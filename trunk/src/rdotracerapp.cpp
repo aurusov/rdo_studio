@@ -2,6 +2,7 @@
 #include "rdotracerapp.h"
 #include "rdoabout.h"
 #include "../resource.h"
+#include "./trace_files/rdotracerexception.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -33,36 +34,55 @@ RDOTracerApp::~RDOTracerApp()
 
 BOOL RDOTracerApp::InitInstance()
 {
-	CWinApp::InitInstance();
+	try {
+		CWinApp::InitInstance();
 
-	if ( ::OleInitialize( NULL ) != S_OK )
-		return FALSE;
+		if ( ::OleInitialize( NULL ) != S_OK )
+			//return FALSE;
+			throw RDOTracerException( format( IDS_OLEINITERROR ).c_str() );
 
-	free( (void*)m_pszProfileName );
-	m_pszProfileName = _tcsdup( _T("") );
-	free( (void*)m_pszRegistryKey );
-	m_pszRegistryKey = _tcsdup( _T("RAO-tracer") );
+		free( (void*)m_pszProfileName );
+		m_pszProfileName = _tcsdup( _T("") );
+		free( (void*)m_pszRegistryKey );
+		m_pszRegistryKey = _tcsdup( _T("RAO-tracer") );
 
-	HFONT hf = (HFONT)::GetStockObject( DEFAULT_GUI_FONT );
-	if ( hf ) {
-		CFont* f = CFont::FromHandle( hf );
-		if ( f ) {
-			LOGFONT lf;
-			f->GetLogFont( &lf );
-			font.CreateFontIndirect( &lf );
+		HFONT hf = (HFONT)::GetStockObject( DEFAULT_GUI_FONT );
+		if ( hf ) {
+			CFont* f = CFont::FromHandle( hf );
+			if ( f ) {
+				LOGFONT lf;
+				f->GetLogFont( &lf );
+				font.CreateFontIndirect( &lf );
+			}
 		}
+
+		tracer = new rdoTracer::RDOTracer();
+
+		mainFrame = new RDOTracerMainFrame();
+		m_pMainWnd = mainFrame;
+		mainFrame->LoadFrame( IDR_MAINFRAME, WS_OVERLAPPEDWINDOW | FWS_ADDTOTITLE, NULL, NULL );
+		mainFrame->SetIcon( LoadIcon( MAKEINTRESOURCE(IDR_MAINFRAME) ), TRUE );
+		//pFrame->SetIcon( LoadIcon( MAKEINTRESOURCE(IDR_MAINFRAME) ), FALSE );
+		mainFrame->SetIcon( (HICON)::LoadImage( NULL, MAKEINTRESOURCE(IDR_MAINFRAME), IMAGE_ICON, ::GetSystemMetrics(SM_CXSMICON), ::GetSystemMetrics(SM_CYSMICON), LR_DEFAULTCOLOR ), FALSE );
+		mainFrame->ShowWindow( SW_SHOW );
+		mainFrame->UpdateWindow();
 	}
-
-	tracer = new rdoTracer::RDOTracer();
-
-	mainFrame = new RDOTracerMainFrame();
-	m_pMainWnd = mainFrame;
-	mainFrame->LoadFrame( IDR_MAINFRAME, WS_OVERLAPPEDWINDOW | FWS_ADDTOTITLE, NULL, NULL );
-	mainFrame->SetIcon( LoadIcon( MAKEINTRESOURCE(IDR_MAINFRAME) ), TRUE );
-	//pFrame->SetIcon( LoadIcon( MAKEINTRESOURCE(IDR_MAINFRAME) ), FALSE );
-	mainFrame->SetIcon( (HICON)::LoadImage( NULL, MAKEINTRESOURCE(IDR_MAINFRAME), IMAGE_ICON, ::GetSystemMetrics(SM_CXSMICON), ::GetSystemMetrics(SM_CYSMICON), LR_DEFAULTCOLOR ), FALSE );
-	mainFrame->ShowWindow( SW_SHOW );
-	mainFrame->UpdateWindow();
+	catch ( RDOTracerException &e ) {
+		AfxMessageBox( format( IDS_INITINSTANCEERROR, e.getMessage().c_str() ).c_str() );
+		return FALSE;
+	}
+	catch ( CException &e ) {
+		//e.ReportError();
+		//TCHAR szCause[255];
+		//e.GetErrorMessage( szCause, 255 );
+		//AfxMessageBox( format( IDS_INITINSTANCEERROR, szCause ).c_str() );
+		showMFCException( IDS_INITINSTANCEERROR, e );
+		return FALSE;
+	}
+	catch ( ... ) {
+		AfxMessageBox( format( IDS_INITINSTANCEERROR, format( IDS_UNKNOWNERROR ).c_str() ).c_str() );
+		return FALSE;
+	}
 
 	return TRUE;
 }
@@ -200,4 +220,11 @@ string RDOTracerApp::getFullHelpFileName( string str )
 	}
 
 	return str;
+}
+
+void RDOTracerApp::showMFCException( const UINT errorTypeID, CException& e ) const
+{
+	TCHAR szCause[255];
+	e.GetErrorMessage( szCause, 255 );
+	AfxMessageBox( format( errorTypeID, szCause ).c_str() );
 }

@@ -176,6 +176,22 @@
 #define IDS_IECANNOTFIND                57651
 #define IDS_IETRACINGERROR              57652
 #define IDS_RULETRACINGERROR            57653
+#define IDS_INITINSTANCEERROR           57654
+#define IDS_UNKNOWNERROR                57655
+#define IDS_OLEINITERROR                57656
+#define IDS_PRECREATEBASEERROR          57657
+#define IDS_PRECREATEERROR              57658
+#define IDS_CREATECLIENTERROR           57659
+#define IDS_LOGSPLITTERERROR            57660
+#define IDS_TREESPLITTERERROR           57661
+#define IDS_LOGSPLITTERVIEWERROR        57662
+#define IDS_TREESPLITTERVIEWSERROR      57663
+#define IDS_CREATEERROR                 57664
+#define IDS_BASECREATEERROR             57665
+#define IDS_TRACETOOLBARERROR           57666
+#define IDS_LOGTOOLBARERROR             57667
+#define IDS_ZOOMTOOLBARERROR            57668
+#define IDS_STATUSBARERROR              57669
 
 // Next default values for new objects
 // 

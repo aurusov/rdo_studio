@@ -5,6 +5,7 @@
 #include "./tracer_ctrls/rdotracertreectrl.h"
 #include "rdotraceroptions.h"
 #include "../resource.h"
+#include "./trace_files/rdotracerexception.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -99,117 +100,162 @@ RDOTracerMainFrame::~RDOTracerMainFrame()
 
 BOOL RDOTracerMainFrame::PreCreateWindow( CREATESTRUCT& cs )
 {
-	if( !CFrameWnd::PreCreateWindow( cs ) ) return FALSE;
-	cs.dwExStyle &= ~WS_EX_CLIENTEDGE;
-	cs.lpszClass = AfxRegisterWndClass(0);
+	try {
+		if( !CFrameWnd::PreCreateWindow( cs ) )
+			throw RDOTracerException( format( IDS_PRECREATEBASEERROR ).c_str() );
+		cs.dwExStyle &= ~WS_EX_CLIENTEDGE;
+		cs.lpszClass = AfxRegisterWndClass(0);
+	}
+	catch ( CException &e ) {
+		rdoTracerApp.showMFCException( IDS_PRECREATEERROR, e );
+		return FALSE;
+	}
+	catch ( RDOTracerException &e ) {
+		AfxMessageBox( format( IDS_PRECREATEERROR, e.getMessage().c_str() ).c_str() );
+		return FALSE;
+	}
+	catch ( ... ) {
+		AfxMessageBox( format( IDS_PRECREATEERROR, format( IDS_UNKNOWNERROR ).c_str() ).c_str() );
+		return FALSE;
+	}
+
 	return TRUE;
 }
 
 BOOL RDOTracerMainFrame::OnCreateClient( LPCREATESTRUCT lpcs, CCreateContext* pContext )
 {
-	tracer->registerClipboardFormat();
-	
-	style_trace.init( "trace" );
-	style_trace.load();
-	style_chart.init( "chart" );
-	style_chart.load();
+	try {
+		tracer->registerClipboardFormat();
+		
+		style_trace.init( "trace" );
+		style_trace.load();
+		style_chart.init( "chart" );
+		style_chart.load();
 
-	if ( !logSplitter.CreateStatic( this, 2, 1, WS_CHILD | WS_VISIBLE ) ) return FALSE;
+		if ( !logSplitter.CreateStatic( this, 2, 1, WS_CHILD | WS_VISIBLE ) )
+			throw RDOTracerException( format( IDS_LOGSPLITTERERROR ).c_str() );
 
-	if ( !treeSplitter.CreateStatic( &logSplitter, 1, 2, WS_CHILD | WS_VISIBLE | WS_BORDER, logSplitter.IdFromRowCol( 0, 0 ) ) ) return FALSE;
-	
-	if ( !logSplitter.CreateView( 1, 0, RUNTIME_CLASS( RDOTracerPane ), CSize(200, 50), pContext ) ) return FALSE;
+		if ( !treeSplitter.CreateStatic( &logSplitter, 1, 2, WS_CHILD | WS_VISIBLE | WS_BORDER, logSplitter.IdFromRowCol( 0, 0 ) ) )
+			throw RDOTracerException( format( IDS_TREESPLITTERERROR ).c_str() );
+		
+		if ( !logSplitter.CreateView( 1, 0, RUNTIME_CLASS( RDOTracerPane ), CSize(200, 50), pContext ) )
+			throw RDOTracerException( format( IDS_LOGSPLITTERVIEWERROR ).c_str() );
 
-	if ( !treeSplitter.CreateView( 0, 0, RUNTIME_CLASS( RDOTracerPane ), CSize(200, 50), pContext ) ||
-		 !treeSplitter.CreateView( 0, 1, RUNTIME_CLASS( RDOTracerPane ), CSize( 0,0 ), pContext ))
+		if ( !treeSplitter.CreateView( 0, 0, RUNTIME_CLASS( RDOTracerPane ), CSize(200, 50), pContext ) ||
+			 !treeSplitter.CreateView( 0, 1, RUNTIME_CLASS( RDOTracerPane ), CSize( 0,0 ), pContext ))
+			throw RDOTracerException( format( IDS_TREESPLITTERVIEWSERROR ).c_str() );
+		
+		log_pane = static_cast<RDOTracerPane*>(logSplitter.GetPane( 1, 0 ));
+		log = tracer->createLog();
+		log->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), log_pane, 0 );
+		log_pane->setControl( log );
+
+		tree_pane = static_cast<RDOTracerPane*>(treeSplitter.GetPane( 0, 0 ));
+		tree = tracer->createTree();
+		tree->Create( 0, CRect(0, 0, 0, 0), tree_pane, 0 );
+		tree_pane->setControl( tree );
+
+		tab_pane = static_cast<RDOTracerPane*>(treeSplitter.GetPane( 0, 1 ));
+		tab = new RDOTabCtrl();
+		tab->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), tab_pane, 0 );
+		tab_pane->setControl( tab );
+
+		CRect rect;
+		RecalcLayout();
+		logSplitter.GetClientRect( &rect );
+
+	#pragma warning( disable : 4244 )
+		logSplitter.SetRowInfo( 0, rect.Height() / 2, 10 );
+		logSplitter.SetRowInfo( 1, rect.Height() / 2, 10 );
+		logSplitter.RecalcLayout();
+		treeSplitter.GetClientRect( &rect );
+		int width = rect.Width() / 3.2;
+		treeSplitter.SetColumnInfo( 0, width, 10 );
+		treeSplitter.SetColumnInfo( 1, rect.Width() - width, 10 );
+		treeSplitter.RecalcLayout();
+	#pragma warning( default : 4244 )
+
+	}
+	catch ( CException &e ) {
+		rdoTracerApp.showMFCException( IDS_CREATECLIENTERROR, e );
 		return FALSE;
-	
-	log_pane = static_cast<RDOTracerPane*>(logSplitter.GetPane( 1, 0 ));
-	log = tracer->createLog();
-	log->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), log_pane, 0 );
-	log_pane->setControl( log );
-
-	tree_pane = static_cast<RDOTracerPane*>(treeSplitter.GetPane( 0, 0 ));
-	tree = tracer->createTree();
-	tree->Create( 0, CRect(0, 0, 0, 0), tree_pane, 0 );
-	tree_pane->setControl( tree );
-
-	tab_pane = static_cast<RDOTracerPane*>(treeSplitter.GetPane( 0, 1 ));
-	tab = new RDOTabCtrl();
-	tab->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), tab_pane, 0 );
-	tab_pane->setControl( tab );
-
-	CRect rect;
-	RecalcLayout();
-	logSplitter.GetClientRect( &rect );
-
-#pragma warning( disable : 4244 )
-	logSplitter.SetRowInfo( 0, rect.Height() / 2, 10 );
-	logSplitter.SetRowInfo( 1, rect.Height() / 2, 10 );
-	logSplitter.RecalcLayout();
-	treeSplitter.GetClientRect( &rect );
-	int width = rect.Width() / 3.2;
-	treeSplitter.SetColumnInfo( 0, width, 10 );
-	treeSplitter.SetColumnInfo( 1, rect.Width() - width, 10 );
-	treeSplitter.RecalcLayout();
-#pragma warning( default : 4244 )
+	}
+	catch ( RDOTracerException &e ) {
+		AfxMessageBox( format( IDS_CREATECLIENTERROR, e.getMessage().c_str() ).c_str() );
+		return FALSE;
+	}
+	catch ( ... ) {
+		AfxMessageBox( format( IDS_CREATECLIENTERROR, format( IDS_UNKNOWNERROR ).c_str() ).c_str() );
+		return FALSE;
+	}
 
 	return TRUE;
 }
 
 int RDOTracerMainFrame::OnCreate( LPCREATESTRUCT lpCreateStruct )
 {
-	if ( CFrameWnd::OnCreate(lpCreateStruct) == -1 ) return -1;
+	try {
+		if ( CFrameWnd::OnCreate(lpCreateStruct) == -1 )
+			throw RDOTracerException( format( IDS_BASECREATEERROR ).c_str() );
 
-	string s;
-	s = format( IDS_TRACE_TOOLBAR );
-	if ( !traceToolBar.CreateEx( this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC ) ||
-		 !traceToolBar.LoadToolBar( IDR_TRACE_TOOLBAR ) ) {
-		TRACE0( "Failed to create trace toolbar\n" );
+		string s;
+		s = format( IDS_TRACE_TOOLBAR );
+		if ( !traceToolBar.CreateEx( this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC ) ||
+			 !traceToolBar.LoadToolBar( IDR_TRACE_TOOLBAR ) ) {
+			throw RDOTracerException( format( IDS_TRACETOOLBARERROR ).c_str() );
+		}
+		traceToolBar.GetToolBarCtrl().SetWindowText( s.c_str() );
+		if ( traceToolBarImageList.Create( IDB_TRACE_TOOLBAR_D, 16, 0, 0xFF00FF ) )
+			traceToolBar.GetToolBarCtrl().SetDisabledImageList( &traceToolBarImageList );
+		
+		s = format( IDS_LOG_TOOLBAR );
+		if ( !logToolBar.CreateEx( this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC ) ||
+			 !logToolBar.LoadToolBar( IDR_LOG_TOOLBAR ) ) {
+			throw RDOTracerException( format( IDS_LOGTOOLBARERROR ).c_str() );
+		}
+		logToolBar.GetToolBarCtrl().SetWindowText( s.c_str() );
+		if ( logToolBarImageList.Create( IDB_LOG_TOOLBAR_D, 16, 0, 0xFF00FF ) )
+			logToolBar.GetToolBarCtrl().SetDisabledImageList( &logToolBarImageList );
+
+		s = format( IDS_ZOOM_TOOLBAR );
+		if ( !zoomToolBar.CreateEx( this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC ) ||
+			 !zoomToolBar.LoadToolBar( IDR_ZOOM_TOOLBAR ) ) {
+			throw RDOTracerException( format( IDS_ZOOMTOOLBARERROR ).c_str() );
+		}
+		zoomToolBar.GetToolBarCtrl().SetWindowText( s.c_str() );
+		if ( zoomToolBarImageList.Create( IDB_ZOOM_TOOLBAR_D, 16, 0, 0xFF00FF ) )
+			zoomToolBar.GetToolBarCtrl().SetDisabledImageList( &zoomToolBarImageList );
+
+		if ( !statusBar.Create( this ) ||
+			 !statusBar.SetIndicators( indicators, sizeof(indicators)/sizeof(UINT) )) {
+			throw RDOTracerException( format( IDS_STATUSBARERROR ).c_str() );
+		}
+		statusBar.SetPaneInfo( 1, ID_DELAY_STATUSBAR , SBPS_NORMAL , 70 );
+		statusBar.SetPaneInfo( 2, ID_COORD_STATUSBAR , SBPS_NORMAL , 70 );
+		statusBar.SetPaneInfo( 3, ID_MODIFY_STATUSBAR, SBPS_NORMAL , 70 );
+
+		traceToolBar.EnableDocking( CBRS_ALIGN_ANY );
+		logToolBar.EnableDocking( CBRS_ALIGN_ANY );
+		zoomToolBar.EnableDocking( CBRS_ALIGN_ANY );
+
+		EnableDocking( CBRS_ALIGN_ANY );
+
+		DockControlBar( &traceToolBar );
+		dockControlBarBesideOf( logToolBar, traceToolBar );
+		dockControlBarBesideOf( zoomToolBar, logToolBar );
+	}
+	catch ( CException &e ) {
+		rdoTracerApp.showMFCException( IDS_CREATEERROR, e );
 		return -1;
 	}
-	traceToolBar.GetToolBarCtrl().SetWindowText( s.c_str() );
-	if ( traceToolBarImageList.Create( IDB_TRACE_TOOLBAR_D, 16, 0, 0xFF00FF ) )
-		traceToolBar.GetToolBarCtrl().SetDisabledImageList( &traceToolBarImageList );
-	
-	s = format( IDS_LOG_TOOLBAR );
-	if ( !logToolBar.CreateEx( this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC ) ||
-		 !logToolBar.LoadToolBar( IDR_LOG_TOOLBAR ) ) {
-		TRACE0( "Failed to create log toolbar\n" );
+	catch ( RDOTracerException &e ) {
+		AfxMessageBox( format( IDS_CREATEERROR, e.getMessage().c_str() ).c_str() );
 		return -1;
 	}
-	logToolBar.GetToolBarCtrl().SetWindowText( s.c_str() );
-	if ( logToolBarImageList.Create( IDB_LOG_TOOLBAR_D, 16, 0, 0xFF00FF ) )
-		logToolBar.GetToolBarCtrl().SetDisabledImageList( &logToolBarImageList );
-
-	s = format( IDS_ZOOM_TOOLBAR );
-	if ( !zoomToolBar.CreateEx( this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC ) ||
-		 !zoomToolBar.LoadToolBar( IDR_ZOOM_TOOLBAR ) ) {
-		TRACE0( "Failed to create zoom toolbar\n" );
+	catch ( ... ) {
+		AfxMessageBox( format( IDS_CREATEERROR, format( IDS_UNKNOWNERROR ).c_str() ).c_str() );
 		return -1;
 	}
-	zoomToolBar.GetToolBarCtrl().SetWindowText( s.c_str() );
-	if ( zoomToolBarImageList.Create( IDB_ZOOM_TOOLBAR_D, 16, 0, 0xFF00FF ) )
-		zoomToolBar.GetToolBarCtrl().SetDisabledImageList( &zoomToolBarImageList );
-
-	if ( !statusBar.Create( this ) ||
-		 !statusBar.SetIndicators( indicators, sizeof(indicators)/sizeof(UINT) )) {
-		TRACE0( "Failed to create status bar\n" );
-		return -1;
-	}
-	statusBar.SetPaneInfo( 1, ID_DELAY_STATUSBAR , SBPS_NORMAL , 70 );
-	statusBar.SetPaneInfo( 2, ID_COORD_STATUSBAR , SBPS_NORMAL , 70 );
-	statusBar.SetPaneInfo( 3, ID_MODIFY_STATUSBAR, SBPS_NORMAL , 70 );
-
-	traceToolBar.EnableDocking( CBRS_ALIGN_ANY );
-	logToolBar.EnableDocking( CBRS_ALIGN_ANY );
-	zoomToolBar.EnableDocking( CBRS_ALIGN_ANY );
-
-	EnableDocking( CBRS_ALIGN_ANY );
-
-	DockControlBar( &traceToolBar );
-	dockControlBarBesideOf( logToolBar, traceToolBar );
-	dockControlBarBesideOf( zoomToolBar, logToolBar );
 
 	return 0;
 }
