@@ -17,6 +17,8 @@ friend class CChatSmileList;
 public:
 	enum Type { none = 0, smile, frown, wink, smirk, tongue, biggrin, gigi, laugh, lol, cool, confused, eek, rolleyes, insane, redface, mad, weep, up, down, rotate, super, upset, beer, amazed, shuffle, lamer, spy, idea, puke, wink2, smirk2, think, fear, yes, no, crazy, joke, hah, ballet, friday, drink, fart, box, invalid, duel, kos, gossip, bis, hit, ivan, venera, mobile, kult, figa, eyes, tomato };
 
+	Type getType() const { return type; }
+
 	void setBgColor( COLORREF color );
 
 private:

@@ -41,7 +41,7 @@ int CChatDock::OnCreate( LPCREATESTRUCT lpCreateStruct )
 
 	users.Create( 0, CRect(0, 0, 0, 0), tab.getTabAsParent(), 1 );
 	network.Create( 0, CRect(0, 0, 0, 0), tab.getTabAsParent(), 2 );
-	smiles.Create( 0, CRect(0, 0, 0, 0), tab.getTabAsParent(), 3 );
+	smiles.Create( NULL, NULL, 0, CRect(0, 0, 0, 0), tab.getTabAsParent(), 3 );
 
 	tab.insertItem( &users, format( IDS_USERS ).c_str(), 0 );
 	tab.insertItem( &network, format( IDS_NETWORK ).c_str(), 1 );
