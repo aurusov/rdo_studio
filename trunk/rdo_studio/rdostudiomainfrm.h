@@ -81,6 +81,12 @@ protected:
 	afx_msg void OnDestroy();
 	afx_msg void OnViewOptions();
 	afx_msg void OnHelpContents();
+	afx_msg void OnModelRunNoShow();
+	afx_msg void OnModelRunAnimation();
+	afx_msg void OnModelRunMonitor();
+	afx_msg void OnUpdateModelRunNoShow(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateModelRunAnimation(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateModelRunMonitor(CCmdUI* pCmdUI);
 	//}}AFX_MSG
 	afx_msg void OnUpdateCoordStatusBar( CCmdUI *pCmdUI );
 	afx_msg void OnUpdateModifyStatusBar( CCmdUI *pCmdUI );

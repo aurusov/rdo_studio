@@ -34,6 +34,12 @@ BEGIN_MESSAGE_MAP(RDOStudioMainFrame, CMDIFrameWnd)
 	ON_WM_DESTROY()
 	ON_COMMAND(ID_VIEW_OPTIONS, OnViewOptions)
 	ON_COMMAND(ID_HELP_CONTENTS, OnHelpContents)
+	ON_COMMAND(ID_MODEL_RUNNOSHOW, OnModelRunNoShow)
+	ON_COMMAND(ID_MODEL_RUNANIMATION, OnModelRunAnimation)
+	ON_COMMAND(ID_MODEL_RUNMONITOR, OnModelRunMonitor)
+	ON_UPDATE_COMMAND_UI(ID_MODEL_RUNNOSHOW, OnUpdateModelRunNoShow)
+	ON_UPDATE_COMMAND_UI(ID_MODEL_RUNANIMATION, OnUpdateModelRunAnimation)
+	ON_UPDATE_COMMAND_UI(ID_MODEL_RUNMONITOR, OnUpdateModelRunMonitor)
 	//}}AFX_MSG_MAP
 	ON_UPDATE_COMMAND_UI( ID_COORDSTATUSBAR          , OnUpdateCoordStatusBar )
 	ON_UPDATE_COMMAND_UI( ID_MODIFYSTATUSBAR         , OnUpdateModifyStatusBar )
@@ -138,6 +144,10 @@ int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	dockControlBarBesideOf( editToolBar, buildToolBar );
 	DockControlBar( &workspace, AFX_IDW_DOCKBAR_LEFT );
 	DockControlBar( &output, AFX_IDW_DOCKBAR_BOTTOM );
+
+	buildToolBar.SetButtonStyle( 3, TBBS_CHECKBOX | TBBS_CHECKGROUP );
+	buildToolBar.SetButtonStyle( 4, TBBS_CHECKBOX | TBBS_CHECKGROUP );
+	buildToolBar.SetButtonStyle( 5, TBBS_CHECKBOX | TBBS_CHECKGROUP );
 
 	tracer->registerClipboardFormat();
 
@@ -310,4 +320,40 @@ void RDOStudioMainFrame::OnHelpContents()
 	if ( filename.empty() ) return;
 
 	HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_DISPLAY_TOPIC, NULL );
+}
+
+void RDOStudioMainFrame::OnModelRunNoShow()
+{
+	model->setShowMode( RDOSimulatorNS::SM_NoShow );
+}
+
+void RDOStudioMainFrame::OnModelRunAnimation()
+{
+	model->setShowMode( RDOSimulatorNS::SM_Animation );
+}
+
+void RDOStudioMainFrame::OnModelRunMonitor()
+{
+	model->setShowMode( RDOSimulatorNS::SM_Monitor );
+}
+
+void RDOStudioMainFrame::OnUpdateModelRunNoShow(CCmdUI* pCmdUI)
+{
+	bool flag = model->isRunning();
+	pCmdUI->Enable( flag );
+	pCmdUI->SetCheck( flag ? model->getShowMode() == RDOSimulatorNS::SM_NoShow : 0 );
+}
+
+void RDOStudioMainFrame::OnUpdateModelRunAnimation(CCmdUI* pCmdUI)
+{
+	bool flag = model->isRunning();
+	pCmdUI->Enable( flag );
+	pCmdUI->SetCheck( flag ? model->getShowMode() == RDOSimulatorNS::SM_Animation : 0 );
+}
+
+void RDOStudioMainFrame::OnUpdateModelRunMonitor(CCmdUI* pCmdUI)
+{
+	bool flag = model->isRunning();
+	pCmdUI->Enable( flag );
+	pCmdUI->SetCheck( flag ? model->getShowMode() == RDOSimulatorNS::SM_Monitor : 0 );
 }

@@ -6,6 +6,7 @@
 #endif
 
 #include "rdostudioframemanager.h"
+#include <rdosimwin.h>
 
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioModel
@@ -32,6 +33,7 @@ private:
 	bool showCanNotCloseModelMessage;
 
 	double modelTime;
+	RDOSimulatorNS::ShowMode showMode;
 
 	static void newModelNotify();
 	static void openModelNotify();
@@ -79,6 +81,9 @@ public:
 	bool isModify() const;
 	bool isRunning() const;
 	double getModelTime() const { return modelTime; };
+
+	RDOSimulatorNS::ShowMode getShowMode() const { return showMode; };
+	void setShowMode( const RDOSimulatorNS::ShowMode value );
 
 	RDOStudioModelDoc* getModelDoc() const;
 	void updateModify() const;

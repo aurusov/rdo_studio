@@ -24,8 +24,7 @@ static char THIS_FILE[] = __FILE__;
 vector< RDOStudioFrameManager::Frame* > RDOStudioFrameManager::frames;
 
 RDOStudioFrameManager::RDOStudioFrameManager():
-	frameDocTemplate( NULL ),
-	initFrameNumber( -1 )
+	frameDocTemplate( NULL )
 {
 	frameDocTemplate = new CMultiDocTemplate( IDR_FRAMETYPE, RUNTIME_CLASS(RDOStudioFrameDoc), RUNTIME_CLASS(RDOStudioChildFrame), RUNTIME_CLASS(RDOStudioFrameView) );
 	AfxGetApp()->AddDocTemplate( frameDocTemplate );
@@ -43,6 +42,7 @@ void RDOStudioFrameManager::insertItem( const string& name )
 {
 	Frame* item = new Frame;
 	item->hitem = studioApp.mainFrame->workspace.frames->InsertItem( name.c_str(), 1, 1, studioApp.mainFrame->workspace.frames->GetRootItem() );
+	item->name  = name;
 	item->doc   = NULL;
 	item->view  = NULL;
 	frames.push_back( item );
@@ -92,7 +92,11 @@ int RDOStudioFrameManager::findFrameIndex( const RDOStudioFrameView* view ) cons
 
 RDOStudioFrameDoc* RDOStudioFrameManager::connectFrameDoc( const HTREEITEM hitem ) const
 {
-	int index = findFrameIndex( hitem );
+	return connectFrameDoc( findFrameIndex( hitem ) );
+}
+
+RDOStudioFrameDoc* RDOStudioFrameManager::connectFrameDoc( const int index ) const
+{
 	RDOStudioFrameDoc* doc = NULL;
 	if ( index != -1 ) {
 		CSingleLock lock( getFrameUsed( index ) );

@@ -23,6 +23,7 @@ private:
 	public:
 		Frame(): hitem( 0 ), doc( NULL ), view( NULL ), timer( false, true ) {};
 		HTREEITEM           hitem;
+		std::string         name;
 		RDOStudioFrameDoc*  doc;
 		RDOStudioFrameView* view;
 		CMutex              used;
@@ -31,8 +32,6 @@ private:
 		CEvent              close;
 	};
 	static std::vector< Frame* > frames;
-
-	int initFrameNumber;
 
 public:
 	RDOStudioFrameManager();
@@ -43,13 +42,16 @@ public:
 	int findFrameIndex( const RDOStudioFrameDoc* doc ) const;
 	int findFrameIndex( const RDOStudioFrameView* view ) const;
 	RDOStudioFrameDoc* connectFrameDoc( const HTREEITEM hitem ) const;
+	RDOStudioFrameDoc* connectFrameDoc( const int index ) const;
 	void disconnectFrameDoc( const RDOStudioFrameDoc* doc ) const;
+	std::string         getFrameName( const int index ) const    { return frames[index]->name;   };
 	RDOStudioFrameDoc*  getFrameDoc( const int index ) const     { return frames[index]->doc;    };
 	RDOStudioFrameView* getFrameView( const int index ) const    { return frames[index]->view;   };
 	CMutex*             getFrameUsed( const int index ) const    { return &frames[index]->used;  };
 	CMutex*             getFrameDraw( const int index ) const    { return &frames[index]->draw;  };
 	CEvent*             getFrameTimer( const int index ) const   { return &frames[index]->timer; };
 	CEvent*             getFrameClose( const int index ) const   { return &frames[index]->close; };
+	int count() const { return frames.size(); };
 	void clear();
 
 	void expand() const;

@@ -12,7 +12,6 @@
 
 #include <rdokernel.h>
 #include <rdorepository.h>
-#include <rdosimwin.h>
 
 using namespace std;
 using namespace rdoEditor;
@@ -35,7 +34,8 @@ RDOStudioModel::RDOStudioModel():
 	useTemplate( false ),
 	closeWithDocDelete( true ),
 	showCanNotCloseModelMessage( true ),
-	modelTime( 0 )
+	modelTime( 0 ),
+	showMode( SM_NoShow )
 {
 	model = this;
 
@@ -461,8 +461,15 @@ void RDOStudioModel::beforeModelStart()
 		it++;
 	}
 	frameManager.expand();
-	frameManager.initFrameNumber = kernel.getSimulator()->getInitialFrameNumber();
+	int initFrameNumber = kernel.getSimulator()->getInitialFrameNumber() - 1;
 	modelTime = 0;
+	showMode  = kernel.getSimulator()->getInitialShowMode();
+	if ( showMode == SM_Animation && initFrameNumber >= 0 && initFrameNumber < frameManager.count() ) {
+		RDOStudioFrameDoc* doc = model->frameManager.connectFrameDoc( initFrameNumber );
+		if ( doc ) {
+			doc->SetTitle( format( IDS_FRAMENAME, frameManager.getFrameName( initFrameNumber ).c_str() ).c_str() );
+		}
+	}
 }
 
 void RDOStudioModel::showFrame()
@@ -676,4 +683,10 @@ void RDOStudioModel::updateStyleOfAllModel() const
 			tab->getItemEdit( i )->setEditorStyle( &studioApp.mainFrame->style_editor );
 		}
 	}
+}
+
+void RDOStudioModel::setShowMode( const ShowMode value )
+{
+	showMode = value;
+	kernel.getSimulator()->setShowMode( showMode );
 }
