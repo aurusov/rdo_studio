@@ -9,6 +9,64 @@ static char THIS_FILE[] = __FILE__;
 
 #include "Rdo.h"
 
+bool CheckOperations::operator()(RDOBaseOperation *op)
+{
+	return op->checkOperation(sim);
+}
+
+bool RDODecisionPoint::checkOperation(RDOSimulator *sim)
+{
+   if(Condition(sim))
+   {
+      if(RunSearchInTree(sim))
+         return true;
+   }
+   return false;
+}
+
+bool RDOOperation::checkOperation(RDOSimulator *sim)
+{
+   onBeforeChoiceFrom(sim);
+   if(!choiceFrom(sim))
+      return false;
+
+   RDOOperation *newOp = clone(sim);
+   newOp->onBeforeOperationBegin(sim);
+   newOp->convertBegin(sim);
+   sim->addOperation(newOp);
+   sim->addTimePoint(newOp->time = (newOp->getNextTimeInterval(sim) + sim->getCurrentTime()));
+   newOp->onAfterOperationBegin(sim);
+   return true;
+}
+
+bool RDOIE::checkOperation(RDOSimulator *sim)
+{
+   if(sim->getCurrentTime() >= time)
+   {
+      onBeforeIrregularEvent(sim);
+      convertEvent(sim);
+      sim->addTimePoint(time = (getNextTimeInterval(sim) + sim->getCurrentTime()));
+      onAfterIrregularEvent(sim);
+      return true;
+   }
+
+   return false;
+}
+
+bool RDORule::checkOperation(RDOSimulator *sim)
+{
+   onBeforeChoiceFrom(sim);
+   if(choiceFrom(sim))
+   {
+      onBeforeRule(sim);
+      convertRule(sim);
+      onAfterRule(sim);
+      return true;
+   }
+   return false;
+}
+
+/*
 bool CheckOperations::operator()(RDODecisionPoint *dp)
 {
    if(dp->Condition(sim))
@@ -60,7 +118,7 @@ bool CheckOperations::operator()(RDORule *ru)
    }
    return false;
 }
-
+*/
 bool RDOSimulator::doOperation(bool onlyEndOfOperations)
 {
 	std::for_each(havePokaz.begin(), havePokaz.end(), std::bind2nd(std::mem_fun1(&RDOPokaz::checkPokaz), this));
@@ -68,6 +126,12 @@ bool RDOSimulator::doOperation(bool onlyEndOfOperations)
 
    if(!onlyEndOfOperations)
    {
+      // Check all operations
+      if(std::find_if(haveBaseOperations.begin(), 
+         haveBaseOperations.end(), CheckOperations(this)) != haveBaseOperations.end())
+         return true;
+		
+/*
       // Check all decision points
       if(std::find_if(haveDecisionPoints.begin(), 
          haveDecisionPoints.end(), CheckOperations(this)) != haveDecisionPoints.end())
@@ -87,6 +151,7 @@ bool RDOSimulator::doOperation(bool onlyEndOfOperations)
       if(std::find_if(haveIrregularEvents.begin(), 
          haveIrregularEvents.end(), CheckOperations(this)) != haveIrregularEvents.end())
          return true;
+*/
    }
 
    if(checkEndOfOperation())
@@ -114,12 +179,25 @@ void RDOSimulator::rdoInit()
 void RDOSimulator::preProcess()
 {
    // Initialise all irregular events
+/*
    for(std::list<RDOIE *>::iterator i = haveIrregularEvents.begin(); 
          i != haveIrregularEvents.end(); i++)
-   {
+	{
       (*i)->onBeforeIrregularEvent(this);
       addTimePoint((*i)->time = ((*i)->getNextTimeInterval(this) + getCurrentTime()));
       (*i)->onAfterIrregularEvent(this);
+   }
+*/
+   for(std::list<RDOBaseOperation *>::iterator i = haveBaseOperations.begin(); 
+         i != haveBaseOperations.end(); i++)
+   {
+		RDOIE *currIE = dynamic_cast<RDOIE *>(*i);
+		if(currIE) // definitely IE
+		{
+			currIE->onBeforeIrregularEvent(this);
+			addTimePoint(currIE->time = (currIE->getNextTimeInterval(this) + getCurrentTime()));
+			currIE->onAfterIrregularEvent(this);
+		}	
    }
 
 	std::for_each(havePokaz.begin(), havePokaz.end(), std::bind2nd(std::mem_fun1(&RDOPokaz::resetPokaz), this));

@@ -30,16 +30,21 @@ friend RDORuleTrace;
    RDOSimulator *createCopy();
 
 	int operationCounter;
+	int dpCounter;
+	int ieCounter;
 
 	void onAfterCheckPokaz();
 
-protected:
-	RDOSimulatorTrace() { operationCounter = 1; }
-   int maxOperationId;
    void addTemplateDecisionPoint(RDODecisionPointTrace *dp);
    void addTemplateOperation(RDOOperationTrace *op);
    void addTemplateIrregularEvent(RDOIETrace *ev);
    void addTemplateRule(RDORuleTrace *rule);
+
+protected:
+	RDOSimulatorTrace(): operationCounter(1), dpCounter(1), ieCounter(1) {}
+   int maxOperationId;
+   void addTemplateBaseOperation(RDOBaseOperation *op);
+	
    void incrementResourceIdReference(int id);
 
    void preProcess();

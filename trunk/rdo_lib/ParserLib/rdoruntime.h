@@ -133,6 +133,9 @@ friend RDOPMDWatchState;
    void onDestroy();
 	vector<RDOResourceTrace *> getPermanentResources();
 
+	vector<RDOBaseOperation *> allBaseOperations; // including rules, ies, operations, allDPTs
+																		 // to preserve order
+
 	vector<RDOActivityRuleRuntime *> rules;
 	vector<RDOActivityIERuntime *> ies;
 	vector<RDOActivityOperationRuntime *> operations;
@@ -176,13 +179,13 @@ public:
 
 	void addPattern(RDOPatternRuntime *pat) { allPatterns.push_back(pat); }
 	void setCurrentActivity(RDOActivityRuntime *pat) { currActivity = pat; }
-	void addRuntimeOperation(RDOActivityOperationRuntime *oper) { operations.push_back(oper); }
-	void addRuntimeRule(RDOActivityRuleRuntime *rule) { rules.push_back(rule); }
-	void addRuntimeIE(RDOActivityIERuntime *ie) { ies.push_back(ie); }
+	void addRuntimeOperation(RDOActivityOperationRuntime *oper);
+	void addRuntimeRule(RDOActivityRuleRuntime *rule);
+	void addRuntimeIE(RDOActivityIERuntime *ie);
 	void addRuntimePokaz(RDOPMDPokaz *pok);
 	void addRuntimeFrame(RDOFRMFrame *frm);
 
-	void addDPT(RDOSearchRuntime *dpt) { allDPTs.push_back(dpt); }
+	void addDPT(RDOSearchRuntime *dpt);
 
 	void addInitCalc(RDOCalc *initCalc) { initCalcs.push_back(initCalc); }
    RDOValue getResParamVal(const int nRes, const int nParam) const;

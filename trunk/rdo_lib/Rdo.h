@@ -13,12 +13,20 @@ class RDOOperation;
 class RDOIE;
 class CheckOperations;
 
-class RDORule
+class RDOBaseOperation
+{
+public:
+	virtual ~RDOBaseOperation() {}
+	virtual bool checkOperation(RDOSimulator *sim) = 0;
+};
+
+class RDORule: public RDOBaseOperation
 {
 friend RDOSimulator;
 friend CheckOperations;
 friend RDODecisionPoint;
 friend TreeNode;
+	bool checkOperation(RDOSimulator *sim);
 protected:
    virtual void onBeforeChoiceFrom(RDOSimulator *sim) {}
    virtual void onBeforeRule(RDOSimulator *sim) {}
@@ -50,18 +58,20 @@ class CheckOperations
    RDOSimulator *sim;
 public:
    CheckOperations(RDOSimulator *i_sim): sim(i_sim) {}
-   bool operator()(RDODecisionPoint *dp);
-   bool operator()(RDOOperation *op);
-   bool operator()(RDOIE *ie);
-   bool operator()(RDORule *ie);
+   bool operator()(RDOBaseOperation *op);
+//   bool operator()(RDODecisionPoint *dp);
+//   bool operator()(RDOOperation *op);
+//   bool operator()(RDOIE *ie);
+//   bool operator()(RDORule *ie);
 };
 
-class RDODecisionPoint
+class RDODecisionPoint: public RDOBaseOperation
 {
 friend RDOSimulator;
 friend TreeNode;
 friend CheckOperations;
    bool RunSearchInTree(RDOSimulator *sim);
+	bool checkOperation(RDOSimulator *sim);
 
 protected:
    std::list<RDOActivity *> activities;
@@ -81,11 +91,12 @@ public:
    virtual void addActivity(RDOActivity *act);
 };
 
-class RDOIE    // Irregular Event
+class RDOIE: public RDOBaseOperation    // Irregular Event
 {
 friend RDOSimulator;
 friend CheckOperations;
    double time;
+	bool checkOperation(RDOSimulator *sim);
 
 protected:
    virtual void onBeforeIrregularEvent(RDOSimulator *sim) {}
@@ -97,11 +108,12 @@ public:
    virtual ~RDOIE() {}
 };
 
-class RDOOperation
+class RDOOperation: public RDOBaseOperation
 {
 friend RDOSimulator;
 friend CheckOperations;
    double time;
+	bool checkOperation(RDOSimulator *sim);
 public:
    virtual void convertEnd(RDOSimulator *sim) = 0;
    virtual void convertBegin(RDOSimulator *sim) = 0;
@@ -133,7 +145,10 @@ class RDOSimulator: public RDOSimulatorBase
 friend RDODecisionPoint;
 friend RDOOperation;
 friend TreeNode;
-friend CheckOperations;
+friend RDORule;
+friend RDOIE;
+friend RDODecisionPoint;
+friend RDOOperation;
 
    std::list<RDOOperation *> operations;                 // currently processing
 
@@ -142,19 +157,21 @@ friend CheckOperations;
    bool checkEndOfOperation();
 
 protected:
-   std::list<RDODecisionPoint *> haveDecisionPoints;     // all decision points
-   std::list<RDOIE *> haveIrregularEvents;               // all IE in simulator
-   std::list<RDORule *> haveRules;                       // all Rules in simulator
-   std::list<RDOOperation *> haveOperations;             // all operations in simulator
+	std::list<RDOBaseOperation *> haveBaseOperations;		// all DP, IE, Rules, Operations
+//   std::list<RDODecisionPoint *> haveDecisionPoints;     // all decision points
+//   std::list<RDOIE *> haveIrregularEvents;               // all IE in simulator
+//   std::list<RDORule *> haveRules;                       // all Rules in simulator
+//   std::list<RDOOperation *> haveOperations;             // all operations in simulator
    std::list<RDOPokaz *> havePokaz;								// all pokaz in simulator
 
    // Following four members are used in users class derived from RDOSimulator
    // to add Operations, IEs, Rules and DecisionPoints which can be 
    // "happened" in process.
-   virtual void addTemplateOperation(RDOOperation *op) { haveOperations.push_back(op); }
-   virtual void addTemplateIrregularEvent(RDOIE *ev) { haveIrregularEvents.push_back(ev); }
-   virtual void addTemplateRule(RDORule *rule) { haveRules.push_back(rule); }
-   virtual void addTemplateDecisionPoint(RDODecisionPoint *dp) { haveDecisionPoints.push_back(dp); }
+   virtual void addTemplateBaseOperation(RDOBaseOperation *op) { haveBaseOperations.push_back(op); }
+//   virtual void addTemplateOperation(RDOOperation *op) { haveOperations.push_back(op); }
+//   virtual void addTemplateIrregularEvent(RDOIE *ev) { haveIrregularEvents.push_back(ev); }
+//   virtual void addTemplateRule(RDORule *rule) { haveRules.push_back(rule); }
+//   virtual void addTemplateDecisionPoint(RDODecisionPoint *dp) { haveDecisionPoints.push_back(dp); }
    virtual void addPokaz(RDOPokaz *pok) { havePokaz.push_back(pok); }
 
    // These functions called by engine before and after process (see RDOSimulatorBase class)

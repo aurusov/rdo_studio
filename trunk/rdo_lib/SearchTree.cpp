@@ -27,7 +27,7 @@ bool RDODecisionPoint::RunSearchInTree(RDOSimulator *sim)
       std::list<TreeNode *> bestPath;
       for(TreeNode *i = treeRoot->targetNode; i->parent; i = i->parent)
          bestPath.push_front(i);
-
+							  
       onSearchDecisionHeader(treeRoot->theRealSimulator);
       for(std::list<TreeNode *>::iterator ii = bestPath.begin(); ii != bestPath.end(); ii++)
       {

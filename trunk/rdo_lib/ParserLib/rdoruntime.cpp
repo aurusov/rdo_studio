@@ -253,10 +253,39 @@ void RDORuntime::rdoInit(RDOTrace *customTracer, RDOResult *customResult)
 	RDOSimulatorTrace::rdoInit();
 }
 
+void RDORuntime::addRuntimeOperation(RDOActivityOperationRuntime *oper) 
+{ 
+	operations.push_back(oper); 
+	allBaseOperations.push_back(oper); 
+}
+
+void RDORuntime::addRuntimeRule(RDOActivityRuleRuntime *rule) 
+{ 
+	rules.push_back(rule); 
+	allBaseOperations.push_back(rule); 
+}
+
+void RDORuntime::addRuntimeIE(RDOActivityIERuntime *ie) 
+{ 
+	ies.push_back(ie); 
+	allBaseOperations.push_back(ie); 
+}
+
+void RDORuntime::addDPT(RDOSearchRuntime *dpt) 
+{ 
+	allDPTs.push_back(dpt); 
+	allBaseOperations.push_back(dpt); 
+}
+
 void RDORuntime::onInit()
 {
 	for_each(initCalcs.begin(), initCalcs.end(), bind2nd(mem_fun1(&RDOCalc::calcValueBase), this));
-	
+
+	int size = allBaseOperations.size();
+	for(int i = 0; i < size; i++)
+		addTemplateBaseOperation(allBaseOperations.at(i));
+
+/*	
 	int size = rules.size();
 	for(int i = 0; i < size; i++)
 		addTemplateRule(rules.at(i));
@@ -272,6 +301,7 @@ void RDORuntime::onInit()
 	size = allDPTs.size();
 	for(i = 0; i < size; i++)
 		addTemplateDecisionPoint(allDPTs.at(i));
+*/
 }
 
 RDOTrace *RDORuntime::getTracer()

@@ -10,7 +10,7 @@
 #include "htmlhelp.h"
 
 #include <rdokernel.h>
-#include <rdorepository.h>
+#include <rdorepository.h>		  
 #include <rdoabout.h>
 
 using namespace std;

@@ -561,7 +561,7 @@ SOURCE=.\rdofrm.y
 InputPath=.\rdofrm.y
 
 "rdogramfrm.cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	..\System\bison.exe -v -pfrm --skeleton=..\System\bison.simple -ordogramfrm.cpp $(InputPath)
+	..\System\bison.exe -pfrm --skeleton=..\System\bison.simple -ordogramfrm.cpp $(InputPath)
 
 # End Custom Build
 

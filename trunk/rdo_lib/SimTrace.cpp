@@ -9,27 +9,45 @@ static char THIS_FILE[] = __FILE__;
 
 void RDOSimulatorTrace::addTemplateDecisionPoint(RDODecisionPointTrace *dp) 
 { 
-   dp->id = haveDecisionPoints.size() + 1;
-   RDOSimulator::addTemplateDecisionPoint(dp);
+   dp->id = dpCounter++;
+//   dp->id = haveDecisionPoints.size() + 1;
+//   RDOSimulator::addTemplateDecisionPoint(dp);
+   RDOSimulator::addTemplateBaseOperation(dp);
 }
 
 void RDOSimulatorTrace::addTemplateOperation(RDOOperationTrace *op) 
 { 
    op->id = operationCounter++;
 //   freeOperationId(op->operId);
-   RDOSimulator::addTemplateOperation(op); 
+//   RDOSimulator::addTemplateOperation(op); 
+   RDOSimulator::addTemplateBaseOperation(op); 
 }
 
 void RDOSimulatorTrace::addTemplateIrregularEvent(RDOIETrace *ev)
 {
-   ev->id = haveIrregularEvents.size() + 1;
-   RDOSimulator::addTemplateIrregularEvent(ev); 
+   ev->id = ieCounter++;
+//   ev->id = haveIrregularEvents.size() + 1;
+//   RDOSimulator::addTemplateIrregularEvent(ev); 
+   RDOSimulator::addTemplateBaseOperation(ev); 
 }
 
 void RDOSimulatorTrace::addTemplateRule(RDORuleTrace *rule)
 {
    rule->id = operationCounter++;
-   RDOSimulator::addTemplateRule(rule); 
+//   RDOSimulator::addTemplateRule(rule); 
+   RDOSimulator::addTemplateBaseOperation(rule); 
+}
+
+void RDOSimulatorTrace::addTemplateBaseOperation(RDOBaseOperation *bop)
+{
+	RDORuleTrace *rule = dynamic_cast<RDORuleTrace *>(bop);
+	RDOIETrace *ie = dynamic_cast<RDOIETrace *>(bop);
+	RDOOperationTrace *op = dynamic_cast<RDOOperationTrace *>(bop);
+	RDODecisionPointTrace *dp = dynamic_cast<RDODecisionPointTrace *>(bop);
+	if(rule) addTemplateRule(rule);
+	else if(ie) addTemplateIrregularEvent(ie);
+	else if(op) addTemplateOperation(op);
+	else if(dp) addTemplateDecisionPoint(dp);
 }
 
 void RDOSimulatorTrace::rdoDestroy()
