@@ -123,31 +123,31 @@ void CChatSoundList::saveSetting() const
 	snd = getSound( CST_Connect );
 	app->WriteProfileInt( "Sound\\Connect", "useSound", snd->useSound );
 	app->WriteProfileInt( "Sound\\Connect", "useDefault", snd->useDefault );
-	app->WriteProfileString( "Sound\\Connect", "file", snd->file );
+	app->WriteProfileString( "Sound\\Connect", "file", snd->file.c_str() );
 	snd = getSound( CST_Disconnect );
 	app->WriteProfileInt( "Sound\\Disconnect", "useSound", snd->useSound );
 	app->WriteProfileInt( "Sound\\Disconnect", "useDefault", snd->useDefault );
-	app->WriteProfileString( "Sound\\Disconnect", "file", snd->file );
+	app->WriteProfileString( "Sound\\Disconnect", "file", snd->file.c_str() );
 	snd = getSound( CST_ChangeStatusMode );
 	app->WriteProfileInt( "Sound\\ChangeStatusMode", "useSound", snd->useSound );
 	app->WriteProfileInt( "Sound\\ChangeStatusMode", "useDefault", snd->useDefault );
-	app->WriteProfileString( "Sound\\ChangeStatusMode", "file", snd->file );
+	app->WriteProfileString( "Sound\\ChangeStatusMode", "file", snd->file.c_str() );
 	snd = getSound( CST_IncomingMessage );
 	app->WriteProfileInt( "Sound\\IncomingMessage", "useSound", snd->useSound );
 	app->WriteProfileInt( "Sound\\IncomingMessage", "useDefault", snd->useDefault );
-	app->WriteProfileString( "Sound\\IncomingMessage", "file", snd->file );
+	app->WriteProfileString( "Sound\\IncomingMessage", "file", snd->file.c_str() );
 	snd = getSound( CST_ChatType );
 	app->WriteProfileInt( "Sound\\ChatType", "useSound", snd->useSound );
 	app->WriteProfileInt( "Sound\\ChatType", "useDefault", snd->useDefault );
-	app->WriteProfileString( "Sound\\ChatType", "file", snd->file );
+	app->WriteProfileString( "Sound\\ChatType", "file", snd->file.c_str() );
 	snd = getSound( CST_ChatBack );
 	app->WriteProfileInt( "Sound\\ChatBack", "useSound", snd->useSound );
 	app->WriteProfileInt( "Sound\\ChatBack", "useDefault", snd->useDefault );
-	app->WriteProfileString( "Sound\\ChatBack", "file", snd->file );
+	app->WriteProfileString( "Sound\\ChatBack", "file", snd->file.c_str() );
 	snd = getSound( CST_ChatRet );
 	app->WriteProfileInt( "Sound\\ChatRet", "useSound", snd->useSound );
 	app->WriteProfileInt( "Sound\\ChatRet", "useDefault", snd->useDefault );
-	app->WriteProfileString( "Sound\\ChatRet", "file", snd->file );
+	app->WriteProfileString( "Sound\\ChatRet", "file", snd->file.c_str() );
 }
 
 void CChatSoundList::play( const int resID )
@@ -170,16 +170,16 @@ void CChatSoundList::play( const int resID )
 	}
 }
 
-void CChatSoundList::play( const CString& file )
+void CChatSoundList::play( const std::string& file )
 {
 	bool fileExist = true;
 	HANDLE hFile;
-	hFile = ::CreateFile( file, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL );
+	hFile = ::CreateFile( file.c_str(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL );
 	if ( hFile == INVALID_HANDLE_VALUE ) fileExist = false;
 	::CloseHandle(hFile);
 	if ( fileExist ) {
 		::sndPlaySound( NULL, 0 );
-		::sndPlaySound( file, SND_ASYNC );
+		::sndPlaySound( file.c_str(), SND_ASYNC );
 	}
 }
 
@@ -203,7 +203,7 @@ void CChatSoundList::play( const CChatSoundType soundType )
 			if ( snd->useDefault ) {
 				play( snd->res );
 			} else {
-				if ( !snd->file.IsEmpty() ) {
+				if ( !snd->file.empty() ) {
 					play( snd->file );
 				}
 			}
@@ -227,9 +227,9 @@ void CChatSoundList::setUseSound( const bool value )
 	}
 }
 
-CString CChatSoundList::getName( const CChatSoundType soundType ) const
+std::string CChatSoundList::getName( const CChatSoundType soundType ) const
 {
-	CString s;
+	std::string s;
 	int res;
 	switch ( soundType ) {
 		case CST_Connect         : res = ID_CONNECT_WAVE; break;
@@ -242,7 +242,7 @@ CString CChatSoundList::getName( const CChatSoundType soundType ) const
 		default                  : res = -1;
 	}
 	if ( res != -1 ) {
-		s.LoadString( res );
+		s = format( res );
 	} else {
 		s = "";
 	}

@@ -15,23 +15,23 @@ friend class CChatUsers;
 
 protected:
 	CChatUser();
-	CChatUser( const CString& _username, const CString& _hostname, const CString& _ip, const CChatStatusModeType _statusMode );
+	CChatUser( const std::string& _username, const std::string& _hostname, const std::string& _ip, const CChatStatusModeType _statusMode );
 	virtual ~CChatUser();
 
-	CString             userName;
-	CString             hostName;
-	CString             ip;
+	std::string         userName;
+	std::string         hostName;
+	std::string         ip;
 	CChatStatusModeType statusMode;
 
 public:
-	CString getUserName() const;
-	void setUserName( const CString& value );
+	std::string getUserName() const;
+	void setUserName( const std::string& value );
 	
-	CString getHostName() const;
-	void setHostName( const CString& value );
+	std::string getHostName() const;
+	void setHostName( const std::string& value );
 	
-	CString getIP() const;
-	void setIP( const CString& value );
+	std::string getIP() const;
+	void setIP( const std::string& value );
 
 	CChatStatusModeType getStatusMode() const;
 	void setStatusMode( const CChatStatusModeType value );
@@ -46,13 +46,13 @@ public:
 	CChatUsers();
 	virtual ~CChatUsers();
 
-	void addUser( const CString& username, const CString& hostname, const CString& ip, const CChatStatusModeType statusMode = CSMT_Online );
+	void addUser( const std::string& username, const std::string& hostname, const std::string& ip, const CChatStatusModeType statusMode = CSMT_Online );
 	void deleteUser( const int listIndex );
 	void deleteUser( const CChatUser* const user );
-	int findUserByHostName( const CString& hostname );
-	int findUserByIP( const CString& ip );
-	CChatUser* getUserByHostName( const CString& hostname );
-	CChatUser* getUserByIP( const CString& ip );
+	int findUserByHostName( const std::string& hostname );
+	int findUserByIP( const std::string& ip );
+	CChatUser* getUserByHostName( const std::string& hostname );
+	CChatUser* getUserByIP( const std::string& ip );
 	void clear( const CChatUser* const dont_delete_user = NULL );
 };
 

@@ -32,7 +32,7 @@ void CChatEdit::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
 		CString s;
 		GetWindowText( s );
 
-		chatApp.udp.Send( "<msg:" + s + ">" );
+		chatApp.udp.send( "<msg:" + s + ">" );
 
 		SetWindowText( "" );
 

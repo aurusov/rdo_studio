@@ -17,8 +17,8 @@ class CChatStatusMode
 {
 public:
 	CChatStatusModeType type;
-	CString             name;
-	CString             info;
+	std::string         name;
+	std::string         info;
 
 	CChatStatusMode();
 	CChatStatusMode( const CChatStatusMode& statusMode );
@@ -40,7 +40,7 @@ public:
 
 	CChatStatusMode* getStatusMode( const CChatStatusModeType statusModeType ) const;
 
-	CString getDefaultName( const CChatStatusModeType statusModeType ) const;
+	std::string getDefaultName( const CChatStatusModeType statusModeType ) const;
 
 	void init();
 	void saveSetting() const;

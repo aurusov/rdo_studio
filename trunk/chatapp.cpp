@@ -41,7 +41,7 @@ CChatApp::CChatApp():
 	userName( "" ),
 	hostName( "" ),
 	ip( "" ),
-	port( 4002 ),
+	port( 4000 ),
 	broadcastIP( "192.168.1.255" )
 {
 }
@@ -93,7 +93,7 @@ BOOL CChatApp::InitInstance()
 
 	if ( !initSocket() ) return FALSE;
 
-	udp.Send( "<connect:" + getUserName() + ">" );
+	udp.send( "<connect:" + getUserName() + ">" );
 
 	OnRefreshUsersList( 0 );
 
@@ -102,8 +102,8 @@ BOOL CChatApp::InitInstance()
 
 int CChatApp::ExitInstance()
 {
-	udp.Send( "<close>" );
-	udp.Close();
+	udp.send( "<close>" );
+	udp.close();
 
 	sounds.saveSetting();
 	statusModes.saveSetting();
@@ -127,43 +127,37 @@ bool CChatApp::initSocket()
 	if ( WSAStartup( wVersionRequested, &wsaData ) == 0 ) {
 		if( gethostname( name, sizeof(name) ) == 0 ) {
 			hostName = name;
-			if ( userName.IsEmpty() ) {
+			if ( userName.empty() ) {
 				userName = hostName;
 			}
 			if( ( hostinfo = gethostbyname(name)) != NULL ) {
 				ip = inet_ntoa( *(struct in_addr*)*hostinfo->h_addr_list );
 //				ip = "192.168.1.1";
-				int i = ip.ReverseFind( '.' );
+				int i = ip.rfind( '.' );
 				if ( i != -1 ) {
-					broadcastIP = ip.Left( i + 1 ) + "255";
+					broadcastIP = std::string( ip.begin(), ip[i+1] ) + "255";
 				}
 			}
 		}
 		WSACleanup( );
 	}
 
-	if ( !udp.Create( getPort(), SOCK_DGRAM, FD_READ | FD_WRITE | FD_OOB | FD_ACCEPT | FD_CONNECT | FD_CLOSE, getIP() ) ) {
-		CString s;
-		s.Format( "Failed to create UDP socket: %s! Close and restart app.", udp.getStrError() );
-		AfxMessageBox( s );
+	if ( !udp.Create( getPort(), SOCK_DGRAM, FD_READ | FD_WRITE | FD_OOB | FD_ACCEPT | FD_CONNECT | FD_CLOSE, getIP().c_str() ) ) {
+		AfxMessageBox( format( "Failed to create UDP socket: %s! Close and restart app.", udp.getStrError().c_str() ).c_str() );
 		return false;
 	}
 
 	int rflag = 0, flag =1, len = 0;
 
 	if ( !udp.SetSockOpt( SO_BROADCAST, &flag, sizeof(int) ) ) {
-		CString s;
-		s.Format( "SetSockOpt failed to set SO_BROADCAST: %s", udp.getStrError() );
-		AfxMessageBox( s );
+		AfxMessageBox( format( "SetSockOpt failed to set SO_BROADCAST: %s", udp.getStrError().c_str() ).c_str() );
 		return false;
 	}
 
 	len = sizeof( rflag );
 
 	if ( !udp.GetSockOpt( SO_BROADCAST, &rflag, &len ) && rflag == 0 ) {
-		CString s;
-		s.Format( "GetSockOpt failed to get SO_BROADCAST: %s", udp.getStrError() );
-		AfxMessageBox( s );
+		AfxMessageBox( format( "GetSockOpt failed to get SO_BROADCAST: %s", udp.getStrError().c_str() ).c_str() );
 		return false;
 	}
 
@@ -182,20 +176,18 @@ CChatStatusModeType CChatApp::getStatusMode()
 void CChatApp::setStatusMode( const CChatStatusModeType value, const bool automatically )
 {
 	CChatStatusMode* statusMode = statusModes.getStatusMode( value );
-	CString s;
+	std::string s;
 	if ( automatically ) {
-		CString s2;
-		s2.LoadString( IDS_STATUSMODE_CHANGEAUTOMATICALLY );
-		s.Format( "<statusmode:%d><statusmsg:%s>", statusMode->type, s2 );
-	} else if ( statusMode->info.IsEmpty() ) {
-		s.Format( "<statusmode:%d>", statusMode->type );
+		s = format( "<statusmode:%d><statusmsg:%s>", statusMode->type, format( IDS_STATUSMODE_CHANGEAUTOMATICALLY ).c_str() );
+	} else if ( statusMode->info.empty() ) {
+		s = format( "<statusmode:%d>", statusMode->type );
 	} else {
-		s.Format( "<statusmode:%d><statusmsg:%s>", statusMode->type, statusMode->info );
+		s = format( "<statusmode:%d><statusmsg:%s>", statusMode->type, statusMode->info.c_str() );
 	}
 	if ( !automatically ) {
 		pFrame->resetAutoStatusMode();
 	}
-	udp.Send( s );
+	udp.send( s );
 }
 
 void CChatApp::OnStatusMode( UINT nID )
@@ -233,7 +225,7 @@ void CChatApp::OnStatusModeInfo( UINT nID )
 		CChatStatusModeDialog dlg( IDD_STATUSMODEINFO_DIALOG );
 		if ( dlg.DoModal() == IDOK ) {
 			CChatStatusMode* statusMode = statusModes.getStatusMode( statusType );
-			CString info_backup = statusMode->info;
+			std::string info_backup = statusMode->info;
 			statusMode->info = dlg.info;
 			setStatusMode( statusType );
 			if ( !dlg.useAsDefault ) {
@@ -256,14 +248,14 @@ void CChatApp::OnUpdateStatusModeInfo( CCmdUI* pCmdUI )
 void CChatApp::OnRefreshUsersList( UINT nID )
 {
 	users.clear( users.getUserByIP( getIP() ) );
-	udp.Send( "<getallhostname>" );
+	udp.send( "<getallhostname>" );
 }
 
 void CChatApp::OnToCryOut()
 {
 	CChatToCryOutDialog dlg( IDD_TOCRYOUT_DIALOG );
 	if ( dlg.DoModal() == IDOK && !dlg.message.IsEmpty() ) {
-		udp.Send( "<tocryout:" + dlg.message + ">" );
+		udp.send( "<tocryout:" + dlg.message + ">" );
 	}
 }
 
@@ -273,12 +265,12 @@ void CChatApp::OnOptions()
 	dlg.DoModal();
 }
 
-void CChatApp::setUserName( const CString& value )
+void CChatApp::setUserName( const std::string& value )
 {
 	if ( userName != value ) {
 		userName = value;
-		WriteProfileString( "User", "userName", userName );
-		udp.Send( "<username:" + userName + ">" );
+		WriteProfileString( "User", "userName", userName.c_str() );
+		udp.send( "<username:" + userName + ">" );
 	}
 }
 

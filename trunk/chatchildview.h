@@ -30,7 +30,7 @@ public:
 	CChatChildView();
 	virtual ~CChatChildView();
 
-	void addStringToViewer( const CString& userName, const CString& str, CChatStringType type = CSTRT_Message );
+	void addStringToViewer( const std::string& userName, const std::string& str, CChatStringType type = CSTRT_Message );
 };
 
 #endif // CHATCHILDVIEW_H

@@ -24,7 +24,7 @@ CChatString::CChatString()
 	tmps        = "";
 }
 
-CChatString::CChatString( const CString& _userName, const CString& _str, CChatStringType _type ):
+CChatString::CChatString( const std::string& _userName, const std::string& _str, CChatStringType _type ):
 	userName( _userName ),
 	str( _str ),
 	type( _type )
@@ -47,12 +47,11 @@ CChatStringType CChatString::getType() const
 	return type;
 }
 
-CString& CChatString::getString()
+std::string& CChatString::getString()
 {
-	if ( tmps.IsEmpty() ) {
+	if ( tmps.empty() ) {
 		struct tm* local_time = localtime( &global_time );
-		CString str_time;
-		str_time.Format( "[%02d:%02d]", local_time->tm_hour, local_time->tm_min );
+		std::string str_time = format( "[%02d:%02d]", local_time->tm_hour, local_time->tm_min );
 		if ( type == CSTRT_Message ) {
 			tmps = str_time + " (" + userName + "): " + str;
 		} else if ( type == CSTRT_ToCryOut ) {
@@ -133,22 +132,22 @@ void CChatString::drawText( CDC* dc, CRect& r, CChatViewerStyle& style )
 	}
 
 	CRect rect;
-	CString s = getString();
+	std::string s = getString();
 	int pos_from = 0;
-	int pos = s.Find( ' ', pos_from );
+	int pos = s.find( ' ', pos_from );
 	int x_pos = r.left;
 	int y_pos = r.top;
 	bool flag = true;
 	while ( flag ) {
-		if ( pos == -1 ) {
-			pos = s.GetLength();
+		if ( pos == std::string::npos ) {
+			pos = s.length();
 			flag = false;
 		}
-		CString s2 = s.Mid( pos_from, pos - pos_from );
-		s2.TrimLeft();
-		if ( !s2.IsEmpty() ) {
+		std::string s2 = s.substr( pos_from, pos - pos_from );
+		trimLeft( s2 );
+		if ( !s2.empty() ) {
 			rect = CRect( 0, 0, 1, 1 );
-			dc->DrawText( s2, &rect, DT_LEFT | DT_SINGLELINE | DT_CALCRECT );
+			dc->DrawText( s2.c_str(), &rect, DT_LEFT | DT_SINGLELINE | DT_CALCRECT );
 			if ( x_pos + rect.right > r.right ) {
 				x_pos = r.left;
 				if ( pos_from != 0 ) {
@@ -159,7 +158,7 @@ void CChatString::drawText( CDC* dc, CRect& r, CChatViewerStyle& style )
 			rect.top     = y_pos;
 			rect.right  += x_pos;
 			rect.bottom += y_pos;
-			dc->DrawText( s2, &rect, DT_LEFT | DT_SINGLELINE );
+			dc->DrawText( s2.c_str(), &rect, DT_LEFT | DT_SINGLELINE );
 			x_pos += rect.Width();
 			if ( flag ) {
 				rect.left    = x_pos;
@@ -171,7 +170,7 @@ void CChatString::drawText( CDC* dc, CRect& r, CChatViewerStyle& style )
 			}
 		}
 		pos_from = pos + 1;
-		pos = s.Find( ' ', pos_from );
+		pos = s.find( ' ', pos_from );
 	}
 
 	if ( prev_font ) {
@@ -249,22 +248,22 @@ int CChatString::getHeight( CDC* dc, const int _width, CChatViewerStyle& style )
 		}
 
 		CRect rect;
-		CString s = getString();
+		std::string s = getString();
 		int pos_from = 0;
-		int pos = s.Find( ' ', pos_from );
+		int pos = s.find( ' ', pos_from );
 		int x_pos = 0;
 		int y_pos = 0;
 		bool flag = true;
 		while ( flag ) {
-			if ( pos == -1 ) {
-				pos = s.GetLength();
+			if ( pos == std::string::npos ) {
+				pos = s.length();
 				flag = false;
 			}
-			CString s2 = s.Mid( pos_from, pos - pos_from );
-			s2.TrimLeft();
-			if ( !s2.IsEmpty() ) {
+			std::string s2 = s.substr( pos_from, pos - pos_from );
+			trimLeft( s2 );
+			if ( !s2.empty() ) {
 				rect = CRect( 0, 0, 1, 1 );
-				dc->DrawText( s2, &rect, DT_LEFT | DT_SINGLELINE | DT_CALCRECT );
+				dc->DrawText( s2.c_str(), &rect, DT_LEFT | DT_SINGLELINE | DT_CALCRECT );
 				if ( !y_pos ) {
 					y_pos = rect.bottom;
 				}
@@ -287,7 +286,7 @@ int CChatString::getHeight( CDC* dc, const int _width, CChatViewerStyle& style )
 			}
 
 			pos_from = pos + 1;
-			pos = s.Find( ' ', pos_from );
+			pos = s.find( ' ', pos_from );
 		}
 		height = y_pos;
 
@@ -377,112 +376,4 @@ CChatStringList::~CChatStringList()
 		delete GetAt( pos );
 		GetNext( pos );
 	}
-}
-
-bool CChatStringList::scan( char*& wildCards, char*&str ) const
-{
-	// remove the '?' and '*'
-	for( wildCards ++; *str != '\0' && ( *wildCards == '?' || *wildCards == '*' ); wildCards ++ )
-		if ( *wildCards == '?') str ++;
-	while ( *wildCards == '*') wildCards ++;
-	
-	// if str is empty and Wildcards has more characters or,
-	// Wildcards is empty, return 
-	if ( *str == '\0' && *wildCards != '\0' ) return false;
-	if ( *str == '\0' && *wildCards == '\0' ) return true; 
-	// else search substring
-	else
-	{
-		char* wdsCopy = wildCards;
-		char* strCopy = str;
-		bool  res     = 1;
-		do 
-		{
-			if ( !match( wildCards, str, true, false ) )	strCopy ++;
-			wildCards = wdsCopy;
-			str		  = strCopy;
-			while ( ( *wildCards != *str ) && ( *str != '\0' ) ) str ++;
-			wdsCopy = wildCards;
-			strCopy = str;
-		} while ( ( *str != '\0' ) ? !match( wildCards, str, true, false ) : ( res = false ) != false );
-
-		if ( *str == '\0' && *wildCards == '\0' ) return true;
-
-		return res;
-	}
-}
-
-bool CChatStringList::match( const CString& wildCards, const CString& str, const bool matchCase, const bool matchWholeWord ) const
-{
-	bool res = true;
-	
-	CString strWild = wildCards;
-	CString strComp = str;
-	
-	if ( !matchCase ) {
-		strWild.MakeLower();
-		strComp.MakeLower();
-	}
-	
-	if ( matchWholeWord )
-		return strWild == strComp;
-	
-	char* wildcards = strWild.GetBuffer( strWild.GetLength() + 1 );
-	char* strcomp   = strComp.GetBuffer( strComp.GetLength() + 1 );
-
-	//iterate and delete '?' and '*' one by one
-	while( *wildcards != '\0' && res && *strcomp != '\0' )
-	{
-		if ( *wildcards == '?' )
-			strcomp ++;
-		else if ( *wildcards == '*' )
-		{
-			res = scan( wildcards, strcomp );
-			wildcards --;
-		}
-		else
-		{
-			res = ( *wildcards == *strcomp );
-			strcomp ++;
-		}
-		wildcards ++;
-	}
-	while ( *wildcards == '*' && res )  wildcards ++;
-
-	return res && *strcomp == '\0' && *wildcards == '\0';
-}
-
-int CChatStringList::findNext( const CString& findWhat, const int findFrom, const int findTo, const bool searchDown, const bool matchCase, const bool matchWholeWord ) const
-{
-	ASSERT_VALID( this );
-
-	if ( findFrom < 0 || findFrom >= m_nCount || findTo < 0 || findTo >= m_nCount )
-		return -1;
-
-	CString findStr = findWhat;
-	
-	if ( !matchWholeWord && findStr.FindOneOf( "*?") == -1 ) {
-		findStr.Insert( 0, "*");
-		findStr += "*";
-	}
-
-	CNode* nodeFrom = (CNode*)FindIndex( findFrom );
-	CNode* nodeTo   = (CNode*)FindIndex( findTo );
-	int found = -1;
-
-	if ( !searchDown ) {
-		for ( ; nodeFrom != nodeTo->pPrev; nodeFrom = nodeFrom->pPrev ) {
-			found++;
-			if ( match( findStr, (*nodeFrom->data).getString(), matchCase, matchWholeWord ) )
-				return findFrom - found;
-		}
-	} else {
-		for ( ; nodeFrom != nodeTo->pNext; nodeFrom = nodeFrom->pNext ) {
-			found++;
-			if ( match( findStr, (*nodeFrom->data).getString(), matchCase, matchWholeWord ) )
-				return findFrom + found;
-		}
-	}
-
-	return -1;
 }

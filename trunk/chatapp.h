@@ -19,10 +19,10 @@ class CChatApp: public CWinApp
 {
 protected:
 	unsigned int port;
-	CString userName;
-	CString hostName;
-	CString ip;
-	CString broadcastIP;
+	std::string userName;
+	std::string hostName;
+	std::string ip;
+	std::string broadcastIP;
 
 	CFont font;
 
@@ -55,12 +55,12 @@ public:
 	CChatStatusModeList statusModes;
 	CChatUsers users;
 
-	CString getUserName() const    { return userName; }
-	void setUserName( const CString& value );
-	CString getHostName() const    { return hostName; }
-	CString getIP() const          { return ip; }
-	unsigned int getPort() const   { return port; }
-	CString getBroadcastIP() const { return broadcastIP; }
+	std::string getUserName() const    { return userName; }
+	void setUserName( const std::string& value );
+	std::string getHostName() const    { return hostName; }
+	std::string getIP() const          { return ip; }
+	unsigned int getPort() const       { return port; }
+	std::string getBroadcastIP() const { return broadcastIP; }
 
 	CChatStatusModeType getStatusMode();
 	void setStatusMode( const CChatStatusModeType value, const bool automatically = false );

@@ -101,7 +101,7 @@ BOOL CChatPopupMessage::OnEraseBkgnd( CDC* pDC )
 	pDC->SetBkMode( TRANSPARENT );
 
 	r.DeflateRect( x_border, y_border );
-	pDC->DrawText( message, r, 0 );
+	pDC->DrawText( message.c_str(), r, 0 );
 
 	pDC->SelectObject( prevFont );
 
@@ -114,7 +114,7 @@ void CChatPopupMessage::showMessage()
 		CRect messageRect( 0, 0, 1, 1 );
 		CDC* dc = GetDC();
 		CFont* prevFont = dc->SelectObject( &chatApp.getFont() );
-		dc->DrawText( message, messageRect, DT_CALCRECT );
+		dc->DrawText( message.c_str(), messageRect, DT_CALCRECT );
 		dc->SelectObject( prevFont );
 		ReleaseDC( dc );
 
@@ -148,7 +148,7 @@ void CChatPopupMessage::showMessage()
 	}
 }
 
-void CChatPopupMessage::setMessage( const CString& value )
+void CChatPopupMessage::setMessage( const std::string& value )
 {
 	if ( usePopup ) {
 		if ( popupTimer ) {

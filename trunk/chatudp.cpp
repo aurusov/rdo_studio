@@ -35,7 +35,7 @@ void CChatUdp::DoAsyncSendBuff()
 		remoteAddr.sin_family      = AF_INET;
 		remoteAddr.sin_port        = htons( chatApp.getPort() );
 		remoteAddr.sin_addr.s_addr = htonl( INADDR_BROADCAST );
-		dwBytes = SendTo( (LPCTSTR)sendBuffer + bytesSent, bytesBufferSize - bytesSent, (const SOCKADDR*)&remoteAddr, sizeof(remoteAddr) );
+		dwBytes = SendTo( sendBuffer.c_str() + bytesSent, bytesBufferSize - bytesSent, (const SOCKADDR*)&remoteAddr, sizeof(remoteAddr) );
 
 		if ( dwBytes == SOCKET_ERROR ) {
 			if ( GetLastError() == WSAEWOULDBLOCK ) {
@@ -64,7 +64,8 @@ void CChatUdp::OnReceive( int nErrorCode )
 	int nRead;
 
 	unsigned int port = chatApp.getPort();
-	nRead = ReceiveFrom( buff, 70000, chatApp.getBroadcastIP(), port ); //make it smaller so we can experiment mulitple notifications
+	CString s = chatApp.getBroadcastIP().c_str();
+	nRead = ReceiveFrom( buff, 70000, s, port ); //make it smaller so we can experiment mulitple notifications
 	switch ( nRead ) {
 		case 0           : Close(); break;
 		case SOCKET_ERROR:
@@ -75,7 +76,7 @@ void CChatUdp::OnReceive( int nErrorCode )
 					AfxMessageBox( szError );
 				} else {
 					AfxMessageBox( "The datagram was too large and was truncated" );
-					CString s( buff );
+					std::string s( buff );
 					addToBackupBufferAnsPars( s );
 				}
 			}
@@ -83,7 +84,7 @@ void CChatUdp::OnReceive( int nErrorCode )
 		default:
 			if ( nRead != SOCKET_ERROR && nRead != 0 ) {
 				buff[nRead] = 0;
-				CString s( buff );
+				std::string s( buff );
 				addToBackupBufferAnsPars( s );
 			}	
 	}
@@ -97,16 +98,15 @@ void CChatUdp::OnSend( int nErrorCode )
 	CAsyncSocket::OnSend( nErrorCode );
 }
 
-void CChatUdp::Send( const CString& value )
+void CChatUdp::send( const char* value )
 {
 	SYSTEMTIME timeDest;
 	::GetSystemTime( &timeDest );
-	CString str_time;
-	str_time.Format( "<time:%d>", timeDest.wHour * 60 * 60 * 1000 + timeDest.wMinute * 60 * 1000 + timeDest.wSecond * 1000 + timeDest.wMilliseconds );
-	CString s = str_time + "<fromhost:" + chatApp.getHostName() + "><fromip:" + chatApp.getIP() + ">" + value;
+	std::string str_time = format( "<time:%d>", timeDest.wHour * 60 * 60 * 1000 + timeDest.wMinute * 60 * 1000 + timeDest.wSecond * 1000 + timeDest.wMilliseconds );
+	std::string s = str_time + "<fromhost:" + chatApp.getHostName() + "><fromip:" + chatApp.getIP() + ">" + value;
 	bytesSent       = 0;
 	sendBuffer      = s;
-	bytesBufferSize = sendBuffer.GetLength() + 1;
+	bytesBufferSize = sendBuffer.length() + 1;
 	DoAsyncSendBuff();
 }
 
@@ -115,45 +115,43 @@ void CChatUdp::Close()
 	CAsyncSocket::Close();
 }
 
-void CChatUdp::addToBackupBufferAnsPars( const CString& str )
+void CChatUdp::addToBackupBufferAnsPars( const std::string& str )
 {
 	while ( backupBuffer.GetCount() > 200 ) {
 		backupBuffer.RemoveHead();
 	}
-	if ( !backupBuffer.Find( str ) ) {
-		backupBuffer.AddTail( str );
+	if ( !backupBuffer.Find( str.c_str() ) ) {
+		backupBuffer.AddTail( str.c_str() );
 		parsCommand( str );
 	}
 }
 
-void CChatUdp::parsCommand( const CString& line )
+void CChatUdp::parsCommand( const std::string& line )
 {
 	CChatMainFrame* mainFrame = (CChatMainFrame*)AfxGetMainWnd();
 
 //	mainFrame->childView.addStringToViewer( "", line );
 
-	CString fromHost = getCommandValue( line, "fromhost" );
-	CString fromIP   = getCommandValue( line, "fromip" );
-	CChatUser* user  = chatApp.users.getUserByIP( fromIP );
+	std::string fromHost = getCommandValue( line, "fromhost" );
+	std::string fromIP   = getCommandValue( line, "fromip" );
+	CChatUser* user      = chatApp.users.getUserByIP( fromIP );
 
 	// CONNECT
 	if ( hasCommand( line, "connect" ) ) {
-		CString username = getCommandValue( line, "connect" );
-		CString s;
-		s.Format( IDS_CONNECT_VIEWERLOG, username );
+		std::string username = getCommandValue( line, "connect" );
+		std::string s = format( IDS_CONNECT_VIEWERLOG, username.c_str() );
 		mainFrame->childView.addStringToViewer( username, s, CSTRT_Connect );
 		chatApp.sounds.play( CST_Connect );
 
 	// CLOSE
 	} else if ( hasCommand( line, "close" ) ) {
-		CString username;
+		std::string username;
 		if ( user ) {
 			username = user->getUserName();
 		} else {
 			username = fromHost;
 		}
-		CString s;
-		s.Format( IDS_DISCONNECT_VIEWERLOG, username );
+		std::string s = format( IDS_DISCONNECT_VIEWERLOG, username.c_str() );
 		mainFrame->childView.addStringToViewer( username, s, CSTRT_Disconnect );
 		chatApp.sounds.play( CST_Disconnect );
 		if ( user ) {
@@ -163,15 +161,14 @@ void CChatUdp::parsCommand( const CString& line )
 
 	// GETALLHOSTNAME
 	} else if ( hasCommand( line, "getallhostname" ) ) {
-		Send( "<username:" + chatApp.getUserName() + ">" );
-		Send( "<hostname:" + chatApp.getHostName() + ">" );
-		CString s;
-		s.Format( "%d", chatApp.getStatusMode() );
-		Send( "<statusmode_from_getallhostname:" + s + ">" );
+		send( "<username:" + chatApp.getUserName() + ">" );
+		send( "<hostname:" + chatApp.getHostName() + ">" );
+		std::string s = format( "%d", chatApp.getStatusMode() );
+		send( "<statusmode_from_getallhostname:" + s + ">" );
 
 	// USERNAME
 	} else if ( hasCommand( line, "username" ) ) {
-		CString username = getCommandValue( line, "username" );
+		std::string username = getCommandValue( line, "username" );
 		if ( !user ) {
 			chatApp.users.addUser( username, "", fromIP );
 		} else {
@@ -182,30 +179,30 @@ void CChatUdp::parsCommand( const CString& line )
 		}
 
 	// HOSTNAME
-	} else if ( hasCommand( line, "hostname" && user ) ) {
-		CString hostname = getCommandValue( line, "hostname" );
+	} else if ( hasCommand( line, "hostname" ) && user ) {
+		std::string hostname = getCommandValue( line, "hostname" );
 		user->setHostName( hostname );
 
 	// STATUSMODE_FROM_GETALLHOSTNAME
 	} else if ( hasCommand( line, "statusmode_from_getallhostname" ) && user ) {
-		CString s = getCommandValue( line, "statusmode_from_getallhostname" );
-		CChatStatusModeType status = (CChatStatusModeType)strtol( s, NULL, 10 );
+		std::string s = getCommandValue( line, "statusmode_from_getallhostname" );
+		CChatStatusModeType status = static_cast<CChatStatusModeType>(strtol( s.c_str(), NULL, 10 ));
 		if ( user->getStatusMode() != status ) {
 			user->setStatusMode( status );
 		}
 
 	// STATUSMODE
 	} else if ( hasCommand( line, "statusmode" ) && user ) {
-		CString s = getCommandValue( line, "statusmode" );
-		CChatStatusModeType status = (CChatStatusModeType)strtol( s, NULL, 10 );
+		std::string s = getCommandValue( line, "statusmode" );
+		CChatStatusModeType status = static_cast<CChatStatusModeType>(strtol( s.c_str(), NULL, 10 ));
 		if ( user->getStatusMode() != status ) {
 			user->setStatusMode( status );
-			CString username = user->getUserName();
-			CString s_statusmsg = getCommandValue( line, "statusmsg" );
-			if ( s_statusmsg.IsEmpty() ) {
-				s.Format( IDS_STATUSMODE_VIEWERLOG, username, chatApp.statusModes.getStatusMode( status )->name );
+			std::string username = user->getUserName();
+			std::string s_statusmsg = getCommandValue( line, "statusmsg" );
+			if ( s_statusmsg.empty() ) {
+				s = format( IDS_STATUSMODE_VIEWERLOG, username.c_str(), chatApp.statusModes.getStatusMode( status )->name.c_str() );
 			} else {
-				s.Format( IDS_STATUSMODEWITHINFO_VIEWERLOG, username, chatApp.statusModes.getStatusMode( status )->name, s_statusmsg );
+				s = format( IDS_STATUSMODEWITHINFO_VIEWERLOG, username.c_str(), chatApp.statusModes.getStatusMode( status )->name.c_str(), s_statusmsg.c_str() );
 			}
 			mainFrame->childView.addStringToViewer( username, s, CSTRT_ChangeStatusMode );
 			chatApp.sounds.play( CST_ChangeStatusMode );
@@ -213,8 +210,8 @@ void CChatUdp::parsCommand( const CString& line )
 
 	// MSG
 	} else if ( hasCommand( line, "msg" ) ) {
-		CString msg = getCommandValue( line, "msg", true );
-		CString fromUser;
+		std::string msg = getCommandValue( line, "msg", true );
+		std::string fromUser;
 		if ( user ) {
 			fromUser = user->getUserName();
 		} else {
@@ -236,14 +233,14 @@ void CChatUdp::parsCommand( const CString& line )
 
 //		if ( fromIP == chatApp.getIP() ) {
 //			if ( msg == "tocryout" ) {
-//				Send( "<tocryout:q>" );
+//				send( "<tocryout:q>" );
 //			}
 //		}
 
 	// TOCRYOUT
 	} else if ( hasCommand( line, "tocryout" ) ) {
-		CString msg = getCommandValue( line, "tocryout", true );
-		CString fromUser;
+		std::string msg = getCommandValue( line, "tocryout", true );
+		std::string fromUser;
 		if ( user ) {
 			fromUser = user->getUserName();
 		} else {
@@ -265,39 +262,39 @@ void CChatUdp::parsCommand( const CString& line )
 	}
 }
 
-CString CChatUdp::getCommandValue( const CString& line, const CString& command, const bool toEnd ) const
+std::string CChatUdp::getCommandValue( const std::string& line, const std::string& command, const bool toEnd ) const
 {
-	int i = line.Find( "<" + command + ":" );
-	if ( i != -1 ) {
+	int i = line.find( "<" + command + ":" );
+	if ( i != std::string::npos ) {
 		int j;
 		if ( toEnd ) {
-			j = line.GetLength() - 1;
+			j = line.length() - 1;
 		} else {
-			j = line.Find( ">", i );
+			j = line.find( ">", i );
 		}
-		if ( j != -1 ) {
-			i = i + command.GetLength() + 2;
-			return line.Mid( i, j - i );
+		if ( j != std::string::npos ) {
+			i = i + command.length() + 2;
+			return line.substr( i, j-i );
 		}
 	}
 	return "";
 }
 
-bool CChatUdp::hasCommand( const CString& line, const CString& command ) const
+bool CChatUdp::hasCommand( const std::string& line, const std::string& command ) const
 {
-	int i = line.Find( "<" + command );
-	if ( i != -1 ) {
-		int j = line.Find( ">", i );
-		if ( j == i + command.GetLength() + 1 ) return true;
-		j = line.Find( ":", i );
-		if ( j == i + command.GetLength() + 1 ) return true;
+	int i = line.find( "<" + command );
+	if ( i != std::string::npos ) {
+		int j = line.find( ">", i );
+		if ( j == i + command.length() + 1 ) return true;
+		j = line.find( ":", i );
+		if ( j == i + command.length() + 1 ) return true;
 	}
 	return false;
 }
 
-CString CChatUdp::getStrError() const
+std::string CChatUdp::getStrError() const
 {
-	CString s = "";
+	std::string s = "";
 	switch( GetLastError() ) {
 		case 0:
 			s = "no error";
@@ -345,7 +342,7 @@ CString CChatUdp::getStrError() const
 			s = "The attempt to connect timed out without establishing a connection";
 			break;
 		default:
-			s.Format( "%d", GetLastError() );
+			s = format( "%d", GetLastError() );
 			break;
 	}
 	return s;

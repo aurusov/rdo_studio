@@ -72,7 +72,7 @@ void CChatUsersTreeCtrl::addUser( const CChatUser* const user )
 {
 	if ( !findUser( user ) ) {
 		HTREEITEM item;
-		item = InsertItem( user->getUserName(), user->getStatusMode(), user->getStatusMode() );
+		item = InsertItem( user->getUserName().c_str(), user->getStatusMode(), user->getStatusMode() );
 		SetItemData( item, (DWORD)user );
 		SortChildren( TVI_ROOT );
 	}
@@ -91,7 +91,7 @@ void CChatUsersTreeCtrl::updateUserName( const CChatUser* const user )
 {
 	HTREEITEM item = findUser( user );
 	if ( item ) {
-		SetItemText( item, user->getUserName() );
+		SetItemText( item, user->getUserName().c_str() );
 	}
 }
 

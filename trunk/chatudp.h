@@ -10,29 +10,32 @@
 class CChatUdp: public CAsyncSocket
 {
 private:
-	CString sendBuffer;
-	int     bytesSent;
-	int     bytesBufferSize;
+	std::string sendBuffer;
+	int         bytesSent;
+	int         bytesBufferSize;
 
 	CStringList backupBuffer;
-	void addToBackupBufferAnsPars( const CString& str );
+	void addToBackupBufferAnsPars( const std::string& str );
 
 	void DoAsyncSendBuff();
+
+	virtual void OnReceive(int nErrorCode);
+	virtual void OnSend(int nErrorCode);
+	virtual void Close();
 
 public:
 	CChatUdp();
 	virtual ~CChatUdp();
 
-	virtual void OnReceive(int nErrorCode);
-	virtual void OnSend(int nErrorCode);
-	virtual void Send( const CString& value );
-	virtual void Close();
+	void send( const char* value );
+	void send( const std::string& value ) { send( value.c_str() ); }
+	void close()                          { Close();               }
 
-	CString getStrError() const;
+	std::string getStrError() const;
 
-	void parsCommand( const CString& line );
-	CString getCommandValue( const CString& line, const CString& command, const bool toEnd = false ) const;
-	bool hasCommand( const CString& line, const CString& command ) const;
+	void parsCommand( const std::string& line );
+	std::string getCommandValue( const std::string& line, const std::string& command, const bool toEnd = false ) const;
+	bool hasCommand( const std::string& line, const std::string& command ) const;
 };
 
 #endif // CHATUDP_H

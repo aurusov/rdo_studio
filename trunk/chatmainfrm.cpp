@@ -86,11 +86,9 @@ int CChatMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	dock.Create( "users", this, 0 );
 	dock.SetBarStyle( dock.GetBarStyle() | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
 
-	CString s;
-	s.LoadString( ID_STATUSMODE_TOOLBAR );
 	statusModeToolBar.CreateEx( this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
 	statusModeToolBar.LoadToolBar( IDR_STATUSMODE_TOOLBAR );
-	statusModeToolBar.GetToolBarCtrl().SetWindowText( s );
+	statusModeToolBar.GetToolBarCtrl().SetWindowText( format( ID_STATUSMODE_TOOLBAR ).c_str() );
 
 	statusBar.Create( this );
 	statusBar.SetIndicators( indicators, 1 );
@@ -448,7 +446,7 @@ void CChatMainFrame::OnUpdateTrayOpenHide( CCmdUI *pCmdUI )
 	}
 }
 
-void CChatMainFrame::showPopupMessage( const CString& value )
+void CChatMainFrame::showPopupMessage( const std::string& value )
 {
 	if ( !popupMessage.GetSafeHwnd() ) {
 		CWnd* activeWindow = CWnd::GetActiveWindow();

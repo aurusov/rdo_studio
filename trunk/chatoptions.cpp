@@ -34,7 +34,7 @@ END_MESSAGE_MAP()
 
 CChatGeneralOptions::CChatGeneralOptions(): CPropertyPage( IDD_OPTIONS_GENERAL_DIALOG )
 {
-	userName = chatApp.getUserName();
+	userName = chatApp.getUserName().c_str();
 
 	CChatMainFrame* mainFrame = (CChatMainFrame*)AfxGetMainWnd();
 
@@ -95,7 +95,7 @@ BOOL CChatGeneralOptions::OnInitDialog()
 
 void CChatGeneralOptions::OnOK()
 {
-	chatApp.setUserName( userName );
+	chatApp.setUserName( static_cast<LPCTSTR>(userName) );
 
 	CChatMainFrame* mainFrame = (CChatMainFrame*)AfxGetMainWnd();
 
@@ -187,7 +187,7 @@ void CChatGeneralOptions::OnUpdateModify()
 
 	CChatMainFrame* mainFrame = (CChatMainFrame*)AfxGetMainWnd();
 	
-	SetModified( userName != chatApp.getUserName() || useTray != ( mainFrame->getUseTray() ? 1 : 0 ) || notifyAboutMessage != ( mainFrame->getNotifyAboutMessage() ? 1 : 0 ) || closeButtonAction != mainFrame->getCloseButtonAction() || minimizeButtonAction != mainFrame->getMinimizeButtonAction() || usePopup != ( mainFrame->popupMessage.getUsePopup() ? 1 : 0 ) || popupPosition != mainFrame->popupMessage.getPosition() || popupDelay != mainFrame->popupMessage.getTimerDelay() || fgColorCB.getCurrentColor() != mainFrame->popupMessage.getTextColor() || bgColorCB.getCurrentColor() != mainFrame->popupMessage.getBackgroundColor() );
+	SetModified( userName != chatApp.getUserName().c_str() || useTray != ( mainFrame->getUseTray() ? 1 : 0 ) || notifyAboutMessage != ( mainFrame->getNotifyAboutMessage() ? 1 : 0 ) || closeButtonAction != mainFrame->getCloseButtonAction() || minimizeButtonAction != mainFrame->getMinimizeButtonAction() || usePopup != ( mainFrame->popupMessage.getUsePopup() ? 1 : 0 ) || popupPosition != mainFrame->popupMessage.getPosition() || popupDelay != mainFrame->popupMessage.getTimerDelay() || fgColorCB.getCurrentColor() != mainFrame->popupMessage.getTextColor() || bgColorCB.getCurrentColor() != mainFrame->popupMessage.getBackgroundColor() );
 }
 
 // ----------------------------------------------------------------------------
@@ -279,7 +279,7 @@ void CChatSoundOptions::OnListBoxSelectChange()
 					((CButton*)GetDlgItem( IDC_SOUNDEXTERNAL_RADIO ))->SetCheck( true );
 				}
 			}
-			GetDlgItem( IDC_SOUNDEXTERNAL_EDIT )->SetWindowText( snd->file );
+			GetDlgItem( IDC_SOUNDEXTERNAL_EDIT )->SetWindowText( snd->file.c_str() );
 		}
 	}
 	OnUpdateModify();
@@ -319,7 +319,9 @@ void CChatSoundOptions::OnEditChanged()
 	if ( current != LB_ERR ) {
 		CChatSound* snd = sounds.GetAt( sounds.FindIndex( current ) );
 		if ( snd ) {
-			GetDlgItem( IDC_SOUNDEXTERNAL_EDIT )->GetWindowText( snd->file );
+			CString s = snd->file.c_str();
+			GetDlgItem( IDC_SOUNDEXTERNAL_EDIT )->GetWindowText( s );
+			snd->file = static_cast<LPCTSTR>(s);
 			OnUpdateModify();
 		}
 	}
@@ -331,11 +333,11 @@ void CChatSoundOptions::OnButtonClicked()
 	if ( current != LB_ERR ) {
 		CChatSound* snd = sounds.GetAt( sounds.FindIndex( current ) );
 		if ( snd ) {
-			CString filter = "WAV Files (*.wav)|*.wav|All Files (*.*)|*.*||";
-			CFileDialog dlg( true, "wav", snd->file, OFN_HIDEREADONLY, filter );
+			std::string filter = "WAV Files (*.wav)|*.wav|All Files (*.*)|*.*||";
+			CFileDialog dlg( true, "wav", snd->file.c_str(), OFN_HIDEREADONLY, filter.c_str() );
 			if ( dlg.DoModal() == IDOK ) {
-				snd->file = dlg.GetPathName();
-				GetDlgItem( IDC_SOUNDEXTERNAL_EDIT )->SetWindowText( snd->file );
+				snd->file = static_cast<LPCTSTR>(dlg.GetPathName());
+				GetDlgItem( IDC_SOUNDEXTERNAL_EDIT )->SetWindowText( snd->file.c_str() );
 			}
 		}
 	}
@@ -478,8 +480,8 @@ void CChatStatusModeOptions::OnListBoxSelectChange()
 	if ( current != LB_ERR ) {
 		CChatStatusMode* statusMode = statusModes.GetAt( statusModes.FindIndex( current ) );
 		if ( statusMode ) {
-			GetDlgItem( IDC_STATUSMODENAME_EDIT )->SetWindowText( statusMode->name );
-			GetDlgItem( IDC_STATUSMODEINFO_EDIT )->SetWindowText( statusMode->info );
+			GetDlgItem( IDC_STATUSMODENAME_EDIT )->SetWindowText( statusMode->name.c_str() );
+			GetDlgItem( IDC_STATUSMODEINFO_EDIT )->SetWindowText( statusMode->info.c_str() );
 		}
 	}
 	OnUpdateModify();
@@ -491,7 +493,9 @@ void CChatStatusModeOptions::OnNameChanged()
 	if ( current != LB_ERR ) {
 		CChatStatusMode* statusMode = statusModes.GetAt( statusModes.FindIndex( current ) );
 		if ( statusMode ) {
-			GetDlgItem( IDC_STATUSMODENAME_EDIT )->GetWindowText( statusMode->name );
+			CString s = statusMode->name.c_str();
+			GetDlgItem( IDC_STATUSMODENAME_EDIT )->GetWindowText( s );
+			statusMode->name = static_cast<LPCTSTR>(s);
 			OnUpdateModify();
 		}
 	}
@@ -503,7 +507,9 @@ void CChatStatusModeOptions::OnInfoChanged()
 	if ( current != LB_ERR ) {
 		CChatStatusMode* statusMode = statusModes.GetAt( statusModes.FindIndex( current ) );
 		if ( statusMode ) {
-			GetDlgItem( IDC_STATUSMODEINFO_EDIT )->GetWindowText( statusMode->info );
+			CString s = statusMode->info.c_str();
+			GetDlgItem( IDC_STATUSMODEINFO_EDIT )->GetWindowText( s );
+			statusMode->info = static_cast<LPCTSTR>(s);
 			OnUpdateModify();
 		}
 	}
@@ -565,9 +571,7 @@ CChatOptions::CChatOptions():
 	soundOptions( NULL ),
 	statusModeOptions( NULL )
 {
-	CString s;
-	s.LoadString( ID_OPTIONS );
-	SetTitle( s );
+	SetTitle( format( ID_OPTIONS ).c_str() );
 
 	generalOptions    = new CChatGeneralOptions();
 	soundOptions      = new CChatSoundOptions();

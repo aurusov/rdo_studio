@@ -98,7 +98,7 @@ public:
 
 	void modifyTray();
 
-	void showPopupMessage( const CString& value );
+	void showPopupMessage( const std::string& value );
 
 	bool isVisible() const;
 	bool isActive();

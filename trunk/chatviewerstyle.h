@@ -64,7 +64,7 @@ public:
 	bool operator ==( const CChatViewerFont& font ) const;
 	bool operator !=( const CChatViewerFont& font ) const;
 
-	CString      name;
+	std::string  name;
 	int          size;
 	int          codepage;
 	int          characterSet;

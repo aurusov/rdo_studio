@@ -24,7 +24,7 @@ public:
 	bool           useSound;
 	bool           useDefault;
 	int            res;
-	CString        file;
+	std::string    file;
 
 	CChatSound();
 	CChatSound( const CChatSound& snd );
@@ -44,7 +44,7 @@ protected:
 	bool useSound;
 
 	void play( const int resID );
-	void play( const CString& file );
+	void play( const std::string& file );
 	CChatSound* getSound( const CChatSoundType soundType ) const;
 
 public:
@@ -56,7 +56,7 @@ public:
 
 	void play( const CChatSoundType soundType );
 
-	CString getName( const CChatSoundType soundType ) const;
+	std::string getName( const CChatSoundType soundType ) const;
 
 	void init();
 	void saveSetting() const;

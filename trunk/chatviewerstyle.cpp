@@ -213,7 +213,7 @@ bool CChatViewerFont::operator !=( const CChatViewerFont& font ) const
 void CChatViewerFont::init()
 {
 	CWinApp* app = AfxGetApp();
-	name         = app->GetProfileString( "Style\\Font", "name", name );
+	name         = app->GetProfileString( "Style\\Font", "name", name.c_str() );
 	size         = app->GetProfileInt( "Style\\Font", "size", size );
 	codepage     = app->GetProfileInt( "Style\\Font", "codepage", codepage );
 	characterSet = app->GetProfileInt( "Style\\Font", "characterSet", characterSet );
@@ -223,7 +223,7 @@ void CChatViewerFont::saveSetting() const
 {
 	CWinApp* app = AfxGetApp();
 
-	app->WriteProfileString( "Style\\Font", "name", name );
+	app->WriteProfileString( "Style\\Font", "name", name.c_str() );
 	app->WriteProfileInt( "Style\\Font", "size", size );
 	app->WriteProfileInt( "Style\\Font", "codepage", codepage );
 	app->WriteProfileInt( "Style\\Font", "characterSet", characterSet );
@@ -300,7 +300,7 @@ void CChatViewerStyle::fontChanged()
 
 	LOGFONT lf;
 	memset( &lf, 0, sizeof(LOGFONT) );
-	strcpy( lf.lfFaceName, font.name );
+	strcpy( lf.lfFaceName, font.name.c_str() );
 	CDC* dc = CWnd::GetDesktopWindow()->GetDC();
 	lf.lfHeight    = -MulDiv( font.size, dc->GetDeviceCaps( LOGPIXELSY ), 72 );
 	lf.lfCharSet   = font.characterSet;

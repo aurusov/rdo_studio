@@ -20,7 +20,7 @@ CChatUser::CChatUser():
 {
 }
 
-CChatUser::CChatUser( const CString& _username, const CString& _hostname, const CString& _ip, const CChatStatusModeType _statusMode ):
+CChatUser::CChatUser( const std::string& _username, const std::string& _hostname, const std::string& _ip, const CChatStatusModeType _statusMode ):
 	CObject(),
 	userName( _username ),
 	hostName( _hostname ),
@@ -33,12 +33,12 @@ CChatUser::~CChatUser()
 {
 }
 
-CString CChatUser::getUserName() const
+std::string CChatUser::getUserName() const
 {
 	return userName;
 }
 
-void CChatUser::setUserName( const CString& value )
+void CChatUser::setUserName( const std::string& value )
 {
 	if ( userName != value ) {
 		userName = value;
@@ -48,22 +48,22 @@ void CChatUser::setUserName( const CString& value )
 	}
 }
 
-CString CChatUser::getHostName() const
+std::string CChatUser::getHostName() const
 {
 	return hostName;
 }
 
-void CChatUser::setHostName( const CString& value )
+void CChatUser::setHostName( const std::string& value )
 {
 	hostName = value;
 }
 
-CString CChatUser::getIP() const
+std::string CChatUser::getIP() const
 {
 	return ip;
 }
 
-void CChatUser::setIP( const CString& value )
+void CChatUser::setIP( const std::string& value )
 {
 	ip = value;
 }
@@ -95,7 +95,7 @@ CChatUsers::~CChatUsers()
 	clear();
 }
 
-void CChatUsers::addUser( const CString& username, const CString& hostname, const CString& ip, const CChatStatusModeType statusMode )
+void CChatUsers::addUser( const std::string& username, const std::string& hostname, const std::string& ip, const CChatStatusModeType statusMode )
 {
 	if ( findUserByIP( ip ) == -1 ) {
 		CChatUser* user = new CChatUser( username, hostname, ip, statusMode );
@@ -128,7 +128,7 @@ void CChatUsers::deleteUser( const CChatUser* const user )
 	}
 }
 
-int CChatUsers::findUserByHostName( const CString& hostname )
+int CChatUsers::findUserByHostName( const std::string& hostname )
 {
 	int cnt = GetSize();
 	for ( int i = 0; i < cnt; i++ ) {
@@ -138,7 +138,7 @@ int CChatUsers::findUserByHostName( const CString& hostname )
 	return -1;
 }
 
-int CChatUsers::findUserByIP( const CString& ip )
+int CChatUsers::findUserByIP( const std::string& ip )
 {
 	int cnt = GetSize();
 	for ( int i = 0; i < cnt; i++ ) {
@@ -148,7 +148,7 @@ int CChatUsers::findUserByIP( const CString& ip )
 	return -1;
 }
 
-CChatUser* CChatUsers::getUserByHostName( const CString& hostname )
+CChatUser* CChatUsers::getUserByHostName( const std::string& hostname )
 {
 	int listIndex = findUserByHostName( hostname );
 	if ( listIndex != -1 ) {
@@ -157,7 +157,7 @@ CChatUser* CChatUsers::getUserByHostName( const CString& hostname )
 	return NULL;
 }
 
-CChatUser* CChatUsers::getUserByIP( const CString& ip )
+CChatUser* CChatUsers::getUserByIP( const std::string& ip )
 {
 	int listIndex = findUserByIP( ip );
 	if ( listIndex != -1 ) {

@@ -21,11 +21,11 @@ enum CChatStringType {
 class CChatString
 {
 private:
-	CString tmps;
+	std::string tmps;
 
 protected:
-	CString         userName;
-	CString         str;
+	std::string     userName;
+	std::string     str;
 	CChatStringType type;
 	long            global_time;
 
@@ -37,11 +37,11 @@ protected:
 
 public:
 	CChatString();
-	CChatString( const CString& _userName, const CString& _str, CChatStringType _type = CSTRT_Message );
+	CChatString( const std::string& _userName, const std::string& _str, CChatStringType _type = CSTRT_Message );
 	virtual ~CChatString();
 
 	CChatStringType getType() const;
-	CString& getString();
+	std::string& getString();
 
 	void drawText( CDC* dc, CRect& rect, CChatViewerStyle& style );
 	int getHeight( CDC* dc, const int _width, CChatViewerStyle& style );
@@ -57,15 +57,9 @@ public:
 // ----------------------------------------------------------------------------
 class CChatStringList: public CList< CChatString*, CChatString* >
 {
-protected:
-	bool scan( char*& wildCards, char*&str ) const;
-
 public:
 	CChatStringList( int blockSize = 10 );
 	virtual ~CChatStringList();
-
-	bool match( const CString& wildCards, const CString& str, const bool matchCase, const bool matchWholeWord ) const;
-	int findNext( const CString& findWhat, const int findFrom, const int findTo, const bool searchDown, const bool matchCase, const bool matchWholeWord ) const;
 };
 
 #endif // CHATVIEWERSTRING_H

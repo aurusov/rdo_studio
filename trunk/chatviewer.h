@@ -41,18 +41,6 @@ protected:
 	void selectLine( const int index );
 	void repaintLine ( const int index );
 
-/*
-	int  firstFoundLine;
-	bool bHaveFound;
-	bool bSearchDown;
-	bool bMatchCase;
-	bool bMatchWholeWord;
-	CString findStr;
-	int find( const bool searchDown, const bool matchCase, const bool matchWholeWord );
-
-	bool canCopy() const { return selectedLine != -1; };
-*/
-
 	CChatString* getString( const int index ) const;
 	int findLine( const int _yPos );
 	int getStringsSumHeight();
@@ -91,12 +79,6 @@ public:
 
 	const CChatViewerStyle& getStyle() const;
 	void setStyle( const CChatViewerStyle& _style, const bool needRedraw = true );
-
-//	CString getSelected() const;
-//	void copy();
-//	void findNext()     { selectLine( find( bSearchDown, bMatchCase, bMatchWholeWord ) );  };
-//	void findPrevious() { selectLine( find( !bSearchDown, bMatchCase, bMatchWholeWord ) ); };
-//	void clear();
 };
 
 //{{AFX_INSERT_LOCATION}}

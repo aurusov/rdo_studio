@@ -16,7 +16,7 @@ class CChatPopupMessage: public CDialog
 //class CChatPopupMessage: public CWnd
 {
 protected:
-	CString message;
+	std::string message;
 
 	UINT popupTimer;
 
@@ -46,7 +46,7 @@ public:
 	CChatPopupMessage();
 	virtual ~CChatPopupMessage();
 
-	void setMessage( const CString& value );
+	void setMessage( const std::string& value );
 
 	bool getUsePopup() const;
 	void setUsePopup( const bool value );

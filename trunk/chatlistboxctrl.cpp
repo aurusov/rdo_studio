@@ -116,18 +116,18 @@ void CChatListBoxCtrl::MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct)
 	}
 }
 
-int CChatListBoxCtrl::addString( const CString& str, const int image )
+int CChatListBoxCtrl::addString( const std::string& str, const int image )
 {
-	int ret = CListBox::AddString( str );
+	int ret = CListBox::AddString( str.c_str() );
 	if ( ret >= 0 ) {
 		SetItemData( ret, image );
 	}
 	return ret;
 }
 
-int CChatListBoxCtrl::insertString( int index, const CString& str, const int image )
+int CChatListBoxCtrl::insertString( int index, const std::string& str, const int image )
 {
-	int ret = CListBox::InsertString( index, str );
+	int ret = CListBox::InsertString( index, str.c_str() );
 	if ( ret >= 0 ) {
 		SetItemData( ret, image );
 	}
