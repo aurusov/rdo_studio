@@ -34,9 +34,9 @@ BOOL RDOStudioFrameView::PreCreateWindow(CREATESTRUCT& cs)
 {
 	if( !CView::PreCreateWindow( cs ) ) return FALSE;
 
-	cs.style &= ~WS_BORDER;
-	cs.dwExStyle &= ~WS_EX_CLIENTEDGE;
-	cs.lpszClass = AfxRegisterWndClass( 0, ::LoadCursor(NULL, IDC_ARROW) );
+//	cs.style &= ~WS_BORDER;
+//	cs.dwExStyle &= ~WS_EX_CLIENTEDGE;
+//	cs.lpszClass = AfxRegisterWndClass( 0, ::LoadCursor(NULL, IDC_ARROW) );
 
 	return TRUE;
 }

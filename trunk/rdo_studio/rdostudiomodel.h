@@ -8,6 +8,8 @@
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioModel
 // ----------------------------------------------------------------------------
+class RDOStudioModelDoc;
+class RDOStudioFrameDoc;
 namespace rdoEditor {
 	class RDOEditorTabCtrl;
 }
@@ -39,6 +41,8 @@ private:
 	static void buildNotify( std::string str );
 	static void debugNotify( std::string str );
 
+	static void showFrameNotify();
+
 	void newModelFromRepository();
 	void openModelFromRepository();
 	void saveModelToRepository();
@@ -47,9 +51,14 @@ private:
 
 	bool canCloseDocument();
 
+	void parseFrame();
+
 public:
 	RDOStudioModel();
 	~RDOStudioModel();
+
+	CEvent addNewFrameEvent;
+	void addNewFrame() const;
 
 	void newModel( const bool _useTemplate = false );
 	bool openModel( const std::string& modelName = "" ) const;
@@ -69,6 +78,7 @@ public:
 	double getModelTime() const;
 
 	RDOStudioModelDoc* getModelDoc() const;
+	RDOStudioFrameDoc* getFrameDoc() const;
 	void updateModify() const;
 
 	rdoEditor::RDOEditorTabCtrl* getTab() const;

@@ -48,6 +48,7 @@ BEGIN_MESSAGE_MAP(RDOStudioApp, CWinApp)
 	//}}AFX_MSG_MAP
 	ON_COMMAND_RANGE( ID_FILE_REOPEN_1, ID_FILE_REOPEN_10, OnProjectReopen )
 	ON_COMMAND(ID_FILE_PRINT_SETUP, CWinApp::OnFilePrintSetup)
+	ON_THREAD_MESSAGE( 111, OnQ )
 END_MESSAGE_MAP()
 
 RDOStudioApp::RDOStudioApp():
@@ -376,4 +377,11 @@ void RDOStudioApp::OnChartStoptrace()
 void RDOStudioApp::OnUpdateChartStoptrace(CCmdUI* pCmdUI) 
 {
 	pCmdUI->Enable( trace.isTracing() );
+}
+
+void RDOStudioApp::OnQ( WPARAM wParam, LPARAM lParam )
+{
+	TRACE( "OnQ\r\n" );
+	model->addNewFrame();
+	model->addNewFrameEvent.SetEvent();
 }

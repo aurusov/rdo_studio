@@ -1032,7 +1032,7 @@ BEGIN
     IDR_EDITTYPE            "\nedit\nEdit File\nRAO Files (.pat;.rtp;.rss;.opr;.frm;.fun;.dpt;.pmd;.pmv;.trc)\n.pat;.rtp;.rss;.opr;.frm;.fun;.dpt;.pmd;.pmv;.trc\nRAOStudio.Document\nRAO Document"
     IDR_PROJECTTOOLBAR      "Project"
     IDR_CHARTTYPE           "\nchart\nChart\n\n\nRAOStudio.Document\nRAO Document"
-    IDR_FRAMETYPE           "\nmodel\nModel Files\n\n\nRAOStudio.Document\nRAO Document"
+    IDR_FRAMETYPE           "\nframe\nModel Frame\n\n\nRAOStudio.Document\nRAO Document"
 END
 
 STRINGTABLE PRELOAD DISCARDABLE 

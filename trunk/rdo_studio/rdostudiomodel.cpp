@@ -38,8 +38,8 @@ RDOStudioModel::RDOStudioModel():
 	modelDocTemplate = new CMultiDocTemplate( IDR_MODELTYPE, RUNTIME_CLASS(RDOStudioModelDoc), RUNTIME_CLASS(RDOStudioChildFrame), RUNTIME_CLASS(RDOStudioModelView) );
 	AfxGetApp()->AddDocTemplate( modelDocTemplate );
 
-	modelDocTemplate = new CMultiDocTemplate( IDR_FRAMETYPE, RUNTIME_CLASS(RDOStudioModelDoc), RUNTIME_CLASS(RDOStudioChildFrame), RUNTIME_CLASS(RDOStudioModelView) );
-	AfxGetApp()->AddDocTemplate( modelDocTemplate );
+	frameDocTemplate = new CMultiDocTemplate( IDR_FRAMETYPE, RUNTIME_CLASS(RDOStudioFrameDoc), RUNTIME_CLASS(RDOStudioChildFrame), RUNTIME_CLASS(RDOStudioFrameView) );
+	AfxGetApp()->AddDocTemplate( frameDocTemplate );
 
 	kernel.setNotifyReflect( RDOKernel::newModel, newModelNotify );
 	kernel.setNotifyReflect( RDOKernel::openModel, openModelNotify );
@@ -54,6 +54,8 @@ RDOStudioModel::RDOStudioModel():
 	kernel.setNotifyReflect( RDOKernel::parseError, parseErrorModelNotify );
 	kernel.setNotifyReflect( RDOKernel::buildString, buildNotify );
 	kernel.setNotifyReflect( RDOKernel::debugString, debugNotify );
+
+	kernel.setNotifyReflect( RDOKernel::showFrame, showFrameNotify );
 }
 
 RDOStudioModel::~RDOStudioModel()
@@ -175,11 +177,25 @@ void RDOStudioModel::debugNotify( string str )
 	studioApp.mainFrame->output.appendStringToDebug( str );
 }
 
+void RDOStudioModel::showFrameNotify()
+{
+	model->parseFrame();
+}
+
 RDOStudioModelDoc* RDOStudioModel::getModelDoc() const
 {
 	POSITION pos = modelDocTemplate->GetFirstDocPosition();
 	if ( pos ) {
 		return static_cast<RDOStudioModelDoc*>(modelDocTemplate->GetNextDoc( pos ));
+	}
+	return NULL;
+}
+
+RDOStudioFrameDoc* RDOStudioModel::getFrameDoc() const
+{
+	POSITION pos = frameDocTemplate->GetFirstDocPosition();
+	if ( pos ) {
+		return static_cast<RDOStudioFrameDoc*>(frameDocTemplate->GetNextDoc( pos ));
 	}
 	return NULL;
 }
@@ -422,4 +438,24 @@ double RDOStudioModel::getModelTime() const
 		return kernel.getSimulator()->getModelTime();
 	}
 	return 0;
+}
+
+void RDOStudioModel::parseFrame()
+{
+	if ( !getFrameDoc() ) {
+		TRACE( "before\r\n" );
+		AfxGetApp()->PostThreadMessage( 111, 0, 0 );
+		TRACE( "after\r\n" );
+		DWORD res = ::WaitForSingleObject( addNewFrameEvent, INFINITE );
+		switch ( res ) {
+			case WAIT_OBJECT_0 : TRACE( "WAIT_OBJECT_0\r\n" ); break;
+			case WAIT_ABANDONED: TRACE( "WAIT_ABANDONED\r\n" ); break;
+			case WAIT_TIMEOUT  : TRACE( "WAIT_TIMEOUT\r\n" ); break;
+		}
+	}
+}
+
+void RDOStudioModel::addNewFrame() const
+{
+	frameDocTemplate->OpenDocumentFile( NULL );
 }

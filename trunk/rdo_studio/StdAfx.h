@@ -26,6 +26,7 @@
 #include <sstream>
 #include <map>
 #include <list>
+#include <afxmt.h>
 
 #include "sizecbar/sizecbar.h"
 #include "sizecbar/scbarg.h"
