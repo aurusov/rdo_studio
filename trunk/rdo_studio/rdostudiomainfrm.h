@@ -8,6 +8,7 @@
 #include "rdostudioworkspace.h"
 #include "rdostudiooutput.h"
 #include "rdo_edit/rdoeditoreditstyle.h"
+#include "rdo_edit/rdoeditorresultsstyle.h"
 #include "edit_ctrls/rdologeditstyle.h"
 #include "edit_ctrls/rdobaseeditstyle.h"
 #include "edit_ctrls/rdofindeditstyle.h"

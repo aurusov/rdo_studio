@@ -39,7 +39,7 @@ void RDOEditorEditBufferDlg::DoDataExchange( CDataExchange* pDX )
 // ----------------------------------------------------------------------------
 // ---------- RDOEditorEdit
 // ---------------------------------------------------------------------------
-BEGIN_MESSAGE_MAP( RDOEditorEdit, RDOEditorBase )
+BEGIN_MESSAGE_MAP( RDOEditorEdit, RDOEditorBaseEdit )
 	//{{AFX_MSG_MAP(RDOEditorEdit)
 	ON_WM_CREATE()
 	ON_COMMAND(ID_EDIT_COMMENTSELECTION, OnEditCommentSelection)
@@ -84,7 +84,7 @@ BEGIN_MESSAGE_MAP( RDOEditorEdit, RDOEditorBase )
 END_MESSAGE_MAP()
 
 RDOEditorEdit::RDOEditorEdit( RDOStudioEditBaseView* _view ):
-	RDOEditorBase(),
+	RDOEditorBaseEdit(),
 	bufSelStart( -1 ),
 	view( _view )
 {
@@ -99,7 +99,7 @@ BOOL RDOEditorEdit::OnNotify( WPARAM wParam, LPARAM lParam, LRESULT* pResult )
 {
 	SCNotification* scn = reinterpret_cast<SCNotification*>(lParam);
 
-	if ( !RDOEditorBase::OnNotify( wParam, lParam, pResult ) || ( scn->nmhdr.hwndFrom == sciHWND && scn->nmhdr.code == SCN_CHARADDED ) ) {
+	if ( !RDOEditorBaseEdit::OnNotify( wParam, lParam, pResult ) || ( scn->nmhdr.hwndFrom == sciHWND && scn->nmhdr.code == SCN_CHARADDED ) ) {
 
 		if ( scn->nmhdr.hwndFrom == sciHWND ) {
 			switch( scn->nmhdr.code ) {
@@ -141,7 +141,7 @@ BOOL RDOEditorEdit::OnNotify( WPARAM wParam, LPARAM lParam, LRESULT* pResult )
 
 int RDOEditorEdit::OnCreate( LPCREATESTRUCT lpCreateStruct )
 {
-	if ( RDOEditorBase::OnCreate(lpCreateStruct) == -1 ) return -1;
+	if ( RDOEditorBaseEdit::OnCreate(lpCreateStruct) == -1 ) return -1;
 
 	sendEditor( SCI_AUTOCSETIGNORECASE    , 1 );
 	sendEditor( SCI_AUTOCSETCHOOSESINGLE  , 0 );
@@ -158,7 +158,7 @@ int RDOEditorEdit::OnCreate( LPCREATESTRUCT lpCreateStruct )
 
 void RDOEditorEdit::setEditorStyle( RDOEditorEditStyle* _style )
 {
-	RDOEditorBase::setEditorStyle( _style );
+	RDOEditorBaseEdit::setEditorStyle( _style );
 	if ( !style ) return;
 
 	// ----------

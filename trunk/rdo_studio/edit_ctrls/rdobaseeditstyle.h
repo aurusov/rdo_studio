@@ -130,8 +130,8 @@ public:
 	bool operator !=( const RDOBaseEditStyle& style ) const;
 
 	virtual void init( const std::string& _regPath = "" );
-	virtual void load();
-	virtual void save() const;
+	virtual bool load();
+	virtual bool save() const;
 
 	RDOBaseEditTheme*  theme;
 	RDOBaseEditTab*    tab;

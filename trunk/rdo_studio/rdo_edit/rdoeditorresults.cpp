@@ -12,12 +12,12 @@ using namespace rdoEditCtrl;
 // ----------------------------------------------------------------------------
 // ---------- RDOEditorResults
 // ---------------------------------------------------------------------------
-BEGIN_MESSAGE_MAP( RDOEditorResults, RDOEditorBase )
+BEGIN_MESSAGE_MAP( RDOEditorResults, RDOEditorBaseEdit )
 	//{{AFX_MSG_MAP(RDOEditorResults)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-RDOEditorResults::RDOEditorResults(): RDOEditorBase()
+RDOEditorResults::RDOEditorResults(): RDOEditorBaseEdit()
 {
 }
 
@@ -27,6 +27,6 @@ RDOEditorResults::~RDOEditorResults()
 
 void RDOEditorResults::setEditorStyle( RDOEditorResultsStyle* _style )
 {
-	RDOEditorBase::setEditorStyle( _style );
+	RDOEditorBaseEdit::setEditorStyle( _style );
 	if ( !style ) return;
 }

@@ -448,6 +448,10 @@ SOURCE=.\rdo_edit\rdoeditorbaseedit.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\rdo_edit\rdoeditorbaseeditstyle.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdo_edit\rdoeditorchildview.cpp
 # End Source File
 # Begin Source File
@@ -476,6 +480,10 @@ SOURCE=.\rdo_edit\rdoeditorresults.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\rdo_edit\rdoeditorresultsstyle.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdo_edit\rdoeditortabctrl.cpp
 # End Source File
 # End Group
@@ -489,6 +497,10 @@ SOURCE=.\rdo_edit\rdoeditorapp.h
 # Begin Source File
 
 SOURCE=.\rdo_edit\rdoeditorbaseedit.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdo_edit\rdoeditorbaseeditstyle.h
 # End Source File
 # Begin Source File
 
@@ -517,6 +529,10 @@ SOURCE=.\rdo_edit\rdoeditorproject.h
 # Begin Source File
 
 SOURCE=.\rdo_edit\rdoeditorresults.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdo_edit\rdoeditorresultsstyle.h
 # End Source File
 # Begin Source File
 

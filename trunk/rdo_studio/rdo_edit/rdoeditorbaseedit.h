@@ -8,28 +8,28 @@
 namespace rdoEditor {
 
 // ----------------------------------------------------------------------------
-// ---------- RDOEditorBase
+// ---------- RDOEditorBaseEdit
 // ----------------------------------------------------------------------------
-class RDOEditorBase: public rdoEditCtrl::RDOBaseEdit
+class RDOEditorBaseEdit: public rdoEditCtrl::RDOBaseEdit
 {
 protected:
 	static char* kw0;
 	static char* kw1;
 	static char* kw2;
 
-	//{{AFX_MSG(RDOEditorBase)
+	//{{AFX_MSG(RDOEditorBaseEdit)
 	afx_msg int OnCreate( LPCREATESTRUCT lpCreateStruct );
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
-	//{{AFX_VIRTUAL(RDOEditorBase)
+	//{{AFX_VIRTUAL(RDOEditorBaseEdit)
 	//}}AFX_VIRTUAL
 
 public:
-	RDOEditorBase();
-	virtual ~RDOEditorBase();
+	RDOEditorBaseEdit();
+	virtual ~RDOEditorBaseEdit();
 
-	void setEditorStyle( RDOEditorBaseStyle* _style );
+	void setEditorStyle( RDOEditorBaseEditStyle* _style );
 };
 
 }; // namespace rdoEditor

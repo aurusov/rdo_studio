@@ -3,14 +3,14 @@
 #pragma once
 
 #include "rdoeditorbaseedit.h"
-#include "rdoeditoreditstyle.h"
+#include "rdoeditorresultsstyle.h"
 
 namespace rdoEditor {
 
 // ----------------------------------------------------------------------------
 // ---------- RDOEditorResults
 // ----------------------------------------------------------------------------
-class RDOEditorResults: public RDOEditorBase
+class RDOEditorResults: public RDOEditorBaseEdit
 {
 protected:
 	//{{AFX_MSG(RDOEditorResults)

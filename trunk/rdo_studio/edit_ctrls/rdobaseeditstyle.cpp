@@ -326,18 +326,24 @@ void RDOBaseEditStyle::init( const string& _regPath )
 	initWindow();
 }
 
-void RDOBaseEditStyle::load()
+bool RDOBaseEditStyle::load()
 {
-	RDOBaseCtrlStyle::load();
-	if ( theme )  theme->load( regPath );
-	if ( tab )    tab->load( regPath );
-	if ( window ) window->load( regPath );
+	if ( RDOBaseCtrlStyle::load() ) {
+		if ( theme )  theme->load( regPath );
+		if ( tab )    tab->load( regPath );
+		if ( window ) window->load( regPath );
+		return true;
+	}
+	return false;
 }
 
-void RDOBaseEditStyle::save() const
+bool RDOBaseEditStyle::save() const
 {
-	RDOBaseCtrlStyle::save();
-	if ( theme )  theme->save( regPath );
-	if ( tab )    tab->save( regPath );
-	if ( window ) window->save( regPath );
+	if ( RDOBaseCtrlStyle::save() ) {
+		if ( theme )  theme->save( regPath );
+		if ( tab )    tab->save( regPath );
+		if ( window ) window->save( regPath );
+		return true;
+	}
+	return false;
 }

@@ -12,13 +12,13 @@ using namespace rdoEditor;
 using namespace rdoEditCtrl;
 
 // ----------------------------------------------------------------------------
-// ---------- RDOEditorBase
+// ---------- RDOEditorBaseEdit
 // ---------------------------------------------------------------------------
 
 // ---------------
 // RDO lexer
 
-char* RDOEditorBase::kw0 = "$Activities $Back_picture $Body $Changes $Compare_tops $Condition \
+char* RDOEditorBaseEdit::kw0 = "$Activities $Back_picture $Body $Changes $Compare_tops $Condition \
 $Constant $Decision_point $Default $End $End_picture $Evaluate_by $Frame $Function \
 $Include $Operations $Parameters $Pattern $Relevant_resources $Resource_type \
 $Resources $Result_values $Results $Sequence $Status $Term_condition $Time $Tracing \
@@ -35,31 +35,31 @@ Terminate_if text Time_now Trace_EndTime Trace_file Trace_StartTime triang TRUE 
 uniform until USER_BREAK value watch_par watch_quant watch_state watch_value with_max \
 with_min YES transparent —ËÒÚÂÏÌÓÂ_‚ÂÏˇ";
 
-char* RDOEditorBase::kw1 = "Abs ArcCos ArcSin ArcTan Cos Cotan Exist Exp Floor For_All Frac \
+char* RDOEditorBaseEdit::kw1 = "Abs ArcCos ArcSin ArcTan Cos Cotan Exist Exp Floor For_All Frac \
 GetRelResNumber GetResNumber IAbs IMax IMin Int IntPower Ln Log10 Log2 LogN Max Min \
 Not_Exist Not_For_All Power Round Sin Sqrt Tan";
 
-char* RDOEditorBase::kw2 = "no_trace trace trace_all trace_stat trace_tops";
+char* RDOEditorBaseEdit::kw2 = "no_trace trace trace_all trace_stat trace_tops";
 
 static char* wordCharacters = "0123456789_$abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ¿‡¡·¬‚√„ƒ‰≈Â®∏∆Ê«Á»Ë…È ÍÀÎÃÏÕÌŒÓœÔ–—Ò“Ú”Û‘Ù’ı÷ˆ◊˜ÿ¯Ÿ˘⁄˙€˚‹¸›˝ﬁ˛ﬂˇ";
 
 // ---------------
 
-BEGIN_MESSAGE_MAP( RDOEditorBase, RDOBaseEdit )
-	//{{AFX_MSG_MAP(RDOEditorBase)
+BEGIN_MESSAGE_MAP( RDOEditorBaseEdit, RDOBaseEdit )
+	//{{AFX_MSG_MAP(RDOEditorBaseEdit)
 	ON_WM_CREATE()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-RDOEditorBase::RDOEditorBase(): RDOBaseEdit()
+RDOEditorBaseEdit::RDOEditorBaseEdit(): RDOBaseEdit()
 {
 }
 
-RDOEditorBase::~RDOEditorBase()
+RDOEditorBaseEdit::~RDOEditorBaseEdit()
 {
 }
 
-int RDOEditorBase::OnCreate( LPCREATESTRUCT lpCreateStruct )
+int RDOEditorBaseEdit::OnCreate( LPCREATESTRUCT lpCreateStruct )
 {
 	if ( RDOBaseEdit::OnCreate(lpCreateStruct) == -1 ) return -1;
 
@@ -74,7 +74,7 @@ int RDOEditorBase::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	return 0;
 }
 
-void RDOEditorBase::setEditorStyle( RDOEditorBaseStyle* _style )
+void RDOEditorBaseEdit::setEditorStyle( RDOEditorBaseEditStyle* _style )
 {
 	RDOBaseEdit::setEditorStyle( _style );
 	if ( !style ) return;
@@ -168,7 +168,7 @@ void RDOEditorBase::setEditorStyle( RDOEditorBaseStyle* _style )
 }
 
 /*
-void RDOEditorBase::OnHelpKeyword()
+void RDOEditorBaseEdit::OnHelpKeyword()
 {
 	CString filename; // = rdoEditorApp.getFullHelpFileName( "RAO-language.chm" );
 	if ( filename.IsEmpty() ) return;

@@ -52,8 +52,8 @@ public:
 	bool operator !=( const RDOBaseCtrlStyle& style ) const;
 
 	virtual void init( const std::string& _regPath = "" );
-	virtual void load();
-	virtual void save() const;
+	virtual bool load();
+	virtual bool save() const;
 
 	RDOBaseCtrlFont* font;
 };

@@ -108,22 +108,30 @@ bool RDOBaseCtrlStyle::operator !=( const RDOBaseCtrlStyle& style ) const
 void RDOBaseCtrlStyle::init( const string& _regPath )
 {
 	regPath = _regPath;
-	if ( regPath.empty() ) {
-		regPath = "empty\\";
+	trim( regPath );
+	if ( !regPath.empty() ) {
+		if ( regPath.find_last_of( '\\' ) != regPath.length() - 1 ) {
+			regPath += '\\';
+		}
+		regPath = "style\\" + regPath;
 	}
-	if ( regPath.find_last_of( '\\' ) != regPath.length() - 1 ) {
-		regPath += '\\';
-	}
-	regPath = "style\\" + regPath;
 	initFont();
 }
 
-void RDOBaseCtrlStyle::load()
+bool RDOBaseCtrlStyle::load()
 {
-	if ( font ) font->load( regPath );
+	if ( !regPath.empty() ) {
+		if ( font ) font->load( regPath );
+		return true;
+	}
+	return false;
 }
 
-void RDOBaseCtrlStyle::save() const
+bool RDOBaseCtrlStyle::save() const
 {
-	if ( font ) font->save( regPath );
+	if ( !regPath.empty() ) {
+		if ( font ) font->save( regPath );
+		return true;
+	}
+	return false;
 }
