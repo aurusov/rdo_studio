@@ -131,6 +131,10 @@ SOURCE=.\bkemultaperecorder.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\bkemultimer.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\bkemulvideo.cpp
 # End Source File
 # Begin Source File
@@ -201,6 +205,10 @@ SOURCE=.\bkemulspeaker.h
 # Begin Source File
 
 SOURCE=.\bkemultaperecorder.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\bkemultimer.h
 # End Source File
 # Begin Source File
 

@@ -16,6 +16,7 @@ class BKEmulMemory
 {
 friend class BKEmul;
 friend class BKEmulKeyboard;
+friend class BKEmulTimer;
 
 private:
 	std::vector< BYTE > memory;

@@ -11,6 +11,7 @@
 #include "bkemulkeyboard.h"
 #include "bkemulspeaker.h"
 #include "bkemultaperecorder.h"
+#include "bkemultimer.h"
 
 namespace bkemul {
 
@@ -23,7 +24,6 @@ private:
 	bool powerOn;
 	bool pause;
 	int  speed;
-	bool BK_SYS_Timer_work;     // Системный таймер БК запущен/остановлен
 
 	// Регист, имеющий разное значение по чтению/записи.
 	BYTE R_177717_byte_read;   // Регист 0177716 - состояние клавиатуры.
@@ -43,6 +43,7 @@ public:
 	BKEmulKeyboard     keyboard;
 	BKEmulSpeaker      speaker;
 	BKEmulTapeRecorder taperecorder;
+	BKEmulTimer        timer;
 
 	void powerON();
 	void powerOFF();

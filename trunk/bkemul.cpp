@@ -18,8 +18,7 @@ BKEmul emul;
 BKEmul::BKEmul():
 	powerOn( false ),
 	pause( false ),
-	speed( 3000 ),
-	BK_SYS_Timer_work( false )
+	speed( 3000 )
 {
 }
 
@@ -55,20 +54,15 @@ void BKEmul::powerOFF()
 
 void BKEmul::reset()
 {
-	BK_SYS_Timer_work = false;
-
 	R_177717_byte_read = 0100000 >> 8; // Задает начальный адрес и флаг отжатой клавиши
 	                                   // ст. байт = 0100000 - адрес старта процессора
 	R_177716_write     = 0000000;      // 0100 = 0
-
-	memory.set_word( 0177706, 0011000 ); // Начальные значения регистров системного таймера
-	memory.set_word( 0177710, 0177777 ); // ---- // ----
-	memory.set_word( 0177712, 0177400 ); // ---- // ----
 
 	cpu.reset();
 	keyboard.reset();
 	speaker.reset();
 	taperecorder.reset();
+	timer.reset();
 /*
 	memory.set_word( 0100000, 0012700 );
 	memory.set_word( 0100002, 0040000 );
@@ -121,16 +115,8 @@ void BKEmul::nextIteration()
 	if ( pause ) return;
 	try {
 		speaker.play();
+		timer.tick();
 		for ( int i = 0; i < speed; i++ ) {
-			if ( BK_SYS_Timer_work ) {
-				WORD data = memory.get_word( 0177710 );
-				data--;
-				if ( !data ) {
-					data = memory.get_word( 0177706 );
-					cpu.setPR_100();
-				}
-				memory.set_word( 0177710, data );
-			}
 			cpu.nextIteration();
 		}
 	} catch( BKMemoryAccessError& ) {
@@ -241,16 +227,13 @@ void BKEmul::setMemoryByte( WORD address, BYTE data )
 		case 0177710:
 		case 0177711: break;
 		// Регистр управления таймером
-		case 0177712:
+		case 0177712: {
+			timer.set177712( data );
+			break;
+		}
+		// Регистр управления таймером
 		case 0177713: {
-			// Запись в 8-15 биты слова игнорируется
-			if ( address == 0177713 ) {
-				data = 0xFF;
-			}
-			memory.set_word( 0177710, memory.get_word( 0177706 ) );
-			// Начать/остановить отсчет
-			BK_SYS_Timer_work = data & 020 ? true : false;
-			memory.set_byte( address, data );
+			timer.set177713( data );
 			break;
 		}
 		// В системном регистре по записи доступны только 4-7 разряды выходного регистра 177716
@@ -315,12 +298,7 @@ void BKEmul::setMemoryWord( WORD address, WORD data )
 		case 0177710: break;
 		// Регистр управления таймером
 		case 0177712: {
-			// Запись в 8-15 биты игнорируется
-			data |= 0xFF00;
-			memory.set_word( 0177710, memory.get_word( 0177706 ) );
-			// Начать/остановить отсчет
-			BK_SYS_Timer_work = data & 0000020 ? true : false;
-			memory.set_word( address, data );
+			timer.set177712( data );
 			break;
 		}
 		// В системном регистре по записи доступны только 4-7 разряды выходного регистра 177716
