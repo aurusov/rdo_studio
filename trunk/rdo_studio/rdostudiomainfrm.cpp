@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "rdostudiomainfrm.h"
+#include "rdostudiomodel.h"
 #include "./rdo_tracer/rdotracertrace.h"
 #include "resource.h"
 
@@ -208,5 +209,9 @@ void RDOStudioMainFrame::OnUpdateInsertOverwriteStatusBar( CCmdUI *pCmdUI )
 void RDOStudioMainFrame::OnUpdateModelTimeStatusBar( CCmdUI *pCmdUI )
 {
 	pCmdUI->Enable();
-	pCmdUI->SetText( "" );
+	string str = "";
+	if ( model->isRunning() ) {
+		str = format( ID_STATUSBAR_MODELTIME, model->getModelTime() );
+	}
+	pCmdUI->SetText( str.c_str() );
 }

@@ -7,8 +7,6 @@
 #include "rdo_edit/rdoeditortabctrl.h"
 #include "resource.h"
 
-#include <rdokernel.h>
-
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -35,7 +33,6 @@ BEGIN_MESSAGE_MAP(RDOStudioModelView, RDOStudioEditBaseView)
 	ON_UPDATE_COMMAND_UI( ID_COORDSTATUSBAR          , OnUpdateCoordStatusBar )
 	ON_UPDATE_COMMAND_UI( ID_MODIFYSTATUSBAR         , OnUpdateModifyStatusBar )
 	ON_UPDATE_COMMAND_UI( ID_INSERTOVERWRITESTATUSBAR, OnUpdateInsertOverwriteStatusBar )
-	ON_UPDATE_COMMAND_UI( ID_MODELTIMESTATUSBAR      , OnUpdateModelTimeStatusBar )
 	ON_COMMAND(ID_FILE_PRINT, RDOStudioEditBaseView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, RDOStudioEditBaseView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, RDOStudioEditBaseView::OnFilePrintPreview)
@@ -228,16 +225,6 @@ void RDOStudioModelView::OnUpdateInsertOverwriteStatusBar( CCmdUI *pCmdUI )
 	RDOEditorEdit* edit = getEdit();
 	if ( edit && edit->isOverwrite() ) {
 		str = format( ID_STATUSBAR_OVERWRITE );
-	}
-	pCmdUI->SetText( str.c_str() );
-}
-
-void RDOStudioModelView::OnUpdateModelTimeStatusBar( CCmdUI *pCmdUI )
-{
-	pCmdUI->Enable();
-	string str = "";
-	if ( GetDocument()->isRunning() ) {
-		str = format( ID_STATUSBAR_MODELTIME, kernel.getSimulator()->getModelTime() );
 	}
 	pCmdUI->SetText( str.c_str() );
 }

@@ -409,3 +409,11 @@ bool RDOStudioModel::isModify() const
 	}
 	return flag;
 }
+
+double RDOStudioModel::getModelTime() const
+{
+	if ( isRunning() ) {
+		return kernel.getSimulator()->getModelTime();
+	}
+	return 0;
+}

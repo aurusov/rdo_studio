@@ -65,6 +65,7 @@ public:
 
 	bool isModify() const;
 	bool isRunning() const { return running; };
+	double getModelTime() const;
 
 	RDOStudioModelDoc* getModelDoc() const;
 	void updateModify() const;
