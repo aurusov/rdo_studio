@@ -84,7 +84,7 @@ int CChatMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	childView.Create( NULL, NULL, AFX_WS_DEFAULT_VIEW, CRect(0, 0, 0, 0), this, AFX_IDW_PANE_FIRST, NULL );
 
-	dock.Create( "aa", this, 0 );
+	dock.Create( "users", this, 0 );
 	dock.SetBarStyle( dock.GetBarStyle() | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
 
 	CString s;

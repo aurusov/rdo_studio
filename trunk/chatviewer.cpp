@@ -357,9 +357,13 @@ bool CChatViewer::scrollHorizontally( int inc )
 
 bool CChatViewer::isVisible( const int index )
 {
-	int height_before = getHeightBeforeLine( index );
-	int line_height   = getStrHeight( index );
-	return height_before + line_height > yPos && height_before < yPos + newClientRect.bottom;
+	if ( index != -1 ) {
+		int height_before = getHeightBeforeLine( index );
+		int line_height   = getStrHeight( index );
+		return height_before + line_height > yPos && height_before < yPos + newClientRect.bottom;
+	} else {
+		return false;
+	}
 }
 
 void CChatViewer::selectLine( const int index )
