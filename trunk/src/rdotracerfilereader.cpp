@@ -12,8 +12,6 @@ static char THIS_FILE[] = __FILE__;
 
 using namespace std;
 
-#define speed 30
-
 RDOTracerFileReader trace_reader;
 
 // ----------------------------------------------------------------------------
@@ -21,7 +19,8 @@ RDOTracerFileReader trace_reader;
 // ----------------------------------------------------------------------------
 RDOTracerFileReader::RDOTracerFileReader()
 	: tracing( false ),
-	  trace_file( NULL )
+	  trace_file( NULL ),
+	  delay( 30 )
 {
 }
 
@@ -48,19 +47,19 @@ UINT RunningThreadControllingFunction( LPVOID pParam )
 	
 	do {
 		*(file_reader->trace_file) >> str;
-	} while( str != "Model_name" );
+	} while( str != "Model_name" && !file_reader->trace_file->eof() );
 	*(file_reader->trace_file) >> str;
 	*(file_reader->trace_file) >> file_reader->model_name;
 	rdoTracerApp.mainFrame->setModelName( file_reader->model_name );
 
 	do {
 		*(file_reader->trace_file) >> str;
-	} while( str != "$Resource_type" );
+	} while( str != "$Resource_type" && !file_reader->trace_file->eof() );
 
 	do {
 		file_reader->structure << str << " ";
 		*(file_reader->trace_file) >> str;
-	} while ( str != "$Tracing" );
+	} while ( str != "$Tracing" && !file_reader->trace_file->eof() );
 
 	file_reader->getNextLine();
 
@@ -71,7 +70,7 @@ UINT RunningThreadControllingFunction( LPVOID pParam )
 	while ( !file_reader->trace_file->eof() ) {
 		tracer->traceStringNotify( file_reader->getNextLine() );
 		if ( rdoTracerApp.mainFrame->getShowMode() != SM_NoShow )
-			::Sleep( speed );
+			::Sleep( file_reader->delay );
 	}
 
 	file_reader->th = NULL;

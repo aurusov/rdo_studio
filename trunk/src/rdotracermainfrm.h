@@ -96,8 +96,16 @@ protected:
 	afx_msg void OnUpdateSmAnimation(CCmdUI* pCmdUI);
 	afx_msg void OnSmMonitor();
 	afx_msg void OnUpdateSmMonitor(CCmdUI* pCmdUI);
+	afx_msg void OnModelDelayInc();
+	afx_msg void OnUpdateModelDelayInc(CCmdUI* pCmdUI);
+	afx_msg void OnModelDelayIncfour();
+	afx_msg void OnUpdateModelDelayIncfour(CCmdUI* pCmdUI);
+	afx_msg void OnModelDelayDecfour();
+	afx_msg void OnUpdateModelDelayDecfour(CCmdUI* pCmdUI);
+	afx_msg void OnModelDelayDec();
+	afx_msg void OnUpdateModelDelayDec(CCmdUI* pCmdUI);
 	//}}AFX_MSG
-
+	afx_msg void OnUpdateDelayStatusBar( CCmdUI *pCmdUI );
 	DECLARE_MESSAGE_MAP()
 
 protected: 
@@ -117,6 +125,7 @@ public:
 
 	rdoTracerLog::RDOTracerLogStyle  style_trace;
 	RDOStudioChartViewStyle          style_chart;
+	void updateAllStyles() const;
 };
 
 //{{AFX_INSERT_LOCATION}}

@@ -104,6 +104,10 @@ SOURCE=.\src\rdotracermainfrm.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\src\rdotraceroptions.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\src\rdotracerpane.cpp
 # ADD CPP /I ".."
 # End Source File
@@ -131,6 +135,10 @@ SOURCE=.\src\rdotracerfilereader.h
 # Begin Source File
 
 SOURCE=.\src\rdotracermainfrm.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\src\rdotraceroptions.h
 # End Source File
 # Begin Source File
 

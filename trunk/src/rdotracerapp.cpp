@@ -137,7 +137,7 @@ void RDOTracerApp::eraseMenu( CMenu* from, const int from_index )
 void RDOTracerApp::OnAppAbout()
 {
 	RDOAbout aboutDlg;
-	aboutDlg.caption = "RDO tracer   v1.0";
+
 	aboutDlg.hPixmap = LoadIcon( MAKEINTRESOURCE(IDR_MAINFRAME) );
 	
 	aboutDlg.bgPixmap  = RGB( 0x9D, 0xC0, 0xD2 );

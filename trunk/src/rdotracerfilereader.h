@@ -28,6 +28,8 @@ protected:
 
 	std::string getNextLine();
 
+	UINT delay;
+
 public:
 	RDOTracerFileReader();
 	virtual ~RDOTracerFileReader();
@@ -43,6 +45,8 @@ public:
 	void stopTrace();
 	void pauseTrace();
 	void unpauseTrace();
+	UINT getDelay() const { return delay; };
+	void setDelay( const UINT _delay ) { delay = _delay; };
 };
 
 extern RDOTracerFileReader trace_reader;

@@ -3,7 +3,7 @@
 #include "rdotracermainfrm.h"
 #include "./tracer_ctrls/rdosplitterwnd.h"
 #include "./tracer_ctrls/rdotracertreectrl.h"
-//#include "rdotraceroptions.h"
+#include "rdotraceroptions.h"
 #include "../resource.h"
 
 #ifdef _DEBUG
@@ -46,11 +46,21 @@ BEGIN_MESSAGE_MAP( RDOTracerMainFrame, CFrameWnd )
 	ON_UPDATE_COMMAND_UI(ID_SM_ANIMATION, OnUpdateSmAnimation)
 	ON_COMMAND(ID_SM_MONITOR, OnSmMonitor)
 	ON_UPDATE_COMMAND_UI(ID_SM_MONITOR, OnUpdateSmMonitor)
+	ON_COMMAND(ID_TRACE_DELAY_INC, OnModelDelayInc)
+	ON_UPDATE_COMMAND_UI(ID_TRACE_DELAY_INC, OnUpdateModelDelayInc)
+	ON_COMMAND(ID_TRACE_DELAY_INCFOUR, OnModelDelayIncfour)
+	ON_UPDATE_COMMAND_UI(ID_TRACE_DELAY_INCFOUR, OnUpdateModelDelayIncfour)
+	ON_COMMAND(ID_TRACE_DELAY_DECFOUR, OnModelDelayDecfour)
+	ON_UPDATE_COMMAND_UI(ID_TRACE_DELAY_DECFOUR, OnUpdateModelDelayDecfour)
+	ON_COMMAND(ID_TRACE_DELAY_DEC, OnModelDelayDec)
+	ON_UPDATE_COMMAND_UI(ID_TRACE_DELAY_DEC, OnUpdateModelDelayDec)
 	//}}AFX_MSG_MAP
+	ON_UPDATE_COMMAND_UI( ID_DELAY_STATUSBAR , OnUpdateDelayStatusBar )
 END_MESSAGE_MAP()
 
 static UINT indicators[] = {
 	ID_SEPARATOR,
+	ID_DELAY_STATUSBAR,
 	ID_COORD_STATUSBAR,
 	ID_MODIFY_STATUSBAR,
 	ID_INDICATOR_CAPS,
@@ -187,8 +197,9 @@ int RDOTracerMainFrame::OnCreate( LPCREATESTRUCT lpCreateStruct )
 		TRACE0( "Failed to create status bar\n" );
 		return -1;
 	}
-	statusBar.SetPaneInfo( 1, ID_COORD_STATUSBAR           , SBPS_NORMAL , 70 );
-	statusBar.SetPaneInfo( 2, ID_MODIFY_STATUSBAR          , SBPS_NORMAL , 70 );
+	statusBar.SetPaneInfo( 1, ID_DELAY_STATUSBAR , SBPS_NORMAL , 70 );
+	statusBar.SetPaneInfo( 2, ID_COORD_STATUSBAR , SBPS_NORMAL , 70 );
+	statusBar.SetPaneInfo( 3, ID_MODIFY_STATUSBAR, SBPS_NORMAL , 70 );
 
 	traceToolBar.EnableDocking( CBRS_ALIGN_ANY );
 	logToolBar.EnableDocking( CBRS_ALIGN_ANY );
@@ -223,8 +234,8 @@ void RDOTracerMainFrame::OnMove( int x, int y )
 
 void RDOTracerMainFrame::onViewOptions()
 {
-/*	RDOTracerOptions dlg( *((RDOTracerLogStyle*)&(log->getStyle())) );
-	dlg.DoModal();*/
+	RDOTracerOptions dlg;
+	dlg.DoModal();
 }
 
 void RDOTracerMainFrame::onStartTrace()
@@ -342,4 +353,73 @@ void RDOTracerMainFrame::OnUpdateSmMonitor(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable( trace_reader.isTracing() );
 	pCmdUI->SetCheck( trace_reader.isTracing() ? showMode == SM_Monitor : 0 );
+}
+
+void RDOTracerMainFrame::updateAllStyles() const
+{
+	log->setStyle( const_cast<RDOTracerLogStyle*>(&style_trace) );
+	tracer->updateChartsStyles();
+}
+
+void RDOTracerMainFrame::OnModelDelayInc() 
+{
+	UINT delay = trace_reader.getDelay();
+	delay = (UINT)((double)delay * 1.5);
+	if ( delay <= UINT_MAX ) {
+		trace_reader.setDelay( delay );
+	}
+}
+
+void RDOTracerMainFrame::OnUpdateModelDelayInc(CCmdUI* pCmdUI) 
+{
+	pCmdUI->Enable( trace_reader.isTracing() && showMode != SM_NoShow && trace_reader.getDelay() * 1.5 <= UINT_MAX );
+}
+
+void RDOTracerMainFrame::OnModelDelayIncfour() 
+{
+	UINT delay = trace_reader.getDelay();
+	delay = (UINT)((double)delay * 4);
+	if ( delay <= UINT_MAX ) {
+		trace_reader.setDelay( delay );
+	}
+}
+
+void RDOTracerMainFrame::OnUpdateModelDelayIncfour(CCmdUI* pCmdUI) 
+{
+	pCmdUI->Enable( trace_reader.isTracing() && showMode != SM_NoShow && trace_reader.getDelay() * 4 <= UINT_MAX );
+}
+
+void RDOTracerMainFrame::OnModelDelayDecfour() 
+{
+	UINT delay = trace_reader.getDelay();
+	delay = (UINT)((double)delay / 4);
+	if ( delay >= 0 ) {
+		trace_reader.setDelay( delay );
+	}
+}
+
+void RDOTracerMainFrame::OnUpdateModelDelayDecfour(CCmdUI* pCmdUI) 
+{
+	pCmdUI->Enable( trace_reader.isTracing() && showMode != SM_NoShow && trace_reader.getDelay() / 4 >= 0 );	
+}
+
+void RDOTracerMainFrame::OnModelDelayDec() 
+{
+	UINT delay = trace_reader.getDelay();
+	delay = (UINT)((double)delay / 1.5);
+	if ( delay >= 0 ) {
+		trace_reader.setDelay( delay );
+	}	
+}
+
+void RDOTracerMainFrame::OnUpdateModelDelayDec(CCmdUI* pCmdUI) 
+{
+	pCmdUI->Enable( trace_reader.isTracing() && showMode != SM_NoShow && trace_reader.getDelay() / 1.5 >= 0 );
+}
+
+void RDOTracerMainFrame::OnUpdateDelayStatusBar( CCmdUI *pCmdUI )
+{
+	string str;
+	str = format( IDS_DELAY_STRING, trace_reader.getDelay() );
+	pCmdUI->SetText( str.c_str() );
 }

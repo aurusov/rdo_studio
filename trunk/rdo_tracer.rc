@@ -2,6 +2,11 @@
 //
 #include "resource.h"
 
+// Generated Help ID header file
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "resource.hm"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+
 #define APSTUDIO_READONLY_SYMBOLS
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -101,7 +106,7 @@ END
 IDD_CHART_OPTIONS_SERIES DIALOGEX 0, 0, 226, 84
 STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "Series"
-FONT 8, "MS Sans Serif"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     LTEXT           "Chart series",IDC_SERIES_STATIC,3,5,38,8
     COMBOBOX        IDC_SERIES_COMBO,43,3,179,51,CBS_DROPDOWNLIST | 
@@ -126,6 +131,66 @@ BEGIN
                     BS_AUTOCHECKBOX | WS_TABSTOP,87,72,77,10
 END
 
+IDD_OPTIONS_STYLESANDCOLORS DIALOGEX 0, 0, 292, 229
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Styles and Colors"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "Tree1",IDC_STYLEITEM_TREE,"SysTreeView32",
+                    TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | 
+                    TVS_SHOWSELALWAYS | TVS_NOTOOLTIPS | WS_TABSTOP,0,4,84,
+                    108,WS_EX_CLIENTEDGE
+    LTEXT           "Theme",IDC_THEME_STATIC,88,8,23,8,0,0,HIDC_THEME_STATIC
+    COMBOBOX        IDC_THEME_COMBO,116,4,104,86,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP,0,HIDC_THEME_COMBO
+    COMBOBOX        IDC_FONTNAME_COMBO,88,20,132,80,CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP,0,HIDC_FONTNAME_COMBO
+    COMBOBOX        IDC_FONTSIZE_COMBO,224,20,64,80,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP,0,HIDC_FONTSIZE_COMBO
+    LTEXT           "Foreground",IDC_FGCOLOR_STATIC,88,40,37,8,0,0,
+                    HIDC_FGCOLOR_STATIC
+    COMBOBOX        IDC_FGCOLOR_COMBO,132,36,88,92,CBS_DROPDOWNLIST | 
+                    CBS_OWNERDRAWFIXED | CBS_HASSTRINGS | WS_VSCROLL | 
+                    WS_TABSTOP,0,HIDC_FGCOLOR_COMBO
+    PUSHBUTTON      "...",IDC_FGCOLOR_BUTTON,220,36,16,12,0,WS_EX_STATICEDGE,
+                    HIDC_FGCOLOR_BUTTON
+    LTEXT           "Background",IDC_BGCOLOR_STATIC,88,56,40,8,0,0,
+                    HIDC_BGCOLOR_STATIC
+    COMBOBOX        IDC_BGCOLOR_COMBO,132,52,88,92,CBS_DROPDOWNLIST | 
+                    CBS_OWNERDRAWFIXED | CBS_HASSTRINGS | WS_VSCROLL | 
+                    WS_TABSTOP,0,HIDC_BGCOLOR_COMBO
+    PUSHBUTTON      "...",IDC_BGCOLOR_BUTTON,220,52,16,12,0,WS_EX_STATICEDGE,
+                    HIDC_BGCOLOR_BUTTON
+    CONTROL         "Bold",IDC_FONTBOLD_CHECK,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,244,36,30,10,0,HIDC_FONTBOLD_CHECK
+    CONTROL         "Italic",IDC_FONTITALIC_CHECK,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,244,48,31,10,0,HIDC_FONTITALIC_CHECK
+    CONTROL         "Underline",IDC_FONTUNDERLINE_CHECK,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,244,60,46,10,0,
+                    HIDC_FONTUNDERLINE_CHECK
+    LTEXT           "Preview as",IDC_PREVIEWAS_STATIC,88,104,36,8,0,0,
+                    HIDC_PREVIEWAS_STATIC
+    COMBOBOX        IDC_PREVIEWAS_COMBO,128,100,92,86,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP,0,HIDC_PREVIEWAS_COMBO
+    LTEXT           "Vertical border",IDC_VERTBORDER_STATIC,88,76,46,8
+    EDITTEXT        IDC_VERTBORDER_EDIT,140,72,24,12,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    LTEXT           "Horizontal border",IDC_HORZBORDER_STATIC,172,76,54,8
+    EDITTEXT        IDC_HORZBORDER_EDIT,232,72,24,12,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    COMBOBOX        IDC_TITLE_FONTSIZE_COMBO,136,73,38,80,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP,0,HIDC_TITLE_FONTSIZE_COMBO
+    LTEXT           "Title font size",IDC_TITLE_FONTSIZE_STATIC,88,78,42,8
+    COMBOBOX        IDC_LEGEND_FONTSIZE_COMBO,247,72,38,80,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP,0,HIDC_LEGEND_FONTSIZE_COMBO
+    LTEXT           "Legend font size",IDC_LEGEND_FONTSIZE_STATIC,189,77,53,
+                    8
+    EDITTEXT        IDC_TICKWIDTH_EDIT,236,89,29,12,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    LTEXT           "Minimal interval between points of time",
+                    IDC_TICKWIDTH_STATIC,110,94,122,8
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -144,6 +209,111 @@ BEGIN
 0x6852, 0x6d6f, 0x0062, 
     IDC_MARKER_COMBO, 0x403, 6, 0
 0x7243, 0x736f, 0x0073, 
+    0
+END
+
+IDD_OPTIONS_STYLESANDCOLORS DLGINIT
+BEGIN
+    IDC_FONTSIZE_COMBO, 0x403, 2, 0
+0x0038, 
+    IDC_FONTSIZE_COMBO, 0x403, 2, 0
+0x0039, 
+    IDC_FONTSIZE_COMBO, 0x403, 3, 0
+0x3031, "\000" 
+    IDC_FONTSIZE_COMBO, 0x403, 3, 0
+0x3131, "\000" 
+    IDC_FONTSIZE_COMBO, 0x403, 3, 0
+0x3231, "\000" 
+    IDC_FONTSIZE_COMBO, 0x403, 3, 0
+0x3431, "\000" 
+    IDC_FONTSIZE_COMBO, 0x403, 3, 0
+0x3631, "\000" 
+    IDC_FONTSIZE_COMBO, 0x403, 3, 0
+0x3831, "\000" 
+    IDC_FONTSIZE_COMBO, 0x403, 3, 0
+0x3032, "\000" 
+    IDC_FONTSIZE_COMBO, 0x403, 3, 0
+0x3232, "\000" 
+    IDC_FONTSIZE_COMBO, 0x403, 3, 0
+0x3432, "\000" 
+    IDC_FONTSIZE_COMBO, 0x403, 3, 0
+0x3632, "\000" 
+    IDC_FONTSIZE_COMBO, 0x403, 3, 0
+0x3832, "\000" 
+    IDC_FONTSIZE_COMBO, 0x403, 3, 0
+0x3633, "\000" 
+    IDC_FONTSIZE_COMBO, 0x403, 3, 0
+0x3834, "\000" 
+    IDC_FONTSIZE_COMBO, 0x403, 3, 0
+0x3237, "\000" 
+    IDC_PREVIEWAS_COMBO, 0x403, 7, 0
+0x7254, 0x6361, 0x7265, "\000" 
+    IDC_PREVIEWAS_COMBO, 0x403, 6, 0
+0x6843, 0x7261, 0x0074, 
+    IDC_TITLE_FONTSIZE_COMBO, 0x403, 2, 0
+0x0038, 
+    IDC_TITLE_FONTSIZE_COMBO, 0x403, 2, 0
+0x0039, 
+    IDC_TITLE_FONTSIZE_COMBO, 0x403, 3, 0
+0x3031, "\000" 
+    IDC_TITLE_FONTSIZE_COMBO, 0x403, 3, 0
+0x3131, "\000" 
+    IDC_TITLE_FONTSIZE_COMBO, 0x403, 3, 0
+0x3231, "\000" 
+    IDC_TITLE_FONTSIZE_COMBO, 0x403, 3, 0
+0x3431, "\000" 
+    IDC_TITLE_FONTSIZE_COMBO, 0x403, 3, 0
+0x3631, "\000" 
+    IDC_TITLE_FONTSIZE_COMBO, 0x403, 3, 0
+0x3831, "\000" 
+    IDC_TITLE_FONTSIZE_COMBO, 0x403, 3, 0
+0x3032, "\000" 
+    IDC_TITLE_FONTSIZE_COMBO, 0x403, 3, 0
+0x3232, "\000" 
+    IDC_TITLE_FONTSIZE_COMBO, 0x403, 3, 0
+0x3432, "\000" 
+    IDC_TITLE_FONTSIZE_COMBO, 0x403, 3, 0
+0x3632, "\000" 
+    IDC_TITLE_FONTSIZE_COMBO, 0x403, 3, 0
+0x3832, "\000" 
+    IDC_TITLE_FONTSIZE_COMBO, 0x403, 3, 0
+0x3633, "\000" 
+    IDC_TITLE_FONTSIZE_COMBO, 0x403, 3, 0
+0x3834, "\000" 
+    IDC_TITLE_FONTSIZE_COMBO, 0x403, 3, 0
+0x3237, "\000" 
+    IDC_LEGEND_FONTSIZE_COMBO, 0x403, 2, 0
+0x0038, 
+    IDC_LEGEND_FONTSIZE_COMBO, 0x403, 2, 0
+0x0039, 
+    IDC_LEGEND_FONTSIZE_COMBO, 0x403, 3, 0
+0x3031, "\000" 
+    IDC_LEGEND_FONTSIZE_COMBO, 0x403, 3, 0
+0x3131, "\000" 
+    IDC_LEGEND_FONTSIZE_COMBO, 0x403, 3, 0
+0x3231, "\000" 
+    IDC_LEGEND_FONTSIZE_COMBO, 0x403, 3, 0
+0x3431, "\000" 
+    IDC_LEGEND_FONTSIZE_COMBO, 0x403, 3, 0
+0x3631, "\000" 
+    IDC_LEGEND_FONTSIZE_COMBO, 0x403, 3, 0
+0x3831, "\000" 
+    IDC_LEGEND_FONTSIZE_COMBO, 0x403, 3, 0
+0x3032, "\000" 
+    IDC_LEGEND_FONTSIZE_COMBO, 0x403, 3, 0
+0x3232, "\000" 
+    IDC_LEGEND_FONTSIZE_COMBO, 0x403, 3, 0
+0x3432, "\000" 
+    IDC_LEGEND_FONTSIZE_COMBO, 0x403, 3, 0
+0x3632, "\000" 
+    IDC_LEGEND_FONTSIZE_COMBO, 0x403, 3, 0
+0x3832, "\000" 
+    IDC_LEGEND_FONTSIZE_COMBO, 0x403, 3, 0
+0x3633, "\000" 
+    IDC_LEGEND_FONTSIZE_COMBO, 0x403, 3, 0
+0x3834, "\000" 
+    IDC_LEGEND_FONTSIZE_COMBO, 0x403, 3, 0
+0x3237, "\000" 
     0
 END
 
@@ -171,6 +341,14 @@ BEGIN
         TOPMARGIN, 7
         BOTTOMMARGIN, 77
     END
+
+    IDD_OPTIONS_STYLESANDCOLORS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 285
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 222
+    END
 END
 #endif    // APSTUDIO_INVOKED
 
@@ -188,6 +366,11 @@ BEGIN
     BUTTON      ID_SM_NOSHOW
     BUTTON      ID_SM_ANIMATION
     BUTTON      ID_SM_MONITOR
+    SEPARATOR
+    BUTTON      ID_TRACE_DELAY_INC
+    BUTTON      ID_TRACE_DELAY_INCFOUR
+    BUTTON      ID_TRACE_DELAY_DECFOUR
+    BUTTON      ID_TRACE_DELAY_DEC
 END
 
 IDR_LOG_TOOLBAR TOOLBAR DISCARDABLE  16, 15
@@ -264,6 +447,105 @@ BEGIN
     IDS_CHART_OPTIONS       "Chart options"
     IDS_TRACE_FILTER        "Trace files (*.trc)|*.TRC||"
     IDS_ZOOM_TOOLBAR        "Zoom"
+    IDS_COLORSTYLE_ALLWINDOW "All Windows"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_COLORSTYLE_LOG_ES   "Service event (ES)"
+    IDS_COLORSTYLE_LOG_EB   "Action start (EB)"
+    IDS_COLORSTYLE_LOG_EF   "Action accomplishing (EF)"
+    IDS_COLORSTYLE_LOG_EI   "Irregular event (EI)"
+    IDS_COLORSTYLE_LOG_ER   "Production rule (ER)"
+    IDS_COLORSTYLE_LOG_RC   "Resource creation (RC)"
+    IDS_COLORSTYLE_LOG_RE   "Resource elimination (RE)"
+    IDS_COLORSTYLE_LOG_RK   "Resource state changing (RK)"
+    IDS_COLORSTYLE_LOG_V    "Index tracing (V)"
+    IDS_COLORSTYLE_LOG_STATUS "Run termination status ($Status)"
+    IDS_COLORSTYLE_LOG_DPS  "Graph search statistics (DPS)"
+    IDS_COLORSTYLE_LOG_SB   "Search start (SB)"
+    IDS_COLORSTYLE_LOG_SO   "Opened top (SO)"
+    IDS_COLORSTYLE_LOG_STN  "Successor information (STN)"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_COLORSTYLE_LOG_STD  "Successor information (STD)"
+    IDS_COLORSTYLE_LOG_STR  "Successor information (STR)"
+    IDS_COLORSTYLE_LOG_SRC  "Resource creation (search) (SRC)"
+    IDS_COLORSTYLE_LOG_SRE  "Resource elimination (search) (SRE)"
+    IDS_COLORSTYLE_LOG_SRK  "Resource state changing (search) (SRK)"
+    IDS_COLORSTYLE_LOG_SD   "Decision tracing (SD)"
+    IDS_COLORSTYLE_LOG_SES  "Search termination (SES)"
+    IDS_COLORSTYLE_LOG_SEN  "Search termination (SEN)"
+    IDS_COLORSTYLE_LOG_SEM  "Search termination (SEM)"
+    IDS_COLORSTYLE_LOG_SEF  "Search termination (SEF)"
+    IDS_COLORSTYLE_LOG_SEU  "Search termination (SEU)"
+    IDS_COLORSTYLE_CHART_AXIS "axis"
+    IDS_COLORSTYLE_CHART_TITLE "title"
+    IDS_COLORSTYLE_CHART_LEGEND "legend"
+    IDS_COLORSTYLE_CHART_CHART "chart"
+    IDS_COLORSTYLE_CHART_TIME "time"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_COLORSTYLE_LOG      "Trace Window"
+    IDS_COLORSTYLE_CHART    "Chart Window"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_COLORSTYLE_LOG_SAMPLE 
+                            "Default string type\nES 0 3\nEB 0 1 1 2 2 1 2\nEF 0.335153 1 1 2 2 1 2\nEI 0.427752 1 1 2 1 2\nER 1.07933 2 2 3 1 3\nRC 0.427752 2 2 0 0.427752 0\nRE 0.335153 2 2\nRK 0.427752 1 1 1 1 1\nV  0.427752 1  1\n$Status = USER_BREAK    607.228\nDPS_C  1  1  1\nSB 0 1\nSO 1 0 0 0\nSTN 3 1 3 6 2 1 3 2  5 6\nSTD 4 3 7 11 1 1 4 2  5 6\nSTR 5 2 8 12 2 1 4 2  1 6\nSRC 0 1 1 1 4\nSRE 0 1 2 2 4\nSRK 0 1 2 2 2\nSD\nSES 0 0.065 397312 10 8 13 13 19\nSEN 0 0.065 397312 10 8 13 13 19\nSEM 0 0.065 397312 10 8 13 13 19\nSEF 0 0.065 397312 10 8 13 13 19\nSEU 0 0.065 397312 10 8 13 13 19"
+    IDS_COLORSTYLE_CHART_SAMPLE1 "chart 1"
+    IDS_COLORSTYLE_CHART_SAMPLE2 "serie 1"
+    IDS_COLORSTYLE_EDITOR_THEME_CURRENT "Current"
+    IDS_COLORSTYLE_EDITOR_THEME_DEFAULT "Default"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_OPTIONS              "Options"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_SM_NOSHOW            "No Show\nNo Show"
+    ID_SM_ANIMATION         "Animation\nAnimation"
+    ID_SM_MONITOR           "Monitor\nMonitor"
+    ID_MODEL_SHOWRATE_INC   "Increase Tempo\nIncrease Tempo (Alt+Num+)"
+    ID_MODEL_SHOWRATE_INCFOUR 
+                            "Increase Tempo by 4 Times\nIncrease Tempo by 4 Times"
+    ID_MODEL_SHOWRATE_DECFOUR 
+                            "Decrease Delay by 4 Times\nDecrease Delay by 4 Times"
+    ID_MODEL_SHOWRATE_DEC   "Decrease Tempo\nDecrease Tempo (Alt+Num-)"
+    ID_TRACE_DELAY_INC      "Increase Delay\nIncrease Delay (Alt+Num+)"
+    ID_TRACE_DELAY_INCFOUR  "Increase Delay by 4 Times\nIncrease Delay by 4 Times"
+    ID_TRACE_DELAY_DECFOUR  "Decrease Delay by 4 Times\nDecrease Delay by 4 Times"
+    ID_TRACE_DELAY_DEC      "Decrease Delay\nDecrease Delay (Alt+Num-)"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_START_TRACE          "Start new trace\nStart trace"
+    ID_STOP_TRACE           "Stop current trace\nStop trace"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_EDIT_COPY            "Copy\nCopy (Ctrl+C)"
+    ID_DELAY_STATUSBAR      " "
+    IDS_DELAY_STRING        "Delay: %d"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_SEARCH_FIND          "Find\nFind  (F3)"
+    ID_VIEW_ZOOMIN          "Zoom In\nZoom &In (Ctrl+Num+)"
+    ID_VIEW_ZOOMOUT         "Zoom Out\nZoom Out (Ctrl+Num-)"
+    ID_VIEW_ZOOMAUTO        "Zoom Auto\nZoom Auto (Ctrl+Num*)"
+    ID_VIEW_ZOOMRESET       "Reset Zoom\nReset Zoom (Ctrl+Num/)"
 END
 
 #endif    // Russian resources
@@ -304,9 +586,10 @@ BEGIN
         MENUITEM "&Animation",                  ID_SM_ANIMATION
         MENUITEM "&Monitor",                    ID_SM_MONITOR
         MENUITEM SEPARATOR
-        MENUITEM "&Print...\tCtrl+P",           ID_FILE_PRINT
-        MENUITEM "Print Pre&view",              ID_FILE_PRINT_PREVIEW
-        MENUITEM "P&rint Setup...",             ID_FILE_PRINT_SETUP
+        MENUITEM "&Increase Delay\tAlt+Num+",   ID_TRACE_DELAY_INC
+        MENUITEM "In&crease Delay by 4 Times",  ID_TRACE_DELAY_INCFOUR
+        MENUITEM "Dec&rease Delay by 4 ",       ID_TRACE_DELAY_DECFOUR
+        MENUITEM "&Decrease Delay\tAlt+Num-",   ID_TRACE_DELAY_DEC
         MENUITEM SEPARATOR
         MENUITEM "E&xit",                       ID_APP_EXIT
     END
@@ -345,7 +628,7 @@ BEGIN
     END
     POPUP "&Help"
     BEGIN
-        MENUITEM "&About RDO tracer...",        ID_APP_ABOUT
+        MENUITEM "&About RAO-Tracer...",        ID_APP_ABOUT
     END
 END
 
@@ -364,6 +647,7 @@ BEGIN
     "P",            ID_FILE_PRINT,          VIRTKEY, CONTROL, NOINVERT
     "S",            ID_STOP_TRACE,          VIRTKEY, CONTROL, NOINVERT
     VK_ADD,         ID_VIEW_ZOOMIN,         VIRTKEY, CONTROL, NOINVERT
+    VK_ADD,         ID_MODEL_SHOWRATE_INC,  VIRTKEY, ALT, NOINVERT
     VK_DIVIDE,      ID_VIEW_ZOOMRESET,      VIRTKEY, CONTROL, NOINVERT
     VK_F1,          ID_HELP_KEYWORD,        VIRTKEY, NOINVERT
     VK_F3,          ID_SEARCH_FIND_NEXT,    VIRTKEY, NOINVERT
@@ -372,6 +656,7 @@ BEGIN
     VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT, NOINVERT
     VK_MULTIPLY,    ID_VIEW_ZOOMAUTO,       VIRTKEY, CONTROL, NOINVERT
     VK_SUBTRACT,    ID_VIEW_ZOOMOUT,        VIRTKEY, CONTROL, NOINVERT
+    VK_SUBTRACT,    ID_MODEL_SHOWRATE_DEC,  VIRTKEY, ALT, NOINVERT
 END
 
 
@@ -382,8 +667,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,0,8
- PRODUCTVERSION 1,0,0,8
+ FILEVERSION 1,0,0,16
+ PRODUCTVERSION 1,0,0,16
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -396,17 +681,20 @@ VS_VERSION_INFO VERSIONINFO
 BEGIN
     BLOCK "StringFileInfo"
     BEGIN
-        BLOCK "040904B0"
+        BLOCK "040904b0"
         BEGIN
+            VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
-            VALUE "FileDescription", "rdo_tracer MFC Application\0"
-            VALUE "FileVersion", "1, 0, 0, 8\0"
-            VALUE "InternalName", "rdo_tracer\0"
-            VALUE "LegalCopyright", "Copyright (C) 2002\0"
+            VALUE "FileDescription", "RAO Tracer\0"
+            VALUE "FileVersion", "1, 0, 0, 16\0"
+            VALUE "InternalName", "RAO-Tracer\0"
+            VALUE "LegalCopyright", "Copyright (C) 2003\0"
             VALUE "LegalTrademarks", "\0"
-            VALUE "OriginalFilename", "rdo_tracer.EXE\0"
-            VALUE "ProductName", "rdo_tracer Application\0"
-            VALUE "ProductVersion", "1, 0, 0, 8\0"
+            VALUE "OriginalFilename", "rdo_tracer.exe\0"
+            VALUE "PrivateBuild", "\0"
+            VALUE "ProductName", "RAO-Tracer\0"
+            VALUE "ProductVersion", "1, 0, 0, 16\0"
+            VALUE "SpecialBuild", "\0"
         END
     END
     BLOCK "VarFileInfo"
@@ -454,7 +742,7 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    ID_EDIT_COPY            "\nCopy (Ctrl+C)"
+    ID_EDIT_COPY            "Copy\nCopy (Ctrl+C)"
     ID_EDIT_FIND            "\nFind (Ctrl+F)"
 END
 
@@ -468,14 +756,39 @@ BEGIN
     ID_START_TRACE          "Start new trace\nStart trace"
     ID_STOP_TRACE           "Stop current trace\nStop trace"
     ID_VIEW_MODELSTRUCTURE  "Show or hide the model structure\nToggle model structure"
+    ID_VIEW_TRACE_TOOLBAR   "Show\\hide Trace Toolbar\nTrace Toolbar"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    ID_VIEW_ZOOMIN          "\nZoom &In (Ctrl+Num+)"
-    ID_VIEW_ZOOMOUT         "\nZoom Out (Ctrl+Num-)"
-    ID_VIEW_ZOOMAUTO        "\nZoom Auto (Ctrl+Num*)"
-    ID_VIEW_ZOOMRESET       "\nReset Zoom (Ctrl+Num/)"
+    ID_CHART_ADDTONEWCHART  "Add To New Chart\nAdd To New Chart"
+    ID_SEARCH_FIND          "Find\nFind... (Ctrl+F)"
+    ID_SEARCH_FIND_NEXT     "\nFind Next\nFind Next (F3)"
+    ID_SEARCH_FIND_PREVIOUS "Find Previous\nFind Previous (Shift+F3)"
+    ID_CHART_TIMEWRAP       "Time Wrap\nTime Wrap"
+    ID_CHART_OPTIONS        "Chart Options\nChart Options"
+    ID_VIEW_ZOOMIN          "Zoom In\nZoom &In (Ctrl+Num+)"
+    ID_VIEW_ZOOMOUT         "Zoom Out\nZoom Out (Ctrl+Num-)"
+    ID_VIEW_ZOOMAUTO        "Zoom Auto\nZoom Auto (Ctrl+Num*)"
+    ID_VIEW_ZOOMRESET       "Reset Zoom\nReset Zoom (Ctrl+Num/)"
+    ID_CHART_FINDINCHARTS   "Find In Charts\nFind In Charts"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_SM_NOSHOW            "No Show\nNo Show"
+    ID_SM_ANIMATION         "Animation\nAnimation"
+    ID_SM_MONITOR           "Monitor\nMonitor"
+    ID_MODEL_SHOWRATE_INC   "Increase Tempo\nIncrease Tempo (Alt+Num+)"
+    ID_MODEL_SHOWRATE_INCFOUR 
+                            "Increase Tempo by 4 Times\nIncrease Tempo by 4 Times"
+    ID_MODEL_SHOWRATE_DECFOUR 
+                            "Decrease Tempo by 4 Times\nDecrease Tempo by 4 Times"
+    ID_MODEL_SHOWRATE_DEC   "Decrease Tempo\nDecrease Tempo (Alt+Num-)"
+    ID_TRACE_DELAY_INC      "Increase Delay\nIncrease Delay (Alt+Num+)"
+    ID_TRACE_DELAY_INCFOUR  "Increase Delay by 4 Times\nIncrease Delay by 4 Times"
+    ID_TRACE_DELAY_DECFOUR  "Decrease Delay by 4 Times\nDecrease Delay by 4 Times"
+    ID_TRACE_DELAY_DEC      "Decrease Delay\nDecrease Delay (Alt+Num-)"
 END
 
 #endif    // English (U.S.) resources
