@@ -10,7 +10,6 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 using namespace rdoTracerLog;
-//using namespace rdoEditCtrl;
 using namespace std;
 using namespace rdoStyle;
 
@@ -151,18 +150,16 @@ BEGIN_MESSAGE_MAP( RDOLogCtrl, CWnd )
 	ON_WM_CREATE()
 	ON_WM_SIZE()
 	ON_WM_PAINT()
-	ON_WM_ERASEBKGND()
-	
 	ON_WM_HSCROLL()
 	ON_WM_VSCROLL()
-	
+	ON_WM_ERASEBKGND()
 	ON_WM_SETFOCUS()
 	ON_WM_KILLFOCUS()
-	
-	ON_WM_GETDLGCODE()
 	ON_WM_KEYDOWN()
+	ON_WM_GETDLGCODE()
 	ON_WM_MOUSEWHEEL()
 	ON_WM_LBUTTONDOWN()
+	ON_WM_DESTROY()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -194,7 +191,12 @@ RDOLogCtrl::RDOLogCtrl( RDOLogStyle* style ):
 	bSearchDown( true ),
 	bMatchCase( false ),
 	bMatchWholeWord( false ),
-	drawLog( true )
+	drawLog( true ),
+	hdc( NULL ),
+	saved_hdc( 0 ),
+	hwnd( NULL ),
+	fontInit( NULL ),
+	hfontLog( NULL )
 {
 	//if no style specified default style will be used
 	if ( !logStyle ) {
@@ -212,13 +214,31 @@ BOOL RDOLogCtrl::PreCreateWindow( CREATESTRUCT& cs )
 	if ( !CWnd::PreCreateWindow( cs ) ) return FALSE;
 	cs.style = WS_CHILD | WS_VISIBLE | WS_HSCROLL | WS_VSCROLL | WS_TABSTOP;
 	cs.dwExStyle |= WS_EX_CLIENTEDGE;
-	cs.lpszClass = AfxRegisterWndClass( CS_DBLCLKS, ::LoadCursor(NULL, IDC_ARROW)/*, reinterpret_cast<HBRUSH>( COLOR_WINDOW + 1 ), NULL*/ );
+	//Setting class style CS_OWNDC to avoid DC releasing
+	//and selecting previous objects into it
+	cs.lpszClass = AfxRegisterWndClass( CS_DBLCLKS | CS_OWNDC, ::LoadCursor(NULL, IDC_ARROW)/*, reinterpret_cast<HBRUSH>( COLOR_WINDOW + 1 ), NULL*/ );
 	return TRUE;
 }
 
 int RDOLogCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 {
 	if ( CWnd::OnCreate( lpCreateStruct ) == -1 ) return -1;
+	//Remembering handle to the window in hwnd member
+	hwnd = GetSafeHwnd();
+	//Remembering handle to the private device context in hdc member
+	if ( hwnd )
+		hdc = ::GetDC( hwnd );
+	if ( !hdc ) return -1;
+	//Setting background mode one time in initialization.
+	//We have private DC, so we needn't to reset it each time
+	//we paint
+	::SetBkMode( hdc, TRANSPARENT );
+	//Remembering default font to select it into DC
+	//when setting new font
+	fontInit = (HFONT)::GetCurrentObject( hdc, OBJ_FONT );
+	//Saving the own DC state to restore it before destroying
+	//a window
+	saved_hdc = ::SaveDC( hdc );
 	setFont( false );
 	updateScrollBars();
 	return 0;
@@ -365,18 +385,12 @@ void RDOLogCtrl::OnPaint()
 	mutex.Lock();
 
 	PAINTSTRUCT ps;
-	CDC* dc = BeginPaint( &ps );
-
-	int prevDC = dc->SaveDC();
+	::BeginPaint( hwnd, &ps );
 
 	if ( drawLog ) {
 
-		dc->SetBkMode( TRANSPARENT );
-
 		if ( !IsRectEmpty( &(ps.rcPaint) ) ) {
 		
-			CFont*  prevFont  = dc->SelectObject( &fontLog );
-			
 			int firstLine = max ( 0, yPos + ps.rcPaint.top / lineHeight );
 			int mul = ps.rcPaint.bottom / lineHeight;
 			if ( ps.rcPaint.bottom > mul * lineHeight ) mul++;
@@ -398,53 +412,45 @@ void RDOLogCtrl::OnPaint()
 					colors->backgroundColor  = ::GetSysColor( COLOR_HIGHLIGHT );
 				}
 
-				int backdc = dc->SaveDC();
-
-				CBrush brush ( colors->backgroundColor );
-				CPen pen( PS_SOLID, 1, colors->backgroundColor );
-				dc->SelectObject( &pen );
-				dc->SelectObject( &brush );
-
 				rect.OffsetRect( 0, lineHeight );
 
-				dc->Rectangle( &rect );
-				
-				dc->SetTextColor( colors->foregroundColor );
-
-				rect.left += logStyle->borders->horzBorder;
-
-				dc->DrawText( (*it).c_str(), rect, DT_SINGLELINE | DT_LEFT | DT_VCENTER );
-
-				rect.left -= logStyle->borders->horzBorder;
-				
-				dc->RestoreDC( backdc );
+				//Main drawing cycle
+				::SetBkColor( hdc, colors->backgroundColor );
+				::SetTextColor( hdc, colors->foregroundColor );
+				::ExtTextOut( hdc, rect.left + logStyle->borders->horzBorder, rect.top + logStyle->borders->vertBorder, ETO_OPAQUE, rect, (*it).c_str(), (*it).length(), NULL );
+				//End of main drawing cycle :)
 
 				if ( i == selectedLine && hasFocus ) {
 					CRect focusRect;
 					focusRect.CopyRect( &newClientRect );
 					focusRect.top = rect.top;
 					focusRect.bottom = rect.bottom;
-					dc->DrawFocusRect( &focusRect );
+					::DrawFocusRect( hdc, focusRect );
 				}
 
 				it++;
+				
 				if ( i == selectedLine && !focusOnly && colors ) {
 					delete colors; colors = NULL;
 				}
 			}
 
 			getItemColors( "", colors );
-			dc->FillSolidRect( ps.rcPaint.left, rect.bottom, ps.rcPaint.right, ps.rcPaint.bottom, colors->backgroundColor );
+			
+			//MFC's FillSolidRect do the same thing
+			::SetBkColor( hdc, colors->backgroundColor );
+			::ExtTextOut( hdc, 0, 0, ETO_OPAQUE, CRect( ps.rcPaint.left, rect.bottom, ps.rcPaint.right, ps.rcPaint.bottom ), NULL, 0, NULL );
 		}
 	} else {
 		RDOLogColorPair* colors = NULL;
 		getItemColors( "", colors );
-		dc->FillSolidRect( newClientRect, colors->backgroundColor );
+
+		//MFC's FillSolidRect do the same thing
+		::SetBkColor( hdc, colors->backgroundColor );
+		::ExtTextOut( hdc, 0, 0, ETO_OPAQUE, newClientRect, NULL, 0, NULL );
 	}
 	
-	dc->RestoreDC( prevDC );
-
-	EndPaint( &ps );
+	::EndPaint( hwnd, &ps );
 
 	mutex.Unlock();
 }
@@ -867,7 +873,7 @@ void RDOLogCtrl::addStringToLog( const string logStr )
 {
 	mutex.Lock();
 
-	if ( GetSafeHwnd() ) {
+	if ( hwnd ) {
 		bool prevVisible = isVisible( stringsCount - 1 );
 
 		strings.push_back( logStr );
@@ -910,11 +916,6 @@ void RDOLogCtrl::addStringToLog( const string logStr )
 	mutex.Unlock();
 }
 
-/*const stringList& RDOLogCtrl::getLogStrings() const
-{
-	return strings;
-}*/
-
 const RDOLogStyle& RDOLogCtrl::getStyle() const
 {
 	return (*logStyle);
@@ -938,33 +939,39 @@ void RDOLogCtrl::setFont( const bool needRedraw )
 {
 	if ( !logStyle ) return;
 
-	if ( fontLog.m_hObject )
-		if ( !fontLog.DeleteObject() )
+	//If some font set for the log control:
+	//1. select the default font into device context
+	//2. delete log font
+	if ( hfontLog ) {
+		::SelectObject( hdc, fontInit );
+		if ( !::DeleteObject( hfontLog ) )
 			return;
+	}
 
 	mutex.Lock();
-
-	//CClientDC dc( this );
-	CDC* dc = GetDC();
 
 	LOGFONT lf;
 	memset( &lf, 0, sizeof(lf) );
 	// The negative is to allow for leading
-	lf.lfHeight    = -MulDiv( logStyle->font->size, ::GetDeviceCaps( dc->GetSafeHdc(), LOGPIXELSY ), 72 );
+	lf.lfHeight    = -MulDiv( logStyle->font->size, ::GetDeviceCaps( hdc, LOGPIXELSY ), 72 );
 	lf.lfWeight    = logStyle->theme->style & RDOStyleFont::BOLD ? FW_BOLD : FW_NORMAL;
 	lf.lfItalic    = logStyle->theme->style & RDOStyleFont::ITALIC;
 	lf.lfUnderline = logStyle->theme->style & RDOStyleFont::UNDERLINE;
 	lf.lfCharSet   = logStyle->font->characterSet;
 	strcpy( lf.lfFaceName, logStyle->font->name.c_str() );
+	
+	//Create new log font
+	hfontLog = ::CreateFontIndirect( &lf );
 
-	if ( fontLog.CreateFontIndirect( &lf ) ) {
+	if ( hfontLog ) {
 		TEXTMETRIC tm;
-		if ( m_hWnd ) {
-			CFont* oldFont = dc->SelectObject( &fontLog );
-			dc->GetTextMetrics( &tm );
+		if ( hwnd ) {
+			//Select new font into device context and recalculate
+			//text lineHeight and charWidth
+			::SelectObject( hdc, hfontLog );
+			::GetTextMetrics( hdc, &tm );
 			lineHeight = tm.tmHeight + 2 * logStyle->borders->vertBorder;
 			charWidth  = tm.tmAveCharWidth/*tm.tmMaxCharWidth*/;
-			dc->SelectObject( oldFont );
 		}
 		
 		if ( needRedraw ) {
@@ -972,8 +979,6 @@ void RDOLogCtrl::setFont( const bool needRedraw )
 			updateWindow();
 		}
 	}
-
-	ReleaseDC( dc );
 
 	mutex.Unlock();
 }
@@ -985,7 +990,6 @@ void RDOLogCtrl::getString( const int index, string& str ) const
 	string res = "";
 
 	if ( index >= 0 && index < stringsCount )
-		//res = (*const_findString( index ));
 		str.assign( *const_findString( index ) );
 
 	const_cast<CMutex&>(mutex).Unlock();
@@ -1094,7 +1098,6 @@ stringList::iterator RDOLogCtrl::findString( int index )
 	}
 
 	return res;
-	//return const_findString( index );
 }
 
 stringList::reverse_iterator RDOLogCtrl::reverse_findString( int index )
@@ -1222,8 +1225,6 @@ void RDOLogCtrl::find( int& result, const bool searchDown, const bool matchCase,
 			bHaveFound    = false;
 			result = -1;
 		}
-		//bHaveFound = true;
-		//return posFind;
 	}
 	
 	mutex.Unlock();
@@ -1251,4 +1252,17 @@ void RDOLogCtrl::setDrawLog( const bool value )
 		updateWindow();
 		makeLineVisible( selectedLine );
 	}
+}
+
+void RDOLogCtrl::OnDestroy() 
+{
+	if ( hdc ) {
+		::RestoreDC( hdc, saved_hdc );
+	}
+	//If some font is selected into device context
+	//select default font and delete log font
+	if ( hfontLog ) {
+		::DeleteObject( hfontLog );
+	}
+	CWnd ::OnDestroy();
 }

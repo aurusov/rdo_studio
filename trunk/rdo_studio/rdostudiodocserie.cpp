@@ -28,60 +28,80 @@ RDOStudioDocSerie::~RDOStudioDocSerie()
 {
 }
 
-CSize RDOStudioDocSerie::getLegendExtent( CDC &dc, CFont& font, CRect& rect ) const
+void RDOStudioDocSerie::getLegendExtent( HDC &dc, CRect& rect, SIZE& size ) const
 {
-	CSize size( 0 , 0 );
+	size.cx = 0;
+	size.cy = 0;
 	if ( !showInLegend )
-		return size;
-	
-	CFont*  oldFont = dc.SelectObject( &font );
+		return;
 	
 	CRect tmprect;
 	tmprect.left = rect.left + 10 + marker_size * 2 + 5;
 	tmprect.right = rect.right;
 	tmprect.top = rect.top;
 	tmprect.bottom = rect.bottom;
-	dc.DrawText( docSerieTitle.c_str(), &tmprect, DT_LEFT | DT_SINGLELINE | DT_END_ELLIPSIS | DT_CALCRECT );
+	::DrawText( dc, docSerieTitle.c_str(), docSerieTitle.length(), tmprect, DT_LEFT | DT_SINGLELINE | DT_END_ELLIPSIS | DT_CALCRECT );
 	size.cy = tmprect.Height();
 	if ( size.cy < marker_size * 2 ){
 		size.cy = marker_size * 2;
 	}
 	size.cx = tmprect.right - rect.left;
 	size.cy += 2;
-	
-	dc.SelectObject( oldFont );
-	
-	return size;
 }
 
-CSize RDOStudioDocSerie::drawInLegend( CDC &dc, CRect &rect, CFont& font, const COLORREF text_color ) const
+void RDOStudioDocSerie::drawInLegend( HDC &dc, CRect &rect, const COLORREF text_color, SIZE& size ) const
 {
-	CSize size = getLegendExtent( dc, font, rect );
+	getLegendExtent( dc, rect, size );
 	if ( !showInLegend )
-		return size;
+		return;
 	
-	int oldBkMode = dc.SetBkMode( TRANSPARENT );
-	CPen pen;
-	pen.CreatePen( PS_SOLID, 0, color );
-	CPen* pOldPen = dc.SelectObject( &pen );
+	::SetTextColor( dc, text_color );
 
-	CFont*  oldFont = dc.SelectObject( &font );
-	COLORREF old_color = dc.SetTextColor( text_color );
+	HPEN pen = NULL;
+	HPEN old_pen = NULL;
+	
+	HBRUSH brush_marker = NULL;
+	HBRUSH old_brush = NULL;
+	LOGBRUSH log_brush;
+	log_brush.lbStyle = transparentMarker ? BS_HOLLOW : BS_SOLID;
+	log_brush.lbColor = color;
+	try {
+		pen = ::CreatePen( PS_SOLID, 0, color );
+		old_pen = (HPEN)::SelectObject( dc, pen );
+		
+		brush_marker = ::CreateBrushIndirect( &log_brush );
+		old_brush = (HBRUSH)::SelectObject( dc, brush_marker );
+		
+		int middle = rect.top + ( size.cy - 2 ) / 2;
+		if ( needDrawMarker )
+			serie->drawMarker( dc, rect.left + 5 + marker_size, middle, marker, marker_size );
+		
+		::MoveToEx( dc, rect.left, middle, (LPPOINT)NULL );
+		::LineTo( dc, rect.left + 10 + marker_size * 2, middle );
+		
+		CRect tmprect;
+		tmprect.CopyRect( rect );
+		tmprect.left += 10 + marker_size * 2 + 5;
+		
+		::DrawText( dc, docSerieTitle.c_str(), docSerieTitle.length(), tmprect, DT_LEFT | DT_SINGLELINE | DT_END_ELLIPSIS );
 
-	int middle = rect.top + ( size.cy - 2 ) / 2;
-	if ( needDrawMarker )
-		serie->drawMarker( dc, rect.left + 5 + marker_size, middle, color, marker, marker_size, transparentMarker );
-	dc.MoveTo( rect.left, middle );
-	dc.LineTo( rect.left + 10 + marker_size * 2, middle );
-	CRect tmprect;
-	tmprect.CopyRect( rect );
-	tmprect.left += 10 + marker_size * 2 + 5;
-	dc.DrawText( docSerieTitle.c_str(), &tmprect, DT_LEFT | DT_SINGLELINE | DT_END_ELLIPSIS );
+		::SelectObject( dc, old_pen );
+		::DeleteObject( pen );
+		pen = NULL;
 
-	dc.SetTextColor( old_color );
-	dc.SelectObject( oldFont );
-	dc.SelectObject( pOldPen );
-	dc.SetBkMode( oldBkMode );
-
-	return size;
+		::SelectObject( dc, old_brush );
+		::DeleteObject( brush_marker );
+		brush_marker = NULL;
+	} catch( ... ) {
+		if ( pen ) {
+			::SelectObject( dc, old_pen );
+			::DeleteObject( pen );
+			pen = NULL;
+		}
+		if ( brush_marker ) {
+			::SelectObject( dc, old_brush );
+			::DeleteObject( brush_marker );
+			brush_marker = NULL;
+		}
+	}
 }

@@ -33,10 +33,10 @@ public:
 	RDOTracerSerie* getSerie() const { return serie; };
 	COLORREF getColor() const { return color; };
 	bool isTracerSerie( const RDOTracerSerie* _serie ) { return serie == _serie; };
-	void drawSerie( RDOStudioChartView* const view, CDC &dc, CRect &rect ) const { serie->drawSerie( view, dc, rect, color, marker, marker_size, needDrawMarker, transparentMarker ); };
+	void drawSerie( RDOStudioChartView* const view, HDC &dc, CRect &rect ) const { serie->drawSerie( view, dc, rect, color, marker, marker_size, needDrawMarker, transparentMarker ); };
 	void getCaptions( std::vector<std::string> &captions, const int val_count ) const { serie->getCaptions( captions, val_count ); };
-	CSize getLegendExtent( CDC &dc, CFont& font, CRect& rect ) const;
-	CSize drawInLegend( CDC &dc, CRect &rect, CFont& font, const COLORREF text_color ) const;
+	void getLegendExtent( HDC &dc, CRect& rect, SIZE& size ) const;
+	void drawInLegend( HDC &dc, CRect &rect, const COLORREF text_color, SIZE& size ) const;
 	void lock() { serie->mutex.Lock(); };
 	void unlock() { serie->mutex.Unlock(); };
 	bool empty() const { return serie->empty(); };

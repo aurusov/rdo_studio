@@ -31,7 +31,6 @@ protected:
 
 	CRect bmpRect;
 	CRect newClientRect;
-	CBitmap bmp;
 
 	int valueCountX;
 	std::vector<std::string> captions;
@@ -61,12 +60,12 @@ protected:
 	void setFromTo();
 	timesList unwrapTimesList;
 	
-	void drawTitle( CDC &dc, CRect& chartRect );
+	void drawTitle( CRect& chartRect );
 	CRect legendRect;
-	void drawLegend( CDC &dc, CRect& chartRect );
-	void drawYAxis( CDC &dc, CRect& chartRect, const RDOStudioDocSerie* axisValues);
-	void drawXAxis( CDC &dc, CRect& chartRect );
-	void drawGrid(	CDC &dc, CRect& chartRect );
+	void drawLegend( CRect& chartRect );
+	void drawYAxis( CRect& chartRect, const RDOStudioDocSerie* axisValues );
+	void drawXAxis( CRect& chartRect );
+	void drawGrid( CRect& chartRect );
 
 	CMenu popupMenu;
 	void copyToClipboard();
@@ -80,17 +79,27 @@ protected:
 
 	bool previewMode;
 	RDOStudioChartViewStyle* style;
-	
-	CFont fontTitle;
-	CFont fontLegend;
-	CFont fontAxis;
-	void setFonts( const bool needRedraw = true );
 
 	RDOStudioDocSerie* yAxis;
 	bool needDrawLegend;
 
 	void updateWindow();
 	void updateView();
+
+	HBITMAP hbmp;
+	HBITMAP hbmpInit;
+	HFONT   hfontTitle;
+	HFONT   hfontLegend;
+	HFONT   hfontAxis;
+	HFONT   hfontInit;
+	HDC     hdc;
+	int     saved_hdc;
+	HDC     hmemdc;
+	int     saved_hmemdc;
+	HWND    hwnd;
+	void setFonts( const bool needRedraw = true );
+
+	void onDraw();
 
 public:
 	RDOStudioChartView( const bool preview = false);

@@ -198,15 +198,10 @@ void RDOTracerSerie::getLastValue( RDOTracerValue*& val ) const
 	const_cast<CMutex&>(mutex).Unlock();
 }
 
-void RDOTracerSerie::drawSerie( RDOStudioChartView* const view, CDC &dc, CRect &rect, const COLORREF color, RDOTracerSerieMarker marker, const int marker_size, const bool draw_marker, const bool transparent_marker ) const
+void RDOTracerSerie::drawSerie( RDOStudioChartView* const view, HDC &dc, CRect &rect, const COLORREF color, RDOTracerSerieMarker marker, const int marker_size, const bool draw_marker, const bool transparent_marker ) const
 {
 	const_cast<CMutex&>(mutex).Lock();
 	
-	int oldBkMode = dc.SetBkMode( TRANSPARENT );
-	CPen pen;
-	pen.CreatePen( PS_SOLID, 0, color );
-	CPen* pOldPen = dc.SelectObject( &pen );
-
 	if ( !values.empty() ) {
 		
 		valuesList::const_iterator it = find_if( values.begin(), values.end(), RDOTracerSerieFindValue( view ) );
@@ -259,39 +254,31 @@ void RDOTracerSerie::drawSerie( RDOStudioChartView* const view, CDC &dc, CRect &
 			}
 			lastx = min( lastx, rect.right - 1 );
 
-			if ( lastx >= rect.left && draw_marker ) {
-				drawMarker( dc, lastx, lasty, color, marker, marker_size, transparent_marker );
-				dc.MoveTo( lastx, lasty );
-			}
-			else
-				dc.MoveTo( rect.left, lasty );
+			HPEN pen = NULL;
+			HPEN old_pen = NULL;
 			
-			int x = lastx, y = lasty;
-			if ( view->doUnwrapTime() ) {
-				ticks -= view->drawFromEventIndex;
-			}
-			it ++;
-			if ( view->doUnwrapTime() && it != values.end() ) {
-				while ( times_it != view->unwrapTimesList.end() && *(*it)->modeltime != *(*times_it) ) {
-					ticks += (*times_it)->eventCount;
-					times_it ++;
-				}
-			}
+			HBRUSH brush_marker = NULL;
+			HBRUSH old_brush = NULL;
+			LOGBRUSH log_brush;
+			log_brush.lbStyle = transparent_marker ? BS_HOLLOW : BS_SOLID;
+			log_brush.lbColor = color;
+			try {
+				pen = ::CreatePen( PS_SOLID, 0, color );
+				old_pen = (HPEN)::SelectObject( dc, pen );
+				brush_marker = ::CreateBrushIndirect( &log_brush );
+				old_brush = (HBRUSH)::SelectObject( dc, brush_marker );
 
-			while ( it != values.end() && ( (!view->doUnwrapTime() && (*it)->modeltime->time <= view->drawToX.time) || (view->doUnwrapTime() && ((*it)->modeltime->time < view->drawToX.time || ((*it)->modeltime->time == view->drawToX.time && (*it)->eventIndex <= view->drawToEventCount) )) ) ) {
-				y = roundDouble( (double)rect.bottom - ky * ( (*it)->value - minValue ) );
-				y = min( y, rect.bottom - 1 );
-				x = rect.left + roundDouble( ( (*it)->modeltime->time - view->drawFromX.time ) * view->timeScale ) - view->chartShift;
-				if ( view->doUnwrapTime() ) {
-					x += ( ticks + (*it)->eventIndex ) * view->style->fonts_ticks->tickWidth;
+				if ( lastx >= rect.left && draw_marker ) {
+					drawMarker( dc, lastx, lasty, marker, marker_size );
+					::MoveToEx( dc, lastx, lasty, (LPPOINT)NULL );
 				}
-				x = min( x, rect.right - 1 );
-				if ( draw_marker )
-					drawMarker( dc, x, y, color, marker, marker_size, transparent_marker );
-				dc.LineTo( x, lasty );
-				dc.LineTo( x, y );
-				lastx = x;
-				lasty = y;
+				else
+					::MoveToEx( dc, rect.left, lasty, (LPPOINT)NULL );
+				
+				int x = lastx, y = lasty;
+				if ( view->doUnwrapTime() ) {
+					ticks -= view->drawFromEventIndex;
+				}
 				it ++;
 				if ( view->doUnwrapTime() && it != values.end() ) {
 					while ( times_it != view->unwrapTimesList.end() && *(*it)->modeltime != *(*times_it) ) {
@@ -299,37 +286,76 @@ void RDOTracerSerie::drawSerie( RDOStudioChartView* const view, CDC &dc, CRect &
 						times_it ++;
 					}
 				}
-			}
-			
-			bool tempres_erased = ( serieKind == RDOST_RESPARAM && ((RDOTracerResParam*)this)->getResource()->isErased() );
-			bool need_continue = !view->doUnwrapTime() ? ( values.size() > 1 ) : true;
-			if ( tempres_erased ) {
-				if ( !view->doUnwrapTime() ) {
-					need_continue = ( it != values.end() && (*it)->modeltime->time > view->drawToX.time );
-				} else {
-					need_continue = ( it != values.end() && ( (*it)->modeltime->time > view->drawToX.time || ( (*it)->modeltime->time == view->drawToX.time && (*it)->eventIndex > view->drawToEventCount ) ) );
-				}
-			}
 
-			if ( need_continue ) {
-				if ( view->drawFromX == view->drawToX ) {
-					x = rect.left + ( view->drawToEventCount - view->drawFromEventIndex ) * view->style->fonts_ticks->tickWidth;
+				while ( it != values.end() && ( (!view->doUnwrapTime() && (*it)->modeltime->time <= view->drawToX.time) || (view->doUnwrapTime() && ((*it)->modeltime->time < view->drawToX.time || ((*it)->modeltime->time == view->drawToX.time && (*it)->eventIndex <= view->drawToEventCount) )) ) ) {
+					y = roundDouble( (double)rect.bottom - ky * ( (*it)->value - minValue ) );
+					y = min( y, rect.bottom - 1 );
+					x = rect.left + roundDouble( ( (*it)->modeltime->time - view->drawFromX.time ) * view->timeScale ) - view->chartShift;
+					if ( view->doUnwrapTime() ) {
+						x += ( ticks + (*it)->eventIndex ) * view->style->fonts_ticks->tickWidth;
+					}
 					x = min( x, rect.right - 1 );
-				} else {
-					x = rect.right - 1;
+					if ( draw_marker )
+						drawMarker( dc, x, y, marker, marker_size );
+					::LineTo( dc, x, lasty );
+					::LineTo( dc, x, y );
+					lastx = x;
+					lasty = y;
+					it ++;
+					if ( view->doUnwrapTime() && it != values.end() ) {
+						while ( times_it != view->unwrapTimesList.end() && *(*it)->modeltime != *(*times_it) ) {
+							ticks += (*times_it)->eventCount;
+							times_it ++;
+						}
+					}
 				}
-				dc.LineTo( x, lasty );
+				
+				bool tempres_erased = ( serieKind == RDOST_RESPARAM && ((RDOTracerResParam*)this)->getResource()->isErased() );
+				bool need_continue = !view->doUnwrapTime() ? ( values.size() > 1 ) : true;
+				if ( tempres_erased ) {
+					if ( !view->doUnwrapTime() ) {
+						need_continue = ( it != values.end() && (*it)->modeltime->time > view->drawToX.time );
+					} else {
+						need_continue = ( it != values.end() && ( (*it)->modeltime->time > view->drawToX.time || ( (*it)->modeltime->time == view->drawToX.time && (*it)->eventIndex > view->drawToEventCount ) ) );
+					}
+				}
+
+				if ( need_continue ) {
+					if ( view->drawFromX == view->drawToX ) {
+						x = rect.left + ( view->drawToEventCount - view->drawFromEventIndex ) * view->style->fonts_ticks->tickWidth;
+						x = min( x, rect.right - 1 );
+					} else {
+						x = rect.right - 1;
+					}
+					::LineTo( dc, x, lasty );
+				}
+				
+				::SelectObject( dc, old_pen );
+				::DeleteObject( pen );
+				pen = NULL;
+
+				::SelectObject( dc, old_brush );
+				::DeleteObject( brush_marker );
+				brush_marker = NULL;
+			} catch( ... ) {
+				if ( pen ) {
+					::SelectObject( dc, old_pen );
+					::DeleteObject( pen );
+					pen = NULL;
+				}
+				if ( brush_marker ) {
+					::SelectObject( dc, old_brush );
+					::DeleteObject( brush_marker );
+					brush_marker = NULL;
+				}
 			}
 		}
 	}
-	
-	dc.SelectObject( pOldPen );
-	dc.SetBkMode( oldBkMode );
 
 	const_cast<CMutex&>(mutex).Unlock();
 }
 
-void RDOTracerSerie::drawMarker( CDC &dc, const int x, const int y, const COLORREF color, RDOTracerSerieMarker marker, const int marker_size, const bool transparent_marker ) const
+void RDOTracerSerie::drawMarker( HDC &dc, const int x, const int y, RDOTracerSerieMarker marker, const int marker_size ) const
 {
 	CRect rect;
 	rect.left = x - marker_size;
@@ -337,71 +363,40 @@ void RDOTracerSerie::drawMarker( CDC &dc, const int x, const int y, const COLORR
 	rect.bottom = y + marker_size;
 	rect.right = x + marker_size;
 
-	CPen pen;
-	pen.CreatePen( PS_SOLID, 0, color );
-	CPen* pOldPen = dc.SelectObject( &pen );
-	CBrush brush;
-	LOGBRUSH log_brush;
-	log_brush.lbStyle = transparent_marker ? BS_HOLLOW : BS_SOLID;
-	log_brush.lbColor = color;
-	brush.CreateBrushIndirect( &log_brush );
-	CBrush* old_brush = dc.SelectObject( &brush );
-
 	switch( marker ) {
 		case RDOSM_CIRCLE : {
-			drawSircle( dc, rect, color );
+			::Ellipse( dc, rect.left, rect.top, rect.right, rect.bottom );
 			break;
 		}
 		case RDOSM_SQUARE : {
-			drawSquare( dc, rect, color );
+			::Rectangle( dc, rect.left, rect.top, rect.right, rect.bottom );
 			break;
 		}
 		case RDOSM_RHOMB : {
-			drawRhomb( dc, rect, color );
+			POINT pts[4];
+			pts[0].x = rect.left + ( rect.right - rect.left ) / 2;
+			pts[0].y = rect.top;
+			pts[1].x = rect.right;
+			pts[1].y = rect.top + ( rect.bottom - rect.top ) / 2;
+			pts[2].x = pts[0].x;
+			pts[2].y = rect.bottom;
+			pts[3].x = rect.left;
+			pts[3].y = pts[1].y;
+			::Polygon( dc, pts, 4 );
 			break;
 		}
 		case RDOSM_CROSS : {
-			drawCross( dc, rect, color );
+			POINT pos;
+			::GetCurrentPositionEx( dc, &pos );
+			
+			::MoveToEx( dc, rect.left, rect.top, (LPPOINT)NULL );
+			::LineTo( dc, rect.right, rect.bottom + 1 );
+			::MoveToEx( dc, rect.left, rect.bottom, (LPPOINT)NULL );
+			::LineTo( dc, rect.right, rect.top - 1 );
+			::MoveToEx( dc, pos.x, pos.y, (LPPOINT)NULL );
 			break;
 		}
 	}
-
-	dc.SelectObject( old_brush );
-	dc.SelectObject( pOldPen );
-}
-
-void RDOTracerSerie::drawSircle( CDC &dc, CRect& rect, const COLORREF color ) const
-{
-	dc.Ellipse( &rect );
-}
-
-void RDOTracerSerie::drawSquare( CDC &dc, CRect& rect, const COLORREF color ) const
-{
-	dc.Rectangle( &rect );
-}
-
-void RDOTracerSerie::drawRhomb( CDC &dc, CRect& rect, const COLORREF color ) const
-{
-	CPoint pts[4];
-	pts[0].x = rect.left + ( rect.right - rect.left ) / 2;
-	pts[0].y = rect.top;
-	pts[1].x = rect.right;
-	pts[1].y = rect.top + ( rect.bottom - rect.top ) / 2;
-	pts[2].x = pts[0].x;
-	pts[2].y = rect.bottom;
-	pts[3].x = rect.left;
-	pts[3].y = pts[1].y;
-	dc.Polygon( pts, 4 );
-}
-
-void RDOTracerSerie::drawCross( CDC &dc, CRect& rect, const COLORREF color ) const
-{
-	CPoint pos = dc.GetCurrentPosition();
-	dc.MoveTo( rect.left, rect.top );
-	dc.LineTo( rect.right, rect.bottom + 1 );
-	dc.MoveTo( rect.left, rect.bottom );
-	dc.LineTo( rect.right, rect.top - 1 );
-	dc.MoveTo( pos );
 }
 
 void RDOTracerSerie::addToDoc( RDOStudioChartDoc* const doc )

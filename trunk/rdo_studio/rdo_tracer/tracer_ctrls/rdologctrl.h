@@ -21,21 +21,23 @@ DECLARE_DYNAMIC( RDOLogCtrl )
 
 protected:
 	CMutex mutex;
-	CFont fontLog;
-	void setFont( const bool needRedraw = true );
+	
 	int lineHeight;
 	int charWidth;
 	int maxStrWidth;
+	
 	int xPos;
 	int yPos;
 	int xMax;
 	int yMax;
 	int xPageSize;
 	int yPageSize;
+	
 	CRect clipRect;
 	CRect prevClientRect;
 	CRect newClientRect;
 	CRect prevWindowRect;
+	
 	int lastViewableLine;
 	bool hasFocus;
 	int selectedLine;
@@ -81,6 +83,13 @@ protected:
 
 	bool drawLog;
 
+	HDC   hdc;
+	int   saved_hdc;
+	HWND  hwnd;
+	HFONT fontInit;
+	HFONT hfontLog;
+	void setFont( const bool needRedraw = true );
+
 	//{{AFX_MSG(RDOLogCtrl)
 	afx_msg int  OnCreate( LPCREATESTRUCT lpCreateStruct );
 	afx_msg void OnSize( UINT nType, int cx, int cy );
@@ -94,6 +103,7 @@ protected:
 	afx_msg UINT OnGetDlgCode() { return DLGC_WANTARROWS; };
 	afx_msg BOOL OnMouseWheel( UINT nFlags, short zDelta, CPoint pt );
 	afx_msg void OnLButtonDown( UINT nFlags, CPoint point );
+	afx_msg void OnDestroy();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
@@ -110,7 +120,6 @@ public:
 	bool getFocusOnly() const { return focusOnly; }
 	virtual void setFocusOnly( const bool value ) { focusOnly = value; }
 
-	//const stringList& getLogStrings() const;
 	virtual void getString( const int index, std::string& str ) const;
 	virtual int getSelectedIndex() const;
 	virtual void getSelected( std::string& str ) const;
@@ -130,9 +139,6 @@ public:
 	bool getDrawLog() const { return drawLog; };
 
 	int getStringsCount() const { return stringsCount; };
-	
-	//Must be called when moving main frame window
-	//void storeWindowRect();
 };
 
 }; // namespace rdoTracerLog

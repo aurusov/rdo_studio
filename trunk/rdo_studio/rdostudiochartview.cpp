@@ -73,7 +73,18 @@ RDOStudioChartView::RDOStudioChartView( const bool preview )
 	style( NULL ),
 	previewMode( preview ),
 	legendRect( 0, 0, 0, 0 ),
-	needDrawLegend( true )
+	needDrawLegend( true ),
+	hbmp( NULL),
+	hbmpInit( NULL ),
+	hfontTitle( NULL),
+	hfontLegend( NULL),
+	hfontAxis( NULL),
+	hfontInit( NULL),
+	hdc( NULL ),
+	saved_hdc( 0 ),
+	hmemdc( NULL ),
+	saved_hmemdc( 0 ),
+	hwnd( NULL )
 {
 	if ( previewMode )
 		timeWrap = false;
@@ -88,69 +99,122 @@ BOOL RDOStudioChartView::PreCreateWindow(CREATESTRUCT& cs)
 	if ( !CView::PreCreateWindow( cs ) ) return FALSE;
 	cs.style = WS_CHILD | WS_VISIBLE | WS_HSCROLL /*| WS_VSCROLL*/ | WS_TABSTOP;
 	cs.dwExStyle |= WS_EX_CLIENTEDGE;
-	cs.lpszClass = AfxRegisterWndClass( CS_DBLCLKS, ::LoadCursor(NULL, IDC_ARROW)/*, reinterpret_cast<HBRUSH>( COLOR_WINDOW + 1 ), NULL*/ );
+	//Setting class style CS_OWNDC to avoid DC releasing
+	//and selecting previous objects into it
+	cs.lpszClass = AfxRegisterWndClass( CS_DBLCLKS | CS_OWNDC, ::LoadCursor(NULL, IDC_ARROW)/*, reinterpret_cast<HBRUSH>( COLOR_WINDOW + 1 ), NULL*/ );
 	return TRUE;
+}
+
+int RDOStudioChartView::OnCreate( LPCREATESTRUCT lpCreateStruct )
+{
+	if ( !target.Register( this ) )
+		return -1;
+	if ( CView::OnCreate( lpCreateStruct ) == -1 ) return -1;
+	
+	//Remembering handle to the window in hwnd member
+	hwnd = GetSafeHwnd();
+	//Remembering handle to the private device context in hdc member
+	if ( hwnd )
+		hdc = ::GetDC( hwnd );
+	if ( !hdc ) return -1;
+
+	//Creating memory device context to draw on bitmap
+	hmemdc = ::CreateCompatibleDC( hdc );
+	if ( !hmemdc ) return -1;
+	//Saving the own DC and memory DC states to restore them
+	//before deleting the memory DC or destroying window
+	saved_hdc    = ::SaveDC( hdc );
+	saved_hmemdc = ::SaveDC( hmemdc );
+	if ( !saved_hdc || !saved_hmemdc ) return -1;
+	//Setting background mode one time in initialization.
+	//We have private DC, so we needn't to reset it each time
+	//we paint
+	::SetBkMode( hmemdc, TRANSPARENT );
+	//Remembering default font to select it into DC
+	//when destroying window or setting new font
+	hfontInit = (HFONT)::GetCurrentObject( hmemdc, OBJ_FONT );
+	//Remembering default bmp to select it into DC
+	//when resizing window
+	hbmpInit  = (HBITMAP)::GetCurrentObject( hmemdc, OBJ_BITMAP );
+
+	if ( !previewMode )
+		setStyle( &studioApp.mainFrame->style_chart, false );
+
+	if ( GetDocument() ) {
+		recalcLayout();
+		updateScrollBars();
+	}
+
+	popupMenu.CreatePopupMenu();
+
+	CMenu* mainMenu = AfxGetMainWnd()->GetMenu();
+	
+	BOOL maximized;
+	studioApp.mainFrame->MDIGetActive( &maximized );
+	int delta = maximized ? 1 : 0;
+
+	appendMenu( mainMenu->GetSubMenu( 1 + delta ), 4, &popupMenu );
+	popupMenu.AppendMenu( MF_SEPARATOR );
+	appendMenu( mainMenu->GetSubMenu( 3 + delta ), 6, &popupMenu );
+	appendMenu( mainMenu->GetSubMenu( 3 + delta ), 7, &popupMenu );
+	appendMenu( mainMenu->GetSubMenu( 3 + delta ), 8, &popupMenu );
+	appendMenu( mainMenu->GetSubMenu( 3 + delta ), 9, &popupMenu );
+	popupMenu.AppendMenu( MF_SEPARATOR );
+	appendMenu( mainMenu->GetSubMenu( 6 + delta ), 3, &popupMenu );
+	popupMenu.AppendMenu( MF_SEPARATOR );
+	appendMenu( mainMenu->GetSubMenu( 6 + delta ), 5, &popupMenu );
+
+	return 0;
 }
 
 void RDOStudioChartView::recalcLayout()
 {
-	//if ( yAxis )
-	//	yAxis->lock();
 	RDOStudioChartDoc* doc = GetDocument();
 	doc->mutex.Lock();
 
 	mutex.Lock();
 	
-	//CClientDC cldc( this );
-	CDC* cldc = GetDC();
-	CDC dc;
-	dc.CreateCompatibleDC( cldc );
-
-	ReleaseDC( cldc );
-
-	CFont* oldFont = dc.SelectObject( &fontTitle );
+	::SelectObject( hmemdc, hfontTitle );
 	
 	CRect tmprect;
 	tmprect.CopyRect( &newClientRect );
-	dc.DrawText( doc->GetTitle(), &tmprect, DT_WORDBREAK | DT_CENTER | DT_CALCRECT );
+	string str = doc->GetTitle();
+	::DrawText( hmemdc, str.c_str(), str.length(), tmprect, DT_WORDBREAK | DT_CENTER | DT_CALCRECT );
 	chartRect.top = tmprect.Height() + 5;
 
-	dc.SelectObject( &fontAxis );
+	::SelectObject( hmemdc, hfontAxis );
 
-	int max_width = 0;
+	SIZE sz;
+	SIZE size_max;
+	size_max.cx = 0;
+	size_max.cy = 0;
 	if ( yAxis ) {
 		yAxis->getCaptions( captions, valueCountY );
-		int width = 0;
 		for ( vector<string>::iterator it = captions.begin(); it != captions.end(); it++ ) {
-			width = dc.GetTextExtent( (*it).c_str() ).cx;
-			if ( width > max_width ) max_width = width;
+			::GetTextExtentPoint32( hmemdc, (*it).c_str(), (*it).length(), &sz );
+			if ( sz.cx > size_max.cx ) size_max.cx = sz.cx;
 		}
 	}
-	chartRect.left = max_width + 10;
+	chartRect.left = size_max.cx + 10;
 
-	double val;
-	if ( !doc->docTimes.empty() )
-		val = doc->docTimes.back()->time;
-	else
-		val = 0;
-	CSize size_time = dc.GetTextExtent( format( "%.3f", val ).c_str() );
-	chartRect.right = newClientRect.right - size_time.cx - 5;
+	str = !doc->docTimes.empty() ? format( "%.3f", doc->docTimes.back()->time ) : format( "%.3f", 0 );
+	::GetTextExtentPoint32( hmemdc, str.c_str(), str.length(), &sz );
+	chartRect.right = newClientRect.right - sz.cx - 5;
 
-	chartRect.bottom = newClientRect.bottom - size_time.cy - 7;
-
-	dc.SelectObject( oldFont );
+	chartRect.bottom = newClientRect.bottom - sz.cy - 7;
 
 	if ( needDrawLegend ) {
-		CSize size_max( 0, 0);
-		CSize size( 0, 0 );
+		
+		::SelectObject( hmemdc, hfontLegend );
+
 		int count = 0;
 		for ( vector< RDOStudioDocSerie* >::iterator it = doc->series.begin(); it != doc->series.end(); it++ ) {
-			size = (*it)->getLegendExtent( dc, fontLegend, chartRect );
-			if ( size.cx && size.cy ) {
-				if ( size.cx > size_max.cx )
-					size_max.cx = size.cx;
-				if ( size.cy > size_max.cy )
-					size_max.cy = size.cy;
+			(*it)->getLegendExtent( hmemdc, chartRect, sz );
+			if ( sz.cx && sz.cy ) {
+				if ( sz.cx > size_max.cx )
+					size_max.cx = sz.cx;
+				if ( sz.cy > size_max.cy )
+					size_max.cy = sz.cy;
 				count ++;
 			}
 		}
@@ -191,8 +255,6 @@ void RDOStudioChartView::recalcLayout()
 	mutex.Unlock();
 
 	doc->mutex.Unlock();
-	//if ( yAxis )
-	//	yAxis->unlock();
 }
 
 void RDOStudioChartView::setScrollPos( UINT nSBCode, UINT nPos, const bool need_update )
@@ -312,7 +374,6 @@ void RDOStudioChartView::setFromTo()
 				drawToX = drawFromX;
 				int delta = drawToX.eventCount * style->fonts_ticks->tickWidth - chartRect.Width();
 				drawToEventCount = delta >= 0 ? roundDouble( (double)delta / (double)style->fonts_ticks->tickWidth ) : drawToX.eventCount;
-				//if ( drawToEventCount * style->fonts_ticks->tickWidth )
 				it_max_pos = drawToX.eventCount * style->fonts_ticks->tickWidth;
 				if ( it_max_pos > chartRect.Width() ) {
 					drawToEventCount = ( it_max_pos - chartRect.Width() ) / style->fonts_ticks->tickWidth;
@@ -350,43 +411,36 @@ void RDOStudioChartView::setFromTo()
 	}
 }
 
-void RDOStudioChartView::drawTitle( CDC &dc, CRect& chartRect )
+void RDOStudioChartView::drawTitle( CRect& chartRect )
 {
 	CRect tmprect;
 	tmprect.CopyRect( &newClientRect );
 	tmprect.top = 0;
 	tmprect.bottom = chartRect.top;
 	
-	int old_bk = dc.SetBkMode( TRANSPARENT );
-	CFont*  oldFont = dc.SelectObject( &fontTitle );
-	COLORREF old_color = dc.SetTextColor( style->getTheme()->titleFGColor );
+	::SelectObject( hmemdc, hfontTitle );
+	::SetTextColor( hmemdc, style->getTheme()->titleFGColor );
 	
-	dc.DrawText( GetDocument()->GetTitle(), tmprect, DT_CENTER | DT_WORDBREAK );
-	
-	dc.SetTextColor( old_color );
-	dc.SelectObject( oldFont );
-	dc.SetBkMode( old_bk );
+	string str = GetDocument()->GetTitle();
+	::DrawText( hmemdc, str.c_str(), str.length(), tmprect, DT_CENTER | DT_WORDBREAK );
 }
 
-void RDOStudioChartView::drawLegend( CDC &dc, CRect& legendRect )
+void RDOStudioChartView::drawLegend( CRect& legendRect )
 {
 	RDOStudioChartDoc* doc = GetDocument();
 	CRect tmprect;
 	tmprect.CopyRect( &legendRect );
-	CSize size;
-	int old_bk = dc.SetBkMode( TRANSPARENT );
+	SIZE size;
+	::SelectObject( hmemdc, hfontLegend );
 	for ( vector< RDOStudioDocSerie* >::iterator it = doc->series.begin(); it != doc->series.end(); it++ ) {
-		size = (*it)->drawInLegend( dc, tmprect, fontLegend, style->getTheme()->legendFgColor );
+		(*it)->drawInLegend( hmemdc, tmprect, style->getTheme()->legendFgColor, size );
 		tmprect.top += size.cy;
 	}
-	dc.SetBkMode( old_bk );
 }
 
-void RDOStudioChartView::drawYAxis( CDC &dc, CRect& chartRect, const RDOStudioDocSerie* axisValues)
+void RDOStudioChartView::drawYAxis( CRect& chartRect, const RDOStudioDocSerie* axisValues )
 {
 	CRect tmprect;
-	CSize size;
-
 	tmprect.CopyRect( &newClientRect );
 	tmprect.right = chartRect.left - 5;
 	tmprect.left  = 5;
@@ -395,9 +449,8 @@ void RDOStudioChartView::drawYAxis( CDC &dc, CRect& chartRect, const RDOStudioDo
 		axisValues->getSerie()->getValueCount( count );
 		if ( count ) {
 			
-			int old_bk = dc.SetBkMode( TRANSPARENT );
-			CFont*  oldFont = dc.SelectObject( &fontAxis );
-			COLORREF old_color = dc.SetTextColor( style->getTheme()->axisFgColor );
+			::SelectObject( hmemdc, hfontAxis );
+			::SetTextColor( hmemdc, style->getTheme()->axisFgColor );
 			
 			int count = captions.size();
 			int heightoffset = roundDouble( (double)chartRect.Height() / (double)( count - 1 ) );
@@ -405,30 +458,24 @@ void RDOStudioChartView::drawYAxis( CDC &dc, CRect& chartRect, const RDOStudioDo
 			int index = 0;
 			for ( vector<string>::iterator it = captions.begin(); it != captions.end(); it++ ) {
 				index ++;
-				dc.DrawText( (*it).c_str(), tmprect, DT_RIGHT );
+				::DrawText( hmemdc, (*it).c_str(), (*it).length(), tmprect, DT_RIGHT );
 				if ( index != 1 && index < count ) {
-					dc.MoveTo( tmprect.right + 2, tmprect.top );
-					dc.LineTo( chartRect.left, tmprect.top );
+					::MoveToEx( hmemdc, tmprect.right + 2, tmprect.top, (LPPOINT)NULL );
+					::LineTo( hmemdc, chartRect.left, tmprect.top );
 				}
 				if ( index == count - 1 )
 					tmprect.top = chartRect.top;
 				else
 					tmprect.top -= heightoffset;
 			}
-			
-			dc.SetTextColor( old_color );
-			dc.SelectObject( oldFont );
-			dc.SetBkMode( old_bk );
 		}
 	}
 }
 
-void RDOStudioChartView::drawXAxis( CDC &dc, CRect& chartRect )
+void RDOStudioChartView::drawXAxis( CRect& chartRect )
 {	
 	CRect tmprect;
-	CSize size;
 	tmprect.CopyRect( &chartRect );
-	
 	tmprect.top = chartRect.bottom + 3;
 	tmprect.left = chartRect.left;
 	tmprect.bottom = newClientRect.bottom;
@@ -438,9 +485,8 @@ void RDOStudioChartView::drawXAxis( CDC &dc, CRect& chartRect )
 	if ( !doc->docTimes.empty() ) {
 		string formatstr = "%.3f";
 		
-		int old_bk = dc.SetBkMode( TRANSPARENT );
-		CFont*  oldFont = dc.SelectObject( &fontAxis );
-		COLORREF old_color = dc.SetTextColor( style->getTheme()->axisFgColor );
+		::SelectObject( hmemdc, hfontAxis );
+		::SetTextColor( hmemdc, style->getTheme()->axisFgColor );
 		
 		if( !doUnwrapTime() ) {
 			double valoffset = 0;
@@ -451,19 +497,18 @@ void RDOStudioChartView::drawXAxis( CDC &dc, CRect& chartRect )
 			double valo = drawFromX.time;
 			int x = chartRect.left;
 			string str = format( formatstr.c_str(), valo );
-			size = dc.GetTextExtent( str.c_str() );
-			tmprect.left = x /*- size.cy / 2*/;
-			dc.DrawText( str.c_str(), tmprect, DT_LEFT );
+			tmprect.left = x;
+			::DrawText( hmemdc, str.c_str(), str.length(), tmprect, DT_LEFT );
 			valo += valoffset;
 			x += widthoffset;
 			if ( valoffset ) {
 				for ( int i = 1; i < valueCountX; i++ ) {
 					str = format( formatstr.c_str(), valo );
-					tmprect.left = x /*- size.cy / 2*/;
-					dc.DrawText( str.c_str(), tmprect, DT_LEFT );
+					tmprect.left = x;
+					::DrawText( hmemdc, str.c_str(), str.length(), tmprect, DT_LEFT );
 					if ( i != valueCountX - 1 ) {
-						dc.MoveTo( x, chartRect.bottom );
-						dc.LineTo( x, chartRect.bottom + 3 );
+						::MoveToEx( hmemdc, x, chartRect.bottom, (LPPOINT)NULL );
+						::LineTo( hmemdc, x, chartRect.bottom + 3 );
 					}
 					valo += valoffset;
 					x += widthoffset;
@@ -483,10 +528,10 @@ void RDOStudioChartView::drawXAxis( CDC &dc, CRect& chartRect )
 				}
 				if ( tmprect.left > chartRect.right )
 					tmprect.left = chartRect.right;
-				dc.DrawText( str.c_str(), tmprect, DT_LEFT );
+				::DrawText( hmemdc, str.c_str(), str.length(), tmprect, DT_LEFT );
 				if ( tmprect.left != chartRect.left && tmprect.left != chartRect.right ) {
-					dc.MoveTo( tmprect.left, chartRect.bottom );
-					dc.LineTo( tmprect.left, chartRect.bottom + 3 );
+					::MoveToEx( hmemdc, tmprect.left, chartRect.bottom, (LPPOINT)NULL );
+					::LineTo( hmemdc, tmprect.left, chartRect.bottom + 3 );
 				}
 
 				ticks += (*it)->eventCount;
@@ -495,19 +540,27 @@ void RDOStudioChartView::drawXAxis( CDC &dc, CRect& chartRect )
 				}
 			}
 		}
-		
-		dc.SetTextColor( old_color );
-		dc.SelectObject( oldFont );
-		dc.SetBkMode( old_bk );
 	}
 }
 
-void RDOStudioChartView::drawGrid(	CDC &dc, CRect& chartRect )
+void RDOStudioChartView::drawGrid( CRect& chartRect )
 {
-	CBrush brush_chart( style->getTheme()->chartBgColor );
-	CBrush* old_brush = dc.SelectObject( &brush_chart );
-	dc.Rectangle( chartRect );
-	dc.SelectObject( old_brush );
+	HBRUSH brush_chart = NULL;
+	HBRUSH old_brush = NULL;
+	try {
+		brush_chart = ::CreateSolidBrush( style->getTheme()->chartBgColor );
+		old_brush = (HBRUSH)::SelectObject( hmemdc, brush_chart );
+		::Rectangle( hmemdc, chartRect.left, chartRect.top, chartRect.right, chartRect.bottom );
+		::SelectObject( hmemdc, old_brush );
+		::DeleteObject( brush_chart );
+		brush_chart = NULL;
+	} catch( ... ) {
+		if ( brush_chart ) {
+			::SelectObject( hmemdc, old_brush );
+			::DeleteObject( brush_chart );
+			brush_chart = NULL;
+		}
+	}
 
 	if ( doUnwrapTime() ) {
 		CRect rect;
@@ -517,12 +570,14 @@ void RDOStudioChartView::drawGrid(	CDC &dc, CRect& chartRect )
 		tmprect.CopyRect( &rect );
 		
 		RDOStudioChartDoc* doc = GetDocument();
-		dc.IntersectClipRect( &rect );
+		::IntersectClipRect( hmemdc, rect.left, rect.top, rect.right, rect.bottom );
 		int ticks = 0;
 		timesList::iterator it = unwrapTimesList.begin();
 		if ( drawFromX == drawToX ) {
 			it ++;
 		}
+		//For drawing solid rect
+		::SetBkColor( hmemdc, style->getTheme()->timeBgColor );
 		for( ; it != unwrapTimesList.end(); it++ ) {
 			int width = (*it)->eventCount * style->fonts_ticks->tickWidth;
 			RDOTracerTimeNow* timenow = (*it);
@@ -534,13 +589,14 @@ void RDOStudioChartView::drawGrid(	CDC &dc, CRect& chartRect )
 				width = drawToEventCount * style->fonts_ticks->tickWidth;
 			}
 			tmprect.right = tmprect.left + width;
-			dc.FillSolidRect( &tmprect, style->getTheme()->timeBgColor );
+			//MFC's FillSolidRect do the same thing
+			::ExtTextOut( hmemdc, 0, 0, ETO_OPAQUE, tmprect, NULL, 0, NULL );
 			ticks += (*it)->eventCount;
 			if ( *(*it) == drawFromX ) {
 				ticks -= drawFromEventIndex;
 			}
 		}
-		dc.SelectClipRgn( NULL );
+		::SelectClipRgn( hmemdc, NULL );
 	}
 }
 
@@ -551,19 +607,15 @@ void RDOStudioChartView::copyToClipboard()
 	
 	mutex.Lock();
 	
-	//CClientDC cldc( this );
-	CDC* cldc = GetDC();
-	CDC dc;
-	if ( dc.CreateCompatibleDC( cldc ) ) {
-		CBitmap* oldBitmap = dc.SelectObject( &bmp );
-		HBITMAP hbm = ::CreateCompatibleBitmap( dc.GetSafeHdc(), newClientRect.Width(), newClientRect.Height() );
+	if ( hmemdc ) {
+		HBITMAP hbm = ::CreateCompatibleBitmap( hmemdc, newClientRect.Width(), newClientRect.Height() );
 		if ( hbm ) {
-			HDC hdcDst = ::CreateCompatibleDC( dc.GetSafeHdc() );
+			HDC hdcDst = ::CreateCompatibleDC( hmemdc );
 			if ( hdcDst ) {
 				HGDIOBJ oldObj = ::SelectObject( hdcDst, hbm );
 
 				::BitBlt( hdcDst, 0, 0, newClientRect.Width(), newClientRect.Height(),
-					dc.GetSafeHdc(), newClientRect.left, newClientRect.top, SRCCOPY );
+					hmemdc, newClientRect.left, newClientRect.top, SRCCOPY );
 				
 				::SelectObject( hdcDst, oldObj );
 				::DeleteDC( hdcDst );
@@ -573,9 +625,7 @@ void RDOStudioChartView::copyToClipboard()
 				::DeleteObject( hbm );
 			}
 		}
-		dc.SelectObject( oldBitmap );
 	}
-	ReleaseDC( cldc );
 
 	CloseClipboard();
 	
@@ -597,8 +647,8 @@ void RDOStudioChartView::setZoom( double new_zoom, const bool force_update )
 	}
 }
 
-void RDOStudioChartView::OnDraw(CDC* pDC)
-{	
+void RDOStudioChartView::onDraw()
+{
 	//Document and view are locked from OnPaint()
 	
 	RDOStudioChartDoc* doc = GetDocument();
@@ -606,46 +656,37 @@ void RDOStudioChartView::OnDraw(CDC* pDC)
 	CRect rect;
 	rect.CopyRect( &newClientRect );
 
-	CDC dc;
-	dc.CreateCompatibleDC( pDC );
-	CBitmap* pOldBitmap = dc.SelectObject( &bmp );
-	
+	//MFC's FillSolidRect do the same thing
+	::SetBkColor( hmemdc, style->theme->backgroundColor );
+	::ExtTextOut( hmemdc, 0, 0, ETO_OPAQUE, newClientRect, NULL, 0, NULL );
 
-	int oldBkMode = dc.SetBkMode( TRANSPARENT );
-
-	CBrush brush_background( style->theme->backgroundColor );
-	CBrush* pOldBrush = dc.SelectObject( &brush_background );
-	CPen pen_chart;
-	pen_chart.CreatePen( PS_SOLID, 0, style->theme->defaultColor );
-	CPen* pOldPen = dc.SelectObject( &pen_chart );
-	
-	dc.FillSolidRect( newClientRect, style->theme->backgroundColor );
-
-	drawTitle( dc, chartRect );
+	drawTitle( chartRect );
 
 	if ( needDrawLegend )
-		drawLegend( dc, legendRect );
+		drawLegend( legendRect );
 	
 	if ( chartRect.Height() > 0 && chartRect.Width() > 0 ) {
 
-		drawYAxis( dc, chartRect, yAxis );
+		drawYAxis(chartRect, yAxis );
 
 		setFromTo();
 		
-		drawXAxis( dc, chartRect );
+		drawXAxis( chartRect );
 
-		drawGrid( dc, chartRect );
+		drawGrid( chartRect );
 
 		for ( vector< RDOStudioDocSerie* >::iterator it = doc->series.begin(); it != doc->series.end(); it++ )
-			(*it)->drawSerie( this, dc, chartRect );
+			(*it)->drawSerie( this, hmemdc, chartRect );
 	}
 
-	pDC->BitBlt( 0, 0, newClientRect.Width(), newClientRect.Height(), &dc, 0, 0, SRCCOPY );
+	::BitBlt( hdc, 0, 0, newClientRect.Width(), newClientRect.Height(), hmemdc, 0, 0, SRCCOPY );
+}
+
+void RDOStudioChartView::OnDraw(CDC* pDC)
+{	
+	//Document and view are locked from OnPaint()
 	
-	dc.SelectObject( pOldPen );
-	dc.SelectObject( pOldBrush );
-	dc.SetBkMode( oldBkMode );
-	dc.SelectObject( pOldBitmap );
+	CView::OnDraw( pDC );
 }
 
 BOOL RDOStudioChartView::OnPreparePrinting( CPrintInfo* pInfo )
@@ -703,44 +744,6 @@ BOOL RDOStudioChartView::OnDrop( COleDataObject* pDataObject, DROPEFFECT dropEff
 	return TRUE;
 }
 
-int RDOStudioChartView::OnCreate( LPCREATESTRUCT lpCreateStruct )
-{
-	if ( !target.Register( this ) )
-		return -1;
-	if ( CView::OnCreate( lpCreateStruct ) == -1 ) return -1;
-	
-	if ( !previewMode )
-		setStyle( &studioApp.mainFrame->style_chart, false );
-
-	if ( GetDocument() ) {
-		recalcLayout();
-		updateScrollBars();
-	}
-
-	popupMenu.CreatePopupMenu();
-
-	CMenu* mainMenu = AfxGetMainWnd()->GetMenu();
-	
-	BOOL maximized;
-	studioApp.mainFrame->MDIGetActive( &maximized );
-	int delta = maximized ? 1 : 0;
-
-	appendMenu( mainMenu->GetSubMenu( 1 + delta ), 4, &popupMenu );
-	popupMenu.AppendMenu( MF_SEPARATOR );
-	appendMenu( mainMenu->GetSubMenu( 3 + delta ), 6, &popupMenu );
-	appendMenu( mainMenu->GetSubMenu( 3 + delta ), 7, &popupMenu );
-	appendMenu( mainMenu->GetSubMenu( 3 + delta ), 8, &popupMenu );
-	appendMenu( mainMenu->GetSubMenu( 3 + delta ), 9, &popupMenu );
-	popupMenu.AppendMenu( MF_SEPARATOR );
-	appendMenu( mainMenu->GetSubMenu( 6 + delta ), 3, &popupMenu );
-	popupMenu.AppendMenu( MF_SEPARATOR );
-	appendMenu( mainMenu->GetSubMenu( 6 + delta ), 5, &popupMenu );
-
-	//GetDocument()->addToViews( GetSafeHwnd() );
-
-	return 0;
-}
-
 #ifdef _DEBUG
 void RDOStudioChartView::AssertValid() const
 {
@@ -774,12 +777,12 @@ void RDOStudioChartView::OnSize(UINT nType, int cx, int cy)
 
 	if ( newClientRect.Width() > bmpRect.Width() || newClientRect.Height() > bmpRect.Height() )
 	{
-		//CClientDC cldc( this );
-		if ( bmp.GetSafeHandle() )
-			bmp.DeleteObject();
-		CDC* cldc = GetDC();
-		bmp.CreateCompatibleBitmap( cldc, newClientRect.Width(), newClientRect.Height() );
-		ReleaseDC( cldc );
+		if ( hbmp ) {
+			::SelectObject( hmemdc, hbmpInit );
+			::DeleteObject( hbmp );
+		}
+		hbmp = CreateCompatibleBitmap( hdc, newClientRect.Width(), newClientRect.Height() );
+		::SelectObject( hmemdc, hbmp );
 		bmpRect = newClientRect;
 	}
 
@@ -1000,52 +1003,50 @@ void RDOStudioChartView::setFonts( const bool needRedraw )
 	
 	mutex.Lock();
 	
-	//CClientDC dc( this );
-	CDC* dc = GetDC();
 	LOGFONT lf;
 	RDOStudioChartViewTheme* chart_theme = static_cast<RDOStudioChartViewTheme*>(style->theme);
+	::SelectObject( hdc, hfontInit );
 
-	if ( !fontAxis.m_hObject || fontAxis.DeleteObject() ) {
+	if ( !hfontAxis || ::DeleteObject( hfontAxis ) ) {
 
 		memset( &lf, 0, sizeof(lf) );
 		// The negative is to allow for leading
-		lf.lfHeight    = -MulDiv( style->font->size, ::GetDeviceCaps( dc->GetSafeHdc(), LOGPIXELSY ), 72 );
+		lf.lfHeight    = -MulDiv( style->font->size, ::GetDeviceCaps( hdc, LOGPIXELSY ), 72 );
 		lf.lfWeight    = chart_theme->defaultStyle & RDOStyleFont::BOLD ? FW_BOLD : FW_NORMAL;
 		lf.lfItalic    = chart_theme->defaultStyle & RDOStyleFont::ITALIC;
 		lf.lfUnderline = chart_theme->defaultStyle & RDOStyleFont::UNDERLINE;
 		lf.lfCharSet   = style->font->characterSet;
 		strcpy( lf.lfFaceName, style->font->name.c_str() );
 
-		fontAxis.CreateFontIndirect( &lf );
+		hfontAxis = ::CreateFontIndirect( &lf );
 	}
 
-	if ( !fontTitle.m_hObject || fontTitle.DeleteObject() ) {
+	if ( !hfontTitle || ::DeleteObject( hfontTitle ) ) {
 
 		memset( &lf, 0, sizeof(lf) );
 		// The negative is to allow for leading
-		lf.lfHeight    = -MulDiv( style->fonts_ticks->titleFontSize, ::GetDeviceCaps( dc->GetSafeHdc(), LOGPIXELSY ), 72 );
+		lf.lfHeight    = -MulDiv( style->fonts_ticks->titleFontSize, ::GetDeviceCaps( hdc, LOGPIXELSY ), 72 );
 		lf.lfWeight    = chart_theme->titleStyle & RDOStyleFont::BOLD ? FW_BOLD : FW_NORMAL;
 		lf.lfItalic    = chart_theme->titleStyle & RDOStyleFont::ITALIC;
 		lf.lfUnderline = chart_theme->titleStyle & RDOStyleFont::UNDERLINE;
 		lf.lfCharSet   = style->font->characterSet;
 		strcpy( lf.lfFaceName, style->font->name.c_str() );
 
-		fontTitle.CreateFontIndirect( &lf );
+		hfontTitle = ::CreateFontIndirect( &lf );
 	}
-	if ( !fontLegend.m_hObject || fontLegend.DeleteObject() ) {
+	if ( !hfontLegend || ::DeleteObject( hfontLegend ) ) {
 
 		memset( &lf, 0, sizeof(lf) );
 		// The negative is to allow for leading
-		lf.lfHeight    = -MulDiv( style->fonts_ticks->legendFontSize, ::GetDeviceCaps( dc->GetSafeHdc(), LOGPIXELSY ), 72 );
+		lf.lfHeight    = -MulDiv( style->fonts_ticks->legendFontSize, ::GetDeviceCaps( hdc, LOGPIXELSY ), 72 );
 		lf.lfWeight    = chart_theme->legendStyle & RDOStyleFont::BOLD ? FW_BOLD : FW_NORMAL;
 		lf.lfItalic    = chart_theme->legendStyle & RDOStyleFont::ITALIC;
 		lf.lfUnderline = chart_theme->legendStyle & RDOStyleFont::UNDERLINE;
 		lf.lfCharSet   = style->font->characterSet;
 		strcpy( lf.lfFaceName, style->font->name.c_str() );
 
-		fontLegend.CreateFontIndirect( &lf );
+		hfontLegend = ::CreateFontIndirect( &lf );
 	}
-	ReleaseDC( dc );
 
 	mutex.Unlock();
 }
@@ -1101,6 +1102,25 @@ void RDOStudioChartView::OnDestroy()
 {
 	if ( GetDocument() )
 		GetDocument()->removeFromViews( GetSafeHwnd() );
+	if ( hdc ) {
+		::RestoreDC( hdc, saved_hdc );
+	}
+	if ( hmemdc ) {
+		::RestoreDC( hmemdc, saved_hmemdc );
+		::DeleteDC( hmemdc );
+	}
+	if ( hfontTitle ) {
+		::DeleteObject( hfontTitle );
+	}
+	if ( hfontLegend ) {
+		::DeleteObject( hfontLegend );
+	}
+	if ( hfontAxis ) {
+		::DeleteObject( hfontAxis );
+	}
+	if ( hbmp ) {
+		::DeleteObject( hbmp );
+	}
 	CView::OnDestroy();
 }
 
@@ -1112,17 +1132,22 @@ void RDOStudioChartView::OnInitialUpdate()
 
 void RDOStudioChartView::OnPaint() 
 {
-	//CPaintDC dc(this); // device context for painting
 	RDOStudioChartDoc* doc = GetDocument();
 	doc->mutex.Lock();
 
 	mutex.Lock();
 
-	PAINTSTRUCT ps;
+	//MFC's realization
+	/*PAINTSTRUCT ps;
 	CDC* dc = BeginPaint( &ps );
 	OnPrepareDC( dc );
 	OnDraw( dc );
-	EndPaint( &ps );
+	EndPaint( &ps );*/
+
+	PAINTSTRUCT ps;
+	::BeginPaint( hwnd, &ps );
+	onDraw();
+	::EndPaint( hwnd, &ps );
 
 	mutex.Unlock();
 
