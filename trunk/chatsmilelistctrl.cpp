@@ -44,6 +44,11 @@ CChatSmileListCtrl::CChatSmileListCtrl():
 
 CChatSmileListCtrl::~CChatSmileListCtrl()
 {
+	std::vector< Item* >::iterator it = list.begin();
+	while ( it != list.end() ) {
+		delete *it++;
+	}
+	list.clear();
 }
 
 BOOL CChatSmileListCtrl::PreCreateWindow( CREATESTRUCT& cs )
@@ -83,25 +88,32 @@ int CChatSmileListCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	}
 	text_focus_height += 2;
 	for ( int i = CChatSmile::smile; i <= CChatSmile::tomato; i++ ) {
-		CChatSmile* smile = list.addSmile( static_cast<CChatSmile::Type>(i), this );
-		smile->ShowWindow( SW_HIDE );
-		CSize size = smile->GetSize();
-		size.cx += 2;
-		size.cy += 2;
-		int smile_height = size.cy;
-		heights.push_back( text_focus_height > smile_height ? text_focus_height : smile_height );
-		if ( size.cx > smile_max_width ) {
-			smile_max_width = size.cx;
-		}
+		Item* item   = new Item;
+		item->smile  = NULL;
+		item->type   = static_cast<CChatSmile::Type>(i);
+		item->info   = CChatSmileList::getStr( item->type );
+		item->height = 0;
+
+//		CChatSmile* smile = list.addSmile( static_cast<CChatSmile::Type>(i), this );
+//		smile->ShowWindow( SW_HIDE );
+//		CSize size = smile->GetSize();
+//		size.cx += 2;
+//		size.cy += 2;
+//		int smile_height = size.cy;
+//		heights.push_back( text_focus_height > smile_height ? text_focus_height : smile_height );
+//		if ( size.cx > smile_max_width ) {
+//			smile_max_width = size.cx;
+//		}
 		CRect rect( 0, 0, 1, 1 );
 		dc->DrawText( CChatSmileList::getStr( static_cast<CChatSmile::Type>(i) ).c_str(), -1, rect, DT_SINGLELINE | DT_CALCRECT );
 		if ( rect.Width() > text_max_width ) {
 			text_max_width = rect.Width();
 		}
+		list.push_back( item );
 	}
 	dc->SelectObject( prev_font );
 	ReleaseDC( dc );
-	list.setBgColor( ::GetSysColor( COLOR_WINDOW ) );
+//	list.setBgColor( ::GetSysColor( COLOR_WINDOW ) );
 
 	return 0;
 }
@@ -422,16 +434,16 @@ bool CChatSmileListCtrl::scrollHorizontally( int inc )
 
 int CChatSmileListCtrl::getStringsSumHeight()
 {
-	if ( !list.count() ) {
+	if ( !list.size() ) {
 		return 0;
 	}
 
 	int height = 0;
 	CDC* dc = GetDC();
 	CFont* prev_font = dc->SelectObject( &font );
-	int cnt = list.count();
+	int cnt = list.size();
 	for ( int i = 0; i < cnt; i++ ) {
-		height += heights[i];
+		height += list[i]->height;
 	};
 	dc->SelectObject( prev_font );
 	ReleaseDC( dc );
@@ -441,7 +453,7 @@ int CChatSmileListCtrl::getStringsSumHeight()
 
 int CChatSmileListCtrl::getHeightBeforeLine( const int index )
 {
-	if ( index < 0 || !list.count() ) {
+	if ( index < 0 || !list.size() ) {
 		return -1;
 	}
 
@@ -449,7 +461,7 @@ int CChatSmileListCtrl::getHeightBeforeLine( const int index )
 	CDC* dc = GetDC();
 	CFont* prev_font = dc->SelectObject( &font );
 	for ( int i = 0; i < index; i++ ) {
-		height += heights[i];
+		height += list[i]->height;
 	}
 	dc->SelectObject( prev_font );
 	ReleaseDC( dc );
@@ -472,8 +484,8 @@ void CChatSmileListCtrl::OnPaint()
 //		int line_from = findLine( yPos );
 //		int line_to   = findLine( yPos + newClientRect.bottom );
 		int line_from = 0;
-		int line_to   = list.count() - 1;
-		if ( line_to == -1 ) line_to = list.count() - 1;
+		int line_to   = list.size() - 1;
+		if ( line_to == -1 ) line_to = list.size() - 1;
 		if ( prev_line_from != -1 && prev_line_to != -1 && line_from != -1 ) {
 			int i;
 			for ( i = prev_line_from; i < line_from; i++ ) {
@@ -496,7 +508,11 @@ void CChatSmileListCtrl::OnPaint()
 		}
 		for ( int i = 0; i < cnt; i++ ) {
 
-			CChatSmile* smile = list[ i + line_from ];
+			CChatSmile* smile = list[ i + line_from ]->smile;
+			if ( !smile ) {
+				smile = new CChatSmile( list[ i + line_from ]->type, this );
+				list[ i + line_from ]->smile = smile;
+			}
 			smile->ShowWindow( SW_SHOW );
 			if ( line_from + i == selectedLine && hasFocus ) {
 				back = ::GetSysColor( COLOR_HIGHLIGHT );
@@ -508,7 +524,7 @@ void CChatSmileListCtrl::OnPaint()
 			CPen* prev_pen     = dc.SelectObject( &pen );
 			CBrush* prev_brush = dc.SelectObject( &brush );
 
-			int h = heights[i + line_from];
+			int h = list[i + line_from]->height;
 			rect.bottom = rect.top + h;
 
 			CRect smile_rect = rect;
@@ -536,7 +552,7 @@ void CChatSmileListCtrl::OnPaint()
 			rect.left  += smile_max_width;
 //			rect.right -= xPos;
 
-			dc.DrawText( list.getStr( smile->getType() ).c_str(), -1, &rect, DT_LEFT | DT_SINGLELINE | DT_VCENTER );
+			dc.DrawText( CChatSmileList::getStr( smile->getType() ).c_str(), -1, &rect, DT_LEFT | DT_SINGLELINE | DT_VCENTER );
 
 			rect.left  -= smile_max_width;
 //			rect.right += xPos;

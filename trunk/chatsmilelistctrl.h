@@ -13,11 +13,20 @@
 class CChatSmileListCtrl: public CWnd
 {
 private:
-	CChatSmileList list;
+
+	struct Item {
+		CChatSmile*      smile;
+		CChatSmile::Type type;
+		std::string      info;
+		int              height;
+	};
+	std::vector< Item* > list;
+
+//	CChatSmileList list;
 	int smile_max_width;
 	int text_max_width;
 	int text_focus_height;
-	std::vector< int > heights;
+//	std::vector< int > heights;
 	int prev_line_from;
 	int prev_line_to;
 	int xPos;
