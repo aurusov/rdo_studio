@@ -29,7 +29,7 @@ private:
 	DWORD rColor, gColor, bColor, grayColor;
 	CRect windowRect;
 	CRect screenRect;
-	bool  windowMode;
+	bool  fullScreenMode;
 	int   fullWindowWidth;
 	int   fullWindowHeight;
 
@@ -49,6 +49,8 @@ private:
 	void updateMonitor() const;
 	void updateScrolling( BYTE delta ) const;
 	void updateBounds();
+	bool isFullScreenMode() const { return fullScreenMode; }
+	void setFullScreenMode( const bool value );
 	
 public:
 	BKMainFrame();
@@ -68,7 +70,7 @@ protected:
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnTimer(UINT nIDEvent);
 	afx_msg void OnGetMinMaxInfo(MINMAXINFO FAR* lpMMI);
-	afx_msg void OnRepaint();
+	afx_msg void OnViewFullScreen();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 

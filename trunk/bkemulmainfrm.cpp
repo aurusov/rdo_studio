@@ -32,7 +32,7 @@ BEGIN_MESSAGE_MAP(BKMainFrame, CFrameWnd)
 	ON_WM_LBUTTONDOWN()
 	ON_WM_TIMER()
 	ON_WM_GETMINMAXINFO()
-	ON_COMMAND(ID_REPAINT, OnRepaint)
+	ON_COMMAND(ID_VIEW_FULLSCREEN, OnViewFullScreen)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -53,7 +53,7 @@ BKMainFrame::BKMainFrame():
 	grayColor( 0 ),
 	windowRect( 0, 0, 0, 0 ),
 	screenRect( 0, 0, 0, 0 ),
-	windowMode( false ),
+	fullScreenMode( false ),
 	fullWindowWidth( 0 ),
 	fullWindowHeight( 0 ),
 	lock( false ),
@@ -67,12 +67,12 @@ BKMainFrame::~BKMainFrame()
 	if ( display ) { delete display; display = NULL; }
 }
 
-BOOL BKMainFrame::PreCreateWindow(CREATESTRUCT& cs)
+BOOL BKMainFrame::PreCreateWindow( CREATESTRUCT& cs )
 {
 	if( !CFrameWnd::PreCreateWindow(cs) ) return FALSE;
 
 	cs.dwExStyle &= ~WS_EX_CLIENTEDGE;
-	cs.lpszClass = AfxRegisterWndClass( 0 );
+	cs.lpszClass = AfxRegisterWndClass( CS_DBLCLKS, ::LoadCursor( NULL, IDC_ARROW ) );
 
 	return TRUE;
 }
@@ -81,7 +81,6 @@ int BKMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if ( CFrameWnd::OnCreate( lpCreateStruct ) == -1 ) return -1;
 
-	updateBounds();
 	initDirectDraw();
 
 	timer = SetTimer( timer_ID, 20, NULL );
@@ -124,14 +123,10 @@ void BKMainFrame::RecalcLayout(BOOL bNotify)
 
 HRESULT BKMainFrame::initDirectDraw()
 {
+	if ( display ) { delete display; display = NULL; }
 	display = new CDisplay();
 
-	if ( windowMode ) {
-		if ( display->CreateWindowedDisplay( this, bk_width, bk_height ) != S_OK ) {
-			AfxMessageBox( "Failed initializing DirectDraw." );
-			return -1;
-		}
-	} else {
+	if ( isFullScreenMode() ) {
 		CDC* dc = CWnd::GetDesktopWindow()->GetDC();
 		int bpp = dc->GetDeviceCaps( BITSPIXEL );
 		CWnd::GetDesktopWindow()->ReleaseDC( dc );
@@ -139,14 +134,22 @@ HRESULT BKMainFrame::initDirectDraw()
 			AfxMessageBox( "Failed initializing DirectDraw." );
 			return -1;
 		}
-		SetMenu( NULL );
 		ModifyStyle( WS_OVERLAPPEDWINDOW, 0 );
+		SetMenu( NULL );
 
 		fullWindowWidth  = display->getSurfaceDesc()->dwWidth;
 		fullWindowHeight = display->getSurfaceDesc()->dwHeight;
+	} else {
+		if ( display->CreateWindowedDisplay( this, bk_width, bk_height ) != S_OK ) {
+			AfxMessageBox( "Failed initializing DirectDraw." );
+			return -1;
+		}
+		ModifyStyle( 0, WS_OVERLAPPEDWINDOW );
+		SetMenu( CMenu::FromHandle( ::LoadMenu( NULL, MAKEINTRESOURCE( IDR_MAINFRAME ) ) ) );
 	}
 	::SystemParametersInfo( SPI_GETWORKAREA, 0, &screenRect, 0 );
 	updateBounds();
+	ShowCursor( !fullScreenMode );
 
 	bytePerPixel = display->getSurfaceDesc()->ddpfPixelFormat.dwRGBBitCount >> 3;
 	if ( bytePerPixel > 1 ) {
@@ -154,6 +157,12 @@ HRESULT BKMainFrame::initDirectDraw()
 		DWORD gMask = display->getSurfaceDesc()->ddpfPixelFormat.dwGBitMask;
 		DWORD bMask = display->getSurfaceDesc()->ddpfPixelFormat.dwBBitMask;
 		DWORD mask;
+		rBits = 0;
+		gBits = 0;
+		bBits = 0;
+		rZero = 0;
+		gZero = 0;
+		bZero = 0;
 		mask = rMask;
 		while ( (mask & 0x1) == 0 ) {
 			mask = mask >> 1;
@@ -189,7 +198,6 @@ HRESULT BKMainFrame::initDirectDraw()
 	gColor    = getColor( RGB( 0x00, 0xFF, 0x00 ) );
 	bColor    = getColor( RGB( 0x00, 0x00, 0xFF ) );
 	grayColor = getColor( RGB( 0xF0, 0xF0, 0xF0 ) );
-//	grayColor = getColor( RGB( 0x80, 0x80, 0x80 ) );
 
 	pitch = display->getSurfaceDesc()->lPitch;
 
@@ -377,7 +385,7 @@ HRESULT BKMainFrame::displayFrame() const
 				draw( &tmp_memory, 1, i & 077, i / 64 );
 			}
 		}
-		if ( !windowMode ) {
+		if ( isFullScreenMode() ) {
 			CClientDC dc( (CWnd*)this );
 			CRect rect;
 			GetClientRect( rect );
@@ -426,18 +434,13 @@ void BKMainFrame::updateScrolling( BYTE delta ) const
 
 void BKMainFrame::updateBounds()
 {
-	if ( windowMode ) {
-		GetClientRect( windowRect );
-		ClientToScreen( windowRect );
-	} else {
-		GetClientRect( windowRect );
-		ClientToScreen( windowRect );
-		if ( fullWindowWidth && fullWindowHeight ) {
-			windowRect.left  += (fullWindowWidth - bk_width) / 2;
-			windowRect.right  = windowRect.left + bk_width;
-			windowRect.top   += (fullWindowHeight - bk_height) / 2;
-			windowRect.bottom = windowRect.top + bk_height;
-		}
+	GetClientRect( windowRect );
+	ClientToScreen( windowRect );
+	if ( isFullScreenMode() && fullWindowWidth && fullWindowHeight ) {
+		windowRect.left  += (fullWindowWidth - bk_width) / 2;
+		windowRect.right  = windowRect.left + bk_width;
+		windowRect.top   += (fullWindowHeight - bk_height) / 2;
+		windowRect.bottom = windowRect.top + bk_height;
 	}
 }
 
@@ -497,18 +500,18 @@ void BKMainFrame::OnTimer(UINT nIDEvent)
 
 void BKMainFrame::OnGetMinMaxInfo( MINMAXINFO FAR* lpMMI )
 {
-	if ( windowMode ) {
+	if ( isFullScreenMode() ) {
+		if ( display && display->getSurfaceDesc() ) {
+			lpMMI->ptMinTrackSize.x = display->getSurfaceDesc()->dwWidth;
+			lpMMI->ptMinTrackSize.y = display->getSurfaceDesc()->dwHeight;
+		}
+	} else {
 		DWORD dwFrameWidth    = ::GetSystemMetrics( SM_CXSIZEFRAME );
 		DWORD dwFrameHeight   = ::GetSystemMetrics( SM_CYSIZEFRAME );
 		DWORD dwMenuHeight    = ::GetSystemMetrics( SM_CYMENU );
 		DWORD dwCaptionHeight = ::GetSystemMetrics( SM_CYCAPTION );
 		lpMMI->ptMinTrackSize.x = bk_width  + dwFrameWidth * 2;
 		lpMMI->ptMinTrackSize.y = bk_height + dwFrameHeight * 2 + dwMenuHeight + dwCaptionHeight;
-	} else {
-		if ( display && display->getSurfaceDesc() ) {
-			lpMMI->ptMinTrackSize.x = display->getSurfaceDesc()->dwWidth;
-			lpMMI->ptMinTrackSize.y = display->getSurfaceDesc()->dwHeight;
-		}
 	}
 	lpMMI->ptMaxTrackSize.x = lpMMI->ptMinTrackSize.x;
 	lpMMI->ptMaxTrackSize.y = lpMMI->ptMinTrackSize.y;
@@ -516,7 +519,16 @@ void BKMainFrame::OnGetMinMaxInfo( MINMAXINFO FAR* lpMMI )
 	CFrameWnd::OnGetMinMaxInfo(lpMMI);
 }
 
-void BKMainFrame::OnRepaint() 
+void BKMainFrame::setFullScreenMode( const bool value )
 {
-	updateMonitor();
+	if ( value != fullScreenMode ) {
+		fullScreenMode = value;
+		initDirectDraw();
+		ShowCursor( !fullScreenMode );
+	}
+}
+
+void BKMainFrame::OnViewFullScreen()
+{
+	setFullScreenMode( !isFullScreenMode() );
 }
