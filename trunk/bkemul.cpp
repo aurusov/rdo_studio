@@ -195,7 +195,7 @@ void BKEmul::setMemoryByte( WORD address, BYTE data )
 		case 0177716: {
 			R_177716_write &= 0xFF0F;
 			R_177716_write |= data & 0xF0;
-			emul.doSpeaker();
+			doSpeaker();
 			break;
 		}
 		case 0177717: R_177716_write &= 0x00F0; break;
@@ -212,11 +212,12 @@ void BKEmul::setMemoryByte( WORD address, BYTE data )
 			WORD value = memory.get_word( 0177664 ) & 0001377;
 			if ( value != R_177664_prev_value ) {
 				if ( (value & 01000) != (R_177664_prev_value & 01000) ) {
+					video.setSmallScreen( R_177664_prev_value & 01000 ? true : false );
 					// Перерисовать весь экран, т.к. сменился режим работы (полный <=> 1/4)
-					emul.video.updateMonitor();
+					video.updateMonitor();
 				} else {
 					// Перерисовать только рулонный сдвиг
-					emul.video.updateScrolling( static_cast<BYTE>(value - R_177664_prev_value) );
+					video.updateScrolling( static_cast<BYTE>(value - R_177664_prev_value) );
 				}
 			}
 			break;
@@ -230,7 +231,7 @@ void BKEmul::setMemoryByte( WORD address, BYTE data )
 			}
 			memory.set_word( 0177710, memory.get_word( 0177706 ) );
 			// Начать/остановить отсчет
-			emul.BK_SYS_Timer_work = data & 020 ? true : false;
+			BK_SYS_Timer_work = data & 020 ? true : false;
 			memory.set_byte( address, data );
 			break;
 		}
@@ -239,7 +240,7 @@ void BKEmul::setMemoryByte( WORD address, BYTE data )
 
 	// Попали в экранку
 	if ( address >= 0040000 && address < 0100000 ) {
-		emul.video.updateVideoMemoryByte( address );
+		video.updateVideoMemoryByte( address );
 	}
 }
 
@@ -267,7 +268,7 @@ void BKEmul::setMemoryWord( WORD address, WORD data )
 		case 0177716: {
 			R_177716_write &= 0xFF0F;
 			R_177716_write |= data & 0x00F0;
-			emul.doSpeaker();
+			doSpeaker();
 			break;
 		}
 		// Регистр смещения
@@ -279,11 +280,12 @@ void BKEmul::setMemoryWord( WORD address, WORD data )
 			// Значение изменилось, необходима перерисовка экрана
 			if ( data != R_177664_prev_value ) {
 				if ( (data & 01000) != (R_177664_prev_value & 01000) ) {
+					video.setSmallScreen( R_177664_prev_value & 01000 ? true : false );
 					// Перерисовать весь экран, т.к. сменился режим работы (полный <=> 1/4)
-					emul.video.updateMonitor();
+					video.updateMonitor();
 				} else {
 					// Перерисовать только рулонный сдвиг
-					emul.video.updateScrolling( static_cast<BYTE>(data - R_177664_prev_value) );
+					video.updateScrolling( static_cast<BYTE>(data - R_177664_prev_value) );
 				}
 			}
 			break;
@@ -296,7 +298,7 @@ void BKEmul::setMemoryWord( WORD address, WORD data )
 			data |= 0xFF00;
 			memory.set_word( 0177710, memory.get_word( 0177706 ) );
 			// Начать/остановить отсчет
-			emul.BK_SYS_Timer_work = data & 0000020 ? true : false;
+			BK_SYS_Timer_work = data & 0000020 ? true : false;
 			memory.set_word( address, data );
 			break;
 		}
@@ -305,7 +307,7 @@ void BKEmul::setMemoryWord( WORD address, WORD data )
 
 	// Попали в экранку
 	if ( address >= 0040000 && address < 0100000 ) {
-		emul.video.updateVideoMemoryWord( address );
+		video.updateVideoMemoryWord( address );
 	}
 }
 

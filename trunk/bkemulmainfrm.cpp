@@ -256,23 +256,11 @@ void BKMainFrame::draw( const BYTE* bk_video_from, int count_byte, BYTE BK_byte_
 	BYTE* lpSurfMemory = static_cast<BYTE*>(display->getSurfaceDesc()->lpSurface);
 	if ( !lpSurfMemory ) return;
 	bool colorMonitor = emul.video.isColorMonitor();
+	BYTE BK_line_Y_base = BK_line_Y;
 	BK_line_Y += ( ~((emul.getMemoryWord(0177664) & 0xFF)-0330) ) + 1;
-	// Режим вывода 1/4 водео-памяти (адреса 070000-077777)
-	bool smallVideo = !(emul.getMemoryWord(0177664) & 0001000);
-	if ( smallVideo ) {
-		BK_line_Y += 0300;
-	}
+	bool smallVideo = emul.video.isSmallScreen();
 	switch ( bytePerPixel ) {
 		case 2: {
-/*
-			// Режим вывода 1/4 водео-памяти (адреса 070000-077777)
-			bool smallVideo = !(BK->Memory_word[0177664] & 0001000);
-			if (smallVideo) {
-				bk_video  += 0300*0100;
-				count     -= 0300*0100;
-				BK_line_Y += (BYTE)0300;
-			}
-*/
 			WORD color;
 			while ( count_byte-- ) {
 				BYTE bk_byte_value = *bk_video_from++;
@@ -327,19 +315,6 @@ void BKMainFrame::draw( const BYTE* bk_video_from, int count_byte, BYTE BK_byte_
 					break;
 				}
 			}
-/*
-			// Очистить нижние 3/4 экрана монитора в случае вывода только 1/4 видео-памяти
-			if (smallVideo) {
-				int lineCount = 0300;
-				while (lineCount--) {
-					int t_memory = (int)(lpSurfMemory + (BK_rect.top + BK_line_Y) * pitch);
-					for (int i = 0; i < 8*0100; i++) {
-						*(WORD*)(t_memory + (BK_rect.left + i) * bytePerPixel) = (WORD)0;
-					}
-					BK_line_Y++;
-				}
-			}
-*/
 			break;
 		}
 		case 4: {
@@ -348,7 +323,7 @@ void BKMainFrame::draw( const BYTE* bk_video_from, int count_byte, BYTE BK_byte_
 				BYTE bk_byte_value = *bk_video_from++;
 				BYTE maska = 0001;
 				int y = windowRect.top + BK_line_Y;
-				if ( y < screenRect.bottom && y >= 0 && y < windowRect.bottom ) {
+				if ( y < screenRect.bottom && y >= 0 && y < windowRect.bottom && ( !smallVideo || ( smallVideo && BK_line_Y_base >= 0300 ) ) ) {
 					int t_memory1 = reinterpret_cast<int>(lpSurfMemory + y * pitch);
 					int t_memory2 = windowRect.left + (BK_byte_X << 3);
 					if ( colorMonitor ) {
@@ -434,6 +409,18 @@ HRESULT BKMainFrame::displayFrame() const
 		unlockSurface( display->getSurface() );
 	}
 	return DD_OK;
+}
+
+void BKMainFrame::setSmallScreen()
+{
+	if ( lockSurface( display->getSurface() ) == DD_OK ) {
+		BYTE tmp_memory = 0;
+		int cnt = emul.video.getMemorySize() / 4 * 3;
+		for ( int i = 0; i < cnt; i++ ) {
+			draw( &tmp_memory, 1, i & 077, i / 64 );
+		}
+		unlockSurface( display->getSurface() );
+	}
 }
 
 HRESULT BKMainFrame::restoreSurfaces() const

@@ -15,7 +15,9 @@ using namespace bkemul;
 // --------------------------------------------------------------
 // ---------- BKEmulVideo
 // --------------------------------------------------------------
-BKEmulVideo::BKEmulVideo(): colorMonitor( false )
+BKEmulVideo::BKEmulVideo():
+	colorMonitor( false ),
+	smallScreen( false )
 {
 }
 
@@ -74,5 +76,15 @@ void BKEmulVideo::setColorMonitor( const bool value )
 	if ( colorMonitor != value ) {
 		colorMonitor = value;
 		updateMonitor();
+	}
+}
+
+void BKEmulVideo::setSmallScreen( const bool value )
+{
+	if ( smallScreen != value ) {
+		smallScreen = value;
+		if ( smallScreen ) {
+			emulApp.mainFrame->setSmallScreen();
+		}
 	}
 }

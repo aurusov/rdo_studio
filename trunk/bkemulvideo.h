@@ -14,6 +14,7 @@ class BKEmulVideo
 {
 private:
 	bool colorMonitor;
+	bool smallScreen;
 
 public:
 	BKEmulVideo();
@@ -34,6 +35,9 @@ public:
 	void updateScrolling( BYTE delta ) const;
 	void updateVideoMemoryByte( WORD address ) const;
 	void updateVideoMemoryWord( WORD address ) const;
+
+	bool isSmallScreen() const                 { return smallScreen; }
+	void setSmallScreen( const bool value );
 };
 
 } // namespace bkemul

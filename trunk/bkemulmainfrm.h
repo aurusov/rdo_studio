@@ -52,6 +52,7 @@ private:
 	void updateMonitor() const;
 	void updateScrolling( BYTE delta );
 	void updateBounds();
+	void setSmallScreen();
 	bool isFullScreenMode() const { return fullScreenMode; }
 	void setFullScreenMode( const bool value );
 
