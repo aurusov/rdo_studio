@@ -253,7 +253,7 @@ void RDOStudioModel::executeErrorNotify()
 		i++;
 	}
 	stopModelNotify();
-	if ( i > 0 ) {
+	if ( i ) {
 		const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->gotoNext();
 	}
 }
