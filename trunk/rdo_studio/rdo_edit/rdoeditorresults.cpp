@@ -21,6 +21,8 @@ BEGIN_MESSAGE_MAP( RDOEditorResults, RDOEditorBaseEdit )
 	ON_WM_CREATE()
 	ON_COMMAND(ID_HELP_KEYWORD, OnHelpKeyword)
 	//}}AFX_MSG_MAP
+	ON_UPDATE_COMMAND_UI( ID_COORD_STATUSBAR , OnUpdateCoordStatusBar )
+	ON_UPDATE_COMMAND_UI( ID_MODIFY_STATUSBAR, OnUpdateModifyStatusBar )
 END_MESSAGE_MAP()
 
 RDOEditorResults::RDOEditorResults(): RDOEditorBaseEdit()
@@ -70,4 +72,16 @@ void RDOEditorResults::OnHelpKeyword()
 	link.pszKeywords  = keyword.c_str();
 
 	::HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_KEYWORD_LOOKUP, (DWORD)&link );
+}
+
+void RDOEditorResults::OnUpdateCoordStatusBar( CCmdUI *pCmdUI )
+{
+	pCmdUI->Enable();
+	pCmdUI->SetText( format( "%d: %d", getCurrentColumnNumber() + 1, getCurrentLineNumber() + 1 ).c_str() );
+}
+
+void RDOEditorResults::OnUpdateModifyStatusBar( CCmdUI *pCmdUI )
+{
+	pCmdUI->Enable();
+	pCmdUI->SetText( format( ID_STATUSBAR_READONLY ).c_str() );
 }

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "rdobuildedit.h"
 #include "../rdo_edit/rdoeditoredit.h"
+#include "../resource.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -52,6 +53,8 @@ string RDOBuildEditLineInfo::getMessage() const
 BEGIN_MESSAGE_MAP( RDOBuildEdit, RDOLogEdit )
 	//{{AFX_MSG_MAP(RDOBuildEdit)
 	//}}AFX_MSG_MAP
+	ON_UPDATE_COMMAND_UI( ID_COORD_STATUSBAR , OnUpdateCoordStatusBar )
+	ON_UPDATE_COMMAND_UI( ID_MODIFY_STATUSBAR, OnUpdateModifyStatusBar )
 END_MESSAGE_MAP()
 
 RDOBuildEdit::RDOBuildEdit(): RDOLogEdit()
@@ -66,4 +69,16 @@ void RDOBuildEdit::updateEdit( rdoEditor::RDOEditorEdit* edit, const RDOLogEditL
 {
 	RDOLogEdit::updateEdit( edit, lineInfo );
 	edit->setErrorLine( lineInfo->lineNumber );
+}
+
+void RDOBuildEdit::OnUpdateCoordStatusBar( CCmdUI *pCmdUI )
+{
+	pCmdUI->Enable();
+	pCmdUI->SetText( format( "%d: %d", getCurrentColumnNumber() + 1, getCurrentLineNumber() + 1 ).c_str() );
+}
+
+void RDOBuildEdit::OnUpdateModifyStatusBar( CCmdUI *pCmdUI )
+{
+	pCmdUI->Enable();
+	pCmdUI->SetText( format( ID_STATUSBAR_READONLY ).c_str() );
 }

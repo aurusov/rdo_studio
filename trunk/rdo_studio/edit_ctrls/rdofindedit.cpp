@@ -2,6 +2,7 @@
 #include "rdofindedit.h"
 #include "sci/SciLexer.h"
 #include "sci/LexFind.h"
+#include "../resource.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -21,6 +22,8 @@ BEGIN_MESSAGE_MAP( RDOFindEdit, RDOLogEdit )
 	//{{AFX_MSG_MAP(RDOFindEdit)
 	ON_WM_CREATE()
 	//}}AFX_MSG_MAP
+	ON_UPDATE_COMMAND_UI( ID_COORD_STATUSBAR , OnUpdateCoordStatusBar )
+	ON_UPDATE_COMMAND_UI( ID_MODIFY_STATUSBAR, OnUpdateModifyStatusBar )
 END_MESSAGE_MAP()
 
 RDOFindEdit::RDOFindEdit(): RDOLogEdit()
@@ -85,4 +88,16 @@ void RDOFindEdit::setKeyword( const string& keyword, const bool matchCase ) cons
 {
 	sendEditorString( SCI_SETPROPERTY, reinterpret_cast<unsigned long>("find_matchcase"), matchCase ? "1" : "0" );
 	sendEditorString( SCI_SETKEYWORDS, SCI_RDO_ENDOFLINEONLY_KEYWORDSINDEX, keyword.c_str() );
+}
+
+void RDOFindEdit::OnUpdateCoordStatusBar( CCmdUI *pCmdUI )
+{
+	pCmdUI->Enable();
+	pCmdUI->SetText( format( "%d: %d", getCurrentColumnNumber() + 1, getCurrentLineNumber() + 1 ).c_str() );
+}
+
+void RDOFindEdit::OnUpdateModifyStatusBar( CCmdUI *pCmdUI )
+{
+	pCmdUI->Enable();
+	pCmdUI->SetText( format( ID_STATUSBAR_READONLY ).c_str() );
 }
