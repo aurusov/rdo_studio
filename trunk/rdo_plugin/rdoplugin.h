@@ -1,8 +1,6 @@
 #ifndef RDOPLUGIN_H
 #define RDOPLUGIN_H
 
-#include <string>
-
 #ifdef RDOPLUGIN_EXPORTS
 #define RDOPLUGIN_DLL __declspec(dllexport)
 #else
