@@ -262,7 +262,8 @@ void RDOPATPatternEvent::addRelRes(string *relName, string *resName, ConvertStat
 	if(beg == CS_Keep || beg == CS_Erase)
 		currParser->error("Can use Keep and Erase status with resource name only (not with resource type) in irregular event");
 
-	relRes.push_back(new RDORelevantResourceByType(relName, relRes.size(), type, beg));
+	RDORelevantResourceByType *rt = new RDORelevantResourceByType(relName, relRes.size(), type, beg);
+	relRes.push_back(rt);
 }
 
 void RDOPATPattern::setCommonChoiceFirst() {	useCommonChoice = true; commonChoice = NULL; }
@@ -496,7 +497,7 @@ void RDOPATPatternOperation::addRelResConvertBegin(bool trace, RDOPATParamsSet *
 		if(currRelRes->getType()->getParams().size() != parSet->paramNumbs.size())
 			currParser->error("Must define all parameters when create new resource: \"" + *currRelRes->getName() + "\" in pattern \"" + *getName() + "\" in convert begin");
 
-		RDOCalc *calc = new RDOCalcCreateEmptyResource(currRelRes->getType()->getType(), trace, currRelRes->numberOfResource);
+		RDOCalc *calc = new RDOCalcCreateEmptyResource(currRelRes->getType()->getType(), trace, currRelRes->numberOfResource, currRelRes->getType()->getParams().size());
 		patRuntime->addBeginCalc(calc);
 	}
 
@@ -528,7 +529,7 @@ void RDOPATPatternOperation::addRelResConvertEnd(bool trace, RDOPATParamsSet *pa
 		if(currRelRes->getType()->getParams().size() != parSet->paramNumbs.size())
 			currParser->error("Must define all parameters when create new resource: \"" + *currRelRes->getName() + "\" in pattern \"" + *getName() + "\" in convert end");
 
-		RDOCalc *calc = new RDOCalcCreateEmptyResource(currRelRes->getType()->getType(), trace, currRelRes->numberOfResource);
+		RDOCalc *calc = new RDOCalcCreateEmptyResource(currRelRes->getType()->getType(), trace, currRelRes->numberOfResource, currRelRes->getType()->getParams().size());
 		patRuntime->addEndCalc(calc);
 	}
 
@@ -561,7 +562,7 @@ void RDOPATPatternOperation::addRelResConvertBeginEnd(bool trace, RDOPATParamsSe
 		if(currRelRes->getType()->getParams().size() != parSet->paramNumbs.size())
 			currParser->error("Must define all parameters when create new resource: \"" + *currRelRes->getName() + "\" in pattern \"" + *getName() + "\" in convert begin");
 
-		RDOCalc *calc = new RDOCalcCreateEmptyResource(currRelRes->getType()->getType(), trace, currRelRes->numberOfResource);
+		RDOCalc *calc = new RDOCalcCreateEmptyResource(currRelRes->getType()->getType(), trace, currRelRes->numberOfResource, currRelRes->getType()->getParams().size());
 		patRuntime->addBeginCalc(calc);
 	}
 
@@ -583,7 +584,7 @@ void RDOPATPatternOperation::addRelResConvertBeginEnd(bool trace, RDOPATParamsSe
 		if(currRelRes->getType()->getParams().size() != parSet2->paramNumbs.size())
 			currParser->error("Must define all parameters when create new resource: \"" + *currRelRes->getName() + "\" in pattern \"" + *getName() + "\" in convert end");
 
-		RDOCalc *calc = new RDOCalcCreateEmptyResource(currRelRes->getType()->getType(), trace2, currRelRes->numberOfResource);
+		RDOCalc *calc = new RDOCalcCreateEmptyResource(currRelRes->getType()->getType(), trace2, currRelRes->numberOfResource, currRelRes->getType()->getParams().size());
 		patRuntime->addEndCalc(calc);
 	}
 
@@ -612,7 +613,7 @@ void RDOPATPatternRule::addRelResConvertRule(bool trace, RDOPATParamsSet *parSet
 		if(currRelRes->getType()->getParams().size() != parSet->paramNumbs.size())
 			currParser->error("Must define all parameters when create new resource: \"" + *currRelRes->getName() + "\" in pattern \"" + *getName() + "\" in converter");
 
-		RDOCalc *calc = new RDOCalcCreateEmptyResource(currRelRes->getType()->getType(), trace, currRelRes->numberOfResource);
+		RDOCalc *calc = new RDOCalcCreateEmptyResource(currRelRes->getType()->getType(), trace, currRelRes->numberOfResource, currRelRes->getType()->getParams().size());
 		patRuntime->addBeginCalc(calc);
 	}
 
@@ -641,7 +642,7 @@ void RDOPATPatternEvent::addRelResConvertEvent(bool trace, RDOPATParamsSet *parS
 		if(currRelRes->getType()->getParams().size() != parSet->paramNumbs.size())
 			currParser->error("Must define all parameters when create new resource: \"" + *currRelRes->getName() + "\" in pattern \"" + *getName() + "\" in converter");
 
-		RDOCalc *calc = new RDOCalcCreateEmptyResource(currRelRes->getType()->getType(), trace, currRelRes->numberOfResource);
+		RDOCalc *calc = new RDOCalcCreateEmptyResource(currRelRes->getType()->getType(), trace, currRelRes->numberOfResource, currRelRes->getType()->getParams().size());
 		patRuntime->addBeginCalc(calc);
 	}
 

@@ -473,8 +473,9 @@ class RDOCalcCreateEmptyResource: public RDOCalc
 	int type;
 	bool traceFlag;
 	int relResNumber;
+	int numParameters;
 public:
-	RDOCalcCreateEmptyResource(int _type, bool _traceFlag, int _relResNumber);
+	RDOCalcCreateEmptyResource(int _type, bool _traceFlag, int _relResNumber, int _numParameters);
    virtual RDOValue calcValue(RDORuntime *sim) const;
 };
 

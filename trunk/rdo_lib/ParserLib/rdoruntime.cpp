@@ -167,12 +167,12 @@ RDOValue RDOCalcCreateEmptyResource::calcValue(RDORuntime *sim) const
 	sim->selectRelResource(relResNumber, res->number);
 	res->type = type;
 	res->trace = traceFlag;
-	res->params.insert(res->params.begin(), 0);
+	res->params.insert(res->params.begin(), numParameters, 0);
 	return RDOValue(1);		// just to return something
 }
 
-RDOCalcCreateEmptyResource::RDOCalcCreateEmptyResource(int _type, bool _traceFlag, int _relResNumber):
-	type(_type), traceFlag(_traceFlag), relResNumber(_relResNumber)
+RDOCalcCreateEmptyResource::RDOCalcCreateEmptyResource(int _type, bool _traceFlag, int _relResNumber, int _numParameters):
+	type(_type), traceFlag(_traceFlag), relResNumber(_relResNumber), numParameters(_numParameters)
 {
 }
 

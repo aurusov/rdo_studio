@@ -235,7 +235,7 @@ pat_pattern:	pat_convert		End {	((RDOPATPattern *)$1)->end(); $$ = $1;}
 			|		pat_time			End {	((RDOPATPattern *)$1)->end(); $$ = $1;};
 
 
-
+							 
 
 
 pat_type: integer fun_const_int_diap fun_const_int_default_val  { 
