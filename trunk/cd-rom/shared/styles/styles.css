@@ -54,11 +54,15 @@ td.syntax { padding: .2em .5em .2em .5em; font-weight: bold; font-size: 80%; tex
 
 table.visible { width: 90%; background: #777777; margin-top: .6em; margin-bottom: .3em; margin-left: 0px }
 
+table.screenshot { width: 90%; background: #FFFFFF; margin-top: .6em; margin-bottom: .3em; margin-left: 0px }
+
 th { padding: 4px 8px; background: #dddddd; text-align: left; font-size: 75%; vertical-align: middle; }
 
 td.visible { padding: 4px 8px; background: #ffffff; vertical-align: top; font-size: 75%; text-align: left }
 
 td.model { padding: 4px 8px; background: #ffffff; vertical-align: top; font-size: 75%; text-align: justify }
+
+td.screenshot { padding: 4px 8px; background: #ffffff; vertical-align: top; font-size: 75%; text-align: justify }
 
 table.navigation { padding: 0px 0px 0px 0px; background: #FFFFFF; margin: 0px 0px 0px 0px }
 
@@ -71,6 +75,8 @@ td.navigation { padding-top: 2px; padding-left: 2px; padding-bottom: 2px; paddin
 font.syntax { font-weight: bold; color: #000000; font-family: "courier new", "courier", "fixedsys", monospace; font-size: 110% }
 
 font.navigation { font-weight: bold; color: #230170; font-family: verdana, arial, helvetica, sans-serif; font-size: 100% }
+
+font.model { font-weight: bold; color: #000000; font-family: "courier new", "courier", "fixedsys", monospace; font-size: 110% }
 
 a { font-family: verdana, arial, helvetica, sans-serif }
 
