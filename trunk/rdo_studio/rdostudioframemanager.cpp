@@ -30,7 +30,7 @@ RDOStudioFrameManager::RDOStudioFrameManager():
 	frameDocTemplate( NULL ),
 	lastShowedFrame( -1 )
 {
-	frameDocTemplate = new CMultiDocTemplate( IDR_FRAMETYPE, RUNTIME_CLASS(RDOStudioFrameDoc), RUNTIME_CLASS(RDOStudioChildFrame), RUNTIME_CLASS(RDOStudioFrameView) );
+	frameDocTemplate = new FrameDocTemplate( IDR_FRAMETYPE, RUNTIME_CLASS(RDOStudioFrameDoc), RUNTIME_CLASS(RDOStudioChildFrame), RUNTIME_CLASS(RDOStudioFrameView) );
 	AfxGetApp()->AddDocTemplate( frameDocTemplate );
 }
 
@@ -132,8 +132,11 @@ void RDOStudioFrameManager::closeAll()
 	int backup = lastShowedFrame;
 	vector< Frame* >::iterator it = frames.begin();
 	while ( it != frames.end() ) {
-		if ( isValidFrameDoc( (*it)->doc ) ) {
-			(*it)->doc->OnCloseDocument();
+		RDOStudioFrameDoc* doc = (*it)->doc;
+		if ( isValidFrameDoc( doc ) ) {
+			if ( doc->frame && doc->frame->GetSafeHwnd() ) {
+				doc->frame->SendNotifyMessage( WM_CLOSE, 0, 0 );
+			}
 		}
 		it++;
 	};
@@ -145,8 +148,11 @@ void RDOStudioFrameManager::clear()
 	studioApp.mainFrame->workspace.frames->deleteChildren( studioApp.mainFrame->workspace.frames->GetRootItem() );
 	vector< Frame* >::iterator it = frames.begin();
 	while ( it != frames.end() ) {
-		if ( isValidFrameDoc( (*it)->doc ) ) {
-			(*it)->doc->OnCloseDocument();
+		RDOStudioFrameDoc* doc = (*it)->doc;
+		if ( isValidFrameDoc( doc ) ) {
+			if ( doc->frame && doc->frame->GetSafeHwnd() ) {
+				doc->frame->SendNotifyMessage( WM_CLOSE, 0, 0 );
+			}
 		}
 		delete *it++;
 	};
@@ -270,6 +276,8 @@ void RDOStudioFrameManager::bmp_insert( const std::string& name )
 						rgb_q[i].rgbBlue     = rgb_t.rgbtBlue;
 						rgb_q[i].rgbReserved = 0;
 					}
+				} else {
+					bmInfoHeader.biClrUsed = 0;
 				}
 			}
 		}
@@ -277,20 +285,24 @@ void RDOStudioFrameManager::bmp_insert( const std::string& name )
 		hBmp.bmType       = 0;
 		hBmp.bmWidth      = bmInfoHeader.biWidth;
 		hBmp.bmHeight     = bmInfoHeader.biHeight;
-		hBmp.bmWidthBytes = bmInfoHeader.biWidth * bmInfoHeader.biBitCount / 8;
+		if ( bmInfoHeader.biBitCount >= 8 ) {
+			hBmp.bmWidthBytes = bmInfoHeader.biWidth * bmInfoHeader.biBitCount / 8;
+		} else {
+			hBmp.bmWidthBytes = bmInfoHeader.biWidth * bmInfoHeader.biBitCount;
+		}
 		hBmp.bmPlanes     = bmInfoHeader.biPlanes;
 		hBmp.bmBitsPixel  = bmInfoHeader.biBitCount;
-/*
-		char* pBits = new char[ hBmp.bmWidthBytes * hBmp.bmHeight ];
+
+		char* pBits = new char[ bmInfoHeader.biClrUsed * sizeof(RGBQUAD) + hBmp.bmWidthBytes * hBmp.bmHeight ];
 		hBmp.bmBits = pBits;
+		memcpy( pBits, &rgb_q, bmInfoHeader.biClrUsed * sizeof(RGBQUAD) );
 
 		stream.seekg( bmFileHeader.bfOffBits, ios::beg );
-		stream.read( pBits, hBmp.bmWidthBytes * hBmp.bmHeight );
+		stream.read( pBits + bmInfoHeader.biClrUsed * sizeof(RGBQUAD), hBmp.bmWidthBytes * hBmp.bmHeight );
 
 		CBitmap cBmp;
 		cBmp.CreateBitmapIndirect( &hBmp );
 		DWORD a = GetLastError();
-*/
 	}
 /*
       // “еперь можно зан€тьс€ инициализацией FImage

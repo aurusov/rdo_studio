@@ -20,7 +20,9 @@ BEGIN_MESSAGE_MAP(RDOStudioFrameDoc, CDocument)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-RDOStudioFrameDoc::RDOStudioFrameDoc(): CDocument()
+RDOStudioFrameDoc::RDOStudioFrameDoc():
+	CDocument(),
+	frame( NULL )
 {
 }
 

@@ -5,18 +5,30 @@
 #pragma once
 #endif
 
+#include "rdostudioframedoc.h"
 #include <fstream>
 
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioFrameManager
 // ----------------------------------------------------------------------------
-class RDOStudioFrameDoc;
 class RDOStudioFrameView;
 
 class RDOStudioFrameManager
 {
 private:
-	CMultiDocTemplate* frameDocTemplate;
+
+	class FrameDocTemplate: public CMultiDocTemplate {
+	friend class RDOStudioFrameManager;
+	private:
+		FrameDocTemplate( UINT nIDResource, CRuntimeClass* pDocClass, CRuntimeClass* pFrameClass, CRuntimeClass* pViewClass ): CMultiDocTemplate( nIDResource, pDocClass, pFrameClass, pViewClass ) {
+		};
+		virtual CFrameWnd* CreateNewFrame( CDocument* pDoc, CFrameWnd* pOther ) {
+			CFrameWnd* frame = CMultiDocTemplate::CreateNewFrame( pDoc, pOther );
+			static_cast<RDOStudioFrameDoc*>(pDoc)->frame = frame;
+			return frame;
+		}
+	};
+	FrameDocTemplate* frameDocTemplate;
 
 	class Frame {
 	friend class RDOStudioFrameManager;

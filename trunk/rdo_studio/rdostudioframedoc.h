@@ -23,6 +23,7 @@ protected:
 public:
 	virtual ~RDOStudioFrameDoc();
 
+	CFrameWnd* frame;
 	RDOStudioFrameView* getView() const;
 
 #ifdef _DEBUG
