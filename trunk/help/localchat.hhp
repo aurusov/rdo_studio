@@ -1,14 +1,74 @@
 [OPTIONS]
 Compatibility=1.1 or later
 Compiled file=localchat.chm
+Default Window=Main
 Default topic=html\forum.htm
 Display compile progress=No
 Language=0x419 Русский
 Title=Смайлики
 
+[WINDOWS]
+Main=,,,"html\forum.htm",,,,,,0x2000,,0x3006,[290,95,668,608],,,,,,,0
+
 
 [FILES]
 html\forum.htm
+..\res\smile_yes.gif
+..\res\smile_ballet.gif
+..\res\smile_beer.gif
+..\res\smile_biggrin.gif
+..\res\smile_bis.gif
+..\res\smile_box.gif
+..\res\smile_confused.gif
+..\res\smile_cool.gif
+..\res\smile_crazy.gif
+..\res\smile_down.gif
+..\res\smile_drink.gif
+..\res\smile_duel.gif
+..\res\smile_eek.gif
+..\res\smile_eyes.gif
+..\res\smile_fart.gif
+..\res\smile_fear.gif
+..\res\smile_figa.gif
+..\res\smile_friday.gif
+..\res\smile_frown.gif
+..\res\smile_gigi.gif
+..\res\smile_gossip.gif
+..\res\smile_hah.gif
+..\res\smile_hit.gif
+..\res\smile_idea.gif
+..\res\smile_insane.gif
+..\res\smile_invalid.gif
+..\res\smile_ivan.gif
+..\res\smile_joke.gif
+..\res\smile_kos.gif
+..\res\smile_kult.gif
+..\res\smile_lamer.gif
+..\res\smile_laugh.gif
+..\res\smile_lol.gif
+..\res\smile_mad.gif
+..\res\smile_mobile.gif
+..\res\smile_no.gif
+..\res\smile_puke.gif
+..\res\smile_redface.gif
+..\res\smile_rolleyes.gif
+..\res\smile_rotate.gif
+..\res\smile_shuffle.gif
+..\res\smile_smile.gif
+..\res\smile_smirk.gif
+..\res\smile_smirk2.gif
+..\res\smile_spy.gif
+..\res\smile_super.gif
+..\res\smile_think.gif
+..\res\smile_tomato.gif
+..\res\smile_tongue.gif
+..\res\smile_up.gif
+..\res\smile_upset.gif
+..\res\smile_venera.gif
+..\res\smile_weep.gif
+..\res\smile_wink.gif
+..\res\smile_wink2.gif
+..\res\smile_amazed.gif
 
 [INFOTYPES]
 

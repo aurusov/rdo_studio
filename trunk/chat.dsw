@@ -14,6 +14,21 @@ Package=<4>
     Begin Project Dependency
     Project_Dep_Name rdo_ctrls
     End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name help
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "help"=.\help\help.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
 }}}
 
 ###############################################################################
