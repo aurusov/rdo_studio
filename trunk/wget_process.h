@@ -46,12 +46,15 @@ public:
 	bool useUsernameAndPassword;
 	QString username;
 	QString password;
-	bool writeToLog;
+	bool writeLog;
 	QString logDirectory;
 	QString retriesNumber;
 	QString waitBetweenRetrievals;
 	bool checkClipboard;
 	bool autostartClipboard;
+
+	void readConfig();
+	void writeConfig();
 };
 
 // -------------------------------------------------------
@@ -170,7 +173,7 @@ public:
 	bool useUsernameAndPassword;
 	QString username;
 	QString password;
-	bool writeToLog;
+	bool writeLog;
 	QString logDirectory;
 	QString retriesNumber;
 	QString waitBetweenRetrievals;
@@ -190,4 +193,3 @@ extern WGProcessList* WGProcess_s;
 // -------------------------------------------------------
 
 #endif // WGET_PROCESS_H
-

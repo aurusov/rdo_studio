@@ -243,7 +243,7 @@ void WGMainForm::slot_options_default()
 	dialog->PasswordCB->setChecked( WGProcess_s->useUsernameAndPassword );
 	dialog->PasswordUsrLE->setText( WGProcess_s->username );
 	dialog->PasswordPassLE->setText( WGProcess_s->password );
-	dialog->LogCB->setChecked( WGProcess_s->writeToLog );
+	dialog->LogCB->setChecked( WGProcess_s->writeLog );
 	dialog->LogDirectoryLE->setText( WGProcess_s->logDirectory );
 	dialog->RetriesNumberLE->setText( WGProcess_s->retriesNumber );
 	dialog->RetriesWaitLE->setText( WGProcess_s->waitBetweenRetrievals );
@@ -251,7 +251,6 @@ void WGMainForm::slot_options_default()
 	dialog->ClipboardAutoStartCB->setChecked( WGProcess_s->autostartClipboard );
 	dialog->updateControls();
 	if ( dialog->exec() == QDialog::Accepted ) {
-//		WGProcess_s->saveToDir = dialog->saveDir;
 		WGProcess_s->saveToDir = dialog->DirectoryLE->text();
 		WGProcess_s->doRestart = dialog->RestartCB->isChecked();
 		WGProcess_s->dontUseSuffix = dialog->DontUseSuffixCB->isChecked();
@@ -259,12 +258,13 @@ void WGMainForm::slot_options_default()
 		WGProcess_s->useUsernameAndPassword = dialog->PasswordCB->isChecked();
 		WGProcess_s->username = dialog->PasswordUsrLE->text();
 		WGProcess_s->password = dialog->PasswordPassLE->text();
-		WGProcess_s->writeToLog = dialog->LogCB->isChecked();
+		WGProcess_s->writeLog = dialog->LogCB->isChecked();
 		WGProcess_s->logDirectory = dialog->LogDirectoryLE->text();
 		WGProcess_s->retriesNumber = dialog->RetriesNumberLE->text();
 		WGProcess_s->waitBetweenRetrievals = dialog->RetriesWaitLE->text();
 		WGProcess_s->checkClipboard = dialog->ClipboardCheckCB->isChecked();
 		WGProcess_s->autostartClipboard = dialog->ClipboardAutoStartCB->isChecked();
+		WGProcess_s->writeConfig();
 	}
 	delete dialog;
 }
@@ -282,13 +282,13 @@ void WGMainForm::slot_show_toolbar()
 void WGMainForm::slot_show_grid_columns()
 {
 	WGProcList::ShowColumns columns;
-    columns.scStatus    = viewGridColStatusAction->isOn();
-    columns.scTotal     = viewGridColTotalAction->isOn();
-    columns.scCurrent   = viewGridColCurrentAction->isOn();
-    columns.scProgress  = viewGridColProgressAction->isOn();
-    columns.scSpeed     = viewGridColSpeedAction->isOn();
-    columns.scURL       = viewGridColURLAction->isOn();
-    columns.scLocalFile = viewGridColLocalFileAction->isOn();
+	columns.scStatus    = viewGridColStatusAction->isOn();
+	columns.scTotal     = viewGridColTotalAction->isOn();
+	columns.scCurrent   = viewGridColCurrentAction->isOn();
+	columns.scProgress  = viewGridColProgressAction->isOn();
+	columns.scSpeed     = viewGridColSpeedAction->isOn();
+	columns.scURL       = viewGridColURLAction->isOn();
+	columns.scLocalFile = viewGridColLocalFileAction->isOn();
 
 	procList->updateShowColumns( columns );
 }
@@ -387,7 +387,7 @@ void WGMainForm::newDownload( QString url, const bool autostart )
 			dialog->PasswordCB->setChecked( WGProcess_s->useUsernameAndPassword );
 			dialog->PasswordUsrLE->setText( WGProcess_s->username );
 			dialog->PasswordPassLE->setText( WGProcess_s->password );
-			dialog->LogCB->setChecked( WGProcess_s->writeToLog );
+			dialog->LogCB->setChecked( WGProcess_s->writeLog );
 			dialog->LogDirectoryLE->setText( WGProcess_s->logDirectory );
 			dialog->RetriesNumberLE->setText( WGProcess_s->retriesNumber );
 			dialog->RetriesWaitLE->setText( WGProcess_s->waitBetweenRetrievals );
@@ -410,7 +410,7 @@ void WGMainForm::newDownload( QString url, const bool autostart )
 					proc->useUsernameAndPassword = dialog->PasswordCB->isChecked();
 					proc->username = dialog->PasswordUsrLE->text();
 					proc->password = dialog->PasswordPassLE->text();
-					proc->writeToLog = dialog->LogCB->isChecked();
+					proc->writeLog = dialog->LogCB->isChecked();
 					proc->logDirectory = dialog->LogDirectoryLE->text();
 					proc->retriesNumber = dialog->RetriesNumberLE->text();
 					proc->waitBetweenRetrievals = dialog->RetriesWaitLE->text();
@@ -419,7 +419,7 @@ void WGMainForm::newDownload( QString url, const bool autostart )
 					proc->doRestart = WGProcess_s->doRestart;
 					proc->dontUseSuffix = WGProcess_s->dontUseSuffix;
 					proc->dontRetrieveOldFile = WGProcess_s->dontRetrieveOldFile;
-					proc->writeToLog = WGProcess_s->writeToLog;
+					proc->writeLog = WGProcess_s->writeLog;
 					proc->logDirectory = WGProcess_s->logDirectory;
 					proc->retriesNumber = WGProcess_s->retriesNumber;
 					proc->waitBetweenRetrievals = WGProcess_s->waitBetweenRetrievals;
@@ -465,5 +465,3 @@ void WGMainForm::slot_change_proc_status( WGProcess*, WGProcessStatus )
 {
 	updateControls();
 }
-
-
