@@ -62,10 +62,10 @@ RDOHotKeyToolkit::RDOHotKeyToolkit()
 	keys.insert(map<string, int>::value_type("NUMPAD9", RDONUMPAD9));
 
 
-	for(char i = '0'; i < '9'; i++)
+	for(char i = '0'; i <= '9'; i++)
 		keys.insert(map<string, int>::value_type(string(1, i), (int)i));
 
-	for(i = 'A'; i < 'Z'; i++)
+	for(i = 'A'; i <= 'Z'; i++)
 		keys.insert(map<string, int>::value_type(string(1, i), (int)i));
 
 }

@@ -173,7 +173,6 @@ protected:
    // The operator==() operator must compare only resources
    virtual bool operator == (RDOSimulator &other) { return false; }
 
-
    virtual RDOSimulator *createCopy();
 
 public:

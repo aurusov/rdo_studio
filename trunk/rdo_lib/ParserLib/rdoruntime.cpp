@@ -560,6 +560,8 @@ RDOSimulator *RDORuntime::clone()
 		}
 	}
 
+	other->allConstants = allConstants;
+
 	return other;
 }
 
