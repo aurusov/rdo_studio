@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "rdobuildedit.h"
+#include "../rdo_edit/rdoeditoredit.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -59,4 +60,10 @@ RDOBuildEdit::RDOBuildEdit(): RDOLogEdit()
 
 RDOBuildEdit::~RDOBuildEdit()
 {
+}
+
+void RDOBuildEdit::updateEdit( rdoEditor::RDOEditorEdit* edit, const RDOLogEditLineInfo* lineInfo )
+{
+	RDOLogEdit::updateEdit( edit, lineInfo );
+	edit->setErrorLine( lineInfo->lineNumber );
 }

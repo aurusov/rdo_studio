@@ -249,14 +249,19 @@ void RDOLogEdit::setSelectLine( const int line, const RDOLogEditLineInfo* lineIn
 			}
 			rdoEditor::RDOEditorEdit* edit = tab->getCurrentEdit();
 			if ( edit && edit->getLog() == this ) {
-				edit->scrollToLine( lineInfo->lineNumber );
-				int pos = edit->getPositionFromLine(lineInfo->lineNumber) + lineInfo->posInLine;
-				edit->setCurrentPos( pos );
-				edit->horzScrollToCurrentPos();
-				edit->SetFocus();
+				updateEdit( edit, lineInfo );
 			}
 		}
 	}
+}
+
+void RDOLogEdit::updateEdit( rdoEditor::RDOEditorEdit* edit, const RDOLogEditLineInfo* lineInfo )
+{
+	edit->scrollToLine( lineInfo->lineNumber );
+	int pos = edit->getPositionFromLine(lineInfo->lineNumber) + lineInfo->posInLine;
+	edit->setCurrentPos( pos );
+	edit->horzScrollToCurrentPos();
+	edit->SetFocus();
 }
 
 void RDOLogEdit::clearSelectLine()

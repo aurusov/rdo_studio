@@ -27,6 +27,9 @@ public:
 class RDOBuildEdit: public RDOLogEdit
 {
 protected:
+	virtual void updateEdit( rdoEditor::RDOEditorEdit* edit, const RDOLogEditLineInfo* lineInfo );
+
+protected:
 	//{{AFX_MSG(RDOBuildEdit)
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()

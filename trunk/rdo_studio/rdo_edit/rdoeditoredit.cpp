@@ -144,7 +144,7 @@ BOOL RDOEditorEdit::OnNotify( WPARAM wParam, LPARAM lParam, LRESULT* pResult )
 					if ( scn->modificationType & SC_MOD_CHANGEFOLD ) {
 						foldChanged( scn->line, scn->foldLevelNow, scn->foldLevelPrev );
 					}
-//					if ( hasErrorLine() ) clearErrorLine();
+					if ( hasErrorLine() ) clearErrorLine();
 					return TRUE;
 				}
 				case SCN_MARGINCLICK: {
@@ -170,7 +170,7 @@ int RDOEditorEdit::OnCreate( LPCREATESTRUCT lpCreateStruct )
 {
 	if ( RDOEditorBaseEdit::OnCreate(lpCreateStruct) == -1 ) return -1;
 
-	sendEditor( SCI_SETMODEVENTMASK, SC_MOD_CHANGEFOLD );
+	sendEditor( SCI_SETMODEVENTMASK, SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT | SC_MOD_CHANGEFOLD );
 
 	sendEditor( SCI_SETMARGINTYPEN     , sci_FOLDMARGIN_ID, SC_MARGIN_SYMBOL );
 	sendEditor( SCI_SETFOLDFLAGS, 16 );
