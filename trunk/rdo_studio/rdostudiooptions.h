@@ -190,11 +190,14 @@ private:
 
 	void updateStyleItem();
 	void updateTheme();
-	void OnUpdateModify();
 
 protected:
 	//{{AFX_DATA(RDOStudioOptionsColorsStyles)
 	enum { IDD = IDD_OPTIONS_STYLESANDCOLORS };
+	CStatic	m_vertBorderStatic;
+	CEdit	m_vertBorder;
+	CStatic	m_horzBorderStatic;
+	CEdit	m_horzBorder;
 	CComboBox	m_theme;
 	CButton	m_horzScrollBar;
 	CButton	m_wordWrap;
@@ -241,6 +244,7 @@ protected:
 	afx_msg void OnBookmarkChanged();
 	afx_msg void OnFoldChanged();
 	afx_msg void OnThemeChanged();
+	afx_msg void OnUpdateModify();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 

@@ -239,6 +239,8 @@ BEGIN_MESSAGE_MAP(RDOStudioOptionsColorsStyles, CPropertyPage)
 	ON_CBN_SELCHANGE(IDC_BOOKMARK_COMBO, OnBookmarkChanged)
 	ON_CBN_SELCHANGE(IDC_FOLD_COMBO, OnFoldChanged)
 	ON_CBN_SELCHANGE(IDC_THEME_COMBO, OnThemeChanged)
+	ON_EN_CHANGE(IDC_VERTBORDER_EDIT, OnUpdateModify)
+	ON_EN_CHANGE(IDC_HORZBORDER_EDIT, OnUpdateModify)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -373,6 +375,10 @@ void RDOStudioOptionsColorsStyles::DoDataExchange(CDataExchange* pDX)
 	CPropertyPage::DoDataExchange(pDX);
 
 	//{{AFX_DATA_MAP(RDOStudioOptionsColorsStyles)
+	DDX_Control(pDX, IDC_VERTBORDER_STATIC, m_vertBorderStatic);
+	DDX_Control(pDX, IDC_VERTBORDER_EDIT, m_vertBorder);
+	DDX_Control(pDX, IDC_HORZBORDER_STATIC, m_horzBorderStatic);
+	DDX_Control(pDX, IDC_HORZBORDER_EDIT, m_horzBorder);
 	DDX_Control(pDX, IDC_THEME_COMBO, m_theme);
 	DDX_Control(pDX, IDC_HORZSCROLLBAR_CHECK, m_horzScrollBar);
 	DDX_Control(pDX, IDC_WORDWRAP_CHECK, m_wordWrap);
@@ -512,6 +518,11 @@ BOOL RDOStudioOptionsColorsStyles::OnInitDialog()
 	isCurrentFixed = false;
 	loadFontsIntoCombo( true );
 
+	int vertBorder = sheet->style_trace.borders->vertBorder;
+	int horzBorder = sheet->style_trace.borders->horzBorder;
+	m_vertBorder.SetWindowText( format( "%d", vertBorder ).c_str() );
+	m_horzBorder.SetWindowText( format( "%d", horzBorder ).c_str() );
+
 	setPreviewAsCombo( STYLEObject::source );
 
 	updatePropOfAllObject();
@@ -617,6 +628,13 @@ void RDOStudioOptionsColorsStyles::updateStyleItem()
 		m_wordWrap.SetCheck( prop->object->wordwrap ? 1 : 0 );
 		m_horzScrollBar.SetCheck( prop->object->horzscrollbar ? 1 : 0 );
 		OnWordWrapClicked();
+
+		// Update borders
+		bool flag_border = type == STYLEObject::trace;
+		m_vertBorder.ShowWindow( flag_border ? SW_SHOW : SW_HIDE );
+		m_vertBorderStatic.ShowWindow( flag_border ? SW_SHOW : SW_HIDE );
+		m_horzBorder.ShowWindow( flag_border ? SW_SHOW : SW_HIDE );
+		m_horzBorderStatic.ShowWindow( flag_border ? SW_SHOW : SW_HIDE );
 
 		// Update bookmark
 		bool flag_bookmark = type == STYLEObject::source;
@@ -1112,6 +1130,12 @@ void RDOStudioOptionsColorsStyles::OnUpdateModify()
 	updateTheme();
 	updatePropOfAllObject();
 
+	CString str;
+	m_vertBorder.GetWindowText( str );
+	sheet->style_trace.borders->vertBorder = atoi( str );
+	m_horzBorder.GetWindowText( str );
+	sheet->style_trace.borders->horzBorder = atoi( str );
+
 	sheet->updateStyles();
 
 	SetModified( *sheet->style_editor.font  != *studioApp.mainFrame->style_editor.font ||
@@ -1130,7 +1154,8 @@ void RDOStudioOptionsColorsStyles::OnUpdateModify()
 	             *sheet->style_build.window   != *studioApp.mainFrame->style_build.window ||
 	             *sheet->style_debug.window   != *studioApp.mainFrame->style_debug.window ||
 	             *sheet->style_results.window != *studioApp.mainFrame->style_results.window ||
-	             *sheet->style_find.window    != *studioApp.mainFrame->style_find.window );
+	             *sheet->style_find.window    != *studioApp.mainFrame->style_find.window ||
+	             *sheet->style_trace.borders != *studioApp.mainFrame->style_trace.borders );
 }
 
 void RDOStudioOptionsColorsStyles::loadFontsIntoCombo( bool fixed )

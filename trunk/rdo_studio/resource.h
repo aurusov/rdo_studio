@@ -68,6 +68,10 @@
 #define IDC_CLEARAUTO_STATIC2           1046
 #define IDC_FILEASSOCIATION_CHECK       1047
 #define IDC_FILEASSOCIATION_STATIC      1048
+#define IDC_VERTBORDER_STATIC           1049
+#define IDC_VERTBORDER_EDIT             1050
+#define IDC_HORZBORDER_STATIC           1051
+#define IDC_HORZBORDER_EDIT             1052
 #define ID_CHART_ADDTONEWCHART          32771
 #define ID_VIEW_WORKSPACE               32774
 #define ID_VIEW_OUTPUT                  32775
@@ -471,7 +475,7 @@
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        156
 #define _APS_NEXT_COMMAND_VALUE         33158
-#define _APS_NEXT_CONTROL_VALUE         1049
+#define _APS_NEXT_CONTROL_VALUE         1051
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
