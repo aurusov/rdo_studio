@@ -1,0 +1,69 @@
+:Title Моделирование компоновок ГПС
+1 Цели имитационного моделирования ГПС=MODEL_AIM@Fms.hlp>main
+1 Разработчики программного комплекса=ABOUT@fms.hlp>main
+1 Программный комплекс для моделирования компоновок ГПС
+2 Общие сведения=PK_COMMON@fms.hlp>main
+2 Основные понятия и определения=PK_GLOSSARY@fms.hlp>main
+2 Ограничения и допущения=PK_OGR@fms.hlp>main
+2 Исходные данные=PK_IN_DATA@fms.hlp>main
+2 Подсистема моделирования=PK_MOD@fms.hlp>main
+2 Подсистема автоматической генерации модели
+3 Общие сведения=PK_GEN_COMMON@fms.hlp>main
+3 Создание текста модели=PK_GEN_MOD@fms.hlp>main
+3 Создание картинок для анимации=PK_GEN_BMP@fms.hlp>main
+1 Подсистема отображения результатов моделирования=PK_PROSM_RESULT@fms.hlp>main
+1 Оболочка программного комплекса=PK_OBOL@fms.hlp>main
+1 Результаты работы программного комплекса=PK_RESULT@fms.hlp>main
+1 Работа с программным комплексом
+2 Общие сведения=RAB_COMMON@fms.hlp>main
+2 Ручной режим
+3 Запуск=RAB_HAND_START@fms.hlp>main
+3 Задание пути к РДО-имитатору=RAB_HAND_RDOPATH@fms.hlp>main
+3 Открытие проекта=RAB_HAND_OPEN@fms.hlp>main
+3 Просмотр и изменение информации
+4 Общие сведения=RAB_HAND_INFO_COMMON@fms.hlp>main
+4 Информация об ОТО=RAB_HAND_INFO_OTO@fms.hlp>main
+4 Информация о ТУ=RAB_HAND_INFO_TU@fms.hlp>main
+4 Информация о складах=RAB_HAND_INFO_SKLAD@fms.hlp>main
+4 Информация о деталях=RAB_HAND_INFO_DET@fms.hlp>main
+4 Информация о компоновке=RAB_HAND_INFO_COMP@fms.hlp>main
+4 Информация о константах=RAB_HAND_INFO_CONST@fms.hlp>main
+3 Режим просмотра компоновки
+4 Общие сведения=RAB_HAND_PREV_COMMON@fms.hlp>main
+4 Масштабирование=RAB_HAND_PREV_ZOOM@fms.hlp>main
+4 Выбор видимой области компоновки=RAB_HAND_PREV_VIEWAR@fms.hlp>main
+4 Вывод и скрытие подписей=RAB_HAND_PREV_TEXT@fms.hlp>main
+4 Просмотр транспортного пути=RAB_HAND_PREV_TRANSWAY@fms.hlp>main
+4 Копирование в буфер юбмена=RAB_HAND_PREV_COPY@fms.hlp>main
+2 Генерация ИМ=RAB_HAND_GEN@fms.hlp>main
+2 Запуск процесса моделирования=RAB_HAND_RUN@fms.hlp>main
+2 Просмотр результатов моделирования=RAB_HAND_RESVIEW@fms.hlp>main
+2 Сохранение проекта=RAB_HAND_SAVE@fms.hlp>main
+2 Получение справочных сведений=RAB_HAND_HELP@fms.hlp>main
+2 Выход из приложения=RAB_HAND_EXIT@fms.hlp>main
+2 Автоматический режим
+3 Параметры командной строки=RAB_AUTO_COMLINE@fms.hlp>main
+2 Работа с ИМ
+3 Общие сведения=RAB_HAND_MODEL_COMMON@fms.hlp>common
+3 Кадр анимации "Оборудование"=RAB_HAND_MODEL_OBORUD@fms.hlp>main
+3 Кадр анимации "Окно_Анимации"=RAB_HAND_MODEL_ANIM@fms.hlp>main
+1 Описание ИМ, создаваемой программным комплексом
+2 Постановка задачи моделирования=MOD_ZAD@fms.hlp>main
+2 Типы ресурсов ИМ=MOD_RES_TYPE@fms.hlp>main
+2 Ресурсы ИМ=MOD_RES@fms.hlp>main
+2 Константы, функции и последовательности=MOD_FUN@fms.hlp>main
+2 Кадры отображения состояния
+3 Кадр "Оборудование"=MOD_ANIM_OBORUD@fms.hlp>main
+3 Кадр "Окно_Анимации"=MOD_ANIM_WINDOW@fms.hlp>main
+1 Моделирование процессов в ГПС=MOD_PROCESS@fms.hlp>main
+1 Показатели ИМ=MOD_POKAZ@fms.hlp>main
+1 Спецификация на формат файла компоновки
+2 Общие сведения=FILE_COMMON@fms.hlp>main
+2 Структура=FILE_STRUCT@fms.hlp>main
+2 Раздел [Константы]=FILE_CONST@fms.hlp>main
+2 Разделы [ОТО_ID_n]=FILE_OTO@fms.hlp>main
+2 Раздел [Склад_входной]=FILE_WARE_ENTER@fms.hlp>main
+2 Раздел [Склад_выходной]=FILE_WARE_EXIT@fms.hlp>main
+2 Разделы [ТУ_ID_m]=FILE_TU@fms.hlp>main
+2 Разделы [Номенклатура_ID_r]=FILE_NOM@fms.hlp>main
+2 Раздел [Узлы]=FILE_UZLI@fms.hlp>main
