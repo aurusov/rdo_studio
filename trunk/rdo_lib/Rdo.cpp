@@ -224,7 +224,8 @@ bool RDOSimulator::checkEndOfOperation()
          op->onBeforeOperationEnd(this);
          op->convertEnd(this);
          op->onAfterOperationEnd(this);
-         operations.erase(i);
+         i = operations.erase(i);
+			i--;
          delete op;
          return true;
       }

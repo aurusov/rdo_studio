@@ -31,15 +31,16 @@ void RDOSimulatorBase::rdoRun()
       rdoDelay(currentTime, newTime);
       currentTime = newTime;
 
-      if(!onlyEndOfOperations && endCondition())
-      {
-//         onEndCondition();
-         onlyEndOfOperations = true;
-      }
 
       bool res = false;
       for(;;)
       {
+			if(!onlyEndOfOperations && endCondition())
+			{
+	//         onEndCondition();
+				onlyEndOfOperations = true;
+			}
+
          if(!(res = doOperation(onlyEndOfOperations)))
             break;
 

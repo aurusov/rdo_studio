@@ -196,6 +196,8 @@ public:
    virtual ~RDOSimulator() {}
    void rdoInit();
    void rdoDestroy();
+
+	virtual void onPutToTreeNode() {}
 };
 
 #endif //RDO_SIMULATOR
