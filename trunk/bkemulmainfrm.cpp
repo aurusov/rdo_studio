@@ -44,8 +44,6 @@ BEGIN_MESSAGE_MAP(BKMainFrame, CFrameWnd)
 	ON_UPDATE_COMMAND_UI(ID_EMULATOR_POWEOFF, OnUpdateEmulatorPoweOff)
 	ON_UPDATE_COMMAND_UI(ID_EMULATOR_RESET, OnUpdateEmulatorReset)
 	ON_UPDATE_COMMAND_UI(ID_EMULATOR_SOFTRESET, OnUpdateEmulatorSoftReset)
-	ON_WM_KEYDOWN()
-	ON_WM_KEYUP()
 	//}}AFX_MSG_MAP
 	ON_COMMAND_RANGE( ID_VIEW_FONT_DEFAULT, ID_VIEW_FONT_WORKS, OnFontClicked )
 END_MESSAGE_MAP()
@@ -249,9 +247,14 @@ void BKMainFrame::draw( const BYTE* bk_video_from, int count_byte, BYTE BK_byte_
 	BYTE* lpSurfMemory = static_cast<BYTE*>(display->getSurfaceDesc()->lpSurface);
 	if ( !lpSurfMemory ) return;
 	bool colorMonitor = emul.video.isColorMonitor();
+	BK_line_Y += ( ~((emul.getMemoryWord(0177664) & 0xFF)-0330) ) + 1;
+	// Режим вывода 1/4 водео-памяти (адреса 070000-077777)
+	bool smallVideo = !(emul.getMemoryWord(0177664) & 0001000);
+	if ( smallVideo ) {
+		BK_line_Y += 0300;
+	}
 	switch ( bytePerPixel ) {
 		case 2: {
-//				BYTE BK_line_Y = (BYTE)((~((BK->Memory_word[0177664] & 0xFF) - (BYTE)0330))+1);
 /*
 			// Режим вывода 1/4 водео-памяти (адреса 070000-077777)
 			bool smallVideo = !(BK->Memory_word[0177664] & 0001000);
@@ -618,65 +621,23 @@ void BKMainFrame::OnUpdateEmulatorSoftReset(CCmdUI* pCmdUI)
 	pCmdUI->Enable( emul.isPowerON() );
 }
 
-void BKMainFrame::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
+LRESULT BKMainFrame::DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
-	CFrameWnd::OnKeyDown(nChar, nRepCnt, nFlags);
-	bool BK_sysKey = false;
-	switch ( nChar ) {
-		// Esc = СТОП
-		case VK_ESCAPE:
-			if ( !emul.StopPressed ) {
-				emul.cpu.setPR_4();
+	switch ( message ) {
+		case WM_KEYDOWN   :
+		case WM_SYSKEYDOWN: {
+			if ( emul.keyboard.keyDown( wParam, lParam ) ) {
+				return 0;
 			}
-			emul.StopPressed = true;
-			BK_sysKey        = true;
 			break;
-		// Shift = Нижний регистр (временная смена регистров)
-		case VK_SHIFT:
-			emul.Shift = true;
-			BK_sysKey  = true;
-			break;
-		// Alt = АР2 (Alt-left) или СУ (Alt-right)
-		case VK_MENU:
-			if ( nFlags & 0x1000000 ) {
-				emul.SU = true;
-			} else {
-				emul.AR2 = true;
+		}
+		case WM_KEYUP     :
+		case WM_SYSKEYUP  : {
+			if ( emul.keyboard.keyUp( wParam, lParam ) ) {
+				return 0;
 			}
-			BK_sysKey = true;
 			break;
-		// CapsLock = ЗАГЛ/СТР
-		case VK_CAPITAL:
-			emul.ZAGL  = !emul.ZAGL;
-			BK_sysKey = true;
-			break;
+		}
 	}
-}
-
-void BKMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
-{
-	CFrameWnd::OnKeyUp(nChar, nRepCnt, nFlags);
-//	DeleteKeyFromList(Key);
-	bool BK_sysKey = false;
-	switch ( nChar ) {
-		// Esc = СТОП
-		case VK_ESCAPE:
-			emul.StopPressed = false;
-			BK_sysKey        = true;
-			break;
-		// Shift = Нижний регистр (временная смена регистров)
-		case VK_SHIFT:
-			emul.Shift = false;
-			BK_sysKey  = true;
-			break;
-		// Alt = АР2 (Alt-left) или СУ (Alt-right)
-		case VK_MENU:
-			if ( nFlags & 0x1000000 ) {
-				emul.SU = false;
-			} else {
-				emul.AR2 = false;
-			}
-			BK_sysKey = true;
-			break;
-	}
+	return CFrameWnd::DefWindowProc( message, wParam, lParam );
 }

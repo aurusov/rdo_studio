@@ -107,6 +107,10 @@ SOURCE=.\bkemulcpu.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\bkemulkeyboard.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\bkemulmainfrm.cpp
 # End Source File
 # Begin Source File
@@ -157,6 +161,10 @@ SOURCE=.\bkemulapp.h
 # Begin Source File
 
 SOURCE=.\bkemulcpu.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\bkemulkeyboard.h
 # End Source File
 # Begin Source File
 

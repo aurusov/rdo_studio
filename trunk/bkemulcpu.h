@@ -170,7 +170,11 @@ public:
 	void reset();
 	void nextIteration();
 
-	void setPR_4() { PR_4 = true; }
+	BYTE getPrior() const { return FP3 ? 1:0 << 3 | FP2 ? 1:0 << 2 | FP1 ? 1:0; }
+
+	void setPR_4()   { PR_4   = true; }
+	void setPR_60()  { PR_60  = true; }
+	void setPR_274() { PR_274 = true; }
 };
 
 } // namespace bkemul

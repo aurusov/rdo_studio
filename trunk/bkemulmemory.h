@@ -15,6 +15,7 @@ namespace bkemul {
 class BKEmulMemory
 {
 friend class BKEmul;
+friend class BKEmulKeyboard;
 
 private:
 	std::vector< BYTE > memory;

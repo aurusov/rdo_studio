@@ -82,8 +82,6 @@ protected:
 	afx_msg void OnUpdateEmulatorPoweOff(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateEmulatorReset(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateEmulatorSoftReset(CCmdUI* pCmdUI);
-	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
-	afx_msg void OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
 	//}}AFX_MSG
 	afx_msg void OnFontClicked( UINT nID );
 	DECLARE_MESSAGE_MAP()
@@ -92,6 +90,8 @@ protected:
 	public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	virtual void RecalcLayout(BOOL bNotify = TRUE);
+	protected:
+	virtual LRESULT DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam);
 	//}}AFX_VIRTUAL
 };
 

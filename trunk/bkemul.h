@@ -8,6 +8,7 @@
 #include "bkemulcpu.h"
 #include "bkemulmemory.h"
 #include "bkemulvideo.h"
+#include "bkemulkeyboard.h"
 
 namespace bkemul {
 
@@ -21,7 +22,7 @@ private:
 	bool BK_SYS_Timer_work;     // Системный таймер БК запущен/остановлен
 
 	// Регист, имеющий разное значение по чтению/записи.
-	WORD R_177716_read;   // Регист 0177716 - состояние клавиатуры.
+	BYTE R_177717_byte_read;   // Регист 0177716 - состояние клавиатуры.
 	WORD R_177716_write;
 
 	void doSpeaker() const;
@@ -45,18 +46,10 @@ public:
 	BKEmul();
 	virtual ~BKEmul();
 
-	BKEmulCPU    cpu;
-	BKEmulMemory memory;
-	BKEmulVideo  video;
-
-	// Клавиатура
-	bool RUS;
-	bool ZAGL;
-	bool Shift;
-	bool AR2;
-	bool SU;
-	bool KeyPressed;
-	bool StopPressed;
+	BKEmulCPU      cpu;
+	BKEmulMemory   memory;
+	BKEmulVideo    video;
+	BKEmulKeyboard keyboard;
 
 	void powerON();
 	void powerOFF();

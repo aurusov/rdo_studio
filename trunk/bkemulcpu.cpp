@@ -169,6 +169,17 @@ void BKEmulCPU::nextIteration()
 		BK_doHALT();
 		return;
 	}
+	// Прерывание с клавиатуры
+	if ( PR_60 ) {
+		PR_60 = false;
+		interrupt(060);
+		return;
+	}
+	if ( PR_274 ) {
+		PR_274 = false;
+		interrupt(0274);
+		return;
+	}
 
 	command = emul.getMemoryWord( R7 );
 	R7 += static_cast<WORD>(2);

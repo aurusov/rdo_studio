@@ -49,18 +49,16 @@ void BKEmul::reset()
 	BK_SYS_Timer_work = false;
 	memory.clear();
 	loadROM( "MONITOR_10" );
-	loadROM( "BASIC_10_120" );
+	loadROM( "MIRAGE120" );
 	loadROM( "BASIC_10_140" );
 	loadROM( "BASIC_10_160" );
 
-	R_177716_read   = 0100300;           // Задает начальный адрес и флаг отжатой клавиши
-	                                     // ст. байт = 0100000 - адрес старта процессора
-	                                     // 0100 = 1 - клавиша отжата
-	                                     // 0200 = 1 - признак отсутствия арифметического расширения,
-	                                     //            должен быть = 1
-	R_177716_write  = 0000000;           // 0100 = 0
+	R_177717_byte_read = 0100000 >> 8; // Задает начальный адрес и флаг отжатой клавиши
+	                                   // ст. байт = 0100000 - адрес старта процессора
+	R_177716_write     = 0000000;      // 0100 = 0
 
 	cpu.reset();
+	keyboard.reset();
 /*
 	memory.set_word( 0100000, 0012700 );
 	memory.set_word( 0100002, 0040000 );
@@ -77,14 +75,11 @@ void BKEmul::reset()
 
 void BKEmul::softReset()
 {
-	R_177716_read   = 0120300;           // Задает начальный адрес и флаг отжатой клавиши
-	                                     // ст. байт = 0100000 - адрес старта процессора
-	                                     // 0100 = 1 - клавиша отжата
-	                                     // 0200 = 1 - признак отсутствия арифметического расширения,
-	                                     //            должен быть = 1
-	R_177716_write  = 0000000;           // 0100 = 0
+	R_177717_byte_read = 0120000 >> 8;
+	R_177716_write     = 0000000;
 
 	cpu.reset();
+	keyboard.reset();
 }
 
 void BKEmul::loadROM( const std::string& rom ) const
@@ -143,8 +138,8 @@ BYTE BKEmul::getMemoryByte( WORD address )
 		// В регистре управления таймером биты 8-15 читаются единицами
 		case 0177713: return memory.get_byte( address ) & 0377;
 		// Вернуть значение системного регистра по чтению
-		case 0177716: return static_cast<BYTE>(R_177716_read);
-		case 0177717: return 0;
+		case 0177716: return keyboard.R_177716_byte_read;
+		case 0177717: return R_177717_byte_read;
 		// Регистр параллельного программируемого интерфейса содержит нулевую нагрузку
 		case 0177714: return 0;
 		case 0177715: return 0;
@@ -171,7 +166,7 @@ WORD BKEmul::getMemoryWord( WORD address )
 		// В регистре управления таймером биты 8-15 читаются единицами
 		case 0177712: return data | 0xFF00;
 		// Вернуть значение системного регистра по чтению
-		case 0177716: return R_177716_read;
+		case 0177716: return R_177717_byte_read << 8 | keyboard.R_177716_byte_read;
 		// Регистр параллельного программируемого интерфейса содержит нулевую нагрузку
 		case 0177714: return 0;
 	}
