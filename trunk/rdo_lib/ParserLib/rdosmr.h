@@ -3,6 +3,7 @@
 
 #include "rdoStdFuncs.h"
 #include "rdotrace.h"
+#include "rdoframe.h"
 
 namespace rdoRuntime
 {
@@ -34,12 +35,7 @@ public:
 	string *resultsFileName;
 	string *traceFileName;
 
-	enum ShowMode
-	{
-		SM_NoShow,
-		SM_Monitor,
-		SM_Animation
-	} showMode;
+	ShowMode showMode;
 
 	bool showModeSet;
 	bool frameNumberSet;

@@ -8,6 +8,36 @@
 
 using namespace std;
 
+enum ShowMode
+{
+	SM_NoShow,
+	SM_Monitor,
+	SM_Animation
+};
+
+enum FileToParse
+{
+	RTP_FILE,
+	RSS_FILE,
+	FUN_FILE,
+	PAT_FILE,
+	OPR_FILE,
+	DPT_FILE,
+	PMD_FILE,
+	FRM_FILE,
+	SMR1_FILE,
+	SMR2_FILE
+};
+
+struct RDOSyntaxError
+{
+	string message;
+	int lineNo;
+	FileToParse file;
+	RDOSyntaxError(string _message, int _lineNo, FileToParse _file)
+		: message(_message), lineNo(_lineNo), file(_file)	{}
+};
+
 struct RDOFrameElement
 {
 	enum Type{

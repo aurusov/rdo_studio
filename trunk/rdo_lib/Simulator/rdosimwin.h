@@ -9,6 +9,8 @@
 #include <afxwin.h>
 #include <strstream>
 
+#include "rdoframe.h"
+
 using namespace std;
 
 namespace rdoModelObjects {
@@ -42,12 +44,14 @@ class RdoSimulator
 	CWinThread* th;
 	void terminateModel();
 	void closeModel(); 
-	bool parseModel();
 public:
 	RdoSimulator();
 	~RdoSimulator();
+	bool parseModel();
 	void runModel();
 	void stopModel();
+	vector<RDOSyntaxError>* getErrors();
+	double getModelTime();
 	void parseSMRFileInfo( strstream& smr, rdoModelObjects::RDOSMRFileInfo& info );
 	friend UINT RunningThreadControllingFunction( LPVOID pParam );
 };

@@ -241,7 +241,7 @@ void RDOParser::parseSMR1(istream* arg_yyin, ostream* arg_yyout)
 	}
 	catch(RDOSMR1OkException &)
 	{
-		// Everithing ok, just end of first part parcing
+		// Everithing ok, just end of first part parsing
 	}
 	currParser = NULL;
 }
@@ -259,10 +259,15 @@ void RDOParser::parseSMR2(istream* arg_yyin, ostream* arg_yyout)
 	currParser = NULL;
 }
 
-void RDOParser::error( const char *mes ) {  
+void RDOParser::error( const char *mes ) 
+{
+	errors.push_back(RDOSyntaxError(mes, rdoLineno(), fileToParse));
+	throw rdoParse::RDOSyntaxException("");
+/*
 	ostringstream str;
 	str << mes << " in " << rdoLineno() << " string, near symbol: \"" << rdoYYText() << "\""; 
 	throw rdoParse::RDOSyntaxException(str.str().c_str());
+*/
 }
 
 int RDOParser::lex(void)

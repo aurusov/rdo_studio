@@ -598,7 +598,7 @@ void RDORuntime::rdoDelay(double fromTime, double toTime)
 	config.realTimeDelay = (toTime - fromTime)/config.showRate * 3600 * 1000;
 
 	config.frame = NULL;
-	if(config.showAnimation == RDO_SM_Animation)
+	if(config.showAnimation == SM_Animation)
 	{
 		RDOFRMFrame *frame = allFrames.at(config.currFrameToShow);
 		if(frame->checkCondition(this))

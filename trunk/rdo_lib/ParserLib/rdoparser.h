@@ -4,6 +4,7 @@
 using namespace std;
 #include "rdolexinterface.h"
 #include "rdoStdFuncs.h"
+#include "rdoframe.h"
 
 namespace rdoRuntime
 {
@@ -44,19 +45,7 @@ class RDOParser
 {
 	ostream* out;
 public:
-	enum FileToParse
-	{
-		RTP_FILE,
-		RSS_FILE,
-		FUN_FILE,
-		PAT_FILE,
-		OPR_FILE,
-		DPT_FILE,
-		PMD_FILE,
-		FRM_FILE,
-		SMR1_FILE,
-		SMR2_FILE
-	} fileToParse;
+	FileToParse fileToParse;
 
    vector<string *> allRTPNames;
    vector<double *> allRTPDoubles;
@@ -94,6 +83,9 @@ public:
 	int constCounter;
 
 	RDOSMR *smr;
+
+	vector<RDOSyntaxError> errors;
+
 	
 	RDOParser();
 	~RDOParser();

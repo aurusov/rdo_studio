@@ -252,7 +252,7 @@ bool RdoModel::parseModel(string smrFileName)
 
 
 /////////  RDO config initialization ////////////////////////
-		runtime->config.showAnimation = (RdoShowMode)parser->smr->showMode;
+		runtime->config.showAnimation = parser->smr->showMode;
 		int size = runtime->allFrames.size();
 		for(int i = 0; i < size; i++)
 			runtime->config.allFrameNames.push_back(*runtime->allFrames.at(i)->getName());

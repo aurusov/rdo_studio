@@ -155,16 +155,16 @@ smr_descr: smr_model
 		|	smr_descr Statistic_file	'=' IDENTIF			{ ((RDOSMR *)$1)->setValue("Statistic_file",	&RDOSMR::statisticFileName,(string *)$4); $$ = $1; }
 		|	smr_descr Results_file		'=' IDENTIF			{ ((RDOSMR *)$1)->setValue("Results_file",	&RDOSMR::resultsFileName,	(string *)$4); $$ = $1; }
 		|	smr_descr Trace_file			'=' IDENTIF			{ ((RDOSMR *)$1)->setValue("Trace_file",		&RDOSMR::traceFileName,		(string *)$4); $$ = $1; }
-		|	smr_descr Show_mode			'=' smr_show_mode	{ ((RDOSMR *)$1)->setShowMode((RDOSMR::ShowMode)$4); $$ = $1; }
+		|	smr_descr Show_mode			'=' smr_show_mode	{ ((RDOSMR *)$1)->setShowMode((ShowMode)$4); $$ = $1; }
 		|	smr_descr Frame_number		'=' INT_CONST		{ ((RDOSMR *)$1)->setFrameNumber($4); $$ = $1; }
 		|	smr_descr Show_rate			'=' REAL_CONST		{ ((RDOSMR *)$1)->setValue("Show_rate",		&RDOSMR::showRate,			(double *)$4); $$ = $1; }
 		|	smr_descr Run_StartTime		'=' REAL_CONST		{ ((RDOSMR *)$1)->setValue("Run_StartTime",	&RDOSMR::runStartTime,		(double *)$4); $$ = $1; }
 		|	smr_descr Trace_StartTime	'=' REAL_CONST		{ ((RDOSMR *)$1)->setValue("Trace_StartTime",&RDOSMR::traceStartTime,	(double *)$4); $$ = $1; }
 		|	smr_descr Trace_EndTime		'=' REAL_CONST		{ ((RDOSMR *)$1)->setValue("Trace_EndTime",	&RDOSMR::traceEndTime,		(double *)$4); $$ = $1; };
 
-smr_show_mode:		NoShow		{ $$ = RDOSMR::ShowMode::SM_NoShow;		}
-					|	Monitor 		{ $$ = RDOSMR::ShowMode::SM_Monitor;	}
-					|	Animation	{ $$ = RDOSMR::ShowMode::SM_Animation; };
+smr_show_mode:		NoShow		{ $$ = SM_NoShow;		}
+					|	Monitor 		{ $$ = SM_Monitor;	}
+					|	Animation	{ $$ = SM_Animation; };
 
 %%
 

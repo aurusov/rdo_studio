@@ -1085,7 +1085,7 @@ case 8:
     break;}
 case 9:
 #line 158 ".\\rdosmr1.y"
-{ ((RDOSMR *)yyvsp[-3])->setShowMode((RDOSMR::ShowMode)yyvsp[0]); yyval = yyvsp[-3]; ;
+{ ((RDOSMR *)yyvsp[-3])->setShowMode((ShowMode)yyvsp[0]); yyval = yyvsp[-3]; ;
     break;}
 case 10:
 #line 159 ".\\rdosmr1.y"
@@ -1109,15 +1109,15 @@ case 14:
     break;}
 case 15:
 #line 165 ".\\rdosmr1.y"
-{ yyval = RDOSMR::ShowMode::SM_NoShow;		;
+{ yyval = SM_NoShow;		;
     break;}
 case 16:
 #line 166 ".\\rdosmr1.y"
-{ yyval = RDOSMR::ShowMode::SM_Monitor;	;
+{ yyval = SM_Monitor;	;
     break;}
 case 17:
 #line 167 ".\\rdosmr1.y"
-{ yyval = RDOSMR::ShowMode::SM_Animation; ;
+{ yyval = SM_Animation; ;
     break;}
 }
 

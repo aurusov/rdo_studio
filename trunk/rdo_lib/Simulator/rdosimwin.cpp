@@ -61,7 +61,7 @@ UINT RunningThreadControllingFunction( LPVOID pParam )
 
 
 /////////  RDO config initialization ////////////////////////
-		simulator->runtime->config.showAnimation = (RdoShowMode)simulator->parser->smr->showMode;
+		simulator->runtime->config.showAnimation = simulator->parser->smr->showMode;
 		int size = simulator->runtime->allFrames.size();
 		for(int i = 0; i < size; i++)
 			simulator->runtime->config.allFrameNames.push_back(*simulator->runtime->allFrames.at(i)->getName());
@@ -103,7 +103,6 @@ UINT RunningThreadControllingFunction( LPVOID pParam )
 			throw;
 		}
 
-		kernel.notifyString(RDOKernel::debugString, "Start executing");
 		try {
 			simulator->runtime->rdoRun();
 		}
@@ -123,7 +122,7 @@ UINT RunningThreadControllingFunction( LPVOID pParam )
 			throw;
 		}
 		kernel.notify(RDOKernel::endExecuteModel);
-		kernel.notifyString(RDOKernel::debugString, "End executing");
+		kernel.debug("End executing\n");
 	}
 	catch(RDOException &)
 	{
@@ -136,6 +135,7 @@ UINT RunningThreadControllingFunction( LPVOID pParam )
 
 bool RdoSimulator::parseModel()
 {
+	kernel.debug("Start parsing\n");
 	terminateModel();
 	closeModel();
 
@@ -206,13 +206,24 @@ bool RdoSimulator::parseModel()
 			parser->parseSMR2(&SMRstream2, &consol);
 	}
 	catch(RDOException &ex) {
-		string mess = ex.getType() + " : " + ex.mess + " in file";
+		string mess = ex.getType() + " : " + ex.mess;
 		kernel.notifyString(RDOKernel::buildString, mess);
 		kernel.notify(RDOKernel::parseError);
 		closeModel();
 		return false;
 	}
+/*
+	if(parser->errors.size() > 0)
+	{
+		for(int i = 0; i < parser->errors.size(); i++)
+		{
+			kernel.notifyString(RDOKernel::buildString, parser->errors.at(i).message);
+		}
 
+		return false;
+	}
+*/
+	kernel.debug("End parsing\n");
 	return true;
 }
 
@@ -222,7 +233,7 @@ void RdoSimulator::runModel()
 	if(res)
 	{
 		kernel.notify(RDOKernel::modelStarted);
-		kernel.notifyString( RDOKernel::debugString, "Start execute model\r\n" );
+		kernel.debug("Start executing\n");
 		th = AfxBeginThread(RunningThreadControllingFunction, (LPVOID)this);
 	}
 }
@@ -275,7 +286,7 @@ void RdoSimulator::parseSMRFileInfo( strstream& smr, rdoModelObjects::RDOSMRFile
 		return;
 	}
 
-	kernel.notifyString(RDOKernel::buildString, "SMR File read successfully");
+	kernel.notifyString(RDOKernel::buildString, "SMR File read successfully\n");
 
 	if(parser->smr->modelName)
 		info.model_name = *parser->smr->modelName;
@@ -299,4 +310,20 @@ void RdoSimulator::parseSMRFileInfo( strstream& smr, rdoModelObjects::RDOSMRFile
 		info.trace_file = *parser->smr->traceFileName;
 
 	closeModel();
+}
+
+vector<RDOSyntaxError>* RdoSimulator::getErrors()
+{
+	if(parser)
+		return &parser->errors;
+	else
+		return NULL;
+}
+
+double RdoSimulator::getModelTime()
+{
+	if(runtime)
+		return runtime->getTimeNow();
+	else
+		return 0.;
 }

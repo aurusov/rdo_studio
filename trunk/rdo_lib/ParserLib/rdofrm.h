@@ -5,7 +5,7 @@
 //#include "rdoStdFuncs.h"
 //#include "rdortp.h"
 
-#include "simulator.h"
+#include "rdoframe.h"
 
 namespace rdoRuntime
 {

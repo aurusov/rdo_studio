@@ -10,35 +10,6 @@
 
 using namespace std;
 
-enum RdoShowMode
-{
-	RDO_SM_NoShow,
-	RDO_SM_Monitor,
-	RDO_SM_Animation
-};
-
-struct RDOConfig
-{
-//////// Interactive /////////////////
-	RdoShowMode showAnimation;
-	vector<string> allFrameNames;
-	int currFrameToShow;
-	vector<int> keysPressed;
-	bool mouseClicked;
-	vector<string> activeAreasMouseClicked;
-	
-//////// Frame /////////////////////
-	RDOFrame *frame;
-
-//////// Timing ///////////////////
-	double currTime;			// model time
-	double newTime;			// model time
-	double showRate;
-	double realTimeDelay;	// msec
-};
-
-typedef void (*TracerCallBack) (string *newString, void *param);
-typedef void (*FrameCallBack) (RDOConfig *config, void *param);
 
 namespace rdoRuntime {
 	class RDORuntime;
