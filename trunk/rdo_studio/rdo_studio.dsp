@@ -650,6 +650,76 @@ SOURCE=.\rdostudioframeview.h
 # End Source File
 # End Group
 # End Group
+# Begin Group "RDO-Chart"
+
+# PROP Default_Filter ""
+# Begin Group "RDO-Chart Source Files"
+
+# PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
+# Begin Source File
+
+SOURCE=.\rdostudiochartdoc.cpp
+
+!IF  "$(CFG)" == "rdo_studio - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
+
+# SUBTRACT CPP /Fr
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdostudiochartoptions.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdostudiochartview.cpp
+
+!IF  "$(CFG)" == "rdo_studio - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
+
+# SUBTRACT CPP /Fr
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdostudiochartviewstyle.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdostudiodocserie.cpp
+# End Source File
+# End Group
+# Begin Group "RDO-Chart Header Files"
+
+# PROP Default_Filter "h;hpp;hxx;hm;inl"
+# Begin Source File
+
+SOURCE=.\rdostudiochartdoc.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdostudiochartoptions.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdostudiochartview.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdostudiochartviewstyle.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdostudiodocserie.h
+# End Source File
+# End Group
+# End Group
 # Begin Group "Edit Ctrls"
 
 # PROP Default_Filter ""
@@ -1066,76 +1136,6 @@ SOURCE=.\res\rdostudiomodeldoc.ico
 
 SOURCE=.\res\tracertreectrl.bmp
 # End Source File
-# End Group
-# Begin Group "RDO-Chart"
-
-# PROP Default_Filter ""
-# Begin Group "RDO-Chart Source Files"
-
-# PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
-# Begin Source File
-
-SOURCE=.\rdostudiochartdoc.cpp
-
-!IF  "$(CFG)" == "rdo_studio - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
-
-# SUBTRACT CPP /Fr
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdostudiochartoptions.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdostudiochartview.cpp
-
-!IF  "$(CFG)" == "rdo_studio - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
-
-# SUBTRACT CPP /Fr
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdostudiochartviewstyle.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdostudiodocserie.cpp
-# End Source File
-# End Group
-# Begin Group "RDO-Chart Header Files"
-
-# PROP Default_Filter "h;hpp;hxx;hm;inl"
-# Begin Source File
-
-SOURCE=.\rdostudiochartdoc.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdostudiochartoptions.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdostudiochartview.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdostudiochartviewstyle.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdostudiodocserie.h
-# End Source File
-# End Group
 # End Group
 # End Target
 # End Project
