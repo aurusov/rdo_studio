@@ -20,6 +20,7 @@
 // ---------- CChatApp
 // ----------------------------------------------------------------------------
 class CChatMainFrame;
+class CChatSplash;
 
 class CChatApp: public CWinApp
 {
@@ -44,6 +45,7 @@ public:
 	CChatUserList       users;
 	CChatNetwork        network;
 	CChatViewerStyle    style;
+	CChatSplash*        splash;
 
 	std::string getUserName() const    { return userName; }
 	void setUserName( const std::string& value );
@@ -57,7 +59,7 @@ public:
 
 	void refreshUserList();
 
-	CFont& getFont();
+	CFont& getFont() { return font; }
 
 	static std::string getFullFileName();
 	static std::string extractFilePath( const std::string& fileName );

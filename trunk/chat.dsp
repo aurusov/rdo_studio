@@ -151,6 +151,10 @@ SOURCE=.\chatsound.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\chatsplash.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\chatstatusmode.cpp
 # End Source File
 # Begin Source File
@@ -241,6 +245,10 @@ SOURCE=.\chatsmilelistctrl.h
 # Begin Source File
 
 SOURCE=.\chatsound.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\chatsplash.h
 # End Source File
 # Begin Source File
 
@@ -417,6 +425,10 @@ SOURCE=.\res\net.bmp
 # Begin Source File
 
 SOURCE=.\res\popupmsg.wav
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\privatemsg.wav
 # End Source File
 # Begin Source File
 
@@ -660,6 +672,10 @@ SOURCE=.\res\sound.bmp
 # End Source File
 # Begin Source File
 
+SOURCE=.\Splsh16.bmp
+# End Source File
+# Begin Source File
+
 SOURCE=.\res\statusModeToolbar.bmp
 # End Source File
 # Begin Source File
@@ -703,9 +719,5 @@ SOURCE=.\res\tray_message.ico
 SOURCE=.\res\userstreectrl.bmp
 # End Source File
 # End Group
-# Begin Source File
-
-SOURCE=.\res\privatemsg.wav
-# End Source File
 # End Target
 # End Project

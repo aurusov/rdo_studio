@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "chatapp.h"
 #include "chatmainfrm.h"
+#include "chatsplash.h"
 #include "htmlhelp.h"
 #include "resource.h"
 
@@ -28,7 +29,8 @@ CChatApp::CChatApp():
 	hostName( "" ),
 	ip( "" ),
 	port( 4002 ),
-	broadcastIP( "192.168.1.255" )
+	broadcastIP( "192.168.1.255" ),
+	splash( NULL )
 {
 }
 
@@ -41,6 +43,13 @@ BOOL CChatApp::InitInstance()
 	free( (void*)m_pszRegistryKey );
 	m_pszRegistryKey = _tcsdup( _T("localChat") );
 
+	mainFrame = new CChatMainFrame;
+	m_pMainWnd = mainFrame;
+
+	splash = new CChatSplash;
+	splash->show( mainFrame );
+
+	splash->setInitInfo( IDS_SPLASH_INITINFO_FONT );
 	HFONT hf = (HFONT)::GetStockObject( SYSTEM_FIXED_FONT );
 //	HFONT hf = (HFONT)::GetStockObject( DEFAULT_GUI_FONT );
 	if ( hf ) {
@@ -52,18 +61,10 @@ BOOL CChatApp::InitInstance()
 		}
 	}
 
-/*
-	CFont* font = new CFont();
-	LOGFONT lf;
-	memset( &lf, 0, sizeof( LOGFONT ) );
-	lf.lfHeight = 8;
-	lf.lfCharSet = DEFAULT_CHARSET;
-	lf.lfPitchAndFamily = FIXED_PITCH | FF_ROMAN;
-	font->CreateFontIndirect( &lf );
-*/
+	splash->setInitInfo( IDS_SPLASH_INITINFO_SOCKET );
+	if ( !initSocket() ) return FALSE;
 
-	mainFrame = new CChatMainFrame;
-	m_pMainWnd = mainFrame;
+	splash->setInitInfo( IDS_SPLASH_INITINFO_SMILES );
 	mainFrame->LoadFrame( IDR_MAINFRAME, WS_OVERLAPPEDWINDOW | FWS_ADDTOTITLE, NULL, NULL );
 	mainFrame->SetIcon( LoadIcon( MAKEINTRESOURCE(IDR_MAINFRAME) ), TRUE );
 	mainFrame->SetIcon( LoadIcon( MAKEINTRESOURCE(IDR_MAINFRAME) ), FALSE );
@@ -79,18 +80,21 @@ BOOL CChatApp::InitInstance()
 	sounds.init();
 	statusModes.init();
 
-	if ( !initSocket() ) return FALSE;
-
 	udp.send( "<connect:" + getUserName() + ">" );
 
 	refreshUserList();
 	network.refresh();
+
+	delete splash;
+	splash = NULL;
 
 	return TRUE;
 }
 
 int CChatApp::ExitInstance()
 {
+	network.stopEnum();
+
 	HtmlHelp( NULL, NULL, HH_CLOSE_ALL, 0 );
 
 	udp.send( "<close>" );
@@ -98,6 +102,8 @@ int CChatApp::ExitInstance()
 
 	sounds.saveSetting();
 	statusModes.saveSetting();
+
+	if ( splash ) { delete splash; splash = NULL; }
 
 	return CWinApp::ExitInstance();
 }
@@ -194,11 +200,6 @@ void CChatApp::refreshUserList()
 {
 	users.clear( users.getUserByIP( getIP() ) );
 	udp.send( "<getallhostname>" );
-}
-
-CFont& CChatApp::getFont()
-{
-	return font;
 }
 
 std::string CChatApp::getFullFileName()

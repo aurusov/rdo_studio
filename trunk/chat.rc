@@ -231,6 +231,14 @@ BEGIN
     LTEXT           "andrewu@mail.ru",IDC_EMAIL_STATIC,120,28,64,8,SS_NOTIFY
 END
 
+IDD_INIT DIALOGEX 0, 0, 212, 60
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
+EXSTYLE WS_EX_TOOLWINDOW
+CAPTION "Running..."
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -294,6 +302,14 @@ BEGIN
         RIGHTMARGIN, 185
         TOPMARGIN, 7
         BOTTOMMARGIN, 74
+    END
+
+    IDD_INIT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 205
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 53
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -579,8 +595,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,2,0,220
- PRODUCTVERSION 0,2,0,220
+ FILEVERSION 0,2,0,228
+ PRODUCTVERSION 0,2,0,228
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -598,14 +614,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "Application for chat in localnet\0"
-            VALUE "FileVersion", "0, 2, 0, 220\0"
+            VALUE "FileVersion", "0, 2, 0, 228\0"
             VALUE "InternalName", "localChat\0"
             VALUE "LegalCopyright", "Copyright (C) 2002\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "localchat.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "localChat\0"
-            VALUE "ProductVersion", "0, 2, 0, 220\0"
+            VALUE "ProductVersion", "0, 2, 0, 228\0"
             VALUE "SpecialBuild", "\0"
         END
     END
@@ -713,6 +729,12 @@ BEGIN
     IDS_SMILES              "Smiles"
     IDS_IP_UNKNOW           "Unknow IP"
     IDS_STATUSINFO_VALUE    "Status mode info: %s"
+    IDS_CHANGENAME_VIEWERLOG "%s changed name to %s"
+    IDS_SPLASH_INITINFO     "Initialization: %s..."
+    IDS_SPLASH_INITINFO_FONT "Font"
+    IDS_SPLASH_INITINFO_SOCKET "Socket"
+    IDS_SPLASH_INITINFO_SMILES "Smiles"
+    IDS_SPLASH_RUNNING      "Running..."
 END
 
 #endif    // English (U.S.) resources
