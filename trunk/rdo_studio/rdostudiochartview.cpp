@@ -363,11 +363,11 @@ void RDOStudioChartView::drawTitle( CDC &dc, CRect& chartRect )
 
 void RDOStudioChartView::drawLegend( CDC &dc, CRect& legendRect )
 {
-	int old_bk = dc.SetBkMode( TRANSPARENT );
 	RDOStudioChartDoc* doc = GetDocument();
 	CRect tmprect;
 	tmprect.CopyRect( &legendRect );
 	CSize size;
+	int old_bk = dc.SetBkMode( TRANSPARENT );
 	for ( vector< RDOStudioDocSerie* >::iterator it = doc->series.begin(); it != doc->series.end(); it++ ) {
 		size = (*it)->drawInLegend( dc, tmprect, fontLegend, style->getTheme()->legendFgColor );
 		tmprect.top += size.cy;
@@ -560,7 +560,6 @@ void RDOStudioChartView::copyToClipboard()
 			}
 			dc.SelectObject( oldBitmap );
 		}
-
 	}
 
 	CloseClipboard();
@@ -631,8 +630,9 @@ void RDOStudioChartView::OnDraw(CDC* pDC)
 	}
 
 	pDC->BitBlt( 0, 0, newClientRect.Width(), newClientRect.Height(), &dc, 0, 0, SRCCOPY );
-	dc.SelectObject( pOldBrush );
+	
 	dc.SelectObject( pOldPen );
+	dc.SelectObject( pOldBrush );
 	dc.SetBkMode( oldBkMode );
 	dc.SelectObject( pOldBitmap );
 

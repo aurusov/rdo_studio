@@ -80,25 +80,36 @@ RDOTracerResource::RDOTracerResource( RDOTracerResType* const type, string& name
 	Name( name ),
 	id( 0 )
 {
+	mutex.Lock();
+
 	int count = resType->getParamsCount();
 	for ( int i = 0; i < count; i++ ) {
 		addParam( new RDOTracerResParam( this ) );
 	}
+
+	mutex.Unlock();
 }
 
 RDOTracerResource::~RDOTracerResource()
 {
+	mutex.Lock();
+
 	int count = params.size();
 	for ( int i = 0; i < count; i++ ) {
 		delete params.at( i );
 	}
+
+	mutex.Unlock();
 }
 
-int RDOTracerResource::addParam( RDOTracerResParam* const value )
+void RDOTracerResource::addParam( RDOTracerResParam* const value )
 {
+	mutex.Lock();
+
 	value->setTitle( Name + "." + resType->getParamInfo( params.size() )->Name );
 	params.push_back( value );
-	return params.size() - 1;
+
+	mutex.Unlock();
 }
 
 RDOTracerResParam* RDOTracerResource::getParam( const int index ) const

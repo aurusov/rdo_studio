@@ -204,6 +204,7 @@ RDOLogCtrl::RDOLogCtrl( RDOLogStyle* style ):
 
 RDOLogCtrl::~RDOLogCtrl()
 {
+	clear();
 }
 
 BOOL RDOLogCtrl::PreCreateWindow( CREATESTRUCT& cs )
@@ -1012,13 +1013,16 @@ void RDOLogCtrl::clear()
 	mutex.Lock();
 	
 	strings.clear();
+
 	stringsCount      = 0;
 	maxStrWidth       = 0;
 	lastViewableLine  = 0;
 	selectedLine = -1;
-	updateScrollBars();
-	Invalidate();
-	updateWindow();
+	if ( ::IsWindow( m_hWnd ) ) {
+		updateScrollBars();
+		Invalidate();
+		updateWindow();
+	}
 	
 	mutex.Unlock();
 }

@@ -33,6 +33,7 @@ class RDOTracerResType;
 class RDOTracerResource : public RDOTracerTreeItem
 {
 protected:
+	CMutex mutex;
 	std::vector <RDOTracerResParam*> params;
 	RDOTracerResType* resType;
 	bool erased;
@@ -43,7 +44,7 @@ public:
 	std::string Name;
 	int id;
 	RDOTracerResType* getType() const { return resType; };
-	int addParam( RDOTracerResParam* const value );
+	void addParam( RDOTracerResParam* const value );
 	RDOTracerResParam* getParam( const int index ) const;
 	int getParamIndex( const RDOTracerResParam* const param ) const;
 	void setParams( std::string& line, RDOTracerTimeNow* const time, const int eventIndex, const bool erasing = false );

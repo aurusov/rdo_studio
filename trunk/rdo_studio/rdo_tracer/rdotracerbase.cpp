@@ -252,6 +252,8 @@ void RDOTracerBase::dispathNextString( string& line )
 	if ( line.empty() )
 		return;
 
+	mutex.Lock();
+	
 	string key = getNextValue( line );
 	RDOTracerTimeNow* timeNow;
 	if ( key != "SO" && key.find( "ST" ) == string::npos && key != "SD" && key.find( "SE" ) == string::npos )
@@ -290,6 +292,8 @@ void RDOTracerBase::dispathNextString( string& line )
 	} else if ( key == "SEF" ) {
 	} else if ( key == "SEU" ) {
 	}*/
+
+	mutex.Unlock();
 }
 
 string RDOTracerBase::getNextValue( string& line )
@@ -416,6 +420,8 @@ void RDOTracerBase::resultChanging( string& line, RDOTracerTimeNow* const time  
 
 void RDOTracerBase::deleteTrace()
 {
+	mutex.Lock();
+	
 	int count = resources.size();
 	for ( int i = 0; i < count; i++ ) {
 		delete resources.at( i );
@@ -452,6 +458,8 @@ void RDOTracerBase::deleteTrace()
 		it++;
 	}
 	timeList.clear();
+
+	mutex.Unlock();
 }
 
 void RDOTracerBase::clear()
@@ -500,6 +508,8 @@ RDOTracerTreeCtrl* RDOTracerBase::createTree()
 
 void RDOTracerBase::getModelStructure( stringstream& stream )
 {
+	mutex.Lock();
+
 	string s;
 	
 	while( !stream.eof() ) {
@@ -547,6 +557,8 @@ void RDOTracerBase::getModelStructure( stringstream& stream )
 			}
 		}
 	}
+
+	mutex.Unlock();
 
 	/*stream >> s;
 
@@ -622,9 +634,10 @@ RDOStudioChartDoc* RDOTracerBase::addSerieToChart( RDOTracerSerie* const serie, 
 	if( chart ) {
 		chart->addSerie( serie );
 	}
-	return chart;
-
+	
 	mutex.Unlock();
+
+	return chart;
 }
 
 void RDOTracerBase::addChart( RDOStudioChartDoc* const chart )

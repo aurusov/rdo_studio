@@ -42,7 +42,8 @@ RDOTracerSerie::RDOTracerSerie( RDOTracerSerieKind _serieKind ) :
 	RDOTracerTreeItem( true ),
 	serieKind( _serieKind ),
 	minValue( 0 ),
-	maxValue( 0 )
+	maxValue( 0 ),
+	value_count( 0 )
 {
 }
 
@@ -91,6 +92,8 @@ void RDOTracerSerie::addValue( RDOTracerValue* const value )
 
 	values.push_back( value );
 
+	value_count++;
+
 	for_each( documents.begin(), documents.end(), bind2nd( mem_fun1( &RDOStudioChartDoc::newValueToSerieAdded ), value ) );
 	
 	mutex.Unlock();
@@ -103,7 +106,7 @@ void RDOTracerSerie::getValueCount( int& count ) const
 {
 	const_cast<CMutex&>(mutex).Lock();
 
-	count = values.size();
+	count = value_count;
 
 	const_cast<CMutex&>(mutex).Unlock();
 }
@@ -118,9 +121,13 @@ void RDOTracerSerie::getCaptions( vector<string> &captions, const int val_count 
 		double valoffset = ( maxValue - minValue ) / (double)( val_count - 1 );
 		double valo = minValue;
 		string formatstr = "%.3f";
-		for ( int i = 0; i < val_count; i++ ) {
+		if ( value_count > 1 ) {
+			for ( int i = 0; i < val_count; i++ ) {
+				captions.push_back( format( formatstr.c_str(), valo ) );
+				valo += valoffset;
+			}
+		} else {
 			captions.push_back( format( formatstr.c_str(), valo ) );
-			valo += valoffset;
 		}
 	}
 
@@ -160,9 +167,13 @@ void RDOTracerSerie::getCaptionsDouble( vector<string> &captions, const int val_
 	double valoffset = ( maxValue - minValue ) / (double)( val_count - 1 );
 	double valo = minValue;
 	string formatstr = "%.3f";
-	for ( int i = 0; i < val_count; i++ ) {
+	if ( value_count > 1 ) {
+		for ( int i = 0; i < val_count; i++ ) {
+			captions.push_back( format( formatstr.c_str(), valo ) );
+			valo += valoffset;
+		}
+	} else {
 		captions.push_back( format( formatstr.c_str(), valo ) );
-		valo += valoffset;
 	}
 
 	const_cast<CMutex&>(mutex).Unlock();

@@ -42,6 +42,7 @@ protected:
 	valuesList values;
 	double minValue;
 	double maxValue;
+	int value_count;
 
 	bool isTemporaryResourceParam() const;
 
