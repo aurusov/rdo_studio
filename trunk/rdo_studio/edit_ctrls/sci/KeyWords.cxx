@@ -98,8 +98,7 @@ int wxForceScintillaLexers(void) {
 int Scintilla_LinkLexers() {
   extern LexerModule lmRDO;
   extern LexerModule lmFind;
-  extern LexerModule lmBuild;
-  extern LexerModule lmDebug;
+  extern LexerModule lmText;
 
   if ( &lmRDO )
     {
@@ -109,13 +108,9 @@ int Scintilla_LinkLexers() {
     {
       return 2;
     }
-  else if ( &lmBuild )
+  else if ( &lmText )
     {
       return 3;
-    }
-  else if ( &lmDebug )
-    {
-      return 4;
     }
   else
     {
