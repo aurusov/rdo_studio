@@ -27,11 +27,11 @@ BEGIN_MESSAGE_MAP(RDOStudioMainFrame, CMDIFrameWnd)
 	//{{AFX_MSG_MAP(RDOStudioMainFrame)
 	ON_WM_CREATE()
 	ON_COMMAND(ID_VIEW_TOOLBAR_FILE_TOOLBAR, OnViewFileToolbar)
-	ON_COMMAND(ID_VIEW_TOOLBAR_MODEL_TOOLBAR, OnViewModelToolbar)
 	ON_COMMAND(ID_VIEW_TOOLBAR_EDIT_TOOLBAR, OnViewEditToolbar)
+	ON_COMMAND(ID_VIEW_TOOLBAR_MODEL_TOOLBAR, OnViewModelToolbar)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_TOOLBAR_FILE_TOOLBAR, OnUpdateViewFileToolbar)
-	ON_UPDATE_COMMAND_UI(ID_VIEW_TOOLBAR_MODEL_TOOLBAR, OnUpdateViewModelToolbar)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_TOOLBAR_EDIT_TOOLBAR, OnUpdateViewEditToolbar)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_TOOLBAR_MODEL_TOOLBAR, OnUpdateViewModelToolbar)
 	ON_COMMAND(ID_VIEW_WORKSPACE, OnViewWorkspace)
 	ON_COMMAND(ID_VIEW_OUTPUT, OnViewOutput)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_WORKSPACE, OnUpdateViewWorkspace)
@@ -124,19 +124,19 @@ int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	fileToolBarImageList.Create( IDB_FILE_TOOLBAR_D, 16, 0, 0xFF00FF );
 	fileToolBar.GetToolBarCtrl().SetDisabledImageList( &fileToolBarImageList );
 
-	modelToolBar.CreateEx( this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
-	modelToolBar.LoadToolBar( IDR_MODEL_TOOLBAR );
-	modelToolBar.GetToolBarCtrl().SetWindowText( format( IDR_MODEL_TOOLBAR ).c_str() );
-
-	modelToolBarImageList.Create( IDB_MODEL_TOOLBAR_D, 16, 0, 0xFF00FF );
-	modelToolBar.GetToolBarCtrl().SetDisabledImageList( &modelToolBarImageList );
-
 	editToolBar.CreateEx( this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
 	editToolBar.LoadToolBar( IDR_EDIT_TOOLBAR );
 	editToolBar.GetToolBarCtrl().SetWindowText( format( IDR_EDIT_TOOLBAR ).c_str() );
 
 	editToolBarImageList.Create( IDB_EDIT_TOOLBAR_D, 16, 0, 0xFF00FF );
 	editToolBar.GetToolBarCtrl().SetDisabledImageList( &editToolBarImageList );
+
+	modelToolBar.CreateEx( this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
+	modelToolBar.LoadToolBar( IDR_MODEL_TOOLBAR );
+	modelToolBar.GetToolBarCtrl().SetWindowText( format( IDR_MODEL_TOOLBAR ).c_str() );
+
+	modelToolBarImageList.Create( IDB_MODEL_TOOLBAR_D, 16, 0, 0xFF00FF );
+	modelToolBar.GetToolBarCtrl().SetDisabledImageList( &modelToolBarImageList );
 
 	statusBar.Create( this );
 	statusBar.SetIndicators( indicators, sizeof(indicators)/sizeof(UINT) );
@@ -156,16 +156,16 @@ int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	output.SetBarStyle( output.GetBarStyle() | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
 
 	fileToolBar.EnableDocking( CBRS_ALIGN_ANY );
-	modelToolBar.EnableDocking( CBRS_ALIGN_ANY );
 	editToolBar.EnableDocking( CBRS_ALIGN_ANY );
+	modelToolBar.EnableDocking( CBRS_ALIGN_ANY );
 	workspace.EnableDocking( CBRS_ALIGN_ANY );
 	output.EnableDocking( CBRS_ALIGN_ANY );
 
 	EnableDocking( CBRS_ALIGN_ANY );
 
 	DockControlBar( &fileToolBar );
-	dockControlBarBesideOf( modelToolBar, fileToolBar );
-	dockControlBarBesideOf( editToolBar, modelToolBar );
+	dockControlBarBesideOf( editToolBar, fileToolBar );
+	dockControlBarBesideOf( modelToolBar, editToolBar );
 	DockControlBar( &workspace, AFX_IDW_DOCKBAR_LEFT );
 	DockControlBar( &output, AFX_IDW_DOCKBAR_BOTTOM );
 

@@ -27,10 +27,10 @@ DECLARE_DYNAMIC(RDOStudioMainFrame)
 private:
 	CToolBar   fileToolBar;
 	CImageList fileToolBarImageList;
-	CToolBar   modelToolBar;
-	CImageList modelToolBarImageList;
 	CToolBar   editToolBar;
 	CImageList editToolBarImageList;
+	CToolBar   modelToolBar;
+	CImageList modelToolBarImageList;
 	RDOStudioStatusBar statusBar;
 
 	void dockControlBarBesideOf( CControlBar& bar, CControlBar& baseBar );
