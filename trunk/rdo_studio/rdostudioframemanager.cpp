@@ -214,165 +214,131 @@ int RDOStudioFrameManager::getNumColors( BITMAPINFOHEADER* pBMIH ) const
 
 void RDOStudioFrameManager::bmp_insert( const std::string& name )
 {
-	BMP* bmp = new BMP;
-	bmp->name = name;
-	bitmaps.push_back( bmp );
+//	BMP* bmp = new BMP;
+//	bmp->name = name;
+//	bitmaps.push_back( bmp );
+
+	bitmaps[name] = NULL;
 
 	stringstream stream;
 	kernel.getRepository()->loadBMP( name, stream );
 
-	// В потоке, перед битовой картой, идет заголовок файла битовой карты
-	BITMAPFILEHEADER bmFileHeader;
-	stream.read( reinterpret_cast<char*>(&bmFileHeader), sizeof(bmFileHeader) );
+	try {
+		// В потоке, перед битовой картой, идет заголовок файла битовой карты
+		BITMAPFILEHEADER bmFileHeader;
+		stream.read( reinterpret_cast<char*>(&bmFileHeader), sizeof(bmFileHeader) );
+		if ( stream.rdstate() != ios_base::goodbit ) throw BMPReadError();
 
-	// Проверяем заголовок битовой карты на магическое число "BM"
-	if ( bmFileHeader.bfType == 0x4D42 ) {
+		// Проверяем заголовок битовой карты на магическое число "BM"
+		if ( bmFileHeader.bfType != 0x4D42 ) throw BMPReadError();
 
 		// Вот теперь читаем сам заголовок битовой карты
 		BITMAPINFOHEADER bmInfoHeader;
 		stream.read( reinterpret_cast<char*>(&bmInfoHeader), sizeof(bmInfoHeader) );
+		if ( stream.rdstate() != ios_base::goodbit ) throw BMPReadError();
 
 		RGBQUAD rgb_q[256];
 		memset( &rgb_q, 0, sizeof(rgb_q) );
+		int size_ColorTable = 0;
 
+		// Если ПОЛЕ 'размер', только что прочитанной структуры, не соврадает
+		// с sizeof(BITMAPINFOHEADER), то остаются два варианта:
+		// 1. Это была структура BITMAPCOREHEADER, которая меньше по размеру,
+		//    но она нас всетаки устраивает, т.к. мы можем сами дополнить необходимые
+		//    поля структуры BITMAPINFOHEADER
+		// 2. Это не файл битовой карты, что никуда не годится -> throw
+		// Ну а если ПОЛЕ 'размер' соврадает, то мы прочитали то, что нам нужно
 		if ( bmInfoHeader.biSize == sizeof(BITMAPINFOHEADER) ) {
 			// Читаем палитру из потока
 			bmInfoHeader.biClrUsed = getNumColors( &bmInfoHeader );
-			int size_ColorTable = bmInfoHeader.biClrUsed * sizeof(RGBQUAD);
+			size_ColorTable = bmInfoHeader.biClrUsed * sizeof(RGBQUAD);
+			if ( size_ColorTable > sizeof(rgb_q) ) throw BMPReadError();
+
 			stream.read( reinterpret_cast<char*>(&rgb_q), size_ColorTable );
-		} else {
-			// Если ПОЛЕ 'размер', только что прочитанной структуры, не соврадает
-			// с sizeof(BITMAPINFOHEADER), то остаются два варианта:
-			// 1. Это была структура BITMAPCOREHEADER, которая меньше по размеру,
-			//    но она нас всетаки устраивает, т.к. мы можем сами дополнить необходимые
-			//    поля структуры BITMAPINFOHEADER
-			// 2. Это не файл битовой карты, что никуда не годится -> throw
-			// Ну а если ПОЛЕ 'размер' соврадает, то мы прочитали то, что нам нужно и
-			// не выполняем этот блок.
-			if ( bmInfoHeader.biSize == sizeof(BITMAPCOREHEADER) ) {
-				// Необходима конвертация файла PM в DIB
-				// Откатываемся в потоке на начало структуры BITMAPCOREHEADER и читаем ее
-				stream.seekg( sizeof(BITMAPFILEHEADER), ios::beg );
-				BITMAPCOREHEADER bmCoreHeader;
-				stream.read( reinterpret_cast<char*>(&bmCoreHeader), sizeof(bmCoreHeader) );
-				bmInfoHeader.biSize     = sizeof(BITMAPINFOHEADER);
-				bmInfoHeader.biWidth    = bmCoreHeader.bcWidth;
-				bmInfoHeader.biHeight   = bmCoreHeader.bcHeight;
-				bmInfoHeader.biPlanes   = bmCoreHeader.bcPlanes;
-				bmInfoHeader.biBitCount = bmCoreHeader.bcBitCount;
-				bmInfoHeader.biCompression = BI_RGB;
-				bmInfoHeader.biSizeImage     = 0;
-				bmInfoHeader.biXPelsPerMeter = 0;
-				bmInfoHeader.biYPelsPerMeter = 0;
-				bmInfoHeader.biClrUsed       = getNumColors(&bmInfoHeader);
-				if ( bmInfoHeader.biClrUsed <= 256 ) {
-					bmInfoHeader.biClrImportant = 0;
-					// Читаем каждый PM цевт и переводим его в DIB
-					RGBTRIPLE rgb_t;
-					for (int i = 0; i < (int)bmInfoHeader.biClrUsed; i++) {
-						stream.read( reinterpret_cast<char*>(&rgb_t), sizeof(RGBTRIPLE) );
-						rgb_q[i].rgbRed      = rgb_t.rgbtRed;
-						rgb_q[i].rgbGreen    = rgb_t.rgbtGreen;
-						rgb_q[i].rgbBlue     = rgb_t.rgbtBlue;
-						rgb_q[i].rgbReserved = 0;
-					}
-				} else {
-					bmInfoHeader.biClrUsed = 0;
+			if ( stream.rdstate() != ios_base::goodbit ) throw BMPReadError();
+
+		} else if ( bmInfoHeader.biSize == sizeof(BITMAPCOREHEADER) ) {
+			// Необходима конвертация файла PM в DIB
+			// Откатываемся в потоке на начало структуры BITMAPCOREHEADER и читаем ее
+			stream.seekg( sizeof(BITMAPFILEHEADER), ios::beg );
+			BITMAPCOREHEADER bmCoreHeader;
+			stream.read( reinterpret_cast<char*>(&bmCoreHeader), sizeof(bmCoreHeader) );
+			bmInfoHeader.biSize     = sizeof(BITMAPINFOHEADER);
+			bmInfoHeader.biWidth    = bmCoreHeader.bcWidth;
+			bmInfoHeader.biHeight   = bmCoreHeader.bcHeight;
+			bmInfoHeader.biPlanes   = bmCoreHeader.bcPlanes;
+			bmInfoHeader.biBitCount = bmCoreHeader.bcBitCount;
+			bmInfoHeader.biCompression = BI_RGB;
+			bmInfoHeader.biSizeImage     = 0;
+			bmInfoHeader.biXPelsPerMeter = 0;
+			bmInfoHeader.biYPelsPerMeter = 0;
+			bmInfoHeader.biClrUsed       = getNumColors(&bmInfoHeader);
+			if ( bmInfoHeader.biClrUsed <= 256 ) {
+				bmInfoHeader.biClrImportant = 0;
+				size_ColorTable = bmInfoHeader.biClrUsed * sizeof(RGBQUAD);
+				// Читаем каждый PM цевт и переводим его в DIB
+				RGBTRIPLE rgb_t;
+				for (int i = 0; i < (int)bmInfoHeader.biClrUsed; i++) {
+					stream.read( reinterpret_cast<char*>(&rgb_t), sizeof(RGBTRIPLE) );
+					rgb_q[i].rgbRed      = rgb_t.rgbtRed;
+					rgb_q[i].rgbGreen    = rgb_t.rgbtGreen;
+					rgb_q[i].rgbBlue     = rgb_t.rgbtBlue;
+					rgb_q[i].rgbReserved = 0;
 				}
+			} else {
+				throw BMPReadError();
 			}
+		} else {
+			throw BMPReadError();
 		}
+		if ( !bmInfoHeader.biSizeImage ) {
+			bmInfoHeader.biSizeImage = ((((bmInfoHeader.biWidth * bmInfoHeader.biBitCount) + 31) & ~31) >> 3) * bmInfoHeader.biHeight;
+		}
+		char* pBits = new char[ size_ColorTable + bmInfoHeader.biSizeImage ];
+		memcpy( pBits, &rgb_q, size_ColorTable );
+
+		stream.seekg( bmFileHeader.bfOffBits, ios::beg );
+		stream.read( pBits + size_ColorTable, bmInfoHeader.biSizeImage );
+
 		BITMAP hBmp;
 		hBmp.bmType       = 0;
 		hBmp.bmWidth      = bmInfoHeader.biWidth;
 		hBmp.bmHeight     = bmInfoHeader.biHeight;
-		if ( bmInfoHeader.biBitCount >= 8 ) {
-			hBmp.bmWidthBytes = bmInfoHeader.biWidth * bmInfoHeader.biBitCount / 8;
-		} else {
-			hBmp.bmWidthBytes = bmInfoHeader.biWidth * bmInfoHeader.biBitCount;
-		}
+		hBmp.bmWidthBytes = (((bmInfoHeader.biWidth * bmInfoHeader.biBitCount) + 31) & ~31) >> 3;
 		hBmp.bmPlanes     = bmInfoHeader.biPlanes;
 		hBmp.bmBitsPixel  = bmInfoHeader.biBitCount;
-
-		char* pBits = new char[ bmInfoHeader.biClrUsed * sizeof(RGBQUAD) + hBmp.bmWidthBytes * hBmp.bmHeight ];
-		hBmp.bmBits = pBits;
-		memcpy( pBits, &rgb_q, bmInfoHeader.biClrUsed * sizeof(RGBQUAD) );
-
-		stream.seekg( bmFileHeader.bfOffBits, ios::beg );
-		stream.read( pBits + bmInfoHeader.biClrUsed * sizeof(RGBQUAD), hBmp.bmWidthBytes * hBmp.bmHeight );
+		hBmp.bmBits       = pBits;
 
 		CBitmap cBmp;
 		cBmp.CreateBitmapIndirect( &hBmp );
-		DWORD a = GetLastError();
+
+		CDC dcMemory;
+		dcMemory.CreateCompatibleDC( CWnd::GetDesktopWindow()->GetDC() );
+		CBitmap* pOldBitmap1 = dcMemory.SelectObject( &cBmp );
+
+		bitmaps[name] = new CBitmap;
+		bitmaps[name]->CreateCompatibleBitmap( CWnd::GetDesktopWindow()->GetDC(), hBmp.bmWidth, hBmp.bmHeight );
+		CDC dcBmp;
+		dcBmp.CreateCompatibleDC( CWnd::GetDesktopWindow()->GetDC() );
+		CBitmap* pOldBitmap2 = dcBmp.SelectObject( bitmaps[name] );
+		dcBmp.BitBlt( 0, 0, hBmp.bmWidth, hBmp.bmHeight, &dcMemory, 0, 0, SRCCOPY );
+
+		dcMemory.SelectObject( pOldBitmap1 );
+		dcBmp.SelectObject( pOldBitmap2 );
+
+//		cBmp.DeleteObject();
+//		delete pBits;
+
+	} catch ( BMPReadError ) {
 	}
-/*
-      // Теперь можно заняться инициализацией FImage
-      FImage.width   = bmInfoHeader.biWidth;
-      FImage.height  = bmInfoHeader.biHeight;
-      FImage.aspectx = 1;
-      FImage.aspecty = 1;
-      FImage.depth   = bmInfoHeader.biBitCount;
-      FImage.rgb     = bmInfoHeader.biBitCount > 8 ? true : false;
-      FImage.bytes_per_line = (FImage.width * FImage.depth) >> 3;
-      // Выделяем память под пикселы
-      // Надуюсь, что new и в этом случае не возвращает NULL
-      FImage.buffer1 = new byte[FImage.bytes_per_line * FImage.height];
-      // Копируем пикселы из потока в конец FImage.buffer1 к его началу
-      byte* pBits  = (byte*)FImage.buffer1 + FImage.height * FImage.bytes_per_line;
-      int bytes_per_line = FImage.bytes_per_line;
-      cs.Stream->Seek(StreamStartPos + bmFileHeader.bfOffBits, soFromBeginning);
-      for (int i = 0; i < FImage.height; i++) {
-        pBits -= bytes_per_line;
-        if (cs.Stream->Read(pBits, bytes_per_line) != bytes_per_line)
-          throw BaseObjError(sErrorRead_Bits);
-      }
-      // Заполняем оставшиеся поля структуры
-      switch (FImage.depth) {
-        case 16: FImage.red_mask     = 0x7C00;
-                 FImage.green_mask   = 0x03E0;
-                 FImage.blue_mask    = 0x001F;
-                 FImage.alpha_mask   = 0x0000;
-                 FImage.palette_size = 0;
-                 break;
-        case 24: FImage.red_mask     = 0xFF0000;
-                 FImage.green_mask   = 0x00FF00;
-                 FImage.blue_mask    = 0x0000FF;
-                 FImage.alpha_mask   = 0x000000;
-                 FImage.palette_size = 0;
-                 break;
-        case 32: FImage.red_mask     = 0x00FF0000;
-                 FImage.green_mask   = 0x0000FF00;
-                 FImage.blue_mask    = 0x000000FF;
-                 FImage.alpha_mask   = 0x00000000;
-                 FImage.palette_size = 0;
-                 break;
-        default: FImage.red_mask     = 0xFF;
-                 FImage.green_mask   = 0xFF;
-                 FImage.blue_mask    = 0xFF;
-                 FImage.alpha_mask   = 0x00000000;
-                 FImage.palette_size = GetNumColors(&bmInfoHeader);
-                 if (FImage.palette_size > 256) throw BaseObjError(sErrorPaletteCount);
-                 break;
-      }
-      // Копируем палитру, если она есть
-      if (FImage.palette_size > 0) {
-        FImage.palette = new D3DRMPALETTEENTRY[FImage.palette_size];
-        for (int i = 0; i < FImage.palette_size; i++) {
-            FImage.palette[i].red   = rgb_q[i].rgbRed;
-            FImage.palette[i].green = rgb_q[i].rgbGreen;
-            FImage.palette[i].blue  = rgb_q[i].rgbBlue;
-            FImage.palette[i].flags = D3DRMPALETTE_READONLY;
-        }
-      }
-    }
-*/
-	kernel.debug( "%s\r\n", bmp->name.c_str() );
 }
 
 void RDOStudioFrameManager::bmp_clear()
 {
-	vector< BMP* >::iterator it = bitmaps.begin();
+	map< string, CBitmap* >::iterator it = bitmaps.begin();
 	while ( it != bitmaps.end() ) {
-		delete *it++;
+		delete it->second;
+		it++;
 	};
 	bitmaps.clear();
 }

@@ -6,7 +6,7 @@
 #endif
 
 #include "rdostudioframedoc.h"
-#include <fstream>
+#include <map>
 
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioFrameManager
@@ -30,6 +30,9 @@ private:
 	};
 	FrameDocTemplate* frameDocTemplate;
 
+	class BMPReadError {
+	};
+
 	class Frame {
 	friend class RDOStudioFrameManager;
 	private:
@@ -44,7 +47,7 @@ private:
 		CEvent              close;
 	};
 	static std::vector< Frame* > frames;
-
+/*
 	class BMP {
 	friend class RDOStudioFrameManager;
 	private:
@@ -53,8 +56,10 @@ private:
 		std::string name;
 		std::string mask;
 		bool hasMask;
+		CBitmap bmp;
 	};
 	std::vector< BMP* > bitmaps;
+*/
 	int getNumColors( BITMAPINFOHEADER* pBMIH ) const;
 
 	int lastShowedFrame;
@@ -81,6 +86,7 @@ public:
 	void closeAll();
 	void clear();
 
+	std::map< std::string, CBitmap* > bitmaps;
 	void bmp_insert( const std::string& name );
 	void bmp_clear();
 
