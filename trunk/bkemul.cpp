@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include "bkemul.h"
-#include "bkemulapp.h"
-#include "bkemulmainfrm.h"
-#include "bkemulchildview.h"
+#include "resource.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -13,13 +11,35 @@ static char THIS_FILE[] = __FILE__;
 using namespace bkemul;
 
 // --------------------------------------------------------------
+// ---------- BKMemoryAccessError
+// --------------------------------------------------------------
+IMPLEMENT_DYNAMIC( BKMemoryAccessError, CException )
+
+BKMemoryAccessError::BKMemoryAccessError( const WORD _address, const WORD _data, const bool _isByte ):
+	CException(),
+	address( _address ),
+	data( _data ),
+	isByte( _isByte )
+{
+};
+
+int BKMemoryAccessError::ReportError( UINT nType, UINT nMessageID ) {
+	std::string s;
+	if ( isByte ) {
+		BYTE byte = data;
+		s = format( IDS_MEMORYACCESSERROR_BYTE, byte, address );
+	} else {
+		s = format( IDS_MEMORYACCESSERROR_WORD, data, address );
+	}
+	return AfxMessageBox( s.c_str(), nType | MB_ICONERROR );
+}
+
+// --------------------------------------------------------------
 // ---------- BKEmul
 // --------------------------------------------------------------
 BKEmul emul;
 
-BKEmul::BKEmul():
-	colorMonitor( true ),
-	BK_SYS_Timer_work( false )
+BKEmul::BKEmul(): BK_SYS_Timer_work( false )
 {
 	memory.resize( 64 * 1024 );
 	std::vector< unsigned char >::iterator it = memory.begin();
@@ -30,6 +50,11 @@ BKEmul::BKEmul():
 
 BKEmul::~BKEmul()
 {
+}
+
+void BKEmul::powerON()
+{
+	cpu.reset();
 }
 
 BYTE BKEmul::getMemoryByte( WORD address )
@@ -92,7 +117,7 @@ void BKEmul::setMemoryByte( WORD address, BYTE data )
 		 ( address >= 0176570 && address < 0177660 ) ||
 		 ( address >  0177665 && address < 0177706 ) ||
 		 ( address >  0177717) ) {
-		throw BKMemoryAccessError( address, data );
+		throw new BKMemoryAccessError( address, data );
 	}
 
 	switch ( address ) {
@@ -125,10 +150,10 @@ void BKEmul::setMemoryByte( WORD address, BYTE data )
 			if ( value != R_177664_prev_value ) {
 				if ( (value & 01000) != (R_177664_prev_value & 01000) ) {
 					// Перерисовать весь экран, т.к. сменился режим работы (полный <=> 1/4)
-					enulApp.mainFrame->childView.updateMonitor();
+					video.updateMonitor();
 				} else {
 					// Перерисовать только рулонный сдвиг
-					enulApp.mainFrame->childView.updateScrolling( static_cast<BYTE>(value - R_177664_prev_value) );
+					video.updateScrolling( static_cast<BYTE>(value - R_177664_prev_value) );
 				}
 			}
 			break;
@@ -151,7 +176,7 @@ void BKEmul::setMemoryByte( WORD address, BYTE data )
 
 	// Попали в экранку
 	if ( address >= 0040000 && address < 0100000 ) {
-		enulApp.mainFrame->childView.updateVideoMemoryByte( address );
+		video.updateVideoMemoryByte( address );
 	}
 }
 
@@ -164,7 +189,7 @@ void BKEmul::setMemoryWord( WORD address, WORD data )
 	     ( address >= 0176570 && address < 0177660 ) ||
 	     ( address >  0177665 && address < 0177706 ) ||
 	     ( address >  0177717 ) ) {
-		throw BKMemoryAccessError( address, data );
+		throw new BKMemoryAccessError( address, data, false );
 	}
 
 	WORD oldData = get_word( address );
@@ -192,10 +217,10 @@ void BKEmul::setMemoryWord( WORD address, WORD data )
 			if ( data != R_177664_prev_value ) {
 				if ( (data & 01000) != (R_177664_prev_value & 01000) ) {
 					// Перерисовать весь экран, т.к. сменился режим работы (полный <=> 1/4)
-					enulApp.mainFrame->childView.updateMonitor();
+					video.updateMonitor();
 				} else {
 					// Перерисовать только рулонный сдвиг
-					enulApp.mainFrame->childView.updateScrolling( static_cast<BYTE>(data - R_177664_prev_value) );
+					video.updateScrolling( static_cast<BYTE>(data - R_177664_prev_value) );
 				}
 			}
 			break;
@@ -217,7 +242,7 @@ void BKEmul::setMemoryWord( WORD address, WORD data )
 
 	// Попали в экранку
 	if ( address >= 0040000 && address < 0100000 ) {
-		enulApp.mainFrame->childView.updateVideoMemoryWord( address );
+		video.updateVideoMemoryWord( address );
 	}
 }
 

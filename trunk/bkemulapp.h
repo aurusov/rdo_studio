@@ -29,6 +29,7 @@ protected:
 	//{{AFX_VIRTUAL(BKEmulApp)
 	public:
 	virtual BOOL InitInstance();
+	virtual LRESULT ProcessWndProcException(CException* e, const MSG* pMsg);
 	//}}AFX_VIRTUAL
 };
 

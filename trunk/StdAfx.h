@@ -19,6 +19,13 @@
 #include <afxcmn.h>			// MFC support for Windows Common Controls
 #endif // _AFX_NO_AFXCMN_SUPPORT
 
+#pragma warning( disable : 4786 )
+
+#include <string>
+#include <vector>
+
+std::string format( const char* str, ... );
+std::string format( UINT resource, ... );
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.

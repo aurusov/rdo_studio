@@ -5,6 +5,8 @@
 #define IDD_ABOUTBOX                    100
 #define IDR_MAINFRAME                   128
 #define IDR_BK_EMUTYPE                  129
+#define IDS_MEMORYACCESSERROR_BYTE      59394
+#define IDS_MEMORYACCESSERROR_WORD      59395
 
 // Next default values for new objects
 // 

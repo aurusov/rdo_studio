@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "bkemulapp.h"
 #include "bkemulmainfrm.h"
+#include "bkemul.h"
 #include "resource.h"
 
 #ifdef _DEBUG
@@ -45,5 +46,19 @@ BOOL BKEmulApp::InitInstance()
 	mainFrame->ShowWindow(SW_SHOW);
 	mainFrame->UpdateWindow();
 
+	emul.powerON();
+
 	return TRUE;
+}
+
+LRESULT BKEmulApp::ProcessWndProcException( CException* e, const MSG* pMsg )
+{
+	using namespace bkemul;
+
+	CRuntimeClass* prt = RUNTIME_CLASS( BKMemoryAccessError );
+	if ( e->GetRuntimeClass() == prt ) {
+		e->ReportError();
+		return 0L;
+	}
+	return CWinApp::ProcessWndProcException( e, pMsg );
 }

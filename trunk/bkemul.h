@@ -5,19 +5,24 @@
 #pragma once
 #endif
 
-#include <vector>
+#include "bkemulcpu.h"
+#include "bkemulvideo.h"
 
 namespace bkemul {
+
 // --------------------------------------------------------------
 // ---------- BKEmul
 // --------------------------------------------------------------
-#define oddWordMask 0xFFFE
+#define oddWordMask (0xFFFE) // Маска для нечетных операций
 
 class BKEmul
 {
 friend class BKChildView;
 
 private:
+	BKEmulCPU   cpu;
+	BKEmulVideo video;
+
 	std::vector< BYTE > memory;
 	BYTE get_byte( WORD address ) const {
 		return memory[address];
@@ -35,18 +40,11 @@ private:
 		memory[address+1] = HIBYTE( data );
 	}
 
-	bool colorMonitor;
-
 	// Регист, имеющий разное значение по чтению/записи.
 	WORD R_177716_read;   // Регист 0177716 - состояние клавиатуры.
 	WORD R_177716_write;
 
 	bool BK_SYS_Timer_work;     // Системный таймер БК запущен/остановлен
-
-	class BKMemoryAccessError{
-	public:
-		BKMemoryAccessError( WORD address, WORD data ) {};
-	};
 
 	void doSpeaker() const;
 
@@ -54,16 +52,34 @@ public:
 	BKEmul();
 	virtual ~BKEmul();
 
+	void powerON();
+
 	const BYTE* getMemory( WORD address ) const { return &memory[address];    }
 	const BYTE* getVideoMemory() const          { return &memory[0] + 040000; }
 	int getVideoMemorySize() const              { return 040000;              }
 
-	bool isColorMonitor() const { return colorMonitor; }
+	bool isColorMonitor() const { return video.colorMonitor; }
 
 	BYTE getMemoryByte( WORD address );
 	WORD getMemoryWord( WORD address );
 	void setMemoryByte( WORD address, BYTE data );
 	void setMemoryWord( WORD address, WORD data );
+};
+
+// --------------------------------------------------------------
+// ---------- BKMemoryAccessError
+// --------------------------------------------------------------
+class BKMemoryAccessError: public CException {
+DECLARE_DYNAMIC( BKMemoryAccessError )
+friend class BKEmul;
+private:
+	WORD address;
+	WORD data;
+	bool isByte;
+
+	BKMemoryAccessError( const WORD _address, const WORD _data, const bool _isByte = true );
+
+	virtual int ReportError( UINT nType = MB_OK, UINT nMessageID = 0 );
 };
 
 } // namespace bkemul

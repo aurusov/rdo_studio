@@ -9,9 +9,14 @@
 // ---------- BKChildView
 // --------------------------------------------------------------
 class CDisplay;
+namespace bkemul {
+class BKEmulVideo;
+}
 
 class BKChildView: public CWnd
 {
+friend class bkemul::BKEmulVideo;
+
 private:
 	CDisplay* display;
 
@@ -33,14 +38,14 @@ private:
 
 	void draw( const BYTE* bk_video_from, int count_byte, BYTE BK_byte_X = 0, BYTE BK_line_Y = 0 ) const;
 
-public:
-	BKChildView();
-	virtual ~BKChildView();
-
 	void updateMonitor() const;
 	void updateScrolling( BYTE delta ) const;
 	void updateVideoMemoryByte( WORD address ) const;
 	void updateVideoMemoryWord( WORD address ) const;
+
+public:
+	BKChildView();
+	virtual ~BKChildView();
 
 	void updateBounds();
 

@@ -105,7 +105,15 @@ SOURCE=.\bkemulchildview.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\bkemulcpu.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\bkemulmainfrm.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\bkemulvideo.cpp
 # End Source File
 # Begin Source File
 
@@ -150,7 +158,15 @@ SOURCE=.\bkemulchildview.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\bkemulcpu.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\bkemulmainfrm.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\bkemulvideo.h
 # End Source File
 # Begin Source File
 
