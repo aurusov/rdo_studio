@@ -412,7 +412,7 @@ BEGIN
     RTEXT           "e-mail:",IDC_ABOUR_EMAIL_STATIC,128,84,32,8
     LTEXT           "rdo@rk9.bmstu.ru",IDC_ABOUT_EMAIL,164,84,80,8,SS_NOTIFY
     RTEXT           "web site:",IDC_ABOUR_WEB_STATIC,128,92,32,8
-    LTEXT           "www.rk9.bmstu.ru/rdo/",IDC_ABOUT_WEB,164,92,80,8,
+    LTEXT           "http://rdo.rk9.bmstu.ru",IDC_ABOUT_WEB,164,92,80,8,
                     SS_NOTIFY
 END
 
