@@ -317,7 +317,7 @@ void RDOTracerSerie::drawSerie( RDOStudioChartView* const view, CDC &dc, CRect &
 			}
 			
 			bool tempres_erased = ( serieKind == RDOST_RESPARAM && ((RDOTracerResParam*)this)->getResource()->isErased() );
-			bool need_continue = true;
+			bool need_continue = ( values.size() > 1 );
 			if ( tempres_erased )
 				need_continue = ( it != values.end() && (*it)->modeltime->time > view->drawToX );
 

@@ -34,7 +34,9 @@ protected:
 	RDOTracerSerie* yaxis;
 	int tickWidth;
 	COLORREF timeColor;
+	
 	bool timeWrap;
+	bool canUnwrapTime() const { return zoom >= 1; };
 
 	/*int leftMargin;
 	int topMargin;
@@ -59,18 +61,24 @@ protected:
 	int pixelsToChart;*/
 	double drawFromX;
 	double drawToX;
-	void prepareDrawing( CDC &dc, CRect& chartRect );
+	//void prepareDrawing( CDC &dc, CRect& chartRect );
 	
-	int xAxisOffset;
-	int yAxisOffset;
-	void calcYAxisOffset( CDC &dc );
-	void calcXAxisOffset( CDC &dc );
+	//int xAxisOffset;
+	//int yAxisOffset;
+	//void calcYAxisOffset( CDC &dc );
+	//void calcXAxisOffset( CDC &dc );
 	void drawYAxis( CDC &dc, CRect& chartRect, const RDOTracerSerie* axisValues);
 	void drawXAxis( CDC &dc, CRect& chartRect );
 	void drawGrid(	CDC &dc, CRect& chartRect );
 
 	CMenu popupMenu;
 	void copyToClipboard();
+
+	double zoom;
+	double old_zoom;
+	double auto_zoom;
+	void setZoom( const double new_zoom );
+	bool zoomAuto;
 
 public:
 	
@@ -108,6 +116,14 @@ protected:
 	afx_msg void OnEditCopy();
 	afx_msg void OnInitMenuPopup( CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu );
 	afx_msg void OnContextMenu( CWnd* pWnd, CPoint pos );
+	afx_msg void OnChartZoomZoomin();
+	afx_msg void OnChartZoomZoomout();
+	afx_msg void OnChartZoomResetzoom();
+	afx_msg void OnUpdateChartZoomZoomin(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateChartZoomZoomout(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateChartZoomResetzoom(CCmdUI* pCmdUI);
+	afx_msg void OnChartZoomZoomauto();
+	afx_msg void OnUpdateChartZoomZoomauto(CCmdUI* pCmdUI);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

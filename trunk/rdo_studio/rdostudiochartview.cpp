@@ -30,6 +30,14 @@ BEGIN_MESSAGE_MAP(RDOStudioChartView, CView)
 	ON_COMMAND(ID_EDIT_COPY, OnEditCopy)
 	ON_WM_INITMENUPOPUP()
 	ON_WM_CONTEXTMENU()
+	ON_COMMAND(ID_CHART_ZOOM_ZOOMIN, OnChartZoomZoomin)
+	ON_COMMAND(ID_CHART_ZOOM_ZOOMOUT, OnChartZoomZoomout)
+	ON_COMMAND(ID_CHART_ZOOM_RESETZOOM, OnChartZoomResetzoom)
+	ON_UPDATE_COMMAND_UI(ID_CHART_ZOOM_ZOOMIN, OnUpdateChartZoomZoomin)
+	ON_UPDATE_COMMAND_UI(ID_CHART_ZOOM_ZOOMOUT, OnUpdateChartZoomZoomout)
+	ON_UPDATE_COMMAND_UI(ID_CHART_ZOOM_RESETZOOM, OnUpdateChartZoomResetzoom)
+	ON_COMMAND(ID_CHART_ZOOM_ZOOMAUTO, OnChartZoomZoomauto)
+	ON_UPDATE_COMMAND_UI(ID_CHART_ZOOM_ZOOMAUTO, OnUpdateChartZoomZoomauto)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -59,9 +67,13 @@ RDOStudioChartView::RDOStudioChartView()
 	drawToXEventIndex( 0 ),
 	pixelsToChart( 0 ),*/
 	drawFromX( 0 ),
-	drawToX( 0 ),
+	drawToX( 0 ),/*,
 	xAxisOffset( 0 ),
-	yAxisOffset( 0 )
+	yAxisOffset( 0 )*/
+	zoom( 1 ),
+	old_zoom( 1 ),
+	auto_zoom( 1 ),
+	zoomAuto( false )
 {
 }
 
@@ -84,10 +96,9 @@ void RDOStudioChartView::recalcLayout()
 	CClientDC cldc( this );
 	CDC dc;
 	dc.CreateCompatibleDC( &cldc );
-	//CBitmap* pOldBitmap = dc.SelectObject( &bmp );
 	
 	string str = GetDocument()->GetTitle();
-	//CSize size;
+
 	chartRect.top = dc.GetTextExtent( str.c_str() ).cy;
 
 	double val = 0;
@@ -101,74 +112,28 @@ void RDOStudioChartView::recalcLayout()
 	chartRect.right = newClientRect.right - dc.GetTextExtent( format( "%.3f", val ).c_str() ).cx - 5;
 
 	chartRect.bottom = newClientRect.bottom - chartRect.top - 2 - 3;
-
+	
 	if ( !GetDocument()->docTimes.empty() ) {
 		double timeRange = GetDocument()->docTimes.back()->time - GetDocument()->docTimes.front()->time;
 		if ( timeRange > 0 ) {
-			/*CRect backuprect;
-			backuprect.CopyRect( &chartRect );
-			calcYAxisOffset( dc );
-			chartRect.left += yAxisOffset;
-			calcXAxisOffset( dc );
-			chartRect.right -= xAxisOffset;*/
-			//timeScale = timeWrap ? chartRect.Width() / timeRange : ( chartRect.Width() - tickWidth * trace.getMaxTime()->overallCount ) / timeRange;
-			timeScale = (double)chartRect.Width() / timeRange;
-			if ( GetDocument()->minTimeOffset * timeScale < (double)5 ) {
-				timeScale = (double)5 / GetDocument()->minTimeOffset;
-				/*drawToX = 
-				
-				drawToX = trace.getMaxTime();
-				drawToXEventIndex = trace.getMaxTime()->eventCount;
-				
-				calcYAxisOffset( dc );
-				chartRect.left += yAxisOffset;
-				calcXAxisOffset( dc );
-				chartRect.right -= xAxisOffset;
-				
-				int count = trace.getTimesCount();
-				int x = chartRect.right;
-				RDOTracerTimeNow* timenow = NULL;
-				RDOTracerTimeNow* prev = trace.getMaxTime();
-				int offset = timeWrap ? 0 : tickWidth * prev->eventCount;
-				x -= offset;
-				for ( int i = count - 2; i >= 0; i-- ) {
-					timenow = trace.getTime( i );
-					offset = ( prev->time - timenow->time ) * timeScale;
-					if ( !timeWrap )
-						offset += tickWidth * timenow->eventCount;
-					x -= offset;
-					if ( x <= chartRect.left ) {
-						drawFromX = timenow;
-						pixelsToChart = chartRect.left - x;
-						drawFromXEventIndex = ( pixelsToChart ) / tickWidth;
-						break;
-					}
-					prev = timenow;
-				}
-				
-				timeRange = drawToX->time - drawFromX->time;*/
-			}/* else {
-				drawFromX = trace.getTime( 0 );
-				drawFromXEventIndex = 0;
-				drawToX = trace.getMaxTime();
-				drawToXEventIndex = trace.getMaxTime()->eventCount;
-			}*/
+			long double timeScaleAuto = (double)chartRect.Width() / timeRange;
+			timeScale = (double)5 / GetDocument()->minTimeOffset;
+			auto_zoom = timeScaleAuto / timeScale;
+			if ( zoomAuto || auto_zoom > 1 ) {
+				timeScale = timeScaleAuto;
+			}
 		} else {
 			timeScale = 0;
-			/*drawFromX = trace.getTime( 0 );
-			drawFromXEventIndex = 0;
-			drawToX = trace.getTime( 0 );
-			drawToXEventIndex = trace.getTime( 0 )->eventCount;
-			calcYAxisOffset( dc );
-			chartRect.left += yAxisOffset;
-			calcXAxisOffset( dc );
-			chartRect.right -= xAxisOffset;*/
 		}
 	} else {
 		timeScale = 0;
 	}
 
-	//dc.SelectObject( pOldBitmap );
+	if ( !zoomAuto ) {
+		timeScale *= zoom;
+	} else {
+		zoom = timeScale > 0 ? auto_zoom : 1;
+	}
 }
 
 void RDOStudioChartView::setScrollPos( UINT nSBCode, UINT nPos )
@@ -228,9 +193,9 @@ void RDOStudioChartView::updateScrollBars()
 	SetScrollInfo( SB_HORZ, &si, TRUE );
 }
 
-void RDOStudioChartView::prepareDrawing( CDC &dc, CRect& chartRect )
+/*void RDOStudioChartView::prepareDrawing( CDC &dc, CRect& chartRect )
 {
-/*	timeRange = trace.getMaxTime()->time;
+	timeRange = trace.getMaxTime()->time;
 	
 	if ( timeRange > 0 ) {
 		CRect backuprect;
@@ -290,26 +255,26 @@ void RDOStudioChartView::prepareDrawing( CDC &dc, CRect& chartRect )
 		chartRect.left += yAxisOffset;
 		calcXAxisOffset( dc );
 		chartRect.right -= xAxisOffset;
-	}*/
-}
+	}
+}*/
 
-void RDOStudioChartView::calcYAxisOffset( CDC &dc )
+/*void RDOStudioChartView::calcYAxisOffset( CDC &dc )
 {
 	CSize size;
 	//temporary
 	string str = format( "%.3f", 0 );
 	size = dc.GetTextExtent( str.c_str() );
 	yAxisOffset = size.cx + 2 + 3;
-}
+}*/
 
-void RDOStudioChartView::calcXAxisOffset( CDC &dc )
+/*void RDOStudioChartView::calcXAxisOffset( CDC &dc )
 {
 	CSize size;
 	//temporary
 	string str = format( "%.3f", trace.getMaxTime()->time );
 	size = dc.GetTextExtent( str.c_str() );
 	xAxisOffset = size.cx;
-}
+}*/
 
 void RDOStudioChartView::drawYAxis( CDC &dc, CRect& chartRect, const RDOTracerSerie* axisValues)
 {
@@ -450,8 +415,11 @@ void RDOStudioChartView::drawXAxis( CDC &dc, CRect& chartRect )
 	if ( !GetDocument()->docTimes.empty() ) {
 		double valoffset = 0;
 		if ( timeScale ) {
-			drawFromX = GetDocument()->docTimes.front()->time + xPos / timeScale;
-			drawToX = GetDocument()->docTimes.front()->time + (double)( xPos + chartRect.Width() ) / timeScale;
+			drawFromX = GetDocument()->docTimes.front()->time + (double)xPos / timeScale;
+			if ( maxXVisible() )
+				drawToX = GetDocument()->docTimes.back()->time;
+			else
+				drawToX = GetDocument()->docTimes.front()->time + (double)( xPos + chartRect.Width() ) / timeScale;
 		} else {
 			drawFromX = 0;
 			drawToX = 0;
@@ -542,6 +510,19 @@ void RDOStudioChartView::copyToClipboard()
 	}
 
 	CloseClipboard();
+}
+
+void RDOStudioChartView::setZoom( const double new_zoom )
+{
+	if ( zoomAuto )
+		zoomAuto = !zoomAuto;
+	if ( zoom != new_zoom ) {
+		zoom = new_zoom;
+		recalcLayout();
+		updateScrollBars();
+		Invalidate();
+		UpdateWindow();
+	}
 }
 
 void RDOStudioChartView::OnDraw(CDC* pDC)
@@ -698,9 +679,10 @@ int RDOStudioChartView::OnCreate( LPCREATESTRUCT lpCreateStruct )
 
 	appendMenu( mainMenu->GetSubMenu( 1 + delta ), 4, &popupMenu );
 	popupMenu.AppendMenu( MF_SEPARATOR );
-	appendMenu( mainMenu->GetSubMenu( 2 + delta ), 0, &popupMenu );
-	appendMenu( mainMenu->GetSubMenu( 2 + delta ), 1, &popupMenu );
-	appendMenu( mainMenu->GetSubMenu( 2 + delta ), 2, &popupMenu );
+	appendMenu( mainMenu->GetSubMenu( 6 + delta ), 7, &popupMenu );
+	appendMenu( mainMenu->GetSubMenu( 6 + delta ), 8, &popupMenu );
+	appendMenu( mainMenu->GetSubMenu( 6 + delta ), 9, &popupMenu );
+	appendMenu( mainMenu->GetSubMenu( 6 + delta ), 10, &popupMenu );
 
 	return 0;
 }
@@ -748,13 +730,16 @@ void RDOStudioChartView::OnSize(UINT nType, int cx, int cy)
 void RDOStudioChartView::OnChartTimewrap() 
 {
 	timeWrap = !timeWrap;
+	recalcLayout();
+	updateScrollBars();
 	Invalidate();
 	UpdateWindow();
 }
 
 void RDOStudioChartView::OnUpdateChartTimewrap(CCmdUI* pCmdUI) 
 {
-	pCmdUI->SetCheck( timeWrap );
+	pCmdUI->SetCheck( !canUnwrapTime() || timeWrap );
+	pCmdUI->Enable( canUnwrapTime() );
 }
 
 void RDOStudioChartView::OnUpdate(CView* pSender, LPARAM lHint, CObject* pHint) 
@@ -931,4 +916,57 @@ void RDOStudioChartView::OnContextMenu( CWnd* pWnd, CPoint pos )
 {
 	CView::OnContextMenu( pWnd, pos );
 	if ( popupMenu.m_hMenu ) popupMenu.TrackPopupMenu( TPM_LEFTALIGN | TPM_RIGHTBUTTON, pos.x, pos.y, this );
+}
+
+void RDOStudioChartView::OnChartZoomZoomin() 
+{
+	double delta = zoom < 1 ? 0.1 : 0.5;
+	setZoom( zoom + delta );
+}
+
+void RDOStudioChartView::OnChartZoomZoomout() 
+{
+	double delta = zoom > 1 ? -0.5 : -0.1;
+	double zoom_new = zoom + delta;
+	if ( zoom_new < auto_zoom )
+		zoom_new = auto_zoom;
+	setZoom( zoom_new );
+}
+
+void RDOStudioChartView::OnChartZoomResetzoom() 
+{
+	setZoom( 1 );
+}
+
+void RDOStudioChartView::OnUpdateChartZoomZoomin(CCmdUI* pCmdUI) 
+{
+	pCmdUI->Enable( !zoomAuto && zoom < 5 );
+}
+
+void RDOStudioChartView::OnUpdateChartZoomZoomout(CCmdUI* pCmdUI) 
+{
+	pCmdUI->Enable( !zoomAuto && zoom > 0.2 && zoom != auto_zoom && auto_zoom <= 1 );
+}
+
+void RDOStudioChartView::OnUpdateChartZoomResetzoom(CCmdUI* pCmdUI) 
+{
+	pCmdUI->Enable( zoom != 1 );
+}
+
+void RDOStudioChartView::OnChartZoomZoomauto() 
+{
+	zoomAuto = !zoomAuto;
+	if ( !zoomAuto )
+		setZoom( old_zoom );
+	else
+		old_zoom = zoom;
+	recalcLayout();
+	updateScrollBars();
+	Invalidate();
+	UpdateWindow();
+}
+
+void RDOStudioChartView::OnUpdateChartZoomZoomauto(CCmdUI* pCmdUI) 
+{
+	pCmdUI->SetCheck( zoomAuto );
 }
