@@ -681,13 +681,30 @@ void RDOStudioChartView::onDraw()
 	
 	if ( chartRect.Height() > 0 && chartRect.Width() > 0 ) {
 
-		drawYAxis(chartRect, yAxis );
+		HPEN pen_chart = NULL;
+		HPEN old_pen   = NULL;
+		try {
+			pen_chart = ::CreatePen( PS_SOLID, 0, style->getTheme()->defaultColor );
+			old_pen   = (HPEN)::SelectObject( hmemdc, pen_chart );
+			
+			drawYAxis( chartRect, yAxis );
 
-		setFromTo();
+			setFromTo();
 		
-		drawXAxis( chartRect );
+			drawXAxis( chartRect );
 
-		drawGrid( chartRect );
+			drawGrid( chartRect );
+
+			::SelectObject( hmemdc, old_pen );
+			::DeleteObject( pen_chart );
+			pen_chart = NULL;
+		} catch( ... ) {
+			if ( pen_chart ) {
+				::SelectObject( hmemdc, old_pen );
+				::DeleteObject( pen_chart );
+				pen_chart = NULL;
+			}
+		}
 
 		for ( vector< RDOStudioDocSerie* >::iterator it = doc->series.begin(); it != doc->series.end(); it++ )
 			(*it)->drawSerie( this, hmemdc, chartRect );
