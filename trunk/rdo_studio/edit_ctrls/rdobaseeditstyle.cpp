@@ -223,7 +223,7 @@ RDOBaseEditWindow& RDOBaseEditWindow::operator =( const RDOBaseEditWindow& windo
 
 bool RDOBaseEditWindow::operator ==( const RDOBaseEditWindow& window ) const
 {
-	return wordWrap          == window.wordWrap&&
+	return wordWrap          == window.wordWrap &&
 	       showHorzScrollBar == window.showHorzScrollBar;
 }
 

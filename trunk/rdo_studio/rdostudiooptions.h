@@ -162,8 +162,8 @@ private:
 	RDOColorComboBox fgColorCB;
 	RDOColorComboBox bgColorCB;
 
-	STYLEProperty* getCurrentProperty() const;
-	const STYLEObject* getCurrentObject() const;
+	STYLEProperty*    getCurrentProperty() const;
+	STYLEObject*      getCurrentObject() const;
 	STYLEObject::Type getCurrentObjectType() const;
 
 	STYLEObject::Type previewAs;
@@ -228,6 +228,8 @@ protected:
 	afx_msg void OnBgColorChanged();
 	afx_msg void OnFgColorClicked();
 	afx_msg void OnBgColorClicked();
+	afx_msg void OnWordWrapClicked();
+	afx_msg void OnHorzScrollBarClicked();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 

@@ -221,7 +221,7 @@ END
 IDD_OPTIONS_STYLESANDCOLORS DIALOGEX 0, 0, 292, 229
 STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "Styles and Colors"
-FONT 8, "MS Sans Serif"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     CONTROL         "Tree1",IDC_STYLEITEM_TREE,"SysTreeView32",
                     TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | 
@@ -1035,7 +1035,7 @@ BEGIN
     IDR_MAINFRAME           "RAO Studio"
     IDR_MODELTYPE           "\nmodel\nModel Files\nRAO Model File (*.smr)\n.smr\nRAOStudio.Document\nRAO Document"
     ID_OPTIONS_COLORS_EDITTEXT 
-                            "{ comments }\n$Pattern pattern_name : operation trace\n$Relevant_resources\n  rel_res2  : res_type2     Keep    Keep\n  rel_res1  : res_type1     Create  NoChange\n$Time = Abs(rel_res2.par1 - rel_res2.par3)\n{...}\n$End\n\ntext [ 10, 20, ... = 'text' ]"
+                            "{ comments }\n$Pattern pattern_name : operation trace\n$Relevant_resources\n  rel_res2  : res_type2     Keep    Keep\n  rel_res1  : res_type1     Create  NoChange\n$Time = Abs(rel_res2.par1 - rel_res2.par3)\n{...}\n$End\n\ntext [ 10, 20, ... = 'text' ]\n\n$Re levant_resources"
     IDR_EDITTYPE            "\nedit\nEdit File\nRAO Files (.pat;.rtp;.rss;.opr;.frm;.fun;.dpt;.pmd;.pmv;.trc)\n.pat;.rtp;.rss;.opr;.frm;.fun;.dpt;.pmd;.pmv;.trc\nRAOStudio.Document\nRAO Document"
     IDR_FILETOOLBAR         "File"
     IDR_CHARTTYPE           "\nchart\nChart\n\n\nRAOStudio.Document\nRAO Document"

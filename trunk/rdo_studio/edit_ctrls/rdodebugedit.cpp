@@ -28,7 +28,7 @@ RDODebugEdit::~RDODebugEdit()
 
 int RDODebugEdit::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
-	if ( RDOBaseEdit ::OnCreate(lpCreateStruct) == -1 ) return -1;
+	if ( RDOBaseEdit::OnCreate(lpCreateStruct) == -1 ) return -1;
 
 	setReadOnly( true );
 

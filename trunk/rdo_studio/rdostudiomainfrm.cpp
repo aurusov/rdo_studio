@@ -62,13 +62,13 @@ int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	style_editor.load();
 
 	style_build.init( "build" );
-	style_build.window->showHorzScrollBar = false;
 	style_build.window->wordWrap          = true;
+	style_build.window->showHorzScrollBar = false;
 	style_build.load();
 
 	style_debug.init( "debug" );
-	style_debug.window->showHorzScrollBar = false;
 	style_debug.window->wordWrap          = true;
+	style_debug.window->showHorzScrollBar = false;
 	style_debug.load();
 
 	style_trace.init( "trace" );

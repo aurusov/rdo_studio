@@ -124,12 +124,20 @@ BOOL RDOEditorEdit::OnNotify( WPARAM wParam, LPARAM lParam, LRESULT* pResult )
 					}
 					return TRUE;
 				}
+				case SCN_RDO_POSCHANGED: {
+					bufSelStart = -1;
+					return TRUE;
+				}
+				case SCN_RDO_CLICK: {
+					bufSelStart = -1;
+					return TRUE;
+				}
 				case SCN_MODIFIED: {
 					bufSelStart = -1;
-					if ( hasErrorLine() ) clearErrorLine();
 					if ( scn->modificationType & SC_MOD_CHANGEFOLD ) {
 						foldChanged( scn->line, scn->foldLevelNow, scn->foldLevelPrev );
 					}
+//					if ( hasErrorLine() ) clearErrorLine();
 					return TRUE;
 				}
 				case SCN_MARGINCLICK: {
@@ -138,14 +146,6 @@ BOOL RDOEditorEdit::OnNotify( WPARAM wParam, LPARAM lParam, LRESULT* pResult )
 						return TRUE;
 					}
 					break;
-				}
-				case SCN_RDO_POSCHANGED: {
-					bufSelStart = -1;
-					return TRUE;
-				}
-				case SCN_RDO_CLICK: {
-					bufSelStart = -1;
-					return TRUE;
 				}
 				case SCN_CHARADDED: {
 					bufSelStart = -1;

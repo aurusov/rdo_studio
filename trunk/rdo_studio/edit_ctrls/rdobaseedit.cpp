@@ -1045,7 +1045,7 @@ bool RDOBaseEdit::isLineVisible( const int line ) const
 
 void RDOBaseEdit::appendText( const string& str ) const
 {
-	sendEditor( SCI_INSERTTEXT, getLength(), (long)str.c_str() );
+	sendEditorString( SCI_ADDTEXT, str.length(), str.c_str() );
 }
 
 void RDOBaseEdit::scrollToLine( const int line ) const
@@ -1065,7 +1065,7 @@ void RDOBaseEdit::load( stringstream& stream ) const
 	bool readOnly = isReadOnly();
 	setReadOnly( false );
 
-	sendEditor( SCI_ADDTEXT, stream.str().length(), (long)stream.str().c_str() );
+	sendEditorString( SCI_ADDTEXT, stream.str().length(), stream.str().c_str() );
 
 	setReadOnly( readOnly );
 }

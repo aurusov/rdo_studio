@@ -37,7 +37,6 @@ protected:
 	void onBufferAppend( const int bufIndex );
 	void onBufferEdit( const int bufIndex );
 
-	void setErrorLine( int line = -1 );
 	void clearErrorLine();
 	bool hasErrorLine() const;
 
@@ -92,6 +91,8 @@ public:
 	virtual ~RDOEditorEdit();
 
 	void setEditorStyle( RDOEditorEditStyle* _style );
+
+	void setErrorLine( int line = -1 );
 
 	void setLog( rdoEditCtrl::RDOLogEdit& _log );
 	const rdoEditCtrl::RDOLogEdit* getLog() const;

@@ -59,8 +59,6 @@ protected:
 	void setLineIndentation( int line, int indent ) const;
 	void autoIndent() const;
 
-	void appendText( const std::string& str ) const;
-
 	//{{AFX_MSG(RDOBaseEdit)
 	afx_msg int OnCreate( LPCREATESTRUCT lpCreateStruct );
 	afx_msg void OnSetFocus( CWnd *pOldWnd );
@@ -147,6 +145,8 @@ public:
 
 	bool isViewEndOfLine() const                           { return sendEditor( SCI_GETVIEWEOL ) ? true : false; };
 	void setEndOfLine( const bool value ) const            { sendEditor( SCI_SETVIEWEOL, value );                };
+
+	void appendText( const std::string& str ) const;
 
 	int getZoom() const                                    { return sendEditor( SCI_GETZOOM ); };
 	void setZoom( const int value ) const                  { sendEditor( SCI_SETZOOM, value ); };

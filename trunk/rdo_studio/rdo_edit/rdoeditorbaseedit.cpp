@@ -66,6 +66,11 @@ int RDOEditorBaseEdit::OnCreate( LPCREATESTRUCT lpCreateStruct )
 
 	sendEditor( SCI_SETLEXER, SCLEX_RDO );
 	int lexLanguage = sendEditor( SCI_GETLEXER );
+
+	sendEditorString( SCI_SETPROPERTY, reinterpret_cast<unsigned long>("fold"), "1" );
+
+	sendEditor( SCI_SETMARGINWIDTHN, 1, 0 );
+
 	sendEditor( SCI_SETSTYLEBITS, 5 );
 	sendEditorString( SCI_SETKEYWORDS, 0, kw0 );
 	sendEditorString( SCI_SETKEYWORDS, 1, kw1 );
