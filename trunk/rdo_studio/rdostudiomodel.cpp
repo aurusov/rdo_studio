@@ -7,8 +7,9 @@
 #include "rdostudiomodelview.h"
 #include "rdostudioframedoc.h"
 #include "rdostudioframeview.h"
-#include "resource.h"
 #include "rdo_edit/rdoeditortabctrl.h"
+#include "edit_ctrls/rdobuildedit.h"
+#include "resource.h"
 
 #include <rdokernel.h>
 #include <rdorepository.h>
@@ -213,6 +214,10 @@ void RDOStudioModel::executeErrorModelNotify()
 		i++;
 	}
 	stopModelNotify();
+	if ( i > 0 ) {
+		studioApp.mainFrame->output.showBuild();
+		const_cast<rdoEditCtrl::RDOBuildEdit*>(studioApp.mainFrame->output.getBuild())->gotoNext();
+	}
 }
 
 void RDOStudioModel::showFrameNotify()
