@@ -423,6 +423,8 @@ BEGIN
     BUTTON      ID_FILE_REFRESHNETWORK
     SEPARATOR
     BUTTON      ID_SOUND
+    SEPARATOR
+    BUTTON      ID_CHAT_TOCRYOUT
 END
 
 
@@ -452,8 +454,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,0,162
- PRODUCTVERSION 1,0,0,162
+ FILEVERSION 1,0,0,163
+ PRODUCTVERSION 1,0,0,163
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -471,14 +473,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "Application for chat in localnet\0"
-            VALUE "FileVersion", "1, 0, 0, 162\0"
+            VALUE "FileVersion", "1, 0, 0, 163\0"
             VALUE "InternalName", "localChat\0"
             VALUE "LegalCopyright", "Copyright (C) 2002\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "localchat.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "localChat\0"
-            VALUE "ProductVersion", "1, 0, 0, 162\0"
+            VALUE "ProductVersion", "1, 0, 0, 163\0"
             VALUE "SpecialBuild", "\0"
         END
     END
@@ -544,6 +546,7 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
+    ID_CHAT_TOCRYOUT        "\nTo cry out (Ctrl+Enter)"
     ID_FILE_REFRESHUSERLIST "\nRefresh User List"
     ID_STATUSMODE_ONLINE_INFO "\nOnline..."
     ID_STATUSMODE_AWAY_INFO "\nAway..."
