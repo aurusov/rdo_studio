@@ -97,6 +97,9 @@ bool RDOStudioModel::openModel( const string& modelName ) const
 	static_cast<bool>(openError) = false;
 	bool flag = kernel.getRepository()->openModel( modelName );
 	if ( flag && !openError ) {
+		rdo::binarystream stream;
+		kernel.getRepository()->loadPMV( stream );
+		output->appendStringToResults( stream.str() );
 		output->updateLogConnection();
 		output->appendStringToBuild( format( IDS_MODEL_LOADING_OK ) );
 	} else {
