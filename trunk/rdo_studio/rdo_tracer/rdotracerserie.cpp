@@ -322,6 +322,7 @@ void RDOTracerSerie::drawSerie( RDOStudioChartView* const view, CDC &dc, CRect &
 			}
 		}
 	}
+	
 	dc.SelectObject( pOldPen );
 	dc.SetBkMode( oldBkMode );
 
@@ -335,6 +336,7 @@ void RDOTracerSerie::drawMarker( CDC &dc, const int x, const int y, const COLORR
 	rect.top = y - marker_size;
 	rect.bottom = y + marker_size;
 	rect.right = x + marker_size;
+
 	CPen pen;
 	pen.CreatePen( PS_SOLID, 0, color );
 	CPen* pOldPen = dc.SelectObject( &pen );
@@ -344,6 +346,7 @@ void RDOTracerSerie::drawMarker( CDC &dc, const int x, const int y, const COLORR
 	log_brush.lbColor = color;
 	brush.CreateBrushIndirect( &log_brush );
 	CBrush* old_brush = dc.SelectObject( &brush );
+
 	switch( marker ) {
 		case RDOSM_CIRCLE : {
 			drawSircle( dc, rect, color );
@@ -362,7 +365,8 @@ void RDOTracerSerie::drawMarker( CDC &dc, const int x, const int y, const COLORR
 			break;
 		}
 	}
-	dc.SelectObject( &old_brush );
+
+	dc.SelectObject( old_brush );
 	dc.SelectObject( pOldPen );
 }
 

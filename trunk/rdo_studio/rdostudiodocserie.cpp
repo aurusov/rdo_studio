@@ -33,7 +33,9 @@ CSize RDOStudioDocSerie::getLegendExtent( CDC &dc, CFont& font, CRect& rect ) co
 	CSize size( 0 , 0 );
 	if ( !showInLegend )
 		return size;
+	
 	CFont*  oldFont = dc.SelectObject( &font );
+	
 	CRect tmprect;
 	tmprect.left = rect.left + 10 + marker_size * 2 + 5;
 	tmprect.right = rect.right;
@@ -45,8 +47,10 @@ CSize RDOStudioDocSerie::getLegendExtent( CDC &dc, CFont& font, CRect& rect ) co
 		size.cy = marker_size * 2;
 	}
 	size.cx = tmprect.right - rect.left;
-	dc.SelectObject( oldFont );
 	size.cy += 2;
+	
+	dc.SelectObject( oldFont );
+	
 	return size;
 }
 
@@ -55,6 +59,7 @@ CSize RDOStudioDocSerie::drawInLegend( CDC &dc, CRect &rect, CFont& font, const 
 	CSize size = getLegendExtent( dc, font, rect );
 	if ( !showInLegend )
 		return size;
+	
 	int oldBkMode = dc.SetBkMode( TRANSPARENT );
 	CPen pen;
 	pen.CreatePen( PS_SOLID, 0, color );

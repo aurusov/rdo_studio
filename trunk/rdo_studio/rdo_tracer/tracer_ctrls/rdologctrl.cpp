@@ -941,34 +941,41 @@ void RDOLogCtrl::setFont( const bool needRedraw )
 	if ( fontLog.m_hObject )
 		if ( !fontLog.DeleteObject() )
 			return;
-	CClientDC dc( this );
+
+	mutex.Lock();
+
+	//CClientDC dc( this );
+	CDC* dc = GetDC();
+
 	LOGFONT lf;
 	memset( &lf, 0, sizeof(lf) );
 	// The negative is to allow for leading
-	lf.lfHeight    = -MulDiv( logStyle->font->size, ::GetDeviceCaps( dc.GetSafeHdc(), LOGPIXELSY ), 72 );
+	lf.lfHeight    = -MulDiv( logStyle->font->size, ::GetDeviceCaps( dc->GetSafeHdc(), LOGPIXELSY ), 72 );
 	lf.lfWeight    = logStyle->theme->style & RDOStyleFont::BOLD ? FW_BOLD : FW_NORMAL;
 	lf.lfItalic    = logStyle->theme->style & RDOStyleFont::ITALIC;
 	lf.lfUnderline = logStyle->theme->style & RDOStyleFont::UNDERLINE;
 	lf.lfCharSet   = logStyle->font->characterSet;
 	strcpy( lf.lfFaceName, logStyle->font->name.c_str() );
 
-	if ( !fontLog.CreateFontIndirect( &lf ) )
-		return;
-	
-	TEXTMETRIC tm;
-	if ( m_hWnd ) {
-		CFont* oldFont = dc.SelectObject( &fontLog );
-		dc.GetTextMetrics( &tm );
-		lineHeight = tm.tmHeight + 2 * logStyle->borders->vertBorder;
-		charWidth  = tm.tmAveCharWidth/*tm.tmMaxCharWidth*/;
-		dc.SelectObject( oldFont );
+	if ( fontLog.CreateFontIndirect( &lf ) ) {
+		TEXTMETRIC tm;
+		if ( m_hWnd ) {
+			CFont* oldFont = dc->SelectObject( &fontLog );
+			dc->GetTextMetrics( &tm );
+			lineHeight = tm.tmHeight + 2 * logStyle->borders->vertBorder;
+			charWidth  = tm.tmAveCharWidth/*tm.tmMaxCharWidth*/;
+			dc->SelectObject( oldFont );
+		}
+		
+		if ( needRedraw ) {
+			Invalidate();   
+			updateWindow();
+		}
 	}
 
-	
-	if ( needRedraw ) {
-		Invalidate();   
-		updateWindow();
-	}
+	ReleaseDC( dc );
+
+	mutex.Unlock();
 }
 
 void RDOLogCtrl::getString( const int index, string& str ) const

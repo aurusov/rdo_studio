@@ -144,6 +144,7 @@ protected:
 	afx_msg int OnMouseActivate( CWnd* pDesktopWnd, UINT nHitTest, UINT message );
 	afx_msg void OnChartOptions();
 	afx_msg void OnDestroy();
+	afx_msg void OnPaint();
 	//}}AFX_MSG
 	afx_msg LRESULT OnUserUpdateChartView(WPARAM wParam = 0, LPARAM lParam = 0);
 	DECLARE_MESSAGE_MAP()
