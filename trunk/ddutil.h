@@ -22,16 +22,30 @@ protected:
 	LPDIRECTDRAWSURFACE7 m_pdds;
 	DDSURFACEDESC2       m_ddsd;
 
-	CWnd*                parentWnd;
-	int                  width;
-	int                  height;
+	CWnd* parentWnd;
+
+	static HRESULT WINAPI EnumModesCallback( LPDDSURFACEDESC2 lpDDSurfaceDesc, LPVOID lpDisplay );
+
+	struct mode {
+		int width;
+		int height;
+		int bpp;
+		bool operator<( const mode& m ) {
+			bool flag = width < m.width;
+			if ( !flag && width == m.width ) {
+				flag = height < m.height;
+			}
+			return flag;
+		}
+	};
+	std::vector< mode > modes;
 
 public:
 	CDisplay();
 	~CDisplay();
 
-	HRESULT CreateWindowedDisplay( CWnd* _parentWnd, int _width, int _height );
-    HRESULT CreateFullScreenDisplay( CWnd* _parentWnd, int _width, int _height, int _bpp );
+	HRESULT CreateWindowedDisplay( CWnd* _parentWnd, int width, int height );
+    HRESULT CreateFullScreenDisplay( CWnd* _parentWnd, int width, int height, int bpp );
 	virtual HRESULT DestroyObjects();
 
 	LPDIRECTDRAW7        GetDirectDraw()     { return m_pDD;   }

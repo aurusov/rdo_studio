@@ -26,13 +26,13 @@ IMPLEMENT_DYNAMIC(BKMainFrame, CFrameWnd)
 BEGIN_MESSAGE_MAP(BKMainFrame, CFrameWnd)
 	//{{AFX_MSG_MAP(BKMainFrame)
 	ON_WM_CREATE()
-	ON_WM_SETFOCUS()
 	ON_WM_MOVE()
 	ON_WM_CLOSE()
 	ON_WM_PAINT()
 	ON_WM_LBUTTONDOWN()
 	ON_WM_TIMER()
 	ON_WM_GETMINMAXINFO()
+	ON_COMMAND(ID_REPAINT, OnRepaint)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -53,10 +53,12 @@ BKMainFrame::BKMainFrame():
 	grayColor( 0 ),
 	windowRect( 0, 0, 0, 0 ),
 	screenRect( 0, 0, 0, 0 ),
+	windowMode( false ),
+	fullWindowWidth( 0 ),
+	fullWindowHeight( 0 ),
 	lock( false ),
 	timer( 0 )
 {
-	::SystemParametersInfo( SPI_GETWORKAREA, 0, &screenRect, 0 );
 	updateVideoMemory.reserve( emul.video.getMemorySize() );
 }
 
@@ -108,11 +110,6 @@ void BKMainFrame::Dump(CDumpContext& dc) const
 }
 #endif
 
-void BKMainFrame::OnSetFocus(CWnd* pOldWnd)
-{
-	CFrameWnd::OnSetFocus( pOldWnd );
-}
-
 void BKMainFrame::OnMove( int x, int y )
 {
 	CFrameWnd::OnMove( x, y );
@@ -129,12 +126,27 @@ HRESULT BKMainFrame::initDirectDraw()
 {
 	display = new CDisplay();
 
-//	if ( display->CreateFullScreenDisplay( this, 640, 480, 32 ) != S_OK ) {
-	if ( display->CreateWindowedDisplay( this, bk_width, bk_height ) != S_OK ) {
-		int i = ::GetLastError();
-		AfxMessageBox( "Failed initializing DirectDraw." );
-		return -1;
+	if ( windowMode ) {
+		if ( display->CreateWindowedDisplay( this, bk_width, bk_height ) != S_OK ) {
+			AfxMessageBox( "Failed initializing DirectDraw." );
+			return -1;
+		}
+	} else {
+		CDC* dc = CWnd::GetDesktopWindow()->GetDC();
+		int bpp = dc->GetDeviceCaps( BITSPIXEL );
+		CWnd::GetDesktopWindow()->ReleaseDC( dc );
+		if ( display->CreateFullScreenDisplay( this, 512, 256, bpp ) != S_OK ) {
+			AfxMessageBox( "Failed initializing DirectDraw." );
+			return -1;
+		}
+		SetMenu( NULL );
+		ModifyStyle( WS_OVERLAPPEDWINDOW, 0 );
+
+		fullWindowWidth  = display->getSurfaceDesc()->dwWidth;
+		fullWindowHeight = display->getSurfaceDesc()->dwHeight;
 	}
+	::SystemParametersInfo( SPI_GETWORKAREA, 0, &screenRect, 0 );
+	updateBounds();
 
 	bytePerPixel = display->getSurfaceDesc()->ddpfPixelFormat.dwRGBBitCount >> 3;
 	if ( bytePerPixel > 1 ) {
@@ -306,7 +318,7 @@ void BKMainFrame::draw( const BYTE* bk_video_from, int count_byte, BYTE BK_byte_
 					if ( colorMonitor ) {
 						DWORD* pByte = reinterpret_cast<DWORD*>( t_memory1 + t_memory2 * bytePerPixel );
 						for ( int i = 0; i < 4; i++ ) {
-							if ( true /*t_memory2 >= screenRect.left && t_memory2 + 1 <= screenRect.right && t_memory2 + 1 <= windowRect.right*/ ) {
+							if ( t_memory2 >= screenRect.left && t_memory2 + 1 <= screenRect.right && t_memory2 + 1 <= windowRect.right ) {
 								bool bit0 = bk_byte_value & maska ? true : false;
 								maska <<= 1;
 								bool bit1 = bk_byte_value & maska ? true : false;
@@ -365,6 +377,24 @@ HRESULT BKMainFrame::displayFrame() const
 				draw( &tmp_memory, 1, i & 077, i / 64 );
 			}
 		}
+		if ( !windowMode ) {
+			CClientDC dc( (CWnd*)this );
+			CRect rect;
+			GetClientRect( rect );
+			COLORREF color = RGB( 0x1F, 0x1F, 0x1F );
+			if ( windowRect.left ) {
+				dc.FillSolidRect( 0, 0, windowRect.left, rect.bottom, color );
+			}
+			if ( windowRect.right != rect.right ) {
+				dc.FillSolidRect( windowRect.right, 0, rect.right - windowRect.right, rect.bottom, color );
+			}
+			if ( windowRect.top ) {
+				dc.FillSolidRect( 0, 0, rect.right, windowRect.top, color );
+			}
+			if ( windowRect.bottom != rect.bottom ) {
+				dc.FillSolidRect( 0, windowRect.bottom, rect.right, rect.bottom - windowRect.bottom, color );
+			}
+		}
 		unlockSurface();
 	}
 	return DD_OK;
@@ -396,23 +426,25 @@ void BKMainFrame::updateScrolling( BYTE delta ) const
 
 void BKMainFrame::updateBounds()
 {
-	GetClientRect( windowRect );
-	ClientToScreen( windowRect );
-//	GetWindowRect( windowRect );
+	if ( windowMode ) {
+		GetClientRect( windowRect );
+		ClientToScreen( windowRect );
+	} else {
+		GetClientRect( windowRect );
+		ClientToScreen( windowRect );
+		if ( fullWindowWidth && fullWindowHeight ) {
+			windowRect.left  += (fullWindowWidth - bk_width) / 2;
+			windowRect.right  = windowRect.left + bk_width;
+			windowRect.top   += (fullWindowHeight - bk_height) / 2;
+			windowRect.bottom = windowRect.top + bk_height;
+		}
+	}
 }
 
 void BKMainFrame::OnPaint()
 {
 	CPaintDC dc( this );
 	updateMonitor();
-	CRect rect;
-	GetClientRect( rect );
-	if ( rect.Width() > bk_width ) {
-		dc.FillSolidRect( bk_width, 0, rect.right - bk_width, rect.bottom, RGB( 0xFF, 0xFF, 0xFF ) );
-	}
-	if ( rect.Height() > bk_height ) {
-		dc.FillSolidRect( 0, bk_height, bk_width, rect.bottom - bk_height, RGB( 0xFF, 0xFF, 0xFF ) );
-	}
 }
 
 void BKMainFrame::OnLButtonDown(UINT nFlags, CPoint point)
@@ -433,6 +465,7 @@ void BKMainFrame::OnTimer(UINT nIDEvent)
 
 	if ( nIDEvent == timer ) {
 		if ( !lock ) {
+/*
 			static int fps      = 0;
 			static int mseconds = 0;
 			fps++;
@@ -444,6 +477,7 @@ void BKMainFrame::OnTimer(UINT nIDEvent)
 				fps      = 0;
 				mseconds = 0;
 			}
+*/
 			std::vector< WORD >::const_iterator it = updateVideoMemory.begin();
 			if ( it != updateVideoMemory.end() && lockSurface() == DD_OK ) {
 				lock = true;
@@ -463,15 +497,26 @@ void BKMainFrame::OnTimer(UINT nIDEvent)
 
 void BKMainFrame::OnGetMinMaxInfo( MINMAXINFO FAR* lpMMI )
 {
-	DWORD dwFrameWidth    = ::GetSystemMetrics( SM_CXSIZEFRAME );
-	DWORD dwFrameHeight   = ::GetSystemMetrics( SM_CYSIZEFRAME );
-	DWORD dwMenuHeight    = ::GetSystemMetrics( SM_CYMENU );
-	DWORD dwCaptionHeight = ::GetSystemMetrics( SM_CYCAPTION );
-
-	lpMMI->ptMinTrackSize.x = bk_width  + dwFrameWidth * 2;
-	lpMMI->ptMinTrackSize.y = bk_height + dwFrameHeight * 2 + dwMenuHeight + dwCaptionHeight;
+	if ( windowMode ) {
+		DWORD dwFrameWidth    = ::GetSystemMetrics( SM_CXSIZEFRAME );
+		DWORD dwFrameHeight   = ::GetSystemMetrics( SM_CYSIZEFRAME );
+		DWORD dwMenuHeight    = ::GetSystemMetrics( SM_CYMENU );
+		DWORD dwCaptionHeight = ::GetSystemMetrics( SM_CYCAPTION );
+		lpMMI->ptMinTrackSize.x = bk_width  + dwFrameWidth * 2;
+		lpMMI->ptMinTrackSize.y = bk_height + dwFrameHeight * 2 + dwMenuHeight + dwCaptionHeight;
+	} else {
+		if ( display && display->getSurfaceDesc() ) {
+			lpMMI->ptMinTrackSize.x = display->getSurfaceDesc()->dwWidth;
+			lpMMI->ptMinTrackSize.y = display->getSurfaceDesc()->dwHeight;
+		}
+	}
 	lpMMI->ptMaxTrackSize.x = lpMMI->ptMinTrackSize.x;
 	lpMMI->ptMaxTrackSize.y = lpMMI->ptMinTrackSize.y;
 
 	CFrameWnd::OnGetMinMaxInfo(lpMMI);
+}
+
+void BKMainFrame::OnRepaint() 
+{
+	updateMonitor();
 }

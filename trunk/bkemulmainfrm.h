@@ -29,6 +29,9 @@ private:
 	DWORD rColor, gColor, bColor, grayColor;
 	CRect windowRect;
 	CRect screenRect;
+	bool  windowMode;
+	int   fullWindowWidth;
+	int   fullWindowHeight;
 
 	UINT timer;
 	bool lock;
@@ -59,13 +62,13 @@ public:
 protected:
 	//{{AFX_MSG(BKMainFrame)
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	afx_msg void OnSetFocus(CWnd *pOldWnd);
 	afx_msg void OnMove(int x, int y);
 	afx_msg void OnClose();
 	afx_msg void OnPaint();
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnTimer(UINT nIDEvent);
 	afx_msg void OnGetMinMaxInfo(MINMAXINFO FAR* lpMMI);
+	afx_msg void OnRepaint();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
