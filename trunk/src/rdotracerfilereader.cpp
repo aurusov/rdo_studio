@@ -3,6 +3,7 @@
 #include "../resource.h"
 #include "rdotracerapp.h"
 #include "./trace_files/rdotracer.h"
+#include "./trace_files/rdotracerexception.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -65,10 +66,14 @@ UINT RunningThreadControllingFunction( LPVOID pParam )
 
 	trace_reader.tracing = true;
 
-	while ( !trace_reader.trace_file->eof() ) {
-		tracer->traceStringNotify( trace_reader.getNextLine() );
-		if ( rdoTracerApp.mainFrame->getShowMode() != SM_NoShow && !trace_reader.trace_file->eof() )
-			::Sleep( trace_reader.delay );
+	try {
+		while ( !trace_reader.trace_file->eof() ) {
+			tracer->traceStringNotify( trace_reader.getNextLine() );
+			if ( rdoTracerApp.mainFrame->getShowMode() != SM_NoShow && !trace_reader.trace_file->eof() )
+				::Sleep( trace_reader.delay );
+		}
+	} catch ( RDOTracerException &e ) {
+		AfxMessageBox( format( IDS_FILEREADEREXCEPTION, trace_reader.model_name.c_str(), e.getMessage().c_str() ).c_str() );
 	}
 
 	trace_reader.th = NULL;

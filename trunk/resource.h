@@ -158,6 +158,24 @@
 #define IDS_COLORSTYLE_EDITOR_THEME_DEFAULT 40169
 #define ID_DELAY_STATUSBAR              57635
 #define IDS_DELAY_STRING                57636
+#define IDS_UEOLEXCEPTION               57637
+#define IDS_RESPARAMEXCEPTION           57638
+#define IDS_RESOURCEEXCEPTION           57639
+#define IDS_RESSTATECHANGEERROR         57639
+#define IDS_TRACEEXCEPTION              57640
+#define IDS_FILEREADEREXCEPTION         57641
+#define IDS_RESCANNOTFIND               57642
+#define IDS_RESELIMERROR                57643
+#define IDS_RESCREATEERROR              57644
+#define IDS_RESULTCANNOTFIND            57645
+#define IDS_RESULTVALCHANGEERROR        57646
+#define IDS_CANNOTFINDRESTYPE           57647
+#define IDS_OPCANNOTFIND                57648
+#define IDS_OPSTARTERROR                57649
+#define IDS_OPENDERROR                  57650
+#define IDS_IECANNOTFIND                57651
+#define IDS_IETRACINGERROR              57652
+#define IDS_RULETRACINGERROR            57653
 
 // Next default values for new objects
 // 

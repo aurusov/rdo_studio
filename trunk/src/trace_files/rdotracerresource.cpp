@@ -3,6 +3,7 @@
 #include "rdotracerrestype.h"
 #include "rdotracervalues.h"
 #include "rdotracer.h"
+#include "rdotracerexception.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -133,13 +134,18 @@ void RDOTracerResource::setParams( string& line, RDOTracerTimeNow* const time, c
 {
 	int count = params.size();
 	for ( int i = 0; i < count; i++ ) {
-		RDOTracerValue* prevval;
-		params.at( i )->getLastValue( prevval );
-		double newval = erasing ? prevval->value : atof( tracer->getNextValue( line ).c_str() );
-		if ( !prevval || erasing || prevval->value != newval ) {
-			RDOTracerValue* newvalue = new RDOTracerValue( time, eventIndex );
-			newvalue->value = newval;
-			params.at( i )->addValue( newvalue );
+		try {
+			RDOTracerValue* prevval;
+			params.at( i )->getLastValue( prevval );
+			double newval = erasing ? prevval->value : atof( tracer->getNextValue( line ).c_str() );
+			if ( !prevval || erasing || prevval->value != newval ) {
+				RDOTracerValue* newvalue = new RDOTracerValue( time, eventIndex );
+				newvalue->value = newval;
+				params.at( i )->addValue( newvalue );
+			}
+		} catch ( RDOTracerException &e ) {
+			e.message = format( IDS_RESPARAMEXCEPTION, i + 1, params.at( i )->getParamInfo()->Name.c_str(), count - i - 1, e.getMessage().c_str() );
+			throw;
 		}
 	}
 }

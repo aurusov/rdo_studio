@@ -329,6 +329,10 @@ SOURCE=.\src\trace_files\rdotracerbase.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\src\trace_files\rdotracerexception.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\src\trace_files\rdotraceroperation.cpp
 # End Source File
 # Begin Source File
@@ -386,6 +390,10 @@ SOURCE=.\src\trace_files\rdotracer.h
 # Begin Source File
 
 SOURCE=.\src\trace_files\rdotracerbase.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\src\trace_files\rdotracerexception.h
 # End Source File
 # Begin Source File
 

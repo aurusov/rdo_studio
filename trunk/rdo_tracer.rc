@@ -129,7 +129,7 @@ END
 IDD_OPTIONS_STYLESANDCOLORS DIALOGEX 0, 0, 292, 229
 STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "Styles and Colors"
-FONT 8, "MS Sans Serif"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     CONTROL         "Tree1",IDC_STYLEITEM_TREE,"SysTreeView32",
                     TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | 
@@ -384,7 +384,7 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_CAPTION             "RDO Tracer - %s"
+    IDS_CAPTION             "RAO Tracer - %s"
     ID_MODEL_START          "Model "
     ID_RESOURCE_TYPES       "Resource types"
     ID_RESULTS              "Results"
@@ -501,6 +501,18 @@ BEGIN
     ID_EDIT_COPY            "Copy\nCopy (Ctrl+C)"
     ID_DELAY_STATUSBAR      " "
     IDS_DELAY_STRING        "Delay: %d"
+    IDS_UEOLEXCEPTION       "Unexpected end of line. Line number -- %d."
+    IDS_RESPARAMEXCEPTION   "Cannot set value for parameter #%d: %s and the rest %d parameters.\nThe reason is '%s'.\nThis may result in wrong values of named parameters."
+    IDS_RESSTATECHANGEERROR "Error while tracing resource #%d: %s of type #%d: %s.\nCannot perform resource state changing.\n%s"
+    IDS_TRACEEXCEPTION      "Time_now = %g. EventIndex = %d.\n%s"
+    IDS_FILEREADEREXCEPTION "Error while tracing model '%s'.\n%s\n\nTrace stopped."
+    IDS_RESCANNOTFIND       "Cannot find not eliminated resource #%d of type #%d."
+    IDS_RESELIMERROR        "Error while tracing resource #%d: %s of type #%d: %s.\nCannot perform resource elimination.\n%s"
+    IDS_RESCREATEERROR      "Error while tracing resource #%d: %s of type #%d: %s.\nCannot perform resource creation.\n%s"
+    IDS_RESULTCANNOTFIND    "Cannot find the index #%d."
+    IDS_RESULTVALCHANGEERROR 
+                            "Error while tracing index #%d: %s.\nCannot set new value.\n%s"
+    IDS_CANNOTFINDRESTYPE   "Cannot find resource type #%d."
 END
 
 STRINGTABLE DISCARDABLE 
@@ -510,6 +522,16 @@ BEGIN
     ID_VIEW_ZOOMOUT         "Zoom Out\nZoom Out (Ctrl+Num-)"
     ID_VIEW_ZOOMAUTO        "Zoom Auto\nZoom Auto (Ctrl+Num*)"
     ID_VIEW_ZOOMRESET       "Reset Zoom\nReset Zoom (Ctrl+Num/)"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_OPCANNOTFIND        "Cannot find the operation #%d, pattern #%d."
+    IDS_OPSTARTERROR        "Error while tracing operation #%d: %s, pattern #%d: %s.\nCannot perform action start.\n%s"
+    IDS_OPENDERROR          "Error while tracing operation #%d: %s, pattern #%d: %s.\nCannot perform action accomplishing.\n%s"
+    IDS_IECANNOTFIND        "Cannot find the irregular event #%d, pattern #%d."
+    IDS_IETRACINGERROR      "Error while tracing irregular event #%d: %s, pattern #%d: %s.\n"
+    IDS_RULETRACINGERROR    "Error while tracing production rule #%d: %s, pattern #%d: %s.\n"
 END
 
 #endif    // Russian resources
@@ -592,7 +614,7 @@ BEGIN
     END
     POPUP "&Help"
     BEGIN
-        MENUITEM "&About RAO-Tracer...",        ID_APP_ABOUT
+        MENUITEM "&About...",                   ID_APP_ABOUT
     END
 END
 
@@ -631,8 +653,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,0,21
- PRODUCTVERSION 1,0,0,21
+ FILEVERSION 1,0,0,23
+ PRODUCTVERSION 1,0,0,23
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -650,14 +672,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "RAO Tracer\0"
-            VALUE "FileVersion", "1, 0, 0, 21\0"
-            VALUE "InternalName", "RAO-Tracer\0"
+            VALUE "FileVersion", "1, 0, 0, 23\0"
+            VALUE "InternalName", "RAO Tracer\0"
             VALUE "LegalCopyright", "Copyright (C) 2003\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "rdo_tracer.exe\0"
             VALUE "PrivateBuild", "\0"
-            VALUE "ProductName", "RAO-Tracer\0"
-            VALUE "ProductVersion", "1, 0, 0, 21\0"
+            VALUE "ProductName", "RAO Tracer\0"
+            VALUE "ProductVersion", "1, 0, 0, 23\0"
             VALUE "SpecialBuild", "\0"
         END
     END
@@ -677,14 +699,14 @@ END
 
 STRINGTABLE PRELOAD DISCARDABLE 
 BEGIN
-    IDR_MAINFRAME           "RAO-tracer"
+    IDR_MAINFRAME           "RAO Tracer"
     ID_MSG_NO_HELP_FILE     "Cannot find help file ""%s"".\r\nIt must be in the application's directory."
     ID_STATUSBAR_READONLY   "Read only"
 END
 
 STRINGTABLE PRELOAD DISCARDABLE 
 BEGIN
-    AFX_IDS_APP_TITLE       "RAO-tracer"
+    AFX_IDS_APP_TITLE       "RAO Tracer"
     AFX_IDS_IDLEMESSAGE     "Ready"
 END
 

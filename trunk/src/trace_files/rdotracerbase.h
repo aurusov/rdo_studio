@@ -52,13 +52,13 @@ private:
 	RDOTracerTimeNow* addTime( std::string& time );
 	int eventIndex;
 	
-	RDOTracerOperationBase* getOperation( std::string& line );
+	RDOTracerOperationBase* getOperation( std::string& line, int& pat_id, int& op_id );
 	void startAction( std::string& line, RDOTracerTimeNow* const time );
 	void accomplishAction( std::string& line, RDOTracerTimeNow* const time  );
 	void irregularEvent( std::string& line, RDOTracerTimeNow* const time  );
 	void productionRule( std::string& line, RDOTracerTimeNow* const time  );
 
-	RDOTracerResource* getResource( std::string& line );
+	RDOTracerResource* getResource( std::string& line, int& type_id, int& res_id );
 	RDOTracerResource* resourceCreation( std::string& line, RDOTracerTimeNow* const time  );
 	RDOTracerResource* resourceElimination( std::string& line, RDOTracerTimeNow* const time  );
 	enum RDOTracerResUpdateAction { RUA_NONE, RUA_ADD, RUA_UPDATE };
@@ -66,7 +66,7 @@ private:
 	RDOTracerResource* resource;
 	void resourceChanging( std::string& line, RDOTracerTimeNow* const time  );
 	
-	RDOTracerResult* getResult( std::string& line );
+	RDOTracerResult* getResult( std::string& line, int& res_id );
 	void resultChanging( std::string& line, RDOTracerTimeNow* const time  );
 
 	std::list< RDOTracerTimeNow* > timeList;

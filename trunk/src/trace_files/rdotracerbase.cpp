@@ -20,6 +20,7 @@
 //#include "../rdostudiomainfrm.h"
 #include "../rdotracermainfrm.h"
 //#include "rdotracer.h"
+#include "rdotracerexception.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -261,51 +262,59 @@ void RDOTracerBase::dispatchNextString( string& line )
 {
 	if ( line.empty() )
 		return;
-
-	string key = getNextValue( line );
+	
 	RDOTracerTimeNow* timeNow;
-	if ( key != "SO" && key.find( "ST" ) == string::npos && key != "SD" && key.find( "SE" ) == string::npos )
-		timeNow = addTime( getNextValue( line ) );
-	else
-		timeNow = timeList.back();
+	
+	try {
+		string key = getNextValue( line );
+		if ( key != "SO" && key.find( "ST" ) == string::npos && key != "SD" && key.find( "SE" ) == string::npos )
+			timeNow = addTime( getNextValue( line ) );
+		else
+			timeNow = timeList.back();
 
-	if ( key == "ES" ) {
-	} else if ( key == "EB" ) {
-		startAction( line, timeNow );
-	} else if ( key == "EF" ) {
-		accomplishAction( line, timeNow );
-	} else if ( key == "EI" ) {
-		irregularEvent( line, timeNow );
-	} else if ( key == "ER" ) {
-		productionRule( line, timeNow );
-	} else if ( key == "RC" || key == "SRC" ) {
-		resource = resourceCreation( line, timeNow );
-		action = RUA_ADD;
-	} else if ( key == "RE" || key == "SRE" ) {
-		resource = resourceElimination( line, timeNow );
-		action = RUA_UPDATE;
-	} else if ( key == "RK" || key == "SRK" ) {
-		resourceChanging( line, timeNow );
-	} else if ( key == "V" ) {
-		resultChanging( line, timeNow );
-	}/* else if ( key == "$Status" ) {
-	} else if ( key.Find( "DPS", 0) != -1 ) {
-	} else if ( key == "SB" ) {
-	} else if ( key == "SO" ) {
-	} else if ( key == "STN" ) {
-	} else if ( key == "STD" ) {
-	} else if ( key == "STR" ) {
-	} else if ( key == "SD" ) {
-	} else if ( key == "SES" ) {
-	} else if ( key == "SEN" ) {
-	} else if ( key == "SEM" ) {
-	} else if ( key == "SEF" ) {
-	} else if ( key == "SEU" ) {
-	}*/
+		if ( key == "ES" ) {
+		} else if ( key == "EB" ) {
+			startAction( line, timeNow );
+		} else if ( key == "EF" ) {
+			accomplishAction( line, timeNow );
+		} else if ( key == "EI" ) {
+			irregularEvent( line, timeNow );
+		} else if ( key == "ER" ) {
+			productionRule( line, timeNow );
+		} else if ( key == "RC" || key == "SRC" ) {
+			resource = resourceCreation( line, timeNow );
+			action = RUA_ADD;
+		} else if ( key == "RE" || key == "SRE" ) {
+			resource = resourceElimination( line, timeNow );
+			action = RUA_UPDATE;
+		} else if ( key == "RK" || key == "SRK" ) {
+			resourceChanging( line, timeNow );
+		} else if ( key == "V" ) {
+			resultChanging( line, timeNow );
+		}/* else if ( key == "$Status" ) {
+		} else if ( key.Find( "DPS", 0) != -1 ) {
+		} else if ( key == "SB" ) {
+		} else if ( key == "SO" ) {
+		} else if ( key == "STN" ) {
+		} else if ( key == "STD" ) {
+		} else if ( key == "STR" ) {
+		} else if ( key == "SD" ) {
+		} else if ( key == "SES" ) {
+		} else if ( key == "SEN" ) {
+		} else if ( key == "SEM" ) {
+		} else if ( key == "SEF" ) {
+		} else if ( key == "SEU" ) {
+		}*/
+	} catch ( RDOTracerException &e ) {
+		e.message = format( IDS_TRACEEXCEPTION, timeNow->time, eventIndex, e.getMessage().c_str() );
+		throw;
+	}
 }
 
 string RDOTracerBase::getNextValue( string& line )
 {
+	if ( line.empty() )
+		throw RDOTracerException( format( IDS_UEOLEXCEPTION, log->getStringsCount()).c_str() );
 	int posstart = line.find_first_not_of( ' ' );
 	int posend = line.find_first_of( ' ', posstart );
 	string res = line.substr( posstart, posend - posstart );
@@ -342,93 +351,171 @@ RDOTracerTimeNow* RDOTracerBase::addTime( string& time )
 	return timeList.back();
 }
 
-RDOTracerOperationBase* RDOTracerBase::getOperation( string& line )
+RDOTracerOperationBase* RDOTracerBase::getOperation( string& line, int& pat_id, int& op_id )
 {
 	getNextValue( line );
-	return operations.at( atoi( getNextValue( line ).c_str() ) - 1 );
+	op_id = atoi( getNextValue( line ).c_str() );
+	pat_id = atoi( getNextValue( line ).c_str() );
+	if ( op_id > operations.size() || pat_id > patterns.size() || operations.at( op_id - 1 )->getPattern() != patterns.at( pat_id - 1 ) )
+		throw RDOTracerException( format( IDS_OPCANNOTFIND, op_id, pat_id ).c_str() );
+	return operations.at( op_id - 1 );
 }
 
 void RDOTracerBase::startAction( string& line, RDOTracerTimeNow* const time  )
 {
-	static_cast<RDOTracerOperation*>(getOperation( line ))->start( time, eventIndex );
+	RDOTracerOperation* opr = NULL;
+	int pat_id, op_id;
+	try {
+		opr = static_cast<RDOTracerOperation*>(getOperation( line, pat_id, op_id ));
+		opr->start( time, eventIndex );
+	} catch ( RDOTracerException &e ) {
+		e.message = format( IDS_OPSTARTERROR, op_id, op_id <= operations.size() ? operations.at( op_id - 1)->getName().c_str() : "NULL", pat_id, pat_id <= patterns.size() ? patterns.at( pat_id - 1 )->Name.c_str() : "NULL", e.getMessage().c_str() );
+		throw;
+	}
 }
 
 void RDOTracerBase::accomplishAction( string& line, RDOTracerTimeNow* const time  )
 {
-	static_cast<RDOTracerOperation*>(getOperation( line ))->accomplish( time, eventIndex );
+	RDOTracerOperation* opr = NULL;
+	int pat_id, op_id;
+	try {
+		opr = static_cast<RDOTracerOperation*>(getOperation( line, pat_id, op_id ));
+		opr->accomplish( time, eventIndex );
+	} catch ( RDOTracerException &e ) {
+		e.message = format( IDS_OPENDERROR, op_id, op_id <= operations.size() ? operations.at( op_id - 1)->getName().c_str() : "NULL", pat_id, pat_id <= patterns.size() ? patterns.at( pat_id - 1 )->Name.c_str() : "NULL", e.getMessage().c_str() );
+		throw;
+	}
 }
 
 void RDOTracerBase::irregularEvent( string& line, RDOTracerTimeNow* const time  )
 {
-	irregularEvents.at( atoi( getNextValue( line ).c_str() ) - 1 )->occurs( time, eventIndex );
+	int ie_id, pat_id;
+	RDOTracerEvent* ie = NULL;
+	ie_id = atoi( getNextValue( line ).c_str() );
+	pat_id = atoi( getNextValue( line ).c_str() );
+	try {
+		if ( ie_id > irregularEvents.size() )
+			throw RDOTracerException( format( IDS_IECANNOTFIND, ie_id ).c_str() );
+		ie = irregularEvents.at( ie_id - 1 );
+		ie->occurs( time, eventIndex );
+	} catch ( RDOTracerException &e ) {
+		e.message = format( IDS_IETRACINGERROR, ie_id, ie_id <= irregularEvents.size() ? irregularEvents.at( ie_id - 1 )->getName().c_str() : "NULL", pat_id, pat_id <= patterns.size() ? patterns.at( pat_id - 1 )->Name.c_str() : "NULL", e.getMessage().c_str() );
+		throw;
+	}
 }
 
 void RDOTracerBase::productionRule( string& line, RDOTracerTimeNow* const time  )
 {
-	static_cast<RDOTracerEvent*>(getOperation( line ))->occurs( time, eventIndex );
+	RDOTracerEvent* rule = NULL;
+	int pat_id, rule_id;
+	try {
+		rule = static_cast<RDOTracerEvent*>(getOperation( line, pat_id, rule_id ));
+		rule->occurs( time, eventIndex );
+	} catch ( RDOTracerException &e ) {
+		e.message = format( IDS_RULETRACINGERROR, rule_id, rule_id <= operations.size() ? operations.at( rule_id - 1)->getName().c_str() : "NULL", pat_id, pat_id <= patterns.size() ? patterns.at( pat_id - 1 )->Name.c_str() : "NULL", e.getMessage().c_str() );
+		throw;
+	}
 }
 
-RDOTracerResource* RDOTracerBase::getResource( string& line )
+RDOTracerResource* RDOTracerBase::getResource( string& line, int& type_id, int& res_id )
 {
-	getNextValue( line );
+	type_id = atoi( getNextValue( line ).c_str() );
 	RDOTracerResource* res = NULL;
-	int findid = atoi( getNextValue( line ).c_str() );
-	int i = 0;
+	res_id = atoi( getNextValue( line ).c_str() );
+	//int i = 0;
 	for ( vector< RDOTracerResource* >::iterator it = resources.begin(); it != resources.end(); it++ ) {
-		if ( (*it)->id == findid )
-		if ( (*it)->id == findid && !(*it)->isErased() ) {
+		//if ( (*it)->id == res_id )
+		if ( (*it)->id == res_id && !(*it)->isErased() && type_id <= resTypes.size() && (*it)->getType() == resTypes.at( type_id - 1 ) ) {
 			res = *it;
 			break;
 		}
-		i++;
+		//i++;
 	}
+
+	if ( !res )
+		throw RDOTracerException( format( IDS_RESCANNOTFIND, res_id, type_id ).c_str() );
+
 	return res;
 }
 
 RDOTracerResource* RDOTracerBase::resourceCreation( string& line, RDOTracerTimeNow* const time  )
 {
-	RDOTracerResType* type = resTypes.at( atoi( getNextValue( line ).c_str() ) - 1 );
-	int id = atoi( getNextValue( line ).c_str() );
-	RDOTracerResource* res = new RDOTracerResource( type, format( "%s #%d", type->Name.c_str(), id ) );
-	res->id = id;
-	res->setParams( line, time, eventIndex );
+	int type_id, res_id;
+	RDOTracerResource* res = NULL;
+	try {
+		type_id = atoi( getNextValue( line ).c_str() );
+		res_id = atoi( getNextValue( line ).c_str() );
+		if ( type_id > resTypes.size() )
+			throw RDOTracerException( format( IDS_CANNOTFINDRESTYPE, type_id ).c_str() );
+		RDOTracerResType* type = resTypes.at( type_id - 1 );
+		res = new RDOTracerResource( type, format( "%s #%d", type->Name.c_str(), res_id ) );
+		res->id = res_id;
+		res->setParams( line, time, eventIndex );
 
-	resources.push_back( res );
-	//tree->addResource( res );
+		resources.push_back( res );
+		//tree->addResource( res );
+	} catch ( RDOTracerException &e ) {
+		e.message = format( IDS_RESCREATEERROR, res_id, res ? res->Name.c_str() : "NULL", type_id, type_id <= resTypes.size() ? resTypes.at( type_id - 1 )->Name.c_str() : "NULL", e.getMessage().c_str() );
+		throw;
+	}
 	return res;
 }
 
 RDOTracerResource* RDOTracerBase::resourceElimination( string& line, RDOTracerTimeNow* const time  )
 {
-	RDOTracerResource* res = getResource( line );
-	res->setParams( line, time, eventIndex, true );
-	res->setErased( true );
+	int type_id, res_id;
+	RDOTracerResource* res = NULL;
+	try {
+		res = getResource( line, type_id, res_id );
+		res->setParams( line, time, eventIndex, true );
+		res->setErased( true );
+	} catch ( RDOTracerException &e ) {
+		e.message = format( IDS_RESELIMERROR, res_id, res ? res->Name.c_str() : "NULL", type_id, type_id <= resTypes.size() ? resTypes.at( type_id - 1 )->Name.c_str() : "NULL", e.getMessage().c_str() );
+		throw;
+	}
 	//tree->updateResource( res );
 	return res;
 }
 
 void RDOTracerBase::resourceChanging( string& line, RDOTracerTimeNow* const time  )
 {
-	RDOTracerResource* res = getResource( line );
-	res->setParams( line, time, eventIndex );
+	int type_id, res_id;
+	RDOTracerResource* res = NULL;
+	try {
+		res = getResource( line, type_id, res_id );
+		res->setParams( line, time, eventIndex );
+	} catch ( RDOTracerException &e ) {
+		e.message = format( IDS_RESSTATECHANGEERROR, res_id, res ? res->Name.c_str() : "NULL", type_id, type_id <= resTypes.size() ? resTypes.at( type_id - 1 )->Name.c_str() : "NULL", e.getMessage().c_str() );
+		throw;
+	}
 }
 
-RDOTracerResult* RDOTracerBase::getResult( std::string& line )
+RDOTracerResult* RDOTracerBase::getResult( std::string& line, int& res_id )
 {
 	RDOTracerResult* res = NULL;
-	int findid = atoi( getNextValue( line ).c_str() );
+	res_id = atoi( getNextValue( line ).c_str() );
 	for ( vector< RDOTracerResult* >::iterator it = results.begin(); it != results.end(); it++ ) {
-		if ( (*it)->id == findid ) {
+		if ( (*it)->id == res_id ) {
 			res = *it;
 			break;
 		}
 	}
+	if ( !res )
+		throw RDOTracerException( format( IDS_RESULTCANNOTFIND, res_id ).c_str() );
 	return res;
 }
 
 void RDOTracerBase::resultChanging( string& line, RDOTracerTimeNow* const time  )
 {
-	getResult( line )->setValue( line, time, eventIndex );
+	RDOTracerResult* res = NULL;
+	int res_id;
+	try {
+		res = getResult( line, res_id );
+		res->setValue( line, time, eventIndex );
+	} catch ( RDOTracerException &e ) {
+		e.message = format( IDS_RESULTVALCHANGEERROR, res_id, res ? res->getName().c_str() : "NULL", e.getMessage().c_str() );
+		throw;
+	}
 }
 
 void RDOTracerBase::deleteTrace()
