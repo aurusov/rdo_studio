@@ -32,18 +32,24 @@ BEGIN_MESSAGE_MAP(RDOPluginMFCMainFrame, CFrameWnd)
 	ON_UPDATE_COMMAND_UI(ID_MODEL_RUN_NOSHOW, OnUpdateModelRunNoshow)
 	ON_UPDATE_COMMAND_UI(ID_MODEL_RUN_ANIMATION, OnUpdateModelRunAnimation)
 	ON_UPDATE_COMMAND_UI(ID_MODEL_RUN_MONITOR, OnUpdateModelRunMonitor)
-	ON_COMMAND(ID_MODEL_SHOWRATE_INC, OnModelShowrateInc)
-	ON_COMMAND(ID_MODEL_SHOWRATE_INCFOUR, OnModelShowrateIncFour)
-	ON_COMMAND(ID_MODEL_SHOWRATE_DECFOUR, OnModelShowrateDecFour)
-	ON_COMMAND(ID_MODEL_SHOWRATE_DEC, OnModelShowrateDec)
-	ON_UPDATE_COMMAND_UI(ID_MODEL_SHOWRATE_INC, OnUpdateModelShowrateInc)
-	ON_UPDATE_COMMAND_UI(ID_MODEL_SHOWRATE_INCFOUR, OnUpdateModelShowrateIncFour)
-	ON_UPDATE_COMMAND_UI(ID_MODEL_SHOWRATE_DECFOUR, OnUpdateModelShowrateDecFour)
-	ON_UPDATE_COMMAND_UI(ID_MODEL_SHOWRATE_DEC, OnUpdateModelShowrateDec)
+	ON_COMMAND(ID_MODEL_SHOWRATE_INC, OnModelShowRateInc)
+	ON_COMMAND(ID_MODEL_SHOWRATE_INCFOUR, OnModelShowRateIncFour)
+	ON_COMMAND(ID_MODEL_SHOWRATE_DECFOUR, OnModelShowRateDecFour)
+	ON_COMMAND(ID_MODEL_SHOWRATE_DEC, OnModelShowRateDec)
+	ON_UPDATE_COMMAND_UI(ID_MODEL_SHOWRATE_INC, OnUpdateModelShowRateInc)
+	ON_UPDATE_COMMAND_UI(ID_MODEL_SHOWRATE_INCFOUR, OnUpdateModelShowRateIncFour)
+	ON_UPDATE_COMMAND_UI(ID_MODEL_SHOWRATE_DECFOUR, OnUpdateModelShowRateDecFour)
+	ON_UPDATE_COMMAND_UI(ID_MODEL_SHOWRATE_DEC, OnUpdateModelShowRateDec)
 	ON_COMMAND(ID_MODEL_FRAME_NEXT, OnModelFrameNext)
 	ON_COMMAND(ID_MODEL_FRAME_PREV, OnModelFramePrev)
 	ON_UPDATE_COMMAND_UI(ID_MODEL_FRAME_NEXT, OnUpdateModelFrameNext)
 	ON_UPDATE_COMMAND_UI(ID_MODEL_FRAME_PREV, OnUpdateModelFramePrev)
+	ON_COMMAND(ID_MODEL_NEW, OnModelNew)
+	ON_COMMAND(ID_MODEL_OPEN, OnModelOpen)
+	ON_COMMAND(ID_MODEL_SAVE, OnModelSave)
+	ON_COMMAND(ID_MODEL_CLOSE, OnModelClose)
+	ON_UPDATE_COMMAND_UI(ID_MODEL_SAVE, OnUpdateModelSave)
+	ON_UPDATE_COMMAND_UI(ID_MODEL_CLOSE, OnUpdateModelClose)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -129,97 +135,127 @@ void RDOPluginMFCMainFrame::OnModelRunMonitor()
 
 void RDOPluginMFCMainFrame::OnUpdateModelRunNoshow(CCmdUI* pCmdUI) 
 {
-	bool flag = pluginMFCApp.studio.model.isRunning() && pluginMFCApp.studio.model.isFrmDescribed();
+	bool flag = pluginMFCApp.studio.model.isRunning() && pluginMFCApp.studio.frame.isDescribed();
 	pCmdUI->Enable( flag );
 	pCmdUI->SetCheck( flag ? pluginMFCApp.studio.model.getShowMode() == rdoPlugin::NoShow : 0 );
 }
 
 void RDOPluginMFCMainFrame::OnUpdateModelRunAnimation(CCmdUI* pCmdUI) 
 {
-	bool flag = pluginMFCApp.studio.model.isRunning() && pluginMFCApp.studio.model.isFrmDescribed();
+	bool flag = pluginMFCApp.studio.model.isRunning() && pluginMFCApp.studio.frame.isDescribed();
 	pCmdUI->Enable( flag );
 	pCmdUI->SetCheck( flag ? pluginMFCApp.studio.model.getShowMode() == rdoPlugin::Animation : 0 );
 }
 
 void RDOPluginMFCMainFrame::OnUpdateModelRunMonitor(CCmdUI* pCmdUI) 
 {
-	bool flag = pluginMFCApp.studio.model.isRunning() && pluginMFCApp.studio.model.isFrmDescribed();
+	bool flag = pluginMFCApp.studio.model.isRunning() && pluginMFCApp.studio.frame.isDescribed();
 	pCmdUI->Enable( flag );
 	pCmdUI->SetCheck( flag ? pluginMFCApp.studio.model.getShowMode() == rdoPlugin::Monitor : 0 );
 }
 
-void RDOPluginMFCMainFrame::OnModelShowrateInc() 
+void RDOPluginMFCMainFrame::OnModelShowRateInc() 
 {
-	double showRate = pluginMFCApp.studio.model.getShowRate();
+	double showRate = pluginMFCApp.studio.frame.getShowRate();
 	showRate *= 1.5;
 	if ( showRate <= DBL_MAX ) {
-		pluginMFCApp.studio.model.setShowRate( showRate );
+		pluginMFCApp.studio.frame.setShowRate( showRate );
 	}
 }
 
-void RDOPluginMFCMainFrame::OnModelShowrateIncFour() 
+void RDOPluginMFCMainFrame::OnModelShowRateIncFour() 
 {
-	double showRate = pluginMFCApp.studio.model.getShowRate();
+	double showRate = pluginMFCApp.studio.frame.getShowRate();
 	showRate *= 4;
 	if ( showRate <= DBL_MAX ) {
-		pluginMFCApp.studio.model.setShowRate( showRate );
+		pluginMFCApp.studio.frame.setShowRate( showRate );
 	}
 }
 
-void RDOPluginMFCMainFrame::OnModelShowrateDecFour() 
+void RDOPluginMFCMainFrame::OnModelShowRateDecFour() 
 {
-	double showRate = pluginMFCApp.studio.model.getShowRate();
+	double showRate = pluginMFCApp.studio.frame.getShowRate();
 	showRate /= 4;
 	if ( showRate >= DBL_MIN ) {
-		pluginMFCApp.studio.model.setShowRate( showRate );
+		pluginMFCApp.studio.frame.setShowRate( showRate );
 	}
 }
 
-void RDOPluginMFCMainFrame::OnModelShowrateDec() 
+void RDOPluginMFCMainFrame::OnModelShowRateDec() 
 {
-	double showRate = pluginMFCApp.studio.model.getShowRate();
+	double showRate = pluginMFCApp.studio.frame.getShowRate();
 	showRate /= 1.5;
 	if ( showRate >= DBL_MIN ) {
-		pluginMFCApp.studio.model.setShowRate( showRate );
+		pluginMFCApp.studio.frame.setShowRate( showRate );
 	}
 }
 
-void RDOPluginMFCMainFrame::OnUpdateModelShowrateInc(CCmdUI* pCmdUI) 
+void RDOPluginMFCMainFrame::OnUpdateModelShowRateInc(CCmdUI* pCmdUI) 
 {
-	pCmdUI->Enable( pluginMFCApp.studio.model.isRunning() && pluginMFCApp.studio.model.getShowMode() != rdoPlugin::NoShow && pluginMFCApp.studio.model.getShowRate() * 1.5 <= DBL_MAX );
+	pCmdUI->Enable( pluginMFCApp.studio.model.isRunning() && pluginMFCApp.studio.model.getShowMode() != rdoPlugin::NoShow && pluginMFCApp.studio.frame.getShowRate() * 1.5 <= DBL_MAX );
 }
 
-void RDOPluginMFCMainFrame::OnUpdateModelShowrateIncFour(CCmdUI* pCmdUI) 
+void RDOPluginMFCMainFrame::OnUpdateModelShowRateIncFour(CCmdUI* pCmdUI) 
 {
-	pCmdUI->Enable( pluginMFCApp.studio.model.isRunning() && pluginMFCApp.studio.model.getShowMode() != rdoPlugin::NoShow && pluginMFCApp.studio.model.getShowRate() * 4 <= DBL_MAX );
+	pCmdUI->Enable( pluginMFCApp.studio.model.isRunning() && pluginMFCApp.studio.model.getShowMode() != rdoPlugin::NoShow && pluginMFCApp.studio.frame.getShowRate() * 4 <= DBL_MAX );
 }
 
-void RDOPluginMFCMainFrame::OnUpdateModelShowrateDecFour(CCmdUI* pCmdUI) 
+void RDOPluginMFCMainFrame::OnUpdateModelShowRateDecFour(CCmdUI* pCmdUI) 
 {
-	pCmdUI->Enable( pluginMFCApp.studio.model.isRunning() && pluginMFCApp.studio.model.getShowMode() != rdoPlugin::NoShow && pluginMFCApp.studio.model.getShowRate() / 4 >= DBL_MIN );
+	pCmdUI->Enable( pluginMFCApp.studio.model.isRunning() && pluginMFCApp.studio.model.getShowMode() != rdoPlugin::NoShow && pluginMFCApp.studio.frame.getShowRate() / 4 >= DBL_MIN );
 }
 
-void RDOPluginMFCMainFrame::OnUpdateModelShowrateDec(CCmdUI* pCmdUI) 
+void RDOPluginMFCMainFrame::OnUpdateModelShowRateDec(CCmdUI* pCmdUI) 
 {
-	pCmdUI->Enable( pluginMFCApp.studio.model.isRunning() && pluginMFCApp.studio.model.getShowMode() != rdoPlugin::NoShow && pluginMFCApp.studio.model.getShowRate() / 1.5 >= DBL_MIN );
+	pCmdUI->Enable( pluginMFCApp.studio.model.isRunning() && pluginMFCApp.studio.model.getShowMode() != rdoPlugin::NoShow && pluginMFCApp.studio.frame.getShowRate() / 1.5 >= DBL_MIN );
 }
 
 void RDOPluginMFCMainFrame::OnModelFrameNext() 
 {
-	pluginMFCApp.studio.model.showNextFrame();
+	pluginMFCApp.studio.frame.showNext();
 }
 
 void RDOPluginMFCMainFrame::OnModelFramePrev() 
 {
-	pluginMFCApp.studio.model.showPrevFrame();
+	pluginMFCApp.studio.frame.showPrev();
 }
 
 void RDOPluginMFCMainFrame::OnUpdateModelFrameNext(CCmdUI* pCmdUI) 
 {
-	pCmdUI->Enable( pluginMFCApp.studio.model.canShowNextFrame() );
+	pCmdUI->Enable( pluginMFCApp.studio.frame.canShowNext() );
 }
 
 void RDOPluginMFCMainFrame::OnUpdateModelFramePrev(CCmdUI* pCmdUI) 
 {
-	pCmdUI->Enable( pluginMFCApp.studio.model.canShowPrevFrame() );
+	pCmdUI->Enable( pluginMFCApp.studio.frame.canShowPrev() );
+}
+
+void RDOPluginMFCMainFrame::OnModelNew()
+{
+	pluginMFCApp.studio.model.newModel();
+}
+
+void RDOPluginMFCMainFrame::OnModelOpen()
+{
+	pluginMFCApp.studio.model.openModel( NULL );
+}
+
+void RDOPluginMFCMainFrame::OnModelSave()
+{
+	pluginMFCApp.studio.model.saveModel();
+}
+
+void RDOPluginMFCMainFrame::OnModelClose()
+{
+	pluginMFCApp.studio.model.closeModel();
+}
+
+void RDOPluginMFCMainFrame::OnUpdateModelSave(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable( pluginMFCApp.studio.model.isModify() );
+}
+
+void RDOPluginMFCMainFrame::OnUpdateModelClose(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable( pluginMFCApp.studio.model.hasModel() );
 }

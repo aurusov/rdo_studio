@@ -72,6 +72,11 @@ BEGIN
     END
     POPUP "&Model"
     BEGIN
+        MENUITEM "Ne&w",                        ID_MODEL_NEW
+        MENUITEM "&Open...",                    ID_MODEL_OPEN
+        MENUITEM "Sa&ve",                       ID_MODEL_SAVE
+        MENUITEM "C&lose",                      ID_MODEL_CLOSE
+        MENUITEM SEPARATOR
         MENUITEM "&Build\tF7",                  ID_MODEL_BUILD
         MENUITEM "&Execute\tF5",                ID_MODEL_RUN
         MENUITEM "&Stop\tShift+F5",             ID_MODEL_STOP

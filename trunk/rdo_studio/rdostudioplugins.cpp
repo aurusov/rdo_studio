@@ -145,24 +145,30 @@ RDOStudioPlugins::RDOStudioPlugins()
 {
 	plugins = this;
 
-	studio.model.hasModel         = RDOStudioPlugins::hasModel;
-	studio.model.build            = RDOStudioPlugins::buildModel;
-	studio.model.run              = RDOStudioPlugins::runModel;
-	studio.model.stop             = RDOStudioPlugins::stopModel;
-	studio.model.isRunning        = RDOStudioPlugins::isModelRunning;
-	studio.model.getShowMode      = RDOStudioPlugins::getModelShowMode;
-	studio.model.setShowMode      = RDOStudioPlugins::setModelShowMode;
-	studio.model.isFrmDescribed   = RDOStudioPlugins::isModelFrmDescribed;
-	studio.model.getShowRate      = RDOStudioPlugins::getModelShowRate;
-	studio.model.setShowRate      = RDOStudioPlugins::setModelShowRate;
-	studio.model.showNextFrame    = RDOStudioPlugins::showModelNextFrame;
-	studio.model.showPrevFrame    = RDOStudioPlugins::showModelPrevFrame;
-	studio.model.canShowNextFrame = RDOStudioPlugins::canShowModelNextFrame;
-	studio.model.canShowPrevFrame = RDOStudioPlugins::canShowModelPrevFrame;
-	studio.model.getFrameCount    = RDOStudioPlugins::modelGetFrameCount;
-	studio.model.getFrameName     = RDOStudioPlugins::getModelFrameName;
-	studio.model.showFrame        = RDOStudioPlugins::modelShowFrame;
-	studio.model.closeAllFrame    = RDOStudioPlugins::modelCloseAllFrame;
+	studio.model.newModel    = RDOStudioPlugins::newModel;
+	studio.model.openModel   = RDOStudioPlugins::openModel;
+	studio.model.saveModel   = RDOStudioPlugins::saveModel;
+	studio.model.closeModel  = RDOStudioPlugins::closeModel;
+	studio.model.hasModel    = RDOStudioPlugins::hasModel;
+	studio.model.isModify    = RDOStudioPlugins::isModelModify;
+	studio.model.build       = RDOStudioPlugins::buildModel;
+	studio.model.run         = RDOStudioPlugins::runModel;
+	studio.model.stop        = RDOStudioPlugins::stopModel;
+	studio.model.isRunning   = RDOStudioPlugins::isModelRunning;
+	studio.model.getShowMode = RDOStudioPlugins::getModelShowMode;
+	studio.model.setShowMode = RDOStudioPlugins::setModelShowMode;
+
+	studio.frame.isDescribed = RDOStudioPlugins::isFrameDescribed;
+	studio.frame.getShowRate = RDOStudioPlugins::getFrameShowRate;
+	studio.frame.setShowRate = RDOStudioPlugins::setFrameShowRate;
+	studio.frame.showNext    = RDOStudioPlugins::showNextFrame;
+	studio.frame.showPrev    = RDOStudioPlugins::showPrevFrame;
+	studio.frame.canShowNext = RDOStudioPlugins::canShowNextFrame;
+	studio.frame.canShowPrev = RDOStudioPlugins::canShowPrevFrame;
+	studio.frame.getCount    = RDOStudioPlugins::getFrameCount;
+	studio.frame.getName     = RDOStudioPlugins::getFrameName;
+	studio.frame.show        = RDOStudioPlugins::showFrame;
+	studio.frame.closeAll    = RDOStudioPlugins::closeAllFrame;
 
 	kernel.setNotifyReflect( RDOKernel::beforeModelStart, modelStartNotify );
 	kernel.setNotifyReflect( RDOKernel::endExecuteModel, modelStopNotify );
@@ -230,9 +236,34 @@ void RDOStudioPlugins::init()
 */
 }
 
+void RDOStudioPlugins::newModel()
+{
+	model->newModel();
+}
+
+bool RDOStudioPlugins::openModel( const char* modelName )
+{
+	return model->openModel( modelName ? modelName : "" );
+}
+
+void RDOStudioPlugins::saveModel()
+{
+	model->saveModel();
+}
+
+void RDOStudioPlugins::closeModel()
+{
+	model->closeModel();
+}
+
 bool RDOStudioPlugins::hasModel()
 {
 	return model->hasModel();
+}
+
+bool RDOStudioPlugins::isModelModify()
+{
+	return model->isModify();
 }
 
 void RDOStudioPlugins::buildModel()
@@ -274,57 +305,57 @@ void RDOStudioPlugins::setModelShowMode( rdoPlugin::ModelShowMode showMode )
 	}
 }
 
-bool RDOStudioPlugins::isModelFrmDescribed()
+bool RDOStudioPlugins::isFrameDescribed()
 {
 	return model->isFrmDescribed();
 }
 
-double RDOStudioPlugins::getModelShowRate()
+double RDOStudioPlugins::getFrameShowRate()
 {
 	return model->getShowRate();
 }
 
-void RDOStudioPlugins::setModelShowRate( double value )
+void RDOStudioPlugins::setFrameShowRate( double value )
 {
 	model->setShowRate( value );
 }
 
-void RDOStudioPlugins::showModelNextFrame()
+void RDOStudioPlugins::showNextFrame()
 {
 	model->showNextFrame();
 }
 
-void RDOStudioPlugins::showModelPrevFrame()
+void RDOStudioPlugins::showPrevFrame()
 {
 	model->showPrevFrame();
 }
 
-bool RDOStudioPlugins::canShowModelNextFrame()
+bool RDOStudioPlugins::canShowNextFrame()
 {
 	return model->canShowNextFrame();
 }
 
-bool RDOStudioPlugins::canShowModelPrevFrame()
+bool RDOStudioPlugins::canShowPrevFrame()
 {
 	return model->canShowPrevFrame();
 }
 
-int RDOStudioPlugins::modelGetFrameCount()
+int RDOStudioPlugins::getFrameCount()
 {
 	return model->getFrameCount();
 }
 
-const char* RDOStudioPlugins::getModelFrameName( int index )
+const char* RDOStudioPlugins::getFrameName( int index )
 {
 	return model->getFrameName( index );
 }
 
-void RDOStudioPlugins::modelShowFrame( int index )
+void RDOStudioPlugins::showFrame( int index )
 {
 	model->showFrame( index );
 }
 
-void RDOStudioPlugins::modelCloseAllFrame()
+void RDOStudioPlugins::closeAllFrame()
 {
 	model->closeAllFrame();
 }

@@ -74,24 +74,30 @@ private:
 
 	rdoPlugin::Studio studio;
 
+	static void newModel();
+	static bool openModel( const char* modelName );
+	static void saveModel();
+	static void closeModel();
 	static bool hasModel();
+	static bool isModelModify();
 	static void buildModel();
 	static void runModel();
 	static void stopModel();
 	static bool isModelRunning();
 	static rdoPlugin::ModelShowMode getModelShowMode();
 	static void setModelShowMode( rdoPlugin::ModelShowMode showMode );
-	static bool isModelFrmDescribed();
-	static double getModelShowRate();
-	static void setModelShowRate( double value );
-	static void showModelNextFrame();
-	static void showModelPrevFrame();
-	static bool canShowModelNextFrame();
-	static bool canShowModelPrevFrame();
-	static int modelGetFrameCount();
-	static const char* getModelFrameName( int index );
-	static void modelShowFrame( int index );
-	static void modelCloseAllFrame();
+
+	static bool isFrameDescribed();
+	static double getFrameShowRate();
+	static void setFrameShowRate( double value );
+	static void showNextFrame();
+	static void showPrevFrame();
+	static bool canShowNextFrame();
+	static bool canShowPrevFrame();
+	static int getFrameCount();
+	static const char* getFrameName( int index );
+	static void showFrame( int index );
+	static void closeAllFrame();
 
 	static void modelStartNotify();
 	static void modelStopNotify();

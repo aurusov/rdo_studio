@@ -23,14 +23,39 @@ struct PluginInfo {
 	PluginRunMode defaultRunMode;
 };
 
+typedef void (*PFunNewModel)();
+typedef bool (*PFunOpenModel)( const char* modelName );
+typedef void (*PFunSaveModel)();
+typedef void (*PFunCloseModel)();
 typedef bool (*PFunHasModel)();
+typedef bool (*PFunIsModelModify)();
 typedef void (*PFunBuild)();
 typedef void (*PFunRun)();
 typedef void (*PFunStop)();
 typedef bool (*PFunIsRunning)();
 typedef ModelShowMode (*PFunGetShowMode)();
 typedef void (*PFunSetShowMode)( ModelShowMode showMode );
-typedef bool (*PFunIsFrmDescribed)();
+
+class Model {
+public:
+	Model(): newModel( NULL ), openModel( NULL ), saveModel( NULL ), closeModel( NULL ), hasModel( NULL ), isModify( NULL ), build( NULL ), run( NULL ), stop( NULL ), isRunning( NULL ), getShowMode( NULL ), setShowMode( NULL ) {};
+	virtual ~Model() {};
+
+	PFunNewModel         newModel;
+	PFunOpenModel        openModel;
+	PFunSaveModel        saveModel;
+	PFunCloseModel       closeModel;
+	PFunHasModel         hasModel;
+	PFunIsModelModify    isModify;
+	PFunBuild            build;
+	PFunRun              run;
+	PFunStop             stop;
+	PFunIsRunning        isRunning;
+	PFunGetShowMode      getShowMode;
+	PFunSetShowMode      setShowMode;
+};
+
+typedef bool (*PFunIsFrameDescribed)();
 typedef double (*PFunGetShowRate)();
 typedef void (*PFunSetShowRate)( double value );
 typedef void (*PFunShowNextFrame)();
@@ -42,29 +67,22 @@ typedef const char* (*PFunGetFrameName)( int index );
 typedef void (*PFunShowFrame)( int index );
 typedef void (*PFunCloseAllFrame)();
 
-class Model {
+class Frame {
 public:
-	Model(): hasModel( NULL ), build( NULL ), run( NULL ), stop( NULL ), isRunning( NULL ), getShowMode( NULL ), setShowMode( NULL ), isFrmDescribed( NULL ), getShowRate( NULL ), setShowRate( NULL ), showNextFrame( NULL ), showPrevFrame( NULL ), canShowNextFrame( NULL ), canShowPrevFrame( NULL ), getFrameCount( NULL ), getFrameName( NULL ), showFrame( NULL ), closeAllFrame( NULL ) {};
-	virtual ~Model() {};
+	Frame(): isDescribed( NULL ), getShowRate( NULL ), setShowRate( NULL ), showNext( NULL ), showPrev( NULL ), canShowNext( NULL ), canShowPrev( NULL ), getCount( NULL ), getName( NULL ), show( NULL ), closeAll( NULL ) {};
+	virtual ~Frame() {};
 
-	PFunHasModel         hasModel;
-	PFunBuild            build;
-	PFunRun              run;
-	PFunStop             stop;
-	PFunIsRunning        isRunning;
-	PFunGetShowMode      getShowMode;
-	PFunSetShowMode      setShowMode;
-	PFunIsFrmDescribed   isFrmDescribed;
+	PFunIsFrameDescribed isDescribed;
 	PFunGetShowRate      getShowRate;
 	PFunSetShowRate      setShowRate;
-	PFunShowNextFrame    showNextFrame;
-	PFunShowPrevFrame    showPrevFrame;
-	PFunCanShowNextFrame canShowNextFrame;
-	PFunCanShowPrevFrame canShowPrevFrame;
-	PFunGetFrameCount    getFrameCount;
-	PFunGetFrameName     getFrameName;
-	PFunShowFrame        showFrame;
-	PFunCloseAllFrame    closeAllFrame;
+	PFunShowNextFrame    showNext;
+	PFunShowPrevFrame    showPrev;
+	PFunCanShowNextFrame canShowNext;
+	PFunCanShowPrevFrame canShowPrev;
+	PFunGetFrameCount    getCount;
+	PFunGetFrameName     getName;
+	PFunShowFrame        show;
+	PFunCloseAllFrame    closeAll;
 };
 
 class Studio {
@@ -73,6 +91,7 @@ public:
 	virtual ~Studio() {};
 
 	Model model;
+	Frame frame;
 };
 
 static const int PLUGIN_MUSTEXIT_MESSAGE = ::RegisterWindowMessage( "PLUGIN_MUSTEXIT_MESSAGE" );

@@ -63,6 +63,8 @@ private:
 	void closeModelFromRepository();
 	void canNotCloseModelFromRepository() const;
 
+	bool canCloseModel();
+
 	void beforeModelStart();
 	void showFrame();
 	void stopModelFromSimulator();
@@ -77,7 +79,6 @@ public:
 	bool openModel( const std::string& modelName = "" ) const;
 	bool saveModel() const;
 	void saveAsModel() const;
-	bool canCloseModel();
 	void closeModel() const;
 
 	void buildModel() const;
