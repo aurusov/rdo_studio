@@ -129,19 +129,22 @@ void BKEmul::nextIteration()
 
 BYTE BKEmul::getMemoryByte( WORD address )
 {
+	BYTE data = memory.get_byte( address );
 	switch ( address ) {
 		// ¬ регистре состо€ни€ клавиатуры по чтению доступны 6 и 7 биты, остальные читаютс€ нул€ми
-		case 0177660: return memory.get_byte( address ) & 0300;
+		case 0177660: return data & 0300;
+		case 0177661: return 0;
 		// ¬ регистре данных клавиатуры доступны биты 0-6, остальные (7-15) читаютс€ нул€ми
 		case 0177662: {
-			BYTE res = memory.get_byte( address ) & 0177;
+			BYTE res = data & 0177;
 			// »з регистр данных клавиатуры прочитан код символа (регистр 177660, бит 0200 = 0 - прочитан, 1 - поступил)
-			memory.set_word( 0177660, memory.get_word( 0177660 ) & 0177577 );
+			memory.set_byte( 0177660, memory.get_byte( 0177660 ) & 0177 );
 			return res;
 		}
+		case 0117663: return 0;
 		// ¬ регистре смещени€ доступны 0-7 и 9 биты, остальные не используютс€ (читаютс€ нул€ми ????)
-		case 0177664: return memory.get_byte( address ) & 0377;
-		case 0177665: return memory.get_byte( address ) & 0002;
+		case 0177664: return data & 0377;
+		case 0177665: return data & 0002;
 		// ¬ регистре управлени€ таймером биты 8-15 читаютс€ единицами
 		case 0177713: return 0377;
 		// –егистр параллельного программируемого интерфейса содержит нулевую нагрузку
@@ -151,7 +154,7 @@ BYTE BKEmul::getMemoryByte( WORD address )
 		case 0177716: return keyboard.R_177716_byte_read;
 		case 0177717: return R_177717_byte_read;
 	}
-	return memory.get_byte( address );
+	return data;
 }
 
 WORD BKEmul::getMemoryWord( WORD address )
@@ -164,8 +167,8 @@ WORD BKEmul::getMemoryWord( WORD address )
 		// ¬ регистре данных клавиатуры доступны биты 0-6, остальные (7-15) читаютс€ нул€ми
 		case 0177662: {
 			data &= 0000177;
-			// »з регистр данных клавиатуры прочитан код символа (регистр 177660, бит 0200 = 0 - прочитан, 1 - поступил)
-			memory.set_word( 0177660, memory.get_word( 0177660 ) & 0177577 );
+			// »з регистр данных клавиатуры прочитан код символа (регистр 177660, разр€д 7, бит 0200 = 0 - прочитан, 1 - поступил)
+			memory.set_byte( 0177660, memory.get_byte( 0177660 ) & 0177 );
 			return data;
 		}
 		// ¬ регистре смещени€ доступны 0-7 и 9 биты, остальные не используютс€ (читаютс€ нул€ми ????)
@@ -198,6 +201,9 @@ void BKEmul::setMemoryByte( WORD address, BYTE data )
 			break;
 		}
 		case 0177661: memory.set_byte( address, 0 ); break;
+		// ¬ регистр данных клавиатуры запись запрещена
+		case 0177662:
+		case 0177663: break;
 		// –егистр смещени€
 		case 0177664:
 		case 0177665: {
@@ -274,6 +280,8 @@ void BKEmul::setMemoryWord( WORD address, WORD data )
 			memory.set_word( address, data );
 			break;
 		}
+		// ¬ регистр данных клавиатуры запись запрещена
+		case 0177662: break;
 		// –егистр смещени€
 		case 0177664: {
 			// ƒоступны только 0-7 и 9 биты

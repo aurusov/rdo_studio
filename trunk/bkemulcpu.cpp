@@ -788,7 +788,7 @@ void BKEmulCPU::BK_doRESET()
 
 	PR_4 = PR_60 = PR_274 = false;
 
-	emul.setMemoryWord( 0177660, 0000100 );
+	emul.keyboard.reset();
 }
 
 void BKEmulCPU::BK_doRTT()

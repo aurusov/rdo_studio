@@ -29,7 +29,7 @@ void BKEmulKeyboard::reset()
 	// 0100 = 1 - клавиша отжата
 	// 0200 = 1 - признак отсутствия арифметического расширения, должен быть = 1
 	R_177716_byte_read = 0300;
-	emul.memory.set_byte( 0177660, 0 );
+	emul.memory.set_byte( 0177660, 0100 );
 	key_list.clear();
 }
 
@@ -68,6 +68,7 @@ void BKEmulKeyboard::removeFromKeyList( char key )
 
 bool BKEmulKeyboard::keyDown( UINT key, UINT flags )
 {
+	addToKeyList( key );
 	bool BK_sysKey = false;
 	switch ( key ) {
 		// Esc = СТОП
@@ -101,25 +102,23 @@ bool BKEmulKeyboard::keyDown( UINT key, UINT flags )
 	// Если не системная клавиша БК, а обыкновенная (и не клавиша IBM PC)
 	BYTE BKScanCode;
 	if ( !BK_sysKey && getBKScanCode( key, BKScanCode ) ) {
-		addToKeyList( key );
 		if ( !KeyPressed && key_list.size() == 1 ) {
-			// Индикатор нажатой клавиши (бит 0100 = 0 - нажата, 1 - отжата)
+			// Индикатор нажатой клавиши (регист 177716, разряд 6, бит 0100 = 0 - нажата, 1 - отжата)
 			R_177716_byte_read &= 0277;
 			KeyPressed = true;
-			// Прочитан ли предыдущий код клавиши (бит 0200 = 1 - в регистре данных клавиатуры есть код нажатой клавиши, 0 - нет)
-//			if ( !(emul.getMemoryByte( 0177660 ) & 0200 ) ) {
-			{
+			// Поместили код нажатой клавиши
+			emul.memory.set_byte( 0177662, BKScanCode );
+			// Прочитан ли предыдущий код клавиши (регистр 177660, разряд 7, бит 0200 = 1 - в регистре данных клавиатуры есть код нажатой клавиши, 0 - нет)
+			if ( !(emul.memory.get_byte( 0177660 ) & 0200 ) ) {
 				// Ctrl = РУС/ЛАТ (РУС = Ctrl-left / ЛАТ = Ctrl-right)
 				if ( key == VK_CONTROL ) {
-					bool bit_24 = flags & 1 << 24 /*0x1000000*/ ? true : false;
+					bool bit_24 = flags & 1 << 24 ? true : false;
 					RUS = !bit_24;
 					BKScanCode = bit_24 ? 017 : 016;
 				}
-				// Поместили код нажатой клавиши
-				emul.setMemoryByte( 0177662, BKScanCode );
-				// В регистр данных клавиатуры поступил код (бит 0200 = 1 - поступил, 0 - прочитан)
+				// В регистр данных клавиатуры поступил код (регист 177660, разряд 7, бит 0200 = 1 - поступил, 0 - прочитан)
 				emul.memory.set_byte( 0177660, emul.memory.get_byte( 0177660 ) | 0200 );
-				// Разрешено ли прерывание с клавиатуры (бит 100 = 0 - разрешено, 1 - запрещено)
+				// Разрешено ли прерывание с клавиатуры (регист 177660, разряд 6, бит 0100 = 0 - разрешено, 1 - запрещено)
 				if ( !(emul.getMemoryByte( 0177660 ) & 0100) && emul.cpu.getPrior() == 0 ) {
 					if ( AR2 || BKScanCode <= 4 || BKScanCode == 013) {
 						emul.cpu.setPR_274();
@@ -127,8 +126,8 @@ bool BKEmulKeyboard::keyDown( UINT key, UINT flags )
 						emul.cpu.setPR_60();
 					}
 				}
-				return true;
 			}
+			return true;
 		}
 	}
 	return false;
@@ -163,7 +162,7 @@ bool BKEmulKeyboard::keyUp( UINT key, UINT flags )
 	BYTE BKScanCode;
 	if ( !BK_sysKey && getBKScanCode( key, BKScanCode ) ) {
 		if ( KeyPressed && key_list.empty() ) {
-			// Индикатор нажатой клавиши (бит 0100 = 0 - нажата, 1 - отжата)
+			// Индикатор нажатой клавиши (регист 177716, разряд 6, бит 0100 = 0 - нажата, 1 - отжата)
 			R_177716_byte_read |= 0100;
 			KeyPressed = false;
 			return true;
