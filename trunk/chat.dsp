@@ -312,6 +312,10 @@ SOURCE=.\res\statusModeToolbar.bmp
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\statusModeToolbar_d.bmp
+# End Source File
+# Begin Source File
+
 SOURCE=.\res\Toolbar.bmp
 # End Source File
 # Begin Source File

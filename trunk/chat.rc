@@ -67,6 +67,7 @@ END
 IDB_STATUSMODE          BITMAP  DISCARDABLE     "res\\userstreectrl.bmp"
 IDB_SOUND               BITMAP  DISCARDABLE     "res\\sound.bmp"
 IDB_NET                 BITMAP  DISCARDABLE     "res\\net.bmp"
+IDB_STATISMODE_TOOLBAR_D BITMAP  DISCARDABLE     "res\\statusModeToolbar_d.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -409,6 +410,10 @@ BEGIN
     BUTTON      ID_STATUSMODE_ONLINE
     BUTTON      ID_STATUSMODE_AWAY
     BUTTON      ID_STATUSMODE_NOTAVAILIBLE
+    SEPARATOR
+    BUTTON      ID_STATUSMODE_ONLINE_INFO
+    BUTTON      ID_STATUSMODE_AWAY_INFO
+    BUTTON      ID_STATUSMODE_NOTAVAILIBLE_INFO
 END
 
 IDR_MAIN_TOOLBAR TOOLBAR DISCARDABLE  16, 15
@@ -444,8 +449,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,0,159
- PRODUCTVERSION 1,0,0,159
+ FILEVERSION 1,0,0,160
+ PRODUCTVERSION 1,0,0,160
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -463,14 +468,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "Application for chat in localnet\0"
-            VALUE "FileVersion", "1, 0, 0, 159\0"
+            VALUE "FileVersion", "1, 0, 0, 160\0"
             VALUE "InternalName", "localChat\0"
             VALUE "LegalCopyright", "Copyright (C) 2002\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "localchat.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "localChat\0"
-            VALUE "ProductVersion", "1, 0, 0, 159\0"
+            VALUE "ProductVersion", "1, 0, 0, 160\0"
             VALUE "SpecialBuild", "\0"
         END
     END
@@ -537,6 +542,9 @@ END
 STRINGTABLE DISCARDABLE 
 BEGIN
     ID_FILE_REFRESHUSERLIST "\nRefresh User List"
+    ID_STATUSMODE_ONLINE_INFO "\nOnline..."
+    ID_STATUSMODE_AWAY_INFO "\nAway..."
+    ID_STATUSMODE_NOTAVAILIBLE_INFO "\nNot Availible..."
 END
 
 STRINGTABLE DISCARDABLE 

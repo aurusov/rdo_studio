@@ -26,6 +26,7 @@ class CChatMainFrame: public CFrameWnd
 private:
 	CToolBar       mainToolBar;
 	CToolBar       statusModeToolBar;
+	CImageList     statusModeToolBarImageList;
 	CStatusBar     statusBar;
 
 	CFont defFont;

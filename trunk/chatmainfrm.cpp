@@ -72,6 +72,7 @@ CChatMainFrame::CChatMainFrame():
 	lastStatusMode( CSMT_Online )
 {
 	trayIconData.cbSize = 0;
+	m_bAutoMenuEnable = FALSE;
 }
 
 CChatMainFrame::~CChatMainFrame()
@@ -102,6 +103,9 @@ int CChatMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	statusModeToolBar.CreateEx( this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
 	statusModeToolBar.LoadToolBar( IDR_STATUSMODE_TOOLBAR );
 	statusModeToolBar.GetToolBarCtrl().SetWindowText( format( ID_STATUSMODE_TOOLBAR ).c_str() );
+
+	statusModeToolBarImageList.Create( IDB_STATISMODE_TOOLBAR_D, 16, 0, 0xFF00FF );
+	statusModeToolBar.GetToolBarCtrl().SetDisabledImageList( &statusModeToolBarImageList );
 
 	statusBar.Create( this );
 	statusBar.SetIndicators( indicators, 1 );

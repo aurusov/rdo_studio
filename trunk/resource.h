@@ -25,6 +25,7 @@
 #define IDR_NETWORK_MENU                181
 #define IDR_STATUSMODE_TOOLBAR          189
 #define IDR_MAIN_TOOLBAR                191
+#define IDB_STATISMODE_TOOLBAR_D        193
 #define IDC_USERNAME_EDIT               1000
 #define IDC_USERNAME_STATIC             1001
 #define IDC_USER_GROUPBOX               1003
@@ -123,8 +124,8 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        193
-#define _APS_NEXT_COMMAND_VALUE         32816
+#define _APS_NEXT_RESOURCE_VALUE        194
+#define _APS_NEXT_COMMAND_VALUE         32823
 #define _APS_NEXT_CONTROL_VALUE         1053
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
