@@ -35,16 +35,19 @@ void CChatEdit::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
 	if ( nChar == VK_RETURN ) {
 		CString s;
 		GetWindowText( s );
+		std::string str = s;
+		std::string str_trim = str;
+		trim( str_trim );
+		if ( !str_trim.empty() ) {
+			list.push_back( str );
+			index = list.size() - 1;
 
-		list.push_back( static_cast<LPCSTR>(s) );
-		index = list.size() - 1;
+			chatApp.udp.send( "<msg:" + str + ">" );
 
-		chatApp.udp.send( "<msg:" + s + ">" );
+			SetWindowText( "" );
 
-		SetWindowText( "" );
-
-		chatApp.sounds.play( CST_ChatRet );
-
+			chatApp.sounds.play( CST_ChatRet );
+		}
 	} else if ( nChar == VK_BACK ) {
 		chatApp.sounds.play( CST_ChatBack );
 
