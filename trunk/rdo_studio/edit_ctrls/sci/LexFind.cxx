@@ -45,7 +45,7 @@ static void ColouriseFindDoc( unsigned int startPos, int length, int initStyle, 
 			continue;
 		}
 
-		if ( state == SCE_FIND_DEFAULT || state == SCE_FIND_IDENTIFIER ) {
+		if ( state == SCE_FIND_DEFAULT ) {
 			if ( (matchCase && ch == findKeyword[0]) || (!matchCase && RDOMakeLowerCase(ch) == RDOMakeLowerCase(findKeyword[0])) ) {
 				bool flag = true;
 				for ( int j = 0; j < findKeywordLen; j++ ) {
@@ -68,17 +68,8 @@ static void ColouriseFindDoc( unsigned int startPos, int length, int initStyle, 
 				if ( flag ) {
 					styler.ColourTo( i + findKeywordLen - 1, SCE_FIND_KEYWORD );
 					i += findKeywordLen - 1;
-					state = SCE_FIND_DEFAULT;
-				} else {
-					if ( ch != ' ' && ch != '\t' ) {
-						state = SCE_FIND_IDENTIFIER;
-					} else {
-						state = SCE_FIND_DEFAULT;
-					}
 				}
-			} else if ( ch != ' ' && ch != '\t' ) {
-				styler.ColourTo( i - 1, state );
-				state = SCE_FIND_IDENTIFIER;
+				state = SCE_FIND_DEFAULT;
 			} else {
 				styler.ColourTo( i - 1, state );
 				state = SCE_FIND_DEFAULT;

@@ -22,10 +22,8 @@ public:
 	virtual void load( std::string regPath );
 	virtual void save( std::string regPath ) const;
 
-	COLORREF identifierColor;
 	COLORREF keywordColor;
 
-	RDOFontStyle identifierStyle;
 	RDOFontStyle keywordStyle;
 
 	virtual bool styleDefault( const int styleType ) const;

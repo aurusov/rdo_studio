@@ -48,37 +48,34 @@ void RDOFindEdit::setEditorStyle( RDOFindEditStyle* _style )
 	// ----------
 	// Colors
 	RDOFindEditTheme* theme = static_cast<RDOFindEditTheme*>(style->theme);
-	sendEditor( SCI_STYLESETFORE, SCE_RDO_IDENTIFIER, theme->identifierColor );
-	sendEditor( SCI_STYLESETBACK, SCE_RDO_IDENTIFIER, theme->backgroundColor );
-	sendEditor( SCI_STYLESETFORE, SCE_RDO_KEYWORD, theme->keywordColor );
-	sendEditor( SCI_STYLESETBACK, SCE_RDO_KEYWORD, theme->backgroundColor );
+	sendEditor( SCI_STYLESETFORE, SCE_FIND_DEFAULT, theme->defaultColor );
+	sendEditor( SCI_STYLESETBACK, SCE_FIND_DEFAULT, theme->backgroundColor );
+	sendEditor( SCI_STYLESETFORE, SCE_FIND_KEYWORD, theme->keywordColor );
+	sendEditor( SCI_STYLESETBACK, SCE_FIND_KEYWORD, theme->backgroundColor );
 
 	// ----------
 	// Styles
-	sendEditor( SCI_STYLESETBOLD     , SCE_RDO_IDENTIFIER, theme->identifierStyle & RDOFS_BOLD      );
-	sendEditor( SCI_STYLESETITALIC   , SCE_RDO_IDENTIFIER, theme->identifierStyle & RDOFS_ITALIC    );
-	sendEditor( SCI_STYLESETUNDERLINE, SCE_RDO_IDENTIFIER, theme->identifierStyle & RDOFS_UNDERLINE );
-	sendEditor( SCI_STYLESETBOLD     , SCE_RDO_KEYWORD, theme->keywordStyle & RDOFS_BOLD      );
-	sendEditor( SCI_STYLESETITALIC   , SCE_RDO_KEYWORD, theme->keywordStyle & RDOFS_ITALIC    );
-	sendEditor( SCI_STYLESETUNDERLINE, SCE_RDO_KEYWORD, theme->keywordStyle & RDOFS_UNDERLINE );
+	sendEditor( SCI_STYLESETBOLD     , SCE_FIND_DEFAULT, theme->defaultStyle & RDOFS_BOLD      );
+	sendEditor( SCI_STYLESETITALIC   , SCE_FIND_DEFAULT, theme->defaultStyle & RDOFS_ITALIC    );
+	sendEditor( SCI_STYLESETUNDERLINE, SCE_FIND_DEFAULT, theme->defaultStyle & RDOFS_UNDERLINE );
+	sendEditor( SCI_STYLESETBOLD     , SCE_FIND_KEYWORD, theme->keywordStyle & RDOFS_BOLD      );
+	sendEditor( SCI_STYLESETITALIC   , SCE_FIND_KEYWORD, theme->keywordStyle & RDOFS_ITALIC    );
+	sendEditor( SCI_STYLESETUNDERLINE, SCE_FIND_KEYWORD, theme->keywordStyle & RDOFS_UNDERLINE );
 
 	// ----------
 	// Font Name
-	sendEditorString( SCI_STYLESETFONT, SCE_RDO_DEFAULT, style->font->name.c_str() );
-	sendEditorString( SCI_STYLESETFONT, SCE_RDO_IDENTIFIER, style->font->name.c_str() );
-	sendEditorString( SCI_STYLESETFONT, SCE_RDO_KEYWORD, style->font->name.c_str() );
+	sendEditorString( SCI_STYLESETFONT, SCE_FIND_DEFAULT, style->font->name.c_str() );
+	sendEditorString( SCI_STYLESETFONT, SCE_FIND_KEYWORD, style->font->name.c_str() );
 
 	// ----------
 	// Font Size
-	sendEditor( SCI_STYLESETSIZE, SCE_RDO_DEFAULT, style->font->size );
-	sendEditor( SCI_STYLESETSIZE, SCE_RDO_IDENTIFIER, style->font->size );
-	sendEditor( SCI_STYLESETSIZE, SCE_RDO_KEYWORD, style->font->size );
+	sendEditor( SCI_STYLESETSIZE, SCE_FIND_DEFAULT, style->font->size );
+	sendEditor( SCI_STYLESETSIZE, SCE_FIND_KEYWORD, style->font->size );
 
 	// ----------
 	// Codepage and Characterset
-	sendEditor( SCI_STYLESETCHARACTERSET, SCE_RDO_DEFAULT, style->font->characterSet );
-	sendEditor( SCI_STYLESETCHARACTERSET, SCE_RDO_IDENTIFIER, style->font->characterSet );
-	sendEditor( SCI_STYLESETCHARACTERSET, SCE_RDO_KEYWORD, style->font->characterSet );
+	sendEditor( SCI_STYLESETCHARACTERSET, SCE_FIND_DEFAULT, style->font->characterSet );
+	sendEditor( SCI_STYLESETCHARACTERSET, SCE_FIND_KEYWORD, style->font->characterSet );
 }
 
 void RDOFindEdit::setKeyword( const string& keyword, const bool matchCase ) const
