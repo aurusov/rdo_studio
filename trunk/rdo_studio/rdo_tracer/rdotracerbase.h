@@ -46,7 +46,7 @@ private:
 	std::vector <RDOTracerResult*> results;
 	void addResult( std::string& s, std::stringstream& stream );
 	
-	void dispathNextString( std::string& line );
+	void dispatchNextString( std::string& line );
 
 	RDOTracerTimeNow* addTime( std::string& time );
 	int eventIndex;
@@ -67,6 +67,7 @@ private:
 
 	std::list< RDOTracerTimeNow* > timeList;
 	
+	void clearCharts();
 	void deleteTrace();
 
 	UINT clipboardFormat;
@@ -75,6 +76,10 @@ private:
 	std::vector <RDOStudioChartDoc*> charts;
 
 	bool drawTrace;
+
+	//identifies if the trace is cleaned, so there is no model
+	//structure and created temporary resources
+	bool cleaned;
 public:
 	RDOTracerBase();
 	virtual ~RDOTracerBase();	
@@ -95,7 +100,6 @@ public:
 	RDOStudioChartDoc* addSerieToChart( RDOTracerSerie* const serie, RDOStudioChartDoc* chart = NULL );
 	void updateChartsStyles() const;
 	void clear();
-	void clearCharts();
 	void setModelName( std::string name ) const;
 	void setDrawTrace( const bool value );
 	bool getDrawTrace() const { return drawTrace; };

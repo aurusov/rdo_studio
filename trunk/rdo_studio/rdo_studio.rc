@@ -1090,8 +1090,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,8,0,123
- PRODUCTVERSION 0,8,0,123
+ FILEVERSION 0,8,0,122
+ PRODUCTVERSION 0,8,0,122
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -1109,14 +1109,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "RAO studio\0"
-            VALUE "FileVersion", "0, 8, 0, 123\0"
+            VALUE "FileVersion", "0, 8, 0, 122\0"
             VALUE "InternalName", "RAO-Studio\0"
             VALUE "LegalCopyright", "Copyright (C) 2003\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "RAO-Studio.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "RAO-Studio\0"
-            VALUE "ProductVersion", "0, 8, 0, 123\0"
+            VALUE "ProductVersion", "0, 8, 0, 122\0"
             VALUE "SpecialBuild", "\0"
         END
     END
@@ -1519,6 +1519,7 @@ BEGIN
     IDS_MODEL_STARTED       "Model started\n"
     IDS_MODEL_FINISHED      "Model finished\n"
     IDS_MODEL_STOPED        "Model stoped by user\n"
+    IDS_TRACER_GETTING_MODEL_STRUCTURE "Getting model structure..."
 END
 
 STRINGTABLE DISCARDABLE 

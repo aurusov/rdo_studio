@@ -43,6 +43,7 @@ RDOTracer::RDOTracer() : RDOTracerBase()
 
 RDOTracer::~RDOTracer()
 {
+	tracer = NULL;
 }
 
 void RDOTracer::newModelNotify()
@@ -65,7 +66,13 @@ void RDOTracer::beforeModelStartNotify()
 	tracer->clear();
 	tracer->setShowMode( kernel.getSimulator()->getShowMode() );
 	tracer->setModelName( kernel.getRepository()->getName() );
-	tracer->getModelStructure( kernel.getSimulator()->getModelStructure() );
+	try {
+		kernel.debug( format( IDS_TRACER_GETTING_MODEL_STRUCTURE ).c_str() );
+		tracer->getModelStructure( kernel.getSimulator()->getModelStructure() );
+		kernel.debug( format( IDS_MODEL_RESOURCE_LOADING_NAME_OK ).c_str() );
+	} catch ( ... ) {
+		kernel.debug( format( IDS_MODEL_RESOURCE_LOADING_NAME_FAILED ).c_str() );
+	}
 }
 
 void RDOTracer::stopModelNotify()

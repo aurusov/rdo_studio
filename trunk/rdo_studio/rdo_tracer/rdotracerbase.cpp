@@ -13,6 +13,7 @@
 #include "../rdostudioapp.h"
 #include "../rdostudiochildfrm.h"
 #include "../rdostudiomainfrm.h"
+#include "rdotracer.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -33,7 +34,8 @@ RDOTracerBase::RDOTracerBase():
 	clipboardFormat( 0 ),
 	chartDocTemplate( NULL ),
 	eventIndex( 0 ),
-	drawTrace( true )
+	drawTrace( true ),
+	cleaned( true )
 {
 }
 
@@ -247,53 +249,54 @@ void RDOTracerBase::addResult( string& s, stringstream& stream )
 	tree->addResult( res );
 }
 
-void RDOTracerBase::dispathNextString( string& line )
+void RDOTracerBase::dispatchNextString( string& line )
 {
 	if ( line.empty() )
 		return;
 
-	mutex.Lock();
+	if ( tracer ) {
+
+		TRACE( "%s\n", line.c_str() );
 	
-	string key = getNextValue( line );
-	RDOTracerTimeNow* timeNow;
-	if ( key != "SO" && key.find( "ST" ) == string::npos && key != "SD" && key.find( "SE" ) == string::npos )
-		timeNow = addTime( getNextValue( line ) );
-	else
-		timeNow = timeList.back();
-
-	if ( key == "ES" ) {
-	} else if ( key == "EB" ) {
-		startAction( line, timeNow );
-	} else if ( key == "EF" ) {
-		accomplishAction( line, timeNow );
-	} else if ( key == "EI" ) {
-		irregularEvent( line, timeNow );
-	} else if ( key == "ER" ) {
-		productionRule( line, timeNow );
-	} else if ( key == "RC" || key == "SRC" ) {
-		resourceCreation( line, timeNow );
-	} else if ( key == "RE" || key == "SRE" ) {
-		resourceElimination( line, timeNow );
-	} else if ( key == "RK" || key == "SRK" ) {
-		resourceChanging( line, timeNow );
-	} else if ( key == "V" ) {
-		resultChanging( line, timeNow );
-	}/* else if ( key == "$Status" ) {
-	} else if ( key.Find( "DPS", 0) != -1 ) {
-	} else if ( key == "SB" ) {
-	} else if ( key == "SO" ) {
-	} else if ( key == "STN" ) {
-	} else if ( key == "STD" ) {
-	} else if ( key == "STR" ) {
-	} else if ( key == "SD" ) {
-	} else if ( key == "SES" ) {
-	} else if ( key == "SEN" ) {
-	} else if ( key == "SEM" ) {
-	} else if ( key == "SEF" ) {
-	} else if ( key == "SEU" ) {
-	}*/
-
-	mutex.Unlock();
+		string key = getNextValue( line );
+		RDOTracerTimeNow* timeNow;
+		if ( key != "SO" && key.find( "ST" ) == string::npos && key != "SD" && key.find( "SE" ) == string::npos )
+			timeNow = addTime( getNextValue( line ) );
+		else
+			timeNow = timeList.back();
+		
+		if ( key == "ES" ) {
+		} else if ( key == "EB" ) {
+			startAction( line, timeNow );
+		} else if ( key == "EF" ) {
+			accomplishAction( line, timeNow );
+		} else if ( key == "EI" ) {
+			irregularEvent( line, timeNow );
+		} else if ( key == "ER" ) {
+			productionRule( line, timeNow );
+		} else if ( key == "RC" || key == "SRC" ) {
+			resourceCreation( line, timeNow );
+		} else if ( key == "RE" || key == "SRE" ) {
+			resourceElimination( line, timeNow );
+		} else if ( key == "RK" || key == "SRK" ) {
+			resourceChanging( line, timeNow );
+		} else if ( key == "V" ) {
+			resultChanging( line, timeNow );
+		}/* else if ( key == "$Status" ) {
+		} else if ( key.Find( "DPS", 0) != -1 ) {
+		} else if ( key == "SB" ) {
+		} else if ( key == "SO" ) {
+		} else if ( key == "STN" ) {
+		} else if ( key == "STD" ) {
+		} else if ( key == "STR" ) {
+		} else if ( key == "SD" ) {
+		} else if ( key == "SES" ) {
+		} else if ( key == "SEN" ) {
+		} else if ( key == "SEM" ) {
+		} else if ( key == "SEF" ) {
+		} else if ( key == "SEU" ) {
+		}*/
+	}
 }
 
 string RDOTracerBase::getNextValue( string& line )
@@ -365,11 +368,16 @@ RDOTracerResource* RDOTracerBase::getResource( string& line )
 	getNextValue( line );
 	RDOTracerResource* res = NULL;
 	int findid = atoi( getNextValue( line ).c_str() );
+	TRACE( "id = %d\r\n", findid );
+	int i = 0;
 	for ( vector< RDOTracerResource* >::iterator it = resources.begin(); it != resources.end(); it++ ) {
+		if ( (*it)->id == findid )
+			TRACE( "found = %d\r\n", i );
 		if ( (*it)->id == findid && !(*it)->isErased() ) {
 			res = *it;
 			break;
 		}
+		i++;
 	}
 	return res;
 }
@@ -396,6 +404,7 @@ void RDOTracerBase::resourceElimination( string& line, RDOTracerTimeNow* const t
 
 void RDOTracerBase::resourceChanging( string& line, RDOTracerTimeNow* const time  )
 {
+	TRACE( "line = %s\r\n", line.c_str() );
 	RDOTracerResource* res = getResource( line );
 	res->setParams( line, time, eventIndex );
 }
@@ -458,6 +467,9 @@ void RDOTracerBase::deleteTrace()
 		it++;
 	}
 	timeList.clear();
+
+	cleaned = true;
+	TRACE( "deleteTrace_______________\n" );
 
 	mutex.Unlock();
 }
@@ -558,6 +570,8 @@ void RDOTracerBase::getModelStructure( stringstream& stream )
 		}
 	}
 
+	cleaned = false;
+
 	mutex.Unlock();
 
 	/*stream >> s;
@@ -610,10 +624,16 @@ void RDOTracerBase::getModelStructure( stringstream& stream )
 
 void RDOTracerBase::getTraceString( string trace_string )
 {
-	if ( log ) {
-		log->addStringToLog( trace_string );
+	mutex.Lock();
+
+	if ( !cleaned ) {
+		if ( log ) {
+			log->addStringToLog( trace_string );
+		}
+		dispatchNextString( trace_string );
 	}
-	dispathNextString( trace_string );
+
+	mutex.Unlock();
 }
 
 RDOStudioChartDoc* RDOTracerBase::createNewChart()

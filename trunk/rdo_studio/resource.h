@@ -515,6 +515,7 @@
 #define IDS_MODEL_STARTED               40224
 #define IDS_MODEL_FINISHED              40225
 #define IDS_MODEL_STOPED                40226
+#define IDS_TRACER_GETTING_MODEL_STRUCTURE 40227
 #define IDS_CHART_OPTIONS               40300
 #define IDS_CHART_OPTIONS_APPLY         40301
 #define ID_ABOUT_BMSTU                  40910
