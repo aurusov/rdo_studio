@@ -68,6 +68,8 @@ void frameCallBack(rdoRuntime::RDOConfig *config, void *param)
 	RdoSimulator *simulator = (RdoSimulator *)param;
 	if((config->showAnimation == SM_Animation) && (config->showAnimation == SM_Animation))
 	{
+		Sleep(config->realTimeDelay);
+
 		simulator->frames = config->frames;
 
 		kernel.notify(RDOKernel::showFrame);
@@ -81,7 +83,6 @@ void frameCallBack(rdoRuntime::RDOConfig *config, void *param)
 		for(int i = 0; i < config->frames.size(); i++)
 			delete config->frames.at(i);
 		config->frames.clear();
-		Sleep(config->realTimeDelay);
 	}
 	else
 	{
@@ -189,43 +190,21 @@ UINT RunningThreadControllingFunction( LPVOID pParam )
 
 	try
 	{
-		try {
-			simulator->runtime->rdoInit(tracer, resulter);
-		}
-		catch(RDOException &ex) {
-			string mess = ex.getType() + " : " + ex.mess + " during initialisation\n";
-			kernel.notifyString(RDOKernel::debugString, mess);
-			kernel.notify(RDOKernel::executeError);
-			throw;
-		}
-
-		try {
-			simulator->runtime->rdoRun();
-		}
-		catch(RDOException &ex) {
-			string mess = ex.getType() + " : " + ex.mess + " during execution\n";
-			kernel.notifyString(RDOKernel::debugString, mess);
-			kernel.notify(RDOKernel::executeError);
-			throw;
-		}
-		try {
-			simulator->runtime->rdoDestroy();
-		}
-		catch(RDOException &ex) {
-			string mess = ex.getType() + " : " + ex.mess + " during ending\n";
-			kernel.notifyString(RDOKernel::debugString, mess);
-			kernel.notify(RDOKernel::executeError);
-			throw;
-		}
+		simulator->runtime->rdoInit(tracer, resulter);
+		simulator->runtime->rdoRun();
+		simulator->runtime->rdoDestroy();
 		kernel.notify(RDOKernel::endExecuteModel);
 		kernel.debug("End executing\n");
-
-//		kernel.debug(simulator->getResults().str().c_str());
-		
-
 	}
-	catch(RDOException &)
+	catch(RDOSyntaxException &) 
 	{
+		kernel.notify(RDOKernel::executeError);
+	}
+	catch(RDOInternalException &ex)		  
+	{
+		string mess = "Internal exception: " + ex.mess;
+		kernel.debug(mess.c_str());
+		kernel.notify(RDOKernel::executeError);
 	}
 
 	simulator->th = NULL;
@@ -305,8 +284,17 @@ bool RdoSimulator::parseModel()
 		if(SMRstream2.good())
 			parser->parseSMR2(&SMRstream2, &consol);
 	}
-	catch(RDOException &ex) {
-		string mess = ex.getType() + " : " + ex.mess;
+	catch(RDOSyntaxException &) 
+	{
+//		string mess = ex.getType() + " : " + ex.mess;
+//		kernel.notifyString(RDOKernel::buildString, mess);
+		kernel.notify(RDOKernel::parseError);
+		closeModel();
+		return false;
+	}
+	catch(RDOInternalException &ex)
+	{
+		string mess = "Internal exception: " + ex.mess;
 		kernel.notifyString(RDOKernel::buildString, mess);
 		kernel.notify(RDOKernel::parseError);
 		closeModel();
@@ -389,8 +377,15 @@ void RdoSimulator::parseSMRFileInfo( stringstream& smr, rdoModelObjects::RDOSMRF
 	try {
 		parser->parseSMR1(&smr, &consol);
 	}
-	catch(RDOException &ex) {
-		string mess = ex.getType() + " : " + ex.mess + " in the first part of SMR file";
+	catch(RDOSyntaxException &) 
+	{
+		kernel.notify(RDOKernel::parseSMRError);
+		closeModel();
+		return;
+	}
+	catch(RDOInternalException &ex)
+	{
+		string mess = "Internal exception: " + ex.mess;
 		kernel.notifyString(RDOKernel::buildString, mess);
 		kernel.notify(RDOKernel::parseSMRError);
 		closeModel();
@@ -433,10 +428,17 @@ void RdoSimulator::parseSMRFileInfo( stringstream& smr, rdoModelObjects::RDOSMRF
 
 vector<RDOSyntaxError>* RdoSimulator::getErrors()
 {
-	if(parser)
-		return &parser->errors;
-	else
+	vector<RDOSyntaxError>* res = NULL;
+
+	if(!parser)
 		return NULL;
+
+	res = &parser->errors;
+	if(res->size() > 0)
+		return res;
+
+	res = &runtime->errors;
+	return res;
 }
 
 double RdoSimulator::getModelTime()

@@ -44,7 +44,7 @@ public:
 		beforeModelStart, 	// when model successfully parsed and ready to start
 		afterModelStart,		// when model thread started
 		endExecuteModel,		// successfully end modelling
-		executeError,			// successfully end modelling
+		executeError,			// runtime error during modelling
 		modelStopped };		// model externally stopped 
 
 	enum BoolNotifyType   {

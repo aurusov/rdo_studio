@@ -5,6 +5,7 @@ using namespace std;
 #include "rdolexinterface.h"
 #include "rdoStdFuncs.h"
 #include "rdosimcommon.h"
+#include "rdocalcconst.h"
 
 namespace rdoRuntime
 {
@@ -35,24 +36,16 @@ struct RDOSyntaxException: public RDOException
    RDOSyntaxException(const char *str): RDOException(str) {}
 };
 
+struct RDOInternalException: public RDOException
+{
+   string getType() const { return "RDO Syntax Error"; }
+   RDOInternalException(const char *str): RDOException(str) {}
+};
+
 struct RDOSMR1OkException: public RDOException
 {
    string getType() const { return ""; }
    RDOSMR1OkException(const char *str): RDOException(str) {}
-};
-
-enum FileToParse
-{
-	RTP_FILE,
-	RSS_FILE,
-	FUN_FILE,
-	PAT_FILE,
-	OPR_FILE,
-	DPT_FILE,
-	PMD_FILE,
-	FRM_FILE,
-	SMR1_FILE,
-	SMR2_FILE
 };
 
 class RDOParser

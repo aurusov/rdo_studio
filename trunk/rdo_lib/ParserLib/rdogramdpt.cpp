@@ -1272,6 +1272,10 @@ case 39:
 #line 218 ".\\rdodpt.y"
 { ((RDODPTSome *)yyval)->end();;
     break;}
+case 41:
+#line 224 ".\\rdodpt.y"
+{ ((RDODPTFreeActivity *)yyvsp[0])->end();;
+    break;}
 case 42:
 #line 226 ".\\rdodpt.y"
 { yyval = (int)(new RDODPTFreeActivity((string *)yyvsp[-1], (string *)yyvsp[0])); ;
@@ -1286,23 +1290,23 @@ case 45:
     break;}
 case 46:
 #line 232 ".\\rdodpt.y"
-{ ((RDODPTFreeActivity *)yyval)->addParam((int)yyvsp[0]); ;
+{ ((RDODPTFreeActivity *)yyvsp[-1])->addParam((int)yyvsp[0]); ;
     break;}
 case 47:
 #line 233 ".\\rdodpt.y"
-{ ((RDODPTFreeActivity *)yyval)->addParam((double *)yyvsp[0]); ;
+{ ((RDODPTFreeActivity *)yyvsp[-1])->addParam((double *)yyvsp[0]); ;
     break;}
 case 48:
 #line 234 ".\\rdodpt.y"
-{ ((RDODPTFreeActivity *)yyval)->addParam((string *)yyvsp[0]); ;
+{ ((RDODPTFreeActivity *)yyvsp[-1])->addParam((string *)yyvsp[0]); ;
     break;}
 case 49:
 #line 235 ".\\rdodpt.y"
-{ ((RDODPTFreeActivity *)yyval)->addParam(); ;
+{ ((RDODPTFreeActivity *)yyvsp[-1])->addParam(); ;
     break;}
 case 51:
 #line 238 ".\\rdodpt.y"
-{ ((RDODPTFreeActivity *)yyval)->end();;
+{ ((RDODPTFreeActivity *)yyvsp[-1])->end();;
     break;}
 case 52:
 #line 244 ".\\rdodpt.y"

@@ -15,12 +15,12 @@ namespace rdoRuntime
 
 void RDOPatternRuntime::addEndCalc(RDOCalc *calc)
 {
-	throw RDORuntimeException("parser internal error 0005");
+	throw RDOInternalException("parser internal error 0005");
 }
 
 RDOActivityRuntime *RDOPatternRuntime::createActivity(RDOCalc *condition, string *_oprName)
 {
-	throw RDORuntimeException("parser internal error 0501");
+	throw RDOInternalException("parser internal error 0501");
 }
 
 RDOPatternRuntime::RDOPatternRuntime(RDORuntime *_runtime, bool _trace)

@@ -162,6 +162,8 @@ friend RDOPMDWatchState;
    bool operator == (RDOSimulator &other);
 
 public:
+	vector<RDOSimulatorNS::RDOSyntaxError> errors;
+	void error( const char *mes, const rdoRuntime::RDOCalc *calc );
 	bool checkKeyPressed(int scanCode);
 	bool checkAreaActivated(string *oprName);
 	void setConstValue(int numberOfConst, RDOValue value);
@@ -228,13 +230,13 @@ public:
 	RDOConfig config;
 	vector<RDOFRMFrame *> allFrames;
 };
-
+/*
 struct RDORuntimeException: public RDOException
 {
    string getType() const { return "RDO Runtime Exception"; };
    RDORuntimeException(const char *str): RDOException(str) {}
 };
-
+*/
 /*
 struct RDOValue
 {
@@ -313,14 +315,7 @@ public:
 class RDOCalcDiv: public RDOCalcBinary
 {
 public:
-   RDOValue calcValue(RDORuntime *sim) const 
-   { 
-      RDOValue rVal = right->calcValue(sim);
-      if(rVal == 0)
-         throw RDORuntimeException("Division by zero");
-
-      return RDOValue(left->calcValue(sim) / rVal);
-   }
+   RDOValue calcValue(RDORuntime *sim) const;
 	RDOCalcDiv(RDOCalc *_left, RDOCalc *_right): RDOCalcBinary(_left, _right) {}
 };
 
@@ -427,14 +422,7 @@ class RDOCalcCheckDiap: public RDOCalcUnary
    RDOValue minVal, maxVal;
 public:
 	RDOCalcCheckDiap(RDOValue _minVal, RDOValue _maxVal, RDOCalc *_oper): minVal(_minVal), maxVal(_maxVal), RDOCalcUnary(_oper) {}
-   RDOValue calcValue(RDORuntime *sim) const 
-   { 
-      RDOValue val = oper->calcValue(sim);
-      if(val < minVal || val > maxVal)
-         throw RDORuntimeException("parameter out of range");
-
-      return val; 
-   }
+   RDOValue calcValue(RDORuntime *sim) const;
 };
 
 

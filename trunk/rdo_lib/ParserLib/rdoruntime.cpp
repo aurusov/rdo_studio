@@ -14,6 +14,7 @@ static char THIS_FILE[] = __FILE__;
 #include "rdopmd.h"
 #include "rdodptrtime.h"
 #include "rdofrm.h"
+#include "rdoparser.h"
 
 namespace rdoRuntime
 {
@@ -87,7 +88,7 @@ RDOResource *RDORuntime::createNewResource(int number, bool isPermanent)
 {
 	allResources.resize(number + 1, NULL);
 	if(allResources.at(number) != NULL)
-		throw RDORuntimeException("internal error N 0010");
+		throw RDOInternalException("internal error N 0010");
 
 	RDOResource *newRes = new RDOResource(this);
 	newRes->number = number;
@@ -524,6 +525,8 @@ RDOValue RDOCalcSeqNextByHist::calcValue(RDORuntime *sim) const
 
 RDOCalc::RDOCalc() 
 {	
+	fileToParse = currParser->fileToParse;
+	lineno = rdoLineno();
 	rdoParse::addCalcToRuntime(this); 
 }
 
@@ -692,6 +695,48 @@ string RDORuntime::writeActivitiesStructure()
   */
 	return stream.str();
 }
+
+RDOValue RDOCalcDiv::calcValue(RDORuntime *sim) const 
+{ 
+   RDOValue rVal = right->calcValue(sim);
+   if(rVal == 0)
+		sim->error("Division by zero", this);
+//			throw RDORuntimeException("Division by zero");
+
+   return RDOValue(left->calcValue(sim) / rVal);
+}
+
+RDOValue RDOCalcCheckDiap::calcValue(RDORuntime *sim) const 
+{ 
+   RDOValue val = oper->calcValue(sim);
+   if(val < minVal || val > maxVal)
+		sim->error(("Parameter out of range: " + toString(val)).c_str(), this);
+//			throw RDORuntimeException("parameter out of range");
+
+   return val; 
+}
+
+
+void RDORuntime::error( const char *mes, const RDOCalc *calc )
+{
+	rdoModelObjects::RDOFileType ft = rdoModelObjects::PAT;
+	switch(calc->fileToParse)
+	{
+	case RTP_FILE: ft = rdoModelObjects::RTP; break;
+	case RSS_FILE: ft = rdoModelObjects::RSS; break;
+	case FUN_FILE: ft = rdoModelObjects::FUN; break;
+	case PAT_FILE: ft = rdoModelObjects::PAT; break;
+	case OPR_FILE: ft = rdoModelObjects::OPR; break;
+	case DPT_FILE: ft = rdoModelObjects::DPT; break;
+	case PMD_FILE: ft = rdoModelObjects::PMD; break;
+	case SMR1_FILE:
+	case SMR2_FILE: ft = rdoModelObjects::SMR; break;
+	case FRM_FILE: ft = rdoModelObjects::FRM; break;
+	}
+	errors.push_back(RDOSimulatorNS::RDOSyntaxError(mes, calc->lineno, ft));
+	throw rdoParse::RDOSyntaxException("");
+}
+
 
 
 }	// namespace rdoRuntime
