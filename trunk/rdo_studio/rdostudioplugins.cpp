@@ -244,38 +244,44 @@ void RDOStudioPlugins::modelStopNotify()
 
 void RDOStudioPlugins::modelStart()
 {
-	std::vector< RDOStudioPlugin* >::iterator it = list.begin();
-	while ( it != list.end() ) {
-		RDOStudioPlugin* plugin = *it;
-		if ( plugin->getRunMode() == rdoPlugin::prmModelStartUp ) {
-			plugin->setState( rdoPlugin::psActive );
+	if ( plugins ) {
+		std::vector< RDOStudioPlugin* >::iterator it = list.begin();
+		while ( it != list.end() ) {
+			RDOStudioPlugin* plugin = *it;
+			if ( plugin->getRunMode() == rdoPlugin::prmModelStartUp ) {
+				plugin->setState( rdoPlugin::psActive );
+			}
+			it++;
 		}
-		it++;
 	}
 }
 
 void RDOStudioPlugins::modelStop()
 {
-	std::vector< RDOStudioPlugin* >::iterator it = list.begin();
-	while ( it != list.end() ) {
-		RDOStudioPlugin* plugin = *it;
-		if ( plugin->getRunMode() == rdoPlugin::prmModelStartUp ) {
-			plugin->setState( rdoPlugin::psStoped );
+	if ( plugins ) {
+		std::vector< RDOStudioPlugin* >::iterator it = list.begin();
+		while ( it != list.end() ) {
+			RDOStudioPlugin* plugin = *it;
+			if ( plugin->getRunMode() == rdoPlugin::prmModelStartUp ) {
+				plugin->setState( rdoPlugin::psStoped );
+			}
+			it++;
 		}
-		it++;
 	}
 }
 
 void RDOStudioPlugins::stopPlugin( const HMODULE lib ) const
 {
-	std::vector< RDOStudioPlugin* >::const_iterator it = list.begin();
-	while ( it != list.end() ) {
-		RDOStudioPlugin* plugin = *it;
-		if ( plugin->lib == lib ) {
-			plugin->setState( rdoPlugin::psStoped );
-			break;
+	if ( plugins ) {
+		std::vector< RDOStudioPlugin* >::const_iterator it = list.begin();
+		while ( it != list.end() ) {
+			RDOStudioPlugin* plugin = *it;
+			if ( plugin->lib == lib ) {
+				plugin->setState( rdoPlugin::psStoped );
+				break;
+			}
+			it++;
 		}
-		it++;
 	}
 }
 
