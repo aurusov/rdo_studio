@@ -117,8 +117,13 @@ bool RDORuntime::checkKeyPressed(int scanCode)
 	if(it == config.keysPressed.end())
 		return false;	
 
-	config.keysPressed.erase(it);
+//	config.keysPressed.erase(it);
 	return true;
+}
+
+void RDORuntime::eraseKeyPressed(int scanCode)
+{
+	config.keysPressed.erase(remove(config.keysPressed.begin(), config.keysPressed.end(), scanCode), config.keysPressed.end());
 }
 
 bool RDORuntime::checkAreaActivated(string *oprName)

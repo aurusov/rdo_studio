@@ -394,6 +394,7 @@
 #define ID_SEARCH_FIND_NEXT             33171
 #define ID_SEARCH_FIND_PREVIOUS         33172
 #define ID_VIEW_TOOLBAR_ZOOM_TOOLBAR    33181
+#define ID_ACCEL33182                   33182
 #define ID_STATUSBAR_READONLY           40000
 #define ID_STATUSBAR_MODIFIED           40001
 #define ID_STATUSBAR_OVERWRITE          40002
@@ -561,7 +562,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        165
-#define _APS_NEXT_COMMAND_VALUE         33182
+#define _APS_NEXT_COMMAND_VALUE         33183
 #define _APS_NEXT_CONTROL_VALUE         1082
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

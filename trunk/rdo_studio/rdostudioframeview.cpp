@@ -338,7 +338,8 @@ void RDOStudioFrameView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	lock_draw.Unlock();
 */
 
-	kernel.getSimulator()->keyDown( nChar );
+	if(!(nFlags & (1 << 14)))
+		kernel.getSimulator()->keyDown( nChar );
 
 	RDOStudioView::OnKeyDown(nChar, nRepCnt, nFlags);
 }

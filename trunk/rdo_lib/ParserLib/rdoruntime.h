@@ -168,6 +168,7 @@ public:
 	vector<RDOSimulatorNS::RDOSyntaxError> errors;
 	void error( const char *mes, const rdoRuntime::RDOCalc *calc );
 	bool checkKeyPressed(int scanCode);
+	void eraseKeyPressed(int scanCode);
 	bool checkAreaActivated(string *oprName);
 	void setConstValue(int numberOfConst, RDOValue value);
 	RDOValue getConstValue(int numberOfConst);

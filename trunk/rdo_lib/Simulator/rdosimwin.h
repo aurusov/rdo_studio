@@ -37,6 +37,8 @@ class RdoSimulator
 
 	vector<RDOFrame *> frames;
 	vector<int> scanCodes;
+//	bool shiftPressed;
+//	bool ctrlPressed;
 	vector<string> areasActivated;
 
 	void terminateModel();
@@ -57,7 +59,7 @@ public:
 	void parseSMRFileInfo( rdo::binarystream& smr, rdoModelObjects::RDOSMRFileInfo& info );
 
 	const vector<RDOFrame *>& getFrames();
-	void addKeyPressed(int scanCode);
+//	void addKeyPressed(int scanCode);
 	void keyDown(int scanCode);
 	void keyUp(int scanCode);
 	void addAreaPressed(string& areaName);

@@ -17,6 +17,7 @@ static char THIS_FILE[] = __FILE__;
 #include <map>
 #include <math.h>
 #include <sstream>
+#include <algorithm>
 
 #include "rdosimwin.h"
 #include "rdokernel.h"
@@ -52,18 +53,33 @@ const vector<RDOFrame *>& RdoSimulator::getFrames()
 {
 	return frames;
 }
-
+/*
 void RdoSimulator::addKeyPressed(int scanCode)
 {
-	scanCodes.push_back(scanCode);
+//	scanCodes.push_back(scanCode);
+//	kernel.debug("addKeyPressed: %d", scanCode); 
 }
-
+  */
 void RdoSimulator::keyDown(int scanCode)
 {
+//	if(scanCode == VK_SHIFT)
+//		shiftPressed = true;
+//	else if(scanCode == VK_CONTROL)
+//		ctrlPressed = true;
+
+	scanCodes.push_back(scanCode);
+//	kernel.debug("keyDown: %d", scanCode); 
 }
 
 void RdoSimulator::keyUp(int scanCode)
 {
+//	if(scanCode == VK_SHIFT)
+//		shiftPressed = false;
+//	else if(scanCode == VK_CONTROL)
+//		ctrlPressed = false;
+
+	scanCodes.erase(remove(scanCodes.begin(), scanCodes.end(), scanCode), scanCodes.end());
+//	kernel.debug("keyUp: %d", scanCode); 
 }
 
 void RdoSimulator::addAreaPressed(string& areaName)
@@ -81,7 +97,7 @@ void frameCallBack(rdoRuntime::RDOConfig *config, void *param)
 		simulator->frames = config->frames;
 
 		kernel.notify(RDOKernel::showFrame);
-
+/*
 		if(simulator->scanCodes.size() > 0)
 		{
 			kernel.debug("Scan Codes:"); 
@@ -90,9 +106,15 @@ void frameCallBack(rdoRuntime::RDOConfig *config, void *param)
 
 			kernel.debug("\n"); 
 		}
-
+  */
+//		simulator->scanCodes.erase(remove(simulator->scanCodes.begin(), simulator->scanCodes.end(), VK_SHIFT), simulator->scanCodes.end());
+//		simulator->scanCodes.erase(remove(simulator->scanCodes.begin(), simulator->scanCodes.end(), VK_CONTROL), simulator->scanCodes.end());
 		config->keysPressed.insert(config->keysPressed.end(), simulator->scanCodes.begin(), simulator->scanCodes.end());
-		simulator->scanCodes.clear();
+//		simulator->scanCodes.clear();
+//		if(simulator->shiftPressed)
+//			config->keysPressed.push_back(VK_SHIFT);
+//		if(simulator->ctrlPressed)
+//			config->keysPressed.push_back(VK_CONTROL);
 
 		config->activeAreasMouseClicked.insert(config->activeAreasMouseClicked.end(), simulator->areasActivated.begin(), simulator->areasActivated.end());
 		simulator->areasActivated.clear();
@@ -141,6 +163,9 @@ RdoSimulator::RdoSimulator():
 	runtime(NULL), 
 	parser(NULL), 
 	th(NULL)
+//	,
+//	shiftPressed(false),
+//	ctrlPressed(false)
 {}
 
 RdoSimulator::~RdoSimulator()

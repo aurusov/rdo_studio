@@ -284,6 +284,9 @@ bool RDOActivityKeyboardRuntime::choiceFrom(RDOSimulator *sim)
 		for(int i = 0; i < size; i++)
 			if(!runtime->checkKeyPressed(keyScanCodes.at(i)))
 				return false;
+
+		for(i = 0; i < size; i++)
+			runtime->eraseKeyPressed(keyScanCodes.at(i));
 	}
 
 	return RDOActivityOperationRuntime::choiceFrom(sim); 
