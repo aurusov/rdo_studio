@@ -643,6 +643,18 @@ void RDORuntime::rdoDelay(double fromTime, double toTime)
 	}
 }
 
+string RDORuntime::writePokazStructure()
+{
+	stringstream stream;
+	for(int i = 0; i < allPokaz.size(); i++)
+	{
+		RDOPMDPokaz *curr = allPokaz.at(i);
+		curr->writePokazStructure(stream);
+	}
+
+	return stream.str();
+}
+
 string RDORuntime::writeActivitiesStructure()
 {
 	stringstream stream;

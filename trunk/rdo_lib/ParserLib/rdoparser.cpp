@@ -231,6 +231,8 @@ void RDOParser::parsePMD(istream* arg_yyin, ostream* arg_yyout)
 
 	currParser = this;
 	pmdparse(); 
+	modelStructure << endl << "$Watching" << endl;
+	modelStructure << runTime->writePokazStructure();
 	currParser = NULL;
 }
 

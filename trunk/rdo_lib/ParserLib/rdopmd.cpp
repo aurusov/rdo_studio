@@ -435,4 +435,29 @@ bool RDOPMDGetValue::calcStat(RDOSimulator *sim)
 	return true;
 }
 
+void RDOPMDWatchPar::writePokazStructure(ostream &stream) const
+{
+	stream << "\t" << name << "\t" << traceId() << "\twatch_par" << endl;
+}
+
+void RDOPMDWatchState::writePokazStructure(ostream &stream) const
+{
+	stream << "\t" << name << "\t" << traceId() << "\twatch_state" << endl;
+}
+
+void RDOPMDWatchQuant::writePokazStructure(ostream &stream) const
+{
+	stream << "\t" << name << "\t" << traceId() << "\twatch_quant" << endl;
+}
+
+void RDOPMDWatchValue::writePokazStructure(ostream &stream) const
+{
+	stream << "\t" << name << "\t" << traceId() << "\twatch_value" << endl;
+}
+
+void RDOPMDGetValue::writePokazStructure(ostream &stream) const
+{
+	stream << "\t" << name << "\t" << traceId() << "\tget_value" << endl;
+}
+
 }		// namespace rdoParse 

@@ -77,7 +77,7 @@ friend RDOTrace;
 protected:
    int id;
    RDOSimulatorTrace *sim;
-   virtual std::string traceId() { return toString(id); }
+   virtual std::string traceId() const { return toString(id); }
    RDOTraceableObject(RDOSimulatorTrace *i_sim): sim(i_sim) {trace = false;}
 public:
    bool trace;

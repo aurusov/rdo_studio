@@ -27,6 +27,7 @@ public:
 	RDOPMDPokaz(const string *const _name, bool _trace);
 	virtual ~RDOPMDPokaz() {}
 	virtual bool checkResourceErased(RDOResource *res) { return false; }
+	virtual void writePokazStructure(ostream &stream) const = 0;
 };
 
 //////////////////////////// class RDOPMDWatchPar /////////////////////////////////
@@ -50,6 +51,7 @@ public:
 	bool resetPokaz(RDOSimulator *sim);
 	bool checkPokaz(RDOSimulator *sim);
 	bool calcStat(RDOSimulator *sim);
+	void writePokazStructure(ostream &stream) const;
 };
 
 //////////////////////////// class RDOPMDWatchState /////////////////////////////////
@@ -72,6 +74,7 @@ public:
 	bool resetPokaz(RDOSimulator *sim);
 	bool checkPokaz(RDOSimulator *sim);
 	bool calcStat(RDOSimulator *sim);
+	void writePokazStructure(ostream &stream) const;
 };
 
 //////////////////////////// class RDOPMDWatchQuant /////////////////////////////////
@@ -97,6 +100,7 @@ public:
 	bool resetPokaz(RDOSimulator *sim);
 	bool checkPokaz(RDOSimulator *sim);
 	bool calcStat(RDOSimulator *sim);
+	void writePokazStructure(ostream &stream) const;
 };
 
 //////////////////////////// class RDOPMDWatchValue /////////////////////////////////
@@ -121,6 +125,7 @@ public:
 	bool checkPokaz(RDOSimulator *sim);
 	bool calcStat(RDOSimulator *sim);
 	bool checkResourceErased(RDOResource *res);
+	void writePokazStructure(ostream &stream) const;
 };
 
 //////////////////////////// class RDOPMDGetValue /////////////////////////////////
@@ -133,6 +138,7 @@ public:
 	bool resetPokaz(RDOSimulator *sim);
 	bool checkPokaz(RDOSimulator *sim);
 	bool calcStat(RDOSimulator *sim);
+	void writePokazStructure(ostream &stream) const;
 };
 
 

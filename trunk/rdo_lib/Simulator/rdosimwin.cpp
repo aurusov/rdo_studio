@@ -95,8 +95,21 @@ void frameCallBack(rdoRuntime::RDOConfig *config, void *param)
 void tracerCallBack(string *newString, void *param)
 {
 	RdoSimulator *simulator = (RdoSimulator *)param;
-//	kernel.debug(newString->c_str());
-	kernel.notifyString(RDOKernel.traceString, newString->c_str());
+//	kernel.notifyString(RDOKernel.traceString, newString->c_str());
+	int pos = 0;
+	for(;;)
+	{
+		int next = newString->find('\n', pos);
+		string str = newString->substr(pos, next-pos);
+		kernel.notifyString(RDOKernel.traceString, str.c_str());
+		if(next == string::npos)
+			break;
+		pos = next + 1;
+		if(pos >= newString->length())
+			break;
+
+		int aa = 0;
+	}
 }
 
 RdoSimulator::RdoSimulator(): 
@@ -317,7 +330,7 @@ bool RdoSimulator::parseModel()
 	kernel.notifyString(RDOKernel::buildString, "End parsing\n");
 
 
-//	kernel.notifyString(RDOKernel::buildString, getModelStructure().c_str());
+//	kernel.notifyString(RDOKernel::buildString, getModelStructure().str().c_str());
 
 	return true;
 }
