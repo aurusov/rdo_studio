@@ -101,8 +101,6 @@ int RDOStudioOutput::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	results->setPopupMenu( &popupMenu );
 
 	findStyle.init( "findStyle" );
-	findStyle.window->showHorzScrollBar = false;
-	findStyle.window->wordWrap          = true;
 	findStyle.load();
 	find->setEditorStyle( &findStyle );
 	find->setReadOnly( true );
@@ -188,9 +186,10 @@ void RDOStudioOutput::appendString( const RDOEditorSciEdit* const edit, const st
 	}
 }
 
-void RDOStudioOutput::appendStringToBuild( const string& str ) const
+void RDOStudioOutput::appendStringToBuild( const string& str, const rdoModelObjects::RDOFileType fileType, const int lineNumber ) const
 {
-	appendString( build, str );
+	RDOEditorSciLogLineInfo line( str, fileType, lineNumber );
+	build->appendLine( line );
 }
 
 void RDOStudioOutput::appendStringToDebug( const string& str ) const
@@ -198,9 +197,8 @@ void RDOStudioOutput::appendStringToDebug( const string& str ) const
 	appendString( debug, str );
 }
 
-void RDOStudioOutput::appendStringToFind( const string& str/*, const RDOFileType _fileType, const int _lineNumber*/ ) const
+void RDOStudioOutput::appendStringToFind( const string& str, const rdoModelObjects::RDOFileType fileType, const int lineNumber ) const
 {
-	RDOEditorSciLogLineInfo line( str );
-//	RDOEditorSciLogLineInfo line( str, RDOEditorSciLogLineInfo::PAT, 1 );
+	RDOEditorSciLogLineInfo line( str, fileType, lineNumber );
 	find->appendLine( line );
 }

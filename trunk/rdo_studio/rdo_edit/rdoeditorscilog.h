@@ -16,15 +16,18 @@ namespace rdoEditor {
 // ----------------------------------------------------------------------------
 // ---------- RDOEditorSciLogLineInfo
 // ----------------------------------------------------------------------------
+class RDOEditorSciLog;
+
 class RDOEditorSciLogLineInfo
 {
+friend class RDOEditorSciLog;
 private:
-	RdoSimulator::RDOFileType fileType;
-	int         lineNumber;
-	string      message;
+	rdoModelObjects::RDOFileType fileType;
+	int                          lineNumber;
+	string                       message;
 
 public:
-	RDOEditorSciLogLineInfo( const string& _message, const RdoSimulator::RDOFileType _fileType = RdoSimulator::NONE, const int _lineNumber = -1 );
+	RDOEditorSciLogLineInfo( const string& _message, const rdoModelObjects::RDOFileType _fileType = rdoModelObjects::PAT, const int _lineNumber = -1 );
 	~RDOEditorSciLogLineInfo();
 
 	string getMessage() const;

@@ -5,12 +5,13 @@
 #pragma once
 #endif
 
-#include <rdotabctrl.h>
-
 #include "rdostudiodockwnd.h"
 #include "rdo_edit/rdoeditorscieditstyle.h"
 #include "rdo_edit/rdoeditorscilogstyle.h"
 #include "rdo_edit/rdoeditoreditstyle.h"
+
+#include <rdotabctrl.h>
+#include <rdosimwin.h>
 
 namespace rdoEditor {
 	class RDOEditorSciEdit;
@@ -55,9 +56,9 @@ public:
 	void clearResults();
 	void clearFind();
 
-	void appendStringToBuild( const string& str ) const;
+	void appendStringToBuild( const string& str, const rdoModelObjects::RDOFileType fileType = rdoModelObjects::PAT, const int lineNumber = -1 ) const;
 	void appendStringToDebug( const string& str ) const;
-	void appendStringToFind( const string& str/*, const RDOFileType _fileType = NONE, const int _lineNumber = -1*/ ) const;
+	void appendStringToFind( const string& str, const rdoModelObjects::RDOFileType fileType = rdoModelObjects::PAT, const int lineNumber = -1 ) const;
 
 public:
 	//{{AFX_VIRTUAL(RDOStudioOutput)

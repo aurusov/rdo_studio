@@ -9,7 +9,6 @@
 #include <afxdlgs.h>
 
 using namespace rdoRepository;
-using namespace rdoParse;
 
 // ----------------------------------------------------------------------------
 // ---------- RDORepositoryFile
@@ -89,16 +88,8 @@ bool RDORepositoryFile::openModel( const string& modelFileName )
 				smrFileName = modelPath + modelName + ".smr";
 				strstream smrStream;
 				loadFile( smrFileName, smrStream );
-				RDOSMRFileInfo fileInfo;
+				rdoModelObjects::RDOSMRFileInfo fileInfo;
 				kernel.getSimulator()->parseSMRFileInfo( smrStream, fileInfo );
-
-				fileInfo.model_name     = modelName;
-				fileInfo.resource_file  = modelName;
-				fileInfo.oprIev_file    = modelName;
-				fileInfo.frame_file     = modelName;
-				fileInfo.statistic_file = modelName;
-				fileInfo.results_file   = modelName;
-				fileInfo.trace_file     = modelName;
 
 				patFileName = modelPath + fileInfo.model_name     + ".pat";
 				rtpFileName = modelPath + fileInfo.model_name     + ".rtp";

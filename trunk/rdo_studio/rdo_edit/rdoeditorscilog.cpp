@@ -10,7 +10,7 @@ using namespace rdoEditor;
 // ----------------------------------------------------------------------------
 // ---------- RDOEditorSciLogLineInfo
 // ----------------------------------------------------------------------------
-RDOEditorSciLogLineInfo::RDOEditorSciLogLineInfo( const string& _message, const RDOFileType _fileType, const int _lineNumber ):
+RDOEditorSciLogLineInfo::RDOEditorSciLogLineInfo( const string& _message, const rdoModelObjects::RDOFileType _fileType, const int _lineNumber ):
 	fileType( _fileType ),
 	lineNumber( _lineNumber ),
 	message( _message )
@@ -25,15 +25,15 @@ string RDOEditorSciLogLineInfo::getMessage() const
 {
 	string file;
 	switch ( fileType ) {
-		case PAT: file = "PAT"; break;
-		case RTP: file = "RTP"; break;
-		case RSS: file = "RSS"; break;
-		case OPR: file = "OPR"; break;
-		case FRM: file = "FRM"; break;
-		case FUN: file = "FUN"; break;
-		case DPT: file = "DPT"; break;
-		case SMR: file = "SMR"; break;
-		case PMD: file = "PMD"; break;
+		case rdoModelObjects::PAT: file = "PAT"; break;
+		case rdoModelObjects::RTP: file = "RTP"; break;
+		case rdoModelObjects::RSS: file = "RSS"; break;
+		case rdoModelObjects::OPR: file = "OPR"; break;
+		case rdoModelObjects::FRM: file = "FRM"; break;
+		case rdoModelObjects::FUN: file = "FUN"; break;
+		case rdoModelObjects::DPT: file = "DPT"; break;
+		case rdoModelObjects::SMR: file = "SMR"; break;
+		case rdoModelObjects::PMD: file = "PMD"; break;
 		default: file = "";
 	}
 	if ( file.empty() || lineNumber == -1 ) {
@@ -110,6 +110,15 @@ void RDOEditorSciLog::setSelectLine()
 	if ( sendEditor( SCI_MARKERNEXT, 0, 1 << sci_MARKER_LINE ) != line ) {
 		clearSelectLine();
 		sendEditor( SCI_MARKERADD, line, sci_MARKER_LINE );
+	}
+	list< RDOEditorSciLogLineInfo >::iterator it = lines.begin();
+	for ( int i = 0; i < line; i++ ) {
+		if ( it != lines.end() ) {
+			it++;
+		}
+	}
+	if ( it != lines.end() ) {
+		TRACE( "%s\r\n", (*it).getMessage().c_str() );
 	}
 }
 

@@ -254,7 +254,7 @@ void RdoSimulator::closeModel()
 	parser = NULL;
 }
 
-void RdoSimulator::parseSMRFileInfo( strstream& smr, RDOSMRFileInfo& info )
+void RdoSimulator::parseSMRFileInfo( strstream& smr, rdoModelObjects::RDOSMRFileInfo& info )
 {
 	terminateModel();
 	closeModel();

@@ -11,6 +11,7 @@
 
 using namespace std;
 
+namespace rdoModelObjects {
 struct RDOSMRFileInfo
 {
 	string model_name;
@@ -21,6 +22,8 @@ struct RDOSMRFileInfo
 	string results_file;
 	string trace_file;
 };
+typedef enum { PAT, RTP, RSS, OPR, FRM, FUN, DPT, SMR, PMD, PMV, TRC } RDOFileType;
+}
 
 namespace rdoRuntime {
 	class RDORuntime;
@@ -41,13 +44,11 @@ class RdoSimulator
 	void closeModel(); 
 	bool parseModel();
 public:
-	typedef enum { NONE, PAT, RTP, RSS, OPR, FRM, FUN, DPT, SMR, PMD } RDOFileType;
-
 	RdoSimulator();
 	~RdoSimulator();
 	void runModel();
 	void stopModel();
-	void parseSMRFileInfo( strstream& smr, RDOSMRFileInfo& info );
+	void parseSMRFileInfo( strstream& smr, rdoModelObjects::RDOSMRFileInfo& info );
 	friend UINT RunningThreadControllingFunction( LPVOID pParam );
 };
 

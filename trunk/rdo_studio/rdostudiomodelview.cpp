@@ -152,7 +152,20 @@ LRESULT RDOStudioModelView::OnFindInModelMsg( WPARAM wParam, LPARAM lParam )
 			while ( line != -1 ) {
 				line = edit->findLine( findStr, line, bMatchCase, bMatchWholeWord );
 				if ( line != -1 ) {
-					studioApp.mainFrame->output.appendStringToFind( edit->getLine( line ) );
+					rdoModelObjects::RDOFileType fileType;
+					switch ( i ) {
+						case 0: fileType = rdoModelObjects::PAT; break;
+						case 1: fileType = rdoModelObjects::RTP; break;
+						case 2: fileType = rdoModelObjects::RSS; break;
+						case 3: fileType = rdoModelObjects::OPR; break;
+						case 4: fileType = rdoModelObjects::FRM; break;
+						case 5: fileType = rdoModelObjects::FUN; break;
+						case 6: fileType = rdoModelObjects::DPT; break;
+						case 7: fileType = rdoModelObjects::PMD; break;
+						case 8: fileType = rdoModelObjects::SMR; break;
+						default: fileType = rdoModelObjects::PAT;
+					}
+					studioApp.mainFrame->output.appendStringToFind( edit->getLine( line ), fileType, line );
 					line++;
 					count++;
 				}
