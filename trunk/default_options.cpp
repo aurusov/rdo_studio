@@ -5,6 +5,7 @@
 #include "pixmap/open_d.xpm"
 
 #include <qpushbutton.h>
+#include <qtoolbutton.h>
 #include <qlineedit.h>
 #include <qlabel.h>
 #include <qcheckbox.h>
@@ -27,14 +28,18 @@ WGDefaultOptionsDlg::WGDefaultOptionsDlg( QWidget* parent, const char* name, boo
 	RetriesNumberLE->setValidator( new WGIntValidator( RetriesNumberLE ) );
 	RetriesWaitLE->setValidator( new WGIntValidator( RetriesWaitLE ) );
 
-	connect( OkB             , SIGNAL(clicked()), this, SLOT(slot_ok())              );
-	connect( CancelB         , SIGNAL(clicked()), this, SLOT(slot_cancel())          );
-	connect( DirectoryB      , SIGNAL(clicked()), this, SLOT(slot_directory())       );
-	connect( RestartCB       , SIGNAL(clicked()), this, SLOT(slot_restart())         );
-	connect( PasswordCB      , SIGNAL(clicked()), this, SLOT(slot_password())        );
-	connect( LogCB           , SIGNAL(clicked()), this, SLOT(slot_log())             );
-	connect( LogDirectoryB   , SIGNAL(clicked()), this, SLOT(slot_log_directory())   );
-	connect( ClipboardCheckCB, SIGNAL(clicked()), this, SLOT(slot_clipboard_check()) );
+	connect( OkB             , SIGNAL(clicked())      , this, SLOT(slot_ok())              );
+	connect( CancelB         , SIGNAL(clicked())      , this, SLOT(slot_cancel())          );
+	connect( DirectoryB      , SIGNAL(clicked())      , this, SLOT(slot_directory())       );
+	connect( RestartCB       , SIGNAL(clicked())      , this, SLOT(slot_restart())         );
+	connect( PasswordCB      , SIGNAL(clicked())      , this, SLOT(slot_password())        );
+	connect( LogCB           , SIGNAL(clicked())      , this, SLOT(slot_log())             );
+	connect( LogDirectoryB   , SIGNAL(clicked())      , this, SLOT(slot_log_directory())   );
+	connect( ClipboardCheckCB, SIGNAL(clicked())      , this, SLOT(slot_clipboard_check()) );
+	connect( PasswordUsrLE   , SIGNAL(returnPressed()), this, SLOT(slot_ok())              );
+	connect( PasswordPassLE  , SIGNAL(returnPressed()), this, SLOT(slot_ok())              );
+	connect( RetriesNumberLE , SIGNAL(returnPressed()), this, SLOT(slot_ok())              );
+	connect( RetriesWaitLE   , SIGNAL(returnPressed()), this, SLOT(slot_ok())              );
 
 	updateControls();
 }

@@ -11,7 +11,7 @@
             <x>0</x>
             <y>0</y>
             <width>356</width>
-            <height>344</height>
+            <height>340</height>
         </rect>
     </property>
     <property name="caption">
@@ -99,125 +99,6 @@
                         <property name="orientation">
                             <enum>Horizontal</enum>
                         </property>
-                    </widget>
-                    <widget class="QLayoutWidget" row="0" column="0">
-                        <property name="name">
-                            <cstring>Layout10</cstring>
-                        </property>
-                        <grid>
-                            <property name="name">
-                                <cstring>unnamed</cstring>
-                            </property>
-                            <property name="margin">
-                                <number>0</number>
-                            </property>
-                            <property name="spacing">
-                                <number>2</number>
-                            </property>
-                            <widget class="QLineEdit" row="0" column="1">
-                                <property name="name">
-                                    <cstring>DirectoryLE</cstring>
-                                </property>
-                                <property name="readOnly">
-                                    <bool>true</bool>
-                                </property>
-                            </widget>
-                            <widget class="QPushButton" row="0" column="2">
-                                <property name="name">
-                                    <cstring>DirectoryB</cstring>
-                                </property>
-                                <property name="maximumSize">
-                                    <size>
-                                        <width>26</width>
-                                        <height>22</height>
-                                    </size>
-                                </property>
-                                <property name="text">
-                                    <string></string>
-                                </property>
-                            </widget>
-                            <widget class="QLabel" row="0" column="0">
-                                <property name="name">
-                                    <cstring>DirectoryL</cstring>
-                                </property>
-                                <property name="text">
-                                    <string>Save to directory</string>
-                                </property>
-                            </widget>
-                        </grid>
-                    </widget>
-                    <widget class="QLayoutWidget" row="6" column="0">
-                        <property name="name">
-                            <cstring>Layout12</cstring>
-                        </property>
-                        <grid>
-                            <property name="name">
-                                <cstring>unnamed</cstring>
-                            </property>
-                            <property name="margin">
-                                <number>0</number>
-                            </property>
-                            <property name="spacing">
-                                <number>3</number>
-                            </property>
-                            <widget class="QCheckBox" row="0" column="0">
-                                <property name="name">
-                                    <cstring>LogCB</cstring>
-                                </property>
-                                <property name="text">
-                                    <string>Write *.log file</string>
-                                </property>
-                                <property name="checked">
-                                    <bool>true</bool>
-                                </property>
-                            </widget>
-                            <widget class="QLayoutWidget" row="1" column="0">
-                                <property name="name">
-                                    <cstring>Layout11</cstring>
-                                </property>
-                                <grid>
-                                    <property name="name">
-                                        <cstring>unnamed</cstring>
-                                    </property>
-                                    <property name="margin">
-                                        <number>0</number>
-                                    </property>
-                                    <property name="spacing">
-                                        <number>2</number>
-                                    </property>
-                                    <widget class="QPushButton" row="0" column="2">
-                                        <property name="name">
-                                            <cstring>LogDirectoryB</cstring>
-                                        </property>
-                                        <property name="maximumSize">
-                                            <size>
-                                                <width>26</width>
-                                                <height>22</height>
-                                            </size>
-                                        </property>
-                                        <property name="text">
-                                            <string></string>
-                                        </property>
-                                    </widget>
-                                    <widget class="QLineEdit" row="0" column="1">
-                                        <property name="name">
-                                            <cstring>LogDirectoryLE</cstring>
-                                        </property>
-                                        <property name="readOnly">
-                                            <bool>true</bool>
-                                        </property>
-                                    </widget>
-                                    <widget class="QLabel" row="0" column="0">
-                                        <property name="name">
-                                            <cstring>LogDirectoryL</cstring>
-                                        </property>
-                                        <property name="text">
-                                            <string>Save *.log to directory</string>
-                                        </property>
-                                    </widget>
-                                </grid>
-                            </widget>
-                        </grid>
                     </widget>
                     <widget class="QLayoutWidget" row="4" column="0">
                         <property name="name">
@@ -381,6 +262,113 @@
                         <property name="checked">
                             <bool>true</bool>
                         </property>
+                    </widget>
+                    <widget class="QLayoutWidget" row="6" column="0">
+                        <property name="name">
+                            <cstring>LogLayout</cstring>
+                        </property>
+                        <grid>
+                            <property name="name">
+                                <cstring>unnamed</cstring>
+                            </property>
+                            <property name="margin">
+                                <number>0</number>
+                            </property>
+                            <property name="spacing">
+                                <number>3</number>
+                            </property>
+                            <widget class="QCheckBox" row="0" column="0">
+                                <property name="name">
+                                    <cstring>LogCB</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>Write *.log file</string>
+                                </property>
+                                <property name="checked">
+                                    <bool>true</bool>
+                                </property>
+                            </widget>
+                            <widget class="QLayoutWidget" row="1" column="0">
+                                <property name="name">
+                                    <cstring>LogDirectoryLayout</cstring>
+                                </property>
+                                <grid>
+                                    <property name="name">
+                                        <cstring>unnamed</cstring>
+                                    </property>
+                                    <property name="margin">
+                                        <number>0</number>
+                                    </property>
+                                    <property name="spacing">
+                                        <number>2</number>
+                                    </property>
+                                    <widget class="QToolButton" row="0" column="2">
+                                        <property name="name">
+                                            <cstring>LogDirectoryB</cstring>
+                                        </property>
+                                        <property name="text">
+                                            <string></string>
+                                        </property>
+                                    </widget>
+                                    <widget class="QLabel" row="0" column="0">
+                                        <property name="name">
+                                            <cstring>LogDirectoryL</cstring>
+                                        </property>
+                                        <property name="text">
+                                            <string>Save *.log to directory</string>
+                                        </property>
+                                    </widget>
+                                    <widget class="QLineEdit" row="0" column="1">
+                                        <property name="name">
+                                            <cstring>LogDirectoryLE</cstring>
+                                        </property>
+                                        <property name="readOnly">
+                                            <bool>true</bool>
+                                        </property>
+                                    </widget>
+                                </grid>
+                            </widget>
+                        </grid>
+                    </widget>
+                    <widget class="QLayoutWidget" row="0" column="0">
+                        <property name="name">
+                            <cstring>DirectoryLayout</cstring>
+                        </property>
+                        <grid>
+                            <property name="name">
+                                <cstring>unnamed</cstring>
+                            </property>
+                            <property name="margin">
+                                <number>0</number>
+                            </property>
+                            <property name="spacing">
+                                <number>2</number>
+                            </property>
+                            <widget class="QLabel" row="0" column="0">
+                                <property name="name">
+                                    <cstring>DirectoryL</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>Save to directory</string>
+                                </property>
+                            </widget>
+                            <widget class="QLineEdit" row="0" column="1">
+                                <property name="name">
+                                    <cstring>DirectoryLE</cstring>
+                                </property>
+                                <property name="readOnly">
+                                    <bool>true</bool>
+                                </property>
+                            </widget>
+                            <widget class="QToolButton" row="0" column="2">
+                                <property name="name">
+                                    <cstring>DirectoryB</cstring>
+                                </property>
+                                <property name="text">
+                                    <string></string>
+                                </property>
+                            </widget>
+                        </grid>
                     </widget>
                 </grid>
             </widget>
@@ -573,7 +561,6 @@
 </images>
 <tabstops>
     <tabstop>DirectoryLE</tabstop>
-    <tabstop>DirectoryB</tabstop>
     <tabstop>RestartCB</tabstop>
     <tabstop>DontUseSuffixCB</tabstop>
     <tabstop>OlderCB</tabstop>
@@ -582,7 +569,6 @@
     <tabstop>PasswordPassLE</tabstop>
     <tabstop>LogCB</tabstop>
     <tabstop>LogDirectoryLE</tabstop>
-    <tabstop>LogDirectoryB</tabstop>
     <tabstop>OkB</tabstop>
     <tabstop>CancelB</tabstop>
     <tabstop>TabWidget</tabstop>
