@@ -3,9 +3,9 @@
 #pragma once
 
 #include "chatlistboxctrl.h"
-#include "rdocolorcombobox.h"
 #include "chatsound.h"
 #include "chatstatusmode.h"
+#include <rdocolorcombobox.h>
 
 // ----------------------------------------------------------------------------
 // ---------- CChatGeneralOptions

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "rdo_ctrls_pch.h"
 #include "rdocolorcombobox.h"
 
 #ifdef _DEBUG
@@ -8,6 +8,11 @@
 // ----------------------------------------------------------------------------
 // ---------- RDOColorComboBox
 // ----------------------------------------------------------------------------
+BEGIN_MESSAGE_MAP( RDOColorComboBox, CComboBox )
+	//{{AFX_MSG_MAP(RDOColorComboBox)
+	//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
 RDOColorComboBox::RDOColorComboBox(): CComboBox()
 {
 }
@@ -79,7 +84,7 @@ void RDOColorComboBox::DrawItem( LPDRAWITEMSTRUCT lpDrawItemStruct )
 	dc.Detach();
 }
 
-void RDOColorComboBox::MeasureItem( LPMEASUREITEMSTRUCT lpMeasureItemStruct )
+void RDOColorComboBox::MeasureItem( LPMEASUREITEMSTRUCT /*lpMeasureItemStruct*/ )
 {
 }
 

@@ -30,7 +30,8 @@ int CChatDockWnd::OnCreate( LPCREATESTRUCT lpCreateStruct )
 
 	SetSCBStyle( GetSCBStyle() | SCBS_SHOWEDGES | SCBS_SIZECHILD );
 
-	tree.CreateEx( WS_EX_CLIENTEDGE, NULL, "aaa", WS_VISIBLE | WS_CHILD, CRect( 0, 0, 0, 0 ), this, 0 );
+//	frames->Create( 0, CRect(0, 0, 0, 0), &tab, 0 );
+	tree.Create( 0, CRect(0, 0, 0, 0), this, 0 );
 
 	return 0;
 }
