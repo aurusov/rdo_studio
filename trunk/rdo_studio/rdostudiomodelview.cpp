@@ -164,7 +164,7 @@ LRESULT RDOStudioModelView::OnFindInModelMsg( WPARAM wParam, LPARAM lParam )
 		if ( count ) {
 			s.Format( ID_FINDINMODEL_ENDMSG_COUNT, count );
 		} else {
-			s.Format( ID_FINDINMODEL_ENDMSG_NOTFOUND );
+			s.Format( ID_FINDINMODEL_ENDMSG_NOTFOUND, findStr.c_str() );
 		}
 		studioApp.mainFrame->output.appendStringToFind( (LPCTSTR)s );
 	}
