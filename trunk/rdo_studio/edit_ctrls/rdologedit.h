@@ -51,6 +51,7 @@ protected:
 	//{{AFX_MSG(RDOLogEdit)
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnGotoNext();
+	afx_msg void OnGotoPrev();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
@@ -66,6 +67,7 @@ public:
 	void setEditorStyle( RDOLogEditStyle* _style );
 
 	void gotoNext();
+	void gotoPrev();
 
 	virtual void clearAll();
 	void appendLine( RDOLogEditLineInfo* line );

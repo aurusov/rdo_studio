@@ -49,8 +49,10 @@ static char* wordCharacters = "0123456789_$abcdefghijklmnopqrstuvwxyzABCDEFGHIJK
 BEGIN_MESSAGE_MAP( RDOEditorBaseEdit, RDOBaseEdit )
 	//{{AFX_MSG_MAP(RDOEditorBaseEdit)
 	ON_WM_CREATE()
-	ON_COMMAND(ID_GOTONEXT, OnGotoNext)
-	ON_UPDATE_COMMAND_UI(ID_GOTONEXT, OnUpdateGotoNext)
+	ON_COMMAND(ID_BUILDFINDLOG_GOTONEXT, OnGotoNext)
+	ON_UPDATE_COMMAND_UI(ID_BUILDFINDLOG_GOTONEXT, OnUpdateGotoNext)
+	ON_COMMAND(ID_BUILDFINDLOG_GOTOPREV, OnGotoPrev)
+	ON_UPDATE_COMMAND_UI(ID_BUILDFINDLOG_GOTOPREV, OnUpdateGotoPrev)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -172,6 +174,11 @@ void RDOEditorBaseEdit::setEditorStyle( RDOEditorBaseEditStyle* _style )
 	sendEditor( SCI_STYLESETCHARACTERSET, SCE_RDO_OPERATOR, style->font->characterSet );
 }
 
+const rdoEditCtrl::RDOLogEdit* RDOEditorBaseEdit::getLog() const
+{
+	return log;
+}
+
 void RDOEditorBaseEdit::setLog( RDOLogEdit& _log )
 {
 	log = &_log;
@@ -184,7 +191,19 @@ void RDOEditorBaseEdit::OnGotoNext()
 	}
 }
 
+void RDOEditorBaseEdit::OnGotoPrev()
+{
+	if ( log ) {
+		log->gotoPrev();
+	}
+}
+
 void RDOEditorBaseEdit::OnUpdateGotoNext(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable( log ? true : false );
+}
+
+void RDOEditorBaseEdit::OnUpdateGotoPrev(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable( log ? true : false );
 }

@@ -56,7 +56,8 @@ string RDOLogEditLineInfo::getMessage() const
 BEGIN_MESSAGE_MAP( RDOLogEdit, RDOBaseEdit )
 	//{{AFX_MSG_MAP(RDOLogEdit)
 	ON_WM_CREATE()
-	ON_COMMAND(ID_GOTONEXT, OnGotoNext)
+	ON_COMMAND(ID_BUILDFINDLOG_GOTONEXT, OnGotoNext)
+	ON_COMMAND(ID_BUILDFINDLOG_GOTOPREV, OnGotoPrev)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -171,9 +172,44 @@ void RDOLogEdit::gotoNext()
 	}
 }
 
+void RDOLogEdit::gotoPrev()
+{
+	current_line--;
+	if ( current_line < 0 ) {
+		current_line = lines.size() - 1;
+	}
+	if ( current_line < 0 ) return;
+
+	list< RDOLogEditLineInfo* >::iterator it = lines.begin();
+	int i;
+	for ( i = 0; i < current_line; i++ ) {
+		it++;
+	}
+	while ( it != lines.begin() && (*it)->lineNumber == -1 ) {
+		it--;
+		current_line--;
+	}
+	if ( it == lines.begin() && (*it)->lineNumber == -1 ) {
+		it = lines.end();
+		current_line = lines.size();
+		while ( it == lines.end() || (it != lines.begin() && (*it)->lineNumber == -1) ) {
+			it--;
+			current_line--;
+		}
+	}
+	if ( it != lines.end() && (*it)->lineNumber != -1 ) {
+		setSelectLine( current_line, *it );
+	}
+}
+
 void RDOLogEdit::OnGotoNext()
 {
 	gotoNext();
+}
+
+void RDOLogEdit::OnGotoPrev()
+{
+	gotoPrev();
 }
 
 void RDOLogEdit::setSelectLine( const int line, const RDOLogEditLineInfo* lineInfo )
@@ -182,6 +218,7 @@ void RDOLogEdit::setSelectLine( const int line, const RDOLogEditLineInfo* lineIn
 		if ( sendEditor( SCI_MARKERNEXT, 0, 1 << sci_MARKER_LINE ) != line ) {
 			clearSelectLine();
 			sendEditor( SCI_MARKERADD, line, sci_MARKER_LINE );
+			scrollToLine( line );
 		}
 		rdoEditor::RDOEditorTabCtrl* tab = model->getTab();
 		if ( tab ) {
@@ -199,10 +236,13 @@ void RDOLogEdit::setSelectLine( const int line, const RDOLogEditLineInfo* lineIn
 				default: tabItem = rdoEditor::RDOEDIT_PAT;
 			}
 			if ( tab->getCurrentRDOItem() != tabItem ) {
-				tab->setCurrentRDOItem( tabItem );
+				rdoEditor::RDOEditorBaseEdit* edit = tab->getCurrentEdit();
+				if ( !edit || (edit && edit->getLog() == this) ) {
+					tab->setCurrentRDOItem( tabItem );
+				}
 			}
-			RDOBaseEdit* edit = tab->getCurrentEdit();
-			if ( edit ) {
+			rdoEditor::RDOEditorBaseEdit* edit = tab->getCurrentEdit();
+			if ( edit && edit->getLog() == this ) {
 				edit->scrollToLine( lineInfo->lineNumber );
 				int pos = edit->getPositionFromLine(lineInfo->lineNumber) + lineInfo->posInLine;
 				edit->setCurrentPos( pos );

@@ -295,6 +295,7 @@ BOOL RDOStudioOptionsStylesAndColors::OnInitDialog()
 	sheet->build.appendLine( new rdoEditCtrl::RDOBuildEditLineInfo( "Building Model..." ) );
 	sheet->build.appendLine( new rdoEditCtrl::RDOBuildEditLineInfo( "Wrong parameter value: L", rdoModelObjects::PAT, 40, true ) );
 	sheet->build.appendLine( new rdoEditCtrl::RDOBuildEditLineInfo( "1 error(s) found." ) );
+	sheet->build.gotoNext();
 
 	sheet->debug.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, -1 );
 	sheet->debug.setEditorStyle( &sheet->style_debug );
@@ -317,6 +318,7 @@ BOOL RDOStudioOptionsStylesAndColors::OnInitDialog()
 	sheet->find.appendLine( new rdoEditCtrl::RDOLogEditLineInfo( "$Time = Равномерный(0.25, 0.75)", rdoModelObjects::PAT, 3 ) );
 	sheet->find.appendLine( new rdoEditCtrl::RDOLogEditLineInfo( "$Time = Нормальный(0.45, 0.2)", rdoModelObjects::PAT, 13 ) );
 	sheet->find.appendLine( new rdoEditCtrl::RDOLogEditLineInfo( "'2' occurrence(s) have been found." ) );
+	sheet->find.gotoNext();
 
 	CRect r;
 	GetClientRect( r );

@@ -24,6 +24,8 @@ protected:
 	afx_msg int OnCreate( LPCREATESTRUCT lpCreateStruct );
 	afx_msg void OnGotoNext();
 	afx_msg void OnUpdateGotoNext(CCmdUI* pCmdUI);
+	afx_msg void OnGotoPrev();
+	afx_msg void OnUpdateGotoPrev(CCmdUI* pCmdUI);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
@@ -35,7 +37,9 @@ public:
 	virtual ~RDOEditorBaseEdit();
 
 	void setEditorStyle( RDOEditorBaseEditStyle* _style );
+
 	void setLog( rdoEditCtrl::RDOLogEdit& _log );
+	const rdoEditCtrl::RDOLogEdit* getLog() const;
 
 	void replaceCurrent( const std::string str, const int changePosValue = -1 ) const;
 };
