@@ -36,6 +36,7 @@ private:
 	bool frmDescribed;
 	double modelTime;
 	RDOSimulatorNS::ShowMode showMode;
+	void updateFrmDescribed();
 
 	static void newModelNotify();
 	static void openModelNotify();

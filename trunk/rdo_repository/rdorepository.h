@@ -37,7 +37,6 @@ public:
 
 	void loadPAT( rdo::binarystream& stream ) const;
 	void loadRTP( rdo::binarystream& stream ) const;
-	void loadRTP( std::stringstream& stream ) const;
 	void loadRSS( rdo::binarystream& stream ) const;
 	void loadOPR( rdo::binarystream& stream ) const;
 	void loadFRM( rdo::binarystream& stream ) const;

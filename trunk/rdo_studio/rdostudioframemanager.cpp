@@ -248,7 +248,7 @@ void RDOStudioFrameManager::bmp_insert( const std::string& name )
 			// ¬ потоке, перед битовой картой, идет заголовок файла битовой карты
 			BITMAPFILEHEADER bmFileHeader;
 			stream.read( reinterpret_cast<char*>(&bmFileHeader), sizeof(bmFileHeader) );
-			if ( stream.rdstate() != ios_base::goodbit ) throw BMPReadError();
+			if ( !stream.good() ) throw BMPReadError();
 
 			// ѕровер€ем заголовок битовой карты на магическое число "BM"
 			if ( bmFileHeader.bfType != 0x4D42 ) throw BMPReadError();
@@ -256,7 +256,7 @@ void RDOStudioFrameManager::bmp_insert( const std::string& name )
 			// ¬от теперь читаем сам заголовок битовой карты
 			BITMAPINFOHEADER bmInfoHeader;
 			stream.read( reinterpret_cast<char*>(&bmInfoHeader), sizeof(bmInfoHeader) );
-			if ( stream.rdstate() != ios_base::goodbit ) throw BMPReadError();
+			if ( !stream.good() ) throw BMPReadError();
 			if ( bmInfoHeader.biSize == sizeof(BITMAPCOREHEADER) ) throw BMPReadError();
 
 			WORD nNumColors = static_cast<WORD>(bmInfoHeader.biClrUsed);
@@ -274,7 +274,7 @@ void RDOStudioFrameManager::bmp_insert( const std::string& name )
 			RGBQUAD rgb_q[256];
 			memset( &rgb_q, 0, sizeof(rgb_q) );
 			stream.read( reinterpret_cast<char*>(&rgb_q), nNumColors * sizeof(RGBQUAD) );
-			if ( stream.rdstate() != ios_base::goodbit ) throw BMPReadError();
+			if ( !stream.good() ) throw BMPReadError();
 
 			bmInfo = new char[ sizeof(bmInfoHeader) + nNumColors * sizeof(RGBQUAD) ];
 			memcpy( bmInfo, &bmInfoHeader, sizeof(bmInfoHeader) );
@@ -282,9 +282,9 @@ void RDOStudioFrameManager::bmp_insert( const std::string& name )
 
 			pBits = new char[ bmInfoHeader.biSizeImage ];
 			stream.seekg( bmFileHeader.bfOffBits, ios::beg );
-			if ( stream.rdstate() != ios_base::goodbit ) throw BMPReadError();
+			if ( !stream.good() ) throw BMPReadError();
 			stream.read( pBits, bmInfoHeader.biSizeImage );
-			if ( stream.rdstate() != ios_base::goodbit ) throw BMPReadError();
+			if ( !(stream.good() || stream.eof()) ) throw BMPReadError();
 
 			CDC* desktopDC = CWnd::GetDesktopWindow()->GetDC();
 			CDC memDC;

@@ -439,11 +439,14 @@ void RDOStudioModel::openModelFromRepository()
 		if ( maximize && wnd && wnd != studioApp.mainFrame ) {
 			studioApp.mainFrame->MDIMaximize( wnd );
 		}
+
+		updateFrmDescribed();
 	}
 }
 
 void RDOStudioModel::saveModelToRepository()
 {
+	bool smr_modified = false;
 	RDOEditorTabCtrl* tab = getTab();
 	if ( tab ) {
 		int cnt = tab->getItemCount();
@@ -468,7 +471,7 @@ void RDOStudioModel::saveModelToRepository()
 						case RDOEDIT_FRM: kernel.getRepository()->saveFRM( stream ); break;
 						case RDOEDIT_FUN: kernel.getRepository()->saveFUN( stream ); break;
 						case RDOEDIT_DPT: kernel.getRepository()->saveDPT( stream ); break;
-						case RDOEDIT_SMR: kernel.getRepository()->saveSMR( stream ); break;
+						case RDOEDIT_SMR: kernel.getRepository()->saveSMR( stream ); smr_modified = true; break;
 						case RDOEDIT_PMD: kernel.getRepository()->savePMD( stream ); break;
 					}
 					edit->setModifyFalse();
@@ -481,6 +484,11 @@ void RDOStudioModel::saveModelToRepository()
 	setName( kernel.getRepository()->getName() );
 	studioApp.insertReopenItem( kernel.getRepository()->getFullName() );
 
+	if ( smr_modified ) updateFrmDescribed();
+}
+
+void RDOStudioModel::updateFrmDescribed()
+{
 	rdo::binarystream smrStream;
 	kernel.getRepository()->loadSMR( smrStream );
 	rdoModelObjects::RDOSMRFileInfo fileInfo;

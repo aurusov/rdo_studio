@@ -43,34 +43,32 @@ private:
 				return traits_type::eof();
 			}
 		}
-		virtual int_type underflow() {
+		virtual std::streamsize xsgetn( std::streambuf::char_type* s, std::streamsize n ) {
+			std::streamsize len = n;
+			if ( vec.size() - current < len ) len = vec.size() - current;
+			memcpy( s, &vec[current], len );
+			current += len;
 			if ( current < vec.size() ) {
+				setg( &vec[current], &vec[current], &vec[current + 1] );
 				stream->setstate( goodbit );
-				return traits_type::to_int_type( vec[current] );
-			} else {
-				stream->setstate( eofbit );
-				return traits_type::eof();
-			}
-		}
-		virtual int_type uflow() {
-			if ( current < vec.size() ) {
-				int_type c = traits_type::to_int_type( vec[current++] );
-				int s = vec.size();
-				char cc = c;
-				if ( current < vec.size() ) {
-					setg( &vec[current], &vec[current], &vec[current + 1] );
-					stream->setstate( goodbit );
-					return c;
-				} else {
-					setg( &vec[current], &vec[current], &vec[current] );
-					stream->setstate( eofbit );
-					return traits_type::eof();
-				}
 			} else {
 				setg( &vec[current], &vec[current], &vec[current] );
 				stream->setstate( eofbit );
-				return traits_type::eof();
 			}
+			return len;
+		}
+		virtual int_type underflow() {
+			stream->setstate( eofbit );
+			return traits_type::eof();
+		}
+		virtual int_type uflow() {
+			int_type c = underflow();
+			if ( c == traits_type::eof() ) {
+				stream->setstate( eofbit );
+			} else {
+				stream->setstate( goodbit );
+			}
+			return c;
 		}
 		virtual pos_type seekoff( off_type off, ios_base::seekdir way, ios_base::openmode which = ios_base::in | ios_base::out ) {
 			switch ( way ) {
@@ -91,8 +89,13 @@ private:
 
 		void initPtr() {
 			current = 0;
-			setg( vec.begin(), vec.begin(), vec.end() );
-			setp( vec.begin(), vec.end() );
+			if ( vec.size() ) {
+				setg( &vec[current], &vec[current], &vec[current + 1] );
+				setp( &vec[current], &vec[current + 1] );
+			} else {
+				setg( vec.end(), vec.end(), vec.end() );
+				setp( vec.end(), vec.end() );
+			}
 		}
 	};
 	binarybuf buf;
@@ -102,7 +105,6 @@ public:
 	char* data()                                    { return buf.vec.begin();             }
 	std::vector< char >::size_type size()           { return buf.vec.size();              }
 	void resize( std::vector< char >::size_type n ) { buf.vec.resize( n ); buf.initPtr(); }
-//	std::vector< char >& vec()                      { return buf.vec;                     }
 	ios_base::openmode getOpenMode() const          { return buf.openmode;                }
 };
 
