@@ -194,7 +194,7 @@ UINT RunningThreadControllingFunction( LPVOID pParam )
 		simulator->runtime->rdoRun();
 		simulator->runtime->rdoDestroy();
 		kernel.notify(RDOKernel::endExecuteModel);
-		kernel.debug("End executing\n");
+//		kernel.debug("End executing\n");
 	}
 	catch(RDOSyntaxException &) 
 	{

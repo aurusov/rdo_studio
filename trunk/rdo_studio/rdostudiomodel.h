@@ -47,6 +47,7 @@ private:
 
 	static void beforeModelStartNotify();
 	static void afterModelStartNotify();
+	static void endExecuteModelNotify();
 	static void stopModelNotify();
 	static void parseSuccessNotify();
 	static void parseErrorNotify();
@@ -64,6 +65,7 @@ private:
 
 	void beforeModelStart();
 	void showFrame();
+	void stopModelFromSimulator();
 
 public:
 	RDOStudioModel();

@@ -55,7 +55,7 @@ RDOStudioModel::RDOStudioModel():
 
 	kernel.setNotifyReflect( RDOKernel::beforeModelStart, beforeModelStartNotify );
 	kernel.setNotifyReflect( RDOKernel::afterModelStart, afterModelStartNotify );
-	kernel.setNotifyReflect( RDOKernel::endExecuteModel, stopModelNotify );
+	kernel.setNotifyReflect( RDOKernel::endExecuteModel, endExecuteModelNotify );
 	kernel.setNotifyReflect( RDOKernel::modelStopped, stopModelNotify );
 	kernel.setNotifyReflect( RDOKernel::parseSuccess, parseSuccessNotify );
 	kernel.setNotifyReflect( RDOKernel::parseError, parseErrorNotify );
@@ -206,14 +206,38 @@ void RDOStudioModel::afterModelStartNotify()
 	const_cast<rdoEditCtrl::RDODebugEdit*>(output->getDebug())->UpdateWindow();
 }
 
+void RDOStudioModel::endExecuteModelNotify()
+{
+	model->stopModelFromSimulator();
+
+	RDOStudioOutput* output = &studioApp.mainFrame->output;
+	output->appendStringToDebug( format( IDS_MODEL_FINISHED ) );
+	const_cast<rdoEditCtrl::RDODebugEdit*>(output->getDebug())->UpdateWindow();
+
+	string str = kernel.getSimulator()->getResults().str();
+	if ( str.length() ) {
+		output->showResults();
+		output->appendStringToResults( str );
+	}
+}
+
 void RDOStudioModel::stopModelNotify()
 {
-	RDOStudioModelDoc* doc = model->getModelDoc();
+	model->stopModelFromSimulator();
+
+	RDOStudioOutput* output = &studioApp.mainFrame->output;
+	output->appendStringToDebug( format( IDS_MODEL_STOPED ) );
+	const_cast<rdoEditCtrl::RDODebugEdit*>(output->getDebug())->UpdateWindow();
+}
+
+void RDOStudioModel::stopModelFromSimulator()
+{
+	RDOStudioModelDoc* doc = getModelDoc();
 	if ( doc ) {
 		doc->running = false;
 	}
-	model->frameManager.clear();
-	model->frameManager.bmp_clear();
+	frameManager.clear();
+	frameManager.bmp_clear();
 }
 
 void RDOStudioModel::parseSuccessNotify()

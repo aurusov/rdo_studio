@@ -1517,6 +1517,8 @@ END
 STRINGTABLE DISCARDABLE 
 BEGIN
     IDS_MODEL_STARTED       "Model started\n"
+    IDS_MODEL_FINISHED      "Model finished\n"
+    IDS_MODEL_STOPED        "Model stoped by user\n"
 END
 
 STRINGTABLE DISCARDABLE 

@@ -189,6 +189,13 @@ void RDOStudioOutput::appendStringToDebug( const string& str ) const
 	debug->appendLine( str );
 }
 
+void RDOStudioOutput::appendStringToResults( const string& str ) const
+{
+	results->setReadOnly( false );
+	results->appendText( str );
+	results->setReadOnly( true );
+}
+
 void RDOStudioOutput::appendStringToFind( const string& str, const rdoModelObjects::RDOFileType fileType, const int lineNumber, const int posInLine ) const
 {
 	RDOLogEditLineInfo* line = new RDOLogEditLineInfo( str, fileType, lineNumber, posInLine );
