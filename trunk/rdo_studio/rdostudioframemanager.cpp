@@ -411,6 +411,12 @@ void RDOStudioFrameManager::showFrame( const RDOFrame* const frame, const int in
 			areas_clicked->clear();
 			frames[index]->areas_sim_clear();
 
+			vector< int >::iterator key = frames[index]->keys_pressed.begin();
+			while ( key != frames[index]->keys_pressed.end() ) {
+				kernel.getSimulator()->addKeyPressed( *key++ );
+			};
+			frames[index]->keys_pressed.clear();
+
 			int size = frame->elements.size();
 			for(int i = 0; i < size; i++)
 			{

@@ -25,6 +25,7 @@ BEGIN_MESSAGE_MAP(RDOStudioFrameView, CView)
 	ON_WM_HSCROLL()
 	ON_WM_VSCROLL()
 	ON_WM_LBUTTONDOWN()
+	ON_WM_KEYDOWN()
 	//}}AFX_MSG_MAP
 	ON_COMMAND(ID_FILE_PRINT, CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, CView::OnFilePrint)
@@ -291,4 +292,19 @@ void RDOStudioFrameView::OnLButtonDown(UINT nFlags, CPoint point)
 	lock_draw.Unlock();
 
 	CView::OnLButtonDown( nFlags, point );
+}
+
+void RDOStudioFrameView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
+{
+	RDOStudioFrameManager* frameManager = &model->frameManager;
+	int index = frameManager->findFrameIndex( this );
+	CSingleLock lock_draw( frameManager->getFrameDraw( index ) );
+	lock_draw.Lock();
+
+	RDOStudioFrameManager::Frame* frame = frameManager->frames[index];
+	frame->keys_pressed.push_back( nChar );
+
+	lock_draw.Unlock();
+
+	CView::OnKeyDown(nChar, nRepCnt, nFlags);
 }
