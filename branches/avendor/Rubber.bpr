@@ -1,0 +1,172 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!-- C++Builder XML Project -->
+<PROJECT>
+  <MACROS>
+    <VERSION value="BCB.05.03"/>
+    <PROJECT value="Rubber.exe"/>
+    <OBJFILES value="Rubber.obj Form_Rubber.obj DataModule.obj Misc.obj DrR_Exception.obj 
+      Dr_Form_About.obj Dr_MiscComponent.obj Dr_Form_Program_Info.obj 
+      Dr_Form_Product.obj Dr_Form_Personal.obj Dr_Form_Hint.obj 
+      Dr_Form_Machine.obj Dr_Form_Customer.obj Dr_Form_Program_Machine.obj 
+      Dr_Form_Select.obj Dr_Form_Select_Customer.obj Dr_Form_Select_Personal.obj 
+      Dr_Form_Select_Product.obj Dr_Form_Select_Program.obj 
+      Dr_Form_RawMaterial.obj Dr_Form_Date.obj Dr_Form_Select_Date.obj 
+      Dr_Form_RawMaterialInProduct.obj Dr_Form_Select_RawMaterial.obj 
+      Pl_Program_Report.obj Pl_Form_ReportPreview.obj Pl_Base_Report.obj 
+      Pl_Form_Report_PreviewOptions.obj Dr_Form_ProgramPart.obj 
+      Pl_DailyTasks_Report.obj Dr_Form_Splash.obj Dr_Form_Plane_Info.obj"/>
+    <RESFILES value="Rubber.res RES_Model.RES RES_String.RES Report_Res_Bitmaps.RES 
+      Report_Res_String.RES Program_Report_Res_String.RES 
+      Tasks_Report_Res_String.res"/>
+    <IDLFILES value=""/>
+    <IDLGENFILES value=""/>
+    <DEFFILE value=""/>
+    <RESDEPEN value="$(RESFILES) Form_Rubber.dfm DataModule.dfm Dr_Form_About.dfm 
+      Dr_Form_Program_Info.dfm Dr_Form_Product.dfm Dr_Form_Personal.dfm 
+      Dr_Form_Hint.dfm Dr_Form_Machine.dfm Dr_Form_Customer.dfm 
+      Dr_Form_Program_Machine.dfm Dr_Form_Select.dfm Dr_Form_Select_Customer.dfm 
+      Dr_Form_Select_Personal.dfm Dr_Form_Select_Product.dfm 
+      Dr_Form_Select_Program.dfm Dr_Form_RawMaterial.dfm Dr_Form_Date.dfm 
+      Dr_Form_Select_Date.dfm Dr_Form_RawMaterialInProduct.dfm 
+      Dr_Form_Select_RawMaterial.dfm Pl_Form_ReportPreview.dfm 
+      Pl_Form_Report_PreviewOptions.dfm Dr_Form_ProgramPart.dfm 
+      Dr_Form_Splash.dfm Dr_Form_Plane_Info.dfm"/>
+    <LIBFILES value=""/>
+    <LIBRARIES value="vclx50.lib bcbsmp50.lib vclbde50.lib vcldb50.lib DCLUSR50.lib vcl50.lib"/>
+    <SPARELIBS value="vcl50.lib DCLUSR50.lib vcldb50.lib vclbde50.lib bcbsmp50.lib vclx50.lib"/>
+    <PACKAGES value="vcl50.bpi vclx50.bpi vcljpg50.bpi vclmid50.bpi vcldb50.bpi vclbde50.bpi 
+      bcbsmp50.bpi ibsmp50.bpi vcldbx50.bpi qrpt50.bpi teeui50.bpi teedb50.bpi 
+      tee50.bpi dss50.bpi nmfast50.bpi inetdb50.bpi inet50.bpi dclocx50.bpi 
+      DCLUSR50.bpi"/>
+    <PATHCPP value=".;"/>
+    <PATHPAS value=".;"/>
+    <PATHRC value=".;"/>
+    <PATHASM value=".;"/>
+    <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
+    <RELEASELIBPATH value="$(BCB)\lib\release"/>
+    <LINKER value="ilink32"/>
+    <USERDEFINES value=""/>
+    <SYSDEFINES value="NO_STRICT;_VIS_NOLIB"/>
+    <MAINSOURCE value="Rubber.cpp"/>
+    <INCLUDEPATH value="$(BCB)\bin;$(BCB)\projects;D:\Components\Cb5\;$(BCB)\include;$(BCB)\include\vcl"/>
+    <LIBPATH value="$(BCB)\bin;$(BCB)\projects;D:\Components\Cb5\;$(BCB)\projects\lib;$(BCB)\lib\obj;$(BCB)\lib"/>
+    <WARNINGS value="-w-par -w-8027 -w-8026"/>
+    <WARNOPTSTR value=""/>
+  </MACROS>
+  <OPTIONS>
+    <IDLCFLAGS value="-src_suffix cpp -I$(BCB)\bin -I$(BCB)\projects -ID:\Components\Cb5\. 
+      -I$(BCB)\include -I$(BCB)\include\vcl -boa"/>
+    <CFLAG1 value="-O2 -H=$(BCB)\lib\vcl50.csm -Hc -Vx -Ve -X- -a8 -b- -k- -vi -c -tW -tWM"/>
+    <PFLAGS value="-$Y- -$L- -$D- -v -JPHNE -M"/>
+    <RFLAGS value=""/>
+    <AFLAGS value="/mx /w2 /zn"/>
+    <LFLAGS value="-D&quot;&quot; -aa -Tpe -x -Gn"/>
+  </OPTIONS>
+  <LINKER>
+    <ALLOBJ value="c0w32.obj sysinit.obj $(OBJFILES)"/>
+    <ALLRES value="$(RESFILES)"/>
+    <ALLLIB value="$(LIBFILES) $(LIBRARIES) import32.lib cp32mt.lib"/>
+  </LINKER>
+  <IDEOPTIONS>
+[Version Info]
+IncludeVerInfo=0
+AutoIncBuild=0
+MajorVer=1
+MinorVer=0
+Release=0
+Build=0
+Debug=0
+PreRelease=0
+Special=0
+Private=0
+DLL=0
+Locale=1049
+CodePage=1251
+
+[Version Info Keys]
+CompanyName=
+FileDescription=
+FileVersion=1.0.0.0
+InternalName=
+LegalCopyright=
+LegalTrademarks=
+OriginalFilename=
+ProductName=
+ProductVersion=1.0.0.0
+Comments=
+
+[HistoryLists\hlIncludePath]
+Count=19
+Item0=$(BCB)\bin;$(BCB)\projects;D:\Components\Cb5\;$(BCB)\include;$(BCB)\include\vcl
+Item1=;$(BCB)\bin;$(BCB)\projects;D:\Components\Cb5\;$(BCB)\include;$(BCB)\include\vcl
+Item2=$(BCB)\Bin;$(BCB)\..\CBuilder4\Projects;D:\Components\Cb5\;$(BCB)\include;$(BCB)\include\vcl
+Item3=;;$(BCB)\Bin;$(BCB)\..\CBuilder4\Projects;D:\Components\Cb5\;$(BCB)\include;$(BCB)\include\vcl
+Item4=;$(BCB)\Bin;$(BCB)\..\CBuilder4\Projects;D:\Components\Cb5\;$(BCB)\include;$(BCB)\include\vcl
+Item5=$(BCB)\..\CBuilder4\Projects;D:\Components\Cb5\;$(BCB)\include;$(BCB)\include\vcl
+Item6=$(BCB)\..\CBuilder4\Projects;D:\Components\Cb5;$(BCB)\include;$(BCB)\include\vcl
+Item7=$(BCB)\..\CBuilder4\Projects;C:\components\cb4\;$(BCB)\include;$(BCB)\include\vcl
+Item8=C:\CBuilder4\Projects\;..\..\..\..\..\components\cb4;..\CBuilder4\Projects;$(BCB)\include;$(BCB)\include\vcl
+Item9=;C:\CBuilder4\Projects;..\..\..\..\..\components\cb4;..\CBuilder4\Projects;$(BCB)\include;$(BCB)\include\vcl
+Item10=d:\components\cb4\;..\CBuilder4\Projects;$(BCB)\include;$(BCB)\include\vcl
+Item11=;d:\components\cb4\;..\CBuilder4\Projects;$(BCB)\include;$(BCB)\include\vcl
+Item12=;;;d:\components\cb4\;..\CBuilder4\Projects;$(BCB)\include;$(BCB)\include\vcl
+Item13=;;d:\components\cb4\;..\CBuilder4\Projects;$(BCB)\include;$(BCB)\include\vcl
+Item14=;d:\components\cb4;;..\CBuilder4\Projects;$(BCB)\include;$(BCB)\include\vcl
+Item15=;;;..\CBuilder4\Projects;$(BCB)\include;$(BCB)\include\vcl
+Item16=;..\CBuilder4\Projects;$(BCB)\include;$(BCB)\include\vcl
+Item17=..\CBuilder4\Projects;$(BCB)\include;$(BCB)\include\vcl
+Item18=$(BCB)\include;$(BCB)\include\vcl
+
+[HistoryLists\hlLibraryPath]
+Count=14
+Item0=$(BCB)\bin;$(BCB)\projects;D:\Components\Cb5\;$(BCB)\projects\lib;$(BCB)\lib\obj;$(BCB)\lib
+Item1=;$(BCB)\bin;$(BCB)\projects;D:\Components\Cb5\;$(BCB)\projects\lib;$(BCB)\lib\obj;$(BCB)\lib
+Item2=$(BCB)\Bin;$(BCB)\..\CBuilder4\Projects;D:\Components\Cb5\;$(BCB)\projects\lib;$(BCB)\lib\obj;$(BCB)\lib
+Item3=;;$(BCB)\Bin;$(BCB)\..\CBuilder4\Projects;D:\Components\Cb5\;$(BCB)\projects\lib;$(BCB)\lib\obj;$(BCB)\lib
+Item4=;$(BCB)\Bin;$(BCB)\..\CBuilder4\Projects;D:\Components\Cb5\;$(BCB)\projects\lib;$(BCB)\lib\obj;$(BCB)\lib
+Item5=$(BCB)\..\CBuilder4\Projects;D:\Components\Cb5\;$(BCB)\projects\lib;$(BCB)\lib\obj;$(BCB)\lib
+Item6=$(BCB)\..\CBuilder4\Projects;D:\Components\Cb5;$(BCB)\projects\lib;$(BCB)\lib\obj;$(BCB)\lib
+Item7=$(BCB)\..\CBuilder4\Projects;C:\components\cb4\;$(BCB)\projects\lib;$(BCB)\lib\obj;$(BCB)\lib
+Item8=C:\CBuilder4\Projects\;..\..\..\..\..\components\cb4;..\CBuilder4\Projects;$(BCB)\projects\lib;$(BCB)\lib\obj;$(BCB)\lib
+Item9=C:\CBuilder4\Projects;..\..\..\..\..\components\cb4;..\CBuilder4\Projects;$(BCB)\projects\lib;$(BCB)\lib\obj;$(BCB)\lib
+Item10=d:\components\cb4\;..\CBuilder4\Projects;$(BCB)\projects\lib;$(BCB)\lib\obj;$(BCB)\lib
+Item11=d:\components\cb4;..\CBuilder4\Projects;$(BCB)\projects\lib;$(BCB)\lib\obj;$(BCB)\lib
+Item12=..\CBuilder4\Projects;$(BCB)\projects\lib;$(BCB)\lib\obj;$(BCB)\lib
+Item13=$(BCB)\projects\lib;$(BCB)\lib\obj;$(BCB)\lib
+
+[HistoryLists\hlDebugSourcePath]
+Count=1
+Item0=$(BCB)\source\vcl
+
+[HistoryLists\hlConditionals]
+Count=3
+Item0=_DEBUG
+Item1=NO_WIN32_LEAN_AND_MEAN
+Item2=NO_WIN32_LEAN_AND_MEAN;_DEBUG
+
+[Debugging]
+DebugSourceDirs=$(BCB)\source\vcl
+
+[Parameters]
+RunParams=-trace
+HostApplication=
+RemoteHost=
+RemotePath=
+RemoteDebug=0
+
+[Compiler]
+ShowInfoMsgs=0
+LinkDebugVcl=0
+LinkCGLIB=0
+
+[CORBA]
+AddServerUnit=1
+AddClientUnit=1
+PrecompiledHeaders=1
+
+[Language]
+ActiveLang=
+ProjectLang=
+RootDir=
+  </IDEOPTIONS>
+</PROJECT>
