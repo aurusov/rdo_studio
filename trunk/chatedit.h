@@ -7,6 +7,10 @@
 // ----------------------------------------------------------------------------
 class CChatEdit: public CEdit
 {
+public:
+	CChatEdit();
+	~CChatEdit();
+
 protected:
 	//{{AFX_VIRTUAL(CChatEdit)
 	//}}AFX_VIRTUAL
@@ -15,10 +19,6 @@ protected:
 	afx_msg void OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags );
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
-
-public:
-	CChatEdit();
-	~CChatEdit();
 };
 
 #endif // CHATEDIT_H

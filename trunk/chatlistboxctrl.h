@@ -13,6 +13,15 @@ protected:
 	bool isImage() const;
 	CSize getImageSize() const;
 
+public:
+	CChatListBoxCtrl();
+	virtual ~CChatListBoxCtrl();
+
+	int addString( const std::string& str, const int image = -1 );
+	int insertString( const int index, const std::string& str, const int image = -1 );
+	void setItemImage( const int index, const int image );
+	void setImageList( CImageList* _imageList );
+
 protected:
 	//{{AFX_VIRTUAL(CChatListBoxCtrl)
 	protected:
@@ -23,15 +32,6 @@ protected:
 	//{{AFX_MSG(CChatListBoxCtrl)
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
-
-public:
-	CChatListBoxCtrl();
-	virtual ~CChatListBoxCtrl();
-
-	int addString( const std::string& str, const int image = -1 );
-	int insertString( const int index, const std::string& str, const int image = -1 );
-	void setItemImage( const int index, const int image );
-	void setImageList( CImageList* _imageList );
 };
 
 #endif // CHATLISTBOXCTRL_H

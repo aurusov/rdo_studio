@@ -28,6 +28,27 @@ protected:
 
 	void showMessage();
 
+public:
+	CChatPopupMessage();
+	virtual ~CChatPopupMessage();
+
+	void setMessage( const std::string& value );
+
+	bool getUsePopup() const               { return usePopup; }
+	void setUsePopup( const bool value );
+
+	CChatPopupPosition getPosition() const { return position; }
+	void setPosition( const CChatPopupPosition value );
+
+	int getTimerDelay() const              { return timerDelay; }
+	void setTimerDelay( const int value );
+
+	COLORREF getTextColor() const          { return textColor; }
+	void setTextColor( const COLORREF value );
+
+	COLORREF getBackgroundColor() const    { return backgroundColor; }
+	void setBackgroundColor( const COLORREF value );
+
 protected:
 	//{{AFX_VIRTUAL(CChatPopupMessage)
 	protected:
@@ -41,27 +62,6 @@ protected:
 	//}}AFX_MSG
 //	afx_msg void OnPaint();
 	DECLARE_MESSAGE_MAP()
-
-public:
-	CChatPopupMessage();
-	virtual ~CChatPopupMessage();
-
-	void setMessage( const std::string& value );
-
-	bool getUsePopup() const;
-	void setUsePopup( const bool value );
-
-	CChatPopupPosition getPosition() const;
-	void setPosition( const CChatPopupPosition value );
-
-	int getTimerDelay() const;
-	void setTimerDelay( const int value );
-
-	COLORREF getTextColor() const;
-	void setTextColor( const COLORREF value );
-
-	COLORREF getBackgroundColor() const;
-	void setBackgroundColor( const COLORREF value );
 };
 
 #endif // CHATPOPUPMESSAGE_H

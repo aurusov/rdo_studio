@@ -160,11 +160,6 @@ void CChatPopupMessage::setMessage( const std::string& value )
 	}
 }
 
-bool CChatPopupMessage::getUsePopup() const
-{
-	return usePopup;
-}
-
 void CChatPopupMessage::setUsePopup( const bool value )
 {
 	if ( usePopup != value ) {
@@ -178,11 +173,6 @@ void CChatPopupMessage::setUsePopup( const bool value )
 	}
 }
 
-CChatPopupPosition CChatPopupMessage::getPosition() const
-{
-	return position;
-}
-
 void CChatPopupMessage::setPosition( const CChatPopupPosition value )
 {
 	if ( position != value ) {
@@ -192,11 +182,6 @@ void CChatPopupMessage::setPosition( const CChatPopupPosition value )
 		}
 		chatApp.WriteProfileInt( "Popup", "position", position );
 	}
-}
-
-int CChatPopupMessage::getTimerDelay() const
-{
-	return timerDelay;
 }
 
 void CChatPopupMessage::setTimerDelay( const int value )
@@ -213,11 +198,6 @@ void CChatPopupMessage::setTimerDelay( const int value )
 	}
 }
 
-COLORREF CChatPopupMessage::getTextColor() const
-{
-	return textColor;
-}
-
 void CChatPopupMessage::setTextColor( const COLORREF value )
 {
 	if ( textColor != value ) {
@@ -227,11 +207,6 @@ void CChatPopupMessage::setTextColor( const COLORREF value )
 		}
 		chatApp.WriteProfileInt( "Popup", "textColor", textColor );
 	}
-}
-
-COLORREF CChatPopupMessage::getBackgroundColor() const
-{
-	return backgroundColor;
 }
 
 void CChatPopupMessage::setBackgroundColor( const COLORREF value )

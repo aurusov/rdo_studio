@@ -28,24 +28,6 @@ protected:
 
 	bool initSocket();
 
-protected:
-	//{{AFX_VIRTUAL(CChatApp)
-	protected:
-	virtual BOOL InitInstance();
-	virtual int ExitInstance();
-	//}}AFX_VIRTUAL
-
-	//{{AFX_MSG(CChatApp)
-	afx_msg void OnRefreshUsersList( UINT nID = 0 );
-	afx_msg void OnStatusMode( UINT nID );
-	afx_msg void OnUpdateStatusMode( CCmdUI* pCmdUI );
-	afx_msg void OnStatusModeInfo( UINT nID );
-	afx_msg void OnUpdateStatusModeInfo( CCmdUI* pCmdUI );
-	afx_msg void OnToCryOut();
-	afx_msg void OnOptions();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
-
 public:
 	CChatApp();
 
@@ -66,6 +48,24 @@ public:
 	void setStatusMode( const CChatStatusModeType value, const bool automatically = false );
 
 	CFont& getFont();
+
+protected:
+	//{{AFX_VIRTUAL(CChatApp)
+	protected:
+	virtual BOOL InitInstance();
+	virtual int ExitInstance();
+	//}}AFX_VIRTUAL
+
+	//{{AFX_MSG(CChatApp)
+	afx_msg void OnRefreshUsersList( UINT nID = 0 );
+	afx_msg void OnStatusMode( UINT nID );
+	afx_msg void OnUpdateStatusMode( CCmdUI* pCmdUI );
+	afx_msg void OnStatusModeInfo( UINT nID );
+	afx_msg void OnUpdateStatusModeInfo( CCmdUI* pCmdUI );
+	afx_msg void OnToCryOut();
+	afx_msg void OnOptions();
+	//}}AFX_MSG
+	DECLARE_MESSAGE_MAP()
 };
 
 // ----------------------------------------------------------------------------

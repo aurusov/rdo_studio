@@ -14,6 +14,12 @@ protected:
 	CChatViewer viewer;
 	CChatEdit   edit;
 
+public:
+	CChatChildView();
+	virtual ~CChatChildView();
+
+	void addStringToViewer( const std::string& userName, const std::string& str, CChatStringType type = CSTRT_Message );
+
 protected:
 	//{{AFX_VIRTUAL(CChatChildView)
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
@@ -25,12 +31,6 @@ protected:
 	afx_msg void OnSetFocus(CWnd *pOldWnd);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
-
-public:
-	CChatChildView();
-	virtual ~CChatChildView();
-
-	void addStringToViewer( const std::string& userName, const std::string& str, CChatStringType type = CSTRT_Message );
 };
 
 #endif // CHATCHILDVIEW_H
