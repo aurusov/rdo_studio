@@ -510,9 +510,10 @@ BEGIN
         MENUITEM "&Whitespace\tCtrl+Shift+8",   ID_VIEW_WHITESPACE
         MENUITEM "&End of Line\tCtrl+Shift+9",  ID_VIEW_ENDOFLINE
         MENUITEM SEPARATOR
-        MENUITEM "Zoom &In\t Ctrl+Num+",        ID_VIEW_ZOOMIN
-        MENUITEM "Zoom O&ut\t Ctrl+Num-",       ID_VIEW_ZOOMOUT
-        MENUITEM "&Reset Zoom\t Ctrl+Num/",     ID_VIEW_ZOOMRESET
+        MENUITEM "Zoom &In\tCtrl+Num+",         ID_VIEW_ZOOMIN
+        MENUITEM "Zoom O&ut\tCtrl+Num-",        ID_VIEW_ZOOMOUT
+        MENUITEM "&Zoom Auto\tCtrl+Num*",       ID_VIEW_ZOOMAUTO
+        MENUITEM "&Reset Zoom\tCtrl+Num/",      ID_VIEW_ZOOMRESET
         MENUITEM SEPARATOR
         MENUITEM "&Workspace",                  ID_VIEW_WORKSPACE
         MENUITEM "&Output",                     ID_VIEW_OUTPUT
@@ -818,14 +819,6 @@ BEGIN
         MENUITEM "Add To &Chart",               ID_CHART_ADDTOCHART
         MENUITEM "&Add To New Chart",           ID_CHART_ADDTONEWCHART
         MENUITEM SEPARATOR
-        POPUP "&Zoom"
-        BEGIN
-            MENUITEM "Zoom &In",                    ID_CHART_ZOOM_ZOOMIN
-            MENUITEM "Zoom &Out",                   ID_CHART_ZOOM_ZOOMOUT
-            MENUITEM "&Reset Zoom",                 ID_CHART_ZOOM_RESETZOOM
-            MENUITEM SEPARATOR
-            MENUITEM "Zoom &Auto",                  ID_CHART_ZOOM_ZOOMAUTO
-        END
         MENUITEM "Time &Wrap",                  ID_CHART_TIMEWRAP
         MENUITEM SEPARATOR
         MENUITEM "&Options",                    ID_CHART_OPTIONS
@@ -968,6 +961,7 @@ BEGIN
     VK_F9,          ID_MODEL_RUN,           VIRTKEY, NOINVERT
     VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
     VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY, SHIFT, NOINVERT
+    VK_MULTIPLY,    ID_VIEW_ZOOMAUTO,       VIRTKEY, CONTROL, NOINVERT
     VK_SPACE,       ID_EDIT_COMPLETEWORD,   VIRTKEY, CONTROL, NOINVERT
     VK_SUBTRACT,    ID_VIEW_ZOOMOUT,        VIRTKEY, CONTROL, NOINVERT
     "W",            ID_EMPTYCOMMAND_2,      VIRTKEY, CONTROL, NOINVERT
