@@ -18,6 +18,7 @@ friend class RDOStudioModelDoc;
 
 private:
 	CMultiDocTemplate* modelDocTemplate;
+	CMultiDocTemplate* frameDocTemplate;
 
 	std::string name;
 	bool useTemplate;

@@ -10,6 +10,7 @@
 #define IDR_PROJECTTOOLBAR              132
 #define IDB_TREECTRL                    133
 #define IDR_CHARTTYPE                   134
+#define IDR_FRAMETYPE                   135
 #define IDD_BUFFER_DIALOG               142
 #define IDB_PROJECTTOOLBAR_D            144
 #define IDB_EDITTOOLBAR_D               145

@@ -5,6 +5,8 @@
 #include "rdostudiochildfrm.h"
 #include "rdostudiomodeldoc.h"
 #include "rdostudiomodelview.h"
+#include "rdostudioframedoc.h"
+#include "rdostudioframeview.h"
 #include "resource.h"
 #include "rdo_edit/rdoeditortabctrl.h"
 
@@ -24,6 +26,7 @@ RDOStudioModel* model = NULL;
 
 RDOStudioModel::RDOStudioModel():
 	modelDocTemplate( NULL ),
+	frameDocTemplate( NULL ),
 	name( "" ),
 	useTemplate( false ),
 	closeWithDocDelete( true ),
@@ -33,6 +36,9 @@ RDOStudioModel::RDOStudioModel():
 	model = this;
 
 	modelDocTemplate = new CMultiDocTemplate( IDR_MODELTYPE, RUNTIME_CLASS(RDOStudioModelDoc), RUNTIME_CLASS(RDOStudioChildFrame), RUNTIME_CLASS(RDOStudioModelView) );
+	AfxGetApp()->AddDocTemplate( modelDocTemplate );
+
+	modelDocTemplate = new CMultiDocTemplate( IDR_FRAMETYPE, RUNTIME_CLASS(RDOStudioModelDoc), RUNTIME_CLASS(RDOStudioChildFrame), RUNTIME_CLASS(RDOStudioModelView) );
 	AfxGetApp()->AddDocTemplate( modelDocTemplate );
 
 	kernel.setNotifyReflect( RDOKernel::newModel, newModelNotify );

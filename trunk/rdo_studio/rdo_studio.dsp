@@ -214,6 +214,14 @@ SOURCE=.\rdostudioeditview.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\rdostudioframedoc.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdostudioframeview.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdostudiomainfrm.cpp
 
 !IF  "$(CFG)" == "rdo_studio - Win32 Release"
@@ -349,6 +357,14 @@ SOURCE=.\rdostudioeditdoc.h
 # Begin Source File
 
 SOURCE=.\rdostudioeditview.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdostudioframedoc.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdostudioframeview.h
 # End Source File
 # Begin Source File
 
@@ -901,6 +917,10 @@ SOURCE=.\res\editToolbar_d.bmp
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\idr_mode.ico
+# End Source File
+# Begin Source File
+
 SOURCE=.\res\Margin.cur
 # End Source File
 # Begin Source File
@@ -934,6 +954,10 @@ SOURCE=.\res\rdostudiochartdoc.ico
 # Begin Source File
 
 SOURCE=.\res\rdostudioeditdoc.ico
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\rdostudioframedoc.ico
 # End Source File
 # Begin Source File
 
