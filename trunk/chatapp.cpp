@@ -108,7 +108,7 @@ BOOL CChatApp::InitInstance()
 	udp.send( "<connect:" + getUserName() + ">" );
 
 	refreshUserList();
-	network.refresh();
+//	network.refresh();
 
 	delete splash;
 	splash = NULL;
@@ -175,6 +175,10 @@ bool CChatApp::initSocket()
 		WSACleanup( );
 	}
 
+//	CString s;
+//	s.Format( "%d", getPort() );
+//	AfxMessageBox( s );
+//	AfxMessageBox( getIP().c_str() );
 	if ( !udp.Create( getPort(), SOCK_DGRAM, FD_READ | FD_WRITE | FD_OOB | FD_ACCEPT | FD_CONNECT | FD_CLOSE, getIP().c_str() ) ) {
 		AfxMessageBox( format( IDS_SOCKET_ERROR_CRETAE, udp.getStrError().c_str() ).c_str() );
 		return false;

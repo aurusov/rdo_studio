@@ -101,6 +101,12 @@ int CChatSmileListCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 
 	chatApp.splash->setProgress( CChatSmile::smile, CChatSmile::tomato + 1 );
 	for ( int i = CChatSmile::smile; i <= CChatSmile::tomato; i++ ) {
+		int sdc = dc->SaveDC();
+//		if ( i == 43 ) {
+//			CString s;
+//			s.Format( "%d, %s", i, CChatSmileList::getStr( static_cast<CChatSmile::Type>(i) ).c_str() );
+//			AfxMessageBox( s );
+//		}
 		Item* item  = new Item;
 		item->smile = new CChatSmile( static_cast<CChatSmile::Type>(i), this );
 		item->smile->showAnimation( false );
@@ -112,7 +118,9 @@ int CChatSmileListCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 		if ( size.cx > smile_max_width ) {
 			smile_max_width = size.cx;
 		}
-
+//		if ( i == 43 ) {
+//			AfxMessageBox( "1" );
+//		}
 		CRect rect( 0, 0, 1, 1 );
 		dc->DrawText( item->info.c_str(), -1, rect, DT_CENTER | DT_CALCRECT );
 		if ( rect.Width() + 2 > text_max_width ) {
@@ -121,6 +129,7 @@ int CChatSmileListCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 		item->height = rect.Height() + 2 > size.cy ? rect.Height() + 2 : size.cy;
 		list.push_back( item );
 		chatApp.splash->stepProgress();
+		dc->RestoreDC( sdc );
 	}
 	chatApp.splash->hideProgress();
 	dc->SelectObject( prev_font );
