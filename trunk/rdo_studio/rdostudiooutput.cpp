@@ -110,52 +110,42 @@ BOOL RDOStudioOutput::OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLER
 
 void RDOStudioOutput::showBuild()
 {
-	HWND hwnd = ::GetFocus();
 	studioApp.mainFrame->showOutput();
 	tab.setCurrentItem( 0 );
 	build->SetFocus();
 	UpdateWindow();
-//	if ( hwnd ) ::SetFocus( hwnd );
 }
 
 void RDOStudioOutput::showDebug()
 {
-	HWND hwnd = ::GetFocus();
 	studioApp.mainFrame->showOutput();
 	tab.setCurrentItem( 1 );
 	debug->SetFocus();
 	UpdateWindow();
-//	if ( hwnd ) ::SetFocus( hwnd );
 }
 
 void RDOStudioOutput::showTrace()
 {
-	HWND hwnd = ::GetFocus();
 	studioApp.mainFrame->showOutput();
 	tab.setCurrentItem( 2 );
 	trace->SetFocus();
 	UpdateWindow();
-//	if ( hwnd ) ::SetFocus( hwnd );
 }
 
 void RDOStudioOutput::showResults()
 {
-	HWND hwnd = ::GetFocus();
 	studioApp.mainFrame->showOutput();
 	tab.setCurrentItem( 3 );
 	results->SetFocus();
 	UpdateWindow();
-//	if ( hwnd ) ::SetFocus( hwnd );
 }
 
 void RDOStudioOutput::showFind()
 {
-	HWND hwnd = ::GetFocus();
 	studioApp.mainFrame->showOutput();
 	tab.setCurrentItem( 4 );
 	find->SetFocus();
 	UpdateWindow();
-//	if ( hwnd ) ::SetFocus( hwnd );
 }
 
 void RDOStudioOutput::clearBuild()

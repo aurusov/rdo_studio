@@ -207,6 +207,10 @@ void RDOStudioModel::afterModelStartNotify()
 	output->showDebug();
 	output->appendStringToDebug( format( IDS_MODEL_STARTED ) );
 	const_cast<rdoEditCtrl::RDODebugEdit*>(output->getDebug())->UpdateWindow();
+	int index = model->frameManager.getLastShowedFrame();
+	if ( index != -1 ) {
+		model->frameManager.getFrameView( index )->SetFocus();
+	}
 }
 
 void RDOStudioModel::endExecuteModelNotify()
@@ -628,9 +632,10 @@ void RDOStudioModel::beforeModelStart()
 		showMode  = kernel.getSimulator()->getInitialShowMode();
 		frameManager.setLastShowedFrame( initFrameNumber );
 		if ( showMode == SM_Animation && initFrameNumber >= 0 && initFrameNumber < frameManager.count() ) {
-			RDOStudioFrameDoc* doc = model->frameManager.connectFrameDoc( initFrameNumber );
+			RDOStudioFrameDoc* doc = frameManager.connectFrameDoc( initFrameNumber );
 			if ( doc ) {
 				doc->SetTitle( format( IDS_FRAME_NAME, frameManager.getFrameName( initFrameNumber ).c_str() ).c_str() );
+				frameManager.getFrameView( initFrameNumber )->SetFocus();
 			}
 		}
 		output->appendStringToDebug( format( IDS_MODEL_RESOURCE_LOADING_OK ) );
