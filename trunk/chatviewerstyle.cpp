@@ -12,34 +12,34 @@ static char THIS_FILE[] = __FILE__;
 // ----------------------------------------------------------------------------
 CChatViewerTheme::CChatViewerTheme()
 {
-	messageColor            = RGB( 0x00, 0x00, 0x00 );
-	messageBg1Color         = RGB( 0xEB, 0xF5, 0xFE );
-	messageBg2Color         = RGB( 0xDF, 0xE9, 0xF0 );
-	connectColor            = RGB( 0x00, 0x00, 0x00 );
-	connectBgColor          = RGB( 0xBD, 0xEC, 0xB3 );
-	disconnectColor         = RGB( 0x00, 0x00, 0x00 );
-	disconnectBgColor       = RGB( 0xE3, 0xB3, 0xEC );
-	changeNameColor         = RGB( 0x00, 0x00, 0x00 );
-	changeNameBgColor       = RGB( 0xEC, 0xE2, 0xB3 );
-	changeStatusModeColor   = RGB( 0x00, 0x00, 0x00 );
-	changeStatusModeBgColor = RGB( 0xBC, 0xCF, 0xB3 );
-	toCryOutColor           = RGB( 0xFF, 0xFF, 0xFF );
-	toCryOutBgColor         = RGB( 0xBC, 0x10, 0x20 );
-	popupMsgSendColor       = RGB( 0x00, 0x00, 0x00 );
-	popupMsgSendBgColor     = RGB( 0x4B, 0xD4, 0x40 );
-	popupMsgReceiveColor    = RGB( 0x00, 0x00, 0x00 );
-	popupMsgReceiveBgColor  = RGB( 0x36, 0xCC, 0x5A );
-	viewerBgColor           = RGB( 0xFA, 0xFD, 0xFE );
-	selectedBgColor         = RGB( 0xA0, 0xA0, 0xA0 );
+	messageColor             = RGB( 0x00, 0x00, 0x00 );
+	messageBg1Color          = RGB( 0xEB, 0xF5, 0xFE );
+	messageBg2Color          = RGB( 0xDF, 0xE9, 0xF0 );
+	connectColor             = RGB( 0x00, 0x00, 0x00 );
+	connectBgColor           = RGB( 0xBD, 0xEC, 0xB3 );
+	disconnectColor          = RGB( 0x00, 0x00, 0x00 );
+	disconnectBgColor        = RGB( 0xE3, 0xB3, 0xEC );
+	changeNameColor          = RGB( 0x00, 0x00, 0x00 );
+	changeNameBgColor        = RGB( 0xEC, 0xE2, 0xB3 );
+	changeStatusModeColor    = RGB( 0x00, 0x00, 0x00 );
+	changeStatusModeBgColor  = RGB( 0xBC, 0xCF, 0xB3 );
+	toCryOutColor            = RGB( 0xFF, 0xFF, 0xFF );
+	toCryOutBgColor          = RGB( 0xBC, 0x10, 0x20 );
+	privateMsgSendColor      = RGB( 0x00, 0x00, 0x00 );
+	privateMsgSendBgColor    = RGB( 0x4B, 0xD4, 0x40 );
+	privateMsgReceiveColor   = RGB( 0x00, 0x00, 0x00 );
+	privateMsgReceiveBgColor = RGB( 0x36, 0xCC, 0x5A );
+	viewerBgColor            = RGB( 0xFA, 0xFD, 0xFE );
+	selectedBgColor          = RGB( 0xA0, 0xA0, 0xA0 );
 
-	messageFS          = CFS_NONE;
-	connectFS          = CFS_NONE;
-	disconnectFS       = CFS_NONE;
-	changeNameFS       = CFS_NONE;
-	changeStatusModeFS = CFS_NONE;
-	toCryOutFS         = CFS_NONE;
-	popupMsgSendFS     = CFS_NONE;
-	popupMsgReceiveFS  = CFS_NONE;
+	messageFS           = CFS_NONE;
+	connectFS           = CFS_NONE;
+	disconnectFS        = CFS_NONE;
+	changeNameFS        = CFS_NONE;
+	changeStatusModeFS  = CFS_NONE;
+	toCryOutFS          = CFS_NONE;
+	privateMsgSendFS    = CFS_NONE;
+	privateMsgReceiveFS = CFS_NONE;
 }
 
 CChatViewerTheme::~CChatViewerTheme()
@@ -48,66 +48,66 @@ CChatViewerTheme::~CChatViewerTheme()
 
 CChatViewerTheme& CChatViewerTheme::operator =( const CChatViewerTheme& theme )
 {
-	messageColor            = theme.messageColor;
-	messageBg1Color         = theme.messageBg1Color;
-	messageBg2Color         = theme.messageBg2Color;
-	connectColor            = theme.connectColor;
-	connectBgColor          = theme.connectBgColor;
-	disconnectColor         = theme.disconnectColor;
-	disconnectBgColor       = theme.disconnectBgColor;
-	changeNameColor         = theme.changeNameColor;
-	changeNameBgColor       = theme.changeNameBgColor;
-	changeStatusModeColor   = theme.changeStatusModeColor;
-	changeStatusModeBgColor = theme.changeStatusModeBgColor;
-	toCryOutColor           = theme.toCryOutColor;
-	toCryOutBgColor         = theme.toCryOutBgColor;
-	popupMsgSendColor       = theme.popupMsgSendColor;
-	popupMsgSendBgColor     = theme.popupMsgSendBgColor;
-	popupMsgReceiveColor    = theme.popupMsgReceiveColor;
-	popupMsgReceiveBgColor  = theme.popupMsgReceiveBgColor;
-	viewerBgColor           = theme.viewerBgColor;
+	messageColor             = theme.messageColor;
+	messageBg1Color          = theme.messageBg1Color;
+	messageBg2Color          = theme.messageBg2Color;
+	connectColor             = theme.connectColor;
+	connectBgColor           = theme.connectBgColor;
+	disconnectColor          = theme.disconnectColor;
+	disconnectBgColor        = theme.disconnectBgColor;
+	changeNameColor          = theme.changeNameColor;
+	changeNameBgColor        = theme.changeNameBgColor;
+	changeStatusModeColor    = theme.changeStatusModeColor;
+	changeStatusModeBgColor  = theme.changeStatusModeBgColor;
+	toCryOutColor            = theme.toCryOutColor;
+	toCryOutBgColor          = theme.toCryOutBgColor;
+	privateMsgSendColor      = theme.privateMsgSendColor;
+	privateMsgSendBgColor    = theme.privateMsgSendBgColor;
+	privateMsgReceiveColor   = theme.privateMsgReceiveColor;
+	privateMsgReceiveBgColor = theme.privateMsgReceiveBgColor;
+	viewerBgColor            = theme.viewerBgColor;
 
-	messageFS          = theme.messageFS;
-	connectFS          = theme.connectFS;
-	disconnectFS       = theme.disconnectFS;
-	changeNameFS       = theme.changeNameFS;
-	changeStatusModeFS = theme.changeStatusModeFS;
-	toCryOutFS         = theme.toCryOutFS;
-	popupMsgSendFS     = theme.popupMsgSendFS;
-	popupMsgReceiveFS  = theme.popupMsgReceiveFS;
+	messageFS           = theme.messageFS;
+	connectFS           = theme.connectFS;
+	disconnectFS        = theme.disconnectFS;
+	changeNameFS        = theme.changeNameFS;
+	changeStatusModeFS  = theme.changeStatusModeFS;
+	toCryOutFS          = theme.toCryOutFS;
+	privateMsgSendFS    = theme.privateMsgSendFS;
+	privateMsgReceiveFS = theme.privateMsgReceiveFS;
 
 	return *this;
 }
 
 bool CChatViewerTheme::operator ==( const CChatViewerTheme& theme ) const
 {
-	return messageColor            == theme.messageColor &&
-	       messageBg1Color         == theme.messageBg1Color &&
-	       messageBg2Color         == theme.messageBg2Color &&
-	       connectColor            == theme.connectColor &&
-	       connectBgColor          == theme.connectBgColor &&
-	       disconnectColor         == theme.disconnectColor &&
-	       disconnectBgColor       == theme.disconnectBgColor &&
-	       changeNameColor         == theme.changeNameColor &&
-	       changeNameBgColor       == theme.changeNameBgColor &&
-	       changeStatusModeColor   == theme.changeStatusModeColor &&
-	       changeStatusModeBgColor == theme.changeStatusModeBgColor &&
-	       toCryOutColor           == theme.toCryOutColor &&
-	       toCryOutBgColor         == theme.toCryOutBgColor &&
-	       popupMsgSendColor       == theme.popupMsgSendColor &&
-	       popupMsgSendBgColor     == theme.popupMsgSendBgColor &&
-	       popupMsgReceiveColor    == theme.popupMsgReceiveColor &&
-	       popupMsgReceiveBgColor  == theme.popupMsgReceiveBgColor &&
-	       viewerBgColor           == theme.viewerBgColor &&
+	return messageColor             == theme.messageColor &&
+	       messageBg1Color          == theme.messageBg1Color &&
+	       messageBg2Color          == theme.messageBg2Color &&
+	       connectColor             == theme.connectColor &&
+	       connectBgColor           == theme.connectBgColor &&
+	       disconnectColor          == theme.disconnectColor &&
+	       disconnectBgColor        == theme.disconnectBgColor &&
+	       changeNameColor          == theme.changeNameColor &&
+	       changeNameBgColor        == theme.changeNameBgColor &&
+	       changeStatusModeColor    == theme.changeStatusModeColor &&
+	       changeStatusModeBgColor  == theme.changeStatusModeBgColor &&
+	       toCryOutColor            == theme.toCryOutColor &&
+	       toCryOutBgColor          == theme.toCryOutBgColor &&
+	       privateMsgSendColor      == theme.privateMsgSendColor &&
+	       privateMsgSendBgColor    == theme.privateMsgSendBgColor &&
+	       privateMsgReceiveColor   == theme.privateMsgReceiveColor &&
+	       privateMsgReceiveBgColor == theme.privateMsgReceiveBgColor &&
+	       viewerBgColor            == theme.viewerBgColor &&
 
-	       messageFS          == theme.messageFS &&
-	       connectFS          == theme.connectFS &&
-	       disconnectFS       == theme.disconnectFS &&
-	       changeNameFS       == theme.changeNameFS &&
-	       changeStatusModeFS == theme.changeStatusModeFS &&
-	       toCryOutFS         == theme.toCryOutFS &&
-	       popupMsgSendFS     == theme.popupMsgSendFS &&
-	       popupMsgReceiveFS  == theme.popupMsgReceiveFS;
+	       messageFS           == theme.messageFS &&
+	       connectFS           == theme.connectFS &&
+	       disconnectFS        == theme.disconnectFS &&
+	       changeNameFS        == theme.changeNameFS &&
+	       changeStatusModeFS  == theme.changeStatusModeFS &&
+	       toCryOutFS          == theme.toCryOutFS &&
+	       privateMsgSendFS    == theme.privateMsgSendFS &&
+	       privateMsgReceiveFS == theme.privateMsgReceiveFS;
 }
 
 bool CChatViewerTheme::operator !=( const CChatViewerTheme& theme ) const
@@ -126,33 +126,33 @@ void CChatViewerTheme::init()
 	CChatViewerTheme theme = getDefaultTheme();
 
 	CWinApp* app = AfxGetApp();
-	messageColor            = app->GetProfileInt( "Style\\Theme", "messageColor", theme.messageColor );
-	messageBg1Color         = app->GetProfileInt( "Style\\Theme", "messageBg1Color", theme.messageBg1Color );
-	messageBg2Color         = app->GetProfileInt( "Style\\Theme", "messageBg2Color", theme.messageBg2Color );
-	connectColor            = app->GetProfileInt( "Style\\Theme", "connectColor", theme.connectColor );
-	connectBgColor          = app->GetProfileInt( "Style\\Theme", "connectBgColor", theme.connectBgColor );
-	disconnectColor         = app->GetProfileInt( "Style\\Theme", "disconnectColor", theme.disconnectColor );
-	disconnectBgColor       = app->GetProfileInt( "Style\\Theme", "disconnectBgColor", theme.disconnectBgColor );
-	changeNameColor         = app->GetProfileInt( "Style\\Theme", "changeNameColor", theme.changeNameColor );
-	changeNameBgColor       = app->GetProfileInt( "Style\\Theme", "changeNameBgColor", theme.changeNameBgColor );
-	changeStatusModeColor   = app->GetProfileInt( "Style\\Theme", "changeStatusModeColor", theme.changeStatusModeColor );
-	changeStatusModeBgColor = app->GetProfileInt( "Style\\Theme", "changeStatusModeBgColor", theme.changeStatusModeBgColor );
-	toCryOutColor           = app->GetProfileInt( "Style\\Theme", "toCryOutColor", theme.toCryOutColor );
-	toCryOutBgColor         = app->GetProfileInt( "Style\\Theme", "toCryOutBgColor", theme.toCryOutBgColor );
-	popupMsgSendColor       = app->GetProfileInt( "Style\\Theme", "popupMsgSendColor", theme.popupMsgSendColor );
-	popupMsgSendBgColor     = app->GetProfileInt( "Style\\Theme", "popupMsgSendBgColor", theme.popupMsgSendBgColor );
-	popupMsgReceiveColor    = app->GetProfileInt( "Style\\Theme", "popupMsgReceiveColor", theme.popupMsgReceiveColor );
-	popupMsgReceiveBgColor  = app->GetProfileInt( "Style\\Theme", "popupMsgReceiveBgColor", theme.popupMsgReceiveBgColor );
-	viewerBgColor           = app->GetProfileInt( "Style\\Theme", "viewerBgColor", theme.viewerBgColor );
+	messageColor             = app->GetProfileInt( "Style\\Theme", "messageColor", theme.messageColor );
+	messageBg1Color          = app->GetProfileInt( "Style\\Theme", "messageBg1Color", theme.messageBg1Color );
+	messageBg2Color          = app->GetProfileInt( "Style\\Theme", "messageBg2Color", theme.messageBg2Color );
+	connectColor             = app->GetProfileInt( "Style\\Theme", "connectColor", theme.connectColor );
+	connectBgColor           = app->GetProfileInt( "Style\\Theme", "connectBgColor", theme.connectBgColor );
+	disconnectColor          = app->GetProfileInt( "Style\\Theme", "disconnectColor", theme.disconnectColor );
+	disconnectBgColor        = app->GetProfileInt( "Style\\Theme", "disconnectBgColor", theme.disconnectBgColor );
+	changeNameColor          = app->GetProfileInt( "Style\\Theme", "changeNameColor", theme.changeNameColor );
+	changeNameBgColor        = app->GetProfileInt( "Style\\Theme", "changeNameBgColor", theme.changeNameBgColor );
+	changeStatusModeColor    = app->GetProfileInt( "Style\\Theme", "changeStatusModeColor", theme.changeStatusModeColor );
+	changeStatusModeBgColor  = app->GetProfileInt( "Style\\Theme", "changeStatusModeBgColor", theme.changeStatusModeBgColor );
+	toCryOutColor            = app->GetProfileInt( "Style\\Theme", "toCryOutColor", theme.toCryOutColor );
+	toCryOutBgColor          = app->GetProfileInt( "Style\\Theme", "toCryOutBgColor", theme.toCryOutBgColor );
+	privateMsgSendColor      = app->GetProfileInt( "Style\\Theme", "privateMsgSendColor", theme.privateMsgSendColor );
+	privateMsgSendBgColor    = app->GetProfileInt( "Style\\Theme", "privateMsgSendBgColor", theme.privateMsgSendBgColor );
+	privateMsgReceiveColor   = app->GetProfileInt( "Style\\Theme", "privateMsgReceiveColor", theme.privateMsgReceiveColor );
+	privateMsgReceiveBgColor = app->GetProfileInt( "Style\\Theme", "privateMsgReceiveBgColor", theme.privateMsgReceiveBgColor );
+	viewerBgColor            = app->GetProfileInt( "Style\\Theme", "viewerBgColor", theme.viewerBgColor );
 
-	messageFS          = static_cast<CChatFontStyle>(app->GetProfileInt( "Style\\Theme", "messageFS", theme.messageFS ));
-	connectFS          = static_cast<CChatFontStyle>(app->GetProfileInt( "Style\\Theme", "connectFS", theme.connectFS ));
-	disconnectFS       = static_cast<CChatFontStyle>(app->GetProfileInt( "Style\\Theme", "disconnectFS", theme.disconnectFS ));
-	changeNameFS       = static_cast<CChatFontStyle>(app->GetProfileInt( "Style\\Theme", "changeNameFS", theme.changeNameFS ));
-	changeStatusModeFS = static_cast<CChatFontStyle>(app->GetProfileInt( "Style\\Theme", "changeStatusModeFS", theme.changeStatusModeFS ));
-	toCryOutFS         = static_cast<CChatFontStyle>(app->GetProfileInt( "Style\\Theme", "toCryOutFS", theme.toCryOutFS ));
-	popupMsgSendFS     = static_cast<CChatFontStyle>(app->GetProfileInt( "Style\\Theme", "popupMsgSendFS", theme.popupMsgSendFS ));
-	popupMsgReceiveFS  = static_cast<CChatFontStyle>(app->GetProfileInt( "Style\\Theme", "popupMsgReceiveFS", theme.popupMsgReceiveFS ));
+	messageFS           = static_cast<CChatFontStyle>(app->GetProfileInt( "Style\\Theme", "messageFS", theme.messageFS ));
+	connectFS           = static_cast<CChatFontStyle>(app->GetProfileInt( "Style\\Theme", "connectFS", theme.connectFS ));
+	disconnectFS        = static_cast<CChatFontStyle>(app->GetProfileInt( "Style\\Theme", "disconnectFS", theme.disconnectFS ));
+	changeNameFS        = static_cast<CChatFontStyle>(app->GetProfileInt( "Style\\Theme", "changeNameFS", theme.changeNameFS ));
+	changeStatusModeFS  = static_cast<CChatFontStyle>(app->GetProfileInt( "Style\\Theme", "changeStatusModeFS", theme.changeStatusModeFS ));
+	toCryOutFS          = static_cast<CChatFontStyle>(app->GetProfileInt( "Style\\Theme", "toCryOutFS", theme.toCryOutFS ));
+	privateMsgSendFS    = static_cast<CChatFontStyle>(app->GetProfileInt( "Style\\Theme", "privateMsgSendFS", theme.privateMsgSendFS ));
+	privateMsgReceiveFS = static_cast<CChatFontStyle>(app->GetProfileInt( "Style\\Theme", "privateMsgReceiveFS", theme.privateMsgReceiveFS ));
 }
 
 void CChatViewerTheme::saveSetting() const
@@ -172,10 +172,10 @@ void CChatViewerTheme::saveSetting() const
 	app->WriteProfileInt( "Style\\Theme", "changeStatusModeBgColor", changeStatusModeBgColor );
 	app->WriteProfileInt( "Style\\Theme", "toCryOutColor", toCryOutColor );
 	app->WriteProfileInt( "Style\\Theme", "toCryOutBgColor", toCryOutBgColor );
-	app->WriteProfileInt( "Style\\Theme", "popupMsgSendColor", popupMsgSendColor );
-	app->WriteProfileInt( "Style\\Theme", "popupMsgSendBgColor", popupMsgSendBgColor );
-	app->WriteProfileInt( "Style\\Theme", "popupMsgReceiveColor", popupMsgReceiveColor );
-	app->WriteProfileInt( "Style\\Theme", "popupMsgReceiveBgColor", popupMsgReceiveBgColor );
+	app->WriteProfileInt( "Style\\Theme", "privateMsgSendColor", privateMsgSendColor );
+	app->WriteProfileInt( "Style\\Theme", "privateMsgSendBgColor", privateMsgSendBgColor );
+	app->WriteProfileInt( "Style\\Theme", "privateMsgReceiveColor", privateMsgReceiveColor );
+	app->WriteProfileInt( "Style\\Theme", "privateMsgReceiveBgColor", privateMsgReceiveBgColor );
 	app->WriteProfileInt( "Style\\Theme", "viewerBgColor", viewerBgColor );
 
 	app->WriteProfileInt( "Style\\Theme", "messageFS", messageFS );
@@ -184,8 +184,8 @@ void CChatViewerTheme::saveSetting() const
 	app->WriteProfileInt( "Style\\Theme", "changeNameFS", changeNameFS );
 	app->WriteProfileInt( "Style\\Theme", "changeStatusModeFS", changeStatusModeFS );
 	app->WriteProfileInt( "Style\\Theme", "toCryOutFS", toCryOutFS );
-	app->WriteProfileInt( "Style\\Theme", "popupMsgSendFS", popupMsgSendFS );
-	app->WriteProfileInt( "Style\\Theme", "popupMsgReceiveFS", popupMsgReceiveFS );
+	app->WriteProfileInt( "Style\\Theme", "privateMsgSendFS", privateMsgSendFS );
+	app->WriteProfileInt( "Style\\Theme", "privateMsgReceiveFS", privateMsgReceiveFS );
 }
 
 // ----------------------------------------------------------------------------

@@ -75,14 +75,14 @@ CChatString::CChatString( const int lineIndex, const std::string& _userName, con
 			bgColor   = theme->toCryOutBgColor;
 			break;
 		}
-		case CSTRT_PopupMsgSend: {
-			textColor = theme->popupMsgSendColor;
-			bgColor   = theme->popupMsgSendBgColor;
+		case CSTRT_PrivateMsgSend: {
+			textColor = theme->privateMsgSendColor;
+			bgColor   = theme->privateMsgSendBgColor;
 			break;
 		}
-		case CSTRT_PopupMsgReceive: {
-			textColor = theme->popupMsgReceiveColor;
-			bgColor   = theme->popupMsgReceiveBgColor;
+		case CSTRT_PrivateMsgReceive: {
+			textColor = theme->privateMsgReceiveColor;
+			bgColor   = theme->privateMsgReceiveBgColor;
 			break;
 		}
 		default: {
@@ -125,9 +125,9 @@ std::string& CChatString::getString()
 			tmps = str_time + " (" + userName + "): " + message;
 		} else if ( type == CSTRT_ToCryOut ) {
 			tmps = str_time + " (" + userName + " cry out): " + message;
-		} else if ( type == CSTRT_PopupMsgSend ) {
+		} else if ( type == CSTRT_PrivateMsgSend ) {
 			tmps = str_time + " (for " + toUserName + "): " + message;
-		} else if ( type == CSTRT_PopupMsgReceive ) {
+		} else if ( type == CSTRT_PrivateMsgReceive ) {
 			tmps = str_time + " (from " + userName + "): " + message;
 		} else {
 			tmps = str_time + " " + message;
@@ -141,15 +141,15 @@ CFont* CChatString::setFont( CDC* dc ) const
 	CChatViewerTheme* theme = &chatApp.style.theme;
 	CChatFontStyle fontStyle;
 	switch ( type ) {
-		case CSTRT_Message         : fontStyle = theme->messageFS; break;
-		case CSTRT_Connect         : fontStyle = theme->connectFS; break;
-		case CSTRT_Disconnect      : fontStyle = theme->disconnectFS; break;
-		case CSTRT_ChangeName      : fontStyle = theme->changeNameFS; break;
-		case CSTRT_ChangeStatusMode: fontStyle = theme->changeStatusModeFS; break;
-		case CSTRT_ToCryOut        : fontStyle = theme->toCryOutFS; break;
-		case CSTRT_PopupMsgSend    : fontStyle = theme->popupMsgSendFS; break;
-		case CSTRT_PopupMsgReceive : fontStyle = theme->popupMsgReceiveFS; break;
-		default                    : fontStyle = CFS_NONE; break;
+		case CSTRT_Message          : fontStyle = theme->messageFS; break;
+		case CSTRT_Connect          : fontStyle = theme->connectFS; break;
+		case CSTRT_Disconnect       : fontStyle = theme->disconnectFS; break;
+		case CSTRT_ChangeName       : fontStyle = theme->changeNameFS; break;
+		case CSTRT_ChangeStatusMode : fontStyle = theme->changeStatusModeFS; break;
+		case CSTRT_ToCryOut         : fontStyle = theme->toCryOutFS; break;
+		case CSTRT_PrivateMsgSend   : fontStyle = theme->privateMsgSendFS; break;
+		case CSTRT_PrivateMsgReceive: fontStyle = theme->privateMsgReceiveFS; break;
+		default                     : fontStyle = CFS_NONE; break;
 	}
 	CFont* prev_font = NULL;
 	if ( fontStyle != CFS_NONE ) {

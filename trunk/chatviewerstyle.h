@@ -38,10 +38,10 @@ public:
 	COLORREF changeStatusModeBgColor;
 	COLORREF toCryOutColor;
 	COLORREF toCryOutBgColor;
-	COLORREF popupMsgSendColor;
-	COLORREF popupMsgSendBgColor;
-	COLORREF popupMsgReceiveColor;
-	COLORREF popupMsgReceiveBgColor;
+	COLORREF privateMsgSendColor;
+	COLORREF privateMsgSendBgColor;
+	COLORREF privateMsgReceiveColor;
+	COLORREF privateMsgReceiveBgColor;
 	COLORREF viewerBgColor;
 	COLORREF selectedBgColor;
 
@@ -51,8 +51,8 @@ public:
 	CChatFontStyle changeNameFS;
 	CChatFontStyle changeStatusModeFS;
 	CChatFontStyle toCryOutFS;
-	CChatFontStyle popupMsgSendFS;
-	CChatFontStyle popupMsgReceiveFS;
+	CChatFontStyle privateMsgSendFS;
+	CChatFontStyle privateMsgReceiveFS;
 
 	static CChatViewerTheme getDefaultTheme();
 

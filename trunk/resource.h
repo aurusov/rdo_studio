@@ -26,7 +26,7 @@
 #define IDR_STATUSMODE_TOOLBAR          189
 #define IDR_MAIN_TOOLBAR                191
 #define IDB_STATISMODE_TOOLBAR_D        193
-#define IDR_POPUPMSG_WAVE               195
+#define IDR_PRIVATEMSG_WAVE             195
 #define IDR_USER_MENU                   196
 #define IDB_MAIN_TOOLBAR_D              197
 #define IDR_SMILE_SMILE                 214
@@ -165,9 +165,6 @@
 #define ID_USER_INGNORE                 32828
 #define ID_HELP_ABOUT                   32841
 #define ID_HELP_CONTENTS                32842
-#define ID_BUTTON32847                  32847
-#define ID_BUTTON32848                  32848
-#define ID_BUTTON32849                  32849
 #define ID_VIEW_EDITTOOLBAR             32850
 #define ID_VIEW_STATUSBAR               32851
 #define IDS_INFOSTATUSBAR               59394
@@ -197,6 +194,7 @@
 #define IDS_TOCRYOUT_DIALOG             61227
 #define IDS_SENDMESSAGE_DIALOG          61228
 #define IDS_POPUPMESSAGE_WAVE           61229
+#define IDS_PRIVATEMESSAGE_WAVE         61229
 #define IDS_NO_HELP_FILE                61230
 #define IDS_EDIT_TOOLBAR                61231
 

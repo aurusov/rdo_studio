@@ -257,12 +257,12 @@ void CChatUdp::parsCommand( const std::string& line )
 		if ( toUser ) {
 			if ( user == chatApp.users.getOnwer() ) {
 				std::string msg = getCommandValue( line, "popupmsg", true );
-				chatApp.mainFrame->childView.viewer.addString( fromUser, msg, CSTRT_PopupMsgSend, toUser->getUserName() );
-				chatApp.sounds.play( CST_PopupMsg );
+				chatApp.mainFrame->childView.viewer.addString( fromUser, msg, CSTRT_PrivateMsgSend, toUser->getUserName() );
+				chatApp.sounds.play( CST_PrivateMsg );
 			} else if ( toUser == chatApp.users.getOnwer() ) {
 				std::string msg = getCommandValue( line, "popupmsg", true );
-				chatApp.mainFrame->childView.viewer.addString( fromUser, msg, CSTRT_PopupMsgReceive, toUser->getUserName() );
-				chatApp.sounds.play( CST_PopupMsg );
+				chatApp.mainFrame->childView.viewer.addString( fromUser, msg, CSTRT_PrivateMsgReceive, toUser->getUserName() );
+				chatApp.sounds.play( CST_PrivateMsg );
 			}
 		}
 	}

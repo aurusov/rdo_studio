@@ -18,8 +18,8 @@ enum CChatStringType {
 	CSTRT_ChangeName,
 	CSTRT_ChangeStatusMode,
 	CSTRT_ToCryOut,
-	CSTRT_PopupMsgSend,
-	CSTRT_PopupMsgReceive
+	CSTRT_PrivateMsgSend,
+	CSTRT_PrivateMsgReceive
 };
 
 class CChatString

@@ -668,6 +668,18 @@ SOURCE=.\res\toolbar_main.bmp
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\toolbar_main_d.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\toolbar_statusMode.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\toolbar_statusMode_d.bmp
+# End Source File
+# Begin Source File
+
 SOURCE=.\res\tray_app.ico
 # End Source File
 # Begin Source File
@@ -679,5 +691,9 @@ SOURCE=.\res\tray_message.ico
 SOURCE=.\res\userstreectrl.bmp
 # End Source File
 # End Group
+# Begin Source File
+
+SOURCE=.\res\privatemsg.wav
+# End Source File
 # End Target
 # End Project
