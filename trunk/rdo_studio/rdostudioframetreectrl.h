@@ -30,6 +30,7 @@ protected:
 	//{{AFX_MSG(RDOStudioFrameTreeCtrl)
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
+	afx_msg void OnHelpKeyword();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

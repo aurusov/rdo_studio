@@ -7,6 +7,7 @@
 #include "rdostudiochartviewstyle.h"
 #include "rdostudiodocserie.h"
 #include "rdostudiochartoptions.h"
+#include "htmlhelp.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -45,6 +46,7 @@ BEGIN_MESSAGE_MAP(RDOStudioChartView, RDOStudioView)
 	ON_WM_PAINT()
 	ON_COMMAND(ID_VIEW_ZOOMAUTO, OnViewZoomauto)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOMAUTO, OnUpdateViewZoomauto)
+	ON_COMMAND(ID_HELP_KEYWORD, OnHelpKeyword)
 	//}}AFX_MSG_MAP
 	ON_MESSAGE(WM_USER_UPDATE_CHART_VIEW, OnUserUpdateChartView)
 END_MESSAGE_MAP()
@@ -1187,4 +1189,12 @@ void RDOStudioChartView::OnViewZoomauto()
 void RDOStudioChartView::OnUpdateViewZoomauto(CCmdUI* pCmdUI) 
 {
 	pCmdUI->SetCheck( zoomAuto );
+}
+
+void RDOStudioChartView::OnHelpKeyword()
+{
+	string filename = studioApp.getFullHelpFileName();
+	if ( filename.empty() ) return;
+	filename += "::/html/work_model_chart_main.htm";
+	::HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_DISPLAY_TOPIC, NULL );
 }

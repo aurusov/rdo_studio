@@ -155,6 +155,7 @@ protected:
 	afx_msg void OnPaint();
 	afx_msg void OnViewZoomauto();
 	afx_msg void OnUpdateViewZoomauto(CCmdUI* pCmdUI);
+	afx_msg void OnHelpKeyword();
 	//}}AFX_MSG
 	afx_msg LRESULT OnUserUpdateChartView(WPARAM wParam = 0, LPARAM lParam = 0);
 	DECLARE_MESSAGE_MAP()

@@ -7,6 +7,7 @@
 #include "rdostudioapp.h"
 #include "rdostudiomainfrm.h"
 #include "resource.h"
+#include "htmlhelp.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -21,6 +22,7 @@ BEGIN_MESSAGE_MAP(RDOStudioFrameTreeCtrl, RDOTreeCtrl)
 	//{{AFX_MSG_MAP(RDOStudioFrameTreeCtrl)
 	ON_WM_CREATE()
 	ON_WM_LBUTTONDBLCLK()
+	ON_COMMAND(ID_HELP_KEYWORD, OnHelpKeyword)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -80,4 +82,12 @@ void RDOStudioFrameTreeCtrl::OnLButtonDblClk(UINT nFlags, CPoint point)
 			}
 		}
 	}
+}
+
+void RDOStudioFrameTreeCtrl::OnHelpKeyword()
+{
+	string filename = studioApp.getFullHelpFileName();
+	if ( filename.empty() ) return;
+	filename += "::/html/work_model_frame.htm#frame";
+	::HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_DISPLAY_TOPIC, NULL );
 }

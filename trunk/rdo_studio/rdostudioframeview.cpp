@@ -5,6 +5,7 @@
 #include "rdostudioapp.h"
 #include "rdostudiomainfrm.h"
 #include "resource.h"
+#include "htmlhelp.h"
 
 #include <rdokernel.h>
 #include <rdosimwin.h>
@@ -32,6 +33,7 @@ BEGIN_MESSAGE_MAP(RDOStudioFrameView, RDOStudioView)
 	ON_WM_MOUSEWHEEL()
 	ON_WM_PAINT()
 	ON_WM_KEYUP()
+	ON_COMMAND(ID_HELP_KEYWORD, OnHelpKeyword)
 	//}}AFX_MSG_MAP
 	ON_COMMAND(ID_FILE_PRINT, RDOStudioView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, RDOStudioView::OnFilePrint)
@@ -443,4 +445,12 @@ void RDOStudioFrameView::onDraw()
 		::FillRect( hdc, &newClientRect, brush );
 		::DeleteObject( brush );
 	}
+}
+
+void RDOStudioFrameView::OnHelpKeyword()
+{
+	string filename = studioApp.getFullHelpFileName();
+	if ( filename.empty() ) return;
+	filename += "::/html/work_model_frame.htm";
+	::HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_DISPLAY_TOPIC, NULL );
 }
