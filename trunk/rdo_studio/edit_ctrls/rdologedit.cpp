@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "rdologedit.h"
+#include "rdologeditstyle.h"
 #include "../rdostudioapp.h"
 #include "../rdostudiomodel.h"
 #include "../rdo_edit/rdoeditortabctrl.h"

@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "rdologeditstyle.h"
-#include "sci/SciLexer.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

@@ -184,3 +184,8 @@ void RDOStudioOutput::appendStringToFind( const string& str, const rdoModelObjec
 	RDOLogEditLineInfo* line = new RDOLogEditLineInfo( str, fileType, lineNumber );
 	find->appendLine( line );
 }
+
+void RDOStudioOutput::setKeywordForFind( const string& keyword ) const
+{
+	find->setKeyword( keyword );
+}

@@ -3,7 +3,6 @@
 #pragma once
 
 #include "rdobaseedit.h"
-#include "rdologeditstyle.h"
 #include <rdosimwin.h>
 
 using namespace std;
@@ -37,9 +36,6 @@ private:
 	int sci_MARKER_LINE;
 
 protected:
-	RDOLogEdit();
-	virtual ~RDOLogEdit();
-
 	list< RDOLogEditLineInfo* > lines;
 	void clearLines();
 
@@ -58,6 +54,9 @@ protected:
 	//}}AFX_VIRTUAL
 
 public:
+	RDOLogEdit();
+	virtual ~RDOLogEdit();
+
 	virtual void setEditorStyle( rdoBaseEdit::RDOBaseEditStyle* style );
 
 	virtual void clearAll();

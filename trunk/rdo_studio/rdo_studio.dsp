@@ -576,6 +576,10 @@ SOURCE=.\edit_ctrls\rdofindedit.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\edit_ctrls\rdofindeditstyle.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\edit_ctrls\rdologedit.cpp
 # End Source File
 # Begin Source File
@@ -605,6 +609,10 @@ SOURCE=.\edit_ctrls\rdodebugedit.h
 # Begin Source File
 
 SOURCE=.\edit_ctrls\rdofindedit.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\rdofindeditstyle.h
 # End Source File
 # Begin Source File
 
@@ -675,6 +683,19 @@ SOURCE=.\edit_ctrls\sci\KeyMap.cxx
 
 SOURCE=.\edit_ctrls\sci\KeyWords.cxx
 # SUBTRACT CPP /YX /Yc /Yu
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\LexFind.cxx
+
+!IF  "$(CFG)" == "rdo_studio - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
+
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
@@ -787,6 +808,10 @@ SOURCE=.\edit_ctrls\sci\KeyMap.h
 # Begin Source File
 
 SOURCE=.\edit_ctrls\sci\KeyWords.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\LexFind.h
 # End Source File
 # Begin Source File
 

@@ -8,6 +8,7 @@
 #include "rdostudiodockwnd.h"
 #include "edit_ctrls/rdobaseeditstyle.h"
 #include "edit_ctrls/rdologeditstyle.h"
+#include "edit_ctrls/rdofindeditstyle.h"
 #include "rdo_edit/rdoeditoreditstyle.h"
 
 #include <rdotabctrl.h>
@@ -30,7 +31,7 @@ private:
 	RDOLogEditStyle               buildStyle;
 	rdoBaseEdit::RDOBaseEditStyle debugStyle;
 	rdoEditor::RDOEditorEditStyle resultsStyle;
-	RDOLogEditStyle               findStyle;
+	RDOFindEditStyle              findStyle;
 
 	RDOBuildEdit*             build;
 	RDODebugEdit*             debug;
@@ -58,6 +59,7 @@ public:
 	void appendStringToBuild( const string& str, const rdoModelObjects::RDOFileType fileType = rdoModelObjects::PAT, const int lineNumber = -1, const bool error = true ) const;
 	void appendStringToDebug( const string& str ) const;
 	void appendStringToFind( const string& str, const rdoModelObjects::RDOFileType fileType = rdoModelObjects::PAT, const int lineNumber = -1 ) const;
+	void setKeywordForFind( const string& keyword ) const;
 
 public:
 	//{{AFX_VIRTUAL(RDOStudioOutput)
