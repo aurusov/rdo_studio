@@ -10,8 +10,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>529</width>
-            <height>254</height>
+            <width>525</width>
+            <height>252</height>
         </rect>
     </property>
     <property name="caption">
@@ -336,6 +336,9 @@
                     </property>
                     <property name="frameShape">
                         <enum>NoFrame</enum>
+                    </property>
+                    <property name="readOnly">
+                        <bool>true</bool>
                     </property>
                 </widget>
             </grid>

@@ -92,5 +92,3 @@ public:
 };
 
 #endif // MAINFORM_H
-
-

@@ -3,8 +3,6 @@
 
 #include "default_options_base.h"
 
-#include <qstring.h>
-
 // -------------------------------------------------------
 // -------- WGDefaultOptionsDlg
 // -------------------------------------------------------
@@ -16,8 +14,6 @@ public:
 	~WGDefaultOptionsDlg();
 
 	void updateControls();
-
-	QString saveDir;
 
 protected slots:
 	void slot_ok();

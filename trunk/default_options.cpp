@@ -58,35 +58,26 @@ void WGDefaultOptionsDlg::slot_cancel()
 	reject();
 }
 
-#include <qtextcodec.h>
-
 void WGDefaultOptionsDlg::slot_directory()
 {
 	DirectoryLE->setText( QFileDialog::getExistingDirectory( DirectoryLE->text(), this ) );
-/*
-	saveDir = QTextCodec::codecForLocale()->fromUnicode( QFileDialog::getExistingDirectory( "", this ) );
-//	saveDir = QFileDialog::getExistingDirectory( DirectoryLE->text(), this );
-	DirectoryLE->setText( saveDir );
-	qDebug( saveDir );
-	qDebug( DirectoryLE->text() );
-*/
 }
 
 void WGDefaultOptionsDlg::slot_restart()
 {
 	bool flag = !RestartCB->isChecked();
-    DontUseSuffixCB->setEnabled( flag );
-    OlderCB->setEnabled( flag );
+	DontUseSuffixCB->setEnabled( flag );
+	OlderCB->setEnabled( flag );
 }
 
 void WGDefaultOptionsDlg::slot_password()
 {
 	bool flag = PasswordCB->isChecked();
 	bool f = PasswordUsrLE->hasFocus() || PasswordPassLE->hasFocus();
-    PasswordUsrL->setEnabled( flag );
-    PasswordUsrLE->setEnabled( flag );
-    PasswordPassL->setEnabled( flag );
-    PasswordPassLE->setEnabled( flag );
+	PasswordUsrL->setEnabled( flag );
+	PasswordUsrLE->setEnabled( flag );
+	PasswordPassL->setEnabled( flag );
+	PasswordPassLE->setEnabled( flag );
 	if ( flag ) {
 		PasswordUsrLE->setFocus();
 	} else {
@@ -97,9 +88,9 @@ void WGDefaultOptionsDlg::slot_password()
 void WGDefaultOptionsDlg::slot_log()
 {
 	bool flag = LogCB->isChecked();
-    LogDirectoryL->setEnabled( flag );
-    LogDirectoryLE->setEnabled( flag );
-    LogDirectoryB->setEnabled( flag );
+	LogDirectoryL->setEnabled( flag );
+	LogDirectoryLE->setEnabled( flag );
+	LogDirectoryB->setEnabled( flag );
 }
 
 void WGDefaultOptionsDlg::slot_log_directory()
