@@ -35,6 +35,8 @@ std::string format( UINT resource, ... );
 void trim( std::string& str );
 void trimLeft( std::string& str );
 void trimRight( std::string& str );
+void appendMenu( CMenu* from, const int from_index, CMenu* to );
+void eraseMenu( CMenu* from, const int from_index = -1 );
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
