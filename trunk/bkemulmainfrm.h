@@ -89,6 +89,7 @@ protected:
 	afx_msg void OnUpdateEmulatorPoweOff(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateEmulatorReset(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateEmulatorSoftReset(CCmdUI* pCmdUI);
+	afx_msg void OnAppAbout();
 	//}}AFX_MSG
 	afx_msg void OnFontClicked( UINT nID );
 	afx_msg void OnRom();

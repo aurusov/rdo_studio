@@ -89,7 +89,7 @@ BEGIN
     BEGIN
         MENUITEM "&Full Screen\tAlt+Enter",     ID_VIEW_FULLSCREEN
         MENUITEM SEPARATOR
-        MENUITEM "&Color Monitor\tAlt+F2",      ID_VIEW_COLORMONITOR
+        MENUITEM "&Color Monitor\tAlt+F9",      ID_VIEW_COLORMONITOR
         POPUP "&Font"
         BEGIN
             MENUITEM "Default",                     ID_VIEW_FONT_DEFAULT
@@ -153,8 +153,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,0,87
- PRODUCTVERSION 1,0,0,87
+ FILEVERSION 0,1,0,90
+ PRODUCTVERSION 0,1,0,90
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -172,14 +172,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "BK 0010-01 Emulator\0"
-            VALUE "FileVersion", "1, 0, 0, 87\0"
+            VALUE "FileVersion", "0, 1, 0, 90\0"
             VALUE "InternalName", "BK Emulator\0"
             VALUE "LegalCopyright", "\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "bk_emul.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "BK 0010-01 Emulator\0"
-            VALUE "ProductVersion", "1, 0, 0, 87\0"
+            VALUE "ProductVersion", "0, 1, 0, 90\0"
             VALUE "SpecialBuild", "\0"
         END
     END
@@ -210,6 +210,9 @@ MONITOR_10              ROM     DISCARDABLE     "res\\rom_monitor_10.bin"
 
 IDR_MAINFRAME ACCELERATORS DISCARDABLE 
 BEGIN
+    VK_F11,         ID_EMULATOR_RESET,      VIRTKEY, ALT, NOINVERT
+    VK_F12,         ID_EMULATOR_SOFTRESET,  VIRTKEY, ALT, NOINVERT
+    VK_F9,          ID_VIEW_COLORMONITOR,   VIRTKEY, ALT, NOINVERT
     VK_RETURN,      ID_VIEW_FULLSCREEN,     VIRTKEY, ALT, NOINVERT
 END
 
@@ -244,6 +247,46 @@ SHRIFT2                 BK_FONT DISCARDABLE     "res\\font_shrift2.bin"
 SUPER                   BK_FONT DISCARDABLE     "res\\font_super.bin"
 THICK                   BK_FONT DISCARDABLE     "res\\font_thick.bin"
 WORKS                   BK_FONT DISCARDABLE     "res\\font_works.bin"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUT DIALOG DISCARDABLE  0, 0, 212, 81
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About BK 0010-01 Emulator"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,132,60,50,14
+    ICON            IDR_MAINFRAME,IDC_IMAGE_STATIC,10,18,20,20
+    CTEXT           "BK 0010-01 Emulator  version 0.1 (build 190)",
+                    IDC_BUILD_STATIC,48,12,152,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDVERT,40,8,1,68
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,8,52,196,1
+    RTEXT           "Andrey Urusov",IDC_AUTHOR_STATIC,48,28,68,8
+    LTEXT           "andrewu@mail.ru",IDC_EMAIL_STATIC,120,28,64,8,SS_NOTIFY
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_ABOUT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 205
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 74
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
 
 /////////////////////////////////////////////////////////////////////////////
 //

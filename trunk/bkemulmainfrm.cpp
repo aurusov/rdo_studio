@@ -2,6 +2,7 @@
 #include "bkemulmainfrm.h"
 #include "bkemulapp.h"
 #include "bkemul.h"
+#include "bkemulabout.h"
 #include "resource.h"
 
 #include <ddraw.h>
@@ -43,6 +44,7 @@ BEGIN_MESSAGE_MAP(BKMainFrame, CFrameWnd)
 	ON_UPDATE_COMMAND_UI(ID_EMULATOR_POWEOFF, OnUpdateEmulatorPoweOff)
 	ON_UPDATE_COMMAND_UI(ID_EMULATOR_RESET, OnUpdateEmulatorReset)
 	ON_UPDATE_COMMAND_UI(ID_EMULATOR_SOFTRESET, OnUpdateEmulatorSoftReset)
+	ON_COMMAND(ID_APP_ABOUT, OnAppAbout)
 	//}}AFX_MSG_MAP
 	ON_COMMAND_RANGE( ID_VIEW_FONT_DEFAULT, ID_VIEW_FONT_WORKS, OnFontClicked )
 	ON_COMMAND( ID_ROM_100000_MONITOR, OnRom )
@@ -501,7 +503,13 @@ void BKMainFrame::updateBounds()
 void BKMainFrame::OnPaint()
 {
 	CPaintDC dc( this );
-	updateMonitor();
+	if ( !emul.getPause() ) {
+		updateMonitor();
+	} else {
+		CRect rect;
+		GetClientRect( rect );
+		dc.FillSolidRect( rect, RGB( 0x00, 0x00, 0x00 ) );
+	}
 }
 
 void BKMainFrame::OnTimer(UINT nIDEvent)
@@ -734,4 +742,12 @@ LRESULT BKMainFrame::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 		}
 	}
 	return CFrameWnd::WindowProc(message, wParam, lParam);
+}
+
+void BKMainFrame::OnAppAbout()
+{
+	emul.setPause( true );
+	BKEmulAbout dlg;
+	dlg.DoModal();
+	emul.setPause( false );
 }

@@ -17,6 +17,7 @@ BKEmul emul;
 
 BKEmul::BKEmul():
 	powerOn( false ),
+	pause( false ),
 	BK_SYS_Timer_work( false )
 {
 }
@@ -111,6 +112,7 @@ void BKEmul::loadIntoROM( const HRSRC& res ) const
 
 void BKEmul::nextIteration()
 {
+	if ( pause ) return;
 	try {
 		for ( int i = 0; i < 3000; i++ ) {
 			if ( BK_SYS_Timer_work ) {
@@ -326,6 +328,16 @@ void BKEmul::setMemoryWord( WORD address, WORD data )
 	// Попали в экранку
 	if ( address >= 0040000 && address < 0100000 ) {
 		video.updateVideoMemoryWord( address );
+	}
+}
+
+void BKEmul::setPause( const bool value )
+{
+	if ( pause != value ) {
+		pause = value;
+		if ( !pause ) {
+			video.updateMonitor();
+		}
 	}
 }
 

@@ -21,6 +21,7 @@ class BKEmul
 {
 private:
 	bool powerOn;
+	bool pause;
 	bool BK_SYS_Timer_work;     // Системный таймер БК запущен/остановлен
 
 	// Регист, имеющий разное значение по чтению/записи.
@@ -44,6 +45,8 @@ public:
 
 	void powerON();
 	void powerOFF();
+	bool getPause() const              { return pause; }
+	void setPause( const bool value );
 	void reset();
 	void softReset();
 	bool isPowerON()       { return powerOn; }

@@ -53,7 +53,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /machine:I386
-# ADD LINK32 winmm.lib dxguid.lib dxerr8.lib ddraw.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib /nologo /subsystem:windows /machine:I386
+# ADD LINK32 winmm.lib dxguid.lib dxerr8.lib ddraw.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib uuid.lib Version.lib /nologo /subsystem:windows /machine:I386
 # SUBTRACT LINK32 /profile
 
 !ELSEIF  "$(CFG)" == "bk_emul - Win32 Debug"
@@ -81,7 +81,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 winmm.lib dxguid.lib dxerr8.lib ddraw.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib /nologo /subsystem:windows /debug /machine:I386
+# ADD LINK32 winmm.lib dxguid.lib dxerr8.lib ddraw.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib uuid.lib Version.lib /nologo /subsystem:windows /debug /machine:I386
 # SUBTRACT LINK32 /profile
 
 !ENDIF 
@@ -96,6 +96,10 @@ LINK32=link.exe
 # Begin Source File
 
 SOURCE=.\bkemul.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\bkemulabout.cpp
 # End Source File
 # Begin Source File
 
@@ -151,6 +155,10 @@ SOURCE=.\dxutil.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\rdolink.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\StdAfx.cpp
 # ADD CPP /Yc"stdafx.h"
 # End Source File
@@ -161,6 +169,10 @@ SOURCE=.\StdAfx.cpp
 # Begin Source File
 
 SOURCE=.\bkemul.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\bkemulabout.h
 # End Source File
 # Begin Source File
 
@@ -201,6 +213,10 @@ SOURCE=.\ddutil.h
 # Begin Source File
 
 SOURCE=.\dxutil.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdolink.h
 # End Source File
 # Begin Source File
 

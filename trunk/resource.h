@@ -3,6 +3,11 @@
 // Used by bk_emul.rc
 //
 #define IDR_MAINFRAME                   128
+#define IDD_ABOUT                       271
+#define IDC_BUILD_STATIC                1053
+#define IDC_AUTHOR_STATIC               1054
+#define IDC_EMAIL_STATIC                1055
+#define IDC_IMAGE_STATIC                1056
 #define ID_VIEW_FULLSCREEN              32773
 #define ID_VIEW_COLORMONITOR            32774
 #define ID_VIEW_FONT_DEFAULT            32775
