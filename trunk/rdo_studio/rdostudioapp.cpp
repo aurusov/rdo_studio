@@ -86,7 +86,7 @@ BOOL RDOStudioApp::InitInstance()
 	editDocTemplate = new CMultiDocTemplate( IDR_EDITTYPE, RUNTIME_CLASS(RDOStudioEditDoc), RUNTIME_CLASS(RDOStudioChildFrame), RUNTIME_CLASS(RDOStudioEditView) );
 	AddDocTemplate( editDocTemplate );
 
-	AddDocTemplate( trace.createDocTemplate() );
+	AddDocTemplate( tracer.createDocTemplate() );
 
 	mainFrame = new RDOStudioMainFrame;
 	if ( !mainFrame->LoadFrame( IDR_MAINFRAME ) ) return FALSE;
@@ -364,22 +364,22 @@ void RDOStudioApp::OnUpdateModelStop(CCmdUI* pCmdUI)
 
 void RDOStudioApp::OnChartStarttrace() 
 {
-	trace.startTrace();
+	tracer.startTrace();
 }
 
 void RDOStudioApp::OnUpdateChartStarttrace(CCmdUI* pCmdUI) 
 {
-	pCmdUI->Enable( !trace.isTracing() );
+	pCmdUI->Enable( !tracer.isTracing() );
 }
 
 void RDOStudioApp::OnChartStoptrace() 
 {
-	trace.stopTrace();
+	tracer.stopTrace();
 }
 
 void RDOStudioApp::OnUpdateChartStoptrace(CCmdUI* pCmdUI) 
 {
-	pCmdUI->Enable( trace.isTracing() );
+	pCmdUI->Enable( tracer.isTracing() );
 }
 
 void RDOStudioApp::OnAddNewFrame( WPARAM wParam, LPARAM lParam )

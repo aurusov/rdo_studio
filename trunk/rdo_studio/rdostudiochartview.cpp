@@ -199,7 +199,7 @@ void RDOStudioChartView::updateScrollBars()
 
 /*void RDOStudioChartView::prepareDrawing( CDC &dc, CRect& chartRect )
 {
-	timeRange = trace.getMaxTime()->time;
+	timeRange = tracer.getMaxTime()->time;
 	
 	if ( timeRange > 0 ) {
 		CRect backuprect;
@@ -208,27 +208,27 @@ void RDOStudioChartView::updateScrollBars()
 		chartRect.left += yAxisOffset;
 		calcXAxisOffset( dc );
 		chartRect.right -= xAxisOffset;
-		timeScale = timeWrap ? chartRect.Width() / timeRange : ( chartRect.Width() - tickWidth * trace.getMaxTime()->overallCount ) / timeRange;
-		if ( trace.getMinTimeDifference() * timeScale < 5 ) {
+		timeScale = timeWrap ? chartRect.Width() / timeRange : ( chartRect.Width() - tickWidth * tracer.getMaxTime()->overallCount ) / timeRange;
+		if ( tracer.getMinTimeDifference() * timeScale < 5 ) {
 			chartRect.CopyRect( &backuprect );
-			timeScale = 5 / trace.getMinTimeDifference();
+			timeScale = 5 / tracer.getMinTimeDifference();
 			
-			drawToX = trace.getMaxTime();
-			drawToXEventIndex = trace.getMaxTime()->eventCount;
+			drawToX = tracer.getMaxTime();
+			drawToXEventIndex = tracer.getMaxTime()->eventCount;
 			
 			calcYAxisOffset( dc );
 			chartRect.left += yAxisOffset;
 			calcXAxisOffset( dc );
 			chartRect.right -= xAxisOffset;
 			
-			int count = trace.getTimesCount();
+			int count = tracer.getTimesCount();
 			int x = chartRect.right;
 			RDOTracerTimeNow* timenow = NULL;
-			RDOTracerTimeNow* prev = trace.getMaxTime();
+			RDOTracerTimeNow* prev = tracer.getMaxTime();
 			int offset = timeWrap ? 0 : tickWidth * prev->eventCount;
 			x -= offset;
 			for ( int i = count - 2; i >= 0; i-- ) {
-				timenow = trace.getTime( i );
+				timenow = tracer.getTime( i );
 				offset = ( prev->time - timenow->time ) * timeScale;
 				if ( !timeWrap )
 					offset += tickWidth * timenow->eventCount;
@@ -244,17 +244,17 @@ void RDOStudioChartView::updateScrollBars()
 			
 			timeRange = drawToX->time - drawFromX->time;
 		} else {
-			drawFromX = trace.getTime( 0 );
+			drawFromX = tracer.getTime( 0 );
 			drawFromXEventIndex = 0;
-			drawToX = trace.getMaxTime();
-			drawToXEventIndex = trace.getMaxTime()->eventCount;
+			drawToX = tracer.getMaxTime();
+			drawToXEventIndex = tracer.getMaxTime()->eventCount;
 		}
 	} else {
 		timeScale = 0;
-		drawFromX = trace.getTime( 0 );
+		drawFromX = tracer.getTime( 0 );
 		drawFromXEventIndex = 0;
-		drawToX = trace.getTime( 0 );
-		drawToXEventIndex = trace.getTime( 0 )->eventCount;
+		drawToX = tracer.getTime( 0 );
+		drawToXEventIndex = tracer.getTime( 0 )->eventCount;
 		calcYAxisOffset( dc );
 		chartRect.left += yAxisOffset;
 		calcXAxisOffset( dc );
@@ -275,7 +275,7 @@ void RDOStudioChartView::updateScrollBars()
 {
 	CSize size;
 	//temporary
-	string str = format( "%.3f", trace.getMaxTime()->time );
+	string str = format( "%.3f", tracer.getMaxTime()->time );
 	size = dc.GetTextExtent( str.c_str() );
 	xAxisOffset = size.cx;
 }*/
@@ -574,10 +574,10 @@ void RDOStudioChartView::drawGrid(	CDC &dc, CRect& chartRect )
 		}
 
 
-		/*int count = trace.getTimesCount();
+		/*int count = tracer.getTimesCount();
 		RDOTracerTimeNow* lasttime = NULL;
 		for ( int i = 0; i < count; i++ ) {
-			RDOTracerTimeNow* timeNow = trace.getTime( i );
+			RDOTracerTimeNow* timeNow = tracer.getTime( i );
 			if ( timeNow->eventCount ) {
 				int ticks = ( lasttime ) ? lasttime->overallCount : 0;
 				tmprect.left = chartRect.left + min( timeScale * timeNow->time + tickWidth * ticks, chartRect.right );
@@ -682,7 +682,7 @@ void RDOStudioChartView::OnDraw(CDC* pDC)
 		rect.right = newClientRect.right - rightMargin;*/
 		
 		//temporary
-		/*timeRange = trace.getMaxTime()->time;
+		/*timeRange = tracer.getMaxTime()->time;
 		drawToX = timeRange;
 
 		rect.left += calcYAxisOffset();
@@ -695,7 +695,7 @@ void RDOStudioChartView::OnDraw(CDC* pDC)
 		/*if ( timeWrap )
 			timeScale = ( timerange > 0 ) ? rect.Width() / timerange : 0;
 		else
-			timeScale = ( timerange > 0 ) ? ( rect.Width() - tickWidth * trace.getMaxTime()->overallCount ) / timerange : 0;*/
+			timeScale = ( timerange > 0 ) ? ( rect.Width() - tickWidth * tracer.getMaxTime()->overallCount ) / timerange : 0;*/
 
 		drawGrid( dc, chartRect );
 
@@ -731,7 +731,7 @@ void RDOStudioChartView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
 DROPEFFECT RDOStudioChartView::OnDragEnter( COleDataObject* pDataObject, DWORD dwKeyState, CPoint point )
 {
 	HGLOBAL glb = NULL;
-	UINT format = trace.getClipboardFormat();
+	UINT format = tracer.getClipboardFormat();
 	if ( pDataObject->IsDataAvailable( format ) ) {
 		glb = pDataObject->GetGlobalData( format );
 		if ( glb ) {
@@ -754,7 +754,7 @@ void RDOStudioChartView::OnDragLeave()
 
 DROPEFFECT RDOStudioChartView::OnDragOver( COleDataObject* pDataObject, DWORD dwKeyState, CPoint point )
 {
-	if ( pDataObject->IsDataAvailable( trace.getClipboardFormat() ) && dragedSerie )
+	if ( pDataObject->IsDataAvailable( tracer.getClipboardFormat() ) && dragedSerie )
 		return DROPEFFECT_COPY;
 	else
 		return DROPEFFECT_NONE;

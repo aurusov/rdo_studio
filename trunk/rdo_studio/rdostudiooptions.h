@@ -17,6 +17,7 @@
 #include "edit_ctrls/rdobaseeditstyle.h"
 #include "edit_ctrls/rdofindeditstyle.h"
 #include "rdo_tracer/tracer_ctrls/rdotracerlogctrl.h"
+#include "rdo_tracer/tracer_ctrls/rdotracerlogstyle.h"
 #include "resource.h"
 
 // ----------------------------------------------------------------------------
@@ -114,21 +115,17 @@ private:
 
 		rdoEditCtrl::RDOFontStyle& font_style;
 
-		STYLEProperty( STYLEObject* _object, std::string _name, bool _root, rdoEditCtrl::RDOFontStyle& _font_style ): object( _object ), name( _name ), root( _root ), font_style( _font_style ) {};
-	};
+		COLORREF& fg_color;
+		COLORREF& bg_color;
+		COLORREF& fg_disable_color;
+		COLORREF& bg_disable_color;
 
-	class STYLEFont {
-	public:
-		std::string name;
-		bool fixed;
-
-		STYLEFont(): name( "" ), fixed( true ) {};
-		STYLEFont( std::string _name, bool _fixed = true ): name( _name ), fixed( _fixed ) {};
+		STYLEProperty( STYLEObject* _object, std::string _name, bool _root, rdoEditCtrl::RDOFontStyle& _font_style, COLORREF& _fg_color, COLORREF& _bg_color, COLORREF& _fg_disable_color, COLORREF& _bg_disable_color ): object( _object ), name( _name ), root( _root ), font_style( _font_style ), fg_color( _fg_color ), bg_color( _bg_color ), fg_disable_color( _fg_disable_color ), bg_disable_color( _bg_disable_color ) {};
 	};
 
 	class STYLEObject {
 	public:
-		enum Type { none = 0, all, source, build, debug, tracer, results, find } type;
+		enum Type { none = 0, all, source, build, debug, trace, results, find } type;
 		std::string& font_name;
 		int&         font_size;
 		bool         font_fixed;
@@ -142,6 +139,15 @@ private:
 				delete *it++;
 			};
 		}
+	};
+
+	class STYLEFont {
+	public:
+		std::string name;
+		bool fixed;
+
+		STYLEFont(): name( "" ), fixed( true ) {};
+		STYLEFont( std::string _name, bool _fixed = true ): name( _name ), fixed( _fixed ) {};
 	};
 
 	std::list< STYLEObject* > objects;
@@ -164,16 +170,25 @@ private:
 
 	std::string all_font_name;
 	int         all_font_size;
-	rdoEditCtrl::RDOFontStyle all_font_style;
-	void updatePropOfAllObject() const;
+	COLORREF    all_fg_color;
+	COLORREF    all_bg_color;
+	bool        use_all_fg_color;
+	bool        use_all_bg_color;
+	void updatePropOfAllObject();
 
 	rdoEditCtrl::RDOFontStyle null_font_style;
+	COLORREF                  null_fg_color;
+	COLORREF                  null_bg_color;
 
 	void OnUpdateModify();
 
 protected:
 	//{{AFX_DATA(RDOStudioOptionsStylesAndColors)
 	enum { IDD = IDD_OPTIONS_STYLESANDCOLORS };
+	CStatic	m_bgColorStatic;
+	CStatic	m_fgColorStatic;
+	CButton	m_bgColorButton;
+	CButton	m_fgColorButton;
 	CButton	m_fontStyleUnderline;
 	CButton	m_fontStyleItalic;
 	CButton	m_fontStyleBold;
@@ -199,6 +214,10 @@ protected:
 	afx_msg void OnFontStyleBoldChanged();
 	afx_msg void OnFontStyleItalicChanged();
 	afx_msg void OnFontStyleUnderlineChanged();
+	afx_msg void OnFgColorChanged();
+	afx_msg void OnBgColorChanged();
+	afx_msg void OnFgColorClicked();
+	afx_msg void OnBgColorClicked();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
@@ -220,7 +239,7 @@ private:
 	rdoEditor::RDOEditorEditStyle    style_editor;
 	rdoEditCtrl::RDOLogEditStyle     style_build;
 	rdoEditCtrl::RDOBaseEditStyle    style_debug;
-//	rdoEditCtrl::RDOBaseEditStyle    style_tracer;
+	rdoTracerLog::RDOTracerLogStyle  style_trace;
 	rdoEditor::RDOEditorResultsStyle style_results;
 	rdoEditCtrl::RDOFindEditStyle    style_find;
 
@@ -228,12 +247,12 @@ private:
 	RDOStudioOptionsTabs*            tabs;
 	RDOStudioOptionsStylesAndColors* styles;
 
-	rdoEditor::RDOEditorEdit    preview_editor;
-	rdoEditCtrl::RDOBuildEdit   preview_build;
-	rdoEditCtrl::RDODebugEdit   preview_debug;
-	RDOTracerLogCtrl            preview_tracer;
-	rdoEditor::RDOEditorResults preview_results;
-	rdoEditCtrl::RDOFindEdit    preview_find;
+	rdoEditor::RDOEditorEdit       preview_editor;
+	rdoEditCtrl::RDOBuildEdit      preview_build;
+	rdoEditCtrl::RDODebugEdit      preview_debug;
+	rdoTracerLog::RDOTracerLogCtrl preview_trace;
+	rdoEditor::RDOEditorResults    preview_results;
+	rdoEditCtrl::RDOFindEdit       preview_find;
 
 	void updateStyles();
 	void apply() const;

@@ -4,7 +4,9 @@
 
 #include "rdologstyle.h"
 
-using namespace std;
+class RDOStudioOptionsStylesAndColors;
+
+namespace rdoTracerLog {
 
 // ----------------------------------------------------------------------------
 // ---------- RDOTracerLogStyle
@@ -17,7 +19,7 @@ typedef struct {
 
 class RDOTracerLogStyle : public RDOLogStyle
 {
-friend class RDOTracerLogOptions;
+friend class RDOStudioOptionsStylesAndColors;
 
 protected:
 	RDOColorPair es;
@@ -50,7 +52,7 @@ public:
 	RDOTracerLogStyle();
 	virtual ~RDOTracerLogStyle();
 
-	bool getItemColors( const string& item, COLORREF& textColor, COLORREF& backColor ) const;
+	bool getItemColors( const std::string& item, COLORREF& textColor, COLORREF& backColor ) const;
 
 	RDOTracerLogStyle& operator =( const RDOTracerLogStyle& style );
 	bool operator ==( const RDOTracerLogStyle& style ) const;
@@ -58,8 +60,10 @@ public:
 
 	static RDOTracerLogStyle getDefaultStyle();
 
-	void load();
-	void save() const;
+	virtual bool load();
+	virtual bool save() const;
 };
+
+}; // namespace rdoTracerLog
 
 #endif // RDOTRACERLOGSTYLE_H

@@ -58,26 +58,26 @@ int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if ( CMDIFrameWnd::OnCreate(lpCreateStruct) == -1 ) return -1;
 
-	style_editor.init( "editorStyle" );
+	style_editor.init( "editor" );
 	style_editor.load();
 
-	style_build.init( "buildStyle" );
+	style_build.init( "build" );
 	style_build.window->showHorzScrollBar = false;
 	style_build.window->wordWrap          = true;
 	style_build.load();
 
-	style_debug.init( "debugStyle" );
+	style_debug.init( "debug" );
 	style_debug.window->showHorzScrollBar = false;
 	style_debug.window->wordWrap          = true;
 	style_debug.load();
 
-//	style_tracer.init( "tracerStyle" );
-//	style_tracer.load();
+	style_trace.init( "trace" );
+	style_trace.load();
 
-	style_results.init( "resultsStyle" );
+	style_results.init( "results" );
 	style_results.load();
 
-	style_find.init( "findStyle" );
+	style_find.init( "find" );
 	style_find.load();
 
 	fileToolBar.CreateEx( this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
@@ -129,7 +129,7 @@ int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	DockControlBar( &workspace, AFX_IDW_DOCKBAR_LEFT );
 	DockControlBar( &output, AFX_IDW_DOCKBAR_BOTTOM );
 
-	trace.registerClipboardFormat();
+	tracer.registerClipboardFormat();
 
 	model = new RDOStudioModel;
 
@@ -141,7 +141,7 @@ void RDOStudioMainFrame::OnDestroy()
 	style_editor.save();
 	style_build.save();
 	style_debug.save();
-//	style_tracer.save();
+	style_trace.save();
 	style_results.save();
 	style_find.save();
 

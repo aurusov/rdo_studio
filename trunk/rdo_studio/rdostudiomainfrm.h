@@ -12,6 +12,7 @@
 #include "edit_ctrls/rdologeditstyle.h"
 #include "edit_ctrls/rdobaseeditstyle.h"
 #include "edit_ctrls/rdofindeditstyle.h"
+#include "rdo_tracer/tracer_ctrls/rdotracerlogstyle.h"
 
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioMainFrame
@@ -41,7 +42,7 @@ public:
 	rdoEditor::RDOEditorEditStyle    style_editor;
 	rdoEditCtrl::RDOLogEditStyle     style_build;
 	rdoEditCtrl::RDOBaseEditStyle    style_debug;
-//	rdoEditCtrl::RDOBaseEditStyle    style_tracer;
+	rdoTracerLog::RDOTracerLogStyle  style_trace;
 	rdoEditor::RDOEditorResultsStyle style_results;
 	rdoEditCtrl::RDOFindEditStyle    style_find;
 	void updateAllStyles() const;

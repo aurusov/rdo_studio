@@ -35,7 +35,7 @@ int RDOStudioWorkspace::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	tab.modifyTabStyle( 0, TCS_BOTTOM | TCS_MULTILINE );
 
 	CEdit* page1 = new CEdit;
-	RDOTracerTreeCtrl*  page2 = trace.createTree();
+	RDOTracerTreeCtrl* page2 = tracer.createTree();
 	CEdit* page3 = new CEdit;
 
 	page1->Create( NULL, CRect(0, 0, 0, 0), &tab, -1 );

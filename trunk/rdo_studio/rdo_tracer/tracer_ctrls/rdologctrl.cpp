@@ -1,9 +1,17 @@
 #include "stdafx.h"
 #include "rdologctrl.h"
+#include "../../rdostudioapp.h"
+#include "../../rdostudiomainfrm.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
+
+using namespace rdoTracerLog;
+using namespace rdoEditCtrl;
+using namespace std;
+
+namespace rdoTracerLog {
 
 // ----------------------------------------------------------------------------
 // ---------- RDOLogCtrlFindInList
@@ -21,6 +29,8 @@ public:
 	RDOLogCtrlFindInList( RDOLogCtrl* _log, string _strToFind, bool _matchCase, bool _matchWholeWord );
 	bool operator()( string nextstr );
 };
+
+}; // namespace rdoTracerLog
 
 RDOLogCtrlFindInList::RDOLogCtrlFindInList( RDOLogCtrl* _log, string _strToFind, bool _matchCase, bool _matchWholeWord )
 	: log( _log ),
@@ -170,13 +180,13 @@ RDOLogCtrl::RDOLogCtrl( RDOLogStyle* style ):
 	bMatchWholeWord( false )
 {
 	//if no style specified default style will be used
-	if ( !logStyle ) logStyle = new RDOLogStyle();
-	logStyle->load();
+	if ( !logStyle ) {
+		logStyle = &studioApp.mainFrame->style_trace;
+	}
 }
 
 RDOLogCtrl::~RDOLogCtrl()
 {
-	if ( logStyle ) delete logStyle;
 }
 
 BOOL RDOLogCtrl::PreCreateWindow( CREATESTRUCT& cs )
@@ -191,7 +201,7 @@ BOOL RDOLogCtrl::PreCreateWindow( CREATESTRUCT& cs )
 int RDOLogCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 {
 	if ( CWnd::OnCreate( lpCreateStruct ) == -1 ) return -1;
-	setFont( logStyle->font, false );
+	setFont( false );
 	updateScrollBars();
 	return 0;
 }
@@ -837,10 +847,10 @@ const RDOLogStyle& RDOLogCtrl::getStyle() const
 	return (*logStyle);
 }
 
-void RDOLogCtrl::setStyle( const RDOLogStyle& style, const bool needRedraw )
+void RDOLogCtrl::setStyle( RDOLogStyle* style, const bool needRedraw )
 {
-	(*logStyle) = style;
-	setFont( logStyle->font, false );
+	logStyle = style;
+	setFont( false );
 	
 	recalcWidth( maxStrWidth );
 	updateScrollBars();
@@ -851,8 +861,10 @@ void RDOLogCtrl::setStyle( const RDOLogStyle& style, const bool needRedraw )
 	}
 }
 
-void RDOLogCtrl::setFont( const RDOFont& font, const bool needRedraw )
+void RDOLogCtrl::setFont( const bool needRedraw )
 {
+	if ( !logStyle ) return;
+
 	if ( fontLog.m_hObject )
 		if ( !fontLog.DeleteObject() )
 			return;
@@ -860,12 +872,12 @@ void RDOLogCtrl::setFont( const RDOFont& font, const bool needRedraw )
 	LOGFONT lf;
 	memset( &lf, 0, sizeof(lf) );
 	// The negative is to allow for leading
-	lf.lfHeight    = -MulDiv( font.size, ::GetDeviceCaps( GetDC()->m_hDC, LOGPIXELSY ), 72 );
-	lf.lfWeight    = font.style & RDOFS_BOLD ? FW_BOLD : FW_NORMAL;
-	lf.lfItalic    = font.style & RDOFS_ITALIC;
-	lf.lfUnderline = font.style & RDOFS_UNDERLINE;
-	lf.lfCharSet   = font.characterSet;
-	strcpy( lf.lfFaceName, font.name.c_str() );
+	lf.lfHeight    = -MulDiv( logStyle->font->size, ::GetDeviceCaps( GetDC()->m_hDC, LOGPIXELSY ), 72 );
+	lf.lfWeight    = logStyle->style & RDOFS_BOLD ? FW_BOLD : FW_NORMAL;
+	lf.lfItalic    = logStyle->style & RDOFS_ITALIC;
+	lf.lfUnderline = logStyle->style & RDOFS_UNDERLINE;
+	lf.lfCharSet   = logStyle->font->characterSet;
+	strcpy( lf.lfFaceName, logStyle->font->name.c_str() );
 
 	if ( !fontLog.CreateFontIndirect( &lf ) )
 		return;

@@ -17,18 +17,22 @@
 #define new DEBUG_NEW
 #endif
 
-RDOTracerTrace trace;
+using namespace rdoTracer;
+using namespace rdoTracerLog;
+using namespace std;
+
+RDOTracer tracer;
 
 void CALLBACK traceTimerFunc( HWND hwnd, UINT uMsg, UINT idEvent, DWORD dwTime )
 {
-	trace.getTraceString();
+	tracer.getTraceString();
 }
 
 // ----------------------------------------------------------------------------
-// ---------- RDOTracerTrace
+// ---------- RDOTracer
 // ----------------------------------------------------------------------------
 
-RDOTracerTrace::RDOTracerTrace():
+RDOTracer::RDOTracer():
 	log( NULL ),
 	tree( NULL ),
 	traceFile( NULL ),
@@ -41,13 +45,13 @@ RDOTracerTrace::RDOTracerTrace():
 {
 }
 
-RDOTracerTrace::~RDOTracerTrace()
+RDOTracer::~RDOTracer()
 {
 	stopTrace();
 	deleteTrace();
 }
 
-void RDOTracerTrace::cleanupObjects()
+void RDOTracer::cleanupObjects()
 {
 	if ( timerID ) {
 		::KillTimer( NULL, timerID );
@@ -59,7 +63,7 @@ void RDOTracerTrace::cleanupObjects()
 	}
 }
 
-void RDOTracerTrace::getStructureData()
+void RDOTracer::getStructureData()
 {
 	string res;
 	if ( !traceFile )
@@ -72,7 +76,7 @@ void RDOTracerTrace::getStructureData()
 	return;
 }
 
-void RDOTracerTrace::parseStructureData( string& structure )
+void RDOTracer::parseStructureData( string& structure )
 {
 	CString str;
 	string s = "Model_name";
@@ -137,7 +141,7 @@ void RDOTracerTrace::parseStructureData( string& structure )
 	}
 }
 
-void RDOTracerTrace::addResourceType( string& s )
+void RDOTracer::addResourceType( string& s )
 {
 	RDOTracerResType* type = new RDOTracerResType( RDOTK_PERMANENT );
 	int pos = s.find( ' ' );
@@ -188,7 +192,7 @@ void RDOTracerTrace::addResourceType( string& s )
 	tree->addResourceType( type );
 }
 
-void RDOTracerTrace::addResource( string& s )
+void RDOTracer::addResource( string& s )
 {
 	int pos = s.find( ' ' );
 	int endpos = s.rfind( ' ' );
@@ -204,7 +208,7 @@ void RDOTracerTrace::addResource( string& s )
 	tree->addResource( res );
 }
 
-void RDOTracerTrace::addPattern( string& s )
+void RDOTracer::addPattern( string& s )
 {
 	string str = s;
 	string part = getNextValue( str );
@@ -225,7 +229,7 @@ void RDOTracerTrace::addPattern( string& s )
 	tree->addPattern( pat );
 }
 
-void RDOTracerTrace::addOperation( string& s )
+void RDOTracer::addOperation( string& s )
 {
 	int pos = s.find( ' ' );
 	int endpos = s.rfind( ' ' );
@@ -241,12 +245,12 @@ void RDOTracerTrace::addOperation( string& s )
 	tree->addOperation( opr );
 }
 
-void RDOTracerTrace::addIrregularEvent( string& s )
+void RDOTracer::addIrregularEvent( string& s )
 {
 	addOperation( s );
 }
 
-void RDOTracerTrace::addResult( string& s )
+void RDOTracer::addResult( string& s )
 {
 	string str = s;
 	string name = getNextValue( str );
@@ -269,7 +273,7 @@ void RDOTracerTrace::addResult( string& s )
 	tree->addResult( res );
 }
 
-string RDOTracerTrace::getNextString()
+string RDOTracer::getNextString()
 {
 	CString res;
 	if ( !traceFile->ReadString( res ) )
@@ -278,7 +282,7 @@ string RDOTracerTrace::getNextString()
 	return res;
 }
 
-void RDOTracerTrace::dispathNextString( string& line )
+void RDOTracer::dispathNextString( string& line )
 {
 	if ( line.empty() )
 		return;
@@ -374,7 +378,7 @@ void RDOTracerTrace::dispathNextString( string& line )
 	updateCharts();
 }
 
-string RDOTracerTrace::getNextValue( string& line )
+string RDOTracer::getNextValue( string& line )
 {
 	int posstart = line.find_first_not_of( ' ' );
 	int posend = line.find_first_of( ' ', posstart );
@@ -384,7 +388,7 @@ string RDOTracerTrace::getNextValue( string& line )
 	return res;
 }
 
-RDOTracerTimeNow* RDOTracerTrace::addTime( string& time )
+RDOTracerTimeNow* RDOTracer::addTime( string& time )
 {
 	double val = atof( time.c_str() );
 	bool empty = timeList.empty();
@@ -407,31 +411,31 @@ RDOTracerTimeNow* RDOTracerTrace::addTime( string& time )
 	return timeList.back();
 }
 
-RDOTracerOperation* RDOTracerTrace::getOperation( string& line )
+RDOTracerOperation* RDOTracer::getOperation( string& line )
 {
 	getNextValue( line );
 	return operations.at( atoi( getNextValue( line ).c_str() ) - 1 );
 }
 
-void RDOTracerTrace::startAction( string& line, RDOTracerTimeNow* const time  )
+void RDOTracer::startAction( string& line, RDOTracerTimeNow* const time  )
 {
 	getOperation( line )->start( time, eventIndex );
 }
 
-void RDOTracerTrace::accomplishAction( string& line, RDOTracerTimeNow* const time  )
+void RDOTracer::accomplishAction( string& line, RDOTracerTimeNow* const time  )
 {
 	getOperation( line )->accomplish( time, eventIndex );
 }
 
-void RDOTracerTrace::irregularEvent( string& line, RDOTracerTimeNow* const time  )
+void RDOTracer::irregularEvent( string& line, RDOTracerTimeNow* const time  )
 {
 }
 
-void RDOTracerTrace::productionRule( string& line, RDOTracerTimeNow* const time  )
+void RDOTracer::productionRule( string& line, RDOTracerTimeNow* const time  )
 {
 }
 
-RDOTracerResource* RDOTracerTrace::getResource( string& line )
+RDOTracerResource* RDOTracer::getResource( string& line )
 {
 	getNextValue( line );
 	RDOTracerResource* res = NULL;
@@ -445,7 +449,7 @@ RDOTracerResource* RDOTracerTrace::getResource( string& line )
 	return res;
 }
 
-void RDOTracerTrace::resourceCreation( string& line, RDOTracerTimeNow* const time  )
+void RDOTracer::resourceCreation( string& line, RDOTracerTimeNow* const time  )
 {
 	RDOTracerResType* type = resTypes.at( atoi( getNextValue( line ).c_str() ) - 1 );
 	int id = atoi( getNextValue( line ).c_str() );
@@ -457,7 +461,7 @@ void RDOTracerTrace::resourceCreation( string& line, RDOTracerTimeNow* const tim
 	tree->addResource( res );
 }
 
-void RDOTracerTrace::resourceElimination( string& line, RDOTracerTimeNow* const time  )
+void RDOTracer::resourceElimination( string& line, RDOTracerTimeNow* const time  )
 {
 	RDOTracerResource* res = getResource( line );
 	res->setParams( line, time, eventIndex, true );
@@ -465,17 +469,17 @@ void RDOTracerTrace::resourceElimination( string& line, RDOTracerTimeNow* const 
 	tree->updateResource( res );
 }
 
-void RDOTracerTrace::resourceChanging( string& line, RDOTracerTimeNow* const time  )
+void RDOTracer::resourceChanging( string& line, RDOTracerTimeNow* const time  )
 {
 	RDOTracerResource* res = getResource( line );
 	res->setParams( line, time, eventIndex );
 }
 
-void RDOTracerTrace::resultChanging( string& line, RDOTracerTimeNow* const time  )
+void RDOTracer::resultChanging( string& line, RDOTracerTimeNow* const time  )
 {
 }
 
-void RDOTracerTrace::deleteTrace()
+void RDOTracer::deleteTrace()
 {
 	int count = resources.size();
 	for ( int i = 0; i < count; i++ ) {
@@ -521,31 +525,31 @@ void RDOTracerTrace::deleteTrace()
 	charts.clear();
 }
 
-void RDOTracerTrace::clear()
+void RDOTracer::clear()
 {
 	deleteTrace();
 	tree->clear();
 }
 
-CMultiDocTemplate* RDOTracerTrace::createDocTemplate()
+CMultiDocTemplate* RDOTracer::createDocTemplate()
 {
 	chartDocTemplate = new CMultiDocTemplate( IDR_CHARTTYPE, RUNTIME_CLASS(RDOStudioChartDoc), RUNTIME_CLASS(RDOStudioChildFrame), RUNTIME_CLASS(RDOStudioChartView) );
 	return chartDocTemplate;
 }
 
-RDOTracerLogCtrl* RDOTracerTrace::createLog()
+RDOTracerLogCtrl* RDOTracer::createLog()
 {
 	log = new RDOTracerLogCtrl();
 	return log;
 }
 
-RDOTracerTreeCtrl* RDOTracerTrace::createTree()
+RDOTracerTreeCtrl* RDOTracer::createTree()
 {
 	tree = new RDOTracerTreeCtrl();
 	return tree;
 }
 
-void RDOTracerTrace::startTrace()
+void RDOTracer::startTrace()
 {
 	string filter = _T("Trace files (*.trc)|*.TRC||");
 
@@ -572,37 +576,37 @@ void RDOTracerTrace::startTrace()
 	}
 }
 
-void RDOTracerTrace::getModelStructure()
+void RDOTracer::getModelStructure()
 {
 	getStructureData();
 }
 
-void RDOTracerTrace::getTraceString()
+void RDOTracer::getTraceString()
 {
 	string str = getNextString();
 	log->addStringToLog( str );
 	dispathNextString( str );
 }
 
-void RDOTracerTrace::stopTrace()
+void RDOTracer::stopTrace()
 {
 	statusStr = "Trace stopped by user";
 	doStopTrace();
 }
 
-void RDOTracerTrace::doStopTrace()
+void RDOTracer::doStopTrace()
 {
 	cleanupObjects();
 	stopTime = CTime::GetCurrentTime();
 	tracing = false;
 }
 	
-const bool RDOTracerTrace::isTracing() const
+const bool RDOTracer::isTracing() const
 {
 	return tracing;
 }
 
-RDOStudioChartDoc* RDOTracerTrace::createNewChart()
+RDOStudioChartDoc* RDOTracer::createNewChart()
 {
 	RDOStudioChartDoc* doc = NULL;
 	if ( chartDocTemplate ) {
@@ -611,7 +615,7 @@ RDOStudioChartDoc* RDOTracerTrace::createNewChart()
 	return doc;
 }
 
-RDOStudioChartDoc* RDOTracerTrace::addSerieToChart( RDOTracerSerie* const serie, RDOStudioChartDoc* chart )
+RDOStudioChartDoc* RDOTracer::addSerieToChart( RDOTracerSerie* const serie, RDOStudioChartDoc* chart )
 {
 	if ( !chart )
 		chart = createNewChart();
@@ -620,12 +624,12 @@ RDOStudioChartDoc* RDOTracerTrace::addSerieToChart( RDOTracerSerie* const serie,
 	return chart;
 }
 
-void RDOTracerTrace::addChart( RDOStudioChartDoc* const chart )
+void RDOTracer::addChart( RDOStudioChartDoc* const chart )
 {
 	charts.push_back( chart );
 }
 
-void RDOTracerTrace::removeChart( RDOStudioChartDoc* chart )
+void RDOTracer::removeChart( RDOStudioChartDoc* chart )
 {
 	for ( vector< RDOStudioChartDoc* >::iterator it = charts.begin(); it != charts.end(); it++ ) {
 		if ( (*it) == chart ) {
@@ -635,7 +639,7 @@ void RDOTracerTrace::removeChart( RDOStudioChartDoc* chart )
 	}
 }
 
-void RDOTracerTrace::updateCharts()
+void RDOTracer::updateCharts()
 {
 	int size = charts.size();
 	for ( vector< RDOStudioChartDoc* >::iterator it = charts.begin(); it != charts.end(); it++ ) {
@@ -643,7 +647,7 @@ void RDOTracerTrace::updateCharts()
 	}
 }
 
-RDOTracerTimeNow* RDOTracerTrace::getTime( const int index ) const
+RDOTracerTimeNow* RDOTracer::getTime( const int index ) const
 {
 	//return timeVector.at( index );
 	if ( index >= timeList.size() || index < 0 )

@@ -4,14 +4,9 @@
 
 #include "../resource.h"
 
-using namespace std;
-
 // ----------------------------------------------------------------------------
-// ---------- RDOTracerTrace
+// ---------- RDOTracer
 // ----------------------------------------------------------------------------
-class RDOTracerLogCtrl;
-class RDOTracerTreeCtrl;
-class RDOStudioChartDoc;
 class RDOTracerResType;
 class RDOTracerResource;
 class RDOTracerPattern;
@@ -20,14 +15,23 @@ class RDOTracerResult;
 class RDOTracerTimeNow;
 class RDOTracerSerie;
 
-class RDOTracerTrace  
+class RDOTracerTreeCtrl;
+class RDOStudioChartDoc;
+
+namespace rdoTracerLog {
+class RDOTracerLogCtrl;
+}
+
+namespace rdoTracer {
+
+class RDOTracer  
 {
 private:
-	RDOTracerLogCtrl*   log;
+	rdoTracerLog::RDOTracerLogCtrl* log;
 	RDOTracerTreeCtrl*  tree;
 
-	string modelName;
-	string statusStr;
+	std::string modelName;
+	std::string statusStr;
 	CTime startTime;
 	CTime stopTime;
 	
@@ -36,41 +40,41 @@ private:
 	void cleanupObjects();
 
 	void getStructureData();
-	void parseStructureData( string& structure );
+	void parseStructureData( std::string& structure );
 	
-	vector <RDOTracerResType*> resTypes;
-	void addResourceType( string& s );
-	vector <RDOTracerResource*> resources;
-	void addResource( string& s );
-	vector <RDOTracerPattern*> patterns;
-	void addPattern( string& s );
-	vector <RDOTracerOperation*> operations;
-	void addOperation( string& s );
-	vector <RDOTracerOperation*> irregularEvents;
-	void addIrregularEvent( string& s );
-	vector <RDOTracerResult*> results;
-	void addResult( string& s );
+	std::vector <RDOTracerResType*> resTypes;
+	void addResourceType( std::string& s );
+	std::vector <RDOTracerResource*> resources;
+	void addResource( std::string& s );
+	std::vector <RDOTracerPattern*> patterns;
+	void addPattern( std::string& s );
+	std::vector <RDOTracerOperation*> operations;
+	void addOperation( std::string& s );
+	std::vector <RDOTracerOperation*> irregularEvents;
+	void addIrregularEvent( std::string& s );
+	std::vector <RDOTracerResult*> results;
+	void addResult( std::string& s );
 	
-	string getNextString();
-	void dispathNextString( string& line );
+	std::string getNextString();
+	void dispathNextString( std::string& line );
 
-	RDOTracerTimeNow* addTime( string& time );
+	RDOTracerTimeNow* addTime( std::string& time );
 	int eventIndex;
 	
-	RDOTracerOperation* getOperation( string& line );
-	void startAction( string& line, RDOTracerTimeNow* const time );
-	void accomplishAction( string& line, RDOTracerTimeNow* const time  );
-	void irregularEvent( string& line, RDOTracerTimeNow* const time  );
-	void productionRule( string& line, RDOTracerTimeNow* const time  );
+	RDOTracerOperation* getOperation( std::string& line );
+	void startAction( std::string& line, RDOTracerTimeNow* const time );
+	void accomplishAction( std::string& line, RDOTracerTimeNow* const time  );
+	void irregularEvent( std::string& line, RDOTracerTimeNow* const time  );
+	void productionRule( std::string& line, RDOTracerTimeNow* const time  );
 	
-	RDOTracerResource* getResource( string& line );
-	void resourceCreation( string& line, RDOTracerTimeNow* const time  );
-	void resourceElimination( string& line, RDOTracerTimeNow* const time  );
-	void resourceChanging( string& line, RDOTracerTimeNow* const time  );
+	RDOTracerResource* getResource( std::string& line );
+	void resourceCreation( std::string& line, RDOTracerTimeNow* const time  );
+	void resourceElimination( std::string& line, RDOTracerTimeNow* const time  );
+	void resourceChanging( std::string& line, RDOTracerTimeNow* const time  );
 	
-	void resultChanging( string& line, RDOTracerTimeNow* const time  );
+	void resultChanging( std::string& line, RDOTracerTimeNow* const time  );
 
-	list< RDOTracerTimeNow* > timeList;
+	std::list< RDOTracerTimeNow* > timeList;
 	//double minTimeDifference;
 	
 	void deleteTrace();
@@ -85,22 +89,22 @@ private:
 	UINT clipboardFormat;
 
 	CMultiDocTemplate* chartDocTemplate;
-	vector <RDOStudioChartDoc*> charts;
+	std::vector <RDOStudioChartDoc*> charts;
 	void updateCharts();
 
 public:
-	RDOTracerTrace();
-	virtual ~RDOTracerTrace();	
+	RDOTracer();
+	virtual ~RDOTracer();	
 	
 //	void setControls();
 	CMultiDocTemplate* createDocTemplate();
-	RDOTracerLogCtrl* createLog();
+	rdoTracerLog::RDOTracerLogCtrl* createLog();
 	RDOTracerTreeCtrl* createTree();
 	
 	void startTrace();
 	void getModelStructure();
 	void getTraceString();
-	string getNextValue( string& line );
+	std::string getNextValue( std::string& line );
 	void stopTrace();
 	const bool isTracing() const;
 	void registerClipboardFormat() { clipboardFormat = ::RegisterClipboardFormat( format(ID_RAO_CLIPBRD).c_str() ); }
@@ -115,7 +119,9 @@ public:
 //	double getMinTimeDifference() const { return minTimeDifference; };
 };
 
+}; // namespace rdoTracer
+
 // ----------------------------------------------------------------------------
-extern RDOTracerTrace trace;
+extern rdoTracer::RDOTracer tracer;
 
 #endif // RDOTRACERTRACE_H

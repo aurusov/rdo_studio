@@ -9,8 +9,9 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-using namespace rdoEditCtrl;
 using namespace rdoEditor;
+using namespace rdoEditCtrl;
+using namespace rdoTracerLog;
 
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioOptionsEditor
@@ -222,6 +223,10 @@ BEGIN_MESSAGE_MAP(RDOStudioOptionsStylesAndColors, CPropertyPage)
 	ON_BN_CLICKED(IDC_FONTBOLD_CHECK, OnFontStyleBoldChanged)
 	ON_BN_CLICKED(IDC_FONTITALIC_CHECK, OnFontStyleItalicChanged)
 	ON_BN_CLICKED(IDC_FONTUNDERLINE_CHECK, OnFontStyleUnderlineChanged)
+	ON_CBN_SELCHANGE(IDC_FGCOLOR_COMBO, OnFgColorChanged)
+	ON_CBN_SELCHANGE(IDC_BGCOLOR_COMBO, OnBgColorChanged)
+	ON_BN_CLICKED(IDC_FGCOLOR_BUTTON, OnFgColorClicked)
+	ON_BN_CLICKED(IDC_BGCOLOR_BUTTON, OnBgColorClicked)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -232,54 +237,66 @@ RDOStudioOptionsStylesAndColors::RDOStudioOptionsStylesAndColors( RDOStudioOptio
 	previewAs( STYLEObject::none ),
 	all_font_name( "" ),
 	all_font_size( -1 ),
-	all_font_style( rdoEditCtrl::RDOFS_NONE ),
-	null_font_style( rdoEditCtrl::RDOFS_NONE )
+	all_fg_color( RGB( 0x00, 0x00, 0x00 ) ),
+	all_bg_color( RGB( 0xFF, 0xFF, 0xFF ) ),
+	use_all_fg_color( false ),
+	use_all_bg_color( false ),
+	null_font_style( RDOFS_NONE ),
+	null_fg_color( RGB( 0x00, 0x00, 0x00 ) ),
+	null_bg_color( RGB( 0xFF, 0xFF, 0xFF ) )
 {
 	//{{AFX_DATA_INIT(RDOStudioOptionsStylesAndColors)
 	//}}AFX_DATA_INIT
 
 	STYLEObject* object;
 	object = new STYLEObject( STYLEObject::all, all_font_name, all_font_size );
-	object->properties.push_back( new STYLEProperty( object, "All Windows", true, all_font_style ) );
+	object->properties.push_back( new STYLEProperty( object, "All Windows", true, null_font_style, all_fg_color, all_bg_color, null_fg_color, null_bg_color ) );
 	objects.push_back( object );
 
+	RDOEditorEditTheme* editor_theme = static_cast<RDOEditorEditTheme*>(sheet->style_editor.theme);
 	object = new STYLEObject( STYLEObject::source, sheet->style_editor.font->name, sheet->style_editor.font->size );
-	object->properties.push_back( new STYLEProperty( object, "Source Windows", true , static_cast<RDOEditorEditTheme*>(sheet->style_editor.theme)->defaultStyle ) );
-	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_PLAINTEXT ), false, static_cast<RDOEditorEditTheme*>(sheet->style_editor.theme)->defaultStyle ) );
-	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_IDENTIFICATOR ), false, static_cast<RDOEditorEditTheme*>(sheet->style_editor.theme)->identifierStyle ) );
-	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_KEYWORD ), false, static_cast<RDOEditorEditTheme*>(sheet->style_editor.theme)->keywordStyle ) );
-	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_FUNCTION ), false, static_cast<RDOEditorEditTheme*>(sheet->style_editor.theme)->functionsStyle ) );
-	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_TRACE ), false, static_cast<RDOEditorEditTheme*>(sheet->style_editor.theme)->traceStyle ) );
-	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_COMMENT ), false, static_cast<RDOEditorEditTheme*>(sheet->style_editor.theme)->commentStyle ) );
-	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_NUMBER ), false, static_cast<RDOEditorEditTheme*>(sheet->style_editor.theme)->numberStyle ) );
-	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_STRING ), false, static_cast<RDOEditorEditTheme*>(sheet->style_editor.theme)->stringStyle ) );
-	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_OPERATOR ), false, static_cast<RDOEditorEditTheme*>(sheet->style_editor.theme)->operatorStyle ) );
-	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_CARET ), false, null_font_style ) );
-	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_TEXTSELECTION ), false, null_font_style ) );
-	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_BOOKMARK ), false, null_font_style ) );
-	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_FOLD ), false, null_font_style ) );
-	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_ERROR ), false, null_font_style ) );
+	object->properties.push_back( new STYLEProperty( object, "Source Windows", true , editor_theme->defaultStyle, editor_theme->defaultColor, editor_theme->backgroundColor, null_fg_color, null_bg_color ) );
+	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_PLAINTEXT ), false, editor_theme->defaultStyle, editor_theme->defaultColor, editor_theme->backgroundColor, null_fg_color, null_bg_color ) );
+	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_IDENTIFICATOR ), false, editor_theme->identifierStyle, editor_theme->identifierColor, null_bg_color, null_fg_color, editor_theme->backgroundColor ) );
+	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_KEYWORD ), false, editor_theme->keywordStyle, editor_theme->keywordColor, null_bg_color, null_fg_color, editor_theme->backgroundColor ) );
+	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_FUNCTION ), false, editor_theme->functionsStyle, editor_theme->keywordColor, null_bg_color, null_fg_color, editor_theme->backgroundColor ) );
+	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_TRACE ), false, editor_theme->traceStyle, editor_theme->traceColor, null_bg_color, null_fg_color, editor_theme->backgroundColor ) );
+	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_COMMENT ), false, editor_theme->commentStyle, editor_theme->commentColor, null_bg_color, null_fg_color, editor_theme->backgroundColor ) );
+	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_NUMBER ), false, editor_theme->numberStyle, editor_theme->numberColor, null_bg_color, null_fg_color, editor_theme->backgroundColor ) );
+	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_STRING ), false, editor_theme->stringStyle, editor_theme->stringColor, null_bg_color, null_fg_color, editor_theme->backgroundColor ) );
+	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_OPERATOR ), false, editor_theme->operatorStyle, editor_theme->operatorColor, null_bg_color, null_fg_color, editor_theme->backgroundColor ) );
+	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_CARET ), false, null_font_style, editor_theme->caretColor, null_bg_color, null_fg_color, null_bg_color ) );
+	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_TEXTSELECTION ), false, null_font_style, null_fg_color, editor_theme->selectionBgColor, null_fg_color, null_bg_color ) );
+	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_BOOKMARK ), false, null_font_style, editor_theme->bookmarkFgColor, editor_theme->bookmarkBgColor, null_fg_color, null_bg_color ) );
+	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_FOLD ), false, null_font_style, editor_theme->foldFgColor, editor_theme->foldBgColor, null_fg_color, null_bg_color ) );
+	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_ERROR ), false, null_font_style, null_fg_color, editor_theme->errorBgColor, null_fg_color, null_bg_color ) );
 	objects.push_back( object );
 
+	RDOLogEditTheme* build_theme = static_cast<RDOLogEditTheme*>(sheet->style_build.theme);
 	object = new STYLEObject( STYLEObject::build, sheet->style_build.font->name, sheet->style_build.font->size, false );
-	object->properties.push_back( new STYLEProperty( object, "Build Windows", true, static_cast<RDOLogEditTheme*>(sheet->style_build.theme)->defaultStyle ) );
+	object->properties.push_back( new STYLEProperty( object, "Build Window", true, build_theme->defaultStyle, build_theme->defaultColor, build_theme->backgroundColor, null_fg_color, null_bg_color ) );
 	objects.push_back( object );
 
+	RDOBaseEditTheme* debug_theme = sheet->style_debug.theme;
 	object = new STYLEObject( STYLEObject::debug, sheet->style_debug.font->name, sheet->style_debug.font->size, false );
-	object->properties.push_back( new STYLEProperty( object, "Debug Windows", true, sheet->style_debug.theme->defaultStyle ) );
+	object->properties.push_back( new STYLEProperty( object, "Debug Window", true, debug_theme->defaultStyle, debug_theme->defaultColor, debug_theme->backgroundColor, null_fg_color, null_bg_color ) );
 	objects.push_back( object );
 
-	object = new STYLEObject( STYLEObject::tracer, sheet->style_editor.font->name, sheet->style_editor.font->size );
-//	object = new STYLEObject( STYLEObject::tracer, sheet->style_tracer.font->name, sheet->style_tracer.font->size );
-	object->properties.push_back( new STYLEProperty( object, "Trace Windows", true, static_cast<RDOEditorEditTheme*>(sheet->style_editor.theme)->defaultStyle ) );
+	RDOTracerLogStyle* trace_theme = &sheet->style_trace;
+	object = new STYLEObject( STYLEObject::trace, sheet->style_trace.font->name, sheet->style_trace.font->size );
+	object->properties.push_back( new STYLEProperty( object, "Trace Window", true, trace_theme->style, trace_theme->es.foregroundColor, trace_theme->es.backgroundColor, null_fg_color, null_bg_color ) );
+	object->properties.push_back( new STYLEProperty( object, "Service event (ES)", false, trace_theme->style, trace_theme->es.foregroundColor, trace_theme->es.backgroundColor, null_fg_color, null_bg_color ) );
+	object->properties.push_back( new STYLEProperty( object, "Action start (EB)", false, trace_theme->style, trace_theme->eb.foregroundColor, trace_theme->eb.backgroundColor, null_fg_color, null_bg_color ) );
 	objects.push_back( object );
 
+	RDOEditorBaseEditTheme* results_theme = static_cast<RDOEditorBaseEditTheme*>(sheet->style_results.theme);
 	object = new STYLEObject( STYLEObject::results, sheet->style_results.font->name, sheet->style_results.font->size );
-	object->properties.push_back( new STYLEProperty( object, "Results Windows", true, static_cast<RDOEditorBaseEditTheme*>(sheet->style_results.theme)->defaultStyle ) );
+	object->properties.push_back( new STYLEProperty( object, "Results Window", true, results_theme->defaultStyle, results_theme->defaultColor, results_theme->backgroundColor, null_fg_color, null_bg_color ) );
 	objects.push_back( object );
 
+	RDOFindEditTheme* find_theme = static_cast<RDOFindEditTheme*>(sheet->style_find.theme);
 	object = new STYLEObject( STYLEObject::find, sheet->style_find.font->name, sheet->style_find.font->size );
-	object->properties.push_back( new STYLEProperty( object, "Find Windows", true, static_cast<RDOFindEditTheme*>(sheet->style_find.theme)->defaultStyle ) );
+	object->properties.push_back( new STYLEProperty( object, "Find Window", true, find_theme->defaultStyle, find_theme->defaultColor, find_theme->backgroundColor, null_fg_color, null_bg_color ) );
 	objects.push_back( object );
 }
 
@@ -296,6 +313,10 @@ void RDOStudioOptionsStylesAndColors::DoDataExchange(CDataExchange* pDX)
 	CPropertyPage::DoDataExchange(pDX);
 
 	//{{AFX_DATA_MAP(RDOStudioOptionsStylesAndColors)
+	DDX_Control(pDX, IDC_BGCOLOR_STATIC, m_bgColorStatic);
+	DDX_Control(pDX, IDC_FGCOLOR_STATIC, m_fgColorStatic);
+	DDX_Control(pDX, IDC_BGCOLOR_BUTTON, m_bgColorButton);
+	DDX_Control(pDX, IDC_FGCOLOR_BUTTON, m_fgColorButton);
 	DDX_Control(pDX, IDC_FONTUNDERLINE_CHECK, m_fontStyleUnderline);
 	DDX_Control(pDX, IDC_FONTITALIC_CHECK, m_fontStyleItalic);
 	DDX_Control(pDX, IDC_FONTBOLD_CHECK, m_fontStyleBold);
@@ -356,8 +377,8 @@ BOOL RDOStudioOptionsStylesAndColors::OnInitDialog()
 	sheet->preview_debug.appendLine( "EI 0 1 1 0\r\n" );
 	sheet->preview_debug.appendLine( "ES 0 1\r\n" );
 
-	sheet->preview_tracer.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, -1 );
-//	sheet->preview_tracer.setEditorStyle( &sheet->style_tracer );
+	sheet->preview_trace.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, -1 );
+	sheet->preview_trace.setStyle( &sheet->style_trace );
 
 	sheet->preview_results.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, -1 );
 	sheet->preview_results.setEditorStyle( &sheet->style_results );
@@ -390,7 +411,7 @@ BOOL RDOStudioOptionsStylesAndColors::OnInitDialog()
 	sheet->preview_editor.MoveWindow( rectEdit );
 	sheet->preview_build.MoveWindow( rectEdit );
 	sheet->preview_debug.MoveWindow( rectEdit );
-	sheet->preview_tracer.MoveWindow( rectEdit );
+	sheet->preview_trace.MoveWindow( rectEdit );
 	sheet->preview_results.MoveWindow( rectEdit );
 	sheet->preview_find.MoveWindow( rectEdit );
 
@@ -476,9 +497,39 @@ void RDOStudioOptionsStylesAndColors::OnStyleItemChanged(NMHDR* pNMHDR, LRESULT*
 		m_fontStyleBold.EnableWindow( flag_font_style );
 		m_fontStyleItalic.EnableWindow( flag_font_style );
 		m_fontStyleUnderline.EnableWindow( flag_font_style );
-		m_fontStyleBold.SetCheck( prop->font_style & rdoEditCtrl::RDOFS_BOLD );
-		m_fontStyleItalic.SetCheck( prop->font_style & rdoEditCtrl::RDOFS_ITALIC );
-		m_fontStyleUnderline.SetCheck( prop->font_style & rdoEditCtrl::RDOFS_UNDERLINE );
+		m_fontStyleBold.SetCheck( prop->font_style & RDOFS_BOLD );
+		m_fontStyleItalic.SetCheck( prop->font_style & RDOFS_ITALIC );
+		m_fontStyleUnderline.SetCheck( prop->font_style & RDOFS_UNDERLINE );
+
+		// Update FG color combobox
+		bool flag_fg_color = &prop->fg_color != &null_fg_color;
+		fgColorCB.EnableWindow( flag_fg_color );
+		m_fgColorStatic.EnableWindow( flag_fg_color );
+		m_fgColorButton.EnableWindow( flag_fg_color );
+		if ( flag_fg_color ) {
+			fgColorCB.insertColor( prop->fg_color );
+			fgColorCB.setCurrentColor( prop->fg_color );
+		} else if ( &prop->fg_disable_color != &null_fg_color ) {
+			fgColorCB.insertColor( prop->fg_disable_color );
+			fgColorCB.setCurrentColor( prop->fg_disable_color );
+		} else {
+			fgColorCB.SetCurSel( -1 );
+		}
+
+		// Update BG color combobox
+		bool flag_bg_color = &prop->bg_color != &null_bg_color;
+		bgColorCB.EnableWindow( flag_bg_color );
+		m_bgColorStatic.EnableWindow( flag_bg_color );
+		m_bgColorButton.EnableWindow( flag_bg_color );
+		if ( flag_bg_color ) {
+			bgColorCB.insertColor( prop->bg_color );
+			bgColorCB.setCurrentColor( prop->bg_color );
+		} else if ( &prop->bg_disable_color != &null_bg_color ) {
+			bgColorCB.insertColor( prop->bg_disable_color );
+			bgColorCB.setCurrentColor( prop->bg_disable_color );
+		} else {
+			bgColorCB.SetCurSel( -1 );
+		}
 
 		setPreviewAsCombo( prop->object->type );
 
@@ -495,7 +546,7 @@ void RDOStudioOptionsStylesAndColors::OnStyleItemChanged(NMHDR* pNMHDR, LRESULT*
 			case STYLEObject::debug: {
 				break;
 			}
-			case STYLEObject::tracer: {
+			case STYLEObject::trace: {
 				break;
 			}
 			case STYLEObject::results: {
@@ -523,7 +574,7 @@ void RDOStudioOptionsStylesAndColors::OnFontNameChanged()
 				sheet->style_editor.font->name  = all_font_name;
 				sheet->style_build.font->name   = all_font_name;
 				sheet->style_debug.font->name   = all_font_name;
-//				sheet->style_tracer.font->name  = all_font_name;
+				sheet->style_trace.font->name   = all_font_name;
 				sheet->style_results.font->name = all_font_name;
 				sheet->style_find.font->name    = all_font_name;
 				break;
@@ -540,8 +591,8 @@ void RDOStudioOptionsStylesAndColors::OnFontNameChanged()
 				sheet->style_debug.font->name = str;
 				break;
 			}
-			case STYLEObject::tracer: {
-//				sheet->style_tracer.font->name = str;
+			case STYLEObject::trace: {
+				sheet->style_trace.font->name = str;
 				break;
 			}
 			case STYLEObject::results: {
@@ -571,7 +622,7 @@ void RDOStudioOptionsStylesAndColors::OnFontSizeChanged()
 				sheet->style_editor.font->size  = all_font_size;
 				sheet->style_build.font->size   = all_font_size;
 				sheet->style_debug.font->size   = all_font_size;
-//				sheet->style_tracer.font->size  = all_font_size;
+				sheet->style_trace.font->size   = all_font_size;
 				sheet->style_results.font->size = all_font_size;
 				sheet->style_find.font->size    = all_font_size;
 				break;
@@ -588,8 +639,8 @@ void RDOStudioOptionsStylesAndColors::OnFontSizeChanged()
 				sheet->style_debug.font->size = size;
 				break;
 			}
-			case STYLEObject::tracer: {
-//				sheet->style_tracer.font->size = size;
+			case STYLEObject::trace: {
+				sheet->style_trace.font->size = size;
 				break;
 			}
 			case STYLEObject::results: {
@@ -610,9 +661,9 @@ void RDOStudioOptionsStylesAndColors::OnFontStyleBoldChanged()
 {
 	STYLEProperty* prop = getCurrentProperty();
 	if ( prop && &prop->font_style != &null_font_style ) {
-		prop->font_style = static_cast<rdoEditCtrl::RDOFontStyle>(prop->font_style & ~rdoEditCtrl::RDOFS_BOLD);
+		prop->font_style = static_cast<RDOFontStyle>(prop->font_style & ~RDOFS_BOLD);
 		if ( m_fontStyleBold.GetCheck() ) {
-			prop->font_style = static_cast<rdoEditCtrl::RDOFontStyle>(prop->font_style | rdoEditCtrl::RDOFS_BOLD);
+			prop->font_style = static_cast<RDOFontStyle>(prop->font_style | RDOFS_BOLD);
 		}
 		OnUpdateModify();
 	}
@@ -622,9 +673,9 @@ void RDOStudioOptionsStylesAndColors::OnFontStyleItalicChanged()
 {
 	STYLEProperty* prop = getCurrentProperty();
 	if ( prop && &prop->font_style != &null_font_style ) {
-		prop->font_style = static_cast<rdoEditCtrl::RDOFontStyle>(prop->font_style & ~rdoEditCtrl::RDOFS_ITALIC);
+		prop->font_style = static_cast<RDOFontStyle>(prop->font_style & ~RDOFS_ITALIC);
 		if ( m_fontStyleItalic.GetCheck() ) {
-			prop->font_style = static_cast<rdoEditCtrl::RDOFontStyle>(prop->font_style | rdoEditCtrl::RDOFS_ITALIC);
+			prop->font_style = static_cast<RDOFontStyle>(prop->font_style | RDOFS_ITALIC);
 		}
 		OnUpdateModify();
 	}
@@ -634,11 +685,75 @@ void RDOStudioOptionsStylesAndColors::OnFontStyleUnderlineChanged()
 {
 	STYLEProperty* prop = getCurrentProperty();
 	if ( prop && &prop->font_style != &null_font_style ) {
-		prop->font_style = static_cast<rdoEditCtrl::RDOFontStyle>(prop->font_style & ~rdoEditCtrl::RDOFS_UNDERLINE);
+		prop->font_style = static_cast<RDOFontStyle>(prop->font_style & ~RDOFS_UNDERLINE);
 		if ( m_fontStyleUnderline.GetCheck() ) {
-			prop->font_style = static_cast<rdoEditCtrl::RDOFontStyle>(prop->font_style | rdoEditCtrl::RDOFS_UNDERLINE);
+			prop->font_style = static_cast<RDOFontStyle>(prop->font_style | RDOFS_UNDERLINE);
 		}
 		OnUpdateModify();
+	}
+}
+
+void RDOStudioOptionsStylesAndColors::OnFgColorChanged()
+{
+	STYLEProperty* prop = getCurrentProperty();
+	if ( &prop->fg_color != &null_fg_color ) {
+		prop->fg_color = fgColorCB.getCurrentColor();
+		if ( &prop->fg_color == &all_fg_color ) {
+			list< STYLEObject* >::const_iterator it = objects.begin();
+			if ( it != objects.end() ) {
+				it++;
+				while ( it != objects.end() ) {
+					list< STYLEProperty* >::const_iterator it_prop = (*it)->properties.begin();
+					if ( it_prop != (*it)->properties.end() ) {
+						(*it_prop)->fg_color = all_fg_color;
+					}
+					it++;
+				}
+			}
+		}
+		fgColorCB.insertColor( prop->fg_color );
+		OnUpdateModify();
+	}
+}
+
+void RDOStudioOptionsStylesAndColors::OnBgColorChanged()
+{
+	STYLEProperty* prop = getCurrentProperty();
+	if ( &prop->bg_color != &null_bg_color ) {
+		prop->bg_color = bgColorCB.getCurrentColor();
+		if ( &prop->bg_color == &all_bg_color ) {
+			list< STYLEObject* >::const_iterator it = objects.begin();
+			if ( it != objects.end() ) {
+				it++;
+				while ( it != objects.end() ) {
+					list< STYLEProperty* >::const_iterator it_prop = (*it)->properties.begin();
+					if ( it_prop != (*it)->properties.end() ) {
+						(*it_prop)->bg_color = all_bg_color;
+					}
+					it++;
+				}
+			}
+		}
+		bgColorCB.insertColor( prop->bg_color );
+		OnUpdateModify();
+	}
+}
+
+void RDOStudioOptionsStylesAndColors::OnFgColorClicked()
+{
+	CColorDialog dlg( fgColorCB.getCurrentColor(), CC_FULLOPEN, this );
+	if ( dlg.DoModal() == IDOK ) {
+		fgColorCB.insertColor( dlg.GetColor() );
+		OnFgColorChanged();
+	}
+}
+
+void RDOStudioOptionsStylesAndColors::OnBgColorClicked()
+{
+	CColorDialog dlg( bgColorCB.getCurrentColor(), CC_FULLOPEN, this );
+	if ( dlg.DoModal() == IDOK ) {
+		bgColorCB.insertColor( dlg.GetColor() );
+		OnBgColorChanged();
 	}
 }
 
@@ -653,7 +768,7 @@ void RDOStudioOptionsStylesAndColors::OnPreviewAsChanged()
 		} else if ( index == 2 ) {
 			setPreviewAsCombo( STYLEObject::debug );
 		} else if ( index == 3 ) {
-			setPreviewAsCombo( STYLEObject::tracer );
+			setPreviewAsCombo( STYLEObject::trace );
 		} else if ( index == 4 ) {
 			setPreviewAsCombo( STYLEObject::results );
 		} else if ( index == 5 ) {
@@ -673,13 +788,13 @@ void RDOStudioOptionsStylesAndColors::OnUpdateModify()
 	SetModified( *sheet->style_editor.font  != *studioApp.mainFrame->style_editor.font ||
 	             *sheet->style_build.font   != *studioApp.mainFrame->style_build.font ||
 	             *sheet->style_debug.font   != *studioApp.mainFrame->style_debug.font ||
-//	             *sheet->style_tracer.font  != *studioApp.mainFrame->style_tracer.font ||
+	             *sheet->style_trace.font   != *studioApp.mainFrame->style_trace.font ||
 	             *sheet->style_results.font != *studioApp.mainFrame->style_results.font ||
 	             *sheet->style_find.font    != *studioApp.mainFrame->style_find.font ||
 	             *static_cast<RDOEditorEditTheme*>(sheet->style_editor.theme) != *static_cast<RDOEditorEditTheme*>(studioApp.mainFrame->style_editor.theme) ||
 	             *static_cast<RDOLogEditTheme*>(sheet->style_build.theme) != *static_cast<RDOLogEditTheme*>(studioApp.mainFrame->style_build.theme) ||
 	             *sheet->style_debug.theme != *studioApp.mainFrame->style_debug.theme ||
-//	             *static_cast<RDOTracerTheme*>(sheet->style_tracer.theme) != *static_cast<RDOTracerTheme*>(studioApp.mainFrame->style_tracer.theme)
+	             sheet->style_trace != studioApp.mainFrame->style_trace ||
 	             *static_cast<RDOEditorBaseEditTheme*>(sheet->style_results.theme) != *static_cast<RDOEditorBaseEditTheme*>(studioApp.mainFrame->style_results.theme) ||
 	             *static_cast<RDOFindEditTheme*>(sheet->style_find.theme) != *static_cast<RDOFindEditTheme*>(studioApp.mainFrame->style_find.theme) );
 }
@@ -724,7 +839,7 @@ void RDOStudioOptionsStylesAndColors::setPreviewAsCombo( STYLEObject::Type type 
 		sheet->preview_editor.ShowWindow( SW_HIDE );
 		sheet->preview_build.ShowWindow( SW_HIDE );
 		sheet->preview_debug.ShowWindow( SW_HIDE );
-		sheet->preview_tracer.ShowWindow( SW_HIDE );
+		sheet->preview_trace.ShowWindow( SW_HIDE );
 		sheet->preview_results.ShowWindow( SW_HIDE );
 		sheet->preview_find.ShowWindow( SW_HIDE );
 		switch ( previewAs ) {
@@ -743,9 +858,9 @@ void RDOStudioOptionsStylesAndColors::setPreviewAsCombo( STYLEObject::Type type 
 				sheet->preview_debug.ShowWindow( SW_SHOW );
 				break;
 			}
-			case STYLEObject::tracer: {
+			case STYLEObject::trace: {
 				m_previewAs.SetCurSel( 3 );
-				sheet->preview_tracer.ShowWindow( SW_SHOW );
+				sheet->preview_trace.ShowWindow( SW_SHOW );
 				break;
 			}
 			case STYLEObject::results: {
@@ -763,30 +878,49 @@ void RDOStudioOptionsStylesAndColors::setPreviewAsCombo( STYLEObject::Type type 
 	}
 }
 
-void RDOStudioOptionsStylesAndColors::updatePropOfAllObject() const
+void RDOStudioOptionsStylesAndColors::updatePropOfAllObject()
 {
-	list< STYLEObject* >::const_iterator it_first = objects.begin();
-	if ( it_first != objects.end() ) {
-		list< STYLEObject* >::const_iterator it = it_first;
+	list< STYLEObject* >::const_iterator it = objects.begin();
+	if ( it != objects.end() ) {
 		it++;
 		if ( it != objects.end() ) {
-			string font_name = (*it)->font_name;
-			int    font_size = (*it)->font_size;
+			all_font_name  = (*it)->font_name;
+			all_font_size  = (*it)->font_size;
+			bool use_color = false;
+			list< STYLEProperty* >::const_iterator prop = (*it)->properties.begin();
+			if ( prop != (*it)->properties.end() ) {
+				all_fg_color = (*prop)->fg_color;
+				all_bg_color = (*prop)->bg_color;
+				use_color    = true;
+			}
 			it++;
 			bool flag_font_name = true;
 			bool flag_font_size = true;
+			bool flag_fg_clor   = true;
+			bool flag_bg_clor   = true;
 			while ( it != objects.end() ) {
-				if ( (*it)->font_name != font_name ) {
+				if ( flag_font_name && (*it)->font_name != all_font_name ) {
 					flag_font_name = false;
+					all_font_name  = "";
 				}
-				if ( (*it)->font_size != font_size ) {
+				if ( flag_font_size && (*it)->font_size != all_font_size ) {
 					flag_font_size = false;
+					all_font_size  = -1;
 				}
-				if ( !flag_font_name && !flag_font_size ) break;
+				prop = (*it)->properties.begin();
+				if ( use_color && prop != (*it)->properties.end() ) {
+					if ( flag_fg_clor && (*prop)->fg_color != all_fg_color ) {
+						flag_fg_clor = false;
+					}
+					if ( flag_bg_clor && (*prop)->bg_color != all_bg_color ) {
+						flag_bg_clor = false;
+					}
+				}
+				if ( !flag_font_name && !flag_font_size && !flag_fg_clor && !flag_bg_clor ) break;
 				it++;
 			}
-			(*it_first)->font_name = flag_font_name ? font_name : "";
-			(*it_first)->font_size = flag_font_size ? font_size : -1;
+			use_all_fg_color = use_color && flag_fg_clor;
+			use_all_bg_color = use_color && flag_bg_clor;
 		}
 	}
 }
@@ -811,14 +945,14 @@ RDOStudioOptions::RDOStudioOptions():
 	style_editor.init();
 	style_build.init();
 	style_debug.init();
-//	style_tracer.init();
+	style_trace.init();
 	style_results.init();
 	style_find.init();
 
 	style_editor  = studioApp.mainFrame->style_editor;
 	style_build   = studioApp.mainFrame->style_build;
 	style_debug   = studioApp.mainFrame->style_debug;
-//	style_tracer  = studioApp.mainFrame->style_tracer;
+	style_trace   = studioApp.mainFrame->style_trace;
 	style_results = studioApp.mainFrame->style_results;
 	style_find    = studioApp.mainFrame->style_find;
 
@@ -851,9 +985,9 @@ void RDOStudioOptions::updateStyles()
 	if ( preview_debug.GetSafeHwnd() ) {
 		preview_debug.setEditorStyle( &style_debug );
 	}
-//	if ( preview_tracer.GetSafeHwnd() ) {
-//		preview_tracer.setEditorStyle( &style_tracer );
-//	}
+	if ( preview_trace.GetSafeHwnd() ) {
+		preview_trace.setStyle( &style_trace );
+	}
 	if ( preview_results.GetSafeHwnd() ) {
 		preview_results.setEditorStyle( &style_results );
 	}
@@ -867,7 +1001,7 @@ void RDOStudioOptions::apply() const
 	studioApp.mainFrame->style_editor  = style_editor;
 	studioApp.mainFrame->style_build   = style_build;
 	studioApp.mainFrame->style_debug   = style_debug;
-//	studioApp.mainFrame->style_tracer  = style_tracer;
+	studioApp.mainFrame->style_trace   = style_trace;
 	studioApp.mainFrame->style_results = style_results;
 	studioApp.mainFrame->style_find    = style_find;
 	studioApp.mainFrame->updateAllStyles();

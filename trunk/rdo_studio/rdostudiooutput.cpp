@@ -8,7 +8,8 @@
 #include "edit_ctrls/rdofindedit.h"
 #include "rdo_edit/rdoeditorresults.h"
 #include "rdo_edit/rdoeditortabctrl.h"
-#include "./rdo_tracer/rdotracertrace.h"
+#include "rdo_tracer/rdotracertrace.h"
+#include "rdo_tracer/tracer_ctrls/rdotracerlogctrl.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -68,13 +69,13 @@ int RDOStudioOutput::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	build   = new RDOBuildEdit;
 	debug   = new RDODebugEdit;
-	tracer  = (CWnd*)::trace.createLog();
+	trace   = tracer.createLog();
 	results = new RDOEditorResults;
 	find    = new RDOFindEdit;
 
 	build->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), tab.getTabAsParent(), -1 );
 	debug->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), tab.getTabAsParent(), -1 );
-	tracer->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), tab.getTabAsParent(), -1 );
+	trace->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), tab.getTabAsParent(), -1 );
 	results->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), tab.getTabAsParent(), -1 );
 	find->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), tab.getTabAsParent(), -1 );
 
@@ -84,7 +85,7 @@ int RDOStudioOutput::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	debug->setEditorStyle( &studioApp.mainFrame->style_debug );
 	debug->setPopupMenu( &popupMenu );
 
-//	tracer->setEditorStyle( &studioApp.mainFrame->style_tracer );
+	trace->setStyle( &studioApp.mainFrame->style_trace );
 
 	results->setEditorStyle( &studioApp.mainFrame->style_results );
 	results->setPopupMenu( &popupMenu );
@@ -94,7 +95,7 @@ int RDOStudioOutput::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	tab.insertItem( build, "Build" );
 	tab.insertItem( debug, "Debug" );
-	tab.insertItem( tracer, "Tracer" );
+	tab.insertItem( trace, "Trace" );
 	tab.insertItem( results, "Results" );
 	tab.insertItem( find, "Find in Model" );
 
@@ -117,10 +118,10 @@ void RDOStudioOutput::showDebug()
 	debug->SetFocus();
 }
 
-void RDOStudioOutput::showTracer()
+void RDOStudioOutput::showTrace()
 {
 	tab.setCurrentItem( 2 );
-	tracer->SetFocus();
+	trace->SetFocus();
 }
 
 void RDOStudioOutput::showResults()
@@ -198,7 +199,7 @@ void RDOStudioOutput::updateStyles() const
 {
 	build->setEditorStyle( &studioApp.mainFrame->style_build );
 	debug->setEditorStyle( &studioApp.mainFrame->style_debug );
-//	tracer->setEditorStyle( &studioApp.mainFrame->style_tracer );
+	trace->setStyle( &studioApp.mainFrame->style_trace );
 	results->setEditorStyle( &studioApp.mainFrame->style_results );
 	find->setEditorStyle( &studioApp.mainFrame->style_find );
 }

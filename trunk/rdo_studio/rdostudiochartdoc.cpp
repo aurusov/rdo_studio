@@ -58,14 +58,14 @@ RDOStudioChartDoc::RDOStudioChartDoc()
 	: CDocument(),
 	minTimeOffset( 1.7E+308 )
 {
-	trace.addChart( this );
+	tracer.addChart( this );
 }
 
 RDOStudioChartDoc::~RDOStudioChartDoc()
 {
 	for ( vector< RDOStudioDocSerie >::iterator it = series.begin(); it != series.end(); it++ )
 		it->serie->removeFromDoc( this );
-	trace.removeChart( this );
+	tracer.removeChart( this );
 }
 
 BOOL RDOStudioChartDoc::OnNewDocument()

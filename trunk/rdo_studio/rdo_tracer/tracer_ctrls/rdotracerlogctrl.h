@@ -5,7 +5,7 @@
 #include "rdologctrl.h"
 #include "rdotracerlogstyle.h"
 
-using namespace std;
+namespace rdoTracerLog {
 
 // ----------------------------------------------------------------------------
 // ---------- RDOTracerLogCtrl
@@ -15,12 +15,12 @@ class RDOTracerLogCtrl: public RDOLogCtrl
 DECLARE_DYNCREATE( RDOTracerLogCtrl )
 
 protected:
-	typedef map< int, RDOColorPair > RDOColorMap;
+	typedef std::map< int, RDOColorPair > RDOColorMap;
 	RDOColorMap subitemColors;
 	bool addingSubitems;
 	RDOColorPair itemColor;
 	bool getItemColors( const int index, COLORREF& textColor, COLORREF& backColor ) const;
-	void showFindError( string& findStr );
+	void showFindError( std::string& findStr );
 
 	CMenu popupMenu;
 	bool bShowMenu;
@@ -47,9 +47,9 @@ public:
 	RDOTracerLogCtrl();
 	virtual ~RDOTracerLogCtrl();
 
-	void addStringToLog( const string& logStr );
+	void addStringToLog( const std::string& logStr );
 
-	void setStyle( const RDOTracerLogStyle& style, const bool needRedraw = true );
+	void setStyle( RDOTracerLogStyle* style, const bool needRedraw = true );
 
 	void clear();
 
@@ -59,6 +59,8 @@ public:
 	void setShowMenu( const bool value ) { bShowMenu = value; };
 
 };
+
+}; // namespace rdoTracerLog
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.

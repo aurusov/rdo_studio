@@ -4,12 +4,14 @@
 
 #include "rdologstyle.h"
 
+namespace rdoTracerLog {
+
 // ----------------------------------------------------------------------------
 // ---------- RDOLogCtrl
 // ----------------------------------------------------------------------------
 #define WM_LOGSELCHANGE WM_USER + 1
 
-typedef list< string > stringList;
+typedef std::list< std::string > stringList;
 
 class RDOLogCtrl: public CWnd  
 {
@@ -19,7 +21,7 @@ DECLARE_DYNAMIC( RDOLogCtrl )
 
 protected:
 	CFont fontLog;
-	void setFont( const RDOFont& font, const bool needRedraw = true );
+	void setFont( const bool needRedraw = true );
 	int lineHeight;
 	int charWidth;
 	int maxStrWidth;
@@ -52,12 +54,12 @@ protected:
 	bool bSearchDown;
 	bool bMatchCase;
 	bool bMatchWholeWord;
-	string findStr;
+	std::string findStr;
 	int find( const bool searchDown, const bool matchCase, const bool matchWholeWord );
 
 	RDOLogStyle* logStyle;
 	virtual bool getItemColors( const int index, COLORREF& textColor, COLORREF& backColor ) const;
-	virtual bool getItemColors( const string& item, COLORREF& textColor, COLORREF& backColor ) const;
+	virtual bool getItemColors( const std::string& item, COLORREF& textColor, COLORREF& backColor ) const;
 	
 	void recalcWidth( const int newMaxStrWidth );
 	void updateScrollBars();
@@ -96,15 +98,15 @@ public:
 	RDOLogCtrl( RDOLogStyle* style = NULL );
 	virtual ~RDOLogCtrl();
 
-	virtual void addStringToLog( const string& logStr );
+	virtual void addStringToLog( const std::string& logStr );
 	
 	bool getFocusOnly() const { return focusOnly; }
 	virtual void setFocusOnly( const bool value ) { focusOnly = value; }
 
 	const stringList& getLogStrings() const;
-	virtual string getString( const int index ) const;
+	virtual std::string getString( const int index ) const;
 	virtual int getSelectedIndex() const;
-	virtual string getSelected() const;
+	virtual std::string getSelected() const;
 	virtual bool makeLineVisible( const int index );
 	virtual void selectLine( const int index );
 	virtual void copy();
@@ -113,11 +115,13 @@ public:
 	virtual void clear();
 	
 	virtual const RDOLogStyle& getStyle() const;
-	virtual void setStyle( const RDOLogStyle& style, const bool needRedraw = true );
+	virtual void setStyle( RDOLogStyle* style, const bool needRedraw = true );
 	
 	//Must be called when moving main frame window
 	//void storeWindowRect();
 };
+
+}; // namespace rdoTracerLog
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
