@@ -15,7 +15,7 @@ class CChatSmile: public CPictureEx
 friend class CChatSmileList;
 
 public:
-	enum Type { smile, frown, wink, smirk, tongue, biggrin, gigi, eyes, beer, friday, lamer, tomato };
+	enum Type { none, smile, frown, wink, smirk, tongue, biggrin, gigi, beer, lamer, friday, eyes, tomato };
 
 private:
 	CChatSmile();
@@ -36,7 +36,9 @@ public:
 	CChatSmileList();
 	virtual ~CChatSmileList();
 
+	CChatSmile* addSmile( const std::string& str );
 	CChatSmile* addSmile( const CChatSmile::Type type );
+	CChatSmile::Type getType( const std::string& str );
 	CChatSmile* operator[] ( const int index ) const { return list[index]; }
 	int count() const                                { return list.size(); }
 

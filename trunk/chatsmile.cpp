@@ -37,6 +37,45 @@ CChatSmileList::~CChatSmileList()
 	list.clear();
 }
 
+CChatSmile::Type CChatSmileList::getType( const std::string& str )
+{
+	if ( str == ":)" || str == ":-)" ) {
+		return CChatSmile::smile;
+	} else if ( str == ":(" || str == ":-(" ) {
+		return CChatSmile::frown;
+	} else if ( str == ";)" || str == ";-)" ) {
+		return CChatSmile::wink;
+	} else if ( str == ":-\\" ) {
+		return CChatSmile::smirk;
+	} else if ( str == ":p" ) {
+		return CChatSmile::tongue;
+	} else if ( str == ":D" ) {
+		return CChatSmile::biggrin;
+	} else if ( str == ":gigi:" ) {
+		return CChatSmile::gigi;
+	} else if ( str == ":beer:" ) {
+		return CChatSmile::beer;
+	} else if ( str == ":lamer:" ) {
+		return CChatSmile::lamer;
+	} else if ( str == ":friday:" ) {
+		return CChatSmile::friday;
+	} else if ( str == ":eyes:" ) {
+		return CChatSmile::eyes;
+	} else if ( str == ":tomato:" ) {
+		return CChatSmile::tomato;
+	}
+	return CChatSmile::none;
+}
+
+CChatSmile* CChatSmileList::addSmile( const std::string& str )
+{
+	CChatSmile::Type type = getType( str );
+	if ( type != CChatSmile::none ) {
+		return addSmile( type );
+	}
+	return NULL;
+}
+
 CChatSmile* CChatSmileList::addSmile( const CChatSmile::Type type )
 {
 	CChatSmile* smile = new CChatSmile;
@@ -51,10 +90,10 @@ CChatSmile* CChatSmileList::addSmile( const CChatSmile::Type type )
 		case CChatSmile::tongue : res = IDR_SMILE_TONGUE; break;
 		case CChatSmile::biggrin: res = IDR_SMILE_BIGGRIN; break;
 		case CChatSmile::gigi   : res = IDR_SMILE_GIGI; break;
-		case CChatSmile::eyes   : res = IDR_SMILE_EYES; break;
 		case CChatSmile::beer   : res = IDR_SMILE_BEER; break;
-		case CChatSmile::friday : res = IDR_SMILE_FRIDAY; break;
 		case CChatSmile::lamer  : res = IDR_SMILE_LAMER; break;
+		case CChatSmile::friday : res = IDR_SMILE_FRIDAY; break;
+		case CChatSmile::eyes   : res = IDR_SMILE_EYES; break;
 		case CChatSmile::tomato : res = IDR_SMILE_TOMATO; break;
 		default                 : res = -1; break;
 	}

@@ -388,6 +388,10 @@ SOURCE=.\res\popupmsg.wav
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\smile_beer.gif
+# End Source File
+# Begin Source File
+
 SOURCE=.\res\smile_beer_1.gif
 # End Source File
 # Begin Source File
@@ -401,6 +405,10 @@ SOURCE=.\res\smile_biggrin.gif
 # Begin Source File
 
 SOURCE=.\res\smile_eyes.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_friday.gif
 # End Source File
 # Begin Source File
 

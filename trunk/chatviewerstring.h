@@ -52,7 +52,6 @@ protected:
 	void selectedON();
 	void selectedOFF();
 
-	CChatSmile* getSmile( const std::string& str, int& smile_index ) const;
 	int getOneLineHeight( CDC* dc, const int _width, int pos_from, int smile_index );
 
 public:
