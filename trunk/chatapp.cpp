@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "chatapp.h"
 #include "chatmainfrm.h"
-#include "chatoptions.h"
 #include "resource.h"
 
 #include <afxsock.h>
@@ -19,20 +18,6 @@ CChatApp chatApp;
 
 BEGIN_MESSAGE_MAP( CChatApp, CWinApp )
 	//{{AFX_MSG_MAP(CChatApp)
-	ON_COMMAND_EX( ID_STATUSMODE_ONLINE      , OnStatusMode )
-	ON_COMMAND_EX( ID_STATUSMODE_AWAY        , OnStatusMode )
-	ON_COMMAND_EX( ID_STATUSMODE_NOTAVAILIBLE, OnStatusMode )
-	ON_UPDATE_COMMAND_UI( ID_STATUSMODE_ONLINE      , OnUpdateStatusMode )
-	ON_UPDATE_COMMAND_UI( ID_STATUSMODE_AWAY        , OnUpdateStatusMode )
-	ON_UPDATE_COMMAND_UI( ID_STATUSMODE_NOTAVAILIBLE, OnUpdateStatusMode )
-	ON_COMMAND_EX( ID_STATUSMODE_ONLINE_INFO      , OnStatusModeInfo )
-	ON_COMMAND_EX( ID_STATUSMODE_AWAY_INFO        , OnStatusModeInfo )
-	ON_COMMAND_EX( ID_STATUSMODE_NOTAVAILIBLE_INFO, OnStatusModeInfo )
-	ON_UPDATE_COMMAND_UI( ID_STATUSMODE_ONLINE_INFO      , OnUpdateStatusModeInfo )
-	ON_UPDATE_COMMAND_UI( ID_STATUSMODE_AWAY_INFO        , OnUpdateStatusModeInfo )
-	ON_UPDATE_COMMAND_UI( ID_STATUSMODE_NOTAVAILIBLE_INFO, OnUpdateStatusModeInfo )
-	ON_COMMAND( ID_CHAT_TOCRYOUT, OnToCryOut )
-	ON_COMMAND( ID_CHAT_OPTIONS, OnOptions )
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -191,75 +176,6 @@ void CChatApp::setStatusMode( const CChatStatusModeType value, const bool automa
 	udp.send( s );
 }
 
-void CChatApp::OnStatusMode( UINT nID )
-{
-	CChatStatusModeType statusType;
-	switch ( nID ) {
-		case ID_STATUSMODE_ONLINE      : statusType = CSMT_Online; break;
-		case ID_STATUSMODE_AWAY        : statusType = CSMT_Away; break;
-		case ID_STATUSMODE_NOTAVAILIBLE: statusType = CSMT_NotAvailible; break;
-		default                        : statusType = CSMT_Online;
-	}
-	setStatusMode( statusType );
-}
-
-void CChatApp::OnUpdateStatusMode( CCmdUI* pCmdUI )
-{
-	CChatStatusModeType statusType = getStatusMode();
-	switch ( pCmdUI->m_nID ) {
-		case ID_STATUSMODE_ONLINE      : pCmdUI->SetCheck( statusType == CSMT_Online ); break;
-		case ID_STATUSMODE_AWAY        : pCmdUI->SetCheck( statusType == CSMT_Away ); break;
-		case ID_STATUSMODE_NOTAVAILIBLE: pCmdUI->SetCheck( statusType == CSMT_NotAvailible ); break;
-	}
-}
-
-void CChatApp::OnStatusModeInfo( UINT nID )
-{
-	CChatStatusModeType statusType;
-	switch ( nID ) {
-		case ID_STATUSMODE_ONLINE_INFO      : statusType = CSMT_Online; break;
-		case ID_STATUSMODE_AWAY_INFO        : statusType = CSMT_Away; break;
-		case ID_STATUSMODE_NOTAVAILIBLE_INFO: statusType = CSMT_NotAvailible; break;
-		default                             : statusType = CSMT_Online;
-	}
-	if ( statusType != getStatusMode() ) {
-		CChatStatusModeDialog dlg( IDD_STATUSMODEINFO_DIALOG );
-		if ( dlg.DoModal() == IDOK ) {
-			CChatStatusMode* statusMode = statusModes.getStatusMode( statusType );
-			std::string info_backup = statusMode->info;
-			statusMode->info = dlg.info;
-			setStatusMode( statusType );
-			if ( !dlg.useAsDefault ) {
-				statusMode->info = info_backup;
-			}
-		}
-	}
-}
-
-void CChatApp::OnUpdateStatusModeInfo( CCmdUI* pCmdUI )
-{
-	CChatStatusModeType statusType = getStatusMode();
-	switch ( pCmdUI->m_nID ) {
-		case ID_STATUSMODE_ONLINE_INFO      : pCmdUI->Enable( statusType != CSMT_Online ); break;
-		case ID_STATUSMODE_AWAY_INFO        : pCmdUI->Enable( statusType != CSMT_Away ); break;
-		case ID_STATUSMODE_NOTAVAILIBLE_INFO: pCmdUI->Enable( statusType != CSMT_NotAvailible ); break;
-	}
-}
-
-void CChatApp::OnToCryOut()
-{
-	CChatToCryOutDialog dlg( IDD_TOCRYOUT_DIALOG );
-	if ( dlg.DoModal() == IDOK && !dlg.message.IsEmpty() ) {
-		udp.send( "<tocryout:" + dlg.message + ">" );
-	}
-}
-
-void CChatApp::OnOptions()
-{
-	CChatOptions dlg;
-	dlg.DoModal();
-}
-
 void CChatApp::setUserName( const std::string& value )
 {
 	if ( userName != value ) {
@@ -278,29 +194,4 @@ void CChatApp::refreshUserList()
 CFont& CChatApp::getFont()
 {
 	return font;
-}
-
-// ----------------------------------------------------------------------------
-// ---------- CChatToCryOutDialog
-// ----------------------------------------------------------------------------
-BEGIN_MESSAGE_MAP( CChatToCryOutDialog, CDialog )
-	//{{AFX_MSG_MAP(CChatToCryOutDialog)
-	//}}AFX_MSG_MAP
-END_MESSAGE_MAP()
-
-CChatToCryOutDialog::CChatToCryOutDialog( UINT nIDTemplate, CWnd* pParentWnd ):
-	CDialog( nIDTemplate, pParentWnd ),
-	message( "" )
-{
-}
-
-CChatToCryOutDialog::~CChatToCryOutDialog()
-{
-}
-
-void CChatToCryOutDialog::DoDataExchange( CDataExchange* pDX )
-{
-	CDialog::DoDataExchange( pDX );
-
-	DDX_Text( pDX, IDC_TOCRYOUT_EDIT, message );
 }

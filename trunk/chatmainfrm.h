@@ -136,7 +136,13 @@ protected:
 	afx_msg void OnUpdateViewStatusModeToolbar(CCmdUI* pCmdUI);
 	afx_msg void OnSound();
 	afx_msg void OnUpdateSound(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateStatusMode( CCmdUI* pCmdUI );
+	afx_msg void OnUpdateStatusModeInfo( CCmdUI* pCmdUI );
+	afx_msg void OnToCryOut();
+	afx_msg void OnOptions();
 	//}}AFX_MSG
+	afx_msg void OnStatusMode( UINT nID );
+	afx_msg void OnStatusModeInfo( UINT nID );
 	DECLARE_MESSAGE_MAP()
 };
 

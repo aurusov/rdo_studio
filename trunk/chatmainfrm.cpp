@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "chatmainfrm.h"
 #include "chatapp.h"
+#include "chatoptions.h"
 #include "resource.h"
 
 #ifdef _DEBUG
@@ -8,6 +9,50 @@
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
+
+// ----------------------------------------------------------------------------
+// ---------- CChatToCryOutDialog
+// ----------------------------------------------------------------------------
+class CChatToCryOutDialog: public CDialog
+{
+public:
+	CString message;
+
+	CChatToCryOutDialog( UINT nIDTemplate, CWnd* pParentWnd = NULL );
+	virtual ~CChatToCryOutDialog();
+
+protected:
+	//{{AFX_VIRTUAL(CChatToCryOutDialog)
+	protected:
+	virtual void DoDataExchange( CDataExchange* pDX );
+	//}}AFX_VIRTUAL
+
+	//{{AFX_MSG(CChatToCryOutDialog)
+	//}}AFX_MSG
+	DECLARE_MESSAGE_MAP()
+};
+
+BEGIN_MESSAGE_MAP( CChatToCryOutDialog, CDialog )
+	//{{AFX_MSG_MAP(CChatToCryOutDialog)
+	//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+CChatToCryOutDialog::CChatToCryOutDialog( UINT nIDTemplate, CWnd* pParentWnd ):
+	CDialog( nIDTemplate, pParentWnd ),
+	message( "" )
+{
+}
+
+CChatToCryOutDialog::~CChatToCryOutDialog()
+{
+}
+
+void CChatToCryOutDialog::DoDataExchange( CDataExchange* pDX )
+{
+	CDialog::DoDataExchange( pDX );
+
+	DDX_Text( pDX, IDC_TOCRYOUT_EDIT, message );
+}
 
 // ----------------------------------------------------------------------------
 // ---------- CChatMainFrame
@@ -39,7 +84,21 @@ BEGIN_MESSAGE_MAP( CChatMainFrame, CFrameWnd )
 	ON_COMMAND( ID_TRAYMENU_EXIT, OnTrayCloseApp )
 	ON_COMMAND(ID_SOUND, OnSound)
 	ON_UPDATE_COMMAND_UI(ID_SOUND, OnUpdateSound)
+	ON_UPDATE_COMMAND_UI( ID_STATUSMODE_ONLINE      , OnUpdateStatusMode )
+	ON_UPDATE_COMMAND_UI( ID_STATUSMODE_AWAY        , OnUpdateStatusMode )
+	ON_UPDATE_COMMAND_UI( ID_STATUSMODE_NOTAVAILIBLE, OnUpdateStatusMode )
+	ON_UPDATE_COMMAND_UI( ID_STATUSMODE_ONLINE_INFO      , OnUpdateStatusModeInfo )
+	ON_UPDATE_COMMAND_UI( ID_STATUSMODE_AWAY_INFO        , OnUpdateStatusModeInfo )
+	ON_UPDATE_COMMAND_UI( ID_STATUSMODE_NOTAVAILIBLE_INFO, OnUpdateStatusModeInfo )
+	ON_COMMAND( ID_CHAT_TOCRYOUT, OnToCryOut )
+	ON_COMMAND( ID_CHAT_OPTIONS, OnOptions )
 	//}}AFX_MSG_MAP
+	ON_COMMAND_EX( ID_STATUSMODE_ONLINE      , OnStatusMode )
+	ON_COMMAND_EX( ID_STATUSMODE_AWAY        , OnStatusMode )
+	ON_COMMAND_EX( ID_STATUSMODE_NOTAVAILIBLE, OnStatusMode )
+	ON_COMMAND_EX( ID_STATUSMODE_ONLINE_INFO      , OnStatusModeInfo )
+	ON_COMMAND_EX( ID_STATUSMODE_AWAY_INFO        , OnStatusModeInfo )
+	ON_COMMAND_EX( ID_STATUSMODE_NOTAVAILIBLE_INFO, OnStatusModeInfo )
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -643,4 +702,73 @@ void CChatMainFrame::OnSound()
 void CChatMainFrame::OnUpdateSound(CCmdUI* pCmdUI)
 {
 	pCmdUI->SetCheck( chatApp.sounds.getUseSound() );
+}
+
+void CChatMainFrame::OnStatusMode( UINT nID )
+{
+	CChatStatusModeType statusType;
+	switch ( nID ) {
+		case ID_STATUSMODE_ONLINE      : statusType = CSMT_Online; break;
+		case ID_STATUSMODE_AWAY        : statusType = CSMT_Away; break;
+		case ID_STATUSMODE_NOTAVAILIBLE: statusType = CSMT_NotAvailible; break;
+		default                        : statusType = CSMT_Online;
+	}
+	chatApp.setStatusMode( statusType );
+}
+
+void CChatMainFrame::OnUpdateStatusMode( CCmdUI* pCmdUI )
+{
+	CChatStatusModeType statusType = chatApp.getStatusMode();
+	switch ( pCmdUI->m_nID ) {
+		case ID_STATUSMODE_ONLINE      : pCmdUI->SetCheck( statusType == CSMT_Online ); break;
+		case ID_STATUSMODE_AWAY        : pCmdUI->SetCheck( statusType == CSMT_Away ); break;
+		case ID_STATUSMODE_NOTAVAILIBLE: pCmdUI->SetCheck( statusType == CSMT_NotAvailible ); break;
+	}
+}
+
+void CChatMainFrame::OnStatusModeInfo( UINT nID )
+{
+	CChatStatusModeType statusType;
+	switch ( nID ) {
+		case ID_STATUSMODE_ONLINE_INFO      : statusType = CSMT_Online; break;
+		case ID_STATUSMODE_AWAY_INFO        : statusType = CSMT_Away; break;
+		case ID_STATUSMODE_NOTAVAILIBLE_INFO: statusType = CSMT_NotAvailible; break;
+		default                             : statusType = CSMT_Online;
+	}
+	if ( statusType != chatApp.getStatusMode() ) {
+		CChatStatusModeDialog dlg( IDD_STATUSMODEINFO_DIALOG );
+		if ( dlg.DoModal() == IDOK ) {
+			CChatStatusMode* statusMode = chatApp.statusModes.getStatusMode( statusType );
+			std::string info_backup = statusMode->info;
+			statusMode->info = dlg.info;
+			chatApp.setStatusMode( statusType );
+			if ( !dlg.useAsDefault ) {
+				statusMode->info = info_backup;
+			}
+		}
+	}
+}
+
+void CChatMainFrame::OnUpdateStatusModeInfo( CCmdUI* pCmdUI )
+{
+	CChatStatusModeType statusType = chatApp.getStatusMode();
+	switch ( pCmdUI->m_nID ) {
+		case ID_STATUSMODE_ONLINE_INFO      : pCmdUI->Enable( statusType != CSMT_Online ); break;
+		case ID_STATUSMODE_AWAY_INFO        : pCmdUI->Enable( statusType != CSMT_Away ); break;
+		case ID_STATUSMODE_NOTAVAILIBLE_INFO: pCmdUI->Enable( statusType != CSMT_NotAvailible ); break;
+	}
+}
+
+void CChatMainFrame::OnToCryOut()
+{
+	CChatToCryOutDialog dlg( IDD_TOCRYOUT_DIALOG );
+	if ( dlg.DoModal() == IDOK && !dlg.message.IsEmpty() ) {
+		chatApp.udp.send( "<tocryout:" + dlg.message + ">" );
+	}
+}
+
+void CChatMainFrame::OnOptions()
+{
+	CChatOptions dlg;
+	dlg.DoModal();
 }

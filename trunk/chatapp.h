@@ -62,34 +62,6 @@ protected:
 	//}}AFX_VIRTUAL
 
 	//{{AFX_MSG(CChatApp)
-	afx_msg void OnStatusMode( UINT nID );
-	afx_msg void OnUpdateStatusMode( CCmdUI* pCmdUI );
-	afx_msg void OnStatusModeInfo( UINT nID );
-	afx_msg void OnUpdateStatusModeInfo( CCmdUI* pCmdUI );
-	afx_msg void OnToCryOut();
-	afx_msg void OnOptions();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
-};
-
-// ----------------------------------------------------------------------------
-// ---------- CChatToCryOutDialog
-// ----------------------------------------------------------------------------
-class CChatToCryOutDialog: public CDialog
-{
-public:
-	CString message;
-
-	CChatToCryOutDialog( UINT nIDTemplate, CWnd* pParentWnd = NULL );
-	virtual ~CChatToCryOutDialog();
-
-protected:
-	//{{AFX_VIRTUAL(CChatToCryOutDialog)
-	protected:
-	virtual void DoDataExchange( CDataExchange* pDX );
-	//}}AFX_VIRTUAL
-
-	//{{AFX_MSG(CChatToCryOutDialog)
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
