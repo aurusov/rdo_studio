@@ -658,46 +658,6 @@ void BKMainFrame::OnUpdateEmulatorSoftReset(CCmdUI* pCmdUI)
 	pCmdUI->Enable( emul.isPowerON() );
 }
 
-LRESULT BKMainFrame::DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam)
-{
-	switch ( message ) {
-		case WM_SYSCOMMAND: {
-			if ( LOWORD( wParam ) == SC_KEYMENU ) {
-				return 0;
-			}
-			break;
-		}
-		case WM_INITMENU: {
-			TRACE( "canIteration = false\r\n" );
-			canIteration = false;
-			break;
-		}
-		case WM_COMMAND:
-		case WM_SETFOCUS:
-		case WM_RBUTTONDOWN:
-		case WM_LBUTTONDOWN: {
-			TRACE( "canIteration = true\r\n" );
-			canIteration = true;
-			break;
-		}
-		case WM_KEYDOWN   :
-		case WM_SYSKEYDOWN: {
-			if ( canIteration && emul.keyboard.keyDown( wParam, lParam ) ) {
-				return 0;
-			}
-			break;
-		}
-		case WM_KEYUP     :
-		case WM_SYSKEYUP  : {
-			if ( canIteration && emul.keyboard.keyUp( wParam, lParam ) ) {
-				return 0;
-			}
-			break;
-		}
-	}
-	return CFrameWnd::DefWindowProc( message, wParam, lParam );
-}
-
 void BKMainFrame::OnRom()
 {
 }
@@ -732,9 +692,46 @@ void BKMainFrame::setDefaultRomMenu()
 	GetMenu()->CheckMenuItem( ID_ROM_120000_BASIC, MF_CHECKED | MF_BYCOMMAND );
 }
 
-BOOL BKMainFrame::OnCommand(WPARAM wParam, LPARAM lParam)
+LRESULT BKMainFrame::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
-	TRACE( "WM_COMMAND\r\n" );
-	canIteration = true;
-	return CFrameWnd::OnCommand( wParam, lParam );
+	switch ( message ) {
+		case WM_SYSCOMMAND: {
+			if ( LOWORD( wParam ) == SC_KEYMENU ) {
+				return 0;
+			}
+			break;
+		}
+		case WM_INITMENU: {
+			canIteration = false;
+			break;
+		}
+		case WM_COMMAND:
+		case WM_SETFOCUS:
+		case WM_RBUTTONDOWN:
+		case WM_LBUTTONDOWN: {
+			canIteration = true;
+			break;
+		}
+		case WM_KEYDOWN   :
+		case WM_SYSKEYDOWN: {
+			if ( canIteration && emul.keyboard.keyDown( wParam, lParam ) ) {
+				return 0;
+			}
+			break;
+		}
+		case WM_KEYUP     :
+		case WM_SYSKEYUP  : {
+			if ( canIteration ) {
+				if ( emul.keyboard.keyUp( wParam, lParam ) ) {
+					return 0;
+				}
+			} else {
+				if ( wParam == VK_ESCAPE ) {
+					canIteration = true;
+				}
+			}
+			break;
+		}
+	}
+	return CFrameWnd::WindowProc(message, wParam, lParam);
 }
