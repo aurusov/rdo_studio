@@ -576,8 +576,8 @@ void __fastcall TForm1::ModelsPanelResize(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TForm1::RunClick(System::TObject* Sender)
 {
-  AnsiString comline = FCurrentPath + "data\\rdodemo.exe" + " " + FCurModelPath + "demo\\" + ModelsTree->Selected->Text + ".dmf";
-  AnsiString curdir = FCurModelPath + "demo";
+  AnsiString comline = FCurrentPath + "data\\RAO-studio.exe" + " \"" + FCurModelPath + "source\\" + ModelsTree->Selected->Text + ".smr\" -autorun -autoexit";
+  AnsiString curdir = FCurModelPath + "source";
 
   STARTUPINFO start;
   ZeroMemory(&start, sizeof(STARTUPINFO));
@@ -1044,7 +1044,7 @@ void TForm1::LoadSettings()
 {
   TIniFile* ini = NULL;
   try {
-    ini = new TIniFile(FCurrentPath + "RAO_Explorer.ini");
+    ini = new TIniFile(FCurrentPath + "RAO-explorer.ini");
     Language = ini->ReadString("Options", "Language", "English");
     ShowOptionsMenu = ini->ReadBool("Options", "ShowOptionsMenu", true);
     ModelsDelay = ini->ReadInteger("Options", "ModelsDelay", 30);
@@ -1063,7 +1063,7 @@ void TForm1::LoadSettings()
 void TForm1::SaveSettings()
 {
   bool oncd = true;
-  AnsiString path = FCurrentPath + "RAO_Explorer.ini";
+  AnsiString path = FCurrentPath + "RAO-explorer.ini";
   if (FileExists(path)) {
     int attr = FileGetAttr(path);
     if ((!(attr & faReadOnly)) || ((attr & faReadOnly) && (FileSetAttr(path, attr ^ faReadOnly) == 0)))
@@ -1156,7 +1156,7 @@ void TForm1::SetLanguage(const AnsiString Value)
     AnsiString folder = "";
 
     try {
-      lng = new TIniFile(FCurrentPath + "data\\RAO_Explorer.lng");
+      lng = new TIniFile(FCurrentPath + "data\\RAO-explorer.lng");
       folder = lng->ReadString(FLanguage, "Folder", "");
       delete lng; lng = NULL;
     } catch (Exception& e) {

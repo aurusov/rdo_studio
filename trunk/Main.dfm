@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 11
-  Top = 16
+  Left = 215
+  Top = 37
   Width = 789
   Height = 556
   Caption = 'Form1'
@@ -45,7 +45,7 @@ object Form1: TForm1
     Left = 0
     Top = 0
     Width = 781
-    Height = 529
+    Height = 522
     Align = alClient
     Brush.Style = bsClear
     Pen.Color = 8478492
@@ -70,7 +70,7 @@ object Form1: TForm1
     Left = 36
     Top = 156
     Width = 64
-    Height = 56
+    Height = 66
     Center = True
     Stretch = True
     Transparent = True

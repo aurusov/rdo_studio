@@ -16,20 +16,6 @@
 #include "HighlightImage.h"
 #include <ImgList.hpp>
 
-typedef enum {
-  mkNone         = 0,
-  mkAbout        = 1,
-  mkExplore      = 2,
-  mkModelsShow   = 3,
-  mkPresentation = 4
-} TMenuItemKind;
-
-typedef enum {
-  nkNone         = 0,
-  nkBrief        = 1,
-  nkRAO          = 2
-} TFileNameKind;
-
 //---------------------------------------------------------------------------
 class TForm1 : public TForm
 {
@@ -95,6 +81,20 @@ __published:
   void __fastcall ModelsTreeKeyDown(TObject *Sender, WORD &Key,
     TShiftState Shift);
 private:
+typedef enum {
+  mkNone         = 0,
+  mkAbout        = 1,
+  mkExplore      = 2,
+  mkModelsShow   = 3,
+  mkPresentation = 4
+} TMenuItemKind;
+
+typedef enum {
+  nkNone         = 0,
+  nkBrief        = 1,
+  nkRAO          = 2
+} TFileNameKind;
+
   THighlightText* MenuExplore;
   THighlightText* MenuShow;
   THighlightText* MenuAbout;

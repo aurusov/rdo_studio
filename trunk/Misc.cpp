@@ -27,7 +27,7 @@ AnsiString GetString(const int ID)
   TIniFile* lng = NULL;
   AnsiString res = "";
   try {
-    AnsiString path = GetNormalDirFromDir(ExtractFilePath(Application->ExeName)) + "data\\RAO_Explorer.lng";
+    AnsiString path = GetNormalDirFromDir(ExtractFilePath(Application->ExeName)) + "data\\RAO-explorer.lng";
     lng = new TIniFile(path);
     res = lng->ReadString(Form1->Language, IntToStr(ID - StringID), "");
     delete lng; lng = NULL;

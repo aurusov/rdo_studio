@@ -273,7 +273,7 @@ void TOptionsForm::GetOptions()
 {
   TIniFile* lng = NULL;
   try {
-    AnsiString path = GetNormalDirFromDir(ExtractFilePath(Application->ExeName)) + "data\\RAO_Explorer.lng";
+    AnsiString path = GetNormalDirFromDir(ExtractFilePath(Application->ExeName)) + "data\\RAO-explorer.lng";
     lng = new TIniFile(path);
     lng->ReadSections(LangBox->Items);
     delete lng; lng = NULL;
