@@ -31,10 +31,10 @@ RDORepository* RDOKernel::getRepository()
 	return repository;
 }
 
-RdoSimulator* RDOKernel::getSimulator()
+RDOSimulatorNS::RdoSimulator* RDOKernel::getSimulator()
 {
 	if ( !simulator ) {
-		simulator = new RdoSimulator;
+		simulator = new RDOSimulatorNS::RdoSimulator;
 	}
 	return simulator;
 }

@@ -5,7 +5,7 @@
 //#include "rdoStdFuncs.h"
 //#include "rdortp.h"
 
-#include "rdoframe.h"
+#include "rdosimcommon.h"
 
 namespace rdoRuntime
 {
@@ -41,7 +41,7 @@ protected:
 	RDOFRMItem() {}
 public:
 	virtual ~RDOFRMItem() {}
-	virtual RDOFrameElement* createElement(RDORuntime *sim);
+	virtual RDOSimulatorNS::RDOFrameElement* createElement(RDORuntime *sim);
 };
 
 class RDOFRMBoundingItem: public virtual RDOFRMItem
@@ -61,8 +61,8 @@ public:
 	RDOFRMColor bgColor;
 	RDOFRMColor color;
 	virtual ~RDOFRMColoredItem() {}
-	RDOColor getBg();
-	RDOColor getFg();
+	RDOSimulatorNS::RDOColor getBg();
+	RDOSimulatorNS::RDOColor getFg();
 };
 
 struct RDORTPEnum;
@@ -78,7 +78,7 @@ public:
 	RDOFRMText(RDOFUNArithm *x, RDOFUNArithm *y, RDOFUNArithm *width, RDOFUNArithm *height, RDOFRMColor *bgColor, RDOFRMColor *color);
 	void setText(int _align, RDOFUNArithm *_value);
 	void setText(int _align, string *_txt);
-	RDOFrameElement* createElement(RDORuntime *sim);
+	RDOSimulatorNS::RDOFrameElement* createElement(RDORuntime *sim);
 };
 
 class RDOFRMBitmap: public RDOFRMItem
@@ -89,7 +89,7 @@ class RDOFRMBitmap: public RDOFRMItem
 	string *mask;
 public:
 	RDOFRMBitmap(RDOFUNArithm *_x, RDOFUNArithm *_y, string *_picFileName, string *_mask = NULL);
-	RDOFrameElement* createElement(RDORuntime *sim);
+	RDOSimulatorNS::RDOFrameElement* createElement(RDORuntime *sim);
 };
 
 class RDOFRMS_bmp: public RDOFRMBoundingItem
@@ -98,21 +98,21 @@ class RDOFRMS_bmp: public RDOFRMBoundingItem
 	string *mask;
 public:
 	RDOFRMS_bmp(RDOFUNArithm *x, RDOFUNArithm *y, RDOFUNArithm *width, RDOFUNArithm *height, string *_picFileName, string *_mask = NULL);
-	RDOFrameElement* createElement(RDORuntime *sim);
+	RDOSimulatorNS::RDOFrameElement* createElement(RDORuntime *sim);
 };
 
 class RDOFRMRect: public RDOFRMBoundingItem, public RDOFRMColoredItem
 {
 public:
 	RDOFRMRect(RDOFUNArithm *x, RDOFUNArithm *y, RDOFUNArithm *width, RDOFUNArithm *height, RDOFRMColor *bgColor, RDOFRMColor *color);
-	RDOFrameElement* createElement(RDORuntime *sim);
+	RDOSimulatorNS::RDOFrameElement* createElement(RDORuntime *sim);
 };
 
 class RDOFRMR_rect: public RDOFRMBoundingItem, public RDOFRMColoredItem
 {
 public:
 	RDOFRMR_rect(RDOFUNArithm *x, RDOFUNArithm *y, RDOFUNArithm *width, RDOFUNArithm *height, RDOFRMColor *bgColor, RDOFRMColor *color);
-	RDOFrameElement* createElement(RDORuntime *sim);
+	RDOSimulatorNS::RDOFrameElement* createElement(RDORuntime *sim);
 };
 
 class RDOFRMLine: public RDOFRMBoundingItem
@@ -120,14 +120,14 @@ class RDOFRMLine: public RDOFRMBoundingItem
 	RDOFRMColor color;
 public:
 	RDOFRMLine(RDOFUNArithm *x, RDOFUNArithm *y, RDOFUNArithm *width, RDOFUNArithm *height, RDOFRMColor *_color);
-	RDOFrameElement* createElement(RDORuntime *sim);
+	RDOSimulatorNS::RDOFrameElement* createElement(RDORuntime *sim);
 };
 
 class RDOFRMEllipse: public RDOFRMBoundingItem, public RDOFRMColoredItem
 {
 public:
 	RDOFRMEllipse(RDOFUNArithm *x, RDOFUNArithm *y, RDOFUNArithm *width, RDOFUNArithm *height, RDOFRMColor *bgColor, RDOFRMColor *color);
-	RDOFrameElement* createElement(RDORuntime *sim);
+	RDOSimulatorNS::RDOFrameElement* createElement(RDORuntime *sim);
 };
 
 class RDOFRMTriang: public RDOFRMColoredItem
@@ -135,7 +135,7 @@ class RDOFRMTriang: public RDOFRMColoredItem
 	RDOCalc *x1, *y1, *x2, *y2, *x3, *y3;
 public:
 	RDOFRMTriang(RDOFUNArithm *_x1, RDOFUNArithm *_y1, RDOFUNArithm *_x2, RDOFUNArithm *_y2, RDOFUNArithm *_x3, RDOFUNArithm *_y3, RDOFRMColor *bgColor, RDOFRMColor *color);
-	RDOFrameElement* createElement(RDORuntime *sim);
+	RDOSimulatorNS::RDOFrameElement* createElement(RDORuntime *sim);
 };
 
 class RDOFRMActive: public RDOFRMBoundingItem
@@ -143,7 +143,7 @@ class RDOFRMActive: public RDOFRMBoundingItem
 	string *operName;
 public:
 	RDOFRMActive(RDOFUNArithm *x, RDOFUNArithm *y, RDOFUNArithm *width, RDOFUNArithm *height, string *_operName);
-	RDOFrameElement* createElement(RDORuntime *sim);
+	RDOSimulatorNS::RDOFrameElement* createElement(RDORuntime *sim);
 };
 
 class RDOFRMFrame;
@@ -177,7 +177,7 @@ public:
 	void end();
 	virtual ~RDOFRMFrame();
 	bool checkCondition(RDORuntime *sim);
-	RDOFrame* createFrame(RDORuntime *sim);
+	RDOSimulatorNS::RDOFrame* createFrame(RDORuntime *sim);
 	string *getName() { return name; }
 };
 

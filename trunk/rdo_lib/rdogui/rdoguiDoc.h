@@ -10,7 +10,7 @@
 #endif // _MSC_VER > 1000
 
 #include <afxmt.h>
-#include "rdoframe.h"
+#include "rdosimcommon.h"
 
 class CRdoguiDoc : public CDocument
 {

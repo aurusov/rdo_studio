@@ -205,7 +205,7 @@ RDOFUNArithm::RDOFUNArithm(string *resName, string *parName)
 		if(currParser->fUNGroupStack.empty() || 
 			*currParser->fUNGroupStack.back()->resType->getName() != *resName)
 		{
-			if((currParser->fileToParse != PAT_FILE) ||
+			if((currParser->fileToParse != RDOSimulatorNS::PAT_FILE) ||
 				!currParser->lastPATPattern->findRelevantResource(resName))
 				currParser->error(("Unknown resource name: " + *resName).c_str());
 			else
@@ -451,9 +451,9 @@ RDOFUNArithm::RDOFUNArithm(string *s)
 	}
 
 	const RDOFUNFunctionParam *param = NULL;
-	if(currParser->fileToParse == FUN_FILE)
+	if(currParser->fileToParse == RDOSimulatorNS::FUN_FILE)
 		param = currParser->lastFUNFunction->findFUNFunctionParam(s);
-	else if(currParser->fileToParse == PAT_FILE)
+	else if(currParser->fileToParse == RDOSimulatorNS::PAT_FILE)
 		param = currParser->lastPATPattern->findPATPatternParam(s);
 
 	const RDOFUNConstant *cons = currParser->findFUNConst(s);
@@ -481,9 +481,9 @@ RDOFUNArithm::RDOFUNArithm(string *s)
 	if(type == 2)
 		enu = ((RDORTPEnumResParam *)param->getType())->enu;
 
-	if(currParser->fileToParse == FUN_FILE)
+	if(currParser->fileToParse == RDOSimulatorNS::FUN_FILE)
 		calc = new RDOCalcFuncParam(currParser->lastFUNFunction->findFUNFunctionParamNum(s));
-	else if(currParser->fileToParse == PAT_FILE)
+	else if(currParser->fileToParse == RDOSimulatorNS::PAT_FILE)
 		calc = new RDOCalcPatParam(currParser->lastPATPattern->findPATPatternParamNum(s));
 }
 

@@ -27,10 +27,50 @@ static char THIS_FILE[] = __FILE__;
 #include "rdosmr.h"
 #include "rdofrm.h"
 
+namespace RDOSimulatorNS
+{
+
+const RDOFrame* RdoSimulator::getFrame()
+{
+	return frame;
+}
+
+void RdoSimulator::addKeyPressed(int scanCode)
+{
+	scanCodes.push_back(scanCode);
+}
+
+void RdoSimulator::addAreaPressed(string& areaName)
+{
+	areasActivated.push_back(areaName);
+}
+
+void frameCallBack(rdoRuntime::RDOConfig *config, void *param)
+{
+	if(config->showAnimation == SM_Animation)
+	{
+		RdoSimulator *simulator = (RdoSimulator *)param;
+		simulator->frame = config->frame;
+
+		kernel.notify(RDOKernel::showFrame);
+
+		config->keysPressed.insert(config->keysPressed.end(), simulator->scanCodes.begin(), simulator->scanCodes.end());
+		simulator->scanCodes.clear();
+
+		config->activeAreasMouseClicked.insert(config->activeAreasMouseClicked.end(), simulator->areasActivated.begin(), simulator->areasActivated.end());
+		simulator->areasActivated.clear();
+
+		delete config->frame;
+		Sleep(config->realTimeDelay);
+	}
+}
+
+
 RdoSimulator::RdoSimulator(): 
 	runtime(NULL), 
 	parser(NULL), 
-	th(NULL)
+	th(NULL),
+	frame(NULL)
 {}
 
 RdoSimulator::~RdoSimulator()
@@ -89,7 +129,7 @@ UINT RunningThreadControllingFunction( LPVOID pParam )
 
 	simulator->runtime->tracerCallBack = NULL;
 	simulator->runtime->param = pParam;
-	simulator->runtime->frameCallBack = NULL;
+	simulator->runtime->frameCallBack = frameCallBack;
 
 	try
 	{
@@ -327,3 +367,5 @@ double RdoSimulator::getModelTime()
 	else
 		return 0.;
 }
+
+}// namespace RDOSimulatorNS

@@ -9,7 +9,7 @@
 #include <afxwin.h>
 #include <strstream>
 
-#include "rdoframe.h"
+#include "rdosimcommon.h"
 
 using namespace std;
 
@@ -30,11 +30,15 @@ typedef enum { PAT, RTP, RSS, OPR, FRM, FUN, DPT, SMR, PMD, PMV, TRC } RDOFileTy
 namespace rdoRuntime {
 	class RDORuntime;
 	class RDOResult;
+	struct RDOConfig;
 }
 class RDOTrace;
 namespace rdoParse {
 	class RDOParser ;
 }
+
+namespace RDOSimulatorNS
+{
 
 class RdoSimulator
 {
@@ -42,6 +46,11 @@ class RdoSimulator
 	rdoRuntime::RDORuntime *runtime;
 
 	CWinThread* th;
+
+	RDOFrame *frame;
+	vector<int> scanCodes;
+	vector<string> areasActivated;
+
 	void terminateModel();
 	void closeModel(); 
 public:
@@ -53,7 +62,15 @@ public:
 	vector<RDOSyntaxError>* getErrors();
 	double getModelTime();
 	void parseSMRFileInfo( strstream& smr, rdoModelObjects::RDOSMRFileInfo& info );
+
+	const RDOFrame* getFrame();
+	void addKeyPressed(int scanCode);
+	void addAreaPressed(string& areaName);
+	
 	friend UINT RunningThreadControllingFunction( LPVOID pParam );
+	friend void frameCallBack(rdoRuntime::RDOConfig *config, void *param);
 };
+
+} // namespace RDOSimulatorNS
 
 #endif //RDO_SIMULATOR_INTERFACE__

@@ -13,7 +13,10 @@
 using namespace std;
 
 class RDORepository;
+
+namespace RDOSimulatorNS {
 class RdoSimulator;
+}
 
 // ----------------------------------------------------------------------------
 // ---------- RDOKernel
@@ -34,6 +37,7 @@ public:
 		canNotCloseModel,   // when repository can not close current model ('canCloseModel' notify returns 'false' value)
 
 		// AB 21.02.03 // these notifies sent by "RdoSimulator"
+		showFrame,				// on have new frame to show
 		parseSMRError,			// on parse SMR file error (when opening model)
 		parseError,				// on parse error
 		modelStarted, 			// when model successfully parsed and started
@@ -54,7 +58,7 @@ public:
 
 private:
 	RDORepository* repository;
-	RdoSimulator*  simulator;
+	RDOSimulatorNS::RdoSimulator*  simulator;
 
 	typedef multimap< NotifyType, OnNotify >             onNotifyListType;
 	typedef multimap< BoolNotifyType, OnBoolNotify >     onBoolNotifyListType;
@@ -69,7 +73,7 @@ public:
 	virtual ~RDOKernel();
 
 	RDORepository* getRepository();
-	RdoSimulator*  getSimulator();
+	RDOSimulatorNS::RdoSimulator*  getSimulator();
 
 	void setNotifyReflect( NotifyType notifyType, OnNotify fun );
 	void setNotifyReflect( BoolNotifyType notifyType, OnBoolNotify fun );

@@ -7,7 +7,10 @@ static char THIS_FILE[] = __FILE__;
 
 #pragma warning(disable : 4786)  
 
-#include "rdoframe.h"
+#include "rdosimcommon.h"
+
+namespace RDOSimulatorNS
+{
 
 RDOFrame::~RDOFrame()
 {
@@ -78,3 +81,6 @@ RDOTriangElement::RDOTriangElement(double _x1, double _y1, double _x2, double _y
 { 
 	type = triang_type; 
 }
+
+}// namespace RDOSimulatorNS
+

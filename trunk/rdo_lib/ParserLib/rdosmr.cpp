@@ -23,7 +23,7 @@ RDOSMR::RDOSMR(string *_modelName)
 	statisticFileName(NULL),
 	resultsFileName(NULL),
 	traceFileName(NULL),
-	showMode(SM_NoShow),
+	showMode(RDOSimulatorNS::SM_NoShow),
 	frameNumber(1),
 	showRate(NULL),
 	runStartTime(NULL),
@@ -52,7 +52,7 @@ void RDOSMR::setValue(const char *descrName, double* RDOSMR::*pMem, double* newV
 	this->*pMem = newValue;
 }
 
-void RDOSMR::setShowMode(ShowMode sm)
+void RDOSMR::setShowMode(RDOSimulatorNS::ShowMode sm)
 {
 	if(showModeSet)
 		currParser->error("Second appearence of Show_mode descriptor");

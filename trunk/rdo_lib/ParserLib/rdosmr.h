@@ -3,7 +3,7 @@
 
 #include "rdoStdFuncs.h"
 #include "rdotrace.h"
-#include "rdoframe.h"
+#include "rdosimcommon.h"
 
 namespace rdoRuntime
 {
@@ -35,7 +35,7 @@ public:
 	string *resultsFileName;
 	string *traceFileName;
 
-	ShowMode showMode;
+	RDOSimulatorNS::ShowMode showMode;
 
 	bool showModeSet;
 	bool frameNumberSet;
@@ -55,7 +55,7 @@ public:
 	void setValue(const char* descrName, string* RDOSMR::*pMem, string* newValue);
 	void setValue(const char* descrName, double* RDOSMR::*pMem, double* newValue);
 
-	void setShowMode(ShowMode sm);
+	void setShowMode(RDOSimulatorNS::ShowMode sm);
 	void setFrameNumber(int fn);
 	void setTerminateIf(RDOFUNLogic *logic);
 	void setConstValue(string *constName, RDOFUNArithm *arithm);

@@ -5,12 +5,14 @@
 #include "rdocalcconst.h"
 
 #include "rdotrace.h"
-#include "rdoframe.h"
+#include "rdosimcommon.h"
 
+namespace rdoRuntime
+{
 struct RDOConfig
 {
 //////// Interactive /////////////////
-	ShowMode showAnimation;
+	RDOSimulatorNS::ShowMode showAnimation;
 	vector<string> allFrameNames;
 	int currFrameToShow;
 	vector<int> keysPressed;
@@ -18,7 +20,7 @@ struct RDOConfig
 	vector<string> activeAreasMouseClicked;
 	
 //////// Frame /////////////////////
-	RDOFrame *frame;
+	RDOSimulatorNS::RDOFrame *frame;
 
 //////// Timing ///////////////////
 	double currTime;			// model time
@@ -29,6 +31,8 @@ struct RDOConfig
 
 typedef void (*TracerCallBack) (string *newString, void *param);
 typedef void (*FrameCallBack) (RDOConfig *config, void *param);
+
+} //namespace rdoRuntime
 
 class RandGenerator;
 class RandGeneratorUniform;

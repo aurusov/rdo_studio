@@ -8,6 +8,9 @@
 
 using namespace std;
 
+namespace RDOSimulatorNS
+{
+
 enum ShowMode
 {
 	SM_NoShow,
@@ -150,5 +153,7 @@ struct RDOFrame
 	vector<RDOFrameElement *> elements;
 	~RDOFrame();
 };
+
+} //namespace RDOSimulatorNS
 
 #endif //RDO_FRAME_INTERFACE__
