@@ -5,7 +5,7 @@ using namespace std;
 
 namespace rdoParse 
 {
-
+/*
 const int RDOESCAPE	= 0x101;
 const int RDOTAB		= 0x10F;
 const int RDOSHIFT	= 0x12A;		// Left
@@ -27,7 +27,7 @@ const int RDOMULTIPLY= 0x137;		// definetly Print Screen, if somebody know 'Gray
 const int RDOSUBTRACT= 0x06D;
 const int RDOADD		= 0x06B;
 const int RDOCLEAR	= 0x14C;		// I think so
-const int RDOSPACE	= 0x139;
+const int RDOSPACE	= VK_SPACE;
 const int RDODECIMAL	= 0x134;		// I hope...
 const int RDOF2		= 0x13C;
 const int RDOF3		= 0x13D;
@@ -50,7 +50,7 @@ const int RDONUMPAD6	= 0x14D;
 const int RDONUMPAD7	= 0x147;
 const int RDONUMPAD8	= 0x148;
 const int RDONUMPAD9	= 0x149;
-
+*/
 class RDOHotKeyToolkit
 {
 	map<string, int> keys;

@@ -14,52 +14,52 @@ namespace rdoParse
 RDOHotKeyToolkit rdoHotKeyToolkit;
 
 RDOHotKeyToolkit::RDOHotKeyToolkit()
-{
+{														   
 
-	keys.insert(map<string, int>::value_type("ESCAPE", RDOESCAPE));
-	keys.insert(map<string, int>::value_type("TAB", RDOTAB));
-	keys.insert(map<string, int>::value_type("SHIFT", RDOSHIFT));
-	keys.insert(map<string, int>::value_type("CONTROL", RDOCONTROL));
-	keys.insert(map<string, int>::value_type("BACK", RDOBACK));
-	keys.insert(map<string, int>::value_type("RETURN", RDORETURN));
-	keys.insert(map<string, int>::value_type("INSERT", RDOINSERT));
-	keys.insert(map<string, int>::value_type("HOME", RDOHOME));
-	keys.insert(map<string, int>::value_type("PRIOR", RDOPRIOR));
-	keys.insert(map<string, int>::value_type("DELETE", RDODELETE));
-	keys.insert(map<string, int>::value_type("END", RDOEND));
-	keys.insert(map<string, int>::value_type("NEXT", RDONEXT));
-	keys.insert(map<string, int>::value_type("UP", RDOUP));
-	keys.insert(map<string, int>::value_type("LEFT", RDOLEFT));
-	keys.insert(map<string, int>::value_type("DOWN", RDODOWN));
-	keys.insert(map<string, int>::value_type("RIGHT", RDORIGHT));
-	keys.insert(map<string, int>::value_type("DIVIDE", RDODIVIDE));
-	keys.insert(map<string, int>::value_type("MULTIPLY", RDOMULTIPLY));
-	keys.insert(map<string, int>::value_type("SUBTRACT", RDOSUBTRACT));
-	keys.insert(map<string, int>::value_type("ADD", RDOADD));
-	keys.insert(map<string, int>::value_type("CLEAR", RDOCLEAR));
-	keys.insert(map<string, int>::value_type("SPACE", RDOSPACE));
-	keys.insert(map<string, int>::value_type("DECIMAL", RDODECIMAL));
-	keys.insert(map<string, int>::value_type("F2", RDOF2));
-	keys.insert(map<string, int>::value_type("F3", RDOF3));
-	keys.insert(map<string, int>::value_type("F4", RDOF4));
-	keys.insert(map<string, int>::value_type("F5", RDOF5));
-	keys.insert(map<string, int>::value_type("F6", RDOF6));
-	keys.insert(map<string, int>::value_type("F7", RDOF7));
-	keys.insert(map<string, int>::value_type("F8", RDOF8));
-	keys.insert(map<string, int>::value_type("F9", RDOF9));
-	keys.insert(map<string, int>::value_type("F10", RDOF10));
-	keys.insert(map<string, int>::value_type("F11", RDOF11));
-	keys.insert(map<string, int>::value_type("F12", RDOF12));
-	keys.insert(map<string, int>::value_type("NUMPAD0", RDONUMPAD0));
-	keys.insert(map<string, int>::value_type("NUMPAD1", RDONUMPAD1));
-	keys.insert(map<string, int>::value_type("NUMPAD2", RDONUMPAD2));
-	keys.insert(map<string, int>::value_type("NUMPAD3", RDONUMPAD3));
-	keys.insert(map<string, int>::value_type("NUMPAD4", RDONUMPAD4));
-	keys.insert(map<string, int>::value_type("NUMPAD5", RDONUMPAD5));
-	keys.insert(map<string, int>::value_type("NUMPAD6", RDONUMPAD6));
-	keys.insert(map<string, int>::value_type("NUMPAD7", RDONUMPAD7));
-	keys.insert(map<string, int>::value_type("NUMPAD8", RDONUMPAD8));
-	keys.insert(map<string, int>::value_type("NUMPAD9", RDONUMPAD9));
+	keys.insert(map<string, int>::value_type("ESCAPE", VK_ESCAPE));
+	keys.insert(map<string, int>::value_type("TAB", VK_TAB));
+	keys.insert(map<string, int>::value_type("SHIFT", VK_SHIFT));
+	keys.insert(map<string, int>::value_type("CONTROL", VK_CONTROL));
+	keys.insert(map<string, int>::value_type("BACK", VK_BACK));
+	keys.insert(map<string, int>::value_type("RETURN", VK_RETURN));
+	keys.insert(map<string, int>::value_type("INSERT", VK_INSERT));
+	keys.insert(map<string, int>::value_type("HOME", VK_HOME));
+	keys.insert(map<string, int>::value_type("PRIOR", VK_PRIOR));
+	keys.insert(map<string, int>::value_type("DELETE", VK_DELETE));
+	keys.insert(map<string, int>::value_type("END", VK_END));
+	keys.insert(map<string, int>::value_type("NEXT", VK_NEXT));
+	keys.insert(map<string, int>::value_type("UP", VK_UP));
+	keys.insert(map<string, int>::value_type("LEFT", VK_LEFT));
+	keys.insert(map<string, int>::value_type("DOWN", VK_DOWN));
+	keys.insert(map<string, int>::value_type("RIGHT", VK_RIGHT));
+	keys.insert(map<string, int>::value_type("DIVIDE", VK_DIVIDE));
+	keys.insert(map<string, int>::value_type("MULTIPLY", VK_MULTIPLY));
+	keys.insert(map<string, int>::value_type("SUBTRACT", VK_SUBTRACT));
+	keys.insert(map<string, int>::value_type("ADD", VK_ADD));
+	keys.insert(map<string, int>::value_type("CLEAR", VK_CLEAR));
+	keys.insert(map<string, int>::value_type("SPACE", VK_SPACE));
+	keys.insert(map<string, int>::value_type("DECIMAL", VK_DECIMAL));
+	keys.insert(map<string, int>::value_type("F2", VK_F2));
+	keys.insert(map<string, int>::value_type("F3", VK_F3));
+	keys.insert(map<string, int>::value_type("F4", VK_F4));
+	keys.insert(map<string, int>::value_type("F5", VK_F5));
+	keys.insert(map<string, int>::value_type("F6", VK_F6));
+	keys.insert(map<string, int>::value_type("F7", VK_F7));
+	keys.insert(map<string, int>::value_type("F8", VK_F8));
+	keys.insert(map<string, int>::value_type("F9", VK_F9));
+	keys.insert(map<string, int>::value_type("F10", VK_F10));
+	keys.insert(map<string, int>::value_type("F11", VK_F11));
+	keys.insert(map<string, int>::value_type("F12", VK_F12));
+	keys.insert(map<string, int>::value_type("NUMPAD0", VK_NUMPAD0));
+	keys.insert(map<string, int>::value_type("NUMPAD1", VK_NUMPAD1));
+	keys.insert(map<string, int>::value_type("NUMPAD2", VK_NUMPAD2));
+	keys.insert(map<string, int>::value_type("NUMPAD3", VK_NUMPAD3));
+	keys.insert(map<string, int>::value_type("NUMPAD4", VK_NUMPAD4));
+	keys.insert(map<string, int>::value_type("NUMPAD5", VK_NUMPAD5));
+	keys.insert(map<string, int>::value_type("NUMPAD6", VK_NUMPAD6));
+	keys.insert(map<string, int>::value_type("NUMPAD7", VK_NUMPAD7));
+	keys.insert(map<string, int>::value_type("NUMPAD8", VK_NUMPAD8));
+	keys.insert(map<string, int>::value_type("NUMPAD9", VK_NUMPAD9));
 
 
 	for(char i = '0'; i <= '9'; i++)
