@@ -391,9 +391,9 @@ RDOTracerTimeNow* RDOTracerTrace::addTime( string& time )
 	RDOTracerTimeNow* last = NULL;
 	if ( !empty ) last = timeList.back();
 	if ( empty || last->time != val ) {
-		RDOTracerTimeNow* timeNow = new RDOTracerTimeNow();
-		timeNow->time = val;
-		timeNow->eventCount = 0;
+		RDOTracerTimeNow* timeNow = new RDOTracerTimeNow( val );
+//		timeNow->time = val;
+//		timeNow->eventCount = 0;
 		timeNow->overallCount = empty ? 0 : last->overallCount;
 		timeList.push_back( timeNow );
 		eventIndex = 0;

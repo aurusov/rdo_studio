@@ -8,12 +8,16 @@
 class RDOTracerTimeNow
 {
 public:
-	RDOTracerTimeNow() {};
+	RDOTracerTimeNow( const double _time = 0 );
 	~RDOTracerTimeNow() {};
 
 	double time;
 	int eventCount;
 	int overallCount;
+	
+	RDOTracerTimeNow& operator =( const RDOTracerTimeNow& timenow );
+	bool operator ==( const RDOTracerTimeNow& timenow ) const;
+	bool operator !=( const RDOTracerTimeNow& timenow ) const;
 
 	bool compareTimes( const RDOTracerTimeNow* timenow );
 };

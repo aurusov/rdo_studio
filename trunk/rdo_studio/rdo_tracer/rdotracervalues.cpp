@@ -4,6 +4,33 @@
 // ----------------------------------------------------------------------------
 // ---------- RDOTracerTimeNow
 // ----------------------------------------------------------------------------
+RDOTracerTimeNow::RDOTracerTimeNow( const double _time ) : time( _time )
+{
+	eventCount = 0;
+	overallCount = 0;
+}
+
+RDOTracerTimeNow& RDOTracerTimeNow::operator =( const RDOTracerTimeNow& timenow )
+{
+	time         = timenow.time;
+	eventCount   = timenow.eventCount;
+	overallCount = timenow.overallCount;
+
+	return *this;
+}
+
+bool RDOTracerTimeNow::operator ==( const RDOTracerTimeNow& timenow ) const
+{
+	return time         == timenow.time &&
+	       eventCount   == timenow.eventCount &&
+	       overallCount == timenow.overallCount;
+}
+
+bool RDOTracerTimeNow::operator !=( const RDOTracerTimeNow& timenow ) const
+{
+	return !(*this == timenow);
+}
+
 bool RDOTracerTimeNow::compareTimes( const RDOTracerTimeNow* timenow )
 {
 	bool res = false;

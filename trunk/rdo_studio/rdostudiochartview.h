@@ -7,12 +7,12 @@
 
 #include <afxole.h>
 #include "./rdo_tracer/rdotracerserie.h"
+#include "./rdo_tracer/rdotracervalues.h"
+#include "rdostudiochartdoc.h"
 
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioChartView
 // ----------------------------------------------------------------------------
-class RDOStudioChartDoc;
-
 class RDOStudioChartView : public CView
 {
 //friend class RDOTracerSerie;
@@ -37,6 +37,8 @@ protected:
 	
 	bool timeWrap;
 	bool canUnwrapTime() const { return zoom >= 1; };
+	bool doUnwrapTime() const { return canUnwrapTime() && !timeWrap; };
+	timesList unwrapTimesList;
 
 	/*int leftMargin;
 	int topMargin;
@@ -59,8 +61,10 @@ protected:
 	RDOTracerTimeNow* drawToX;
 	int drawToXEventIndex;
 	int pixelsToChart;*/
-	double drawFromX;
-	double drawToX;
+	RDOTracerTimeNow drawFromX;
+	RDOTracerTimeNow drawToX;
+	bool setTo( const int from_max_pos );
+	void setFromTo();
 	//void prepareDrawing( CDC &dc, CRect& chartRect );
 	
 	//int xAxisOffset;

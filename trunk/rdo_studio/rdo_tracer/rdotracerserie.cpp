@@ -19,7 +19,7 @@ public:
 
 bool RDOTracerSerieFindValue::operator ()( RDOTracerValue* val )
 {
-	if( val && val->modeltime->time >= view->drawFromX )
+	if( val && val->modeltime->time >= view->drawFromX.time )
 		return true;
 	return false;
 }
@@ -283,8 +283,12 @@ void RDOTracerSerie::drawSerie( RDOStudioChartView* const view, CDC &dc, CRect &
 	if ( !values.empty() ) {
 		
 		valuesList::const_iterator it = find_if( values.begin(), values.end(), RDOTracerSerieFindValue( view ) );
+
+		if ( it == values.end() && !values.empty() && !isTemporaryResourceParam() ) {
+			it --;
+		}
 		
-		if ( it != values.end() && !( it == values.begin() && (*it)->modeltime->time > view->drawToX ) ) {
+		if ( it != values.end() && !( it == values.begin() && (*it)->modeltime->time > view->drawToX.time ) ) {
 			
 			long double ky;
 			if ( maxValue != minValue )
@@ -292,11 +296,11 @@ void RDOTracerSerie::drawSerie( RDOStudioChartView* const view, CDC &dc, CRect &
 			else
 				ky = 0;
 			
-			if ( it != values.begin() && (*it)->modeltime->time > view->drawFromX )
+			if ( it != values.begin() && (*it)->modeltime->time > view->drawFromX.time )
 				it --;
 			
 			int lasty = roundDouble( rect.bottom - ky * ( (*it)->value - minValue ) );
-			int lastx = rect.left + roundDouble( ( (*it)->modeltime->time - view->drawFromX ) * view->timeScale );
+			int lastx = rect.left + roundDouble( ( (*it)->modeltime->time - view->drawFromX.time ) * view->timeScale );
 			if ( lastx >= rect.left )
 				drawMarker( dc, lastx, lasty, color );
 			else
@@ -305,9 +309,9 @@ void RDOTracerSerie::drawSerie( RDOStudioChartView* const view, CDC &dc, CRect &
 			
 			int x = lastx, y = lasty;
 			it ++;
-			while ( it != values.end() && (*it)->modeltime->time <= view->drawToX ) {
+			while ( it != values.end() && (*it)->modeltime->time <= view->drawToX.time ) {
 				y = roundDouble( rect.bottom - ky * ( (*it)->value - minValue ) );
-				x = rect.left + roundDouble( ( (*it)->modeltime->time - view->drawFromX ) * view->timeScale );
+				x = rect.left + roundDouble( ( (*it)->modeltime->time - view->drawFromX.time ) * view->timeScale );
 				drawMarker( dc, x, y, color );
 				dc.LineTo( x, lasty );
 				dc.LineTo( x, y );
@@ -319,7 +323,7 @@ void RDOTracerSerie::drawSerie( RDOStudioChartView* const view, CDC &dc, CRect &
 			bool tempres_erased = ( serieKind == RDOST_RESPARAM && ((RDOTracerResParam*)this)->getResource()->isErased() );
 			bool need_continue = ( values.size() > 1 );
 			if ( tempres_erased )
-				need_continue = ( it != values.end() && (*it)->modeltime->time > view->drawToX );
+				need_continue = ( it != values.end() && (*it)->modeltime->time > view->drawToX.time );
 
 			if ( need_continue )
 				dc.LineTo( rect.right, lasty );

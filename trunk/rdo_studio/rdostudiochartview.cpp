@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include "rdostudiochartview.h"
-#include "rdostudiochartdoc.h"
 #include "./rdo_tracer/rdotracertrace.h"
-#include "./rdo_tracer/rdotracervalues.h"
 #include "rdostudioapp.h"
 #include "rdostudiomainfrm.h"
 #include "resource.h"
@@ -96,8 +94,10 @@ void RDOStudioChartView::recalcLayout()
 	CClientDC cldc( this );
 	CDC dc;
 	dc.CreateCompatibleDC( &cldc );
+
+	RDOStudioChartDoc* doc = GetDocument();
 	
-	string str = GetDocument()->GetTitle();
+	string str = doc->GetTitle();
 
 	chartRect.top = dc.GetTextExtent( str.c_str() ).cy;
 
@@ -105,19 +105,19 @@ void RDOStudioChartView::recalcLayout()
 
 	chartRect.left = dc.GetTextExtent( format( "%.3f", val ).c_str() ).cx + 5;
 
-	if ( !GetDocument()->docTimes.empty() )
-		val = GetDocument()->docTimes.back()->time;
+	if ( !doc->docTimes.empty() )
+		val = doc->docTimes.back()->time;
 	else
 		val = 0;
 	chartRect.right = newClientRect.right - dc.GetTextExtent( format( "%.3f", val ).c_str() ).cx - 5;
 
 	chartRect.bottom = newClientRect.bottom - chartRect.top - 2 - 3;
 	
-	if ( !GetDocument()->docTimes.empty() ) {
-		double timeRange = GetDocument()->docTimes.back()->time - GetDocument()->docTimes.front()->time;
+	if ( !doc->docTimes.empty() ) {
+		double timeRange = doc->docTimes.back()->time - doc->docTimes.front()->time;
 		if ( timeRange > 0 ) {
-			long double timeScaleAuto = (double)chartRect.Width() / timeRange;
-			timeScale = (double)5 / GetDocument()->minTimeOffset;
+			long double timeScaleAuto = doUnwrapTime() ? (double)( chartRect.Width() - tickWidth * doc->docTimes.back()->overallCount ) / timeRange : (double)chartRect.Width() / timeRange;
+			timeScale = (double)tickWidth / doc->minTimeOffset;
 			auto_zoom = timeScaleAuto / timeScale;
 			if ( zoomAuto || auto_zoom > 1 ) {
 				timeScale = timeScaleAuto;
@@ -173,12 +173,15 @@ void RDOStudioChartView::updateScrollBars()
 	si.nPos   = yPos; 
 	SetScrollInfo( SB_VERT, &si, TRUE );*/
 	
+	RDOStudioChartDoc* doc = GetDocument();
 	int size;
-	if ( !GetDocument()->docTimes.empty() )
+	if ( !doc->docTimes.empty() )
 		//size = roundDouble( GetDocument()->docTimes.back()->time * /*5 / GetDocument()->minTimeOffset*/timeScale );
-		size = roundDouble( ( GetDocument()->docTimes.back()->time - GetDocument()->docTimes.front()->time ) * timeScale );
+		size = roundDouble( ( doc->docTimes.back()->time - doc->docTimes.front()->time ) * timeScale );
 	else
 		size = 0;
+	if ( doUnwrapTime() )
+		size += tickWidth * doc->docTimes.back()->overallCount;
 	//int chartwidth = /*newClientRect.Width() - leftMargin - rightMargin*/chartRect.Width();
 	xMax = max ( 0, size - chartRect.Width() );
 	xPos = min ( xPos, xMax );
@@ -276,6 +279,100 @@ void RDOStudioChartView::updateScrollBars()
 	xAxisOffset = size.cx;
 }*/
 
+bool RDOStudioChartView::setTo( const int from_max_pos )
+{
+	bool res = true;
+	int delta = ( from_max_pos - xPos - chartRect.Width() ) / tickWidth;
+	if ( delta >= 0 ) {
+		res = false;
+		drawToX = drawFromX;
+		if ( delta > 0 ) {
+			//drawToX.overallCount = drawToX.eventCount - delta;
+			drawToX.eventCount -= delta;
+			//drawToX.overallCount -= delta;
+		}
+	}
+	return res;
+}
+
+void RDOStudioChartView::setFromTo()
+{
+	RDOStudioChartDoc* doc = GetDocument();
+
+	drawFromX.eventCount = 0;
+	drawFromX.overallCount = 0;
+	drawToX.eventCount = 0;
+	drawToX.overallCount = 0;
+	unwrapTimesList.clear();
+
+	if ( !doUnwrapTime() ) {
+		if ( timeScale ) {
+			drawFromX.time = doc->docTimes.front()->time + (double)xPos / timeScale;
+			if ( maxXVisible() )
+				drawToX.time = doc->docTimes.back()->time;
+			else
+				drawToX.time = doc->docTimes.front()->time + (double)( xPos + chartRect.Width() ) / timeScale;
+		} else {
+			drawFromX.time = 0;
+			drawToX.time = 0;
+		}
+	} else {
+		int it_pos = 0;
+		int it_max_pos = 0;
+		bool need_search_to = true;
+		for( timesList::iterator it = doc->docTimes.begin(); it != doc->docTimes.end(); it++ ) {
+			it_pos = roundDouble( (*it)->time * timeScale ) + tickWidth * ( (*it)->overallCount - (*it)->eventCount );
+			it_max_pos = it_pos + tickWidth * (*it)->eventCount;
+			if ( it_pos == xPos ) {
+				drawFromX = *(*it);
+				//drawFromX.overallCount = 0;
+				unwrapTimesList.push_back( &drawFromX );
+				need_search_to = setTo( it_max_pos );
+				break;
+			}
+			if ( it_pos < xPos && ( it_max_pos > xPos ) ) {
+				//drawFromX = *(*it);
+				int delta = ( xPos - it_pos ) / tickWidth;
+				drawFromX.time = (*it)->time + ( xPos - it_pos ) / timeScale;
+				drawFromX.eventCount = (*it)->eventCount - delta;
+				drawFromX.overallCount = drawFromX.eventCount;
+				unwrapTimesList.push_back( &drawFromX );
+				need_search_to = setTo( it_max_pos );
+				break;
+			}
+			if ( it_pos > xPos ) {
+				drawFromX.time = (*it)->time - ( it_pos - xPos ) / timeScale;
+				drawFromX.overallCount = (*it)->overallCount - (*it)->eventCount;
+				unwrapTimesList.push_back( &drawFromX );
+				break;
+			}
+		}
+		if ( need_search_to ) {
+			int pos = xPos + chartRect.Width();
+			for( ++it; it != doc->docTimes.end(); it++ ) {
+				it_pos = roundDouble( (*it)->time * timeScale ) + tickWidth * ( (*it)->overallCount - (*it)->eventCount );
+				it_max_pos = it_pos + tickWidth * (*it)->eventCount;
+				if ( it_pos == pos ) {
+					drawToX = *(*it);
+					drawToX.overallCount = 0;
+					break;
+				}
+				if ( it_pos < pos && it_max_pos >= pos ) {
+					drawToX = *(*it);
+					drawToX.overallCount = ( it_max_pos - pos ) / tickWidth;
+					break;
+				}
+				if ( it_pos > pos ) {
+					drawToX.time = (*it)->time - ( it_pos - pos ) / timeScale;
+					break;
+				}
+				unwrapTimesList.push_back( (*it) );
+			}
+		}
+		unwrapTimesList.push_back( &drawToX );
+	}
+}
+
 void RDOStudioChartView::drawYAxis( CDC &dc, CRect& chartRect, const RDOTracerSerie* axisValues)
 {
 	CRect tmprect;
@@ -369,7 +466,7 @@ void RDOStudioChartView::drawYAxis( CDC &dc, CRect& chartRect, const RDOTracerSe
 }
 
 void RDOStudioChartView::drawXAxis( CDC &dc, CRect& chartRect )
-{
+{	
 	CRect tmprect;
 	CSize size;
 	/*tmprect.top = chartRect.bottom;
@@ -412,23 +509,17 @@ void RDOStudioChartView::drawXAxis( CDC &dc, CRect& chartRect )
 		dc.DrawText( str.c_str(), tmprect, DT_RIGHT );
 	}
 	chartRect.bottom -= 2;*/
-	if ( !GetDocument()->docTimes.empty() ) {
+	RDOStudioChartDoc* doc = GetDocument();
+	if ( !doc->docTimes.empty() ) {
 		double valoffset = 0;
-		if ( timeScale ) {
-			drawFromX = GetDocument()->docTimes.front()->time + (double)xPos / timeScale;
-			if ( maxXVisible() )
-				drawToX = GetDocument()->docTimes.back()->time;
-			else
-				drawToX = GetDocument()->docTimes.front()->time + (double)( xPos + chartRect.Width() ) / timeScale;
-		} else {
-			drawFromX = 0;
-			drawToX = 0;
-		}
+		setFromTo();
+		if( doUnwrapTime() )
+			return;
 		int widthoffset = chartRect.Width() / ( valueCountX - 1 );
 		if ( drawToX != drawFromX ) {
-			valoffset = ( drawToX - drawFromX ) / ( valueCountX - 1 );
+			valoffset = ( drawToX.time - drawFromX.time ) / ( valueCountX - 1 );
 		}
-		double valo = drawFromX;
+		double valo = drawFromX.time;
 		int x = chartRect.left;
 		string formatstr = "%.3f";
 		string str = format( formatstr.c_str(), valo );
@@ -461,12 +552,28 @@ void RDOStudioChartView::drawXAxis( CDC &dc, CRect& chartRect )
 void RDOStudioChartView::drawGrid(	CDC &dc, CRect& chartRect )
 {
 	dc.Rectangle( chartRect );
-	/*chartRect.InflateRect( -1, -1 );
 
-	if ( !timeWrap ) {
-		int count = trace.getTimesCount();
+	if ( doUnwrapTime() ) {
+		CRect rect;
+		rect.CopyRect( chartRect );
+		rect.InflateRect( -1, -1 );
 		CRect tmprect;
-		tmprect.CopyRect( &chartRect );
+		tmprect.CopyRect( &rect );
+		
+		int ticks = 0;
+		for( timesList::iterator it = unwrapTimesList.begin(); it != unwrapTimesList.end(); it++ ) {
+			RDOTracerTimeNow* time = (*it);
+			int width = (*it)->eventCount * tickWidth;
+			//tmprect.left = rect.left + roundDouble( (*it)->time * timeScale ) + (*it)->overallCount * tickWidth - width - xPos;
+			tmprect.left = rect.left + roundDouble( ( (*it)->time - unwrapTimesList.front()->time ) * timeScale ) + ticks * tickWidth;
+			tmprect.right = tmprect.left + width;
+			dc.FillSolidRect( &tmprect, timeColor );
+			dc.Rectangle( &tmprect );
+			ticks = (*it)->overallCount;
+		}
+
+
+		/*int count = trace.getTimesCount();
 		RDOTracerTimeNow* lasttime = NULL;
 		for ( int i = 0; i < count; i++ ) {
 			RDOTracerTimeNow* timeNow = trace.getTime( i );
@@ -477,8 +584,8 @@ void RDOStudioChartView::drawGrid(	CDC &dc, CRect& chartRect )
 				dc.FillSolidRect( &tmprect, timeColor );
 			}
 			lasttime = timeNow;
-		}
-	}*/
+		}*/
+	}
 }
 
 void RDOStudioChartView::copyToClipboard()
@@ -591,9 +698,9 @@ void RDOStudioChartView::OnDraw(CDC* pDC)
 
 		drawGrid( dc, chartRect );
 
-		int count = pDoc->series.size();
-		for ( int i = 0; i < count; i++ ) {
-			pDoc->series.at( i ).getSerie()->drawSerie( this, dc, chartRect, pDoc->series.at( i ).getColor() );
+		if ( !doUnwrapTime() ) {
+		for ( vector< RDOStudioDocSerie >::iterator it = pDoc->series.begin(); it != pDoc->series.end(); it++ )
+			it->getSerie()->drawSerie( this, dc, chartRect, it->getColor() );
 		}
 	}
 
@@ -778,11 +885,11 @@ void RDOStudioChartView::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollB
 			break;
 
 		case SB_LINEUP:
-			inc = -5;
+			inc = -tickWidth;
 			break;
 
 		case SB_LINEDOWN:
-			inc = 5;
+			inc = tickWidth;
 			break;
 
 		case SB_THUMBTRACK: {
