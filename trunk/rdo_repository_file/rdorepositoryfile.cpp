@@ -328,17 +328,19 @@ void RDORepositoryFile::loadFile( const string& filename, stringstream& stream )
 		ifstream file( filename.c_str() );
 		stream << file.rdbuf();
 		file.close();
+	} else {
+		stream.setstate( ios_base::badbit );
 	}
 }
 
-void RDORepositoryFile::saveFile( const string& filename, stringstream& stream ) const
+void RDORepositoryFile::saveFile( const string& filename, stringstream& stream, const bool deleteIfEmpty ) const
 {
 	if ( stream.str().length() ) {
 		ofstream file( filename.c_str() );
 		file << stream.str();
 		file.close();
 	} else {
-		if ( isFileExists( filename ) ) {
+		if ( deleteIfEmpty && isFileExists( filename ) ) {
 			CFile::Remove( filename.c_str() );
 		}
 	}
@@ -416,7 +418,7 @@ void RDORepositoryFile::saveRSS( stringstream& stream ) const
 
 void RDORepositoryFile::saveOPR( stringstream& stream ) const
 {
-	saveFile( oprFileName, stream );
+	saveFile( oprFileName, stream, true );
 }
 
 void RDORepositoryFile::saveFRM( stringstream& stream ) const
@@ -431,7 +433,7 @@ void RDORepositoryFile::saveFUN( stringstream& stream ) const
 
 void RDORepositoryFile::saveDPT( stringstream& stream ) const
 {
-	saveFile( dptFileName, stream );
+	saveFile( dptFileName, stream, true );
 }
 
 void RDORepositoryFile::saveSMR( stringstream& stream ) const
