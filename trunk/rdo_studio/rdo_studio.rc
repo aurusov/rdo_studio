@@ -121,6 +121,9 @@ BEGIN
     BUTTON      ID_MODEL_SHOWRATE_INCFOUR
     BUTTON      ID_MODEL_SHOWRATE_DECFOUR
     BUTTON      ID_MODEL_SHOWRATE_DEC
+    SEPARATOR
+    BUTTON      ID_MODEL_FRAME_NEXT
+    BUTTON      ID_MODEL_FRAME_PREV
 END
 
 
@@ -890,10 +893,13 @@ BEGIN
         MENUITEM "&Animation",                  ID_MODEL_RUNANIMATION
         MENUITEM "&Monitor",                    ID_MODEL_RUNMONITOR
         MENUITEM SEPARATOR
-        MENUITEM "&Increase tempo\tAlt+Num+",   ID_MODEL_SHOWRATE_INC
-        MENUITEM "In&crease tempo by 4 times",  ID_MODEL_SHOWRATE_INCFOUR
-        MENUITEM "Dec&rease tempo by 4 times",  ID_MODEL_SHOWRATE_DECFOUR
-        MENUITEM "&Decrease tempo\tAlt+Num-",   ID_MODEL_SHOWRATE_DEC
+        MENUITEM "&Increase Tempo\tAlt+Num+",   ID_MODEL_SHOWRATE_INC
+        MENUITEM "In&crease Tempo by 4 Times",  ID_MODEL_SHOWRATE_INCFOUR
+        MENUITEM "Dec&rease Tempo by 4 Times",  ID_MODEL_SHOWRATE_DECFOUR
+        MENUITEM "&Decrease Tempo\tAlt+Num-",   ID_MODEL_SHOWRATE_DEC
+        MENUITEM SEPARATOR
+        MENUITEM "Ne&xt Frame",                 ID_MODEL_FRAME_NEXT
+        MENUITEM "&Previous Frame",             ID_MODEL_FRAME_PREV
     END
     POPUP "&Chart"
     BEGIN
@@ -1358,8 +1364,8 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    ID_MODEL_RUN            "\nExecute"
-    ID_MODEL_STOP           "\nStop"
+    ID_MODEL_RUN            "\nExecute (F5)"
+    ID_MODEL_STOP           "\nStop (Shift+F5)"
 END
 
 STRINGTABLE DISCARDABLE 
@@ -1448,10 +1454,12 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    ID_MODEL_SHOWRATE_INC   "\nIncrease the animation tempo"
-    ID_MODEL_SHOWRATE_INCFOUR "\nIncrease the animation tempo by 4 times"
-    ID_MODEL_SHOWRATE_DECFOUR "\nDecrease the animation tempo by 4 times"
-    ID_MODEL_SHOWRATE_DEC   "\nDecrease the animation tempo"
+    ID_MODEL_SHOWRATE_INC   "\nIncrease Tempo (Alt+Num+)"
+    ID_MODEL_SHOWRATE_INCFOUR "\nIncrease Tempo by 4 Times"
+    ID_MODEL_SHOWRATE_DECFOUR "\nDecrease Tempo by 4 Times"
+    ID_MODEL_SHOWRATE_DEC   "\nDecrease Tempo (Alt+Num-)"
+    ID_MODEL_FRAME_PREV     "\nPrevious Frame"
+    ID_MODEL_FRAME_NEXT     "\nNext Frame"
 END
 
 STRINGTABLE DISCARDABLE 

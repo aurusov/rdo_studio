@@ -88,6 +88,7 @@ private:
 	CDC dcMask;
 
 	int lastShowedFrame;
+	int currentShowingFrame;
 
 public:
 	RDOStudioFrameManager();
@@ -99,14 +100,14 @@ public:
 	int findFrameIndex( const RDOStudioFrameView* view ) const;
 	RDOStudioFrameDoc* connectFrameDoc( const int index );
 	void disconnectFrameDoc( const RDOStudioFrameDoc* doc ) const;
-	std::string         getFrameName( const int index ) const    { return frames[index]->name;   };
-	RDOStudioFrameDoc*  getFrameDoc( const int index ) const     { return frames[index]->doc;    };
-	RDOStudioFrameView* getFrameView( const int index ) const    { return frames[index]->view;   };
-	CMutex*             getFrameUsed( const int index ) const    { return &frames[index]->used;  };
-	CMutex*             getFrameDraw( const int index ) const    { return &frames[index]->draw;  };
-	CEvent*             getFrameTimer( const int index ) const   { return &frames[index]->timer; };
-	CEvent*             getFrameClose( const int index ) const   { return &frames[index]->close; };
-	int count() const                                            { return frames.size();         };
+	std::string         getFrameName( const int index ) const       { return frames[index]->name;   };
+	RDOStudioFrameDoc*  getFrameDoc( const int index ) const        { return frames[index]->doc;    };
+	RDOStudioFrameView* getFrameView( const int index ) const       { return frames[index]->view;   };
+	CMutex*             getFrameMutexUsed( const int index ) const  { return &frames[index]->used;  };
+	CMutex*             getFrameMutexDraw( const int index ) const  { return &frames[index]->draw;  };
+	CEvent*             getFrameEventTimer( const int index ) const { return &frames[index]->timer; };
+	CEvent*             getFrameEventClose( const int index ) const { return &frames[index]->close; };
+	int count() const                                               { return frames.size();         };
 	RDOStudioFrameDoc* getFirstExistDoc() const;
 	void closeAll();
 	void clear();
@@ -116,12 +117,17 @@ public:
 
 	void expand() const;
 
-	int getLastShowedFrame() const              { return lastShowedFrame; };
-	void setLastShowedFrame( const int value );
-
 	bool isValidFrameDoc( const RDOStudioFrameDoc* const frame ) const;
 
+	int getLastShowedFrame() const              { return lastShowedFrame; };
+	void setLastShowedFrame( const int value );
+	void setCurrentShowingFrame( const int value );
+	void resetCurrentShowingFrame( const int value );
 	void showFrame( const RDOSimulatorNS::RDOFrame* const frame, const int index );
+	void showNextFrame();
+	void showPrevFrame();
+	bool canShowNextFrame() const;
+	bool canShowPrevFrame() const;
 };
 
 //{{AFX_INSERT_LOCATION}}

@@ -19,8 +19,7 @@ namespace rdoEditor {
 class RDOStudioModel
 {
 friend class RDOStudioModelDoc;
-friend class RDOStudioApp;
-friend class RDOStudioFrameDoc;
+friend class RDOStudioMainFrame;
 friend class RDOStudioFrameView;
 friend class RDOStudioFrameTreeCtrl;
 

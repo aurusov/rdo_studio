@@ -50,6 +50,10 @@ BEGIN_MESSAGE_MAP(RDOStudioMainFrame, CMDIFrameWnd)
 	ON_UPDATE_COMMAND_UI(ID_MODEL_SHOWRATE_INCFOUR, OnUpdateModelShowRateIncFour)
 	ON_UPDATE_COMMAND_UI(ID_MODEL_SHOWRATE_DECFOUR, OnUpdateModelShowRateDecFour)
 	ON_UPDATE_COMMAND_UI(ID_MODEL_SHOWRATE_DEC, OnUpdateModelShowRateDec)
+	ON_COMMAND(ID_MODEL_FRAME_NEXT, OnModelFrameNext)
+	ON_COMMAND(ID_MODEL_FRAME_PREV, OnModelFramePrev)
+	ON_UPDATE_COMMAND_UI(ID_MODEL_FRAME_NEXT, OnUpdateModelFrameNext)
+	ON_UPDATE_COMMAND_UI(ID_MODEL_FRAME_PREV, OnUpdateModelFramePrev)
 	//}}AFX_MSG_MAP
 	ON_UPDATE_COMMAND_UI( ID_COORDSTATUSBAR          , OnUpdateCoordStatusBar )
 	ON_UPDATE_COMMAND_UI( ID_MODIFYSTATUSBAR         , OnUpdateModifyStatusBar )
@@ -475,4 +479,24 @@ void RDOStudioMainFrame::OnUpdateModelShowRateDecFour(CCmdUI* pCmdUI)
 void RDOStudioMainFrame::OnUpdateModelShowRateDec(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable( model && model->getModelDoc() && model->isRunning() && model->getShowMode() != RDOSimulatorNS::SM_NoShow && model->getShowRate() / 1.5 >= DBL_MIN );
+}
+
+void RDOStudioMainFrame::OnModelFrameNext()
+{
+	if ( model ) model->frameManager.showNextFrame();
+}
+
+void RDOStudioMainFrame::OnModelFramePrev()
+{
+	if ( model ) model->frameManager.showPrevFrame();
+}
+
+void RDOStudioMainFrame::OnUpdateModelFrameNext(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable( model && model->frameManager.canShowNextFrame() );
+}
+
+void RDOStudioMainFrame::OnUpdateModelFramePrev(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable( model && model->frameManager.canShowPrevFrame() );
 }

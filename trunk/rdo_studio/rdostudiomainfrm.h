@@ -104,6 +104,10 @@ protected:
 	afx_msg void OnUpdateModelShowRateIncFour(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateModelShowRateDecFour(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateModelShowRateDec(CCmdUI* pCmdUI);
+	afx_msg void OnModelFrameNext();
+	afx_msg void OnModelFramePrev();
+	afx_msg void OnUpdateModelFrameNext(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateModelFramePrev(CCmdUI* pCmdUI);
 	//}}AFX_MSG
 	afx_msg void OnUpdateCoordStatusBar( CCmdUI *pCmdUI );
 	afx_msg void OnUpdateModifyStatusBar( CCmdUI *pCmdUI );

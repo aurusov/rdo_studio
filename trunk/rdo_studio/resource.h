@@ -388,6 +388,8 @@
 #define ID_MODEL_SHOWRATE_INCFOUR       33160
 #define ID_MODEL_SHOWRATE_DECFOUR       33161
 #define ID_MODEL_SHOWRATE_DEC           33162
+#define ID_MODEL_FRAME_PREV             33163
+#define ID_MODEL_FRAME_NEXT             33164
 #define ID_STATUSBAR_READONLY           40000
 #define ID_STATUSBAR_MODIFIED           40001
 #define ID_STATUSBAR_OVERWRITE          40002
@@ -525,7 +527,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        158
-#define _APS_NEXT_COMMAND_VALUE         33163
+#define _APS_NEXT_COMMAND_VALUE         33168
 #define _APS_NEXT_CONTROL_VALUE         1082
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

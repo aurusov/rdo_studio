@@ -20,7 +20,6 @@ BEGIN_MESSAGE_MAP(RDOStudioFrameView, CView)
 	//{{AFX_MSG_MAP(RDOStudioFrameView)
 	ON_WM_CREATE()
 	ON_WM_DESTROY()
-	ON_WM_SETFOCUS()
 	ON_WM_SIZE()
 	ON_WM_HSCROLL()
 	ON_WM_VSCROLL()
@@ -74,7 +73,7 @@ void RDOStudioFrameView::OnDraw(CDC* pDC)
 //	ASSERT_VALID(pDoc);
 
 	int index = model->frameManager.findFrameIndex( this );
-	CSingleLock lock_draw( model->frameManager.getFrameDraw( index ) );
+	CSingleLock lock_draw( model->frameManager.getFrameMutexDraw( index ) );
 	lock_draw.Lock();
 
 	GetClientRect( &newClientRect );
@@ -113,7 +112,7 @@ void RDOStudioFrameView::OnDraw(CDC* pDC)
 
 	lock_draw.Unlock();
 
-	model->frameManager.getFrameTimer( index )->SetEvent();
+	model->frameManager.getFrameEventTimer( index )->SetEvent();
 }
 
 BOOL RDOStudioFrameView::OnPreparePrinting(CPrintInfo* pInfo)
@@ -151,16 +150,11 @@ void RDOStudioFrameView::OnDestroy()
 {
 	int index = model->frameManager.findFrameIndex( this );
 	if ( index != -1 ) {
-		model->frameManager.getFrameClose( index )->SetEvent();
+		model->frameManager.getFrameEventClose( index )->SetEvent();
 		model->frameManager.disconnectFrameDoc( GetDocument() );
+		model->frameManager.resetCurrentShowingFrame( index );
 	}
 	CView::OnDestroy();
-}
-
-void RDOStudioFrameView::OnSetFocus(CWnd* pOldWnd)
-{
-	CView::OnSetFocus( pOldWnd );
-	model->frameManager.setLastShowedFrame( model->frameManager.findFrameIndex( this ) );
 }
 
 void RDOStudioFrameView::OnSize(UINT nType, int cx, int cy)
@@ -275,7 +269,7 @@ void RDOStudioFrameView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	RDOStudioFrameManager* frameManager = &model->frameManager;
 	int index = frameManager->findFrameIndex( this );
-	CSingleLock lock_draw( frameManager->getFrameDraw( index ) );
+	CSingleLock lock_draw( frameManager->getFrameMutexDraw( index ) );
 	lock_draw.Lock();
 
 	RDOStudioFrameManager::Frame* frame = frameManager->frames[index];
@@ -298,7 +292,7 @@ void RDOStudioFrameView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
 	RDOStudioFrameManager* frameManager = &model->frameManager;
 	int index = frameManager->findFrameIndex( this );
-	CSingleLock lock_draw( frameManager->getFrameDraw( index ) );
+	CSingleLock lock_draw( frameManager->getFrameMutexDraw( index ) );
 	lock_draw.Lock();
 
 	RDOStudioFrameManager::Frame* frame = frameManager->frames[index];
@@ -307,4 +301,14 @@ void RDOStudioFrameView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	lock_draw.Unlock();
 
 	CView::OnKeyDown(nChar, nRepCnt, nFlags);
+}
+
+void RDOStudioFrameView::OnActivateView(BOOL bActivate, CView* pActivateView, CView* pDeactiveView)
+{
+	if ( bActivate ) {
+		int index = model->frameManager.findFrameIndex( this );
+		model->frameManager.setLastShowedFrame( index );
+		model->frameManager.setCurrentShowingFrame( index );
+	}
+	CView::OnActivateView( bActivate, pActivateView, pDeactiveView );
 }

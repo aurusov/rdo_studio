@@ -30,7 +30,8 @@ vector< RDOStudioFrameManager::Frame* > RDOStudioFrameManager::frames;
 
 RDOStudioFrameManager::RDOStudioFrameManager():
 	frameDocTemplate( NULL ),
-	lastShowedFrame( -1 )
+	lastShowedFrame( -1 ),
+	currentShowingFrame( -1 )
 {
 	frameDocTemplate = new FrameDocTemplate( IDR_FRAMETYPE, RUNTIME_CLASS(RDOStudioFrameDoc), RUNTIME_CLASS(RDOStudioChildFrame), RUNTIME_CLASS(RDOStudioFrameView) );
 	AfxGetApp()->AddDocTemplate( frameDocTemplate );
@@ -104,7 +105,7 @@ RDOStudioFrameDoc* RDOStudioFrameManager::connectFrameDoc( const int index )
 {
 	RDOStudioFrameDoc* doc = NULL;
 	if ( index != -1 ) {
-		CSingleLock lock( getFrameUsed( index ) );
+		CSingleLock lock( getFrameMutexUsed( index ) );
 		lock.Lock();
 
 		doc = static_cast<RDOStudioFrameDoc*>(frameDocTemplate->OpenDocumentFile( NULL ));
@@ -112,6 +113,7 @@ RDOStudioFrameDoc* RDOStudioFrameManager::connectFrameDoc( const int index )
 			frames[index]->doc  = doc;
 			frames[index]->view = doc->getView();
 			lastShowedFrame     = index;
+			setCurrentShowingFrame( index );
 		}
 
 		lock.Unlock();
@@ -124,7 +126,7 @@ void RDOStudioFrameManager::disconnectFrameDoc( const RDOStudioFrameDoc* doc ) c
 	int index = findFrameIndex( doc );
 	if ( index != -1 ) {
 
-		CSingleLock lock( getFrameUsed( index ) );
+		CSingleLock lock( getFrameMutexUsed( index ) );
 		lock.Lock();
 
 		frames[index]->doc  = NULL;
@@ -165,6 +167,7 @@ void RDOStudioFrameManager::clear()
 	};
 	frames.clear();
 	lastShowedFrame = -1;
+	setCurrentShowingFrame( -1 );
 }
 
 RDOStudioFrameDoc* RDOStudioFrameManager::getFirstExistDoc() const
@@ -184,13 +187,6 @@ void RDOStudioFrameManager::expand() const
 	studioApp.mainFrame->workspace.frames->expand();
 }
 
-void RDOStudioFrameManager::setLastShowedFrame( const int value )
-{
-	if ( value >= 0 && value < count() ) {
-		lastShowedFrame = value;
-	}
-}
-
 bool RDOStudioFrameManager::isValidFrameDoc( const RDOStudioFrameDoc* const frame ) const
 {
 	POSITION pos = frameDocTemplate->GetFirstDocPosition();
@@ -202,6 +198,32 @@ bool RDOStudioFrameManager::isValidFrameDoc( const RDOStudioFrameDoc* const fram
 	}
 
 	return false;
+}
+
+void RDOStudioFrameManager::setLastShowedFrame( const int value )
+{
+	if ( value >= 0 && value < count() ) {
+		lastShowedFrame = value;
+	}
+}
+
+void RDOStudioFrameManager::setCurrentShowingFrame( const int value )
+{
+	if ( value == -1 || (value >= 0 && value < count()) ) {
+		currentShowingFrame = value;
+		CTreeCtrl* tree = studioApp.mainFrame->workspace.frames;
+		if ( currentShowingFrame != -1 ) {
+			HTREEITEM hitem = frames[currentShowingFrame]->hitem;
+			tree->SelectItem( hitem );
+		} else {
+			tree->SelectItem( NULL );
+		}
+	}
+}
+
+void RDOStudioFrameManager::resetCurrentShowingFrame( const int value )
+{
+	if ( value == currentShowingFrame ) setCurrentShowingFrame( -1 );
 }
 
 class binarybuf: public streambuf
@@ -355,13 +377,13 @@ void RDOStudioFrameManager::showFrame( const RDOFrame* const frame, const int in
 {
 	if ( index < count() ) {
 
-		CSingleLock lock_used( getFrameUsed( index ) );
+		CSingleLock lock_used( getFrameMutexUsed( index ) );
 		lock_used.Lock();
 
 		RDOStudioFrameDoc* doc = getFrameDoc( index );
 		if ( doc ) {
 
-			CSingleLock lock_draw( getFrameDraw( index ) );
+			CSingleLock lock_draw( getFrameMutexDraw( index ) );
 			lock_draw.Lock();
 
 			RDOStudioFrameView* view = getFrameView( index );
@@ -563,14 +585,14 @@ void RDOStudioFrameManager::showFrame( const RDOFrame* const frame, const int in
 
 			lock_draw.Unlock();
 
-			getFrameTimer( index )->ResetEvent();
+			getFrameEventTimer( index )->ResetEvent();
 
 //			CRect rect;
 //			view->GetClientRect( rect );
 			view->InvalidateRect( NULL );
 			view->SendNotifyMessage( WM_PAINT, 0, 0 );
 
-			CONST HANDLE events[2] = { getFrameTimer( index )->m_hObject, getFrameClose( index )->m_hObject };
+			CONST HANDLE events[2] = { getFrameEventTimer( index )->m_hObject, getFrameEventClose( index )->m_hObject };
 			DWORD res = ::WaitForMultipleObjects( 2, events, FALSE, INFINITE );
 			if ( res == WAIT_OBJECT_0 ) {               // timer
 			} else if ( res == WAIT_OBJECT_0 + 1 ) {    // close
@@ -579,4 +601,44 @@ void RDOStudioFrameManager::showFrame( const RDOFrame* const frame, const int in
 		}
 		lock_used.Unlock();
 	}
+}
+
+void RDOStudioFrameManager::showNextFrame()
+{
+	int cnt = count();
+	if ( model->isRunning() && model->getShowMode() != RDOSimulatorNS::SM_NoShow && cnt > 1 && currentShowingFrame < cnt-1 ) {
+		int index = currentShowingFrame + 1;
+		RDOStudioFrameDoc* doc = getFrameDoc( index );
+		if ( !doc ) {
+			doc = connectFrameDoc( index );
+		} else {
+			doc->frame->ActivateFrame();
+		}
+	}
+}
+
+void RDOStudioFrameManager::showPrevFrame()
+{
+	int cnt = count();
+	if ( model->isRunning() && model->getShowMode() != RDOSimulatorNS::SM_NoShow && cnt > 1 && currentShowingFrame > 0 ) {
+		int index = currentShowingFrame - 1;
+		RDOStudioFrameDoc* doc = getFrameDoc( index );
+		if ( !doc ) {
+			doc = connectFrameDoc( index );
+		} else {
+			doc->frame->ActivateFrame();
+		}
+	}
+}
+
+bool RDOStudioFrameManager::canShowNextFrame() const
+{
+	int cnt = count();
+	return model->isRunning() && model->getShowMode() != RDOSimulatorNS::SM_NoShow && cnt > 1 && ( currentShowingFrame == -1 || currentShowingFrame < cnt-1 );
+}
+
+bool RDOStudioFrameManager::canShowPrevFrame() const
+{
+	int cnt = count();
+	return model->isRunning() && model->getShowMode() != RDOSimulatorNS::SM_NoShow && cnt > 1 && currentShowingFrame > 0;
 }
