@@ -168,8 +168,9 @@ void BKEmulTapeRecorder::doEMT36()
 						// Останов по команде оператора
 						answer = 4;
 					} else {
+						bool canFind = true;
 						if ( !findFile ) {
-							// Находим первый файл в директории
+							// Настраиваем поиск
 							findFile = new CFileFind;
 							char dir[ MAX_PATH + 1 ];
 							::GetCurrentDirectory( MAX_PATH, dir );
@@ -184,27 +185,10 @@ void BKEmulTapeRecorder::doEMT36()
 							}
 							trimRight( file_name );
 							mask += file_name + "*.*";
-							if ( findFile->FindFile( mask.c_str() ) && findFile->FindNextFile() ) {
-								bool flag = true;
-								while ( flag && ( findFile->IsDots() || findFile->IsDirectory() ) ) {
-									flag = findFile->FindNextFile() ? true : false;
-								}
-								if ( !findFile->IsDots() && !findFile->IsDirectory() ) {
-									file_name = findFile->GetFileName();
-								} else {
-									// Нет ни одного файла
-									closeFind();
-									// Останов по команде оператора
-									answer = 4;
-								}
-							} else {
-								// Ошибка открытия первого файла
-								closeFind();
-								// Останов по команде оператора
-								answer = 4;
-							}
-						} else {
-							// Находим следующий файл в директории
+							canFind = findFile->FindFile( mask.c_str() ) ? true : false;
+						}
+						if ( canFind ) {
+							// Находим первый/следующий файл в директории
 							if ( findFile->FindNextFile() ) {
 								bool flag = true;
 								while ( flag && ( findFile->IsDots() || findFile->IsDirectory() ) ) {
