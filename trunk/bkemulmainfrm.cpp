@@ -519,6 +519,9 @@ void BKMainFrame::OnTimer(UINT nIDEvent)
 	CFrameWnd::OnTimer( nIDEvent );
 
 	if ( nIDEvent == timer ) {
+		if ( emul.isPowerON() ) {
+			emul.nextIteration();
+		}
 		if ( !lock ) {
 /*
 			static int fps      = 0;

@@ -123,6 +123,10 @@ SOURCE=.\bkemulspeaker.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\bkemultaperecorder.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\bkemulvideo.cpp
 # End Source File
 # Begin Source File
@@ -181,6 +185,10 @@ SOURCE=.\bkemulmemory.h
 # Begin Source File
 
 SOURCE=.\bkemulspeaker.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\bkemultaperecorder.h
 # End Source File
 # Begin Source File
 

@@ -15,7 +15,7 @@ typedef void (BKEmulCPU::* CPUcommand)();
 
 class BKEmulCPU
 {
-friend class BKEmul; // tmp
+friend class BKEmulTapeRecorder;
 private:
 	// Регистры R0..R7
 	std::vector< WORD > regs;
@@ -169,6 +169,15 @@ public:
 
 	void reset();
 	void nextIteration();
+
+	WORD R0() const { return regs[0]; }
+	WORD R1() const { return regs[1]; }
+	WORD R2() const { return regs[2]; }
+	WORD R3() const { return regs[3]; }
+	WORD R4() const { return regs[4]; }
+	WORD R5() const { return regs[5]; }
+	WORD SP() const { return regs[6]; }
+	WORD PC() const { return regs[7]; }
 
 	BYTE getPrior() const { return FP3 ? 1:0 << 3 | FP2 ? 1:0 << 2 | FP1 ? 1:0; }
 

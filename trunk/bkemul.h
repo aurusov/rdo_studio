@@ -10,6 +10,7 @@
 #include "bkemulvideo.h"
 #include "bkemulkeyboard.h"
 #include "bkemulspeaker.h"
+#include "bkemultaperecorder.h"
 
 namespace bkemul {
 
@@ -47,11 +48,12 @@ public:
 	BKEmul();
 	virtual ~BKEmul();
 
-	BKEmulCPU      cpu;
-	BKEmulMemory   memory;
-	BKEmulVideo    video;
-	BKEmulKeyboard keyboard;
-	BKEmulSpeaker  speaker;
+	BKEmulCPU          cpu;
+	BKEmulMemory       memory;
+	BKEmulVideo        video;
+	BKEmulKeyboard     keyboard;
+	BKEmulSpeaker      speaker;
+	BKEmulTapeRecorder taperecorder;
 
 	void powerON();
 	void powerOFF();

@@ -1167,8 +1167,8 @@ void BKEmulCPU::BK_doBCS()
 void BKEmulCPU::BK_doEMT()
 {
 	interrupt( 030 );
-	if ( command & 077 == 036 ) {
-//		HookEMT36();
+	if ( (command & 077) == 036 ) {
+		emul.taperecorder.doEMT36();
 	}
 }
 

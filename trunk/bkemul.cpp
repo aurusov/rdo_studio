@@ -60,6 +60,7 @@ void BKEmul::reset()
 	cpu.reset();
 	keyboard.reset();
 	speaker.reset();
+	taperecorder.reset();
 /*
 	memory.set_word( 0100000, 0012700 );
 	memory.set_word( 0100002, 0040000 );
@@ -110,10 +111,10 @@ void BKEmul::loadIntoROM( const HRSRC& res ) const
 void BKEmul::nextIteration()
 {
 	try {
-		for ( int i = 0; i < 1000; i++ ) {
-//			CClientDC dc( enulApp.mainFrame );
-//			std::string str = format( "R7 = 0%0o", cpu.regs[ 6 ] );
-//			dc.TextOut( 550, 30, str.c_str(), str.length() );
+		for ( int i = 0; i < 7000; i++ ) {
+//			CClientDC dc( emulApp.mainFrame );
+//			std::string str = format( "PC = 0%0o", cpu.PC() );
+//			dc.TextOut( 300, 30, str.c_str(), str.length() );
 			cpu.nextIteration();
 		}
 	} catch( BKMemoryAccessError& /*e*/ ) {

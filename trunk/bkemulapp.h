@@ -29,7 +29,6 @@ protected:
 	//{{AFX_VIRTUAL(BKEmulApp)
 	public:
 	virtual BOOL InitInstance();
-	virtual BOOL OnIdle(LONG lCount);
 	virtual int ExitInstance();
 	//}}AFX_VIRTUAL
 };

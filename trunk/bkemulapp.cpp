@@ -56,11 +56,3 @@ int BKEmulApp::ExitInstance()
 	emul.powerOFF();
 	return CWinApp::ExitInstance();
 }
-
-BOOL BKEmulApp::OnIdle(LONG lCount)
-{
-	if ( emul.isPowerON() ) {
-		emul.nextIteration();
-	}
-	return CWinApp::OnIdle(lCount);
-}
