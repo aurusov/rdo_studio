@@ -254,10 +254,11 @@ void RDOTracerLogCtrl::OnHelpKeyword()
 
 	getSelected( line );
 
+	string keyword = "trc";
 	if ( !line.empty() ) {
 		int posstart = line.find_first_not_of( ' ' );
 		int posend = line.find_first_of( ' ', posstart );
-		string keyword = line.substr( posstart, posend - posstart );
+		keyword = line.substr( posstart, posend - posstart );
 		trim( keyword );
 
 		if ( !keyword.empty() ) {
@@ -266,26 +267,18 @@ void RDOTracerLogCtrl::OnHelpKeyword()
 				getItemColors( selectedLine, colors );
 				if ( *colors == static_cast<RDOTracerLogTheme*>(logStyle->theme)->sd )
 					keyword = "SD";
-				else
-					keyword = "trc";
 			}
-		} else {
-			keyword = "trc";
 		}
-
-
-		HH_AKLINK link;
-		::ZeroMemory( &link, sizeof( HH_AKLINK ) );
-		link.cbStruct     = sizeof( HH_AKLINK );
-		link.fIndexOnFail = TRUE;
-		link.pszKeywords  = keyword.c_str();
-
-		::HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_KEYWORD_LOOKUP, (DWORD)&link );
-	} else {
-		filename += "::/html/rdo_res_trc.htm";
-		HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_DISPLAY_TOPIC, NULL );
 	}
 
+
+	HH_AKLINK link;
+	::ZeroMemory( &link, sizeof( HH_AKLINK ) );
+	link.cbStruct     = sizeof( HH_AKLINK );
+	link.fIndexOnFail = TRUE;
+	link.pszKeywords  = keyword.c_str();
+
+	::HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_KEYWORD_LOOKUP, (DWORD)&link );
 }
 
 void RDOTracerLogCtrl::OnUpdateCoordStatusBar( CCmdUI *pCmdUI )
