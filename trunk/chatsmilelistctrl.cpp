@@ -26,6 +26,7 @@ BEGIN_MESSAGE_MAP( CChatSmileListCtrl, CWnd )
 	ON_WM_KILLFOCUS()
 	ON_WM_LBUTTONDOWN()
 	ON_WM_KEYDOWN()
+	ON_WM_GETDLGCODE()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -464,9 +465,12 @@ void CChatSmileListCtrl::OnPaint()
 //			rect.right -= xPos;
 
 			if ( line_from + i == selectedLine && hasFocus ) {
+				dc.SetTextColor( ::GetSysColor( COLOR_HIGHLIGHTTEXT ) );
 				CRect bg_rect( smile_max_width, rect.top, rect.right, rect.bottom );
 				dc.FillSolidRect( bg_rect, ::GetSysColor( COLOR_HIGHLIGHT ) );
 				dc.DrawFocusRect( bg_rect );
+			} else {
+				dc.SetTextColor( ::GetSysColor( COLOR_WINDOWTEXT ) );
 			}
 			dc.SetBkMode( TRANSPARENT );
 			dc.DrawText( list[ i + line_from ]->info.c_str(), -1, &rect, DT_LEFT | DT_SINGLELINE | DT_VCENTER );
@@ -578,14 +582,6 @@ void CChatSmileListCtrl::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			selectLine( selectedLine - 1 );
 			break;
 
-		case VK_PRIOR:
-//			selectLine( max ( selectedLine - yPageSize, 0 ) );
-			break;
-
-		case VK_NEXT:
-//			selectLine( min ( selectedLine + yPageSize, strings.count() - 1 ) );
-			break;
-
 		case VK_DOWN:
 			selectLine( selectedLine + 1 );
 			break;
@@ -598,18 +594,12 @@ void CChatSmileListCtrl::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			selectLine( list.size() - 1 );
 			break;
 
-		case VK_LEFT: {
-//			scrollNotify = SB_LINEUP;
-//			msg = WM_HSCROLL;
-			break;
-		}
-
-		case VK_RIGHT: {
-//			scrollNotify = SB_LINEDOWN;
-//			msg = WM_HSCROLL;
-			break;
-		}
 		default:
 			break;
 	}
+}
+
+UINT CChatSmileListCtrl::OnGetDlgCode() 
+{
+	return CWnd::OnGetDlgCode() | DLGC_WANTARROWS;
 }

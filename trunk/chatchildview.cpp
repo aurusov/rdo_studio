@@ -81,5 +81,5 @@ BOOL CChatChildView::OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERI
 {
 	if ( viewer.OnCmdMsg( nID, nCode, pExtra, pHandlerInfo ) ) return TRUE;
 	if ( edit.OnCmdMsg( nID, nCode, pExtra, pHandlerInfo ) ) return TRUE;
-	return CWnd ::OnCmdMsg(nID, nCode, pExtra, pHandlerInfo);
+	return CWnd::OnCmdMsg( nID, nCode, pExtra, pHandlerInfo );
 }
