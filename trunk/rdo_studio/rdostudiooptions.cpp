@@ -218,7 +218,8 @@ COLORREF RDOStudioOptionsStylesAndColors::null_fg_color = RGB( 0x00, 0x00, 0x00 
 COLORREF RDOStudioOptionsStylesAndColors::null_bg_color = RGB( 0xFF, 0xFF, 0xFF );
 bool RDOStudioOptionsStylesAndColors::null_wordwrap      = false;
 bool RDOStudioOptionsStylesAndColors::null_horzscrollbar = true;
-rdoEditCtrl::RDOBookmarkStyle RDOStudioOptionsStylesAndColors::null_bookmarkstyle = RDOBOOKMARKS_NONE;
+RDOBookmarkStyle RDOStudioOptionsStylesAndColors::null_bookmarkstyle = RDOBOOKMARKS_NONE;
+RDOFoldStyle     RDOStudioOptionsStylesAndColors::null_foldstyle     = RDOFOLDS_NONE;
 
 BEGIN_MESSAGE_MAP(RDOStudioOptionsStylesAndColors, CPropertyPage)
 	//{{AFX_MSG_MAP(RDOStudioOptionsStylesAndColors)
@@ -236,6 +237,7 @@ BEGIN_MESSAGE_MAP(RDOStudioOptionsStylesAndColors, CPropertyPage)
 	ON_BN_CLICKED(IDC_WORDWRAP_CHECK, OnWordWrapClicked)
 	ON_BN_CLICKED(IDC_HORZSCROLLBAR_CHECK, OnHorzScrollBarClicked)
 	ON_CBN_SELCHANGE(IDC_BOOKMARK_COMBO, OnBookmarkChanged)
+	ON_CBN_SELCHANGE(IDC_FOLD_COMBO, OnFoldChanged)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -261,7 +263,7 @@ RDOStudioOptionsStylesAndColors::RDOStudioOptionsStylesAndColors( RDOStudioOptio
 	objects.push_back( object );
 
 	RDOEditorEditTheme* editor_theme = static_cast<RDOEditorEditTheme*>(sheet->style_editor.theme);
-	object = new STYLEObject( STYLEObject::source, sheet->style_editor.font->name, sheet->style_editor.font->size, true, sheet->style_editor.window->wordWrap, sheet->style_editor.window->showHorzScrollBar, editor_theme->bookmarkStyle );
+	object = new STYLEObject( STYLEObject::source, sheet->style_editor.font->name, sheet->style_editor.font->size, true, sheet->style_editor.window->wordWrap, sheet->style_editor.window->showHorzScrollBar, editor_theme->bookmarkStyle, editor_theme->foldStyle );
 	object->properties.push_back( new STYLEProperty( object, "Source Windows", editor_theme->defaultStyle, editor_theme->identifierColor, editor_theme->backgroundColor ) );
 	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_PLAINTEXT ), editor_theme->defaultStyle, editor_theme->defaultColor, null_bg_color, null_fg_color, editor_theme->backgroundColor ) );
 	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_IDENTIFICATOR ), editor_theme->identifierStyle, editor_theme->identifierColor, null_bg_color, null_fg_color, editor_theme->backgroundColor ) );
@@ -570,6 +572,7 @@ void RDOStudioOptionsStylesAndColors::OnStyleItemChanged(NMHDR* /*pNMHDR*/, LRES
 		bool flag_fold = type == STYLEObject::source;
 		m_fold.ShowWindow( flag_fold ? SW_SHOW : SW_HIDE );
 		m_foldStatic.ShowWindow( flag_fold ? SW_SHOW : SW_HIDE );
+		m_fold.SetCurSel( prop->object->foldstyle );
 
 		// Update preview
 		bool flag_preview = type == STYLEObject::all;
@@ -827,6 +830,18 @@ void RDOStudioOptionsStylesAndColors::OnBookmarkChanged()
 		int index = m_bookmark.GetCurSel();
 		if ( index != CB_ERR ) {
 			obj->bookmarkstyle = static_cast<RDOBookmarkStyle>(index);
+			OnUpdateModify();
+		}
+	}
+}
+
+void RDOStudioOptionsStylesAndColors::OnFoldChanged()
+{
+	STYLEObject* obj = getCurrentObject();
+	if ( obj && &obj->foldstyle != &null_foldstyle ) {
+		int index = m_fold.GetCurSel();
+		if ( index != CB_ERR ) {
+			obj->foldstyle = static_cast<RDOFoldStyle>(index);
 			OnUpdateModify();
 		}
 	}

@@ -131,11 +131,12 @@ private:
 		bool&                          wordwrap;
 		bool&                          horzscrollbar;
 		rdoEditCtrl::RDOBookmarkStyle& bookmarkstyle;
+		rdoEditor::RDOFoldStyle&       foldstyle;
 
 		std::list< std::string > themes;
 		std::list< STYLEProperty* > properties;
 
-		STYLEObject( const Type _type, std::string& _font_name, int& _font_size, const bool _font_fixed = true, bool& _wordwrap = null_wordwrap, bool& _horzscrollbar = null_horzscrollbar, rdoEditCtrl::RDOBookmarkStyle& _bookmarkstyle = null_bookmarkstyle ): type( _type ), font_name( _font_name ), font_size( _font_size ), font_fixed( _font_fixed ), wordwrap( _wordwrap ), horzscrollbar( _horzscrollbar ), bookmarkstyle( _bookmarkstyle ) {};
+		STYLEObject( const Type _type, std::string& _font_name, int& _font_size, const bool _font_fixed = true, bool& _wordwrap = null_wordwrap, bool& _horzscrollbar = null_horzscrollbar, rdoEditCtrl::RDOBookmarkStyle& _bookmarkstyle = null_bookmarkstyle, rdoEditor::RDOFoldStyle& _foldstyle = null_foldstyle ): type( _type ), font_name( _font_name ), font_size( _font_size ), font_fixed( _font_fixed ), wordwrap( _wordwrap ), horzscrollbar( _horzscrollbar ), bookmarkstyle( _bookmarkstyle ), foldstyle( _foldstyle ) {};
 		~STYLEObject() {
 			std::list< STYLEProperty* >::iterator it = properties.begin();
 			while ( it != properties.end() ) {
@@ -185,6 +186,7 @@ private:
 	static bool                          null_wordwrap;
 	static bool                          null_horzscrollbar;
 	static rdoEditCtrl::RDOBookmarkStyle null_bookmarkstyle;
+	static rdoEditor::RDOFoldStyle       null_foldstyle;
 
 	void OnUpdateModify();
 
@@ -234,6 +236,7 @@ protected:
 	afx_msg void OnWordWrapClicked();
 	afx_msg void OnHorzScrollBarClicked();
 	afx_msg void OnBookmarkChanged();
+	afx_msg void OnFoldChanged();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
