@@ -65,27 +65,22 @@ void RDOStudioFrameView::OnDraw(CDC* pDC)
 	CSingleLock lock_draw( model->frameManager.getFrameDraw( index ) );
 	lock_draw.Lock();
 
-	if ( true /*!model->frameManager.isDeleted( index )*/ ) {
+	GetClientRect( &newClientRect );
 
-		GetClientRect( &newClientRect );
+	CDC dc;
+	dc.CreateCompatibleDC( pDC );
+	CBitmap* pOldBitmap = dc.SelectObject( &frameBmp );
 
-		CDC dc;
-		dc.CreateCompatibleDC( pDC );
-		CBitmap* pOldBitmap = dc.SelectObject( &frameBmp );
+	pDC->BitBlt( 0, 0, frameBmpRect.right, frameBmpRect.bottom, &dc, 0, 0, SRCCOPY );
+	COLORREF color = studioApp.mainFrame->style_frame.theme->backgroundColor;
+	pDC->FillSolidRect( frameBmpRect.right, 0, newClientRect.right - frameBmpRect.right, newClientRect.bottom, color );
+	pDC->FillSolidRect( 0, frameBmpRect.bottom, newClientRect.right, newClientRect.bottom - frameBmpRect.bottom, color );
 
-		pDC->BitBlt( 0, 0, frameBmpRect.right, frameBmpRect.bottom, &dc, 0, 0, SRCCOPY );
-		COLORREF color = studioApp.mainFrame->style_frame.theme->backgroundColor;
-		pDC->FillSolidRect( frameBmpRect.right, 0, newClientRect.right - frameBmpRect.right, newClientRect.bottom, color );
-		pDC->FillSolidRect( 0, frameBmpRect.bottom, newClientRect.right, newClientRect.bottom - frameBmpRect.bottom, color );
-
-		dc.SelectObject( pOldBitmap );
-
-	}
+	dc.SelectObject( pOldBitmap );
 
 	lock_draw.Unlock();
 
-	CEvent* timer = model->frameManager.getFrameTimer( index );
-	timer->SetEvent();
+	model->frameManager.getFrameTimer( index )->SetEvent();
 }
 
 BOOL RDOStudioFrameView::OnPreparePrinting(CPrintInfo* pInfo)
@@ -121,6 +116,7 @@ RDOStudioFrameDoc* RDOStudioFrameView::GetDocument()
 
 void RDOStudioFrameView::OnDestroy() 
 {
+	model->frameManager.getFrameClose( model->frameManager.findFrameIndex( this ) )->SetEvent();
 	model->frameManager.disconnectFrameDoc( GetDocument() );
 	CView::OnDestroy();
 }

@@ -28,6 +28,7 @@ private:
 		CMutex              used;
 		CMutex              draw;
 		CEvent              timer;
+		CEvent              close;
 	};
 	static std::vector< Frame* > frames;
 
@@ -48,6 +49,7 @@ public:
 	CMutex*             getFrameUsed( const int index ) const    { return &frames[index]->used;  };
 	CMutex*             getFrameDraw( const int index ) const    { return &frames[index]->draw;  };
 	CEvent*             getFrameTimer( const int index ) const   { return &frames[index]->timer; };
+	CEvent*             getFrameClose( const int index ) const   { return &frames[index]->close; };
 	void clear();
 
 	void expand() const;

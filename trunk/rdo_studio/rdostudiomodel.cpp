@@ -475,23 +475,23 @@ void RDOStudioModel::showFrame()
 {
 	const vector<RDOFrame *>& frames = kernel.getSimulator()->getFrames();
 	vector<RDOFrame *>::const_iterator it = frames.begin();
-	int frame_index = 0;
+	int index = 0;
 	while ( it != frames.end() ) {
-		if ( *it && frame_index < frameManager.frames.size() ) {
+		if ( *it && index < frameManager.frames.size() ) {
 
-			CSingleLock lock_used( frameManager.getFrameUsed( frame_index ) );
+			CSingleLock lock_used( frameManager.getFrameUsed( index ) );
 			lock_used.Lock();
 
-			RDOStudioFrameDoc* doc = frameManager.getFrameDoc( frame_index );
+			RDOStudioFrameDoc* doc = frameManager.getFrameDoc( index );
 			if ( doc ) {
 
 				SYSTEMTIME time1;
 				::GetSystemTime( &time1 );
 
-				CSingleLock lock_draw( frameManager.getFrameDraw( frame_index ) );
+				CSingleLock lock_draw( frameManager.getFrameDraw( index ) );
 				lock_draw.Lock();
 
-				RDOStudioFrameView* view = frameManager.getFrameView( frame_index );
+				RDOStudioFrameView* view = frameManager.getFrameView( index );
 				if ( view->mustBeInit ) {
 					view->frameBmpRect.right  = (*it)->width;
 					view->frameBmpRect.bottom = (*it)->height;
@@ -645,32 +645,28 @@ void RDOStudioModel::showFrame()
 
 				lock_draw.Unlock();
 
-				TRACE( "1\r\n" );
-				CEvent* timer = frameManager.getFrameTimer( frame_index );
-				timer->ResetEvent();
+				frameManager.getFrameTimer( index )->ResetEvent();
 
 				CRect rect;
 				view->GetClientRect( rect );
 				view->InvalidateRect( NULL );
 				view->SendNotifyMessage( WM_PAINT, 0, 0 );
 
-				TRACE( "4\r\n" );
-
-				DWORD res = ::WaitForSingleObject( timer->m_hObject, 100000 );
+				CONST HANDLE events[2] = { frameManager.getFrameTimer( index )->m_hObject, frameManager.getFrameClose( index )->m_hObject };
+				DWORD res = ::WaitForMultipleObjects( 2, events, FALSE, INFINITE );
 				if ( res == WAIT_OBJECT_0 ) {
-					TRACE( "333333333333333333\r\n" );
 					SYSTEMTIME time2;
 					::GetSystemTime( &time2 );
 					int msec = ( time2.wSecond - time1.wSecond ) * 1000 + ( time2.wMilliseconds - time1.wMilliseconds );
 					TRACE( "time = %d\r\n", msec );
+				} else if ( res == WAIT_OBJECT_0 + 1 ) {
 				} else {
-					TRACE( "____________________________error\r\n" );
 				}
 			}
 			lock_used.Unlock();
 		}
 		it++;
-		frame_index++;
+		index++;
 	}
 }
 
