@@ -128,6 +128,8 @@ public:
 
 	void setDrawLog( const bool value );
 	bool getDrawLog() const { return drawLog; };
+
+	int getStringsCount() const { return stringsCount; };
 	
 	//Must be called when moving main frame window
 	//void storeWindowRect();
