@@ -251,9 +251,12 @@ void CChatUdp::parsCommand( const std::string& line )
 			chatApp.users.addUser( username, "", fromIP );
 		} else {
 			if ( user->getUserName() != username ) {
-				user->setUserName( username );
-				if ( user->isIgnored() ) return;
-				chatApp.mainFrame->childView.viewer.addString( username, user->getUserName() + " сменил имя на " + username, CSTRT_ChangeName );
+				if ( user->isIgnored() ) {
+					user->setUserName( username );
+				} else {
+					chatApp.mainFrame->childView.viewer.addString( username, format( IDS_CHANGENAME_VIEWERLOG, user->getUserName().c_str(), username.c_str() ), CSTRT_ChangeName );
+					user->setUserName( username );
+				}
 			}
 		}
 
