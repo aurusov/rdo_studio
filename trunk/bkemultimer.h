@@ -13,9 +13,11 @@ namespace bkemul {
 class BKEmulTimer
 {
 private:
-	enum Type { none, t20, t120, t22, t122 }; // Системный таймер БК запущен/остановлен
+	enum Type { none, t20, t22, t24 }; // Системный таймер БК запущен/остановлен
 	Type type;
 	int  tick_count;
+	int  tick_koef;
+	bool next20;
 
 public:
 	BKEmulTimer();
@@ -24,7 +26,6 @@ public:
 	void reset();
 	void tick();
 	bool isWork() const { return type != none; }
-	void set177706( WORD value );
 	void set177712( WORD value );
 	void set177712( BYTE value );
 	void set177713( BYTE value );

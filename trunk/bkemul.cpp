@@ -115,8 +115,8 @@ void BKEmul::nextIteration()
 	if ( pause ) return;
 	try {
 		speaker.play();
-		timer.tick();
 		for ( int i = 0; i < speed; i++ ) {
+			if ( timer.isWork() ) timer.tick();
 			cpu.nextIteration();
 		}
 	} catch( BKMemoryAccessError& ) {

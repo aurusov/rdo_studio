@@ -60,6 +60,6 @@ bool BKEmulSpeaker::check() const
 
 void BKEmulSpeaker::play()
 {
-	TRACE( "count = %d\r\n", count );
+//	TRACE( "count = %d\r\n", count );
 	count = 0;
 }
