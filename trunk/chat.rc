@@ -356,7 +356,8 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 // Bitmap
 //
 
-IDR_STATUSMODE_TOOLBAR  BITMAP  MOVEABLE PURE   "res\\Toolbar.bmp"
+IDR_STATUSMODE_TOOLBAR  BITMAP  DISCARDABLE     "res\\statusModeToolbar.bmp"
+IDR_MAIN_TOOLBAR        BITMAP  DISCARDABLE     "res\\mainToolbar.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -392,7 +393,8 @@ BEGIN
     POPUP "&View"
     BEGIN
         MENUITEM "&Dock Window",                ID_VIEW_DOCKWINDOW
-        MENUITEM "&Status Mode Toolbar",        ID_VIEW_TOOLBAR
+        MENUITEM "&Main Toolbar",               ID_VIEW_MAINTOOLBAR
+        MENUITEM "&Status Mode Toolbar",        ID_VIEW_STATUSMODE_TOOLBAR
     END
 END
 
@@ -402,11 +404,17 @@ END
 // Toolbar
 //
 
-IDR_STATUSMODE_TOOLBAR TOOLBAR DISCARDABLE  15, 16
+IDR_STATUSMODE_TOOLBAR TOOLBAR DISCARDABLE  16, 15
 BEGIN
     BUTTON      ID_STATUSMODE_ONLINE
     BUTTON      ID_STATUSMODE_AWAY
     BUTTON      ID_STATUSMODE_NOTAVAILIBLE
+END
+
+IDR_MAIN_TOOLBAR TOOLBAR DISCARDABLE  16, 15
+BEGIN
+    BUTTON      ID_FILE_REFRESHUSERLIST
+    BUTTON      ID_FILE_REFRESHNETWORK
 END
 
 
@@ -436,8 +444,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,0,155
- PRODUCTVERSION 1,0,0,155
+ FILEVERSION 1,0,0,159
+ PRODUCTVERSION 1,0,0,159
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -455,14 +463,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "Application for chat in localnet\0"
-            VALUE "FileVersion", "1, 0, 0, 155\0"
+            VALUE "FileVersion", "1, 0, 0, 159\0"
             VALUE "InternalName", "localChat\0"
             VALUE "LegalCopyright", "Copyright (C) 2002\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "localchat.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "localChat\0"
-            VALUE "ProductVersion", "1, 0, 0, 155\0"
+            VALUE "ProductVersion", "1, 0, 0, 159\0"
             VALUE "SpecialBuild", "\0"
         END
     END
@@ -523,6 +531,24 @@ BEGIN
     IDS_IP_VALUE            "IP = %s"
     IDS_USERS               "Users"
     IDS_NETWORK             "Network"
+    ID_MAIN_TOOLBAR         "Main"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_FILE_REFRESHUSERLIST "\nRefresh User List"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_FILE_REFRESHNETWORK  "\nRefresh Network"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_STATUSMODE_ONLINE    "\nOnline"
+    ID_STATUSMODE_AWAY      "\nAway"
+    ID_STATUSMODE_NOTAVAILIBLE "\nNot Availible"
 END
 
 #endif    // English (U.S.) resources

@@ -296,11 +296,19 @@ SOURCE=.\res\incoming.wav
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\mainToolbar.bmp
+# End Source File
+# Begin Source File
+
 SOURCE=.\res\net.bmp
 # End Source File
 # Begin Source File
 
 SOURCE=.\res\sound.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\statusModeToolbar.bmp
 # End Source File
 # Begin Source File
 

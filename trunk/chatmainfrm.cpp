@@ -30,9 +30,13 @@ BEGIN_MESSAGE_MAP( CChatMainFrame, CFrameWnd )
 	ON_COMMAND(ID_FILE_REFRESHUSERLIST, OnFileRefreshUserList)
 	ON_COMMAND(ID_FILE_REFRESHNETWORK, OnFileRefreshNetwork)
 	ON_UPDATE_COMMAND_UI(ID_FILE_REFRESHNETWORK, OnUpdateFileRefreshNetwork)
-	ON_COMMAND( ID_TRAYMENU_EXIT, OnTrayCloseApp )
 	ON_COMMAND(ID_VIEW_DOCKWINDOW, OnViewDockWindow)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_DOCKWINDOW, OnUpdateViewDockWindow)
+	ON_COMMAND(ID_VIEW_STATUSMODE_TOOLBAR, OnViewStatusModeToolbar)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_STATUSMODE_TOOLBAR, OnUpdateViewStatusModeToolbar)
+	ON_COMMAND( ID_TRAYMENU_EXIT, OnTrayCloseApp )
+	ON_COMMAND(ID_VIEW_MAINTOOLBAR, OnViewMainToolbar)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_MAINTOOLBAR, OnUpdateViewMainToolbar)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -91,6 +95,10 @@ int CChatMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	dock.Create( format( IDS_DOCKWINDOW ).c_str(), this, 0 );
 	dock.SetBarStyle( dock.GetBarStyle() | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
 
+	mainToolBar.CreateEx( this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
+	mainToolBar.LoadToolBar( IDR_MAIN_TOOLBAR );
+	mainToolBar.GetToolBarCtrl().SetWindowText( format( ID_MAIN_TOOLBAR ).c_str() );
+
 	statusModeToolBar.CreateEx( this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
 	statusModeToolBar.LoadToolBar( IDR_STATUSMODE_TOOLBAR );
 	statusModeToolBar.GetToolBarCtrl().SetWindowText( format( ID_STATUSMODE_TOOLBAR ).c_str() );
@@ -103,12 +111,14 @@ int CChatMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 //	statusBar.SetPaneInfo( 2, ID_INSERTOVERWRITESTATUSBAR, SBPS_NORMAL , 70 );
 //	statusBar.SetPaneInfo( 3, ID_INFOSTATUSBAR           , SBPS_STRETCH, 70 );
 
-	dock.EnableDocking( CBRS_ALIGN_ANY );
+	mainToolBar.EnableDocking( CBRS_ALIGN_ANY );
 	statusModeToolBar.EnableDocking( CBRS_ALIGN_ANY );
+	dock.EnableDocking( CBRS_ALIGN_ANY );
 
 	EnableDocking( CBRS_ALIGN_ANY );
 
-	DockControlBar( &statusModeToolBar );
+	DockControlBar( &mainToolBar );
+	dockControlBarBesideOf( statusModeToolBar, mainToolBar );
 	DockControlBar( &dock, AFX_IDW_DOCKBAR_LEFT );
 
 	closeButtonAction    = (CChatCloseButtonAction)chatApp.GetProfileInt( "General", "closeButtonAction", CCBA_Tray );
@@ -598,4 +608,24 @@ void CChatMainFrame::OnViewDockWindow()
 void CChatMainFrame::OnUpdateViewDockWindow(CCmdUI* pCmdUI)
 {
 	pCmdUI->SetCheck( dock.IsVisible() );
+}
+
+void CChatMainFrame::OnViewMainToolbar()
+{
+	ShowControlBar( &mainToolBar, !(mainToolBar.GetStyle() & WS_VISIBLE), false );
+}
+
+void CChatMainFrame::OnUpdateViewMainToolbar(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetCheck( mainToolBar.GetStyle() & WS_VISIBLE );
+}
+
+void CChatMainFrame::OnViewStatusModeToolbar()
+{
+	ShowControlBar( &statusModeToolBar, !(statusModeToolBar.GetStyle() & WS_VISIBLE), false );
+}
+
+void CChatMainFrame::OnUpdateViewStatusModeToolbar(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetCheck( statusModeToolBar.GetStyle() & WS_VISIBLE );
 }

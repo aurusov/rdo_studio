@@ -3,7 +3,6 @@
 // Used by chat.rc
 //
 #define IDR_MAINFRAME                   128
-#define IDR_STATUSMODE_TOOLBAR          128
 #define IDB_STATUSMODE                  131
 #define IDD_OPTIONS_GENERAL_DIALOG      136
 #define IDR_INCOMINGMESSAGE_WAVE        142
@@ -24,6 +23,8 @@
 #define IDD_TOCRYOUT_DIALOG             173
 #define IDB_NET                         180
 #define IDR_NETWORK_MENU                181
+#define IDR_STATUSMODE_TOOLBAR          189
+#define IDR_MAIN_TOOLBAR                191
 #define IDC_USERNAME_EDIT               1000
 #define IDC_USERNAME_STATIC             1001
 #define IDC_USER_GROUPBOX               1003
@@ -90,6 +91,8 @@
 #define ID_NETWORK_OPEN                 32803
 #define ID_NETWORK_INFO                 32804
 #define ID_VIEW_DOCKWINDOW              32805
+#define ID_VIEW_STATUSMODE_TOOLBAR      32814
+#define ID_VIEW_MAINTOOLBAR             32815
 #define ID_INFOSTATUSBAR                59394
 #define ID_STATUSMODE_TOOLBAR           61204
 #define ID_OPTIONS                      61205
@@ -113,14 +116,15 @@
 #define IDS_IP_VALUE                    61223
 #define IDS_USERS                       61224
 #define IDS_NETWORK                     61225
+#define ID_MAIN_TOOLBAR                 61226
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        182
-#define _APS_NEXT_COMMAND_VALUE         32806
+#define _APS_NEXT_RESOURCE_VALUE        193
+#define _APS_NEXT_COMMAND_VALUE         32816
 #define _APS_NEXT_CONTROL_VALUE         1053
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

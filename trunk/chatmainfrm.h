@@ -23,7 +23,8 @@ enum CChatMinimizeButtonAction {
 
 class CChatMainFrame: public CFrameWnd
 {
-private: 
+private:
+	CToolBar       mainToolBar;
 	CToolBar       statusModeToolBar;
 	CStatusBar     statusBar;
 
@@ -128,6 +129,10 @@ protected:
 	afx_msg void OnUpdateFileRefreshNetwork(CCmdUI* pCmdUI);
 	afx_msg void OnViewDockWindow();
 	afx_msg void OnUpdateViewDockWindow(CCmdUI* pCmdUI);
+	afx_msg void OnViewMainToolbar();
+	afx_msg void OnUpdateViewMainToolbar(CCmdUI* pCmdUI);
+	afx_msg void OnViewStatusModeToolbar();
+	afx_msg void OnUpdateViewStatusModeToolbar(CCmdUI* pCmdUI);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
