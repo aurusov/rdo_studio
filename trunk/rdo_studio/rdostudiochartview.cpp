@@ -732,7 +732,7 @@ int RDOStudioChartView::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	popupMenu.AppendMenu( MF_SEPARATOR );
 	appendMenu( mainMenu->GetSubMenu( 6 + delta ), 5, &popupMenu );
 
-	GetDocument()->addToViews( GetSafeHwnd() );
+	//GetDocument()->addToViews( GetSafeHwnd() );
 
 	return 0;
 }
@@ -1080,6 +1080,13 @@ void RDOStudioChartView::updateView()
 
 void RDOStudioChartView::OnDestroy() 
 {
-	GetDocument()->removeFromViews( GetSafeHwnd() );
+	if ( GetDocument() )
+		GetDocument()->removeFromViews( GetSafeHwnd() );
 	CView::OnDestroy();
+}
+
+void RDOStudioChartView::OnInitialUpdate() 
+{
+	GetDocument()->addToViews( GetSafeHwnd() );
+	CView::OnInitialUpdate();	
 }

@@ -109,17 +109,18 @@ void RDOStudioChartDoc::Serialize(CArchive& ar)
 
 void RDOStudioChartDoc::incTimeEventsCount( RDOTracerTimeNow* time )
 {
-	mutex.Lock();
+	//mutex.Lock(); Document is locked from RDOTracerBase::addTime
 
 	if ( docTimes.back() == time )
 		ticksCount ++;
+	updateChartViews();
 
-	mutex.Unlock();
+	//mutex.Unlock();
 }
 
 bool RDOStudioChartDoc::newValueToSerieAdded( RDOTracerValue* val )
 {
-	mutex.Lock();
+	//mutex.Lock(); Document is locked from RDOTracerSerie::addValue
 	
 	if ( docTimes.empty() ) {
 		docTimes.push_back( val->modeltime );
@@ -137,7 +138,7 @@ bool RDOStudioChartDoc::newValueToSerieAdded( RDOTracerValue* val )
 
 	updateChartViews();
 
-	mutex.Unlock();
+	//mutex.Unlock();
 
 	return true;
 }

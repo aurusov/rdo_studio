@@ -78,11 +78,13 @@ void RDOTracerSerie::addValue( RDOTracerValue* const value )
 
 	mutex.Lock();
 
-	values.push_back( value );
 	if ( value->value < minValue || values.empty() )
 		minValue = value->value;
 	if ( value->value > maxValue || values.empty() )
 		maxValue = value->value;
+
+	values.push_back( value );
+
 	for_each( documents.begin(), documents.end(), bind2nd( mem_fun1( &RDOStudioChartDoc::newValueToSerieAdded ), value ) );
 	
 	mutex.Unlock();

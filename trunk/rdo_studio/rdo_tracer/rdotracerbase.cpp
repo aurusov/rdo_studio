@@ -321,7 +321,9 @@ RDOTracerTimeNow* RDOTracerBase::addTime( string& time )
 		last->eventCount ++;
 		eventIndex ++;
 		for ( vector< RDOStudioChartDoc* >::iterator it = charts.begin(); it != charts.end(); it++ ) {
+			(*it)->lock();
 			(*it)->incTimeEventsCount( last );
+			(*it)->unlock();
 		}
 	}
 	return timeList.back();

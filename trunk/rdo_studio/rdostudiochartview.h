@@ -101,6 +101,8 @@ public:
 	void setStyle( RDOStudioChartViewStyle* _style, const bool needRedraw = true );
 
 	//{{AFX_VIRTUAL(RDOStudioChartView)
+	public:
+	virtual void OnInitialUpdate();
 	protected:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	virtual void OnDraw(CDC* pDC);
