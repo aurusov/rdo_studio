@@ -87,6 +87,7 @@ bool RDOStudioModel::openModel( const string& modelName ) const
 	studioApp.mainFrame->output.clearFind();
 	studioApp.mainFrame->output.showBuild();
 	studioApp.mainFrame->output.appendStringToBuild( format( IDS_MODELLOADINGBEGIN ) );
+	const_cast<rdoEditCtrl::RDOBuildEdit*>(studioApp.mainFrame->output.getBuild())->UpdateWindow();
 	static_cast<bool>(openError) = false;
 	bool flag = kernel.getRepository()->openModel( modelName );
 	if ( flag && !openError ) {
@@ -344,6 +345,8 @@ void RDOStudioModel::openModelFromRepository()
 
 		RDOEditorTabCtrl* tab = getTab();
 		if ( tab ) {
+			studioApp.mainFrame->beginProgress( 0, tab->getItemCount() * 2 + 1 );
+			studioApp.mainFrame->stepProgress();
 			for ( int i = 0; i < tab->getItemCount(); i++ ) {
 				RDOEditorEdit* edit = tab->getItemEdit( i );
 				edit->setReadOnly( false );
@@ -362,6 +365,7 @@ void RDOStudioModel::openModelFromRepository()
 					case RDOEDIT_PMD: kernel.getRepository()->loadPMD( stream ); break;
 					default: canLoad = false; break;
 				}
+				studioApp.mainFrame->stepProgress();
 				if ( canLoad ) {
 					bool stream_error = stream.rdstate() & ios_base::badbit ? true : false;
 					if ( !stream_error ) {
@@ -381,13 +385,16 @@ void RDOStudioModel::openModelFromRepository()
 						}
 						if ( obj ) {
 							studioApp.mainFrame->output.appendStringToBuild( format( IDS_MODELCANNOTLOAD, format( obj ).c_str() ) );
+							const_cast<rdoEditCtrl::RDOBuildEdit*>(studioApp.mainFrame->output.getBuild())->UpdateWindow();
 						}
 						openError = true;
 					}
 				}
 				edit->setCurrentPos( 0 );
 				edit->setModifyFalse();
+				studioApp.mainFrame->stepProgress();
 			}
+			studioApp.mainFrame->endProgress();
 		}
 
 		CWnd* wnd = studioApp.mainFrame->GetActiveFrame();
@@ -401,6 +408,8 @@ void RDOStudioModel::saveModelToRepository()
 {
 	RDOEditorTabCtrl* tab = getTab();
 	if ( tab ) {
+		studioApp.mainFrame->beginProgress( 0, tab->getItemCount() + 1 );
+		studioApp.mainFrame->stepProgress();
 		for ( int i = 0; i < tab->getItemCount(); i++ ) {
 			RDOEditorEdit* edit = tab->getItemEdit( i );
 			stringstream stream;
@@ -417,7 +426,9 @@ void RDOStudioModel::saveModelToRepository()
 				case RDOEDIT_PMD: kernel.getRepository()->savePMD( stream ); break;
 			}
 			edit->setModifyFalse();
+			studioApp.mainFrame->stepProgress();
 		}
+		studioApp.mainFrame->endProgress();
 	}
 	setName( kernel.getRepository()->getName() );
 	studioApp.insertReopenItem( kernel.getRepository()->getFullName() );

@@ -144,6 +144,7 @@ int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	statusBar.SetPaneInfo( 4, ID_MODELRUNTYPESTATUSBAR   , SBPS_NORMAL , 70 );
 	statusBar.SetPaneInfo( 5, ID_MODELSHOWRATE           , SBPS_NORMAL , 120 );
 	statusBar.SetPaneInfo( 6, ID_PROGRESSSTATUSBAR       , SBPS_STRETCH, 70 );
+	statusBar.setProgressIndicator( ID_PROGRESSSTATUSBAR );
 
 	workspace.Create( format( ID_DOCK_WORKSPACE ).c_str(), this, 0 );
 	workspace.SetBarStyle( workspace.GetBarStyle() | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
