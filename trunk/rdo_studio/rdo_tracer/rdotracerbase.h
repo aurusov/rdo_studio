@@ -77,9 +77,6 @@ private:
 
 	bool drawTrace;
 
-	//identifies if the trace is cleaned, so there is no model
-	//structure and created temporary resources
-	bool cleaned;
 public:
 	RDOTracerBase();
 	virtual ~RDOTracerBase();	

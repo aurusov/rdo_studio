@@ -34,8 +34,7 @@ RDOTracerBase::RDOTracerBase():
 	clipboardFormat( 0 ),
 	chartDocTemplate( NULL ),
 	eventIndex( 0 ),
-	drawTrace( true ),
-	cleaned( true )
+	drawTrace( true )
 {
 }
 
@@ -467,9 +466,7 @@ void RDOTracerBase::deleteTrace()
 		it++;
 	}
 	timeList.clear();
-
-	cleaned = true;
-	TRACE( "deleteTrace_______________\n" );
+	TRACE( "deletetrace-----------" );
 
 	mutex.Unlock();
 }
@@ -570,8 +567,6 @@ void RDOTracerBase::getModelStructure( stringstream& stream )
 		}
 	}
 
-	cleaned = false;
-
 	mutex.Unlock();
 
 	/*stream >> s;
@@ -626,12 +621,10 @@ void RDOTracerBase::getTraceString( string trace_string )
 {
 	mutex.Lock();
 
-	if ( !cleaned ) {
-		if ( log ) {
-			log->addStringToLog( trace_string );
-		}
-		dispatchNextString( trace_string );
+	if ( log ) {
+		log->addStringToLog( trace_string );
 	}
+	dispatchNextString( trace_string );
 
 	mutex.Unlock();
 }
