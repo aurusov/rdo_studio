@@ -59,6 +59,7 @@ void BKEmul::reset()
 
 	cpu.reset();
 	keyboard.reset();
+	speaker.reset();
 /*
 	memory.set_word( 0100000, 0012700 );
 	memory.set_word( 0100002, 0040000 );

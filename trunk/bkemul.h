@@ -9,6 +9,7 @@
 #include "bkemulmemory.h"
 #include "bkemulvideo.h"
 #include "bkemulkeyboard.h"
+#include "bkemulspeaker.h"
 
 namespace bkemul {
 
@@ -50,6 +51,7 @@ public:
 	BKEmulMemory   memory;
 	BKEmulVideo    video;
 	BKEmulKeyboard keyboard;
+	BKEmulSpeaker  speaker;
 
 	void powerON();
 	void powerOFF();
