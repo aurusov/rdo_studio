@@ -1065,50 +1065,23 @@ void RDOBaseEdit::horzScrollToCurrentPos() const
 	sendEditor( SCI_REPLACESEL, 0, 0 );
 }
 
-void RDOBaseEdit::load( stringstream& stream ) const
+void RDOBaseEdit::load( rdo::binarystream& stream ) const
 {
 	bool readOnly = isReadOnly();
 	setReadOnly( false );
 
-	sendEditorString( SCI_ADDTEXT, stream.str().length(), stream.str().c_str() );
+	int i = stream.vec().size();
+	sendEditorString( SCI_ADDTEXT, stream.vec().size(), stream.data() );
 
 	setReadOnly( readOnly );
 }
 
-void RDOBaseEdit::load( vector< char >& vec ) const
-{
-	bool readOnly = isReadOnly();
-	setReadOnly( false );
-
-	int len = vec.size();
-	string s( vec.begin(), len );
-	sendEditorString( SCI_ADDTEXT, s.length(), s.c_str() );
-
-	setReadOnly( readOnly );
-}
-
-void RDOBaseEdit::save( stringstream& stream ) const
-{
-	char currentLine[8000];
-	int cnt = getLineCount();
-	for ( int i = 0; i < cnt; i++ ) {
-		int length = sendEditor( SCI_LINELENGTH, i );
-		sendEditor( SCI_GETLINE, i, (long)currentLine );
-		string str( currentLine, length );
-		trimRight( str );
-		if ( i == cnt - 1 && str.empty() ) {
-		} else {
-			// ???? перевод строки делается после каждой строки. даже после последней
-			stream << str << endl;
-		}
-	}
-}
-
-void RDOBaseEdit::save( vector< char >& vec ) const
+void RDOBaseEdit::save( rdo::binarystream& stream ) const
 {
 	int len = getLength();
-	vec.resize( len );
-	sendEditorString( SCI_GETTEXT, len, &vec[0] );
+	stream.vec().resize( len + 1 );
+	sendEditorString( SCI_GETTEXT, len + 1, stream.data() );
+	stream.vec().resize( len );
 }
 
 int RDOBaseEdit::indentOfBlock( int line ) const

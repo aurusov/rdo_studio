@@ -238,7 +238,7 @@ void RDOStudioFrameManager::bmp_insert( const std::string& name )
 		bitmaps[name] = NULL;
 
 		rdo::binarystream stream;
-		kernel.getRepository()->loadBMP( name, stream.vec() );
+		kernel.getRepository()->loadBMP( name, stream );
 
 		char* bmInfo   = NULL;
 		char* pBits    = NULL;

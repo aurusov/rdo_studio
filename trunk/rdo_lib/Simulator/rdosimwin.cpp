@@ -240,61 +240,61 @@ bool RdoSimulator::parseModel()
 
 	try {
 /////////////////   SMR file //////////////////////////////////
-		stringstream SMRstream;
+		rdo::binarystream SMRstream( ios_base::in | ios_base::out );
 		kernel.getRepository()->loadSMR(SMRstream);
 		if(SMRstream.good())
 			parser->parseSMR1(&SMRstream, &consol);
 
 /////////////////   RTP file //////////////////////////////////
-		stringstream RTPstream1;
+		rdo::binarystream RTPstream1( ios_base::in | ios_base::out );
 		kernel.getRepository()->loadRTP(RTPstream1);
 		if(RTPstream1.good())
 			parser->parseRTP(&RTPstream1, &consol);
 
 /////////////////   RSS file //////////////////////////////////
-		stringstream RSSstream;
+		rdo::binarystream RSSstream( ios_base::in | ios_base::out );
 		kernel.getRepository()->loadRSS(RSSstream);
 		if(RSSstream.good())
 			parser->parseRSS(&RSSstream, &consol);
 
 /////////////////   FUN file //////////////////////////////////
-		stringstream FUNstream;
+		rdo::binarystream FUNstream( ios_base::in | ios_base::out );
 		kernel.getRepository()->loadFUN(FUNstream);
 		if(FUNstream.good())
 			parser->parseFUN(&FUNstream, &consol);
 
 /////////////////   PAT file //////////////////////////////////
-		stringstream PATstream;
+		rdo::binarystream PATstream( ios_base::in | ios_base::out );
 		kernel.getRepository()->loadPAT(PATstream);
 		if(PATstream.good())
 			parser->parsePAT(&PATstream, &consol);
 
 /////////////////   OPR file //////////////////////////////////
-		stringstream OPRstream;
+		rdo::binarystream OPRstream( ios_base::in | ios_base::out );
 		kernel.getRepository()->loadOPR(OPRstream);
 		if(OPRstream.good())
 			parser->parseOPR(&OPRstream, &consol);
 
 /////////////////   DPT file //////////////////////////////////
-		stringstream DPTstream;
+		rdo::binarystream DPTstream( ios_base::in | ios_base::out );
 		kernel.getRepository()->loadDPT(DPTstream);
 		if(DPTstream.good())
 			parser->parseDPT(&DPTstream, &consol);
 
 /////////////////   PMD file //////////////////////////////////
-		stringstream PMDstream;
+		rdo::binarystream PMDstream( ios_base::in | ios_base::out );
 		kernel.getRepository()->loadPMD(PMDstream);
 		if(PMDstream.good())
 			parser->parsePMD(&PMDstream, &consol);
 
 /////////////////   FRM file //////////////////////////////////
-		stringstream FRMstream;
+		rdo::binarystream FRMstream( ios_base::in | ios_base::out );
 		kernel.getRepository()->loadFRM(FRMstream);
 		if(FRMstream.good())
 			parser->parseFRM(&FRMstream, &consol);
 
 /////////////////   SMR file //////////////////////////////////
-		stringstream SMRstream2;
+		rdo::binarystream SMRstream2( ios_base::in | ios_base::out );
 		kernel.getRepository()->loadSMR(SMRstream2);
 		if(SMRstream2.good())
 			parser->parseSMR2(&SMRstream2, &consol);
@@ -379,7 +379,7 @@ void RdoSimulator::closeModel()
 	parser = NULL;
 }
 
-void RdoSimulator::parseSMRFileInfo( stringstream& smr, rdoModelObjects::RDOSMRFileInfo& info )
+void RdoSimulator::parseSMRFileInfo( rdo::binarystream& smr, rdoModelObjects::RDOSMRFileInfo& info )
 {
 	terminateModel();
 	closeModel();

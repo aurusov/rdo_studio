@@ -3,6 +3,7 @@
 #pragma once
 
 #include "rdobaseeditstyle.h"
+#include <rdobinarystream.h>
 
 namespace rdoEditCtrl {
 
@@ -181,10 +182,8 @@ public:
 	int findPos( std::string& findWhat, const int startFromLine = 0, const bool matchCase = false, const bool matchWholeWord = false ) const;
 	std::string getLine( const int line ) const;
 
-	void load( std::stringstream& stream ) const;
-	void load( std::vector< char >& vec ) const;
-	void save( std::stringstream& stream ) const;
-	void save( std::vector< char >& vec ) const;
+	void load( rdo::binarystream& stream ) const;
+	void save( rdo::binarystream& stream ) const;
 	void saveAsRTF( CFile& file, int start = 0, int end = -1 ) const;
 };
 

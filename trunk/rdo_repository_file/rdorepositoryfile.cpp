@@ -138,7 +138,7 @@ bool RDORepositoryFile::openModel( const string& modelFileName )
 			if ( isFileExists( modelPath + modelName + ".smr" ) ) {
 
 				smrFileName = modelName;
-				stringstream smrStream;
+				rdo::binarystream smrStream( ios::in | ios::out );
 				loadFile( modelPath + smrFileName + ".smr", smrStream, true, true );
 				rdoModelObjects::RDOSMRFileInfo fileInfo;
 				kernel.getSimulator()->parseSMRFileInfo( smrStream, fileInfo );
@@ -387,13 +387,34 @@ bool RDORepositoryFile::isReadOnly() const
 	return readOnly;
 }
 
-void RDORepositoryFile::loadFile( const string& filename, stringstream& stream, const bool described, const bool mustExist ) const
+void RDORepositoryFile::loadFile( const string& filename, rdo::binarystream& stream, const bool described, const bool mustExist ) const
 {
 	if ( described ) {
 		if ( isFileExists( filename ) ) {
-			ifstream file( filename.c_str() );
-			stream << file.rdbuf();
+			ifstream file( filename.c_str(), ios::in | ios::binary );
+			file.seekg( 0, ios::end );
+			int len = file.tellg();
+			file.seekg( 0, ios::beg );
+			stream.vec().resize( len );
+			file.read( &stream.vec()[0], len );
 			file.close();
+/*
+			if ( stream.getOpenMode() & ios::binary ) {
+				ios_base::openmode openmode = ios::in;
+				if ( stream.getOpenMode() & ios::binary ) openmode |= ios::binary;
+				ifstream file( filename.c_str(), openmode );
+				file.seekg( 0, ios::end );
+				int len = file.tellg();
+				file.seekg( 0, ios::beg );
+				stream.vec().resize( len );
+				file.read( &stream.vec()[0], len );
+				file.close();
+			} else {
+				ifstream file( filename.c_str() );
+				stream << file.rdbuf();
+				file.close();
+			}
+*/
 		} else {
 			stream.setstate( ios_base::badbit );
 			if ( mustExist ) stream.setstate( stream.rdstate() | ios_base::failbit );
@@ -403,13 +424,15 @@ void RDORepositoryFile::loadFile( const string& filename, stringstream& stream, 
 	}
 }
 
-void RDORepositoryFile::saveFile( const string& filename, stringstream& stream, const bool deleteIfEmpty ) const
+void RDORepositoryFile::saveFile( const string& filename, rdo::binarystream& stream, const bool deleteIfEmpty ) const
 {
 	if ( !filename.empty() ) {
 		bool file_exist = isFileExists( filename );
-		if ( stream.str().length() || ( file_exist && !deleteIfEmpty ) ) {
-			ofstream file( filename.c_str() );
-			file << stream.str();
+		if ( stream.vec().size() || ( file_exist && !deleteIfEmpty ) ) {
+			ios_base::openmode openmode = ios::out;
+			if ( stream.getOpenMode() & ios::binary ) openmode |= ios::binary;
+			ofstream file( filename.c_str(), openmode );
+			file.write( &stream.vec()[0], stream.vec().size() );
 			file.close();
 		} else {
 			if ( file_exist && deleteIfEmpty ) {
@@ -419,204 +442,117 @@ void RDORepositoryFile::saveFile( const string& filename, stringstream& stream, 
 	}
 }
 
-void RDORepositoryFile::loadFile( const string& filename, vector< char >& vec, const bool described, const bool mustExist ) const
-{
-	if ( described ) {
-		if ( isFileExists( filename ) ) {
-			ifstream file( filename.c_str(), ios::in | ios::binary  );
-			file.seekg( 0, ios::end );
-			int len = file.tellg();
-			file.seekg( 0, ios::beg );
-			vec.resize( len );
-			file.read( &vec[0], len );
-			file.close();
-		} else {
-//			stream.setstate( ios_base::badbit );
-//			if ( mustExist ) stream.setstate( stream.rdstate() | ios_base::failbit );
-		}
-	} else {
-//		stream.setstate( ios_base::badbit );
-	}
-}
-
-void RDORepositoryFile::loadPAT( stringstream& stream ) const
+void RDORepositoryFile::loadPAT( rdo::binarystream& stream ) const
 {
 	loadFile( modelPath + patFileName + ".pat", stream, patDescribed, patMustExist );
 }
 
-void RDORepositoryFile::loadRTP( stringstream& stream ) const
+void RDORepositoryFile::loadRTP( rdo::binarystream& stream ) const
 {
 	loadFile( modelPath + rtpFileName + ".rtp", stream, rtpDescribed, rtpMustExist );
 }
 
-void RDORepositoryFile::loadRSS( stringstream& stream ) const
+void RDORepositoryFile::loadRSS( rdo::binarystream& stream ) const
 {
 	loadFile( modelPath + rssFileName + ".rss", stream, rssDescribed, rssMustExist );
 }
 
-void RDORepositoryFile::loadOPR( stringstream& stream ) const
+void RDORepositoryFile::loadOPR( rdo::binarystream& stream ) const
 {
 	loadFile( modelPath + oprFileName + ".opr", stream, oprDescribed, oprMustExist );
 }
 
-void RDORepositoryFile::loadFRM( stringstream& stream ) const
+void RDORepositoryFile::loadFRM( rdo::binarystream& stream ) const
 {
 	loadFile( modelPath + frmFileName + ".frm", stream, frmDescribed, frmMustExist );
 }
 
-void RDORepositoryFile::loadFUN( stringstream& stream ) const
+void RDORepositoryFile::loadFUN( rdo::binarystream& stream ) const
 {
 	loadFile( modelPath + funFileName + ".fun", stream, funDescribed, funMustExist );
 }
 
-void RDORepositoryFile::loadDPT( stringstream& stream ) const
+void RDORepositoryFile::loadDPT( rdo::binarystream& stream ) const
 {
 	loadFile( modelPath + dptFileName + ".dpt", stream, dptDescribed, dptMustExist );
 }
 
-void RDORepositoryFile::loadSMR( stringstream& stream ) const
+void RDORepositoryFile::loadSMR( rdo::binarystream& stream ) const
 {
 	loadFile( modelPath + smrFileName + ".smr", stream, smrDescribed, smrMustExist );
 }
 
-void RDORepositoryFile::loadPMD( stringstream& stream ) const
+void RDORepositoryFile::loadPMD( rdo::binarystream& stream ) const
 {
 	loadFile( modelPath + pmdFileName + ".pmd", stream, pmdDescribed, pmdMustExist );
 }
 
-void RDORepositoryFile::loadPMV( stringstream& stream ) const
+void RDORepositoryFile::loadPMV( rdo::binarystream& stream ) const
 {
 	loadFile( modelPath + pmvFileName + ".pmv", stream, pmvDescribed, pmvMustExist );
 }
 
-void RDORepositoryFile::loadTRC( stringstream& stream ) const
+void RDORepositoryFile::loadTRC( rdo::binarystream& stream ) const
 {
 	loadFile( modelPath + trcFileName + ".trc", stream, trcDescribed, trcMustExist );
 }
 
-void RDORepositoryFile::savePAT( stringstream& stream ) const
+void RDORepositoryFile::savePAT( rdo::binarystream& stream ) const
 {
 	saveFile( modelPath + patFileName + ".pat", stream );
 }
 
-void RDORepositoryFile::saveRTP( stringstream& stream ) const
+void RDORepositoryFile::saveRTP( rdo::binarystream& stream ) const
 {
 	saveFile( modelPath + rtpFileName + ".rtp", stream );
 }
 
-void RDORepositoryFile::saveRSS( stringstream& stream ) const
+void RDORepositoryFile::saveRSS( rdo::binarystream& stream ) const
 {
 	saveFile( modelPath + rssFileName + ".rss", stream );
 }
 
-void RDORepositoryFile::saveOPR( stringstream& stream ) const
+void RDORepositoryFile::saveOPR( rdo::binarystream& stream ) const
 {
 	saveFile( modelPath + oprFileName + ".opr", stream, true );
 }
 
-void RDORepositoryFile::saveFRM( stringstream& stream ) const
+void RDORepositoryFile::saveFRM( rdo::binarystream& stream ) const
 {
 	saveFile( modelPath + frmFileName + ".frm", stream );
 }
 
-void RDORepositoryFile::saveFUN( stringstream& stream ) const
+void RDORepositoryFile::saveFUN( rdo::binarystream& stream ) const
 {
 	saveFile( modelPath + funFileName + ".fun", stream );
 }
 
-void RDORepositoryFile::saveDPT( stringstream& stream ) const
+void RDORepositoryFile::saveDPT( rdo::binarystream& stream ) const
 {
 	saveFile( modelPath + dptFileName + ".dpt", stream, true );
 }
 
-void RDORepositoryFile::saveSMR( stringstream& stream ) const
+void RDORepositoryFile::saveSMR( rdo::binarystream& stream ) const
 {
 	saveFile( modelPath + smrFileName + ".smr", stream );
 }
 
-void RDORepositoryFile::savePMD( stringstream& stream ) const
+void RDORepositoryFile::savePMD( rdo::binarystream& stream ) const
 {
 	saveFile( modelPath + pmdFileName + ".pmd", stream );
 }
 
-void RDORepositoryFile::savePMV( stringstream& stream ) const
+void RDORepositoryFile::savePMV( rdo::binarystream& stream ) const
 {
 	saveFile( modelPath + pmvFileName + ".pmv", stream );
 }
 
-void RDORepositoryFile::saveTRC( stringstream& stream ) const
+void RDORepositoryFile::saveTRC( rdo::binarystream& stream ) const
 {
 	saveFile( modelPath + trcFileName + ".trc", stream );
 }
 
-void RDORepositoryFile::loadBMP( const string& name, iostream& stream ) const
-{
-	string file_name = modelPath + name + ".bmp";
-	if ( isFileExists( file_name ) ) {
-		ifstream file( file_name.c_str(), ios::in | ios::binary );
-		stream << file.rdbuf();
-		file.close();
-	} else {
-		stream.setstate( ios_base::badbit );
-	}
-}
-
-void RDORepositoryFile::loadPAT( vector< char >& vec ) const
-{
-	loadFile( modelPath + patFileName + ".pat", vec, patDescribed, patMustExist );
-}
-
-void RDORepositoryFile::loadRTP( vector< char >& vec ) const
-{
-	loadFile( modelPath + rtpFileName + ".rtp", vec, rtpDescribed, rtpMustExist );
-}
-
-void RDORepositoryFile::loadRSS( vector< char >& vec ) const
-{
-	loadFile( modelPath + rssFileName + ".rss", vec, rssDescribed, rssMustExist );
-}
-
-void RDORepositoryFile::loadOPR( vector< char >& vec ) const
-{
-	loadFile( modelPath + oprFileName + ".opr", vec, oprDescribed, oprMustExist );
-}
-
-void RDORepositoryFile::loadFRM( vector< char >& vec ) const
-{
-	loadFile( modelPath + frmFileName + ".frm", vec, frmDescribed, frmMustExist );
-}
-
-void RDORepositoryFile::loadFUN( vector< char >& vec ) const
-{
-	loadFile( modelPath + funFileName + ".fun", vec, funDescribed, funMustExist );
-}
-
-void RDORepositoryFile::loadDPT( vector< char >& vec ) const
-{
-	loadFile( modelPath + dptFileName + ".dpt", vec, dptDescribed, dptMustExist );
-}
-
-void RDORepositoryFile::loadSMR( vector< char >& vec ) const
-{
-	loadFile( modelPath + smrFileName + ".smr", vec, smrDescribed, smrMustExist );
-}
-
-void RDORepositoryFile::loadPMD( vector< char >& vec ) const
-{
-	loadFile( modelPath + pmdFileName + ".pmd", vec, pmdDescribed, pmdMustExist );
-}
-
-void RDORepositoryFile::loadPMV( vector< char >& vec ) const
-{
-	loadFile( modelPath + pmvFileName + ".pmv", vec, pmvDescribed, pmvMustExist );
-}
-
-void RDORepositoryFile::loadTRC( vector< char >& vec ) const
-{
-	loadFile( modelPath + trcFileName + ".trc", vec, trcDescribed, trcMustExist );
-}
-
-void RDORepositoryFile::loadBMP( const string& name, vector< char >& vec ) const
+void RDORepositoryFile::loadBMP( const string& name, rdo::binarystream& stream ) const
 {
 	string file_name = modelPath + name + ".bmp";
 	if ( isFileExists( file_name ) ) {
@@ -624,10 +560,10 @@ void RDORepositoryFile::loadBMP( const string& name, vector< char >& vec ) const
 		file.seekg( 0, ios::end );
 		int len = file.tellg();
 		file.seekg( 0, ios::beg );
-		vec.resize( len );
-		file.read( &vec[0], len );
+		stream.vec().resize( len );
+		file.read( &stream.vec()[0], len );
 		file.close();
 	} else {
-//		stream.setstate( ios_base::badbit );
+		stream.setstate( ios_base::badbit );
 	}
 }

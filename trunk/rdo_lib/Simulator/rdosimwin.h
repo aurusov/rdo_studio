@@ -10,6 +10,8 @@
 
 #include "rdosimcommon.h"
 
+#include <rdobinarystream.h>
+
 using namespace std;
 
 namespace rdoRuntime {
@@ -51,7 +53,7 @@ public:
 	void stopModel();
 	vector<RDOSyntaxError>* getErrors();
 	double getModelTime();
-	void parseSMRFileInfo( stringstream& smr, rdoModelObjects::RDOSMRFileInfo& info );
+	void parseSMRFileInfo( rdo::binarystream& smr, rdoModelObjects::RDOSMRFileInfo& info );
 
 	const vector<RDOFrame *>& getFrames();
 	void addKeyPressed(int scanCode);

@@ -388,26 +388,25 @@ void RDOStudioModel::openModelFromRepository()
 				RDOEditorEdit* edit = tab->getItemEdit( i );
 				edit->setReadOnly( false );
 				edit->clearAll();
-//				stringstream stream;
 				rdo::binarystream stream;
 				bool canLoad = true;
 				switch ( i ) {
-					case RDOEDIT_PAT: kernel.getRepository()->loadPAT( stream.vec() ); break;
-					case RDOEDIT_RTP: kernel.getRepository()->loadRTP( stream.vec() ); break;
-					case RDOEDIT_RSS: kernel.getRepository()->loadRSS( stream.vec() ); break;
-					case RDOEDIT_OPR: kernel.getRepository()->loadOPR( stream.vec() ); break;
-					case RDOEDIT_FRM: kernel.getRepository()->loadFRM( stream.vec() ); break;
-					case RDOEDIT_FUN: kernel.getRepository()->loadFUN( stream.vec() ); break;
-					case RDOEDIT_DPT: kernel.getRepository()->loadDPT( stream.vec() ); break;
-					case RDOEDIT_SMR: kernel.getRepository()->loadSMR( stream.vec() ); break;
-					case RDOEDIT_PMD: kernel.getRepository()->loadPMD( stream.vec() ); break;
+					case RDOEDIT_PAT: kernel.getRepository()->loadPAT( stream ); break;
+					case RDOEDIT_RTP: kernel.getRepository()->loadRTP( stream ); break;
+					case RDOEDIT_RSS: kernel.getRepository()->loadRSS( stream ); break;
+					case RDOEDIT_OPR: kernel.getRepository()->loadOPR( stream ); break;
+					case RDOEDIT_FRM: kernel.getRepository()->loadFRM( stream ); break;
+					case RDOEDIT_FUN: kernel.getRepository()->loadFUN( stream ); break;
+					case RDOEDIT_DPT: kernel.getRepository()->loadDPT( stream ); break;
+					case RDOEDIT_SMR: kernel.getRepository()->loadSMR( stream ); break;
+					case RDOEDIT_PMD: kernel.getRepository()->loadPMD( stream ); break;
 					default: canLoad = false; break;
 				}
 				studioApp.mainFrame->stepProgress();
 				if ( canLoad ) {
 					bool stream_error = stream.rdstate() & ios_base::failbit ? true : false;
 					if ( !stream_error ) {
-						edit->load( stream.vec() );
+						edit->load( stream );
 						edit->setReadOnly( kernel.getRepository()->isReadOnly() );
 					} else {
 						int obj = 0;
@@ -458,7 +457,7 @@ void RDOStudioModel::saveModelToRepository()
 			for ( int i = 0; i < cnt; i++ ) {
 				RDOEditorEdit* edit = tab->getItemEdit( i );
 				if ( edit->isModify() ) {
-					stringstream stream;
+					rdo::binarystream stream;
 					edit->save( stream );
 					studioApp.mainFrame->stepProgress();
 					switch ( i ) {
@@ -482,7 +481,7 @@ void RDOStudioModel::saveModelToRepository()
 	setName( kernel.getRepository()->getName() );
 	studioApp.insertReopenItem( kernel.getRepository()->getFullName() );
 
-	stringstream smrStream;
+	rdo::binarystream smrStream;
 	kernel.getRepository()->loadSMR( smrStream );
 	rdoModelObjects::RDOSMRFileInfo fileInfo;
 	kernel.getSimulator()->parseSMRFileInfo( smrStream, fileInfo );

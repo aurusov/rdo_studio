@@ -22,9 +22,10 @@ private:
 	protected:
 		std::vector< char > vec;
 		int current;
+		ios_base::openmode openmode;
 
 		virtual std::streambuf* setbuf( char* s, std::streamsize n ) {
-			vec.reserve( n );
+			vec.resize( n );
 			vec.assign( s, s + n );
 			current = 0;
 			setg( vec.begin(), vec.begin(), vec.end() );
@@ -60,16 +61,25 @@ private:
 			return current;
 		}
 
-	public:
+	protected:
 		binarybuf();
 		virtual ~binarybuf() { vec.clear(); };
 	};
 	binarybuf buf;
 
 public:
-	binarystream();
-	std::vector< char >& vec()    { return buf.vec;     };
-	const char* date() const      { return &buf.vec[0]; };
+	binarystream( ios_base::openmode mode = ios_base::in | ios_base::out | ios_base::binary );
+	const char* data() const               { return &buf.vec[0];  };
+	std::vector< char >& vec()             { return buf.vec;      };
+	ios_base::openmode getOpenMode() const { return buf.openmode; };
+};
+
+// ----------------------------------------------------------------------------
+// ---------- stringstream
+// ----------------------------------------------------------------------------
+class stringstream: public binarystream
+{
+	stringstream(): binarystream( ios_base::in | ios_base::out ) {};
 };
 
 }; // namespace rdo

@@ -98,6 +98,9 @@ Package=<5>
 
 Package=<4>
 {{{
+    Begin Project Dependency
+    Project_Dep_Name rdo_stream
+    End Project Dependency
 }}}
 
 ###############################################################################
