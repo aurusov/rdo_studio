@@ -1,0 +1,94 @@
+object MessageForm: TMessageForm
+  Left = 192
+  Top = 107
+  BorderStyle = bsNone
+  Caption = 'MessageForm'
+  ClientHeight = 261
+  ClientWidth = 387
+  Color = 10474457
+  Font.Charset = RUSSIAN_CHARSET
+  Font.Color = 8478492
+  Font.Height = -11
+  Font.Name = 'Verdana'
+  Font.Style = [fsBold]
+  FormStyle = fsStayOnTop
+  KeyPreview = True
+  OldCreateOrder = False
+  Position = poScreenCenter
+  OnKeyPress = FormKeyPress
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object TopShape: TShape
+    Left = 0
+    Top = 13
+    Width = 387
+    Height = 25
+    Brush.Color = 4414053
+    Pen.Color = 4414053
+    Pen.Width = 2
+  end
+  object Title: TLabel
+    Left = 8
+    Top = 18
+    Width = 369
+    Height = 14
+    Alignment = taCenter
+    AutoSize = False
+    Font.Charset = RUSSIAN_CHARSET
+    Font.Color = 16053490
+    Font.Height = -12
+    Font.Name = 'Verdana'
+    Font.Style = [fsBold]
+    ParentFont = False
+    Transparent = True
+  end
+  object BottomShape: TShape
+    Left = 0
+    Top = 149
+    Width = 385
+    Height = 25
+    Brush.Color = 4414053
+    Pen.Color = 4414053
+    Pen.Width = 2
+  end
+  object Image: TImage
+    Left = 8
+    Top = 48
+    Width = 32
+    Height = 32
+    Center = True
+    Transparent = True
+  end
+  object MessageL: TLabel
+    Left = 48
+    Top = 48
+    Width = 329
+    Height = 93
+    AutoSize = False
+    Caption = 'MessageL'
+    Font.Charset = RUSSIAN_CHARSET
+    Font.Color = 3746675
+    Font.Height = -11
+    Font.Name = 'Verdana'
+    Font.Style = [fsBold]
+    ParentFont = False
+    WordWrap = True
+  end
+  object BigShape: TShape
+    Left = 20
+    Top = 185
+    Width = 57
+    Height = 37
+    Brush.Style = bsClear
+    Pen.Color = 4414053
+    Pen.Width = 2
+    Shape = stRoundRect
+  end
+  object Transp: TImageList
+    Height = 32
+    Width = 32
+    Left = 160
+    Top = 200
+  end
+end
