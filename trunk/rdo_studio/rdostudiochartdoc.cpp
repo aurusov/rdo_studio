@@ -11,6 +11,39 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 // ----------------------------------------------------------------------------
+// ---------- RDOStudioChartDocInsertTime
+// ----------------------------------------------------------------------------
+class RDOStudioChartDocInsertTime
+{
+	RDOStudioChartDoc* doc;
+public:
+	RDOStudioChartDocInsertTime( RDOStudioChartDoc* _doc ): doc( _doc ) {};
+	void operator ()( RDOTracerValue* val );
+};
+
+void RDOStudioChartDocInsertTime::operator ()( RDOTracerValue* val )
+{
+	if( val ) {
+		timesList::iterator it = find_if( doc->docTimes.begin(), doc->docTimes.end(), bind2nd( greater_equal<RDOTracerTimeNow*>(), val->modeltime ) );
+		if ( it != doc->docTimes.end() && (*it) == val->modeltime )
+			return;
+		timesList::iterator inserted_it = doc->docTimes.insert( it, val->modeltime );
+		double offl = 1.7E+308;
+		double offr = 1.7E+308;
+		if ( it != doc->docTimes.end() )
+			offr = (*it)->time - (*inserted_it)->time;
+		if ( inserted_it != doc->docTimes.begin() ) {
+			offl = (*inserted_it)->time;
+			inserted_it --;
+			offl -= (*inserted_it)->time;
+		}
+		double minoff = min( offl, offr );
+		if ( minoff < doc->minTimeOffset )
+			doc->minTimeOffset = minoff;
+	}
+}
+
+// ----------------------------------------------------------------------------
 // ---------- RDOStudioChartDoc
 // ----------------------------------------------------------------------------
 IMPLEMENT_DYNCREATE(RDOStudioChartDoc, CDocument)
@@ -62,36 +95,6 @@ bool RDOStudioChartDoc::newValueToSerieAdded( RDOTracerValue* val )
 	return true;
 }
 
-class insertTime
-{
-	RDOStudioChartDoc* doc;
-public:
-	insertTime( RDOStudioChartDoc* _doc ): doc( _doc ) {};
-	void operator ()( RDOTracerValue* val );
-};
-
-void insertTime::operator ()( RDOTracerValue* val )
-{
-	if( val ) {
-		timesList::iterator it = find_if( doc->docTimes.begin(), doc->docTimes.end(), bind2nd( greater_equal<RDOTracerTimeNow*>(), val->modeltime ) );
-		if ( it != doc->docTimes.end() && (*it) == val->modeltime )
-			return;
-		timesList::iterator inserted_it = doc->docTimes.insert( it, val->modeltime );
-		double offl = 1.7E+308;
-		double offr = 1.7E+308;
-		if ( it != doc->docTimes.end() )
-			offr = (*it)->time - (*inserted_it)->time;
-		if ( inserted_it != doc->docTimes.begin() ) {
-			offl = (*inserted_it)->time;
-			inserted_it --;
-			offl -= (*inserted_it)->time;
-		}
-		double minoff = min( offl, offr );
-		if ( minoff < doc->minTimeOffset )
-			doc->minTimeOffset = minoff;
-	}
-}
-
 void RDOStudioChartDoc::addSerie( RDOTracerSerie* const serie )
 {
 	if ( serie && !serieExists( serie ) ) {
@@ -99,7 +102,7 @@ void RDOStudioChartDoc::addSerie( RDOTracerSerie* const serie )
 		//docserie.serie = serie;
 		docserie.color = selectColor();
 		series.push_back( docserie );
-		for_each( serie->begin(), serie->end(), insertTime( this ) );
+		for_each( serie->begin(), serie->end(), RDOStudioChartDocInsertTime( this ) );
 		serie->addToDoc( this );
 		UpdateAllViews( NULL );
 	}

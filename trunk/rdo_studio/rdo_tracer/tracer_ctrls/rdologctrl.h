@@ -13,7 +13,7 @@ typedef list< string > stringList;
 
 class RDOLogCtrl: public CWnd  
 {
-friend class findInList;
+friend class RDOLogCtrlFindInList;
 
 DECLARE_DYNAMIC( RDOLogCtrl )
 

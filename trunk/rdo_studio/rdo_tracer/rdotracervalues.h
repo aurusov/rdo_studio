@@ -25,7 +25,7 @@ class RDOTracerValue
 {
 friend class RDOTracerSerie;
 friend class RDOStudioChartDoc;
-friend class insertTime;
+friend class RDOStudioChartDocInsertTime;
 
 protected:
 	RDOTracerTimeNow* modeltime;

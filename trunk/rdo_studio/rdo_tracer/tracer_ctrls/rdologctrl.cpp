@@ -6,9 +6,9 @@
 #endif
 
 // ----------------------------------------------------------------------------
-// ---------- findInList
+// ---------- RDOLogCtrlFindInList
 // ----------------------------------------------------------------------------
-class findInList
+class RDOLogCtrlFindInList
 {
 	RDOLogCtrl* log;
 	string strToFind;
@@ -18,11 +18,11 @@ class findInList
 	bool scan( string::iterator &wildCards, string::iterator &wildend, string::iterator &str, string::iterator &strend ) const;
 	bool match( string::iterator &wildcards, string::iterator &wildend, string::iterator &strcomp, string::iterator &strend ) const;
 public:
-	findInList( RDOLogCtrl* _log, string _strToFind, bool _matchCase, bool _matchWholeWord );
+	RDOLogCtrlFindInList( RDOLogCtrl* _log, string _strToFind, bool _matchCase, bool _matchWholeWord );
 	bool operator()( string nextstr );
 };
 
-findInList::findInList( RDOLogCtrl* _log, string _strToFind, bool _matchCase, bool _matchWholeWord )
+RDOLogCtrlFindInList::RDOLogCtrlFindInList( RDOLogCtrl* _log, string _strToFind, bool _matchCase, bool _matchWholeWord )
 	: log( _log ),
 	strToFind( _strToFind ),
 	matchCase( _matchCase ),
@@ -30,7 +30,7 @@ findInList::findInList( RDOLogCtrl* _log, string _strToFind, bool _matchCase, bo
 {
 }
 
-bool findInList::scan( string::iterator &wildCards, string::iterator &wildend, string::iterator &str, string::iterator &strend ) const
+bool RDOLogCtrlFindInList::scan( string::iterator &wildCards, string::iterator &wildend, string::iterator &str, string::iterator &strend ) const
 {
 	// remove the '?' and '*'
 	for( wildCards ++; str != strend && ( *wildCards == '?' || *wildCards == '*' ); wildCards ++ )
@@ -63,7 +63,7 @@ bool findInList::scan( string::iterator &wildCards, string::iterator &wildend, s
 	}
 }
 
-bool findInList::match( string::iterator &wildcards, string::iterator &wildend, string::iterator &strcomp, string::iterator &strend ) const
+bool RDOLogCtrlFindInList::match( string::iterator &wildcards, string::iterator &wildend, string::iterator &strcomp, string::iterator &strend ) const
 {
 	bool res = true;
 	
@@ -89,7 +89,7 @@ bool findInList::match( string::iterator &wildcards, string::iterator &wildend, 
 	return res && strcomp == strend && wildcards == wildend;
 }
 
-bool findInList::operator()( string nextstr )
+bool RDOLogCtrlFindInList::operator()( string nextstr )
 {
 	if ( !matchWholeWord && strToFind.find_first_of( "*?" ) == string::npos ) {
 		//strtofind.Insert( 0, "*");
@@ -978,7 +978,7 @@ int RDOLogCtrl::find( const bool searchDown, const bool matchCase, const bool ma
 		it = find_if(
 				findString( startPos ),
 				strings.end(),
-				findInList( this, findStr, matchCase, matchWholeWord )
+				RDOLogCtrlFindInList( this, findStr, matchCase, matchWholeWord )
 			);
 		if ( it == strings.end() ) {
 			posFind = -1;
@@ -987,7 +987,7 @@ int RDOLogCtrl::find( const bool searchDown, const bool matchCase, const bool ma
 			it = find_if(
 				strings.begin(),
 				strings.end(),
-				findInList( this, findStr, matchCase, matchWholeWord )
+				RDOLogCtrlFindInList( this, findStr, matchCase, matchWholeWord )
 			);
 		}
 		if ( it == strings.end() )
@@ -998,7 +998,7 @@ int RDOLogCtrl::find( const bool searchDown, const bool matchCase, const bool ma
 		it_r = find_if(
 				reverse_findString( startPos + 1 ),
 				strings.rend(),
-				findInList( this, findStr, matchCase, matchWholeWord )
+				RDOLogCtrlFindInList( this, findStr, matchCase, matchWholeWord )
 			);
 		if ( it_r == strings.rend() ) {
 			posFind = -1;
@@ -1007,7 +1007,7 @@ int RDOLogCtrl::find( const bool searchDown, const bool matchCase, const bool ma
 			it_r = find_if(
 				strings.rbegin(),
 				strings.rend(),
-				findInList( this, findStr, matchCase, matchWholeWord )
+				RDOLogCtrlFindInList( this, findStr, matchCase, matchWholeWord )
 			);
 		}
 		if ( it_r == strings.rend() )
@@ -1016,35 +1016,6 @@ int RDOLogCtrl::find( const bool searchDown, const bool matchCase, const bool ma
 			posFind = startPos - posFind;
 	}
 	
-	/*if ( searchDown ) {
-		if ( it == strings.end() ) {
-			posFind = -1;
-			startPos = 0;
-			endPos   = stringsCount - 1;
-			it = find_if(
-				strings.begin(),
-				strings.end(),
-				findInList( this, findStr, matchCase, matchWholeWord )
-			);
-			posFind += startPos;
-			if ( it == strings.end() )
-				posFind = -1;
-		}
-	} else {
-		if ( it_r == strings.rend() ) {
-			posFind = -1;
-			startPos = stringsCount - 1;
-			endPos   = 0;
-			it_r = find_if(
-				strings.rbegin(),
-				strings.rend(),
-				findInList( this, findStr, matchCase, matchWholeWord )
-			);
-			posFind = startPos - posFind;
-			if ( it_r == strings.rend() )
-				posFind = -1;
-		}
-	}*/
 	if ( posFind == -1 ) {
 		firstFoundLine = -1;
 		bHaveFound    = false;

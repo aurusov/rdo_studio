@@ -33,7 +33,7 @@ public:
 class RDOStudioChartDoc : public CDocument
 {
 friend class RDOStudioChartView;
-friend class insertTime;
+friend class RDOStudioChartDocInsertTime;
 
 protected:
 	RDOStudioChartDoc();
