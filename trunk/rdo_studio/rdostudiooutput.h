@@ -12,6 +12,12 @@
 #include "rdo_edit/rdoeditorscilogstyle.h"
 #include "rdo_edit/rdoeditoreditstyle.h"
 
+namespace rdoEditor {
+	class RDOEditorSciEdit;
+	class RDOEditorSciLog;
+	class RDOEditorEdit;
+}
+
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioOutput
 // ----------------------------------------------------------------------------
@@ -23,9 +29,19 @@ private:
 	rdoEditor::RDOEditorSciEditStyle debugStyle;
 	rdoEditor::RDOEditorEditStyle    resultsStyle;
 
+	rdoEditor::RDOEditorSciLog*  build;
+	rdoEditor::RDOEditorSciEdit* debug;
+	CWnd*                        tracer;
+	rdoEditor::RDOEditorEdit*    results;
+
 public:
 	RDOStudioOutput();
 	virtual ~RDOStudioOutput();
+
+	void showBuild();
+	void showDebug();
+	void showTracer();
+	void showResults();
 
 public:
 	//{{AFX_VIRTUAL(RDOStudioOutput)

@@ -4,6 +4,7 @@
 #include "rdostudiomodel.h"
 #include "rdostudioapp.h"
 #include "rdo_edit/rdoeditortabctrl.h"
+#include "./rdo_tracer/rdotracertrace.h"
 #include "resource.h"
 
 #include <rdokernel.h>
@@ -63,14 +64,14 @@ void RDOStudioModelDoc::Dump(CDumpContext& dc) const
 
 void RDOStudioModelDoc::OnRdoRun() 
 {
-	kernel.getSimulator()->parseModel( kernel.getRepository()->getFullName() );
-	kernel.getSimulator()->executeModel( NULL, NULL, NULL );
-//	trace.startTrace();
+//	kernel.getSimulator()->parseModel( kernel.getRepository()->getFullName() );
+//	kernel.getSimulator()->executeModel( NULL, NULL, NULL );
+	trace.startTrace();
 }
 
 void RDOStudioModelDoc::OnRdoStop() 
 {
-//	trace.stopTrace();
+	trace.stopTrace();
 }
 
 void RDOStudioModelDoc::updateModify()

@@ -53,6 +53,8 @@ public:
 	void setAutoDelete( const bool value ) { autoDelete = value; };
 
 	void modifyTabStyle( DWORD dwRemove, DWORD dwAdd, UINT nFlags = 0 );
+
+	CWnd* getTabAsParent() const { return (CWnd*)tab; };
 };
 
 #endif // RDOTABCTRL_H

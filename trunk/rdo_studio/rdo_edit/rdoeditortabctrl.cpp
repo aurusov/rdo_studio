@@ -51,15 +51,15 @@ int RDOEditorTabCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	RDOEditorEdit* page8  = new RDOEditorEdit( view );
 	RDOEditorEdit* page9  = new RDOEditorEdit( view );
 
-	page1->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), (CWnd*)tab, -1 );
-	page2->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), (CWnd*)tab, -1 );
-	page3->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), (CWnd*)tab, -1 );
-	page4->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), (CWnd*)tab, -1 );
-	page5->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), (CWnd*)tab, -1 );
-	page6->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), (CWnd*)tab, -1 );
-	page7->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), (CWnd*)tab, -1 );
-	page8->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), (CWnd*)tab, -1 );
-	page9->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), (CWnd*)tab, -1 );
+	page1->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), -1 );
+	page2->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), -1 );
+	page3->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), -1 );
+	page4->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), -1 );
+	page5->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), -1 );
+	page6->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), -1 );
+	page7->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), -1 );
+	page8->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), -1 );
+	page9->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), -1 );
 
 	style.init();
 	style.load();
