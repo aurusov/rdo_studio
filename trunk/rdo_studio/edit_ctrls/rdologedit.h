@@ -39,15 +39,18 @@ private:
 	int sci_MARKER_LINE;
 
 protected:
+	int current_line;
 	list< RDOLogEditLineInfo* > lines;
 	void clearLines();
 
 	void setSelectLine();
+	void setSelectLine( const int line, const RDOLogEditLineInfo* lineInfo );
 	void clearSelectLine();
 	bool hasSelectLine() const;
 
 	//{{AFX_MSG(RDOLogEdit)
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+	afx_msg void OnGotoNext();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
@@ -62,7 +65,7 @@ public:
 
 	void setEditorStyle( RDOLogEditStyle* _style );
 
-	void gotoNext() const;
+	void gotoNext();
 
 	virtual void clearAll();
 	void appendLine( RDOLogEditLineInfo* line );
