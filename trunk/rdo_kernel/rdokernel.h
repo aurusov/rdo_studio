@@ -13,7 +13,7 @@
 using namespace std;
 
 class RDORepository;
-class RdoModel;
+class RdoSimulator;
 
 // ----------------------------------------------------------------------------
 // ---------- RDOKernel
@@ -26,7 +26,7 @@ class RDOKernel
 {
 private:
 	RDORepository* repository;
-	RdoModel*      simulator;
+	RdoSimulator*  simulator;
 
 	typedef multimap< int, OnNotify >       onNotifyListType;
 	typedef multimap< int, OnBoolNotify >   onBoolNotifyListType;
@@ -41,9 +41,15 @@ public:
 	virtual ~RDOKernel();
 
 	RDORepository* getRepository();
-	RdoModel*      getSimulator();
+	RdoSimulator*  getSimulator();
 
-	enum NotifyType       { newModel, openModel, saveModel, closeModel, canNotCloseModel, parseModel, executeModel, stopModel };
+	enum NotifyType       { newModel, openModel, saveModel, closeModel, canNotCloseModel, parseModel, executeModel, stopModel, 
+		// AB 21.02.03 // these notifies sent by "RdoSimulator"
+		parseError,				// on parse error
+		modelStarted, 			// when model successfully parsed and started
+		endExecuteModel,		// successfully end modelling
+		modelStopped };		// model externally stopped 
+
 	enum BoolNotifyType   { canCloseModel };
 	enum NotifyStringType { buildString, debugString, traceString };
 

@@ -9,7 +9,7 @@
 
 #include <rdokernel.h>
 #include <rdorepository.h>
-#include <simulator.h>
+#include <rdosimwin.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -64,14 +64,14 @@ void RDOStudioModelDoc::Dump(CDumpContext& dc) const
 
 void RDOStudioModelDoc::OnRdoRun() 
 {
-//	kernel.getSimulator()->parseModel( kernel.getRepository()->getFullName() );
-//	kernel.getSimulator()->executeModel( NULL, NULL, NULL );
-	trace.startTrace();
+	kernel.getSimulator()->runModel( kernel.getRepository()->getFullName() );
+//	trace.startTrace();
 }
 
 void RDOStudioModelDoc::OnRdoStop() 
 {
-	trace.stopTrace();
+	kernel.getSimulator()->stopModel();
+//	trace.stopTrace();
 }
 
 void RDOStudioModelDoc::updateModify()

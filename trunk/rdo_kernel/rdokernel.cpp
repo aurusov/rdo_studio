@@ -1,7 +1,7 @@
 #include "rdokernel.h"
 
 #include <rdorepository.h>
-#include <simulator.h>
+#include <rdosimwin.h>
 
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioKernel
@@ -28,10 +28,10 @@ RDORepository* RDOKernel::getRepository()
 	return repository;
 }
 
-RdoModel* RDOKernel::getSimulator()
+RdoSimulator* RDOKernel::getSimulator()
 {
 	if ( !simulator ) {
-		simulator = new RdoModel;
+		simulator = new RdoSimulator;
 	}
 	return simulator;
 }
