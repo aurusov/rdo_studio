@@ -30,6 +30,8 @@ RDOTracerResParamInfo* RDOTracerResParam::getParamInfo() const
 
 void RDOTracerResParam::getCaptions( vector<string> &captions, const int val_count ) const
 {
+	const_cast<CMutex&>(mutex).Lock();
+
 	switch( getParamInfo()->getParamType() ) {
 		case RDOPT_INTEGER: {
 			RDOTracerSerie::getCaptionsInt( captions, val_count );
@@ -58,6 +60,8 @@ void RDOTracerResParam::getCaptions( vector<string> &captions, const int val_cou
 			break;
 		}
 	}
+
+	const_cast<CMutex&>(mutex).Unlock();
 }
 
 // ----------------------------------------------------------------------------

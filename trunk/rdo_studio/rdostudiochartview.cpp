@@ -93,6 +93,8 @@ BOOL RDOStudioChartView::PreCreateWindow(CREATESTRUCT& cs)
 
 void RDOStudioChartView::recalcLayout()
 {
+	//if ( yAxis )
+	//	yAxis->lock();
 	RDOStudioChartDoc* doc = GetDocument();
 	doc->mutex.Lock();
 
@@ -181,10 +183,12 @@ void RDOStudioChartView::recalcLayout()
 	}
 
 	timeScale *= scale_koeff;
-
-	doc->mutex.Unlock();
 	
 	mutex.Unlock();
+
+	doc->mutex.Unlock();
+	//if ( yAxis )
+	//	yAxis->unlock();
 }
 
 void RDOStudioChartView::setScrollPos( UINT nSBCode, UINT nPos, const bool need_update )
@@ -379,31 +383,33 @@ void RDOStudioChartView::drawYAxis( CDC &dc, CRect& chartRect, const RDOStudioDo
 	tmprect.CopyRect( &newClientRect );
 	tmprect.right = chartRect.left - 5;
 	tmprect.left  = 5;
-	int count;
-	axisValues->getSerie()->getValueCount( count );
-	if ( axisValues && count ) {
-		int old_bk = dc.SetBkMode( TRANSPARENT );
-		CFont*  oldFont = dc.SelectObject( &fontAxis );
-		COLORREF old_color = dc.SetTextColor( style->getTheme()->axisFgColor );
-		int count = captions.size();
-		int heightoffset = roundDouble( (double)chartRect.Height() / (double)( count - 1 ) );
-		tmprect.top = chartRect.bottom;
-		int index = 0;
-		for ( vector<string>::iterator it = captions.begin(); it != captions.end(); it++ ) {
-			index ++;
-			dc.DrawText( (*it).c_str(), tmprect, DT_RIGHT );
-			if ( index != 1 && index < count ) {
-				dc.MoveTo( tmprect.right + 2, tmprect.top );
-				dc.LineTo( chartRect.left, tmprect.top );
+	if ( axisValues ) {
+		int count;
+		axisValues->getSerie()->getValueCount( count );
+		if ( count ) {
+			int old_bk = dc.SetBkMode( TRANSPARENT );
+			CFont*  oldFont = dc.SelectObject( &fontAxis );
+			COLORREF old_color = dc.SetTextColor( style->getTheme()->axisFgColor );
+			int count = captions.size();
+			int heightoffset = roundDouble( (double)chartRect.Height() / (double)( count - 1 ) );
+			tmprect.top = chartRect.bottom;
+			int index = 0;
+			for ( vector<string>::iterator it = captions.begin(); it != captions.end(); it++ ) {
+				index ++;
+				dc.DrawText( (*it).c_str(), tmprect, DT_RIGHT );
+				if ( index != 1 && index < count ) {
+					dc.MoveTo( tmprect.right + 2, tmprect.top );
+					dc.LineTo( chartRect.left, tmprect.top );
+				}
+				if ( index == count - 1 )
+					tmprect.top = chartRect.top;
+				else
+					tmprect.top -= heightoffset;
 			}
-			if ( index == count - 1 )
-				tmprect.top = chartRect.top;
-			else
-				tmprect.top -= heightoffset;
+			dc.SetTextColor( old_color );
+			dc.SelectObject( oldFont );
+			dc.SetBkMode( old_bk );
 		}
-		dc.SetTextColor( old_color );
-		dc.SelectObject( oldFont );
-		dc.SetBkMode( old_bk );
 	}
 }
 
@@ -578,10 +584,14 @@ void RDOStudioChartView::setZoom( double new_zoom, const bool force_update )
 }
 
 void RDOStudioChartView::OnDraw(CDC* pDC)
-{
-	mutex.Lock();
+{	
+	//if ( yAxis )
+	//	yAxis->lock();
 	
-	RDOStudioChartDoc* pDoc = GetDocument();
+	RDOStudioChartDoc* doc = GetDocument();
+	doc->mutex.Lock();
+
+	mutex.Lock();
 
 	CRect rect;
 	rect.CopyRect( &newClientRect );
@@ -616,7 +626,7 @@ void RDOStudioChartView::OnDraw(CDC* pDC)
 
 		drawGrid( dc, chartRect );
 
-		for ( vector< RDOStudioDocSerie* >::iterator it = pDoc->series.begin(); it != pDoc->series.end(); it++ )
+		for ( vector< RDOStudioDocSerie* >::iterator it = doc->series.begin(); it != doc->series.end(); it++ )
 			(*it)->drawSerie( this, dc, chartRect );
 	}
 
@@ -627,6 +637,11 @@ void RDOStudioChartView::OnDraw(CDC* pDC)
 	dc.SelectObject( pOldBitmap );
 
 	mutex.Unlock();
+
+	doc->mutex.Unlock();
+
+	//if ( yAxis )
+	//	yAxis->unlock();
 }
 
 BOOL RDOStudioChartView::OnPreparePrinting( CPrintInfo* pInfo )

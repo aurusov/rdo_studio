@@ -51,6 +51,9 @@ protected:
 
 	void updateChartViews() const;
 
+	void lock() { mutex.Lock(); };
+	void unlock() { mutex.Unlock(); };
+
 public:
 	//{{AFX_VIRTUAL(RDOStudioChartDoc)
 	public:

@@ -31,7 +31,7 @@ typedef std::list< RDOTracerValue* > valuesList;
 
 class RDOTracerSerie : public RDOTracerTreeItem
 {
-//friend class RDOStudioDocSerie;
+friend class RDOStudioDocSerie;
 
 protected:
 	CMutex mutex;

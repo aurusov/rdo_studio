@@ -37,6 +37,8 @@ public:
 	void getCaptions( std::vector<std::string> &captions, const int val_count ) const { serie->getCaptions( captions, val_count ); };
 	CSize getLegendExtent( CDC &dc, CFont& font, CRect& rect ) const;
 	CSize drawInLegend( CDC &dc, CRect &rect, CFont& font, const COLORREF text_color ) const;
+	void lock() { serie->mutex.Lock(); };
+	void unlock() { serie->mutex.Unlock(); };
 };
 
 //{{AFX_INSERT_LOCATION}}

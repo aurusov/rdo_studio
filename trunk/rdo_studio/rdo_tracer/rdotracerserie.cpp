@@ -73,6 +73,9 @@ void RDOTracerSerie::setTitle( const string& value )
 
 void RDOTracerSerie::addValue( RDOTracerValue* const value )
 {
+	for ( vector< RDOStudioChartDoc* >::iterator it = documents.begin(); it != documents.end(); it++ )
+		(*it)->lock();
+
 	mutex.Lock();
 
 	values.push_back( value );
@@ -83,6 +86,9 @@ void RDOTracerSerie::addValue( RDOTracerValue* const value )
 	for_each( documents.begin(), documents.end(), bind2nd( mem_fun1( &RDOStudioChartDoc::newValueToSerieAdded ), value ) );
 	
 	mutex.Unlock();
+
+	for ( it = documents.begin(); it != documents.end(); it++ )
+		(*it)->unlock();
 }
 
 void RDOTracerSerie::getValueCount( int& count ) const
@@ -96,6 +102,8 @@ void RDOTracerSerie::getValueCount( int& count ) const
 
 void RDOTracerSerie::getCaptions( vector<string> &captions, const int val_count ) const
 {
+	const_cast<CMutex&>(mutex).Lock();
+
 	if ( !captions.empty() )
 		captions.clear();
 	if ( serieKind == RDOST_PREVIEW ) {
@@ -107,13 +115,15 @@ void RDOTracerSerie::getCaptions( vector<string> &captions, const int val_count 
 			valo += valoffset;
 		}
 	}
+
+	const_cast<CMutex&>(mutex).Unlock();
 }
 
 void RDOTracerSerie::getCaptionsInt( vector<string> &captions, const int val_count ) const
 {
-	RDOTracerSerie::getCaptions( captions, val_count );
-
 	const_cast<CMutex&>(mutex).Lock();
+
+	RDOTracerSerie::getCaptions( captions, val_count );
 
 	int real_val_count = val_count;
 	if ( ( maxValue - minValue + 1 ) > real_val_count ) {
@@ -135,9 +145,9 @@ void RDOTracerSerie::getCaptionsInt( vector<string> &captions, const int val_cou
 
 void RDOTracerSerie::getCaptionsDouble( vector<string> &captions, const int val_count ) const
 {
-	RDOTracerSerie::getCaptions( captions, val_count );
-	
 	const_cast<CMutex&>(mutex).Lock();
+
+	RDOTracerSerie::getCaptions( captions, val_count );
 	
 	double valoffset = ( maxValue - minValue ) / (double)( val_count - 1 );
 	double valo = minValue;
