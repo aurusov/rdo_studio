@@ -502,6 +502,7 @@ void RDOStudioModel::showFrame()
 					view->frameBmpRect.bottom = (*it)->height;
 					view->frameBmp.CreateCompatibleBitmap( view->GetDC(), view->frameBmpRect.Width(), view->frameBmpRect.Height() );
 					view->mustBeInit = false;
+					view->updateScrollBars();
 				}
 
 				CDC dc;

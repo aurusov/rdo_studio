@@ -19,8 +19,12 @@ DECLARE_DYNCREATE(RDOStudioFrameView)
 private:
 	CRect frameBmpRect;
 	CRect newClientRect;
+	int xPos;
+	int yPos;
 	CBitmap frameBmp;
 	bool mustBeInit;
+
+	void updateScrollBars();
 
 public:
 	RDOStudioFrameView();
@@ -49,6 +53,9 @@ protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnDestroy();
 	afx_msg void OnSetFocus(CWnd* pOldWnd);
+	afx_msg void OnSize(UINT nType, int cx, int cy);
+	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
+	afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
