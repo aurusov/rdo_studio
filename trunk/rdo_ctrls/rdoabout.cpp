@@ -279,8 +279,8 @@ BOOL RDOAbout::OnInitDialog()
 	GetWindowRect( rWindow );
 	int wWindow = rButtonOK.right + buttonOKBorder;
 	int hWindow = rButtonOK.bottom + buttonOKBorder;
-	rWindow.left = (::GetSystemMetrics( SM_CXSCREEN ) - wWindow ) / 2;
-	rWindow.top  = (::GetSystemMetrics( SM_CYSCREEN ) - hWindow ) / 2;
+	rWindow.left = (::GetSystemMetrics( SM_CXFULLSCREEN ) - wWindow ) / 2;
+	rWindow.top  = (::GetSystemMetrics( SM_CYFULLSCREEN ) - hWindow ) / 2;
 	rWindow.right  = rWindow.left + wWindow;
 	rWindow.bottom = rWindow.top + hWindow;
 	MoveWindow( &rWindow );
