@@ -166,110 +166,7 @@ SOURCE=.\rdostudiodockwnd.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\rdostudioeditbasedoc.cpp
-
-!IF  "$(CFG)" == "rdo_studio - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
-
-# SUBTRACT CPP /Fr
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdostudioeditbaseview.cpp
-
-!IF  "$(CFG)" == "rdo_studio - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
-
-# SUBTRACT CPP /Fr
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdostudioeditdoc.cpp
-
-!IF  "$(CFG)" == "rdo_studio - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
-
-# SUBTRACT CPP /Fr
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdostudioeditview.cpp
-
-!IF  "$(CFG)" == "rdo_studio - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
-
-# SUBTRACT CPP /Fr
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdostudioframedoc.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdostudioframestreectrl.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdostudioframeview.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\rdostudiomainfrm.cpp
-
-!IF  "$(CFG)" == "rdo_studio - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
-
-# SUBTRACT CPP /Fr
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdostudiomodel.cpp
-
-!IF  "$(CFG)" == "rdo_studio - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
-
-# SUBTRACT CPP /Fr
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdostudiomodeldoc.cpp
-
-!IF  "$(CFG)" == "rdo_studio - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
-
-# SUBTRACT CPP /Fr
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdostudiomodelview.cpp
 
 !IF  "$(CFG)" == "rdo_studio - Win32 Release"
 
@@ -360,47 +257,7 @@ SOURCE=.\rdostudiodockwnd.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\rdostudioeditbasedoc.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdostudioeditbaseview.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdostudioeditdoc.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdostudioeditview.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdostudioframedoc.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdostudioframestreectrl.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdostudioframeview.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\rdostudiomainfrm.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdostudiomodel.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdostudiomodeldoc.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdostudiomodelview.h
 # End Source File
 # Begin Source File
 
@@ -490,6 +347,58 @@ SOURCE=.\rdo_edit\rdoeditorresultsstyle.cpp
 
 SOURCE=.\rdo_edit\rdoeditortabctrl.cpp
 # End Source File
+# Begin Source File
+
+SOURCE=.\rdostudioeditbasedoc.cpp
+
+!IF  "$(CFG)" == "rdo_studio - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
+
+# SUBTRACT CPP /Fr
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdostudioeditbaseview.cpp
+
+!IF  "$(CFG)" == "rdo_studio - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
+
+# SUBTRACT CPP /Fr
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdostudioeditdoc.cpp
+
+!IF  "$(CFG)" == "rdo_studio - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
+
+# SUBTRACT CPP /Fr
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdostudioeditview.cpp
+
+!IF  "$(CFG)" == "rdo_studio - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
+
+# SUBTRACT CPP /Fr
+
+!ENDIF 
+
+# End Source File
 # End Group
 # Begin Group "RDO-Editor Header Files"
 
@@ -521,6 +430,22 @@ SOURCE=.\rdo_edit\rdoeditorresultsstyle.h
 # Begin Source File
 
 SOURCE=.\rdo_edit\rdoeditortabctrl.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdostudioeditbasedoc.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdostudioeditbaseview.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdostudioeditdoc.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdostudioeditview.h
 # End Source File
 # End Group
 # End Group
@@ -658,6 +583,105 @@ SOURCE=.\rdo_tracer\tracer_ctrls\rdotracertreectrl.h
 SOURCE=.\rdo_tracer\tracer_ctrls\rdotracertreeitem.h
 # End Source File
 # End Group
+# End Group
+# End Group
+# Begin Group "RDO-Model"
+
+# PROP Default_Filter ""
+# Begin Group "RDO-Model Source Files"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\rdostudiomodel.cpp
+
+!IF  "$(CFG)" == "rdo_studio - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
+
+# SUBTRACT CPP /Fr
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdostudiomodeldoc.cpp
+
+!IF  "$(CFG)" == "rdo_studio - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
+
+# SUBTRACT CPP /Fr
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdostudiomodelview.cpp
+
+!IF  "$(CFG)" == "rdo_studio - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
+
+# SUBTRACT CPP /Fr
+
+!ENDIF 
+
+# End Source File
+# End Group
+# Begin Group "RDO-Model Header Files"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\rdostudiomodel.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdostudiomodeldoc.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdostudiomodelview.h
+# End Source File
+# End Group
+# End Group
+# Begin Group "RDO-Frame"
+
+# PROP Default_Filter ""
+# Begin Group "RDO-Frame Source Files"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\rdostudioframedoc.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdostudioframestreectrl.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdostudioframeview.cpp
+# End Source File
+# End Group
+# Begin Group "RDO-Frame Header Files"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\rdostudioframedoc.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdostudioframestreectrl.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdostudioframeview.h
+# End Source File
 # End Group
 # End Group
 # Begin Group "Edit Ctrls"
@@ -1023,10 +1047,6 @@ SOURCE=.\res\fileToolbar.bmp
 # Begin Source File
 
 SOURCE=.\res\fileToolbar_d.bmp
-# End Source File
-# Begin Source File
-
-SOURCE=.\res\framestr.bmp
 # End Source File
 # Begin Source File
 
