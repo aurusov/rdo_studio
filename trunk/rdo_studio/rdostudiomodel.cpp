@@ -195,11 +195,14 @@ void RDOStudioModel::beforeModelStartNotify()
 
 void RDOStudioModel::afterModelStartNotify()
 {
-	studioApp.mainFrame->output.showDebug();
 	RDOStudioModelDoc* doc = model->getModelDoc();
 	if ( doc ) {
 		doc->running = true;
 	}
+	RDOStudioOutput* output = &studioApp.mainFrame->output;
+	output->showDebug();
+	output->appendStringToDebug( format( IDS_MODEL_STARTED ) );
+	const_cast<rdoEditCtrl::RDODebugEdit*>(output->getDebug())->UpdateWindow();
 }
 
 void RDOStudioModel::stopModelNotify()
@@ -476,6 +479,12 @@ void RDOStudioModel::saveModelToRepository()
 	}
 	setName( kernel.getRepository()->getName() );
 	studioApp.insertReopenItem( kernel.getRepository()->getFullName() );
+
+	stringstream smrStream;
+	kernel.getRepository()->loadSMR( smrStream );
+	rdoModelObjects::RDOSMRFileInfo fileInfo;
+	kernel.getSimulator()->parseSMRFileInfo( smrStream, fileInfo );
+	frmDescribed = !fileInfo.frame_file.empty();
 }
 
 bool RDOStudioModel::canCloseModel()
@@ -552,12 +561,6 @@ bool RDOStudioModel::isRunning() const
 
 void RDOStudioModel::beforeModelStart()
 {
-	stringstream smrStream;
-	kernel.getRepository()->loadSMR( smrStream );
-	rdoModelObjects::RDOSMRFileInfo fileInfo;
-	kernel.getSimulator()->parseSMRFileInfo( smrStream, fileInfo );
-	frmDescribed = !fileInfo.frame_file.empty();
-
 	frameManager.bmp_clear();
 	frameManager.clear();
 

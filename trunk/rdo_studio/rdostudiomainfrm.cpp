@@ -430,21 +430,21 @@ void RDOStudioMainFrame::OnModelRunMonitor()
 
 void RDOStudioMainFrame::OnUpdateModelRunNoShow(CCmdUI* pCmdUI)
 {
-	bool flag = model->isRunning();
+	bool flag = model->isRunning() && model->isFrmDescribed();
 	pCmdUI->Enable( flag );
 	pCmdUI->SetCheck( flag ? model->getShowMode() == RDOSimulatorNS::SM_NoShow : 0 );
 }
 
 void RDOStudioMainFrame::OnUpdateModelRunAnimation(CCmdUI* pCmdUI)
 {
-	bool flag = model->isRunning();
+	bool flag = model->isRunning() && model->isFrmDescribed();
 	pCmdUI->Enable( flag );
 	pCmdUI->SetCheck( flag ? model->getShowMode() == RDOSimulatorNS::SM_Animation : 0 );
 }
 
 void RDOStudioMainFrame::OnUpdateModelRunMonitor(CCmdUI* pCmdUI)
 {
-	bool flag = model->isRunning();
+	bool flag = model->isRunning() && model->isFrmDescribed();
 	pCmdUI->Enable( flag );
 	pCmdUI->SetCheck( flag ? model->getShowMode() == RDOSimulatorNS::SM_Monitor : 0 );
 }
