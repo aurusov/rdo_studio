@@ -61,6 +61,7 @@ TreeNode::TreeNode(RDOSimulator *i_sim, TreeNode *i_parent, TreeRoot *i_root, RD
    costPath(cost),
    count(cnt) 
 {
+	sim->onPutToTreeNode();
 }
 
 TreeNode::~TreeNode()

@@ -47,13 +47,20 @@ void RDORuntime::setResParamVal(const int nRes, const int nParam, RDOValue val)
    res->params.at(nParam) = val;
 }
 
-RDOValue RDORuntime::eraseRes(const int resNumb)
+RDOValue RDORuntime::eraseRes(const int resNumb, const RDOCalc *fromCalc)
 {
 	RDOResource *res = allResources.at(resNumb);
 	for_each(allPokaz.begin(), allPokaz.end(), bind2nd(mem_fun1(RDOPMDPokaz::checkResourceErased), res));
 
-	delete res;
-	allResources.at(resNumb) = NULL;
+	if(res->referenceCount > 0)
+	{
+		error("Try to erase used resource", fromCalc);
+	}
+	else
+	{
+		delete res;
+		allResources.at(resNumb) = NULL;
+	}
 	return 1;
 }
 
@@ -186,15 +193,11 @@ RDORuntime::RDORuntime(): tracer(NULL), result(NULL)
 	terminateIfCalc = NULL;
 }
 
-int a = 0;
 bool RDORuntime::endCondition()
 {
 	if(!terminateIfCalc)
 		return false;	// forever
 
-	a++;
-	if(a == 30)
-		int b = 0;
 	return fabs(terminateIfCalc->calcValueBase(this)) > DBL_EPSILON; 
 }
 
@@ -505,6 +508,105 @@ RDOValue RDOSelectResourceByTypeCalc::calcValue(RDORuntime *sim) const
 	return 0;
 }
 
+vector<int> RDOSelectResourceDirectCommonCalc::getPossibleNumbers(RDORuntime *sim) const
+{
+	vector<int> res;	
+	res.push_back(resNumb);
+	return res;
+}
+
+vector<int> RDOSelectResourceByTypeCommonCalc::getPossibleNumbers(RDORuntime *sim) const
+{
+	vector<int> res;	
+	vector<RDOResource *>::iterator end = sim->allResources.end();
+	for(vector<RDOResource *>::iterator it = sim->allResources.begin(); 
+													it != end; it++)
+	{
+		if(*it == NULL)
+			continue;
+
+		if((*it)->type != resType)
+			continue;
+
+		res.push_back((*it)->number);
+	}
+
+	return res;
+}
+
+RDOValue RDOSelectResourceCommonCalc::calcValue(RDORuntime *sim) const
+{
+	vector<vector<int> > allNumbs;
+	vector<int> res;
+	for(int i = 0; i < resSelectors.size(); i++)
+	{
+		allNumbs.push_back(resSelectors.at(i)->getPossibleNumbers(sim));
+		res.push_back(sim->getRelResNumber(i));
+	}
+
+	RDOValue bestVal = 0;
+	bool hasBest = false;
+	getBest(allNumbs, 0, res, bestVal, sim, hasBest);
+
+	if(!hasBest)
+		return false;
+
+	for(i = 0; i < res.size(); i++)
+		sim->selectRelResource(i, res.at(i));
+
+	return true;
+}
+
+void RDOSelectResourceCommonCalc::getBest(vector<vector<int> > &allNumbs, int level, vector<int> &res, RDOValue &bestVal, RDORuntime *sim, bool &hasBest) const
+{
+	if(level >= allNumbs.size())
+	{
+		for(int i = 0; i < resSelectors.size(); i++)
+		{
+			if(!resSelectors.at(i)->callChoice(sim))
+				return;	// state not valid
+		}
+
+		RDOValue newVal = choice->calcValueBase(sim);
+		if(!hasBest || (useCommonWithMax && (newVal > bestVal)) ||
+			(!useCommonWithMax && (newVal < bestVal)))	// found better value
+		{
+			for(int i = 0; i < resSelectors.size(); i++)
+				res.at(i) = sim->getRelResNumber(i);
+			bestVal = newVal;
+			hasBest = true;
+		}
+
+		return;
+	}
+
+	vector<int> &ourLevel = allNumbs.at(level);
+	for(int i = 0; i < ourLevel.size(); i++)
+	{
+		sim->selectRelResource(level, ourLevel.at(i));
+		getBest(allNumbs, level+1, res, bestVal, sim, hasBest);
+	}
+}
+
+bool RDOSelectResourceDirectCommonCalc::callChoice(RDORuntime *sim) const
+{
+	if(hasChoice)
+		if(!choice->calcValueBase(sim))
+			return 0;
+
+	return 1;
+}
+
+bool RDOSelectResourceByTypeCommonCalc::callChoice(RDORuntime *sim) const
+{
+	if(hasChoice)
+		if(!choice->calcValueBase(sim))
+			return 0;
+
+	return 1;
+}
+
+
 RDOValue RDOSetRelParamCalc::calcValue(RDORuntime *sim) const
 {
 	sim->setResParamVal(sim->getRelResNumber(relNumb), parNumb, calc->calcValueBase(sim));
@@ -787,6 +889,18 @@ void RDORuntime::error( const char *mes, const RDOCalc *calc )
 	throw rdoParse::RDOSyntaxException("");
 }
 
+void RDORuntime::onPutToTreeNode()
+{
+	// when create TreeNode with new RDOSimulator,
+	// make all resources permanent, to avoid trace their
+	// erase when delete TreeNode
+	for(int i = 0; i < allResources.size(); i++)
+	{
+		if(allResources.at(i))
+			allResources.at(i)->makeTemporary(false);
+	}
+
+}
 
 
 }	// namespace rdoRuntime

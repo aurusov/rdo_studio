@@ -78,6 +78,7 @@ public:
 	RDORSSResource *lastRSSResource;
 	RDOFUNFunction *lastFUNFunction;
 	RDOPATPattern  *lastPATPattern;
+	RDODPTSearch   *lastDPTSearch;
 	
 	vector<RDOFUNGroup *> fUNGroupStack;
 

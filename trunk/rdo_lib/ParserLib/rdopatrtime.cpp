@@ -297,5 +297,25 @@ void RDOActivityRuntime::writeModelStructure(stringstream &stream)
 	stream << *oprName << " " << pattern->getPatternId() << endl;
 }
 
+void RDOActivityRuntime::incrementRelevantResourceReference(RDOSimulator *sim)
+{
+	RDORuntime *runtime = dynamic_cast<RDORuntime *>(sim);
+	for(int i = 0; i < relResNumbers.size(); i++)
+	{
+		RDOResource *res = runtime->findResource(relResNumbers.at(i));
+		res->referenceCount++;
+	}
+}
+
+void RDOActivityRuntime::decrementRelevantResourceReference(RDOSimulator *sim)
+{
+	RDORuntime *runtime = dynamic_cast<RDORuntime *>(sim);
+	for(int i = 0; i < relResNumbers.size(); i++)
+	{
+		RDOResource *res = runtime->findResource(relResNumbers.at(i));
+		res->referenceCount--;
+	}
+}
+
 
 }	// namespace rdoRuntime

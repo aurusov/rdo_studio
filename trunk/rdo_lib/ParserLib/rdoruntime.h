@@ -54,6 +54,8 @@ class RDOPMDWatchPar;
 class RDOPMDPokaz;
 class RDOPMDWatchState;
 class RDOFRMFrame;
+class RDORelevantResource;
+struct RDOFUNArithm;
 }
 
 using namespace rdoParse;
@@ -102,6 +104,7 @@ class RDOFunCalcNotExist;
 class RDOFunCalcForAll;
 class RDOFunCalcNotForAll;
 class RDOSelectResourceByTypeCalc;
+class RDOSelectResourceByTypeCommonCalc;
 
 class RDORuntime: public RDOSimulatorTrace
 {
@@ -110,6 +113,7 @@ friend RDOFunCalcNotExist;
 friend RDOFunCalcForAll;
 friend RDOFunCalcNotForAll;
 friend RDOSelectResourceByTypeCalc;
+friend RDOSelectResourceByTypeCommonCalc;
 friend RDOPMDWatchQuant;
 friend RDOPMDWatchValue;
 friend RDOPMDWatchPar;	  
@@ -192,7 +196,7 @@ public:
    RDOValue getResParamVal(const int nRes, const int nParam) const;
    void setResParamVal(const int nRes, const int nParam, RDOValue val);
    int getRelResNumber(const int nRelRes) const;
-	RDOValue eraseRes(const int resNumb);
+	RDOValue eraseRes(const int resNumb, const RDOCalc *fromCalc);
 	RDOResource *createNewResource();
 	RDOResource *createNewResource(int number, bool isPermanent);
 	RDORuntime();
@@ -233,6 +237,8 @@ public:
 	void *param;		// this param send back to tracerCallBack and frameCallBack
 	RDOConfig config;
 	vector<RDOFRMFrame *> allFrames;
+
+	void onPutToTreeNode();
 };
 /*
 struct RDORuntimeException: public RDOException
@@ -263,8 +269,9 @@ public:
    vector<RDOValue> params;
    string getTypeId();
    string traceParametersValue();
-	RDOResource(RDORuntime *rt): RDOResourceTrace(rt) {}
+	RDOResource(RDORuntime *rt): RDOResourceTrace(rt), referenceCount(0) {}
    bool operator != (RDOResource &other);
+	int referenceCount;
 };
 /*
 class RDOCalc
@@ -930,7 +937,7 @@ public:
 	RDOCalcEraseRes(int _relNumb): relNumb(_relNumb) {}
    virtual RDOValue calcValue(RDORuntime *sim) const
 	{
-		return sim->eraseRes(sim->getRelResNumber(relNumb));
+		return sim->eraseRes(sim->getRelResNumber(relNumb), this);
 	}
 };
 
@@ -948,6 +955,7 @@ protected:
 
 class RDOSelectResourceDirectCalc: public RDOSelectResourceCalc
 {
+protected:
 	int resNumb;
 public:
 	RDOSelectResourceDirectCalc(int _relNumb, int _resNumb, RDOPATFirst *_first, RDOPATChoice *_choice):
@@ -957,12 +965,52 @@ public:
 
 class RDOSelectResourceByTypeCalc: public RDOSelectResourceCalc
 {
+protected:
 	int resType;
 public:
 	RDOSelectResourceByTypeCalc(int _relNumb, int _resType, RDOPATFirst *_first, RDOPATChoice *_choice):
 		RDOSelectResourceCalc(_relNumb, _first, _choice), resType(_resType) {}
    virtual RDOValue calcValue(RDORuntime *sim) const;
 };
+
+class RDOSelectResourceCommon
+{
+public:
+   virtual vector<int> getPossibleNumbers(RDORuntime *sim) const = 0;
+	virtual bool callChoice(RDORuntime *sim) const = 0;
+};
+
+class RDOSelectResourceDirectCommonCalc: public RDOSelectResourceDirectCalc, public RDOSelectResourceCommon
+{
+public:
+	RDOSelectResourceDirectCommonCalc(int _relNumb, int _resNumb, RDOPATFirst *_first, RDOPATChoice *_choice):
+		RDOSelectResourceDirectCalc(_relNumb, _resNumb, _first, _choice) {}
+   vector<int> getPossibleNumbers(RDORuntime *sim) const;
+	virtual bool callChoice(RDORuntime *sim) const;
+};
+
+class RDOSelectResourceByTypeCommonCalc: public RDOSelectResourceByTypeCalc, public RDOSelectResourceCommon
+{
+public:
+	RDOSelectResourceByTypeCommonCalc(int _relNumb, int _resType, RDOPATFirst *_first, RDOPATChoice *_choice):
+		RDOSelectResourceByTypeCalc(_relNumb, _resType, _first, _choice) {}
+   vector<int> getPossibleNumbers(RDORuntime *sim) const;
+	virtual bool callChoice(RDORuntime *sim) const;
+};
+
+class RDOSelectResourceCommonCalc: public RDOCalc
+{
+	RDOCalc *choice;
+	vector<RDOSelectResourceCommon *> resSelectors;
+	bool useCommonWithMax;
+public:
+	RDOSelectResourceCommonCalc(const vector<RDOSelectResourceCommon *> &_resSelectors, bool _useCommonWithMax, RDOCalc *_choice):
+		resSelectors(_resSelectors), useCommonWithMax(_useCommonWithMax), choice(_choice) {}
+   virtual RDOValue calcValue(RDORuntime *sim) const;
+private:
+	void getBest(vector<vector<int> > &allNumbs, int level, vector<int> &res, RDOValue &bestVal, RDORuntime *sim, bool &hasBest) const;
+};
+
 
 class RDOSetRelParamCalc: public RDOCalc
 {

@@ -220,7 +220,7 @@ dpt_activ_some_end:	dpt_activ_some End												{ ((RDODPTSome *)$$)->end();};
 
 /* ///////////////////////  FREE ACTIVITIES ///////////////////////////// */
 
-dpt_activ_free:	Activities																
+dpt_activ_free:	Activities																{ $$ = NULL; };
 					|	dpt_activ_free_descr_param { ((RDODPTFreeActivity *)$1)->end();};										
 																									
 dpt_activ_free_descr:	dpt_activ_free IDENTIF_COLON IDENTIF					{ $$ = (int)(new RDODPTFreeActivity((string *)$2, (string *)$3)); };
@@ -235,7 +235,7 @@ dpt_activ_free_descr_param:	dpt_activ_free_descr_param INT_CONST			{ ((RDODPTFre
 								|		dpt_activ_free_descr_param '*'					{ ((RDODPTFreeActivity *)$1)->addParam(); }
 								|		dpt_activ_free_descr_keyb;
 																									                                                                    
-dpt_activ_free_end:	dpt_activ_free End												{ ((RDODPTFreeActivity *)$1)->end();};                                      
+dpt_activ_free_end:	dpt_activ_free End												{ if($1 != NULL) ((RDODPTFreeActivity *)$1)->end(); };
 
 
 

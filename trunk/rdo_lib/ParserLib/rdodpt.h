@@ -66,6 +66,7 @@ class RDODPTSearch: public RDODeletable
 	RDOFUNArithm *evalBy;
 	bool compTops;
 	vector<RDODPTSearchActivity *> activities;
+public:
 	RDODPTSearchActivity *lastActivity;
 public:
 	RDODPTSearch(string *_name, DPTSearchTrace _trace = DPTnotrace);

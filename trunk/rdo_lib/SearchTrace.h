@@ -62,7 +62,8 @@ friend RDOTrace;
 public:
    TreeNodeTrace(RDOSimulator *i_sim, TreeNode *i_parent, TreeRoot *i_root, RDOActivity *i_activity, double cost, int cnt):
       TreeNode(i_sim, i_parent, i_root, i_activity, cost, cnt)
-      {}
+	{
+	}
 };
 
 

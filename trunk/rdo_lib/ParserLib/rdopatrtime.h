@@ -98,6 +98,8 @@ protected:
 	RDOActivityRuntime(RDOPatternRuntime *_pattern, string *_oprName): pattern(_pattern), oprName(_oprName) {}
 	void setPatternParameters(RDOSimulator *sim);
    virtual vector<RDOResourceTrace *> getRelevantResources(RDOSimulator *sim);
+   void incrementRelevantResourceReference(RDOSimulator *sim);
+   void decrementRelevantResourceReference(RDOSimulator *sim);
 public:
 	void addParamCalc(RDOCalc *calc) { setParamsCalcs.push_back(calc); }
 	virtual ~RDOActivityRuntime() {}
@@ -150,7 +152,8 @@ class RDOActivityOperationRuntime: public RDOOperationTrace, public RDOActivityR
    vector<RDOResourceTrace *> getRelevantResources(RDOSimulator *sim) { return RDOActivityRuntime::getRelevantResources(sim); }
    RDOOperationTrace *clone2(RDOSimulator *sim);
    void onBeforeChoiceFrom(RDOSimulator *sim) { setPatternParameters(sim); }
-   void onBeforeOperationEnd(RDOSimulator *sim) { setPatternParameters(sim); RDOOperationTrace::onBeforeOperationEnd(sim); }
+   void onAfterOperationBegin(RDOSimulator *sim) { incrementRelevantResourceReference(sim); RDOOperationTrace::onAfterOperationBegin(sim); }
+   void onBeforeOperationEnd(RDOSimulator *sim) { decrementRelevantResourceReference(sim); setPatternParameters(sim); RDOOperationTrace::onBeforeOperationEnd(sim); }
 protected:
    virtual bool choiceFrom(RDOSimulator *sim);
 public:

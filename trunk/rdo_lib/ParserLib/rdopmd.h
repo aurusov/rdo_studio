@@ -23,6 +23,7 @@ class RDOPMDPokaz: public RDOPokazTrace
 {
 protected:
 	const string const name;
+	void endOfCreation();
 public:
 	RDOPMDPokaz(const string *const _name, bool _trace);
 	virtual ~RDOPMDPokaz() {}

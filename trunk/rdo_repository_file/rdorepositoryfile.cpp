@@ -735,5 +735,6 @@ void RDORepositoryFile::trace( const string& str )
 	if ( trace_file.is_open() ) {
 		trace_file.write( str.c_str(), str.length() );
 		trace_file.write( "\n", 1 );
+		trace_file.flush();
 	}
 }

@@ -24,6 +24,10 @@ RDOPMDPokaz::RDOPMDPokaz(const string *const _name, bool _trace)
 	: name(*_name), RDOPokazTrace(currParser->runTime) 
 {
 	trace = _trace; 
+}
+
+void RDOPMDPokaz::endOfCreation()
+{
 	currParser->runTime->addRuntimePokaz(this);
 	id = currParser->pokazCounter++;
 }
@@ -49,6 +53,7 @@ RDOPMDWatchPar::RDOPMDWatchPar(string *_name, bool _trace, string *_resName, str
 
 	resNumber = res->getNumber();
 	parNumber = res->getType()->getRTPParamNumber(_parName);
+	endOfCreation();
 }
 
 string RDOPMDWatchPar::traceValue()
@@ -124,6 +129,7 @@ bool RDOPMDWatchPar::calcStat(RDOSimulator *sim)
 RDOPMDWatchState::RDOPMDWatchState(string *_name, bool _trace, RDOFUNLogic *_logic)
 	: RDOPMDPokaz(_name, _trace), logicCalc(_logic->calc)
 {
+	endOfCreation();
 }
 
 string RDOPMDWatchState::traceValue()
@@ -136,7 +142,7 @@ bool RDOPMDWatchState::resetPokaz(RDOSimulator *sim)
 	RDORuntime *runtime = dynamic_cast<RDORuntime *>(sim);
 
 	watchNumber = 0;
-	currValue = false;
+	currValue = fabs(logicCalc->calcValueBase(runtime)) > DBL_EPSILON;
 	sum = 0;
 	sumSqr = 0;
 	minValue = DBL_MAX;
@@ -150,6 +156,31 @@ bool RDOPMDWatchState::checkPokaz(RDOSimulator *sim)
 {
 	RDORuntime *runtime = dynamic_cast<RDORuntime *>(sim);
 	bool newValue = fabs(logicCalc->calcValueBase(runtime)) > DBL_EPSILON;
+	if(newValue && !currValue)	// from FALSE to TRUE
+	{
+		timePrev = runtime->getCurrentTime();
+	}
+	else if(!newValue && currValue)	// from TRUE to FALSE
+	{
+		double currTime = runtime->getCurrentTime();
+		double val = currTime - timePrev;
+		sum	+= val;
+		sumSqr += val * val;
+
+		wasChanged = true;
+		watchNumber ++;
+
+		if(minValue > val)
+			minValue = val;
+
+		if(maxValue < val)
+			maxValue = val;
+	}
+
+	currValue = newValue;
+	return true;
+
+/*
 	if(newValue != currValue)
 	{
 		double currTime = runtime->getCurrentTime();
@@ -172,6 +203,7 @@ bool RDOPMDWatchState::checkPokaz(RDOSimulator *sim)
 		return true;
 	}
 	return false;
+*/
 }
 
 bool RDOPMDWatchState::calcStat(RDOSimulator *sim)
@@ -202,6 +234,7 @@ RDOPMDWatchQuant::RDOPMDWatchQuant(string *_name, bool _trace, string *_resTypeN
 	: RDOPMDPokaz(_name, _trace)
 {
 	funGroup = new RDOFUNGroup(5, _resTypeName);
+	endOfCreation();
 }
 
 void RDOPMDWatchQuant::setLogic(RDOFUNLogic *_logic)
@@ -308,6 +341,7 @@ RDOPMDWatchValue::RDOPMDWatchValue(string *_name, bool _trace, string *_resTypeN
 {
 	funGroup = new RDOFUNGroup(5, _resTypeName);
 	wasChanged = false;
+	endOfCreation();
 }
 
 void RDOPMDWatchValue::setLogic(RDOFUNLogic *_logic, RDOFUNArithm *_arithm)
@@ -408,6 +442,7 @@ bool RDOPMDWatchValue::checkResourceErased(RDOResource *res)
 RDOPMDGetValue::RDOPMDGetValue(string *_name, RDOFUNArithm *_arithm)
 	: RDOPMDPokaz(_name, false), arithmCalc(_arithm->createCalc())
 {
+	endOfCreation();
 }
 
 string RDOPMDGetValue::traceValue()

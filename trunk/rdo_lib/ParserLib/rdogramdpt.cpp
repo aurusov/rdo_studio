@@ -1272,6 +1272,10 @@ case 39:
 #line 218 ".\\rdodpt.y"
 { ((RDODPTSome *)yyval)->end();;
     break;}
+case 40:
+#line 223 ".\\rdodpt.y"
+{ yyval = NULL; ;
+    break;}
 case 41:
 #line 224 ".\\rdodpt.y"
 { ((RDODPTFreeActivity *)yyvsp[0])->end();;
@@ -1306,7 +1310,7 @@ case 49:
     break;}
 case 51:
 #line 238 ".\\rdodpt.y"
-{ ((RDODPTFreeActivity *)yyvsp[-1])->end();;
+{ if(yyvsp[-1] != NULL) ((RDODPTFreeActivity *)yyvsp[-1])->end(); ;
     break;}
 case 52:
 #line 244 ".\\rdodpt.y"

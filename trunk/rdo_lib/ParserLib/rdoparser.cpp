@@ -269,7 +269,8 @@ void RDOParser::parseSMR1(istream* arg_yyin, ostream* arg_yyout)
 	{
 		// Everithing ok, just end of first part parsing
 	}
-	if(!currParser->smr->showRate)	// was not initialised
+
+	if(currParser->smr && !currParser->smr->showRate)	// was not initialised
 	{
 		currParser->smr->showRate = addDouble(new double(60.));
 	}
@@ -323,6 +324,11 @@ RDOParser::RDOParser():
 	pokazCounter = 1;
 	constCounter = 0;
 	smr = NULL;
+	lastDPTSearch = NULL;
+	lastRTPResType = NULL;
+	lastRSSResource = NULL;
+	lastFUNFunction = NULL;
+	lastPATPattern = NULL;
 }
 
 void RDOParser::setYylval(int val)

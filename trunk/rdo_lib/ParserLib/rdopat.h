@@ -8,6 +8,7 @@ namespace rdoRuntime
 {
 class RDOCalc;
 class RDOPatternRuntime;
+class RDOSelectResourceCommon;
 }
 
 using namespace rdoRuntime;
@@ -55,6 +56,7 @@ public:
 	virtual RDOCalc *createSelectFirstResourceCalc() = 0;			// first without choice
 	virtual RDOCalc *createSelectFirstResourceChoiceCalc() = 0;	// first with choice
 	virtual RDOCalc *createSelectResourceChoiceCalc() = 0;		// first/withmax/withmin with choice
+	virtual RDOSelectResourceCommon *createSelectResourceCommonChoiceCalc() = 0; // for common choice
 };
 
 class RDORelevantResourceDirect: public RDORelevantResource
@@ -67,6 +69,7 @@ public:
 	RDOCalc *createSelectFirstResourceCalc();
 	RDOCalc *createSelectFirstResourceChoiceCalc();
 	RDOCalc *createSelectResourceChoiceCalc();
+	RDOSelectResourceCommon *createSelectResourceCommonChoiceCalc();
 };
 
 class RDORelevantResourceByType: public RDORelevantResource
@@ -79,6 +82,7 @@ public:
 	RDOCalc *createSelectFirstResourceCalc();
 	RDOCalc *createSelectFirstResourceChoiceCalc();
 	RDOCalc *createSelectResourceChoiceCalc();
+	RDOSelectResourceCommon *createSelectResourceCommonChoiceCalc();
 };
 
 class RDOPATPattern: public RDODeletable

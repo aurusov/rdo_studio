@@ -268,7 +268,7 @@ void RDOPATPatternEvent::addRelRes(string *relName, string *resName, ConvertStat
 
 void RDOPATPattern::setCommonChoiceFirst() {	useCommonChoice = true; commonChoice = NULL; }
 void RDOPATPattern::setCommonChoiceWithMin(RDOFUNArithm *arithm) { useCommonChoice = true; useCommonWithMax = false; commonChoice = arithm; }
-void RDOPATPattern::setCommonChoiceWithMax(RDOFUNArithm *arithm) { useCommonChoice = true; useCommonWithMax = false; commonChoice = arithm; }
+void RDOPATPattern::setCommonChoiceWithMax(RDOFUNArithm *arithm) { useCommonChoice = true; useCommonWithMax = true; commonChoice = arithm; }
 void RDOPATPatternRule::setTime(RDOFUNArithm *arithm) 
 { 
 	currParser->error("Rule must have no $Time field"); 
@@ -339,7 +339,7 @@ void RDOPATPattern::end()
 	{
 		if(commonChoice == NULL)	// first
 		{
-			int size = relRes.size();
+//			int size = relRes.size();
 			for(int i = 0; i < size; i++)
 			{
 				RDOCalc *calc = relRes.at(i)->createSelectFirstResourceChoiceCalc();
@@ -348,12 +348,16 @@ void RDOPATPattern::end()
 			return;
 		}
 
-//		RDOCalc *calc = new RDOSelectResourceCommon(relRes, useCommonWithMax, commonChoice);
-		currParser->error("RDOPATPattern::end not implemented yet for not \"first\" conditions in common choice");
+		vector<RDOSelectResourceCommon *> resSelectors;
+		for(int i = 0; i < size; i++)
+			resSelectors.push_back(relRes.at(i)->createSelectResourceCommonChoiceCalc());
+
+		patRuntime->addChoiceFromCalc(new rdoRuntime::RDOSelectResourceCommonCalc(resSelectors, useCommonWithMax, commonChoice->createCalc()));
+//		currParser->error("RDOPATPattern::end not implemented yet for not \"first\" conditions in common choice");
 	}
 	else
 	{
-		int size = relRes.size();
+//		int size = relRes.size();
 		for(int i = 0; i < size; i++)
 		{
 			RDOCalc *calc = relRes.at(i)->createSelectResourceChoiceCalc();
@@ -428,6 +432,11 @@ RDOCalc *RDORelevantResourceDirect::createSelectResourceChoiceCalc()
 	return new RDOSelectResourceDirectCalc(numberOfResource, res->getNumber(), first, choice);
 }
 
+RDOSelectResourceCommon *RDORelevantResourceDirect::createSelectResourceCommonChoiceCalc()
+{
+	return new RDOSelectResourceDirectCommonCalc(numberOfResource, res->getNumber(), NULL, choice);
+}
+
 RDOCalc *RDORelevantResourceByType::createSelectFirstResourceCalc()
 {
 	if((begin != CS_Create) && (end != CS_Create))
@@ -450,6 +459,11 @@ RDOCalc *RDORelevantResourceByType::createSelectResourceChoiceCalc()
 		return new RDOSelectResourceByTypeCalc(numberOfResource, type->getType(), first, choice);
 	else
 		return new RDOCalcConst(1);
+}
+
+RDOSelectResourceCommon *RDORelevantResourceByType::createSelectResourceCommonChoiceCalc()
+{
+	return new RDOSelectResourceByTypeCommonCalc(numberOfResource, type->getType(), NULL, choice);
 }
 
 void RDOPATParamsSet::checkParamsNumbers(RDORelevantResource *currRelRes)

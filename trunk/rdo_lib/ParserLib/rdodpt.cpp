@@ -23,7 +23,7 @@ RDODPTSearch::RDODPTSearch(string *_name, DPTSearchTrace _trace)
 	if(find_if(currParser->allDPTSearch.begin(), currParser->allDPTSearch.end(), compareName<RDODPTSearch>(_name)) != currParser->allDPTSearch.end())
 		currParser->error("DPT name: " + *_name + " already defined");
 
-	currParser->allDPTSearch.push_back(this);
+	currParser->allDPTSearch.push_back(currParser->lastDPTSearch = this);
 }
 
 void RDODPTSearch::addNewActivity(string *_name, string *_ruleName)
@@ -166,6 +166,7 @@ RDODPTSome::RDODPTSome(string *_name)
 		currParser->error("DPT name: " + *_name + " already defined");
 
 	currParser->allDPTSome.push_back(this);
+	currParser->lastDPTSearch = NULL;
 }
 
 void RDODPTSome::addNewActivity(string *_name, string *_patternName)
@@ -255,6 +256,7 @@ RDODPTFreeActivity::RDODPTFreeActivity(string *_name, string *_patternName)
 		currParser->error("Free activity name: " + *_name + " already defined");
 
 	currParser->allFreeActivity.push_back(this);
+	currParser->lastDPTSearch = NULL;
 
 	pattern = currParser->findPattern(_patternName);
 	pattern->testGoodForFreeActivity();

@@ -525,6 +525,12 @@ void RDOTracerBase::getModelStructure( stringstream& stream )
 				do {
 					stream >> s;
 					pos = s.find( "$Resources" );
+
+					// AB if model has no $Resources at all,
+					// we get endless cycle here
+					if(pos == string::npos)
+						pos = s.find( "$Pattern" );
+
 					if ( !s.empty() && pos == string::npos )
 						addResourceType( s, stream );
 				} while ( pos == string::npos && !stream.eof() );

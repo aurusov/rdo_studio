@@ -12,6 +12,7 @@ static char THIS_FILE[] = __FILE__;
 #include "rdopat.h"
 #include "rdoruntime.h"
 #include "RdoFunc.h"
+#include "rdodpt.h"
 
 
 namespace rdoParse 
@@ -207,7 +208,27 @@ RDOFUNArithm::RDOFUNArithm(string *resName, string *parName)
 		{
 			if((currParser->fileToParse != PAT_FILE) ||
 				!currParser->lastPATPattern->findRelevantResource(resName))
-				currParser->error(("Unknown resource name: " + *resName).c_str());
+			{
+				if((currParser->fileToParse == DPT_FILE) && 
+					(currParser->lastDPTSearch != NULL) && 
+					(currParser->lastDPTSearch->lastActivity->getRule()->findRelevantResource(resName) != NULL))
+				{
+					const RDORelevantResource *const rel = currParser->lastDPTSearch->lastActivity->getRule()->findRelevantResource(resName);
+					int relResNumb = currParser->lastDPTSearch->lastActivity->getRule()->findRelevantResourceNum(resName);
+					int parNumb = rel->getType()->getRTPParamNumber(parName);
+					if(parNumb == -1)
+						currParser->error("Unknown resource parameter: " + *parName);
+
+					calc = new RDOCalcGetRelevantResParam(relResNumb, parNumb);
+					type = rel->getType()->findRTPParam(parName)->getType()->getType();
+					if(type == 2)
+						enu = ((RDORTPEnumResParam *)rel->getType()->findRTPParam(parName)->getType())->enu;
+
+					return;
+				}
+				else
+					currParser->error(("Unknown resource name: " + *resName).c_str());
+			}
 			else
 			{
 				const RDORelevantResource *const rel = currParser->lastPATPattern->findRelevantResource(resName);

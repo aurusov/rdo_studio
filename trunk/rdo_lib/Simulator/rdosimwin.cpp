@@ -383,7 +383,7 @@ bool RdoSimulator::parseModel()
 		if(SMRstream2.good())
 			parser->parseSMR2(&SMRstream2, &consol);
 	}
-	catch(RDOSyntaxException &) 
+	catch(RDOSyntaxException &ex) 
 	{
 //		string mess = ex.getType() + " : " + ex.mess;
 //		kernel.notifyString(RDOKernel::buildString, mess);
