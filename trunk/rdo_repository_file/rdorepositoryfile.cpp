@@ -395,8 +395,8 @@ void RDORepositoryFile::loadFile( const string& filename, rdo::binarystream& str
 			file.seekg( 0, ios::end );
 			int len = file.tellg();
 			file.seekg( 0, ios::beg );
-			stream.vec().resize( len );
-			file.read( &stream.vec()[0], len );
+			stream.resize( len );
+			file.read( stream.data(), len );
 			file.close();
 /*
 			if ( stream.getOpenMode() & ios::binary ) {
@@ -424,15 +424,23 @@ void RDORepositoryFile::loadFile( const string& filename, rdo::binarystream& str
 	}
 }
 
+void RDORepositoryFile::loadRTP( stringstream& stream ) const
+{
+	string filename = modelPath + rtpFileName + ".rtp";
+	ifstream file( filename.c_str() );
+	stream << file.rdbuf();
+	file.close();
+}
+
 void RDORepositoryFile::saveFile( const string& filename, rdo::binarystream& stream, const bool deleteIfEmpty ) const
 {
 	if ( !filename.empty() ) {
 		bool file_exist = isFileExists( filename );
-		if ( stream.vec().size() || ( file_exist && !deleteIfEmpty ) ) {
+		if ( stream.size() || ( file_exist && !deleteIfEmpty ) ) {
 			ios_base::openmode openmode = ios::out;
 			if ( stream.getOpenMode() & ios::binary ) openmode |= ios::binary;
 			ofstream file( filename.c_str(), openmode );
-			file.write( &stream.vec()[0], stream.vec().size() );
+			file.write( stream.data(), stream.size() );
 			file.close();
 		} else {
 			if ( file_exist && deleteIfEmpty ) {
@@ -560,8 +568,8 @@ void RDORepositoryFile::loadBMP( const string& name, rdo::binarystream& stream )
 		file.seekg( 0, ios::end );
 		int len = file.tellg();
 		file.seekg( 0, ios::beg );
-		stream.vec().resize( len );
-		file.read( &stream.vec()[0], len );
+		stream.resize( len );
+		file.read( stream.data(), len );
 		file.close();
 	} else {
 		stream.setstate( ios_base::badbit );

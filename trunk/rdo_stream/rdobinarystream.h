@@ -27,9 +27,7 @@ private:
 		virtual std::streambuf* setbuf( char* s, std::streamsize n ) {
 			vec.resize( n );
 			vec.assign( s, s + n );
-			current = 0;
-			setg( vec.begin(), vec.begin(), vec.end() );
-			setp( vec.begin(), vec.end() );
+			initPtr();
 			return this;
 		}
 		virtual int_type overflow( int_type c = traits_type::eof() ) {
@@ -63,15 +61,23 @@ private:
 
 	protected:
 		binarybuf();
-		virtual ~binarybuf() { vec.clear(); };
+		virtual ~binarybuf() { vec.clear(); }
+
+		void initPtr() {
+			current = 0;
+			setg( vec.begin(), vec.begin(), vec.end() );
+			setp( vec.begin(), vec.end() );
+		}
 	};
 	binarybuf buf;
 
 public:
 	binarystream( ios_base::openmode mode = ios_base::in | ios_base::out | ios_base::binary );
-	const char* data() const               { return &buf.vec[0];  };
-	std::vector< char >& vec()             { return buf.vec;      };
-	ios_base::openmode getOpenMode() const { return buf.openmode; };
+	char* data()                                    { return &buf.vec[0];                 }
+	std::vector< char >::size_type size()           { return buf.vec.size();              }
+	void resize( std::vector< char >::size_type n ) { buf.vec.resize( n ); buf.initPtr(); }
+//	std::vector< char >& vec()                      { return buf.vec;                     }
+	ios_base::openmode getOpenMode() const          { return buf.openmode;                }
 };
 
 // ----------------------------------------------------------------------------

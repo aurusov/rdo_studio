@@ -1070,8 +1070,7 @@ void RDOBaseEdit::load( rdo::binarystream& stream ) const
 	bool readOnly = isReadOnly();
 	setReadOnly( false );
 
-	int i = stream.vec().size();
-	sendEditorString( SCI_ADDTEXT, stream.vec().size(), stream.data() );
+	sendEditorString( SCI_ADDTEXT, stream.size(), stream.data() );
 
 	setReadOnly( readOnly );
 }
@@ -1079,9 +1078,9 @@ void RDOBaseEdit::load( rdo::binarystream& stream ) const
 void RDOBaseEdit::save( rdo::binarystream& stream ) const
 {
 	int len = getLength();
-	stream.vec().resize( len + 1 );
+	stream.resize( len + 1 );
 	sendEditorString( SCI_GETTEXT, len + 1, stream.data() );
-	stream.vec().resize( len );
+	stream.resize( len );
 }
 
 int RDOBaseEdit::indentOfBlock( int line ) const

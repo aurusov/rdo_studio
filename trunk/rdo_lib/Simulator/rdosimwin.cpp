@@ -246,7 +246,7 @@ bool RdoSimulator::parseModel()
 			parser->parseSMR1(&SMRstream, &consol);
 
 /////////////////   RTP file //////////////////////////////////
-		rdo::binarystream RTPstream1( ios_base::in | ios_base::out );
+		rdo::binarystream RTPstream1;
 		kernel.getRepository()->loadRTP(RTPstream1);
 		if(RTPstream1.good())
 			parser->parseRTP(&RTPstream1, &consol);

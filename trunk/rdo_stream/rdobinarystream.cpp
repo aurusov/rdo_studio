@@ -13,9 +13,7 @@ binarystream::binarystream( ios_base::openmode mode ): iostream( &buf )
 
 binarystream::binarybuf::binarybuf():
 	streambuf(),
-	current( 0 ),
 	openmode( ios_base::in | ios_base::out | ios_base::binary )
 {
-	setg( vec.begin(), vec.begin(), vec.end() );
-	setp( vec.begin(), vec.end() );
+	initPtr();
 }

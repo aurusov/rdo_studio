@@ -68,6 +68,11 @@ void RDORepository::loadRTP( rdo::binarystream& stream ) const
 	repositoryFile->loadRTP( stream );
 }
 
+void RDORepository::loadRTP( std::stringstream& stream ) const
+{
+	repositoryFile->loadRTP( stream );
+}
+
 void RDORepository::loadRSS( rdo::binarystream& stream ) const
 {
 	repositoryFile->loadRSS( stream );
