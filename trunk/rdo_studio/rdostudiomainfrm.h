@@ -15,9 +15,25 @@ class RDOStudioMainFrame: public CMDIFrameWnd
 {
 DECLARE_DYNAMIC(RDOStudioMainFrame)
 
+private:
+	static void buildNotify( string str );
+	static void debugNotify( string str );
+
+protected:
+	CToolBar           projectToolBar;
+	CImageList         projectToolBarImageList;
+	CToolBar           editToolBar;
+	CImageList         editToolBarImageList;
+	CStatusBar         statusBar;
+
+	void dockControlBarBesideOf( CControlBar& bar, CControlBar& baseBar );
+
 public:
 	RDOStudioMainFrame();
 	virtual ~RDOStudioMainFrame();
+
+	RDOStudioWorkspace workspace;
+	RDOStudioOutput    output;
 
 	BOOL OnCmdMsgForDockOnly( UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo );
 
@@ -48,20 +64,6 @@ protected:
 	afx_msg void OnUpdateModifyStatusBar( CCmdUI *pCmdUI );
 	afx_msg void OnUpdateInsertOverwriteStatusBar( CCmdUI *pCmdUI );
 	DECLARE_MESSAGE_MAP()
-
-private:
-	static void debugNotify( string str );
-
-protected:
-	CToolBar           projectToolBar;
-	CImageList         projectToolBarImageList;
-	CToolBar           editToolBar;
-	CImageList         editToolBarImageList;
-	CStatusBar         statusBar;
-	RDOStudioWorkspace workspace;
-	RDOStudioOutput    output;
-
-	void dockControlBarBesideOf( CControlBar& bar, CControlBar& baseBar );
 };
 
 //{{AFX_INSERT_LOCATION}}

@@ -102,6 +102,7 @@ int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	trace.registerClipboardFormat();
 
+	kernel.setNotifyReflect( RDOKernel::buildString, buildNotify );
 	kernel.setNotifyReflect( RDOKernel::debugString, debugNotify );
 
 	return 0;
@@ -254,7 +255,12 @@ void RDOStudioMainFrame::OnUpdateInsertOverwriteStatusBar( CCmdUI *pCmdUI )
 	pCmdUI->SetText( str );
 }
 
+void RDOStudioMainFrame::buildNotify( string str )
+{
+	studioApp.mainFrame->output.appendStringToBuild( str );
+}
+
 void RDOStudioMainFrame::debugNotify( string str )
 {
-	((RDOStudioMainFrame*)AfxGetMainWnd())->output.appendStringToDebug( str );
+	studioApp.mainFrame->output.appendStringToDebug( str );
 }

@@ -4,12 +4,7 @@
 #include "rdostudiomodel.h"
 #include "rdostudioapp.h"
 #include "rdo_edit/rdoeditortabctrl.h"
-#include "./rdo_tracer/rdotracertrace.h"
 #include "resource.h"
-
-#include <rdokernel.h>
-#include <rdorepository.h>
-#include <rdosimwin.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -24,8 +19,6 @@ IMPLEMENT_DYNCREATE(RDOStudioModelDoc, RDOStudioEditBaseDoc)
 
 BEGIN_MESSAGE_MAP(RDOStudioModelDoc, RDOStudioEditBaseDoc)
 	//{{AFX_MSG_MAP(RDOStudioModelDoc)
-	ON_COMMAND(ID_RDO_RUN, OnRdoRun)
-	ON_COMMAND(ID_RDO_STOP, OnRdoStop)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -61,19 +54,6 @@ void RDOStudioModelDoc::Dump(CDumpContext& dc) const
 	RDOStudioEditBaseDoc::Dump(dc);
 }
 #endif
-
-void RDOStudioModelDoc::OnRdoRun() 
-{
-	kernel.debug( "x = %d, y = %d, str = %s\r\n", 2, 80, "ssss" );
-//	kernel.getSimulator()->runModel( kernel.getRepository()->getFullName() );
-//	trace.startTrace();
-}
-
-void RDOStudioModelDoc::OnRdoStop() 
-{
-//	kernel.getSimulator()->stopModel();
-//	trace.stopTrace();
-}
 
 void RDOStudioModelDoc::updateModify()
 {

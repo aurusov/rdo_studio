@@ -33,9 +33,9 @@ public:
 		closeModel,			// when repository closed current model
 		canNotCloseModel,   // when repository can not close current model ('canCloseModel' notify returns 'false' value)
 
-		parseModel,
-		executeModel,
-		stopModel, 
+//		parseModel,
+//		executeModel,
+//		stopModel, 
 		// AB 21.02.03 // these notifies sent by "RdoSimulator"
 		parseError,				// on parse error
 		modelStarted, 			// when model successfully parsed and started

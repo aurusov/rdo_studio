@@ -60,7 +60,7 @@ int RDOStudioOutput::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	debugStyle.window->wordWrap          = true;
 	debugStyle.load();
 	debug->setEditorStyle( &debugStyle );
-//	debug->setReadOnly( true );
+	debug->setReadOnly( true );
 
 	resultsStyle.init( "resultsStyle" );
 	resultsStyle.window->showHorzScrollBar = false;
@@ -106,7 +106,31 @@ void RDOStudioOutput::showResults()
 	results->SetFocus();
 }
 
-void RDOStudioOutput::appendStringToDebug( const string& str )
+void RDOStudioOutput::appendString( const RDOEditorSciEdit* const edit, const string& str ) const
 {
-	debug->appendText( str );
+	bool readOnly = edit->isReadOnly();
+	if ( readOnly ) {
+		edit->setReadOnly( false );
+	}
+	bool scroll = edit->isLineVisible( edit->getLineCount() - 1 );
+	edit->appendText( str );
+	if ( scroll ) {
+		int line = edit->getLineCount();
+		int line_to_scroll = line > 0 ? line - 1 : 0;
+		edit->scrollToLine( line_to_scroll );
+		edit->setCurrentPos( edit->getLength() );
+	}
+	if ( readOnly ) {
+		edit->setReadOnly( true );
+	}
+}
+
+void RDOStudioOutput::appendStringToBuild( const string& str ) const
+{
+	appendString( build, str );
+}
+
+void RDOStudioOutput::appendStringToDebug( const string& str ) const
+{
+	appendString( debug, str );
 }

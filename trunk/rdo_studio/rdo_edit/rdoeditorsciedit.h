@@ -193,6 +193,8 @@ public:
 	void setCurrentPos( const int line, int pos_in_line, const bool convert_rdo_tab = false ) const;
 	int getCurrentLineNumber() const            { return sendEditor( SCI_LINEFROMPOSITION, getCurrentPos() );   };
 	int getCurrentColumnNumber() const          { return sendEditor( SCI_GETCOLUMN, getCurrentPos() );          };
+	bool isLineVisible( const int line ) const;
+	void scrollToLine( const int line ) const;
 
 	CString getCurrentWord() const;
 	CString getSelection() const;

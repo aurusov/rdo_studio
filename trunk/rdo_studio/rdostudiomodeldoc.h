@@ -31,8 +31,6 @@ public:
 
 protected:
 	//{{AFX_MSG(RDOStudioModelDoc)
-	afx_msg void OnRdoRun();
-	afx_msg void OnRdoStop();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 

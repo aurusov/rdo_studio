@@ -1262,10 +1262,22 @@ void RDOEditorSciEdit::setCurrentPos( const int line, int pos_in_line, const boo
 	}
 
 	int line_to_scroll = line > 0 ? line - 1 : 0;
-	sendEditor( SCI_LINESCROLL, 0, line_to_scroll );
+	scrollToLine( line_to_scroll );
 	sendEditor( SCI_GOTOPOS, pos );
 
 	setCurrentPos( pos );
+}
+
+bool RDOEditorSciEdit::isLineVisible( const int line ) const
+{
+	int first_line = sendEditor( SCI_GETFIRSTVISIBLELINE );
+	int last_line = first_line + sendEditor( SCI_LINESONSCREEN );
+	return line >= first_line && line <= last_line;
+}
+
+void RDOEditorSciEdit::scrollToLine( const int line ) const
+{
+	sendEditor( SCI_LINESCROLL, 0, line );
 }
 
 void RDOEditorSciEdit::load( strstream& stream ) const

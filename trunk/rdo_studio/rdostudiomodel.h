@@ -23,6 +23,7 @@ private:
 	bool useTemplate;
 	bool closeWithDocDelete;
 	bool canNotCloseByModel;
+	bool running;
 
 	rdoEditor::RDOEditorTabCtrl* getTab() const;
 
@@ -32,6 +33,9 @@ private:
 	static bool canCloseModelNotify();
 	static void closeModelNotify();
 	static void canNotCloseModelNotify();
+
+	static void runModelNotify();
+	static void stopModelNotify();
 
 	void newModelFromRepository();
 	void openModelFromRepository();
@@ -52,10 +56,14 @@ public:
 	bool canCloseModel();
 	void closeModel();
 
+	void runModel() const;
+	void stopModel() const;
+
 	string getName() const;
 	void setName( const string& str );
 
 	bool isModify() const;
+	bool isRunning() const { return running; };
 };
 
 // ----------------------------------------------------------------------------

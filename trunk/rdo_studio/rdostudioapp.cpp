@@ -38,6 +38,10 @@ BEGIN_MESSAGE_MAP(RDOStudioApp, CWinApp)
 	ON_COMMAND(ID_FILE_RDO_SAVE_AS, OnFileSaveAs)
 	ON_UPDATE_COMMAND_UI(ID_FILE_RDO_CLOSE, OnUpdateFileClose)
 	ON_UPDATE_COMMAND_UI(ID_FILE_RDO_SAVE_AS, OnUpdateFileSaveAs)
+	ON_COMMAND(ID_RDO_RUN, OnRdoRun)
+	ON_COMMAND(ID_RDO_STOP, OnRdoStop)
+	ON_UPDATE_COMMAND_UI(ID_RDO_RUN, OnUpdateRdoRun)
+	ON_UPDATE_COMMAND_UI(ID_RDO_STOP, OnUpdateRdoStop)
 	//}}AFX_MSG_MAP
 	ON_COMMAND_RANGE( ID_FILE_REOPEN_1, ID_FILE_REOPEN_10, OnProjectReopen )
 	ON_COMMAND(ID_FILE_PRINT_SETUP, CWinApp::OnFilePrintSetup)
@@ -411,4 +415,24 @@ void RDOStudioApp::saveReopen() const
 		}
 		END_CATCH
 	}
+}
+
+void RDOStudioApp::OnRdoRun() 
+{
+	model->runModel();
+}
+
+void RDOStudioApp::OnRdoStop() 
+{
+	model->stopModel();
+}
+
+void RDOStudioApp::OnUpdateRdoRun(CCmdUI* pCmdUI) 
+{
+	pCmdUI->Enable( model && !model->isRunning() );
+}
+
+void RDOStudioApp::OnUpdateRdoStop(CCmdUI* pCmdUI) 
+{
+	pCmdUI->Enable( model && model->isRunning() );
 }

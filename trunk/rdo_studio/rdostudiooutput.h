@@ -34,6 +34,8 @@ private:
 	CWnd*                        tracer;
 	rdoEditor::RDOEditorEdit*    results;
 
+	void appendString( const rdoEditor::RDOEditorSciEdit* const edit, const string& str ) const;
+
 public:
 	RDOStudioOutput();
 	virtual ~RDOStudioOutput();
@@ -43,7 +45,8 @@ public:
 	void showTracer();
 	void showResults();
 
-	void appendStringToDebug( const string& str );
+	void appendStringToBuild( const string& str ) const;
+	void appendStringToDebug( const string& str ) const;
 
 public:
 	//{{AFX_VIRTUAL(RDOStudioOutput)

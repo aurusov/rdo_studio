@@ -134,19 +134,18 @@ void RDOKernel::notifyString( NotifyStringType notifyType, string str ) const
 
 void RDOKernel::debug( const char* str, ... )
 {
-	string s;
-	s.resize( 1024 );
+	vector< char > s;
+	s.resize( 256 );
 	va_list paramList;
-	va_start( paramList, str );
-	int size = _vsnprintf( (char*)s.data(), s.size(), str, paramList );
-	va_end( paramList );
-	if ( size > 0 ) {
-		s.resize( size );
+	int size = -1;
+	while ( size == -1 ) {
 		va_start( paramList, str );
-		_vsnprintf( (char*)s.data(), size, str, paramList );
+		size = _vsnprintf( s.begin(), s.size(), str, paramList );
 		va_end( paramList );
-	} else {
-		s = "";
+		if ( size == -1 ) {
+			s.resize( s.size() + 256 );
+		}
 	}
-	notifyString( debugString, s );
+	s.resize( size );
+	notifyString( debugString, string( s.begin(), s.end() ) );
 }

@@ -9,6 +9,7 @@
 
 #include <rdokernel.h>
 #include <rdorepository.h>
+#include <rdosimwin.h>
 
 using namespace rdoEditor;
 using namespace rdoRepository;
@@ -22,7 +23,8 @@ RDOStudioModel::RDOStudioModel():
 	name( "" ),
 	useTemplate( false ),
 	closeWithDocDelete( true ),
-	canNotCloseByModel( false )
+	canNotCloseByModel( false ),
+	running( false )
 {
 	model = this;
 	kernel.setNotifyReflect( RDOKernel::newModel, newModelNotify );
@@ -31,6 +33,10 @@ RDOStudioModel::RDOStudioModel():
 	kernel.setNotifyReflect( RDOKernel::canCloseModel, canCloseModelNotify );
 	kernel.setNotifyReflect( RDOKernel::closeModel, closeModelNotify );
 	kernel.setNotifyReflect( RDOKernel::canNotCloseModel, canNotCloseModelNotify );
+
+	kernel.setNotifyReflect( RDOKernel::modelStarted, runModelNotify );
+	kernel.setNotifyReflect( RDOKernel::endExecuteModel, stopModelNotify );
+	kernel.setNotifyReflect( RDOKernel::modelStopped, stopModelNotify );
 }
 
 RDOStudioModel::~RDOStudioModel()
@@ -64,6 +70,17 @@ void RDOStudioModel::closeModel()
 	kernel.getRepository()->closeModel();
 }
 
+void RDOStudioModel::runModel() const
+{
+	studioApp.mainFrame->output.showBuild();
+	kernel.getSimulator()->runModel( kernel.getRepository()->getFullName() );
+}
+
+void RDOStudioModel::stopModel() const
+{
+	kernel.getSimulator()->stopModel();
+}
+
 void RDOStudioModel::newModelNotify()
 {
 	model->newModelFromRepository();
@@ -92,6 +109,17 @@ void RDOStudioModel::closeModelNotify()
 void RDOStudioModel::canNotCloseModelNotify()
 {
 	model->canNotCloseModelFromRepository();
+}
+
+void RDOStudioModel::runModelNotify()
+{
+	studioApp.mainFrame->output.showDebug();
+	model->running = true;
+}
+
+void RDOStudioModel::stopModelNotify()
+{
+	model->running = false;
 }
 
 RDOEditorTabCtrl* RDOStudioModel::getTab() const

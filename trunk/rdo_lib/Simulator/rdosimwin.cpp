@@ -26,7 +26,7 @@ UINT RunningThreadControllingFunction( LPVOID pParam )
 	simulator->model->executeModel(NULL, NULL, pParam);
 
 	kernel.notify(RDOKernel::endExecuteModel);
-	kernel.notifyString( RDOKernel::debugString, "End execute model" );
+	kernel.notifyString( RDOKernel::debugString, "End execute model\r\n" );
 
 	return 0;
 }
@@ -45,7 +45,7 @@ RdoSimulator::runModel(string smrFileName)
 	else
 	{
 		kernel.notify(RDOKernel::modelStarted);
-		kernel.notifyString( RDOKernel::debugString, "Start execute model" );
+		kernel.notifyString( RDOKernel::debugString, "Start execute model\r\n" );
 		th = AfxBeginThread(RunningThreadControllingFunction, (LPVOID)this);
 	}
 }

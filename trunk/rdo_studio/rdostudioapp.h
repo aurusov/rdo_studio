@@ -61,6 +61,10 @@ public:
 	afx_msg void OnFileSaveAs();
 	afx_msg void OnUpdateFileClose(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateFileSaveAs(CCmdUI* pCmdUI);
+	afx_msg void OnRdoRun();
+	afx_msg void OnRdoStop();
+	afx_msg void OnUpdateRdoRun(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateRdoStop(CCmdUI* pCmdUI);
 	//}}AFX_MSG
 	afx_msg void OnProjectReopen( UINT nID );
 	DECLARE_MESSAGE_MAP()
