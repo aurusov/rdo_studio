@@ -74,6 +74,7 @@ protected:
 	void ContextMenu(Point pt);
 
 	virtual void ButtonDown(Point pt, unsigned int curTime, bool shift, bool ctrl, bool alt);
+	virtual bool selectByClick();
 
 	virtual void NotifyStyleToNeeded(int endStyleNeeded);
 public:

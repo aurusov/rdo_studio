@@ -3,7 +3,7 @@
 #include "../rdostudioapp.h"
 #include "../rdostudiomodel.h"
 #include "../rdo_edit/rdoeditortabctrl.h"
-#include "sci/LexRdo.h"
+#include "sci/Scintilla.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -52,6 +52,7 @@ string RDOLogEditLineInfo::getMessage() const
 // ---------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP( RDOLogEdit, RDOBaseEdit )
 	//{{AFX_MSG_MAP(RDOLogEdit)
+	ON_WM_CREATE()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -72,7 +73,7 @@ BOOL RDOLogEdit::OnNotify( WPARAM wParam, LPARAM lParam, LRESULT* pResult )
 		SCNotification* scn = (SCNotification*)lParam;
 		if ( scn->nmhdr.hwndFrom == sciHWND ) {
 			switch( scn->nmhdr.code ) {
-				case SCN_RDO_AFTERDBLCLICK: {
+				case SCN_DOUBLECLICK: {
 					setSelectLine();
 					return TRUE;
 				}
@@ -86,6 +87,15 @@ BOOL RDOLogEdit::OnNotify( WPARAM wParam, LPARAM lParam, LRESULT* pResult )
 		return TRUE;
 	}
 	return FALSE;
+}
+
+int RDOLogEdit::OnCreate( LPCREATESTRUCT lpCreateStruct )
+{
+	if ( RDOBaseEdit ::OnCreate(lpCreateStruct) == -1 ) return -1;
+
+	sendEditorString( SCI_SETPROPERTY, reinterpret_cast<unsigned long>("withoutselectbyclick"), "1" );
+
+	return 0;
 }
 
 void RDOLogEdit::setEditorStyle( rdoBaseEdit::RDOBaseEditStyle* style )
@@ -137,7 +147,7 @@ void RDOLogEdit::setSelectLine()
 			}
 			rdoBaseEdit::RDOBaseEdit* edit = tab->getCurrentEdit();
 			if ( edit ) {
-				edit->scrollToLine( (*it)->lineNumber, edit->getPositionFromLine( (*it)->lineNumber ) );
+				edit->scrollToLine( (*it)->lineNumber );
 				edit->SetFocus();
 			}
 		}

@@ -4,7 +4,6 @@
 #define SCN_RDO_POSCHANGED    20000
 #define SCN_RDO_CLICK         20001
 #define SCN_RDO_BUFFERKEY     20002
-#define SCN_RDO_AFTERDBLCLICK 20003
 
 static inline bool isRDOLexerOperator( char ch )
 {

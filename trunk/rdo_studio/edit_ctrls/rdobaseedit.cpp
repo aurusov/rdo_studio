@@ -220,9 +220,6 @@ int RDOBaseEdit::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	sciEditor = (long)::SendMessage( sciHWND, SCI_GETDIRECTPOINTER, 0, 0 );
 
 	sendEditorString( SCI_SETPROPERTY, reinterpret_cast<unsigned long>("fold"), "1" );
-	sendEditorString( SCI_SETPROPERTY, reinterpret_cast<unsigned long>("fold.compact"), "1" );
-	sendEditorString( SCI_SETPROPERTY, reinterpret_cast<unsigned long>("fold.flags"), "16" );
-	sendEditorString( SCI_SETPROPERTY, reinterpret_cast<unsigned long>("fold.symbols"), "1" );
 
 	sendEditor( SCI_SETMODEVENTMASK, SC_MOD_CHANGEFOLD | SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT );
 	sendEditor( SCI_SETMARGINTYPEN     , sci_FOLDMARGIN_ID, SC_MARGIN_SYMBOL );
@@ -1264,13 +1261,10 @@ void RDOBaseEdit::appendText( const string& str ) const
 	sendEditor( SCI_INSERTTEXT, getLength(), (long)str.c_str() );
 }
 
-void RDOBaseEdit::scrollToLine( const int line, int setPosition ) const
+void RDOBaseEdit::scrollToLine( const int line ) const
 {
-	sendEditor( SCI_LINESCROLL, 0, line );
-	if ( setPosition != -1 ) {
-		sendEditor( SCI_GOTOPOS, setPosition );
-		setCurrentPos( setPosition );
-	}
+	sendEditor( SCI_LINESCROLL, 0, line - sendEditor( SCI_GETFIRSTVISIBLELINE ) - sendEditor( SCI_LINESONSCREEN )/3 );
+	setCurrentPos( getPositionFromLine( line ) );
 }
 
 void RDOBaseEdit::load( strstream& stream ) const

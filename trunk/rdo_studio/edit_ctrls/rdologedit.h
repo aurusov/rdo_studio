@@ -48,6 +48,7 @@ protected:
 	bool hasSelectLine() const;
 
 	//{{AFX_MSG(RDOLogEdit)
+	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 

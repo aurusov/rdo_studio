@@ -195,7 +195,7 @@ public:
 	int getCurrentLineNumber() const                { return sendEditor( SCI_LINEFROMPOSITION, getCurrentPos() );   };
 	int getCurrentColumnNumber() const              { return sendEditor( SCI_GETCOLUMN, getCurrentPos() );          };
 	bool isLineVisible( const int line ) const;
-	void scrollToLine( const int line, int setPosition = -1 ) const;
+	void scrollToLine( const int line ) const;
 
 	string getCurrentWord() const;
 	string getSelection() const;

@@ -3576,17 +3576,21 @@ void Editor::ButtonDown(Point pt, unsigned int curTime, bool shift, bool ctrl, b
 		//Platform::DebugPrintf("Double click %d %d = %d\n", curTime, lastClickTime, curTime - lastClickTime);
 		SetMouseCapture(true);
 		SetEmptySelection(newPos);
-		// Stop mouse button bounce changing selection type
-		if (curTime != lastClickTime) {
-			if (selectionType == selChar) {
-				selectionType = selWord;
-				doubleClick = true;
-			} else if (selectionType == selWord) {
-				selectionType = selLine;
-			} else {
-				selectionType = selChar;
-				originalAnchorPos = currentPos;
+		if ( selectByClick() ) {
+			// Stop mouse button bounce changing selection type
+			if (curTime != lastClickTime) {
+				if (selectionType == selChar) {
+					selectionType = selWord;
+					doubleClick = true;
+				} else if (selectionType == selWord) {
+					selectionType = selLine;
+				} else {
+					selectionType = selChar;
+					originalAnchorPos = currentPos;
+				}
 			}
+		} else {
+			doubleClick = true;
 		}
 
 		if (selectionType == selWord) {
@@ -3661,12 +3665,11 @@ void Editor::ButtonDown(Point pt, unsigned int curTime, bool shift, bool ctrl, b
 	lastClickTime = curTime;
 	lastXChosen = pt.x;
 	ShowCaretAtCurrentPosition();
+}
 
-	if ( doubleClick ) {
-		SCNotification scn;
-		scn.nmhdr.code = SCN_RDO_AFTERDBLCLICK;
-		NotifyParent(scn);
-	}
+bool Editor::selectByClick()
+{
+	return true;
 }
 
 void Editor::ButtonMove(Point pt) {

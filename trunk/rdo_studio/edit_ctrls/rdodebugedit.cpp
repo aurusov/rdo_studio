@@ -30,7 +30,8 @@ void RDODebugEdit::appendLine( const string& str )
 	if ( scroll ) {
 		int line = getLineCount();
 		int line_to_scroll = line > 0 ? line - 1 : 0;
-		scrollToLine( line_to_scroll, getLength() );
+		scrollToLine( line_to_scroll );
+		setCurrentPos( getLength() );
 	}
 	setReadOnly( readOnly );
 }

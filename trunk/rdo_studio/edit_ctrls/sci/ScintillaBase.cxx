@@ -351,6 +351,11 @@ void ScintillaBase::ButtonDown(Point pt, unsigned int curTime, bool shift, bool 
 	Editor::ButtonDown(pt, curTime, shift, ctrl, alt);
 }
 
+bool ScintillaBase::selectByClick()
+{
+	return props.GetInt("withoutselectbyclick", 0) ? false : true;
+}
+
 void ScintillaBase::SetLexer(uptr_t wParam) {
 	lexLanguage = wParam;
 	lexCurrent = LexerModule::Find(lexLanguage);
