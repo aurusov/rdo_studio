@@ -597,9 +597,12 @@ void RDORuntime::rdoDelay(double fromTime, double toTime)
 	config.newTime = toTime;
 	config.realTimeDelay = (toTime - fromTime)/config.showRate * 3600 * 1000;
 
-	config.frame = NULL;
+//	config.frame = NULL;
+	config.frames.clear();
+
 	if(config.showAnimation == RDOSimulatorNS::SM_Animation)
 	{
+		/*
 		RDOFRMFrame *frame = allFrames.at(config.currFrameToShow);
 		if(frame->checkCondition(this))
 			config.frame = frame->createFrame(this);
@@ -617,12 +620,27 @@ void RDORuntime::rdoDelay(double fromTime, double toTime)
 				}
 			}
 		}
+		*/
+
+		int size = allFrames.size();
+		for(int i = 0; i < size; i++)
+		{
+			RDOFRMFrame *frame = allFrames.at(i);
+			if(frame->checkCondition(this))
+				config.frames.push_back(frame->createFrame(this));
+			else
+				config.frames.push_back(NULL);
+		}
 	}
 
 	if(frameCallBack)
 		(*frameCallBack)(&config, param);
 	else
-		delete config.frame;	// normally  frameCallBack deletes config.frame
+	{								// normally  frameCallBack deletes config.frame
+		for(int i = 0; i < config.frames.size(); i++)
+			delete config.frames.at(i);
+		config.frames.clear();
+	}
 }
 
 string RDORuntime::writeActivitiesStructure()

@@ -48,9 +48,9 @@ public:
 };
 
 
-const RDOFrame* RdoSimulator::getFrame()
+const vector<RDOFrame *>& RdoSimulator::getFrames()
 {
-	return frame;
+	return frames;
 }
 
 void RdoSimulator::addKeyPressed(int scanCode)
@@ -68,7 +68,7 @@ void frameCallBack(rdoRuntime::RDOConfig *config, void *param)
 	RdoSimulator *simulator = (RdoSimulator *)param;
 	if((config->showAnimation == SM_Animation) && (config->showAnimation == SM_Animation))
 	{
-		simulator->frame = config->frame;
+		simulator->frames = config->frames;
 
 		kernel.notify(RDOKernel::showFrame);
 
@@ -78,7 +78,9 @@ void frameCallBack(rdoRuntime::RDOConfig *config, void *param)
 		config->activeAreasMouseClicked.insert(config->activeAreasMouseClicked.end(), simulator->areasActivated.begin(), simulator->areasActivated.end());
 		simulator->areasActivated.clear();
 
-		delete config->frame;
+		for(int i = 0; i < config->frames.size(); i++)
+			delete config->frames.at(i);
+		config->frames.clear();
 		Sleep(config->realTimeDelay);
 	}
 
@@ -95,8 +97,7 @@ void tracerCallBack(string *newString, void *param)
 RdoSimulator::RdoSimulator(): 
 	runtime(NULL), 
 	parser(NULL), 
-	th(NULL),
-	frame(NULL)
+	th(NULL)
 {}
 
 RdoSimulator::~RdoSimulator()
@@ -137,7 +138,7 @@ UINT RunningThreadControllingFunction( LPVOID pParam )
 		simulator->runtime->config.keysPressed.clear();
 		simulator->runtime->config.mouseClicked = false;
 		simulator->runtime->config.activeAreasMouseClicked.clear();
-		simulator->runtime->config.frame = NULL;
+		simulator->runtime->config.frames.clear();
 		simulator->runtime->config.currTime = 0;
 		simulator->runtime->config.newTime = 0;
 		if(simulator->parser->smr->showRate)

@@ -261,7 +261,7 @@ bool RdoModel::parseModel(string smrFileName)
 		runtime->config.keysPressed.clear();
 		runtime->config.mouseClicked = false;
 		runtime->config.activeAreasMouseClicked.clear();
-		runtime->config.frame = NULL;
+		runtime->config.frames.clear();
 		runtime->config.currTime = 0;
 		runtime->config.newTime = 0;
 		runtime->config.showRate = *parser->smr->showRate;

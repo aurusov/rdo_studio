@@ -20,7 +20,7 @@ struct RDOConfig
 	vector<string> activeAreasMouseClicked;
 	
 //////// Frame /////////////////////
-	RDOSimulatorNS::RDOFrame *frame;
+	vector<RDOSimulatorNS::RDOFrame *> frames;
 
 //////// Timing ///////////////////
 	double currTime;			// model time

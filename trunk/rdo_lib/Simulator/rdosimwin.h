@@ -32,7 +32,7 @@ class RdoSimulator
 
 	CWinThread* th;
 
-	RDOFrame *frame;
+	vector<RDOFrame *> frames;
 	vector<int> scanCodes;
 	vector<string> areasActivated;
 
@@ -50,7 +50,7 @@ public:
 	double getModelTime();
 	void parseSMRFileInfo( stringstream& smr, rdoModelObjects::RDOSMRFileInfo& info );
 
-	const RDOFrame* getFrame();
+	const vector<RDOFrame *>& getFrames();
 	void addKeyPressed(int scanCode);
 	void addAreaPressed(string& areaName);
 
