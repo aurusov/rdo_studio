@@ -2,7 +2,6 @@
 #define RDOTRACERTRACE_H
 #pragma once
 
-#include "rdotracerrdoclasses.h"
 #include "../resource.h"
 
 using namespace std;
@@ -13,6 +12,13 @@ using namespace std;
 class RDOTracerLogCtrl;
 class RDOTracerTreeCtrl;
 class RDOStudioChartDoc;
+class RDOTracerResType;
+class RDOTracerResource;
+class RDOTracerPattern;
+class RDOTracerOperation;
+class RDOTracerResult;
+class RDOTracerTimeNow;
+class RDOTracerSerie;
 
 class RDOTracerTrace  
 {
@@ -64,7 +70,8 @@ private:
 	
 	void resultChanging( string& line, RDOTracerTimeNow* const time  );
 
-	vector <RDOTracerTimeNow*> timeVector;
+	list< RDOTracerTimeNow* > timeList;
+	//double minTimeDifference;
 	
 	void deleteTrace();
 	void clear();
@@ -102,9 +109,10 @@ public:
 	void addChart( RDOStudioChartDoc* const chart );
 	void removeChart( RDOStudioChartDoc* chart );
 	RDOStudioChartDoc* addSerieToChart( RDOTracerSerie* const serie, RDOStudioChartDoc* chart = NULL );
-	RDOTracerTimeNow* getMaxTime() const { return timeVector.back(); };
+	RDOTracerTimeNow* getMaxTime() const { return timeList.empty() ? NULL : timeList.back(); };
 	RDOTracerTimeNow* getTime( const int index ) const;
-	int getTimesCount() const { return timeVector.size(); };
+	int getTimesCount() const { return timeList.size(); };
+//	double getMinTimeDifference() const { return minTimeDifference; };
 };
 
 // ----------------------------------------------------------------------------

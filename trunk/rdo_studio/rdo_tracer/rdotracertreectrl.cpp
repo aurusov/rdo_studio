@@ -1,6 +1,11 @@
 #include "stdafx.h"
 #include "rdotracertreectrl.h"
 #include "rdotracertrace.h"
+#include "rdotracerrestype.h"
+#include "rdotracerresource.h"
+#include "rdotracerpattern.h"
+#include "rdotraceroperation.h"
+#include "rdotracerresult.h"
 #include "../resource.h"
 
 #ifdef _DEBUG

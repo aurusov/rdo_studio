@@ -6,7 +6,7 @@
 #endif
 
 #include <afxole.h>
-#include "./rdo_tracer/rdotracerrdoclasses.h"
+#include "./rdo_tracer/rdotracerserie.h"
 
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioChartView
@@ -15,6 +15,8 @@ class RDOStudioChartDoc;
 
 class RDOStudioChartView : public CView
 {
+friend class RDOTracerSerie;
+
 protected:
 	RDOStudioChartView();
 	DECLARE_DYNCREATE(RDOStudioChartView)
@@ -33,9 +35,22 @@ protected:
 	COLORREF timeColor;
 	bool timeWrap;
 
+	double timeRange;
+	long double timeScale;
+	RDOTracerTimeNow* drawFromX;
+	int drawFromXEventIndex;
+	RDOTracerTimeNow* drawToX;
+	int drawToXEventIndex;
+	int pixelsToChart;
+	void prepareDrawing( CDC &dc, CRect& chartRect );
+	
+	int xAxisOffset;
+	int yAxisOffset;
+	void calcYAxisOffset( CDC &dc );
+	void calcXAxisOffset( CDC &dc );
 	void drawYAxis( CDC &dc, CRect& chartRect, const RDOTracerSerie* axisValues);
-	void drawXAxis( CDC &dc, CRect& chartRect, const long double timeRange );
-	void drawGrid(	CDC &dc, CRect& chartRect, const long double timeScale );
+	void drawXAxis( CDC &dc, CRect& chartRect );
+	void drawGrid(	CDC &dc, CRect& chartRect );
 
 public:
 	

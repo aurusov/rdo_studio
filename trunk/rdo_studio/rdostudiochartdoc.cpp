@@ -42,12 +42,17 @@ void RDOStudioChartDoc::Serialize(CArchive& ar)
 	}
 }
 
-bool RDOStudioChartDoc::serieExists( const RDOTracerSerie* serie ) const
+int RDOStudioChartDoc::findSerie( const RDOTracerSerie* serie ) const
 {
-	for ( vector<RDOStudioDocSerie>::const_iterator it = series.begin(); it != series.end(); it++ )
+	int res = -1;
+	if ( !serie ) return res;
+	for ( vector<RDOStudioDocSerie>::const_iterator it = series.begin(); it != series.end(); it++ ) {
+		res ++;
 		if ( (*it).serie == serie )
-			return true;
-	return false;
+			break;
+	}
+	if ( it == series.end() ) res = -1;
+	return res;
 }
 
 void RDOStudioChartDoc::addSerie( RDOTracerSerie* const serie )
@@ -57,10 +62,23 @@ void RDOStudioChartDoc::addSerie( RDOTracerSerie* const serie )
 		docserie.serie = serie;
 		docserie.color = selectColor();
 		series.push_back( docserie );
+		serie->addToDoc( this );
 		UpdateAllViews( NULL );
 	}
 }
 
+void RDOStudioChartDoc::removeSerie( RDOTracerSerie* const serie )
+{
+	if ( !serie ) return;
+	int index = findSerie( serie );
+	if ( index != -1) {
+		vector<RDOStudioDocSerie>::iterator it = series.begin();
+		it += index;
+		(*it).serie->removeFromDoc( this );
+		series.erase( it );
+		UpdateAllViews( NULL );
+	}
+}
 
 COLORREF RDOStudioChartDoc::selectColor()
 {

@@ -2,6 +2,12 @@
 #include "rdotracertrace.h"
 #include "rdotracerlogctrl.h"
 #include "rdotracertreectrl.h"
+#include "rdotracerrestype.h"
+#include "rdotracerresource.h"
+#include "rdotracerpattern.h"
+#include "rdotraceroperation.h"
+#include "rdotracerresult.h"
+#include "rdotracervalues.h"
 #include "../rdostudiochartdoc.h"
 #include "../rdostudiochartview.h"
 #include "../rdostudioapp.h"
@@ -30,7 +36,8 @@ RDOTracerTrace::RDOTracerTrace():
 	tracing( false ),
 	clipboardFormat( 0 ),
 	chartDocTemplate( NULL ),
-	eventIndex( 0 )
+	eventIndex( 0 )/*,
+	minTimeDifference( 1.7E+308 )*/
 {
 }
 
@@ -380,22 +387,24 @@ string RDOTracerTrace::getNextValue( string& line )
 RDOTracerTimeNow* RDOTracerTrace::addTime( string& time )
 {
 	double val = atof( time.c_str() );
-	bool empty = timeVector.empty();
+	bool empty = timeList.empty();
 	RDOTracerTimeNow* last = NULL;
-	if ( !empty ) last = timeVector.back();
+	if ( !empty ) last = timeList.back();
 	if ( empty || last->time != val ) {
 		RDOTracerTimeNow* timeNow = new RDOTracerTimeNow();
 		timeNow->time = val;
 		timeNow->eventCount = 0;
 		timeNow->overallCount = empty ? 0 : last->overallCount;
-		timeVector.push_back( timeNow );
+		timeList.push_back( timeNow );
 		eventIndex = 0;
+		//if ( !empty && timeNow->time - last->time < minTimeDifference )
+		//	minTimeDifference = timeNow->time - last->time;
 	} else {
 		last->eventCount ++;
 		last->overallCount ++;
 		eventIndex ++;
 	}
-	return timeVector.back();
+	return timeList.back();
 }
 
 RDOTracerOperation* RDOTracerTrace::getOperation( string& line )
@@ -498,11 +507,17 @@ void RDOTracerTrace::deleteTrace()
 		delete results.at( i );
 	}
 	results.clear();
-	count = timeVector.size();
+	/*count = timeVector.size();
 	for ( i = 0; i < count; i++ ) {
 		delete timeVector.at( i );
 	}
-	timeVector.clear();
+	timeVector.clear();*/
+	list< RDOTracerTimeNow* >::iterator it = timeList.begin();
+	while ( it != timeList.end() ) {
+		delete *it;
+		it++;
+	}
+	timeList.clear();
 	charts.clear();
 }
 
@@ -629,5 +644,11 @@ void RDOTracerTrace::updateCharts()
 
 RDOTracerTimeNow* RDOTracerTrace::getTime( const int index ) const
 {
-	return timeVector.at( index );
+	//return timeVector.at( index );
+	if ( index >= timeList.size() || index < 0 )
+		return NULL;
+	list< RDOTracerTimeNow* >::const_iterator it = timeList.begin();
+	for ( int i = 0; i < index; i++ )
+		it++;
+	return (*it);
 }

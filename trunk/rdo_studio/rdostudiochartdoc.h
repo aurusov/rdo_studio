@@ -7,7 +7,7 @@
 
 #include <vector>
 
-#include "./rdo_tracer/rdotracerrdoclasses.h"
+#include "./rdo_tracer/rdotracerserie.h"
 
 using namespace std;
 
@@ -28,7 +28,8 @@ protected:
 	DECLARE_DYNCREATE(RDOStudioChartDoc)
 
 	vector <RDOStudioDocSerie> series;
-	bool serieExists( const RDOTracerSerie* serie ) const;
+	int findSerie( const RDOTracerSerie* serie ) const;
+	bool serieExists( const RDOTracerSerie* serie ) const { return findSerie( serie ) != -1; };
 	COLORREF selectColor();
 
 public:
@@ -47,6 +48,7 @@ public:
 	virtual ~RDOStudioChartDoc();
 
 	void addSerie( RDOTracerSerie* const serie );
+	void removeSerie( RDOTracerSerie* const serie );
 
 #ifdef _DEBUG
 	virtual void AssertValid() const;

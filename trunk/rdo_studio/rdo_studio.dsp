@@ -520,11 +520,31 @@ SOURCE=.\rdo_tracer\rdotracerlogstyle.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\rdo_tracer\rdotraceroperation.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdo_tracer\rdotraceroptions.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\rdo_tracer\rdotracerrdoclasses.cpp
+SOURCE=.\rdo_tracer\rdotracerpattern.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdo_tracer\rdotracerresource.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdo_tracer\rdotracerrestype.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdo_tracer\rdotracerresult.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdo_tracer\rdotracerserie.cpp
 # End Source File
 # Begin Source File
 
@@ -533,6 +553,14 @@ SOURCE=.\rdo_tracer\rdotracertrace.cpp
 # Begin Source File
 
 SOURCE=.\rdo_tracer\rdotracertreectrl.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdo_tracer\rdotracertreeitem.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdo_tracer\rdotracervalues.cpp
 # End Source File
 # End Group
 # Begin Group "RDO-Tracer Header Files"
@@ -548,11 +576,31 @@ SOURCE=.\rdo_tracer\rdotracerlogstyle.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\rdo_tracer\rdotraceroperation.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdo_tracer\rdotraceroptions.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\rdo_tracer\rdotracerrdoclasses.h
+SOURCE=.\rdo_tracer\rdotracerpattern.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdo_tracer\rdotracerresource.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdo_tracer\rdotracerrestype.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdo_tracer\rdotracerresult.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdo_tracer\rdotracerserie.h
 # End Source File
 # Begin Source File
 
@@ -561,6 +609,14 @@ SOURCE=.\rdo_tracer\rdotracertrace.h
 # Begin Source File
 
 SOURCE=.\rdo_tracer\rdotracertreectrl.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdo_tracer\rdotracertreeitem.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdo_tracer\rdotracervalues.h
 # End Source File
 # End Group
 # End Group

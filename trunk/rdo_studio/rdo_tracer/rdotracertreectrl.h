@@ -5,7 +5,9 @@
 #include <afxole.h>
 
 #include <rdotreectrl.h>
-#include "rdotracerrdoclasses.h"
+#include "rdotracertreeitem.h"
+
+using namespace std;
 
 // ----------------------------------------------------------------------------
 // ---------- RDOTracerTreeCtrl
@@ -21,6 +23,12 @@ public:
 	RDODropSource() : COleDropSource() {};
 	virtual ~RDODropSource() {};
 };
+
+class RDOTracerResType;
+class RDOTracerResource;
+class RDOTracerPattern;
+class RDOTracerOperation;
+class RDOTracerResult;
 
 class RDOTracerTreeCtrl: public RDOTreeCtrl  
 {
