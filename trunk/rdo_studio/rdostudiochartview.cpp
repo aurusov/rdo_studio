@@ -593,7 +593,7 @@ void RDOStudioChartView::drawGrid( CRect& chartRect )
 			if ( tmprect.left < rect.left )
 				tmprect.left = rect.left;
 			if ( *(*it) == drawFromX ) {
-				width -= drawFromEventIndex * style->fonts_ticks->tickWidth;
+				width -= drawFromEventIndex * style->fonts_ticks->tickWidth + chartShift;
 			}
 			if ( *(*it) == drawToX ) {
 				width = drawToEventCount * style->fonts_ticks->tickWidth;
