@@ -38,26 +38,28 @@ void BKEmulTimer::reset()
 
 void BKEmulTimer::tick()
 {
-	tick_count++;
-	if ( tick_count % tick_koef == 0 ) {
-		tick_count = 0;
-		WORD data = emul.memory.get_word( 0177710 );
-		if ( type == t20 && type == t24 ) {
-			if ( next20 ) {
-				next20 = false;
-				data = emul.memory.get_word( 0177706 );
-				emul.memory.set_word( 0177710, data );
-			} else {
+	if ( isWork() ) {
+		tick_count++;
+		if ( tick_count % tick_koef == 0 ) {
+			tick_count = 0;
+			WORD data = emul.memory.get_word( 0177710 );
+			if ( type == t20 && type == t24 ) {
+				if ( next20 ) {
+					next20 = false;
+					data = emul.memory.get_word( 0177706 );
+					emul.memory.set_word( 0177710, data );
+				} else {
+					data--;
+					emul.memory.set_word( 0177710, data );
+					if ( data == 1 ) {
+						next20 = true;
+						if ( type == t24 ) emul.cpu.setPR_100();
+					}
+				}
+			} else if ( type == t22 ) {
 				data--;
 				emul.memory.set_word( 0177710, data );
-				if ( data == 1 ) {
-					next20 = true;
-					if ( type == t24 ) emul.cpu.setPR_100();
-				}
 			}
-		} else if ( type == t22 ) {
-			data--;
-			emul.memory.set_word( 0177710, data );
 		}
 	}
 }

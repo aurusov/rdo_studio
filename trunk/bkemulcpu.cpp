@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "bkemulcpu.h"
 #include "bkemul.h"
+#include "bkemultimer.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -164,6 +165,8 @@ void BKEmulCPU::reset()
 
 void BKEmulCPU::nextIteration()
 {
+	emul.timer.tick();
+
 	// Прерывание по нажатию на клавишу СТОП или по зависанию канала
 	if ( PR_4 ) {
 		BK_doHALT();
@@ -213,34 +216,45 @@ void BKEmulCPU::Command_dest_Parser_byte()
 		case 2: dest_adr = regs[dest_reg_id];
 				regs[dest_reg_id]++;
 				if ( dest_reg_id == 7 ) R7++;
+				emul.timer.tick();
 				break;
 		case 3: dest_adr = regs[dest_reg_id];
 				regs[dest_reg_id] += 2;
+				emul.timer.tick();
 				dest_adr &= oddWordMask;
 				dest_adr = emul.getMemoryWord( dest_adr );
+				emul.timer.tick();
 				break;
 		case 4: regs[dest_reg_id]--;
 				if (dest_reg_id == 7) R7--;
+				emul.timer.tick();
 				dest_adr = regs[dest_reg_id];
 				break;
 		case 5: regs[dest_reg_id] -= 2;
+				emul.timer.tick();
 				dest_adr = regs[dest_reg_id];
 				dest_adr &= oddWordMask;
 				dest_adr = emul.getMemoryWord( dest_adr );
+				emul.timer.tick();
 				break;
 		case 6: dest_adr = R7;
 				R7 += 2;
+				emul.timer.tick();
 				dest_adr &= oddWordMask;
 				dest_adr = emul.getMemoryWord( dest_adr );
+				emul.timer.tick();
 				dest_adr += regs[dest_reg_id];
 				break;
 		case 7: dest_adr = R7;
 				R7 += 2;
+				emul.timer.tick();
 				dest_adr &= oddWordMask;
 				dest_adr = emul.getMemoryWord( dest_adr );
+				emul.timer.tick();
 				dest_adr += regs[dest_reg_id];
 				dest_adr &= oddWordMask;
 				dest_adr = emul.getMemoryWord( dest_adr );
+				emul.timer.tick();
 				break;
 	}
 }
@@ -262,33 +276,44 @@ void BKEmulCPU::Command_dest_Parser_word()
 				break;
 		case 2: dest_adr = regs[dest_reg_id];
 				regs[dest_reg_id] += 2;
+				emul.timer.tick();
 				break;
 		case 3: dest_adr = regs[dest_reg_id];
 				regs[dest_reg_id] += 2;
+				emul.timer.tick();
 				dest_adr &= oddWordMask;
 				dest_adr = emul.getMemoryWord( dest_adr );
+				emul.timer.tick();
 				break;
 		case 4: regs[dest_reg_id] -= 2;
 				dest_adr = regs[dest_reg_id];
+				emul.timer.tick();
 				break;
 		case 5: regs[dest_reg_id] -= 2;
+				emul.timer.tick();
 				dest_adr = regs[dest_reg_id];
 				dest_adr &= oddWordMask;
 				dest_adr = emul.getMemoryWord( dest_adr );
+				emul.timer.tick();
 				break;
 		case 6: dest_adr = R7;
 				R7 += 2;
+				emul.timer.tick();
 				dest_adr &= oddWordMask;
 				dest_adr = emul.getMemoryWord( dest_adr );
+				emul.timer.tick();
 				dest_adr += regs[dest_reg_id];
 				break;
 		case 7: dest_adr = R7;
 				R7 += 2;
+				emul.timer.tick();
 				dest_adr &= oddWordMask;
 				dest_adr = emul.getMemoryWord( dest_adr );
+				emul.timer.tick();
 				dest_adr += regs[dest_reg_id];
 				dest_adr &= oddWordMask;
 				dest_adr = emul.getMemoryWord( dest_adr );
+				emul.timer.tick();
 				break;
 	}
 	// ????
@@ -316,34 +341,45 @@ void BKEmulCPU::CommandParser_byte()
 		case 2: source_data = regs[source_reg_id];
 				regs[source_reg_id]++;
 				if (source_reg_id == 7) R7++;
+				emul.timer.tick();
 				break;
 		case 3: source_data = regs[source_reg_id];
 				regs[source_reg_id] += 2;
+				emul.timer.tick();
 				source_data &= oddWordMask;
 				source_data = emul.getMemoryWord( source_data );
+				emul.timer.tick();
 				break;
 		case 4: regs[source_reg_id]--;
 				if (source_reg_id == 7) R7--;
+				emul.timer.tick();
 				source_data = regs[source_reg_id];
 				break;
 		case 5: regs[source_reg_id] -= 2;
+				emul.timer.tick();
 				source_data = regs[source_reg_id];
 				source_data &= oddWordMask;
 				source_data = emul.getMemoryWord( source_data );
+				emul.timer.tick();
 				break;
 		case 6: source_data = R7;
 				R7 += 2;
+				emul.timer.tick();
 				source_data &= oddWordMask;
 				source_data = emul.getMemoryWord( source_data );
 				source_data += regs[source_reg_id];
+				emul.timer.tick();
 				break;
 		case 7: source_data = R7;
 				R7 += 2;
+				emul.timer.tick();
 				source_data &= oddWordMask;
 				source_data = emul.getMemoryWord( source_data );
+				emul.timer.tick();
 				source_data += regs[source_reg_id];
 				source_data &= oddWordMask;
 				source_data = emul.getMemoryWord( source_data );
+				emul.timer.tick();
 				break;
 	}
 	// Общая часть для режимов адресации  1..7
@@ -373,33 +409,44 @@ void BKEmulCPU::CommandParser_word()
 				break;
 		case 2: source_data = regs[source_reg_id];
 				regs[source_reg_id] += 2;
+				emul.timer.tick();
 				break;
 		case 3: source_data = regs[source_reg_id];
 				regs[source_reg_id] += 2;
+				emul.timer.tick();
 				source_data &= oddWordMask;
 				source_data = emul.getMemoryWord( source_data );
+				emul.timer.tick();
 				break;
 		case 4: regs[source_reg_id] -= 2;
+				emul.timer.tick();
 				source_data = regs[source_reg_id];
 				break;
 		case 5: regs[source_reg_id] -= 2;
+				emul.timer.tick();
 				source_data = regs[source_reg_id];
 				source_data &= oddWordMask;
 				source_data = emul.getMemoryWord( source_data );
+				emul.timer.tick();
 				break;
 		case 6: source_data = R7;
 				R7 += 2;
+				emul.timer.tick();
 				source_data &= oddWordMask;
 				source_data = emul.getMemoryWord( source_data );
 				source_data += regs[source_reg_id];
+				emul.timer.tick();
 				break;
 		case 7: source_data = R7;
 				R7 += 2;
+				emul.timer.tick();
 				source_data &= oddWordMask;
 				source_data = emul.getMemoryWord( source_data );
+				emul.timer.tick();
 				source_data += regs[source_reg_id];
 				source_data &= oddWordMask;
 				source_data = emul.getMemoryWord( source_data );
+				emul.timer.tick();
 				break;
 	}
 	// Общая часть для режимов адресации  1..7
