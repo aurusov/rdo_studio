@@ -91,7 +91,7 @@ public:
 	void savePMV( std::stringstream& stream ) const;
 	void saveTRC( std::stringstream& stream ) const;
 
-	void loadBMP( const std::string& name, std::stringstream& stream ) const;
+	void loadBMP( const std::string& name, std::iostream& stream ) const;
 };
 
 }; // namespace rdoRepository

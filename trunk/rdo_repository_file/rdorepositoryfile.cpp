@@ -493,7 +493,7 @@ void RDORepositoryFile::saveTRC( stringstream& stream ) const
 	saveFile( modelPath + trcFileName + ".trc", stream );
 }
 
-void RDORepositoryFile::loadBMP( const std::string& name, std::stringstream& stream ) const
+void RDORepositoryFile::loadBMP( const string& name, iostream& stream ) const
 {
 	string file_name = modelPath + name + ".bmp";
 	if ( isFileExists( file_name ) ) {

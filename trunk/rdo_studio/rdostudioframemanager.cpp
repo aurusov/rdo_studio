@@ -204,11 +204,63 @@ bool RDOStudioFrameManager::isValidFrameDoc( const RDOStudioFrameDoc* const fram
 	return false;
 }
 
+template < class E, class Tr = char_traits<E> > class binarybuf: public basic_streambuf< E, Tr >
+{
+protected:
+	vector< E > buf;
+	int current;
+
+	virtual basic_streambuf< E, Tr >* setbuf( E* s, streamsize n ) {
+		buf.reserve( n );
+		buf.assign( s, s + n );
+		current = 0;
+		setg( buf.begin(), buf.begin(), buf.end() );
+		setp( buf.begin(), buf.end() );
+		return this;
+	}
+	virtual int_type overflow( int_type c = Tr::eof() ) {
+		if ( c != Tr::eof() ) {
+			buf.push_back( Tr::to_char_type( c ) );
+			return Tr::not_eof( c );
+		} else {
+			return Tr::eof();
+		}
+	}
+	virtual int_type underflow() {
+		return Tr::to_int_type( buf[current] );
+	}
+	virtual int_type uflow() {
+		int_type c = Tr::to_int_type( buf[current++] );
+		setg( buf.begin(), &buf[current], buf.end() );
+		return c;
+	}
+	virtual pos_type seekoff( off_type off, ios_base::seekdir way, ios_base::openmode which = ios_base::in | ios_base::out) {
+		switch ( way ) {
+			case ios_base::beg: current = off; break;
+			case ios_base::cur: current += off; break;
+			case ios_base::end: current = buf.size() - off; break;
+		}
+		return current;
+	}
+	virtual pos_type seekpos( pos_type sp, ios_base::openmode which = ios_base::in | ios_base::out ) {
+		current = sp;
+		return current;
+	}
+
+public:
+	binarybuf(): basic_streambuf< E, Tr >(), current( 0 ) {
+		setg( buf.begin(), buf.begin(), buf.end() );
+		setp( buf.begin(), buf.end() );
+	}
+	virtual ~binarybuf() { buf.clear(); };
+};
+
 void RDOStudioFrameManager::bmp_insert( const std::string& name )
 {
 	bitmaps[name] = NULL;
 
-	stringstream stream( ios::in | ios_base::out | ios::binary );
+	binarybuf< char > buf;
+	iostream stream( &buf );
 	kernel.getRepository()->loadBMP( name, stream );
 
 	HANDLE hDIBInfo = ::GlobalAlloc( GMEM_MOVEABLE, sizeof(BITMAPINFOHEADER) + 256 * sizeof(RGBQUAD) );
