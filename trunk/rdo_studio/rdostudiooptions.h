@@ -205,12 +205,12 @@ private:
 	RDOStudioOptionsTabs*            tabs;
 	RDOStudioOptionsStylesAndColors* styles;
 
-	rdoEditor::RDOEditorEdit    edit;
-	rdoEditCtrl::RDOBuildEdit   build;
-	rdoEditCtrl::RDODebugEdit   debug;
-	RDOTracerLogCtrl            tracer;
-	rdoEditor::RDOEditorResults results;
-	rdoEditCtrl::RDOFindEdit    find;
+	rdoEditor::RDOEditorEdit    preview_editor;
+	rdoEditCtrl::RDOBuildEdit   preview_build;
+	rdoEditCtrl::RDODebugEdit   preview_debug;
+	RDOTracerLogCtrl            preview_tracer;
+	rdoEditor::RDOEditorResults preview_results;
+	rdoEditCtrl::RDOFindEdit    preview_find;
 
 	void apply();
 	static int CALLBACK AddContextHelpProc(HWND hwnd, UINT message, LPARAM lParam);

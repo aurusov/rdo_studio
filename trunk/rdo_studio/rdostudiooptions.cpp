@@ -117,9 +117,9 @@ void RDOStudioOptionsEditor::OnUpdateModify()
 	sheet->style_editor.margin->bookmark   = m_marginBookmark ? true : false;
 	sheet->style_editor.margin->lineNumber = m_marginLineNumber ? true : false;
 
-//	if ( sheet->colorOptions->edit ) {
-//		sheet->colorOptions->edit.setEditorStyle( sheet->editorStyle );
-//	}
+	if ( sheet->preview_editor.GetSafeHwnd() ) {
+		sheet->preview_editor.setEditorStyle( &sheet->style_editor );
+	}
 
 	SetModified( *sheet->style_editor.buffer != *studioApp.mainFrame->style_editor.buffer || *sheet->style_editor.autoComplete != *studioApp.mainFrame->style_editor.autoComplete || *sheet->style_editor.margin != *studioApp.mainFrame->style_editor.margin );
 }
@@ -301,41 +301,41 @@ BOOL RDOStudioOptionsStylesAndColors::OnInitDialog()
 	fgColorCB.insertBaseColors();
 	bgColorCB.insertBaseColors();
 
-	sheet->edit.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, -1 );
-	sheet->edit.setEditorStyle( &sheet->style_editor );
-	sheet->edit.replaceCurrent( format( ID_OPTIONS_COLORS_EDITTEXT ), 0 );
-	sheet->edit.setReadOnly( true );
-	sheet->edit.bookmarkToggle();
+	sheet->preview_editor.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, -1 );
+	sheet->preview_editor.setEditorStyle( &sheet->style_editor );
+	sheet->preview_editor.replaceCurrent( format( ID_OPTIONS_COLORS_EDITTEXT ), 0 );
+	sheet->preview_editor.setReadOnly( true );
+	sheet->preview_editor.bookmarkToggle();
 
-	sheet->build.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, -1 );
-	sheet->build.setEditorStyle( &sheet->style_build );
-	sheet->build.appendLine( new rdoEditCtrl::RDOBuildEditLineInfo( "Building Model..." ) );
-	sheet->build.appendLine( new rdoEditCtrl::RDOBuildEditLineInfo( "Wrong parameter value: L", rdoModelObjects::PAT, 40, true ) );
-	sheet->build.appendLine( new rdoEditCtrl::RDOBuildEditLineInfo( "1 error(s) found." ) );
-	sheet->build.gotoNext();
+	sheet->preview_build.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, -1 );
+	sheet->preview_build.setEditorStyle( &sheet->style_build );
+	sheet->preview_build.appendLine( new rdoEditCtrl::RDOBuildEditLineInfo( "Building Model..." ) );
+	sheet->preview_build.appendLine( new rdoEditCtrl::RDOBuildEditLineInfo( "Wrong parameter value: L", rdoModelObjects::PAT, 40, true ) );
+	sheet->preview_build.appendLine( new rdoEditCtrl::RDOBuildEditLineInfo( "1 error(s) found." ) );
+	sheet->preview_build.gotoNext();
 
-	sheet->debug.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, -1 );
-	sheet->debug.setEditorStyle( &sheet->style_debug );
-	sheet->debug.appendLine( "Start executing\r\n" );
-	sheet->debug.appendLine( "EI 0 1 1 0\r\n" );
-	sheet->debug.appendLine( "ES 0 1\r\n" );
+	sheet->preview_debug.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, -1 );
+	sheet->preview_debug.setEditorStyle( &sheet->style_debug );
+	sheet->preview_debug.appendLine( "Start executing\r\n" );
+	sheet->preview_debug.appendLine( "EI 0 1 1 0\r\n" );
+	sheet->preview_debug.appendLine( "ES 0 1\r\n" );
 
-	sheet->tracer.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, -1 );
+	sheet->preview_tracer.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, -1 );
 
-	sheet->results.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, -1 );
-	sheet->results.setEditorStyle( &sheet->style_results );
-	sheet->results.setReadOnly( false );
-	sheet->results.replaceCurrent( format( ID_OPTIONS_COLOR_RESULTSTEXT ), 0 );
-	sheet->results.setReadOnly( true );
+	sheet->preview_results.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, -1 );
+	sheet->preview_results.setEditorStyle( &sheet->style_results );
+	sheet->preview_results.setReadOnly( false );
+	sheet->preview_results.replaceCurrent( format( ID_OPTIONS_COLOR_RESULTSTEXT ), 0 );
+	sheet->preview_results.setReadOnly( true );
 
-	sheet->find.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, -1 );
-	sheet->find.setEditorStyle( &sheet->style_find );
-	sheet->find.setKeyword( "$Time" );
-	sheet->find.appendLine( new rdoEditCtrl::RDOLogEditLineInfo( "Searching for '$Time'..." ) );
-	sheet->find.appendLine( new rdoEditCtrl::RDOLogEditLineInfo( "$Time = Равномерный(0.25, 0.75)", rdoModelObjects::PAT, 3 ) );
-	sheet->find.appendLine( new rdoEditCtrl::RDOLogEditLineInfo( "$Time = Нормальный(0.45, 0.2)", rdoModelObjects::PAT, 13 ) );
-	sheet->find.appendLine( new rdoEditCtrl::RDOLogEditLineInfo( "'2' occurrence(s) have been found." ) );
-	sheet->find.gotoNext();
+	sheet->preview_find.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, -1 );
+	sheet->preview_find.setEditorStyle( &sheet->style_find );
+	sheet->preview_find.setKeyword( "$Time" );
+	sheet->preview_find.appendLine( new rdoEditCtrl::RDOLogEditLineInfo( "Searching for '$Time'..." ) );
+	sheet->preview_find.appendLine( new rdoEditCtrl::RDOLogEditLineInfo( "$Time = Равномерный(0.25, 0.75)", rdoModelObjects::PAT, 3 ) );
+	sheet->preview_find.appendLine( new rdoEditCtrl::RDOLogEditLineInfo( "$Time = Нормальный(0.45, 0.2)", rdoModelObjects::PAT, 13 ) );
+	sheet->preview_find.appendLine( new rdoEditCtrl::RDOLogEditLineInfo( "'2' occurrence(s) have been found." ) );
+	sheet->preview_find.gotoNext();
 
 	CRect r;
 	GetClientRect( r );
@@ -350,12 +350,12 @@ BOOL RDOStudioOptionsStylesAndColors::OnInitDialog()
 	rectEdit.top    = rectStyleLB.bottom + 5;
 	rectEdit.bottom = r.bottom;
 
-	sheet->edit.MoveWindow( rectEdit );
-	sheet->build.MoveWindow( rectEdit );
-	sheet->debug.MoveWindow( rectEdit );
-	sheet->tracer.MoveWindow( rectEdit );
-	sheet->results.MoveWindow( rectEdit );
-	sheet->find.MoveWindow( rectEdit );
+	sheet->preview_editor.MoveWindow( rectEdit );
+	sheet->preview_build.MoveWindow( rectEdit );
+	sheet->preview_debug.MoveWindow( rectEdit );
+	sheet->preview_tracer.MoveWindow( rectEdit );
+	sheet->preview_results.MoveWindow( rectEdit );
+	sheet->preview_find.MoveWindow( rectEdit );
 
 	list< STYLEObject* >::iterator obj_it = objects.begin();
 	while ( obj_it != objects.end() ) {
@@ -483,41 +483,41 @@ void RDOStudioOptionsStylesAndColors::setPreviewAsCombo( STYLEObject::Type type 
 {
 	if ( previewAs != type && type >= STYLEObject::source ) {
 		previewAs = type;
-		sheet->edit.ShowWindow( SW_HIDE );
-		sheet->build.ShowWindow( SW_HIDE );
-		sheet->debug.ShowWindow( SW_HIDE );
-		sheet->tracer.ShowWindow( SW_HIDE );
-		sheet->results.ShowWindow( SW_HIDE );
-		sheet->find.ShowWindow( SW_HIDE );
+		sheet->preview_editor.ShowWindow( SW_HIDE );
+		sheet->preview_build.ShowWindow( SW_HIDE );
+		sheet->preview_debug.ShowWindow( SW_HIDE );
+		sheet->preview_tracer.ShowWindow( SW_HIDE );
+		sheet->preview_results.ShowWindow( SW_HIDE );
+		sheet->preview_find.ShowWindow( SW_HIDE );
 		switch ( previewAs ) {
 			case STYLEObject::source: {
 				m_previewAs.SetCurSel( 0 );
-				sheet->edit.ShowWindow( SW_SHOW );
+				sheet->preview_editor.ShowWindow( SW_SHOW );
 				break;
 			}
 			case STYLEObject::build: {
 				m_previewAs.SetCurSel( 1 );
-				sheet->build.ShowWindow( SW_SHOW );
+				sheet->preview_build.ShowWindow( SW_SHOW );
 				break;
 			}
 			case STYLEObject::debug: {
 				m_previewAs.SetCurSel( 2 );
-				sheet->debug.ShowWindow( SW_SHOW );
+				sheet->preview_debug.ShowWindow( SW_SHOW );
 				break;
 			}
 			case STYLEObject::trace: {
 				m_previewAs.SetCurSel( 3 );
-				sheet->tracer.ShowWindow( SW_SHOW );
+				sheet->preview_tracer.ShowWindow( SW_SHOW );
 				break;
 			}
 			case STYLEObject::results: {
 				m_previewAs.SetCurSel( 4 );
-				sheet->results.ShowWindow( SW_SHOW );
+				sheet->preview_results.ShowWindow( SW_SHOW );
 				break;
 			}
 			case STYLEObject::find: {
 				m_previewAs.SetCurSel( 5 );
-				sheet->find.ShowWindow( SW_SHOW );
+				sheet->preview_find.ShowWindow( SW_SHOW );
 				break;
 			}
 			default: break;
