@@ -105,7 +105,6 @@ protected:
 	afx_msg void OnUpdateEndOfLine( CCmdUI* pCmdUI );
 	afx_msg void OnUpdateZoomIn( CCmdUI *pCmdUI );
 	afx_msg void OnUpdateZoomOut( CCmdUI *pCmdUI );
-	afx_msg void OnUpdateZoomAuto( CCmdUI* pCmdUI );
 	afx_msg void OnUpdateZoomReset( CCmdUI *pCmdUI );
 	afx_msg void OnIsSelected(CCmdUI* pCmdUI);
 	//}}AFX_MSG

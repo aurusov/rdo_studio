@@ -27,10 +27,6 @@ BEGIN_MESSAGE_MAP(RDOStudioFrameView, CView)
 	ON_WM_LBUTTONDOWN()
 	ON_WM_KEYDOWN()
 	ON_WM_MOUSEWHEEL()
-	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOMIN, OnUpdateZoomIn)
-	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOMOUT, OnUpdateZoomOut)
-	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOMRESET, OnUpdateZoomReset)
-	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOMAUTO, OnUpdateZoomAuto)
 	ON_WM_PAINT()
 	//}}AFX_MSG_MAP
 	ON_COMMAND(ID_FILE_PRINT, CView::OnFilePrint)
@@ -52,7 +48,7 @@ RDOStudioFrameView::RDOStudioFrameView():
 	saved_hdc( 0 ),
 	saved_hmemdc( 0 ),
 	hfontInit( NULL ),
-	hbmpInit( NULL ),
+//	hbmpInit( NULL ),
 	hbmp( NULL )
 {
 }
@@ -100,7 +96,7 @@ int RDOStudioFrameView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	hfontInit = static_cast<HFONT>(::GetCurrentObject( hmemdc, OBJ_FONT ));
 	// Remembering default bmp to select it into DC
 	// when resizing window
-	hbmpInit  = static_cast<HBITMAP>(::GetCurrentObject( hmemdc, OBJ_BITMAP ));
+//	hbmpInit  = static_cast<HBITMAP>(::GetCurrentObject( hmemdc, OBJ_BITMAP ));
 
 	updateScrollBars();
 
@@ -331,27 +327,6 @@ BOOL RDOStudioFrameView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 	UpdateWindow();
 
 	return TRUE;
-}
-
-void RDOStudioFrameView::OnUpdateZoomIn(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable( false );
-}
-
-void RDOStudioFrameView::OnUpdateZoomOut(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable( false );
-}
-
-void RDOStudioFrameView::OnUpdateZoomReset(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable( false );
-}
-
-void RDOStudioFrameView::OnUpdateZoomAuto(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable( false );
-	pCmdUI->SetCheck( false );
 }
 
 void RDOStudioFrameView::OnPaint()

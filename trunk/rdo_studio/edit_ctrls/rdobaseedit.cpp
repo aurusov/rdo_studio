@@ -102,7 +102,6 @@ BEGIN_MESSAGE_MAP( RDOBaseEdit, CWnd )
 	ON_UPDATE_COMMAND_UI( ID_VIEW_ENDOFLINE       , OnUpdateEndOfLine )
 	ON_UPDATE_COMMAND_UI( ID_VIEW_ZOOMIN          , OnUpdateZoomIn )
 	ON_UPDATE_COMMAND_UI( ID_VIEW_ZOOMOUT         , OnUpdateZoomOut )
-	ON_UPDATE_COMMAND_UI( ID_VIEW_ZOOMAUTO        , OnUpdateZoomAuto )
 	ON_UPDATE_COMMAND_UI( ID_VIEW_ZOOMRESET       , OnUpdateZoomReset )
 	ON_UPDATE_COMMAND_UI( ID_EDIT_COPY            , OnIsSelected )
 	ON_UPDATE_COMMAND_UI( ID_EDIT_COPYASRTF       , OnIsSelected )
@@ -1314,12 +1313,6 @@ void RDOBaseEdit::OnUpdateZoomIn( CCmdUI *pCmdUI )
 void RDOBaseEdit::OnUpdateZoomOut( CCmdUI *pCmdUI )
 {
 	pCmdUI->Enable( getZoom() > -10 );
-}
-
-void RDOBaseEdit::OnUpdateZoomAuto( CCmdUI* pCmdUI )
-{
-	pCmdUI->Enable( false );
-	pCmdUI->SetCheck( false );
 }
 
 void RDOBaseEdit::OnUpdateZoomReset( CCmdUI *pCmdUI )
