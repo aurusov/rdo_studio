@@ -145,7 +145,7 @@ void RDOStudioModel::buildModel() const
 
 void RDOStudioModel::runModel() const
 {
-	if ( saveModel() ) {
+	if ( !isRunning() && saveModel() ) {
 		RDOStudioOutput* output = &studioApp.mainFrame->output;
 		output->clearBuild();
 		output->clearDebug();
