@@ -61,8 +61,8 @@ BEGIN_MESSAGE_MAP(RDOStudioMainFrame, CMDIFrameWnd)
 	ON_UPDATE_COMMAND_UI(ID_MODEL_FRAME_PREV, OnUpdateModelFramePrev)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOMIN, OnUpdateViewZoomIn)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOMOUT, OnUpdateViewZoomOut)
-	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOMRESET, OnUpdateViewZoomReset)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOMAUTO, OnUpdateViewZoomAuto)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOMRESET, OnUpdateViewZoomReset)
 	//}}AFX_MSG_MAP
 	ON_UPDATE_COMMAND_UI( ID_COORD_STATUSBAR           , OnUpdateCoordStatusBar )
 	ON_UPDATE_COMMAND_UI( ID_MODIFY_STATUSBAR          , OnUpdateModifyStatusBar )
@@ -183,6 +183,9 @@ int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	dockControlBarBesideOf( modelToolBar, zoomToolBar );
 	DockControlBar( &workspace, AFX_IDW_DOCKBAR_LEFT );
 	DockControlBar( &output, AFX_IDW_DOCKBAR_BOTTOM );
+
+	zoomToolBar.SetButtonStyle( 2, TBBS_CHECKBOX | TBBS_CHECKGROUP );
+//	zoomToolBar.SetButtonStyle( 3, TBBS_BUTTON );
 
 	modelToolBar.SetButtonStyle( 3, TBBS_CHECKBOX | TBBS_CHECKGROUP );
 	modelToolBar.SetButtonStyle( 4, TBBS_CHECKBOX | TBBS_CHECKGROUP );
@@ -570,13 +573,13 @@ void RDOStudioMainFrame::OnUpdateViewZoomOut(CCmdUI* pCmdUI)
 	pCmdUI->Enable( false );
 }
 
-void RDOStudioMainFrame::OnUpdateViewZoomReset(CCmdUI* pCmdUI)
+void RDOStudioMainFrame::OnUpdateViewZoomAuto(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable( false );
 	pCmdUI->SetCheck( false );
 }
 
-void RDOStudioMainFrame::OnUpdateViewZoomAuto(CCmdUI* pCmdUI)
+void RDOStudioMainFrame::OnUpdateViewZoomReset(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable( false );
 }

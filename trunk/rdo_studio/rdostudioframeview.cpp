@@ -27,6 +27,9 @@ BEGIN_MESSAGE_MAP(RDOStudioFrameView, CView)
 	ON_WM_LBUTTONDOWN()
 	ON_WM_KEYDOWN()
 	ON_WM_MOUSEWHEEL()
+	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOMIN, OnUpdateZoomIn)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOMOUT, OnUpdateZoomOut)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOMRESET, OnUpdateZoomReset)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOMAUTO, OnUpdateZoomAuto)
 	//}}AFX_MSG_MAP
 	ON_COMMAND(ID_FILE_PRINT, CView::OnFilePrint)
@@ -331,6 +334,21 @@ BOOL RDOStudioFrameView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 	UpdateWindow();
 
 	return TRUE;
+}
+
+void RDOStudioFrameView::OnUpdateZoomIn(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable( false );
+}
+
+void RDOStudioFrameView::OnUpdateZoomOut(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable( false );
+}
+
+void RDOStudioFrameView::OnUpdateZoomReset(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable( false );
 }
 
 void RDOStudioFrameView::OnUpdateZoomAuto(CCmdUI* pCmdUI)
