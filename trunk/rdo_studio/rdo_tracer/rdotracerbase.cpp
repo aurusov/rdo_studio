@@ -625,7 +625,6 @@ RDOStudioChartDoc* RDOTracerBase::createNewChart()
 	RDOStudioChartDoc* doc = NULL;
 	if ( chartDocTemplate ) {
 		doc = (RDOStudioChartDoc*)chartDocTemplate->OpenDocumentFile( NULL );
-		doc->setTitle( (LPCSTR)doc->GetTitle() );
 	}
 	return doc;
 }

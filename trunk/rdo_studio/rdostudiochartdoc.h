@@ -66,6 +66,7 @@ public:
 	public:
 	virtual void Serialize(CArchive& ar);
 	virtual BOOL OnNewDocument();
+	virtual void SetTitle( LPCTSTR lpszTitle );
 	//}}AFX_VIRTUAL
 
 protected:
@@ -82,7 +83,7 @@ public:
 	bool serieExists( const RDOTracerSerie* serie ) const;
 
 	std::string getTitle() const { return title; };
-	void setTitle( const std::string _title );
+	//void setTitle( const std::string _title );
 
 #ifdef _DEBUG
 	virtual void AssertValid() const;

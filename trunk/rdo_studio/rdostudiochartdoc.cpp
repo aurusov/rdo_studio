@@ -312,10 +312,10 @@ bool RDOStudioChartDoc::serieExists( const RDOTracerSerie* serie ) const
 	return res;
 }
 
-void RDOStudioChartDoc::setTitle( const std::string _title )
+void RDOStudioChartDoc::SetTitle( LPCTSTR lpszTitle )
 {
-	title = _title;
-	SetTitle( format( IDS_CHART_TITLE, title.c_str() ).c_str() );
+	title = lpszTitle;
+	CDocument::SetTitle( format( IDS_CHART_TITLE, title.c_str() ).c_str() );
 }
 
 #ifdef _DEBUG
