@@ -1,5 +1,10 @@
 #include "stdafx.h"
 #include "rdostudioframestreectrl.h"
+#include "rdostudiomodel.h"
+#include "rdostudioframedoc.h"
+#include "rdostudioframeview.h"
+#include "rdostudioapp.h"
+#include "rdostudiomainfrm.h"
 #include "resource.h"
 
 using namespace std;
@@ -10,6 +15,7 @@ using namespace std;
 BEGIN_MESSAGE_MAP(RDOStudioFramesTreeCtrl, RDOTreeCtrl)
 	//{{AFX_MSG_MAP(RDOStudioFramesTreeCtrl)
 	ON_WM_CREATE()
+	ON_WM_LBUTTONDBLCLK()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -38,7 +44,7 @@ int RDOStudioFramesTreeCtrl::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	bmp.LoadBitmap( IDB_FRAMESTREECTRL );
 	imageList.Add( &bmp, RGB( 255, 0, 255 ) );
 	SetImageList( &imageList, TVSIL_NORMAL );
-	InsertItem( "Frames", 0, 0 );
+	InsertItem( format( IDS_FRAMES ).c_str(), 0, 0 );
 
 	return 0;
 }
@@ -56,4 +62,23 @@ void RDOStudioFramesTreeCtrl::clear()
 void RDOStudioFramesTreeCtrl::expand()
 {
 	Expand( GetRootItem(), TVE_EXPAND );
+}
+
+void RDOStudioFramesTreeCtrl::OnLButtonDblClk(UINT nFlags, CPoint point)
+{
+	RDOTreeCtrl::OnLButtonDblClk(nFlags, point);
+
+	UINT uFlags;
+	HTREEITEM hitem = HitTest( point, &uFlags );
+
+	if ( hitem && ( TVHT_ONITEM & uFlags ) && hitem != GetRootItem() ) {
+		RDOStudioFrameDoc* doc = reinterpret_cast<RDOStudioFrameDoc*>(GetItemData( hitem ));
+		if ( !doc ) {
+			doc = model->addNewFrameDoc();
+			doc->SetTitle( format( IDS_FRAMENAME, static_cast<LPCTSTR>(GetItemText( hitem )) ).c_str()  );
+			SetItemData( hitem, reinterpret_cast<DWORD>(doc) );
+		} else {
+			studioApp.mainFrame->MDIActivate( doc->getView()->GetParentFrame() );
+		}
+	}
 }

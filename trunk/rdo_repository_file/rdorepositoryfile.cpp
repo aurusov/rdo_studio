@@ -65,7 +65,7 @@ void RDORepositoryFile::newModel()
 {
 	if ( canCloseModel() ) {
 		realCloseModel();
-		modelName   = "model";
+		modelName   = "noname";
 		modelPath   = "";
 		patFileName = modelName;
 		rtpFileName = modelName;

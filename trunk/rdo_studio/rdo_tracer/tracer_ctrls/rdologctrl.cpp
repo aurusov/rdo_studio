@@ -888,9 +888,9 @@ void RDOLogCtrl::setFont( const bool needRedraw )
 	memset( &lf, 0, sizeof(lf) );
 	// The negative is to allow for leading
 	lf.lfHeight    = -MulDiv( logStyle->font->size, ::GetDeviceCaps( GetDC()->m_hDC, LOGPIXELSY ), 72 );
-	lf.lfWeight    = logStyle->theme->style & RDOFS_BOLD ? FW_BOLD : FW_NORMAL;
-	lf.lfItalic    = logStyle->theme->style & RDOFS_ITALIC;
-	lf.lfUnderline = logStyle->theme->style & RDOFS_UNDERLINE;
+	lf.lfWeight    = logStyle->theme->style & rdoStyle::RDOStyleFont::BOLD ? FW_BOLD : FW_NORMAL;
+	lf.lfItalic    = logStyle->theme->style & rdoStyle::RDOStyleFont::ITALIC;
+	lf.lfUnderline = logStyle->theme->style & rdoStyle::RDOStyleFont::UNDERLINE;
 	lf.lfCharSet   = logStyle->font->characterSet;
 	strcpy( lf.lfFaceName, logStyle->font->name.c_str() );
 

@@ -31,14 +31,14 @@ public:
 	COLORREF stringColor;
 	COLORREF operatorColor;
 
-	rdoEditCtrl::RDOFontStyle identifierStyle;
-	rdoEditCtrl::RDOFontStyle keywordStyle;
-	rdoEditCtrl::RDOFontStyle functionsStyle;
-	rdoEditCtrl::RDOFontStyle traceStyle;
-	rdoEditCtrl::RDOFontStyle commentStyle;
-	rdoEditCtrl::RDOFontStyle numberStyle;
-	rdoEditCtrl::RDOFontStyle stringStyle;
-	rdoEditCtrl::RDOFontStyle operatorStyle;
+	rdoStyle::RDOStyleFont::style identifierStyle;
+	rdoStyle::RDOStyleFont::style keywordStyle;
+	rdoStyle::RDOStyleFont::style functionsStyle;
+	rdoStyle::RDOStyleFont::style traceStyle;
+	rdoStyle::RDOStyleFont::style commentStyle;
+	rdoStyle::RDOStyleFont::style numberStyle;
+	rdoStyle::RDOStyleFont::style stringStyle;
+	rdoStyle::RDOStyleFont::style operatorStyle;
 
 	virtual bool styleDefault( const int styleType ) const;
 	virtual bool styleUsing( const int styleType ) const;

@@ -8,6 +8,7 @@
 
 using namespace std;
 using namespace rdoEditCtrl;
+using namespace rdoStyle;
 
 // ----------------------------------------------------------------------------
 // ---------- RDOLogEditTheme
@@ -15,7 +16,7 @@ using namespace rdoEditCtrl;
 RDOFindEditTheme::RDOFindEditTheme(): RDOLogEditTheme()
 {
 	keywordColor = RGB( 0x00, 0x00, 0x00 );
-	keywordStyle = RDOFS_BOLD;
+	keywordStyle = RDOStyleFont::BOLD;
 }
 
 RDOFindEditTheme::~RDOFindEditTheme()
@@ -52,7 +53,7 @@ void RDOFindEditTheme::load( string regPath )
 
 	regPath += "theme";
 	keywordColor = AfxGetApp()->GetProfileInt( regPath.c_str(), "keywordColor", keywordColor );
-	keywordStyle = static_cast<RDOFontStyle>(AfxGetApp()->GetProfileInt( regPath.c_str(), "keywordStyle", keywordStyle ));
+	keywordStyle = static_cast<RDOStyleFont::style>(AfxGetApp()->GetProfileInt( regPath.c_str(), "keywordStyle", keywordStyle ));
 }
 
 void RDOFindEditTheme::save( string regPath ) const
@@ -77,8 +78,8 @@ bool RDOFindEditTheme::styleUsing( const int styleType ) const
 bool RDOFindEditTheme::styleBold( const int styleType ) const
 {
 	switch ( styleType ) {
-		case SCE_FIND_DEFAULT: return defaultStyle & RDOFS_BOLD ? true : false;
-		case SCE_FIND_KEYWORD: return keywordStyle & RDOFS_BOLD ? true : false;
+		case SCE_FIND_DEFAULT: return defaultStyle & RDOStyleFont::BOLD ? true : false;
+		case SCE_FIND_KEYWORD: return keywordStyle & RDOStyleFont::BOLD ? true : false;
 	}
 	return false;
 }
@@ -86,8 +87,8 @@ bool RDOFindEditTheme::styleBold( const int styleType ) const
 bool RDOFindEditTheme::styleItalic( const int styleType ) const
 {
 	switch ( styleType ) {
-		case SCE_FIND_DEFAULT: return defaultStyle & RDOFS_ITALIC ? true : false;
-		case SCE_FIND_KEYWORD: return keywordStyle & RDOFS_ITALIC ? true : false;
+		case SCE_FIND_DEFAULT: return defaultStyle & RDOStyleFont::ITALIC ? true : false;
+		case SCE_FIND_KEYWORD: return keywordStyle & RDOStyleFont::ITALIC ? true : false;
 	}
 	return false;
 }
@@ -113,7 +114,7 @@ RDOFindEditTheme RDOFindEditTheme::getClassicTheme()
 	*static_cast<RDOLogEditTheme*>(&theme) = RDOLogEditTheme::getClassicTheme();
 
 	theme.keywordColor = RGB( 0xFF, 0xFF, 0xFF );
-	theme.keywordStyle = RDOFS_NONE;
+	theme.keywordStyle = RDOStyleFont::NONE;
 
 	return theme;
 }
@@ -124,7 +125,7 @@ RDOFindEditTheme RDOFindEditTheme::getTwilightTheme()
 	*static_cast<RDOLogEditTheme*>(&theme) = RDOLogEditTheme::getTwilightTheme();
 
 	theme.keywordColor = RGB( 0x00, 0xFF, 0xFF );
-	theme.keywordStyle = RDOFS_BOLD;
+	theme.keywordStyle = RDOStyleFont::BOLD;
 
 	return theme;
 }
@@ -135,7 +136,7 @@ RDOFindEditTheme RDOFindEditTheme::getOceanTheme()
 	*static_cast<RDOLogEditTheme*>(&theme) = RDOLogEditTheme::getOceanTheme();
 
 	theme.keywordColor = RGB( 0x00, 0x00, 0x00 );
-	theme.keywordStyle = RDOFS_BOLD;
+	theme.keywordStyle = RDOStyleFont::BOLD;
 
 	return theme;
 }

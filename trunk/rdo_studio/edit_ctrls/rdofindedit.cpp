@@ -8,6 +8,7 @@
 #endif
 
 using namespace rdoEditCtrl;
+using namespace rdoStyle;
 
 static char* wordCharacters = "0123456789_$abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZÀàÁáÂâÃãÄäÅå¨¸ÆæÇçÈèÉéÊêËëÌìÍíÎîÏïÐðÑñÒòÓóÔôÕõÖö×÷ØøÙùÚúÛûÜüÝýÞþßÿ";
 
@@ -55,12 +56,12 @@ void RDOFindEdit::setEditorStyle( RDOFindEditStyle* _style )
 
 	// ----------
 	// Styles
-	sendEditor( SCI_STYLESETBOLD     , SCE_FIND_DEFAULT, theme->defaultStyle & RDOFS_BOLD      );
-	sendEditor( SCI_STYLESETITALIC   , SCE_FIND_DEFAULT, theme->defaultStyle & RDOFS_ITALIC    );
-	sendEditor( SCI_STYLESETUNDERLINE, SCE_FIND_DEFAULT, theme->defaultStyle & RDOFS_UNDERLINE );
-	sendEditor( SCI_STYLESETBOLD     , SCE_FIND_KEYWORD, theme->keywordStyle & RDOFS_BOLD      );
-	sendEditor( SCI_STYLESETITALIC   , SCE_FIND_KEYWORD, theme->keywordStyle & RDOFS_ITALIC    );
-	sendEditor( SCI_STYLESETUNDERLINE, SCE_FIND_KEYWORD, theme->keywordStyle & RDOFS_UNDERLINE );
+	sendEditor( SCI_STYLESETBOLD     , SCE_FIND_DEFAULT, theme->defaultStyle & RDOStyleFont::BOLD      );
+	sendEditor( SCI_STYLESETITALIC   , SCE_FIND_DEFAULT, theme->defaultStyle & RDOStyleFont::ITALIC    );
+	sendEditor( SCI_STYLESETUNDERLINE, SCE_FIND_DEFAULT, theme->defaultStyle & RDOStyleFont::UNDERLINE );
+	sendEditor( SCI_STYLESETBOLD     , SCE_FIND_KEYWORD, theme->keywordStyle & RDOStyleFont::BOLD      );
+	sendEditor( SCI_STYLESETITALIC   , SCE_FIND_KEYWORD, theme->keywordStyle & RDOStyleFont::ITALIC    );
+	sendEditor( SCI_STYLESETUNDERLINE, SCE_FIND_KEYWORD, theme->keywordStyle & RDOStyleFont::UNDERLINE );
 
 	// ----------
 	// Font Name

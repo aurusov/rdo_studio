@@ -2,7 +2,7 @@
 #define RDOBASEEDITSTYLE_H
 #pragma once
 
-#include "rdobasectrlstyle.h"
+#include "../rdostudiostyle.h"
 #include "sci/Scintilla.h"
 
 namespace rdoEditCtrl {
@@ -18,7 +18,7 @@ enum RDOBookmarkStyle {
 	RDOBOOKMARKS_ARROW
 };
 
-class RDOBaseEditTheme
+class RDOBaseEditTheme: public rdoStyle::RDOStyleTheme
 {
 public:
 	RDOBaseEditTheme();
@@ -39,7 +39,7 @@ public:
 	COLORREF bookmarkFgColor;
 	COLORREF bookmarkBgColor;
 
-	RDOFontStyle defaultStyle;
+	rdoStyle::RDOStyleFont::style defaultStyle;
 
 	RDOBookmarkStyle bookmarkStyle;
 
@@ -105,7 +105,7 @@ public:
 // ----------------------------------------------------------------------------
 // ---------- RDOBaseEditStyle
 // ----------------------------------------------------------------------------
-class RDOBaseEditStyle: public RDOBaseCtrlStyle
+class RDOBaseEditStyle: public rdoStyle::RDOStyleWithTheme
 {
 protected:
 	virtual void initTheme();
@@ -124,7 +124,6 @@ public:
 	virtual bool load();
 	virtual bool save() const;
 
-	RDOBaseEditTheme*  theme;
 	RDOBaseEditTab*    tab;
 	RDOBaseEditWindow* window;
 };

@@ -6,12 +6,13 @@
 #endif
 
 using namespace std;
+using namespace rdoStyle;
 using namespace rdoEditCtrl;
 
 // ----------------------------------------------------------------------------
 // ---------- RDOBaseEditTheme
 // ----------------------------------------------------------------------------
-RDOBaseEditTheme::RDOBaseEditTheme()
+RDOBaseEditTheme::RDOBaseEditTheme(): RDOStyleTheme()
 {
 	defaultColor    = RGB( 0x00, 0x00, 0x00 );
 	backgroundColor = RGB( 0xFF, 0xFF, 0xFF );
@@ -21,7 +22,7 @@ RDOBaseEditTheme::RDOBaseEditTheme()
 	bookmarkFgColor  = RGB( 0x00, 0x00, 0x00 );
 	bookmarkBgColor  = RGB( 0x00, 0xFF, 0xFF );
 
-	defaultStyle = RDOFS_NONE;
+	defaultStyle = RDOStyleFont::NONE;
 
 	bookmarkStyle = RDOBOOKMARKS_CIRCLE;
 }
@@ -76,8 +77,8 @@ void RDOBaseEditTheme::load( string regPath )
 	selectionBgColor = AfxGetApp()->GetProfileInt( regPath.c_str(), "selectionBgColor", selectionBgColor );
 	bookmarkFgColor  = AfxGetApp()->GetProfileInt( regPath.c_str(), "bookmarkFgColor", bookmarkFgColor );
 	bookmarkBgColor  = AfxGetApp()->GetProfileInt( regPath.c_str(), "bookmarkBgColor", bookmarkBgColor );
-	defaultStyle     = (RDOFontStyle)AfxGetApp()->GetProfileInt( regPath.c_str(), "defaultStyle", defaultStyle );
-	bookmarkStyle    = (RDOBookmarkStyle)AfxGetApp()->GetProfileInt( regPath.c_str(), "bookmarkStyle", bookmarkStyle );
+	defaultStyle     = static_cast<RDOStyleFont::style>(AfxGetApp()->GetProfileInt( regPath.c_str(), "defaultStyle", defaultStyle ));
+	bookmarkStyle    = static_cast<RDOBookmarkStyle>(AfxGetApp()->GetProfileInt( regPath.c_str(), "bookmarkStyle", bookmarkStyle ));
 }
 
 void RDOBaseEditTheme::save( string regPath ) const
@@ -105,12 +106,12 @@ bool RDOBaseEditTheme::styleUsing( const int styleType ) const
 
 bool RDOBaseEditTheme::styleBold( const int /*styleType*/ ) const
 {
-	return defaultStyle & RDOFS_BOLD ? true : false;
+	return defaultStyle & RDOStyleFont::BOLD ? true : false;
 }
 
 bool RDOBaseEditTheme::styleItalic( const int /*styleType*/ ) const
 {
-	return defaultStyle & RDOFS_ITALIC ? true : false;
+	return defaultStyle & RDOStyleFont::ITALIC ? true : false;
 }
 
 string RDOBaseEditTheme::styleFGColorToHEX( const int /*styleType*/ ) const
@@ -141,7 +142,7 @@ RDOBaseEditTheme RDOBaseEditTheme::getClassicTheme()
 	theme.bookmarkFgColor  = RGB( 0x00, 0x00, 0x00 );
 	theme.bookmarkBgColor  = RGB( 0x80, 0x80, 0x00 );
 
-	theme.defaultStyle = RDOFS_NONE;
+	theme.defaultStyle = RDOStyleFont::NONE;
 
 	theme.bookmarkStyle = RDOBOOKMARKS_CIRCLE;
 
@@ -160,7 +161,7 @@ RDOBaseEditTheme RDOBaseEditTheme::getTwilightTheme()
 	theme.bookmarkFgColor  = RGB( 0x00, 0x00, 0x00 );
 	theme.bookmarkBgColor  = RGB( 0x00, 0x00, 0xFF );
 
-	theme.defaultStyle = RDOFS_NONE;
+	theme.defaultStyle = RDOStyleFont::NONE;
 
 	theme.bookmarkStyle = RDOBOOKMARKS_CIRCLE;
 
@@ -179,7 +180,7 @@ RDOBaseEditTheme RDOBaseEditTheme::getOceanTheme()
 	theme.bookmarkFgColor  = RGB( 0x00, 0x00, 0x00 );
 	theme.bookmarkBgColor  = RGB( 0xBA, 0xCC, 0xFC );
 
-	theme.defaultStyle = RDOFS_NONE;
+	theme.defaultStyle = RDOStyleFont::NONE;
 
 	theme.bookmarkStyle = RDOBOOKMARKS_CIRCLE;
 
@@ -307,8 +308,7 @@ void RDOBaseEditWindow::save( string regPath ) const
 // ---------- RDOBaseEditStyle
 // ----------------------------------------------------------------------------
 RDOBaseEditStyle::RDOBaseEditStyle():
-	RDOBaseCtrlStyle(),
-	theme( NULL ),
+	RDOStyleWithTheme(),
 	tab( NULL ),
 	window( NULL )
 {
@@ -316,7 +316,6 @@ RDOBaseEditStyle::RDOBaseEditStyle():
 
 RDOBaseEditStyle::~RDOBaseEditStyle()
 {
-	if ( theme )  { delete theme;  theme = NULL; };
 	if ( tab )    { delete tab;    tab = NULL; };
 	if ( window ) { delete window; window = NULL; };
 }
@@ -338,8 +337,8 @@ void RDOBaseEditStyle::initWindow()
 
 RDOBaseEditStyle& RDOBaseEditStyle::operator =( const RDOBaseEditStyle& style )
 {
-	RDOBaseCtrlStyle::operator=( style );
-	if ( theme  && style.theme )  *theme  = *style.theme;
+	RDOStyleWithTheme::operator=( style );
+	if ( theme  && style.theme )  *static_cast<RDOBaseEditTheme*>(theme) = *static_cast<RDOBaseEditTheme*>(style.theme);
 	if ( tab    && style.tab )    *tab    = *style.tab;
 	if ( window && style.window ) *window = *style.window;
 
@@ -348,8 +347,8 @@ RDOBaseEditStyle& RDOBaseEditStyle::operator =( const RDOBaseEditStyle& style )
 
 bool RDOBaseEditStyle::operator ==( const RDOBaseEditStyle& style ) const
 {
-	bool flag = RDOBaseCtrlStyle::operator==( style );
-	if ( theme  && style.theme  && flag ) flag &= *theme  == *style.theme;
+	bool flag = RDOStyleWithTheme::operator==( style );
+	if ( theme  && style.theme  && flag ) flag &= *static_cast<RDOBaseEditTheme*>(theme) == *static_cast<RDOBaseEditTheme*>(style.theme);
 	if ( tab    && style.tab    && flag ) flag &= *tab    == *style.tab;
 	if ( window && style.window && flag ) flag &= *window == *style.window;
 	return flag;
@@ -362,16 +361,14 @@ bool RDOBaseEditStyle::operator !=( const RDOBaseEditStyle& style ) const
 
 void RDOBaseEditStyle::init( const string& _regPath )
 {
-	RDOBaseCtrlStyle::init( _regPath );
-	initTheme();
+	RDOStyleWithTheme::init( _regPath );
 	initTab();
 	initWindow();
 }
 
 bool RDOBaseEditStyle::load()
 {
-	if ( RDOBaseCtrlStyle::load() ) {
-		if ( theme )  theme->load( regPath );
+	if ( RDOStyleWithTheme::load() ) {
 		if ( tab )    tab->load( regPath );
 		if ( window ) window->load( regPath );
 		return true;
@@ -381,8 +378,7 @@ bool RDOBaseEditStyle::load()
 
 bool RDOBaseEditStyle::save() const
 {
-	if ( RDOBaseCtrlStyle::save() ) {
-		if ( theme )  theme->save( regPath );
+	if ( RDOStyleWithTheme::save() ) {
 		if ( tab )    tab->save( regPath );
 		if ( window ) window->save( regPath );
 		return true;

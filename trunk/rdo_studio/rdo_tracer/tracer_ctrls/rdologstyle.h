@@ -2,7 +2,7 @@
 #define RDOLOGSTYLE_H
 #pragma once
 
-#include "../../edit_ctrls/rdobasectrlstyle.h"
+#include "../../rdostudiostyle.h"
 
 namespace rdoTracerLog {
 
@@ -42,7 +42,7 @@ public:
 	virtual void load( std::string regPath );
 	virtual void save( std::string regPath ) const;
 
-	rdoEditCtrl::RDOFontStyle style;
+	rdoStyle::RDOStyleFont::style style;
 
 	RDOLogColorPair defaultColor;
 };
@@ -70,7 +70,7 @@ public:
 // ----------------------------------------------------------------------------
 // ---------- RDOLogStyle
 // ----------------------------------------------------------------------------
-class RDOLogStyle: public rdoEditCtrl::RDOBaseCtrlStyle
+class RDOLogStyle: public rdoStyle::RDOStyle
 {
 protected:
 	virtual void initTheme();

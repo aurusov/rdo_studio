@@ -1330,6 +1330,9 @@ BEGIN
     IDS_COLORSTYLE_EDITOR_THEME_CLASSIC "Classic"
     IDS_COLORSTYLE_EDITOR_THEME_TWILIGHT "Twilight"
     IDS_COLORSTYLE_EDITOR_THEME_OCEAN "Ocean"
+    IDS_FRAMES              "Frames"
+    IDS_FRAMENAME           "frame: %s"
+    IDS_MODELNAME           "model: %s"
 END
 
 #endif    // Russian resources

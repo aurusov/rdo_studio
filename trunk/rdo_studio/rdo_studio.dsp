@@ -295,6 +295,10 @@ SOURCE=.\rdostudiooutput.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\rdostudiostyle.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdostudioworkspace.cpp
 
 !IF  "$(CFG)" == "rdo_studio - Win32 Release"
@@ -397,6 +401,10 @@ SOURCE=.\rdostudiooptions.h
 # Begin Source File
 
 SOURCE=.\rdostudiooutput.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdostudiostyle.h
 # End Source File
 # Begin Source File
 
@@ -660,10 +668,6 @@ SOURCE=.\rdo_tracer\tracer_ctrls\rdotracertreeitem.h
 # PROP Default_Filter ""
 # Begin Source File
 
-SOURCE=.\edit_ctrls\rdobasectrlstyle.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\edit_ctrls\rdobaseedit.cpp
 # End Source File
 # Begin Source File
@@ -698,10 +702,6 @@ SOURCE=.\edit_ctrls\rdologeditstyle.cpp
 # Begin Group "Edit Ctrls Headers Files"
 
 # PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=.\edit_ctrls\rdobasectrlstyle.h
-# End Source File
 # Begin Source File
 
 SOURCE=.\edit_ctrls\rdobaseedit.h

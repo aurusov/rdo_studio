@@ -439,6 +439,9 @@
 #define IDS_COLORSTYLE_EDITOR_THEME_CLASSIC 40165
 #define IDS_COLORSTYLE_EDITOR_THEME_TWILIGHT 40166
 #define IDS_COLORSTYLE_EDITOR_THEME_OCEAN 40167
+#define IDS_FRAMES                      40168
+#define IDS_FRAMENAME                   40169
+#define IDS_MODELNAME                   40170
 #define ID_ABOUT_BMSTU                  40910
 #define ID_ABOUT_TEL                    40911
 #define ID_ABOUT_OKBUTTON               40912

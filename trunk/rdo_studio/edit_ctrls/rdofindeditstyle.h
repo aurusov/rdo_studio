@@ -24,7 +24,7 @@ public:
 
 	COLORREF keywordColor;
 
-	RDOFontStyle keywordStyle;
+	rdoStyle::RDOStyleFont::style keywordStyle;
 
 	virtual bool styleDefault( const int styleType ) const;
 	virtual bool styleUsing( const int styleType ) const;

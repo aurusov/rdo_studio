@@ -637,6 +637,11 @@ void RDOStudioModel::addNewFrame()
 	addNewFrameEvent.SetEvent();
 }
 
+RDOStudioFrameDoc* RDOStudioModel::addNewFrameDoc() const
+{
+	return static_cast<RDOStudioFrameDoc*>(frameDocTemplate->OpenDocumentFile( NULL ));
+}
+
 void RDOStudioModel::updateStyleOfAllModel() const
 {
 	POSITION pos = modelDocTemplate->GetFirstDocPosition();

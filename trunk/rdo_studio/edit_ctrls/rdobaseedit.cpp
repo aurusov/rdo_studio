@@ -11,6 +11,7 @@
 
 using namespace std;
 using namespace rdoEditCtrl;
+using namespace rdoStyle;
 
 // ----------------------------------------------------------------------------
 // ---------- RDOBaseEdit
@@ -257,19 +258,20 @@ void RDOBaseEdit::setEditorStyle( RDOBaseEditStyle* _style )
 
 	// ----------
 	// Colors
-	sendEditor( SCI_STYLESETBACK, STYLE_DEFAULT, style->theme->defaultColor );
-	sendEditor( SCI_STYLESETBACK, STYLE_DEFAULT, style->theme->backgroundColor );
-	sendEditor( SCI_STYLESETFORE, SCE_TEXT_DEFAULT, style->theme->defaultColor );
-	sendEditor( SCI_STYLESETBACK, SCE_TEXT_DEFAULT, style->theme->backgroundColor );
+	RDOBaseEditTheme* theme = static_cast<RDOBaseEditTheme*>(style->theme);
+	sendEditor( SCI_STYLESETBACK, STYLE_DEFAULT, theme->defaultColor );
+	sendEditor( SCI_STYLESETBACK, STYLE_DEFAULT, theme->backgroundColor );
+	sendEditor( SCI_STYLESETFORE, SCE_TEXT_DEFAULT, theme->defaultColor );
+	sendEditor( SCI_STYLESETBACK, SCE_TEXT_DEFAULT, theme->backgroundColor );
 
 	// ----------
 	// Styles
-	sendEditor( SCI_STYLESETBOLD     , STYLE_DEFAULT, style->theme->defaultStyle & RDOFS_BOLD      );
-	sendEditor( SCI_STYLESETITALIC   , STYLE_DEFAULT, style->theme->defaultStyle & RDOFS_ITALIC    );
-	sendEditor( SCI_STYLESETUNDERLINE, STYLE_DEFAULT, style->theme->defaultStyle & RDOFS_UNDERLINE );
-	sendEditor( SCI_STYLESETBOLD     , SCE_TEXT_DEFAULT, style->theme->defaultStyle & RDOFS_BOLD      );
-	sendEditor( SCI_STYLESETITALIC   , SCE_TEXT_DEFAULT, style->theme->defaultStyle & RDOFS_ITALIC    );
-	sendEditor( SCI_STYLESETUNDERLINE, SCE_TEXT_DEFAULT, style->theme->defaultStyle & RDOFS_UNDERLINE );
+	sendEditor( SCI_STYLESETBOLD     , STYLE_DEFAULT, theme->defaultStyle & RDOStyleFont::BOLD      );
+	sendEditor( SCI_STYLESETITALIC   , STYLE_DEFAULT, theme->defaultStyle & RDOStyleFont::ITALIC    );
+	sendEditor( SCI_STYLESETUNDERLINE, STYLE_DEFAULT, theme->defaultStyle & RDOStyleFont::UNDERLINE );
+	sendEditor( SCI_STYLESETBOLD     , SCE_TEXT_DEFAULT, theme->defaultStyle & RDOStyleFont::BOLD      );
+	sendEditor( SCI_STYLESETITALIC   , SCE_TEXT_DEFAULT, theme->defaultStyle & RDOStyleFont::ITALIC    );
+	sendEditor( SCI_STYLESETUNDERLINE, SCE_TEXT_DEFAULT, theme->defaultStyle & RDOStyleFont::UNDERLINE );
 
 	// ----------
 	// Font Name
@@ -294,15 +296,15 @@ void RDOBaseEdit::setEditorStyle( RDOBaseEditStyle* _style )
 
 	// ----------
 	// Caret
-	sendEditor( SCI_SETCARETFORE, style->theme->caretColor );
-	sendEditor( SCI_SETSELBACK, true, style->theme->selectionBgColor );
+	sendEditor( SCI_SETCARETFORE, theme->caretColor );
+	sendEditor( SCI_SETSELBACK, true, theme->selectionBgColor );
 	sendEditor( SCI_SETCARETWIDTH, 1 );
 
 	// ----------
 	// Bookmark
-	COLORREF bookmarkFgColor = style->theme->bookmarkFgColor;
-	COLORREF bookmarkBgColor = style->theme->bookmarkBgColor;
-	switch ( style->theme->bookmarkStyle ) {
+	COLORREF bookmarkFgColor = theme->bookmarkFgColor;
+	COLORREF bookmarkBgColor = theme->bookmarkBgColor;
+	switch ( theme->bookmarkStyle ) {
 		case RDOBOOKMARKS_NONE     : defineMarker( sci_MARKER_BOOKMARK, SC_MARK_EMPTY    , bookmarkFgColor, bookmarkBgColor ); break;
 		case RDOBOOKMARKS_CIRCLE   : defineMarker( sci_MARKER_BOOKMARK, SC_MARK_CIRCLE   , bookmarkFgColor, bookmarkBgColor ); break;
 		case RDOBOOKMARKS_RECT     : defineMarker( sci_MARKER_BOOKMARK, SC_MARK_SMALLRECT, bookmarkFgColor, bookmarkBgColor ); break;
@@ -925,16 +927,18 @@ void RDOBaseEdit::saveAsRTF( CFile& file, int start, int end ) const
 	saveStr += format( RTF_FONTDEF, 0, style->font->characterSet, style->font->name.c_str() );
 	strncpy( *colors, "#000000", MAX_COLORDEF );
 
+	RDOBaseEditTheme* theme = static_cast<RDOBaseEditTheme*>(style->theme);
+
 	for ( int istyle = 0; istyle <= STYLE_DEFAULT; istyle++ ) {
-		if ( style->theme->styleUsing( istyle ) ) {
+		if ( theme->styleUsing( istyle ) ) {
 			sprintf( lastStyle, RTF_SETFONTFACE "%d", fontCount-1 );
 			sprintf( lastStyle + strlen(lastStyle), RTF_SETFONTSIZE "%d", style->font->size * 2 );
-			if ( style->theme->styleDefault( istyle ) ) {
-				strncpy( colors[colorCount++], style->theme->styleBGColorToHEX( istyle ).c_str(), MAX_COLORDEF );
+			if ( theme->styleDefault( istyle ) ) {
+				strncpy( colors[colorCount++], theme->styleBGColorToHEX( istyle ).c_str(), MAX_COLORDEF );
 			}
-			strncpy( colors[colorCount++], style->theme->styleFGColorToHEX( istyle ).c_str(), MAX_COLORDEF );
-			bool bold   = style->theme->styleBold( istyle );
-			bool italic = style->theme->styleItalic( istyle );
+			strncpy( colors[colorCount++], theme->styleFGColorToHEX( istyle ).c_str(), MAX_COLORDEF );
+			bool bold   = theme->styleBold( istyle );
+			bool italic = theme->styleItalic( istyle );
 			sprintf( lastStyle + strlen(lastStyle), RTF_SETCOLOR "%d", colorCount-1 );
 			sprintf( lastStyle + strlen(lastStyle), RTF_SETBACKGROUND "%d", 1 );
 			strcat( lastStyle, bold ? RTF_BOLD_ON : RTF_BOLD_OFF );

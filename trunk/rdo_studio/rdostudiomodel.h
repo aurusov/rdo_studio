@@ -80,6 +80,7 @@ public:
 	double getModelTime() const;
 
 	RDOStudioModelDoc* getModelDoc() const;
+	RDOStudioFrameDoc* addNewFrameDoc() const;
 	RDOStudioFrameDoc* getFrameDoc() const;
 	void updateModify() const;
 

@@ -134,6 +134,9 @@ BOOL RDOStudioApp::InitInstance()
 
 	setupFileAssociation();
 
+	mainFrame->ShowWindow(m_nCmdShow);
+	mainFrame->UpdateWindow();
+
 	string fileName( m_lpCmdLine );
 	if ( !fileName.empty() ) {
 		int pos = fileName.find_first_of( '"' );
@@ -152,9 +155,6 @@ BOOL RDOStudioApp::InitInstance()
 	} else {
 		OnFileNew();
 	}
-
-	mainFrame->ShowWindow(m_nCmdShow);
-	mainFrame->UpdateWindow();
 
 	initInstance = true;
 

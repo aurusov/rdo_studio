@@ -114,14 +114,14 @@ private:
 		STYLEObject* object;
 		std::string name;
 
-		rdoEditCtrl::RDOFontStyle& font_style;
+		rdoStyle::RDOStyleFont::style& font_style;
 
 		COLORREF& fg_color;
 		COLORREF& bg_color;
 		COLORREF& fg_disable_color;
 		COLORREF& bg_disable_color;
 
-		STYLEProperty( STYLEObject* _object, std::string _name, rdoEditCtrl::RDOFontStyle& _font_style, COLORREF& _fg_color, COLORREF& _bg_color, COLORREF& _fg_disable_color = null_fg_color, COLORREF& _bg_disable_color = null_bg_color ): object( _object ), name( _name ), font_style( _font_style ), fg_color( _fg_color ), bg_color( _bg_color ), fg_disable_color( _fg_disable_color ), bg_disable_color( _bg_disable_color ) {};
+		STYLEProperty( STYLEObject* _object, std::string _name, rdoStyle::RDOStyleFont::style& _font_style, COLORREF& _fg_color, COLORREF& _bg_color, COLORREF& _fg_disable_color = null_fg_color, COLORREF& _bg_disable_color = null_bg_color ): object( _object ), name( _name ), font_style( _font_style ), fg_color( _fg_color ), bg_color( _bg_color ), fg_disable_color( _fg_disable_color ), bg_disable_color( _bg_disable_color ) {};
 	};
 
 	class STYLEObject {
@@ -182,7 +182,7 @@ private:
 	bool        use_all_bg_color;
 	void updatePropOfAllObject();
 
-	rdoEditCtrl::RDOFontStyle            null_font_style;
+	rdoStyle::RDOStyleFont::style        null_font_style;
 	static COLORREF                      null_fg_color;
 	static COLORREF                      null_bg_color;
 	static bool                          null_wordwrap;

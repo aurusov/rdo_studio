@@ -116,7 +116,7 @@ void RDOStudioModelDoc::setName( const string& str )
 {
 	name = str;
 	trim( name );
-	SetTitle( name.c_str() );
+	SetTitle( format( IDS_MODELNAME, name.c_str() ).c_str()  );
 }
 
 bool RDOStudioModelDoc::isModify()
