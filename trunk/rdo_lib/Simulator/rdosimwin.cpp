@@ -30,6 +30,24 @@ static char THIS_FILE[] = __FILE__;
 namespace RDOSimulatorNS
 {
 
+class RDORuntimeTracer: public RDOTrace, public RDOEndL
+{
+	LPVOID pParam;
+  	TracerCallBack tracerCallBack;
+	stringstream stream;
+public:
+   ostream &getOStream() { return stream; }
+   RDOEndL& getEOL() { return *this; }
+	void onEndl()
+	{
+		tracerCallBack(&stream.str(), pParam);
+		stream.str("");
+	}
+	RDORuntimeTracer(TracerCallBack _tracerCallBack, LPVOID _pParam):
+		tracerCallBack(_tracerCallBack), pParam(_pParam) { isNullTracer = false; }
+};
+
+
 const RDOFrame* RdoSimulator::getFrame()
 {
 	return frame;
@@ -65,6 +83,12 @@ void frameCallBack(rdoRuntime::RDOConfig *config, void *param)
 	}
 }
 
+void tracerCallBack(string *newString, void *param)
+{
+	RdoSimulator *simulator = (RdoSimulator *)param;
+	kernel.debug(newString->c_str());
+	kernel.notifyString(RDOKernel.traceString, newString->c_str());
+}
 
 RdoSimulator::RdoSimulator(): 
 	runtime(NULL), 
@@ -90,7 +114,8 @@ UINT RunningThreadControllingFunction( LPVOID pParam )
 		if(simulator->parser->smr->traceFileName == NULL) 
 			tracer = new RDOTrace();
 		else
-			tracer = new RDOTrace(*simulator->parser->smr->traceFileName + ".trc");
+			tracer = new RDORuntimeTracer(tracerCallBack, pParam);
+//			tracer = new RDOTrace(*simulator->parser->smr->traceFileName + ".trc");
 //			tracer = new RDOTrace("trace.trc");
 
 		resulter;
@@ -127,7 +152,7 @@ UINT RunningThreadControllingFunction( LPVOID pParam )
 ////////////////////////////////////////////////////////////////
 
 
-	simulator->runtime->tracerCallBack = NULL;
+	simulator->runtime->tracerCallBack = tracerCallBack;
 	simulator->runtime->param = pParam;
 	simulator->runtime->frameCallBack = frameCallBack;
 

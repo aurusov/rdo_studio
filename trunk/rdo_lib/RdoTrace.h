@@ -14,6 +14,12 @@ class RDOTraceableObject;
 class TreeRootTrace;
 class RDOPokazTrace;
 
+class RDOEndL
+{
+public:
+	virtual void onEndl() {}
+};
+
 class RDOTrace
 {
 friend RDOSimulatorTrace;
@@ -22,6 +28,10 @@ friend RDOResourceTrace;
    std::ofstream out;
 	bool canWriteToStream;
    virtual std::ostream &getOStream() { return out; }
+	RDOEndL rdoEndL;
+
+protected:
+   virtual RDOEndL& getEOL() { return rdoEndL; }
 	bool isNullTracer;
 
 public:

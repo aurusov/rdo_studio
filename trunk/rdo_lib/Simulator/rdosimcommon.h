@@ -8,6 +8,21 @@
 
 using namespace std;
 
+namespace rdoModelObjects {
+struct RDOSMRFileInfo
+{
+	string model_name;
+	string resource_file;
+	string oprIev_file;
+	string frame_file;
+	string statistic_file;
+	string results_file;
+	string trace_file;
+};
+typedef enum { PAT, RTP, RSS, OPR, FRM, FUN, DPT, SMR, PMD, PMV, TRC } RDOFileType;
+}
+
+
 namespace RDOSimulatorNS
 {
 
@@ -18,26 +33,12 @@ enum ShowMode
 	SM_Animation
 };
 
-enum FileToParse
-{
-	RTP_FILE,
-	RSS_FILE,
-	FUN_FILE,
-	PAT_FILE,
-	OPR_FILE,
-	DPT_FILE,
-	PMD_FILE,
-	FRM_FILE,
-	SMR1_FILE,
-	SMR2_FILE
-};
-
 struct RDOSyntaxError
 {
 	string message;
 	int lineNo;
-	FileToParse file;
-	RDOSyntaxError(string _message, int _lineNo, FileToParse _file)
+	rdoModelObjects::RDOFileType file;
+	RDOSyntaxError(string _message, int _lineNo, rdoModelObjects::RDOFileType _file)
 		: message(_message), lineNo(_lineNo), file(_file)	{}
 };
 

@@ -123,7 +123,7 @@ void RDOParser::parseRTP(istream* arg_yyin, ostream* arg_yyout)
 {
 	resourceTypeCounter = 1;
 	rdoLexer lexer(arg_yyin, arg_yyout);
-	fileToParse = RDOSimulatorNS::RTP_FILE;
+	fileToParse = RTP_FILE;
 	out = arg_yyout;
 	if(currParser != NULL)
 		throw RDOSyntaxException("Internal error 0002");
@@ -137,7 +137,7 @@ void RDOParser::parseRSS(istream* arg_yyin, ostream* arg_yyout)
 {
 	resourceCounter = 0;
 	rdoLexer lexer(arg_yyin, arg_yyout);
-	fileToParse = RDOSimulatorNS::RSS_FILE;
+	fileToParse = RSS_FILE;
 	out = arg_yyout;
 	if(currParser != NULL)
 		throw RDOSyntaxException("Internal error 0002");
@@ -150,7 +150,7 @@ void RDOParser::parseRSS(istream* arg_yyin, ostream* arg_yyout)
 void RDOParser::parseFUN(istream* arg_yyin, ostream* arg_yyout) 
 {
 	rdoLexer lexer(arg_yyin, arg_yyout);
-	fileToParse = RDOSimulatorNS::FUN_FILE;
+	fileToParse = FUN_FILE;
 	out = arg_yyout;
 	if(currParser != NULL)
 		throw RDOSyntaxException("Internal error 0002");
@@ -164,7 +164,7 @@ void RDOParser::parseFUN(istream* arg_yyin, ostream* arg_yyout)
 void RDOParser::parsePAT(istream* arg_yyin, ostream* arg_yyout) 
 {
 	rdoLexer lexer(arg_yyin, arg_yyout);
-	fileToParse = RDOSimulatorNS::PAT_FILE;
+	fileToParse = PAT_FILE;
 	out = arg_yyout;
 	if(currParser != NULL)
 		throw RDOSyntaxException("Internal error 0002");
@@ -177,7 +177,7 @@ void RDOParser::parsePAT(istream* arg_yyin, ostream* arg_yyout)
 void RDOParser::parseOPR(istream* arg_yyin, ostream* arg_yyout) 
 {
 	rdoLexer lexer(arg_yyin, arg_yyout);
-	fileToParse = RDOSimulatorNS::OPR_FILE;
+	fileToParse = OPR_FILE;
 	out = arg_yyout;
 	if(currParser != NULL)
 		throw RDOSyntaxException("Internal error 0030");
@@ -190,7 +190,7 @@ void RDOParser::parseOPR(istream* arg_yyin, ostream* arg_yyout)
 void RDOParser::parseDPT(istream* arg_yyin, ostream* arg_yyout) 
 {
 	rdoLexer lexer(arg_yyin, arg_yyout);
-	fileToParse = RDOSimulatorNS::DPT_FILE;
+	fileToParse = DPT_FILE;
 	out = arg_yyout;
 	if(currParser != NULL)
 		throw RDOSyntaxException("Internal error 0030");
@@ -203,7 +203,7 @@ void RDOParser::parseDPT(istream* arg_yyin, ostream* arg_yyout)
 void RDOParser::parsePMD(istream* arg_yyin, ostream* arg_yyout) 
 {
 	rdoLexer lexer(arg_yyin, arg_yyout);
-	fileToParse = RDOSimulatorNS::PMD_FILE;
+	fileToParse = PMD_FILE;
 	out = arg_yyout;
 	if(currParser != NULL)
 		throw RDOSyntaxException("Internal error 0031");
@@ -216,7 +216,7 @@ void RDOParser::parsePMD(istream* arg_yyin, ostream* arg_yyout)
 void RDOParser::parseFRM(istream* arg_yyin, ostream* arg_yyout) 
 {
 	rdoLexer lexer(arg_yyin, arg_yyout);
-	fileToParse = RDOSimulatorNS::FRM_FILE;
+	fileToParse = FRM_FILE;
 	out = arg_yyout;
 	if(currParser != NULL)
 		throw RDOSyntaxException("Internal error 0032");
@@ -229,7 +229,7 @@ void RDOParser::parseFRM(istream* arg_yyin, ostream* arg_yyout)
 void RDOParser::parseSMR1(istream* arg_yyin, ostream* arg_yyout) 
 {
 	rdoLexer lexer(arg_yyin, arg_yyout);
-	fileToParse = RDOSimulatorNS::SMR1_FILE;
+	fileToParse = SMR1_FILE;
 	out = arg_yyout;
 	if(currParser != NULL)
 		throw RDOSyntaxException("Internal error 0032");
@@ -249,7 +249,7 @@ void RDOParser::parseSMR1(istream* arg_yyin, ostream* arg_yyout)
 void RDOParser::parseSMR2(istream* arg_yyin, ostream* arg_yyout) 
 {
 	rdoLexer lexer(arg_yyin, arg_yyout);
-	fileToParse = RDOSimulatorNS::SMR2_FILE;
+	fileToParse = SMR2_FILE;
 	out = arg_yyout;
 	if(currParser != NULL)
 		throw RDOSyntaxException("Internal error 0033");
@@ -261,13 +261,21 @@ void RDOParser::parseSMR2(istream* arg_yyin, ostream* arg_yyout)
 
 void RDOParser::error( const char *mes ) 
 {
-	errors.push_back(RDOSimulatorNS::RDOSyntaxError(mes, rdoLineno(), fileToParse));
+	rdoModelObjects::RDOFileType ft = rdoModelObjects::PAT;
+	switch(fileToParse)
+	{
+	case RTP_FILE: ft = rdoModelObjects::RTP; break;
+	case RSS_FILE: ft = rdoModelObjects::RSS; break;
+	case FUN_FILE: ft = rdoModelObjects::FUN; break;
+	case PAT_FILE: ft = rdoModelObjects::PAT; break;
+	case OPR_FILE: ft = rdoModelObjects::OPR; break;
+	case DPT_FILE: ft = rdoModelObjects::DPT; break;
+	case PMD_FILE: ft = rdoModelObjects::PMD; break;
+	case SMR1_FILE:
+	case SMR2_FILE: ft = rdoModelObjects::SMR; break;
+	}
+	errors.push_back(RDOSimulatorNS::RDOSyntaxError(mes, rdoLineno(), ft));
 	throw rdoParse::RDOSyntaxException("");
-/*
-	ostringstream str;
-	str << mes << " in " << rdoLineno() << " string, near symbol: \"" << rdoYYText() << "\""; 
-	throw rdoParse::RDOSyntaxException(str.str().c_str());
-*/
 }
 
 int RDOParser::lex(void)
@@ -288,34 +296,34 @@ void RDOParser::setYylval(int val)
 {
 	switch(fileToParse)
 	{
-	case RDOSimulatorNS::RTP_FILE:
+	case RTP_FILE:
 		rtplval = val;
 		break;
-	case RDOSimulatorNS::RSS_FILE:
+	case RSS_FILE:
 		rsslval = val;
 		break;
-	case RDOSimulatorNS::FUN_FILE:
+	case FUN_FILE:
 		funlval = val;
 		break;
-	case RDOSimulatorNS::PAT_FILE:
+	case PAT_FILE:
 		patlval = val;
 		break;
-	case RDOSimulatorNS::OPR_FILE:
+	case OPR_FILE:
 		oprlval = val;
 		break;
-	case RDOSimulatorNS::DPT_FILE:
+	case DPT_FILE:
 		dptlval = val;
 		break;
-	case RDOSimulatorNS::PMD_FILE:
+	case PMD_FILE:
 		pmdlval = val;
 		break;
-	case RDOSimulatorNS::FRM_FILE:
+	case FRM_FILE:
 		frmlval = val;
 		break;
-	case RDOSimulatorNS::SMR1_FILE:
+	case SMR1_FILE:
 		smr1lval = val;
 		break;
-	case RDOSimulatorNS::SMR2_FILE:
+	case SMR2_FILE:
 		smr2lval = val;
 		break;
 	default:

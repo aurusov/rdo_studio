@@ -41,11 +41,25 @@ struct RDOSMR1OkException: public RDOException
    RDOSMR1OkException(const char *str): RDOException(str) {}
 };
 
+enum FileToParse
+{
+	RTP_FILE,
+	RSS_FILE,
+	FUN_FILE,
+	PAT_FILE,
+	OPR_FILE,
+	DPT_FILE,
+	PMD_FILE,
+	FRM_FILE,
+	SMR1_FILE,
+	SMR2_FILE
+};
+
 class RDOParser
 {
 	ostream* out;
 public:
-	RDOSimulatorNS::FileToParse fileToParse;
+	FileToParse fileToParse;
 
    vector<string *> allRTPNames;
    vector<double *> allRTPDoubles;

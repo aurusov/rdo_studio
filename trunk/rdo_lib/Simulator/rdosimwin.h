@@ -12,20 +12,6 @@
 
 using namespace std;
 
-namespace rdoModelObjects {
-struct RDOSMRFileInfo
-{
-	string model_name;
-	string resource_file;
-	string oprIev_file;
-	string frame_file;
-	string statistic_file;
-	string results_file;
-	string trace_file;
-};
-typedef enum { PAT, RTP, RSS, OPR, FRM, FUN, DPT, SMR, PMD, PMV, TRC } RDOFileType;
-}
-
 namespace rdoRuntime {
 	class RDORuntime;
 	class RDOResult;
@@ -68,6 +54,7 @@ public:
 	
 	friend UINT RunningThreadControllingFunction( LPVOID pParam );
 	friend void frameCallBack(rdoRuntime::RDOConfig *config, void *param);
+	friend void tracerCallBack(string *newString, void *param);
 };
 
 } // namespace RDOSimulatorNS
