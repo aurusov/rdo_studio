@@ -35,53 +35,51 @@ string str;
 
 UINT RunningThreadControllingFunction( LPVOID pParam )
 {
-	RDOTracerFileReader* file_reader = (RDOTracerFileReader*)pParam;
-
-	file_reader->trace_file = new ifstream;
-	if ( !file_reader->trace_file )
+	trace_reader.trace_file = new ifstream;
+	if ( !trace_reader.trace_file )
 		return 1;
 
-	file_reader->trace_file->open( file_reader->file_name.c_str() );
+	trace_reader.trace_file->open( trace_reader.file_name.c_str() );
 
-	file_reader->structure.clear();
+	trace_reader.structure.clear();
 	
 	do {
-		*(file_reader->trace_file) >> str;
-	} while( str != "Model_name" && !file_reader->trace_file->eof() );
-	*(file_reader->trace_file) >> str;
-	*(file_reader->trace_file) >> file_reader->model_name;
-	rdoTracerApp.mainFrame->setModelName( file_reader->model_name );
+		*(trace_reader.trace_file) >> str;
+	} while( str != "Model_name" && !trace_reader.trace_file->eof() );
+	*(trace_reader.trace_file) >> str;
+	*(trace_reader.trace_file) >> trace_reader.model_name;
+	rdoTracerApp.mainFrame->setModelName( trace_reader.model_name );
 
 	do {
-		*(file_reader->trace_file) >> str;
-	} while( str != "$Resource_type" && !file_reader->trace_file->eof() );
+		*(trace_reader.trace_file) >> str;
+	} while( str != "$Resource_type" && !trace_reader.trace_file->eof() );
 
 	do {
-		file_reader->structure << str << " ";
-		*(file_reader->trace_file) >> str;
-	} while ( str != "$Tracing" && !file_reader->trace_file->eof() );
+		trace_reader.structure << str << " ";
+		*(trace_reader.trace_file) >> str;
+	} while ( str != "$Tracing" && !trace_reader.trace_file->eof() );
 
-	file_reader->getNextLine();
+	trace_reader.getNextLine();
 
 	tracer->beforeModelStartNotify();
 
-	file_reader->tracing = true;
+	trace_reader.tracing = true;
 
-	while ( !file_reader->trace_file->eof() ) {
-		tracer->traceStringNotify( file_reader->getNextLine() );
-		if ( rdoTracerApp.mainFrame->getShowMode() != SM_NoShow )
-			::Sleep( file_reader->delay );
+	while ( !trace_reader.trace_file->eof() ) {
+		tracer->traceStringNotify( trace_reader.getNextLine() );
+		if ( rdoTracerApp.mainFrame->getShowMode() != SM_NoShow && !trace_reader.trace_file->eof() )
+			::Sleep( trace_reader.delay );
 	}
 
-	file_reader->th = NULL;
+	trace_reader.th = NULL;
 
-	if ( file_reader->trace_file->is_open() ) {
-		file_reader->trace_file->close();
+	if ( trace_reader.trace_file->is_open() ) {
+		trace_reader.trace_file->close();
 	}
-	delete file_reader->trace_file;
-	file_reader->trace_file = NULL;
+	delete trace_reader.trace_file;
+	trace_reader.trace_file = NULL;
 
-	file_reader->tracing = false;
+	trace_reader.tracing = false;
 
 	tracer->modelStoppedNotify();
 
@@ -111,7 +109,7 @@ void RDOTracerFileReader::startTrace()
 	file_name = dlg.GetPathName();
 	rdoTracerApp.mainFrame->getTab()->deleteAllItems();
 
-	th = AfxBeginThread(RunningThreadControllingFunction, (LPVOID)this);
+	th = AfxBeginThread( RunningThreadControllingFunction, (LPVOID)NULL );
 }
 
 void RDOTracerFileReader::stopTrace()
