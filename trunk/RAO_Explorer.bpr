@@ -26,7 +26,7 @@
     <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
     <RELEASELIBPATH value="$(BCB)\lib\release"/>
     <LINKER value="ilink32"/>
-    <USERDEFINES value="_DEBUG"/>
+    <USERDEFINES value=""/>
     <SYSDEFINES value="NO_STRICT"/>
     <MAINSOURCE value="RAO_Explorer.cpp"/>
     <INCLUDEPATH value="C:\CBuilder5\Projects;$(BCB)\include;$(BCB)\include\vcl"/>
@@ -36,13 +36,13 @@
   </MACROS>
   <OPTIONS>
     <IDLCFLAGS value="-IC:\CBuilder5\Projects -I$(BCB)\include -I$(BCB)\include\vcl -src_suffix 
-      cpp -D_DEBUG -boa"/>
-    <CFLAG1 value="-Od -H=j:\CBUILD~1\lib\vcl60.csm -Hc -Vx -Ve -X- -r- -a8 -b- -k -y -v -vi- 
-      -c -tW -tWM"/>
-    <PFLAGS value="-$Y+ -$W -$O- -$A8 -v -JPHNE -M"/>
+      cpp -boa"/>
+    <CFLAG1 value="-O2 -H=&quot;C:\Program Files\Borland\CBuilder6\Lib\vcl60.csm&quot; -Hc -Vx -Ve -X- 
+      -a8 -b- -k- -vi -c -tW -tWM"/>
+    <PFLAGS value="-$Y- -$L- -$D- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
-    <AFLAGS value="/mx /w2 /zi"/>
-    <LFLAGS value="-D&quot;&quot; -aa -Tpe -x -Gn -v"/>
+    <AFLAGS value="/mx /w2 /zn"/>
+    <LFLAGS value="-D&quot;&quot; -aa -Tpe -x -Gn"/>
     <OTHERFILES value=""/>
   </OPTIONS>
   <LINKER>
