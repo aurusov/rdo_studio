@@ -384,7 +384,8 @@ bool RDOPMDWatchValue::checkResourceErased(RDOResource *res)
 	if(logicCalc->calcValueBase(runtime))
 	{
 		currValue = arithmCalc->calcValueBase(runtime);
-		runtime->getTracer()->writePokaz(runtime, this);
+		tracePokaz();
+//		runtime->getTracer()->writePokaz(runtime, this);
 
 		sum	+= currValue;
 		sumSqr += currValue * currValue;

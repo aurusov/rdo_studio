@@ -66,7 +66,7 @@ void RdoSimulator::addAreaPressed(string& areaName)
 void frameCallBack(rdoRuntime::RDOConfig *config, void *param)
 {
 	RdoSimulator *simulator = (RdoSimulator *)param;
-	if((config->showAnimation == SM_Animation) && (config->showAnimation == SM_Animation))
+	if((config->showAnimation == SM_Animation) && (simulator->showMode == SM_Animation))
 	{
 		Sleep(config->realTimeDelay);
 
