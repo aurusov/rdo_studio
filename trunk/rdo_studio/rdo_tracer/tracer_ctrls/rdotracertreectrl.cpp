@@ -1,6 +1,16 @@
 #include "stdafx.h"
-#include "rdotracerlogstyle.h"
+#include "rdotracertreectrl.h"
+#include "../rdotracer.h"
+#include "../rdotracerrestype.h"
+#include "../rdotracerresource.h"
+#include "../rdotracerpattern.h"
+#include "../rdotraceroperation.h"
+#include "../rdotracerresult.h"
+#include "../../resource.h"
 #include "../../rdostudioapp.h"
+#include "../../rdostudiomainfrm.h"
+#include "../../rdostudiochartdoc.h"
+#include "../../htmlhelp.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -8,348 +18,291 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-using namespace rdoTracerLog;
 using namespace std;
 
 // ----------------------------------------------------------------------------
-// ---------- RDOTracerLogTheme
+// ---------- RDOTracerTreeCtrl
 // ----------------------------------------------------------------------------
-RDOTracerLogTheme::RDOTracerLogTheme(): RDOLogTheme()
+SCODE RDODropSource::GiveFeedback( DROPEFFECT dropEffect )
 {
-	es.foregroundColor = RGB( 0x8B, 0x00, 0x00 );
-	es.backgroundColor = RGB( 0xFF, 0xC0, 0xCB );
-	
-	eb.foregroundColor = RGB( 0x34, 0x4B, 0xA2 );
-	eb.backgroundColor = RGB( 0xAA, 0xE3, 0xFB );
-	
-	ef.foregroundColor = RGB( 0x16, 0x02, 0x50 );
-	ef.backgroundColor = RGB( 0x81, 0xB0, 0xD5 );
-	
-	ei.foregroundColor = RGB( 0x4F, 0x29, 0x62 );
-	ei.backgroundColor = RGB( 0xD0, 0xD0, 0xFF );
-	
-	er.foregroundColor = RGB( 0x17, 0x32, 0x47 );
-	er.backgroundColor = RGB( 0xB6, 0xCB, 0xDB );
-	
-	rc.foregroundColor = RGB( 0x23, 0x74, 0x42 );
-	rc.backgroundColor = RGB( 0x96, 0xFF, 0x96 );
-	
-	re.foregroundColor = RGB( 0x43, 0x5A, 0x43 );
-	re.backgroundColor = RGB( 0xB4, 0xE0, 0xB4 );
-	
-	rk.foregroundColor = RGB( 0x00, 0x86, 0x00 );
-	rk.backgroundColor = RGB( 0xD0, 0xFF, 0xD0 );
-	
-	v.foregroundColor  = RGB( 0x00, 0x00, 0x00 );
-	v.backgroundColor  = RGB( 0xF1, 0xFB, 0xE2 );
-	
-	s.foregroundColor  = RGB( 0x00, 0x00, 0xFF );
-	s.backgroundColor  = RGB( 0xE7, 0xF8, 0xF8 );
-
-	dps.foregroundColor = RGB( 0x03, 0x23, 0x8B );
-	dps.backgroundColor = RGB( 0xC9, 0xCD, 0xDB );
-
-	sb.foregroundColor = RGB( 0x5A, 0x4F, 0x37 );
-	sb.backgroundColor = RGB( 0xF8, 0xD6, 0x8D );
-	
-	so.foregroundColor = RGB( 0x4B, 0x54, 0x0E );
-	so.backgroundColor = RGB( 0xE6, 0xF1, 0x98 );
-
-	stn.foregroundColor = RGB( 0x00, 0x54, 0x72 );
-	stn.backgroundColor = RGB( 0xE8, 0xE8, 0xD7 );
-
-	std.foregroundColor = RGB( 0x69, 0x55, 0x49 );
-	std.backgroundColor = stn.backgroundColor;
-
-	str.foregroundColor = RGB( 0x8B, 0x00, 0x00 );
-	str.backgroundColor = stn.backgroundColor;
-	
-	src.foregroundColor = rc.foregroundColor;
-	src.backgroundColor = rc.backgroundColor;
-
-	sre.foregroundColor = re.foregroundColor;
-	sre.backgroundColor = re.backgroundColor;
-
-	srk.foregroundColor = rk.foregroundColor;
-	srk.backgroundColor = rk.backgroundColor;
-
-	sd.foregroundColor = RGB( 0x54, 0x1E, 0x09 );
-	sd.backgroundColor = RGB( 0xF7, 0xCF, 0xB5 );
-
-	ses.foregroundColor = RGB( 0x54, 0x1E, 0x09 );
-	ses.backgroundColor = RGB( 0xF0, 0xDE, 0xDB );
-	
-	sen.foregroundColor = RGB( 0xF0, 0x4B, 0x30 );
-	sen.backgroundColor = ses.backgroundColor;
-	
-	sem.foregroundColor = RGB( 0xF0, 0x4B, 0x30 );
-	sem.backgroundColor = RGB( 0xE3, 0xF0, 0xF6 );
-	
-	sef.foregroundColor = sem.foregroundColor;
-	sef.backgroundColor = sem.backgroundColor;
-	
-	seu.foregroundColor = sem.foregroundColor;
-	seu.backgroundColor = sem.backgroundColor;
+	return COleDropSource::GiveFeedback( dropEffect );
 }
 
-RDOTracerLogTheme::~RDOTracerLogTheme()
+IMPLEMENT_DYNCREATE( RDOTracerTreeCtrl, RDOTreeCtrl )
+
+BEGIN_MESSAGE_MAP( RDOTracerTreeCtrl, RDOTreeCtrl )
+	//{{AFX_MSG_MAP(RDOTracerTreeCtrl)
+	ON_WM_CREATE()
+	ON_WM_INITMENUPOPUP()
+	ON_COMMAND( ID_CHART_ADDTONEWCHART, OnAddToNewChart )
+	ON_UPDATE_COMMAND_UI( ID_CHART_ADDTONEWCHART, OnUpdateAddToNewChart )
+	ON_WM_LBUTTONDBLCLK()
+	ON_NOTIFY_REFLECT( TVN_BEGINDRAG, OnDragDrop )
+	ON_WM_RBUTTONDOWN()
+	ON_UPDATE_COMMAND_UI(ID_CHART_FINDINCHARTS, OnUpdateChartFindincharts)
+	ON_COMMAND(ID_CHART_FINDINCHARTS, OnChartFindincharts)
+	ON_COMMAND(ID_HELP_KEYWORD, OnHelpKeyword)
+	//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+RDOTracerTreeCtrl::RDOTracerTreeCtrl(): RDOTreeCtrl()
 {
 }
 
-RDOTracerLogTheme& RDOTracerLogTheme::operator =( const RDOTracerLogTheme& theme )
+RDOTracerTreeCtrl::~RDOTracerTreeCtrl()
 {
-	RDOLogTheme::operator=( theme );
-	
-	es  = theme.es;
-	eb  = theme.eb;
-	ef  = theme.ef;
-	ei  = theme.ei;
-	er  = theme.er;
-	rc  = theme.rc;
-	re  = theme.re;
-	rk  = theme.rk;
-	v   = theme.v;
-	s   = theme.s;
-	dps = theme.dps;
-	sb  = theme.sb;
-	so  = theme.so;
-	stn = theme.stn;
-	std = theme.std;
-	str = theme.str;
-	src = theme.src;
-	sre = theme.sre;
-	srk = theme.srk;
-	sd  = theme.sd;
-	ses = theme.ses;
-	sen = theme.sen;
-	sem = theme.sem;
-	sef = theme.sef;
-	seu = theme.seu;
-
-	return *this;
+	source.Empty();
 }
 
-bool RDOTracerLogTheme::operator ==( const RDOTracerLogTheme& theme ) const
+RDOTracerTreeItem* RDOTracerTreeCtrl::getIfItemIsDrawable ( const HTREEITEM hItem ) const
 {
-	bool flag = RDOLogTheme::operator==( theme );
-	if ( flag )	flag &= es  == theme.es;
-	if ( flag )	flag &= eb  == theme.eb;
-	if ( flag )	flag &= ef  == theme.ef;
-	if ( flag )	flag &= ei  == theme.ei;
-	if ( flag )	flag &= er  == theme.er;
-	if ( flag )	flag &= rc  == theme.rc;
-	if ( flag )	flag &= re  == theme.re;
-	if ( flag )	flag &= rk  == theme.rk;
-	if ( flag )	flag &= v   == theme.v;
-	if ( flag )	flag &= s   == theme.s;
-	if ( flag )	flag &= dps == theme.dps;
-	if ( flag )	flag &= sb  == theme.sb;
-	if ( flag )	flag &= so  == theme.so;
-	if ( flag )	flag &= stn == theme.stn;
-	if ( flag )	flag &= std == theme.std;
-	if ( flag )	flag &= str == theme.str;
-	if ( flag )	flag &= src == theme.src;
-	if ( flag )	flag &= sre == theme.sre;
-	if ( flag )	flag &= srk == theme.srk;
-	if ( flag )	flag &= sd  == theme.sd;
-	if ( flag )	flag &= ses == theme.ses;
-	if ( flag )	flag &= sen == theme.sen;
-	if ( flag )	flag &= sem == theme.sem;
-	if ( flag )	flag &= sef == theme.sef;
-	if ( flag )	flag &= seu == theme.seu;
-	return flag;
-}
-
-bool RDOTracerLogTheme::operator !=( const RDOTracerLogTheme& theme ) const
-{
-	return !(*this == theme);
-}
-
-void RDOTracerLogTheme::load( string regPath )
-{
-	RDOLogTheme::load( regPath );
-
-	regPath += "theme";
-	es.load( regPath, "es" );
-	eb.load( regPath, "eb" );
-	ef.load( regPath, "ef" );
-	ei.load( regPath, "ei" );
-	er.load( regPath, "er" );
-	rc.load( regPath, "rc" );
-	re.load( regPath, "re" );
-	rk.load( regPath, "rk" );
-	v.load( regPath, "v" );
-	s.load( regPath, "s" );
-	dps.load( regPath, "dps" );
-	sb.load( regPath, "sb" );
-	so.load( regPath, "so" );
-	stn.load( regPath, "stn" );
-	std.load( regPath, "std" );
-	str.load( regPath, "str" );
-	src.load( regPath, "src" );
-	sre.load( regPath, "sre" );
-	srk.load( regPath, "srk" );
-	sd.load( regPath, "sd" );
-	ses.load( regPath, "ses" );
-	sen.load( regPath, "sen" );
-	sem.load( regPath, "sem" );
-	sef.load( regPath, "sef" );
-	seu.load( regPath, "seu" );
-}
-
-void RDOTracerLogTheme::save( string regPath ) const
-{
-	RDOLogTheme::save( regPath );
-
-	regPath += "theme";
-	es.save( regPath, "es" );
-	eb.save( regPath, "eb" );
-	ef.save( regPath, "ef" );
-	ei.save( regPath, "ei" );
-	er.save( regPath, "er" );
-	rc.save( regPath, "rc" );
-	re.save( regPath, "re" );
-	rk.save( regPath, "rk" );
-	v.save( regPath, "v" );
-	s.save( regPath, "s" );
-	dps.save( regPath, "dps" );
-	sb.save( regPath, "sb" );
-	so.save( regPath, "so" );
-	stn.save( regPath, "stn" );
-	std.save( regPath, "std" );
-	str.save( regPath, "str" );
-	src.save( regPath, "src" );
-	sre.save( regPath, "sre" );
-	srk.save( regPath, "srk" );
-	sd.save( regPath, "sd" );
-	ses.save( regPath, "ses" );
-	sen.save( regPath, "sen" );
-	sem.save( regPath, "sem" );
-	sef.save( regPath, "sef" );
-	seu.save( regPath, "seu" );
-}
-
-RDOTracerLogTheme RDOTracerLogTheme::getDefaultTheme()
-{
-	RDOTracerLogTheme theme;
-	return theme;
-}
-
-// ----------------------------------------------------------------------------
-// ---------- RDOTracerLogStyle
-// ----------------------------------------------------------------------------
-RDOTracerLogStyle::RDOTracerLogStyle() : RDOLogStyle()
-{
-}
-
-RDOTracerLogStyle::~RDOTracerLogStyle()
-{
-}
-
-void RDOTracerLogStyle::initTheme()
-{
-	theme = new RDOTracerLogTheme;
-}
-
-void RDOTracerLogStyle::initBorders()
-{
-	RDOLogStyle::initBorders();
-	borders->vertBorder = 1;
-	borders->horzBorder = 2;
-}
-
-bool RDOTracerLogStyle::getItemColors( const string& item, RDOLogColorPair* &colors ) const
-{
-	if ( item.empty() )
-		return RDOLogStyle::getItemColors( "", colors );
-	int posstart = item.find_first_not_of( ' ' );
-	int posend = item.find_first_of( ' ', posstart );
-	string key = item.substr( posstart, posend - posstart );
-	trim( key );
-	bool res = true;
-	if ( theme ) {
-		RDOTracerLogTheme* _theme = static_cast<RDOTracerLogTheme*>(theme);
-		if ( key == "ES" ) {
-			colors = &_theme->es;
-		} else if ( key == "EB" ) {
-			colors = &_theme->eb;
-		} else if ( key == "EF" ) {
-			colors = &_theme->ef;
-		} else if ( key == "EI" ) {
-			colors = &_theme->ei;
-		} else if ( key == "ER" ) {
-			colors = &_theme->er;
-		} else if ( key == "RC" ) {
-			colors = &_theme->rc;
-		} else if ( key == "RE" ) {
-			colors = &_theme->re;
-		} else if ( key == "RK" ) {
-			colors = &_theme->rk;
-		} else if ( key == "V" ) {
-			colors = &_theme->v;
-		} else if ( key == "$Status" ) {
-			colors = &_theme->s;
-		} else if ( key.find( "DPS" ) != string::npos ) {
-			colors = &_theme->dps;
-		} else if ( key == "SB" ) {
-			colors = &_theme->sb;
-		} else if ( key == "SO" ) {
-			colors = &_theme->so;
-		} else if ( key == "STN" ) {
-			colors = &_theme->stn;
-		} else if ( key == "STD" ) {
-			colors = &_theme->std;
-		} else if ( key == "STR" ) {
-			colors = &_theme->str;
-		} else if ( key == "SRC" ) {
-			colors = &_theme->src;
-		} else if ( key == "SRE" ) {
-			colors = &_theme->sre;
-		} else if ( key == "SRK" ) {
-			colors = &_theme->srk;
-		} else if ( key == "SD" ) {
-			colors = &_theme->sd;
-		} else if ( key == "SES" ) {
-			colors = &_theme->ses;
-		} else if ( key == "SEN" ) {
-			colors = &_theme->sen;
-		} else if ( key == "SEM" ) {
-			colors = &_theme->sem;
-		} else if ( key == "SEF" ) {
-			colors = &_theme->sef;
-		} else if ( key == "SEU" ) {
-			colors = &_theme->seu;
-		} else {
-			res = RDOLogStyle::getItemColors( "", colors );
-		}
-	} else {
-		res = RDOLogStyle::getItemColors( "", colors );
+	RDOTracerTreeItem* res = NULL;
+	if ( hItem ) {
+		RDOTracerTreeItem* item = (RDOTracerTreeItem*)GetItemData( hItem );
+		res = item && item->isDrawable() ? item : NULL;
 	}
 	return res;
 }
 
-RDOTracerLogStyle& RDOTracerLogStyle::operator =( const RDOTracerLogStyle& style )
+BOOL RDOTracerTreeCtrl::PreCreateWindow( CREATESTRUCT& cs )
 {
-	RDOLogStyle::operator=( style );
-	if ( theme && style.theme ) *static_cast<RDOTracerLogTheme*>(theme) = *static_cast<RDOTracerLogTheme*>(style.theme);
-
-	return *this;
+	cs.style = WS_CHILD | WS_VISIBLE | WS_CLIPCHILDREN | WS_TABSTOP | TVS_HASBUTTONS /*| TVS_LINESATROOT*/ | TVS_HASLINES/* | TVS_DISABLEDRAGDROP*/;
+	cs.dwExStyle |= WS_EX_CLIENTEDGE;
+	return RDOTreeCtrl::PreCreateWindow(cs);
 }
 
-bool RDOTracerLogStyle::operator ==( const RDOTracerLogStyle& style ) const
+int RDOTracerTreeCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 {
-	bool flag = RDOLogStyle::operator==( style );
-	if ( theme && style.theme && flag ) flag &= *static_cast<RDOTracerLogTheme*>(theme) == *static_cast<RDOTracerLogTheme*>(style.theme);
-	return flag;
+	if ( RDOTreeCtrl::OnCreate( lpCreateStruct ) == -1 ) return -1;
+
+	imageList.Create( 16, 16, ILC_COLORDDB | ILC_MASK, 5, 1 );
+	CBitmap bmp;
+	bmp.LoadBitmap( IDB_TREECTRL );
+	imageList.Add( &bmp, RGB( 255, 0, 255 ) );
+	SetImageList( &imageList, TVSIL_NORMAL );
+
+	rootItem.setTreeItem( InsertItem( rdo::format( ID_MODEL_START ).c_str(), 0, 0 ) );
+	rtpItem.setTreeItem( InsertItem( rdo::format( ID_RESOURCE_TYPES ).c_str(), 1, 1, rootItem.getTreeItem() ) );
+	patItem.setTreeItem( InsertItem( rdo::format( ID_PATTERNS ).c_str(), 1, 1, rootItem.getTreeItem() ) );
+	pmvItem.setTreeItem( InsertItem( rdo::format( ID_RESULTS ).c_str(), 1, 1, rootItem.getTreeItem() ) );
+	Expand( rootItem.getTreeItem(), TVE_EXPAND );
+
+	popupMenu.CreatePopupMenu();
+
+	CMenu* mainMenu = AfxGetMainWnd()->GetMenu();
+	
+	BOOL maximized;
+	studioApp.mainFrame->MDIGetActive( &maximized );
+	int delta = maximized ? 1 : 0;
+
+	appendMenu( mainMenu->GetSubMenu( 6 + delta ), 0, &popupMenu );
+	appendMenu( mainMenu->GetSubMenu( 6 + delta ), 1, &popupMenu );
+
+	return 0;
 }
 
-bool RDOTracerLogStyle::operator !=( const RDOTracerLogStyle& style ) const
+void RDOTracerTreeCtrl::OnInitMenuPopup( CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu )
 {
-	return !(*this == style);
+	RDOTreeCtrl::OnInitMenuPopup( pPopupMenu, nIndex, bSysMenu );
+	CFrameWnd* pwndFrame = (CFrameWnd*)AfxGetMainWnd();
+	if( pwndFrame ) pwndFrame->SendMessage( WM_INITMENUPOPUP, WPARAM(pPopupMenu->m_hMenu), MAKELPARAM(nIndex, bSysMenu) );
 }
 
-void RDOTracerLogStyle::init( const string& _regPath )
+void RDOTracerTreeCtrl::setHasChildren( const RDOTracerTreeItem* item, const bool hasChildren )
 {
-	RDOLogStyle::init( _regPath );
-	*font = rdoStyle::RDOStyleFont::getTracerLogFont();
+	TVITEM tvitem;
+	tvitem.hItem = item->getTreeItem();
+	tvitem.mask = TVIF_CHILDREN;
+	tvitem.cChildren = hasChildren ? 1 : 0;
+	SetItem( &tvitem );
+}
+
+void RDOTracerTreeCtrl::doDragDrop( RDOTracerTreeItem* item, CPoint point )
+{
+	UINT format = tracer->getClipboardFormat();
+	if ( format ) {
+		RDOTracerSerie** ptr = (RDOTracerSerie**)::GlobalAlloc( LMEM_FIXED, sizeof( RDOTracerSerie* ) );
+		*ptr = (RDOTracerSerie*)item;
+		source.CacheGlobalData( format, ptr );
+		source.DoDragDrop( DROPEFFECT_COPY, NULL, &dropsource );
+		source.Empty();
+		// Dont call ::GlobalFree( ptr ), because
+		// COleDataSource::Empty() calls ::ReleaseStgMedium() for
+		// each allocated storage medium. By Microsoft's default
+		// STGMEDIUM::punkForRelease == NULL,
+		// so ::ReleaseStgMedium() calls ::GlobalFree()
+		// for each allocated STGMEDIUM::TYMED_HGLOBAL.
+		// ::GlobalFlags( ptr ) returns GMEM_INVALID_HANDLE
+		// if HGLOBAL is not a valid handle.
+	}
+}
+
+void RDOTracerTreeCtrl::OnDragDrop ( NMHDR * pNotifyStruct, LRESULT* result )
+{
+	LPNMTREEVIEW lpnmtv = (LPNMTREEVIEW)pNotifyStruct;
+	HTREEITEM hitem = lpnmtv->itemNew.hItem;
+	RDOTracerTreeItem* item = getIfItemIsDrawable( hitem );
+	if ( item  )
+		doDragDrop( item, lpnmtv->ptDrag );
+	*result = 0;
+}
+
+BOOL RDOTracerTreeCtrl::setModelName( const string& modelName )
+{
+	return SetItemText( rootItem.getTreeItem(), rdo::format( ID_MODEL, modelName.c_str() ).c_str() );
+}
+
+void RDOTracerTreeCtrl::addResourceType( RDOTracerResType* resType )
+{
+	UINT mask = TVIF_IMAGE | TVIF_PARAM | TVIF_SELECTEDIMAGE | TVIF_TEXT;
+	resType->setTreeItem( InsertItem( mask, resType->Name.c_str(), 2, 2, 0, 0, (LPARAM)(RDOTracerTreeItem*)resType, rtpItem.getTreeItem(), TVI_LAST ) );
+	setHasChildren( &rtpItem );
+}
+
+void RDOTracerTreeCtrl::addResource( RDOTracerResource* res )
+{
+	UINT mask =  TVIF_PARAM | TVIF_TEXT;
+	RDOTracerResType* type = res->getType();
+	res->setTreeItem( InsertItem( mask, res->Name.c_str(), 0, 0, 0, 0, (LPARAM)(RDOTracerTreeItem*)res, type->getTreeItem(), TVI_LAST ) );
+	int count = type->getParamsCount();
+	mask |= ( TVIF_IMAGE | TVIF_SELECTEDIMAGE );
+	for ( int i = 0; i < count; i++ )
+		res->getParam( i )->setTreeItem( InsertItem( mask, type->getParamInfo( i )->Name.c_str(), 5, 5, 0, 0, (LPARAM)(RDOTracerTreeItem*)res->getParam( i ), res->getTreeItem(), TVI_LAST ) );
+	updateResource( res );
+	setHasChildren( type );
+}
+
+void RDOTracerTreeCtrl::updateResource( RDOTracerResource* const res )
+{
+	int index = 3;
+	if ( res->isErased() )
+		index = 6;
+	SetItemImage( res->getTreeItem(), index, index );
+}
+
+void RDOTracerTreeCtrl::addPattern( RDOTracerPattern* pat )
+{
+	UINT mask = TVIF_IMAGE | TVIF_PARAM | TVIF_SELECTEDIMAGE | TVIF_TEXT;
+	pat->setTreeItem( InsertItem( mask, pat->Name.c_str(), 2, 2, 0, 0, (LPARAM)(RDOTracerTreeItem*)pat, patItem.getTreeItem(), TVI_LAST ) );
+	setHasChildren( &patItem );
+}
+
+void RDOTracerTreeCtrl::addOperation( RDOTracerOperationBase* opr )
+{
+	UINT mask = TVIF_IMAGE | TVIF_PARAM | TVIF_SELECTEDIMAGE | TVIF_TEXT;
+	opr->setTreeItem( InsertItem( mask, opr->getName().c_str(), 5, 5, 0, 0, (LPARAM)(RDOTracerTreeItem*)opr, opr->getPattern()->getTreeItem(), TVI_LAST ) );
+	setHasChildren( opr->getPattern() );
+}
+
+/*void RDOTracerTreeCtrl::addIrregularEvent( RDOTracerOperation* opr )
+{
+	addOperation( opr );
+}*/
+
+void RDOTracerTreeCtrl::addResult( RDOTracerResult* res )
+{
+	UINT mask = TVIF_IMAGE | TVIF_PARAM | TVIF_SELECTEDIMAGE | TVIF_TEXT;
+	res->setTreeItem( InsertItem( mask, res->getName().c_str(), 5, 5, 0, 0, (LPARAM)(RDOTracerTreeItem*)res, pmvItem.getTreeItem(), TVI_LAST ) );
+	setHasChildren( &pmvItem );
+}
+
+void RDOTracerTreeCtrl::deleteChildren( const RDOTracerTreeItem* parent )
+{
+	RDOTreeCtrl::deleteChildren( parent->getTreeItem() );
+	setHasChildren( parent, false );
+}
+
+void RDOTracerTreeCtrl::clear()
+{
+	deleteChildren( &rtpItem );
+	deleteChildren( &patItem );
+	deleteChildren( &pmvItem );
+	SetItemText( rootItem.getTreeItem(), rdo::format( ID_MODEL_START ).c_str() );
+}
+
+void RDOTracerTreeCtrl::addToNewChart( const HTREEITEM hitem ) const
+{
+	RDOTracerTreeItem* item = getIfItemIsDrawable( GetSelectedItem() );
+	RDOTracerSerie* serie = NULL;
+	if ( item ) {
+		tracer->addSerieToChart( static_cast<RDOTracerSerie*>( item ) );
+	}
+}
+
+bool RDOTracerTreeCtrl::findInCharts( const HTREEITEM hitem ) const
+{
+	bool res = false;
+	RDOTracerTreeItem* item = getIfItemIsDrawable( GetSelectedItem() );
+	RDOTracerSerie* serie = NULL;
+	if ( item ) {
+		serie = static_cast<RDOTracerSerie*>( item );
+		res = serie->activateFirstDoc();
+	}
+	return res;
+}
+
+void RDOTracerTreeCtrl::OnAddToNewChart()
+{
+	addToNewChart( GetSelectedItem() );
+}
+
+void RDOTracerTreeCtrl::OnUpdateAddToNewChart( CCmdUI* pCmdUI )
+{
+	pCmdUI->Enable( tracer->getDrawTrace() && getIfItemIsDrawable( GetSelectedItem() ) != NULL );
+}
+
+void RDOTracerTreeCtrl::OnLButtonDblClk(UINT nFlags, CPoint point) 
+{
+	RDOTreeCtrl::OnLButtonDblClk(nFlags, point);
+
+	if ( tracer->getDrawTrace() ) {
+		UINT uFlags;
+		HTREEITEM hitem = HitTest( point, &uFlags );
+
+		if ( hitem && ( TVHT_ONITEM & uFlags ) ) {
+			if ( !findInCharts( hitem ) )
+				addToNewChart( hitem );
+		}
+	}
+}
+
+void RDOTracerTreeCtrl::OnRButtonDown(UINT nFlags, CPoint point) 
+{
+	UINT uFlags;
+	HTREEITEM hitem = HitTest( point, &uFlags );
+	if ( hitem && ( TVHT_ONITEM & uFlags ) ) {
+		SelectItem( hitem );
+	}
+	if ( GetFocus() != this )
+		SetFocus();
+	CPoint pos = point;
+	ClientToScreen( &pos );
+	if ( popupMenu.m_hMenu ) popupMenu.TrackPopupMenu( TPM_LEFTALIGN | TPM_RIGHTBUTTON, pos.x, pos.y, this );
+}
+
+void RDOTracerTreeCtrl::OnUpdateChartFindincharts(CCmdUI* pCmdUI) 
+{
+	bool enable = false;
+	if ( tracer->getDrawTrace() ) {
+		RDOTracerTreeItem* item = getIfItemIsDrawable( GetSelectedItem() );
+		RDOTracerSerie* serie = NULL;
+		if ( item ) {
+			serie = static_cast<RDOTracerSerie*>( item );
+			enable = serie->isInOneOrMoreDocs();
+		}
+	}
+	pCmdUI->Enable( enable );
+}
+
+void RDOTracerTreeCtrl::OnChartFindincharts() 
+{
+	findInCharts( GetSelectedItem() );
+}
+
+void RDOTracerTreeCtrl::OnHelpKeyword()
+{
+	string filename = studioApp.getFullHelpFileName();
+	if ( filename.empty() ) return;
+	filename += "::/html/work_model_chart_main.htm";
+	::HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_DISPLAY_TOPIC, NULL );
 }
