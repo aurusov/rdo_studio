@@ -18,6 +18,7 @@ namespace RDOSimulatorNS {
 
 class RDOStudioFrameManager
 {
+friend class RDOStudioFrameView;
 private:
 
 	class FrameDocTemplate: public CMultiDocTemplate {
@@ -36,10 +37,23 @@ private:
 	class BMPReadError {
 	};
 
+	class Area {
+	friend class RDOStudioFrameManager;
+	friend class RDOStudioFrameView;
+	private:
+		std::string name;
+		int x;
+		int y;
+		int w;
+		int h;
+	};
+
 	class Frame {
 	friend class RDOStudioFrameManager;
+	friend class RDOStudioFrameView;
 	private:
 		Frame(): hitem( 0 ), doc( NULL ), view( NULL ), timer( false, true ) {};
+		~Frame() { areas_sim_clear(); };
 		HTREEITEM           hitem;
 		std::string         name;
 		RDOStudioFrameDoc*  doc;
@@ -48,6 +62,15 @@ private:
 		CMutex              draw;
 		CEvent              timer;
 		CEvent              close;
+		std::vector< Area* >       areas_sim;
+		std::vector< std::string > areas_clicked;
+		void areas_sim_clear() {
+			std::vector< Area* >::iterator it = areas_sim.begin();
+			while ( it != areas_sim.end() ) {
+				delete *it++;
+			};
+			areas_sim.clear();
+		}
 	};
 	static std::vector< Frame* > frames;
 
@@ -97,7 +120,7 @@ public:
 
 	bool isValidFrameDoc( const RDOStudioFrameDoc* const frame ) const;
 
-	void showFrame( std::vector<RDOSimulatorNS::RDOFrame *>::const_iterator& frame, const int index );
+	void showFrame( const RDOSimulatorNS::RDOFrame* const frame, const int index );
 };
 
 //{{AFX_INSERT_LOCATION}}

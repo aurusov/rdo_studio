@@ -24,6 +24,7 @@ BEGIN_MESSAGE_MAP(RDOStudioFrameView, CView)
 	ON_WM_SIZE()
 	ON_WM_HSCROLL()
 	ON_WM_VSCROLL()
+	ON_WM_LBUTTONDOWN()
 	//}}AFX_MSG_MAP
 	ON_COMMAND(ID_FILE_PRINT, CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, CView::OnFilePrint)
@@ -267,4 +268,27 @@ void RDOStudioFrameView::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollB
 	SetScrollInfo( SB_VERT, &si, TRUE );
 	InvalidateRect( NULL );
 	UpdateWindow();
+}
+
+void RDOStudioFrameView::OnLButtonDown(UINT nFlags, CPoint point)
+{
+	RDOStudioFrameManager* frameManager = &model->frameManager;
+	int index = frameManager->findFrameIndex( this );
+	CSingleLock lock_draw( frameManager->getFrameDraw( index ) );
+	lock_draw.Lock();
+
+	RDOStudioFrameManager::Frame* frame = frameManager->frames[index];
+	vector< RDOStudioFrameManager::Area* >* areas_sim = &frame->areas_sim;
+	vector< RDOStudioFrameManager::Area* >::iterator it = areas_sim->begin();
+	while ( it != areas_sim->end() ) {
+		RDOStudioFrameManager::Area* area = *it++;
+		CRect rect( area->x, area->y, area->x + area->w, area->y + area->h );
+		if ( rect.PtInRect( point ) ) {
+			frame->areas_clicked.push_back( area->name );
+		}
+	};
+
+	lock_draw.Unlock();
+
+	CView::OnLButtonDown( nFlags, point );
 }

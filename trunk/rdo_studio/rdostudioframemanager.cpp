@@ -351,9 +351,9 @@ void RDOStudioFrameManager::bmp_clear()
 	bitmaps.clear();
 }
 
-void RDOStudioFrameManager::showFrame( vector<RDOFrame *>::const_iterator& frame, const int index )
+void RDOStudioFrameManager::showFrame( const RDOFrame* const frame, const int index )
 {
-	if ( *frame && index < count() ) {
+	if ( index < count() ) {
 
 		CSingleLock lock_used( getFrameUsed( index ) );
 		lock_used.Lock();
@@ -366,15 +366,15 @@ void RDOStudioFrameManager::showFrame( vector<RDOFrame *>::const_iterator& frame
 
 			RDOStudioFrameView* view = getFrameView( index );
 			if ( view->mustBeInit ) {
-				if ( (*frame)->hasBackPicture ) {
-					BMP* bmp = bitmaps[*(*frame)->picFileName];
+				if ( frame->hasBackPicture ) {
+					BMP* bmp = bitmaps[*frame->picFileName];
 					if ( bmp ) {
 						view->frameBmpRect.right  = bmp->w;
 						view->frameBmpRect.bottom = bmp->h;
 					}
 				} else {
-					view->frameBmpRect.right  = (*frame)->width;
-					view->frameBmpRect.bottom = (*frame)->height;
+					view->frameBmpRect.right  = frame->width;
+					view->frameBmpRect.bottom = frame->height;
 				}
 				view->frameBmp.CreateCompatibleBitmap( view->GetDC(), view->frameBmpRect.Width(), view->frameBmpRect.Height() );
 				view->mustBeInit = false;
@@ -385,17 +385,17 @@ void RDOStudioFrameManager::showFrame( vector<RDOFrame *>::const_iterator& frame
 			dc.CreateCompatibleDC( view->GetDC() );
 			CBitmap* pOldBitmap = dc.SelectObject( &view->frameBmp );
 
-			if( !(*frame)->hasBackPicture ) {
-				CBrush brush( RGB( (*frame)->r, (*frame)->g, (*frame)->b ) );
+			if( !frame->hasBackPicture ) {
+				CBrush brush( RGB( frame->r, frame->g, frame->b ) );
 				CBrush* pOldBrush = dc.SelectObject( &brush );
 				CPen pen( PS_SOLID, 0, RGB( 0x00, 0x00, 0x00 ) );
 				CPen* pOldPen = dc.SelectObject( &pen );
-				CRect rect( 0, 0, (*frame)->width, (*frame)->height );
+				CRect rect( 0, 0, frame->width, frame->height );
 				dc.Rectangle( rect );
 				dc.SelectObject( pOldBrush );
 				dc.SelectObject( pOldPen );
 			} else {
-				BMP* bmp = bitmaps[*(*frame)->picFileName];
+				BMP* bmp = bitmaps[*frame->picFileName];
 				if ( bmp ) {
 					CBitmap* pOldBitmap = dcBmp.SelectObject( &bmp->bmp );
 					dc.BitBlt( 0, 0, bmp->w, bmp->h, &dcBmp, 0, 0, SRCCOPY );
@@ -403,10 +403,18 @@ void RDOStudioFrameManager::showFrame( vector<RDOFrame *>::const_iterator& frame
 				}
 			}
 
-			int size = (*frame)->elements.size();
+			vector< string >* areas_clicked = &frames[index]->areas_clicked;
+			vector< string >::iterator it = areas_clicked->begin();
+			while ( it != areas_clicked->end() ) {
+				kernel.getSimulator()->addAreaPressed( *it++ );
+			};
+			areas_clicked->clear();
+			frames[index]->areas_sim_clear();
+
+			int size = frame->elements.size();
 			for(int i = 0; i < size; i++)
 			{
-				RDOFrameElement *currElement = (*frame)->elements.at(i);
+				RDOFrameElement *currElement = frame->elements.at(i);
 				switch(currElement->type)
 				{
 				case RDOFrameElement::text_type:
@@ -532,22 +540,15 @@ void RDOStudioFrameManager::showFrame( vector<RDOFrame *>::const_iterator& frame
 					}
 					break;
 
-				case RDOFrameElement::active_type:
-					{							
-/*							
-						RDOActiveElement *activeEl = (RDOActiveElement *)currElement;
-						CBrush brush( RGB(196, 0, 196) );
-						CBrush* pOldBrush = dc.SelectObject( &brush );
-						CPen pen( PS_SOLID, 2, RGB(196, 196, 0) );
-						CPen* pOldPen = dc.SelectObject( &pen );
-						dc.Rectangle(activeEl->x, activeEl->y, activeEl->x + activeEl->w, activeEl->y + activeEl->h);
-						dc.MoveTo(activeEl->x, activeEl->y);
-						dc.LineTo(activeEl->x + activeEl->w, activeEl->y + activeEl->h);
-						dc.MoveTo(activeEl->x + activeEl->w, activeEl->y);
-						dc.LineTo(activeEl->x, activeEl->y + activeEl->h);
-						dc.SelectObject( pOldBrush );
-						dc.SelectObject( pOldPen );
-*/
+				case RDOFrameElement::active_type: {
+						RDOActiveElement* activeEl = (RDOActiveElement*)currElement;
+						Area* area = new Area;
+						area->name = activeEl->operName;
+						area->x    = activeEl->x;
+						area->y    = activeEl->y;
+						area->w    = activeEl->w;
+						area->h    = activeEl->h;
+						frames[index]->areas_sim.push_back( area );
 					}
 					break;
 				}

@@ -489,7 +489,9 @@ void RDOStudioModel::showFrame()
 	vector<RDOFrame *>::const_iterator it = frames.begin();
 	int index = 0;
 	while ( it != frames.end() ) {
-		frameManager.showFrame( it, index );
+		if ( *it ) {
+			frameManager.showFrame( *it, index );
+		}
 		it++;
 		index++;
 	}
