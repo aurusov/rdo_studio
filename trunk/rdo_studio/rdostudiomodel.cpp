@@ -37,6 +37,7 @@ RDOStudioModel::RDOStudioModel():
 	closeWithDocDelete( true ),
 	showCanNotCloseModelMessage( true ),
 	openError( false ),
+	modelClosed( true ),
 	frmDescribed( false ),
 	modelTime( 0 ),
 	showMode( SM_NoShow )
@@ -94,7 +95,8 @@ bool RDOStudioModel::openModel( const string& modelName ) const
 	output->showBuild();
 	output->appendStringToBuild( format( IDS_MODEL_LOADING_BEGIN ) );
 	const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->UpdateWindow();
-	static_cast<bool>(openError) = false;
+	static_cast<bool>(openError)   = false;
+	static_cast<bool>(modelClosed) = false;
 	bool flag = kernel.getRepository()->openModel( modelName );
 	if ( flag && !openError ) {
 		rdo::binarystream stream;
@@ -559,6 +561,7 @@ void RDOStudioModel::closeModelFromRepository()
 	if ( !showCanNotCloseModelMessage ) {
 		showCanNotCloseModelMessage = true;
 	}
+	modelClosed = true;
 }
 
 void RDOStudioModel::canNotCloseModelFromRepository() const

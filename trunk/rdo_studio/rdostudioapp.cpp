@@ -265,7 +265,7 @@ void RDOStudioApp::OnProjectReopen( UINT nID )
 	}
 	if ( model->openModel( reopenList[i] ) ) {
 		insertReopenItem( kernel.getRepository()->getFullName() );
-	} else {
+	} else if ( model->isPrevModelClosed() ) {
 		string item = reopenList[i];
 		for ( vector< string >::iterator it = reopenList.begin(); it != reopenList.end(); it++ ) {
 			if ( *it == item ) {

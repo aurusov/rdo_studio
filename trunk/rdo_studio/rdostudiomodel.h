@@ -32,6 +32,7 @@ private:
 	bool showCanNotCloseModelMessage;
 
 	bool openError;
+	bool modelClosed;
 
 	bool frmDescribed;
 	double modelTime;
@@ -101,6 +102,8 @@ public:
 	rdoEditor::RDOEditorTabCtrl* getTab() const;
 
 	void updateStyleOfAllModel() const;
+
+	bool isPrevModelClosed() const { return modelClosed; }
 };
 
 // ----------------------------------------------------------------------------
