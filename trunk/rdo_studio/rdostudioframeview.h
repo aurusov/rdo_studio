@@ -12,7 +12,7 @@ class RDOStudioFrameDoc;
 
 class RDOStudioFrameView: public CView
 {
-friend class RDOStudioModel;
+friend class RDOStudioFrameManager;
 
 DECLARE_DYNCREATE(RDOStudioFrameView)
 

@@ -15,6 +15,7 @@
 #include <fstream>
 
 using namespace std;
+using namespace RDOSimulatorNS;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -185,7 +186,7 @@ void RDOStudioFrameManager::expand() const
 
 void RDOStudioFrameManager::setLastShowedFrame( const int value )
 {
-	if ( lastShowedFrame >= 0 && lastShowedFrame < count() ) {
+	if ( value >= 0 && value < count() ) {
 		lastShowedFrame = value;
 	}
 }
@@ -203,27 +204,8 @@ bool RDOStudioFrameManager::isValidFrameDoc( const RDOStudioFrameDoc* const fram
 	return false;
 }
 
-int RDOStudioFrameManager::getNumColors( BITMAPINFOHEADER* pBMIH ) const
-{
-	int colors = 0;
-	switch ( pBMIH->biBitCount ) {
-		case  1: colors = 2;   break;
-		case  4: colors = 16;  break;
-		case  8: colors = 256; break;
-	}
-	int max = colors;
-	if ( pBMIH->biClrUsed ) colors = pBMIH->biClrUsed;
-	// Не надо выходить за размеры палитры
-	if ( max && colors > max ) colors = max;
-	return colors;
-}
-
 void RDOStudioFrameManager::bmp_insert( const std::string& name )
 {
-//	BMP* bmp = new BMP;
-//	bmp->name = name;
-//	bitmaps.push_back( bmp );
-
 	bitmaps[name] = NULL;
 
 	stringstream stream( ios::in | ios_base::out | ios::binary );
@@ -231,7 +213,7 @@ void RDOStudioFrameManager::bmp_insert( const std::string& name )
 
 	HANDLE hDIBInfo = ::GlobalAlloc( GMEM_MOVEABLE, sizeof(BITMAPINFOHEADER) + 256 * sizeof(RGBQUAD) );
 
-	LPBITMAPINFOHEADER lpbi = static_cast<LPBITMAPINFOHEADER>(::GlobalLock( hDIBInfo ));
+	BITMAPINFOHEADER* lpbi = static_cast<BITMAPINFOHEADER*>(::GlobalLock( hDIBInfo ));
 
 	try {
 		BITMAPFILEHEADER bf;
@@ -260,7 +242,7 @@ void RDOStudioFrameManager::bmp_insert( const std::string& name )
 
 		::GlobalUnlock( hDIBInfo );
 		hDIBInfo = ::GlobalReAlloc( hDIBInfo, lpbi->biSize + nNumColors * sizeof(RGBQUAD) + lpbi->biSizeImage, 0 );
-		lpbi     = static_cast<LPBITMAPINFOHEADER>(::GlobalLock( hDIBInfo ));
+		lpbi     = static_cast<BITMAPINFOHEADER*>(::GlobalLock( hDIBInfo ));
 
 		stream.read( (LPSTR)(lpbi) + lpbi->biSize, nNumColors * sizeof(RGBQUAD) );
 		if ( stream.rdstate() != ios_base::goodbit ) throw BMPReadError();
@@ -278,25 +260,18 @@ void RDOStudioFrameManager::bmp_insert( const std::string& name )
 		CDC memDC;
 		memDC.CreateCompatibleDC( desktopDC );
 		CBitmap memBMP;
-		if ( lpbi->biBitCount != 1 ) {
-			memBMP.CreateCompatibleBitmap( desktopDC, lpbi->biWidth, lpbi->biHeight );
-		} else {
-			memBMP.CreateCompatibleBitmap( &memDC, lpbi->biWidth, lpbi->biHeight );
-		}
-		HBITMAP h = (HBITMAP)memBMP;
-		int a = ::SetDIBits( desktopDC->m_hDC, h, 0, lpbi->biHeight, (LPSTR)(lpbi) + offBits, reinterpret_cast<LPBITMAPINFO>(lpbi), DIB_RGB_COLORS );
+		memBMP.CreateCompatibleBitmap( lpbi->biBitCount != 1 ? desktopDC : &memDC, lpbi->biWidth, lpbi->biHeight );
+		::SetDIBits( desktopDC->m_hDC, static_cast<HBITMAP>(memBMP), 0, lpbi->biHeight, (LPSTR)(lpbi) + offBits, reinterpret_cast<BITMAPINFO*>(lpbi), DIB_RGB_COLORS );
 		CBitmap* hOldBitmap1 = memDC.SelectObject( &memBMP );
 
 		CDC dc;
-		bitmaps[name] = new CBitmap;
-		if ( lpbi->biBitCount != 1 ) {
-			dc.CreateCompatibleDC( desktopDC );
-			bitmaps[name]->CreateCompatibleBitmap( desktopDC, lpbi->biWidth, lpbi->biHeight );
-		} else {
-			dc.CreateCompatibleDC( &memDC );
-			bitmaps[name]->CreateCompatibleBitmap( &memDC, lpbi->biWidth, lpbi->biHeight );
-		}
-		CBitmap* hOldBitmap2 = dc.SelectObject( bitmaps[name] );
+		dc.CreateCompatibleDC( desktopDC );
+		BMP* bmp = new BMP;
+		bitmaps[name] = bmp;
+		bitmaps[name]->w = lpbi->biWidth;
+		bitmaps[name]->h = lpbi->biHeight;
+		bitmaps[name]->bmp.CreateCompatibleBitmap( lpbi->biBitCount != 1 ? desktopDC : &dc, lpbi->biWidth, lpbi->biHeight );
+		CBitmap* hOldBitmap2 = dc.SelectObject( &bitmaps[name]->bmp );
 		dc.BitBlt( 0, 0, lpbi->biWidth, lpbi->biHeight, &memDC, 0, 0, SRCCOPY );
 
 		memDC.SelectObject( hOldBitmap1 );
@@ -307,7 +282,7 @@ void RDOStudioFrameManager::bmp_insert( const std::string& name )
 	}
 
 	::GlobalUnlock( hDIBInfo );
-//	::GlobalFree( hDIBInfo );
+	::GlobalFree( hDIBInfo );
 
 /*
 	char* pBits = NULL;
@@ -428,10 +403,231 @@ void RDOStudioFrameManager::bmp_insert( const std::string& name )
 
 void RDOStudioFrameManager::bmp_clear()
 {
-	map< string, CBitmap* >::iterator it = bitmaps.begin();
+	map< string, BMP* >::iterator it = bitmaps.begin();
 	while ( it != bitmaps.end() ) {
 		delete it->second;
 		it++;
 	};
 	bitmaps.clear();
+}
+
+void RDOStudioFrameManager::showFrame( vector<RDOFrame *>::const_iterator& frame, const int index )
+{
+	if ( *frame && index < count() ) {
+
+		CSingleLock lock_used( getFrameUsed( index ) );
+		lock_used.Lock();
+
+		RDOStudioFrameDoc* doc = getFrameDoc( index );
+		if ( doc ) {
+
+			CSingleLock lock_draw( getFrameDraw( index ) );
+			lock_draw.Lock();
+
+			RDOStudioFrameView* view = getFrameView( index );
+			if ( view->mustBeInit ) {
+				if ( (*frame)->hasBackPicture ) {
+					BMP* bmp = bitmaps[*(*frame)->picFileName];
+					view->frameBmpRect.right  = bmp->w;
+					view->frameBmpRect.bottom = bmp->h;
+				} else {
+					view->frameBmpRect.right  = (*frame)->width;
+					view->frameBmpRect.bottom = (*frame)->height;
+				}
+				view->frameBmp.CreateCompatibleBitmap( view->GetDC(), view->frameBmpRect.Width(), view->frameBmpRect.Height() );
+				view->mustBeInit = false;
+				view->updateScrollBars();
+			}
+
+			CDC dc;
+			dc.CreateCompatibleDC( view->GetDC() );
+			CBitmap* pOldBitmap = dc.SelectObject( &view->frameBmp );
+
+			if( !(*frame)->hasBackPicture ) {
+				CBrush brush( RGB( (*frame)->r, (*frame)->g, (*frame)->b ) );
+				CBrush* pOldBrush = dc.SelectObject( &brush );
+				CPen pen( PS_SOLID, 0, RGB( 0x00, 0x00, 0x00 ) );
+				CPen* pOldPen = dc.SelectObject( &pen );
+				CRect rect( 0, 0, (*frame)->width, (*frame)->height );
+				dc.Rectangle( rect );
+				dc.SelectObject( pOldBrush );
+				dc.SelectObject( pOldPen );
+			} else {
+				BMP* bmp = bitmaps[*(*frame)->picFileName];
+				if ( bmp ) {
+					CBitmap* pOldBitmap = dcBmp.SelectObject( &bmp->bmp );
+					dc.BitBlt( 0, 0, bmp->w, bmp->h, &dcBmp, 0, 0, SRCCOPY );
+					dcBmp.SelectObject( pOldBitmap );
+				}
+			}
+
+			int size = (*frame)->elements.size();
+			for(int i = 0; i < size; i++)
+			{
+				RDOFrameElement *currElement = (*frame)->elements.at(i);
+				switch(currElement->type)
+				{
+				case RDOFrameElement::text_type:
+					{				
+						int oldBkMode;
+						COLORREF oldBkColor;
+						COLORREF oldTextColor;
+						bool restoreBkColor   = false;
+						bool restoreTextColor = false;
+						RDOTextElement *textEl = (RDOTextElement *)currElement;
+						if( !textEl->background.isTransparent ) {
+							oldBkMode  = dc.SetBkMode(OPAQUE);
+							oldBkColor = dc.SetBkColor(RGB(textEl->background.r, textEl->background.g, textEl->background.b));
+							restoreBkColor = true;
+						} else {
+							oldBkMode = dc.SetBkMode(TRANSPARENT);
+						}
+
+						if( !textEl->foreground.isTransparent ) {
+							oldTextColor = dc.SetTextColor(RGB(textEl->foreground.r, textEl->foreground.g, textEl->foreground.b));
+							restoreTextColor = true;
+						}
+
+						UINT nFormat = DT_SINGLELINE;
+						switch(textEl->align)
+						{
+						case RDOTextElement::left:
+							nFormat |= DT_LEFT; break;
+						case RDOTextElement::right:
+							nFormat |= DT_RIGHT; break;
+						case RDOTextElement::center:
+							nFormat |= DT_CENTER; break;
+						}
+
+						dc.DrawText(textEl->strText.c_str(), textEl->strText.length(),
+							CRect(textEl->x, textEl->y, textEl->x + textEl->w, textEl->y + textEl->h),
+							nFormat);
+
+						dc.SetBkMode( oldBkMode );
+						if ( restoreBkColor ) dc.SetBkColor( oldBkColor );
+						if ( restoreTextColor ) dc.SetTextColor( oldTextColor );
+					}
+					break;
+
+				case RDOFrameElement::rect_type:
+					{																		
+						RDORectElement *rectEl = (RDORectElement *)currElement;
+						CBrush brush( RGB(rectEl->background.r, rectEl->background.g, rectEl->background.b) );
+						CBrush* pOldBrush;
+						if( !rectEl->background.isTransparent ) {
+							pOldBrush = dc.SelectObject( &brush );
+						} else {
+							pOldBrush = static_cast<CBrush*>(dc.SelectStockObject( NULL_BRUSH ));
+						}
+
+						CPen pen( PS_SOLID, 0, RGB(rectEl->foreground.r, rectEl->foreground.g, rectEl->foreground.b) );
+						CPen* pOldPen;
+						bool restorePen = false;
+						if( !rectEl->foreground.isTransparent ) {
+							pOldPen = dc.SelectObject( &pen );
+							restorePen = true;
+						}
+
+						dc.Rectangle(rectEl->x, rectEl->y, rectEl->x + rectEl->w, rectEl->y + rectEl->h);
+
+						dc.SelectObject( pOldBrush );
+						if ( restorePen ) dc.SelectObject( pOldPen );
+					}
+					break;
+
+				case RDOFrameElement::line_type:
+					{																		
+						RDOLineElement *lineEl = (RDOLineElement *)currElement;
+						CPen pen( PS_SOLID, 0, RGB(lineEl->foreground.r, lineEl->foreground.g, lineEl->foreground.b) );
+						CPen* pOldPen;
+						bool restorePen = false;
+						if( !lineEl->foreground.isTransparent ) {
+							pOldPen = dc.SelectObject( &pen );
+							restorePen = true;
+						}
+
+						dc.MoveTo(lineEl->x, lineEl->y);
+						dc.LineTo(lineEl->w, lineEl->h);
+
+						if ( restorePen ) dc.SelectObject( pOldPen );
+					}
+					break;
+
+				case RDOFrameElement::bitmap_type: {
+						RDOBitmapElement* bmpEl = (RDOBitmapElement *)currElement;
+						BMP* bmp = bitmaps[bmpEl->bmp];
+						if ( bmp ) {
+							BMP* mask = bmpEl->hasMask ? bitmaps[bmpEl->mask] : NULL;
+							CBitmap* pOldBitmap = dcBmp.SelectObject( &bmp->bmp );
+							if ( mask ) {
+								CBitmap* pOldMask = dcMask.SelectObject( &mask->bmp );
+								dc.BitBlt( bmpEl->x, bmpEl->y, mask->w, mask->h, &dcMask, 0, 0, SRCAND );
+								dc.BitBlt( bmpEl->x, bmpEl->y, bmp->w, bmp->h, &dcBmp, 0, 0, SRCPAINT );
+								dcMask.SelectObject( pOldMask );
+							} else {
+								dc.BitBlt( bmpEl->x, bmpEl->y, bmp->w, bmp->h, &dcBmp, 0, 0, SRCCOPY );
+							}
+							dcBmp.SelectObject( pOldBitmap );
+						}
+					}
+					break;
+				case RDOFrameElement::s_bmp_type: {
+						RDOSBmpElement *sbmpEl = (RDOSBmpElement *)currElement;
+						BMP* bmp = bitmaps[sbmpEl->bmp];
+						if ( bmp ) {
+							BMP* mask = sbmpEl->hasMask ? bitmaps[sbmpEl->mask] : NULL;
+							CBitmap* pOldBitmap = dcBmp.SelectObject( &bmp->bmp );
+							if ( mask ) {
+								CBitmap* pOldMask = dcMask.SelectObject( &mask->bmp );
+								dc.StretchBlt( sbmpEl->x, sbmpEl->y, sbmpEl->w, sbmpEl->h, &dcMask, 0, 0, mask->w, mask->h, SRCAND );
+								dc.StretchBlt( sbmpEl->x, sbmpEl->y, sbmpEl->w, sbmpEl->h, &dcBmp, 0, 0, bmp->w, bmp->h, SRCPAINT );
+								dcMask.SelectObject( pOldMask );
+							} else {
+								dc.StretchBlt( sbmpEl->x, sbmpEl->y, sbmpEl->w, sbmpEl->h, &dcBmp, 0, 0, bmp->w, bmp->h, SRCCOPY );
+							}
+							dcBmp.SelectObject( pOldBitmap );
+						}
+					}
+					break;
+
+				case RDOFrameElement::active_type:
+					{							
+/*							
+						RDOActiveElement *activeEl = (RDOActiveElement *)currElement;
+						CBrush brush( RGB(196, 0, 196) );
+						CBrush* pOldBrush = dc.SelectObject( &brush );
+						CPen pen( PS_SOLID, 2, RGB(196, 196, 0) );
+						CPen* pOldPen = dc.SelectObject( &pen );
+						dc.Rectangle(activeEl->x, activeEl->y, activeEl->x + activeEl->w, activeEl->y + activeEl->h);
+						dc.MoveTo(activeEl->x, activeEl->y);
+						dc.LineTo(activeEl->x + activeEl->w, activeEl->y + activeEl->h);
+						dc.MoveTo(activeEl->x + activeEl->w, activeEl->y);
+						dc.LineTo(activeEl->x, activeEl->y + activeEl->h);
+						dc.SelectObject( pOldBrush );
+						dc.SelectObject( pOldPen );
+*/
+					}
+					break;
+				}
+			}
+			dc.SelectObject( pOldBitmap );
+
+			lock_draw.Unlock();
+
+			getFrameTimer( index )->ResetEvent();
+
+//			CRect rect;
+//			view->GetClientRect( rect );
+			view->InvalidateRect( NULL );
+			view->SendNotifyMessage( WM_PAINT, 0, 0 );
+
+			CONST HANDLE events[2] = { getFrameTimer( index )->m_hObject, getFrameClose( index )->m_hObject };
+			DWORD res = ::WaitForMultipleObjects( 2, events, FALSE, INFINITE );
+			if ( res == WAIT_OBJECT_0 ) {               // timer
+			} else if ( res == WAIT_OBJECT_0 + 1 ) {    // close
+			} else {
+			}
+		}
+		lock_used.Unlock();
+	}
 }

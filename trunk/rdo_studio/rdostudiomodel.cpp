@@ -188,6 +188,7 @@ void RDOStudioModel::stopModelNotify()
 		doc->running = false;
 	}
 	model->frameManager.clear();
+	model->frameManager.bmp_clear();
 }
 
 void RDOStudioModel::parseErrorModelNotify()
@@ -482,6 +483,8 @@ void RDOStudioModel::beforeModelStart()
 
 void RDOStudioModel::showFrame()
 {
+	SYSTEMTIME time1;
+	::GetSystemTime( &time1 );
 	modelTime = kernel.getSimulator()->getModelTime();
 	studioApp.mainFrame->showNewModelTime( modelTime );
 	while ( getShowMode() == SM_Monitor ) {};
@@ -489,241 +492,14 @@ void RDOStudioModel::showFrame()
 	vector<RDOFrame *>::const_iterator it = frames.begin();
 	int index = 0;
 	while ( it != frames.end() ) {
-		if ( *it && index < frameManager.count() ) {
-
-			CSingleLock lock_used( frameManager.getFrameUsed( index ) );
-			lock_used.Lock();
-
-			RDOStudioFrameDoc* doc = frameManager.getFrameDoc( index );
-			if ( doc ) {
-
-				SYSTEMTIME time1;
-				::GetSystemTime( &time1 );
-
-				CSingleLock lock_draw( frameManager.getFrameDraw( index ) );
-				lock_draw.Lock();
-
-				RDOStudioFrameView* view = frameManager.getFrameView( index );
-				if ( view->mustBeInit ) {
-					if ( (*it)->hasBackPicture ) {
-						CBitmap* bmp = frameManager.bitmaps[*(*it)->picFileName];
-						BITMAP bmp_info;
-						bmp->GetBitmap( &bmp_info );
-						view->frameBmpRect.right  = bmp_info.bmWidth;
-						view->frameBmpRect.bottom = bmp_info.bmHeight;
-					} else {
-						view->frameBmpRect.right  = (*it)->width;
-						view->frameBmpRect.bottom = (*it)->height;
-					}
-					view->frameBmp.CreateCompatibleBitmap( view->GetDC(), view->frameBmpRect.Width(), view->frameBmpRect.Height() );
-					view->mustBeInit = false;
-					view->updateScrollBars();
-				}
-
-				CDC dc;
-				dc.CreateCompatibleDC( view->GetDC() );
-				CBitmap* pOldBitmap = dc.SelectObject( &view->frameBmp );
-
-				if( !(*it)->hasBackPicture ) {
-					CBrush brush( RGB( (*it)->r, (*it)->g, (*it)->b ) );
-					CBrush* pOldBrush = dc.SelectObject( &brush );
-					CPen pen( PS_SOLID, 0, RGB( 0x00, 0x00, 0x00 ) );
-					CPen* pOldPen = dc.SelectObject( &pen );
-					CRect rect( 0, 0, (*it)->width, (*it)->height );
-					dc.Rectangle( rect );
-					dc.SelectObject( pOldBrush );
-					dc.SelectObject( pOldPen );
-				} else {
-					CBitmap* bmp = frameManager.bitmaps[*(*it)->picFileName];
-					if ( bmp ) {
-						CBitmap* pOldBitmap = frameManager.dcBmp.SelectObject( bmp );
-						BITMAP bmp_info;
-						bmp->GetBitmap( &bmp_info );
-						dc.BitBlt( 0, 0, bmp_info.bmWidth, bmp_info.bmHeight, &frameManager.dcBmp, 0, 0, SRCCOPY );
-						frameManager.dcBmp.SelectObject( pOldBitmap );
-					}
-				}
-
-				int size = (*it)->elements.size();
-				for(int i = 0; i < size; i++)
-				{
-					RDOFrameElement *currElement = (*it)->elements.at(i);
-					switch(currElement->type)
-					{
-					case RDOFrameElement::text_type:
-						{				
-							int oldBkMode;
-							COLORREF oldBkColor;
-							COLORREF oldTextColor;
-							bool restoreBkColor   = false;
-							bool restoreTextColor = false;
-							RDOTextElement *textEl = (RDOTextElement *)currElement;
-							if( !textEl->background.isTransparent ) {
-								oldBkMode  = dc.SetBkMode(OPAQUE);
-								oldBkColor = dc.SetBkColor(RGB(textEl->background.r, textEl->background.g, textEl->background.b));
-								restoreBkColor = true;
-							} else {
-								oldBkMode = dc.SetBkMode(TRANSPARENT);
-							}
-
-							if( !textEl->foreground.isTransparent ) {
-								oldTextColor = dc.SetTextColor(RGB(textEl->foreground.r, textEl->foreground.g, textEl->foreground.b));
-								restoreTextColor = true;
-							}
-
-							UINT nFormat = DT_SINGLELINE;
-							switch(textEl->align)
-							{
-							case RDOTextElement::left:
-								nFormat |= DT_LEFT; break;
-							case RDOTextElement::right:
-								nFormat |= DT_RIGHT; break;
-							case RDOTextElement::center:
-								nFormat |= DT_CENTER; break;
-							}
-
-							dc.DrawText(textEl->strText.c_str(), textEl->strText.length(),
-								CRect(textEl->x, textEl->y, textEl->x + textEl->w, textEl->y + textEl->h),
-								nFormat);
-
-							dc.SetBkMode( oldBkMode );
-							if ( restoreBkColor ) dc.SetBkColor( oldBkColor );
-							if ( restoreTextColor ) dc.SetTextColor( oldTextColor );
-						}
-						break;
-
-					case RDOFrameElement::rect_type:
-						{																		
-							RDORectElement *rectEl = (RDORectElement *)currElement;
-							CBrush brush( RGB(rectEl->background.r, rectEl->background.g, rectEl->background.b) );
-							CBrush* pOldBrush;
-							if( !rectEl->background.isTransparent ) {
-								pOldBrush = dc.SelectObject( &brush );
-							} else {
-								pOldBrush = static_cast<CBrush*>(dc.SelectStockObject( NULL_BRUSH ));
-							}
-
-							CPen pen( PS_SOLID, 0, RGB(rectEl->foreground.r, rectEl->foreground.g, rectEl->foreground.b) );
-							CPen* pOldPen;
-							bool restorePen = false;
-							if( !rectEl->foreground.isTransparent ) {
-								pOldPen = dc.SelectObject( &pen );
-								restorePen = true;
-							}
-
-							dc.Rectangle(rectEl->x, rectEl->y, rectEl->x + rectEl->w, rectEl->y + rectEl->h);
-
-							dc.SelectObject( pOldBrush );
-							if ( restorePen ) dc.SelectObject( pOldPen );
-						}
-						break;
-
-					case RDOFrameElement::line_type:
-						{																		
-							RDOLineElement *lineEl = (RDOLineElement *)currElement;
-							CPen pen( PS_SOLID, 0, RGB(lineEl->foreground.r, lineEl->foreground.g, lineEl->foreground.b) );
-							CPen* pOldPen;
-							bool restorePen = false;
-							if( !lineEl->foreground.isTransparent ) {
-								pOldPen = dc.SelectObject( &pen );
-								restorePen = true;
-							}
-
-							dc.MoveTo(lineEl->x, lineEl->y);
-							dc.LineTo(lineEl->w, lineEl->h);
-
-							if ( restorePen ) dc.SelectObject( pOldPen );
-						}
-						break;
-
-					case RDOFrameElement::bitmap_type: {
-							RDOBitmapElement* bmpEl = (RDOBitmapElement *)currElement;
-							CBitmap* bmp = frameManager.bitmaps[bmpEl->bmp];
-							if ( bmp ) {
-								CBitmap* mask = bmpEl->hasMask ? frameManager.bitmaps[bmpEl->mask] : NULL;
-								CBitmap* pOldBitmap = frameManager.dcBmp.SelectObject( bmp );
-								BITMAP bmp_info;
-								bmp->GetBitmap( &bmp_info );
-								if ( mask ) {
-									CBitmap* pOldMask = frameManager.dcMask.SelectObject( mask );
-									dc.BitBlt( bmpEl->x, bmpEl->y, bmp_info.bmWidth, bmp_info.bmHeight, &frameManager.dcMask, 0, 0, SRCAND );
-									dc.BitBlt( bmpEl->x, bmpEl->y, bmp_info.bmWidth, bmp_info.bmHeight, &frameManager.dcBmp, 0, 0, SRCPAINT );
-									frameManager.dcMask.SelectObject( pOldMask );
-								} else {
-									dc.BitBlt( bmpEl->x, bmpEl->y, bmp_info.bmWidth, bmp_info.bmHeight, &frameManager.dcBmp, 0, 0, SRCCOPY );
-								}
-								frameManager.dcBmp.SelectObject( pOldBitmap );
-							}
-						}
-						break;
-					case RDOFrameElement::s_bmp_type: {
-							RDOSBmpElement *sbmpEl = (RDOSBmpElement *)currElement;
-							CBitmap* bmp = frameManager.bitmaps[sbmpEl->bmp];
-							if ( bmp ) {
-								CBitmap* mask = sbmpEl->hasMask ? frameManager.bitmaps[sbmpEl->mask] : NULL;
-								CBitmap* pOldBitmap = frameManager.dcBmp.SelectObject( bmp );
-								BITMAP bmp_info;
-								bmp->GetBitmap( &bmp_info );
-								if ( mask ) {
-									CBitmap* pOldMask = frameManager.dcMask.SelectObject( mask );
-									dc.StretchBlt( sbmpEl->x, sbmpEl->y, sbmpEl->w, sbmpEl->h, &frameManager.dcMask, 0, 0, bmp_info.bmWidth, bmp_info.bmHeight, SRCAND );
-									dc.StretchBlt( sbmpEl->x, sbmpEl->y, sbmpEl->w, sbmpEl->h, &frameManager.dcBmp, 0, 0, bmp_info.bmWidth, bmp_info.bmHeight, SRCPAINT );
-									frameManager.dcMask.SelectObject( pOldMask );
-								} else {
-									dc.StretchBlt( sbmpEl->x, sbmpEl->y, sbmpEl->w, sbmpEl->h, &frameManager.dcBmp, 0, 0, bmp_info.bmWidth, bmp_info.bmHeight, SRCCOPY );
-								}
-								frameManager.dcBmp.SelectObject( pOldBitmap );
-							}
-						}
-						break;
-
-					case RDOFrameElement::active_type:
-						{							
-/*							
-							RDOActiveElement *activeEl = (RDOActiveElement *)currElement;
-							CBrush brush( RGB(196, 0, 196) );
-							CBrush* pOldBrush = dc.SelectObject( &brush );
-							CPen pen( PS_SOLID, 2, RGB(196, 196, 0) );
-							CPen* pOldPen = dc.SelectObject( &pen );
-							dc.Rectangle(activeEl->x, activeEl->y, activeEl->x + activeEl->w, activeEl->y + activeEl->h);
-							dc.MoveTo(activeEl->x, activeEl->y);
-							dc.LineTo(activeEl->x + activeEl->w, activeEl->y + activeEl->h);
-							dc.MoveTo(activeEl->x + activeEl->w, activeEl->y);
-							dc.LineTo(activeEl->x, activeEl->y + activeEl->h);
-							dc.SelectObject( pOldBrush );
-							dc.SelectObject( pOldPen );
-*/
-						}
-						break;
-					}
-				}
-				dc.SelectObject( pOldBitmap );
-
-				lock_draw.Unlock();
-
-				frameManager.getFrameTimer( index )->ResetEvent();
-
-//				CRect rect;
-//				view->GetClientRect( rect );
-				view->InvalidateRect( NULL );
-				view->SendNotifyMessage( WM_PAINT, 0, 0 );
-
-				CONST HANDLE events[2] = { frameManager.getFrameTimer( index )->m_hObject, frameManager.getFrameClose( index )->m_hObject };
-				DWORD res = ::WaitForMultipleObjects( 2, events, FALSE, INFINITE );
-				if ( res == WAIT_OBJECT_0 ) {
-					SYSTEMTIME time2;
-					::GetSystemTime( &time2 );
-					int msec = ( time2.wSecond - time1.wSecond ) * 1000 + ( time2.wMilliseconds - time1.wMilliseconds );
-//					TRACE( "time = %d\r\n", msec );
-				} else if ( res == WAIT_OBJECT_0 + 1 ) {
-				} else {
-				}
-			}
-			lock_used.Unlock();
-		}
+		frameManager.showFrame( it, index );
 		it++;
 		index++;
 	}
+	SYSTEMTIME time2;
+	::GetSystemTime( &time2 );
+	int msec = ( time2.wSecond - time1.wSecond ) * 1000 + ( time2.wMilliseconds - time1.wMilliseconds );
+	TRACE( "time = %d\r\n", msec );
 }
 
 void RDOStudioModel::updateStyleOfAllModel() const

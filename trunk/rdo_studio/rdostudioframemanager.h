@@ -6,12 +6,15 @@
 #endif
 
 #include "rdostudioframedoc.h"
-#include <map>
 
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioFrameManager
 // ----------------------------------------------------------------------------
+class RDOStudioFrameDoc;
 class RDOStudioFrameView;
+namespace RDOSimulatorNS {
+	struct RDOFrame;
+}
 
 class RDOStudioFrameManager
 {
@@ -47,20 +50,18 @@ private:
 		CEvent              close;
 	};
 	static std::vector< Frame* > frames;
-/*
+
 	class BMP {
 	friend class RDOStudioFrameManager;
 	private:
-		BMP(): name( "" ), mask( "" ), hasMask( false ) {};
-
-		std::string name;
-		std::string mask;
-		bool hasMask;
+		BMP(): w( 0 ), h( 0 ) {};
 		CBitmap bmp;
+		int w;
+		int h;
 	};
-	std::vector< BMP* > bitmaps;
-*/
-	int getNumColors( BITMAPINFOHEADER* pBMIH ) const;
+	std::map< std::string, BMP* > bitmaps;
+	CDC dcBmp;
+	CDC dcMask;
 
 	int lastShowedFrame;
 
@@ -86,11 +87,8 @@ public:
 	void closeAll();
 	void clear();
 
-	std::map< std::string, CBitmap* > bitmaps;
 	void bmp_insert( const std::string& name );
 	void bmp_clear();
-	CDC dcBmp;
-	CDC dcMask;
 
 	void expand() const;
 
@@ -98,6 +96,8 @@ public:
 	void setLastShowedFrame( const int value );
 
 	bool isValidFrameDoc( const RDOStudioFrameDoc* const frame ) const;
+
+	void showFrame( std::vector<RDOSimulatorNS::RDOFrame *>::const_iterator& frame, const int index );
 };
 
 //{{AFX_INSERT_LOCATION}}
