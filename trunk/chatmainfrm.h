@@ -107,6 +107,8 @@ public:
 	void restoreStatusMode();
 	void resetAutoStatusMode();
 
+	void sendMessageToUser() { OnUserSendMessage(); }
+
 protected:
 #ifdef _DEBUG
 	virtual void AssertValid() const;
@@ -161,6 +163,9 @@ protected:
 	afx_msg void OnUpdateEditCopy(CCmdUI* pCmdUI);
 	afx_msg void OnEditPaste();
 	afx_msg void OnUpdateEditPaste(CCmdUI* pCmdUI);
+	afx_msg void OnShowUserList();
+	afx_msg void OnShowNetwork();
+	afx_msg void OnShowSmiles();
 	//}}AFX_MSG
 	afx_msg void OnHandleTrayNotify( UINT wParam, LONG lParam );
 	afx_msg void OnStatusMode( UINT nID );

@@ -498,6 +498,9 @@ void CChatSmileListCtrl::OnSetFocus(CWnd* pOldWnd)
 {
 	CWnd::OnSetFocus( pOldWnd );
 	hasFocus = true;
+	if ( selectedLine == -1 && !list.empty() ) {
+		selectedLine = 0;
+	}
 	repaintLine( selectedLine );
 }
 
@@ -579,6 +582,8 @@ void CChatSmileListCtrl::OnLButtonDown(UINT nFlags, CPoint point)
 void CChatSmileListCtrl::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
 	CWnd::OnKeyDown(nChar, nRepCnt, nFlags);
+
+	chatApp.mainFrame->restoreStatusMode();
 
 	WORD scrollNotify = 0xFFFF;
 	UINT msg = WM_VSCROLL;

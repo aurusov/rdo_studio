@@ -169,6 +169,9 @@
 #define ID_HELP_CONTENTS                32842
 #define ID_VIEW_EDITTOOLBAR             32850
 #define ID_VIEW_STATUSBAR               32851
+#define ID_SHOW_USERLIST                32852
+#define ID_SHOW_NETWORK                 32853
+#define ID_SHOW_SMILES                  32854
 #define IDS_INFOSTATUSBAR               59394
 #define IDS_STATUSMODE_TOOLBAR          61204
 #define IDS_OPTIONS                     61205
@@ -271,7 +274,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        283
-#define _APS_NEXT_COMMAND_VALUE         32852
+#define _APS_NEXT_COMMAND_VALUE         32855
 #define _APS_NEXT_CONTROL_VALUE         1057
 #define _APS_NEXT_SYMED_VALUE           104
 #endif

@@ -40,6 +40,8 @@ protected:
 	afx_msg void OnNetworkOpen();
 	afx_msg void OnNetworkInfo();
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
+	afx_msg UINT OnGetDlgCode();
+	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 	//}}AFX_MSG
 	afx_msg BOOL OnToolTipText( UINT id, NMHDR * pNMHDR, LRESULT * pResult );
 	DECLARE_MESSAGE_MAP()

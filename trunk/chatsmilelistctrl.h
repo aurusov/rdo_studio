@@ -49,7 +49,7 @@ private:
 	bool isFirstLineVisible();
 	bool isLastLineVisible();
 	void selectLine( const int index );
-	void repaintLine ( const int index );
+	void repaintLine( const int index );
 
 	int findLine( const int _yPos );
 	int getStringsSumHeight();

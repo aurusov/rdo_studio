@@ -128,6 +128,9 @@ BEGIN_MESSAGE_MAP( CChatMainFrame, CFrameWnd )
 	ON_UPDATE_COMMAND_UI( ID_STATUSMODE_NOTAVAILIBLE, OnUpdateStatusMode )
 	ON_UPDATE_COMMAND_UI( ID_STATUSMODE_AWAY_INFO        , OnUpdateStatusModeInfo )
 	ON_UPDATE_COMMAND_UI( ID_STATUSMODE_NOTAVAILIBLE_INFO, OnUpdateStatusModeInfo )
+	ON_COMMAND(ID_SHOW_USERLIST, OnShowUserList)
+	ON_COMMAND(ID_SHOW_NETWORK, OnShowNetwork)
+	ON_COMMAND(ID_SHOW_SMILES, OnShowSmiles)
 	//}}AFX_MSG_MAP
 	ON_COMMAND_EX( ID_STATUSMODE_ONLINE      , OnStatusMode )
 	ON_COMMAND_EX( ID_STATUSMODE_AWAY        , OnStatusMode )
@@ -799,7 +802,7 @@ void CChatMainFrame::OnOptions()
 void CChatMainFrame::OnUserSendMessage()
 {
 	CChatUser* user = chatApp.users.getSelected();
-	if ( user ) {
+	if ( user && user != chatApp.users.getOnwer() ) {
 		CChatMessageDialog dlg( IDD_MESSAGE_DIALOG, format( IDS_SENDMESSAGE_DIALOG, user->getUserName().c_str() ) );
 		if ( dlg.DoModal() == IDOK && !dlg.message.IsEmpty() ) {
 			chatApp.udp.send( "<tohostip:" + user->getIP() + "><popupmsg:" + std::string(static_cast<LPCTSTR>(dlg.message)) + ">" );
@@ -881,4 +884,22 @@ void CChatMainFrame::OnEditPaste()
 void CChatMainFrame::OnUpdateEditPaste(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable( &childView.edit == GetFocus() && ::IsClipboardFormatAvailable( CF_TEXT ) );
+}
+
+void CChatMainFrame::OnShowUserList()
+{
+	dock.tab.setCurrentItem( dock.tab.findItem( &dock.users ) );
+	dock.users.SetFocus();
+}
+
+void CChatMainFrame::OnShowNetwork()
+{
+	dock.tab.setCurrentItem( dock.tab.findItem( &dock.network ) );
+	dock.network.SetFocus();
+}
+
+void CChatMainFrame::OnShowSmiles()
+{
+	dock.tab.setCurrentItem( dock.tab.findItem( &dock.smiles ) );
+	dock.smiles.SetFocus();
 }

@@ -34,6 +34,7 @@ private:
 	CFont font;
 
 	bool initSocket();
+	void setBroadcastIP( const std::string ipBase );
 
 public:
 	CChatApp();

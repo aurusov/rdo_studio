@@ -24,6 +24,8 @@ BEGIN_MESSAGE_MAP( CChatNetworkCtrl, RDOTreeCtrl )
 	ON_COMMAND(ID_NETWORK_OPEN, OnNetworkOpen)
 	ON_COMMAND(ID_NETWORK_INFO, OnNetworkInfo)
 	ON_WM_CONTEXTMENU()
+	ON_WM_GETDLGCODE()
+	ON_WM_KEYDOWN()
 	//}}AFX_MSG_MAP
 	ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTW, 0, 0xFFFF, OnToolTipText)
 	ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTA, 0, 0xFFFF, OnToolTipText)
@@ -245,6 +247,28 @@ void CChatNetworkCtrl::OnContextMenu(CWnd* pWnd, CPoint point)
 			ClientToScreen( &point );
 			subMenu->TrackPopupMenu( TPM_LEFTALIGN | TPM_RIGHTBUTTON, point.x, point.y, this );
 			menu.DestroyMenu();
+		}
+	}
+}
+
+UINT CChatNetworkCtrl::OnGetDlgCode()
+{
+	return RDOTreeCtrl::OnGetDlgCode() | DLGC_WANTALLKEYS;
+}
+
+void CChatNetworkCtrl::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
+{
+	RDOTreeCtrl::OnKeyDown(nChar, nRepCnt, nFlags);
+
+	chatApp.mainFrame->restoreStatusMode();
+
+	if ( nChar == VK_RETURN ) {
+		HTREEITEM hitem = GetSelectedItem();
+		if ( hitem ) {
+			CChatNet* net = reinterpret_cast<CChatNet*>(GetItemData( hitem ));
+			if ( net && net->getType() == CChatNet::shared || net->getType() == CChatNet::server ) {
+				net->openingThread = AfxBeginThread( shellExecute, net );
+			}
 		}
 	}
 }

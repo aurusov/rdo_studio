@@ -557,6 +557,9 @@ BEGIN
     "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL, NOINVERT
     VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT, NOINVERT
     VK_F1,          ID_HELP_CONTENTS,       VIRTKEY, NOINVERT
+    VK_F2,          ID_SHOW_USERLIST,       VIRTKEY, NOINVERT
+    VK_F3,          ID_SHOW_NETWORK,        VIRTKEY, NOINVERT
+    VK_F4,          ID_SHOW_SMILES,         VIRTKEY, NOINVERT
     VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
     VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY, SHIFT, NOINVERT
     VK_RETURN,      ID_CHAT_TOCRYOUT,       VIRTKEY, CONTROL, NOINVERT
@@ -571,8 +574,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,2,0,250
- PRODUCTVERSION 0,2,0,250
+ FILEVERSION 0,2,0,253
+ PRODUCTVERSION 0,2,0,253
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -590,14 +593,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "Application for chat in localnet\0"
-            VALUE "FileVersion", "0, 2, 0, 250\0"
+            VALUE "FileVersion", "0, 2, 0, 253\0"
             VALUE "InternalName", "localChat\0"
             VALUE "LegalCopyright", "Copyright (C) 2002\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "localchat.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "localChat\0"
-            VALUE "ProductVersion", "0, 2, 0, 250\0"
+            VALUE "ProductVersion", "0, 2, 0, 253\0"
             VALUE "SpecialBuild", "\0"
         END
     END

@@ -127,12 +127,16 @@ bool CChatApp::initSocket()
 			if ( userName.empty() ) {
 				userName = hostName;
 			}
-			if( ( hostinfo = gethostbyname(name)) != NULL ) {
-				ip = inet_ntoa( *(struct in_addr*)*hostinfo->h_addr_list );
-//				ip = "192.168.1.1";
-				int i = ip.rfind( '.' );
-				if ( i != -1 ) {
-					broadcastIP = std::string( ip.begin(), ip[i+1] ) + "255";
+			std::string cmd = m_lpCmdLine;
+			std::string::size_type pos = cmd.find( "ip=" );
+			if ( pos != std::string::npos ) {
+				ip = cmd.substr( pos + 3 );
+				setBroadcastIP( ip );
+			} else {
+				if( ( hostinfo = gethostbyname(name)) != NULL ) {
+					ip = inet_ntoa( *(struct in_addr*)*hostinfo->h_addr_list );
+//					ip = "192.168.1.1";
+					setBroadcastIP( ip );
 				}
 			}
 		}
@@ -159,6 +163,14 @@ bool CChatApp::initSocket()
 	}
 
 	return true;
+}
+
+void CChatApp::setBroadcastIP( const std::string ipBase )
+{
+	int i = ipBase.rfind( '.' );
+	if ( i != -1 ) {
+		broadcastIP = std::string( ipBase.begin(), ipBase[i+1] ) + "255";
+	}
 }
 
 CChatStatusModeType CChatApp::getStatusMode()

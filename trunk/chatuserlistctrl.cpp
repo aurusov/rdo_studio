@@ -21,6 +21,7 @@ BEGIN_MESSAGE_MAP( CChatUserListCtrl, RDOTreeCtrl )
 	ON_WM_KEYDOWN()
 	ON_WM_RBUTTONDOWN()
 	ON_WM_CONTEXTMENU()
+	ON_WM_GETDLGCODE()
 	//}}AFX_MSG_MAP
 	ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTW, 0, 0xFFFF, OnToolTipText)
 	ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTA, 0, 0xFFFF, OnToolTipText)
@@ -127,6 +128,10 @@ void CChatUserListCtrl::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
 	RDOTreeCtrl::OnKeyDown( nChar, nRepCnt, nFlags );
 
 	chatApp.mainFrame->restoreStatusMode();
+
+	if ( nChar == VK_RETURN ) {
+		chatApp.mainFrame->sendMessageToUser();
+	}
 }
 
 // Using code from Megavarnan Selvaraj
@@ -248,4 +253,9 @@ void CChatUserListCtrl::OnContextMenu(CWnd* pWnd, CPoint point)
 		ClientToScreen( &point );
 		popupMenu.TrackPopupMenu( TPM_LEFTALIGN | TPM_RIGHTBUTTON, point.x, point.y, chatApp.mainFrame );
 	}
+}
+
+UINT CChatUserListCtrl::OnGetDlgCode()
+{
+	return RDOTreeCtrl::OnGetDlgCode() | DLGC_WANTALLKEYS;
 }
