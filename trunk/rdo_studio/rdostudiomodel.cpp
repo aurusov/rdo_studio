@@ -84,9 +84,11 @@ bool RDOStudioModel::openModel( const string& modelName ) const
 	studioApp.mainFrame->output.clearDebug();
 	studioApp.mainFrame->output.clearResults();
 	studioApp.mainFrame->output.clearFind();
+	studioApp.mainFrame->output.appendStringToBuild( "Loading model..." );
 	bool flag = kernel.getRepository()->openModel( modelName );
 	if ( flag ) {
 		studioApp.mainFrame->output.updateLogConnection();
+		studioApp.mainFrame->output.appendStringToBuild( "Loading model... ok" );
 	}
 	return flag;
 }
@@ -354,6 +356,7 @@ void RDOStudioModel::openModelFromRepository()
 					default: canLoad = false; break;
 				}
 				if ( canLoad ) {
+//					if ( stream.rdstate() & ios_base::badbit )
 					edit->load( stream );
 					edit->setReadOnly( kernel.getRepository()->isReadOnly() );
 				}

@@ -45,7 +45,7 @@ string RDOLogEditLineInfo::getMessage() const
 		case rdoModelObjects::PMD: file = "PMD"; break;
 		default: file = "";
 	}
-	if ( lineNumber == -1 || file.empty() ) {
+	if ( lineNumber < 0 || file.empty() ) {
 		return message;
 	} else {
 		return format( "%s (%d): %s", file.c_str(), lineNumber + 1, message.c_str() );
