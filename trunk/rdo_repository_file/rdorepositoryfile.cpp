@@ -52,6 +52,8 @@ RDORepositoryFile::RDORepositoryFile():
 	kernel.setNotifyReflect( RDOKernel::modelStopped, stopModelNotify );
 	kernel.setNotifyReflect( RDOKernel::traceString, traceNotify );
 
+	lastModelPath = AfxGetApp()->GetProfileString( "repository", "lastModelPath", "" );
+
 	resetModelNames();
 }
 
@@ -115,7 +117,6 @@ void RDORepositoryFile::newModel()
 		pmdFileName = modelName;
 		pmvFileName = modelName;
 		trcFileName = modelName;
-		changeLastModelPath();
 		kernel.notify( RDOKernel::newModel );
 	} else {
 		kernel.notify( RDOKernel::canNotCloseModel );
@@ -264,7 +265,6 @@ void RDORepositoryFile::realCloseModel()
 	modelName   = "";
 	modelPath   = "";
 	resetModelNames();
-	changeLastModelPath();
 }
 
 void RDORepositoryFile::closeModel()
@@ -367,6 +367,7 @@ void RDORepositoryFile::changeLastModelPath()
 		}
 		lastModelPath += name;
 	}
+	AfxGetApp()->WriteProfileString( "repository", "lastModelPath", lastModelPath.c_str() );
 }
 
 string RDORepositoryFile::getName() const
