@@ -27,11 +27,9 @@ RDOStudioModel* model = NULL;
 RDOStudioModel::RDOStudioModel():
 	modelDocTemplate( NULL ),
 	frameDocTemplate( NULL ),
-	name( "" ),
 	useTemplate( false ),
 	closeWithDocDelete( true ),
-	canNotCloseByModel( false ),
-	running( false )
+	showCanNotCloseModelMessage( true )
 {
 	model = this;
 
@@ -60,10 +58,7 @@ RDOStudioModel::RDOStudioModel():
 
 RDOStudioModel::~RDOStudioModel()
 {
-	kernel.getRepository()->closeModel();
-	if ( isRunning() ) {
-		kernel.getSimulator()->stopModel();
-	}
+	closeModel();
 	model = NULL;
 }
 
@@ -98,6 +93,7 @@ void RDOStudioModel::saveAsModel() const
 
 void RDOStudioModel::closeModel() const
 {
+	stopModel();
 	studioApp.mainFrame->output.clearBuild();
 	studioApp.mainFrame->output.clearDebug();
 	studioApp.mainFrame->output.clearResults();
@@ -155,12 +151,25 @@ void RDOStudioModel::runModelNotify()
 {
 	studioApp.mainFrame->output.clearDebug();
 	studioApp.mainFrame->output.showDebug();
-	model->running = true;
+	RDOStudioModelDoc* doc = model->getModelDoc();
+	if ( doc ) {
+		doc->running = true;
+	}
 }
 
 void RDOStudioModel::stopModelNotify()
 {
-	model->running = false;
+	RDOStudioModelDoc* doc = model->getModelDoc();
+	if ( doc ) {
+		doc->running = false;
+	}
+	POSITION pos = model->frameDocTemplate->GetFirstDocPosition();
+	if ( pos ) {
+		RDOStudioFrameDoc* frame = static_cast<RDOStudioFrameDoc*>(model->frameDocTemplate->GetNextDoc( pos ));
+		if ( frame ) {
+			frame->OnCloseDocument();
+		}
+	}
 }
 
 void RDOStudioModel::parseErrorModelNotify()
@@ -367,26 +376,7 @@ bool RDOStudioModel::canCloseModel()
 		}
 	}
 	if ( !flag ) {
-		canNotCloseByModel = true;
-	}
-	return flag;
-}
-
-bool RDOStudioModel::canCloseDocument()
-{
-	bool flag = true;
-	if ( isModify() ) {
-		int res = AfxGetMainWnd()->MessageBox( format( ID_MSG_MODELSAVE_QUERY ).c_str(), NULL, MB_ICONQUESTION | MB_YESNOCANCEL );
-		switch ( res ) {
-			case IDYES   : flag = saveModel(); break;
-			case IDNO    : flag = true; break;
-			case IDCANCEL: flag = false; break;
-		}
-	}
-	if ( flag ) {
-		closeWithDocDelete = false;
-		closeModel();
-		closeWithDocDelete = true;
+		showCanNotCloseModelMessage = false;
 	}
 	return flag;
 }
@@ -399,41 +389,51 @@ void RDOStudioModel::closeModelFromRepository()
 			doc->OnCloseDocument();
 		}
 	}
-	if ( !canNotCloseByModel ) {
-		canNotCloseByModel = false;
+	if ( !showCanNotCloseModelMessage ) {
+		showCanNotCloseModelMessage = true;
 	}
 }
 
 void RDOStudioModel::canNotCloseModelFromRepository() const
 {
-	if ( !canNotCloseByModel ) {
+	if ( showCanNotCloseModelMessage ) {
 		AfxMessageBox( format( ID_MSG_MODELCLOSE_ERROR ).c_str(), MB_ICONSTOP | MB_OK );
 	}
 }
 
 string RDOStudioModel::getName() const
 {
-	return name;
+	RDOStudioModelDoc* doc = getModelDoc();
+	if ( doc ) {
+		return doc->getName();
+	}
+	return "";
 }
 
 void RDOStudioModel::setName( const string& str )
 {
-	name = str;
-	static char szDelims[] = " \t\n\r";
-	name.erase( 0, name.find_first_not_of( szDelims ) );
-	name.erase( name.find_last_not_of( szDelims ) + 1, string::npos );
-	getModelDoc()->SetTitle( name.c_str() );
+	RDOStudioModelDoc* doc = getModelDoc();
+	if ( doc ) {
+		doc->setName( str );
+	}
 }
 
 bool RDOStudioModel::isModify() const
 {
-	bool flag = false;
 	RDOStudioModelDoc* doc = getModelDoc();
 	if ( doc ) {
-		updateModify();
-		flag = doc->IsModified() ? true : false;
+		return doc->isModify();
 	}
-	return flag;
+	return false;
+}
+
+bool RDOStudioModel::isRunning() const
+{
+	RDOStudioModelDoc* doc = getModelDoc();
+	if ( doc ) {
+		return doc->isRunning();
+	}
+	return false;
 }
 
 double RDOStudioModel::getModelTime() const
@@ -463,6 +463,7 @@ void RDOStudioModel::parseFrame()
 			ASSERT( false );
 		}
 	}
+
 	CSingleLock lock( &getFrameDoc()->frameUsed );
 	lock.Lock();
 

@@ -11,6 +11,8 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+using namespace std;
+
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioModelDoc
 // ----------------------------------------------------------------------------
@@ -21,7 +23,10 @@ BEGIN_MESSAGE_MAP(RDOStudioModelDoc, RDOStudioEditBaseDoc)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-RDOStudioModelDoc::RDOStudioModelDoc(): RDOStudioEditBaseDoc()
+RDOStudioModelDoc::RDOStudioModelDoc():
+	RDOStudioEditBaseDoc(),
+	name( "" ),
+	running( false )
 {
 }
 
@@ -79,18 +84,43 @@ RDOStudioModelView* RDOStudioModelDoc::getView() const
 
 BOOL RDOStudioModelDoc::CanCloseFrame(CFrameWnd* pFrame) 
 {
-	if ( model->getModelDoc() == this ) {
-		return model->canCloseDocument();
+	bool flag = true;
+	if ( isModify() ) {
+		int res = AfxGetMainWnd()->MessageBox( format( ID_MSG_MODELSAVE_QUERY ).c_str(), NULL, MB_ICONQUESTION | MB_YESNOCANCEL );
+		switch ( res ) {
+			case IDYES   : flag = model->saveModel(); break;
+			case IDNO    : flag = true; break;
+			case IDCANCEL: flag = false; break;
+		}
 	}
-	return TRUE;
+	if ( flag ) {
+		model->closeWithDocDelete = false;
+		model->closeModel();
+		model->closeWithDocDelete = true;
+	}
+	return flag;
 }
 
 void RDOStudioModelDoc::OnCloseDocument() 
 {
 	RDOStudioEditBaseDoc::OnCloseDocument();
+	model->stopModel();
 }
 
-bool RDOStudioModelDoc::isRunning() const
+string RDOStudioModelDoc::getName() const
 {
-	return model->isRunning();
+	return name;
+}
+
+void RDOStudioModelDoc::setName( const string& str )
+{
+	name = str;
+	trim( name );
+	SetTitle( name.c_str() );
+}
+
+bool RDOStudioModelDoc::isModify()
+{
+	updateModify();
+	return IsModified() ? true : false;
 }

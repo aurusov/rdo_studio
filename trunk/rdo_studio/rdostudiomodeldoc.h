@@ -16,9 +16,13 @@ class RDOStudioModelDoc: public RDOStudioEditBaseDoc
 {
 friend class RDOStudioModel;
 
-protected:
+DECLARE_DYNCREATE(RDOStudioModelDoc)
+
+private:
+	std::string name;
+	bool running;
+
 	RDOStudioModelDoc();
-	DECLARE_DYNCREATE(RDOStudioModelDoc)
 
 public:
 	//{{AFX_VIRTUAL(RDOStudioModelDoc)
@@ -41,7 +45,11 @@ public:
 
 	RDOStudioModelView* getView() const;
 
-	bool isRunning() const;
+	std::string getName() const;
+	void setName( const std::string& str );
+
+	bool isModify();
+	bool isRunning() const { return running; };
 
 #ifdef _DEBUG
 	virtual void AssertValid() const;
