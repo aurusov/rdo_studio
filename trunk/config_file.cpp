@@ -5,12 +5,14 @@
 #include <qfile.h>
 #include <qtextstream.h>
 #include <qdir.h>
-#define general_section "general"
+
+#define config_file_name ".winwget"
+#define general_section  "general"
 
 #else
 
 #include <qsettings.h>
-#define winwget_register "winwget"
+#define root_register "winwget"
 
 #endif
 
@@ -43,7 +45,7 @@ void WGConfigFile::open()
 {
 	QDir dir( QDir::homeDirPath() );
 	if ( dir.exists() ) {
-		QFile file( dir.filePath(".winwget") );
+		QFile file( dir.filePath( config_file_name ) );
 		if ( file.open(IO_ReadOnly) ) {
 			QTextStream stream( &file );
 			config.clear();
@@ -72,7 +74,7 @@ void WGConfigFile::save()
 	if ( save_config ) {
 		QDir dir( QDir::homeDirPath() );
 		if ( dir.exists() ) {
-			QFile file( dir.filePath(".winwget") );
+			QFile file( dir.filePath( config_file_name ) );
 			if ( file.open(IO_WriteOnly) ) {
 				QTextStream stream( &file );
 				config.sort();
@@ -213,9 +215,9 @@ QString WGConfigFile::read_str( QString& name_value, QString def_value, const ch
 	QSettings reg;
 	QString s;
 	if ( section ) {
-		s.sprintf( "/%s/%s/%s", winwget_register, section, name_value.latin1() );
+		s.sprintf( "/%s/%s/%s", root_register, section, name_value.latin1() );
 	} else {
-		s.sprintf( "/%s/%s", winwget_register, name_value.latin1() );
+		s.sprintf( "/%s/%s", root_register, name_value.latin1() );
 	}
 	return reg.readEntry( s, def_value );
 }
@@ -225,9 +227,9 @@ int WGConfigFile::read_int( QString& name_value, const int def_value, const char
 	QSettings reg;
 	QString s;
 	if ( section ) {
-		s.sprintf( "/%s/%s/%s", winwget_register, section, name_value.latin1() );
+		s.sprintf( "/%s/%s/%s", root_register, section, name_value.latin1() );
 	} else {
-		s.sprintf( "/%s/%s", winwget_register, name_value.latin1() );
+		s.sprintf( "/%s/%s", root_register, name_value.latin1() );
 	}
 	return reg.readNumEntry( s, def_value );
 }
@@ -237,9 +239,9 @@ bool WGConfigFile::read_bool( QString& name_value, const bool def_value, const c
 	QSettings reg;
 	QString s;
 	if ( section ) {
-		s.sprintf( "/%s/%s/%s", winwget_register, section, name_value.latin1() );
+		s.sprintf( "/%s/%s/%s", root_register, section, name_value.latin1() );
 	} else {
-		s.sprintf( "/%s/%s", winwget_register, name_value.latin1() );
+		s.sprintf( "/%s/%s", root_register, name_value.latin1() );
 	}
 	return reg.readBoolEntry( s, def_value );
 }
@@ -249,9 +251,9 @@ void WGConfigFile::write( QString& name_value, QString value, const char* sectio
 	QSettings reg;
 	QString s;
 	if ( section ) {
-		s.sprintf( "/%s/%s/%s", winwget_register, section, name_value.latin1() );
+		s.sprintf( "/%s/%s/%s", root_register, section, name_value.latin1() );
 	} else {
-		s.sprintf( "/%s/%s", winwget_register, name_value.latin1() );
+		s.sprintf( "/%s/%s", root_register, name_value.latin1() );
 	}
 	reg.writeEntry( s, value );
 }
@@ -261,9 +263,9 @@ void WGConfigFile::write( QString& name_value, const int value, const char* sect
 	QSettings reg;
 	QString s;
 	if ( section ) {
-		s.sprintf( "/%s/%s/%s", winwget_register, section, name_value.latin1() );
+		s.sprintf( "/%s/%s/%s", root_register, section, name_value.latin1() );
 	} else {
-		s.sprintf( "/%s/%s", winwget_register, name_value.latin1() );
+		s.sprintf( "/%s/%s", root_register, name_value.latin1() );
 	}
 	reg.writeEntry( s, value );
 }
@@ -273,9 +275,9 @@ void WGConfigFile::write( QString& name_value, const bool value, const char* sec
 	QSettings reg;
 	QString s;
 	if ( section ) {
-		s.sprintf( "/%s/%s/%s", winwget_register, section, name_value.latin1() );
+		s.sprintf( "/%s/%s/%s", root_register, section, name_value.latin1() );
 	} else {
-		s.sprintf( "/%s/%s", winwget_register, name_value.latin1() );
+		s.sprintf( "/%s/%s", root_register, name_value.latin1() );
 	}
 	reg.writeEntry( s, value );
 }
