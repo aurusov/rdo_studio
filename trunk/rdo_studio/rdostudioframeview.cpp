@@ -58,41 +58,46 @@ int RDOStudioFrameView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 void RDOStudioFrameView::OnDraw(CDC* pDC)
 {
-	RDOStudioFrameDoc* pDoc = GetDocument();
-	ASSERT_VALID(pDoc);
+//	RDOStudioFrameDoc* pDoc = GetDocument();
+//	ASSERT_VALID(pDoc);
 
-	CSingleLock lock( &pDoc->frameUsed );
-	lock.Lock();
+	int index = model->frameManager.findFrameIndex( this );
+	CSingleLock lock_draw( model->frameManager.getFrameDraw( index ) );
+	lock_draw.Lock();
 
-	GetClientRect( &newClientRect );
-//	CRect rect;
-//	rect.CopyRect( &newClientRect );
+	CSingleLock lock_deleted( model->frameManager.getFrameDeleted( index ) );
+	if ( !lock_deleted.IsLocked() ) {
 
-	if ( newClientRect.Width() > clientBmpRect.Width() || newClientRect.Height() > clientBmpRect.Height() ) {
-		if ( clientBmp.GetSafeHandle() ) clientBmp.DeleteObject();
-		clientBmp.CreateCompatibleBitmap( pDC, newClientRect.Width(), newClientRect.Height() );
-		clientBmpRect = newClientRect;
+		GetClientRect( &newClientRect );
+//		CRect rect;
+//		rect.CopyRect( &newClientRect );
+
+		if ( newClientRect.Width() > clientBmpRect.Width() || newClientRect.Height() > clientBmpRect.Height() ) {
+			if ( clientBmp.GetSafeHandle() ) clientBmp.DeleteObject();
+			clientBmp.CreateCompatibleBitmap( pDC, newClientRect.Width(), newClientRect.Height() );
+			clientBmpRect = newClientRect;
+		}
+
+		CDC dc;
+		dc.CreateCompatibleDC( pDC );
+		CBitmap* pOldBitmap = dc.SelectObject( &clientBmp );
+
+		int oldBkMode = dc.SetBkMode( TRANSPARENT );
+
+		dc.FillSolidRect( newClientRect, studioApp.mainFrame->style_frame.theme->backgroundColor );
+
+		CDC dc2;
+		dc2.CreateCompatibleDC( pDC );
+		CBitmap* pOldBitmap2 = dc2.SelectObject( &frameBmp );
+		dc.BitBlt( 0, 0, newClientRect.Width(), newClientRect.Height(), &dc2, 0, 0, SRCCOPY );
+		dc2.SelectObject( pOldBitmap2 );
+
+		pDC->BitBlt( 0, 0, newClientRect.Width(), newClientRect.Height(), &dc, 0, 0, SRCCOPY );
+		dc.SetBkMode( oldBkMode );
+		dc.SelectObject( pOldBitmap );
 	}
 
-	CDC dc;
-	dc.CreateCompatibleDC( pDC );
-	CBitmap* pOldBitmap = dc.SelectObject( &clientBmp );
-
-	int oldBkMode = dc.SetBkMode( TRANSPARENT );
-
-	dc.FillSolidRect( newClientRect, studioApp.mainFrame->style_frame.theme->backgroundColor );
-
-	CDC dc2;
-	dc2.CreateCompatibleDC( pDC );
-	CBitmap* pOldBitmap2 = dc2.SelectObject( &frameBmp );
-	dc.BitBlt( 0, 0, newClientRect.Width(), newClientRect.Height(), &dc2, 0, 0, SRCCOPY );
-	dc2.SelectObject( pOldBitmap2 );
-
-	pDC->BitBlt( 0, 0, newClientRect.Width(), newClientRect.Height(), &dc, 0, 0, SRCCOPY );
-	dc.SetBkMode( oldBkMode );
-	dc.SelectObject( pOldBitmap );
-
-	lock.Unlock();
+	lock_draw.Unlock();
 }
 
 BOOL RDOStudioFrameView::OnPreparePrinting(CPrintInfo* pInfo)

@@ -70,14 +70,33 @@ int RDOStudioFrameManager::findFrameIndex( const RDOStudioFrameDoc* doc ) const
 	return -1;
 }
 
+int RDOStudioFrameManager::findFrameIndex( const RDOStudioFrameView* view ) const
+{
+	vector< Frame* >::iterator it = frames.begin();
+	int index = 0;
+	while ( it != frames.end() ) {
+		if ( (*it)->view == view ) {
+			return index;
+		}
+		it++;
+		index++;
+	};
+	return -1;
+}
+
 RDOStudioFrameDoc* RDOStudioFrameManager::connectFrameDoc( const HTREEITEM hitem ) const
 {
 	int index = findFrameIndex( hitem );
 	RDOStudioFrameDoc* doc = NULL;
 	if ( index != -1 ) {
+//		CSingleLock lock( &frames[index]->used );
+//		lock.Lock();
+
 		doc = static_cast<RDOStudioFrameDoc*>(frameDocTemplate->OpenDocumentFile( NULL ));
 		frames[index]->doc  = doc;
 		frames[index]->view = doc->getView();
+
+//		lock.Unlock();
 	}
 	return doc;
 }
@@ -86,8 +105,13 @@ void RDOStudioFrameManager::disconnectFrameDoc( const RDOStudioFrameDoc* doc ) c
 {
 	int index = findFrameIndex( doc );
 	if ( index != -1 ) {
+//		CSingleLock lock( &frames[index]->used );
+//		lock.Lock();
+
 		frames[index]->doc  = NULL;
 		frames[index]->view = NULL;
+
+//		lock.Unlock();
 	}
 }
 

@@ -64,12 +64,21 @@ RDOStudioFrameView* RDOStudioFrameDoc::getView() const
 
 void RDOStudioFrameDoc::OnCloseDocument()
 {
-	CSingleLock lock( &frameUsed );
-	lock.Lock();
+	int index = model->frameManager.findFrameIndex( this );
+
+	CSingleLock lock_used( model->frameManager.getFrameUsed( index ) );
+	lock_used.Lock();
+
+	CSingleLock lock_draw( model->frameManager.getFrameDraw( index ) );
+	lock_draw.Lock();
+
+	CSingleLock lock_deleted( model->frameManager.getFrameDeleted( index ) );
+	lock_deleted.Lock();
 
 	model->frameManager.disconnectFrameDoc( this );
-	
-	lock.Unlock();
+
+	lock_draw.Unlock();
+	lock_used.Unlock();
 
 	CDocument::OnCloseDocument();
 }

@@ -25,6 +25,9 @@ private:
 		HTREEITEM           hitem;
 		RDOStudioFrameDoc*  doc;
 		RDOStudioFrameView* view;
+		CMutex              used;
+		CMutex              draw;
+		CMutex              deleted;
 	};
 	static std::vector< Frame* > frames;
 
@@ -37,10 +40,14 @@ public:
 	void insertItem( const std::string& name );
 	int findFrameIndex( const HTREEITEM hitem ) const;
 	int findFrameIndex( const RDOStudioFrameDoc* doc ) const;
+	int findFrameIndex( const RDOStudioFrameView* view ) const;
 	RDOStudioFrameDoc* connectFrameDoc( const HTREEITEM hitem ) const;
 	void disconnectFrameDoc( const RDOStudioFrameDoc* doc ) const;
-	RDOStudioFrameDoc*  getFrameDoc( const int index ) const  { return frames[index]->doc;  };
-	RDOStudioFrameView* getFrameView( const int index ) const { return frames[index]->view; };
+	RDOStudioFrameDoc*  getFrameDoc( const int index ) const     { return frames[index]->doc;      };
+	RDOStudioFrameView* getFrameView( const int index ) const    { return frames[index]->view;     };
+	CMutex*             getFrameUsed( const int index ) const    { return &frames[index]->used;    };
+	CMutex*             getFrameDraw( const int index ) const    { return &frames[index]->draw;    };
+	CMutex*             getFrameDeleted( const int index ) const { return &frames[index]->deleted; };
 	void clear();
 
 	void expand() const;

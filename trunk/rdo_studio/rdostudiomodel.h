@@ -20,6 +20,7 @@ class RDOStudioModel
 friend class RDOStudioModelDoc;
 friend class RDOStudioApp;
 friend class RDOStudioFrameDoc;
+friend class RDOStudioFrameView;
 friend class RDOStudioFrameTreeCtrl;
 
 private:

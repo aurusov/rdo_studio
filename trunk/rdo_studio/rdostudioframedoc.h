@@ -20,8 +20,6 @@ DECLARE_DYNCREATE(RDOStudioFrameDoc)
 protected:
 	RDOStudioFrameDoc();
 
-	CMutex frameUsed;
-
 public:
 	virtual ~RDOStudioFrameDoc();
 
