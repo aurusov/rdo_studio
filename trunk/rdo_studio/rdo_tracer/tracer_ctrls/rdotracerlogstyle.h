@@ -60,6 +60,7 @@ friend class RDOStudioOptionsStylesAndColors;
 
 protected:
 	virtual void initTheme();
+	virtual void initBorders();
 
 public:
 	RDOTracerLogStyle();
@@ -70,6 +71,8 @@ public:
 	RDOTracerLogStyle& operator =( const RDOTracerLogStyle& style );
 	bool operator ==( const RDOTracerLogStyle& style ) const;
 	bool operator !=( const RDOTracerLogStyle& style ) const;
+
+	virtual void init( const std::string& _regPath = "" );
 
 	//static RDOTracerLogStyle getDefaultStyle();
 };

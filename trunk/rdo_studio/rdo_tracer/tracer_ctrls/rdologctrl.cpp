@@ -807,7 +807,7 @@ bool RDOLogCtrl::makeLineVisible( const int index )
 	return res;
 }
 
-void RDOLogCtrl::addStringToLog( const string& logStr )
+void RDOLogCtrl::addStringToLog( const string logStr )
 {
 	if ( GetSafeHwnd() ) {
 		bool prevVisible = isVisible( stringsCount - 1 );
@@ -1045,4 +1045,17 @@ int RDOLogCtrl::find( const bool searchDown, const bool matchCase, const bool ma
 		return posFind;
 	}
 	return -1;
+}
+
+void RDOLogCtrl::setText( std::string text )
+{
+	clear();
+	while ( !text.empty() ) {
+		int pos = text.find_first_of( "\r\n" );
+		if ( pos == string::npos )
+			pos = text.length();
+		addStringToLog( pos ? text.substr( 0, pos ) : "" );
+		text.erase( 0, pos );
+		text.erase( 0, text.find_first_not_of( "\r\n" ) );
+	}
 }

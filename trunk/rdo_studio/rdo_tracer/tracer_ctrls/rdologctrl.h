@@ -98,7 +98,7 @@ public:
 	RDOLogCtrl( RDOLogStyle* style = NULL );
 	virtual ~RDOLogCtrl();
 
-	virtual void addStringToLog( const std::string& logStr );
+	virtual void addStringToLog( const std::string logStr );
 	
 	bool getFocusOnly() const { return focusOnly; }
 	virtual void setFocusOnly( const bool value ) { focusOnly = value; }
@@ -116,6 +116,8 @@ public:
 	
 	virtual const RDOLogStyle& getStyle() const;
 	virtual void setStyle( RDOLogStyle* style, const bool needRedraw = true );
+
+	void setText( std::string text );
 	
 	//Must be called when moving main frame window
 	//void storeWindowRect();

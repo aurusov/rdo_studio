@@ -47,7 +47,7 @@ public:
 	RDOTracerLogCtrl();
 	virtual ~RDOTracerLogCtrl();
 
-	void addStringToLog( const std::string& logStr );
+	void addStringToLog( const std::string logStr );
 
 	void setStyle( RDOTracerLogStyle* style, const bool needRedraw = true );
 

@@ -239,6 +239,13 @@ void RDOTracerLogStyle::initTheme()
 	theme = new RDOTracerLogTheme;
 }
 
+void RDOTracerLogStyle::initBorders()
+{
+	RDOLogStyle::initBorders();
+	borders->vertBorder = 1;
+	borders->horzBorder = 2;
+}
+
 bool RDOTracerLogStyle::getItemColors( const string& item, COLORREF& textColor, COLORREF& backColor ) const
 {
 	if ( item.empty() )
@@ -356,6 +363,12 @@ bool RDOTracerLogStyle::operator ==( const RDOTracerLogStyle& style ) const
 bool RDOTracerLogStyle::operator !=( const RDOTracerLogStyle& style ) const
 {
 	return !(*this == style);
+}
+
+void RDOTracerLogStyle::init( const string& _regPath )
+{
+	RDOLogStyle::init( _regPath );
+	font->name = "Courier";
 }
 
 /*RDOTracerLogStyle RDOTracerLogStyle::getDefaultStyle()

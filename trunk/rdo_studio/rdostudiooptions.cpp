@@ -296,11 +296,34 @@ RDOStudioOptionsStylesAndColors::RDOStudioOptionsStylesAndColors( RDOStudioOptio
 	object->properties.push_back( new STYLEProperty( object, "Debug Window", debug_theme->defaultStyle, debug_theme->defaultColor, debug_theme->backgroundColor ) );
 	objects.push_back( object );
 
-	RDOTracerLogStyle* trace_theme = &sheet->style_trace;
+	RDOTracerLogTheme* trace_theme = static_cast<RDOTracerLogTheme*>(sheet->style_trace.theme);
 	object = new STYLEObject( STYLEObject::trace, sheet->style_trace.font->name, sheet->style_trace.font->size );
-	object->properties.push_back( new STYLEProperty( object, "Trace Window", trace_theme->style, trace_theme->es.foregroundColor, trace_theme->es.backgroundColor ) );
-	object->properties.push_back( new STYLEProperty( object, "Service event (ES)", trace_theme->style, trace_theme->es.foregroundColor, trace_theme->es.backgroundColor ) );
-	object->properties.push_back( new STYLEProperty( object, "Action start (EB)", trace_theme->style, trace_theme->eb.foregroundColor, trace_theme->eb.backgroundColor ) );
+	object->properties.push_back( new STYLEProperty( object, "Trace Window", trace_theme->style, trace_theme->defaultColor.foregroundColor, trace_theme->defaultColor.backgroundColor ) );
+	object->properties.push_back( new STYLEProperty( object, format( IDS_COLORSTYLE_LOG_ES ), trace_theme->style, trace_theme->es.foregroundColor, trace_theme->es.backgroundColor ) );
+	object->properties.push_back( new STYLEProperty( object, format( IDS_COLORSTYLE_LOG_EB ), trace_theme->style, trace_theme->eb.foregroundColor, trace_theme->eb.backgroundColor ) );
+	object->properties.push_back( new STYLEProperty( object, format( IDS_COLORSTYLE_LOG_EF ), trace_theme->style, trace_theme->ef.foregroundColor, trace_theme->ef.backgroundColor ) );
+	object->properties.push_back( new STYLEProperty( object, format( IDS_COLORSTYLE_LOG_EI ), trace_theme->style, trace_theme->ei.foregroundColor, trace_theme->ei.backgroundColor ) );
+	object->properties.push_back( new STYLEProperty( object, format( IDS_COLORSTYLE_LOG_ER ), trace_theme->style, trace_theme->er.foregroundColor, trace_theme->er.backgroundColor ) );
+	object->properties.push_back( new STYLEProperty( object, format( IDS_COLORSTYLE_LOG_RC ), trace_theme->style, trace_theme->rc.foregroundColor, trace_theme->rc.backgroundColor ) );
+	object->properties.push_back( new STYLEProperty( object, format( IDS_COLORSTYLE_LOG_RE ), trace_theme->style, trace_theme->re.foregroundColor, trace_theme->re.backgroundColor ) );
+	object->properties.push_back( new STYLEProperty( object, format( IDS_COLORSTYLE_LOG_RK ), trace_theme->style, trace_theme->rk.foregroundColor, trace_theme->rk.backgroundColor ) );
+	object->properties.push_back( new STYLEProperty( object, format( IDS_COLORSTYLE_LOG_V ),  trace_theme->style, trace_theme->v.foregroundColor,  trace_theme->v.backgroundColor  ) );
+	object->properties.push_back( new STYLEProperty( object, format( IDS_COLORSTYLE_LOG_STATUS ), trace_theme->style, trace_theme->s.foregroundColor, trace_theme->s.backgroundColor ) );
+	object->properties.push_back( new STYLEProperty( object, format( IDS_COLORSTYLE_LOG_DPS ), trace_theme->style, trace_theme->dps.foregroundColor, trace_theme->dps.backgroundColor ) );
+	object->properties.push_back( new STYLEProperty( object, format( IDS_COLORSTYLE_LOG_SB ),  trace_theme->style, trace_theme->sb.foregroundColor,  trace_theme->sb.backgroundColor  ) );
+	object->properties.push_back( new STYLEProperty( object, format( IDS_COLORSTYLE_LOG_SO ),  trace_theme->style, trace_theme->so.foregroundColor,  trace_theme->so.backgroundColor  ) );
+	object->properties.push_back( new STYLEProperty( object, format( IDS_COLORSTYLE_LOG_STN ), trace_theme->style, trace_theme->stn.foregroundColor, trace_theme->stn.backgroundColor ) );
+	object->properties.push_back( new STYLEProperty( object, format( IDS_COLORSTYLE_LOG_STD ), trace_theme->style, trace_theme->std.foregroundColor, trace_theme->std.backgroundColor ) );
+	object->properties.push_back( new STYLEProperty( object, format( IDS_COLORSTYLE_LOG_STR ), trace_theme->style, trace_theme->str.foregroundColor, trace_theme->str.backgroundColor ) );
+	object->properties.push_back( new STYLEProperty( object, format( IDS_COLORSTYLE_LOG_SRC ), trace_theme->style, trace_theme->src.foregroundColor, trace_theme->src.backgroundColor ) );
+	object->properties.push_back( new STYLEProperty( object, format( IDS_COLORSTYLE_LOG_SRE ), trace_theme->style, trace_theme->sre.foregroundColor, trace_theme->sre.backgroundColor ) );
+	object->properties.push_back( new STYLEProperty( object, format( IDS_COLORSTYLE_LOG_SRK ), trace_theme->style, trace_theme->srk.foregroundColor, trace_theme->srk.backgroundColor ) );
+	object->properties.push_back( new STYLEProperty( object, format( IDS_COLORSTYLE_LOG_SD ),  trace_theme->style, trace_theme->sd.foregroundColor,  trace_theme->sd.backgroundColor  ) );
+	object->properties.push_back( new STYLEProperty( object, format( IDS_COLORSTYLE_LOG_SES ), trace_theme->style, trace_theme->ses.foregroundColor, trace_theme->ses.backgroundColor ) );
+	object->properties.push_back( new STYLEProperty( object, format( IDS_COLORSTYLE_LOG_SEN ), trace_theme->style, trace_theme->sen.foregroundColor, trace_theme->sen.backgroundColor ) );
+	object->properties.push_back( new STYLEProperty( object, format( IDS_COLORSTYLE_LOG_SEM ), trace_theme->style, trace_theme->sem.foregroundColor, trace_theme->sem.backgroundColor ) );
+	object->properties.push_back( new STYLEProperty( object, format( IDS_COLORSTYLE_LOG_SEF ), trace_theme->style, trace_theme->sef.foregroundColor, trace_theme->sef.backgroundColor ) );
+	object->properties.push_back( new STYLEProperty( object, format( IDS_COLORSTYLE_LOG_SEU ), trace_theme->style, trace_theme->seu.foregroundColor, trace_theme->seu.backgroundColor ) );
 	objects.push_back( object );
 
 	RDOEditorBaseEditTheme* results_theme = static_cast<RDOEditorBaseEditTheme*>(sheet->style_results.theme);
@@ -402,6 +425,10 @@ BOOL RDOStudioOptionsStylesAndColors::OnInitDialog()
 
 	sheet->preview_trace.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, 0 );
 	sheet->preview_trace.setStyle( &sheet->style_trace );
+	sheet->preview_trace.setFocusOnly( true );
+	sheet->preview_trace.setShowMenu( false );
+	sheet->preview_trace.setText( format( ID_OPTIONS_COLOR_LOGTEXT ) );
+	sheet->preview_trace.selectLine( 0 );
 
 	sheet->preview_results.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, 0 );
 	sheet->preview_results.setEditorStyle( &sheet->style_results );
