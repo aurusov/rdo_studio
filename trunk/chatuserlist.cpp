@@ -17,7 +17,8 @@ CChatUser::CChatUser():
 	userName( "" ),
 	hostName( "" ),
 	ip( "" ),
-	statusMode( CSMT_Online )
+	statusMode( CSMT_Online ),
+	ignored( false )
 {
 }
 
@@ -25,7 +26,8 @@ CChatUser::CChatUser( const std::string& _username, const std::string& _hostname
 	userName( _username ),
 	hostName( _hostname ),
 	ip( _ip ),
-	statusMode( _statusMode )
+	statusMode( _statusMode ),
+	ignored( false )
 {
 }
 
@@ -37,7 +39,7 @@ void CChatUser::setUserName( const std::string& value )
 {
 	if ( userName != value ) {
 		userName = value;
-		if ( chatApp.mainFrame ) {
+		if ( !isIgnored() && chatApp.mainFrame ) {
 			chatApp.mainFrame->dock.users.updateUserName( this );
 		}
 	}
@@ -61,6 +63,17 @@ void CChatUser::setStatusMode( const CChatStatusModeType value )
 		statusMode = value;
 		if ( chatApp.mainFrame ) {
 			chatApp.mainFrame->dock.users.updateUserStatus( this );
+		}
+	}
+}
+
+void CChatUser::setIgnored( const bool value )
+{
+	if ( ignored != value ) {
+		ignored = value;
+		if ( chatApp.mainFrame ) {
+			chatApp.mainFrame->dock.users.updateUserStatus( this );
+			chatApp.mainFrame->dock.users.updateUserName( this );
 		}
 	}
 }
@@ -176,7 +189,7 @@ const CChatUser* CChatUserList::getOnwer() const
 	return getUserByIP( chatApp.getIP() );
 }
 
-const CChatUser* CChatUserList::getSelected() const
+CChatUser* CChatUserList::getSelected() const
 {
 	HTREEITEM hitem = chatApp.mainFrame->dock.users.GetSelectedItem();
 	if ( hitem ) {

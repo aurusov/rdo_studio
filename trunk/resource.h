@@ -100,16 +100,16 @@
 #define ID_SOUND                        32823
 #define ID_USER_SENDMESSAGE             32827
 #define ID_USER_INGNORE                 32828
-#define ID_INFOSTATUSBAR                59394
-#define ID_STATUSMODE_TOOLBAR           61204
-#define ID_OPTIONS                      61205
-#define ID_CONNECT_WAVE                 61206
-#define ID_DISCONNECT_WAVE              61207
-#define ID_CHANGESTATUSMODE_WAVE        61208
-#define ID_INCOMINGMESSAGE_WAVE         61209
-#define ID_CHATTYPE_WAVE                61210
-#define ID_CHATBACK_WAVE                61211
-#define ID_CHATRET_WAVE                 61212
+#define IDS_INFOSTATUSBAR               59394
+#define IDS_STATUSMODE_TOOLBAR          61204
+#define IDS_OPTIONS                     61205
+#define IDS_CONNECT_WAVE                61206
+#define IDS_DISCONNECT_WAVE             61207
+#define IDS_CHANGESTATUSMODE_WAVE       61208
+#define IDS_INCOMINGMESSAGE_WAVE        61209
+#define IDS_CHATTYPE_WAVE               61210
+#define IDS_CHATBACK_WAVE               61211
+#define IDS_CHATRET_WAVE                61212
 #define IDS_STATUSMODE_ONLINE           61213
 #define IDS_STATUSMODE_AWAY             61214
 #define IDS_STATUSMODE_NOTAVAILIBLE     61215
@@ -123,9 +123,10 @@
 #define IDS_IP_VALUE                    61223
 #define IDS_USERS                       61224
 #define IDS_NETWORK                     61225
-#define ID_MAIN_TOOLBAR                 61226
+#define IDS_MAIN_TOOLBAR                61226
 #define IDS_TOCRYOUT_DIALOG             61227
 #define IDS_SENDMESSAGE_DIALOG          61228
+#define IDS_POPUPMESSAGE_WAVE           61229
 
 // Next default values for new objects
 // 

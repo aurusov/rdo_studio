@@ -146,6 +146,8 @@ protected:
 	afx_msg void OnOptions();
 	afx_msg void OnUserSendMessage();
 	afx_msg void OnUpdateUserSendMessage(CCmdUI* pCmdUI);
+	afx_msg void OnUserIngnore();
+	afx_msg void OnUpdateUserIngnore(CCmdUI* pCmdUI);
 	//}}AFX_MSG
 	afx_msg void OnStatusMode( UINT nID );
 	afx_msg void OnStatusModeInfo( UINT nID );

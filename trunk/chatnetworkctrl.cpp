@@ -84,7 +84,7 @@ void CChatNetworkCtrl::OnLButtonDblClk( UINT nFlags, CPoint point )
 
 	if ( hitem && ( uFlags & TVHT_ONITEM ) ) {
 		CChatNet* net = reinterpret_cast<CChatNet*>(GetItemData( hitem ));
-		if ( net->getType() == CChatNet::shared ) {
+		if ( net && net->getType() == CChatNet::shared ) {
 			net->openingThread = AfxBeginThread( shellExecute, net );
 		}
 	}
@@ -98,7 +98,7 @@ void CChatNetworkCtrl::OnRButtonDown( UINT nFlags, CPoint point )
 	if ( hitem && ( uFlags & TVHT_ONITEM ) ) {
 		SelectItem( hitem );
 		CChatNet* net = reinterpret_cast<CChatNet*>(GetItemData( hitem ));
-		if ( net->getType() == CChatNet::shared || net->getType() == CChatNet::server ) {
+		if ( net && net->getType() == CChatNet::shared || net->getType() == CChatNet::server ) {
 			CMenu menu;
 			menu.LoadMenu( IDR_NETWORK_MENU );
 			CMenu* subMenu = menu.GetSubMenu( 0 );
@@ -122,7 +122,7 @@ void CChatNetworkCtrl::OnNetworkOpen()
 	HTREEITEM hitem = GetSelectedItem();
 	if ( hitem ) {
 		CChatNet* net = reinterpret_cast<CChatNet*>(GetItemData( hitem ));
-		if ( net->getType() == CChatNet::shared || net->getType() == CChatNet::server ) {
+		if ( net && net->getType() == CChatNet::shared || net->getType() == CChatNet::server ) {
 			net->openingThread = AfxBeginThread( shellExecute, net );
 		}
 	}
@@ -133,7 +133,7 @@ void CChatNetworkCtrl::OnNetworkInfo()
 	HTREEITEM hitem = GetSelectedItem();
 	if ( hitem ) {
 		CChatNet* net = reinterpret_cast<CChatNet*>(GetItemData( hitem ));
-		if ( net->getType() == CChatNet::server ) {
+		if ( net && net->getType() == CChatNet::server ) {
 		}
 	}
 }
@@ -146,7 +146,7 @@ int CChatNetworkCtrl::OnToolHitTest( CPoint point, TOOLINFO* pTI ) const
 
 	if ( hitem && ( uFlags & TVHT_ONITEM ) ) {
 		CChatNet* net = reinterpret_cast<CChatNet*>(GetItemData( hitem ));
-		if ( net->getType() == CChatNet::server ) {
+		if ( net && net->getType() == CChatNet::server ) {
 			RECT rect;
 			GetItemRect( hitem, &rect, TRUE );
 			pTI->hwnd     = m_hWnd;
@@ -189,7 +189,7 @@ BOOL CChatNetworkCtrl::OnToolTipText( UINT id, NMHDR * pNMHDR, LRESULT * pResult
 	if( nFlags & TVHT_ONITEM)
 	{
 		CChatNet* net = reinterpret_cast<CChatNet*>(GetItemData( hitem ));
-		if ( net->getType() == CChatNet::server ) {
+		if ( net && net->getType() == CChatNet::server ) {
 			strTipText = net->getToolTipInfo().c_str();
 		}
 	}

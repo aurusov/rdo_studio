@@ -207,7 +207,7 @@ IDD_MESSAGE_DIALOG DIALOGEX 0, 0, 284, 49
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_TOOLWINDOW
 CAPTION "Message"
-FONT 8, "MS Sans Serif"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     EDITTEXT        IDC_MESSAGE_EDIT,8,8,268,12,ES_AUTOHSCROLL
     DEFPUSHBUTTON   "OK",IDOK,156,28,50,14
@@ -471,8 +471,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,0,168
- PRODUCTVERSION 1,0,0,168
+ FILEVERSION 1,0,0,169
+ PRODUCTVERSION 1,0,0,169
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -490,14 +490,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "Application for chat in localnet\0"
-            VALUE "FileVersion", "1, 0, 0, 168\0"
+            VALUE "FileVersion", "1, 0, 0, 169\0"
             VALUE "InternalName", "localChat\0"
             VALUE "LegalCopyright", "Copyright (C) 2002\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "localchat.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "localChat\0"
-            VALUE "ProductVersion", "1, 0, 0, 168\0"
+            VALUE "ProductVersion", "1, 0, 0, 169\0"
             VALUE "SpecialBuild", "\0"
         END
     END
@@ -527,20 +527,20 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    ID_INFOSTATUSBAR        " "
+    IDS_INFOSTATUSBAR       " "
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    ID_STATUSMODE_TOOLBAR   "Status Mode"
-    ID_OPTIONS              "Options"
-    ID_CONNECT_WAVE         "User connect"
-    ID_DISCONNECT_WAVE      "User disconnect"
-    ID_CHANGESTATUSMODE_WAVE "Chage status"
-    ID_INCOMINGMESSAGE_WAVE "Incoming message"
-    ID_CHATTYPE_WAVE        "Char pressed"
-    ID_CHATBACK_WAVE        "Backspace pressed"
-    ID_CHATRET_WAVE         "Return pressed"
+    IDS_STATUSMODE_TOOLBAR  "Status Mode"
+    IDS_OPTIONS             "Options"
+    IDS_CONNECT_WAVE        "User connect"
+    IDS_DISCONNECT_WAVE     "User disconnect"
+    IDS_CHANGESTATUSMODE_WAVE "Chage status"
+    IDS_INCOMINGMESSAGE_WAVE "Incoming message"
+    IDS_CHATTYPE_WAVE       "Char pressed"
+    IDS_CHATBACK_WAVE       "Backspace pressed"
+    IDS_CHATRET_WAVE        "Return pressed"
     IDS_STATUSMODE_ONLINE   "Online"
     IDS_STATUSMODE_AWAY     "Away"
     IDS_STATUSMODE_NOTAVAILIBLE "Not availible"
@@ -558,9 +558,10 @@ BEGIN
     IDS_IP_VALUE            "IP = %s"
     IDS_USERS               "Users"
     IDS_NETWORK             "Network"
-    ID_MAIN_TOOLBAR         "Main"
+    IDS_MAIN_TOOLBAR        "Main"
     IDS_TOCRYOUT_DIALOG     "To Cry Out Message"
     IDS_SENDMESSAGE_DIALOG  "Send Message For %s"
+    IDS_POPUPMESSAGE_WAVE   "Private message"
 END
 
 STRINGTABLE DISCARDABLE 

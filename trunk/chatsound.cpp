@@ -274,13 +274,14 @@ std::string CChatSoundList::getName( const CChatSoundType soundType ) const
 	std::string s;
 	int res;
 	switch ( soundType ) {
-		case CST_Connect         : res = ID_CONNECT_WAVE; break;
-		case CST_Disconnect      : res = ID_DISCONNECT_WAVE; break;
-		case CST_ChangeStatusMode: res = ID_CHANGESTATUSMODE_WAVE; break;
-		case CST_IncomingMessage : res = ID_INCOMINGMESSAGE_WAVE; break;
-		case CST_ChatType        : res = ID_CHATTYPE_WAVE; break;
-		case CST_ChatBack        : res = ID_CHATBACK_WAVE; break;
-		case CST_ChatRet         : res = ID_CHATRET_WAVE; break;
+		case CST_Connect         : res = IDS_CONNECT_WAVE; break;
+		case CST_Disconnect      : res = IDS_DISCONNECT_WAVE; break;
+		case CST_ChangeStatusMode: res = IDS_CHANGESTATUSMODE_WAVE; break;
+		case CST_IncomingMessage : res = IDS_INCOMINGMESSAGE_WAVE; break;
+		case CST_ChatType        : res = IDS_CHATTYPE_WAVE; break;
+		case CST_ChatBack        : res = IDS_CHATBACK_WAVE; break;
+		case CST_ChatRet         : res = IDS_CHATRET_WAVE; break;
+		case CST_PopupMsg        : res = IDS_POPUPMESSAGE_WAVE; break;
 		default                  : res = -1;
 	}
 	if ( res != -1 ) {

@@ -105,13 +105,15 @@ BEGIN_MESSAGE_MAP( CChatMainFrame, CFrameWnd )
 	ON_UPDATE_COMMAND_UI( ID_STATUSMODE_ONLINE_INFO      , OnUpdateStatusModeInfo )
 	ON_COMMAND( ID_CHAT_TOCRYOUT, OnToCryOut )
 	ON_COMMAND( ID_CHAT_OPTIONS, OnOptions )
+	ON_COMMAND(ID_USER_SENDMESSAGE, OnUserSendMessage)
+	ON_UPDATE_COMMAND_UI(ID_USER_SENDMESSAGE, OnUpdateUserSendMessage)
 	ON_COMMAND( ID_TRAYMENU_EXIT, OnTrayCloseApp )
 	ON_UPDATE_COMMAND_UI( ID_STATUSMODE_AWAY        , OnUpdateStatusMode )
 	ON_UPDATE_COMMAND_UI( ID_STATUSMODE_NOTAVAILIBLE, OnUpdateStatusMode )
 	ON_UPDATE_COMMAND_UI( ID_STATUSMODE_AWAY_INFO        , OnUpdateStatusModeInfo )
 	ON_UPDATE_COMMAND_UI( ID_STATUSMODE_NOTAVAILIBLE_INFO, OnUpdateStatusModeInfo )
-	ON_COMMAND(ID_USER_SENDMESSAGE, OnUserSendMessage)
-	ON_UPDATE_COMMAND_UI(ID_USER_SENDMESSAGE, OnUpdateUserSendMessage)
+	ON_COMMAND(ID_USER_INGNORE, OnUserIngnore)
+	ON_UPDATE_COMMAND_UI(ID_USER_INGNORE, OnUpdateUserIngnore)
 	//}}AFX_MSG_MAP
 	ON_COMMAND_EX( ID_STATUSMODE_ONLINE      , OnStatusMode )
 	ON_COMMAND_EX( ID_STATUSMODE_AWAY        , OnStatusMode )
@@ -178,21 +180,21 @@ int CChatMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	mainToolBar.CreateEx( this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
 	mainToolBar.LoadToolBar( IDR_MAIN_TOOLBAR );
-	mainToolBar.GetToolBarCtrl().SetWindowText( format( ID_MAIN_TOOLBAR ).c_str() );
+	mainToolBar.GetToolBarCtrl().SetWindowText( format( IDS_MAIN_TOOLBAR ).c_str() );
 
 	mainToolBarImageList.Create( IDB_MAIN_TOOLBAR_D, 16, 0, 0xFF00FF );
 	mainToolBar.GetToolBarCtrl().SetDisabledImageList( &mainToolBarImageList );
 
 	statusModeToolBar.CreateEx( this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
 	statusModeToolBar.LoadToolBar( IDR_STATUSMODE_TOOLBAR );
-	statusModeToolBar.GetToolBarCtrl().SetWindowText( format( ID_STATUSMODE_TOOLBAR ).c_str() );
+	statusModeToolBar.GetToolBarCtrl().SetWindowText( format( IDS_STATUSMODE_TOOLBAR ).c_str() );
 
 	statusModeToolBarImageList.Create( IDB_STATISMODE_TOOLBAR_D, 16, 0, 0xFF00FF );
 	statusModeToolBar.GetToolBarCtrl().SetDisabledImageList( &statusModeToolBarImageList );
 
 	statusBar.Create( this );
 	statusBar.SetIndicators( indicators, 1 );
-	statusBar.SetPaneInfo( 0, ID_INFOSTATUSBAR, SBPS_STRETCH, 70 );
+	statusBar.SetPaneInfo( 0, IDS_INFOSTATUSBAR, SBPS_STRETCH, 70 );
 //	statusBar.SetPaneInfo( 0, ID_COORDSTATUSBAR          , SBPS_NORMAL , 70 );
 //	statusBar.SetPaneInfo( 1, ID_MODIFYSTATUSBAR         , SBPS_NORMAL , 70 );
 //	statusBar.SetPaneInfo( 2, ID_INSERTOVERWRITESTATUSBAR, SBPS_NORMAL , 70 );
@@ -798,7 +800,7 @@ void CChatMainFrame::OnOptions()
 
 void CChatMainFrame::OnUserSendMessage()
 {
-	const CChatUser* user = chatApp.users.getSelected();
+	CChatUser* user = chatApp.users.getSelected();
 	if ( user ) {
 		CChatMessageDialog dlg( IDD_MESSAGE_DIALOG, format( IDS_SENDMESSAGE_DIALOG, user->getUserName().c_str() ) );
 		if ( dlg.DoModal() == IDOK && !dlg.message.IsEmpty() ) {
@@ -808,6 +810,19 @@ void CChatMainFrame::OnUserSendMessage()
 }
 
 void CChatMainFrame::OnUpdateUserSendMessage(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable( chatApp.users.getSelected() != NULL && chatApp.users.getSelected() != chatApp.users.getOnwer() );
+}
+
+void CChatMainFrame::OnUserIngnore()
+{
+	CChatUser* user = chatApp.users.getSelected();
+	if ( user ) {
+		user->setIgnored( !user->isIgnored() );
+	}
+}
+
+void CChatMainFrame::OnUpdateUserIngnore(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable( chatApp.users.getSelected() != NULL && chatApp.users.getSelected() != chatApp.users.getOnwer() );
 }

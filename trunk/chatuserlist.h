@@ -20,6 +20,7 @@ private:
 	std::string         hostName;
 	std::string         ip;
 	CChatStatusModeType statusMode;
+	bool                ignored;
 
 public:
 	std::string getUserName() const { return userName; }
@@ -33,6 +34,9 @@ public:
 
 	CChatStatusModeType getStatusMode() const { return statusMode; }
 	void setStatusMode( const CChatStatusModeType value );
+
+	bool isIgnored() const { return ignored; }
+	void setIgnored( const bool value );
 
 	std::string getToolTipInfo() const;
 };
@@ -59,7 +63,7 @@ public:
 	void clear( const CChatUser* const dont_delete_user = NULL );
 
 	const CChatUser* getOnwer() const;
-	const CChatUser* getSelected() const;
+	CChatUser* getSelected() const;
 };
 
 //{{AFX_INSERT_LOCATION}}

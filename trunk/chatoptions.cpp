@@ -524,7 +524,7 @@ CChatOptions::CChatOptions():
 	soundOptions( NULL ),
 	statusModeOptions( NULL )
 {
-	SetTitle( format( ID_OPTIONS ).c_str() );
+	SetTitle( format( IDS_OPTIONS ).c_str() );
 
 	generalOptions    = new CChatGeneralOptions();
 	soundOptions      = new CChatSoundOptions();

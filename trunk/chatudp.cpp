@@ -172,8 +172,9 @@ void CChatUdp::parsCommand( const std::string& line )
 			chatApp.users.addUser( username, "", fromIP );
 		} else {
 			if ( user->getUserName() != username ) {
-				chatApp.mainFrame->childView.addStringToViewer( username, user->getUserName() + " сменил имя на " + username, CSTRT_ChangeName );
 				user->setUserName( username );
+				if ( user->isIgnored() ) return;
+				chatApp.mainFrame->childView.addStringToViewer( username, user->getUserName() + " сменил имя на " + username, CSTRT_ChangeName );
 			}
 		}
 
@@ -196,6 +197,7 @@ void CChatUdp::parsCommand( const std::string& line )
 		CChatStatusModeType status = static_cast<CChatStatusModeType>(strtol( s.c_str(), NULL, 10 ));
 		if ( user->getStatusMode() != status ) {
 			user->setStatusMode( status );
+			if ( user->isIgnored() ) return;
 			std::string username = user->getUserName();
 			std::string s_statusmsg = getCommandValue( line, "statusmsg" );
 			if ( s_statusmsg.empty() ) {
@@ -209,6 +211,7 @@ void CChatUdp::parsCommand( const std::string& line )
 
 	// MSG
 	} else if ( hasCommand( line, "msg" ) ) {
+		if ( user && user->isIgnored() ) return;
 		std::string msg = getCommandValue( line, "msg", true );
 		chatApp.mainFrame->childView.addStringToViewer( fromUser, msg );
 
@@ -232,6 +235,7 @@ void CChatUdp::parsCommand( const std::string& line )
 
 	// TOCRYOUT
 	} else if ( hasCommand( line, "tocryout" ) ) {
+		if ( user && user->isIgnored() ) return;
 		std::string msg = getCommandValue( line, "tocryout", true );
 		chatApp.mainFrame->childView.addStringToViewer( fromUser, msg, CSTRT_ToCryOut );
 
@@ -247,6 +251,7 @@ void CChatUdp::parsCommand( const std::string& line )
 			chatApp.sounds.play( CST_IncomingMessage );
 		}
 	} else if ( hasCommand( line, "popupmsg" ) && user ) {
+		if ( user && user->isIgnored() ) return;
 		std::string toIP  = getCommandValue( line, "tohostip" );
 		CChatUser* toUser = chatApp.users.getUserByIP( toIP );
 		if ( toUser ) {

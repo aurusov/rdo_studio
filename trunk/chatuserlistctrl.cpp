@@ -76,7 +76,7 @@ HTREEITEM CChatUserListCtrl::findUser( const CChatUser* const user )
 
 	while ( item ) {
 		CChatUser* data = reinterpret_cast<CChatUser*>(GetItemData( item ));
-		if ( data == user ) return item;
+		if ( data && data == user ) return item;
 		item = GetNextItem( item, TVGN_NEXT );
 	}
 
@@ -114,7 +114,11 @@ void CChatUserListCtrl::updateUserStatus( const CChatUser* const user )
 {
 	HTREEITEM item = findUser( user );
 	if ( item ) {
-		SetItemImage( item, user->getStatusMode(), user->getStatusMode() );
+		if ( !user->isIgnored() ) {
+			SetItemImage( item, user->getStatusMode(), user->getStatusMode() );
+		} else {
+			SetItemImage( item, 3, 3 );
+		}
 	}
 }
 
@@ -173,7 +177,9 @@ BOOL CChatUserListCtrl::OnToolTipText( UINT id, NMHDR * pNMHDR, LRESULT * pResul
 	if( nFlags & TVHT_ONITEM)
 	{
 		CChatUser* user = reinterpret_cast<CChatUser*>(GetItemData( hitem ));
-		strTipText = user->getToolTipInfo().c_str();
+		if ( user ) {
+			strTipText = user->getToolTipInfo().c_str();
+		}
 	}
 
 #ifndef _UNICODE
