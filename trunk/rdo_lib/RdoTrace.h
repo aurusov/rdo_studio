@@ -20,6 +20,13 @@ public:
 	virtual void onEndl() {}
 };
 
+inline std::ostream &operator << (std::ostream &stream, RDOEndL& rdoEndL)
+{
+//	stream << std::endl;
+	rdoEndL.onEndl();
+	return stream;
+}
+
 class RDOTrace
 {
 friend RDOSimulatorTrace;

@@ -153,8 +153,11 @@ UINT RunningThreadControllingFunction( LPVOID pParam )
 		if(simulator->parser->smr->resultsFileName == NULL) 
 			resulter = new rdoRuntime::RDOResult();
 		else
+		{
 //			resulter = new rdoRuntime::RDOResult((*simulator->parser->smr->resultsFileName + ".pmv").c_str());
+			simulator->resultString.str("");
 			resulter = new RDOSimResulter(simulator->resultString);
+		}
 
 
 /////////  RDO config initialization ////////////////////////
@@ -237,6 +240,30 @@ bool RdoSimulator::parseModel()
 	runtime = parser->runTime;
 
 	ostringstream consol;
+
+/*
+		rdo::binarystream RTPstream1;
+		kernel.getRepository()->loadRTP(RTPstream1);
+
+		for(int i = 0; i < 10; i++)
+		{
+			if ( RTPstream1.eof() || RTPstream1.fail() )
+				break;
+
+			char buff[256];
+			RTPstream1.read(buff, 255);
+			buff[255] = 0;
+			kernel.debug(buff);
+		}
+
+
+
+		kernel.notify(RDOKernel::parseError);
+		closeModel();
+		return false;
+  */
+  
+
 
 	try {
 /////////////////   SMR file //////////////////////////////////

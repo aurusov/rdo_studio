@@ -103,7 +103,7 @@ void RDOSimulatorTrace::onResourceErase(RDOResourceTrace *res)
       getTracer()->getOStream() << "RE "
          << getCurrentTime() << " " 
          << res->typeId.c_str() << " " 
-         << res->traceId().c_str() << std::endl;
+         << res->traceId().c_str() << std::endl << getTracer()->getEOL();
    }
    allResourcesInSim.remove(res);
    freeResourceId(res->id);
