@@ -74,7 +74,7 @@ void RDOStudioModel::runModel() const
 {
 	if ( saveModel() ) {
 		studioApp.mainFrame->output.showBuild();
-		kernel.getSimulator()->runModel( kernel.getRepository()->getFullName() );
+		kernel.getSimulator()->runModel();
 	}
 }
 

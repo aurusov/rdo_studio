@@ -33,13 +33,12 @@ public:
 		closeModel,			// when repository closed current model
 		canNotCloseModel,   // when repository can not close current model ('canCloseModel' notify returns 'false' value)
 
-//		parseModel,
-//		executeModel,
-//		stopModel, 
 		// AB 21.02.03 // these notifies sent by "RdoSimulator"
+		parseSMRError,			// on parse SMR file error (when opening model)
 		parseError,				// on parse error
 		modelStarted, 			// when model successfully parsed and started
 		endExecuteModel,		// successfully end modelling
+		executeError,		// successfully end modelling
 		modelStopped };		// model externally stopped 
 
 	enum BoolNotifyType   {

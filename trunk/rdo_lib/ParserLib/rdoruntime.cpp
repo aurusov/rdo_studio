@@ -175,7 +175,7 @@ RDOCalcCreateEmptyResource::RDOCalcCreateEmptyResource(int _type, bool _traceFla
 {
 }
 
-RDORuntime::RDORuntime()
+RDORuntime::RDORuntime(): tracer(NULL), result(NULL)
 {
 	terminateIfCalc = NULL;
 }

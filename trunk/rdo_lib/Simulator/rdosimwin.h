@@ -6,14 +6,10 @@
 #include <string>
 #include <sstream>
 #include <vector>
-#include <strstream>
 #include <afxwin.h>
+#include <strstream>
 
 using namespace std;
-
-class RdoModel;
-
-namespace rdoParse {
 
 struct RDOSMRFileInfo
 {
@@ -26,20 +22,30 @@ struct RDOSMRFileInfo
 	string trace_file;
 };
 
-};
+namespace rdoRuntime {
+	class RDORuntime;
+	class RDOResult;
+}
+class RDOTrace;
+namespace rdoParse {
+	class RDOParser ;
+}
 
 class RdoSimulator
 {
-	RdoModel *model;
+	rdoParse::RDOParser *parser;
+	rdoRuntime::RDORuntime *runtime;
+
 	CWinThread* th;
-	terminateModel();
-	closeModel();
+	void terminateModel();
+	void closeModel(); 
+	bool parseModel();
 public:
 	RdoSimulator();
 	~RdoSimulator();
-	runModel(string smrFileName);
-	stopModel();
-	void parseSMRFileInfo( strstream& smr, rdoParse::RDOSMRFileInfo& info );
+	void runModel();
+	void stopModel();
+	void parseSMRFileInfo( strstream& smr, RDOSMRFileInfo& info );
 	friend UINT RunningThreadControllingFunction( LPVOID pParam );
 };
 

@@ -72,7 +72,7 @@ bool RDORepositoryFile::openModel( const string& modelFileName )
 		if ( modelFileName.empty() ) {
 			CString s;
 			s.LoadString( ID_MODEL_FILETYPE );
-			CFileDialog dlg( true, "smr", lastModelPath.c_str(), 0, s );
+			CFileDialog dlg( true, "smr", lastModelPath.c_str(), 0, s, AfxGetMainWnd() );
 			flag = dlg.DoModal() == IDOK;
 			readOnly = dlg.GetReadOnlyPref() == TRUE;
 			if ( flag ) {
