@@ -35,24 +35,26 @@ typedef void (*PFunStop)();
 typedef bool (*PFunIsRunning)();
 typedef ModelShowMode (*PFunGetShowMode)();
 typedef void (*PFunSetShowMode)( ModelShowMode showMode );
+typedef const char* (*PFunGetModelStructure)();
 
 class Model {
 public:
-	Model(): newModel( NULL ), openModel( NULL ), saveModel( NULL ), closeModel( NULL ), hasModel( NULL ), isModify( NULL ), build( NULL ), run( NULL ), stop( NULL ), isRunning( NULL ), getShowMode( NULL ), setShowMode( NULL ) {};
+	Model(): newModel( NULL ), openModel( NULL ), saveModel( NULL ), closeModel( NULL ), hasModel( NULL ), isModify( NULL ), build( NULL ), run( NULL ), stop( NULL ), isRunning( NULL ), getShowMode( NULL ), setShowMode( NULL ), getStructure( NULL ) {};
 	virtual ~Model() {};
 
-	PFunNewModel         newModel;
-	PFunOpenModel        openModel;
-	PFunSaveModel        saveModel;
-	PFunCloseModel       closeModel;
-	PFunHasModel         hasModel;
-	PFunIsModelModify    isModify;
-	PFunBuild            build;
-	PFunRun              run;
-	PFunStop             stop;
-	PFunIsRunning        isRunning;
-	PFunGetShowMode      getShowMode;
-	PFunSetShowMode      setShowMode;
+	PFunNewModel          newModel;
+	PFunOpenModel         openModel;
+	PFunSaveModel         saveModel;
+	PFunCloseModel        closeModel;
+	PFunHasModel          hasModel;
+	PFunIsModelModify     isModify;
+	PFunBuild             build;
+	PFunRun               run;
+	PFunStop              stop;
+	PFunIsRunning         isRunning;
+	PFunGetShowMode       getShowMode;
+	PFunSetShowMode       setShowMode;
+	PFunGetModelStructure getStructure;
 };
 
 typedef bool (*PFunIsFrameDescribed)();
@@ -115,6 +117,8 @@ typedef bool (*PFunStartPlugin)( const Studio* studio );
 typedef void (*PFunStopPlugin)();
 typedef const int (*PFunEnumMessages)();
 typedef void (*PFunPluginProc)( const int );
+typedef void (*PFunTrace)( const char* );
+typedef void (*PFunResults)( const char* );
 
 };
 
@@ -124,6 +128,8 @@ extern "C" {
 	RDOPLUGIN_DLL void stopPlugin();
 	RDOPLUGIN_DLL const int enumMessages();
 	RDOPLUGIN_DLL void pluginProc( const int message );
+	RDOPLUGIN_DLL void trace( const char* line );
+	RDOPLUGIN_DLL void results( const char* lines );
 }
 
 #endif // RDOPLUGIN_H

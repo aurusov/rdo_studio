@@ -45,3 +45,11 @@ const int enumMessages()
 void pluginProc( const int message )
 {
 }
+
+void trace( const char* line )
+{
+}
+
+void results( const char* lines )
+{
+}

@@ -32,6 +32,8 @@ private:
 	rdoPlugin::PluginRunMode runMode;
 
 	rdoPlugin::PFunPluginProc pluginProc;
+	rdoPlugin::PFunTrace      trace;
+	rdoPlugin::PFunResults    results;
 
 	std::string getProfilePath() const;
 
@@ -78,10 +80,21 @@ private:
 	void init();
 
 	rdoPlugin::Studio studio;
-	typedef std::multimap< const int, RDOStudioPlugin* > messageList;
+
+	typedef std::multimap< const int, rdoPlugin::PFunPluginProc > messageList;
 	messageList messages;
-	void setMessageReflect( const int message, RDOStudioPlugin* plugin );
-	void clearMessageReflect( RDOStudioPlugin* plugin );
+	void setMessageReflect( const int message, rdoPlugin::PFunPluginProc pluginProc );
+	void clearMessageReflect( rdoPlugin::PFunPluginProc pluginProc );
+
+	std::vector< rdoPlugin::PFunTrace> trace;
+	void setTrace( rdoPlugin::PFunTrace trace );
+	void clearTrace( rdoPlugin::PFunTrace trace );
+
+	std::vector< rdoPlugin::PFunResults> results;
+	void setResults( rdoPlugin::PFunResults results );
+	void clearResults( rdoPlugin::PFunResults results );
+
+	std::string modelStructure;
 
 	static void newModel();
 	static bool openModel( const char* modelName );
@@ -95,6 +108,7 @@ private:
 	static bool isModelRunning();
 	static rdoPlugin::ModelShowMode getModelShowMode();
 	static void setModelShowMode( rdoPlugin::ModelShowMode showMode );
+	static const char* getModelStructure();
 
 	static bool isFrameDescribed();
 	static double getFrameShowRate();
@@ -109,7 +123,9 @@ private:
 	static void closeAllFrame();
 
 	static void modelStartNotify();
+	static void endExecuteModelNotify();
 	static void modelStopNotify();
+	static void traceNotify( std::string str );
 
 public:
 	RDOStudioPlugins();

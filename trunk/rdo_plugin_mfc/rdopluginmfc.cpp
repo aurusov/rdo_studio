@@ -3,6 +3,9 @@
 #include "rdopluginmfcmainframe.h"
 #include "resource.h"
 
+#include <string>
+#include <algorithm>
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -27,9 +30,9 @@ RDOPluginMFC::RDOPluginMFC():
 
 void getPluginInfo( rdoPlugin::PluginInfo* info )
 {
-	static char* name         = "Dialog";
+	static char* name         = "MFC Plugin";
 	static char* version_info = "";
-	static char* description  = "MFC Plugin";
+	static char* description  = "MFC-Based Plugin";
 	info->name = name;
 	info->version_major  = 1;
 	info->version_minor  = 0;
@@ -41,11 +44,7 @@ void getPluginInfo( rdoPlugin::PluginInfo* info )
 
 bool startPlugin( const rdoPlugin::Studio* _studio )
 {
-//	TRACE( "plugin handle = %d\n", AfxGetInstanceHandle() );
-//	TRACE( "studio        = %d\n", &pluginMFCApp.studio );
-//	TRACE( "studio.run    = %d\n", pluginMFCApp.studio.model.run );
 	pluginMFCApp.studio = *_studio;
-//	TRACE( "studio.run    = %d\n", pluginMFCApp.studio.model.run );
 	if ( !pluginMFCApp.m_pMainWnd ) {
 		pluginMFCApp.frame = new RDOPluginMFCMainFrame;
 		pluginMFCApp.m_pMainWnd = pluginMFCApp.frame;
@@ -101,6 +100,22 @@ void pluginProc( const int message )
 		pluginMFCApp.frame->insertLine( "PM_MODEL_BUILD_FAILD" );
 	} else if ( message == rdoPlugin::PM_MODEL_BEFORE_START ) {
 		pluginMFCApp.frame->insertLine( "PM_MODEL_BEFORE_START" );
+		std::string str = pluginMFCApp.studio.model.getStructure();
+		std::string::size_type pos = str.find( '\n' );
+		if ( pos != std::string::npos ) {
+			while ( pos != std::string::npos ) {
+				std::string str2( str.begin(), 0, pos );
+				pluginMFCApp.frame->insertLine( str2.c_str() );
+				str.erase( 0, pos + 1 );
+				pos = str.find( '\n' );
+			}
+			std::string str2( str.begin(), 0, pos );
+			if ( !str2.empty() ) {
+				pluginMFCApp.frame->insertLine( str2.c_str() );
+			}
+		} else {
+			pluginMFCApp.frame->insertLine( str.c_str() );
+		}
 	} else if ( message == rdoPlugin::PM_MODEL_AFTER_START ) {
 		pluginMFCApp.frame->insertLine( "PM_MODEL_AFTER_START" );
 	} else if ( message == rdoPlugin::PM_MODEL_FINISHED ) {
@@ -111,5 +126,30 @@ void pluginProc( const int message )
 		pluginMFCApp.frame->insertLine( "PM_MODEL_STOP_RUNTIME_ERROR" );
 	} else if ( message == rdoPlugin::PM_MODEL_SHOWMODE ) {
 		pluginMFCApp.frame->insertLine( "PM_MODEL_SHOWMODE" );
+	}
+}
+
+void trace( const char* line )
+{
+	pluginMFCApp.frame->insertLine( line );
+}
+
+void results( const char* lines )
+{
+	std::string str = lines;
+	std::string::size_type pos = str.find( '\n' );
+	if ( pos != std::string::npos ) {
+		while ( pos != std::string::npos ) {
+			std::string str2( str.begin(), 0, pos );
+			pluginMFCApp.frame->insertLine( str2.c_str() );
+			str.erase( 0, pos + 1 );
+			pos = str.find( '\n' );
+		}
+		std::string str2( str.begin(), 0, pos );
+		if ( !str2.empty() ) {
+			pluginMFCApp.frame->insertLine( str2.c_str() );
+		}
+	} else {
+		pluginMFCApp.frame->insertLine( str.c_str() );
 	}
 }

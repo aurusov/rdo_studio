@@ -27,7 +27,9 @@ RDOStudioPlugin::RDOStudioPlugin( const std::string& _modulName ):
 	restoreState( true ),
 	defaultRunMode( rdoPlugin::prmNoAuto ),
 	runMode( rdoPlugin::prmNoAuto ),
-	pluginProc( NULL )
+	pluginProc( NULL ),
+	trace( NULL ),
+	results( NULL )
 {
 	lib = ::LoadLibrary( modulName.c_str() );
 	if ( lib ) {
@@ -97,14 +99,27 @@ void RDOStudioPlugin::setState( const rdoPlugin::PluginState value )
 			if ( state == rdoPlugin::psActive ) {
 				rdoPlugin::PFunStartPlugin startPlugin = reinterpret_cast<rdoPlugin::PFunStartPlugin>(::GetProcAddress( lib, "startPlugin" ));
 				if ( startPlugin && startPlugin( plugins->getStudio() ) ) {
+					// setup messages procedure
 					rdoPlugin::PFunEnumMessages enumMessages = reinterpret_cast<rdoPlugin::PFunEnumMessages>(::GetProcAddress( lib, "enumMessages" ));
 					if ( enumMessages ) {
-						while ( const int message = enumMessages() ) {
-							plugins->setMessageReflect( message, this );
-						}
 						pluginProc = reinterpret_cast<rdoPlugin::PFunPluginProc>(::GetProcAddress( lib, "pluginProc" ));
+						if ( pluginProc ) {
+							while ( const int message = enumMessages() ) {
+								plugins->setMessageReflect( message, pluginProc );
+							}
+						}
 					} else {
 						pluginProc = NULL;
+					}
+					// setup trace procedure
+					trace = reinterpret_cast<rdoPlugin::PFunTrace>(::GetProcAddress( lib, "trace" ));
+					if ( trace ) {
+						plugins->setTrace( trace );
+					}
+					// setup results procedure
+					results = reinterpret_cast<rdoPlugin::PFunResults>(::GetProcAddress( lib, "results" ));
+					if ( results ) {
+						plugins->setResults( results );
 					}
 				} else {
 					state = rdoPlugin::psStoped;
@@ -113,8 +128,12 @@ void RDOStudioPlugin::setState( const rdoPlugin::PluginState value )
 		}
 		if ( state == rdoPlugin::psStoped ) {
 			if ( lib ) {
-				plugins->clearMessageReflect( this );
+				plugins->clearMessageReflect( pluginProc );
 				pluginProc = NULL;
+				plugins->clearTrace( trace );
+				trace = NULL;
+				plugins->clearResults( results );
+				results = NULL;
 				rdoPlugin::PFunStopPlugin stopPlugin = reinterpret_cast<rdoPlugin::PFunStopPlugin>(::GetProcAddress( lib, "stopPlugin" ));
 				if ( stopPlugin ) {
 					stopPlugin();
@@ -154,22 +173,24 @@ void RDOStudioPlugin::setRunMode( const rdoPlugin::PluginRunMode value )
 // ----------------------------------------------------------------------------
 RDOStudioPlugins* plugins;
 
-RDOStudioPlugins::RDOStudioPlugins()
+RDOStudioPlugins::RDOStudioPlugins():
+	modelStructure( "" )
 {
 	plugins = this;
 
-	studio.model.newModel    = RDOStudioPlugins::newModel;
-	studio.model.openModel   = RDOStudioPlugins::openModel;
-	studio.model.saveModel   = RDOStudioPlugins::saveModel;
-	studio.model.closeModel  = RDOStudioPlugins::closeModel;
-	studio.model.hasModel    = RDOStudioPlugins::hasModel;
-	studio.model.isModify    = RDOStudioPlugins::isModelModify;
-	studio.model.build       = RDOStudioPlugins::buildModel;
-	studio.model.run         = RDOStudioPlugins::runModel;
-	studio.model.stop        = RDOStudioPlugins::stopModel;
-	studio.model.isRunning   = RDOStudioPlugins::isModelRunning;
-	studio.model.getShowMode = RDOStudioPlugins::getModelShowMode;
-	studio.model.setShowMode = RDOStudioPlugins::setModelShowMode;
+	studio.model.newModel     = RDOStudioPlugins::newModel;
+	studio.model.openModel    = RDOStudioPlugins::openModel;
+	studio.model.saveModel    = RDOStudioPlugins::saveModel;
+	studio.model.closeModel   = RDOStudioPlugins::closeModel;
+	studio.model.hasModel     = RDOStudioPlugins::hasModel;
+	studio.model.isModify     = RDOStudioPlugins::isModelModify;
+	studio.model.build        = RDOStudioPlugins::buildModel;
+	studio.model.run          = RDOStudioPlugins::runModel;
+	studio.model.stop         = RDOStudioPlugins::stopModel;
+	studio.model.isRunning    = RDOStudioPlugins::isModelRunning;
+	studio.model.getShowMode  = RDOStudioPlugins::getModelShowMode;
+	studio.model.setShowMode  = RDOStudioPlugins::setModelShowMode;
+	studio.model.getStructure = RDOStudioPlugins::getModelStructure;
 
 	studio.frame.isDescribed = RDOStudioPlugins::isFrameDescribed;
 	studio.frame.getShowRate = RDOStudioPlugins::getFrameShowRate;
@@ -184,9 +205,10 @@ RDOStudioPlugins::RDOStudioPlugins()
 	studio.frame.closeAll    = RDOStudioPlugins::closeAllFrame;
 
 	kernel.setNotifyReflect( RDOKernel::beforeModelStart, modelStartNotify );
-	kernel.setNotifyReflect( RDOKernel::endExecuteModel, modelStopNotify );
+	kernel.setNotifyReflect( RDOKernel::endExecuteModel, endExecuteModelNotify );
 	kernel.setNotifyReflect( RDOKernel::modelStopped, modelStopNotify );
 	kernel.setNotifyReflect( RDOKernel::executeError, modelStopNotify );
+	kernel.setNotifyReflect( RDOKernel::traceString, traceNotify );
 
 	init();
 }
@@ -238,38 +260,31 @@ void RDOStudioPlugins::init()
 	if ( !path.empty() ) {
 		enumPlugins( path + "\\plugins\\*.*" );
 	}
-/*
-	int i = 1;
-	std::vector< RDOStudioPlugin* >::const_iterator it = list.begin();
-	while ( it != list.end() ) {
-		RDOStudioPlugin* plugin = *it;
-		TRACE( "%d. plugin name = %s, version %d.%d, build %d, version info = %s, description = %s\r\n", i++, plugin->name.c_str(), plugin->version_major, plugin->version_minor, plugin->version_build, plugin->version_info.c_str(), plugin->description.c_str() );
-		it++;
-	}
-*/
 }
 
-void RDOStudioPlugins::setMessageReflect( const int message, RDOStudioPlugin* plugin )
+void RDOStudioPlugins::setMessageReflect( const int message, rdoPlugin::PFunPluginProc pluginProc )
 {
-	bool flag = true;
-	messageList::iterator it = messages.find( message );
-	while ( it != messages.end() ) {
-		if ( (*it).second == plugin ) {
-			flag = false;
-			break;
+	if ( message && pluginProc ) {
+		bool flag = true;
+		messageList::iterator it = messages.find( message );
+		while ( it != messages.end() ) {
+			if ( (*it).second == pluginProc ) {
+				flag = false;
+				break;
+			}
+			it++;
 		}
-		it++;
-	}
-	if ( flag ) {
-		messages.insert( messageList::value_type( message, plugin ) );
+		if ( flag ) {
+			messages.insert( messageList::value_type( message, pluginProc ) );
+		}
 	}
 }
 
-void RDOStudioPlugins::clearMessageReflect( RDOStudioPlugin* plugin )
+void RDOStudioPlugins::clearMessageReflect( rdoPlugin::PFunPluginProc pluginProc )
 {
 	messageList::iterator it = messages.begin();
 	while ( it != messages.end() ) {
-		if ( (*it).second == plugin ) {
+		if ( (*it).second == pluginProc ) {
 			it = messages.erase( it );
 		} else {
 			it++;
@@ -281,7 +296,67 @@ void RDOStudioPlugins::pluginProc( const int message )
 {
 	messageList::iterator it = messages.lower_bound( message );
 	while ( it != messages.upper_bound( message ) ) {
-		(*it).second->pluginProc( message );
+		(*it).second( message );
+		it++;
+	}
+}
+
+void RDOStudioPlugins::setTrace( rdoPlugin::PFunTrace _trace )
+{
+	if ( _trace ) {
+		std::vector< rdoPlugin::PFunTrace >::const_iterator it = trace.begin();
+		bool flag = true;
+		while ( it != trace.end() ) {
+			if ( *it == _trace ) {
+				flag = false;
+				break;
+			}
+			it++;
+		}
+		if ( flag ) {
+			trace.push_back( _trace );
+		}
+	}
+}
+
+void RDOStudioPlugins::clearTrace( rdoPlugin::PFunTrace _trace )
+{
+	std::vector< rdoPlugin::PFunTrace >::iterator it = trace.begin();
+	while ( it != trace.end() ) {
+		if ( *it == _trace ) {
+			trace.erase( it );
+			break;
+		}
+		it++;
+	}
+}
+
+void RDOStudioPlugins::setResults( rdoPlugin::PFunResults _results )
+{
+	if ( _results ) {
+		std::vector< rdoPlugin::PFunResults >::const_iterator it = results.begin();
+		bool flag = true;
+		while ( it != results.end() ) {
+			if ( *it == _results ) {
+				flag = false;
+				break;
+			}
+			it++;
+		}
+		if ( flag ) {
+			results.push_back( _results );
+		}
+	}
+}
+
+void RDOStudioPlugins::clearResults( rdoPlugin::PFunResults _results )
+{
+	std::vector< rdoPlugin::PFunResults >::iterator it = results.begin();
+	while ( it != results.end() ) {
+		if ( *it == _results ) {
+			results.erase( it );
+			break;
+		}
 		it++;
 	}
 }
@@ -355,6 +430,16 @@ void RDOStudioPlugins::setModelShowMode( rdoPlugin::ModelShowMode showMode )
 	}
 }
 
+const char* RDOStudioPlugins::getModelStructure()
+{
+	if ( model->hasModel() ) {
+		plugins->modelStructure = kernel.getSimulator()->getModelStructure().str();
+	} else {
+		plugins->modelStructure = "";
+	}
+	return plugins->modelStructure.c_str();
+}
+
 bool RDOStudioPlugins::isFrameDescribed()
 {
 	return model->isFrmDescribed();
@@ -415,9 +500,27 @@ void RDOStudioPlugins::modelStartNotify()
 	AfxGetApp()->PostThreadMessage( PLUGIN_STARTMODEL_MESSAGE, 0, 0 );
 }
 
+void RDOStudioPlugins::endExecuteModelNotify()
+{
+	std::string str = kernel.getSimulator()->getResults().str();
+	std::vector< rdoPlugin::PFunResults>::const_iterator it = plugins->results.begin();
+	while ( it != plugins->results.end() ) {
+		(*it++)( str.c_str() );
+	}
+	AfxGetApp()->PostThreadMessage( PLUGIN_STOPMODEL_MESSAGE, 0, 0 );
+}
+
 void RDOStudioPlugins::modelStopNotify()
 {
 	AfxGetApp()->PostThreadMessage( PLUGIN_STOPMODEL_MESSAGE, 0, 0 );
+}
+
+void RDOStudioPlugins::traceNotify( std::string str )
+{
+	std::vector< rdoPlugin::PFunTrace>::const_iterator it = plugins->trace.begin();
+	while ( it != plugins->trace.end() ) {
+		(*it++)( str.c_str() );
+	}
 }
 
 void RDOStudioPlugins::modelStart()
