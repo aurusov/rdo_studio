@@ -36,6 +36,9 @@ protected:
 	int		m_bufferDelay;
 	BOOL	m_codecompUse;
 	int		m_codecompShowFullList;
+	BOOL	m_marginFold;
+	BOOL	m_marginBookmark;
+	BOOL	m_marginLineNumber;
 	//}}AFX_DATA
 
 	//{{AFX_VIRTUAL(RDOStudioOptionsEditor)

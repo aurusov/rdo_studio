@@ -76,6 +76,27 @@ public:
 };
 
 // ----------------------------------------------------------------------------
+// ---------- RDOEditorEditMargin
+// ----------------------------------------------------------------------------
+class RDOEditorEditMargin
+{
+public:
+	RDOEditorEditMargin();
+	virtual ~RDOEditorEditMargin();
+
+	RDOEditorEditMargin& operator =( const RDOEditorEditMargin& margin );
+	bool operator ==( const RDOEditorEditMargin& margin ) const;
+	bool operator !=( const RDOEditorEditMargin& margin ) const;
+
+	virtual void load( std::string regPath );
+	virtual void save( std::string regPath ) const;
+
+	bool fold;
+	bool bookmark;
+	bool lineNumber;
+};
+
+// ----------------------------------------------------------------------------
 // ---------- RDOEditorEditStyle
 // ----------------------------------------------------------------------------
 class RDOEditorEditStyle: public RDOEditorBaseEditStyle
@@ -84,6 +105,7 @@ protected:
 	virtual void initTheme();
 	virtual void initAutoComplete();
 	virtual void initBuffer();
+	virtual void initMargin();
 
 public:
 	RDOEditorEditStyle();
@@ -99,6 +121,7 @@ public:
 
 	RDOEditorEditAutoComplete* autoComplete;
 	RDOEditorEditBuffer*       buffer;
+	RDOEditorEditMargin*       margin;
 };
 
 }; // namespace rdoEditor

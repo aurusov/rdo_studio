@@ -31,8 +31,6 @@ int RDOEditorResults::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	if ( RDOEditorBaseEdit ::OnCreate(lpCreateStruct) == -1 ) return -1;
 
 	setReadOnly( true );
-	setViewMargin( false );
-	setViewFoldMargin( false );
 
 	return 0;
 }

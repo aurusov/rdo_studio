@@ -19,6 +19,9 @@ BEGIN_MESSAGE_MAP(RDOStudioOptionsEditor, CPropertyPage)
 	ON_BN_CLICKED(IDC_CLEARAUTO_CHECK, OnClearAutoCheck)
 	ON_BN_CLICKED(IDC_SHOWNEARESTWORDSONLY_RADIO, OnUpdateModify)
 	ON_EN_CHANGE(IDC_CLEARAUTO_EDIT, OnUpdateModify)
+	ON_BN_CLICKED(IDC_MARGIN_FOLD_CHECK, OnUpdateModify)
+	ON_BN_CLICKED(IDC_MARGIN_BOOKMARK_CHECK, OnUpdateModify)
+	ON_BN_CLICKED(IDC_MARGIN_LINENUMBER_CHECK, OnUpdateModify)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -31,6 +34,9 @@ RDOStudioOptionsEditor::RDOStudioOptionsEditor( RDOStudioOptions& _sheet ):
 	m_bufferDelay = 0;
 	m_codecompUse = FALSE;
 	m_codecompShowFullList = -1;
+	m_marginFold = FALSE;
+	m_marginBookmark = FALSE;
+	m_marginLineNumber = FALSE;
 	//}}AFX_DATA_INIT
 
 	m_bufferClearAuto = sheet->style_editor.buffer->canClearBuffer ? 1 : 0;
@@ -38,6 +44,10 @@ RDOStudioOptionsEditor::RDOStudioOptionsEditor( RDOStudioOptions& _sheet ):
 
 	m_codecompUse          = sheet->style_editor.autoComplete->useAutoComplete ? 1 : 0;
 	m_codecompShowFullList = sheet->style_editor.autoComplete->showFullList ? 0 : 1;
+
+	m_marginFold       = sheet->style_editor.margin->fold ? 1 : 0;
+	m_marginBookmark   = sheet->style_editor.margin->bookmark ? 1 : 0;
+	m_marginLineNumber = sheet->style_editor.margin->lineNumber ? 1 : 0;
 }
 
 RDOStudioOptionsEditor::~RDOStudioOptionsEditor()
@@ -54,6 +64,9 @@ void RDOStudioOptionsEditor::DoDataExchange(CDataExchange* pDX)
 	DDV_MinMaxInt(pDX, m_bufferDelay, 1, 100);
 	DDX_Check(pDX, IDC_USEAUTOCOMPLETE_CHECK, m_codecompUse);
 	DDX_Radio(pDX, IDC_SHOWFULLLIST_RADIO, m_codecompShowFullList);
+	DDX_Check(pDX, IDC_MARGIN_FOLD_CHECK, m_marginFold);
+	DDX_Check(pDX, IDC_MARGIN_BOOKMARK_CHECK, m_marginBookmark);
+	DDX_Check(pDX, IDC_MARGIN_LINENUMBER_CHECK, m_marginLineNumber);
 	//}}AFX_DATA_MAP
 }
 
@@ -100,11 +113,15 @@ void RDOStudioOptionsEditor::OnUpdateModify()
 	sheet->style_editor.autoComplete->useAutoComplete = m_codecompUse ? true : false;
 	sheet->style_editor.autoComplete->showFullList    = m_codecompShowFullList == 0;
 
+	sheet->style_editor.margin->fold       = m_marginFold ? true : false;
+	sheet->style_editor.margin->bookmark   = m_marginBookmark ? true : false;
+	sheet->style_editor.margin->lineNumber = m_marginLineNumber ? true : false;
+
 //	if ( sheet->colorOptions->edit ) {
 //		sheet->colorOptions->edit.setEditorStyle( sheet->editorStyle );
 //	}
 
-	SetModified( *sheet->style_editor.buffer != *studioApp.mainFrame->style_editor.buffer || *sheet->style_editor.autoComplete != *studioApp.mainFrame->style_editor.autoComplete );
+	SetModified( *sheet->style_editor.buffer != *studioApp.mainFrame->style_editor.buffer || *sheet->style_editor.autoComplete != *studioApp.mainFrame->style_editor.autoComplete || *sheet->style_editor.margin != *studioApp.mainFrame->style_editor.margin );
 }
 
 // ----------------------------------------------------------------------------

@@ -80,30 +80,24 @@ BEGIN_MESSAGE_MAP( RDOBaseEdit, CWnd )
 	ON_UPDATE_COMMAND_UI(ID_SEARCH_FINDNEXT, OnUpdateSearchFindNextPrev)
 	ON_UPDATE_COMMAND_UI(ID_SEARCH_FIND, OnUpdateSearchFind)
 	ON_UPDATE_COMMAND_UI(ID_SEARCH_REPLACE, OnUpdateSearchReplace)
-	ON_COMMAND(ID_VIEW_EDITOR_TOGGLECURRENTFOLD, OnViewToggleCurrentFold)
-	ON_COMMAND(ID_VIEW_EDITOR_TOGGLEALLFOLDS, OnViewToggleAllFolds)
-	ON_UPDATE_COMMAND_UI( ID_VIEW_EDITOR_TOGGLECURRENTFOLD, OnUpdateFold )
+	ON_COMMAND(ID_VIEW_TOGGLECURRENTFOLD, OnViewToggleCurrentFold)
+	ON_COMMAND(ID_VIEW_TOGGLEALLFOLDS, OnViewToggleAllFolds)
+	ON_UPDATE_COMMAND_UI( ID_VIEW_TOGGLECURRENTFOLD, OnUpdateFold )
 	ON_COMMAND( ID_SEARCH_BOOKMARKTOGGLE  , OnBookmarkToggle )
 	ON_COMMAND( ID_SEARCH_BOOKMARKNEXT    , OnBookmarkNext )
 	ON_COMMAND( ID_SEARCH_BOOKMARKPREVIOUS, OnBookmarkPrev )
 	ON_COMMAND( ID_SEARCH_BOOKMARKSCLEAR  , OnBookmarkClearAll )
 	ON_UPDATE_COMMAND_UI( ID_SEARCH_BOOKMARKNEXT    , OnHasBookmarks )
-	ON_COMMAND(ID_VIEW_EDITOR_WHITESPACE, OnViewWhiteSpace)
-	ON_COMMAND(ID_VIEW_EDITOR_ENDOFLINE, OnViewEndOfLine)
-	ON_COMMAND(ID_VIEW_EDITOR_LINENUMBERMARGIN, OnViewLineNumberMargin)
-	ON_COMMAND(ID_VIEW_EDITOR_MARGIN, OnViewMargin)
-	ON_COMMAND(ID_VIEW_EDITOR_FOLDMARGIN, OnViewFoldMargin)
-	ON_COMMAND(ID_VIEW_EDITOR_ZOOMIN, OnViewZoomIn)
-	ON_COMMAND(ID_VIEW_EDITOR_ZOOMOUT, OnViewZoomOut)
-	ON_COMMAND(ID_VIEW_EDITOR_ZOOMRESET, OnViewZoomReset)
-	ON_UPDATE_COMMAND_UI( ID_VIEW_EDITOR_WHITESPACE      , OnUpdateWhiteSpace )
-	ON_UPDATE_COMMAND_UI( ID_VIEW_EDITOR_ENDOFLINE       , OnUpdateEndOfLine )
-	ON_UPDATE_COMMAND_UI( ID_VIEW_EDITOR_LINENUMBERMARGIN, OnUpdateViewLineNumberMargin )
-	ON_UPDATE_COMMAND_UI( ID_VIEW_EDITOR_MARGIN          , OnUpdateViewMargin )
-	ON_UPDATE_COMMAND_UI( ID_VIEW_EDITOR_FOLDMARGIN      , OnUpdateViewFoldMargin )
-	ON_UPDATE_COMMAND_UI( ID_VIEW_EDITOR_ZOOMIN          , OnUpdateZoomIn )
-	ON_UPDATE_COMMAND_UI( ID_VIEW_EDITOR_ZOOMOUT         , OnUpdateZoomOut )
-	ON_UPDATE_COMMAND_UI( ID_VIEW_EDITOR_ZOOMRESET       , OnUpdateZoomReset )
+	ON_COMMAND(ID_VIEW_WHITESPACE, OnViewWhiteSpace)
+	ON_COMMAND(ID_VIEW_ENDOFLINE, OnViewEndOfLine)
+	ON_COMMAND(ID_VIEW_ZOOMIN, OnViewZoomIn)
+	ON_COMMAND(ID_VIEW_ZOOMOUT, OnViewZoomOut)
+	ON_COMMAND(ID_VIEW_ZOOMRESET, OnViewZoomReset)
+	ON_UPDATE_COMMAND_UI( ID_VIEW_WHITESPACE      , OnUpdateWhiteSpace )
+	ON_UPDATE_COMMAND_UI( ID_VIEW_ENDOFLINE       , OnUpdateEndOfLine )
+	ON_UPDATE_COMMAND_UI( ID_VIEW_ZOOMIN          , OnUpdateZoomIn )
+	ON_UPDATE_COMMAND_UI( ID_VIEW_ZOOMOUT         , OnUpdateZoomOut )
+	ON_UPDATE_COMMAND_UI( ID_VIEW_ZOOMRESET       , OnUpdateZoomReset )
 	ON_UPDATE_COMMAND_UI( ID_EDIT_COPY            , OnIsSelected )
 	ON_UPDATE_COMMAND_UI(ID_EDIT_UNDO, OnUpdateEditUndo)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_REDO, OnUpdateEditRedo)
@@ -113,7 +107,7 @@ BEGIN_MESSAGE_MAP( RDOBaseEdit, CWnd )
 	ON_UPDATE_COMMAND_UI( ID_EDIT_COPYASRTF       , OnIsSelected )
 	ON_UPDATE_COMMAND_UI( ID_EDIT_UPPERCASE       , OnIsSelected )
 	ON_UPDATE_COMMAND_UI( ID_EDIT_LOWERCASE       , OnIsSelected )
-	ON_UPDATE_COMMAND_UI( ID_VIEW_EDITOR_TOGGLEALLFOLDS   , OnUpdateFold )
+	ON_UPDATE_COMMAND_UI( ID_VIEW_TOGGLEALLFOLDS   , OnUpdateFold )
 	ON_UPDATE_COMMAND_UI( ID_SEARCH_BOOKMARKPREVIOUS, OnHasBookmarks )
 	ON_UPDATE_COMMAND_UI( ID_SEARCH_BOOKMARKSCLEAR  , OnHasBookmarks )
 	ON_UPDATE_COMMAND_UI(ID_SEARCH_FINDPREVIOUS, OnUpdateSearchFindNextPrev)
@@ -227,10 +221,6 @@ int RDOBaseEdit::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	sendEditor( SCI_SETFOLDFLAGS, 16 );
 	sendEditor( SCI_SETMARGINMASKN     , sci_FOLDMARGIN_ID, SC_MASK_FOLDERS );
 	sendEditor( SCI_SETMARGINSENSITIVEN, sci_FOLDMARGIN_ID, 1 );
-
-	setViewLineNumberMargin( false );
-	setViewMargin( false );
-	setViewFoldMargin( false );
 
 	sendEditor( SCI_USEPOPUP, 0 );
 
@@ -1490,42 +1480,6 @@ void RDOBaseEdit::OnViewEndOfLine()
 	}
 }
 
-void RDOBaseEdit::OnViewLineNumberMargin() 
-{
-	if ( !group ) {
-		setViewLineNumberMargin( !isViewLineNumberMargin() );
-	} else {
-		bool flag = !isViewLineNumberMargin();
-		for ( RDOBaseEditListIterator it = group->begin(); it != group->end(); it++ ) {
-			(*it)->setViewLineNumberMargin( flag );
-		}
-	}
-}
-
-void RDOBaseEdit::OnViewMargin() 
-{
-	if ( !group ) {
-		setViewMargin( !isViewMargin() );
-	} else {
-		bool flag = !isViewMargin();
-		for ( RDOBaseEditListIterator it = group->begin(); it != group->end(); it++ ) {
-			(*it)->setViewMargin( flag );
-		}
-	}
-}
-
-void RDOBaseEdit::OnViewFoldMargin() 
-{
-	if ( !group ) {
-		setViewFoldMargin( !isViewFoldMargin() );
-	} else {
-		bool flag = !isViewFoldMargin();
-		for ( RDOBaseEditListIterator it = group->begin(); it != group->end(); it++ ) {
-			(*it)->setViewFoldMargin( flag );
-		}
-	}
-}
-
 void RDOBaseEdit::OnViewZoomIn() 
 {
 	if ( !group ) {
@@ -1567,21 +1521,6 @@ void RDOBaseEdit::OnUpdateWhiteSpace( CCmdUI* pCmdUI )
 void RDOBaseEdit::OnUpdateEndOfLine( CCmdUI* pCmdUI )
 {
 	pCmdUI->SetCheck( isViewEndOfLine() );
-}
-
-void RDOBaseEdit::OnUpdateViewLineNumberMargin( CCmdUI* pCmdUI )
-{
-	pCmdUI->SetCheck( isViewLineNumberMargin() );
-}
-
-void RDOBaseEdit::OnUpdateViewMargin( CCmdUI* pCmdUI )
-{
-	pCmdUI->SetCheck( isViewMargin() );
-}
-
-void RDOBaseEdit::OnUpdateViewFoldMargin( CCmdUI* pCmdUI )
-{
-	pCmdUI->SetCheck( isViewFoldMargin() );
 }
 
 void RDOBaseEdit::OnUpdateZoomIn( CCmdUI *pCmdUI )

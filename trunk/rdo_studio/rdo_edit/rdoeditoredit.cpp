@@ -155,9 +155,6 @@ int RDOEditorEdit::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	sendEditor( SCI_AUTOCSETAUTOHIDE      , false );
 	sendEditor( SCI_AUTOCSTOPS            , 0, reinterpret_cast<long>("+-*/:[](),<>=.") );
 
-	setViewMargin( true );
-	setViewFoldMargin( true );
-
 	return 0;
 }
 
@@ -165,6 +162,12 @@ void RDOEditorEdit::setEditorStyle( RDOEditorEditStyle* _style )
 {
 	RDOEditorBaseEdit::setEditorStyle( _style );
 	if ( !style ) return;
+
+	// ----------
+	// Margin
+	sendEditor( SCI_SETMARGINWIDTHN, 2, static_cast<RDOEditorEditStyle*>(style)->margin->fold ? 16 : 0 );
+	sendEditor( SCI_SETMARGINWIDTHN, 1, static_cast<RDOEditorEditStyle*>(style)->margin->bookmark ? 16 : 0 );
+	sendEditor( SCI_SETMARGINWIDTHN, 0, static_cast<RDOEditorEditStyle*>(style)->margin->lineNumber ? 40 : 0 );
 
 	// ----------
 	// Error

@@ -108,17 +108,11 @@ protected:
 	afx_msg void OnHasBookmarks( CCmdUI* pCmdUI );
 	afx_msg void OnViewWhiteSpace();
 	afx_msg void OnViewEndOfLine();
-	afx_msg void OnViewLineNumberMargin();
-	afx_msg void OnViewMargin();
-	afx_msg void OnViewFoldMargin();
 	afx_msg void OnViewZoomIn();
 	afx_msg void OnViewZoomOut();
 	afx_msg void OnViewZoomReset();
 	afx_msg void OnUpdateWhiteSpace( CCmdUI* pCmdUI );
 	afx_msg void OnUpdateEndOfLine( CCmdUI* pCmdUI );
-	afx_msg void OnUpdateViewLineNumberMargin( CCmdUI* pCmdUI );
-	afx_msg void OnUpdateViewMargin( CCmdUI* pCmdUI );
-	afx_msg void OnUpdateViewFoldMargin( CCmdUI* pCmdUI );
 	afx_msg void OnUpdateZoomIn( CCmdUI *pCmdUI );
 	afx_msg void OnUpdateZoomOut( CCmdUI *pCmdUI );
 	afx_msg void OnUpdateZoomReset( CCmdUI *pCmdUI );
@@ -162,15 +156,6 @@ public:
 
 	bool isViewEndOfLine() const                           { return sendEditor( SCI_GETVIEWEOL ) ? true : false; };
 	void setEndOfLine( const bool value ) const            { sendEditor( SCI_SETVIEWEOL, value );                };
-
-	bool isViewLineNumberMargin() const                    { return sendEditor( SCI_GETMARGINWIDTHN, 0 ) != 0;     };
-	void setViewLineNumberMargin( const bool value ) const { sendEditor( SCI_SETMARGINWIDTHN, 0, value ? 40 : 0 ); };
-
-	bool isViewMargin() const                              { return sendEditor( SCI_GETMARGINWIDTHN, 1 ) != 0;     };
-	void setViewMargin( const bool value ) const           { sendEditor( SCI_SETMARGINWIDTHN, 1, value ? 16 : 0 ); };
-
-	bool isViewFoldMargin() const                          { return sendEditor( SCI_GETMARGINWIDTHN, 2 ) != 0;     };
-	void setViewFoldMargin( const bool value ) const       { sendEditor( SCI_SETMARGINWIDTHN, 2, value ? 16 : 0 ); };
 
 	int getZoom() const                                    { return sendEditor( SCI_GETZOOM ); };
 	void setZoom( const int value ) const                  { sendEditor( SCI_SETZOOM, value ); };
