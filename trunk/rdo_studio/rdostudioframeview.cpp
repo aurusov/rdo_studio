@@ -19,6 +19,7 @@ IMPLEMENT_DYNCREATE(RDOStudioFrameView, CView)
 BEGIN_MESSAGE_MAP(RDOStudioFrameView, CView)
 	//{{AFX_MSG_MAP(RDOStudioFrameView)
 	ON_WM_CREATE()
+	ON_WM_DESTROY()
 	//}}AFX_MSG_MAP
 	ON_COMMAND(ID_FILE_PRINT, CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, CView::OnFilePrint)
@@ -81,8 +82,6 @@ void RDOStudioFrameView::OnDraw(CDC* pDC)
 
 	}
 
-	TRACE( "22222\r\n" );
-
 	lock_draw.Unlock();
 
 	CEvent* timer = model->frameManager.getFrameTimer( index );
@@ -119,3 +118,9 @@ RDOStudioFrameDoc* RDOStudioFrameView::GetDocument()
 	return (RDOStudioFrameDoc*)m_pDocument;
 }
 #endif
+
+void RDOStudioFrameView::OnDestroy() 
+{
+	model->frameManager.disconnectFrameDoc( GetDocument() );
+	CView::OnDestroy();
+}

@@ -649,10 +649,14 @@ void RDOStudioModel::showFrame()
 				CEvent* timer = frameManager.getFrameTimer( frame_index );
 				timer->ResetEvent();
 
+				CRect rect;
+				view->GetClientRect( rect );
 				view->InvalidateRect( NULL );
 				view->SendNotifyMessage( WM_PAINT, 0, 0 );
 
-				DWORD res = ::WaitForSingleObject( timer->m_hObject, INFINITE );
+				TRACE( "4\r\n" );
+
+				DWORD res = ::WaitForSingleObject( timer->m_hObject, 100000 );
 				if ( res == WAIT_OBJECT_0 ) {
 					TRACE( "333333333333333333\r\n" );
 					SYSTEMTIME time2;

@@ -61,15 +61,3 @@ RDOStudioFrameView* RDOStudioFrameDoc::getView() const
 	}
 	return NULL;
 }
-
-void RDOStudioFrameDoc::OnCloseDocument()
-{
-	int index = model->frameManager.findFrameIndex( this );
-
-//	if ( !model->frameManager.isDeleted( index ) ) {
-//		model->frameManager.setDeleted( index, true );
-//	}
-	model->frameManager.disconnectFrameDoc( this );
-
-	CDocument::OnCloseDocument();
-}

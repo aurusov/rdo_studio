@@ -111,8 +111,23 @@ void RDOStudioFrameManager::disconnectFrameDoc( const RDOStudioFrameDoc* doc ) c
 {
 	int index = findFrameIndex( doc );
 	if ( index != -1 ) {
+
+//		CSingleLock lock_draw( getFrameDraw( index ) );
+//		lock_draw.Lock();
+
+//		lock_draw.Unlock();
+
+		TRACE( "1-disconnectFrameDoc\r\n" );
+
+		CEvent* timer = getFrameTimer( index );
+
 		CSingleLock lock( getFrameUsed( index ) );
+		while ( lock.IsLocked() ) {
+			timer->SetEvent();
+		}
 		lock.Lock();
+
+		TRACE( "2-disconnectFrameDoc\r\n" );
 
 		frames[index]->doc  = NULL;
 		frames[index]->view = NULL;
