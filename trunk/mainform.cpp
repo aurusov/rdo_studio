@@ -245,8 +245,16 @@ void WGMainForm::slot_options_default()
 	dialog->PasswordPassLE->setText( WGProcess_s->password );
 	dialog->LogCB->setChecked( WGProcess_s->writeLog );
 	dialog->LogDirectoryLE->setText( WGProcess_s->logDirectory );
-	dialog->RetriesNumberLE->setText( WGProcess_s->retriesNumber );
-	dialog->RetriesWaitLE->setText( WGProcess_s->waitBetweenRetrievals );
+	if ( WGProcess_s->retriesNumber != -1 ) {
+		dialog->RetriesNumberLE->setText( QString::number( WGProcess_s->retriesNumber ));
+	} else {
+		dialog->RetriesNumberLE->setText( "" );
+	}
+	if ( WGProcess_s->waitBetweenRetrievals != -1 ) {
+		dialog->RetriesWaitLE->setText( QString::number( WGProcess_s->waitBetweenRetrievals ));
+	} else {
+		dialog->RetriesWaitLE->setText( "" );
+	}
 	dialog->ClipboardCheckCB->setChecked( WGProcess_s->checkClipboard );
 	dialog->ClipboardAutoStartCB->setChecked( WGProcess_s->autostartClipboard );
 	dialog->updateControls();
@@ -260,8 +268,15 @@ void WGMainForm::slot_options_default()
 		WGProcess_s->password = dialog->PasswordPassLE->text();
 		WGProcess_s->writeLog = dialog->LogCB->isChecked();
 		WGProcess_s->logDirectory = dialog->LogDirectoryLE->text();
-		WGProcess_s->retriesNumber = dialog->RetriesNumberLE->text();
-		WGProcess_s->waitBetweenRetrievals = dialog->RetriesWaitLE->text();
+
+		bool ok = true;
+		int v = dialog->RetriesNumberLE->text().toInt( &ok );
+		WGProcess_s->retriesNumber = ok ? v : -1;
+
+		ok = true;
+		v = dialog->RetriesWaitLE->text().toInt( &ok );
+		WGProcess_s->waitBetweenRetrievals = ok ? v : -1;
+
 		WGProcess_s->checkClipboard = dialog->ClipboardCheckCB->isChecked();
 		WGProcess_s->autostartClipboard = dialog->ClipboardAutoStartCB->isChecked();
 		WGProcess_s->writeConfig();
@@ -389,8 +404,16 @@ void WGMainForm::newDownload( QString url, const bool autostart )
 			dialog->PasswordPassLE->setText( WGProcess_s->password );
 			dialog->LogCB->setChecked( WGProcess_s->writeLog );
 			dialog->LogDirectoryLE->setText( WGProcess_s->logDirectory );
-			dialog->RetriesNumberLE->setText( WGProcess_s->retriesNumber );
-			dialog->RetriesWaitLE->setText( WGProcess_s->waitBetweenRetrievals );
+			if ( WGProcess_s->retriesNumber != -1 ) {
+				dialog->RetriesNumberLE->setText( QString::number( WGProcess_s->retriesNumber ));
+			} else {
+				dialog->RetriesNumberLE->setText( "" );
+			}
+			if ( WGProcess_s->waitBetweenRetrievals != -1 ) {
+				dialog->RetriesWaitLE->setText( QString::number( WGProcess_s->waitBetweenRetrievals ));
+			} else {
+				dialog->RetriesWaitLE->setText( "" );
+			}
 			dialog->updateControls();
 			doDownload = dialog->exec() == QDialog::Accepted;
 		}
@@ -412,8 +435,15 @@ void WGMainForm::newDownload( QString url, const bool autostart )
 					proc->password = dialog->PasswordPassLE->text();
 					proc->writeLog = dialog->LogCB->isChecked();
 					proc->logDirectory = dialog->LogDirectoryLE->text();
-					proc->retriesNumber = dialog->RetriesNumberLE->text();
-					proc->waitBetweenRetrievals = dialog->RetriesWaitLE->text();
+					
+					bool ok = true;
+					int v = dialog->RetriesNumberLE->text().toInt( &ok );
+					proc->retriesNumber = ok ? v : -1;
+
+					ok = true;
+					v = dialog->RetriesWaitLE->text().toInt( &ok );
+					proc->waitBetweenRetrievals = ok ? v : -1;
+					
 				} else {
 					proc->saveToDir = WGProcess_s->saveToDir;
 					proc->doRestart = WGProcess_s->doRestart;

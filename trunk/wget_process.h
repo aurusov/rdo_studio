@@ -48,8 +48,8 @@ public:
 	QString password;
 	bool writeLog;
 	QString logDirectory;
-	QString retriesNumber;
-	QString waitBetweenRetrievals;
+	int retriesNumber;
+	int waitBetweenRetrievals;
 	bool checkClipboard;
 	bool autostartClipboard;
 
@@ -81,7 +81,8 @@ typedef enum WGProcessStatus {
 	psNoMatchesOnPattern         = 15,
 	psInvalidPortSpecification   = 16,
 	psUnknownUnsupportedProtocol = 17,
-	psUnknownError               = 18
+	psLoginIncorrect             = 18,
+	psUnknownError               = 19
 };
 
 class WGProcess: public QObject
@@ -176,8 +177,8 @@ public:
 	QString password;
 	bool writeLog;
 	QString logDirectory;
-	QString retriesNumber;
-	QString waitBetweenRetrievals;
+	int retriesNumber;
+	int waitBetweenRetrievals;
 
 signals:
 	void signal_start( WGProcess* proc );

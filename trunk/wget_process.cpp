@@ -23,8 +23,8 @@ WGProcessList::WGProcessList( QObject* parent ):
 	password( "" ),
 	writeLog( false ),
 	logDirectory( QDir::homeDirPath() ),
-	retriesNumber( "" ),
-	waitBetweenRetrievals( "" ),
+	retriesNumber( -1 ),
+	waitBetweenRetrievals( -1 ),
 	checkClipboard( true ),
 	autostartClipboard( false )
 {
@@ -174,10 +174,14 @@ void WGProcessList::readConfig()
 				if ( pos == 0 ) logDirectory = value;
 
 				value = getConfigValue( line, "retriesNumber", pos );
-				if ( pos == 0 ) retriesNumber = value.toInt();
+				bool ok = true;
+				int v = value.toInt( &ok );
+				if ( pos == 0 && ok ) retriesNumber = v;
 
 				value = getConfigValue( line, "waitBetweenRetrievals", pos );
-				if ( pos == 0 ) waitBetweenRetrievals = value.toInt();
+				ok = true;
+				v = value.toInt( &ok );
+				if ( pos == 0 && ok ) waitBetweenRetrievals = v;
 
 				value = getConfigValue( line, "checkClipboard", pos );
 				if ( pos == 0 ) checkClipboard = value.toInt() ? true : false;
@@ -224,8 +228,8 @@ void WGProcessList::readConfig()
 	dontRetrieveOldFile   = reg.readBoolEntry( "/winwget/dontRetrieveOldFile", false );
 	writeLog              = reg.readBoolEntry( "/winwget/writeLog", false );
 	logDirectory          = reg.readEntry( "/winwget/logDirectory", QDir::homeDirPath() );
-	retriesNumber         = reg.readEntry( "/winwget/retriesNumber", empty_str );
-	waitBetweenRetrievals = reg.readEntry( "/winwget/waitBetweenRetrievals", empty_str );
+	retriesNumber         = reg.readNumEntry( "/winwget/retriesNumber", -1 );
+	waitBetweenRetrievals = reg.readNumEntry( "/winwget/waitBetweenRetrievals", -1 );
 	checkClipboard        = reg.readBoolEntry( "/winwget/checkClipboard", true );
 	autostartClipboard    = reg.readBoolEntry( "/winwget/autostartClipboard", false );
 }
@@ -285,8 +289,8 @@ WGProcess::WGProcess( QObject* parent ):
 	password( "" ),
 	writeLog( false ),
 	logDirectory( "" ),
-	retriesNumber( "" ),
-	waitBetweenRetrievals( "" )
+	retriesNumber( -1 ),
+	waitBetweenRetrievals( -1 )
 {
 	proc = new QProcess( this );
 	proc->addArgument( "wget" );
@@ -338,14 +342,23 @@ bool WGProcess::start( const bool without_arguments )
 				}
 				url = s;
 			}
-			if ( !retriesNumber.isEmpty()         ) proc->addArgument( "-t" + retriesNumber );
-			if ( !waitBetweenRetrievals.isEmpty() ) proc->addArgument( "-w" + waitBetweenRetrievals );
+			if ( retriesNumber         != -1 ) proc->addArgument( "-t" + QString::number( retriesNumber ));
+			if ( waitBetweenRetrievals != -1 ) proc->addArgument( "-w" + QString::number( waitBetweenRetrievals ));
 			if ( !saveToDir.isEmpty() ) {
+				QDir dir( saveToDir );
+				if ( !dir.exists() ) saveToDir = QDir::homeDirPath();
 				int length = (int)saveToDir.length();
 				if ( saveToDir.find( "/", length-1 ) == length-1 || saveToDir.find( "\\", length-1 ) == length-1 ) saveToDir.remove( length-1, 1 );
 				proc->addArgument( "-P" + saveToDir );
 			}
 			proc->addArgument( url );
+			if ( !logDirectory.isEmpty() ) {
+				QDir dir( logDirectory );
+				if ( !dir.exists() ) logDirectory = QDir::homeDirPath();
+			}
+		}
+		for ( int i = 0; i < (int)proc->arguments().count(); i++ ) {
+		    qDebug( "arg." + QString::number(i) + " = " + proc->arguments()[i] );
 		}
 		if ( proc->start() ) {
 			if ( !url.isEmpty() ) {
@@ -497,6 +510,7 @@ void WGProcess::readStderr()
 #define no_matches_on_pattern_str      "No matches on pattern"
 #define invalid_port_specification     "Invalid port specification"
 #define unknown_unsupported_protocol   "Unknown/unsupported protocol"
+#define login_incorrect                "Login incorrect"
 #define unknown_error_str              "Unknown error"
 
 void WGProcess::logParser()
@@ -533,6 +547,9 @@ void WGProcess::logParser()
 		}
 		if ( str.find( unknown_unsupported_protocol ) != -1 ) {
 			setStatus( psUnknownUnsupportedProtocol );
+		}
+		if ( str.find( login_incorrect ) != -1 ) {
+			setStatus( psLoginIncorrect );
 		}
 		if ( str.find( unknown_error_str ) != -1 ) {
 			setStatus( psUnknownError );
@@ -586,6 +603,7 @@ void WGProcess::logParser()
 			found_file_progress_end_line   = -1;
 			found_file_saved_line          = -1;
 			setStatus( psLogin );
+			qDebug( "login... ok" );
 		}
 
 		// done ( before download )
@@ -690,14 +708,17 @@ void WGProcess::logParser()
 		// file saved
 		if ( ( found_file_progress_end_line != -1 || found_login_line != -1 ) &&
 		       found_file_saved_line < line && str.find( file_saved_str ) != -1 ) {
+			qDebug( "saved..." );
 			found_file_saved_line = line;
 			bool saved_flag = true;
 			if ( !fileSize ) {
+				qDebug( "  get file size..." );
 				QString fs = str;
 				i = fs.findRev( "'" );
 				if ( i != -1 ) {
 					fs.remove( 0, i+1 );
 					fs = pickOutStr( fs, file_saved_index );
+					qDebug( "  file size str = " + fs );
 					if ( fs.find( "[" ) == 0 && fs.findRev( "]" ) == (int)(fs.length()-1) ) {
 						fs.remove( 0, 1 );
 						fs.remove( fs.length()-1, 1 );
@@ -710,11 +731,15 @@ void WGProcess::logParser()
 							fs.remove( i, 1 );
 						}
 						emit signal_file_size( this, fileSize );
+						qDebug( "  file size = " + QString::number( fileSize) );
+						qDebug( "  get file size... ok" );
 					} else {
 						saved_flag = false;
+						qDebug( "  get file size... faild 1" );
 					}
 				} else {
 					saved_flag = false;
+					qDebug( "  get file size... faild 2" );
 				}
 			}
 			if ( saved_flag ) {
@@ -723,8 +748,10 @@ void WGProcess::logParser()
 				found_file_progress_end_line = line;
 				setStatus( psFinish );
 				setStatus( psSaved );
+				qDebug( "saved... ok" );
 			} else {
 				found_file_saved_line = -1;
+				qDebug( "saved... faild" );
 			}
 		}
 	}

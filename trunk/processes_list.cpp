@@ -212,6 +212,7 @@ void WGProcList::slot_change_proc_status( WGProcess* proc, WGProcessStatus statu
 			case psNoMatchesOnPattern        : s = "no matches on pattern";        pixmap = &image_faild;        break;
 			case psInvalidPortSpecification  : s = "invalid port specification";   pixmap = &image_faild;        break;
 			case psUnknownUnsupportedProtocol: s = "unknown/unsupported protocol"; pixmap = &image_faild;        break;
+			case psLoginIncorrect            : s = "login incorrect";              pixmap = &image_faild;        break;
 			case psUnknownError              : s = "unknown error";                pixmap = &image_faild;        break;
 			default                          : s = "";                             pixmap = &image_ok;           break;
 		}
