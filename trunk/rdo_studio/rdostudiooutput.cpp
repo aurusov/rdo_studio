@@ -50,6 +50,7 @@ int RDOStudioOutput::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	int delta = maximized ? 1 : 0;
 
 	RDOStudioApp::appendMenu( mainMenu->GetSubMenu( 1 + delta ), 4, &popupMenu );
+	RDOStudioApp::appendMenu( mainMenu->GetSubMenu( 1 + delta ), 8, &popupMenu );
 	RDOStudioApp::appendMenu( mainMenu->GetSubMenu( 1 + delta ), 10, &popupMenu );
 	popupMenu.AppendMenu( MF_SEPARATOR );
 	RDOStudioApp::appendMenu( mainMenu->GetSubMenu( 2 + delta ), 0, &popupMenu );
