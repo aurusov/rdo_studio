@@ -51,7 +51,7 @@ private:
 	void updateBounds();
 	bool isFullScreenMode() const { return fullScreenMode; }
 	void setFullScreenMode( const bool value );
-	
+
 public:
 	BKMainFrame();
 	virtual ~BKMainFrame();
