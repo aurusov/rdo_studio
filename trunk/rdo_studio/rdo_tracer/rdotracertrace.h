@@ -117,6 +117,7 @@ public:
 	RDOTracerTimeNow* getTime( const int index ) const;
 	int getTimesCount() const { return timeList.size(); };
 //	double getMinTimeDifference() const { return minTimeDifference; };
+	void updateChartsStyles() const;
 };
 
 }; // namespace rdoTracer

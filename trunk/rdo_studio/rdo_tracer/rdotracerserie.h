@@ -2,9 +2,7 @@
 #define RDOTRACERSERIE_H
 #pragma once
 
-#include "./tracer_ctrls/rdotracertreeitem.h"
-
-using namespace std;
+#include "tracer_ctrls/rdotracertreeitem.h"
 
 // ----------------------------------------------------------------------------
 // ---------- RDOTracerSerie
@@ -12,7 +10,8 @@ using namespace std;
 enum RDOTracerSerieKind{
 	RDOST_RESPARAM = 0,
 	RDOST_OPERATION,
-	RDOST_RESULT
+	RDOST_RESULT,
+	RDOST_PREVIEW
 };
 
 class RDOStudioChartView;
@@ -20,13 +19,13 @@ class RDOStudioChartDoc;
 class RDOTracerValue;
 class RDOTracerTimeNow;
 
-typedef list< RDOTracerValue* > valuesList;
+typedef std::list< RDOTracerValue* > valuesList;
 
 class RDOTracerSerie : public RDOTracerTreeItem
 {
 protected:
 	RDOTracerSerieKind serieKind;
-	string title;
+	std::string title;
 
 	valuesList values;
 	double minValue;
@@ -34,15 +33,15 @@ protected:
 
 	bool isTemporaryResourceParam() const;
 
-	vector< RDOStudioChartDoc* > documents;
+	std::vector< RDOStudioChartDoc* > documents;
 public:
-	RDOTracerSerie( RDOTracerSerieKind _serieKind );
+	RDOTracerSerie( RDOTracerSerieKind _serieKind = RDOST_PREVIEW );
 	virtual ~RDOTracerSerie();
 	
 	RDOTracerSerieKind getSerieKind() const { return serieKind; };
 
-	string getTitle() const;
-	void setTitle( const string& value );
+	std::string getTitle() const;
+	void setTitle( const std::string& value );
 
 	int addValue( RDOTracerValue* const value );
 	int getValueCount() const;

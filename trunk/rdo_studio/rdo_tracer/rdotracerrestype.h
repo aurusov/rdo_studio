@@ -2,9 +2,7 @@
 #define RDOTRACERRESTYPE_H
 #pragma once
 
-#include "./tracer_ctrls/rdotracertreeitem.h"
-
-using namespace std;
+#include "tracer_ctrls/rdotracertreeitem.h"
 
 // ----------------------------------------------------------------------------
 // ---------- RDOTracerResParamInfo
@@ -15,7 +13,7 @@ enum RDOTracerResParamType {
 	RDOPT_ENUMERATIVE
 };
 	
-typedef vector <string> RDOStringVector;
+typedef std::vector <std::string> RDOStringVector;
 
 class RDOTracerResParamInfo
 {
@@ -26,10 +24,10 @@ public:
 	RDOTracerResParamInfo( const RDOTracerResParamType type );
 	virtual ~RDOTracerResParamInfo();
 
-	string Name;
+	std::string Name;
 	RDOTracerResParamType getParamType() const { return paramType; };
-	int addEnumValue( const string& value );
-	string getEnumValue( const int index ) const;
+	int addEnumValue( const std::string& value );
+	std::string getEnumValue( const int index ) const;
 };
 
 // ----------------------------------------------------------------------------
@@ -43,13 +41,13 @@ enum RDOTracerResTypeKind {
 class RDOTracerResType : public RDOTracerTreeItem
 {
 protected:
-	vector <RDOTracerResParamInfo*> paramsInfo;
+	std::vector <RDOTracerResParamInfo*> paramsInfo;
 	RDOTracerResTypeKind restypeKind;
 public:
 	RDOTracerResType( const RDOTracerResTypeKind kind );
 	virtual ~RDOTracerResType();
 
-	string Name;
+	std::string Name;
 	RDOTracerResTypeKind getResTypeKind() const { return restypeKind; };
 	int addParamInfo( RDOTracerResParamInfo* const value );
 	RDOTracerResParamInfo* getParamInfo( const int index ) const;

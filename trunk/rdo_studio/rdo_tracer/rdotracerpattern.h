@@ -2,9 +2,7 @@
 #define RDOTRACERPATTERN_H
 #pragma once
 
-#include "./tracer_ctrls/rdotracertreeitem.h"
-
-using namespace std;
+#include "tracer_ctrls/rdotracertreeitem.h"
 
 // ----------------------------------------------------------------------------
 // ---------- RDOTracerPattern
@@ -24,7 +22,7 @@ public:
 	RDOTracerPattern( const RDOTracerPatternKind kind );
 	virtual ~RDOTracerPattern();
 
-	string Name;
+	std::string Name;
 	RDOTracerPatternKind getPatternKind() const { return patKind; };
 };
 

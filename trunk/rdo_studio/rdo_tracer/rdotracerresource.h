@@ -4,8 +4,6 @@
 
 #include "rdotracerserie.h"
 
-using namespace std;
-
 // ----------------------------------------------------------------------------
 // ---------- RDOTracerResParam
 // ----------------------------------------------------------------------------
@@ -33,20 +31,20 @@ class RDOTracerResType;
 class RDOTracerResource : public RDOTracerTreeItem
 {
 protected:
-	vector <RDOTracerResParam*> params;
+	std::vector <RDOTracerResParam*> params;
 	RDOTracerResType* resType;
 	bool erased;
 public:
-	RDOTracerResource( RDOTracerResType* const type, string& name );
+	RDOTracerResource( RDOTracerResType* const type, std::string& name );
 	virtual ~RDOTracerResource();
 
-	string Name;
+	std::string Name;
 	int id;
 	RDOTracerResType* getType() const { return resType; };
 	int addParam( RDOTracerResParam* const value );
 	RDOTracerResParam* getParam( const int index ) const;
 	int getParamIndex( const RDOTracerResParam* const param ) const;
-	void setParams( string& line, RDOTracerTimeNow* const time, const int eventIndex, const bool erasing = false );
+	void setParams( std::string& line, RDOTracerTimeNow* const time, const int eventIndex, const bool erasing = false );
 	void setErased( const bool value );
 	bool isErased() { return erased; };
 };

@@ -6,12 +6,13 @@
 #include "rdotraceroperation.h"
 #include "rdotracerresult.h"
 #include "rdotracervalues.h"
-#include "./tracer_ctrls/rdotracerlogctrl.h"
-#include "./tracer_ctrls/rdotracertreectrl.h"
+#include "tracer_ctrls/rdotracerlogctrl.h"
+#include "tracer_ctrls/rdotracertreectrl.h"
 #include "../rdostudiochartdoc.h"
 #include "../rdostudiochartview.h"
 #include "../rdostudioapp.h"
 #include "../rdostudiochildfrm.h"
+#include "../rdostudiomainfrm.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -656,4 +657,17 @@ RDOTracerTimeNow* RDOTracer::getTime( const int index ) const
 	for ( int i = 0; i < index; i++ )
 		it++;
 	return (*it);
+}
+
+void RDOTracer::updateChartsStyles() const
+{
+	for ( vector< RDOStudioChartDoc* >::const_iterator it = charts.begin(); it != charts.end(); it++ ) {
+		POSITION pos = (*it)->GetFirstViewPosition();
+		while ( pos != NULL ) {
+			CView* pView = (*it)->GetNextView( pos );
+			if ( pView && pView->IsKindOf(RUNTIME_CLASS(RDOStudioChartView)) ) {
+				((RDOStudioChartView*)pView)->setStyle( &studioApp.mainFrame->style_chart );
+			}
+		}
+	}
 }

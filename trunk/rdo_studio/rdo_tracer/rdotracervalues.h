@@ -9,6 +9,7 @@ class RDOTracerTimeNow
 {
 public:
 	RDOTracerTimeNow( const double _time = 0 );
+	RDOTracerTimeNow( const double _time, const int _event_count );
 	~RDOTracerTimeNow() {};
 
 	double time;
@@ -37,7 +38,7 @@ protected:
 	int eventIndex;
 public:
 	double value;
-	RDOTracerValue( RDOTracerTimeNow* const timenow, const int _eventIndex );
+	RDOTracerValue( RDOTracerTimeNow* const timenow, const int _eventIndex, const double _value = 0 );
 	~RDOTracerValue();
 };
 

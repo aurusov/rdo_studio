@@ -6,6 +6,8 @@
 #include "../rdostudiochartview.h"
 #include "../rdostudiochartdoc.h"
 
+using namespace std;
+
 // ----------------------------------------------------------------------------
 // ---------- RDOTracerSerieFindValue
 // ----------------------------------------------------------------------------

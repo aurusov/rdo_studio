@@ -7,8 +7,6 @@
 #include <rdotreectrl.h>
 #include "rdotracertreeitem.h"
 
-using namespace std;
-
 // ----------------------------------------------------------------------------
 // ---------- RDOTracerTreeCtrl
 // ----------------------------------------------------------------------------
@@ -66,7 +64,7 @@ public:
 	RDOTracerTreeCtrl();
 	virtual ~RDOTracerTreeCtrl();
 
-	BOOL setModelName( const string& modelName );
+	BOOL setModelName( const std::string& modelName );
 	void addResourceType( RDOTracerResType* resType );
 	void addResource( RDOTracerResource* res );
 	void updateResource( RDOTracerResource* const res );

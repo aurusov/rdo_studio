@@ -9,6 +9,12 @@ RDOTracerTimeNow::RDOTracerTimeNow( const double _time ) : time( _time )
 	eventCount = 0;
 }
 
+RDOTracerTimeNow::RDOTracerTimeNow( const double _time, const int _event_count )
+{
+	time = _time;
+	eventCount = _event_count;
+}
+
 RDOTracerTimeNow& RDOTracerTimeNow::operator =( const RDOTracerTimeNow& timenow )
 {
 	time         = timenow.time;
@@ -40,9 +46,10 @@ bool RDOTracerTimeNow::compareTimes( const RDOTracerTimeNow* timenow )
 // ----------------------------------------------------------------------------
 // ---------- RDOTracerValue
 // ----------------------------------------------------------------------------
-RDOTracerValue::RDOTracerValue( RDOTracerTimeNow* const timenow, const int _eventIndex )
+RDOTracerValue::RDOTracerValue( RDOTracerTimeNow* const timenow, const int _eventIndex, const double _value )
 	: modeltime( timenow ),
-	eventIndex( _eventIndex )
+	eventIndex( _eventIndex ),
+	value( _value )
 {
 }
 

@@ -8,8 +8,9 @@
 #endif
 
 using namespace rdoTracerLog;
-using namespace rdoEditCtrl;
+//using namespace rdoEditCtrl;
 using namespace std;
+using namespace rdoStyle;
 
 namespace rdoTracerLog {
 
@@ -628,10 +629,10 @@ void RDOLogCtrl::updateScrollBars()
 
 	SCROLLINFO si;
 	si.cbSize = sizeof( si );
-	si.fMask  = SIF_RANGE | SIF_PAGE | SIF_POS; 
+	si.fMask  = SIF_RANGE | SIF_PAGE | SIF_POS;
 	si.nMin   = 0; 
 	
-	si.nMax   = stringsCount - 1; 
+	si.nMax   = stringsCount - 1;
 	si.nPage  = yPageSize; 
 	si.nPos   = yPos; 
 	SetScrollInfo( SB_VERT, &si, TRUE );
@@ -883,14 +884,14 @@ void RDOLogCtrl::setFont( const bool needRedraw )
 	if ( fontLog.m_hObject )
 		if ( !fontLog.DeleteObject() )
 			return;
-	
+	CClientDC dc( this );
 	LOGFONT lf;
 	memset( &lf, 0, sizeof(lf) );
 	// The negative is to allow for leading
-	lf.lfHeight    = -MulDiv( logStyle->font->size, ::GetDeviceCaps( GetDC()->m_hDC, LOGPIXELSY ), 72 );
-	lf.lfWeight    = logStyle->theme->style & rdoStyle::RDOStyleFont::BOLD ? FW_BOLD : FW_NORMAL;
-	lf.lfItalic    = logStyle->theme->style & rdoStyle::RDOStyleFont::ITALIC;
-	lf.lfUnderline = logStyle->theme->style & rdoStyle::RDOStyleFont::UNDERLINE;
+	lf.lfHeight    = -MulDiv( logStyle->font->size, ::GetDeviceCaps( dc.GetSafeHdc(), LOGPIXELSY ), 72 );
+	lf.lfWeight    = logStyle->theme->style & RDOStyleFont::BOLD ? FW_BOLD : FW_NORMAL;
+	lf.lfItalic    = logStyle->theme->style & RDOStyleFont::ITALIC;
+	lf.lfUnderline = logStyle->theme->style & RDOStyleFont::UNDERLINE;
 	lf.lfCharSet   = logStyle->font->characterSet;
 	strcpy( lf.lfFaceName, logStyle->font->name.c_str() );
 
@@ -899,12 +900,11 @@ void RDOLogCtrl::setFont( const bool needRedraw )
 	
 	TEXTMETRIC tm;
 	if ( m_hWnd ) {
-		CDC* dc = GetDC();
-		CFont* oldFont = dc->SelectObject( &fontLog );
-		dc->GetTextMetrics( &tm );
+		CFont* oldFont = dc.SelectObject( &fontLog );
+		dc.GetTextMetrics( &tm );
 		lineHeight = tm.tmHeight + 2 * logStyle->borders->vertBorder;
 		charWidth  = tm.tmAveCharWidth/*tm.tmMaxCharWidth*/;
-		dc->SelectObject( oldFont );
+		dc.SelectObject( oldFont );
 	}
 
 	
