@@ -39,9 +39,12 @@ void RDOStudioView::Dump(CDumpContext& dc) const
 
 BOOL RDOStudioView::OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo) 
 {
-	if ( ::GetFocus() == m_hWnd ) {
-		return CView::OnCmdMsg(nID, nCode, pExtra, pHandlerInfo);
-	} else {
-		return FALSE;
+	HWND hwnd = ::GetFocus();
+	while ( hwnd ) {
+		if ( hwnd == m_hWnd ) {
+			return CView::OnCmdMsg(nID, nCode, pExtra, pHandlerInfo);
+		}
+		hwnd = ::GetParent( hwnd );
 	}
+	return FALSE;
 }
