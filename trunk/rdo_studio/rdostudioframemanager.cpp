@@ -158,7 +158,7 @@ void RDOStudioFrameManager::clear()
 		RDOStudioFrameDoc* doc = (*it)->doc;
 		if ( isValidFrameDoc( doc ) ) {
 			if ( doc->frame && doc->frame->GetSafeHwnd() ) {
-				doc->frame->SendNotifyMessage( WM_CLOSE, 0, 0 );
+				doc->frame->SendMessage( WM_CLOSE, 0, 0 );
 			}
 		}
 		delete *it++;

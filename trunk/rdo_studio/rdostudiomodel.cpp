@@ -482,8 +482,6 @@ void RDOStudioModel::beforeModelStart()
 
 void RDOStudioModel::showFrame()
 {
-	SYSTEMTIME time1;
-	::GetSystemTime( &time1 );
 	modelTime = kernel.getSimulator()->getModelTime();
 	studioApp.mainFrame->showNewModelTime( modelTime );
 	while ( getShowMode() == SM_Monitor ) {};
@@ -495,10 +493,6 @@ void RDOStudioModel::showFrame()
 		it++;
 		index++;
 	}
-	SYSTEMTIME time2;
-	::GetSystemTime( &time2 );
-	int msec = ( time2.wSecond - time1.wSecond ) * 1000 + ( time2.wMilliseconds - time1.wMilliseconds );
-	TRACE( "time = %d\r\n", msec );
 }
 
 void RDOStudioModel::updateStyleOfAllModel() const

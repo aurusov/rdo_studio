@@ -147,8 +147,11 @@ RDOStudioFrameDoc* RDOStudioFrameView::GetDocument()
 
 void RDOStudioFrameView::OnDestroy() 
 {
-	model->frameManager.getFrameClose( model->frameManager.findFrameIndex( this ) )->SetEvent();
-	model->frameManager.disconnectFrameDoc( GetDocument() );
+	int index = model->frameManager.findFrameIndex( this );
+	if ( index != -1 ) {
+		model->frameManager.getFrameClose( index )->SetEvent();
+		model->frameManager.disconnectFrameDoc( GetDocument() );
+	}
 	CView::OnDestroy();
 }
 
