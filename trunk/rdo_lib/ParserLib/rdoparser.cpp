@@ -290,6 +290,7 @@ RDOParser::RDOParser():
 	patternCounter = 1;
 	pokazCounter = 1;
 	constCounter = 0;
+	smr = NULL;
 }
 
 void RDOParser::setYylval(int val)

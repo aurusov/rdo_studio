@@ -351,6 +351,14 @@ void RdoSimulator::parseSMRFileInfo( stringstream& smr, rdoModelObjects::RDOSMRF
 		return;
 	}
 
+	if(!parser->smr)
+	{
+		kernel.notifyString(RDOKernel::buildString, "SMR File seems to be empty\n");
+		kernel.notify(RDOKernel::parseSMRError);
+		closeModel();
+		return;
+	}
+
 	kernel.notifyString(RDOKernel::buildString, "SMR File read successfully\n");
 
 	if(parser->smr->modelName)
