@@ -92,6 +92,7 @@ public:
 	void saveTRC( std::stringstream& stream ) const;
 
 	void loadBMP( const std::string& name, std::stringstream& stream ) const;
+	std::string getBMPFileName( const std::string& name ) const { return modelPath + name + ".bmp"; };
 };
 
 }; // namespace rdoRepository

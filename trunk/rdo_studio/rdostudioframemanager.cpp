@@ -12,6 +12,7 @@
 
 #include <rdokernel.h>
 #include <rdorepository.h>
+#include <fstream>
 
 using namespace std;
 
@@ -103,9 +104,11 @@ RDOStudioFrameDoc* RDOStudioFrameManager::connectFrameDoc( const int index )
 		lock.Lock();
 
 		doc = static_cast<RDOStudioFrameDoc*>(frameDocTemplate->OpenDocumentFile( NULL ));
-		frames[index]->doc  = doc;
-		frames[index]->view = doc->getView();
-		lastShowedFrame     = index;
+		if ( doc ) {
+			frames[index]->doc  = doc;
+			frames[index]->view = doc->getView();
+			lastShowedFrame     = index;
+		}
 
 		lock.Unlock();
 	}
@@ -220,10 +223,88 @@ void RDOStudioFrameManager::bmp_insert( const std::string& name )
 
 	bitmaps[name] = NULL;
 
-	stringstream stream;
-	kernel.getRepository()->loadBMP( name, stream );
+//	stringstream stream( ios::in | ios::binary );
+//	kernel.getRepository()->loadBMP( name, stream );
+
+	ifstream stream( kernel.getRepository()->getBMPFileName( name ).c_str(), ios::in | ios::binary );
+
+	HANDLE hDIBInfo = ::GlobalAlloc( GMEM_MOVEABLE, sizeof(BITMAPINFOHEADER) + 256 * sizeof(RGBQUAD) );
+
+	LPBITMAPINFOHEADER lpbi = static_cast<LPBITMAPINFOHEADER>(::GlobalLock( hDIBInfo ));
 
 	try {
+		BITMAPFILEHEADER bf;
+		stream.read( (LPSTR)(&bf), sizeof(bf) );
+		if ( stream.rdstate() != ios_base::goodbit ) throw BMPReadError();
+		if ( bf.bfType != 0x4D42 ) throw BMPReadError();
+
+		stream.read( (LPSTR)(lpbi), sizeof(BITMAPINFOHEADER) );
+		if ( stream.rdstate() != ios_base::goodbit ) throw BMPReadError();
+
+		if ( lpbi->biSize == sizeof(BITMAPCOREHEADER) ) throw BMPReadError();
+
+	    WORD nNumColors;
+		if ( !(nNumColors = (WORD)lpbi->biClrUsed) ) {
+			if ( lpbi->biBitCount != 24 ) {
+				nNumColors = 1 << lpbi->biBitCount;
+			}
+		}
+		if ( !lpbi->biClrUsed ) {
+			lpbi->biClrUsed = nNumColors;
+		}
+
+		if ( !lpbi->biSizeImage ) {
+			lpbi->biSizeImage = ((((lpbi->biWidth * (DWORD)lpbi->biBitCount) + 31) & ~31) >> 3) * lpbi->biHeight;
+		}
+
+		::GlobalUnlock( hDIBInfo );
+		hDIBInfo = ::GlobalReAlloc( hDIBInfo, lpbi->biSize + nNumColors * sizeof(RGBQUAD) + lpbi->biSizeImage, 0 );
+		lpbi     = static_cast<LPBITMAPINFOHEADER>(::GlobalLock( hDIBInfo ));
+
+		stream.read( (LPSTR)(lpbi) + lpbi->biSize, nNumColors * sizeof(RGBQUAD) );
+		if ( stream.rdstate() != ios_base::goodbit ) throw BMPReadError();
+
+		int offBits = lpbi->biSize + nNumColors * sizeof(RGBQUAD);
+
+		if ( bf.bfOffBits ) {
+			stream.seekg( bf.bfOffBits, ios::beg );
+			if ( stream.rdstate() != ios_base::goodbit ) throw BMPReadError();
+		}
+		stream.read( (LPSTR)(lpbi) + offBits, lpbi->biSizeImage );
+		if ( stream.rdstate() != ios_base::goodbit ) throw BMPReadError();
+
+		CDC* desktopDC = CWnd::GetDesktopWindow()->GetDC();
+		CDC memDC;
+		memDC.CreateCompatibleDC( desktopDC );
+		CBitmap memBMP;
+		memBMP.CreateCompatibleBitmap( desktopDC, lpbi->biWidth, lpbi->biHeight );
+		HBITMAP h = (HBITMAP)memBMP;
+		int a = ::SetDIBits( desktopDC->m_hDC, h, 0, lpbi->biHeight, (char*)lpbi + offBits, reinterpret_cast<LPBITMAPINFO>(lpbi), DIB_RGB_COLORS );
+		CBitmap* hOldBitmap1 = memDC.SelectObject( &memBMP );
+
+		CDC dc;
+		dc.CreateCompatibleDC( desktopDC );
+		bitmaps[name] = new CBitmap;
+		bitmaps[name]->CreateCompatibleBitmap( desktopDC, lpbi->biWidth, lpbi->biHeight );
+		CBitmap* hOldBitmap2 = dc.SelectObject( bitmaps[name] );
+		dc.BitBlt( 0, 0, lpbi->biWidth, lpbi->biHeight, &memDC, 0, 0, SRCCOPY );
+
+		memDC.SelectObject( hOldBitmap1 );
+		dc.SelectObject( hOldBitmap2 );
+
+	} catch ( BMPReadError ) {
+		TRACE( "catch for %s\r\n", name.c_str() );
+	}
+
+	::GlobalUnlock( hDIBInfo );
+	stream.close();
+//	::GlobalFree( hDIBInfo );
+
+/*
+	char* pBits = NULL;
+
+	try {
+
 		// В потоке, перед битовой картой, идет заголовок файла битовой карты
 		BITMAPFILEHEADER bmFileHeader;
 		stream.read( reinterpret_cast<char*>(&bmFileHeader), sizeof(bmFileHeader) );
@@ -294,7 +375,7 @@ void RDOStudioFrameManager::bmp_insert( const std::string& name )
 		if ( !bmInfoHeader.biSizeImage ) {
 			bmInfoHeader.biSizeImage = ((((bmInfoHeader.biWidth * bmInfoHeader.biBitCount) + 31) & ~31) >> 3) * bmInfoHeader.biHeight;
 		}
-		char* pBits = new char[ size_ColorTable + bmInfoHeader.biSizeImage ];
+		pBits = new char[ size_ColorTable + bmInfoHeader.biSizeImage ];
 		memcpy( pBits, &rgb_q, size_ColorTable );
 
 		stream.seekg( bmFileHeader.bfOffBits, ios::beg );
@@ -331,6 +412,9 @@ void RDOStudioFrameManager::bmp_insert( const std::string& name )
 
 	} catch ( BMPReadError ) {
 	}
+
+//	if ( pBits ) delete pBits;
+*/
 }
 
 void RDOStudioFrameManager::bmp_clear()

@@ -621,38 +621,30 @@ void RDOStudioModel::showFrame()
 
 					case RDOFrameElement::bitmap_type: {
 							RDOBitmapElement* bmpEl = (RDOBitmapElement *)currElement;
-							CDC dcMemory;
-							dcMemory.CreateCompatibleDC( CWnd::GetDesktopWindow()->GetDC() );
 							CBitmap* bmp = frameManager.bitmaps[bmpEl->bmp];
-							CBitmap* pOldBitmap = dcMemory.SelectObject( bmp );
-							BITMAP bmp_info;
-							bmp->GetBitmap( &bmp_info );
-							dc.BitBlt( bmpEl->x, bmpEl->y, bmp_info.bmWidth, bmp_info.bmHeight, &dcMemory, 0, 0, SRCCOPY );
-							dcMemory.SelectObject( pOldBitmap );
+							if ( bmp ) {
+								CDC dcMemory;
+								dcMemory.CreateCompatibleDC( CWnd::GetDesktopWindow()->GetDC() );
+								CBitmap* pOldBitmap = dcMemory.SelectObject( bmp );
+								BITMAP bmp_info;
+								bmp->GetBitmap( &bmp_info );
+								dc.BitBlt( bmpEl->x, bmpEl->y, bmp_info.bmWidth, bmp_info.bmHeight, &dcMemory, 0, 0, SRCCOPY );
+								dcMemory.SelectObject( pOldBitmap );
+							}
 						}
 						break;
-					case RDOFrameElement::s_bmp_type:
-						{																		
+					case RDOFrameElement::s_bmp_type: {
 							RDOSBmpElement *sbmpEl = (RDOSBmpElement *)currElement;
-							CDC dcMemory;
-							dcMemory.CreateCompatibleDC( &dc );
 							CBitmap* bmp = frameManager.bitmaps[sbmpEl->bmp];
-							CBitmap* pOldBitmap = dcMemory.SelectObject( bmp );
-							dc.BitBlt( sbmpEl->x, sbmpEl->y, sbmpEl->w, sbmpEl->h, &dcMemory, 0, 0, SRCCOPY );
-							dcMemory.SelectObject( pOldBitmap );
-/*
-							CBrush brush(RGB(196, 196, 0));
-							CBrush* pOldBrush = dc.SelectObject( &brush );
-							CPen pen(PS_SOLID, 3, RGB(0, 196, 196));
-							CPen* pOldPen = dc.SelectObject( &pen );
-							dc.Rectangle(sbmpEl->x, sbmpEl->y, sbmpEl->x + sbmpEl->w, sbmpEl->y + sbmpEl->h);
-							dc.MoveTo(sbmpEl->x, sbmpEl->y);
-							dc.LineTo(sbmpEl->x + sbmpEl->w, sbmpEl->y + sbmpEl->h);
-							dc.MoveTo(sbmpEl->x + sbmpEl->w, sbmpEl->y);
-							dc.LineTo(sbmpEl->x, sbmpEl->y + sbmpEl->h);
-							dc.SelectObject( pOldBrush );
-							dc.SelectObject( pOldPen );
-*/
+							if ( bmp ) {
+								CDC dcMemory;
+								dcMemory.CreateCompatibleDC( &dc );
+								CBitmap* pOldBitmap = dcMemory.SelectObject( bmp );
+								BITMAP bmp_info;
+								bmp->GetBitmap( &bmp_info );
+								dc.StretchBlt( sbmpEl->x, sbmpEl->y, sbmpEl->w, sbmpEl->h, &dcMemory, 0, 0, bmp_info.bmWidth, bmp_info.bmHeight, SRCCOPY );
+								dcMemory.SelectObject( pOldBitmap );
+							}
 						}
 						break;
 
