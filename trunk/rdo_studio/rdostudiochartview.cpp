@@ -64,10 +64,10 @@ RDOStudioChartView::RDOStudioChartView()
 	drawToX( NULL ),
 	drawToXEventIndex( 0 ),
 	pixelsToChart( 0 ),*/
-	drawFromX( 0 ),
-	drawToX( 0 ),/*,
-	xAxisOffset( 0 ),
-	yAxisOffset( 0 )*/
+	drawFromEventIndex( 0 ),
+	drawToEventCount( 0 ),
+	/*xAxisOffset( 0 ),
+	yAxisOffset( 0 ),*/
 	zoom( 1 ),
 	old_zoom( 1 ),
 	auto_zoom( 1 ),
@@ -176,13 +176,14 @@ void RDOStudioChartView::updateScrollBars()
 	
 	RDOStudioChartDoc* doc = GetDocument();
 	int size;
-	if ( !doc->docTimes.empty() )
+	if ( !doc->docTimes.empty() ) {
 		//size = roundDouble( GetDocument()->docTimes.back()->time * /*5 / GetDocument()->minTimeOffset*/timeScale );
 		size = roundDouble( ( doc->docTimes.back()->time - doc->docTimes.front()->time ) * timeScale );
-	else
+		if ( doUnwrapTime() )
+			size += tickWidth * ( doc->docTimes.back()->overallCount - doc->docTimes.front()->overallCount + doc->docTimes.front()->eventCount );
+	} else {
 		size = 0;
-	if ( doUnwrapTime() )
-		size += tickWidth * doc->docTimes.back()->overallCount;
+	}
 	//int chartwidth = /*newClientRect.Width() - leftMargin - rightMargin*/chartRect.Width();
 	xMax = max ( 0, size - chartRect.Width() );
 	xPos = min ( xPos, xMax );
@@ -283,15 +284,11 @@ void RDOStudioChartView::updateScrollBars()
 bool RDOStudioChartView::setTo( const int from_max_pos )
 {
 	bool res = true;
-	int delta = ( from_max_pos - xPos - chartRect.Width() ) / tickWidth;
+	int delta = ( from_max_pos - xPos - chartRect.Width() / tickWidth );
 	if ( delta >= 0 ) {
 		res = false;
 		drawToX = drawFromX;
-		if ( delta > 0 ) {
-			//drawToX.overallCount = drawToX.eventCount - delta;
-			drawToX.eventCount -= delta;
-			//drawToX.overallCount -= delta;
-		}
+		drawToEventCount = drawToX.eventCount - delta;
 	}
 	return res;
 }
@@ -302,8 +299,10 @@ void RDOStudioChartView::setFromTo()
 
 	drawFromX.eventCount = 0;
 	drawFromX.overallCount = 0;
+	drawFromEventIndex = 0;
 	drawToX.eventCount = 0;
 	drawToX.overallCount = 0;
+	drawToEventCount = 0;
 	unwrapTimesList.clear();
 
 	if ( !doUnwrapTime() ) {
@@ -326,45 +325,46 @@ void RDOStudioChartView::setFromTo()
 			it_max_pos = it_pos + tickWidth * (*it)->eventCount;
 			if ( it_pos == xPos ) {
 				drawFromX = *(*it);
+				//drawFromEventIndex = 0;
 				//drawFromX.overallCount = 0;
-				unwrapTimesList.push_back( &drawFromX );
 				need_search_to = setTo( it_max_pos );
 				break;
 			}
-			if ( it_pos < xPos && ( it_max_pos > xPos ) ) {
-				//drawFromX = *(*it);
-				int delta = ( xPos - it_pos ) / tickWidth;
-				drawFromX.time = (*it)->time + ( xPos - it_pos ) / timeScale;
-				drawFromX.eventCount = (*it)->eventCount - delta;
-				drawFromX.overallCount = drawFromX.eventCount;
-				unwrapTimesList.push_back( &drawFromX );
+			if ( it_pos < xPos && ( it_max_pos >= xPos ) ) {
+				drawFromX = *(*it);
+				drawFromEventIndex = ( xPos - it_pos ) / tickWidth;
 				need_search_to = setTo( it_max_pos );
 				break;
 			}
 			if ( it_pos > xPos ) {
 				drawFromX.time = (*it)->time - ( it_pos - xPos ) / timeScale;
 				drawFromX.overallCount = (*it)->overallCount - (*it)->eventCount;
-				unwrapTimesList.push_back( &drawFromX );
+				need_search_to = setTo( it_max_pos );
 				break;
 			}
 		}
+		unwrapTimesList.push_back( &drawFromX );
 		if ( need_search_to ) {
+			if ( drawFromX == *(*it) )
+				it ++;
 			int pos = xPos + chartRect.Width();
-			for( ++it; it != doc->docTimes.end(); it++ ) {
+			for( ; it != doc->docTimes.end(); it++ ) {
 				it_pos = roundDouble( (*it)->time * timeScale ) + tickWidth * ( (*it)->overallCount - (*it)->eventCount );
 				it_max_pos = it_pos + tickWidth * (*it)->eventCount;
 				if ( it_pos == pos ) {
 					drawToX = *(*it);
-					drawToX.overallCount = 0;
+					//drawToEventCount = 
 					break;
 				}
 				if ( it_pos < pos && it_max_pos >= pos ) {
 					drawToX = *(*it);
-					drawToX.overallCount = ( it_max_pos - pos ) / tickWidth;
+					//drawToX.overallCount = ( it_max_pos - pos ) / tickWidth;
+					drawToEventCount = roundDouble( ( pos - it_pos ) / tickWidth );
 					break;
 				}
 				if ( it_pos > pos ) {
 					drawToX.time = (*it)->time - ( it_pos - pos ) / timeScale;
+					drawToX.overallCount = (*it)->overallCount - (*it)->eventCount;
 					break;
 				}
 				unwrapTimesList.push_back( (*it) );
@@ -561,31 +561,30 @@ void RDOStudioChartView::drawGrid(	CDC &dc, CRect& chartRect )
 		CRect tmprect;
 		tmprect.CopyRect( &rect );
 		
-		int ticks = 0;
-		for( timesList::iterator it = unwrapTimesList.begin(); it != unwrapTimesList.end(); it++ ) {
-			RDOTracerTimeNow* time = (*it);
-			int width = (*it)->eventCount * tickWidth;
-			//tmprect.left = rect.left + roundDouble( (*it)->time * timeScale ) + (*it)->overallCount * tickWidth - width - xPos;
-			tmprect.left = rect.left + roundDouble( ( (*it)->time - unwrapTimesList.front()->time ) * timeScale ) + ticks * tickWidth;
-			tmprect.right = tmprect.left + width;
-			dc.FillSolidRect( &tmprect, timeColor );
-			dc.Rectangle( &tmprect );
-			ticks = (*it)->overallCount;
-		}
-
-
-		/*int count = tracer.getTimesCount();
-		RDOTracerTimeNow* lasttime = NULL;
-		for ( int i = 0; i < count; i++ ) {
-			RDOTracerTimeNow* timeNow = tracer.getTime( i );
-			if ( timeNow->eventCount ) {
-				int ticks = ( lasttime ) ? lasttime->overallCount : 0;
-				tmprect.left = chartRect.left + min( timeScale * timeNow->time + tickWidth * ticks, chartRect.right );
-				tmprect.right = min( tmprect.left + tickWidth * timeNow->eventCount, chartRect.right );
+		RDOStudioChartDoc* doc = GetDocument();
+		dc.IntersectClipRect( &rect );
+		if ( drawFromX != drawToX ) {
+			for( timesList::iterator it = unwrapTimesList.begin(); it != unwrapTimesList.end(); it++ ) {
+				int width = (*it)->eventCount * tickWidth;
+				RDOTracerTimeNow* timenow = (*it);
+				//tmprect.left = min( rect.right, rect.left + max( ( (*it)->time - doc->docTimes.front()->time ) * timeScale + ( (*it)->overallCount - doc->docTimes.front()->overallCount + doc->docTimes.front()->eventCount - (*it)->eventCount ) * tickWidth - xPos, 0 ) );
+				//tmprect.left = min( rect.right, rect.left + ( (*it)->time - doc->docTimes.front()->time ) * timeScale + ( (*it)->overallCount - doc->docTimes.front()->overallCount + doc->docTimes.front()->eventCount - (*it)->eventCount ) * tickWidth - xPos );
+				tmprect.left = rect.left + ( (*it)->time - doc->docTimes.front()->time ) * timeScale + ( (*it)->overallCount - doc->docTimes.front()->overallCount + doc->docTimes.front()->eventCount - (*it)->eventCount ) * tickWidth - xPos;
+				if ( *(*it) == drawFromX ) {
+					tmprect.left += drawFromEventIndex * tickWidth;
+					width -= drawFromEventIndex * tickWidth;
+				}
+				if ( *(*it) == drawToX ) {
+					width = drawToEventCount * tickWidth;
+				}
+				//tmprect.right = min( tmprect.left + width, rect.right );
+				tmprect.right = tmprect.left + width;
 				dc.FillSolidRect( &tmprect, timeColor );
 			}
-			lasttime = timeNow;
-		}*/
+		} else {
+			dc.FillSolidRect( &tmprect, timeColor );
+		}
+		dc.IntersectClipRect( &newClientRect );
 	}
 }
 

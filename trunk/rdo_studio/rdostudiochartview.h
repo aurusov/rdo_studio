@@ -38,7 +38,6 @@ protected:
 	bool timeWrap;
 	bool canUnwrapTime() const { return zoom >= 1; };
 	bool doUnwrapTime() const { return canUnwrapTime() && !timeWrap; };
-	timesList unwrapTimesList;
 
 	/*int leftMargin;
 	int topMargin;
@@ -62,9 +61,12 @@ protected:
 	int drawToXEventIndex;
 	int pixelsToChart;*/
 	RDOTracerTimeNow drawFromX;
+	int drawFromEventIndex;
 	RDOTracerTimeNow drawToX;
+	int drawToEventCount;
 	bool setTo( const int from_max_pos );
 	void setFromTo();
+	timesList unwrapTimesList;
 	//void prepareDrawing( CDC &dc, CRect& chartRect );
 	
 	//int xAxisOffset;
