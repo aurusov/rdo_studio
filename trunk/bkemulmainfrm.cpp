@@ -717,11 +717,15 @@ LRESULT BKMainFrame::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 			canIteration = false;
 			break;
 		}
+		case WM_SETFOCUS: emul.setPause( false );
 		case WM_COMMAND:
-		case WM_SETFOCUS:
 		case WM_RBUTTONDOWN:
 		case WM_LBUTTONDOWN: {
 			canIteration = true;
+			break;
+		}
+		case WM_KILLFOCUS: {
+			emul.setPause( true );
 			break;
 		}
 		case WM_KEYDOWN   :
