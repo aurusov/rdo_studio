@@ -5,23 +5,6 @@
 #include "rdologstyle.h"
 
 // ----------------------------------------------------------------------------
-// ---------- RDOStringList
-// ----------------------------------------------------------------------------
-/*class RDOStringList: public CStringList
-{
-friend class RDOLogCtrl;
-	
-protected:
-	bool scan( char*& wildCards, char*&str ) const;
-public:
-	RDOStringList( int blockSize = 10 );
-	virtual ~RDOStringList();
-	
-	bool match( const CString& wildCards, const CString& str, const bool matchCase, const bool matchWholeWord ) const;
-	int findNext( const CString& findWhat, const int findFrom, const int findTo, const bool searchDown, const bool matchCase, const bool matchWholeWord ) const;
-};*/
-
-// ----------------------------------------------------------------------------
 // ---------- RDOLogCtrl
 // ----------------------------------------------------------------------------
 #define WM_LOGSELCHANGE WM_USER + 1
@@ -30,6 +13,8 @@ typedef list< string > stringList;
 
 class RDOLogCtrl: public CWnd  
 {
+friend class findInList;
+
 DECLARE_DYNAMIC( RDOLogCtrl )
 
 protected:
@@ -56,19 +41,19 @@ protected:
 
 	stringList strings;
 	int stringsCount;
-	bool scan( char*& wildCards, char*&str ) const;
-	bool match( const string& wildCards, const string& str, const bool matchCase, const bool matchWholeWord ) const;
-	int findInList( const string& findWhat, const int findFrom, const int findTo, const bool searchDown, const bool matchCase, const bool matchWholeWord ) const;
+	stringList::iterator findString( int index );
+	stringList::reverse_iterator reverse_findString( int index );
+	stringList::const_iterator const_findString( int index ) const;
+	stringList::const_reverse_iterator const_reverse_findString( int index ) const;
 
 	int  firstFoundLine;
+	int  posFind;
 	bool bHaveFound;
 	bool bSearchDown;
 	bool bMatchCase;
 	bool bMatchWholeWord;
 	string findStr;
 	int find( const bool searchDown, const bool matchCase, const bool matchWholeWord );
-
-//	RDOStringList logStrings;
 
 	RDOLogStyle* logStyle;
 	virtual bool getItemColors( const int index, COLORREF& textColor, COLORREF& backColor ) const;

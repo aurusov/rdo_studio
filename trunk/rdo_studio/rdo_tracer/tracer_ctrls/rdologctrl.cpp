@@ -6,76 +6,75 @@
 #endif
 
 // ----------------------------------------------------------------------------
-// ---------- RDOStringList
+// ---------- findInList
 // ----------------------------------------------------------------------------
-/*RDOStringList::RDOStringList( int blockSize )
-	: CStringList( blockSize )
+class findInList
+{
+	RDOLogCtrl* log;
+	string strToFind;
+	bool matchCase;
+	bool matchWholeWord;
+	
+	bool scan( string::iterator &wildCards, string::iterator &wildend, string::iterator &str, string::iterator &strend ) const;
+	bool match( string::iterator &wildcards, string::iterator &wildend, string::iterator &strcomp, string::iterator &strend ) const;
+public:
+	findInList( RDOLogCtrl* _log, string _strToFind, bool _matchCase, bool _matchWholeWord );
+	bool operator()( string nextstr );
+};
+
+findInList::findInList( RDOLogCtrl* _log, string _strToFind, bool _matchCase, bool _matchWholeWord )
+	: log( _log ),
+	strToFind( _strToFind ),
+	matchCase( _matchCase ),
+	matchWholeWord( _matchWholeWord )
 {
 }
 
-RDOStringList::~RDOStringList()
-{
-}
-
-bool RDOStringList::scan( char*& wildCards, char*&str ) const
+bool findInList::scan( string::iterator &wildCards, string::iterator &wildend, string::iterator &str, string::iterator &strend ) const
 {
 	// remove the '?' and '*'
-	for( wildCards ++; *str != '\0' && ( *wildCards == '?' || *wildCards == '*' ); wildCards ++ )
+	for( wildCards ++; str != strend && ( *wildCards == '?' || *wildCards == '*' ); wildCards ++ )
 		if ( *wildCards == '?') str ++;
 	while ( *wildCards == '*') wildCards ++;
 	
 	// if str is empty and Wildcards has more characters or,
 	// Wildcards is empty, return 
-	if ( *str == '\0' && *wildCards != '\0' ) return false;
-	if ( *str == '\0' && *wildCards == '\0' ) return true; 
+	if ( str == strend && wildCards != wildend ) return false;
+	if ( str == strend && wildCards == wildend ) return true; 
 	// else search substring
 	else
 	{
-		char* wdsCopy = wildCards;
-		char* strCopy = str;
-		bool  res     = 1;
+		string::iterator wdsCopy = wildCards;
+		string::iterator strCopy = str;
+		bool res = 1;
 		do 
 		{
-			if ( !match( wildCards, str, true, false ) )	strCopy ++;
+			if ( !match( wildCards, wildend, str, strend ) ) strCopy ++;
 			wildCards = wdsCopy;
 			str		  = strCopy;
-			while ( ( *wildCards != *str ) && ( *str != '\0' ) ) str ++;
+			while ( ( *wildCards != *str ) && ( str != strend ) ) str ++;
 			wdsCopy = wildCards;
 			strCopy = str;
-		} while ( ( *str != '\0' ) ? !match( wildCards, str, true, false ) : ( res = false ) != false );
+		} while ( ( str != strend ) ? !match( wildCards, wildend, str, strend ) : ( res = false ) != false );
 
-		if ( *str == '\0' && *wildCards == '\0' ) return true;
+		if ( str == strend && wildCards == wildend ) return true;
 
 		return res;
 	}
 }
 
-bool RDOStringList::match( const CString& wildCards, const CString& str, const bool matchCase, const bool matchWholeWord ) const
+bool findInList::match( string::iterator &wildcards, string::iterator &wildend, string::iterator &strcomp, string::iterator &strend ) const
 {
 	bool res = true;
 	
-	CString strWild = wildCards;
-	CString strComp = str;
-	
-	if ( !matchCase ) {
-		strWild.MakeLower();
-		strComp.MakeLower();
-	}
-	
-	if ( matchWholeWord )
-		return strWild == strComp;
-	
-	char* wildcards = strWild.GetBuffer( strWild.GetLength() + 1 );
-	char* strcomp   = strComp.GetBuffer( strComp.GetLength() + 1 );
-
 	//iterate and delete '?' and '*' one by one
-	while( *wildcards != '\0' && res && *strcomp != '\0' )
+	while( wildcards != wildend && res && strcomp != strend )
 	{
 		if ( *wildcards == '?' )
 			strcomp ++;
 		else if ( *wildcards == '*' )
 		{
-			res = scan( wildcards, strcomp );
+			res = scan( wildcards, wildend, strcomp, strend );
 			wildcards --;
 		}
 		else
@@ -87,43 +86,34 @@ bool RDOStringList::match( const CString& wildCards, const CString& str, const b
 	}
 	while ( *wildcards == '*' && res )  wildcards ++;
 
-	return res && *strcomp == '\0' && *wildcards == '\0';
+	return res && strcomp == strend && wildcards == wildend;
 }
 
-int RDOStringList::findNext( const CString& findWhat, const int findFrom, const int findTo, const bool searchDown, const bool matchCase, const bool matchWholeWord ) const
+bool findInList::operator()( string nextstr )
 {
-	ASSERT_VALID( this );
-	
-	if ( findFrom < 0 || findFrom >= m_nCount || findTo < 0 || findTo >= m_nCount )
-		return -1;
-
-	CString findStr = findWhat;
-	
-	if ( !matchWholeWord && findStr.FindOneOf( "*?") == -1 ) {
-		findStr.Insert( 0, "*");
-		findStr += "*";
+	if ( !matchWholeWord && strToFind.find_first_of( "*?" ) == string::npos ) {
+		//strtofind.Insert( 0, "*");
+		strToFind.insert( 0, "*");
+		strToFind += "*";
 	}
 
-	CNode* nodeFrom = (CNode*)FindIndex( findFrom );
-	CNode* nodeTo   = (CNode*)FindIndex( findTo );
-	int found = -1;
-
-	if ( !searchDown ) {
-		for ( ; nodeFrom != nodeTo->pPrev; nodeFrom = nodeFrom->pPrev ) {
-			found++;
-			if ( match( findStr, nodeFrom->data, matchCase, matchWholeWord ) )
-				return findFrom - found;
-		}
-	} else {
-		for ( ; nodeFrom != nodeTo->pNext; nodeFrom = nodeFrom->pNext ) {
-			found++;
-			if ( match( findStr, nodeFrom->data, matchCase, matchWholeWord ) )
-				return findFrom + found;
-		}
+	string str = nextstr;
+	
+	if ( !matchCase ) {
+		transform( strToFind.begin(), strToFind.end(), strToFind.begin(), tolower );
+		transform( str.begin(), str.end(), str.begin(), tolower );
 	}
 	
-	return -1;
-}*/
+	if ( matchWholeWord )
+		return strToFind == str;
+	log->posFind ++;
+	string::iterator findstrb = strToFind.begin();
+	string::iterator findstre = strToFind.end();
+	string::iterator strb = str.begin();
+	string::iterator stre = str.end();
+	//return match( strToFind.begin(), strToFind.end(),  str.begin(), str.end() );
+	return match( findstrb, findstre,  strb, stre );
+}
 
 // ----------------------------------------------------------------------------
 // ---------- RDOLogCtrl
@@ -173,6 +163,7 @@ RDOLogCtrl::RDOLogCtrl( RDOLogStyle* style ):
 	logStyle( style ),
 	stringsCount( 0 ),
 	firstFoundLine( -1 ),
+	posFind( -1 ),
 	bHaveFound( false ),
 	bSearchDown( true ),
 	bMatchCase( false ),
@@ -364,20 +355,9 @@ void RDOLogCtrl::OnPaint()
 
 		int y = lineHeight * ( -yPos + firstLine - 1 );
 		CRect rect( charWidth * ( -xPos ), y, ps.rcPaint.right, y + lineHeight );
-		//POSITION pos = logStrings.FindIndex( firstLine );
-		stringList::const_iterator it = strings.begin();
-		int i = 0;
-		while ( i < firstLine ) {
-			it ++;
-			i ++;
-		}
+		stringList::const_iterator it = findString( firstLine );
+		for ( int i = firstLine; i < lastLine + 1; i++ ) {
 
-		for ( i = firstLine; i < lastLine + 1; i++ ) {
-
-			//CString str;
-
-			//str = logStrings.GetNext( pos );
-			
 			if ( i != selectedLine || focusOnly ) {
 				if ( !( getItemColors( (*it), front, back ) || getItemColors( i, front, back ) ) ) {
 					front = dc->GetTextColor();
@@ -821,7 +801,6 @@ void RDOLogCtrl::addStringToLog( const string& logStr )
 	if ( GetSafeHwnd() ) {
 		bool prevVisible = isVisible( stringsCount - 1 );
 
-		//logStrings.AddTail( logStr );
 		strings.push_back( logStr );
 		stringsCount ++;
 
@@ -837,7 +816,6 @@ void RDOLogCtrl::addStringToLog( const string& logStr )
 			selectedLine = lastString;
 			fullRepaintLines ++;
 		}
-
 
 		if ( !isFullyVisible( lastString ) && prevVisible && ( !isVisible( selectedLine ) || selectedLine == lastString ) )
 			::SendMessage( m_hWnd, WM_VSCROLL, MAKELONG(SB_BOTTOM, 0), NULL );
@@ -911,23 +889,10 @@ void RDOLogCtrl::setFont( const RDOFont& font, const bool needRedraw )
 	}
 }
 
-/*void RDOLogCtrl::storeWindowRect()
-{
-	GetWindowRect( &prevWindowRect );
-}*/
-
 string RDOLogCtrl::getString( const int index ) const
 {
 	if ( index >= 0 && index < stringsCount ) {
-		//POSITION pos = logStrings.FindIndex( index );
-		//return logStrings.GetAt( pos );
-		stringList::const_iterator it = strings.begin();
-		int i = 0;
-		while ( i <= index ) {
-			it ++;
-			i ++;
-		}
-		return (*it);
+		return (*const_findString( index ));
 	} else {
 		return "";
 	}
@@ -958,7 +923,6 @@ void RDOLogCtrl::copy()
 
 void RDOLogCtrl::clear()
 {
-	//logStrings.RemoveAll();
 	strings.clear();
 	stringsCount      = 0;
 	maxStrWidth       = 0;
@@ -969,170 +933,118 @@ void RDOLogCtrl::clear()
 	UpdateWindow();
 }
 
-bool RDOLogCtrl::scan( char*& wildCards, char*&str ) const
+stringList::iterator RDOLogCtrl::findString( int index )
 {
-	// remove the '?' and '*'
-	for( wildCards ++; *str != '\0' && ( *wildCards == '?' || *wildCards == '*' ); wildCards ++ )
-		if ( *wildCards == '?') str ++;
-	while ( *wildCards == '*') wildCards ++;
-	
-	// if str is empty and Wildcards has more characters or,
-	// Wildcards is empty, return 
-	if ( *str == '\0' && *wildCards != '\0' ) return false;
-	if ( *str == '\0' && *wildCards == '\0' ) return true; 
-	// else search substring
-	else
-	{
-		char* wdsCopy = wildCards;
-		char* strCopy = str;
-		bool  res     = 1;
-		do 
-		{
-			if ( !match( wildCards, str, true, false ) )	strCopy ++;
-			wildCards = wdsCopy;
-			str		  = strCopy;
-			while ( ( *wildCards != *str ) && ( *str != '\0' ) ) str ++;
-			wdsCopy = wildCards;
-			strCopy = str;
-		} while ( ( *str != '\0' ) ? !match( wildCards, str, true, false ) : ( res = false ) != false );
-
-		if ( *str == '\0' && *wildCards == '\0' ) return true;
-
-		return res;
-	}
+	stringList::iterator res = strings.begin();
+	while ( index-- )
+		res ++;
+	return res;
 }
 
-bool RDOLogCtrl::match( const string& wildCards, const string& str, const bool matchCase, const bool matchWholeWord ) const
+stringList::reverse_iterator RDOLogCtrl::reverse_findString( int index )
 {
-	bool res = true;
-	
-	string strWild = wildCards;
-	string strComp = str;
-	
-	if ( !matchCase ) {
-		transform( strWild.begin(), strWild.end(), strWild.begin(), tolower );
-		transform( strComp.begin(), strComp.end(), strComp.begin(), tolower );
-	}
-	
-	if ( matchWholeWord )
-		return strWild == strComp;
-	
-	char* wildcards = strWild.begin();
-	char* strcomp   = strComp.begin();
-
-	//iterate and delete '?' and '*' one by one
-	while( *wildcards != '\0' && res && *strcomp != '\0' )
-	{
-		if ( *wildcards == '?' )
-			strcomp ++;
-		else if ( *wildcards == '*' )
-		{
-			res = scan( wildcards, strcomp );
-			wildcards --;
-		}
-		else
-		{
-			res = ( *wildcards == *strcomp );
-			strcomp ++;
-		}
-		wildcards ++;
-	}
-	while ( *wildcards == '*' && res )  wildcards ++;
-
-	return res && *strcomp == '\0' && *wildcards == '\0';
+	return findString( index );
 }
 
-int RDOLogCtrl::findInList( const string& findWhat, const int findFrom, const int findTo, const bool searchDown, const bool matchCase, const bool matchWholeWord ) const
+stringList::const_iterator RDOLogCtrl::const_findString( int index ) const
 {
-	if ( findFrom < 0 || findFrom >= stringsCount || findTo < 0 || findTo >= stringsCount )
-		return -1;
+	stringList::const_iterator res = strings.begin();
+	while ( index-- )
+		res ++;
+	return res;
+}
 
-	string strtofind = findWhat;
-
-	
-	if ( !matchWholeWord && strtofind.find_first_of( "*?" ) == string::npos ) {
-		//strtofind.Insert( 0, "*");
-		strtofind.insert( 0, "*");
-		strtofind += "*";
-	}
-	
-
-	/*CNode* nodeFrom = (CNode*)FindIndex( findFrom );
-	CNode* nodeTo   = (CNode*)FindIndex( findTo );*/
-
-	stringList::const_iterator it_from = strings.begin();
-	int i = 0;
-	for ( ; it_from != strings.end(); it_from ++ ) {
-		if ( i == findFrom )
-			break;
-		i ++;
-	}
-	stringList::const_iterator it_to = strings.begin();
-	i = 0;
-	for ( ; it_to != strings.end(); it_to ++ ) {
-		if ( i == findTo )
-			break;
-		i ++;
-	}
-
-	int found = -1;
-
-	/*int found = -1;
-
-	if ( !searchDown ) {
-		for ( ; nodeFrom != nodeTo->pPrev; nodeFrom = nodeFrom->pPrev ) {
-			found++;
-			if ( match( strtofind, nodeFrom->data, matchCase, matchWholeWord ) )
-				return findFrom - found;
-		}
-	} else {
-		for ( ; nodeFrom != nodeTo->pNext; nodeFrom = nodeFrom->pNext ) {
-			found++;
-			if ( match( strtofind, nodeFrom->data, matchCase, matchWholeWord ) )
-				return findFrom + found;
-		}
-	}*/
-
-	if ( !searchDown ) {
-		it_to --;
-		for ( ; it_from != it_to; it_from -- ) {
-			found++;
-			if ( match( strtofind, (*it_from), matchCase, matchWholeWord ) )
-				return findFrom - found;
-		}
-	} else {
-		it_to ++;
-		for ( ; it_from != it_to; it_from ++ ) {
-			found ++;
-			if ( match( strtofind, (*it_from), matchCase, matchWholeWord ) )
-				return findFrom + found;
-		}
-	}
-	
-	return -1;
+stringList::const_reverse_iterator RDOLogCtrl::const_reverse_findString( int index ) const
+{
+	return const_findString( index );
 }
 
 int RDOLogCtrl::find( const bool searchDown, const bool matchCase, const bool matchWholeWord )
 {
-	int startPosition = selectedLine + 1;
-	int endPosition = stringsCount - 1;
+	string strtofind = findStr;
+	
+	stringList::iterator it;
+	stringList::reverse_iterator it_r;
+
+	int startPos = selectedLine + 1;
+	int endPos = stringsCount - 1;
 	if ( !searchDown ) {
-		startPosition = selectedLine - 1;
-		endPosition   = 0;
+		startPos = selectedLine - 1;
+		endPos   = 0;
 	}
-	//int posFind = logStrings.findNext( findStr, startPosition, endPosition, searchDown, matchCase, matchWholeWord );
-	int posFind = findInList( findStr, startPosition, endPosition, searchDown, matchCase, matchWholeWord );
-	if ( posFind == -1 ) {
-		if ( !searchDown ) {
-			startPosition = stringsCount - 1;
-			endPosition   = 0;
-		} else {
-			startPosition = 0;
-			endPosition   = stringsCount - 1;
+
+	posFind = -1;
+	if ( searchDown ) {
+		it = find_if(
+				findString( startPos ),
+				strings.end(),
+				findInList( this, findStr, matchCase, matchWholeWord )
+			);
+		if ( it == strings.end() ) {
+			posFind = -1;
+			startPos = 0;
+			endPos   = stringsCount - 1;
+			it = find_if(
+				strings.begin(),
+				strings.end(),
+				findInList( this, findStr, matchCase, matchWholeWord )
+			);
 		}
-		//posFind = logStrings.findNext( findStr, startPosition, endPosition, searchDown, matchCase, matchWholeWord );
-		posFind = findInList( findStr, startPosition, endPosition, searchDown, matchCase, matchWholeWord );
+		if ( it == strings.end() )
+			posFind = -1;
+		else
+			posFind += startPos;
+	} else {
+		it_r = find_if(
+				reverse_findString( startPos + 1 ),
+				strings.rend(),
+				findInList( this, findStr, matchCase, matchWholeWord )
+			);
+		if ( it_r == strings.rend() ) {
+			posFind = -1;
+			startPos = stringsCount - 1;
+			endPos   = 0;
+			it_r = find_if(
+				strings.rbegin(),
+				strings.rend(),
+				findInList( this, findStr, matchCase, matchWholeWord )
+			);
+		}
+		if ( it_r == strings.rend() )
+			posFind = -1;
+		else
+			posFind = startPos - posFind;
 	}
+	
+	/*if ( searchDown ) {
+		if ( it == strings.end() ) {
+			posFind = -1;
+			startPos = 0;
+			endPos   = stringsCount - 1;
+			it = find_if(
+				strings.begin(),
+				strings.end(),
+				findInList( this, findStr, matchCase, matchWholeWord )
+			);
+			posFind += startPos;
+			if ( it == strings.end() )
+				posFind = -1;
+		}
+	} else {
+		if ( it_r == strings.rend() ) {
+			posFind = -1;
+			startPos = stringsCount - 1;
+			endPos   = 0;
+			it_r = find_if(
+				strings.rbegin(),
+				strings.rend(),
+				findInList( this, findStr, matchCase, matchWholeWord )
+			);
+			posFind = startPos - posFind;
+			if ( it_r == strings.rend() )
+				posFind = -1;
+		}
+	}*/
 	if ( posFind == -1 ) {
 		firstFoundLine = -1;
 		bHaveFound    = false;
