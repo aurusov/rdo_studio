@@ -70,9 +70,11 @@ void insertTime::operator ()( RDOTracerValue* val )
 
 bool checkMoreThen::operator ()( RDOTracerTimeNow* val )
 {
+	bool res = false;
 	if( val ) {
-		return val->time > checktime->time;
+		res = val->time > checktime->time;
 	}
+	return res;
 }
 
 void RDOStudioChartDoc::addSerieTimes( RDOTracerSerie* const serie )
