@@ -200,8 +200,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,0,1
- PRODUCTVERSION 1,0,0,1
+ FILEVERSION 1,0,0,2
+ PRODUCTVERSION 1,0,0,2
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -218,13 +218,13 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "rdogui MFC Application\0"
-            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "FileVersion", "1, 0, 0, 2\0"
             VALUE "InternalName", "rdogui\0"
             VALUE "LegalCopyright", "Copyright (C) 2002\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "rdogui.EXE\0"
             VALUE "ProductName", "rdogui Application\0"
-            VALUE "ProductVersion", "1, 0, 0, 1\0"
+            VALUE "ProductVersion", "1, 0, 0, 2\0"
         END
     END
     BLOCK "VarFileInfo"

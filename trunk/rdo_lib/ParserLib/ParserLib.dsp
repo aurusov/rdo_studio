@@ -41,7 +41,7 @@ RSC=rc.exe
 # PROP Intermediate_Dir "Release"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GR /GX /O2 /I "." /I ".." /D "_LIB" /D "_UNISTD_H_" /D "WIN32" /D "NDEBUG" /D "_MBCS" /FD /c
+# ADD CPP /nologo /MT /W3 /GR /GX /O2 /I "." /I ".." /I "..\System" /I "..\simulator" /D "_LIB" /D "_UNISTD_H_" /D "WIN32" /D "NDEBUG" /D "_MBCS" /FD /c
 # SUBTRACT CPP /Fr /YX
 # ADD BASE RSC /l 0x419 /d "NDEBUG"
 # ADD RSC /l 0x419 /d "NDEBUG"
