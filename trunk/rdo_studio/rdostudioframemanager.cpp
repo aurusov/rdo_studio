@@ -257,84 +257,88 @@ public:
 
 void RDOStudioFrameManager::bmp_insert( const std::string& name )
 {
-	bitmaps[name] = NULL;
+	if ( bitmaps.find( name ) == bitmaps.end() ) {
 
-	binarybuf buf;
-	iostream stream( &buf );
-	kernel.getRepository()->loadBMP( name, stream );
+		bitmaps[name] = NULL;
 
-	char* bmInfo = NULL;
-	char* pBits  = NULL;
+		binarybuf buf;
+		iostream stream( &buf );
+		kernel.getRepository()->loadBMP( name, stream );
 
-	try {
-		// ¬ потоке, перед битовой картой, идет заголовок файла битовой карты
-		BITMAPFILEHEADER bmFileHeader;
-		stream.read( reinterpret_cast<char*>(&bmFileHeader), sizeof(bmFileHeader) );
-		if ( stream.rdstate() != ios_base::goodbit ) throw BMPReadError();
+		char* bmInfo = NULL;
+		char* pBits  = NULL;
 
-		// ѕровер€ем заголовок битовой карты на магическое число "BM"
-		if ( bmFileHeader.bfType != 0x4D42 ) throw BMPReadError();
+		try {
+			// ¬ потоке, перед битовой картой, идет заголовок файла битовой карты
+			BITMAPFILEHEADER bmFileHeader;
+			stream.read( reinterpret_cast<char*>(&bmFileHeader), sizeof(bmFileHeader) );
+			if ( stream.rdstate() != ios_base::goodbit ) throw BMPReadError();
 
-		// ¬от теперь читаем сам заголовок битовой карты
-		BITMAPINFOHEADER bmInfoHeader;
-		stream.read( reinterpret_cast<char*>(&bmInfoHeader), sizeof(bmInfoHeader) );
-		if ( stream.rdstate() != ios_base::goodbit ) throw BMPReadError();
-		if ( bmInfoHeader.biSize == sizeof(BITMAPCOREHEADER) ) throw BMPReadError();
+			// ѕровер€ем заголовок битовой карты на магическое число "BM"
+			if ( bmFileHeader.bfType != 0x4D42 ) throw BMPReadError();
 
-	    WORD nNumColors = static_cast<WORD>(bmInfoHeader.biClrUsed);
-		if ( !nNumColors && bmInfoHeader.biBitCount != 24 ) {
-			nNumColors = 1 << bmInfoHeader.biBitCount;
+			// ¬от теперь читаем сам заголовок битовой карты
+			BITMAPINFOHEADER bmInfoHeader;
+			stream.read( reinterpret_cast<char*>(&bmInfoHeader), sizeof(bmInfoHeader) );
+			if ( stream.rdstate() != ios_base::goodbit ) throw BMPReadError();
+			if ( bmInfoHeader.biSize == sizeof(BITMAPCOREHEADER) ) throw BMPReadError();
+
+			WORD nNumColors = static_cast<WORD>(bmInfoHeader.biClrUsed);
+			if ( !nNumColors && bmInfoHeader.biBitCount != 24 ) {
+				nNumColors = 1 << bmInfoHeader.biBitCount;
+			}
+			if ( !bmInfoHeader.biClrUsed ) {
+				bmInfoHeader.biClrUsed = nNumColors;
+			}
+
+			if ( !bmInfoHeader.biSizeImage ) {
+				bmInfoHeader.biSizeImage = ((((bmInfoHeader.biWidth * static_cast<WORD>(bmInfoHeader.biBitCount)) + 31) & ~31) >> 3) * bmInfoHeader.biHeight;
+			}
+
+			RGBQUAD rgb_q[256];
+			memset( &rgb_q, 0, sizeof(rgb_q) );
+			stream.read( reinterpret_cast<char*>(&rgb_q), nNumColors * sizeof(RGBQUAD) );
+			if ( stream.rdstate() != ios_base::goodbit ) throw BMPReadError();
+
+			bmInfo = new char[ sizeof(bmInfoHeader) + nNumColors * sizeof(RGBQUAD) ];
+			memcpy( bmInfo, &bmInfoHeader, sizeof(bmInfoHeader) );
+			memcpy( bmInfo + sizeof(bmInfoHeader), &rgb_q, nNumColors * sizeof(RGBQUAD) );
+
+			pBits = new char[ bmInfoHeader.biSizeImage ];
+			stream.seekg( bmFileHeader.bfOffBits, ios::beg );
+			if ( stream.rdstate() != ios_base::goodbit ) throw BMPReadError();
+			stream.read( pBits, bmInfoHeader.biSizeImage );
+			if ( stream.rdstate() != ios_base::goodbit ) throw BMPReadError();
+
+			CDC* desktopDC = CWnd::GetDesktopWindow()->GetDC();
+			CDC memDC;
+			memDC.CreateCompatibleDC( desktopDC );
+			CBitmap memBMP;
+			memBMP.CreateCompatibleBitmap( bmInfoHeader.biBitCount != 1 ? desktopDC : &memDC, bmInfoHeader.biWidth, bmInfoHeader.biHeight );
+			::SetDIBits( desktopDC->m_hDC, static_cast<HBITMAP>(memBMP), 0, bmInfoHeader.biHeight, pBits, reinterpret_cast<BITMAPINFO*>(bmInfo), DIB_RGB_COLORS );
+			CBitmap* hOldBitmap1 = memDC.SelectObject( &memBMP );
+
+			CDC dc;
+			dc.CreateCompatibleDC( desktopDC );
+			int i = sizeof( CBitmap );
+			BMP* bmp = new BMP;
+			bitmaps[name] = bmp;
+			bitmaps[name]->w = bmInfoHeader.biWidth;
+			bitmaps[name]->h = bmInfoHeader.biHeight;
+			bitmaps[name]->bmp.CreateCompatibleBitmap( bmInfoHeader.biBitCount != 1 ? desktopDC : &dc, bmInfoHeader.biWidth, bmInfoHeader.biHeight );
+			CBitmap* hOldBitmap2 = dc.SelectObject( &bitmaps[name]->bmp );
+			dc.BitBlt( 0, 0, bmInfoHeader.biWidth, bmInfoHeader.biHeight, &memDC, 0, 0, SRCCOPY );
+
+			memDC.SelectObject( hOldBitmap1 );
+			dc.SelectObject( hOldBitmap2 );
+
+		} catch ( BMPReadError ) {
+			TRACE( "catch for %s\r\n", name.c_str() );
 		}
-		if ( !bmInfoHeader.biClrUsed ) {
-			bmInfoHeader.biClrUsed = nNumColors;
-		}
 
-		if ( !bmInfoHeader.biSizeImage ) {
-			bmInfoHeader.biSizeImage = ((((bmInfoHeader.biWidth * static_cast<WORD>(bmInfoHeader.biBitCount)) + 31) & ~31) >> 3) * bmInfoHeader.biHeight;
-		}
-
-		RGBQUAD rgb_q[256];
-		memset( &rgb_q, 0, sizeof(rgb_q) );
-		stream.read( reinterpret_cast<char*>(&rgb_q), nNumColors * sizeof(RGBQUAD) );
-		if ( stream.rdstate() != ios_base::goodbit ) throw BMPReadError();
-
-		bmInfo = new char[ sizeof(bmInfoHeader) + nNumColors * sizeof(RGBQUAD) ];
-		memcpy( bmInfo, &bmInfoHeader, sizeof(bmInfoHeader) );
-		memcpy( bmInfo + sizeof(bmInfoHeader), &rgb_q, nNumColors * sizeof(RGBQUAD) );
-
-		pBits = new char[ bmInfoHeader.biSizeImage ];
-		stream.seekg( bmFileHeader.bfOffBits, ios::beg );
-		if ( stream.rdstate() != ios_base::goodbit ) throw BMPReadError();
-		stream.read( pBits, bmInfoHeader.biSizeImage );
-		if ( stream.rdstate() != ios_base::goodbit ) throw BMPReadError();
-
-		CDC* desktopDC = CWnd::GetDesktopWindow()->GetDC();
-		CDC memDC;
-		memDC.CreateCompatibleDC( desktopDC );
-		CBitmap memBMP;
-		memBMP.CreateCompatibleBitmap( bmInfoHeader.biBitCount != 1 ? desktopDC : &memDC, bmInfoHeader.biWidth, bmInfoHeader.biHeight );
-		::SetDIBits( desktopDC->m_hDC, static_cast<HBITMAP>(memBMP), 0, bmInfoHeader.biHeight, pBits, reinterpret_cast<BITMAPINFO*>(bmInfo), DIB_RGB_COLORS );
-		CBitmap* hOldBitmap1 = memDC.SelectObject( &memBMP );
-
-		CDC dc;
-		dc.CreateCompatibleDC( desktopDC );
-		BMP* bmp = new BMP;
-		bitmaps[name] = bmp;
-		bitmaps[name]->w = bmInfoHeader.biWidth;
-		bitmaps[name]->h = bmInfoHeader.biHeight;
-		bitmaps[name]->bmp.CreateCompatibleBitmap( bmInfoHeader.biBitCount != 1 ? desktopDC : &dc, bmInfoHeader.biWidth, bmInfoHeader.biHeight );
-		CBitmap* hOldBitmap2 = dc.SelectObject( &bitmaps[name]->bmp );
-		dc.BitBlt( 0, 0, bmInfoHeader.biWidth, bmInfoHeader.biHeight, &memDC, 0, 0, SRCCOPY );
-
-		memDC.SelectObject( hOldBitmap1 );
-		dc.SelectObject( hOldBitmap2 );
-
-	} catch ( BMPReadError ) {
-		TRACE( "catch for %s\r\n", name.c_str() );
+		if ( bmInfo ) delete bmInfo;
+		if ( pBits ) delete pBits;
 	}
-
-	if ( bmInfo ) delete bmInfo;
-	if ( pBits ) delete pBits;
 }
 
 void RDOStudioFrameManager::bmp_clear()
