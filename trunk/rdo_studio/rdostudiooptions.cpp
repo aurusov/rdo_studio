@@ -802,16 +802,16 @@ void RDOStudioOptionsStylesAndColors::OnThemeChanged()
 				break;
 			}
 			case STYLEObject::build: {
-				RDOBaseEditTheme* theme = static_cast<RDOBaseEditTheme*>(sheet->style_debug.theme);
+				RDOLogEditTheme* theme = static_cast<RDOLogEditTheme*>(sheet->style_build.theme);
 				switch ( index ) {
-					case 1: *theme = RDOBaseEditTheme::getDefaultTheme(); break;
+					case 1: *theme = RDOLogEditTheme::getDefaultTheme(); break;
 				}
 				break;
 			}
 			case STYLEObject::debug: {
-				RDOLogEditTheme* theme = static_cast<RDOLogEditTheme*>(sheet->style_build.theme);
+				RDOBaseEditTheme* theme = static_cast<RDOBaseEditTheme*>(sheet->style_debug.theme);
 				switch ( index ) {
-					case 1: *theme = RDOLogEditTheme::getDefaultTheme(); break;
+					case 1: *theme = RDOBaseEditTheme::getDefaultTheme(); break;
 				}
 				break;
 			}
