@@ -134,6 +134,8 @@ protected:
 	afx_msg void OnUpdateViewMainToolbar(CCmdUI* pCmdUI);
 	afx_msg void OnViewStatusModeToolbar();
 	afx_msg void OnUpdateViewStatusModeToolbar(CCmdUI* pCmdUI);
+	afx_msg void OnSound();
+	afx_msg void OnUpdateSound(CCmdUI* pCmdUI);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

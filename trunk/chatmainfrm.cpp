@@ -32,11 +32,13 @@ BEGIN_MESSAGE_MAP( CChatMainFrame, CFrameWnd )
 	ON_UPDATE_COMMAND_UI(ID_FILE_REFRESHNETWORK, OnUpdateFileRefreshNetwork)
 	ON_COMMAND(ID_VIEW_DOCKWINDOW, OnViewDockWindow)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_DOCKWINDOW, OnUpdateViewDockWindow)
+	ON_COMMAND(ID_VIEW_MAINTOOLBAR, OnViewMainToolbar)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_MAINTOOLBAR, OnUpdateViewMainToolbar)
 	ON_COMMAND(ID_VIEW_STATUSMODE_TOOLBAR, OnViewStatusModeToolbar)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_STATUSMODE_TOOLBAR, OnUpdateViewStatusModeToolbar)
 	ON_COMMAND( ID_TRAYMENU_EXIT, OnTrayCloseApp )
-	ON_COMMAND(ID_VIEW_MAINTOOLBAR, OnViewMainToolbar)
-	ON_UPDATE_COMMAND_UI(ID_VIEW_MAINTOOLBAR, OnUpdateViewMainToolbar)
+	ON_COMMAND(ID_SOUND, OnSound)
+	ON_UPDATE_COMMAND_UI(ID_SOUND, OnUpdateSound)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -72,7 +74,6 @@ CChatMainFrame::CChatMainFrame():
 	lastStatusMode( CSMT_Online )
 {
 	trayIconData.cbSize = 0;
-	m_bAutoMenuEnable = FALSE;
 }
 
 CChatMainFrame::~CChatMainFrame()
@@ -632,4 +633,14 @@ void CChatMainFrame::OnViewStatusModeToolbar()
 void CChatMainFrame::OnUpdateViewStatusModeToolbar(CCmdUI* pCmdUI)
 {
 	pCmdUI->SetCheck( statusModeToolBar.GetStyle() & WS_VISIBLE );
+}
+
+void CChatMainFrame::OnSound()
+{
+	chatApp.sounds.setUseSound( !chatApp.sounds.getUseSound() );
+}
+
+void CChatMainFrame::OnUpdateSound(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetCheck( chatApp.sounds.getUseSound() );
 }

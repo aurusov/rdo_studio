@@ -388,6 +388,7 @@ BEGIN
     POPUP "&Chat"
     BEGIN
         MENUITEM "&To cry out...\tCtrl+Enter",  ID_CHAT_TOCRYOUT
+        MENUITEM "&Sound",                      ID_SOUND
         MENUITEM SEPARATOR
         MENUITEM "&Options...",                 ID_CHAT_OPTIONS
     END
@@ -420,6 +421,8 @@ IDR_MAIN_TOOLBAR TOOLBAR DISCARDABLE  16, 15
 BEGIN
     BUTTON      ID_FILE_REFRESHUSERLIST
     BUTTON      ID_FILE_REFRESHNETWORK
+    SEPARATOR
+    BUTTON      ID_SOUND
 END
 
 
@@ -449,8 +452,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,0,160
- PRODUCTVERSION 1,0,0,160
+ FILEVERSION 1,0,0,161
+ PRODUCTVERSION 1,0,0,161
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -468,14 +471,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "Application for chat in localnet\0"
-            VALUE "FileVersion", "1, 0, 0, 160\0"
+            VALUE "FileVersion", "1, 0, 0, 161\0"
             VALUE "InternalName", "localChat\0"
             VALUE "LegalCopyright", "Copyright (C) 2002\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "localchat.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "localChat\0"
-            VALUE "ProductVersion", "1, 0, 0, 160\0"
+            VALUE "ProductVersion", "1, 0, 0, 161\0"
             VALUE "SpecialBuild", "\0"
         END
     END
@@ -557,6 +560,11 @@ BEGIN
     ID_STATUSMODE_ONLINE    "\nOnline"
     ID_STATUSMODE_AWAY      "\nAway"
     ID_STATUSMODE_NOTAVAILIBLE "\nNot Availible"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_SOUND                "\nSound On/Off"
 END
 
 #endif    // English (U.S.) resources
