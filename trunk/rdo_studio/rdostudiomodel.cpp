@@ -233,6 +233,8 @@ void RDOStudioModel::endExecuteModelNotify()
 		output->showResults();
 		output->appendStringToResults( str );
 	}
+
+	studioApp.autoClose();
 }
 
 void RDOStudioModel::stopModelNotify()
@@ -242,6 +244,8 @@ void RDOStudioModel::stopModelNotify()
 	RDOStudioOutput* output = &studioApp.mainFrame->output;
 	output->appendStringToDebug( format( IDS_MODEL_STOPED ) );
 	const_cast<rdoEditCtrl::RDODebugEdit*>(output->getDebug())->UpdateWindow();
+
+	studioApp.autoClose();
 }
 
 void RDOStudioModel::stopModelFromSimulator()
@@ -282,6 +286,8 @@ void RDOStudioModel::parseErrorNotify()
 		output->appendStringToBuild( format( IDS_MODEL_BUILDING_RESULTS, i ) );
 		const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->gotoNext();
 	}
+
+	studioApp.autoClose();
 }
 
 void RDOStudioModel::executeErrorNotify()
@@ -300,6 +306,8 @@ void RDOStudioModel::executeErrorNotify()
 	if ( i ) {
 		const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->gotoNext();
 	}
+
+	studioApp.autoClose();
 }
 
 void RDOStudioModel::showFrameNotify()

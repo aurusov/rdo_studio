@@ -20,6 +20,7 @@ class RDOStudioMainFrame;
 class RDOStudioApp: public CWinApp
 {
 friend class RDOStudioModel;
+friend class RDOStudioCommandLineInfo;
 
 private:
 	bool initInstance;
@@ -37,6 +38,10 @@ private:
 	std::string lastProjectName;
 
 	void setupFileAssociation();
+
+	bool autoRun;
+	bool autoExit;
+	std::string openModelName;
 
 public:
 	RDOStudioApp();
@@ -56,6 +61,8 @@ public:
 
 	std::string getLastProjectName() const            { return lastProjectName;              }
 	void setLastProjectName( const std::string& projectName );
+
+	void autoClose();
 
 	static std::string getFullFileName();
 	static std::string extractFilePath( const std::string& fileName );

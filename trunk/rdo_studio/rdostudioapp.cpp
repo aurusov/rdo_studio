@@ -9,12 +9,6 @@
 #include "rdo_tracer/rdotracer.h"
 #include "htmlhelp.h"
 
-#include <rdokernel.h>
-#include <rdorepository.h>		  
-
-using namespace std;
-using namespace rdoRepository;
-
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -60,6 +54,42 @@ void RDOFileAssociationDlg::OnCancel()
 	CDialog::OnCancel();
 }
 
+// -----------------------------------------------------------------
+// ---------- RDOStudioCommandLineInfo
+// -----------------------------------------------------------------
+class RDOStudioCommandLineInfo: public CCommandLineInfo
+{
+public:
+	RDOStudioCommandLineInfo();
+	virtual ~RDOStudioCommandLineInfo();
+	virtual void ParseParam( LPCTSTR lpszParam, BOOL bFlag, BOOL bLast );
+};
+
+RDOStudioCommandLineInfo::RDOStudioCommandLineInfo(): CCommandLineInfo()
+{
+}
+
+RDOStudioCommandLineInfo::~RDOStudioCommandLineInfo()
+{
+}
+
+void RDOStudioCommandLineInfo::ParseParam( LPCTSTR lpszParam, BOOL bFlag, BOOL bLast )
+{
+	CCommandLineInfo::ParseParam( lpszParam, bFlag, bLast );
+	if ( bFlag ) {
+		if ( CString( lpszParam ).CompareNoCase( "autorun" ) == 0 ) {
+			studioApp.autoRun = true;
+		}
+		if ( CString( lpszParam ).CompareNoCase( "autoexit" ) == 0 ) {
+			studioApp.autoExit = true;
+		}
+	} else {
+		if ( studioApp.openModelName.empty() ) {
+			studioApp.openModelName = lpszParam;
+		}
+	}
+}
+
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioApp
 // ----------------------------------------------------------------------------
@@ -96,7 +126,10 @@ RDOStudioApp::RDOStudioApp():
 	fileAssociationSetup( false ),
 	fileAssociationCheckInFuture( false ),
 	openLastProject( false ),
-	lastProjectName( "" )
+	lastProjectName( "" ),
+	autoRun( false ),
+	autoExit( false ),
+	openModelName( "" )
 {
 }
 
@@ -144,23 +177,18 @@ BOOL RDOStudioApp::InitInstance()
 	mainFrame->ShowWindow(m_nCmdShow);
 	mainFrame->UpdateWindow();
 
-	bool newModel = true;
-	string fileName( m_lpCmdLine );
-	if ( !fileName.empty() ) {
-		int pos = fileName.find_first_of( '"' );
-		if ( pos == 0 ) {
-			fileName.erase( 0, 1 );
+	RDOStudioCommandLineInfo cmdInfo;
+	ParseCommandLine( cmdInfo );
+
+	bool newModel  = true;
+	bool autoModel = false;
+	if ( !openModelName.empty() ) {
+		std::string longFileName;
+		if ( shortToLongPath( openModelName, longFileName ) ) {
+			openModelName = longFileName;
 		}
-		pos = fileName.find_last_of( '"' );
-		if ( pos == fileName.length() - 1 ) {
-			fileName.erase( pos, 1 );
-		}
-		string longFileName;
-		if ( shortToLongPath( fileName, longFileName ) ) {
-			fileName = longFileName;
-		}
-		if ( model->openModel( fileName ) ) {
-			newModel = false;
+		if ( model->openModel( openModelName ) ) {
+			autoModel = true;
 		}
 	} else {
 		if ( getOpenLastProject() && !getLastProjectName().empty() ) {
@@ -169,11 +197,21 @@ BOOL RDOStudioApp::InitInstance()
 			}
 		}
 	}
+	if ( autoModel ) {
+		newModel = false;
+	} else {
+		autoRun  = false;
+		autoExit = false;
+	}
 	if ( newModel ) {
 		OnFileNew();
 	}
 
 	initInstance = true;
+
+	if ( autoRun ) {
+		OnModelRun();
+	}
 
 	return TRUE;
 }
@@ -652,6 +690,13 @@ void RDOStudioApp::OnAppAbout()
 {
 	RDOAboutDlg dlg;
 	dlg.DoModal();
+}
+
+void RDOStudioApp::autoClose()
+{
+	if ( autoExit ) {
+		mainFrame->SendMessage( WM_CLOSE );
+	}
 }
 
 // ----------------------------------------------------------------------------
