@@ -22,6 +22,8 @@ private:
 	int xPos;
 	int yPos;
 	CBitmap frameBmp;
+	COLORREF& bgColor;
+	CDC dc;
 	bool mustBeInit;
 
 	void updateScrollBars();

@@ -36,8 +36,10 @@ RDOStudioFrameView::RDOStudioFrameView():
 	newClientRect( 0, 0, 0, 0 ),
 	xPos( 0 ),
 	yPos( 0 ),
+	bgColor( studioApp.mainFrame->style_frame.theme->backgroundColor ),
 	mustBeInit( true )
 {
+	dc.CreateCompatibleDC( NULL );
 }
 
 RDOStudioFrameView::~RDOStudioFrameView()
@@ -75,15 +77,15 @@ void RDOStudioFrameView::OnDraw(CDC* pDC)
 
 	GetClientRect( &newClientRect );
 
-	CDC dc;
-	dc.CreateCompatibleDC( pDC );
 	CBitmap* pOldBitmap = dc.SelectObject( &frameBmp );
 
-	pDC->BitBlt( -xPos, -yPos, frameBmpRect.right, frameBmpRect.bottom, &dc, 0, 0, SRCCOPY );
-	COLORREF color = studioApp.mainFrame->style_frame.theme->backgroundColor;
-	pDC->FillSolidRect( frameBmpRect.right, 0, newClientRect.right - frameBmpRect.right, newClientRect.bottom, color );
-	pDC->FillSolidRect( 0, frameBmpRect.bottom, newClientRect.right, newClientRect.bottom - frameBmpRect.bottom, color );
-
+	pDC->BitBlt( 0, 0, newClientRect.right, newClientRect.bottom, &dc, xPos, yPos, SRCCOPY );
+	if ( newClientRect.right - frameBmpRect.right > 0 ) {
+		pDC->FillSolidRect( frameBmpRect.right, 0, newClientRect.right - frameBmpRect.right, newClientRect.bottom, bgColor );
+	}
+	if ( newClientRect.bottom - frameBmpRect.bottom > 0 ) {
+		pDC->FillSolidRect( 0, frameBmpRect.bottom, newClientRect.right, newClientRect.bottom - frameBmpRect.bottom, bgColor );
+	}
 	dc.SelectObject( pOldBitmap );
 
 	lock_draw.Unlock();
