@@ -2172,15 +2172,15 @@ void RDOStudioOptions::onHelpButton()
 
 	CPropertyPage* page = GetActivePage( );
 	if ( page == general ) {
-		filename += "::/html/work_options.htm#general";
+		filename += "::/html/work_options_general.htm";
 	} else if ( page == editor ) {
-		filename += "::/html/work_options.htm#editor";
+		filename += "::/html/work_options_editor.htm";
 	} else if ( page == tabs ) {
-		filename += "::/html/work_options.htm#tabs";
+		filename += "::/html/work_options_tabs.htm";
 	} else if ( page == styles ) {
-		filename += "::/html/work_options.htm#styles";
+		filename += "::/html/work_options_styles_and_color.htm";
 	} else if ( page == plugins ) {
-		filename += "::/html/work_options.htm#plugins";
+		filename += "::/html/work_options.htm";
 	}
 	HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_DISPLAY_TOPIC, NULL );
 }
