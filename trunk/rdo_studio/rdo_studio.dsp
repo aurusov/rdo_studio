@@ -89,6 +89,9 @@ LINK32=link.exe
 
 # Name "rdo_studio - Win32 Release"
 # Name "rdo_studio - Win32 Debug"
+# Begin Group "RDO-Studio"
+
+# PROP Default_Filter ""
 # Begin Group "Source Files"
 
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
@@ -380,6 +383,35 @@ SOURCE=.\Resource.h
 SOURCE=.\StdAfx.h
 # End Source File
 # End Group
+# Begin Group "CSizingControlBar"
+
+# PROP Default_Filter ""
+# Begin Group "CSizingControlBar Source Files"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\sizecbar\scbarg.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\sizecbar\sizecbar.cpp
+# End Source File
+# End Group
+# Begin Group "CSizingControlBar Header Files"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\sizecbar\scbarg.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\sizecbar\sizecbar.h
+# End Source File
+# End Group
+# End Group
+# End Group
 # Begin Group "RDO-Editor"
 
 # PROP Default_Filter ""
@@ -513,70 +545,6 @@ SOURCE=.\rdo_tracer\rdotracertrace.h
 # Begin Source File
 
 SOURCE=.\rdo_tracer\rdotracertreectrl.h
-# End Source File
-# End Group
-# End Group
-# Begin Group "Resource Files"
-
-# PROP Default_Filter "ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
-# Begin Source File
-
-SOURCE=.\res\Margin.cur
-# End Source File
-# Begin Source File
-
-SOURCE=.\res\rdo_studio.ico
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_studio.rc
-# End Source File
-# Begin Source File
-
-SOURCE=.\res\rdo_studio.rc2
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_studio.reg
-# End Source File
-# Begin Source File
-
-SOURCE=.\res\rdostudiochartdoc.ico
-# End Source File
-# Begin Source File
-
-SOURCE=.\res\rdostudioeditdoc.ico
-# End Source File
-# Begin Source File
-
-SOURCE=.\res\rdostudiomodeldoc.ico
-# End Source File
-# End Group
-# Begin Group "CSizingControlBar"
-
-# PROP Default_Filter ""
-# Begin Group "CSizingControlBar Source Files"
-
-# PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=.\sizecbar\scbarg.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\sizecbar\sizecbar.cpp
-# End Source File
-# End Group
-# Begin Group "CSizingControlBar Header Files"
-
-# PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=.\sizecbar\scbarg.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\sizecbar\sizecbar.h
 # End Source File
 # End Group
 # End Group
@@ -1054,6 +1022,42 @@ SOURCE=.\edit_ctrls\sci\WindowAccessor.h
 SOURCE=.\edit_ctrls\sci\License.txt
 # End Source File
 # End Group
+# End Group
+# Begin Group "Resource Files"
+
+# PROP Default_Filter "ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
+# Begin Source File
+
+SOURCE=.\res\Margin.cur
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\rdo_studio.ico
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdo_studio.rc
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\rdo_studio.rc2
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdo_studio.reg
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\rdostudiochartdoc.ico
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\rdostudioeditdoc.ico
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\rdostudiomodeldoc.ico
+# End Source File
 # End Group
 # End Target
 # End Project
