@@ -103,6 +103,7 @@
 #define IDC_MAKER_SIZE_STATIC           1077
 #define IDC_MARKER_SIZE_EDIT            1078
 #define IDC_LEGEND_CHECK                1079
+#define IDC_TRANSP_MARKER_CHECK         1081
 #define ID_CHART_ADDTONEWCHART          32771
 #define ID_VIEW_WORKSPACE               32774
 #define ID_VIEW_OUTPUT                  32775
@@ -519,7 +520,7 @@
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        159
 #define _APS_NEXT_COMMAND_VALUE         33158
-#define _APS_NEXT_CONTROL_VALUE         1081
+#define _APS_NEXT_CONTROL_VALUE         1082
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

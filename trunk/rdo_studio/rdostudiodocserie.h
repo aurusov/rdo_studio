@@ -26,13 +26,14 @@ protected:
 	int marker_size;
 	std::string docSerieTitle;
 	bool showInLegend;
+	bool transparentMarker;
 public:
 	RDOStudioDocSerie( RDOTracerSerie* _serie );
 	~RDOStudioDocSerie();
 	RDOTracerSerie* getSerie() const { return serie; };
 	COLORREF getColor() const { return color; };
 	bool isTracerSerie( const RDOTracerSerie* _serie ) { return serie == _serie; };
-	void drawSerie( RDOStudioChartView* const view, CDC &dc, CRect &rect ) const { serie->drawSerie( view, dc, rect, color, marker, marker_size, needDrawMarker ); };
+	void drawSerie( RDOStudioChartView* const view, CDC &dc, CRect &rect ) const { serie->drawSerie( view, dc, rect, color, marker, marker_size, needDrawMarker, transparentMarker ); };
 	void getCaptions( std::vector<std::string> &captions, const int val_count ) const { serie->getCaptions( captions, val_count ); };
 	CSize getLegendExtent( CDC &dc, CFont& font, CRect& rect ) const;
 	CSize drawInLegend( CDC &dc, CRect &rect, CFont& font, const COLORREF text_color ) const;

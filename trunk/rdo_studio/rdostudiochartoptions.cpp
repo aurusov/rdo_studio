@@ -129,6 +129,7 @@ BEGIN_MESSAGE_MAP(RDOStudioChartOptionsSeries, CPropertyPage)
 	ON_BN_CLICKED(IDC_MARKER_CHECK, OnUpdateModify)
 	ON_EN_CHANGE(IDC_MARKER_SIZE_EDIT, OnUpdateModify)
 	ON_BN_CLICKED(IDC_LEGEND_CHECK, OnUpdateModify)
+	ON_BN_CLICKED(IDC_TRANSP_MARKER_CHECK, OnUpdateModify)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -157,7 +158,8 @@ bool RDOStudioChartOptionsSeries::getModified() const
 		m_SerieTitle.GetWindowText( title );
 		bool marker = m_DrawMarker.GetCheck() ? true : false;
 		bool legend = m_DrawInLegend.GetCheck() ? true : false;
-		res = title != serie->docSerieTitle.c_str() || ColorCB.getCurrentColor() != serie->color || m_Marker.GetCurSel() != serie->marker || marker != serie->needDrawMarker || m_sizeMarker != serie->marker_size || legend != serie->showInLegend;
+		bool transp = m_TranspMarker.GetCheck() ? true : false;
+		res = title != serie->docSerieTitle.c_str() || ColorCB.getCurrentColor() != serie->color || m_Marker.GetCurSel() != serie->marker || marker != serie->needDrawMarker || m_sizeMarker != serie->marker_size || legend != serie->showInLegend || transp != serie->transparentMarker;
 	}
 	return res;
 }
@@ -167,6 +169,7 @@ void RDOStudioChartOptionsSeries::DoDataExchange(CDataExchange* pDX)
 	CPropertyPage::DoDataExchange(pDX);
 
 	//{{AFX_DATA_MAP(RDOStudioChartOptionsSeries)
+	DDX_Control(pDX, IDC_TRANSP_MARKER_CHECK, m_TranspMarker);
 	DDX_Control(pDX, IDC_SERIES_COMBO, m_SerieCombo);
 	DDX_Control(pDX, IDC_LEGEND_CHECK, m_DrawInLegend);
 	DDX_Control(pDX, IDC_MARKER_SIZE_EDIT, m_MarkerSize);
@@ -174,7 +177,7 @@ void RDOStudioChartOptionsSeries::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_MARKER_COMBO, m_Marker);
 	DDX_Control(pDX, IDC_SERIE_TITLE_EDIT, m_SerieTitle);
 	DDX_Text(pDX, IDC_MARKER_SIZE_EDIT, m_sizeMarker);
-	DDV_MinMaxInt(pDX, m_sizeMarker, 2, 100);
+	DDV_MinMaxInt(pDX, m_sizeMarker, 2, 6);
 	//}}AFX_DATA_MAP
 
 	DDX_Control( pDX, IDC_COLOR_COMBO, ColorCB );
@@ -236,6 +239,8 @@ void RDOStudioChartOptionsSeries::apply() const
 		serie->marker_size = m_sizeMarker;
 		bool legend = m_DrawInLegend.GetCheck() ? true : false;
 		serie->showInLegend = legend;
+		bool transp = m_TranspMarker.GetCheck() ? true : false;
+		serie->transparentMarker = transp;
 	}
 }
 
@@ -249,6 +254,7 @@ void RDOStudioChartOptionsSeries::restoreValues()
 		m_DrawMarker.SetCheck( serie->needDrawMarker );
 		m_MarkerSize.SetWindowText( format( "%d", serie->marker_size).c_str() );
 		m_DrawInLegend.SetCheck( serie->showInLegend );
+		m_TranspMarker.SetCheck( serie->transparentMarker );
 	}
 }
 
@@ -262,6 +268,7 @@ void RDOStudioChartOptionsSeries::OnSelchangeSeriesCombo()
 	m_DrawMarker.EnableWindow( enable );
 	m_MarkerSize.EnableWindow( enable );
 	m_DrawInLegend.EnableWindow( enable );
+	m_TranspMarker.EnableWindow( enable );
 	if ( enable ) {
 		if ( serie && getModified() ) {
 			int res = AfxGetMainWnd()->MessageBox( format( IDS_CHART_OPTIONS_APPLY ).c_str(), NULL, MB_ICONQUESTION | MB_YESNOCANCEL );

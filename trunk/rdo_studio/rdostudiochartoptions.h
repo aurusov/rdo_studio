@@ -69,6 +69,7 @@ protected:
 
 	//{{AFX_DATA(RDOStudioChartOptionsSeries)
 	enum { IDD = IDD_CHART_OPTIONS_SERIES };
+	CButton	m_TranspMarker;
 	CComboBox	m_SerieCombo;
 	CButton	m_DrawInLegend;
 	CEdit	m_MarkerSize;

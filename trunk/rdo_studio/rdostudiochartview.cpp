@@ -144,7 +144,7 @@ void RDOStudioChartView::recalcLayout()
 		}
 
 		legendRect.top = chartRect.top;
-		legendRect.bottom = legendRect.top + count * size_max.cy + 3;
+		legendRect.bottom = legendRect.top + count * size_max.cy + 3 + doc->getMaxMarkerSize() / 2;
 		legendRect.left = chartRect.left + ( chartRect.Width() - size_max.cx ) / 2;
 		legendRect.right = legendRect.left + size_max.cx;
 		chartRect.top += legendRect.Height();

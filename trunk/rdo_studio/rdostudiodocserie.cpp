@@ -10,7 +10,8 @@ RDOStudioDocSerie::RDOStudioDocSerie( RDOTracerSerie* _serie ) :
 	marker( RDOSM_NONE ),
 	marker_size( 3 ),
 	showInLegend( true ),
-	needDrawMarker( true )
+	needDrawMarker( true ),
+	transparentMarker( true )
 {
 	if( serie ) {
 		docSerieTitle = serie->getTitle();
@@ -57,7 +58,8 @@ CSize RDOStudioDocSerie::drawInLegend( CDC &dc, CRect &rect, CFont& font, const 
 	COLORREF old_color = dc.SetTextColor( text_color );
 
 	int middle = rect.top + ( size.cy - 2 ) / 2;
-	serie->drawMarker( dc, rect.left + 5 + marker_size, middle, color, marker, marker_size );
+	if ( needDrawMarker )
+		serie->drawMarker( dc, rect.left + 5 + marker_size, middle, color, marker, marker_size, transparentMarker );
 	dc.MoveTo( rect.left, middle );
 	dc.LineTo( rect.left + 10 + marker_size * 2, middle );
 	CRect tmprect;

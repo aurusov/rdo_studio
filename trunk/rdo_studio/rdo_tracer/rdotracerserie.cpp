@@ -144,7 +144,7 @@ RDOTracerValue* RDOTracerSerie::getLastValue() const
 	return values.back();
 }
 
-void RDOTracerSerie::drawSerie( RDOStudioChartView* const view, CDC &dc, CRect &rect, const COLORREF color, RDOTracerSerieMarker marker, const int marker_size, const bool draw_marker ) const
+void RDOTracerSerie::drawSerie( RDOStudioChartView* const view, CDC &dc, CRect &rect, const COLORREF color, RDOTracerSerieMarker marker, const int marker_size, const bool draw_marker, const bool transparent_marker ) const
 {
 	int oldBkMode = dc.SetBkMode( TRANSPARENT );
 	CPen pen;
@@ -204,7 +204,7 @@ void RDOTracerSerie::drawSerie( RDOStudioChartView* const view, CDC &dc, CRect &
 			lastx = min( lastx, rect.right - 1 );
 
 			if ( lastx >= rect.left && draw_marker )
-				drawMarker( dc, lastx, lasty, color, marker, marker_size );
+				drawMarker( dc, lastx, lasty, color, marker, marker_size, transparent_marker );
 			else
 				lastx = rect.left;
 			dc.MoveTo( lastx, lasty );
@@ -230,7 +230,7 @@ void RDOTracerSerie::drawSerie( RDOStudioChartView* const view, CDC &dc, CRect &
 				}
 				x = min( x, rect.right - 1 );
 				if ( draw_marker )
-					drawMarker( dc, x, y, color, marker, marker_size );
+					drawMarker( dc, x, y, color, marker, marker_size, transparent_marker );
 				dc.LineTo( x, lasty );
 				dc.LineTo( x, y );
 				lastx = x;
@@ -269,7 +269,7 @@ void RDOTracerSerie::drawSerie( RDOStudioChartView* const view, CDC &dc, CRect &
 	dc.SetBkMode( oldBkMode );
 }
 
-void RDOTracerSerie::drawMarker( CDC &dc, const int x, const int y, const COLORREF color, RDOTracerSerieMarker marker, const int marker_size ) const
+void RDOTracerSerie::drawMarker( CDC &dc, const int x, const int y, const COLORREF color, RDOTracerSerieMarker marker, const int marker_size, const bool transparent_marker ) const
 {
 	CRect rect;
 	rect.left = x - marker_size;
@@ -279,6 +279,12 @@ void RDOTracerSerie::drawMarker( CDC &dc, const int x, const int y, const COLORR
 	CPen pen;
 	pen.CreatePen( PS_SOLID, 0, color );
 	CPen* pOldPen = dc.SelectObject( &pen );
+	CBrush brush;
+	LOGBRUSH log_brush;
+	log_brush.lbStyle = transparent_marker ? BS_HOLLOW : BS_SOLID;
+	log_brush.lbColor = color;
+	brush.CreateBrushIndirect( &log_brush );
+	CBrush* old_brush = dc.SelectObject( &brush );
 	switch( marker ) {
 		case RDOSM_CIRCLE : {
 			drawSircle( dc, rect, color );
@@ -297,6 +303,7 @@ void RDOTracerSerie::drawMarker( CDC &dc, const int x, const int y, const COLORR
 			break;
 		}
 	}
+	dc.SelectObject( &old_brush );
 	dc.SelectObject( pOldPen );
 }
 

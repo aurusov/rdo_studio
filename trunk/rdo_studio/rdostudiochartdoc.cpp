@@ -127,6 +127,15 @@ bool RDOStudioChartDoc::newValueToSerieAdded( RDOTracerValue* val )
 	return true;
 }
 
+int RDOStudioChartDoc::getMaxMarkerSize() const
+{
+	int res = 0;
+	for ( vector< RDOStudioDocSerie* >::const_iterator it = series.begin(); it != series.end(); it++ ) {
+		if ( (*it)->needDrawMarker && (*it)->marker_size > res ) res = (*it)->marker_size;
+	}
+	return res;
+}
+
 void RDOStudioChartDoc::addSerie( RDOTracerSerie* const serie )
 {
 	if ( serie && !serieExists( serie ) ) {

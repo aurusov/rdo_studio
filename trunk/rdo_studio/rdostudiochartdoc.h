@@ -39,6 +39,8 @@ protected:
 
 	bool previewMode;
 
+	int getMaxMarkerSize() const;
+
 public:
 	//{{AFX_VIRTUAL(RDOStudioChartDoc)
 	public:

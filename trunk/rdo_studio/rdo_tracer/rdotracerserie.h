@@ -65,8 +65,8 @@ public:
 	void getCaptionsDouble( std::vector<std::string> &captions, const int val_count ) const;
 	void getCaptionsBool( std::vector<std::string> &captions, const int val_count ) const;
 
-	void drawSerie( RDOStudioChartView* const view, CDC &dc, CRect &rect, const COLORREF color, RDOTracerSerieMarker marker, const int marker_size, const bool draw_marker ) const;
-	void drawMarker( CDC &dc, const int x, const int y, const COLORREF color, RDOTracerSerieMarker marker, const int marker_size ) const;
+	void drawSerie( RDOStudioChartView* const view, CDC &dc, CRect &rect, const COLORREF color, RDOTracerSerieMarker marker, const int marker_size, const bool draw_marker, const bool transparent_marker ) const;
+	void drawMarker( CDC &dc, const int x, const int y, const COLORREF color, RDOTracerSerieMarker marker, const int marker_size, const bool transparent_marker ) const;
 	void drawSircle( CDC &dc, CRect& rect, const COLORREF color ) const;
 	void drawSquare( CDC &dc, CRect& rect, const COLORREF color ) const;
 	void drawRhomb( CDC &dc, CRect& rect, const COLORREF color ) const;
