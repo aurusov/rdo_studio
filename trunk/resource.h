@@ -14,6 +14,8 @@
 #define IDC_ABOUT_EMAIL                 1087
 #define IDC_ABOUR_WEB_STATIC            1088
 #define IDC_ABOUT_WEB                   1089
+#define ID_URL_STATUSBAR                57602
+#define ID_EMPTY_STATUSBAR              57603
 
 // Next default values for new objects
 // 

@@ -29,6 +29,7 @@ public:
 	virtual void OnDraw(CDC* pDC);
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	virtual void OnBeforeNavigate2(LPCTSTR lpszURL, DWORD nFlags, LPCTSTR lpszTargetFrameName, CByteArray& baPostedData, LPCTSTR lpszHeaders, BOOL* pbCancel);
+	virtual void OnStatusTextChange(LPCTSTR lpszText);
 	//}}AFX_VIRTUAL
 
 protected:

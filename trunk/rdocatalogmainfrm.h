@@ -15,8 +15,13 @@ protected:
 	RDOCatalogMainFrame();
 	DECLARE_DYNCREATE(RDOCatalogMainFrame)
 
+	CString    url;
+	CStatusBar statusBar;
+
 public:
 	virtual ~RDOCatalogMainFrame();
+
+	void setUrl( const CString& url );
 
 #ifdef _DEBUG
 	virtual void AssertValid() const;
@@ -31,6 +36,7 @@ protected:
 	//{{AFX_MSG(RDOCatalogMainFrame)
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	//}}AFX_MSG
+	afx_msg void OnUpdateUrlStatusBar( CCmdUI *pCmdUI );
 	DECLARE_MESSAGE_MAP()
 };
 

@@ -92,10 +92,6 @@ LINK32=link.exe
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 # Begin Source File
 
-SOURCE=.\rdo_catalog.rc
-# End Source File
-# Begin Source File
-
 SOURCE=.\rdocatalogapp.cpp
 # End Source File
 # Begin Source File
@@ -150,6 +146,10 @@ SOURCE=.\StdAfx.h
 # Begin Source File
 
 SOURCE=.\res\rdo_catalog.ico
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdo_catalog.rc
 # End Source File
 # Begin Source File
 

@@ -54,7 +54,8 @@ BOOL RDOCatalogApp::InitInstance()
 	CDocument* doc = OpenDocumentFile( "index.html" );
 	if ( !doc ) return FALSE;
 
-	m_pMainWnd->ShowWindow( SW_SHOW );
+	mainFrame = static_cast<RDOCatalogMainFrame*>(m_pMainWnd);
+	mainFrame->ShowWindow( SW_SHOW );
 	m_pMainWnd->UpdateWindow();
 
 //	POSITION pos = doc->GetFirstViewPosition();

@@ -15,11 +15,15 @@
 // ----------------------------------------------------------------------------
 // ---------- RDOCatalogApp
 // ----------------------------------------------------------------------------
+class RDOCatalogMainFrame;
+
 class RDOCatalogApp: public CWinApp
 {
 public:
 	RDOCatalogApp();
 	virtual ~RDOCatalogApp();
+
+	RDOCatalogMainFrame* mainFrame;
 
 	//{{AFX_VIRTUAL(RDOCatalogApp)
 	public:

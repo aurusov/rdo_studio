@@ -2,6 +2,7 @@
 #include "rdocatalogdoc.h"
 #include "rdocatalogview.h"
 #include "rdocatalogapp.h"
+#include "rdocatalogmainfrm.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -59,6 +60,9 @@ RDOCatalogDoc* RDOCatalogView::GetDocument()
 void RDOCatalogView::OnBeforeNavigate2( LPCTSTR lpszURL, DWORD nFlags, LPCTSTR lpszTargetFrameName, CByteArray& baPostedData, LPCTSTR lpszHeaders, BOOL* pbCancel )
 {
 	CString url = lpszURL;
+	if ( catalog.mainFrame ) {
+		catalog.mainFrame->setUrl( url );
+	}
 	url.MakeLower();
 	CString ext = url.Right( 4 );
 	ext.MakeLower();
@@ -87,4 +91,12 @@ void RDOCatalogView::OnBeforeNavigate2( LPCTSTR lpszURL, DWORD nFlags, LPCTSTR l
 		*pbCancel = TRUE;
 	}
 	CHtmlView::OnBeforeNavigate2( lpszURL, nFlags, lpszTargetFrameName, baPostedData, lpszHeaders, pbCancel );
+}
+
+void RDOCatalogView::OnStatusTextChange( LPCTSTR lpszText ) 
+{
+	if ( catalog.mainFrame ) {
+		catalog.mainFrame->setUrl( lpszText );
+	}
+	CHtmlView::OnStatusTextChange( lpszText );
 }
