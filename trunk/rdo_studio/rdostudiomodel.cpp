@@ -156,7 +156,7 @@ void RDOStudioModel::runModel() const
 
 void RDOStudioModel::stopModel() const
 {
-	kernel.getSimulator()->stopModel();
+	if ( isRunning() ) kernel.getSimulator()->stopModel();
 }
 
 void RDOStudioModel::newModelNotify()
@@ -282,7 +282,7 @@ void RDOStudioModel::executeErrorNotify()
 		output->appendStringToBuild( it->message, it->file, it->lineNo - 1 );
 		i++;
 	}
-	stopModelNotify();
+	model->stopModelFromSimulator();
 	if ( i ) {
 		const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->gotoNext();
 	}
