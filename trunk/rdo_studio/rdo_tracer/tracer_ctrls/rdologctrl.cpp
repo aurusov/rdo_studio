@@ -651,7 +651,6 @@ bool RDOLogCtrl::scrollVertically( int inc )
 
 		SCROLLINFO si;
 		si.cbSize = sizeof( si );
-		si.cbSize = sizeof(si);
 		si.fMask  = SIF_POS;
 		si.nPos   = yPos;
 		SetScrollInfo( SB_VERT, &si, TRUE );
@@ -708,7 +707,6 @@ bool RDOLogCtrl::scrollHorizontally( int inc )
 		
 		SCROLLINFO si;
 		si.cbSize = sizeof( si );
-		si.cbSize = sizeof(si);
 		si.fMask  = SIF_POS;
 		si.nPos   = xPos;
 		SetScrollInfo( SB_HORZ, &si, TRUE );

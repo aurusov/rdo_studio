@@ -560,7 +560,7 @@ void RDOTracerTrace::startTrace()
 	
 	try {
 		getModelStructure();
-		timerID = ::SetTimer( NULL, 0, 500, traceTimerFunc );
+		timerID = ::SetTimer( NULL, 0, 1, traceTimerFunc );
 		tracing = true;
 	} catch ( CException* ) {
 		if (traceFile) {

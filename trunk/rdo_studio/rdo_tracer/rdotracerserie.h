@@ -29,6 +29,8 @@ protected:
 	string title;
 
 	valuesList values;
+	double minValue;
+	double maxValue;
 
 	bool isTemporaryResourceParam() const;
 
@@ -51,8 +53,8 @@ public:
 	valuesList::const_iterator begin() const { return values.begin(); };
 	valuesList::const_iterator end() const { return values.end(); };
 	RDOTracerValue* getLastValue() const;
-//	double getMinValue() const { return minValue; };
-//	double getMaxValue() const { return maxValue; };
+	double getMinValue() const { return minValue; };
+	double getMaxValue() const { return maxValue; };
 	void getFromToValues( RDOTracerTimeNow* const from, const int fromEvent, RDOTracerTimeNow* const to, const int toEvent, RDOTracerValue* &begin, RDOTracerValue* &end ) const;
 	void getMinMaxValues( RDOTracerValue* const begin, RDOTracerValue* const end, double &min, double &max ) const;
 

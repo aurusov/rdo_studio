@@ -24,7 +24,8 @@ public:
 void RDOStudioChartDocInsertTime::operator ()( RDOTracerValue* val )
 {
 	if( val ) {
-		timesList::iterator it = find_if( doc->docTimes.begin(), doc->docTimes.end(), bind2nd( greater_equal<RDOTracerTimeNow*>(), val->modeltime ) );
+		//timesList::iterator it = find_if( doc->docTimes.begin(), doc->docTimes.end(), bind2nd( greater_equal<RDOTracerTimeNow*>(), val->modeltime ) );
+		timesList::iterator it = find_if( doc->docTimes.begin(), doc->docTimes.end(), bind2nd( mem_fun1( &RDOTracerTimeNow::compareTimes ), val->modeltime ) );
 		if ( it != doc->docTimes.end() && (*it) == val->modeltime )
 			return;
 		timesList::iterator inserted_it = doc->docTimes.insert( it, val->modeltime );
@@ -62,6 +63,8 @@ RDOStudioChartDoc::RDOStudioChartDoc()
 
 RDOStudioChartDoc::~RDOStudioChartDoc()
 {
+	for ( vector< RDOStudioDocSerie >::iterator it = series.begin(); it != series.end(); it++ )
+		it->serie->removeFromDoc( this );
 	trace.removeChart( this );
 }
 

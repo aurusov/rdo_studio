@@ -15,7 +15,7 @@ class RDOStudioChartDoc;
 
 class RDOStudioChartView : public CView
 {
-friend class RDOTracerSerie;
+//friend class RDOTracerSerie;
 
 protected:
 	RDOStudioChartView();
@@ -35,13 +35,29 @@ protected:
 	COLORREF timeColor;
 	bool timeWrap;
 
-	double timeRange;
+	/*int leftMargin;
+	int topMargin;
+	int rightMargin;
+	int bottomMargin;*/
+	CRect chartRect;
+	void recalcLayout();
+
+	int xMax;
+	int xPos;
+	bool minXVisible() const { return xPos == 0; };
+	bool maxXVisible() const { return xPos == xMax; };
+	void setScrollPos( UINT nSBCode, UINT nPos );
+	void updateScrollBars();
+
+	//double timeRange;
 	long double timeScale;
-	RDOTracerTimeNow* drawFromX;
+	/*RDOTracerTimeNow* drawFromX;
 	int drawFromXEventIndex;
 	RDOTracerTimeNow* drawToX;
 	int drawToXEventIndex;
-	int pixelsToChart;
+	int pixelsToChart;*/
+	double drawFromX;
+	double drawToX;
 	void prepareDrawing( CDC &dc, CRect& chartRect );
 	
 	int xAxisOffset;
@@ -68,6 +84,7 @@ public:
 	virtual void OnDragLeave();
 	virtual DROPEFFECT OnDragOver( COleDataObject* pDataObject, DWORD dwKeyState, CPoint point );
 	virtual BOOL OnDrop( COleDataObject* pDataObject, DROPEFFECT dropEffect, CPoint point );
+	virtual void OnUpdate(CView* pSender, LPARAM lHint, CObject* pHint);
 	//}}AFX_VIRTUAL
 
 #ifdef _DEBUG
@@ -82,6 +99,8 @@ protected:
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnChartTimewrap();
 	afx_msg void OnUpdateChartTimewrap(CCmdUI* pCmdUI);
+	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
+	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

@@ -4,11 +4,11 @@
 // ----------------------------------------------------------------------------
 // ---------- RDOTracerTimeNow
 // ----------------------------------------------------------------------------
-bool RDOTracerTimeNow::operator >=( const RDOTracerTimeNow* timenow ) const
+bool RDOTracerTimeNow::compareTimes( const RDOTracerTimeNow* timenow )
 {
 	bool res = false;
 	if( timenow ) {
-		res = time >= timenow->time;
+		res = ( time >= timenow->time );
 	}
 	return res;
 }

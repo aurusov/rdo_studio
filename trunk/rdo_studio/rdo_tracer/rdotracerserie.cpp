@@ -11,9 +11,9 @@
 // ----------------------------------------------------------------------------
 RDOTracerSerie::RDOTracerSerie( RDOTracerSerieKind _serieKind ) :
 	RDOTracerTreeItem( true ),
-	serieKind( _serieKind )/*,
+	serieKind( _serieKind ),
 	minValue( 0 ),
-	maxValue( 0 )*/
+	maxValue( 0 )
 {
 }
 
@@ -63,6 +63,10 @@ void RDOTracerSerie::setTitle( const string& value )
 int RDOTracerSerie::addValue( RDOTracerValue* const value )
 {
 	values.push_back( value );
+	if ( value->value < minValue || values.empty() )
+		minValue = value->value;
+	if ( value->value > maxValue || values.empty() )
+		maxValue = value->value;
 	for_each( documents.begin(), documents.end(), bind2nd( mem_fun1( &RDOStudioChartDoc::newValueToSerieAdded ), value ) );
 	return values.size() - 1;
 }
