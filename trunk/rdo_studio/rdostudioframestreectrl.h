@@ -10,10 +10,19 @@
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioFramesTreeCtrl
 // ----------------------------------------------------------------------------
+class RDOStudioFrameDoc;
+
 class RDOStudioFramesTreeCtrl: public RDOTreeCtrl
 {
 private:
 	CImageList imageList;
+
+	class Item {
+		friend class RDOStudioFramesTreeCtrl;
+		HTREEITEM          hitem;
+		RDOStudioFrameDoc* frame_doc;
+	};
+	static std::vector< Item* > frames;
 
 public:
 	RDOStudioFramesTreeCtrl();

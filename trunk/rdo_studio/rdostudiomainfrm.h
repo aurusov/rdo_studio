@@ -13,6 +13,7 @@
 #include "edit_ctrls/rdobaseeditstyle.h"
 #include "edit_ctrls/rdofindeditstyle.h"
 #include "rdo_tracer/tracer_ctrls/rdotracerlogstyle.h"
+#include "rdostudiostyle.h"
 
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioMainFrame
@@ -45,6 +46,7 @@ public:
 	rdoTracerLog::RDOTracerLogStyle  style_trace;
 	rdoEditor::RDOEditorResultsStyle style_results;
 	rdoEditCtrl::RDOFindEditStyle    style_find;
+	rdoStyle::RDOStyleWithTheme      style_frame;
 	void updateAllStyles() const;
 
 	BOOL OnCmdMsgForDockOnly( UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo );

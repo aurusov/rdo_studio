@@ -2,6 +2,8 @@
 #include "rdostudioframeview.h"
 #include "rdostudioframedoc.h"
 #include "rdostudiomodel.h"
+#include "rdostudioapp.h"
+#include "rdostudiomainfrm.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -77,7 +79,7 @@ void RDOStudioFrameView::OnDraw(CDC* pDC)
 
 	int oldBkMode = dc.SetBkMode( TRANSPARENT );
 
-//	dc.FillSolidRect( newClientRect, RGB( 0x00, 0x80, 0x80 ) );
+	dc.FillSolidRect( newClientRect, studioApp.mainFrame->style_frame.theme->backgroundColor );
 
 	CDC dc2;
 	dc2.CreateCompatibleDC( pDC );

@@ -19,12 +19,18 @@ BEGIN_MESSAGE_MAP(RDOStudioFramesTreeCtrl, RDOTreeCtrl)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
+vector< RDOStudioFramesTreeCtrl::Item* > RDOStudioFramesTreeCtrl::frames;
+
 RDOStudioFramesTreeCtrl::RDOStudioFramesTreeCtrl()
 {
 }
 
 RDOStudioFramesTreeCtrl::~RDOStudioFramesTreeCtrl()
 {
+	std::vector< Item* >::iterator it = frames.begin();
+	while ( it != frames.end() ) {
+		delete *it++;
+	};
 }
 
 BOOL RDOStudioFramesTreeCtrl::PreCreateWindow(CREATESTRUCT& cs)
@@ -51,12 +57,21 @@ int RDOStudioFramesTreeCtrl::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 void RDOStudioFramesTreeCtrl::insertItem( const string& name )
 {
-	InsertItem( name.c_str(), 1, 1, GetRootItem() );
+	Item* item = new Item;
+	item->frame_doc = NULL;
+	item->hitem     = InsertItem( name.c_str(), 1, 1, GetRootItem() );
+	frames.push_back( item );
 }
 
 void RDOStudioFramesTreeCtrl::clear()
 {
 	deleteChildren( GetRootItem() );
+	std::vector< Item* >::iterator it = frames.begin();
+	while ( it != frames.end() ) {
+		(*it)->frame_doc->OnCloseDocument();
+		delete *it++;
+	};
+	frames.clear();
 }
 
 void RDOStudioFramesTreeCtrl::expand()
@@ -72,13 +87,31 @@ void RDOStudioFramesTreeCtrl::OnLButtonDblClk(UINT nFlags, CPoint point)
 	HTREEITEM hitem = HitTest( point, &uFlags );
 
 	if ( hitem && ( TVHT_ONITEM & uFlags ) && hitem != GetRootItem() ) {
-		RDOStudioFrameDoc* doc = reinterpret_cast<RDOStudioFrameDoc*>(GetItemData( hitem ));
-		if ( !doc ) {
+		RDOStudioFrameDoc* doc = NULL;
+		std::vector< Item* >::iterator it = frames.begin();
+		while ( it != frames.end() ) {
+			if ( (*it)->hitem == hitem ) {
+				doc = (*it)->frame_doc;
+				break;
+			}
+			it++;
+		};
+		if ( !doc || !model->isValidFrameDoc( doc ) ) {
 			doc = model->addNewFrameDoc();
+			(*it)->frame_doc = doc;
 			doc->SetTitle( format( IDS_FRAMENAME, static_cast<LPCTSTR>(GetItemText( hitem )) ).c_str()  );
-			SetItemData( hitem, reinterpret_cast<DWORD>(doc) );
 		} else {
 			studioApp.mainFrame->MDIActivate( doc->getView()->GetParentFrame() );
 		}
+/*
+		RDOStudioFrameDoc* doc = reinterpret_cast<RDOStudioFrameDoc*>(GetItemData( hitem ));
+		if ( !doc || !model->isValidFrameDoc( doc ) ) {
+			doc = model->addNewFrameDoc();
+			SetItemData( hitem, reinterpret_cast<DWORD>(doc) );
+			doc->SetTitle( format( IDS_FRAMENAME, static_cast<LPCTSTR>(GetItemText( hitem )) ).c_str()  );
+		} else {
+			studioApp.mainFrame->MDIActivate( doc->getView()->GetParentFrame() );
+		}
+*/
 	}
 }

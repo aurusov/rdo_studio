@@ -80,8 +80,9 @@ public:
 	double getModelTime() const;
 
 	RDOStudioModelDoc* getModelDoc() const;
-	RDOStudioFrameDoc* addNewFrameDoc() const;
 	RDOStudioFrameDoc* getFrameDoc() const;
+	RDOStudioFrameDoc* addNewFrameDoc() const;
+	bool isValidFrameDoc( const RDOStudioFrameDoc* const frame ) const;
 	void updateModify() const;
 
 	rdoEditor::RDOEditorTabCtrl* getTab() const;

@@ -83,6 +83,9 @@ int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	style_find.init( "find" );
 	style_find.load();
 
+	style_frame.init( "frame" );
+	style_frame.load();
+
 	fileToolBar.CreateEx( this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
 	fileToolBar.LoadToolBar( IDR_FILETOOLBAR );
 	fileToolBar.GetToolBarCtrl().SetWindowText( format( IDR_FILETOOLBAR ).c_str() );
@@ -147,6 +150,7 @@ void RDOStudioMainFrame::OnDestroy()
 	style_trace.save();
 	style_results.save();
 	style_find.save();
+	style_frame.save();
 
 	::OleUninitialize();
 	if ( model ) { delete model; model = NULL; }

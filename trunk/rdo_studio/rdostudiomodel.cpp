@@ -642,6 +642,19 @@ RDOStudioFrameDoc* RDOStudioModel::addNewFrameDoc() const
 	return static_cast<RDOStudioFrameDoc*>(frameDocTemplate->OpenDocumentFile( NULL ));
 }
 
+bool RDOStudioModel::isValidFrameDoc( const RDOStudioFrameDoc* const frame ) const
+{
+	POSITION pos = frameDocTemplate->GetFirstDocPosition();
+	while ( pos ) {
+		RDOStudioFrameDoc* doc = static_cast<RDOStudioFrameDoc*>(frameDocTemplate->GetNextDoc( pos ));
+		if ( frame == doc ) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
 void RDOStudioModel::updateStyleOfAllModel() const
 {
 	POSITION pos = modelDocTemplate->GetFirstDocPosition();
