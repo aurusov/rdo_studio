@@ -13,6 +13,7 @@
 #include <stdarg.h>
 
 #include "LexFind.h"
+#include "LexRdo.h"
 
 #include "Platform.h"
 
@@ -44,10 +45,12 @@ static void ColouriseFindDoc( unsigned int startPos, int length, int initStyle, 
 		}
 
 		if ( state == SCE_FIND_DEFAULT || state == SCE_FIND_IDENTIFIER ) {
-			if ( ch == findKeyword[0] ) {
+			if ( (matchCase && ch == findKeyword[0]) || (!matchCase && RDOMakeLowerCase(ch) == RDOMakeLowerCase(findKeyword[0])) ) {
 				bool flag = true;
 				for ( int j = 0; j < findKeywordLen; j++ ) {
-					if ( styler.SafeGetCharAt( i + j ) != findKeyword[j] ) {
+					char c1 = styler.SafeGetCharAt( i + j );
+					char c2 = findKeyword[j];
+					if ( (matchCase && c1 != c2) || (!matchCase && RDOMakeLowerCase(c1) != RDOMakeLowerCase(c2)) ) {
 						flag = false;
 						break;
 					}
