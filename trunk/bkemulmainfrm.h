@@ -55,6 +55,9 @@ private:
 	bool isFullScreenMode() const { return fullScreenMode; }
 	void setFullScreenMode( const bool value );
 
+	void setDefaultFontMenu();
+	void setDefaultRomMenu();
+
 public:
 	BKMainFrame();
 	virtual ~BKMainFrame();
@@ -87,6 +90,9 @@ protected:
 	afx_msg void OnUpdateEmulatorSoftReset(CCmdUI* pCmdUI);
 	//}}AFX_MSG
 	afx_msg void OnFontClicked( UINT nID );
+	afx_msg void OnRom();
+	afx_msg void OnUpdateRom( CCmdUI* pCmdUI );
+	afx_msg void OnRom120000( UINT nID );
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_VIRTUAL(BKMainFrame)

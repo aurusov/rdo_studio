@@ -119,6 +119,26 @@ BEGIN
             MENUITEM "Works",                       ID_VIEW_FONT_WORKS
         END
     END
+    POPUP "&Rom"
+    BEGIN
+        POPUP "100000"
+        BEGIN
+            MENUITEM "Monitor",                     ID_ROM_100000_MONITOR
+        END
+        POPUP "120000"
+        BEGIN
+            MENUITEM "Basic",                       ID_ROM_120000_BASIC
+            MENUITEM "Mirage",                      ID_ROM_120000_MIRAGE
+        END
+        POPUP "140000"
+        BEGIN
+            MENUITEM "Basic",                       ID_ROM_140000_BASIC
+        END
+        POPUP "160000"
+        BEGIN
+            MENUITEM "Basic",                       ID_ROM_160000_BASIC
+        END
+    END
     POPUP "&Help"
     BEGIN
         MENUITEM "&About Emulator...",          ID_APP_ABOUT
@@ -133,8 +153,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,0,73
- PRODUCTVERSION 1,0,0,73
+ FILEVERSION 1,0,0,74
+ PRODUCTVERSION 1,0,0,74
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -152,14 +172,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "BK 0010-01 Emulator\0"
-            VALUE "FileVersion", "1, 0, 0, 73\0"
+            VALUE "FileVersion", "1, 0, 0, 74\0"
             VALUE "InternalName", "BK Emulator\0"
             VALUE "LegalCopyright", "\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "bk_emul.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "BK 0010-01 Emulator\0"
-            VALUE "ProductVersion", "1, 0, 0, 73\0"
+            VALUE "ProductVersion", "1, 0, 0, 74\0"
             VALUE "SpecialBuild", "\0"
         END
     END

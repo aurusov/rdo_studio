@@ -34,6 +34,11 @@
 #define ID_EMULATOR_SOFTRESET           32801
 #define ID_EMULATOR_POWERON             32802
 #define ID_EMULATOR_POWEOFF             32803
+#define ID_ROM_100000_MONITOR           32808
+#define ID_ROM_120000_BASIC             32809
+#define ID_ROM_120000_MIRAGE            32810
+#define ID_ROM_140000_BASIC             32811
+#define ID_ROM_160000_BASIC             32812
 #define IDS_MEMORYACCESSERROR_BYTE      59394
 #define IDS_MEMORYACCESSERROR_WORD      59395
 
@@ -43,7 +48,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        139
-#define _APS_NEXT_COMMAND_VALUE         32804
+#define _APS_NEXT_COMMAND_VALUE         32813
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

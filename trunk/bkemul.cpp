@@ -36,6 +36,11 @@ void BKEmul::powerON()
 {
 	powerOn = true;
 	video.updateMonitor();
+	memory.clear();
+	loadROM( "MONITOR_10" );
+	loadROM( "BASIC_10_120" );
+	loadROM( "BASIC_10_140" );
+	loadROM( "BASIC_10_160" );
 	reset();
 }
 
@@ -47,11 +52,6 @@ void BKEmul::powerOFF()
 void BKEmul::reset()
 {
 	BK_SYS_Timer_work = false;
-	memory.clear();
-	loadROM( "MONITOR_10" );
-	loadROM( "MIRAGE120" );
-	loadROM( "BASIC_10_140" );
-	loadROM( "BASIC_10_160" );
 
 	R_177717_byte_read = 0100000 >> 8; // Задает начальный адрес и флаг отжатой клавиши
 	                                   // ст. байт = 0100000 - адрес старта процессора

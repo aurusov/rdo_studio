@@ -46,6 +46,13 @@ BEGIN_MESSAGE_MAP(BKMainFrame, CFrameWnd)
 	ON_UPDATE_COMMAND_UI(ID_EMULATOR_SOFTRESET, OnUpdateEmulatorSoftReset)
 	//}}AFX_MSG_MAP
 	ON_COMMAND_RANGE( ID_VIEW_FONT_DEFAULT, ID_VIEW_FONT_WORKS, OnFontClicked )
+	ON_COMMAND( ID_ROM_100000_MONITOR, OnRom )
+	ON_COMMAND_RANGE( ID_ROM_120000_BASIC, ID_ROM_120000_MIRAGE, OnRom120000 )
+	ON_COMMAND( ID_ROM_140000_BASIC, OnRom )
+	ON_COMMAND( ID_ROM_160000_BASIC, OnRom )
+	ON_UPDATE_COMMAND_UI( ID_ROM_100000_MONITOR, OnUpdateRom )
+	ON_UPDATE_COMMAND_UI( ID_ROM_140000_BASIC, OnUpdateRom )
+	ON_UPDATE_COMMAND_UI( ID_ROM_160000_BASIC, OnUpdateRom )
 END_MESSAGE_MAP()
 
 BKMainFrame::BKMainFrame():
@@ -98,7 +105,8 @@ int BKMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	timer = SetTimer( timer_ID, 20, NULL );
 
-	GetMenu()->CheckMenuItem( ID_VIEW_FONT_DEFAULT, MF_CHECKED | MF_BYCOMMAND );
+	setDefaultFontMenu();
+	setDefaultRomMenu();
 
 	return 0;
 }
@@ -608,20 +616,30 @@ void BKMainFrame::OnUpdateViewColorMonitor(CCmdUI* pCmdUI)
 void BKMainFrame::OnFontClicked( UINT nID )
 {
 	for ( int i = ID_VIEW_FONT_DEFAULT; i <= ID_VIEW_FONT_WORKS; i++ ) {
-		AfxGetMainWnd()->GetMenu()->CheckMenuItem( i, MF_UNCHECKED | MF_BYCOMMAND );
+		GetMenu()->CheckMenuItem( i, MF_UNCHECKED | MF_BYCOMMAND );
 	}
 	CString s = "";
-	AfxGetMainWnd()->GetMenu()->GetMenuString( nID, s, MF_BYCOMMAND );
-	AfxGetMainWnd()->GetMenu()->CheckMenuItem( nID, MF_CHECKED | MF_BYCOMMAND );
+	GetMenu()->GetMenuString( nID, s, MF_BYCOMMAND );
+	GetMenu()->CheckMenuItem( nID, MF_CHECKED | MF_BYCOMMAND );
 	if ( !s.IsEmpty() ) {
 		s.MakeUpper();
 		emul.loadFont( static_cast<LPCSTR>(s) );
 	}
 }
 
+void BKMainFrame::setDefaultFontMenu()
+{
+	for ( int i = ID_VIEW_FONT_DEFAULT; i <= ID_VIEW_FONT_WORKS; i++ ) {
+		GetMenu()->CheckMenuItem( i, MF_UNCHECKED | MF_BYCOMMAND );
+	}
+	GetMenu()->CheckMenuItem( ID_VIEW_FONT_DEFAULT, MF_CHECKED | MF_BYCOMMAND );
+}
+
 void BKMainFrame::OnEmulatorPowerOn()
 {
 	emul.powerON();
+	setDefaultFontMenu();
+	setDefaultRomMenu();
 }
 
 void BKMainFrame::OnEmulatorPoweOff()
@@ -642,6 +660,7 @@ void BKMainFrame::OnUpdateEmulatorPoweOff(CCmdUI* pCmdUI)
 void BKMainFrame::OnEmulatorReset() 
 {
 	emul.reset();
+	setDefaultFontMenu();
 }
 
 void BKMainFrame::OnEmulatorSoftReset()
@@ -678,4 +697,38 @@ LRESULT BKMainFrame::DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 		}
 	}
 	return CFrameWnd::DefWindowProc( message, wParam, lParam );
+}
+
+void BKMainFrame::OnRom()
+{
+}
+
+void BKMainFrame::OnUpdateRom( CCmdUI* pCmdUI )
+{
+	pCmdUI->SetCheck( 1 );
+}
+
+void BKMainFrame::OnRom120000( UINT nID )
+{
+	for ( int i = ID_ROM_120000_BASIC; i <= ID_ROM_120000_MIRAGE; i++ ) {
+		GetMenu()->CheckMenuItem( i, MF_UNCHECKED | MF_BYCOMMAND );
+	}
+	GetMenu()->CheckMenuItem( nID, MF_CHECKED | MF_BYCOMMAND );
+	std::string rom;
+	switch ( nID ) {
+		case ID_ROM_120000_BASIC : rom = "BASIC_10_120"; break;
+		case ID_ROM_120000_MIRAGE: rom = "MIRAGE120"; break;
+		default                  : rom = ""; break;
+	}
+	if ( !rom.empty() ) {
+		emul.loadROM( rom );
+	}
+}
+
+void BKMainFrame::setDefaultRomMenu()
+{
+	for ( int i = ID_ROM_120000_BASIC; i <= ID_ROM_120000_MIRAGE; i++ ) {
+		GetMenu()->CheckMenuItem( i, MF_UNCHECKED | MF_BYCOMMAND );
+	}
+	GetMenu()->CheckMenuItem( ID_ROM_120000_BASIC, MF_CHECKED | MF_BYCOMMAND );
 }
