@@ -21,14 +21,13 @@ private:
 	class Frame {
 	friend class RDOStudioFrameManager;
 	public:
-		Frame(): hitem( 0 ), doc( NULL ), view( NULL )/*, lock_deleted( &deleted ) */{};
+		Frame(): hitem( 0 ), doc( NULL ), view( NULL ), timer( false, true ) {};
 		HTREEITEM           hitem;
 		RDOStudioFrameDoc*  doc;
 		RDOStudioFrameView* view;
 		CMutex              used;
 		CMutex              draw;
-//		CMutex              deleted;
-//		CSingleLock         lock_deleted;
+		CEvent              timer;
 	};
 	static std::vector< Frame* > frames;
 
@@ -44,13 +43,11 @@ public:
 	int findFrameIndex( const RDOStudioFrameView* view ) const;
 	RDOStudioFrameDoc* connectFrameDoc( const HTREEITEM hitem ) const;
 	void disconnectFrameDoc( const RDOStudioFrameDoc* doc ) const;
-	RDOStudioFrameDoc*  getFrameDoc( const int index ) const     { return frames[index]->doc;      };
-	RDOStudioFrameView* getFrameView( const int index ) const    { return frames[index]->view;     };
-	CMutex*             getFrameUsed( const int index ) const    { return &frames[index]->used;    };
-	CMutex*             getFrameDraw( const int index ) const    { return &frames[index]->draw;    };
-//	CMutex*             getFrameDeleted( const int index ) const { return &frames[index]->deleted; };
-//	void setDeleted( const int index, const bool value ) const   { value ? frames[index]->lock_deleted.Lock() : frames[index]->lock_deleted.Unlock(); };
-//	bool isDeleted( const int index ) const                      { return frames[index]->lock_deleted.IsLocked() ? true : false; };
+	RDOStudioFrameDoc*  getFrameDoc( const int index ) const     { return frames[index]->doc;    };
+	RDOStudioFrameView* getFrameView( const int index ) const    { return frames[index]->view;   };
+	CMutex*             getFrameUsed( const int index ) const    { return &frames[index]->used;  };
+	CMutex*             getFrameDraw( const int index ) const    { return &frames[index]->draw;  };
+	CEvent*             getFrameTimer( const int index ) const   { return &frames[index]->timer; };
 	void clear();
 
 	void expand() const;

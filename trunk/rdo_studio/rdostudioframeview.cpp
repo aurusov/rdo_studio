@@ -81,7 +81,12 @@ void RDOStudioFrameView::OnDraw(CDC* pDC)
 
 	}
 
+	TRACE( "22222\r\n" );
+
 	lock_draw.Unlock();
+
+	CEvent* timer = model->frameManager.getFrameTimer( index );
+	timer->SetEvent();
 }
 
 BOOL RDOStudioFrameView::OnPreparePrinting(CPrintInfo* pInfo)
