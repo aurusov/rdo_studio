@@ -1,6 +1,5 @@
 [OPTIONS]
 Auto Index=Yes
-Binary Index=No
 Compatibility=1.1 or later
 Compiled file=RAO-studio.chm
 Contents file=rdo_studio.hhc
@@ -8,6 +7,7 @@ Default Window=main
 Default topic=html\intro.htm
 Display compile progress=No
 Full text search stop list file=rdo_studio.stp
+Full-text search=Yes
 Index file=rdo_studio.hhk
 Language=0x419 Русский
 Title=Справка по RAO-studio
