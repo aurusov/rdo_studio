@@ -521,8 +521,8 @@ BOOL RDOStudioOptionsColorsStyles::OnInitDialog()
 	sheet->preview_chart_doc->SetTitle( format( IDS_COLORSTYLE_CHART_SAMPLE1 ).c_str() );
 	sheet->preview_chart->previewMode = true;
 	sheet->preview_chart->Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, 0 );
-	sheet->preview_chart->setStyle( &sheet->style_chart, false );
 	sheet->preview_chart_doc->AddView( sheet->preview_chart );
+	sheet->preview_chart->setStyle( &sheet->style_chart, false );
 	//initializing times vector
 	sheet->preview_times.push_back( RDOTracerTimeNow( 0, 3 ) );
 	sheet->preview_times.push_back( RDOTracerTimeNow( 2, 3 ) );

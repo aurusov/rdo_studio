@@ -148,12 +148,12 @@ protected:
 	afx_msg void OnUpdateChartZoomZoomin(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateChartZoomZoomout(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateChartZoomResetzoom(CCmdUI* pCmdUI);
-	afx_msg void OnChartZoomZoomauto();
-	afx_msg void OnUpdateChartZoomZoomauto(CCmdUI* pCmdUI);
 	afx_msg int OnMouseActivate( CWnd* pDesktopWnd, UINT nHitTest, UINT message );
 	afx_msg void OnChartOptions();
 	afx_msg void OnDestroy();
 	afx_msg void OnPaint();
+	afx_msg void OnViewZoomauto();
+	afx_msg void OnUpdateViewZoomauto(CCmdUI* pCmdUI);
 	//}}AFX_MSG
 	afx_msg LRESULT OnUserUpdateChartView(WPARAM wParam = 0, LPARAM lParam = 0);
 	DECLARE_MESSAGE_MAP()

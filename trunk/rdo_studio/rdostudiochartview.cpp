@@ -39,12 +39,12 @@ BEGIN_MESSAGE_MAP(RDOStudioChartView, CView)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOMIN, OnUpdateChartZoomZoomin)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOMOUT, OnUpdateChartZoomZoomout)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOMRESET, OnUpdateChartZoomResetzoom)
-	ON_COMMAND(ID_VIEW_ZOOMAUTO, OnChartZoomZoomauto)
-	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOMAUTO, OnUpdateChartZoomZoomauto)
 	ON_WM_MOUSEACTIVATE()
 	ON_COMMAND(ID_CHART_OPTIONS, OnChartOptions)
 	ON_WM_DESTROY()
 	ON_WM_PAINT()
+	ON_COMMAND(ID_VIEW_ZOOMAUTO, OnViewZoomauto)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOMAUTO, OnUpdateViewZoomauto)
 	//}}AFX_MSG_MAP
 	ON_MESSAGE(WM_USER_UPDATE_CHART_VIEW, OnUserUpdateChartView)
 END_MESSAGE_MAP()
@@ -981,22 +981,6 @@ void RDOStudioChartView::OnUpdateChartZoomResetzoom(CCmdUI* pCmdUI)
 	pCmdUI->Enable( zoom != 1 );
 }
 
-void RDOStudioChartView::OnChartZoomZoomauto() 
-{
-	zoomAuto = !zoomAuto;
-	if ( !zoomAuto )
-		setZoom( old_zoom, true );
-	else {
-		old_zoom = zoom;
-		setZoom( auto_zoom, true );
-	}
-}
-
-void RDOStudioChartView::OnUpdateChartZoomZoomauto(CCmdUI* pCmdUI) 
-{
-	pCmdUI->SetCheck( zoomAuto );
-}
-
 const RDOStudioChartViewStyle& RDOStudioChartView::getStyle() const
 {
 	return (*style);
@@ -1071,10 +1055,10 @@ void RDOStudioChartView::setStyle( RDOStudioChartViewStyle* _style, const bool n
 
 	setFonts( false );
 	
-	if ( previewMode ) {
+	/*if ( previewMode ) {
 		auto_zoom = 1;
 		setZoom( 1 );
-	}
+	}*/
 
 	if ( needRedraw ) {
 		recalcLayout();
@@ -1166,4 +1150,20 @@ void RDOStudioChartView::OnPaint()
 	mutex.Unlock();
 
 	doc->mutex.Unlock();
+}
+
+void RDOStudioChartView::OnViewZoomauto() 
+{
+	zoomAuto = !zoomAuto;
+	if ( !zoomAuto )
+		setZoom( old_zoom, true );
+	else {
+		old_zoom = zoom;
+		setZoom( auto_zoom, true );
+	}
+}
+
+void RDOStudioChartView::OnUpdateViewZoomauto(CCmdUI* pCmdUI) 
+{
+	pCmdUI->SetCheck( zoomAuto );
 }

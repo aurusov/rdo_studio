@@ -253,8 +253,6 @@ void RDOTracerBase::dispatchNextString( string& line )
 	if ( line.empty() )
 		return;
 
-	TRACE( "%s\n", line.c_str() );
-
 	string key = getNextValue( line );
 	RDOTracerTimeNow* timeNow;
 	if ( key != "SO" && key.find( "ST" ) == string::npos && key != "SD" && key.find( "SE" ) == string::npos )
@@ -364,11 +362,9 @@ RDOTracerResource* RDOTracerBase::getResource( string& line )
 	getNextValue( line );
 	RDOTracerResource* res = NULL;
 	int findid = atoi( getNextValue( line ).c_str() );
-	TRACE( "id = %d\r\n", findid );
 	int i = 0;
 	for ( vector< RDOTracerResource* >::iterator it = resources.begin(); it != resources.end(); it++ ) {
 		if ( (*it)->id == findid )
-			TRACE( "found = %d\r\n", i );
 		if ( (*it)->id == findid && !(*it)->isErased() ) {
 			res = *it;
 			break;
@@ -400,7 +396,6 @@ void RDOTracerBase::resourceElimination( string& line, RDOTracerTimeNow* const t
 
 void RDOTracerBase::resourceChanging( string& line, RDOTracerTimeNow* const time  )
 {
-	TRACE( "line = %s\r\n", line.c_str() );
 	RDOTracerResource* res = getResource( line );
 	res->setParams( line, time, eventIndex );
 }
@@ -463,7 +458,6 @@ void RDOTracerBase::deleteTrace()
 		it++;
 	}
 	timeList.clear();
-	TRACE( "deletetrace-----------" );
 
 	mutex.Unlock();
 }
