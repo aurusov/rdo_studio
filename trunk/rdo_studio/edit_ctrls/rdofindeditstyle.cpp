@@ -14,11 +14,9 @@ using namespace rdoEditCtrl;
 // ----------------------------------------------------------------------------
 RDOFindEditTheme::RDOFindEditTheme(): RDOLogEditTheme()
 {
-	defaultColor    = RGB( 0x00, 0x00, 0x00 );
 	identifierColor = RGB( 0x00, 0x00, 0x00 );
 	keywordColor    = RGB( 0x00, 0x00, 0x00 );
 
-	defaultStyle    = RDOFS_NONE;
 	identifierStyle = RDOFS_NONE;
 	keywordStyle    = RDOFS_BOLD;
 }

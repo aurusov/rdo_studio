@@ -218,6 +218,7 @@ COLORREF RDOStudioOptionsStylesAndColors::null_fg_color = RGB( 0x00, 0x00, 0x00 
 COLORREF RDOStudioOptionsStylesAndColors::null_bg_color = RGB( 0xFF, 0xFF, 0xFF );
 bool RDOStudioOptionsStylesAndColors::null_wordwrap      = false;
 bool RDOStudioOptionsStylesAndColors::null_horzscrollbar = true;
+rdoEditCtrl::RDOBookmarkStyle RDOStudioOptionsStylesAndColors::null_bookmarkstyle = RDOBOOKMARKS_NONE;
 
 BEGIN_MESSAGE_MAP(RDOStudioOptionsStylesAndColors, CPropertyPage)
 	//{{AFX_MSG_MAP(RDOStudioOptionsStylesAndColors)
@@ -234,6 +235,7 @@ BEGIN_MESSAGE_MAP(RDOStudioOptionsStylesAndColors, CPropertyPage)
 	ON_BN_CLICKED(IDC_BGCOLOR_BUTTON, OnBgColorClicked)
 	ON_BN_CLICKED(IDC_WORDWRAP_CHECK, OnWordWrapClicked)
 	ON_BN_CLICKED(IDC_HORZSCROLLBAR_CHECK, OnHorzScrollBarClicked)
+	ON_CBN_SELCHANGE(IDC_BOOKMARK_COMBO, OnBookmarkChanged)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -259,9 +261,9 @@ RDOStudioOptionsStylesAndColors::RDOStudioOptionsStylesAndColors( RDOStudioOptio
 	objects.push_back( object );
 
 	RDOEditorEditTheme* editor_theme = static_cast<RDOEditorEditTheme*>(sheet->style_editor.theme);
-	object = new STYLEObject( STYLEObject::source, sheet->style_editor.font->name, sheet->style_editor.font->size, true, sheet->style_editor.window->wordWrap, sheet->style_editor.window->showHorzScrollBar );
+	object = new STYLEObject( STYLEObject::source, sheet->style_editor.font->name, sheet->style_editor.font->size, true, sheet->style_editor.window->wordWrap, sheet->style_editor.window->showHorzScrollBar, editor_theme->bookmarkStyle );
 	object->properties.push_back( new STYLEProperty( object, "Source Windows", editor_theme->defaultStyle, editor_theme->identifierColor, editor_theme->backgroundColor ) );
-	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_PLAINTEXT ), editor_theme->defaultStyle, editor_theme->defaultColor, editor_theme->backgroundColor ) );
+	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_PLAINTEXT ), editor_theme->defaultStyle, editor_theme->defaultColor, null_bg_color, null_fg_color, editor_theme->backgroundColor ) );
 	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_IDENTIFICATOR ), editor_theme->identifierStyle, editor_theme->identifierColor, null_bg_color, null_fg_color, editor_theme->backgroundColor ) );
 	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_KEYWORD ), editor_theme->keywordStyle, editor_theme->keywordColor, null_bg_color, null_fg_color, editor_theme->backgroundColor ) );
 	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_FUNCTION ), editor_theme->functionsStyle, editor_theme->keywordColor, null_bg_color, null_fg_color, editor_theme->backgroundColor ) );
@@ -278,7 +280,7 @@ RDOStudioOptionsStylesAndColors::RDOStudioOptionsStylesAndColors( RDOStudioOptio
 	objects.push_back( object );
 
 	RDOLogEditTheme* build_theme = static_cast<RDOLogEditTheme*>(sheet->style_build.theme);
-	object = new STYLEObject( STYLEObject::build, sheet->style_build.font->name, sheet->style_build.font->size, false, sheet->style_build.window->wordWrap, sheet->style_build.window->showHorzScrollBar );
+	object = new STYLEObject( STYLEObject::build, sheet->style_build.font->name, sheet->style_build.font->size, false, sheet->style_build.window->wordWrap, sheet->style_build.window->showHorzScrollBar, build_theme->bookmarkStyle );
 	object->properties.push_back( new STYLEProperty( object, "Build Window", build_theme->defaultStyle, build_theme->defaultColor, build_theme->backgroundColor ) );
 	object->properties.push_back( new STYLEProperty( object, "text", build_theme->defaultStyle, build_theme->defaultColor, build_theme->backgroundColor ) );
 	object->properties.push_back( new STYLEProperty( object, "selected line", null_font_style, null_fg_color, build_theme->selectLineBgColor ) );
@@ -288,7 +290,7 @@ RDOStudioOptionsStylesAndColors::RDOStudioOptionsStylesAndColors( RDOStudioOptio
 	objects.push_back( object );
 
 	RDOBaseEditTheme* debug_theme = sheet->style_debug.theme;
-	object = new STYLEObject( STYLEObject::debug, sheet->style_debug.font->name, sheet->style_debug.font->size, false );
+	object = new STYLEObject( STYLEObject::debug, sheet->style_debug.font->name, sheet->style_debug.font->size, false, sheet->style_debug.window->wordWrap, sheet->style_debug.window->showHorzScrollBar, debug_theme->bookmarkStyle );
 	object->properties.push_back( new STYLEProperty( object, "Debug Window", debug_theme->defaultStyle, debug_theme->defaultColor, debug_theme->backgroundColor ) );
 	objects.push_back( object );
 
@@ -300,12 +302,12 @@ RDOStudioOptionsStylesAndColors::RDOStudioOptionsStylesAndColors( RDOStudioOptio
 	objects.push_back( object );
 
 	RDOEditorBaseEditTheme* results_theme = static_cast<RDOEditorBaseEditTheme*>(sheet->style_results.theme);
-	object = new STYLEObject( STYLEObject::results, sheet->style_results.font->name, sheet->style_results.font->size );
+	object = new STYLEObject( STYLEObject::results, sheet->style_results.font->name, sheet->style_results.font->size, true, sheet->style_results.window->wordWrap, sheet->style_results.window->showHorzScrollBar, results_theme->bookmarkStyle );
 	object->properties.push_back( new STYLEProperty( object, "Results Window", results_theme->defaultStyle, results_theme->defaultColor, results_theme->backgroundColor ) );
 	objects.push_back( object );
 
 	RDOFindEditTheme* find_theme = static_cast<RDOFindEditTheme*>(sheet->style_find.theme);
-	object = new STYLEObject( STYLEObject::find, sheet->style_find.font->name, sheet->style_find.font->size );
+	object = new STYLEObject( STYLEObject::find, sheet->style_find.font->name, sheet->style_find.font->size, true, sheet->style_find.window->wordWrap, sheet->style_find.window->showHorzScrollBar, find_theme->bookmarkStyle );
 	object->properties.push_back( new STYLEProperty( object, "Find Window", find_theme->defaultStyle, find_theme->defaultColor, find_theme->backgroundColor ) );
 	objects.push_back( object );
 }
@@ -559,9 +561,10 @@ void RDOStudioOptionsStylesAndColors::OnStyleItemChanged(NMHDR* /*pNMHDR*/, LRES
 		OnWordWrapClicked();
 
 		// Update bookmark
-		bool flag_bookmark = type == STYLEObject::source || type == STYLEObject::build || type == STYLEObject::debug || type == STYLEObject::results || type == STYLEObject::find;
+		bool flag_bookmark = type == STYLEObject::source;
 		m_bookmark.ShowWindow( flag_bookmark ? SW_SHOW : SW_HIDE );
 		m_bookmarkStatic.ShowWindow( flag_bookmark ? SW_SHOW : SW_HIDE );
+		m_bookmark.SetCurSel( prop->object->bookmarkstyle );
 
 		// Update fold
 		bool flag_fold = type == STYLEObject::source;
@@ -814,6 +817,18 @@ void RDOStudioOptionsStylesAndColors::OnHorzScrollBarClicked()
 	if ( obj && &obj->horzscrollbar != &null_horzscrollbar ) {
 		obj->horzscrollbar = m_horzScrollBar.GetCheck() ? true : false;
 		OnUpdateModify();
+	}
+}
+
+void RDOStudioOptionsStylesAndColors::OnBookmarkChanged()
+{
+	STYLEObject* obj = getCurrentObject();
+	if ( obj && &obj->bookmarkstyle != &null_bookmarkstyle ) {
+		int index = m_bookmark.GetCurSel();
+		if ( index != CB_ERR ) {
+			obj->bookmarkstyle = static_cast<RDOBookmarkStyle>(index);
+			OnUpdateModify();
+		}
 	}
 }
 

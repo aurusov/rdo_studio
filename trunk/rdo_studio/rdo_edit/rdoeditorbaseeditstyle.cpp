@@ -15,6 +15,7 @@ using namespace rdoEditCtrl;
 // ----------------------------------------------------------------------------
 RDOEditorBaseEditTheme::RDOEditorBaseEditTheme(): RDOBaseEditTheme()
 {
+	defaultColor    = RGB( 0x80, 0x80, 0x80 );
 	identifierColor = RGB( 0x00, 0x00, 0x00 );
 	keywordColor    = RGB( 0x00, 0x00, 0x00 );
 	functionsColor  = RGB( 0x00, 0x80, 0x00 );

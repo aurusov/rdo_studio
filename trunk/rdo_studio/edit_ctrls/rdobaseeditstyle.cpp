@@ -13,7 +13,7 @@ using namespace rdoEditCtrl;
 // ----------------------------------------------------------------------------
 RDOBaseEditTheme::RDOBaseEditTheme()
 {
-	defaultColor    = RGB( 0x80, 0x80, 0x80 );
+	defaultColor    = RGB( 0x00, 0x00, 0x00 );
 	backgroundColor = RGB( 0xFF, 0xFF, 0xFF );
 
 	caretColor       = RGB( 0x00, 0x00, 0x00 );

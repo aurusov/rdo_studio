@@ -125,15 +125,17 @@ private:
 	class STYLEObject {
 	public:
 		enum Type { none = 0, all, source, build, debug, trace, results, find } type;
-		std::string& font_name;
-		int&         font_size;
-		bool         font_fixed;
-		bool&        wordwrap;
-		bool&        horzscrollbar;
+		std::string&                   font_name;
+		int&                           font_size;
+		bool                           font_fixed;
+		bool&                          wordwrap;
+		bool&                          horzscrollbar;
+		rdoEditCtrl::RDOBookmarkStyle& bookmarkstyle;
+
 		std::list< std::string > themes;
 		std::list< STYLEProperty* > properties;
 
-		STYLEObject( const Type _type, std::string& _font_name, int& _font_size, const bool _font_fixed = true, bool& _wordwrap = null_wordwrap, bool& _horzscrollbar = null_horzscrollbar ): type( _type ), font_name( _font_name ), font_size( _font_size ), font_fixed( _font_fixed ), wordwrap( _wordwrap ), horzscrollbar( _horzscrollbar ) {};
+		STYLEObject( const Type _type, std::string& _font_name, int& _font_size, const bool _font_fixed = true, bool& _wordwrap = null_wordwrap, bool& _horzscrollbar = null_horzscrollbar, rdoEditCtrl::RDOBookmarkStyle& _bookmarkstyle = null_bookmarkstyle ): type( _type ), font_name( _font_name ), font_size( _font_size ), font_fixed( _font_fixed ), wordwrap( _wordwrap ), horzscrollbar( _horzscrollbar ), bookmarkstyle( _bookmarkstyle ) {};
 		~STYLEObject() {
 			std::list< STYLEProperty* >::iterator it = properties.begin();
 			while ( it != properties.end() ) {
@@ -177,11 +179,12 @@ private:
 	bool        use_all_bg_color;
 	void updatePropOfAllObject();
 
-	rdoEditCtrl::RDOFontStyle null_font_style;
-	static COLORREF           null_fg_color;
-	static COLORREF           null_bg_color;
-	static bool               null_wordwrap;
-	static bool               null_horzscrollbar;
+	rdoEditCtrl::RDOFontStyle            null_font_style;
+	static COLORREF                      null_fg_color;
+	static COLORREF                      null_bg_color;
+	static bool                          null_wordwrap;
+	static bool                          null_horzscrollbar;
+	static rdoEditCtrl::RDOBookmarkStyle null_bookmarkstyle;
 
 	void OnUpdateModify();
 
@@ -230,6 +233,7 @@ protected:
 	afx_msg void OnBgColorClicked();
 	afx_msg void OnWordWrapClicked();
 	afx_msg void OnHorzScrollBarClicked();
+	afx_msg void OnBookmarkChanged();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 

@@ -47,24 +47,20 @@ void RDOFindEdit::setEditorStyle( RDOFindEditStyle* _style )
 
 	// ----------
 	// Colors
-	sendEditor( SCI_STYLESETFORE, SCE_RDO_DEFAULT, ((RDOFindEditTheme*)style->theme)->defaultColor );
-	sendEditor( SCI_STYLESETBACK, SCE_RDO_DEFAULT, ((RDOFindEditTheme*)style->theme)->backgroundColor );
-	sendEditor( SCI_STYLESETFORE, SCE_RDO_IDENTIFIER, ((RDOFindEditTheme*)style->theme)->identifierColor );
-	sendEditor( SCI_STYLESETBACK, SCE_RDO_IDENTIFIER, ((RDOFindEditTheme*)style->theme)->backgroundColor );
-	sendEditor( SCI_STYLESETFORE, SCE_RDO_KEYWORD, ((RDOFindEditTheme*)style->theme)->keywordColor );
-	sendEditor( SCI_STYLESETBACK, SCE_RDO_KEYWORD, ((RDOFindEditTheme*)style->theme)->backgroundColor );
+	RDOFindEditTheme* theme = static_cast<RDOFindEditTheme*>(style->theme);
+	sendEditor( SCI_STYLESETFORE, SCE_RDO_IDENTIFIER, theme->identifierColor );
+	sendEditor( SCI_STYLESETBACK, SCE_RDO_IDENTIFIER, theme->backgroundColor );
+	sendEditor( SCI_STYLESETFORE, SCE_RDO_KEYWORD, theme->keywordColor );
+	sendEditor( SCI_STYLESETBACK, SCE_RDO_KEYWORD, theme->backgroundColor );
 
 	// ----------
 	// Styles
-	sendEditor( SCI_STYLESETBOLD     , SCE_RDO_DEFAULT, ((RDOFindEditTheme*)style->theme)->defaultStyle & RDOFS_BOLD      );
-	sendEditor( SCI_STYLESETITALIC   , SCE_RDO_DEFAULT, ((RDOFindEditTheme*)style->theme)->defaultStyle & RDOFS_ITALIC    );
-	sendEditor( SCI_STYLESETUNDERLINE, SCE_RDO_DEFAULT, ((RDOFindEditTheme*)style->theme)->defaultStyle & RDOFS_UNDERLINE );
-	sendEditor( SCI_STYLESETBOLD     , SCE_RDO_IDENTIFIER, ((RDOFindEditTheme*)style->theme)->identifierStyle & RDOFS_BOLD      );
-	sendEditor( SCI_STYLESETITALIC   , SCE_RDO_IDENTIFIER, ((RDOFindEditTheme*)style->theme)->identifierStyle & RDOFS_ITALIC    );
-	sendEditor( SCI_STYLESETUNDERLINE, SCE_RDO_IDENTIFIER, ((RDOFindEditTheme*)style->theme)->identifierStyle & RDOFS_UNDERLINE );
-	sendEditor( SCI_STYLESETBOLD     , SCE_RDO_KEYWORD, ((RDOFindEditTheme*)style->theme)->keywordStyle & RDOFS_BOLD      );
-	sendEditor( SCI_STYLESETITALIC   , SCE_RDO_KEYWORD, ((RDOFindEditTheme*)style->theme)->keywordStyle & RDOFS_ITALIC    );
-	sendEditor( SCI_STYLESETUNDERLINE, SCE_RDO_KEYWORD, ((RDOFindEditTheme*)style->theme)->keywordStyle & RDOFS_UNDERLINE );
+	sendEditor( SCI_STYLESETBOLD     , SCE_RDO_IDENTIFIER, theme->identifierStyle & RDOFS_BOLD      );
+	sendEditor( SCI_STYLESETITALIC   , SCE_RDO_IDENTIFIER, theme->identifierStyle & RDOFS_ITALIC    );
+	sendEditor( SCI_STYLESETUNDERLINE, SCE_RDO_IDENTIFIER, theme->identifierStyle & RDOFS_UNDERLINE );
+	sendEditor( SCI_STYLESETBOLD     , SCE_RDO_KEYWORD, theme->keywordStyle & RDOFS_BOLD      );
+	sendEditor( SCI_STYLESETITALIC   , SCE_RDO_KEYWORD, theme->keywordStyle & RDOFS_ITALIC    );
+	sendEditor( SCI_STYLESETUNDERLINE, SCE_RDO_KEYWORD, theme->keywordStyle & RDOFS_UNDERLINE );
 
 	// ----------
 	// Font Name
