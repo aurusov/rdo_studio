@@ -194,7 +194,8 @@ bool WGProcess::start( const bool without_arguments )
 			if ( useUsernameAndPassword && ( !username.isEmpty() || !password.isEmpty() )) {
 				QString s = url.stripWhiteSpace();
 				if ( s.find( "ftp://" ) != 0 ) s = "ftp://" + s;
-				QString user_name = !username.isEmpty() ? username : "anonymous";
+				QString anonymous = "anonymous";
+				QString user_name = !username.isEmpty() ? username : anonymous;
 				if ( !password.isEmpty() ) {
 					s.insert( 6, user_name + ":" + password + "@" );
 				} else {
