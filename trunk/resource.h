@@ -39,7 +39,9 @@
 #define IDR_SMILE_GIGI                  221
 #define IDR_SMILE_EYES                  222
 #define IDR_SMILE_BEER_1                223
+#define IDR_SMILE_BEER                  223
 #define IDR_SMILE_BEER_2                224
+#define IDR_SMILE_FRIDAY                224
 #define IDR_SMILE_LAMER                 225
 #define IDC_USERNAME_EDIT               1000
 #define IDC_USERNAME_STATIC             1001

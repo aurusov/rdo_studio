@@ -15,7 +15,7 @@ class CChatSmile: public CPictureEx
 friend class CChatSmileList;
 
 public:
-	enum Type { smile, frown, wink, smirk, tongue, biggrin, gigi, eyes, beer1, beer2, lamer, tomato };
+	enum Type { smile, frown, wink, smirk, tongue, biggrin, gigi, eyes, beer, friday, lamer, tomato };
 
 private:
 	CChatSmile();

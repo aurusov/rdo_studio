@@ -365,8 +365,8 @@ IDR_SMILE_TONGUE        GIF     DISCARDABLE     "res\\smile_tongue.gif"
 IDR_SMILE_BIGGRIN       GIF     DISCARDABLE     "res\\smile_biggrin.gif"
 IDR_SMILE_GIGI          GIF     DISCARDABLE     "res\\smile_gigi.gif"
 IDR_SMILE_EYES          GIF     DISCARDABLE     "res\\smile_eyes.gif"
-IDR_SMILE_BEER_1        GIF     DISCARDABLE     "res\\smile_beer_1.gif"
-IDR_SMILE_BEER_2        GIF     DISCARDABLE     "res\\smile_beer_2.gif"
+IDR_SMILE_BEER          GIF     DISCARDABLE     "res\\smile_beer.gif"
+IDR_SMILE_FRIDAY        GIF     DISCARDABLE     "res\\smile_friday.gif"
 IDR_SMILE_LAMER         GIF     DISCARDABLE     "res\\smile_lamer.gif"
 #endif    // Russian resources
 /////////////////////////////////////////////////////////////////////////////

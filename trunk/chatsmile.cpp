@@ -52,8 +52,8 @@ CChatSmile* CChatSmileList::addSmile( const CChatSmile::Type type )
 		case CChatSmile::biggrin: res = IDR_SMILE_BIGGRIN; break;
 		case CChatSmile::gigi   : res = IDR_SMILE_GIGI; break;
 		case CChatSmile::eyes   : res = IDR_SMILE_EYES; break;
-		case CChatSmile::beer1  : res = IDR_SMILE_BEER_1; break;
-		case CChatSmile::beer2  : res = IDR_SMILE_BEER_2; break;
+		case CChatSmile::beer   : res = IDR_SMILE_BEER; break;
+		case CChatSmile::friday : res = IDR_SMILE_FRIDAY; break;
 		case CChatSmile::lamer  : res = IDR_SMILE_LAMER; break;
 		case CChatSmile::tomato : res = IDR_SMILE_TOMATO; break;
 		default                 : res = -1; break;

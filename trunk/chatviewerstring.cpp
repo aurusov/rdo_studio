@@ -110,9 +110,9 @@ CChatString::CChatString( const int lineIndex, const std::string& _userName, con
 		} else if ( str == ":eyes:" ) {
 			smile = smiles.addSmile( CChatSmile::eyes );
 		} else if ( str == ":beer:" ) {
-			smile = smiles.addSmile( CChatSmile::beer1 );
-		} else if ( str == ":beer2:" ) {
-			smile = smiles.addSmile( CChatSmile::beer2 );
+			smile = smiles.addSmile( CChatSmile::beer );
+		} else if ( str == ":friday:" ) {
+			smile = smiles.addSmile( CChatSmile::friday );
 		} else if ( str == ":tomato:" ) {
 			smile = smiles.addSmile( CChatSmile::tomato );
 		}
@@ -128,6 +128,20 @@ CChatString::CChatString( const int lineIndex, const std::string& _userName, con
 
 CChatString::~CChatString()
 {
+}
+
+CChatSmile* CChatString::getSmile( const std::string& str, int& smile_index ) const
+{
+	if ( str == ":)" || str == ":-)" ||
+	     str == ";)" || str == ";-)" ||
+	     str == ":eyes:" ||
+	     str == ":beer:" ||
+	     str == ":friday:" ||
+	     str == ":tomato:"
+	   ) {
+		return smiles[smile_index++];
+	}
+	return NULL;
 }
 
 std::string& CChatString::getString()
@@ -199,20 +213,6 @@ CFont* CChatString::setFont( CDC* dc ) const
 		}
 	}
 	return prev_font;
-}
-
-CChatSmile* CChatString::getSmile( const std::string& str, int& smile_index ) const
-{
-	if ( str == ":)" || str == ":-)" ||
-	     str == ";)" || str == ";-)" ||
-	     str == ":eyes:" ||
-	     str == ":beer:" ||
-	     str == ":beer2:" ||
-	     str == ":tomato:"
-	   ) {
-		return smiles[smile_index++];
-	}
-	return NULL;
 }
 
 void CChatString::drawText( CDC* dc, CRect& r )
