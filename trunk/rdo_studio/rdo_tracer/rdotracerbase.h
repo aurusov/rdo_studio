@@ -56,10 +56,13 @@ private:
 	void accomplishAction( std::string& line, RDOTracerTimeNow* const time  );
 	void irregularEvent( std::string& line, RDOTracerTimeNow* const time  );
 	void productionRule( std::string& line, RDOTracerTimeNow* const time  );
-	
+
 	RDOTracerResource* getResource( std::string& line );
-	void resourceCreation( std::string& line, RDOTracerTimeNow* const time  );
-	void resourceElimination( std::string& line, RDOTracerTimeNow* const time  );
+	RDOTracerResource* resourceCreation( std::string& line, RDOTracerTimeNow* const time  );
+	RDOTracerResource* resourceElimination( std::string& line, RDOTracerTimeNow* const time  );
+	enum RDOTracerResUpdateAction { RUA_NONE, RUA_ADD, RUA_UPDATE };
+	RDOTracerResUpdateAction action;
+	RDOTracerResource* resource;
 	void resourceChanging( std::string& line, RDOTracerTimeNow* const time  );
 	
 	RDOTracerResult* getResult( std::string& line );

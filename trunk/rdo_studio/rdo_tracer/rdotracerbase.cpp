@@ -34,7 +34,8 @@ RDOTracerBase::RDOTracerBase():
 	clipboardFormat( 0 ),
 	chartDocTemplate( NULL ),
 	eventIndex( 0 ),
-	drawTrace( true )
+	drawTrace( true ),
+	action( RUA_NONE )
 {
 }
 
@@ -259,7 +260,7 @@ void RDOTracerBase::dispatchNextString( string& line )
 		timeNow = addTime( getNextValue( line ) );
 	else
 		timeNow = timeList.back();
-	
+
 	if ( key == "ES" ) {
 	} else if ( key == "EB" ) {
 		startAction( line, timeNow );
@@ -270,9 +271,11 @@ void RDOTracerBase::dispatchNextString( string& line )
 	} else if ( key == "ER" ) {
 		productionRule( line, timeNow );
 	} else if ( key == "RC" || key == "SRC" ) {
-		resourceCreation( line, timeNow );
+		resource = resourceCreation( line, timeNow );
+		action = RUA_ADD;
 	} else if ( key == "RE" || key == "SRE" ) {
-		resourceElimination( line, timeNow );
+		resource = resourceElimination( line, timeNow );
+		action = RUA_UPDATE;
 	} else if ( key == "RK" || key == "SRK" ) {
 		resourceChanging( line, timeNow );
 	} else if ( key == "V" ) {
@@ -374,7 +377,7 @@ RDOTracerResource* RDOTracerBase::getResource( string& line )
 	return res;
 }
 
-void RDOTracerBase::resourceCreation( string& line, RDOTracerTimeNow* const time  )
+RDOTracerResource* RDOTracerBase::resourceCreation( string& line, RDOTracerTimeNow* const time  )
 {
 	RDOTracerResType* type = resTypes.at( atoi( getNextValue( line ).c_str() ) - 1 );
 	int id = atoi( getNextValue( line ).c_str() );
@@ -383,15 +386,17 @@ void RDOTracerBase::resourceCreation( string& line, RDOTracerTimeNow* const time
 	res->setParams( line, time, eventIndex );
 
 	resources.push_back( res );
-	tree->addResource( res );
+	//tree->addResource( res );
+	return res;
 }
 
-void RDOTracerBase::resourceElimination( string& line, RDOTracerTimeNow* const time  )
+RDOTracerResource* RDOTracerBase::resourceElimination( string& line, RDOTracerTimeNow* const time  )
 {
 	RDOTracerResource* res = getResource( line );
 	res->setParams( line, time, eventIndex, true );
 	res->setErased( true );
-	tree->updateResource( res );
+	//tree->updateResource( res );
+	return res;
 }
 
 void RDOTracerBase::resourceChanging( string& line, RDOTracerTimeNow* const time  )
@@ -615,9 +620,27 @@ void RDOTracerBase::getTraceString( string trace_string )
 	if ( log ) {
 		log->addStringToLog( trace_string );
 	}
+
+	action = RUA_NONE;
+	resource = NULL;
+
 	dispatchNextString( trace_string );
 
 	mutex.Unlock();
+
+	switch( action ) {
+		case RUA_ADD: {
+			tree->addResource( resource );
+			break;
+		}
+		case RUA_UPDATE: {
+			tree->updateResource( resource );
+			break;
+		}
+		default: {
+			break;
+		}
+	}
 }
 
 RDOStudioChartDoc* RDOTracerBase::createNewChart()
