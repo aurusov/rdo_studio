@@ -2,9 +2,6 @@
 #include "bkemul.h"
 #include "resource.h"
 
-//#include "bkemulapp.h"
-//#include "bkemulmainfrm.h"
-
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -56,6 +53,10 @@ void BKEmul::reset()
 	R_177717_byte_read = 0100000 >> 8; // Задает начальный адрес и флаг отжатой клавиши
 	                                   // ст. байт = 0100000 - адрес старта процессора
 	R_177716_write     = 0000000;      // 0100 = 0
+
+	memory.set_word( 0177706, 0011000 ); // Начальные значения регистров системного таймера
+	memory.set_word( 0177710, 0177777 ); // ---- // ----
+	memory.set_word( 0177712, 0177400 ); // ---- // ----
 
 	cpu.reset();
 	keyboard.reset();
@@ -112,13 +113,17 @@ void BKEmul::nextIteration()
 {
 	try {
 		for ( int i = 0; i < 3000; i++ ) {
-//			CClientDC dc( emulApp.mainFrame );
-//			std::string str = format( "PC = 0%0o", cpu.PC() );
-//			dc.TextOut( 300, 30, str.c_str(), str.length() );
+			if ( BK_SYS_Timer_work ) {
+				WORD data = memory.get_word( 0177710 );
+				data--;
+				if ( !data ) {
+//					data = memory.get_word( 0177706 );
+				}
+				memory.set_word( 0177710, data );
+			}
 			cpu.nextIteration();
 		}
-	} catch( BKMemoryAccessError& /*e*/ ) {
-//		e.report();
+	} catch( BKMemoryAccessError& ) {
 	}
 }
 
@@ -138,13 +143,13 @@ BYTE BKEmul::getMemoryByte( WORD address )
 		case 0177664: return memory.get_byte( address ) & 0377;
 		case 0177665: return memory.get_byte( address ) & 0002;
 		// В регистре управления таймером биты 8-15 читаются единицами
-		case 0177713: return memory.get_byte( address ) & 0377;
-		// Вернуть значение системного регистра по чтению
-		case 0177716: return keyboard.R_177716_byte_read;
-		case 0177717: return R_177717_byte_read;
+		case 0177713: return 0377;
 		// Регистр параллельного программируемого интерфейса содержит нулевую нагрузку
 		case 0177714: return 0;
 		case 0177715: return 0;
+		// Вернуть значение системного регистра по чтению
+		case 0177716: return keyboard.R_177716_byte_read;
+		case 0177717: return R_177717_byte_read;
 	}
 	return memory.get_byte( address );
 }
@@ -167,10 +172,10 @@ WORD BKEmul::getMemoryWord( WORD address )
 		case 0177664: return data & 0001377;
 		// В регистре управления таймером биты 8-15 читаются единицами
 		case 0177712: return data | 0xFF00;
-		// Вернуть значение системного регистра по чтению
-		case 0177716: return R_177717_byte_read << 8 | keyboard.R_177716_byte_read;
 		// Регистр параллельного программируемого интерфейса содержит нулевую нагрузку
 		case 0177714: return 0;
+		// Вернуть значение системного регистра по чтению
+		case 0177716: return R_177717_byte_read << 8 | keyboard.R_177716_byte_read;
 	}
 	return data;
 }
@@ -193,14 +198,6 @@ void BKEmul::setMemoryByte( WORD address, BYTE data )
 			break;
 		}
 		case 0177661: memory.set_byte( address, 0 ); break;
-		// В системном регистре по записи доступны только 4-7 разряды выходного регистра 177716
-		case 0177716: {
-			R_177716_write &= 0xFF0F;
-			R_177716_write |= data & 0xF0;
-			doSpeaker();
-			break;
-		}
-		case 0177717: R_177716_write &= 0x00F0; break;
 		// Регистр смещения
 		case 0177664:
 		case 0177665: {
@@ -224,6 +221,9 @@ void BKEmul::setMemoryByte( WORD address, BYTE data )
 			}
 			break;
 		}
+		// В регистр счетчика таймера запись игнорируется
+		case 0177710:
+		case 0177711: break;
 		// Регистр управления таймером
 		case 0177712:
 		case 0177713: {
@@ -237,6 +237,14 @@ void BKEmul::setMemoryByte( WORD address, BYTE data )
 			memory.set_byte( address, data );
 			break;
 		}
+		// В системном регистре по записи доступны только 4-7 разряды выходного регистра 177716
+		case 0177716: {
+			R_177716_write &= 0xFF0F;
+			R_177716_write |= data & 0xF0;
+			doSpeaker();
+			break;
+		}
+		case 0177717: R_177716_write &= 0x00F0; break;
 		default: memory.set_byte( address, data );
 	}
 
@@ -264,13 +272,6 @@ void BKEmul::setMemoryWord( WORD address, WORD data )
 		case 0177660: {
 			data = ( oldData & 0000200 ) | ( data & 0000100 );
 			memory.set_word( address, data );
-			break;
-		}
-		// В системном регистре по записи доступны только 4-7 разряды выходного регистра 177716
-		case 0177716: {
-			R_177716_write &= 0xFF0F;
-			R_177716_write |= data & 0x00F0;
-			doSpeaker();
 			break;
 		}
 		// Регистр смещения
@@ -302,6 +303,13 @@ void BKEmul::setMemoryWord( WORD address, WORD data )
 			// Начать/остановить отсчет
 			BK_SYS_Timer_work = data & 0000020 ? true : false;
 			memory.set_word( address, data );
+			break;
+		}
+		// В системном регистре по записи доступны только 4-7 разряды выходного регистра 177716
+		case 0177716: {
+			R_177716_write &= 0xFF0F;
+			R_177716_write |= data & 0x00F0;
+			doSpeaker();
 			break;
 		}
 		default: memory.set_word( address, data );
