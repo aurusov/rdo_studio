@@ -9,6 +9,9 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+using namespace rdoEditCtrl;
+using namespace rdoEditor;
+
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioOptionsEditor
 // ----------------------------------------------------------------------------
@@ -216,6 +219,9 @@ BEGIN_MESSAGE_MAP(RDOStudioOptionsStylesAndColors, CPropertyPage)
 	ON_CBN_SELCHANGE(IDC_PREVIEWAS_COMBO, OnPreviewAsChanged)
 	ON_CBN_SELCHANGE(IDC_FONTNAME_COMBO, OnFontNameChanged)
 	ON_CBN_SELCHANGE(IDC_FONTSIZE_COMBO, OnFontSizeChanged)
+	ON_BN_CLICKED(IDC_FONTBOLD_CHECK, OnFontStyleBoldChanged)
+	ON_BN_CLICKED(IDC_FONTITALIC_CHECK, OnFontStyleItalicChanged)
+	ON_BN_CLICKED(IDC_FONTUNDERLINE_CHECK, OnFontStyleUnderlineChanged)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -225,39 +231,55 @@ RDOStudioOptionsStylesAndColors::RDOStudioOptionsStylesAndColors( RDOStudioOptio
 	isCurrentFixed( false ),
 	previewAs( STYLEObject::none ),
 	all_font_name( "" ),
-	all_font_size( -1 )
+	all_font_size( -1 ),
+	all_font_style( rdoEditCtrl::RDOFS_NONE ),
+	null_font_style( rdoEditCtrl::RDOFS_NONE )
 {
 	//{{AFX_DATA_INIT(RDOStudioOptionsStylesAndColors)
 	//}}AFX_DATA_INIT
 
 	STYLEObject* object;
 	object = new STYLEObject( STYLEObject::all, all_font_name, all_font_size );
-	object->properties.push_back( new STYLEProperty( object, "All Windows" ) );
+	object->properties.push_back( new STYLEProperty( object, "All Windows", true, all_font_style ) );
 	objects.push_back( object );
 
 	object = new STYLEObject( STYLEObject::source, sheet->style_editor.font->name, sheet->style_editor.font->size );
-	object->properties.push_back( new STYLEProperty( object, "Source Windows" ) );
+	object->properties.push_back( new STYLEProperty( object, "Source Windows", true , static_cast<RDOEditorEditTheme*>(sheet->style_editor.theme)->defaultStyle ) );
+	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_PLAINTEXT ), false, static_cast<RDOEditorEditTheme*>(sheet->style_editor.theme)->defaultStyle ) );
+	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_IDENTIFICATOR ), false, static_cast<RDOEditorEditTheme*>(sheet->style_editor.theme)->identifierStyle ) );
+	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_KEYWORD ), false, static_cast<RDOEditorEditTheme*>(sheet->style_editor.theme)->keywordStyle ) );
+	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_FUNCTION ), false, static_cast<RDOEditorEditTheme*>(sheet->style_editor.theme)->functionsStyle ) );
+	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_TRACE ), false, static_cast<RDOEditorEditTheme*>(sheet->style_editor.theme)->traceStyle ) );
+	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_COMMENT ), false, static_cast<RDOEditorEditTheme*>(sheet->style_editor.theme)->commentStyle ) );
+	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_NUMBER ), false, static_cast<RDOEditorEditTheme*>(sheet->style_editor.theme)->numberStyle ) );
+	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_STRING ), false, static_cast<RDOEditorEditTheme*>(sheet->style_editor.theme)->stringStyle ) );
+	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_OPERATOR ), false, static_cast<RDOEditorEditTheme*>(sheet->style_editor.theme)->operatorStyle ) );
+	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_CARET ), false, null_font_style ) );
+	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_TEXTSELECTION ), false, null_font_style ) );
+	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_BOOKMARK ), false, null_font_style ) );
+	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_FOLD ), false, null_font_style ) );
+	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_ERROR ), false, null_font_style ) );
 	objects.push_back( object );
 
 	object = new STYLEObject( STYLEObject::build, sheet->style_build.font->name, sheet->style_build.font->size, false );
-	object->properties.push_back( new STYLEProperty( object, "Build Windows" ) );
+	object->properties.push_back( new STYLEProperty( object, "Build Windows", true, static_cast<RDOLogEditTheme*>(sheet->style_build.theme)->defaultStyle ) );
 	objects.push_back( object );
 
 	object = new STYLEObject( STYLEObject::debug, sheet->style_debug.font->name, sheet->style_debug.font->size, false );
-	object->properties.push_back( new STYLEProperty( object, "Debug Windows" ) );
+	object->properties.push_back( new STYLEProperty( object, "Debug Windows", true, sheet->style_debug.theme->defaultStyle ) );
 	objects.push_back( object );
 
 	object = new STYLEObject( STYLEObject::tracer, sheet->style_editor.font->name, sheet->style_editor.font->size );
 //	object = new STYLEObject( STYLEObject::tracer, sheet->style_tracer.font->name, sheet->style_tracer.font->size );
-	object->properties.push_back( new STYLEProperty( object, "Trace Windows" ) );
+	object->properties.push_back( new STYLEProperty( object, "Trace Windows", true, static_cast<RDOEditorEditTheme*>(sheet->style_editor.theme)->defaultStyle ) );
 	objects.push_back( object );
 
 	object = new STYLEObject( STYLEObject::results, sheet->style_results.font->name, sheet->style_results.font->size );
-	object->properties.push_back( new STYLEProperty( object, "Results Windows" ) );
+	object->properties.push_back( new STYLEProperty( object, "Results Windows", true, static_cast<RDOEditorBaseEditTheme*>(sheet->style_results.theme)->defaultStyle ) );
 	objects.push_back( object );
 
 	object = new STYLEObject( STYLEObject::find, sheet->style_find.font->name, sheet->style_find.font->size );
-	object->properties.push_back( new STYLEProperty( object, "Find Windows" ) );
+	object->properties.push_back( new STYLEProperty( object, "Find Windows", true, static_cast<RDOFindEditTheme*>(sheet->style_find.theme)->defaultStyle ) );
 	objects.push_back( object );
 }
 
@@ -274,6 +296,9 @@ void RDOStudioOptionsStylesAndColors::DoDataExchange(CDataExchange* pDX)
 	CPropertyPage::DoDataExchange(pDX);
 
 	//{{AFX_DATA_MAP(RDOStudioOptionsStylesAndColors)
+	DDX_Control(pDX, IDC_FONTUNDERLINE_CHECK, m_fontStyleUnderline);
+	DDX_Control(pDX, IDC_FONTITALIC_CHECK, m_fontStyleItalic);
+	DDX_Control(pDX, IDC_FONTBOLD_CHECK, m_fontStyleBold);
 	DDX_Control(pDX, IDC_FONTSIZE_COMBO, m_fontSize);
 	DDX_Control(pDX, IDC_PREVIEWAS_COMBO, m_previewAs);
 	DDX_Control(pDX, IDC_FONTNAME_COMBO, m_fontName);
@@ -320,9 +345,9 @@ BOOL RDOStudioOptionsStylesAndColors::OnInitDialog()
 
 	sheet->preview_build.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, -1 );
 	sheet->preview_build.setEditorStyle( &sheet->style_build );
-	sheet->preview_build.appendLine( new rdoEditCtrl::RDOBuildEditLineInfo( "Building Model..." ) );
-	sheet->preview_build.appendLine( new rdoEditCtrl::RDOBuildEditLineInfo( "Wrong parameter value: L", rdoModelObjects::PAT, 40, true ) );
-	sheet->preview_build.appendLine( new rdoEditCtrl::RDOBuildEditLineInfo( "1 error(s) found." ) );
+	sheet->preview_build.appendLine( new RDOBuildEditLineInfo( "Building Model..." ) );
+	sheet->preview_build.appendLine( new RDOBuildEditLineInfo( "Wrong parameter value: L", rdoModelObjects::PAT, 40, true ) );
+	sheet->preview_build.appendLine( new RDOBuildEditLineInfo( "1 error(s) found." ) );
 	sheet->preview_build.gotoNext();
 
 	sheet->preview_debug.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, -1 );
@@ -343,10 +368,10 @@ BOOL RDOStudioOptionsStylesAndColors::OnInitDialog()
 	sheet->preview_find.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, -1 );
 	sheet->preview_find.setEditorStyle( &sheet->style_find );
 	sheet->preview_find.setKeyword( "$Time" );
-	sheet->preview_find.appendLine( new rdoEditCtrl::RDOLogEditLineInfo( "Searching for '$Time'..." ) );
-	sheet->preview_find.appendLine( new rdoEditCtrl::RDOLogEditLineInfo( "$Time = Равномерный(0.25, 0.75)", rdoModelObjects::PAT, 3 ) );
-	sheet->preview_find.appendLine( new rdoEditCtrl::RDOLogEditLineInfo( "$Time = Нормальный(0.45, 0.2)", rdoModelObjects::PAT, 13 ) );
-	sheet->preview_find.appendLine( new rdoEditCtrl::RDOLogEditLineInfo( "'2' occurrence(s) have been found." ) );
+	sheet->preview_find.appendLine( new RDOLogEditLineInfo( "Searching for '$Time'..." ) );
+	sheet->preview_find.appendLine( new RDOLogEditLineInfo( "$Time = Равномерный(0.25, 0.75)", rdoModelObjects::PAT, 3 ) );
+	sheet->preview_find.appendLine( new RDOLogEditLineInfo( "$Time = Нормальный(0.45, 0.2)", rdoModelObjects::PAT, 13 ) );
+	sheet->preview_find.appendLine( new RDOLogEditLineInfo( "'2' occurrence(s) have been found." ) );
 	sheet->preview_find.gotoNext();
 
 	CRect r;
@@ -396,9 +421,9 @@ BOOL RDOStudioOptionsStylesAndColors::OnInitDialog()
 
 	setPreviewAsCombo( STYLEObject::source );
 
-	updatePropOfAllObject();
-
 	m_styleItem.SelectItem( m_styleItem.GetRootItem() );
+
+	OnUpdateModify();
 
 	return true;
 }
@@ -415,7 +440,7 @@ void RDOStudioOptionsStylesAndColors::OnStyleItemChanged(NMHDR* pNMHDR, LRESULT*
 	if ( item ) {
 		STYLEProperty* prop = reinterpret_cast<STYLEProperty*>(m_styleItem.GetItemData( item ));
 
-		// update font name combobox
+		// Update font name combobox
 		if ( prop->object->type == STYLEObject::all ) {
 			loadFontsIntoCombo( true );
 		} else {
@@ -438,13 +463,22 @@ void RDOStudioOptionsStylesAndColors::OnStyleItemChanged(NMHDR* pNMHDR, LRESULT*
 			m_fontName.SetCurSel( -1 );
 		}
 
-		// update font size combobox
+		// Update font size combobox
 		int index = m_fontSize.FindStringExact( -1, format( "%d", prop->object->font_size ).c_str() );
 		if ( index != CB_ERR ) {
 			m_fontSize.SetCurSel( index );
 		} else {
 			m_fontSize.SetCurSel( -1 );
 		}
+
+		// Update font style checkboxs
+		bool flag_font_style = &prop->font_style != &null_font_style;
+		m_fontStyleBold.EnableWindow( flag_font_style );
+		m_fontStyleItalic.EnableWindow( flag_font_style );
+		m_fontStyleUnderline.EnableWindow( flag_font_style );
+		m_fontStyleBold.SetCheck( prop->font_style & rdoEditCtrl::RDOFS_BOLD );
+		m_fontStyleItalic.SetCheck( prop->font_style & rdoEditCtrl::RDOFS_ITALIC );
+		m_fontStyleUnderline.SetCheck( prop->font_style & rdoEditCtrl::RDOFS_UNDERLINE );
 
 		setPreviewAsCombo( prop->object->type );
 
@@ -520,8 +554,7 @@ void RDOStudioOptionsStylesAndColors::OnFontNameChanged()
 			}
 			default: break;
 		}
-		updatePropOfAllObject();
-		sheet->updateStyles();
+		OnUpdateModify();
 	}
 }
 
@@ -569,8 +602,43 @@ void RDOStudioOptionsStylesAndColors::OnFontSizeChanged()
 			}
 			default: break;
 		}
-		updatePropOfAllObject();
-		sheet->updateStyles();
+		OnUpdateModify();
+	}
+}
+
+void RDOStudioOptionsStylesAndColors::OnFontStyleBoldChanged()
+{
+	STYLEProperty* prop = getCurrentProperty();
+	if ( prop && &prop->font_style != &null_font_style ) {
+		prop->font_style = static_cast<rdoEditCtrl::RDOFontStyle>(prop->font_style & ~rdoEditCtrl::RDOFS_BOLD);
+		if ( m_fontStyleBold.GetCheck() ) {
+			prop->font_style = static_cast<rdoEditCtrl::RDOFontStyle>(prop->font_style | rdoEditCtrl::RDOFS_BOLD);
+		}
+		OnUpdateModify();
+	}
+}
+
+void RDOStudioOptionsStylesAndColors::OnFontStyleItalicChanged()
+{
+	STYLEProperty* prop = getCurrentProperty();
+	if ( prop && &prop->font_style != &null_font_style ) {
+		prop->font_style = static_cast<rdoEditCtrl::RDOFontStyle>(prop->font_style & ~rdoEditCtrl::RDOFS_ITALIC);
+		if ( m_fontStyleItalic.GetCheck() ) {
+			prop->font_style = static_cast<rdoEditCtrl::RDOFontStyle>(prop->font_style | rdoEditCtrl::RDOFS_ITALIC);
+		}
+		OnUpdateModify();
+	}
+}
+
+void RDOStudioOptionsStylesAndColors::OnFontStyleUnderlineChanged()
+{
+	STYLEProperty* prop = getCurrentProperty();
+	if ( prop && &prop->font_style != &null_font_style ) {
+		prop->font_style = static_cast<rdoEditCtrl::RDOFontStyle>(prop->font_style & ~rdoEditCtrl::RDOFS_UNDERLINE);
+		if ( m_fontStyleUnderline.GetCheck() ) {
+			prop->font_style = static_cast<rdoEditCtrl::RDOFontStyle>(prop->font_style | rdoEditCtrl::RDOFS_UNDERLINE);
+		}
+		OnUpdateModify();
 	}
 }
 
@@ -594,6 +662,28 @@ void RDOStudioOptionsStylesAndColors::OnPreviewAsChanged()
 	}
 }
 
+void RDOStudioOptionsStylesAndColors::OnUpdateModify()
+{
+	UpdateData();
+
+	updatePropOfAllObject();
+
+	sheet->updateStyles();
+
+	SetModified( *sheet->style_editor.font  != *studioApp.mainFrame->style_editor.font ||
+	             *sheet->style_build.font   != *studioApp.mainFrame->style_build.font ||
+	             *sheet->style_debug.font   != *studioApp.mainFrame->style_debug.font ||
+//	             *sheet->style_tracer.font  != *studioApp.mainFrame->style_tracer.font ||
+	             *sheet->style_results.font != *studioApp.mainFrame->style_results.font ||
+	             *sheet->style_find.font    != *studioApp.mainFrame->style_find.font ||
+	             *static_cast<RDOEditorEditTheme*>(sheet->style_editor.theme) != *static_cast<RDOEditorEditTheme*>(studioApp.mainFrame->style_editor.theme) ||
+	             *static_cast<RDOLogEditTheme*>(sheet->style_build.theme) != *static_cast<RDOLogEditTheme*>(studioApp.mainFrame->style_build.theme) ||
+	             *sheet->style_debug.theme != *studioApp.mainFrame->style_debug.theme ||
+//	             *static_cast<RDOTracerTheme*>(sheet->style_tracer.theme) != *static_cast<RDOTracerTheme*>(studioApp.mainFrame->style_tracer.theme)
+	             *static_cast<RDOEditorBaseEditTheme*>(sheet->style_results.theme) != *static_cast<RDOEditorBaseEditTheme*>(studioApp.mainFrame->style_results.theme) ||
+	             *static_cast<RDOFindEditTheme*>(sheet->style_find.theme) != *static_cast<RDOFindEditTheme*>(studioApp.mainFrame->style_find.theme) );
+}
+
 void RDOStudioOptionsStylesAndColors::loadFontsIntoCombo( bool fixed )
 {
 	if ( isCurrentFixed != fixed ) {
@@ -609,14 +699,16 @@ void RDOStudioOptionsStylesAndColors::loadFontsIntoCombo( bool fixed )
 	}
 }
 
-const RDOStudioOptionsStylesAndColors::STYLEObject* RDOStudioOptionsStylesAndColors::getCurrentObject() const
+RDOStudioOptionsStylesAndColors::STYLEProperty* RDOStudioOptionsStylesAndColors::getCurrentProperty() const
 {
 	HTREEITEM item = m_styleItem.GetSelectedItem();
-	if ( item ) {
-		STYLEProperty* prop = reinterpret_cast<STYLEProperty*>(m_styleItem.GetItemData( item ));
-		return prop->object;
-	}
-	return NULL;
+	return item ? reinterpret_cast<RDOStudioOptionsStylesAndColors::STYLEProperty*>(m_styleItem.GetItemData( item )) : NULL;
+}
+
+const RDOStudioOptionsStylesAndColors::STYLEObject* RDOStudioOptionsStylesAndColors::getCurrentObject() const
+{
+	STYLEProperty* prop = getCurrentProperty();
+	return prop ? prop->object : NULL;
 }
 
 RDOStudioOptionsStylesAndColors::STYLEObject::Type RDOStudioOptionsStylesAndColors::getCurrentObjectType() const
@@ -673,12 +765,6 @@ void RDOStudioOptionsStylesAndColors::setPreviewAsCombo( STYLEObject::Type type 
 
 void RDOStudioOptionsStylesAndColors::updatePropOfAllObject() const
 {
-	{
-		list< STYLEObject* >::const_iterator it = objects.begin();
-		while ( it != objects.end() ) {
-			TRACE( "%s\r\n", (*it++)->font_name.c_str() );
-		}
-	}
 	list< STYLEObject* >::const_iterator it_first = objects.begin();
 	if ( it_first != objects.end() ) {
 		list< STYLEObject* >::const_iterator it = it_first;
@@ -690,7 +776,6 @@ void RDOStudioOptionsStylesAndColors::updatePropOfAllObject() const
 			bool flag_font_name = true;
 			bool flag_font_size = true;
 			while ( it != objects.end() ) {
-//				TRACE( "%s\r\n", (*it)->font_name.c_str() );
 				if ( (*it)->font_name != font_name ) {
 					flag_font_name = false;
 				}

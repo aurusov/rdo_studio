@@ -112,8 +112,9 @@ private:
 		std::string name;
 		bool root;
 
-		STYLEProperty(): object( NULL ), name( "" ), root( true ) {};
-		STYLEProperty( STYLEObject* _object, std::string _name, bool _root = true ): object( _object ), name( _name ), root( _root ) {};
+		rdoEditCtrl::RDOFontStyle& font_style;
+
+		STYLEProperty( STYLEObject* _object, std::string _name, bool _root, rdoEditCtrl::RDOFontStyle& _font_style ): object( _object ), name( _name ), root( _root ), font_style( _font_style ) {};
 	};
 
 	class STYLEFont {
@@ -154,6 +155,7 @@ private:
 	RDOColorComboBox fgColorCB;
 	RDOColorComboBox bgColorCB;
 
+	STYLEProperty* getCurrentProperty() const;
 	const STYLEObject* getCurrentObject() const;
 	STYLEObject::Type getCurrentObjectType() const;
 
@@ -162,11 +164,19 @@ private:
 
 	std::string all_font_name;
 	int         all_font_size;
+	rdoEditCtrl::RDOFontStyle all_font_style;
 	void updatePropOfAllObject() const;
+
+	rdoEditCtrl::RDOFontStyle null_font_style;
+
+	void OnUpdateModify();
 
 protected:
 	//{{AFX_DATA(RDOStudioOptionsStylesAndColors)
 	enum { IDD = IDD_OPTIONS_STYLESANDCOLORS };
+	CButton	m_fontStyleUnderline;
+	CButton	m_fontStyleItalic;
+	CButton	m_fontStyleBold;
 	CComboBox	m_fontSize;
 	CComboBox	m_previewAs;
 	CComboBox	m_fontName;
@@ -186,6 +196,9 @@ protected:
 	afx_msg void OnPreviewAsChanged();
 	afx_msg void OnFontNameChanged();
 	afx_msg void OnFontSizeChanged();
+	afx_msg void OnFontStyleBoldChanged();
+	afx_msg void OnFontStyleItalicChanged();
+	afx_msg void OnFontStyleUnderlineChanged();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
