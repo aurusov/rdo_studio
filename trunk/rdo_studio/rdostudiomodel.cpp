@@ -11,6 +11,7 @@
 #include <rdorepository.h>
 #include <rdosimwin.h>
 
+using namespace std;
 using namespace rdoEditor;
 using namespace rdoRepository;
 
@@ -37,6 +38,9 @@ RDOStudioModel::RDOStudioModel():
 	kernel.setNotifyReflect( RDOKernel::modelStarted, runModelNotify );
 	kernel.setNotifyReflect( RDOKernel::endExecuteModel, stopModelNotify );
 	kernel.setNotifyReflect( RDOKernel::modelStopped, stopModelNotify );
+
+	kernel.setNotifyReflect( RDOKernel::buildString, buildNotify );
+	kernel.setNotifyReflect( RDOKernel::debugString, debugNotify );
 }
 
 RDOStudioModel::~RDOStudioModel()
@@ -138,6 +142,16 @@ void RDOStudioModel::runModelNotify()
 void RDOStudioModel::stopModelNotify()
 {
 	model->running = false;
+}
+
+void RDOStudioModel::buildNotify( string str )
+{
+	studioApp.mainFrame->output.appendStringToBuild( str );
+}
+
+void RDOStudioModel::debugNotify( string str )
+{
+	studioApp.mainFrame->output.appendStringToDebug( str );
 }
 
 RDOEditorTabCtrl* RDOStudioModel::getTab() const

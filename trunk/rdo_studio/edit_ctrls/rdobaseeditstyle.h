@@ -4,8 +4,6 @@
 
 #include "sci/Scintilla.h"
 
-using namespace std;
-
 namespace rdoBaseEdit {
 
 // ----------------------------------------------------------------------------
@@ -46,8 +44,8 @@ public:
 	bool operator ==( const RDOBaseEditTheme& theme ) const;
 	bool operator !=( const RDOBaseEditTheme& theme ) const;
 
-	virtual void load( string regPath );
-	virtual void save( string regPath ) const;
+	virtual void load( std::string regPath );
+	virtual void save( std::string regPath ) const;
 
 	COLORREF defaultColor;
 	COLORREF backgroundColor;
@@ -68,11 +66,11 @@ public:
 	virtual bool styleUsing( const int styleType ) const;
 	virtual bool styleBold( const int styleType = STYLE_DEFAULT ) const;
 	virtual bool styleItalic( const int styleType = STYLE_DEFAULT ) const;
-	virtual string styleFGColorToHEX( const int styleType = STYLE_DEFAULT ) const;
-	virtual string styleBGColorToHEX( const int styleType = STYLE_DEFAULT ) const;
+	virtual std::string styleFGColorToHEX( const int styleType = STYLE_DEFAULT ) const;
+	virtual std::string styleBGColorToHEX( const int styleType = STYLE_DEFAULT ) const;
 
 	static RDOBaseEditTheme getDefaultTheme();
-	static string colorToHEX( const COLORREF color );
+	static std::string colorToHEX( const COLORREF color );
 };
 
 // ----------------------------------------------------------------------------
@@ -88,13 +86,13 @@ public:
 	bool operator ==( const RDOBaseEditFont& font ) const;
 	bool operator !=( const RDOBaseEditFont& font ) const;
 
-	virtual void load( string regPath );
-	virtual void save( string regPath ) const;
+	virtual void load( std::string regPath );
+	virtual void save( std::string regPath ) const;
 
-	string name;
-	int    size;
-	int    codepage;
-	int    characterSet;
+	std::string name;
+	int         size;
+	int         codepage;
+	int         characterSet;
 };
 
 // ----------------------------------------------------------------------------
@@ -110,8 +108,8 @@ public:
 	bool operator ==( const RDOBaseEditTab& tab ) const;
 	bool operator !=( const RDOBaseEditTab& tab ) const;
 
-	virtual void load( string regPath );
-	virtual void save( string regPath ) const;
+	virtual void load( std::string regPath );
+	virtual void save( std::string regPath ) const;
 
 	int tabSize;
 	int indentSize;
@@ -134,8 +132,8 @@ public:
 	bool operator ==( const RDOBaseEditWindow& window ) const;
 	bool operator !=( const RDOBaseEditWindow& window ) const;
 
-	virtual void load( string regPath );
-	virtual void save( string regPath ) const;
+	virtual void load( std::string regPath );
+	virtual void save( std::string regPath ) const;
 
 	bool wordWrap;
 	bool showHorzScrollBar;
@@ -147,7 +145,7 @@ public:
 class RDOBaseEditStyle
 {
 protected:
-	string regPath;
+	std::string regPath;
 
 	virtual void initTheme();
 	virtual void initFont();
@@ -162,7 +160,7 @@ public:
 	bool operator ==( const RDOBaseEditStyle& style ) const;
 	bool operator !=( const RDOBaseEditStyle& style ) const;
 
-	virtual void init( const string& _regPath = "" );
+	virtual void init( const std::string& _regPath = "" );
 	virtual void load();
 	virtual void save() const;
 

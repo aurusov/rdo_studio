@@ -6,8 +6,6 @@
 #include "rdologeditstyle.h"
 #include <rdosimwin.h>
 
-using namespace std;
-
 // ----------------------------------------------------------------------------
 // ---------- RDOLogEditLineInfo
 // ----------------------------------------------------------------------------
@@ -20,13 +18,13 @@ protected:
 	rdoModelObjects::RDOFileType fileType;
 	int                          lineNumber;
 	int                          posInLine;
-	string                       message;
+	std::string                  message;
 
 public:
-	RDOLogEditLineInfo( const string& _message, const rdoModelObjects::RDOFileType _fileType = rdoModelObjects::PAT, const int _lineNumber = -1, const int _posInLine = 0 );
+	RDOLogEditLineInfo( const std::string& _message, const rdoModelObjects::RDOFileType _fileType = rdoModelObjects::PAT, const int _lineNumber = -1, const int _posInLine = 0 );
 	~RDOLogEditLineInfo();
 
-	virtual string getMessage() const;
+	virtual std::string getMessage() const;
 };
 
 // ----------------------------------------------------------------------------

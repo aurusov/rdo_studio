@@ -13,6 +13,7 @@
 #include <rdokernel.h>
 #include <rdorepository.h>
 
+using namespace std;
 using namespace rdoRepository;
 
 #ifdef _DEBUG

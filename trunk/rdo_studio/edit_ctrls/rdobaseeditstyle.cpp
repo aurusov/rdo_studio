@@ -5,6 +5,7 @@
 #define new DEBUG_NEW
 #endif
 
+using namespace std;
 using namespace rdoBaseEdit;
 
 // ----------------------------------------------------------------------------

@@ -2,9 +2,10 @@
 
 #include <rdorepository.h>
 #include <rdosimwin.h>
-
 #include <stdio.h>
 #include <stdarg.h>
+
+using namespace std;
 
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioKernel

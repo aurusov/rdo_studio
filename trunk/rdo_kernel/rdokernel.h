@@ -10,8 +10,6 @@
 #include <map>
 #include <string>
 
-using namespace std;
-
 class RDORepository;
 
 namespace RDOSimulatorNS {
@@ -23,7 +21,7 @@ class RdoSimulator;
 // ----------------------------------------------------------------------------
 typedef void (*OnNotify)();
 typedef bool (*OnBoolNotify)();
-typedef void (*OnNotifyString)( string );
+typedef void (*OnNotifyString)( std::string );
 
 class RDOKernel
 {
@@ -60,9 +58,9 @@ private:
 	RDORepository* repository;
 	RDOSimulatorNS::RdoSimulator*  simulator;
 
-	typedef multimap< NotifyType, OnNotify >             onNotifyListType;
-	typedef multimap< BoolNotifyType, OnBoolNotify >     onBoolNotifyListType;
-	typedef multimap< NotifyStringType, OnNotifyString > onNotifyStringListType;
+	typedef std::multimap< NotifyType, OnNotify >             onNotifyListType;
+	typedef std::multimap< BoolNotifyType, OnBoolNotify >     onBoolNotifyListType;
+	typedef std::multimap< NotifyStringType, OnNotifyString > onNotifyStringListType;
 
 	onNotifyListType       onNotify_list;
 	onBoolNotifyListType   onBoolNotify_list;
@@ -82,7 +80,7 @@ public:
 	void notify( NotifyType notifyType ) const;
 	bool boolNotifyAnd( BoolNotifyType notifyType ) const;
 	bool boolNotifyOr( BoolNotifyType notifyType ) const;
-	void notifyString( NotifyStringType notifyType, string str ) const;
+	void notifyString( NotifyStringType notifyType, std::string str ) const;
 
 	void debug( const char* str, ... );
 };

@@ -5,8 +5,6 @@
 #pragma once
 #endif
 
-using namespace std;
-
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioModel
 // ----------------------------------------------------------------------------
@@ -19,7 +17,7 @@ class RDOStudioModel
 friend class RDOStudioModelDoc;
 
 private:
-	string name;
+	std::string name;
 	bool useTemplate;
 	bool closeWithDocDelete;
 	bool canNotCloseByModel;
@@ -35,6 +33,9 @@ private:
 	static void runModelNotify();
 	static void stopModelNotify();
 
+	static void buildNotify( std::string str );
+	static void debugNotify( std::string str );
+
 	void newModelFromRepository();
 	void openModelFromRepository();
 	void saveModelToRepository();
@@ -48,7 +49,7 @@ public:
 	~RDOStudioModel();
 
 	void newModel( const bool _useTemplate = false );
-	bool openModel( const string& modelName = "" ) const;
+	bool openModel( const std::string& modelName = "" ) const;
 	bool saveModel() const;
 	void saveAsModel() const;
 	bool canCloseModel();
@@ -57,8 +58,8 @@ public:
 	void runModel() const;
 	void stopModel() const;
 
-	string getName() const;
-	void setName( const string& str );
+	std::string getName() const;
+	void setName( const std::string& str );
 
 	bool isModify() const;
 	bool isRunning() const { return running; };

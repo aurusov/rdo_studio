@@ -21,7 +21,7 @@ public:
 	RDODebugEdit();
 	virtual ~RDODebugEdit();
 
-	void appendLine( const string& str );
+	void appendLine( const std::string& str );
 };
 
 //{{AFX_INSERT_LOCATION}}

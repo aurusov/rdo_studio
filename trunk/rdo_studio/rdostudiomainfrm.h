@@ -15,10 +15,6 @@ class RDOStudioMainFrame: public CMDIFrameWnd
 {
 DECLARE_DYNAMIC(RDOStudioMainFrame)
 
-private:
-	static void buildNotify( string str );
-	static void debugNotify( string str );
-
 protected:
 	CToolBar           projectToolBar;
 	CImageList         projectToolBarImageList;

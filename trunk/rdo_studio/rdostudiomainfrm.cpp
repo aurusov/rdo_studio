@@ -1,21 +1,13 @@
 #include "stdafx.h"
 #include "rdostudiomainfrm.h"
-#include "rdostudioapp.h"
-#include "rdostudiomodeldoc.h"
-#include "rdostudiomodelview.h"
 #include "./rdo_tracer/rdotracertrace.h"
-#include "rdo_edit/rdoeditoredit.h"
 #include "resource.h"
-
-#include <rdokernel.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
-
-using namespace rdoEditor;
 
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioMainFrame
@@ -101,9 +93,6 @@ int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	DockControlBar( &output, AFX_IDW_DOCKBAR_BOTTOM );
 
 	trace.registerClipboardFormat();
-
-	kernel.setNotifyReflect( RDOKernel::buildString, buildNotify );
-	kernel.setNotifyReflect( RDOKernel::debugString, debugNotify );
 
 	return 0;
 }
@@ -196,16 +185,6 @@ void RDOStudioMainFrame::OnUpdateViewWorkspace(CCmdUI* pCmdUI)
 void RDOStudioMainFrame::OnUpdateViewOutput(CCmdUI* pCmdUI) 
 {
 	pCmdUI->SetCheck( output.IsVisible() );
-}
-
-void RDOStudioMainFrame::buildNotify( string str )
-{
-	studioApp.mainFrame->output.appendStringToBuild( str );
-}
-
-void RDOStudioMainFrame::debugNotify( string str )
-{
-	studioApp.mainFrame->output.appendStringToDebug( str );
 }
 
 void RDOStudioMainFrame::OnUpdateCoordStatusBar( CCmdUI *pCmdUI )

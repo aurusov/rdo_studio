@@ -2,6 +2,7 @@
 
 #include <rdorepositoryfile.h>
 
+using namespace std;
 using namespace rdoRepository;
 
 // ----------------------------------------------------------------------------

@@ -4,11 +4,8 @@
 
 #include "../edit_ctrls/rdobaseedit.h"
 #include "rdoeditoreditstyle.h"
-//#include "sci/Scintilla.h"
 
 class RDOStudioEditBaseView;
-
-using namespace std;
 
 namespace rdoEditor {
 
@@ -79,7 +76,7 @@ public:
 
 	void setEditorStyle( RDOEditorEditStyle* _style );
 
-	void replaceCurrent( const string str, const int changePosValue = -1 ) const;
+	void replaceCurrent( const std::string str, const int changePosValue = -1 ) const;
 };
 
 }; // namespace rdoEditor

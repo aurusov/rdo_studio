@@ -17,8 +17,8 @@ public:
 	bool operator ==( const RDOLogEditTheme& theme ) const;
 	bool operator !=( const RDOLogEditTheme& theme ) const;
 
-	virtual void load( string regPath );
-	virtual void save( string regPath ) const;
+	virtual void load( std::string regPath );
+	virtual void save( std::string regPath ) const;
 
 	COLORREF selectLineBgColor;
 };

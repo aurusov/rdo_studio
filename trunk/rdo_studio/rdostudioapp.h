@@ -9,8 +9,6 @@
 	#error include 'stdafx.h' before including this file for PCH
 #endif
 
-using namespace std;
-
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioApp
 // ----------------------------------------------------------------------------
@@ -27,7 +25,7 @@ private:
 	CMultiDocTemplate* modelDocTemplate;
 	CMultiDocTemplate* editDocTemplate;
 
-	vector< string > reopenList;
+	std::vector< std::string > reopenList;
 	void updateReopenSubMenu() const;
 	void loadReopen();
 	void saveReopen() const;
@@ -38,7 +36,7 @@ public:
 	RDOStudioMainFrame* mainFrame;
 	RDOStudioModelDoc* getModelDoc();
 
-	void insertReopenItem( const string& item );
+	void insertReopenItem( const std::string& item );
 
 	static void appendMenu( CMenu* from, const int from_index, CMenu* to );
 	static void eraseMenu( CMenu* from, const int from_index = -1 );

@@ -4,8 +4,6 @@
 
 #include "rdobaseeditstyle.h"
 
-using namespace std;
-
 namespace rdoBaseEdit {
 
 // ----------------------------------------------------------------------------
@@ -14,8 +12,8 @@ namespace rdoBaseEdit {
 typedef long (*sciFunType)( long ptr, unsigned int iMessage, unsigned long wParam, long lParam );
 
 class RDOBaseEdit;
-typedef vector< RDOBaseEdit* >           RDOBaseEditList;
-typedef vector< RDOBaseEdit* >::iterator RDOBaseEditListIterator;
+typedef std::vector< RDOBaseEdit* >           RDOBaseEditList;
+typedef std::vector< RDOBaseEdit* >::iterator RDOBaseEditListIterator;
 
 class RDOBaseEdit: public CWnd
 {
@@ -51,10 +49,10 @@ protected:
 	bool bSearchDown;
 	bool bMatchCase;
 	bool bMatchWholeWord;
-	string findStr;
-	void findNext( string& findWhat, const bool searchDown = true, const bool matchCase = false, const bool matchWholeWord = false );
-	void replace( string& findWhat, string& replaceWhat, const bool searchDown = true, const bool matchCase = false, const bool matchWholeWord = false );
-	void replaceAll( string& findWhat, string& replaceWhat, const bool matchCase = false, const bool matchWholeWord = false );
+	std::string findStr;
+	void findNext( std::string& findWhat, const bool searchDown = true, const bool matchCase = false, const bool matchWholeWord = false );
+	void replace( std::string& findWhat, std::string& replaceWhat, const bool searchDown = true, const bool matchCase = false, const bool matchWholeWord = false );
+	void replaceAll( std::string& findWhat, std::string& replaceWhat, const bool matchCase = false, const bool matchWholeWord = false );
 
 	void copyAsRTF();
 
@@ -67,7 +65,7 @@ protected:
 	void setLineIndentation( int line, int indent ) const;
 	void autoIndent() const;
 
-	void appendText( const string& str ) const;
+	void appendText( const std::string& str ) const;
 
 	//{{AFX_MSG(RDOBaseEdit)
 	afx_msg int OnCreate( LPCREATESTRUCT lpCreateStruct );
@@ -199,15 +197,15 @@ public:
 	void scrollToLine( const int line ) const;
 	void horzScrollToCurrentPos() const;
 
-	string getCurrentWord() const;
-	string getSelection() const;
-	string getCurrentOrSelectedWord() const;
+	std::string getCurrentWord() const;
+	std::string getSelection() const;
+	std::string getCurrentOrSelectedWord() const;
 
-	int findPos( string& findWhat, const int startFromLine = 0, const bool matchCase = false, const bool matchWholeWord = false ) const;
-	string getLine( const int line ) const;
+	int findPos( std::string& findWhat, const int startFromLine = 0, const bool matchCase = false, const bool matchWholeWord = false ) const;
+	std::string getLine( const int line ) const;
 
-	void load( stringstream& stream ) const;
-	void save( stringstream& stream ) const;
+	void load( std::stringstream& stream ) const;
+	void save( std::stringstream& stream ) const;
 	void saveAsRTF( CFile& file, int start = 0, int end = -1 ) const;
 };
 

@@ -8,8 +8,6 @@
 #include <string>
 #include <sstream>
 
-using namespace std;
-
 class CFileDialog;
 
 namespace rdoRepository {
@@ -20,20 +18,20 @@ namespace rdoRepository {
 class RDORepositoryFile
 {
 private:
-	string modelName;
-	string modelPath;
-	string lastModelPath;
-	string patFileName;
-	string rtpFileName;
-	string rssFileName;
-	string oprFileName;
-	string frmFileName;
-	string funFileName;
-	string dptFileName;
-	string smrFileName;
-	string pmdFileName;
-	string pmvFileName;
-	string trcFileName;
+	std::string modelName;
+	std::string modelPath;
+	std::string lastModelPath;
+	std::string patFileName;
+	std::string rtpFileName;
+	std::string rssFileName;
+	std::string oprFileName;
+	std::string frmFileName;
+	std::string funFileName;
+	std::string dptFileName;
+	std::string smrFileName;
+	std::string pmdFileName;
+	std::string pmvFileName;
+	std::string trcFileName;
 
 	bool readOnly;
 
@@ -42,14 +40,14 @@ private:
 	void realCloseModel();
 
 	void extractName( const CFileDialog* const dlg );
-	void extractName( const string& fullname );
-	static string extractFilePath( const string& fileName );
-	static bool isFileExists( const string& fileName );
+	void extractName( const std::string& fullname );
+	static std::string extractFilePath( const std::string& fileName );
+	static bool isFileExists( const std::string& fileName );
 
-	void setName( const string& str );
+	void setName( const std::string& str );
 
-	void loadFile( const string& filename, stringstream& stream ) const;
-	void saveFile( const string& filename, stringstream& stream ) const;
+	void loadFile( const std::string& filename, std::stringstream& stream ) const;
+	void saveFile( const std::string& filename, std::stringstream& stream ) const;
 
 	void changeLastModelPath();
 
@@ -57,40 +55,40 @@ public:
 	RDORepositoryFile();
 	virtual ~RDORepositoryFile();
 
-	string getName() const;
-	string getFullName() const;
+	std::string getName() const;
+	std::string getFullName() const;
 
 	void newModel();
-	bool openModel( const string& modelFileName = "" );
+	bool openModel( const std::string& modelFileName = "" );
 	bool saveModel();
 	void saveAsModel();
 	void closeModel();
 
 	bool isReadOnly() const;
 
-	void loadPAT( stringstream& stream ) const;
-	void loadRTP( stringstream& stream ) const;
-	void loadRSS( stringstream& stream ) const;
-	void loadOPR( stringstream& stream ) const;
-	void loadFRM( stringstream& stream ) const;
-	void loadFUN( stringstream& stream ) const;
-	void loadDPT( stringstream& stream ) const;
-	void loadSMR( stringstream& stream ) const;
-	void loadPMD( stringstream& stream ) const;
-	void loadPMV( stringstream& stream ) const;
-	void loadTRC( stringstream& stream ) const;
+	void loadPAT( std::stringstream& stream ) const;
+	void loadRTP( std::stringstream& stream ) const;
+	void loadRSS( std::stringstream& stream ) const;
+	void loadOPR( std::stringstream& stream ) const;
+	void loadFRM( std::stringstream& stream ) const;
+	void loadFUN( std::stringstream& stream ) const;
+	void loadDPT( std::stringstream& stream ) const;
+	void loadSMR( std::stringstream& stream ) const;
+	void loadPMD( std::stringstream& stream ) const;
+	void loadPMV( std::stringstream& stream ) const;
+	void loadTRC( std::stringstream& stream ) const;
 
-	void savePAT( stringstream& stream ) const;
-	void saveRTP( stringstream& stream ) const;
-	void saveRSS( stringstream& stream ) const;
-	void saveOPR( stringstream& stream ) const;
-	void saveFRM( stringstream& stream ) const;
-	void saveFUN( stringstream& stream ) const;
-	void saveDPT( stringstream& stream ) const;
-	void saveSMR( stringstream& stream ) const;
-	void savePMD( stringstream& stream ) const;
-	void savePMV( stringstream& stream ) const;
-	void saveTRC( stringstream& stream ) const;
+	void savePAT( std::stringstream& stream ) const;
+	void saveRTP( std::stringstream& stream ) const;
+	void saveRSS( std::stringstream& stream ) const;
+	void saveOPR( std::stringstream& stream ) const;
+	void saveFRM( std::stringstream& stream ) const;
+	void saveFUN( std::stringstream& stream ) const;
+	void saveDPT( std::stringstream& stream ) const;
+	void saveSMR( std::stringstream& stream ) const;
+	void savePMD( std::stringstream& stream ) const;
+	void savePMV( std::stringstream& stream ) const;
+	void saveTRC( std::stringstream& stream ) const;
 };
 
 }; // namespace rdoRepository

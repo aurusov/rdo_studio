@@ -19,8 +19,8 @@ public:
 	bool operator ==( const RDOEditorEditTheme& theme ) const;
 	bool operator !=( const RDOEditorEditTheme& theme ) const;
 
-	virtual void load( string regPath );
-	virtual void save( string regPath ) const;
+	virtual void load( std::string regPath );
+	virtual void save( std::string regPath ) const;
 
 	COLORREF identifierColor;
 	COLORREF keywordColor;
@@ -46,7 +46,7 @@ public:
 	virtual bool styleUsing( const int styleType ) const;
 	virtual bool styleBold( const int styleType = STYLE_DEFAULT ) const;
 	virtual bool styleItalic( const int styleType = STYLE_DEFAULT ) const;
-	virtual string styleFGColorToHEX( const int styleType = STYLE_DEFAULT ) const;
+	virtual std::string styleFGColorToHEX( const int styleType = STYLE_DEFAULT ) const;
 
 	static RDOEditorEditTheme getDefaultTheme();
 	static RDOEditorEditTheme getCppTheme();
@@ -70,8 +70,8 @@ public:
 	bool operator ==( const RDOEditorEditAutoComplete& autoComplete ) const;
 	bool operator !=( const RDOEditorEditAutoComplete& autoComplete ) const;
 
-	virtual void load( string regPath );
-	virtual void save( string regPath ) const;
+	virtual void load( std::string regPath );
+	virtual void save( std::string regPath ) const;
 
 	bool useAutoComplete;
 	bool showFullList;
@@ -94,7 +94,7 @@ public:
 	bool operator ==( const RDOEditorEditStyle& style ) const;
 	bool operator !=( const RDOEditorEditStyle& style ) const;
 
-	virtual void init( const string& _regPath = "" );
+	virtual void init( const std::string& _regPath = "" );
 	virtual void load();
 	virtual void save() const;
 

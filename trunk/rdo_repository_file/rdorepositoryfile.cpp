@@ -8,6 +8,7 @@
 #include <fstream>
 #include <afxdlgs.h>
 
+using namespace std;
 using namespace rdoRepository;
 
 // ----------------------------------------------------------------------------

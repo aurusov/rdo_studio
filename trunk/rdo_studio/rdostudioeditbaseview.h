@@ -5,8 +5,6 @@
 #pragma once
 #endif
 
-using namespace std;
-
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioEditBaseView
 // ----------------------------------------------------------------------------
@@ -36,10 +34,10 @@ public:
 
 	CMenu popupMenu;
 
-	string buf1;
-	string buf2;
-	string buf3;
-	string buf4;
+	std::string buf1;
+	std::string buf2;
+	std::string buf3;
+	std::string buf4;
 	bool resetBuf1;
 	bool resetBuf2;
 	bool resetBuf3;
