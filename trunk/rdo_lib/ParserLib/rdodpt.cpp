@@ -307,6 +307,10 @@ void RDODPTFreeActivity::end()
 	int size = params.size();
 	for(int i = 0; i < size; i++)
 		activity->addParamCalc(new RDOSetPatternParamCalc(i, params.at(i)));
+
+	size = hotKeys.size();
+	for(i = 0; i < size; i++)
+		activity->addHotKey(hotKeys.at(i));
 }
 
 }		// namespace rdoParse 

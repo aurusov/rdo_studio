@@ -141,6 +141,7 @@ class RDODPTFreeActivity: public RDODeletable
 	const RDOPATPattern *pattern;
 	int currParamNum;
 	vector<RDOValue> params;
+	vector<string *> hotKeys;
 public:
 	RDODPTFreeActivity(string *_name, string *_ruleName);
 	const string *getName() const { return name; }
@@ -149,6 +150,7 @@ public:
 	void addParam(string *_param);
 	void addParam();
 	void end();
+	void addHotKey(string *hotKey) { hotKeys.push_back(hotKey); }
 };
 
 }		// namespace rdoParse 

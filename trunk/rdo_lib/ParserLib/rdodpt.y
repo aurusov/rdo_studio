@@ -225,11 +225,15 @@ dpt_activ_free:	Activities
 																									
 dpt_activ_free_descr:	dpt_activ_free IDENTIF_COLON IDENTIF					{ $$ = (int)(new RDODPTFreeActivity((string *)$2, (string *)$3)); };
 																									                                                                    
-dpt_activ_free_descr_param:	dpt_activ_free_descr									                                                                    
-								|		dpt_activ_free_descr_param INT_CONST			{ ((RDODPTFreeActivity *)$$)->addParam((int)$2); }                  
+dpt_activ_free_descr_keyb:	dpt_activ_free_descr
+			|	dpt_activ_free_descr_keyb QUOTED_IDENTIF			{ ((RDODPTFreeActivity *)$1)->addHotKey((string *)$2); }
+			|	dpt_activ_free_descr_keyb '+' QUOTED_IDENTIF	{ ((RDODPTFreeActivity *)$1)->addHotKey((string *)$3); };
+
+dpt_activ_free_descr_param:	dpt_activ_free_descr_param INT_CONST			{ ((RDODPTFreeActivity *)$$)->addParam((int)$2); }                  
 								|		dpt_activ_free_descr_param REAL_CONST			{ ((RDODPTFreeActivity *)$$)->addParam((double *)$2); }             
 								|		dpt_activ_free_descr_param IDENTIF				{ ((RDODPTFreeActivity *)$$)->addParam((string *)$2); }             
-								|		dpt_activ_free_descr_param '*'					{ ((RDODPTFreeActivity *)$$)->addParam(); };                        
+								|		dpt_activ_free_descr_param '*'					{ ((RDODPTFreeActivity *)$$)->addParam(); }
+								|		dpt_activ_free_descr_keyb;
 																									                                                                    
 dpt_activ_free_end:	dpt_activ_free End												{ ((RDODPTFreeActivity *)$$)->end();};                                      
 

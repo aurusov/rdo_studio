@@ -33,12 +33,12 @@ void RDOPATPattern::testGoodForSearchActivity() const
 
 void RDOPATPattern::testGoodForSomeActivity() const
 {
-	currParser->error("Only RULEs amd OPERATIONs can be used in some activity");
+	currParser->error("Only RULEs and OPERATIONs can be used in some activity");
 }
 
 void RDOPATPattern::testGoodForFreeActivity() const
 {
-	currParser->error("Only IEs amd KEYBOARD OPERATIONs can be used in free activity");
+	currParser->error("Only IEs and KEYBOARD OPERATIONs can be used in free activity");
 }
 
 string RDOPATPattern::getPatternId() const
@@ -504,9 +504,13 @@ void RDOPATPatternOperation::addRelResConvertBegin(bool trace, RDOPATParamsSet *
 	for(int i = 0; i < size; i++)
 	{
 		int parNumb = parSet->paramNumbs.at(i);
-		RDOCalc *rightValue = parSet->paramArithms.at(i)->createCalc(currRelRes->getType()->getParams().at(parNumb)->getType());
-		RDOCalc *calc = new RDOSetRelParamCalc(currRelRes->numberOfResource, parNumb, rightValue);
-		patRuntime->addBeginCalc(calc);
+		RDOFUNArithm *currArithm = parSet->paramArithms.at(i);
+		if(currArithm)	// if NULL - "NoChange" 
+		{
+			RDOCalc *rightValue = currArithm->createCalc(currRelRes->getType()->getParams().at(parNumb)->getType());
+			RDOCalc *calc = new RDOSetRelParamCalc(currRelRes->numberOfResource, parNumb, rightValue);
+			patRuntime->addBeginCalc(calc);
+		}
 	}
 }
 
@@ -532,9 +536,13 @@ void RDOPATPatternOperation::addRelResConvertEnd(bool trace, RDOPATParamsSet *pa
 	for(int i = 0; i < size; i++)
 	{
 		int parNumb = parSet->paramNumbs.at(i);
-		RDOCalc *rightValue = parSet->paramArithms.at(i)->createCalc(currRelRes->getType()->getParams().at(parNumb)->getType());
-		RDOCalc *calc = new RDOSetRelParamCalc(currRelRes->numberOfResource, parNumb, rightValue);
-		patRuntime->addEndCalc(calc);
+		RDOFUNArithm *currArithm = parSet->paramArithms.at(i);
+		if(currArithm)	// if NULL - "NoChange" 
+		{
+			RDOCalc *rightValue = currArithm->createCalc(currRelRes->getType()->getParams().at(parNumb)->getType());
+			RDOCalc *calc = new RDOSetRelParamCalc(currRelRes->numberOfResource, parNumb, rightValue);
+			patRuntime->addEndCalc(calc);
+		}
 	}
 }
 
@@ -561,9 +569,13 @@ void RDOPATPatternOperation::addRelResConvertBeginEnd(bool trace, RDOPATParamsSe
 	for(int i = 0; i < size; i++)
 	{
 		int parNumb = parSet->paramNumbs.at(i);
-		RDOCalc *rightValue = parSet->paramArithms.at(i)->createCalc(currRelRes->getType()->getParams().at(parNumb)->getType());
-		RDOCalc *calc = new RDOSetRelParamCalc(currRelRes->numberOfResource, parNumb, rightValue);
-		patRuntime->addBeginCalc(calc);
+		RDOFUNArithm *currArithm = parSet->paramArithms.at(i);
+		if(currArithm)	// if NULL - "NoChange" 
+		{
+			RDOCalc *rightValue = currArithm->createCalc(currRelRes->getType()->getParams().at(parNumb)->getType());
+			RDOCalc *calc = new RDOSetRelParamCalc(currRelRes->numberOfResource, parNumb, rightValue);
+			patRuntime->addBeginCalc(calc);
+		}
 	}
 
 	if(currRelRes->end == CS_Create)
@@ -579,9 +591,13 @@ void RDOPATPatternOperation::addRelResConvertBeginEnd(bool trace, RDOPATParamsSe
 	for(i = 0; i < size; i++)
 	{
 		int parNumb = parSet2->paramNumbs.at(i);
-		RDOCalc *rightValue = parSet2->paramArithms.at(i)->createCalc(currRelRes->getType()->getParams().at(parNumb)->getType());
-		RDOCalc *calc = new RDOSetRelParamCalc(currRelRes->numberOfResource, parNumb, rightValue);
-		patRuntime->addEndCalc(calc);
+		RDOFUNArithm *currArithm = parSet2->paramArithms.at(i);
+		if(currArithm)	// if NULL - "NoChange" 
+		{
+			RDOCalc *rightValue = currArithm->createCalc(currRelRes->getType()->getParams().at(parNumb)->getType());
+			RDOCalc *calc = new RDOSetRelParamCalc(currRelRes->numberOfResource, parNumb, rightValue);
+			patRuntime->addEndCalc(calc);
+		}
 	}
 }
 
@@ -604,9 +620,13 @@ void RDOPATPatternRule::addRelResConvertRule(bool trace, RDOPATParamsSet *parSet
 	for(int i = 0; i < size; i++)
 	{
 		int parNumb = parSet->paramNumbs.at(i);
-		RDOCalc *rightValue = parSet->paramArithms.at(i)->createCalc(currRelRes->getType()->getParams().at(parNumb)->getType());
-		RDOCalc *calc = new RDOSetRelParamCalc(currRelRes->numberOfResource, parNumb, rightValue);
-		patRuntime->addBeginCalc(calc);
+		RDOFUNArithm *currArithm = parSet->paramArithms.at(i);
+		if(currArithm)	// if NULL - "NoChange" 
+		{
+			RDOCalc *rightValue = currArithm->createCalc(currRelRes->getType()->getParams().at(parNumb)->getType());
+			RDOCalc *calc = new RDOSetRelParamCalc(currRelRes->numberOfResource, parNumb, rightValue);
+			patRuntime->addBeginCalc(calc);
+		}
 	}
 }
 
@@ -629,9 +649,13 @@ void RDOPATPatternEvent::addRelResConvertEvent(bool trace, RDOPATParamsSet *parS
 	for(int i = 0; i < size; i++)
 	{
 		int parNumb = parSet->paramNumbs.at(i);
-		RDOCalc *rightValue = parSet->paramArithms.at(i)->createCalc(currRelRes->getType()->getParams().at(parNumb)->getType());
-		RDOCalc *calc = new RDOSetRelParamCalc(currRelRes->numberOfResource, parNumb, rightValue);
-		patRuntime->addBeginCalc(calc);
+		RDOFUNArithm *currArithm = parSet->paramArithms.at(i);
+		if(currArithm)	// if NULL - "NoChange" 
+		{
+			RDOCalc *rightValue = currArithm->createCalc(currRelRes->getType()->getParams().at(parNumb)->getType());
+			RDOCalc *calc = new RDOSetRelParamCalc(currRelRes->numberOfResource, parNumb, rightValue);
+			patRuntime->addBeginCalc(calc);
+		}
 	}
 }
 

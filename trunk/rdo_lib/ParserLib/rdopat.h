@@ -184,6 +184,7 @@ class RDOPATPatternKeyboard: public RDOPATPatternOperation
 public:
 	RDOPATPatternKeyboard(string *_name, bool _trace, int patternCounter);
 	char getModelStructureLetter() const { return 'K'; };
+	void testGoodForFreeActivity() const {}
 };
 
 class RDOPATChoice: public RDODeletable
