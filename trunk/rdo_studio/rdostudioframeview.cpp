@@ -20,6 +20,7 @@ BEGIN_MESSAGE_MAP(RDOStudioFrameView, CView)
 	//{{AFX_MSG_MAP(RDOStudioFrameView)
 	ON_WM_CREATE()
 	ON_WM_DESTROY()
+	ON_WM_SETFOCUS()
 	//}}AFX_MSG_MAP
 	ON_COMMAND(ID_FILE_PRINT, CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, CView::OnFilePrint)
@@ -119,4 +120,10 @@ void RDOStudioFrameView::OnDestroy()
 	model->frameManager.getFrameClose( model->frameManager.findFrameIndex( this ) )->SetEvent();
 	model->frameManager.disconnectFrameDoc( GetDocument() );
 	CView::OnDestroy();
+}
+
+void RDOStudioFrameView::OnSetFocus(CWnd* pOldWnd)
+{
+	CView::OnSetFocus(pOldWnd);
+	model->frameManager.setLastShowedFrame( model->frameManager.findFrameIndex( this ) );
 }

@@ -69,13 +69,13 @@ void RDOStudioFrameTreeCtrl::OnLButtonDblClk(UINT nFlags, CPoint point)
 		HTREEITEM hitem = HitTest( point, &uFlags );
 
 		if ( hitem && ( TVHT_ONITEM & uFlags ) && hitem != GetRootItem() ) {
-			int frame_index = model->frameManager.findFrameIndex( hitem );
-			if ( frame_index != -1 ) {
-				RDOStudioFrameDoc* doc = model->frameManager.getFrameDoc( frame_index );
+			int index = model->frameManager.findFrameIndex( hitem );
+			if ( index != -1 ) {
+				RDOStudioFrameDoc* doc = model->frameManager.getFrameDoc( index );
 				if ( !doc ) {
-					doc = model->frameManager.connectFrameDoc( hitem );
+					doc = model->frameManager.connectFrameDoc( index );
 					if ( doc ) {
-						doc->SetTitle( format( IDS_FRAMENAME, model->frameManager.getFrameName( frame_index ).c_str() ).c_str()  );
+						doc->SetTitle( format( IDS_FRAMENAME, model->frameManager.getFrameName( index ).c_str() ).c_str()  );
 					}
 				} else {
 					studioApp.mainFrame->MDIActivate( doc->getView()->GetParentFrame() );

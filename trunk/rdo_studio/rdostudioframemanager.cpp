@@ -24,7 +24,8 @@ static char THIS_FILE[] = __FILE__;
 vector< RDOStudioFrameManager::Frame* > RDOStudioFrameManager::frames;
 
 RDOStudioFrameManager::RDOStudioFrameManager():
-	frameDocTemplate( NULL )
+	frameDocTemplate( NULL ),
+	lastShowedFrame( -1 )
 {
 	frameDocTemplate = new CMultiDocTemplate( IDR_FRAMETYPE, RUNTIME_CLASS(RDOStudioFrameDoc), RUNTIME_CLASS(RDOStudioChildFrame), RUNTIME_CLASS(RDOStudioFrameView) );
 	AfxGetApp()->AddDocTemplate( frameDocTemplate );
@@ -90,12 +91,7 @@ int RDOStudioFrameManager::findFrameIndex( const RDOStudioFrameView* view ) cons
 	return -1;
 }
 
-RDOStudioFrameDoc* RDOStudioFrameManager::connectFrameDoc( const HTREEITEM hitem ) const
-{
-	return connectFrameDoc( findFrameIndex( hitem ) );
-}
-
-RDOStudioFrameDoc* RDOStudioFrameManager::connectFrameDoc( const int index ) const
+RDOStudioFrameDoc* RDOStudioFrameManager::connectFrameDoc( const int index )
 {
 	RDOStudioFrameDoc* doc = NULL;
 	if ( index != -1 ) {
@@ -105,6 +101,7 @@ RDOStudioFrameDoc* RDOStudioFrameManager::connectFrameDoc( const int index ) con
 		doc = static_cast<RDOStudioFrameDoc*>(frameDocTemplate->OpenDocumentFile( NULL ));
 		frames[index]->doc  = doc;
 		frames[index]->view = doc->getView();
+		lastShowedFrame     = index;
 
 		lock.Unlock();
 	}
@@ -126,8 +123,9 @@ void RDOStudioFrameManager::disconnectFrameDoc( const RDOStudioFrameDoc* doc ) c
 	}
 }
 
-void RDOStudioFrameManager::closeAll() const
+void RDOStudioFrameManager::closeAll()
 {
+	int backup = lastShowedFrame;
 	vector< Frame* >::iterator it = frames.begin();
 	while ( it != frames.end() ) {
 		if ( isValidFrameDoc( (*it)->doc ) ) {
@@ -135,9 +133,10 @@ void RDOStudioFrameManager::closeAll() const
 		}
 		it++;
 	};
+	lastShowedFrame = backup;
 }
 
-void RDOStudioFrameManager::clear() const
+void RDOStudioFrameManager::clear()
 {
 	studioApp.mainFrame->workspace.frames->deleteChildren( studioApp.mainFrame->workspace.frames->GetRootItem() );
 	vector< Frame* >::iterator it = frames.begin();
@@ -148,11 +147,31 @@ void RDOStudioFrameManager::clear() const
 		delete *it++;
 	};
 	frames.clear();
+	lastShowedFrame = -1;
+}
+
+RDOStudioFrameDoc* RDOStudioFrameManager::getFirstExistDoc() const
+{
+	vector< Frame* >::const_iterator it = frames.begin();
+	while ( it != frames.end() ) {
+		if ( isValidFrameDoc( (*it)->doc ) ) {
+			return (*it)->doc;
+		}
+		it++;
+	};
+	return NULL;
 }
 
 void RDOStudioFrameManager::expand() const
 {
 	studioApp.mainFrame->workspace.frames->expand();
+}
+
+void RDOStudioFrameManager::setLastShowedFrame( const int value )
+{
+	if ( lastShowedFrame >= 0 && lastShowedFrame < count() ) {
+		lastShowedFrame = value;
+	}
 }
 
 bool RDOStudioFrameManager::isValidFrameDoc( const RDOStudioFrameDoc* const frame ) const

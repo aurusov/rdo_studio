@@ -464,6 +464,7 @@ void RDOStudioModel::beforeModelStart()
 	int initFrameNumber = kernel.getSimulator()->getInitialFrameNumber() - 1;
 	modelTime = 0;
 	showMode  = kernel.getSimulator()->getInitialShowMode();
+	frameManager.setLastShowedFrame( initFrameNumber );
 	if ( showMode == SM_Animation && initFrameNumber >= 0 && initFrameNumber < frameManager.count() ) {
 		RDOStudioFrameDoc* doc = model->frameManager.connectFrameDoc( initFrameNumber );
 		if ( doc ) {
@@ -687,6 +688,16 @@ void RDOStudioModel::updateStyleOfAllModel() const
 
 void RDOStudioModel::setShowMode( const ShowMode value )
 {
+	if ( showMode == SM_NoShow && value == SM_Animation ) {
+		RDOStudioFrameDoc* doc = frameManager.getFirstExistDoc();
+		if ( doc ) {
+		} else {
+			doc = frameManager.connectFrameDoc( frameManager.getLastShowedFrame() );
+			if ( doc ) {
+				doc->SetTitle( format( IDS_FRAMENAME, frameManager.getFrameName( frameManager.getLastShowedFrame() ).c_str() ).c_str()  );
+			}
+		}
+	}
 	showMode = value;
 	if ( showMode == SM_NoShow ) {
 		frameManager.closeAll();

@@ -31,6 +31,8 @@ private:
 	};
 	static std::vector< Frame* > frames;
 
+	int lastShowedFrame;
+
 public:
 	RDOStudioFrameManager();
 	virtual ~RDOStudioFrameManager();
@@ -39,8 +41,7 @@ public:
 	int findFrameIndex( const HTREEITEM hitem ) const;
 	int findFrameIndex( const RDOStudioFrameDoc* doc ) const;
 	int findFrameIndex( const RDOStudioFrameView* view ) const;
-	RDOStudioFrameDoc* connectFrameDoc( const HTREEITEM hitem ) const;
-	RDOStudioFrameDoc* connectFrameDoc( const int index ) const;
+	RDOStudioFrameDoc* connectFrameDoc( const int index );
 	void disconnectFrameDoc( const RDOStudioFrameDoc* doc ) const;
 	std::string         getFrameName( const int index ) const    { return frames[index]->name;   };
 	RDOStudioFrameDoc*  getFrameDoc( const int index ) const     { return frames[index]->doc;    };
@@ -49,11 +50,15 @@ public:
 	CMutex*             getFrameDraw( const int index ) const    { return &frames[index]->draw;  };
 	CEvent*             getFrameTimer( const int index ) const   { return &frames[index]->timer; };
 	CEvent*             getFrameClose( const int index ) const   { return &frames[index]->close; };
-	int count() const { return frames.size(); };
-	void closeAll() const;
-	void clear() const;
+	int count() const                                            { return frames.size();         };
+	RDOStudioFrameDoc* getFirstExistDoc() const;
+	void closeAll();
+	void clear();
 
 	void expand() const;
+
+	int getLastShowedFrame() const              { return lastShowedFrame; };
+	void setLastShowedFrame( const int value );
 
 	bool isValidFrameDoc( const RDOStudioFrameDoc* const frame ) const;
 };
