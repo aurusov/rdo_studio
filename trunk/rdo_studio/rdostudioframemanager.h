@@ -13,14 +13,12 @@ class RDOStudioFrameView;
 
 class RDOStudioFrameManager
 {
-friend class RDOStudioModel;
-
 private:
 	CMultiDocTemplate* frameDocTemplate;
 
 	class Frame {
 	friend class RDOStudioFrameManager;
-	public:
+	private:
 		Frame(): hitem( 0 ), doc( NULL ), view( NULL ), timer( false, true ) {};
 		HTREEITEM           hitem;
 		std::string         name;
@@ -52,7 +50,8 @@ public:
 	CEvent*             getFrameTimer( const int index ) const   { return &frames[index]->timer; };
 	CEvent*             getFrameClose( const int index ) const   { return &frames[index]->close; };
 	int count() const { return frames.size(); };
-	void clear();
+	void closeAll() const;
+	void clear() const;
 
 	void expand() const;
 

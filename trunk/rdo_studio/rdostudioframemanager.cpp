@@ -126,7 +126,18 @@ void RDOStudioFrameManager::disconnectFrameDoc( const RDOStudioFrameDoc* doc ) c
 	}
 }
 
-void RDOStudioFrameManager::clear()
+void RDOStudioFrameManager::closeAll() const
+{
+	vector< Frame* >::iterator it = frames.begin();
+	while ( it != frames.end() ) {
+		if ( isValidFrameDoc( (*it)->doc ) ) {
+			(*it)->doc->OnCloseDocument();
+		}
+		it++;
+	};
+}
+
+void RDOStudioFrameManager::clear() const
 {
 	studioApp.mainFrame->workspace.frames->deleteChildren( studioApp.mainFrame->workspace.frames->GetRootItem() );
 	vector< Frame* >::iterator it = frames.begin();

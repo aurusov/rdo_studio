@@ -480,7 +480,7 @@ void RDOStudioModel::showFrame()
 	vector<RDOFrame *>::const_iterator it = frames.begin();
 	int index = 0;
 	while ( it != frames.end() ) {
-		if ( *it && index < frameManager.frames.size() ) {
+		if ( *it && index < frameManager.count() ) {
 
 			CSingleLock lock_used( frameManager.getFrameUsed( index ) );
 			lock_used.Lock();
@@ -688,5 +688,8 @@ void RDOStudioModel::updateStyleOfAllModel() const
 void RDOStudioModel::setShowMode( const ShowMode value )
 {
 	showMode = value;
+	if ( showMode == SM_NoShow ) {
+		frameManager.closeAll();
+	}
 	kernel.getSimulator()->setShowMode( showMode );
 }
