@@ -168,7 +168,7 @@ void RDOLogEdit::gotoNext()
 		}
 	}
 	if ( it != lines.end() && (*it)->lineNumber != -1 ) {
-		setSelectLine( current_line, *it );
+		setSelectLine( current_line, *it, true );
 	}
 }
 
@@ -198,7 +198,7 @@ void RDOLogEdit::gotoPrev()
 		}
 	}
 	if ( it != lines.end() && (*it)->lineNumber != -1 ) {
-		setSelectLine( current_line, *it );
+		setSelectLine( current_line, *it, true );
 	}
 }
 
@@ -212,13 +212,15 @@ void RDOLogEdit::OnGotoPrev()
 	gotoPrev();
 }
 
-void RDOLogEdit::setSelectLine( const int line, const RDOLogEditLineInfo* lineInfo )
+void RDOLogEdit::setSelectLine( const int line, const RDOLogEditLineInfo* lineInfo, const bool useScroll )
 {
 	if ( lineInfo->lineNumber != -1 ) {
 		if ( sendEditor( SCI_MARKERNEXT, 0, 1 << sci_MARKER_LINE ) != line ) {
 			clearSelectLine();
 			sendEditor( SCI_MARKERADD, line, sci_MARKER_LINE );
-			scrollToLine( line );
+			if ( useScroll ) {
+				scrollToLine( line );
+			}
 		}
 		rdoEditor::RDOEditorTabCtrl* tab = model->getTab();
 		if ( tab ) {

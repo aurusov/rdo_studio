@@ -44,7 +44,7 @@ protected:
 	void clearLines();
 
 	void setSelectLine();
-	void setSelectLine( const int line, const RDOLogEditLineInfo* lineInfo );
+	void setSelectLine( const int line, const RDOLogEditLineInfo* lineInfo, const bool useScroll = false );
 	void clearSelectLine();
 	bool hasSelectLine() const;
 
