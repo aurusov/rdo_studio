@@ -194,7 +194,7 @@ void CChatNetwork::clear()
 		delete *it++;
 	}
 	if ( chatApp.mainFrame ) {
-		chatApp.mainFrame->networkList.list.DeleteAllItems();
+		chatApp.mainFrame->dock.network.DeleteAllItems();
 	}
 	list.clear();
 }
@@ -219,9 +219,9 @@ BOOL CChatNetwork::OnHitResource( NETRESOURCE& res )
 			CChatNetDomain* domain = new CChatNetDomain;
 			domain->name = GetRemoteName( res );
 			list.push_back( domain );
-			domain->item = chatApp.mainFrame->networkList.list.InsertItem( domain->getNameForCtrl().c_str(), 0, 0 );
-			chatApp.mainFrame->networkList.list.SetItemData( domain->item, reinterpret_cast<DWORD>(domain) );
-			chatApp.mainFrame->networkList.list.SortChildren( NULL );
+			domain->item = chatApp.mainFrame->dock.network.InsertItem( domain->getNameForCtrl().c_str(), 0, 0 );
+			chatApp.mainFrame->dock.network.SetItemData( domain->item, reinterpret_cast<DWORD>(domain) );
+			chatApp.mainFrame->dock.network.SortChildren( NULL );
 		}
 		if ( IsServer( res ) ) {
 			if ( !list.empty() ) {
@@ -242,10 +242,10 @@ BOOL CChatNetwork::OnHitResource( NETRESOURCE& res )
 //				}
 
 				domain->list.push_back( server );
-				server->item = chatApp.mainFrame->networkList.list.InsertItem( server->getNameForCtrl().c_str(), 1, 1, domain->item );
-				chatApp.mainFrame->networkList.list.SetItemData( server->item, reinterpret_cast<DWORD>(server) );
-				chatApp.mainFrame->networkList.list.SortChildren( domain->item );
-				chatApp.mainFrame->networkList.list.Expand( domain->item, TVE_EXPAND );
+				server->item = chatApp.mainFrame->dock.network.InsertItem( server->getNameForCtrl().c_str(), 1, 1, domain->item );
+				chatApp.mainFrame->dock.network.SetItemData( server->item, reinterpret_cast<DWORD>(server) );
+				chatApp.mainFrame->dock.network.SortChildren( domain->item );
+				chatApp.mainFrame->dock.network.Expand( domain->item, TVE_EXPAND );
 				Enumerate( &res, CNetwork::GLOBALNET | CNetwork::TYPE_DISK );
 			}
 		}
@@ -258,10 +258,10 @@ BOOL CChatNetwork::OnHitResource( NETRESOURCE& res )
 					shared->name    = GetRemoteName( res );
 					shared->comment = GetComment( res );
 					server->list.push_back( shared );
-					shared->item = chatApp.mainFrame->networkList.list.InsertItem( shared->getNameForCtrl().c_str(), 2, 2, server->item );
-					chatApp.mainFrame->networkList.list.SetItemData( shared->item, reinterpret_cast<DWORD>(shared) );
-					chatApp.mainFrame->networkList.list.SortChildren( server->item );
-					chatApp.mainFrame->networkList.list.Expand( server->item, TVE_EXPAND );
+					shared->item = chatApp.mainFrame->dock.network.InsertItem( shared->getNameForCtrl().c_str(), 2, 2, server->item );
+					chatApp.mainFrame->dock.network.SetItemData( shared->item, reinterpret_cast<DWORD>(shared) );
+					chatApp.mainFrame->dock.network.SortChildren( server->item );
+					chatApp.mainFrame->dock.network.Expand( server->item, TVE_EXPAND );
 				}
 			}
 		}

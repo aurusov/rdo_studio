@@ -3,8 +3,7 @@
 #pragma once
 
 #include "chatchildview.h"
-#include "chatuserlistdock.h"
-#include "chatnetworkdock.h"
+#include "chatdock.h"
 #include "chatpopupmessage.h"
 #include "chatstatusmode.h"
 
@@ -65,9 +64,8 @@ public:
 	CChatMainFrame();
 	virtual ~CChatMainFrame();
 
-	CChatChildView     childView;
-	CChatUserListDock  userList;
-	CChatNetworkDock   networkList;
+	CChatChildView  childView;
+	CChatDock       dock;
 
 	CChatPopupMessage popupMessage;
 
@@ -125,13 +123,11 @@ protected:
 	afx_msg void OnTrayOpenHide();
 	afx_msg void OnTrayCloseApp();
 	afx_msg void OnUpdateTrayOpenHide( CCmdUI *pCmdUI );
-	afx_msg void OnViewUserList();
-	afx_msg void OnUpdateViewUserList(CCmdUI* pCmdUI);
-	afx_msg void OnViewNetwork();
-	afx_msg void OnUpdateViewNetwork(CCmdUI* pCmdUI);
 	afx_msg void OnFileRefreshUserList();
 	afx_msg void OnFileRefreshNetwork();
 	afx_msg void OnUpdateFileRefreshNetwork(CCmdUI* pCmdUI);
+	afx_msg void OnViewDockWindow();
+	afx_msg void OnUpdateViewDockWindow(CCmdUI* pCmdUI);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

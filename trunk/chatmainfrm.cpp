@@ -27,14 +27,12 @@ BEGIN_MESSAGE_MAP( CChatMainFrame, CFrameWnd )
 	ON_COMMAND( ID_TRAYMENU_OPEN, OnTrayOpenHide )
 	ON_COMMAND( ID_APP_EXIT     , OnTrayCloseApp )
 	ON_UPDATE_COMMAND_UI( ID_TRAYMENU_OPEN, OnUpdateTrayOpenHide )
-	ON_COMMAND(ID_VIEW_USERLIST, OnViewUserList)
-	ON_UPDATE_COMMAND_UI(ID_VIEW_USERLIST, OnUpdateViewUserList)
-	ON_COMMAND(ID_VIEW_NETWORK, OnViewNetwork)
-	ON_UPDATE_COMMAND_UI(ID_VIEW_NETWORK, OnUpdateViewNetwork)
 	ON_COMMAND(ID_FILE_REFRESHUSERLIST, OnFileRefreshUserList)
 	ON_COMMAND(ID_FILE_REFRESHNETWORK, OnFileRefreshNetwork)
 	ON_UPDATE_COMMAND_UI(ID_FILE_REFRESHNETWORK, OnUpdateFileRefreshNetwork)
 	ON_COMMAND( ID_TRAYMENU_EXIT, OnTrayCloseApp )
+	ON_COMMAND(ID_VIEW_DOCKWINDOW, OnViewDockWindow)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_DOCKWINDOW, OnUpdateViewDockWindow)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -90,11 +88,8 @@ int CChatMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	childView.Create( NULL, NULL, AFX_WS_DEFAULT_VIEW, CRect(0, 0, 0, 0), this, AFX_IDW_PANE_FIRST, NULL );
 
-	userList.Create( format( IDS_USERLIST ).c_str(), this, 0 );
-	userList.SetBarStyle( userList.GetBarStyle() | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
-
-	networkList.Create( format( IDS_NETLIST ).c_str(), this, 0 );
-	networkList.SetBarStyle( networkList.GetBarStyle() | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
+	dock.Create( format( IDS_DOCKWINDOW ).c_str(), this, 0 );
+	dock.SetBarStyle( dock.GetBarStyle() | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
 
 	statusModeToolBar.CreateEx( this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
 	statusModeToolBar.LoadToolBar( IDR_STATUSMODE_TOOLBAR );
@@ -108,17 +103,13 @@ int CChatMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 //	statusBar.SetPaneInfo( 2, ID_INSERTOVERWRITESTATUSBAR, SBPS_NORMAL , 70 );
 //	statusBar.SetPaneInfo( 3, ID_INFOSTATUSBAR           , SBPS_STRETCH, 70 );
 
-	userList.EnableDocking( CBRS_ALIGN_ANY );
-	networkList.EnableDocking( CBRS_ALIGN_ANY );
+	dock.EnableDocking( CBRS_ALIGN_ANY );
 	statusModeToolBar.EnableDocking( CBRS_ALIGN_ANY );
 
 	EnableDocking( CBRS_ALIGN_ANY );
 
 	DockControlBar( &statusModeToolBar );
-	DockControlBar( &userList, AFX_IDW_DOCKBAR_LEFT );
-	DockControlBar( &networkList, AFX_IDW_DOCKBAR_RIGHT );
-//	dockControlBarBesideOf( networkList, userList );
-	ShowControlBar( &networkList, false, false );
+	DockControlBar( &dock, AFX_IDW_DOCKBAR_LEFT );
 
 	closeButtonAction    = (CChatCloseButtonAction)chatApp.GetProfileInt( "General", "closeButtonAction", CCBA_Tray );
 	minimizeButtonAction = (CChatMinimizeButtonAction)chatApp.GetProfileInt( "General", "minimizeButtonAction", CCMA_Minimize );
@@ -164,8 +155,7 @@ void CChatMainFrame::dockControlBarBesideOf( CControlBar& bar, CControlBar& base
 BOOL CChatMainFrame::OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo)
 {
 	if ( childView.OnCmdMsg( nID, nCode, pExtra, pHandlerInfo ) ) return TRUE;
-	if ( userList.OnCmdMsg( nID, nCode, pExtra, pHandlerInfo ) ) return TRUE;
-	if ( networkList.OnCmdMsg( nID, nCode, pExtra, pHandlerInfo ) ) return TRUE;
+	if ( dock.OnCmdMsg( nID, nCode, pExtra, pHandlerInfo ) ) return TRUE;
 	return CFrameWnd::OnCmdMsg( nID, nCode, pExtra, pHandlerInfo );
 }
 
@@ -585,26 +575,6 @@ LRESULT CChatMainFrame::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 	return CFrameWnd::WindowProc(message, wParam, lParam);
 }
 
-void CChatMainFrame::OnViewUserList()
-{
-	ShowControlBar( &userList, !userList.IsVisible(), false );
-}
-
-void CChatMainFrame::OnUpdateViewUserList(CCmdUI* pCmdUI) 
-{
-	pCmdUI->SetCheck( userList.IsVisible() );
-}
-
-void CChatMainFrame::OnViewNetwork()
-{
-	ShowControlBar( &networkList, !networkList.IsVisible(), false );
-}
-
-void CChatMainFrame::OnUpdateViewNetwork(CCmdUI* pCmdUI)
-{
-	pCmdUI->SetCheck( networkList.IsVisible() );
-}
-
 void CChatMainFrame::OnFileRefreshUserList()
 {
 	chatApp.refreshUserList();
@@ -618,4 +588,14 @@ void CChatMainFrame::OnFileRefreshNetwork()
 void CChatMainFrame::OnUpdateFileRefreshNetwork(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable( chatApp.network.refreshFinished() );
+}
+
+void CChatMainFrame::OnViewDockWindow()
+{
+	ShowControlBar( &dock, !dock.IsVisible(), false );
+}
+
+void CChatMainFrame::OnUpdateViewDockWindow(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetCheck( dock.IsVisible() );
 }

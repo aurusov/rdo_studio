@@ -38,7 +38,7 @@ void CChatUser::setUserName( const std::string& value )
 	if ( userName != value ) {
 		userName = value;
 		if ( chatApp.mainFrame ) {
-			chatApp.mainFrame->userList.list.updateUserName( this );
+			chatApp.mainFrame->dock.users.updateUserName( this );
 		}
 	}
 }
@@ -60,7 +60,7 @@ void CChatUser::setStatusMode( const CChatStatusModeType value )
 	if ( statusMode != value ) {
 		statusMode = value;
 		if ( chatApp.mainFrame ) {
-			chatApp.mainFrame->userList.list.updateUserStatus( this );
+			chatApp.mainFrame->dock.users.updateUserStatus( this );
 		}
 	}
 }
@@ -94,7 +94,7 @@ void CChatUserList::addUser( const std::string& username, const std::string& hos
 	if ( findUserByIP( ip ) == -1 ) {
 		CChatUser* user = new CChatUser( username, hostname, ip, statusMode );
 		list.push_back( user );
-		chatApp.mainFrame->userList.list.addUser( user );
+		chatApp.mainFrame->dock.users.addUser( user );
 	}
 }
 
@@ -103,7 +103,7 @@ void CChatUserList::deleteUser( const int index )
 	if ( index != -1 && index < list.size() ) {
 		CChatUser* user = list[index];
 		if ( chatApp.mainFrame ) {
-			chatApp.mainFrame->userList.list.deleteUser( user );
+			chatApp.mainFrame->dock.users.deleteUser( user );
 		}
 		list.erase( list.begin() + index );
 		delete user;

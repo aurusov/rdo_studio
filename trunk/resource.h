@@ -86,11 +86,10 @@
 #define ID_STATUSMODE_AWAY_INFO         32796
 #define ID_STATUSMODE_NOTAVAILIBLE_INFO 32797
 #define ID_CHAT_OPTIONS                 32798
-#define ID_VIEW_USERLIST                32799
-#define ID_VIEW_NETWORK                 32800
 #define ID_FILE_REFRESHNETWORK          32801
 #define ID_NETWORK_OPEN                 32803
 #define ID_NETWORK_INFO                 32804
+#define ID_VIEW_DOCKWINDOW              32805
 #define ID_INFOSTATUSBAR                59394
 #define ID_STATUSMODE_TOOLBAR           61204
 #define ID_OPTIONS                      61205
@@ -109,10 +108,11 @@
 #define IDS_CONNECT_VIEWERLOG           61218
 #define IDS_DISCONNECT_VIEWERLOG        61219
 #define IDS_STATUSMODE_CHANGEAUTOMATICALLY 61220
-#define IDS_USERLIST                    61221
-#define IDS_NETLIST                     61222
+#define IDS_DOCKWINDOW                  61221
+#define IDS_HOSTNAME_VALUE              61222
 #define IDS_IP_VALUE                    61223
-#define IDS_HOSTNAME_VALUE              61224
+#define IDS_USERS                       61224
+#define IDS_NETWORK                     61225
 
 // Next default values for new objects
 // 
@@ -120,7 +120,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        182
-#define _APS_NEXT_COMMAND_VALUE         32805
+#define _APS_NEXT_COMMAND_VALUE         32806
 #define _APS_NEXT_CONTROL_VALUE         1053
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

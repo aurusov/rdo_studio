@@ -1,28 +1,33 @@
-#ifndef CHATUSERLISTDOCK_H
-#define CHATUSERLISTDOCK_H
+#ifndef CHATDOCK_H
+#define CHATDOCK_H
 
 #if _MSC_VER > 1000
 #pragma once
 #endif
 
 #include "chatuserlistctrl.h"
+#include "chatnetworkctrl.h"
+
+#include <rdotabctrl.h>
 
 // ----------------------------------------------------------------------------
-// ---------- CChatUserListDock
+// ---------- CChatDock
 // ----------------------------------------------------------------------------
-class CChatUserListDock: public CSizingControlBarG
+class CChatDock: public CSizingControlBarG
 {
 public:
-	CChatUserListDock();
-	virtual ~CChatUserListDock();
+	CChatDock();
+	virtual ~CChatDock();
 
-	CChatUserListCtrl list;
+	RDOTabCtrl tab;
+	CChatUserListCtrl users;
+	CChatNetworkCtrl  network;
 
 protected:
-	//{{AFX_VIRTUAL(CChatUserListDock)
+	//{{AFX_VIRTUAL(CChatDock)
 	//}}AFX_VIRTUAL
 
-	//{{AFX_MSG(CChatUserListDock)
+	//{{AFX_MSG(CChatDock)
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
@@ -30,4 +35,4 @@ protected:
 
 //{{AFX_INSERT_LOCATION}}
 
-#endif // CHATUSERLISTDOCK_H
+#endif // CHATDOCK_H
