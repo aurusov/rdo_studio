@@ -207,6 +207,21 @@ UINT RunningThreadControllingFunction( LPVOID pParam )
 		kernel.notify(RDOKernel::executeError);
 	}
 
+	try
+	{
+		simulator->runtime->rdoDestroy();
+	}
+	catch(RDOSyntaxException &) 
+	{
+		kernel.notify(RDOKernel::executeError);
+	}
+	catch(RDOInternalException &ex)		  
+	{
+		string mess = "Internal exception: " + ex.mess;
+		kernel.debug(mess.c_str());
+		kernel.notify(RDOKernel::executeError);
+	}
+
 	simulator->th = NULL;
 
 	return 0;
