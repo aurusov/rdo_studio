@@ -1,4 +1,4 @@
-#include "rdo_ctrls_pch.h"
+#include "stdafx.h"
 #include "rdologctrl.h"
 
 #ifdef _DEBUG

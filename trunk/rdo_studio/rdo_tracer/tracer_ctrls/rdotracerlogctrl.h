@@ -2,7 +2,7 @@
 #define RDOTRACERLOGCTRL_H
 #pragma once
 
-#include <rdologctrl.h>
+#include "rdologctrl.h"
 #include "rdotracerlogstyle.h"
 
 using namespace std;

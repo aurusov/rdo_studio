@@ -2,7 +2,7 @@
 #define RDOTRACERRESTYPE_H
 #pragma once
 
-#include "rdotracertreeitem.h"
+#include "./tracer_ctrls/rdotracertreeitem.h"
 
 using namespace std;
 

@@ -2,7 +2,7 @@
 #define RDOTRACERLOGSTYLE_H
 #pragma once
 
-#include <rdologstyle.h>
+#include "rdologstyle.h"
 
 // ----------------------------------------------------------------------------
 // ---------- RDOTracerLogStyle

@@ -105,14 +105,6 @@ SOURCE=.\rdolink.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\rdologctrl.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdologstyle.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\rdotabctrl.cpp
 # ADD CPP /Yu"rdo_ctrls_pch.h"
 # End Source File
@@ -139,14 +131,6 @@ SOURCE=.\rdocolorcombobox.h
 # Begin Source File
 
 SOURCE=.\rdolink.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdologctrl.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdologstyle.h
 # End Source File
 # Begin Source File
 

@@ -512,14 +512,6 @@ SOURCE=.\rdo_edit\rdoeditortabctrl.h
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 # Begin Source File
 
-SOURCE=.\rdo_tracer\rdotracerlogctrl.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_tracer\rdotracerlogstyle.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\rdo_tracer\rdotraceroperation.cpp
 # End Source File
 # Begin Source File
@@ -552,28 +544,12 @@ SOURCE=.\rdo_tracer\rdotracertrace.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\rdo_tracer\rdotracertreectrl.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_tracer\rdotracertreeitem.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\rdo_tracer\rdotracervalues.cpp
 # End Source File
 # End Group
 # Begin Group "RDO-Tracer Header Files"
 
 # PROP Default_Filter "h;hpp;hxx;hm;inl"
-# Begin Source File
-
-SOURCE=.\rdo_tracer\rdotracerlogctrl.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_tracer\rdotracerlogstyle.h
-# End Source File
 # Begin Source File
 
 SOURCE=.\rdo_tracer\rdotraceroperation.h
@@ -608,16 +584,68 @@ SOURCE=.\rdo_tracer\rdotracertrace.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\rdo_tracer\rdotracertreectrl.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_tracer\rdotracertreeitem.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\rdo_tracer\rdotracervalues.h
 # End Source File
+# End Group
+# Begin Group "Tracer Ctrls"
+
+# PROP Default_Filter ""
+# Begin Group "Tracer Ctrls Source Files"
+
+# PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
+# Begin Source File
+
+SOURCE=.\rdo_tracer\tracer_ctrls\rdologctrl.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdo_tracer\tracer_ctrls\rdologstyle.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdo_tracer\tracer_ctrls\rdotracerlogctrl.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdo_tracer\tracer_ctrls\rdotracerlogstyle.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdo_tracer\tracer_ctrls\rdotracertreectrl.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdo_tracer\tracer_ctrls\rdotracertreeitem.cpp
+# End Source File
+# End Group
+# Begin Group "Tracer Ctrls Header Files"
+
+# PROP Default_Filter "h;hpp;hxx;hm;inl"
+# Begin Source File
+
+SOURCE=.\rdo_tracer\tracer_ctrls\rdologctrl.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdo_tracer\tracer_ctrls\rdologstyle.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdo_tracer\tracer_ctrls\rdotracerlogctrl.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdo_tracer\tracer_ctrls\rdotracerlogstyle.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdo_tracer\tracer_ctrls\rdotracertreectrl.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdo_tracer\tracer_ctrls\rdotracertreeitem.h
+# End Source File
+# End Group
 # End Group
 # End Group
 # Begin Group "Edit Ctrls"
