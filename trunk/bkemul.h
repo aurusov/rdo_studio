@@ -26,6 +26,21 @@ private:
 
 	void doSpeaker() const;
 
+	class BKMemoryAccessError
+	{
+	friend class BKEmul;
+	private:
+		WORD address;
+		WORD data;
+		bool isByte;
+
+		BKMemoryAccessError( const WORD _address, const WORD _data, const bool _isByte = true );
+
+		void report() const;
+	};
+
+	void loadROM( const std::string& rom ) const;
+
 public:
 	BKEmul();
 	virtual ~BKEmul();
@@ -45,23 +60,6 @@ public:
 	void setMemoryByte( WORD address, BYTE data );
 	void setMemoryWord( WORD address, WORD data );
 };
-
-// --------------------------------------------------------------
-// ---------- BKMemoryAccessError
-// --------------------------------------------------------------
-class BKMemoryAccessError: public CException {
-DECLARE_DYNAMIC( BKMemoryAccessError )
-friend class BKEmul;
-private:
-	WORD address;
-	WORD data;
-	bool isByte;
-
-	BKMemoryAccessError( const WORD _address, const WORD _data, const bool _isByte = true );
-
-	virtual int ReportError( UINT nType = MB_OK, UINT nMessageID = 0 );
-};
-
 
 } // namespace bkemul
 

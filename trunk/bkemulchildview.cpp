@@ -377,6 +377,8 @@ void BKChildView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	CWnd::OnLButtonDown( nFlags, point );
 
+	return;
+
 	for ( int i = 040000; i < 0100000; i++ ) {
 		emul.video.setMemoryWord( i, 031463 + point.x );
 //		emul.video.setMemoryWord( i, 031463 );
@@ -388,6 +390,7 @@ void BKChildView::OnTimer(UINT nIDEvent)
 	CWnd::OnTimer( nIDEvent );
 	if ( nIDEvent == timer ) {
 		if ( !lock ) {
+/*
 			static int fps      = 0;
 			static int mseconds = 0;
 			fps++;
@@ -399,6 +402,7 @@ void BKChildView::OnTimer(UINT nIDEvent)
 				fps      = 0;
 				mseconds = 0;
 			}
+*/
 			std::vector< WORD >::const_iterator it = updateVideoMemory.begin();
 			if ( it != updateVideoMemory.end() && lockSurface() == DD_OK ) {
 				lock = true;

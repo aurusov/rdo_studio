@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "bkemulmemory.h"
-#include "bkemul.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

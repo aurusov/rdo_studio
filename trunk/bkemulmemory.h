@@ -23,7 +23,7 @@ private:
 	}
 	WORD get_word( WORD address ) const {
 		address &= oddWordMask;
-		WORD data = memory[address] | memory[address+1];
+		WORD data = memory[address + 1] << 8 | memory[address];
 		return data;
 	}
 	void set_byte( WORD address, BYTE data ) {

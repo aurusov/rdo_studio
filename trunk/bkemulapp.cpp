@@ -51,20 +51,16 @@ BOOL BKEmulApp::InitInstance()
 	return TRUE;
 }
 
-LRESULT BKEmulApp::ProcessWndProcException( CException* e, const MSG* pMsg )
+int BKEmulApp::ExitInstance()
 {
-	using namespace bkemul;
-
-	CRuntimeClass* prt = RUNTIME_CLASS( BKMemoryAccessError );
-	if ( e->GetRuntimeClass() == prt ) {
-		e->ReportError();
-		return 0L;
-	}
-	return CWinApp::ProcessWndProcException( e, pMsg );
+	emul.powerOFF();
+	return CWinApp::ExitInstance();
 }
 
 BOOL BKEmulApp::OnIdle(LONG lCount)
 {
-	emul.nextIteration();
+	if ( emul.isPowerON() ) {
+		emul.nextIteration();
+	}
 	return CWinApp::OnIdle(lCount);
 }

@@ -10,13 +10,12 @@ namespace bkemul {
 // --------------------------------------------------------------
 // ---------- BKEmulCPU
 // --------------------------------------------------------------
-#define bits_Mask ((WORD)0x0007)  // Маска для выделения трех младших бит,
-
 class BKEmulCPU;
 typedef void (BKEmulCPU::* CPUcommand)();
 
 class BKEmulCPU
 {
+friend class BKEmul; // tmp
 private:
 	// Регистры R0..R7
 	std::vector< WORD > regs;
@@ -31,12 +30,30 @@ private:
 	bool FP2; // Флаг приоритета
 	bool FP3; // Флаг приоритета (запрещает прерывание с внешних устройств, например, клавиатуры)
 
+	// Прерывания
+	bool PR_4;
+	bool PR_60;
+	bool PR_274;
+
 	WORD command;             // Каманда процессора
 	WORD source_data;         // Данные источника
 	WORD dest_adr;            // Адресс приемника
 	WORD dest_reg_id;         // Индекс регистра приемника. Необходим в том случае, когда приемником является регистр
 	bool is_dest_reg;         // Приемником является регистр
 	WORD short_jmp;           // Приращение к R7 в команде близкого перехода
+
+	// Разбор метода адресации
+	void Command_dest_Parser_byte();
+	void Command_dest_Parser_word();
+	void CommandParser_byte();
+	void CommandParser_word();
+	// Установка приемника
+	BYTE GetDestData_byte();
+	void SetDestData_byte( BYTE data );
+	WORD GetDestData_word();
+	void SetDestData_word( WORD data );
+
+	void interrupt( WORD address );
 
 	WORD MFPS();
 	void MTPS( WORD data );

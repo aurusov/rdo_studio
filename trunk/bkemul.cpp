@@ -2,6 +2,10 @@
 #include "bkemul.h"
 #include "resource.h"
 
+#include "bkemulapp.h"
+#include "bkemulmainfrm.h"
+#include "bkemulchildview.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -45,20 +49,56 @@ void BKEmul::reset()
 {
 	BK_SYS_Timer_work = false;
 	memory.clear();
+	loadROM( "MONITOR_10" );
+	loadROM( "BASIC_10_120" );
+	loadROM( "BASIC_10_140" );
+	loadROM( "BASIC_10_160" );
 
-	R_177716_read  = 0100300; // Задает начальный адрес и флаг отжатой клавиши
-	                          // ст. байт = 0100000 - адрес старта процессора
-	                          // 0100 = 1 - клавиша отжата
-	                          // 0200 = 1 - признак отсутствия арифметического расширения,
-	                          //            должен быть = 1
-	R_177716_write = 0000000; // 0100 = 0
+	R_177716_read   = 0100300;           // Задает начальный адрес и флаг отжатой клавиши
+	                                     // ст. байт = 0100000 - адрес старта процессора
+	                                     // 0100 = 1 - клавиша отжата
+	                                     // 0200 = 1 - признак отсутствия арифметического расширения,
+	                                     //            должен быть = 1
+	R_177716_write  = 0000000;           // 0100 = 0
 
 	cpu.reset();
+/*
+	memory.set_word( 0100000, 0012700 );
+	memory.set_word( 0100002, 0040000 );
+	memory.set_word( 0100004, 0012701 );
+	memory.set_word( 0100006, 0020000 );
+	memory.set_word( 0100010, 0012720 );
+	memory.set_word( 0100012, 0177777 );
+	memory.set_word( 0100014, 0077103 );
+	memory.set_word( 0100016, 0000000 );
+//	memory.set_word( 0100010, 0000167 );
+//	memory.set_word( 0100012, 0177770 );
+*/
+}
+
+void BKEmul::loadROM( const std::string& rom ) const
+{
+	HRSRC rom_res   = ::FindResource( NULL, rom.c_str(), "ROM" );
+	HGLOBAL rom_mem = ::LoadResource( NULL, rom_res );
+	WORD address;
+	memcpy( &address, (char*)rom_mem, 02 );
+	WORD size;
+	memcpy( &size, (char*)rom_mem + 02, 02 );
+	memcpy( (char*)memory.getMemory() + address, (char*)rom_mem + 04, size );
 }
 
 void BKEmul::nextIteration()
 {
-	cpu.nextIteration();
+	try {
+		for ( int i = 0; i < 1000; i++ ) {
+//			CClientDC dc( &enulApp.mainFrame->childView );
+//			std::string str = format( "R7 = 0%0o", cpu.regs[ 6 ] );
+//			dc.TextOut( 550, 30, str.c_str(), str.length() );
+			cpu.nextIteration();
+		}
+	} catch( BKMemoryAccessError& /*e*/ ) {
+//		e.report();
+	}
 }
 
 BYTE BKEmul::getMemoryByte( WORD address )
@@ -121,7 +161,7 @@ void BKEmul::setMemoryByte( WORD address, BYTE data )
 		 ( address >= 0176570 && address < 0177660 ) ||
 		 ( address >  0177665 && address < 0177706 ) ||
 		 ( address >  0177717) ) {
-		throw new BKMemoryAccessError( address, data );
+		throw BKMemoryAccessError( address, data );
 	}
 
 	switch ( address ) {
@@ -193,7 +233,7 @@ void BKEmul::setMemoryWord( WORD address, WORD data )
 	     ( address >= 0176570 && address < 0177660 ) ||
 	     ( address >  0177665 && address < 0177706 ) ||
 	     ( address >  0177717 ) ) {
-		throw new BKMemoryAccessError( address, data, false );
+		throw BKMemoryAccessError( address, data, false );
 	}
 
 	WORD oldData = memory.get_word( address );
@@ -253,17 +293,15 @@ void BKEmul::setMemoryWord( WORD address, WORD data )
 // --------------------------------------------------------------
 // ---------- BKMemoryAccessError
 // --------------------------------------------------------------
-IMPLEMENT_DYNAMIC( BKMemoryAccessError, CException )
-
-BKMemoryAccessError::BKMemoryAccessError( const WORD _address, const WORD _data, const bool _isByte ):
-	CException(),
+BKEmul::BKMemoryAccessError::BKMemoryAccessError( const WORD _address, const WORD _data, const bool _isByte ):
 	address( _address ),
 	data( _data ),
 	isByte( _isByte )
 {
 };
 
-int BKMemoryAccessError::ReportError( UINT nType, UINT nMessageID ) {
+void BKEmul::BKMemoryAccessError::report() const
+{
 	std::string s;
 	if ( isByte ) {
 		BYTE byte = data;
@@ -271,5 +309,5 @@ int BKMemoryAccessError::ReportError( UINT nType, UINT nMessageID ) {
 	} else {
 		s = format( IDS_MEMORYACCESSERROR_WORD, data, address );
 	}
-	return AfxMessageBox( s.c_str(), nType | MB_ICONERROR );
+	AfxMessageBox( s.c_str(), MB_OK | MB_ICONERROR );
 }
