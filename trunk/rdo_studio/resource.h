@@ -556,6 +556,7 @@
 #define IDS_CHART_TITLE                 40300
 #define IDS_CHART_OPTIONS               40301
 #define IDS_CHART_OPTIONS_APPLY         40302
+#define IDS_CHART_OPTIONS_INT_VERIFY    40303
 #define ID_ABOUT_BMSTU                  40910
 #define ID_ABOUT_TEL                    40911
 #define ID_ABOUT_OKBUTTON               40912

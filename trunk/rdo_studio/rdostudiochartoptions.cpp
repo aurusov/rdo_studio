@@ -13,6 +13,10 @@ static char THIS_FILE[] = __FILE__;
 
 using namespace std;
 
+#define MIN_X_Y_M   2
+#define MAX_X_Y     100
+#define MAX_M       6
+
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioChartOptionsChart
 // ----------------------------------------------------------------------------
@@ -53,9 +57,7 @@ void RDOStudioChartOptionsChart::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_AXIS_SERIES, m_AxisSerieCombo);
 	DDX_Control(pDX, IDC_DRAW_LEGEND_CHECK, m_DrawLegend);
 	DDX_Text(pDX, IDC_IDC_VAL_COUNT_X_EDIT, m_ValCountX);
-	DDV_MinMaxInt(pDX, m_ValCountX, 2, 100);
 	DDX_Text(pDX, IDC_IDC_VAL_COUNT_Y_EDIT, m_ValCountY);
-	DDV_MinMaxInt(pDX, m_ValCountY, 2, 100);
 	DDX_Text(pDX, IDC_CHART_TITLE_EDIT, m_ChartTitle);
 	DDX_CBIndex(pDX, IDC_AXIS_SERIES, m_AxisSerie);
 	//}}AFX_DATA_MAP
@@ -82,6 +84,51 @@ void RDOStudioChartOptionsChart::OnOK()
 {
 	sheet->apply();
 	CPropertyPage::OnOK();
+}
+
+bool RDOStudioChartOptionsChart::checkValues() const
+{
+    bool result = true;
+	int valCount_Y = GetDlgItemInt(IDC_IDC_VAL_COUNT_Y_EDIT);
+	CEdit* edit_Y = (CEdit*) GetDlgItem(IDC_IDC_VAL_COUNT_Y_EDIT);
+	int valCount_X = GetDlgItemInt(IDC_IDC_VAL_COUNT_X_EDIT);
+	CEdit* edit_X = (CEdit*) GetDlgItem(IDC_IDC_VAL_COUNT_X_EDIT);
+
+	int val_corrected;
+	CString ctrl_caption;
+
+	if (valCount_X < MIN_X_Y_M || valCount_X > MAX_X_Y) {
+		((CStatic*) GetDlgItem(IDC_VAL_COUNT_X_STATIC))->GetWindowText(ctrl_caption);
+		AfxGetMainWnd()->MessageBox(rdo::format(IDS_CHART_OPTIONS_INT_VERIFY, ctrl_caption, MIN_X_Y_M, MAX_X_Y ).c_str(), NULL, MB_OK | MB_ICONWARNING);
+
+		if (valCount_X < MIN_X_Y_M) val_corrected = MIN_X_Y_M;
+		if (valCount_X > MAX_X_Y)   val_corrected = MAX_X_Y;
+		edit_X->SetSel(0, -1);
+		edit_X->ReplaceSel(rdo::format( "%d", val_corrected ).c_str());
+		edit_X->SetFocus();
+		result = false;
+	}
+
+	if (valCount_Y < MIN_X_Y_M || valCount_Y > MAX_X_Y) {
+		((CStatic*) GetDlgItem(IDC_VAL_COUNT_Y_STATIC))->GetWindowText(ctrl_caption);
+		AfxGetMainWnd()->MessageBox(rdo::format(IDS_CHART_OPTIONS_INT_VERIFY, ctrl_caption, MIN_X_Y_M, MAX_X_Y ).c_str(), NULL, MB_OK | MB_ICONWARNING);
+		
+		if (valCount_Y < MIN_X_Y_M) val_corrected = MIN_X_Y_M;
+		if (valCount_Y > MAX_X_Y)   val_corrected = MAX_X_Y;
+		edit_Y->SetSel(0, -1);
+		edit_Y->ReplaceSel(rdo::format( "%d", val_corrected ).c_str());
+		edit_Y->SetFocus();
+		result = false;
+	}
+
+	return result;
+}
+
+BOOL RDOStudioChartOptionsChart::OnKillActive() 
+{
+	if (!checkValues()) return 0;
+	
+	return CPropertyPage::OnKillActive();
 }
 
 BOOL RDOStudioChartOptionsChart::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
@@ -177,7 +224,6 @@ void RDOStudioChartOptionsSeries::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_MARKER_COMBO, m_Marker);
 	DDX_Control(pDX, IDC_SERIE_TITLE_EDIT, m_SerieTitle);
 	DDX_Text(pDX, IDC_MARKER_SIZE_EDIT, m_sizeMarker);
-	DDV_MinMaxInt(pDX, m_sizeMarker, 2, 6);
 	//}}AFX_DATA_MAP
 
 	DDX_Control( pDX, IDC_COLOR_COMBO, ColorCB );
@@ -216,6 +262,37 @@ BOOL RDOStudioChartOptionsSeries::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT
 		return true;
 	}
 	return CPropertyPage::OnNotify(wParam, lParam, pResult);
+}
+
+bool RDOStudioChartOptionsSeries::checkValues() const
+{
+    bool result = true;
+	int marker_size = GetDlgItemInt(IDC_MARKER_SIZE_EDIT);
+	CEdit* edit_marker_size = (CEdit*) GetDlgItem(IDC_MARKER_SIZE_EDIT);
+
+	int val_corrected;
+	CString ctrl_caption;
+
+	if (marker_size < MIN_X_Y_M || marker_size > MAX_M) {
+		((CStatic*) GetDlgItem(IDC_MAKER_SIZE_STATIC))->GetWindowText(ctrl_caption);
+		AfxGetMainWnd()->MessageBox(rdo::format(IDS_CHART_OPTIONS_INT_VERIFY, ctrl_caption, MIN_X_Y_M, MAX_M ).c_str(), NULL, MB_OK | MB_ICONWARNING);
+
+		if (marker_size < MIN_X_Y_M) val_corrected = MIN_X_Y_M;
+		if (marker_size > MAX_M)     val_corrected = MAX_M;
+		edit_marker_size->SetSel(0, -1);
+		edit_marker_size->ReplaceSel(rdo::format( "%d", val_corrected ).c_str());
+		edit_marker_size->SetFocus();
+		result = false;
+	}
+
+	return result;
+}
+
+BOOL RDOStudioChartOptionsSeries::OnKillActive() 
+{
+	if (!checkValues()) return 0;
+	
+	return CPropertyPage::OnKillActive();
 }
 
 void RDOStudioChartOptionsSeries::OnUpdateModify() 
@@ -260,6 +337,10 @@ void RDOStudioChartOptionsSeries::restoreValues()
 
 void RDOStudioChartOptionsSeries::OnSelchangeSeriesCombo() 
 {
+	if (!checkValues()) {
+		m_SerieCombo.SetCurSel( sheet->view->GetDocument()->getSerieIndex( serie ) );
+		return;
+	}
 	int ser = m_SerieCombo.GetCurSel();
 	bool enable = ser != -1;
 	m_SerieTitle.EnableWindow( enable );
@@ -376,3 +457,4 @@ BOOL RDOStudioChartOptions::OnHelpInfo(HELPINFO* pHelpInfo)
 		return ::HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_HELP_CONTEXT, pHelpInfo->dwContextId) != NULL;
 	return TRUE;
 }
+

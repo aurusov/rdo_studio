@@ -34,6 +34,7 @@ protected:
 	public:
 	virtual void OnOK();
 	virtual BOOL OnInitDialog();
+	virtual BOOL OnKillActive();
 	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);
 	virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
@@ -43,6 +44,8 @@ protected:
 	afx_msg void OnUpdateModify();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
+
+	bool checkValues() const;
 
 public:
 	RDOStudioChartOptionsChart( RDOStudioChartOptions& _sheet );
@@ -83,6 +86,7 @@ protected:
 	public:
 	virtual void OnOK();
 	virtual BOOL OnInitDialog();
+	virtual BOOL OnKillActive();
 	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);
 	virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
@@ -94,6 +98,8 @@ protected:
 	afx_msg void OnSelchangeSeriesCombo();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
+
+	bool checkValues() const;
 
 public:
 	RDOStudioChartOptionsSeries( RDOStudioChartOptions& _sheet );
