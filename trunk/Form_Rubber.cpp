@@ -1,6 +1,7 @@
 //---------------------------------------------------------------------------
 #include <vcl.h>
 #include <SysUtils.hpp>
+#include <math.h>
 #pragma hdrstop
 
 #include "Form_Rubber.h"
@@ -43,6 +44,7 @@ bool log_flag          = false;
 bool trace_flag        = false;
 bool long_smena_flag   = false;
 bool new_personal_flag = false;
+double fill_koef       = 0.85;
 //---------------------------------------------------------------------------
 typedef struct {
   int model_id;
@@ -101,6 +103,15 @@ __fastcall TRubberStudio::TRubberStudio(TComponent* Owner):
     if (str == "-trace")        trace_flag        = true;
     if (str == "-long_smena")   long_smena_flag   = true;
     if (str == "-new_personal") new_personal_flag = true;
+    if (str == "-fill_koef" && (i + 1 ) <= ParamCount() ) {
+      try {
+        fill_koef = PickOutDouble( ParamStr(i+1), 1 );
+        if ( fill_koef < 0.01 || fill_koef > 1.0 )
+          fill_koef = 0.85;
+      } catch (Exception& e) {
+        fill_koef = 0.85;
+      }
+    }
   }
 
   PrNewM->ImageIndex          = 0;
@@ -1684,7 +1695,7 @@ void TRubberStudio::BuildModels()
       for (int i = 1; i <= floors; i++) {
         floors_count++;
         AnsiString p_name = MiscFormat("Пресс_%d_%d", machine_model_id, i);
-        machine_rss->Add(MiscFormat("  %s : Прессы no_trace %d %d %d %d %d %d * * %s * * * * * %1.2f %1.2f * * *",
+        machine_rss->Add(MiscFormat("  %s : Прессы no_trace %d %d %d %d %d %d * * %s * * * * * %1.2f %1.2f * * * *",
           p_name.c_str(),
           machine_model_id, (int)effort, i, floor_height, plate_width,
           load_sides,
@@ -1872,9 +1883,9 @@ void TRubberStudio::BuildModels()
             }
           }
 
-          product_gen_rss->Add(MiscFormat("  Изделие_%d : Изделия no_trace %d %d %1.1f %1.1f %d %d * %d %d %d",
+          product_gen_rss->Add(MiscFormat("  Изделие_%d : Изделия no_trace %d %d %1.1f %1.1f %d %d * %d %d %d %1.1f",
             product_model_id,
-            product_model_id, group->group_id, amount, amount, pf_number, pf_places, pf_pressure, group->vulcan_temperature, group->pressing)
+            product_model_id, group->group_id, amount, amount, pf_number, pf_places, pf_pressure, group->vulcan_temperature, group->pressing, amount)
           );
           product_rss->Add(MiscFormat("  Изделие_%d : Изделия trace %d %d %1.1f %1.1f %d %d * %d %d %d * * * %1.1f *",
             product_model_id,
@@ -1933,11 +1944,11 @@ void TRubberStudio::BuildModels()
       try {
         model_strings->Add("$Resources\r\n");
         model_strings->Add("  Система : тип_Система no_trace 0 20 0.7 0.06 Инициализация 0 * * * * * * * * * 1 0 0 0 0 0 0 0.0 * *");
-        model_strings->Add( MiscFormat("  Систем  : Система1    no_trace * * * * * * * * * * * * %1.2f %d\r\n", ((double)(100 - plane_precision)) / 100.0, floors_count ));
+        model_strings->Add( MiscFormat("  Систем  : Система1    no_trace * * * * * * * * * * * * %1.2f %d %1.7f\r\n", ((double)(100 - plane_precision)) / 100.0, floors_count, sqrt(fill_koef) ));
         model_strings->SaveToStream(file_gen);
         model_strings->Clear();
         model_strings->Add("$Resources");
-        model_strings->Add("  Систем : Система no_trace * * * * * * * * * *\r\n");
+        model_strings->Add( MiscFormat("  Систем : Система no_trace * * * * * * * * * * %1.7f\r\n", sqrt(fill_koef) ));
         model_strings->SaveToStream(file);
         model_strings->Clear();
         machine_rss->Add("");
