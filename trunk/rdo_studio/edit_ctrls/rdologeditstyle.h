@@ -7,7 +7,7 @@
 // ----------------------------------------------------------------------------
 // ---------- RDOLogEditTheme
 // ----------------------------------------------------------------------------
-class RDOLogEditTheme: public rdoStyle::RDOBaseEditTheme
+class RDOLogEditTheme: public rdoBaseEdit::RDOBaseEditTheme
 {
 public:
 	RDOLogEditTheme();
@@ -26,7 +26,7 @@ public:
 // ----------------------------------------------------------------------------
 // ---------- RDOLogEditStyle
 // ----------------------------------------------------------------------------
-class RDOLogEditStyle: public rdoStyle::RDOBaseEditStyle
+class RDOLogEditStyle: public rdoBaseEdit::RDOBaseEditStyle
 {
 protected:
 	virtual void initTheme();

@@ -92,7 +92,7 @@ LINK32=link.exe
 # Begin Group "RDO-Studio"
 
 # PROP Default_Filter ""
-# Begin Group "Source Files"
+# Begin Group "RDO-Studio Source Files"
 
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 # Begin Source File
@@ -307,7 +307,7 @@ SOURCE=.\StdAfx.cpp
 
 # End Source File
 # End Group
-# Begin Group "Header Files"
+# Begin Group "RDO-Studio Header Files"
 
 # PROP Default_Filter "h;hpp;hxx;hm;inl"
 # Begin Source File

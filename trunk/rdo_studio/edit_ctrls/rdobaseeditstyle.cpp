@@ -5,7 +5,7 @@
 #define new DEBUG_NEW
 #endif
 
-using namespace rdoStyle;
+using namespace rdoBaseEdit;
 
 // ----------------------------------------------------------------------------
 // ---------- RDOBaseEditTheme

@@ -63,7 +63,7 @@ int RDOStudioOutput::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	RDOStudioApp::appendMenu( mainMenu->GetSubMenu( 2 + delta ), 10, &popupMenu );
 
 	build   = new RDOLogEdit;
-	debug   = new RDOBaseEdit;
+	debug   = new rdoBaseEdit::RDOBaseEdit;
 	tracer  = (CWnd*)::trace.createLog();
 	results = new RDOEditorEdit;
 	find    = new RDOLogEdit;
@@ -167,7 +167,7 @@ void RDOStudioOutput::clearFind()
 	find->clearAll();
 }
 
-void RDOStudioOutput::appendString( const RDOBaseEdit* const edit, const string& str ) const
+void RDOStudioOutput::appendString( const rdoBaseEdit::RDOBaseEdit* const edit, const string& str ) const
 {
 	bool readOnly = edit->isReadOnly();
 	if ( readOnly ) {

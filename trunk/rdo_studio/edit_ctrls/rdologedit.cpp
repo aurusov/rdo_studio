@@ -129,7 +129,7 @@ int RDOLogEdit::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	return 0;
 }
 
-void RDOLogEdit::setEditorStyle( rdoStyle::RDOBaseEditStyle* style )
+void RDOLogEdit::setEditorStyle( rdoBaseEdit::RDOBaseEditStyle* style )
 {
 	RDOBaseEdit::setEditorStyle( style );
 
@@ -176,7 +176,7 @@ void RDOLogEdit::setSelectLine()
 			if ( tab->getCurrentRDOItem() != tabItem ) {
 				tab->setCurrentRDOItem( tabItem );
 			}
-			RDOBaseEdit* edit = tab->getCurrentEdit();
+			rdoBaseEdit::RDOBaseEdit* edit = tab->getCurrentEdit();
 			if ( edit ) {
 				edit->scrollToLine( (*it)->lineNumber, edit->getPositionFromLine( (*it)->lineNumber ) );
 				edit->SetFocus();

@@ -49,7 +49,7 @@ public:
 // ----------------------------------------------------------------------------
 // ---------- RDOLogEdit
 // ----------------------------------------------------------------------------
-class RDOLogEdit: public RDOBaseEdit
+class RDOLogEdit: public rdoBaseEdit::RDOBaseEdit
 {
 private:
 	int sci_MARKER_LINE;
@@ -76,7 +76,7 @@ public:
 	RDOLogEdit();
 	virtual ~RDOLogEdit();
 
-	virtual void setEditorStyle( rdoStyle::RDOBaseEditStyle* style );
+	virtual void setEditorStyle( rdoBaseEdit::RDOBaseEditStyle* style );
 
 	virtual void clearAll();
 	void appendLine( RDOLogEditLineInfo* line );

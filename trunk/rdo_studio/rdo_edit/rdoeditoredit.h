@@ -15,7 +15,7 @@ namespace rdoEditor {
 // ----------------------------------------------------------------------------
 // ---------- RDOEditorEdit
 // ----------------------------------------------------------------------------
-class RDOEditorEdit: public RDOBaseEdit
+class RDOEditorEdit: public rdoBaseEdit::RDOBaseEdit
 {
 private:
 	int sci_MARKER_ERROR;
@@ -77,7 +77,7 @@ public:
 	RDOEditorEdit( RDOStudioEditBaseView* _view = NULL );
 	virtual ~RDOEditorEdit();
 
-	virtual void setEditorStyle( rdoStyle::RDOBaseEditStyle* style );
+	virtual void setEditorStyle( rdoBaseEdit::RDOBaseEditStyle* style );
 
 	void replaceCurrent( const string str, const int changePosValue = -1 ) const;
 };

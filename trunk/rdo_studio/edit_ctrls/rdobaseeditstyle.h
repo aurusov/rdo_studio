@@ -6,7 +6,7 @@
 
 using namespace std;
 
-namespace rdoStyle {
+namespace rdoBaseEdit {
 
 // ----------------------------------------------------------------------------
 // ---------- RDOBaseEditTheme
@@ -172,6 +172,6 @@ public:
 	RDOBaseEditWindow* window;
 };
 
-}; // rdoStyle
+}; // namespace rdoBaseEdit
 
 #endif // RDOBASEEDITSTYLE_H

@@ -13,7 +13,9 @@
 #include <rdotabctrl.h>
 #include <rdosimwin.h>
 
-class RDOBaseEdit;
+namespace rdoBaseEdit {
+	class RDOBaseEdit;
+}
 class RDOLogEdit;
 namespace rdoEditor {
 	class RDOEditorEdit;
@@ -27,19 +29,19 @@ class RDOStudioOutput: public RDOStudioDockWnd
 private:
 	RDOTabCtrl tab;
 	RDOLogEditStyle               buildStyle;
-	rdoStyle::RDOBaseEditStyle    debugStyle;
+	rdoBaseEdit::RDOBaseEditStyle debugStyle;
 	rdoEditor::RDOEditorEditStyle resultsStyle;
 	RDOLogEditStyle               findStyle;
 
 	RDOLogEdit*               build;
-	RDOBaseEdit*              debug;
+	rdoBaseEdit::RDOBaseEdit* debug;
 	CWnd*                     tracer;
 	rdoEditor::RDOEditorEdit* results;
 	RDOLogEdit*               find;
 
 	CMenu popupMenu;
 
-	void appendString( const RDOBaseEdit* const edit, const string& str ) const;
+	void appendString( const rdoBaseEdit::RDOBaseEdit* const edit, const string& str ) const;
 
 public:
 	RDOStudioOutput();

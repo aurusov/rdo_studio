@@ -9,6 +9,8 @@
 #define new DEBUG_NEW
 #endif
 
+using namespace rdoBaseEdit;
+
 // ----------------------------------------------------------------------------
 // ---------- RDOBaseEdit
 // ---------------------------------------------------------------------------
@@ -282,7 +284,7 @@ void RDOBaseEdit::defineMarker( int marker, int markerType, COLORREF fore, COLOR
   sendEditor( SCI_MARKERSETBACK, marker, back );
 }
 
-void RDOBaseEdit::setEditorStyle( rdoStyle::RDOBaseEditStyle* _style )
+void RDOBaseEdit::setEditorStyle( RDOBaseEditStyle* _style )
 {
 	style = _style;
 
@@ -293,9 +295,9 @@ void RDOBaseEdit::setEditorStyle( rdoStyle::RDOBaseEditStyle* _style )
 
 	// ----------
 	// Styles
-	sendEditor( SCI_STYLESETBOLD     , STYLE_DEFAULT, style->theme->defaultStyle & rdoStyle::RDOFS_BOLD      );
-	sendEditor( SCI_STYLESETITALIC   , STYLE_DEFAULT, style->theme->defaultStyle & rdoStyle::RDOFS_ITALIC    );
-	sendEditor( SCI_STYLESETUNDERLINE, STYLE_DEFAULT, style->theme->defaultStyle & rdoStyle::RDOFS_UNDERLINE );
+	sendEditor( SCI_STYLESETBOLD     , STYLE_DEFAULT, style->theme->defaultStyle & RDOFS_BOLD      );
+	sendEditor( SCI_STYLESETITALIC   , STYLE_DEFAULT, style->theme->defaultStyle & RDOFS_ITALIC    );
+	sendEditor( SCI_STYLESETUNDERLINE, STYLE_DEFAULT, style->theme->defaultStyle & RDOFS_UNDERLINE );
 
 	// ----------
 	// Font Name
@@ -329,11 +331,11 @@ void RDOBaseEdit::setEditorStyle( rdoStyle::RDOBaseEditStyle* _style )
 	COLORREF bookmarkFgColor = style->theme->bookmarkFgColor;
 	COLORREF bookmarkBgColor = style->theme->bookmarkBgColor;
 	switch ( style->theme->bookmarkStyle ) {
-		case rdoStyle::RDOBOOKMARKS_NONE     : defineMarker( sci_MARKER_BOOKMARK, SC_MARK_EMPTY    , bookmarkFgColor, bookmarkBgColor ); break;
-		case rdoStyle::RDOBOOKMARKS_CIRCLE   : defineMarker( sci_MARKER_BOOKMARK, SC_MARK_CIRCLE   , bookmarkFgColor, bookmarkBgColor ); break;
-		case rdoStyle::RDOBOOKMARKS_RECT     : defineMarker( sci_MARKER_BOOKMARK, SC_MARK_SMALLRECT, bookmarkFgColor, bookmarkBgColor ); break;
-		case rdoStyle::RDOBOOKMARKS_ROUNDRECT: defineMarker( sci_MARKER_BOOKMARK, SC_MARK_ROUNDRECT, bookmarkFgColor, bookmarkBgColor ); break;
-		case rdoStyle::RDOBOOKMARKS_ARROW    : defineMarker( sci_MARKER_BOOKMARK, SC_MARK_ARROW    , bookmarkFgColor, bookmarkBgColor ); break;
+		case RDOBOOKMARKS_NONE     : defineMarker( sci_MARKER_BOOKMARK, SC_MARK_EMPTY    , bookmarkFgColor, bookmarkBgColor ); break;
+		case RDOBOOKMARKS_CIRCLE   : defineMarker( sci_MARKER_BOOKMARK, SC_MARK_CIRCLE   , bookmarkFgColor, bookmarkBgColor ); break;
+		case RDOBOOKMARKS_RECT     : defineMarker( sci_MARKER_BOOKMARK, SC_MARK_SMALLRECT, bookmarkFgColor, bookmarkBgColor ); break;
+		case RDOBOOKMARKS_ROUNDRECT: defineMarker( sci_MARKER_BOOKMARK, SC_MARK_ROUNDRECT, bookmarkFgColor, bookmarkBgColor ); break;
+		case RDOBOOKMARKS_ARROW    : defineMarker( sci_MARKER_BOOKMARK, SC_MARK_ARROW    , bookmarkFgColor, bookmarkBgColor ); break;
 	}
 
 	// ----------
@@ -341,7 +343,7 @@ void RDOBaseEdit::setEditorStyle( rdoStyle::RDOBaseEditStyle* _style )
 	COLORREF foldFgColor = style->theme->foldFgColor;
 	COLORREF foldBgColor = style->theme->foldBgColor;
 	switch ( style->theme->foldStyle ) {
-		case rdoStyle::RDOFOLDS_NONE:
+		case RDOFOLDS_NONE:
 			defineMarker( SC_MARKNUM_FOLDEROPEN   , SC_MARK_EMPTY, foldFgColor, foldBgColor );
 			defineMarker( SC_MARKNUM_FOLDER       , SC_MARK_EMPTY, foldFgColor, foldBgColor );
 			defineMarker( SC_MARKNUM_FOLDERSUB    , SC_MARK_EMPTY, foldFgColor, foldBgColor );
@@ -350,7 +352,7 @@ void RDOBaseEdit::setEditorStyle( rdoStyle::RDOBaseEditStyle* _style )
 			defineMarker( SC_MARKNUM_FOLDEROPENMID, SC_MARK_EMPTY, foldFgColor, foldBgColor );
 			defineMarker( SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_EMPTY, foldFgColor, foldBgColor );
 			break;
-		case rdoStyle::RDOFOLDS_PLUS:
+		case RDOFOLDS_PLUS:
 			defineMarker( SC_MARKNUM_FOLDEROPEN   , SC_MARK_MINUS, foldFgColor, foldBgColor );
 			defineMarker( SC_MARKNUM_FOLDER       , SC_MARK_PLUS , foldFgColor, foldBgColor );
 			defineMarker( SC_MARKNUM_FOLDERSUB    , SC_MARK_EMPTY, foldFgColor, foldBgColor );
@@ -359,7 +361,7 @@ void RDOBaseEdit::setEditorStyle( rdoStyle::RDOBaseEditStyle* _style )
 			defineMarker( SC_MARKNUM_FOLDEROPENMID, SC_MARK_EMPTY, foldFgColor, foldBgColor );
 			defineMarker( SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_EMPTY, foldFgColor, foldBgColor );
 			break;
-		case rdoStyle::RDOFOLDS_PLUSCONNECTED:
+		case RDOFOLDS_PLUSCONNECTED:
 			defineMarker( SC_MARKNUM_FOLDEROPEN   , SC_MARK_MINUS  , foldFgColor, foldBgColor );
 			defineMarker( SC_MARKNUM_FOLDER       , SC_MARK_PLUS   , foldFgColor, foldBgColor );
 			defineMarker( SC_MARKNUM_FOLDERSUB    , SC_MARK_VLINE  , foldFgColor, foldBgColor );
@@ -368,7 +370,7 @@ void RDOBaseEdit::setEditorStyle( rdoStyle::RDOBaseEditStyle* _style )
 			defineMarker( SC_MARKNUM_FOLDEROPENMID, SC_MARK_EMPTY  , foldFgColor, foldBgColor );
 			defineMarker( SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_LCORNER, foldFgColor, foldBgColor );
 			break;
-		case rdoStyle::RDOFOLDS_ARROW:
+		case RDOFOLDS_ARROW:
 			defineMarker( SC_MARKNUM_FOLDEROPEN   , SC_MARK_ARROWDOWN, foldFgColor, foldBgColor );
 			defineMarker( SC_MARKNUM_FOLDER       , SC_MARK_ARROW    , foldFgColor, foldBgColor );
 			defineMarker( SC_MARKNUM_FOLDERSUB    , SC_MARK_EMPTY    , foldFgColor, foldBgColor );
@@ -377,7 +379,7 @@ void RDOBaseEdit::setEditorStyle( rdoStyle::RDOBaseEditStyle* _style )
 			defineMarker( SC_MARKNUM_FOLDEROPENMID, SC_MARK_EMPTY    , foldFgColor, foldBgColor );
 			defineMarker( SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_EMPTY    , foldFgColor, foldBgColor );
 			break;
-		case rdoStyle::RDOFOLDS_ARROWCONNECTED:
+		case RDOFOLDS_ARROWCONNECTED:
 			defineMarker( SC_MARKNUM_FOLDEROPEN   , SC_MARK_ARROWDOWN, foldFgColor, foldBgColor );
 			defineMarker( SC_MARKNUM_FOLDER       , SC_MARK_ARROW    , foldFgColor, foldBgColor );
 			defineMarker( SC_MARKNUM_FOLDERSUB    , SC_MARK_VLINE    , foldFgColor, foldBgColor );
@@ -386,7 +388,7 @@ void RDOBaseEdit::setEditorStyle( rdoStyle::RDOBaseEditStyle* _style )
 			defineMarker( SC_MARKNUM_FOLDEROPENMID, SC_MARK_EMPTY    , foldFgColor, foldBgColor );
 			defineMarker( SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_LCORNER  , foldFgColor, foldBgColor );
 			break;
-		case rdoStyle::RDOFOLDS_BOXCONNECTED:
+		case RDOFOLDS_BOXCONNECTED:
 			defineMarker( SC_MARKNUM_FOLDEROPEN   , SC_MARK_BOXMINUS, foldFgColor, foldBgColor );
 			defineMarker( SC_MARKNUM_FOLDER       , SC_MARK_BOXPLUS , foldFgColor, foldBgColor );
 			defineMarker( SC_MARKNUM_FOLDERSUB    , SC_MARK_VLINE   , foldFgColor, foldBgColor );
@@ -395,7 +397,7 @@ void RDOBaseEdit::setEditorStyle( rdoStyle::RDOBaseEditStyle* _style )
 			defineMarker( SC_MARKNUM_FOLDEROPENMID, SC_MARK_EMPTY   , foldFgColor, foldBgColor );
 			defineMarker( SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_LCORNER , foldFgColor, foldBgColor );
 			break;
-		case rdoStyle::RDOFOLDS_CIRCLECONNECTED:
+		case RDOFOLDS_CIRCLECONNECTED:
 			defineMarker( SC_MARKNUM_FOLDEROPEN   , SC_MARK_CIRCLEMINUS, foldFgColor, foldBgColor );
 			defineMarker( SC_MARKNUM_FOLDER       , SC_MARK_CIRCLEPLUS , foldFgColor, foldBgColor );
 			defineMarker( SC_MARKNUM_FOLDERSUB    , SC_MARK_VLINE      , foldFgColor, foldBgColor );

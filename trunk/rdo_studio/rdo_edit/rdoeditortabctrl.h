@@ -29,9 +29,9 @@ enum RDOEditorTabItem {
 class RDOEditorTabCtrl: public RDOTabCtrl
 {
 private:
-	RDOStudioEditBaseView* view;
-	RDOEditorEditStyle     style;
-	RDOBaseEditList        group;
+	RDOStudioEditBaseView*       view;
+	RDOEditorEditStyle           style;
+	rdoBaseEdit::RDOBaseEditList group;
 
 protected:
 	//{{AFX_MSG(RDOEditorTabCtrl)

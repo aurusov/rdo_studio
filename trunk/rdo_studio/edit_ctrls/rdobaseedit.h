@@ -3,9 +3,10 @@
 #pragma once
 
 #include "rdobaseeditstyle.h"
-#include "sci/Scintilla.h"
 
 using namespace std;
+
+namespace rdoBaseEdit {
 
 // ----------------------------------------------------------------------------
 // ---------- RDOBaseEdit
@@ -42,8 +43,8 @@ protected:
 	void gotoLineEnsureVisible( int line ) const;
 	void ensureRangeVisible( int posStart, int posEnd, bool enforcePolicy = true ) const;
 
-	rdoStyle::RDOBaseEditStyle* style;
-	RDOBaseEditList*            group;
+	RDOBaseEditStyle* style;
+	RDOBaseEditList*  group;
 
 	int  firstFoundPos;
 	bool bHaveFound;
@@ -137,8 +138,8 @@ public:
 	RDOBaseEdit();
 	virtual ~RDOBaseEdit();
 
-	const rdoStyle::RDOBaseEditStyle* getEditorStyle() const         { return style; };
-	virtual void setEditorStyle( rdoStyle::RDOBaseEditStyle* style );
+	const RDOBaseEditStyle* getEditorStyle() const         { return style; };
+	virtual void setEditorStyle( RDOBaseEditStyle* style );
 
 	void setGroup( RDOBaseEditList* _group );
 	void setPopupMenu( CMenu* const value )                { popupMenu = value; };
@@ -207,6 +208,8 @@ public:
 	void save( strstream& stream ) const;
 	void saveAsRTF( CFile& file, int start = 0, int end = -1 ) const;
 };
+
+}; // namespace rdoBaseEdit
 
 //{{AFX_INSERT_LOCATION}}
 

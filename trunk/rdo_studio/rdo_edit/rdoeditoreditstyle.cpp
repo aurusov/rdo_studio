@@ -7,6 +7,7 @@
 #endif
 
 using namespace rdoEditor;
+using namespace rdoBaseEdit;
 
 // ----------------------------------------------------------------------------
 // ---------- RDOEditorEditTheme
@@ -24,14 +25,14 @@ RDOEditorEditTheme::RDOEditorEditTheme(): RDOBaseEditTheme()
 
 	errorBgColor = RGB( 0xFF, 0x80, 0x80 );
 
-	identifierStyle = rdoStyle::RDOFS_NONE;
-	keywordStyle    = rdoStyle::RDOFS_BOLD;
-	functionsStyle  = rdoStyle::RDOFS_BOLD;
-	traceStyle      = rdoStyle::RDOFS_BOLD;
-	commentStyle    = rdoStyle::RDOFS_ITALIC;
-	numberStyle     = rdoStyle::RDOFS_NONE;
-	stringStyle     = rdoStyle::RDOFS_NONE;
-	operatorStyle   = rdoStyle::RDOFS_NONE;
+	identifierStyle = RDOFS_NONE;
+	keywordStyle    = RDOFS_BOLD;
+	functionsStyle  = RDOFS_BOLD;
+	traceStyle      = RDOFS_BOLD;
+	commentStyle    = RDOFS_ITALIC;
+	numberStyle     = RDOFS_NONE;
+	stringStyle     = RDOFS_NONE;
+	operatorStyle   = RDOFS_NONE;
 }
 
 RDOEditorEditTheme::~RDOEditorEditTheme()
@@ -105,14 +106,14 @@ void RDOEditorEditTheme::load( string regPath )
 	stringColor            = AfxGetApp()->GetProfileInt( regPath.c_str(), "stringColor", stringColor );
 	operatorColor          = AfxGetApp()->GetProfileInt( regPath.c_str(), "operatorColor", operatorColor );
 	errorBgColor           = AfxGetApp()->GetProfileInt( regPath.c_str(), "errorBgColor", errorBgColor );
-	identifierStyle        = (rdoStyle::RDOFontStyle)AfxGetApp()->GetProfileInt( regPath.c_str(), "identifierStyle", identifierStyle );
-	keywordStyle           = (rdoStyle::RDOFontStyle)AfxGetApp()->GetProfileInt( regPath.c_str(), "keywordStyle", keywordStyle );
-	functionsStyle         = (rdoStyle::RDOFontStyle)AfxGetApp()->GetProfileInt( regPath.c_str(), "functionsStyle", functionsStyle );
-	traceStyle             = (rdoStyle::RDOFontStyle)AfxGetApp()->GetProfileInt( regPath.c_str(), "traceStyle", traceStyle );
-	commentStyle           = (rdoStyle::RDOFontStyle)AfxGetApp()->GetProfileInt( regPath.c_str(), "commentStyle", commentStyle );
-	numberStyle            = (rdoStyle::RDOFontStyle)AfxGetApp()->GetProfileInt( regPath.c_str(), "numberStyle", numberStyle );
-	stringStyle            = (rdoStyle::RDOFontStyle)AfxGetApp()->GetProfileInt( regPath.c_str(), "stringStyle", stringStyle );
-	operatorStyle          = (rdoStyle::RDOFontStyle)AfxGetApp()->GetProfileInt( regPath.c_str(), "operatorStyle", operatorStyle );
+	identifierStyle        = (RDOFontStyle)AfxGetApp()->GetProfileInt( regPath.c_str(), "identifierStyle", identifierStyle );
+	keywordStyle           = (RDOFontStyle)AfxGetApp()->GetProfileInt( regPath.c_str(), "keywordStyle", keywordStyle );
+	functionsStyle         = (RDOFontStyle)AfxGetApp()->GetProfileInt( regPath.c_str(), "functionsStyle", functionsStyle );
+	traceStyle             = (RDOFontStyle)AfxGetApp()->GetProfileInt( regPath.c_str(), "traceStyle", traceStyle );
+	commentStyle           = (RDOFontStyle)AfxGetApp()->GetProfileInt( regPath.c_str(), "commentStyle", commentStyle );
+	numberStyle            = (RDOFontStyle)AfxGetApp()->GetProfileInt( regPath.c_str(), "numberStyle", numberStyle );
+	stringStyle            = (RDOFontStyle)AfxGetApp()->GetProfileInt( regPath.c_str(), "stringStyle", stringStyle );
+	operatorStyle          = (RDOFontStyle)AfxGetApp()->GetProfileInt( regPath.c_str(), "operatorStyle", operatorStyle );
 }
 
 void RDOEditorEditTheme::save( string regPath ) const
@@ -156,15 +157,15 @@ bool RDOEditorEditTheme::styleUsing( const int styleType ) const
 bool RDOEditorEditTheme::styleBold( const int styleType ) const
 {
 	switch ( styleType ) {
-		case SCE_RDO_DEFAULT   : return defaultStyle    & rdoStyle::RDOFS_BOLD ? true : false;
-		case SCE_RDO_IDENTIFIER: return identifierStyle & rdoStyle::RDOFS_BOLD ? true : false;
-		case SCE_RDO_KEYWORD   : return keywordStyle    & rdoStyle::RDOFS_BOLD ? true : false;
-		case SCE_RDO_FUNCTION  : return functionsStyle  & rdoStyle::RDOFS_BOLD ? true : false;
-		case SCE_RDO_TRACE     : return traceStyle      & rdoStyle::RDOFS_BOLD ? true : false;
-		case SCE_RDO_COMMENT   : return commentStyle    & rdoStyle::RDOFS_BOLD ? true : false;
-		case SCE_RDO_NUMBER    : return numberStyle     & rdoStyle::RDOFS_BOLD ? true : false;
-		case SCE_RDO_STRING    : return stringStyle     & rdoStyle::RDOFS_BOLD ? true : false;
-		case SCE_RDO_OPERATOR  : return operatorStyle   & rdoStyle::RDOFS_BOLD ? true : false;
+		case SCE_RDO_DEFAULT   : return defaultStyle    & RDOFS_BOLD ? true : false;
+		case SCE_RDO_IDENTIFIER: return identifierStyle & RDOFS_BOLD ? true : false;
+		case SCE_RDO_KEYWORD   : return keywordStyle    & RDOFS_BOLD ? true : false;
+		case SCE_RDO_FUNCTION  : return functionsStyle  & RDOFS_BOLD ? true : false;
+		case SCE_RDO_TRACE     : return traceStyle      & RDOFS_BOLD ? true : false;
+		case SCE_RDO_COMMENT   : return commentStyle    & RDOFS_BOLD ? true : false;
+		case SCE_RDO_NUMBER    : return numberStyle     & RDOFS_BOLD ? true : false;
+		case SCE_RDO_STRING    : return stringStyle     & RDOFS_BOLD ? true : false;
+		case SCE_RDO_OPERATOR  : return operatorStyle   & RDOFS_BOLD ? true : false;
 	}
 	return false;
 }
@@ -172,15 +173,15 @@ bool RDOEditorEditTheme::styleBold( const int styleType ) const
 bool RDOEditorEditTheme::styleItalic( const int styleType ) const
 {
 	switch ( styleType ) {
-		case SCE_RDO_DEFAULT   : return defaultStyle    & rdoStyle::RDOFS_ITALIC ? true : false;
-		case SCE_RDO_IDENTIFIER: return identifierStyle & rdoStyle::RDOFS_ITALIC ? true : false;
-		case SCE_RDO_KEYWORD   : return keywordStyle    & rdoStyle::RDOFS_ITALIC ? true : false;
-		case SCE_RDO_FUNCTION  : return functionsStyle  & rdoStyle::RDOFS_ITALIC ? true : false;
-		case SCE_RDO_TRACE     : return traceStyle      & rdoStyle::RDOFS_ITALIC ? true : false;
-		case SCE_RDO_COMMENT   : return commentStyle    & rdoStyle::RDOFS_ITALIC ? true : false;
-		case SCE_RDO_NUMBER    : return numberStyle     & rdoStyle::RDOFS_ITALIC ? true : false;
-		case SCE_RDO_STRING    : return stringStyle     & rdoStyle::RDOFS_ITALIC ? true : false;
-		case SCE_RDO_OPERATOR  : return operatorStyle   & rdoStyle::RDOFS_ITALIC ? true : false;
+		case SCE_RDO_DEFAULT   : return defaultStyle    & RDOFS_ITALIC ? true : false;
+		case SCE_RDO_IDENTIFIER: return identifierStyle & RDOFS_ITALIC ? true : false;
+		case SCE_RDO_KEYWORD   : return keywordStyle    & RDOFS_ITALIC ? true : false;
+		case SCE_RDO_FUNCTION  : return functionsStyle  & RDOFS_ITALIC ? true : false;
+		case SCE_RDO_TRACE     : return traceStyle      & RDOFS_ITALIC ? true : false;
+		case SCE_RDO_COMMENT   : return commentStyle    & RDOFS_ITALIC ? true : false;
+		case SCE_RDO_NUMBER    : return numberStyle     & RDOFS_ITALIC ? true : false;
+		case SCE_RDO_STRING    : return stringStyle     & RDOFS_ITALIC ? true : false;
+		case SCE_RDO_OPERATOR  : return operatorStyle   & RDOFS_ITALIC ? true : false;
 	}
 	return false;
 }
@@ -230,18 +231,18 @@ RDOEditorEditTheme RDOEditorEditTheme::getCppTheme()
 	theme.foldBgColor      = RGB( 0x00, 0x00, 0x00 );
 	theme.errorBgColor     = RGB( 0xFF, 0x80, 0x80 );
 
-	theme.defaultStyle    = rdoStyle::RDOFS_NONE;
-	theme.identifierStyle = rdoStyle::RDOFS_NONE;
-	theme.keywordStyle    = rdoStyle::RDOFS_NONE;
-	theme.functionsStyle  = rdoStyle::RDOFS_NONE;
-	theme.traceStyle      = rdoStyle::RDOFS_NONE;
-	theme.commentStyle    = rdoStyle::RDOFS_NONE;
-	theme.numberStyle     = rdoStyle::RDOFS_NONE;
-	theme.stringStyle     = rdoStyle::RDOFS_NONE;
-	theme.operatorStyle   = rdoStyle::RDOFS_NONE;
+	theme.defaultStyle    = RDOFS_NONE;
+	theme.identifierStyle = RDOFS_NONE;
+	theme.keywordStyle    = RDOFS_NONE;
+	theme.functionsStyle  = RDOFS_NONE;
+	theme.traceStyle      = RDOFS_NONE;
+	theme.commentStyle    = RDOFS_NONE;
+	theme.numberStyle     = RDOFS_NONE;
+	theme.stringStyle     = RDOFS_NONE;
+	theme.operatorStyle   = RDOFS_NONE;
 
-	theme.bookmarkStyle = rdoStyle::RDOBOOKMARKS_CIRCLE;
-	theme.foldStyle     = rdoStyle::RDOFOLDS_PLUS;
+	theme.bookmarkStyle = RDOBOOKMARKS_CIRCLE;
+	theme.foldStyle     = RDOFOLDS_PLUS;
 
 	return theme;
 }
@@ -269,18 +270,18 @@ RDOEditorEditTheme RDOEditorEditTheme::getPascalTheme()
 	theme.foldBgColor      = RGB( 0x00, 0x00, 0x00 );
 	theme.errorBgColor     = RGB( 0xFF, 0x80, 0x80 );
 
-	theme.defaultStyle    = rdoStyle::RDOFS_NONE;
-	theme.identifierStyle = rdoStyle::RDOFS_NONE;
-	theme.keywordStyle    = rdoStyle::RDOFS_BOLD;
-	theme.functionsStyle  = rdoStyle::RDOFS_BOLD;
-	theme.traceStyle      = rdoStyle::RDOFS_BOLD;
-	theme.commentStyle    = rdoStyle::RDOFS_ITALIC;
-	theme.numberStyle     = rdoStyle::RDOFS_NONE;
-	theme.stringStyle     = rdoStyle::RDOFS_NONE;
-	theme.operatorStyle   = rdoStyle::RDOFS_NONE;
+	theme.defaultStyle    = RDOFS_NONE;
+	theme.identifierStyle = RDOFS_NONE;
+	theme.keywordStyle    = RDOFS_BOLD;
+	theme.functionsStyle  = RDOFS_BOLD;
+	theme.traceStyle      = RDOFS_BOLD;
+	theme.commentStyle    = RDOFS_ITALIC;
+	theme.numberStyle     = RDOFS_NONE;
+	theme.stringStyle     = RDOFS_NONE;
+	theme.operatorStyle   = RDOFS_NONE;
 
-	theme.bookmarkStyle = rdoStyle::RDOBOOKMARKS_CIRCLE;
-	theme.foldStyle     = rdoStyle::RDOFOLDS_PLUS;
+	theme.bookmarkStyle = RDOBOOKMARKS_CIRCLE;
+	theme.foldStyle     = RDOFOLDS_PLUS;
 
 	return theme;
 }
@@ -308,18 +309,18 @@ RDOEditorEditTheme RDOEditorEditTheme::getHtmlTheme()
 	theme.foldBgColor      = RGB( 0x00, 0x00, 0x00 );
 	theme.errorBgColor     = RGB( 0xFF, 0x80, 0x80 );
 
-	theme.defaultStyle    = rdoStyle::RDOFS_NONE;
-	theme.identifierStyle = rdoStyle::RDOFS_NONE;
-	theme.keywordStyle    = rdoStyle::RDOFS_NONE;
-	theme.functionsStyle  = rdoStyle::RDOFS_NONE;
-	theme.traceStyle      = rdoStyle::RDOFS_NONE;
-	theme.commentStyle    = rdoStyle::RDOFS_NONE;
-	theme.numberStyle     = rdoStyle::RDOFS_NONE;
-	theme.stringStyle     = rdoStyle::RDOFS_NONE;
-	theme.operatorStyle   = rdoStyle::RDOFS_NONE;
+	theme.defaultStyle    = RDOFS_NONE;
+	theme.identifierStyle = RDOFS_NONE;
+	theme.keywordStyle    = RDOFS_NONE;
+	theme.functionsStyle  = RDOFS_NONE;
+	theme.traceStyle      = RDOFS_NONE;
+	theme.commentStyle    = RDOFS_NONE;
+	theme.numberStyle     = RDOFS_NONE;
+	theme.stringStyle     = RDOFS_NONE;
+	theme.operatorStyle   = RDOFS_NONE;
 
-	theme.bookmarkStyle = rdoStyle::RDOBOOKMARKS_CIRCLE;
-	theme.foldStyle     = rdoStyle::RDOFOLDS_PLUS;
+	theme.bookmarkStyle = RDOBOOKMARKS_CIRCLE;
+	theme.foldStyle     = RDOFOLDS_PLUS;
 
 	return theme;
 }
@@ -347,18 +348,18 @@ RDOEditorEditTheme RDOEditorEditTheme::getClassicTheme()
 	theme.foldBgColor      = RGB( 0x00, 0x00, 0x00 );
 	theme.errorBgColor     = RGB( 0xFF, 0x00, 0x80 );
 
-	theme.defaultStyle    = rdoStyle::RDOFS_NONE;
-	theme.identifierStyle = rdoStyle::RDOFS_NONE;
-	theme.keywordStyle    = rdoStyle::RDOFS_NONE;
-	theme.functionsStyle  = rdoStyle::RDOFS_NONE;
-	theme.traceStyle      = rdoStyle::RDOFS_NONE;
-	theme.commentStyle    = rdoStyle::RDOFS_NONE;
-	theme.numberStyle     = rdoStyle::RDOFS_NONE;
-	theme.stringStyle     = rdoStyle::RDOFS_NONE;
-	theme.operatorStyle   = rdoStyle::RDOFS_NONE;
+	theme.defaultStyle    = RDOFS_NONE;
+	theme.identifierStyle = RDOFS_NONE;
+	theme.keywordStyle    = RDOFS_NONE;
+	theme.functionsStyle  = RDOFS_NONE;
+	theme.traceStyle      = RDOFS_NONE;
+	theme.commentStyle    = RDOFS_NONE;
+	theme.numberStyle     = RDOFS_NONE;
+	theme.stringStyle     = RDOFS_NONE;
+	theme.operatorStyle   = RDOFS_NONE;
 
-	theme.bookmarkStyle = rdoStyle::RDOBOOKMARKS_CIRCLE;
-	theme.foldStyle     = rdoStyle::RDOFOLDS_PLUS;
+	theme.bookmarkStyle = RDOBOOKMARKS_CIRCLE;
+	theme.foldStyle     = RDOFOLDS_PLUS;
 
 	return theme;
 }
@@ -386,18 +387,18 @@ RDOEditorEditTheme RDOEditorEditTheme::getTwilightTheme()
 	theme.foldBgColor      = RGB( 0x00, 0x00, 0x00 );
 	theme.errorBgColor     = RGB( 0xFF, 0x80, 0x80 );
 
-	theme.defaultStyle    = rdoStyle::RDOFS_NONE;
-	theme.identifierStyle = rdoStyle::RDOFS_NONE;
-	theme.keywordStyle    = rdoStyle::RDOFS_BOLD;
-	theme.functionsStyle  = rdoStyle::RDOFS_BOLD;
-	theme.traceStyle      = (rdoStyle::RDOFontStyle)(rdoStyle::RDOFS_BOLD | rdoStyle::RDOFS_ITALIC);
-	theme.commentStyle    = rdoStyle::RDOFS_ITALIC;
-	theme.numberStyle     = rdoStyle::RDOFS_NONE;
-	theme.stringStyle     = rdoStyle::RDOFS_NONE;
-	theme.operatorStyle   = rdoStyle::RDOFS_NONE;
+	theme.defaultStyle    = RDOFS_NONE;
+	theme.identifierStyle = RDOFS_NONE;
+	theme.keywordStyle    = RDOFS_BOLD;
+	theme.functionsStyle  = RDOFS_BOLD;
+	theme.traceStyle      = (RDOFontStyle)(RDOFS_BOLD | RDOFS_ITALIC);
+	theme.commentStyle    = RDOFS_ITALIC;
+	theme.numberStyle     = RDOFS_NONE;
+	theme.stringStyle     = RDOFS_NONE;
+	theme.operatorStyle   = RDOFS_NONE;
 
-	theme.bookmarkStyle = rdoStyle::RDOBOOKMARKS_CIRCLE;
-	theme.foldStyle     = rdoStyle::RDOFOLDS_PLUS;
+	theme.bookmarkStyle = RDOBOOKMARKS_CIRCLE;
+	theme.foldStyle     = RDOFOLDS_PLUS;
 
 	return theme;
 }
@@ -425,18 +426,18 @@ RDOEditorEditTheme RDOEditorEditTheme::getOceanTheme()
 	theme.foldBgColor      = RGB( 0x00, 0x00, 0x00 );
 	theme.errorBgColor     = RGB( 0xFF, 0xFF, 0x00 );
 
-	theme.defaultStyle    = rdoStyle::RDOFS_NONE;
-	theme.identifierStyle = rdoStyle::RDOFS_NONE;
-	theme.keywordStyle    = rdoStyle::RDOFS_BOLD;
-	theme.functionsStyle  = rdoStyle::RDOFS_BOLD;
-	theme.traceStyle      = rdoStyle::RDOFS_BOLD;
-	theme.commentStyle    = rdoStyle::RDOFS_ITALIC;
-	theme.numberStyle     = rdoStyle::RDOFS_NONE;
-	theme.stringStyle     = rdoStyle::RDOFS_NONE;
-	theme.operatorStyle   = rdoStyle::RDOFS_NONE;
+	theme.defaultStyle    = RDOFS_NONE;
+	theme.identifierStyle = RDOFS_NONE;
+	theme.keywordStyle    = RDOFS_BOLD;
+	theme.functionsStyle  = RDOFS_BOLD;
+	theme.traceStyle      = RDOFS_BOLD;
+	theme.commentStyle    = RDOFS_ITALIC;
+	theme.numberStyle     = RDOFS_NONE;
+	theme.stringStyle     = RDOFS_NONE;
+	theme.operatorStyle   = RDOFS_NONE;
 
-	theme.bookmarkStyle = rdoStyle::RDOBOOKMARKS_CIRCLE;
-	theme.foldStyle     = rdoStyle::RDOFOLDS_PLUS;
+	theme.bookmarkStyle = RDOBOOKMARKS_CIRCLE;
+	theme.foldStyle     = RDOFOLDS_PLUS;
 
 	return theme;
 }
