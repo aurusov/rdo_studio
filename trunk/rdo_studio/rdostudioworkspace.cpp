@@ -2,6 +2,7 @@
 #include "rdostudioworkspace.h"
 #include "./rdo_tracer/rdotracertrace.h"
 #include "./rdo_tracer/tracer_ctrls/rdotracertreectrl.h"
+#include "resource.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -37,11 +38,10 @@ int RDOStudioWorkspace::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	tab.modifyTabStyle( 0, TCS_BOTTOM | TCS_MULTILINE );
 
 	RDOTracerTreeCtrl* trace = tracer.createTree();
-	frames = new CTreeCtrl;
-
 	trace->Create( 0, CRect(0, 0, 0, 0), &tab, 0 );
-	frames->Create( TVS_HASLINES | TVS_SHOWSELALWAYS | TVS_DISABLEDRAGDROP, CRect(0, 0, 0, 0), &tab, 0 );
-	frames->ModifyStyleEx( 0, WS_EX_CLIENTEDGE );
+
+	frames = new RDOStudioFramesTreeCtrl;
+	frames->Create( 0, CRect(0, 0, 0, 0), &tab, 0 );
 
 	tab.insertItem( trace, "Tracer" );
 	tab.insertItem( frames, "Frames" );

@@ -6,6 +6,7 @@
 #endif
 
 #include "rdostudiodockwnd.h"
+#include "rdostudioframestreectrl.h"
 
 #include <rdotabctrl.h>
 
@@ -16,11 +17,12 @@ class RDOStudioWorkspace: public RDOStudioDockWnd
 {
 private:
 	RDOTabCtrl tab;
-	CTreeCtrl* frames;
 
 public:
 	RDOStudioWorkspace();
 	virtual ~RDOStudioWorkspace();
+
+	RDOStudioFramesTreeCtrl* frames;
 
 protected:
 	//{{AFX_VIRTUAL(RDOStudioWorkspace)

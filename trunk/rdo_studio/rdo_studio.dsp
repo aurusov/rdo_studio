@@ -218,6 +218,10 @@ SOURCE=.\rdostudioframedoc.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\rdostudioframestreectrl.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdostudioframeview.cpp
 # End Source File
 # Begin Source File
@@ -361,6 +365,10 @@ SOURCE=.\rdostudioeditview.h
 # Begin Source File
 
 SOURCE=.\rdostudioframedoc.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdostudioframestreectrl.h
 # End Source File
 # Begin Source File
 
@@ -1019,6 +1027,10 @@ SOURCE=.\res\fileToolbar_d.bmp
 # Begin Source File
 
 SOURCE=.\res\framestr.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\framestreectrl.bmp
 # End Source File
 # Begin Source File
 

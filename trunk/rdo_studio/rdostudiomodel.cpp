@@ -473,12 +473,14 @@ double RDOStudioModel::getModelTime() const
 
 void RDOStudioModel::parseSuccess() const
 {
+	studioApp.mainFrame->workspace.frames->clear();
 	vector< const string* > frames = kernel.getSimulator()->getAllFrames();
 	vector< const string* >::iterator it = frames.begin();
 	while ( it != frames.end() ) {
-		TRACE( "%s\r\n", (*it)->c_str() );
+		studioApp.mainFrame->workspace.frames->insertItem( *(*it) );
 		it++;
 	}
+	studioApp.mainFrame->workspace.frames->expand();
 }
 
 void RDOStudioModel::parseFrame()
