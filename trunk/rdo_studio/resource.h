@@ -7,16 +7,17 @@
 #define IDC_CURMARGIN                   130
 #define ID_OPTIONS_COLORS_EDITTEXT      130
 #define IDR_EDITTYPE                    131
-#define IDR_PROJECTTOOLBAR              132
+#define IDR_FILETOOLBAR                 132
 #define IDB_TREECTRL                    133
 #define IDR_CHARTTYPE                   134
 #define IDR_FRAMETYPE                   135
-#define IDB_FRAME_TREECTRL              139
 #define IDD_BUFFER_DIALOG               142
-#define IDB_PROJECTTOOLBAR_D            144
+#define IDB_FILETOOLBAR_D               144
 #define IDB_EDITTOOLBAR_D               145
+#define IDR_BUILDTOOLBAR                148
 #define IDR_EDITTOOLBAR                 151
 #define IDD_OPTIONS_EDITOR_DIALOG       152
+#define IDB_BUILDTOOLBAR_D              152
 #define IDD_OPTIONS_COLORS_DIALOG       153
 #define IDD_FILEASSOCIATION_DIALOG      154
 #define IDC_CLEARAUTO_CHECK             1001
@@ -88,7 +89,6 @@
 #define ID_SEARCH_BOOKMARKPREVIOUS      32793
 #define ID_SEARCH_BOOKMARKSCLEAR        32794
 #define ID_FILE_SAVE_ALL                32795
-#define ID_FILE_RDO_SAVE                32796
 #define ID_VIEW_EDITOR_LINENUMBERMARGIN 32799
 #define ID_VIEW_EDITOR_MARGIN           32800
 #define ID_VIEW_EDITOR_FOLDMARGIN       32801
@@ -96,8 +96,6 @@
 #define ID_EDIT_COMPLETEWORD            32809
 #define ID_EDIT_COPYASRTF               32811
 #define ID_VIEW_EDITOR_TOGGLECURRENTFOLD 32812
-#define ID_RDO_RUN                      32821
-#define ID_RDO_STOP                     32822
 #define ID_INSERT_PAT_PATOPERATION      32840
 #define ID_INSERT_PAT_PATIRREGULAREVENT 32841
 #define ID_INSERT_PAT_PATRULE           32842
@@ -274,7 +272,7 @@
 #define ID_INSERT_BUFFER3_EDIT          33014
 #define ID_INSERT_BUFFER4_PASTE         33015
 #define ID_INSERT_BUFFER4_EDIT          33039
-#define ID_VIEW_TOOLBAR_PROJECTTOOLBAR  33040
+#define ID_VIEW_TOOLBAR_FILETOOLBAR     33040
 #define ID_VIEW_TOOLBAR_EDITTOOLBAR     33041
 #define ID_FILE_REOPEN_1                33042
 #define ID_FILE_REOPEN_2                33043
@@ -337,12 +335,20 @@
 #define ID_INSERT_BUFFER2_CLEAR         33102
 #define ID_INSERT_BUFFER3_CLEAR         33103
 #define ID_INSERT_BUFFER4_CLEAR         33104
-#define ID_FILE_RDO_CLOSE               33105
-#define ID_FILE_RDO_SAVE_AS             33106
+#define ID_FILE_MODEL_CLOSE             33105
+#define ID_FILE_MODEL_SAVE_AS           33106
 #define ID_SEARCH_FINDINMODEL           33117
 #define ID_CHART_STARTTRACE             33118
 #define ID_CHART_STOPTRACE              33120
 #define ID_CHART_TIMEWRAP               33121
+#define ID_VIEW_TOOLBAR_BUILDTOOLBAR    33132
+#define ID_MODEL_BUILD                  33133
+#define ID_MODEL_RUN                    33134
+#define ID_MODEL_STOP                   33135
+#define ID_MODEL_RUNNOSHOW              33136
+#define ID_MODEL_RUNANIMATION           33137
+#define ID_MODEL_RUNMONITOR             33138
+#define ID_FILE_MODEL_SAVE              33139
 #define ID_STATUSBAR_READONLY           40000
 #define ID_STATUSBAR_MODIFIED           40001
 #define ID_STATUSBAR_OVERWRITE          40002
@@ -398,23 +404,18 @@
 #define ID_MODELTIMESTATUSBAR           59397
 #define ID_MODELRUNTYPESTATUSBAR        59398
 #define ID_MSG_NO_HELP_FILE             60000
-#define ID_MSG_RDOSTART_ERROR           60001
-#define ID_MSG_CANTFIND                 60002
-#define ID_MSG_MODELOPEN_ERROR          60003
-#define ID_MSG_MODELOPEN_PMV_ERROR      60004
-#define ID_MSG_MODELOPEN_TRC_ERROR      60005
-#define ID_MSG_MODELSAVE_ERROR          60006
-#define ID_MSG_MODELSAVE_QUERY          60007
-#define ID_MSG_RDOSTARTFULLDEBUG_ERROR  60008
-#define ID_MSG_MODELCLOSE_ERROR         60009
+#define ID_MSG_CANTFIND                 60001
+#define ID_MSG_MODELOPEN_ERROR          60002
+#define ID_MSG_MODELSAVE_QUERY          60003
+#define ID_MSG_MODELCLOSE_ERROR         60004
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        144
-#define _APS_NEXT_COMMAND_VALUE         33122
+#define _APS_NEXT_RESOURCE_VALUE        153
+#define _APS_NEXT_COMMAND_VALUE         33140
 #define _APS_NEXT_CONTROL_VALUE         1001
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

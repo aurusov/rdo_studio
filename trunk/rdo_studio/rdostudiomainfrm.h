@@ -16,8 +16,10 @@ class RDOStudioMainFrame: public CMDIFrameWnd
 DECLARE_DYNAMIC(RDOStudioMainFrame)
 
 protected:
-	CToolBar           projectToolBar;
-	CImageList         projectToolBarImageList;
+	CToolBar           fileToolBar;
+	CImageList         fileToolBarImageList;
+	CToolBar           buildToolBar;
+	CImageList         buildToolBarImageList;
 	CToolBar           editToolBar;
 	CImageList         editToolBarImageList;
 	CStatusBar         statusBar;
@@ -47,9 +49,11 @@ public:
 protected:
 	//{{AFX_MSG(RDOStudioMainFrame)
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	afx_msg void OnViewProjectToolbar();
+	afx_msg void OnViewFileToolbar();
+	afx_msg void OnViewBuildToolbar();
 	afx_msg void OnViewEditToolbar();
-	afx_msg void OnUpdateViewProjectToolbar(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateViewFileToolbar(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateViewBuildToolbar(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateViewEditToolbar(CCmdUI* pCmdUI);
 	afx_msg void OnViewWorkspace();
 	afx_msg void OnViewOutput();

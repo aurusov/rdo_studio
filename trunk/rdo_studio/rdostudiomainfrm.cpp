@@ -18,9 +18,11 @@ IMPLEMENT_DYNAMIC(RDOStudioMainFrame, CMDIFrameWnd)
 BEGIN_MESSAGE_MAP(RDOStudioMainFrame, CMDIFrameWnd)
 	//{{AFX_MSG_MAP(RDOStudioMainFrame)
 	ON_WM_CREATE()
-	ON_COMMAND(ID_VIEW_TOOLBAR_PROJECTTOOLBAR, OnViewProjectToolbar)
+	ON_COMMAND(ID_VIEW_TOOLBAR_FILETOOLBAR, OnViewFileToolbar)
+	ON_COMMAND(ID_VIEW_TOOLBAR_BUILDTOOLBAR, OnViewBuildToolbar)
 	ON_COMMAND(ID_VIEW_TOOLBAR_EDITTOOLBAR, OnViewEditToolbar)
-	ON_UPDATE_COMMAND_UI(ID_VIEW_TOOLBAR_PROJECTTOOLBAR, OnUpdateViewProjectToolbar)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_TOOLBAR_FILETOOLBAR, OnUpdateViewFileToolbar)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_TOOLBAR_BUILDTOOLBAR, OnUpdateViewBuildToolbar)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_TOOLBAR_EDITTOOLBAR, OnUpdateViewEditToolbar)
 	ON_COMMAND(ID_VIEW_WORKSPACE, OnViewWorkspace)
 	ON_COMMAND(ID_VIEW_OUTPUT, OnViewOutput)
@@ -54,12 +56,19 @@ int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if ( CMDIFrameWnd::OnCreate(lpCreateStruct) == -1 ) return -1;
 
-	projectToolBar.CreateEx( this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
-	projectToolBar.LoadToolBar( IDR_PROJECTTOOLBAR );
-	projectToolBar.GetToolBarCtrl().SetWindowText( format( IDR_PROJECTTOOLBAR ).c_str() );
+	fileToolBar.CreateEx( this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
+	fileToolBar.LoadToolBar( IDR_FILETOOLBAR );
+	fileToolBar.GetToolBarCtrl().SetWindowText( format( IDR_FILETOOLBAR ).c_str() );
 
-	projectToolBarImageList.Create( IDB_PROJECTTOOLBAR_D, 16, 0, 0xFF00FF );
-	projectToolBar.GetToolBarCtrl().SetDisabledImageList( &projectToolBarImageList );
+	fileToolBarImageList.Create( IDB_FILETOOLBAR_D, 16, 0, 0xFF00FF );
+	fileToolBar.GetToolBarCtrl().SetDisabledImageList( &fileToolBarImageList );
+
+	buildToolBar.CreateEx( this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
+	buildToolBar.LoadToolBar( IDR_BUILDTOOLBAR );
+	buildToolBar.GetToolBarCtrl().SetWindowText( format( IDR_BUILDTOOLBAR ).c_str() );
+
+	buildToolBarImageList.Create( IDB_BUILDTOOLBAR_D, 16, 0, 0xFF00FF );
+	buildToolBar.GetToolBarCtrl().SetDisabledImageList( &buildToolBarImageList );
 
 	editToolBar.CreateEx( this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
 	editToolBar.LoadToolBar( IDR_EDITTOOLBAR );
@@ -82,15 +91,17 @@ int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	output.Create( format( ID_DOCK_OUTPUT ).c_str(), this, -1 );
 	output.SetBarStyle( output.GetBarStyle() | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
 
-	projectToolBar.EnableDocking( CBRS_ALIGN_ANY );
+	fileToolBar.EnableDocking( CBRS_ALIGN_ANY );
+	buildToolBar.EnableDocking( CBRS_ALIGN_ANY );
 	editToolBar.EnableDocking( CBRS_ALIGN_ANY );
 	workspace.EnableDocking( CBRS_ALIGN_ANY );
 	output.EnableDocking( CBRS_ALIGN_ANY );
 
 	EnableDocking( CBRS_ALIGN_ANY );
 
-	DockControlBar( &projectToolBar );
-	dockControlBarBesideOf( editToolBar, projectToolBar );
+	DockControlBar( &fileToolBar );
+	dockControlBarBesideOf( buildToolBar, fileToolBar );
+	dockControlBarBesideOf( editToolBar, buildToolBar );
 	DockControlBar( &workspace, AFX_IDW_DOCKBAR_LEFT );
 	DockControlBar( &output, AFX_IDW_DOCKBAR_BOTTOM );
 
@@ -151,9 +162,14 @@ void RDOStudioMainFrame::dockControlBarBesideOf( CControlBar& bar, CControlBar& 
 	DockControlBar( &bar, n, rect );
 }
 
-void RDOStudioMainFrame::OnViewProjectToolbar() 
+void RDOStudioMainFrame::OnViewFileToolbar() 
 {
-	ShowControlBar( &projectToolBar, !(projectToolBar.GetStyle() & WS_VISIBLE), false );
+	ShowControlBar( &fileToolBar, !(fileToolBar.GetStyle() & WS_VISIBLE), false );
+}
+
+void RDOStudioMainFrame::OnViewBuildToolbar() 
+{
+	ShowControlBar( &buildToolBar, !(buildToolBar.GetStyle() & WS_VISIBLE), false );
 }
 
 void RDOStudioMainFrame::OnViewEditToolbar() 
@@ -161,9 +177,14 @@ void RDOStudioMainFrame::OnViewEditToolbar()
 	ShowControlBar( &editToolBar, !(editToolBar.GetStyle() & WS_VISIBLE), false );
 }
 
-void RDOStudioMainFrame::OnUpdateViewProjectToolbar(CCmdUI* pCmdUI) 
+void RDOStudioMainFrame::OnUpdateViewFileToolbar(CCmdUI* pCmdUI) 
 {
-	pCmdUI->SetCheck( projectToolBar.GetStyle() & WS_VISIBLE );
+	pCmdUI->SetCheck( fileToolBar.GetStyle() & WS_VISIBLE );
+}
+
+void RDOStudioMainFrame::OnUpdateViewBuildToolbar(CCmdUI* pCmdUI) 
+{
+	pCmdUI->SetCheck( buildToolBar.GetStyle() & WS_VISIBLE );
 }
 
 void RDOStudioMainFrame::OnUpdateViewEditToolbar(CCmdUI* pCmdUI) 

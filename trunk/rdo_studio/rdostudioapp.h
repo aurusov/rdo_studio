@@ -52,10 +52,12 @@ public:
 	afx_msg void OnFileSaveAs();
 	afx_msg void OnUpdateFileClose(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateFileSaveAs(CCmdUI* pCmdUI);
-	afx_msg void OnRdoRun();
-	afx_msg void OnRdoStop();
-	afx_msg void OnUpdateRdoRun(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateRdoStop(CCmdUI* pCmdUI);
+	afx_msg void OnModelBuild();
+	afx_msg void OnModelRun();
+	afx_msg void OnModelStop();
+	afx_msg void OnUpdateModelBuild(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateModelRun(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateModelStop(CCmdUI* pCmdUI);
 	afx_msg void OnChartStarttrace();
 	afx_msg void OnUpdateChartStarttrace(CCmdUI* pCmdUI);
 	afx_msg void OnChartStoptrace();

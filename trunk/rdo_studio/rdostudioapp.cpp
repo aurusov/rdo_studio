@@ -29,18 +29,20 @@ BEGIN_MESSAGE_MAP(RDOStudioApp, CWinApp)
 	//{{AFX_MSG_MAP(RDOStudioApp)
 	ON_COMMAND(ID_FILE_NEW, OnFileNew)
 	ON_COMMAND(ID_FILE_OPEN, OnFileOpen)
-	ON_COMMAND(ID_FILE_RDO_SAVE, OnFileSave)
-	ON_UPDATE_COMMAND_UI(ID_FILE_RDO_SAVE, OnUpdateFileSave)
+	ON_COMMAND(ID_FILE_MODEL_SAVE, OnFileSave)
+	ON_UPDATE_COMMAND_UI(ID_FILE_MODEL_SAVE, OnUpdateFileSave)
 	ON_COMMAND(ID_FILE_SAVE_ALL, OnFileSaveAll)
 	ON_UPDATE_COMMAND_UI(ID_FILE_SAVE_ALL, OnUpdateFileSaveAll)
-	ON_COMMAND(ID_FILE_RDO_CLOSE, OnFileClose)
-	ON_COMMAND(ID_FILE_RDO_SAVE_AS, OnFileSaveAs)
-	ON_UPDATE_COMMAND_UI(ID_FILE_RDO_CLOSE, OnUpdateFileClose)
-	ON_UPDATE_COMMAND_UI(ID_FILE_RDO_SAVE_AS, OnUpdateFileSaveAs)
-	ON_COMMAND(ID_RDO_RUN, OnRdoRun)
-	ON_COMMAND(ID_RDO_STOP, OnRdoStop)
-	ON_UPDATE_COMMAND_UI(ID_RDO_RUN, OnUpdateRdoRun)
-	ON_UPDATE_COMMAND_UI(ID_RDO_STOP, OnUpdateRdoStop)
+	ON_COMMAND(ID_FILE_MODEL_CLOSE, OnFileClose)
+	ON_COMMAND(ID_FILE_MODEL_SAVE_AS, OnFileSaveAs)
+	ON_UPDATE_COMMAND_UI(ID_FILE_MODEL_CLOSE, OnUpdateFileClose)
+	ON_UPDATE_COMMAND_UI(ID_FILE_MODEL_SAVE_AS, OnUpdateFileSaveAs)
+	ON_COMMAND(ID_MODEL_BUILD, OnModelBuild)
+	ON_COMMAND(ID_MODEL_RUN, OnModelRun)
+	ON_COMMAND(ID_MODEL_STOP, OnModelStop)
+	ON_UPDATE_COMMAND_UI(ID_MODEL_BUILD, OnUpdateModelBuild)
+	ON_UPDATE_COMMAND_UI(ID_MODEL_RUN, OnUpdateModelRun)
+	ON_UPDATE_COMMAND_UI(ID_MODEL_STOP, OnUpdateModelStop)
 	ON_COMMAND(ID_CHART_STARTTRACE, OnChartStarttrace)
 	ON_UPDATE_COMMAND_UI(ID_CHART_STARTTRACE, OnUpdateChartStarttrace)
 	ON_COMMAND(ID_CHART_STOPTRACE, OnChartStoptrace)
@@ -330,22 +332,32 @@ void RDOStudioApp::saveReopen() const
 	}
 }
 
-void RDOStudioApp::OnRdoRun() 
+void RDOStudioApp::OnModelBuild() 
+{
+//	model->runModel();
+}
+
+void RDOStudioApp::OnModelRun() 
 {
 	model->runModel();
 }
 
-void RDOStudioApp::OnRdoStop() 
+void RDOStudioApp::OnModelStop() 
 {
 	model->stopModel();
 }
 
-void RDOStudioApp::OnUpdateRdoRun(CCmdUI* pCmdUI) 
+void RDOStudioApp::OnUpdateModelBuild(CCmdUI* pCmdUI) 
 {
 	pCmdUI->Enable( model && model->getModelDoc() && !model->isRunning() );
 }
 
-void RDOStudioApp::OnUpdateRdoStop(CCmdUI* pCmdUI) 
+void RDOStudioApp::OnUpdateModelRun(CCmdUI* pCmdUI) 
+{
+	pCmdUI->Enable( model && model->getModelDoc() && !model->isRunning() );
+}
+
+void RDOStudioApp::OnUpdateModelStop(CCmdUI* pCmdUI) 
 {
 	pCmdUI->Enable( model && model->getModelDoc() && model->isRunning() );
 }

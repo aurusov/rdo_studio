@@ -70,26 +70,25 @@ END
 // Bitmap
 //
 
-IDB_PROJECTTOOLBAR_D    BITMAP  DISCARDABLE     "res\\projectToolbar_d.bmp"
+IDB_FILETOOLBAR_D       BITMAP  DISCARDABLE     "res\\fileToolbar_d.bmp"
 IDB_EDITTOOLBAR_D       BITMAP  DISCARDABLE     "res\\editToolbar_d.bmp"
-IDR_PROJECTTOOLBAR      BITMAP  DISCARDABLE     "res\\projectToolbar.bmp"
+IDR_FILETOOLBAR         BITMAP  DISCARDABLE     "res\\fileToolbar.bmp"
 IDB_TREECTRL            BITMAP  DISCARDABLE     "res\\tracertreectrl.bmp"
 IDR_EDITTOOLBAR         BITMAP  MOVEABLE PURE   "res\\editToolbar.bmp"
+IDR_BUILDTOOLBAR        BITMAP  DISCARDABLE     "res\\buildToolbar.bmp"
+IDB_BUILDTOOLBAR_D      BITMAP  DISCARDABLE     "res\\buildToolbar_d.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // Toolbar
 //
 
-IDR_PROJECTTOOLBAR TOOLBAR DISCARDABLE  16, 15
+IDR_FILETOOLBAR TOOLBAR DISCARDABLE  16, 15
 BEGIN
     BUTTON      ID_FILE_NEW
     BUTTON      ID_FILE_OPEN
-    BUTTON      ID_FILE_RDO_SAVE
+    BUTTON      ID_FILE_MODEL_SAVE
     BUTTON      ID_FILE_SAVE_ALL
-    SEPARATOR
-    BUTTON      ID_RDO_RUN
-    BUTTON      ID_RDO_STOP
 END
 
 IDR_EDITTOOLBAR TOOLBAR DISCARDABLE  16, 15
@@ -106,6 +105,16 @@ BEGIN
     SEPARATOR
     BUTTON      ID_SEARCH_BOOKMARKPREVIOUS
     BUTTON      ID_SEARCH_BOOKMARKNEXT
+END
+
+IDR_BUILDTOOLBAR TOOLBAR DISCARDABLE  16, 15
+BEGIN
+    BUTTON      ID_MODEL_RUN
+    BUTTON      ID_MODEL_STOP
+    SEPARATOR
+    BUTTON      ID_MODEL_RUNNOSHOW
+    BUTTON      ID_MODEL_RUNANIMATION
+    BUTTON      ID_MODEL_RUNMONITOR
 END
 
 
@@ -423,10 +432,10 @@ BEGIN
             MENUITEM "9",                           ID_FILE_REOPEN_9
             MENUITEM "10",                          ID_FILE_REOPEN_10
         END
-        MENUITEM "Close",                       ID_FILE_RDO_CLOSE
+        MENUITEM "Close",                       ID_FILE_MODEL_CLOSE
         MENUITEM SEPARATOR
-        MENUITEM "&Save\tCtrl+S",               ID_FILE_RDO_SAVE
-        MENUITEM "Sa&ve As...",                 ID_FILE_RDO_SAVE_AS
+        MENUITEM "&Save\tCtrl+S",               ID_FILE_MODEL_SAVE
+        MENUITEM "Sa&ve As...",                 ID_FILE_MODEL_SAVE_AS
         MENUITEM "Save All",                    ID_FILE_SAVE_ALL
         MENUITEM SEPARATOR
         MENUITEM "E&xit",                       ID_APP_EXIT
@@ -493,9 +502,11 @@ BEGIN
         MENUITEM "&Output",                     ID_VIEW_OUTPUT
         POPUP "&Toolbar"
         BEGIN
-            MENUITEM "&Project Toolbar",            ID_VIEW_TOOLBAR_PROJECTTOOLBAR
+            MENUITEM "&File Toolbar",               ID_VIEW_TOOLBAR_FILETOOLBAR
 
-            MENUITEM "E&dit Toolbar",               ID_VIEW_TOOLBAR_EDITTOOLBAR
+            MENUITEM "&Build Toolbar",              ID_VIEW_TOOLBAR_BUILDTOOLBAR
+
+            MENUITEM "&Edit Toolbar",               ID_VIEW_TOOLBAR_EDITTOOLBAR
 
         END
         MENUITEM SEPARATOR
@@ -779,10 +790,11 @@ BEGIN
             MENUITEM "&Clear\tCtrl+Shift+4",        ID_INSERT_BUFFER4_CLEAR
         END
     END
-    POPUP "&Project"
+    POPUP "&Model"
     BEGIN
-        MENUITEM "&Run\tF5",                    ID_RDO_RUN
-        MENUITEM "&Stop\tShift+F5",             ID_RDO_STOP
+        MENUITEM "&Build\tF7",                  ID_MODEL_BUILD
+        MENUITEM "&Execute\tF5",                ID_MODEL_RUN
+        MENUITEM "&Stop\tShift+F5",             ID_MODEL_STOP
     END
     POPUP "&Chart"
     BEGIN
@@ -891,7 +903,7 @@ BEGIN
     "R",            ID_SEARCH_REPLACE,      VIRTKEY, CONTROL, NOINVERT
     "R",            ID_EMPTYCOMMAND_6,      VIRTKEY, SHIFT, CONTROL, 
                                                     NOINVERT
-    "S",            ID_FILE_RDO_SAVE,       VIRTKEY, CONTROL, NOINVERT
+    "S",            ID_FILE_MODEL_SAVE,     VIRTKEY, CONTROL, NOINVERT
     "S",            ID_EMPTYCOMMAND_18,     VIRTKEY, SHIFT, CONTROL, 
                                                     NOINVERT
     "T",            ID_EMPTYCOMMAND_7,      VIRTKEY, SHIFT, CONTROL, 
@@ -918,9 +930,11 @@ BEGIN
     VK_F3,          ID_SEARCH_FINDPREVIOUS, VIRTKEY, SHIFT, NOINVERT
     VK_F3,          ID_SEARCH_FINDPREVIOUS_FAST, VIRTKEY, SHIFT, CONTROL, 
                                                     NOINVERT
-    VK_F5,          ID_RDO_RUN,             VIRTKEY, NOINVERT
-    VK_F5,          ID_RDO_STOP,            VIRTKEY, SHIFT, NOINVERT
-    VK_F9,          ID_RDO_RUN,             VIRTKEY, NOINVERT
+    VK_F5,          ID_MODEL_RUN,           VIRTKEY, NOINVERT
+    VK_F5,          ID_MODEL_RUN,           VIRTKEY, CONTROL, NOINVERT
+    VK_F5,          ID_MODEL_STOP,          VIRTKEY, SHIFT, NOINVERT
+    VK_F7,          ID_MODEL_BUILD,         VIRTKEY, NOINVERT
+    VK_F9,          ID_MODEL_RUN,           VIRTKEY, NOINVERT
     VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
     VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY, SHIFT, NOINVERT
     VK_SPACE,       ID_EDIT_COMPLETEWORD,   VIRTKEY, CONTROL, NOINVERT
@@ -998,7 +1012,7 @@ BEGIN
     ID_OPTIONS_COLORS_EDITTEXT 
                             "{ comments }\n$Pattern pattern_name : operation trace\n$Relevant_resources\n  rel_res2  : res_type2     Keep    Keep\n  rel_res1  : res_type1     Create  NoChange\n$Time = Abs(rel_res2.par1 - rel_res2.par3)\n{...}\n$End\n\ntext [ 10, 20, ... = 'text' ]"
     IDR_EDITTYPE            "\nedit\nEdit File\nRAO Files (.pat;.rtp;.rss;.opr;.frm;.fun;.dpt;.pmd;.pmv;.trc)\n.pat;.rtp;.rss;.opr;.frm;.fun;.dpt;.pmd;.pmv;.trc\nRAOStudio.Document\nRAO Document"
-    IDR_PROJECTTOOLBAR      "Project"
+    IDR_FILETOOLBAR         "File"
     IDR_CHARTTYPE           "\nchart\nChart\n\n\nRAOStudio.Document\nRAO Document"
     IDR_FRAMETYPE           "\nframe\nModel Frame\n\n\nRAOStudio.Document\nRAO Document"
 END
@@ -1068,6 +1082,7 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
+    IDR_BUILDTOOLBAR        "Build"
     IDR_EDITTOOLBAR         "Edit"
 END
 
@@ -1077,13 +1092,7 @@ BEGIN
     ID_SEARCH_REPLACE       "\nReplace (Ctrl+R)"
     ID_SEARCH_BOOKMARKNEXT  "\nNext Bookmark (F2)"
     ID_SEARCH_BOOKMARKPREVIOUS "\nPrevious Bookmark (Shift+F2)"
-    ID_FILE_RDO_SAVE        "\nSave (Ctrl+S)"
-END
-
-STRINGTABLE DISCARDABLE 
-BEGIN
-    ID_RDO_RUN              "\nRun"
-    ID_RDO_STOP             "\nStop"
+    ID_FILE_SAVE_ALL        "\nSave All"
 END
 
 STRINGTABLE DISCARDABLE 
@@ -1215,14 +1224,9 @@ END
 STRINGTABLE DISCARDABLE 
 BEGIN
     ID_MSG_NO_HELP_FILE     "Cannot find help file ""%s"".\r\nIt must be in the application's directory."
-    ID_MSG_RDOSTART_ERROR   "Cannot run ""%s""."
     ID_MSG_CANTFIND         "Cannot find the string '%s'."
     ID_MSG_MODELOPEN_ERROR  "Cannot open model."
-    ID_MSG_MODELOPEN_PMV_ERROR "Cannot open results."
-    ID_MSG_MODELOPEN_TRC_ERROR "Cannot open trace."
-    ID_MSG_MODELSAVE_ERROR  "Cannot save model."
     ID_MSG_MODELSAVE_QUERY  "Save changes in project ?"
-    ID_MSG_RDOSTARTFULLDEBUG_ERROR "Cannot start debuger"
     ID_MSG_MODELCLOSE_ERROR "Cannot close model."
 END
 
@@ -1230,6 +1234,20 @@ STRINGTABLE DISCARDABLE
 BEGIN
     ID_FINDINMODEL_ENDMSG_COUNT "'%d' occurrence(s) have been found.\r\n"
     ID_FINDINMODEL_ENDMSG_NOTFOUND "Cannot find the string '%s'.\r\n"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_MODEL_RUN            "\nExecute"
+    ID_MODEL_STOP           "\nStop"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_MODEL_RUNNOSHOW      "\nNo Show"
+    ID_MODEL_RUNANIMATION   "\nAnimation"
+    ID_MODEL_RUNMONITOR     "\nMonitor"
+    ID_FILE_MODEL_SAVE      "\nSave (Ctrl+S)"
 END
 
 #endif    // Russian resources

@@ -993,7 +993,7 @@ SOURCE=.\edit_ctrls\sci\License.txt
 # PROP Default_Filter "ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
 # Begin Source File
 
-SOURCE=.\res\bitmap1.bmp
+SOURCE=.\res\buildToolbar.bmp
 # End Source File
 # Begin Source File
 
@@ -1005,15 +1005,7 @@ SOURCE=.\res\editToolbar_d.bmp
 # End Source File
 # Begin Source File
 
-SOURCE=.\res\frametreectrl.bmp
-# End Source File
-# Begin Source File
-
-SOURCE=.\res\icon1.ico
-# End Source File
-# Begin Source File
-
-SOURCE=.\res\idr_mode.ico
+SOURCE=.\res\fileToolbar.bmp
 # End Source File
 # Begin Source File
 
@@ -1058,10 +1050,6 @@ SOURCE=.\res\rdostudioframedoc.ico
 # Begin Source File
 
 SOURCE=.\res\rdostudiomodeldoc.ico
-# End Source File
-# Begin Source File
-
-SOURCE=.\res\tracertreectrl.bmp
 # End Source File
 # End Group
 # End Target
