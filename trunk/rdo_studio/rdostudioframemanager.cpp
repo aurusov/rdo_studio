@@ -561,6 +561,63 @@ void RDOStudioFrameManager::showFrame( const RDOFrame* const frame, const int in
 
 						break;
 					}
+					case RDOFrameElement::triang_type: {
+						RDOTriangElement* element = static_cast<RDOTriangElement*>(currElement);
+						CBrush brush( RGB(element->background.r, element->background.g, element->background.b) );
+						CBrush* pOldBrush;
+						if( !element->background.isTransparent ) {
+							pOldBrush = dc.SelectObject( &brush );
+						} else {
+							pOldBrush = static_cast<CBrush*>(dc.SelectStockObject( NULL_BRUSH ));
+						}
+
+						CPen pen( PS_SOLID, 0, RGB(element->foreground.r, element->foreground.g, element->foreground.b) );
+						CPen* pOldPen;
+						bool restorePen = false;
+						if( !element->foreground.isTransparent ) {
+							pOldPen = dc.SelectObject( &pen );
+							restorePen = true;
+						}
+
+						CPoint pts[3];
+						pts[0].x = element->x1;
+						pts[0].y = element->y1;
+						pts[1].x = element->x2;
+						pts[1].y = element->y2;
+						pts[2].x = element->x3;
+						pts[2].y = element->y3;
+						dc.Polygon( pts, 3 );
+
+						dc.SelectObject( pOldBrush );
+						if ( restorePen ) dc.SelectObject( pOldPen );
+
+						break;
+					}
+					case RDOFrameElement::ellipse_type: {
+						RDOEllipseElement* element = static_cast<RDOEllipseElement*>(currElement);
+						CBrush brush( RGB(element->background.r, element->background.g, element->background.b) );
+						CBrush* pOldBrush;
+						if( !element->background.isTransparent ) {
+							pOldBrush = dc.SelectObject( &brush );
+						} else {
+							pOldBrush = static_cast<CBrush*>(dc.SelectStockObject( NULL_BRUSH ));
+						}
+
+						CPen pen( PS_SOLID, 0, RGB(element->foreground.r, element->foreground.g, element->foreground.b) );
+						CPen* pOldPen;
+						bool restorePen = false;
+						if( !element->foreground.isTransparent ) {
+							pOldPen = dc.SelectObject( &pen );
+							restorePen = true;
+						}
+
+						dc.Ellipse( element->x, element->y, element->x + element->w, element->y + element->h );
+
+						dc.SelectObject( pOldBrush );
+						if ( restorePen ) dc.SelectObject( pOldPen );
+
+						break;
+					}
 					case RDOFrameElement::bitmap_type: {
 						RDOBitmapElement* element = static_cast<RDOBitmapElement*>(currElement);
 						BMP* bmp = bitmaps[element->bmp];
