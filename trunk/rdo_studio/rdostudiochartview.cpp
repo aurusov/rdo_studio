@@ -50,8 +50,7 @@ RDOStudioChartView::RDOStudioChartView( const bool preview )
 	dragedSerie( NULL ),
 	valueCountX( 5 ),
 	valueCountY( 5 ),
-	yaxis( NULL ),
-	tickWidth( 5 ),
+	yAxis( NULL ),
 	timeWrap( true ),
 	chartRect( 0, 0, 0, 0 ),
 	xMax( 0 ),
@@ -65,9 +64,7 @@ RDOStudioChartView::RDOStudioChartView( const bool preview )
 	zoomAuto( false ),
 	scale_koeff( 1 ),
 	style( NULL ),
-	previewMode( preview ),
-	font_sizeTitle( 1.2 ),
-	font_sizeLegend( 0.8 )
+	previewMode( preview )
 {
 	if ( previewMode )
 		timeWrap = false;
@@ -120,8 +117,8 @@ void RDOStudioChartView::recalcLayout()
 	if ( !doc->docTimes.empty() ) {
 		double timeRange = doc->docTimes.back()->time - doc->docTimes.front()->time;
 		if ( timeRange > 0 ) {
-			long double timeScaleAuto = doUnwrapTime() ? (double)( chartRect.Width() - tickWidth * doc->ticksCount ) / timeRange : (double)chartRect.Width() / timeRange;
-			timeScale = (double)tickWidth / doc->minTimeOffset;
+			long double timeScaleAuto = doUnwrapTime() ? (double)( chartRect.Width() - style->fonts_ticks->tickWidth * doc->ticksCount ) / timeRange : (double)chartRect.Width() / timeRange;
+			timeScale = (double)style->fonts_ticks->tickWidth / doc->minTimeOffset;
 			auto_zoom = timeScaleAuto / timeScale;
 			if ( doUnwrapTime() && auto_zoom < 0 ) {
 				auto_zoom = 1;
@@ -165,7 +162,7 @@ void RDOStudioChartView::updateScrollBars( const bool need_update )
 	if ( !doc->docTimes.empty() ) {
 		size = roundDouble( ( doc->docTimes.back()->time - doc->docTimes.front()->time ) * timeScale );
 		if ( doUnwrapTime() )
-			size += tickWidth * doc->ticksCount;
+			size += style->fonts_ticks->tickWidth * doc->ticksCount;
 	} else {
 		size = 0;
 	}
@@ -185,7 +182,7 @@ void RDOStudioChartView::updateScrollBars( const bool need_update )
 bool RDOStudioChartView::setTo( const int from_max_pos )
 {
 	bool res = true;
-	int delta = ( from_max_pos - xPos - chartRect.Width() ) / tickWidth;
+	int delta = ( from_max_pos - xPos - chartRect.Width() ) / style->fonts_ticks->tickWidth;
 	if ( delta >= 0 ) {
 		res = false;
 		drawToX = drawFromX;
@@ -221,8 +218,8 @@ void RDOStudioChartView::setFromTo()
 		bool need_search_to = true;
 		int ticks = 0;
 		for( timesList::iterator it = doc->docTimes.begin(); it != doc->docTimes.end(); it++ ) {
-			it_pos = roundDouble( ( (*it)->time - doc->docTimes.front()->time ) * timeScale ) + ticks * tickWidth;
-			it_max_pos = it_pos + tickWidth * (*it)->eventCount;
+			it_pos = roundDouble( ( (*it)->time - doc->docTimes.front()->time ) * timeScale ) + ticks * style->fonts_ticks->tickWidth;
+			it_max_pos = it_pos + style->fonts_ticks->tickWidth * (*it)->eventCount;
 			if ( it_pos == xPos ) {
 				drawFromX = *(*it);
 				need_search_to = setTo( it_max_pos );
@@ -230,7 +227,7 @@ void RDOStudioChartView::setFromTo()
 			}
 			if ( it_pos < xPos && ( it_max_pos >= xPos ) ) {
 				drawFromX = *(*it);
-				drawFromEventIndex = roundDouble( (double)( xPos - it_pos ) / (double)tickWidth );
+				drawFromEventIndex = roundDouble( (double)( xPos - it_pos ) / (double)style->fonts_ticks->tickWidth );
 				need_search_to = setTo( it_max_pos );
 				break;
 			}
@@ -249,21 +246,21 @@ void RDOStudioChartView::setFromTo()
 			}
 			if ( it == doc->docTimes.end() && !doc->docTimes.empty() ) {
 				drawToX = drawFromX;
-				int delta = drawToX.eventCount * tickWidth - chartRect.Width();
-				drawToEventCount = delta >= 0 ? roundDouble( (double)delta / (double)tickWidth ) : drawToX.eventCount;
+				int delta = drawToX.eventCount * style->fonts_ticks->tickWidth - chartRect.Width();
+				drawToEventCount = delta >= 0 ? roundDouble( (double)delta / (double)style->fonts_ticks->tickWidth ) : drawToX.eventCount;
 
 			}
 			int pos = xPos + chartRect.Width();
 			for( ; it != doc->docTimes.end(); it++ ) {
-				it_pos = roundDouble( ( (*it)->time - doc->docTimes.front()->time ) * timeScale ) + ticks * tickWidth;
-				it_max_pos = it_pos + tickWidth * (*it)->eventCount;
+				it_pos = roundDouble( ( (*it)->time - doc->docTimes.front()->time ) * timeScale ) + ticks * style->fonts_ticks->tickWidth;
+				it_max_pos = it_pos + style->fonts_ticks->tickWidth * (*it)->eventCount;
 				if ( it_pos == pos ) {
 					drawToX = *(*it);
 					break;
 				}
 				if ( it_pos < pos && it_max_pos >= pos ) {
 					drawToX = *(*it);
-					drawToEventCount = roundDouble( (double)( pos - it_pos ) / (double)tickWidth );
+					drawToEventCount = roundDouble( (double)( pos - it_pos ) / (double)style->fonts_ticks->tickWidth );
 					break;
 				}
 				if ( it_pos > pos ) {
@@ -293,7 +290,7 @@ void RDOStudioChartView::drawTitle( CDC &dc, CRect& chartRect )
 	dc.SetBkMode( old_bk );
 }
 
-void RDOStudioChartView::drawYAxis( CDC &dc, CRect& chartRect, const RDOTracerSerie* axisValues)
+void RDOStudioChartView::drawYAxis( CDC &dc, CRect& chartRect, const RDOStudioDocSerie* axisValues)
 {
 	CRect tmprect;
 	CSize size;
@@ -301,14 +298,14 @@ void RDOStudioChartView::drawYAxis( CDC &dc, CRect& chartRect, const RDOTracerSe
 	tmprect.CopyRect( &newClientRect );
 	tmprect.left = 5;
 	tmprect.right = chartRect.left;
-	if ( axisValues && axisValues->getValueCount() ) {
+	if ( axisValues && axisValues->getSerie()->getValueCount() ) {
 		int old_bk = dc.SetBkMode( TRANSPARENT );
 		CFont*  oldFont = dc.SelectObject( &fontAxis );
 		COLORREF old_color = dc.SetTextColor( style->getTheme()->axisFgColor );
 		string formatstr = "%.3f";
 		double valoffset = 0;
-		double min = axisValues->getMinValue();
-		double max = axisValues->getMaxValue();
+		double min = axisValues->getSerie()->getMinValue();
+		double max = axisValues->getSerie()->getMaxValue();
 		int heightoffset = chartRect.Height() / ( valueCountY - 1 );
 		if ( max != min ) {
 			valoffset = ( max - min ) / ( valueCountY - 1 );
@@ -385,9 +382,9 @@ void RDOStudioChartView::drawXAxis( CDC &dc, CRect& chartRect )
 			int ticks = 0;
 			string str;
 			for( timesList::iterator it = unwrapTimesList.begin(); it != unwrapTimesList.end(); it++ ) {
-				int width = (*it)->eventCount * tickWidth;
+				int width = (*it)->eventCount * style->fonts_ticks->tickWidth;
 				RDOTracerTimeNow* timenow = (*it);
-				tmprect.left = chartRect.left + ( (*it)->time - unwrapTimesList.front()->time ) * timeScale + ticks * tickWidth;
+				tmprect.left = chartRect.left + ( (*it)->time - unwrapTimesList.front()->time ) * timeScale + ticks * style->fonts_ticks->tickWidth;
 				tmprect.left = min( tmprect.left, chartRect.right - 1 );
 				str = format( formatstr.c_str(), (*it)->time );
 				dc.DrawText( str.c_str(), tmprect, DT_LEFT );
@@ -428,14 +425,14 @@ void RDOStudioChartView::drawGrid(	CDC &dc, CRect& chartRect )
 				it ++;
 			}
 			for( ; it != unwrapTimesList.end(); it++ ) {
-				int width = (*it)->eventCount * tickWidth;
+				int width = (*it)->eventCount * style->fonts_ticks->tickWidth;
 				RDOTracerTimeNow* timenow = (*it);
-				tmprect.left = rect.left + ( (*it)->time - unwrapTimesList.front()->time ) * timeScale + ticks * tickWidth;
+				tmprect.left = rect.left + ( (*it)->time - unwrapTimesList.front()->time ) * timeScale + ticks * style->fonts_ticks->tickWidth;
 				if ( *(*it) == drawFromX ) {
-					width -= drawFromEventIndex * tickWidth;
+					width -= drawFromEventIndex * style->fonts_ticks->tickWidth;
 				}
 				if ( *(*it) == drawToX ) {
-					width = drawToEventCount * tickWidth;
+					width = drawToEventCount * style->fonts_ticks->tickWidth;
 				}
 				tmprect.right = tmprect.left + width;
 				dc.FillSolidRect( &tmprect, style->getTheme()->timeBgColor );
@@ -505,7 +502,7 @@ void RDOStudioChartView::OnDraw(CDC* pDC)
 	
 	//temporary
 	if ( pDoc->series.size() )
-		yaxis = pDoc->series.at( 0 ).getSerie();
+		yAxis = &pDoc->series.at( 0 );
 	//temporary
 
 	//GetClientRect( &newClientRect );
@@ -532,7 +529,7 @@ void RDOStudioChartView::OnDraw(CDC* pDC)
 	
 	if ( chartRect.Height() > 0 && chartRect.Width() > 0 ) {
 
-		drawYAxis( dc, chartRect, yaxis );
+		drawYAxis( dc, chartRect, yAxis );
 
 		setFromTo();
 		
@@ -614,7 +611,8 @@ int RDOStudioChartView::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	if ( CView::OnCreate( lpCreateStruct ) == -1 ) return -1;
 	//setFont( logStyle->font, false );
 	
-	setStyle( style = &studioApp.mainFrame->style_chart, false );
+	if ( !previewMode )
+		setStyle( &studioApp.mainFrame->style_chart, false );
 
 	if ( GetDocument() ) {
 		recalcLayout();
@@ -731,11 +729,11 @@ void RDOStudioChartView::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollB
 			break;
 
 		case SB_LINEUP:
-			inc = -tickWidth;
+			inc = -style->fonts_ticks->tickWidth;
 			break;
 
 		case SB_LINEDOWN:
-			inc = tickWidth;
+			inc = style->fonts_ticks->tickWidth;
 			break;
 
 		case SB_THUMBTRACK: {
@@ -916,8 +914,7 @@ void RDOStudioChartView::setFonts( const bool needRedraw )
 
 		memset( &lf, 0, sizeof(lf) );
 		// The negative is to allow for leading
-		bool b = chart_theme->titleStyle & RDOStyleFont::BOLD;
-		lf.lfHeight    = -MulDiv( roundDouble( style->font->size * font_sizeTitle ), ::GetDeviceCaps( dc.GetSafeHdc(), LOGPIXELSY ), 72 );
+		lf.lfHeight    = -MulDiv( style->fonts_ticks->titleFontSize, ::GetDeviceCaps( dc.GetSafeHdc(), LOGPIXELSY ), 72 );
 		lf.lfWeight    = chart_theme->titleStyle & RDOStyleFont::BOLD ? FW_BOLD : FW_NORMAL;
 		lf.lfItalic    = chart_theme->titleStyle & RDOStyleFont::ITALIC;
 		lf.lfUnderline = chart_theme->titleStyle & RDOStyleFont::UNDERLINE;
@@ -930,7 +927,7 @@ void RDOStudioChartView::setFonts( const bool needRedraw )
 
 		memset( &lf, 0, sizeof(lf) );
 		// The negative is to allow for leading
-		lf.lfHeight    = -MulDiv( roundDouble( style->font->size * font_sizeLegend ), ::GetDeviceCaps( dc.GetSafeHdc(), LOGPIXELSY ), 72 );
+		lf.lfHeight    = -MulDiv( style->fonts_ticks->legendFontSize, ::GetDeviceCaps( dc.GetSafeHdc(), LOGPIXELSY ), 72 );
 		lf.lfWeight    = chart_theme->legendStyle & RDOStyleFont::BOLD ? FW_BOLD : FW_NORMAL;
 		lf.lfItalic    = chart_theme->legendStyle & RDOStyleFont::ITALIC;
 		lf.lfUnderline = chart_theme->legendStyle & RDOStyleFont::UNDERLINE;
@@ -947,6 +944,11 @@ void RDOStudioChartView::setStyle( RDOStudioChartViewStyle* _style, const bool n
 
 	setFonts( false );
 	
+	if ( previewMode ) {
+		auto_zoom = 1;
+		setZoom( 1 );
+	}
+
 	if ( needRedraw ) {
 		recalcLayout();
 		updateScrollBars();

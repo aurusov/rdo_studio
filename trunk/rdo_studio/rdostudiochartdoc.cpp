@@ -119,6 +119,7 @@ void RDOStudioChartDoc::addSerie( RDOTracerSerie* const serie )
 		RDOStudioDocSerie docserie( serie );
 		//docserie.serie = serie;
 		docserie.color = selectColor();
+		docserie.docSerieTitle = serie->getTitle();
 		series.push_back( docserie );
 		for_each( serie->begin(), serie->end(), RDOStudioChartDocInsertTime( this ) );
 		serie->addToDoc( this );

@@ -5,12 +5,14 @@
 #pragma once
 #endif
 
+#include "rdo_tracer/rdotracerserie.h"
+
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioChartDoc
 // ----------------------------------------------------------------------------
-class RDOTracerSerie;
 class RDOTracerTimeNow;
 class RDOTracerValue;
+class RDOStudioChartView;
 
 typedef std::list< RDOTracerTimeNow* > timesList;
 
@@ -20,12 +22,14 @@ friend class RDOStudioChartDoc;
 protected:
 	RDOTracerSerie* serie;
 	COLORREF color;
+	std::string docSerieTitle;
 public:
 	RDOStudioDocSerie( RDOTracerSerie* _serie ) : serie( _serie ){};
 	~RDOStudioDocSerie() {};
 	RDOTracerSerie* getSerie() const { return serie; };
 	COLORREF getColor() const { return color; };
 	bool operator ==( const RDOTracerSerie* _serie ) const { return serie == _serie; };
+	void drawSerie( RDOStudioChartView* const view, CDC &dc, CRect &rect ) const { serie->drawSerie( view, dc, rect, color ); };
 };
 
 class RDOStudioChartDoc : public CDocument

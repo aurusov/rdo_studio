@@ -96,6 +96,57 @@ RDOStudioChartViewTheme RDOStudioChartViewTheme::getDefaultTheme()
 }
 
 // ----------------------------------------------------------------------------
+// ---------- RDOStudioChartViewFontsTicks
+// ----------------------------------------------------------------------------
+RDOStudioChartViewFontsTicks::RDOStudioChartViewFontsTicks()
+{
+	titleFontSize  = 12;
+	legendFontSize = 8;
+	tickWidth      = 5;
+}
+
+RDOStudioChartViewFontsTicks::~RDOStudioChartViewFontsTicks()
+{
+}
+
+RDOStudioChartViewFontsTicks& RDOStudioChartViewFontsTicks::operator =( const RDOStudioChartViewFontsTicks& fonts_ticks )
+{
+	titleFontSize  = fonts_ticks.titleFontSize;
+	legendFontSize = fonts_ticks.legendFontSize;
+	tickWidth      = fonts_ticks.tickWidth;
+
+	return *this;
+}
+
+bool RDOStudioChartViewFontsTicks::operator ==( const RDOStudioChartViewFontsTicks& fonts_ticks ) const
+{
+	return titleFontSize  == fonts_ticks.titleFontSize &&
+	       legendFontSize == fonts_ticks.legendFontSize &&
+		   tickWidth      == fonts_ticks.tickWidth;
+}
+
+bool RDOStudioChartViewFontsTicks::operator !=( const RDOStudioChartViewFontsTicks& fonts_ticks ) const
+{
+	return !(*this == fonts_ticks);
+}
+
+void RDOStudioChartViewFontsTicks::load( string regPath )
+{
+	regPath += "fonts_ticks";
+	titleFontSize  = AfxGetApp()->GetProfileInt( regPath.c_str(), "titleFontSize", titleFontSize );
+	legendFontSize = AfxGetApp()->GetProfileInt( regPath.c_str(), "legendFontSize", legendFontSize );
+	tickWidth      = AfxGetApp()->GetProfileInt( regPath.c_str(), "tickWidth", tickWidth );
+}
+
+void RDOStudioChartViewFontsTicks::save( string regPath ) const
+{
+	regPath += "fonts_ticks";
+	AfxGetApp()->WriteProfileInt( regPath.c_str(), "titleFontSize", titleFontSize );
+	AfxGetApp()->WriteProfileInt( regPath.c_str(), "legendFontSize", legendFontSize );
+	AfxGetApp()->WriteProfileInt( regPath.c_str(), "tickWidth", tickWidth );
+}
+
+// ----------------------------------------------------------------------------
 // ---------- RDOStudioChartViewStyle
 // ----------------------------------------------------------------------------
 RDOStudioChartViewStyle::RDOStudioChartViewStyle() : RDOStyleWithTheme()
@@ -111,10 +162,16 @@ void RDOStudioChartViewStyle::initTheme()
 	theme = new RDOStudioChartViewTheme;
 }
 
+void RDOStudioChartViewStyle::initFontsTicks()
+{
+	fonts_ticks = new RDOStudioChartViewFontsTicks;
+}
+
 RDOStudioChartViewStyle& RDOStudioChartViewStyle::operator =( const RDOStudioChartViewStyle& style )
 {
 	RDOStyleWithTheme::operator=( style );
 	if ( theme  && style.theme )  *static_cast<RDOStudioChartViewTheme*>(theme) = *static_cast<RDOStudioChartViewTheme*>(style.theme);
+	if ( fonts_ticks  && style.fonts_ticks )  *fonts_ticks = *style.fonts_ticks;
 	return *this;
 }
 
@@ -122,6 +179,7 @@ bool RDOStudioChartViewStyle::operator ==( const RDOStudioChartViewStyle& style 
 {
 	bool flag = RDOStyleWithTheme::operator==( style );
 	if ( theme  && style.theme  && flag ) flag &= *static_cast<RDOStudioChartViewTheme*>(theme) == *static_cast<RDOStudioChartViewTheme*>(style.theme);
+	if ( fonts_ticks  && style.fonts_ticks && flag ) flag &= *fonts_ticks == *style.fonts_ticks;
 	return flag;
 }
 
@@ -134,4 +192,23 @@ void RDOStudioChartViewStyle::init( const std::string& _regPath )
 {
 	RDOStyleWithTheme::init( _regPath );
 	*font = rdoStyle::RDOStyleFont::getChartViewFont();
+	initFontsTicks();
+}
+
+bool RDOStudioChartViewStyle::load()
+{
+	if ( RDOStyleWithTheme::load() ) {
+		if ( fonts_ticks ) fonts_ticks->load( regPath );
+		return true;
+	}
+	return false;
+}
+
+bool RDOStudioChartViewStyle::save() const
+{
+	if ( RDOStyleWithTheme::save() ) {
+		if ( fonts_ticks ) fonts_ticks->save( regPath );
+		return true;
+	}
+	return false;
 }

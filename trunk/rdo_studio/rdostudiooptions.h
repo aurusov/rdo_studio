@@ -201,6 +201,12 @@ private:
 protected:
 	//{{AFX_DATA(RDOStudioOptionsColorsStyles)
 	enum { IDD = IDD_OPTIONS_STYLESANDCOLORS };
+	CStatic	m_title_fontSizeStatic;
+	CStatic	m_leg_fontSizeStatic;
+	CComboBox	m_leg_fontSizeCombo;
+	CComboBox	m_title_fontSizeCombo;
+	CStatic	m_tickWidthStatic;
+	CEdit	m_tickWidth;
 	CStatic	m_vertBorderStatic;
 	CEdit	m_vertBorder;
 	CStatic	m_horzBorderStatic;

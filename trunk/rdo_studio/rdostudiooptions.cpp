@@ -265,6 +265,9 @@ BEGIN_MESSAGE_MAP(RDOStudioOptionsColorsStyles, CPropertyPage)
 	ON_CBN_SELCHANGE(IDC_THEME_COMBO, OnThemeChanged)
 	ON_EN_CHANGE(IDC_VERTBORDER_EDIT, OnUpdateModify)
 	ON_EN_CHANGE(IDC_HORZBORDER_EDIT, OnUpdateModify)
+	ON_CBN_SELCHANGE(IDC_TITLE_FONTSIZE_COMBO, OnUpdateModify)
+	ON_CBN_SELCHANGE(IDC_LEGEND_FONTSIZE_COMBO, OnUpdateModify)
+	ON_EN_CHANGE(IDC_TICKWIDTH_EDIT, OnUpdateModify)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -411,6 +414,12 @@ void RDOStudioOptionsColorsStyles::DoDataExchange(CDataExchange* pDX)
 	CPropertyPage::DoDataExchange(pDX);
 
 	//{{AFX_DATA_MAP(RDOStudioOptionsColorsStyles)
+	DDX_Control(pDX, IDC_TITLE_FONTSIZE_STATIC, m_title_fontSizeStatic);
+	DDX_Control(pDX, IDC_LEGEND_FONTSIZE_STATIC, m_leg_fontSizeStatic);
+	DDX_Control(pDX, IDC_LEGEND_FONTSIZE_COMBO, m_leg_fontSizeCombo);
+	DDX_Control(pDX, IDC_TITLE_FONTSIZE_COMBO, m_title_fontSizeCombo);
+	DDX_Control(pDX, IDC_TICKWIDTH_STATIC, m_tickWidthStatic);
+	DDX_Control(pDX, IDC_TICKWIDTH_EDIT, m_tickWidth);
 	DDX_Control(pDX, IDC_VERTBORDER_STATIC, m_vertBorderStatic);
 	DDX_Control(pDX, IDC_VERTBORDER_EDIT, m_vertBorder);
 	DDX_Control(pDX, IDC_HORZBORDER_STATIC, m_horzBorderStatic);
@@ -512,6 +521,7 @@ BOOL RDOStudioOptionsColorsStyles::OnInitDialog()
 	sheet->preview_chart_doc->SetTitle( format( IDS_COLORSTYLE_CHART_SAMPLE1 ).c_str() );
 	sheet->preview_chart->previewMode = true;
 	sheet->preview_chart->Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, 0 );
+	sheet->preview_chart->setStyle( &sheet->style_chart, false );
 	sheet->preview_chart_doc->AddView( sheet->preview_chart );
 	//initializing times vector
 	sheet->preview_times.push_back( RDOTracerTimeNow( 0, 3 ) );
@@ -577,10 +587,28 @@ BOOL RDOStudioOptionsColorsStyles::OnInitDialog()
 
 	int vertBorder = sheet->style_trace.borders->vertBorder;
 	int horzBorder = sheet->style_trace.borders->horzBorder;
+	int tickWidth = sheet->style_chart.fonts_ticks->tickWidth;
+	int title_font_size = sheet->style_chart.fonts_ticks->titleFontSize;
+	int legent_font_size = sheet->style_chart.fonts_ticks->legendFontSize;
 	m_vertBorder.SetWindowText( format( "%d", vertBorder ).c_str() );
 	m_horzBorder.SetWindowText( format( "%d", horzBorder ).c_str() );
 	m_vertBorder.SetLimitText( 2 );
 	m_horzBorder.SetLimitText( 2 );
+
+	m_tickWidth.SetWindowText( format( "%d", tickWidth ).c_str() );
+	m_tickWidth.SetLimitText( 2 );
+	int index = m_title_fontSizeCombo.FindStringExact( -1, format( "%d", title_font_size ).c_str() );
+	if ( index != CB_ERR ) {
+		m_title_fontSizeCombo.SetCurSel( index );
+	} else {
+		m_title_fontSizeCombo.SetCurSel( -1 );
+	}
+	index = m_leg_fontSizeCombo.FindStringExact( -1, format( "%d", legent_font_size ).c_str() );
+	if ( index != CB_ERR ) {
+		m_leg_fontSizeCombo.SetCurSel( index );
+	} else {
+		m_leg_fontSizeCombo.SetCurSel( -1 );
+	}
 
 	setPreviewAsCombo( STYLEObject::source );
 
@@ -703,6 +731,15 @@ void RDOStudioOptionsColorsStyles::updateStyleItem()
 		m_vertBorderStatic.ShowWindow( flag_border ? SW_SHOW : SW_HIDE );
 		m_horzBorder.ShowWindow( flag_border ? SW_SHOW : SW_HIDE );
 		m_horzBorderStatic.ShowWindow( flag_border ? SW_SHOW : SW_HIDE );
+
+		// Update fonts and ticks
+		bool flag_fonts_ticks = type == STYLEObject::chart;
+		m_title_fontSizeStatic.ShowWindow( flag_fonts_ticks ? SW_SHOW : SW_HIDE );
+		m_leg_fontSizeStatic.ShowWindow( flag_fonts_ticks ? SW_SHOW : SW_HIDE );
+		m_leg_fontSizeCombo.ShowWindow( flag_fonts_ticks ? SW_SHOW : SW_HIDE );
+		m_title_fontSizeCombo.ShowWindow( flag_fonts_ticks ? SW_SHOW : SW_HIDE );
+		m_tickWidth.ShowWindow( flag_fonts_ticks ? SW_SHOW : SW_HIDE );
+		m_tickWidthStatic.ShowWindow( flag_fonts_ticks ? SW_SHOW : SW_HIDE );
 
 		// Update bookmark
 		bool flag_bookmark = type == STYLEObject::source;
@@ -1266,7 +1303,7 @@ void RDOStudioOptionsColorsStyles::OnPreviewAsChanged()
 			setPreviewAsCombo( STYLEObject::results );
 		} else if ( index == 5 ) {
 			setPreviewAsCombo( STYLEObject::find );
-		} else if ( index == 5 ) {
+		} else if ( index == 6 ) {
 			setPreviewAsCombo( STYLEObject::chart );
 		}
 	}
@@ -1285,6 +1322,19 @@ void RDOStudioOptionsColorsStyles::OnUpdateModify()
 	m_horzBorder.GetWindowText( str );
 	sheet->style_trace.borders->horzBorder = atoi( str );
 
+	m_tickWidth.GetWindowText( str );
+	sheet->style_chart.fonts_ticks->tickWidth = atoi( str );
+	int index = m_leg_fontSizeCombo.GetCurSel();
+	if ( index != CB_ERR ) {
+		m_leg_fontSizeCombo.GetLBText( index, str );
+		sheet->style_chart.fonts_ticks->legendFontSize = atoi( str );
+	}
+	index = m_title_fontSizeCombo.GetCurSel();
+	if ( index != CB_ERR ) {
+		m_title_fontSizeCombo.GetLBText( index, str );
+		sheet->style_chart.fonts_ticks->titleFontSize = atoi( str );
+	}
+
 	sheet->updateStyles();
 
 	SetModified( *sheet->style_editor.font  != *studioApp.mainFrame->style_editor.font ||
@@ -1301,12 +1351,13 @@ void RDOStudioOptionsColorsStyles::OnUpdateModify()
 	             *static_cast<RDOEditorBaseEditTheme*>(sheet->style_results.theme) != *static_cast<RDOEditorBaseEditTheme*>(studioApp.mainFrame->style_results.theme) ||
 	             *static_cast<RDOFindEditTheme*>(sheet->style_find.theme) != *static_cast<RDOFindEditTheme*>(studioApp.mainFrame->style_find.theme) ||
 				 *static_cast<RDOStudioChartViewTheme*>(sheet->style_chart.theme) != *static_cast<RDOStudioChartViewTheme*>(studioApp.mainFrame->style_chart.theme) ||
-	             *sheet->style_editor.window  != *studioApp.mainFrame->style_editor.window ||
-	             *sheet->style_build.window   != *studioApp.mainFrame->style_build.window ||
-	             *sheet->style_debug.window   != *studioApp.mainFrame->style_debug.window ||
-	             *sheet->style_results.window != *studioApp.mainFrame->style_results.window ||
-	             *sheet->style_find.window    != *studioApp.mainFrame->style_find.window ||
-	             *sheet->style_trace.borders != *studioApp.mainFrame->style_trace.borders );
+	             *sheet->style_editor.window     != *studioApp.mainFrame->style_editor.window ||
+	             *sheet->style_build.window      != *studioApp.mainFrame->style_build.window ||
+	             *sheet->style_debug.window      != *studioApp.mainFrame->style_debug.window ||
+	             *sheet->style_results.window    != *studioApp.mainFrame->style_results.window ||
+	             *sheet->style_find.window       != *studioApp.mainFrame->style_find.window ||
+	             *sheet->style_trace.borders     != *studioApp.mainFrame->style_trace.borders || 
+				 *sheet->style_chart.fonts_ticks != *studioApp.mainFrame->style_chart.fonts_ticks );
 }
 
 void RDOStudioOptionsColorsStyles::loadFontsIntoCombo( bool fixed )

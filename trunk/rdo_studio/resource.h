@@ -60,7 +60,9 @@
 #define IDC_BOOKMARK_COMBO              1037
 #define IDC_BOOKMARK_STATIC             1038
 #define IDC_AUTOCOMPLETE_STATIC         1039
+#define IDC_TITLE_FONTSIZE_COMBO        1039
 #define IDC_TABSIZE_STATIC              1040
+#define IDC_LEGEND_FONTSIZE_COMBO       1040
 #define IDC_MARGIN_STATIC               1041
 #define IDC_INDENTSIZE_STATIC           1042
 #define IDC_BUFFERS_STATIC              1043
@@ -73,6 +75,10 @@
 #define IDC_VERTBORDER_EDIT             1050
 #define IDC_HORZBORDER_STATIC           1051
 #define IDC_HORZBORDER_EDIT             1052
+#define IDC_TITLE_FONTSIZE_STATIC       1053
+#define IDC_LEGEND_FONTSIZE_STATIC      1054
+#define IDC_TICKWIDTH_EDIT              1055
+#define IDC_TICKWIDTH_STATIC            1056
 #define ID_CHART_ADDTONEWCHART          32771
 #define ID_VIEW_WORKSPACE               32774
 #define ID_VIEW_OUTPUT                  32775
@@ -487,7 +493,7 @@
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        157
 #define _APS_NEXT_COMMAND_VALUE         33158
-#define _APS_NEXT_CONTROL_VALUE         1051
+#define _APS_NEXT_CONTROL_VALUE         1057
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

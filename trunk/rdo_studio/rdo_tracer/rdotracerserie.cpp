@@ -138,13 +138,13 @@ void RDOTracerSerie::drawSerie( RDOStudioChartView* const view, CDC &dc, CRect &
 			timesList::iterator times_it = view->unwrapTimesList.begin();
 			if ( view->doUnwrapTime() && (*it)->modeltime->time >= view->drawFromX.time ) {
 				if ( *(*it)->modeltime == *(*times_it) ) {
-					lastx += ( (*it)->eventIndex - view->drawFromEventIndex ) * view->tickWidth;
+					lastx += ( (*it)->eventIndex - view->drawFromEventIndex ) * view->style->fonts_ticks->tickWidth;
 				} else {
 					while ( times_it != view->unwrapTimesList.end() && *(*it)->modeltime != *(*times_it) ) {
 						ticks += (*times_it)->eventCount;
 						times_it ++;
 					}
-					lastx += ( ticks + (*it)->eventIndex - view->drawFromEventIndex ) * view->tickWidth;
+					lastx += ( ticks + (*it)->eventIndex - view->drawFromEventIndex ) * view->style->fonts_ticks->tickWidth;
 				}
 			}
 			lastx = min( lastx, rect.right - 1 );
@@ -172,7 +172,7 @@ void RDOTracerSerie::drawSerie( RDOStudioChartView* const view, CDC &dc, CRect &
 				y = min( y, rect.bottom - 1 );
 				x = rect.left + roundDouble( ( (*it)->modeltime->time - view->drawFromX.time ) * view->timeScale );
 				if ( view->doUnwrapTime() ) {
-					x += ( ticks + (*it)->eventIndex ) * view->tickWidth;
+					x += ( ticks + (*it)->eventIndex ) * view->style->fonts_ticks->tickWidth;
 				}
 				x = min( x, rect.right - 1 );
 				drawMarker( dc, x, y, color );
@@ -201,7 +201,7 @@ void RDOTracerSerie::drawSerie( RDOStudioChartView* const view, CDC &dc, CRect &
 
 			if ( need_continue ) {
 				if ( view->drawFromX == view->drawToX ) {
-					x = rect.left + ( view->drawToEventCount - view->drawFromEventIndex ) * view->tickWidth;
+					x = rect.left + ( view->drawToEventCount - view->drawFromEventIndex ) * view->style->fonts_ticks->tickWidth;
 					x = min( x, rect.right - 1 );
 				} else {
 					x = rect.right - 1;

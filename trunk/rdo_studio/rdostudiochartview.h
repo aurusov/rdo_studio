@@ -32,8 +32,6 @@ protected:
 
 	int valueCountX;
 	int valueCountY;
-	RDOTracerSerie* yaxis;
-	int tickWidth;
 	
 	bool timeWrap;
 	bool canUnwrapTime() const { return scale_koeff >= 1 && !zoomAuto; };
@@ -59,7 +57,7 @@ protected:
 	timesList unwrapTimesList;
 	
 	void drawTitle( CDC &dc, CRect& chartRect );
-	void drawYAxis( CDC &dc, CRect& chartRect, const RDOTracerSerie* axisValues);
+	void drawYAxis( CDC &dc, CRect& chartRect, const RDOStudioDocSerie* axisValues);
 	void drawXAxis( CDC &dc, CRect& chartRect );
 	void drawGrid(	CDC &dc, CRect& chartRect );
 
@@ -81,8 +79,8 @@ protected:
 	CFont fontAxis;
 	void setFonts( const bool needRedraw = true );
 
-	double font_sizeTitle;
-	double font_sizeLegend;
+	//edited with RDOStudioChartViewOptions
+	RDOStudioDocSerie* yAxis;
 
 public:
 	RDOStudioChartView( const bool preview = false);
