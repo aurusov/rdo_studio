@@ -274,6 +274,10 @@ SOURCE=.\rdostudiomodelview.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\rdostudiooptions.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdostudiooutput.cpp
 
 !IF  "$(CFG)" == "rdo_studio - Win32 Release"
@@ -381,6 +385,10 @@ SOURCE=.\rdostudiomodeldoc.h
 # Begin Source File
 
 SOURCE=.\rdostudiomodelview.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdostudiooptions.h
 # End Source File
 # Begin Source File
 

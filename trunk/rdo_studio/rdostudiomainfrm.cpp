@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "rdostudiomainfrm.h"
 #include "rdostudiomodel.h"
+#include "rdostudiooptions.h"
 #include "./rdo_tracer/rdotracertrace.h"
 #include "resource.h"
 
@@ -29,6 +30,7 @@ BEGIN_MESSAGE_MAP(RDOStudioMainFrame, CMDIFrameWnd)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_WORKSPACE, OnUpdateViewWorkspace)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_OUTPUT, OnUpdateViewOutput)
 	ON_WM_DESTROY()
+	ON_COMMAND(ID_VIEW_OPTIONS, OnViewOptions)
 	//}}AFX_MSG_MAP
 	ON_UPDATE_COMMAND_UI( ID_COORDSTATUSBAR          , OnUpdateCoordStatusBar )
 	ON_UPDATE_COMMAND_UI( ID_MODIFYSTATUSBAR         , OnUpdateModifyStatusBar )
@@ -245,4 +247,12 @@ void RDOStudioMainFrame::OnUpdateModelTimeStatusBar( CCmdUI *pCmdUI )
 		str = format( ID_STATUSBAR_MODELTIME, model->getModelTime() );
 	}
 	pCmdUI->SetText( str.c_str() );
+}
+
+void RDOStudioMainFrame::OnViewOptions() 
+{
+	RDOStudioOptions dlg;
+	dlg.DoModal();
+//	RDOEditorOptions dlg( childView.tab.getCurrentEdit()->getEditorStyle() );
+//	dlg.DoModal();
 }
