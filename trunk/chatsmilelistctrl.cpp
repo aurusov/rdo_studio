@@ -518,11 +518,13 @@ void CChatSmileListCtrl::selectLine( const int index )
 	}
 	if ( hasFocus ) {
 		hasFocus = false;
-//		strings.clearSelected( selectedLine );
+//		if ( selectedLine != -1 ) {
+//			list[selectedLine]->smile->setBgColor( ::GetSysColor( COLOR_WINDOW ) );
+//		}
 		repaintLine( selectedLine );
 		selectedLine = index;
 		hasFocus = true;
-//		strings.setSelected( selectedLine );
+//		list[selectedLine]->smile->setBgColor( ::GetSysColor( COLOR_HIGHLIGHT ) );
 		repaintLine( selectedLine );
 	}
 }
