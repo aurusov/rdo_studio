@@ -23,6 +23,8 @@ public:
 	virtual void save( std::string regPath ) const;
 
 	COLORREF selectLineBgColor;
+
+	static RDOLogEditTheme getDefaultTheme();
 };
 
 // ----------------------------------------------------------------------------

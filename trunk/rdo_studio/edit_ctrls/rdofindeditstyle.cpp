@@ -101,6 +101,12 @@ string RDOFindEditTheme::styleFGColorToHEX( const int styleType ) const
 	return RDOLogEditTheme::styleFGColorToHEX( styleType );
 }
 
+RDOFindEditTheme RDOFindEditTheme::getDefaultTheme()
+{
+	RDOFindEditTheme theme;
+	return theme;
+}
+
 // ----------------------------------------------------------------------------
 // ---------- RDOFindEditStyle
 // ----------------------------------------------------------------------------

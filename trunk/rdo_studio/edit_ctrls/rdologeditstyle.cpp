@@ -56,6 +56,12 @@ void RDOLogEditTheme::save( string regPath ) const
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "selectLineBgColor", selectLineBgColor );
 }
 
+RDOLogEditTheme RDOLogEditTheme::getDefaultTheme()
+{
+	RDOLogEditTheme theme;
+	return theme;
+}
+
 // ----------------------------------------------------------------------------
 // ---------- RDOLogEditStyle
 // ----------------------------------------------------------------------------

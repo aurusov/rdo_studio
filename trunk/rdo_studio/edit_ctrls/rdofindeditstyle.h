@@ -31,6 +31,8 @@ public:
 	virtual bool styleBold( const int styleType = STYLE_DEFAULT ) const;
 	virtual bool styleItalic( const int styleType = STYLE_DEFAULT ) const;
 	virtual std::string styleFGColorToHEX( const int styleType = STYLE_DEFAULT ) const;
+
+	static RDOFindEditTheme getDefaultTheme();
 };
 
 // ----------------------------------------------------------------------------
