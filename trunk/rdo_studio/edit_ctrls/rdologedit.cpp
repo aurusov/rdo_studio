@@ -93,7 +93,7 @@ BOOL RDOLogEdit::OnNotify( WPARAM wParam, LPARAM lParam, LRESULT* pResult )
 
 int RDOLogEdit::OnCreate( LPCREATESTRUCT lpCreateStruct )
 {
-	if ( RDOBaseEdit ::OnCreate(lpCreateStruct) == -1 ) return -1;
+	if ( RDOBaseEdit::OnCreate(lpCreateStruct) == -1 ) return -1;
 
 	sendEditorString( SCI_SETPROPERTY, reinterpret_cast<unsigned long>("withoutselectbyclick"), "1" );
 

@@ -32,7 +32,7 @@ RDOFindEdit::~RDOFindEdit()
 
 int RDOFindEdit::OnCreate( LPCREATESTRUCT lpCreateStruct )
 {
-	if ( RDOLogEdit ::OnCreate(lpCreateStruct) == -1 ) return -1;
+	if ( RDOLogEdit::OnCreate(lpCreateStruct) == -1 ) return -1;
 
 	sendEditor( SCI_SETLEXER, SCLEX_FIND );
 	int lexLanguage = sendEditor( SCI_GETLEXER );
