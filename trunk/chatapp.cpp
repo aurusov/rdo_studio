@@ -19,7 +19,6 @@ CChatApp chatApp;
 
 BEGIN_MESSAGE_MAP( CChatApp, CWinApp )
 	//{{AFX_MSG_MAP(CChatApp)
-	ON_COMMAND_EX( ID_FILE_REFRESHUSERSLIST, OnRefreshUsersList )
 	ON_COMMAND_EX( ID_STATUSMODE_ONLINE      , OnStatusMode )
 	ON_COMMAND_EX( ID_STATUSMODE_AWAY        , OnStatusMode )
 	ON_COMMAND_EX( ID_STATUSMODE_NOTAVAILIBLE, OnStatusMode )
@@ -42,7 +41,7 @@ CChatApp::CChatApp():
 	userName( "" ),
 	hostName( "" ),
 	ip( "" ),
-	port( 4000 ),
+	port( 4002 ),
 	broadcastIP( "192.168.1.255" )
 {
 }
@@ -96,7 +95,8 @@ BOOL CChatApp::InitInstance()
 
 	udp.send( "<connect:" + getUserName() + ">" );
 
-	OnRefreshUsersList( 0 );
+	refreshUserList();
+	network.refresh();
 
 	return TRUE;
 }
@@ -246,12 +246,6 @@ void CChatApp::OnUpdateStatusModeInfo( CCmdUI* pCmdUI )
 	}
 }
 
-void CChatApp::OnRefreshUsersList( UINT nID )
-{
-	users.clear( users.getUserByIP( getIP() ) );
-	udp.send( "<getallhostname>" );
-}
-
 void CChatApp::OnToCryOut()
 {
 	CChatToCryOutDialog dlg( IDD_TOCRYOUT_DIALOG );
@@ -273,6 +267,12 @@ void CChatApp::setUserName( const std::string& value )
 		WriteProfileString( "User", "userName", userName.c_str() );
 		udp.send( "<username:" + userName + ">" );
 	}
+}
+
+void CChatApp::refreshUserList()
+{
+	users.clear( users.getUserByIP( getIP() ) );
+	udp.send( "<getallhostname>" );
 }
 
 CFont& CChatApp::getFont()

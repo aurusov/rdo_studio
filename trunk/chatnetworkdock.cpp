@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "chatnetlistdock.h"
+#include "chatnetworkdock.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -8,23 +8,23 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 // ----------------------------------------------------------------------------
-// ---------- CChatNetListDock
+// ---------- CChatNetworkDock
 // ----------------------------------------------------------------------------
-BEGIN_MESSAGE_MAP(CChatNetListDock, CSizingControlBarG)
-	//{{AFX_MSG_MAP(CChatNetListDock)
+BEGIN_MESSAGE_MAP(CChatNetworkDock, CSizingControlBarG)
+	//{{AFX_MSG_MAP(CChatNetworkDock)
 	ON_WM_CREATE()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-CChatNetListDock::CChatNetListDock()
+CChatNetworkDock::CChatNetworkDock()
 {
 }
 
-CChatNetListDock::~CChatNetListDock()
+CChatNetworkDock::~CChatNetworkDock()
 {
 }
 
-int CChatNetListDock::OnCreate( LPCREATESTRUCT lpCreateStruct ) 
+int CChatNetworkDock::OnCreate( LPCREATESTRUCT lpCreateStruct ) 
 {
 	if ( CSizingControlBarG::OnCreate(lpCreateStruct) == -1 ) return -1;
 

@@ -1,28 +1,28 @@
-#ifndef CHATNETLISTDOCK_H
-#define CHATNETLISTDOCK_H
+#ifndef CHATNETWORKDOCK_H
+#define CHATNETWORKDOCK_H
 
 #if _MSC_VER > 1000
 #pragma once
 #endif
 
-#include "chatnetlistctrl.h"
+#include "chatnetworkctrl.h"
 
 // ----------------------------------------------------------------------------
-// ---------- CChatNetListDock
+// ---------- CChatNetworkDock
 // ----------------------------------------------------------------------------
-class CChatNetListDock: public CSizingControlBarG
+class CChatNetworkDock: public CSizingControlBarG
 {
 public:
-	CChatNetListDock();
-	virtual ~CChatNetListDock();
+	CChatNetworkDock();
+	virtual ~CChatNetworkDock();
 
-	CChatNetListCtrl list;
+	CChatNetworkCtrl list;
 
 protected:
-	//{{AFX_VIRTUAL(CChatNetListDock)
+	//{{AFX_VIRTUAL(CChatNetworkDock)
 	//}}AFX_VIRTUAL
 
-	//{{AFX_MSG(CChatNetListDock)
+	//{{AFX_MSG(CChatNetworkDock)
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
@@ -30,4 +30,4 @@ protected:
 
 //{{AFX_INSERT_LOCATION}}
 
-#endif // CHATNETLISTDOCK_H
+#endif // CHATNETWORKDOCK_H

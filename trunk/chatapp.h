@@ -10,6 +10,7 @@
 #include "chatsound.h"
 #include "chatstatusmode.h"
 #include "chatuserlist.h"
+#include "chatnetwork.h"
 
 // ----------------------------------------------------------------------------
 // ---------- CChatApp
@@ -18,7 +19,7 @@ class CChatMainFrame;
 
 class CChatApp: public CWinApp
 {
-protected:
+private:
 	unsigned int port;
 	std::string userName;
 	std::string hostName;
@@ -37,6 +38,7 @@ public:
 	CChatSoundList      sounds;
 	CChatStatusModeList statusModes;
 	CChatUserList       users;
+	CChatNetwork        network;
 
 	std::string getUserName() const    { return userName; }
 	void setUserName( const std::string& value );
@@ -48,6 +50,8 @@ public:
 	CChatStatusModeType getStatusMode();
 	void setStatusMode( const CChatStatusModeType value, const bool automatically = false );
 
+	void refreshUserList();
+
 	CFont& getFont();
 
 protected:
@@ -58,7 +62,6 @@ protected:
 	//}}AFX_VIRTUAL
 
 	//{{AFX_MSG(CChatApp)
-	afx_msg void OnRefreshUsersList( UINT nID = 0 );
 	afx_msg void OnStatusMode( UINT nID );
 	afx_msg void OnUpdateStatusMode( CCmdUI* pCmdUI );
 	afx_msg void OnStatusModeInfo( UINT nID );

@@ -79,13 +79,14 @@
 #define ID_TRAYMENU_OPEN                32782
 #define ID_TRAYMENU_EXIT                32783
 #define ID_CHAT_TOCRYOUT                32793
-#define ID_FILE_REFRESHUSERSLIST        32794
+#define ID_FILE_REFRESHUSERLIST         32794
 #define ID_STATUSMODE_ONLINE_INFO       32795
 #define ID_STATUSMODE_AWAY_INFO         32796
 #define ID_STATUSMODE_NOTAVAILIBLE_INFO 32797
 #define ID_CHAT_OPTIONS                 32798
 #define ID_VIEW_USERLIST                32799
 #define ID_VIEW_NETWORK                 32800
+#define ID_FILE_REFRESHNETWORK          32801
 #define ID_INFOSTATUSBAR                59394
 #define ID_STATUSMODE_TOOLBAR           61204
 #define ID_OPTIONS                      61205
@@ -113,7 +114,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        178
-#define _APS_NEXT_COMMAND_VALUE         32801
+#define _APS_NEXT_COMMAND_VALUE         32802
 #define _APS_NEXT_CONTROL_VALUE         1053
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

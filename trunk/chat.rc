@@ -357,7 +357,8 @@ IDR_MAINFRAME MENU PRELOAD DISCARDABLE
 BEGIN
     POPUP "&File"
     BEGIN
-        MENUITEM "&Refresh users list",         ID_FILE_REFRESHUSERSLIST
+        MENUITEM "Refresh &User List",          ID_FILE_REFRESHUSERLIST
+        MENUITEM "Refresh &Network",            ID_FILE_REFRESHNETWORK
         MENUITEM SEPARATOR
         MENUITEM "E&xit",                       ID_APP_EXIT
     END
@@ -376,12 +377,12 @@ BEGIN
     BEGIN
         MENUITEM "&To cry out...\tCtrl+Enter",  ID_CHAT_TOCRYOUT
         MENUITEM SEPARATOR
-        MENUITEM "Options...",                  ID_CHAT_OPTIONS
+        MENUITEM "&Options...",                 ID_CHAT_OPTIONS
     END
     POPUP "&View"
     BEGIN
-        MENUITEM "User List",                   ID_VIEW_USERLIST
-        MENUITEM "Network",                     ID_VIEW_NETWORK
+        MENUITEM "&User List",                  ID_VIEW_USERLIST
+        MENUITEM "&Network",                    ID_VIEW_NETWORK
         MENUITEM "&Status Mode Toolbar",        ID_VIEW_TOOLBAR
     END
 END
@@ -426,8 +427,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,0,138
- PRODUCTVERSION 1,0,0,138
+ FILEVERSION 1,0,0,148
+ PRODUCTVERSION 1,0,0,148
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -445,14 +446,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "Application for chat in localnet\0"
-            VALUE "FileVersion", "1, 0, 0, 138\0"
+            VALUE "FileVersion", "1, 0, 0, 148\0"
             VALUE "InternalName", "localChat\0"
             VALUE "LegalCopyright", "Copyright (C) 2002\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "localchat.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "localChat\0"
-            VALUE "ProductVersion", "1, 0, 0, 138\0"
+            VALUE "ProductVersion", "1, 0, 0, 148\0"
             VALUE "SpecialBuild", "\0"
         END
     END

@@ -29,9 +29,12 @@ BEGIN_MESSAGE_MAP( CChatMainFrame, CFrameWnd )
 	ON_UPDATE_COMMAND_UI( ID_TRAYMENU_OPEN, OnUpdateTrayOpenHide )
 	ON_COMMAND(ID_VIEW_USERLIST, OnViewUserList)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_USERLIST, OnUpdateViewUserList)
-	ON_COMMAND( ID_TRAYMENU_EXIT, OnTrayCloseApp )
 	ON_COMMAND(ID_VIEW_NETWORK, OnViewNetwork)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_NETWORK, OnUpdateViewNetwork)
+	ON_COMMAND(ID_FILE_REFRESHUSERLIST, OnFileRefreshUserList)
+	ON_COMMAND(ID_FILE_REFRESHNETWORK, OnFileRefreshNetwork)
+	ON_UPDATE_COMMAND_UI(ID_FILE_REFRESHNETWORK, OnUpdateFileRefreshNetwork)
+	ON_COMMAND( ID_TRAYMENU_EXIT, OnTrayCloseApp )
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -90,8 +93,8 @@ int CChatMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	userList.Create( format( IDS_USERLIST ).c_str(), this, 0 );
 	userList.SetBarStyle( userList.GetBarStyle() | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
 
-	netList.Create( format( IDS_NETLIST ).c_str(), this, 0 );
-	netList.SetBarStyle( netList.GetBarStyle() | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
+	networkList.Create( format( IDS_NETLIST ).c_str(), this, 0 );
+	networkList.SetBarStyle( networkList.GetBarStyle() | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
 
 	statusModeToolBar.CreateEx( this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
 	statusModeToolBar.LoadToolBar( IDR_STATUSMODE_TOOLBAR );
@@ -106,15 +109,15 @@ int CChatMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 //	statusBar.SetPaneInfo( 3, ID_INFOSTATUSBAR           , SBPS_STRETCH, 70 );
 
 	userList.EnableDocking( CBRS_ALIGN_ANY );
-	netList.EnableDocking( CBRS_ALIGN_ANY );
+	networkList.EnableDocking( CBRS_ALIGN_ANY );
 	statusModeToolBar.EnableDocking( CBRS_ALIGN_ANY );
 
 	EnableDocking( CBRS_ALIGN_ANY );
 
 	DockControlBar( &statusModeToolBar );
 	DockControlBar( &userList, AFX_IDW_DOCKBAR_LEFT );
-	dockControlBarBesideOf( netList, userList );
-	ShowControlBar( &netList, false, false );
+	dockControlBarBesideOf( networkList, userList );
+	ShowControlBar( &networkList, false, false );
 
 	closeButtonAction    = (CChatCloseButtonAction)chatApp.GetProfileInt( "General", "closeButtonAction", CCBA_Tray );
 	minimizeButtonAction = (CChatMinimizeButtonAction)chatApp.GetProfileInt( "General", "minimizeButtonAction", CCMA_Minimize );
@@ -161,7 +164,7 @@ BOOL CChatMainFrame::OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERI
 {
 	if ( childView.OnCmdMsg( nID, nCode, pExtra, pHandlerInfo ) ) return TRUE;
 	if ( userList.OnCmdMsg( nID, nCode, pExtra, pHandlerInfo ) ) return TRUE;
-	if ( netList.OnCmdMsg( nID, nCode, pExtra, pHandlerInfo ) ) return TRUE;
+	if ( networkList.OnCmdMsg( nID, nCode, pExtra, pHandlerInfo ) ) return TRUE;
 	return CFrameWnd::OnCmdMsg( nID, nCode, pExtra, pHandlerInfo );
 }
 
@@ -593,10 +596,25 @@ void CChatMainFrame::OnUpdateViewUserList(CCmdUI* pCmdUI)
 
 void CChatMainFrame::OnViewNetwork()
 {
-	ShowControlBar( &netList, !netList.IsVisible(), false );
+	ShowControlBar( &networkList, !networkList.IsVisible(), false );
 }
 
 void CChatMainFrame::OnUpdateViewNetwork(CCmdUI* pCmdUI)
 {
-	pCmdUI->SetCheck( netList.IsVisible() );
+	pCmdUI->SetCheck( networkList.IsVisible() );
+}
+
+void CChatMainFrame::OnFileRefreshUserList()
+{
+	chatApp.refreshUserList();
+}
+
+void CChatMainFrame::OnFileRefreshNetwork() 
+{
+	chatApp.network.refresh();
+}
+
+void CChatMainFrame::OnUpdateFileRefreshNetwork(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable( chatApp.network.refreshFinished() );
 }

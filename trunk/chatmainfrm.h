@@ -4,7 +4,7 @@
 
 #include "chatchildview.h"
 #include "chatuserlistdock.h"
-#include "chatnetlistdock.h"
+#include "chatnetworkdock.h"
 #include "chatpopupmessage.h"
 #include "chatstatusmode.h"
 
@@ -67,7 +67,7 @@ public:
 
 	CChatChildView     childView;
 	CChatUserListDock  userList;
-	CChatNetListDock   netList;
+	CChatNetworkDock   networkList;
 
 	CChatPopupMessage popupMessage;
 
@@ -129,6 +129,9 @@ protected:
 	afx_msg void OnUpdateViewUserList(CCmdUI* pCmdUI);
 	afx_msg void OnViewNetwork();
 	afx_msg void OnUpdateViewNetwork(CCmdUI* pCmdUI);
+	afx_msg void OnFileRefreshUserList();
+	afx_msg void OnFileRefreshNetwork();
+	afx_msg void OnUpdateFileRefreshNetwork(CCmdUI* pCmdUI);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

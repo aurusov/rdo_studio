@@ -1,7 +1,5 @@
 #include "stdafx.h"
-#include "chatnetlistctrl.h"
-//#include "chatapp.h"
-//#include "chatmainfrm.h"
+#include "chatnetworkctrl.h"
 #include "resource.h"
 
 #ifdef _DEBUG
@@ -11,23 +9,23 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 // ----------------------------------------------------------------------------
-// ---------- CChatNetListCtrl
+// ---------- CChatNetworkCtrl
 // ----------------------------------------------------------------------------
-BEGIN_MESSAGE_MAP( CChatNetListCtrl, RDOTreeCtrl )
-	//{{AFX_MSG_MAP(CChatNetListCtrl)
+BEGIN_MESSAGE_MAP( CChatNetworkCtrl, RDOTreeCtrl )
+	//{{AFX_MSG_MAP(CChatNetworkCtrl)
 	ON_WM_CREATE()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-CChatNetListCtrl::CChatNetListCtrl(): RDOTreeCtrl()
+CChatNetworkCtrl::CChatNetworkCtrl(): RDOTreeCtrl()
 {
 }
 
-CChatNetListCtrl::~CChatNetListCtrl()
+CChatNetworkCtrl::~CChatNetworkCtrl()
 {
 }
 
-BOOL CChatNetListCtrl::PreCreateWindow( CREATESTRUCT& cs )
+BOOL CChatNetworkCtrl::PreCreateWindow( CREATESTRUCT& cs )
 {
 	if ( !RDOTreeCtrl::PreCreateWindow(cs) ) return FALSE;
 	cs.style |= WS_VISIBLE | WS_CHILD | WS_CLIPCHILDREN | WS_TABSTOP | TVS_HASLINES | TVS_SHOWSELALWAYS | TVS_DISABLEDRAGDROP;
@@ -35,7 +33,7 @@ BOOL CChatNetListCtrl::PreCreateWindow( CREATESTRUCT& cs )
 	return TRUE;
 }
 
-int CChatNetListCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
+int CChatNetworkCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 {
 	if ( RDOTreeCtrl::OnCreate( lpCreateStruct ) == -1 ) return -1;
 

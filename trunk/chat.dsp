@@ -115,15 +115,15 @@ SOURCE=.\chatmainfrm.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\chatnetlist.cpp
+SOURCE=.\chatnetwork.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\chatnetlistctrl.cpp
+SOURCE=.\chatnetworkctrl.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\chatnetlistdock.cpp
+SOURCE=.\chatnetworkdock.cpp
 # End Source File
 # Begin Source File
 
@@ -200,15 +200,15 @@ SOURCE=.\chatmainfrm.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\chatnetlist.h
+SOURCE=.\chatnetwork.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\chatnetlistctrl.h
+SOURCE=.\chatnetworkctrl.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\chatnetlistdock.h
+SOURCE=.\chatnetworkdock.h
 # End Source File
 # Begin Source File
 
@@ -348,6 +348,26 @@ SOURCE=.\sizecbar\scbarg.h
 # Begin Source File
 
 SOURCE=.\sizecbar\sizecbar.h
+# End Source File
+# End Group
+# End Group
+# Begin Group "NetSearch"
+
+# PROP Default_Filter ""
+# Begin Group "NetSearch Source Files"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\netsearch\Network.cpp
+# End Source File
+# End Group
+# Begin Group "NetSearch Header Files"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\netsearch\Network.h
 # End Source File
 # End Group
 # End Group

@@ -1,13 +1,15 @@
-#ifndef CHATNETLIST_H
-#define CHATNETLIST_H
+#ifndef CHATNETWORK_H
+#define CHATNETWORK_H
 #pragma once
+
+#include "netsearch/Network.h"
 
 // ----------------------------------------------------------------------------
 // ---------- CChatNetPC
 // ----------------------------------------------------------------------------
 class CChatNetPC
 {
-friend class CChatNetWorkGroup;
+friend class CChatNetWorkgroup;
 
 private:
 	CChatNetPC();
@@ -23,16 +25,16 @@ public:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- CChatNetWorkGroup
+// ---------- CChatNetWorkgroup
 // ----------------------------------------------------------------------------
-class CChatNetWorkGroup
+class CChatNetWorkgroup
 {
 private:
 	std::vector< CChatNetPC* > list;
 
 public:
-	CChatNetWorkGroup();
-	virtual ~CChatNetWorkGroup();
+	CChatNetWorkgroup();
+	virtual ~CChatNetWorkgroup();
 
 	void addPC( const std::string& hostname, const std::string& ip );
 	int findPCByHostName( const std::string& hostname ) const;
@@ -42,4 +44,24 @@ public:
 	void clear();
 };
 
-#endif // CHATNETLIST_H
+// ----------------------------------------------------------------------------
+// ---------- CChatNetwork
+// ----------------------------------------------------------------------------
+class CChatNetwork: public CNetwork
+{
+private:
+	CWinThread* enumNetworkThread;
+	static UINT enumNetwork( LPVOID pParam );
+	BOOL OnHitResource( NETRESOURCE& res );
+
+public:
+	CChatNetwork();
+	virtual ~CChatNetwork();
+
+	void refresh();
+	bool refreshFinished() const { return enumNetworkThread == NULL; }
+};
+
+//{{AFX_INSERT_LOCATION}}
+
+#endif // CHATNETWORK_H

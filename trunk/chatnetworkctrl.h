@@ -1,31 +1,33 @@
-#ifndef CHATNETLISTCTRL_H
-#define CHATNETLISTCTRL_H
+#ifndef CHATNETWORKCTRL_H
+#define CHATNETWORKCTRL_H
 #pragma once
 
 #include <rdotreectrl.h>
 
 // ----------------------------------------------------------------------------
-// ---------- CChatNetListCtrl
+// ---------- CChatNetworkCtrl
 // ----------------------------------------------------------------------------
-class CChatNetListCtrl: public RDOTreeCtrl
+class CChatNetworkCtrl: public RDOTreeCtrl
 {
 private:
 	CImageList imageList;
 
 protected:
-	//{{AFX_VIRTUAL(CChatNetListCtrl)
+	//{{AFX_VIRTUAL(CChatNetworkCtrl)
 	protected:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	//}}AFX_VIRTUAL
 
-	//{{AFX_MSG(CChatNetListCtrl)
+	//{{AFX_MSG(CChatNetworkCtrl)
 	afx_msg int OnCreate( LPCREATESTRUCT lpCreateStruct );
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
 public:
-	CChatNetListCtrl();
-	virtual ~CChatNetListCtrl();
+	CChatNetworkCtrl();
+	virtual ~CChatNetworkCtrl();
 };
 
-#endif // CHATNETLISTCTRL_H
+//{{AFX_INSERT_LOCATION}}
+
+#endif // CHATNETWORKCTRL_H
