@@ -11,6 +11,7 @@
 
 #include <rdokernel.h>
 #include <rdorepository.h>
+#include <rdoabout.h>
 
 using namespace std;
 using namespace rdoRepository;
@@ -87,6 +88,7 @@ BEGIN_MESSAGE_MAP(RDOStudioApp, CWinApp)
 	ON_UPDATE_COMMAND_UI(ID_CHART_STARTTRACE, OnUpdateChartStarttrace)
 	ON_COMMAND(ID_CHART_STOPTRACE, OnChartStoptrace)
 	ON_UPDATE_COMMAND_UI(ID_CHART_STOPTRACE, OnUpdateChartStoptrace)
+	ON_COMMAND(ID_APP_ABOUT, OnAppAbout)
 	//}}AFX_MSG_MAP
 	ON_COMMAND_RANGE( ID_FILE_REOPEN_1, ID_FILE_REOPEN_10, OnProjectReopen )
 	ON_THREAD_MESSAGE( RDO_ADDNEWFRAME_MSG, OnAddNewFrame )
@@ -578,6 +580,17 @@ void RDOStudioApp::setupFileAssociation()
 			::RegCloseKey( hCurUserSoftClasses );
 		}
 	}
+}
+
+void RDOStudioApp::OnAppAbout()
+{
+	RDOAbout aboutDlg;
+	aboutDlg.BMSTU.LoadString( ID_ABOUT_BMSTU );
+	aboutDlg.tel.LoadString( ID_ABOUT_TEL );
+	aboutDlg.buttonOkText.LoadString( ID_ABOUT_OKBUTTON );
+	aboutDlg.hPixmap = LoadIcon( MAKEINTRESOURCE(IDR_MAINFRAME) );
+	aboutDlg.changeColor( 1, 20, 4 );
+	aboutDlg.DoModal();
 }
 
 void RDOStudioApp::OnAddNewFrame( WPARAM /*wParam*/, LPARAM /*lParam*/ )

@@ -70,6 +70,7 @@ public:
 	afx_msg void OnUpdateChartStarttrace(CCmdUI* pCmdUI);
 	afx_msg void OnChartStoptrace();
 	afx_msg void OnUpdateChartStoptrace(CCmdUI* pCmdUI);
+	afx_msg void OnAppAbout();
 	//}}AFX_MSG
 	afx_msg void OnProjectReopen( UINT nID );
 	afx_msg void OnAddNewFrame( WPARAM wParam, LPARAM lParam );
