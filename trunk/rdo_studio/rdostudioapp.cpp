@@ -334,7 +334,7 @@ void RDOStudioApp::saveReopen() const
 
 void RDOStudioApp::OnModelBuild() 
 {
-//	model->runModel();
+	model->buildModel();
 }
 
 void RDOStudioApp::OnModelRun() 

@@ -101,6 +101,17 @@ void RDOStudioModel::closeModel() const
 	kernel.getRepository()->closeModel();
 }
 
+void RDOStudioModel::buildModel() const
+{
+	if ( saveModel() ) {
+		studioApp.mainFrame->output.clearBuild();
+		studioApp.mainFrame->output.clearDebug();
+		studioApp.mainFrame->output.clearResults();
+		studioApp.mainFrame->output.showBuild();
+		kernel.getSimulator()->parseModel();
+	}
+}
+
 void RDOStudioModel::runModel() const
 {
 	if ( saveModel() ) {

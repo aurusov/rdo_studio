@@ -66,6 +66,7 @@ public:
 	bool canCloseModel();
 	void closeModel() const;
 
+	void buildModel() const;
 	void runModel() const;
 	void stopModel() const;
 
