@@ -4,7 +4,6 @@
 #include "rdotracerresource.h"
 #include "rdotracerrestype.h"
 #include "../rdostudiochartview.h"
-#include <algorithm>
 
 // ----------------------------------------------------------------------------
 // ---------- RDOTracerSerie

@@ -5,8 +5,6 @@
 #pragma once
 #endif
 
-#include <algorithm>
-
 using namespace std;
 
 // ----------------------------------------------------------------------------
@@ -32,25 +30,10 @@ public:
 	bool operator ==( const RDOTracerSerie* _serie ) const { return serie == _serie; };
 };
 
-class insertTime
-{
-	timesList* times;
-public:
-	insertTime( timesList* _times ): times( _times ) {};
-	void operator ()( RDOTracerValue* val );
-};
-
-class checkMoreThen
-{
-	RDOTracerTimeNow* checktime;
-public:
-	checkMoreThen( RDOTracerTimeNow* _checktime ): checktime( _checktime ) {};
-	bool operator ()( RDOTracerTimeNow* val );
-};
-
 class RDOStudioChartDoc : public CDocument
 {
 friend class RDOStudioChartView;
+friend class insertTime;
 
 protected:
 	RDOStudioChartDoc();
@@ -63,6 +46,7 @@ protected:
 	COLORREF selectColor();
 
 	timesList docTimes;
+	double minTimeOffset;
 	//static void insertTime( RDOTracerValue* const val );
 	void addSerieTimes( RDOTracerSerie* const serie );
 

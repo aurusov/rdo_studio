@@ -57,25 +57,57 @@ void RDOStudioChartDoc::Serialize(CArchive& ar)
 	return res;
 }*/
 
+class insertTime
+{
+	RDOStudioChartDoc* doc;
+public:
+	insertTime( RDOStudioChartDoc* _doc ): doc( _doc ) {};
+	void operator ()( RDOTracerValue* val );
+};
+
 void insertTime::operator ()( RDOTracerValue* val )
 {
 	if( val ) {
-		timesList::iterator it = find( times->begin(), times->end(), val->modeltime );
-		if ( it != times->end() )
+		//timesList::iterator it = find( times->begin(), times->end(), val->modeltime );
+		//if ( it != times->end() )
+		//	return;
+		//it = find_if( times->begin(), times->end(), checkMoreThen( val->modeltime ) );
+		//timesList::iterator it = find_if( times->begin(), times->end(), bind2nd( mem_fun1( &RDOTracerTimeNow::checkTimeMoreOrEqual ), val->modeltime ) );
+		timesList::iterator it = find_if( doc->docTimes.begin(), doc->docTimes.end(), bind2nd( greater_equal<RDOTracerTimeNow*>(), val->modeltime ) );
+		if ( it != doc->docTimes.end() && (*it) == val->modeltime )
 			return;
-		it = find_if( times->begin(), times->end(), checkMoreThen( val->modeltime ) );
-		times->insert( it, val->modeltime );
+		timesList::iterator inserted_it = doc->docTimes.insert( it, val->modeltime );
+		double offl = 1.7E+308;
+		double offr = 1.7E+308;
+		if ( it != doc->docTimes.end() )
+			offr = (*it)->time - (*inserted_it)->time;
+		if ( inserted_it != doc->docTimes.begin() ) {
+			offl = (*inserted_it)->time;
+			inserted_it --;
+			offl -= (*inserted_it)->time;
+		}
+		double minoff = min( offl, offr );
+		if ( minoff < doc->minTimeOffset )
+			doc->minTimeOffset = minoff;
 	}
 }
 
-bool checkMoreThen::operator ()( RDOTracerTimeNow* val )
+/*bool checkMoreThen::operator ()( RDOTracerTimeNow* val )
 {
 	bool res = false;
 	if( val ) {
 		res = val->time > checktime->time;
 	}
 	return res;
-}
+}*/
+
+/*void RDOStudioChartDoc::insertTime( RDOTracerValue* val )
+{
+	timesList::iterator it = find_if( docTimes.begin(), docTimes.end(), bind2nd( greater_equal<RDOTracerTimeNow*>(), val->modeltime ) );
+	if ( it != docTimes.end() && (*it) == val->modeltime )
+		return;
+	timesList::iterator inserted_it = docTimes.insert( it, val->modeltime );
+}*/
 
 void RDOStudioChartDoc::addSerieTimes( RDOTracerSerie* const serie )
 {
@@ -90,7 +122,7 @@ void RDOStudioChartDoc::addSerieTimes( RDOTracerSerie* const serie )
 			docTimes.push_back( timenow );
 		last = timenow;
 	}*/
-	for_each( serie->begin(), serie->end(), insertTime( &docTimes ) );
+	for_each( serie->begin(), serie->end(), insertTime( this ) );
 }
 
 void RDOStudioChartDoc::addSerie( RDOTracerSerie* const serie )
