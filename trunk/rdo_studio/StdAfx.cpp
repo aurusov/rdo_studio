@@ -53,3 +53,15 @@ void trim( std::string& str )
 	str.erase( 0, str.find_first_not_of( szDelims ) );
 	str.erase( str.find_last_not_of( szDelims ) + 1, std::string::npos );
 }
+
+void trimLeft( std::string& str )
+{
+	static char szDelims[] = " \t\n\r";
+	str.erase( 0, str.find_first_not_of( szDelims ) );
+}
+
+void trimRight( std::string& str )
+{
+	static char szDelims[] = " \t\n\r";
+	str.erase( str.find_last_not_of( szDelims ) + 1, std::string::npos );
+}

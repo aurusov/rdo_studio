@@ -33,6 +33,8 @@
 std::string format( const char* str, ... );
 std::string format( UINT resource, ... );
 void trim( std::string& str );
+void trimLeft( std::string& str );
+void trimRight( std::string& str );
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
