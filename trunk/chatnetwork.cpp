@@ -251,14 +251,16 @@ BOOL CChatNetwork::OnHitResource( NETRESOURCE& res )
 					}
 					PHOSTENT hostinfo = gethostbyname( hostname.c_str() );
 					if ( hostinfo ) {
-						pos   = 0;
 						int i = 0;
-						while ( pos < std::string( *hostinfo->h_addr_list ).length() - hostname.length() ) {
+						while ( true ) {
+							if ( !hostinfo->h_addr_list[i] ) {
+								break;
+							}
 							if ( i ) {
 								server->ip += "/";
 							}
-							server->ip += inet_ntoa( *reinterpret_cast<struct in_addr*>(hostinfo->h_addr_list[i++]) );
-							pos += hostinfo->h_length;
+							server->ip += inet_ntoa( *reinterpret_cast<struct in_addr*>(hostinfo->h_addr_list[i]) );
+							i++;
 						}
 					}
 //					WSACleanup();

@@ -92,23 +92,25 @@ CChatString::CChatString( const int lineIndex, const std::string& _userName, con
 		}
 	}
 
-	int pos_from = 0;
-	int pos = message.find( ' ', pos_from );
-	bool flag = true;
-	while ( flag ) {
-		if ( pos == std::string::npos ) {
-			pos = message.length();
-			flag = false;
+	if ( chatApp.isWinNT() ) {
+		int pos_from = 0;
+		int pos = message.find( ' ', pos_from );
+		bool flag = true;
+		while ( flag ) {
+			if ( pos == std::string::npos ) {
+				pos = message.length();
+				flag = false;
+			}
+			std::string str = message.substr( pos_from, pos - pos_from );
+			CChatSmile* smile = smiles.addSmile( str, &chatApp.mainFrame->childView.viewer );
+			if ( smile ) {
+				if ( !smile->IsAnimatedGIF() ) smile->Stop();
+				smile->SetBkColor( getBgColor() );
+				if ( !smile->IsAnimatedGIF() ) smile->Draw();
+			}
+			pos_from = pos + 1;
+			pos = message.find( ' ', pos_from );
 		}
-		std::string str = message.substr( pos_from, pos - pos_from );
-		CChatSmile* smile = smiles.addSmile( str, &chatApp.mainFrame->childView.viewer );
-		if ( smile ) {
-			if ( !smile->IsAnimatedGIF() ) smile->Stop();
-			smile->SetBkColor( getBgColor() );
-			if ( !smile->IsAnimatedGIF() ) smile->Draw();
-		}
-		pos_from = pos + 1;
-		pos = message.find( ' ', pos_from );
 	}
 }
 
@@ -206,7 +208,7 @@ void CChatString::drawText( CDC* dc, CRect& r )
 		}
 		std::string s2 = s.substr( pos_from, pos - pos_from );
 		if ( !s2.empty() ) {
-			if ( smiles.getType( s2 ) != CChatSmile::none ) {
+			if ( chatApp.isWinNT() && smiles.getType( s2 ) != CChatSmile::none ) {
 				CChatSmile* smile = smiles[smile_index];
 				CSize size = smile->GetSize();
 				if ( left + size.cx > r.right ) {
@@ -270,7 +272,7 @@ int CChatString::getOneLineHeight( CDC* dc, const int _width, int pos_from, int 
 		}
 		std::string s2 = s.substr( pos_from, pos - pos_from );
 		if ( !s2.empty() ) {
-			if ( smiles.getType( s2 ) != CChatSmile::none ) {
+			if ( chatApp.isWinNT() && smiles.getType( s2 ) != CChatSmile::none ) {
 				CChatSmile* smile = smiles[smile_index];
 				CSize size = smile->GetSize();
 				if ( !height_of_line ) {
@@ -334,7 +336,7 @@ int CChatString::getHeight( CDC* dc, const int _width )
 			}
 			std::string s2 = s.substr( pos_from, pos - pos_from );
 			if ( !s2.empty() ) {
-				if ( smiles.getType( s2 ) != CChatSmile::none ) {
+				if ( chatApp.isWinNT() && smiles.getType( s2 ) != CChatSmile::none ) {
 					CChatSmile* smile = smiles[smile_index];
 					CSize size = smile->GetSize();
 					if ( left + size.cx > _width ) {
@@ -415,12 +417,16 @@ void CChatString::recalculateSize()
 
 void CChatString::selectedON()
 {
-	smiles.setBgColor( chatApp.style.theme.selectedBgColor );
+	if ( chatApp.isWinNT() ) {
+		smiles.setBgColor( chatApp.style.theme.selectedBgColor );
+	}
 }
 
 void CChatString::selectedOFF()
 {
-	smiles.setBgColor( getBgColor() );
+	if ( chatApp.isWinNT() ) {
+		smiles.setBgColor( getBgColor() );
+	}
 }
 
 // ----------------------------------------------------------------------------

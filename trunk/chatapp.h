@@ -31,6 +31,8 @@ private:
 	std::string ip;
 	std::string broadcastIP;
 
+	bool   winNT;
+
 	bool   firstRun;
 	HANDLE mutex;
 
@@ -63,7 +65,9 @@ public:
 
 	void refreshUserList();
 
-	CFont& getFont() { return font; }
+	bool isWinNT()   { return winNT; }
+
+	CFont& getFont() { return font;  }
 
 	static std::string getFullFileName();
 	static std::string extractFilePath( const std::string& fileName );

@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "chatdock.h"
+#include "chatapp.h"
 #include "resource.h"
 
 #ifdef _DEBUG
@@ -41,11 +42,15 @@ int CChatDock::OnCreate( LPCREATESTRUCT lpCreateStruct )
 
 	users.Create( 0, CRect(0, 0, 0, 0), tab.getTabAsParent(), 1 );
 	network.Create( 0, CRect(0, 0, 0, 0), tab.getTabAsParent(), 2 );
-	smiles.Create( NULL, NULL, 0, CRect(0, 0, 0, 0), tab.getTabAsParent(), 3 );
+	if ( chatApp.isWinNT() ) {
+		smiles.Create( NULL, NULL, 0, CRect(0, 0, 0, 0), tab.getTabAsParent(), 3 );
+	}
 
 	tab.insertItem( &users, format( IDS_USERS ).c_str(), 0 );
 	tab.insertItem( &network, format( IDS_NETWORK ).c_str(), 1 );
-	tab.insertItem( &smiles, format( IDS_SMILES ).c_str(), 2 );
+	if ( chatApp.isWinNT() ) {
+		tab.insertItem( &smiles, format( IDS_SMILES ).c_str(), 2 );
+	}
 
 	return 0;
 }

@@ -30,6 +30,7 @@ CChatApp::CChatApp():
 	ip( "" ),
 	port( 4000 ),
 	broadcastIP( "192.168.1.255" ),
+	winNT( false ),
 	firstRun( true ),
 	mutex( 0 ),
 	splash( NULL )
@@ -61,10 +62,20 @@ BOOL CChatApp::InitInstance()
 	mainFrame = new CChatMainFrame;
 	m_pMainWnd = mainFrame;
 
-	splash = new CChatSplash;
-	splash->show( mainFrame );
+	OSVERSIONINFO osvi;
+	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+	if ( ::GetVersionEx( &osvi ) ) {
+		winNT = osvi.dwPlatformId == VER_PLATFORM_WIN32_NT;
+	}
 
-	splash->setInitInfo( IDS_SPLASH_INITINFO_FONT );
+	if ( isWinNT() ) {
+		splash = new CChatSplash;
+		splash->show( mainFrame );
+	}
+
+	if ( splash ) {
+		splash->setInitInfo( IDS_SPLASH_INITINFO_FONT );
+	}
 	HFONT hf = (HFONT)::GetStockObject( SYSTEM_FIXED_FONT );
 //	HFONT hf = (HFONT)::GetStockObject( DEFAULT_GUI_FONT );
 	if ( hf ) {
@@ -76,7 +87,9 @@ BOOL CChatApp::InitInstance()
 		}
 	}
 
-	splash->setInitInfo( IDS_SPLASH_INITINFO_SOCKET );
+	if ( splash ) {
+		splash->setInitInfo( IDS_SPLASH_INITINFO_SOCKET );
+	}
 	if ( !initSocket() ) {
 		firstRun = false;
 		delete mainFrame;
@@ -89,7 +102,9 @@ BOOL CChatApp::InitInstance()
 		return FALSE;
 	}
 
-	splash->setInitInfo( IDS_SPLASH_INITINFO_SMILES );
+	if ( splash ) {
+		splash->setInitInfo( IDS_SPLASH_INITINFO_SMILES );
+	}
 	mainFrame->LoadFrame( IDR_MAINFRAME, WS_OVERLAPPEDWINDOW | FWS_ADDTOTITLE, NULL, NULL );
 	mainFrame->SetIcon( LoadIcon( MAKEINTRESOURCE(IDR_MAINFRAME) ), TRUE );
 	mainFrame->SetIcon( LoadIcon( MAKEINTRESOURCE(IDR_MAINFRAME) ), FALSE );
@@ -110,8 +125,10 @@ BOOL CChatApp::InitInstance()
 	refreshUserList();
 //	network.refresh();
 
-	delete splash;
-	splash = NULL;
+	if ( splash ) {
+		delete splash;
+		splash = NULL;
+	}
 
 	return TRUE;
 }

@@ -233,8 +233,8 @@ int CChatMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	dockControlBarBesideOf( statusModeToolBar, editToolBar );
 	DockControlBar( &dock, AFX_IDW_DOCKBAR_LEFT );
 
-	closeButtonAction    = (CChatCloseButtonAction)chatApp.GetProfileInt( "General", "closeButtonAction", CCBA_Tray );
-	minimizeButtonAction = (CChatMinimizeButtonAction)chatApp.GetProfileInt( "General", "minimizeButtonAction", CCMA_Minimize );
+	closeButtonAction    = static_cast<CChatCloseButtonAction>(chatApp.GetProfileInt( "General", "closeButtonAction", CCBA_Tray ));
+	minimizeButtonAction = static_cast<CChatMinimizeButtonAction>(chatApp.GetProfileInt( "General", "minimizeButtonAction", CCMA_Minimize ));
 
 	useTray            = chatApp.GetProfileInt( "Tray", "useTray", true ) ? true : false;
 	notifyAboutMessage = chatApp.GetProfileInt( "Tray", "notifyAboutMessage", true ) ? true : false;
@@ -901,8 +901,10 @@ void CChatMainFrame::OnShowNetwork()
 
 void CChatMainFrame::OnShowSmiles()
 {
-	dock.tab.setCurrentItem( dock.tab.findItem( &dock.smiles ) );
-	dock.smiles.SetFocus();
+	if ( chatApp.isWinNT() ) {
+		dock.tab.setCurrentItem( dock.tab.findItem( &dock.smiles ) );
+		dock.smiles.SetFocus();
+	}
 }
 
 void CChatMainFrame::OnShowEdit()

@@ -99,9 +99,10 @@ int CChatSmileListCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	}
 	text_focus_height += 2;
 
-	chatApp.splash->setProgress( CChatSmile::smile, CChatSmile::tomato + 1 );
+	if ( chatApp.splash ) {
+		chatApp.splash->setProgress( CChatSmile::smile, CChatSmile::tomato + 1 );
+	}
 	for ( int i = CChatSmile::smile; i <= CChatSmile::tomato; i++ ) {
-		int sdc = dc->SaveDC();
 //		if ( i == 43 ) {
 //			CString s;
 //			s.Format( "%d, %s", i, CChatSmileList::getStr( static_cast<CChatSmile::Type>(i) ).c_str() );
@@ -128,10 +129,13 @@ int CChatSmileListCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 		}
 		item->height = rect.Height() + 2 > size.cy ? rect.Height() + 2 : size.cy;
 		list.push_back( item );
-		chatApp.splash->stepProgress();
-		dc->RestoreDC( sdc );
+		if ( chatApp.splash ) {
+			chatApp.splash->stepProgress();
+		}
 	}
-	chatApp.splash->hideProgress();
+	if ( chatApp.splash ) {
+		chatApp.splash->hideProgress();
+	}
 	dc->SelectObject( prev_font );
 	ReleaseDC( dc );
 
