@@ -135,7 +135,7 @@ RDOEditorEditTheme RDOEditorEditTheme::getClassicTheme()
 
 	theme.foldFgColor  = RGB( 0xFF, 0xFF, 0xFF );
 	theme.foldBgColor  = RGB( 0x00, 0x00, 0x00 );
-	theme.errorBgColor = RGB( 0xFF, 0x00, 0x80 );
+	theme.errorBgColor = RGB( 0xE6, 0x05, 0xF8 );
 
 	theme.foldStyle = RDOFOLDS_PLUS;
 

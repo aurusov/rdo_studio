@@ -139,7 +139,7 @@ RDOBaseEditTheme RDOBaseEditTheme::getClassicTheme()
 	theme.caretColor       = RGB( 0xFF, 0xFF, 0x00 );
 	theme.selectionBgColor = RGB( 0x00, 0x00, 0x40 );
 	theme.bookmarkFgColor  = RGB( 0x00, 0x00, 0x00 );
-	theme.bookmarkBgColor  = RGB( 0x00, 0xFF, 0xFF );
+	theme.bookmarkBgColor  = RGB( 0x80, 0x80, 0x00 );
 
 	theme.defaultStyle = RDOFS_NONE;
 
@@ -158,7 +158,7 @@ RDOBaseEditTheme RDOBaseEditTheme::getTwilightTheme()
 	theme.caretColor       = RGB( 0xFF, 0xFF, 0xFF );
 	theme.selectionBgColor = RGB( 0x70, 0x70, 0x70 );
 	theme.bookmarkFgColor  = RGB( 0x00, 0x00, 0x00 );
-	theme.bookmarkBgColor  = RGB( 0x00, 0xFF, 0xFF );
+	theme.bookmarkBgColor  = RGB( 0x00, 0x00, 0xFF );
 
 	theme.defaultStyle = RDOFS_NONE;
 
