@@ -1,6 +1,6 @@
 #include "processes_list.h"
 
-#include "pixmap/start.xpm"
+#include "pixmap/circle_green.xpm"
 #include "pixmap/stop.xpm"
 #include "pixmap/pause.xpm"
 #include "pixmap/ok.xpm"
@@ -30,7 +30,7 @@ WGProcList::WGProcList( QWidget* parent, const char* name, WFlags fl ):
 	column_speed_width( 40 ),
 	column_url_width( 40 ),
 	column_local_file_width( 40 ),
-	image_start( (const char**)image_start_data ),
+	image_circle_green( (const char**)image_circle_green_data ),
 	image_pause( (const char**)image_pause_data ),
 	image_stop( (const char**)image_stop_data ),
 	image_ok( (const char**)image_ok_data ),
@@ -191,22 +191,25 @@ void WGProcList::slot_change_proc_status( WGProcess* proc, WGProcessStatus statu
 		QString s;;
 		QPixmap* pixmap;
 		switch ( status ) {
-			case psStart                : s = "start";                     pixmap = &image_start; break;
-			case psConnect              : s = "connect";                   pixmap = &image_start; break;
-			case psLogin                : s = "login";                     pixmap = &image_start; break;
-			case psDownload             : s = "download";                  pixmap = &image_start; break;
-			case psFinish               : s = "finish";                    pixmap = &image_start; break;
-			case psSaved                : s = "saved";                     pixmap = &image_ok;    break;
-			case psPause                : s = "pause";                     pixmap = &image_pause; break;
-			case psWgetNotFound         : s = "wget not found";            pixmap = &image_stop;  break;
-			case psURLNotFound          : s = "url not found";             pixmap = &image_faild; break;
-			case psHostNotFound         : s = "host not found";            pixmap = &image_faild; break;
-			case psInvalidHostName      : s = "invalid host name";         pixmap = &image_faild; break;
-			case psFileAlreadyExist     : s = "file already exist";        pixmap = &image_ok;    break;
-			case psNoSuchFileOrDirectory: s = "no such file or directory"; pixmap = &image_faild; break;
-			case psNoMatchesOnPattern   : s = "no matches on pattern";     pixmap = &image_faild; break;
-			case psUnknownError         : s = "unknown error";             pixmap = &image_faild; break;
-			default                     : s = "";                          pixmap = &image_ok;    break;
+			case psStart                     : s = "start";                        pixmap = &image_circle_green; break;
+			case psConnect                   : s = "connect";                      pixmap = &image_circle_green; break;
+			case psLogin                     : s = "login";                        pixmap = &image_circle_green; break;
+			case psDownload                  : s = "download";                     pixmap = &image_circle_green; break;
+			case psFinish                    : s = "finish";                       pixmap = &image_circle_green; break;
+			case psSaved                     : s = "saved";                        pixmap = &image_ok;           break;
+			case psPause                     : s = "pause";                        pixmap = &image_pause;        break;
+			case psWgetNotFound              : s = "wget not found";               pixmap = &image_stop;         break;
+			case psURLNotFound               : s = "url not found";                pixmap = &image_faild;        break;
+			case psHostNotFound              : s = "host not found";               pixmap = &image_faild;        break;
+			case psInvalidHostName           : s = "invalid host name";            pixmap = &image_faild;        break;
+			case psFileAlreadyExist          : s = "file already exist";           pixmap = &image_ok;           break;
+			case psNoSuchFileOrDirectory     : s = "no such file or directory";    pixmap = &image_faild;        break;
+			case psNoSuchFile                : s = "no such file";                 pixmap = &image_faild;        break;
+			case psNoMatchesOnPattern        : s = "no matches on pattern";        pixmap = &image_faild;        break;
+			case psInvalidPortSpecification  : s = "invalid port specification";   pixmap = &image_faild;        break;
+			case psUnknownUnsupportedProtocol: s = "unknown/unsupported protocol"; pixmap = &image_faild;        break;
+			case psUnknownError              : s = "unknown error";                pixmap = &image_faild;        break;
+			default                          : s = "";                             pixmap = &image_ok;           break;
 		}
 		item->setText( column_status_index, s );
 		if ( pixmap ) item->setPixmap( column_status_index, *pixmap );
@@ -297,7 +300,7 @@ WGProcListItem::WGProcListItem( const WGProcList* const parent, WGProcess* proce
 	QListViewItem( (QListView*)parent, parent->lastItem() ),
 	proc( process )
 {
-	setText( column_url_index, " " + proc->getURL() + " " );
+	setText( column_url_index, " " + proc->getURLWithHidenPassword() + " " );
 }
 
 WGProcListItem::~WGProcListItem()

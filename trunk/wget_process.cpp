@@ -159,6 +159,20 @@ WGProcess::WGProcess( QObject* parent ):
 	connect( proc, SIGNAL(readyReadStdout()), this, SLOT(readStdout()) );
 	connect( proc, SIGNAL(readyReadStderr()), this, SLOT(readStderr()) );
 	connect( proc, SIGNAL(processExited()),   this, SLOT(procExit()) );
+/*
+	log.clear();
+	QFile f( "test.log" );
+	if ( f.open(IO_ReadOnly) ) {
+		QTextStream t( &f );
+		QString s;
+		int n = 1;
+		while ( !t.eof() ) {
+			s = t.readLine();
+			log.unicode_append( s );
+		}
+		f.close();
+	}
+*/
 }
 
 WGProcess::~WGProcess()
@@ -177,10 +191,15 @@ bool WGProcess::start( const bool without_arguments )
 				if ( dontUseSuffix       ) proc->addArgument( "-nc" );
 				if ( dontRetrieveOldFile ) proc->addArgument( "-N" );
 			}
-			if ( useUsernameAndPassword && !username.isEmpty() && !password.isEmpty() ) {
+			if ( useUsernameAndPassword && ( !username.isEmpty() || !password.isEmpty() )) {
 				QString s = url.stripWhiteSpace();
 				if ( s.find( "ftp://" ) != 0 ) s = "ftp://" + s;
-				s.insert( 6, username + ":" + password + "@" );
+				QString user_name = !username.isEmpty() ? username : "anonymous";
+				if ( !password.isEmpty() ) {
+					s.insert( 6, user_name + ":" + password + "@" );
+				} else {
+					s.insert( 6, user_name + "@" );
+				}
 				url = s;
 			}
 			if ( !retriesNumber.isEmpty()         ) proc->addArgument( "-t" + retriesNumber );
@@ -215,7 +234,7 @@ bool WGProcess::start( const bool without_arguments )
 			return true;
 		} else {
 			emit signal_start( this );
-			addToLog( "wget not fount" );
+			addToLog( "wget not found" );
 			addToLog( "" );
 			setStatus( psWgetNotFound );
 			return false;
@@ -233,7 +252,7 @@ bool WGProcess::version()
 {
 	proc->addArgument( "--version" );
 	if ( !proc->start() ) {
-		addToLog( "wget not fount" );
+		addToLog( "wget not found" );
 		return false;
 	}
 	return true;
@@ -334,25 +353,15 @@ void WGProcess::readStderr()
 #define invalid_host_name_str          "Invalid host name"
 #define file_already_exist_str         "already there, not retrieving"
 #define no_such_file_or_directory_str  "No such file or directory"
+#define no_such_file                   "No such file"
 #define no_matches_on_pattern_str      "No matches on pattern"
+#define invalid_port_specification     "Invalid port specification"
+#define unknown_unsupported_protocol   "Unknown/unsupported protocol"
 #define unknown_error_str              "Unknown error"
 
 void WGProcess::logParser()
 {
-/*
-	log.clear();
-	QFile f( "file.log" );
-	if ( f.open(IO_ReadOnly) ) {
-		QTextStream t( &f );
-		QString s;
-		int n = 1;
-		while ( !t.eof() ) {
-			s = t.readLine();
-			log.unicode_append( s );
-		}
-		f.close();
-	}
-*/
+
 	if ( status == psPause ) return;
 	int count = (int)log.unicode_count();
 	for ( int line = current_line; line < count; line++ ) {
@@ -371,9 +380,19 @@ void WGProcess::logParser()
 		}
 		if ( str.find( no_such_file_or_directory_str ) != -1 ) {
 			setStatus( psNoSuchFileOrDirectory );
+		} else {
+			if ( str.find( no_such_file ) != -1 ) {
+				setStatus( psNoSuchFile );
+			}
 		}
 		if ( str.find( no_matches_on_pattern_str ) != -1 ) {
 			setStatus( psNoMatchesOnPattern );
+		}
+		if ( str.find( invalid_port_specification ) != -1 ) {
+			setStatus( psInvalidPortSpecification );
+		}
+		if ( str.find( unknown_unsupported_protocol ) != -1 ) {
+			setStatus( psUnknownUnsupportedProtocol );
 		}
 		if ( str.find( unknown_error_str ) != -1 ) {
 			setStatus( psUnknownError );
@@ -577,6 +596,41 @@ void WGProcess::setLocalFileName( const char* str )
 QString& WGProcess::getURL()
 {
 	return url;
+}
+
+QString WGProcess::getURLWithHidenPassword() const
+{
+	QString s = url;
+	int i = s.find( '/' );
+	if ( i != -1 ) {
+		int b = 0;
+		int e = s.length() - 1;
+		if ( s.find( '/', i+1 ) == i+1 ) {
+			b = i+2;
+			i = s.find( '/', b );
+			if ( i != -1 ) {
+				e = i-1;
+			} else {
+				e = b-1;
+			}
+		} else {
+			e = i-1;
+		}
+		if ( b < e ) {
+			i = s.find( '@', b );
+			if ( i != -1 ) e = i-1;
+			if ( b < e ) {
+				i = s.find( ':', b );
+				if ( i != -1 ) b = i+1;
+				if ( b <= e ) {
+					for ( i = b; i <= e; i++ ) {
+						s.replace( i, 1, "x" );
+					}
+				}
+			}
+		}
+	}
+	return s;
 }
 
 void WGProcess::setURL( QString& str )

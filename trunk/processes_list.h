@@ -28,7 +28,7 @@ private:
 	int column_url_width;
 	int column_local_file_width;
 
-	QPixmap image_start;
+	QPixmap image_circle_green;
 	QPixmap image_pause;
 	QPixmap image_stop;
 	QPixmap image_ok;

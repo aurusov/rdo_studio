@@ -60,22 +60,25 @@ public:
 class QProcess;
 
 typedef enum WGProcessStatus {
-	psNone                  =  0,
-	psStart                 =  1,
-	psConnect               =  2,
-	psLogin                 =  3,
-	psDownload              =  4,
-	psFinish                =  5,
-	psSaved                 =  6,
-	psPause                 =  7,
-	psWgetNotFound          =  8,
-	psURLNotFound           =  9,
-	psHostNotFound          = 10,
-	psInvalidHostName       = 11,
-	psFileAlreadyExist      = 12,
-	psNoSuchFileOrDirectory = 13,
-	psNoMatchesOnPattern    = 14,
-	psUnknownError          = 15
+	psNone                       =  0,
+	psStart                      =  1,
+	psConnect                    =  2,
+	psLogin                      =  3,
+	psDownload                   =  4,
+	psFinish                     =  5,
+	psSaved                      =  6,
+	psPause                      =  7,
+	psWgetNotFound               =  8,
+	psURLNotFound                =  9,
+	psHostNotFound               = 10,
+	psInvalidHostName            = 11,
+	psFileAlreadyExist           = 12,
+	psNoSuchFileOrDirectory      = 13,
+	psNoSuchFile                 = 14,
+	psNoMatchesOnPattern         = 15,
+	psInvalidPortSpecification   = 16,
+	psUnknownUnsupportedProtocol = 17,
+	psUnknownError               = 18
 };
 
 class WGProcess: public QObject
@@ -145,6 +148,7 @@ public:
 	void setLocalFileName( const char* str );
 
 	QString& getURL();
+	QString getURLWithHidenPassword() const;
 	void setURL( QString& str );
 	void setURL( const char* str );
 
