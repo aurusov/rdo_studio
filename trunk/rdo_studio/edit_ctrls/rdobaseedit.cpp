@@ -631,12 +631,12 @@ LRESULT RDOBaseEdit::OnFindReplaceMsg( WPARAM wParam, LPARAM lParam )
 
 		} else if ( pDialog->ReplaceCurrent() ) {
 
-			string replaceWhat = (LPCTSTR)pDialog->GetReplaceString();
+			string replaceWhat = static_cast<LPCTSTR>(pDialog->GetReplaceString());
 			replace( findStr, replaceWhat, bSearchDown, bMatchCase, bMatchWholeWord );
 
 		} else if ( pDialog->ReplaceAll() ) {
 
-			string replaceWhat = (LPCTSTR)pDialog->GetReplaceString();
+			string replaceWhat = static_cast<LPCTSTR>(pDialog->GetReplaceString());
 			replaceAll( findStr, replaceWhat, bMatchCase, bMatchWholeWord );
 
 		}

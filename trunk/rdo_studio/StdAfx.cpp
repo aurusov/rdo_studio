@@ -35,7 +35,7 @@ std::string format( UINT resource, ... )
 		int size = -1;
 		while ( size == -1 ) {
 			va_start( paramList, resource );
-			size = _vsnprintf( s.begin(), s.size(), (LPCTSTR)str, paramList );
+			size = _vsnprintf( s.begin(), s.size(), static_cast<LPCTSTR>(str), paramList );
 			va_end( paramList );
 			if ( size == -1 ) {
 				s.resize( s.size() + 256 );

@@ -56,7 +56,7 @@ void RDOStudioEditDoc::updateModify()
 {
 	POSITION pos = GetFirstViewPosition();
 	if ( pos ) {
-		RDOStudioEditView* view = (RDOStudioEditView*)GetNextView( pos );
+		RDOStudioEditView* view = static_cast<RDOStudioEditView*>(GetNextView( pos ));
 		if ( view ) {
 			if ( view->edit->isModify() ) {
 				SetModifiedFlag( true );

@@ -87,9 +87,9 @@ void RDOFindEdit::setEditorStyle( RDOFindEditStyle* _style )
 	sendEditor( SCI_STYLESETCHARACTERSET, SCE_RDO_KEYWORD, style->font->characterSet );
 }
 
-void RDOFindEdit::setKeyword( const string& _keyword, const bool matchCase )
+void RDOFindEdit::setKeyword( const string& _keyword, const bool matchCase ) const
 {
-	keyword = _keyword;
+	const_cast<string&>(keyword) = _keyword;
 	sendEditorString( SCI_SETPROPERTY, reinterpret_cast<unsigned long>("find_matchcase"), matchCase ? "1" : "0" );
 	sendEditorString( SCI_SETKEYWORDS, SCI_RDO_ENDOFLINEONLY_KEYWORDSINDEX, keyword.c_str() );
 }

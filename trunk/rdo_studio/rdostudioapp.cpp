@@ -181,7 +181,7 @@ RDOStudioModelDoc* RDOStudioApp::getModelDoc()
 {
 	POSITION pos = modelDocTemplate->GetFirstDocPosition();
 	if ( pos ) {
-		return (RDOStudioModelDoc*)modelDocTemplate->GetNextDoc( pos );
+		return static_cast<RDOStudioModelDoc*>(modelDocTemplate->GetNextDoc( pos ));
 	}
 	return NULL;
 }
@@ -228,14 +228,14 @@ void RDOStudioApp::OnUpdateFileSave(CCmdUI* pCmdUI)
 	POSITION pos;
 	pos = modelDocTemplate->GetFirstDocPosition();
 	while ( pos ) {
-		RDOStudioModelDoc* doc = (RDOStudioModelDoc*)modelDocTemplate->GetNextDoc( pos );
+		RDOStudioModelDoc* doc = static_cast<RDOStudioModelDoc*>(modelDocTemplate->GetNextDoc( pos ));
 		if ( doc ) {
 			doc->updateModify();
 		}
 	}
 	pos = editDocTemplate->GetFirstDocPosition();
 	while ( pos ) {
-		RDOStudioEditDoc* doc = (RDOStudioEditDoc*)editDocTemplate->GetNextDoc( pos );
+		RDOStudioEditDoc* doc = static_cast<RDOStudioEditDoc*>(editDocTemplate->GetNextDoc( pos ));
 		if ( doc ) {
 			doc->updateModify();
 		}
@@ -263,7 +263,7 @@ void RDOStudioApp::OnUpdateFileSaveAll(CCmdUI* pCmdUI)
 		POSITION pos;
 		pos = modelDocTemplate->GetFirstDocPosition();
 		while ( pos ) {
-			RDOStudioModelDoc* doc = (RDOStudioModelDoc*)modelDocTemplate->GetNextDoc( pos );
+			RDOStudioModelDoc* doc = static_cast<RDOStudioModelDoc*>(modelDocTemplate->GetNextDoc( pos ));
 			if ( doc ) {
 				doc->updateModify();
 				flag = doc->IsModified() ? true : false;
@@ -273,7 +273,7 @@ void RDOStudioApp::OnUpdateFileSaveAll(CCmdUI* pCmdUI)
 		if ( !flag ) {
 			pos = editDocTemplate->GetFirstDocPosition();
 			while ( pos ) {
-				RDOStudioEditDoc* doc = (RDOStudioEditDoc*)editDocTemplate->GetNextDoc( pos );
+				RDOStudioEditDoc* doc = static_cast<RDOStudioEditDoc*>(editDocTemplate->GetNextDoc( pos ));
 				if ( doc ) {
 					doc->updateModify();
 					flag = doc->IsModified() ? true : false;

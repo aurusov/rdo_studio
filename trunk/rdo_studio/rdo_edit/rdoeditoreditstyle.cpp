@@ -106,14 +106,14 @@ void RDOEditorEditTheme::load( string regPath )
 	stringColor            = AfxGetApp()->GetProfileInt( regPath.c_str(), "stringColor", stringColor );
 	operatorColor          = AfxGetApp()->GetProfileInt( regPath.c_str(), "operatorColor", operatorColor );
 	errorBgColor           = AfxGetApp()->GetProfileInt( regPath.c_str(), "errorBgColor", errorBgColor );
-	identifierStyle        = (RDOFontStyle)AfxGetApp()->GetProfileInt( regPath.c_str(), "identifierStyle", identifierStyle );
-	keywordStyle           = (RDOFontStyle)AfxGetApp()->GetProfileInt( regPath.c_str(), "keywordStyle", keywordStyle );
-	functionsStyle         = (RDOFontStyle)AfxGetApp()->GetProfileInt( regPath.c_str(), "functionsStyle", functionsStyle );
-	traceStyle             = (RDOFontStyle)AfxGetApp()->GetProfileInt( regPath.c_str(), "traceStyle", traceStyle );
-	commentStyle           = (RDOFontStyle)AfxGetApp()->GetProfileInt( regPath.c_str(), "commentStyle", commentStyle );
-	numberStyle            = (RDOFontStyle)AfxGetApp()->GetProfileInt( regPath.c_str(), "numberStyle", numberStyle );
-	stringStyle            = (RDOFontStyle)AfxGetApp()->GetProfileInt( regPath.c_str(), "stringStyle", stringStyle );
-	operatorStyle          = (RDOFontStyle)AfxGetApp()->GetProfileInt( regPath.c_str(), "operatorStyle", operatorStyle );
+	identifierStyle        = static_cast<RDOFontStyle>(AfxGetApp()->GetProfileInt( regPath.c_str(), "identifierStyle", identifierStyle ));
+	keywordStyle           = static_cast<RDOFontStyle>(AfxGetApp()->GetProfileInt( regPath.c_str(), "keywordStyle", keywordStyle ));
+	functionsStyle         = static_cast<RDOFontStyle>(AfxGetApp()->GetProfileInt( regPath.c_str(), "functionsStyle", functionsStyle ));
+	traceStyle             = static_cast<RDOFontStyle>(AfxGetApp()->GetProfileInt( regPath.c_str(), "traceStyle", traceStyle ));
+	commentStyle           = static_cast<RDOFontStyle>(AfxGetApp()->GetProfileInt( regPath.c_str(), "commentStyle", commentStyle ));
+	numberStyle            = static_cast<RDOFontStyle>(AfxGetApp()->GetProfileInt( regPath.c_str(), "numberStyle", numberStyle ));
+	stringStyle            = static_cast<RDOFontStyle>(AfxGetApp()->GetProfileInt( regPath.c_str(), "stringStyle", stringStyle ));
+	operatorStyle          = static_cast<RDOFontStyle>(AfxGetApp()->GetProfileInt( regPath.c_str(), "operatorStyle", operatorStyle ));
 }
 
 void RDOEditorEditTheme::save( string regPath ) const
@@ -391,7 +391,7 @@ RDOEditorEditTheme RDOEditorEditTheme::getTwilightTheme()
 	theme.identifierStyle = RDOFS_NONE;
 	theme.keywordStyle    = RDOFS_BOLD;
 	theme.functionsStyle  = RDOFS_BOLD;
-	theme.traceStyle      = (RDOFontStyle)(RDOFS_BOLD | RDOFS_ITALIC);
+	theme.traceStyle      = static_cast<RDOFontStyle>(RDOFS_BOLD | RDOFS_ITALIC);
 	theme.commentStyle    = RDOFS_ITALIC;
 	theme.numberStyle     = RDOFS_NONE;
 	theme.stringStyle     = RDOFS_NONE;
@@ -515,8 +515,8 @@ void RDOEditorEditStyle::initAutoComplete()
 RDOEditorEditStyle& RDOEditorEditStyle::operator =( const RDOEditorEditStyle& style )
 {
 	RDOBaseEditStyle::operator=( style );
-	if ( theme        && style.theme )        *(RDOEditorEditTheme*)theme = *(RDOEditorEditTheme*)style.theme;
-	if ( autoComplete && style.autoComplete ) *autoComplete               = *style.autoComplete;
+	if ( theme        && style.theme )        *static_cast<RDOEditorEditTheme*>(theme) = *static_cast<RDOEditorEditTheme*>(style.theme);
+	if ( autoComplete && style.autoComplete ) *autoComplete = *style.autoComplete;
 
 	return *this;
 }
@@ -524,8 +524,8 @@ RDOEditorEditStyle& RDOEditorEditStyle::operator =( const RDOEditorEditStyle& st
 bool RDOEditorEditStyle::operator ==( const RDOEditorEditStyle& style ) const
 {
 	bool flag = RDOBaseEditStyle::operator==( style );
-	if ( theme        && style.theme        && flag ) flag &= *(RDOEditorEditTheme*)theme == *(RDOEditorEditTheme*)style.theme;
-	if ( autoComplete && style.autoComplete && flag ) flag &= *autoComplete               == *style.autoComplete;
+	if ( theme        && style.theme        && flag ) flag &= *static_cast<RDOEditorEditTheme*>(theme) == *static_cast<RDOEditorEditTheme*>(style.theme);
+	if ( autoComplete && style.autoComplete && flag ) flag &= *autoComplete == *style.autoComplete;
 	return flag;
 }
 

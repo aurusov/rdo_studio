@@ -356,7 +356,7 @@ void RDOStudioModel::setName( const string& str )
 bool RDOStudioModel::isModify() const
 {
 	bool flag = false;
-	RDOStudioModelDoc* doc = (RDOStudioModelDoc*)studioApp.getModelDoc();
+	RDOStudioModelDoc* doc = studioApp.getModelDoc();
 	if ( doc ) {
 		doc->updateModify();
 		flag = doc->IsModified() ? true : false;

@@ -27,7 +27,7 @@ public:
 
 	void setEditorStyle( RDOFindEditStyle* _style );
 
-	void setKeyword( const string& _keyword, const bool matchCase = false );
+	void setKeyword( const string& _keyword, const bool matchCase = false ) const;
 };
 
 //{{AFX_INSERT_LOCATION}}

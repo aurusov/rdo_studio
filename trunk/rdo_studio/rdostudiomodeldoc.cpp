@@ -57,15 +57,12 @@ void RDOStudioModelDoc::Dump(CDumpContext& dc) const
 
 void RDOStudioModelDoc::updateModify()
 {
-	POSITION pos = GetFirstViewPosition();
-	if ( pos ) {
-		RDOStudioModelView* view = (RDOStudioModelView*)GetNextView( pos );
-		if ( view ) {
-			for ( int i = 0; i < view->tab->getItemCount(); i++ ) {
-				if ( view->tab->getItemEdit( i )->isModify() ) {
-					SetModifiedFlag( true );
-					return;
-				}
+	RDOStudioModelView* view = getView();
+	if ( view ) {
+		for ( int i = 0; i < view->tab->getItemCount(); i++ ) {
+			if ( view->tab->getItemEdit( i )->isModify() ) {
+				SetModifiedFlag( true );
+				return;
 			}
 		}
 	}
@@ -76,7 +73,7 @@ RDOStudioModelView* RDOStudioModelDoc::getView() const
 {
 	POSITION pos = GetFirstViewPosition();
 	if ( pos ) {
-		return (RDOStudioModelView*)GetNextView( pos );
+		return static_cast<RDOStudioModelView*>(GetNextView( pos ));
 	}
 	return NULL;
 }
