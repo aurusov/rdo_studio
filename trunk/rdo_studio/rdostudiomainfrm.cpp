@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "rdostudiomainfrm.h"
+#include "rdostudioapp.h"
 #include "rdostudiomodel.h"
 #include "rdostudiooptions.h"
 #include "./rdo_tracer/rdotracertrace.h"
@@ -31,6 +32,7 @@ BEGIN_MESSAGE_MAP(RDOStudioMainFrame, CMDIFrameWnd)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_OUTPUT, OnUpdateViewOutput)
 	ON_WM_DESTROY()
 	ON_COMMAND(ID_VIEW_OPTIONS, OnViewOptions)
+	ON_COMMAND(ID_HELP_CONTENTS, OnHelpContents)
 	//}}AFX_MSG_MAP
 	ON_UPDATE_COMMAND_UI( ID_COORDSTATUSBAR          , OnUpdateCoordStatusBar )
 	ON_UPDATE_COMMAND_UI( ID_MODIFYSTATUSBAR         , OnUpdateModifyStatusBar )
@@ -288,4 +290,12 @@ void RDOStudioMainFrame::updateAllStyles() const
 {
 	model->updateStyleOfAllModel();
 	output.updateStyles();
+}
+
+void RDOStudioMainFrame::OnHelpContents()
+{
+	string filename = studioApp.getFullHelpFileName();
+	if ( filename.empty() ) return;
+
+//	HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_DISPLAY_TOPIC, NULL );
 }
