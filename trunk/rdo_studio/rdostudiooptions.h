@@ -18,6 +18,11 @@
 #include "edit_ctrls/rdofindeditstyle.h"
 #include "rdo_tracer/tracer_ctrls/rdotracerlogctrl.h"
 #include "rdo_tracer/tracer_ctrls/rdotracerlogstyle.h"
+#include "rdostudiochartdoc.h"
+#include "rdostudiochartview.h"
+#include "rdostudiochartviewstyle.h"
+#include "rdo_tracer/rdotracerserie.h"
+#include "rdo_tracer/rdotracervalues.h"
 #include "resource.h"
 
 // ----------------------------------------------------------------------------
@@ -126,7 +131,7 @@ private:
 
 	class STYLEObject {
 	public:
-		enum Type { none = 0, all, source, build, debug, trace, results, find } type;
+		enum Type { none = 0, all, source, build, debug, trace, results, find, chart } type;
 		std::string&                   font_name;
 		int&                           font_size;
 		bool                           font_fixed;
@@ -272,6 +277,7 @@ private:
 	rdoTracerLog::RDOTracerLogStyle  style_trace;
 	rdoEditor::RDOEditorResultsStyle style_results;
 	rdoEditCtrl::RDOFindEditStyle    style_find;
+	RDOStudioChartViewStyle          style_chart;
 
 	RDOStudioOptionsEditor*       editor;
 	RDOStudioOptionsTabs*         tabs;
@@ -283,6 +289,12 @@ private:
 	rdoTracerLog::RDOTracerLogCtrl preview_trace;
 	rdoEditor::RDOEditorResults    preview_results;
 	rdoEditCtrl::RDOFindEdit       preview_find;
+	
+	RDOStudioChartDoc*             preview_chart_doc;
+	RDOStudioChartView*            preview_chart;
+	std::vector<RDOTracerTimeNow>  preview_times;
+	RDOTracerSerie                 preview_serie;
+	
 
 	void updateStyles();
 	void apply() const;

@@ -275,7 +275,7 @@ BEGIN
     LTEXT           "Vertical border",IDC_VERTBORDER_STATIC,88,76,46,8
     EDITTEXT        IDC_VERTBORDER_EDIT,140,72,24,12,ES_AUTOHSCROLL | 
                     ES_NUMBER
-    LTEXT           "Horizantal border",IDC_HORZBORDER_STATIC,172,76,54,8
+    LTEXT           "Horizontal border",IDC_HORZBORDER_STATIC,172,76,54,8
     EDITTEXT        IDC_HORZBORDER_EDIT,232,72,24,12,ES_AUTOHSCROLL | 
                     ES_NUMBER
 END
@@ -410,6 +410,8 @@ BEGIN
 0x6552, 0x7573, 0x746c, 0x0073, 
     IDC_PREVIEWAS_COMBO, 0x403, 5, 0
 0x6946, 0x646e, "\000" 
+    IDC_PREVIEWAS_COMBO, 0x403, 6, 0
+0x6843, 0x7261, 0x0074, 
     0
 END
 
@@ -1290,19 +1292,25 @@ BEGIN
     IDS_COLORSTYLE_LOG_SEM  "Search termination (SEM)"
     IDS_COLORSTYLE_LOG_SEF  "Search termination (SEF)"
     IDS_COLORSTYLE_LOG_SEU  "Search termination (SEU)"
+    IDS_COLORSTYLE_CHART_AXIS "axis"
+    IDS_COLORSTYLE_CHART_TITLE "title"
+    IDS_COLORSTYLE_CHART_LEGEND "legend"
+    IDS_COLORSTYLE_CHART_CHART "chart"
+    IDS_COLORSTYLE_CHART_TIME "time"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
     IDS_COLORSTYLE_ALLWINDOW "All Windows"
     IDS_COLORSTYLE_EDITOR   "Source Windows"
     IDS_COLORSTYLE_BUILD    "Build Window"
     IDS_COLORSTYLE_BUILD_TEXT "text"
     IDS_COLORSTYLE_BUILD_SELECTEDLINE "selected line"
-END
-
-STRINGTABLE DISCARDABLE 
-BEGIN
     IDS_COLORSTYLE_DEBUG    "Debug Window"
     IDS_COLORSTYLE_LOG      "Trace Window"
     IDS_COLORSTYLE_RESULTS  "Results Window"
     IDS_COLORSTYLE_FIND     "Find Window"
+    IDS_COLORSTYLE_CHART    "Chart Window"
     IDS_COLORSTYLE_FIND_SEARCHTEXT "search text"
     IDS_COLORSTYLE_EDITOR_SAMPLE 
                             "{ comments }\n$Pattern pattern_name : operation trace\n$Relevant_resources\n  rel_res2  : res_type2     Keep    Keep\n  rel_res1  : res_type1     Create  NoChange\n$Time = Abs(rel_res2.par1 - rel_res2.par3)\n{...}\n$End\n\ntext [ 10, 20, ... = 'text' ]\n\n$Re levant_resources"
@@ -1310,6 +1318,10 @@ BEGIN
     IDS_COLORSTYLE_BUILD_SAMPLE2 "Wrong parameter value: L"
     IDS_COLORSTYLE_BUILD_SAMPLE3 "1 error(s) found."
     IDS_COLORSTYLE_DEBUG_SAMPLE "Start executing\nEI 0 1 1 0\nES 0 1\n"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
     IDS_COLORSTYLE_LOG_SAMPLE 
                             "Default string type\nES 0 3\nEB 0 1 1 2 2 1 2\nEF 0.335153 1 1 2 2 1 2\nEI 0.427752 1 1 2 1 2\nER 1.07933 2 2 3 1 3\nRC 0.427752 2 2 0 0.427752 0\nRE 0.335153 2 2\nRK 0.427752 1 1 1 1 1\nV  0.427752 1  1\n$Status = USER_BREAK    607.228\nDPS_C  1  1  1\nSB 0 1\nSO 1 0 0 0\nSTN 3 1 3 6 2 1 3 2  5 6\nSTD 4 3 7 11 1 1 4 2  5 6\nSTR 5 2 8 12 2 1 4 2  1 6\nSRC 0 1 1 1 4\nSRE 0 1 2 2 4\nSRK 0 1 2 2 2\nSD\nSES 0 0.065 397312 10 8 13 13 19\nSEN 0 0.065 397312 10 8 13 13 19\nSEM 0 0.065 397312 10 8 13 13 19\nSEF 0 0.065 397312 10 8 13 13 19\nSEU 0 0.065 397312 10 8 13 13 19"
     IDS_COLORSTYLE_RESULTS_SAMPLE 
@@ -1318,10 +1330,8 @@ BEGIN
     IDS_COLORSTYLE_FIND_SAMPLE2 "$Time = Равномерный(0.25, 0.75)"
     IDS_COLORSTYLE_FIND_SAMPLE3 "$Time = Нормальный(0.45, 0.2)"
     IDS_COLORSTYLE_FIND_SAMPLE4 "'2' occurrence(s) have been found."
-END
-
-STRINGTABLE DISCARDABLE 
-BEGIN
+    IDS_COLORSTYLE_CHART_SAMPLE1 "chart 1"
+    IDS_COLORSTYLE_CHART_SAMPLE2 "serie 1"
     IDS_COLORSTYLE_EDITOR_THEME_CURRENT "Current"
     IDS_COLORSTYLE_EDITOR_THEME_DEFAULT "Default"
     IDS_COLORSTYLE_EDITOR_THEME_CPP "C++"
@@ -1330,6 +1340,10 @@ BEGIN
     IDS_COLORSTYLE_EDITOR_THEME_CLASSIC "Classic"
     IDS_COLORSTYLE_EDITOR_THEME_TWILIGHT "Twilight"
     IDS_COLORSTYLE_EDITOR_THEME_OCEAN "Ocean"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
     IDS_FRAMES              "Frames"
     IDS_FRAMENAME           "frame: %s"
     IDS_MODELNAME           "model: %s"

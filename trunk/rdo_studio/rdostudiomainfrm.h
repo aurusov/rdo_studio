@@ -14,6 +14,7 @@
 #include "edit_ctrls/rdofindeditstyle.h"
 #include "rdo_tracer/tracer_ctrls/rdotracerlogstyle.h"
 #include "rdostudiostyle.h"
+#include "rdostudiochartviewstyle.h"
 
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioMainFrame
@@ -47,6 +48,7 @@ public:
 	rdoEditor::RDOEditorResultsStyle style_results;
 	rdoEditCtrl::RDOFindEditStyle    style_find;
 	rdoStyle::RDOStyleWithTheme      style_frame;
+	RDOStudioChartViewStyle          style_chart;
 	void updateAllStyles() const;
 
 	BOOL OnCmdMsgForDockOnly( UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo );

@@ -91,6 +91,15 @@ RDOStyleFont RDOStyleFont::getTracerLogFont()
 	return font;
 }
 
+RDOStyleFont RDOStyleFont::getChartViewFont()
+{
+	RDOStyleFont font;
+
+	font.name = "Tahoma";
+
+	return font;
+}
+
 // ----------------------------------------------------------------------------
 // ---------- RDOStyleTheme
 // ----------------------------------------------------------------------------

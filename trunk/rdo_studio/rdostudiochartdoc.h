@@ -5,8 +5,6 @@
 #pragma once
 #endif
 
-using namespace std;
-
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioChartDoc
 // ----------------------------------------------------------------------------
@@ -14,7 +12,7 @@ class RDOTracerSerie;
 class RDOTracerTimeNow;
 class RDOTracerValue;
 
-typedef list< RDOTracerTimeNow* > timesList;
+typedef std::list< RDOTracerTimeNow* > timesList;
 
 class RDOStudioDocSerie
 {
@@ -36,11 +34,10 @@ friend class RDOStudioChartView;
 friend class RDOStudioChartDocInsertTime;
 
 protected:
-	RDOStudioChartDoc();
 	DECLARE_DYNCREATE(RDOStudioChartDoc)
 
-	vector< RDOStudioDocSerie > series;
-	bool serieExists( const RDOTracerSerie* serie ) const { return find( series.begin(), series.end(), serie ) != series.end(); };
+	std::vector< RDOStudioDocSerie > series;
+	bool serieExists( const RDOTracerSerie* serie ) const { return std::find( series.begin(), series.end(), serie ) != series.end(); };
 	COLORREF selectColor();
 
 	timesList docTimes;
@@ -49,6 +46,8 @@ protected:
 	void incTimeEventsCount( RDOTracerTimeNow* time );
 	//void addSerieTimes( RDOTracerSerie* const serie );
 	bool newValueToSerieAdded( RDOTracerValue* val );
+
+	bool previewMode;
 
 public:
 	//{{AFX_VIRTUAL(RDOStudioChartDoc)
@@ -63,6 +62,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 public:
+	RDOStudioChartDoc( const bool preview = false );
 	virtual ~RDOStudioChartDoc();
 
 	void addSerie( RDOTracerSerie* const serie );

@@ -6,7 +6,7 @@
 #include "rdostudioeditdoc.h"
 #include "rdostudioeditview.h"
 #include "resource.h"
-#include "./rdo_tracer/rdotracertrace.h"
+#include "rdo_tracer/rdotracertrace.h"
 #include "htmlhelp.h"
 
 #include <rdokernel.h>

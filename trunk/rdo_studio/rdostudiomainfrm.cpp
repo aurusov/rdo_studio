@@ -3,7 +3,7 @@
 #include "rdostudioapp.h"
 #include "rdostudiomodel.h"
 #include "rdostudiooptions.h"
-#include "./rdo_tracer/rdotracertrace.h"
+#include "rdo_tracer/rdotracertrace.h"
 #include "htmlhelp.h"
 #include "resource.h"
 
@@ -85,6 +85,9 @@ int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	style_frame.init( "frame" );
 	style_frame.load();
+	
+	style_chart.init( "chart" );
+	style_chart.load();
 
 	fileToolBar.CreateEx( this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
 	fileToolBar.LoadToolBar( IDR_FILETOOLBAR );
@@ -151,6 +154,7 @@ void RDOStudioMainFrame::OnDestroy()
 	style_results.save();
 	style_find.save();
 	style_frame.save();
+	style_chart.save();
 
 	::OleUninitialize();
 	if ( model ) { delete model; model = NULL; }
@@ -295,6 +299,7 @@ void RDOStudioMainFrame::updateAllStyles() const
 {
 	model->updateStyleOfAllModel();
 	output.updateStyles();
+	tracer.updateChartsStyles();
 }
 
 void RDOStudioMainFrame::OnHelpContents()

@@ -30,6 +30,7 @@ public:
 	static RDOStyleFont getDefaultFont();
 	static RDOStyleFont getClassicFont();
 	static RDOStyleFont getTracerLogFont();
+	static RDOStyleFont getChartViewFont();
 };
 
 // ----------------------------------------------------------------------------

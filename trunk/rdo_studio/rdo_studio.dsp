@@ -136,6 +136,10 @@ SOURCE=.\rdostudiochartview.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\rdostudiochartviewstyle.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdostudiochildfrm.cpp
 
 !IF  "$(CFG)" == "rdo_studio - Win32 Release"
@@ -344,6 +348,10 @@ SOURCE=.\rdostudiochartview.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\rdostudiochartviewstyle.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdostudiochildfrm.h
 # End Source File
 # Begin Source File
@@ -528,10 +536,6 @@ SOURCE=.\rdo_tracer\rdotraceroperation.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\rdo_tracer\rdotraceroptions.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\rdo_tracer\rdotracerpattern.cpp
 # End Source File
 # Begin Source File
@@ -565,10 +569,6 @@ SOURCE=.\rdo_tracer\rdotracervalues.cpp
 # Begin Source File
 
 SOURCE=.\rdo_tracer\rdotraceroperation.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_tracer\rdotraceroptions.h
 # End Source File
 # Begin Source File
 

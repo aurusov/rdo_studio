@@ -1,15 +1,18 @@
 #include "stdafx.h"
 #include "rdostudiochartview.h"
-#include "./rdo_tracer/rdotracertrace.h"
+#include "rdo_tracer/rdotracertrace.h"
 #include "rdostudioapp.h"
 #include "rdostudiomainfrm.h"
 #include "resource.h"
+#include "rdostudiochartviewstyle.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
+
+using namespace rdoStyle;
 
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioChartView
@@ -36,10 +39,11 @@ BEGIN_MESSAGE_MAP(RDOStudioChartView, CView)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOMOUT, OnUpdateChartZoomZoomout)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOMRESET, OnUpdateChartZoomResetzoom)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOMAUTO, OnUpdateChartZoomZoomauto)
+	ON_WM_MOUSEACTIVATE()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-RDOStudioChartView::RDOStudioChartView()
+RDOStudioChartView::RDOStudioChartView( const bool preview )
 	: CView(),
 	bmpRect( 0, 0, 0, 0 ),
 	newClientRect( 0, 0, 0, 0 ),
@@ -48,7 +52,6 @@ RDOStudioChartView::RDOStudioChartView()
 	valueCountY( 5 ),
 	yaxis( NULL ),
 	tickWidth( 5 ),
-	timeColor( RGB( 0xE7, 0xF8, 0xF8 ) ),
 	timeWrap( true ),
 	chartRect( 0, 0, 0, 0 ),
 	xMax( 0 ),
@@ -60,8 +63,14 @@ RDOStudioChartView::RDOStudioChartView()
 	old_zoom( 1 ),
 	auto_zoom( 1 ),
 	zoomAuto( false ),
-	scale_koeff( 1 )
+	scale_koeff( 1 ),
+	style( NULL ),
+	previewMode( preview ),
+	font_sizeTitle( 1.2 ),
+	font_sizeLegend( 0.8 )
 {
+	if ( previewMode )
+		timeWrap = false;
 }
 
 RDOStudioChartView::~RDOStudioChartView()
@@ -84,11 +93,15 @@ void RDOStudioChartView::recalcLayout()
 	CDC dc;
 	dc.CreateCompatibleDC( &cldc );
 
+	CFont* oldFont = dc.SelectObject( &fontTitle );
+
 	RDOStudioChartDoc* doc = GetDocument();
 	
 	string str = doc->GetTitle();
 
 	chartRect.top = dc.GetTextExtent( str.c_str() ).cy;
+
+	dc.SelectObject( &fontAxis );
 
 	double val = 0;
 
@@ -99,6 +112,8 @@ void RDOStudioChartView::recalcLayout()
 	else
 		val = 0;
 	chartRect.right = newClientRect.right - dc.GetTextExtent( format( "%.3f", val ).c_str() ).cx - 5;
+
+	dc.SelectObject( oldFont );
 
 	chartRect.bottom = newClientRect.bottom - chartRect.top - 2 - 3;
 	
@@ -263,6 +278,21 @@ void RDOStudioChartView::setFromTo()
 	}
 }
 
+void RDOStudioChartView::drawTitle( CDC &dc, CRect& chartRect )
+{
+	//CRect tmprect;
+	//tmprect.CopyRect( &newClientRect );
+	int old_bk = dc.SetBkMode( TRANSPARENT );
+	CFont*  oldFont = dc.SelectObject( &fontTitle );
+	COLORREF old_color = dc.SetTextColor( style->getTheme()->titleFGColor );
+	string str = GetDocument()->GetTitle();
+	//dc.DrawText( str.c_str(), rect, DT_CENTER );
+	dc.DrawText( str.c_str(), newClientRect, DT_CENTER );
+	dc.SetTextColor( old_color );
+	dc.SelectObject( oldFont );
+	dc.SetBkMode( old_bk );
+}
+
 void RDOStudioChartView::drawYAxis( CDC &dc, CRect& chartRect, const RDOTracerSerie* axisValues)
 {
 	CRect tmprect;
@@ -272,6 +302,9 @@ void RDOStudioChartView::drawYAxis( CDC &dc, CRect& chartRect, const RDOTracerSe
 	tmprect.left = 5;
 	tmprect.right = chartRect.left;
 	if ( axisValues && axisValues->getValueCount() ) {
+		int old_bk = dc.SetBkMode( TRANSPARENT );
+		CFont*  oldFont = dc.SelectObject( &fontAxis );
+		COLORREF old_color = dc.SetTextColor( style->getTheme()->axisFgColor );
 		string formatstr = "%.3f";
 		double valoffset = 0;
 		double min = axisValues->getMinValue();
@@ -299,6 +332,9 @@ void RDOStudioChartView::drawYAxis( CDC &dc, CRect& chartRect, const RDOTracerSe
 				y -= heightoffset;
 			}
 		}
+		dc.SetTextColor( old_color );
+		dc.SelectObject( oldFont );
+		dc.SetBkMode( old_bk );
 	}
 
 }
@@ -317,6 +353,9 @@ void RDOStudioChartView::drawXAxis( CDC &dc, CRect& chartRect )
 	RDOStudioChartDoc* doc = GetDocument();
 	if ( !doc->docTimes.empty() ) {
 		string formatstr = "%.3f";
+		int old_bk = dc.SetBkMode( TRANSPARENT );
+		CFont*  oldFont = dc.SelectObject( &fontAxis );
+		COLORREF old_color = dc.SetTextColor( style->getTheme()->axisFgColor );
 		if( !doUnwrapTime() ) {
 			double valoffset = 0;
 			int widthoffset = chartRect.Width() / ( valueCountX - 1 );
@@ -361,12 +400,18 @@ void RDOStudioChartView::drawXAxis( CDC &dc, CRect& chartRect )
 				}
 			}
 		}
+		dc.SetTextColor( old_color );
+		dc.SelectObject( oldFont );
+		dc.SetBkMode( old_bk );
 	}
 }
 
 void RDOStudioChartView::drawGrid(	CDC &dc, CRect& chartRect )
 {
+	CBrush brush_chart( style->getTheme()->chartBgColor );
+	CBrush* old_brush = dc.SelectObject( &brush_chart );
 	dc.Rectangle( chartRect );
+	dc.SelectObject( old_brush );
 
 	if ( doUnwrapTime() ) {
 		CRect rect;
@@ -393,7 +438,7 @@ void RDOStudioChartView::drawGrid(	CDC &dc, CRect& chartRect )
 					width = drawToEventCount * tickWidth;
 				}
 				tmprect.right = tmprect.left + width;
-				dc.FillSolidRect( &tmprect, timeColor );
+				dc.FillSolidRect( &tmprect, style->getTheme()->timeBgColor );
 				ticks += (*it)->eventCount;
 				if ( *(*it) == drawFromX ) {
 					ticks -= drawFromEventIndex;
@@ -474,18 +519,16 @@ void RDOStudioChartView::OnDraw(CDC* pDC)
 
 	int oldBkMode = dc.SetBkMode( TRANSPARENT );
 
-	CBrush brush( RGB( 255, 255, 255 ) );
-	CBrush* pOldBrush = dc.SelectObject( &brush );
-	CPen penBlack;
-	penBlack.CreatePen( PS_SOLID, 0, RGB( 0, 0, 0 ) );
-	CPen* pOldPen = dc.SelectObject( &penBlack );
+	CBrush brush_background( style->theme->backgroundColor );
+	CBrush* pOldBrush = dc.SelectObject( &brush_background );
+	CPen pen_chart;
+	pen_chart.CreatePen( PS_SOLID, 0, style->theme->defaultColor );
+	CPen* pOldPen = dc.SelectObject( &pen_chart );
 	
-	dc.FillSolidRect( newClientRect, RGB( 255, 255, 255 ) );
+	dc.FillSolidRect( newClientRect, style->theme->backgroundColor );
 
-	string str = pDoc->GetTitle();
-	dc.DrawText( str.c_str(), rect, DT_CENTER | DT_CALCRECT );
-	dc.DrawText( str.c_str(), newClientRect, DT_CENTER );
-	int height = rect.Height();
+	//int height = rect.Height();
+	drawTitle( dc, chartRect );
 	
 	if ( chartRect.Height() > 0 && chartRect.Width() > 0 ) {
 
@@ -570,8 +613,13 @@ int RDOStudioChartView::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	//return CView::OnCreate( lpCreateStruct );
 	if ( CView::OnCreate( lpCreateStruct ) == -1 ) return -1;
 	//setFont( logStyle->font, false );
-	recalcLayout();
-	updateScrollBars();
+	
+	setStyle( style = &studioApp.mainFrame->style_chart, false );
+
+	if ( GetDocument() ) {
+		recalcLayout();
+		updateScrollBars();
+	}
 
 	popupMenu.CreatePopupMenu();
 
@@ -608,6 +656,8 @@ void RDOStudioChartView::Dump(CDumpContext& dc) const
 
 RDOStudioChartDoc* RDOStudioChartView::GetDocument()
 {
+	if ( !m_pDocument )
+		return NULL;
 	ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(RDOStudioChartDoc)));
 	return (RDOStudioChartDoc*)m_pDocument;
 }
@@ -631,9 +681,11 @@ void RDOStudioChartView::OnSize(UINT nType, int cx, int cy)
 		bmpRect = newClientRect;
 	}
 
-	recalcLayout();
-	updateScrollBars( false );
-	setZoom( zoom );
+	if ( GetDocument() ) {
+		recalcLayout();
+		updateScrollBars( false );
+		setZoom( zoom );
+	}
 }
 
 void RDOStudioChartView::OnChartTimewrap() 
@@ -761,6 +813,7 @@ void RDOStudioChartView::OnInitMenuPopup( CMenu* pPopupMenu, UINT nIndex, BOOL b
 
 void RDOStudioChartView::OnContextMenu( CWnd* pWnd, CPoint pos )
 {
+	if ( previewMode ) return;
 	CView::OnContextMenu( pWnd, pos );
 	if ( popupMenu.m_hMenu ) popupMenu.TrackPopupMenu( TPM_LEFTALIGN | TPM_RIGHTBUTTON, pos.x, pos.y, this );
 }
@@ -821,4 +874,83 @@ void RDOStudioChartView::OnChartZoomZoomauto()
 void RDOStudioChartView::OnUpdateChartZoomZoomauto(CCmdUI* pCmdUI) 
 {
 	pCmdUI->SetCheck( zoomAuto );
+}
+
+const RDOStudioChartViewStyle& RDOStudioChartView::getStyle() const
+{
+	return (*style);
+}
+
+int RDOStudioChartView::OnMouseActivate( CWnd* pDesktopWnd, UINT nHitTest, UINT message )
+{
+	if ( previewMode ) {
+		return CWnd::OnMouseActivate( pDesktopWnd, nHitTest, message );
+	} else {
+		return CView::OnMouseActivate( pDesktopWnd, nHitTest, message );
+	}
+}
+
+void RDOStudioChartView::setFonts( const bool needRedraw )
+{
+	if ( !style ) return;
+	
+	CClientDC dc( this );
+	LOGFONT lf;
+	RDOStudioChartViewTheme* chart_theme = static_cast<RDOStudioChartViewTheme*>(style->theme);
+
+	if ( !fontAxis.m_hObject || fontAxis.DeleteObject() ) {
+
+		memset( &lf, 0, sizeof(lf) );
+		// The negative is to allow for leading
+		lf.lfHeight    = -MulDiv( style->font->size, ::GetDeviceCaps( dc.GetSafeHdc(), LOGPIXELSY ), 72 );
+		lf.lfWeight    = chart_theme->defaultStyle & RDOStyleFont::BOLD ? FW_BOLD : FW_NORMAL;
+		lf.lfItalic    = chart_theme->defaultStyle & RDOStyleFont::ITALIC;
+		lf.lfUnderline = chart_theme->defaultStyle & RDOStyleFont::UNDERLINE;
+		lf.lfCharSet   = style->font->characterSet;
+		strcpy( lf.lfFaceName, style->font->name.c_str() );
+
+		fontAxis.CreateFontIndirect( &lf );
+	}
+
+	if ( !fontTitle.m_hObject || fontTitle.DeleteObject() ) {
+
+		memset( &lf, 0, sizeof(lf) );
+		// The negative is to allow for leading
+		bool b = chart_theme->titleStyle & RDOStyleFont::BOLD;
+		lf.lfHeight    = -MulDiv( roundDouble( style->font->size * font_sizeTitle ), ::GetDeviceCaps( dc.GetSafeHdc(), LOGPIXELSY ), 72 );
+		lf.lfWeight    = chart_theme->titleStyle & RDOStyleFont::BOLD ? FW_BOLD : FW_NORMAL;
+		lf.lfItalic    = chart_theme->titleStyle & RDOStyleFont::ITALIC;
+		lf.lfUnderline = chart_theme->titleStyle & RDOStyleFont::UNDERLINE;
+		lf.lfCharSet   = style->font->characterSet;
+		strcpy( lf.lfFaceName, style->font->name.c_str() );
+
+		fontTitle.CreateFontIndirect( &lf );
+	}
+	if ( !fontLegend.m_hObject || fontLegend.DeleteObject() ) {
+
+		memset( &lf, 0, sizeof(lf) );
+		// The negative is to allow for leading
+		lf.lfHeight    = -MulDiv( roundDouble( style->font->size * font_sizeLegend ), ::GetDeviceCaps( dc.GetSafeHdc(), LOGPIXELSY ), 72 );
+		lf.lfWeight    = chart_theme->legendStyle & RDOStyleFont::BOLD ? FW_BOLD : FW_NORMAL;
+		lf.lfItalic    = chart_theme->legendStyle & RDOStyleFont::ITALIC;
+		lf.lfUnderline = chart_theme->legendStyle & RDOStyleFont::UNDERLINE;
+		lf.lfCharSet   = style->font->characterSet;
+		strcpy( lf.lfFaceName, style->font->name.c_str() );
+
+		fontLegend.CreateFontIndirect( &lf );
+	}
+}
+
+void RDOStudioChartView::setStyle( RDOStudioChartViewStyle* _style, const bool needRedraw )
+{
+	style = _style;
+
+	setFonts( false );
+	
+	if ( needRedraw ) {
+		recalcLayout();
+		updateScrollBars();
+		Invalidate();
+		UpdateWindow();
+	}
 }

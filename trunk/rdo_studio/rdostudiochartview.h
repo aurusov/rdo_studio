@@ -6,20 +6,21 @@
 #endif
 
 #include <afxole.h>
-#include "./rdo_tracer/rdotracerserie.h"
-#include "./rdo_tracer/rdotracervalues.h"
+#include "rdo_tracer/rdotracerserie.h"
+#include "rdo_tracer/rdotracervalues.h"
 #include "rdostudiochartdoc.h"
 
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioChartView
 // ----------------------------------------------------------------------------
+class RDOStudioChartViewStyle;
+
 class RDOStudioChartView : public CView
 {
 //friend class RDOTracerSerie;
 friend class RDOTracerSerieFindValue;
 
 protected:
-	RDOStudioChartView();
 	DECLARE_DYNCREATE(RDOStudioChartView)
 
 	COleDropTarget target;
@@ -33,7 +34,6 @@ protected:
 	int valueCountY;
 	RDOTracerSerie* yaxis;
 	int tickWidth;
-	COLORREF timeColor;
 	
 	bool timeWrap;
 	bool canUnwrapTime() const { return scale_koeff >= 1 && !zoomAuto; };
@@ -58,6 +58,7 @@ protected:
 	void setFromTo();
 	timesList unwrapTimesList;
 	
+	void drawTitle( CDC &dc, CRect& chartRect );
 	void drawYAxis( CDC &dc, CRect& chartRect, const RDOTracerSerie* axisValues);
 	void drawXAxis( CDC &dc, CRect& chartRect );
 	void drawGrid(	CDC &dc, CRect& chartRect );
@@ -72,10 +73,24 @@ protected:
 	void setZoom( double new_zoom, const bool force_update = false );
 	bool zoomAuto;
 
-public:
+	bool previewMode;
+	RDOStudioChartViewStyle* style;
 	
+	CFont fontTitle;
+	CFont fontLegend;
+	CFont fontAxis;
+	void setFonts( const bool needRedraw = true );
+
+	double font_sizeTitle;
+	double font_sizeLegend;
+
+public:
+	RDOStudioChartView( const bool preview = false);
 	virtual ~RDOStudioChartView();
 	RDOStudioChartDoc* GetDocument();
+
+	const RDOStudioChartViewStyle& getStyle() const;
+	void setStyle( RDOStudioChartViewStyle* _style, const bool needRedraw = true );
 
 	//{{AFX_VIRTUAL(RDOStudioChartView)
 	protected:
@@ -116,6 +131,7 @@ protected:
 	afx_msg void OnUpdateChartZoomResetzoom(CCmdUI* pCmdUI);
 	afx_msg void OnChartZoomZoomauto();
 	afx_msg void OnUpdateChartZoomZoomauto(CCmdUI* pCmdUI);
+	afx_msg int OnMouseActivate( CWnd* pDesktopWnd, UINT nHitTest, UINT message );
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

@@ -1,14 +1,16 @@
 #include "stdafx.h"
 #include "rdostudiochartdoc.h"
-#include "./rdo_tracer/rdotracertrace.h"
-#include "./rdo_tracer/rdotracerserie.h"
-#include "./rdo_tracer/rdotracervalues.h"
+#include "rdo_tracer/rdotracertrace.h"
+#include "rdo_tracer/rdotracerserie.h"
+#include "rdo_tracer/rdotracervalues.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
+
+using namespace std;
 
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioChartDocInsertTime
@@ -55,19 +57,22 @@ BEGIN_MESSAGE_MAP(RDOStudioChartDoc, CDocument)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-RDOStudioChartDoc::RDOStudioChartDoc()
+RDOStudioChartDoc::RDOStudioChartDoc( const bool preview )
 	: CDocument(),
 	minTimeOffset( 1.7E+308 ),
-	ticksCount( 0 )
+	ticksCount( 0 ),
+	previewMode( preview )
 {
-	tracer.addChart( this );
+	if ( !previewMode )
+		tracer.addChart( this );
 }
 
 RDOStudioChartDoc::~RDOStudioChartDoc()
 {
 	for ( vector< RDOStudioDocSerie >::iterator it = series.begin(); it != series.end(); it++ )
 		it->serie->removeFromDoc( this );
-	tracer.removeChart( this );
+	if ( !previewMode )
+		tracer.removeChart( this );
 }
 
 BOOL RDOStudioChartDoc::OnNewDocument()
