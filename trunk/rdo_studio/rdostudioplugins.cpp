@@ -88,6 +88,7 @@ std::string RDOStudioPlugin::getProfilePath() const
 
 void RDOStudioPlugin::setState( const rdoPlugin::PluginState value )
 {
+	internalMutex.Lock();
 	if ( state != value ) {
 		state = value;
 		if ( state == rdoPlugin::psActive ) {
@@ -100,6 +101,7 @@ void RDOStudioPlugin::setState( const rdoPlugin::PluginState value )
 			if ( state == rdoPlugin::psActive ) {
 				rdoPlugin::PFunStartPlugin startPlugin = reinterpret_cast<rdoPlugin::PFunStartPlugin>(::GetProcAddress( lib, "startPlugin" ));
 				if ( startPlugin && startPlugin( plugins->getStudio() ) ) {
+					plugins->mutex.Lock();
 					// setup messages procedure
 					rdoPlugin::PFunEnumMessages enumMessages = reinterpret_cast<rdoPlugin::PFunEnumMessages>(::GetProcAddress( lib, "enumMessages" ));
 					if ( enumMessages ) {
@@ -122,16 +124,18 @@ void RDOStudioPlugin::setState( const rdoPlugin::PluginState value )
 					if ( results ) {
 						plugins->setResults( results );
 					}
+					plugins->mutex.Unlock();
 				} else {
 					state = rdoPlugin::psStoped;
 				}
+				closed = false;
 			}
 		}
 		if ( state == rdoPlugin::psStoped ) {
 			if ( lib ) {
 				TRACE( "plugin stoped begin\n" );
-//				traceMutex.Lock();
-				plugins->traceMutex.Lock();
+				plugins->mutex.Lock();
+				closed = true;
 				plugins->clearMessageReflect( pluginProc );
 				pluginProc = NULL;
 				plugins->clearTrace( this );
@@ -144,8 +148,7 @@ void RDOStudioPlugin::setState( const rdoPlugin::PluginState value )
 				}
 				::FreeLibrary( lib );
 				lib = NULL;
-				plugins->traceMutex.Unlock();
-//				traceMutex.Unlock();
+				plugins->mutex.Unlock();
 				TRACE( "plugin stoped end\n" );
 			}
 		}
@@ -153,6 +156,7 @@ void RDOStudioPlugin::setState( const rdoPlugin::PluginState value )
 			AfxGetApp()->WriteProfileInt( getProfilePath().c_str(), "state", state );
 		}
 	}
+	internalMutex.Unlock();
 }
 
 void RDOStudioPlugin::setRestoreState( const bool value )
@@ -276,6 +280,7 @@ void RDOStudioPlugins::init()
 
 void RDOStudioPlugins::setMessageReflect( const int message, rdoPlugin::PFunPluginProc pluginProc )
 {
+	mutex.Lock();
 	if ( message && pluginProc ) {
 		bool flag = true;
 		messageList::iterator it = messages.find( message );
@@ -290,10 +295,12 @@ void RDOStudioPlugins::setMessageReflect( const int message, rdoPlugin::PFunPlug
 			messages.insert( messageList::value_type( message, pluginProc ) );
 		}
 	}
+	mutex.Unlock();
 }
 
 void RDOStudioPlugins::clearMessageReflect( rdoPlugin::PFunPluginProc pluginProc )
 {
+	mutex.Lock();
 	messageList::iterator it = messages.begin();
 	while ( it != messages.end() ) {
 		if ( (*it).second == pluginProc ) {
@@ -302,21 +309,23 @@ void RDOStudioPlugins::clearMessageReflect( rdoPlugin::PFunPluginProc pluginProc
 			it++;
 		}
 	}
+	mutex.Unlock();
 }
 
 void RDOStudioPlugins::pluginProc( const int message )
 {
-//	plugins->traceMutex.Lock();
+	mutex.Lock();
 	messageList::iterator it = messages.lower_bound( message );
 	while ( it != messages.upper_bound( message ) ) {
 		(*it).second( message );
 		it++;
 	}
-//	plugins->traceMutex.Unlock();
+	mutex.Unlock();
 }
 
 void RDOStudioPlugins::setTrace( RDOStudioPlugin* plugin )
 {
+	mutex.Lock();
 	if ( plugin ) {
 		std::vector< RDOStudioPlugin* >::const_iterator it = trace.begin();
 		bool flag = true;
@@ -331,10 +340,12 @@ void RDOStudioPlugins::setTrace( RDOStudioPlugin* plugin )
 			trace.push_back( plugin );
 		}
 	}
+	mutex.Unlock();
 }
 
 void RDOStudioPlugins::clearTrace( RDOStudioPlugin* plugin )
 {
+	mutex.Lock();
 	std::vector< RDOStudioPlugin* >::iterator it = trace.begin();
 	while ( it != trace.end() ) {
 		if ( *it == plugin ) {
@@ -343,10 +354,12 @@ void RDOStudioPlugins::clearTrace( RDOStudioPlugin* plugin )
 		}
 		it++;
 	}
+	mutex.Unlock();
 }
 
 void RDOStudioPlugins::setResults( rdoPlugin::PFunResults _results )
 {
+	mutex.Lock();
 	if ( _results ) {
 		std::vector< rdoPlugin::PFunResults >::const_iterator it = results.begin();
 		bool flag = true;
@@ -361,10 +374,12 @@ void RDOStudioPlugins::setResults( rdoPlugin::PFunResults _results )
 			results.push_back( _results );
 		}
 	}
+	mutex.Unlock();
 }
 
 void RDOStudioPlugins::clearResults( rdoPlugin::PFunResults _results )
 {
+	mutex.Lock();
 	std::vector< rdoPlugin::PFunResults >::iterator it = results.begin();
 	while ( it != results.end() ) {
 		if ( *it == _results ) {
@@ -373,22 +388,28 @@ void RDOStudioPlugins::clearResults( rdoPlugin::PFunResults _results )
 		}
 		it++;
 	}
+	mutex.Unlock();
 }
 
 void RDOStudioPlugins::stopStudioPlugin( const HMODULE lib )
 {
-	lockPlugin( lib );
+	RDOStudioPlugin* plugin = NULL;
 	std::vector< RDOStudioPlugin* >::const_iterator it = plugins->list.begin();
 	while ( it != plugins->list.end() ) {
-		RDOStudioPlugin* plugin = *it;
-		if ( plugin->lib == lib ) {
-			plugin->closed = true;
+		if ( (*it)->lib == lib ) {
+			plugin = *it;
 			break;
 		}
 		it++;
 	}
+	if ( plugin ) {
+		plugin->internalMutex.Lock();
+		plugin->closed = true;
+	}
 	AfxGetApp()->PostThreadMessage( PLUGIN_MUSTEXIT_MESSAGE, reinterpret_cast<WPARAM>(lib), 0 );
-	unlockPlugin( lib );
+	if ( plugin ) {
+		plugin->internalMutex.Unlock();
+	}
 }
 
 void RDOStudioPlugins::lockPlugin( const HMODULE lib )
@@ -397,7 +418,7 @@ void RDOStudioPlugins::lockPlugin( const HMODULE lib )
 	while ( it != plugins->list.end() ) {
 		RDOStudioPlugin* plugin = *it;
 		if ( plugin->lib == lib ) {
-			plugin->traceMutex.Lock();
+			plugin->externalMutex.Lock();
 			break;
 		}
 		it++;
@@ -410,7 +431,7 @@ void RDOStudioPlugins::unlockPlugin( const HMODULE lib )
 	while ( it != plugins->list.end() ) {
 		RDOStudioPlugin* plugin = *it;
 		if ( plugin->lib == lib ) {
-			plugin->traceMutex.Unlock();
+			plugin->externalMutex.Unlock();
 			break;
 		}
 		it++;
@@ -586,13 +607,13 @@ void RDOStudioPlugins::modelStartNotify()
 
 void RDOStudioPlugins::endExecuteModelNotify()
 {
-//	plugins->traceMutex.Lock();
+	plugins->mutex.Lock();
 	std::string str = kernel.getSimulator()->getResults().str();
 	std::vector< rdoPlugin::PFunResults>::const_iterator it = plugins->results.begin();
 	while ( it != plugins->results.end() ) {
 		(*it++)( str.c_str() );
 	}
-//	plugins->traceMutex.Unlock();
+	plugins->mutex.Unlock();
 	AfxGetApp()->PostThreadMessage( PLUGIN_STOPMODEL_MESSAGE, 0, 0 );
 }
 
@@ -603,20 +624,18 @@ void RDOStudioPlugins::modelStopNotify()
 
 void RDOStudioPlugins::traceNotify( std::string str )
 {
-	TRACE( "plugins->traceMutex.Lock()_1\n" );
-	plugins->traceMutex.Lock();
-	TRACE( "plugins->traceMutex.Lock()_2\n" );
+	plugins->mutex.Lock();
 	std::vector< RDOStudioPlugin* >::const_iterator it = plugins->trace.begin();
 	while ( it != plugins->trace.end() ) {
 		RDOStudioPlugin* plugin = *it;
-//		plugin->traceMutex.Lock();
-		plugin->trace( str.c_str() );
-//		plugin->traceMutex.Unlock();
+		plugin->internalMutex.Lock();
+		if ( !plugin->closed ) {
+			plugin->trace( str.c_str() );
+		}
+		plugin->internalMutex.Unlock();
 		it++;
 	}
-	TRACE( "plugins->traceMutex.Lock()_3\n" );
-	plugins->traceMutex.Unlock();
-	TRACE( "plugins->traceMutex.Lock()_4\n" );
+	plugins->mutex.Unlock();
 }
 
 void RDOStudioPlugins::modelStart()

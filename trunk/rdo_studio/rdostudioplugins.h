@@ -8,7 +8,6 @@
 #include <rdoplugin.h>
 #include <string>
 #include <vector>
-#include <map>
 
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioPlugin
@@ -35,7 +34,8 @@ private:
 	rdoPlugin::PFunTrace      trace;
 	rdoPlugin::PFunResults    results;
 
-	CMutex traceMutex;
+	CMutex internalMutex;
+	CMutex externalMutex;
 	bool closed;
 
 	std::string getProfilePath() const;
@@ -91,7 +91,7 @@ private:
 	void clearMessageReflect( rdoPlugin::PFunPluginProc pluginProc );
 
 	std::vector< RDOStudioPlugin* > trace;
-	CMutex traceMutex;
+	CMutex mutex;
 	void setTrace( RDOStudioPlugin* plugin );
 	void clearTrace( RDOStudioPlugin* plugin );
 

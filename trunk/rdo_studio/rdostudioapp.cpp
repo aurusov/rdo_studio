@@ -197,7 +197,7 @@ BOOL RDOStudioApp::InitInstance()
 			autoModel = true;
 		}
 	} else {
-		if ( getOpenLastProject() && !getLastProjectName().empty() ) {
+		if ( getOpenLastProject() && !getLastProjectName().empty() && isFileExists( getLastProjectName() ) ) {
 			if ( model->openModel( getLastProjectName() ) ) {
 				newModel = false;
 			}

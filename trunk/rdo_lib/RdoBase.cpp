@@ -28,7 +28,7 @@ void RDOSimulatorBase::rdoRun()
    {
       double newTime = timePointList.front();
       timePointList.pop_front();
-//      rdoDelay(currentTime, newTime);
+      rdoDelay(currentTime, newTime);
       currentTime = newTime;
 
       if(!onlyEndOfOperations && endCondition())
