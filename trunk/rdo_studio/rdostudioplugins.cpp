@@ -83,10 +83,9 @@ void RDOStudioPlugins::enumPlugins( const std::string& mask )
 void RDOStudioPlugins::init()
 {
 	std::string path = "";
-	TCHAR buffer[MAX_PATH+1]; 
-	if ( ::GetCurrentDirectory( MAX_PATH, buffer ) ) {
-		path = buffer;
-		path += "\\plugins\\";
+	TCHAR szExeName[ MAX_PATH + 1 ];
+	if ( ::GetModuleFileName( NULL, szExeName, MAX_PATH ) ) {
+		path = szExeName;
 	}
 	if ( !path.empty() ) {
 		enumPlugins( path + "*.*" );

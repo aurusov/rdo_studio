@@ -31,6 +31,12 @@ private:
 	void loadReopen();
 	void saveReopen() const;
 
+	bool fileAssociationSetup;
+	bool fileAssociationCheckInFuture;
+	bool openLastProject;
+
+	void setupFileAssociation();
+
 public:
 	RDOStudioApp();
 
@@ -38,13 +44,20 @@ public:
 
 	void insertReopenItem( const std::string& item );
 
+	bool getFileAssociationSetup() const              { return fileAssociationSetup;         }
+	void setFileAssociationSetup( const bool value );
+
+	bool getFileAssociationCheckInFuture() const      { return fileAssociationCheckInFuture; }
+	void setFileAssociationCheckInFuture( const bool value );
+
+	bool getOpenLastProject() const                   { return openLastProject;              }
+	void setOpenLastProject( const bool value );
+
 	static std::string getFullFileName();
 	static std::string extractFilePath( const std::string& fileName );
 	static bool isFileExists( const std::string& fileName );
 	static std::string getFullHelpFileName( std::string str = "RAO-studio.chm" );
 	static bool shortToLongPath( const std::string& shortPath, std::string& longPath );
-
-	void setupFileAssociation();
 
 	//{{AFX_VIRTUAL(RDOStudioApp)
 	public:

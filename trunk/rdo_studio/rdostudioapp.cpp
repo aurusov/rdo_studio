@@ -92,7 +92,10 @@ END_MESSAGE_MAP()
 RDOStudioApp::RDOStudioApp():
 	CWinApp(),
 	initInstance( false ),
-	editDocTemplate( NULL )
+	editDocTemplate( NULL ),
+	fileAssociationSetup( false ),
+	fileAssociationCheckInFuture( false ),
+	openLastProject( false )
 {
 }
 
@@ -114,6 +117,10 @@ BOOL RDOStudioApp::InitInstance()
 	free( (void*)m_pszRegistryKey );
 	m_pszRegistryKey = _tcsdup( _T("RAO-studio") );
 
+	fileAssociationSetup         = GetProfileInt( "fileAssociation", "setup", false ) ? true : false;
+	fileAssociationCheckInFuture = GetProfileInt( "fileAssociation", "checkInFuture", false ) ? true : false;
+	openLastProject              = GetProfileInt( "general", "openLastProject", false ) ? true : false;
+
 	editDocTemplate = new CMultiDocTemplate( IDR_EDIT_TYPE, RUNTIME_CLASS(RDOStudioEditDoc), RUNTIME_CLASS(RDOStudioChildFrame), RUNTIME_CLASS(RDOStudioEditView) );
 	AddDocTemplate( editDocTemplate );
 	
@@ -128,7 +135,9 @@ BOOL RDOStudioApp::InitInstance()
 	loadReopen();
 	updateReopenSubMenu();
 
-	setupFileAssociation();
+	if ( getFileAssociationCheckInFuture() ) {
+		setupFileAssociation();
+	}
 
 	mainFrame->ShowWindow(m_nCmdShow);
 	mainFrame->UpdateWindow();
@@ -504,10 +513,33 @@ string RDOStudioApp::getFullHelpFileName( string str )
 	return str;
 }
 
+void RDOStudioApp::setFileAssociationSetup( const bool value )
+{
+	fileAssociationSetup = value;
+	WriteProfileInt( "fileAssociation", "setup", fileAssociationSetup );
+	if ( fileAssociationSetup ) {
+		setupFileAssociation();
+	}
+}
+
+void RDOStudioApp::setFileAssociationCheckInFuture( const bool value )
+{
+	if ( fileAssociationCheckInFuture != value ) {
+		fileAssociationCheckInFuture = value;
+		WriteProfileInt( "fileAssociation", "checkInFuture", fileAssociationCheckInFuture );
+	}
+}
+
+void RDOStudioApp::setOpenLastProject( const bool value )
+{
+	if ( openLastProject != value ) {
+		openLastProject = value;
+		WriteProfileInt( "general", "openLastProject", openLastProject );
+	}
+}
+
 void RDOStudioApp::setupFileAssociation()
 {
-	if ( !GetProfileInt( "fileAssociation", "checkInFuture", true ) ) return;
-
 	string strFileTypeId   = _T("RAO.FileInfo");
 	string strFileTypeName = _T("RAO FileInfo");
 	string strParam        = _T(" \"%1\"");
@@ -549,9 +581,11 @@ void RDOStudioApp::setupFileAssociation()
 						if ( pos != -1 ) {
 							s.Delete( pos, strParam.length() );
 							if ( s != strPathName.c_str() ) {
-								RDOFileAssociationDlg dlg;
-								mustBeRegistered = dlg.DoModal() == IDOK;
-								WriteProfileInt( "fileAssociation", "checkInFuture", dlg.checkInFuture ? true : false );
+								if ( !getFileAssociationSetup() ) {
+									RDOFileAssociationDlg dlg;
+									mustBeRegistered = dlg.DoModal() == IDOK;
+									setFileAssociationCheckInFuture( dlg.checkInFuture ? true : false );
+								}
 							} else {
 								mustBeRegistered = false;
 							}
@@ -604,15 +638,6 @@ void RDOStudioApp::OnAppAbout()
 {
 	RDOAboutDlg dlg;
 	dlg.DoModal();
-/*
-	RDOAbout aboutDlg;
-	aboutDlg.BMSTU.LoadString( ID_ABOUT_BMSTU );
-	aboutDlg.tel.LoadString( ID_ABOUT_TEL );
-	aboutDlg.buttonOkText.LoadString( ID_ABOUT_OKBUTTON );
-	aboutDlg.hPixmap = LoadIcon( MAKEINTRESOURCE(IDR_MAINFRAME) );
-	aboutDlg.changeColor( 1, 20, 4 );
-	aboutDlg.DoModal();
-*/
 }
 
 // ----------------------------------------------------------------------------

@@ -28,10 +28,46 @@
 #include "resource.h"
 
 // ----------------------------------------------------------------------------
-// ---------- RDOStudioOptionsEditor
+// ---------- RDOStudioOptionsGeneral
 // ----------------------------------------------------------------------------
 class RDOStudioOptions;
 
+class RDOStudioOptionsGeneral: public CPropertyPage
+{
+friend class RDOStudioOptions;
+
+private:
+	RDOStudioOptions* sheet;
+
+protected:
+	//{{AFX_DATA(RDOStudioOptionsGeneral)
+	enum { IDD = IDD_OPTIONS_GENERAL };
+	BOOL	m_setup;
+	BOOL	m_checkInFuture;
+	BOOL	m_openLastProject;
+	//}}AFX_DATA
+
+	//{{AFX_VIRTUAL(RDOStudioOptionsGeneral)
+	public:
+	virtual void OnOK();
+	protected:
+	virtual void DoDataExchange(CDataExchange* pDX);
+	virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
+	//}}AFX_VIRTUAL
+
+	//{{AFX_MSG(RDOStudioOptionsGeneral)
+	afx_msg void OnUpdateModify();
+	//}}AFX_MSG
+	DECLARE_MESSAGE_MAP()
+
+public:
+	RDOStudioOptionsGeneral( RDOStudioOptions& _sheet );
+	virtual ~RDOStudioOptionsGeneral();
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOStudioOptionsEditor
+// ----------------------------------------------------------------------------
 class RDOStudioOptionsEditor: public CPropertyPage
 {
 private:
@@ -274,6 +310,7 @@ public:
 // ----------------------------------------------------------------------------
 class RDOStudioOptions: public CPropertySheet
 {
+friend class RDOStudioOptionsGeneral;
 friend class RDOStudioOptionsEditor;
 friend class RDOStudioOptionsTabs;
 friend class RDOStudioOptionsColorsStyles;
@@ -288,6 +325,7 @@ private:
 	RDOStudioChartViewStyle          style_chart;
 	RDOStudioFrameStyle              style_frame;
 
+	RDOStudioOptionsGeneral*      general;
 	RDOStudioOptionsEditor*       editor;
 	RDOStudioOptionsTabs*         tabs;
 	RDOStudioOptionsColorsStyles* styles;

@@ -27,6 +27,7 @@
 #define IDB_ZOOM_TOOLBAR_D              162
 #define IDB_FRAME_OPTIONS_CTRL          164
 #define IDD_ABOUT                       165
+#define IDD_OPTIONS_GENERAL             166
 #define IDC_CLEARAUTO_CHECK             1001
 #define IDC_STYLEITEM_TREE              1002
 #define IDC_BUFFERVALUESTATIC           1003
@@ -116,6 +117,9 @@
 #define IDC_ABOUT_EMAIL                 1087
 #define IDC_ABOUR_WEB_STATIC            1088
 #define IDC_ABOUT_WEB                   1089
+#define IDC_FILEASSOCIATION_SETUP_CHECK 1091
+#define IDC_OPENLASTPROJECT_CHECK       1092
+#define IDC_FILEASSOCIATION_CHECKINFUTURE_CHECK 1094
 #define ID_CHART_ADDTONEWCHART          32771
 #define ID_VIEW_WORKSPACE               32774
 #define ID_VIEW_OUTPUT                  32775
@@ -572,7 +576,7 @@
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        169
 #define _APS_NEXT_COMMAND_VALUE         33183
-#define _APS_NEXT_CONTROL_VALUE         1088
+#define _APS_NEXT_CONTROL_VALUE         1095
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

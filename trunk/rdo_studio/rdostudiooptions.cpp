@@ -16,6 +16,69 @@ using namespace rdoEditCtrl;
 using namespace rdoTracerLog;
 
 // ----------------------------------------------------------------------------
+// ---------- RDOStudioOptionsGeneral
+// ----------------------------------------------------------------------------
+BEGIN_MESSAGE_MAP(RDOStudioOptionsGeneral, CPropertyPage)
+	//{{AFX_MSG_MAP(RDOStudioOptionsGeneral)
+	ON_BN_CLICKED(IDC_FILEASSOCIATION_SETUP_CHECK, OnUpdateModify)
+	ON_BN_CLICKED(IDC_FILEASSOCIATION_CHECKINFUTURE_CHECK, OnUpdateModify)
+	ON_BN_CLICKED(IDC_OPENLASTPROJECT_CHECK, OnUpdateModify)
+	//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+RDOStudioOptionsGeneral::RDOStudioOptionsGeneral( RDOStudioOptions& _sheet ):
+	CPropertyPage( IDD ),
+	sheet( &_sheet )
+{
+	//{{AFX_DATA_INIT(RDOStudioOptionsGeneral)
+	m_setup = FALSE;
+	m_checkInFuture = FALSE;
+	m_openLastProject = FALSE;
+	//}}AFX_DATA_INIT
+
+	m_setup           = studioApp.getFileAssociationSetup();
+	m_checkInFuture   = studioApp.getFileAssociationCheckInFuture();
+	m_openLastProject = studioApp.getOpenLastProject();
+
+	m_psp.dwFlags |= PSP_HASHELP;
+}
+
+RDOStudioOptionsGeneral::~RDOStudioOptionsGeneral()
+{
+}
+
+void RDOStudioOptionsGeneral::DoDataExchange(CDataExchange* pDX) 
+{
+	CPropertyPage::DoDataExchange(pDX);
+	//{{AFX_DATA_MAP(RDOStudioOptionsGeneral)
+	DDX_Check(pDX, IDC_FILEASSOCIATION_SETUP_CHECK, m_setup);
+	DDX_Check(pDX, IDC_FILEASSOCIATION_CHECKINFUTURE_CHECK, m_checkInFuture);
+	DDX_Check(pDX, IDC_OPENLASTPROJECT_CHECK, m_openLastProject);
+	//}}AFX_DATA_MAP
+}
+
+void RDOStudioOptionsGeneral::OnOK() 
+{
+	sheet->apply();
+	CPropertyPage::OnOK();
+}
+
+BOOL RDOStudioOptionsGeneral::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult) 
+{
+	if ( reinterpret_cast<LPNMHDR>(lParam)->code == PSN_HELP ) {
+		sheet->onHelpButton();
+		return true;
+	}
+	return CPropertyPage::OnNotify(wParam, lParam, pResult);
+}
+
+void RDOStudioOptionsGeneral::OnUpdateModify() 
+{
+	UpdateData();
+	SetModified( m_setup != (studioApp.getFileAssociationSetup() ? 1 : 0) || m_checkInFuture != (studioApp.getFileAssociationCheckInFuture() ? 1 : 0) || m_openLastProject != (studioApp.getOpenLastProject() ? 1 : 0) );
+}
+
+// ----------------------------------------------------------------------------
 // ---------- RDOStudioOptionsEditor
 // ----------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP(RDOStudioOptionsEditor, CPropertyPage)
@@ -1585,13 +1648,15 @@ RDOStudioOptions::RDOStudioOptions():
 	style_chart   = studioApp.mainFrame->style_chart;
 	style_frame   = studioApp.mainFrame->style_frame;
 
-	editor = new RDOStudioOptionsEditor( *this );
-	tabs   = new RDOStudioOptionsTabs( *this );
-	styles = new RDOStudioOptionsColorsStyles( *this );
+	general = new RDOStudioOptionsGeneral( *this );
+	editor  = new RDOStudioOptionsEditor( *this );
+	tabs    = new RDOStudioOptionsTabs( *this );
+	styles  = new RDOStudioOptionsColorsStyles( *this );
 
 	preview_chart_doc = new RDOStudioChartDoc( true );
 	preview_chart     = new RDOStudioChartView( true );
 
+	AddPage( general );
 	AddPage( editor );
 	AddPage( tabs );
 	AddPage( styles );
@@ -1604,9 +1669,10 @@ RDOStudioOptions::~RDOStudioOptions()
 {
 	//dont calll destructors for preview_chart & preview_chart_doc
 	//because framework kills them itself
-	if ( editor )  { delete editor; editor = NULL; }
-	if ( tabs )    { delete tabs;   tabs = NULL; }
-	if ( styles )  { delete styles; styles = NULL; }
+	if ( general )  { delete general; general = NULL; }
+	if ( editor )   { delete editor; editor = NULL; }
+	if ( tabs )     { delete tabs;   tabs = NULL; }
+	if ( styles )   { delete styles; styles = NULL; }
 }
 
 void RDOStudioOptions::updateStyles()
@@ -1648,6 +1714,9 @@ void RDOStudioOptions::apply() const
 	studioApp.mainFrame->style_chart   = style_chart;
 	studioApp.mainFrame->style_frame   = style_frame;
 	studioApp.mainFrame->updateAllStyles();
+	studioApp.setFileAssociationSetup( general->m_setup ? true : false );
+	studioApp.setFileAssociationCheckInFuture( general->m_checkInFuture ? true : false );
+	studioApp.setOpenLastProject( general->m_openLastProject ? true : false );
 }
 
 int CALLBACK RDOStudioOptions::AddContextHelpProc(HWND hwnd, UINT message, LPARAM /*lParam*/)
@@ -1668,7 +1737,9 @@ void RDOStudioOptions::onHelpButton()
 	if ( filename.empty() ) return;
 
 	CPropertyPage* page = GetActivePage( );
-	if ( page == editor ) {
+	if ( page == general ) {
+		filename += "::/html/work_options.htm#general";
+	} else if ( page == editor ) {
 		filename += "::/html/work_options.htm#editor";
 	} else if ( page == tabs ) {
 		filename += "::/html/work_options.htm#tabs";
