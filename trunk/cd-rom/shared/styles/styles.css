@@ -48,29 +48,27 @@ pre.syntax { padding: .2em .5em .2em .5em; margin-top: .6em; margin-bottom: .6em
 
 table { margin-top: -1.2em; margin-bottom: .6em; margin-left: -1.2em; width: 100% }
 
-td { font-size: 80%; text-align: justify }
-
-td.syntax { padding: .2em .5em .2em .5em; font-weight: bold; font-size: 80%; text-align: justify; background: #e5e5e5; color: #000000; font-family: "courier new", "courier", "fixedsys", monospace }
-
 table.visible { width: 90%; background: #777777; margin-top: .6em; margin-bottom: .3em; margin-left: 0px }
 
 table.screenshot { width: 100%; background: #FFFFFF; margin-top: .6em; margin-bottom: .3em; margin-left: 0px }
 
 th { padding: 4px 8px; background: #dddddd; text-align: left; font-size: 75%; vertical-align: middle; }
 
-td.visible { padding: 4px 8px; background: #ffffff; vertical-align: top; font-size: 75%; text-align: left }
-
-td.model { padding: 4px 8px; background: #ffffff; vertical-align: top; font-size: 75%; text-align: justify }
-
-td.screenshot { padding: 2px 2px; background: #ffffff; vertical-align: top; font-size: 75%; text-align: center }
-
 table.navigation { padding: 0px 0px 0px 0px; background: #FFFFFF; margin: 0px 0px 0px 0px }
 
 tr.navigation{ padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px }
 
-img.navigation { border-color: #C7E1FF; border-width: 2px; padding: 0px 0px 0px 0px; margin: -1px -1px -1px 0px }
+td { font-size: 80%; text-align: justify }
 
 td.navigation { padding-top: 2px; padding-left: 2px; padding-bottom: 2px; padding-right: 2px; margin: 0px 0px 0px 0px; background: #C7E1FF }
+
+td.syntax { padding: .2em .5em .2em .5em; font-weight: bold; font-size: 80%; text-align: justify; background: #e5e5e5; color: #000000; font-family: "courier new", "courier", "fixedsys", monospace }
+
+td.visible { padding: 4px 8px; background: #ffffff; vertical-align: top; font-size: 75%; text-align: left }
+
+td.model { padding: 4px 8px; background: #ffffff; vertical-align: top; font-size: 75%; text-align: justify }
+
+img.navigation { border-color: #C7E1FF; border-width: 2px; padding: 0px 0px 0px 0px; margin: -1px -1px -1px 0px }
 
 font.syntax { font-weight: bold; color: #000000; font-family: "courier new", "courier", "fixedsys", monospace; font-size: 110% }
 
