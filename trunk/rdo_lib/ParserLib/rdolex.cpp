@@ -1562,7 +1562,7 @@ static char THIS_FILE[] = __FILE__;
 #include "rdogramrtp.hpp"
 namespace rdoParse {
 void setYylval(int val);
-void addDouble(double *val);
+double *addDouble(double *val);
 void addName(std::string *name);
 }
 
@@ -2431,15 +2431,14 @@ case 126:
 YY_RULE_SETUP
 #line 177 ".\\parser.l"
 {
-                  double *val = new double(atof(YYText()));
-                  rdoParse::addDouble(val);
+                  double *val = rdoParse::addDouble(new double(atof(YYText())));
                   rdoParse::setYylval((int)val);
                   return REAL_CONST;
                }
 	YY_BREAK
 case 127:
 YY_RULE_SETUP
-#line 184 ".\\parser.l"
+#line 183 ".\\parser.l"
 {
                   rdoParse::setYylval(atoi(YYText()));
                   return INT_CONST;
@@ -2447,7 +2446,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 128:
 YY_RULE_SETUP
-#line 189 ".\\parser.l"
+#line 188 ".\\parser.l"
 {       
 							std::string n1(YYText());
 							int pos = n1.find_first_of("\n\t :");
@@ -2459,7 +2458,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 129:
 YY_RULE_SETUP
-#line 198 ".\\parser.l"
+#line 197 ".\\parser.l"
 {       
 							std::string n1(YYText());
 							int pos = n1.find_first_of("\n\t :");
@@ -2471,7 +2470,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 130:
 YY_RULE_SETUP
-#line 207 ".\\parser.l"
+#line 206 ".\\parser.l"
 {       
 							std::string n1(YYText());
 							int pos = n1.find_first_of("\n\t :");
@@ -2483,7 +2482,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 131:
 YY_RULE_SETUP
-#line 216 ".\\parser.l"
+#line 215 ".\\parser.l"
 {       
 							std::string n1(YYText());
 							int pos = n1.find_first_of("\n\t :");
@@ -2495,7 +2494,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 132:
 YY_RULE_SETUP
-#line 225 ".\\parser.l"
+#line 224 ".\\parser.l"
 {       
                      std::string *name = new std::string(YYText());
                      rdoParse::addName(name);
@@ -2505,10 +2504,10 @@ YY_RULE_SETUP
 	YY_BREAK
 case 133:
 YY_RULE_SETUP
-#line 233 ".\\parser.l"
+#line 232 ".\\parser.l"
 ECHO;
 	YY_BREAK
-#line 2512 "rdolex.cpp"
+#line 2511 "rdolex.cpp"
 			case YY_STATE_EOF(INITIAL):
 			case YY_STATE_EOF(comment):
 				yyterminate();
@@ -3314,6 +3313,6 @@ int main()
 	return 0;
 	}
 #endif
-#line 233 ".\\parser.l"
+#line 232 ".\\parser.l"
 
    

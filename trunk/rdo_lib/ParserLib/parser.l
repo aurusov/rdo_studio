@@ -9,7 +9,7 @@ static char THIS_FILE[] = __FILE__;
 #include "rdogramrtp.hpp"
 namespace rdoParse {
 void setYylval(int val);
-void addDouble(double *val);
+double *addDouble(double *val);
 void addName(std::string *name);
 }
 
@@ -175,8 +175,7 @@ active					return(active);
 					}
 
 ([+-]?[0-9]+"."[0-9]*([Ee][+-]?[0-9]+)?) {
-                  double *val = new double(atof(YYText()));
-                  rdoParse::addDouble(val);
+                  double *val = rdoParse::addDouble(new double(atof(YYText())));
                   rdoParse::setYylval((int)val);
                   return REAL_CONST;
                }

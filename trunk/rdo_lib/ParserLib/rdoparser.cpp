@@ -14,6 +14,7 @@ static char THIS_FILE[] = __FILE__;
 #include "rdorss.h"
 #include "rdopat.h"
 #include "rdodpt.h"
+#include "rdosmr.h"
 
 
 //#include "stdHeaders.h"
@@ -26,9 +27,10 @@ void setYylval(int val)
 	currParser->setYylval((int)val);
 }
 
-void addDouble(double *val)
+double *addDouble(double *val)
 {
 	currParser->allRTPDoubles.push_back(val);
+	return val;
 }
 
 void addName(string *name)
@@ -267,6 +269,11 @@ void RDOParser::parseSMR1(istream* arg_yyin, ostream* arg_yyout)
 	{
 		// Everithing ok, just end of first part parsing
 	}
+	if(!currParser->smr->showRate)	// was not initialised
+	{
+		currParser->smr->showRate = addDouble(new double(60.));
+	}
+
 	currParser = NULL;
 }
 
