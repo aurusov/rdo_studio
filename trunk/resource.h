@@ -172,6 +172,7 @@
 #define ID_SHOW_USERLIST                32852
 #define ID_SHOW_NETWORK                 32853
 #define ID_SHOW_SMILES                  32854
+#define ID_SHOW_EDIT                    32855
 #define IDS_INFOSTATUSBAR               59394
 #define IDS_STATUSMODE_TOOLBAR          61204
 #define IDS_OPTIONS                     61205
@@ -267,6 +268,10 @@
 #define IDS_SMILE_FIGA                  61294
 #define IDS_SMILE_EYES                  61295
 #define IDS_SMILE_TOMATO                61296
+#define IDS_SOCKET_ERROR_INIT           61297
+#define IDS_SOCKET_ERROR_CRETAE         61298
+#define IDS_SOCKET_ERROR_SETBROADCAST   61299
+#define IDS_SOCKET_ERROR_GETBROADCAST   61300
 
 // Next default values for new objects
 // 
@@ -274,7 +279,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        283
-#define _APS_NEXT_COMMAND_VALUE         32855
+#define _APS_NEXT_COMMAND_VALUE         32856
 #define _APS_NEXT_CONTROL_VALUE         1057
 #define _APS_NEXT_SYMED_VALUE           104
 #endif

@@ -28,8 +28,10 @@ CChatApp::CChatApp():
 	userName( "" ),
 	hostName( "" ),
 	ip( "" ),
-	port( 4002 ),
+	port( 4000 ),
 	broadcastIP( "192.168.1.255" ),
+	firstRun( true ),
+	mutex( 0 ),
 	splash( NULL )
 {
 }
@@ -42,6 +44,19 @@ BOOL CChatApp::InitInstance()
 	m_pszProfileName = _tcsdup( _T("") );
 	free( (void*)m_pszRegistryKey );
 	m_pszRegistryKey = _tcsdup( _T("localChat") );
+
+	mutex = ::CreateMutex( NULL, FALSE, _T("localChat") );
+	if ( ::GetLastError() == ERROR_ALREADY_EXISTS ) {
+		firstRun = false;
+		HWND hwnd = ::FindWindow( NULL, _T("localChat") );
+		if ( hwnd ) {
+			if ( !(::GetWindowLong( hwnd, GWL_STYLE ) & WS_VISIBLE) ) {
+				::ShowWindow( hwnd, SW_RESTORE );
+			}
+			::SetForegroundWindow( hwnd );
+		}
+		return FALSE;
+	}
 
 	mainFrame = new CChatMainFrame;
 	m_pMainWnd = mainFrame;
@@ -62,7 +77,17 @@ BOOL CChatApp::InitInstance()
 	}
 
 	splash->setInitInfo( IDS_SPLASH_INITINFO_SOCKET );
-	if ( !initSocket() ) return FALSE;
+	if ( !initSocket() ) {
+		firstRun = false;
+		delete mainFrame;
+		mainFrame  = NULL;
+		m_pMainWnd = NULL;
+		if ( mutex ) {
+			::CloseHandle( mutex );
+			mutex = 0;
+		}
+		return FALSE;
+	}
 
 	splash->setInitInfo( IDS_SPLASH_INITINFO_SMILES );
 	mainFrame->LoadFrame( IDR_MAINFRAME, WS_OVERLAPPEDWINDOW | FWS_ADDTOTITLE, NULL, NULL );
@@ -93,15 +118,22 @@ BOOL CChatApp::InitInstance()
 
 int CChatApp::ExitInstance()
 {
-	network.stopEnum();
+	if ( firstRun ) {
+		network.stopEnum();
 
-	HtmlHelp( NULL, NULL, HH_CLOSE_ALL, 0 );
+		HtmlHelp( NULL, NULL, HH_CLOSE_ALL, 0 );
 
-	udp.send( "<close>" );
-	udp.close();
+		udp.send( "<close>" );
+		udp.close();
 
-	sounds.saveSetting();
-	statusModes.saveSetting();
+		sounds.saveSetting();
+		statusModes.saveSetting();
+
+		if ( mutex ) {
+			::CloseHandle( mutex );
+			mutex = 0;
+		}
+	}
 
 	if ( splash ) { delete splash; splash = NULL; }
 
@@ -111,7 +143,7 @@ int CChatApp::ExitInstance()
 bool CChatApp::initSocket()
 {
 	if ( !AfxSocketInit() ) {
-		AfxMessageBox( "Sockets init failed" );
+		AfxMessageBox( format( IDS_SOCKET_ERROR_INIT ).c_str() );
 		return false;
 	}
 
@@ -134,7 +166,7 @@ bool CChatApp::initSocket()
 				setBroadcastIP( ip );
 			} else {
 				if( ( hostinfo = gethostbyname(name)) != NULL ) {
-					ip = inet_ntoa( *(struct in_addr*)*hostinfo->h_addr_list );
+					ip = inet_ntoa( *reinterpret_cast<struct in_addr*>(hostinfo->h_addr_list[0]) );
 //					ip = "192.168.1.1";
 					setBroadcastIP( ip );
 				}
@@ -144,21 +176,21 @@ bool CChatApp::initSocket()
 	}
 
 	if ( !udp.Create( getPort(), SOCK_DGRAM, FD_READ | FD_WRITE | FD_OOB | FD_ACCEPT | FD_CONNECT | FD_CLOSE, getIP().c_str() ) ) {
-		AfxMessageBox( format( "Failed to create UDP socket: %s! Close and restart app.", udp.getStrError().c_str() ).c_str() );
+		AfxMessageBox( format( IDS_SOCKET_ERROR_CRETAE, udp.getStrError().c_str() ).c_str() );
 		return false;
 	}
 
 	int rflag = 0, flag =1, len = 0;
 
 	if ( !udp.SetSockOpt( SO_BROADCAST, &flag, sizeof(int) ) ) {
-		AfxMessageBox( format( "SetSockOpt failed to set SO_BROADCAST: %s", udp.getStrError().c_str() ).c_str() );
+		AfxMessageBox( format( IDS_SOCKET_ERROR_SETBROADCAST, udp.getStrError().c_str() ).c_str() );
 		return false;
 	}
 
 	len = sizeof( rflag );
 
 	if ( !udp.GetSockOpt( SO_BROADCAST, &rflag, &len ) && rflag == 0 ) {
-		AfxMessageBox( format( "GetSockOpt failed to get SO_BROADCAST: %s", udp.getStrError().c_str() ).c_str() );
+		AfxMessageBox( format( IDS_SOCKET_ERROR_GETBROADCAST, udp.getStrError().c_str() ).c_str() );
 		return false;
 	}
 

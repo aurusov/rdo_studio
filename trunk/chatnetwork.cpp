@@ -245,13 +245,21 @@ BOOL CChatNetwork::OnHitResource( NETRESOURCE& res )
 
 //				if ( WSAStartup( wVersionRequested, &wsaData ) == 0 ) {
 					std::string hostname = server->name;
-					int pos = hostname.find( "\\\\" );
+					std::string::size_type pos = hostname.find( "\\\\" );
 					if ( pos == 0 ) {
 						hostname.erase( hostname.begin(), hostname.begin() + 2 );
 					}
 					PHOSTENT hostinfo = gethostbyname( hostname.c_str() );
 					if ( hostinfo ) {
-						server->ip = inet_ntoa( *(struct in_addr*)*hostinfo->h_addr_list );
+						pos   = 0;
+						int i = 0;
+						while ( pos < std::string( *hostinfo->h_addr_list ).length() - hostname.length() ) {
+							if ( i ) {
+								server->ip += "/";
+							}
+							server->ip += inet_ntoa( *reinterpret_cast<struct in_addr*>(hostinfo->h_addr_list[i++]) );
+							pos += hostinfo->h_length;
+						}
 					}
 //					WSACleanup();
 //				}

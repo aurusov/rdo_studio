@@ -166,6 +166,7 @@ protected:
 	afx_msg void OnShowUserList();
 	afx_msg void OnShowNetwork();
 	afx_msg void OnShowSmiles();
+	afx_msg void OnShowEdit();
 	//}}AFX_MSG
 	afx_msg void OnHandleTrayNotify( UINT wParam, LONG lParam );
 	afx_msg void OnStatusMode( UINT nID );

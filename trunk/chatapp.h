@@ -31,6 +31,9 @@ private:
 	std::string ip;
 	std::string broadcastIP;
 
+	bool   firstRun;
+	HANDLE mutex;
+
 	CFont font;
 
 	bool initSocket();

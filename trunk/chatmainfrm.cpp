@@ -123,14 +123,15 @@ BEGIN_MESSAGE_MAP( CChatMainFrame, CFrameWnd )
 	ON_UPDATE_COMMAND_UI(ID_EDIT_COPY, OnUpdateEditCopy)
 	ON_COMMAND(ID_EDIT_PASTE, OnEditPaste)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_PASTE, OnUpdateEditPaste)
+	ON_COMMAND(ID_SHOW_USERLIST, OnShowUserList)
+	ON_COMMAND(ID_SHOW_NETWORK, OnShowNetwork)
+	ON_COMMAND(ID_SHOW_SMILES, OnShowSmiles)
 	ON_COMMAND( ID_TRAYMENU_EXIT, OnTrayCloseApp )
 	ON_UPDATE_COMMAND_UI( ID_STATUSMODE_AWAY        , OnUpdateStatusMode )
 	ON_UPDATE_COMMAND_UI( ID_STATUSMODE_NOTAVAILIBLE, OnUpdateStatusMode )
 	ON_UPDATE_COMMAND_UI( ID_STATUSMODE_AWAY_INFO        , OnUpdateStatusModeInfo )
 	ON_UPDATE_COMMAND_UI( ID_STATUSMODE_NOTAVAILIBLE_INFO, OnUpdateStatusModeInfo )
-	ON_COMMAND(ID_SHOW_USERLIST, OnShowUserList)
-	ON_COMMAND(ID_SHOW_NETWORK, OnShowNetwork)
-	ON_COMMAND(ID_SHOW_SMILES, OnShowSmiles)
+	ON_COMMAND(ID_SHOW_EDIT, OnShowEdit)
 	//}}AFX_MSG_MAP
 	ON_COMMAND_EX( ID_STATUSMODE_ONLINE      , OnStatusMode )
 	ON_COMMAND_EX( ID_STATUSMODE_AWAY        , OnStatusMode )
@@ -902,4 +903,9 @@ void CChatMainFrame::OnShowSmiles()
 {
 	dock.tab.setCurrentItem( dock.tab.findItem( &dock.smiles ) );
 	dock.smiles.SetFocus();
+}
+
+void CChatMainFrame::OnShowEdit()
+{
+	childView.edit.SetFocus();
 }

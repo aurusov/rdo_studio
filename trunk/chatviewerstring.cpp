@@ -224,7 +224,7 @@ void CChatString::drawText( CDC* dc, CRect& r )
 				smile_index++;
 			} else {
 				rect = CRect( 0, 0, 1, 1 );
-				dc->DrawText( s2.c_str(), &rect, DT_LEFT | DT_SINGLELINE | DT_CALCRECT );
+				dc->DrawText( s2.c_str(), &rect, DT_LEFT | DT_SINGLELINE | DT_NOPREFIX | DT_CALCRECT );
 				if ( left + rect.right > r.right ) {
 					left = r.left;
 					if ( pos_from != 0 ) {
@@ -236,14 +236,14 @@ void CChatString::drawText( CDC* dc, CRect& r )
 				rect.top     = top;
 				rect.right  += left;
 				rect.bottom  = top + height_of_line;
-				dc->DrawText( s2.c_str(), &rect, DT_LEFT | DT_SINGLELINE | DT_BOTTOM );
+				dc->DrawText( s2.c_str(), &rect, DT_LEFT | DT_SINGLELINE | DT_NOPREFIX | DT_BOTTOM );
 				left += rect.Width();
 				if ( flag ) {
 					rect.left    = left;
 					rect.top     = top;
 					rect.right  += left;
 					rect.bottom  = top + height_of_line;
-					dc->DrawText( " ", &rect, DT_LEFT | DT_SINGLELINE );
+					dc->DrawText( " ", &rect, DT_LEFT | DT_NOPREFIX | DT_SINGLELINE );
 					left += chatApp.style.spaceWidth;
 				}
 			}
@@ -289,7 +289,7 @@ int CChatString::getOneLineHeight( CDC* dc, const int _width, int pos_from, int 
 				smile_index++;
 			} else {
 				rect = CRect( 0, 0, 1, 1 );
-				dc->DrawText( s2.c_str(), &rect, DT_LEFT | DT_SINGLELINE | DT_CALCRECT );
+				dc->DrawText( s2.c_str(), &rect, DT_LEFT | DT_SINGLELINE | DT_NOPREFIX | DT_CALCRECT );
 				if ( !height_of_line ) {
 					height_of_line = rect.bottom;
 				}
@@ -358,7 +358,7 @@ int CChatString::getHeight( CDC* dc, const int _width )
 					smile_index++;
 				} else {
 					rect = CRect( 0, 0, 1, 1 );
-					dc->DrawText( s2.c_str(), &rect, DT_LEFT | DT_SINGLELINE | DT_CALCRECT );
+					dc->DrawText( s2.c_str(), &rect, DT_LEFT | DT_SINGLELINE | DT_NOPREFIX | DT_CALCRECT );
 					if ( left + rect.right > _width ) {
 						left = 0;
 						if ( pos_from != 0 ) {
