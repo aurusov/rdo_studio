@@ -3,8 +3,9 @@
 #include "sci/SciLexer.h"
 #include "sci/LexRdo.h"
 #include "sci/PropSet.h"
+#include "../rdostudioapp.h"
 #include "../rdostudioeditbaseview.h"
-#include "../rdo_studio/resource.h"
+#include "../resource.h"
 //#include "../Htmlhelp.h"
 
 #ifdef _DEBUG
@@ -637,10 +638,10 @@ void RDOEditorEdit::onBufferEdit( const int bufIndex )
 {
 	if ( !view ) return;
 
-	CString bufName;
-	string  bufValue;
+	string bufName;
+	string bufValue;
 
-	bufName.LoadString( ID_BUFFER_NAME );
+	bufName = studioApp.sprintf( ID_BUFFER_NAME );
 
 	switch ( bufIndex ) {
 		case 1: bufName += " 1:"; bufValue = view->buf1; break;
@@ -652,7 +653,7 @@ void RDOEditorEdit::onBufferEdit( const int bufIndex )
 	if ( bufValue.empty() ) {
 		bufValue = getCurrentOrSelectedWord();
 	}
-	RDOEditorEditBufferDlg dlg( bufName, bufValue.c_str() );
+	RDOEditorEditBufferDlg dlg( bufName.c_str(), bufValue.c_str() );
 
 	if ( dlg.DoModal() == IDOK ) {
 

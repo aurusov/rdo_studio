@@ -127,12 +127,12 @@ bool RDOEditorSciEditTheme::styleItalic( const int styleType ) const
 	return defaultStyle & RDOFS_ITALIC ? true : false;
 }
 
-CString RDOEditorSciEditTheme::styleFGColorToHEX( const int styleType ) const
+string RDOEditorSciEditTheme::styleFGColorToHEX( const int styleType ) const
 {
 	return colorToHEX( defaultColor );
 }
 
-CString RDOEditorSciEditTheme::styleBGColorToHEX( const int styleType ) const
+string RDOEditorSciEditTheme::styleBGColorToHEX( const int styleType ) const
 {
 	return colorToHEX( backgroundColor );
 }
@@ -143,7 +143,7 @@ RDOEditorSciEditTheme RDOEditorSciEditTheme::getDefaultTheme()
 	return theme;
 }
 
-CString RDOEditorSciEditTheme::colorToHEX( const COLORREF color )
+string RDOEditorSciEditTheme::colorToHEX( const COLORREF color )
 {
 	CString s;
 	s.Format( "#%02X%02X%02X", GetRValue( color ), GetGValue( color ), GetBValue( color ) );

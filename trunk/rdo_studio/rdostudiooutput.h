@@ -57,7 +57,7 @@ public:
 
 	void appendStringToBuild( const string& str ) const;
 	void appendStringToDebug( const string& str ) const;
-	void appendStringToFind( const string& str ) const;
+	void appendStringToFind( const string& str/*, const RDOFileType _fileType = NONE, const int _lineNumber = -1*/ ) const;
 
 public:
 	//{{AFX_VIRTUAL(RDOStudioOutput)

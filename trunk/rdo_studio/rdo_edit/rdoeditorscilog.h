@@ -5,7 +5,31 @@
 #include "rdoeditorsciedit.h"
 #include "rdoeditorscilogstyle.h"
 
+#include <list>
+
+using namespace std;
+
 namespace rdoEditor {
+
+// ----------------------------------------------------------------------------
+// ---------- RDOEditorSciLogLineInfo
+// ----------------------------------------------------------------------------
+class RDOEditorSciLogLineInfo
+{
+public:
+	typedef enum { NONE, PAT, RTP, RSS, OPR, FRM, FUN, DPT, SMR, PMD } RDOFileType;
+
+private:
+	RDOFileType fileType;
+	int         lineNumber;
+	string      message;
+
+public:
+	RDOEditorSciLogLineInfo( const string& _message, const RDOFileType _fileType = NONE, const int _lineNumber = -1 );
+	~RDOEditorSciLogLineInfo();
+
+	string getMessage() const;
+};
 
 // ----------------------------------------------------------------------------
 // ---------- RDOEditorSciLog
@@ -16,6 +40,8 @@ private:
 	int sci_MARKER_LINE;
 
 protected:
+	list< RDOEditorSciLogLineInfo > lines;
+
 	void setSelectLine();
 	void clearSelectLine();
 	bool hasSelectLine() const;
@@ -35,6 +61,8 @@ public:
 	virtual ~RDOEditorSciLog();
 
 	virtual void setEditorStyle( RDOEditorSciEditStyle* style );
+
+	void appendLine( const RDOEditorSciLogLineInfo& line );
 };
 
 }; // namespace rdoEditor

@@ -3,7 +3,8 @@
 #include "sci/SciLexer.h"
 #include "sci/PropSet.h"
 #include "sci/Scintilla.h"
-#include "../rdo_studio/resource.h"
+#include "../rdostudioapp.h"
+#include "../resource.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -693,9 +694,7 @@ void RDOEditorSciEdit::findNext( string& findWhat, const bool searchDown, const 
 	if ( posFind == -1 ) {
 		firstFoundPos = -1;
 		bHaveFound    = false;
-		CString s;
-		s.Format( ID_MSG_CANTFIND, findWhat.c_str() );
-		MessageBox( s, NULL, MB_OK | MB_ICONWARNING );
+		MessageBox( studioApp.sprintf( ID_MSG_CANTFIND, findWhat.c_str() ).c_str(), NULL, MB_OK | MB_ICONWARNING );
 		SetFocus();
 	} else {
 		if ( firstFoundPos == -1 ) {
@@ -703,9 +702,7 @@ void RDOEditorSciEdit::findNext( string& findWhat, const bool searchDown, const 
 		} else if ( posFind == firstFoundPos ) {
 			firstFoundPos = -1;
 			bHaveFound    = false;
-			CString s;
-			s.Format( ID_MSG_CANTFIND, findWhat.c_str() );
-			MessageBox( s, NULL, MB_OK | MB_ICONWARNING );
+			MessageBox( studioApp.sprintf( ID_MSG_CANTFIND, findWhat.c_str() ).c_str(), NULL, MB_OK | MB_ICONWARNING );
 			SetFocus();
 			return;
 		}
@@ -765,9 +762,7 @@ void RDOEditorSciEdit::replaceAll( string& findWhat, string& replaceWhat, const 
 		setSelection( lastMatch, lastMatch );
 		sendEditor( SCI_ENDUNDOACTION );
 	} else {
-		CString s;
-		s.Format( ID_MSG_CANTFIND, findWhat.c_str() );
-		MessageBox( s, NULL, MB_OK | MB_ICONWARNING );
+		MessageBox( studioApp.sprintf( ID_MSG_CANTFIND, findWhat.c_str() ).c_str(), NULL, MB_OK | MB_ICONWARNING );
 		SetFocus();
 	}
 }
@@ -1032,9 +1027,9 @@ void RDOEditorSciEdit::saveAsRTF( CFile& file, int start, int end ) const
 			sprintf( lastStyle, RTF_SETFONTFACE "%d", fontCount-1 );
 			sprintf( lastStyle + strlen(lastStyle), RTF_SETFONTSIZE "%d", style->font->size * 2 );
 			if ( style->theme->styleDefault( istyle ) ) {
-				strncpy( colors[colorCount++], style->theme->styleBGColorToHEX( istyle ), MAX_COLORDEF );
+				strncpy( colors[colorCount++], style->theme->styleBGColorToHEX( istyle ).c_str(), MAX_COLORDEF );
 			}
-			strncpy( colors[colorCount++], style->theme->styleFGColorToHEX( istyle ), MAX_COLORDEF );
+			strncpy( colors[colorCount++], style->theme->styleFGColorToHEX( istyle ).c_str(), MAX_COLORDEF );
 			bool bold   = style->theme->styleBold( istyle );
 			bool italic = style->theme->styleItalic( istyle );
 			sprintf( lastStyle + strlen(lastStyle), RTF_SETCOLOR "%d", colorCount-1 );

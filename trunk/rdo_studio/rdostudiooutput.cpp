@@ -198,7 +198,9 @@ void RDOStudioOutput::appendStringToDebug( const string& str ) const
 	appendString( debug, str );
 }
 
-void RDOStudioOutput::appendStringToFind( const string& str ) const
+void RDOStudioOutput::appendStringToFind( const string& str/*, const RDOFileType _fileType, const int _lineNumber*/ ) const
 {
-	appendString( find, str );
+	RDOEditorSciLogLineInfo line( str );
+//	RDOEditorSciLogLineInfo line( str, RDOEditorSciLogLineInfo::PAT, 1 );
+	find->appendLine( line );
 }

@@ -46,7 +46,7 @@ public:
 	virtual bool styleUsing( const int styleType ) const;
 	virtual bool styleBold( const int styleType = STYLE_DEFAULT ) const;
 	virtual bool styleItalic( const int styleType = STYLE_DEFAULT ) const;
-	virtual CString styleFGColorToHEX( const int styleType = STYLE_DEFAULT ) const;
+	virtual string styleFGColorToHEX( const int styleType = STYLE_DEFAULT ) const;
 
 	static RDOEditorEditTheme getDefaultTheme();
 	static RDOEditorEditTheme getCppTheme();

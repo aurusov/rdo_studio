@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "rdoeditorapp.h"
 #include "rdoeditormainfrm.h"
-#include "../rdo_studio/resource.h"
 //#include "../Htmlhelp.h"
 
 #include <rdoabout.h>

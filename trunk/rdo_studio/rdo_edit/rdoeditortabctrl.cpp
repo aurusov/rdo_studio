@@ -2,7 +2,7 @@
 #include "rdoeditortabctrl.h"
 #include "sci/LexRdo.h"
 #include "../rdostudioeditbaseview.h"
-#include "../rdo_studio/resource.h"
+#include "../resource.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

@@ -4,7 +4,7 @@
 
 #include <vector>
 #include "rdotracerrdoclasses.h"
-#include "../rdo_studio/resource.h"
+#include "../resource.h"
 
 using namespace std;
 

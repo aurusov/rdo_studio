@@ -21,7 +21,7 @@
 #include "PlatformRes.h"
 #include "UniConversion.h"
 
-#include "../rdo_studio/resource.h"
+#include "../../resource.h"
 
 static CRITICAL_SECTION crPlatformLock;
 static HINSTANCE hinstPlatformRes = 0;

@@ -58,20 +58,17 @@ RDOStudioMainFrame::~RDOStudioMainFrame()
 int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if ( CMDIFrameWnd::OnCreate(lpCreateStruct) == -1 ) return -1;
-	
-	CString s;
-	s.LoadString( IDR_PROJECTTOOLBAR );
+
 	projectToolBar.CreateEx( this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
 	projectToolBar.LoadToolBar( IDR_PROJECTTOOLBAR );
-	projectToolBar.GetToolBarCtrl().SetWindowText( s );
+	projectToolBar.GetToolBarCtrl().SetWindowText( studioApp.sprintf( IDR_PROJECTTOOLBAR ).c_str() );
 
 	projectToolBarImageList.Create( IDB_PROJECTTOOLBAR_D, 16, 0, 0xFF00FF );
 	projectToolBar.GetToolBarCtrl().SetDisabledImageList( &projectToolBarImageList );
 
-	s.LoadString( IDR_EDITTOOLBAR );
 	editToolBar.CreateEx( this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
 	editToolBar.LoadToolBar( IDR_EDITTOOLBAR );
-	editToolBar.GetToolBarCtrl().SetWindowText( s );
+	editToolBar.GetToolBarCtrl().SetWindowText( studioApp.sprintf( IDR_EDITTOOLBAR ).c_str() );
 
 	editToolBarImageList.Create( IDB_EDITTOOLBAR_D, 16, 0, 0xFF00FF );
 	editToolBar.GetToolBarCtrl().SetDisabledImageList( &editToolBarImageList );
@@ -84,12 +81,10 @@ int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	statusBar.SetPaneInfo( 3, ID_MODELTIMESTATUSBAR      , SBPS_NORMAL , 100 );
 	statusBar.SetPaneInfo( 4, ID_MODELRUNTYPESTATUSBAR   , SBPS_STRETCH, 70 );
 
-	s.LoadString( ID_DOCK_WORKSPACE );
-	workspace.Create( s, this, -1 );
+	workspace.Create( studioApp.sprintf( ID_DOCK_WORKSPACE ).c_str(), this, -1 );
 	workspace.SetBarStyle( workspace.GetBarStyle() | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
 
-	s.LoadString( ID_DOCK_OUTPUT );
-	output.Create( s, this, -1 );
+	output.Create( studioApp.sprintf( ID_DOCK_OUTPUT ).c_str(), this, -1 );
 	output.SetBarStyle( output.GetBarStyle() | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
 
 	projectToolBar.EnableDocking( CBRS_ALIGN_ANY );
@@ -205,7 +200,7 @@ void RDOStudioMainFrame::OnUpdateViewOutput(CCmdUI* pCmdUI)
 void RDOStudioMainFrame::OnUpdateCoordStatusBar( CCmdUI *pCmdUI )
 {
 	pCmdUI->Enable();
-	CString str = "";
+	string str = "";
 	RDOStudioModelDoc* doc = studioApp.getModelDoc();
 	if ( doc ) {
 		RDOStudioModelView* view = doc->getView();
@@ -214,17 +209,17 @@ void RDOStudioMainFrame::OnUpdateCoordStatusBar( CCmdUI *pCmdUI )
 			if ( edit ) {
 				int x = edit->getCurrentColumnNumber() + 1;
 				int y = edit->getCurrentLineNumber() + 1;
-				str.Format( "%d: %d", x, y );
+				str = studioApp.sprintf( "%d: %d", x, y );
 			}
 		}
 	}
-	pCmdUI->SetText( str );
+	pCmdUI->SetText( str.c_str() );
 }
 
 void RDOStudioMainFrame::OnUpdateModifyStatusBar( CCmdUI *pCmdUI )
 {
 	pCmdUI->Enable();
-	CString str = "";
+	string str = "";
 	RDOStudioModelDoc* doc = studioApp.getModelDoc();
 	if ( doc ) {
 		RDOStudioModelView* view = doc->getView();
@@ -232,31 +227,31 @@ void RDOStudioMainFrame::OnUpdateModifyStatusBar( CCmdUI *pCmdUI )
 			RDOEditorEdit* edit = view->getEdit();
 			if ( edit ) {
 				if ( edit->isReadOnly() ) {
-					str.LoadString( ID_STATUSBAR_READONLY );
+					str = studioApp.sprintf( ID_STATUSBAR_READONLY );
 				} else if ( edit->isModify() ) {
-					str.LoadString( ID_STATUSBAR_MODIFIED );
+					str = studioApp.sprintf( ID_STATUSBAR_MODIFIED );
 				}
 			}
 		}
 	}
-	pCmdUI->SetText( str );
+	pCmdUI->SetText( str.c_str() );
 }
 
 void RDOStudioMainFrame::OnUpdateInsertOverwriteStatusBar( CCmdUI *pCmdUI )
 {
 	pCmdUI->Enable();
-	CString str = "";
+	string str = "";
 	RDOStudioModelDoc* doc = studioApp.getModelDoc();
 	if ( doc ) {
 		RDOStudioModelView* view = doc->getView();
 		if ( view ) {
 			RDOEditorEdit* edit = view->getEdit();
 			if ( edit && edit->isOverwrite() ) {
-				str.LoadString( ID_STATUSBAR_OVERWRITE );
+				str = studioApp.sprintf( ID_STATUSBAR_OVERWRITE );
 			}
 		}
 	}
-	pCmdUI->SetText( str );
+	pCmdUI->SetText( str.c_str() );
 }
 
 void RDOStudioMainFrame::buildNotify( string str )

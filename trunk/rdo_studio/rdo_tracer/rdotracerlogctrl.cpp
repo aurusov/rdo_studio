@@ -2,7 +2,7 @@
 #include "rdotracerlogctrl.h"
 #include "../rdostudioapp.h"
 #include "../rdostudiomainfrm.h"
-#include "../rdo_studio/resource.h"
+#include "../resource.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

@@ -185,7 +185,7 @@ bool RDOEditorEditTheme::styleItalic( const int styleType ) const
 	return false;
 }
 
-CString RDOEditorEditTheme::styleFGColorToHEX( const int styleType ) const
+string RDOEditorEditTheme::styleFGColorToHEX( const int styleType ) const
 {
 	switch ( styleType ) {
 		case SCE_RDO_DEFAULT   : return colorToHEX( defaultColor );

@@ -3,7 +3,6 @@
 #include "rdoeditortabctrl.h"
 #include "rdoeditormainfrm.h"
 #include "rdoeditorapp.h"
-#include "../rdo_studio/resource.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

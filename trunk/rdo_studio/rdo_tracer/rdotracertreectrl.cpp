@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "rdotracertreectrl.h"
 #include "rdotracertrace.h"
-#include "../rdo_studio/resource.h"
+#include "../resource.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
