@@ -50,30 +50,32 @@ void RDOStudioModel::newModel( const bool _useTemplate )
 	kernel.getRepository()->newModel();
 }
 
-bool RDOStudioModel::openModel( const string& modelName )
+bool RDOStudioModel::openModel( const string& modelName ) const
 {
 	return kernel.getRepository()->openModel( modelName );
 }
 
-void RDOStudioModel::saveModel()
+bool RDOStudioModel::saveModel() const
 {
-	kernel.getRepository()->saveModel();
+	return kernel.getRepository()->saveModel();
 }
 
-void RDOStudioModel::saveAsModel()
+void RDOStudioModel::saveAsModel() const
 {
 	kernel.getRepository()->saveAsModel();
 }
 
-void RDOStudioModel::closeModel()
+void RDOStudioModel::closeModel() const
 {
 	kernel.getRepository()->closeModel();
 }
 
 void RDOStudioModel::runModel() const
 {
-	studioApp.mainFrame->output.showBuild();
-	kernel.getSimulator()->runModel( kernel.getRepository()->getFullName() );
+	if ( saveModel() ) {
+		studioApp.mainFrame->output.showBuild();
+		kernel.getSimulator()->runModel( kernel.getRepository()->getFullName() );
+	}
 }
 
 void RDOStudioModel::stopModel() const
@@ -290,7 +292,7 @@ bool RDOStudioModel::canCloseDocument()
 		s.LoadString( ID_MSG_MODELSAVE_QUERY );
 		int res = AfxGetMainWnd()->MessageBox( s, NULL, MB_ICONQUESTION | MB_YESNOCANCEL );
 		switch ( res ) {
-			case IDYES   : saveModel(); flag = true; break;
+			case IDYES   : flag = saveModel(); break;
 			case IDNO    : flag = true; break;
 			case IDCANCEL: flag = false; break;
 		}
@@ -316,7 +318,7 @@ void RDOStudioModel::closeModelFromRepository()
 	}
 }
 
-void RDOStudioModel::canNotCloseModelFromRepository()
+void RDOStudioModel::canNotCloseModelFromRepository() const
 {
 	if ( !canNotCloseByModel ) {
 		CString s;

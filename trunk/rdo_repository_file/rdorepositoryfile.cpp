@@ -129,7 +129,7 @@ bool RDORepositoryFile::openModel( const string& modelFileName )
 	return false;
 }
 
-void RDORepositoryFile::saveModel()
+bool RDORepositoryFile::saveModel()
 {
 	bool flag = true;
 	if ( modelPath.empty() ) {
@@ -138,6 +138,7 @@ void RDORepositoryFile::saveModel()
 	if ( flag ) {
 		kernel.notify( RDOKernel::saveModel );
 	}
+	return flag;
 }
 
 void RDORepositoryFile::saveAsModel()

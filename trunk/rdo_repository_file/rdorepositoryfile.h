@@ -62,7 +62,7 @@ public:
 
 	void newModel();
 	bool openModel( const string& modelFileName = "" );
-	void saveModel();
+	bool saveModel();
 	void saveAsModel();
 	void closeModel();
 

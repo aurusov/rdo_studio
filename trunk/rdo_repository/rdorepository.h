@@ -31,7 +31,7 @@ public:
 
 	void newModel();
 	bool openModel( const string& modelName = "" );
-	void saveModel();
+	bool saveModel();
 	void saveAsModel();
 	void closeModel();
 

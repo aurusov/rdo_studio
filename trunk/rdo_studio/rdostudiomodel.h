@@ -41,7 +41,7 @@ private:
 	void openModelFromRepository();
 	void saveModelToRepository();
 	void closeModelFromRepository();
-	void canNotCloseModelFromRepository();
+	void canNotCloseModelFromRepository() const;
 
 	bool canCloseDocument();
 
@@ -50,11 +50,11 @@ public:
 	~RDOStudioModel();
 
 	void newModel( const bool _useTemplate = false );
-	bool openModel( const string& modelName = "" );
-	void saveModel();
-	void saveAsModel();
+	bool openModel( const string& modelName = "" ) const;
+	bool saveModel() const;
+	void saveAsModel() const;
 	bool canCloseModel();
-	void closeModel();
+	void closeModel() const;
 
 	void runModel() const;
 	void stopModel() const;

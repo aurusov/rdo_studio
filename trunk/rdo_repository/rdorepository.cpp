@@ -37,9 +37,9 @@ bool RDORepository::openModel( const string& modelName )
 	return repositoryFile->openModel( modelName );
 }
 
-void RDORepository::saveModel()
+bool RDORepository::saveModel()
 {
-	repositoryFile->saveModel();
+	return repositoryFile->saveModel();
 }
 
 void RDORepository::saveAsModel()
