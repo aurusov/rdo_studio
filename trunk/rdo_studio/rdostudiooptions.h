@@ -313,6 +313,10 @@ class RDOStudioOptionsPlugins: public CPropertyPage
 private:
 	RDOStudioOptions* sheet;
 
+	bool sortPluginNameAsceding;
+	bool sortPluginVersionAsceding;
+	bool sortPluginStateAsceding;
+
 protected:
 	//{{AFX_DATA(RDOStudioOptionsPlugins)
 	enum { IDD = IDD_OPTIONS_PLUGINS };
@@ -330,6 +334,7 @@ protected:
 
 	//{{AFX_MSG(RDOStudioOptionsPlugins)
 	virtual BOOL OnInitDialog();
+	afx_msg void OnPluginListColumnClick(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnPluginListSelectChanged(NMHDR* pNMHDR, LRESULT* pResult);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()

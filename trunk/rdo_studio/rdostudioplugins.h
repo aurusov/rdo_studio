@@ -7,7 +7,7 @@
 
 #include <rdoplugin.h>
 #include <string>
-#include <map>
+#include <vector>
 
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioPlugin
@@ -17,16 +17,21 @@ class RDOStudioPlugin
 friend class RDOStudioPlugins;
 
 private:
+	std::string modulName;
+	HMODULE     lib;
 	std::string name;
 	int version_major;
 	int version_minor;
 	int version_build;
 	std::string version_info;
 	std::string description;
+	rdoPlugin::PluginState state;
 
 public:
-	RDOStudioPlugin();
+	RDOStudioPlugin( const std::string& modulName );
 	virtual ~RDOStudioPlugin();
+
+	static bool isRDOStudioPlugin( const std::string& modulName );
 
 	std::string getName() const { return name; }
 	int getVersionMajor() const { return version_major; }
@@ -34,6 +39,7 @@ public:
 	int getVersionBuild() const { return version_build; }
 	std::string getVersionInfo() const { return version_info; }
 	std::string getDescription() const { return description; }
+	rdoPlugin::PluginState getState() const { return state; }
 };
 
 // ----------------------------------------------------------------------------
@@ -42,7 +48,7 @@ public:
 class RDOStudioPlugins
 {
 private:
-	std::multimap< std::string, RDOStudioPlugin* > list;
+	std::vector< RDOStudioPlugin* > list;
 	void enumPlugins( const std::string& mask );
 
 public:
@@ -51,7 +57,11 @@ public:
 
 	void init();
 
-	const std::multimap< std::string, RDOStudioPlugin* >& getList() { return list; }
+	const std::vector< RDOStudioPlugin* >& getList() { return list; }
+
+	static int comparePluginsByName( const RDOStudioPlugin* plugin1, const RDOStudioPlugin* plugin2 );
+	static int comparePluginsByVersion( const RDOStudioPlugin* plugin1, const RDOStudioPlugin* plugin2 );
+	static int comparePluginsByState( const RDOStudioPlugin* plugin1, const RDOStudioPlugin* plugin2 );
 };
 
 // ----------------------------------------------------------------------------

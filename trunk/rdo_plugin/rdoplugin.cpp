@@ -14,15 +14,20 @@ int WINAPI DllMain( HINSTANCE hinst, DWORD fdwReason, PVOID pvReserved )
 	return TRUE;
 }
 
-void getPluginInfo( PluginInfo* info )
+void getPluginInfo( rdoPlugin::PluginInfo* info )
 {
-	static char* name         = "Test";
+	static char* name         = "Test2";
 	static char* version_info = "Test version";
 	static char* description  = "some info about plugin";
 	info->name = name;
-	info->version_major = 1;
+	info->version_major = 2;
 	info->version_minor = 0;
 	info->version_build = 1;
 	info->version_info  = version_info;
 	info->description   = description;
+}
+
+rdoPlugin::PluginRunMode getPluginRunMode()
+{
+	return rdoPlugin::prmNoAuto;
 }
