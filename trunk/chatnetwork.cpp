@@ -70,6 +70,7 @@ std::string CChatNetShared::getNameForCtrl() const
 // ----------------------------------------------------------------------------
 CChatNetServer::CChatNetServer():
 	CChatNet(),
+	comment( "" ),
 	ip( "" )
 {
 }
@@ -97,6 +98,16 @@ std::string CChatNetServer::getNameForCtrl() const
 	}
 	tolower( str );
 	toupper( str, 0, 1 );
+
+	if ( !comment.empty() ) {
+		std::string str1 = str;
+		tolower( str1 );
+		std::string str2 = comment;
+		tolower( str2 );
+		if ( str1 != str2 ) {
+			str = format( "%s (%s)", comment.c_str(), str.c_str() );
+		}
+	}
 	return str;
 }
 
@@ -227,14 +238,20 @@ BOOL CChatNetwork::OnHitResource( NETRESOURCE& res )
 			if ( !list.empty() ) {
 				CChatNetDomain* domain = list[list.size()-1];
 				CChatNetServer* server = new CChatNetServer;
-				server->name = GetRemoteName( res );
+				server->name    = GetRemoteName( res );
+				server->comment = GetComment( res );
 
 //				WORD wVersionRequested;
 //				WSADATA wsaData;
 //				wVersionRequested = MAKEWORD( 2, 0 );
 
 //				if ( WSAStartup( wVersionRequested, &wsaData ) == 0 ) {
-					PHOSTENT hostinfo = gethostbyname( server->getNameForCtrl().c_str() );
+					std::string hostname = server->name;
+					int pos = hostname.find( "\\\\" );
+					if ( pos == 0 ) {
+						hostname.erase( hostname.begin(), hostname.begin() + 2 );
+					}
+					PHOSTENT hostinfo = gethostbyname( hostname.c_str() );
 					if ( hostinfo ) {
 						server->ip = inet_ntoa( *(struct in_addr*)*hostinfo->h_addr_list );
 					}

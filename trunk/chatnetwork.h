@@ -64,6 +64,7 @@ private:
 	std::vector< CChatNetShared* > list;
 	void clear();
 
+	std::string comment;
 	std::string ip;
 	virtual std::string getNameForCtrl() const;
 

@@ -27,7 +27,7 @@ CChatApp::CChatApp():
 	userName( "" ),
 	hostName( "" ),
 	ip( "" ),
-	port( 4002 ),
+	port( 4000 ),
 	broadcastIP( "192.168.1.255" )
 {
 }
