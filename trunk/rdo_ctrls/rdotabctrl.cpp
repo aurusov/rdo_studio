@@ -24,7 +24,7 @@ protected:
 	int   getCurrentIndex() const           { return GetCurSel();                  };
 	int   findItem( const CWnd* const item ) const;
 	int   findItem( const HWND item ) const;
-	void  insertItem( CWnd* pWnd, LPCTSTR lpName );
+	void  insertItem( CWnd* pWnd, LPCTSTR lpName, const int image_index = -1 );
 	void  setCurrentItem( const int index );
 
 	//{{AFX_MSG(RDOTab)
@@ -203,7 +203,7 @@ int RDOTab::findItem( const HWND item ) const
 	return -1;
 }
 
-void RDOTab::insertItem( CWnd* pWnd, LPCTSTR lpName )
+void RDOTab::insertItem( CWnd* pWnd, LPCTSTR lpName, const int image_index )
 {
 	int item_id = getItemCount();
 	InsertItem( item_id, lpName );
@@ -215,6 +215,10 @@ void RDOTab::insertItem( CWnd* pWnd, LPCTSTR lpName )
 		TC_ITEM TabItem;
 		TabItem.mask   = TCIF_PARAM;
 		TabItem.lParam = (LPARAM)pWnd;
+		if ( image_index != -1 ) {
+			TabItem.mask |= TCIF_IMAGE;
+			TabItem.iImage = image_index;
+		}
 		SetItem( item_id, &TabItem );
 	}
 }
@@ -395,9 +399,9 @@ int RDOTabCtrl::findItem( const CWnd* const item ) const
 	return tab->findItem( item );
 }
 
-void RDOTabCtrl::insertItem( CWnd* pWnd, LPCTSTR lpName )
+void RDOTabCtrl::insertItem( CWnd* pWnd, LPCTSTR lpName, const int image_index )
 {
-	tab->insertItem( pWnd, lpName );
+	tab->insertItem( pWnd, lpName, image_index );
 }
 
 void RDOTabCtrl::setCurrentItem( const int index )

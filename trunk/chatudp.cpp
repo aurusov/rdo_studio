@@ -141,8 +141,87 @@ void CChatUdp::parsCommand( const std::string& line )
 		fromUser = fromHost;
 	}
 
+	// MSG
+	if ( hasCommand( line, "msg" ) ) {
+		if ( user && user->isIgnored() ) return;
+		std::string msg = getCommandValue( line, "msg", true );
+		chatApp.mainFrame->childView.viewer.addString( fromUser, msg );
+
+		if ( !chatApp.mainFrame->isVisible() ) {
+			chatApp.mainFrame->modifyTray();
+		}
+
+		if ( !chatApp.mainFrame->isActive() ) {
+			chatApp.mainFrame->showPopupMessage( "(" + fromUser + "): " + msg );
+		}
+
+		if ( chatApp.getIP() != fromIP ) {
+			chatApp.sounds.play( CST_IncomingMessage );
+		}
+
+//		if ( fromIP == chatApp.getIP() ) {
+//			if ( msg == "tocryout" ) {
+//				send( "<tocryout:q>" );
+//			}
+//		}
+
+	// TOCRYOUT
+	} else if ( hasCommand( line, "tocryout" ) ) {
+		if ( user && user->isIgnored() ) return;
+		std::string msg = getCommandValue( line, "tocryout", true );
+		chatApp.mainFrame->childView.viewer.addString( fromUser, msg, CSTRT_ToCryOut );
+
+		if ( !chatApp.mainFrame->isVisible() ) {
+			chatApp.mainFrame->modifyTray();
+		}
+
+		if ( !chatApp.mainFrame->isActive() ) {
+			chatApp.mainFrame->showPopupMessage( "(" + fromUser + " cry out): " + msg );
+		}
+
+		if ( chatApp.getIP() != fromIP ) {
+			chatApp.sounds.play( CST_IncomingMessage );
+		}
+
+	// PRIVATE
+	} else if ( hasCommand( line, "popupmsg" ) && user ) {
+		if ( user && user->isIgnored() ) return;
+		std::string toIP  = getCommandValue( line, "tohostip" );
+		CChatUser* toUser = chatApp.users.getUserByIP( toIP );
+		if ( toUser ) {
+			if ( user == chatApp.users.getOnwer() ) {
+				std::string msg = getCommandValue( line, "popupmsg", true );
+				chatApp.mainFrame->childView.viewer.addString( fromUser, msg, CSTRT_PrivateMsgSend, toUser->getUserName() );
+				chatApp.sounds.play( CST_PrivateMsg );
+			} else if ( toUser == chatApp.users.getOnwer() ) {
+				std::string msg = getCommandValue( line, "popupmsg", true );
+				chatApp.mainFrame->childView.viewer.addString( fromUser, msg, CSTRT_PrivateMsgReceive, toUser->getUserName() );
+				chatApp.sounds.play( CST_PrivateMsg );
+			}
+		}
+
+	// STATUSMODE
+	} else if ( hasCommand( line, "statusmode" ) && user ) {
+		std::string s = getCommandValue( line, "statusmode" );
+		CChatStatusModeType status = static_cast<CChatStatusModeType>(strtol( s.c_str(), NULL, 10 ));
+		if ( user->getStatusMode() != status ) {
+			user->setStatusMode( status );
+			if ( user->isIgnored() ) return;
+			std::string username = user->getUserName();
+			std::string s_statusmsg = getCommandValue( line, "statusmsg", true );
+			if ( s_statusmsg.empty() ) {
+				s = format( IDS_STATUSMODE_VIEWERLOG, username.c_str(), chatApp.statusModes.getStatusMode( status )->name.c_str() );
+				user->setStatusInfo( "" );
+			} else {
+				s = format( IDS_STATUSMODEWITHINFO_VIEWERLOG, username.c_str(), chatApp.statusModes.getStatusMode( status )->name.c_str(), s_statusmsg.c_str() );
+				user->setStatusInfo( s_statusmsg );
+			}
+			chatApp.mainFrame->childView.viewer.addString( username, s, CSTRT_ChangeStatusMode );
+			chatApp.sounds.play( CST_ChangeStatusMode );
+		}
+
 	// CONNECT
-	if ( hasCommand( line, "connect" ) ) {
+	} else if ( hasCommand( line, "connect" ) ) {
 		std::string username = getCommandValue( line, "connect" );
 		std::string s = format( IDS_CONNECT_VIEWERLOG, username.c_str() );
 		chatApp.mainFrame->childView.viewer.addString( username, s, CSTRT_Connect );
@@ -189,81 +268,6 @@ void CChatUdp::parsCommand( const std::string& line )
 		CChatStatusModeType status = static_cast<CChatStatusModeType>(strtol( s.c_str(), NULL, 10 ));
 		if ( user->getStatusMode() != status ) {
 			user->setStatusMode( status );
-		}
-
-	// STATUSMODE
-	} else if ( hasCommand( line, "statusmode" ) && user ) {
-		std::string s = getCommandValue( line, "statusmode" );
-		CChatStatusModeType status = static_cast<CChatStatusModeType>(strtol( s.c_str(), NULL, 10 ));
-		if ( user->getStatusMode() != status ) {
-			user->setStatusMode( status );
-			if ( user->isIgnored() ) return;
-			std::string username = user->getUserName();
-			std::string s_statusmsg = getCommandValue( line, "statusmsg" );
-			if ( s_statusmsg.empty() ) {
-				s = format( IDS_STATUSMODE_VIEWERLOG, username.c_str(), chatApp.statusModes.getStatusMode( status )->name.c_str() );
-			} else {
-				s = format( IDS_STATUSMODEWITHINFO_VIEWERLOG, username.c_str(), chatApp.statusModes.getStatusMode( status )->name.c_str(), s_statusmsg.c_str() );
-			}
-			chatApp.mainFrame->childView.viewer.addString( username, s, CSTRT_ChangeStatusMode );
-			chatApp.sounds.play( CST_ChangeStatusMode );
-		}
-
-	// MSG
-	} else if ( hasCommand( line, "msg" ) ) {
-		if ( user && user->isIgnored() ) return;
-		std::string msg = getCommandValue( line, "msg", true );
-		chatApp.mainFrame->childView.viewer.addString( fromUser, msg );
-
-		if ( !chatApp.mainFrame->isVisible() ) {
-			chatApp.mainFrame->modifyTray();
-		}
-
-		if ( !chatApp.mainFrame->isActive() ) {
-			chatApp.mainFrame->showPopupMessage( "(" + fromUser + "): " + msg );
-		}
-
-		if ( chatApp.getIP() != fromIP ) {
-			chatApp.sounds.play( CST_IncomingMessage );
-		}
-
-//		if ( fromIP == chatApp.getIP() ) {
-//			if ( msg == "tocryout" ) {
-//				send( "<tocryout:q>" );
-//			}
-//		}
-
-	// TOCRYOUT
-	} else if ( hasCommand( line, "tocryout" ) ) {
-		if ( user && user->isIgnored() ) return;
-		std::string msg = getCommandValue( line, "tocryout", true );
-		chatApp.mainFrame->childView.viewer.addString( fromUser, msg, CSTRT_ToCryOut );
-
-		if ( !chatApp.mainFrame->isVisible() ) {
-			chatApp.mainFrame->modifyTray();
-		}
-
-		if ( !chatApp.mainFrame->isActive() ) {
-			chatApp.mainFrame->showPopupMessage( "(" + fromUser + " cry out): " + msg );
-		}
-
-		if ( chatApp.getIP() != fromIP ) {
-			chatApp.sounds.play( CST_IncomingMessage );
-		}
-	} else if ( hasCommand( line, "popupmsg" ) && user ) {
-		if ( user && user->isIgnored() ) return;
-		std::string toIP  = getCommandValue( line, "tohostip" );
-		CChatUser* toUser = chatApp.users.getUserByIP( toIP );
-		if ( toUser ) {
-			if ( user == chatApp.users.getOnwer() ) {
-				std::string msg = getCommandValue( line, "popupmsg", true );
-				chatApp.mainFrame->childView.viewer.addString( fromUser, msg, CSTRT_PrivateMsgSend, toUser->getUserName() );
-				chatApp.sounds.play( CST_PrivateMsg );
-			} else if ( toUser == chatApp.users.getOnwer() ) {
-				std::string msg = getCommandValue( line, "popupmsg", true );
-				chatApp.mainFrame->childView.viewer.addString( fromUser, msg, CSTRT_PrivateMsgReceive, toUser->getUserName() );
-				chatApp.sounds.play( CST_PrivateMsg );
-			}
 		}
 	}
 }

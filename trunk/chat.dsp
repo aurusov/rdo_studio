@@ -143,6 +143,10 @@ SOURCE=.\chatsmile.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\chatsmilelistctrl.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\chatsound.cpp
 # End Source File
 # Begin Source File
@@ -229,6 +233,10 @@ SOURCE=.\chatpopupmessage.h
 # Begin Source File
 
 SOURCE=.\chatsmile.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\chatsmilelistctrl.h
 # End Source File
 # Begin Source File
 
@@ -377,6 +385,10 @@ SOURCE=.\res\connect.wav
 # Begin Source File
 
 SOURCE=.\res\disconnect.wav
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\dock.bmp
 # End Source File
 # Begin Source File
 

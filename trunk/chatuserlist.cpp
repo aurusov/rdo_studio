@@ -18,15 +18,17 @@ CChatUser::CChatUser():
 	hostName( "" ),
 	ip( "" ),
 	statusMode( CSMT_Online ),
+	statusInfo( "" ),
 	ignored( false )
 {
 }
 
-CChatUser::CChatUser( const std::string& _username, const std::string& _hostname, const std::string& _ip, const CChatStatusModeType _statusMode ):
+CChatUser::CChatUser( const std::string& _username, const std::string& _hostname, const std::string& _ip, const CChatStatusModeType _statusMode, const std::string& _statusInfo ):
 	userName( _username ),
 	hostName( _hostname ),
 	ip( _ip ),
 	statusMode( _statusMode ),
+	statusInfo( _statusInfo ),
 	ignored( false )
 {
 }
@@ -67,6 +69,11 @@ void CChatUser::setStatusMode( const CChatStatusModeType value )
 	}
 }
 
+void CChatUser::setStatusInfo( const std::string& value )
+{
+	statusInfo = value;
+}
+
 void CChatUser::setIgnored( const bool value )
 {
 	if ( ignored != value ) {
@@ -80,10 +87,19 @@ void CChatUser::setIgnored( const bool value )
 
 std::string CChatUser::getToolTipInfo() const
 {
-	if ( !hostName.empty() ) {
-		return format( IDS_HOSTNAME_VALUE, hostName.c_str() );
+	std::string s = "";
+	if ( !statusInfo.empty() ) {
+		s = format( IDS_STATUSINFO_VALUE, statusInfo.c_str() );
 	}
-	return "";
+	if ( !hostName.empty() ) {
+		std::string host_str = format( IDS_HOSTNAME_VALUE, hostName.c_str() );
+		if ( s.empty() ) {
+			s = host_str;
+		} else {
+			s += ". " + host_str;
+		}
+	}
+	return s;
 }
 
 // ----------------------------------------------------------------------------
@@ -102,10 +118,10 @@ CChatUserList::~CChatUserList()
 	list.clear();
 }
 
-void CChatUserList::addUser( const std::string& username, const std::string& hostname, const std::string& ip, const CChatStatusModeType statusMode )
+void CChatUserList::addUser( const std::string& username, const std::string& hostname, const std::string& ip, const CChatStatusModeType statusMode, const std::string& statusInfo )
 {
 	if ( findUserByIP( ip ) == -1 ) {
-		CChatUser* user = new CChatUser( username, hostname, ip, statusMode );
+		CChatUser* user = new CChatUser( username, hostname, ip, statusMode, statusInfo );
 		list.push_back( user );
 		chatApp.mainFrame->dock.users.addUser( user );
 	}

@@ -62,8 +62,8 @@ int CChatUserListCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 
 	popupMenu.CreatePopupMenu();
 	CMenu* mainMenu = AfxGetMainWnd()->GetMenu();
-	appendMenu( mainMenu->GetSubMenu( 3 ), 0, &popupMenu );
-	appendMenu( mainMenu->GetSubMenu( 3 ), 1, &popupMenu );
+	appendMenu( mainMenu->GetSubMenu( 4 ), 0, &popupMenu );
+	appendMenu( mainMenu->GetSubMenu( 4 ), 1, &popupMenu );
 
 	EnableToolTips();
 

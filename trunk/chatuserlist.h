@@ -16,13 +16,14 @@ friend class CChatUserList;
 
 private:
 	CChatUser();
-	CChatUser( const std::string& _username, const std::string& _hostname, const std::string& _ip, const CChatStatusModeType _statusMode );
+	CChatUser( const std::string& _username, const std::string& _hostname, const std::string& _ip, const CChatStatusModeType _statusMode, const std::string& _statusInfo );
 	virtual ~CChatUser();
 
 	std::string         userName;
 	std::string         hostName;
 	std::string         ip;
 	CChatStatusModeType statusMode;
+	std::string         statusInfo;
 	bool                ignored;
 
 public:
@@ -37,6 +38,9 @@ public:
 
 	CChatStatusModeType getStatusMode() const { return statusMode; }
 	void setStatusMode( const CChatStatusModeType value );
+
+	std::string getStatusInfo() const { return statusInfo; }
+	void setStatusInfo( const std::string& value );
 
 	bool isIgnored() const { return ignored; }
 	void setIgnored( const bool value );
@@ -56,7 +60,7 @@ public:
 	CChatUserList();
 	virtual ~CChatUserList();
 
-	void addUser( const std::string& username, const std::string& hostname, const std::string& ip, const CChatStatusModeType statusMode = CSMT_Online );
+	void addUser( const std::string& username, const std::string& hostname, const std::string& ip, const CChatStatusModeType statusMode = CSMT_Online, const std::string& statusInfo = "" );
 	void deleteUser( const int index );
 	void deleteUser( const CChatUser* const user );
 	int findUserByHostName( const std::string& hostname ) const;

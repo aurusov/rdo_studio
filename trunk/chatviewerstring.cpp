@@ -101,7 +101,7 @@ CChatString::CChatString( const int lineIndex, const std::string& _userName, con
 			flag = false;
 		}
 		std::string str = message.substr( pos_from, pos - pos_from );
-		CChatSmile* smile = smiles.addSmile( str );
+		CChatSmile* smile = smiles.addSmile( str, &chatApp.mainFrame->childView.viewer );
 		if ( smile ) {
 			if ( !smile->IsAnimatedGIF() ) smile->Stop();
 			smile->SetBkColor( getBgColor() );

@@ -7,6 +7,7 @@
 
 #include "chatuserlistctrl.h"
 #include "chatnetworkctrl.h"
+#include "chatsmilelistctrl.h"
 
 #include <rdotabctrl.h>
 
@@ -20,8 +21,10 @@ public:
 	virtual ~CChatDock();
 
 	RDOTabCtrl tab;
-	CChatUserListCtrl users;
-	CChatNetworkCtrl  network;
+	CImageList images;
+	CChatUserListCtrl  users;
+	CChatNetworkCtrl   network;
+	CChatSmileListCtrl smiles;
 
 protected:
 	//{{AFX_VIRTUAL(CChatDock)

@@ -70,6 +70,7 @@ IDB_NET                 BITMAP  DISCARDABLE     "res\\net.bmp"
 IDB_STATISMODE_TOOLBAR_D BITMAP  DISCARDABLE     "res\\toolbar_statusMode_d.bmp"
 IDB_MAIN_TOOLBAR_D      BITMAP  DISCARDABLE     "res\\toolbar_main_d.bmp"
 IDB_EDIT_TOOLBAR_D      BITMAP  DISCARDABLE     "res\\toolbar_edit_d.bmp"
+IDB_DOCK                BITMAP  DISCARDABLE     "res\\dock.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -578,8 +579,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,2,0,211
- PRODUCTVERSION 0,2,0,211
+ FILEVERSION 0,2,0,217
+ PRODUCTVERSION 0,2,0,217
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -597,14 +598,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "Application for chat in localnet\0"
-            VALUE "FileVersion", "0, 2, 0, 211\0"
+            VALUE "FileVersion", "0, 2, 0, 217\0"
             VALUE "InternalName", "localChat\0"
             VALUE "LegalCopyright", "Copyright (C) 2002\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "localchat.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "localChat\0"
-            VALUE "ProductVersion", "0, 2, 0, 211\0"
+            VALUE "ProductVersion", "0, 2, 0, 217\0"
             VALUE "SpecialBuild", "\0"
         END
     END
@@ -705,6 +706,13 @@ BEGIN
     ID_EDIT_COPY            "\nCopy (Ctrl+C)"
     ID_EDIT_CUT             "\nCut (Ctrl+X)"
     ID_EDIT_PASTE           "\nPaste (Ctrl+V)"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_SMILES              "Smiles"
+    IDS_IP_UNKNOW           "Unknow IP"
+    IDS_STATUSINFO_VALUE    "Status mode info: %s"
 END
 
 #endif    // English (U.S.) resources

@@ -103,6 +103,8 @@ BEGIN_MESSAGE_MAP( CChatMainFrame, CFrameWnd )
 	ON_UPDATE_COMMAND_UI(ID_VIEW_EDITTOOLBAR, OnUpdateViewEditToolbar)
 	ON_COMMAND(ID_VIEW_STATUSMODE_TOOLBAR, OnViewStatusModeToolbar)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_STATUSMODE_TOOLBAR, OnUpdateViewStatusModeToolbar)
+	ON_COMMAND(ID_VIEW_STATUSBAR, OnViewStatusBar)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_STATUSBAR, OnUpdateViewStatusBar)
 	ON_COMMAND(ID_SOUND, OnSound)
 	ON_UPDATE_COMMAND_UI(ID_SOUND, OnUpdateSound)
 	ON_UPDATE_COMMAND_UI( ID_STATUSMODE_ONLINE      , OnUpdateStatusMode )
@@ -126,8 +128,6 @@ BEGIN_MESSAGE_MAP( CChatMainFrame, CFrameWnd )
 	ON_UPDATE_COMMAND_UI( ID_STATUSMODE_NOTAVAILIBLE, OnUpdateStatusMode )
 	ON_UPDATE_COMMAND_UI( ID_STATUSMODE_AWAY_INFO        , OnUpdateStatusModeInfo )
 	ON_UPDATE_COMMAND_UI( ID_STATUSMODE_NOTAVAILIBLE_INFO, OnUpdateStatusModeInfo )
-	ON_COMMAND(ID_VIEW_STATUSBAR, OnViewStatusBar)
-	ON_UPDATE_COMMAND_UI(ID_VIEW_STATUSBAR, OnUpdateViewStatusBar)
 	//}}AFX_MSG_MAP
 	ON_COMMAND_EX( ID_STATUSMODE_ONLINE      , OnStatusMode )
 	ON_COMMAND_EX( ID_STATUSMODE_AWAY        , OnStatusMode )
@@ -196,21 +196,21 @@ int CChatMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	mainToolBar.LoadToolBar( IDR_MAIN_TOOLBAR );
 	mainToolBar.GetToolBarCtrl().SetWindowText( format( IDS_MAIN_TOOLBAR ).c_str() );
 
-	mainToolBarImageList.Create( IDB_MAIN_TOOLBAR_D, 16, 0, 0xFF00FF );
+	mainToolBarImageList.Create( IDB_MAIN_TOOLBAR_D, 16, 0, RGB( 0xFF, 0x00, 0xFF ) );
 	mainToolBar.GetToolBarCtrl().SetDisabledImageList( &mainToolBarImageList );
 
 	editToolBar.CreateEx( this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
 	editToolBar.LoadToolBar( IDR_EDIT_TOOLBAR );
 	editToolBar.GetToolBarCtrl().SetWindowText( format( IDS_EDIT_TOOLBAR ).c_str() );
 
-	editToolBarImageList.Create( IDB_EDIT_TOOLBAR_D, 16, 0, 0xFF00FF );
+	editToolBarImageList.Create( IDB_EDIT_TOOLBAR_D, 16, 0, RGB( 0xFF, 0x00, 0xFF ) );
 	editToolBar.GetToolBarCtrl().SetDisabledImageList( &editToolBarImageList );
 
 	statusModeToolBar.CreateEx( this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
 	statusModeToolBar.LoadToolBar( IDR_STATUSMODE_TOOLBAR );
 	statusModeToolBar.GetToolBarCtrl().SetWindowText( format( IDS_STATUSMODE_TOOLBAR ).c_str() );
 
-	statusModeToolBarImageList.Create( IDB_STATISMODE_TOOLBAR_D, 16, 0, 0xFF00FF );
+	statusModeToolBarImageList.Create( IDB_STATISMODE_TOOLBAR_D, 16, 0, RGB( 0xFF, 0x00, 0xFF ) );
 	statusModeToolBar.GetToolBarCtrl().SetDisabledImageList( &statusModeToolBarImageList );
 
 	statusBar.Create( this );

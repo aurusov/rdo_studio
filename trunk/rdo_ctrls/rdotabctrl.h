@@ -47,7 +47,7 @@ public:
 	CWnd* getItemCurrent() const;
 	int   getCurrentIndex() const;
 	int   findItem( const CWnd* const item ) const;
-	void  insertItem( CWnd* pWnd, LPCTSTR lpName );
+	void  insertItem( CWnd* pWnd, LPCTSTR lpName, const int image_index = -1 );
 	void  setCurrentItem( const int index );
 
 	void setAutoDelete( const bool value ) { autoDelete = value; };

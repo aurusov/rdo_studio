@@ -127,7 +127,6 @@ protected:
 	afx_msg void OnTimer( UINT nIDEvent );
 	afx_msg void OnSize( UINT nType, int cx, int cy );
 	afx_msg void OnClose();
-	afx_msg void OnHandleTrayNotify( UINT wParam, LONG lParam );
 	afx_msg void OnTrayOpenHide();
 	afx_msg void OnTrayCloseApp();
 	afx_msg void OnUpdateTrayOpenHide( CCmdUI *pCmdUI );
@@ -163,6 +162,7 @@ protected:
 	afx_msg void OnEditPaste();
 	afx_msg void OnUpdateEditPaste(CCmdUI* pCmdUI);
 	//}}AFX_MSG
+	afx_msg void OnHandleTrayNotify( UINT wParam, LONG lParam );
 	afx_msg void OnStatusMode( UINT nID );
 	afx_msg void OnStatusModeInfo( UINT nID );
 	DECLARE_MESSAGE_MAP()

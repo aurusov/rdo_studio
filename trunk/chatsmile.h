@@ -36,8 +36,8 @@ public:
 	CChatSmileList();
 	virtual ~CChatSmileList();
 
-	CChatSmile* addSmile( const std::string& str );
-	CChatSmile* addSmile( const CChatSmile::Type type );
+	CChatSmile* addSmile( const std::string& str, CWnd* parent );
+	CChatSmile* addSmile( const CChatSmile::Type type, CWnd* parent );
 	CChatSmile::Type getType( std::string str );
 	CChatSmile* operator[] ( const int index ) const { return list[index]; }
 	int count() const                                { return list.size(); }

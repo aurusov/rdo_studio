@@ -115,6 +115,8 @@ std::string CChatNetServer::getToolTipInfo() const
 {
 	if ( !ip.empty() ) {
 		return format( IDS_IP_VALUE, ip.c_str() );
+	} else {
+		return format( IDS_IP_UNKNOW );
 	}
 	return "";
 }

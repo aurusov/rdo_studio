@@ -1,7 +1,5 @@
 #include "stdafx.h"
 #include "chatsmile.h"
-#include "chatapp.h"
-#include "chatmainfrm.h"
 #include "resource.h"
 
 #ifdef _DEBUG
@@ -103,17 +101,16 @@ CChatSmile::Type CChatSmileList::getType( std::string str )
 	return CChatSmile::none;
 }
 
-CChatSmile* CChatSmileList::addSmile( const std::string& str )
+CChatSmile* CChatSmileList::addSmile( const std::string& str, CWnd* parent )
 {
 	CChatSmile::Type type = getType( str );
 	if ( type != CChatSmile::none ) {
-		return addSmile( type );
+		return addSmile( type, parent );
 	}
 	return NULL;
 }
 
-
-CChatSmile* CChatSmileList::addSmile( const CChatSmile::Type type )
+CChatSmile* CChatSmileList::addSmile( const CChatSmile::Type type, CWnd* parent )
 {
 	CChatSmile* smile = new CChatSmile;
 	smile->type = type;
@@ -179,7 +176,7 @@ CChatSmile* CChatSmileList::addSmile( const CChatSmile::Type type )
 		default                  : res = -1; break;
 	}
 	if ( res != -1 ) {
-		smile->Create( "", WS_CHILD | WS_VISIBLE, CRect( 0, 0, 1, 1 ), &chatApp.mainFrame->childView.viewer );
+		smile->Create( "", WS_CHILD | WS_VISIBLE, CRect( 0, 0, 1, 1 ), parent );
 		if ( smile->Load( MAKEINTRESOURCE( res ), _T("GIF") ) ) {
 			smile->Draw();
 		}
