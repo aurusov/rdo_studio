@@ -60,6 +60,7 @@ RDOHotKeyToolkit::RDOHotKeyToolkit()
 	keys.insert(map<string, int>::value_type("NUMPAD7", VK_NUMPAD7));
 	keys.insert(map<string, int>::value_type("NUMPAD8", VK_NUMPAD8));
 	keys.insert(map<string, int>::value_type("NUMPAD9", VK_NUMPAD9));
+	keys.insert(map<string, int>::value_type("NOKEY", -1));
 
 
 	for(char i = '0'; i <= '9'; i++)
