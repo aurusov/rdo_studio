@@ -252,7 +252,7 @@ void RDOStudioModel::endExecuteModelNotify()
 
 	plugins->pluginProc( rdoPlugin::PM_MODEL_FINISHED );
 
-	studioApp.autoClose();
+	studioApp.autoClose( 0 );
 }
 
 void RDOStudioModel::stopModelNotify()
@@ -265,7 +265,7 @@ void RDOStudioModel::stopModelNotify()
 
 	plugins->pluginProc( rdoPlugin::PM_MODEL_STOP_CANCEL );
 
-	studioApp.autoClose();
+	studioApp.autoClose( 3 );
 }
 
 void RDOStudioModel::stopModelFromSimulator()
@@ -310,7 +310,7 @@ void RDOStudioModel::parseErrorNotify()
 
 	plugins->pluginProc( rdoPlugin::PM_MODEL_BUILD_FAILD );
 
-	studioApp.autoClose();
+	studioApp.autoClose( 1 );
 }
 
 void RDOStudioModel::executeErrorNotify()
@@ -332,7 +332,7 @@ void RDOStudioModel::executeErrorNotify()
 
 	plugins->pluginProc( rdoPlugin::PM_MODEL_STOP_RUNTIME_ERROR );
 
-	studioApp.autoClose();
+	studioApp.autoClose( 2 );
 }
 
 void RDOStudioModel::showFrameNotify()

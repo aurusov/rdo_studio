@@ -41,6 +41,7 @@ private:
 
 	bool autoRun;
 	bool autoExit;
+	int  exitCode;
 	std::string openModelName;
 
 public:
@@ -62,7 +63,7 @@ public:
 	std::string getLastProjectName() const            { return lastProjectName;              }
 	void setLastProjectName( const std::string& projectName );
 
-	void autoClose();
+	void autoClose( const int exitCode );
 
 	static std::string getFullFileName();
 	static std::string extractFilePath( const std::string& fileName );

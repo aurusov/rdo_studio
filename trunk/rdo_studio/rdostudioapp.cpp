@@ -96,6 +96,8 @@ void RDOStudioCommandLineInfo::ParseParam( LPCTSTR lpszParam, BOOL bFlag, BOOL b
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioApp
 // ----------------------------------------------------------------------------
+static const int RDOSTUDIO_AUTOEXIT_MESSAGE = ::RegisterWindowMessage( "RDOSTUDIO_AUTOEXIT_MESSAGE" );
+
 RDOStudioApp studioApp;
 
 BEGIN_MESSAGE_MAP(RDOStudioApp, CWinApp)
@@ -132,6 +134,7 @@ RDOStudioApp::RDOStudioApp():
 	lastProjectName( "" ),
 	autoRun( false ),
 	autoExit( false ),
+	exitCode( 0 ),
 	openModelName( "" )
 {
 }
@@ -260,13 +263,15 @@ bool RDOStudioApp::shortToLongPath( const std::string& shortPath, std::string& l
 
 int RDOStudioApp::ExitInstance()
 {
-	HtmlHelp( NULL, NULL, HH_CLOSE_ALL, 0 );
-
-	if( tracer ) delete tracer;
-
-	WriteProfileString( "general", "lastProject", getOpenLastProject() ? lastProjectName.c_str() : "" );
-
-	return CWinApp::ExitInstance();
+	if ( autoExit ) {
+		CWinApp::ExitInstance();
+		return exitCode;
+	} else {
+		HtmlHelp( NULL, NULL, HH_CLOSE_ALL, 0 );
+		if ( tracer ) delete tracer;
+		WriteProfileString( "general", "lastProject", getOpenLastProject() ? lastProjectName.c_str() : "" );
+		return CWinApp::ExitInstance();
+	}
 }
 
 void RDOStudioApp::OnFileNew() 
@@ -698,11 +703,26 @@ void RDOStudioApp::OnAppAbout()
 	dlg.DoModal();
 }
 
-void RDOStudioApp::autoClose()
+void RDOStudioApp::autoClose( const int _exitCode )
 {
 	if ( autoExit ) {
+		AfxGetApp()->PostThreadMessage( RDOSTUDIO_AUTOEXIT_MESSAGE, _exitCode, 0 );
+	}
+}
+
+BOOL RDOStudioApp::PreTranslateMessage( MSG* pMsg ) 
+{
+	if ( pMsg->message == PLUGIN_MUSTEXIT_MESSAGE ) {
+		plugins->stopPlugin( reinterpret_cast<HMODULE>(pMsg->wParam) );
+	} else if ( pMsg->message == PLUGIN_STARTMODEL_MESSAGE ) {
+		plugins->modelStart();
+	} else if ( pMsg->message == PLUGIN_STOPMODEL_MESSAGE ) {
+		plugins->modelStop();
+	} else if ( pMsg->message == RDOSTUDIO_AUTOEXIT_MESSAGE ) {
+		exitCode = pMsg->wParam;
 		mainFrame->SendMessage( WM_CLOSE );
 	}
+	return CWinApp::PreTranslateMessage(pMsg);
 }
 
 // ----------------------------------------------------------------------------
@@ -778,16 +798,4 @@ void RDOAboutDlg::OnAboutWeb()
 	CString s;
 	m_web.GetWindowText( s );
 	::ShellExecute( m_hWnd, "open", s, 0, 0, SW_SHOWNORMAL );
-}
-
-BOOL RDOStudioApp::PreTranslateMessage( MSG* pMsg ) 
-{
-	if ( pMsg->message == PLUGIN_MUSTEXIT_MESSAGE ) {
-		plugins->stopPlugin( reinterpret_cast<HMODULE>(pMsg->wParam) );
-	} else if ( pMsg->message == PLUGIN_STARTMODEL_MESSAGE ) {
-		plugins->modelStart();
-	} else if ( pMsg->message == PLUGIN_STOPMODEL_MESSAGE ) {
-		plugins->modelStop();
-	}
-	return CWinApp::PreTranslateMessage(pMsg);
 }
