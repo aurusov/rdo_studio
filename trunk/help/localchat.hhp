@@ -1,0 +1,14 @@
+[OPTIONS]
+Compatibility=1.1 or later
+Compiled file=localchat.chm
+Default topic=html\forum.htm
+Display compile progress=No
+Language=0x419 Русский
+Title=Смайлики
+
+
+[FILES]
+html\forum.htm
+
+[INFOTYPES]
+
