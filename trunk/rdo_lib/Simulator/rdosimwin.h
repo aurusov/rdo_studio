@@ -41,6 +41,8 @@ class RdoSimulator
 	void closeModel(); 
 	bool parseModel();
 public:
+	typedef enum { NONE, PAT, RTP, RSS, OPR, FRM, FUN, DPT, SMR, PMD } RDOFileType;
+
 	RdoSimulator();
 	~RdoSimulator();
 	void runModel();

@@ -168,7 +168,7 @@ void RDOStudioModel::newModelFromRepository()
 						case RDOEDIT_SMR: resID = ID_INSERT_SMR_SMR; break;
 					}
 					if ( resID != - 1 ) {
-						string s = studioApp.sprintf( resID );
+						string s = format( resID );
 						if ( !s.empty() ) {
 							int incPos = -1;
 							switch ( resID ) {
@@ -273,7 +273,7 @@ bool RDOStudioModel::canCloseModel()
 {
 	bool flag = true;
 	if ( isModify() && closeWithDocDelete ) {
-		int res = AfxGetMainWnd()->MessageBox( studioApp.sprintf( ID_MSG_MODELSAVE_QUERY ).c_str(), NULL, MB_ICONQUESTION | MB_YESNOCANCEL );
+		int res = AfxGetMainWnd()->MessageBox( format( ID_MSG_MODELSAVE_QUERY ).c_str(), NULL, MB_ICONQUESTION | MB_YESNOCANCEL );
 		switch ( res ) {
 			case IDYES   : flag = true; break;
 			case IDNO    : flag = true; break;
@@ -290,7 +290,7 @@ bool RDOStudioModel::canCloseDocument()
 {
 	bool flag = true;
 	if ( isModify() ) {
-		int res = AfxGetMainWnd()->MessageBox( studioApp.sprintf( ID_MSG_MODELSAVE_QUERY ).c_str(), NULL, MB_ICONQUESTION | MB_YESNOCANCEL );
+		int res = AfxGetMainWnd()->MessageBox( format( ID_MSG_MODELSAVE_QUERY ).c_str(), NULL, MB_ICONQUESTION | MB_YESNOCANCEL );
 		switch ( res ) {
 			case IDYES   : flag = saveModel(); break;
 			case IDNO    : flag = true; break;
@@ -321,7 +321,7 @@ void RDOStudioModel::closeModelFromRepository()
 void RDOStudioModel::canNotCloseModelFromRepository() const
 {
 	if ( !canNotCloseByModel ) {
-		AfxMessageBox( studioApp.sprintf( ID_MSG_MODELCLOSE_ERROR ).c_str(), MB_ICONSTOP | MB_OK );
+		AfxMessageBox( format( ID_MSG_MODELCLOSE_ERROR ).c_str(), MB_ICONSTOP | MB_OK );
 	}
 }
 

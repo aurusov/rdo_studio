@@ -145,9 +145,7 @@ RDOEditorSciEditTheme RDOEditorSciEditTheme::getDefaultTheme()
 
 string RDOEditorSciEditTheme::colorToHEX( const COLORREF color )
 {
-	CString s;
-	s.Format( "#%02X%02X%02X", GetRValue( color ), GetGValue( color ), GetBValue( color ) );
-	return s;
+	return format( "#%02X%02X%02X", GetRValue( color ), GetGValue( color ), GetBValue( color ) );
 }
 
 // ----------------------------------------------------------------------------
@@ -194,7 +192,7 @@ bool RDOEditorSciEditFont::operator !=( const RDOEditorSciEditFont& font ) const
 void RDOEditorSciEditFont::load( string regPath )
 {
 	regPath += "font";
-	name         = AfxGetApp()->GetProfileString( regPath.c_str(), "name", name );
+	name         = AfxGetApp()->GetProfileString( regPath.c_str(), "name", name.c_str() );
 	size         = AfxGetApp()->GetProfileInt( regPath.c_str(), "size", size );
 	codepage     = AfxGetApp()->GetProfileInt( regPath.c_str(), "codepage", codepage );
 	characterSet = AfxGetApp()->GetProfileInt( regPath.c_str(), "characterSet", characterSet );
@@ -203,7 +201,7 @@ void RDOEditorSciEditFont::load( string regPath )
 void RDOEditorSciEditFont::save( string regPath ) const
 {
 	regPath += "font";
-	AfxGetApp()->WriteProfileString( regPath.c_str(), "name", name );
+	AfxGetApp()->WriteProfileString( regPath.c_str(), "name", name.c_str() );
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "size", size );
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "codepage", codepage );
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "characterSet", characterSet );

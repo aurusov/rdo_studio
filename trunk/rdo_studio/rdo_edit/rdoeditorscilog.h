@@ -5,6 +5,8 @@
 #include "rdoeditorsciedit.h"
 #include "rdoeditorscilogstyle.h"
 
+#include <rdosimwin.h>
+
 #include <list>
 
 using namespace std;
@@ -16,16 +18,13 @@ namespace rdoEditor {
 // ----------------------------------------------------------------------------
 class RDOEditorSciLogLineInfo
 {
-public:
-	typedef enum { NONE, PAT, RTP, RSS, OPR, FRM, FUN, DPT, SMR, PMD } RDOFileType;
-
 private:
-	RDOFileType fileType;
+	RdoSimulator::RDOFileType fileType;
 	int         lineNumber;
 	string      message;
 
 public:
-	RDOEditorSciLogLineInfo( const string& _message, const RDOFileType _fileType = NONE, const int _lineNumber = -1 );
+	RDOEditorSciLogLineInfo( const string& _message, const RdoSimulator::RDOFileType _fileType = RdoSimulator::NONE, const int _lineNumber = -1 );
 	~RDOEditorSciLogLineInfo();
 
 	string getMessage() const;

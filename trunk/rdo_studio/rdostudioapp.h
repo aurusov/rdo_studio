@@ -42,8 +42,6 @@ public:
 
 	static void appendMenu( CMenu* from, const int from_index, CMenu* to );
 	static void eraseMenu( CMenu* from, const int from_index = -1 );
-	static string sprintf( const char* str, ... );
-	static string sprintf( UINT resource, ... );
 
 	//{{AFX_VIRTUAL(RDOStudioApp)
 	public:

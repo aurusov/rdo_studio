@@ -28,6 +28,9 @@
 #include "sizecbar/sizecbar.h"
 #include "sizecbar/scbarg.h"
 
+std::string format( const char* str, ... );
+std::string format( UINT resource, ... );
+
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 

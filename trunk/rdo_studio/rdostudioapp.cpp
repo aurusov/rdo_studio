@@ -13,9 +13,6 @@
 #include <rdokernel.h>
 #include <rdorepository.h>
 
-#include <stdio.h>
-#include <stdarg.h>
-
 using namespace rdoRepository;
 
 #ifdef _DEBUG
@@ -365,7 +362,7 @@ void RDOStudioApp::updateReopenSubMenu() const
 				case 8: id = ID_FILE_REOPEN_9; break;
 				case 9: id = ID_FILE_REOPEN_10; break;
 			}
-			reopenMenu->AppendMenu( MF_STRING, id, sprintf( "%d. %s", i+1, reopenList[i].c_str() ).c_str() );
+			reopenMenu->AppendMenu( MF_STRING, id, format( "%d. %s", i+1, reopenList[i].c_str() ).c_str() );
 		}
 	} else {
 		AfxGetMainWnd()->GetMenu()->GetSubMenu( delta )->EnableMenuItem( 2, MF_BYPOSITION | MF_DISABLED | MF_GRAYED );
@@ -380,9 +377,9 @@ void RDOStudioApp::loadReopen()
 	for ( int i = 0; i < 10; i++ ) {
 		string sec;
 		if ( i+1 < 10 ) {
-			sec = sprintf( "0%d", i+1 );
+			sec = format( "0%d", i+1 );
 		} else {
-			sec = sprintf( "%d", i+1 );
+			sec = format( "%d", i+1 );
 		}
 		TRY {
 			string s = AfxGetApp()->GetProfileString( "reopen", sec.c_str(), "" );
@@ -400,9 +397,9 @@ void RDOStudioApp::saveReopen() const
 	for ( int i = 0; i < 10; i++ ) {
 		string sec;
 		if ( i+1 < 10 ) {
-			sec = sprintf( "0%d", i+1 );
+			sec = format( "0%d", i+1 );
 		} else {
-			sec = sprintf( "%d", i+1 );
+			sec = format( "%d", i+1 );
 		}
 		string s;
 		if ( i < reopenList.size() ) {
@@ -436,44 +433,4 @@ void RDOStudioApp::OnUpdateRdoRun(CCmdUI* pCmdUI)
 void RDOStudioApp::OnUpdateRdoStop(CCmdUI* pCmdUI) 
 {
 	pCmdUI->Enable( model && model->isRunning() );
-}
-
-string RDOStudioApp::sprintf( const char* str, ... )
-{
-	vector< char > s;
-	s.resize( 256 );
-	va_list paramList;
-	int size = -1;
-	while ( size == -1 ) {
-		va_start( paramList, str );
-		size = _vsnprintf( s.begin(), s.size(), str, paramList );
-		va_end( paramList );
-		if ( size == -1 ) {
-			s.resize( s.size() + 256 );
-		}
-	}
-	s.resize( size );
-	return string( s.begin(), s.end() );
-}
-
-string RDOStudioApp::sprintf( UINT resource, ... )
-{
-	CString str;
-	if ( str.LoadString( resource ) ) {
-		vector< char > s;
-		s.resize( 256 );
-		va_list paramList;
-		int size = -1;
-		while ( size == -1 ) {
-			va_start( paramList, resource );
-			size = _vsnprintf( s.begin(), s.size(), (LPCTSTR)str, paramList );
-			va_end( paramList );
-			if ( size == -1 ) {
-				s.resize( s.size() + 256 );
-			}
-		}
-		s.resize( size );
-		return string( s.begin(), s.end() );
-	}
-	return "";
 }

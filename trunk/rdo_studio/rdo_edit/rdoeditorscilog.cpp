@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "rdoeditorscilog.h"
-#include "../rdostudioapp.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -40,7 +39,7 @@ string RDOEditorSciLogLineInfo::getMessage() const
 	if ( file.empty() || lineNumber == -1 ) {
 		return message;
 	} else {
-		return studioApp.sprintf( "%s (%d): %s", file.c_str(), lineNumber, message.c_str() );
+		return format( "%s (%d): %s", file.c_str(), lineNumber, message.c_str() );
 	}
 }
 

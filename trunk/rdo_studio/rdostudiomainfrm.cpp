@@ -61,14 +61,14 @@ int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	projectToolBar.CreateEx( this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
 	projectToolBar.LoadToolBar( IDR_PROJECTTOOLBAR );
-	projectToolBar.GetToolBarCtrl().SetWindowText( studioApp.sprintf( IDR_PROJECTTOOLBAR ).c_str() );
+	projectToolBar.GetToolBarCtrl().SetWindowText( format( IDR_PROJECTTOOLBAR ).c_str() );
 
 	projectToolBarImageList.Create( IDB_PROJECTTOOLBAR_D, 16, 0, 0xFF00FF );
 	projectToolBar.GetToolBarCtrl().SetDisabledImageList( &projectToolBarImageList );
 
 	editToolBar.CreateEx( this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
 	editToolBar.LoadToolBar( IDR_EDITTOOLBAR );
-	editToolBar.GetToolBarCtrl().SetWindowText( studioApp.sprintf( IDR_EDITTOOLBAR ).c_str() );
+	editToolBar.GetToolBarCtrl().SetWindowText( format( IDR_EDITTOOLBAR ).c_str() );
 
 	editToolBarImageList.Create( IDB_EDITTOOLBAR_D, 16, 0, 0xFF00FF );
 	editToolBar.GetToolBarCtrl().SetDisabledImageList( &editToolBarImageList );
@@ -81,10 +81,10 @@ int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	statusBar.SetPaneInfo( 3, ID_MODELTIMESTATUSBAR      , SBPS_NORMAL , 100 );
 	statusBar.SetPaneInfo( 4, ID_MODELRUNTYPESTATUSBAR   , SBPS_STRETCH, 70 );
 
-	workspace.Create( studioApp.sprintf( ID_DOCK_WORKSPACE ).c_str(), this, -1 );
+	workspace.Create( format( ID_DOCK_WORKSPACE ).c_str(), this, -1 );
 	workspace.SetBarStyle( workspace.GetBarStyle() | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
 
-	output.Create( studioApp.sprintf( ID_DOCK_OUTPUT ).c_str(), this, -1 );
+	output.Create( format( ID_DOCK_OUTPUT ).c_str(), this, -1 );
 	output.SetBarStyle( output.GetBarStyle() | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
 
 	projectToolBar.EnableDocking( CBRS_ALIGN_ANY );
@@ -209,7 +209,7 @@ void RDOStudioMainFrame::OnUpdateCoordStatusBar( CCmdUI *pCmdUI )
 			if ( edit ) {
 				int x = edit->getCurrentColumnNumber() + 1;
 				int y = edit->getCurrentLineNumber() + 1;
-				str = studioApp.sprintf( "%d: %d", x, y );
+				str = format( "%d: %d", x, y );
 			}
 		}
 	}
@@ -227,9 +227,9 @@ void RDOStudioMainFrame::OnUpdateModifyStatusBar( CCmdUI *pCmdUI )
 			RDOEditorEdit* edit = view->getEdit();
 			if ( edit ) {
 				if ( edit->isReadOnly() ) {
-					str = studioApp.sprintf( ID_STATUSBAR_READONLY );
+					str = format( ID_STATUSBAR_READONLY );
 				} else if ( edit->isModify() ) {
-					str = studioApp.sprintf( ID_STATUSBAR_MODIFIED );
+					str = format( ID_STATUSBAR_MODIFIED );
 				}
 			}
 		}
@@ -247,7 +247,7 @@ void RDOStudioMainFrame::OnUpdateInsertOverwriteStatusBar( CCmdUI *pCmdUI )
 		if ( view ) {
 			RDOEditorEdit* edit = view->getEdit();
 			if ( edit && edit->isOverwrite() ) {
-				str = studioApp.sprintf( ID_STATUSBAR_OVERWRITE );
+				str = format( ID_STATUSBAR_OVERWRITE );
 			}
 		}
 	}

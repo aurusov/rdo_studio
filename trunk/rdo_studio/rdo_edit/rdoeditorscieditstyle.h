@@ -91,10 +91,10 @@ public:
 	virtual void load( string regPath );
 	virtual void save( string regPath ) const;
 
-	CString name;
-	int     size;
-	int     codepage;
-	int     characterSet;
+	string name;
+	int    size;
+	int    codepage;
+	int    characterSet;
 };
 
 // ----------------------------------------------------------------------------

@@ -3,7 +3,6 @@
 #include "sci/SciLexer.h"
 #include "sci/PropSet.h"
 #include "sci/Scintilla.h"
-#include "../rdostudioapp.h"
 #include "../resource.h"
 
 #ifdef _DEBUG
@@ -302,7 +301,7 @@ void RDOEditorSciEdit::setEditorStyle( RDOEditorSciEditStyle* _style )
 
 	// ----------
 	// Font Name
-	sendEditorString( SCI_STYLESETFONT, STYLE_DEFAULT, style->font->name );
+	sendEditorString( SCI_STYLESETFONT, STYLE_DEFAULT, style->font->name.c_str() );
 
 	// ----------
 	// Font Size
@@ -694,7 +693,7 @@ void RDOEditorSciEdit::findNext( string& findWhat, const bool searchDown, const 
 	if ( posFind == -1 ) {
 		firstFoundPos = -1;
 		bHaveFound    = false;
-		MessageBox( studioApp.sprintf( ID_MSG_CANTFIND, findWhat.c_str() ).c_str(), NULL, MB_OK | MB_ICONWARNING );
+		MessageBox( format( ID_MSG_CANTFIND, findWhat.c_str() ).c_str(), NULL, MB_OK | MB_ICONWARNING );
 		SetFocus();
 	} else {
 		if ( firstFoundPos == -1 ) {
@@ -702,7 +701,7 @@ void RDOEditorSciEdit::findNext( string& findWhat, const bool searchDown, const 
 		} else if ( posFind == firstFoundPos ) {
 			firstFoundPos = -1;
 			bHaveFound    = false;
-			MessageBox( studioApp.sprintf( ID_MSG_CANTFIND, findWhat.c_str() ).c_str(), NULL, MB_OK | MB_ICONWARNING );
+			MessageBox( format( ID_MSG_CANTFIND, findWhat.c_str() ).c_str(), NULL, MB_OK | MB_ICONWARNING );
 			SetFocus();
 			return;
 		}
@@ -762,7 +761,7 @@ void RDOEditorSciEdit::replaceAll( string& findWhat, string& replaceWhat, const 
 		setSelection( lastMatch, lastMatch );
 		sendEditor( SCI_ENDUNDOACTION );
 	} else {
-		MessageBox( studioApp.sprintf( ID_MSG_CANTFIND, findWhat.c_str() ).c_str(), NULL, MB_OK | MB_ICONWARNING );
+		MessageBox( format( ID_MSG_CANTFIND, findWhat.c_str() ).c_str(), NULL, MB_OK | MB_ICONWARNING );
 		SetFocus();
 	}
 }
@@ -1010,16 +1009,14 @@ void RDOEditorSciEdit::saveAsRTF( CFile& file, int start, int end ) const
 	int colorCount = 1;
 	int i;
 
-	CString str;
-	CString saveStr;
+	string saveStr;
 
 	saveStr = "";
 	saveStr += RTF_HEADEROPEN;
 	saveStr += RTF_FONTDEFOPEN;
 
-	strncpy( *fonts, style->font->name, MAX_FONTDEF );
-	str.Format( RTF_FONTDEF, 0, style->font->characterSet, style->font->name );
-	saveStr += str;
+	strncpy( *fonts, style->font->name.c_str(), MAX_FONTDEF );
+	saveStr += format( RTF_FONTDEF, 0, style->font->characterSet, style->font->name.c_str() );
 	strncpy( *colors, "#000000", MAX_COLORDEF );
 
 	for ( int istyle = 0; istyle <= STYLE_DEFAULT; istyle++ ) {
@@ -1043,12 +1040,10 @@ void RDOEditorSciEdit::saveAsRTF( CFile& file, int start, int end ) const
 	saveStr += RTF_COLORDEFOPEN;
 
 	for ( i = 0; i < colorCount; i++ ) {
-		str.Format( RTF_COLORDEF, GetHexByte(colors[i] + 1), GetHexByte(colors[i] + 3), GetHexByte(colors[i] + 5) );
-		saveStr += str;
+		saveStr += format( RTF_COLORDEF, GetHexByte(colors[i] + 1), GetHexByte(colors[i] + 3), GetHexByte(colors[i] + 5) );
 	}
 
-	str.Format( RTF_COLORDEFCLOSE RTF_HEADERCLOSE RTF_BODYOPEN RTF_SETFONTFACE "0" RTF_SETFONTSIZE "%d" RTF_SETCOLOR "0 ", style->font->size * 2 );
-	saveStr += str;
+	saveStr += format( RTF_COLORDEFCLOSE RTF_HEADERCLOSE RTF_BODYOPEN RTF_SETFONTFACE "0" RTF_SETFONTSIZE "%d" RTF_SETCOLOR "0 ", style->font->size * 2 );
 
 	sprintf( lastStyle, RTF_SETFONTFACE "0" RTF_SETFONTSIZE "%d" RTF_SETCOLOR "0" RTF_SETBACKGROUND "0" RTF_BOLD_OFF RTF_ITALIC_OFF, style->font->size * 2 );
 
@@ -1075,7 +1070,7 @@ void RDOEditorSciEdit::saveAsRTF( CFile& file, int start, int end ) const
 	}
 	saveStr += RTF_BODYCLOSE;
 
-	file.Write( saveStr, saveStr.GetLength() );
+	file.Write( saveStr.c_str(), saveStr.length() );
 }
 
 void RDOEditorSciEdit::expand( int& line, bool doExpand, bool force, int visLevels, int level ) const

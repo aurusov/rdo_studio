@@ -3,7 +3,6 @@
 #include "sci/SciLexer.h"
 #include "sci/LexRdo.h"
 #include "sci/PropSet.h"
-#include "../rdostudioapp.h"
 #include "../rdostudioeditbaseview.h"
 #include "../resource.h"
 //#include "../Htmlhelp.h"
@@ -252,15 +251,15 @@ void RDOEditorEdit::setEditorStyle( RDOEditorSciEditStyle* style )
 
 	// ----------
 	// Font Name
-	sendEditorString( SCI_STYLESETFONT, SCE_RDO_DEFAULT, style->font->name );
-	sendEditorString( SCI_STYLESETFONT, SCE_RDO_IDENTIFIER, style->font->name );
-	sendEditorString( SCI_STYLESETFONT, SCE_RDO_KEYWORD, style->font->name );
-	sendEditorString( SCI_STYLESETFONT, SCE_RDO_FUNCTION, style->font->name );
-	sendEditorString( SCI_STYLESETFONT, SCE_RDO_TRACE, style->font->name );
-	sendEditorString( SCI_STYLESETFONT, SCE_RDO_COMMENT, style->font->name );
-	sendEditorString( SCI_STYLESETFONT, SCE_RDO_NUMBER, style->font->name );
-	sendEditorString( SCI_STYLESETFONT, SCE_RDO_STRING, style->font->name );
-	sendEditorString( SCI_STYLESETFONT, SCE_RDO_OPERATOR, style->font->name );
+	sendEditorString( SCI_STYLESETFONT, SCE_RDO_DEFAULT, style->font->name.c_str() );
+	sendEditorString( SCI_STYLESETFONT, SCE_RDO_IDENTIFIER, style->font->name.c_str() );
+	sendEditorString( SCI_STYLESETFONT, SCE_RDO_KEYWORD, style->font->name.c_str() );
+	sendEditorString( SCI_STYLESETFONT, SCE_RDO_FUNCTION, style->font->name.c_str() );
+	sendEditorString( SCI_STYLESETFONT, SCE_RDO_TRACE, style->font->name.c_str() );
+	sendEditorString( SCI_STYLESETFONT, SCE_RDO_COMMENT, style->font->name.c_str() );
+	sendEditorString( SCI_STYLESETFONT, SCE_RDO_NUMBER, style->font->name.c_str() );
+	sendEditorString( SCI_STYLESETFONT, SCE_RDO_STRING, style->font->name.c_str() );
+	sendEditorString( SCI_STYLESETFONT, SCE_RDO_OPERATOR, style->font->name.c_str() );
 
 	// ----------
 	// Font Size
@@ -641,7 +640,7 @@ void RDOEditorEdit::onBufferEdit( const int bufIndex )
 	string bufName;
 	string bufValue;
 
-	bufName = studioApp.sprintf( ID_BUFFER_NAME );
+	bufName = format( ID_BUFFER_NAME );
 
 	switch ( bufIndex ) {
 		case 1: bufName += " 1:"; bufValue = view->buf1; break;
