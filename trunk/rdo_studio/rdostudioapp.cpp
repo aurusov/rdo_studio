@@ -504,7 +504,7 @@ void RDOStudioApp::OnUpdateModelRun(CCmdUI* pCmdUI)
 
 void RDOStudioApp::OnUpdateModelStop(CCmdUI* pCmdUI) 
 {
-	pCmdUI->Enable( model && model->getModelDoc() && model->isRunning() );
+	pCmdUI->Enable( model && model->isRunning() );
 }
 
 string RDOStudioApp::getFullFileName()

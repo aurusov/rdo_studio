@@ -20,19 +20,15 @@ void getPluginInfo( rdoPlugin::PluginInfo* info )
 	static char* version_info = "";
 	static char* description  = "some info about plugin";
 	info->name = name;
-	info->version_major = 1;
-	info->version_minor = 0;
-	info->version_build = 1;
-	info->version_info  = version_info;
-	info->description   = description;
+	info->version_major  = 1;
+	info->version_minor  = 0;
+	info->version_build  = 1;
+	info->version_info   = version_info;
+	info->description    = description;
+	info->defaultRunMode = rdoPlugin::prmNoAuto;
 }
 
-rdoPlugin::PluginRunMode getPluginRunMode()
-{
-	return rdoPlugin::prmNoAuto;
-}
-
-bool startPlugin()
+bool startPlugin( const rdoPlugin::Studio* studio )
 {
 	return true;
 }

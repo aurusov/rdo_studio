@@ -9,32 +9,42 @@
 
 namespace rdoPlugin {
 
+enum PluginState   { psStoped, psActive };
+enum PluginRunMode { prmNoAuto, prmStudioStartUp, prmModelStartUp };
+
 struct PluginInfo {
-	int structSize;
 	const char* name;
 	int version_major;
 	int version_minor;
 	int version_build;
 	const char* version_info;
 	const char* description;
+	PluginRunMode defaultRunMode;
 };
 
-enum PluginState   { psStoped, psActive };
-enum PluginRunMode { prmNoAuto, prmStudioStartUp, prmModelStartUp };
+typedef void (*PFunRunModel)();
+typedef bool (*PFunIsModelRunning)();
+
+class Studio {
+public:
+	Studio(): runModel( NULL ) {};
+	virtual ~Studio() {};
+
+	PFunRunModel       runModel;
+	PFunIsModelRunning isModelRunning;
+};
 
 static const int PLUGIN_MUSTEXIT_MESSAGE = ::RegisterWindowMessage( "PLUGIN_MUSTEXIT_MESSAGE" );
 
 typedef void (*PFunGetPluginInfo)( PluginInfo* );
-typedef PluginRunMode (*PFunGetPluginRunMode)();
-typedef bool (*PFunStartPlugin)();
+typedef bool (*PFunStartPlugin)( const Studio* studio );
 typedef void (*PFunStopPlugin)();
 
 };
 
 extern "C" {
 	RDOPLUGIN_DLL void getPluginInfo( rdoPlugin::PluginInfo* info );
-	RDOPLUGIN_DLL rdoPlugin::PluginRunMode getPluginRunMode();
-	RDOPLUGIN_DLL bool startPlugin();
+	RDOPLUGIN_DLL bool startPlugin( const rdoPlugin::Studio* studio );
 	RDOPLUGIN_DLL void stopPlugin();
 }
 

@@ -27,6 +27,7 @@ private:
 	std::string description;
 	rdoPlugin::PluginState state;
 	bool restoreState;
+	rdoPlugin::PluginRunMode defaultRunMode;
 	rdoPlugin::PluginRunMode runMode;
 
 	std::string getProfilePath() const;
@@ -54,7 +55,7 @@ public:
 
 	rdoPlugin::PluginRunMode getRunMode() const { return runMode; }
 	void setRunMode( const rdoPlugin::PluginRunMode value );
-	rdoPlugin::PluginRunMode getDefaultRunMode() const;
+	rdoPlugin::PluginRunMode getDefaultRunMode() const { return defaultRunMode; }
 };
 
 // ----------------------------------------------------------------------------
@@ -71,6 +72,11 @@ private:
 
 	void init();
 
+	rdoPlugin::Studio studio;
+
+	static void runModel();
+	static bool isModelRunning();
+
 	static void modelStartNotify();
 	static void modelStopNotify();
 
@@ -84,6 +90,8 @@ public:
 	void modelStop();
 
 	void stopPlugin( const HMODULE lib ) const;
+
+	rdoPlugin::Studio* getStudio() { return &studio; }
 
 	static int comparePluginsByName( const RDOStudioPlugin* plugin1, const RDOStudioPlugin* plugin2 );
 	static int comparePluginsByVersion( const RDOStudioPlugin* plugin1, const RDOStudioPlugin* plugin2 );

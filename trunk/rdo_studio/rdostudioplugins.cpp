@@ -25,6 +25,7 @@ RDOStudioPlugin::RDOStudioPlugin( const std::string& _modulName ):
 	description( "" ),
 	state( rdoPlugin::psStoped ),
 	restoreState( true ),
+	defaultRunMode( rdoPlugin::prmNoAuto ),
 	runMode( rdoPlugin::prmNoAuto )
 {
 	lib = ::LoadLibrary( modulName.c_str() );
@@ -33,12 +34,13 @@ RDOStudioPlugin::RDOStudioPlugin( const std::string& _modulName ):
 		if ( getPluginInfo ) {
 			rdoPlugin::PluginInfo info;
 			getPluginInfo( &info );
-			name          = info.name;
-			version_major = info.version_major;
-			version_minor = info.version_minor;
-			version_build = info.version_build;
-			version_info  = info.version_info;
-			description   = info.description;
+			name           = info.name;
+			version_major  = info.version_major;
+			version_minor  = info.version_minor;
+			version_build  = info.version_build;
+			version_info   = info.version_info;
+			description    = info.description;
+			defaultRunMode = info.defaultRunMode;
 		}
 		runMode = getDefaultRunMode();
 	}
@@ -93,7 +95,7 @@ void RDOStudioPlugin::setState( const rdoPlugin::PluginState value )
 			}
 			if ( state == rdoPlugin::psActive ) {
 				rdoPlugin::PFunStartPlugin startPlugin = reinterpret_cast<rdoPlugin::PFunStartPlugin>(::GetProcAddress( lib, "startPlugin" ));
-				if ( !startPlugin || !startPlugin() ) {
+				if ( !startPlugin || !startPlugin( plugins->getStudio() ) ) {
 					state = rdoPlugin::psStoped;
 				}
 			}
@@ -127,34 +129,11 @@ void RDOStudioPlugin::setRunMode( const rdoPlugin::PluginRunMode value )
 {
 	if ( runMode != value ) {
 		runMode = value;
-		if ( runMode == rdoPlugin::prmModelStartUp && model ) {
-			setState( model->isRunning() ? rdoPlugin::psActive : rdoPlugin::psStoped );
-		} else if ( runMode == rdoPlugin::prmStudioStartUp ) {
-			setState( rdoPlugin::psActive );
+		if ( runMode == rdoPlugin::prmModelStartUp && model && !model->isRunning() ) {
+			setState( rdoPlugin::psStoped );
 		}
 		AfxGetApp()->WriteProfileInt( getProfilePath().c_str(), "runMode", runMode );
 	}
-}
-
-rdoPlugin::PluginRunMode RDOStudioPlugin::getDefaultRunMode() const
-{
-	rdoPlugin::PluginRunMode defaultRunMode = rdoPlugin::prmNoAuto;
-	if ( !lib ) {
-		HMODULE local_lib = ::LoadLibrary( modulName.c_str() );
-		if ( local_lib ) {
-			rdoPlugin::PFunGetPluginRunMode getPluginRunMode = reinterpret_cast<rdoPlugin::PFunGetPluginRunMode>(::GetProcAddress( local_lib, "getPluginRunMode" ));
-			if ( getPluginRunMode ) {
-				defaultRunMode = getPluginRunMode();
-			}
-			::FreeLibrary( local_lib );
-		}
-	} else {
-		rdoPlugin::PFunGetPluginRunMode getPluginRunMode = reinterpret_cast<rdoPlugin::PFunGetPluginRunMode>(::GetProcAddress( lib, "getPluginRunMode" ));
-		if ( getPluginRunMode ) {
-			defaultRunMode = getPluginRunMode();
-		}
-	}
-	return defaultRunMode;
 }
 
 // ----------------------------------------------------------------------------
@@ -165,6 +144,9 @@ RDOStudioPlugins* plugins;
 RDOStudioPlugins::RDOStudioPlugins()
 {
 	plugins = this;
+
+	studio.runModel       = RDOStudioPlugins::runModel;
+	studio.isModelRunning = RDOStudioPlugins::isModelRunning;
 
 	kernel.setNotifyReflect( RDOKernel::beforeModelStart, modelStartNotify );
 	kernel.setNotifyReflect( RDOKernel::endExecuteModel, modelStopNotify );
@@ -230,6 +212,18 @@ void RDOStudioPlugins::init()
 		it++;
 	}
 */
+}
+
+void RDOStudioPlugins::runModel()
+{
+	if ( model ) {
+		model->runModel();
+	}
+}
+
+bool RDOStudioPlugins::isModelRunning()
+{
+	return model && model->isRunning();
 }
 
 void RDOStudioPlugins::modelStartNotify()

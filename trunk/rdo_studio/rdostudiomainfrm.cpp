@@ -517,22 +517,22 @@ void RDOStudioMainFrame::OnModelShowRateDec()
 
 void RDOStudioMainFrame::OnUpdateModelShowRateInc(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable( model && model->getModelDoc() && model->isRunning() && model->getShowMode() != RDOSimulatorNS::SM_NoShow && model->getShowRate() * 1.5 <= DBL_MAX );
+	pCmdUI->Enable( model && model->isRunning() && model->getShowMode() != RDOSimulatorNS::SM_NoShow && model->getShowRate() * 1.5 <= DBL_MAX );
 }
 
 void RDOStudioMainFrame::OnUpdateModelShowRateIncFour(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable( model && model->getModelDoc() && model->isRunning() && model->getShowMode() != RDOSimulatorNS::SM_NoShow && model->getShowRate() * 4 <= DBL_MAX );
+	pCmdUI->Enable( model && model->isRunning() && model->getShowMode() != RDOSimulatorNS::SM_NoShow && model->getShowRate() * 4 <= DBL_MAX );
 }
 
 void RDOStudioMainFrame::OnUpdateModelShowRateDecFour(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable( model && model->getModelDoc() && model->isRunning() && model->getShowMode() != RDOSimulatorNS::SM_NoShow && model->getShowRate() / 4 >= DBL_MIN );
+	pCmdUI->Enable( model && model->isRunning() && model->getShowMode() != RDOSimulatorNS::SM_NoShow && model->getShowRate() / 4 >= DBL_MIN );
 }
 
 void RDOStudioMainFrame::OnUpdateModelShowRateDec(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable( model && model->getModelDoc() && model->isRunning() && model->getShowMode() != RDOSimulatorNS::SM_NoShow && model->getShowRate() / 1.5 >= DBL_MIN );
+	pCmdUI->Enable( model && model->isRunning() && model->getShowMode() != RDOSimulatorNS::SM_NoShow && model->getShowRate() / 1.5 >= DBL_MIN );
 }
 
 void RDOStudioMainFrame::OnModelFrameNext()

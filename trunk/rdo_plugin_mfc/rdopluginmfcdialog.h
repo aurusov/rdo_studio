@@ -17,19 +17,20 @@ public:
 	virtual ~RDOPluginMFCDialog();
 
 	//{{AFX_DATA(RDOPluginMFCDialog)
-	enum { IDD = IDD_DIALOG };
+	enum { IDD = IDD_PLUGIN_DIALOG };
 	//}}AFX_DATA
 
 
 	//{{AFX_VIRTUAL(RDOPluginMFCDialog)
 	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);
+	virtual void OnCancel();
 	//}}AFX_VIRTUAL
 
 protected:
 	//{{AFX_MSG(RDOPluginMFCDialog)
-	virtual void OnOK();
-	virtual void OnCancel();
+	afx_msg void OnModelRun();
+	afx_msg void OnUpdateModelRun(CCmdUI* pCmdUI);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

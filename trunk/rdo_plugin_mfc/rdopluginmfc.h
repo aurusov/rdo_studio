@@ -9,6 +9,9 @@
 	#error include 'stdafx.h' before including this file for PCH
 #endif
 
+#define RDOPLUGIN_EXPORTS
+#include <rdoplugin.h>
+
 // ----------------------------------------------------------------------------
 // ---------- RDOPluginMFC
 // ----------------------------------------------------------------------------
@@ -17,6 +20,9 @@ class RDOPluginMFC: public CWinApp
 public:
 	RDOPluginMFC();
 
+	rdoPlugin::Studio studio;
+
+protected:
 	//{{AFX_VIRTUAL(RDOPluginMFC)
 	//}}AFX_VIRTUAL
 

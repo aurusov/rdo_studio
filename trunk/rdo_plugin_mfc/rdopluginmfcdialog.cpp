@@ -16,6 +16,8 @@ static char THIS_FILE[] = __FILE__;
 // ----------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP(RDOPluginMFCDialog, CDialog)
 	//{{AFX_MSG_MAP(RDOPluginMFCDialog)
+	ON_COMMAND(ID_MODEL_RUN, OnModelRun)
+	ON_UPDATE_COMMAND_UI(ID_MODEL_RUN, OnUpdateModelRun)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -37,14 +39,17 @@ void RDOPluginMFCDialog::DoDataExchange(CDataExchange* pDX)
 	//}}AFX_DATA_MAP
 }
 
-void RDOPluginMFCDialog::OnOK() 
-{
-	CDialog::OnOK();
-	pluginMFCApp.PostThreadMessage( rdoPlugin::PLUGIN_MUSTEXIT_MESSAGE, reinterpret_cast<WPARAM>(AfxGetInstanceHandle()), 0 );
-}
-
 void RDOPluginMFCDialog::OnCancel() 
 {
 	CDialog::OnCancel();
 	pluginMFCApp.PostThreadMessage( rdoPlugin::PLUGIN_MUSTEXIT_MESSAGE, reinterpret_cast<WPARAM>(AfxGetInstanceHandle()), 0 );
+}
+
+void RDOPluginMFCDialog::OnModelRun() 
+{
+	pluginMFCApp.studio.runModel();
+}
+
+void RDOPluginMFCDialog::OnUpdateModelRun(CCmdUI* pCmdUI) 
+{
 }
