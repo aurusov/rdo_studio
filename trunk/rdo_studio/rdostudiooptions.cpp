@@ -1630,10 +1630,11 @@ RDOStudioOptionsPlugins::RDOStudioOptionsPlugins( RDOStudioOptions& _sheet ):
 	sheet( &_sheet ),
 	sortPluginNameAsceding( true ),
 	sortPluginVersionAsceding( true ),
-	sortPluginStateAsceding( true )
+	sortPluginRunModeAsceding( true ),
+	sortPluginStateAsceding( true ),
+	sortPluginDescriptionAsceding( true )
 {
 	//{{AFX_DATA_INIT(RDOStudioOptionsPlugins)
-	m_pluginInfo = _T("");
 	//}}AFX_DATA_INIT
 
 	m_psp.dwFlags |= PSP_HASHELP;
@@ -1648,7 +1649,6 @@ void RDOStudioOptionsPlugins::DoDataExchange(CDataExchange* pDX)
 	CPropertyPage::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(RDOStudioOptionsPlugins)
 	DDX_Control(pDX, IDC_PLUGIN_LIST, m_pluginList);
-	DDX_Text(pDX, IDC_PLUGIN_INFO, m_pluginInfo);
 	//}}AFX_DATA_MAP
 }
 
@@ -1661,9 +1661,15 @@ static int CALLBACK ComparePluginName( LPARAM lParam1, LPARAM lParam2, LPARAM lP
 		res = RDOStudioPlugins::comparePluginsByName( plugin1, plugin2 );
 		if ( !res ) {
 			res = RDOStudioPlugins::comparePluginsByVersion( plugin1, plugin2 );
-			if ( !res ) {
-				res = RDOStudioPlugins::comparePluginsByState( plugin1, plugin2 );
-			}
+		}
+		if ( !res ) {
+			res = RDOStudioPlugins::comparePluginsByRunMode( plugin1, plugin2 );
+		}
+		if ( !res ) {
+			res = RDOStudioPlugins::comparePluginsByState( plugin1, plugin2 );
+		}
+		if ( !res ) {
+			res = RDOStudioPlugins::comparePluginsByDescription( plugin1, plugin2 );
 		}
 		if ( !lParamSort ) {
 			res *= -1;
@@ -1680,7 +1686,33 @@ static int CALLBACK ComparePluginVersion( LPARAM lParam1, LPARAM lParam2, LPARAM
 	if ( plugin1 && plugin2 ) {
 		res = RDOStudioPlugins::comparePluginsByVersion( plugin1, plugin2 );
 		if ( !res ) {
+			res = RDOStudioPlugins::comparePluginsByRunMode( plugin1, plugin2 );
+		}
+		if ( !res ) {
 			res = RDOStudioPlugins::comparePluginsByState( plugin1, plugin2 );
+		}
+		if ( !res ) {
+			res = RDOStudioPlugins::comparePluginsByDescription( plugin1, plugin2 );
+		}
+		if ( !lParamSort ) {
+			res *= -1;
+		}
+	}
+	return res;
+}
+
+static int CALLBACK ComparePluginRunMode( LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort )
+{
+	int res = 0;
+	RDOStudioPlugin* plugin1 = reinterpret_cast<RDOStudioPlugin*>(lParam1);
+	RDOStudioPlugin* plugin2 = reinterpret_cast<RDOStudioPlugin*>(lParam2);
+	if ( plugin1 && plugin2 ) {
+		res = RDOStudioPlugins::comparePluginsByRunMode( plugin1, plugin2 );
+		if ( !res ) {
+			res = RDOStudioPlugins::comparePluginsByState( plugin1, plugin2 );
+		}
+		if ( !res ) {
+			res = RDOStudioPlugins::comparePluginsByDescription( plugin1, plugin2 );
 		}
 		if ( !lParamSort ) {
 			res *= -1;
@@ -1696,6 +1728,23 @@ static int CALLBACK ComparePluginState( LPARAM lParam1, LPARAM lParam2, LPARAM l
 	RDOStudioPlugin* plugin2 = reinterpret_cast<RDOStudioPlugin*>(lParam2);
 	if ( plugin1 && plugin2 ) {
 		res = RDOStudioPlugins::comparePluginsByState( plugin1, plugin2 );
+		if ( !res ) {
+			res = RDOStudioPlugins::comparePluginsByDescription( plugin1, plugin2 );
+		}
+		if ( !lParamSort ) {
+			res *= -1;
+		}
+	}
+	return res;
+}
+
+static int CALLBACK ComparePluginDescription( LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort )
+{
+	int res = 0;
+	RDOStudioPlugin* plugin1 = reinterpret_cast<RDOStudioPlugin*>(lParam1);
+	RDOStudioPlugin* plugin2 = reinterpret_cast<RDOStudioPlugin*>(lParam2);
+	if ( plugin1 && plugin2 ) {
+		res = RDOStudioPlugins::comparePluginsByDescription( plugin1, plugin2 );
 		if ( !lParamSort ) {
 			res *= -1;
 		}
@@ -1708,8 +1757,10 @@ BOOL RDOStudioOptionsPlugins::OnInitDialog()
 	CPropertyPage::OnInitDialog();
 
 	m_pluginList.InsertColumn( 0, format( IDS_PLUGIN_NAME ).c_str(), LVCFMT_LEFT, 100 );
-	m_pluginList.InsertColumn( 1, format( IDS_PLUGIN_VERSION ).c_str(), LVCFMT_LEFT, 80, 1 );
-	m_pluginList.InsertColumn( 2, format( IDS_PLUGIN_STATE ).c_str(), LVCFMT_LEFT, 56, 2 );
+	m_pluginList.InsertColumn( 1, format( IDS_PLUGIN_VERSION ).c_str(), LVCFMT_LEFT, 90, 1 );
+	m_pluginList.InsertColumn( 2, format( IDS_PLUGIN_RUNMODE ).c_str(), LVCFMT_LEFT, 60, 2 );
+	m_pluginList.InsertColumn( 3, format( IDS_PLUGIN_STATE ).c_str(), LVCFMT_LEFT, 50, 3 );
+	m_pluginList.InsertColumn( 4, format( IDS_PLUGIN_DESCRIPTION ).c_str(), LVCFMT_LEFT, 115, 4 );
 	m_pluginList.SetExtendedStyle( m_pluginList.GetExtendedStyle() | LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES );
 	std::vector< RDOStudioPlugin* >::const_iterator it = plugins.getList().begin();
 	int i = 0;
@@ -1717,8 +1768,22 @@ BOOL RDOStudioOptionsPlugins::OnInitDialog()
 		RDOStudioPlugin* plugin = *it;
 		int index = m_pluginList.InsertItem( i, plugin->getName().c_str() );
 		if ( index != -1 ) {
-			m_pluginList.SetItemText( index, 1, format( "%d.%d (build %d)", plugin->getVersionMajor(), plugin->getVersionMinor(), plugin->getVersionBuild() ).c_str() );
-			m_pluginList.SetItemText( index, 2, format( plugin->getState() == rdoPlugin::psStop ? IDS_PLUGIN_STATE_STOP : IDS_PLUGIN_STATE_ACTIVE ).c_str() );
+			std::string version = format( "%d.%d (build %d)", plugin->getVersionMajor(), plugin->getVersionMinor(), plugin->getVersionBuild() );
+			if ( !plugin->getVersionInfo().empty() ) {
+				version += " " + plugin->getVersionInfo();
+			}
+			m_pluginList.SetItemText( index, 1, version.c_str() );
+			std::string runMode;
+			if ( plugin->getRunMode() == rdoPlugin::prmStudioStartUp ) {
+				runMode = format( IDS_PLUGIN_RUNMODE_STUDIOSTARTUP );
+			} else if ( plugin->getRunMode() == rdoPlugin::prmModelStartUp ) {
+				runMode = format( IDS_PLUGIN_RUNMODE_MODELSTARTUP );
+			} else {
+				runMode = format( IDS_PLUGIN_RUNMODE_NOAUTO );
+			}
+			m_pluginList.SetItemText( index, 2, runMode.c_str() );
+			m_pluginList.SetItemText( index, 3, format( plugin->getState() == rdoPlugin::psStop ? IDS_PLUGIN_STATE_STOP : IDS_PLUGIN_STATE_ACTIVE ).c_str() );
+			m_pluginList.SetItemText( index, 4, plugin->getDescription().c_str() );
 			m_pluginList.SetItemData( index, reinterpret_cast<DWORD>(plugin) );
 		}
 		i++;
@@ -1764,16 +1829,10 @@ void RDOStudioOptionsPlugins::OnPluginListSelectChanged( NMHDR* pNMHDR, LRESULT*
 	if ( useItem ) {
 		RDOStudioPlugin* plugin = reinterpret_cast<RDOStudioPlugin*>(pNMListView->lParam);
 		if ( plugin ) {
-			std::string version = format( "%s - ver %d.%d (build %d)", plugin->getName().c_str(), plugin->getVersionMajor(), plugin->getVersionMinor(), plugin->getVersionBuild() );
-			if ( !plugin->getVersionInfo().empty() ) {
-				version += " " + plugin->getVersionInfo();
-			}
-			m_pluginInfo.Format( "%s\r\r%s", version.c_str(), plugin->getDescription().c_str() );
 			havePlugin = true;
 		}
 	}
 	if ( !havePlugin ) {
-		m_pluginInfo = "";
 	}
 	UpdateData( false );
 
@@ -1791,8 +1850,14 @@ void RDOStudioOptionsPlugins::OnPluginListColumnClick( NMHDR* pNMHDR, LRESULT* p
 		m_pluginList.SortItems( ComparePluginVersion, sortPluginVersionAsceding ? !NULL : NULL );
 		sortPluginVersionAsceding = !sortPluginVersionAsceding;
 	} else if ( pNMListView->iSubItem == 2 ) {
+		m_pluginList.SortItems( ComparePluginRunMode, sortPluginRunModeAsceding ? !NULL : NULL );
+		sortPluginRunModeAsceding = !sortPluginRunModeAsceding;
+	} else if ( pNMListView->iSubItem == 3 ) {
 		m_pluginList.SortItems( ComparePluginState, sortPluginStateAsceding ? !NULL : NULL );
 		sortPluginStateAsceding = !sortPluginStateAsceding;
+	} else if ( pNMListView->iSubItem == 4 ) {
+		m_pluginList.SortItems( ComparePluginDescription, sortPluginDescriptionAsceding ? !NULL : NULL );
+		sortPluginDescriptionAsceding = !sortPluginDescriptionAsceding;
 	}
 	
 	*pResult = 0;

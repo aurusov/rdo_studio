@@ -20,7 +20,8 @@ RDOStudioPlugin::RDOStudioPlugin( const std::string& _modulName ):
 	version_build( 0 ),
 	version_info( "" ),
 	description( "" ),
-	state( rdoPlugin::psStop )
+	state( rdoPlugin::psStop ),
+	runMode( rdoPlugin::prmNoAuto )
 {
 	HMODULE local_lib = ::LoadLibrary( modulName.c_str() );
 	if ( local_lib ) {
@@ -34,6 +35,10 @@ RDOStudioPlugin::RDOStudioPlugin( const std::string& _modulName ):
 			version_build = info.version_build;
 			version_info  = info.version_info;
 			description   = info.description;
+		}
+		rdoPlugin::PFunGetPluginRunMode getPluginRunMode = reinterpret_cast<rdoPlugin::PFunGetPluginRunMode>(::GetProcAddress( local_lib, "getPluginRunMode" ));
+		if ( getPluginRunMode ) {
+			runMode = getPluginRunMode();
 		}
 		::FreeLibrary( local_lib );
 	}
@@ -143,6 +148,20 @@ int RDOStudioPlugins::comparePluginsByVersion( const RDOStudioPlugin* plugin1, c
 			return 1;
 		} else if ( plugin1->getVersionBuild() < plugin2->getVersionBuild() ) {
 			return -1;
+		} else {
+			return strcmp( plugin1->getVersionInfo().c_str(), plugin2->getVersionInfo().c_str() );
+		}
+	}
+	return 0;
+}
+
+int RDOStudioPlugins::comparePluginsByRunMode( const RDOStudioPlugin* plugin1, const RDOStudioPlugin* plugin2 )
+{
+	if ( plugin1 && plugin2 ) {
+		if ( plugin1->getRunMode() > plugin2->getRunMode() ) {
+			return 1;;
+		} else if ( plugin1->getRunMode() < plugin2->getRunMode() ) {
+			return -1;
 		}
 	}
 	return 0;
@@ -156,6 +175,14 @@ int RDOStudioPlugins::comparePluginsByState( const RDOStudioPlugin* plugin1, con
 		} else if ( plugin1->getState() < plugin2->getState() ) {
 			return -1;
 		}
+	}
+	return 0;
+}
+
+int RDOStudioPlugins::comparePluginsByDescription( const RDOStudioPlugin* plugin1, const RDOStudioPlugin* plugin2 )
+{
+	if ( plugin1 && plugin2 ) {
+		return strcmp( plugin1->getDescription().c_str(), plugin2->getDescription().c_str() );
 	}
 	return 0;
 }

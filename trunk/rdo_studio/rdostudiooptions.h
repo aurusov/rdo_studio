@@ -315,13 +315,14 @@ private:
 
 	bool sortPluginNameAsceding;
 	bool sortPluginVersionAsceding;
+	bool sortPluginRunModeAsceding;
 	bool sortPluginStateAsceding;
+	bool sortPluginDescriptionAsceding;
 
 protected:
 	//{{AFX_DATA(RDOStudioOptionsPlugins)
 	enum { IDD = IDD_OPTIONS_PLUGINS };
 	CListCtrl	m_pluginList;
-	CString	m_pluginInfo;
 	//}}AFX_DATA
 
 	//{{AFX_VIRTUAL(RDOStudioOptionsPlugins)

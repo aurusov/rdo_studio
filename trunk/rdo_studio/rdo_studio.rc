@@ -210,7 +210,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 285
         TOPMARGIN, 7
-        BOTTOMMARGIN, 133
+        BOTTOMMARGIN, 180
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -426,14 +426,13 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,52,101,10
 END
 
-IDD_OPTIONS_PLUGINS DIALOG DISCARDABLE  0, 0, 292, 140
+IDD_OPTIONS_PLUGINS DIALOG DISCARDABLE  0, 0, 292, 187
 STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "Plugins"
 FONT 8, "MS Sans Serif"
 BEGIN
-    CTEXT           "",IDC_PLUGIN_INFO,164,4,128,132
     CONTROL         "List1",IDC_PLUGIN_LIST,"SysListView32",LVS_REPORT | 
-                    LVS_SINGLESEL | WS_BORDER | WS_TABSTOP,0,4,160,136
+                    LVS_SINGLESEL | WS_BORDER | WS_TABSTOP,0,4,292,136
 END
 
 
@@ -1162,8 +1161,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,8,0,189
- PRODUCTVERSION 0,8,0,189
+ FILEVERSION 0,8,0,190
+ PRODUCTVERSION 0,8,0,190
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -1181,14 +1180,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "RAO studio\0"
-            VALUE "FileVersion", "0, 8, 0, 189\0"
+            VALUE "FileVersion", "0, 8, 0, 190\0"
             VALUE "InternalName", "RAO-Studio\0"
             VALUE "LegalCopyright", "Copyright (C) 2003\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "RAO-Studio.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "RAO-Studio\0"
-            VALUE "ProductVersion", "0, 8, 0, 189\0"
+            VALUE "ProductVersion", "0, 8, 0, 190\0"
             VALUE "SpecialBuild", "\0"
         END
     END
@@ -1450,9 +1449,14 @@ BEGIN
     ID_FINDINMODEL_ENDMSG_NOTFOUND "Cannot find the string '%s'.\r\n"
     IDS_PLUGIN_NAME         "Name"
     IDS_PLUGIN_VERSION      "Version"
+    IDS_PLUGIN_RUNMODE      "Run With"
+    IDS_PLUGIN_RUNMODE_NOAUTO " "
+    IDS_PLUGIN_RUNMODE_STUDIOSTARTUP "Studio"
+    IDS_PLUGIN_RUNMODE_MODELSTARTUP "Model"
     IDS_PLUGIN_STATE        "State"
     IDS_PLUGIN_STATE_STOP   "stoped"
     IDS_PLUGIN_STATE_ACTIVE "active"
+    IDS_PLUGIN_DESCRIPTION  "Description"
 END
 
 STRINGTABLE DISCARDABLE 

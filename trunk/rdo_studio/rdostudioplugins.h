@@ -26,6 +26,7 @@ private:
 	std::string version_info;
 	std::string description;
 	rdoPlugin::PluginState state;
+	rdoPlugin::PluginRunMode runMode;
 
 public:
 	RDOStudioPlugin( const std::string& modulName );
@@ -38,8 +39,9 @@ public:
 	int getVersionMinor() const { return version_minor; }
 	int getVersionBuild() const { return version_build; }
 	std::string getVersionInfo() const { return version_info; }
-	std::string getDescription() const { return description; }
-	rdoPlugin::PluginState getState() const { return state; }
+	std::string getDescription() const { return description;  }
+	rdoPlugin::PluginState getState() const     { return state;   }
+	rdoPlugin::PluginRunMode getRunMode() const { return runMode; }
 };
 
 // ----------------------------------------------------------------------------
@@ -61,7 +63,9 @@ public:
 
 	static int comparePluginsByName( const RDOStudioPlugin* plugin1, const RDOStudioPlugin* plugin2 );
 	static int comparePluginsByVersion( const RDOStudioPlugin* plugin1, const RDOStudioPlugin* plugin2 );
+	static int comparePluginsByRunMode( const RDOStudioPlugin* plugin1, const RDOStudioPlugin* plugin2 );
 	static int comparePluginsByState( const RDOStudioPlugin* plugin1, const RDOStudioPlugin* plugin2 );
+	static int comparePluginsByDescription( const RDOStudioPlugin* plugin1, const RDOStudioPlugin* plugin2 );
 };
 
 // ----------------------------------------------------------------------------

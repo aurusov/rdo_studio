@@ -17,7 +17,7 @@ int WINAPI DllMain( HINSTANCE hinst, DWORD fdwReason, PVOID pvReserved )
 void getPluginInfo( rdoPlugin::PluginInfo* info )
 {
 	static char* name         = "Test2";
-	static char* version_info = "Test version";
+	static char* version_info = "";
 	static char* description  = "some info about plugin";
 	info->name = name;
 	info->version_major = 2;
@@ -29,5 +29,5 @@ void getPluginInfo( rdoPlugin::PluginInfo* info )
 
 rdoPlugin::PluginRunMode getPluginRunMode()
 {
-	return rdoPlugin::prmNoAuto;
+	return rdoPlugin::prmStudioStartUp;
 }
