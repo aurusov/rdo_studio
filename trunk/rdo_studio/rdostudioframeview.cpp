@@ -78,6 +78,24 @@ void RDOStudioFrameView::OnDraw(CDC* pDC)
 	GetClientRect( &newClientRect );
 
 	CBitmap* pOldBitmap = dc.SelectObject( &frameBmp );
+/*
+	pDC->SetStretchBltMode( HALFTONE );
+	double k1 = (double)newClientRect.bottom / frameBmpRect.bottom;
+	double k2 = (double)newClientRect.right / frameBmpRect.right;
+	double k = min( k1, k2 );
+	if ( k > 1 ) k = 1;
+	CRect rect( 0, 0, frameBmpRect.right * k, frameBmpRect.bottom * k );
+	rect.OffsetRect( (newClientRect.right - rect.right) / 2, (newClientRect.bottom - rect.bottom) / 2 );
+	pDC->StretchBlt( rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top, &dc, 0, 0, frameBmpRect.right, frameBmpRect.bottom, SRCCOPY );
+	if ( rect.left ) {
+		pDC->FillSolidRect( 0, 0, rect.left, newClientRect.bottom, bgColor );
+		pDC->FillSolidRect( rect.right, 0, newClientRect.right, newClientRect.bottom, bgColor );
+	}
+	if ( rect.top ) {
+		pDC->FillSolidRect( 0, 0, newClientRect.right, rect.top, bgColor );
+		pDC->FillSolidRect( 0, rect.bottom, newClientRect.right, newClientRect.bottom, bgColor );
+	}
+*/
 
 	pDC->BitBlt( 0, 0, newClientRect.right, newClientRect.bottom, &dc, xPos, yPos, SRCCOPY );
 	if ( newClientRect.right - frameBmpRect.right > 0 ) {
@@ -86,6 +104,7 @@ void RDOStudioFrameView::OnDraw(CDC* pDC)
 	if ( newClientRect.bottom - frameBmpRect.bottom > 0 ) {
 		pDC->FillSolidRect( 0, frameBmpRect.bottom, newClientRect.right, newClientRect.bottom - frameBmpRect.bottom, bgColor );
 	}
+
 	dc.SelectObject( pOldBitmap );
 
 	lock_draw.Unlock();
