@@ -46,6 +46,7 @@ public:
 	CChatSmile* addSmile( const CChatSmile::Type type, CWnd* parent );
 	static CChatSmile::Type getType( std::string str );
 	static std::string getStr( const CChatSmile::Type type );
+	static std::string getInfo( const CChatSmile::Type type );
 	CChatSmile* operator[] ( const int index ) const { return list[index]; }
 	int count() const                                { return list.size(); }
 

@@ -246,6 +246,74 @@ std::string CChatSmileList::getStr( const CChatSmile::Type type )
 	}
 }
 
+std::string CChatSmileList::getInfo( const CChatSmile::Type type )
+{
+	UINT res;
+	switch ( type ) {
+		case CChatSmile::smile   : res = IDS_SMILE_SMILE; break;
+		case CChatSmile::frown   : res = IDS_SMILE_FROWN; break;
+		case CChatSmile::wink    : res = IDS_SMILE_WINK; break;
+		case CChatSmile::smirk   : res = IDS_SMILE_SMIRK; break;
+		case CChatSmile::tongue  : res = IDS_SMILE_TONGUE; break;
+		case CChatSmile::biggrin : res = IDS_SMILE_BIGGRIN; break;
+		case CChatSmile::gigi    : res = IDS_SMILE_GIGI; break;
+		case CChatSmile::laugh   : res = IDS_SMILE_LAUGH; break;
+		case CChatSmile::lol     : res = IDS_SMILE_LOL; break;
+		case CChatSmile::cool    : res = IDS_SMILE_COOL; break;
+		case CChatSmile::confused: res = IDS_SMILE_CONFUSED; break;
+		case CChatSmile::eek     : res = IDS_SMILE_EEK; break;
+		case CChatSmile::rolleyes: res = IDS_SMILE_ROLLEYES; break;
+		case CChatSmile::insane  : res = IDS_SMILE_INSANE; break;
+		case CChatSmile::redface : res = IDS_SMILE_REDFACE; break;
+		case CChatSmile::mad     : res = IDS_SMILE_MAD; break;
+		case CChatSmile::weep    : res = IDS_SMILE_WEEP; break;
+		case CChatSmile::up      : res = IDS_SMILE_UP; break;
+		case CChatSmile::down    : res = IDS_SMILE_DOWN; break;
+		case CChatSmile::rotate  : res = IDS_SMILE_ROTATE; break;
+		case CChatSmile::super   : res = IDS_SMILE_SUPER; break;
+		case CChatSmile::upset   : res = IDS_SMILE_UPSET; break;
+		case CChatSmile::beer    : res = IDS_SMILE_BEER; break;
+		case CChatSmile::amazed  : res = IDS_SMILE_AMAZED; break;
+		case CChatSmile::shuffle : res = IDS_SMILE_SHUFFLE; break;
+		case CChatSmile::lamer   : res = IDS_SMILE_LAMER; break;
+		case CChatSmile::spy     : res = IDS_SMILE_SPY; break;
+		case CChatSmile::idea    : res = IDS_SMILE_IDEA; break;
+		case CChatSmile::puke    : res = IDS_SMILE_PUKE; break;
+		case CChatSmile::wink2   : res = IDS_SMILE_WINK2; break;
+		case CChatSmile::smirk2  : res = IDS_SMILE_SMIRK2; break;
+		case CChatSmile::think   : res = IDS_SMILE_THINK; break;
+		case CChatSmile::fear    : res = IDS_SMILE_FEAR; break;
+		case CChatSmile::yes     : res = IDS_SMILE_YES; break;
+		case CChatSmile::no      : res = IDS_SMILE_NO; break;
+		case CChatSmile::crazy   : res = IDS_SMILE_CRAZY; break;
+		case CChatSmile::joke    : res = IDS_SMILE_JOKE; break;
+		case CChatSmile::hah     : res = IDS_SMILE_HAH; break;
+		case CChatSmile::ballet  : res = IDS_SMILE_BALLET; break;
+		case CChatSmile::friday  : res = IDS_SMILE_FRIDAY; break;
+		case CChatSmile::drink   : res = IDS_SMILE_DRINK; break;
+		case CChatSmile::fart    : res = IDS_SMILE_FART; break;
+		case CChatSmile::box     : res = IDS_SMILE_BOX; break;
+		case CChatSmile::invalid : res = IDS_SMILE_INVALID; break;
+		case CChatSmile::duel    : res = IDS_SMILE_DUEL; break;
+		case CChatSmile::kos     : res = IDS_SMILE_KOS; break;
+		case CChatSmile::gossip  : res = IDS_SMILE_GOSSIP; break;
+		case CChatSmile::bis     : res = IDS_SMILE_BIS; break;
+		case CChatSmile::hit     : res = IDS_SMILE_HIT; break;
+		case CChatSmile::ivan    : res = IDS_SMILE_IVAN; break;
+		case CChatSmile::venera  : res = IDS_SMILE_VENERA; break;
+		case CChatSmile::mobile  : res = IDS_SMILE_MOBILE; break;
+		case CChatSmile::kult    : res = IDS_SMILE_KULT; break;
+		case CChatSmile::figa    : res = IDS_SMILE_FIGA; break;
+		case CChatSmile::eyes    : res = IDS_SMILE_EYES; break;
+		case CChatSmile::tomato  : res = IDS_SMILE_TOMATO; break;
+		default: res = -1;
+	}
+	if ( res != -1 ) {
+		return format( res );
+	}
+	return "";
+}
+
 CChatSmile* CChatSmileList::addSmile( const std::string& str, CWnd* parent )
 {
 	CChatSmile::Type type = getType( str );

@@ -259,7 +259,7 @@ void CChatViewer::recalcWidth()
 bool CChatViewer::updateScrollBars()
 {
 	yMax      = max( getStringsSumHeight(), newClientRect.bottom - 1 );
-	yPageSize = newClientRect.bottom;
+	yPageSize = yMax >= newClientRect.bottom ? newClientRect.bottom + 1 : newClientRect.bottom;
 	yPos      = min( yPos, max( 0, yMax - newClientRect.bottom ) );
 
 	SCROLLINFO si;
@@ -273,7 +273,7 @@ bool CChatViewer::updateScrollBars()
 
 	recalcWidth();
 	xMax      = maxStrWidth;
-	xPageSize = newClientRect.right;
+	xPageSize = xMax >= newClientRect.right ? newClientRect.right + 1 : newClientRect.right;
 	xPos      = min( xPos, max( 0, xMax - newClientRect.right ) );
 
 	si.nMax   = xMax; 

@@ -71,6 +71,9 @@ IDB_STATISMODE_TOOLBAR_D BITMAP  DISCARDABLE     "res\\toolbar_statusMode_d.bmp"
 IDB_MAIN_TOOLBAR_D      BITMAP  DISCARDABLE     "res\\toolbar_main_d.bmp"
 IDB_EDIT_TOOLBAR_D      BITMAP  DISCARDABLE     "res\\toolbar_edit_d.bmp"
 IDB_DOCK                BITMAP  DISCARDABLE     "res\\dock.bmp"
+IDR_STATUSMODE_TOOLBAR  BITMAP  DISCARDABLE     "res\\toolbar_statusMode.bmp"
+IDR_MAIN_TOOLBAR        BITMAP  DISCARDABLE     "res\\toolbar_main.bmp"
+IDR_EDIT_TOOLBAR        BITMAP  DISCARDABLE     "res\\toolbar_edit.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -372,6 +375,60 @@ BEGIN
     END
 END
 
+IDR_MAINFRAME MENU PRELOAD DISCARDABLE 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "Refresh &User List",          ID_FILE_REFRESHUSERLIST
+        MENUITEM "Refresh &Network",            ID_FILE_REFRESHNETWORK
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                       ID_APP_EXIT
+    END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "Cu&t\tCtrl+X",                ID_EDIT_CUT
+        MENUITEM "&Copy\tCtrl+C",               ID_EDIT_COPY
+        MENUITEM "&Paste\tCtrl+V",              ID_EDIT_PASTE
+    END
+    POPUP "&Status Mode"
+    BEGIN
+        MENUITEM "O&nline",                     ID_STATUSMODE_ONLINE
+        MENUITEM "&Away",                       ID_STATUSMODE_AWAY
+        MENUITEM "No&t Availible",              ID_STATUSMODE_NOTAVAILIBLE
+        MENUITEM SEPARATOR
+        MENUITEM "On&line...",                  ID_STATUSMODE_ONLINE_INFO
+        MENUITEM "Awa&y...",                    ID_STATUSMODE_AWAY_INFO
+        MENUITEM "Not A&vailible...",           ID_STATUSMODE_NOTAVAILIBLE_INFO
+
+    END
+    POPUP "&Chat"
+    BEGIN
+        MENUITEM "&To Cry Out...\tCtrl+Enter",  ID_CHAT_TOCRYOUT
+        MENUITEM "&Sound",                      ID_SOUND
+        MENUITEM SEPARATOR
+        MENUITEM "&Options...",                 ID_CHAT_OPTIONS
+    END
+    POPUP "&User"
+    BEGIN
+        MENUITEM "&Send Message...",            ID_USER_SENDMESSAGE
+        MENUITEM "&Ingnore",                    ID_USER_INGNORE
+    END
+    POPUP "&View"
+    BEGIN
+        MENUITEM "&Dock Window",                ID_VIEW_DOCKWINDOW
+        MENUITEM "&Main Toolbar",               ID_VIEW_MAINTOOLBAR
+        MENUITEM "&Edit Toolbar",               ID_VIEW_EDITTOOLBAR
+        MENUITEM "&Status Mode Toolbar",        ID_VIEW_STATUSMODE_TOOLBAR
+        MENUITEM "Status &Bar",                 ID_VIEW_STATUSBAR
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&Contents\tF1",               ID_HELP_CONTENTS
+        MENUITEM SEPARATOR
+        MENUITEM "&About...",                   ID_HELP_ABOUT
+    END
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -453,87 +510,6 @@ IDR_SMILE_VENERA        GIF     DISCARDABLE     "res\\smile_venera.gif"
 IDR_SMILE_MOBILE        GIF     DISCARDABLE     "res\\smile_mobile.gif"
 IDR_SMILE_KULT          GIF     DISCARDABLE     "res\\smile_kult.gif"
 IDR_SMILE_FIGA          GIF     DISCARDABLE     "res\\smile_figa.gif"
-#endif    // Russian resources
-/////////////////////////////////////////////////////////////////////////////
-
-
-/////////////////////////////////////////////////////////////////////////////
-// English (U.S.) resources
-
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
-#ifdef _WIN32
-LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
-#pragma code_page(1252)
-#endif //_WIN32
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Bitmap
-//
-
-IDR_STATUSMODE_TOOLBAR  BITMAP  DISCARDABLE     "res\\toolbar_statusMode.bmp"
-IDR_MAIN_TOOLBAR        BITMAP  DISCARDABLE     "res\\toolbar_main.bmp"
-IDR_EDIT_TOOLBAR        BITMAP  DISCARDABLE     "res\\toolbar_edit.bmp"
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Menu
-//
-
-IDR_MAINFRAME MENU PRELOAD DISCARDABLE 
-BEGIN
-    POPUP "&File"
-    BEGIN
-        MENUITEM "Refresh &User List",          ID_FILE_REFRESHUSERLIST
-        MENUITEM "Refresh &Network",            ID_FILE_REFRESHNETWORK
-        MENUITEM SEPARATOR
-        MENUITEM "E&xit",                       ID_APP_EXIT
-    END
-    POPUP "&Edit"
-    BEGIN
-        MENUITEM "Cu&t\tCtrl+X",                ID_EDIT_CUT
-        MENUITEM "&Copy\tCtrl+C",               ID_EDIT_COPY
-        MENUITEM "&Paste\tCtrl+V",              ID_EDIT_PASTE
-    END
-    POPUP "&Status Mode"
-    BEGIN
-        MENUITEM "O&nline",                     ID_STATUSMODE_ONLINE
-        MENUITEM "&Away",                       ID_STATUSMODE_AWAY
-        MENUITEM "No&t Availible",              ID_STATUSMODE_NOTAVAILIBLE
-        MENUITEM SEPARATOR
-        MENUITEM "On&line...",                  ID_STATUSMODE_ONLINE_INFO
-        MENUITEM "Awa&y...",                    ID_STATUSMODE_AWAY_INFO
-        MENUITEM "Not A&vailible...",           ID_STATUSMODE_NOTAVAILIBLE_INFO
-
-    END
-    POPUP "&Chat"
-    BEGIN
-        MENUITEM "&To Cry Out...\tCtrl+Enter",  ID_CHAT_TOCRYOUT
-        MENUITEM "&Sound",                      ID_SOUND
-        MENUITEM SEPARATOR
-        MENUITEM "&Options...",                 ID_CHAT_OPTIONS
-    END
-    POPUP "&User"
-    BEGIN
-        MENUITEM "&Send Message...",            ID_USER_SENDMESSAGE
-        MENUITEM "&Ingnore",                    ID_USER_INGNORE
-    END
-    POPUP "&View"
-    BEGIN
-        MENUITEM "&Dock Window",                ID_VIEW_DOCKWINDOW
-        MENUITEM "&Main Toolbar",               ID_VIEW_MAINTOOLBAR
-        MENUITEM "&Edit Toolbar",               ID_VIEW_EDITTOOLBAR
-        MENUITEM "&Status Mode Toolbar",        ID_VIEW_STATUSMODE_TOOLBAR
-        MENUITEM "Status &Bar",                 ID_VIEW_STATUSBAR
-    END
-    POPUP "&Help"
-    BEGIN
-        MENUITEM "&Contents\tF1",               ID_HELP_CONTENTS
-        MENUITEM SEPARATOR
-        MENUITEM "&About...",                   ID_HELP_ABOUT
-    END
-END
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -595,8 +571,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,2,0,234
- PRODUCTVERSION 0,2,0,234
+ FILEVERSION 0,2,0,247
+ PRODUCTVERSION 0,2,0,247
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -614,14 +590,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "Application for chat in localnet\0"
-            VALUE "FileVersion", "0, 2, 0, 234\0"
+            VALUE "FileVersion", "0, 2, 0, 247\0"
             VALUE "InternalName", "localChat\0"
             VALUE "LegalCopyright", "Copyright (C) 2002\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "localchat.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "localChat\0"
-            VALUE "ProductVersion", "0, 2, 0, 234\0"
+            VALUE "ProductVersion", "0, 2, 0, 247\0"
             VALUE "SpecialBuild", "\0"
         END
     END
@@ -735,9 +711,81 @@ BEGIN
     IDS_SPLASH_INITINFO_SOCKET "Socket"
     IDS_SPLASH_INITINFO_SMILES "Smiles"
     IDS_SPLASH_RUNNING      "Running..."
+    IDS_SMILE_SMILE         "улыбка"
+    IDS_SMILE_FROWN         "недовольство,\rогорчение"
+    IDS_SMILE_WINK          "подмигивание"
+    IDS_SMILE_SMIRK         "ухмылка"
+    IDS_SMILE_TONGUE        "подшучивание"
+    IDS_SMILE_BIGGRIN       "голливудска€\rулыбка"
+    IDS_SMILE_GIGI          "гы!"
 END
 
-#endif    // English (U.S.) resources
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_SMILE_LAUGH         "смех"
+    IDS_SMILE_LOL           "помираю со смеху!"
+    IDS_SMILE_COOL          "класс!"
+    IDS_SMILE_CONFUSED      "замешательство"
+    IDS_SMILE_EEK           "жуть"
+    IDS_SMILE_ROLLEYES      "закатывание глаз,\rсарказм"
+    IDS_SMILE_INSANE        "не в себе"
+    IDS_SMILE_REDFACE       "смущение, стыд"
+    IDS_SMILE_MAD           "злость"
+    IDS_SMILE_WEEP          "рев в 3 ручь€"
+    IDS_SMILE_UP            "одобрение"
+    IDS_SMILE_DOWN          "неодобрение"
+    IDS_SMILE_ROTATE        "тащусь!"
+    IDS_SMILE_SUPER         "высший восторг"
+    IDS_SMILE_UPSET         "огорчение,\rзамешательство"
+    IDS_SMILE_BEER          "сходка"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_SMILE_AMAZED        "изумление"
+    IDS_SMILE_SHUFFLE       "смущение"
+    IDS_SMILE_LAMER         "ламер"
+    IDS_SMILE_SPY           "шпион"
+    IDS_SMILE_IDEA          "иде€!"
+    IDS_SMILE_PUKE          "тошнит!"
+    IDS_SMILE_WINK2         "подмигивание"
+    IDS_SMILE_SMIRK2        "ухмылка"
+    IDS_SMILE_THINK         "раздумь€"
+    IDS_SMILE_FEAR          "страх"
+    IDS_SMILE_YES           "да"
+    IDS_SMILE_NO            "нет"
+    IDS_SMILE_CRAZY         "псих"
+    IDS_SMILE_JOKE          "киргуду"
+    IDS_SMILE_HAH           "ха-ха!"
+    IDS_SMILE_BALLET        "лебединое озеро"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_SMILE_FRIDAY        "т€пница"
+    IDS_SMILE_DRINK         "выпьем?"
+    IDS_SMILE_FART          "скунс"
+    IDS_SMILE_BOX           "поединок"
+    IDS_SMILE_INVALID       "инвалид"
+    IDS_SMILE_DUEL          "дуэль"
+    IDS_SMILE_KOS           "кос€к"
+    IDS_SMILE_GOSSIP        "по секрету"
+    IDS_SMILE_BIS           "бис!"
+    IDS_SMILE_HIT           "пощечина"
+    IDS_SMILE_IVAN          "»ван-царевич"
+    IDS_SMILE_VENERA        "скульптор"
+    IDS_SMILE_MOBILE        "мобила"
+    IDS_SMILE_KULT          "культурист"
+    IDS_SMILE_FIGA          "фиг!"
+    IDS_SMILE_EYES          "глаза разбежались"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_SMILE_TOMATO        "помидоры"
+END
+
+#endif    // Russian resources
 /////////////////////////////////////////////////////////////////////////////
 
 
