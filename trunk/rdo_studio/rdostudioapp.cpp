@@ -125,8 +125,8 @@ BOOL RDOStudioApp::InitInstance()
 	AddDocTemplate( tracer.createDocTemplate() );
 
 	mainFrame = new RDOStudioMainFrame;
-	if ( !mainFrame->LoadFrame( IDR_MAINFRAME ) ) return FALSE;
 	m_pMainWnd = mainFrame;
+	if ( !mainFrame->LoadFrame( IDR_MAINFRAME ) ) return FALSE;
 
 	loadReopen();
 	updateReopenSubMenu();
