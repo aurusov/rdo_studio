@@ -53,6 +53,7 @@ RDOStudioModel::RDOStudioModel():
 	kernel.setNotifyReflect( RDOKernel::endExecuteModel, stopModelNotify );
 	kernel.setNotifyReflect( RDOKernel::modelStopped, stopModelNotify );
 	kernel.setNotifyReflect( RDOKernel::parseError, parseErrorModelNotify );
+	kernel.setNotifyReflect( RDOKernel::executeError, executeErrorModelNotify );
 	kernel.setNotifyReflect( RDOKernel::showFrame, showFrameNotify );
 
 	kernel.setNotifyReflect( RDOKernel::buildString, buildNotify );
@@ -201,6 +202,17 @@ void RDOStudioModel::parseErrorModelNotify()
 	if ( i ) {
 		studioApp.mainFrame->output.appendStringToBuild( format( "%d error(s) found.", i ) );
 	}
+}
+
+void RDOStudioModel::executeErrorModelNotify()
+{
+	vector<RDOSyntaxError>* errors = kernel.getSimulator()->getErrors();
+	int i = 0;
+	for ( vector<RDOSyntaxError>::iterator it = errors->begin(); it != errors->end(); it++ ) {
+		studioApp.mainFrame->output.appendStringToBuild( it->message, it->file, it->lineNo - 1 );
+		i++;
+	}
+	stopModelNotify();
 }
 
 void RDOStudioModel::showFrameNotify()
