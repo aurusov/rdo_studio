@@ -391,8 +391,8 @@ void RDOStudioModel::newModelFromRepository()
 						}
 					}
 				}
-				edit->setModifyFalse();
-				edit->clearUndoBuffer();
+//				edit->setModifyFalse();
+//				edit->clearUndoBuffer();
 			}
 		}
 

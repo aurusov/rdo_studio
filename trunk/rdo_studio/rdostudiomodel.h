@@ -72,7 +72,7 @@ public:
 	RDOStudioModel();
 	~RDOStudioModel();
 
-	void newModel( const bool _useTemplate = false );
+	void newModel( const bool useTemplate = false );
 	bool openModel( const std::string& modelName = "" ) const;
 	bool saveModel() const;
 	void saveAsModel() const;
