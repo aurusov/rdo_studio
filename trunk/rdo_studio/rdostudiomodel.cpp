@@ -34,7 +34,8 @@ RDOStudioModel::RDOStudioModel():
 	modelDocTemplate( NULL ),
 	useTemplate( false ),
 	closeWithDocDelete( true ),
-	showCanNotCloseModelMessage( true )
+	showCanNotCloseModelMessage( true ),
+	modelTime( 0 )
 {
 	model = this;
 
@@ -450,14 +451,6 @@ bool RDOStudioModel::isRunning() const
 	return false;
 }
 
-double RDOStudioModel::getModelTime() const
-{
-	if ( isRunning() ) {
-		return kernel.getSimulator()->getModelTime();
-	}
-	return 0;
-}
-
 void RDOStudioModel::beforeModelStart()
 {
 	frameManager.clear();
@@ -469,10 +462,13 @@ void RDOStudioModel::beforeModelStart()
 	}
 	frameManager.expand();
 	frameManager.initFrameNumber = kernel.getSimulator()->getInitialFrameNumber();
+	modelTime = 0;
 }
 
 void RDOStudioModel::showFrame()
 {
+	modelTime = kernel.getSimulator()->getModelTime();
+	studioApp.mainFrame->showNewModelTime( modelTime );
 	const vector<RDOFrame *>& frames = kernel.getSimulator()->getFrames();
 	vector<RDOFrame *>::const_iterator it = frames.begin();
 	int index = 0;
@@ -647,8 +643,8 @@ void RDOStudioModel::showFrame()
 
 				frameManager.getFrameTimer( index )->ResetEvent();
 
-				CRect rect;
-				view->GetClientRect( rect );
+//				CRect rect;
+//				view->GetClientRect( rect );
 				view->InvalidateRect( NULL );
 				view->SendNotifyMessage( WM_PAINT, 0, 0 );
 

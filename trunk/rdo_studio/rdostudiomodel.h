@@ -31,6 +31,8 @@ private:
 	bool closeWithDocDelete;
 	bool showCanNotCloseModelMessage;
 
+	double modelTime;
+
 	static void newModelNotify();
 	static void openModelNotify();
 	static void saveModelNotify();
@@ -76,7 +78,7 @@ public:
 
 	bool isModify() const;
 	bool isRunning() const;
-	double getModelTime() const;
+	double getModelTime() const { return modelTime; };
 
 	RDOStudioModelDoc* getModelDoc() const;
 	void updateModify() const;

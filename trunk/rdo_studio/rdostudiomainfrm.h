@@ -51,6 +51,8 @@ public:
 	RDOStudioChartViewStyle          style_chart;
 	void updateAllStyles() const;
 
+	void showNewModelTime( const double value ) ;
+
 	BOOL OnCmdMsgForDockOnly( UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo );
 
 #ifdef _DEBUG

@@ -283,11 +283,12 @@ void RDOStudioMainFrame::OnUpdateInsertOverwriteStatusBar( CCmdUI *pCmdUI )
 void RDOStudioMainFrame::OnUpdateModelTimeStatusBar( CCmdUI *pCmdUI )
 {
 	pCmdUI->Enable();
-	string str = "";
-	if ( model->isRunning() ) {
-		str = format( ID_STATUSBAR_MODELTIME, model->getModelTime() );
-	}
-	pCmdUI->SetText( str.c_str() );
+	pCmdUI->SetText( format( ID_STATUSBAR_MODELTIME, model->getModelTime() ).c_str() );
+}
+
+void RDOStudioMainFrame::showNewModelTime( const double value )
+{
+	::SendMessage( statusBar.m_hWnd, SB_SETTEXT, 3, reinterpret_cast<LPARAM>(format( ID_STATUSBAR_MODELTIME, value ).c_str()) );
 }
 
 void RDOStudioMainFrame::OnViewOptions() 
