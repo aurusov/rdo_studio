@@ -35,7 +35,7 @@ BKEmulCPU::BKEmulCPU()
 	regs.resize( 8 );
 
 	R0 = R1 = R2 = R3 = R4 = R5 = R6 = R7 = 0;
-	FC = FV = FZ = FN = FT = FP1 = FP2 = FP3 = PR_4 = PR_60 = PR_274 = false;
+	FC = FV = FZ = FN = FT = FP1 = FP2 = FP3 = PR_4 = PR_60 = PR_100 = PR_274 = false;
 
 	doCommandGroup_0.push_back( &BKEmulCPU::BK_doGroup_1 );
 	doCommandGroup_0.push_back( &BKEmulCPU::BK_doMOV );
@@ -172,12 +172,19 @@ void BKEmulCPU::nextIteration()
 	// Прерывание с клавиатуры
 	if ( PR_60 ) {
 		PR_60 = false;
-		interrupt(060);
+		interrupt( 060 );
 		return;
 	}
+	// Прерывание по таймеру (IRQ2)
+	if ( PR_100 ) {
+		PR_100 = false;
+		interrupt( 0100 );
+		return;
+	}
+	// Прерывание с клавиатуры
 	if ( PR_274 ) {
 		PR_274 = false;
-		interrupt(0274);
+		interrupt( 0274 );
 		return;
 	}
 

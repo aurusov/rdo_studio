@@ -29,7 +29,7 @@ private:
 	BYTE R_177717_byte_read;   // Регист 0177716 - состояние клавиатуры.
 	WORD R_177716_write;
 
-	void doSpeaker() const;
+	void doSpeaker();
 
 	void loadIntoROM( const HRSRC& res ) const;
 

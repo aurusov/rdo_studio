@@ -27,8 +27,13 @@ BKEmul::~BKEmul()
 {
 }
 
-void BKEmul::doSpeaker() const
+void BKEmul::doSpeaker()
 {
+	if ( R_177716_write & 0100 ) {
+		speaker.down();
+	} else {
+		speaker.up();
+	}
 }
 
 void BKEmul::powerON()
@@ -115,12 +120,14 @@ void BKEmul::nextIteration()
 {
 	if ( pause ) return;
 	try {
+		speaker.play();
 		for ( int i = 0; i < speed; i++ ) {
 			if ( BK_SYS_Timer_work ) {
 				WORD data = memory.get_word( 0177710 );
 				data--;
 				if ( !data ) {
-//					data = memory.get_word( 0177706 );
+					data = memory.get_word( 0177706 );
+					cpu.setPR_100();
 				}
 				memory.set_word( 0177710, data );
 			}

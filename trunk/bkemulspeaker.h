@@ -13,6 +13,8 @@ namespace bkemul {
 class BKEmulSpeaker
 {
 private:
+	int count;
+	bool last_down;
 	bool check() const;
 
 public:
@@ -22,6 +24,7 @@ public:
 	void reset();
 	void down();
 	void up();
+	void play();
 };
 
 } // namespace bkemul

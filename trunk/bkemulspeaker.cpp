@@ -13,7 +13,9 @@ using namespace bkemul;
 // --------------------------------------------------------------
 // ---------- BKEmulSpeaker
 // --------------------------------------------------------------
-BKEmulSpeaker::BKEmulSpeaker()
+BKEmulSpeaker::BKEmulSpeaker():
+	count( 0 ),
+	last_down( true )
 {
 }
 
@@ -31,6 +33,8 @@ void BKEmulSpeaker::reset()
 
 void BKEmulSpeaker::down()
 {
+	if ( !last_down ) count++;
+	last_down = true;
 	return;
 	BYTE value = _inp( 0x61 );
 	value |= 2;
@@ -39,6 +43,8 @@ void BKEmulSpeaker::down()
 
 void BKEmulSpeaker::up()
 {
+	if ( last_down ) count++;
+	last_down = false;
 	return;
 	BYTE value = _inp( 0x61 );
 	value &= 0xFC;
@@ -50,4 +56,10 @@ bool BKEmulSpeaker::check() const
 	return true;
 	BYTE value = _inp( 0x61 );
 	return value & 2 ? true : false;
+}
+
+void BKEmulSpeaker::play()
+{
+	TRACE( "count = %d\r\n", count );
+	count = 0;
 }

@@ -33,6 +33,7 @@ private:
 	// Прерывания
 	bool PR_4;
 	bool PR_60;
+	bool PR_100;
 	bool PR_274;
 
 	WORD command;             // Каманда процессора
@@ -183,6 +184,7 @@ public:
 
 	void setPR_4()   { PR_4   = true; }
 	void setPR_60()  { PR_60  = true; }
+	void setPR_100() { PR_100 = true; }
 	void setPR_274() { PR_274 = true; }
 };
 
