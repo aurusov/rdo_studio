@@ -240,6 +240,7 @@ UINT RunningThreadControllingFunction( LPVOID pParam )
 	simulator->runtime->frameCallBack = frameCallBack;
 	simulator->canTrace = true;
 
+	int exitCode = 0;
 	try
 	{
 		simulator->runtime->rdoInit(tracer, resulter);
@@ -251,12 +252,14 @@ UINT RunningThreadControllingFunction( LPVOID pParam )
 	catch(RDOSyntaxException &) 
 	{
 		kernel.notify(RDOKernel::executeError);
+		exitCode = 2;
 	}
 	catch(RDOInternalException &ex)		  
 	{
 		string mess = "Internal exception: " + ex.mess;
 		kernel.debug(mess.c_str());
 		kernel.notify(RDOKernel::executeError);
+		exitCode = 2;
 	}
 
 	try
@@ -266,15 +269,19 @@ UINT RunningThreadControllingFunction( LPVOID pParam )
 	catch(RDOSyntaxException &) 
 	{
 		kernel.notify(RDOKernel::executeError);
+		exitCode = 2;
 	}
 	catch(RDOInternalException &ex)		  
 	{
 		string mess = "Internal exception: " + ex.mess;
 		kernel.debug(mess.c_str());
 		kernel.notify(RDOKernel::executeError);
+		exitCode = 2;
 	}
 
 	simulator->th = NULL;
+
+	kernel.callback(RDOKernel::modelExit, exitCode);
 
 	return 0;
 }
@@ -309,6 +316,7 @@ bool RdoSimulator::parseModel()
 
 		kernel.notify(RDOKernel::parseError);
 		closeModel();
+		kernel.callback(RDOKernel::modelExit, 1);
 		return false;
   */
   
@@ -381,6 +389,7 @@ bool RdoSimulator::parseModel()
 //		kernel.notifyString(RDOKernel::buildString, mess);
 		kernel.notify(RDOKernel::parseError);
 		closeModel();
+		kernel.callback(RDOKernel::modelExit, 1);
 		return false;
 	}
 	catch(RDOInternalException &ex)
@@ -389,6 +398,7 @@ bool RdoSimulator::parseModel()
 		kernel.notifyString(RDOKernel::buildString, mess);
 		kernel.notify(RDOKernel::parseError);
 		closeModel();
+		kernel.callback(RDOKernel::modelExit, 1);
 		return false;
 	}
 
@@ -434,6 +444,7 @@ void RdoSimulator::stopModel()
 	terminateModel();
 	closeModel();
 	kernel.notify(RDOKernel::modelStopped);
+	kernel.callback(RDOKernel::modelExit, 3);
 }
 
 void RdoSimulator::terminateModel()

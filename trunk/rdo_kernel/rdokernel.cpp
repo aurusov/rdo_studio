@@ -88,6 +88,22 @@ void RDOKernel::setNotifyReflect( NotifyStringType notifyType, OnNotifyString fu
 	}
 }
 
+void RDOKernel::setCallbackReflect( CallbackType callbackType, OnCallback fun )
+{
+	bool flag = true;
+	onCallbackListType::iterator it = onCallback_list.find( callbackType );
+	while ( it != onCallback_list.end() ) {
+		if ( (*it).second == fun ) {
+			flag = false;
+			break;
+		}
+		it++;
+	}
+	if ( flag ) {
+		onCallback_list.insert( onCallbackListType::value_type( callbackType, fun ) );
+	}
+}
+
 void RDOKernel::notify( NotifyType notifyType ) const
 {
 	onNotifyListType::const_iterator it = onNotify_list.lower_bound( notifyType );
@@ -129,6 +145,29 @@ void RDOKernel::notifyString( NotifyStringType notifyType, string str ) const
 	onNotifyStringListType::const_iterator it = onNotifyString_list.lower_bound( notifyType );
 	while ( it != onNotifyString_list.upper_bound( notifyType ) ) {
 		(*it).second( str );
+		it++;
+	}
+}
+
+void RDOKernel::callback( CallbackType callbackType, int parament ) const
+{
+	onCallbackListType::const_iterator it = onCallback_list.lower_bound( callbackType );
+	if ( it != onCallback_list.upper_bound( callbackType ) ) {
+		(*it).second( parament );
+	}
+}
+
+void RDOKernel::callbackNext( CallbackType callbackType, OnCallback fun, int parament ) const
+{
+	onCallbackListType::const_iterator it = onCallback_list.lower_bound( callbackType );
+	while ( it != onCallback_list.upper_bound( callbackType ) ) {
+		if ( (*it).second == fun ) {
+			it++;
+			if ( it != onCallback_list.upper_bound( callbackType ) ) {
+				(*it).second( parament );
+			}
+			break;
+		}
 		it++;
 	}
 }

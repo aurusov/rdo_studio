@@ -53,7 +53,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /machine:I386
-# ADD LINK32 Imm32.lib Version.lib Htmlhelp.lib /nologo /subsystem:windows /machine:I386
+# ADD LINK32 Imm32.lib Version.lib Htmlhelp.lib /nologo /subsystem:windows /machine:I386 /out:"Release/RAO-studio.exe"
 # SUBTRACT LINK32 /profile
 
 !ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
@@ -81,7 +81,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 Imm32.lib Version.lib Htmlhelp.lib /nologo /subsystem:windows /debug /machine:I386
+# ADD LINK32 Imm32.lib Version.lib Htmlhelp.lib /nologo /subsystem:windows /debug /machine:I386 /out:"Debug/RAO-studio.exe"
 # SUBTRACT LINK32 /profile /nodefaultlib
 
 !ENDIF 

@@ -70,6 +70,8 @@ RDOStudioModel::RDOStudioModel():
 
 	kernel.setNotifyReflect( RDOKernel::buildString, buildNotify );
 	kernel.setNotifyReflect( RDOKernel::debugString, debugNotify );
+
+	kernel.setCallbackReflect( RDOKernel::modelExit, modelExitCallback );
 }
 
 RDOStudioModel::~RDOStudioModel()
@@ -251,8 +253,6 @@ void RDOStudioModel::endExecuteModelNotify()
 	}
 
 	plugins->pluginProc( rdoPlugin::PM_MODEL_FINISHED );
-
-	studioApp.autoClose( 0 );
 }
 
 void RDOStudioModel::stopModelNotify()
@@ -264,8 +264,6 @@ void RDOStudioModel::stopModelNotify()
 	const_cast<rdoEditCtrl::RDODebugEdit*>(output->getDebug())->UpdateWindow();
 
 	plugins->pluginProc( rdoPlugin::PM_MODEL_STOP_CANCEL );
-
-	studioApp.autoClose( 3 );
 }
 
 void RDOStudioModel::stopModelFromSimulator()
@@ -309,8 +307,6 @@ void RDOStudioModel::parseErrorNotify()
 	}
 
 	plugins->pluginProc( rdoPlugin::PM_MODEL_BUILD_FAILD );
-
-	studioApp.autoClose( 1 );
 }
 
 void RDOStudioModel::executeErrorNotify()
@@ -331,8 +327,6 @@ void RDOStudioModel::executeErrorNotify()
 	}
 
 	plugins->pluginProc( rdoPlugin::PM_MODEL_STOP_RUNTIME_ERROR );
-
-	studioApp.autoClose( 2 );
 }
 
 void RDOStudioModel::showFrameNotify()
@@ -348,6 +342,12 @@ void RDOStudioModel::buildNotify( string str )
 void RDOStudioModel::debugNotify( string str )
 {
 	studioApp.mainFrame->output.appendStringToDebug( str );
+}
+
+void RDOStudioModel::modelExitCallback( int exitCode )
+{
+	kernel.callbackNext( RDOKernel::modelExit, RDOStudioModel::modelExitCallback, exitCode );
+	studioApp.autoClose( exitCode );
 }
 
 RDOStudioModelDoc* RDOStudioModel::getModelDoc() const

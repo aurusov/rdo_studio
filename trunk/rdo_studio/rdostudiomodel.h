@@ -60,6 +60,8 @@ private:
 	static void buildNotify( std::string str );
 	static void debugNotify( std::string str );
 
+	static void modelExitCallback( int exitCode );
+
 	void newModelFromRepository();
 	void openModelFromRepository();
 	void saveModelToRepository();
