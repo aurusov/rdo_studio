@@ -345,9 +345,10 @@ void RDOStudioModel::openModelFromRepository()
 
 		RDOEditorTabCtrl* tab = getTab();
 		if ( tab ) {
-			studioApp.mainFrame->beginProgress( 0, tab->getItemCount() * 2 + 1 );
+			int cnt = tab->getItemCount();
+			studioApp.mainFrame->beginProgress( 0, cnt * 2 + 1 );
 			studioApp.mainFrame->stepProgress();
-			for ( int i = 0; i < tab->getItemCount(); i++ ) {
+			for ( int i = 0; i < cnt; i++ ) {
 				RDOEditorEdit* edit = tab->getItemEdit( i );
 				edit->setReadOnly( false );
 				edit->clearAll();
@@ -408,27 +409,37 @@ void RDOStudioModel::saveModelToRepository()
 {
 	RDOEditorTabCtrl* tab = getTab();
 	if ( tab ) {
-		studioApp.mainFrame->beginProgress( 0, tab->getItemCount() + 1 );
-		studioApp.mainFrame->stepProgress();
-		for ( int i = 0; i < tab->getItemCount(); i++ ) {
-			RDOEditorEdit* edit = tab->getItemEdit( i );
-			stringstream stream;
-			edit->save( stream );
-			switch ( i ) {
-				case RDOEDIT_PAT: kernel.getRepository()->savePAT( stream ); break;
-				case RDOEDIT_RTP: kernel.getRepository()->saveRTP( stream ); break;
-				case RDOEDIT_RSS: kernel.getRepository()->saveRSS( stream ); break;
-				case RDOEDIT_OPR: kernel.getRepository()->saveOPR( stream ); break;
-				case RDOEDIT_FRM: kernel.getRepository()->saveFRM( stream ); break;
-				case RDOEDIT_FUN: kernel.getRepository()->saveFUN( stream ); break;
-				case RDOEDIT_DPT: kernel.getRepository()->saveDPT( stream ); break;
-				case RDOEDIT_SMR: kernel.getRepository()->saveSMR( stream ); break;
-				case RDOEDIT_PMD: kernel.getRepository()->savePMD( stream ); break;
-			}
-			edit->setModifyFalse();
-			studioApp.mainFrame->stepProgress();
+		int cnt = tab->getItemCount();
+		int progress_cnt = 0;
+		for ( int i = 0; i < cnt; i++ ) {
+			if ( tab->getItemEdit( i )->isModify() ) progress_cnt++;
 		}
-		studioApp.mainFrame->endProgress();
+		if ( progress_cnt ) {
+			studioApp.mainFrame->beginProgress( 0, progress_cnt * 2 + 1 );
+			studioApp.mainFrame->stepProgress();
+			for ( int i = 0; i < cnt; i++ ) {
+				RDOEditorEdit* edit = tab->getItemEdit( i );
+				if ( edit->isModify() ) {
+					stringstream stream;
+					edit->save( stream );
+					studioApp.mainFrame->stepProgress();
+					switch ( i ) {
+						case RDOEDIT_PAT: kernel.getRepository()->savePAT( stream ); break;
+						case RDOEDIT_RTP: kernel.getRepository()->saveRTP( stream ); break;
+						case RDOEDIT_RSS: kernel.getRepository()->saveRSS( stream ); break;
+						case RDOEDIT_OPR: kernel.getRepository()->saveOPR( stream ); break;
+						case RDOEDIT_FRM: kernel.getRepository()->saveFRM( stream ); break;
+						case RDOEDIT_FUN: kernel.getRepository()->saveFUN( stream ); break;
+						case RDOEDIT_DPT: kernel.getRepository()->saveDPT( stream ); break;
+						case RDOEDIT_SMR: kernel.getRepository()->saveSMR( stream ); break;
+						case RDOEDIT_PMD: kernel.getRepository()->savePMD( stream ); break;
+					}
+					edit->setModifyFalse();
+				}
+				studioApp.mainFrame->stepProgress();
+			}
+			studioApp.mainFrame->endProgress();
+		}
 	}
 	setName( kernel.getRepository()->getName() );
 	studioApp.insertReopenItem( kernel.getRepository()->getFullName() );
