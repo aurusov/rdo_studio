@@ -111,7 +111,6 @@ private:
 	public:
 		STYLEObject* object;
 		std::string name;
-		bool root;
 
 		rdoEditCtrl::RDOFontStyle& font_style;
 
@@ -120,7 +119,7 @@ private:
 		COLORREF& fg_disable_color;
 		COLORREF& bg_disable_color;
 
-		STYLEProperty( STYLEObject* _object, std::string _name, bool _root, rdoEditCtrl::RDOFontStyle& _font_style, COLORREF& _fg_color, COLORREF& _bg_color, COLORREF& _fg_disable_color, COLORREF& _bg_disable_color ): object( _object ), name( _name ), root( _root ), font_style( _font_style ), fg_color( _fg_color ), bg_color( _bg_color ), fg_disable_color( _fg_disable_color ), bg_disable_color( _bg_disable_color ) {};
+		STYLEProperty( STYLEObject* _object, std::string _name, rdoEditCtrl::RDOFontStyle& _font_style, COLORREF& _fg_color, COLORREF& _bg_color, COLORREF& _fg_disable_color = null_fg_color, COLORREF& _bg_disable_color = null_bg_color ): object( _object ), name( _name ), font_style( _font_style ), fg_color( _fg_color ), bg_color( _bg_color ), fg_disable_color( _fg_disable_color ), bg_disable_color( _bg_disable_color ) {};
 	};
 
 	class STYLEObject {
@@ -129,10 +128,12 @@ private:
 		std::string& font_name;
 		int&         font_size;
 		bool         font_fixed;
+		bool&        wordwrap;
+		bool&        horzscrollbar;
 		std::list< std::string > themes;
 		std::list< STYLEProperty* > properties;
 
-		STYLEObject( const Type _type, std::string& _font_name, int& _font_size, const bool _font_fixed = true ): type( _type ), font_name( _font_name ), font_size( _font_size ), font_fixed( _font_fixed ) {};
+		STYLEObject( const Type _type, std::string& _font_name, int& _font_size, const bool _font_fixed = true, bool& _wordwrap = null_wordwrap, bool& _horzscrollbar = null_horzscrollbar ): type( _type ), font_name( _font_name ), font_size( _font_size ), font_fixed( _font_fixed ), wordwrap( _wordwrap ), horzscrollbar( _horzscrollbar ) {};
 		~STYLEObject() {
 			std::list< STYLEProperty* >::iterator it = properties.begin();
 			while ( it != properties.end() ) {
@@ -177,14 +178,23 @@ private:
 	void updatePropOfAllObject();
 
 	rdoEditCtrl::RDOFontStyle null_font_style;
-	COLORREF                  null_fg_color;
-	COLORREF                  null_bg_color;
+	static COLORREF           null_fg_color;
+	static COLORREF           null_bg_color;
+	static bool               null_wordwrap;
+	static bool               null_horzscrollbar;
 
 	void OnUpdateModify();
 
 protected:
 	//{{AFX_DATA(RDOStudioOptionsStylesAndColors)
 	enum { IDD = IDD_OPTIONS_STYLESANDCOLORS };
+	CButton	m_horzScrollBar;
+	CButton	m_wordWrap;
+	CComboBox	m_fold;
+	CStatic	m_foldStatic;
+	CStatic	m_bookmarkStatic;
+	CComboBox	m_bookmark;
+	CStatic	m_previewAsStatic;
 	CStatic	m_bgColorStatic;
 	CStatic	m_fgColorStatic;
 	CButton	m_bgColorButton;

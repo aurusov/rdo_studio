@@ -214,6 +214,11 @@ void RDOStudioOptionsTabs::OnUpdateModify()
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioOptionsStylesAndColors
 // ----------------------------------------------------------------------------
+COLORREF RDOStudioOptionsStylesAndColors::null_fg_color = RGB( 0x00, 0x00, 0x00 );
+COLORREF RDOStudioOptionsStylesAndColors::null_bg_color = RGB( 0xFF, 0xFF, 0xFF );
+bool RDOStudioOptionsStylesAndColors::null_wordwrap      = false;
+bool RDOStudioOptionsStylesAndColors::null_horzscrollbar = false;
+
 BEGIN_MESSAGE_MAP(RDOStudioOptionsStylesAndColors, CPropertyPage)
 	//{{AFX_MSG_MAP(RDOStudioOptionsStylesAndColors)
 	ON_NOTIFY(TVN_SELCHANGED, IDC_STYLEITEM_TREE, OnStyleItemChanged)
@@ -241,67 +246,65 @@ RDOStudioOptionsStylesAndColors::RDOStudioOptionsStylesAndColors( RDOStudioOptio
 	all_bg_color( RGB( 0xFF, 0xFF, 0xFF ) ),
 	use_all_fg_color( false ),
 	use_all_bg_color( false ),
-	null_font_style( RDOFS_NONE ),
-	null_fg_color( RGB( 0x00, 0x00, 0x00 ) ),
-	null_bg_color( RGB( 0xFF, 0xFF, 0xFF ) )
+	null_font_style( RDOFS_NONE )
 {
 	//{{AFX_DATA_INIT(RDOStudioOptionsStylesAndColors)
 	//}}AFX_DATA_INIT
 
 	STYLEObject* object;
 	object = new STYLEObject( STYLEObject::all, all_font_name, all_font_size );
-	object->properties.push_back( new STYLEProperty( object, "All Windows", true, null_font_style, all_fg_color, all_bg_color, null_fg_color, null_bg_color ) );
+	object->properties.push_back( new STYLEProperty( object, "All Windows", null_font_style, all_fg_color, all_bg_color ) );
 	objects.push_back( object );
 
 	RDOEditorEditTheme* editor_theme = static_cast<RDOEditorEditTheme*>(sheet->style_editor.theme);
 	object = new STYLEObject( STYLEObject::source, sheet->style_editor.font->name, sheet->style_editor.font->size );
-	object->properties.push_back( new STYLEProperty( object, "Source Windows", true , editor_theme->defaultStyle, editor_theme->defaultColor, editor_theme->backgroundColor, null_fg_color, null_bg_color ) );
-	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_PLAINTEXT ), false, editor_theme->defaultStyle, editor_theme->defaultColor, editor_theme->backgroundColor, null_fg_color, null_bg_color ) );
-	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_IDENTIFICATOR ), false, editor_theme->identifierStyle, editor_theme->identifierColor, null_bg_color, null_fg_color, editor_theme->backgroundColor ) );
-	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_KEYWORD ), false, editor_theme->keywordStyle, editor_theme->keywordColor, null_bg_color, null_fg_color, editor_theme->backgroundColor ) );
-	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_FUNCTION ), false, editor_theme->functionsStyle, editor_theme->keywordColor, null_bg_color, null_fg_color, editor_theme->backgroundColor ) );
-	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_TRACE ), false, editor_theme->traceStyle, editor_theme->traceColor, null_bg_color, null_fg_color, editor_theme->backgroundColor ) );
-	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_COMMENT ), false, editor_theme->commentStyle, editor_theme->commentColor, null_bg_color, null_fg_color, editor_theme->backgroundColor ) );
-	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_NUMBER ), false, editor_theme->numberStyle, editor_theme->numberColor, null_bg_color, null_fg_color, editor_theme->backgroundColor ) );
-	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_STRING ), false, editor_theme->stringStyle, editor_theme->stringColor, null_bg_color, null_fg_color, editor_theme->backgroundColor ) );
-	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_OPERATOR ), false, editor_theme->operatorStyle, editor_theme->operatorColor, null_bg_color, null_fg_color, editor_theme->backgroundColor ) );
-	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_CARET ), false, null_font_style, editor_theme->caretColor, null_bg_color, null_fg_color, null_bg_color ) );
-	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_TEXTSELECTION ), false, null_font_style, null_fg_color, editor_theme->selectionBgColor, null_fg_color, null_bg_color ) );
-	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_BOOKMARK ), false, null_font_style, editor_theme->bookmarkFgColor, editor_theme->bookmarkBgColor, null_fg_color, null_bg_color ) );
-	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_FOLD ), false, null_font_style, editor_theme->foldFgColor, editor_theme->foldBgColor, null_fg_color, null_bg_color ) );
-	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_ERROR ), false, null_font_style, null_fg_color, editor_theme->errorBgColor, null_fg_color, null_bg_color ) );
+	object->properties.push_back( new STYLEProperty( object, "Source Windows", editor_theme->defaultStyle, editor_theme->identifierColor, editor_theme->backgroundColor ) );
+	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_PLAINTEXT ), editor_theme->defaultStyle, editor_theme->defaultColor, editor_theme->backgroundColor ) );
+	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_IDENTIFICATOR ), editor_theme->identifierStyle, editor_theme->identifierColor, null_bg_color, null_fg_color, editor_theme->backgroundColor ) );
+	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_KEYWORD ), editor_theme->keywordStyle, editor_theme->keywordColor, null_bg_color, null_fg_color, editor_theme->backgroundColor ) );
+	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_FUNCTION ), editor_theme->functionsStyle, editor_theme->keywordColor, null_bg_color, null_fg_color, editor_theme->backgroundColor ) );
+	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_TRACE ), editor_theme->traceStyle, editor_theme->traceColor, null_bg_color, null_fg_color, editor_theme->backgroundColor ) );
+	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_COMMENT ), editor_theme->commentStyle, editor_theme->commentColor, null_bg_color, null_fg_color, editor_theme->backgroundColor ) );
+	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_NUMBER ), editor_theme->numberStyle, editor_theme->numberColor, null_bg_color, null_fg_color, editor_theme->backgroundColor ) );
+	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_STRING ), editor_theme->stringStyle, editor_theme->stringColor, null_bg_color, null_fg_color, editor_theme->backgroundColor ) );
+	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_OPERATOR ), editor_theme->operatorStyle, editor_theme->operatorColor, null_bg_color, null_fg_color, editor_theme->backgroundColor ) );
+	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_CARET ), null_font_style, editor_theme->caretColor, null_bg_color ) );
+	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_TEXTSELECTION ), null_font_style, null_fg_color, editor_theme->selectionBgColor ) );
+	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_BOOKMARK ), null_font_style, editor_theme->bookmarkFgColor, editor_theme->bookmarkBgColor ) );
+	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_FOLD ), null_font_style, editor_theme->foldFgColor, editor_theme->foldBgColor ) );
+	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_ERROR ), null_font_style, null_fg_color, editor_theme->errorBgColor ) );
 	objects.push_back( object );
 
 	RDOLogEditTheme* build_theme = static_cast<RDOLogEditTheme*>(sheet->style_build.theme);
 	object = new STYLEObject( STYLEObject::build, sheet->style_build.font->name, sheet->style_build.font->size, false );
-	object->properties.push_back( new STYLEProperty( object, "Build Window", true, build_theme->defaultStyle, build_theme->defaultColor, build_theme->backgroundColor, null_fg_color, null_bg_color ) );
-	object->properties.push_back( new STYLEProperty( object, "text", false, build_theme->defaultStyle, build_theme->defaultColor, build_theme->backgroundColor, null_fg_color, null_bg_color ) );
-	object->properties.push_back( new STYLEProperty( object, "selected line", false, null_font_style, null_fg_color, build_theme->selectLineBgColor, null_fg_color, null_bg_color ) );
-	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_CARET ), false, null_font_style, build_theme->caretColor, null_bg_color, null_fg_color, null_bg_color ) );
-	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_TEXTSELECTION ), false, null_font_style, null_fg_color, build_theme->selectionBgColor, null_fg_color, null_bg_color ) );
-	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_BOOKMARK ), false, null_font_style, build_theme->bookmarkFgColor, build_theme->bookmarkBgColor, null_fg_color, null_bg_color ) );
+	object->properties.push_back( new STYLEProperty( object, "Build Window", build_theme->defaultStyle, build_theme->defaultColor, build_theme->backgroundColor ) );
+	object->properties.push_back( new STYLEProperty( object, "text", build_theme->defaultStyle, build_theme->defaultColor, build_theme->backgroundColor ) );
+	object->properties.push_back( new STYLEProperty( object, "selected line", null_font_style, null_fg_color, build_theme->selectLineBgColor ) );
+	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_CARET ), null_font_style, build_theme->caretColor, null_bg_color ) );
+	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_TEXTSELECTION ), null_font_style, null_fg_color, build_theme->selectionBgColor ) );
+	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_BOOKMARK ), null_font_style, build_theme->bookmarkFgColor, build_theme->bookmarkBgColor ) );
 	objects.push_back( object );
 
 	RDOBaseEditTheme* debug_theme = sheet->style_debug.theme;
 	object = new STYLEObject( STYLEObject::debug, sheet->style_debug.font->name, sheet->style_debug.font->size, false );
-	object->properties.push_back( new STYLEProperty( object, "Debug Window", true, debug_theme->defaultStyle, debug_theme->defaultColor, debug_theme->backgroundColor, null_fg_color, null_bg_color ) );
+	object->properties.push_back( new STYLEProperty( object, "Debug Window", debug_theme->defaultStyle, debug_theme->defaultColor, debug_theme->backgroundColor ) );
 	objects.push_back( object );
 
 	RDOTracerLogStyle* trace_theme = &sheet->style_trace;
 	object = new STYLEObject( STYLEObject::trace, sheet->style_trace.font->name, sheet->style_trace.font->size );
-	object->properties.push_back( new STYLEProperty( object, "Trace Window", true, trace_theme->style, trace_theme->es.foregroundColor, trace_theme->es.backgroundColor, null_fg_color, null_bg_color ) );
-	object->properties.push_back( new STYLEProperty( object, "Service event (ES)", false, trace_theme->style, trace_theme->es.foregroundColor, trace_theme->es.backgroundColor, null_fg_color, null_bg_color ) );
-	object->properties.push_back( new STYLEProperty( object, "Action start (EB)", false, trace_theme->style, trace_theme->eb.foregroundColor, trace_theme->eb.backgroundColor, null_fg_color, null_bg_color ) );
+	object->properties.push_back( new STYLEProperty( object, "Trace Window", trace_theme->style, trace_theme->es.foregroundColor, trace_theme->es.backgroundColor ) );
+	object->properties.push_back( new STYLEProperty( object, "Service event (ES)", trace_theme->style, trace_theme->es.foregroundColor, trace_theme->es.backgroundColor ) );
+	object->properties.push_back( new STYLEProperty( object, "Action start (EB)", trace_theme->style, trace_theme->eb.foregroundColor, trace_theme->eb.backgroundColor ) );
 	objects.push_back( object );
 
 	RDOEditorBaseEditTheme* results_theme = static_cast<RDOEditorBaseEditTheme*>(sheet->style_results.theme);
 	object = new STYLEObject( STYLEObject::results, sheet->style_results.font->name, sheet->style_results.font->size );
-	object->properties.push_back( new STYLEProperty( object, "Results Window", true, results_theme->defaultStyle, results_theme->defaultColor, results_theme->backgroundColor, null_fg_color, null_bg_color ) );
+	object->properties.push_back( new STYLEProperty( object, "Results Window", results_theme->defaultStyle, results_theme->defaultColor, results_theme->backgroundColor ) );
 	objects.push_back( object );
 
 	RDOFindEditTheme* find_theme = static_cast<RDOFindEditTheme*>(sheet->style_find.theme);
 	object = new STYLEObject( STYLEObject::find, sheet->style_find.font->name, sheet->style_find.font->size );
-	object->properties.push_back( new STYLEProperty( object, "Find Window", true, find_theme->defaultStyle, find_theme->defaultColor, find_theme->backgroundColor, null_fg_color, null_bg_color ) );
+	object->properties.push_back( new STYLEProperty( object, "Find Window", find_theme->defaultStyle, find_theme->defaultColor, find_theme->backgroundColor ) );
 	objects.push_back( object );
 }
 
@@ -318,6 +321,13 @@ void RDOStudioOptionsStylesAndColors::DoDataExchange(CDataExchange* pDX)
 	CPropertyPage::DoDataExchange(pDX);
 
 	//{{AFX_DATA_MAP(RDOStudioOptionsStylesAndColors)
+	DDX_Control(pDX, IDC_HORZSCROLLBAR_CHECK, m_horzScrollBar);
+	DDX_Control(pDX, IDC_WORDWRAP_CHECK, m_wordWrap);
+	DDX_Control(pDX, IDC_FOLD_COMBO, m_fold);
+	DDX_Control(pDX, IDC_FOLD_STATIC, m_foldStatic);
+	DDX_Control(pDX, IDC_BOOKMARK_STATIC, m_bookmarkStatic);
+	DDX_Control(pDX, IDC_BOOKMARK_COMBO, m_bookmark);
+	DDX_Control(pDX, IDC_PREVIEWAS_STATIC, m_previewAsStatic);
 	DDX_Control(pDX, IDC_BGCOLOR_STATIC, m_bgColorStatic);
 	DDX_Control(pDX, IDC_FGCOLOR_STATIC, m_fgColorStatic);
 	DDX_Control(pDX, IDC_BGCOLOR_BUTTON, m_bgColorButton);
@@ -425,12 +435,12 @@ BOOL RDOStudioOptionsStylesAndColors::OnInitDialog()
 		list< STYLEProperty* >::iterator prop_it = (*obj_it)->properties.begin();
 		HTREEITEM root = TVI_ROOT;
 		while ( prop_it != (*obj_it)->properties.end() ) {
-			if ( (*prop_it)->root ) {
+			if ( prop_it == (*obj_it)->properties.begin() ) {
 				root = TVI_ROOT;
 			}
 			HTREEITEM item = m_styleItem.InsertItem( (*prop_it)->name.c_str(), root );
 			m_styleItem.SetItemData( item, reinterpret_cast<DWORD>(*prop_it) );
-			if ( (*prop_it)->root ) {
+			if ( prop_it == (*obj_it)->properties.begin() ) {
 				root = item;
 			}
 			prop_it++;
@@ -465,9 +475,10 @@ void RDOStudioOptionsStylesAndColors::OnStyleItemChanged(NMHDR* /*pNMHDR*/, LRES
 	HTREEITEM item = m_styleItem.GetSelectedItem();
 	if ( item ) {
 		STYLEProperty* prop = reinterpret_cast<STYLEProperty*>(m_styleItem.GetItemData( item ));
+		STYLEObject::Type type = prop->object->type;
 
 		// Update font name combobox
-		if ( prop->object->type == STYLEObject::all ) {
+		if ( type == STYLEObject::all ) {
 			loadFontsIntoCombo( true );
 		} else {
 			loadFontsIntoCombo( prop->object->font_fixed );
@@ -536,9 +547,29 @@ void RDOStudioOptionsStylesAndColors::OnStyleItemChanged(NMHDR* /*pNMHDR*/, LRES
 			bgColorCB.SetCurSel( -1 );
 		}
 
-		setPreviewAsCombo( prop->object->type );
+		// Update wordwrap
+		bool flag_wordwrap = type == STYLEObject::source || type == STYLEObject::build || type == STYLEObject::debug || type == STYLEObject::results || type == STYLEObject::find;
+		m_wordWrap.ShowWindow( flag_wordwrap ? SW_SHOW : SW_HIDE );
+		m_horzScrollBar.ShowWindow( flag_wordwrap ? SW_SHOW : SW_HIDE );
+//		m_wordWrap.SetCheck( );
 
-		switch ( prop->object->type ) {
+		// Update bookmark
+		bool flag_bookmark = type == STYLEObject::source || type == STYLEObject::build || type == STYLEObject::debug || type == STYLEObject::results || type == STYLEObject::find;
+		m_bookmark.ShowWindow( flag_bookmark ? SW_SHOW : SW_HIDE );
+		m_bookmarkStatic.ShowWindow( flag_bookmark ? SW_SHOW : SW_HIDE );
+
+		// Update fold
+		bool flag_fold = type == STYLEObject::source;
+		m_fold.ShowWindow( flag_fold ? SW_SHOW : SW_HIDE );
+		m_foldStatic.ShowWindow( flag_fold ? SW_SHOW : SW_HIDE );
+
+		// Update preview
+		bool flag_preview = type == STYLEObject::all;
+		m_previewAs.ShowWindow( flag_preview ? SW_SHOW : SW_HIDE );
+		m_previewAsStatic.ShowWindow( flag_preview ? SW_SHOW : SW_HIDE );
+		setPreviewAsCombo( type );
+
+		switch ( type ) {
 			case STYLEObject::all: {
 				break;
 			}
