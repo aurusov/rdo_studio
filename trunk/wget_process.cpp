@@ -1,11 +1,13 @@
 #include "wget_process.h"
+#include "config_file.h"
 
 #include <qprocess.h>
 #include <qtextcodec.h>
 #include <qfile.h>
 #include <qtextstream.h>
-#include <qglobal.h>
 #include <qdir.h>
+
+#define process_section "process"
 
 // -------------------------------------------------------
 // -------- WGProcessList
@@ -33,15 +35,6 @@ WGProcessList::WGProcessList( QObject* parent ):
 	proc_list.setAutoDelete( true );
 
 	readConfig();
-
-	if ( !saveToDir.isEmpty() ) {
-		QDir dir( saveToDir );
-		if ( !dir.exists() ) saveToDir = "";
-	}
-	if ( !logDirectory.isEmpty() ) {
-		QDir dir( logDirectory );
-		if ( !dir.exists() ) logDirectory = "";
-	}
 }
 
 WGProcessList::~WGProcessList()
@@ -118,147 +111,56 @@ WGProcess* WGProcessList::prev()
 	return proc_list.prev();
 }
 
-#ifdef Q_OS_UNIX
-
-QString getConfigValue( QString str, const char* search, int& pos )
-{
-	QString res = "";
-	pos = str.find( search );
-	if ( pos != -1 ) {
-		QString s = search;
-		str.remove( 0, s.length() );
-		s = s.stripWhiteSpace();
-		str = str.stripWhiteSpace();
-		if ( s.findRev('=') != (int)(s.length()-1) && str.find('=') == 0 ) {
-			str.remove( 0, 1 );
-			str = str.stripWhiteSpace();
-		}
-		if ( str.find('"') == 0 && str.findRev('"') == (int)(str.length()-1) ) {
-			str.remove( str.length()-1, 1 );
-			str.remove( 0, 1 );
-		}
-		res = str;
-	}
-	return res;
-}
-
 void WGProcessList::readConfig()
 {
-	QDir dir( QDir::homeDirPath() );
-	if ( dir.exists() ) {
-		QFile file( dir.filePath(".winwget") );
-		if ( file.open(IO_ReadOnly) ) {
-			QTextStream stream( &file );
-			QString line;
-			QString value;
-			int pos;
-			while ( !stream.atEnd() ) {
-				line = stream.readLine();
+	WGConfigFile config;
+	saveToDir             = config.read_str( "saveToDir", QDir::homeDirPath(), process_section );
+	doRestart             = config.read_bool( "doRestart", true, process_section );
+	dontUseSuffix         = config.read_bool( "dontUseSuffix", false, process_section );
+	dontRetrieveOldFile   = config.read_bool( "dontRetrieveOldFile", false, process_section );
+	writeLog              = config.read_bool( "writeLog", false, process_section );
+	logDirectory          = config.read_str( "logDirectory", QDir::homeDirPath(), process_section );
+	retriesNumber         = config.read_int( "retriesNumber", -1, process_section );
+	waitBetweenRetrievals = config.read_int( "waitBetweenRetrievals", -1, process_section );
+	checkClipboard        = config.read_bool( "checkClipboard", true, process_section );
+	autostartClipboard    = config.read_bool( "autostartClipboard", false, process_section );
 
-				value = getConfigValue( line, "saveToDir", pos );
-				if ( pos == 0 ) saveToDir = value;
-
-				value = getConfigValue( line, "doRestart", pos );
-				if ( pos == 0 ) doRestart = value.toInt() ? true : false;
-
-				value = getConfigValue( line, "dontUseSuffix", pos );
-				if ( pos == 0 ) dontUseSuffix = value.toInt() ? true : false;
-
-				value = getConfigValue( line, "dontRetrieveOldFile", pos );
-				if ( pos == 0 ) dontRetrieveOldFile = value.toInt() ? true : false;
-
-				value = getConfigValue( line, "writeLog", pos );
-				if ( pos == 0 ) writeLog = value.toInt() ? true : false;
-
-				value = getConfigValue( line, "logDirectory", pos );
-				if ( pos == 0 ) logDirectory = value;
-
-				value = getConfigValue( line, "retriesNumber", pos );
-				bool ok = true;
-				int v = value.toInt( &ok );
-				if ( pos == 0 && ok ) retriesNumber = v;
-
-				value = getConfigValue( line, "waitBetweenRetrievals", pos );
-				ok = true;
-				v = value.toInt( &ok );
-				if ( pos == 0 && ok ) waitBetweenRetrievals = v;
-
-				value = getConfigValue( line, "checkClipboard", pos );
-				if ( pos == 0 ) checkClipboard = value.toInt() ? true : false;
-
-				value = getConfigValue( line, "autostartClipboard", pos );
-				if ( pos == 0 ) autostartClipboard = value.toInt() ? true : false;
-			}
-		}
+	if ( !saveToDir.isEmpty() ) {
+		QDir dir( saveToDir );
+		if ( !dir.exists() ) saveToDir = QDir::homeDirPath();
 	}
+	if ( !logDirectory.isEmpty() ) {
+		QDir dir( logDirectory );
+		if ( !dir.exists() ) logDirectory = QDir::homeDirPath();
+	}
+	if ( retriesNumber         < -1 ) retriesNumber         = -1;
+	if ( waitBetweenRetrievals < -1 ) waitBetweenRetrievals = -1;
 }
 
 void WGProcessList::writeConfig()
 {
-	QDir dir( QDir::homeDirPath() );
-	if ( dir.exists() ) {
-		QFile file( dir.filePath(".winwget") );
-		if ( file.open(IO_WriteOnly) ) {
-			QTextStream stream( &file );
-			stream << "saveToDir=\""            << saveToDir             << "\"" << endl;
-			stream << "doRestart="              << doRestart             << endl;
-			stream << "dontUseSuffix="          << dontUseSuffix         << endl;
-			stream << "dontRetrieveOldFile="    << dontRetrieveOldFile   << endl;
-			stream << "writeLog="               << writeLog              << endl;
-			stream << "logDirectory=\""         << logDirectory          << "\"" << endl;
-			stream << "retriesNumber="          << retriesNumber         << endl;
-			stream << "waitBetweenRetrievals="  << waitBetweenRetrievals << endl;
-			stream << "checkClipboard="         << checkClipboard        << endl;
-			stream << "autostartClipboard="     << autostartClipboard    << endl;
-		}
-	}
+	WGConfigFile config;
+	config.write( "saveToDir"            , saveToDir            , process_section );
+	config.write( "doRestart"            , doRestart            , process_section );
+	config.write( "dontUseSuffix"        , dontUseSuffix        , process_section );
+	config.write( "dontRetrieveOldFile"  , dontRetrieveOldFile  , process_section );
+	config.write( "writeLog"             , writeLog             , process_section );
+	config.write( "logDirectory"         , logDirectory         , process_section );
+	config.write( "retriesNumber"        , retriesNumber        , process_section );
+	config.write( "waitBetweenRetrievals", waitBetweenRetrievals, process_section );
+	config.write( "checkClipboard"       , checkClipboard       , process_section );
+	config.write( "autostartClipboard"   , autostartClipboard   , process_section );
 }
-
-#else
-
-#include <qsettings.h>
-
-void WGProcessList::readConfig()
-{
-	QSettings reg;
-	QString empty_str = "";
-	saveToDir             = reg.readEntry( "/winwget/saveToDir", QDir::homeDirPath() );
-	doRestart             = reg.readBoolEntry( "/winwget/doRestart", true );
-	dontUseSuffix         = reg.readBoolEntry( "/winwget/dontUseSuffix", false );
-	dontRetrieveOldFile   = reg.readBoolEntry( "/winwget/dontRetrieveOldFile", false );
-	writeLog              = reg.readBoolEntry( "/winwget/writeLog", false );
-	logDirectory          = reg.readEntry( "/winwget/logDirectory", QDir::homeDirPath() );
-	retriesNumber         = reg.readNumEntry( "/winwget/retriesNumber", -1 );
-	waitBetweenRetrievals = reg.readNumEntry( "/winwget/waitBetweenRetrievals", -1 );
-	checkClipboard        = reg.readBoolEntry( "/winwget/checkClipboard", true );
-	autostartClipboard    = reg.readBoolEntry( "/winwget/autostartClipboard", false );
-}
-
-void WGProcessList::writeConfig()
-{
-	QSettings reg;
-	reg.writeEntry( "/winwget/saveToDir", saveToDir );
-	reg.writeEntry( "/winwget/doRestart", doRestart );
-	reg.writeEntry( "/winwget/dontUseSuffix", dontUseSuffix );
-	reg.writeEntry( "/winwget/dontRetrieveOldFile", dontRetrieveOldFile );
-	reg.writeEntry( "/winwget/writeLog", writeLog );
-	reg.writeEntry( "/winwget/logDirectory", logDirectory );
-	reg.writeEntry( "/winwget/retriesNumber", retriesNumber );
-	reg.writeEntry( "/winwget/waitBetweenRetrievals", waitBetweenRetrievals );
-	reg.writeEntry( "/winwget/checkClipboard", checkClipboard );
-	reg.writeEntry( "/winwget/autostartClipboard", autostartClipboard );
-}
-
-#endif
-
 
 // -------------------------------------------------------
 // -------- WGProcess
 // -------------------------------------------------------
-WGProcess::WGProcess( QObject* parent ):
+WGProcess::WGProcess( QObject* parent, WGProcess* procParent ):
 	QObject( parent),
+	proc_parent( procParent ),
 	new_line( true ),
 	logFileName( "" ),
+	proc( NULL ),
 	localFileName( "" ),
 	url( "" ),
 	time_download_begin( 0, 0, 0, 0 ),
@@ -292,12 +194,14 @@ WGProcess::WGProcess( QObject* parent ):
 	retriesNumber( -1 ),
 	waitBetweenRetrievals( -1 )
 {
-	proc = new QProcess( this );
-	proc->addArgument( "wget" );
-	proc->addArgument( "-v" );
-	connect( proc, SIGNAL(readyReadStdout()), this, SLOT(readStdout()) );
-	connect( proc, SIGNAL(readyReadStderr()), this, SLOT(readStderr()) );
-	connect( proc, SIGNAL(processExited()),   this, SLOT(procExit()) );
+	if ( !proc_parent ) {
+		proc = new QProcess( this );
+		proc->addArgument( "wget" );
+		proc->addArgument( "-v" );
+		connect( proc, SIGNAL(readyReadStdout()), this, SLOT(readStdout()) );
+		connect( proc, SIGNAL(readyReadStderr()), this, SLOT(readStderr()) );
+		connect( proc, SIGNAL(processExited()),   this, SLOT(procExit()) );
+	}
 /*
 	log.clear();
 	QFile f( "test.log" );
@@ -316,13 +220,13 @@ WGProcess::WGProcess( QObject* parent ):
 
 WGProcess::~WGProcess()
 {
-	proc->kill();
+	if ( proc ) proc->kill();
 	emit signal_close( this );
 }
 
 bool WGProcess::start( const bool without_arguments )
 {
-	if ( !url.isEmpty() ) {
+	if ( proc && !url.isEmpty() ) {
 		if ( !without_arguments ) {
 			if ( doRestart ) {
 				proc->addArgument( "-c" );
@@ -400,6 +304,7 @@ bool WGProcess::start( const bool without_arguments )
 
 bool WGProcess::version()
 {
+	if ( !proc ) return false;
 	proc->addArgument( "--version" );
 	if ( !proc->start() ) {
 		addToLog( "wget not found" );
@@ -437,46 +342,50 @@ WGUnicodeLog WGProcess::getStrListFromByteArray( const QByteArray& array )
 
 void WGProcess::readStdout()
 {
-	bool nl = new_line;
-	current_log = getStrListFromByteArray( proc->readStdout() );
-	QString s;
-	unsigned int count = current_log.unicode_count();
-	for ( unsigned int i = 0; i < count; i++ ) {
-		if ( !nl && i == 0 && log.unicode_count() ) {
-			s = log.native_last() + current_log.native_at(i);
-			log.unicode_remove_last();
-			log.unicode_append( s );
-			saveToLogStream( current_log.native_at(i), false );
-		} else {
-			s = current_log.native_at(i);
-			log.unicode_append( s );
-			saveToLogStream( s );
+	if ( proc ) {
+		bool nl = new_line;
+		current_log = getStrListFromByteArray( proc->readStdout() );
+		QString s;
+		unsigned int count = current_log.unicode_count();
+		for ( unsigned int i = 0; i < count; i++ ) {
+			if ( !nl && i == 0 && log.unicode_count() ) {
+				s = log.back() + current_log[i];
+				log.unicode_remove_last();
+				log.unicode_append( s );
+				saveToLogStream( current_log[i], false );
+			} else {
+				s = current_log[i];
+				log.unicode_append( s );
+				saveToLogStream( s );
+			}
 		}
+		logParser();
+		emit signal_log_change( current_log, new_line );
 	}
-	logParser();
-	emit signal_log_change( current_log, new_line );
 }
 
 void WGProcess::readStderr()
 {
-	bool nl = new_line;
-	current_log = getStrListFromByteArray( proc->readStderr() );
-	QString s;
-	unsigned int count = current_log.unicode_count();
-	for ( unsigned int i = 0; i < count; i++ ) {
-		if ( !nl && i == 0 && log.unicode_count() ) {
-			s = log.native_last() + current_log.native_at(i);
-			log.unicode_remove_last();
-			log.unicode_append( s );
-			saveToLogStream( current_log.native_at(i), false );
-		} else {
-			s = current_log.native_at(i);
-			log.unicode_append( s );
-			saveToLogStream( s );
+	if ( proc ) {
+		bool nl = new_line;
+		current_log = getStrListFromByteArray( proc->readStderr() );
+		QString s;
+		unsigned int count = current_log.unicode_count();
+		for ( unsigned int i = 0; i < count; i++ ) {
+			if ( !nl && i == 0 && log.unicode_count() ) {
+				s = log.back() + current_log[i];
+				log.unicode_remove_last();
+				log.unicode_append( s );
+				saveToLogStream( current_log[i], false );
+			} else {
+				s = current_log[i];
+				log.unicode_append( s );
+				saveToLogStream( s );
+			}
 		}
+		logParser();
+		emit signal_log_change( current_log, new_line );
 	}
-	logParser();
-	emit signal_log_change( current_log, new_line );
 }
 
 #define local_file_name_str            "=>"
@@ -730,6 +639,7 @@ void WGProcess::logParser()
 							step *= 10;
 							fs.remove( i, 1 );
 						}
+						lastFileSizeFull = fileSize;
 						emit signal_file_size( this, fileSize );
 						qDebug( "  file size = " + QString::number( fileSize) );
 						qDebug( "  get file size... ok" );
@@ -922,7 +832,7 @@ void WGProcess::setPause( const bool value )
 {
 	if ( getPause() != value ) {
 		if ( value ) {
-			proc->kill();
+			if ( proc ) proc->kill();
 			setStatus( psPause );
 			addToLog( "user paused" );
 			addToLog( "" );
@@ -960,7 +870,7 @@ void WGProcess::addToLog( const char* str )
 	emit signal_log_change( current_log, true );
 }
 
-void WGProcess::saveToLogStream( QString& str, const bool newline )
+void WGProcess::saveToLogStream( QString str, const bool newline )
 {
 	if ( writeLog && !localFileName.isEmpty() ) {
 
@@ -1010,6 +920,6 @@ void WGProcess::saveToLogStream( QString& str, const bool newline )
 
 void WGProcess::saveToLogStream( const char* str, const bool newline )
 {
-	QString s( str );
+	QString s = str;
 	saveToLogStream( s, newline );
 }

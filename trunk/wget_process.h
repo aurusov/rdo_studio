@@ -92,8 +92,10 @@ friend class WGProcessList;
 friend class QPtrList< WGProcess >;
 
 private:
-	WGProcess( QObject* parent = NULL );
+	WGProcess( QObject* parent = NULL, WGProcess* procParent = NULL );
 	~WGProcess();
+
+	WGProcess* proc_parent;
 
 	WGUnicodeLog log;
 	WGUnicodeLog current_log;
@@ -101,7 +103,7 @@ private:
 	void addToLog( const char* str );
 
 	QString logFileName;
-	void saveToLogStream( QString& str, const bool newline = true );
+	void saveToLogStream( QString str, const bool newline = true );
 	void saveToLogStream( const char* str, const bool newline = true );
 
 	QProcess* proc;
