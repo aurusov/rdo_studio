@@ -18,6 +18,9 @@ static char THIS_FILE[] = __FILE__;
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioMainFrame
 // ----------------------------------------------------------------------------
+const int WORKSPACE_SHOW_MESSAGE = ::RegisterWindowMessage( "WORKSPACE_SHOW_MESSAGE" );
+const int OUTPUT_SHOW_MESSAGE    = ::RegisterWindowMessage( "OUTPUT_SHOW_MESSAGE" );
+
 IMPLEMENT_DYNAMIC(RDOStudioMainFrame, CMDIFrameWnd)
 
 BEGIN_MESSAGE_MAP(RDOStudioMainFrame, CMDIFrameWnd)
@@ -283,14 +286,24 @@ void RDOStudioMainFrame::OnViewOutput()
 	ShowControlBar( &output, !output.IsVisible(), false );
 }
 
-void RDOStudioMainFrame::showWorkspace()
+void RDOStudioMainFrame::OnWorkspaceShow()
 {
 	ShowControlBar( &workspace, true, false );
 }
 
-void RDOStudioMainFrame::showOutput()
+void RDOStudioMainFrame::OnOutputShow()
 {
 	ShowControlBar( &output, true, false );
+}
+
+void RDOStudioMainFrame::showWorkspace()
+{
+	::SendMessage( m_hWnd, WORKSPACE_SHOW_MESSAGE, 0, 0 );
+}
+
+void RDOStudioMainFrame::showOutput()
+{
+	::SendMessage( m_hWnd, OUTPUT_SHOW_MESSAGE, 0, 0 );
 }
 
 void RDOStudioMainFrame::OnUpdateViewWorkspace(CCmdUI* pCmdUI) 
@@ -510,4 +523,14 @@ void RDOStudioMainFrame::OnUpdateModelFrameNext(CCmdUI* pCmdUI)
 void RDOStudioMainFrame::OnUpdateModelFramePrev(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable( model && model->frameManager.canShowPrevFrame() );
+}
+
+LRESULT RDOStudioMainFrame::WindowProc( UINT message, WPARAM wParam, LPARAM lParam )
+{
+	if ( message == WORKSPACE_SHOW_MESSAGE ) {
+		OnWorkspaceShow();
+	} else if ( message == OUTPUT_SHOW_MESSAGE ) {
+		OnOutputShow();
+	}
+	return CMDIFrameWnd::WindowProc(message, wParam, lParam);
 }

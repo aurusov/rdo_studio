@@ -76,6 +76,8 @@ protected:
 	//{{AFX_VIRTUAL(RDOStudioMainFrame)
 	public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
+	protected:
+	virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
 	//}}AFX_VIRTUAL
 
 protected:
@@ -119,6 +121,8 @@ protected:
 	afx_msg void OnUpdateModelTimeStatusBar( CCmdUI *pCmdUI );
 	afx_msg void OnUpdateModelRunTypeStatusBar( CCmdUI *pCmdUI );
 	afx_msg void OnUpdateModelShowRateStatusBar( CCmdUI *pCmdUI );
+	afx_msg void OnWorkspaceShow();
+	afx_msg void OnOutputShow();
 	DECLARE_MESSAGE_MAP()
 };
 
