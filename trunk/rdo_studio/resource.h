@@ -96,9 +96,6 @@
 #define ID_VIEW_EDITOR_TOGGLECURRENTFOLD 32812
 #define ID_RDO_RUN                      32821
 #define ID_RDO_STOP                     32822
-#define ID_RDO_PATH                     32827
-#define ID_RDO_RELOADPMVFILE            32828
-#define ID_RDO_RELOADTRCFILE            32829
 #define ID_INSERT_PAT_PATOPERATION      32840
 #define ID_INSERT_PAT_PATIRREGULAREVENT 32841
 #define ID_INSERT_PAT_PATRULE           32842

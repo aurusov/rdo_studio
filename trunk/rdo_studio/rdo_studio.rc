@@ -89,11 +89,6 @@ BEGIN
     SEPARATOR
     BUTTON      ID_RDO_RUN
     BUTTON      ID_RDO_STOP
-    SEPARATOR
-    BUTTON      ID_RDO_PATH
-    SEPARATOR
-    BUTTON      ID_RDO_RELOADPMVFILE
-    BUTTON      ID_RDO_RELOADTRCFILE
 END
 
 
@@ -817,11 +812,6 @@ BEGIN
     BEGIN
         MENUITEM "&Run\tF5",                    ID_RDO_RUN
         MENUITEM "&Stop\tShift+F5",             ID_RDO_STOP
-        MENUITEM SEPARATOR
-        MENUITEM "&Path...",                    ID_RDO_PATH
-        MENUITEM SEPARATOR
-        MENUITEM "Reload PM&V file",            ID_RDO_RELOADPMVFILE
-        MENUITEM "Reload &TRC file",            ID_RDO_RELOADTRCFILE
     END
     POPUP "&Chart"
     BEGIN
@@ -1118,9 +1108,6 @@ STRINGTABLE DISCARDABLE
 BEGIN
     ID_RDO_RUN              "\nRun"
     ID_RDO_STOP             "\nStop"
-    ID_RDO_PATH             "\nRAO Path"
-    ID_RDO_RELOADPMVFILE    "\nReload PMV File"
-    ID_RDO_RELOADTRCFILE    "\nReload TRC File"
 END
 
 STRINGTABLE DISCARDABLE 
