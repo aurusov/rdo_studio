@@ -1,13 +1,12 @@
 #include "stdafx.h"
 #include "rdostudioframestreectrl.h"
 #include "rdostudiomodel.h"
+#include "rdostudioframemanager.h"
 #include "rdostudioframedoc.h"
 #include "rdostudioframeview.h"
 #include "rdostudioapp.h"
 #include "rdostudiomainfrm.h"
 #include "resource.h"
-
-using namespace std;
 
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioFramesTreeCtrl
@@ -19,18 +18,12 @@ BEGIN_MESSAGE_MAP(RDOStudioFramesTreeCtrl, RDOTreeCtrl)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-vector< RDOStudioFramesTreeCtrl::TreeCtrlItem* > RDOStudioFramesTreeCtrl::frames;
-
 RDOStudioFramesTreeCtrl::RDOStudioFramesTreeCtrl()
 {
 }
 
 RDOStudioFramesTreeCtrl::~RDOStudioFramesTreeCtrl()
 {
-	std::vector< TreeCtrlItem* >::iterator it = frames.begin();
-	while ( it != frames.end() ) {
-		delete *it++;
-	};
 }
 
 BOOL RDOStudioFramesTreeCtrl::PreCreateWindow(CREATESTRUCT& cs)
@@ -55,28 +48,6 @@ int RDOStudioFramesTreeCtrl::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	return 0;
 }
 
-void RDOStudioFramesTreeCtrl::insertItem( const string& name )
-{
-	TreeCtrlItem* item = new TreeCtrlItem;
-	item->hitem = InsertItem( name.c_str(), 1, 1, GetRootItem() );
-	item->doc   = NULL;
-	item->view  = NULL;
-	frames.push_back( item );
-}
-
-void RDOStudioFramesTreeCtrl::clear()
-{
-	deleteChildren( GetRootItem() );
-	std::vector< TreeCtrlItem* >::iterator it = frames.begin();
-	while ( it != frames.end() ) {
-		if ( model->isValidFrameDoc( (*it)->doc ) ) {
-			(*it)->doc->OnCloseDocument();
-		}
-		delete *it++;
-	};
-	frames.clear();
-}
-
 void RDOStudioFramesTreeCtrl::expand()
 {
 	Expand( GetRootItem(), TVE_EXPAND );
@@ -90,34 +61,17 @@ void RDOStudioFramesTreeCtrl::OnLButtonDblClk(UINT nFlags, CPoint point)
 	HTREEITEM hitem = HitTest( point, &uFlags );
 
 	if ( hitem && ( TVHT_ONITEM & uFlags ) && hitem != GetRootItem() ) {
-		RDOStudioFrameDoc* doc = NULL;
-		std::vector< TreeCtrlItem* >::iterator it = frames.begin();
-		while ( it != frames.end() ) {
-			if ( (*it)->hitem == hitem ) {
-				doc = (*it)->doc;
-				break;
-			}
-			it++;
-		};
-		if ( it != frames.end() ) {
-			if ( !doc || !model->isValidFrameDoc( doc ) ) {
-				doc = static_cast<RDOStudioFrameDoc*>(model->frameDocTemplate->OpenDocumentFile( NULL ));
-				(*it)->doc  = doc;
-				(*it)->view = doc->getView();
+		int frame_index = model->frameManager.findFrameIndex( hitem );
+		if ( frame_index != -1 ) {
+			RDOStudioFrameDoc* doc = model->frameManager.getFrameDoc( frame_index );
+			if ( !doc || !model->frameManager.isValidFrameDoc( doc ) ) {
+//				doc = static_cast<RDOStudioFrameDoc*>(model->frameDocTemplate->OpenDocumentFile( NULL ));
+//				(*it)->doc  = doc;
+//				(*it)->view = doc->getView();
 				doc->SetTitle( format( IDS_FRAMENAME, static_cast<LPCTSTR>(GetItemText( hitem )) ).c_str()  );
 			} else {
 				studioApp.mainFrame->MDIActivate( doc->getView()->GetParentFrame() );
 			}
 		}
-/*
-		RDOStudioFrameDoc* doc = reinterpret_cast<RDOStudioFrameDoc*>(GetItemData( hitem ));
-		if ( !doc || !model->isValidFrameDoc( doc ) ) {
-			doc = model->addNewFrameDoc();
-			SetItemData( hitem, reinterpret_cast<DWORD>(doc) );
-			doc->SetTitle( format( IDS_FRAMENAME, static_cast<LPCTSTR>(GetItemText( hitem )) ).c_str()  );
-		} else {
-			studioApp.mainFrame->MDIActivate( doc->getView()->GetParentFrame() );
-		}
-*/
 	}
 }

@@ -7,8 +7,6 @@
 #include "rdostudiomodelview.h"
 #include "rdostudioframedoc.h"
 #include "rdostudioframeview.h"
-#include "rdostudioworkspace.h"
-#include "rdostudioframestreectrl.h"
 #include "resource.h"
 #include "rdo_edit/rdoeditortabctrl.h"
 
@@ -28,7 +26,6 @@ RDOStudioModel* model = NULL;
 
 RDOStudioModel::RDOStudioModel():
 	modelDocTemplate( NULL ),
-	frameDocTemplate( NULL ),
 	useTemplate( false ),
 	closeWithDocDelete( true ),
 	showCanNotCloseModelMessage( true )
@@ -37,9 +34,6 @@ RDOStudioModel::RDOStudioModel():
 
 	modelDocTemplate = new CMultiDocTemplate( IDR_MODELTYPE, RUNTIME_CLASS(RDOStudioModelDoc), RUNTIME_CLASS(RDOStudioChildFrame), RUNTIME_CLASS(RDOStudioModelView) );
 	AfxGetApp()->AddDocTemplate( modelDocTemplate );
-
-	frameDocTemplate = new CMultiDocTemplate( IDR_FRAMETYPE, RUNTIME_CLASS(RDOStudioFrameDoc), RUNTIME_CLASS(RDOStudioChildFrame), RUNTIME_CLASS(RDOStudioFrameView) );
-	AfxGetApp()->AddDocTemplate( frameDocTemplate );
 
 	kernel.setNotifyReflect( RDOKernel::newModel, newModelNotify );
 	kernel.setNotifyReflect( RDOKernel::openModel, openModelNotify );
@@ -182,13 +176,7 @@ void RDOStudioModel::stopModelNotify()
 	if ( doc ) {
 		doc->running = false;
 	}
-	POSITION pos = model->frameDocTemplate->GetFirstDocPosition();
-	if ( pos ) {
-		RDOStudioFrameDoc* frame = static_cast<RDOStudioFrameDoc*>(model->frameDocTemplate->GetNextDoc( pos ));
-		if ( frame ) {
-			frame->OnCloseDocument();
-		}
-	}
+	model->frameManager.clear();
 }
 
 void RDOStudioModel::parseErrorModelNotify()
@@ -464,47 +452,28 @@ double RDOStudioModel::getModelTime() const
 	return 0;
 }
 
-void RDOStudioModel::parseSuccess() const
+void RDOStudioModel::parseSuccess()
 {
-	studioApp.mainFrame->workspace.frames->clear();
+	frameManager.clear();
 	vector< const string* > frames = kernel.getSimulator()->getAllFrames();
 	vector< const string* >::iterator it = frames.begin();
 	while ( it != frames.end() ) {
-		studioApp.mainFrame->workspace.frames->insertItem( *(*it) );
+		frameManager.insertItem( *(*it) );
 		it++;
 	}
-	studioApp.mainFrame->workspace.frames->expand();
+	frameManager.expand();
 }
 
 void RDOStudioModel::parseFrame()
 {
 	const RDOFrame* frame = kernel.getSimulator()->getFrame();
 	int frame_index = 0;
-	RDOStudioFramesTreeCtrl* tree = studioApp.mainFrame->workspace.frames;
-	RDOStudioFrameDoc* doc = tree->getFrameDoc( frame_index );
-/*
-	if ( !tree->getFrameDoc( frame_index ) ) {
-		AfxGetApp()->PostThreadMessage( RDO_ADDNEWFRAME_MSG, 0, 0 );
-		if ( ::WaitForSingleObject( addNewFrameEvent, INFINITE ) == WAIT_OBJECT_0 ) {
-			CSingleLock lock( &tree->getFrameDoc( frame_index )->frameUsed );
-			lock.Lock();
-
-			RDOStudioFrameView* view = tree->getFrameDoc( frame_index )->getView();
-			view->frameBmpRect.right  = frame->width;
-			view->frameBmpRect.bottom = frame->height;
-			view->frameBmp.CreateCompatibleBitmap( view->GetDC(), view->frameBmpRect.Width(), view->frameBmpRect.Height() );
-
-			lock.Unlock();
-		} else {
-			ASSERT( false );
-		}
-	}
-*/
+	RDOStudioFrameDoc* doc = frameManager.getFrameDoc( frame_index );
 	if ( doc ) {
 		CSingleLock lock( &doc->frameUsed );
 		lock.Lock();
 
-		RDOStudioFrameView* view = tree->getFrameView( frame_index );
+		RDOStudioFrameView* view = frameManager.getFrameView( frame_index );
 		if ( view->mustBeInit ) {
 			view->frameBmpRect.right  = frame->width;
 			view->frameBmpRect.bottom = frame->height;
@@ -635,19 +604,6 @@ void RDOStudioModel::parseFrame()
 		view->GetClientRect( rect );
 		view->RedrawWindow( rect );
 	}
-}
-
-bool RDOStudioModel::isValidFrameDoc( const RDOStudioFrameDoc* const frame ) const
-{
-	POSITION pos = frameDocTemplate->GetFirstDocPosition();
-	while ( pos ) {
-		RDOStudioFrameDoc* doc = static_cast<RDOStudioFrameDoc*>(frameDocTemplate->GetNextDoc( pos ));
-		if ( frame == doc ) {
-			return true;
-		}
-	}
-
-	return false;
 }
 
 void RDOStudioModel::updateStyleOfAllModel() const

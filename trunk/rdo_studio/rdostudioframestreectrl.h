@@ -10,32 +10,14 @@
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioFramesTreeCtrl
 // ----------------------------------------------------------------------------
-class RDOStudioFrameDoc;
-class RDOStudioFrameView;
-
 class RDOStudioFramesTreeCtrl: public RDOTreeCtrl
 {
 private:
 	CImageList imageList;
 
-	class TreeCtrlItem {
-	friend class RDOStudioFramesTreeCtrl;
-	public:
-		TreeCtrlItem(): hitem( 0 ), doc( NULL ), view( NULL ) {};
-		HTREEITEM           hitem;
-		RDOStudioFrameDoc*  doc;
-		RDOStudioFrameView* view;
-	};
-	static std::vector< TreeCtrlItem* > frames;
-
 public:
 	RDOStudioFramesTreeCtrl();
 	virtual ~RDOStudioFramesTreeCtrl();
-
-	void insertItem( const std::string& name );
-	RDOStudioFrameDoc*  getFrameDoc( const int index ) const  { return frames[index]->doc;  };
-	RDOStudioFrameView* getFrameView( const int index ) const { return frames[index]->view; };
-	void clear();
 
 	void expand();
 

@@ -15,14 +15,14 @@
 // ----------------------------------------------------------------------------
 class RDOStudioWorkspace: public RDOStudioDockWnd
 {
+friend class RDOStudioFrameManager;
 private:
 	RDOTabCtrl tab;
+	RDOStudioFramesTreeCtrl* frames;
 
 public:
 	RDOStudioWorkspace();
 	virtual ~RDOStudioWorkspace();
-
-	RDOStudioFramesTreeCtrl* frames;
 
 protected:
 	//{{AFX_VIRTUAL(RDOStudioWorkspace)

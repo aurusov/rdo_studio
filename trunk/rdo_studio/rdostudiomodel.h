@@ -5,11 +5,12 @@
 #pragma once
 #endif
 
+#include "rdostudioframemanager.h"
+
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioModel
 // ----------------------------------------------------------------------------
 class RDOStudioModelDoc;
-class RDOStudioFrameDoc;
 namespace rdoEditor {
 	class RDOEditorTabCtrl;
 }
@@ -22,7 +23,7 @@ friend class RDOStudioFramesTreeCtrl;
 
 private:
 	CMultiDocTemplate* modelDocTemplate;
-	CMultiDocTemplate* frameDocTemplate;
+	RDOStudioFrameManager frameManager;
 
 	bool useTemplate;
 	bool closeWithDocDelete;
@@ -50,7 +51,7 @@ private:
 	void closeModelFromRepository();
 	void canNotCloseModelFromRepository() const;
 
-	void parseSuccess() const;
+	void parseSuccess();
 	void parseFrame();
 
 public:
@@ -77,8 +78,6 @@ public:
 
 	RDOStudioModelDoc* getModelDoc() const;
 	void updateModify() const;
-
-	bool isValidFrameDoc( const RDOStudioFrameDoc* const frame ) const;
 
 	rdoEditor::RDOEditorTabCtrl* getTab() const;
 

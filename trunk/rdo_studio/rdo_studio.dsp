@@ -660,6 +660,10 @@ SOURCE=.\rdostudioframedoc.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\rdostudioframemanager.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdostudioframestreectrl.cpp
 # End Source File
 # Begin Source File
@@ -673,6 +677,10 @@ SOURCE=.\rdostudioframeview.cpp
 # Begin Source File
 
 SOURCE=.\rdostudioframedoc.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdostudioframemanager.h
 # End Source File
 # Begin Source File
 
