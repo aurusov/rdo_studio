@@ -733,6 +733,9 @@ void RDOStudioOptionsStylesAndColors::OnThemeChanged()
 	if ( index != CB_ERR ) {
 		switch ( getCurrentObjectType() ) {
 			case STYLEObject::all: {
+				if ( index == 1 ) {
+					*static_cast<RDOEditorEditTheme*>(sheet->style_editor.theme) = RDOEditorEditTheme::getDefaultTheme();
+				}
 				break;
 			}
 			case STYLEObject::source: {
