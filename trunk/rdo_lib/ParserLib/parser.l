@@ -146,7 +146,7 @@ ellipse					return(ellipse);
 triang					return(triang);
 active					return(active);
 							
-(\'.*\')				{
+(\'[^\']*\')				{
 							std::string n1(YYText());
 							int len = n1.length();
                      std::string *name = new std::string(n1, 1, len-2);

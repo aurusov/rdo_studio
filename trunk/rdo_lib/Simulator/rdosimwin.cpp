@@ -74,6 +74,15 @@ void frameCallBack(rdoRuntime::RDOConfig *config, void *param)
 
 		kernel.notify(RDOKernel::showFrame);
 
+		if(simulator->scanCodes.size() > 0)
+		{
+			kernel.debug("Scan Codes:"); 
+			for(int j = 0; j < simulator->scanCodes.size(); j++)
+				kernel.debug(" %d", simulator->scanCodes[j]);
+
+			kernel.debug("\n"); 
+		}
+
 		config->keysPressed.insert(config->keysPressed.end(), simulator->scanCodes.begin(), simulator->scanCodes.end());
 		simulator->scanCodes.clear();
 
