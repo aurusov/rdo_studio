@@ -57,18 +57,21 @@ private:
 			}
 			return len;
 		}
+		virtual std::streamsize xsputn( const std::streambuf::char_type* s, std::streamsize n ) {
+			if ( current + n > vec.size() ) {
+				vec.resize( current + n );
+			}
+			memcpy( &vec[current], s, n );
+			current += n;
+			return n;
+		}
 		virtual int_type underflow() {
 			stream->setstate( eofbit );
 			return traits_type::eof();
 		}
 		virtual int_type uflow() {
-			int_type c = underflow();
-			if ( c == traits_type::eof() ) {
-				stream->setstate( eofbit );
-			} else {
-				stream->setstate( goodbit );
-			}
-			return c;
+			stream->setstate( eofbit );
+			return traits_type::eof();
 		}
 		virtual pos_type seekoff( off_type off, ios_base::seekdir way, ios_base::openmode which = ios_base::in | ios_base::out ) {
 			switch ( way ) {

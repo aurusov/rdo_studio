@@ -216,6 +216,9 @@ void RDOStudioModel::endExecuteModelNotify()
 
 	string str = kernel.getSimulator()->getResults().str();
 	if ( str.length() ) {
+		rdo::binarystream stream;
+		stream.write( str.c_str(), str.length() );
+		kernel.getRepository()->savePMV( stream );
 		output->showResults();
 		output->appendStringToResults( str );
 	}

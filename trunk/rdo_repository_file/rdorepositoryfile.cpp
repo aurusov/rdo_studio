@@ -392,9 +392,7 @@ void RDORepositoryFile::loadFile( const string& filename, rdo::binarystream& str
 	if ( described ) {
 		if ( isFileExists( filename ) ) {
 			if ( stream.getOpenMode() & ios::binary ) {
-				ios_base::openmode openmode = ios::in;
-				if ( stream.getOpenMode() & ios::binary ) openmode |= ios::binary;
-				ifstream file( filename.c_str(), openmode );
+				ifstream file( filename.c_str(), ios::in | ios::binary );
 				file.seekg( 0, ios::end );
 				int len = file.tellg();
 				file.seekg( 0, ios::beg );
@@ -420,11 +418,15 @@ void RDORepositoryFile::saveFile( const string& filename, rdo::binarystream& str
 	if ( !filename.empty() ) {
 		bool file_exist = isFileExists( filename );
 		if ( stream.size() || ( file_exist && !deleteIfEmpty ) ) {
-			ios_base::openmode openmode = ios::out;
-			if ( stream.getOpenMode() & ios::binary ) openmode |= ios::binary;
-			ofstream file( filename.c_str(), openmode );
-			file.write( stream.data(), stream.size() );
-			file.close();
+			if ( stream.getOpenMode() & ios::binary ) {
+				ofstream file( filename.c_str(), ios::out | ios::binary );
+				file.write( stream.data(), stream.size() );
+				file.close();
+			} else {
+				ofstream file( filename.c_str() );
+				file << stream.rdbuf();
+				file.close();
+			}
 		} else {
 			if ( file_exist && deleteIfEmpty ) {
 				CFile::Remove( filename.c_str() );
