@@ -41,6 +41,7 @@ public:
 	rdoEditor::RDOEditorEditStyle    style_editor;
 	rdoEditCtrl::RDOLogEditStyle     style_build;
 	rdoEditCtrl::RDOBaseEditStyle    style_debug;
+//	rdoEditCtrl::RDOBaseEditStyle    style_tracer;
 	rdoEditor::RDOEditorResultsStyle style_results;
 	rdoEditCtrl::RDOFindEditStyle    style_find;
 	void updateAllStyles() const;

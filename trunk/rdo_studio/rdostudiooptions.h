@@ -127,18 +127,18 @@ private:
 
 	class STYLEObject {
 	public:
-		enum Type { none = 0, all, source, build, debug, trace, results, find } type;
-		bool fixedFont;
+		enum Type { none = 0, all, source, build, debug, tracer, results, find } type;
+		std::string& font_name;
+		int&         font_size;
+		bool         font_fixed;
 		std::list< std::string > themes;
 		std::list< STYLEProperty* > properties;
 
-		STYLEObject(): type( none ), fixedFont( true ) {};
-		STYLEObject( Type _type, bool _fixedFont = true ): type( _type ), fixedFont( _fixedFont ) {};
+		STYLEObject( const Type _type, std::string& _font_name, int& _font_size, const bool _font_fixed = true ): type( _type ), font_name( _font_name ), font_size( _font_size ), font_fixed( _font_fixed ) {};
 		~STYLEObject() {
 			std::list< STYLEProperty* >::iterator it = properties.begin();
 			while ( it != properties.end() ) {
-				delete *it;
-				it++;
+				delete *it++;
 			};
 		}
 	};
@@ -149,17 +149,25 @@ private:
 	static int CALLBACK EnumFontFamExProc( ENUMLOGFONTEX* lpelfe, NEWTEXTMETRICEX* lpntme, DWORD FontType, LPARAM lParam );
 	void loadFontsIntoCombo( bool fixed = true );
 
-	STYLEObject::Type previewAs;
-	void setPreviewAsCombo( STYLEObject::Type type );
-
 	RDOStudioOptions* sheet;
 
 	RDOColorComboBox fgColorCB;
 	RDOColorComboBox bgColorCB;
 
+	const STYLEObject* getCurrentObject() const;
+	STYLEObject::Type getCurrentObjectType() const;
+
+	STYLEObject::Type previewAs;
+	void setPreviewAsCombo( STYLEObject::Type type );
+
+	std::string all_font_name;
+	int         all_font_size;
+	void updatePropOfAllObject() const;
+
 protected:
 	//{{AFX_DATA(RDOStudioOptionsStylesAndColors)
 	enum { IDD = IDD_OPTIONS_STYLESANDCOLORS };
+	CComboBox	m_fontSize;
 	CComboBox	m_previewAs;
 	CComboBox	m_fontName;
 	CTreeCtrl	m_styleItem;
@@ -174,9 +182,10 @@ protected:
 
 	//{{AFX_MSG(RDOStudioOptionsStylesAndColors)
 	virtual BOOL OnInitDialog();
-	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnStyleItemChanged(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnPreviewAsChanged();
+	afx_msg void OnFontNameChanged();
+	afx_msg void OnFontSizeChanged();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
@@ -198,6 +207,7 @@ private:
 	rdoEditor::RDOEditorEditStyle    style_editor;
 	rdoEditCtrl::RDOLogEditStyle     style_build;
 	rdoEditCtrl::RDOBaseEditStyle    style_debug;
+//	rdoEditCtrl::RDOBaseEditStyle    style_tracer;
 	rdoEditor::RDOEditorResultsStyle style_results;
 	rdoEditCtrl::RDOFindEditStyle    style_find;
 
@@ -212,7 +222,8 @@ private:
 	rdoEditor::RDOEditorResults preview_results;
 	rdoEditCtrl::RDOFindEdit    preview_find;
 
-	void apply();
+	void updateStyles();
+	void apply() const;
 	static int CALLBACK AddContextHelpProc(HWND hwnd, UINT message, LPARAM lParam);
 	void onHelpButton();
 

@@ -84,6 +84,8 @@ int RDOStudioOutput::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	debug->setEditorStyle( &studioApp.mainFrame->style_debug );
 	debug->setPopupMenu( &popupMenu );
 
+//	tracer->setEditorStyle( &studioApp.mainFrame->style_tracer );
+
 	results->setEditorStyle( &studioApp.mainFrame->style_results );
 	results->setPopupMenu( &popupMenu );
 
@@ -190,4 +192,13 @@ void RDOStudioOutput::updateLogConnection() const
 			}
 		}
 	}
+}
+
+void RDOStudioOutput::updateStyles() const
+{
+	build->setEditorStyle( &studioApp.mainFrame->style_build );
+	debug->setEditorStyle( &studioApp.mainFrame->style_debug );
+//	tracer->setEditorStyle( &studioApp.mainFrame->style_tracer );
+	results->setEditorStyle( &studioApp.mainFrame->style_results );
+	find->setEditorStyle( &studioApp.mainFrame->style_find );
 }

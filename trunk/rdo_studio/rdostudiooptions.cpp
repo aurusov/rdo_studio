@@ -202,21 +202,7 @@ void RDOStudioOptionsTabs::OnUpdateModify()
 	*sheet->style_results.tab = *sheet->style_editor.tab;
 	*sheet->style_find.tab    = *sheet->style_editor.tab;
 
-	if ( sheet->preview_editor.GetSafeHwnd() ) {
-		sheet->preview_editor.setEditorStyle( &sheet->style_editor );
-	}
-	if ( sheet->preview_build.GetSafeHwnd() ) {
-		sheet->preview_build.setEditorStyle( &sheet->style_build );
-	}
-	if ( sheet->preview_debug.GetSafeHwnd() ) {
-		sheet->preview_debug.setEditorStyle( &sheet->style_debug );
-	}
-	if ( sheet->preview_results.GetSafeHwnd() ) {
-		sheet->preview_results.setEditorStyle( &sheet->style_results );
-	}
-	if ( sheet->preview_find.GetSafeHwnd() ) {
-		sheet->preview_find.setEditorStyle( &sheet->style_find );
-	}
+	sheet->updateStyles();
 
 	SetModified( *sheet->style_editor.tab != *studioApp.mainFrame->style_editor.tab );
 }
@@ -226,9 +212,10 @@ void RDOStudioOptionsTabs::OnUpdateModify()
 // ----------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP(RDOStudioOptionsStylesAndColors, CPropertyPage)
 	//{{AFX_MSG_MAP(RDOStudioOptionsStylesAndColors)
-	ON_WM_SIZE()
 	ON_NOTIFY(TVN_SELCHANGED, IDC_STYLEITEM_TREE, OnStyleItemChanged)
 	ON_CBN_SELCHANGE(IDC_PREVIEWAS_COMBO, OnPreviewAsChanged)
+	ON_CBN_SELCHANGE(IDC_FONTNAME_COMBO, OnFontNameChanged)
+	ON_CBN_SELCHANGE(IDC_FONTSIZE_COMBO, OnFontSizeChanged)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -236,37 +223,40 @@ RDOStudioOptionsStylesAndColors::RDOStudioOptionsStylesAndColors( RDOStudioOptio
 	CPropertyPage( IDD ),
 	sheet( &_sheet ),
 	isCurrentFixed( false ),
-	previewAs( STYLEObject::none )
+	previewAs( STYLEObject::none ),
+	all_font_name( "" ),
+	all_font_size( -1 )
 {
 	//{{AFX_DATA_INIT(RDOStudioOptionsStylesAndColors)
 	//}}AFX_DATA_INIT
 
 	STYLEObject* object;
-	object = new STYLEObject( STYLEObject::all );
+	object = new STYLEObject( STYLEObject::all, all_font_name, all_font_size );
 	object->properties.push_back( new STYLEProperty( object, "All Windows" ) );
 	objects.push_back( object );
 
-	object = new STYLEObject( STYLEObject::source );
+	object = new STYLEObject( STYLEObject::source, sheet->style_editor.font->name, sheet->style_editor.font->size );
 	object->properties.push_back( new STYLEProperty( object, "Source Windows" ) );
 	objects.push_back( object );
 
-	object = new STYLEObject( STYLEObject::build, false );
+	object = new STYLEObject( STYLEObject::build, sheet->style_build.font->name, sheet->style_build.font->size, false );
 	object->properties.push_back( new STYLEProperty( object, "Build Windows" ) );
 	objects.push_back( object );
 
-	object = new STYLEObject( STYLEObject::debug, false );
+	object = new STYLEObject( STYLEObject::debug, sheet->style_debug.font->name, sheet->style_debug.font->size, false );
 	object->properties.push_back( new STYLEProperty( object, "Debug Windows" ) );
 	objects.push_back( object );
 
-	object = new STYLEObject( STYLEObject::trace );
+	object = new STYLEObject( STYLEObject::tracer, sheet->style_editor.font->name, sheet->style_editor.font->size );
+//	object = new STYLEObject( STYLEObject::tracer, sheet->style_tracer.font->name, sheet->style_tracer.font->size );
 	object->properties.push_back( new STYLEProperty( object, "Trace Windows" ) );
 	objects.push_back( object );
 
-	object = new STYLEObject( STYLEObject::results );
+	object = new STYLEObject( STYLEObject::results, sheet->style_results.font->name, sheet->style_results.font->size );
 	object->properties.push_back( new STYLEProperty( object, "Results Windows" ) );
 	objects.push_back( object );
 
-	object = new STYLEObject( STYLEObject::find );
+	object = new STYLEObject( STYLEObject::find, sheet->style_find.font->name, sheet->style_find.font->size );
 	object->properties.push_back( new STYLEProperty( object, "Find Windows" ) );
 	objects.push_back( object );
 }
@@ -275,8 +265,7 @@ RDOStudioOptionsStylesAndColors::~RDOStudioOptionsStylesAndColors()
 {
 	list< STYLEObject* >::iterator it = objects.begin();
 	while ( it != objects.end() ) {
-		delete *it;
-		it++;
+		delete *it++;
 	};
 }
 
@@ -285,6 +274,7 @@ void RDOStudioOptionsStylesAndColors::DoDataExchange(CDataExchange* pDX)
 	CPropertyPage::DoDataExchange(pDX);
 
 	//{{AFX_DATA_MAP(RDOStudioOptionsStylesAndColors)
+	DDX_Control(pDX, IDC_FONTSIZE_COMBO, m_fontSize);
 	DDX_Control(pDX, IDC_PREVIEWAS_COMBO, m_previewAs);
 	DDX_Control(pDX, IDC_FONTNAME_COMBO, m_fontName);
 	DDX_Control(pDX, IDC_STYLEITEM_TREE, m_styleItem);
@@ -342,6 +332,7 @@ BOOL RDOStudioOptionsStylesAndColors::OnInitDialog()
 	sheet->preview_debug.appendLine( "ES 0 1\r\n" );
 
 	sheet->preview_tracer.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, -1 );
+//	sheet->preview_tracer.setEditorStyle( &sheet->style_tracer );
 
 	sheet->preview_results.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, -1 );
 	sheet->preview_results.setEditorStyle( &sheet->style_results );
@@ -378,7 +369,7 @@ BOOL RDOStudioOptionsStylesAndColors::OnInitDialog()
 	sheet->preview_results.MoveWindow( rectEdit );
 	sheet->preview_find.MoveWindow( rectEdit );
 
-	list< STYLEObject* >::iterator obj_it = objects.begin();
+	list< STYLEObject* >::const_iterator obj_it = objects.begin();
 	while ( obj_it != objects.end() ) {
 		list< STYLEProperty* >::iterator prop_it = (*obj_it)->properties.begin();
 		HTREEITEM root = TVI_ROOT;
@@ -405,6 +396,10 @@ BOOL RDOStudioOptionsStylesAndColors::OnInitDialog()
 
 	setPreviewAsCombo( STYLEObject::source );
 
+	updatePropOfAllObject();
+
+	m_styleItem.SelectItem( m_styleItem.GetRootItem() );
+
 	return true;
 }
 
@@ -414,9 +409,189 @@ void RDOStudioOptionsStylesAndColors::OnOK()
 	CPropertyPage::OnOK();
 }
 
-void RDOStudioOptionsStylesAndColors::OnSize(UINT nType, int cx, int cy)
+void RDOStudioOptionsStylesAndColors::OnStyleItemChanged(NMHDR* pNMHDR, LRESULT* pResult)
 {
-	CPropertyPage::OnSize(nType, cx, cy);
+	HTREEITEM item = m_styleItem.GetSelectedItem();
+	if ( item ) {
+		STYLEProperty* prop = reinterpret_cast<STYLEProperty*>(m_styleItem.GetItemData( item ));
+
+		// update font name combobox
+		if ( prop->object->type == STYLEObject::all ) {
+			loadFontsIntoCombo( true );
+		} else {
+			loadFontsIntoCombo( prop->object->font_fixed );
+		}
+		list< STYLEFont >::const_iterator it = fonts.begin();
+		bool flag = false;
+		while ( it != fonts.end() ) {
+			if ( it->name == prop->object->font_name ) {
+				int index = m_fontName.FindStringExact( -1, prop->object->font_name.c_str() );
+				if ( index != CB_ERR ) {
+					m_fontName.SetCurSel( index );
+					flag = true;
+				}
+				break;
+			}
+			it++;
+		}
+		if ( !flag ) {
+			m_fontName.SetCurSel( -1 );
+		}
+
+		// update font size combobox
+		int index = m_fontSize.FindStringExact( -1, format( "%d", prop->object->font_size ).c_str() );
+		if ( index != CB_ERR ) {
+			m_fontSize.SetCurSel( index );
+		} else {
+			m_fontSize.SetCurSel( -1 );
+		}
+
+		setPreviewAsCombo( prop->object->type );
+
+		switch ( prop->object->type ) {
+			case STYLEObject::all: {
+				break;
+			}
+			case STYLEObject::source: {
+				break;
+			}
+			case STYLEObject::build: {
+				break;
+			}
+			case STYLEObject::debug: {
+				break;
+			}
+			case STYLEObject::tracer: {
+				break;
+			}
+			case STYLEObject::results: {
+				break;
+			}
+			case STYLEObject::find: {
+				break;
+			}
+			default: break;
+		}
+	}
+
+	*pResult = 0;
+}
+
+void RDOStudioOptionsStylesAndColors::OnFontNameChanged()
+{
+	int index = m_fontName.GetCurSel();
+	if ( index != CB_ERR ) {
+		CString str;
+		m_fontName.GetLBText( index, str );
+		switch ( getCurrentObjectType() ) {
+			case STYLEObject::all: {
+				all_font_name = str;
+				sheet->style_editor.font->name  = all_font_name;
+				sheet->style_build.font->name   = all_font_name;
+				sheet->style_debug.font->name   = all_font_name;
+//				sheet->style_tracer.font->name  = all_font_name;
+				sheet->style_results.font->name = all_font_name;
+				sheet->style_find.font->name    = all_font_name;
+				break;
+			}
+			case STYLEObject::source: {
+				sheet->style_editor.font->name = str;
+				break;
+			}
+			case STYLEObject::build: {
+				sheet->style_build.font->name = str;
+				break;
+			}
+			case STYLEObject::debug: {
+				sheet->style_debug.font->name = str;
+				break;
+			}
+			case STYLEObject::tracer: {
+//				sheet->style_tracer.font->name = str;
+				break;
+			}
+			case STYLEObject::results: {
+				sheet->style_results.font->name = str;
+				break;
+			}
+			case STYLEObject::find: {
+				sheet->style_find.font->name = str;
+				break;
+			}
+			default: break;
+		}
+		updatePropOfAllObject();
+		sheet->updateStyles();
+	}
+}
+
+void RDOStudioOptionsStylesAndColors::OnFontSizeChanged()
+{
+	int index = m_fontSize.GetCurSel();
+	if ( index != CB_ERR ) {
+		CString str;
+		m_fontSize.GetLBText( index, str );
+		int size = atoi( str );
+		switch ( getCurrentObjectType() ) {
+			case STYLEObject::all: {
+				all_font_size = size;
+				sheet->style_editor.font->size  = all_font_size;
+				sheet->style_build.font->size   = all_font_size;
+				sheet->style_debug.font->size   = all_font_size;
+//				sheet->style_tracer.font->size  = all_font_size;
+				sheet->style_results.font->size = all_font_size;
+				sheet->style_find.font->size    = all_font_size;
+				break;
+			}
+			case STYLEObject::source: {
+				sheet->style_editor.font->size = size;
+				break;
+			}
+			case STYLEObject::build: {
+				sheet->style_build.font->size = size;
+				break;
+			}
+			case STYLEObject::debug: {
+				sheet->style_debug.font->size = size;
+				break;
+			}
+			case STYLEObject::tracer: {
+//				sheet->style_tracer.font->size = size;
+				break;
+			}
+			case STYLEObject::results: {
+				sheet->style_results.font->size = size;
+				break;
+			}
+			case STYLEObject::find: {
+				sheet->style_find.font->size = size;
+				break;
+			}
+			default: break;
+		}
+		updatePropOfAllObject();
+		sheet->updateStyles();
+	}
+}
+
+void RDOStudioOptionsStylesAndColors::OnPreviewAsChanged()
+{
+	int index = m_previewAs.GetCurSel();
+	if ( index != CB_ERR ) {
+		if ( index == 0 ) {
+			setPreviewAsCombo( STYLEObject::source );
+		} else if ( index == 1 ) {
+			setPreviewAsCombo( STYLEObject::build );
+		} else if ( index == 2 ) {
+			setPreviewAsCombo( STYLEObject::debug );
+		} else if ( index == 3 ) {
+			setPreviewAsCombo( STYLEObject::tracer );
+		} else if ( index == 4 ) {
+			setPreviewAsCombo( STYLEObject::results );
+		} else if ( index == 5 ) {
+			setPreviewAsCombo( STYLEObject::find );
+		}
+	}
 }
 
 void RDOStudioOptionsStylesAndColors::loadFontsIntoCombo( bool fixed )
@@ -434,70 +609,20 @@ void RDOStudioOptionsStylesAndColors::loadFontsIntoCombo( bool fixed )
 	}
 }
 
-void RDOStudioOptionsStylesAndColors::OnStyleItemChanged(NMHDR* pNMHDR, LRESULT* pResult)
+const RDOStudioOptionsStylesAndColors::STYLEObject* RDOStudioOptionsStylesAndColors::getCurrentObject() const
 {
-	NM_TREEVIEW* pNMTreeView = (NM_TREEVIEW*)pNMHDR;
-
 	HTREEITEM item = m_styleItem.GetSelectedItem();
 	if ( item ) {
 		STYLEProperty* prop = reinterpret_cast<STYLEProperty*>(m_styleItem.GetItemData( item ));
-		loadFontsIntoCombo( prop->object->fixedFont );
-		setPreviewAsCombo( prop->object->type );
-		switch ( prop->object->type ) {
-			case STYLEObject::all: {
-				break;
-			}
-			case STYLEObject::source: {
-				break;
-			}
-			case STYLEObject::build: {
-				break;
-			}
-			case STYLEObject::debug: {
-				break;
-			}
-			case STYLEObject::trace: {
-				break;
-			}
-			case STYLEObject::results: {
-				break;
-			}
-			case STYLEObject::find: {
-				break;
-			}
-			default: break;
-		}
-/*
-		int index = m_fontName.FindStringExact( -1, sheet->editorStyle.font.name );
-		if ( index != CB_ERR ) {
-			fontNameCB->SetCurSel( index );
-		} else {
-			fontNameCB->SetCurSel( -1 );
-		}
-*/
+		return prop->object;
 	}
-
-	*pResult = 0;
+	return NULL;
 }
 
-void RDOStudioOptionsStylesAndColors::OnPreviewAsChanged()
+RDOStudioOptionsStylesAndColors::STYLEObject::Type RDOStudioOptionsStylesAndColors::getCurrentObjectType() const
 {
-	int index = m_previewAs.GetCurSel();
-	if ( index != CB_ERR ) {
-		if ( index == 0 ) {
-			setPreviewAsCombo( STYLEObject::source );
-		} else if ( index == 1 ) {
-			setPreviewAsCombo( STYLEObject::build );
-		} else if ( index == 2 ) {
-			setPreviewAsCombo( STYLEObject::debug );
-		} else if ( index == 3 ) {
-			setPreviewAsCombo( STYLEObject::trace );
-		} else if ( index == 4 ) {
-			setPreviewAsCombo( STYLEObject::results );
-		} else if ( index == 5 ) {
-			setPreviewAsCombo( STYLEObject::find );
-		}
-	}
+	const STYLEObject* obj = getCurrentObject();
+	return obj ? obj->type : STYLEObject::none;
 }
 
 void RDOStudioOptionsStylesAndColors::setPreviewAsCombo( STYLEObject::Type type )
@@ -526,7 +651,7 @@ void RDOStudioOptionsStylesAndColors::setPreviewAsCombo( STYLEObject::Type type 
 				sheet->preview_debug.ShowWindow( SW_SHOW );
 				break;
 			}
-			case STYLEObject::trace: {
+			case STYLEObject::tracer: {
 				m_previewAs.SetCurSel( 3 );
 				sheet->preview_tracer.ShowWindow( SW_SHOW );
 				break;
@@ -542,6 +667,41 @@ void RDOStudioOptionsStylesAndColors::setPreviewAsCombo( STYLEObject::Type type 
 				break;
 			}
 			default: break;
+		}
+	}
+}
+
+void RDOStudioOptionsStylesAndColors::updatePropOfAllObject() const
+{
+	{
+		list< STYLEObject* >::const_iterator it = objects.begin();
+		while ( it != objects.end() ) {
+			TRACE( "%s\r\n", (*it++)->font_name.c_str() );
+		}
+	}
+	list< STYLEObject* >::const_iterator it_first = objects.begin();
+	if ( it_first != objects.end() ) {
+		list< STYLEObject* >::const_iterator it = it_first;
+		it++;
+		if ( it != objects.end() ) {
+			string font_name = (*it)->font_name;
+			int    font_size = (*it)->font_size;
+			it++;
+			bool flag_font_name = true;
+			bool flag_font_size = true;
+			while ( it != objects.end() ) {
+//				TRACE( "%s\r\n", (*it)->font_name.c_str() );
+				if ( (*it)->font_name != font_name ) {
+					flag_font_name = false;
+				}
+				if ( (*it)->font_size != font_size ) {
+					flag_font_size = false;
+				}
+				if ( !flag_font_name && !flag_font_size ) break;
+				it++;
+			}
+			(*it_first)->font_name = flag_font_name ? font_name : "";
+			(*it_first)->font_size = flag_font_size ? font_size : -1;
 		}
 	}
 }
@@ -566,12 +726,14 @@ RDOStudioOptions::RDOStudioOptions():
 	style_editor.init();
 	style_build.init();
 	style_debug.init();
+//	style_tracer.init();
 	style_results.init();
 	style_find.init();
 
 	style_editor  = studioApp.mainFrame->style_editor;
 	style_build   = studioApp.mainFrame->style_build;
 	style_debug   = studioApp.mainFrame->style_debug;
+//	style_tracer  = studioApp.mainFrame->style_tracer;
 	style_results = studioApp.mainFrame->style_results;
 	style_find    = studioApp.mainFrame->style_find;
 
@@ -593,11 +755,34 @@ RDOStudioOptions::~RDOStudioOptions()
 	if ( styles )  { delete styles; styles = NULL; }
 }
 
-void RDOStudioOptions::apply()
+void RDOStudioOptions::updateStyles()
+{
+	if ( preview_editor.GetSafeHwnd() ) {
+		preview_editor.setEditorStyle( &style_editor );
+	}
+	if ( preview_build.GetSafeHwnd() ) {
+		preview_build.setEditorStyle( &style_build );
+	}
+	if ( preview_debug.GetSafeHwnd() ) {
+		preview_debug.setEditorStyle( &style_debug );
+	}
+//	if ( preview_tracer.GetSafeHwnd() ) {
+//		preview_tracer.setEditorStyle( &style_tracer );
+//	}
+	if ( preview_results.GetSafeHwnd() ) {
+		preview_results.setEditorStyle( &style_results );
+	}
+	if ( preview_find.GetSafeHwnd() ) {
+		preview_find.setEditorStyle( &style_find );
+	}
+}
+
+void RDOStudioOptions::apply() const
 {
 	studioApp.mainFrame->style_editor  = style_editor;
 	studioApp.mainFrame->style_build   = style_build;
 	studioApp.mainFrame->style_debug   = style_debug;
+//	studioApp.mainFrame->style_tracer  = style_tracer;
 	studioApp.mainFrame->style_results = style_results;
 	studioApp.mainFrame->style_find    = style_find;
 	studioApp.mainFrame->updateAllStyles();

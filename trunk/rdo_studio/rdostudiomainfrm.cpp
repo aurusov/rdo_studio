@@ -71,6 +71,9 @@ int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	style_debug.window->wordWrap          = true;
 	style_debug.load();
 
+//	style_tracer.init( "tracerStyle" );
+//	style_tracer.load();
+
 	style_results.init( "resultsStyle" );
 	style_results.load();
 
@@ -138,6 +141,7 @@ void RDOStudioMainFrame::OnDestroy()
 	style_editor.save();
 	style_build.save();
 	style_debug.save();
+//	style_tracer.save();
 	style_results.save();
 	style_find.save();
 
@@ -283,4 +287,5 @@ void RDOStudioMainFrame::OnViewOptions()
 void RDOStudioMainFrame::updateAllStyles() const
 {
 	model->updateStyleOfAllModel();
+	output.updateStyles();
 }

@@ -68,6 +68,7 @@ public:
 	void appendStringToFind( const string& str, const rdoModelObjects::RDOFileType fileType = rdoModelObjects::PAT, const int lineNumber = -1, const int posInLine = 0 ) const;
 
 	void updateLogConnection() const;
+	void updateStyles() const;
 
 public:
 	//{{AFX_VIRTUAL(RDOStudioOutput)
