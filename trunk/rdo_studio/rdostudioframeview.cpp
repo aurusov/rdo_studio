@@ -4,6 +4,7 @@
 #include "rdostudiomodel.h"
 #include "rdostudioapp.h"
 #include "rdostudiomainfrm.h"
+#include "resource.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -26,6 +27,7 @@ BEGIN_MESSAGE_MAP(RDOStudioFrameView, CView)
 	ON_WM_LBUTTONDOWN()
 	ON_WM_KEYDOWN()
 	ON_WM_MOUSEWHEEL()
+	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOMAUTO, OnUpdateZoomAuto)
 	//}}AFX_MSG_MAP
 	ON_COMMAND(ID_FILE_PRINT, CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, CView::OnFilePrint)
@@ -329,4 +331,10 @@ BOOL RDOStudioFrameView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 	UpdateWindow();
 
 	return TRUE;
+}
+
+void RDOStudioFrameView::OnUpdateZoomAuto(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable( false );
+	pCmdUI->SetCheck( false );
 }

@@ -73,6 +73,11 @@ BEGIN_MESSAGE_MAP( RDOBaseEdit, CWnd )
 	ON_COMMAND(ID_EDIT_SELECT_ALL, OnEditSelectAll)
 	ON_COMMAND(ID_EDIT_UPPERCASE, OnEditUpperCase)
 	ON_COMMAND(ID_EDIT_LOWERCASE, OnEditLowerCase)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_UNDO, OnUpdateEditUndo)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_REDO, OnUpdateEditRedo)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_CUT, OnUpdateEditCut)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_PASTE, OnUpdateEditPaste)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_CLEAR, OnUpdateEditClear)
 	ON_UPDATE_COMMAND_UI( ID_EDIT_SELECT_ALL      , OnSelectAll )
 	ON_COMMAND(ID_SEARCH_FIND, OnSearchFind)
 	ON_COMMAND(ID_SEARCH_REPLACE, OnSearchReplace)
@@ -97,13 +102,9 @@ BEGIN_MESSAGE_MAP( RDOBaseEdit, CWnd )
 	ON_UPDATE_COMMAND_UI( ID_VIEW_ENDOFLINE       , OnUpdateEndOfLine )
 	ON_UPDATE_COMMAND_UI( ID_VIEW_ZOOMIN          , OnUpdateZoomIn )
 	ON_UPDATE_COMMAND_UI( ID_VIEW_ZOOMOUT         , OnUpdateZoomOut )
+	ON_UPDATE_COMMAND_UI( ID_VIEW_ZOOMAUTO        , OnUpdateZoomAuto )
 	ON_UPDATE_COMMAND_UI( ID_VIEW_ZOOMRESET       , OnUpdateZoomReset )
 	ON_UPDATE_COMMAND_UI( ID_EDIT_COPY            , OnIsSelected )
-	ON_UPDATE_COMMAND_UI(ID_EDIT_UNDO, OnUpdateEditUndo)
-	ON_UPDATE_COMMAND_UI(ID_EDIT_REDO, OnUpdateEditRedo)
-	ON_UPDATE_COMMAND_UI(ID_EDIT_CUT, OnUpdateEditCut)
-	ON_UPDATE_COMMAND_UI(ID_EDIT_PASTE, OnUpdateEditPaste)
-	ON_UPDATE_COMMAND_UI(ID_EDIT_CLEAR, OnUpdateEditClear)
 	ON_UPDATE_COMMAND_UI( ID_EDIT_COPYASRTF       , OnIsSelected )
 	ON_UPDATE_COMMAND_UI( ID_EDIT_UPPERCASE       , OnIsSelected )
 	ON_UPDATE_COMMAND_UI( ID_EDIT_LOWERCASE       , OnIsSelected )
@@ -1344,6 +1345,12 @@ void RDOBaseEdit::OnUpdateZoomIn( CCmdUI *pCmdUI )
 void RDOBaseEdit::OnUpdateZoomOut( CCmdUI *pCmdUI )
 {
 	pCmdUI->Enable( getZoom() > -10 );
+}
+
+void RDOBaseEdit::OnUpdateZoomAuto( CCmdUI* pCmdUI )
+{
+	pCmdUI->Enable( false );
+	pCmdUI->SetCheck( false );
 }
 
 void RDOBaseEdit::OnUpdateZoomReset( CCmdUI *pCmdUI )
