@@ -12,6 +12,12 @@
 
 using namespace std;
 
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioFrameManager
 // ----------------------------------------------------------------------------
@@ -89,21 +95,13 @@ RDOStudioFrameDoc* RDOStudioFrameManager::connectFrameDoc( const HTREEITEM hitem
 	int index = findFrameIndex( hitem );
 	RDOStudioFrameDoc* doc = NULL;
 	if ( index != -1 ) {
-
 		CSingleLock lock( getFrameUsed( index ) );
 		lock.Lock();
-		CSingleLock lock2( getFrameDraw( index ) );
-		lock2.Lock();
 
 		doc = static_cast<RDOStudioFrameDoc*>(frameDocTemplate->OpenDocumentFile( NULL ));
 		frames[index]->doc  = doc;
 		frames[index]->view = doc->getView();
 
-		if ( isDeleted( index ) ) {
-			setDeleted( index, false );
-		}
-
-		lock2.Unlock();
 		lock.Unlock();
 	}
 	return doc;
@@ -113,13 +111,13 @@ void RDOStudioFrameManager::disconnectFrameDoc( const RDOStudioFrameDoc* doc ) c
 {
 	int index = findFrameIndex( doc );
 	if ( index != -1 ) {
-//		CSingleLock lock( getFrameUsed( index ) );
-//		lock.Lock();
+		CSingleLock lock( getFrameUsed( index ) );
+		lock.Lock();
 
 		frames[index]->doc  = NULL;
 		frames[index]->view = NULL;
 
-//		lock.Unlock();
+		lock.Unlock();
 	}
 }
 

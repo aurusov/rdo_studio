@@ -19,6 +19,12 @@ using namespace rdoEditor;
 using namespace rdoRepository;
 using namespace RDOSimulatorNS;
 
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioModel
 // ----------------------------------------------------------------------------
@@ -476,7 +482,7 @@ void RDOStudioModel::showFrame()
 			CSingleLock lock_used( frameManager.getFrameUsed( frame_index ) );
 			lock_used.Lock();
 
-			if ( !frameManager.isDeleted( frame_index ) ) {
+			if ( true /*!frameManager.isDeleted( frame_index )*/ ) {
 
 				RDOStudioFrameDoc* doc = frameManager.getFrameDoc( frame_index );
 				if ( doc ) {
@@ -638,10 +644,8 @@ void RDOStudioModel::showFrame()
 
 					lock_draw.Unlock();
 
-					CRect rect;
-					view->GetClientRect( rect );
-					view->InvalidateRect( rect );
-					view->UpdateWindow();
+					view->InvalidateRect( NULL );
+					view->SendNotifyMessage( WM_PAINT, 0, 0 );
 				}
 			}
 			lock_used.Unlock();

@@ -66,24 +66,10 @@ void RDOStudioFrameDoc::OnCloseDocument()
 {
 	int index = model->frameManager.findFrameIndex( this );
 
-	CSyncObject* ppObjects[] = { model->frameManager.getFrameUsed( index ), model->frameManager.getFrameDraw( index ) };
-	CMultiLock locks( ppObjects, 2 );
-	locks.Lock();
-
-//	CSingleLock lock_used( model->frameManager.getFrameUsed( index ) );
-//	lock_used.Lock();
-
-//	CSingleLock lock_draw( model->frameManager.getFrameDraw( index ) );
-//	lock_draw.Lock();
-
-	if ( !model->frameManager.isDeleted( index ) ) {
-		model->frameManager.setDeleted( index, true );
-	}
+//	if ( !model->frameManager.isDeleted( index ) ) {
+//		model->frameManager.setDeleted( index, true );
+//	}
 	model->frameManager.disconnectFrameDoc( this );
 
 	CDocument::OnCloseDocument();
-
-	locks.Unlock();
-//	lock_draw.Unlock();
-//	lock_used.Unlock();
 }
