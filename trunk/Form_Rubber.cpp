@@ -611,7 +611,7 @@ void TRubberStudio::RefreshOrderID()
   }
 }
 
-void TRubberStudio::DrawMenuCaption(TCanvas* canvas, AnsiString& text, bool enabled, TRect& rect, bool selected, UINT flags)
+void TRubberStudio::DrawMenuCaption(TCanvas* canvas, const AnsiString& text, bool enabled, TRect& rect, bool selected, UINT flags)
 {
   canvas->Brush->Style = bsClear;
   if (!enabled) {

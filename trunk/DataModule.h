@@ -8,6 +8,7 @@
 #include <Forms.hpp>
 #include <Db.hpp>
 #include <DBTables.hpp>
+#include <DB.hpp>
 //---------------------------------------------------------------------------
 class TData : public TDataModule
 {

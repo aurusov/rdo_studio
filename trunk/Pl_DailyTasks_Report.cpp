@@ -1,6 +1,6 @@
 //---------------------------------------------------------------------------
-
 #include <vcl.h>
+#include <algorithm>
 #pragma hdrstop
 
 #include "Pl_DailyTasks_Report.h"
@@ -114,7 +114,7 @@ bool TPlDailyTasksReport::DrawReportTop()
   fontstyle.Clear();
   SetFont("Arial", fontstyle, 12);
   TextInRectMm(0, 0, 0, 0, str, DT_LEFT | DT_CALCRECT, &dim);
-  double width = max(aswidth, dim.TextWidth);
+  double width = std::max(aswidth, dim.TextWidth);
 
   double left = PageWidthMm - width - OffsetLeft - OffsetRight - 3;
 

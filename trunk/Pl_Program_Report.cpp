@@ -1,6 +1,7 @@
 //---------------------------------------------------------------------------
 #include <vcl.h>
 #include <inifiles.hpp>
+#include <algorithm>
 #pragma hdrstop
 
 #include "Pl_Program_Report.h"
@@ -13,7 +14,6 @@
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 //---------------------------------------------------------------------------
-
 __fastcall TPlProgramReport::TPlProgramReport():
            TPlBaseReport(),
            LineOffsetY(0.0),
@@ -196,7 +196,7 @@ bool TPlProgramReport::DrawReportTop()
   fontstyle.Clear();
   SetFont("Arial", fontstyle, 12);
   TextInRectMm(0, 0, 0, 0, str, DT_LEFT | DT_CALCRECT, &dim);
-  double width = max(aswidth, dim.TextWidth);
+  double width = std::max(aswidth, dim.TextWidth);
 
   double left = PageWidthMm - width - OffsetLeft - OffsetRight - 3;
 
@@ -301,7 +301,7 @@ bool TPlProgramReport::DrawTable()
     TTextDimentions dim2;
     TextInRectMm(LastX + 1, LastY + dim.TextHeight + 1, LastX + WulkCostWidth -1, 0, LoadStr(sCost), DT_WORDBREAK | DT_CENTER | DT_VCENTER | DT_CALCRECT, &dim2);
     dim2.TextHeight += 2;
-    dim.TextHeight += max(dim1.TextHeight, dim2.TextHeight);
+    dim.TextHeight += std::max(dim1.TextHeight, dim2.TextHeight);
     if (dim.TextHeight > ReportTableHeaderHeight)
       ReportTableHeaderHeight = dim.TextHeight;
   } else {
@@ -327,7 +327,7 @@ bool TPlProgramReport::DrawTable()
     TTextDimentions dim2;
     TextInRectMm(LastX + 1, LastY + dim.TextHeight + 1, LastX + CutCostWidth -1, 0, LoadStr(sCost), DT_WORDBREAK | DT_CENTER | DT_VCENTER | DT_CALCRECT, &dim2);
     dim2.TextHeight += 2;
-    dim.TextHeight += max(dim1.TextHeight, dim2.TextHeight);
+    dim.TextHeight += std::max(dim1.TextHeight, dim2.TextHeight);
     if (dim.TextHeight > ReportTableHeaderHeight)
       ReportTableHeaderHeight = dim.TextHeight;
   } else {
@@ -353,7 +353,7 @@ bool TPlProgramReport::DrawTable()
     TTextDimentions dim2;
     TextInRectMm(LastX + 1, LastY + dim.TextHeight + 1, LastX + WulkSalaryProgWidth -1, 0, LoadStr(sSalary), DT_WORDBREAK | DT_CENTER | DT_VCENTER | DT_CALCRECT, &dim2);
     dim2.TextHeight += 2;
-    dim.TextHeight += max(dim1.TextHeight, dim2.TextHeight);
+    dim.TextHeight += std::max(dim1.TextHeight, dim2.TextHeight);
     if (dim.TextHeight > ReportTableHeaderHeight)
       ReportTableHeaderHeight = dim.TextHeight;
   } else {
@@ -379,7 +379,7 @@ bool TPlProgramReport::DrawTable()
     TTextDimentions dim2;
     TextInRectMm(LastX + 1, LastY + dim.TextHeight + 1, LastX + CutSalaryProgWidth -1, 0, LoadStr(sSalary), DT_WORDBREAK | DT_CENTER | DT_VCENTER | DT_CALCRECT, &dim2);
     dim2.TextHeight += 2;
-    dim.TextHeight += max(dim1.TextHeight, dim2.TextHeight);
+    dim.TextHeight += std::max(dim1.TextHeight, dim2.TextHeight);
     if (dim.TextHeight > ReportTableHeaderHeight)
       ReportTableHeaderHeight = dim.TextHeight;
   } else {
@@ -517,7 +517,7 @@ bool TPlProgramReport::DrawTableGroup(AnsiString GroupTitle, AnsiString GroupFie
 }
 
 // Отрисовка ячейки
-void TPlProgramReport::DrawTableCell(AnsiString &CellText, double CellWidth, UINT Format, double &MaxHeight)
+void TPlProgramReport::DrawTableCell(AnsiString CellText, double CellWidth, UINT Format, double &MaxHeight)
 {
   if (!CellText.Length())
     CellText = LoadStr(sUnknowValue);
@@ -1057,6 +1057,7 @@ void TPlProgramReport::DrawReport(int PageNumber)
         int rmcount = Data->RawMaterialInProduct->RecordCount;
         AnsiString rm_str = "";
         if (PrintingTargetAddition && rmcount) {
+          Data->RawMaterialInProduct->First();
           for (int j = 0; j < rmcount; j++) {
             if (j)
               rm_str += "; ";

@@ -196,7 +196,7 @@ __published:
 private:
   void __fastcall WndProc(Messages::TMessage &Message);
   void __fastcall AppException(TObject *Sender, Exception *E);
-  void DrawMenuCaption(TCanvas* canvas, AnsiString& text, bool enabled, TRect& rect, bool selected, UINT flags);
+  void DrawMenuCaption(TCanvas* canvas, const AnsiString& text, bool enabled, TRect& rect, bool selected, UINT flags);
   void __fastcall OnDrawMenuItem(TObject *Sender, TCanvas *ACanvas, const TRect &ARect, bool Selected);
 
   int lockProgram_count;

@@ -26,7 +26,7 @@ private:
   bool DrawTableGroup(AnsiString GroupTitle, AnsiString GroupFieldName, AnsiString Addititon);
   void CutTable();
   double RecordHeight;
-  void DrawTableCell(AnsiString &CellText, double CellWidth, UINT Format, double &MaxHeight);
+  void DrawTableCell(AnsiString CellText, double CellWidth, UINT Format, double &MaxHeight);
   bool DrawingAdditionTitle;
   bool DrawReportAdditionTitle(AnsiString AdditionTitle);
   double BottomItemTop;

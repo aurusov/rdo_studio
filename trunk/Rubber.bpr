@@ -2,7 +2,7 @@
 <!-- C++Builder XML Project -->
 <PROJECT>
   <MACROS>
-    <VERSION value="BCB.05.03"/>
+    <VERSION value="BCB.06.00"/>
     <PROJECT value="Rubber.exe"/>
     <OBJFILES value="Rubber.obj Form_Rubber.obj DataModule.obj Misc.obj DrR_Exception.obj 
       Dr_Form_About.obj Dr_MiscComponent.obj Dr_Form_Program_Info.obj 
@@ -15,8 +15,8 @@
       Pl_Program_Report.obj Pl_Form_ReportPreview.obj Pl_Base_Report.obj 
       Pl_Form_Report_PreviewOptions.obj Dr_Form_ProgramPart.obj 
       Pl_DailyTasks_Report.obj Dr_Form_Splash.obj Dr_Form_Plane_Info.obj"/>
-    <RESFILES value="Rubber.res RES_Model.RES RES_String.RES Report_Res_Bitmaps.RES 
-      Report_Res_String.RES Program_Report_Res_String.RES 
+    <RESFILES value="Rubber.res RES_Model.res RES_String.res Report_Res_Bitmaps.res 
+      Report_Res_String.res Program_Report_Res_String.res 
       Tasks_Report_Res_String.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -32,12 +32,13 @@
       Pl_Form_Report_PreviewOptions.dfm Dr_Form_ProgramPart.dfm 
       Dr_Form_Splash.dfm Dr_Form_Plane_Info.dfm"/>
     <LIBFILES value=""/>
-    <LIBRARIES value="vclx50.lib bcbsmp50.lib vclbde50.lib vcldb50.lib DCLUSR50.lib vcl50.lib"/>
-    <SPARELIBS value="vcl50.lib DCLUSR50.lib vcldb50.lib vclbde50.lib bcbsmp50.lib vclx50.lib"/>
-    <PACKAGES value="vcl50.bpi vclx50.bpi vcljpg50.bpi vclmid50.bpi vcldb50.bpi vclbde50.bpi 
-      bcbsmp50.bpi ibsmp50.bpi vcldbx50.bpi qrpt50.bpi teeui50.bpi teedb50.bpi 
-      tee50.bpi dss50.bpi nmfast50.bpi inetdb50.bpi inet50.bpi dclocx50.bpi 
-      DCLUSR50.bpi"/>
+    <LIBRARIES value="vclx.lib bcbsmp.lib bdertl.lib vcldb.lib dbrtl.lib DCLUSR.lib vcl.lib 
+      rtl.lib"/>
+    <SPARELIBS value="rtl.lib vcl.lib DCLUSR.lib dbrtl.lib vcldb.lib bdertl.lib bcbsmp.lib 
+      vclx.lib"/>
+    <PACKAGES value="rtl.bpi vcl.bpi vclx.bpi vcljpg.bpi dsnap.bpi dbrtl.bpi vcldb.bpi 
+      bdertl.bpi bcbsmp.bpi ibsmp.bpi vcldbx.bpi qrpt.bpi teeui.bpi teedb.bpi 
+      tee.bpi dss.bpi nmfast.bpi inetdb.bpi inet.bpi dclocx.bpi DCLUSR.bpi"/>
     <PATHCPP value=".;"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
@@ -48,25 +49,75 @@
     <USERDEFINES value=""/>
     <SYSDEFINES value="NO_STRICT;_VIS_NOLIB"/>
     <MAINSOURCE value="Rubber.cpp"/>
-    <INCLUDEPATH value="$(BCB)\bin;$(BCB)\projects;D:\Components\Cb5\;$(BCB)\include;$(BCB)\include\vcl"/>
-    <LIBPATH value="$(BCB)\bin;$(BCB)\projects;D:\Components\Cb5\;$(BCB)\projects\lib;$(BCB)\lib\obj;$(BCB)\lib"/>
+    <INCLUDEPATH value="$(BCB)\bin;$(BCB)\projects;I:\Components\Cb5;$(BCB)\include;$(BCB)\include\vcl"/>
+    <LIBPATH value="$(BCB)\bin;$(BCB)\projects;I:\Components\Cb5;$(BCB)\projects\lib;$(BCB)\lib\obj;$(BCB)\lib"/>
     <WARNINGS value="-w-par -w-8027 -w-8026"/>
     <WARNOPTSTR value=""/>
+    <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-I$(BCB)\bin -I$(BCB)\projects -ID:\Components\Cb5\. -I$(BCB)\include 
+    <IDLCFLAGS value="-I$(BCB)\bin -I$(BCB)\projects -II:\Components\Cb5 -I$(BCB)\include 
       -I$(BCB)\include\vcl -src_suffix cpp -boa"/>
-    <CFLAG1 value="-O2 -H=$(BCB)\lib\vcl50.csm -Hc -Vx -Ve -X- -a8 -b- -k- -vi -c -tW -tWM"/>
-    <PFLAGS value="-$Y- -$L- -$D- -v -JPHNE -M"/>
+    <CFLAG1 value="-O2 -H=j:\CBUILD~1\lib\vcl60.csm -Hc -Vx -Ve -X- -a8 -b- -k- -vi -c -tW -tWM"/>
+    <PFLAGS value="-$Y- -$L- -$D- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
     <AFLAGS value="/mx /w2 /zn"/>
     <LFLAGS value="-D&quot;&quot; -aa -Tpe -x -Gn"/>
+    <OTHERFILES value=""/>
   </OPTIONS>
   <LINKER>
     <ALLOBJ value="c0w32.obj sysinit.obj $(OBJFILES)"/>
     <ALLRES value="$(RESFILES)"/>
     <ALLLIB value="$(LIBFILES) $(LIBRARIES) import32.lib cp32mt.lib"/>
+    <OTHERFILES value=""/>
   </LINKER>
+  <FILELIST>
+      <FILE FILENAME="Rubber.cpp" FORMNAME="" UNITNAME="Rubber" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Rubber.res" FORMNAME="" UNITNAME="Rubber" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Form_Rubber.cpp" FORMNAME="RubberStudio" UNITNAME="Form_Rubber" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="DataModule.cpp" FORMNAME="Data" UNITNAME="DataModule" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ConstRes.h" FORMNAME="" UNITNAME="ConstRes" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="RES_Model.RES" FORMNAME="" UNITNAME="RES_Model" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Misc.cpp" FORMNAME="" UNITNAME="Misc" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="DrR_Exception.cpp" FORMNAME="" UNITNAME="DrR_Exception" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="RES_String.RES" FORMNAME="" UNITNAME="RES_String" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Dr_Form_About.cpp" FORMNAME="AboutForm" UNITNAME="Dr_Form_About" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Dr_MiscComponent.cpp" FORMNAME="" UNITNAME="Dr_MiscComponent" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Dr_Form_Program_Info.cpp" FORMNAME="ProgramInfoForm" UNITNAME="Dr_Form_Program_Info" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Dr_Form_Product.cpp" FORMNAME="ProductForm" UNITNAME="Dr_Form_Product" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Dr_Form_Personal.cpp" FORMNAME="PersonalForm" UNITNAME="Dr_Form_Personal" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Dr_Form_Hint.cpp" FORMNAME="HintForm" UNITNAME="Dr_Form_Hint" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Dr_Form_Machine.cpp" FORMNAME="MachineForm" UNITNAME="Dr_Form_Machine" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Dr_Form_Customer.cpp" FORMNAME="CustomerForm" UNITNAME="Dr_Form_Customer" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Dr_Form_Program_Machine.cpp" FORMNAME="MachineInProgForm" UNITNAME="Dr_Form_Program_Machine" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Dr_Form_Select.cpp" FORMNAME="SelectForm" UNITNAME="Dr_Form_Select" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Dr_Form_Select_Customer.cpp" FORMNAME="SelectCustomerForm" UNITNAME="Dr_Form_Select_Customer" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Dr_Form_Select_Personal.cpp" FORMNAME="SelectPersonalForm" UNITNAME="Dr_Form_Select_Personal" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Dr_Form_Select_Product.cpp" FORMNAME="SelectProductForm" UNITNAME="Dr_Form_Select_Product" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Dr_Form_Select_Program.cpp" FORMNAME="SelectProgramForm" UNITNAME="Dr_Form_Select_Program" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Dr_Form_RawMaterial.cpp" FORMNAME="RawMaterialForm" UNITNAME="Dr_Form_RawMaterial" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Dr_Form_Date.cpp" FORMNAME="DateForm" UNITNAME="Dr_Form_Date" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Dr_Form_Select_Date.cpp" FORMNAME="SelectDateForm" UNITNAME="Dr_Form_Select_Date" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Dr_Form_RawMaterialInProduct.cpp" FORMNAME="RawMaterialInProductForm" UNITNAME="Dr_Form_RawMaterialInProduct" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Dr_Form_Select_RawMaterial.cpp" FORMNAME="SelectRawMaterialForm" UNITNAME="Dr_Form_Select_RawMaterial" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Pl_Program_Report.cpp" FORMNAME="" UNITNAME="Pl_Program_Report" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Pl_Form_ReportPreview.cpp" FORMNAME="PreviewForm" UNITNAME="Pl_Form_ReportPreview" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Pl_Base_Report.cpp" FORMNAME="" UNITNAME="Pl_Base_Report" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Report_Res_Bitmaps.RES" FORMNAME="" UNITNAME="Report_Res_Bitmaps" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Report_Res_String.RES" FORMNAME="" UNITNAME="Report_Res_String" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Report_Consts.h" FORMNAME="" UNITNAME="Report_Consts" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Pl_Form_Report_PreviewOptions.cpp" FORMNAME="PreviewOptionsForm" UNITNAME="Pl_Form_Report_PreviewOptions" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Program_report_consts.h" FORMNAME="" UNITNAME="Program_report_consts" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Program_Report_Res_String.RES" FORMNAME="" UNITNAME="Program_Report_Res_String" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Dr_Form_ProgramPart.cpp" FORMNAME="ProgramPartForm" UNITNAME="Dr_Form_ProgramPart" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Pl_DailyTasks_Report.cpp" FORMNAME="" UNITNAME="Pl_DailyTasks_Report" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Tasks_Report_Res_String.res" FORMNAME="" UNITNAME="Tasks_Report_Res_String" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Dr_Form_Splash.cpp" FORMNAME="SplashForm" UNITNAME="Dr_Form_Splash" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Dr_Form_Plane_Info.cpp" FORMNAME="PlaneInfo" UNITNAME="Dr_Form_Plane_Info" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+  </FILELIST>
+  <BUILDTOOLS>
+  </BUILDTOOLS>
+
   <IDEOPTIONS>
 [Version Info]
 IncludeVerInfo=0
@@ -95,50 +146,48 @@ ProductName=
 ProductVersion=1.0.0.0
 Comments=
 
-[Excluded Packages]
-$(BCB)\Bin\dclado50.bpl=Borland ADO DB Components
-C:\WINDOWS\SYSTEM\ibsmp50.bpl=Borland C++ InterBase Alerter Component
-$(BCB)\Bin\bcbsmp50.bpl=Borland C++ Sample Components
-$(BCB)\Bin\dcl31w50.bpl=Delphi 1.0 Compatibility Components
-
 [HistoryLists\hlIncludePath]
-Count=19
-Item0=$(BCB)\bin;$(BCB)\projects;D:\Components\Cb5\;$(BCB)\include;$(BCB)\include\vcl
-Item1=;$(BCB)\bin;$(BCB)\projects;D:\Components\Cb5\;$(BCB)\include;$(BCB)\include\vcl
-Item2=$(BCB)\Bin;$(BCB)\..\CBuilder4\Projects;D:\Components\Cb5\;$(BCB)\include;$(BCB)\include\vcl
-Item3=;;$(BCB)\Bin;$(BCB)\..\CBuilder4\Projects;D:\Components\Cb5\;$(BCB)\include;$(BCB)\include\vcl
-Item4=;$(BCB)\Bin;$(BCB)\..\CBuilder4\Projects;D:\Components\Cb5\;$(BCB)\include;$(BCB)\include\vcl
-Item5=$(BCB)\..\CBuilder4\Projects;D:\Components\Cb5\;$(BCB)\include;$(BCB)\include\vcl
-Item6=$(BCB)\..\CBuilder4\Projects;D:\Components\Cb5;$(BCB)\include;$(BCB)\include\vcl
-Item7=$(BCB)\..\CBuilder4\Projects;C:\components\cb4\;$(BCB)\include;$(BCB)\include\vcl
-Item8=C:\CBuilder4\Projects\;..\..\..\..\..\components\cb4;..\CBuilder4\Projects;$(BCB)\include;$(BCB)\include\vcl
-Item9=;C:\CBuilder4\Projects;..\..\..\..\..\components\cb4;..\CBuilder4\Projects;$(BCB)\include;$(BCB)\include\vcl
-Item10=d:\components\cb4\;..\CBuilder4\Projects;$(BCB)\include;$(BCB)\include\vcl
-Item11=;d:\components\cb4\;..\CBuilder4\Projects;$(BCB)\include;$(BCB)\include\vcl
-Item12=;;;d:\components\cb4\;..\CBuilder4\Projects;$(BCB)\include;$(BCB)\include\vcl
-Item13=;;d:\components\cb4\;..\CBuilder4\Projects;$(BCB)\include;$(BCB)\include\vcl
-Item14=;d:\components\cb4;;..\CBuilder4\Projects;$(BCB)\include;$(BCB)\include\vcl
-Item15=;;;..\CBuilder4\Projects;$(BCB)\include;$(BCB)\include\vcl
-Item16=;..\CBuilder4\Projects;$(BCB)\include;$(BCB)\include\vcl
-Item17=..\CBuilder4\Projects;$(BCB)\include;$(BCB)\include\vcl
-Item18=$(BCB)\include;$(BCB)\include\vcl
+Count=21
+Item0=$(BCB)\bin;$(BCB)\projects;I:\Components\Cb5;$(BCB)\include;$(BCB)\include\vcl
+Item1=$(BCB)\bin;$(BCB)\projects;I:\Components\Cb5\;$(BCB)\include;$(BCB)\include\vcl
+Item2=$(BCB)\bin;$(BCB)\projects;D:\Components\Cb5\;$(BCB)\include;$(BCB)\include\vcl
+Item3=;$(BCB)\bin;$(BCB)\projects;D:\Components\Cb5\;$(BCB)\include;$(BCB)\include\vcl
+Item4=$(BCB)\Bin;$(BCB)\..\CBuilder4\Projects;D:\Components\Cb5\;$(BCB)\include;$(BCB)\include\vcl
+Item5=;;$(BCB)\Bin;$(BCB)\..\CBuilder4\Projects;D:\Components\Cb5\;$(BCB)\include;$(BCB)\include\vcl
+Item6=;$(BCB)\Bin;$(BCB)\..\CBuilder4\Projects;D:\Components\Cb5\;$(BCB)\include;$(BCB)\include\vcl
+Item7=$(BCB)\..\CBuilder4\Projects;D:\Components\Cb5\;$(BCB)\include;$(BCB)\include\vcl
+Item8=$(BCB)\..\CBuilder4\Projects;D:\Components\Cb5;$(BCB)\include;$(BCB)\include\vcl
+Item9=$(BCB)\..\CBuilder4\Projects;C:\components\cb4\;$(BCB)\include;$(BCB)\include\vcl
+Item10=C:\CBuilder4\Projects\;..\..\..\..\..\components\cb4;..\CBuilder4\Projects;$(BCB)\include;$(BCB)\include\vcl
+Item11=;C:\CBuilder4\Projects;..\..\..\..\..\components\cb4;..\CBuilder4\Projects;$(BCB)\include;$(BCB)\include\vcl
+Item12=d:\components\cb4\;..\CBuilder4\Projects;$(BCB)\include;$(BCB)\include\vcl
+Item13=;d:\components\cb4\;..\CBuilder4\Projects;$(BCB)\include;$(BCB)\include\vcl
+Item14=;;;d:\components\cb4\;..\CBuilder4\Projects;$(BCB)\include;$(BCB)\include\vcl
+Item15=;;d:\components\cb4\;..\CBuilder4\Projects;$(BCB)\include;$(BCB)\include\vcl
+Item16=;d:\components\cb4;;..\CBuilder4\Projects;$(BCB)\include;$(BCB)\include\vcl
+Item17=;;;..\CBuilder4\Projects;$(BCB)\include;$(BCB)\include\vcl
+Item18=;..\CBuilder4\Projects;$(BCB)\include;$(BCB)\include\vcl
+Item19=..\CBuilder4\Projects;$(BCB)\include;$(BCB)\include\vcl
+Item20=$(BCB)\include;$(BCB)\include\vcl
 
 [HistoryLists\hlLibraryPath]
-Count=14
-Item0=$(BCB)\bin;$(BCB)\projects;D:\Components\Cb5\;$(BCB)\projects\lib;$(BCB)\lib\obj;$(BCB)\lib
-Item1=;$(BCB)\bin;$(BCB)\projects;D:\Components\Cb5\;$(BCB)\projects\lib;$(BCB)\lib\obj;$(BCB)\lib
-Item2=$(BCB)\Bin;$(BCB)\..\CBuilder4\Projects;D:\Components\Cb5\;$(BCB)\projects\lib;$(BCB)\lib\obj;$(BCB)\lib
-Item3=;;$(BCB)\Bin;$(BCB)\..\CBuilder4\Projects;D:\Components\Cb5\;$(BCB)\projects\lib;$(BCB)\lib\obj;$(BCB)\lib
-Item4=;$(BCB)\Bin;$(BCB)\..\CBuilder4\Projects;D:\Components\Cb5\;$(BCB)\projects\lib;$(BCB)\lib\obj;$(BCB)\lib
-Item5=$(BCB)\..\CBuilder4\Projects;D:\Components\Cb5\;$(BCB)\projects\lib;$(BCB)\lib\obj;$(BCB)\lib
-Item6=$(BCB)\..\CBuilder4\Projects;D:\Components\Cb5;$(BCB)\projects\lib;$(BCB)\lib\obj;$(BCB)\lib
-Item7=$(BCB)\..\CBuilder4\Projects;C:\components\cb4\;$(BCB)\projects\lib;$(BCB)\lib\obj;$(BCB)\lib
-Item8=C:\CBuilder4\Projects\;..\..\..\..\..\components\cb4;..\CBuilder4\Projects;$(BCB)\projects\lib;$(BCB)\lib\obj;$(BCB)\lib
-Item9=C:\CBuilder4\Projects;..\..\..\..\..\components\cb4;..\CBuilder4\Projects;$(BCB)\projects\lib;$(BCB)\lib\obj;$(BCB)\lib
-Item10=d:\components\cb4\;..\CBuilder4\Projects;$(BCB)\projects\lib;$(BCB)\lib\obj;$(BCB)\lib
-Item11=d:\components\cb4;..\CBuilder4\Projects;$(BCB)\projects\lib;$(BCB)\lib\obj;$(BCB)\lib
-Item12=..\CBuilder4\Projects;$(BCB)\projects\lib;$(BCB)\lib\obj;$(BCB)\lib
-Item13=$(BCB)\projects\lib;$(BCB)\lib\obj;$(BCB)\lib
+Count=16
+Item0=$(BCB)\bin;$(BCB)\projects;I:\Components\Cb5;$(BCB)\projects\lib;$(BCB)\lib\obj;$(BCB)\lib
+Item1=$(BCB)\bin;$(BCB)\projects;I:\Components\Cb5\;$(BCB)\projects\lib;$(BCB)\lib\obj;$(BCB)\lib
+Item2=$(BCB)\bin;$(BCB)\projects;D:\Components\Cb5\;$(BCB)\projects\lib;$(BCB)\lib\obj;$(BCB)\lib
+Item3=;$(BCB)\bin;$(BCB)\projects;D:\Components\Cb5\;$(BCB)\projects\lib;$(BCB)\lib\obj;$(BCB)\lib
+Item4=$(BCB)\Bin;$(BCB)\..\CBuilder4\Projects;D:\Components\Cb5\;$(BCB)\projects\lib;$(BCB)\lib\obj;$(BCB)\lib
+Item5=;;$(BCB)\Bin;$(BCB)\..\CBuilder4\Projects;D:\Components\Cb5\;$(BCB)\projects\lib;$(BCB)\lib\obj;$(BCB)\lib
+Item6=;$(BCB)\Bin;$(BCB)\..\CBuilder4\Projects;D:\Components\Cb5\;$(BCB)\projects\lib;$(BCB)\lib\obj;$(BCB)\lib
+Item7=$(BCB)\..\CBuilder4\Projects;D:\Components\Cb5\;$(BCB)\projects\lib;$(BCB)\lib\obj;$(BCB)\lib
+Item8=$(BCB)\..\CBuilder4\Projects;D:\Components\Cb5;$(BCB)\projects\lib;$(BCB)\lib\obj;$(BCB)\lib
+Item9=$(BCB)\..\CBuilder4\Projects;C:\components\cb4\;$(BCB)\projects\lib;$(BCB)\lib\obj;$(BCB)\lib
+Item10=C:\CBuilder4\Projects\;..\..\..\..\..\components\cb4;..\CBuilder4\Projects;$(BCB)\projects\lib;$(BCB)\lib\obj;$(BCB)\lib
+Item11=C:\CBuilder4\Projects;..\..\..\..\..\components\cb4;..\CBuilder4\Projects;$(BCB)\projects\lib;$(BCB)\lib\obj;$(BCB)\lib
+Item12=d:\components\cb4\;..\CBuilder4\Projects;$(BCB)\projects\lib;$(BCB)\lib\obj;$(BCB)\lib
+Item13=d:\components\cb4;..\CBuilder4\Projects;$(BCB)\projects\lib;$(BCB)\lib\obj;$(BCB)\lib
+Item14=..\CBuilder4\Projects;$(BCB)\projects\lib;$(BCB)\lib\obj;$(BCB)\lib
+Item15=$(BCB)\projects\lib;$(BCB)\lib\obj;$(BCB)\lib
 
 [HistoryLists\hlDebugSourcePath]
 Count=1
@@ -155,9 +204,14 @@ DebugSourceDirs=$(BCB)\source\vcl
 
 [Parameters]
 RunParams=-fill_koef 50
+Launcher=
+UseLauncher=0
+DebugCWD=
 HostApplication=
 RemoteHost=
 RemotePath=
+RemoteLauncher=
+RemoteCWD=
 RemoteDebug=0
 
 [Compiler]
