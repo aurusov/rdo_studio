@@ -135,7 +135,7 @@ RDOStudioApp::RDOStudioApp():
 	showCaptionFullName( false ),
 	autoRun( false ),
 	autoExit( false ),
-	exitCode( 0 ),
+	exitCode( -1 ),
 	openModelName( "" )
 {
 }
@@ -267,6 +267,9 @@ int RDOStudioApp::ExitInstance()
 {
 	if ( autoExit ) {
 		CWinApp::ExitInstance();
+		if ( exitCode == -1 ) {
+			exitCode = 3;
+		}
 		return exitCode;
 	} else {
 		HtmlHelp( NULL, NULL, HH_CLOSE_ALL, 0 );
@@ -731,7 +734,9 @@ BOOL RDOStudioApp::PreTranslateMessage( MSG* pMsg )
 		plugins->modelStop();
 	} else if ( pMsg->message == RDOSTUDIO_AUTOEXIT_MESSAGE ) {
 		exitCode = pMsg->wParam;
-		mainFrame->SendMessage( WM_CLOSE );
+		if ( mainFrame && ::IsWindow( mainFrame->m_hWnd ) ) {
+			mainFrame->SendMessage( WM_CLOSE );
+		}
 	}
 	return CWinApp::PreTranslateMessage(pMsg);
 }
