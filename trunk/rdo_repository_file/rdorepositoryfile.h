@@ -23,6 +23,17 @@ private:
 	string modelName;
 	string modelPath;
 	string lastModelPath;
+	string patFileName;
+	string rtpFileName;
+	string rssFileName;
+	string oprFileName;
+	string frmFileName;
+	string funFileName;
+	string dptFileName;
+	string smrFileName;
+	string pmdFileName;
+	string pmvFileName;
+	string trcFileName;
 
 	bool readOnly;
 
@@ -37,8 +48,8 @@ private:
 
 	void setName( const string& str );
 
-	void loadFile( string& filename, strstream& stream ) const;
-	void saveFile( string& filename, strstream& stream ) const;
+	void loadFile( const string& filename, strstream& stream ) const;
+	void saveFile( const string& filename, strstream& stream ) const;
 
 	void changeLastModelPath();
 

@@ -6,11 +6,27 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <strstream>
 #include <afxwin.h>
 
 using namespace std;
 
 class RdoModel;
+
+namespace rdoParse {
+
+struct RDOSMRFileInfo
+{
+	string model_name;
+	string resource_file;
+	string oprIev_file;
+	string frame_file;
+	string statistic_file;
+	string results_file;
+	string trace_file;
+};
+
+};
 
 class RdoSimulator
 {
@@ -23,6 +39,7 @@ public:
 	~RdoSimulator();
 	runModel(string smrFileName);
 	stopModel();
+	void parseSMRFileInfo( strstream& smr, rdoParse::RDOSMRFileInfo& info );
 	friend UINT RunningThreadControllingFunction( LPVOID pParam );
 };
 

@@ -74,3 +74,7 @@ RdoSimulator::closeModel()
 		model = NULL;
 	}
 }
+
+void RdoSimulator::parseSMRFileInfo( strstream& smr, rdoParse::RDOSMRFileInfo& info )
+{
+}

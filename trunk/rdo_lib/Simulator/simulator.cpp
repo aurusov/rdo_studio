@@ -401,7 +401,3 @@ RDOTriangElement::RDOTriangElement(double _x1, double _y1, double _x2, double _y
 { 
 	type = triang_type; 
 }
-
-//void RdoModel::parseSMRFileInfo( strstream& smr, rdoParse::RDOSMRFileInfo& info )
-//{
-//}

@@ -3,7 +3,7 @@
 #include "../rdo_studio/resource.h"
 
 #include <rdokernel.h>
-#include <simulator.h>
+#include <rdosimwin.h>
 
 #include <fstream>
 #include <afxdlgs.h>
@@ -18,6 +18,17 @@ RDORepositoryFile::RDORepositoryFile():
 	modelName( "" ),
 	modelPath( "" ),
 	lastModelPath( "" ),
+	patFileName( "" ),
+	rtpFileName( "" ),
+	rssFileName( "" ),
+	oprFileName( "" ),
+	frmFileName( "" ),
+	funFileName( "" ),
+	dptFileName( "" ),
+	smrFileName( "" ),
+	pmdFileName( "" ),
+	pmvFileName( "" ),
+	trcFileName( "" ),
 	readOnly( false )
 {
 }
@@ -30,8 +41,19 @@ void RDORepositoryFile::newModel()
 {
 	if ( canCloseModel() ) {
 		realCloseModel();
-		modelName = "model";
-		modelPath = "";
+		modelName   = "model";
+		modelPath   = "";
+		patFileName = "";
+		rtpFileName = "";
+		rssFileName = "";
+		oprFileName = "";
+		frmFileName = "";
+		funFileName = "";
+		dptFileName = "";
+		smrFileName = "";
+		pmdFileName = "";
+		pmvFileName = "";
+		trcFileName = "";
 		changeLastModelPath();
 		kernel.notify( RDOKernel::newModel );
 	} else {
@@ -63,10 +85,35 @@ bool RDORepositoryFile::openModel( const string& modelFileName )
 
 		if ( flag ) {
 			if ( isFileExists( modelPath + modelName + ".smr" ) ) {
-//				RDOSMRFileInfo fileInfo;
-//				kernel.getSimulator()->parseSMRFileInfo( 
+
+				smrFileName = modelPath + modelName + ".smr";
+				strstream smrStream;
+				loadFile( smrFileName, smrStream );
+				RDOSMRFileInfo fileInfo;
+				kernel.getSimulator()->parseSMRFileInfo( smrStream, fileInfo );
+
+				fileInfo.model_name     = modelName;
+				fileInfo.resource_file  = modelName;
+				fileInfo.oprIev_file    = modelName;
+				fileInfo.frame_file     = modelName;
+				fileInfo.statistic_file = modelName;
+				fileInfo.results_file   = modelName;
+				fileInfo.trace_file     = modelName;
+
+				patFileName = modelPath + fileInfo.model_name     + ".pat";
+				rtpFileName = modelPath + fileInfo.model_name     + ".rtp";
+				rssFileName = modelPath + fileInfo.resource_file  + ".rss";
+				oprFileName = modelPath + fileInfo.oprIev_file    + ".opr";
+				frmFileName = modelPath + fileInfo.frame_file     + ".frm";
+				funFileName = modelPath + fileInfo.model_name     + ".fun";
+				dptFileName = modelPath + fileInfo.model_name     + ".dpt";
+				pmdFileName = modelPath + fileInfo.statistic_file + ".pmd";
+				pmvFileName = modelPath + fileInfo.results_file   + ".pmv";
+				trcFileName = modelPath + fileInfo.trace_file     + ".trc";
+
 				kernel.notify( RDOKernel::openModel );
 				return true;
+
 			} else {
 				CString s;
 				s.LoadString( ID_MSG_MODELOPEN_ERROR );
@@ -126,8 +173,19 @@ bool RDORepositoryFile::canCloseModel() const
 void RDORepositoryFile::realCloseModel()
 {
 	kernel.notify( RDOKernel::closeModel );
-	modelName = "";
-	modelPath = "";
+	modelName   = "";
+	modelPath   = "";
+	patFileName = "";
+	rtpFileName = "";
+	rssFileName = "";
+	oprFileName = "";
+	frmFileName = "";
+	funFileName = "";
+	dptFileName = "";
+	smrFileName = "";
+	pmdFileName = "";
+	pmvFileName = "";
+	trcFileName = "";
 	changeLastModelPath();
 }
 
@@ -240,7 +298,7 @@ string RDORepositoryFile::getName() const
 
 string RDORepositoryFile::getFullName() const
 {
-	return modelPath + modelName + ".smr";
+	return smrFileName;
 }
 
 void RDORepositoryFile::setName( const string& str )
@@ -250,7 +308,18 @@ void RDORepositoryFile::setName( const string& str )
 	modelName.erase( 0, modelName.find_first_not_of( szDelims ) );
 	modelName.erase( modelName.find_last_not_of( szDelims ) + 1, string::npos );
 	if ( modelName.empty() ) {
-		modelPath = "";
+		modelPath   = "";
+		patFileName = "";
+		rtpFileName = "";
+		rssFileName = "";
+		oprFileName = "";
+		frmFileName = "";
+		funFileName = "";
+		dptFileName = "";
+		smrFileName = "";
+		pmdFileName = "";
+		pmvFileName = "";
+		trcFileName = "";
 	}
 	changeLastModelPath();
 }
@@ -260,7 +329,7 @@ bool RDORepositoryFile::isReadOnly() const
 	return readOnly;
 }
 
-void RDORepositoryFile::loadFile( string& filename, strstream& stream ) const
+void RDORepositoryFile::loadFile( const string& filename, strstream& stream ) const
 {
 	if ( isFileExists( filename ) ) {
 		ifstream file( filename.c_str() );
@@ -269,7 +338,7 @@ void RDORepositoryFile::loadFile( string& filename, strstream& stream ) const
 	}
 }
 
-void RDORepositoryFile::saveFile( string& filename, strstream& stream ) const
+void RDORepositoryFile::saveFile( const string& filename, strstream& stream ) const
 {
 	if ( stream.pcount() ) {
 		ofstream file( filename.c_str() );
@@ -285,110 +354,110 @@ void RDORepositoryFile::saveFile( string& filename, strstream& stream ) const
 
 void RDORepositoryFile::loadPAT( strstream& stream ) const
 {
-	loadFile( modelPath + modelName + ".pat", stream );
+	loadFile( patFileName, stream );
 }
 
 void RDORepositoryFile::loadRTP( strstream& stream ) const
 {
-	loadFile( modelPath + modelName + ".rtp", stream );
+	loadFile( rtpFileName, stream );
 }
 
 void RDORepositoryFile::loadRSS( strstream& stream ) const
 {
-	loadFile( modelPath + modelName + ".rss", stream );
+	loadFile( rssFileName, stream );
 }
 
 void RDORepositoryFile::loadOPR( strstream& stream ) const
 {
-	loadFile( modelPath + modelName + ".opr", stream );
+	loadFile( oprFileName, stream );
 }
 
 void RDORepositoryFile::loadFRM( strstream& stream ) const
 {
-	loadFile( modelPath + modelName + ".frm", stream );
+	loadFile( frmFileName, stream );
 }
 
 void RDORepositoryFile::loadFUN( strstream& stream ) const
 {
-	loadFile( modelPath + modelName + ".fun", stream );
+	loadFile( funFileName, stream );
 }
 
 void RDORepositoryFile::loadDPT( strstream& stream ) const
 {
-	loadFile( modelPath + modelName + ".dpt", stream );
+	loadFile( dptFileName, stream );
 }
 
 void RDORepositoryFile::loadSMR( strstream& stream ) const
 {
-	loadFile( modelPath + modelName + ".smr", stream );
+	loadFile( smrFileName, stream );
 }
 
 void RDORepositoryFile::loadPMD( strstream& stream ) const
 {
-	loadFile( modelPath + modelName + ".pmd", stream );
+	loadFile( pmdFileName, stream );
 }
 
 void RDORepositoryFile::loadPMV( strstream& stream ) const
 {
-	loadFile( modelPath + modelName + ".pmv", stream );
+	loadFile( pmvFileName, stream );
 }
 
 void RDORepositoryFile::loadTRC( strstream& stream ) const
 {
-	loadFile( modelPath + modelName + ".trc", stream );
+	loadFile( trcFileName, stream );
 }
 
 void RDORepositoryFile::savePAT( strstream& stream ) const
 {
-	saveFile( modelPath + modelName + ".pat", stream );
+	saveFile( patFileName, stream );
 }
 
 void RDORepositoryFile::saveRTP( strstream& stream ) const
 {
-	saveFile( modelPath + modelName + ".rtp", stream );
+	saveFile( rtpFileName, stream );
 }
 
 void RDORepositoryFile::saveRSS( strstream& stream ) const
 {
-	saveFile( modelPath + modelName + ".rss", stream );
+	saveFile( rssFileName, stream );
 }
 
 void RDORepositoryFile::saveOPR( strstream& stream ) const
 {
-	saveFile( modelPath + modelName + ".opr", stream );
+	saveFile( oprFileName, stream );
 }
 
 void RDORepositoryFile::saveFRM( strstream& stream ) const
 {
-	saveFile( modelPath + modelName + ".frm", stream );
+	saveFile( frmFileName, stream );
 }
 
 void RDORepositoryFile::saveFUN( strstream& stream ) const
 {
-	saveFile( modelPath + modelName + ".fun", stream );
+	saveFile( funFileName, stream );
 }
 
 void RDORepositoryFile::saveDPT( strstream& stream ) const
 {
-	saveFile( modelPath + modelName + ".dpt", stream );
+	saveFile( dptFileName, stream );
 }
 
 void RDORepositoryFile::saveSMR( strstream& stream ) const
 {
-	saveFile( modelPath + modelName + ".smr", stream );
+	saveFile( smrFileName, stream );
 }
 
 void RDORepositoryFile::savePMD( strstream& stream ) const
 {
-	saveFile( modelPath + modelName + ".pmd", stream );
+	saveFile( pmdFileName, stream );
 }
 
 void RDORepositoryFile::savePMV( strstream& stream ) const
 {
-	saveFile( modelPath + modelName + ".pmv", stream );
+	saveFile( pmvFileName, stream );
 }
 
 void RDORepositoryFile::saveTRC( strstream& stream ) const
 {
-	saveFile( modelPath + modelName + ".trc", stream );
+	saveFile( trcFileName, stream );
 }
