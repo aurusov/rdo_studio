@@ -33,6 +33,17 @@ private:
 	std::string pmdFileName;
 	std::string pmvFileName;
 	std::string trcFileName;
+	bool patDescribed;
+	bool rtpDescribed;
+	bool rssDescribed;
+	bool oprDescribed;
+	bool frmDescribed;
+	bool funDescribed;
+	bool dptDescribed;
+	bool smrDescribed;
+	bool pmdDescribed;
+	bool pmvDescribed;
+	bool trcDescribed;
 	bool patMustExist;
 	bool rtpMustExist;
 	bool rssMustExist;
@@ -44,6 +55,7 @@ private:
 	bool pmdMustExist;
 	bool pmvMustExist;
 	bool trcMustExist;
+	void resetModelNames();
 
 	bool readOnly;
 
@@ -58,7 +70,7 @@ private:
 
 	void setName( const std::string& str );
 
-	void loadFile( const std::string& filename, std::stringstream& stream, const bool mustExist = false ) const;
+	void loadFile( const std::string& filename, std::stringstream& stream, const bool described, const bool mustExist ) const;
 	void saveFile( const std::string& filename, std::stringstream& stream, const bool deleteIfEmpty = false ) const;
 
 	void changeLastModelPath();

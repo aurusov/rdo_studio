@@ -42,34 +42,50 @@ RDORepositoryFile::RDORepositoryFile():
 	modelName( "" ),
 	modelPath( "" ),
 	lastModelPath( "" ),
-	patFileName( "" ),
-	rtpFileName( "" ),
-	rssFileName( "" ),
-	oprFileName( "" ),
-	frmFileName( "" ),
-	funFileName( "" ),
-	dptFileName( "" ),
-	smrFileName( "" ),
-	pmdFileName( "" ),
-	pmvFileName( "" ),
-	trcFileName( "" ),
-	patMustExist( false ),
-	rtpMustExist( false ),
-	rssMustExist( false ),
-	oprMustExist( false ),
-	frmMustExist( false ),
-	funMustExist( false ),
-	dptMustExist( false ),
-	smrMustExist( false ),
-	pmdMustExist( false ),
-	pmvMustExist( false ),
-	trcMustExist( false ),
 	readOnly( false )
 {
+	resetModelNames();
 }
 
 RDORepositoryFile::~RDORepositoryFile()
 {
+}
+
+void RDORepositoryFile::resetModelNames()
+{
+	patFileName = "";
+	rtpFileName = "";
+	rssFileName = "";
+	oprFileName = "";
+	frmFileName = "";
+	funFileName = "";
+	dptFileName = "";
+	smrFileName = "";
+	pmdFileName = "";
+	pmvFileName = "";
+	trcFileName = "";
+	patDescribed = false;
+	rtpDescribed = false;
+	rssDescribed = false;
+	oprDescribed = false;
+	frmDescribed = false;
+	funDescribed = false;
+	dptDescribed = false;
+	smrDescribed = false;
+	pmdDescribed = false;
+	pmvDescribed = false;
+	trcDescribed = false;
+	patMustExist = false;
+	rtpMustExist = false;
+	rssMustExist = false;
+	oprMustExist = false;
+	frmMustExist = false;
+	funMustExist = false;
+	dptMustExist = false;
+	smrMustExist = false;
+	pmdMustExist = false;
+	pmvMustExist = false;
+	trcMustExist = false;
 }
 
 void RDORepositoryFile::newModel()
@@ -89,17 +105,6 @@ void RDORepositoryFile::newModel()
 		pmdFileName = modelName;
 		pmvFileName = modelName;
 		trcFileName = modelName;
-		patMustExist = false;
-		rtpMustExist = false;
-		rssMustExist = false;
-		oprMustExist = false;
-		frmMustExist = false;
-		funMustExist = false;
-		dptMustExist = false;
-		smrMustExist = false;
-		pmdMustExist = false;
-		pmvMustExist = false;
-		trcMustExist = false;
 		changeLastModelPath();
 		kernel.notify( RDOKernel::newModel );
 	} else {
@@ -134,7 +139,7 @@ bool RDORepositoryFile::openModel( const string& modelFileName )
 
 				smrFileName = modelName;
 				stringstream smrStream;
-				loadFile( modelPath + smrFileName + ".smr", smrStream );
+				loadFile( modelPath + smrFileName + ".smr", smrStream, true, true );
 				rdoModelObjects::RDOSMRFileInfo fileInfo;
 				kernel.getSimulator()->parseSMRFileInfo( smrStream, fileInfo );
 
@@ -149,8 +154,20 @@ bool RDORepositoryFile::openModel( const string& modelFileName )
  				pmvFileName = fileInfo.results_file.empty()   ? smrFileName : fileInfo.results_file;
  				trcFileName = fileInfo.trace_file.empty()     ? smrFileName : fileInfo.trace_file;
 
-				patMustExist = true;
-				rtpMustExist = true;
+				patDescribed = !fileInfo.model_name.empty();
+				rtpDescribed = !fileInfo.model_name.empty();
+				rssDescribed = !fileInfo.resource_file.empty();
+				oprDescribed = !fileInfo.oprIev_file.empty();
+				frmDescribed = !fileInfo.frame_file.empty();
+				funDescribed = !fileInfo.model_name.empty();
+				dptDescribed = !oprDescribed;
+				smrDescribed = true;
+				pmdDescribed = !fileInfo.statistic_file.empty();
+				pmvDescribed = !fileInfo.results_file.empty();
+				trcDescribed = !fileInfo.trace_file.empty();
+
+				patMustExist = !fileInfo.model_name.empty();
+				rtpMustExist = !fileInfo.model_name.empty();
 				rssMustExist = !fileInfo.resource_file.empty();
 				oprMustExist = !fileInfo.oprIev_file.empty();
 				frmMustExist = !fileInfo.frame_file.empty();
@@ -236,17 +253,7 @@ void RDORepositoryFile::realCloseModel()
 	kernel.notify( RDOKernel::closeModel );
 	modelName   = "";
 	modelPath   = "";
-	patFileName = "";
-	rtpFileName = "";
-	rssFileName = "";
-	oprFileName = "";
-	frmFileName = "";
-	funFileName = "";
-	dptFileName = "";
-	smrFileName = "";
-	pmdFileName = "";
-	pmvFileName = "";
-	trcFileName = "";
+	resetModelNames();
 	changeLastModelPath();
 }
 
@@ -370,17 +377,7 @@ void RDORepositoryFile::setName( const string& str )
 	modelName.erase( modelName.find_last_not_of( szDelims ) + 1, string::npos );
 	if ( modelName.empty() ) {
 		modelPath   = "";
-		patFileName = "";
-		rtpFileName = "";
-		rssFileName = "";
-		oprFileName = "";
-		frmFileName = "";
-		funFileName = "";
-		dptFileName = "";
-		smrFileName = "";
-		pmdFileName = "";
-		pmvFileName = "";
-		trcFileName = "";
+		resetModelNames();
 	}
 	changeLastModelPath();
 }
@@ -390,15 +387,19 @@ bool RDORepositoryFile::isReadOnly() const
 	return readOnly;
 }
 
-void RDORepositoryFile::loadFile( const string& filename, stringstream& stream, const bool mustExist ) const
+void RDORepositoryFile::loadFile( const string& filename, stringstream& stream, const bool described, const bool mustExist ) const
 {
-	if ( isFileExists( filename ) ) {
-		ifstream file( filename.c_str() );
-		stream << file.rdbuf();
-		file.close();
+	if ( described ) {
+		if ( isFileExists( filename ) ) {
+			ifstream file( filename.c_str() );
+			stream << file.rdbuf();
+			file.close();
+		} else {
+			stream.setstate( ios_base::badbit );
+			if ( mustExist ) stream.setstate( stream.rdstate() | ios_base::failbit );
+		}
 	} else {
 		stream.setstate( ios_base::badbit );
-		if ( mustExist ) stream.setstate( stream.rdstate() | ios_base::failbit );
 	}
 }
 
@@ -420,57 +421,57 @@ void RDORepositoryFile::saveFile( const string& filename, stringstream& stream, 
 
 void RDORepositoryFile::loadPAT( stringstream& stream ) const
 {
-	loadFile( modelPath + patFileName + ".pat", stream, patMustExist );
+	loadFile( modelPath + patFileName + ".pat", stream, patDescribed, patMustExist );
 }
 
 void RDORepositoryFile::loadRTP( stringstream& stream ) const
 {
-	loadFile( modelPath + rtpFileName + ".rtp", stream, rtpMustExist );
+	loadFile( modelPath + rtpFileName + ".rtp", stream, rtpDescribed, rtpMustExist );
 }
 
 void RDORepositoryFile::loadRSS( stringstream& stream ) const
 {
-	loadFile( modelPath + rssFileName + ".rss", stream, rssMustExist );
+	loadFile( modelPath + rssFileName + ".rss", stream, rssDescribed, rssMustExist );
 }
 
 void RDORepositoryFile::loadOPR( stringstream& stream ) const
 {
-	loadFile( modelPath + oprFileName + ".opr", stream, oprMustExist );
+	loadFile( modelPath + oprFileName + ".opr", stream, oprDescribed, oprMustExist );
 }
 
 void RDORepositoryFile::loadFRM( stringstream& stream ) const
 {
-	loadFile( modelPath + frmFileName + ".frm", stream, frmMustExist );
+	loadFile( modelPath + frmFileName + ".frm", stream, frmDescribed, frmMustExist );
 }
 
 void RDORepositoryFile::loadFUN( stringstream& stream ) const
 {
-	loadFile( modelPath + funFileName + ".fun", stream, funMustExist );
+	loadFile( modelPath + funFileName + ".fun", stream, funDescribed, funMustExist );
 }
 
 void RDORepositoryFile::loadDPT( stringstream& stream ) const
 {
-	loadFile( modelPath + dptFileName + ".dpt", stream, dptMustExist );
+	loadFile( modelPath + dptFileName + ".dpt", stream, dptDescribed, dptMustExist );
 }
 
 void RDORepositoryFile::loadSMR( stringstream& stream ) const
 {
-	loadFile( modelPath + smrFileName + ".smr", stream, smrMustExist );
+	loadFile( modelPath + smrFileName + ".smr", stream, smrDescribed, smrMustExist );
 }
 
 void RDORepositoryFile::loadPMD( stringstream& stream ) const
 {
-	loadFile( modelPath + pmdFileName + ".pmd", stream, pmdMustExist );
+	loadFile( modelPath + pmdFileName + ".pmd", stream, pmdDescribed, pmdMustExist );
 }
 
 void RDORepositoryFile::loadPMV( stringstream& stream ) const
 {
-	loadFile( modelPath + pmvFileName + ".pmv", stream, pmvMustExist );
+	loadFile( modelPath + pmvFileName + ".pmv", stream, pmvDescribed, pmvMustExist );
 }
 
 void RDORepositoryFile::loadTRC( stringstream& stream ) const
 {
-	loadFile( modelPath + trcFileName + ".trc", stream, trcMustExist );
+	loadFile( modelPath + trcFileName + ".trc", stream, trcDescribed, trcMustExist );
 }
 
 void RDORepositoryFile::savePAT( stringstream& stream ) const
