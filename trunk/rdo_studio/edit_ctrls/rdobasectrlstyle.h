@@ -31,6 +31,10 @@ public:
 	int         size;
 	int         codepage;
 	int         characterSet;
+
+	static RDOBaseCtrlFont getDefaultFont();
+	static RDOBaseCtrlFont getClassicFont();
+	static RDOBaseCtrlFont getTracerLogFont();
 };
 
 // ----------------------------------------------------------------------------

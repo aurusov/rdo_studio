@@ -700,7 +700,13 @@ void RDOStudioOptionsColorsStyles::updateTheme()
 				 *static_cast<RDOBaseEditTheme*>(sheet->style_debug.theme) == RDOBaseEditTheme::getDefaultTheme() &&
 				 *static_cast<RDOTracerLogTheme*>(sheet->style_trace.theme) == RDOTracerLogTheme::getDefaultTheme() &&
 				 *static_cast<RDOEditorBaseEditTheme*>(sheet->style_results.theme) == RDOEditorBaseEditTheme::getDefaultTheme() &&
-				 *static_cast<RDOFindEditTheme*>(sheet->style_find.theme) == RDOFindEditTheme::getDefaultTheme() ) {
+				 *static_cast<RDOFindEditTheme*>(sheet->style_find.theme) == RDOFindEditTheme::getDefaultTheme() &&
+				 *sheet->style_editor.font == RDOBaseCtrlFont::getDefaultFont() &&
+				 *sheet->style_build.font == RDOBaseCtrlFont::getDefaultFont() &&
+				 *sheet->style_debug.font == RDOBaseCtrlFont::getDefaultFont() &&
+				 *sheet->style_trace.font == RDOBaseCtrlFont::getTracerLogFont() &&
+				 *sheet->style_results.font == RDOBaseCtrlFont::getDefaultFont() &&
+				 *sheet->style_find.font == RDOBaseCtrlFont::getDefaultFont() ) {
 				m_theme.SetCurSel( 1 );
 			} else {
 				m_theme.SetCurSel( 0 );
@@ -709,19 +715,20 @@ void RDOStudioOptionsColorsStyles::updateTheme()
 		}
 		case STYLEObject::source: {
 			RDOEditorEditTheme* theme = static_cast<RDOEditorEditTheme*>(sheet->style_editor.theme);
-			if ( *theme == RDOEditorEditTheme::getDefaultTheme() ) {
+			RDOBaseCtrlFont* font = sheet->style_editor.font;
+			if ( *theme == RDOEditorEditTheme::getDefaultTheme() && *font == RDOBaseCtrlFont::getDefaultFont() ) {
 				m_theme.SetCurSel( 1 );
-			} else if ( *theme == RDOEditorEditTheme::getCppTheme() ) {
+			} else if ( *theme == RDOEditorEditTheme::getCppTheme() && *font == RDOBaseCtrlFont::getDefaultFont()  ) {
 				m_theme.SetCurSel( 2 );
-			} else if ( *theme == RDOEditorEditTheme::getPascalTheme() ) {
+			} else if ( *theme == RDOEditorEditTheme::getPascalTheme() && *font == RDOBaseCtrlFont::getDefaultFont()  ) {
 				m_theme.SetCurSel( 3 );
-			} else if ( *theme == RDOEditorEditTheme::getHtmlTheme() ) {
+			} else if ( *theme == RDOEditorEditTheme::getHtmlTheme() && *font == RDOBaseCtrlFont::getDefaultFont()  ) {
 				m_theme.SetCurSel( 4 );
-			} else if ( *theme == RDOEditorEditTheme::getClassicTheme() ) {
+			} else if ( *theme == RDOEditorEditTheme::getClassicTheme() && *font == RDOBaseCtrlFont::getClassicFont()  ) {
 				m_theme.SetCurSel( 5 );
-			} else if ( *theme == RDOEditorEditTheme::getTwilightTheme() ) {
+			} else if ( *theme == RDOEditorEditTheme::getTwilightTheme() && *font == RDOBaseCtrlFont::getDefaultFont()  ) {
 				m_theme.SetCurSel( 6 );
-			} else if ( *theme == RDOEditorEditTheme::getOceanTheme() ) {
+			} else if ( *theme == RDOEditorEditTheme::getOceanTheme() && *font == RDOBaseCtrlFont::getDefaultFont()  ) {
 				m_theme.SetCurSel( 7 );
 			} else {
 				m_theme.SetCurSel( 0 );
@@ -730,13 +737,14 @@ void RDOStudioOptionsColorsStyles::updateTheme()
 		}
 		case STYLEObject::build: {
 			RDOLogEditTheme* theme = static_cast<RDOLogEditTheme*>(sheet->style_build.theme);
-			if ( *theme == RDOLogEditTheme::getDefaultTheme() ) {
+			RDOBaseCtrlFont* font = sheet->style_build.font;
+			if ( *theme == RDOLogEditTheme::getDefaultTheme() && *font == RDOBaseCtrlFont::getDefaultFont() ) {
 				m_theme.SetCurSel( 1 );
-			} else if ( *theme == RDOLogEditTheme::getClassicTheme() ) {
+			} else if ( *theme == RDOLogEditTheme::getClassicTheme() && *font == RDOBaseCtrlFont::getClassicFont() ) {
 				m_theme.SetCurSel( 2 );
-			} else if ( *theme == RDOLogEditTheme::getTwilightTheme() ) {
+			} else if ( *theme == RDOLogEditTheme::getTwilightTheme() && *font == RDOBaseCtrlFont::getDefaultFont() ) {
 				m_theme.SetCurSel( 3 );
-			} else if ( *theme == RDOLogEditTheme::getOceanTheme() ) {
+			} else if ( *theme == RDOLogEditTheme::getOceanTheme() && *font == RDOBaseCtrlFont::getDefaultFont() ) {
 				m_theme.SetCurSel( 4 );
 			} else {
 				m_theme.SetCurSel( 0 );
@@ -745,13 +753,14 @@ void RDOStudioOptionsColorsStyles::updateTheme()
 		}
 		case STYLEObject::debug: {
 			RDOBaseEditTheme* theme = static_cast<RDOBaseEditTheme*>(sheet->style_debug.theme);
-			if ( *theme == RDOBaseEditTheme::getDefaultTheme() ) {
+			RDOBaseCtrlFont* font = sheet->style_debug.font;
+			if ( *theme == RDOBaseEditTheme::getDefaultTheme() && *font == RDOBaseCtrlFont::getDefaultFont() ) {
 				m_theme.SetCurSel( 1 );
-			} else if ( *theme == RDOBaseEditTheme::getClassicTheme() ) {
+			} else if ( *theme == RDOBaseEditTheme::getClassicTheme() && *font == RDOBaseCtrlFont::getClassicFont() ) {
 				m_theme.SetCurSel( 2 );
-			} else if ( *theme == RDOBaseEditTheme::getTwilightTheme() ) {
+			} else if ( *theme == RDOBaseEditTheme::getTwilightTheme() && *font == RDOBaseCtrlFont::getDefaultFont() ) {
 				m_theme.SetCurSel( 3 );
-			} else if ( *theme == RDOBaseEditTheme::getOceanTheme() ) {
+			} else if ( *theme == RDOBaseEditTheme::getOceanTheme() && *font == RDOBaseCtrlFont::getDefaultFont() ) {
 				m_theme.SetCurSel( 4 );
 			} else {
 				m_theme.SetCurSel( 0 );
@@ -760,7 +769,8 @@ void RDOStudioOptionsColorsStyles::updateTheme()
 		}
 		case STYLEObject::trace: {
 			RDOTracerLogTheme* theme = static_cast<RDOTracerLogTheme*>(sheet->style_trace.theme);
-			if ( *theme == RDOTracerLogTheme::getDefaultTheme() ) {
+			RDOBaseCtrlFont* font = sheet->style_trace.font;
+			if ( *theme == RDOTracerLogTheme::getDefaultTheme() && *font == RDOBaseCtrlFont::getTracerLogFont() ) {
 				m_theme.SetCurSel( 1 );
 			} else {
 				m_theme.SetCurSel( 0 );
@@ -769,19 +779,20 @@ void RDOStudioOptionsColorsStyles::updateTheme()
 		}
 		case STYLEObject::results: {
 			RDOEditorBaseEditTheme* theme = static_cast<RDOEditorBaseEditTheme*>(sheet->style_results.theme);
-			if ( *theme == RDOEditorBaseEditTheme::getDefaultTheme() ) {
+			RDOBaseCtrlFont* font = sheet->style_results.font;
+			if ( *theme == RDOEditorBaseEditTheme::getDefaultTheme() && *font == RDOBaseCtrlFont::getDefaultFont() ) {
 				m_theme.SetCurSel( 1 );
-			} else if ( *theme == RDOEditorBaseEditTheme::getCppTheme() ) {
+			} else if ( *theme == RDOEditorBaseEditTheme::getCppTheme() && *font == RDOBaseCtrlFont::getDefaultFont() ) {
 				m_theme.SetCurSel( 2 );
-			} else if ( *theme == RDOEditorBaseEditTheme::getPascalTheme() ) {
+			} else if ( *theme == RDOEditorBaseEditTheme::getPascalTheme() && *font == RDOBaseCtrlFont::getDefaultFont() ) {
 				m_theme.SetCurSel( 3 );
-			} else if ( *theme == RDOEditorBaseEditTheme::getHtmlTheme() ) {
+			} else if ( *theme == RDOEditorBaseEditTheme::getHtmlTheme() && *font == RDOBaseCtrlFont::getDefaultFont() ) {
 				m_theme.SetCurSel( 4 );
-			} else if ( *theme == RDOEditorBaseEditTheme::getClassicTheme() ) {
+			} else if ( *theme == RDOEditorBaseEditTheme::getClassicTheme() && *font == RDOBaseCtrlFont::getClassicFont() ) {
 				m_theme.SetCurSel( 5 );
-			} else if ( *theme == RDOEditorBaseEditTheme::getTwilightTheme() ) {
+			} else if ( *theme == RDOEditorBaseEditTheme::getTwilightTheme() && *font == RDOBaseCtrlFont::getDefaultFont() ) {
 				m_theme.SetCurSel( 6 );
-			} else if ( *theme == RDOEditorBaseEditTheme::getOceanTheme() ) {
+			} else if ( *theme == RDOEditorBaseEditTheme::getOceanTheme() && *font == RDOBaseCtrlFont::getDefaultFont() ) {
 				m_theme.SetCurSel( 7 );
 			} else {
 				m_theme.SetCurSel( 0 );
@@ -790,13 +801,14 @@ void RDOStudioOptionsColorsStyles::updateTheme()
 		}
 		case STYLEObject::find: {
 			RDOFindEditTheme* theme = static_cast<RDOFindEditTheme*>(sheet->style_find.theme);
-			if ( *theme == RDOFindEditTheme::getDefaultTheme() ) {
+			RDOBaseCtrlFont* font = sheet->style_find.font;
+			if ( *theme == RDOFindEditTheme::getDefaultTheme() && *font == RDOBaseCtrlFont::getDefaultFont() ) {
 				m_theme.SetCurSel( 1 );
-			} else if ( *theme == RDOFindEditTheme::getClassicTheme() ) {
+			} else if ( *theme == RDOFindEditTheme::getClassicTheme() && *font == RDOBaseCtrlFont::getClassicFont() ) {
 				m_theme.SetCurSel( 2 );
-			} else if ( *theme == RDOFindEditTheme::getTwilightTheme() ) {
+			} else if ( *theme == RDOFindEditTheme::getTwilightTheme() && *font == RDOBaseCtrlFont::getDefaultFont() ) {
 				m_theme.SetCurSel( 3 );
-			} else if ( *theme == RDOFindEditTheme::getOceanTheme() ) {
+			} else if ( *theme == RDOFindEditTheme::getOceanTheme() && *font == RDOBaseCtrlFont::getDefaultFont() ) {
 				m_theme.SetCurSel( 4 );
 			} else {
 				m_theme.SetCurSel( 0 );
@@ -820,74 +832,81 @@ void RDOStudioOptionsColorsStyles::OnThemeChanged()
 					*static_cast<RDOTracerLogTheme*>(sheet->style_trace.theme) = RDOTracerLogTheme::getDefaultTheme();
 					*static_cast<RDOEditorBaseEditTheme*>(sheet->style_results.theme) = RDOEditorBaseEditTheme::getDefaultTheme();
 					*static_cast<RDOFindEditTheme*>(sheet->style_find.theme) = RDOFindEditTheme::getDefaultTheme();
+					*sheet->style_editor.font  = RDOBaseCtrlFont::getDefaultFont();
+					*sheet->style_build.font   = RDOBaseCtrlFont::getDefaultFont();
+					*sheet->style_debug.font   = RDOBaseCtrlFont::getDefaultFont();
+					*sheet->style_trace.font   = RDOBaseCtrlFont::getTracerLogFont();
+					*sheet->style_results.font = RDOBaseCtrlFont::getDefaultFont();
+					*sheet->style_find.font    = RDOBaseCtrlFont::getDefaultFont();
 				}
 				break;
 			}
 			case STYLEObject::source: {
 				RDOEditorEditTheme* theme = static_cast<RDOEditorEditTheme*>(sheet->style_editor.theme);
 				switch ( index ) {
-					case 1: *theme = RDOEditorEditTheme::getDefaultTheme(); break;
-					case 2: *theme = RDOEditorEditTheme::getCppTheme(); break;
-					case 3: *theme = RDOEditorEditTheme::getPascalTheme(); break;
-					case 4: *theme = RDOEditorEditTheme::getHtmlTheme(); break;
-					case 5: *theme = RDOEditorEditTheme::getClassicTheme(); break;
-					case 6: *theme = RDOEditorEditTheme::getTwilightTheme(); break;
-					case 7: *theme = RDOEditorEditTheme::getOceanTheme(); break;
+					case 1: *theme = RDOEditorEditTheme::getDefaultTheme();  *sheet->style_editor.font = RDOBaseCtrlFont::getDefaultFont(); break;
+					case 2: *theme = RDOEditorEditTheme::getCppTheme();      *sheet->style_editor.font = RDOBaseCtrlFont::getDefaultFont(); break;
+					case 3: *theme = RDOEditorEditTheme::getPascalTheme();   *sheet->style_editor.font = RDOBaseCtrlFont::getDefaultFont(); break;
+					case 4: *theme = RDOEditorEditTheme::getHtmlTheme();     *sheet->style_editor.font = RDOBaseCtrlFont::getDefaultFont(); break;
+					case 5: *theme = RDOEditorEditTheme::getClassicTheme();  *sheet->style_editor.font = RDOBaseCtrlFont::getClassicFont(); break;
+					case 6: *theme = RDOEditorEditTheme::getTwilightTheme(); *sheet->style_editor.font = RDOBaseCtrlFont::getDefaultFont(); break;
+					case 7: *theme = RDOEditorEditTheme::getOceanTheme();    *sheet->style_editor.font = RDOBaseCtrlFont::getDefaultFont(); break;
 				}
 				break;
 			}
 			case STYLEObject::build: {
 				RDOLogEditTheme* theme = static_cast<RDOLogEditTheme*>(sheet->style_build.theme);
 				switch ( index ) {
-					case 1: *theme = RDOLogEditTheme::getDefaultTheme(); break;
-					case 2: *theme = RDOLogEditTheme::getClassicTheme(); break;
-					case 3: *theme = RDOLogEditTheme::getTwilightTheme(); break;
-					case 4: *theme = RDOLogEditTheme::getOceanTheme(); break;
+					case 1: *theme = RDOLogEditTheme::getDefaultTheme();  *sheet->style_build.font = RDOBaseCtrlFont::getDefaultFont(); break;
+					case 2: *theme = RDOLogEditTheme::getClassicTheme();  *sheet->style_build.font = RDOBaseCtrlFont::getClassicFont(); break;
+					case 3: *theme = RDOLogEditTheme::getTwilightTheme(); *sheet->style_build.font = RDOBaseCtrlFont::getDefaultFont(); break;
+					case 4: *theme = RDOLogEditTheme::getOceanTheme();    *sheet->style_build.font = RDOBaseCtrlFont::getDefaultFont(); break;
 				}
 				break;
 			}
 			case STYLEObject::debug: {
 				RDOBaseEditTheme* theme = static_cast<RDOBaseEditTheme*>(sheet->style_debug.theme);
 				switch ( index ) {
-					case 1: *theme = RDOBaseEditTheme::getDefaultTheme(); break;
-					case 2: *theme = RDOBaseEditTheme::getClassicTheme(); break;
-					case 3: *theme = RDOBaseEditTheme::getTwilightTheme(); break;
-					case 4: *theme = RDOBaseEditTheme::getOceanTheme(); break;
+					case 1: *theme = RDOBaseEditTheme::getDefaultTheme();  *sheet->style_debug.font = RDOBaseCtrlFont::getDefaultFont(); break;
+					case 2: *theme = RDOBaseEditTheme::getClassicTheme();  *sheet->style_debug.font = RDOBaseCtrlFont::getClassicFont(); break;
+					case 3: *theme = RDOBaseEditTheme::getTwilightTheme(); *sheet->style_debug.font = RDOBaseCtrlFont::getDefaultFont(); break;
+					case 4: *theme = RDOBaseEditTheme::getOceanTheme();    *sheet->style_debug.font = RDOBaseCtrlFont::getDefaultFont(); break;
 				}
 				break;
 			}
 			case STYLEObject::trace: {
 				RDOTracerLogTheme* theme = static_cast<RDOTracerLogTheme*>(sheet->style_trace.theme);
 				switch ( index ) {
-					case 1: *theme = RDOTracerLogTheme::getDefaultTheme(); break;
+					case 1: *theme = RDOTracerLogTheme::getDefaultTheme(); *sheet->style_trace.font = RDOBaseCtrlFont::getTracerLogFont(); break;
 				}
 				break;
 			}
 			case STYLEObject::results: {
 				RDOEditorBaseEditTheme* theme = static_cast<RDOEditorBaseEditTheme*>(sheet->style_results.theme);
 				switch ( index ) {
-					case 1: *theme = RDOEditorBaseEditTheme::getDefaultTheme(); break;
-					case 2: *theme = RDOEditorBaseEditTheme::getCppTheme(); break;
-					case 3: *theme = RDOEditorBaseEditTheme::getPascalTheme(); break;
-					case 4: *theme = RDOEditorBaseEditTheme::getHtmlTheme(); break;
-					case 5: *theme = RDOEditorBaseEditTheme::getClassicTheme(); break;
-					case 6: *theme = RDOEditorBaseEditTheme::getTwilightTheme(); break;
-					case 7: *theme = RDOEditorBaseEditTheme::getOceanTheme(); break;
+					case 1: *theme = RDOEditorBaseEditTheme::getDefaultTheme();  *sheet->style_results.font = RDOBaseCtrlFont::getDefaultFont(); break;
+					case 2: *theme = RDOEditorBaseEditTheme::getCppTheme();      *sheet->style_results.font = RDOBaseCtrlFont::getDefaultFont(); break;
+					case 3: *theme = RDOEditorBaseEditTheme::getPascalTheme();   *sheet->style_results.font = RDOBaseCtrlFont::getDefaultFont(); break;
+					case 4: *theme = RDOEditorBaseEditTheme::getHtmlTheme();     *sheet->style_results.font = RDOBaseCtrlFont::getDefaultFont(); break;
+					case 5: *theme = RDOEditorBaseEditTheme::getClassicTheme();  *sheet->style_results.font = RDOBaseCtrlFont::getClassicFont(); break;
+					case 6: *theme = RDOEditorBaseEditTheme::getTwilightTheme(); *sheet->style_results.font = RDOBaseCtrlFont::getDefaultFont(); break;
+					case 7: *theme = RDOEditorBaseEditTheme::getOceanTheme();    *sheet->style_results.font = RDOBaseCtrlFont::getDefaultFont(); break;
 				}
 				break;
 			}
 			case STYLEObject::find: {
 				RDOFindEditTheme* theme = static_cast<RDOFindEditTheme*>(sheet->style_find.theme);
 				switch ( index ) {
-					case 1: *theme = RDOFindEditTheme::getDefaultTheme(); break;
-					case 2: *theme = RDOFindEditTheme::getClassicTheme(); break;
-					case 3: *theme = RDOFindEditTheme::getTwilightTheme(); break;
-					case 4: *theme = RDOFindEditTheme::getOceanTheme(); break;
+					case 1: *theme = RDOFindEditTheme::getDefaultTheme();  *sheet->style_find.font = RDOBaseCtrlFont::getDefaultFont(); break;
+					case 2: *theme = RDOFindEditTheme::getClassicTheme();  *sheet->style_find.font = RDOBaseCtrlFont::getClassicFont(); break;
+					case 3: *theme = RDOFindEditTheme::getTwilightTheme(); *sheet->style_find.font = RDOBaseCtrlFont::getDefaultFont(); break;
+					case 4: *theme = RDOFindEditTheme::getOceanTheme();    *sheet->style_find.font = RDOBaseCtrlFont::getDefaultFont(); break;
 				}
 				break;
 			}
 			default: break;
 		}
+		updatePropOfAllObject();
 		updateStyleItem();
 		OnUpdateModify();
 	}

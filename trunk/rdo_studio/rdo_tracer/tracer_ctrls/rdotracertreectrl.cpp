@@ -347,5 +347,5 @@ bool RDOTracerLogStyle::operator !=( const RDOTracerLogStyle& style ) const
 void RDOTracerLogStyle::init( const string& _regPath )
 {
 	RDOLogStyle::init( _regPath );
-	font->name = "Courier";
+	*font = rdoEditCtrl::RDOBaseCtrlFont::getTracerLogFont();
 }

@@ -67,6 +67,30 @@ void RDOBaseCtrlFont::save( string regPath ) const
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "characterSet", characterSet );
 }
 
+RDOBaseCtrlFont RDOBaseCtrlFont::getDefaultFont()
+{
+	RDOBaseCtrlFont font;
+	return font;
+}
+
+RDOBaseCtrlFont RDOBaseCtrlFont::getClassicFont()
+{
+	RDOBaseCtrlFont font;
+
+	font.name = "Fixedsys";
+
+	return font;
+}
+
+RDOBaseCtrlFont RDOBaseCtrlFont::getTracerLogFont()
+{
+	RDOBaseCtrlFont font;
+
+	font.name = "Courier";
+
+	return font;
+}
+
 // ----------------------------------------------------------------------------
 // ---------- RDOBaseCtrlStyle
 // ----------------------------------------------------------------------------
