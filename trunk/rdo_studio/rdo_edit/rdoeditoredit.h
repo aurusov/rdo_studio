@@ -2,7 +2,7 @@
 #define RDOEDITOREDIT_H
 #pragma once
 
-#include "../edit_ctrls/rdobaseedit.h"
+#include "rdoeditorbaseedit.h"
 #include "rdoeditoreditstyle.h"
 
 class RDOStudioEditBaseView;
@@ -12,7 +12,7 @@ namespace rdoEditor {
 // ----------------------------------------------------------------------------
 // ---------- RDOEditorEdit
 // ----------------------------------------------------------------------------
-class RDOEditorEdit: public rdoEditCtrl::RDOBaseEdit
+class RDOEditorEdit: public RDOEditorBase
 {
 private:
 	int sci_MARKER_ERROR;

@@ -37,11 +37,11 @@ public:
 	RDOStudioWorkspace workspace;
 	RDOStudioOutput    output;
 
-	rdoEditor::RDOEditorEditStyle default_editorStyle;
-	rdoEditCtrl::RDOLogEditStyle  default_buildStyle;
-	rdoEditCtrl::RDOBaseEditStyle default_debugStyle;
-	rdoEditor::RDOEditorEditStyle default_resultsStyle;
-	rdoEditCtrl::RDOFindEditStyle default_findStyle;
+	rdoEditor::RDOEditorEditStyle    default_editorStyle;
+	rdoEditCtrl::RDOLogEditStyle     default_buildStyle;
+	rdoEditCtrl::RDOBaseEditStyle    default_debugStyle;
+	rdoEditor::RDOEditorResultsStyle default_resultsStyle;
+	rdoEditCtrl::RDOFindEditStyle    default_findStyle;
 	void updateAllStyles() const;
 
 	BOOL OnCmdMsgForDockOnly( UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo );

@@ -5,7 +5,7 @@
 #include "edit_ctrls/rdobuildedit.h"
 #include "edit_ctrls/rdodebugedit.h"
 #include "edit_ctrls/rdofindedit.h"
-#include "rdo_edit/rdoeditoredit.h"
+#include "rdo_edit/rdoeditorresults.h"
 #include "./rdo_tracer/rdotracertrace.h"
 
 #ifdef _DEBUG
@@ -67,7 +67,7 @@ int RDOStudioOutput::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	build   = new RDOBuildEdit;
 	debug   = new RDODebugEdit;
 	tracer  = (CWnd*)::trace.createLog();
-	results = new RDOEditorEdit;
+	results = new RDOEditorResults;
 	find    = new RDOFindEdit;
 
 	build->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), tab.getTabAsParent(), -1 );

@@ -490,22 +490,112 @@ void RDOEditorEditAutoComplete::save( string regPath ) const
 }
 
 // ----------------------------------------------------------------------------
+// ---------- RDOEditorEditBuffer
+// ----------------------------------------------------------------------------
+RDOEditorEditBuffer::RDOEditorEditBuffer()
+{
+	canClearBuffer   = true;
+	clearBufferDelay = 7;
+}
+
+RDOEditorEditBuffer::~RDOEditorEditBuffer()
+{
+}
+
+RDOEditorEditBuffer& RDOEditorEditBuffer::operator =( const RDOEditorEditBuffer& buffer )
+{
+	canClearBuffer   = buffer.canClearBuffer;
+	clearBufferDelay = buffer.clearBufferDelay;
+
+	return *this;
+}
+
+bool RDOEditorEditBuffer::operator ==( const RDOEditorEditBuffer& buffer ) const
+{
+	return canClearBuffer   == buffer.canClearBuffer &&
+	       clearBufferDelay == buffer.clearBufferDelay;
+}
+
+bool RDOEditorEditBuffer::operator !=( const RDOEditorEditBuffer& buffer ) const
+{
+	return !(*this == buffer);
+}
+
+void RDOEditorEditBuffer::load( std::string regPath )
+{
+	regPath += "buffer";
+	canClearBuffer   = AfxGetApp()->GetProfileInt( regPath.c_str(), "canClearBuffer", canClearBuffer ) ? true : false;
+	clearBufferDelay = AfxGetApp()->GetProfileInt( regPath.c_str(), "clearBufferDelay", clearBufferDelay );
+}
+
+void RDOEditorEditBuffer::save( std::string regPath ) const
+{
+	regPath += "buffer";
+	AfxGetApp()->WriteProfileInt( regPath.c_str(), "canClearBuffer", canClearBuffer );
+	AfxGetApp()->WriteProfileInt( regPath.c_str(), "clearBufferDelay", clearBufferDelay );
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOEditorBaseStyle
+// ----------------------------------------------------------------------------
+RDOEditorBaseStyle::RDOEditorBaseStyle(): RDOBaseEditStyle()
+{
+}
+
+RDOEditorBaseStyle::~RDOEditorBaseStyle()
+{
+}
+
+void RDOEditorBaseStyle::initTheme()
+{
+	theme = new RDOEditorEditTheme;
+}
+
+RDOEditorBaseStyle& RDOEditorBaseStyle::operator =( const RDOEditorBaseStyle& style )
+{
+	RDOBaseEditStyle::operator=( style );
+	if ( theme && style.theme ) *static_cast<RDOEditorEditTheme*>(theme) = *static_cast<RDOEditorEditTheme*>(style.theme);
+
+	return *this;
+}
+
+bool RDOEditorBaseStyle::operator ==( const RDOEditorBaseStyle& style ) const
+{
+	bool flag = RDOBaseEditStyle::operator==( style );
+	if ( theme && style.theme && flag ) flag &= *static_cast<RDOEditorEditTheme*>(theme) == *static_cast<RDOEditorEditTheme*>(style.theme);
+	return flag;
+}
+
+bool RDOEditorBaseStyle::operator !=( const RDOEditorBaseStyle& style ) const
+{
+	return !(*this == style);
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOEditorResultsStyle
+// ----------------------------------------------------------------------------
+RDOEditorResultsStyle::RDOEditorResultsStyle(): RDOEditorBaseStyle()
+{
+}
+
+RDOEditorResultsStyle::~RDOEditorResultsStyle()
+{
+}
+
+// ----------------------------------------------------------------------------
 // ---------- RDOEditorEditStyle
 // ----------------------------------------------------------------------------
 RDOEditorEditStyle::RDOEditorEditStyle():
-	RDOBaseEditStyle(),
-	autoComplete( NULL )
+	RDOEditorBaseStyle(),
+	autoComplete( NULL ),
+	buffer( NULL )
 {
 }
 
 RDOEditorEditStyle::~RDOEditorEditStyle()
 {
 	if ( autoComplete ) { delete autoComplete; autoComplete = NULL; };
-}
-
-void RDOEditorEditStyle::initTheme()
-{
-	theme = new RDOEditorEditTheme;
+	if ( buffer )       { delete buffer;       buffer = NULL; };
 }
 
 void RDOEditorEditStyle::initAutoComplete()
@@ -513,20 +603,25 @@ void RDOEditorEditStyle::initAutoComplete()
 	autoComplete = new RDOEditorEditAutoComplete;
 }
 
+void RDOEditorEditStyle::initBuffer()
+{
+	buffer = new RDOEditorEditBuffer;
+}
+
 RDOEditorEditStyle& RDOEditorEditStyle::operator =( const RDOEditorEditStyle& style )
 {
-	RDOBaseEditStyle::operator=( style );
-	if ( theme        && style.theme )        *static_cast<RDOEditorEditTheme*>(theme) = *static_cast<RDOEditorEditTheme*>(style.theme);
+	RDOEditorBaseStyle::operator=( style );
 	if ( autoComplete && style.autoComplete ) *autoComplete = *style.autoComplete;
+	if ( buffer       && style.buffer )       *buffer       = *style.buffer;
 
 	return *this;
 }
 
 bool RDOEditorEditStyle::operator ==( const RDOEditorEditStyle& style ) const
 {
-	bool flag = RDOBaseEditStyle::operator==( style );
-	if ( theme        && style.theme        && flag ) flag &= *static_cast<RDOEditorEditTheme*>(theme) == *static_cast<RDOEditorEditTheme*>(style.theme);
+	bool flag = RDOEditorBaseStyle::operator==( style );
 	if ( autoComplete && style.autoComplete && flag ) flag &= *autoComplete == *style.autoComplete;
+	if ( buffer       && style.buffer       && flag ) flag &= *buffer       == *style.buffer;
 	return flag;
 }
 
@@ -537,18 +632,21 @@ bool RDOEditorEditStyle::operator !=( const RDOEditorEditStyle& style ) const
 
 void RDOEditorEditStyle::init( const string& _regPath )
 {
-	RDOBaseEditStyle::init( _regPath );
+	RDOEditorBaseStyle::init( _regPath );
 	initAutoComplete();
+	initBuffer();
 }
 
 void RDOEditorEditStyle::load()
 {
-	RDOBaseEditStyle::load();
+	RDOEditorBaseStyle::load();
 	if ( autoComplete ) autoComplete->load( regPath );
+	if ( buffer )       buffer->load( regPath );
 }
 
 void RDOEditorEditStyle::save() const
 {
-	RDOBaseEditStyle::save();
+	RDOEditorBaseStyle::save();
 	if ( autoComplete ) autoComplete->save(  regPath );
+	if ( buffer )       buffer->save(  regPath );
 }

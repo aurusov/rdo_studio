@@ -324,10 +324,6 @@ SOURCE=.\StdAfx.cpp
 # PROP Default_Filter "h;hpp;hxx;hm;inl"
 # Begin Source File
 
-SOURCE=..\rdo_repository_file\rdorepositoryfile.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\rdostudioapp.h
 # End Source File
 # Begin Source File
@@ -448,6 +444,10 @@ SOURCE=.\rdo_edit\rdoeditorapp.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\rdo_edit\rdoeditorbaseedit.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdo_edit\rdoeditorchildview.cpp
 # End Source File
 # Begin Source File
@@ -472,6 +472,10 @@ SOURCE=.\rdo_edit\rdoeditorproject.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\rdo_edit\rdoeditorresults.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdo_edit\rdoeditortabctrl.cpp
 # End Source File
 # End Group
@@ -481,6 +485,10 @@ SOURCE=.\rdo_edit\rdoeditortabctrl.cpp
 # Begin Source File
 
 SOURCE=.\rdo_edit\rdoeditorapp.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdo_edit\rdoeditorbaseedit.h
 # End Source File
 # Begin Source File
 
@@ -505,6 +513,10 @@ SOURCE=.\rdo_edit\rdoeditoroptions.h
 # Begin Source File
 
 SOURCE=.\rdo_edit\rdoeditorproject.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdo_edit\rdoeditorresults.h
 # End Source File
 # Begin Source File
 
@@ -664,6 +676,10 @@ SOURCE=.\rdo_tracer\tracer_ctrls\rdotracertreeitem.h
 # PROP Default_Filter ""
 # Begin Source File
 
+SOURCE=.\edit_ctrls\rdobasectrlstyle.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\edit_ctrls\rdobaseedit.cpp
 # End Source File
 # Begin Source File
@@ -698,6 +714,10 @@ SOURCE=.\edit_ctrls\rdologeditstyle.cpp
 # Begin Group "Edit Ctrls Headers Files"
 
 # PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\edit_ctrls\rdobasectrlstyle.h
+# End Source File
 # Begin Source File
 
 SOURCE=.\edit_ctrls\rdobaseedit.h

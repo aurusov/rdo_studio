@@ -78,13 +78,60 @@ public:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOEditorEditStyle
+// ---------- RDOEditorEditBuffer
 // ----------------------------------------------------------------------------
-class RDOEditorEditStyle: public rdoEditCtrl::RDOBaseEditStyle
+class RDOEditorEditBuffer
+{
+public:
+	RDOEditorEditBuffer();
+	virtual ~RDOEditorEditBuffer();
+
+	RDOEditorEditBuffer& operator =( const RDOEditorEditBuffer& buffer );
+	bool operator ==( const RDOEditorEditBuffer& buffer ) const;
+	bool operator !=( const RDOEditorEditBuffer& buffer ) const;
+
+	virtual void load( std::string regPath );
+	virtual void save( std::string regPath ) const;
+
+	bool canClearBuffer;
+	int  clearBufferDelay;
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOEditorBaseStyle
+// ----------------------------------------------------------------------------
+class RDOEditorBaseStyle: public rdoEditCtrl::RDOBaseEditStyle
 {
 protected:
 	virtual void initTheme();
+
+public:
+	RDOEditorBaseStyle();
+	virtual ~RDOEditorBaseStyle();
+
+	RDOEditorBaseStyle& operator =( const RDOEditorBaseStyle& style );
+	bool operator ==( const RDOEditorBaseStyle& style ) const;
+	bool operator !=( const RDOEditorBaseStyle& style ) const;
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOEditorResultsStyle
+// ----------------------------------------------------------------------------
+class RDOEditorResultsStyle: public RDOEditorBaseStyle
+{
+public:
+	RDOEditorResultsStyle();
+	virtual ~RDOEditorResultsStyle();
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOEditorEditStyle
+// ----------------------------------------------------------------------------
+class RDOEditorEditStyle: public RDOEditorBaseStyle
+{
+protected:
 	virtual void initAutoComplete();
+	virtual void initBuffer();
 
 public:
 	RDOEditorEditStyle();
@@ -99,6 +146,7 @@ public:
 	virtual void save() const;
 
 	RDOEditorEditAutoComplete* autoComplete;
+	RDOEditorEditBuffer*       buffer;
 };
 
 }; // namespace rdoEditor

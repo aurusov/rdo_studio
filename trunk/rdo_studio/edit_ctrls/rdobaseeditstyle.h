@@ -2,6 +2,7 @@
 #define RDOBASEEDITSTYLE_H
 #pragma once
 
+#include "rdobasectrlstyle.h"
 #include "sci/Scintilla.h"
 
 namespace rdoEditCtrl {
@@ -9,13 +10,6 @@ namespace rdoEditCtrl {
 // ----------------------------------------------------------------------------
 // ---------- RDOBaseEditTheme
 // ----------------------------------------------------------------------------
-enum RDOFontStyle {
-	RDOFS_NONE      = 0x00,
-	RDOFS_BOLD      = 0x01,
-	RDOFS_ITALIC    = 0x02,
-	RDOFS_UNDERLINE = 0x04
-};
-
 enum RDOBookmarkStyle {
 	RDOBOOKMARKS_NONE = 0,
 	RDOBOOKMARKS_CIRCLE,
@@ -74,28 +68,6 @@ public:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOBaseEditFont
-// ----------------------------------------------------------------------------
-class RDOBaseEditFont
-{
-public:
-	RDOBaseEditFont();
-	virtual ~RDOBaseEditFont();
-
-	RDOBaseEditFont& operator =( const RDOBaseEditFont& font );
-	bool operator ==( const RDOBaseEditFont& font ) const;
-	bool operator !=( const RDOBaseEditFont& font ) const;
-
-	virtual void load( std::string regPath );
-	virtual void save( std::string regPath ) const;
-
-	std::string name;
-	int         size;
-	int         codepage;
-	int         characterSet;
-};
-
-// ----------------------------------------------------------------------------
 // ---------- RDOBaseEditTab
 // ----------------------------------------------------------------------------
 class RDOBaseEditTab
@@ -142,13 +114,10 @@ public:
 // ----------------------------------------------------------------------------
 // ---------- RDOBaseEditStyle
 // ----------------------------------------------------------------------------
-class RDOBaseEditStyle
+class RDOBaseEditStyle: public RDOBaseCtrlStyle
 {
 protected:
-	std::string regPath;
-
 	virtual void initTheme();
-	virtual void initFont();
 	virtual void initTab();
 	virtual void initWindow();
 
@@ -165,7 +134,6 @@ public:
 	virtual void save() const;
 
 	RDOBaseEditTheme*  theme;
-	RDOBaseEditFont*   font;
 	RDOBaseEditTab*    tab;
 	RDOBaseEditWindow* window;
 };

@@ -150,65 +150,6 @@ string RDOBaseEditTheme::colorToHEX( const COLORREF color )
 }
 
 // ----------------------------------------------------------------------------
-// ---------- RDOBaseEditFont
-// ----------------------------------------------------------------------------
-RDOBaseEditFont::RDOBaseEditFont()
-{
-	name         = "Courier New";
-	size         = 10;
-	codepage     = 0;
-	characterSet = 1;
-	if ( PRIMARYLANGID(GetSystemDefaultLangID()) == LANG_RUSSIAN ) {
-		characterSet = RUSSIAN_CHARSET;
-	}
-}
-
-RDOBaseEditFont::~RDOBaseEditFont()
-{
-}
-
-RDOBaseEditFont& RDOBaseEditFont::operator =( const RDOBaseEditFont& font )
-{
-	name         = font.name;
-	size         = font.size;
-	codepage     = font.codepage;
-	characterSet = font.characterSet;
-
-	return *this;
-}
-
-bool RDOBaseEditFont::operator ==( const RDOBaseEditFont& font ) const
-{
-	return name         == font.name &&
-	       size         == font.size &&
-	       codepage     == font.codepage &&
-	       characterSet == font.characterSet;
-}
-
-bool RDOBaseEditFont::operator !=( const RDOBaseEditFont& font ) const
-{
-	return !(*this == font);
-}
-
-void RDOBaseEditFont::load( string regPath )
-{
-	regPath += "font";
-	name         = AfxGetApp()->GetProfileString( regPath.c_str(), "name", name.c_str() );
-	size         = AfxGetApp()->GetProfileInt( regPath.c_str(), "size", size );
-	codepage     = AfxGetApp()->GetProfileInt( regPath.c_str(), "codepage", codepage );
-	characterSet = AfxGetApp()->GetProfileInt( regPath.c_str(), "characterSet", characterSet );
-}
-
-void RDOBaseEditFont::save( string regPath ) const
-{
-	regPath += "font";
-	AfxGetApp()->WriteProfileString( regPath.c_str(), "name", name.c_str() );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "size", size );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "codepage", codepage );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "characterSet", characterSet );
-}
-
-// ----------------------------------------------------------------------------
 // ---------- RDOBaseEditTab
 // ----------------------------------------------------------------------------
 RDOBaseEditTab::RDOBaseEditTab()
@@ -324,9 +265,8 @@ void RDOBaseEditWindow::save( string regPath ) const
 // ---------- RDOBaseEditStyle
 // ----------------------------------------------------------------------------
 RDOBaseEditStyle::RDOBaseEditStyle():
-	regPath( "" ),
+	RDOBaseCtrlStyle(),
 	theme( NULL ),
-	font( NULL ),
 	tab( NULL ),
 	window( NULL )
 {
@@ -335,7 +275,6 @@ RDOBaseEditStyle::RDOBaseEditStyle():
 RDOBaseEditStyle::~RDOBaseEditStyle()
 {
 	if ( theme )  { delete theme;  theme = NULL; };
-	if ( font )   { delete font;   font = NULL; };
 	if ( tab )    { delete tab;    tab = NULL; };
 	if ( window ) { delete window; window = NULL; };
 }
@@ -343,11 +282,6 @@ RDOBaseEditStyle::~RDOBaseEditStyle()
 void RDOBaseEditStyle::initTheme()
 {
 	theme = new RDOBaseEditTheme;
-}
-
-void RDOBaseEditStyle::initFont()
-{
-	font = new RDOBaseEditFont;
 }
 
 void RDOBaseEditStyle::initTab()
@@ -362,8 +296,8 @@ void RDOBaseEditStyle::initWindow()
 
 RDOBaseEditStyle& RDOBaseEditStyle::operator =( const RDOBaseEditStyle& style )
 {
+	RDOBaseCtrlStyle::operator=( style );
 	if ( theme  && style.theme )  *theme  = *style.theme;
-	if ( font   && style.font )   *font   = *style.font;
 	if ( tab    && style.tab )    *tab    = *style.tab;
 	if ( window && style.window ) *window = *style.window;
 
@@ -372,9 +306,8 @@ RDOBaseEditStyle& RDOBaseEditStyle::operator =( const RDOBaseEditStyle& style )
 
 bool RDOBaseEditStyle::operator ==( const RDOBaseEditStyle& style ) const
 {
-	bool flag = true;
+	bool flag = RDOBaseCtrlStyle::operator==( style );
 	if ( theme  && style.theme  && flag ) flag &= *theme  == *style.theme;
-	if ( font   && style.font   && flag ) flag &= *font   == *style.font;
 	if ( tab    && style.tab    && flag ) flag &= *tab    == *style.tab;
 	if ( window && style.window && flag ) flag &= *window == *style.window;
 	return flag;
@@ -387,32 +320,24 @@ bool RDOBaseEditStyle::operator !=( const RDOBaseEditStyle& style ) const
 
 void RDOBaseEditStyle::init( const string& _regPath )
 {
-	regPath = _regPath;
-	if ( regPath.empty() ) {
-		regPath = "editStyle\\";
-	}
-	if ( regPath.find_last_of( '\\' ) != regPath.length() - 1 ) {
-		regPath += '\\';
-	}
-	regPath = "style\\" + regPath;
+	RDOBaseCtrlStyle::init( _regPath );
 	initTheme();
-	initFont();
 	initTab();
 	initWindow();
 }
 
 void RDOBaseEditStyle::load()
 {
+	RDOBaseCtrlStyle::load();
 	if ( theme )  theme->load( regPath );
-	if ( font )   font->load( regPath );
 	if ( tab )    tab->load( regPath );
 	if ( window ) window->load( regPath );
 }
 
 void RDOBaseEditStyle::save() const
 {
+	RDOBaseCtrlStyle::save();
 	if ( theme )  theme->save( regPath );
-	if ( font )   font->save( regPath );
 	if ( tab )    tab->save( regPath );
 	if ( window ) window->save( regPath );
 }
