@@ -34,19 +34,21 @@ private:
 		virtual int_type overflow( int_type c = traits_type::eof() ) {
 			if ( c != traits_type::eof() ) {
 				vec.push_back( traits_type::to_char_type( c ) );
-				stream->clear( goodbit );
+//				vec.resize( vec.size() + 1 );
+//				setp( &vec[ vec.size() - 1 ], vec.end() );
+				stream->setstate( goodbit );
 				return traits_type::not_eof( c );
 			} else {
-				stream->clear( eofbit );
+				stream->setstate( eofbit );
 				return traits_type::eof();
 			}
 		}
 		virtual int_type underflow() {
 			if ( current < vec.size() ) {
-				stream->clear( goodbit );
+				stream->setstate( goodbit );
 				return traits_type::to_int_type( vec[current] );
 			} else {
-				stream->clear( eofbit );
+				stream->setstate( eofbit );
 				return traits_type::eof();
 			}
 		}
@@ -54,16 +56,17 @@ private:
 			if ( current < vec.size() ) {
 				int_type c = traits_type::to_int_type( vec[current++] );
 				int s = vec.size();
-				setg( vec.begin(), &vec[current], vec.end() );
+				char cc = c;
 				if ( current < vec.size() ) {
-					stream->clear( goodbit );
+					setg( vec.begin(), &vec[current], vec.end() );
+					stream->setstate( goodbit );
 					return c;
 				} else {
-					stream->clear( eofbit );
+					stream->setstate( eofbit );
 					return traits_type::eof();
 				}
 			} else {
-				stream->clear( eofbit );
+				stream->setstate( eofbit );
 				return traits_type::eof();
 			}
 		}
