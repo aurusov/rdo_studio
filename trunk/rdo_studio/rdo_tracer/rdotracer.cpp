@@ -82,7 +82,9 @@ void RDOTracer::stopModelNotify()
 
 void RDOTracer::traceStringNotify( string trace_string )
 {
-	tracer->getTraceString( trace_string );
+	if ( tracer ) {
+		tracer->getTraceString( trace_string );
+	}
 }
 
 void RDOTracer::setShowMode( const RDOSimulatorNS::ShowMode value )

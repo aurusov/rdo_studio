@@ -69,7 +69,6 @@ RDOStudioChartView::RDOStudioChartView( const bool preview )
 	old_zoom( 1 ),
 	auto_zoom( 1 ),
 	zoomAuto( false ),
-	minZoom( false ),
 	scale_koeff( 1 ),
 	style( NULL ),
 	previewMode( preview ),
@@ -232,23 +231,14 @@ void RDOStudioChartView::recalcLayout()
 		if ( timeRange > 0 ) {
 			long double timeScaleAuto = doUnwrapTime() ? (double)( chartRect.Width() - style->fonts_ticks->tickWidth * doc->ticksCount ) / timeRange : (double)chartRect.Width() / timeRange;
 			timeScale = (double)style->fonts_ticks->tickWidth / doc->minTimeOffset;
-			//bool flag = !zoomAuto && ( scale_koeff == auto_zoom );
 			auto_zoom = timeScaleAuto / timeScale;
 			/*if ( doUnwrapTime() && auto_zoom < 0 ) {
 				auto_zoom = 1;
+			}*/
+			if ( zoomAuto || ( auto_zoom > 1 /*&& scale_koeff < auto_zoom*/ ) ) {
+				scale_koeff = auto_zoom;
 			}
 			if ( !zoomAuto && auto_zoom <= 1 ) {
-				scale_koeff = zoom;
-			}
-			if ( zoomAuto || ( auto_zoom > 1 && scale_koeff < auto_zoom ) ) {
-				scale_koeff = auto_zoom;
-			}*/
-			/*if ( doUnwrapTime() && auto_zoom < 0 ) {
-				auto_zoom = 1;
-			}*/
-			if ( zoomAuto || ( !zoomAuto && auto_zoom > 1 /*&& scale_koeff < auto_zoom*/ ) || minZoom ) {
-				scale_koeff = auto_zoom;
-			} else {
 				scale_koeff = zoom;
 			}
 		} else {
@@ -527,6 +517,8 @@ void RDOStudioChartView::drawXAxis( CRect& chartRect )
 		} else {
 			int ticks = 0;
 			string str;
+			int lastx = 0;
+			SIZE sz;
 			for( timesList::iterator it = unwrapTimesList.begin(); it != unwrapTimesList.end(); it++ ) {
 				int width = (*it)->eventCount * style->fonts_ticks->tickWidth;
 				RDOTracerTimeNow* timenow = (*it);
@@ -538,10 +530,16 @@ void RDOStudioChartView::drawXAxis( CRect& chartRect )
 				}
 				if ( tmprect.left > chartRect.right )
 					tmprect.left = chartRect.right;
-				::DrawText( hmemdc, str.c_str(), str.length(), tmprect, DT_LEFT );
-				if ( tmprect.left != chartRect.left && tmprect.left != chartRect.right ) {
-					::MoveToEx( hmemdc, tmprect.left, chartRect.bottom, (LPPOINT)NULL );
-					::LineTo( hmemdc, tmprect.left, chartRect.bottom + 3 );
+				
+				
+				if ( tmprect.left > lastx ) {
+					::DrawText( hmemdc, str.c_str(), str.length(), tmprect, DT_LEFT );
+					if ( tmprect.left != chartRect.left && tmprect.left != chartRect.right ) {
+						::MoveToEx( hmemdc, tmprect.left, chartRect.bottom, (LPPOINT)NULL );
+						::LineTo( hmemdc, tmprect.left, chartRect.bottom + 3 );
+					}
+					::GetTextExtentPoint32( hmemdc, str.c_str(), str.length(), &sz );
+					lastx = tmprect.left + sz.cx;
 				}
 
 				ticks += (*it)->eventCount;
@@ -644,20 +642,23 @@ void RDOStudioChartView::copyToClipboard()
 
 void RDOStudioChartView::setZoom( double new_zoom, const bool force_update )
 {
-	scale_koeff = new_zoom;
-	minZoom = false;
+	/*scale_koeff = new_zoom;
 	if ( scale_koeff < auto_zoom ) {
-		/*scale_koeff = auto_zoom;
-		new_zoom = auto_zoom;*/
-		minZoom = true;
+		scale_koeff = auto_zoom;
+	}*/
+	if ( doUnwrapTime() && new_zoom < 1 ) {
+		new_zoom = 1;
+	} else if ( !doUnwrapTime() && new_zoom < auto_zoom ) {
+		new_zoom = auto_zoom;
 	}
-	if ( zoom != new_zoom || scale_koeff != new_zoom || force_update ) {
+	//if ( zoom != new_zoom || scale_koeff != new_zoom || force_update ) {
 		zoom = new_zoom;
+		scale_koeff = zoom;
 		recalcLayout();
 		updateScrollBars();
 		Invalidate();
 		updateWindow();
-	}
+	//}
 }
 
 void RDOStudioChartView::onDraw()
@@ -802,9 +803,9 @@ void RDOStudioChartView::OnSize(UINT nType, int cx, int cy)
 	if ( GetDocument() ) {
 		recalcLayout();
 		updateScrollBars( false );
-		setZoom( zoom, true );
+		//setZoom( zoom );
 	}
-
+	
 	mutex.Unlock();
 }
 
@@ -972,7 +973,7 @@ void RDOStudioChartView::OnUpdateChartZoomZoomin(CCmdUI* pCmdUI)
 
 void RDOStudioChartView::OnUpdateChartZoomZoomout(CCmdUI* pCmdUI) 
 {
-	pCmdUI->Enable( !zoomAuto && zoom > auto_zoom );
+	pCmdUI->Enable( !zoomAuto && ( ( !doUnwrapTime() && zoom > auto_zoom ) || ( doUnwrapTime() && zoom > 1 ) ) );
 }
 
 void RDOStudioChartView::OnUpdateChartZoomResetzoom(CCmdUI* pCmdUI) 

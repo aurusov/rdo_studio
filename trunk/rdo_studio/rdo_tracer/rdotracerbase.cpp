@@ -13,7 +13,7 @@
 #include "../rdostudioapp.h"
 #include "../rdostudiochildfrm.h"
 #include "../rdostudiomainfrm.h"
-#include "rdotracer.h"
+//#include "rdotracer.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -253,49 +253,46 @@ void RDOTracerBase::dispatchNextString( string& line )
 	if ( line.empty() )
 		return;
 
-	if ( tracer ) {
+	TRACE( "%s\n", line.c_str() );
 
-		TRACE( "%s\n", line.c_str() );
+	string key = getNextValue( line );
+	RDOTracerTimeNow* timeNow;
+	if ( key != "SO" && key.find( "ST" ) == string::npos && key != "SD" && key.find( "SE" ) == string::npos )
+		timeNow = addTime( getNextValue( line ) );
+	else
+		timeNow = timeList.back();
 	
-		string key = getNextValue( line );
-		RDOTracerTimeNow* timeNow;
-		if ( key != "SO" && key.find( "ST" ) == string::npos && key != "SD" && key.find( "SE" ) == string::npos )
-			timeNow = addTime( getNextValue( line ) );
-		else
-			timeNow = timeList.back();
-		
-		if ( key == "ES" ) {
-		} else if ( key == "EB" ) {
-			startAction( line, timeNow );
-		} else if ( key == "EF" ) {
-			accomplishAction( line, timeNow );
-		} else if ( key == "EI" ) {
-			irregularEvent( line, timeNow );
-		} else if ( key == "ER" ) {
-			productionRule( line, timeNow );
-		} else if ( key == "RC" || key == "SRC" ) {
-			resourceCreation( line, timeNow );
-		} else if ( key == "RE" || key == "SRE" ) {
-			resourceElimination( line, timeNow );
-		} else if ( key == "RK" || key == "SRK" ) {
-			resourceChanging( line, timeNow );
-		} else if ( key == "V" ) {
-			resultChanging( line, timeNow );
-		}/* else if ( key == "$Status" ) {
-		} else if ( key.Find( "DPS", 0) != -1 ) {
-		} else if ( key == "SB" ) {
-		} else if ( key == "SO" ) {
-		} else if ( key == "STN" ) {
-		} else if ( key == "STD" ) {
-		} else if ( key == "STR" ) {
-		} else if ( key == "SD" ) {
-		} else if ( key == "SES" ) {
-		} else if ( key == "SEN" ) {
-		} else if ( key == "SEM" ) {
-		} else if ( key == "SEF" ) {
-		} else if ( key == "SEU" ) {
-		}*/
-	}
+	if ( key == "ES" ) {
+	} else if ( key == "EB" ) {
+		startAction( line, timeNow );
+	} else if ( key == "EF" ) {
+		accomplishAction( line, timeNow );
+	} else if ( key == "EI" ) {
+		irregularEvent( line, timeNow );
+	} else if ( key == "ER" ) {
+		productionRule( line, timeNow );
+	} else if ( key == "RC" || key == "SRC" ) {
+		resourceCreation( line, timeNow );
+	} else if ( key == "RE" || key == "SRE" ) {
+		resourceElimination( line, timeNow );
+	} else if ( key == "RK" || key == "SRK" ) {
+		resourceChanging( line, timeNow );
+	} else if ( key == "V" ) {
+		resultChanging( line, timeNow );
+	}/* else if ( key == "$Status" ) {
+	} else if ( key.Find( "DPS", 0) != -1 ) {
+	} else if ( key == "SB" ) {
+	} else if ( key == "SO" ) {
+	} else if ( key == "STN" ) {
+	} else if ( key == "STD" ) {
+	} else if ( key == "STR" ) {
+	} else if ( key == "SD" ) {
+	} else if ( key == "SES" ) {
+	} else if ( key == "SEN" ) {
+	} else if ( key == "SEM" ) {
+	} else if ( key == "SEF" ) {
+	} else if ( key == "SEU" ) {
+	}*/
 }
 
 string RDOTracerBase::getNextValue( string& line )
