@@ -7,7 +7,6 @@
 #include <sstream>
 #include <vector>
 #include <afxwin.h>
-#include <strstream>
 
 #include "rdosimcommon.h"
 
@@ -61,7 +60,7 @@ public:
 	void stopModel();
 	vector<RDOSyntaxError>* getErrors();
 	double getModelTime();
-	void parseSMRFileInfo( strstream& smr, rdoModelObjects::RDOSMRFileInfo& info );
+	void parseSMRFileInfo( stringstream& smr, rdoModelObjects::RDOSMRFileInfo& info );
 
 	const RDOFrame* getFrame();
 	void addKeyPressed(int scanCode);

@@ -6,7 +6,7 @@
 #endif
 
 #include <string>
-#include <strstream>
+#include <sstream>
 
 using namespace std;
 
@@ -48,8 +48,8 @@ private:
 
 	void setName( const string& str );
 
-	void loadFile( const string& filename, strstream& stream ) const;
-	void saveFile( const string& filename, strstream& stream ) const;
+	void loadFile( const string& filename, stringstream& stream ) const;
+	void saveFile( const string& filename, stringstream& stream ) const;
 
 	void changeLastModelPath();
 
@@ -68,29 +68,29 @@ public:
 
 	bool isReadOnly() const;
 
-	void loadPAT( strstream& stream ) const;
-	void loadRTP( strstream& stream ) const;
-	void loadRSS( strstream& stream ) const;
-	void loadOPR( strstream& stream ) const;
-	void loadFRM( strstream& stream ) const;
-	void loadFUN( strstream& stream ) const;
-	void loadDPT( strstream& stream ) const;
-	void loadSMR( strstream& stream ) const;
-	void loadPMD( strstream& stream ) const;
-	void loadPMV( strstream& stream ) const;
-	void loadTRC( strstream& stream ) const;
+	void loadPAT( stringstream& stream ) const;
+	void loadRTP( stringstream& stream ) const;
+	void loadRSS( stringstream& stream ) const;
+	void loadOPR( stringstream& stream ) const;
+	void loadFRM( stringstream& stream ) const;
+	void loadFUN( stringstream& stream ) const;
+	void loadDPT( stringstream& stream ) const;
+	void loadSMR( stringstream& stream ) const;
+	void loadPMD( stringstream& stream ) const;
+	void loadPMV( stringstream& stream ) const;
+	void loadTRC( stringstream& stream ) const;
 
-	void savePAT( strstream& stream ) const;
-	void saveRTP( strstream& stream ) const;
-	void saveRSS( strstream& stream ) const;
-	void saveOPR( strstream& stream ) const;
-	void saveFRM( strstream& stream ) const;
-	void saveFUN( strstream& stream ) const;
-	void saveDPT( strstream& stream ) const;
-	void saveSMR( strstream& stream ) const;
-	void savePMD( strstream& stream ) const;
-	void savePMV( strstream& stream ) const;
-	void saveTRC( strstream& stream ) const;
+	void savePAT( stringstream& stream ) const;
+	void saveRTP( stringstream& stream ) const;
+	void saveRSS( stringstream& stream ) const;
+	void saveOPR( stringstream& stream ) const;
+	void saveFRM( stringstream& stream ) const;
+	void saveFUN( stringstream& stream ) const;
+	void saveDPT( stringstream& stream ) const;
+	void saveSMR( stringstream& stream ) const;
+	void savePMD( stringstream& stream ) const;
+	void savePMV( stringstream& stream ) const;
+	void saveTRC( stringstream& stream ) const;
 };
 
 }; // namespace rdoRepository

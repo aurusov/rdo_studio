@@ -1278,18 +1278,17 @@ void RDOBaseEdit::horzScrollToCurrentPos() const
 	sendEditor( SCI_REPLACESEL, 0, 0 );
 }
 
-void RDOBaseEdit::load( strstream& stream ) const
+void RDOBaseEdit::load( stringstream& stream ) const
 {
 	bool readOnly = isReadOnly();
 	setReadOnly( false );
 
-	sendEditor( SCI_ADDTEXT, stream.pcount(), (long)stream.str() );
-	stream.freeze( false );
+	sendEditor( SCI_ADDTEXT, stream.str().length(), (long)stream.str().c_str() );
 
 	setReadOnly( readOnly );
 }
 
-void RDOBaseEdit::save( strstream& stream ) const
+void RDOBaseEdit::save( stringstream& stream ) const
 {
 	char currentLine[8000];
 	int cnt = getLineCount();
@@ -1297,10 +1296,10 @@ void RDOBaseEdit::save( strstream& stream ) const
 		int length = sendEditor( SCI_LINELENGTH, i );
 		sendEditor( SCI_GETLINE, i, (long)currentLine );
 		string str( currentLine, length );
-		static char szDelims[] = "\n\r";
-		str.erase( str.find_last_not_of( szDelims ) + 1, string::npos );
+		trimRight( str );
 		if ( i == cnt - 1 && str.empty() ) {
 		} else {
+			// ???? перевод строки делается после каждой строки. даже после последней
 			stream << str << endl;
 		}
 	}

@@ -186,61 +186,61 @@ bool RdoSimulator::parseModel()
 
 	try {
 /////////////////   SMR file //////////////////////////////////
-		strstream SMRstream;
+		stringstream SMRstream;
 		kernel.getRepository()->loadSMR(SMRstream);
 		if(SMRstream.good())
 			parser->parseSMR1(&SMRstream, &consol);
 
 /////////////////   RTP file //////////////////////////////////
-		strstream RTPstream1;
+		stringstream RTPstream1;
 		kernel.getRepository()->loadRTP(RTPstream1);
 		if(RTPstream1.good())
 			parser->parseRTP(&RTPstream1, &consol);
 
 /////////////////   RSS file //////////////////////////////////
-		strstream RSSstream;
+		stringstream RSSstream;
 		kernel.getRepository()->loadRSS(RSSstream);
 		if(RSSstream.good())
 			parser->parseRSS(&RSSstream, &consol);
 
 /////////////////   FUN file //////////////////////////////////
-		strstream FUNstream;
+		stringstream FUNstream;
 		kernel.getRepository()->loadFUN(FUNstream);
 		if(FUNstream.good())
 			parser->parseFUN(&FUNstream, &consol);
 
 /////////////////   PAT file //////////////////////////////////
-		strstream PATstream;
+		stringstream PATstream;
 		kernel.getRepository()->loadPAT(PATstream);
 		if(PATstream.good())
 			parser->parsePAT(&PATstream, &consol);
 
 /////////////////   OPR file //////////////////////////////////
-		strstream OPRstream;
+		stringstream OPRstream;
 		kernel.getRepository()->loadOPR(OPRstream);
 		if(OPRstream.good())
 			parser->parseOPR(&OPRstream, &consol);
 
 /////////////////   DPT file //////////////////////////////////
-		strstream DPTstream;
+		stringstream DPTstream;
 		kernel.getRepository()->loadDPT(DPTstream);
 		if(DPTstream.good())
 			parser->parseDPT(&DPTstream, &consol);
 
 /////////////////   PMD file //////////////////////////////////
-		strstream PMDstream;
+		stringstream PMDstream;
 		kernel.getRepository()->loadPMD(PMDstream);
 		if(PMDstream.good())
 			parser->parsePMD(&PMDstream, &consol);
 
 /////////////////   FRM file //////////////////////////////////
-		strstream FRMstream;
+		stringstream FRMstream;
 		kernel.getRepository()->loadFRM(FRMstream);
 		if(FRMstream.good())
 			parser->parseFRM(&FRMstream, &consol);
 
 /////////////////   SMR file //////////////////////////////////
-		strstream SMRstream2;
+		stringstream SMRstream2;
 		kernel.getRepository()->loadSMR(SMRstream2);
 		if(SMRstream2.good())
 			parser->parseSMR2(&SMRstream2, &consol);
@@ -305,7 +305,7 @@ void RdoSimulator::closeModel()
 	parser = NULL;
 }
 
-void RdoSimulator::parseSMRFileInfo( strstream& smr, rdoModelObjects::RDOSMRFileInfo& info )
+void RdoSimulator::parseSMRFileInfo( stringstream& smr, rdoModelObjects::RDOSMRFileInfo& info )
 {
 	terminateModel();
 	closeModel();

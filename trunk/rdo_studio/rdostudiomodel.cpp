@@ -227,7 +227,7 @@ void RDOStudioModel::openModelFromRepository()
 				RDOEditorEdit* edit = tab->getItemEdit( i );
 				edit->setReadOnly( false );
 				edit->clearAll();
-				strstream stream;
+				stringstream stream;
 				bool canLoad = true;
 				switch ( i ) {
 					case RDOEDIT_PAT: kernel.getRepository()->loadPAT( stream ); break;
@@ -263,7 +263,7 @@ void RDOStudioModel::saveModelToRepository()
 	if ( tab ) {
 		for ( int i = 0; i < tab->getItemCount(); i++ ) {
 			RDOEditorEdit* edit = tab->getItemEdit( i );
-			strstream stream;
+			stringstream stream;
 			edit->save( stream );
 			switch ( i ) {
 				case RDOEDIT_PAT: kernel.getRepository()->savePAT( stream ); break;

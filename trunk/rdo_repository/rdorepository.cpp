@@ -57,112 +57,112 @@ bool RDORepository::isReadOnly() const
 	return repositoryFile->isReadOnly();
 }
 
-void RDORepository::loadPAT( strstream& stream ) const
+void RDORepository::loadPAT( stringstream& stream ) const
 {
 	repositoryFile->loadPAT( stream );
 }
 
-void RDORepository::loadRTP( strstream& stream ) const
+void RDORepository::loadRTP( stringstream& stream ) const
 {
 	repositoryFile->loadRTP( stream );
 }
 
-void RDORepository::loadRSS( strstream& stream ) const
+void RDORepository::loadRSS( stringstream& stream ) const
 {
 	repositoryFile->loadRSS( stream );
 }
 
-void RDORepository::loadOPR( strstream& stream ) const
+void RDORepository::loadOPR( stringstream& stream ) const
 {
 	repositoryFile->loadOPR( stream );
 }
 
-void RDORepository::loadFRM( strstream& stream ) const
+void RDORepository::loadFRM( stringstream& stream ) const
 {
 	repositoryFile->loadFRM( stream );
 }
 
-void RDORepository::loadFUN( strstream& stream ) const
+void RDORepository::loadFUN( stringstream& stream ) const
 {
 	repositoryFile->loadFUN( stream );
 }
 
-void RDORepository::loadDPT( strstream& stream ) const
+void RDORepository::loadDPT( stringstream& stream ) const
 {
 	repositoryFile->loadDPT( stream );
 }
 
-void RDORepository::loadSMR( strstream& stream ) const
+void RDORepository::loadSMR( stringstream& stream ) const
 {
 	repositoryFile->loadSMR( stream );
 }
 
-void RDORepository::loadPMD( strstream& stream ) const
+void RDORepository::loadPMD( stringstream& stream ) const
 {
 	repositoryFile->loadPMD( stream );
 }
 
-void RDORepository::loadPMV( strstream& stream ) const
+void RDORepository::loadPMV( stringstream& stream ) const
 {
 	repositoryFile->loadPMV( stream );
 }
 
-void RDORepository::loadTRC( strstream& stream ) const
+void RDORepository::loadTRC( stringstream& stream ) const
 {
 	repositoryFile->loadTRC( stream );
 }
 
-void RDORepository::savePAT( strstream& stream ) const
+void RDORepository::savePAT( stringstream& stream ) const
 {
 	repositoryFile->savePAT( stream );
 }
 
-void RDORepository::saveRTP( strstream& stream ) const
+void RDORepository::saveRTP( stringstream& stream ) const
 {
 	repositoryFile->saveRTP( stream );
 }
 
-void RDORepository::saveRSS( strstream& stream ) const
+void RDORepository::saveRSS( stringstream& stream ) const
 {
 	repositoryFile->saveRSS( stream );
 }
 
-void RDORepository::saveOPR( strstream& stream ) const
+void RDORepository::saveOPR( stringstream& stream ) const
 {
 	repositoryFile->saveOPR( stream );
 }
 
-void RDORepository::saveFRM( strstream& stream ) const
+void RDORepository::saveFRM( stringstream& stream ) const
 {
 	repositoryFile->saveFRM( stream );
 }
 
-void RDORepository::saveFUN( strstream& stream ) const
+void RDORepository::saveFUN( stringstream& stream ) const
 {
 	repositoryFile->saveFUN( stream );
 }
 
-void RDORepository::saveDPT( strstream& stream ) const
+void RDORepository::saveDPT( stringstream& stream ) const
 {
 	repositoryFile->saveDPT( stream );
 }
 
-void RDORepository::saveSMR( strstream& stream ) const
+void RDORepository::saveSMR( stringstream& stream ) const
 {
 	repositoryFile->saveSMR( stream );
 }
 
-void RDORepository::savePMD( strstream& stream ) const
+void RDORepository::savePMD( stringstream& stream ) const
 {
 	repositoryFile->savePMD( stream );
 }
 
-void RDORepository::savePMV( strstream& stream ) const
+void RDORepository::savePMV( stringstream& stream ) const
 {
 	repositoryFile->savePMV( stream );
 }
 
-void RDORepository::saveTRC( strstream& stream ) const
+void RDORepository::saveTRC( stringstream& stream ) const
 {
 	repositoryFile->saveTRC( stream );
 }

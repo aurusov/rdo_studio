@@ -23,7 +23,7 @@
 
 #include <string>
 #include <vector>
-#include <strstream>
+#include <sstream>
 #include <map>
 #include <list>
 

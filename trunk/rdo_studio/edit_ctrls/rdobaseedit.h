@@ -206,8 +206,8 @@ public:
 	int findPos( string& findWhat, const int startFromLine = 0, const bool matchCase = false, const bool matchWholeWord = false ) const;
 	string getLine( const int line ) const;
 
-	void load( strstream& stream ) const;
-	void save( strstream& stream ) const;
+	void load( stringstream& stream ) const;
+	void save( stringstream& stream ) const;
 	void saveAsRTF( CFile& file, int start = 0, int end = -1 ) const;
 };
 

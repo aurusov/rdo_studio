@@ -86,7 +86,7 @@ bool RDORepositoryFile::openModel( const string& modelFileName )
 			if ( isFileExists( modelPath + modelName + ".smr" ) ) {
 
 				smrFileName = modelPath + modelName + ".smr";
-				strstream smrStream;
+				stringstream smrStream;
 				loadFile( smrFileName, smrStream );
 				rdoModelObjects::RDOSMRFileInfo fileInfo;
 				kernel.getSimulator()->parseSMRFileInfo( smrStream, fileInfo );
@@ -321,7 +321,7 @@ bool RDORepositoryFile::isReadOnly() const
 	return readOnly;
 }
 
-void RDORepositoryFile::loadFile( const string& filename, strstream& stream ) const
+void RDORepositoryFile::loadFile( const string& filename, stringstream& stream ) const
 {
 	if ( isFileExists( filename ) ) {
 		ifstream file( filename.c_str() );
@@ -330,11 +330,10 @@ void RDORepositoryFile::loadFile( const string& filename, strstream& stream ) co
 	}
 }
 
-void RDORepositoryFile::saveFile( const string& filename, strstream& stream ) const
+void RDORepositoryFile::saveFile( const string& filename, stringstream& stream ) const
 {
-	if ( stream.pcount() ) {
+	if ( stream.str().length() ) {
 		ofstream file( filename.c_str() );
-		stream << ends;
 		file << stream.str();
 		file.close();
 	} else {
@@ -344,112 +343,112 @@ void RDORepositoryFile::saveFile( const string& filename, strstream& stream ) co
 	}
 }
 
-void RDORepositoryFile::loadPAT( strstream& stream ) const
+void RDORepositoryFile::loadPAT( stringstream& stream ) const
 {
 	loadFile( patFileName, stream );
 }
 
-void RDORepositoryFile::loadRTP( strstream& stream ) const
+void RDORepositoryFile::loadRTP( stringstream& stream ) const
 {
 	loadFile( rtpFileName, stream );
 }
 
-void RDORepositoryFile::loadRSS( strstream& stream ) const
+void RDORepositoryFile::loadRSS( stringstream& stream ) const
 {
 	loadFile( rssFileName, stream );
 }
 
-void RDORepositoryFile::loadOPR( strstream& stream ) const
+void RDORepositoryFile::loadOPR( stringstream& stream ) const
 {
 	loadFile( oprFileName, stream );
 }
 
-void RDORepositoryFile::loadFRM( strstream& stream ) const
+void RDORepositoryFile::loadFRM( stringstream& stream ) const
 {
 	loadFile( frmFileName, stream );
 }
 
-void RDORepositoryFile::loadFUN( strstream& stream ) const
+void RDORepositoryFile::loadFUN( stringstream& stream ) const
 {
 	loadFile( funFileName, stream );
 }
 
-void RDORepositoryFile::loadDPT( strstream& stream ) const
+void RDORepositoryFile::loadDPT( stringstream& stream ) const
 {
 	loadFile( dptFileName, stream );
 }
 
-void RDORepositoryFile::loadSMR( strstream& stream ) const
+void RDORepositoryFile::loadSMR( stringstream& stream ) const
 {
 	loadFile( smrFileName, stream );
 }
 
-void RDORepositoryFile::loadPMD( strstream& stream ) const
+void RDORepositoryFile::loadPMD( stringstream& stream ) const
 {
 	loadFile( pmdFileName, stream );
 }
 
-void RDORepositoryFile::loadPMV( strstream& stream ) const
+void RDORepositoryFile::loadPMV( stringstream& stream ) const
 {
 	loadFile( pmvFileName, stream );
 }
 
-void RDORepositoryFile::loadTRC( strstream& stream ) const
+void RDORepositoryFile::loadTRC( stringstream& stream ) const
 {
 	loadFile( trcFileName, stream );
 }
 
-void RDORepositoryFile::savePAT( strstream& stream ) const
+void RDORepositoryFile::savePAT( stringstream& stream ) const
 {
 	saveFile( patFileName, stream );
 }
 
-void RDORepositoryFile::saveRTP( strstream& stream ) const
+void RDORepositoryFile::saveRTP( stringstream& stream ) const
 {
 	saveFile( rtpFileName, stream );
 }
 
-void RDORepositoryFile::saveRSS( strstream& stream ) const
+void RDORepositoryFile::saveRSS( stringstream& stream ) const
 {
 	saveFile( rssFileName, stream );
 }
 
-void RDORepositoryFile::saveOPR( strstream& stream ) const
+void RDORepositoryFile::saveOPR( stringstream& stream ) const
 {
 	saveFile( oprFileName, stream );
 }
 
-void RDORepositoryFile::saveFRM( strstream& stream ) const
+void RDORepositoryFile::saveFRM( stringstream& stream ) const
 {
 	saveFile( frmFileName, stream );
 }
 
-void RDORepositoryFile::saveFUN( strstream& stream ) const
+void RDORepositoryFile::saveFUN( stringstream& stream ) const
 {
 	saveFile( funFileName, stream );
 }
 
-void RDORepositoryFile::saveDPT( strstream& stream ) const
+void RDORepositoryFile::saveDPT( stringstream& stream ) const
 {
 	saveFile( dptFileName, stream );
 }
 
-void RDORepositoryFile::saveSMR( strstream& stream ) const
+void RDORepositoryFile::saveSMR( stringstream& stream ) const
 {
 	saveFile( smrFileName, stream );
 }
 
-void RDORepositoryFile::savePMD( strstream& stream ) const
+void RDORepositoryFile::savePMD( stringstream& stream ) const
 {
 	saveFile( pmdFileName, stream );
 }
 
-void RDORepositoryFile::savePMV( strstream& stream ) const
+void RDORepositoryFile::savePMV( stringstream& stream ) const
 {
 	saveFile( pmvFileName, stream );
 }
 
-void RDORepositoryFile::saveTRC( strstream& stream ) const
+void RDORepositoryFile::saveTRC( stringstream& stream ) const
 {
 	saveFile( trcFileName, stream );
 }
