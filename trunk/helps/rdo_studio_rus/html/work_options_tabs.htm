@@ -6,38 +6,52 @@
 </HEAD>
 <SCRIPT language="JavaScript" src="../sections.js"></SCRIPT>
 <BODY>
-	
-<DIV> 
-  <H1>Закладка Tabs</H1>
-		
-  <P>На данной закладке пользователь имеет возможность настроить табуляцию для 
-    редактора текста модели и некоторых закладок <a href="work_windows_output.htm">окна 
-    вывода</a>.</P>
-    
-  <P style="text-align: center; margin-bottom: 0px"><IMG src="../images/options_tabs.gif" width="468" height="475" style="cursor: hand"></P>
-  <UL>
-    <LI><strong>Tab size</strong> – размер табуляции в символах пробела.</LI>
-    <LI><strong>Indent size</strong> – размер отступа в символах пробела.</LI>
-    <LI> <strong>Use tabs</strong> – если не установлен этот флажок, то при нажатии 
-      на клавишу <strong>Tab</strong> на клавиатуре в текст модели вместо символа 
-      табуляции будут вставлены пробелы, причем их количество определяется значением 
-      <strong>Tab size</strong>.</LI>
-    <LI><strong>Tab indents</strong> – если установлен данный флажок, то нажатие 
-      на клавишу <strong>Tab</strong> на клавиатуре приведет к вставке в текст 
-      модели отступа размером <strong>Indent size</strong>.</LI>
-    <LI><strong>Backspace Untabs/Backspace Unindents</strong> – возможен выбор 
-      одного из вариантов. В случае, если выбран первый вариант, то при нажатии 
-      клавиши <strong>Backspace</strong> будет удален символ табуляции (если он 
-      присутствует). Если выбран второй вариант, то при нажатии на клавишу <strong>Backspace</strong> 
-      будет удален весь отступ целиком (может состоять из нескольких символов 
-      табуляции и пробелов).</LI>
-    <LI><strong>Auto inden</strong>t – включение механизма автоматического переноса 
-      отступа от предыдущей строки к следующей при переводе каретки.</LI>
-  </UL>
-  <H4>См. также</H4>
-<P><A href="work_options_general.htm">Закладка General</A></P>		
- 	<P><A href="work_options_editor.htm">Закладка Editor</A></P>
- 	<P><A href="work_options_styles_and_color.htm">Закладка Styles and Color</A></P>
+	<DIV>
+		<H1>Закладка Tabs</H1>
+		<P>На данной закладке пользователь имеет возможность настроить табуляцию для редактора текста модели и некоторых закладок <a href="work_windows_output.htm">окна вывода</a>.</P>
+		<DIV id="edl" style="padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px" onclick="swapSections(edf, edl)">
+			<P style="text-align: center; margin-bottom: 0px"><IMG style="cursor: hand" src="../images/options_tabs.gif" width="300"></P>
+			<P style="cursor: hand; text-align: center; margin-top: 0px"><A onclick="swapSections(edf, edl)" href="#nowhere">Увеличить рисунок</A></P>
+		</DIV>
+		<DIV id="edf" style="display: none; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px" onclick="swapSections(edl, edf)">
+			<P style="text-align: center; margin-bottom: 0px"><IMG style="cursor: hand" src="../images/options_tabs.gif"></P>
+			<P  style="cursor: hand; text-align: center; margin-top: 0px"><A onclick="swapSections(edl, edf)" href="#nowhere">Уменьшить рисунок</A></P>
+		</DIV>
+		<P>В группе <FONT class="syntax">Tabs</FONT> настраиваются знаки табуляции и отступы:</P>
+		<TABLE class="visible" style="width: 95.5%">
+			<TR valign="top">
+				<TH align=left width=20%>Наименование настройки</TH>
+				<TH align=left width="80%">Назначение</TH>
+			</TR>
+			<TR valign="top"><A name="tab_size"></A>
+				<TD class="visible" width=20%><FONT class="syntax">Tab&nbsp;size</FONT></TD>
+				<TD class="visible" width="80%">Размер табуляции в символах пробела</TD>
+			</TR>
+			<TR valign="top"><A name="indent_size"></A>
+				<TD class="visible" width=20%><FONT class="syntax">Indent&nbsp;size</FONT></TD>
+				<TD class="visible" width="80%">Размер отступа в символах пробела</TD>
+			</TR>
+			<TR valign="top"><A name="use_tabs"></A>
+				<TD class="visible" width=20%><FONT class="syntax">Use&nbsp;tabs</FONT></TD>
+				<TD class="visible" width="80%">Если не установлен этот флажок, то при нажатии на клавишу <FONT class="syntax">Tab</FONT> на клавиатуре в текст модели вместо символа табуляции будут вставлены пробелы, причем их количество определяется значением <FONT class="syntax">Tab&nbsp;size</FONT></TD>
+			</TR>
+			<TR valign="top"><A name="tab_indents"></A>
+				<TD class="visible" width=20%><FONT class="syntax">Tab&nbsp;indents</FONT></TD>
+				<TD class="visible" width="80%">Если установлен данный флажок, то нажатие на клавишу <FONT class="syntax">Tab</FONT> на клавиатуре приведет к вставке в текст модели отступа размером <FONT class="syntax">Indent&nbsp;size</FONT></TD>
+			</TR>
+			<TR valign="top"><A name="back_untab"></A>
+				<TD class="visible" width=20%><FONT class="syntax">Backspace&nbsp;Untabs, Backspace&nbsp;Unindents</FONT></TD>
+				<TD class="visible" width="80%">Возможен выбор одного из вариантов. В случае, если выбран первый вариант, то при нажатии клавиши <FONT class="syntax">Backspace</FONT> будет удален символ табуляции (если он присутствует). Если выбран второй вариант, то при нажатии на клавишу <FONT class="syntax">Backspace</FONT> будет удален весь отступ целиком (может состоять из нескольких символов табуляции и пробелов)</TD>
+			</TR>
+			<TR valign="top"><A name="auto_indent"></A>
+				<TD class="visible" width=20%><FONT class="syntax">Auto&nbsp;indent</FONT></TD>
+				<TD class="visible" width="80%">Включение механизма автоматического переноса отступа от предыдущей строки к следующей при переводе каретки</TD>
+			</TR>
+		</TABLE>
+		<H4>См. также</H4>
+		<P><A href="work_options_general.htm">Закладка General</A></P>		
+		<P><A href="work_options_editor.htm">Закладка Editor</A></P>
+		<P><A href="work_options_styles_and_color.htm">Закладка Styles and Color</A></P>
 	</DIV>
 	<A name="prev_section;../html/work_model_intro.htm;Работа с моделью">
 	<A name="next_section;../html/rdo_lang_help.htm;Справка по языку РДО">

@@ -1134,6 +1134,10 @@ SOURCE=.\res\rdostudiomodeldoc.ico
 # End Source File
 # Begin Source File
 
+SOURCE=.\resource.hm
+# End Source File
+# Begin Source File
+
 SOURCE=.\res\tracertreectrl.bmp
 # End Source File
 # Begin Source File

@@ -158,7 +158,7 @@ BOOL RDOStudioApp::InitInstance()
 	free( (void*)m_pszRegistryKey );
 	m_pszRegistryKey = _tcsdup( _T("RAO-studio") );
 
-	fileAssociationSetup         = GetProfileInt( "fileAssociation", "setup", false ) ? true : false;
+	fileAssociationSetup         = GetProfileInt( "fileAssociation", "setup", true ) ? true : false;
 	fileAssociationCheckInFuture = GetProfileInt( "fileAssociation", "checkInFuture", true ) ? true : false;
 	openLastProject              = GetProfileInt( "general", "openLastProject", true ) ? true : false;
 	lastProjectName              = GetProfileString( "general", "lastProject", "" );

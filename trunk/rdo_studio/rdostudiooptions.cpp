@@ -1126,7 +1126,7 @@ void RDOStudioOptionsColorsStyles::OnThemeChanged()
 			case STYLEObject::chart: {
 				RDOStudioChartViewTheme* theme = static_cast<RDOStudioChartViewTheme*>(sheet->style_chart.theme);
 				switch ( index ) {
-					case 1: *theme = RDOStudioChartViewTheme::getDefaultTheme(); *sheet->style_trace.font = RDOStyleFont::getChartViewFont(); break;
+					case 1: *theme = RDOStudioChartViewTheme::getDefaultTheme(); *sheet->style_chart.font = RDOStyleFont::getChartViewFont(); break;
 				}
 				break;
 			}
