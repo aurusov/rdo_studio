@@ -126,6 +126,9 @@
 #define IDC_PLUGIN_RUNMODE_STATIC       1100
 #define IDC_PLUGIN_RUNMODE_COMBOBOX     1101
 #define IDC_PLUGIN_RUNMODE_BUTTON       1103
+#define IDC_PLUGIN_START                1104
+#define IDC_PLUGIN_STOP                 1105
+#define IDC_PLUGIN_SAVESTATE_CHECKBOX   1109
 #define ID_CHART_ADDTONEWCHART          32771
 #define ID_VIEW_WORKSPACE               32774
 #define ID_VIEW_OUTPUT                  32775
@@ -437,6 +440,7 @@
 #define IDS_PLUGIN_RUNMODE_MODELSTARTUP 40023
 #define IDS_PLUGIN_STATE                40024
 #define IDS_PLUGIN_STATE_STOP           40025
+#define IDS_PLUGIN_STATE_STOPED         40025
 #define IDS_PLUGIN_STATE_ACTIVE         40026
 #define IDS_PLUGIN_DESCRIPTION          40027
 #define IDS_COLORSTYLE_EDITOR_PLAINTEXT 40100
@@ -590,7 +594,7 @@
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        171
 #define _APS_NEXT_COMMAND_VALUE         33183
-#define _APS_NEXT_CONTROL_VALUE         1104
+#define _APS_NEXT_CONTROL_VALUE         1110
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

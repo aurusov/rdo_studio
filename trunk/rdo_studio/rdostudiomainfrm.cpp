@@ -194,7 +194,7 @@ int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	model = new RDOStudioModel;
 
-	plugins.init();
+	plugins = new RDOStudioPlugins;
 
 	return 0;
 }
@@ -211,7 +211,8 @@ void RDOStudioMainFrame::OnDestroy()
 	style_chart.save();
 
 	::OleUninitialize();
-	if ( model ) { delete model; model = NULL; }
+	if ( plugins ) { delete plugins; plugins = NULL; }
+	if ( model   ) { delete model; model = NULL; }
 	CMDIFrameWnd::OnDestroy();
 }
 

@@ -1624,6 +1624,9 @@ BEGIN_MESSAGE_MAP(RDOStudioOptionsPlugins, CPropertyPage)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_PLUGIN_LIST, OnPluginListSelectChanged)
 	ON_CBN_SELCHANGE(IDC_PLUGIN_RUNMODE_COMBOBOX, OnPluginRunModeComboBoxChanged)
 	ON_BN_CLICKED(IDC_PLUGIN_RUNMODE_BUTTON, OnPluginRunModeButtonClicked)
+	ON_BN_CLICKED(IDC_PLUGIN_START, OnPluginStart)
+	ON_BN_CLICKED(IDC_PLUGIN_STOP, OnPluginStop)
+	ON_BN_CLICKED(IDC_PLUGIN_SAVESTATE_CHECKBOX, OnPluginSaveStateCheckBoxClicked)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -1650,6 +1653,9 @@ void RDOStudioOptionsPlugins::DoDataExchange(CDataExchange* pDX)
 {
 	CPropertyPage::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(RDOStudioOptionsPlugins)
+	DDX_Control(pDX, IDC_PLUGIN_SAVESTATE_CHECKBOX, m_saveStateCheckBox);
+	DDX_Control(pDX, IDC_PLUGIN_STOP, m_stopButton);
+	DDX_Control(pDX, IDC_PLUGIN_START, m_startButton);
 	DDX_Control(pDX, IDC_PLUGIN_RUNMODE_COMBOBOX, m_runModeComboBox);
 	DDX_Control(pDX, IDC_PLUGIN_RUNMODE_BUTTON, m_runModeButton);
 	DDX_Control(pDX, IDC_PLUGIN_RUNMODE_STATIC, m_runModeStatic);
@@ -1767,9 +1773,9 @@ BOOL RDOStudioOptionsPlugins::OnInitDialog()
 	m_pluginList.InsertColumn( 3, format( IDS_PLUGIN_STATE ).c_str(), LVCFMT_LEFT, 50, 3 );
 	m_pluginList.InsertColumn( 4, format( IDS_PLUGIN_DESCRIPTION ).c_str(), LVCFMT_LEFT, 115, 4 );
 	m_pluginList.SetExtendedStyle( m_pluginList.GetExtendedStyle() | LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES );
-	std::vector< RDOStudioPlugin* >::const_iterator it = plugins.getList().begin();
+	std::vector< RDOStudioPlugin* >::const_iterator it = plugins->getList().begin();
 	int i = 0;
-	while ( it != plugins.getList().end() ) {
+	while ( it != plugins->getList().end() ) {
 		RDOStudioPlugin* plugin = *it;
 		int index = m_pluginList.InsertItem( i, plugin->getName().c_str() );
 		if ( index != -1 ) {
@@ -1779,7 +1785,7 @@ BOOL RDOStudioOptionsPlugins::OnInitDialog()
 			}
 			m_pluginList.SetItemText( index, 1, version.c_str() );
 			updateRunModeInGrid( plugin, index );
-			m_pluginList.SetItemText( index, 3, format( plugin->getState() == rdoPlugin::psStop ? IDS_PLUGIN_STATE_STOP : IDS_PLUGIN_STATE_ACTIVE ).c_str() );
+			updateStateInGrid( plugin, index );
 			m_pluginList.SetItemText( index, 4, plugin->getDescription().c_str() );
 			m_pluginList.SetItemData( index, reinterpret_cast<DWORD>(plugin) );
 		}
@@ -1881,6 +1887,11 @@ void RDOStudioOptionsPlugins::updateRunModeInGrid( const RDOStudioPlugin* plugin
 	m_pluginList.SetItemText( index, 2, runMode.c_str() );
 }
 
+void RDOStudioOptionsPlugins::updateStateInGrid( const RDOStudioPlugin* plugin, const int index )
+{
+	m_pluginList.SetItemText( index, 3, format( plugin->getState() == rdoPlugin::psStoped ? IDS_PLUGIN_STATE_STOPED : IDS_PLUGIN_STATE_ACTIVE ).c_str() );
+}
+
 void RDOStudioOptionsPlugins::updateControls( const RDOStudioPlugin* plugin )
 {
 	if ( plugin ) {
@@ -1888,10 +1899,17 @@ void RDOStudioOptionsPlugins::updateControls( const RDOStudioPlugin* plugin )
 		m_runModeComboBox.EnableWindow( true );
 		m_runModeButton.EnableWindow( plugin->getRunMode() != plugin->getDefaultRunMode() );
 		m_runModeComboBox.SetCurSel( plugin->getRunMode() );
+		m_startButton.EnableWindow( plugin->getRunMode() == rdoPlugin::prmNoAuto && plugin->getState() == rdoPlugin::psStoped );
+		m_stopButton.EnableWindow( plugin->getRunMode() == rdoPlugin::prmNoAuto && plugin->getState() == rdoPlugin::psActive );
+		m_saveStateCheckBox.EnableWindow( plugin->getRunMode() == rdoPlugin::prmNoAuto );
+		m_saveStateCheckBox.SetCheck( plugin->getRestoreState() );
 	} else {
 		m_runModeStatic.EnableWindow( false );
 		m_runModeComboBox.EnableWindow( false );
 		m_runModeButton.EnableWindow( false );
+		m_startButton.EnableWindow( false );
+		m_stopButton.EnableWindow( false );
+		m_saveStateCheckBox.EnableWindow( false );
 	}
 }
 
@@ -1908,6 +1926,7 @@ void RDOStudioOptionsPlugins::OnPluginRunModeComboBoxChanged()
 				case 2: plugin->setRunMode( rdoPlugin::prmModelStartUp ); break;
 			}
 			updateRunModeInGrid( plugin, index );
+			updateStateInGrid( plugin, index );
 			updateControls( plugin );
 		}
 	}
@@ -1922,7 +1941,49 @@ void RDOStudioOptionsPlugins::OnPluginRunModeButtonClicked()
 		if ( plugin ) {
 			plugin->setRunMode( plugin->getDefaultRunMode() );
 			updateRunModeInGrid( plugin, index );
+			updateStateInGrid( plugin, index );
 			updateControls( plugin );
+		}
+	}
+}
+
+void RDOStudioOptionsPlugins::OnPluginStart() 
+{
+	POSITION pos = m_pluginList.GetFirstSelectedItemPosition();
+	if ( pos ) {
+		int index = m_pluginList.GetNextSelectedItem( pos );
+		RDOStudioPlugin* plugin = reinterpret_cast<RDOStudioPlugin*>(m_pluginList.GetItemData( index ) );
+		if ( plugin ) {
+			plugin->setState( rdoPlugin::psActive );
+			updateStateInGrid( plugin, index );
+			updateControls( plugin );
+		}
+	}
+}
+
+void RDOStudioOptionsPlugins::OnPluginStop() 
+{
+	POSITION pos = m_pluginList.GetFirstSelectedItemPosition();
+	if ( pos ) {
+		int index = m_pluginList.GetNextSelectedItem( pos );
+		RDOStudioPlugin* plugin = reinterpret_cast<RDOStudioPlugin*>(m_pluginList.GetItemData( index ) );
+		if ( plugin ) {
+			plugin->setState( rdoPlugin::psStoped );
+			updateStateInGrid( plugin, index );
+			updateControls( plugin );
+		}
+	}
+}
+
+void RDOStudioOptionsPlugins::OnPluginSaveStateCheckBoxClicked() 
+{
+	POSITION pos = m_pluginList.GetFirstSelectedItemPosition();
+	if ( pos ) {
+		int index = m_pluginList.GetNextSelectedItem( pos );
+		RDOStudioPlugin* plugin = reinterpret_cast<RDOStudioPlugin*>(m_pluginList.GetItemData( index ) );
+		if ( plugin ) {
+			plugin->setRestoreState( m_saveStateCheckBox.GetCheck() ? true : false );
+			updateStateInGrid( plugin, index );
 		}
 	}
 }

@@ -21,17 +21,21 @@ struct PluginInfo {
 	const char* description;
 };
 
-enum PluginState   { psStop, psRun };
+enum PluginState   { psStoped, psActive };
 enum PluginRunMode { prmNoAuto, prmStudioStartUp, prmModelStartUp };
 
 typedef void (*PFunGetPluginInfo)( PluginInfo* );
 typedef PluginRunMode (*PFunGetPluginRunMode)();
+typedef bool (*PFunStartPlugin)();
+typedef void (*PFunStopPlugin)();
 
 };
 
 extern "C" {
 	RDOPLUGIN_DLL void getPluginInfo( rdoPlugin::PluginInfo* info );
 	RDOPLUGIN_DLL rdoPlugin::PluginRunMode getPluginRunMode();
+	RDOPLUGIN_DLL bool startPlugin();
+	RDOPLUGIN_DLL void stopPlugin();
 }
 
 #endif // RDOPLUGIN_H

@@ -26,6 +26,7 @@ private:
 	std::string version_info;
 	std::string description;
 	rdoPlugin::PluginState state;
+	bool restoreState;
 	rdoPlugin::PluginRunMode runMode;
 
 	std::string getProfilePath() const;
@@ -36,15 +37,23 @@ public:
 
 	static bool isRDOStudioPlugin( const std::string& modulName );
 
-	std::string getName() const { return name; }
-	int getVersionMajor() const { return version_major; }
-	int getVersionMinor() const { return version_minor; }
-	int getVersionBuild() const { return version_build; }
-	std::string getVersionInfo() const { return version_info; }
-	std::string getDescription() const { return description;  }
-	rdoPlugin::PluginState getState() const     { return state;   }
+	std::string getName() const        { return name;          }
+
+	int getVersionMajor() const        { return version_major; }
+	int getVersionMinor() const        { return version_minor; }
+	int getVersionBuild() const        { return version_build; }
+	std::string getVersionInfo() const { return version_info;  }
+
+	std::string getDescription() const { return description;   }
+
+	rdoPlugin::PluginState getState() const     { return state; }
+	void setState( const rdoPlugin::PluginState value );
+
+	bool getRestoreState() const                { return restoreState; }
+	void setRestoreState( const bool value );
+
 	rdoPlugin::PluginRunMode getRunMode() const { return runMode; }
-	void setRunMode( const rdoPlugin::PluginRunMode runMode );
+	void setRunMode( const rdoPlugin::PluginRunMode value );
 	rdoPlugin::PluginRunMode getDefaultRunMode() const;
 };
 
@@ -57,11 +66,17 @@ private:
 	std::vector< RDOStudioPlugin* > list;
 	void enumPlugins( const std::string& mask );
 
+	void init();
+
+	static void modelStartNotify();
+	static void modelStopNotify();
+
+	void modelStart();
+	void modelStop();
+
 public:
 	RDOStudioPlugins();
 	virtual ~RDOStudioPlugins();
-
-	void init();
 
 	const std::vector< RDOStudioPlugin* >& getList() { return list; }
 
@@ -73,6 +88,6 @@ public:
 };
 
 // ----------------------------------------------------------------------------
-extern RDOStudioPlugins plugins;
+extern RDOStudioPlugins* plugins;
 
 #endif // RDOSTUDIOPLUGINS_H
