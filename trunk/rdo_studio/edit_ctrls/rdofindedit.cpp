@@ -2,6 +2,7 @@
 #include "rdofindedit.h"
 #include "rdofindeditstyle.h"
 #include "sci/SciLexer.h"
+#include "sci/LexFind.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -89,5 +90,5 @@ void RDOFindEdit::setEditorStyle( rdoBaseEdit::RDOBaseEditStyle* style )
 void RDOFindEdit::setKeyword( const string& _keyword )
 {
 	keyword = _keyword;
-	sendEditorString( SCI_SETKEYWORDS, 0, keyword.c_str() );
+	sendEditorString( SCI_SETKEYWORDS, RDO_FINDLEXER_KEYWORDSINDEX, keyword.c_str() );
 }

@@ -181,7 +181,11 @@ void RDOStudioOutput::appendStringToDebug( const string& str ) const
 
 void RDOStudioOutput::appendStringToFind( const string& str, const rdoModelObjects::RDOFileType fileType, const int lineNumber ) const
 {
-	RDOLogEditLineInfo* line = new RDOLogEditLineInfo( str, fileType, lineNumber );
+	string s = str;
+	if ( s.find_last_of( '\r' ) != s.length() - 1 && s.find_last_of( '\n' ) != s.length() - 1 ) {
+		s += "\r\n";
+	}
+	RDOLogEditLineInfo* line = new RDOLogEditLineInfo( s, fileType, lineNumber );
 	find->appendLine( line );
 }
 

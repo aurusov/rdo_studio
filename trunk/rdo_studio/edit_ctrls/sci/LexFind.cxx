@@ -13,13 +13,11 @@
 #include <stdarg.h>
 
 #include "LexFind.h"
-#include "LexRdo.h"
 
 #include "Platform.h"
 
 #include "PropSet.h"
 #include "Accessor.h"
-#include "StyleContext.h"
 #include "KeyWords.h"
 #include "Scintilla.h"
 #include "SciLexer.h"
@@ -27,34 +25,55 @@
 
 static void ColouriseFindDoc( unsigned int startPos, int length, int initStyle, WordList *keywordlists[], Accessor &styler )
 {
-	WordList& keywords = *keywordlists[0];
+	WordList& keywords = *keywordlists[ RDO_FINDLEXER_KEYWORDSINDEX ];
+	const char* findKeyword = keywords[0];
+	const int findKeywordLen = strlen( findKeyword );
 
 	styler.StartAt( startPos );
+	styler.StartSegment( startPos );
+	int state = initStyle;
+	unsigned int lengthDoc = startPos + length;
+	for ( unsigned int i = startPos; i < lengthDoc; i++ ) {
 
-	StyleContext sc( startPos, length, initStyle, styler );
+		char ch = styler.SafeGetCharAt( i );
 
-	bool flag = sc.More();
-	for ( ; flag; sc.Forward() ) {
+		if ( styler.IsLeadByte( ch ) ) {
+			i += 1;
+			continue;
+		}
 
-		if ( sc.state == SCE_FIND_IDENTIFIER ) {
-			if ( !isRDOLexerIdentifier(sc.ch) ) {
-				char s[100];
-				sc.GetCurrent( s, sizeof(s) );
-				if ( keywords.InList(s) ) {
-					sc.ChangeState( SCE_FIND_KEYWORD );
+		if ( state == SCE_FIND_DEFAULT || state == SCE_FIND_IDENTIFIER ) {
+			if ( ch == findKeyword[0] ) {
+				bool flag = true;
+				for ( int j = 0; j < findKeywordLen; j++ ) {
+					if ( styler.SafeGetCharAt( i + j ) != findKeyword[j] ) {
+						flag = false;
+						break;
+					}
 				}
-				sc.SetState( SCE_FIND_DEFAULT );
+				styler.ColourTo( i - 1, state );
+				if ( flag ) {
+					styler.ColourTo( i + findKeywordLen - 1, SCE_FIND_KEYWORD );
+					i += findKeywordLen - 1;
+					state = SCE_FIND_DEFAULT;
+				} else {
+					if ( ch != ' ' && ch != '\t' ) {
+						state = SCE_FIND_IDENTIFIER;
+					} else {
+						state = SCE_FIND_DEFAULT;
+					}
+				}
+			} else if ( ch != ' ' && ch != '\t' ) {
+				styler.ColourTo( i - 1, state );
+				state = SCE_FIND_IDENTIFIER;
+			} else {
+				styler.ColourTo( i - 1, state );
+				state = SCE_FIND_DEFAULT;
 			}
 		}
 
-		if ( sc.state == SCE_FIND_DEFAULT ) {
-			if ( isRDOLexerIdentifier(sc.ch) )
-				sc.SetState( SCE_FIND_IDENTIFIER );
-		}
-
-		flag = sc.More();
 	}
-	sc.Complete();
+	styler.ColourTo( lengthDoc - 1, state );
 }
 
 LexerModule lmFind( SCLEX_FIND, ColouriseFindDoc, "find" );

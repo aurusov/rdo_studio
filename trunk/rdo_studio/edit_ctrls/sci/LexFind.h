@@ -1,4 +1,6 @@
 #ifndef LEXFIND_H
 #define LEXFIND_H
 
+#define RDO_FINDLEXER_KEYWORDSINDEX 4
+
 #endif // LEXFIND_H

@@ -12,6 +12,8 @@
 
 #include "Platform.h"
 
+#include "LexFind.h"
+
 #include "Scintilla.h"
 #include "PropSet.h"
 #include "SciLexer.h"
@@ -38,7 +40,11 @@ ScintillaBase::ScintillaBase() {
 	lexLanguage = SCLEX_CONTAINER;
 	lexCurrent = 0;
 	for (int wl = 0;wl < numWordLists;wl++)
-		keyWordLists[wl] = new WordList;
+		if (wl == RDO_FINDLEXER_KEYWORDSINDEX) {
+			keyWordLists[wl] = new WordList( true );
+		} else {
+			keyWordLists[wl] = new WordList;
+		}
 	keyWordLists[numWordLists] = 0;
 }
 
