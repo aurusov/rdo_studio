@@ -65,3 +65,35 @@ void trimRight( std::string& str )
 	static char szDelims[] = " \t\n\r";
 	str.erase( str.find_last_not_of( szDelims ) + 1, std::string::npos );
 }
+
+struct uppercase {
+private:
+	const std::locale& loc;
+public:
+	uppercase( const std::locale& loc ): loc( loc ) {}
+	char operator() ( char c ) { return std::toupper( c, loc ); }
+};
+
+void toupper( std::string& str, int pos, int count )
+{
+	if ( count == std::string::npos ) {
+		count = str.length();
+	}
+	std::transform( str.begin() + pos, str.begin() + count, str.begin() + pos, uppercase( std::locale() ) );
+}
+
+struct lowercase {
+private:
+	const std::locale& loc;
+public:
+	lowercase( const std::locale& loc ): loc( loc ) {}
+	char operator() ( char c ) { return std::tolower( c, loc ); }
+};
+
+void tolower( std::string& str, int pos, int count )
+{
+	if ( count == std::string::npos ) {
+		count = str.length();
+	}
+	std::transform( str.begin() + pos, str.begin() + count, str.begin() + pos, lowercase( std::locale() ) );
+}

@@ -14,8 +14,12 @@ protected:
 	virtual ~CChatNet();
 
 	HTREEITEM item;
-	std::string name;
-	std::string comment;
+
+	virtual std::string getNameForCtrl() const = 0;
+
+public:
+	enum Type { shared, server, domain };
+	virtual getType() const = 0;
 };
 
 // ----------------------------------------------------------------------------
@@ -28,6 +32,14 @@ friend class CChatNetwork;
 private:
 	CChatNetShared();
 	virtual ~CChatNetShared();
+
+	std::string name;
+	std::string comment;
+	virtual std::string getNameForCtrl() const;
+	virtual getType() const { return shared; }
+
+public:
+	std::string getName() const { return name; }
 };
 
 // ----------------------------------------------------------------------------
@@ -42,12 +54,15 @@ private:
 	virtual ~CChatNetServer();
 
 	std::vector< CChatNetShared* > list;
+	void clear();
 
+	std::string name;
 	std::string ip;
+	virtual std::string getNameForCtrl() const;
+	virtual getType() const { return server; }
 
 public:
-	void addShared( const std::string& name, const std::string& comment );
-	void clear();
+	std::string getToolTipInfo() const;
 };
 
 // ----------------------------------------------------------------------------
@@ -57,12 +72,15 @@ class CChatNetDomain: public CChatNet
 {
 friend class CChatNetwork;
 private:
-	std::vector< CChatNetServer* > list;
-
 	CChatNetDomain();
 	virtual ~CChatNetDomain();
 
-	void addServer( const std::string& hostname, const std::string& ip );
+	std::vector< CChatNetServer* > list;
+
+	std::string name;
+	virtual std::string getNameForCtrl() const;
+	virtual getType() const { return domain; }
+
 	int findServerByHostName( const std::string& hostname ) const;
 	int findServerByIP( const std::string& ip ) const;
 	CChatNetServer* getServerByHostName( const std::string& hostname ) const;

@@ -23,6 +23,8 @@
 
 #include <string>
 #include <vector>
+#include <locale>
+#include <algorithm>
 
 #include "sizecbar/sizecbar.h"
 #include "sizecbar/scbarg.h"
@@ -32,6 +34,8 @@ std::string format( UINT resource, ... );
 void trim( std::string& str );
 void trimLeft( std::string& str );
 void trimRight( std::string& str );
+void toupper( std::string& str, int pos = 0, int count = std::string::npos );
+void tolower( std::string& str, int pos = 0, int count = std::string::npos );
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
