@@ -1,0 +1,47 @@
+<HTML>
+<HEAD>
+<TITLE>Data types. Types correspondence</TITLE>
+<LINK rel = "stylesheet" type = "text/css" href = "../styles.css">
+</HEAD>
+<BODY>
+	<DIV>
+		<H1>DATA TYPES. TYPES CORRESPONDENCE</H1>
+		<P><B>Data type</B> determines what set some or other variable may have values from, and what operations are applicable to the variable. The conception of data types is broadly used in modern programming languages. It helps to abstract from presenting the data physically and to make the program more descriptive and reliable. With any <A href="../html/rdo_obj_const_fun_sec.htm#const_type">constant</A> or <A href="../html/rdo_obj_fun.htm#val_type">function</A> or <A href="../html/rdo_obj_sec.htm#val_type">sequence</A> or a <A href="../html/rdo_base_res_types.htm#param_type">resource parameter</A> or a <A href="../html/rdo_obj_fun.htm#param_type">function parameter</A> or a <A href="../html/rdo_obj_pat.htm#param_type">pattern parameter</A> encountered in a program, only one type should correspond, neither more nor less.</P>
+		<P>In the RAO language version given here, the following data types are defined:</P>
+		<UL>
+			<LI><A name="int"></A>integer type - <FONT class="syntax">integer</FONT>;</LI>
+			<LI><A name="longint"></A>long integer - <FONT class="syntax">longint</FONT>;</LI>
+			<LI><A name="real"></A>real type - <FONT class="syntax">real</FONT>;</LI>
+			<LI>enumerative type;</LI>
+			<LI>reference to one of the above ones - <FONT class="syntax">such_as</FONT>.</LI>
+		</UL>
+		<P>For integer and real types, it is possible to specify the <A name="diap"></A><A name="diap_word"></A><B>range of values allowed</B>. The range is printed after reserved word <FONT class="syntax">integer</FONT>, <FONT class="syntax">longint</FONT> or <FONT class="syntax">real</FONT> in square parentheses. The range bounds are denoted with numerical constants separated with two points.</P>
+		<H4>Examples</H4>
+		<PRE class="samples">integer [1..100]</PRE>
+		<PRE class="samples">real [0.0..50.7]</PRE>
+		<P>If the range is specified, then before the assignment it is checked whether the object's value is within the allowed range. Besides, there is another feature of storing ranged integers. If the integer range lower and upper boundaries are not less than 0 and less than 256, an integer object takes one byte for storing, so the memory is used more efficiently.</P>
+		<P><A name="enum"></A><B>Enumerative types</B> are determined by specifying all their possible values. The names of all the values of an enumerative type are given in round brackets separated with commas. The maximum number of such names is 256, each value takes a byte for storing. The name of an enumerative value is a <A href="../html/rdo_lex_div_names.htm">simple name</A>.</P>
+		<H4>Examples</H4>
+		<PRE class="samples">(Free, Busy, Loading, Unloading)</PRE>
+		<PRE class="samples">(First, Second, Third, Seventh)</PRE>
+		<P>If several different objects in a program belong to one and the same type, it is not necessary to repeat that type's description. Instead, it is possible to <B>refer to the type described before</B>. <A name="ref"></A>The reference should be as follows:</P>
+		<PRE class="syntax">such_as &lt;name_of_object_described_before&gt;</PRE>
+		<P>References are possible on the types of previously <A href="../html/rdo_obj_const_fun_sec.htm">described constants</A> and resource parameters presented in <A href="../html/rdo_base_res_types.htm">resource type object</A>. Chain references are allowed, i.e. references on objects belonging to types described with other references.</P>
+		<H4>Examples</H4>
+		<PRE class="samples">wood_kind  : such_as a_trunk.wood_kind</PRE>
+		<PRE class="samples">quality    : such_as a_trunk.quality</PRE>
+		<PRE class="samples">diameter_b : such_as a_trunk.diameter_a</PRE>
+		<PRE class="samples">diameter_e : such_as diameter_b</PRE>
+		<P><A name="type_comp"></A>The following agreements are used in the language on <B>types correspondence</B>. Integer type always corresponds with an integer and real type with a real, no matter what range of values, if any, is allowed. Enumerative types are considered corresponding when either one of them is described with reference on the other or both are described with a reference on the third enumerative type.</P>
+		<H4>See Also</H4>
+		<P><A href="../html/rdo_base_equations.htm">Arithmetic and logical expressions</A></P>
+	</DIV>
+	<A name="prev_section;../html/rdo_lex_div_intro.htm;Lexems and separators">
+	<A name="next_section;../html/rdo_obj_intro.htm;Certain constructions of the language">
+	<A name="section_top;../html/rdo_base_intro.htm;Primary constructions of RAO language">
+	<A name="section;Primary constructions of RAO language;">
+	<A name="prev_topic;../html/rdo_lex_div_names.htm;Names">
+	<A name="next_topic;../html/rdo_base_equations.htm;Arithmetic and logical expressions">
+	<A name="title;RAO language help"><BR><SCRIPT src="../navbar.js"></SCRIPT>
+</BODY>
+</HTML>

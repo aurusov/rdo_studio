@@ -75,6 +75,30 @@ Package=<4>
 
 ###############################################################################
 
+Project: "rdo_lang_eng"=.\helps\rdo_lang_eng\rdo_lang_eng.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "rdo_lang_rus"=.\helps\rdo_lang_rus\rdo_lang_rus.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
 Project: "rdo_plugin"=.\rdo_plugin\rdo_plugin.dsp - Package Owner=<4>
 
 Package=<5>
@@ -167,6 +191,18 @@ Package=<4>
     Begin Project Dependency
     Project_Dep_Name rdo_plugin_mfc
     End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "rdo_studio_rus"=.\helps\rdo_studio_rus\rdo_studio_rus.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
 }}}
 
 ###############################################################################

@@ -1,0 +1,81 @@
+<HTML>
+<HEAD>
+<TITLE>Скрытие фрагментов текста</TITLE>
+<LINK rel = "stylesheet" type = "text/css" href = "../styles.css">
+</HEAD>
+<SCRIPT language="JavaScript" src="../sections.js"></SCRIPT>
+<BODY>
+	<DIV>
+		<H1>СКРЫТИЕ ФРАГМЕНТОВ ТЕКСТА</H1>
+		<P>В данной версии программного комплекса существует возможность <B>скрытия фрагментов текста</B>. Понятие скрываемого фрагмента текста различно для различных <A href="ms-its:RAO-language.chm::/html/rdo_terms.htm#object">объектов модели</A>. Ниже дается их перечень:</P>
+		<TABLE class="visible" style="width: 95.5%">
+			<TR valign="top">
+				<TH align=left width=30%>Закладка главного окна</TH>
+				<TH align=left width=30%>Объект модели</TH>
+				<TH align=left width="40%">Скрываемый фрагмент</TH>
+			</TR>
+			<TR valign="top">
+				<TD class="visible" width=30%><FONT class="syntax">PAT</FONT></TD>
+				<TD class="visible" width=30%><A href="ms-its:RAO-language.chm::/html/rdo_obj_pat.htm">Объект образцов</A></TD>
+				<TD class="visible" width="40%">Образец операции</TD>
+			</TR>
+			<TR valign="top">
+				<TD class="visible" width=30%><FONT class="syntax">RTP</FONT></TD>
+				<TD class="visible" width=30%><A href="ms-its:RAO-language.chm::/html/rdo_base_res_types.htm">Объект типов ресурсов</A></TD>
+				<TD class="visible" width="40%">Тип ресурса</TD>
+			</TR>
+			<TR valign="top">
+				<TD class="visible" width=30%><FONT class="syntax">RSS</FONT></TD>
+				<TD class="visible" width=30%><A href="ms-its:RAO-language.chm::/html/rdo_base_resources.htm">Объект ресурсов</A></TD>
+				<TD class="visible" width="40%">Весь текст объекта ресурсов</TD>
+			</TR>
+			<TR valign="top">
+				<TD class="visible" width=30%><FONT class="syntax">OPR</FONT></TD>
+				<TD class="visible" width=30%><A href="ms-its:RAO-language.chm::/html/rdo_obj_opr.htm">Объект операций</A></TD>
+				<TD class="visible" width="40%">Весь текст объекта операций</TD>
+			</TR>
+			<TR valign="top">
+				<TD class="visible" width=30%><FONT class="syntax">FRM</FONT></TD>
+				<TD class="visible" width=30%><A href="ms-its:RAO-language.chm::/html/rdo_obj_frm.htm">Объект кадров анимации</A></TD>
+				<TD class="visible" width="40%">Кадр анимации</TD>
+			</TR>
+			<TR valign="top">
+				<TD class="visible" width=30%><FONT class="syntax">FUN</FONT></TD>
+				<TD class="visible" width=30%><A href="ms-its:RAO-language.chm::/html/rdo_obj_const_fun_sec.htm">Объект констант, функций и последовательностей</A></TD>
+				<TD class="visible" width="40%">Раздел описания констант, функция или последовательность</TD>
+			</TR>
+			<TR valign="top">
+				<TD class="visible" width=30%><FONT class="syntax">DPT</FONT></TD>
+				<TD class="visible" width=30%><A href="ms-its:RAO-language.chm::/html/rdo_obj_dpt.htm">Объект точек принятия решений</A></TD>
+				<TD class="visible" width="40%">Точка принятия решений</TD>
+			</TR>
+			<TR valign="top">
+				<TD class="visible" width=30%><FONT class="syntax">PMD</FONT></TD>
+				<TD class="visible" width=30%><A href="ms-its:RAO-language.chm::/html/rdo_obj_pmd.htm">Объект требуемых статистик</A></TD>
+				<TD class="visible" width="40%">Весь текст объекта требуемых статистик</TD>
+			</TR>
+		</TABLE>
+		<P>Необходимость сворачивания фрагментов текста может возникнуть при достаточно большом количестве элементов в объекте модели. Например, при наличии большого числа образцов, удобно свернуть часть из них (те, которые не редактируются в данный момент), чтобы сосредоточить внимание на редактируемых. При сворачивании фрагмента текста от него остается первая строка, отчеркнутая горизонтальной чертой. Текст фрагмента не теряется, и фрагмент может быть в любой момент развернут.</P>
+		<P><A name="marker"></A>Начало (а также, возможно, границы) сворачиваемого фрагмента текста отображается в специальном поле слева от поля редактирования текста в виде маркера.</P>
+		<DIV id="ltl" style="padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px">
+			<P style="text-align: center; margin-bottom: 0px"><IMG style="cursor: hand" src="../images/fold.gif" width="300" onclick="swapSections(fll, ltl)"></P>
+			<P style="cursor: hand; text-align: center; margin-top: 0px"><A onclick="swapSections(fll, ltl)" href="#nowhere" onclick="swapSections(fll, ltl)">Увеличить рисунок</A></P>
+		</DIV>
+		<DIV id="fll" style="display: none; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px">
+			<P style="text-align: center; margin-bottom: 0px"><IMG style="cursor: hand" src="../images/fold.gif"  onclick="swapSections(ltl, fll)"></P>
+			<P  style="cursor: hand; text-align: center; margin-top: 0px"><A onclick="swapSections(ltl, fll)" href="#nowhere"  onclick="swapSections(ltl, fll)">Уменьшить рисунок</A></P>
+		</DIV>
+		<P>Свернуть/развернуть текущий сворачиваемый фрагмент текста, можно выбрав <A href="../html/work_menu_view.htm#view_fold">пункт меню</A> <FONT class="syntax">View-&gt;Toggle&nbsp;Current&nbsp;Fold</FONT> или нажав левой кнопкой мыши на маркер начала сворачиваемого фрагмента в специальном поле поля редактирования (см. pис.).</P>
+		<P>Свернуть/развернуть все сворачиваемые фрагменты текста, можно выбрав <A href="../html/work_menu_view.htm#view_allfolds">пункт меню</A> <FONT class="syntax">View-&gt;Toggle&nbsp;All&nbsp;Folds</FONT> или нажав комбинацию клавиш <FONT class="syntax">Ctrl+Shift+0</FONT>.</P>
+		<H4>См. также</H4>
+		<P><A href="../html/work_menu_view.htm">Меню View</A></P>
+	</DIV>
+	<A name="prev_section;../html/work_menu_intro.htm;Главное меню">
+	<A name="next_section;../html/rdo_lang_help.htm;Справка по языку РДО">
+	<A name="section_top;../html/work_model_intro.htm;Работа с моделью">
+	<A name="section;Работа с моделью;">
+	<A name="prev_topic;../html/work_model_results.htm;Просмотр результатов моделирования">
+	<A name="next_topic;../html/work_model_view.htm;Управление отображением текста">
+	<A name="title;Справка по RAO-editor"><BR><SCRIPT src="../navbar.js"></SCRIPT>
+</BODY>
+</HTML>

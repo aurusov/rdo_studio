@@ -1,0 +1,78 @@
+[OPTIONS]
+Auto Index=Yes
+Binary Index=No
+Compatibility=1.1 or later
+Compiled file=RAO-studio.chm
+Contents file=rdo_studio.hhc
+Default Window=main
+Default topic=html\intro.htm
+Display compile progress=No
+Full text search stop list file=rdo_studio.stp
+Index file=rdo_studio.hhk
+Language=0x419 Русский
+Title=Справка по RAO-studio
+
+[WINDOWS]
+main=,"rdo_studio.hhc","rdo_studio.hhk","html\intro.htm",,,,,,0x23520,,0x304e,,,,,,,,0
+
+
+[FILES]
+html\work_status_bar.htm
+html\intro.htm
+html\work_bookmarks.htm
+html\work_exit.htm
+html\work_help.htm
+html\work_install.htm
+html\work_intro.htm
+html\work_menu_edit.htm
+html\work_menu_file.htm
+html\work_menu_help.htm
+html\work_menu_insert.htm
+html\work_menu_intro.htm
+html\work_menu_rdo.htm
+html\work_menu_search.htm
+html\work_menu_view.htm
+html\work_model_bookmarks.htm
+html\work_model_buffer.htm
+html\work_model_complete.htm
+html\work_model_creation.htm
+html\work_model_edit.htm
+html\work_model_folds.htm
+html\work_model_insert.htm
+html\work_model_open.htm
+html\work_model_results.htm
+html\work_model_run.htm
+html\work_model_save.htm
+html\work_model_scale.htm
+html\work_model_search_replace.htm
+html\work_model_view.htm
+html\work_options.htm
+html\work_run.htm
+html\about.htm
+html\work_model_intro.htm
+html\rdo_lang_help.htm
+..\shared\images\section_top_d.gif
+..\shared\images\next_section_d.gif
+..\shared\images\next_topic.gif
+..\shared\images\next_topic_d.gif
+..\shared\images\prev_section.gif
+..\shared\images\prev_section_d.gif
+..\shared\images\prev_topic.gif
+..\shared\images\prev_topic_d.gif
+..\shared\images\section_top.gif
+..\shared\images\next_section.gif
+..\shared\scripts\navbar.js
+..\shared\styles\styles.css
+
+[ALIAS]
+#include aliases.h
+
+[MAP]
+#include dummy.h
+#include resource.hm
+
+[MERGE FILES]
+RAO-language.chm
+
+[INFOTYPES]
+
