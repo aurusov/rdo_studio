@@ -58,7 +58,7 @@ public:
 	virtual ~RDOStudioChartDoc();
 
 	void addSerie( RDOTracerSerie* const serie );
-	void removeSerie( RDOTracerSerie* const serie );
+	//void removeSerie( RDOTracerSerie* const serie );
 	bool serieExists( const RDOTracerSerie* serie ) const { return std::find_if( series.begin(), series.end(), std::bind2nd( std::mem_fun1(&RDOStudioDocSerie::isTracerSerie), serie ) ) != series.end(); };
 
 #ifdef _DEBUG

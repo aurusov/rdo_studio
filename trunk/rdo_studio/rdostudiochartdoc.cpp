@@ -157,7 +157,7 @@ void RDOStudioChartDoc::addSerie( RDOTracerSerie* const serie )
 	}
 }
 
-void RDOStudioChartDoc::removeSerie( RDOTracerSerie* const serie )
+/*void RDOStudioChartDoc::removeSerie( RDOTracerSerie* const serie )
 {
 	if ( !serie ) return;
 	vector<RDOStudioDocSerie*>::iterator it = find_if( series.begin(), series.end(), bind2nd( mem_fun1(&RDOStudioDocSerie::isTracerSerie), serie ) );
@@ -168,7 +168,7 @@ void RDOStudioChartDoc::removeSerie( RDOTracerSerie* const serie )
 		series.erase( it );
 		UpdateAllViews( NULL );
 	}
-}
+}*/
 
 COLORREF RDOStudioChartDoc::selectColor()
 {

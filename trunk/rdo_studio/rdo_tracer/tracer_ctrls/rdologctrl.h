@@ -56,7 +56,7 @@ protected:
 	bool bMatchCase;
 	bool bMatchWholeWord;
 	std::string findStr;
-	int find( const bool searchDown, const bool matchCase, const bool matchWholeWord );
+	void find( int& result, const bool searchDown, const bool matchCase, const bool matchWholeWord );
 
 	RDOLogStyle* logStyle;
 	virtual bool getItemColors( const int index, RDOLogColorPair* &colors ) const;
@@ -74,6 +74,8 @@ protected:
 	void repaintLine ( const int index );
 
 	bool canCopy() const { return selectedLine != -1; };
+
+	void updateWindow();
 
 	//{{AFX_MSG(RDOLogCtrl)
 	afx_msg int  OnCreate( LPCREATESTRUCT lpCreateStruct );
@@ -105,14 +107,14 @@ public:
 	virtual void setFocusOnly( const bool value ) { focusOnly = value; }
 
 	//const stringList& getLogStrings() const;
-	virtual std::string getString( const int index ) const;
+	virtual void getString( const int index, std::string& str ) const;
 	virtual int getSelectedIndex() const;
-	virtual std::string getSelected() const;
+	virtual void getSelected( std::string& str ) const;
 	virtual bool makeLineVisible( const int index );
 	virtual void selectLine( const int index );
 	virtual void copy();
-	virtual void findNext()     { selectLine( find( bSearchDown, bMatchCase, bMatchWholeWord ) );  };
-	virtual void findPrevious() { selectLine( find( !bSearchDown, bMatchCase, bMatchWholeWord ) ); };
+	virtual void findNext()     { int res; find( res, bSearchDown, bMatchCase, bMatchWholeWord ); selectLine( res );  };
+	virtual void findPrevious() { int res; find( res, !bSearchDown, bMatchCase, bMatchWholeWord ); selectLine( res ); };
 	virtual void clear();
 	
 	virtual const RDOLogStyle& getStyle() const;

@@ -17,7 +17,6 @@ namespace rdoTracerLog {
 class RDOTracerLogCtrl: public RDOLogCtrl
 {
 DECLARE_DYNCREATE( RDOTracerLogCtrl )
-friend class rdoTracer::RDOTracerBase;
 
 protected:
 	typedef std::map< int, RDOLogColorPair* > RDOColorMap;

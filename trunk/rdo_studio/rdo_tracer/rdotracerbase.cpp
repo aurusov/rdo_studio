@@ -552,19 +552,20 @@ void RDOTracerBase::deleteTrace()
 		it++;
 	}
 	timeList.clear();
-	charts.clear();
+	//charts.clear();
 }
 
 void RDOTracerBase::clear()
 {
+	while ( !charts.empty() ) {
+		charts.front()->OnCloseDocument();
+	}
+	charts.clear();
 	deleteTrace();
 	if( tree )
 		tree->clear();
 	if ( log )
 		log->clear();
-	while ( !charts.empty() ) {
-		charts.front()->OnCloseDocument();
-	}
 }
 
 CMultiDocTemplate* RDOTracerBase::createDocTemplate()
@@ -687,9 +688,7 @@ void RDOTracerBase::getModelStructure( stringstream& stream )
 void RDOTracerBase::getTraceString( string trace_string )
 {
 	if ( log ) {
-		log->mutex.Lock();
 		log->addStringToLog( trace_string );
-		log->mutex.Unlock();
 	}
 	//dispathNextString( trace_string );
 }

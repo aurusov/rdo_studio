@@ -64,6 +64,5 @@ void RDOTracer::beforeModelStartNotify()
 
 void RDOTracer::traceStringNotify( string trace_string )
 {
-	//trim( trace_string );
-	//tracer->getTraceString( trace_string );
+	tracer->getTraceString( trace_string );
 }

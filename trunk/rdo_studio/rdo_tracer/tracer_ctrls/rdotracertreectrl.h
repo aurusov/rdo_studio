@@ -39,7 +39,7 @@ private:
 	RDOTracerTreeItem patItem;
 	RDOTracerTreeItem pmvItem;
 
-	void setHasChildren( const RDOTracerTreeItem* item );
+	void setHasChildren( const RDOTracerTreeItem* item, const bool hasChildren = true );
 
 protected:
 	COleDataSource source;

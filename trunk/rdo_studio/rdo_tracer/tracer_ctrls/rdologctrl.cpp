@@ -108,7 +108,7 @@ bool RDOLogCtrlFindInList::match( string::iterator &wildcards, string::iterator 
 		}
 		strWildb ++;
 	}
-	while ( *strWildb == '*' && res )  strWildb ++;
+	while ( strWildb && *strWildb == '*' && res )  strWildb ++;
 
 	return res && strCompb == strCompe && strWildb == strWilde;
 }
@@ -580,7 +580,7 @@ void RDOLogCtrl::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
 	}
 
 	if (scrollNotify != -1) 
-		::SendMessage( m_hWnd, msg, MAKELONG(scrollNotify, 0), NULL );
+		SendNotifyMessage( msg, MAKELONG(scrollNotify, 0), NULL );
 	
 }
 
@@ -593,7 +593,7 @@ BOOL RDOLogCtrl::OnMouseWheel( UINT nFlags, short zDelta, CPoint pt )
 	else
 		scrollNotify = SB_LINEUP;
 	
-	::SendMessage( m_hWnd, WM_VSCROLL, MAKELONG(scrollNotify, 0), NULL );
+	SendNotifyMessage( WM_VSCROLL, MAKELONG(scrollNotify, 0), NULL );
 	
 	return TRUE;
 }
@@ -707,7 +707,7 @@ bool RDOLogCtrl::scrollVertically( int inc )
 		}
 		
 		InvalidateRect( &rect );*/
-		UpdateWindow ();
+		updateWindow();
 		res = true;
 	}
 	return res;
@@ -741,7 +741,7 @@ bool RDOLogCtrl::scrollHorizontally( int inc )
 		si.nPos   = xPos;
 		SetScrollInfo( SB_HORZ, &si, TRUE );
 
-		UpdateWindow();
+		updateWindow();
 		res = true;
 	}
 	return res;
@@ -780,7 +780,7 @@ void RDOLogCtrl::selectLine( const int index )
 	}
 	CWnd* parent = GetParent();
 	if ( parent )
-		::SendMessage( parent->m_hWnd, WM_LOGSELCHANGE, (WPARAM)prevSel, (LPARAM)selectedLine );
+		::SendNotifyMessage( parent->m_hWnd, WM_LOGSELCHANGE, (WPARAM)prevSel, (LPARAM)selectedLine );
 }
 
 void RDOLogCtrl::getLineRect( const int index, CRect* rect ) const
@@ -796,8 +796,16 @@ void RDOLogCtrl::repaintLine ( const int index )
 		CRect rect;
 		getLineRect( index, &rect );
 		InvalidateRect( &rect );
-		UpdateWindow();
+		updateWindow();
 	}
+}
+
+void RDOLogCtrl::updateWindow()
+{
+	CRgn updateRgn;
+	int rgn_type = GetUpdateRgn( &updateRgn );
+	if ( rgn_type != NULLREGION && rgn_type != ERROR )
+		SendNotifyMessage( WM_PAINT, 0, 0 );
 }
 
 bool RDOLogCtrl::makeLineVisible( const int index )
@@ -848,7 +856,8 @@ void RDOLogCtrl::addStringToLog( const string logStr )
 		}
 
 		if ( !isFullyVisible( lastString ) && prevVisible && ( !isVisible( selectedLine ) || selectedLine == lastString ) )
-			::SendMessage( m_hWnd, WM_VSCROLL, MAKELONG(SB_BOTTOM, 0), NULL );
+			//::SendMessage( m_hWnd, WM_VSCROLL, MAKELONG(SB_BOTTOM, 0), NULL );
+			scrollVertically( yMax - yPos );
 		else if ( isVisible( lastString ) ) {
 			repaintLine( lastString );
 			if ( fullRepaintLines == 2 )
@@ -881,7 +890,7 @@ void RDOLogCtrl::setStyle( RDOLogStyle* style, const bool needRedraw )
 	
 	if ( needRedraw ) {
 		Invalidate();
-		UpdateWindow();
+		updateWindow();
 	}
 }
 
@@ -918,19 +927,19 @@ void RDOLogCtrl::setFont( const bool needRedraw )
 	
 	if ( needRedraw ) {
 		Invalidate();   
-		UpdateWindow();
+		updateWindow();
 	}
 }
 
-string RDOLogCtrl::getString( const int index ) const
+void RDOLogCtrl::getString( const int index, string& str ) const
 {
 	const_cast<CMutex&>(mutex).Lock();
 
-	if ( index >= 0 && index < stringsCount ) {
-		return (*const_findString( index ));
-	} else {
-		return "";
-	}
+	string res = "";
+
+	if ( index >= 0 && index < stringsCount )
+		//res = (*const_findString( index ));
+		str.assign( *const_findString( index ) );
 
 	const_cast<CMutex&>(mutex).Unlock();
 }
@@ -940,9 +949,9 @@ int RDOLogCtrl::getSelectedIndex() const
 	return selectedLine;
 }
 
-string RDOLogCtrl::getSelected() const
+void RDOLogCtrl::getSelected( string& str ) const
 {
-	return getString( selectedLine );
+	getString( selectedLine, str );
 }
 
 void RDOLogCtrl::copy()
@@ -950,7 +959,8 @@ void RDOLogCtrl::copy()
 	if ( canCopy() ) {
 		if ( !OpenClipboard() || !::EmptyClipboard() )
 			return;
-		string str = getSelected();
+		string str;
+		getSelected( str );
 		char* ptr = (char*)::LocalAlloc( LMEM_FIXED, str.length() + 1 );
 		strcpy( ptr, str.c_str() );
 		::SetClipboardData( CF_TEXT, ptr );
@@ -969,7 +979,7 @@ void RDOLogCtrl::clear()
 	selectedLine = -1;
 	updateScrollBars();
 	Invalidate();
-	UpdateWindow();
+	updateWindow();
 	
 	mutex.Unlock();
 }
@@ -1000,9 +1010,11 @@ stringList::const_reverse_iterator RDOLogCtrl::const_reverse_findString( int ind
 	return const_findString( index );
 }
 
-int RDOLogCtrl::find( const bool searchDown, const bool matchCase, const bool matchWholeWord )
+void RDOLogCtrl::find( int& result, const bool searchDown, const bool matchCase, const bool matchWholeWord )
 {
 	mutex.Lock();
+
+	result = -1;
 
 	string strtofind = findStr;
 	
@@ -1062,20 +1074,22 @@ int RDOLogCtrl::find( const bool searchDown, const bool matchCase, const bool ma
 	if ( posFind == -1 ) {
 		firstFoundLine = -1;
 		bHaveFound    = false;
-		return -1;
+		result = -1;
 	} else {
+		bHaveFound = true;
+		result = posFind;
 		if ( firstFoundLine == -1 ) {
 			firstFoundLine = posFind;
 		} else if ( posFind == firstFoundLine ) {
 			firstFoundLine = -1;
 			bHaveFound    = false;
-			return -1;
+			result = -1;
 		}
-		bHaveFound = true;
-		return posFind;
+		//bHaveFound = true;
+		//return posFind;
 	}
+	
 	mutex.Unlock();
-	return -1;
 }
 
 void RDOLogCtrl::setText( std::string text )
