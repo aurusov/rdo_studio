@@ -1526,6 +1526,7 @@ BEGIN
     IDS_COLORSTYLE_FRAME    "Animation Window"
     IDS_COLORSTYLE_FRAME_BORDER "border line"
     IDS_COLORSTYLE_FRAME_BACKGROUND "outside background"
+    IDS_CHART_TITLE         "chart: %s"
 END
 
 STRINGTABLE DISCARDABLE 

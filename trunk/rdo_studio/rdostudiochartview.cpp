@@ -178,7 +178,7 @@ void RDOStudioChartView::recalcLayout()
 	
 	CRect tmprect;
 	tmprect.CopyRect( &newClientRect );
-	string str = doc->GetTitle();
+	string str = doc->getTitle();
 	::DrawText( hmemdc, str.c_str(), str.length(), tmprect, DT_WORDBREAK | DT_CENTER | DT_CALCRECT );
 	chartRect.top = tmprect.Height() + 5;
 
@@ -421,7 +421,7 @@ void RDOStudioChartView::drawTitle( CRect& chartRect )
 	::SelectObject( hmemdc, hfontTitle );
 	::SetTextColor( hmemdc, style->getTheme()->titleFGColor );
 	
-	string str = GetDocument()->GetTitle();
+	string str = GetDocument()->getTitle();
 	::DrawText( hmemdc, str.c_str(), str.length(), tmprect, DT_CENTER | DT_WORDBREAK );
 }
 

@@ -203,6 +203,7 @@ void RDOStudioChartDoc::addSerie( RDOTracerSerie* const serie )
 		docserie->marker = selectMarker();
 		series.push_back( docserie );
 		inserted_it = docTimes.begin();
+
 		if ( !docTimes.empty() && !serie->empty() ) {
 			timesList::iterator last_doc = docTimes.end();
 			last_doc --;
@@ -214,14 +215,21 @@ void RDOStudioChartDoc::addSerie( RDOTracerSerie* const serie )
 				}
 			}
 		}
-		
-		//int count;
-		//serie->getValueCount( count );
-		//studioApp.mainFrame->beginProgress( 0, count );
 
-		for_each( serie->begin(), serie->end(), RDOStudioChartDocInsertTime( this ) );
+		try {
+			studioApp.BeginWaitCursor();
+			
+			//int count;
+			//serie->getValueCount( count );
+			//studioApp.mainFrame->beginProgress( 0, count );
 
-		//studioApp.mainFrame->endProgress();
+			for_each( serie->begin(), serie->end(), RDOStudioChartDocInsertTime( this ) );
+
+			//studioApp.mainFrame->endProgress();
+			studioApp.EndWaitCursor();
+		} catch( ... ) {
+			studioApp.EndWaitCursor();
+		}
 
 		serie->addToDoc( this );
 		if ( series.size() == 1 ) {
@@ -302,6 +310,12 @@ bool RDOStudioChartDoc::serieExists( const RDOTracerSerie* serie ) const
 	const_cast<CMutex&>(mutex).Unlock();
 
 	return res;
+}
+
+void RDOStudioChartDoc::setTitle( const std::string _title )
+{
+	title = _title;
+	SetTitle( format( IDS_CHART_TITLE, title.c_str() ).c_str() );
 }
 
 #ifdef _DEBUG

@@ -59,6 +59,8 @@ protected:
 	void lock() { mutex.Lock(); };
 	void unlock() { mutex.Unlock(); };
 
+	std::string title;
+
 public:
 	//{{AFX_VIRTUAL(RDOStudioChartDoc)
 	public:
@@ -78,6 +80,9 @@ public:
 	void addSerie( RDOTracerSerie* const serie );
 	//void removeSerie( RDOTracerSerie* const serie );
 	bool serieExists( const RDOTracerSerie* serie ) const;
+
+	std::string getTitle() const { return title; };
+	void setTitle( const std::string _title );
 
 #ifdef _DEBUG
 	virtual void AssertValid() const;

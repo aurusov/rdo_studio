@@ -34,7 +34,7 @@ RDOStudioChartOptionsChart::RDOStudioChartOptionsChart( RDOStudioChartOptions& _
 	//{{AFX_DATA_INIT(RDOStudioChartOptionsChart)
 	m_ValCountX = sheet->view->valueCountX;
 	m_ValCountY = sheet->view->valueCountY;
-	m_ChartTitle = sheet->view->GetDocument()->GetTitle();
+	m_ChartTitle = sheet->view->GetDocument()->getTitle().c_str();
 	m_AxisSerie = -1;
 	//}}AFX_DATA_INIT
 
@@ -100,7 +100,7 @@ void RDOStudioChartOptionsChart::OnUpdateModify()
 	RDOStudioChartView* view = sheet->view;
 	bool legend = m_DrawLegend.GetCheck() ? true : false;
 
-	SetModified( legend != view->needDrawLegend || m_ValCountX != view->valueCountX || m_ValCountY != view->valueCountY || m_ChartTitle != view->GetDocument()->GetTitle() || m_AxisSerie != view->GetDocument()->getSerieIndex( view->yAxis ) );
+	SetModified( legend != view->needDrawLegend || m_ValCountX != view->valueCountX || m_ValCountY != view->valueCountY || m_ChartTitle != view->GetDocument()->getTitle().c_str() || m_AxisSerie != view->GetDocument()->getSerieIndex( view->yAxis ) );
 }
 
 void RDOStudioChartOptionsChart::apply() const
@@ -113,7 +113,7 @@ void RDOStudioChartOptionsChart::apply() const
 	sheet->view->needDrawLegend = legend;
 	sheet->view->valueCountX = m_ValCountX;
 	sheet->view->valueCountY = m_ValCountY;
-	sheet->view->GetDocument()->SetTitle( m_ChartTitle );
+	sheet->view->GetDocument()->setTitle( (LPCTSTR)m_ChartTitle );
 }
 
 // ----------------------------------------------------------------------------
