@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "rdotracer.h"
+#include "../rdostudiomodel.h"
 #include <rdokernel.h>
 #include <rdorepository.h>
 #include <rdosimwin.h>
@@ -21,22 +22,25 @@ using namespace rdoTracer;
 
 RDOTracer* tracer = NULL;
 
+static bool clear_after_stop = false;
+
 // ----------------------------------------------------------------------------
 // ---------- RDOTracer
 // ----------------------------------------------------------------------------
 
-RDOTracer::RDOTracer() : RDOTracerBase()
+RDOTracer::RDOTracer() :
+	RDOTracerBase()
 {
+	clear_after_stop = false;
+	
 	tracer = this;
 
-	kernel.setNotifyReflect( RDOKernel::newModel, newModelNotify );
-	kernel.setNotifyReflect( RDOKernel::openModel, openModelNotify );
 	kernel.setNotifyReflect( RDOKernel::closeModel, closeModelNotify );
 
 	kernel.setNotifyReflect( RDOKernel::beforeModelStart, beforeModelStartNotify );
-	kernel.setNotifyReflect( RDOKernel::endExecuteModel, stopModelNotify );
-	kernel.setNotifyReflect( RDOKernel::modelStopped, stopModelNotify );
-	kernel.setNotifyReflect( RDOKernel::executeError, stopModelNotify );
+	kernel.setNotifyReflect( RDOKernel::endExecuteModel, modelStoppedNotify );
+	kernel.setNotifyReflect( RDOKernel::modelStopped, modelStoppedNotify );
+	kernel.setNotifyReflect( RDOKernel::executeError, modelStoppedNotify );
 
 	kernel.setNotifyReflect( RDOKernel::traceString, traceStringNotify );
 }
@@ -46,19 +50,11 @@ RDOTracer::~RDOTracer()
 	tracer = NULL;
 }
 
-void RDOTracer::newModelNotify()
-{
-	tracer->clear();
-}
-
-void RDOTracer::openModelNotify()
-{
-	tracer->clear();
-}
-
 void RDOTracer::closeModelNotify()
 {
-	tracer->clear();
+	clear_after_stop = model->isRunning();
+	if ( !clear_after_stop )
+		tracer->clear();
 }
 
 void RDOTracer::beforeModelStartNotify()
@@ -75,16 +71,18 @@ void RDOTracer::beforeModelStartNotify()
 	}
 }
 
-void RDOTracer::stopModelNotify()
+void RDOTracer::modelStoppedNotify()
 {
+	if ( clear_after_stop ) {
+		tracer->clear();
+		clear_after_stop = false;
+	}
 	tracer->setDrawTrace( true );
 }
 
 void RDOTracer::traceStringNotify( string trace_string )
 {
-	if ( tracer ) {
-		tracer->getTraceString( trace_string );
-	}
+	tracer->getTraceString( trace_string );
 }
 
 void RDOTracer::setShowMode( const RDOSimulatorNS::ShowMode value )
