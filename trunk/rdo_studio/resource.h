@@ -23,6 +23,8 @@
 #define IDD_OPTIONS_TABS                155
 #define IDB_FRAMES_TREECTRL             156
 #define IDD_CHART_OPTIONS_SERIES        157
+#define IDR_ZOOM_TOOLBAR                160
+#define IDB_ZOOM_TOOLBAR_D              162
 #define IDC_CLEARAUTO_CHECK             1001
 #define IDC_STYLEITEM_TREE              1002
 #define IDC_BUFFERVALUESTATIC           1003
@@ -390,6 +392,7 @@
 #define ID_SEARCH_BOOKMARKS_CLEAR       33170
 #define ID_SEARCH_FIND_NEXT             33171
 #define ID_SEARCH_FIND_PREVIOUS         33172
+#define ID_VIEW_TOOLBAR_ZOOM_TOOLBAR    33181
 #define ID_STATUSBAR_READONLY           40000
 #define ID_STATUSBAR_MODIFIED           40001
 #define ID_STATUSBAR_OVERWRITE          40002
@@ -548,8 +551,8 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        158
-#define _APS_NEXT_COMMAND_VALUE         33176
+#define _APS_NEXT_RESOURCE_VALUE        163
+#define _APS_NEXT_COMMAND_VALUE         33182
 #define _APS_NEXT_CONTROL_VALUE         1082
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

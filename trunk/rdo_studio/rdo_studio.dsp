@@ -1160,6 +1160,14 @@ SOURCE=.\res\rdostudiomodeldoc.ico
 
 SOURCE=.\res\tracertreectrl.bmp
 # End Source File
+# Begin Source File
+
+SOURCE=.\res\zoomToolbar.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\zoomToolbar_d.bmp
+# End Source File
 # End Group
 # End Target
 # End Project

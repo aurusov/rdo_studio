@@ -28,9 +28,11 @@ BEGIN_MESSAGE_MAP(RDOStudioMainFrame, CMDIFrameWnd)
 	ON_WM_CREATE()
 	ON_COMMAND(ID_VIEW_TOOLBAR_FILE_TOOLBAR, OnViewFileToolbar)
 	ON_COMMAND(ID_VIEW_TOOLBAR_EDIT_TOOLBAR, OnViewEditToolbar)
+	ON_COMMAND(ID_VIEW_TOOLBAR_ZOOM_TOOLBAR, OnViewZoomToolbar)
 	ON_COMMAND(ID_VIEW_TOOLBAR_MODEL_TOOLBAR, OnViewModelToolbar)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_TOOLBAR_FILE_TOOLBAR, OnUpdateViewFileToolbar)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_TOOLBAR_EDIT_TOOLBAR, OnUpdateViewEditToolbar)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_TOOLBAR_ZOOM_TOOLBAR, OnUpdateViewZoomToolbar)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_TOOLBAR_MODEL_TOOLBAR, OnUpdateViewModelToolbar)
 	ON_COMMAND(ID_VIEW_WORKSPACE, OnViewWorkspace)
 	ON_COMMAND(ID_VIEW_OUTPUT, OnViewOutput)
@@ -57,6 +59,10 @@ BEGIN_MESSAGE_MAP(RDOStudioMainFrame, CMDIFrameWnd)
 	ON_COMMAND(ID_MODEL_FRAME_PREV, OnModelFramePrev)
 	ON_UPDATE_COMMAND_UI(ID_MODEL_FRAME_NEXT, OnUpdateModelFrameNext)
 	ON_UPDATE_COMMAND_UI(ID_MODEL_FRAME_PREV, OnUpdateModelFramePrev)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOMIN, OnUpdateViewZoomIn)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOMOUT, OnUpdateViewZoomOut)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOMRESET, OnUpdateViewZoomReset)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOMAUTO, OnUpdateViewZoomAuto)
 	//}}AFX_MSG_MAP
 	ON_UPDATE_COMMAND_UI( ID_COORD_STATUSBAR           , OnUpdateCoordStatusBar )
 	ON_UPDATE_COMMAND_UI( ID_MODIFY_STATUSBAR          , OnUpdateModifyStatusBar )
@@ -131,6 +137,13 @@ int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	editToolBarImageList.Create( IDB_EDIT_TOOLBAR_D, 16, 0, 0xFF00FF );
 	editToolBar.GetToolBarCtrl().SetDisabledImageList( &editToolBarImageList );
 
+	zoomToolBar.CreateEx( this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
+	zoomToolBar.LoadToolBar( IDR_ZOOM_TOOLBAR );
+	zoomToolBar.GetToolBarCtrl().SetWindowText( format( IDR_ZOOM_TOOLBAR ).c_str() );
+
+	zoomToolBarImageList.Create( IDB_ZOOM_TOOLBAR_D, 16, 0, 0xFF00FF );
+	zoomToolBar.GetToolBarCtrl().SetDisabledImageList( &zoomToolBarImageList );
+
 	modelToolBar.CreateEx( this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
 	modelToolBar.LoadToolBar( IDR_MODEL_TOOLBAR );
 	modelToolBar.GetToolBarCtrl().SetWindowText( format( IDR_MODEL_TOOLBAR ).c_str() );
@@ -157,6 +170,7 @@ int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	fileToolBar.EnableDocking( CBRS_ALIGN_ANY );
 	editToolBar.EnableDocking( CBRS_ALIGN_ANY );
+	zoomToolBar.EnableDocking( CBRS_ALIGN_ANY );
 	modelToolBar.EnableDocking( CBRS_ALIGN_ANY );
 	workspace.EnableDocking( CBRS_ALIGN_ANY );
 	output.EnableDocking( CBRS_ALIGN_ANY );
@@ -165,7 +179,8 @@ int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	DockControlBar( &fileToolBar );
 	dockControlBarBesideOf( editToolBar, fileToolBar );
-	dockControlBarBesideOf( modelToolBar, editToolBar );
+	dockControlBarBesideOf( zoomToolBar, editToolBar );
+	dockControlBarBesideOf( modelToolBar, zoomToolBar );
 	DockControlBar( &workspace, AFX_IDW_DOCKBAR_LEFT );
 	DockControlBar( &output, AFX_IDW_DOCKBAR_BOTTOM );
 
@@ -244,14 +259,19 @@ void RDOStudioMainFrame::OnViewFileToolbar()
 	ShowControlBar( &fileToolBar, !(fileToolBar.GetStyle() & WS_VISIBLE), false );
 }
 
-void RDOStudioMainFrame::OnViewModelToolbar()
-{
-	ShowControlBar( &modelToolBar, !(modelToolBar.GetStyle() & WS_VISIBLE), false );
-}
-
 void RDOStudioMainFrame::OnViewEditToolbar() 
 {
 	ShowControlBar( &editToolBar, !(editToolBar.GetStyle() & WS_VISIBLE), false );
+}
+
+void RDOStudioMainFrame::OnViewZoomToolbar()
+{
+	ShowControlBar( &zoomToolBar, !(zoomToolBar.GetStyle() & WS_VISIBLE), false );
+}
+
+void RDOStudioMainFrame::OnViewModelToolbar()
+{
+	ShowControlBar( &modelToolBar, !(modelToolBar.GetStyle() & WS_VISIBLE), false );
 }
 
 void RDOStudioMainFrame::OnUpdateViewFileToolbar(CCmdUI* pCmdUI) 
@@ -259,14 +279,19 @@ void RDOStudioMainFrame::OnUpdateViewFileToolbar(CCmdUI* pCmdUI)
 	pCmdUI->SetCheck( fileToolBar.GetStyle() & WS_VISIBLE );
 }
 
-void RDOStudioMainFrame::OnUpdateViewModelToolbar(CCmdUI* pCmdUI)
-{
-	pCmdUI->SetCheck( modelToolBar.GetStyle() & WS_VISIBLE );
-}
-
 void RDOStudioMainFrame::OnUpdateViewEditToolbar(CCmdUI* pCmdUI) 
 {
 	pCmdUI->SetCheck( editToolBar.GetStyle() & WS_VISIBLE );
+}
+
+void RDOStudioMainFrame::OnUpdateViewZoomToolbar(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetCheck( zoomToolBar.GetStyle() & WS_VISIBLE );
+}
+
+void RDOStudioMainFrame::OnUpdateViewModelToolbar(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetCheck( modelToolBar.GetStyle() & WS_VISIBLE );
 }
 
 BOOL RDOStudioMainFrame::OnCmdMsgForDockOnly( UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo )
@@ -533,4 +558,25 @@ LRESULT RDOStudioMainFrame::WindowProc( UINT message, WPARAM wParam, LPARAM lPar
 		OnOutputShow();
 	}
 	return CMDIFrameWnd::WindowProc(message, wParam, lParam);
+}
+
+void RDOStudioMainFrame::OnUpdateViewZoomIn(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable( false );
+}
+
+void RDOStudioMainFrame::OnUpdateViewZoomOut(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable( false );
+}
+
+void RDOStudioMainFrame::OnUpdateViewZoomReset(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable( false );
+	pCmdUI->SetCheck( false );
+}
+
+void RDOStudioMainFrame::OnUpdateViewZoomAuto(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable( false );
 }

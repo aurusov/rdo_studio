@@ -29,6 +29,8 @@ private:
 	CImageList fileToolBarImageList;
 	CToolBar   editToolBar;
 	CImageList editToolBarImageList;
+	CToolBar   zoomToolBar;
+	CImageList zoomToolBarImageList;
 	CToolBar   modelToolBar;
 	CImageList modelToolBarImageList;
 	RDOStudioStatusBar statusBar;
@@ -84,11 +86,13 @@ protected:
 	//{{AFX_MSG(RDOStudioMainFrame)
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnViewFileToolbar();
-	afx_msg void OnViewModelToolbar();
 	afx_msg void OnViewEditToolbar();
+	afx_msg void OnViewZoomToolbar();
+	afx_msg void OnViewModelToolbar();
 	afx_msg void OnUpdateViewFileToolbar(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateViewModelToolbar(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateViewEditToolbar(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateViewZoomToolbar(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateViewModelToolbar(CCmdUI* pCmdUI);
 	afx_msg void OnViewWorkspace();
 	afx_msg void OnViewOutput();
 	afx_msg void OnUpdateViewWorkspace(CCmdUI* pCmdUI);
@@ -114,6 +118,10 @@ protected:
 	afx_msg void OnModelFramePrev();
 	afx_msg void OnUpdateModelFrameNext(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateModelFramePrev(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateViewZoomIn(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateViewZoomOut(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateViewZoomReset(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateViewZoomAuto(CCmdUI* pCmdUI);
 	//}}AFX_MSG
 	afx_msg void OnUpdateCoordStatusBar( CCmdUI *pCmdUI );
 	afx_msg void OnUpdateModifyStatusBar( CCmdUI *pCmdUI );

@@ -78,6 +78,8 @@ IDR_EDIT_TOOLBAR        BITMAP  MOVEABLE PURE   "res\\editToolbar.bmp"
 IDR_MODEL_TOOLBAR       BITMAP  DISCARDABLE     "res\\modeToolbar.bmp"
 IDB_MODEL_TOOLBAR_D     BITMAP  DISCARDABLE     "res\\modelToolbar_d.bmp"
 IDB_FRAMES_TREECTRL     BITMAP  DISCARDABLE     "res\\framestreectrl.bmp"
+IDR_ZOOM_TOOLBAR        BITMAP  DISCARDABLE     "res\\zoomToolbar.bmp"
+IDB_ZOOM_TOOLBAR_D      BITMAP  DISCARDABLE     "res\\zoomToolbar_d.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -127,6 +129,14 @@ BEGIN
     SEPARATOR
     BUTTON      ID_MODEL_FRAME_NEXT
     BUTTON      ID_MODEL_FRAME_PREV
+END
+
+IDR_ZOOM_TOOLBAR TOOLBAR DISCARDABLE  16, 15
+BEGIN
+    BUTTON      ID_VIEW_ZOOMIN
+    BUTTON      ID_VIEW_ZOOMOUT
+    BUTTON      ID_VIEW_ZOOMAUTO
+    BUTTON      ID_VIEW_ZOOMRESET
 END
 
 
@@ -601,9 +611,11 @@ BEGIN
         BEGIN
             MENUITEM "&File Toolbar",               ID_VIEW_TOOLBAR_FILE_TOOLBAR
 
-            MENUITEM "&Model Toolbar",              ID_VIEW_TOOLBAR_MODEL_TOOLBAR
-
             MENUITEM "&Edit Toolbar",               ID_VIEW_TOOLBAR_EDIT_TOOLBAR
+
+            MENUITEM "&Zoom Toolbar",               ID_VIEW_TOOLBAR_ZOOM_TOOLBAR
+
+            MENUITEM "&Model Toolbar",              ID_VIEW_TOOLBAR_MODEL_TOOLBAR
 
         END
         MENUITEM SEPARATOR
@@ -1378,6 +1390,9 @@ BEGIN
     ID_MODEL_RUN_ANIMATION  "\nAnimation"
     ID_MODEL_RUN_MONITOR    "\nMonitor"
     ID_FILE_MODEL_SAVE      "\nSave (Ctrl+S)"
+    ID_VIEW_ZOOMIN          "\nZoom &In (Ctrl+Num+)"
+    ID_VIEW_ZOOMOUT         "\nZoom Out (Ctrl+Num-)"
+    ID_VIEW_ZOOMRESET       "\nReset Zoom (Ctrl+Num/)"
 END
 
 STRINGTABLE DISCARDABLE 
@@ -1463,6 +1478,7 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
+    ID_VIEW_ZOOMAUTO        "\nZoom Auto (Ctrl+Num*)"
     ID_MODEL_SHOWRATE_INC   "\nIncrease Tempo (Alt+Num+)"
     ID_MODEL_SHOWRATE_INCFOUR "\nIncrease Tempo by 4 Times"
     ID_MODEL_SHOWRATE_DECFOUR "\nDecrease Tempo by 4 Times"
@@ -1507,6 +1523,11 @@ STRINGTABLE DISCARDABLE
 BEGIN
     ID_VIEW_WORKSPACE       "\nWorkspace (Alt+0)"
     ID_VIEW_OUTPUT          "\nOutput (Alt+2)"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDR_ZOOM_TOOLBAR        "Zoom"
 END
 
 #endif    // Russian resources
