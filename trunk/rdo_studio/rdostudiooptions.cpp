@@ -1668,7 +1668,12 @@ RDOStudioOptions::RDOStudioOptions():
 RDOStudioOptions::~RDOStudioOptions()
 {
 	//dont calll destructors for preview_chart & preview_chart_doc
+	//if the property page that contains them was showed (preview_chart has safe Hwnd)
 	//because framework kills them itself
+	if ( preview_chart_doc && preview_chart && !preview_chart->GetSafeHwnd() ) {
+		delete preview_chart_doc; preview_chart_doc = NULL;
+		delete preview_chart;     preview_chart = NULL;
+	}
 	if ( general )  { delete general; general = NULL; }
 	if ( editor )   { delete editor; editor = NULL; }
 	if ( tabs )     { delete tabs;   tabs = NULL; }
