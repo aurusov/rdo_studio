@@ -7,6 +7,7 @@
 #include "rdostudioeditview.h"
 #include "resource.h"
 #include "./rdo_tracer/rdotracertrace.h"
+//#include "Htmlhelp.h"
 
 #include <rdokernel.h>
 #include <rdorepository.h>
@@ -19,6 +20,45 @@ using namespace rdoRepository;
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
+
+// ----------------------------------------------------------------------------
+// ---------- RDOFileAssociationDlg
+// ----------------------------------------------------------------------------
+class RDOFileAssociationDlg: public CDialog
+{
+protected:
+	virtual void DoDataExchange( CDataExchange* pDX );
+	virtual void OnCancel();
+
+public:
+	RDOFileAssociationDlg( CWnd* pParentWnd = NULL );
+	virtual ~RDOFileAssociationDlg();
+
+	int checkInFuture;
+};
+
+RDOFileAssociationDlg::RDOFileAssociationDlg( CWnd* pParentWnd ):
+	CDialog( IDD_FILEASSOCIATION, pParentWnd ),
+	checkInFuture( true )
+{
+}
+
+RDOFileAssociationDlg::~RDOFileAssociationDlg()
+{
+}
+
+void RDOFileAssociationDlg::DoDataExchange( CDataExchange* pDX )
+{
+	CDialog::DoDataExchange( pDX );
+
+	DDX_Check( pDX, IDC_FILEASSOCIATION_CHECK, checkInFuture );
+}
+
+void RDOFileAssociationDlg::OnCancel()
+{
+	CDialog::UpdateData( true );
+	CDialog::OnCancel();
+}
 
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioApp
@@ -78,11 +118,6 @@ BOOL RDOStudioApp::InitInstance()
 	free( (void*)m_pszRegistryKey );
 	m_pszRegistryKey = _tcsdup( _T("RAO-studio") );
 
-	// Change the registry key under which our settings are stored.
-//	SetRegistryKey(_T("Local AppWizard-Generated Applications"));
-
-//	LoadStdProfileSettings();  // Load standard INI file options (including MRU)
-
 	editDocTemplate = new CMultiDocTemplate( IDR_EDITTYPE, RUNTIME_CLASS(RDOStudioEditDoc), RUNTIME_CLASS(RDOStudioChildFrame), RUNTIME_CLASS(RDOStudioEditView) );
 	AddDocTemplate( editDocTemplate );
 
@@ -95,26 +130,40 @@ BOOL RDOStudioApp::InitInstance()
 	loadReopen();
 	updateReopenSubMenu();
 
-	// Enable drag/drop open
-//	mainFrame->DragAcceptFiles();
+	setupFileAssociation();
 
-	// Enable DDE Execute open
-//	EnableShellOpen();
-//	RegisterShellFileTypes( TRUE );
+	string fileName( m_lpCmdLine );
+	if ( !fileName.empty() ) {
+		int pos = fileName.find_first_of( '"' );
+		if ( pos == 0 ) {
+			fileName.erase( 0, 1 );
+		}
+		pos = fileName.find_last_of( '"' );
+		if ( pos == fileName.length() - 1 ) {
+			fileName.erase( pos, 1 );
+		}
+		if ( model->openModel( fileName ) ) {
+			insertReopenItem( kernel.getRepository()->getFullName() );
+		} else {
+			OnFileNew();
+		}
+	} else {
+		OnFileNew();
+	}
 
 	mainFrame->ShowWindow(m_nCmdShow);
 	mainFrame->UpdateWindow();
 
-	// Parse command line for standard shell commands, DDE, file open
-	CCommandLineInfo cmdInfo;
-	ParseCommandLine( cmdInfo );
-
-	// Dispatch commands specified on the command line
-	if ( !ProcessShellCommand(cmdInfo) ) return FALSE;
-
 	initInstance = true;
 
 	return TRUE;
+}
+
+int RDOStudioApp::ExitInstance()
+{
+//	HtmlHelp( NULL, NULL, HH_CLOSE_ALL, 0 );
+
+	return CWinApp::ExitInstance();
 }
 
 void RDOStudioApp::OnFileNew() 
@@ -380,6 +429,155 @@ void RDOStudioApp::OnChartStoptrace()
 void RDOStudioApp::OnUpdateChartStoptrace(CCmdUI* pCmdUI) 
 {
 	pCmdUI->Enable( tracer.isTracing() );
+}
+
+string RDOStudioApp::getFullFileName()
+{
+	string fileName = "";
+	TCHAR szExeName[ MAX_PATH + 1 ];
+	if ( ::GetModuleFileName( NULL, szExeName, MAX_PATH ) ) {
+		fileName = szExeName;
+	}
+	return fileName;
+}
+
+string RDOStudioApp::extractFilePath( const string& fileName )
+{
+	string s;
+	string::size_type pos = fileName.find_last_of( '\\' );
+	if ( pos == string::npos ) {
+		pos = fileName.find_last_of( '/' );
+	}
+	if ( pos != string::npos && pos < fileName.length() - 1 ) {
+		s.assign( fileName.begin(), pos + 1 );
+		static char szDelims[] = " \t\n\r";
+		s.erase( 0, s.find_first_not_of( szDelims ) );
+		s.erase( s.find_last_not_of( szDelims ) + 1, string::npos );
+	} else {
+		s = fileName;
+	}
+	pos = s.find_last_of( '\\' );
+	if ( pos == string::npos ) {
+		pos = s.find_last_of( '/' );
+	}
+	if ( pos != s.length() - 1 && s.length() ) {
+		s += "/";
+	}
+	return s;
+}
+
+bool RDOStudioApp::isFileExists( const string& fileName )
+{
+	CFileFind finder;
+	return finder.FindFile( fileName.c_str() ) ? true : false;
+}
+
+string RDOStudioApp::getFullHelpFileName( string str )
+{
+	str.insert( 0, extractFilePath( getFullFileName() ) );
+	
+	if ( !isFileExists( str ) ) {
+		::MessageBox( NULL, format( ID_MSG_NO_HELP_FILE, str.c_str() ).c_str(), NULL, MB_ICONEXCLAMATION | MB_OK );
+		return "";
+	}
+
+	return str;
+}
+
+void RDOStudioApp::setupFileAssociation()
+{
+	if ( !GetProfileInt( "fileAssociation", "checkInFuture", true ) ) return;
+
+	string strFileTypeId   = _T("RAO.FileInfo");
+	string strFileTypeName = _T("RAO FileInfo");
+	string strParam        = _T(" \"%1\"");
+	string strPathName     = getFullFileName();
+	string strRAOExt       = _T(".smr");
+
+	bool win2000 = false;
+	OSVERSIONINFO osvi;
+	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+	if ( ::GetVersionEx( &osvi ) ) {
+		win2000 = osvi.dwMajorVersion >= 5;
+	}
+
+	HKEY hCurUserSoftClasses = 0;
+	HKEY hKey;
+	DWORD result;
+	if ( win2000 ) {
+		if ( ::RegOpenKeyEx( HKEY_CURRENT_USER, _T("Software\\Classes"), 0, KEY_ALL_ACCESS, &hCurUserSoftClasses ) != ERROR_SUCCESS ) {
+			hCurUserSoftClasses = 0;
+		}
+	} else {
+		hCurUserSoftClasses = HKEY_CLASSES_ROOT;
+	}
+	if ( hCurUserSoftClasses ) {
+		if ( ::RegCreateKeyEx( hCurUserSoftClasses, strFileTypeId.c_str(), 0, _T(""), REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &hKey, &result ) == ERROR_SUCCESS ) {
+			bool mustBeRegistered = true;
+			DWORD size;
+			if ( ::RegQueryValueEx( hKey, _T(""), NULL, NULL, NULL, &size ) == ERROR_SUCCESS ) {
+				if ( size > 0 ) {
+					HKEY hKeyPath;
+					if ( ::RegOpenKeyEx( hKey, _T("shell\\open\\command"), 0, KEY_READ, &hKeyPath ) == ERROR_SUCCESS ) {
+						CString s;
+						DWORD length = MAX_PATH + strParam.length() * sizeof(TCHAR) + 1;
+						::RegQueryValueEx( hKeyPath, _T(""), NULL, NULL, (LPBYTE)s.GetBuffer( length ), &length );
+						s.ReleaseBuffer();
+						::RegCloseKey( hKeyPath );
+
+						int pos = s.Find( strParam.c_str() );
+						if ( pos != -1 ) {
+							s.Delete( pos, strParam.length() );
+							if ( s != strPathName.c_str() ) {
+								RDOFileAssociationDlg dlg;
+								mustBeRegistered = dlg.DoModal() == IDOK;
+								WriteProfileInt( "fileAssociation", "checkInFuture", dlg.checkInFuture ? true : false );
+							} else {
+								mustBeRegistered = false;
+							}
+						}
+					}
+				}
+			}
+			if ( mustBeRegistered ) {
+				HKEY hKey_tmp;
+				if ( ::RegCreateKeyEx( hCurUserSoftClasses, strFileTypeId.c_str(), 0, _T(""), REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &hKey_tmp, &result ) == ERROR_SUCCESS ) {
+					string s = strFileTypeName;
+					::RegSetValueEx( hKey_tmp, _T(""), 0, REG_SZ, (LPBYTE)s.c_str(), s.length() );
+					::RegCloseKey( hKey_tmp );
+				}
+				if ( ::RegCreateKeyEx( hCurUserSoftClasses, string(strFileTypeId + _T("\\DefaultIcon")).c_str(), 0, _T(""), REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &hKey_tmp, &result ) == ERROR_SUCCESS ) {
+					string s = strPathName + _T(",0");
+					::RegSetValueEx( hKey_tmp, _T(""), 0, REG_SZ, (LPBYTE)s.c_str(), s.length() );
+					::RegCloseKey( hKey_tmp );
+				}
+				if ( ::RegCreateKeyEx( hCurUserSoftClasses, string(strFileTypeId + _T("\\shell\\open\\command")).c_str(), 0, _T(""), REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &hKey_tmp, &result ) == ERROR_SUCCESS ) {
+					string s = strPathName + strParam;
+					::RegSetValueEx( hKey_tmp, _T(""), 0, REG_SZ, (LPBYTE)s.c_str(), s.length() );
+					::RegCloseKey( hKey_tmp );
+				}
+				if ( ::RegCreateKeyEx( hCurUserSoftClasses, strRAOExt.c_str(), 0, _T(""), REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &hKey_tmp, &result ) == ERROR_SUCCESS ) {
+					string s = strFileTypeId;
+					::RegSetValueEx( hKey_tmp, _T(""), 0, REG_SZ, (LPBYTE)s.c_str(), s.length() );
+					::RegCloseKey( hKey_tmp );
+				}
+				if ( ::RegCreateKeyEx( hCurUserSoftClasses, strRAOExt.c_str(), 0, _T(""), REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &hKey_tmp, &result ) == ERROR_SUCCESS ) {
+					string s = strFileTypeId;
+					::RegSetValueEx( hKey_tmp, _T(""), 0, REG_SZ, (LPBYTE)s.c_str(), s.length() );
+					::RegCloseKey( hKey_tmp );
+				}
+				if ( ::RegCreateKeyEx( hCurUserSoftClasses, string(strRAOExt + _T("\\ShellNew")).c_str(), 0, _T(""), REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &hKey_tmp, &result ) == ERROR_SUCCESS ) {
+					string s = "";
+					::RegSetValueEx( hKey_tmp, _T("NullFile"), 0, REG_SZ, (LPBYTE)s.c_str(), s.length() );
+					::RegCloseKey( hKey_tmp );
+				}
+			}
+			::RegCloseKey( hKey );
+		}
+		if ( hCurUserSoftClasses != HKEY_CLASSES_ROOT ) {
+			::RegCloseKey( hCurUserSoftClasses );
+		}
+	}
 }
 
 void RDOStudioApp::OnAddNewFrame( WPARAM /*wParam*/, LPARAM /*lParam*/ )

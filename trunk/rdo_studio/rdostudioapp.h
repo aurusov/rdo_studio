@@ -35,9 +35,17 @@ public:
 
 	void insertReopenItem( const std::string& item );
 
+	static std::string getFullFileName();
+	static std::string extractFilePath( const std::string& fileName );
+	static bool isFileExists( const std::string& fileName );
+	static std::string getFullHelpFileName( std::string str = "RAO-language.chm" );
+
+	void setupFileAssociation();
+
 	//{{AFX_VIRTUAL(RDOStudioApp)
 	public:
 	virtual BOOL InitInstance();
+	virtual int ExitInstance();
 	//}}AFX_VIRTUAL
 
 	//{{AFX_MSG(RDOStudioApp)

@@ -145,9 +145,9 @@ BEGIN
     IDD_FILEASSOCIATION, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 190
+        RIGHTMARGIN, 193
         TOPMARGIN, 7
-        BOTTOMMARGIN, 64
+        BOTTOMMARGIN, 63
     END
 
     IDD_BUFFER, DIALOG
@@ -221,7 +221,7 @@ END
 IDD_OPTIONS_STYLESANDCOLORS DIALOGEX 0, 0, 292, 229
 STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "Styles and Colors"
-FONT 8, "MS Sans Serif"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     CONTROL         "Tree1",IDC_STYLEITEM_TREE,"SysTreeView32",
                     TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | 
@@ -279,14 +279,14 @@ BEGIN
                     ES_NUMBER
 END
 
-IDD_FILEASSOCIATION DIALOG DISCARDABLE  0, 0, 197, 71
+IDD_FILEASSOCIATION DIALOG DISCARDABLE  0, 0, 200, 70
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "File association"
 FONT 8, "MS Sans Serif"
 BEGIN
     DEFPUSHBUTTON   "Yes",IDOK,45,50,50,14
     PUSHBUTTON      "No",IDCANCEL,115,50,50,14
-    LTEXT           "Current instance of RAO-editor is't associated with SMR file. Do you want to make new association for SMR ?",
+    LTEXT           "Current instance of RAO-studio is't associated with SMR file. Do you want to make new association for SMR ?",
                     IDC_FILEASSOCIATION_STATIC,5,5,190,20
     CONTROL         "Check association in future",IDC_FILEASSOCIATION_CHECK,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,30,101,10
