@@ -1018,6 +1018,10 @@ SOURCE=.\res\fileToolbar_d.bmp
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\framestr.bmp
+# End Source File
+# Begin Source File
+
 SOURCE=.\res\Margin.cur
 # End Source File
 # Begin Source File

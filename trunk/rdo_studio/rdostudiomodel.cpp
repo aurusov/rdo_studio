@@ -53,6 +53,7 @@ RDOStudioModel::RDOStudioModel():
 	kernel.setNotifyReflect( RDOKernel::buildString, buildNotify );
 	kernel.setNotifyReflect( RDOKernel::debugString, debugNotify );
 
+	kernel.setNotifyReflect( RDOKernel::parseSuccess, parseSuccessNotify );
 	kernel.setNotifyReflect( RDOKernel::showFrame, showFrameNotify );
 }
 
@@ -214,6 +215,11 @@ void RDOStudioModel::debugNotify( string str )
 void RDOStudioModel::showFrameNotify()
 {
 	model->parseFrame();
+}
+
+void RDOStudioModel::parseSuccessNotify()
+{
+	model->parseSuccess();
 }
 
 RDOStudioModelDoc* RDOStudioModel::getModelDoc() const
@@ -463,6 +469,16 @@ double RDOStudioModel::getModelTime() const
 		return kernel.getSimulator()->getModelTime();
 	}
 	return 0;
+}
+
+void RDOStudioModel::parseSuccess() const
+{
+	vector< const string* > frames = kernel.getSimulator()->getAllFrames();
+	vector< const string* >::iterator it = frames.begin();
+	while ( it != frames.end() ) {
+		TRACE( "%s\r\n", (*it)->c_str() );
+		it++;
+	}
 }
 
 void RDOStudioModel::parseFrame()

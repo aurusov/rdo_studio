@@ -18,7 +18,9 @@ BEGIN_MESSAGE_MAP(RDOStudioWorkspace, RDOStudioDockWnd)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-RDOStudioWorkspace::RDOStudioWorkspace()
+RDOStudioWorkspace::RDOStudioWorkspace():
+	RDOStudioDockWnd(),
+	frames( NULL )
 {
 }
 
@@ -34,16 +36,15 @@ int RDOStudioWorkspace::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	tab.Create( NULL, NULL, 0, CRect(0, 0, 100, 100), this, 0 );
 	tab.modifyTabStyle( 0, TCS_BOTTOM | TCS_MULTILINE );
 
-	RDOTracerTreeCtrl* page1 = tracer.createTree();
-	CEdit* page2 = new CEdit;
+	RDOTracerTreeCtrl* trace = tracer.createTree();
+	frames = new CTreeCtrl;
 
-	page1->Create( 0, CRect(0, 0, 0, 0), &tab, 0 );
-	page2->Create( NULL, CRect(0, 0, 0, 0), &tab, 0 );
+	trace->Create( 0, CRect(0, 0, 0, 0), &tab, 0 );
+	frames->Create( TVS_HASLINES | TVS_SHOWSELALWAYS | TVS_DISABLEDRAGDROP, CRect(0, 0, 0, 0), &tab, 0 );
+	frames->ModifyStyleEx( 0, WS_EX_CLIENTEDGE );
 
-	page2->ModifyStyleEx( 0, WS_EX_CLIENTEDGE );
-
-	tab.insertItem( page1, "Tracer" );
-	tab.insertItem( page2, "Frames" );
+	tab.insertItem( trace, "Tracer" );
+	tab.insertItem( frames, "Frames" );
 
 	return 0;
 }

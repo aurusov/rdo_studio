@@ -20,6 +20,7 @@
 #define IDD_OPTIONS_STYLESANDCOLORS     153
 #define IDD_FILEASSOCIATION             154
 #define IDD_OPTIONS_TABS                155
+#define IDB_FRAMESTREECTRL              156
 #define IDC_CLEARAUTO_CHECK             1001
 #define IDC_STYLEITEM_TREE              1002
 #define IDC_BUFFERVALUESTATIC           1003
@@ -473,7 +474,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        156
+#define _APS_NEXT_RESOURCE_VALUE        157
 #define _APS_NEXT_COMMAND_VALUE         33158
 #define _APS_NEXT_CONTROL_VALUE         1051
 #define _APS_NEXT_SYMED_VALUE           101

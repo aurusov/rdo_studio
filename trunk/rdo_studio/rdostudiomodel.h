@@ -45,6 +45,7 @@ private:
 	static void buildNotify( std::string str );
 	static void debugNotify( std::string str );
 
+	static void parseSuccessNotify();
 	static void showFrameNotify();
 
 	void newModelFromRepository();
@@ -53,6 +54,7 @@ private:
 	void closeModelFromRepository();
 	void canNotCloseModelFromRepository() const;
 
+	void parseSuccess() const;
 	void parseFrame();
 
 public:

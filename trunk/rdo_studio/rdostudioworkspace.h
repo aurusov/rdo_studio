@@ -16,6 +16,7 @@ class RDOStudioWorkspace: public RDOStudioDockWnd
 {
 private:
 	RDOTabCtrl tab;
+	CTreeCtrl* frames;
 
 public:
 	RDOStudioWorkspace();
