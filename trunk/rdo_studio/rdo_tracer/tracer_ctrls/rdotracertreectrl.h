@@ -44,8 +44,15 @@ private:
 protected:
 	COleDataSource source;
 	RDODropSource  dropsource;
+
+	RDOTracerTreeItem* getIfItemIsDrawable( const HTREEITEM hItem ) const;
+
 	void doDragDrop( RDOTracerTreeItem* item, CPoint point );
-	void addToNewChart( RDOTracerTreeItem* const item );
+
+	CMenu popupMenu;
+
+	void addToNewChart( const HTREEITEM hitem ) const;
+	bool findInCharts( const HTREEITEM hitem ) const;
 
 	//{{AFX_VIRTUAL(RDOTracerTreeCtrl)
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
@@ -53,10 +60,14 @@ protected:
 
 	//{{AFX_MSG(RDOTracerTreeCtrl)
 	afx_msg int OnCreate( LPCREATESTRUCT lpCreateStruct );
+	afx_msg void OnInitMenuPopup( CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu );
 	afx_msg void OnAddToNewChart();
 	afx_msg void OnUpdateAddToNewChart( CCmdUI* pCmdUI );
 	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
 	afx_msg void OnDragDrop ( NMHDR * pNotifyStruct, LRESULT* result );
+	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnUpdateChartFindincharts(CCmdUI* pCmdUI);
+	afx_msg void OnChartFindincharts();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 

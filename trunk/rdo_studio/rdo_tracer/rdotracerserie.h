@@ -56,6 +56,8 @@ public:
 
 	int addToDoc( RDOStudioChartDoc* const doc );
 	void removeFromDoc( RDOStudioChartDoc* const doc );
+	bool isInOneOrMoreDocs() const { return !documents.empty(); };
+	bool activateFirstDoc() const;
 };
 
 #endif // RDOTRACERSERIE_H

@@ -5,6 +5,8 @@
 #include "rdotracerrestype.h"
 #include "../rdostudiochartview.h"
 #include "../rdostudiochartdoc.h"
+#include "../rdostudioapp.h"
+#include "../rdostudiomainfrm.h"
 
 using namespace std;
 
@@ -243,4 +245,22 @@ void RDOTracerSerie::removeFromDoc( RDOStudioChartDoc* const doc )
 	if ( it != documents.end() ) {
 		documents.erase( it );
 	}
+}
+
+bool RDOTracerSerie::activateFirstDoc() const
+{
+	bool res = false;
+	if ( documents.empty() ) return res;
+	RDOStudioChartDoc* doc = documents.front();
+	if ( doc ) {
+		POSITION pos = doc->GetFirstViewPosition();
+		RDOStudioChartView* view = NULL;
+		if ( pos )
+			view = static_cast<RDOStudioChartView*>(doc->GetNextView( pos ));
+		if ( view ) {
+			studioApp.mainFrame->MDIActivate( view->GetParentFrame() );
+			res = true;
+		}
+	}
+	return res;
 }

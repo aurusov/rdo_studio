@@ -37,7 +37,6 @@ protected:
 	DECLARE_DYNCREATE(RDOStudioChartDoc)
 
 	std::vector< RDOStudioDocSerie > series;
-	bool serieExists( const RDOTracerSerie* serie ) const { return std::find( series.begin(), series.end(), serie ) != series.end(); };
 	COLORREF selectColor();
 
 	timesList docTimes;
@@ -67,6 +66,7 @@ public:
 
 	void addSerie( RDOTracerSerie* const serie );
 	void removeSerie( RDOTracerSerie* const serie );
+	bool serieExists( const RDOTracerSerie* serie ) const { return std::find( series.begin(), series.end(), serie ) != series.end(); };
 
 #ifdef _DEBUG
 	virtual void AssertValid() const;
