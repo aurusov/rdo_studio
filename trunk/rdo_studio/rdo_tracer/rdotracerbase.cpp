@@ -43,7 +43,41 @@ RDOTracerBase::~RDOTracerBase()
 void RDOTracerBase::addResourceType( string& s, stringstream& stream )
 {
 	RDOTracerResType* type = new RDOTracerResType( RDOTK_PERMANENT );
-	int pos = s.find( ' ' );
+	stream >> type->Name;
+	int paramcount;
+	stream >> paramcount;
+	string par_type;
+	string par_name;
+	RDOTracerResParamType parType;
+	int enum_count;
+	for ( int i = 0; i < paramcount; i++ ) {
+		enum_count = 0;
+		stream >> par_type;
+		stream >> par_name;
+		stream >> par_type;
+		if ( par_type == "E" ) {
+			parType = RDOPT_ENUMERATIVE;
+			stream >> enum_count;
+		} if ( par_type == "I" )
+			parType = RDOPT_INTEGER;
+		else if ( par_type == "R" )
+			parType = RDOPT_REAL;
+		RDOTracerResParamInfo* param = new RDOTracerResParamInfo( parType );
+		param->Name = par_name;
+		if ( parType == RDOPT_ENUMERATIVE ) {
+			string en_name;
+			for ( int j = 0; j < enum_count; j++ ) {
+				stream >> en_name;
+				stream >> en_name;
+				param->addEnumValue( en_name );
+			}
+		}
+		type->addParamInfo( param );
+	}
+	resTypes.push_back( type );
+	tree->addResourceType( type );
+
+	/*int pos = s.find( ' ' );
 	int endpos = s.rfind( ' ' );
 	type->Name = s.substr( pos, endpos - pos );
 	trim( type->Name );
@@ -85,12 +119,19 @@ void RDOTracerBase::addResourceType( string& s, stringstream& stream )
 	}
 	
 	resTypes.push_back( type );
-	tree->addResourceType( type );
+	tree->addResourceType( type );*/
 }
 
-void RDOTracerBase::addResource( string& s )
+void RDOTracerBase::addResource( string& s, stringstream& stream )
 {
-	int pos = s.find( ' ' );
+	int rtp;
+	string res_name;
+	stream >> res_name;
+	stream >> rtp;
+	RDOTracerResource* res = new RDOTracerResource( resTypes.at( rtp - 1 ), res_name );
+	res->id = atoi( s.c_str() );
+
+	/*int pos = s.find( ' ' );
 	int endpos = s.rfind( ' ' );
 	string rtpstr = s.substr( endpos );
 	trim( rtpstr );
@@ -98,15 +139,31 @@ void RDOTracerBase::addResource( string& s )
 	trim( name );
 	RDOTracerResource* res = new RDOTracerResource( resTypes.at( atoi( rtpstr.c_str() ) - 1 ), name );
 	rtpstr = getNextValue( s );
-	res->id = atoi( rtpstr.c_str() );
+	res->id = atoi( rtpstr.c_str() );*/
 	
 	resources.push_back( res );
 	tree->addResource( res );
 }
 
-void RDOTracerBase::addPattern( string& s )
+void RDOTracerBase::addPattern( string& s, stringstream& stream )
 {
-	string str = s;
+	string pat_name;
+	stream >> pat_name;
+	string pat_type;
+	stream >> pat_type;
+	RDOTracerPatternKind kind;
+	if ( pat_type == "A" )
+		kind = RDOPK_OPERATION;
+	else if ( pat_type == "I" )
+		kind = RDOPK_IRREGULAREVENT;
+	else if ( pat_type == "R" )
+		kind = RDOPK_RULE;
+	else if ( pat_type == "K" )
+		kind = RDOPK_KEYBOARD;
+	RDOTracerPattern* pat = new RDOTracerPattern( kind );
+	pat->Name = pat_name;
+
+	/*string str = s;
 	string part = getNextValue( str );
 	string name = getNextValue( str );
 	part = getNextValue( str );
@@ -120,14 +177,43 @@ void RDOTracerBase::addPattern( string& s )
 	else if ( part == "K" )
 		kind = RDOPK_KEYBOARD;
 	RDOTracerPattern* pat = new RDOTracerPattern( kind );
-	pat->Name = name;
+	pat->Name = name;*/
+
 	patterns.push_back( pat );
 	tree->addPattern( pat );
+	int rel_res_count;
+	string dummy;
+	stream >> rel_res_count;
+	for( int i = 0; i < rel_res_count; i++ )
+		stream >> dummy;
 }
 
-void RDOTracerBase::addOperation( string& s )
+void RDOTracerBase::addOperation( string& s, stringstream& stream )
 {
-	int pos = s.find( ' ' );
+	string opr_name;
+	stream >> opr_name;
+	int pat_id;
+	stream >> pat_id;
+	RDOTracerPattern* pattern = patterns.at( pat_id - 1 );
+	
+	RDOTracerOperationBase* opr = NULL;
+	
+	if ( pattern->getPatternKind() != RDOPK_RULE && pattern->getPatternKind() != RDOPK_IRREGULAREVENT )
+		opr = new RDOTracerOperation( pattern );
+	else
+		opr = new RDOTracerEvent( pattern );
+	
+	opr->setName( opr_name );
+
+	if ( pattern->getPatternKind() != RDOPK_IRREGULAREVENT ) {
+		operations.push_back( opr );
+	} else {
+		irregularEvents.push_back( static_cast<RDOTracerEvent*>(opr) );
+	}
+	
+	tree->addOperation( opr );
+
+	/*int pos = s.find( ' ' );
 	int endpos = s.rfind( ' ' );
 	string patstr = s.substr( endpos );
 	trim( patstr );
@@ -145,10 +231,10 @@ void RDOTracerBase::addOperation( string& s )
 	opr->setName( patstr );
 	
 	operations.push_back( opr );
-	tree->addOperation( opr );
+	tree->addOperation( opr );*/
 }
 
-void RDOTracerBase::addIrregularEvent( string& s )
+/*void RDOTracerBase::addIrregularEvent( string& s, stringstream& stream )
 {
 	int pos = s.find( ' ' );
 	int endpos = s.rfind( ' ' );
@@ -162,11 +248,27 @@ void RDOTracerBase::addIrregularEvent( string& s )
 	
 	irregularEvents.push_back( event );
 	tree->addOperation( event );
-}
+}*/
 
-void RDOTracerBase::addResult( string& s )
+void RDOTracerBase::addResult( string& s, stringstream& stream )
 {
-	string str = s;
+	int resid;
+	stream >> resid;
+	string res_kind;
+	stream >> res_kind;
+	RDOTracerResultKind resKind;
+	if ( res_kind == "watch_par" )
+		resKind = RDORK_WATCHPAR;
+	else if ( res_kind == "watch_state" )
+		resKind = RDORK_WATCHSTATE;
+	else if ( res_kind == "watch_quant" )
+		resKind = RDORK_WATCHQUANT;
+	else if ( res_kind == "watch_value" )
+		resKind = RDORK_WATCHVALUE;
+	RDOTracerResult* res = new RDOTracerResult( resKind );
+	res->setName( s );
+	res->id = resid;
+	/*string str = s;
 	string name = getNextValue( str );
 	string part = getNextValue( str );
 	int resid = atoi( part.c_str() );
@@ -182,7 +284,7 @@ void RDOTracerBase::addResult( string& s )
 		resKind = RDORK_WATCHVALUE;
 	RDOTracerResult* res = new RDOTracerResult( resKind );
 	res->setName( name );
-	res->id = resid;
+	res->id = resid;*/
 	results.push_back( res );
 	tree->addResult( res );
 }
@@ -486,7 +588,55 @@ RDOTracerTreeCtrl* RDOTracerBase::createTree()
 void RDOTracerBase::getModelStructure( stringstream& stream )
 {
 	string s;
-	stream >> s;
+	
+	while( !stream.eof() ) {
+		stream >> s;
+		if ( !s.empty() ) {
+			int pos = string::npos;
+			if ( s.find( "$Resource_type" ) != string::npos ) {
+				do {
+					stream >> s;
+					pos = s.find( "$Resources" );
+					if ( !s.empty() && pos == string::npos )
+						addResourceType( s, stream );
+				} while ( pos == string::npos && !stream.eof() );
+			}
+			if ( s.find( "$Resources" ) != string::npos ) {
+				do {
+					stream >> s;
+					pos = s.find( "$Pattern" );
+					if ( !s.empty() && pos == string::npos )
+						addResource( s, stream );
+				} while ( pos == string::npos && !stream.eof() );
+			}
+			if ( s.find( "$Pattern" ) != string::npos ) {
+				do {
+					stream >> s;
+					pos = s.find( "$Activities" );
+					if ( !s.empty() && pos == string::npos )
+						addPattern( s, stream );
+				} while ( pos == string::npos && !stream.eof() );
+			}
+			if ( s.find( "$Activities" ) != string::npos ) {
+				do {
+					stream >> s;
+					pos = s.find( "$Watching" );
+					if ( !s.empty() && pos == string::npos )
+						addOperation( s, stream );
+				} while ( pos == string::npos && !stream.eof() );
+			}
+			if ( s.find( "$Watching" ) != string::npos ) {
+				do {
+					stream >> s;
+					pos = s.find( "" );
+					if ( !s.empty() && pos == string::npos )
+						addResult( s, stream );
+				} while ( pos == string::npos && !stream.eof() );
+			}
+		}
+	}
+
+	/*stream >> s;
 
 	if ( s.find( "$Resource_type" ) != string::npos ) {
 		do {
@@ -500,7 +650,7 @@ void RDOTracerBase::getModelStructure( stringstream& stream )
 		do {
 			stream >> s;
 			if ( !s.empty() )
-				addResource( s );
+				addResource( s, stream );
 		} while ( s != "" );
 	}
 
@@ -508,7 +658,7 @@ void RDOTracerBase::getModelStructure( stringstream& stream )
 		do {
 			stream >> s;
 			if ( !s.empty() )
-				addPattern( s );
+				addPattern( s, stream );
 		} while ( s != "" );
 	}
 
@@ -516,12 +666,12 @@ void RDOTracerBase::getModelStructure( stringstream& stream )
 		do {
 			stream >> s;
 			if ( !s.empty() )
-				addOperation( s );
+				addOperation( s, stream );
 		} while ( s != "" );
 		do {
 			stream >> s;
 			if ( !s.empty() )
-				addIrregularEvent( s );
+				addIrregularEvent( s, stream );
 		} while ( s != "" );
 	}
 
@@ -529,15 +679,19 @@ void RDOTracerBase::getModelStructure( stringstream& stream )
 		do {
 			stream >> s;
 			if ( !s.empty() )
-				addResult( s );
+				addResult( s, stream );
 		} while ( s != "" );
-	}
+	}*/
 }
 
 void RDOTracerBase::getTraceString( string trace_string )
 {
-	if( log) log->addStringToLog( trace_string );
-	dispathNextString( trace_string );
+	if ( log ) {
+		log->mutex.Lock();
+		log->addStringToLog( trace_string );
+		log->mutex.Unlock();
+	}
+	//dispathNextString( trace_string );
 }
 
 RDOStudioChartDoc* RDOTracerBase::createNewChart()

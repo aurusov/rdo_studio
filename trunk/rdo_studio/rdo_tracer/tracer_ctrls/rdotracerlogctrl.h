@@ -5,6 +5,10 @@
 #include "rdologctrl.h"
 #include "rdotracerlogstyle.h"
 
+namespace rdoTracer {
+class RDOTracerBase;
+}
+
 namespace rdoTracerLog {
 
 // ----------------------------------------------------------------------------
@@ -13,6 +17,7 @@ namespace rdoTracerLog {
 class RDOTracerLogCtrl: public RDOLogCtrl
 {
 DECLARE_DYNCREATE( RDOTracerLogCtrl )
+friend class rdoTracer::RDOTracerBase;
 
 protected:
 	typedef std::map< int, RDOLogColorPair* > RDOColorMap;

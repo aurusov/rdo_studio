@@ -34,15 +34,15 @@ private:
 	std::vector <RDOTracerResType*> resTypes;
 	void addResourceType( std::string& s, std::stringstream& stream );
 	std::vector <RDOTracerResource*> resources;
-	void addResource( std::string& s );
+	void addResource( std::string& s, std::stringstream& stream );
 	std::vector <RDOTracerPattern*> patterns;
-	void addPattern( std::string& s );
+	void addPattern( std::string& s, std::stringstream& stream );
 	std::vector <RDOTracerOperationBase*> operations;
-	void addOperation( std::string& s );
 	std::vector <RDOTracerEvent*> irregularEvents;
-	void addIrregularEvent( std::string& s );
+	void addOperation( std::string& s, std::stringstream& stream );
+	//void addIrregularEvent( std::string& s, std::stringstream& stream );
 	std::vector <RDOTracerResult*> results;
-	void addResult( std::string& s );
+	void addResult( std::string& s, std::stringstream& stream );
 	
 	void dispathNextString( std::string& line );
 

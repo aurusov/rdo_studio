@@ -358,6 +358,8 @@ bool RDOLogCtrl::getItemColors( const string& item, RDOLogColorPair* &colors ) c
 
 void RDOLogCtrl::OnPaint()
 {
+	mutex.Lock();
+
 	PAINTSTRUCT ps;
 	CDC* dc = BeginPaint( &ps );
 
@@ -432,6 +434,8 @@ void RDOLogCtrl::OnPaint()
 	dc->RestoreDC( prevDC );
 
 	EndPaint( &ps );
+
+	mutex.Unlock();
 }
 
 void RDOLogCtrl::OnHScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBar )
@@ -822,6 +826,8 @@ bool RDOLogCtrl::makeLineVisible( const int index )
 
 void RDOLogCtrl::addStringToLog( const string logStr )
 {
+	mutex.Lock();
+
 	if ( GetSafeHwnd() ) {
 		bool prevVisible = isVisible( stringsCount - 1 );
 
@@ -851,12 +857,14 @@ void RDOLogCtrl::addStringToLog( const string logStr )
 
 		fullRepaintLines = 0;
 	}
+
+	mutex.Unlock();
 }
 
-const stringList& RDOLogCtrl::getLogStrings() const
+/*const stringList& RDOLogCtrl::getLogStrings() const
 {
 	return strings;
-}
+}*/
 
 const RDOLogStyle& RDOLogCtrl::getStyle() const
 {
@@ -916,11 +924,15 @@ void RDOLogCtrl::setFont( const bool needRedraw )
 
 string RDOLogCtrl::getString( const int index ) const
 {
+	const_cast<CMutex&>(mutex).Lock();
+
 	if ( index >= 0 && index < stringsCount ) {
 		return (*const_findString( index ));
 	} else {
 		return "";
 	}
+
+	const_cast<CMutex&>(mutex).Unlock();
 }
 
 int RDOLogCtrl::getSelectedIndex() const
@@ -948,6 +960,8 @@ void RDOLogCtrl::copy()
 
 void RDOLogCtrl::clear()
 {
+	mutex.Lock();
+	
 	strings.clear();
 	stringsCount      = 0;
 	maxStrWidth       = 0;
@@ -956,6 +970,8 @@ void RDOLogCtrl::clear()
 	updateScrollBars();
 	Invalidate();
 	UpdateWindow();
+	
+	mutex.Unlock();
 }
 
 stringList::iterator RDOLogCtrl::findString( int index )
@@ -986,6 +1002,8 @@ stringList::const_reverse_iterator RDOLogCtrl::const_reverse_findString( int ind
 
 int RDOLogCtrl::find( const bool searchDown, const bool matchCase, const bool matchWholeWord )
 {
+	mutex.Lock();
+
 	string strtofind = findStr;
 	
 	stringList::iterator it;
@@ -1056,6 +1074,7 @@ int RDOLogCtrl::find( const bool searchDown, const bool matchCase, const bool ma
 		bHaveFound = true;
 		return posFind;
 	}
+	mutex.Unlock();
 	return -1;
 }
 

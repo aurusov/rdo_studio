@@ -4,6 +4,9 @@
 #include <rdorepository.h>
 #include <rdosimwin.h>
 
+#include "../rdostudiomainfrm.h"
+#include "../rdostudioapp.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -56,10 +59,11 @@ void RDOTracer::beforeModelStartNotify()
 {
 	tracer->clear();
 	tracer->setModelName( kernel.getRepository()->getName() );
-//	tracer->getModelStructure( kernel.getSimulator()->getModelStructure() );
+	tracer->getModelStructure( kernel.getSimulator()->getModelStructure() );
 }
 
 void RDOTracer::traceStringNotify( string trace_string )
 {
+	//trim( trace_string );
 	//tracer->getTraceString( trace_string );
 }

@@ -20,6 +20,7 @@ friend class RDOLogCtrlFindInList;
 DECLARE_DYNAMIC( RDOLogCtrl )
 
 protected:
+	CMutex mutex;
 	CFont fontLog;
 	void setFont( const bool needRedraw = true );
 	int lineHeight;
@@ -103,7 +104,7 @@ public:
 	bool getFocusOnly() const { return focusOnly; }
 	virtual void setFocusOnly( const bool value ) { focusOnly = value; }
 
-	const stringList& getLogStrings() const;
+	//const stringList& getLogStrings() const;
 	virtual std::string getString( const int index ) const;
 	virtual int getSelectedIndex() const;
 	virtual std::string getSelected() const;
