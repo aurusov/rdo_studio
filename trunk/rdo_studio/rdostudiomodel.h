@@ -32,7 +32,7 @@ private:
 
 	static void runModelNotify();
 	static void stopModelNotify();
-
+	static void parseErrorModelNotify();
 	static void buildNotify( std::string str );
 	static void debugNotify( std::string str );
 
