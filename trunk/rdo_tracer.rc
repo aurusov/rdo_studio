@@ -400,35 +400,10 @@ BEGIN
     ID_RESOURCE_TYPES       "Resource types"
     ID_RESULTS              "Results"
     ID_MODEL                "Model : %s"
-    IDS_LOGSTYLE_ES         "Service event (ES)"
-    IDS_LOGSTYLE_EB         "Action start (EB)"
-    IDS_LOGSTYLE_EF         "Action accomplishing (EF)"
-    IDS_LOGSTYLE_EI         "Irregular event (EI)"
-    IDS_LOGSTYLE_ER         "Production rule (ER)"
-    IDS_LOGSTYLE_RC         "Resource creation (RC)"
-    IDS_LOGSTYLE_RE         "Resource elimination (RE)"
-    IDS_LOGSTYLE_RK         "Resource state changing (RK)"
-    IDS_LOGSTYLE_V          "Index tracing (V)"
-    IDS_LOGSTYLE_S          "Run termination status ($Status)"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_LOGSTYLE_DPS        "Graph search statistics (DPS)"
-    IDS_LOGSTYLE_SB         "Search start (SB)"
-    IDS_LOGSTYLE_SO         "Opened top (SO)"
-    IDS_LOGSTYLE_STN        "Successor information (STN)"
-    IDS_LOGSTYLE_STD        "Successor information (STD)"
-    IDS_LOGSTYLE_STR        "Successor information (STR)"
-    IDS_LOGSTYLE_SRC        "Resource creation (search) (SRC)"
-    IDS_LOGSTYLE_SRE        "Resource elimination (search) (SRE)"
-    IDS_LOGSTYLE_SRK        "Resource state changing (search) (SRK)"
-    IDS_LOGSTYLE_SD         "Decision tracing (SD)"
-    IDS_LOGSTYLE_SES        "Search termination (SES)"
-    IDS_LOGSTYLE_SEN        "Search termination (SEN)"
-    IDS_LOGSTYLE_SEM        "Search termination (SEM)"
-    IDS_LOGSTYLE_SEF        "Search termination (SEF)"
-    IDS_LOGSTYLE_SEU        "Search termination (SEU)"
     IDS_OPTIONS             "Options"
 END
 
@@ -667,8 +642,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,0,16
- PRODUCTVERSION 1,0,0,16
+ FILEVERSION 1,0,0,17
+ PRODUCTVERSION 1,0,0,17
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -686,14 +661,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "RAO Tracer\0"
-            VALUE "FileVersion", "1, 0, 0, 16\0"
+            VALUE "FileVersion", "1, 0, 0, 17\0"
             VALUE "InternalName", "RAO-Tracer\0"
             VALUE "LegalCopyright", "Copyright (C) 2003\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "rdo_tracer.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "RAO-Tracer\0"
-            VALUE "ProductVersion", "1, 0, 0, 16\0"
+            VALUE "ProductVersion", "1, 0, 0, 17\0"
             VALUE "SpecialBuild", "\0"
         END
     END
@@ -743,7 +718,6 @@ END
 STRINGTABLE DISCARDABLE 
 BEGIN
     ID_EDIT_COPY            "Copy\nCopy (Ctrl+C)"
-    ID_EDIT_FIND            "\nFind (Ctrl+F)"
 END
 
 STRINGTABLE DISCARDABLE 
@@ -779,12 +753,6 @@ BEGIN
     ID_SM_NOSHOW            "No Show\nNo Show"
     ID_SM_ANIMATION         "Animation\nAnimation"
     ID_SM_MONITOR           "Monitor\nMonitor"
-    ID_MODEL_SHOWRATE_INC   "Increase Tempo\nIncrease Tempo (Alt+Num+)"
-    ID_MODEL_SHOWRATE_INCFOUR 
-                            "Increase Tempo by 4 Times\nIncrease Tempo by 4 Times"
-    ID_MODEL_SHOWRATE_DECFOUR 
-                            "Decrease Tempo by 4 Times\nDecrease Tempo by 4 Times"
-    ID_MODEL_SHOWRATE_DEC   "Decrease Tempo\nDecrease Tempo (Alt+Num-)"
     ID_TRACE_DELAY_INC      "Increase Delay\nIncrease Delay (Alt+Num+)"
     ID_TRACE_DELAY_INCFOUR  "Increase Delay by 4 Times\nIncrease Delay by 4 Times"
     ID_TRACE_DELAY_DECFOUR  "Decrease Delay by 4 Times\nDecrease Delay by 4 Times"
