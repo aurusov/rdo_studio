@@ -293,6 +293,7 @@ bool RdoSimulator::parseModel()
 
 //	ShowMode sm = getInitialShowMode();
 
+	kernel.notify(RDOKernel::parseSuccess);
 	kernel.notifyString(RDOKernel::buildString, "End parsing\n");
 
 	return true;

@@ -38,6 +38,7 @@ public:
 		showFrame,				// on have new frame to show
 		parseSMRError,			// on parse SMR file error (when opening model)
 		parseError,				// on parse error
+		parseSuccess,			// on parse success
 		modelStarted, 			// when model successfully parsed and started
 		endExecuteModel,		// successfully end modelling
 		executeError,		// successfully end modelling
