@@ -38,9 +38,12 @@ public:
 // ----------------------------------------------------------------------------
 // ---------- CChatSoundList
 // ----------------------------------------------------------------------------
-class CChatSoundList: public CList< CChatSound*, CChatSound* >
+class CChatSoundList
 {
-protected:
+private:
+	std::vector< CChatSound* > list;
+	void clear();
+
 	bool useSound;
 
 	void play( const int resID );
@@ -51,7 +54,13 @@ public:
 	CChatSoundList();
 	virtual ~CChatSoundList();
 
-	bool getUseSound() const;
+	CChatSoundList& operator= ( const CChatSoundList& soundList );
+	bool operator== ( const CChatSoundList& soundList );
+	bool operator!= ( const CChatSoundList& soundList );
+	CChatSound* operator[] ( const int index ) { return list[index]; }
+	int count() const                          { return list.size(); }
+
+	bool getUseSound() const { return useSound; }
 	void setUseSound( const bool value );
 
 	void play( const CChatSoundType soundType );

@@ -47,16 +47,52 @@ bool CChatSound::operator!= ( const CChatSound& snd )
 // ----------------------------------------------------------------------------
 // ---------- CChatSoundList
 // ----------------------------------------------------------------------------
-CChatSoundList::CChatSoundList(): CList< CChatSound*, CChatSound* >()
+CChatSoundList::CChatSoundList()
 {
 }
 
 CChatSoundList::~CChatSoundList()
 {
-	while ( POSITION pos = GetTailPosition() ) {
-		delete GetAt( pos );
-		RemoveTail();
+	clear();
+}
+
+void CChatSoundList::clear()
+{
+	std::vector< CChatSound* >::iterator it = list.begin();
+	while ( it != list.end() ) {
+		delete *it++;
 	}
+	list.clear();
+}
+
+CChatSoundList& CChatSoundList::operator=( const CChatSoundList& soundList )
+{
+	clear();
+	std::vector< CChatSound* >::const_iterator it = soundList.list.begin();
+	while ( it != soundList.list.end() ) {
+		CChatSound* snd = *it++;
+		list.push_back( new CChatSound( *snd ) );
+	}
+	return *this;
+}
+
+bool CChatSoundList::operator== ( const CChatSoundList& soundList )
+{
+	std::vector< CChatSound* >::const_iterator it1 = list.begin();
+	std::vector< CChatSound* >::const_iterator it2 = soundList.list.begin();
+	while ( it1 != list.end() && it2 != soundList.list.end() ) {
+		CChatSound* snd1 = *it1++;
+		CChatSound* snd2 = *it2++;
+		if ( *snd1 != *snd2 ) {
+			return false;
+		};
+	}
+	return true;
+}
+
+bool CChatSoundList::operator!= ( const CChatSoundList& soundList )
+{
+	return !( *this == soundList );
 }
 
 void CChatSoundList::init()
@@ -71,49 +107,49 @@ void CChatSoundList::init()
 	snd->useDefault = app->GetProfileInt( "Sound\\Connect", "useDefault", true ) ? true : false;
 	snd->res        = IDR_CONNECT_WAVE;
 	snd->file       = app->GetProfileString( "Sound\\Connect", "file", "" );
-	AddTail( snd );
+	list.push_back( snd );
 	snd = new CChatSound();
 	snd->type       = CST_Disconnect;
 	snd->useSound   = app->GetProfileInt( "Sound\\Disconnect", "useSound", true ) ? true : false;
 	snd->useDefault = app->GetProfileInt( "Sound\\Disconnect", "useDefault", true ) ? true : false;
 	snd->res        = IDR_DISCONNECT_WAVE;
 	snd->file       = app->GetProfileString( "Sound\\Disconnect", "file", "" );
-	AddTail( snd );
+	list.push_back( snd );
 	snd = new CChatSound();
 	snd->type       = CST_ChangeStatusMode;
 	snd->useSound   = app->GetProfileInt( "Sound\\ChangeStatusMode", "useSound", true ) ? true : false;
 	snd->useDefault = app->GetProfileInt( "Sound\\ChangeStatusMode", "useDefault", true ) ? true : false;
 	snd->res        = IDR_CHANGESTATUSMODE_WAVE;
 	snd->file       = app->GetProfileString( "Sound\\ChangeStatusMode", "file", "" );
-	AddTail( snd );
+	list.push_back( snd );
 	snd = new CChatSound();
 	snd->type       = CST_IncomingMessage;
 	snd->useSound   = app->GetProfileInt( "Sound\\IncomingMessage", "useSound", true ) ? true : false;
 	snd->useDefault = app->GetProfileInt( "Sound\\IncomingMessage", "useDefault", true ) ? true : false;
 	snd->res        = IDR_INCOMINGMESSAGE_WAVE;
 	snd->file       = app->GetProfileString( "Sound\\IncomingMessage", "file", "" );
-	AddTail( snd );
+	list.push_back( snd );
 	snd = new CChatSound();
 	snd->type       = CST_ChatType;
 	snd->useSound   = app->GetProfileInt( "Sound\\ChatType", "useSound", true ) ? true : false;
 	snd->useDefault = app->GetProfileInt( "Sound\\ChatType", "useDefault", true ) ? true : false;
 	snd->res        = IDR_CHATTYPE_WAVE;
 	snd->file       = app->GetProfileString( "Sound\\ChatType", "file", "" );
-	AddTail( snd );
+	list.push_back( snd );
 	snd = new CChatSound();
 	snd->type       = CST_ChatBack;
 	snd->useSound   = app->GetProfileInt( "Sound\\ChatBack", "useSound", true ) ? true : false;
 	snd->useDefault = app->GetProfileInt( "Sound\\ChatBack", "useDefault", true ) ? true : false;
 	snd->res        = IDR_CHATBACK_WAVE;
 	snd->file       = app->GetProfileString( "Sound\\ChatBack", "file", "" );
-	AddTail( snd );
+	list.push_back( snd );
 	snd = new CChatSound();
 	snd->type       = CST_ChatRet;
 	snd->useSound   = app->GetProfileInt( "Sound\\ChatRet", "useSound", true ) ? true : false;
 	snd->useDefault = app->GetProfileInt( "Sound\\ChatRet", "useDefault", true ) ? true : false;
 	snd->res        = IDR_CHATRET_WAVE;
 	snd->file       = app->GetProfileString( "Sound\\ChatRet", "file", "" );
-	AddTail( snd );
+	list.push_back( snd );
 }
 
 void CChatSoundList::saveSetting() const
@@ -185,12 +221,12 @@ void CChatSoundList::play( const std::string& file )
 
 CChatSound* CChatSoundList::getSound( const CChatSoundType soundType ) const
 {
-	POSITION pos = GetHeadPosition();
-	for ( int i = 0; i < GetCount(); i++ ) {
-		if ( GetAt( pos )->type == soundType ) {
-			return GetAt( pos );
+	std::vector< CChatSound* >::const_iterator it = list.begin();
+	while ( it != list.end() ) {
+		if ( (*it)->type == soundType ) {
+			return *it;
 		}
-		GetNext( pos );
+		it++;
 	}
 	return NULL;
 }
@@ -209,11 +245,6 @@ void CChatSoundList::play( const CChatSoundType soundType )
 			}
 		}
 	}
-}
-
-bool CChatSoundList::getUseSound() const
-{
-	return useSound;
 }
 
 void CChatSoundList::setUseSound( const bool value )

@@ -12,7 +12,7 @@
 // ----------------------------------------------------------------------------
 class CChatGeneralOptions: public CPropertyPage
 {
-protected:
+private:
 	CString userName;
 
 	int useTray;
@@ -29,6 +29,9 @@ protected:
 	CSpinButtonCtrl spin;
 	RDOColorComboBox fgColorCB;
 	RDOColorComboBox bgColorCB;
+
+public:
+	CChatGeneralOptions();
 
 protected:
 	//{{AFX_VIRTUAL(CChatGeneralOptions)
@@ -49,9 +52,6 @@ protected:
 	afx_msg void OnUpdateModify();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
-
-public:
-	CChatGeneralOptions();
 };
 
 // ----------------------------------------------------------------------------
@@ -59,12 +59,16 @@ public:
 // ----------------------------------------------------------------------------
 class CChatSoundOptions: public CPropertyPage
 {
-protected:
+private:
 	int useSound;
 
 	CImageList       imageList;
 	CChatListBoxCtrl listBox;
 	CChatSoundList   sounds;
+
+public:
+	CChatSoundOptions();
+	virtual ~CChatSoundOptions();
 
 protected:
 	//{{AFX_VIRTUAL(CChatSoundOptions)
@@ -84,10 +88,6 @@ protected:
 	afx_msg void OnUpdateModify();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
-
-public:
-	CChatSoundOptions();
-	virtual ~CChatSoundOptions();
 };
 
 // ----------------------------------------------------------------------------
@@ -95,7 +95,7 @@ public:
 // ----------------------------------------------------------------------------
 class CChatStatusModeOptions: public CPropertyPage
 {
-protected:
+private:
 	CImageList          imageList;
 	CChatListBoxCtrl    listBox;
 	CChatStatusModeList statusModes;
@@ -109,6 +109,10 @@ protected:
 	CSpinButtonCtrl autoAwaySpin;
 	CEdit           autoNotAvailibaleEdit;
 	CSpinButtonCtrl autoNotAvailibaleSpin;
+
+public:
+	CChatStatusModeOptions();
+	virtual ~CChatStatusModeOptions();
 
 protected:
 	//{{AFX_VIRTUAL(CChatStatusModeOptions)
@@ -128,10 +132,6 @@ protected:
 	afx_msg void OnUpdateModify();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
-
-public:
-	CChatStatusModeOptions();
-	virtual ~CChatStatusModeOptions();
 };
 
 // ----------------------------------------------------------------------------
@@ -139,10 +139,14 @@ public:
 // ----------------------------------------------------------------------------
 class CChatOptions: public CPropertySheet
 {
-protected:
+private:
 	CChatGeneralOptions*    generalOptions;
 	CChatSoundOptions*      soundOptions;
 	CChatStatusModeOptions* statusModeOptions;
+
+public:
+	CChatOptions();
+	virtual ~CChatOptions();
 
 protected:
 	//{{AFX_VIRTUAL(CChatOptions)
@@ -151,10 +155,6 @@ protected:
 	//{{AFX_MSG(CChatOptions)
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
-
-public:
-	CChatOptions();
-	virtual ~CChatOptions();
 };
 
 #endif // CHATOPTIONS_H

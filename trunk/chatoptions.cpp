@@ -217,10 +217,6 @@ CChatSoundOptions::CChatSoundOptions(): CPropertyPage( IDD_OPTIONS_SOUND_DIALOG 
 
 CChatSoundOptions::~CChatSoundOptions()
 {
-	while ( POSITION pos = sounds.GetTailPosition() ) {
-		delete sounds.GetAt( pos );
-		sounds.RemoveTail();
-	}
 }
 
 void CChatSoundOptions::DoDataExchange( CDataExchange* pDX )
@@ -237,11 +233,14 @@ BOOL CChatSoundOptions::OnInitDialog()
 	CPropertyPage::OnInitDialog();
 
 	listBox.setImageList( &imageList );
-	for ( int i = 0; i < chatApp.sounds.GetCount(); i++ ) {
-		CChatSound* snd = new CChatSound( *chatApp.sounds.GetAt( chatApp.sounds.FindIndex( i ) ) );
+	sounds = chatApp.sounds;
+/*
+	for ( int i = 0; i < chatApp.sounds.list.size(); i++ ) {
+		CChatSound* snd = new CChatSound( *chatApp.sounds.list[i] );
 		sounds.AddTail( snd );
 		listBox.addString( chatApp.sounds.getName( snd->type ), snd->useSound ? 0 : -1 );
 	}
+*/
 	listBox.SetCurSel( 0 );
 	OnListBoxSelectChange();
 
@@ -251,12 +250,7 @@ BOOL CChatSoundOptions::OnInitDialog()
 void CChatSoundOptions::OnOK()
 {
 	chatApp.sounds.setUseSound( useSound ? true : false );
-
-	for ( int i = 0; i < sounds.GetCount(); i++ ) {
-		CChatSound* snd1 = chatApp.sounds.GetAt( chatApp.sounds.FindIndex( i ) );
-		CChatSound* snd2 = sounds.GetAt( sounds.FindIndex( i ) );
-		*snd1 = *snd2;
-	}
+	chatApp.sounds = sounds;
 
 	CPropertyPage::OnOK();
 }
@@ -265,7 +259,7 @@ void CChatSoundOptions::OnListBoxSelectChange()
 {
 	int current = listBox.GetCurSel();
 	if ( current != LB_ERR ) {
-		CChatSound* snd = sounds.GetAt( sounds.FindIndex( current ) );
+		CChatSound* snd = sounds[current];
 		if ( snd ) {
 			((CButton*)GetDlgItem( IDC_SOUNDNONE_RADIO ))->SetCheck( false );
 			((CButton*)GetDlgItem( IDC_SOUNDDEFAULT_RADIO ))->SetCheck( false );
@@ -289,7 +283,7 @@ void CChatSoundOptions::OnListBoxDoubleClick()
 {
 	int current = listBox.GetCurSel();
 	if ( current != LB_ERR ) {
-		CChatSound* snd = sounds.GetAt( sounds.FindIndex( current ) );
+		CChatSound* snd = sounds[current];
 		if ( snd ) {
 			snd->useSound = !snd->useSound;
 			OnListBoxSelectChange();
@@ -302,7 +296,7 @@ void CChatSoundOptions::OnRadioChanged()
 {
 	int current = listBox.GetCurSel();
 	if ( current != LB_ERR ) {
-		CChatSound* snd = sounds.GetAt( sounds.FindIndex( current ) );
+		CChatSound* snd = sounds[current];
 		if ( snd ) {
 			snd->useSound   = ((CButton*)GetDlgItem( IDC_SOUNDNONE_RADIO ))->GetCheck() ? false : true;
 			snd->useDefault = ((CButton*)GetDlgItem( IDC_SOUNDDEFAULT_RADIO ))->GetCheck() ? true : false;
@@ -317,7 +311,7 @@ void CChatSoundOptions::OnEditChanged()
 {
 	int current = listBox.GetCurSel();
 	if ( current != LB_ERR ) {
-		CChatSound* snd = sounds.GetAt( sounds.FindIndex( current ) );
+		CChatSound* snd = sounds[current];
 		if ( snd ) {
 			CString s = snd->file.c_str();
 			GetDlgItem( IDC_SOUNDEXTERNAL_EDIT )->GetWindowText( s );
@@ -331,7 +325,7 @@ void CChatSoundOptions::OnButtonClicked()
 {
 	int current = listBox.GetCurSel();
 	if ( current != LB_ERR ) {
-		CChatSound* snd = sounds.GetAt( sounds.FindIndex( current ) );
+		CChatSound* snd = sounds[current];
 		if ( snd ) {
 			std::string filter = "WAV Files (*.wav)|*.wav|All Files (*.*)|*.*||";
 			CFileDialog dlg( true, "wav", snd->file.c_str(), OFN_HIDEREADONLY, filter.c_str() );
@@ -361,17 +355,7 @@ void CChatSoundOptions::OnUpdateModify()
 		GetDlgItem( IDC_SOUNDEXTERMAL_BUTTON )->EnableWindow( externalFlag );
 	}
 
-	bool flag = false;
-	for ( int i = 0; i < sounds.GetCount(); i++ ) {
-		CChatSound* snd1 = chatApp.sounds.GetAt( chatApp.sounds.FindIndex( i ) );
-		CChatSound* snd2 = sounds.GetAt( sounds.FindIndex( i ) );
-		if ( *snd1 != *snd2 ) {
-			flag = true;
-			break;
-		}
-	}
-
-	SetModified( useSound != ( chatApp.sounds.getUseSound() ? 1 : 0 ) || flag );
+	SetModified( useSound != ( chatApp.sounds.getUseSound() ? 1 : 0 ) || sounds != chatApp.sounds );
 }
 
 // ----------------------------------------------------------------------------
