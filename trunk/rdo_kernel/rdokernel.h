@@ -39,10 +39,10 @@ public:
 		parseSMRError,			// on parse SMR file error (when opening model)
 		parseError,				// on parse error
 		parseSuccess,			// on parse success
-		modelStarted, 			// when model successfully parsed and started
-		modelThreadStarted,	// when model thread started
+		beforeModelStart, 	// when model successfully parsed and ready to start
+		afterModelStart,		// when model thread started
 		endExecuteModel,		// successfully end modelling
-		executeError,		// successfully end modelling
+		executeError,			// successfully end modelling
 		modelStopped };		// model externally stopped 
 
 	enum BoolNotifyType   {

@@ -308,10 +308,10 @@ void RdoSimulator::runModel()
 	bool res = parseModel();
 	if(res)
 	{
-		kernel.notify(RDOKernel::modelStarted);
+		kernel.notify(RDOKernel::beforeModelStart);
 		kernel.debug("Start executing\n");
 		th = AfxBeginThread(RunningThreadControllingFunction, (LPVOID)this);
-		kernel.notify(RDOKernel::modelThreadStarted);
+		kernel.notify(RDOKernel::afterModelStart);
 	}
 }
 
