@@ -8,11 +8,29 @@
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioFrameDoc
 // ----------------------------------------------------------------------------
+class RDOStudioFrameView;
+
 class RDOStudioFrameDoc: public CDocument
 {
+friend class RDOStudioModel;
+friend class RDOStudioFrameView;
+
+DECLARE_DYNCREATE(RDOStudioFrameDoc)
+
 protected:
 	RDOStudioFrameDoc();
-	DECLARE_DYNCREATE(RDOStudioFrameDoc)
+
+	CMutex frameUsed;
+
+public:
+	virtual ~RDOStudioFrameDoc();
+
+	RDOStudioFrameView* getView() const;
+
+#ifdef _DEBUG
+	virtual void AssertValid() const;
+	virtual void Dump(CDumpContext& dc) const;
+#endif
 
 public:
 	//{{AFX_VIRTUAL(RDOStudioFrameDoc)
@@ -25,15 +43,6 @@ protected:
 	//{{AFX_MSG(RDOStudioFrameDoc)
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
-
-public:
-	virtual ~RDOStudioFrameDoc();
-
-#ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
-#endif
-
 };
 
 //{{AFX_INSERT_LOCATION}}

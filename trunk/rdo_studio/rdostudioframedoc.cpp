@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "rdostudioframedoc.h"
+#include "rdostudioframeview.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -49,3 +50,12 @@ void RDOStudioFrameDoc::Dump(CDumpContext& dc) const
 	CDocument::Dump(dc);
 }
 #endif
+
+RDOStudioFrameView* RDOStudioFrameDoc::getView() const
+{
+	POSITION pos = GetFirstViewPosition();
+	if ( pos ) {
+		return static_cast<RDOStudioFrameView*>(GetNextView( pos ));
+	}
+	return NULL;
+}

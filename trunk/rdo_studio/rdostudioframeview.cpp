@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "rdostudioframeview.h"
 #include "rdostudioframedoc.h"
+#include "rdostudiomodel.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -22,7 +23,11 @@ BEGIN_MESSAGE_MAP(RDOStudioFrameView, CView)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, CView::OnFilePrintPreview)
 END_MESSAGE_MAP()
 
-RDOStudioFrameView::RDOStudioFrameView(): CView()
+RDOStudioFrameView::RDOStudioFrameView():
+	CView(),
+	clientBmpRect( 0, 0, 0, 0 ),
+	frameBmpRect( 0, 0, 0, 0 ),
+	newClientRect( 0, 0, 0, 0 )
 {
 }
 
@@ -34,9 +39,8 @@ BOOL RDOStudioFrameView::PreCreateWindow(CREATESTRUCT& cs)
 {
 	if( !CView::PreCreateWindow( cs ) ) return FALSE;
 
-//	cs.style &= ~WS_BORDER;
-//	cs.dwExStyle &= ~WS_EX_CLIENTEDGE;
-//	cs.lpszClass = AfxRegisterWndClass( 0, ::LoadCursor(NULL, IDC_ARROW) );
+	cs.style &= ~WS_BORDER;
+	cs.lpszClass = AfxRegisterWndClass( 0, ::LoadCursor(NULL, IDC_ARROW) );
 
 	return TRUE;
 }
@@ -53,6 +57,39 @@ void RDOStudioFrameView::OnDraw(CDC* pDC)
 {
 	RDOStudioFrameDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
+
+	CSingleLock lock( &pDoc->frameUsed );
+	lock.Lock();
+
+	GetClientRect( &newClientRect );
+//	CRect rect;
+//	rect.CopyRect( &newClientRect );
+
+	if ( newClientRect.Width() > clientBmpRect.Width() || newClientRect.Height() > clientBmpRect.Height() ) {
+		if ( clientBmp.GetSafeHandle() ) clientBmp.DeleteObject();
+		clientBmp.CreateCompatibleBitmap( pDC, newClientRect.Width(), newClientRect.Height() );
+		clientBmpRect = newClientRect;
+	}
+
+	CDC dc;
+	dc.CreateCompatibleDC( pDC );
+	CBitmap* pOldBitmap = dc.SelectObject( &clientBmp );
+
+	int oldBkMode = dc.SetBkMode( TRANSPARENT );
+
+//	dc.FillSolidRect( newClientRect, RGB( 0x00, 0x80, 0x80 ) );
+
+	CDC dc2;
+	dc2.CreateCompatibleDC( pDC );
+	CBitmap* pOldBitmap2 = dc2.SelectObject( &frameBmp );
+	dc.BitBlt( 0, 0, newClientRect.Width(), newClientRect.Height(), &dc2, 0, 0, SRCCOPY );
+	dc2.SelectObject( pOldBitmap2 );
+
+	pDC->BitBlt( 0, 0, newClientRect.Width(), newClientRect.Height(), &dc, 0, 0, SRCCOPY );
+	dc.SetBkMode( oldBkMode );
+	dc.SelectObject( pOldBitmap );
+
+	lock.Unlock();
 }
 
 BOOL RDOStudioFrameView::OnPreparePrinting(CPrintInfo* pInfo)

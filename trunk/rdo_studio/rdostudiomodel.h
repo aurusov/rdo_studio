@@ -14,7 +14,8 @@ namespace rdoEditor {
 	class RDOEditorTabCtrl;
 }
 
-static const UINT RDO_ADDNEWFRAME_MSG = WM_USER + 111;
+static const UINT RDO_ADDNEWFRAME_MSG    = WM_USER + 111;
+static const UINT RDO_UPDATEALLFRAME_MSG = WM_USER + 112;
 
 class RDOStudioModel
 {
@@ -32,7 +33,9 @@ private:
 	bool running;
 
 	CEvent addNewFrameEvent;
+	CEvent updateAllFrameEvent;
 	void addNewFrame();
+	void updateAllFrame();
 
 	static void newModelNotify();
 	static void openModelNotify();
