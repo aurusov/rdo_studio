@@ -14,6 +14,7 @@
 
 #include <rdokernel.h>
 #include <rdorepository.h>
+#include <rdobinarystream.h>
 
 using namespace std;
 using namespace rdoEditor;
@@ -388,7 +389,7 @@ void RDOStudioModel::openModelFromRepository()
 				edit->setReadOnly( false );
 				edit->clearAll();
 //				stringstream stream;
-				binarystream stream;
+				rdo::binarystream stream;
 				bool canLoad = true;
 				switch ( i ) {
 					case RDOEDIT_PAT: kernel.getRepository()->loadPAT( stream.vec() ); break;

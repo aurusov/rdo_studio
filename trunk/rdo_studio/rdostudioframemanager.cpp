@@ -13,7 +13,7 @@
 
 #include <rdokernel.h>
 #include <rdorepository.h>
-#include <fstream>
+#include <rdobinarystream.h>
 
 using namespace std;
 using namespace RDOSimulatorNS;
@@ -237,7 +237,7 @@ void RDOStudioFrameManager::bmp_insert( const std::string& name )
 
 		bitmaps[name] = NULL;
 
-		binarystream stream;
+		rdo::binarystream stream;
 		kernel.getRepository()->loadBMP( name, stream.vec() );
 
 		char* bmInfo   = NULL;
