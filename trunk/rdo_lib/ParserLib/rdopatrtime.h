@@ -29,6 +29,7 @@ public:
 	virtual void addBeginCalc(RDOCalc *calc) { beginCalcs.push_back(calc); }
 	virtual void addEndCalc(RDOCalc *calc);
 	void setPatternId(int _id) { patternId = toString(_id); }
+	string& getPatternId() { return patternId; }
 
 	void setTime(RDOCalc *_time) { timeField = _time; }
 	void addChoiceFromCalc(RDOCalc *_calc) { choiceFromCalcs.push_back(_calc); }
@@ -109,6 +110,7 @@ public:
 		relResNumbers[relNumb] = resNumb; 
 	}
 	virtual void addHotKey(string *hotKey);
+	void writeModelStructure(stringstream &stream);
 };
 
 class RDOActivityRuleRuntime: public RDORuleTrace, public RDOActivityRuntime

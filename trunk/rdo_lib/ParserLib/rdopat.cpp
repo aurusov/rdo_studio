@@ -41,8 +41,18 @@ void RDOPATPattern::testGoodForFreeActivity() const
 	currParser->error("Only IEs amd KEYBOARD OPERATIONs can be used in free activity");
 }
 
-int RDOPATPattern::writeModelStructure()
+string RDOPATPattern::getPatternId() const
+{ 
+	return patRuntime->getPatternId(); 
+}
+
+int RDOPATPattern::writeModelStructure() const
 {
+	currParser->modelStructure << getPatternId() << " " << *getName() << " " << getModelStructureLetter() << " " << relRes.size();
+	for(int i = 0; i < relRes.size(); i++)
+		currParser->modelStructure << " " << relRes.at(i)->getType()->getType();
+
+	currParser->modelStructure << endl;
 	return 0;
 }
 

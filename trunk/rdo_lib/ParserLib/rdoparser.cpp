@@ -13,6 +13,7 @@ static char THIS_FILE[] = __FILE__;
 #include "rdofun.h"
 #include "rdorss.h"
 #include "rdopat.h"
+#include "rdodpt.h"
 
 
 //#include "stdHeaders.h"
@@ -130,7 +131,7 @@ void RDOParser::parseRTP(istream* arg_yyin, ostream* arg_yyout)
 
 	currParser = this;
 	rtpparse(); 
-	modelStructure << "$Resource_type" << endl;
+	modelStructure << endl << "$Resource_type" << endl;
 	for_each(allRTPResType.begin(), allRTPResType.end(), mem_fun(&RDORTPResType::writeModelStructure));
 	currParser = NULL;
 }
@@ -145,9 +146,9 @@ void RDOParser::parseRSS(istream* arg_yyin, ostream* arg_yyout)
 		throw RDOSyntaxException("Internal error 0002");
 
 	currParser = this;
-	modelStructure << "$Resources" << endl;
-	for_each(allRSSResource.begin(), allRSSResource.end(), mem_fun(&RDORSSResource::writeModelStructure));
 	rssparse(); 
+	modelStructure << endl << "$Resources" << endl;
+	for_each(allRSSResource.begin(), allRSSResource.end(), mem_fun(&RDORSSResource::writeModelStructure));
 	currParser = NULL;
 }
 
@@ -174,9 +175,9 @@ void RDOParser::parsePAT(istream* arg_yyin, ostream* arg_yyout)
 		throw RDOSyntaxException("Internal error 0002");
 
 	currParser = this;
-	modelStructure << "$Pattern" << endl;
-	for_each(allPATPatterns.begin(), allPATPatterns.end(), mem_fun(&RDOPATPattern::writeModelStructure));
 	patparse(); 
+	modelStructure << endl << "$Pattern" << endl;
+	for_each(allPATPatterns.begin(), allPATPatterns.end(), mem_fun(&RDOPATPattern::writeModelStructure));
 	currParser = NULL;
 }
 
@@ -189,8 +190,9 @@ void RDOParser::parseOPR(istream* arg_yyin, ostream* arg_yyout)
 		throw RDOSyntaxException("Internal error 0030");
 
 	currParser = this;
-	modelStructure << "$Activities" << endl;
 	oprparse(); 
+	modelStructure << endl << "$Activities" << endl;
+	modelStructure << runTime->writeActivitiesStructure();
 	currParser = NULL;
 }
 
@@ -203,8 +205,19 @@ void RDOParser::parseDPT(istream* arg_yyin, ostream* arg_yyout)
 		throw RDOSyntaxException("Internal error 0030");
 
 	currParser = this;
-	modelStructure << "$Activities" << endl;
 	dptparse(); 
+	modelStructure << endl << "$Activities" << endl;
+	modelStructure << runTime->writeActivitiesStructure();
+	for(int i = 0; i < allDPTSearch.size(); i++)
+	{
+		int counter = 1;
+		for(int j = 0; j < allDPTSearch.at(i)->getActivities().size(); j++)
+		{
+			RDODPTSearchActivity *curr = allDPTSearch.at(i)->getActivities().at(j);
+			modelStructure << counter++ << " " << *curr->getName() << " " << 
+				curr->getRule()->getPatternId() << endl;
+		}
+	}
 	currParser = NULL;
 }
 

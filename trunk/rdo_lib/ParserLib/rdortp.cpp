@@ -62,8 +62,42 @@ int RDORTPResType::getRTPParamNumber(const string *const param) const
 	return -1;
 }
 
-int RDORTPResType::writeModelStructure()
+int RDORTPResType::writeModelStructure() const
 {
+	currParser->modelStructure << getType() << " " << *getName() << " " << getParams().size() << endl;
+	for(int i = 0; i < getParams().size(); i++)
+	{
+		currParser->modelStructure << "  " << (i+1) << " ";
+		getParams().at(i)->writeModelStructure();
+	}
+	return 0;
+}
+
+int RDORTPParamDesc::writeModelStructure() const
+{
+	currParser->modelStructure << *getName() << " ";
+	getType()->writeModelStructure();
+//	currParser->modelStructure << " ";
+	return 0;
+}
+
+int RDORTPIntResParam::writeModelStructure() const
+{
+	currParser->modelStructure << "I" << endl;
+	return 0;
+}
+
+int RDORTPRealResParam::writeModelStructure() const
+{
+	currParser->modelStructure << "R" << endl;
+	return 0;
+}
+
+int RDORTPEnumResParam::writeModelStructure() const
+{
+	currParser->modelStructure << "E " << enu->enumVals.size() << endl;
+	for(int i = 0; i < enu->enumVals.size(); i++)
+		currParser->modelStructure << "    " << i << " " << *enu->enumVals.at(i) << endl;
 	return 0;
 }
 

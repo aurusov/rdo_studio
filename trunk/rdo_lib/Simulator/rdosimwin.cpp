@@ -88,7 +88,7 @@ void frameCallBack(rdoRuntime::RDOConfig *config, void *param)
 void tracerCallBack(string *newString, void *param)
 {
 	RdoSimulator *simulator = (RdoSimulator *)param;
-	kernel.debug(newString->c_str());
+//	kernel.debug(newString->c_str());
 	kernel.notifyString(RDOKernel.traceString, newString->c_str());
 }
 

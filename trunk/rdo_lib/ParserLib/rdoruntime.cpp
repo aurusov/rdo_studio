@@ -625,4 +625,43 @@ void RDORuntime::rdoDelay(double fromTime, double toTime)
 		delete config.frame;	// normally  frameCallBack deletes config.frame
 }
 
+string RDORuntime::writeActivitiesStructure()
+{
+	stringstream stream;
+	int counter = 1;
+	int size = rules.size();
+	for(int i = 0; i < size; i++)
+	{
+		stream << counter++ << " ";
+		rules.at(i)->writeModelStructure(stream);
+	}
+
+	size = operations.size();
+	for(i = 0; i < size; i++)
+	{
+		stream << counter++ << " ";
+		operations.at(i)->writeModelStructure(stream);
+	}
+
+	stream << endl;
+
+	counter = 1;
+	size = ies.size();
+	for(i = 0; i < size; i++)
+	{
+		stream << counter++ << " ";
+		ies.at(i)->writeModelStructure(stream);
+	}
+/*
+	counter = 1;
+	size = allDPTs.size();
+	for(i = 0; i < size; i++)
+	{
+		allDPTs.at(i)->writeModelStructure(stream);
+	}
+  */
+	return stream.str();
+}
+
+
 }	// namespace rdoRuntime

@@ -52,6 +52,7 @@ public:
 	void addParam(double * _param);
 	void addParam(string *_param);
 	void addParam();
+	RDOPATPatternRule *getRule() { return rule; }
 
 	RDOSearchActivityRuntime *createActivityRuntime(RDORuntime *sim);
 };
@@ -85,6 +86,7 @@ public:
 	void end();
 
 	const string *getName() const { return name; }
+	vector<RDODPTSearchActivity *> & getActivities() { return activities; }
 };
 
 

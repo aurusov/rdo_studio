@@ -7,6 +7,7 @@ static char THIS_FILE[] = __FILE__;
 
 #include "rdorss.h"
 #include "rdortp.h"
+#include "rdoparser.h"
 
 namespace rdoParse 
 {
@@ -19,6 +20,7 @@ RDORSSResource::RDORSSResource(const string *const _name, const RDORTPResType *c
 
 int RDORSSResource::writeModelStructure()
 {
+	currParser->modelStructure << (number + 1) << " " << *getName() << " " << getType()->getType() << endl;
 	return 0;
 }
 

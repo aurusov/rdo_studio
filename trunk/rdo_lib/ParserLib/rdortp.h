@@ -46,6 +46,7 @@ struct RDORTPResParam: public RDODeletable
 	virtual RDOValue getRSSRealValue(const double *const val) const;
 	virtual int getDiapTableFunc() const = 0;
 	virtual int getType() const = 0;
+	virtual int writeModelStructure() const = 0;
 };
 
 struct RDORTPIntResParam: public RDORTPResParam
@@ -57,6 +58,7 @@ struct RDORTPIntResParam: public RDORTPResParam
 	RDOValue getRSSIntValue(const int val)const ;	// the function also check range if exist
 	int getDiapTableFunc() const;
 	int getType() const {return 0;}
+	int writeModelStructure() const;
 };
 
 struct RDORTPRealDiap: public RDODeletable
@@ -85,6 +87,7 @@ struct RDORTPRealResParam: public RDORTPResParam
 	RDOValue getRSSIntValue(const int val) const;					// this function too
 	int getDiapTableFunc() const;
 	int getType() const {return 1;}
+	int writeModelStructure() const;
 };
 
 struct RDORTPEnum: public RDODeletable
@@ -112,6 +115,7 @@ struct RDORTPEnumResParam: public RDORTPResParam
 	RDOValue getRSSEnumValue(const string *const val)const ;
 	int getDiapTableFunc() const;
 	int getType() const {return 2;}
+	int writeModelStructure() const;
 };
 
 
@@ -123,6 +127,7 @@ public:
 	RDORTPParamDesc(const string *const _name, const RDORTPResParam *const _parType);
 	const string *const getName() const { return name; };
 	const RDORTPResParam *const getType() const { return parType; };
+	int writeModelStructure() const;
 };
 
 class RDORTPResType: public RDODeletable
@@ -141,7 +146,7 @@ public:
 	bool isPerm() const { return isPermanent; };
 	int getType() const { return type; };
 	const vector<const RDORTPParamDesc *>& getParams() const { return params; }
-	int writeModelStructure();
+	int writeModelStructure() const;
 };
 
 

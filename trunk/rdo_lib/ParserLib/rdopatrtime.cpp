@@ -289,4 +289,10 @@ bool RDOActivityKeyboardRuntime::choiceFrom(RDOSimulator *sim)
 	return RDOActivityOperationRuntime::choiceFrom(sim); 
 }
 
+void RDOActivityRuntime::writeModelStructure(stringstream &stream)
+{
+	stream << *oprName << " " << pattern->getPatternId() << endl;
+}
+
+
 }	// namespace rdoRuntime

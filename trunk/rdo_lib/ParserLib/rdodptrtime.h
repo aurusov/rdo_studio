@@ -5,6 +5,7 @@ using namespace std;
 #include "searchtrace.h"
 
 #include "rdoruntime.h"
+#include <sstream>
 
 namespace rdoRuntime 
 {

@@ -136,7 +136,9 @@ public:
 	virtual void testGoodForSomeActivity() const;
 	virtual void testGoodForFreeActivity() const;
 
-	int writeModelStructure();
+	int writeModelStructure() const;
+	virtual char getModelStructureLetter() const = 0;
+	string getPatternId() const;
 };
 
 class RDOPATPatternOperation: public RDOPATPattern
@@ -151,6 +153,7 @@ public:
 	void addRelResConvertEnd(		bool trace, RDOPATParamsSet *parSet);
 	void addRelResConvertBeginEnd(bool trace, RDOPATParamsSet *parSet, bool trace2, RDOPATParamsSet *parSet2);
 	void testGoodForSomeActivity() const {}
+	virtual char getModelStructureLetter() const { return 'A'; };
 };
 
 class RDOPATPatternEvent: public RDOPATPattern
@@ -161,6 +164,7 @@ public:
 	void addRelResUsage(RDOPATChoice *choice, RDOPATFirst *first);
 	void addRelResConvertEvent(bool trace, RDOPATParamsSet *parSet);
 	void testGoodForFreeActivity() const {}
+	char getModelStructureLetter() const { return 'I'; };
 };
 
 class RDOPATPatternRule: public RDOPATPattern
@@ -172,12 +176,14 @@ public:
 	void addRelResConvertRule(bool trace, RDOPATParamsSet *parSet);
 	void testGoodForSearchActivity() const;
 	void testGoodForSomeActivity() const {}
+	char getModelStructureLetter() const { return 'R'; };
 };
 
 class RDOPATPatternKeyboard: public RDOPATPatternOperation
 {
 public:
 	RDOPATPatternKeyboard(string *_name, bool _trace, int patternCounter);
+	char getModelStructureLetter() const { return 'K'; };
 };
 
 class RDOPATChoice: public RDODeletable

@@ -215,6 +215,7 @@ public:
 	{ 
 		return patternParameters.at(parNumb);
 	}
+	string writeActivitiesStructure();
 
    void rdoDelay(double fromTime, double toTime);
   	TracerCallBack tracerCallBack;
