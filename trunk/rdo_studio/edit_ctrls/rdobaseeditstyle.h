@@ -18,16 +18,6 @@ enum RDOBookmarkStyle {
 	RDOBOOKMARKS_ARROW
 };
 
-enum RDOFoldStyle {
-	RDOFOLDS_NONE = 0,
-	RDOFOLDS_PLUS,
-	RDOFOLDS_PLUSCONNECTED,
-	RDOFOLDS_ARROW,
-	RDOFOLDS_ARROWCONNECTED,
-	RDOFOLDS_BOXCONNECTED,
-	RDOFOLDS_CIRCLECONNECTED
-};
-
 class RDOBaseEditTheme
 {
 public:
@@ -48,13 +38,10 @@ public:
 	COLORREF selectionBgColor;
 	COLORREF bookmarkFgColor;
 	COLORREF bookmarkBgColor;
-	COLORREF foldFgColor;
-	COLORREF foldBgColor;
 
 	RDOFontStyle defaultStyle;
 
 	RDOBookmarkStyle bookmarkStyle;
-	RDOFoldStyle     foldStyle;
 
 	virtual bool styleDefault( const int styleType ) const;
 	virtual bool styleUsing( const int styleType ) const;

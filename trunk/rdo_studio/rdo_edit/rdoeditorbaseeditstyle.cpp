@@ -225,8 +225,6 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getCppTheme()
 	theme.selectionBgColor = RGB( 0xC0, 0xC0, 0xC0 );
 	theme.bookmarkFgColor  = RGB( 0x00, 0x00, 0x00 );
 	theme.bookmarkBgColor  = RGB( 0x00, 0xFF, 0xFF );
-	theme.foldFgColor      = RGB( 0xFF, 0xFF, 0xFF );
-	theme.foldBgColor      = RGB( 0x00, 0x00, 0x00 );
 
 	theme.defaultStyle    = RDOFS_NONE;
 	theme.identifierStyle = RDOFS_NONE;
@@ -239,7 +237,6 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getCppTheme()
 	theme.operatorStyle   = RDOFS_NONE;
 
 	theme.bookmarkStyle = RDOBOOKMARKS_CIRCLE;
-	theme.foldStyle     = RDOFOLDS_PLUS;
 
 	return theme;
 }
@@ -263,8 +260,6 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getPascalTheme()
 	theme.selectionBgColor = RGB( 0xC0, 0xC0, 0xC0 );
 	theme.bookmarkFgColor  = RGB( 0x00, 0x00, 0x00 );
 	theme.bookmarkBgColor  = RGB( 0x00, 0xFF, 0xFF );
-	theme.foldFgColor      = RGB( 0xFF, 0xFF, 0xFF );
-	theme.foldBgColor      = RGB( 0x00, 0x00, 0x00 );
 
 	theme.defaultStyle    = RDOFS_NONE;
 	theme.identifierStyle = RDOFS_NONE;
@@ -277,7 +272,6 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getPascalTheme()
 	theme.operatorStyle   = RDOFS_NONE;
 
 	theme.bookmarkStyle = RDOBOOKMARKS_CIRCLE;
-	theme.foldStyle     = RDOFOLDS_PLUS;
 
 	return theme;
 }
@@ -301,8 +295,6 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getHtmlTheme()
 	theme.selectionBgColor = RGB( 0xC0, 0xC0, 0xC0 );
 	theme.bookmarkFgColor  = RGB( 0x00, 0x00, 0x00 );
 	theme.bookmarkBgColor  = RGB( 0x00, 0xFF, 0xFF );
-	theme.foldFgColor      = RGB( 0xFF, 0xFF, 0xFF );
-	theme.foldBgColor      = RGB( 0x00, 0x00, 0x00 );
 
 	theme.defaultStyle    = RDOFS_NONE;
 	theme.identifierStyle = RDOFS_NONE;
@@ -315,7 +307,6 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getHtmlTheme()
 	theme.operatorStyle   = RDOFS_NONE;
 
 	theme.bookmarkStyle = RDOBOOKMARKS_CIRCLE;
-	theme.foldStyle     = RDOFOLDS_PLUS;
 
 	return theme;
 }
@@ -339,8 +330,6 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getClassicTheme()
 	theme.selectionBgColor = RGB( 0x00, 0x00, 0x40 );
 	theme.bookmarkFgColor  = RGB( 0x00, 0x00, 0x00 );
 	theme.bookmarkBgColor  = RGB( 0x00, 0xFF, 0xFF );
-	theme.foldFgColor      = RGB( 0xFF, 0xFF, 0xFF );
-	theme.foldBgColor      = RGB( 0x00, 0x00, 0x00 );
 
 	theme.defaultStyle    = RDOFS_NONE;
 	theme.identifierStyle = RDOFS_NONE;
@@ -353,7 +342,6 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getClassicTheme()
 	theme.operatorStyle   = RDOFS_NONE;
 
 	theme.bookmarkStyle = RDOBOOKMARKS_CIRCLE;
-	theme.foldStyle     = RDOFOLDS_PLUS;
 
 	return theme;
 }
@@ -377,8 +365,6 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getTwilightTheme()
 	theme.selectionBgColor = RGB( 0x70, 0x70, 0x70 );
 	theme.bookmarkFgColor  = RGB( 0x00, 0x00, 0x00 );
 	theme.bookmarkBgColor  = RGB( 0x00, 0xFF, 0xFF );
-	theme.foldFgColor      = RGB( 0xFF, 0xFF, 0xFF );
-	theme.foldBgColor      = RGB( 0x00, 0x00, 0x00 );
 
 	theme.defaultStyle    = RDOFS_NONE;
 	theme.identifierStyle = RDOFS_NONE;
@@ -391,7 +377,6 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getTwilightTheme()
 	theme.operatorStyle   = RDOFS_NONE;
 
 	theme.bookmarkStyle = RDOBOOKMARKS_CIRCLE;
-	theme.foldStyle     = RDOFOLDS_PLUS;
 
 	return theme;
 }
@@ -415,8 +400,6 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getOceanTheme()
 	theme.selectionBgColor = RGB( 0xC0, 0xC0, 0xD0 );
 	theme.bookmarkFgColor  = RGB( 0x00, 0x00, 0x00 );
 	theme.bookmarkBgColor  = RGB( 0x00, 0xFF, 0xFF );
-	theme.foldFgColor      = RGB( 0xFF, 0xFF, 0xFF );
-	theme.foldBgColor      = RGB( 0x00, 0x00, 0x00 );
 
 	theme.defaultStyle    = RDOFS_NONE;
 	theme.identifierStyle = RDOFS_NONE;
@@ -429,7 +412,6 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getOceanTheme()
 	theme.operatorStyle   = RDOFS_NONE;
 
 	theme.bookmarkStyle = RDOBOOKMARKS_CIRCLE;
-	theme.foldStyle     = RDOFOLDS_PLUS;
 
 	return theme;
 }

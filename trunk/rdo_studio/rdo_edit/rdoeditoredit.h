@@ -16,6 +16,7 @@ namespace rdoEditor {
 class RDOEditorEdit: public RDOEditorBaseEdit
 {
 private:
+	int sci_FOLDMARGIN_ID;
 	int sci_MARKER_ERROR;
 
 protected:
@@ -23,6 +24,12 @@ protected:
 	RDOStudioEditBaseView* view;
 
 	rdoEditCtrl::RDOLogEdit* log;
+
+	void expand( int& line, bool doExpand, bool force = false, int visLevels = 0, int level = -1 ) const;
+	void foldChanged( int line, int levelNow, int levelPrev ) const;
+	void toggleCurrentFold() const;
+	void toggleAllFolds() const;
+	void foldMarginClick( int position, int modifiers ) const;
 
 	void commentSelection() const;
 	void completeWord();
@@ -68,6 +75,9 @@ protected:
 	afx_msg void OnUpdateGotoNext(CCmdUI* pCmdUI);
 	afx_msg void OnGotoPrev();
 	afx_msg void OnUpdateGotoPrev(CCmdUI* pCmdUI);
+	afx_msg void OnToggleAllFolds();
+	afx_msg void OnToggleCurrentFold();
+	afx_msg void OnUpdateFold(CCmdUI* pCmdUI);
 	//}}AFX_MSG
 	afx_msg void OnInsertCommand( UINT nID );
 	DECLARE_MESSAGE_MAP()

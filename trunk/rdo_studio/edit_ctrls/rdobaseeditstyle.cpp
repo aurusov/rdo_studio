@@ -20,13 +20,10 @@ RDOBaseEditTheme::RDOBaseEditTheme()
 	selectionBgColor = RGB( 0xC0, 0xC0, 0xC0 );
 	bookmarkFgColor  = RGB( 0x00, 0x00, 0x00 );
 	bookmarkBgColor  = RGB( 0x00, 0xFF, 0xFF );
-	foldFgColor      = RGB( 0xFF, 0xFF, 0xFF );
-	foldBgColor      = RGB( 0x00, 0x00, 0x00 );
 
 	defaultStyle = RDOFS_NONE;
 
 	bookmarkStyle = RDOBOOKMARKS_CIRCLE;
-	foldStyle     = RDOFOLDS_PLUS;
 }
 
 RDOBaseEditTheme::~RDOBaseEditTheme()
@@ -42,13 +39,10 @@ RDOBaseEditTheme& RDOBaseEditTheme::operator =( const RDOBaseEditTheme& theme )
 	selectionBgColor = theme.selectionBgColor;
 	bookmarkFgColor  = theme.bookmarkFgColor;
 	bookmarkBgColor  = theme.bookmarkBgColor;
-	foldFgColor      = theme.foldFgColor;
-	foldBgColor      = theme.foldBgColor;
 
 	defaultStyle = theme.defaultStyle;
 
 	bookmarkStyle = theme.bookmarkStyle;
-	foldStyle     = theme.foldStyle;
 
 	return *this;
 }
@@ -62,13 +56,10 @@ bool RDOBaseEditTheme::operator ==( const RDOBaseEditTheme& theme ) const
 	       selectionBgColor == theme.selectionBgColor &&
 	       bookmarkFgColor  == theme.bookmarkFgColor &&
 	       bookmarkBgColor  == theme.bookmarkBgColor &&
-	       foldFgColor      == theme.foldFgColor &&
-	       foldBgColor      == theme.foldBgColor &&
 
 	       defaultStyle == theme.defaultStyle &&
 
-	       bookmarkStyle == theme.bookmarkStyle &&
-	       foldStyle     == theme.foldStyle;
+	       bookmarkStyle == theme.bookmarkStyle;
 }
 
 bool RDOBaseEditTheme::operator !=( const RDOBaseEditTheme& theme ) const
@@ -85,11 +76,8 @@ void RDOBaseEditTheme::load( string regPath )
 	selectionBgColor = AfxGetApp()->GetProfileInt( regPath.c_str(), "selectionBgColor", selectionBgColor );
 	bookmarkFgColor  = AfxGetApp()->GetProfileInt( regPath.c_str(), "bookmarkFgColor", bookmarkFgColor );
 	bookmarkBgColor  = AfxGetApp()->GetProfileInt( regPath.c_str(), "bookmarkBgColor", bookmarkBgColor );
-	foldFgColor      = AfxGetApp()->GetProfileInt( regPath.c_str(), "foldFgColor", foldFgColor );
-	foldBgColor      = AfxGetApp()->GetProfileInt( regPath.c_str(), "foldBgColor", foldBgColor );
 	defaultStyle     = (RDOFontStyle)AfxGetApp()->GetProfileInt( regPath.c_str(), "defaultStyle", defaultStyle );
 	bookmarkStyle    = (RDOBookmarkStyle)AfxGetApp()->GetProfileInt( regPath.c_str(), "bookmarkStyle", bookmarkStyle );
-	foldStyle        = (RDOFoldStyle)AfxGetApp()->GetProfileInt( regPath.c_str(), "foldStyle", foldStyle );
 }
 
 void RDOBaseEditTheme::save( string regPath ) const
@@ -101,11 +89,8 @@ void RDOBaseEditTheme::save( string regPath ) const
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "selectionBgColor", selectionBgColor );
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "bookmarkFgColor", bookmarkFgColor );
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "bookmarkBgColor", bookmarkBgColor );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "foldFgColor", foldFgColor );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "foldBgColor", foldBgColor );
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "defaultStyle", defaultStyle );
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "bookmarkStyle", bookmarkStyle );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "foldStyle", foldStyle );
 }
 
 bool RDOBaseEditTheme::styleDefault( const int styleType ) const

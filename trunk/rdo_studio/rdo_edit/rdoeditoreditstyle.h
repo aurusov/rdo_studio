@@ -9,6 +9,16 @@ namespace rdoEditor {
 // ----------------------------------------------------------------------------
 // ---------- RDOEditorEditTheme
 // ----------------------------------------------------------------------------
+enum RDOFoldStyle {
+	RDOFOLDS_NONE = 0,
+	RDOFOLDS_PLUS,
+	RDOFOLDS_PLUSCONNECTED,
+	RDOFOLDS_ARROW,
+	RDOFOLDS_ARROWCONNECTED,
+	RDOFOLDS_BOXCONNECTED,
+	RDOFOLDS_CIRCLECONNECTED
+};
+
 class RDOEditorEditTheme: public RDOEditorBaseEditTheme
 {
 public:
@@ -22,7 +32,12 @@ public:
 	virtual void load( std::string regPath );
 	virtual void save( std::string regPath ) const;
 
+	COLORREF foldFgColor;
+	COLORREF foldBgColor;
+
 	COLORREF errorBgColor;
+
+	RDOFoldStyle foldStyle;
 
 /*
 	static RDOEditorEditTheme getDefaultTheme();

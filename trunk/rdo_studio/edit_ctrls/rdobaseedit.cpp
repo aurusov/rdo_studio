@@ -80,9 +80,6 @@ BEGIN_MESSAGE_MAP( RDOBaseEdit, CWnd )
 	ON_UPDATE_COMMAND_UI(ID_SEARCH_FINDNEXT, OnUpdateSearchFindNextPrev)
 	ON_UPDATE_COMMAND_UI(ID_SEARCH_FIND, OnUpdateSearchFind)
 	ON_UPDATE_COMMAND_UI(ID_SEARCH_REPLACE, OnUpdateSearchReplace)
-	ON_COMMAND(ID_VIEW_TOGGLECURRENTFOLD, OnViewToggleCurrentFold)
-	ON_COMMAND(ID_VIEW_TOGGLEALLFOLDS, OnViewToggleAllFolds)
-	ON_UPDATE_COMMAND_UI( ID_VIEW_TOGGLECURRENTFOLD, OnUpdateFold )
 	ON_COMMAND( ID_SEARCH_BOOKMARKTOGGLE  , OnBookmarkToggle )
 	ON_COMMAND( ID_SEARCH_BOOKMARKNEXT    , OnBookmarkNext )
 	ON_COMMAND( ID_SEARCH_BOOKMARKPREVIOUS, OnBookmarkPrev )
@@ -107,7 +104,6 @@ BEGIN_MESSAGE_MAP( RDOBaseEdit, CWnd )
 	ON_UPDATE_COMMAND_UI( ID_EDIT_COPYASRTF       , OnIsSelected )
 	ON_UPDATE_COMMAND_UI( ID_EDIT_UPPERCASE       , OnIsSelected )
 	ON_UPDATE_COMMAND_UI( ID_EDIT_LOWERCASE       , OnIsSelected )
-	ON_UPDATE_COMMAND_UI( ID_VIEW_TOGGLEALLFOLDS   , OnUpdateFold )
 	ON_UPDATE_COMMAND_UI( ID_SEARCH_BOOKMARKPREVIOUS, OnHasBookmarks )
 	ON_UPDATE_COMMAND_UI( ID_SEARCH_BOOKMARKSCLEAR  , OnHasBookmarks )
 	ON_UPDATE_COMMAND_UI(ID_SEARCH_FINDPREVIOUS, OnUpdateSearchFindNextPrev)
@@ -142,7 +138,6 @@ RDOBaseEdit::RDOBaseEdit():
 	objectCount++;
 
 	sci_MARKER_BOOKMARK = getNewMarker();
-	sci_FOLDMARGIN_ID   = getNewMarker();
 }
 
 RDOBaseEdit::~RDOBaseEdit()
@@ -169,23 +164,9 @@ BOOL RDOBaseEdit::OnNotify( WPARAM wParam, LPARAM lParam, LRESULT* pResult )
 
 	if ( scn->nmhdr.hwndFrom == sciHWND ) {
 		switch( scn->nmhdr.code ) {
-			case SCN_MODIFIED: {
-				if ( scn->modificationType & SC_MOD_CHANGEFOLD ) {
-					foldChanged( scn->line, scn->foldLevelNow, scn->foldLevelPrev );
-					return TRUE;
-				}
-				break;
-			}
 			case SCN_NEEDSHOWN: {
 				ensureRangeVisible( scn->position, scn->position + scn->length, false );
 				return TRUE;
-			}
-			case SCN_MARGINCLICK: {
-				if ( scn->margin == sci_FOLDMARGIN_ID ) {
-					foldMarginClick( scn->position, scn->modifiers );
-					return TRUE;
-				}
-				break;
 			}
 			case SCN_CHARADDED: {
 				if ( style && style->tab->autoIndent && ( scn->ch == '\r' || scn->ch == '\n' ) ) autoIndent();
@@ -215,12 +196,6 @@ int RDOBaseEdit::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	sciEditor = (long)::SendMessage( sciHWND, SCI_GETDIRECTPOINTER, 0, 0 );
 
 	sendEditorString( SCI_SETPROPERTY, reinterpret_cast<unsigned long>("fold"), "1" );
-
-	sendEditor( SCI_SETMODEVENTMASK, SC_MOD_CHANGEFOLD | SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT );
-	sendEditor( SCI_SETMARGINTYPEN     , sci_FOLDMARGIN_ID, SC_MARGIN_SYMBOL );
-	sendEditor( SCI_SETFOLDFLAGS, 16 );
-	sendEditor( SCI_SETMARGINMASKN     , sci_FOLDMARGIN_ID, SC_MASK_FOLDERS );
-	sendEditor( SCI_SETMARGINSENSITIVEN, sci_FOLDMARGIN_ID, 1 );
 
 	sendEditor( SCI_SETMARGINWIDTHN, 1, 0 );
 
@@ -327,76 +302,6 @@ void RDOBaseEdit::setEditorStyle( RDOBaseEditStyle* _style )
 		case RDOBOOKMARKS_RECT     : defineMarker( sci_MARKER_BOOKMARK, SC_MARK_SMALLRECT, bookmarkFgColor, bookmarkBgColor ); break;
 		case RDOBOOKMARKS_ROUNDRECT: defineMarker( sci_MARKER_BOOKMARK, SC_MARK_ROUNDRECT, bookmarkFgColor, bookmarkBgColor ); break;
 		case RDOBOOKMARKS_ARROW    : defineMarker( sci_MARKER_BOOKMARK, SC_MARK_ARROW    , bookmarkFgColor, bookmarkBgColor ); break;
-	}
-
-	// ----------
-	// Fold
-	COLORREF foldFgColor = style->theme->foldFgColor;
-	COLORREF foldBgColor = style->theme->foldBgColor;
-	switch ( style->theme->foldStyle ) {
-		case RDOFOLDS_NONE:
-			defineMarker( SC_MARKNUM_FOLDEROPEN   , SC_MARK_EMPTY, foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDER       , SC_MARK_EMPTY, foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDERSUB    , SC_MARK_EMPTY, foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDERTAIL   , SC_MARK_EMPTY, foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDEREND    , SC_MARK_EMPTY, foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDEROPENMID, SC_MARK_EMPTY, foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_EMPTY, foldFgColor, foldBgColor );
-			break;
-		case RDOFOLDS_PLUS:
-			defineMarker( SC_MARKNUM_FOLDEROPEN   , SC_MARK_MINUS, foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDER       , SC_MARK_PLUS , foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDERSUB    , SC_MARK_EMPTY, foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDERTAIL   , SC_MARK_EMPTY, foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDEREND    , SC_MARK_EMPTY, foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDEROPENMID, SC_MARK_EMPTY, foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_EMPTY, foldFgColor, foldBgColor );
-			break;
-		case RDOFOLDS_PLUSCONNECTED:
-			defineMarker( SC_MARKNUM_FOLDEROPEN   , SC_MARK_MINUS  , foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDER       , SC_MARK_PLUS   , foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDERSUB    , SC_MARK_VLINE  , foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDERTAIL   , SC_MARK_LCORNER, foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDEREND    , SC_MARK_EMPTY  , foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDEROPENMID, SC_MARK_EMPTY  , foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_LCORNER, foldFgColor, foldBgColor );
-			break;
-		case RDOFOLDS_ARROW:
-			defineMarker( SC_MARKNUM_FOLDEROPEN   , SC_MARK_ARROWDOWN, foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDER       , SC_MARK_ARROW    , foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDERSUB    , SC_MARK_EMPTY    , foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDERTAIL   , SC_MARK_EMPTY    , foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDEREND    , SC_MARK_EMPTY    , foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDEROPENMID, SC_MARK_EMPTY    , foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_EMPTY    , foldFgColor, foldBgColor );
-			break;
-		case RDOFOLDS_ARROWCONNECTED:
-			defineMarker( SC_MARKNUM_FOLDEROPEN   , SC_MARK_ARROWDOWN, foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDER       , SC_MARK_ARROW    , foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDERSUB    , SC_MARK_VLINE    , foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDERTAIL   , SC_MARK_LCORNER  , foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDEREND    , SC_MARK_EMPTY    , foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDEROPENMID, SC_MARK_EMPTY    , foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_LCORNER  , foldFgColor, foldBgColor );
-			break;
-		case RDOFOLDS_BOXCONNECTED:
-			defineMarker( SC_MARKNUM_FOLDEROPEN   , SC_MARK_BOXMINUS, foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDER       , SC_MARK_BOXPLUS , foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDERSUB    , SC_MARK_VLINE   , foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDERTAIL   , SC_MARK_LCORNER , foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDEREND    , SC_MARK_EMPTY   , foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDEROPENMID, SC_MARK_EMPTY   , foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_LCORNER , foldFgColor, foldBgColor );
-			break;
-		case RDOFOLDS_CIRCLECONNECTED:
-			defineMarker( SC_MARKNUM_FOLDEROPEN   , SC_MARK_CIRCLEMINUS, foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDER       , SC_MARK_CIRCLEPLUS , foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDERSUB    , SC_MARK_VLINE      , foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDERTAIL   , SC_MARK_LCORNER    , foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDEREND    , SC_MARK_EMPTY      , foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDEROPENMID, SC_MARK_EMPTY      , foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_LCORNER    , foldFgColor, foldBgColor );
-			break;
 	}
 
 	// ----------
@@ -1066,130 +971,6 @@ void RDOBaseEdit::saveAsRTF( CFile& file, int start, int end ) const
 	saveStr += RTF_BODYCLOSE;
 
 	file.Write( saveStr.c_str(), saveStr.length() );
-}
-
-void RDOBaseEdit::expand( int& line, bool doExpand, bool force, int visLevels, int level ) const
-{
-	int lineMaxSubord = sendEditor( SCI_GETLASTCHILD, line, level & SC_FOLDLEVELNUMBERMASK );
-	line++;
-	while ( line <= lineMaxSubord ) {
-		if ( force ) {
-			if ( visLevels > 0 )
-				sendEditor( SCI_SHOWLINES, line, line );
-			else
-				sendEditor( SCI_HIDELINES, line, line );
-		} else {
-			if ( doExpand ) sendEditor( SCI_SHOWLINES, line, line );
-		}
-		int levelLine = level;
-		if ( levelLine == -1 ) levelLine = sendEditor( SCI_GETFOLDLEVEL, line );
-		if ( levelLine & SC_FOLDLEVELHEADERFLAG ) {
-			if ( force ) {
-				if ( visLevels > 1 )
-					sendEditor( SCI_SETFOLDEXPANDED, line, 1 );
-				else
-					sendEditor( SCI_SETFOLDEXPANDED, line, 0 );
-				expand( line, doExpand, force, visLevels - 1 );
-			} else {
-				if ( doExpand ) {
-					if ( !sendEditor(SCI_GETFOLDEXPANDED, line) ) sendEditor( SCI_SETFOLDEXPANDED, line, 1 );
-					expand( line, true, force, visLevels - 1 );
-				} else {
-					expand( line, false, force, visLevels - 1 );
-				}
-			}
-		} else {
-			line++;
-		}
-	}
-}
-
-void RDOBaseEdit::foldChanged( int line, int levelNow, int levelPrev ) const
-{
-	if ( levelNow & SC_FOLDLEVELHEADERFLAG ) {
-		if ( !(levelPrev & SC_FOLDLEVELHEADERFLAG) ) {
-			sendEditor( SCI_SETFOLDEXPANDED, line, 1 );
-		}
-	} else if ( levelPrev & SC_FOLDLEVELHEADERFLAG ) {
-		if ( !sendEditor( SCI_GETFOLDEXPANDED, line ) ) {
-			expand( line, true, false, 0, levelPrev );
-		}
-	}
-}
-
-void RDOBaseEdit::toggleAllFolds() const
-{
-	sendEditor( SCI_COLOURISE, 0, -1 );
-	int maxLine = getLineCount();
-	bool expanding = true;
-	for ( int lineSeek = 0; lineSeek < maxLine; lineSeek++ ) {
-		if ( sendEditor(SCI_GETFOLDLEVEL, lineSeek) & SC_FOLDLEVELHEADERFLAG ) {
-			expanding = !sendEditor( SCI_GETFOLDEXPANDED, lineSeek );
-			break;
-		}
-	}
-	for ( int line = 0; line < maxLine; line++ ) {
-		int level = sendEditor(SCI_GETFOLDLEVEL, line);
-		if ( (level & SC_FOLDLEVELHEADERFLAG) &&
-		     (SC_FOLDLEVELBASE == (level & SC_FOLDLEVELNUMBERMASK)) ) {
-			if ( expanding ) {
-				sendEditor( SCI_SETFOLDEXPANDED, line, 1 );
-				expand( line, true, false, 0, level );
-				line--;
-			} else {
-				int lineMaxSubord = sendEditor( SCI_GETLASTCHILD, line, -1 );
-				sendEditor( SCI_SETFOLDEXPANDED, line, 0 );
-				if ( lineMaxSubord > line ) {
-					sendEditor( SCI_HIDELINES, line + 1, lineMaxSubord );
-				}
-			}
-		}
-	}
-}
-
-void RDOBaseEdit::foldMarginClick( int position, int modifiers ) const
-{
-	int lineClick = getLineFromPosition( position );
-	if ( (modifiers & SCMOD_SHIFT) && (modifiers & SCMOD_CTRL) ) {
-		toggleAllFolds();
-	} else {
-		int levelClick = sendEditor( SCI_GETFOLDLEVEL, lineClick );
-		if ( levelClick & SC_FOLDLEVELHEADERFLAG ) {
-			if ( modifiers & SCMOD_SHIFT ) {
-				// Ensure all children visible
-				sendEditor( SCI_SETFOLDEXPANDED, lineClick, 1 );
-				expand( lineClick, true, true, 100, levelClick );
-			} else if ( modifiers & SCMOD_CTRL ) {
-				if ( sendEditor(SCI_GETFOLDEXPANDED, lineClick) ) {
-					// Contract this line and all children
-					sendEditor( SCI_SETFOLDEXPANDED, lineClick, 0 );
-					expand( lineClick, false, true, 0, levelClick );
-				} else {
-					// Expand this line and all children
-					sendEditor( SCI_SETFOLDEXPANDED, lineClick, 1 );
-					expand( lineClick, true, true, 100, levelClick );
-				}
-			} else {
-				// Toggle this line
-				sendEditor( SCI_TOGGLEFOLD, lineClick );
-			}
-		}
-	}
-}
-
-void RDOBaseEdit::OnViewToggleCurrentFold() 
-{
-	sendEditor( SCI_TOGGLEFOLD, getCurrentLineNumber() );
-}
-
-void RDOBaseEdit::OnViewToggleAllFolds() 
-{
-	toggleAllFolds();
-}
-
-void RDOBaseEdit::OnUpdateFold( CCmdUI* pCmdUI )
-{
-	pCmdUI->Enable( !isEmpty() );
 }
 
 void RDOBaseEdit::setCurrentPos( const int value ) const

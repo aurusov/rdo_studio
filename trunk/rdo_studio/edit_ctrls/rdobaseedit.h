@@ -32,7 +32,6 @@ protected:
 	CMenu* popupMenu;
 
 	int sci_MARKER_BOOKMARK;
-	int sci_FOLDMARGIN_ID;
 	int getNewMarker();
 	void defineMarker( int marker, int markerType, COLORREF fore, COLORREF back ) const;
 
@@ -55,11 +54,6 @@ protected:
 	void replaceAll( std::string& findWhat, std::string& replaceWhat, const bool matchCase = false, const bool matchWholeWord = false );
 
 	void copyAsRTF();
-
-	void expand( int& line, bool doExpand, bool force = false, int visLevels = 0, int level = -1 ) const;
-	void foldChanged( int line, int levelNow, int levelPrev ) const;
-	void toggleAllFolds() const;
-	void foldMarginClick( int position, int modifiers ) const;
 
 	int indentOfBlock( int line ) const;
 	void setLineIndentation( int line, int indent ) const;
@@ -98,9 +92,6 @@ protected:
 	afx_msg void OnUpdateSearchFindNextPrev(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateSearchFind(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateSearchReplace(CCmdUI* pCmdUI);
-	afx_msg void OnViewToggleCurrentFold();
-	afx_msg void OnViewToggleAllFolds();
-	afx_msg void OnUpdateFold( CCmdUI* pCmdUI );
 	afx_msg void OnBookmarkToggle();
 	afx_msg void OnBookmarkNext();
 	afx_msg void OnBookmarkPrev();

@@ -13,7 +13,12 @@ using namespace rdoEditor;
 // ----------------------------------------------------------------------------
 RDOEditorEditTheme::RDOEditorEditTheme(): RDOEditorBaseEditTheme()
 {
+	foldFgColor = RGB( 0xFF, 0xFF, 0xFF );
+	foldBgColor = RGB( 0x00, 0x00, 0x00 );
+
 	errorBgColor = RGB( 0xFF, 0x80, 0x80 );
+
+	foldStyle = RDOFOLDS_PLUS;
 }
 
 RDOEditorEditTheme::~RDOEditorEditTheme()
@@ -23,7 +28,13 @@ RDOEditorEditTheme::~RDOEditorEditTheme()
 RDOEditorEditTheme& RDOEditorEditTheme::operator =( const RDOEditorEditTheme& theme )
 {
 	RDOEditorBaseEditTheme::operator=( theme );
+
+	foldFgColor = theme.foldFgColor;
+	foldBgColor = theme.foldBgColor;
+
 	errorBgColor = theme.errorBgColor;
+
+	foldStyle = theme.foldStyle;
 
 	return *this;
 }
@@ -31,7 +42,14 @@ RDOEditorEditTheme& RDOEditorEditTheme::operator =( const RDOEditorEditTheme& th
 bool RDOEditorEditTheme::operator ==( const RDOEditorEditTheme& theme ) const
 {
 	bool flag = RDOEditorBaseEditTheme::operator==( theme );
-	if ( flag ) flag &= errorBgColor == theme.errorBgColor ? true : false;
+
+	if ( flag ) foldFgColor == theme.foldFgColor &&
+	            foldBgColor == theme.foldBgColor &&
+
+	            errorBgColor == theme.errorBgColor &&
+
+	            foldStyle == theme.foldStyle;
+
 	return flag;
 }
 
@@ -45,7 +63,10 @@ void RDOEditorEditTheme::load( string regPath )
 	RDOEditorBaseEditTheme::load( regPath );
 
 	regPath += "theme";
-	errorBgColor           = AfxGetApp()->GetProfileInt( regPath.c_str(), "errorBgColor", errorBgColor );
+	foldFgColor  = AfxGetApp()->GetProfileInt( regPath.c_str(), "foldFgColor", foldFgColor );
+	foldBgColor  = AfxGetApp()->GetProfileInt( regPath.c_str(), "foldBgColor", foldBgColor );
+	errorBgColor = AfxGetApp()->GetProfileInt( regPath.c_str(), "errorBgColor", errorBgColor );
+	foldStyle    = (RDOFoldStyle)AfxGetApp()->GetProfileInt( regPath.c_str(), "foldStyle", foldStyle );
 }
 
 void RDOEditorEditTheme::save( string regPath ) const
@@ -53,7 +74,10 @@ void RDOEditorEditTheme::save( string regPath ) const
 	RDOEditorBaseEditTheme::save( regPath );
 
 	regPath += "theme";
+	AfxGetApp()->WriteProfileInt( regPath.c_str(), "foldFgColor", foldFgColor );
+	AfxGetApp()->WriteProfileInt( regPath.c_str(), "foldBgColor", foldBgColor );
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "errorBgColor", errorBgColor );
+	AfxGetApp()->WriteProfileInt( regPath.c_str(), "foldStyle", foldStyle );
 }
 
 /*
