@@ -34,6 +34,7 @@ private:
 	bool fileAssociationSetup;
 	bool fileAssociationCheckInFuture;
 	bool openLastProject;
+	std::string lastProjectName;
 
 	void setupFileAssociation();
 
@@ -52,6 +53,9 @@ public:
 
 	bool getOpenLastProject() const                   { return openLastProject;              }
 	void setOpenLastProject( const bool value );
+
+	std::string getLastProjectName() const            { return lastProjectName;              }
+	void setLastProjectName( const std::string& projectName );
 
 	static std::string getFullFileName();
 	static std::string extractFilePath( const std::string& fileName );

@@ -104,6 +104,7 @@ bool RDOStudioModel::openModel( const string& modelName ) const
 		output->appendStringToResults( stream.str() );
 		output->updateLogConnection();
 		output->appendStringToBuild( format( IDS_MODEL_LOADING_OK ) );
+		studioApp.setLastProjectName( kernel.getRepository()->getFullName() );
 	} else {
 		output->appendStringToBuild( format( IDS_MODEL_LOADING_FAILD ) );
 	}

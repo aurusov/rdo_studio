@@ -95,7 +95,8 @@ RDOStudioApp::RDOStudioApp():
 	editDocTemplate( NULL ),
 	fileAssociationSetup( false ),
 	fileAssociationCheckInFuture( false ),
-	openLastProject( false )
+	openLastProject( false ),
+	lastProjectName( "" )
 {
 }
 
@@ -118,8 +119,9 @@ BOOL RDOStudioApp::InitInstance()
 	m_pszRegistryKey = _tcsdup( _T("RAO-studio") );
 
 	fileAssociationSetup         = GetProfileInt( "fileAssociation", "setup", false ) ? true : false;
-	fileAssociationCheckInFuture = GetProfileInt( "fileAssociation", "checkInFuture", false ) ? true : false;
-	openLastProject              = GetProfileInt( "general", "openLastProject", false ) ? true : false;
+	fileAssociationCheckInFuture = GetProfileInt( "fileAssociation", "checkInFuture", true ) ? true : false;
+	openLastProject              = GetProfileInt( "general", "openLastProject", true ) ? true : false;
+	lastProjectName              = GetProfileString( "general", "lastProject", "" );
 
 	editDocTemplate = new CMultiDocTemplate( IDR_EDIT_TYPE, RUNTIME_CLASS(RDOStudioEditDoc), RUNTIME_CLASS(RDOStudioChildFrame), RUNTIME_CLASS(RDOStudioEditView) );
 	AddDocTemplate( editDocTemplate );
@@ -142,6 +144,7 @@ BOOL RDOStudioApp::InitInstance()
 	mainFrame->ShowWindow(m_nCmdShow);
 	mainFrame->UpdateWindow();
 
+	bool newModel = true;
 	string fileName( m_lpCmdLine );
 	if ( !fileName.empty() ) {
 		int pos = fileName.find_first_of( '"' );
@@ -157,11 +160,16 @@ BOOL RDOStudioApp::InitInstance()
 			fileName = longFileName;
 		}
 		if ( model->openModel( fileName ) ) {
-			insertReopenItem( kernel.getRepository()->getFullName() );
-		} else {
-			OnFileNew();
+			newModel = false;
 		}
 	} else {
+		if ( getOpenLastProject() && !getLastProjectName().empty() ) {
+			if ( model->openModel( getLastProjectName() ) ) {
+				newModel = false;
+			}
+		}
+	}
+	if ( newModel ) {
 		OnFileNew();
 	}
 
@@ -212,6 +220,8 @@ int RDOStudioApp::ExitInstance()
 
 	if( tracer ) delete tracer;
 
+	WriteProfileString( "general", "lastProject", getOpenLastProject() ? lastProjectName.c_str() : "" );
+
 	return CWinApp::ExitInstance();
 }
 
@@ -222,9 +232,7 @@ void RDOStudioApp::OnFileNew()
 
 void RDOStudioApp::OnFileOpen() 
 {
-	if ( model->openModel() ) {
-		insertReopenItem( kernel.getRepository()->getFullName() );
-	}
+	model->openModel();
 }
 
 void RDOStudioApp::OnFileClose() 
@@ -311,9 +319,7 @@ void RDOStudioApp::OnProjectReopen( UINT nID )
 		case ID_FILE_REOPEN_9 : i = 8; break;
 		case ID_FILE_REOPEN_10: i = 9; break;
 	}
-	if ( model->openModel( reopenList[i] ) ) {
-		insertReopenItem( kernel.getRepository()->getFullName() );
-	} else if ( model->isPrevModelClosed() ) {
+	if ( !model->openModel( reopenList[i] ) && model->isPrevModelClosed() ) {
 		string item = reopenList[i];
 		for ( vector< string >::iterator it = reopenList.begin(); it != reopenList.end(); it++ ) {
 			if ( *it == item ) {
@@ -535,6 +541,14 @@ void RDOStudioApp::setOpenLastProject( const bool value )
 	if ( openLastProject != value ) {
 		openLastProject = value;
 		WriteProfileInt( "general", "openLastProject", openLastProject );
+	}
+}
+
+void RDOStudioApp::setLastProjectName( const std::string& projectName )
+{
+	insertReopenItem( projectName );
+	if ( lastProjectName != projectName ) {
+		lastProjectName = projectName;
 	}
 }
 
