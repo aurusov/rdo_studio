@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "chatapp.h"
 #include "chatmainfrm.h"
+#include "htmlhelp.h"
 #include "resource.h"
 
 #include <afxsock.h>
@@ -90,6 +91,8 @@ BOOL CChatApp::InitInstance()
 
 int CChatApp::ExitInstance()
 {
+	HtmlHelp( NULL, NULL, HH_CLOSE_ALL, 0 );
+
 	udp.send( "<close>" );
 	udp.close();
 
@@ -196,4 +199,57 @@ void CChatApp::refreshUserList()
 CFont& CChatApp::getFont()
 {
 	return font;
+}
+
+std::string CChatApp::getFullFileName()
+{
+	std::string fileName = "";
+	TCHAR szExeName[ MAX_PATH + 1 ];
+	if ( ::GetModuleFileName( NULL, szExeName, MAX_PATH ) ) {
+		fileName = szExeName;
+	}
+	return fileName;
+}
+
+std::string CChatApp::extractFilePath( const std::string& fileName )
+{
+	std::string s;
+	std::string::size_type pos = fileName.find_last_of( '\\' );
+	if ( pos == std::string::npos ) {
+		pos = fileName.find_last_of( '/' );
+	}
+	if ( pos != std::string::npos && pos < fileName.length() - 1 ) {
+		s.assign( fileName.begin(), pos + 1 );
+		static char szDelims[] = " \t\n\r";
+		s.erase( 0, s.find_first_not_of( szDelims ) );
+		s.erase( s.find_last_not_of( szDelims ) + 1, std::string::npos );
+	} else {
+		s = fileName;
+	}
+	pos = s.find_last_of( '\\' );
+	if ( pos == std::string::npos ) {
+		pos = s.find_last_of( '/' );
+	}
+	if ( pos != s.length() - 1 && s.length() ) {
+		s += "/";
+	}
+	return s;
+}
+
+bool CChatApp::isFileExists( const std::string& fileName )
+{
+	CFileFind finder;
+	return finder.FindFile( fileName.c_str() ) ? true : false;
+}
+
+std::string CChatApp::getFullHelpFileName( std::string str )
+{
+	str.insert( 0, extractFilePath( getFullFileName() ) );
+
+	if ( !isFileExists( str ) ) {
+		::MessageBox( NULL, format( IDS_NO_HELP_FILE, str.c_str() ).c_str(), NULL, MB_ICONEXCLAMATION | MB_OK );
+		return "";
+	}
+
+	return str;
 }

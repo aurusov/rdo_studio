@@ -53,7 +53,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /machine:I386
-# ADD LINK32 winmm.lib /nologo /subsystem:windows /machine:I386 /out:"Release/localchat.exe"
+# ADD LINK32 winmm.lib htmlhelp.lib Version.lib /nologo /subsystem:windows /machine:I386 /out:"Release/localchat.exe"
 # SUBTRACT LINK32 /profile
 
 !ELSEIF  "$(CFG)" == "chat - Win32 Debug"
@@ -81,7 +81,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 winmm.lib /nologo /subsystem:windows /debug /machine:I386 /out:"Debug/localchat.exe"
+# ADD LINK32 winmm.lib htmlhelp.lib Version.lib /nologo /subsystem:windows /debug /machine:I386 /out:"Debug/localchat.exe"
 # SUBTRACT LINK32 /profile
 
 !ENDIF 
@@ -93,6 +93,10 @@ LINK32=link.exe
 # Begin Group "Source Files"
 
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
+# Begin Source File
+
+SOURCE=.\chatabout.cpp
+# End Source File
 # Begin Source File
 
 SOURCE=.\chatapp.cpp
@@ -180,6 +184,10 @@ SOURCE=.\StdAfx.cpp
 # PROP Default_Filter "h;hpp;hxx;hm;inl"
 # Begin Source File
 
+SOURCE=.\chatabout.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\chatapp.h
 # End Source File
 # Begin Source File
@@ -253,6 +261,10 @@ SOURCE=.\chatviewerstring.h
 # Begin Source File
 
 SOURCE=.\chatviewerstyle.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\HTMLHELP.H
 # End Source File
 # Begin Source File
 

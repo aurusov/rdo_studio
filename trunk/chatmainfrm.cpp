@@ -2,6 +2,8 @@
 #include "chatmainfrm.h"
 #include "chatapp.h"
 #include "chatoptions.h"
+#include "chatabout.h"
+#include "htmlhelp.h"
 #include "resource.h"
 
 #ifdef _DEBUG
@@ -109,6 +111,8 @@ BEGIN_MESSAGE_MAP( CChatMainFrame, CFrameWnd )
 	ON_UPDATE_COMMAND_UI(ID_USER_SENDMESSAGE, OnUpdateUserSendMessage)
 	ON_COMMAND(ID_USER_INGNORE, OnUserIngnore)
 	ON_UPDATE_COMMAND_UI(ID_USER_INGNORE, OnUpdateUserIngnore)
+	ON_COMMAND(ID_HELP_CONTENTS, OnHelpContents)
+	ON_COMMAND(ID_HELP_ABOUT, OnHelpAbout)
 	ON_COMMAND( ID_TRAYMENU_EXIT, OnTrayCloseApp )
 	ON_UPDATE_COMMAND_UI( ID_STATUSMODE_AWAY        , OnUpdateStatusMode )
 	ON_UPDATE_COMMAND_UI( ID_STATUSMODE_NOTAVAILIBLE, OnUpdateStatusMode )
@@ -825,4 +829,18 @@ void CChatMainFrame::OnUserIngnore()
 void CChatMainFrame::OnUpdateUserIngnore(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable( chatApp.users.getSelected() != NULL && chatApp.users.getSelected() != chatApp.users.getOnwer() );
+}
+
+void CChatMainFrame::OnHelpContents() 
+{
+	std::string filename = chatApp.getFullHelpFileName();
+	if ( filename.empty() ) return;
+
+	HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_DISPLAY_TOPIC, NULL );
+}
+
+void CChatMainFrame::OnHelpAbout() 
+{
+	CChatAbout dlg;
+	dlg.DoModal();
 }

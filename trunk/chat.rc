@@ -214,6 +214,21 @@ BEGIN
     PUSHBUTTON      "Cancel",IDCANCEL,216,28,50,14
 END
 
+IDD_ABOUT DIALOG DISCARDABLE  0, 0, 192, 81
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About localChat"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,132,60,50,14
+    ICON            IDR_MAINFRAME,IDC_IMAGE_STATIC,10,18,20,20
+    CTEXT           "localChat  version 0.1 (build 190)",IDC_BUILD_STATIC,48,
+                    12,136,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDVERT,40,8,1,68
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,8,52,176,1
+    RTEXT           "Andrey Urusov",IDC_AUTHOR_STATIC,48,28,68,8
+    LTEXT           "andrewu@mail.ru",IDC_EMAIL_STATIC,120,28,64,8,SS_NOTIFY
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -269,6 +284,14 @@ BEGIN
         RIGHTMARGIN, 277
         TOPMARGIN, 7
         BOTTOMMARGIN, 42
+    END
+
+    IDD_ABOUT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 185
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 74
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -476,6 +499,12 @@ BEGIN
         MENUITEM "&Main Toolbar",               ID_VIEW_MAINTOOLBAR
         MENUITEM "&Status Mode Toolbar",        ID_VIEW_STATUSMODE_TOOLBAR
     END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&Contents",                   ID_HELP_CONTENTS
+        MENUITEM SEPARATOR
+        MENUITEM "&About...",                   ID_HELP_ABOUT
+    END
 END
 
 
@@ -533,8 +562,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,0,189
- PRODUCTVERSION 1,0,0,189
+ FILEVERSION 0,2,0,201
+ PRODUCTVERSION 0,2,0,201
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -552,14 +581,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "Application for chat in localnet\0"
-            VALUE "FileVersion", "1, 0, 0, 189\0"
+            VALUE "FileVersion", "0, 2, 0, 201\0"
             VALUE "InternalName", "localChat\0"
             VALUE "LegalCopyright", "Copyright (C) 2002\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "localchat.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "localChat\0"
-            VALUE "ProductVersion", "1, 0, 0, 189\0"
+            VALUE "ProductVersion", "0, 2, 0, 201\0"
             VALUE "SpecialBuild", "\0"
         END
     END
@@ -624,6 +653,7 @@ BEGIN
     IDS_TOCRYOUT_DIALOG     "To Cry Out Message"
     IDS_SENDMESSAGE_DIALOG  "Send Message For %s"
     IDS_POPUPMESSAGE_WAVE   "Private message"
+    IDS_NO_HELP_FILE        "Cannot find help file ""%s"".\r\nIt must be in the application's directory."
 END
 
 STRINGTABLE DISCARDABLE 

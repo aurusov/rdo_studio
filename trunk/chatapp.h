@@ -59,6 +59,11 @@ public:
 
 	CFont& getFont();
 
+	static std::string getFullFileName();
+	static std::string extractFilePath( const std::string& fileName );
+	static bool isFileExists( const std::string& fileName );
+	static std::string getFullHelpFileName( std::string str = "localchat.chm" );
+
 protected:
 	//{{AFX_VIRTUAL(CChatApp)
 	protected:

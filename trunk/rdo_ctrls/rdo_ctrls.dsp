@@ -95,6 +95,10 @@ SOURCE=.\rdocolorcombobox.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\rdolink.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdotabctrl.cpp
 # ADD CPP /Yu"rdo_ctrls_pch.h"
 # End Source File
@@ -113,6 +117,10 @@ SOURCE=.\rdo_ctrls_pch.h
 # Begin Source File
 
 SOURCE=.\rdocolorcombobox.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdolink.h
 # End Source File
 # Begin Source File
 

@@ -85,6 +85,7 @@
 #define IDR_SMILE_MOBILE                268
 #define IDR_SMILE_KULT                  269
 #define IDR_SMILE_FIGA                  270
+#define IDD_ABOUT                       271
 #define IDC_USERNAME_EDIT               1000
 #define IDC_USERNAME_STATIC             1001
 #define IDC_USER_GROUPBOX               1003
@@ -135,7 +136,11 @@
 #define IDC_AUTOMATICALLYSTATUSMODE_NOTAVAILIBLE_EDIT 1052
 #define IDC_MESSAGE_EDIT                1052
 #define IDC_AUTOMATICALLYSTATUSMODE_NOTAVAILIBLE_SPIN 1053
+#define IDC_BUILD_STATIC                1053
 #define IDC_AUTOMATICALLYSTATUSMODE_NOTAVAILIBLE_STATIC 1054
+#define IDC_AUTHOR_STATIC               1054
+#define IDC_EMAIL_STATIC                1055
+#define IDC_IMAGE_STATIC                1056
 #define ID_STATUSMODE_ONLINE            32773
 #define ID_STATUSMODE_AWAY              32776
 #define ID_STATUSMODE_NOTAVAILIBLE      32778
@@ -156,6 +161,8 @@
 #define ID_SOUND                        32823
 #define ID_USER_SENDMESSAGE             32827
 #define ID_USER_INGNORE                 32828
+#define ID_HELP_ABOUT                   32841
+#define ID_HELP_CONTENTS                32842
 #define IDS_INFOSTATUSBAR               59394
 #define IDS_STATUSMODE_TOOLBAR          61204
 #define IDS_OPTIONS                     61205
@@ -183,15 +190,16 @@
 #define IDS_TOCRYOUT_DIALOG             61227
 #define IDS_SENDMESSAGE_DIALOG          61228
 #define IDS_POPUPMESSAGE_WAVE           61229
+#define IDS_NO_HELP_FILE                61230
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        271
-#define _APS_NEXT_COMMAND_VALUE         32840
-#define _APS_NEXT_CONTROL_VALUE         1053
+#define _APS_NEXT_RESOURCE_VALUE        272
+#define _APS_NEXT_COMMAND_VALUE         32843
+#define _APS_NEXT_CONTROL_VALUE         1057
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
