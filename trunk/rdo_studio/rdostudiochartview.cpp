@@ -679,10 +679,10 @@ int RDOStudioChartView::OnCreate( LPCREATESTRUCT lpCreateStruct )
 
 	appendMenu( mainMenu->GetSubMenu( 1 + delta ), 4, &popupMenu );
 	popupMenu.AppendMenu( MF_SEPARATOR );
+	appendMenu( mainMenu->GetSubMenu( 6 + delta ), 4, &popupMenu );
+	appendMenu( mainMenu->GetSubMenu( 6 + delta ), 5, &popupMenu );
+	popupMenu.AppendMenu( MF_SEPARATOR );
 	appendMenu( mainMenu->GetSubMenu( 6 + delta ), 7, &popupMenu );
-	appendMenu( mainMenu->GetSubMenu( 6 + delta ), 8, &popupMenu );
-	appendMenu( mainMenu->GetSubMenu( 6 + delta ), 9, &popupMenu );
-	appendMenu( mainMenu->GetSubMenu( 6 + delta ), 10, &popupMenu );
 
 	return 0;
 }

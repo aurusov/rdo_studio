@@ -818,9 +818,6 @@ BEGIN
         MENUITEM "Add To &Chart",               ID_CHART_ADDTOCHART
         MENUITEM "&Add To New Chart",           ID_CHART_ADDTONEWCHART
         MENUITEM SEPARATOR
-        MENUITEM "Start Trace",                 ID_CHART_STARTTRACE
-        MENUITEM "Stop Trace",                  ID_CHART_STOPTRACE
-        MENUITEM SEPARATOR
         POPUP "&Zoom"
         BEGIN
             MENUITEM "Zoom &In",                    ID_CHART_ZOOM_ZOOMIN
@@ -832,6 +829,9 @@ BEGIN
         MENUITEM "Time &Wrap",                  ID_CHART_TIMEWRAP
         MENUITEM SEPARATOR
         MENUITEM "&Options",                    ID_CHART_OPTIONS
+        MENUITEM SEPARATOR
+        MENUITEM "Start Trace",                 ID_CHART_STARTTRACE
+        MENUITEM "Stop Trace",                  ID_CHART_STOPTRACE
     END
     POPUP "&Window"
     BEGIN
