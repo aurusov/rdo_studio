@@ -16,7 +16,7 @@ static inline bool isRDOLexerOperator( char ch )
 static inline bool isRDOLexerIdentifier( char ch )
 {
 	if ( (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') ||
-	     (ch >= 'à' && ch <= 'ÿ') || (ch >= 'À' && ch <= 'ß') || ch == '¨' ||
+	     (ch >= 'à' && ch <= 'ÿ') || (ch >= 'À' && ch <= 'ß') || ch == '¨' || ch == '¸' ||
 	     ch == '_' || ch == '$' || isdigit(ch) ) return true;
 	return false;
 }
