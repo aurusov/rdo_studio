@@ -39,7 +39,7 @@ QString& WGUnicodeLog::native_last()
 	return native.back();
 }
 
-void WGUnicodeLog::unicode_append( QString& str )
+void WGUnicodeLog::unicode_append( QString str )
 {
 	push_back( QTextCodec::codecForLocale()->toUnicode( str ) );
 	native.push_back( str );

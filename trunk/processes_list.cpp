@@ -120,7 +120,7 @@ void WGProcList::slot_local_fine_name_change( WGProcess* proc )
 {
 	WGProcListItem* item = findProcListItem( proc );
 	if ( item ) {
-		item->setText( column_local_file_index, QTextCodec::codecForLocale()->toUnicode( " " + proc->getLocalFileName() + " " ));
+		item->setText( column_local_file_index, " " + proc->getLocalFileName() + " " );
 	}
 }
 

@@ -18,7 +18,7 @@ public:
 	~WGUnicodeLog();
 
 	unsigned int unicode_count() const;
-	void unicode_append( QString& str );
+	void unicode_append( QString str );
 	void unicode_append( const char* str );
 	void unicode_remove_last();
 	void unicode_clear();
