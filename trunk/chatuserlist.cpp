@@ -2,6 +2,7 @@
 #include "chatuserlist.h"
 #include "chatapp.h"
 #include "chatmainfrm.h"
+#include "resource.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -45,6 +46,8 @@ void CChatUser::setUserName( const std::string& value )
 void CChatUser::setHostName( const std::string& value )
 {
 	hostName = value;
+	tolower( hostName );
+	toupper( hostName, 0, 1 );
 }
 
 void CChatUser::setIP( const std::string& value )
@@ -60,6 +63,14 @@ void CChatUser::setStatusMode( const CChatStatusModeType value )
 			chatApp.mainFrame->userList.list.updateUserStatus( this );
 		}
 	}
+}
+
+std::string CChatUser::getToolTipInfo() const
+{
+	if ( !hostName.empty() ) {
+		return format( IDS_HOSTNAME_VALUE, hostName.c_str() );
+	}
+	return "";
 }
 
 // ----------------------------------------------------------------------------

@@ -79,7 +79,9 @@ void toupper( std::string& str, int pos, int count )
 	if ( count == std::string::npos ) {
 		count = str.length();
 	}
-	std::transform( str.begin() + pos, str.begin() + count, str.begin() + pos, uppercase( std::locale() ) );
+	if ( pos + count <= str.length() ) {
+		std::transform( str.begin() + pos, str.begin() + count, str.begin() + pos, uppercase( std::locale() ) );
+	}
 }
 
 struct lowercase {
@@ -95,5 +97,7 @@ void tolower( std::string& str, int pos, int count )
 	if ( count == std::string::npos ) {
 		count = str.length();
 	}
-	std::transform( str.begin() + pos, str.begin() + count, str.begin() + pos, lowercase( std::locale() ) );
+	if ( pos + count <= str.length() ) {
+		std::transform( str.begin() + pos, str.begin() + count, str.begin() + pos, lowercase( std::locale() ) );
+	}
 }

@@ -18,14 +18,21 @@ BEGIN_MESSAGE_MAP( CChatUserListCtrl, RDOTreeCtrl )
 	ON_WM_CREATE()
 	ON_WM_KEYDOWN()
 	//}}AFX_MSG_MAP
+	ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTW, 0, 0xFFFF, OnToolTipText)
+	ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTA, 0, 0xFFFF, OnToolTipText)
 END_MESSAGE_MAP()
 
-CChatUserListCtrl::CChatUserListCtrl(): RDOTreeCtrl()
+CChatUserListCtrl::CChatUserListCtrl():
+	RDOTreeCtrl(),
+	m_pchTip( NULL ),
+	m_pwchTip( NULL )
 {
 }
 
 CChatUserListCtrl::~CChatUserListCtrl()
 {
+	if ( m_pwchTip ) delete m_pwchTip;
+	if ( m_pchTip  ) delete m_pchTip;
 }
 
 BOOL CChatUserListCtrl::PreCreateWindow( CREATESTRUCT& cs )
@@ -48,6 +55,8 @@ int CChatUserListCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	imageList.Add( &bmp, RGB( 255, 0, 255 ) );
 	SetImageList( &imageList, TVSIL_NORMAL );
 
+	EnableToolTips();
+
 	return 0;
 }
 
@@ -56,7 +65,7 @@ HTREEITEM CChatUserListCtrl::findUser( const CChatUser* const user )
 	HTREEITEM item = GetRootItem();
 
 	while ( item ) {
-		CChatUser* data = (CChatUser*)GetItemData( item );
+		CChatUser* data = reinterpret_cast<CChatUser*>(GetItemData( item ));
 		if ( data == user ) return item;
 		item = GetNextItem( item, TVGN_NEXT );
 	}
@@ -69,7 +78,7 @@ void CChatUserListCtrl::addUser( const CChatUser* const user )
 	if ( !findUser( user ) ) {
 		HTREEITEM item;
 		item = InsertItem( user->getUserName().c_str(), user->getStatusMode(), user->getStatusMode() );
-		SetItemData( item, (DWORD)user );
+		SetItemData( item, reinterpret_cast<DWORD>(user) );
 		SortChildren( TVI_ROOT );
 	}
 }
@@ -104,4 +113,102 @@ void CChatUserListCtrl::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
 	RDOTreeCtrl::OnKeyDown( nChar, nRepCnt, nFlags );
 
 	chatApp.mainFrame->restoreStatusMode();
+}
+
+int CChatUserListCtrl::OnToolHitTest( CPoint point, TOOLINFO* pTI ) const
+{
+	UINT uFlags;
+	HTREEITEM hitem = HitTest( point, &uFlags );
+
+	if ( hitem && ( uFlags & TVHT_ONITEM ) ) {
+		RECT rect;
+		GetItemRect( hitem, &rect, TRUE );
+		pTI->hwnd     = m_hWnd;
+		pTI->uId      = reinterpret_cast<UINT>(hitem);
+		pTI->lpszText = LPSTR_TEXTCALLBACK;
+		pTI->rect     = rect;
+		return pTI->uId;
+	}
+
+	return -1;
+}
+
+BOOL CChatUserListCtrl::OnToolTipText( UINT id, NMHDR * pNMHDR, LRESULT * pResult )
+{
+	// need to handle both ANSI and UNICODE versions of the message
+	TOOLTIPTEXTA* pTTTA = (TOOLTIPTEXTA*)pNMHDR;
+	TOOLTIPTEXTW* pTTTW = (TOOLTIPTEXTW*)pNMHDR;
+	CString strTipText = "";
+	UINT nID = pNMHDR->idFrom;
+
+	// Do not process the message from built in tooltip 
+	if( nID == (UINT)m_hWnd &&
+		(( pNMHDR->code == TTN_NEEDTEXTA && pTTTA->uFlags & TTF_IDISHWND ) ||
+		( pNMHDR->code == TTN_NEEDTEXTW && pTTTW->uFlags & TTF_IDISHWND ) ) )
+		return FALSE;
+
+	// Get the mouse position
+	const MSG* pMessage;
+	CPoint pt;
+	pMessage = GetCurrentMessage();
+	ASSERT ( pMessage );
+	pt = pMessage->pt;
+
+	ScreenToClient( &pt );
+
+	UINT nFlags;
+	HTREEITEM hitem = HitTest( pt, &nFlags );
+	if( nFlags & TVHT_ONITEM)
+	{
+		CChatUser* user = reinterpret_cast<CChatUser*>(GetItemData( hitem ));
+		strTipText = user->getToolTipInfo().c_str();
+	}
+
+#ifndef _UNICODE
+	if(pNMHDR->code == TTN_NEEDTEXTA)
+	{
+		if(m_pchTip != NULL)
+			delete m_pchTip;
+		
+		m_pchTip = new TCHAR[strTipText.GetLength()+1];
+		lstrcpyn(m_pchTip, strTipText, strTipText.GetLength());
+		m_pchTip[strTipText.GetLength()] = 0;
+		pTTTW->lpszText = (WCHAR*)m_pchTip;
+	}
+	else
+	{
+		if(m_pwchTip != NULL)
+			delete m_pwchTip;
+		
+		m_pwchTip = new WCHAR[strTipText.GetLength()+1];
+		_mbstowcsz(m_pwchTip, strTipText, strTipText.GetLength());
+		m_pwchTip[strTipText.GetLength()] = 0; // end of text
+		pTTTW->lpszText = (WCHAR*)m_pwchTip;
+	}
+#else
+	if(pNMHDR->code == TTN_NEEDTEXTA)
+	{
+		if(m_pchTip != NULL)
+			delete m_pchTip;
+		
+		m_pchTip = new TCHAR[strTipText.GetLength()+1];
+		_wcstombsz(m_pchTip, strTipText, strTipText.GetLength());
+		m_pchTip[strTipText.GetLength()] = 0; // end of text
+		pTTTA->lpszText = (LPTSTR)m_pchTip;
+	}
+	else
+	{
+		if(m_pwchTip != NULL)
+			delete m_pwchTip;
+		
+		m_pwchTip = new WCHAR[strTipText.GetLength()+1];
+		lstrcpyn(m_pwchTip, strTipText, strTipText.GetLength());
+		m_pwchTip[strTipText.GetLength()] = 0;
+		pTTTA->lpszText = (LPTSTR) m_pwchTip;
+	}
+#endif
+
+	*pResult = 0;
+
+	return TRUE;    // message was handled
 }

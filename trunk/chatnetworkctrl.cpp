@@ -32,6 +32,8 @@ CChatNetworkCtrl::CChatNetworkCtrl():
 
 CChatNetworkCtrl::~CChatNetworkCtrl()
 {
+	if ( m_pwchTip ) delete m_pwchTip;
+	if ( m_pchTip  ) delete m_pchTip;
 }
 
 BOOL CChatNetworkCtrl::PreCreateWindow( CREATESTRUCT& cs )
@@ -89,7 +91,7 @@ int CChatNetworkCtrl::OnToolHitTest( CPoint point, TOOLINFO* pTI ) const
 			pTI->uId      = reinterpret_cast<UINT>(hitem);
 			pTI->lpszText = LPSTR_TEXTCALLBACK;
 			pTI->rect     = rect;
-			return 1;
+			return pTI->uId;
 		}
 	}
 

@@ -118,7 +118,7 @@ int CChatMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	DockControlBar( &userList, AFX_IDW_DOCKBAR_LEFT );
 	DockControlBar( &networkList, AFX_IDW_DOCKBAR_RIGHT );
 //	dockControlBarBesideOf( networkList, userList );
-//	ShowControlBar( &networkList, false, false );
+	ShowControlBar( &networkList, false, false );
 
 	closeButtonAction    = (CChatCloseButtonAction)chatApp.GetProfileInt( "General", "closeButtonAction", CCBA_Tray );
 	minimizeButtonAction = (CChatMinimizeButtonAction)chatApp.GetProfileInt( "General", "minimizeButtonAction", CCMA_Minimize );

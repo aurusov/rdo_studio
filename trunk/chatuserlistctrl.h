@@ -16,6 +16,10 @@ private:
 
 	HTREEITEM findUser( const CChatUser* const user );
 
+	TCHAR* m_pchTip ;
+	WCHAR* m_pwchTip;
+	virtual int OnToolHitTest( CPoint point, TOOLINFO* pTI ) const;
+
 protected:
 	//{{AFX_VIRTUAL(CChatUserListCtrl)
 	protected:
@@ -26,6 +30,7 @@ protected:
 	afx_msg int OnCreate( LPCREATESTRUCT lpCreateStruct );
 	afx_msg void OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags );
 	//}}AFX_MSG
+	afx_msg BOOL OnToolTipText( UINT id, NMHDR * pNMHDR, LRESULT * pResult );
 	DECLARE_MESSAGE_MAP()
 
 public:

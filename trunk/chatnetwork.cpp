@@ -2,6 +2,7 @@
 #include "chatnetwork.h"
 #include "chatapp.h"
 #include "chatmainfrm.h"
+#include "resource.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -85,7 +86,10 @@ std::string CChatNetServer::getNameForCtrl() const
 
 std::string CChatNetServer::getToolTipInfo() const
 {
-	return "IP = " + ip;
+	if ( !ip.empty() ) {
+		return format( IDS_IP_VALUE, ip.c_str() );
+	}
+	return "";
 }
 
 // ----------------------------------------------------------------------------
@@ -212,11 +216,11 @@ BOOL CChatNetwork::OnHitResource( NETRESOURCE& res )
 
 //				WORD wVersionRequested;
 //				WSADATA wsaData;
-				PHOSTENT hostinfo;
 //				wVersionRequested = MAKEWORD( 2, 0 );
 
 //				if ( WSAStartup( wVersionRequested, &wsaData ) == 0 ) {
-					if( ( hostinfo = gethostbyname(server->getNameForCtrl().c_str())) != NULL ) {
+					PHOSTENT hostinfo = gethostbyname( server->getNameForCtrl().c_str() );
+					if ( hostinfo ) {
 						server->ip = inet_ntoa( *(struct in_addr*)*hostinfo->h_addr_list );
 					}
 //					WSACleanup();

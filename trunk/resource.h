@@ -108,6 +108,8 @@
 #define IDS_STATUSMODE_CHANGEAUTOMATICALLY 61220
 #define IDS_USERLIST                    61221
 #define IDS_NETLIST                     61222
+#define IDS_IP_VALUE                    61223
+#define IDS_HOSTNAME_VALUE              61224
 
 // Next default values for new objects
 // 

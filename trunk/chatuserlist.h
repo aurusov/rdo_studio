@@ -33,6 +33,8 @@ public:
 
 	CChatStatusModeType getStatusMode() const { return statusMode; }
 	void setStatusMode( const CChatStatusModeType value );
+
+	std::string getToolTipInfo() const;
 };
 
 // ----------------------------------------------------------------------------
