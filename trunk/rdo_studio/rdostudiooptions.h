@@ -99,9 +99,9 @@ public:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOStudioOptionsStylesAndColors
+// ---------- RDOStudioOptionsColorsStyles
 // ----------------------------------------------------------------------------
-class RDOStudioOptionsStylesAndColors: public CPropertyPage
+class RDOStudioOptionsColorsStyles: public CPropertyPage
 {
 private:
 
@@ -193,7 +193,7 @@ private:
 	void OnUpdateModify();
 
 protected:
-	//{{AFX_DATA(RDOStudioOptionsStylesAndColors)
+	//{{AFX_DATA(RDOStudioOptionsColorsStyles)
 	enum { IDD = IDD_OPTIONS_STYLESANDCOLORS };
 	CComboBox	m_theme;
 	CButton	m_horzScrollBar;
@@ -216,14 +216,14 @@ protected:
 	CTreeCtrl	m_styleItem;
 	//}}AFX_DATA
 
-	//{{AFX_VIRTUAL(RDOStudioOptionsStylesAndColors)
+	//{{AFX_VIRTUAL(RDOStudioOptionsColorsStyles)
 	public:
 	virtual void OnOK();
 	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);
 	//}}AFX_VIRTUAL
 
-	//{{AFX_MSG(RDOStudioOptionsStylesAndColors)
+	//{{AFX_MSG(RDOStudioOptionsColorsStyles)
 	virtual BOOL OnInitDialog();
 	afx_msg void OnStyleItemChanged(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnPreviewAsChanged();
@@ -245,8 +245,8 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 public:
-	RDOStudioOptionsStylesAndColors( RDOStudioOptions& _sheet );
-	virtual ~RDOStudioOptionsStylesAndColors();
+	RDOStudioOptionsColorsStyles( RDOStudioOptions& _sheet );
+	virtual ~RDOStudioOptionsColorsStyles();
 };
 
 // ----------------------------------------------------------------------------
@@ -256,7 +256,7 @@ class RDOStudioOptions: public CPropertySheet
 {
 friend class RDOStudioOptionsEditor;
 friend class RDOStudioOptionsTabs;
-friend class RDOStudioOptionsStylesAndColors;
+friend class RDOStudioOptionsColorsStyles;
 
 private:
 	rdoEditor::RDOEditorEditStyle    style_editor;
@@ -266,9 +266,9 @@ private:
 	rdoEditor::RDOEditorResultsStyle style_results;
 	rdoEditCtrl::RDOFindEditStyle    style_find;
 
-	RDOStudioOptionsEditor*          editor;
-	RDOStudioOptionsTabs*            tabs;
-	RDOStudioOptionsStylesAndColors* styles;
+	RDOStudioOptionsEditor*       editor;
+	RDOStudioOptionsTabs*         tabs;
+	RDOStudioOptionsColorsStyles* styles;
 
 	rdoEditor::RDOEditorEdit       preview_editor;
 	rdoEditCtrl::RDOBuildEdit      preview_build;

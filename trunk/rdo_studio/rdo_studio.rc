@@ -1018,8 +1018,6 @@ STRINGTABLE PRELOAD DISCARDABLE
 BEGIN
     IDR_MAINFRAME           "RAO Studio"
     IDR_MODELTYPE           "\nmodel\nModel Files\nRAO Model File (*.smr)\n.smr\nRAOStudio.Document\nRAO Document"
-    ID_OPTIONS_COLORS_EDITTEXT 
-                            "{ comments }\n$Pattern pattern_name : operation trace\n$Relevant_resources\n  rel_res2  : res_type2     Keep    Keep\n  rel_res1  : res_type1     Create  NoChange\n$Time = Abs(rel_res2.par1 - rel_res2.par3)\n{...}\n$End\n\ntext [ 10, 20, ... = 'text' ]\n\n$Re levant_resources"
     IDR_EDITTYPE            "\nedit\nEdit File\nRAO Files (.pat;.rtp;.rss;.opr;.frm;.fun;.dpt;.pmd;.pmv;.trc)\n.pat;.rtp;.rss;.opr;.frm;.fun;.dpt;.pmd;.pmv;.trc\nRAOStudio.Document\nRAO Document"
     IDR_FILETOOLBAR         "File"
     IDR_CHARTTYPE           "\nchart\nChart\n\n\nRAOStudio.Document\nRAO Document"
@@ -1162,7 +1160,6 @@ BEGIN
     ID_STATUSBAR_MODEL_RUNANIMATION "Animation"
     ID_STATUSBAR_MODEL_RUNMONITOR "Monitor"
     ID_BUFFER_NAME          "Buffer"
-    ID_RDO_FILETYPE         "RAO Simulator v3.0|rdosim.exe|RAO Simulator|*.exe|All Files|*.*||"
     ID_MODEL_FILETYPE       "RAO Files (*.smr)|*.smr|All Files (*.*)|*.*||"
     ID_OPTIONS              "Options"
     ID_DOCK_WORKSPACE       "Workspace"
@@ -1172,24 +1169,24 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    ID_COLORSTYLE_EDITOR_PLAINTEXT "plain text"
-    ID_COLORSTYLE_EDITOR_IDENTIFICATOR "identificator"
-    ID_COLORSTYLE_EDITOR_KEYWORD "keyword"
-    ID_COLORSTYLE_EDITOR_FUNCTION "function"
-    ID_COLORSTYLE_EDITOR_TRACE "trace"
-    ID_COLORSTYLE_EDITOR_COMMENT "comment"
-    ID_COLORSTYLE_EDITOR_NUMBER "number"
-    ID_COLORSTYLE_EDITOR_STRING "string"
-    ID_COLORSTYLE_EDITOR_OPERATOR "operator"
-    ID_COLORSTYLE_EDITOR_CARET "caret"
-    ID_COLORSTYLE_EDITOR_TEXTSELECTION "text selection"
-    ID_COLORSTYLE_EDITOR_BOOKMARK "bookmark"
+    IDS_COLORSTYLE_EDITOR_PLAINTEXT "plain text"
+    IDS_COLORSTYLE_EDITOR_IDENTIFICATOR "identificator"
+    IDS_COLORSTYLE_EDITOR_KEYWORD "keyword"
+    IDS_COLORSTYLE_EDITOR_FUNCTION "function"
+    IDS_COLORSTYLE_EDITOR_TRACE "trace"
+    IDS_COLORSTYLE_EDITOR_COMMENT "comment"
+    IDS_COLORSTYLE_EDITOR_NUMBER "number"
+    IDS_COLORSTYLE_EDITOR_STRING "string"
+    IDS_COLORSTYLE_EDITOR_OPERATOR "operator"
+    IDS_COLORSTYLE_EDITOR_CARET "caret"
+    IDS_COLORSTYLE_EDITOR_TEXTSELECTION "text selection"
+    IDS_COLORSTYLE_EDITOR_BOOKMARK "bookmark"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    ID_COLORSTYLE_EDITOR_FOLD "fold"
-    ID_COLORSTYLE_EDITOR_ERROR "error"
+    IDS_COLORSTYLE_EDITOR_FOLD "fold"
+    IDS_COLORSTYLE_EDITOR_ERROR "error"
     IDS_COLORSTYLE_LOG_ES   "Service event (ES)"
     IDS_COLORSTYLE_LOG_EB   "Action start (EB)"
     IDS_COLORSTYLE_LOG_EF   "Action accomplishing (EF)"
@@ -1271,10 +1268,6 @@ BEGIN
     ID_MODEL_RUNANIMATION   "\nAnimation"
     ID_MODEL_RUNMONITOR     "\nMonitor"
     ID_FILE_MODEL_SAVE      "\nSave (Ctrl+S)"
-    ID_OPTIONS_COLOR_RESULTSTEXT 
-                            "Длина_очереди                2  194  0.675957  21.6506  0  4\r\nЗанятость_парикмахера         TRUE  96  0.877351  21.7041  0.0397544  0.918872\r\nВсего_обслужено              96\r\nПропускная_способность       1.99198\r\n"
-    ID_OPTIONS_COLOR_LOGTEXT 
-                            "Default string type\nES 0 3\nEB 0 1 1 2 2 1 2\nEF 0.335153 1 1 2 2 1 2\nEI 0.427752 1 1 2 1 2\nER 1.07933 2 2 3 1 3\nRC 0.427752 2 2 0 0.427752 0\nRE 0.335153 2 2\nRK 0.427752 1 1 1 1 1\nV  0.427752 1  1\n$Status = USER_BREAK    607.228\nDPS_C  1  1  1\nSB 0 1\nSO 1 0 0 0\nSTN 3 1 3 6 2 1 3 2  5 6\nSTD 4 3 7 11 1 1 4 2  5 6\nSTR 5 2 8 12 2 1 4 2  1 6\nSRC 0 1 1 1 4\nSRE 0 1 2 2 4\nSRK 0 1 2 2 2\nSD\nSES 0 0.065 397312 10 8 13 13 19\nSEN 0 0.065 397312 10 8 13 13 19\nSEM 0 0.065 397312 10 8 13 13 19\nSEF 0 0.065 397312 10 8 13 13 19\nSEU 0 0.065 397312 10 8 13 13 19"
 END
 
 STRINGTABLE DISCARDABLE 
@@ -1290,6 +1283,46 @@ BEGIN
     IDS_COLORSTYLE_LOG_SEM  "Search termination (SEM)"
     IDS_COLORSTYLE_LOG_SEF  "Search termination (SEF)"
     IDS_COLORSTYLE_LOG_SEU  "Search termination (SEU)"
+    IDS_COLORSTYLE_ALLWINDOW "All Windows"
+    IDS_COLORSTYLE_EDITOR   "Source Windows"
+    IDS_COLORSTYLE_BUILD    "Build Window"
+    IDS_COLORSTYLE_BUILD_TEXT "text"
+    IDS_COLORSTYLE_BUILD_SELECTEDLINE "selected line"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_COLORSTYLE_DEBUG    "Debug Window"
+    IDS_COLORSTYLE_LOG      "Trace Window"
+    IDS_COLORSTYLE_RESULTS  "Results Window"
+    IDS_COLORSTYLE_FIND     "Find Window"
+    IDS_COLORSTYLE_FIND_SEARCHTEXT "search text"
+    IDS_COLORSTYLE_EDITOR_SAMPLE 
+                            "{ comments }\n$Pattern pattern_name : operation trace\n$Relevant_resources\n  rel_res2  : res_type2     Keep    Keep\n  rel_res1  : res_type1     Create  NoChange\n$Time = Abs(rel_res2.par1 - rel_res2.par3)\n{...}\n$End\n\ntext [ 10, 20, ... = 'text' ]\n\n$Re levant_resources"
+    IDS_COLORSTYLE_BUILD_SAMPLE1 "Building Model..."
+    IDS_COLORSTYLE_BUILD_SAMPLE2 "Wrong parameter value: L"
+    IDS_COLORSTYLE_BUILD_SAMPLE3 "1 error(s) found."
+    IDS_COLORSTYLE_DEBUG_SAMPLE "Start executing\nEI 0 1 1 0\nES 0 1\n"
+    IDS_COLORSTYLE_LOG_SAMPLE 
+                            "Default string type\nES 0 3\nEB 0 1 1 2 2 1 2\nEF 0.335153 1 1 2 2 1 2\nEI 0.427752 1 1 2 1 2\nER 1.07933 2 2 3 1 3\nRC 0.427752 2 2 0 0.427752 0\nRE 0.335153 2 2\nRK 0.427752 1 1 1 1 1\nV  0.427752 1  1\n$Status = USER_BREAK    607.228\nDPS_C  1  1  1\nSB 0 1\nSO 1 0 0 0\nSTN 3 1 3 6 2 1 3 2  5 6\nSTD 4 3 7 11 1 1 4 2  5 6\nSTR 5 2 8 12 2 1 4 2  1 6\nSRC 0 1 1 1 4\nSRE 0 1 2 2 4\nSRK 0 1 2 2 2\nSD\nSES 0 0.065 397312 10 8 13 13 19\nSEN 0 0.065 397312 10 8 13 13 19\nSEM 0 0.065 397312 10 8 13 13 19\nSEF 0 0.065 397312 10 8 13 13 19\nSEU 0 0.065 397312 10 8 13 13 19"
+    IDS_COLORSTYLE_RESULTS_SAMPLE 
+                            "Длина_очереди                2  194  0.675957  21.6506  0  4\r\nЗанятость_парикмахера         TRUE  96  0.877351  21.7041  0.0397544  0.918872\r\nВсего_обслужено              96\r\nПропускная_способность       1.99198\r\n"
+    IDS_COLORSTYLE_FIND_SAMPLE1 "Searching for '$Time'..."
+    IDS_COLORSTYLE_FIND_SAMPLE2 "$Time = Равномерный(0.25, 0.75)"
+    IDS_COLORSTYLE_FIND_SAMPLE3 "$Time = Нормальный(0.45, 0.2)"
+    IDS_COLORSTYLE_FIND_SAMPLE4 "'2' occurrence(s) have been found."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_COLORSTYLE_EDITOR_THEME_CURRENT "Current"
+    IDS_COLORSTYLE_EDITOR_THEME_DEFAULT "Default"
+    IDS_COLORSTYLE_EDITOR_THEME_CPP "C++"
+    IDS_COLORSTYLE_EDITOR_THEME_PASCAL "Pascal"
+    IDS_COLORSTYLE_EDITOR_THEME_HTML "HTML"
+    IDS_COLORSTYLE_EDITOR_THEME_CLASSIC "Classic"
+    IDS_COLORSTYLE_EDITOR_THEME_TWILIGHT "Twilight"
+    IDS_COLORSTYLE_EDITOR_THEME_OCEAN "Ocean"
 END
 
 #endif    // Russian resources
