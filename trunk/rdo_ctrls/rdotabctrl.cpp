@@ -121,7 +121,7 @@ BOOL RDOTab::OnCommand(WPARAM wParam, LPARAM lParam)
 	return CTabCtrl::OnCommand(wParam, lParam);
 }
 
-void RDOTab::OnSelChanged( NMHDR* pNMHDR, LRESULT* pResult )
+void RDOTab::OnSelChanged( NMHDR* /*pNMHDR*/, LRESULT* /*pResult*/ )
 {
 	showCurrentPage();
 	changeCurrentItem();
@@ -177,9 +177,14 @@ CWnd* RDOTab::getItemNext( const CWnd* const currentItem, const bool direction, 
 	} else {
 		index--;
 	}
-	if ( index < 0 ) index = getItemCount()-1;
-	if ( index == getItemCount() ) index = 0;
-	return getItem( index );
+	if ( loop ) {
+		if ( index < 0 ) index = getItemCount()-1;
+		if ( index == getItemCount() ) index = 0;
+		return getItem( index );
+	} else {
+		if ( index >= 0 && index < getItemCount() ) return getItem( index );
+	}
+	return NULL;
 }
 
 int RDOTab::findItem( const CWnd* const item ) const
@@ -219,8 +224,6 @@ void RDOTab::setCurrentItem( const int index )
 // ----------------------------------------------------------------------------
 // ---------- RDOTabCtrl
 // ----------------------------------------------------------------------------
-//#define RDOTab_ID 1
-
 BEGIN_MESSAGE_MAP( RDOTabCtrl, CWnd )
 	//{{AFX_MSG_MAP(RDOTabCtrl)
 	ON_WM_CREATE()
@@ -257,8 +260,7 @@ BOOL RDOTabCtrl::PreCreateWindow( CREATESTRUCT& cs )
 int RDOTabCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 {
 	if ( CWnd::OnCreate(lpCreateStruct) == -1 ) return -1;
-	tab->Create( 0, CRect(0, 0, 400, 100), this, -1 );
-//	tab->Create( 0, CRect(0, 0, 400, 100), this, RDOTab_ID );
+	tab->Create( 0, CRect(0, 0, 400, 100), this, 0 );
 	tab->ModifyStyle( 0, WS_CLIPCHILDREN );
 
 	HFONT hf = (HFONT)::GetStockObject( DEFAULT_GUI_FONT );

@@ -43,7 +43,7 @@ int RDOStudioOutput::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	if (RDOStudioDockWnd::OnCreate(lpCreateStruct) == -1)
 		return -1;
 
-	tab.Create( NULL, NULL, 0, CRect(0, 0, 100, 100), this, -1 );
+	tab.Create( NULL, NULL, 0, CRect(0, 0, 100, 100), this, 0 );
 	tab.modifyTabStyle( 0, TCS_BOTTOM | TCS_MULTILINE );
 
 	popupMenu.CreatePopupMenu();
@@ -73,11 +73,11 @@ int RDOStudioOutput::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	results = new RDOEditorResults;
 	find    = new RDOFindEdit;
 
-	build->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), tab.getTabAsParent(), -1 );
-	debug->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), tab.getTabAsParent(), -1 );
-	trace->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), tab.getTabAsParent(), -1 );
-	results->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), tab.getTabAsParent(), -1 );
-	find->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), tab.getTabAsParent(), -1 );
+	build->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), tab.getTabAsParent(), 0 );
+	debug->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), tab.getTabAsParent(), 0 );
+	trace->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), tab.getTabAsParent(), 0 );
+	results->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), tab.getTabAsParent(), 0 );
+	find->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), tab.getTabAsParent(), 0 );
 
 	build->setEditorStyle( &studioApp.mainFrame->style_build );
 	build->setPopupMenu( &popupMenu );

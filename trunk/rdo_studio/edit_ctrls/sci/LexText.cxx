@@ -21,7 +21,7 @@
 #include "SciLexer.h"
 #include "SString.h"
 
-static void ColouriseTextDoc( unsigned int startPos, int length, int initStyle, WordList *keywordlists[], Accessor &styler )
+static void ColouriseTextDoc( unsigned int startPos, int length, int /*initStyle*/, WordList * /*keywordlists*/ [], Accessor &styler )
 {
 	styler.StartAt( startPos );
 	styler.StartSegment( startPos );

@@ -96,7 +96,7 @@ int RDOStudioEditBaseView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	return 0;
 }
 
-void RDOStudioEditBaseView::OnDraw(CDC* pDC)
+void RDOStudioEditBaseView::OnDraw(CDC* /*pDC*/)
 {
 	RDOStudioEditBaseDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);

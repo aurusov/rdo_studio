@@ -214,7 +214,7 @@ void RDORepositoryFile::extractName( const string& fullname )
 	modelPath = extractFilePath( fullname );
 
 	string name = fullname;
-	int pos = name.find_last_of( '.' );
+	string::size_type pos = name.find_last_of( '.' );
 	if ( pos != string::npos ) {
 		string s;
 		s.assign( name.begin(), pos );
@@ -238,7 +238,7 @@ void RDORepositoryFile::extractName( const string& fullname )
 string RDORepositoryFile::extractFilePath( const string& fileName )
 {
 	string s;
-	int pos = fileName.find_last_of( '\\' );
+	string::size_type pos = fileName.find_last_of( '\\' );
 	if ( pos == string::npos ) {
 		pos = fileName.find_last_of( '/' );
 	}

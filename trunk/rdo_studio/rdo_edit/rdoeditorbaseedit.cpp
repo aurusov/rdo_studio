@@ -170,7 +170,7 @@ void RDOEditorBaseEdit::setEditorStyle( RDOEditorBaseEditStyle* _style )
 
 void RDOEditorBaseEdit::replaceCurrent( const string str, const int changePosValue ) const
 {
-	int pos;
+	int pos = 0;
 	if ( changePosValue != -1 ) pos = getCurrentPos();
 
 	sendEditor( SCI_REPLACESEL, 0, (long)str.c_str() );

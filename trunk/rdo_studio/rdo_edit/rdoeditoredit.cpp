@@ -116,10 +116,10 @@ BOOL RDOEditorEdit::OnNotify( WPARAM wParam, LPARAM lParam, LRESULT* pResult )
 				case SCN_RDO_BUFFERKEY: {
 					if ( view ) {
 						switch ( view->currentBuffer ) {
-							case 1: view->buf1 += scn->ch; break;
-							case 2: view->buf2 += scn->ch; break;
-							case 3: view->buf3 += scn->ch; break;
-							case 4: view->buf4 += scn->ch; break;
+							case 1: view->buf1 += static_cast<char>(scn->ch); break;
+							case 2: view->buf2 += static_cast<char>(scn->ch); break;
+							case 3: view->buf3 += static_cast<char>(scn->ch); break;
+							case 4: view->buf4 += static_cast<char>(scn->ch); break;
 						}
 					}
 					return TRUE;
@@ -457,8 +457,7 @@ void RDOEditorEdit::completeWord()
 
 	int currentPos = getCurrentPos() - getPositionFromLine( line );
 
-	int startPos     = currentPos;
-	int startPos_old = startPos;
+	int startPos = currentPos;
 
 	while ( (startPos > 0) && isRDOLexerIdentifier( currentLine[startPos - 1] ) ) {
 		startPos--;
@@ -466,7 +465,7 @@ void RDOEditorEdit::completeWord()
 
 	currentLine[ currentPos ] = '\0';
 	const char* str = currentLine + startPos;
-	int strLength = currentPos - startPos;
+	unsigned int strLength = currentPos - startPos;
 
 	const char* word = NULL;
 	int wordLength = strLength + 1;

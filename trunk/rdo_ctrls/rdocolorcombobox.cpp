@@ -84,7 +84,7 @@ void RDOColorComboBox::DrawItem( LPDRAWITEMSTRUCT lpDrawItemStruct )
 	dc.Detach();
 }
 
-void RDOColorComboBox::MeasureItem( LPMEASUREITEMSTRUCT lpMeasureItemStruct )
+void RDOColorComboBox::MeasureItem( LPMEASUREITEMSTRUCT /*lpMeasureItemStruct*/ )
 {
 }
 

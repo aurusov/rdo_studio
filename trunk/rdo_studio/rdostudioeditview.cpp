@@ -51,7 +51,7 @@ BOOL RDOStudioEditView::PreCreateWindow(CREATESTRUCT& cs)
 	return TRUE;
 }
 
-void RDOStudioEditView::OnDraw(CDC* pDC)
+void RDOStudioEditView::OnDraw(CDC* /*pDC*/)
 {
 	RDOStudioEditDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
@@ -93,7 +93,7 @@ int RDOStudioEditView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	if (RDOStudioEditBaseView::OnCreate(lpCreateStruct) == -1) return -1;
 
 	edit->setEditorStyle( &studioApp.mainFrame->style_editor );
-	edit->Create( NULL, NULL, WS_VISIBLE, CRect(0, 0, 100, 100), this, -1 );
+	edit->Create( NULL, NULL, WS_VISIBLE, CRect(0, 0, 100, 100), this, 0 );
 	edit->setPopupMenu( &popupMenu );
 
 	return 0;

@@ -59,7 +59,7 @@ BOOL RDOStudioModelView::PreCreateWindow(CREATESTRUCT& cs)
 	return TRUE;
 }
 
-void RDOStudioModelView::OnDraw(CDC* pDC)
+void RDOStudioModelView::OnDraw(CDC* /*pDC*/)
 {
 	RDOStudioModelDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
@@ -101,7 +101,7 @@ int RDOStudioModelView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	if (RDOStudioEditBaseView::OnCreate(lpCreateStruct) == -1)
 		return -1;
 
-	tab->Create( NULL, NULL, 0, CRect(0, 0, 100, 100), this, -1 );
+	tab->Create( NULL, NULL, 0, CRect(0, 0, 100, 100), this, 0 );
 
 	return 0;
 }
@@ -138,7 +138,7 @@ void RDOStudioModelView::OnSearchFindInModel()
 	pDlg->Create( true, getEdit()->getCurrentOrSelectedWord().c_str(), NULL, FR_HIDEUPDOWN, this );
 }
 
-LRESULT RDOStudioModelView::OnFindInModelMsg( WPARAM wParam, LPARAM lParam )
+LRESULT RDOStudioModelView::OnFindInModelMsg( WPARAM /*wParam*/, LPARAM lParam )
 {
 	CFindReplaceDialog* pDialog = CFindReplaceDialog::GetNotifier( lParam );
 

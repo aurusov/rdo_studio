@@ -335,7 +335,7 @@ void RDOStudioOptionsStylesAndColors::DoDataExchange(CDataExchange* pDX)
 	DDX_Control( pDX, IDC_BGCOLOR_COMBO, bgColorCB );
 }
 
-int CALLBACK RDOStudioOptionsStylesAndColors::EnumFontFamExProc( ENUMLOGFONTEX* lpelfe, NEWTEXTMETRICEX* lpntme, DWORD FontType, LPARAM lParam )
+int CALLBACK RDOStudioOptionsStylesAndColors::EnumFontFamExProc( ENUMLOGFONTEX* lpelfe, NEWTEXTMETRICEX* /*lpntme*/, DWORD /*FontType*/, LPARAM lParam )
 {
 	list< STYLEFont >* fonts = reinterpret_cast< list< STYLEFont >* >(lParam);
 	bool can_insert = true;
@@ -363,35 +363,35 @@ BOOL RDOStudioOptionsStylesAndColors::OnInitDialog()
 	fgColorCB.insertBaseColors();
 	bgColorCB.insertBaseColors();
 
-	sheet->preview_editor.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, -1 );
+	sheet->preview_editor.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, 0 );
 	sheet->preview_editor.setEditorStyle( &sheet->style_editor );
 	sheet->preview_editor.replaceCurrent( format( ID_OPTIONS_COLORS_EDITTEXT ), 0 );
 	sheet->preview_editor.setReadOnly( true );
 	sheet->preview_editor.bookmarkToggle();
 
-	sheet->preview_build.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, -1 );
+	sheet->preview_build.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, 0 );
 	sheet->preview_build.setEditorStyle( &sheet->style_build );
 	sheet->preview_build.appendLine( new RDOBuildEditLineInfo( "Building Model..." ) );
 	sheet->preview_build.appendLine( new RDOBuildEditLineInfo( "Wrong parameter value: L", rdoModelObjects::PAT, 40, true ) );
 	sheet->preview_build.appendLine( new RDOBuildEditLineInfo( "1 error(s) found." ) );
 	sheet->preview_build.gotoNext();
 
-	sheet->preview_debug.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, -1 );
+	sheet->preview_debug.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, 0 );
 	sheet->preview_debug.setEditorStyle( &sheet->style_debug );
 	sheet->preview_debug.appendLine( "Start executing\r\n" );
 	sheet->preview_debug.appendLine( "EI 0 1 1 0\r\n" );
 	sheet->preview_debug.appendLine( "ES 0 1\r\n" );
 
-	sheet->preview_trace.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, -1 );
+	sheet->preview_trace.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, 0 );
 	sheet->preview_trace.setStyle( &sheet->style_trace );
 
-	sheet->preview_results.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, -1 );
+	sheet->preview_results.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, 0 );
 	sheet->preview_results.setEditorStyle( &sheet->style_results );
 	sheet->preview_results.setReadOnly( false );
 	sheet->preview_results.replaceCurrent( format( ID_OPTIONS_COLOR_RESULTSTEXT ), 0 );
 	sheet->preview_results.setReadOnly( true );
 
-	sheet->preview_find.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, -1 );
+	sheet->preview_find.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, 0 );
 	sheet->preview_find.setEditorStyle( &sheet->style_find );
 	sheet->preview_find.setKeyword( "$Time" );
 	sheet->preview_find.appendLine( new RDOLogEditLineInfo( "Searching for '$Time'..." ) );
@@ -439,7 +439,7 @@ BOOL RDOStudioOptionsStylesAndColors::OnInitDialog()
 	}
 
 	LOGFONT lf;
-	lf.lfCharSet = sheet->style_editor.font->characterSet;
+	lf.lfCharSet = static_cast<unsigned char>(sheet->style_editor.font->characterSet);
 	lf.lfFaceName[0] = '\0';
 	::EnumFontFamiliesEx( GetDC()->m_hDC, &lf, reinterpret_cast<FONTENUMPROC>(RDOStudioOptionsStylesAndColors::EnumFontFamExProc), reinterpret_cast<LPARAM>(&fonts), 0 );
 	isCurrentFixed = false;
@@ -460,7 +460,7 @@ void RDOStudioOptionsStylesAndColors::OnOK()
 	CPropertyPage::OnOK();
 }
 
-void RDOStudioOptionsStylesAndColors::OnStyleItemChanged(NMHDR* pNMHDR, LRESULT* pResult)
+void RDOStudioOptionsStylesAndColors::OnStyleItemChanged(NMHDR* /*pNMHDR*/, LRESULT* pResult)
 {
 	HTREEITEM item = m_styleItem.GetSelectedItem();
 	if ( item ) {
@@ -1012,7 +1012,7 @@ void RDOStudioOptions::apply() const
 	studioApp.mainFrame->updateAllStyles();
 }
 
-int CALLBACK RDOStudioOptions::AddContextHelpProc(HWND hwnd, UINT message, LPARAM lParam)
+int CALLBACK RDOStudioOptions::AddContextHelpProc(HWND hwnd, UINT message, LPARAM /*lParam*/)
 {
 	switch (message) {
 		case PSCB_INITIALIZED: {

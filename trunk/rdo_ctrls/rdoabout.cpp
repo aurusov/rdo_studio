@@ -389,13 +389,13 @@ void RDOAbout::OnPaint()
 	dc.SelectObject( prevFont );
 }
 
-void RDOAbout::OnEMailLinkLButtonDown( NMHDR* pNotifyStruct, LRESULT* result )
+void RDOAbout::OnEMailLinkLButtonDown( NMHDR* /*pNotifyStruct*/, LRESULT* result )
 {
 	::ShellExecute( m_hWnd, "open", "mailto:" + emailLinkText, 0, 0, SW_SHOWNORMAL );
 	*result = 0;
 }
 
-void RDOAbout::OnWebSiteLinkLButtonDown( NMHDR* pNotifyStruct, LRESULT* result )
+void RDOAbout::OnWebSiteLinkLButtonDown( NMHDR* /*pNotifyStruct*/, LRESULT* result )
 {
 	::ShellExecute( m_hWnd, "open", webSiteLinkText, 0, 0, SW_SHOWNORMAL );
 	*result = 0;
@@ -424,7 +424,7 @@ int RDOAbout::DoModal()
 	m_dlgMemory.cdit = 0;
 	m_dlgMemory.x = 0;
 	m_dlgMemory.y = 0;
-	m_dlgMemory.cx = width;
+	m_dlgMemory.cx = static_cast<short>(width);
 	m_dlgMemory.cy = 1;
 	memcpy( pDest, &m_dlgMemory, sizeof(DLGTEMPLATE) );
 	pDest += sizeof(DLGTEMPLATE);

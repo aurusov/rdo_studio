@@ -82,7 +82,7 @@ RDOStudioModelView* RDOStudioModelDoc::getView() const
 	return NULL;
 }
 
-BOOL RDOStudioModelDoc::CanCloseFrame(CFrameWnd* pFrame) 
+BOOL RDOStudioModelDoc::CanCloseFrame(CFrameWnd* /*pFrame*/) 
 {
 	bool flag = true;
 	if ( isModify() ) {

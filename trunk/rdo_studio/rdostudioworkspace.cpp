@@ -31,16 +31,16 @@ int RDOStudioWorkspace::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	if (RDOStudioDockWnd::OnCreate(lpCreateStruct) == -1)
 		return -1;
 
-	tab.Create( NULL, NULL, 0, CRect(0, 0, 100, 100), this, -1 );
+	tab.Create( NULL, NULL, 0, CRect(0, 0, 100, 100), this, 0 );
 	tab.modifyTabStyle( 0, TCS_BOTTOM | TCS_MULTILINE );
 
 	CEdit* page1 = new CEdit;
 	RDOTracerTreeCtrl* page2 = tracer.createTree();
 	CEdit* page3 = new CEdit;
 
-	page1->Create( NULL, CRect(0, 0, 0, 0), &tab, -1 );
-	page2->Create( 0, CRect(0, 0, 0, 0), &tab, -1 );
-	page3->Create( NULL, CRect(0, 0, 0, 0), &tab, -1 );
+	page1->Create( NULL, CRect(0, 0, 0, 0), &tab, 0 );
+	page2->Create( 0, CRect(0, 0, 0, 0), &tab, 0 );
+	page3->Create( NULL, CRect(0, 0, 0, 0), &tab, 0 );
 
 	page1->ModifyStyleEx( 0, WS_EX_CLIENTEDGE );
 	page3->ModifyStyleEx( 0, WS_EX_CLIENTEDGE );

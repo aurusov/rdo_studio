@@ -109,10 +109,10 @@ int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	statusBar.SetPaneInfo( 3, ID_MODELTIMESTATUSBAR      , SBPS_NORMAL , 140 );
 	statusBar.SetPaneInfo( 4, ID_MODELRUNTYPESTATUSBAR   , SBPS_STRETCH, 70 );
 
-	workspace.Create( format( ID_DOCK_WORKSPACE ).c_str(), this, -1 );
+	workspace.Create( format( ID_DOCK_WORKSPACE ).c_str(), this, 0 );
 	workspace.SetBarStyle( workspace.GetBarStyle() | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
 
-	output.Create( format( ID_DOCK_OUTPUT ).c_str(), this, -1 );
+	output.Create( format( ID_DOCK_OUTPUT ).c_str(), this, 0 );
 	output.SetBarStyle( output.GetBarStyle() | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
 
 	fileToolBar.EnableDocking( CBRS_ALIGN_ANY );

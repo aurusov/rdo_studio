@@ -264,7 +264,7 @@ void RDOStudioApp::updateReopenSubMenu() const
 
 	if ( !reopenList.empty() ) {
 		AfxGetMainWnd()->GetMenu()->GetSubMenu( delta )->EnableMenuItem( 2, MF_BYPOSITION | MF_ENABLED );
-		for ( int i = 0; i < reopenList.size(); i++ ) {
+		for ( vector< string >::size_type i = 0; i < reopenList.size(); i++ ) {
 			if ( i == 4 ) reopenMenu->AppendMenu( MF_SEPARATOR );
 			int id = ID_FILE_MRU_FILE1;
 			switch( i ) {
@@ -311,7 +311,7 @@ void RDOStudioApp::loadReopen()
 
 void RDOStudioApp::saveReopen() const
 {
-	for ( int i = 0; i < 10; i++ ) {
+	for ( vector< string >::size_type i = 0; i < 10; i++ ) {
 		string sec;
 		if ( i+1 < 10 ) {
 			sec = format( "0%d", i+1 );
@@ -382,7 +382,7 @@ void RDOStudioApp::OnUpdateChartStoptrace(CCmdUI* pCmdUI)
 	pCmdUI->Enable( tracer.isTracing() );
 }
 
-void RDOStudioApp::OnAddNewFrame( WPARAM wParam, LPARAM lParam )
+void RDOStudioApp::OnAddNewFrame( WPARAM /*wParam*/, LPARAM /*lParam*/ )
 {
 	model->addNewFrame();
 }

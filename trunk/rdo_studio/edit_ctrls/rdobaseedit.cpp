@@ -158,7 +158,7 @@ BOOL RDOBaseEdit::PreCreateWindow( CREATESTRUCT& cs )
 	return TRUE;
 }
 
-BOOL RDOBaseEdit::OnNotify( WPARAM wParam, LPARAM lParam, LRESULT* pResult )
+BOOL RDOBaseEdit::OnNotify( WPARAM /*wParam*/, LPARAM lParam, LRESULT* /*pResult*/ )
 {
 	SCNotification* scn = (SCNotification*)lParam;
 
@@ -502,7 +502,7 @@ void RDOBaseEdit::OnSearchFindPreviousFast()
 	findNext( findStr, !bSearchDown, bMatchCase, bMatchWholeWord );
 }
 
-LRESULT RDOBaseEdit::OnFindReplaceMsg( WPARAM wParam, LPARAM lParam )
+LRESULT RDOBaseEdit::OnFindReplaceMsg( WPARAM /*wParam*/, LPARAM lParam )
 {
 	CFindReplaceDialog* pDialog = CFindReplaceDialog::GetNotifier( lParam );
 
@@ -1125,7 +1125,6 @@ void RDOBaseEdit::autoIndent() const
 	int selStart      = crange.cpMin;
 	int curLine       = getCurrentLineNumber();
 	int thisLineStart = getPositionFromLine( curLine );
-	int indentSize    = sendEditor( SCI_GETINDENT );
 	int indentBlock   = indentOfBlock( curLine - 1 );
 
 	if ( selStart == thisLineStart ) {

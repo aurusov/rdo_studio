@@ -103,22 +103,22 @@ bool RDOBaseEditTheme::styleUsing( const int styleType ) const
 	return styleType == STYLE_DEFAULT;
 }
 
-bool RDOBaseEditTheme::styleBold( const int styleType ) const
+bool RDOBaseEditTheme::styleBold( const int /*styleType*/ ) const
 {
 	return defaultStyle & RDOFS_BOLD ? true : false;
 }
 
-bool RDOBaseEditTheme::styleItalic( const int styleType ) const
+bool RDOBaseEditTheme::styleItalic( const int /*styleType*/ ) const
 {
 	return defaultStyle & RDOFS_ITALIC ? true : false;
 }
 
-string RDOBaseEditTheme::styleFGColorToHEX( const int styleType ) const
+string RDOBaseEditTheme::styleFGColorToHEX( const int /*styleType*/ ) const
 {
 	return colorToHEX( defaultColor );
 }
 
-string RDOBaseEditTheme::styleBGColorToHEX( const int styleType ) const
+string RDOBaseEditTheme::styleBGColorToHEX( const int /*styleType*/ ) const
 {
 	return colorToHEX( backgroundColor );
 }
