@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "rdostudioplugins.h"
+#include "rdostudioapp.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -85,7 +86,7 @@ void RDOStudioPlugins::init()
 	std::string path = "";
 	TCHAR szExeName[ MAX_PATH + 1 ];
 	if ( ::GetModuleFileName( NULL, szExeName, MAX_PATH ) ) {
-		path = szExeName;
+		path = RDOStudioApp::extractFilePath( szExeName );
 	}
 	if ( !path.empty() ) {
 		enumPlugins( path + "*.*" );
