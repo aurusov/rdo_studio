@@ -265,7 +265,7 @@ RDOStudioOptionsStylesAndColors::RDOStudioOptionsStylesAndColors( RDOStudioOptio
 
 	RDOEditorEditTheme* editor_theme = static_cast<RDOEditorEditTheme*>(sheet->style_editor.theme);
 	object = new STYLEObject( STYLEObject::source, sheet->style_editor.font->name, sheet->style_editor.font->size, true, sheet->style_editor.window->wordWrap, sheet->style_editor.window->showHorzScrollBar, editor_theme->bookmarkStyle, editor_theme->foldStyle );
-	object->properties.push_back( new STYLEProperty( object, "Source Windows", editor_theme->defaultStyle, editor_theme->identifierColor, editor_theme->backgroundColor ) );
+	object->properties.push_back( new STYLEProperty( object, "Source Windows", editor_theme->identifierStyle, editor_theme->identifierColor, editor_theme->backgroundColor ) );
 	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_PLAINTEXT ), editor_theme->defaultStyle, editor_theme->defaultColor, null_bg_color, null_fg_color, editor_theme->backgroundColor ) );
 	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_IDENTIFICATOR ), editor_theme->identifierStyle, editor_theme->identifierColor, null_bg_color, null_fg_color, editor_theme->backgroundColor ) );
 	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_KEYWORD ), editor_theme->keywordStyle, editor_theme->keywordColor, null_bg_color, null_fg_color, editor_theme->backgroundColor ) );
@@ -333,7 +333,7 @@ RDOStudioOptionsStylesAndColors::RDOStudioOptionsStylesAndColors( RDOStudioOptio
 
 	RDOEditorBaseEditTheme* results_theme = static_cast<RDOEditorBaseEditTheme*>(sheet->style_results.theme);
 	object = new STYLEObject( STYLEObject::results, sheet->style_results.font->name, sheet->style_results.font->size, true, sheet->style_results.window->wordWrap, sheet->style_results.window->showHorzScrollBar );
-	object->properties.push_back( new STYLEProperty( object, "Results Window", results_theme->defaultStyle, results_theme->identifierColor, results_theme->backgroundColor ) );
+	object->properties.push_back( new STYLEProperty( object, "Results Window", results_theme->identifierStyle, results_theme->identifierColor, results_theme->backgroundColor ) );
 	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_PLAINTEXT ), results_theme->defaultStyle, results_theme->defaultColor, null_bg_color, null_fg_color, results_theme->backgroundColor ) );
 	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_IDENTIFICATOR ), results_theme->identifierStyle, results_theme->identifierColor, null_bg_color, null_fg_color, results_theme->backgroundColor ) );
 	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_KEYWORD ), results_theme->keywordStyle, results_theme->keywordColor, null_bg_color, null_fg_color, results_theme->backgroundColor ) );
