@@ -1486,6 +1486,8 @@ BEGIN
     IDS_MODEL_PMDS          "performance measures description"
     IDS_MODEL_RUNTIMEERROR  "Run time error detected..."
     IDS_MODEL_BUILDING_BEGIN "Building..."
+    IDS_MODEL_BUILDING_RESULTS "%d error(s) found."
+    IDS_MODEL_RUNNING_BEGIN "Running..."
 END
 
 #endif    // Russian resources

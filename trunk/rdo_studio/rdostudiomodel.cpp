@@ -54,8 +54,9 @@ RDOStudioModel::RDOStudioModel():
 	kernel.setNotifyReflect( RDOKernel::afterModelStart, afterModelStartNotify );
 	kernel.setNotifyReflect( RDOKernel::endExecuteModel, stopModelNotify );
 	kernel.setNotifyReflect( RDOKernel::modelStopped, stopModelNotify );
-	kernel.setNotifyReflect( RDOKernel::parseError, parseErrorModelNotify );
-	kernel.setNotifyReflect( RDOKernel::executeError, executeErrorModelNotify );
+	kernel.setNotifyReflect( RDOKernel::parseSuccess, parseSuccessNotify );
+	kernel.setNotifyReflect( RDOKernel::parseError, parseErrorNotify );
+	kernel.setNotifyReflect( RDOKernel::executeError, executeErrorNotify );
 	kernel.setNotifyReflect( RDOKernel::showFrame, showFrameNotify );
 
 	kernel.setNotifyReflect( RDOKernel::buildString, buildNotify );
@@ -71,30 +72,32 @@ RDOStudioModel::~RDOStudioModel()
 void RDOStudioModel::newModel( const bool _useTemplate )
 {
 	useTemplate = _useTemplate;
-	studioApp.mainFrame->output.clearBuild();
-	studioApp.mainFrame->output.clearDebug();
-	studioApp.mainFrame->output.clearResults();
-	studioApp.mainFrame->output.clearFind();
+	RDOStudioOutput* output = &studioApp.mainFrame->output;
+	output->clearBuild();
+	output->clearDebug();
+	output->clearResults();
+	output->clearFind();
 	kernel.getRepository()->newModel();
-	studioApp.mainFrame->output.updateLogConnection();
+	output->updateLogConnection();
 }
 
 bool RDOStudioModel::openModel( const string& modelName ) const
 {
-	studioApp.mainFrame->output.clearBuild();
-	studioApp.mainFrame->output.clearDebug();
-	studioApp.mainFrame->output.clearResults();
-	studioApp.mainFrame->output.clearFind();
-	studioApp.mainFrame->output.showBuild();
-	studioApp.mainFrame->output.appendStringToBuild( format( IDS_MODEL_LOADING_BEGIN ) );
-	const_cast<rdoEditCtrl::RDOBuildEdit*>(studioApp.mainFrame->output.getBuild())->UpdateWindow();
+	RDOStudioOutput* output = &studioApp.mainFrame->output;
+	output->clearBuild();
+	output->clearDebug();
+	output->clearResults();
+	output->clearFind();
+	output->showBuild();
+	output->appendStringToBuild( format( IDS_MODEL_LOADING_BEGIN ) );
+	const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->UpdateWindow();
 	static_cast<bool>(openError) = false;
 	bool flag = kernel.getRepository()->openModel( modelName );
 	if ( flag && !openError ) {
-		studioApp.mainFrame->output.updateLogConnection();
-		studioApp.mainFrame->output.appendStringToBuild( format( IDS_MODEL_LOADING_OK ) );
+		output->updateLogConnection();
+		output->appendStringToBuild( format( IDS_MODEL_LOADING_OK ) );
 	} else {
-		studioApp.mainFrame->output.appendStringToBuild( format( IDS_MODEL_LOADING_FAILD ) );
+		output->appendStringToBuild( format( IDS_MODEL_LOADING_FAILD ) );
 	}
 	return flag;
 }
@@ -112,22 +115,24 @@ void RDOStudioModel::saveAsModel() const
 void RDOStudioModel::closeModel() const
 {
 	stopModel();
-	studioApp.mainFrame->output.clearBuild();
-	studioApp.mainFrame->output.clearDebug();
-	studioApp.mainFrame->output.clearResults();
-	studioApp.mainFrame->output.clearFind();
+	RDOStudioOutput* output = &studioApp.mainFrame->output;
+	output->clearBuild();
+	output->clearDebug();
+	output->clearResults();
+	output->clearFind();
 	kernel.getRepository()->closeModel();
 }
 
 void RDOStudioModel::buildModel() const
 {
 	if ( saveModel() ) {
-		studioApp.mainFrame->output.clearBuild();
-		studioApp.mainFrame->output.clearDebug();
-		studioApp.mainFrame->output.clearResults();
-		studioApp.mainFrame->output.showBuild();
-		studioApp.mainFrame->output.appendStringToBuild( format( IDS_MODEL_BUILDING_BEGIN ) );
-		const_cast<rdoEditCtrl::RDOBuildEdit*>(studioApp.mainFrame->output.getBuild())->UpdateWindow();
+		RDOStudioOutput* output = &studioApp.mainFrame->output;
+		output->clearBuild();
+		output->clearDebug();
+		output->clearResults();
+		output->showBuild();
+		output->appendStringToBuild( format( IDS_MODEL_BUILDING_BEGIN ) );
+		const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->UpdateWindow();
 		kernel.getSimulator()->parseModel();
 	}
 }
@@ -135,10 +140,13 @@ void RDOStudioModel::buildModel() const
 void RDOStudioModel::runModel() const
 {
 	if ( saveModel() ) {
-		studioApp.mainFrame->output.clearBuild();
-		studioApp.mainFrame->output.clearDebug();
-		studioApp.mainFrame->output.clearResults();
-		studioApp.mainFrame->output.showBuild();
+		RDOStudioOutput* output = &studioApp.mainFrame->output;
+		output->clearBuild();
+		output->clearDebug();
+		output->clearResults();
+		output->showBuild();
+		output->appendStringToBuild( format( IDS_MODEL_RUNNING_BEGIN ) );
+		const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->UpdateWindow();
 		kernel.getSimulator()->runModel();
 	}
 }
@@ -202,33 +210,51 @@ void RDOStudioModel::stopModelNotify()
 	model->frameManager.bmp_clear();
 }
 
-void RDOStudioModel::parseErrorModelNotify()
+void RDOStudioModel::parseSuccessNotify()
 {
+	RDOStudioOutput* output = &studioApp.mainFrame->output;
 	vector<RDOSyntaxError>* errors = kernel.getSimulator()->getErrors();
 	int i = 0;
 	for ( vector<RDOSyntaxError>::iterator it = errors->begin(); it != errors->end(); it++ ) {
-		studioApp.mainFrame->output.appendStringToBuild( it->message, it->file, it->lineNo - 1 );
+		output->appendStringToBuild( it->message, it->file, it->lineNo - 1 );
 		i++;
 	}
+	output->appendStringToBuild( format( IDS_MODEL_BUILDING_RESULTS, i ) );
 	if ( i ) {
-		studioApp.mainFrame->output.appendStringToBuild( format( "%d error(s) found.", i ) );
+		const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->gotoNext();
 	}
 }
 
-void RDOStudioModel::executeErrorModelNotify()
+void RDOStudioModel::parseErrorNotify()
 {
+	RDOStudioOutput* output = &studioApp.mainFrame->output;
 	vector<RDOSyntaxError>* errors = kernel.getSimulator()->getErrors();
 	int i = 0;
 	for ( vector<RDOSyntaxError>::iterator it = errors->begin(); it != errors->end(); it++ ) {
-		studioApp.mainFrame->output.appendStringToBuild( it->message, it->file, it->lineNo - 1 );
+		output->appendStringToBuild( it->message, it->file, it->lineNo - 1 );
+		i++;
+	}
+	if ( i ) {
+		output->appendStringToBuild( format( IDS_MODEL_BUILDING_RESULTS, i ) );
+		const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->gotoNext();
+	}
+}
+
+void RDOStudioModel::executeErrorNotify()
+{
+	RDOStudioOutput* output = &studioApp.mainFrame->output;
+	output->clearBuild();
+	output->showBuild();
+	output->appendStringToBuild( format( IDS_MODEL_RUNTIMEERROR ) );
+	vector<RDOSyntaxError>* errors = kernel.getSimulator()->getErrors();
+	int i = 0;
+	for ( vector<RDOSyntaxError>::iterator it = errors->begin(); it != errors->end(); it++ ) {
+		output->appendStringToBuild( it->message, it->file, it->lineNo - 1 );
 		i++;
 	}
 	stopModelNotify();
 	if ( i > 0 ) {
-		studioApp.mainFrame->output.clearBuild();
-		studioApp.mainFrame->output.showBuild();
-		studioApp.mainFrame->output.appendStringToBuild( format( IDS_MODEL_RUNTIMEERROR ) );
-		const_cast<rdoEditCtrl::RDOBuildEdit*>(studioApp.mainFrame->output.getBuild())->gotoNext();
+		const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->gotoNext();
 	}
 }
 
@@ -345,6 +371,7 @@ void RDOStudioModel::openModelFromRepository()
 		modelDocTemplate->OpenDocumentFile( NULL );
 		setName( kernel.getRepository()->getName() );
 
+		RDOStudioOutput* output = &studioApp.mainFrame->output;
 		RDOEditorTabCtrl* tab = getTab();
 		if ( tab ) {
 			int cnt = tab->getItemCount();
@@ -387,8 +414,8 @@ void RDOStudioModel::openModelFromRepository()
 							case RDOEDIT_PMD: obj = IDS_MODEL_PMDS;          break;
 						}
 						if ( obj ) {
-							studioApp.mainFrame->output.appendStringToBuild( format( IDS_MODEL_CANNOT_LOAD, format( obj ).c_str() ) );
-							const_cast<rdoEditCtrl::RDOBuildEdit*>(studioApp.mainFrame->output.getBuild())->UpdateWindow();
+							output->appendStringToBuild( format( IDS_MODEL_CANNOT_LOAD, format( obj ).c_str() ) );
+							const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->UpdateWindow();
 						}
 						openError = true;
 					}

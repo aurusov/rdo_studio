@@ -46,8 +46,9 @@ private:
 	static void beforeModelStartNotify();
 	static void afterModelStartNotify();
 	static void stopModelNotify();
-	static void parseErrorModelNotify();
-	static void executeErrorModelNotify();
+	static void parseSuccessNotify();
+	static void parseErrorNotify();
+	static void executeErrorNotify();
 	static void showFrameNotify();
 
 	static void buildNotify( std::string str );

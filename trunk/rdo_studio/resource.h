@@ -502,6 +502,8 @@
 #define IDS_MODEL_PMDS                  40214
 #define IDS_MODEL_RUNTIMEERROR          40215
 #define IDS_MODEL_BUILDING_BEGIN        40216
+#define IDS_MODEL_BUILDING_RESULTS      40217
+#define IDS_MODEL_RUNNING_BEGIN         40218
 #define IDS_CHART_OPTIONS               40300
 #define IDS_CHART_OPTIONS_APPLY         40301
 #define ID_ABOUT_BMSTU                  40910

@@ -214,7 +214,7 @@ UINT RunningThreadControllingFunction( LPVOID pParam )
 
 bool RdoSimulator::parseModel()
 {
-	kernel.notifyString(RDOKernel::buildString, "Start parsing\n");
+//	kernel.notifyString(RDOKernel::buildString, "Start parsing\n");
 	terminateModel();
 	closeModel();
 
@@ -317,7 +317,7 @@ bool RdoSimulator::parseModel()
 */
 	
 	kernel.notify(RDOKernel::parseSuccess);
-	kernel.notifyString(RDOKernel::buildString, "End parsing\n");
+//	kernel.notifyString(RDOKernel::buildString, "End parsing\n");
 
 
 //	kernel.notifyString(RDOKernel::buildString, getModelStructure().str().c_str());
@@ -400,7 +400,7 @@ void RdoSimulator::parseSMRFileInfo( stringstream& smr, rdoModelObjects::RDOSMRF
 		return;
 	}
 
-	kernel.notifyString(RDOKernel::buildString, "SMR File read successfully\n");
+//	kernel.notifyString(RDOKernel::buildString, "SMR File read successfully\n");
 
 	if(parser->smr->modelName)
 		info.model_name = *parser->smr->modelName;
