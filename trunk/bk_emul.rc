@@ -130,8 +130,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,0,7
- PRODUCTVERSION 1,0,0,7
+ FILEVERSION 1,0,0,10
+ PRODUCTVERSION 1,0,0,10
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -149,14 +149,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "BK 0010-01 Emulator\0"
-            VALUE "FileVersion", "1, 0, 0, 7\0"
+            VALUE "FileVersion", "1, 0, 0, 10\0"
             VALUE "InternalName", "BK Emulator\0"
             VALUE "LegalCopyright", "\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "bk_emul.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "BK 0010-01 Emulator\0"
-            VALUE "ProductVersion", "1, 0, 0, 7\0"
+            VALUE "ProductVersion", "1, 0, 0, 10\0"
             VALUE "SpecialBuild", "\0"
         END
     END

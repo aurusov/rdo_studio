@@ -308,6 +308,6 @@ HRESULT BKChildView::restoreSurfaces()
 void BKChildView::updateBounds()
 {
 	display->UpdateBounds();
-	InvalidateRect( NULL );
-	UpdateWindow();
+//	InvalidateRect( NULL );
+//	UpdateWindow();
 }
