@@ -694,7 +694,7 @@ void RDOEditorSciEdit::findNext( string& findWhat, const bool searchDown, const 
 		firstFoundPos = -1;
 		bHaveFound    = false;
 		CString s;
-		s.Format( ID_MSG_CANTFIND, findWhat );
+		s.Format( ID_MSG_CANTFIND, findWhat.c_str() );
 		MessageBox( s, NULL, MB_OK | MB_ICONWARNING );
 		SetFocus();
 	} else {
@@ -704,7 +704,7 @@ void RDOEditorSciEdit::findNext( string& findWhat, const bool searchDown, const 
 			firstFoundPos = -1;
 			bHaveFound    = false;
 			CString s;
-			s.Format( ID_MSG_CANTFIND, findWhat );
+			s.Format( ID_MSG_CANTFIND, findWhat.c_str() );
 			MessageBox( s, NULL, MB_OK | MB_ICONWARNING );
 			SetFocus();
 			return;
@@ -766,7 +766,7 @@ void RDOEditorSciEdit::replaceAll( string& findWhat, string& replaceWhat, const 
 		sendEditor( SCI_ENDUNDOACTION );
 	} else {
 		CString s;
-		s.Format( ID_MSG_CANTFIND, findWhat );
+		s.Format( ID_MSG_CANTFIND, findWhat.c_str() );
 		MessageBox( s, NULL, MB_OK | MB_ICONWARNING );
 		SetFocus();
 	}

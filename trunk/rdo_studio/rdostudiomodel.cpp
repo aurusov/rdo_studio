@@ -73,6 +73,7 @@ void RDOStudioModel::closeModel() const
 void RDOStudioModel::runModel() const
 {
 	if ( saveModel() ) {
+		studioApp.mainFrame->output.clearBuild();
 		studioApp.mainFrame->output.showBuild();
 		kernel.getSimulator()->runModel();
 	}
@@ -115,6 +116,7 @@ void RDOStudioModel::canNotCloseModelNotify()
 
 void RDOStudioModel::runModelNotify()
 {
+	studioApp.mainFrame->output.clearDebug();
 	studioApp.mainFrame->output.showDebug();
 	model->running = true;
 }

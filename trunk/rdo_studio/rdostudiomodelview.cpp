@@ -143,7 +143,7 @@ LRESULT RDOStudioModelView::OnFindInModelMsg( WPARAM wParam, LPARAM lParam )
 		studioApp.mainFrame->output.showFind();
 		string findStr = pDialog->GetFindString();
 		CString s;
-		s.Format( ID_FINDINMODEL_BEGINMSG, findStr );
+		s.Format( ID_FINDINMODEL_BEGINMSG, findStr.c_str() );
 		studioApp.mainFrame->output.appendStringToFind( (LPCTSTR)s );
 		bool bMatchCase      = pDialog->MatchCase() ? true : false;
 		bool bMatchWholeWord = pDialog->MatchWholeWord() ? true : false;
