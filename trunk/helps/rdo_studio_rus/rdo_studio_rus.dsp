@@ -103,37 +103,30 @@ SOURCE=.\rdo_studio.stp
 # Begin Source File
 
 SOURCE=.\html\about.htm
-# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
 SOURCE=.\html\intro.htm
-# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
 SOURCE=.\html\rdo_lang_help.htm
-# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
 SOURCE=.\html\work_exit.htm
-# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
 SOURCE=.\html\work_help.htm
-# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
 SOURCE=.\html\work_install.htm
-# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
 SOURCE=.\html\work_intro.htm
-# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
@@ -142,27 +135,22 @@ SOURCE=.\html\work_menu_chart.htm
 # Begin Source File
 
 SOURCE=.\html\work_menu_edit.htm
-# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
 SOURCE=.\html\work_menu_file.htm
-# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
 SOURCE=.\html\work_menu_help.htm
-# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
 SOURCE=.\html\work_menu_insert.htm
-# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
 SOURCE=.\html\work_menu_intro.htm
-# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
@@ -171,12 +159,10 @@ SOURCE=.\html\work_menu_model.htm
 # Begin Source File
 
 SOURCE=.\html\work_menu_search.htm
-# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
 SOURCE=.\html\work_menu_view.htm
-# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
@@ -185,72 +171,74 @@ SOURCE=.\html\work_menu_window.htm
 # Begin Source File
 
 SOURCE=.\html\work_model_bookmarks.htm
-# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
 SOURCE=.\html\work_model_buffer.htm
-# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=.\html\work_model_chart_main.htm
+# End Source File
+# Begin Source File
+
+SOURCE=.\html\work_model_chart_opt_c.htm
+# End Source File
+# Begin Source File
+
+SOURCE=.\html\work_model_chart_opt_s.htm
 # End Source File
 # Begin Source File
 
 SOURCE=.\html\work_model_complete.htm
-# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
 SOURCE=.\html\work_model_creation.htm
-# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
 SOURCE=.\html\work_model_edit.htm
-# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=.\html\work_model_find_in_model.htm
 # End Source File
 # Begin Source File
 
 SOURCE=.\html\work_model_folds.htm
-# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
 SOURCE=.\html\work_model_insert.htm
-# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
 SOURCE=.\html\work_model_intro.htm
-# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
 SOURCE=.\html\work_model_open.htm
-# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
 SOURCE=.\html\work_model_results.htm
-# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
 SOURCE=.\html\work_model_run.htm
-# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
 SOURCE=.\html\work_model_save.htm
-# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
 SOURCE=.\html\work_model_scale.htm
-# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
 SOURCE=.\html\work_model_search_replace.htm
-# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
@@ -259,22 +247,46 @@ SOURCE=.\html\work_model_tabsheets.htm
 # Begin Source File
 
 SOURCE=.\html\work_model_view.htm
-# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
 SOURCE=.\html\work_options.htm
-# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=.\html\work_options_editor.htm
+# End Source File
+# Begin Source File
+
+SOURCE=.\html\work_options_general.htm
+# End Source File
+# Begin Source File
+
+SOURCE=.\html\work_options_styles_and_color.htm
+# End Source File
+# Begin Source File
+
+SOURCE=.\html\work_options_tabs.htm
 # End Source File
 # Begin Source File
 
 SOURCE=.\html\work_run.htm
-# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
 SOURCE=.\html\work_status_bar.htm
-# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=.\html\work_windows.htm
+# End Source File
+# Begin Source File
+
+SOURCE=.\html\work_windows_output.htm
+# End Source File
+# Begin Source File
+
+SOURCE=.\html\work_windows_workspace.htm
 # End Source File
 # End Group
 # Begin Group "Images Files"
@@ -283,202 +295,150 @@ SOURCE=.\html\work_status_bar.htm
 # Begin Source File
 
 SOURCE=.\images\bmstu.gif
-# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
 SOURCE=.\images\bookmark_margin.gif
-# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
 SOURCE=.\images\bookmark_no_margin.gif
-# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\chart_main_view.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\chart_window_chart.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\chart_window_series.gif
 # End Source File
 # Begin Source File
 
 SOURCE=.\images\code_completion.gif
-# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
 SOURCE=.\images\context_help.gif
-# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
 SOURCE=.\images\edit_copy.gif
-# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
 SOURCE=.\images\edit_cut.gif
-# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
 SOURCE=.\images\edit_paste.gif
-# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
 SOURCE=.\images\edit_redo.gif
-# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
 SOURCE=.\images\edit_undo.gif
-# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
 SOURCE=.\images\exit.gif
-# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
 SOURCE=.\images\file_new.gif
-# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
 SOURCE=.\images\file_open.gif
-# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
 SOURCE=.\images\file_save.gif
-# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\find_in_model_dlg.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\find_in_model_results.gif
 # End Source File
 # Begin Source File
 
 SOURCE=.\images\fold.gif
-# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
 SOURCE=.\images\insert_buffer_edit.gif
-# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
 SOURCE=.\images\main_win.gif
-# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
 SOURCE=.\images\next_bookmark.gif
-# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
-SOURCE=..\shared\images\next_section.gif
-# PROP Exclude_From_Build 1
+SOURCE=.\images\options_editor.gif
 # End Source File
 # Begin Source File
 
-SOURCE=..\shared\images\next_section_d.gif
-# PROP Exclude_From_Build 1
+SOURCE=.\images\options_general.gif
 # End Source File
 # Begin Source File
 
-SOURCE=..\shared\images\next_topic.gif
-# PROP Exclude_From_Build 1
+SOURCE=.\images\options_styles_and_color.gif
 # End Source File
 # Begin Source File
 
-SOURCE=..\shared\images\next_topic_d.gif
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=.\images\options_color.gif
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=.\images\options_edit.gif
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=..\shared\images\prev_section.gif
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=..\shared\images\prev_section_d.gif
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=..\shared\images\prev_topic.gif
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=..\shared\images\prev_topic_d.gif
-# PROP Exclude_From_Build 1
+SOURCE=.\images\options_tabs.gif
 # End Source File
 # Begin Source File
 
 SOURCE=.\images\previous_bookmark.gif
-# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
 SOURCE=.\images\rdo_path.gif
-# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
 SOURCE=.\images\rdo_reload_pmv.gif
-# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
 SOURCE=.\images\rdo_reload_trc.gif
-# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
 SOURCE=.\images\rdo_run.gif
-# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
 SOURCE=.\images\rdo_stop.gif
-# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
 SOURCE=.\images\search_find.gif
-# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
 SOURCE=.\images\search_find_dlg.gif
-# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
 SOURCE=.\images\search_replace.gif
-# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
 SOURCE=.\images\search_replace_dlg.gif
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=..\shared\images\section_top.gif
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=..\shared\images\section_top_d.gif
-# PROP Exclude_From_Build 1
 # End Source File
 # End Group
 # Begin Group "Scripts"

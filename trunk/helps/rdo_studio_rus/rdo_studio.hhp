@@ -63,6 +63,17 @@ html\rdo_lang_help.htm
 ..\shared\styles\styles.css
 html\work_menu_model.htm
 html\work_model_tabsheets.htm
+html\work_model_find_in_model.htm
+html\work_model_chart_opt_s.htm
+html\work_model_chart_opt_c.htm
+html\work_model_chart_main.htm
+html\work_windows.htm
+html\work_windows_output.htm
+html\work_windows_workspace.htm
+html\work_options_tabs.htm
+html\work_options_general.htm
+html\work_options_styles_and_color.htm
+html\work_options_editor.htm
 
 [ALIAS]
 #include aliases.h
