@@ -593,7 +593,9 @@ void RDORepositoryFile::beforeModelStart()
 		trace_file.close();
 	}
 	string file_name = modelPath + trcFileName + ".trc";
-	trace_file.open( file_name.c_str(), ios::out | ios::binary);
+	trace_file.open( file_name.c_str(), ios::out | ios::binary );
+	trace_file << "Model_name = " << smrFileName << endl;
+	trace_file << kernel.getSimulator()->getModelStructure().str() << endl;
 }
 
 void RDORepositoryFile::stopModel()
