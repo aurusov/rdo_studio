@@ -24,7 +24,7 @@ public:
 	WGProcessList( QObject* parent = NULL );
 	~WGProcessList();
 
-	WGProcess* newProcess();
+	WGProcess* newProcess( WGProcess* procParent = NULL );
 	void deleteProcess( WGProcess* proc );
 
 	WGProcess* newWgetVersionProcess();

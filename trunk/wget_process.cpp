@@ -44,9 +44,9 @@ WGProcessList::~WGProcessList()
 	WGProcess_s = NULL;
 }
 
-WGProcess* WGProcessList::newProcess()
+WGProcess* WGProcessList::newProcess( WGProcess* procParent )
 {
-	WGProcess* proc = new WGProcess( this );
+	WGProcess* proc = new WGProcess( this, procParent );
 	proc_list.append( proc );
 	return proc;
 }
