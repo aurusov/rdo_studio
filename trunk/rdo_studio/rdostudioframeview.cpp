@@ -201,6 +201,8 @@ void RDOStudioFrameView::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollB
 	si.fMask = SIF_POS;
 	si.nPos  = xPos;
 	SetScrollInfo( SB_HORZ, &si, TRUE );
+	InvalidateRect( NULL );
+	UpdateWindow();
 }
 
 void RDOStudioFrameView::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
@@ -237,4 +239,6 @@ void RDOStudioFrameView::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollB
 	si.fMask = SIF_POS;
 	si.nPos  = yPos;
 	SetScrollInfo( SB_VERT, &si, TRUE );
+	InvalidateRect( NULL );
+	UpdateWindow();
 }
