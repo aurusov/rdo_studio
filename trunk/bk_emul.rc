@@ -83,7 +83,8 @@ BEGIN
     BEGIN
         MENUITEM "&Full Screen\t(Alt+Enter)",   ID_VIEW_FULLSCREEN
         MENUITEM SEPARATOR
-        MENUITEM "&Color Monitor",              ID_VIEW_COLORMONITOR
+        MENUITEM "&Color Monitor\t(Alt + F2)",  ID_VIEW_COLORMONITOR
+        MENUITEM "&Font",                       65535
     END
     POPUP "&Help"
     BEGIN
@@ -143,11 +144,11 @@ END
 // ROM
 //
 
-BASIC_10_120            ROM     DISCARDABLE     "res\\basic_10_120.bin"
-BASIC_10_140            ROM     DISCARDABLE     "res\\basic_10_140.bin"
-BASIC_10_160            ROM     DISCARDABLE     "res\\basic_10_160.bin"
-MIRAGE120               ROM     DISCARDABLE     "res\\mirage120.bin"
-MONITOR_10              ROM     DISCARDABLE     "res\\monitor_10.bin"
+BASIC_10_120            ROM     DISCARDABLE     "res\\rom_basic_10_120.bin"
+BASIC_10_140            ROM     DISCARDABLE     "res\\rom_basic_10_140.bin"
+BASIC_10_160            ROM     DISCARDABLE     "res\\rom_basic_10_160.bin"
+MIRAGE120               ROM     DISCARDABLE     "res\\rom_mirage120.bin"
+MONITOR_10              ROM     DISCARDABLE     "res\\rom_monitor_10.bin"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -160,6 +161,37 @@ BEGIN
     VK_RETURN,      ID_VIEW_FULLSCREEN,     VIRTKEY, ALT, NOINVERT
 END
 
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// BK_FONT
+//
+
+ATLANTIC                BK_FONT DISCARDABLE     "res\\font_atlantic.bin"
+BIG                     BK_FONT DISCARDABLE     "res\\font_big.bin"
+BK11                    BK_FONT DISCARDABLE     "res\\font_bk11.bin"
+CLOCK                   BK_FONT DISCARDABLE     "res\\font_clock.bin"
+COLOR1                  BK_FONT DISCARDABLE     "res\\font_color1.bin"
+COLOR2                  BK_FONT DISCARDABLE     "res\\font_color2.bin"
+COMP                    BK_FONT DISCARDABLE     "res\\font_comp.bin"
+CURSIV                  BK_FONT DISCARDABLE     "res\\font_cursiv.bin"
+DEFAULT                 BK_FONT DISCARDABLE     "res\\font_default.bin"
+FUTURE                  BK_FONT DISCARDABLE     "res\\font_future.bin"
+GOTHIC                  BK_FONT DISCARDABLE     "res\\font_gothic.bin"
+IBM                     BK_FONT DISCARDABLE     "res\\font_ibm.bin"
+MODERN                  BK_FONT DISCARDABLE     "res\\font_modern.bin"
+PCFONT                  BK_FONT DISCARDABLE     "res\\font_pcfont.bin"
+PRS                     BK_FONT DISCARDABLE     "res\\font_prs.bin"
+PRS2                    BK_FONT DISCARDABLE     "res\\font_prs2.bin"
+PRS3                    BK_FONT DISCARDABLE     "res\\font_prs3.bin"
+READER                  BK_FONT DISCARDABLE     "res\\font_reader.bin"
+RTV21                   BK_FONT DISCARDABLE     "res\\font_rtv21.bin"
+SCRIPT                  BK_FONT DISCARDABLE     "res\\font_script.bin"
+SHRIFT1                 BK_FONT DISCARDABLE     "res\\font_shrift1.bin"
+SHRIFT2                 BK_FONT DISCARDABLE     "res\\font_shrift2.bin"
+SUPER                   BK_FONT DISCARDABLE     "res\\font_super.bin"
+THICK                   BK_FONT DISCARDABLE     "res\\font_thick.bin"
+WORKS                   BK_FONT DISCARDABLE     "res\\font_works.bin"
 
 /////////////////////////////////////////////////////////////////////////////
 //

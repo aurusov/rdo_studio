@@ -216,6 +216,106 @@ SOURCE=.\res\bk_emul.rc2
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\font_atlantic.bin
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\font_big.bin
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\font_bk11.bin
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\font_clock.bin
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\font_color1.bin
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\font_color2.bin
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\font_comp.bin
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\font_cursiv.bin
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\font_default.bin
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\font_future.bin
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\font_gothic.bin
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\font_ibm.bin
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\font_modern.bin
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\font_pcfont.bin
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\font_prs.bin
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\font_prs2.bin
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\font_prs3.bin
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\font_reader.bin
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\font_rtv21.bin
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\font_script.bin
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\font_shrift1.bin
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\font_shrift2.bin
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\font_super.bin
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\font_thick.bin
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\font_works.bin
+# End Source File
+# Begin Source File
+
 SOURCE=.\res\mirage120.bin
 # End Source File
 # Begin Source File
