@@ -236,12 +236,12 @@ void RDOLogEdit::setSelectLine( const int line, const RDOLogEditLineInfo* lineIn
 				default: tabItem = rdoEditor::RDOEDIT_PAT;
 			}
 			if ( tab->getCurrentRDOItem() != tabItem ) {
-				rdoEditor::RDOEditorBaseEdit* edit = tab->getCurrentEdit();
+				rdoEditor::RDOEditorEdit* edit = tab->getCurrentEdit();
 				if ( !edit || (edit && edit->getLog() == this) ) {
 					tab->setCurrentRDOItem( tabItem );
 				}
 			}
-			rdoEditor::RDOEditorBaseEdit* edit = tab->getCurrentEdit();
+			rdoEditor::RDOEditorEdit* edit = tab->getCurrentEdit();
 			if ( edit && edit->getLog() == this ) {
 				edit->scrollToLine( lineInfo->lineNumber );
 				int pos = edit->getPositionFromLine(lineInfo->lineNumber) + lineInfo->posInLine;

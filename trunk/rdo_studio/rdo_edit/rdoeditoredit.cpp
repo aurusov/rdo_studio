@@ -77,6 +77,10 @@ BEGIN_MESSAGE_MAP( RDOEditorEdit, RDOEditorBaseEdit )
 	ON_UPDATE_COMMAND_UI(ID_INSERT_BUFFER2_EDIT, OnUpdateInsertBufferEdit)
 	ON_UPDATE_COMMAND_UI(ID_INSERT_BUFFER3_EDIT, OnUpdateInsertBufferEdit)
 	ON_UPDATE_COMMAND_UI(ID_INSERT_BUFFER4_EDIT, OnUpdateInsertBufferEdit)
+	ON_COMMAND(ID_BUILDFINDLOG_GOTONEXT, OnGotoNext)
+	ON_UPDATE_COMMAND_UI(ID_BUILDFINDLOG_GOTONEXT, OnUpdateGotoNext)
+	ON_COMMAND(ID_BUILDFINDLOG_GOTOPREV, OnGotoPrev)
+	ON_UPDATE_COMMAND_UI(ID_BUILDFINDLOG_GOTOPREV, OnUpdateGotoPrev)
 	//}}AFX_MSG_MAP
 
 	ON_COMMAND_RANGE( ID_INSERT_PAT_PATOPERATION, ID_INSERT_FUNCTIONS_TAN, OnInsertCommand )
@@ -86,7 +90,8 @@ END_MESSAGE_MAP()
 RDOEditorEdit::RDOEditorEdit( RDOStudioEditBaseView* _view ):
 	RDOEditorBaseEdit(),
 	bufSelStart( -1 ),
-	view( _view )
+	view( _view ),
+	log( NULL )
 {
 	sci_MARKER_ERROR = getNewMarker();
 }
@@ -595,4 +600,38 @@ void RDOEditorEdit::OnUndateBuffer3Clear( CCmdUI* pCmdUI )
 void RDOEditorEdit::OnUndateBuffer4Clear( CCmdUI* pCmdUI )
 {
 	pCmdUI->Enable( view && !view->buf4.empty() );
+}
+
+const rdoEditCtrl::RDOLogEdit* RDOEditorEdit::getLog() const
+{
+	return log;
+}
+
+void RDOEditorEdit::setLog( RDOLogEdit& _log )
+{
+	log = &_log;
+}
+
+void RDOEditorEdit::OnGotoNext()
+{
+	if ( log ) {
+		log->gotoNext();
+	}
+}
+
+void RDOEditorEdit::OnGotoPrev()
+{
+	if ( log ) {
+		log->gotoPrev();
+	}
+}
+
+void RDOEditorEdit::OnUpdateGotoNext(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable( log ? true : false );
+}
+
+void RDOEditorEdit::OnUpdateGotoPrev(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable( log ? true : false );
 }

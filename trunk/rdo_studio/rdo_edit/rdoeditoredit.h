@@ -4,6 +4,7 @@
 
 #include "rdoeditorbaseedit.h"
 #include "rdoeditoreditstyle.h"
+#include "../edit_ctrls/rdologedit.h"
 
 class RDOStudioEditBaseView;
 
@@ -20,6 +21,8 @@ private:
 protected:
 	int bufSelStart;
 	RDOStudioEditBaseView* view;
+
+	rdoEditCtrl::RDOLogEdit* log;
 
 	void commentSelection() const;
 	void completeWord();
@@ -61,6 +64,10 @@ protected:
 	afx_msg void OnUndateBuffer2Clear( CCmdUI* pCmdUI );
 	afx_msg void OnUndateBuffer3Clear( CCmdUI* pCmdUI );
 	afx_msg void OnUndateBuffer4Clear( CCmdUI* pCmdUI );
+	afx_msg void OnGotoNext();
+	afx_msg void OnUpdateGotoNext(CCmdUI* pCmdUI);
+	afx_msg void OnGotoPrev();
+	afx_msg void OnUpdateGotoPrev(CCmdUI* pCmdUI);
 	//}}AFX_MSG
 	afx_msg void OnInsertCommand( UINT nID );
 	DECLARE_MESSAGE_MAP()
@@ -75,6 +82,9 @@ public:
 	virtual ~RDOEditorEdit();
 
 	void setEditorStyle( RDOEditorEditStyle* _style );
+
+	void setLog( rdoEditCtrl::RDOLogEdit& _log );
+	const rdoEditCtrl::RDOLogEdit* getLog() const;
 };
 
 }; // namespace rdoEditor
