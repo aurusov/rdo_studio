@@ -16,6 +16,7 @@
 #include "rdostudiostyle.h"
 #include "rdostudiochartviewstyle.h"
 #include "rdostudiostatusbar.h"
+#include "rdostudioframestyle.h"
 
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioMainFrame
@@ -50,7 +51,7 @@ public:
 	rdoTracerLog::RDOTracerLogStyle  style_trace;
 	rdoEditor::RDOEditorResultsStyle style_results;
 	rdoEditCtrl::RDOFindEditStyle    style_find;
-	rdoStyle::RDOStyleWithTheme      style_frame;
+	RDOStudioFrameStyle              style_frame;
 	RDOStudioChartViewStyle          style_chart;
 	void updateAllStyles() const;
 

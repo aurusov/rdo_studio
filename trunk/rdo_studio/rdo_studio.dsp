@@ -638,6 +638,14 @@ SOURCE=.\rdostudioframemanager.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\rdostudioframeoptionsctrl.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdostudioframestyle.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdostudioframetreectrl.cpp
 # End Source File
 # Begin Source File
@@ -655,6 +663,14 @@ SOURCE=.\rdostudioframedoc.h
 # Begin Source File
 
 SOURCE=.\rdostudioframemanager.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdostudioframeoptionsctrl.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdostudioframestyle.h
 # End Source File
 # Begin Source File
 
@@ -1099,6 +1115,14 @@ SOURCE=.\res\fileToolbar.bmp
 # Begin Source File
 
 SOURCE=.\res\fileToolbar_d.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\frameoptionsctrl.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\framesoptionsctrl.bmp
 # End Source File
 # Begin Source File
 

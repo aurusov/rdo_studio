@@ -398,6 +398,13 @@ RDOStudioOptionsColorsStyles::RDOStudioOptionsColorsStyles( RDOStudioOptions& _s
 	object->properties.push_back( new STYLEProperty( object, format( IDS_COLORSTYLE_CHART_TIME ), null_font_style, null_fg_color, chart_theme->timeBgColor ) );
 	objects.push_back( object );
 
+	RDOStudioFrameTheme* frame_theme = static_cast<RDOStudioFrameTheme*>(sheet->style_frame.theme);
+	object = new STYLEObject( STYLEObject::frame, sheet->style_frame.font->name, sheet->style_frame.font->size, false );
+	object->properties.push_back( new STYLEProperty( object, format( IDS_COLORSTYLE_FRAME ), frame_theme->defaultStyle, frame_theme->defaultColor, frame_theme->backgroundColor ) );
+	object->properties.push_back( new STYLEProperty( object, format( IDS_COLORSTYLE_FRAME_BORDER ), frame_theme->defaultStyle, frame_theme->defaultColor, null_bg_color ) );
+	object->properties.push_back( new STYLEProperty( object, format( IDS_COLORSTYLE_FRAME_BACKGROUND ), frame_theme->defaultStyle, null_fg_color, frame_theme->backgroundColor ) );
+	objects.push_back( object );
+
 	m_psp.dwFlags |= PSP_HASHELP;
 }
 
@@ -539,6 +546,9 @@ BOOL RDOStudioOptionsColorsStyles::OnInitDialog()
 	sheet->preview_serie.addValue( new RDOTracerValue( &sheet->preview_times.at( 5 ), 0, 3 ) );
 	sheet->preview_chart_doc->addSerie( &sheet->preview_serie );
 
+	sheet->preview_frame.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, 0 );
+	sheet->preview_frame.setStyle( &sheet->style_frame );
+
 	CRect r;
 	GetClientRect( r );
 
@@ -559,6 +569,7 @@ BOOL RDOStudioOptionsColorsStyles::OnInitDialog()
 	sheet->preview_results.MoveWindow( rectEdit );
 	sheet->preview_find.MoveWindow( rectEdit );
 	sheet->preview_chart->MoveWindow( rectEdit );
+	sheet->preview_frame.MoveWindow( rectEdit );
 
 	list< STYLEObject* >::const_iterator obj_it = objects.begin();
 	while ( obj_it != objects.end() ) {
@@ -810,13 +821,15 @@ void RDOStudioOptionsColorsStyles::updateTheme()
 				 *static_cast<RDOEditorBaseEditTheme*>(sheet->style_results.theme) == RDOEditorBaseEditTheme::getDefaultTheme() &&
 				 *static_cast<RDOFindEditTheme*>(sheet->style_find.theme) == RDOFindEditTheme::getDefaultTheme() &&
 				 *static_cast<RDOStudioChartViewTheme*>(sheet->style_chart.theme) == RDOStudioChartViewTheme::getDefaultTheme() &&
+				 *static_cast<RDOStudioFrameTheme*>(sheet->style_frame.theme) == RDOStudioFrameTheme::getDefaultTheme() &&
 				 *sheet->style_editor.font == RDOStyleFont::getDefaultFont() &&
 				 *sheet->style_build.font == RDOStyleFont::getDefaultFont() &&
 				 *sheet->style_debug.font == RDOStyleFont::getDefaultFont() &&
 				 *sheet->style_trace.font == RDOStyleFont::getTracerLogFont() &&
 				 *sheet->style_results.font == RDOStyleFont::getDefaultFont() &&
 				 *sheet->style_find.font == RDOStyleFont::getDefaultFont() &&
-				 *sheet->style_chart.font == RDOStyleFont::getChartViewFont() ) {
+				 *sheet->style_chart.font == RDOStyleFont::getChartViewFont() &&
+				 *sheet->style_frame.font == RDOStyleFont::getFrameFont() ) {
 				m_theme.SetCurSel( 1 );
 			} else {
 				m_theme.SetCurSel( 0 );
@@ -935,6 +948,16 @@ void RDOStudioOptionsColorsStyles::updateTheme()
 			}
 			break;
 		}
+		case STYLEObject::frame: {
+			RDOStudioFrameTheme* theme = static_cast<RDOStudioFrameTheme*>(sheet->style_frame.theme);
+			RDOStyleFont* font = sheet->style_frame.font;
+			if ( *theme == RDOStudioFrameTheme::getDefaultTheme() && *font == RDOStyleFont::getFrameFont() ) {
+				m_theme.SetCurSel( 1 );
+			} else {
+				m_theme.SetCurSel( 0 );
+			}
+			break;
+		}
 		default: break;
 	}
 }
@@ -953,6 +976,7 @@ void RDOStudioOptionsColorsStyles::OnThemeChanged()
 					*static_cast<RDOEditorBaseEditTheme*>(sheet->style_results.theme) = RDOEditorBaseEditTheme::getDefaultTheme();
 					*static_cast<RDOFindEditTheme*>(sheet->style_find.theme) = RDOFindEditTheme::getDefaultTheme();
 					*static_cast<RDOStudioChartViewTheme*>(sheet->style_chart.theme) = RDOStudioChartViewTheme::getDefaultTheme();
+					*static_cast<RDOStudioFrameTheme*>(sheet->style_frame.theme) = RDOStudioFrameTheme::getDefaultTheme();
 					*sheet->style_editor.font  = RDOStyleFont::getDefaultFont();
 					*sheet->style_build.font   = RDOStyleFont::getDefaultFont();
 					*sheet->style_debug.font   = RDOStyleFont::getDefaultFont();
@@ -960,6 +984,7 @@ void RDOStudioOptionsColorsStyles::OnThemeChanged()
 					*sheet->style_results.font = RDOStyleFont::getDefaultFont();
 					*sheet->style_find.font    = RDOStyleFont::getDefaultFont();
 					*sheet->style_chart.font   = RDOStyleFont::getChartViewFont();
+					*sheet->style_frame.font   = RDOStyleFont::getFrameFont();
 				}
 				break;
 			}
@@ -1033,6 +1058,13 @@ void RDOStudioOptionsColorsStyles::OnThemeChanged()
 				}
 				break;
 			}
+			case STYLEObject::frame: {
+				RDOStudioFrameTheme* theme = static_cast<RDOStudioFrameTheme*>(sheet->style_frame.theme);
+				switch ( index ) {
+					case 1: *theme = RDOStudioFrameTheme::getDefaultTheme(); *sheet->style_frame.font = RDOStyleFont::getFrameFont(); break;
+				}
+				break;
+			}
 			default: break;
 		}
 		updatePropOfAllObject();
@@ -1056,7 +1088,8 @@ void RDOStudioOptionsColorsStyles::OnFontNameChanged()
 				sheet->style_trace.font->name   = all_font_name;
 				sheet->style_results.font->name = all_font_name;
 				sheet->style_find.font->name    = all_font_name;
-				sheet->style_chart.font->name    = all_font_name;
+				sheet->style_chart.font->name   = all_font_name;
+				sheet->style_frame.font->name   = all_font_name;
 				break;
 			}
 			case STYLEObject::source: {
@@ -1087,6 +1120,10 @@ void RDOStudioOptionsColorsStyles::OnFontNameChanged()
 				sheet->style_chart.font->name = str;
 				break;
 			}
+			case STYLEObject::frame: {
+				sheet->style_frame.font->name = str;
+				break;
+			}
 			default: break;
 		}
 		OnUpdateModify();
@@ -1109,7 +1146,8 @@ void RDOStudioOptionsColorsStyles::OnFontSizeChanged()
 				sheet->style_trace.font->size   = all_font_size;
 				sheet->style_results.font->size = all_font_size;
 				sheet->style_find.font->size    = all_font_size;
-				sheet->style_chart.font->size    = all_font_size;
+				sheet->style_chart.font->size   = all_font_size;
+				sheet->style_frame.font->size   = all_font_size;
 				break;
 			}
 			case STYLEObject::source: {
@@ -1138,6 +1176,10 @@ void RDOStudioOptionsColorsStyles::OnFontSizeChanged()
 			}
 			case STYLEObject::chart: {
 				sheet->style_chart.font->size = size;
+				break;
+			}
+			case STYLEObject::frame: {
+				sheet->style_frame.font->size = size;
 				break;
 			}
 			default: break;
@@ -1307,6 +1349,8 @@ void RDOStudioOptionsColorsStyles::OnPreviewAsChanged()
 			setPreviewAsCombo( STYLEObject::find );
 		} else if ( index == 6 ) {
 			setPreviewAsCombo( STYLEObject::chart );
+		} else if ( index == 7 ) {
+			setPreviewAsCombo( STYLEObject::frame );
 		}
 	}
 }
@@ -1350,6 +1394,7 @@ void RDOStudioOptionsColorsStyles::OnUpdateModify()
 	             *sheet->style_results.font != *studioApp.mainFrame->style_results.font ||
 	             *sheet->style_find.font    != *studioApp.mainFrame->style_find.font ||
 				 *sheet->style_chart.font   != *studioApp.mainFrame->style_chart.font ||
+				 *sheet->style_frame.font   != *studioApp.mainFrame->style_frame.font ||
 	             *static_cast<RDOEditorEditTheme*>(sheet->style_editor.theme) != *static_cast<RDOEditorEditTheme*>(studioApp.mainFrame->style_editor.theme) ||
 	             *static_cast<RDOLogEditTheme*>(sheet->style_build.theme) != *static_cast<RDOLogEditTheme*>(studioApp.mainFrame->style_build.theme) ||
 	             *static_cast<RDOBaseEditTheme*>(sheet->style_debug.theme) != *static_cast<RDOBaseEditTheme*>(studioApp.mainFrame->style_debug.theme) ||
@@ -1357,6 +1402,7 @@ void RDOStudioOptionsColorsStyles::OnUpdateModify()
 	             *static_cast<RDOEditorBaseEditTheme*>(sheet->style_results.theme) != *static_cast<RDOEditorBaseEditTheme*>(studioApp.mainFrame->style_results.theme) ||
 	             *static_cast<RDOFindEditTheme*>(sheet->style_find.theme) != *static_cast<RDOFindEditTheme*>(studioApp.mainFrame->style_find.theme) ||
 				 *static_cast<RDOStudioChartViewTheme*>(sheet->style_chart.theme) != *static_cast<RDOStudioChartViewTheme*>(studioApp.mainFrame->style_chart.theme) ||
+				 *static_cast<RDOStudioFrameTheme*>(sheet->style_frame.theme) != *static_cast<RDOStudioFrameTheme*>(studioApp.mainFrame->style_frame.theme) ||
 	             *sheet->style_editor.window     != *studioApp.mainFrame->style_editor.window ||
 	             *sheet->style_build.window      != *studioApp.mainFrame->style_build.window ||
 	             *sheet->style_debug.window      != *studioApp.mainFrame->style_debug.window ||
@@ -1410,6 +1456,7 @@ void RDOStudioOptionsColorsStyles::setPreviewAsCombo( STYLEObject::Type type )
 		sheet->preview_results.ShowWindow( SW_HIDE );
 		sheet->preview_find.ShowWindow( SW_HIDE );
 		sheet->preview_chart->ShowWindow( SW_HIDE );
+		sheet->preview_frame.ShowWindow( SW_HIDE );
 		switch ( previewAs ) {
 			case STYLEObject::source: {
 				m_previewAs.SetCurSel( 0 );
@@ -1444,6 +1491,11 @@ void RDOStudioOptionsColorsStyles::setPreviewAsCombo( STYLEObject::Type type )
 			case STYLEObject::chart: {
 				m_previewAs.SetCurSel( 6 );
 				sheet->preview_chart->ShowWindow( SW_SHOW );
+				break;
+			}
+			case STYLEObject::frame: {
+				m_previewAs.SetCurSel( 7 );
+				sheet->preview_frame.ShowWindow( SW_SHOW );
 				break;
 			}
 			default: break;
@@ -1522,6 +1574,7 @@ RDOStudioOptions::RDOStudioOptions():
 	style_results.init();
 	style_find.init();
 	style_chart.init();
+	style_frame.init();
 
 	style_editor  = studioApp.mainFrame->style_editor;
 	style_build   = studioApp.mainFrame->style_build;
@@ -1530,6 +1583,7 @@ RDOStudioOptions::RDOStudioOptions():
 	style_results = studioApp.mainFrame->style_results;
 	style_find    = studioApp.mainFrame->style_find;
 	style_chart   = studioApp.mainFrame->style_chart;
+	style_frame   = studioApp.mainFrame->style_frame;
 
 	editor = new RDOStudioOptionsEditor( *this );
 	tabs   = new RDOStudioOptionsTabs( *this );
@@ -1578,6 +1632,9 @@ void RDOStudioOptions::updateStyles()
 	if ( preview_chart->GetSafeHwnd() ) {
 		preview_chart->setStyle( &style_chart );
 	}
+	if ( preview_frame.GetSafeHwnd() ) {
+		preview_frame.setStyle( &style_frame );
+	}
 }
 
 void RDOStudioOptions::apply() const
@@ -1589,6 +1646,7 @@ void RDOStudioOptions::apply() const
 	studioApp.mainFrame->style_results = style_results;
 	studioApp.mainFrame->style_find    = style_find;
 	studioApp.mainFrame->style_chart   = style_chart;
+	studioApp.mainFrame->style_frame   = style_frame;
 	studioApp.mainFrame->updateAllStyles();
 }
 

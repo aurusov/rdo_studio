@@ -31,6 +31,7 @@ public:
 	static RDOStyleFont getClassicFont();
 	static RDOStyleFont getTracerLogFont();
 	static RDOStyleFont getChartViewFont();
+	static RDOStyleFont getFrameFont();
 };
 
 // ----------------------------------------------------------------------------

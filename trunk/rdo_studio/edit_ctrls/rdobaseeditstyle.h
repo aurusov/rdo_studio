@@ -31,15 +31,10 @@ public:
 	virtual void load( std::string regPath );
 	virtual void save( std::string regPath ) const;
 
-	COLORREF defaultColor;
-	COLORREF backgroundColor;
-
 	COLORREF caretColor;
 	COLORREF selectionBgColor;
 	COLORREF bookmarkFgColor;
 	COLORREF bookmarkBgColor;
-
-	rdoStyle::RDOStyleFont::style defaultStyle;
 
 	RDOBookmarkStyle bookmarkStyle;
 

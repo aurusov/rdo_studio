@@ -357,7 +357,17 @@ void RDOStudioFrameManager::showFrame( const RDOFrame* const frame, const int in
 					view->frameBmpRect.right  = frame->width;
 					view->frameBmpRect.bottom = frame->height;
 				}
-				view->hbmp = ::CreateCompatibleBitmap( view->hdc, view->frameBmpRect.Width(), view->frameBmpRect.Height() );
+				view->points[0].x = 0;
+				view->points[0].y = 0;
+				view->points[1].x = view->frameBmpRect.right - 1;
+				view->points[1].y = 0;
+				view->points[2].x = view->frameBmpRect.right - 1;
+				view->points[2].y = view->frameBmpRect.bottom - 1;
+				view->points[3].x = 0;
+				view->points[3].y = view->frameBmpRect.bottom - 1;
+				view->points[4].x = 0;
+				view->points[4].y = 0;
+				view->hbmp = ::CreateCompatibleBitmap( view->hdc, view->frameBmpRect.right, view->frameBmpRect.bottom );
 				::SelectObject( view->hmemdc, view->hbmp );
 				view->mustBeInit = false;
 				view->updateScrollBars();
@@ -368,6 +378,19 @@ void RDOStudioFrameManager::showFrame( const RDOFrame* const frame, const int in
 			if( !frame->hasBackPicture ) {
 				HBRUSH brush     = ::CreateSolidBrush( RGB( frame->r, frame->g, frame->b ) );
 				HBRUSH pOldBrush = static_cast<HBRUSH>(::SelectObject( hdc, brush ));
+				HPEN pen     = ::CreatePen( PS_SOLID, 0, studioApp.mainFrame->style_frame.theme->defaultColor );
+				HPEN pOldPen = static_cast<HPEN>(::SelectObject( hdc, pen ));
+				::FillRect( hdc, view->frameBmpRect, brush );
+				::Polyline( hdc, view->points, 5 );
+				::SelectObject( hdc, pOldBrush );
+				::SelectObject( hdc, pOldPen );
+				::DeleteObject( brush );
+				::DeleteObject( pen );
+				view->bgColor = studioApp.mainFrame->style_frame.theme->backgroundColor;
+
+/*
+				HBRUSH brush     = ::CreateSolidBrush( RGB( frame->r, frame->g, frame->b ) );
+				HBRUSH pOldBrush = static_cast<HBRUSH>(::SelectObject( hdc, brush ));
 				HPEN pen     = ::CreatePen( PS_SOLID, 0, RGB( 0x00, 0x00, 0x00 ) );
 				HPEN pOldPen = static_cast<HPEN>(::SelectObject( hdc, pen ));
 				::Rectangle( hdc, 0, 0, frame->width, frame->height );
@@ -375,6 +398,7 @@ void RDOStudioFrameManager::showFrame( const RDOFrame* const frame, const int in
 				::SelectObject( hdc, pOldPen );
 				::DeleteObject( brush );
 				::DeleteObject( pen );
+*/
 			} else {
 				BMP* bmp = bitmaps[*frame->picFileName];
 				if ( bmp ) {
@@ -382,6 +406,7 @@ void RDOStudioFrameManager::showFrame( const RDOFrame* const frame, const int in
 					::BitBlt( hdc, 0, 0, bmp->w, bmp->h, dcBmp.m_hDC, 0, 0, SRCCOPY );
 					dcBmp.SelectObject( pOldBitmap );
 				}
+				view->bgColor = RGB( frame->r, frame->g, frame->b );
 			}
 
 			vector< string >* areas_clicked = &frames[index]->areas_clicked;
@@ -669,4 +694,17 @@ bool RDOStudioFrameManager::canShowPrevFrame() const
 {
 	int cnt = count();
 	return model->isRunning() && model->getShowMode() != RDOSimulatorNS::SM_NoShow && cnt > 1 && currentShowingFrame > 0;
+}
+
+void RDOStudioFrameManager::updateStyles() const
+{
+	vector< Frame* >::iterator it = frames.begin();
+	while ( it != frames.end() ) {
+		RDOStudioFrameView* view = (*it++)->view;
+		if ( view ) {
+			view->updateFont();
+			view->InvalidateRect( NULL );
+			view->UpdateWindow();
+		}
+	}
 }

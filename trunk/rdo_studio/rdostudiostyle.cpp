@@ -102,6 +102,15 @@ RDOStyleFont RDOStyleFont::getChartViewFont()
 	return font;
 }
 
+RDOStyleFont RDOStyleFont::getFrameFont()
+{
+	RDOStyleFont font;
+
+	font.name = "System";
+
+	return font;
+}
+
 // ----------------------------------------------------------------------------
 // ---------- RDOStyleTheme
 // ----------------------------------------------------------------------------

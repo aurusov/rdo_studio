@@ -128,6 +128,8 @@ public:
 	void showPrevFrame();
 	bool canShowNextFrame() const;
 	bool canShowPrevFrame() const;
+
+	void updateStyles() const;
 };
 
 //{{AFX_INSERT_LOCATION}}

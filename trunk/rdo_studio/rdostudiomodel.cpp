@@ -678,6 +678,7 @@ void RDOStudioModel::updateStyleOfAllModel() const
 			tab->getItemEdit( i )->setEditorStyle( &studioApp.mainFrame->style_editor );
 		}
 	}
+	frameManager.updateStyles();
 }
 
 void RDOStudioModel::setShowMode( const ShowMode value )

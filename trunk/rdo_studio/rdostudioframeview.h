@@ -18,10 +18,11 @@ DECLARE_DYNCREATE(RDOStudioFrameView)
 
 private:
 	CRect frameBmpRect;
+	CPoint points[5];
 	CRect newClientRect;
 	int xPos;
 	int yPos;
-	COLORREF& bgColor;
+	COLORREF bgColor;
 	bool mustBeInit;
 
 	HWND    hwnd;
@@ -30,10 +31,12 @@ private:
 	int     saved_hdc;
 	int     saved_hmemdc;
 	HFONT   hfontInit;
+	HFONT   hfontCurrent;
 //	HBITMAP hbmpInit;
 	HBITMAP hbmp;
 
 	void onDraw();
+	void updateFont();
 	void updateScrollBars();
 
 public:

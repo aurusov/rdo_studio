@@ -23,6 +23,8 @@
 #include "rdostudiochartviewstyle.h"
 #include "rdo_tracer/rdotracerserie.h"
 #include "rdo_tracer/rdotracervalues.h"
+#include "rdostudioframestyle.h"
+#include "rdostudioframeoptionsctrl.h"
 #include "resource.h"
 
 // ----------------------------------------------------------------------------
@@ -131,7 +133,7 @@ private:
 
 	class STYLEObject {
 	public:
-		enum Type { none = 0, all, source, build, debug, trace, results, find, chart } type;
+		enum Type { none = 0, all, source, build, debug, trace, results, find, chart, frame } type;
 		std::string&                   font_name;
 		int&                           font_size;
 		bool                           font_fixed;
@@ -284,6 +286,7 @@ private:
 	rdoEditor::RDOEditorResultsStyle style_results;
 	rdoEditCtrl::RDOFindEditStyle    style_find;
 	RDOStudioChartViewStyle          style_chart;
+	RDOStudioFrameStyle              style_frame;
 
 	RDOStudioOptionsEditor*       editor;
 	RDOStudioOptionsTabs*         tabs;
@@ -300,7 +303,8 @@ private:
 	RDOStudioChartView*            preview_chart;
 	std::vector<RDOTracerTimeNow>  preview_times;
 	RDOTracerSerie                 preview_serie;
-	
+
+	RDOStudioFrameOptionsCtrl      preview_frame;
 
 	void updateStyles();
 	void apply() const;

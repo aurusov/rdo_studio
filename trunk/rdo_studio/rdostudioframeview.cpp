@@ -48,6 +48,7 @@ RDOStudioFrameView::RDOStudioFrameView():
 	saved_hdc( 0 ),
 	saved_hmemdc( 0 ),
 	hfontInit( NULL ),
+	hfontCurrent( NULL ),
 //	hbmpInit( NULL ),
 	hbmp( NULL )
 {
@@ -98,9 +99,40 @@ int RDOStudioFrameView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	// when resizing window
 //	hbmpInit  = static_cast<HBITMAP>(::GetCurrentObject( hmemdc, OBJ_BITMAP ));
 
+	updateFont();
 	updateScrollBars();
 
 	return 0;
+}
+
+void RDOStudioFrameView::updateFont()
+{
+	int index = model->frameManager.findFrameIndex( this );
+	if ( index != -1 ) {
+		model->frameManager.getFrameMutexDraw( index )->Lock();
+	}
+
+	if ( hfontCurrent ) {
+		::SelectObject( hmemdc, hfontInit );
+		::DeleteObject( hfontCurrent );
+	}
+
+	LOGFONT lf;
+	memset( &lf, 0, sizeof(lf) );
+	RDOStudioFrameStyle* style = &studioApp.mainFrame->style_frame;
+	lf.lfHeight    = -MulDiv( style->font->size, ::GetDeviceCaps( hmemdc, LOGPIXELSY ), 72 );
+	lf.lfWeight    = style->theme->defaultStyle & rdoStyle::RDOStyleFont::BOLD ? FW_BOLD : FW_NORMAL;
+	lf.lfItalic    = style->theme->defaultStyle & rdoStyle::RDOStyleFont::ITALIC;
+	lf.lfUnderline = style->theme->defaultStyle & rdoStyle::RDOStyleFont::UNDERLINE;
+	lf.lfCharSet   = style->font->characterSet;
+	strcpy( lf.lfFaceName, style->font->name.c_str() );
+
+	hfontCurrent = ::CreateFontIndirect( &lf );
+	::SelectObject( hmemdc, hfontCurrent );
+
+	if ( index != -1 ) {
+		model->frameManager.getFrameMutexDraw( index )->Unlock();
+	}
 }
 
 BOOL RDOStudioFrameView::OnPreparePrinting(CPrintInfo* pInfo)
@@ -377,7 +409,6 @@ void RDOStudioFrameView::onDraw()
 		}
 */
 	}
-
 	if ( newClientRect.right - frameBmpRect.right > 0 ) {
 //		dc.FillSolidRect( frameBmpRect.right, 0, newClientRect.right - frameBmpRect.right, newClientRect.bottom, bgColor );
 		HBRUSH brush = ::CreateSolidBrush( bgColor );
@@ -388,7 +419,7 @@ void RDOStudioFrameView::onDraw()
 	if ( newClientRect.bottom - frameBmpRect.bottom > 0 ) {
 //		dc.FillSolidRect( 0, frameBmpRect.bottom, newClientRect.right, newClientRect.bottom - frameBmpRect.bottom, bgColor );
 		HBRUSH brush = ::CreateSolidBrush( bgColor );
-		RECT r = { 0, frameBmpRect.bottom, newClientRect.right, newClientRect.bottom };
+		RECT r = { 0, frameBmpRect.bottom, frameBmpRect.right, newClientRect.bottom };
 		::FillRect( hdc, &r, brush );
 		::DeleteObject( brush );
 	}

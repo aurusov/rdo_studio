@@ -80,6 +80,7 @@ IDB_MODEL_TOOLBAR_D     BITMAP  DISCARDABLE     "res\\modelToolbar_d.bmp"
 IDB_FRAMES_TREECTRL     BITMAP  DISCARDABLE     "res\\framestreectrl.bmp"
 IDR_ZOOM_TOOLBAR        BITMAP  DISCARDABLE     "res\\zoomToolbar.bmp"
 IDB_ZOOM_TOOLBAR_D      BITMAP  DISCARDABLE     "res\\zoomToolbar_d.bmp"
+IDB_FRAME_OPTIONS_CTRL  BITMAP  DISCARDABLE     "res\\frameoptionsctrl.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -243,7 +244,7 @@ END
 IDD_OPTIONS_STYLESANDCOLORS DIALOGEX 0, 0, 292, 229
 STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "Styles and Colors"
-FONT 8, "MS Sans Serif", 0, 0, 0x1
+FONT 8, "MS Sans Serif"
 BEGIN
     CONTROL         "Tree1",IDC_STYLEITEM_TREE,"SysTreeView32",
                     TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | 
@@ -444,6 +445,8 @@ BEGIN
 0x6946, 0x646e, "\000" 
     IDC_PREVIEWAS_COMBO, 0x403, 6, 0
 0x6843, 0x7261, 0x0074, 
+    IDC_PREVIEWAS_COMBO, 0x403, 6, 0
+0x7246, 0x6d61, 0x0065, 
     IDC_TITLE_FONTSIZE_COMBO, 0x403, 2, 0
 0x0038, 
     IDC_TITLE_FONTSIZE_COMBO, 0x403, 2, 0
@@ -1090,8 +1093,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,8,0,144
- PRODUCTVERSION 0,8,0,144
+ FILEVERSION 0,8,0,149
+ PRODUCTVERSION 0,8,0,149
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -1109,14 +1112,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "RAO studio\0"
-            VALUE "FileVersion", "0, 8, 0, 144\0"
+            VALUE "FileVersion", "0, 8, 0, 149\0"
             VALUE "InternalName", "RAO-Studio\0"
             VALUE "LegalCopyright", "Copyright (C) 2003\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "RAO-Studio.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "RAO-Studio\0"
-            VALUE "ProductVersion", "0, 8, 0, 144\0"
+            VALUE "ProductVersion", "0, 8, 0, 149\0"
             VALUE "SpecialBuild", "\0"
         END
     END
@@ -1520,6 +1523,9 @@ BEGIN
     IDS_MODEL_FINISHED      "Model finished\n"
     IDS_MODEL_STOPED        "Model stoped by user\n"
     IDS_TRACER_GETTING_MODEL_STRUCTURE "Getting model structure..."
+    IDS_COLORSTYLE_FRAME    "Animation Window"
+    IDS_COLORSTYLE_FRAME_BORDER "border line"
+    IDS_COLORSTYLE_FRAME_BACKGROUND "outside background"
 END
 
 STRINGTABLE DISCARDABLE 

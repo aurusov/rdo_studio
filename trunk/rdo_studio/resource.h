@@ -25,6 +25,7 @@
 #define IDD_CHART_OPTIONS_SERIES        157
 #define IDR_ZOOM_TOOLBAR                160
 #define IDB_ZOOM_TOOLBAR_D              162
+#define IDB_FRAME_OPTIONS_CTRL          164
 #define IDC_CLEARAUTO_CHECK             1001
 #define IDC_STYLEITEM_TREE              1002
 #define IDC_BUFFERVALUESTATIC           1003
@@ -516,6 +517,9 @@
 #define IDS_MODEL_FINISHED              40225
 #define IDS_MODEL_STOPED                40226
 #define IDS_TRACER_GETTING_MODEL_STRUCTURE 40227
+#define IDS_COLORSTYLE_FRAME            40228
+#define IDS_COLORSTYLE_FRAME_BORDER     40229
+#define IDS_COLORSTYLE_FRAME_BACKGROUND 40230
 #define IDS_CHART_OPTIONS               40300
 #define IDS_CHART_OPTIONS_APPLY         40301
 #define ID_ABOUT_BMSTU                  40910
@@ -554,7 +558,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        163
+#define _APS_NEXT_RESOURCE_VALUE        165
 #define _APS_NEXT_COMMAND_VALUE         33182
 #define _APS_NEXT_CONTROL_VALUE         1082
 #define _APS_NEXT_SYMED_VALUE           101
