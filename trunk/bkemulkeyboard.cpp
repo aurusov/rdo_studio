@@ -118,13 +118,13 @@ bool BKEmulKeyboard::keyDown( UINT key, UINT flags )
 			if ( !(emul.memory.get_byte( 0177660 ) & 0200 ) ) {
 				// В регистр данных клавиатуры поступил код (регист 177660, разряд 7, бит 0200 = 1 - поступил, 0 - прочитан)
 				emul.memory.set_byte( 0177660, emul.memory.get_byte( 0177660 ) | 0200 );
-				// Разрешено ли прерывание с клавиатуры (регист 177660, разряд 6, бит 0100 = 0 - разрешено, 1 - запрещено)
-				if ( !(emul.getMemoryByte( 0177660 ) & 0100) && emul.cpu.getPrior() == 0 ) {
-					if ( AR2 || BKScanCode <= 4 || BKScanCode == 013) {
-						emul.cpu.setPR_274();
-					} else {
-						emul.cpu.setPR_60();
-					}
+			}
+			// Разрешено ли прерывание с клавиатуры (регист 177660, разряд 6, бит 0100 = 0 - разрешено, 1 - запрещено)
+			if ( !(emul.getMemoryByte( 0177660 ) & 0100) && emul.cpu.getPrior() == 0 ) {
+				if ( AR2 || BKScanCode <= 4 || BKScanCode == 013) {
+					emul.cpu.setPR_274();
+				} else {
+					emul.cpu.setPR_60();
 				}
 			}
 			return true;
