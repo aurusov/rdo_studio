@@ -29,7 +29,6 @@ BEGIN_MESSAGE_MAP(BKMainFrame, CFrameWnd)
 	ON_WM_MOVE()
 	ON_WM_CLOSE()
 	ON_WM_PAINT()
-	ON_WM_LBUTTONDOWN()
 	ON_WM_TIMER()
 	ON_WM_GETMINMAXINFO()
 	ON_COMMAND(ID_VIEW_FULLSCREEN, OnViewFullScreen)
@@ -77,6 +76,7 @@ BKMainFrame::BKMainFrame():
 	fullWindowWidth( 0 ),
 	fullWindowHeight( 0 ),
 	lock( false ),
+	canIteration( false ),
 	timer( 0 )
 {
 	updateVideoMemory.reserve( emul.video.getMemorySize() );
@@ -107,6 +107,8 @@ int BKMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	setDefaultFontMenu();
 	setDefaultRomMenu();
+
+	canIteration = true;
 
 	return 0;
 }
@@ -502,24 +504,12 @@ void BKMainFrame::OnPaint()
 	updateMonitor();
 }
 
-void BKMainFrame::OnLButtonDown(UINT nFlags, CPoint point)
-{
-	CFrameWnd::OnLButtonDown(nFlags, point);
-
-	return;
-
-	for ( int i = 040000; i < 0100000; i++ ) {
-		emul.video.setMemoryWord( i, 031463 + point.x );
-//		emul.video.setMemoryWord( i, 031463 );
-	}
-}
-
 void BKMainFrame::OnTimer(UINT nIDEvent)
 {
 	CFrameWnd::OnTimer( nIDEvent );
 
 	if ( nIDEvent == timer ) {
-		if ( emul.isPowerON() ) {
+		if ( emul.isPowerON() && canIteration ) {
 			emul.nextIteration();
 		}
 		if ( !lock ) {
@@ -671,16 +661,35 @@ void BKMainFrame::OnUpdateEmulatorSoftReset(CCmdUI* pCmdUI)
 LRESULT BKMainFrame::DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch ( message ) {
+		case WM_SYSCOMMAND: {
+			if ( LOWORD( wParam ) == SC_KEYMENU ) {
+				return 0;
+			}
+			break;
+		}
+		case WM_INITMENU: {
+			TRACE( "canIteration = false\r\n" );
+			canIteration = false;
+			break;
+		}
+		case WM_COMMAND:
+		case WM_SETFOCUS:
+		case WM_RBUTTONDOWN:
+		case WM_LBUTTONDOWN: {
+			TRACE( "canIteration = true\r\n" );
+			canIteration = true;
+			break;
+		}
 		case WM_KEYDOWN   :
 		case WM_SYSKEYDOWN: {
-			if ( emul.keyboard.keyDown( wParam, lParam ) ) {
+			if ( canIteration && emul.keyboard.keyDown( wParam, lParam ) ) {
 				return 0;
 			}
 			break;
 		}
 		case WM_KEYUP     :
 		case WM_SYSKEYUP  : {
-			if ( emul.keyboard.keyUp( wParam, lParam ) ) {
+			if ( canIteration && emul.keyboard.keyUp( wParam, lParam ) ) {
 				return 0;
 			}
 			break;
@@ -721,4 +730,11 @@ void BKMainFrame::setDefaultRomMenu()
 		GetMenu()->CheckMenuItem( i, MF_UNCHECKED | MF_BYCOMMAND );
 	}
 	GetMenu()->CheckMenuItem( ID_ROM_120000_BASIC, MF_CHECKED | MF_BYCOMMAND );
+}
+
+BOOL BKMainFrame::OnCommand(WPARAM wParam, LPARAM lParam)
+{
+	TRACE( "WM_COMMAND\r\n" );
+	canIteration = true;
+	return CFrameWnd::OnCommand( wParam, lParam );
 }

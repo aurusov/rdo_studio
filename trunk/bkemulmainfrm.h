@@ -38,6 +38,7 @@ private:
 
 	UINT timer;
 	bool lock;
+	bool canIteration;
 	std::vector< WORD > updateVideoMemory;
 	HRESULT initDirectDraw();
 	HRESULT lockSurface( LPDIRECTDRAWSURFACE7 surface ) const;
@@ -74,7 +75,6 @@ protected:
 	afx_msg void OnMove(int x, int y);
 	afx_msg void OnClose();
 	afx_msg void OnPaint();
-	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnTimer(UINT nIDEvent);
 	afx_msg void OnGetMinMaxInfo(MINMAXINFO FAR* lpMMI);
 	afx_msg void OnViewFullScreen();
@@ -102,6 +102,7 @@ protected:
 	virtual void RecalcLayout(BOOL bNotify = TRUE);
 	protected:
 	virtual LRESULT DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam);
+	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
 	//}}AFX_VIRTUAL
 };
 
