@@ -48,7 +48,6 @@ BEGIN_MESSAGE_MAP(RDOStudioApp, CWinApp)
 	//}}AFX_MSG_MAP
 	ON_COMMAND_RANGE( ID_FILE_REOPEN_1, ID_FILE_REOPEN_10, OnProjectReopen )
 	ON_THREAD_MESSAGE( RDO_ADDNEWFRAME_MSG, OnAddNewFrame )
-	ON_THREAD_MESSAGE( RDO_UPDATEALLFRAME_MSG, OnUpdateAllFrame )
 	ON_COMMAND(ID_FILE_PRINT_SETUP, CWinApp::OnFilePrintSetup)
 END_MESSAGE_MAP()
 
@@ -383,9 +382,4 @@ void RDOStudioApp::OnUpdateChartStoptrace(CCmdUI* pCmdUI)
 void RDOStudioApp::OnAddNewFrame( WPARAM wParam, LPARAM lParam )
 {
 	model->addNewFrame();
-}
-
-void RDOStudioApp::OnUpdateAllFrame( WPARAM wParam, LPARAM lParam )
-{
-	model->updateAllFrame();
 }

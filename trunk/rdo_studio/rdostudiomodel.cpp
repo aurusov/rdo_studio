@@ -586,19 +586,13 @@ void RDOStudioModel::parseFrame()
 
 	lock.Unlock();
 
-	AfxGetApp()->PostThreadMessage( RDO_UPDATEALLFRAME_MSG, 0, 0 );
-	ASSERT ( ::WaitForSingleObject( updateAllFrameEvent, INFINITE ) == WAIT_OBJECT_0 );
+	CRect rect;
+	view->GetClientRect( rect );
+	view->RedrawWindow( rect );
 }
 
 void RDOStudioModel::addNewFrame()
 {
 	frameDocTemplate->OpenDocumentFile( NULL );
 	addNewFrameEvent.SetEvent();
-}
-
-void RDOStudioModel::updateAllFrame()
-{
-	getFrameDoc()->UpdateAllViews( NULL );
-	AfxGetMainWnd()->SetFocus();
-	updateAllFrameEvent.SetEvent();
 }
