@@ -869,7 +869,7 @@ void RDOEditorEdit::OnUpdateGotoPrev(CCmdUI* pCmdUI)
 
 void RDOEditorEdit::OnHelpKeyword()
 {
-	string filename = studioApp.getFullHelpFileName( "RAO-language.chm" );
+	string filename = studioApp.getFullHelpFileName( "RAO-studio.chm" );
 	if ( filename.empty() ) return;
 
 	string keyword = getCurrentOrSelectedWord();
