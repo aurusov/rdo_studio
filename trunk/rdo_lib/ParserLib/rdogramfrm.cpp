@@ -216,52 +216,52 @@ static const short yytranslate[] =
 static const short yyprhs[] =
 {
        0,     0,     1,     4,     7,    12,    16,    25,    29,    32,
-      34,    36,    39,    43,    45,    48,    51,    54,    57,    60,
-      63,    66,    69,    72,    75,    90,    95,   100,   101,   103,
-     105,   107,   109,   115,   124,   135,   148,   163,   178,   193,
-     206,   221,   240,   252,   256,   260,   264,   268,   272,   276,
-     280,   284,   288,   290,   294,   298,   302,   306,   310,   315,
-     319,   321,   323,   325,   326,   329,   333,   335,   337,   339,
-     341,   345,   349
+      34,    36,    38,    41,    45,    47,    50,    53,    56,    59,
+      62,    65,    68,    71,    74,    77,    92,    97,   102,   103,
+     105,   107,   109,   111,   117,   126,   137,   150,   165,   180,
+     195,   208,   223,   242,   254,   258,   262,   266,   270,   274,
+     278,   282,   286,   290,   292,   296,   300,   304,   308,   312,
+     317,   321,   323,   325,   327,   328,   331,   335,   337,   339,
+     341,   343,   347,   351
 };
 static const short yyrhs[] =
 {
       -1,   137,   144,     0,   108,    10,     0,   108,    10,   109,
      157,     0,   138,   110,   128,     0,   138,   110,   128,   129,
       11,    11,    11,   130,     0,   139,    11,    11,     0,   139,
-      10,     0,   140,     0,   143,     0,   141,   111,     0,   141,
-     109,   157,     0,   142,     0,   143,   146,     0,   143,   149,
-       0,   143,   151,     0,   143,   153,     0,   143,   154,     0,
-     143,   152,     0,   143,   155,     0,   143,   150,     0,   143,
-     156,     0,   143,     8,     0,   113,   131,   158,   132,   158,
-     132,   158,   132,   158,   132,   148,   132,   148,   132,     0,
-     145,   147,   158,   133,     0,   145,   147,   123,   133,     0,
-       0,   129,     0,   128,     0,   130,     0,   114,     0,   129,
-      11,    11,    11,   130,     0,   115,   131,   158,   132,   158,
-     132,    10,   133,     0,   115,   131,   158,   132,   158,   132,
-      10,   132,    10,   133,     0,   116,   131,   158,   132,   158,
-     132,   158,   132,   158,   132,    10,   133,     0,   116,   131,
-     158,   132,   158,   132,   158,   132,   158,   132,    10,   132,
-      10,   133,     0,   117,   131,   158,   132,   158,   132,   158,
-     132,   158,   132,   148,   132,   148,   133,     0,   118,   131,
-     158,   132,   158,   132,   158,   132,   158,   132,   148,   132,
-     148,   133,     0,   119,   131,   158,   132,   158,   132,   158,
-     132,   158,   132,   148,   133,     0,   120,   131,   158,   132,
-     158,   132,   158,   132,   158,   132,   148,   132,   148,   133,
-       0,   121,   131,   158,   132,   158,   132,   158,   132,   158,
+      10,     0,   140,     0,   143,     0,   141,     0,   141,   111,
+       0,   141,   109,   157,     0,   142,     0,   143,   146,     0,
+     143,   149,     0,   143,   151,     0,   143,   153,     0,   143,
+     154,     0,   143,   152,     0,   143,   155,     0,   143,   150,
+       0,   143,   156,     0,   143,     8,     0,   113,   131,   158,
+     132,   158,   132,   158,   132,   158,   132,   148,   132,   148,
+     132,     0,   145,   147,   158,   133,     0,   145,   147,   123,
+     133,     0,     0,   129,     0,   128,     0,   130,     0,   114,
+       0,   129,    11,    11,    11,   130,     0,   115,   131,   158,
+     132,   158,   132,    10,   133,     0,   115,   131,   158,   132,
+     158,   132,    10,   132,    10,   133,     0,   116,   131,   158,
+     132,   158,   132,   158,   132,   158,   132,    10,   133,     0,
+     116,   131,   158,   132,   158,   132,   158,   132,   158,   132,
+      10,   132,    10,   133,     0,   117,   131,   158,   132,   158,
      132,   158,   132,   158,   132,   148,   132,   148,   133,     0,
-     122,    10,   131,   158,   132,   158,   132,   158,   132,   158,
-     133,     0,   158,   128,   158,     0,   158,    31,   158,     0,
-     158,   129,   158,     0,   158,   130,   158,     0,   158,    32,
-     158,     0,   158,    33,   158,     0,   157,    36,   157,     0,
-     157,    35,   157,     0,   131,   157,   133,     0,   162,     0,
-     158,   124,   158,     0,   158,   125,   158,     0,   158,   126,
-     158,     0,   158,   127,   158,     0,   134,   158,   135,     0,
-      10,   134,   159,   135,     0,    10,   136,    10,     0,    11,
-       0,    12,     0,    10,     0,     0,   159,   158,     0,   159,
-     132,   158,     0,    27,     0,    28,     0,    29,     0,    30,
-       0,   160,   134,    18,     0,   161,   157,   135,     0,   161,
-      34,   135,     0
+     118,   131,   158,   132,   158,   132,   158,   132,   158,   132,
+     148,   132,   148,   133,     0,   119,   131,   158,   132,   158,
+     132,   158,   132,   158,   132,   148,   133,     0,   120,   131,
+     158,   132,   158,   132,   158,   132,   158,   132,   148,   132,
+     148,   133,     0,   121,   131,   158,   132,   158,   132,   158,
+     132,   158,   132,   158,   132,   158,   132,   148,   132,   148,
+     133,     0,   122,    10,   131,   158,   132,   158,   132,   158,
+     132,   158,   133,     0,   158,   128,   158,     0,   158,    31,
+     158,     0,   158,   129,   158,     0,   158,   130,   158,     0,
+     158,    32,   158,     0,   158,    33,   158,     0,   157,    36,
+     157,     0,   157,    35,   157,     0,   131,   157,   133,     0,
+     162,     0,   158,   124,   158,     0,   158,   125,   158,     0,
+     158,   126,   158,     0,   158,   127,   158,     0,   134,   158,
+     135,     0,    10,   134,   159,   135,     0,    10,   136,    10,
+       0,    11,     0,    12,     0,    10,     0,     0,   159,   158,
+       0,   159,   132,   158,     0,    27,     0,    28,     0,    29,
+       0,    30,     0,   160,   134,    18,     0,   161,   157,   135,
+       0,   161,    34,   135,     0
 };
 
 #endif
@@ -271,13 +271,13 @@ static const short yyrhs[] =
 static const short yyrline[] =
 {
        0,   158,   159,   164,   165,   167,   168,   170,   171,   173,
-     174,   176,   177,   179,   180,   181,   182,   183,   184,   185,
-     186,   187,   188,   190,   194,   196,   197,   199,   200,   201,
-     202,   204,   205,   207,   208,   210,   211,   213,   215,   217,
-     219,   221,   223,   228,   229,   230,   231,   232,   233,   234,
-     235,   236,   237,   240,   241,   242,   243,   244,   245,   246,
-     247,   248,   249,   251,   252,   253,   256,   257,   258,   259,
-     261,   263,   264
+     174,   176,   177,   178,   180,   181,   182,   183,   184,   185,
+     186,   187,   188,   189,   191,   195,   197,   198,   200,   201,
+     202,   203,   205,   206,   208,   209,   211,   212,   214,   216,
+     218,   220,   222,   224,   229,   230,   231,   232,   233,   234,
+     235,   236,   237,   238,   241,   242,   243,   244,   245,   246,
+     247,   248,   249,   250,   252,   253,   254,   257,   258,   259,
+     260,   262,   264,   265
 };
 #endif
 
@@ -326,26 +326,26 @@ static const char *const yytname[] =
 static const short yyr1[] =
 {
        0,   137,   137,   138,   138,   139,   139,   140,   140,   141,
-     141,   142,   142,   143,   143,   143,   143,   143,   143,   143,
-     143,   143,   143,   144,   145,   146,   146,   147,   147,   147,
-     147,   148,   148,   149,   149,   150,   150,   151,   152,   153,
-     154,   155,   156,   157,   157,   157,   157,   157,   157,   157,
-     157,   157,   157,   158,   158,   158,   158,   158,   158,   158,
-     158,   158,   158,   159,   159,   159,   160,   160,   160,   160,
-     161,   162,   162
+     141,   142,   142,   142,   143,   143,   143,   143,   143,   143,
+     143,   143,   143,   143,   144,   145,   146,   146,   147,   147,
+     147,   147,   148,   148,   149,   149,   150,   150,   151,   152,
+     153,   154,   155,   156,   157,   157,   157,   157,   157,   157,
+     157,   157,   157,   157,   158,   158,   158,   158,   158,   158,
+     158,   158,   158,   158,   159,   159,   159,   160,   160,   160,
+     160,   161,   162,   162
 };
 
 /* YYR2[YYN] -- Number of symbols composing right hand side of rule YYN. */
 static const short yyr2[] =
 {
        0,     0,     2,     2,     4,     3,     8,     3,     2,     1,
-       1,     2,     3,     1,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,    14,     4,     4,     0,     1,     1,
-       1,     1,     5,     8,    10,    12,    14,    14,    14,    12,
-      14,    18,    11,     3,     3,     3,     3,     3,     3,     3,
-       3,     3,     1,     3,     3,     3,     3,     3,     4,     3,
-       1,     1,     1,     0,     2,     3,     1,     1,     1,     1,
-       3,     3,     3
+       1,     1,     2,     3,     1,     2,     2,     2,     2,     2,
+       2,     2,     2,     2,     2,    14,     4,     4,     0,     1,
+       1,     1,     1,     5,     8,    10,    12,    14,    14,    14,
+      12,    14,    18,    11,     3,     3,     3,     3,     3,     3,
+       3,     3,     3,     1,     3,     3,     3,     3,     3,     4,
+       3,     1,     1,     1,     0,     2,     3,     1,     1,     1,
+       1,     3,     3,     3
 };
 
 /* YYDEFACT[S] -- default rule to reduce with in state S when YYTABLE
@@ -353,29 +353,29 @@ static const short yyr2[] =
    error. */
 static const short yydefact[] =
 {
-       1,     0,     0,     0,     0,     9,     0,    13,    10,     2,
-       3,     0,     8,     0,     0,    11,    23,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,    27,    14,    15,    21,
-      16,    19,    17,    18,    20,    22,     0,     5,     7,    62,
-      60,    61,    66,    67,    68,    69,     0,     0,    12,     0,
-       0,     0,    52,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,    29,    28,    30,     0,     4,     0,    63,     0,
+       1,     0,     0,     0,     0,     9,    11,    14,    10,     2,
+       3,     0,     8,     0,     0,    12,    24,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,    28,    15,    16,    22,
+      17,    20,    18,    19,    21,    23,     0,     5,     7,    63,
+      61,    62,    67,    68,    69,    70,     0,     0,    13,     0,
+       0,     0,    53,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,    30,    29,    31,     0,     4,     0,    64,     0,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-      59,    51,    57,    50,    49,    44,    47,    48,    53,    54,
-      55,    56,    43,    45,    46,    70,    72,    71,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,    26,    25,     0,
-       0,    58,    64,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,    65,     0,     0,     0,     0,     0,     0,
+      60,    52,    58,    51,    50,    45,    48,    49,    54,    55,
+      56,    57,    44,    46,    47,    71,    73,    72,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,    27,    26,     0,
+       0,    59,    65,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,    66,     0,     0,     0,     0,     0,     0,
        0,     0,     0,     6,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,    33,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,    34,     0,     0,     0,     0,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,    34,     0,     0,     0,     0,     0,     0,
-       0,    31,     0,     0,     0,     0,     0,     0,     0,     0,
-      42,     0,     0,     0,    35,     0,     0,    39,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,    24,    36,
-      37,    38,    40,     0,    32,     0,     0,     0,    41,     0,
+       0,     0,     0,    35,     0,     0,     0,     0,     0,     0,
+       0,    32,     0,     0,     0,     0,     0,     0,     0,     0,
+      43,     0,     0,     0,    36,     0,     0,    40,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,    25,    37,
+      38,    39,    41,     0,    33,     0,     0,     0,    42,     0,
        0
 };
 
@@ -1249,67 +1249,67 @@ case 8:
     break;}
 case 11:
 #line 176 ".\\rdofrm.y"
-{ ((RDOFRMFrame *)yyvsp[-1])->startShow(); ;
+{ ((RDOFRMFrame *)yyvsp[0])->startShow(); ;
     break;}
 case 12:
 #line 177 ".\\rdofrm.y"
-{ ((RDOFRMFrame *)yyvsp[-2])->startShow((RDOFUNLogic *)yyvsp[0]); ;
+{ ((RDOFRMFrame *)yyvsp[-1])->startShow(); ;
     break;}
-case 14:
-#line 180 ".\\rdofrm.y"
-{ ((RDOFRMFrame *)yyvsp[-1])->addItem((RDOFRMText *)yyvsp[0]); ;
+case 13:
+#line 178 ".\\rdofrm.y"
+{ ((RDOFRMFrame *)yyvsp[-2])->startShow((RDOFUNLogic *)yyvsp[0]); ;
     break;}
 case 15:
 #line 181 ".\\rdofrm.y"
-{ ((RDOFRMFrame *)yyvsp[-1])->addItem((RDOFRMBitmap *)yyvsp[0]); ;
+{ ((RDOFRMFrame *)yyvsp[-1])->addItem((RDOFRMText *)yyvsp[0]); ;
     break;}
 case 16:
 #line 182 ".\\rdofrm.y"
-{ ((RDOFRMFrame *)yyvsp[-1])->addItem((RDOFRMRect *)yyvsp[0]); ;
+{ ((RDOFRMFrame *)yyvsp[-1])->addItem((RDOFRMBitmap *)yyvsp[0]); ;
     break;}
 case 17:
 #line 183 ".\\rdofrm.y"
-{ ((RDOFRMFrame *)yyvsp[-1])->addItem((RDOFRMLine *)yyvsp[0]); ;
+{ ((RDOFRMFrame *)yyvsp[-1])->addItem((RDOFRMRect *)yyvsp[0]); ;
     break;}
 case 18:
 #line 184 ".\\rdofrm.y"
-{ ((RDOFRMFrame *)yyvsp[-1])->addItem((RDOFRMEllipse *)yyvsp[0]); ;
+{ ((RDOFRMFrame *)yyvsp[-1])->addItem((RDOFRMLine *)yyvsp[0]); ;
     break;}
 case 19:
 #line 185 ".\\rdofrm.y"
-{ ((RDOFRMFrame *)yyvsp[-1])->addItem((RDOFRMR_rect *)yyvsp[0]); ;
+{ ((RDOFRMFrame *)yyvsp[-1])->addItem((RDOFRMEllipse *)yyvsp[0]); ;
     break;}
 case 20:
 #line 186 ".\\rdofrm.y"
-{ ((RDOFRMFrame *)yyvsp[-1])->addItem((RDOFRMTriang *)yyvsp[0]); ;
+{ ((RDOFRMFrame *)yyvsp[-1])->addItem((RDOFRMR_rect *)yyvsp[0]); ;
     break;}
 case 21:
 #line 187 ".\\rdofrm.y"
-{ ((RDOFRMFrame *)yyvsp[-1])->addItem((RDOFRMS_bmp *)yyvsp[0]); ;
+{ ((RDOFRMFrame *)yyvsp[-1])->addItem((RDOFRMTriang *)yyvsp[0]); ;
     break;}
 case 22:
 #line 188 ".\\rdofrm.y"
-{ ((RDOFRMFrame *)yyvsp[-1])->addItem((RDOFRMActive *)yyvsp[0]); ;
+{ ((RDOFRMFrame *)yyvsp[-1])->addItem((RDOFRMS_bmp *)yyvsp[0]); ;
     break;}
 case 23:
-#line 190 ".\\rdofrm.y"
-{ ((RDOFRMFrame *)yyvsp[-1])->end(); ;
+#line 189 ".\\rdofrm.y"
+{ ((RDOFRMFrame *)yyvsp[-1])->addItem((RDOFRMActive *)yyvsp[0]); ;
     break;}
 case 24:
-#line 194 ".\\rdofrm.y"
-{ yyval = (int)(new RDOFRMText((RDOFUNArithm *)yyvsp[-11], (RDOFUNArithm *)yyvsp[-9], (RDOFUNArithm *)yyvsp[-7], (RDOFUNArithm *)yyvsp[-5], (RDOFRMColor *)yyvsp[-3], (RDOFRMColor *)yyvsp[-1])); ;
+#line 191 ".\\rdofrm.y"
+{ ((RDOFRMFrame *)yyvsp[-1])->end(); ;
     break;}
 case 25:
-#line 196 ".\\rdofrm.y"
-{ ((RDOFRMText *)yyvsp[-3])->setText(yyvsp[-2], (RDOFUNArithm *)yyvsp[-1]); ;
+#line 195 ".\\rdofrm.y"
+{ yyval = (int)(new RDOFRMText((RDOFUNArithm *)yyvsp[-11], (RDOFUNArithm *)yyvsp[-9], (RDOFUNArithm *)yyvsp[-7], (RDOFUNArithm *)yyvsp[-5], (RDOFRMColor *)yyvsp[-3], (RDOFRMColor *)yyvsp[-1])); ;
     break;}
 case 26:
 #line 197 ".\\rdofrm.y"
-{ ((RDOFRMText *)yyvsp[-3])->setText(yyvsp[-2], (string *)yyvsp[-1]); ;
+{ ((RDOFRMText *)yyvsp[-3])->setText(yyvsp[-2], (RDOFUNArithm *)yyvsp[-1]); ;
     break;}
 case 27:
-#line 199 ".\\rdofrm.y"
-{ yyval = 1; ;
+#line 198 ".\\rdofrm.y"
+{ ((RDOFRMText *)yyvsp[-3])->setText(yyvsp[-2], (string *)yyvsp[-1]); ;
     break;}
 case 28:
 #line 200 ".\\rdofrm.y"
@@ -1317,178 +1317,182 @@ case 28:
     break;}
 case 29:
 #line 201 ".\\rdofrm.y"
-{ yyval = 2; ;
+{ yyval = 1; ;
     break;}
 case 30:
 #line 202 ".\\rdofrm.y"
-{ yyval = 3; ;
+{ yyval = 2; ;
     break;}
 case 31:
-#line 204 ".\\rdofrm.y"
-{ yyval = (int)(new RDOFRMColor()); ;
+#line 203 ".\\rdofrm.y"
+{ yyval = 3; ;
     break;}
 case 32:
 #line 205 ".\\rdofrm.y"
-{ yyval = (int)(new RDOFRMColor(yyvsp[-3], yyvsp[-2], yyvsp[-1])); ;
+{ yyval = (int)(new RDOFRMColor()); ;
     break;}
 case 33:
-#line 207 ".\\rdofrm.y"
-{ yyval = (int)(new RDOFRMBitmap((RDOFUNArithm *)yyvsp[-5], (RDOFUNArithm *)yyvsp[-3], (string *)yyvsp[-1])); ;
+#line 206 ".\\rdofrm.y"
+{ yyval = (int)(new RDOFRMColor(yyvsp[-3], yyvsp[-2], yyvsp[-1])); ;
     break;}
 case 34:
 #line 208 ".\\rdofrm.y"
-{ yyval = (int)(new RDOFRMBitmap((RDOFUNArithm *)yyvsp[-7], (RDOFUNArithm *)yyvsp[-5], (string *)yyvsp[-3], (string *)yyvsp[-1])); ;
+{ yyval = (int)(new RDOFRMBitmap((RDOFUNArithm *)yyvsp[-5], (RDOFUNArithm *)yyvsp[-3], (string *)yyvsp[-1])); ;
     break;}
 case 35:
-#line 210 ".\\rdofrm.y"
-{ yyval = (int)(new RDOFRMS_bmp((RDOFUNArithm *)yyvsp[-9], (RDOFUNArithm *)yyvsp[-7], (RDOFUNArithm *)yyvsp[-5], (RDOFUNArithm *)yyvsp[-3], (string *)yyvsp[-1])); ;
+#line 209 ".\\rdofrm.y"
+{ yyval = (int)(new RDOFRMBitmap((RDOFUNArithm *)yyvsp[-7], (RDOFUNArithm *)yyvsp[-5], (string *)yyvsp[-3], (string *)yyvsp[-1])); ;
     break;}
 case 36:
 #line 211 ".\\rdofrm.y"
-{ yyval = (int)(new RDOFRMS_bmp((RDOFUNArithm *)yyvsp[-11], (RDOFUNArithm *)yyvsp[-9], (RDOFUNArithm *)yyvsp[-7], (RDOFUNArithm *)yyvsp[-5], (string *)yyvsp[-3], (string *)yyvsp[-1])); ;
+{ yyval = (int)(new RDOFRMS_bmp((RDOFUNArithm *)yyvsp[-9], (RDOFUNArithm *)yyvsp[-7], (RDOFUNArithm *)yyvsp[-5], (RDOFUNArithm *)yyvsp[-3], (string *)yyvsp[-1])); ;
     break;}
 case 37:
-#line 213 ".\\rdofrm.y"
-{ yyval = (int)(new RDOFRMRect((RDOFUNArithm *)yyvsp[-11], (RDOFUNArithm *)yyvsp[-9], (RDOFUNArithm *)yyvsp[-7], (RDOFUNArithm *)yyvsp[-5], (RDOFRMColor *)yyvsp[-3], (RDOFRMColor *)yyvsp[-1])); ;
+#line 212 ".\\rdofrm.y"
+{ yyval = (int)(new RDOFRMS_bmp((RDOFUNArithm *)yyvsp[-11], (RDOFUNArithm *)yyvsp[-9], (RDOFUNArithm *)yyvsp[-7], (RDOFUNArithm *)yyvsp[-5], (string *)yyvsp[-3], (string *)yyvsp[-1])); ;
     break;}
 case 38:
-#line 215 ".\\rdofrm.y"
-{ yyval = (int)(new RDOFRMR_rect((RDOFUNArithm *)yyvsp[-11], (RDOFUNArithm *)yyvsp[-9], (RDOFUNArithm *)yyvsp[-7], (RDOFUNArithm *)yyvsp[-5], (RDOFRMColor *)yyvsp[-3], (RDOFRMColor *)yyvsp[-1])); ;
+#line 214 ".\\rdofrm.y"
+{ yyval = (int)(new RDOFRMRect((RDOFUNArithm *)yyvsp[-11], (RDOFUNArithm *)yyvsp[-9], (RDOFUNArithm *)yyvsp[-7], (RDOFUNArithm *)yyvsp[-5], (RDOFRMColor *)yyvsp[-3], (RDOFRMColor *)yyvsp[-1])); ;
     break;}
 case 39:
-#line 217 ".\\rdofrm.y"
-{ yyval = (int)(new RDOFRMLine((RDOFUNArithm *)yyvsp[-9], (RDOFUNArithm *)yyvsp[-7], (RDOFUNArithm *)yyvsp[-5], (RDOFUNArithm *)yyvsp[-3], (RDOFRMColor *)yyvsp[-1])); ;
+#line 216 ".\\rdofrm.y"
+{ yyval = (int)(new RDOFRMR_rect((RDOFUNArithm *)yyvsp[-11], (RDOFUNArithm *)yyvsp[-9], (RDOFUNArithm *)yyvsp[-7], (RDOFUNArithm *)yyvsp[-5], (RDOFRMColor *)yyvsp[-3], (RDOFRMColor *)yyvsp[-1])); ;
     break;}
 case 40:
-#line 219 ".\\rdofrm.y"
-{ yyval = (int)(new RDOFRMEllipse((RDOFUNArithm *)yyvsp[-11], (RDOFUNArithm *)yyvsp[-9], (RDOFUNArithm *)yyvsp[-7], (RDOFUNArithm *)yyvsp[-5], (RDOFRMColor *)yyvsp[-3], (RDOFRMColor *)yyvsp[-1])); ;
+#line 218 ".\\rdofrm.y"
+{ yyval = (int)(new RDOFRMLine((RDOFUNArithm *)yyvsp[-9], (RDOFUNArithm *)yyvsp[-7], (RDOFUNArithm *)yyvsp[-5], (RDOFUNArithm *)yyvsp[-3], (RDOFRMColor *)yyvsp[-1])); ;
     break;}
 case 41:
-#line 221 ".\\rdofrm.y"
-{ yyval = (int)(new RDOFRMTriang((RDOFUNArithm *)yyvsp[-15], (RDOFUNArithm *)yyvsp[-13], (RDOFUNArithm *)yyvsp[-11], (RDOFUNArithm *)yyvsp[-9], (RDOFUNArithm *)yyvsp[-7], (RDOFUNArithm *)yyvsp[-5], (RDOFRMColor *)yyvsp[-3], (RDOFRMColor *)yyvsp[-1])); ;
+#line 220 ".\\rdofrm.y"
+{ yyval = (int)(new RDOFRMEllipse((RDOFUNArithm *)yyvsp[-11], (RDOFUNArithm *)yyvsp[-9], (RDOFUNArithm *)yyvsp[-7], (RDOFUNArithm *)yyvsp[-5], (RDOFRMColor *)yyvsp[-3], (RDOFRMColor *)yyvsp[-1])); ;
     break;}
 case 42:
-#line 223 ".\\rdofrm.y"
-{ yyval = (int)(new RDOFRMActive((RDOFUNArithm *)yyvsp[-7], (RDOFUNArithm *)yyvsp[-5], (RDOFUNArithm *)yyvsp[-3], (RDOFUNArithm *)yyvsp[-1], (string *)yyvsp[-9])); ;
+#line 222 ".\\rdofrm.y"
+{ yyval = (int)(new RDOFRMTriang((RDOFUNArithm *)yyvsp[-15], (RDOFUNArithm *)yyvsp[-13], (RDOFUNArithm *)yyvsp[-11], (RDOFUNArithm *)yyvsp[-9], (RDOFUNArithm *)yyvsp[-7], (RDOFUNArithm *)yyvsp[-5], (RDOFRMColor *)yyvsp[-3], (RDOFRMColor *)yyvsp[-1])); ;
     break;}
 case 43:
-#line 228 ".\\rdofrm.y"
-{ yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] == *(RDOFUNArithm *)yyvsp[0]); ;
+#line 224 ".\\rdofrm.y"
+{ yyval = (int)(new RDOFRMActive((RDOFUNArithm *)yyvsp[-7], (RDOFUNArithm *)yyvsp[-5], (RDOFUNArithm *)yyvsp[-3], (RDOFUNArithm *)yyvsp[-1], (string *)yyvsp[-9])); ;
     break;}
 case 44:
 #line 229 ".\\rdofrm.y"
-{ yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] != *(RDOFUNArithm *)yyvsp[0]); ;
+{ yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] == *(RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 45:
 #line 230 ".\\rdofrm.y"
-{ yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] <  *(RDOFUNArithm *)yyvsp[0]); ;
+{ yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] != *(RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 46:
 #line 231 ".\\rdofrm.y"
-{ yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] >  *(RDOFUNArithm *)yyvsp[0]); ;
+{ yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] <  *(RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 47:
 #line 232 ".\\rdofrm.y"
-{ yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] <= *(RDOFUNArithm *)yyvsp[0]); ;
+{ yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] >  *(RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 48:
 #line 233 ".\\rdofrm.y"
-{ yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] >= *(RDOFUNArithm *)yyvsp[0]); ;
+{ yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] <= *(RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 49:
 #line 234 ".\\rdofrm.y"
-{ yyval = (int)(*(RDOFUNLogic *)yyvsp[-2] && *(RDOFUNLogic *)yyvsp[0]); ;
+{ yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] >= *(RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 50:
 #line 235 ".\\rdofrm.y"
-{ yyval = (int)(*(RDOFUNLogic *)yyvsp[-2] || *(RDOFUNLogic *)yyvsp[0]); ;
+{ yyval = (int)(*(RDOFUNLogic *)yyvsp[-2] && *(RDOFUNLogic *)yyvsp[0]); ;
     break;}
 case 51:
 #line 236 ".\\rdofrm.y"
-{ yyval = yyvsp[-1]; ;
+{ yyval = (int)(*(RDOFUNLogic *)yyvsp[-2] || *(RDOFUNLogic *)yyvsp[0]); ;
     break;}
 case 52:
 #line 237 ".\\rdofrm.y"
-{ yyval = yyvsp[0]; ;
+{ yyval = yyvsp[-1]; ;
     break;}
 case 53:
-#line 240 ".\\rdofrm.y"
-{ yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] + *(RDOFUNArithm *)yyvsp[0]); ;
+#line 238 ".\\rdofrm.y"
+{ yyval = yyvsp[0]; ;
     break;}
 case 54:
 #line 241 ".\\rdofrm.y"
-{ yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] - *(RDOFUNArithm *)yyvsp[0]); ;
+{ yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] + *(RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 55:
 #line 242 ".\\rdofrm.y"
-{ yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] * *(RDOFUNArithm *)yyvsp[0]); ;
+{ yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] - *(RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 56:
 #line 243 ".\\rdofrm.y"
-{ yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] / *(RDOFUNArithm *)yyvsp[0]); ;
+{ yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] * *(RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 57:
 #line 244 ".\\rdofrm.y"
-{ yyval = yyvsp[-1]; ;
+{ yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] / *(RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 58:
 #line 245 ".\\rdofrm.y"
-{ yyval = (int)((RDOFUNParams *)yyvsp[-1])->createCall((string *)yyvsp[-3]) ;
+{ yyval = yyvsp[-1]; ;
     break;}
 case 59:
 #line 246 ".\\rdofrm.y"
-{ yyval = (int)(new RDOFUNArithm((string *)yyvsp[-2], (string *)yyvsp[0])); ;
+{ yyval = (int)((RDOFUNParams *)yyvsp[-1])->createCall((string *)yyvsp[-3]) ;
     break;}
 case 60:
 #line 247 ".\\rdofrm.y"
-{ yyval = (int)(new RDOFUNArithm((int)yyvsp[0])); ;
+{ yyval = (int)(new RDOFUNArithm((string *)yyvsp[-2], (string *)yyvsp[0])); ;
     break;}
 case 61:
 #line 248 ".\\rdofrm.y"
-{ yyval = (int)(new RDOFUNArithm((double*)yyvsp[0])); ;
+{ yyval = (int)(new RDOFUNArithm((int)yyvsp[0])); ;
     break;}
 case 62:
 #line 249 ".\\rdofrm.y"
-{ yyval = (int)(new RDOFUNArithm((string *)yyvsp[0])); ;
+{ yyval = (int)(new RDOFUNArithm((double*)yyvsp[0])); ;
     break;}
 case 63:
-#line 251 ".\\rdofrm.y"
-{ yyval = (int)(new RDOFUNParams()); ;
+#line 250 ".\\rdofrm.y"
+{ yyval = (int)(new RDOFUNArithm((string *)yyvsp[0])); ;
     break;}
 case 64:
 #line 252 ".\\rdofrm.y"
-{ yyval = (int)(((RDOFUNParams *)yyvsp[-1])->addParameter((RDOFUNArithm *)yyvsp[0])); ;
+{ yyval = (int)(new RDOFUNParams()); ;
     break;}
 case 65:
 #line 253 ".\\rdofrm.y"
-{ yyval = (int)(((RDOFUNParams *)yyvsp[-2])->addParameter((RDOFUNArithm *)yyvsp[0])); ;
+{ yyval = (int)(((RDOFUNParams *)yyvsp[-1])->addParameter((RDOFUNArithm *)yyvsp[0])); ;
     break;}
 case 66:
-#line 256 ".\\rdofrm.y"
-{ yyval = 1; ;
+#line 254 ".\\rdofrm.y"
+{ yyval = (int)(((RDOFUNParams *)yyvsp[-2])->addParameter((RDOFUNArithm *)yyvsp[0])); ;
     break;}
 case 67:
 #line 257 ".\\rdofrm.y"
-{ yyval = 2; ;
+{ yyval = 1; ;
     break;}
 case 68:
 #line 258 ".\\rdofrm.y"
-{ yyval = 3; ;
+{ yyval = 2; ;
     break;}
 case 69:
 #line 259 ".\\rdofrm.y"
-{ yyval = 4; ;
+{ yyval = 3; ;
     break;}
 case 70:
-#line 261 ".\\rdofrm.y"
-{ yyval = (int)(new RDOFUNGroup(yyvsp[-2], (string *)yyvsp[0])); ;
+#line 260 ".\\rdofrm.y"
+{ yyval = 4; ;
     break;}
 case 71:
-#line 263 ".\\rdofrm.y"
-{ yyval = (int)(((RDOFUNGroup *)yyvsp[-2])->createFunLogin((RDOFUNLogic *)yyvsp[-1])); ;
+#line 262 ".\\rdofrm.y"
+{ yyval = (int)(new RDOFUNGroup(yyvsp[-2], (string *)yyvsp[0])); ;
     break;}
 case 72:
 #line 264 ".\\rdofrm.y"
+{ yyval = (int)(((RDOFUNGroup *)yyvsp[-2])->createFunLogin((RDOFUNLogic *)yyvsp[-1])); ;
+    break;}
+case 73:
+#line 265 ".\\rdofrm.y"
 { yyval = (int)(((RDOFUNGroup *)yyvsp[-2])->createFunLogin()); ;
     break;}
 }
@@ -1724,7 +1728,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 271 ".\\rdofrm.y"
+#line 272 ".\\rdofrm.y"
 
 
 }

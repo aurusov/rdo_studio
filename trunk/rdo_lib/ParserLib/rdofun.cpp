@@ -457,7 +457,7 @@ RDOFUNArithm::RDOFUNArithm(double *d)
 
 RDOFUNArithm::RDOFUNArithm(string *s)
 {
-	if(*s == "Time_now")
+	if((*s == "Time_now") || (*s == "Системное_время"))
 	{
 		type = 1;
 		calc = new RDOCalcGetTimeNow();

@@ -205,6 +205,36 @@ RDOValue RDORTPEnumResParam::getRSSEnumValue(const string *const val) const
 	return enu->findValue(val);
 }
 
+RDORTPIntResParam::RDORTPIntResParam(RDORTPIntDiap *_diap, RDORTPIntDefVal *_dv): 
+	diap(_diap), 
+	RDORTPResParam(_dv) 
+{
+	diap->check(_dv);
+}
+
+void RDORTPIntDiap::check(const RDORTPIntDefVal *dv) const
+{
+	if(exist && dv->exist)
+		if((minVal > dv->GetIntValue()) || (maxVal < dv->GetIntValue()))
+			currParser->error(("Integer value " + toString(dv->GetIntValue()) + 
+					" out of range[" + toString(minVal) + ", " + toString(maxVal) + "]").c_str());
+}
+
+RDORTPRealResParam::RDORTPRealResParam(RDORTPRealDiap *_diap, RDORTPRealDefVal *_dv): 
+	diap(_diap), 
+	RDORTPResParam(_dv) 
+{
+	diap->check(_dv);
+}
+
+void RDORTPRealDiap::check(const RDORTPRealDefVal *dv) const
+{
+	if(exist && dv->exist)
+		if((minVal > dv->GetRealValue()) || (maxVal < dv->GetRealValue()))
+			currParser->error(("Integer value " + toString(dv->GetRealValue()) + 
+					" out of range[" + toString(minVal) + ", " + toString(maxVal) + "]").c_str());
+}
+
 const RDORTPResParam *RDORTPIntResParam::constructSuchAs(const int defVal) const 
 {
 	RDORTPIntDefVal *newDV = new RDORTPIntDefVal(defVal);
@@ -227,19 +257,19 @@ const RDORTPResParam *RDORTPEnumResParam::constructSuchAs(const string *const de
 	return rp;
 }
 
-int RDORTPDefVal::GetIntValue()
+int RDORTPDefVal::GetIntValue() const
 {
 	currParser->error("Invalid default value");
 	return 0;	// unreachable code...
 }
 
-double RDORTPDefVal::GetRealValue()
+double RDORTPDefVal::GetRealValue() const
 {
 	currParser->error("Invalid default value");
 	return 0.;	// unreachable code...
 }
 
-const string *RDORTPDefVal::GetEnumValue()
+const string *RDORTPDefVal::GetEnumValue() const
 {
 	currParser->error("Invalid default value");
 	return NULL;	// unreachable code...

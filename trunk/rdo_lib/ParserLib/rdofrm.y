@@ -173,7 +173,8 @@ frm_backpicture: frm_background INT_CONST INT_CONST	{ ((RDOFRMFrame *)$1)->setBa
 frm_pre_show: frm_backpicture
 				| frm_item;
 
-frm_show: frm_pre_show Show					{ ((RDOFRMFrame *)$1)->startShow(); }
+frm_show: frm_pre_show							{ ((RDOFRMFrame *)$1)->startShow(); }
+		  | frm_pre_show Show					{ ((RDOFRMFrame *)$1)->startShow(); }
 		  | frm_pre_show Show_if frm_logic	{ ((RDOFRMFrame *)$1)->startShow((RDOFUNLogic *)$3); };
 
 frm_item: frm_show								

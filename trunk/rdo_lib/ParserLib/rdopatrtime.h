@@ -103,7 +103,13 @@ protected:
 public:
 	void addParamCalc(RDOCalc *calc) { setParamsCalcs.push_back(calc); }
 	virtual ~RDOActivityRuntime() {}
-	int getRelResNumber(const int nRelRes) const { return relResNumbers.at(nRelRes); } 
+	int getRelResNumber(const int nRelRes) const 
+	{
+		if(relResNumbers.size() <= nRelRes)
+			return 0;
+
+		return relResNumbers.at(nRelRes); 
+	} 
 	void selectRelResource(int relNumb, int resNumb) 
 	{ 
 		if(relResNumbers.size() <= relNumb)

@@ -7,21 +7,24 @@ using namespace std;
 namespace rdoParse 
 {
 
+struct RDORTPIntDefVal;
+
 struct RDORTPIntDiap: public RDODeletable
 {
 	bool exist;
 	int minVal, maxVal;
 	RDORTPIntDiap(int _minVal, int _maxVal): minVal(_minVal), maxVal(_maxVal), exist(true) {}
 	RDORTPIntDiap(): exist(false) {}
+	void check(const RDORTPIntDefVal *dv) const;
 };
 
 struct RDORTPDefVal: public RDODeletable
 {
 	bool exist;
 	RDORTPDefVal(bool _exist): exist(_exist) {}
-	virtual int GetIntValue();
-	virtual double GetRealValue();
-	virtual const string *GetEnumValue();
+	virtual int GetIntValue() const;
+	virtual double GetRealValue() const;
+	virtual const string *GetEnumValue() const;
 };
 
 struct RDORTPIntDefVal: public RDORTPDefVal
@@ -29,7 +32,7 @@ struct RDORTPIntDefVal: public RDORTPDefVal
 	int val;
 	RDORTPIntDefVal(): RDORTPDefVal(false) {}
 	RDORTPIntDefVal(int _val): val(_val), RDORTPDefVal(true) {}
-	int GetIntValue() { return val; }
+	int GetIntValue() const { return val; }
 };
 
 struct RDORTPResParam: public RDODeletable
@@ -52,8 +55,8 @@ struct RDORTPResParam: public RDODeletable
 struct RDORTPIntResParam: public RDORTPResParam
 {
 	RDORTPIntDiap *diap;
-	RDORTPIntResParam(RDORTPIntDiap *_diap, RDORTPIntDefVal *_dv): diap(_diap), RDORTPResParam(_dv) {}
-	const RDORTPResParam *constructSuchAs(const int defVal) const ;
+	RDORTPIntResParam(RDORTPIntDiap *_diap, RDORTPIntDefVal *_dv);
+	const RDORTPResParam *constructSuchAs(const int defVal) const;
 	RDOValue getRSSDefaultValue()const ;
 	RDOValue getRSSIntValue(const int val)const ;	// the function also check range if exist
 	int getDiapTableFunc() const;
@@ -61,12 +64,14 @@ struct RDORTPIntResParam: public RDORTPResParam
 	int writeModelStructure() const;
 };
 
+struct RDORTPRealDefVal;
 struct RDORTPRealDiap: public RDODeletable
 {
 	bool exist;
 	double minVal, maxVal;
 	RDORTPRealDiap(double _minVal, double _maxVal): minVal(_minVal), maxVal(_maxVal), exist(true) {}
 	RDORTPRealDiap(): exist(false) {}
+	void check(const RDORTPRealDefVal *dv) const;
 };
 
 struct RDORTPRealDefVal: public RDORTPDefVal
@@ -74,14 +79,14 @@ struct RDORTPRealDefVal: public RDORTPDefVal
 	double val;
 	RDORTPRealDefVal(): RDORTPDefVal(false) {}
 	RDORTPRealDefVal(double _val): val(_val), RDORTPDefVal(true) {}
-	double GetRealValue() { return val; }
+	double GetRealValue() const { return val; }
 };
 
 struct RDORTPRealResParam: public RDORTPResParam
 {
 	RDORTPRealDiap *diap;
-	RDORTPRealResParam(RDORTPRealDiap *_diap, RDORTPRealDefVal *_dv): diap(_diap), RDORTPResParam(_dv) {}
-	const RDORTPResParam *constructSuchAs(const double *const defVal) const ;
+	RDORTPRealResParam(RDORTPRealDiap *_diap, RDORTPRealDefVal *_dv);
+	const RDORTPResParam *constructSuchAs(const double *const defVal) const;
 	RDOValue getRSSDefaultValue()const ;
 	RDOValue getRSSRealValue(const double *const val)const ; 	// the function also check range if exist
 	RDOValue getRSSIntValue(const int val) const;					// this function too
@@ -103,7 +108,7 @@ struct RDORTPEnumDefVal: public RDORTPDefVal
 	const string *const value;
 	RDORTPEnumDefVal(const string *const _value): value(_value), RDORTPDefVal(true) {}
 	RDORTPEnumDefVal(): value(NULL), RDORTPDefVal(false) {}
-	const string *GetEnumValue() { return value; }
+	const string *GetEnumValue() const { return value; }
 };
 
 struct RDORTPEnumResParam: public RDORTPResParam
