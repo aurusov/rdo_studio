@@ -62,4 +62,6 @@ public:
 	virtual ~CChatStringList();
 };
 
+//{{AFX_INSERT_LOCATION}}
+
 #endif // CHATVIEWERSTRING_H

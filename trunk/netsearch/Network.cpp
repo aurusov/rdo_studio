@@ -136,7 +136,8 @@ BOOL CNetwork :: Enumerate( LPNETRESOURCE lpNetRC_p, DWORD dwFlags_p ) {
 							lpnrLocal[i].dwDisplayType != RESOURCEDISPLAYTYPE_SERVER ) 
 						if( !Enumerate( &lpnrLocal[i], dwFlags_p ) ) {
 							TRACE0( "CNetwork::Enumerate(): recursiv call failed\n" );
-							throw CNetworkBreak(FALSE);
+							// changed by Andrey Urusov
+//							throw CNetworkBreak(FALSE);
 						} 
 
 				}

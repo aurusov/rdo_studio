@@ -71,4 +71,6 @@ public:
 	void saveSetting() const;
 };
 
+//{{AFX_INSERT_LOCATION}}
+
 #endif // CHATSOUND_H

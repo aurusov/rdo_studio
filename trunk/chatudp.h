@@ -38,4 +38,6 @@ public:
 	bool hasCommand( const std::string& line, const std::string& command ) const;
 };
 
+//{{AFX_INSERT_LOCATION}}
+
 #endif // CHATUDP_H

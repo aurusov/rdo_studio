@@ -38,4 +38,6 @@ public:
 	void updateUserStatus( const CChatUser* const user );
 };
 
+//{{AFX_INSERT_LOCATION}}
+
 #endif // CHATUSERLISTCTRL_H

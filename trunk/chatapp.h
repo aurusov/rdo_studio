@@ -97,4 +97,6 @@ protected:
 // ----------------------------------------------------------------------------
 extern CChatApp chatApp;
 
+//{{AFX_INSERT_LOCATION}}
+
 #endif // CHATAPP_H

@@ -41,7 +41,7 @@ int CChatNetworkCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 
 	imageList.Create( 16, 16, ILC_COLORDDB | ILC_MASK, 3, 1 );
 	CBitmap bmp;
-	bmp.LoadBitmap( IDB_STATUSMODE );
+	bmp.LoadBitmap( IDB_NET );
 	imageList.Add( &bmp, RGB( 255, 0, 255 ) );
 	SetImageList( &imageList, TVSIL_NORMAL );
 

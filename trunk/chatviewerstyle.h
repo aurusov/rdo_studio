@@ -110,4 +110,6 @@ public:
 	void saveSetting() const;
 };
 
+//{{AFX_INSERT_LOCATION}}
+
 #endif // CHATVIEWERSTYLE_H

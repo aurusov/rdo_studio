@@ -34,4 +34,6 @@ protected:
 	DECLARE_MESSAGE_MAP()
 };
 
+//{{AFX_INSERT_LOCATION}}
+
 #endif // CHATLISTBOXCTRL_H

@@ -57,4 +57,6 @@ public:
 	void clear( const CChatUser* const dont_delete_user = NULL );
 };
 
+//{{AFX_INSERT_LOCATION}}
+
 #endif // CHATUSERLIST_H

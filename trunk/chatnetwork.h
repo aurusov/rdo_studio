@@ -5,42 +5,68 @@
 #include "netsearch/Network.h"
 
 // ----------------------------------------------------------------------------
-// ---------- CChatNetPC
+// ---------- CChatNet
 // ----------------------------------------------------------------------------
-class CChatNetPC
+class CChatNet
 {
-friend class CChatNetWorkgroup;
+protected:
+	CChatNet();
+	virtual ~CChatNet();
 
-private:
-	CChatNetPC();
-	CChatNetPC( const std::string& _hostname, const std::string& _ip );
-	virtual ~CChatNetPC();
-
-	std::string hostname;
-	std::string ip;
-
-public:
-	std::string getHostName() const { return hostname; }
-	std::string getIP() const       { return ip;   }
+	HTREEITEM item;
+	std::string name;
+	std::string comment;
 };
 
 // ----------------------------------------------------------------------------
-// ---------- CChatNetWorkgroup
+// ---------- CChatNetShared
 // ----------------------------------------------------------------------------
-class CChatNetWorkgroup
+class CChatNetShared: public CChatNet
 {
+friend class CChatNetServer;
+friend class CChatNetwork;
 private:
-	std::vector< CChatNetPC* > list;
+	CChatNetShared();
+	virtual ~CChatNetShared();
+};
+
+// ----------------------------------------------------------------------------
+// ---------- CChatNetServer
+// ----------------------------------------------------------------------------
+class CChatNetServer: public CChatNet
+{
+friend class CChatNetDomain;
+friend class CChatNetwork;
+private:
+	CChatNetServer();
+	virtual ~CChatNetServer();
+
+	std::vector< CChatNetShared* > list;
+
+	std::string ip;
 
 public:
-	CChatNetWorkgroup();
-	virtual ~CChatNetWorkgroup();
+	void addShared( const std::string& name, const std::string& comment );
+	void clear();
+};
 
-	void addPC( const std::string& hostname, const std::string& ip );
-	int findPCByHostName( const std::string& hostname ) const;
-	int findPCByIP( const std::string& ip ) const;
-	CChatNetPC* getPCByHostName( const std::string& hostname ) const;
-	CChatNetPC* getPCByIP( const std::string& ip ) const;
+// ----------------------------------------------------------------------------
+// ---------- CChatNetDomain
+// ----------------------------------------------------------------------------
+class CChatNetDomain: public CChatNet
+{
+friend class CChatNetwork;
+private:
+	std::vector< CChatNetServer* > list;
+
+	CChatNetDomain();
+	virtual ~CChatNetDomain();
+
+	void addServer( const std::string& hostname, const std::string& ip );
+	int findServerByHostName( const std::string& hostname ) const;
+	int findServerByIP( const std::string& ip ) const;
+	CChatNetServer* getServerByHostName( const std::string& hostname ) const;
+	CChatNetServer* getServerByIP( const std::string& ip ) const;
 	void clear();
 };
 
@@ -50,9 +76,13 @@ public:
 class CChatNetwork: public CNetwork
 {
 private:
+	std::vector< CChatNetDomain* > list;
+
 	CWinThread* enumNetworkThread;
 	static UINT enumNetwork( LPVOID pParam );
 	BOOL OnHitResource( NETRESOURCE& res );
+
+	void clear();
 
 public:
 	CChatNetwork();
