@@ -292,6 +292,10 @@ SOURCE=.\res\disconnect.wav
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\eyes.gif
+# End Source File
+# Begin Source File
+
 SOURCE=.\res\incoming.wav
 # End Source File
 # Begin Source File
@@ -380,6 +384,26 @@ SOURCE=.\netsearch\Network.cpp
 # Begin Source File
 
 SOURCE=.\netsearch\Network.h
+# End Source File
+# End Group
+# End Group
+# Begin Group "PictureEx"
+
+# PROP Default_Filter ""
+# Begin Group "PictureEx Source Files"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\PictureEx\PictureEx.cpp
+# End Source File
+# End Group
+# Begin Group "PictureEx Header Files"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\PictureEx\PictureEx.h
 # End Source File
 # End Group
 # End Group
