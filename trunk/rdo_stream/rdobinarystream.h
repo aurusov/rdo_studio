@@ -113,6 +113,7 @@ public:
 // ----------------------------------------------------------------------------
 class stringstream: public binarystream
 {
+public:
 	stringstream(): binarystream( ios_base::in | ios_base::out ) {};
 };
 
