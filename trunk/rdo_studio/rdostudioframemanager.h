@@ -13,6 +13,8 @@ class RDOStudioFrameView;
 
 class RDOStudioFrameManager
 {
+friend class RDOStudioModel;
+
 private:
 	CMultiDocTemplate* frameDocTemplate;
 
@@ -25,6 +27,8 @@ private:
 		RDOStudioFrameView* view;
 	};
 	static std::vector< Frame* > frames;
+
+	int initFrameNumber;
 
 public:
 	RDOStudioFrameManager();

@@ -18,7 +18,8 @@ using namespace std;
 vector< RDOStudioFrameManager::Frame* > RDOStudioFrameManager::frames;
 
 RDOStudioFrameManager::RDOStudioFrameManager():
-	frameDocTemplate( NULL )
+	frameDocTemplate( NULL ),
+	initFrameNumber( -1 )
 {
 	frameDocTemplate = new CMultiDocTemplate( IDR_FRAMETYPE, RUNTIME_CLASS(RDOStudioFrameDoc), RUNTIME_CLASS(RDOStudioChildFrame), RUNTIME_CLASS(RDOStudioFrameView) );
 	AfxGetApp()->AddDocTemplate( frameDocTemplate );

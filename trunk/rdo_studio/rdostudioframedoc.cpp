@@ -64,6 +64,12 @@ RDOStudioFrameView* RDOStudioFrameDoc::getView() const
 
 void RDOStudioFrameDoc::OnCloseDocument()
 {
+	CSingleLock lock( &frameUsed );
+	lock.Lock();
+
 	model->frameManager.disconnectFrameDoc( this );
+	
+	lock.Unlock();
+
 	CDocument::OnCloseDocument();
 }

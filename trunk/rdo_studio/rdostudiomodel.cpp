@@ -165,18 +165,6 @@ void RDOStudioModel::beforeModelStartNotify()
 	model->beforeModelStart();
 }
 
-void RDOStudioModel::beforeModelStart()
-{
-	frameManager.clear();
-	vector< const string* > frames = kernel.getSimulator()->getAllFrames();
-	vector< const string* >::iterator it = frames.begin();
-	while ( it != frames.end() ) {
-		frameManager.insertItem( *(*it) );
-		it++;
-	}
-	frameManager.expand();
-}
-
 void RDOStudioModel::afterModelStartNotify()
 {
 	studioApp.mainFrame->output.clearDebug();
@@ -464,10 +452,23 @@ double RDOStudioModel::getModelTime() const
 	return 0;
 }
 
+void RDOStudioModel::beforeModelStart()
+{
+	frameManager.clear();
+	vector< const string* > frames = kernel.getSimulator()->getAllFrames();
+	vector< const string* >::iterator it = frames.begin();
+	while ( it != frames.end() ) {
+		frameManager.insertItem( *(*it) );
+		it++;
+	}
+	frameManager.expand();
+	frameManager.initFrameNumber = kernel.getSimulator()->getInitialFrameNumber();
+}
+
 void RDOStudioModel::showFrame()
 {
 	const RDOFrame* frame = kernel.getSimulator()->getFrame();
-	int frame_index = 0;
+	int frame_index = frameManager.initFrameNumber - 1;
 	RDOStudioFrameDoc* doc = frameManager.getFrameDoc( frame_index );
 	if ( doc ) {
 		CSingleLock lock( &doc->frameUsed );
