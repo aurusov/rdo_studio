@@ -1149,5 +1149,13 @@ SOURCE=.\res\zoomToolbar.bmp
 SOURCE=.\res\zoomToolbar_d.bmp
 # End Source File
 # End Group
+# Begin Source File
+
+SOURCE=..\Changes.txt
+# End Source File
+# Begin Source File
+
+SOURCE=..\TODO.txt
+# End Source File
 # End Target
 # End Project
