@@ -68,7 +68,8 @@ BOOL RDOTracerApp::InitInstance()
 		mainFrame->UpdateWindow();
 	}
 	catch ( RDOTracerException &e ) {
-		AfxMessageBox( format( IDS_INITINSTANCEERROR, e.getMessage().c_str() ).c_str() );
+		//AfxMessageBox( format( IDS_INITINSTANCEERROR, e.getMessage().c_str() ).c_str() );
+		::MessageBox( mainFrame->GetSafeHwnd(), format( IDS_INITINSTANCEERROR, e.getMessage().c_str() ).c_str(), NULL, MB_ICONEXCLAMATION | MB_OK );
 		return FALSE;
 	}
 	catch ( CException &e ) {
@@ -211,7 +212,7 @@ string RDOTracerApp::getFullHelpFileName( string str )
 	str.insert( 0, extractFilePath( getFullFileName() ) );
 	
 	if ( !isFileExists( str ) ) {
-		::MessageBox( NULL, format( ID_MSG_NO_HELP_FILE, str.c_str() ).c_str(), NULL, MB_ICONEXCLAMATION | MB_OK );
+		::MessageBox( rdoTracerApp.mainFrame->GetSafeHwnd(), format( ID_MSG_NO_HELP_FILE, str.c_str() ).c_str(), NULL, MB_ICONEXCLAMATION | MB_OK );
 		return "";
 	}
 
@@ -222,13 +223,15 @@ void RDOTracerApp::showMFCException( const UINT errorTypeID, CException& e ) con
 {
 	TCHAR szCause[255];
 	e.GetErrorMessage( szCause, 255 );
-	AfxMessageBox( format( errorTypeID, szCause ).c_str() );
+	//AfxMessageBox( format( errorTypeID, szCause ).c_str() );
+	::MessageBox( mainFrame->GetSafeHwnd(), format( errorTypeID, szCause ).c_str(), NULL, MB_ICONEXCLAMATION | MB_OK );
 }
 
 void RDOTracerApp::showUnknownException( const UINT errorTypeID ) const
 {
 	LPVOID lpMsgBuf;
 	::FormatMessage( FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, NULL, GetLastError(), MAKELANGID( LANG_NEUTRAL, SUBLANG_DEFAULT ), (LPTSTR) &lpMsgBuf, 0, NULL );
-	AfxMessageBox( format( errorTypeID, format( IDS_UNKNOWNERROR, (LPCTSTR)lpMsgBuf ).c_str() ).c_str() );
+	//AfxMessageBox( format( errorTypeID, format( IDS_UNKNOWNERROR, (LPCTSTR)lpMsgBuf ).c_str() ).c_str() );
+	::MessageBox( mainFrame->GetSafeHwnd(), format( errorTypeID, format( IDS_UNKNOWNERROR, (LPCTSTR)lpMsgBuf ).c_str() ).c_str(), NULL, MB_ICONEXCLAMATION | MB_OK );
 	::LocalFree( lpMsgBuf );
 }

@@ -24,7 +24,7 @@ protected:
 	std::string model_name;
 	std::string file_name;
 	std::ifstream* trace_file;
-	std::stringstream structure;
+	std::stringstream* structure;
 
 	std::string getNextLine();
 
@@ -37,7 +37,7 @@ public:
 	friend UINT RunningThreadControllingFunction( LPVOID pParam );
 
 	std::string& getModelName() { return model_name; };
-	std::stringstream& getModelStructure() { return structure; };
+	std::stringstream& getModelStructure() { return *structure; };
 
 	bool isTracing() { return tracing; };
 	

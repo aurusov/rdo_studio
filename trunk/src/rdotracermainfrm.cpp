@@ -111,7 +111,8 @@ BOOL RDOTracerMainFrame::PreCreateWindow( CREATESTRUCT& cs )
 		return FALSE;
 	}
 	catch ( RDOTracerException &e ) {
-		AfxMessageBox( format( IDS_PRECREATEERROR, e.getMessage().c_str() ).c_str() );
+		//AfxMessageBox( format( IDS_PRECREATEERROR, e.getMessage().c_str() ).c_str() );
+		::MessageBox( GetSafeHwnd(), format( IDS_PRECREATEERROR, e.getMessage().c_str() ).c_str(), NULL, MB_ICONEXCLAMATION | MB_OK );
 		return FALSE;
 	}
 	catch ( ... ) {
@@ -181,7 +182,8 @@ BOOL RDOTracerMainFrame::OnCreateClient( LPCREATESTRUCT lpcs, CCreateContext* pC
 		return FALSE;
 	}
 	catch ( RDOTracerException &e ) {
-		AfxMessageBox( format( IDS_CREATECLIENTERROR, e.getMessage().c_str() ).c_str() );
+		//AfxMessageBox( format( IDS_CREATECLIENTERROR, e.getMessage().c_str() ).c_str() );
+		::MessageBox( GetSafeHwnd(), format( IDS_CREATECLIENTERROR, e.getMessage().c_str() ).c_str(), NULL, MB_ICONEXCLAMATION | MB_OK );
 		return FALSE;
 	}
 	catch ( ... ) {
@@ -249,7 +251,8 @@ int RDOTracerMainFrame::OnCreate( LPCREATESTRUCT lpCreateStruct )
 		return -1;
 	}
 	catch ( RDOTracerException &e ) {
-		AfxMessageBox( format( IDS_CREATEERROR, e.getMessage().c_str() ).c_str() );
+		//AfxMessageBox( format( IDS_CREATEERROR, e.getMessage().c_str() ).c_str() );
+		::MessageBox( GetSafeHwnd(), format( IDS_CREATEERROR, e.getMessage().c_str() ).c_str(), NULL, MB_ICONEXCLAMATION | MB_OK );
 		return -1;
 	}
 	catch ( ... ) {
