@@ -103,10 +103,6 @@ SOURCE=.\chatchildview.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\chatdockwnd.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\chatedit.cpp
 # End Source File
 # Begin Source File
@@ -139,11 +135,15 @@ SOURCE=.\chatudp.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\chatusers.cpp
+SOURCE=.\chatuserlist.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\chatuserstreectrl.cpp
+SOURCE=.\chatuserlistctrl.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\chatuserlistdock.cpp
 # End Source File
 # Begin Source File
 
@@ -173,10 +173,6 @@ SOURCE=.\chatapp.h
 # Begin Source File
 
 SOURCE=.\chatchildview.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\chatdockwnd.h
 # End Source File
 # Begin Source File
 
@@ -212,11 +208,15 @@ SOURCE=.\chatudp.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\chatusers.h
+SOURCE=.\chatuserlist.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\chatuserstreectrl.h
+SOURCE=.\chatuserlistctrl.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\chatuserlistdock.h
 # End Source File
 # Begin Source File
 

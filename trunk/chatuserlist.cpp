@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "chatusers.h"
+#include "chatuserlist.h"
 #include "chatapp.h"
 
 #ifdef _DEBUG
@@ -43,7 +43,7 @@ void CChatUser::setUserName( const std::string& value )
 	if ( userName != value ) {
 		userName = value;
 		if ( chatApp.pFrame ) {
-			chatApp.pFrame->dock.tree.updateUserName( this );
+			chatApp.pFrame->userList.list.updateUserName( this );
 		}
 	}
 }
@@ -78,45 +78,45 @@ void CChatUser::setStatusMode( const CChatStatusModeType value )
 	if ( statusMode != value ) {
 		statusMode = value;
 		if ( chatApp.pFrame ) {
-			chatApp.pFrame->dock.tree.updateUserStatus( this );
+			chatApp.pFrame->userList.list.updateUserStatus( this );
 		}
 	}
 }
 
 // ----------------------------------------------------------------------------
-// ---------- CChatUsers
+// ---------- CChatUserList
 // ----------------------------------------------------------------------------
-CChatUsers::CChatUsers(): CPtrArray()
+CChatUserList::CChatUserList(): CPtrArray()
 {
 }
 
-CChatUsers::~CChatUsers()
+CChatUserList::~CChatUserList()
 {
 	clear();
 }
 
-void CChatUsers::addUser( const std::string& username, const std::string& hostname, const std::string& ip, const CChatStatusModeType statusMode )
+void CChatUserList::addUser( const std::string& username, const std::string& hostname, const std::string& ip, const CChatStatusModeType statusMode )
 {
 	if ( findUserByIP( ip ) == -1 ) {
 		CChatUser* user = new CChatUser( username, hostname, ip, statusMode );
 		Add( user );
-		((CChatMainFrame*)AfxGetMainWnd())->dock.tree.addUser( user );
+		chatApp.pFrame->userList.list.addUser( user );
 	}
 }
 
-void CChatUsers::deleteUser( const int listIndex )
+void CChatUserList::deleteUser( const int listIndex )
 {
 	if ( listIndex != -1 && listIndex < GetSize() ) {
 		CChatUser* user = (CChatUser*)GetAt( listIndex );
 		if ( chatApp.pFrame ) {
-			chatApp.pFrame->dock.tree.deleteUser( user );
+			chatApp.pFrame->userList.list.deleteUser( user );
 		}
 		delete user;
 		RemoveAt( listIndex );
 	}
 }
 
-void CChatUsers::deleteUser( const CChatUser* const user )
+void CChatUserList::deleteUser( const CChatUser* const user )
 {
 	int cnt = GetSize();
 	for ( int i = 0; i < cnt; i++ ) {
@@ -128,7 +128,7 @@ void CChatUsers::deleteUser( const CChatUser* const user )
 	}
 }
 
-int CChatUsers::findUserByHostName( const std::string& hostname )
+int CChatUserList::findUserByHostName( const std::string& hostname )
 {
 	int cnt = GetSize();
 	for ( int i = 0; i < cnt; i++ ) {
@@ -138,7 +138,7 @@ int CChatUsers::findUserByHostName( const std::string& hostname )
 	return -1;
 }
 
-int CChatUsers::findUserByIP( const std::string& ip )
+int CChatUserList::findUserByIP( const std::string& ip )
 {
 	int cnt = GetSize();
 	for ( int i = 0; i < cnt; i++ ) {
@@ -148,7 +148,7 @@ int CChatUsers::findUserByIP( const std::string& ip )
 	return -1;
 }
 
-CChatUser* CChatUsers::getUserByHostName( const std::string& hostname )
+CChatUser* CChatUserList::getUserByHostName( const std::string& hostname )
 {
 	int listIndex = findUserByHostName( hostname );
 	if ( listIndex != -1 ) {
@@ -157,7 +157,7 @@ CChatUser* CChatUsers::getUserByHostName( const std::string& hostname )
 	return NULL;
 }
 
-CChatUser* CChatUsers::getUserByIP( const std::string& ip )
+CChatUser* CChatUserList::getUserByIP( const std::string& ip )
 {
 	int listIndex = findUserByIP( ip );
 	if ( listIndex != -1 ) {
@@ -166,7 +166,7 @@ CChatUser* CChatUsers::getUserByIP( const std::string& ip )
 	return NULL;
 }
 
-void CChatUsers::clear( const CChatUser* const dont_delete_user )
+void CChatUserList::clear( const CChatUser* const dont_delete_user )
 {
 	int cnt = GetSize();
 	for ( int i = 0; i < GetSize(); i++ ) {

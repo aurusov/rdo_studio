@@ -1,30 +1,28 @@
-#ifndef CHATDOCKWND_H
-#define CHATDOCKWND_H
+#ifndef CHATUSERLISTDOCK_H
+#define CHATUSERLISTDOCK_H
 
 #if _MSC_VER > 1000
 #pragma once
 #endif
 
-#include "chatuserstreectrl.h"
+#include "chatuserlistctrl.h"
 
 // ----------------------------------------------------------------------------
-// ---------- CChatDockWnd
+// ---------- CChatUserListDock
 // ----------------------------------------------------------------------------
-class CChatDockWnd: public CSizingControlBarG
+class CChatUserListDock: public CSizingControlBarG
 {
 public:
-	CChatDockWnd();
-	virtual ~CChatDockWnd();
+	CChatUserListDock();
+	virtual ~CChatUserListDock();
 
-	CChatUsersTreeCtrl tree;
+	CChatUserListCtrl list;
 
 protected:
-	//{{AFX_VIRTUAL(CChatDockWnd)
-	protected:
-	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
+	//{{AFX_VIRTUAL(CChatUserListDock)
 	//}}AFX_VIRTUAL
 
-	//{{AFX_MSG(CChatDockWnd)
+	//{{AFX_MSG(CChatUserListDock)
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
@@ -32,4 +30,4 @@ protected:
 
 //{{AFX_INSERT_LOCATION}}
 
-#endif // CHATDOCKWND_H
+#endif // CHATUSERLISTDOCK_H

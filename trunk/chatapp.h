@@ -10,7 +10,7 @@
 #include "chatudp.h"
 #include "chatsound.h"
 #include "chatstatusmode.h"
-#include "chatusers.h"
+#include "chatuserlist.h"
 
 // ----------------------------------------------------------------------------
 // ---------- CChatApp
@@ -53,7 +53,7 @@ public:
 	CChatUdp udp;
 	CChatSoundList sounds;
 	CChatStatusModeList statusModes;
-	CChatUsers users;
+	CChatUserList users;
 
 	std::string getUserName() const    { return userName; }
 	void setUserName( const std::string& value );

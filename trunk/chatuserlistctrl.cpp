@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "chatuserstreectrl.h"
+#include "chatuserlistctrl.h"
 #include "chatapp.h"
 #include "resource.h"
 
@@ -10,24 +10,24 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 // ----------------------------------------------------------------------------
-// ---------- CChatUsersTreeCtrl
+// ---------- CChatUserListCtrl
 // ----------------------------------------------------------------------------
-BEGIN_MESSAGE_MAP( CChatUsersTreeCtrl, RDOTreeCtrl )
-	//{{AFX_MSG_MAP(CChatUsersTreeCtrl)
+BEGIN_MESSAGE_MAP( CChatUserListCtrl, RDOTreeCtrl )
+	//{{AFX_MSG_MAP(CChatUserListCtrl)
 	ON_WM_CREATE()
 	ON_WM_KEYDOWN()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-CChatUsersTreeCtrl::CChatUsersTreeCtrl(): RDOTreeCtrl()
+CChatUserListCtrl::CChatUserListCtrl(): RDOTreeCtrl()
 {
 }
 
-CChatUsersTreeCtrl::~CChatUsersTreeCtrl()
+CChatUserListCtrl::~CChatUserListCtrl()
 {
 }
 
-BOOL CChatUsersTreeCtrl::PreCreateWindow( CREATESTRUCT& cs )
+BOOL CChatUserListCtrl::PreCreateWindow( CREATESTRUCT& cs )
 {
 	if ( !RDOTreeCtrl::PreCreateWindow(cs) ) return FALSE;
 	cs.style |= WS_VISIBLE | WS_CHILD | WS_CLIPCHILDREN | WS_TABSTOP | TVS_HASLINES | TVS_SHOWSELALWAYS | TVS_DISABLEDRAGDROP;
@@ -35,12 +35,7 @@ BOOL CChatUsersTreeCtrl::PreCreateWindow( CREATESTRUCT& cs )
 	return TRUE;
 }
 
-BOOL CChatUsersTreeCtrl::DestroyWindow()
-{
-	return RDOTreeCtrl::DestroyWindow();
-}
-
-int CChatUsersTreeCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
+int CChatUserListCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 {
 	if ( RDOTreeCtrl::OnCreate( lpCreateStruct ) == -1 ) return -1;
 
@@ -55,7 +50,7 @@ int CChatUsersTreeCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	return 0;
 }
 
-HTREEITEM CChatUsersTreeCtrl::findUser( const CChatUser* const user )
+HTREEITEM CChatUserListCtrl::findUser( const CChatUser* const user )
 {
 	HTREEITEM item = GetRootItem();
 
@@ -68,7 +63,7 @@ HTREEITEM CChatUsersTreeCtrl::findUser( const CChatUser* const user )
 	return NULL;
 }
 
-void CChatUsersTreeCtrl::addUser( const CChatUser* const user )
+void CChatUserListCtrl::addUser( const CChatUser* const user )
 {
 	if ( !findUser( user ) ) {
 		HTREEITEM item;
@@ -78,7 +73,7 @@ void CChatUsersTreeCtrl::addUser( const CChatUser* const user )
 	}
 }
 
-void CChatUsersTreeCtrl::deleteUser( const CChatUser* const user )
+void CChatUserListCtrl::deleteUser( const CChatUser* const user )
 {
 	HTREEITEM item;
 	item = findUser( user );
@@ -87,7 +82,7 @@ void CChatUsersTreeCtrl::deleteUser( const CChatUser* const user )
 	}
 }
 
-void CChatUsersTreeCtrl::updateUserName( const CChatUser* const user )
+void CChatUserListCtrl::updateUserName( const CChatUser* const user )
 {
 	HTREEITEM item = findUser( user );
 	if ( item ) {
@@ -95,7 +90,7 @@ void CChatUsersTreeCtrl::updateUserName( const CChatUser* const user )
 	}
 }
 
-void CChatUsersTreeCtrl::updateUserStatus( const CChatUser* const user )
+void CChatUserListCtrl::updateUserStatus( const CChatUser* const user )
 {
 	HTREEITEM item = findUser( user );
 	if ( item ) {
@@ -103,7 +98,7 @@ void CChatUsersTreeCtrl::updateUserStatus( const CChatUser* const user )
 	}
 }
 
-void CChatUsersTreeCtrl::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
+void CChatUserListCtrl::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
 {
 	RDOTreeCtrl::OnKeyDown( nChar, nRepCnt, nFlags );
 

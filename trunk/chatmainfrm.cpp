@@ -12,9 +12,10 @@ static char THIS_FILE[] = __FILE__;
 // ----------------------------------------------------------------------------
 // ---------- CChatMainFrame
 // ----------------------------------------------------------------------------
-#define MYMSG_NOTIFYTRAY ( WM_USER + 100 )
 #define trayTimer_ID 1
 #define awayTimer_ID 2
+
+const int MYMSG_NOTIFYTRAY = ::RegisterWindowMessage( "MYMSG_NOTIFYTRAY" );
 
 BEGIN_MESSAGE_MAP( CChatMainFrame, CFrameWnd )
 	//{{AFX_MSG_MAP(CChatMainFrame)
@@ -23,11 +24,12 @@ BEGIN_MESSAGE_MAP( CChatMainFrame, CFrameWnd )
 	ON_WM_TIMER()
 	ON_WM_SIZE()
 	ON_WM_CLOSE()
-	ON_MESSAGE( MYMSG_NOTIFYTRAY, OnHandleTrayNotify )
 	ON_COMMAND( ID_TRAYMENU_OPEN, OnTrayOpenHide )
 	ON_COMMAND( ID_APP_EXIT     , OnTrayCloseApp )
-	ON_COMMAND( ID_TRAYMENU_EXIT, OnTrayCloseApp )
 	ON_UPDATE_COMMAND_UI( ID_TRAYMENU_OPEN, OnUpdateTrayOpenHide )
+	ON_COMMAND( ID_TRAYMENU_EXIT, OnTrayCloseApp )
+	ON_COMMAND(ID_VIEW_USERLIST, OnViewUserList)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_USERLIST, OnUpdateViewUserList)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -83,8 +85,8 @@ int CChatMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	childView.Create( NULL, NULL, AFX_WS_DEFAULT_VIEW, CRect(0, 0, 0, 0), this, AFX_IDW_PANE_FIRST, NULL );
 
-	dock.Create( "users", this, 0 );
-	dock.SetBarStyle( dock.GetBarStyle() | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
+	userList.Create( format( IDS_USERLIST ).c_str(), this, 0 );
+	userList.SetBarStyle( userList.GetBarStyle() | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
 
 	statusModeToolBar.CreateEx( this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
 	statusModeToolBar.LoadToolBar( IDR_STATUSMODE_TOOLBAR );
@@ -98,13 +100,13 @@ int CChatMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 //	statusBar.SetPaneInfo( 2, ID_INSERTOVERWRITESTATUSBAR, SBPS_NORMAL , 70 );
 //	statusBar.SetPaneInfo( 3, ID_INFOSTATUSBAR           , SBPS_STRETCH, 70 );
 
-	dock.EnableDocking( CBRS_ALIGN_ANY );
+	userList.EnableDocking( CBRS_ALIGN_ANY );
 	statusModeToolBar.EnableDocking( CBRS_ALIGN_ANY );
 
 	EnableDocking( CBRS_ALIGN_ANY );
 
 	DockControlBar( &statusModeToolBar );
-	DockControlBar( &dock, AFX_IDW_DOCKBAR_LEFT );
+	DockControlBar( &userList, AFX_IDW_DOCKBAR_LEFT );
 //	dockControlBarBesideOf( editToolBar, projectToolBar );
 
 	closeButtonAction    = (CChatCloseButtonAction)chatApp.GetProfileInt( "General", "closeButtonAction", CCBA_Tray );
@@ -126,7 +128,7 @@ int CChatMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 BOOL CChatMainFrame::OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo)
 {
 	if ( childView.OnCmdMsg( nID, nCode, pExtra, pHandlerInfo ) ) return TRUE;
-	if ( dock.OnCmdMsg( nID, nCode, pExtra, pHandlerInfo ) ) return TRUE;
+	if ( userList.OnCmdMsg( nID, nCode, pExtra, pHandlerInfo ) ) return TRUE;
 	return CFrameWnd::OnCmdMsg( nID, nCode, pExtra, pHandlerInfo );
 }
 
@@ -537,3 +539,21 @@ void CChatMainFrame::Dump(CDumpContext& dc) const
 	CFrameWnd::Dump(dc);
 }
 #endif
+
+LRESULT CChatMainFrame::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
+{
+	if ( message == MYMSG_NOTIFYTRAY ) {
+		OnHandleTrayNotify( wParam, lParam );
+	}
+	return CFrameWnd::WindowProc(message, wParam, lParam);
+}
+
+void CChatMainFrame::OnViewUserList()
+{
+	ShowControlBar( &userList, !userList.IsVisible(), false );
+}
+
+void CChatMainFrame::OnUpdateViewUserList(CCmdUI* pCmdUI) 
+{
+	pCmdUI->SetCheck( userList.IsVisible() );
+}

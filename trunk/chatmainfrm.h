@@ -3,8 +3,7 @@
 #pragma once
 
 #include "chatchildview.h"
-#include "chatuserstreectrl.h"
-#include "chatdockwnd.h"
+#include "chatuserlistdock.h"
 #include "chatpopupmessage.h"
 #include "chatstatusmode.h"
 
@@ -59,40 +58,12 @@ protected:
 	void startAutoStatusModeTimer();
 	void stopAutoStatusModeTimer();
 
-protected:
-	//{{AFX_VIRTUAL(CChatMainFrame)
-	protected:
-	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-	virtual BOOL OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo);
-	virtual BOOL DestroyWindow();
-	//}}AFX_VIRTUAL
-
-	//{{AFX_MSG(CChatMainFrame)
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	afx_msg void OnSetFocus(CWnd *pOldWnd);
-	afx_msg void OnTimer( UINT nIDEvent );
-	afx_msg void OnSize( UINT nType, int cx, int cy );
-	afx_msg void OnClose();
-	afx_msg void OnHandleTrayNotify( UINT wParam, LONG lParam );
-	afx_msg void OnTrayOpenHide();
-	afx_msg void OnTrayCloseApp();
-	afx_msg void OnUpdateTrayOpenHide( CCmdUI *pCmdUI );
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
-
-protected: 
-#ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump( CDumpContext& dc ) const;
-#endif
-
 public:
 	CChatMainFrame();
 	virtual ~CChatMainFrame();
 
 	CChatChildView     childView;
-	CChatDockWnd       dock;
-//	CChatUsersTreeCtrl* usersTreeView;
+	CChatUserListDock  userList;
 
 	CChatPopupMessage popupMessage;
 
@@ -125,6 +96,35 @@ public:
 	bool isAutoStatusMode() const;
 	void restoreStatusMode();
 	void resetAutoStatusMode();
+
+protected:
+#ifdef _DEBUG
+	virtual void AssertValid() const;
+	virtual void Dump( CDumpContext& dc ) const;
+#endif
+
+	//{{AFX_VIRTUAL(CChatMainFrame)
+	protected:
+	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
+	virtual BOOL OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo);
+	virtual BOOL DestroyWindow();
+	virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
+	//}}AFX_VIRTUAL
+
+	//{{AFX_MSG(CChatMainFrame)
+	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+	afx_msg void OnSetFocus(CWnd *pOldWnd);
+	afx_msg void OnTimer( UINT nIDEvent );
+	afx_msg void OnSize( UINT nType, int cx, int cy );
+	afx_msg void OnClose();
+	afx_msg void OnHandleTrayNotify( UINT wParam, LONG lParam );
+	afx_msg void OnTrayOpenHide();
+	afx_msg void OnTrayCloseApp();
+	afx_msg void OnUpdateTrayOpenHide( CCmdUI *pCmdUI );
+	afx_msg void OnViewUserList();
+	afx_msg void OnUpdateViewUserList(CCmdUI* pCmdUI);
+	//}}AFX_MSG
+	DECLARE_MESSAGE_MAP()
 };
 
 #endif // CHATMAINFRM_H

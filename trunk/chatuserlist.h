@@ -1,5 +1,5 @@
-#ifndef CHATUSERS_H
-#define CHATUSERS_H
+#ifndef CHATUSERLIST_H
+#define CHATUSERLIST_H
 #pragma once
 
 #include "chatstatusmode.h"
@@ -7,11 +7,11 @@
 // ----------------------------------------------------------------------------
 // ---------- CChatUser
 // ----------------------------------------------------------------------------
-class CChatUsers;
+class CChatUserList;
 
 class CChatUser: public CObject
 {
-friend class CChatUsers;
+friend class CChatUserList;
 
 protected:
 	CChatUser();
@@ -38,13 +38,13 @@ public:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- CChatUsers
+// ---------- CChatUserList
 // ----------------------------------------------------------------------------
-class CChatUsers: public CPtrArray
+class CChatUserList: public CPtrArray
 {
 public:
-	CChatUsers();
-	virtual ~CChatUsers();
+	CChatUserList();
+	virtual ~CChatUserList();
 
 	void addUser( const std::string& username, const std::string& hostname, const std::string& ip, const CChatStatusModeType statusMode = CSMT_Online );
 	void deleteUser( const int listIndex );
@@ -56,4 +56,4 @@ public:
 	void clear( const CChatUser* const dont_delete_user = NULL );
 };
 
-#endif // CHATUSERS_H
+#endif // CHATUSERLIST_H
