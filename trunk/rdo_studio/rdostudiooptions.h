@@ -308,6 +308,8 @@ public:
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioOptionsPlugins
 // ----------------------------------------------------------------------------
+class RDOStudioPlugin;
+
 class RDOStudioOptionsPlugins: public CPropertyPage
 {
 private:
@@ -319,9 +321,15 @@ private:
 	bool sortPluginStateAsceding;
 	bool sortPluginDescriptionAsceding;
 
+	void updateRunModeInGrid( const RDOStudioPlugin* plugin, const int index );
+	void updateControls( const RDOStudioPlugin* plugin );
+
 protected:
 	//{{AFX_DATA(RDOStudioOptionsPlugins)
 	enum { IDD = IDD_OPTIONS_PLUGINS };
+	CComboBox	m_runModeComboBox;
+	CButton	m_runModeButton;
+	CStatic	m_runModeStatic;
 	CListCtrl	m_pluginList;
 	//}}AFX_DATA
 
@@ -337,6 +345,8 @@ protected:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnPluginListColumnClick(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnPluginListSelectChanged(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnPluginRunModeComboBoxChanged();
+	afx_msg void OnPluginRunModeButtonClicked();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 

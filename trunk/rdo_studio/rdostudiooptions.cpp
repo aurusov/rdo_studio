@@ -1622,6 +1622,8 @@ BEGIN_MESSAGE_MAP(RDOStudioOptionsPlugins, CPropertyPage)
 	//{{AFX_MSG_MAP(RDOStudioOptionsPlugins)
 	ON_NOTIFY(LVN_COLUMNCLICK, IDC_PLUGIN_LIST, OnPluginListColumnClick)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_PLUGIN_LIST, OnPluginListSelectChanged)
+	ON_CBN_SELCHANGE(IDC_PLUGIN_RUNMODE_COMBOBOX, OnPluginRunModeComboBoxChanged)
+	ON_BN_CLICKED(IDC_PLUGIN_RUNMODE_BUTTON, OnPluginRunModeButtonClicked)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -1648,6 +1650,9 @@ void RDOStudioOptionsPlugins::DoDataExchange(CDataExchange* pDX)
 {
 	CPropertyPage::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(RDOStudioOptionsPlugins)
+	DDX_Control(pDX, IDC_PLUGIN_RUNMODE_COMBOBOX, m_runModeComboBox);
+	DDX_Control(pDX, IDC_PLUGIN_RUNMODE_BUTTON, m_runModeButton);
+	DDX_Control(pDX, IDC_PLUGIN_RUNMODE_STATIC, m_runModeStatic);
 	DDX_Control(pDX, IDC_PLUGIN_LIST, m_pluginList);
 	//}}AFX_DATA_MAP
 }
@@ -1773,15 +1778,7 @@ BOOL RDOStudioOptionsPlugins::OnInitDialog()
 				version += " " + plugin->getVersionInfo();
 			}
 			m_pluginList.SetItemText( index, 1, version.c_str() );
-			std::string runMode;
-			if ( plugin->getRunMode() == rdoPlugin::prmStudioStartUp ) {
-				runMode = format( IDS_PLUGIN_RUNMODE_STUDIOSTARTUP );
-			} else if ( plugin->getRunMode() == rdoPlugin::prmModelStartUp ) {
-				runMode = format( IDS_PLUGIN_RUNMODE_MODELSTARTUP );
-			} else {
-				runMode = format( IDS_PLUGIN_RUNMODE_NOAUTO );
-			}
-			m_pluginList.SetItemText( index, 2, runMode.c_str() );
+			updateRunModeInGrid( plugin, index );
 			m_pluginList.SetItemText( index, 3, format( plugin->getState() == rdoPlugin::psStop ? IDS_PLUGIN_STATE_STOP : IDS_PLUGIN_STATE_ACTIVE ).c_str() );
 			m_pluginList.SetItemText( index, 4, plugin->getDescription().c_str() );
 			m_pluginList.SetItemData( index, reinterpret_cast<DWORD>(plugin) );
@@ -1793,6 +1790,13 @@ BOOL RDOStudioOptionsPlugins::OnInitDialog()
 		m_pluginList.SortItems( ComparePluginName, !NULL );
 		m_pluginList.SetItemState( 0, LVIS_SELECTED, LVIS_SELECTED );
 	}
+
+	CRect comboBoxRect;
+	m_runModeComboBox.GetWindowRect( comboBoxRect );
+	CRect buttonBoxRect;
+	m_runModeButton.GetWindowRect( buttonBoxRect );
+	ScreenToClient( buttonBoxRect );
+	m_runModeButton.MoveWindow( buttonBoxRect.left, buttonBoxRect.top, buttonBoxRect.Width(), comboBoxRect.Height() );
 
 	return TRUE;
 }
@@ -1829,12 +1833,13 @@ void RDOStudioOptionsPlugins::OnPluginListSelectChanged( NMHDR* pNMHDR, LRESULT*
 	if ( useItem ) {
 		RDOStudioPlugin* plugin = reinterpret_cast<RDOStudioPlugin*>(pNMListView->lParam);
 		if ( plugin ) {
+			updateControls( plugin );
 			havePlugin = true;
 		}
 	}
 	if ( !havePlugin ) {
+		updateControls( NULL );
 	}
-	UpdateData( false );
 
 	*pResult = 0;
 }
@@ -1844,23 +1849,82 @@ void RDOStudioOptionsPlugins::OnPluginListColumnClick( NMHDR* pNMHDR, LRESULT* p
 	NM_LISTVIEW* pNMListView = reinterpret_cast<NM_LISTVIEW*>(pNMHDR);
 
 	if ( pNMListView->iSubItem == 0 ) {
-		m_pluginList.SortItems( ComparePluginName, sortPluginNameAsceding ? !NULL : NULL );
 		sortPluginNameAsceding = !sortPluginNameAsceding;
+		m_pluginList.SortItems( ComparePluginName, sortPluginNameAsceding ? !NULL : NULL );
 	} else if ( pNMListView->iSubItem == 1 ) {
-		m_pluginList.SortItems( ComparePluginVersion, sortPluginVersionAsceding ? !NULL : NULL );
 		sortPluginVersionAsceding = !sortPluginVersionAsceding;
+		m_pluginList.SortItems( ComparePluginVersion, sortPluginVersionAsceding ? !NULL : NULL );
 	} else if ( pNMListView->iSubItem == 2 ) {
-		m_pluginList.SortItems( ComparePluginRunMode, sortPluginRunModeAsceding ? !NULL : NULL );
 		sortPluginRunModeAsceding = !sortPluginRunModeAsceding;
+		m_pluginList.SortItems( ComparePluginRunMode, sortPluginRunModeAsceding ? !NULL : NULL );
 	} else if ( pNMListView->iSubItem == 3 ) {
-		m_pluginList.SortItems( ComparePluginState, sortPluginStateAsceding ? !NULL : NULL );
 		sortPluginStateAsceding = !sortPluginStateAsceding;
+		m_pluginList.SortItems( ComparePluginState, sortPluginStateAsceding ? !NULL : NULL );
 	} else if ( pNMListView->iSubItem == 4 ) {
-		m_pluginList.SortItems( ComparePluginDescription, sortPluginDescriptionAsceding ? !NULL : NULL );
 		sortPluginDescriptionAsceding = !sortPluginDescriptionAsceding;
+		m_pluginList.SortItems( ComparePluginDescription, sortPluginDescriptionAsceding ? !NULL : NULL );
 	}
 	
 	*pResult = 0;
+}
+
+void RDOStudioOptionsPlugins::updateRunModeInGrid( const RDOStudioPlugin* plugin, const int index )
+{
+	std::string runMode;
+	if ( plugin->getRunMode() == rdoPlugin::prmStudioStartUp ) {
+		runMode = format( IDS_PLUGIN_RUNMODE_STUDIOSTARTUP );
+	} else if ( plugin->getRunMode() == rdoPlugin::prmModelStartUp ) {
+		runMode = format( IDS_PLUGIN_RUNMODE_MODELSTARTUP );
+	} else {
+		runMode = format( IDS_PLUGIN_RUNMODE_NOAUTO );
+	}
+	m_pluginList.SetItemText( index, 2, runMode.c_str() );
+}
+
+void RDOStudioOptionsPlugins::updateControls( const RDOStudioPlugin* plugin )
+{
+	if ( plugin ) {
+		m_runModeStatic.EnableWindow( true );
+		m_runModeComboBox.EnableWindow( true );
+		m_runModeButton.EnableWindow( plugin->getRunMode() != plugin->getDefaultRunMode() );
+		m_runModeComboBox.SetCurSel( plugin->getRunMode() );
+	} else {
+		m_runModeStatic.EnableWindow( false );
+		m_runModeComboBox.EnableWindow( false );
+		m_runModeButton.EnableWindow( false );
+	}
+}
+
+void RDOStudioOptionsPlugins::OnPluginRunModeComboBoxChanged() 
+{
+	POSITION pos = m_pluginList.GetFirstSelectedItemPosition();
+	if ( pos ) {
+		int index = m_pluginList.GetNextSelectedItem( pos );
+		RDOStudioPlugin* plugin = reinterpret_cast<RDOStudioPlugin*>(m_pluginList.GetItemData( index ) );
+		if ( plugin ) {
+			switch ( m_runModeComboBox.GetCurSel() ) {
+				case 0: plugin->setRunMode( rdoPlugin::prmNoAuto ); break;
+				case 1: plugin->setRunMode( rdoPlugin::prmStudioStartUp ); break;
+				case 2: plugin->setRunMode( rdoPlugin::prmModelStartUp ); break;
+			}
+			updateRunModeInGrid( plugin, index );
+			updateControls( plugin );
+		}
+	}
+}
+
+void RDOStudioOptionsPlugins::OnPluginRunModeButtonClicked() 
+{
+	POSITION pos = m_pluginList.GetFirstSelectedItemPosition();
+	if ( pos ) {
+		int index = m_pluginList.GetNextSelectedItem( pos );
+		RDOStudioPlugin* plugin = reinterpret_cast<RDOStudioPlugin*>(m_pluginList.GetItemData( index ) );
+		if ( plugin ) {
+			plugin->setRunMode( plugin->getDefaultRunMode() );
+			updateRunModeInGrid( plugin, index );
+			updateControls( plugin );
+		}
+	}
 }
 
 // ----------------------------------------------------------------------------

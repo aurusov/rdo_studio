@@ -28,6 +28,8 @@ private:
 	rdoPlugin::PluginState state;
 	rdoPlugin::PluginRunMode runMode;
 
+	std::string getProfilePath() const;
+
 public:
 	RDOStudioPlugin( const std::string& modulName );
 	virtual ~RDOStudioPlugin();
@@ -42,6 +44,8 @@ public:
 	std::string getDescription() const { return description;  }
 	rdoPlugin::PluginState getState() const     { return state;   }
 	rdoPlugin::PluginRunMode getRunMode() const { return runMode; }
+	void setRunMode( const rdoPlugin::PluginRunMode runMode );
+	rdoPlugin::PluginRunMode getDefaultRunMode() const;
 };
 
 // ----------------------------------------------------------------------------

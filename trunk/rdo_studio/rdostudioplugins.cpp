@@ -23,9 +23,9 @@ RDOStudioPlugin::RDOStudioPlugin( const std::string& _modulName ):
 	state( rdoPlugin::psStop ),
 	runMode( rdoPlugin::prmNoAuto )
 {
-	HMODULE local_lib = ::LoadLibrary( modulName.c_str() );
-	if ( local_lib ) {
-		rdoPlugin::PFunGetPluginInfo getPluginInfo = reinterpret_cast<rdoPlugin::PFunGetPluginInfo>(::GetProcAddress( local_lib, "getPluginInfo" ));
+	lib = ::LoadLibrary( modulName.c_str() );
+	if ( lib ) {
+		rdoPlugin::PFunGetPluginInfo getPluginInfo = reinterpret_cast<rdoPlugin::PFunGetPluginInfo>(::GetProcAddress( lib, "getPluginInfo" ));
 		if ( getPluginInfo ) {
 			rdoPlugin::PluginInfo info;
 			getPluginInfo( &info );
@@ -36,12 +36,11 @@ RDOStudioPlugin::RDOStudioPlugin( const std::string& _modulName ):
 			version_info  = info.version_info;
 			description   = info.description;
 		}
-		rdoPlugin::PFunGetPluginRunMode getPluginRunMode = reinterpret_cast<rdoPlugin::PFunGetPluginRunMode>(::GetProcAddress( local_lib, "getPluginRunMode" ));
-		if ( getPluginRunMode ) {
-			runMode = getPluginRunMode();
-		}
-		::FreeLibrary( local_lib );
+		runMode = getDefaultRunMode();
+		::FreeLibrary( lib );
 	}
+	lib = 0;
+	runMode = static_cast<rdoPlugin::PluginRunMode>(AfxGetApp()->GetProfileInt( getProfilePath().c_str(), "runMode", runMode ));
 }
 
 RDOStudioPlugin::~RDOStudioPlugin()
@@ -60,6 +59,40 @@ bool RDOStudioPlugin::isRDOStudioPlugin( const std::string& modulName )
 		::FreeLibrary( lib );
 	}
 	return res;
+}
+
+std::string RDOStudioPlugin::getProfilePath() const
+{
+	return format( "plugins\\%s_%d.%d.%d", name.c_str(), version_major, version_minor, version_build );
+}
+
+void RDOStudioPlugin::setRunMode( const rdoPlugin::PluginRunMode _runMode )
+{
+	if ( runMode != _runMode ) {
+		runMode = _runMode;
+		AfxGetApp()->WriteProfileInt( getProfilePath().c_str(), "runMode", runMode );
+	}
+}
+
+rdoPlugin::PluginRunMode RDOStudioPlugin::getDefaultRunMode() const
+{
+	rdoPlugin::PluginRunMode defaultRunMode = rdoPlugin::prmNoAuto;
+	if ( !lib ) {
+		HMODULE local_lib = ::LoadLibrary( modulName.c_str() );
+		if ( local_lib ) {
+			rdoPlugin::PFunGetPluginRunMode getPluginRunMode = reinterpret_cast<rdoPlugin::PFunGetPluginRunMode>(::GetProcAddress( local_lib, "getPluginRunMode" ));
+			if ( getPluginRunMode ) {
+				defaultRunMode = getPluginRunMode();
+			}
+			::FreeLibrary( local_lib );
+		}
+	} else {
+		rdoPlugin::PFunGetPluginRunMode getPluginRunMode = reinterpret_cast<rdoPlugin::PFunGetPluginRunMode>(::GetProcAddress( lib, "getPluginRunMode" ));
+		if ( getPluginRunMode ) {
+			defaultRunMode = getPluginRunMode();
+		}
+	}
+	return defaultRunMode;
 }
 
 // ----------------------------------------------------------------------------

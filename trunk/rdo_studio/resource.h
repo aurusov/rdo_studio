@@ -123,6 +123,9 @@
 #define IDC_FILEASSOCIATION_CHECKINFUTURE_CHECK 1094
 #define IDC_PLUGIN_INFO                 1097
 #define IDC_PLUGIN_LIST                 1099
+#define IDC_PLUGIN_RUNMODE_STATIC       1100
+#define IDC_PLUGIN_RUNMODE_COMBOBOX     1101
+#define IDC_PLUGIN_RUNMODE_BUTTON       1103
 #define ID_CHART_ADDTONEWCHART          32771
 #define ID_VIEW_WORKSPACE               32774
 #define ID_VIEW_OUTPUT                  32775
@@ -585,9 +588,9 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        170
+#define _APS_NEXT_RESOURCE_VALUE        171
 #define _APS_NEXT_COMMAND_VALUE         33183
-#define _APS_NEXT_CONTROL_VALUE         1100
+#define _APS_NEXT_CONTROL_VALUE         1104
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
