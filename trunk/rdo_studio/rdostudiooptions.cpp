@@ -9,25 +9,43 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 // ----------------------------------------------------------------------------
-// ---------- RDOStudioSourceEditorOptions
+// ---------- RDOStudioOptionsSourceEditor
 // ----------------------------------------------------------------------------
-RDOStudioSourceEditorOptions::RDOStudioSourceEditorOptions(): CPropertyPage( IDD_OPTIONS_EDITOR_DIALOG )
+BEGIN_MESSAGE_MAP(RDOStudioOptionsSourceEditor, CPropertyPage)
+	//{{AFX_MSG_MAP(RDOStudioOptionsSourceEditor)
+	//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+RDOStudioOptionsSourceEditor::RDOStudioOptionsSourceEditor(): CPropertyPage( IDD_OPTIONS_EDITOR_DIALOG )
 {
 }
 
-RDOStudioSourceEditorOptions::~RDOStudioSourceEditorOptions()
+RDOStudioOptionsSourceEditor::~RDOStudioOptionsSourceEditor()
 {
 }
 
 // ----------------------------------------------------------------------------
-// ---------- RDOStudioStyleColorOptions
+// ---------- RDOStudioOptionsStyleColor
 // ----------------------------------------------------------------------------
-RDOStudioStyleColorOptions::RDOStudioStyleColorOptions(): CPropertyPage( IDD_OPTIONS_COLORS_DIALOG )
+BEGIN_MESSAGE_MAP(RDOStudioOptionsStyleColor, CPropertyPage)
+	//{{AFX_MSG_MAP(RDOStudioOptionsStyleColor)
+	//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+RDOStudioOptionsStyleColor::RDOStudioOptionsStyleColor(): CPropertyPage( IDD_OPTIONS_COLORS_DIALOG )
 {
 }
 
-RDOStudioStyleColorOptions::~RDOStudioStyleColorOptions()
+RDOStudioOptionsStyleColor::~RDOStudioOptionsStyleColor()
 {
+}
+
+void RDOStudioOptionsStyleColor::DoDataExchange(CDataExchange* pDX) 
+{
+	CPropertyPage::DoDataExchange(pDX);
+
+	DDX_Control( pDX, IDC_FGCOLOR_COMBO, fgColorCB );
+	DDX_Control( pDX, IDC_BGCOLOR_COMBO, bgColorCB );
 }
 
 // ----------------------------------------------------------------------------
@@ -41,18 +59,18 @@ END_MESSAGE_MAP()
 
 RDOStudioOptions::RDOStudioOptions():
 	CPropertySheet(),
-	sourceEditorOptions( NULL ),
-	styleColorOptions( NULL )
+	sourceEditor( NULL ),
+	styleColor( NULL )
 {
 	SetTitle( format( ID_OPTIONS ).c_str() );
 
 //	editorStyle = style;
 //	prevStyle   = style;
 
-	sourceEditorOptions = new RDOStudioSourceEditorOptions();
-	styleColorOptions   = new RDOStudioStyleColorOptions();
-	AddPage( sourceEditorOptions );
-	AddPage( styleColorOptions );
+	sourceEditor = new RDOStudioOptionsSourceEditor();
+	styleColor   = new RDOStudioOptionsStyleColor();
+	AddPage( sourceEditor );
+	AddPage( styleColor );
 
 	m_psh.dwFlags |= PSH_USECALLBACK | PSH_HASHELP;
 	m_psh.pfnCallback = AddContextHelpProc;
@@ -60,8 +78,8 @@ RDOStudioOptions::RDOStudioOptions():
 
 RDOStudioOptions::~RDOStudioOptions()
 {
-	if ( sourceEditorOptions ) delete sourceEditorOptions;
-	if ( styleColorOptions ) delete styleColorOptions;
+	if ( sourceEditor ) delete sourceEditor;
+	if ( styleColor ) delete styleColor;
 }
 
 void RDOStudioOptions::apply()
@@ -111,4 +129,17 @@ BOOL RDOStudioOptions::OnHelpInfo(HELPINFO* pHelpInfo)
 //	if ( pHelpInfo->iContextType == HELPINFO_WINDOW )
 //		return HtmlHelp( ::GetDesktopWindow(), filename, HH_HELP_CONTEXT, pHelpInfo->dwContextId) != NULL;
 	return TRUE;
+}
+
+BOOL RDOStudioOptionsStyleColor::OnInitDialog() 
+{
+	CPropertyPage::OnInitDialog();
+
+	int itemHeight = ((CComboBox*)GetDlgItem( IDC_THEME_COMBO ))->GetItemHeight( -1 );
+	fgColorCB.setItemHeight( itemHeight );
+	bgColorCB.setItemHeight( itemHeight );
+	fgColorCB.insertBaseColors();
+	bgColorCB.insertBaseColors();
+
+	return true;
 }

@@ -997,6 +997,10 @@ SOURCE=.\res\buildToolbar.bmp
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\buildToolbar_d.bmp
+# End Source File
+# Begin Source File
+
 SOURCE=.\res\editToolbar.bmp
 # End Source File
 # Begin Source File
@@ -1006,6 +1010,10 @@ SOURCE=.\res\editToolbar_d.bmp
 # Begin Source File
 
 SOURCE=.\res\fileToolbar.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\fileToolbar_d.bmp
 # End Source File
 # Begin Source File
 
@@ -1050,6 +1058,10 @@ SOURCE=.\res\rdostudioframedoc.ico
 # Begin Source File
 
 SOURCE=.\res\rdostudiomodeldoc.ico
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\tracertreectrl.bmp
 # End Source File
 # End Group
 # End Target

@@ -8,27 +8,46 @@
 #include <rdocolorcombobox.h>
 
 // ----------------------------------------------------------------------------
-// ---------- RDOStudioSourceEditorOptions
+// ---------- RDOStudioOptionsSourceEditor
 // ----------------------------------------------------------------------------
-class RDOStudioSourceEditorOptions: public CPropertyPage
+class RDOStudioOptionsSourceEditor: public CPropertyPage
 {
+protected:
+	//{{AFX_VIRTUAL(RDOStudioOptionsSourceEditor)
+	//}}AFX_VIRTUAL
+
+	//{{AFX_MSG(RDOStudioOptionsSourceEditor)
+	//}}AFX_MSG
+	DECLARE_MESSAGE_MAP()
+
 public:
-	RDOStudioSourceEditorOptions();
-	virtual ~RDOStudioSourceEditorOptions();
+	RDOStudioOptionsSourceEditor();
+	virtual ~RDOStudioOptionsSourceEditor();
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOStudioStyleColorOptions
+// ---------- RDOStudioOptionsStyleColor
 // ----------------------------------------------------------------------------
-class RDOStudioStyleColorOptions: public CPropertyPage
+class RDOStudioOptionsStyleColor: public CPropertyPage
 {
 private:
 	RDOColorComboBox fgColorCB;
 	RDOColorComboBox bgColorCB;
 
+protected:
+	//{{AFX_VIRTUAL(RDOStudioOptionsStyleColor)
+	protected:
+	virtual void DoDataExchange(CDataExchange* pDX);
+	//}}AFX_VIRTUAL
+
+	//{{AFX_MSG(RDOStudioOptionsStyleColor)
+	virtual BOOL OnInitDialog();
+	//}}AFX_MSG
+	DECLARE_MESSAGE_MAP()
+
 public:
-	RDOStudioStyleColorOptions();
-	virtual ~RDOStudioStyleColorOptions();
+	RDOStudioOptionsStyleColor();
+	virtual ~RDOStudioOptionsStyleColor();
 };
 
 // ----------------------------------------------------------------------------
@@ -39,17 +58,21 @@ class RDOStudioOptions: public CPropertySheet
 //friend class RDOStudioEditorOptions;
 //friend class RDOStudioColorsOptions;
 
-protected:
+private:
 //	RDOStudioEditStyle prevStyle;
 
-	RDOStudioSourceEditorOptions* sourceEditorOptions;
-	RDOStudioStyleColorOptions*   styleColorOptions;
+	RDOStudioOptionsSourceEditor* sourceEditor;
+	RDOStudioOptionsStyleColor*   styleColor;
 
 	void apply();
 	static int CALLBACK AddContextHelpProc(HWND hwnd, UINT message, LPARAM lParam);
 	void onHelpButton();
 
-	//{{AFX_MSG(RDOStudioOutput)
+protected:
+	//{{AFX_VIRTUAL(RDOStudioOptions)
+	//}}AFX_VIRTUAL
+
+	//{{AFX_MSG(RDOStudioOptions)
 	afx_msg BOOL OnHelpInfo(HELPINFO* pHelpInfo);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
