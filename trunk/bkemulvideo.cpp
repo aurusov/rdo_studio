@@ -50,23 +50,23 @@ void BKEmulVideo::setMemoryWord( WORD address, WORD data )
 
 void BKEmulVideo::updateMonitor() const
 {
-	enulApp.mainFrame->updateMonitor();
+	emulApp.mainFrame->updateMonitor();
 }
 
 void BKEmulVideo::updateScrolling( BYTE delta ) const
 {
-	enulApp.mainFrame->updateScrolling( delta );
+	emulApp.mainFrame->updateScrolling( delta );
 }
 
 void BKEmulVideo::updateVideoMemoryByte( WORD address ) const
 {
-	enulApp.mainFrame->updateVideoMemory.push_back( address );
+	emulApp.mainFrame->updateVideoMemory.push_back( address );
 }
 
 void BKEmulVideo::updateVideoMemoryWord( WORD address ) const
 {
-	enulApp.mainFrame->updateVideoMemory.push_back( address );
-	enulApp.mainFrame->updateVideoMemory.push_back( address + 1 );
+	emulApp.mainFrame->updateVideoMemory.push_back( address );
+	emulApp.mainFrame->updateVideoMemory.push_back( address + 1 );
 }
 
 void BKEmulVideo::setColorMonitor( const bool value )

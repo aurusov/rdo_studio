@@ -13,7 +13,7 @@ static char THIS_FILE[] = __FILE__;
 // --------------------------------------------------------------
 // ---------- BKEmulApp
 // --------------------------------------------------------------
-BKEmulApp enulApp;
+BKEmulApp emulApp;
 
 BEGIN_MESSAGE_MAP(BKEmulApp, CWinApp)
 	//{{AFX_MSG_MAP(BKEmulApp)

@@ -21,6 +21,8 @@ protected:
 	LPDIRECTDRAW7        m_pDD;
 	LPDIRECTDRAWSURFACE7 m_pdds;
 	DDSURFACEDESC2       m_ddsd;
+	LPDIRECTDRAWSURFACE7 m_bg_pdds;
+	DDSURFACEDESC2       m_bg_ddsd;
 
 	CWnd* parentWnd;
 
@@ -48,9 +50,11 @@ public:
     HRESULT CreateFullScreenDisplay( CWnd* _parentWnd, int width, int height, int bpp );
 	virtual HRESULT DestroyObjects();
 
-	LPDIRECTDRAW7        GetDirectDraw()     { return m_pDD;   }
-	LPDIRECTDRAWSURFACE7 getSurface()        { return m_pdds;  }
-	DDSURFACEDESC2*      getSurfaceDesc()    { return &m_ddsd; }
+	LPDIRECTDRAW7        getDirectDraw()     { return m_pDD;      }
+	LPDIRECTDRAWSURFACE7 getSurface()        { return m_pdds;     }
+	DDSURFACEDESC2*      getSurfaceDesc()    { return &m_ddsd;    }
+	LPDIRECTDRAWSURFACE7 getBgSurface()      { return m_bg_pdds;  }
+	DDSURFACEDESC2*      getBgSurfaceDesc()  { return &m_bg_ddsd; }
 };
 
 #endif // DDUTIL_H

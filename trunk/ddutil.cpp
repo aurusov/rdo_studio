@@ -20,7 +20,8 @@
 
 CDisplay::CDisplay():
 	m_pDD( NULL ),
-	m_pdds( NULL )
+	m_pdds( NULL ),
+	m_bg_pdds( NULL )
 {
 }
 
@@ -33,6 +34,7 @@ CDisplay::~CDisplay()
 HRESULT CDisplay::DestroyObjects()
 {
 	SAFE_RELEASE( m_pdds );
+	SAFE_RELEASE( m_bg_pdds );
 
 	if ( m_pDD ) {
 		m_pDD->SetCooperativeLevel( parentWnd->m_hWnd, DDSCL_NORMAL );
@@ -87,6 +89,21 @@ HRESULT CDisplay::CreateWindowedDisplay( CWnd* _parentWnd, int width, int height
 
 	m_ddsd.dwSize = sizeof( m_ddsd );
 	m_pdds->GetSurfaceDesc( &m_ddsd );
+
+	// Create the backbuffer surface
+	::ZeroMemory( &ddsd, sizeof( ddsd ) );
+	ddsd.dwSize         = sizeof( ddsd );
+	ddsd.dwFlags        = DDSD_CAPS | DDSD_WIDTH | DDSD_HEIGHT;    
+	ddsd.ddsCaps.dwCaps = DDSCAPS_OFFSCREENPLAIN;
+	ddsd.dwWidth        = width;
+	ddsd.dwHeight       = height;
+
+	if( FAILED( m_pDD->CreateSurface( &ddsd, &m_bg_pdds, NULL ) ) ) {
+		return E_FAIL;
+	}
+
+	m_bg_ddsd.dwSize = sizeof( m_bg_ddsd );
+	m_bg_pdds->GetSurfaceDesc( &m_bg_ddsd );
 
 	LPDIRECTDRAWCLIPPER pcClipper;
 	if( FAILED( hr = m_pDD->CreateClipper( 0, &pcClipper, NULL ) ) ) {
@@ -175,6 +192,19 @@ HRESULT CDisplay::CreateFullScreenDisplay( CWnd* _parentWnd, int width, int heig
 
 	m_ddsd.dwSize = sizeof( m_ddsd );
 	m_pdds->GetSurfaceDesc( &m_ddsd );
+
+	// Create the backbuffer surface
+	ddsd.dwFlags        = DDSD_CAPS | DDSD_WIDTH | DDSD_HEIGHT;    
+	ddsd.ddsCaps.dwCaps = DDSCAPS_OFFSCREENPLAIN;
+	ddsd.dwWidth        = width;
+	ddsd.dwHeight       = height;
+
+	if( FAILED( m_pDD->CreateSurface( &ddsd, &m_bg_pdds, NULL ) ) ) {
+		return E_FAIL;
+	}
+
+	m_bg_ddsd.dwSize = sizeof( m_bg_ddsd );
+	m_bg_pdds->GetSurfaceDesc( &m_bg_ddsd );
 
 	RECT rc;
 	::SetRect( &rc, 0, 0, width, height );

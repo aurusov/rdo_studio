@@ -35,7 +35,7 @@ protected:
 };
 
 // --------------------------------------------------------------
-extern BKEmulApp enulApp;
+extern BKEmulApp emulApp;
 
 //{{AFX_INSERT_LOCATION}}
 

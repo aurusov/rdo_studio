@@ -1,10 +1,10 @@
 #include "stdafx.h"
 #include "bkemulmainfrm.h"
+#include "bkemulapp.h"
 #include "bkemul.h"
 #include "resource.h"
 
 #include <ddraw.h>
-#include "ddutil.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -64,6 +64,7 @@ BKMainFrame::BKMainFrame():
 	bColor( 0 ),
 	grayColor( 0 ),
 	windowRect( 0, 0, 0, 0 ),
+	backRect( 0, 0, bk_width, bk_height ),
 	screenRect( 0, 0, 0, 0 ),
 	fullScreenMode( false ),
 	fullWindowWidth( 0 ),
@@ -218,15 +219,15 @@ HRESULT BKMainFrame::initDirectDraw()
 	return S_OK;
 }
 
-HRESULT BKMainFrame::lockSurface() const
+HRESULT BKMainFrame::lockSurface( LPDIRECTDRAWSURFACE7 surface ) const
 {
 	try {
-		HRESULT rValue = display->getSurface()->Lock( NULL, display->getSurfaceDesc(), DDLOCK_WAIT, NULL );
+		HRESULT rValue = surface->Lock( NULL, display->getSurfaceDesc(), DDLOCK_WAIT, NULL );
 		if ( rValue != DD_OK ) {
 			if ( rValue == DDERR_SURFACELOST ) {
 				restoreSurfaces();
 				if ( rValue != DD_OK ) return false;
-				return display->getSurface()->Lock( NULL, display->getSurfaceDesc(), DDLOCK_WAIT, NULL ) == DD_OK;
+				return surface->Lock( NULL, display->getSurfaceDesc(), DDLOCK_WAIT, NULL ) == DD_OK;
 			} else {
 				return DD_FALSE;
 			}
@@ -237,9 +238,9 @@ HRESULT BKMainFrame::lockSurface() const
 	}
 }
 
-HRESULT BKMainFrame::unlockSurface() const
+HRESULT BKMainFrame::unlockSurface( LPDIRECTDRAWSURFACE7 surface ) const
 {
-	return display->getSurface()->Unlock( NULL );
+	return surface->Unlock( NULL );
 }
 
 void BKMainFrame::draw( const BYTE* bk_video_from, int count_byte, BYTE BK_byte_X, BYTE BK_line_Y ) const
@@ -395,7 +396,7 @@ void BKMainFrame::draw( const BYTE* bk_video_from, int count_byte, BYTE BK_byte_
 
 HRESULT BKMainFrame::displayFrame() const
 {
-	if ( lockSurface() == DD_OK ) {
+	if ( lockSurface( display->getSurface() ) == DD_OK ) {
 		if ( emul.isPowerON() ) {
 			draw( emul.video.getMemory(), emul.video.getMemorySize() );
 		} else {
@@ -422,14 +423,14 @@ HRESULT BKMainFrame::displayFrame() const
 				dc.FillSolidRect( 0, windowRect.bottom, rect.right, rect.bottom - windowRect.bottom, color );
 			}
 		}
-		unlockSurface();
+		unlockSurface( display->getSurface() );
 	}
 	return DD_OK;
 }
 
 HRESULT BKMainFrame::restoreSurfaces() const
 {
-	return display->GetDirectDraw()->RestoreAllSurfaces();
+	return display->getDirectDraw()->RestoreAllSurfaces();
 }
 
 DWORD BKMainFrame::getColor( const COLORREF color ) const
@@ -447,8 +448,45 @@ void BKMainFrame::updateMonitor() const
 	}
 }
 
-void BKMainFrame::updateScrolling( BYTE delta ) const
+void BKMainFrame::updateScrolling( BYTE delta )
 {
+	LPDIRECTDRAWSURFACE7 front = display->getSurface();
+	LPDIRECTDRAWSURFACE7 back  = display->getBgSurface();
+	::SetCursor( 0 );
+	HRESULT rValue = back->Blt( backRect, front, windowRect, 0, NULL );
+	if ( rValue == DDERR_SURFACELOST ) {
+		rValue = back->Restore();
+		if ( rValue == DD_OK ) {
+			rValue = back->Blt( backRect, front, windowRect, 0, NULL );
+		}
+	}
+	if ( rValue == DD_OK ) {
+		CRect rect_front = windowRect;
+		CRect rect_back  = backRect;
+		rect_front.bottom -= delta;
+		rect_back.top     += delta;
+		rValue = front->Blt( rect_front, back, rect_back, 0, NULL );
+		if ( rValue == DDERR_SURFACELOST ) {
+			rValue = front->Restore();
+			if ( rValue == DD_OK ) {
+				rValue = front->Blt( rect_front, back, rect_back, 0, NULL );
+			}
+		}
+		if ( rValue == DD_OK ) {
+			rect_front = windowRect;
+			rect_back  = backRect;
+			rect_front.top   += bk_height - delta;
+			rect_back.bottom -= bk_height - delta;
+			rValue = front->Blt( rect_front, back, rect_back, 0, NULL );
+			if ( rValue == DDERR_SURFACELOST ) {
+				rValue = front->Restore();
+				if ( rValue == DD_OK ) {
+					rValue = front->Blt( rect_front, back, rect_back, 0, NULL );
+				}
+			}
+		}
+	}
+	::SetCursor( emulApp.LoadStandardCursor( IDC_ARROW ) );
 }
 
 void BKMainFrame::updateBounds()
@@ -501,7 +539,7 @@ void BKMainFrame::OnTimer(UINT nIDEvent)
 			}
 */
 			std::vector< WORD >::const_iterator it = updateVideoMemory.begin();
-			if ( it != updateVideoMemory.end() && lockSurface() == DD_OK ) {
+			if ( it != updateVideoMemory.end() && lockSurface( display->getSurface() ) == DD_OK ) {
 				lock = true;
 				if ( emul.isPowerON() ) {
 					while ( it != updateVideoMemory.end() ) {
@@ -510,7 +548,7 @@ void BKMainFrame::OnTimer(UINT nIDEvent)
 					}
 				}
 				updateVideoMemory.clear();
-				unlockSurface();
+				unlockSurface( display->getSurface() );
 				lock = false;
 			}
 		}

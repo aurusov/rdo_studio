@@ -5,6 +5,8 @@
 #pragma once
 #endif
 
+#include "ddutil.h"
+
 // --------------------------------------------------------------
 // ---------- BKMainFrame
 // --------------------------------------------------------------
@@ -28,6 +30,7 @@ private:
 	DWORD rZero, gZero, bZero;
 	DWORD rColor, gColor, bColor, grayColor;
 	CRect windowRect;
+	CRect backRect;
 	CRect screenRect;
 	bool  fullScreenMode;
 	int   fullWindowWidth;
@@ -37,8 +40,8 @@ private:
 	bool lock;
 	std::vector< WORD > updateVideoMemory;
 	HRESULT initDirectDraw();
-	HRESULT lockSurface() const;
-	HRESULT unlockSurface() const;
+	HRESULT lockSurface( LPDIRECTDRAWSURFACE7 surface ) const;
+	HRESULT unlockSurface( LPDIRECTDRAWSURFACE7 surface ) const;
 	HRESULT displayFrame() const;
 	HRESULT restoreSurfaces() const;
 
@@ -47,7 +50,7 @@ private:
 	void draw( const BYTE* bk_video_from, int count_byte, BYTE BK_byte_X = 0, BYTE BK_line_Y = 0 ) const;
 
 	void updateMonitor() const;
-	void updateScrolling( BYTE delta ) const;
+	void updateScrolling( BYTE delta );
 	void updateBounds();
 	bool isFullScreenMode() const { return fullScreenMode; }
 	void setFullScreenMode( const bool value );
