@@ -31,6 +31,7 @@ BEGIN_MESSAGE_MAP(RDOStudioFrameView, CView)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOMOUT, OnUpdateZoomOut)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOMRESET, OnUpdateZoomReset)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOMAUTO, OnUpdateZoomAuto)
+	ON_WM_PAINT()
 	//}}AFX_MSG_MAP
 	ON_COMMAND(ID_FILE_PRINT, CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, CView::OnFilePrint)
@@ -44,9 +45,16 @@ RDOStudioFrameView::RDOStudioFrameView():
 	xPos( 0 ),
 	yPos( 0 ),
 	bgColor( studioApp.mainFrame->style_frame.theme->backgroundColor ),
-	mustBeInit( true )
+	mustBeInit( true ),
+	hwnd( NULL ),
+	hdc( NULL ),
+	hmemdc( NULL ),
+	saved_hdc( 0 ),
+	saved_hmemdc( 0 ),
+	hfontInit( NULL ),
+	hbmpInit( NULL ),
+	hbmp( NULL )
 {
-	dc.CreateCompatibleDC( NULL );
 }
 
 RDOStudioFrameView::~RDOStudioFrameView()
@@ -59,7 +67,7 @@ BOOL RDOStudioFrameView::PreCreateWindow(CREATESTRUCT& cs)
 
 	cs.style &= ~WS_BORDER;
 	cs.style |= WS_HSCROLL | WS_VSCROLL;
-	cs.lpszClass = AfxRegisterWndClass( 0, ::LoadCursor(NULL, IDC_ARROW) );
+	cs.lpszClass = AfxRegisterWndClass( CS_DBLCLKS | CS_OWNDC, ::LoadCursor(NULL, IDC_ARROW) );
 
 	return TRUE;
 }
@@ -68,57 +76,35 @@ int RDOStudioFrameView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if ( CView::OnCreate(lpCreateStruct) == -1 ) return -1;
 
+	// Remembering handle to the window in hwnd member
+	hwnd = GetSafeHwnd();
+	// Remembering handle to the private device context in hdc member
+	if ( hwnd ) hdc = ::GetDC( hwnd );
+	if ( !hdc ) return -1;
+
+	// Creating memory device context to draw on bitmap
+	hmemdc = ::CreateCompatibleDC( hdc );
+	if ( !hmemdc ) return -1;
+
+	// Saving the own DC and memory DC states to restore them
+	// before deleting the memory DC or destroying window
+	saved_hdc    = ::SaveDC( hdc );
+	saved_hmemdc = ::SaveDC( hmemdc );
+	if ( !saved_hdc || !saved_hmemdc ) return -1;
+	// Setting background mode one time in initialization.
+	// We have private DC, so we needn't to reset it each time
+	// we paint
+	::SetBkMode( hmemdc, TRANSPARENT );
+	// Remembering default font to select it into DC
+	// when destroying window or setting new font
+	hfontInit = static_cast<HFONT>(::GetCurrentObject( hmemdc, OBJ_FONT ));
+	// Remembering default bmp to select it into DC
+	// when resizing window
+	hbmpInit  = static_cast<HBITMAP>(::GetCurrentObject( hmemdc, OBJ_BITMAP ));
+
 	updateScrollBars();
 
 	return 0;
-}
-
-void RDOStudioFrameView::OnDraw(CDC* pDC)
-{
-//	RDOStudioFrameDoc* pDoc = GetDocument();
-//	ASSERT_VALID(pDoc);
-
-	int index = model->frameManager.findFrameIndex( this );
-	CSingleLock lock_draw( model->frameManager.getFrameMutexDraw( index ) );
-	lock_draw.Lock();
-
-	GetClientRect( &newClientRect );
-
-	if ( !mustBeInit ) {
-		CBitmap* pOldBitmap = dc.SelectObject( &frameBmp );
-/*
-		pDC->SetStretchBltMode( HALFTONE );
-		double k1 = (double)newClientRect.bottom / frameBmpRect.bottom;
-		double k2 = (double)newClientRect.right / frameBmpRect.right;
-		double k = min( k1, k2 );
-		if ( k > 1 ) k = 1;
-		CRect rect( 0, 0, frameBmpRect.right * k, frameBmpRect.bottom * k );
-		rect.OffsetRect( (newClientRect.right - rect.right) / 2, (newClientRect.bottom - rect.bottom) / 2 );
-		pDC->StretchBlt( rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top, &dc, 0, 0, frameBmpRect.right, frameBmpRect.bottom, SRCCOPY );
-		if ( rect.left ) {
-			pDC->FillSolidRect( 0, 0, rect.left, newClientRect.bottom, bgColor );
-			pDC->FillSolidRect( rect.right, 0, newClientRect.right, newClientRect.bottom, bgColor );
-		}
-		if ( rect.top ) {
-			pDC->FillSolidRect( 0, 0, newClientRect.right, rect.top, bgColor );
-			pDC->FillSolidRect( 0, rect.bottom, newClientRect.right, newClientRect.bottom, bgColor );
-		}
-*/
-
-		pDC->BitBlt( 0, 0, newClientRect.right, newClientRect.bottom, &dc, xPos, yPos, SRCCOPY );
-		dc.SelectObject( pOldBitmap );
-	}
-
-	if ( newClientRect.right - frameBmpRect.right > 0 ) {
-		pDC->FillSolidRect( frameBmpRect.right, 0, newClientRect.right - frameBmpRect.right, newClientRect.bottom, bgColor );
-	}
-	if ( newClientRect.bottom - frameBmpRect.bottom > 0 ) {
-		pDC->FillSolidRect( 0, frameBmpRect.bottom, newClientRect.right, newClientRect.bottom - frameBmpRect.bottom, bgColor );
-	}
-
-	lock_draw.Unlock();
-
-	model->frameManager.getFrameEventTimer( index )->SetEvent();
 }
 
 BOOL RDOStudioFrameView::OnPreparePrinting(CPrintInfo* pInfo)
@@ -160,6 +146,17 @@ void RDOStudioFrameView::OnDestroy()
 		model->frameManager.disconnectFrameDoc( GetDocument() );
 		model->frameManager.resetCurrentShowingFrame( index );
 	}
+	if ( hdc ) {
+		::RestoreDC( hdc, saved_hdc );
+	}
+	if ( hmemdc ) {
+		::RestoreDC( hmemdc, saved_hmemdc );
+		::DeleteDC( hmemdc );
+	}
+	if ( hbmp ) {
+		::DeleteObject( hbmp );
+	}
+
 	CView::OnDestroy();
 }
 
@@ -355,4 +352,69 @@ void RDOStudioFrameView::OnUpdateZoomAuto(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable( false );
 	pCmdUI->SetCheck( false );
+}
+
+void RDOStudioFrameView::OnPaint()
+{
+	int index = model->frameManager.findFrameIndex( this );
+	CSingleLock lock_draw( model->frameManager.getFrameMutexDraw( index ) );
+	lock_draw.Lock();
+
+	PAINTSTRUCT ps;
+	::BeginPaint( hwnd, &ps );
+	onDraw();
+	::EndPaint( hwnd, &ps );
+
+	lock_draw.Unlock();
+	model->frameManager.getFrameEventTimer( index )->SetEvent();
+}
+
+void RDOStudioFrameView::OnDraw( CDC* pDC )
+{
+	CView::OnDraw( pDC );
+}
+
+void RDOStudioFrameView::onDraw()
+{
+//	RDOStudioFrameDoc* pDoc = GetDocument();
+//	ASSERT_VALID(pDoc);
+
+	GetClientRect( &newClientRect );
+
+	if ( !mustBeInit ) {
+		::BitBlt( hdc, 0, 0, newClientRect.right, newClientRect.bottom, hmemdc, xPos, yPos, SRCCOPY );
+/*
+		pDC->SetStretchBltMode( HALFTONE );
+		double k1 = (double)newClientRect.bottom / frameBmpRect.bottom;
+		double k2 = (double)newClientRect.right / frameBmpRect.right;
+		double k = min( k1, k2 );
+		if ( k > 1 ) k = 1;
+		CRect rect( 0, 0, frameBmpRect.right * k, frameBmpRect.bottom * k );
+		rect.OffsetRect( (newClientRect.right - rect.right) / 2, (newClientRect.bottom - rect.bottom) / 2 );
+		pDC->StretchBlt( rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top, &dc, 0, 0, frameBmpRect.right, frameBmpRect.bottom, SRCCOPY );
+		if ( rect.left ) {
+			pDC->FillSolidRect( 0, 0, rect.left, newClientRect.bottom, bgColor );
+			pDC->FillSolidRect( rect.right, 0, newClientRect.right, newClientRect.bottom, bgColor );
+		}
+		if ( rect.top ) {
+			pDC->FillSolidRect( 0, 0, newClientRect.right, rect.top, bgColor );
+			pDC->FillSolidRect( 0, rect.bottom, newClientRect.right, newClientRect.bottom, bgColor );
+		}
+*/
+	}
+
+	if ( newClientRect.right - frameBmpRect.right > 0 ) {
+//		dc.FillSolidRect( frameBmpRect.right, 0, newClientRect.right - frameBmpRect.right, newClientRect.bottom, bgColor );
+		HBRUSH brush = ::CreateSolidBrush( bgColor );
+		RECT r = { frameBmpRect.right, 0, newClientRect.right, newClientRect.bottom };
+		::FillRect( hdc, &r, brush );
+		::DeleteObject( brush );
+	}
+	if ( newClientRect.bottom - frameBmpRect.bottom > 0 ) {
+//		dc.FillSolidRect( 0, frameBmpRect.bottom, newClientRect.right, newClientRect.bottom - frameBmpRect.bottom, bgColor );
+		HBRUSH brush = ::CreateSolidBrush( bgColor );
+		RECT r = { 0, frameBmpRect.bottom, newClientRect.right, newClientRect.bottom };
+		::FillRect( hdc, &r, brush );
+		::DeleteObject( brush );
+	}
 }

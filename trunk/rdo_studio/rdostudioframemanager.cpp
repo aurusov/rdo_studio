@@ -290,7 +290,7 @@ void RDOStudioFrameManager::bmp_insert( const std::string& name )
 			CDC memDC;
 			memDC.CreateCompatibleDC( desktopDC );
 			CBitmap memBMP;
-			memBMP.CreateCompatibleBitmap( bmInfoHeader.biBitCount != 1 ? desktopDC : &memDC, bmInfoHeader.biWidth, bmInfoHeader.biHeight );
+			memBMP.CreateCompatibleBitmap( desktopDC, bmInfoHeader.biWidth, bmInfoHeader.biHeight );
 			::SetDIBits( desktopDC->m_hDC, static_cast<HBITMAP>(memBMP), 0, bmInfoHeader.biHeight, pBits, reinterpret_cast<BITMAPINFO*>(bmInfo), DIB_RGB_COLORS );
 			CBitmap* hOldBitmap1 = memDC.SelectObject( &memBMP );
 
@@ -301,7 +301,7 @@ void RDOStudioFrameManager::bmp_insert( const std::string& name )
 			bitmaps[name] = bmp;
 			bitmaps[name]->w = bmInfoHeader.biWidth;
 			bitmaps[name]->h = bmInfoHeader.biHeight;
-			bitmaps[name]->bmp.CreateCompatibleBitmap( bmInfoHeader.biBitCount != 1 ? desktopDC : &dc, bmInfoHeader.biWidth, bmInfoHeader.biHeight );
+			bitmaps[name]->bmp.CreateCompatibleBitmap( desktopDC, bmInfoHeader.biWidth, bmInfoHeader.biHeight );
 			CBitmap* hOldBitmap2 = dc.SelectObject( &bitmaps[name]->bmp );
 			dc.BitBlt( 0, 0, bmInfoHeader.biWidth, bmInfoHeader.biHeight, &memDC, 0, 0, SRCCOPY );
 
@@ -357,33 +357,32 @@ void RDOStudioFrameManager::showFrame( const RDOFrame* const frame, const int in
 					view->frameBmpRect.right  = frame->width;
 					view->frameBmpRect.bottom = frame->height;
 				}
-				CDC* dc = view->GetDC();
-				view->frameBmp.CreateCompatibleBitmap( dc, view->frameBmpRect.Width(), view->frameBmpRect.Height() );
-				view->ReleaseDC( dc );
+//				CDC* dc = view->GetDC();
+//				view->frameBmp.CreateCompatibleBitmap( dc, view->frameBmpRect.Width(), view->frameBmpRect.Height() );
+//				view->ReleaseDC( dc );
+				view->hbmp = ::CreateCompatibleBitmap( view->hdc, view->frameBmpRect.Width(), view->frameBmpRect.Height() );
+				::SelectObject( view->hmemdc, view->hbmp );
 				view->mustBeInit = false;
 				view->updateScrollBars();
 			}
 
-			CDC dc;
-			CDC* viewDC = view->GetDC();
-			dc.CreateCompatibleDC( viewDC );
-			view->ReleaseDC( viewDC );
-			CBitmap* pOldBitmap = dc.SelectObject( &view->frameBmp );
+			HDC hdc = view->hmemdc;
 
 			if( !frame->hasBackPicture ) {
-				CBrush brush( RGB( frame->r, frame->g, frame->b ) );
-				CBrush* pOldBrush = dc.SelectObject( &brush );
-				CPen pen( PS_SOLID, 0, RGB( 0x00, 0x00, 0x00 ) );
-				CPen* pOldPen = dc.SelectObject( &pen );
-				CRect rect( 0, 0, frame->width, frame->height );
-				dc.Rectangle( rect );
-				dc.SelectObject( pOldBrush );
-				dc.SelectObject( pOldPen );
+				HBRUSH brush     = ::CreateSolidBrush( RGB( frame->r, frame->g, frame->b ) );
+				HBRUSH pOldBrush = static_cast<HBRUSH>(::SelectObject( hdc, brush ));
+				HPEN pen     = ::CreatePen( PS_SOLID, 0, RGB( 0x00, 0x00, 0x00 ) );
+				HPEN pOldPen = static_cast<HPEN>(::SelectObject( hdc, pen ));
+				::Rectangle( hdc, 0, 0, frame->width, frame->height );
+				::SelectObject( hdc, pOldBrush );
+				::SelectObject( hdc, pOldPen );
+				::DeleteObject( brush );
+				::DeleteObject( pen );
 			} else {
 				BMP* bmp = bitmaps[*frame->picFileName];
 				if ( bmp ) {
 					CBitmap* pOldBitmap = dcBmp.SelectObject( &bmp->bmp );
-					dc.BitBlt( 0, 0, bmp->w, bmp->h, &dcBmp, 0, 0, SRCCOPY );
+					::BitBlt( hdc, 0, 0, bmp->w, bmp->h, dcBmp.m_hDC, 0, 0, SRCCOPY );
 					dcBmp.SelectObject( pOldBitmap );
 				}
 			}
@@ -403,27 +402,20 @@ void RDOStudioFrameManager::showFrame( const RDOFrame* const frame, const int in
 			frames[index]->keys_pressed.clear();
 
 			int size = frame->elements.size();
-			for(int i = 0; i < size; i++) {
+			for ( int i = 0; i < size; i++ ) {
 				RDOFrameElement* currElement = frame->elements.at(i);
 				switch( currElement->type ) {
 					case RDOFrameElement::text_type: {
 						RDOTextElement* element = static_cast<RDOTextElement*>(currElement);
-						int oldBkMode;
-						COLORREF oldBkColor;
-						COLORREF oldTextColor;
-						bool restoreBkColor   = false;
-						bool restoreTextColor = false;
 						if( !element->background.isTransparent ) {
-							oldBkMode  = dc.SetBkMode( OPAQUE );
-							oldBkColor = dc.SetBkColor( RGB(element->background.r, element->background.g, element->background.b) );
-							restoreBkColor = true;
+							::SetBkMode( hdc, OPAQUE );
+							::SetBkColor( hdc, RGB(element->background.r, element->background.g, element->background.b) );
 						} else {
-							oldBkMode = dc.SetBkMode( TRANSPARENT );
+							::SetBkMode( hdc, TRANSPARENT );
 						}
 
 						if( !element->foreground.isTransparent ) {
-							oldTextColor = dc.SetTextColor( RGB(element->foreground.r, element->foreground.g, element->foreground.b) );
-							restoreTextColor = true;
+							::SetTextColor( hdc, RGB(element->foreground.r, element->foreground.g, element->foreground.b) );
 						}
 
 						UINT nFormat = DT_SINGLELINE;
@@ -433,98 +425,97 @@ void RDOStudioFrameManager::showFrame( const RDOFrame* const frame, const int in
 							case RDOTextElement::center: nFormat |= DT_CENTER; break;
 						}
 
-						dc.DrawText( element->strText.c_str(), element->strText.length(), CRect( element->x, element->y, element->x + element->w, element->y + element->h ), nFormat );
-
-						dc.SetBkMode( oldBkMode );
-						if ( restoreBkColor ) dc.SetBkColor( oldBkColor );
-						if ( restoreTextColor ) dc.SetTextColor( oldTextColor );
+						::DrawText( hdc, element->strText.c_str(), element->strText.length(), CRect( element->x, element->y, element->x + element->w, element->y + element->h ), nFormat );
 
 						break;
 					}
 					case RDOFrameElement::rect_type: {
 						RDORectElement* element = static_cast<RDORectElement*>(currElement);
-						CBrush brush( RGB(element->background.r, element->background.g, element->background.b) );
-						CBrush* pOldBrush;
+						HBRUSH brush = ::CreateSolidBrush( RGB(element->background.r, element->background.g, element->background.b) );
+						HBRUSH pOldBrush;
 						if( !element->background.isTransparent ) {
-							pOldBrush = dc.SelectObject( &brush );
+							pOldBrush = static_cast<HBRUSH>(::SelectObject( hdc, brush ));
 						} else {
-							pOldBrush = static_cast<CBrush*>(dc.SelectStockObject( NULL_BRUSH ));
+							pOldBrush = static_cast<HBRUSH>(::GetStockObject( NULL_BRUSH ));
 						}
 
-						CPen pen( PS_SOLID, 0, RGB(element->foreground.r, element->foreground.g, element->foreground.b) );
-						CPen* pOldPen;
-						bool restorePen = false;
+						HPEN pen     = NULL;
+						HPEN pOldPen = NULL;
 						if( !element->foreground.isTransparent ) {
-							pOldPen = dc.SelectObject( &pen );
-							restorePen = true;
+							pen     = ::CreatePen( PS_SOLID, 0, RGB(element->foreground.r, element->foreground.g, element->foreground.b) );
+							pOldPen = static_cast<HPEN>(::SelectObject( hdc, pen ));
 						}
 
-						dc.Rectangle( element->x, element->y, element->x + element->w, element->y + element->h );
+						::Rectangle( hdc, element->x, element->y, element->x + element->w, element->y + element->h );
 
-						dc.SelectObject( pOldBrush );
-						if ( restorePen ) dc.SelectObject( pOldPen );
+						::SelectObject( hdc, pOldBrush );
+						::DeleteObject( brush );
+						if ( pen ) {
+							::SelectObject( hdc, pOldPen );
+							::DeleteObject( pen );
+						}
 
 						break;
 					}
 					case RDOFrameElement::r_rect_type: {
 						RDORRectElement* element = static_cast<RDORRectElement*>(currElement);
-						CBrush brush( RGB(element->background.r, element->background.g, element->background.b) );
-						CBrush* pOldBrush;
+						HBRUSH brush = ::CreateSolidBrush( RGB(element->background.r, element->background.g, element->background.b) );
+						HBRUSH pOldBrush;
 						if( !element->background.isTransparent ) {
-							pOldBrush = dc.SelectObject( &brush );
+							pOldBrush = static_cast<HBRUSH>(::SelectObject( hdc, brush ));
 						} else {
-							pOldBrush = static_cast<CBrush*>(dc.SelectStockObject( NULL_BRUSH ));
+							pOldBrush = static_cast<HBRUSH>(::GetStockObject( NULL_BRUSH ));
 						}
 
-						CPen pen( PS_SOLID, 0, RGB(element->foreground.r, element->foreground.g, element->foreground.b) );
-						CPen* pOldPen;
-						bool restorePen = false;
+						HPEN pen     = NULL;
+						HPEN pOldPen = NULL;
 						if( !element->foreground.isTransparent ) {
-							pOldPen = dc.SelectObject( &pen );
-							restorePen = true;
+							pen     = ::CreatePen( PS_SOLID, 0, RGB(element->foreground.r, element->foreground.g, element->foreground.b) );
+							pOldPen = static_cast<HPEN>(::SelectObject( hdc, pen ));
 						}
 
 						int w = min( element->w, element->h ) / 3;
-						dc.RoundRect( element->x, element->y, element->x + element->w, element->y + element->h, w, w );
+						RoundRect( hdc, element->x, element->y, element->x + element->w, element->y + element->h, w, w );
 
-						dc.SelectObject( pOldBrush );
-						if ( restorePen ) dc.SelectObject( pOldPen );
+						::SelectObject( hdc, pOldBrush );
+						::DeleteObject( brush );
+						if ( pen ) {
+							::SelectObject( hdc, pOldPen );
+							::DeleteObject( pen );
+						}
 
 						break;
 					}
 					case RDOFrameElement::line_type: {
 						RDOLineElement* element = static_cast<RDOLineElement*>(currElement);
-						CPen pen( PS_SOLID, 0, RGB(element->foreground.r, element->foreground.g, element->foreground.b) );
-						CPen* pOldPen;
-						bool restorePen = false;
 						if( !element->foreground.isTransparent ) {
-							pOldPen = dc.SelectObject( &pen );
-							restorePen = true;
+							HPEN pen     = ::CreatePen( PS_SOLID, 0, RGB(element->foreground.r, element->foreground.g, element->foreground.b) );
+							HPEN pOldPen = static_cast<HPEN>(::SelectObject( hdc, pen ));
+
+							::MoveToEx( hdc, element->x, element->y, NULL );
+							::LineTo( hdc, element->w, element->h );
+
+							::SelectObject( hdc, pOldPen );
+							::DeleteObject( pen );
 						}
-
-						dc.MoveTo( element->x, element->y );
-						dc.LineTo( element->w, element->h );
-
-						if ( restorePen ) dc.SelectObject( pOldPen );
 
 						break;
 					}
 					case RDOFrameElement::triang_type: {
 						RDOTriangElement* element = static_cast<RDOTriangElement*>(currElement);
-						CBrush brush( RGB(element->background.r, element->background.g, element->background.b) );
-						CBrush* pOldBrush;
+						HBRUSH brush = ::CreateSolidBrush( RGB(element->background.r, element->background.g, element->background.b) );
+						HBRUSH pOldBrush;
 						if( !element->background.isTransparent ) {
-							pOldBrush = dc.SelectObject( &brush );
+							pOldBrush = static_cast<HBRUSH>(::SelectObject( hdc, brush ));
 						} else {
-							pOldBrush = static_cast<CBrush*>(dc.SelectStockObject( NULL_BRUSH ));
+							pOldBrush = static_cast<HBRUSH>(::GetStockObject( NULL_BRUSH ));
 						}
 
-						CPen pen( PS_SOLID, 0, RGB(element->foreground.r, element->foreground.g, element->foreground.b) );
-						CPen* pOldPen;
-						bool restorePen = false;
+						HPEN pen     = NULL;
+						HPEN pOldPen = NULL;
 						if( !element->foreground.isTransparent ) {
-							pOldPen = dc.SelectObject( &pen );
-							restorePen = true;
+							pen     = ::CreatePen( PS_SOLID, 0, RGB(element->foreground.r, element->foreground.g, element->foreground.b) );
+							pOldPen = static_cast<HPEN>(::SelectObject( hdc, pen ));
 						}
 
 						CPoint pts[3];
@@ -534,35 +525,42 @@ void RDOStudioFrameManager::showFrame( const RDOFrame* const frame, const int in
 						pts[1].y = element->y2;
 						pts[2].x = element->x3;
 						pts[2].y = element->y3;
-						dc.Polygon( pts, 3 );
+						::Polygon( hdc, pts, 3 );
 
-						dc.SelectObject( pOldBrush );
-						if ( restorePen ) dc.SelectObject( pOldPen );
+						::SelectObject( hdc, pOldBrush );
+						::DeleteObject( brush );
+						if ( pen ) {
+							::SelectObject( hdc, pOldPen );
+							::DeleteObject( pen );
+						}
 
 						break;
 					}
 					case RDOFrameElement::ellipse_type: {
 						RDOEllipseElement* element = static_cast<RDOEllipseElement*>(currElement);
-						CBrush brush( RGB(element->background.r, element->background.g, element->background.b) );
-						CBrush* pOldBrush;
+						HBRUSH brush = ::CreateSolidBrush( RGB(element->background.r, element->background.g, element->background.b) );
+						HBRUSH pOldBrush;
 						if( !element->background.isTransparent ) {
-							pOldBrush = dc.SelectObject( &brush );
+							pOldBrush = static_cast<HBRUSH>(::SelectObject( hdc, brush ));
 						} else {
-							pOldBrush = static_cast<CBrush*>(dc.SelectStockObject( NULL_BRUSH ));
+							pOldBrush = static_cast<HBRUSH>(::GetStockObject( NULL_BRUSH ));
 						}
 
-						CPen pen( PS_SOLID, 0, RGB(element->foreground.r, element->foreground.g, element->foreground.b) );
-						CPen* pOldPen;
-						bool restorePen = false;
+						HPEN pen     = NULL;
+						HPEN pOldPen = NULL;
 						if( !element->foreground.isTransparent ) {
-							pOldPen = dc.SelectObject( &pen );
-							restorePen = true;
+							pen     = ::CreatePen( PS_SOLID, 0, RGB(element->foreground.r, element->foreground.g, element->foreground.b) );
+							pOldPen = static_cast<HPEN>(::SelectObject( hdc, pen ));
 						}
 
-						dc.Ellipse( element->x, element->y, element->x + element->w, element->y + element->h );
+						::Ellipse( hdc, element->x, element->y, element->x + element->w, element->y + element->h );
 
-						dc.SelectObject( pOldBrush );
-						if ( restorePen ) dc.SelectObject( pOldPen );
+						::SelectObject( hdc, pOldBrush );
+						::DeleteObject( brush );
+						if ( pen ) {
+							::SelectObject( hdc, pOldPen );
+							::DeleteObject( pen );
+						}
 
 						break;
 					}
@@ -574,11 +572,11 @@ void RDOStudioFrameManager::showFrame( const RDOFrame* const frame, const int in
 							CBitmap* pOldBitmap = dcBmp.SelectObject( &bmp->bmp );
 							if ( mask ) {
 								CBitmap* pOldMask = dcMask.SelectObject( &mask->bmp );
-								dc.BitBlt( element->x, element->y, mask->w, mask->h, &dcMask, 0, 0, SRCAND );
-								dc.BitBlt( element->x, element->y, bmp->w, bmp->h, &dcBmp, 0, 0, SRCPAINT );
+								::BitBlt( hdc, element->x, element->y, mask->w, mask->h, dcMask.m_hDC, 0, 0, SRCAND );
+								::BitBlt( hdc, element->x, element->y, bmp->w, bmp->h, dcBmp.m_hDC, 0, 0, SRCPAINT );
 								dcMask.SelectObject( pOldMask );
 							} else {
-								dc.BitBlt( element->x, element->y, bmp->w, bmp->h, &dcBmp, 0, 0, SRCCOPY );
+								::BitBlt( hdc, element->x, element->y, bmp->w, bmp->h, dcBmp.m_hDC, 0, 0, SRCCOPY );
 							}
 							dcBmp.SelectObject( pOldBitmap );
 						}
@@ -592,11 +590,11 @@ void RDOStudioFrameManager::showFrame( const RDOFrame* const frame, const int in
 							CBitmap* pOldBitmap = dcBmp.SelectObject( &bmp->bmp );
 							if ( mask ) {
 								CBitmap* pOldMask = dcMask.SelectObject( &mask->bmp );
-								dc.StretchBlt( element->x, element->y, element->w, element->h, &dcMask, 0, 0, mask->w, mask->h, SRCAND );
-								dc.StretchBlt( element->x, element->y, element->w, element->h, &dcBmp, 0, 0, bmp->w, bmp->h, SRCPAINT );
+								::StretchBlt( hdc, element->x, element->y, element->w, element->h, dcMask.m_hDC, 0, 0, mask->w, mask->h, SRCAND );
+								::StretchBlt( hdc, element->x, element->y, element->w, element->h, dcBmp.m_hDC, 0, 0, bmp->w, bmp->h, SRCPAINT );
 								dcMask.SelectObject( pOldMask );
 							} else {
-								dc.StretchBlt( element->x, element->y, element->w, element->h, &dcBmp, 0, 0, bmp->w, bmp->h, SRCCOPY );
+								::StretchBlt( hdc, element->x, element->y, element->w, element->h, dcBmp.m_hDC, 0, 0, bmp->w, bmp->h, SRCCOPY );
 							}
 							dcBmp.SelectObject( pOldBitmap );
 						}
@@ -615,7 +613,6 @@ void RDOStudioFrameManager::showFrame( const RDOFrame* const frame, const int in
 					}
 				}
 			}
-			dc.SelectObject( pOldBitmap );
 
 			lock_draw.Unlock();
 

@@ -209,7 +209,8 @@ void RDOStudioModel::afterModelStartNotify()
 	const_cast<rdoEditCtrl::RDODebugEdit*>(output->getDebug())->UpdateWindow();
 	int index = model->frameManager.getLastShowedFrame();
 	if ( index != -1 ) {
-		model->frameManager.getFrameView( index )->SetFocus();
+		RDOStudioFrameView* view = model->frameManager.getFrameView( index );
+		if ( view ) view->SetFocus();
 	}
 }
 

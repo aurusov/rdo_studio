@@ -21,11 +21,19 @@ private:
 	CRect newClientRect;
 	int xPos;
 	int yPos;
-	CBitmap frameBmp;
 	COLORREF& bgColor;
-	CDC dc;
 	bool mustBeInit;
 
+	HWND    hwnd;
+	HDC     hdc;
+	HDC     hmemdc;
+	int     saved_hdc;
+	int     saved_hmemdc;
+	HFONT   hfontInit;
+	HBITMAP hbmpInit;
+	HBITMAP hbmp;
+
+	void onDraw();
 	void updateScrollBars();
 
 public:
@@ -42,13 +50,13 @@ public:
 public:
 	//{{AFX_VIRTUAL(RDOStudioFrameView)
 	public:
-	virtual void OnDraw(CDC* pDC);  // overridden to draw this view
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	protected:
 	virtual BOOL OnPreparePrinting(CPrintInfo* pInfo);
 	virtual void OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo);
 	virtual void OnEndPrinting(CDC* pDC, CPrintInfo* pInfo);
 	virtual void OnActivateView(BOOL bActivate, CView* pActivateView, CView* pDeactiveView);
+	virtual void OnDraw(CDC* pDC);
 	//}}AFX_VIRTUAL
 
 protected:
@@ -65,6 +73,7 @@ protected:
 	afx_msg void OnUpdateZoomOut(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateZoomReset(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateZoomAuto(CCmdUI* pCmdUI);
+	afx_msg void OnPaint();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
