@@ -75,7 +75,7 @@ BOOL CChatApp::InitInstance()
 	mainFrame->ShowWindow(SW_SHOW);
 	mainFrame->UpdateWindow();
 
-	userName = GetProfileString( "User", "userName" );
+	userName = GetProfileString( "User", "userName", userName.c_str() );
 
 	sounds.init();
 	statusModes.init();
