@@ -5,7 +5,6 @@
 #include <rdokernel.h>
 #include <rdosimwin.h>
 
-#include <fstream>
 #include <afxdlgs.h>
 
 using namespace std;
@@ -14,6 +13,8 @@ using namespace rdoRepository;
 // ----------------------------------------------------------------------------
 // ---------- RDORepositoryFile
 // ----------------------------------------------------------------------------
+RDORepositoryFile* repository = NULL;
+
 namespace rdoRepository {
 std::string format( UINT resource, ... )
 {
@@ -44,11 +45,20 @@ RDORepositoryFile::RDORepositoryFile():
 	lastModelPath( "" ),
 	readOnly( false )
 {
+	repository = this;
+
+	kernel.setNotifyReflect( RDOKernel::beforeModelStart, beforeModelStartNotify );
+	kernel.setNotifyReflect( RDOKernel::endExecuteModel, stopModelNotify );
+	kernel.setNotifyReflect( RDOKernel::modelStopped, stopModelNotify );
+	kernel.setNotifyReflect( RDOKernel::traceString, traceNotify );
+
 	resetModelNames();
 }
 
 RDORepositoryFile::~RDORepositoryFile()
 {
+	trace_file.close();
+	repository = NULL;
 }
 
 void RDORepositoryFile::resetModelNames()
@@ -558,5 +568,44 @@ void RDORepositoryFile::loadBMP( const string& name, rdo::binarystream& stream )
 		file.close();
 	} else {
 		stream.setstate( ios_base::badbit );
+	}
+}
+
+void RDORepositoryFile::beforeModelStartNotify()
+{
+	repository->beforeModelStart();
+}
+
+void RDORepositoryFile::stopModelNotify()
+{
+	repository->stopModel();
+}
+
+void RDORepositoryFile::traceNotify( std::string str )
+{
+	repository->trace( str );
+}
+
+void RDORepositoryFile::beforeModelStart()
+{
+	if ( trace_file.is_open() ) {
+		trace_file.close();
+	}
+	string file_name = modelPath + trcFileName + ".trc";
+	trace_file.open( file_name.c_str(), ios::out | ios::binary);
+}
+
+void RDORepositoryFile::stopModel()
+{
+	if ( trace_file.is_open() ) {
+		trace_file.close();
+	}
+}
+
+void RDORepositoryFile::trace( std::string str )
+{
+	if ( trace_file.is_open() ) {
+		trace_file.write( str.c_str(), str.length() );
+		trace_file.write( "\n", 1 );
 	}
 }

@@ -6,6 +6,7 @@
 #endif
 
 #include <string>
+#include <fstream>
 #include <rdobinarystream.h>
 
 class CFileDialog;
@@ -73,6 +74,14 @@ private:
 	void saveFile( const std::string& filename, rdo::binarystream& stream, const bool deleteIfEmpty = false ) const;
 
 	void changeLastModelPath();
+
+	std::ofstream trace_file;
+	static void beforeModelStartNotify();
+	static void stopModelNotify();
+	static void traceNotify( std::string str );
+	void beforeModelStart();
+	void stopModel();
+	void trace( std::string str );
 
 public:
 	RDORepositoryFile();
