@@ -4,10 +4,12 @@
 
 #include "rdobaseeditstyle.h"
 
+namespace rdoEditCtrl {
+
 // ----------------------------------------------------------------------------
 // ---------- RDOLogEditTheme
 // ----------------------------------------------------------------------------
-class RDOLogEditTheme: public rdoBaseEdit::RDOBaseEditTheme
+class RDOLogEditTheme: public RDOBaseEditTheme
 {
 public:
 	RDOLogEditTheme();
@@ -26,7 +28,7 @@ public:
 // ----------------------------------------------------------------------------
 // ---------- RDOLogEditStyle
 // ----------------------------------------------------------------------------
-class RDOLogEditStyle: public rdoBaseEdit::RDOBaseEditStyle
+class RDOLogEditStyle: public RDOBaseEditStyle
 {
 protected:
 	virtual void initTheme();
@@ -39,5 +41,7 @@ public:
 	bool operator ==( const RDOLogEditStyle& style ) const;
 	bool operator !=( const RDOLogEditStyle& style ) const;
 };
+
+}; // namespace rdoEditCtrl
 
 #endif // RDOLOGEDITSTYLE_H

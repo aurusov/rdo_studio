@@ -6,7 +6,7 @@
 #endif
 
 using namespace std;
-using namespace rdoBaseEdit;
+using namespace rdoEditCtrl;
 
 // ----------------------------------------------------------------------------
 // ---------- RDOBaseEditTheme

@@ -4,6 +4,8 @@
 
 #include "rdologedit.h"
 
+namespace rdoEditCtrl {
+
 // ----------------------------------------------------------------------------
 // ---------- RDOBuildEditLineInfo
 // ----------------------------------------------------------------------------
@@ -36,6 +38,8 @@ public:
 	RDOBuildEdit();
 	virtual ~RDOBuildEdit();
 };
+
+}; // namespace rdoEditCtrl
 
 //{{AFX_INSERT_LOCATION}}
 

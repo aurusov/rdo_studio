@@ -6,6 +6,8 @@
 #include "rdologeditstyle.h"
 #include <rdosimwin.h>
 
+namespace rdoEditCtrl {
+
 // ----------------------------------------------------------------------------
 // ---------- RDOLogEditLineInfo
 // ----------------------------------------------------------------------------
@@ -30,7 +32,7 @@ public:
 // ----------------------------------------------------------------------------
 // ---------- RDOLogEdit
 // ----------------------------------------------------------------------------
-class RDOLogEdit: public rdoBaseEdit::RDOBaseEdit
+class RDOLogEdit: public RDOBaseEdit
 {
 private:
 	int sci_MARKER_LINE;
@@ -62,6 +64,8 @@ public:
 	virtual void clearAll();
 	void appendLine( RDOLogEditLineInfo* line );
 };
+
+}; // namespace rdoEditCtrl
 
 //{{AFX_INSERT_LOCATION}}
 

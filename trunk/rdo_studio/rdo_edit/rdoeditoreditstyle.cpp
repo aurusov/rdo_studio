@@ -8,7 +8,7 @@
 
 using namespace std;
 using namespace rdoEditor;
-using namespace rdoBaseEdit;
+using namespace rdoEditCtrl;
 
 // ----------------------------------------------------------------------------
 // ---------- RDOEditorEditTheme

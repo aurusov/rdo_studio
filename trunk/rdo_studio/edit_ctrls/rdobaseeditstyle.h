@@ -4,7 +4,7 @@
 
 #include "sci/Scintilla.h"
 
-namespace rdoBaseEdit {
+namespace rdoEditCtrl {
 
 // ----------------------------------------------------------------------------
 // ---------- RDOBaseEditTheme
@@ -170,6 +170,6 @@ public:
 	RDOBaseEditWindow* window;
 };
 
-}; // namespace rdoBaseEdit
+}; // namespace rdoEditCtrl
 
 #endif // RDOBASEEDITSTYLE_H

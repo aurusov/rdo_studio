@@ -38,10 +38,10 @@ public:
 	RDOStudioOutput    output;
 
 	rdoEditor::RDOEditorEditStyle default_editorStyle;
-	RDOLogEditStyle               default_buildStyle;
-	rdoBaseEdit::RDOBaseEditStyle default_debugStyle;
+	rdoEditCtrl::RDOLogEditStyle  default_buildStyle;
+	rdoEditCtrl::RDOBaseEditStyle default_debugStyle;
 	rdoEditor::RDOEditorEditStyle default_resultsStyle;
-	RDOFindEditStyle              default_findStyle;
+	rdoEditCtrl::RDOFindEditStyle default_findStyle;
 	void updateAllStyles() const;
 
 	BOOL OnCmdMsgForDockOnly( UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo );

@@ -10,11 +10,13 @@
 #include <rdotabctrl.h>
 #include <rdosimwin.h>
 
-class RDOBuildEdit;
-class RDODebugEdit;
-class RDOFindEdit;
 namespace rdoEditor {
 	class RDOEditorEdit;
+}
+namespace rdoEditCtrl {
+	class RDOBuildEdit;
+	class RDODebugEdit;
+	class RDOFindEdit;
 }
 
 // ----------------------------------------------------------------------------
@@ -25,11 +27,11 @@ class RDOStudioOutput: public RDOStudioDockWnd
 private:
 	RDOTabCtrl tab;
 
-	RDOBuildEdit*             build;
-	RDODebugEdit*             debug;
-	CWnd*                     tracer;
-	rdoEditor::RDOEditorEdit* results;
-	RDOFindEdit*              find;
+	rdoEditCtrl::RDOBuildEdit* build;
+	rdoEditCtrl::RDODebugEdit* debug;
+	CWnd*                      tracer;
+	rdoEditor::RDOEditorEdit*  results;
+	rdoEditCtrl::RDOFindEdit*  find;
 
 	CMenu popupMenu;
 
@@ -48,11 +50,11 @@ public:
 	void clearResults();
 	void clearFind();
 
-	const RDOBuildEdit*             getBuild() const   { return build;   };
-	const RDODebugEdit*             getDebug() const   { return debug;   };
-	const CWnd*                     getTracer() const  { return tracer;  };
-	const rdoEditor::RDOEditorEdit* getResults() const { return results; };
-	const RDOFindEdit*              getFind() const    { return find;    };
+	const rdoEditCtrl::RDOBuildEdit* getBuild() const   { return build;   };
+	const rdoEditCtrl::RDODebugEdit* getDebug() const   { return debug;   };
+	const CWnd*                      getTracer() const  { return tracer;  };
+	const rdoEditor::RDOEditorEdit*  getResults() const { return results; };
+	const rdoEditCtrl::RDOFindEdit*  getFind() const    { return find;    };
 
 	void appendStringToBuild( const string& str, const rdoModelObjects::RDOFileType fileType = rdoModelObjects::PAT, const int lineNumber = -1, const bool error = true ) const;
 	void appendStringToDebug( const string& str ) const;

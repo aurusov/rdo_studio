@@ -5,6 +5,8 @@
 #include "rdologedit.h"
 #include "rdofindeditstyle.h"
 
+namespace rdoEditCtrl {
+
 // ----------------------------------------------------------------------------
 // ---------- RDOFindEdit
 // ----------------------------------------------------------------------------
@@ -29,6 +31,8 @@ public:
 
 	void setKeyword( const string& _keyword, const bool matchCase = false ) const;
 };
+
+}; // namespace rdoEditCtrl
 
 //{{AFX_INSERT_LOCATION}}
 

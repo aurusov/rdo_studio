@@ -4,7 +4,7 @@
 
 #include "rdobaseeditstyle.h"
 
-namespace rdoBaseEdit {
+namespace rdoEditCtrl {
 
 // ----------------------------------------------------------------------------
 // ---------- RDOBaseEdit
@@ -209,7 +209,7 @@ public:
 	void saveAsRTF( CFile& file, int start = 0, int end = -1 ) const;
 };
 
-}; // namespace rdoBaseEdit
+}; // namespace rdoEditCtrl
 
 //{{AFX_INSERT_LOCATION}}
 

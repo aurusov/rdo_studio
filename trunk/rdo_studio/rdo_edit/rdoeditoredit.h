@@ -12,7 +12,7 @@ namespace rdoEditor {
 // ----------------------------------------------------------------------------
 // ---------- RDOEditorEdit
 // ----------------------------------------------------------------------------
-class RDOEditorEdit: public rdoBaseEdit::RDOBaseEdit
+class RDOEditorEdit: public rdoEditCtrl::RDOBaseEdit
 {
 private:
 	int sci_MARKER_ERROR;

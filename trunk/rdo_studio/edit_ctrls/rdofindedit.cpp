@@ -7,7 +7,7 @@
 #define new DEBUG_NEW
 #endif
 
-using namespace rdoBaseEdit;
+using namespace rdoEditCtrl;
 
 static char* wordCharacters = "0123456789_$abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZÀàÁáÂâÃãÄäÅå¨¸ÆæÇçÈèÉéÊêËëÌìÍíÎîÏïĞğÑñÒòÓóÔôÕõÖö×÷ØøÙùÚúÛûÜüİıŞşßÿ";
 

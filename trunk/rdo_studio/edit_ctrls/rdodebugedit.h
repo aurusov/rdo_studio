@@ -4,10 +4,12 @@
 
 #include "rdobaseedit.h"
 
+namespace rdoEditCtrl {
+
 // ----------------------------------------------------------------------------
 // ---------- RDODebugEdit
 // ----------------------------------------------------------------------------
-class RDODebugEdit: public rdoBaseEdit::RDOBaseEdit
+class RDODebugEdit: public RDOBaseEdit
 {
 protected:
 	//{{AFX_MSG(RDODebugEdit)
@@ -23,6 +25,8 @@ public:
 
 	void appendLine( const std::string& str );
 };
+
+}; // namespace rdoEditCtrl
 
 //{{AFX_INSERT_LOCATION}}
 

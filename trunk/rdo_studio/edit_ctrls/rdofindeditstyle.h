@@ -4,6 +4,8 @@
 
 #include "rdologeditstyle.h"
 
+namespace rdoEditCtrl {
+
 // ----------------------------------------------------------------------------
 // ---------- RDOFindEditTheme
 // ----------------------------------------------------------------------------
@@ -23,8 +25,8 @@ public:
 	COLORREF identifierColor;
 	COLORREF keywordColor;
 
-	rdoBaseEdit::RDOFontStyle identifierStyle;
-	rdoBaseEdit::RDOFontStyle keywordStyle;
+	RDOFontStyle identifierStyle;
+	RDOFontStyle keywordStyle;
 
 	virtual bool styleDefault( const int styleType ) const;
 	virtual bool styleUsing( const int styleType ) const;
@@ -49,5 +51,7 @@ public:
 	bool operator ==( const RDOFindEditStyle& style ) const;
 	bool operator !=( const RDOFindEditStyle& style ) const;
 };
+
+}; // namespace rdoEditCtrl
 
 #endif // RDOFINDEDITSTYLE_H

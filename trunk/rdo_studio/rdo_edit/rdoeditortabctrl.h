@@ -29,7 +29,7 @@ class RDOEditorTabCtrl: public RDOTabCtrl
 {
 private:
 	RDOStudioEditBaseView*       view;
-	rdoBaseEdit::RDOBaseEditList group;
+	rdoEditCtrl::RDOBaseEditList group;
 
 protected:
 	//{{AFX_MSG(RDOEditorTabCtrl)

@@ -9,7 +9,7 @@ namespace rdoEditor {
 // ----------------------------------------------------------------------------
 // ---------- RDOEditorEditTheme
 // ----------------------------------------------------------------------------
-class RDOEditorEditTheme: public rdoBaseEdit::RDOBaseEditTheme
+class RDOEditorEditTheme: public rdoEditCtrl::RDOBaseEditTheme
 {
 public:
 	RDOEditorEditTheme();
@@ -33,14 +33,14 @@ public:
 
 	COLORREF errorBgColor;
 
-	rdoBaseEdit::RDOFontStyle identifierStyle;
-	rdoBaseEdit::RDOFontStyle keywordStyle;
-	rdoBaseEdit::RDOFontStyle functionsStyle;
-	rdoBaseEdit::RDOFontStyle traceStyle;
-	rdoBaseEdit::RDOFontStyle commentStyle;
-	rdoBaseEdit::RDOFontStyle numberStyle;
-	rdoBaseEdit::RDOFontStyle stringStyle;
-	rdoBaseEdit::RDOFontStyle operatorStyle;
+	rdoEditCtrl::RDOFontStyle identifierStyle;
+	rdoEditCtrl::RDOFontStyle keywordStyle;
+	rdoEditCtrl::RDOFontStyle functionsStyle;
+	rdoEditCtrl::RDOFontStyle traceStyle;
+	rdoEditCtrl::RDOFontStyle commentStyle;
+	rdoEditCtrl::RDOFontStyle numberStyle;
+	rdoEditCtrl::RDOFontStyle stringStyle;
+	rdoEditCtrl::RDOFontStyle operatorStyle;
 
 	virtual bool styleDefault( const int styleType ) const;
 	virtual bool styleUsing( const int styleType ) const;
@@ -80,7 +80,7 @@ public:
 // ----------------------------------------------------------------------------
 // ---------- RDOEditorEditStyle
 // ----------------------------------------------------------------------------
-class RDOEditorEditStyle: public rdoBaseEdit::RDOBaseEditStyle
+class RDOEditorEditStyle: public rdoEditCtrl::RDOBaseEditStyle
 {
 protected:
 	virtual void initTheme();

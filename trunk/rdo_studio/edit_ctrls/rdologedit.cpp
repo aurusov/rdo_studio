@@ -10,7 +10,7 @@
 #endif
 
 using namespace std;
-using namespace rdoBaseEdit;
+using namespace rdoEditCtrl;
 
 // ----------------------------------------------------------------------------
 // ---------- RDOLogEditLineInfo
@@ -148,7 +148,7 @@ void RDOLogEdit::setSelectLine()
 			if ( tab->getCurrentRDOItem() != tabItem ) {
 				tab->setCurrentRDOItem( tabItem );
 			}
-			rdoBaseEdit::RDOBaseEdit* edit = tab->getCurrentEdit();
+			RDOBaseEdit* edit = tab->getCurrentEdit();
 			if ( edit ) {
 				edit->scrollToLine( (*it)->lineNumber );
 				int pos = edit->getPositionFromLine((*it)->lineNumber) + (*it)->posInLine;
