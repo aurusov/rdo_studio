@@ -179,17 +179,13 @@ void RDOStudioOutput::appendStringToDebug( const string& str ) const
 	debug->appendLine( str );
 }
 
-void RDOStudioOutput::appendStringToFind( const string& str, const rdoModelObjects::RDOFileType fileType, const int lineNumber ) const
+void RDOStudioOutput::appendStringToFind( const string& str, const rdoModelObjects::RDOFileType fileType, const int lineNumber, const int posInLine ) const
 {
-	string s = str;
-	if ( s.find_last_of( '\r' ) != s.length() - 1 && s.find_last_of( '\n' ) != s.length() - 1 ) {
-		s += "\r\n";
-	}
-	RDOLogEditLineInfo* line = new RDOLogEditLineInfo( s, fileType, lineNumber );
+	RDOLogEditLineInfo* line = new RDOLogEditLineInfo( str, fileType, lineNumber, posInLine );
 	find->appendLine( line );
 }
 
-void RDOStudioOutput::setKeywordForFind( const string& keyword ) const
+void RDOStudioOutput::setKeywordForFind( const string& keyword, const bool matchCase ) const
 {
-	find->setKeyword( keyword );
+	find->setKeyword( keyword, matchCase );
 }

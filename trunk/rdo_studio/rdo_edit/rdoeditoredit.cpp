@@ -195,9 +195,10 @@ int RDOEditorEdit::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	return 0;
 }
 
-void RDOEditorEdit::setEditorStyle( RDOBaseEditStyle* style )
+void RDOEditorEdit::setEditorStyle( RDOEditorEditStyle* _style )
 {
-	RDOBaseEdit::setEditorStyle( style );
+	RDOBaseEdit::setEditorStyle( _style );
+	if ( !style ) return;
 
 	// ----------
 	// Colors

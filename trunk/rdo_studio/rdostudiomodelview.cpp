@@ -141,18 +141,19 @@ LRESULT RDOStudioModelView::OnFindInModelMsg( WPARAM wParam, LPARAM lParam )
 	if ( !pDialog->IsTerminating() ) {
 		studioApp.mainFrame->output.clearFind();
 		studioApp.mainFrame->output.showFind();
-		string findStr = pDialog->GetFindString();
-		studioApp.mainFrame->output.setKeywordForFind( findStr );
-		studioApp.mainFrame->output.appendStringToFind( format( ID_FINDINMODEL_BEGINMSG, findStr.c_str() ) );
+		string findStr       = pDialog->GetFindString();
 		bool bMatchCase      = pDialog->MatchCase() ? true : false;
 		bool bMatchWholeWord = pDialog->MatchWholeWord() ? true : false;
+		studioApp.mainFrame->output.setKeywordForFind( findStr, bMatchCase );
+		studioApp.mainFrame->output.appendStringToFind( format( ID_FINDINMODEL_BEGINMSG, findStr.c_str() ) );
 		int count = 0;
 		for ( int i = 0; i < tab->getItemCount(); i++ ) {
 			RDOEditorEdit* edit = tab->getItemEdit( i );
+			int pos  = 0;
 			int line = 0;
-			while ( line != -1 ) {
-				line = edit->findLine( findStr, line, bMatchCase, bMatchWholeWord );
-				if ( line != -1 ) {
+			while ( pos != -1 ) {
+				pos = edit->findPos( findStr, line, bMatchCase, bMatchWholeWord );
+				if ( pos != -1 ) {
 					rdoModelObjects::RDOFileType fileType;
 					switch ( i ) {
 						case 0: fileType = rdoModelObjects::PAT; break;
@@ -166,7 +167,8 @@ LRESULT RDOStudioModelView::OnFindInModelMsg( WPARAM wParam, LPARAM lParam )
 						case 8: fileType = rdoModelObjects::PMD; break;
 						default: fileType = rdoModelObjects::PAT;
 					}
-					studioApp.mainFrame->output.appendStringToFind( edit->getLine( line ), fileType, line );
+					line = edit->getLineFromPosition( pos );
+					studioApp.mainFrame->output.appendStringToFind( edit->getLine( line ), fileType, line, pos - edit->getPositionFromLine( line ) );
 					line++;
 					count++;
 				}

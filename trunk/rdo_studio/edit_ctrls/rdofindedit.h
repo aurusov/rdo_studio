@@ -3,6 +3,7 @@
 #pragma once
 
 #include "rdologedit.h"
+#include "rdofindeditstyle.h"
 
 // ----------------------------------------------------------------------------
 // ---------- RDOFindEdit
@@ -24,9 +25,9 @@ public:
 	RDOFindEdit();
 	virtual ~RDOFindEdit();
 
-	virtual void setEditorStyle( rdoBaseEdit::RDOBaseEditStyle* style );
+	void setEditorStyle( RDOFindEditStyle* _style );
 
-	void setKeyword( const string& _keyword );
+	void setKeyword( const string& _keyword, const bool matchCase = false );
 };
 
 //{{AFX_INSERT_LOCATION}}

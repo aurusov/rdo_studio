@@ -58,8 +58,8 @@ public:
 
 	void appendStringToBuild( const string& str, const rdoModelObjects::RDOFileType fileType = rdoModelObjects::PAT, const int lineNumber = -1, const bool error = true ) const;
 	void appendStringToDebug( const string& str ) const;
-	void appendStringToFind( const string& str, const rdoModelObjects::RDOFileType fileType = rdoModelObjects::PAT, const int lineNumber = -1 ) const;
-	void setKeywordForFind( const string& keyword ) const;
+	void appendStringToFind( const string& str, const rdoModelObjects::RDOFileType fileType = rdoModelObjects::PAT, const int lineNumber = -1, const int posInLine = 0 ) const;
+	void setKeywordForFind( const string& keyword, const bool matchCase = false ) const;
 
 public:
 	//{{AFX_VIRTUAL(RDOStudioOutput)

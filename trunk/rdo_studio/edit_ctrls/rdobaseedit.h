@@ -141,7 +141,7 @@ public:
 	virtual ~RDOBaseEdit();
 
 	const RDOBaseEditStyle* getEditorStyle() const         { return style; };
-	virtual void setEditorStyle( RDOBaseEditStyle* style );
+	void setEditorStyle( RDOBaseEditStyle* _style );
 
 	void setGroup( RDOBaseEditList* _group );
 	void setPopupMenu( CMenu* const value )                { popupMenu = value; };
@@ -186,22 +186,24 @@ public:
 	void bookmarkClearAll() const;
 	bool hasBookmarks() const;
 
-	int getLength() const                           { return sendEditor( SCI_GETLENGTH );                           };
-	int getLineCount() const                        { return sendEditor( SCI_GETLINECOUNT );                        };
-	int getCurrentPos() const                       { return sendEditor( SCI_GETCURRENTPOS );                       };
-	int getPositionFromLine( const int line ) const { return sendEditor( SCI_POSITIONFROMLINE, line );              };
+	int getLength() const                           { return sendEditor( SCI_GETLENGTH );                  };
+	int getLineCount() const                        { return sendEditor( SCI_GETLINECOUNT );               };
+	int getCurrentPos() const                       { return sendEditor( SCI_GETCURRENTPOS );              };
+	int getPositionFromLine( const int line ) const { return sendEditor( SCI_POSITIONFROMLINE, line );     };
+	int getLineFromPosition( const int pos ) const  { return sendEditor( SCI_LINEFROMPOSITION, pos );      };
 	void setCurrentPos( const int value ) const;
 	void setCurrentPos( const int line, int pos_in_line, const bool convert_rdo_tab = false ) const;
-	int getCurrentLineNumber() const                { return sendEditor( SCI_LINEFROMPOSITION, getCurrentPos() );   };
-	int getCurrentColumnNumber() const              { return sendEditor( SCI_GETCOLUMN, getCurrentPos() );          };
+	int getCurrentLineNumber() const                { return getLineFromPosition( getCurrentPos() );       };
+	int getCurrentColumnNumber() const              { return sendEditor( SCI_GETCOLUMN, getCurrentPos() ); };
 	bool isLineVisible( const int line ) const;
 	void scrollToLine( const int line ) const;
+	void horzScrollToCurrentPos() const;
 
 	string getCurrentWord() const;
 	string getSelection() const;
 	string getCurrentOrSelectedWord() const;
 
-	int findLine( string& findWhat, const int startFromLine, const bool matchCase = false, const bool matchWholeWord = false ) const;
+	int findPos( string& findWhat, const int startFromLine = 0, const bool matchCase = false, const bool matchWholeWord = false ) const;
 	string getLine( const int line ) const;
 
 	void load( strstream& stream ) const;

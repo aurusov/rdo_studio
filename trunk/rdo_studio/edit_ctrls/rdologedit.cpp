@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "rdologedit.h"
-#include "rdologeditstyle.h"
 #include "../rdostudioapp.h"
 #include "../rdostudiomodel.h"
 #include "../rdo_edit/rdoeditortabctrl.h"
@@ -15,9 +14,10 @@ using namespace rdoBaseEdit;
 // ----------------------------------------------------------------------------
 // ---------- RDOLogEditLineInfo
 // ----------------------------------------------------------------------------
-RDOLogEditLineInfo::RDOLogEditLineInfo( const string& _message, const rdoModelObjects::RDOFileType _fileType, const int _lineNumber ):
+RDOLogEditLineInfo::RDOLogEditLineInfo( const string& _message, const rdoModelObjects::RDOFileType _fileType, const int _lineNumber, const int _posInLine ):
 	fileType( _fileType ),
 	lineNumber( _lineNumber ),
+	posInLine( _posInLine ),
 	message( _message )
 {
 }
@@ -99,9 +99,10 @@ int RDOLogEdit::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	return 0;
 }
 
-void RDOLogEdit::setEditorStyle( rdoBaseEdit::RDOBaseEditStyle* style )
+void RDOLogEdit::setEditorStyle( RDOLogEditStyle* _style )
 {
-	RDOBaseEdit::setEditorStyle( style );
+	RDOBaseEdit::setEditorStyle( _style );
+	if ( !style ) return;
 
 	// ----------
 	// Selected Line
@@ -114,7 +115,7 @@ void RDOLogEdit::setSelectLine()
 	::GetCursorPos( &point );
 	ScreenToClient( &point );
 	int pos  = sendEditor( SCI_POSITIONFROMPOINT, point.x, point.y );
-	int line = sendEditor( SCI_LINEFROMPOSITION, pos );
+	int line = getLineFromPosition( pos );
 	setCurrentPos( pos );
 
 	list< RDOLogEditLineInfo* >::iterator it = lines.begin();
@@ -149,6 +150,9 @@ void RDOLogEdit::setSelectLine()
 			rdoBaseEdit::RDOBaseEdit* edit = tab->getCurrentEdit();
 			if ( edit ) {
 				edit->scrollToLine( (*it)->lineNumber );
+				int pos = edit->getPositionFromLine((*it)->lineNumber) + (*it)->posInLine;
+				edit->setCurrentPos( pos );
+				edit->horzScrollToCurrentPos();
 				edit->SetFocus();
 			}
 		}
@@ -194,7 +198,10 @@ void RDOLogEdit::appendLine( RDOLogEditLineInfo* line )
 		setReadOnly( false );
 	}
 	bool scroll = isLineVisible( getLineCount() - 1 );
-	appendText( line->getMessage() );
+	string str = line->getMessage();
+	trimRight( str );
+	str += "\r\n";
+	appendText( str );
 	if ( scroll ) {
 		int line = getLineCount();
 		int line_to_scroll = line > 0 ? line - 1 : 0;

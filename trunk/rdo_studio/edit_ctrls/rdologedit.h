@@ -3,6 +3,7 @@
 #pragma once
 
 #include "rdobaseedit.h"
+#include "rdologeditstyle.h"
 #include <rdosimwin.h>
 
 using namespace std;
@@ -18,10 +19,11 @@ friend class RDOLogEdit;
 protected:
 	rdoModelObjects::RDOFileType fileType;
 	int                          lineNumber;
+	int                          posInLine;
 	string                       message;
 
 public:
-	RDOLogEditLineInfo( const string& _message, const rdoModelObjects::RDOFileType _fileType = rdoModelObjects::PAT, const int _lineNumber = -1 );
+	RDOLogEditLineInfo( const string& _message, const rdoModelObjects::RDOFileType _fileType = rdoModelObjects::PAT, const int _lineNumber = -1, const int _posInLine = 0 );
 	~RDOLogEditLineInfo();
 
 	virtual string getMessage() const;
@@ -57,7 +59,7 @@ public:
 	RDOLogEdit();
 	virtual ~RDOLogEdit();
 
-	virtual void setEditorStyle( rdoBaseEdit::RDOBaseEditStyle* style );
+	void setEditorStyle( RDOLogEditStyle* _style );
 
 	virtual void clearAll();
 	void appendLine( RDOLogEditLineInfo* line );

@@ -77,7 +77,7 @@ public:
 	RDOEditorEdit( RDOStudioEditBaseView* _view = NULL );
 	virtual ~RDOEditorEdit();
 
-	virtual void setEditorStyle( rdoBaseEdit::RDOBaseEditStyle* style );
+	void setEditorStyle( RDOEditorEditStyle* _style );
 
 	void replaceCurrent( const string str, const int changePosValue = -1 ) const;
 };

@@ -193,7 +193,7 @@ BOOL RDOBaseEdit::OnNotify( WPARAM wParam, LPARAM lParam, LRESULT* pResult )
 				break;
 			}
 			case SCN_CHARADDED: {
-				if ( style->tab->autoIndent && ( scn->ch == '\r' || scn->ch == '\n' ) ) autoIndent();
+				if ( style && style->tab->autoIndent && ( scn->ch == '\r' || scn->ch == '\n' ) ) autoIndent();
 				return TRUE;
 			}
 		}
@@ -284,6 +284,7 @@ void RDOBaseEdit::defineMarker( int marker, int markerType, COLORREF fore, COLOR
 void RDOBaseEdit::setEditorStyle( RDOBaseEditStyle* _style )
 {
 	style = _style;
+	if ( !style ) return;
 
 	// ----------
 	// Colors
@@ -512,8 +513,8 @@ string RDOBaseEdit::getCurrentWord() const
 	tr.chrg.cpMin = pos_begin;
 	tr.chrg.cpMax = pos_end;
 	sendEditor( SCI_GETTEXTRANGE, 0, (long)&tr );
-	string str = tr.lpstrText;
-	delete []word;
+	string str( tr.lpstrText );
+	delete[] word;
 	return str;
 }
 
@@ -522,7 +523,9 @@ string RDOBaseEdit::getSelection() const
 	CharacterRange cr = getSelectionRange();
 	char* selection = new char[ cr.cpMax - cr.cpMin + 1 ];
 	sendEditor( SCI_GETSELTEXT, 0, (long)selection );
-	return selection;
+	string str( selection );
+	delete[] selection;
+	return str;
 }
 
 string RDOBaseEdit::getCurrentOrSelectedWord() const
@@ -550,8 +553,8 @@ void RDOBaseEdit::gotoLineEnsureVisible( int line ) const
 
 void RDOBaseEdit::ensureRangeVisible( int posStart, int posEnd, bool enforcePolicy ) const
 {
-	int lineStart = sendEditor( SCI_LINEFROMPOSITION, posStart < posEnd ? posStart : posEnd );
-	int lineEnd   = sendEditor( SCI_LINEFROMPOSITION, posStart > posEnd ? posStart : posEnd );
+	int lineStart = getLineFromPosition( posStart < posEnd ? posStart : posEnd );
+	int lineEnd   = getLineFromPosition( posStart > posEnd ? posStart : posEnd );
 	for ( int line = lineStart; line <= lineEnd; line++ ) {
 		sendEditor( enforcePolicy ? SCI_ENSUREVISIBLEENFORCEPOLICY : SCI_ENSUREVISIBLE, line );
 	}
@@ -995,6 +998,8 @@ void GetRTFStyleChange( char *delta, char *last, const char *current ) // \f0\fs
 
 void RDOBaseEdit::saveAsRTF( CFile& file, int start, int end ) const
 {
+	if ( !style ) return;
+
 	int lengthDoc = getLength();
 	if ( end < 0 ) end = lengthDoc;
 	sendEditor( SCI_COLOURISE, 0, -1 );
@@ -1151,7 +1156,7 @@ void RDOBaseEdit::toggleAllFolds() const
 
 void RDOBaseEdit::foldMarginClick( int position, int modifiers ) const
 {
-	int lineClick = sendEditor( SCI_LINEFROMPOSITION, position );
+	int lineClick = getLineFromPosition( position );
 	if ( (modifiers & SCMOD_SHIFT) && (modifiers & SCMOD_CTRL) ) {
 		toggleAllFolds();
 	} else {
@@ -1220,7 +1225,7 @@ void RDOBaseEdit::setCurrentPos( const int line, int pos_in_line, const bool con
 	int new_line_length = line_length;
 
 	if ( canUseLine && convert_rdo_tab ) {
-		int tab_size = style->tab->tabSize;
+		int tab_size = style ? style->tab->tabSize : 8;
 		int spaces = 0;
 		for ( int i = 0; i < line_length; i++ ) {
 			if ( currentLine[i] == ' ' ) {
@@ -1265,6 +1270,12 @@ void RDOBaseEdit::scrollToLine( const int line ) const
 {
 	sendEditor( SCI_LINESCROLL, 0, line - sendEditor( SCI_GETFIRSTVISIBLELINE ) - sendEditor( SCI_LINESONSCREEN )/3 );
 	setCurrentPos( getPositionFromLine( line ) );
+}
+
+void RDOBaseEdit::horzScrollToCurrentPos() const
+{
+	setCurrentPos( getCurrentPos() );
+	sendEditor( SCI_REPLACESEL, 0, 0 );
 }
 
 void RDOBaseEdit::load( strstream& stream ) const
@@ -1588,7 +1599,7 @@ void RDOBaseEdit::OnUpdateZoomReset( CCmdUI *pCmdUI )
 	pCmdUI->Enable( getZoom() );
 }
 
-int RDOBaseEdit::findLine( string& findWhat, const int startFromLine, const bool matchCase, const bool matchWholeWord ) const
+int RDOBaseEdit::findPos( string& findWhat, const int startFromLine, const bool matchCase, const bool matchWholeWord ) const
 {
 	int findLen = findWhat.length();
 	if ( !findLen ) return -1;
@@ -1601,11 +1612,7 @@ int RDOBaseEdit::findLine( string& findWhat, const int startFromLine, const bool
 	sendEditor( SCI_SETTARGETSTART, startPosition );
 	sendEditor( SCI_SETTARGETEND, endPosition );
 	sendEditor( SCI_SETSEARCHFLAGS, flags );
-	int posFind = sendEditorString( SCI_SEARCHINTARGET, findLen, findWhat.c_str() );
-	if ( posFind != -1 ) {
-		return sendEditor( SCI_LINEFROMPOSITION, posFind );
-	}
-	return -1;
+	return sendEditorString( SCI_SEARCHINTARGET, findLen, findWhat.c_str() );
 }
 
 string RDOBaseEdit::getLine( const int line ) const

@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "rdofindedit.h"
-#include "rdofindeditstyle.h"
 #include "sci/SciLexer.h"
 #include "sci/LexFind.h"
 
@@ -43,9 +42,10 @@ int RDOFindEdit::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	return 0;
 }
 
-void RDOFindEdit::setEditorStyle( rdoBaseEdit::RDOBaseEditStyle* style )
+void RDOFindEdit::setEditorStyle( RDOFindEditStyle* _style )
 {
-	RDOLogEdit::setEditorStyle( style );
+	RDOLogEdit::setEditorStyle( _style );
+	if ( !style ) return;
 
 	// ----------
 	// Colors
@@ -87,8 +87,9 @@ void RDOFindEdit::setEditorStyle( rdoBaseEdit::RDOBaseEditStyle* style )
 	sendEditor( SCI_STYLESETCHARACTERSET, SCE_RDO_KEYWORD, style->font->characterSet );
 }
 
-void RDOFindEdit::setKeyword( const string& _keyword )
+void RDOFindEdit::setKeyword( const string& _keyword, const bool matchCase )
 {
 	keyword = _keyword;
-	sendEditorString( SCI_SETKEYWORDS, RDO_FINDLEXER_KEYWORDSINDEX, keyword.c_str() );
+	sendEditorString( SCI_SETPROPERTY, reinterpret_cast<unsigned long>("find_matchcase"), matchCase ? "1" : "0" );
+	sendEditorString( SCI_SETKEYWORDS, SCI_RDO_ENDOFLINEONLY_KEYWORDSINDEX, keyword.c_str() );
 }

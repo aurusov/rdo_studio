@@ -25,9 +25,10 @@
 
 static void ColouriseFindDoc( unsigned int startPos, int length, int initStyle, WordList *keywordlists[], Accessor &styler )
 {
-	WordList& keywords = *keywordlists[ RDO_FINDLEXER_KEYWORDSINDEX ];
+	WordList& keywords = *keywordlists[ SCI_RDO_ENDOFLINEONLY_KEYWORDSINDEX ];
 	const char* findKeyword = keywords[0];
 	const int findKeywordLen = strlen( findKeyword );
+	bool matchCase = styler.GetPropertyInt( "find_matchcase", 0 ) ? true : false;
 
 	styler.StartAt( startPos );
 	styler.StartSegment( startPos );
@@ -51,6 +52,14 @@ static void ColouriseFindDoc( unsigned int startPos, int length, int initStyle, 
 						break;
 					}
 				}
+				if ( flag ) {
+					int lineCurrent = styler.GetLine( i );
+					int posInLine   = i - styler.LineStart( lineCurrent );
+					if ( posInLine < 3 ) {
+						flag = false;
+					}
+				}
+
 				styler.ColourTo( i - 1, state );
 				if ( flag ) {
 					styler.ColourTo( i + findKeywordLen - 1, SCE_FIND_KEYWORD );

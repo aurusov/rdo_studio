@@ -40,11 +40,7 @@ ScintillaBase::ScintillaBase() {
 	lexLanguage = SCLEX_CONTAINER;
 	lexCurrent = 0;
 	for (int wl = 0;wl < numWordLists;wl++)
-		if (wl == RDO_FINDLEXER_KEYWORDSINDEX) {
-			keyWordLists[wl] = new WordList( true );
-		} else {
-			keyWordLists[wl] = new WordList;
-		}
+		keyWordLists[wl] = new WordList( wl == SCI_RDO_ENDOFLINEONLY_KEYWORDSINDEX );
 	keyWordLists[numWordLists] = 0;
 }
 
