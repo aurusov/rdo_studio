@@ -6,7 +6,7 @@
 #include <string>
 #include <sstream>
 #include <vector>
-#include "rdosimcommon.h"
+#include <rdocommon.h>
 
 using namespace std;
 

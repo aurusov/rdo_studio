@@ -2,6 +2,9 @@
 #include "rdoeditorbaseedit.h"
 #include "../edit_ctrls/sci/SciLexer.h"
 #include "../resource.h"
+#include "../res/ac_function.xpm"
+#include "../res/ac_data.xpm"
+#include "../res/ac_trace.xpm"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -20,28 +23,32 @@ using namespace rdoStyle;
 // ---------------
 // RDO lexer
 
-char* RDOEditorBaseEdit::kw0 = "$Activities $Back_picture $Body $Changes $Compare_tops $Condition \
-$Constant $Decision_point $Default $End $End_picture $Evaluate_by $Frame $Function \
-$Include $Operations $Parameters $Pattern $Relevant_resources $Resource_type \
-$Resources $Result_values $Results $Sequence $Status $Term_condition $Time $Tracing \
-$Type $Watching active AExpCalcCounter after algorithmic all and Animation before \
-BExpCalcCounter bitmap Break_point by_hist Calculate_if Choice Convert_begin \
-Convert_end Convert_event Convert_rule Create ellipse enumerative Erase EventCount \
-exponential first FALSE Frame_file Frame_number from get_value Get_value integer \
-irregular_event Keep keyboard line list longint Model_name Monitor NO NO_MORE_EVENTS \
-NoChange NoCheck NonExist normal NORMAL_TERMINATION NoShow operation \
-OperRuleCheckCounter OprIev_file or permanent r_rect real rect Resource_file \
-Results_file rule Run_file Run_StartTime RUN_TIME_ERROR s_bmp search Seconds selected \
-set Show Show_if Show_mode Show_rate some Statistic_file such_as table temporary \
-Terminate_if text Time_now Trace_EndTime Trace_file Trace_StartTime triang TRUE \
-uniform until USER_BREAK value watch_par watch_quant watch_state watch_value with_max \
-with_min YES transparent —ËÒÚÂÏÌÓÂ_‚ÂÏˇ";
+char* RDOEditorBaseEdit::kw0 = "$Activities?0 $Back_picture?0 $Body?0 $Changes?0 $Compare_tops?0 $Condition?0 \
+$Constant?0 $Decision_point?0 $Default?0 $End?0 $End_picture?0 $Evaluate_by?0 $Frame?0 $Function?0 \
+$Include?0 $Operations?0 $Parameters?0 $Pattern?0 $Relevant_resources?0 $Resource_type?0 \
+$Resources?0 $Result_values?0 $Results?0 $Sequence?0 $Status?0 $Term_condition?0 $Time?0 $Tracing?0 \
+$Type?0 $Watching?0 active?0 AExpCalcCounter?0 after?0 algorithmic?0 all?0 and?0 Animation?0 before?0 \
+BExpCalcCounter?0 bitmap?0 Break_point?0 by_hist?0 Calculate_if?0 Choice?0 Convert_begin?0 \
+Convert_end?0 Convert_event?0 Convert_rule?0 Create?0 ellipse?0 enumerative?0 Erase?0 EventCount?0 \
+exponential?0 first?0 FALSE?0 Frame_file?0 Frame_number?0 from?0 get_value?0 Get_value?0 integer?0 \
+irregular_event?0 Keep?0 keyboard?0 line?0 list?0 longint?0 Model_name?0 Monitor?0 NO?0 NO_MORE_EVENTS?0 \
+NoChange?0 NoCheck?0 NonExist?0 normal?0 NORMAL_TERMINATION?0 NoShow?0 operation?0 \
+OperRuleCheckCounter?0 OprIev_file?0 or?0 permanent?0 r_rect?0 real?0 rect?0 Resource_file?0 \
+Results_file?0 rule?0 Run_file?0 Run_StartTime?0 RUN_TIME_ERROR?0 s_bmp?0 search?0 Seconds?0 selected?0 \
+set?0 Show?0 Show_if?0 Show_mode?0 Show_rate?0 some?0 Statistic_file?0 such_as?0 table?0 temporary?0 \
+Terminate_if?0 text?0 Time_now?0 Trace_EndTime?2 Trace_file?2 Trace_StartTime?2 triang?0 TRUE?0 \
+uniform?0 until?0 USER_BREAK?0 value?0 watch_par?0 watch_quant?0 watch_state?0 watch_value?0 with_max?0 \
+with_min?0 YES?0 transparent?0 Seed?0 —ËÒÚÂÏÌÓÂ_‚ÂÏˇ?0";
 
-char* RDOEditorBaseEdit::kw1 = "Abs ArcCos ArcSin ArcTan Cos Cotan Exist Exp Floor For_All Frac \
-GetRelResNumber GetResNumber IAbs IMax IMin Int IntPower Ln Log10 Log2 LogN Max Min \
-Not_Exist Not_For_All Power Round Sin Sqrt Tan";
+char* RDOEditorBaseEdit::kw1 = "Abs?1 ArcCos?1 ArcSin?1 ArcTan?1 Cos?1 Cotan?1 Exist?1 Exp?1 Floor?1 For_All?1 Frac?1 \
+GetRelResNumber?1 GetResNumber?1 IAbs?1 IMax?1 IMin?1 Int?1 IntPower?1 Ln?1 Log10?1 Log2?1 LogN?1 Max?1 Min?1 \
+Not_Exist?1 Not_For_All?1 Power?1 Round?1 Sin?1 Sqrt?1 Tan?1";
 
-char* RDOEditorBaseEdit::kw2 = "no_trace trace trace_all trace_stat trace_tops";
+char* RDOEditorBaseEdit::kw2 = "no_trace?2 trace?2 trace_all?2 trace_stat?2 trace_tops?2";
+
+char* RDOEditorBaseEdit::p_kw0 = NULL;
+char* RDOEditorBaseEdit::p_kw1 = NULL;
+char* RDOEditorBaseEdit::p_kw2 = NULL;
 
 static char* wordCharacters = "0123456789_$abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ¿‡¡·¬‚√„ƒ‰≈Â®∏∆Ê«Á»Ë…È ÍÀÎÃÏÕÌŒÓœÔ–—Ò“Ú”Û‘Ù’ı÷ˆ◊˜ÿ¯Ÿ˘⁄˙€˚‹¸›˝ﬁ˛ﬂˇ";
 
@@ -61,6 +68,54 @@ RDOEditorBaseEdit::~RDOEditorBaseEdit()
 {
 }
 
+char* RDOEditorBaseEdit::getKW0()
+{
+	if ( !p_kw0 ) {
+		string s = kw0;
+		while ( s.find( '?' ) != string::npos ) {
+			string::size_type pos1 = s.find( '?' );
+			string::size_type pos2 = s.find( ' ', pos1 );
+			s.erase( pos1, pos2 - pos1 );
+		}
+		p_kw0 = new char[ s.length() + 1 ];
+		strcpy( p_kw0, s.c_str() );
+		p_kw0[ s.length() + 1 ] = '\0';
+	}
+	return p_kw0;
+}
+
+char* RDOEditorBaseEdit::getKW1()
+{
+	if ( !p_kw1 ) {
+		string s = kw1;
+		while ( s.find( '?' ) != string::npos ) {
+			string::size_type pos1 = s.find( '?' );
+			string::size_type pos2 = s.find( ' ', pos1 );
+			s.erase( pos1, pos2 - pos1 );
+		}
+		p_kw1 = new char[ s.length() + 1 ];
+		strcpy( p_kw1, s.c_str() );
+		p_kw1[ s.length() + 1 ] = '\0';
+	}
+	return p_kw1;
+}
+
+char* RDOEditorBaseEdit::getKW2()
+{
+	if ( !p_kw2 ) {
+		string s = kw2;
+		while ( s.find( '?' ) != string::npos ) {
+			string::size_type pos1 = s.find( '?' );
+			string::size_type pos2 = s.find( ' ', pos1 );
+			s.erase( pos1, pos2 - pos1 );
+		}
+		p_kw2 = new char[ s.length() + 1 ];
+		strcpy( p_kw2, s.c_str() );
+		p_kw2[ s.length() + 1 ] = '\0';
+	}
+	return p_kw2;
+}
+
 int RDOEditorBaseEdit::OnCreate( LPCREATESTRUCT lpCreateStruct )
 {
 	if ( RDOBaseEdit::OnCreate(lpCreateStruct) == -1 ) return -1;
@@ -73,10 +128,13 @@ int RDOEditorBaseEdit::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	sendEditor( SCI_SETMARGINWIDTHN, 1, 0 );
 
 	sendEditor( SCI_SETSTYLEBITS, 5 );
-	sendEditorString( SCI_SETKEYWORDS, 0, kw0 );
-	sendEditorString( SCI_SETKEYWORDS, 1, kw1 );
-	sendEditorString( SCI_SETKEYWORDS, 2, kw2 );
+	sendEditorString( SCI_SETKEYWORDS, 0, getKW0() );
+	sendEditorString( SCI_SETKEYWORDS, 1, getKW1() );
+	sendEditorString( SCI_SETKEYWORDS, 2, getKW2() );
 	sendEditorString( SCI_SETWORDCHARS, 0, wordCharacters );
+	sendEditor( SCI_REGISTERIMAGE, 0, reinterpret_cast<long>(xpm_ac_function) );
+	sendEditor( SCI_REGISTERIMAGE, 1, reinterpret_cast<unsigned long>(xpm_ac_data) );
+	sendEditor( SCI_REGISTERIMAGE, 2, reinterpret_cast<unsigned long>(xpm_ac_trace) );
 
 	return 0;
 }

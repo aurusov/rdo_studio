@@ -409,10 +409,11 @@ BEGIN
                     IDC_ABOUT_ADDRESS,52,28,192,24
     RTEXT           "Tel (095) 263-6388, (095) 263-6954, (095) 263-6049\r\nFax (095) 263-6170",
                     IDC_ABOUT_TEL,52,60,192,16
-    RTEXT           "e-mail:",IDC_ABOUR_EMAIL_STATIC,148,84,32,8
-    RTEXT           "evv@rk9.bmstu.ru",IDC_ABOUT_EMAIL,184,84,60,8,SS_NOTIFY
-    RTEXT           "web site:",IDC_ABOUR_WEB_STATIC,148,92,32,8
-    RTEXT           "www.rk9.bmstu.ru",IDC_ABOUT_WEB,184,92,60,8,SS_NOTIFY
+    RTEXT           "e-mail:",IDC_ABOUR_EMAIL_STATIC,128,84,32,8
+    LTEXT           "rdo@rk9.bmstu.ru",IDC_ABOUT_EMAIL,164,84,80,8,SS_NOTIFY
+    RTEXT           "web site:",IDC_ABOUR_WEB_STATIC,128,92,32,8
+    LTEXT           "www.rk9.bmstu.ru/rdo/",IDC_ABOUT_WEB,164,92,80,8,
+                    SS_NOTIFY
 END
 
 IDD_OPTIONS_GENERAL DIALOGEX 0, 0, 292, 138
@@ -1193,8 +1194,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,8,0,239
- PRODUCTVERSION 0,8,0,239
+ FILEVERSION 0,8,0,246
+ PRODUCTVERSION 0,8,0,246
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -1212,14 +1213,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "RAO studio\0"
-            VALUE "FileVersion", "0, 8, 0, 239\0"
+            VALUE "FileVersion", "0, 8, 0, 246\0"
             VALUE "InternalName", "RAO-Studio\0"
             VALUE "LegalCopyright", "Copyright (C) 2003\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "RAO-Studio.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "RAO-Studio\0"
-            VALUE "ProductVersion", "0, 8, 0, 239\0"
+            VALUE "ProductVersion", "0, 8, 0, 246\0"
             VALUE "SpecialBuild", "\0"
         END
     END
@@ -1579,7 +1580,7 @@ BEGIN
     IDS_MODEL_LOADING_BEGIN "Loading model..."
     IDS_MODEL_LOADING_OK    "Loading model... ok"
     IDS_MODEL_LOADING_FAILD "Loading model... failed"
-    IDS_MODEL_CANNOT_LOAD   "Can't load %s"
+    IDS_MODEL_CANNOT_LOAD   "Can't load %s (%s)"
     IDS_MODEL_PATTERNS      "patterns"
 END
 
@@ -1637,7 +1638,7 @@ BEGIN
     IDS_COLORSTYLE_FRAME    "Animation Window"
     IDS_COLORSTYLE_FRAME_BORDER "border line"
     IDS_COLORSTYLE_FRAME_BACKGROUND "outside background"
-    IDS_MODEL_FILE_READONLY "%s.%s - readonly"
+    IDS_MODEL_FILE_READONLY "%s - readonly"
 END
 
 STRINGTABLE DISCARDABLE 

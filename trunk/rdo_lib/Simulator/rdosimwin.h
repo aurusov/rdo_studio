@@ -8,9 +8,10 @@
 #include <vector>
 #include <afxwin.h>
 
-#include "rdosimcommon.h"
+#include <rdocommon.h>
 
 #include <rdobinarystream.h>
+#include <rdocommon.h>
 
 using namespace std;
 

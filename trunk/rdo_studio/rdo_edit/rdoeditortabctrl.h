@@ -13,18 +13,6 @@ namespace rdoEditor {
 // ----------------------------------------------------------------------------
 // ---------- RDOEditorTabCtrl
 // ----------------------------------------------------------------------------
-enum RDOEditorTabItem {
-	RDOEDIT_PAT = 0,
-	RDOEDIT_RTP,
-	RDOEDIT_RSS,
-	RDOEDIT_OPR,
-	RDOEDIT_FRM,
-	RDOEDIT_FUN,
-	RDOEDIT_DPT,
-	RDOEDIT_SMR,
-	RDOEDIT_PMD
-};
-
 class RDOEditorTabCtrl: public RDOTabCtrl
 {
 private:
@@ -46,12 +34,16 @@ public:
 	RDOEditorTabCtrl( RDOStudioEditBaseView* _view );
 	virtual ~RDOEditorTabCtrl();
 
-	RDOEditorTabItem getCurrentRDOItem() const;
-	void setCurrentRDOItem( const RDOEditorTabItem item );
+	rdoModelObjects::RDOFileType indexToType( const int index ) const;
+	int typeToIndex( const rdoModelObjects::RDOFileType type ) const;
+	bool typeSupported( const rdoModelObjects::RDOFileType type ) const { return typeToIndex( type ) != -1;        }
 
-	RDOEditorEdit* getCurrentEdit() const                           { return static_cast<RDOEditorEdit*>(getItemCurrent()); }
-	RDOEditorEdit* getItemEdit( const int index ) const             { return static_cast<RDOEditorEdit*>(getItem( index )); }
-	RDOEditorEdit* getItemEdit( const RDOEditorTabItem item ) const { return getItemEdit( static_cast<int>(item) );         }
+	rdoModelObjects::RDOFileType getCurrentRDOItem() const              { return indexToType( getCurrentIndex() ); }
+	void setCurrentRDOItem( const rdoModelObjects::RDOFileType type );
+
+	RDOEditorEdit* getCurrentEdit() const               { return static_cast<RDOEditorEdit*>(getItemCurrent()); }
+	RDOEditorEdit* getItemEdit( const int index ) const { return static_cast<RDOEditorEdit*>(getItem( index )); }
+	RDOEditorEdit* getItemEdit( const rdoModelObjects::RDOFileType type ) const;
 };
 
 }; // namespace rdoEditor

@@ -2,7 +2,7 @@
 /** @file StyleContext.cxx
  ** Lexer infrastructure.
  **/
-// Copyright 1998-2001 by Neil Hodgson <neilh@scintilla.org>
+// Copyright 1998-2004 by Neil Hodgson <neilh@scintilla.org>
 // This file is in the public domain.
 
 #include <stdlib.h>
@@ -29,7 +29,7 @@ static void getRange(unsigned int start,
 	s[i] = '\0';
 }
 
-void StyleContext::GetCurrent(char *s, int len) {
+void StyleContext::GetCurrent(char *s, unsigned int len) {
 	getRange(styler.GetStartSegment(), currentPos - 1, styler, s, len);
 }
 
@@ -46,6 +46,6 @@ static void getRangeLowered(unsigned int start,
 	s[i] = '\0';
 }
 
-void StyleContext::GetCurrentLowered(char *s, int len) {
+void StyleContext::GetCurrentLowered(char *s, unsigned int len) {
 	getRangeLowered(styler.GetStartSegment(), currentPos - 1, styler, s, len);
 }

@@ -199,7 +199,7 @@ void RDOStudioChartView::recalcLayout()
 	}
 	chartRect.left = size_max.cx + 10;
 
-	str = !doc->docTimes.empty() ? format( "%.3f", doc->docTimes.back()->time ) : format( "%.3f", 0 );
+	str = !doc->docTimes.empty() ? rdo::format( "%.3f", doc->docTimes.back()->time ) : rdo::format( "%.3f", 0 );
 	::GetTextExtentPoint32( hmemdc, str.c_str(), str.length(), &sz );
 	chartRect.right = newClientRect.right - sz.cx - 5;
 
@@ -498,14 +498,14 @@ void RDOStudioChartView::drawXAxis( CRect& chartRect )
 			}
 			double valo = drawFromX.time;
 			int x = chartRect.left;
-			string str = format( formatstr.c_str(), valo );
+			string str = rdo::format( formatstr.c_str(), valo );
 			tmprect.left = x;
 			::DrawText( hmemdc, str.c_str(), str.length(), tmprect, DT_LEFT );
 			valo += valoffset;
 			x += widthoffset;
 			if ( valoffset ) {
 				for ( int i = 1; i < valueCountX; i++ ) {
-					str = format( formatstr.c_str(), valo );
+					str = rdo::format( formatstr.c_str(), valo );
 					tmprect.left = x;
 					::DrawText( hmemdc, str.c_str(), str.length(), tmprect, DT_LEFT );
 					if ( i != valueCountX - 1 ) {
@@ -526,7 +526,7 @@ void RDOStudioChartView::drawXAxis( CRect& chartRect )
 				RDOTracerTimeNow* timenow = (*it);
 				tmprect.left = chartRect.left + ( (*it)->time - unwrapTimesList.front()->time ) * timeScale + ticks * style->fonts_ticks->tickWidth - chartShift;
 				tmprect.left = min( tmprect.left, chartRect.right - 1 );
-				str = format( formatstr.c_str(), (*it)->time );
+				str = rdo::format( formatstr.c_str(), (*it)->time );
 				if ( *(*it) == drawFromX ) {
 					tmprect.left += chartShift;
 				}

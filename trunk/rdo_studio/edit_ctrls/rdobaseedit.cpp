@@ -598,7 +598,7 @@ void RDOBaseEdit::findNext( string& findWhat, const bool searchDown, const bool 
 	if ( posFind == -1 ) {
 		firstFoundPos = -1;
 		bHaveFound    = false;
-		MessageBox( format( ID_MSG_CANTFIND, findWhat.c_str() ).c_str(), NULL, MB_OK | MB_ICONWARNING );
+		MessageBox( rdo::format( ID_MSG_CANTFIND, findWhat.c_str() ).c_str(), NULL, MB_OK | MB_ICONWARNING );
 		SetFocus();
 	} else {
 		if ( firstFoundPos == -1 ) {
@@ -606,7 +606,7 @@ void RDOBaseEdit::findNext( string& findWhat, const bool searchDown, const bool 
 		} else if ( posFind == firstFoundPos ) {
 			firstFoundPos = -1;
 			bHaveFound    = false;
-			MessageBox( format( ID_MSG_CANTFIND, findWhat.c_str() ).c_str(), NULL, MB_OK | MB_ICONWARNING );
+			MessageBox( rdo::format( ID_MSG_CANTFIND, findWhat.c_str() ).c_str(), NULL, MB_OK | MB_ICONWARNING );
 			SetFocus();
 			return;
 		}
@@ -666,7 +666,7 @@ void RDOBaseEdit::replaceAll( string& findWhat, string& replaceWhat, const bool 
 		setSelection( lastMatch, lastMatch );
 		sendEditor( SCI_ENDUNDOACTION );
 	} else {
-		MessageBox( format( ID_MSG_CANTFIND, findWhat.c_str() ).c_str(), NULL, MB_OK | MB_ICONWARNING );
+		MessageBox( rdo::format( ID_MSG_CANTFIND, findWhat.c_str() ).c_str(), NULL, MB_OK | MB_ICONWARNING );
 		SetFocus();
 	}
 }
@@ -923,7 +923,7 @@ void RDOBaseEdit::saveAsRTF( CFile& file, int start, int end ) const
 	saveStr += RTF_FONTDEFOPEN;
 
 	strncpy( *fonts, style->font->name.c_str(), MAX_FONTDEF );
-	saveStr += format( RTF_FONTDEF, 0, style->font->characterSet, style->font->name.c_str() );
+	saveStr += rdo::format( RTF_FONTDEF, 0, style->font->characterSet, style->font->name.c_str() );
 	strncpy( *colors, "#000000", MAX_COLORDEF );
 
 	RDOBaseEditTheme* theme = static_cast<RDOBaseEditTheme*>(style->theme);
@@ -949,10 +949,10 @@ void RDOBaseEdit::saveAsRTF( CFile& file, int start, int end ) const
 	saveStr += RTF_COLORDEFOPEN;
 
 	for ( i = 0; i < colorCount; i++ ) {
-		saveStr += format( RTF_COLORDEF, GetHexByte(colors[i] + 1), GetHexByte(colors[i] + 3), GetHexByte(colors[i] + 5) );
+		saveStr += rdo::format( RTF_COLORDEF, GetHexByte(colors[i] + 1), GetHexByte(colors[i] + 3), GetHexByte(colors[i] + 5) );
 	}
 
-	saveStr += format( RTF_COLORDEFCLOSE RTF_HEADERCLOSE RTF_BODYOPEN RTF_SETFONTFACE "0" RTF_SETFONTSIZE "%d" RTF_SETCOLOR "0 ", style->font->size * 2 );
+	saveStr += rdo::format( RTF_COLORDEFCLOSE RTF_HEADERCLOSE RTF_BODYOPEN RTF_SETFONTFACE "0" RTF_SETFONTSIZE "%d" RTF_SETCOLOR "0 ", style->font->size * 2 );
 
 	sprintf( lastStyle, RTF_SETFONTFACE "0" RTF_SETFONTSIZE "%d" RTF_SETCOLOR "0" RTF_SETBACKGROUND "0" RTF_BOLD_OFF RTF_ITALIC_OFF, style->font->size * 2 );
 

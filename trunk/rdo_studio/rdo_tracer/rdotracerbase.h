@@ -92,7 +92,7 @@ public:
 	void getModelStructure( std::stringstream& stream );
 	void getTraceString( std::string trace_string );
 	std::string getNextValue( std::string& line );
-	void registerClipboardFormat() { clipboardFormat = ::RegisterClipboardFormat( format(ID_RAO_CLIPBRD).c_str() ); }
+	void registerClipboardFormat() { clipboardFormat = ::RegisterClipboardFormat( rdo::format(ID_RAO_CLIPBRD).c_str() ); }
 	UINT const getClipboardFormat() const { return clipboardFormat; }
 	RDOStudioChartDoc* createNewChart();
 	void addChart( RDOStudioChartDoc* const chart );

@@ -63,11 +63,12 @@ public:
 	enum CallbackType     {
 		// these callback calling by "RdoSimulator"
 		modelExit			// calls after parseError, endExecuteModel, executeError, modelStopped
-							// exit code (parament):
-							//	0 - normal (endExecuteModel)
-							//	1 - parse error (parseError)
-							//	2 - run-time error (executeError)
-							//	3 - stoped by user (modelStopped)
+							// exit code (parament) look at rdoModel::RDOExitCode
+							//	EC_OK            = 0 - normal (endExecuteModel)
+							//	EC_ParserError   = 1 - parse error (parseError)
+							//	EC_RunTimeError  = 2 - run-time error (executeError)
+							//	EC_UserBreak     = 3 - stoped by user (modelStopped)
+							//  EC_ModelNotFound = 4 - smr file not found (for autorun + autoexit mode)
 	};
 
 private:

@@ -5,7 +5,7 @@
 #include "rdocalcconst.h"
 
 #include "rdotrace.h"
-#include "rdosimcommon.h"
+#include <rdocommon.h>
 
 namespace rdoRuntime
 {

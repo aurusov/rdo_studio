@@ -63,11 +63,11 @@ void RDOTracer::beforeModelStartNotify()
 	tracer->setShowMode( kernel.getSimulator()->getShowMode() );
 	tracer->setModelName( kernel.getRepository()->getName() );
 	try {
-		kernel.debug( format( IDS_TRACER_GETTING_MODEL_STRUCTURE ).c_str() );
+		kernel.debug( rdo::format( IDS_TRACER_GETTING_MODEL_STRUCTURE ).c_str() );
 		tracer->getModelStructure( kernel.getSimulator()->getModelStructure() );
-		kernel.debug( format( IDS_MODEL_RESOURCE_LOADING_NAME_OK ).c_str() );
+		kernel.debug( rdo::format( IDS_MODEL_RESOURCE_LOADING_NAME_OK ).c_str() );
 	} catch ( ... ) {
-		kernel.debug( format( IDS_MODEL_RESOURCE_LOADING_NAME_FAILED ).c_str() );
+		kernel.debug( rdo::format( IDS_MODEL_RESOURCE_LOADING_NAME_FAILED ).c_str() );
 	}
 }
 

@@ -48,7 +48,7 @@ string RDOLogEditLineInfo::getMessage() const
 	if ( lineNumber < 0 || file.empty() ) {
 		return message;
 	} else {
-		return format( "%s (%d): %s", file.c_str(), lineNumber + 1, message.c_str() );
+		return rdo::format( "%s (%d): %s", file.c_str(), lineNumber + 1, message.c_str() );
 	}
 }
 
@@ -228,23 +228,10 @@ void RDOLogEdit::setSelectLine( const int line, const RDOLogEditLineInfo* lineIn
 		}
 		rdoEditor::RDOEditorTabCtrl* tab = model->getTab();
 		if ( tab ) {
-			rdoEditor::RDOEditorTabItem tabItem;
-			switch ( lineInfo->fileType ) {
-				case rdoModelObjects::PAT: tabItem = rdoEditor::RDOEDIT_PAT; break;
-				case rdoModelObjects::RTP: tabItem = rdoEditor::RDOEDIT_RTP; break;
-				case rdoModelObjects::RSS: tabItem = rdoEditor::RDOEDIT_RSS; break;
-				case rdoModelObjects::OPR: tabItem = rdoEditor::RDOEDIT_OPR; break;
-				case rdoModelObjects::FRM: tabItem = rdoEditor::RDOEDIT_FRM; break;
-				case rdoModelObjects::FUN: tabItem = rdoEditor::RDOEDIT_FUN; break;
-				case rdoModelObjects::DPT: tabItem = rdoEditor::RDOEDIT_DPT; break;
-				case rdoModelObjects::SMR: tabItem = rdoEditor::RDOEDIT_SMR; break;
-				case rdoModelObjects::PMD: tabItem = rdoEditor::RDOEDIT_PMD; break;
-				default: tabItem = rdoEditor::RDOEDIT_PAT;
-			}
-			if ( tab->getCurrentRDOItem() != tabItem ) {
+			if ( tab->getCurrentRDOItem() != lineInfo->fileType ) {
 				rdoEditor::RDOEditorEdit* edit = tab->getCurrentEdit();
 				if ( !edit || (edit && edit->getLog() == this) ) {
-					tab->setCurrentRDOItem( tabItem );
+					tab->setCurrentRDOItem( lineInfo->fileType );
 				}
 			}
 			rdoEditor::RDOEditorEdit* edit = tab->getCurrentEdit();
@@ -305,7 +292,7 @@ void RDOLogEdit::appendLine( RDOLogEditLineInfo* line )
 	}
 	bool scroll = isLineVisible( getLineCount() - 1 );
 	string str = line->getMessage();
-	trimRight( str );
+	rdo::trimRight( str );
 	str += "\r\n";
 	appendText( str );
 	if ( scroll ) {

@@ -47,7 +47,7 @@ void RDOTracerResult::setValue( string& line, RDOTracerTimeNow* const time, cons
 {
 	RDOTracerValue* newvalue = new RDOTracerValue( time, eventIndex );
 	double newval;
-	trim( line );
+	rdo::trim( line );
 	if ( resultKind != RDORK_WATCHSTATE )
 		newval = atof( line.c_str() );
 	else

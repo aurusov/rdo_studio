@@ -123,11 +123,11 @@ void RDOTracerSerie::getCaptions( vector<string> &captions, const int val_count 
 		string formatstr = "%.3f";
 		if ( value_count > 1 ) {
 			for ( int i = 0; i < val_count; i++ ) {
-				captions.push_back( format( formatstr.c_str(), valo ) );
+				captions.push_back( rdo::format( formatstr.c_str(), valo ) );
 				valo += valoffset;
 			}
 		} else {
-			captions.push_back( format( formatstr.c_str(), valo ) );
+			captions.push_back( rdo::format( formatstr.c_str(), valo ) );
 		}
 	}
 
@@ -151,7 +151,7 @@ void RDOTracerSerie::getCaptionsInt( vector<string> &captions, const int val_cou
 	int valoffset = ( maxValue - minValue ) / ( real_val_count - 1 );
 	string formatstr = "%d";
 	for ( int i = 0; i < real_val_count; i++ ) {
-		captions.push_back( format( formatstr.c_str(), valo ) );
+		captions.push_back( rdo::format( formatstr.c_str(), valo ) );
 		valo += valoffset;
 	}
 
@@ -169,11 +169,11 @@ void RDOTracerSerie::getCaptionsDouble( vector<string> &captions, const int val_
 	string formatstr = "%.3f";
 	if ( value_count > 1 ) {
 		for ( int i = 0; i < val_count; i++ ) {
-			captions.push_back( format( formatstr.c_str(), valo ) );
+			captions.push_back( rdo::format( formatstr.c_str(), valo ) );
 			valo += valoffset;
 		}
 	} else {
-		captions.push_back( format( formatstr.c_str(), valo ) );
+		captions.push_back( rdo::format( formatstr.c_str(), valo ) );
 	}
 
 	const_cast<CMutex&>(mutex).Unlock();

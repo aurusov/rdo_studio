@@ -5,14 +5,13 @@
 // Copyright 2001 Simon Steele <ss@pnotepad.org>, portions copyright Neil Hodgson.
 // The License.txt file describes the conditions under which this software may be distributed.
 
-#include <stdlib.h> 
-#include <stdio.h> 
-#include <ctype.h> 
-
-#define _WIN32_WINNT  0x0400
-#include <windows.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
 
 #include "Platform.h"
+
 #include "SciLexer.h"
 #include "PropSet.h"
 #include "Accessor.h"
@@ -20,11 +19,7 @@
 #include "KeyWords.h"
 #include "ExternalLexer.h"
 
-// Initialise the static vars...
-int LexerManager::UseCount = 0;
-LexerLibrary *LexerManager::first = NULL;
-LexerLibrary *LexerManager::last = NULL;
-LexerManager *LexerManager::firstlm = NULL;
+LexerManager *LexerManager::theInstance = NULL;
 
 //------------------------------------------
 //
@@ -68,8 +63,8 @@ void ExternalLexerModule::Lex(unsigned int startPos, int lengthDoc, int initStyl
 
 	char **kwds = WordListsToStrings(keywordlists);
 	char *ps = styler.GetProperties();
-	
-	// The accessor passed in is always a DocumentAccessor so this cast and the subsequent 
+
+	// The accessor passed in is always a DocumentAccessor so this cast and the subsequent
 	// access will work. Can not use the stricter dynamic_cast as that requires RTTI.
 	DocumentAccessor &da = static_cast<DocumentAccessor &>(styler);
 	WindowID wID = da.GetWindow();
@@ -87,8 +82,8 @@ void ExternalLexerModule::Fold(unsigned int startPos, int lengthDoc, int initSty
 
 	char **kwds = WordListsToStrings(keywordlists);
 	char *ps = styler.GetProperties();
-	
-	// The accessor passed in is always a DocumentAccessor so this cast and the subsequent 
+
+	// The accessor passed in is always a DocumentAccessor so this cast and the subsequent
 	// access will work. Can not use the stricter dynamic_cast as that requires RTTI.
 	DocumentAccessor &da = static_cast<DocumentAccessor &>(styler);
 	WindowID wID = da.GetWindow();
@@ -111,25 +106,26 @@ void ExternalLexerModule::SetExternal(ExtLexerFunction fLexer, ExtFoldFunction f
 //
 //------------------------------------------
 
-LexerLibrary::LexerLibrary(LPCTSTR ModuleName) {
+LexerLibrary::LexerLibrary(const char* ModuleName) {
 	// Initialise some members...
 	first = NULL;
 	last = NULL;
 
 	// Load the DLL
-	m_hModule = LoadLibrary(ModuleName);
-	if (m_hModule) {
+	lib = DynamicLibrary::Load(ModuleName);
+	if (lib->IsValid()) {
 		m_sModuleName = ModuleName;
-		GetLexerCountFn GetLexerCount = (GetLexerCountFn)GetProcAddress(m_hModule, "GetLexerCount");
+		//Cannot use reinterpret_cast because: ANSI C++ forbids casting between pointers to functions and objects
+		GetLexerCountFn GetLexerCount = (GetLexerCountFn)lib->FindFunction("GetLexerCount");
 
 		if (GetLexerCount) {
 			ExternalLexerModule *lex;
 			LexerMinder *lm;
 
 			// Find functions in the DLL
-			GetLexerNameFn GetLexerName = (GetLexerNameFn)GetProcAddress(m_hModule, "GetLexerName");
-			ExtLexerFunction Lexer = (ExtLexerFunction)GetProcAddress(m_hModule, "Lex");
-			ExtFoldFunction Folder = (ExtFoldFunction)GetProcAddress(m_hModule, "Fold");
+			GetLexerNameFn GetLexerName = (GetLexerNameFn)lib->FindFunction("GetLexerName");
+			ExtLexerFunction Lexer = (ExtLexerFunction)lib->FindFunction("Lex");
+			ExtFoldFunction Folder = (ExtFoldFunction)lib->FindFunction("Fold");
 
 			// Assign a buffer for the lexer name.
 			char lexname[100];
@@ -156,7 +152,6 @@ LexerLibrary::LexerLibrary(LPCTSTR ModuleName) {
 				// The external lexer needs to know how to call into its DLL to
 				// do its lexing and folding, we tell it here. Folder may be null.
 				lex->SetExternal(Lexer, Folder, i);
-
 			}
 		}
 	}
@@ -165,6 +160,7 @@ LexerLibrary::LexerLibrary(LPCTSTR ModuleName) {
 
 LexerLibrary::~LexerLibrary() {
 	Release();
+	delete lib;
 }
 
 void LexerLibrary::Release() {
@@ -181,10 +177,69 @@ void LexerLibrary::Release() {
 
 	first = NULL;
 	last = NULL;
+}
 
-	// Release the DLL
-	if (NULL != m_hModule) {
-		FreeLibrary(m_hModule);
+//------------------------------------------
+//
+// LexerManager
+//
+//------------------------------------------
+
+/// Return the single LexerManager instance...
+LexerManager *LexerManager::GetInstance() {
+	if(!theInstance)
+		theInstance = new LexerManager;
+	return theInstance;
+}
+
+/// Delete any LexerManager instance...
+void LexerManager::DeleteInstance()
+{
+	if(theInstance) {
+		delete theInstance;
+		theInstance = NULL;
+	}
+}
+
+/// protected constructor - this is a singleton...
+LexerManager::LexerManager() {
+	first = NULL;
+	last = NULL;
+}
+
+LexerManager::~LexerManager() {
+	Clear();
+}
+
+void LexerManager::Load(const char* path)
+{
+	LoadLexerLibrary(path);
+}
+
+void LexerManager::LoadLexerLibrary(const char* module)
+{
+	LexerLibrary *lib = new LexerLibrary(module);
+	if (NULL != first) {
+		last->next = lib;
+		last = lib;
+	} else {
+		first = lib;
+		last = lib;
+	}
+}
+
+void LexerManager::Clear()
+{
+	if (NULL != first) {
+		LexerLibrary *cur = first;
+		LexerLibrary *next;
+		while (cur) {
+			next = cur->next;
+			delete cur;
+			cur = next;
+		}
+		first = NULL;
+		last = NULL;
 	}
 }
 
@@ -194,120 +249,9 @@ void LexerLibrary::Release() {
 //
 //------------------------------------------
 
-int FindLastSlash(char *inp) {
-	int i;
-	int ret = -1;
-	for (i = strlen(inp) - 1; i >= 0; i--) {
-		if (inp[i] == '\\' || inp[i] == '/') {
-			// if you don't like break:
-			/*
-			if (ret == -1)
-			*/
-			ret = i;
-			break;
-		}
-	}
-	return ret;
-}
-
-LexerManager::LexerManager() {
-	
-	UseCount++;
-	if (1 == UseCount) {
-		firstlm = this;
-		m_bLoaded = false;
-	}
-}
-
-void LexerManager::EnumerateLexers() {
-	HANDLE hFind;
-	WIN32_FIND_DATA FindFileData;
-
-	char path[MAX_PATH + 1];
-
-	GetModuleFileName(GetModuleHandle(NULL), path, MAX_PATH);
-
-	int i = FindLastSlash(path);
-
-	if (i == -1)
-		i = strlen(path);
-
-	SString sPath(path, 0, i);
-
-	// Ensure a trailing slash...
-	if ( sPath[sPath.size() - 1] != '/' && sPath[sPath.size() - 1] != '\\' ) {
-		sPath += '\\';
-	}
-
-	SString sPattern(sPath);
-	sPattern += "*.lexer";
-
-	hFind = FindFirstFile(sPattern.c_str(), &FindFileData);
-	if (hFind != INVALID_HANDLE_VALUE) {
-		//Found the first file...
-		BOOL found = TRUE;
-		SString to_open;
-
-		while (found) {
-			to_open = sPath;
-			to_open += FindFileData.cFileName;
-			LexerLibrary *lib = new LexerLibrary(to_open.c_str());
-			if (NULL != first) {
-				last->next = lib;
-				last = lib;
-			} else {
-				first = lib;
-				last = lib;
-			}
-			found = FindNextFile(hFind, &FindFileData);
-		}
-
-		FindClose(hFind);
-
-	}
-}
-
-LexerManager::~LexerManager() {
-	// If this is the last LexerManager to be freed then
-	// we delete all of our LexerLibrarys.
-	UseCount--;
-	if (0 == UseCount) {
-		if (NULL != first) {
-			LexerLibrary *cur = first;
-			LexerLibrary *next = first->next;
-			while (cur) {
-				delete cur;
-				cur = next;
-			}
-			first = NULL;
-			last = NULL;
-		}
-	}
-	if (this == firstlm)
-		firstlm = NULL;
-}
-
-void LexerManager::Load()
-{
-	if(!m_bLoaded)
-	{
-		m_bLoaded = true;
-		EnumerateLexers();
-	}
-}
-
-// Return a LexerManager, or create one and then return it.
-LexerManager *LexerManager::GetInstance() {
-	if(!firstlm)
-		firstlm = new LexerManager;
-	return firstlm;
-}
-
 LMMinder::~LMMinder()
 {
-	LexerManager *rem = LexerManager::firstlm;
-	if(rem)
-		delete rem;
+	LexerManager::DeleteInstance();
 }
 
 LMMinder minder;

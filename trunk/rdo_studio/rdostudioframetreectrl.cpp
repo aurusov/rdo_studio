@@ -51,7 +51,7 @@ int RDOStudioFrameTreeCtrl::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	bmp.LoadBitmap( IDB_FRAMES_TREECTRL );
 	imageList.Add( &bmp, RGB( 255, 0, 255 ) );
 	SetImageList( &imageList, TVSIL_NORMAL );
-	InsertItem( format( IDS_FRAMES ).c_str(), 0, 0 );
+	InsertItem( rdo::format( IDS_FRAMES ).c_str(), 0, 0 );
 
 	return 0;
 }

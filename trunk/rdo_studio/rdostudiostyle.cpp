@@ -206,7 +206,7 @@ bool RDOStyle::operator !=( const RDOStyle& style ) const
 void RDOStyle::init( const string& _regPath )
 {
 	regPath = _regPath;
-	trim( regPath );
+	rdo::trim( regPath );
 	if ( !regPath.empty() ) {
 		if ( regPath.find_last_of( '\\' ) != regPath.length() - 1 ) {
 			regPath += '\\';

@@ -157,7 +157,7 @@ void RDOLink::OnMouseMove( UINT nFlags, CPoint point )
 
 	CString s;
 	GetWindowText( s );
-	dc->DrawText( s, rectCaption, DT_SINGLELINE | DT_CENTER | DT_VCENTER | DT_CALCRECT );
+	dc->DrawText( s, rectCaption, DT_SINGLELINE | DT_VCENTER | DT_CALCRECT );
 	r.DeflateRect( (r.Width() - rectCaption.Width())/2, (r.Height() - rectCaption.Height())/2 );
 	bool isMouseCaptionOverPrev = isMouseCaptionOver;
 	isMouseCaptionOver = r.PtInRect( point ) ? true : false;
@@ -196,7 +196,7 @@ void RDOLink::OnPaint()
 	dc.SetTextColor( useTextColor ? textColor : GetSysColor(COLOR_WINDOWTEXT) );
 	CString s;
 	GetWindowText( s );
-	dc.DrawText( s, r, DT_SINGLELINE | DT_CENTER | DT_VCENTER );
+	dc.DrawText( s, r, DT_SINGLELINE | DT_VCENTER );
 
 	dc.RestoreDC( saveIndex );
 }

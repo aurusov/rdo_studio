@@ -45,7 +45,7 @@ string RDOBuildEditLineInfo::getMessage() const
 		return message;
 	} else {
 		string s = error ? "error" : "warning";
-		return format( "%s (%d): %s: %s", file.c_str(), lineNumber + 1, s.c_str(), message.c_str() );
+		return rdo::format( "%s (%d): %s: %s", file.c_str(), lineNumber + 1, s.c_str(), message.c_str() );
 	}
 }
 
@@ -77,13 +77,13 @@ void RDOBuildEdit::updateEdit( rdoEditor::RDOEditorEdit* edit, const RDOLogEditL
 void RDOBuildEdit::OnUpdateCoordStatusBar( CCmdUI *pCmdUI )
 {
 	pCmdUI->Enable();
-	pCmdUI->SetText( format( "%d: %d", getCurrentColumnNumber() + 1, getCurrentLineNumber() + 1 ).c_str() );
+	pCmdUI->SetText( rdo::format( "%d: %d", getCurrentColumnNumber() + 1, getCurrentLineNumber() + 1 ).c_str() );
 }
 
 void RDOBuildEdit::OnUpdateModifyStatusBar( CCmdUI *pCmdUI )
 {
 	pCmdUI->Enable();
-	pCmdUI->SetText( format( ID_STATUSBAR_READONLY ).c_str() );
+	pCmdUI->SetText( rdo::format( ID_STATUSBAR_READONLY ).c_str() );
 }
 
 void RDOBuildEdit::OnHelpKeyword()

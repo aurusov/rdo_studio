@@ -61,13 +61,13 @@ void RDODebugEdit::appendLine( const string& str )
 void RDODebugEdit::OnUpdateCoordStatusBar( CCmdUI *pCmdUI )
 {
 	pCmdUI->Enable();
-	pCmdUI->SetText( format( "%d: %d", getCurrentColumnNumber() + 1, getCurrentLineNumber() + 1 ).c_str() );
+	pCmdUI->SetText( rdo::format( "%d: %d", getCurrentColumnNumber() + 1, getCurrentLineNumber() + 1 ).c_str() );
 }
 
 void RDODebugEdit::OnUpdateModifyStatusBar( CCmdUI *pCmdUI )
 {
 	pCmdUI->Enable();
-	pCmdUI->SetText( format( ID_STATUSBAR_READONLY ).c_str() );
+	pCmdUI->SetText( rdo::format( ID_STATUSBAR_READONLY ).c_str() );
 }
 
 void RDODebugEdit::OnHelpKeyword()

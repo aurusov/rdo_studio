@@ -191,7 +191,7 @@ RDOBaseEditTheme RDOBaseEditTheme::getOceanTheme()
 
 string RDOBaseEditTheme::colorToHEX( const COLORREF color )
 {
-	return format( "#%02X%02X%02X", GetRValue( color ), GetGValue( color ), GetBValue( color ) );
+	return rdo::format( "#%02X%02X%02X", GetRValue( color ), GetGValue( color ), GetBValue( color ) );
 }
 
 // ----------------------------------------------------------------------------

@@ -90,7 +90,7 @@ BOOL RDOStudioModelDoc::SaveModified()
 {
 	bool flag = true;
 	if ( isModify() ) {
-		int res = AfxGetMainWnd()->MessageBox( format( ID_MSG_MODELSAVE_QUERY ).c_str(), NULL, MB_ICONQUESTION | MB_YESNOCANCEL );
+		int res = AfxGetMainWnd()->MessageBox( rdo::format( ID_MSG_MODELSAVE_QUERY ).c_str(), NULL, MB_ICONQUESTION | MB_YESNOCANCEL );
 		switch ( res ) {
 			case IDYES   : flag = model->saveModel(); break;
 			case IDNO    : flag = true; break;
@@ -119,11 +119,11 @@ string RDOStudioModelDoc::getName() const
 void RDOStudioModelDoc::setName( const string& str )
 {
 	name = str;
-	trim( name );
+	rdo::trim( name );
 	if ( studioApp.getShowCaptionFullName() ) {
-		SetTitle( format( IDS_MODEL_NAME, kernel.getRepository()->getFullName().c_str() ).c_str()  );
+		SetTitle( rdo::format( IDS_MODEL_NAME, kernel.getRepository()->getFullName().c_str() ).c_str()  );
 	} else {
-		SetTitle( format( IDS_MODEL_NAME, name.c_str() ).c_str() );
+		SetTitle( rdo::format( IDS_MODEL_NAME, name.c_str() ).c_str() );
 	}
 }
 

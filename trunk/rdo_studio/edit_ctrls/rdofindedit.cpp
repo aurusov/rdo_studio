@@ -96,13 +96,13 @@ void RDOFindEdit::setKeyword( const string& keyword, const bool matchCase ) cons
 void RDOFindEdit::OnUpdateCoordStatusBar( CCmdUI *pCmdUI )
 {
 	pCmdUI->Enable();
-	pCmdUI->SetText( format( "%d: %d", getCurrentColumnNumber() + 1, getCurrentLineNumber() + 1 ).c_str() );
+	pCmdUI->SetText( rdo::format( "%d: %d", getCurrentColumnNumber() + 1, getCurrentLineNumber() + 1 ).c_str() );
 }
 
 void RDOFindEdit::OnUpdateModifyStatusBar( CCmdUI *pCmdUI )
 {
 	pCmdUI->Enable();
-	pCmdUI->SetText( format( ID_STATUSBAR_READONLY ).c_str() );
+	pCmdUI->SetText( rdo::format( ID_STATUSBAR_READONLY ).c_str() );
 }
 
 void RDOFindEdit::OnHelpKeyword()

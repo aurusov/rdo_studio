@@ -750,7 +750,7 @@ void RDOEditorEdit::onBufferEdit( const int bufIndex )
 	string bufName;
 	string bufValue;
 
-	bufName = format( ID_BUFFER_NAME );
+	bufName = rdo::format( ID_BUFFER_NAME );
 
 	switch ( bufIndex ) {
 		case 1: bufName += " 1:"; bufValue = view->buf1; break;
@@ -883,18 +883,17 @@ void RDOEditorEdit::OnHelpKeyword()
 	if ( s.find_first_of( keyword ) == string::npos || keyword.empty() ) {
 		RDOEditorTabCtrl* tab = model->getTab();
 		if ( tab ) {
-			RDOEditorTabItem item = tab->getCurrentRDOItem();
-			switch( item ) {
-				case RDOEDIT_PAT: keyword = "pat"; break;
-				case RDOEDIT_RTP: keyword = "rtp"; break;
-				case RDOEDIT_RSS: keyword = "rss"; break;
-				case RDOEDIT_OPR: keyword = "opr"; break;
-				case RDOEDIT_FRM: keyword = "frm"; break;
-				case RDOEDIT_FUN: keyword = "fun"; break;
-				case RDOEDIT_DPT: keyword = "dpt"; break;
-				case RDOEDIT_SMR: keyword = "smr"; break;
-				case RDOEDIT_PMD: keyword = "pmd"; break;
-				default:          keyword = ""; break;
+			switch( tab->getCurrentRDOItem() ) {
+				case rdoModelObjects::PAT: keyword = "pat"; break;
+				case rdoModelObjects::RTP: keyword = "rtp"; break;
+				case rdoModelObjects::RSS: keyword = "rss"; break;
+				case rdoModelObjects::OPR: keyword = "opr"; break;
+				case rdoModelObjects::FRM: keyword = "frm"; break;
+				case rdoModelObjects::FUN: keyword = "fun"; break;
+				case rdoModelObjects::DPT: keyword = "dpt"; break;
+				case rdoModelObjects::SMR: keyword = "smr"; break;
+				case rdoModelObjects::PMD: keyword = "pmd"; break;
+				default:                   keyword = ""; break;
 			}
 		}
 	}

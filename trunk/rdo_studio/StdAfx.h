@@ -29,14 +29,11 @@
 #include <algorithm>
 #include <afxmt.h>
 
+#include <rdocommon.h>
+
 #include "sizecbar/sizecbar.h"
 #include "sizecbar/scbarg.h"
 
-std::string format( const char* str, ... );
-std::string format( UINT resource, ... );
-void trim( std::string& str );
-void trimLeft( std::string& str );
-void trimRight( std::string& str );
 void appendMenu( CMenu* from, const int from_index, CMenu* to );
 void eraseMenu( CMenu* from, const int from_index = -1 );
 int roundDouble( const double val );

@@ -2,7 +2,7 @@
 /** @file Document.h
  ** Text document that handles notifications, DBCS, styling, words and end of line.
  **/
-// Copyright 1998-2002 by Neil Hodgson <neilh@scintilla.org>
+// Copyright 1998-2003 by Neil Hodgson <neilh@scintilla.org>
 // The License.txt file describes the conditions under which this software may be distributed.
 
 #ifndef DOCUMENT_H
@@ -26,10 +26,10 @@ public:
 	Position start;
 	Position end;
 
-	Range(Position pos=0) : 
+	Range(Position pos=0) :
 		start(pos), end(pos) {
 	};
-	Range(Position start_, Position end_) : 
+	Range(Position start_, Position end_) :
 		start(start_), end(end_) {
 	};
 
@@ -60,7 +60,7 @@ public:
 	}
 
 	bool Overlaps(Range other) const {
-		return 
+		return
 		Contains(other.start) ||
 		Contains(other.end) ||
 		other.Contains(start) ||
@@ -88,10 +88,11 @@ public:
 		}
 	};
 
-private:	
+	enum charClassification { ccSpace, ccNewLine, ccWord, ccPunctuation };
+
+private:
 	int refCount;
 	CellBuffer cb;
-	enum charClassification { ccSpace, ccNewLine, ccWord, ccPunctuation };
 	charClassification charClass[256];
 	char stylingMask;
 	int endStyled;
@@ -115,6 +116,7 @@ public:
 	int dbcsCodePage;
 	int tabInChars;
 	int indentInChars;
+	int actualIndentInChars;
 	bool useTabs;
 	bool tabIndents;
 	bool backspaceUnindents;
@@ -132,8 +134,8 @@ public:
 	int MovePositionOutsideChar(int pos, int moveDir, bool checkLineEnd=true);
 
 	// Gateways to modifying document
-	void DeleteChars(int pos, int len);
-	void InsertStyledString(int position, char *s, int insertLength);
+	bool DeleteChars(int pos, int len);
+	bool InsertStyledString(int position, char *s, int insertLength);
 	int Undo();
 	int Redo();
 	bool CanUndo() { return cb.CanUndo(); }
@@ -154,16 +156,17 @@ public:
 	int GetColumn(int position);
 	int FindColumn(int line, int column);
 	void Indent(bool forwards, int lineBottom, int lineTop);
+	static char *TransformLineEnds(int *pLenOut, const char *s, size_t len, int eolMode);
 	void ConvertLineEnds(int eolModeSet);
 	void SetReadOnly(bool set) { cb.SetReadOnly(set); }
 	bool IsReadOnly() { return cb.IsReadOnly(); }
 
-	void InsertChar(int pos, char ch);
-	void InsertString(int position, const char *s);
-	void InsertString(int position, const char *s, int insertLength);
+	bool InsertChar(int pos, char ch);
+	bool InsertString(int position, const char *s);
+	bool InsertString(int position, const char *s, size_t insertLength);
 	void ChangeChar(int pos, char ch);
 	void DelChar(int pos);
-	int DelCharBack(int pos);
+	void DelCharBack(int pos);
 
 	char CharAt(int position) { return cb.CharAt(position); }
 	void GetCharRange(char *buffer, int position, int lengthRetrieve) {
@@ -190,23 +193,27 @@ public:
 	void Indent(bool forwards);
 	int ExtendWordSelect(int pos, int delta, bool onlyWordCharacters=false);
 	int NextWordStart(int pos, int delta);
+	int NextWordEnd(int pos, int delta);
 	int Length() { return cb.Length(); }
-	long FindText(int minPos, int maxPos, const char *s, 
-		bool caseSensitive, bool word, bool wordStart, bool regExp, int *length);
+	void Allocate(int newSize) { cb.Allocate(newSize*2); }
+	long FindText(int minPos, int maxPos, const char *s,
+		bool caseSensitive, bool word, bool wordStart, bool regExp, bool posix, int *length);
 	long FindText(int iMessage, unsigned long wParam, long lParam);
 	const char *SubstituteByPosition(const char *text, int *length);
 	int LinesTotal();
 
 	void ChangeCase(Range r, bool makeUpperCase);
 
-	void SetWordChars(unsigned char *chars);
+	void SetDefaultCharClasses(bool includeWordClass);
+	void SetCharClasses(const unsigned char *chars, charClassification newCharClass);
 	void SetStylingBits(int bits);
 	void StartStyling(int position, char mask);
-	void SetStyleFor(int length, char style);
-	void SetStyles(int length, char *styles);
+	bool SetStyleFor(int length, char style);
+	bool SetStyles(int length, char *styles);
 	int GetEndStyled() { return endStyled; }
 	bool EnsureStyledTo(int pos);
 	int GetStyleClock() { return styleClock; }
+	void IncrementStyleClock();
 
 	int SetLineState(int line, int state) { return cb.SetLineState(line, state); }
 	int GetLineState(int line) { return cb.GetLineState(line); }
@@ -220,9 +227,12 @@ public:
 	bool IsWordPartSeparator(char ch);
 	int WordPartLeft(int pos);
 	int WordPartRight(int pos);
+	int ExtendStyleRange(int pos, int delta, bool singleLine = false);
+	int ParaUp(int pos);
+	int ParaDown(int pos);
+	int IndentSize() { return actualIndentInChars; }
 
 private:
-	bool IsDBCS(int pos);
 	charClassification WordCharClass(unsigned char ch);
 	bool IsWordStartAt(int pos);
 	bool IsWordEndAt(int pos);
@@ -232,8 +242,6 @@ private:
 	void NotifyModifyAttempt();
 	void NotifySavePoint(bool atSavePoint);
 	void NotifyModified(DocModification mh);
-
-	int IndentSize() { return indentInChars ? indentInChars : tabInChars; }
 };
 
 /**
@@ -252,7 +260,7 @@ public:
 	int foldLevelNow;
 	int foldLevelPrev;
 
-	DocModification(int modificationType_, int position_=0, int length_=0, 
+	DocModification(int modificationType_, int position_=0, int length_=0,
 		int linesAdded_=0, const char *text_=0) :
 		modificationType(modificationType_),
 		position(position_),

@@ -127,28 +127,28 @@ int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	fileToolBar.CreateEx( this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
 	fileToolBar.LoadToolBar( IDR_FILE_TOOLBAR );
-	fileToolBar.GetToolBarCtrl().SetWindowText( format( IDR_FILE_TOOLBAR ).c_str() );
+	fileToolBar.GetToolBarCtrl().SetWindowText( rdo::format( IDR_FILE_TOOLBAR ).c_str() );
 
 	fileToolBarImageList.Create( IDB_FILE_TOOLBAR_D, 16, 0, 0xFF00FF );
 	fileToolBar.GetToolBarCtrl().SetDisabledImageList( &fileToolBarImageList );
 
 	editToolBar.CreateEx( this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
 	editToolBar.LoadToolBar( IDR_EDIT_TOOLBAR );
-	editToolBar.GetToolBarCtrl().SetWindowText( format( IDR_EDIT_TOOLBAR ).c_str() );
+	editToolBar.GetToolBarCtrl().SetWindowText( rdo::format( IDR_EDIT_TOOLBAR ).c_str() );
 
 	editToolBarImageList.Create( IDB_EDIT_TOOLBAR_D, 16, 0, 0xFF00FF );
 	editToolBar.GetToolBarCtrl().SetDisabledImageList( &editToolBarImageList );
 
 	zoomToolBar.CreateEx( this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
 	zoomToolBar.LoadToolBar( IDR_ZOOM_TOOLBAR );
-	zoomToolBar.GetToolBarCtrl().SetWindowText( format( IDR_ZOOM_TOOLBAR ).c_str() );
+	zoomToolBar.GetToolBarCtrl().SetWindowText( rdo::format( IDR_ZOOM_TOOLBAR ).c_str() );
 
 	zoomToolBarImageList.Create( IDB_ZOOM_TOOLBAR_D, 16, 0, 0xFF00FF );
 	zoomToolBar.GetToolBarCtrl().SetDisabledImageList( &zoomToolBarImageList );
 
 	modelToolBar.CreateEx( this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
 	modelToolBar.LoadToolBar( IDR_MODEL_TOOLBAR );
-	modelToolBar.GetToolBarCtrl().SetWindowText( format( IDR_MODEL_TOOLBAR ).c_str() );
+	modelToolBar.GetToolBarCtrl().SetWindowText( rdo::format( IDR_MODEL_TOOLBAR ).c_str() );
 
 	modelToolBarImageList.Create( IDB_MODEL_TOOLBAR_D, 16, 0, 0xFF00FF );
 	modelToolBar.GetToolBarCtrl().SetDisabledImageList( &modelToolBarImageList );
@@ -164,10 +164,10 @@ int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	statusBar.SetPaneInfo( 6, ID_PROGRESSSTATUSBAR         , SBPS_STRETCH, 70 );
 	statusBar.setProgressIndicator( ID_PROGRESSSTATUSBAR );
 
-	workspace.Create( format( ID_DOCK_WORKSPACE ).c_str(), this, 0 );
+	workspace.Create( rdo::format( ID_DOCK_WORKSPACE ).c_str(), this, 0 );
 	workspace.SetBarStyle( workspace.GetBarStyle() | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
 
-	output.Create( format( ID_DOCK_OUTPUT ).c_str(), this, 0 );
+	output.Create( rdo::format( ID_DOCK_OUTPUT ).c_str(), this, 0 );
 	output.SetBarStyle( output.GetBarStyle() | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
 
 	fileToolBar.EnableDocking( CBRS_ALIGN_ANY );
@@ -368,12 +368,12 @@ void RDOStudioMainFrame::OnUpdateInsertOverwriteStatusBar( CCmdUI *pCmdUI )
 void RDOStudioMainFrame::OnUpdateModelTimeStatusBar( CCmdUI *pCmdUI )
 {
 	pCmdUI->Enable();
-	pCmdUI->SetText( format( ID_STATUSBAR_MODEL_TIME, model->getModelTime() ).c_str() );
+	pCmdUI->SetText( rdo::format( ID_STATUSBAR_MODEL_TIME, model->getModelTime() ).c_str() );
 }
 
 void RDOStudioMainFrame::showNewModelTime( const double value )
 {
-	::SendMessage( statusBar.m_hWnd, SB_SETTEXT, 3, reinterpret_cast<LPARAM>(format( ID_STATUSBAR_MODEL_TIME, value ).c_str()) );
+	::SendMessage( statusBar.m_hWnd, SB_SETTEXT, 3, reinterpret_cast<LPARAM>(rdo::format( ID_STATUSBAR_MODEL_TIME, value ).c_str()) );
 }
 
 void RDOStudioMainFrame::OnUpdateModelRunTypeStatusBar( CCmdUI *pCmdUI )
@@ -382,9 +382,9 @@ void RDOStudioMainFrame::OnUpdateModelRunTypeStatusBar( CCmdUI *pCmdUI )
 	string s = "";
 	if ( model->isRunning() ) {
 		switch ( model->getShowMode() ) {
-			case RDOSimulatorNS::SM_NoShow   : s = format( ID_STATUSBAR_MODEL_RUNNOSHOW ); break;
-			case RDOSimulatorNS::SM_Animation: s = format( ID_STATUSBAR_MODEL_RUNANIMATION ); break;
-			case RDOSimulatorNS::SM_Monitor  : s = format( ID_STATUSBAR_MODEL_RUNMONITOR ); break;
+			case RDOSimulatorNS::SM_NoShow   : s = rdo::format( ID_STATUSBAR_MODEL_RUNNOSHOW ); break;
+			case RDOSimulatorNS::SM_Animation: s = rdo::format( ID_STATUSBAR_MODEL_RUNANIMATION ); break;
+			case RDOSimulatorNS::SM_Monitor  : s = rdo::format( ID_STATUSBAR_MODEL_RUNMONITOR ); break;
 		}
 	}
 	pCmdUI->SetText( s.c_str() );
@@ -397,11 +397,11 @@ void RDOStudioMainFrame::OnUpdateModelShowRateStatusBar( CCmdUI *pCmdUI )
 	if ( model->isRunning() ) {
 		double showRate = model->getShowRate();
 		if ( showRate < 1e-10 || showRate > 1e10 ) {
-			s = format( IDS_MODEL_SHOWRATE_E, showRate );
+			s = rdo::format( IDS_MODEL_SHOWRATE_E, showRate );
 		} else if ( showRate >= 1 ) {
-			s = format( IDS_MODEL_SHOWRATE_FMOREONE, showRate );
+			s = rdo::format( IDS_MODEL_SHOWRATE_FMOREONE, showRate );
 		} else {
-			s = format( IDS_MODEL_SHOWRATE_FLESSONE, showRate );
+			s = rdo::format( IDS_MODEL_SHOWRATE_FLESSONE, showRate );
 		}
 	}
 	pCmdUI->SetText( s.c_str() );

@@ -149,7 +149,7 @@ LRESULT RDOStudioModelView::OnFindInModelMsg( WPARAM /*wParam*/, LPARAM lParam )
 		bool bMatchCase      = pDialog->MatchCase() ? true : false;
 		bool bMatchWholeWord = pDialog->MatchWholeWord() ? true : false;
 		studioApp.mainFrame->output.getFind()->setKeyword( findStr, bMatchCase );
-		studioApp.mainFrame->output.appendStringToFind( format( ID_FINDINMODEL_BEGINMSG, findStr.c_str() ) );
+		studioApp.mainFrame->output.appendStringToFind( rdo::format( ID_FINDINMODEL_BEGINMSG, findStr.c_str() ) );
 		int count = 0;
 		for ( int i = 0; i < tab->getItemCount(); i++ ) {
 			RDOEditorEdit* edit = tab->getItemEdit( i );
@@ -158,21 +158,8 @@ LRESULT RDOStudioModelView::OnFindInModelMsg( WPARAM /*wParam*/, LPARAM lParam )
 			while ( pos != -1 ) {
 				pos = edit->findPos( findStr, line, bMatchCase, bMatchWholeWord );
 				if ( pos != -1 ) {
-					rdoModelObjects::RDOFileType fileType;
-					switch ( i ) {
-						case 0: fileType = rdoModelObjects::PAT; break;
-						case 1: fileType = rdoModelObjects::RTP; break;
-						case 2: fileType = rdoModelObjects::RSS; break;
-						case 3: fileType = rdoModelObjects::OPR; break;
-						case 4: fileType = rdoModelObjects::FRM; break;
-						case 5: fileType = rdoModelObjects::FUN; break;
-						case 6: fileType = rdoModelObjects::DPT; break;
-						case 7: fileType = rdoModelObjects::SMR; break;
-						case 8: fileType = rdoModelObjects::PMD; break;
-						default: fileType = rdoModelObjects::PAT;
-					}
 					line = edit->getLineFromPosition( pos );
-					studioApp.mainFrame->output.appendStringToFind( edit->getLine( line ), fileType, line, pos - edit->getPositionFromLine( line ) );
+					studioApp.mainFrame->output.appendStringToFind( edit->getLine( line ), tab->indexToType( i ), line, pos - edit->getPositionFromLine( line ) );
 					line++;
 					count++;
 				}
@@ -181,9 +168,9 @@ LRESULT RDOStudioModelView::OnFindInModelMsg( WPARAM /*wParam*/, LPARAM lParam )
 		pDialog->SendMessage( WM_CLOSE );
 		string s;
 		if ( count ) {
-			s = format( ID_FINDINMODEL_ENDMSG_COUNT, count );
+			s = rdo::format( ID_FINDINMODEL_ENDMSG_COUNT, count );
 		} else {
-			s = format( ID_FINDINMODEL_ENDMSG_NOTFOUND, findStr.c_str() );
+			s = rdo::format( ID_FINDINMODEL_ENDMSG_NOTFOUND, findStr.c_str() );
 		}
 		studioApp.mainFrame->output.appendStringToFind( s );
 	}
@@ -198,7 +185,7 @@ void RDOStudioModelView::OnUpdateCoordStatusBar( CCmdUI *pCmdUI )
 	if ( edit ) {
 		int x = edit->getCurrentColumnNumber() + 1;
 		int y = edit->getCurrentLineNumber() + 1;
-		str = format( "%d: %d", x, y );
+		str = rdo::format( "%d: %d", x, y );
 	}
 	pCmdUI->SetText( str.c_str() );
 }
@@ -210,9 +197,9 @@ void RDOStudioModelView::OnUpdateModifyStatusBar( CCmdUI *pCmdUI )
 	RDOEditorEdit* edit = getEdit();
 	if ( edit ) {
 		if ( edit->isReadOnly() ) {
-			str = format( ID_STATUSBAR_READONLY );
+			str = rdo::format( ID_STATUSBAR_READONLY );
 		} else if ( edit->isModify() ) {
-			str = format( ID_STATUSBAR_MODIFIED );
+			str = rdo::format( ID_STATUSBAR_MODIFIED );
 		}
 	}
 	pCmdUI->SetText( str.c_str() );
@@ -224,7 +211,7 @@ void RDOStudioModelView::OnUpdateInsertOverwriteStatusBar( CCmdUI *pCmdUI )
 	string str = "";
 	RDOEditorEdit* edit = getEdit();
 	if ( edit && edit->isOverwrite() ) {
-		str = format( ID_STATUSBAR_OVERWRITE );
+		str = rdo::format( ID_STATUSBAR_OVERWRITE );
 	}
 	pCmdUI->SetText( str.c_str() );
 }

@@ -113,40 +113,51 @@ int RDOEditorTabCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	insertItem( page8, "SMR" );
 	insertItem( page9, "PMD" );
 
-	setCurrentRDOItem( RDOEDIT_PAT );
+	setCurrentRDOItem( rdoModelObjects::PAT );
 
 	return 0;
 }
 
-RDOEditorTabItem RDOEditorTabCtrl::getCurrentRDOItem() const
+rdoModelObjects::RDOFileType RDOEditorTabCtrl::indexToType( const int index ) const
 {
-	switch ( getCurrentIndex() ) {
-		case  0: return RDOEDIT_PAT;
-		case  1: return RDOEDIT_RTP;
-		case  2: return RDOEDIT_RSS;
-		case  3: return RDOEDIT_OPR;
-		case  4: return RDOEDIT_FRM;
-		case  5: return RDOEDIT_FUN;
-		case  6: return RDOEDIT_DPT;
-		case  7: return RDOEDIT_SMR;
-		case  8: return RDOEDIT_PMD;
-		default: return RDOEDIT_PAT;
+	switch ( index ) {
+		case  0: return rdoModelObjects::PAT;
+		case  1: return rdoModelObjects::RTP;
+		case  2: return rdoModelObjects::RSS;
+		case  3: return rdoModelObjects::OPR;
+		case  4: return rdoModelObjects::FRM;
+		case  5: return rdoModelObjects::FUN;
+		case  6: return rdoModelObjects::DPT;
+		case  7: return rdoModelObjects::SMR;
+		case  8: return rdoModelObjects::PMD;
+		default: return rdoModelObjects::PAT;
 	}
 }
 
-void RDOEditorTabCtrl::setCurrentRDOItem( const RDOEditorTabItem item )
+int RDOEditorTabCtrl::typeToIndex( const rdoModelObjects::RDOFileType type ) const
 {
-	int index = -1;
-	switch ( item ) {
-		case RDOEDIT_PAT: index =  0; break;
-		case RDOEDIT_RTP: index =  1; break;
-		case RDOEDIT_RSS: index =  2; break;
-		case RDOEDIT_OPR: index =  3; break;
-		case RDOEDIT_FRM: index =  4; break;
-		case RDOEDIT_FUN: index =  5; break;
-		case RDOEDIT_DPT: index =  6; break;
-		case RDOEDIT_SMR: index =  7; break;
-		case RDOEDIT_PMD: index =  8; break;
+	switch ( type ) {
+		case rdoModelObjects::PAT: return 0;
+		case rdoModelObjects::RTP: return 1;
+		case rdoModelObjects::RSS: return 2;
+		case rdoModelObjects::OPR: return 3;
+		case rdoModelObjects::FRM: return 4;
+		case rdoModelObjects::FUN: return 5;
+		case rdoModelObjects::DPT: return 6;
+		case rdoModelObjects::SMR: return 7;
+		case rdoModelObjects::PMD: return 8;
 	}
+	return -1;
+}
+
+void RDOEditorTabCtrl::setCurrentRDOItem( const rdoModelObjects::RDOFileType type )
+{
+	int index = typeToIndex( type );
 	if ( index != -1 ) setCurrentItem( index );
+}
+
+RDOEditorEdit* RDOEditorTabCtrl::getItemEdit( const rdoModelObjects::RDOFileType type ) const
+{
+	int index = typeToIndex( type );
+	return index != -1 ? getItemEdit( index ) : NULL;
 }

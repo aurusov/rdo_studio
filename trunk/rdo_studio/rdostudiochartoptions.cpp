@@ -252,7 +252,7 @@ void RDOStudioChartOptionsSeries::restoreValues()
 		ColorCB.setCurrentColor( serie->color );
 		m_Marker.SetCurSel( serie->marker );
 		m_DrawMarker.SetCheck( serie->needDrawMarker );
-		m_MarkerSize.SetWindowText( format( "%d", serie->marker_size).c_str() );
+		m_MarkerSize.SetWindowText( rdo::format( "%d", serie->marker_size).c_str() );
 		m_DrawInLegend.SetCheck( serie->showInLegend );
 		m_TranspMarker.SetCheck( serie->transparentMarker );
 	}
@@ -271,7 +271,7 @@ void RDOStudioChartOptionsSeries::OnSelchangeSeriesCombo()
 	m_TranspMarker.EnableWindow( enable );
 	if ( enable ) {
 		if ( serie && getModified() ) {
-			int res = AfxGetMainWnd()->MessageBox( format( IDS_CHART_OPTIONS_APPLY ).c_str(), NULL, MB_ICONQUESTION | MB_YESNOCANCEL );
+			int res = AfxGetMainWnd()->MessageBox( rdo::format( IDS_CHART_OPTIONS_APPLY ).c_str(), NULL, MB_ICONQUESTION | MB_YESNOCANCEL );
 			bool continue_flag = true;  
 			switch ( res ) {
 				case IDYES   : sheet->apply(); break;
@@ -314,7 +314,7 @@ RDOStudioChartOptions::RDOStudioChartOptions( RDOStudioChartView* _view ):
 	chart( NULL ),
 	view( _view )
 {
-	SetTitle( format( IDS_CHART_OPTIONS ).c_str() );
+	SetTitle( rdo::format( IDS_CHART_OPTIONS ).c_str() );
 
 	chart  = new RDOStudioChartOptionsChart( *this );
 	series = new RDOStudioChartOptionsSeries( *this );

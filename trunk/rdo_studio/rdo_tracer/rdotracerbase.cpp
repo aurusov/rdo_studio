@@ -14,6 +14,7 @@
 #include "../rdostudiochildfrm.h"
 #include "../rdostudiomainfrm.h"
 //#include "rdotracer.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -302,7 +303,7 @@ string RDOTracerBase::getNextValue( string& line )
 	int posend = line.find_first_of( ' ', posstart );
 	string res = line.substr( posstart, posend - posstart );
 	line.erase( 0, posend + 1 );
-	trim( res );
+	rdo::trim( res );
 	return res;
 }
 
@@ -381,7 +382,7 @@ RDOTracerResource* RDOTracerBase::resourceCreation( string& line, RDOTracerTimeN
 {
 	RDOTracerResType* type = resTypes.at( atoi( getNextValue( line ).c_str() ) - 1 );
 	int id = atoi( getNextValue( line ).c_str() );
-	RDOTracerResource* res = new RDOTracerResource( type, format( "%s #%d", type->Name.c_str(), id ) );
+	RDOTracerResource* res = new RDOTracerResource( type, rdo::format( "%s #%d", type->Name.c_str(), id ) );
 	res->id = id;
 	res->setParams( line, time, eventIndex );
 

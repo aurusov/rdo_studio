@@ -53,169 +53,49 @@ void RDORepository::closeModel()
 	repositoryFile->closeModel();
 }
 
-bool RDORepository::isPATReadOnly() const
+std::string RDORepository::getFileName( rdoModelObjects::RDOFileType type ) const
 {
-	return repositoryFile->isPATReadOnly();
+	return repositoryFile->getFileName( type );
 }
 
-bool RDORepository::isRTPReadOnly() const
+std::string RDORepository::getExtention( rdoModelObjects::RDOFileType type ) const
 {
-	return repositoryFile->isRTPReadOnly();
+	return repositoryFile->getExtention( type );
 }
 
-bool RDORepository::isRSSReadOnly() const
+std::string RDORepository::getFileExtName( rdoModelObjects::RDOFileType type ) const
 {
-	return repositoryFile->isRSSReadOnly();
+	return repositoryFile->getFileExtName( type );
 }
 
-bool RDORepository::isOPRReadOnly() const
+std::string RDORepository::getFullFileName( rdoModelObjects::RDOFileType type ) const
 {
-	return repositoryFile->isOPRReadOnly();
+	return repositoryFile->getFullFileName( type );
 }
 
-bool RDORepository::isFRMReadOnly() const
+bool RDORepository::isReadOnly( rdoModelObjects::RDOFileType type ) const
 {
-	return repositoryFile->isFRMReadOnly();
+	return repositoryFile->isReadOnly( type );
 }
 
-bool RDORepository::isFUNReadOnly() const
+bool RDORepository::isDescribed( rdoModelObjects::RDOFileType type ) const
 {
-	return repositoryFile->isFUNReadOnly();
+	return repositoryFile->isDescribed( type );
 }
 
-bool RDORepository::isDPTReadOnly() const
+bool RDORepository::isMustExist( rdoModelObjects::RDOFileType type ) const
 {
-	return repositoryFile->isDPTReadOnly();
+	return repositoryFile->isMustExist( type );
 }
 
-bool RDORepository::isSMRReadOnly() const
+void RDORepository::load( rdoModelObjects::RDOFileType type, rdo::binarystream& stream ) const
 {
-	return repositoryFile->isSMRReadOnly();
+	repositoryFile->load( type, stream );
 }
 
-bool RDORepository::isPMVReadOnly() const
+void RDORepository::save( rdoModelObjects::RDOFileType type, rdo::binarystream& stream ) const
 {
-	return repositoryFile->isPMVReadOnly();
-}
-
-bool RDORepository::isPMDReadOnly() const
-{
-	return repositoryFile->isPMDReadOnly();
-}
-
-bool RDORepository::isTRCReadOnly() const
-{
-	return repositoryFile->isTRCReadOnly();
-}
-
-void RDORepository::loadPAT( rdo::binarystream& stream ) const
-{
-	repositoryFile->loadPAT( stream );
-}
-
-void RDORepository::loadRTP( rdo::binarystream& stream ) const
-{
-	repositoryFile->loadRTP( stream );
-}
-
-void RDORepository::loadRSS( rdo::binarystream& stream ) const
-{
-	repositoryFile->loadRSS( stream );
-}
-
-void RDORepository::loadOPR( rdo::binarystream& stream ) const
-{
-	repositoryFile->loadOPR( stream );
-}
-
-void RDORepository::loadFRM( rdo::binarystream& stream ) const
-{
-	repositoryFile->loadFRM( stream );
-}
-
-void RDORepository::loadFUN( rdo::binarystream& stream ) const
-{
-	repositoryFile->loadFUN( stream );
-}
-
-void RDORepository::loadDPT( rdo::binarystream& stream ) const
-{
-	repositoryFile->loadDPT( stream );
-}
-
-void RDORepository::loadSMR( rdo::binarystream& stream ) const
-{
-	repositoryFile->loadSMR( stream );
-}
-
-void RDORepository::loadPMD( rdo::binarystream& stream ) const
-{
-	repositoryFile->loadPMD( stream );
-}
-
-void RDORepository::loadPMV( rdo::binarystream& stream ) const
-{
-	repositoryFile->loadPMV( stream );
-}
-
-void RDORepository::loadTRC( rdo::binarystream& stream ) const
-{
-	repositoryFile->loadTRC( stream );
-}
-
-void RDORepository::savePAT( rdo::binarystream& stream ) const
-{
-	repositoryFile->savePAT( stream );
-}
-
-void RDORepository::saveRTP( rdo::binarystream& stream ) const
-{
-	repositoryFile->saveRTP( stream );
-}
-
-void RDORepository::saveRSS( rdo::binarystream& stream ) const
-{
-	repositoryFile->saveRSS( stream );
-}
-
-void RDORepository::saveOPR( rdo::binarystream& stream ) const
-{
-	repositoryFile->saveOPR( stream );
-}
-
-void RDORepository::saveFRM( rdo::binarystream& stream ) const
-{
-	repositoryFile->saveFRM( stream );
-}
-
-void RDORepository::saveFUN( rdo::binarystream& stream ) const
-{
-	repositoryFile->saveFUN( stream );
-}
-
-void RDORepository::saveDPT( rdo::binarystream& stream ) const
-{
-	repositoryFile->saveDPT( stream );
-}
-
-void RDORepository::saveSMR( rdo::binarystream& stream ) const
-{
-	repositoryFile->saveSMR( stream );
-}
-
-void RDORepository::savePMD( rdo::binarystream& stream ) const
-{
-	repositoryFile->savePMD( stream );
-}
-
-void RDORepository::savePMV( rdo::binarystream& stream ) const
-{
-	repositoryFile->savePMV( stream );
-}
-
-void RDORepository::saveTRC( rdo::binarystream& stream ) const
-{
-	repositoryFile->saveTRC( stream );
+	repositoryFile->save( type, stream );
 }
 
 void RDORepository::loadBMP( const string& name, rdo::binarystream& stream ) const

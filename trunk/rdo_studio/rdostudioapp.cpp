@@ -62,19 +62,9 @@ void RDOFileAssociationDlg::OnCancel()
 // -----------------------------------------------------------------
 class RDOStudioCommandLineInfo: public CCommandLineInfo
 {
-public:
-	RDOStudioCommandLineInfo();
-	virtual ~RDOStudioCommandLineInfo();
+protected:
 	virtual void ParseParam( LPCTSTR lpszParam, BOOL bFlag, BOOL bLast );
 };
-
-RDOStudioCommandLineInfo::RDOStudioCommandLineInfo(): CCommandLineInfo()
-{
-}
-
-RDOStudioCommandLineInfo::~RDOStudioCommandLineInfo()
-{
-}
 
 void RDOStudioCommandLineInfo::ParseParam( LPCTSTR lpszParam, BOOL bFlag, BOOL bLast )
 {
@@ -135,7 +125,7 @@ RDOStudioApp::RDOStudioApp():
 	showCaptionFullName( false ),
 	autoRun( false ),
 	autoExit( false ),
-	exitCode( -1 ),
+	exitCode( rdoModel::EC_OK ),
 	openModelName( "" )
 {
 }
@@ -194,18 +184,29 @@ BOOL RDOStudioApp::InitInstance()
 	bool newModel  = true;
 	bool autoModel = false;
 	if ( !openModelName.empty() ) {
-		std::string longFileName;
-		if ( shortToLongPath( openModelName, longFileName ) ) {
-			openModelName = longFileName;
-		}
-		if ( model->openModel( openModelName ) ) {
-			autoModel = true;
+		if ( !rdo::extractFilePath( openModelName ).empty() ) {
+			std::string longFileName;
+			if ( shortToLongPath( openModelName, longFileName ) ) {
+				openModelName = longFileName;
+			}
+			if ( model->openModel( openModelName ) ) {
+				autoModel = true;
+			}
+		} else {
+			openModelName = rdo::extractFilePath( RDOStudioApp::getFullFileName() ) + openModelName;
+			if ( rdo::isFileExists( openModelName ) && model->openModel( openModelName ) ) {
+				autoRun   = true;
+				autoExit  = true;
+				autoModel = true;
+			} else {
+				exitCode = rdoModel::EC_ModelNotFound;
+				return false;
+			}
 		}
 	} else {
-		if ( getOpenLastProject() && !getLastProjectName().empty() && isFileExists( getLastProjectName() ) ) {
-			if ( model->openModel( getLastProjectName() ) ) {
-				newModel = false;
-			}
+		if ( getOpenLastProject() && !getLastProjectName().empty() && rdo::isFileExists( getLastProjectName() ) ) {
+			model->openModel( getLastProjectName() );
+			newModel = false;
 		}
 	}
 	if ( autoModel ) {
@@ -267,9 +268,6 @@ int RDOStudioApp::ExitInstance()
 {
 	if ( autoExit ) {
 		CWinApp::ExitInstance();
-		if ( exitCode == -1 ) {
-			exitCode = 3;
-		}
 		return exitCode;
 	} else {
 		::HtmlHelp( NULL, NULL, HH_CLOSE_ALL, 0 );
@@ -437,7 +435,7 @@ void RDOStudioApp::updateReopenSubMenu() const
 				case 8: id = ID_FILE_REOPEN_9; break;
 				case 9: id = ID_FILE_REOPEN_10; break;
 			}
-			reopenMenu->AppendMenu( MF_STRING, id, format( "%d. %s", i+1, reopenList[i].c_str() ).c_str() );
+			reopenMenu->AppendMenu( MF_STRING, id, rdo::format( "%d. %s", i+1, reopenList[i].c_str() ).c_str() );
 		}
 	} else {
 		AfxGetMainWnd()->GetMenu()->GetSubMenu( delta )->EnableMenuItem( 2, MF_BYPOSITION | MF_DISABLED | MF_GRAYED );
@@ -452,9 +450,9 @@ void RDOStudioApp::loadReopen()
 	for ( int i = 0; i < 10; i++ ) {
 		string sec;
 		if ( i+1 < 10 ) {
-			sec = format( "0%d", i+1 );
+			sec = rdo::format( "0%d", i+1 );
 		} else {
-			sec = format( "%d", i+1 );
+			sec = rdo::format( "%d", i+1 );
 		}
 		TRY {
 			string s = AfxGetApp()->GetProfileString( "reopen", sec.c_str(), "" );
@@ -472,9 +470,9 @@ void RDOStudioApp::saveReopen() const
 	for ( vector< string >::size_type i = 0; i < 10; i++ ) {
 		string sec;
 		if ( i+1 < 10 ) {
-			sec = format( "0%d", i+1 );
+			sec = rdo::format( "0%d", i+1 );
 		} else {
-			sec = format( "%d", i+1 );
+			sec = rdo::format( "%d", i+1 );
 		}
 		string s;
 		if ( i < reopenList.size() ) {
@@ -530,43 +528,12 @@ string RDOStudioApp::getFullFileName()
 	return fileName;
 }
 
-string RDOStudioApp::extractFilePath( const string& fileName )
-{
-	string s;
-	string::size_type pos = fileName.find_last_of( '\\' );
-	if ( pos == string::npos ) {
-		pos = fileName.find_last_of( '/' );
-	}
-	if ( pos != string::npos && pos < fileName.length() - 1 ) {
-		s.assign( fileName.begin(), pos + 1 );
-		static char szDelims[] = " \t\n\r";
-		s.erase( 0, s.find_first_not_of( szDelims ) );
-		s.erase( s.find_last_not_of( szDelims ) + 1, string::npos );
-	} else {
-		s = fileName;
-	}
-	pos = s.find_last_of( '\\' );
-	if ( pos == string::npos ) {
-		pos = s.find_last_of( '/' );
-	}
-	if ( pos != s.length() - 1 && s.length() ) {
-		s += "/";
-	}
-	return s;
-}
-
-bool RDOStudioApp::isFileExists( const string& fileName )
-{
-	CFileFind finder;
-	return finder.FindFile( fileName.c_str() ) ? true : false;
-}
-
 string RDOStudioApp::getFullHelpFileName( string str )
 {
-	str.insert( 0, extractFilePath( getFullFileName() ) );
+	str.insert( 0, rdo::extractFilePath( RDOStudioApp::getFullFileName() ) );
 	
-	if ( !isFileExists( str ) ) {
-		::MessageBox( NULL, format( ID_MSG_NO_HELP_FILE, str.c_str() ).c_str(), NULL, MB_ICONEXCLAMATION | MB_OK );
+	if ( !rdo::isFileExists( str ) ) {
+		::MessageBox( NULL, rdo::format( ID_MSG_NO_HELP_FILE, str.c_str() ).c_str(), NULL, MB_ICONEXCLAMATION | MB_OK );
 		return "";
 	}
 
@@ -620,7 +587,7 @@ void RDOStudioApp::setupFileAssociation()
 	string strFileTypeId   = _T("RAO.FileInfo");
 	string strFileTypeName = _T("RAO FileInfo");
 	string strParam        = _T(" \"%1\"");
-	string strPathName     = getFullFileName();
+	string strPathName     = RDOStudioApp::getFullFileName();
 	string strRAOExt       = _T(".smr");
 
 	bool win2000 = false;
@@ -733,7 +700,7 @@ BOOL RDOStudioApp::PreTranslateMessage( MSG* pMsg )
 	} else if ( pMsg->message == PLUGIN_STOPMODEL_MESSAGE ) {
 		plugins->modelStop();
 	} else if ( pMsg->message == RDOSTUDIO_AUTOEXIT_MESSAGE ) {
-		exitCode = pMsg->wParam;
+		exitCode = static_cast<rdoModel::RDOExitCode>(pMsg->wParam);
 		if ( mainFrame && ::IsWindow( mainFrame->m_hWnd ) ) {
 			mainFrame->SendMessage( WM_CLOSE );
 		}

@@ -7,6 +7,7 @@
 
 #include <string>
 #include <rdobinarystream.h>
+#include <rdocommon.h>
 
 // ----------------------------------------------------------------------------
 // ---------- RDORepository
@@ -33,41 +34,16 @@ public:
 	void saveAsModel();
 	void closeModel();
 
-	bool isPATReadOnly() const;
-	bool isRTPReadOnly() const;
-	bool isRSSReadOnly() const;
-	bool isOPRReadOnly() const;
-	bool isFRMReadOnly() const;
-	bool isFUNReadOnly() const;
-	bool isDPTReadOnly() const;
-	bool isSMRReadOnly() const;
-	bool isPMDReadOnly() const;
-	bool isPMVReadOnly() const;
-	bool isTRCReadOnly() const;
+	std::string getFileName( rdoModelObjects::RDOFileType type ) const;
+	std::string getExtention( rdoModelObjects::RDOFileType type ) const;
+	std::string getFileExtName( rdoModelObjects::RDOFileType type ) const;
+	std::string getFullFileName( rdoModelObjects::RDOFileType type ) const;
+	bool isReadOnly( rdoModelObjects::RDOFileType type ) const;
+	bool isDescribed( rdoModelObjects::RDOFileType type ) const;
+	bool isMustExist( rdoModelObjects::RDOFileType type ) const;
 
-	void loadPAT( rdo::binarystream& stream ) const;
-	void loadRTP( rdo::binarystream& stream ) const;
-	void loadRSS( rdo::binarystream& stream ) const;
-	void loadOPR( rdo::binarystream& stream ) const;
-	void loadFRM( rdo::binarystream& stream ) const;
-	void loadFUN( rdo::binarystream& stream ) const;
-	void loadDPT( rdo::binarystream& stream ) const;
-	void loadSMR( rdo::binarystream& stream ) const;
-	void loadPMD( rdo::binarystream& stream ) const;
-	void loadPMV( rdo::binarystream& stream ) const;
-	void loadTRC( rdo::binarystream& stream ) const;
-
-	void savePAT( rdo::binarystream& stream ) const;
-	void saveRTP( rdo::binarystream& stream ) const;
-	void saveRSS( rdo::binarystream& stream ) const;
-	void saveOPR( rdo::binarystream& stream ) const;
-	void saveFRM( rdo::binarystream& stream ) const;
-	void saveFUN( rdo::binarystream& stream ) const;
-	void saveDPT( rdo::binarystream& stream ) const;
-	void saveSMR( rdo::binarystream& stream ) const;
-	void savePMD( rdo::binarystream& stream ) const;
-	void savePMV( rdo::binarystream& stream ) const;
-	void saveTRC( rdo::binarystream& stream ) const;
+	void load( rdoModelObjects::RDOFileType type, rdo::binarystream& stream ) const;
+	void save( rdoModelObjects::RDOFileType type, rdo::binarystream& stream ) const;
 
 	void loadBMP( const std::string& name, rdo::binarystream& stream ) const;
 };

@@ -43,7 +43,7 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_AFXDLL" /Yu"stdafx.h" /FD /c
-# ADD CPP /nologo /MT /W3 /GX /O2 /I "../rdo_ctrls" /I "../rdo_kernel" /I "../rdo_repository" /I "../rdo_lib/simulator" /I "../rdo_stream" /I "../rdo_plugin" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /Yu"stdafx.h" /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /I "../rdo_ctrls" /I "../rdo_kernel" /I "../rdo_repository" /I "../rdo_lib/simulator" /I "../rdo_stream" /I "../rdo_plugin" /I "../rdo_common" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "SCI_LEXER" /Yu"stdafx.h" /FD /c
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x419 /d "NDEBUG" /d "_AFXDLL"
@@ -70,7 +70,7 @@ LINK32=link.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_AFXDLL" /Yu"stdafx.h" /FD /GZ /c
-# ADD CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /I "../rdo_ctrls" /I "../rdo_kernel" /I "../rdo_repository" /I "../rdo_lib/simulator" /I "../rdo_stream" /I "../rdo_plugin" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_AFXDLL" /Fr /Yu"stdafx.h" /FD /GZ /c
+# ADD CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /I "../rdo_ctrls" /I "../rdo_kernel" /I "../rdo_repository" /I "../rdo_lib/simulator" /I "../rdo_stream" /I "../rdo_plugin" /I "../rdo_common" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_AFXDLL" /D "SCI_LEXER" /Fr /Yu"stdafx.h" /FD /GZ /c
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x419 /d "_DEBUG" /d "_AFXDLL"
@@ -909,6 +909,11 @@ SOURCE=.\edit_ctrls\sci\ViewStyle.cxx
 SOURCE=.\edit_ctrls\sci\WindowAccessor.cxx
 # SUBTRACT CPP /YX /Yc /Yu
 # End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\XPM.cxx
+# SUBTRACT CPP /YX /Yc /Yu
+# End Source File
 # End Group
 # Begin Group "Scintilla Header Files"
 
@@ -1033,6 +1038,10 @@ SOURCE=.\edit_ctrls\sci\ViewStyle.h
 
 SOURCE=.\edit_ctrls\sci\WindowAccessor.h
 # End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\XPM.h
+# End Source File
 # End Group
 # Begin Source File
 
@@ -1043,6 +1052,18 @@ SOURCE=.\edit_ctrls\sci\License.txt
 # Begin Group "Resource Files"
 
 # PROP Default_Filter "ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
+# Begin Source File
+
+SOURCE=.\res\ac_data.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\ac_function.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\ac_trace.xpm
+# End Source File
 # Begin Source File
 
 SOURCE=.\res\buildToolbar.bmp

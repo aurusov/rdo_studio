@@ -43,7 +43,7 @@ private:
 
 	bool autoRun;
 	bool autoExit;
-	int  exitCode;
+	rdoModel::RDOExitCode exitCode;
 	std::string openModelName;
 
 public:
@@ -71,8 +71,6 @@ public:
 	void autoClose( const int exitCode );
 
 	static std::string getFullFileName();
-	static std::string extractFilePath( const std::string& fileName );
-	static bool isFileExists( const std::string& fileName );
 	static std::string getFullHelpFileName( std::string str = "RAO-studio.chm" );
 	static bool shortToLongPath( const std::string& shortPath, std::string& longPath );
 

@@ -24,21 +24,33 @@ struct Property {
 /**
  */
 class PropSet {
-private:
+protected:
 	enum { hashRoots=31 };
 	Property *props[hashRoots];
 	Property *enumnext;
 	int enumhash;
+	static unsigned int HashString(const char *s, size_t len) {
+		unsigned int ret = 0;
+		while (len--) {
+			ret <<= 4;
+			ret ^= *s;
+			s++;
+		}
+		return ret;
+	}
+	static bool IncludesVar(const char *value, const char *key);
+
 public:
 	PropSet *superPS;
 	PropSet();
 	~PropSet();
 	void Set(const char *key, const char *val, int lenKey=-1, int lenVal=-1);
 	void Set(const char *keyVal);
+	void Unset(const char *key, int lenKey=-1);
 	void SetMultiple(const char *s);
 	SString Get(const char *key);
 	SString GetExpanded(const char *key);
-	SString Expand(const char *withVars);
+	SString Expand(const char *withVars, int maxExpands=100);
 	int GetInt(const char *key, int defaultValue=0);
 	SString GetWild(const char *keybase, const char *filename);
 	SString GetNewExpand(const char *keybase, const char *filename="");
@@ -46,6 +58,11 @@ public:
 	char *ToString();	// Caller must delete[] the return value
 	bool GetFirst(char **key, char **val);
 	bool GetNext(char **key, char **val);
+
+private:
+	// copy-value semantics not implemented	
+	PropSet(const PropSet &copy);
+	void operator=(const PropSet &assign);
 };
 
 /**
@@ -60,7 +77,7 @@ public:
 	bool onlyLineEnds;	///< Delimited by any white space or only line ends
 	bool sorted;
 	int starts[256];
-	WordList(bool onlyLineEnds_ = false) : 
+	WordList(bool onlyLineEnds_ = false) :
 		words(0), wordsNoCase(0), list(0), len(0), onlyLineEnds(onlyLineEnds_), sorted(false) {}
 	~WordList() { Clear(); }
 	operator bool() { return len ? true : false; }
@@ -70,18 +87,21 @@ public:
 	char *Allocate(int size);
 	void SetFromAllocated();
 	bool InList(const char *s);
-	const char *GetNearestWord(const char *wordStart, int searchLen = -1, 
-		bool ignoreCase = false, SString wordCharacters="");
-	char *GetNearestWords(const char *wordStart, int searchLen=-1, 
-		bool ignoreCase=false, char otherSeparator='\0');
+	const char *GetNearestWord(const char *wordStart, int searchLen,
+		bool ignoreCase = false, SString wordCharacters="", int wordIndex = -1);
+	char *GetNearestWords(const char *wordStart, int searchLen,
+		bool ignoreCase=false, char otherSeparator='\0', bool exactLen=false);
 };
-
-inline bool nonFuncChar(char ch) {
-	return strchr("\t\n\r !\"#$%&'()*+,-./:;<=>?@[\\]^`{|}~", ch) != NULL;
-}
 
 inline bool IsAlphabetic(unsigned int ch) {
 	return ((ch >= 'A') && (ch <= 'Z')) || ((ch >= 'a') && (ch <= 'z'));
 }
+
+
+#ifdef _MSC_VER
+// Visual C++ doesn't like the private copy idiom for disabling
+// the default copy constructor and operator=, but it's fine.
+#pragma warning(disable: 4511 4512)
+#endif
 
 #endif

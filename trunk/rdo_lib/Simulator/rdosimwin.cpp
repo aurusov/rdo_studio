@@ -20,8 +20,8 @@ static char THIS_FILE[] = __FILE__;
 #include <algorithm>
 
 #include "rdosimwin.h"
-#include "rdokernel.h"
-#include "rdorepository.h"
+#include <rdokernel.h>
+#include <rdorepository.h>
 
 #include "rdoparser.h"
 #include "rdoruntime.h"
@@ -240,7 +240,10 @@ UINT RunningThreadControllingFunction( LPVOID pParam )
 	simulator->runtime->frameCallBack = frameCallBack;
 	simulator->canTrace = true;
 
-	int exitCode = 0;
+	rdoModel::RDOExitCode exitCode = rdoModel::EC_OK;
+	// UA 19.08.04 // добавил код возврата и
+	// перенес kernel.notify(RDOKernel::executeError) в самый конец,
+	// чтобы он не вызывался дважды в случае двойного прерывания
 	try
 	{
 		simulator->runtime->rdoInit(tracer, resulter);
@@ -251,15 +254,13 @@ UINT RunningThreadControllingFunction( LPVOID pParam )
 	}
 	catch(RDOSyntaxException &) 
 	{
-		kernel.notify(RDOKernel::executeError);
-		exitCode = 2;
+		exitCode = rdoModel::EC_RunTimeError;
 	}
 	catch(RDOInternalException &ex)		  
 	{
 		string mess = "Internal exception: " + ex.mess;
 		kernel.debug(mess.c_str());
-		kernel.notify(RDOKernel::executeError);
-		exitCode = 2;
+		exitCode = rdoModel::EC_RunTimeError;
 	}
 
 	try
@@ -268,16 +269,17 @@ UINT RunningThreadControllingFunction( LPVOID pParam )
 	}
 	catch(RDOSyntaxException &) 
 	{
-		kernel.notify(RDOKernel::executeError);
-		exitCode = 2;
+		exitCode = rdoModel::EC_RunTimeError;
 	}
 	catch(RDOInternalException &ex)		  
 	{
 		string mess = "Internal exception: " + ex.mess;
 		kernel.debug(mess.c_str());
-		kernel.notify(RDOKernel::executeError);
-		exitCode = 2;
+		exitCode = rdoModel::EC_RunTimeError;
 	}
+
+	if (exitCode == rdoModel::EC_RunTimeError)
+		kernel.notify(RDOKernel::executeError);
 
 	simulator->th = NULL;
 
@@ -316,7 +318,7 @@ bool RdoSimulator::parseModel()
 
 		kernel.notify(RDOKernel::parseError);
 		closeModel();
-		kernel.callback(RDOKernel::modelExit, 1);
+		kernel.callback(RDOKernel::modelExit, rdoModel::EC_ParserError);
 		return false;
   */
   
@@ -325,71 +327,72 @@ bool RdoSimulator::parseModel()
 	try {
 /////////////////   SMR file //////////////////////////////////
 		rdo::binarystream SMRstream;
-		kernel.getRepository()->loadSMR(SMRstream);
+		kernel.getRepository()->load(rdoModelObjects::SMR, SMRstream);
 		if(SMRstream.good())
 			parser->parseSMR1(&SMRstream, &consol);
 
 /////////////////   RTP file //////////////////////////////////
 		rdo::binarystream RTPstream1;
-		kernel.getRepository()->loadRTP(RTPstream1);
+		kernel.getRepository()->load(rdoModelObjects::RTP, RTPstream1);
 		if(RTPstream1.good())
 			parser->parseRTP(&RTPstream1, &consol);
 
 /////////////////   RSS file //////////////////////////////////
 		rdo::binarystream RSSstream;
-		kernel.getRepository()->loadRSS(RSSstream);
+		kernel.getRepository()->load(rdoModelObjects::RSS, RSSstream);
 		if(RSSstream.good())
 			parser->parseRSS(&RSSstream, &consol);
 
 /////////////////   FUN file //////////////////////////////////
 		rdo::binarystream FUNstream;
-		kernel.getRepository()->loadFUN(FUNstream);
+		kernel.getRepository()->load(rdoModelObjects::FUN, FUNstream);
 		if(FUNstream.good())
 			parser->parseFUN(&FUNstream, &consol);
 
 /////////////////   PAT file //////////////////////////////////
 		rdo::binarystream PATstream;
-		kernel.getRepository()->loadPAT(PATstream);
+		kernel.getRepository()->load(rdoModelObjects::PAT, PATstream);
 		if(PATstream.good())
 			parser->parsePAT(&PATstream, &consol);
 
 /////////////////   OPR file //////////////////////////////////
 		rdo::binarystream OPRstream;
-		kernel.getRepository()->loadOPR(OPRstream);
+		kernel.getRepository()->load(rdoModelObjects::OPR, OPRstream);
 		if(OPRstream.good())
 			parser->parseOPR(&OPRstream, &consol);
 
 /////////////////   DPT file //////////////////////////////////
 		rdo::binarystream DPTstream;
-		kernel.getRepository()->loadDPT(DPTstream);
+		kernel.getRepository()->load(rdoModelObjects::DPT, DPTstream);
 		if(DPTstream.good())
 			parser->parseDPT(&DPTstream, &consol);
 
 /////////////////   PMD file //////////////////////////////////
 		rdo::binarystream PMDstream;
-		kernel.getRepository()->loadPMD(PMDstream);
+		kernel.getRepository()->load(rdoModelObjects::PMD, PMDstream);
 		if(PMDstream.good())
 			parser->parsePMD(&PMDstream, &consol);
 
 /////////////////   FRM file //////////////////////////////////
 		rdo::binarystream FRMstream;
-		kernel.getRepository()->loadFRM(FRMstream);
+		kernel.getRepository()->load(rdoModelObjects::FRM, FRMstream);
 		if(FRMstream.good())
 			parser->parseFRM(&FRMstream, &consol);
 
 /////////////////   SMR file //////////////////////////////////
 		rdo::binarystream SMRstream2;
-		kernel.getRepository()->loadSMR(SMRstream2);
+		kernel.getRepository()->load(rdoModelObjects::SMR, SMRstream2);
 		if(SMRstream2.good())
 			parser->parseSMR2(&SMRstream2, &consol);
 	}
+	// UA 19.08.04 // добавил код возврата
 	catch(RDOSyntaxException &ex) 
 	{
 //		string mess = ex.getType() + " : " + ex.mess;
 //		kernel.notifyString(RDOKernel::buildString, mess);
 		kernel.notify(RDOKernel::parseError);
 		closeModel();
-		kernel.callback(RDOKernel::modelExit, 1);
+		kernel.callback(RDOKernel::modelExit, rdoModel::EC_ParserError);
 		return false;
 	}
 	catch(RDOInternalException &ex)
@@ -398,7 +401,7 @@ bool RdoSimulator::parseModel()
 		kernel.notifyString(RDOKernel::buildString, mess);
 		kernel.notify(RDOKernel::parseError);
 		closeModel();
-		kernel.callback(RDOKernel::modelExit, 1);
+		kernel.callback(RDOKernel::modelExit, rdoModel::EC_ParserError);
 		return false;
 	}
 
@@ -444,7 +447,8 @@ void RdoSimulator::stopModel()
 	terminateModel();
 	closeModel();
 	kernel.notify(RDOKernel::modelStopped);
-	kernel.callback(RDOKernel::modelExit, 3);
+	// UA 19.08.04 // добавил код возврата
+	kernel.callback(RDOKernel::modelExit, rdoModel::EC_UserBreak);
 }
 
 void RdoSimulator::terminateModel()
@@ -485,6 +489,7 @@ void RdoSimulator::parseSMRFileInfo( rdo::binarystream& smr, rdoModelObjects::RD
 	{
 		kernel.notify(RDOKernel::parseSMRError);
 		closeModel();
+		info.error = true;
 		return;
 	}
 	catch(RDOInternalException &ex)
@@ -493,6 +498,7 @@ void RdoSimulator::parseSMRFileInfo( rdo::binarystream& smr, rdoModelObjects::RD
 		kernel.notifyString(RDOKernel::buildString, mess);
 		kernel.notify(RDOKernel::parseSMRError);
 		closeModel();
+		info.error = true;
 		return;
 	}
 
@@ -501,6 +507,7 @@ void RdoSimulator::parseSMRFileInfo( rdo::binarystream& smr, rdoModelObjects::RD
 		kernel.notifyString(RDOKernel::buildString, "SMR File seems to be empty\n");
 		kernel.notify(RDOKernel::parseSMRError);
 		closeModel();
+		info.error = true;
 		return;
 	}
 
@@ -528,6 +535,7 @@ void RdoSimulator::parseSMRFileInfo( rdo::binarystream& smr, rdoModelObjects::RD
 		info.trace_file = *parser->smr->traceFileName;
 
 	closeModel();
+	info.error = false;
 }
 
 vector<RDOSyntaxError>* RdoSimulator::getErrors()

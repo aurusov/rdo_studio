@@ -2,7 +2,7 @@
 /** @file ViewStyle.cxx
  ** Store information on how the document is to be viewed.
  **/
-// Copyright 1998-2001 by Neil Hodgson <neilh@scintilla.org>
+// Copyright 1998-2003 by Neil Hodgson <neilh@scintilla.org>
 // The License.txt file describes the conditions under which this software may be distributed.
 
 #include <string.h>
@@ -11,6 +11,7 @@
 
 #include "Scintilla.h"
 #include "Indicator.h"
+#include "XPM.h"
 #include "LineMarker.h"
 #include "Style.h"
 #include "ViewStyle.h"
@@ -72,6 +73,23 @@ ViewStyle::ViewStyle(const ViewStyle &source) {
 	selbackset = source.selbackset;
 	selbackground.desired = source.selbackground.desired;
 	selbackground2.desired = source.selbackground2.desired;
+
+	foldmarginColourSet = source.foldmarginColourSet;
+	foldmarginColour.desired = source.foldmarginColour.desired;
+	foldmarginHighlightColourSet = source.foldmarginHighlightColourSet;
+	foldmarginHighlightColour.desired = source.foldmarginHighlightColour.desired;
+
+	hotspotForegroundSet = source.hotspotForegroundSet;
+	hotspotForeground.desired = source.hotspotForeground.desired;
+	hotspotBackgroundSet = source.hotspotBackgroundSet;
+	hotspotBackground.desired = source.hotspotBackground.desired;
+	hotspotUnderline = source.hotspotUnderline;
+	hotspotSingleLine = source.hotspotSingleLine;
+
+	whitespaceForegroundSet = source.whitespaceForegroundSet;
+	whitespaceForeground.desired = source.whitespaceForeground.desired;
+	whitespaceBackgroundSet = source.whitespaceBackgroundSet;
+	whitespaceBackground.desired = source.whitespaceBackground.desired;
 	selbar.desired = source.selbar.desired;
 	selbarlight.desired = source.selbarlight.desired;
 	caretcolour.desired = source.caretcolour.desired;
@@ -80,6 +98,7 @@ ViewStyle::ViewStyle(const ViewStyle &source) {
 	edgecolour.desired = source.edgecolour.desired;
 	edgeState = source.edgeState;
 	caretWidth = source.caretWidth;
+	someStylesProtected = false;
 	leftMarginWidth = source.leftMarginWidth;
 	rightMarginWidth = source.rightMarginWidth;
 	for (int i=0;i < margins; i++) {
@@ -93,6 +112,7 @@ ViewStyle::ViewStyle(const ViewStyle &source) {
 	viewIndentationGuides = source.viewIndentationGuides;
 	viewEOL = source.viewEOL;
 	showMarkedLines = source.showMarkedLines;
+	extraFontFlag = source.extraFontFlag;
 }
 
 ViewStyle::~ViewStyle() {
@@ -120,6 +140,16 @@ void ViewStyle::Init() {
 	selbackset = true;
 	selbackground.desired = ColourDesired(0xc0, 0xc0, 0xc0);
 	selbackground2.desired = ColourDesired(0xb0, 0xb0, 0xb0);
+
+	foldmarginColourSet = false;
+	foldmarginColour.desired = ColourDesired(0xff, 0, 0);
+	foldmarginHighlightColourSet = false;
+	foldmarginHighlightColour.desired = ColourDesired(0xc0, 0xc0, 0xc0);
+
+	whitespaceForegroundSet = false;
+	whitespaceForeground.desired = ColourDesired(0, 0, 0);
+	whitespaceBackgroundSet = false;
+	whitespaceBackground.desired = ColourDesired(0xff, 0xff, 0xff);
 	selbar.desired = Platform::Chrome();
 	selbarlight.desired = Platform::ChromeHighlight();
 	styles[STYLE_LINENUMBER].fore.desired = ColourDesired(0, 0, 0);
@@ -130,6 +160,14 @@ void ViewStyle::Init() {
 	edgecolour.desired = ColourDesired(0xc0, 0xc0, 0xc0);
 	edgeState = EDGE_NONE;
 	caretWidth = 1;
+	someStylesProtected = false;
+
+	hotspotForegroundSet = false;
+	hotspotForeground.desired = ColourDesired(0, 0, 0xff);
+	hotspotBackgroundSet = false;
+	hotspotBackground.desired = ColourDesired(0xff, 0xff, 0xff);
+	hotspotUnderline = true;
+	hotspotSingleLine = true;
 
 	leftMarginWidth = 1;
 	rightMarginWidth = 1;
@@ -140,9 +178,7 @@ void ViewStyle::Init() {
 	ms[1].width = 16;
 	ms[1].mask = ~SC_MASK_FOLDERS;
 	ms[2].symbol = true;
-	ms[2].width = 14;	// Nice width for arrows
-	ms[2].mask = SC_MASK_FOLDERS;
-	ms[2].width = 0;	// Nice width for arrows
+	ms[2].width = 0;
 	ms[2].mask = 0;
 	fixedColumnWidth = leftMarginWidth;
 	symbolMargin = false;
@@ -158,6 +194,7 @@ void ViewStyle::Init() {
 	viewIndentationGuides = false;
 	viewEOL = false;
 	showMarkedLines = true;
+	extraFontFlag = false;
 }
 
 void ViewStyle::RefreshColourPalette(Palette &pal, bool want) {
@@ -170,32 +207,43 @@ void ViewStyle::RefreshColourPalette(Palette &pal, bool want) {
 		pal.WantFind(indicators[i].fore, want);
 	}
 	for (i=0;i<(sizeof(markers)/sizeof(markers[0]));i++) {
-		pal.WantFind(markers[i].fore, want);
-		pal.WantFind(markers[i].back, want);
+		markers[i].RefreshColourPalette(pal, want);
 	}
 	pal.WantFind(selforeground, want);
 	pal.WantFind(selbackground, want);
 	pal.WantFind(selbackground2, want);
+
+	pal.WantFind(foldmarginColour, want);
+	pal.WantFind(foldmarginHighlightColour, want);
+
+	pal.WantFind(whitespaceForeground, want);
+	pal.WantFind(whitespaceBackground, want);
 	pal.WantFind(selbar, want);
 	pal.WantFind(selbarlight, want);
 	pal.WantFind(caretcolour, want);
 	pal.WantFind(caretLineBackground, want);
 	pal.WantFind(edgecolour, want);
+	pal.WantFind(hotspotForeground, want);
+	pal.WantFind(hotspotBackground, want);
 }
 
 void ViewStyle::Refresh(Surface &surface) {
 	selbar.desired = Platform::Chrome();
 	selbarlight.desired = Platform::ChromeHighlight();
-	styles[STYLE_DEFAULT].Realise(surface, zoomLevel);
+	styles[STYLE_DEFAULT].Realise(surface, zoomLevel, NULL, extraFontFlag);
 	maxAscent = styles[STYLE_DEFAULT].ascent;
 	maxDescent = styles[STYLE_DEFAULT].descent;
+	someStylesProtected = false;
 	for (unsigned int i=0;i<(sizeof(styles)/sizeof(styles[0]));i++) {
 		if (i != STYLE_DEFAULT) {
-			styles[i].Realise(surface, zoomLevel, &styles[STYLE_DEFAULT]);
+			styles[i].Realise(surface, zoomLevel, &styles[STYLE_DEFAULT], extraFontFlag);
 			if (maxAscent < styles[i].ascent)
 				maxAscent = styles[i].ascent;
 			if (maxDescent < styles[i].descent)
 				maxDescent = styles[i].descent;
+		}
+		if (styles[i].IsProtected()) {
+			someStylesProtected = true;
 		}
 	}
 
@@ -215,11 +263,11 @@ void ViewStyle::Refresh(Surface &surface) {
 }
 
 void ViewStyle::ResetDefaultStyle() {
-	styles[STYLE_DEFAULT].Clear(ColourDesired(0,0,0), 
+	styles[STYLE_DEFAULT].Clear(ColourDesired(0,0,0),
 		ColourDesired(0xff,0xff,0xff),
 	        Platform::DefaultFontSize(), fontNames.Save(Platform::DefaultFont()),
 		SC_CHARSET_DEFAULT,
-		false, false, false, false, Style::caseMixed, true, true);
+		false, false, false, false, Style::caseMixed, true, true, false);
 }
 
 void ViewStyle::ClearStyles() {
@@ -234,4 +282,8 @@ void ViewStyle::ClearStyles() {
 
 void ViewStyle::SetStyleFontName(int styleIndex, const char *name) {
 	styles[styleIndex].fontName = fontNames.Save(name);
+}
+
+bool ViewStyle::ProtectionActive() const {
+    return someStylesProtected;
 }

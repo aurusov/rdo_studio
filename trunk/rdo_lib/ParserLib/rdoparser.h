@@ -4,8 +4,9 @@
 using namespace std;
 #include "rdolexinterface.h"
 #include "rdoStdFuncs.h"
-#include "rdosimcommon.h"
 #include "rdocalcconst.h"
+
+#include <rdocommon.h>
 
 namespace rdoRuntime
 {

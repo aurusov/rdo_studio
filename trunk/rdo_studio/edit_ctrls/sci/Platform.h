@@ -3,7 +3,7 @@
  ** Interface to platform facilities. Also includes some basic utilities.
  ** Implemented in PlatGTK.cxx for GTK+/Linux, PlatWin.cxx for Windows, and PlatWX.cxx for wxWindows.
  **/
-// Copyright 1998-2002 by Neil Hodgson <neilh@scintilla.org>
+// Copyright 1998-2003 by Neil Hodgson <neilh@scintilla.org>
 // The License.txt file describes the conditions under which this software may be distributed.
 
 #ifndef PLATFORM_H
@@ -14,6 +14,35 @@
 // PLAT_WIN = Win32 API on Win32 OS
 // PLAT_WX is wxWindows on any supported platform
 
+#define PLAT_GTK 0
+#define PLAT_GTK_WIN32 0
+#define PLAT_WIN 0
+#define PLAT_WX  0
+#define PLAT_FOX 0
+
+#if defined(FOX)
+#undef PLAT_FOX
+#define PLAT_FOX 1
+
+#elif defined(__WX__)
+#undef PLAT_WX
+#define PLAT_WX  1
+
+#elif defined(GTK)
+#undef PLAT_GTK
+#define PLAT_GTK 1
+
+#ifdef _MSC_VER
+#undef PLAT_GTK_WIN32
+#define PLAT_GTK_WIN32 1
+#endif
+
+#else
+#undef PLAT_WIN
+#define PLAT_WIN 1
+
+#endif
+
 // Underlying the implementation of the platform classes are platform specific types.
 // Sometimes these need to be passed around by client code so they are defined here
 
@@ -22,6 +51,8 @@ typedef void *SurfaceID;
 typedef void *WindowID;
 typedef void *MenuID;
 typedef void *TickerID;
+typedef void *Function;
+typedef void *IdlerID;
 
 /**
  * A geometric point class.
@@ -32,7 +63,7 @@ public:
 	int x;
 	int y;
 
-	Point(int x_=0, int y_=0) : x(x_), y(y_) {
+	explicit Point(int x_=0, int y_=0) : x(x_), y(y_) {
 	}
 
 	// Other automatically defined methods (assignment, copy constructor, destructor) are fine
@@ -71,8 +102,14 @@ public:
 			(rc.top >= top) && (rc.bottom <= bottom);
 	}
 	bool Intersects(PRectangle other) {
-		return (right >= other.left) && (left <= other.right) &&
-			(bottom >= other.top) && (top <= other.bottom);
+		return (right > other.left) && (left < other.right) &&
+			(bottom > other.top) && (top < other.bottom);
+	}
+	void Move(int xDelta, int yDelta) {
+		left += xDelta;
+		top += yDelta;
+		right += xDelta;
+		bottom += yDelta;
 	}
 	int Width() { return right - left; }
 	int Height() { return bottom - top; }
@@ -80,13 +117,13 @@ public:
 
 /**
  * In some circumstances, including Win32 in paletted mode and GTK+, each colour
- * must be allocated before use. The desired colours are held in the ColourDesired class, 
+ * must be allocated before use. The desired colours are held in the ColourDesired class,
  * and after allocation the allocation entry is stored in the ColourAllocated class. In other
- * circumstances, such as Win32 in true colour mode, the allocation process just copies 
+ * circumstances, such as Win32 in true colour mode, the allocation process just copies
  * the RGB values from the desired to the allocated class.
  * As each desired colour requires allocation before it can be used, the ColourPair class
  * holds both a ColourDesired and a ColourAllocated
- * The Palette class is responsible for managing the palette of colours which contains a 
+ * The Palette class is responsible for managing the palette of colours which contains a
  * list of ColourPair objects and performs the allocation.
  */
 
@@ -99,31 +136,56 @@ public:
 	ColourDesired(long lcol=0) {
 		co = lcol;
 	}
-	
+
 	ColourDesired(unsigned int red, unsigned int green, unsigned int blue) {
-		co = red | (green << 8) | (blue << 16);
+		Set(red, green, blue);
 	}
-	
+
 	bool operator==(const ColourDesired &other) const {
 		return co == other.co;
 	}
-	
+
 	void Set(long lcol) {
 		co = lcol;
 	}
-	
+
+	void Set(unsigned int red, unsigned int green, unsigned int blue) {
+		co = red | (green << 8) | (blue << 16);
+	}
+
+	static inline unsigned int ValueOfHex(const char ch) {
+		if (ch >= '0' && ch <= '9')
+			return ch - '0';
+		else if (ch >= 'A' && ch <= 'F')
+			return ch - 'A' + 10;
+		else if (ch >= 'a' && ch <= 'f')
+			return ch - 'a' + 10;
+		else
+			return 0;
+	}
+
+	void Set(const char *val) {
+		if (*val == '#') {
+			val++;
+		}
+		unsigned int r = ValueOfHex(val[0]) * 16 + ValueOfHex(val[1]);
+		unsigned int g = ValueOfHex(val[2]) * 16 + ValueOfHex(val[3]);
+		unsigned int b = ValueOfHex(val[4]) * 16 + ValueOfHex(val[5]);
+		Set(r, g, b);
+	}
+
 	long AsLong() const {
 		return co;
 	}
-	
+
 	unsigned int GetRed() {
 		return co & 0xff;
 	}
-	
+
 	unsigned int GetGreen() {
 		return (co >> 8) & 0xff;
 	}
-	
+
 	unsigned int GetBlue() {
 		return (co >> 16) & 0xff;
 	}
@@ -134,17 +196,17 @@ public:
  */
 class ColourAllocated {
 	long coAllocated;
-	
+
 public:
 
 	ColourAllocated(long lcol=0) {
 		coAllocated = lcol;
 	}
-	
+
 	void Set(long lcol) {
 		coAllocated = lcol;
 	}
-	
+
 	long AsLong() const {
 		return coAllocated;
 	}
@@ -161,6 +223,9 @@ struct ColourPair {
 		desired = desired_;
 		allocated.Set(desired.AsLong());
 	}
+	void Copy() {
+		allocated.Set(desired.AsLong());
+	}
 };
 
 class Window;	// Forward declaration for Palette
@@ -172,8 +237,14 @@ class Palette {
 	int used;
 	enum {numEntries = 100};
 	ColourPair entries[numEntries];
+#if PLAT_GTK
+	void *allocatedPalette; // GdkColor *
+	int allocatedLen;
+#endif
 public:
+#if PLAT_WIN
 	void *hpal;
+#endif
 	bool allowRealization;
 
 	Palette();
@@ -197,6 +268,9 @@ public:
 class Font {
 protected:
 	FontID id;
+#if PLAT_WX
+	int ascent;
+#endif
 	// Private so Font objects can not be copied
 	Font(const Font &) {}
 	Font &operator=(const Font &) { id=0; return *this; }
@@ -204,7 +278,8 @@ public:
 	Font();
 	virtual ~Font();
 
-	virtual void Create(const char *faceName, int characterSet, int size, bool bold, bool italic);
+	virtual void Create(const char *faceName, int characterSet, int size,
+		bool bold, bool italic, bool extraFontFlag=false);
 	virtual void Release();
 
 	FontID GetID() { return id; }
@@ -226,9 +301,9 @@ public:
 	virtual ~Surface() {};
 	static Surface *Allocate();
 
-	virtual void Init()=0;
-	virtual void Init(SurfaceID sid)=0;
-	virtual void InitPixMap(int width, int height, Surface *surface_)=0;
+	virtual void Init(WindowID wid)=0;
+	virtual void Init(SurfaceID sid, WindowID wid)=0;
+	virtual void InitPixMap(int width, int height, Surface *surface_, WindowID wid)=0;
 
 	virtual void Release()=0;
 	virtual bool Initialised()=0;
@@ -247,6 +322,7 @@ public:
 
 	virtual void DrawTextNoClip(PRectangle rc, Font &font_, int ybase, const char *s, int len, ColourAllocated fore, ColourAllocated back)=0;
 	virtual void DrawTextClipped(PRectangle rc, Font &font_, int ybase, const char *s, int len, ColourAllocated fore, ColourAllocated back)=0;
+	virtual void DrawTextTransparent(PRectangle rc, Font &font_, int ybase, const char *s, int len, ColourAllocated fore)=0;
 	virtual void MeasureWidths(Font &font_, const char *s, int len, int *positions)=0;
 	virtual int WidthText(Font &font_, const char *s, int len)=0;
 	virtual int WidthChar(Font &font_, char ch)=0;
@@ -262,6 +338,7 @@ public:
 	virtual void FlushCachedState()=0;
 
 	virtual void SetUnicodeMode(bool unicodeMode_)=0;
+	virtual void SetDBCSMode(int codePage)=0;
 };
 
 /**
@@ -284,8 +361,8 @@ public:
 		id = id_;
 		return *this;
 	}
-	WindowID GetID() { return id; }
-	bool Created() { return id != 0; }
+	WindowID GetID() const { return id; }
+	bool Created() const { return id != 0; }
 	void Destroy();
 	bool HasFocus();
 	PRectangle GetPosition();
@@ -296,7 +373,7 @@ public:
 	void InvalidateAll();
 	void InvalidateRectangle(PRectangle rc);
 	virtual void SetFont(Font &font);
-	enum Cursor { cursorInvalid, cursorText, cursorArrow, cursorUp, cursorWait, cursorHoriz, cursorVert, cursorReverseArrow };
+	enum Cursor { cursorInvalid, cursorText, cursorArrow, cursorUp, cursorWait, cursorHoriz, cursorVert, cursorReverseArrow, cursorHand };
 	void SetCursor(Cursor curs);
 	void SetTitle(const char *s);
 private:
@@ -308,33 +385,27 @@ private:
  */
 
 class ListBox : public Window {
-private:
-	int desiredVisibleRows;
-	unsigned int maxItemCharacters;
-	unsigned int aveCharWidth;
-public:
-	CallBackAction doubleClickAction;
-	void *doubleClickActionData;
 public:
 	ListBox();
 	virtual ~ListBox();
-	void Create(Window &parent, int ctrlID);
-	virtual void SetFont(Font &font);
-	void SetAverageCharWidth(int width);
-	void SetVisibleRows(int rows);
-	PRectangle GetDesiredRect();
-	void Clear();
-	void Append(char *s);
-	int Length();
-	void Select(int n);
-	int GetSelection();
-	int Find(const char *prefix);
-	void GetValue(int n, char *value, int len);
-	void Sort();
-	void SetDoubleClickAction(CallBackAction action, void *data) {
-		doubleClickAction = action;
-		doubleClickActionData = data;
-	}
+	static ListBox *Allocate();
+
+	virtual void SetFont(Font &font)=0;
+	virtual void Create(Window &parent, int ctrlID, int lineHeight_, bool unicodeMode_)=0;
+	virtual void SetAverageCharWidth(int width)=0;
+	virtual void SetVisibleRows(int rows)=0;
+	virtual PRectangle GetDesiredRect()=0;
+	virtual int CaretFromEdge()=0;
+	virtual void Clear()=0;
+	virtual void Append(char *s, int type = -1)=0;
+	virtual int Length()=0;
+	virtual void Select(int n)=0;
+	virtual int GetSelection()=0;
+	virtual int Find(const char *prefix)=0;
+	virtual void GetValue(int n, char *value, int len)=0;
+	virtual void RegisterImage(int type, const char *xpm_data)=0;
+	virtual void ClearRegisteredImages()=0;
+	virtual void SetDoubleClickAction(CallBackAction, void *)=0;
 };
 
 /**
@@ -359,6 +430,23 @@ public:
 };
 
 /**
+ * Dynamic Library (DLL/SO/...) loading
+ */
+class DynamicLibrary {
+public:
+	virtual ~DynamicLibrary() {};
+
+	/// @return Pointer to function "name", or NULL on failure.
+	virtual Function FindFunction(const char *name) = 0;
+
+	/// @return true if the library was loaded successfully.
+	virtual bool IsValid() = 0;
+
+	/// @return An instance of a DynamicLibrary subclass with "modulePath" loaded.
+	static DynamicLibrary *Load(const char *modulePath);
+};
+
+/**
  * Platform class used to retrieve system wide parameters such as double click speed
  * and chrome colour. Not a creatable object, more of a module with several functions.
  */
@@ -376,11 +464,16 @@ public:
 	static const char *DefaultFont();
 	static int DefaultFontSize();
 	static unsigned int DoubleClickTime();
+	static bool MouseButtonBounce();
 	static void DebugDisplay(const char *s);
 	static bool IsKeyDown(int key);
 	static long SendScintilla(
 		WindowID w, unsigned int msg, unsigned long wParam=0, long lParam=0);
+	static long SendScintillaPointer(
+		WindowID w, unsigned int msg, unsigned long wParam=0, void *lParam=0);
 	static bool IsDBCSLeadByte(int codePage, char ch);
+	static int DBCSCharLength(int codePage, const char *s);
+	static int DBCSCharMaxLength();
 
 	// These are utility functions not really tied to a platform
 	static int Minimum(int a, int b);

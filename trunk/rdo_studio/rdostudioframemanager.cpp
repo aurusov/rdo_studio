@@ -115,7 +115,7 @@ RDOStudioFrameDoc* RDOStudioFrameManager::connectFrameDoc( const int index )
 			frames[index]->doc  = doc;
 			frames[index]->view = doc->getView();
 			lastShowedFrame     = index;
-			doc->SetTitle( format( IDS_FRAME_NAME, getFrameName( index ).c_str() ).c_str()  );
+			doc->SetTitle( rdo::format( IDS_FRAME_NAME, getFrameName( index ).c_str() ).c_str()  );
 			setCurrentShowingFrame( index );
 		}
 
@@ -234,7 +234,7 @@ void RDOStudioFrameManager::bmp_insert( const std::string& name )
 	if ( bitmaps.find( name ) == bitmaps.end() ) {
 
 		RDOStudioOutput* output = &studioApp.mainFrame->output;
-		output->appendStringToDebug( format( IDS_MODEL_RESOURCE_LOADING_NAME, name.c_str() ) );
+		output->appendStringToDebug( rdo::format( IDS_MODEL_RESOURCE_LOADING_NAME, name.c_str() ) );
 		const_cast<rdoEditCtrl::RDODebugEdit*>(output->getDebug())->UpdateWindow();
 
 		bitmaps[name] = NULL;
@@ -310,11 +310,11 @@ void RDOStudioFrameManager::bmp_insert( const std::string& name )
 			memDC.SelectObject( hOldBitmap1 );
 			dc.SelectObject( hOldBitmap2 );
 
-			output->appendStringToDebug( format( IDS_MODEL_RESOURCE_LOADING_NAME_OK ) );
+			output->appendStringToDebug( rdo::format( IDS_MODEL_RESOURCE_LOADING_NAME_OK ) );
 			const_cast<rdoEditCtrl::RDODebugEdit*>(output->getDebug())->UpdateWindow();
 
 		} catch ( BMPReadError ) {
-			output->appendStringToDebug( format( IDS_MODEL_RESOURCE_LOADING_NAME_FAILED ) );
+			output->appendStringToDebug( rdo::format( IDS_MODEL_RESOURCE_LOADING_NAME_FAILED ) );
 			const_cast<rdoEditCtrl::RDODebugEdit*>(output->getDebug())->UpdateWindow();
 		}
 

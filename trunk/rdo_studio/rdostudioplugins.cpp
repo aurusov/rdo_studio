@@ -83,7 +83,7 @@ bool RDOStudioPlugin::isRDOStudioPlugin( const std::string& modulName )
 
 std::string RDOStudioPlugin::getProfilePath() const
 {
-	return format( "plugins\\%s_%d.%d.%d", name.c_str(), version_major, version_minor, version_build );
+	return rdo::format( "plugins\\%s_%d.%d.%d", name.c_str(), version_major, version_minor, version_build );
 }
 
 void RDOStudioPlugin::setState( const rdoPlugin::PluginState value )
@@ -271,7 +271,7 @@ void RDOStudioPlugins::init()
 	std::string path = "";
 	TCHAR szExeName[ MAX_PATH + 1 ];
 	if ( ::GetModuleFileName( NULL, szExeName, MAX_PATH ) ) {
-		path = RDOStudioApp::extractFilePath( szExeName );
+		path = rdo::extractFilePath( szExeName );
 	}
 	if ( !path.empty() ) {
 		enumPlugins( path + "\\plugins\\*.*" );

@@ -100,20 +100,20 @@ bool RDOStudioModel::openModel( const string& modelName ) const
 	output->clearResults();
 	output->clearFind();
 	output->showBuild();
-	output->appendStringToBuild( format( IDS_MODEL_LOADING_BEGIN ) );
+	output->appendStringToBuild( rdo::format( IDS_MODEL_LOADING_BEGIN ) );
 	const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->UpdateWindow();
 	static_cast<bool>(openError)   = false;
 	static_cast<bool>(modelClosed) = false;
 	bool flag = kernel.getRepository()->openModel( modelName );
 	if ( flag && !openError ) {
 		rdo::binarystream stream;
-		kernel.getRepository()->loadPMV( stream );
+		kernel.getRepository()->load( rdoModelObjects::PMV, stream );
 		output->appendStringToResults( stream.str() );
 		output->updateLogConnection();
-		output->appendStringToBuild( format( IDS_MODEL_LOADING_OK ) );
+		output->appendStringToBuild( rdo::format( IDS_MODEL_LOADING_OK ) );
 		studioApp.setLastProjectName( kernel.getRepository()->getFullName() );
 	} else {
-		output->appendStringToBuild( format( IDS_MODEL_LOADING_FAILD ) );
+		output->appendStringToBuild( rdo::format( IDS_MODEL_LOADING_FAILD ) );
 	}
 	return flag;
 }
@@ -149,7 +149,7 @@ void RDOStudioModel::buildModel() const
 		output->clearDebug();
 		output->clearResults();
 		output->showBuild();
-		output->appendStringToBuild( format( IDS_MODEL_BUILDING_BEGIN ) );
+		output->appendStringToBuild( rdo::format( IDS_MODEL_BUILDING_BEGIN ) );
 		const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->UpdateWindow();
 		kernel.getSimulator()->parseModel();
 	}
@@ -163,7 +163,7 @@ void RDOStudioModel::runModel() const
 		output->clearDebug();
 		output->clearResults();
 		output->showBuild();
-		output->appendStringToBuild( format( IDS_MODEL_RUNNING_BEGIN ) );
+		output->appendStringToBuild( rdo::format( IDS_MODEL_RUNNING_BEGIN ) );
 		const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->UpdateWindow();
 		kernel.getSimulator()->runModel();
 	}
@@ -225,7 +225,7 @@ void RDOStudioModel::afterModelStartNotify()
 	}
 	RDOStudioOutput* output = &studioApp.mainFrame->output;
 	output->showDebug();
-	output->appendStringToDebug( format( IDS_MODEL_STARTED ) );
+	output->appendStringToDebug( rdo::format( IDS_MODEL_STARTED ) );
 	const_cast<rdoEditCtrl::RDODebugEdit*>(output->getDebug())->UpdateWindow();
 	int index = model->frameManager.getLastShowedFrame();
 	if ( index != -1 ) {
@@ -240,14 +240,14 @@ void RDOStudioModel::endExecuteModelNotify()
 	model->stopModelFromSimulator();
 
 	RDOStudioOutput* output = &studioApp.mainFrame->output;
-	output->appendStringToDebug( format( IDS_MODEL_FINISHED ) );
+	output->appendStringToDebug( rdo::format( IDS_MODEL_FINISHED ) );
 	const_cast<rdoEditCtrl::RDODebugEdit*>(output->getDebug())->UpdateWindow();
 
 	string str = kernel.getSimulator()->getResults().str();
 	if ( str.length() ) {
 		rdo::binarystream stream;
 		stream.write( str.c_str(), str.length() );
-		kernel.getRepository()->savePMV( stream );
+		kernel.getRepository()->save( rdoModelObjects::PMV, stream );
 		output->showResults();
 		output->appendStringToResults( str );
 	}
@@ -260,7 +260,7 @@ void RDOStudioModel::stopModelNotify()
 	model->stopModelFromSimulator();
 
 	RDOStudioOutput* output = &studioApp.mainFrame->output;
-	output->appendStringToDebug( format( IDS_MODEL_STOPED ) );
+	output->appendStringToDebug( rdo::format( IDS_MODEL_STOPED ) );
 	const_cast<rdoEditCtrl::RDODebugEdit*>(output->getDebug())->UpdateWindow();
 
 	plugins->pluginProc( rdoPlugin::PM_MODEL_STOP_CANCEL );
@@ -285,7 +285,7 @@ void RDOStudioModel::parseSuccessNotify()
 		output->appendStringToBuild( it->message, it->file, it->lineNo - 1 );
 		i++;
 	}
-	output->appendStringToBuild( format( IDS_MODEL_BUILDING_RESULTS, i ) );
+	output->appendStringToBuild( rdo::format( IDS_MODEL_BUILDING_RESULTS, i ) );
 	if ( i ) {
 		const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->gotoNext();
 	}
@@ -302,7 +302,7 @@ void RDOStudioModel::parseErrorNotify()
 		i++;
 	}
 	if ( i ) {
-		output->appendStringToBuild( format( IDS_MODEL_BUILDING_RESULTS, i ) );
+		output->appendStringToBuild( rdo::format( IDS_MODEL_BUILDING_RESULTS, i ) );
 		const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->gotoNext();
 	}
 
@@ -314,7 +314,7 @@ void RDOStudioModel::executeErrorNotify()
 	RDOStudioOutput* output = &studioApp.mainFrame->output;
 	output->clearBuild();
 	output->showBuild();
-	output->appendStringToBuild( format( IDS_MODEL_RUNTIMEERROR ) );
+	output->appendStringToBuild( rdo::format( IDS_MODEL_RUNTIMEERROR ) );
 	vector<RDOSyntaxError>* errors = kernel.getSimulator()->getErrors();
 	int i = 0;
 	for ( vector<RDOSyntaxError>::iterator it = errors->begin(); it != errors->end(); it++ ) {
@@ -403,17 +403,17 @@ void RDOStudioModel::newModelFromRepository()
 				edit->clearAll();
 				if ( useTemplate ) {
 					int resID = -1;
-					switch ( i ) {
-						case RDOEDIT_PAT: resID = ID_INSERT_PAT_PATOPERATION; break;
-						case RDOEDIT_RTP: resID = ID_INSERT_RTP_RTPPERMANENT; break;
-						case RDOEDIT_RSS: resID = ID_INSERT_RSS_RSS; break;
-						case RDOEDIT_OPR: resID = ID_INSERT_OPR_OPR; break;
-						case RDOEDIT_FRM: resID = ID_INSERT_FRM_FRM; break;
-						case RDOEDIT_FUN: resID = ID_INSERT_FUN_FUN; break;
-						case RDOEDIT_SMR: resID = ID_INSERT_SMR_SMR; break;
+					switch ( tab->indexToType( i ) ) {
+						case rdoModelObjects::PAT: resID = ID_INSERT_PAT_PATOPERATION; break;
+						case rdoModelObjects::RTP: resID = ID_INSERT_RTP_RTPPERMANENT; break;
+						case rdoModelObjects::RSS: resID = ID_INSERT_RSS_RSS; break;
+						case rdoModelObjects::OPR: resID = ID_INSERT_OPR_OPR; break;
+						case rdoModelObjects::FRM: resID = ID_INSERT_FRM_FRM; break;
+						case rdoModelObjects::FUN: resID = ID_INSERT_FUN_FUN; break;
+						case rdoModelObjects::SMR: resID = ID_INSERT_SMR_SMR; break;
 					}
 					if ( resID != - 1 ) {
-						string s = format( resID );
+						string s = rdo::format( resID );
 						if ( !s.empty() ) {
 							int incPos = -1;
 							switch ( resID ) {
@@ -465,48 +465,36 @@ void RDOStudioModel::openModelFromRepository()
 				edit->clearAll();
 				rdo::binarystream stream;
 				bool canLoad = true;
-				switch ( i ) {
-					case RDOEDIT_PAT: kernel.getRepository()->loadPAT( stream ); break;
-					case RDOEDIT_RTP: kernel.getRepository()->loadRTP( stream ); break;
-					case RDOEDIT_RSS: kernel.getRepository()->loadRSS( stream ); break;
-					case RDOEDIT_OPR: kernel.getRepository()->loadOPR( stream ); break;
-					case RDOEDIT_FRM: kernel.getRepository()->loadFRM( stream ); break;
-					case RDOEDIT_FUN: kernel.getRepository()->loadFUN( stream ); break;
-					case RDOEDIT_DPT: kernel.getRepository()->loadDPT( stream ); break;
-					case RDOEDIT_SMR: kernel.getRepository()->loadSMR( stream ); break;
-					case RDOEDIT_PMD: kernel.getRepository()->loadPMD( stream ); break;
-					default: canLoad = false; break;
+				rdoModelObjects::RDOFileType type = tab->indexToType( i );
+				if ( tab->typeSupported( type ) ) {
+					kernel.getRepository()->load( type, stream );
+				} else {
+					canLoad = false;
 				}
 				studioApp.mainFrame->stepProgress();
 				if ( canLoad ) {
 					bool stream_error = stream.rdstate() & ios_base::failbit ? true : false;
 					if ( !stream_error ) {
+						bool readonly = kernel.getRepository()->isReadOnly( type );
 						edit->load( stream );
-						switch ( i ) {
-							case RDOEDIT_PAT: edit->setReadOnly( kernel.getRepository()->isPATReadOnly() ); if ( kernel.getRepository()->isPATReadOnly() ) output->appendStringToBuild( format( IDS_MODEL_FILE_READONLY, getName().c_str(), "pat" ) ); break;
-							case RDOEDIT_RTP: edit->setReadOnly( kernel.getRepository()->isRTPReadOnly() ); if ( kernel.getRepository()->isRTPReadOnly() ) output->appendStringToBuild( format( IDS_MODEL_FILE_READONLY, getName().c_str(), "rtp" ) ); break;
-							case RDOEDIT_RSS: edit->setReadOnly( kernel.getRepository()->isRSSReadOnly() ); if ( kernel.getRepository()->isRSSReadOnly() ) output->appendStringToBuild( format( IDS_MODEL_FILE_READONLY, getName().c_str(), "rss" ) ); break;
-							case RDOEDIT_OPR: edit->setReadOnly( kernel.getRepository()->isOPRReadOnly() ); if ( kernel.getRepository()->isOPRReadOnly() ) output->appendStringToBuild( format( IDS_MODEL_FILE_READONLY, getName().c_str(), "opr" ) ); break;
-							case RDOEDIT_FRM: edit->setReadOnly( kernel.getRepository()->isFRMReadOnly() ); if ( kernel.getRepository()->isFRMReadOnly() ) output->appendStringToBuild( format( IDS_MODEL_FILE_READONLY, getName().c_str(), "frm" ) ); break;
-							case RDOEDIT_FUN: edit->setReadOnly( kernel.getRepository()->isFUNReadOnly() ); if ( kernel.getRepository()->isFUNReadOnly() ) output->appendStringToBuild( format( IDS_MODEL_FILE_READONLY, getName().c_str(), "fun" ) ); break;
-							case RDOEDIT_DPT: edit->setReadOnly( kernel.getRepository()->isDPTReadOnly() ); if ( kernel.getRepository()->isDPTReadOnly() ) output->appendStringToBuild( format( IDS_MODEL_FILE_READONLY, getName().c_str(), "dpt" ) ); break;
-							case RDOEDIT_SMR: edit->setReadOnly( kernel.getRepository()->isSMRReadOnly() ); if ( kernel.getRepository()->isSMRReadOnly() ) output->appendStringToBuild( format( IDS_MODEL_FILE_READONLY, getName().c_str(), "smr" ) ); break;
-							case RDOEDIT_PMD: edit->setReadOnly( kernel.getRepository()->isPMDReadOnly() ); if ( kernel.getRepository()->isPMDReadOnly() ) output->appendStringToBuild( format( IDS_MODEL_FILE_READONLY, getName().c_str(), "pmd" ) ); break;
+						edit->setReadOnly( readonly );
+						if ( readonly ) {
+							output->appendStringToBuild( rdo::format( IDS_MODEL_FILE_READONLY, kernel.getRepository()->getFileExtName( type ).c_str() ) );
 						}
 					} else {
 						int obj = 0;
-						switch ( i ) {
-							case RDOEDIT_PAT: obj = IDS_MODEL_PATTERNS;      break;
-							case RDOEDIT_RTP: obj = IDS_MODEL_RESOURCETYPES; break;
-							case RDOEDIT_RSS: obj = IDS_MODEL_RESOURCES;     break;
-							case RDOEDIT_OPR: obj = IDS_MODEL_OPERATIONS;    break;
-							case RDOEDIT_FRM: obj = IDS_MODEL_FRAMES;        break;
-							case RDOEDIT_FUN: obj = IDS_MODEL_FUNCTIONS;     break;
-							case RDOEDIT_DPT: obj = IDS_MODEL_DPTS;          break;
-							case RDOEDIT_PMD: obj = IDS_MODEL_PMDS;          break;
+						switch ( type ) {
+							case rdoModelObjects::PAT: obj = IDS_MODEL_PATTERNS;      break;
+							case rdoModelObjects::RTP: obj = IDS_MODEL_RESOURCETYPES; break;
+							case rdoModelObjects::RSS: obj = IDS_MODEL_RESOURCES;     break;
+							case rdoModelObjects::OPR: obj = IDS_MODEL_OPERATIONS;    break;
+							case rdoModelObjects::FRM: obj = IDS_MODEL_FRAMES;        break;
+							case rdoModelObjects::FUN: obj = IDS_MODEL_FUNCTIONS;     break;
+							case rdoModelObjects::DPT: obj = IDS_MODEL_DPTS;          break;
+							case rdoModelObjects::PMD: obj = IDS_MODEL_PMDS;          break;
 						}
 						if ( obj ) {
-							output->appendStringToBuild( format( IDS_MODEL_CANNOT_LOAD, format( obj ).c_str() ) );
+							output->appendStringToBuild( rdo::format( IDS_MODEL_CANNOT_LOAD, rdo::format( obj ).c_str(), kernel.getRepository()->getFullFileName( type ).c_str() ) );
 							const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->UpdateWindow();
 						}
 						openError = true;
@@ -535,11 +523,11 @@ void RDOStudioModel::saveModelToRepository()
 	bool wasSaved = false;
 	RDOEditorTabCtrl* tab = getTab();
 	if ( tab ) {
-		RDOEditorEdit* smr_edit = tab->getItemEdit( RDOEDIT_SMR );
+		RDOEditorEdit* smr_edit = tab->getItemEdit( rdoModelObjects::SMR );
 		if ( smr_edit->isModify() || saveAsFlag ) {
 			rdo::binarystream stream;
 			smr_edit->save( stream );
-			kernel.getRepository()->saveSMR( stream );
+			kernel.getRepository()->save( rdoModelObjects::SMR, stream );
 			smr_modified = true;
 		}
 		int cnt = tab->getItemCount();
@@ -556,15 +544,16 @@ void RDOStudioModel::saveModelToRepository()
 					rdo::binarystream stream;
 					edit->save( stream );
 					studioApp.mainFrame->stepProgress();
-					switch ( i ) {
-						case RDOEDIT_PAT: kernel.getRepository()->savePAT( stream ); break;
-						case RDOEDIT_RTP: kernel.getRepository()->saveRTP( stream ); break;
-						case RDOEDIT_RSS: kernel.getRepository()->saveRSS( stream ); break;
-						case RDOEDIT_OPR: kernel.getRepository()->saveOPR( stream ); break;
-						case RDOEDIT_FRM: kernel.getRepository()->saveFRM( stream ); break;
-						case RDOEDIT_FUN: kernel.getRepository()->saveFUN( stream ); break;
-						case RDOEDIT_DPT: kernel.getRepository()->saveDPT( stream ); break;
-						case RDOEDIT_PMD: kernel.getRepository()->savePMD( stream ); break;
+					rdoModelObjects::RDOFileType type = tab->indexToType( i );
+					switch ( type ) {
+						case rdoModelObjects::PAT:
+						case rdoModelObjects::RTP:
+						case rdoModelObjects::RSS:
+						case rdoModelObjects::OPR:
+						case rdoModelObjects::FRM:
+						case rdoModelObjects::FUN:
+						case rdoModelObjects::DPT:
+						case rdoModelObjects::PMD: kernel.getRepository()->save( type, stream ); break;
 						default: break;
 					}
 					edit->setModifyFalse();
@@ -587,18 +576,15 @@ void RDOStudioModel::saveModelToRepository()
 
 void RDOStudioModel::updateFrmDescribed()
 {
-	rdo::binarystream smrStream;
-	kernel.getRepository()->loadSMR( smrStream );
-	rdoModelObjects::RDOSMRFileInfo fileInfo;
-	kernel.getSimulator()->parseSMRFileInfo( smrStream, fileInfo );
-	frmDescribed = !fileInfo.frame_file.empty();
+//	frmDescribed = kernel.getRepository()->isDescribed( rdoModelObjects::FRM );
+	frmDescribed = true;
 }
 
 bool RDOStudioModel::canCloseModel()
 {
 	bool flag = true;
 	if ( isModify() && closeWithDocDelete ) {
-		int res = AfxGetMainWnd()->MessageBox( format( ID_MSG_MODELSAVE_QUERY ).c_str(), NULL, MB_ICONQUESTION | MB_YESNOCANCEL );
+		int res = AfxGetMainWnd()->MessageBox( rdo::format( ID_MSG_MODELSAVE_QUERY ).c_str(), NULL, MB_ICONQUESTION | MB_YESNOCANCEL );
 		switch ( res ) {
 			case IDYES   : flag = true; break;
 			case IDNO    : flag = true; break;
@@ -628,7 +614,7 @@ void RDOStudioModel::closeModelFromRepository()
 void RDOStudioModel::canNotCloseModelFromRepository() const
 {
 	if ( showCanNotCloseModelMessage ) {
-		AfxMessageBox( format( ID_MSG_MODELCLOSE_ERROR ).c_str(), MB_ICONSTOP | MB_OK );
+		AfxMessageBox( rdo::format( ID_MSG_MODELCLOSE_ERROR ).c_str(), MB_ICONSTOP | MB_OK );
 	}
 }
 
@@ -677,10 +663,10 @@ void RDOStudioModel::beforeModelStart()
 	frameManager.bmp_clear();
 	frameManager.clear();
 
-	if ( frmDescribed ) {
+	if ( isFrmDescribed() ) {
 		RDOStudioOutput* output = &studioApp.mainFrame->output;
 		output->showDebug();
-		output->appendStringToDebug( format( IDS_MODEL_RESOURCE_LOADING_BEGIN ) );
+		output->appendStringToDebug( rdo::format( IDS_MODEL_RESOURCE_LOADING_BEGIN ) );
 		const_cast<rdoEditCtrl::RDODebugEdit*>(output->getDebug())->UpdateWindow();
 
 		vector< const string* > bitmaps = kernel.getSimulator()->getAllBitmaps();
@@ -707,7 +693,7 @@ void RDOStudioModel::beforeModelStart()
 				frameManager.getFrameView( initFrameNumber )->SetFocus();
 			}
 		}
-		output->appendStringToDebug( format( IDS_MODEL_RESOURCE_LOADING_OK ) );
+		output->appendStringToDebug( rdo::format( IDS_MODEL_RESOURCE_LOADING_OK ) );
 		const_cast<rdoEditCtrl::RDODebugEdit*>(output->getDebug())->UpdateWindow();
 	} else {
 		modelTime = 0;

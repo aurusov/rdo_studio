@@ -5,7 +5,7 @@
 //#include "rdoStdFuncs.h"
 //#include "rdortp.h"
 
-#include "rdosimcommon.h"
+#include <rdocommon.h>
 
 namespace rdoRuntime
 {

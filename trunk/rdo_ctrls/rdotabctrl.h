@@ -55,7 +55,7 @@ public:
 
 	void modifyTabStyle( DWORD dwRemove, DWORD dwAdd, UINT nFlags = 0 );
 
-	CWnd* getTabAsParent() const { return (CWnd*)tab; };
+	CWnd* getTabAsParent() const { return reinterpret_cast<CWnd*>(tab); };
 };
 
 #endif // RDOTABCTRL_H
