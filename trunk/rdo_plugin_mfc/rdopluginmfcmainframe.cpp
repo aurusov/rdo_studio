@@ -51,10 +51,13 @@ BEGIN_MESSAGE_MAP(RDOPluginMFCMainFrame, CFrameWnd)
 	ON_UPDATE_COMMAND_UI(ID_MODEL_SAVE, OnUpdateModelSave)
 	ON_UPDATE_COMMAND_UI(ID_MODEL_CLOSE, OnUpdateModelClose)
 	ON_WM_SIZE()
+	ON_WM_CLOSE()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-RDOPluginMFCMainFrame::RDOPluginMFCMainFrame()
+RDOPluginMFCMainFrame::RDOPluginMFCMainFrame():
+	CFrameWnd(),
+	closed( false )
 {
 }
 
@@ -88,7 +91,7 @@ int RDOPluginMFCMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 BOOL RDOPluginMFCMainFrame::DestroyWindow()
 {
-	pluginMFCApp.PostThreadMessage( rdoPlugin::PLUGIN_MUSTEXIT_MESSAGE, reinterpret_cast<WPARAM>(AfxGetInstanceHandle()), 0 );
+	TRACE( "destroy\n" );
 	return CFrameWnd::DestroyWindow();
 }
 
@@ -110,11 +113,21 @@ void RDOPluginMFCMainFrame::OnSize(UINT nType, int cx, int cy)
 
 void RDOPluginMFCMainFrame::insertLine( const char* line )
 {
-	int length = edit.GetWindowTextLength();
-	edit.SetSel( length, length );
-	CString str;
-	str.Format( "%d. %s\r\n", edit.GetLineCount(), line );
-	edit.ReplaceSel( str );
+	pluginMFCApp.studio.lock( AfxGetInstanceHandle() );
+	pluginMFCApp.closeMutex.Lock();
+	if ( !closed ) {
+		TRACE( "line1\n" );
+		int length = edit.GetWindowTextLength();
+		edit.SetSel( length, length );
+		CString str;
+		str.Format( "%d. %s\r\n", edit.GetLineCount(), line );
+		edit.ReplaceSel( str );
+		TRACE( "line2\n" );
+	} else {
+		TRACE( "noline\n" );
+	}
+	pluginMFCApp.closeMutex.Unlock();
+	pluginMFCApp.studio.unlock( AfxGetInstanceHandle() );
 }
 
 void RDOPluginMFCMainFrame::OnPluginClose()
@@ -292,4 +305,25 @@ void RDOPluginMFCMainFrame::OnUpdateModelSave(CCmdUI* pCmdUI)
 void RDOPluginMFCMainFrame::OnUpdateModelClose(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable( pluginMFCApp.studio.model.hasModel() );
+}
+
+void RDOPluginMFCMainFrame::OnClose() 
+{
+	CFrameWnd::OnClose();
+}
+
+LRESULT RDOPluginMFCMainFrame::WindowProc( UINT message, WPARAM wParam, LPARAM lParam )
+{
+	if ( message == WM_CLOSE ) {
+		TRACE( "WM_CLOSE\n" );
+//		pluginMFCApp.closeMutex.Lock();
+		TRACE( "close = true\n" );
+		closed = true;
+//		pluginMFCApp.closeMutex.Unlock();
+	} else if ( message == WM_SYSCOMMAND && wParam == SC_CLOSE ) {
+		TRACE( "SC_CLOSE\n" );
+		closed = true;
+		pluginMFCApp.studio.stopPlugin( AfxGetInstanceHandle() );
+	}
+	return CFrameWnd::WindowProc( message, wParam, lParam );
 }

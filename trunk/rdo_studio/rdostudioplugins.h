@@ -35,6 +35,8 @@ private:
 	rdoPlugin::PFunTrace      trace;
 	rdoPlugin::PFunResults    results;
 
+	CMutex traceMutex;
+
 	std::string getProfilePath() const;
 
 public:
@@ -66,6 +68,7 @@ public:
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioPlugins
 // ----------------------------------------------------------------------------
+static const int PLUGIN_MUSTEXIT_MESSAGE   = ::RegisterWindowMessage( "PLUGIN_MUSTEXIT_MESSAGE" );
 static const int PLUGIN_STARTMODEL_MESSAGE = ::RegisterWindowMessage( "PLUGIN_START_MODEL_MESSAGE" );
 static const int PLUGIN_STOPMODEL_MESSAGE  = ::RegisterWindowMessage( "PLUGIN_STOP_MODEL_MESSAGE" );
 
@@ -86,15 +89,20 @@ private:
 	void setMessageReflect( const int message, rdoPlugin::PFunPluginProc pluginProc );
 	void clearMessageReflect( rdoPlugin::PFunPluginProc pluginProc );
 
-	std::vector< rdoPlugin::PFunTrace> trace;
-	void setTrace( rdoPlugin::PFunTrace trace );
-	void clearTrace( rdoPlugin::PFunTrace trace );
+	std::vector< RDOStudioPlugin* > trace;
+	CMutex traceMutex;
+	void setTrace( RDOStudioPlugin* plugin );
+	void clearTrace( RDOStudioPlugin* plugin );
 
 	std::vector< rdoPlugin::PFunResults> results;
 	void setResults( rdoPlugin::PFunResults results );
 	void clearResults( rdoPlugin::PFunResults results );
 
 	std::string modelStructure;
+
+	static void stopStudioPlugin( const HMODULE lib );
+	static void lockPlugin( const HMODULE lib );
+	static void unlockPlugin( const HMODULE lib );
 
 	static void newModel();
 	static bool openModel( const char* modelName );
@@ -133,10 +141,9 @@ public:
 
 	const std::vector< RDOStudioPlugin* >& getList() { return list; }
 
+	void stopPlugin( const HMODULE lib );
 	void modelStart();
 	void modelStop();
-
-	void stopPlugin( const HMODULE lib ) const;
 
 	void pluginProc( const int message );
 

@@ -87,16 +87,23 @@ public:
 	PFunCloseAllFrame    closeAll;
 };
 
+typedef void (*PFunStopStudioPlugin)( const HMODULE );
+typedef void (*PFunLockPlugin)( const HMODULE );
+typedef void (*PFunUnlockPlugin)( const HMODULE );
+
 class Studio {
 public:
-	Studio() {};
+	Studio(): stopPlugin( NULL ), lock( NULL ), unlock( NULL ) {};
 	virtual ~Studio() {};
 
 	Model model;
 	Frame frame;
+
+	PFunStopStudioPlugin stopPlugin;
+	PFunLockPlugin       lock;
+	PFunLockPlugin       unlock;
 };
 
-static const int PLUGIN_MUSTEXIT_MESSAGE = ::RegisterWindowMessage( "PLUGIN_MUSTEXIT_MESSAGE" );
 static const int PM_MODEL_NEW                = ::RegisterWindowMessage( "PM_MODEL_NEW_MESSAGE" );
 static const int PM_MODEL_OPEN               = ::RegisterWindowMessage( "PM_MODEL_OPEN_MESSAGE" );
 static const int PM_MODEL_SAVE               = ::RegisterWindowMessage( "PM_MODEL_SAVE_MESSAGE" );

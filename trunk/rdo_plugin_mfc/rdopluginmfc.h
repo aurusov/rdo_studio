@@ -12,6 +12,8 @@
 #define RDOPLUGIN_EXPORTS
 #include <rdoplugin.h>
 
+#include <afxmt.h>
+
 // ----------------------------------------------------------------------------
 // ---------- RDOPluginMFC
 // ----------------------------------------------------------------------------
@@ -24,6 +26,7 @@ public:
 
 	rdoPlugin::Studio studio;
 	RDOPluginMFCMainFrame* frame;
+	CMutex closeMutex;
 
 protected:
 	//{{AFX_VIRTUAL(RDOPluginMFC)

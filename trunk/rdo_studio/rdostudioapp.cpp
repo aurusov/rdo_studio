@@ -782,7 +782,7 @@ void RDOAboutDlg::OnAboutWeb()
 
 BOOL RDOStudioApp::PreTranslateMessage( MSG* pMsg ) 
 {
-	if ( pMsg->message == rdoPlugin::PLUGIN_MUSTEXIT_MESSAGE ) {
+	if ( pMsg->message == PLUGIN_MUSTEXIT_MESSAGE ) {
 		plugins->stopPlugin( reinterpret_cast<HMODULE>(pMsg->wParam) );
 	} else if ( pMsg->message == PLUGIN_STARTMODEL_MESSAGE ) {
 		plugins->modelStart();
