@@ -49,6 +49,7 @@ RDORepositoryFile::RDORepositoryFile():
 
 	kernel.setNotifyReflect( RDOKernel::beforeModelStart, beforeModelStartNotify );
 	kernel.setNotifyReflect( RDOKernel::endExecuteModel, stopModelNotify );
+	kernel.setNotifyReflect( RDOKernel::executeError, stopModelNotify );
 	kernel.setNotifyReflect( RDOKernel::modelStopped, stopModelNotify );
 	kernel.setNotifyReflect( RDOKernel::traceString, traceNotify );
 
