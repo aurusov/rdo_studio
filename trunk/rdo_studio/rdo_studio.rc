@@ -992,8 +992,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,0,80
- PRODUCTVERSION 1,0,0,80
+ FILEVERSION 1,0,0,83
+ PRODUCTVERSION 1,0,0,83
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -1011,14 +1011,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "RAO studio\0"
-            VALUE "FileVersion", "1, 0, 0, 80\0"
+            VALUE "FileVersion", "1, 0, 0, 83\0"
             VALUE "InternalName", "RAO-Studio\0"
             VALUE "LegalCopyright", "Copyright (C) 2003\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "RAO-Studio.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "RAO-Studio\0"
-            VALUE "ProductVersion", "1, 0, 0, 80\0"
+            VALUE "ProductVersion", "1, 0, 0, 83\0"
             VALUE "SpecialBuild", "\0"
         END
     END
@@ -1194,24 +1194,24 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    ID_COLORSTYLE_PLAINTEXT "plain text"
-    ID_COLORSTYLE_IDENTIFICATOR "identificator"
-    ID_COLORSTYLE_KEYWORD   "keyword"
-    ID_COLORSTYLE_FUNCTION  "function"
-    ID_COLORSTYLE_TRACE     "trace"
-    ID_COLORSTYLE_COMMENT   "comment"
-    ID_COLORSTYLE_NUMBER    "number"
-    ID_COLORSTYLE_STRING    "string"
-    ID_COLORSTYLE_OPERATOR  "operator"
-    ID_COLORSTYLE_CARET     "caret"
-    ID_COLORSTYLE_TEXTSELECTION "text selection"
-    ID_COLORSTYLE_BOOKMARK  "bookmark"
+    ID_COLORSTYLE_EDITOR_PLAINTEXT "plain text"
+    ID_COLORSTYLE_EDITOR_IDENTIFICATOR "identificator"
+    ID_COLORSTYLE_EDITOR_KEYWORD "keyword"
+    ID_COLORSTYLE_EDITOR_FUNCTION "function"
+    ID_COLORSTYLE_EDITOR_TRACE "trace"
+    ID_COLORSTYLE_EDITOR_COMMENT "comment"
+    ID_COLORSTYLE_EDITOR_NUMBER "number"
+    ID_COLORSTYLE_EDITOR_STRING "string"
+    ID_COLORSTYLE_EDITOR_OPERATOR "operator"
+    ID_COLORSTYLE_EDITOR_CARET "caret"
+    ID_COLORSTYLE_EDITOR_TEXTSELECTION "text selection"
+    ID_COLORSTYLE_EDITOR_BOOKMARK "bookmark"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    ID_COLORSTYLE_FOLD      "fold"
-    ID_COLORSTYLE_ERROR     "error"
+    ID_COLORSTYLE_EDITOR_FOLD "fold"
+    ID_COLORSTYLE_EDITOR_ERROR "error"
 END
 
 STRINGTABLE DISCARDABLE 
