@@ -1,5 +1,6 @@
 //---------------------------------------------------------------------------
 #include <vcl.h>
+#include <stdio.h>
 #pragma hdrstop
 
 #include "rdoplugincbuilderform.h"
@@ -8,6 +9,21 @@
 #pragma resource "*.dfm"
 //---------------------------------------------------------------------------
 TCBuilderPluginForm* CBuilderPluginForm = NULL;
+
+AnsiString MiscFormat(char const *str, ...)
+{
+	va_list paramList;
+	va_start(paramList, str);
+	int size = vsnprintf(NULL, 0, str, paramList);
+	va_end(paramList);
+	if (size) {
+		AnsiString formatStr;
+		formatStr.SetLength(size);
+		vsnprintf(formatStr.c_str(), size, str, paramList);
+		return formatStr;
+	}
+	return "";
+}
 //---------------------------------------------------------------------------
 __fastcall TCBuilderPluginForm::TCBuilderPluginForm( TComponent* Owner, const rdoPlugin::Studio* _studio ):
 	TForm(Owner),
@@ -36,7 +52,9 @@ void __fastcall TCBuilderPluginForm::FormClose(TObject *Sender, TCloseAction &Ac
 //---------------------------------------------------------------------------
 void TCBuilderPluginForm::insertLine( const char* line )
 {
-	Memo->Lines->Append( line );
+	static int lines = 1;
+	Memo->Lines->Append( IntToStr( lines++ ) + ". " + line );
+//	Memo->Lines->Append( line );
 }
 //---------------------------------------------------------------------------
 void __fastcall TCBuilderPluginForm::Close1Click(TObject *Sender)
