@@ -160,15 +160,15 @@ void WGConfigFile::setConfigValue( QString& name_value, QString value, const cha
 QString WGConfigFile::read_str( QString& name_value, QString def_value, const char* section )
 {
 	bool ok;
-	QString s =	getConfigValue( name_value, ok, section );
+	QString s = getConfigValue( name_value, ok, section );
 	return ok ? s : def_value;
 }
 
 int WGConfigFile::read_int( QString& name_value, const int def_value, const char* section )
 {
 	bool ok;
-	QString s =	getConfigValue( name_value, ok, section );
-	int i;
+	QString s = getConfigValue( name_value, ok, section );
+	int i = 0;
 	if ( ok ) i = s.toInt( &ok );
 	return ok ? i : def_value;
 }
@@ -176,8 +176,8 @@ int WGConfigFile::read_int( QString& name_value, const int def_value, const char
 bool WGConfigFile::read_bool( QString& name_value, const bool def_value, const char* section )
 {
 	bool ok;
-	QString s =	getConfigValue( name_value, ok, section );
-	bool b;
+	QString s = getConfigValue( name_value, ok, section );
+	bool b = true;
 	if ( ok ) b = s.toInt( &ok ) ? true : false;
 	return ok ? b : def_value;
 }
