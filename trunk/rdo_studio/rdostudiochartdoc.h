@@ -45,7 +45,9 @@ protected:
 
 	timesList docTimes;
 	double minTimeOffset;
-	void addSerieTimes( RDOTracerSerie* const serie );
+	int ticksCount;
+	void incTimeEventsCount( RDOTracerTimeNow* time );
+	//void addSerieTimes( RDOTracerSerie* const serie );
 	bool newValueToSerieAdded( RDOTracerValue* val );
 
 public:

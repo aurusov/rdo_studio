@@ -29,6 +29,7 @@ void RDOStudioChartDocInsertTime::operator ()( RDOTracerValue* val )
 		if ( it != doc->docTimes.end() && (*it) == val->modeltime )
 			return;
 		timesList::iterator inserted_it = doc->docTimes.insert( it, val->modeltime );
+		doc->ticksCount += val->modeltime->eventCount;
 		double offl = 1.7E+308;
 		double offr = 1.7E+308;
 		if ( it != doc->docTimes.end() )
@@ -56,7 +57,8 @@ END_MESSAGE_MAP()
 
 RDOStudioChartDoc::RDOStudioChartDoc()
 	: CDocument(),
-	minTimeOffset( 1.7E+308 )
+	minTimeOffset( 1.7E+308 ),
+	ticksCount( 0 )
 {
 	tracer.addChart( this );
 }
@@ -82,15 +84,23 @@ void RDOStudioChartDoc::Serialize(CArchive& ar)
 	}
 }
 
+void RDOStudioChartDoc::incTimeEventsCount( RDOTracerTimeNow* time )
+{
+	if ( docTimes.back() == time )
+		ticksCount ++;
+}
+
 bool RDOStudioChartDoc::newValueToSerieAdded( RDOTracerValue* val )
 {
 	if ( docTimes.empty() ) {
 		docTimes.push_back( val->modeltime );
+		ticksCount += val->modeltime->eventCount;
 		return true;
 	}
 	RDOTracerTimeNow* last = docTimes.back();
 	if ( last != val->modeltime ) {
 		docTimes.push_back( val->modeltime );
+		ticksCount += val->modeltime->eventCount;
 		double off = val->modeltime->time - last->time;
 		if ( off < minTimeOffset )
 			minTimeOffset = off;

@@ -302,24 +302,28 @@ void RDOTracer::dispathNextString( string& line )
 	}
 
 	string key = getNextValue( line );
-	RDOTracerTimeNow* timeNow = addTime( getNextValue( line ) );
+	RDOTracerTimeNow* timeNow;
+	if ( key != "SO" && key.find( "ST" ) == string::npos && key != "SD" && key.find( "SE" ) == string::npos )
+		timeNow = addTime( getNextValue( line ) );
+	else
+		timeNow = timeList.back();
 
-	if ( key == _T("ES") ) {
-	} else if ( key == _T("EB") ) {
+	if ( key == "ES" ) {
+	} else if ( key == "EB" ) {
 		startAction( line, timeNow );
-	} else if ( key == _T("EF") ) {
+	} else if ( key == "EF" ) {
 		accomplishAction( line, timeNow );
-	} else if ( key == _T("EI") ) {
+	} else if ( key == "EI" ) {
 		irregularEvent( line, timeNow );
-	} else if ( key == _T("ER") ) {
+	} else if ( key == "ER" ) {
 		productionRule( line, timeNow );
-	} else if ( key == _T("RC") ) {
+	} else if ( key == "RC" || key == "SRC" ) {
 		resourceCreation( line, timeNow );
-	} else if ( key == _T("RE") ) {
+	} else if ( key == "RE" || key == "SRE" ) {
 		resourceElimination( line, timeNow );
-	} else if ( key == _T("RK") ) {
+	} else if ( key == "RK" || key == "SRK" ) {
 		resourceChanging( line, timeNow );
-	} else if ( key == _T("V") ) {
+	} else if ( key == "V" ) {
 		resultChanging( line, timeNow );
 	}/* else if ( key == _T("$Status") ) {
 		textColor = s.foregroundColor;
@@ -396,17 +400,14 @@ RDOTracerTimeNow* RDOTracer::addTime( string& time )
 	if ( !empty ) last = timeList.back();
 	if ( empty || last->time != val ) {
 		RDOTracerTimeNow* timeNow = new RDOTracerTimeNow( val );
-//		timeNow->time = val;
-//		timeNow->eventCount = 0;
-		timeNow->overallCount = empty ? 0 : last->overallCount;
 		timeList.push_back( timeNow );
 		eventIndex = 0;
-		//if ( !empty && timeNow->time - last->time < minTimeDifference )
-		//	minTimeDifference = timeNow->time - last->time;
 	} else {
 		last->eventCount ++;
-		last->overallCount ++;
 		eventIndex ++;
+		for ( vector< RDOStudioChartDoc* >::iterator it = charts.begin(); it != charts.end(); it++ ) {
+			(*it)->incTimeEventsCount( last );
+		}
 	}
 	return timeList.back();
 }
@@ -641,7 +642,6 @@ void RDOTracer::removeChart( RDOStudioChartDoc* chart )
 
 void RDOTracer::updateCharts()
 {
-	int size = charts.size();
 	for ( vector< RDOStudioChartDoc* >::iterator it = charts.begin(); it != charts.end(); it++ ) {
 		(*it)->UpdateAllViews( NULL );
 	}

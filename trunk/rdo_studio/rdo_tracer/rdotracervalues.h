@@ -13,7 +13,6 @@ public:
 
 	double time;
 	int eventCount;
-	int overallCount;
 	
 	RDOTracerTimeNow& operator =( const RDOTracerTimeNow& timenow );
 	bool operator ==( const RDOTracerTimeNow& timenow ) const;

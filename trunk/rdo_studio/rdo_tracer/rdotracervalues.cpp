@@ -7,14 +7,12 @@
 RDOTracerTimeNow::RDOTracerTimeNow( const double _time ) : time( _time )
 {
 	eventCount = 0;
-	overallCount = 0;
 }
 
 RDOTracerTimeNow& RDOTracerTimeNow::operator =( const RDOTracerTimeNow& timenow )
 {
 	time         = timenow.time;
 	eventCount   = timenow.eventCount;
-	overallCount = timenow.overallCount;
 
 	return *this;
 }
@@ -22,8 +20,7 @@ RDOTracerTimeNow& RDOTracerTimeNow::operator =( const RDOTracerTimeNow& timenow 
 bool RDOTracerTimeNow::operator ==( const RDOTracerTimeNow& timenow ) const
 {
 	return time         == timenow.time &&
-	       eventCount   == timenow.eventCount &&
-	       overallCount == timenow.overallCount;
+	       eventCount   == timenow.eventCount;
 }
 
 bool RDOTracerTimeNow::operator !=( const RDOTracerTimeNow& timenow ) const

@@ -34,8 +34,6 @@ protected:
 
 	bool isTemporaryResourceParam() const;
 
-	//list< RDOTracerValue* >::const_iterator findValue( RDOTracerValue* const value ) const;
-
 	vector< RDOStudioChartDoc* > documents;
 public:
 	RDOTracerSerie( RDOTracerSerieKind _serieKind );
@@ -47,16 +45,12 @@ public:
 	void setTitle( const string& value );
 
 	int addValue( RDOTracerValue* const value );
-	//RDOTracerValue* getValue( const int index ) const;
-	//list< RDOTracerValue* >::const_iterator getValueIterator( const int index ) const;
 	int getValueCount() const;
 	valuesList::const_iterator begin() const { return values.begin(); };
 	valuesList::const_iterator end() const { return values.end(); };
 	RDOTracerValue* getLastValue() const;
 	double getMinValue() const { return minValue; };
 	double getMaxValue() const { return maxValue; };
-	void getFromToValues( RDOTracerTimeNow* const from, const int fromEvent, RDOTracerTimeNow* const to, const int toEvent, RDOTracerValue* &begin, RDOTracerValue* &end ) const;
-	void getMinMaxValues( RDOTracerValue* const begin, RDOTracerValue* const end, double &min, double &max ) const;
 
 	void drawSerie( RDOStudioChartView* const view, CDC &dc, CRect &rect, const COLORREF color ) const;
 	void drawMarker( CDC &dc, const int x, const int y, const COLORREF color ) const;

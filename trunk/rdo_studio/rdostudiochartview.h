@@ -36,13 +36,9 @@ protected:
 	COLORREF timeColor;
 	
 	bool timeWrap;
-	bool canUnwrapTime() const { return zoom >= 1; };
+	bool canUnwrapTime() const { return scale_koeff >= 1 && !zoomAuto; };
 	bool doUnwrapTime() const { return canUnwrapTime() && !timeWrap; };
 
-	/*int leftMargin;
-	int topMargin;
-	int rightMargin;
-	int bottomMargin;*/
 	CRect chartRect;
 	void recalcLayout();
 
@@ -50,16 +46,10 @@ protected:
 	int xPos;
 	bool minXVisible() const { return xPos == 0; };
 	bool maxXVisible() const { return xPos == xMax; };
-	void setScrollPos( UINT nSBCode, UINT nPos );
-	void updateScrollBars();
+	void setScrollPos( UINT nSBCode, UINT nPos, const bool need_update = true );
+	void updateScrollBars( const bool need_update = true );
 
-	//double timeRange;
 	long double timeScale;
-	/*RDOTracerTimeNow* drawFromX;
-	int drawFromXEventIndex;
-	RDOTracerTimeNow* drawToX;
-	int drawToXEventIndex;
-	int pixelsToChart;*/
 	RDOTracerTimeNow drawFromX;
 	int drawFromEventIndex;
 	RDOTracerTimeNow drawToX;
@@ -67,12 +57,7 @@ protected:
 	bool setTo( const int from_max_pos );
 	void setFromTo();
 	timesList unwrapTimesList;
-	//void prepareDrawing( CDC &dc, CRect& chartRect );
 	
-	//int xAxisOffset;
-	//int yAxisOffset;
-	//void calcYAxisOffset( CDC &dc );
-	//void calcXAxisOffset( CDC &dc );
 	void drawYAxis( CDC &dc, CRect& chartRect, const RDOTracerSerie* axisValues);
 	void drawXAxis( CDC &dc, CRect& chartRect );
 	void drawGrid(	CDC &dc, CRect& chartRect );
@@ -83,7 +68,8 @@ protected:
 	double zoom;
 	double old_zoom;
 	double auto_zoom;
-	void setZoom( const double new_zoom );
+	double scale_koeff;
+	void setZoom( double new_zoom, const bool force_update = false );
 	bool zoomAuto;
 
 public:

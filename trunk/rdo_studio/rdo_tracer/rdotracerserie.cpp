@@ -19,9 +19,10 @@ public:
 
 bool RDOTracerSerieFindValue::operator ()( RDOTracerValue* val )
 {
-	if( val && val->modeltime->time >= view->drawFromX.time )
-		return true;
-	return false;
+	bool res = val && val->modeltime->time >= view->drawFromX.time;
+	if ( view->doUnwrapTime() && res && ( val->modeltime->time == view->drawFromX.time ) )
+		res = val->eventIndex >= view->drawFromEventIndex;
+	return res;
 }
 
 // ----------------------------------------------------------------------------
@@ -51,22 +52,6 @@ bool RDOTracerSerie::isTemporaryResourceParam() const
 	return serieKind == RDOST_RESPARAM && ((RDOTracerResParam*)this)->getResource()->getType()->getResTypeKind() == RDOTK_TEMPORARY;
 };
 
-/*list< RDOTracerValue* >::const_iterator RDOTracerSerie::findValue( RDOTracerValue* const value ) const
-{
-	//int res = -1;
-	//for ( list< RDOTracerValue* >::const_iterator it = values.begin(); it != values.end(); it++ ) {
-	//	res ++;
-	//	if ( (*it) == value ) {
-	//		break;
-	//	}
-	//}
-	//if ( it == values.end() ) res = -1;
-	//return res;
-	list< RDOTracerValue* >::const_iterator it = find( values.begin(), values.end(), value );
-	if ( it == values.end() ) return -1;
-	return it;
-}*/
-
 string RDOTracerSerie::getTitle() const
 {
 	return title;
@@ -89,26 +74,6 @@ int RDOTracerSerie::addValue( RDOTracerValue* const value )
 	return values.size() - 1;
 }
 
-/*RDOTracerValue* RDOTracerSerie::getValue( const int index ) const
-{
-	if ( index >= values.size() || index < 0 )
-		return NULL;
-	list< RDOTracerValue* >::const_iterator it = values.begin();
-	for ( int i = 0; i < index; i++ )
-		it++;
-	return (*it);
-}*/
-
-/*list< RDOTracerValue* >::const_iterator RDOTracerSerie::getValueIterator( const int index ) const
-{
-	list< RDOTracerValue* >::const_iterator it = values.begin();
-	if ( index >= values.size() || index < 0 )
-		return it;
-	for ( int i = 0; i < index; i++ )
-		it++;
-	return it;
-}*/
-
 int RDOTracerSerie::getValueCount() const
 {
 	return values.size();
@@ -121,165 +86,13 @@ RDOTracerValue* RDOTracerSerie::getLastValue() const
 	return values.back();
 }
 
-void RDOTracerSerie::getFromToValues( RDOTracerTimeNow* const from, const int fromEvent, RDOTracerTimeNow* const to, const int toEvent, RDOTracerValue* &begin, RDOTracerValue* &end ) const
-{
-	begin = NULL;
-	end = NULL;
-	/*if ( values.empty() )
-		return;
-
-	vector <RDOTracerValue*>::const_iterator it = values.begin();
-	while ( it != values.end() && ( (*it)->modeltime->time < from->time || ( (*it)->modeltime->time == from->time && (*it)->eventIndex <= fromEvent ) ) ) {
-		it ++;
-	}
-	if ( it = values.end() )
-		it --;
-	bool more = (*it)->modeltime->time > from->time || ( (*it)->modeltime->time == from->time && (*it)->eventIndex > fromEvent );
-	if ( it != values.begin() && more )
-		it --;
-	begin = (*it);
-
-	it = values.end();
-	it --;
-	while ( it >= values.begin() && ( (*it)->modeltime->time > to->time || ( (*it)->modeltime->time == to->time && (*it)->eventIndex >= toEvent ) ) ) {
-		it --;
-	}
-	bool less = (*it)->modeltime->time < to->time || ( (*it)->modeltime->time == to->time && (*it)->eventIndex < fromEvent );
-	if ( it < values.end() - 1 && less )
-		it ++;
-	end = (*it);*/
-}
-
-void RDOTracerSerie::getMinMaxValues( RDOTracerValue* const begin, RDOTracerValue* const end, double &min, double &max ) const
-{
-	/*if ( values.empty() ) {
-		min = 0;
-		max = 0;
-		return;
-	}
-	
-	for ( vector <RDOTracerValue*>::const_iterator it = values.begin(); it != values.end(); it++ ) {
-		if ( (*it) == begin ) {
-			break;
-		}
-	}
-	
-	min = (*it)->value;
-	max = min;
-	
-	if ( it!= values.end() ) {
-		while ( it != values.end() ) {
-			if ( (*it)->value > max  )
-				max = (*it)->value;
-			if ( (*it)->value < min )
-				min = (*it)->value;
-			if ( (*it) == end )
-				break;
-			it ++;
-		}
-	}*/
-}
-
 void RDOTracerSerie::drawSerie( RDOStudioChartView* const view, CDC &dc, CRect &rect, const COLORREF color ) const
 {
 	int oldBkMode = dc.SetBkMode( TRANSPARENT );
 	CPen pen;
 	pen.CreatePen( PS_SOLID, 0, color );
 	CPen* pOldPen = dc.SelectObject( &pen );
-	/*long double ky;
-	if ( maxValue != minValue )
-		ky = rect.Height() / ( maxValue - minValue );
-	else
-		ky = 0;
-	int count = values.size();
-	if ( count ) {
-		int prevx = rect.left + view->timeScale * values.at( 0 )->modeltime->time;
-		if ( !view->timeWrap )
-			prevx += view->tickWidth * values.at( 0 )->eventIndex;
-		int prevy = rect.bottom - ky * values.at( 0 )->value;
-		if ( !view->timeWrap && !isTemporaryResourceParam() ) {
-			dc.MoveTo( rect.left, prevy );
-			dc.LineTo( prevx, prevy );
-		}
-		dc.MoveTo( prevx, prevy );
-		int x = prevx, y = prevy;
-		RDOTracerValue* val = NULL;
-		for ( int i = 1; i < count; i++ ) {
-			val = values.at( i );
-			y = min( rect.bottom - ky * val->value, rect.bottom );
-			x = rect.left;
-			int wrapoffset = 0;
-			if ( !view->timeWrap )
-				wrapoffset = view->tickWidth * ( val->modeltime->overallCount - val->modeltime->eventCount + val->eventIndex );
-			x = min( rect.left + view->timeScale * val->modeltime->time + wrapoffset, rect.right );
-			dc.LineTo( x, prevy );
-			dc.LineTo( x, y );
-			prevx = x;
-			prevy = y;
-		}
-		if ( !( serieKind == RDOST_RESPARAM && ((RDOTracerResParam*)this)->getResource()->isErased() ) && x < rect.right ) {
-			x = rect.right;
-			if ( !view->timeWrap && count == 1 )
-				x = rect.left + view->tickWidth * values.at( 0 )->modeltime->eventCount;
-			else if ( count == 1 )
-				x = prevx;
-				
-			dc.LineTo( x, y );
-		}
-	}*/
-	
-	//new
-	/*RDOTracerValue* start = NULL;
-	RDOTracerValue* end = NULL;
-	getFromToValues( view->drawFromX, view->drawFromXEventIndex, view->drawToX, view->drawToXEventIndex, start, end );
-	double min = 0;
-	double max = 0;
-	getMinMaxValues( start, end, min, max );
-	long double ky = 0;
-	if ( min != max )
-		ky = rect.Height() / ( max - min );
-	if ( !values.empty() ) {
-		//int prevx = rect.left + view->timeScale * values.at( 0 )->modeltime->time;
-		//if ( !view->timeWrap )
-		//	prevx += view->tickWidth * values.at( 0 )->eventIndex;
-		int prevx = rect.left;
-		if ( isTemporaryResourceParam() )
-			prevx += view->timeScale * start->modeltime->time;
-		if ( !view->timeWrap )
-			prevx += view->tickWidth * start->eventIndex;
-		int prevy = rect.bottom - ky * ( start->value - min );
-		//if ( !view->timeWrap && !isTemporaryResourceParam() ) {
-		//	dc.MoveTo( rect.left, prevy );
-		//	dc.LineTo( prevx, prevy );
-		//}
-		dc.MoveTo( prevx, prevy );
-		int x = prevx, y = prevy;
-		RDOTracerValue* val = NULL;
-		int startindex = findValue( start ) + 1;
-		int endindex = findValue( end );
-		for ( int i = startindex; i <= endindex; i++ ) {
-			val = values.at( i );
-			y = min( rect.bottom - ky * ( val->value - min ), rect.bottom );
-			x = rect.left;
-			int wrapoffset = 0;
-			if ( !view->timeWrap )
-				wrapoffset = view->tickWidth * ( val->modeltime->overallCount - val->modeltime->eventCount + val->eventIndex );
-			x = max( rect.left, min( rect.left + view->timeScale * ( val->modeltime->time - view->drawFromX->time ) - view->pixelsToChart + wrapoffset, rect.right ) );
-			dc.LineTo( x, prevy );
-			dc.LineTo( x, y );
-			prevx = x;
-			prevy = y;
-		}
-		if ( !( serieKind == RDOST_RESPARAM && ((RDOTracerResParam*)this)->getResource()->isErased() ) && x < rect.right ) {
-			x = rect.right;
-			//if ( !view->timeWrap && count == 1 )
-			//	x = rect.left + view->tickWidth * values.at( 0 )->modeltime->eventCount;
-			//else if ( count == 1 )
-			//	x = prevx;
-				
-			dc.LineTo( x, y );
-		}
-	}*/
+
 	if ( !values.empty() ) {
 		
 		valuesList::const_iterator it = find_if( values.begin(), values.end(), RDOTracerSerieFindValue( view ) );
@@ -288,7 +101,14 @@ void RDOTracerSerie::drawSerie( RDOStudioChartView* const view, CDC &dc, CRect &
 			it --;
 		}
 		
-		if ( it != values.end() && !( it == values.begin() && (*it)->modeltime->time > view->drawToX.time ) ) {
+		bool flag = it != values.end();
+		if ( flag && !view->doUnwrapTime() ) {
+			flag = !( it == values.begin() && (*it)->modeltime->time > view->drawToX.time );
+		} else if ( flag ) {
+			flag = !( it == values.begin() && ( (*it)->modeltime->time > view->drawToX.time || ( (*it)->modeltime->time == view->drawToX.time && (*it)->eventIndex > view->drawToEventCount ) ) );
+		}
+
+		if ( flag ) {
 			
 			long double ky;
 			if ( maxValue != minValue )
@@ -296,11 +116,35 @@ void RDOTracerSerie::drawSerie( RDOStudioChartView* const view, CDC &dc, CRect &
 			else
 				ky = 0;
 			
-			if ( it != values.begin() && (*it)->modeltime->time > view->drawFromX.time )
+			flag = it != values.begin();
+			if ( flag && !view->doUnwrapTime() ) {
+				flag = (*it)->modeltime->time > view->drawFromX.time;
+			} else if ( flag ) {
+				flag = (*it)->modeltime->time > view->drawFromX.time || ( (*it)->modeltime->time == view->drawFromX.time && (*it)->eventIndex > view->drawFromEventIndex );
+			}
+			if ( flag )
 				it --;
 			
-			int lasty = roundDouble( rect.bottom - ky * ( (*it)->value - minValue ) );
+			int lasty = roundDouble( (double)rect.bottom - ky * ( (*it)->value - minValue ) );
+			lasty = min( lasty, rect.bottom - 1 );
 			int lastx = rect.left + roundDouble( ( (*it)->modeltime->time - view->drawFromX.time ) * view->timeScale );
+			lastx = min( lastx, rect.right - 1 );
+			
+			int ticks = 0;
+			timesList::iterator times_it = view->unwrapTimesList.begin();
+			if ( view->doUnwrapTime() && (*it)->modeltime->time >= view->drawFromX.time ) {
+				if ( *(*it)->modeltime == *(*times_it) ) {
+					lastx += ( (*it)->eventIndex - view->drawFromEventIndex ) * view->tickWidth;
+				} else {
+					while ( times_it != view->unwrapTimesList.end() && *(*it)->modeltime != *(*times_it) ) {
+						ticks += (*times_it)->eventCount;
+						times_it ++;
+					}
+					lastx += ( ticks + (*it)->eventIndex - view->drawFromEventIndex ) * view->tickWidth;
+				}
+			}
+			lastx = min( lastx, rect.right - 1 );
+
 			if ( lastx >= rect.left )
 				drawMarker( dc, lastx, lasty, color );
 			else
@@ -308,25 +152,58 @@ void RDOTracerSerie::drawSerie( RDOStudioChartView* const view, CDC &dc, CRect &
 			dc.MoveTo( lastx, lasty );
 			
 			int x = lastx, y = lasty;
+			if ( view->doUnwrapTime() ) {
+				ticks -= view->drawFromEventIndex;
+			}
 			it ++;
-			while ( it != values.end() && (*it)->modeltime->time <= view->drawToX.time ) {
-				y = roundDouble( rect.bottom - ky * ( (*it)->value - minValue ) );
+			if ( view->doUnwrapTime() && it != values.end() ) {
+				while ( times_it != view->unwrapTimesList.end() && *(*it)->modeltime != *(*times_it) ) {
+					ticks += (*times_it)->eventCount;
+					times_it ++;
+				}
+			}
+
+			while ( it != values.end() && ( (!view->doUnwrapTime() && (*it)->modeltime->time <= view->drawToX.time) || (view->doUnwrapTime() && ((*it)->modeltime->time < view->drawToX.time || ((*it)->modeltime->time == view->drawToX.time && (*it)->eventIndex <= view->drawToEventCount) )) ) ) {
+				y = roundDouble( (double)rect.bottom - ky * ( (*it)->value - minValue ) );
+				y = min( y, rect.bottom - 1 );
 				x = rect.left + roundDouble( ( (*it)->modeltime->time - view->drawFromX.time ) * view->timeScale );
+				if ( view->doUnwrapTime() ) {
+					x += ( ticks + (*it)->eventIndex ) * view->tickWidth;
+				}
+				x = min( x, rect.right - 1 );
 				drawMarker( dc, x, y, color );
 				dc.LineTo( x, lasty );
 				dc.LineTo( x, y );
 				lastx = x;
 				lasty = y;
 				it ++;
+				if ( view->doUnwrapTime() && it != values.end() ) {
+					while ( times_it != view->unwrapTimesList.end() && *(*it)->modeltime != *(*times_it) ) {
+						ticks += (*times_it)->eventCount;
+						times_it ++;
+					}
+				}
 			}
 			
 			bool tempres_erased = ( serieKind == RDOST_RESPARAM && ((RDOTracerResParam*)this)->getResource()->isErased() );
-			bool need_continue = ( values.size() > 1 );
-			if ( tempres_erased )
-				need_continue = ( it != values.end() && (*it)->modeltime->time > view->drawToX.time );
+			bool need_continue = !view->doUnwrapTime() ? ( values.size() > 1 ) : true;
+			if ( tempres_erased ) {
+				if ( !view->doUnwrapTime() ) {
+					need_continue = ( it != values.end() && (*it)->modeltime->time > view->drawToX.time );
+				} else {
+					need_continue = ( it != values.end() && ( (*it)->modeltime->time > view->drawToX.time || ( (*it)->modeltime->time == view->drawToX.time && (*it)->eventIndex > view->drawToEventCount ) ) );
+				}
+			}
 
-			if ( need_continue )
-				dc.LineTo( rect.right, lasty );
+			if ( need_continue ) {
+				if ( view->drawFromX == view->drawToX ) {
+					x = rect.left + ( view->drawToEventCount - view->drawFromEventIndex ) * view->tickWidth;
+					x = min( x, rect.right - 1 );
+				} else {
+					x = rect.right - 1;
+				}
+				dc.LineTo( x, lasty );
+			}
 		}
 	}
 	dc.SelectObject( pOldPen );

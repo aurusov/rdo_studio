@@ -118,5 +118,8 @@ void eraseMenu( CMenu* from, const int from_index )
 
 int roundDouble( const double val )
 {
-	return ( val - (int)val < 0.5 ) ? (int)val : (int)val + 1;
+	if ( val >= 0 )
+		return ( val - (int)val < 0.5 ) ? (int)val : (int)val + 1;
+	else
+		return ( val - (int)val > - 0.5 ) ? (int)val : (int)val - 1;
 }
