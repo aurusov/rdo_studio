@@ -60,6 +60,9 @@ RDOStudioModel::RDOStudioModel():
 
 RDOStudioModel::~RDOStudioModel()
 {
+	if ( isRunning() ) {
+		kernel.getSimulator()->stopModel();
+	}
 	model = NULL;
 }
 
@@ -444,7 +447,7 @@ void RDOStudioModel::parseFrame()
 {
 	if ( !getFrameDoc() ) {
 		TRACE( "before\r\n" );
-		AfxGetApp()->PostThreadMessage( 111, 0, 0 );
+		AfxGetApp()->PostThreadMessage( RDO_ADDNEWFRAME_MSG, 0, 0 );
 		TRACE( "after\r\n" );
 		DWORD res = ::WaitForSingleObject( addNewFrameEvent, INFINITE );
 		switch ( res ) {
@@ -455,7 +458,9 @@ void RDOStudioModel::parseFrame()
 	}
 }
 
-void RDOStudioModel::addNewFrame() const
+void RDOStudioModel::addNewFrame()
 {
 	frameDocTemplate->OpenDocumentFile( NULL );
+	AfxMessageBox( "q" );
+	addNewFrameEvent.SetEvent();
 }

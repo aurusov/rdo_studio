@@ -14,9 +14,12 @@ namespace rdoEditor {
 	class RDOEditorTabCtrl;
 }
 
+static const UINT RDO_ADDNEWFRAME_MSG = WM_USER + 111;
+
 class RDOStudioModel
 {
 friend class RDOStudioModelDoc;
+friend class RDOStudioApp;
 
 private:
 	CMultiDocTemplate* modelDocTemplate;
@@ -27,6 +30,9 @@ private:
 	bool closeWithDocDelete;
 	bool canNotCloseByModel;
 	bool running;
+
+	CEvent addNewFrameEvent;
+	void addNewFrame();
 
 	static void newModelNotify();
 	static void openModelNotify();
@@ -56,9 +62,6 @@ private:
 public:
 	RDOStudioModel();
 	~RDOStudioModel();
-
-	CEvent addNewFrameEvent;
-	void addNewFrame() const;
 
 	void newModel( const bool _useTemplate = false );
 	bool openModel( const std::string& modelName = "" ) const;

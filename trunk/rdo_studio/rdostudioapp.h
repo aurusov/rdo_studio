@@ -63,7 +63,7 @@ public:
 	afx_msg void OnUpdateChartStoptrace(CCmdUI* pCmdUI);
 	//}}AFX_MSG
 	afx_msg void OnProjectReopen( UINT nID );
-	afx_msg void OnQ( WPARAM wParam, LPARAM lParam );
+	afx_msg void OnAddNewFrame( WPARAM wParam, LPARAM lParam );
 	DECLARE_MESSAGE_MAP()
 };
 
