@@ -45,6 +45,10 @@ BEGIN_MESSAGE_MAP(BKMainFrame, CFrameWnd)
 	ON_UPDATE_COMMAND_UI(ID_EMULATOR_RESET, OnUpdateEmulatorReset)
 	ON_UPDATE_COMMAND_UI(ID_EMULATOR_SOFTRESET, OnUpdateEmulatorSoftReset)
 	ON_COMMAND(ID_APP_ABOUT, OnAppAbout)
+	ON_COMMAND(ID_EMULATOR_INCREASESPEED, OnEmulatorIncreaseSpeed)
+	ON_COMMAND(ID_EMULATOR_DECREASESPEED, OnEmulatorDecreaseSpeed)
+	ON_UPDATE_COMMAND_UI(ID_EMULATOR_INCREASESPEED, OnUpdateEmulatorIncreaseSpeed)
+	ON_UPDATE_COMMAND_UI(ID_EMULATOR_DECREASESPEED, OnUpdateEmulatorDecreaseSpeed)
 	//}}AFX_MSG_MAP
 	ON_COMMAND_RANGE( ID_VIEW_FONT_DEFAULT, ID_VIEW_FONT_WORKS, OnFontClicked )
 	ON_COMMAND( ID_ROM_100000_MONITOR, OnRom )
@@ -750,4 +754,24 @@ void BKMainFrame::OnAppAbout()
 	BKEmulAbout dlg;
 	dlg.DoModal();
 	emul.setPause( false );
+}
+
+void BKMainFrame::OnEmulatorIncreaseSpeed()
+{
+	emul.setSpeed( emul.getSpeed() * 1.5 );
+}
+
+void BKMainFrame::OnEmulatorDecreaseSpeed()
+{
+	emul.setSpeed( emul.getSpeed() / 1.5 );
+}
+
+void BKMainFrame::OnUpdateEmulatorIncreaseSpeed(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable( emul.isPowerON() && emul.canSetSpeed( emul.getSpeed() * 1.5 ) );
+}
+
+void BKMainFrame::OnUpdateEmulatorDecreaseSpeed(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable( emul.isPowerON() && emul.canSetSpeed( emul.getSpeed() / 1.5 ) );
 }

@@ -22,6 +22,7 @@ class BKEmul
 private:
 	bool powerOn;
 	bool pause;
+	int  speed;
 	bool BK_SYS_Timer_work;     // Системный таймер БК запущен/остановлен
 
 	// Регист, имеющий разное значение по чтению/записи.
@@ -45,12 +46,15 @@ public:
 
 	void powerON();
 	void powerOFF();
-	bool getPause() const              { return pause; }
+	bool getPause() const              { return pause;   }
 	void setPause( const bool value );
 	void reset();
 	void softReset();
-	bool isPowerON()       { return powerOn; }
+	bool isPowerON()                   { return powerOn; }
 	void nextIteration();
+	int  getSpeed() const              { return speed;   }
+	void setSpeed( const int value );
+	bool canSetSpeed( const int value );
 
 	void loadROM( const std::string& rom ) const;
 	void loadFont( const std::string& font ) const;

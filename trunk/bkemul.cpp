@@ -18,6 +18,7 @@ BKEmul emul;
 BKEmul::BKEmul():
 	powerOn( false ),
 	pause( false ),
+	speed( 3000 ),
 	BK_SYS_Timer_work( false )
 {
 }
@@ -114,7 +115,7 @@ void BKEmul::nextIteration()
 {
 	if ( pause ) return;
 	try {
-		for ( int i = 0; i < 3000; i++ ) {
+		for ( int i = 0; i < speed; i++ ) {
 			if ( BK_SYS_Timer_work ) {
 				WORD data = memory.get_word( 0177710 );
 				data--;
@@ -339,6 +340,18 @@ void BKEmul::setPause( const bool value )
 			video.updateMonitor();
 		}
 	}
+}
+
+void BKEmul::setSpeed( const int value )
+{
+	if ( canSetSpeed( value ) ) {
+		speed = value;
+	}
+}
+
+bool BKEmul::canSetSpeed( const int value )
+{
+	return value > 1000 && value < 30000;
 }
 
 // --------------------------------------------------------------

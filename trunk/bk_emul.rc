@@ -77,11 +77,14 @@ IDR_MAINFRAME MENU PRELOAD DISCARDABLE
 BEGIN
     POPUP "&Emulator"
     BEGIN
-        MENUITEM "Power On",                    ID_EMULATOR_POWERON
-        MENUITEM "Power Off",                   ID_EMULATOR_POWEOFF
+        MENUITEM "Power &On",                   ID_EMULATOR_POWERON
+        MENUITEM "Power O&ff",                  ID_EMULATOR_POWEOFF
         MENUITEM SEPARATOR
         MENUITEM "&Reset\tAlt+F11",             ID_EMULATOR_RESET
         MENUITEM "&Soft Reset\tAlt+F12",        ID_EMULATOR_SOFTRESET
+        MENUITEM SEPARATOR
+        MENUITEM "&Increase Speed\tAlt+Num+",   ID_EMULATOR_INCREASESPEED
+        MENUITEM "&Decrease Speed\tAlt+Num-",   ID_EMULATOR_DECREASESPEED
         MENUITEM SEPARATOR
         MENUITEM "E&xit",                       ID_APP_EXIT
     END
@@ -153,8 +156,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,1,0,90
- PRODUCTVERSION 0,1,0,90
+ FILEVERSION 0,1,0,97
+ PRODUCTVERSION 0,1,0,97
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -172,14 +175,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "BK 0010-01 Emulator\0"
-            VALUE "FileVersion", "0, 1, 0, 90\0"
+            VALUE "FileVersion", "0, 1, 0, 97\0"
             VALUE "InternalName", "BK Emulator\0"
             VALUE "LegalCopyright", "\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "bk_emul.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "BK 0010-01 Emulator\0"
-            VALUE "ProductVersion", "0, 1, 0, 90\0"
+            VALUE "ProductVersion", "0, 1, 0, 97\0"
             VALUE "SpecialBuild", "\0"
         END
     END
@@ -210,10 +213,12 @@ MONITOR_10              ROM     DISCARDABLE     "res\\rom_monitor_10.bin"
 
 IDR_MAINFRAME ACCELERATORS DISCARDABLE 
 BEGIN
+    VK_ADD,         ID_EMULATOR_INCREASESPEED, VIRTKEY, ALT, NOINVERT
     VK_F11,         ID_EMULATOR_RESET,      VIRTKEY, ALT, NOINVERT
     VK_F12,         ID_EMULATOR_SOFTRESET,  VIRTKEY, ALT, NOINVERT
     VK_F9,          ID_VIEW_COLORMONITOR,   VIRTKEY, ALT, NOINVERT
     VK_RETURN,      ID_VIEW_FULLSCREEN,     VIRTKEY, ALT, NOINVERT
+    VK_SUBTRACT,    ID_EMULATOR_DECREASESPEED, VIRTKEY, ALT, NOINVERT
 END
 
 
