@@ -88,7 +88,6 @@ void RDOStudioChartOptionsChart::OnOK()
 
 bool RDOStudioChartOptionsChart::checkValues() const
 {
-    bool result = true;
 	int valCount_Y = GetDlgItemInt(IDC_IDC_VAL_COUNT_Y_EDIT);
 	CEdit* edit_Y = (CEdit*) GetDlgItem(IDC_IDC_VAL_COUNT_Y_EDIT);
 	int valCount_X = GetDlgItemInt(IDC_IDC_VAL_COUNT_X_EDIT);
@@ -106,7 +105,7 @@ bool RDOStudioChartOptionsChart::checkValues() const
 		edit_X->SetSel(0, -1);
 		edit_X->ReplaceSel(rdo::format( "%d", val_corrected ).c_str());
 		edit_X->SetFocus();
-		result = false;
+		return false;
 	}
 
 	if (valCount_Y < MIN_X_Y_M || valCount_Y > MAX_X_Y) {
@@ -118,10 +117,10 @@ bool RDOStudioChartOptionsChart::checkValues() const
 		edit_Y->SetSel(0, -1);
 		edit_Y->ReplaceSel(rdo::format( "%d", val_corrected ).c_str());
 		edit_Y->SetFocus();
-		result = false;
+		return false;
 	}
 
-	return result;
+	return true;
 }
 
 BOOL RDOStudioChartOptionsChart::OnKillActive() 
@@ -266,7 +265,6 @@ BOOL RDOStudioChartOptionsSeries::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT
 
 bool RDOStudioChartOptionsSeries::checkValues() const
 {
-    bool result = true;
 	int marker_size = GetDlgItemInt(IDC_MARKER_SIZE_EDIT);
 	CEdit* edit_marker_size = (CEdit*) GetDlgItem(IDC_MARKER_SIZE_EDIT);
 
@@ -282,10 +280,10 @@ bool RDOStudioChartOptionsSeries::checkValues() const
 		edit_marker_size->SetSel(0, -1);
 		edit_marker_size->ReplaceSel(rdo::format( "%d", val_corrected ).c_str());
 		edit_marker_size->SetFocus();
-		result = false;
+		return false;
 	}
 
-	return result;
+	return true;
 }
 
 BOOL RDOStudioChartOptionsSeries::OnKillActive() 
