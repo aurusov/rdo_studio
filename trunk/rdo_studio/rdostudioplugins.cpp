@@ -234,12 +234,12 @@ void RDOStudioPlugins::init()
 
 void RDOStudioPlugins::modelStartNotify()
 {
-	plugins->modelStart();
+	AfxGetApp()->PostThreadMessage( PLUGIN_STARTMODEL_MESSAGE, 0, 0 );
 }
 
 void RDOStudioPlugins::modelStopNotify()
 {
-	plugins->modelStop();
+	AfxGetApp()->PostThreadMessage( PLUGIN_STOPMODEL_MESSAGE, 0, 0 );
 }
 
 void RDOStudioPlugins::modelStart()

@@ -60,6 +60,9 @@ public:
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioPlugins
 // ----------------------------------------------------------------------------
+static const int PLUGIN_STARTMODEL_MESSAGE = ::RegisterWindowMessage( "PLUGIN_START_MODEL_MESSAGE" );
+static const int PLUGIN_STOPMODEL_MESSAGE  = ::RegisterWindowMessage( "PLUGIN_STOP_MODEL_MESSAGE" );
+
 class RDOStudioPlugins
 {
 private:
@@ -71,14 +74,14 @@ private:
 	static void modelStartNotify();
 	static void modelStopNotify();
 
-	void modelStart();
-	void modelStop();
-
 public:
 	RDOStudioPlugins();
 	virtual ~RDOStudioPlugins();
 
 	const std::vector< RDOStudioPlugin* >& getList() { return list; }
+
+	void modelStart();
+	void modelStop();
 
 	void stopPlugin( const HMODULE lib ) const;
 
