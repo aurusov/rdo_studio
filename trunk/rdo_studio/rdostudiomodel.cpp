@@ -655,7 +655,9 @@ void RDOStudioModel::showFrame()
 {
 	modelTime = kernel.getSimulator()->getModelTime();
 	studioApp.mainFrame->showNewModelTime( modelTime );
-	while ( getShowMode() == SM_Monitor ) {};
+	while ( getShowMode() == SM_Monitor ) {
+		::Sleep( 500 );
+	}
 	const vector<RDOFrame *>& frames = kernel.getSimulator()->getFrames();
 	vector<RDOFrame *>::const_iterator it = frames.begin();
 	int index = 0;
