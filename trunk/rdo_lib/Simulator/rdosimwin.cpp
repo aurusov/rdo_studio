@@ -83,6 +83,11 @@ void frameCallBack(rdoRuntime::RDOConfig *config, void *param)
 		config->frames.clear();
 		Sleep(config->realTimeDelay);
 	}
+	else
+	{
+		simulator->frames.clear();
+		kernel.notify(RDOKernel::showFrame);
+	}
 
 	config->showAnimation = simulator->getShowMode();
 }
@@ -202,6 +207,7 @@ UINT RunningThreadControllingFunction( LPVOID pParam )
 		kernel.debug("End executing\n");
 
 //		kernel.debug(simulator->getResults().str().c_str());
+		
 
 	}
 	catch(RDOException &)
