@@ -36,14 +36,14 @@ BOOL BKEmulApp::InitInstance()
 	free( (void*)m_pszRegistryKey );
 	m_pszRegistryKey = _tcsdup( _T("BKEmulator") );
 
-	BKMainFrame* pFrame = new BKMainFrame;
-	m_pMainWnd = pFrame;
+	mainFrame = new BKMainFrame;
+	m_pMainWnd = mainFrame;
 
-	pFrame->LoadFrame( IDR_MAINFRAME, WS_OVERLAPPEDWINDOW | FWS_ADDTOTITLE, NULL, NULL );
-	pFrame->SetIcon( LoadIcon( MAKEINTRESOURCE(IDR_MAINFRAME) ), TRUE );
-	pFrame->SetIcon( (HICON)::LoadImage( NULL, MAKEINTRESOURCE(IDR_MAINFRAME), IMAGE_ICON, ::GetSystemMetrics( SM_CXSMICON ), ::GetSystemMetrics( SM_CYSMICON ), LR_DEFAULTCOLOR ), FALSE );
-	pFrame->ShowWindow(SW_SHOW);
-	pFrame->UpdateWindow();
+	mainFrame->LoadFrame( IDR_MAINFRAME, WS_OVERLAPPEDWINDOW | FWS_ADDTOTITLE, NULL, NULL );
+	mainFrame->SetIcon( LoadIcon( MAKEINTRESOURCE(IDR_MAINFRAME) ), TRUE );
+	mainFrame->SetIcon( (HICON)::LoadImage( NULL, MAKEINTRESOURCE(IDR_MAINFRAME), IMAGE_ICON, ::GetSystemMetrics( SM_CXSMICON ), ::GetSystemMetrics( SM_CYSMICON ), LR_DEFAULTCOLOR ), FALSE );
+	mainFrame->ShowWindow(SW_SHOW);
+	mainFrame->UpdateWindow();
 
 	return TRUE;
 }

@@ -12,10 +12,14 @@
 // --------------------------------------------------------------
 // ---------- BKEmulApp
 // --------------------------------------------------------------
+class BKMainFrame;
+
 class BKEmulApp: public CWinApp
 {
 public:
 	BKEmulApp();
+
+	BKMainFrame* mainFrame;
 
 protected:
 	//{{AFX_MSG(BKEmulApp)

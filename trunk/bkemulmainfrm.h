@@ -15,13 +15,14 @@ class BKMainFrame: public CFrameWnd
 DECLARE_DYNAMIC(BKMainFrame)
 
 private:
-	BKChildView childView;
 //	CToolBar    toolBar;
 //	CStatusBar  statusBar;
 	
 public:
 	BKMainFrame();
 	virtual ~BKMainFrame();
+
+	BKChildView childView;
 
 #ifdef _DEBUG
 	virtual void AssertValid() const;

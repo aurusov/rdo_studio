@@ -18,7 +18,23 @@ class BKEmul
 friend class BKChildView;
 
 private:
-	std::vector< unsigned char > memory;
+	std::vector< BYTE > memory;
+	BYTE get_byte( WORD address ) const {
+		return memory[address];
+	}
+	WORD get_word( WORD address ) const {
+		address &= oddWordMask;
+		WORD data = memory[address] | memory[address+1];
+		return data;
+	}
+	void set_byte( WORD address, BYTE data ) {
+		memory[address] = data;
+	}
+	void set_word( WORD address, WORD data )  {
+		memory[address]   = LOBYTE( data );
+		memory[address+1] = HIBYTE( data );
+	}
+
 	bool colorMonitor;
 
 	// –егист, имеющий разное значение по чтению/записи.
@@ -29,7 +45,7 @@ private:
 
 	class BKMemoryAccessError{
 	public:
-		BKMemoryAccessError( WORD memory, WORD data ) {};
+		BKMemoryAccessError( WORD address, WORD data ) {};
 	};
 
 	void doSpeaker() const;
@@ -38,50 +54,16 @@ public:
 	BKEmul();
 	virtual ~BKEmul();
 
-	const unsigned char* getVideoMemory() const { return &memory[0] + 040000; }
+	const BYTE* getMemory( WORD address ) const { return &memory[address];    }
+	const BYTE* getVideoMemory() const          { return &memory[0] + 040000; }
 	int getVideoMemorySize() const              { return 040000;              }
 
 	bool isColorMonitor() const { return colorMonitor; }
 
-	BYTE getDirectMemoryByte( WORD mem ) {
-		switch ( mem ) {
-			case 0177716: return static_cast<BYTE>(R_177716_read);
-			case 0177714: return 0;
-		}
-		return memory[mem];
-	}
-	WORD getDirectMemoryWord( WORD mem ) {
-		mem &= oddWordMask;
-		switch ( mem ) {
-			case 0177716: return R_177716_read;
-			case 0177714: return 0;
-		}
-		WORD data = memory[mem] | memory[mem+1];
-		return data;
-	}
-	void setDirectMemoryByte( WORD mem, BYTE data ) {
-		if ( mem == 0177716 ) {
-			// ѕо записи доступны только 4-7 разр€ды выходного регистра 177716
-			R_177716_write &= 0xFF0F;
-			R_177716_write |= static_cast<BYTE>(data & 0xF0);
-		} else {
-			memory[mem] = data;
-		}
-	}
-	void setDirectMemoryWord( WORD mem, WORD data )  {
-		mem &= oddWordMask;
-		if ( mem == 0177716 ) {
-			// ѕо записи доступны только 4-7 разр€ды выходного регистра 177716
-			R_177716_write &= 0xFF0F;
-			R_177716_write |= data & 0x00F0;
-		} else {
-			memory[mem]   = LOBYTE( data );
-			memory[mem+1] = HIBYTE( data );
-		}
-	}
-	BYTE getMemoryByte( WORD mem );
-	WORD getMemoryWord( WORD mem );
-	void setMemoryByte( WORD mem, BYTE data );
+	BYTE getMemoryByte( WORD address );
+	WORD getMemoryWord( WORD address );
+	void setMemoryByte( WORD address, BYTE data );
+	void setMemoryWord( WORD address, WORD data );
 };
 
 } // namespace bkemul
