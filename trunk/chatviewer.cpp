@@ -390,6 +390,25 @@ void CChatViewer::repaintLine( const int index )
 	}
 }
 
+void CChatViewer::addString( const std::string& userName, const std::string& message, CChatStringType type, const std::string& toUserName )
+{
+	if ( GetSafeHwnd() ) {
+
+		CChatString* str = new CChatString( getStringCount(), userName, message, type, toUserName );
+		strings.addString( str );
+
+		updateScrollBars();
+
+		int lastString = strings.count() - 1;
+		if ( lastString <= 0 ) lastString = 1;
+
+		if ( isVisible( lastString - 1 ) ) {
+			selectedLine = lastString;
+			::SendMessage( m_hWnd, WM_VSCROLL, MAKELONG( SB_BOTTOM, 0 ), NULL );
+		}
+	}
+}
+
 void CChatViewer::setStyle( const CChatViewerStyle& _style, const bool needRedraw )
 {
 //	style = _style;
@@ -606,24 +625,5 @@ void CChatViewer::OnPaint()
 		dc.FillSolidRect( dc.m_ps.rcPaint.left, rect.bottom, dc.m_ps.rcPaint.right, dc.m_ps.rcPaint.bottom, chatApp.style.theme.viewerBgColor );
 
 		dc.SelectObject( prev_font );
-	}
-}
-
-void CChatViewer::addString( const std::string& userName, const std::string& message, CChatStringType type, const std::string& toUserName )
-{
-	if ( GetSafeHwnd() ) {
-
-		CChatString* str = new CChatString( getStringCount(), userName, message, type, toUserName );
-		strings.addString( str );
-
-		updateScrollBars();
-
-		int lastString = strings.count() - 1;
-		if ( lastString <= 0 ) lastString = 1;
-
-		if ( isVisible( lastString - 1 ) ) {
-			selectedLine = lastString;
-			::SendMessage( m_hWnd, WM_VSCROLL, MAKELONG( SB_BOTTOM, 0 ), NULL );
-		}
 	}
 }
