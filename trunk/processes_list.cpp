@@ -144,16 +144,20 @@ void WGProcList::slot_get_file_progress( WGProcess* proc )
 QString WGProcList::fileSizeToString( const unsigned long int file_size )
 {
 	QString str;
-	if ( file_size < 1024 ) {
-		str.sprintf( "%lu byte", file_size );
+	if ( file_size == 0 ) {
+		str = "??";
 	} else {
-		if ( file_size < 1024*1024 ) {
-			str.sprintf( "%4.1f Kb", double((double)file_size / 1024.0) );
+		if ( file_size < 1024 ) {
+			str.sprintf( "%lu byte", file_size );
 		} else {
-			if ( file_size < 1024*1024*1024 ) {
-				str.sprintf( "%4.1f Mb", double((double)file_size / 1024.0 / 1024.0) );
+			if ( file_size < 1024*1024 ) {
+				str.sprintf( "%4.1f Kb", double((double)file_size / 1024.0) );
 			} else {
-				str.sprintf( "%4.1f Gb", double((double)file_size / 1024.0 / 1024.0 / 1024.0) );
+				if ( file_size < 1024*1024*1024 ) {
+					str.sprintf( "%4.1f Mb", double((double)file_size / 1024.0 / 1024.0) );
+				} else {
+					str.sprintf( "%4.1f Gb", double((double)file_size / 1024.0 / 1024.0 / 1024.0) );
+				}
 			}
 		}
 	}

@@ -122,6 +122,7 @@ private:
 	int found_connect_line;
 	int found_login_line;
 	int found_file_size_line;
+	int found_file_REST_size_line;
 	int found_file_progress_begin_line;
 	int found_file_progress_end_line;
 	int found_file_saved_line;

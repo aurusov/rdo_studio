@@ -218,12 +218,12 @@ void WGProcessList::readConfig()
 {
 	QSettings reg;
 	QString empty_str = "";
-	saveToDir             = reg.readEntry( "/winwget/saveToDir", empty_str );
+	saveToDir             = reg.readEntry( "/winwget/saveToDir", QDir::homeDirPath() );
 	doRestart             = reg.readBoolEntry( "/winwget/doRestart", true );
 	dontUseSuffix         = reg.readBoolEntry( "/winwget/dontUseSuffix", false );
 	dontRetrieveOldFile   = reg.readBoolEntry( "/winwget/dontRetrieveOldFile", false );
 	writeLog              = reg.readBoolEntry( "/winwget/writeLog", false );
-	logDirectory          = reg.readEntry( "/winwget/logDirectory", empty_str );
+	logDirectory          = reg.readEntry( "/winwget/logDirectory", QDir::homeDirPath() );
 	retriesNumber         = reg.readEntry( "/winwget/retriesNumber", empty_str );
 	waitBetweenRetrievals = reg.readEntry( "/winwget/waitBetweenRetrievals", empty_str );
 	checkClipboard        = reg.readBoolEntry( "/winwget/checkClipboard", true );
@@ -270,6 +270,7 @@ WGProcess::WGProcess( QObject* parent ):
 	found_connect_line( -1 ),
 	found_login_line( -1 ),
 	found_file_size_line( -1 ),
+	found_file_REST_size_line( -1 ),
 	found_file_progress_begin_line( -1 ),
 	found_file_progress_end_line( -1 ),
 	found_file_saved_line( -1 ),
@@ -358,6 +359,7 @@ bool WGProcess::start( const bool without_arguments )
 				found_connect_line             = -1;
 				found_login_line               = -1;
 				found_file_size_line           = -1;
+				found_file_REST_size_line      = -1;
 				found_file_progress_begin_line = -1;
 				found_file_progress_end_line   = -1;
 				found_file_saved_line          = -1;
@@ -475,15 +477,18 @@ void WGProcess::readStderr()
 #define file_size_index                2
 #define file_size_todo_str             "["
 #define file_size_todo_index           3
+#define file_REST_size_str             "REST"
+#define file_REST_size_pos             26
+#define file_REST_size_index           7
 #define done_str                       "done"
-#define progress_str1                  " 0K"
+#define progress_str1                  "K "
 #define progress_str2                  "->"
 #define progress_str3                  "["
-#define progress_pos1                  3
+#define progress_pos1                  5
 #define progress_pos2                  7
 #define progress_pos3                  65
 #define file_saved_str                 "saved"
-#define file_saved_index               7
+#define file_saved_index               2
 #define host_not_found_str             "Host not found"
 #define invalid_host_name_str          "Invalid host name"
 #define file_already_exist_str         "already there, not retrieving"
@@ -539,6 +544,7 @@ void WGProcess::logParser()
 			found_connect_line             = -1;
 			found_login_line               = -1;
 			found_file_size_line           = -1;
+			found_file_REST_size_line      = -1;
 			found_file_progress_begin_line = -1;
 			found_file_progress_end_line   = -1;
 			found_file_saved_line          = -1;
@@ -564,6 +570,7 @@ void WGProcess::logParser()
 			found_connect_line = line;
 			found_login_line               = -1;
 			found_file_size_line           = -1;
+			found_file_REST_size_line      = -1;
 			found_file_progress_begin_line = -1;
 			found_file_progress_end_line   = -1;
 			found_file_saved_line          = -1;
@@ -574,6 +581,7 @@ void WGProcess::logParser()
 		if ( found_connect_line != -1 && found_login_line < line && str.find( login_str ) == login_pos ) {
 			found_login_line = line;
 			found_file_size_line           = -1;
+			found_file_REST_size_line      = -1;
 			found_file_progress_begin_line = -1;
 			found_file_progress_end_line   = -1;
 			found_file_saved_line          = -1;
@@ -620,8 +628,27 @@ void WGProcess::logParser()
 			}
 		}
 
+		// file REST size
+		if ( found_login_line != -1 && found_file_REST_size_line < line && str.find( file_REST_size_str ) == file_REST_size_pos ) {
+			found_file_REST_size_line = line;
+			found_file_progress_begin_line = -1;
+			found_file_progress_end_line   = -1;
+			found_file_saved_line          = -1;
+			QString fs = pickOutStr( str, file_REST_size_index );
+			unsigned long int step = 1;
+			fileSize = 0;
+			fileCurrentSize = 0;
+			for ( i = fs.length()-1; i >= 0; i-- ) {
+				fileCurrentSize += (fs[i].latin1() - '0') * step;
+				step *= 10;
+				fs.remove( i, 1 );
+			}
+			emit signal_file_size( this, fileSize );
+			emit signal_file_progress( this );
+		}
+
 		// file progress
-		if ( found_file_size_line != -1 && found_file_progress_begin_line < line &&
+		if ( found_file_progress_begin_line < line &&
 		     ( str.find( progress_str1 ) == progress_pos1 ) &&
 		     ( str.find( progress_str2 ) == progress_pos2 ) ) {
 			found_file_progress_begin_line = line;
@@ -630,6 +657,7 @@ void WGProcess::logParser()
 			time_download_begin   = QTime::currentTime();
 			time_last_speed_check = time_download_begin;
 			setStatus( psDownload );
+			if ( !fileSize ) emit signal_file_size( this, fileSize );
 		}
 		if ( found_file_progress_begin_line != -1 && str.find( progress_str2 ) == progress_pos2 && line >= shot_fileCurrentSize_prev_line ) {
 			int shot_size = 0;
@@ -663,27 +691,41 @@ void WGProcess::logParser()
 		if ( ( found_file_progress_end_line != -1 || found_login_line != -1 ) &&
 		       found_file_saved_line < line && str.find( file_saved_str ) != -1 ) {
 			found_file_saved_line = line;
-			if ( found_file_progress_begin_line == -1 ) {
-				if ( !fileSize ) {
-					QString fs = pickOutStr( str, file_saved_index );
-					fs.remove( 0, 1 );
-					fs.remove( fs.length()-1, 1 );
-					for ( i = fs.length()-1; i >= 0; i-- )
-						if ( fs.find(",", i) == i ) fs.remove( i, 1 );
-					unsigned long int step = 1;
-					for ( i = fs.length()-1; i >= 0; i-- ) {
-						fileSize += (fs[i].latin1() - '0') * step;
-						step *= 10;
-						fs.remove( i, 1 );
+			bool saved_flag = true;
+			if ( !fileSize ) {
+				QString fs = str;
+				i = fs.findRev( "'" );
+				if ( i != -1 ) {
+					fs.remove( 0, i+1 );
+					fs = pickOutStr( fs, file_saved_index );
+					if ( fs.find( "[" ) == 0 && fs.findRev( "]" ) == (int)(fs.length()-1) ) {
+						fs.remove( 0, 1 );
+						fs.remove( fs.length()-1, 1 );
+						for ( i = fs.length()-1; i >= 0; i-- )
+							if ( fs.find(",", i) == i ) fs.remove( i, 1 );
+						unsigned long int step = 1;
+						for ( i = fs.length()-1; i >= 0; i-- ) {
+							fileSize += (fs[i].latin1() - '0') * step;
+							step *= 10;
+							fs.remove( i, 1 );
+						}
+						emit signal_file_size( this, fileSize );
+					} else {
+						saved_flag = false;
 					}
-					emit signal_file_size( this, fileSize );
+				} else {
+					saved_flag = false;
 				}
+			}
+			if ( saved_flag ) {
 				fileCurrentSize = fileSize;
 				emit signal_file_progress( this );
 				found_file_progress_end_line = line;
 				setStatus( psFinish );
+				setStatus( psSaved );
+			} else {
+				found_file_saved_line = -1;
 			}
-			setStatus( psSaved );
 		}
 	}
 }
@@ -746,17 +788,25 @@ QString WGProcess::getURLWithHidenPassword() const
 			if ( i != -1 ) {
 				e = i-1;
 			} else {
-				e = b-1;
+				e = -1;
 			}
 		} else {
 			e = i-1;
 		}
 		if ( b < e ) {
 			i = s.find( '@', b );
-			if ( i != -1 ) e = i-1;
+			if ( i != -1 ) {
+				e = i-1;
+			} else {
+				e = -1;
+			}
 			if ( b < e ) {
 				i = s.find( ':', b );
-				if ( i != -1 ) b = i+1;
+				if ( i != -1 ) {
+					b = i+1;
+				} else {
+					e = -1;
+				}
 				if ( b <= e ) {
 					for ( i = b; i <= e; i++ ) {
 						s.replace( i, 1, "x" );
