@@ -37,6 +37,7 @@ protected:
 	afx_msg void OnUpdateFind( CCmdUI* pCmdUI );
 	afx_msg void OnInitMenuPopup( CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu );
 	afx_msg void OnContextMenu( CWnd* pWnd, CPoint pos );
+	afx_msg void OnHelpKeyword();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 	

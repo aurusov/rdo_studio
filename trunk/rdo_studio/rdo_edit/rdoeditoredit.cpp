@@ -1,9 +1,13 @@
 #include "stdafx.h"
 #include "rdoeditoredit.h"
+#include "rdoeditortabctrl.h"
+#include "../rdostudioapp.h"
+#include "../rdostudiomodel.h"
 #include "../rdostudioeditbaseview.h"
 #include "../edit_ctrls/sci/LexRdo.h"
 #include "../edit_ctrls/sci/PropSet.h"
 #include "../resource.h"
+#include "../htmlhelp.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -76,6 +80,7 @@ BEGIN_MESSAGE_MAP( RDOEditorEdit, RDOEditorBaseEdit )
 	ON_UPDATE_COMMAND_UI(ID_BUILDFINDLOG_GOTOPREV, OnUpdateGotoPrev)
 	ON_COMMAND(ID_VIEW_TOGGLEALLFOLDS, OnToggleAllFolds)
 	ON_COMMAND(ID_VIEW_TOGGLECURRENTFOLD, OnToggleCurrentFold)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_TOGGLEALLFOLDS, OnUpdateFold)
 	ON_UPDATE_COMMAND_UI( ID_EDIT_COMMENTSELECTION, OnIsSelected )
 	ON_UPDATE_COMMAND_UI( ID_INSERT_BUFFER2_APPEND, OnUndateBufferAppend )
 	ON_UPDATE_COMMAND_UI( ID_INSERT_BUFFER3_APPEND, OnUndateBufferAppend )
@@ -83,8 +88,8 @@ BEGIN_MESSAGE_MAP( RDOEditorEdit, RDOEditorBaseEdit )
 	ON_UPDATE_COMMAND_UI(ID_INSERT_BUFFER2_EDIT, OnUpdateInsertBufferEdit)
 	ON_UPDATE_COMMAND_UI(ID_INSERT_BUFFER3_EDIT, OnUpdateInsertBufferEdit)
 	ON_UPDATE_COMMAND_UI(ID_INSERT_BUFFER4_EDIT, OnUpdateInsertBufferEdit)
-	ON_UPDATE_COMMAND_UI(ID_VIEW_TOGGLEALLFOLDS, OnUpdateFold)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_TOGGLECURRENTFOLD, OnUpdateFold)
+	ON_COMMAND(ID_HELP_KEYWORD, OnHelpKeyword)
 	//}}AFX_MSG_MAP
 
 	ON_COMMAND_RANGE( ID_INSERT_PAT_PATOPERATION, ID_INSERT_FUNCTIONS_TAN, OnInsertCommand )
@@ -858,4 +863,45 @@ void RDOEditorEdit::OnUpdateGotoNext(CCmdUI* pCmdUI)
 void RDOEditorEdit::OnUpdateGotoPrev(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable( log ? true : false );
+}
+
+void RDOEditorEdit::OnHelpKeyword()
+{
+	string filename = studioApp.getFullHelpFileName( "RAO-language.chm" );
+	if ( filename.empty() ) return;
+
+	string keyword = getCurrentOrSelectedWord();
+
+	string s = kw0;
+	s += " ";
+	s += kw1;
+	s += " ";
+	s += kw2;
+
+	if ( s.find_first_of( keyword ) == string::npos || keyword.empty() ) {
+		RDOEditorTabCtrl* tab = model->getTab();
+		if ( tab ) {
+			RDOEditorTabItem item = tab->getCurrentRDOItem();
+			switch( item ) {
+				case RDOEDIT_PAT: keyword = "pat"; break;
+				case RDOEDIT_RTP: keyword = "rtp"; break;
+				case RDOEDIT_RSS: keyword = "rss"; break;
+				case RDOEDIT_OPR: keyword = "opr"; break;
+				case RDOEDIT_FRM: keyword = "frm"; break;
+				case RDOEDIT_FUN: keyword = "fun"; break;
+				case RDOEDIT_DPT: keyword = "dpt"; break;
+				case RDOEDIT_SMR: keyword = "smr"; break;
+				case RDOEDIT_PMD: keyword = "pmd"; break;
+				default:          keyword = ""; break;
+			}
+		}
+	}
+
+	HH_AKLINK link;
+	::ZeroMemory( &link, sizeof( HH_AKLINK ) );
+	link.cbStruct     = sizeof( HH_AKLINK );
+	link.fIndexOnFail = TRUE;
+	link.pszKeywords  = keyword.c_str();
+
+	::HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_KEYWORD_LOOKUP, (DWORD)&link );
 }

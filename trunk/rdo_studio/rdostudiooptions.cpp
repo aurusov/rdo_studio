@@ -2,7 +2,7 @@
 #include "rdostudiooptions.h"
 #include "rdostudioapp.h"
 #include "rdostudiomainfrm.h"
-//#include "htmlhelp.h"
+#include "htmlhelp.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -53,6 +53,8 @@ RDOStudioOptionsEditor::RDOStudioOptionsEditor( RDOStudioOptions& _sheet ):
 	m_marginFold       = sheet->style_editor.margin->fold ? 1 : 0;
 	m_marginBookmark   = sheet->style_editor.margin->bookmark ? 1 : 0;
 	m_marginLineNumber = sheet->style_editor.margin->lineNumber ? 1 : 0;
+
+	m_psp.dwFlags |= PSP_HASHELP;
 }
 
 RDOStudioOptionsEditor::~RDOStudioOptionsEditor()
@@ -91,9 +93,18 @@ void RDOStudioOptionsEditor::OnOK()
 	CPropertyPage::OnOK();
 }
 
+BOOL RDOStudioOptionsEditor::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
+{
+	if ( reinterpret_cast<LPNMHDR>(lParam)->code == PSN_HELP ) {
+		sheet->onHelpButton();
+		return true;
+	}
+	return CPropertyPage::OnNotify(wParam, lParam, pResult);
+}
+
 void RDOStudioOptionsEditor::OnClearAutoCheck() 
 {
-	bool use = ((CButton*)GetDlgItem( IDC_CLEARAUTO_CHECK ))->GetCheck() ? true : false;
+	bool use = static_cast<CButton*>(GetDlgItem( IDC_CLEARAUTO_CHECK ))->GetCheck() ? true : false;
 	GetDlgItem( IDC_CLEARAUTO_STATIC1 )->EnableWindow( use );
 	GetDlgItem( IDC_CLEARAUTO_EDIT )->EnableWindow( use );
 	GetDlgItem( IDC_CLEARAUTO_STATIC2 )->EnableWindow( use );
@@ -102,7 +113,7 @@ void RDOStudioOptionsEditor::OnClearAutoCheck()
 
 void RDOStudioOptionsEditor::OnUseAutoCompleteCheck() 
 {
-	bool use = ((CButton*)GetDlgItem( IDC_USEAUTOCOMPLETE_CHECK ))->GetCheck() ? true : false;
+	bool use = static_cast<CButton*>(GetDlgItem( IDC_USEAUTOCOMPLETE_CHECK ))->GetCheck() ? true : false;
 	GetDlgItem( IDC_SHOWFULLLIST_RADIO )->EnableWindow( use );
 	GetDlgItem( IDC_SHOWNEARESTWORDSONLY_RADIO )->EnableWindow( use );
 	OnUpdateModify();
@@ -163,6 +174,8 @@ RDOStudioOptionsTabs::RDOStudioOptionsTabs( RDOStudioOptions& _sheet ):
 	m_tabIndentSize      = sheet->style_editor.tab->indentSize;
 	m_tabBackspaceUntabs = sheet->style_editor.tab->backspaceUntabs ? 0 : 1;
 	m_tabAutoIndent      = sheet->style_editor.tab->autoIndent ? 1 : 0;
+
+	m_psp.dwFlags |= PSP_HASHELP;
 }
 
 RDOStudioOptionsTabs::~RDOStudioOptionsTabs()
@@ -189,6 +202,15 @@ void RDOStudioOptionsTabs::OnOK()
 {
 	sheet->apply();
 	CPropertyPage::OnOK();
+}
+
+BOOL RDOStudioOptionsTabs::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
+{
+	if ( reinterpret_cast<LPNMHDR>(lParam)->code == PSN_HELP ) {
+		sheet->onHelpButton();
+		return true;
+	}
+	return CPropertyPage::OnNotify(wParam, lParam, pResult);
 }
 
 void RDOStudioOptionsTabs::OnUpdateModify() 
@@ -361,6 +383,8 @@ RDOStudioOptionsColorsStyles::RDOStudioOptionsColorsStyles( RDOStudioOptions& _s
 	object->properties.push_back( new STYLEProperty( object, format( IDS_COLORSTYLE_EDITOR_TEXTSELECTION ), null_font_style, null_fg_color, find_theme->selectionBgColor ) );
 	object->properties.push_back( new STYLEProperty( object, format( IDS_COLORSTYLE_EDITOR_BOOKMARK ), null_font_style, null_fg_color, find_theme->bookmarkBgColor ) );
 	objects.push_back( object );
+
+	m_psp.dwFlags |= PSP_HASHELP;
 }
 
 RDOStudioOptionsColorsStyles::~RDOStudioOptionsColorsStyles()
@@ -427,7 +451,7 @@ BOOL RDOStudioOptionsColorsStyles::OnInitDialog()
 {
 	CPropertyPage::OnInitDialog();
 
-	int itemHeight = ((CComboBox*)GetDlgItem( IDC_THEME_COMBO ))->GetItemHeight( -1 );
+	int itemHeight = static_cast<CComboBox*>(GetDlgItem( IDC_THEME_COMBO ))->GetItemHeight( -1 );
 	fgColorCB.setItemHeight( itemHeight );
 	bgColorCB.setItemHeight( itemHeight );
 	fgColorCB.insertBaseColors();
@@ -538,6 +562,15 @@ void RDOStudioOptionsColorsStyles::OnOK()
 {
 	sheet->apply();
 	CPropertyPage::OnOK();
+}
+
+BOOL RDOStudioOptionsColorsStyles::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
+{
+	if ( reinterpret_cast<LPNMHDR>(lParam)->code == PSN_HELP ) {
+		sheet->onHelpButton();
+		return true;
+	}
+	return CPropertyPage::OnNotify(wParam, lParam, pResult);
 }
 
 void RDOStudioOptionsColorsStyles::OnStyleItemChanged(NMHDR* /*pNMHDR*/, LRESULT* pResult)
@@ -1428,23 +1461,26 @@ int CALLBACK RDOStudioOptions::AddContextHelpProc(HWND hwnd, UINT message, LPARA
 
 void RDOStudioOptions::onHelpButton()
 {
-//	CString filename = rdoEditorApp.getFullHelpFileName();
-//	if ( filename.IsEmpty() ) return;
+	string filename = studioApp.getFullHelpFileName();
+	if ( filename.empty() ) return;
 
-//	CPropertyPage* page = GetActivePage( );
-//	if ( page == editorOptions )
-//		filename += "::/html/work_options.htm#edit";
-//	if ( page == colorOptions )
-//		filename += "::/html/work_options.htm#color";
-//	HtmlHelp( ::GetDesktopWindow(), filename, HH_DISPLAY_TOPIC, NULL );
+	CPropertyPage* page = GetActivePage( );
+	if ( page == editor ) {
+		filename += "::/html/work_options.htm#editor";
+	} else if ( page == tabs ) {
+		filename += "::/html/work_options.htm#tabs";
+	} else if ( page == styles ) {
+		filename += "::/html/work_options.htm#styles";
+	}
+	HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_DISPLAY_TOPIC, NULL );
 }
 
 BOOL RDOStudioOptions::OnHelpInfo(HELPINFO* pHelpInfo) 
 {
-//	CString filename = rdoEditorApp.getFullHelpFileName();
-//	if ( filename.IsEmpty() ) return TRUE;
+	string filename = studioApp.getFullHelpFileName();
+	if ( filename.empty() ) return TRUE;
 
-//	if ( pHelpInfo->iContextType == HELPINFO_WINDOW )
-//		return HtmlHelp( ::GetDesktopWindow(), filename, HH_HELP_CONTEXT, pHelpInfo->dwContextId) != NULL;
+	if ( pHelpInfo->iContextType == HELPINFO_WINDOW )
+		return HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_HELP_CONTEXT, pHelpInfo->dwContextId) != NULL;
 	return TRUE;
 }

@@ -77,6 +77,7 @@ protected:
 	afx_msg void OnToggleAllFolds();
 	afx_msg void OnToggleCurrentFold();
 	afx_msg void OnUpdateFold(CCmdUI* pCmdUI);
+	afx_msg void OnHelpKeyword();
 	//}}AFX_MSG
 	afx_msg void OnInsertCommand( UINT nID );
 	DECLARE_MESSAGE_MAP()

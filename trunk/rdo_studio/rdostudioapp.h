@@ -38,7 +38,7 @@ public:
 	static std::string getFullFileName();
 	static std::string extractFilePath( const std::string& fileName );
 	static bool isFileExists( const std::string& fileName );
-	static std::string getFullHelpFileName( std::string str = "RAO-language.chm" );
+	static std::string getFullHelpFileName( std::string str = "RAO-studio.chm" );
 
 	void setupFileAssociation();
 

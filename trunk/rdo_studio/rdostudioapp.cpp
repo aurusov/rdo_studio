@@ -7,7 +7,7 @@
 #include "rdostudioeditview.h"
 #include "resource.h"
 #include "./rdo_tracer/rdotracertrace.h"
-//#include "Htmlhelp.h"
+#include "htmlhelp.h"
 
 #include <rdokernel.h>
 #include <rdorepository.h>
@@ -163,7 +163,7 @@ BOOL RDOStudioApp::InitInstance()
 
 int RDOStudioApp::ExitInstance()
 {
-//	HtmlHelp( NULL, NULL, HH_CLOSE_ALL, 0 );
+	HtmlHelp( NULL, NULL, HH_CLOSE_ALL, 0 );
 
 	return CWinApp::ExitInstance();
 }

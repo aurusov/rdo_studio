@@ -47,6 +47,7 @@ protected:
 	virtual void OnOK();
 	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);
+	virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
 	//}}AFX_VIRTUAL
 
 	//{{AFX_MSG(RDOStudioOptionsEditor)
@@ -86,6 +87,7 @@ protected:
 	virtual void OnOK();
 	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);
+	virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
 	//}}AFX_VIRTUAL
 
 	//{{AFX_MSG(RDOStudioOptionsTabs)
@@ -224,6 +226,7 @@ protected:
 	virtual void OnOK();
 	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);
+	virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
 	//}}AFX_VIRTUAL
 
 	//{{AFX_MSG(RDOStudioOptionsColorsStyles)

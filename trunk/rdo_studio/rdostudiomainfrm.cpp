@@ -4,6 +4,7 @@
 #include "rdostudiomodel.h"
 #include "rdostudiooptions.h"
 #include "./rdo_tracer/rdotracertrace.h"
+#include "htmlhelp.h"
 #include "resource.h"
 
 #ifdef _DEBUG
@@ -294,8 +295,8 @@ void RDOStudioMainFrame::updateAllStyles() const
 
 void RDOStudioMainFrame::OnHelpContents()
 {
-	string filename = studioApp.getFullHelpFileName();
+	string filename = studioApp.getFullHelpFileName( "RAO-language.chm" );
 	if ( filename.empty() ) return;
 
-//	HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_DISPLAY_TOPIC, NULL );
+	HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_DISPLAY_TOPIC, NULL );
 }

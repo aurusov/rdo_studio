@@ -2,7 +2,6 @@
 #include "rdoeditorbaseedit.h"
 #include "../edit_ctrls/sci/SciLexer.h"
 #include "../resource.h"
-//#include "../Htmlhelp.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -185,46 +184,3 @@ void RDOEditorBaseEdit::replaceCurrent( const string str, const int changePosVal
 		setCurrentPos( pos );
 	}
 }
-
-/*
-void RDOEditorBaseEdit::OnHelpKeyword()
-{
-	CString filename; // = rdoEditorApp.getFullHelpFileName( "RAO-language.chm" );
-	if ( filename.IsEmpty() ) return;
-
-	CString keyword = getCurrentOrSelectedWord();
-
-	CString s = kw0;
-	s += " ";
-	s += kw1;
-	s += " ";
-	s += kw2;
-
-	if ( s.Find( keyword ) == -1 || keyword.IsEmpty() ) {
-		RDOEditorTabCtrl* tabCtrl = &((RDOEditorMainFrame*)AfxGetMainWnd())->childView.tab;
-		RDOEditorTabItem item = tabCtrl->getCurrentRDOItem();
-		switch( item ) {
-			case RDOEDIT_PAT: keyword = "pat"; break;
-			case RDOEDIT_RTP: keyword = "rtp"; break;
-			case RDOEDIT_RSS: keyword = "rss"; break;
-			case RDOEDIT_OPR: keyword = "opr"; break;
-			case RDOEDIT_FRM: keyword = "frm"; break;
-			case RDOEDIT_FUN: keyword = "fun"; break;
-			case RDOEDIT_DPT: keyword = "dpt"; break;
-			case RDOEDIT_SMR: keyword = "smr"; break;
-			case RDOEDIT_PMD: keyword = "pmd"; break;
-			case RDOEDIT_PMV: keyword = "pmv"; break;
-			case RDOEDIT_TRC: keyword = "trc"; break;
-			default:          keyword = ""; break;
-		}
-	}
-
-//	HH_AKLINK link;
-//	::ZeroMemory( &link, sizeof( HH_AKLINK ) );
-//	link.cbStruct     = sizeof( HH_AKLINK );
-//	link.fIndexOnFail = TRUE;
-//	link.pszKeywords  = keyword;
-
-//	::HtmlHelp( ::GetDesktopWindow(), filename, HH_KEYWORD_LOOKUP, (DWORD)&link );
-}
-*/
