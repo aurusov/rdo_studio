@@ -177,8 +177,11 @@ BOOL RDOStudioApp::InitInstance()
 		setupFileAssociation();
 	}
 
-	mainFrame->ShowWindow(m_nCmdShow);
+	mainFrame->ShowWindow( m_nCmdShow );
 	mainFrame->UpdateWindow();
+
+	// create plugins after mainFrame was show
+	plugins = new RDOStudioPlugins;
 
 	RDOStudioCommandLineInfo cmdInfo;
 	ParseCommandLine( cmdInfo );

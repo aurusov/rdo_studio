@@ -194,8 +194,6 @@ int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	tracer->registerClipboardFormat();
 
-	plugins = new RDOStudioPlugins;
-
 	return 0;
 }
 
@@ -211,6 +209,7 @@ void RDOStudioMainFrame::OnDestroy()
 	style_chart.save();
 
 	::OleUninitialize();
+	// delete plugins before delete model
 	if ( plugins ) { delete plugins; plugins = NULL; }
 	if ( model   ) { delete model; model = NULL; }
 	CMDIFrameWnd::OnDestroy();
