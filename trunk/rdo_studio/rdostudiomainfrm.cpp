@@ -183,8 +183,7 @@ int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	DockControlBar( &workspace, AFX_IDW_DOCKBAR_LEFT );
 	DockControlBar( &output, AFX_IDW_DOCKBAR_BOTTOM );
 
-	zoomToolBar.SetButtonStyle( 2, TBBS_CHECKBOX | TBBS_CHECKGROUP );
-//	zoomToolBar.SetButtonStyle( 3, TBBS_BUTTON );
+//	zoomToolBar.SetButtonStyle( 2, TBBS_CHECKBOX );
 
 	modelToolBar.SetButtonStyle( 3, TBBS_CHECKBOX | TBBS_CHECKGROUP );
 	modelToolBar.SetButtonStyle( 4, TBBS_CHECKBOX | TBBS_CHECKGROUP );

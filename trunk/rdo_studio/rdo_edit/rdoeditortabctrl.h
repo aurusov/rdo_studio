@@ -49,8 +49,9 @@ public:
 	RDOEditorTabItem getCurrentRDOItem() const;
 	void setCurrentRDOItem( const RDOEditorTabItem item );
 
-	RDOEditorEdit* getCurrentEdit() const               { return static_cast<RDOEditorEdit*>(getItemCurrent()); }
-	RDOEditorEdit* getItemEdit( const int index ) const { return static_cast<RDOEditorEdit*>(getItem( index )); }
+	RDOEditorEdit* getCurrentEdit() const                           { return static_cast<RDOEditorEdit*>(getItemCurrent()); }
+	RDOEditorEdit* getItemEdit( const int index ) const             { return static_cast<RDOEditorEdit*>(getItem( index )); }
+	RDOEditorEdit* getItemEdit( const RDOEditorTabItem item ) const { return getItemEdit( static_cast<int>(item) );         }
 };
 
 }; // namespace rdoEditor

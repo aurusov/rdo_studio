@@ -19,9 +19,9 @@ using namespace rdoStyle;
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioChartView
 // ----------------------------------------------------------------------------
-IMPLEMENT_DYNCREATE(RDOStudioChartView, CView)
+IMPLEMENT_DYNCREATE(RDOStudioChartView, RDOStudioView)
 
-BEGIN_MESSAGE_MAP(RDOStudioChartView, CView)
+BEGIN_MESSAGE_MAP(RDOStudioChartView, RDOStudioView)
 	//{{AFX_MSG_MAP(RDOStudioChartView)
 	ON_WM_CREATE()
 	ON_WM_ERASEBKGND()
@@ -50,7 +50,7 @@ BEGIN_MESSAGE_MAP(RDOStudioChartView, CView)
 END_MESSAGE_MAP()
 
 RDOStudioChartView::RDOStudioChartView( const bool preview )
-	: CView(),
+	: RDOStudioView(),
 	bmpRect( 0, 0, 0, 0 ),
 	newClientRect( 0, 0, 0, 0 ),
 	dragedSerie( NULL ),
@@ -96,7 +96,7 @@ RDOStudioChartView::~RDOStudioChartView()
 
 BOOL RDOStudioChartView::PreCreateWindow(CREATESTRUCT& cs) 
 {
-	if ( !CView::PreCreateWindow( cs ) ) return FALSE;
+	if ( !RDOStudioView::PreCreateWindow( cs ) ) return FALSE;
 	cs.style = WS_CHILD | WS_VISIBLE | WS_HSCROLL /*| WS_VSCROLL*/ | WS_TABSTOP;
 	cs.dwExStyle |= WS_EX_CLIENTEDGE;
 	//Setting class style CS_OWNDC to avoid DC releasing
@@ -109,7 +109,7 @@ int RDOStudioChartView::OnCreate( LPCREATESTRUCT lpCreateStruct )
 {
 	if ( !target.Register( this ) )
 		return -1;
-	if ( CView::OnCreate( lpCreateStruct ) == -1 ) return -1;
+	if ( RDOStudioView::OnCreate( lpCreateStruct ) == -1 ) return -1;
 	
 	//Remembering handle to the window in hwnd member
 	hwnd = GetSafeHwnd();
@@ -717,7 +717,7 @@ void RDOStudioChartView::OnDraw(CDC* pDC)
 {	
 	//Document and view are locked from OnPaint()
 	
-	CView::OnDraw( pDC );
+	RDOStudioView::OnDraw( pDC );
 }
 
 BOOL RDOStudioChartView::OnPreparePrinting( CPrintInfo* pInfo )
@@ -778,12 +778,12 @@ BOOL RDOStudioChartView::OnDrop( COleDataObject* pDataObject, DROPEFFECT dropEff
 #ifdef _DEBUG
 void RDOStudioChartView::AssertValid() const
 {
-	CView::AssertValid();
+	RDOStudioView::AssertValid();
 }
 
 void RDOStudioChartView::Dump(CDumpContext& dc) const
 {
-	CView::Dump(dc);
+	RDOStudioView::Dump(dc);
 }
 
 RDOStudioChartDoc* RDOStudioChartView::GetDocument()
@@ -944,7 +944,7 @@ void RDOStudioChartView::OnEditCopy()
 
 void RDOStudioChartView::OnInitMenuPopup( CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu )
 {
-	CView::OnInitMenuPopup( pPopupMenu, nIndex, bSysMenu );
+	RDOStudioView::OnInitMenuPopup( pPopupMenu, nIndex, bSysMenu );
 	CFrameWnd* pwndFrame = (CFrameWnd*)AfxGetMainWnd();
 	if( pwndFrame ) pwndFrame->SendMessage( WM_INITMENUPOPUP, WPARAM(pPopupMenu->m_hMenu), MAKELPARAM(nIndex, bSysMenu) );
 }
@@ -952,7 +952,7 @@ void RDOStudioChartView::OnInitMenuPopup( CMenu* pPopupMenu, UINT nIndex, BOOL b
 void RDOStudioChartView::OnContextMenu( CWnd* pWnd, CPoint pos )
 {
 	if ( previewMode ) return;
-	CView::OnContextMenu( pWnd, pos );
+	RDOStudioView::OnContextMenu( pWnd, pos );
 	if ( popupMenu.m_hMenu ) popupMenu.TrackPopupMenu( TPM_LEFTALIGN | TPM_RIGHTBUTTON, pos.x, pos.y, this );
 }
 
@@ -1008,7 +1008,7 @@ int RDOStudioChartView::OnMouseActivate( CWnd* pDesktopWnd, UINT nHitTest, UINT 
 	if ( previewMode ) {
 		return CWnd::OnMouseActivate( pDesktopWnd, nHitTest, message );
 	} else {
-		return CView::OnMouseActivate( pDesktopWnd, nHitTest, message );
+		return RDOStudioView::OnMouseActivate( pDesktopWnd, nHitTest, message );
 	}
 }
 
@@ -1108,7 +1108,7 @@ void RDOStudioChartView::updateView()
 	if ( lastvisible  && !maxXVisible() ) {
 		setScrollPos( SB_HORZ, xMax, false );
 	}
-	CView::OnUpdate( NULL, 0, NULL );
+	RDOStudioView::OnUpdate( NULL, 0, NULL );
 	updateScrollBars( true );
 	GetDocument()->unlock();
 }
@@ -1136,13 +1136,13 @@ void RDOStudioChartView::OnDestroy()
 	if ( hbmp ) {
 		::DeleteObject( hbmp );
 	}
-	CView::OnDestroy();
+	RDOStudioView::OnDestroy();
 }
 
 void RDOStudioChartView::OnInitialUpdate() 
 {
 	GetDocument()->addToViews( GetSafeHwnd() );
-	CView::OnInitialUpdate();	
+	RDOStudioView::OnInitialUpdate();	
 }
 
 void RDOStudioChartView::OnPaint() 

@@ -22,21 +22,21 @@ using namespace rdoEditor;
 #define timerBuf3_ID 3
 #define timerBuf4_ID 4
 
-IMPLEMENT_DYNCREATE(RDOStudioEditBaseView, CView)
+IMPLEMENT_DYNCREATE(RDOStudioEditBaseView, RDOStudioView)
 
-BEGIN_MESSAGE_MAP(RDOStudioEditBaseView, CView)
+BEGIN_MESSAGE_MAP(RDOStudioEditBaseView, RDOStudioView)
 	//{{AFX_MSG_MAP(RDOStudioEditBaseView)
 	ON_WM_CREATE()
 	ON_WM_DESTROY()
 	ON_WM_TIMER()
 	//}}AFX_MSG_MAP
-	ON_COMMAND(ID_FILE_PRINT, CView::OnFilePrint)
-	ON_COMMAND(ID_FILE_PRINT_DIRECT, CView::OnFilePrint)
-	ON_COMMAND(ID_FILE_PRINT_PREVIEW, CView::OnFilePrintPreview)
+	ON_COMMAND(ID_FILE_PRINT, RDOStudioView::OnFilePrint)
+	ON_COMMAND(ID_FILE_PRINT_DIRECT, RDOStudioView::OnFilePrint)
+	ON_COMMAND(ID_FILE_PRINT_PREVIEW, RDOStudioView::OnFilePrintPreview)
 END_MESSAGE_MAP()
 
 RDOStudioEditBaseView::RDOStudioEditBaseView():
-	CView(),
+	RDOStudioView(),
 	buf1( "" ),
 	buf2( "" ),
 	buf3( "" ),
@@ -60,7 +60,7 @@ RDOStudioEditBaseView::~RDOStudioEditBaseView()
 
 BOOL RDOStudioEditBaseView::PreCreateWindow(CREATESTRUCT& cs)
 {
-	if( !CView::PreCreateWindow( cs ) ) return FALSE;
+	if( !RDOStudioView::PreCreateWindow( cs ) ) return FALSE;
 
 	cs.style &= ~WS_BORDER;
 	cs.dwExStyle &= ~WS_EX_CLIENTEDGE;
@@ -71,7 +71,7 @@ BOOL RDOStudioEditBaseView::PreCreateWindow(CREATESTRUCT& cs)
 
 int RDOStudioEditBaseView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
-	if ( CView::OnCreate(lpCreateStruct) == -1 ) return -1;
+	if ( RDOStudioView::OnCreate(lpCreateStruct) == -1 ) return -1;
 
 	popupMenu.CreatePopupMenu();
 
@@ -118,12 +118,12 @@ void RDOStudioEditBaseView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
 #ifdef _DEBUG
 void RDOStudioEditBaseView::AssertValid() const
 {
-	CView::AssertValid();
+	RDOStudioView::AssertValid();
 }
 
 void RDOStudioEditBaseView::Dump(CDumpContext& dc) const
 {
-	CView::Dump(dc);
+	RDOStudioView::Dump(dc);
 }
 
 RDOStudioEditBaseDoc* RDOStudioEditBaseView::GetDocument()
@@ -156,7 +156,7 @@ void RDOStudioEditBaseView::stopTimer( UINT& timer )
 
 void RDOStudioEditBaseView::OnDestroy() 
 {
-	CView::OnDestroy();
+	RDOStudioView::OnDestroy();
 	
 	stopTimer( timerBuf1 );
 	stopTimer( timerBuf2 );
@@ -180,7 +180,7 @@ void RDOStudioEditBaseView::OnTimer(UINT nIDEvent)
 		stopTimer( timerBuf4 );
 	}
 	
-	CView::OnTimer(nIDEvent);
+	RDOStudioView::OnTimer(nIDEvent);
 }
 
 RDOEditorEdit* RDOStudioEditBaseView::getEdit() const

@@ -114,6 +114,7 @@ RDOStudioFrameDoc* RDOStudioFrameManager::connectFrameDoc( const int index )
 			frames[index]->doc  = doc;
 			frames[index]->view = doc->getView();
 			lastShowedFrame     = index;
+			doc->SetTitle( format( IDS_FRAME_NAME, getFrameName( index ).c_str() ).c_str()  );
 			setCurrentShowingFrame( index );
 		}
 

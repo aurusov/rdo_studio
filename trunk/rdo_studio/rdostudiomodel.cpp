@@ -486,6 +486,13 @@ void RDOStudioModel::saveModelToRepository()
 	bool smr_modified = false;
 	RDOEditorTabCtrl* tab = getTab();
 	if ( tab ) {
+		RDOEditorEdit* smr_edit = tab->getItemEdit( RDOEDIT_SMR );
+		if ( smr_edit->isModify() ) {
+			rdo::binarystream stream;
+			smr_edit->save( stream );
+			kernel.getRepository()->saveSMR( stream );
+			smr_modified = true;
+		}
 		int cnt = tab->getItemCount();
 		int progress_cnt = 0;
 		for ( int i = 0; i < cnt; i++ ) {
@@ -508,8 +515,8 @@ void RDOStudioModel::saveModelToRepository()
 						case RDOEDIT_FRM: kernel.getRepository()->saveFRM( stream ); break;
 						case RDOEDIT_FUN: kernel.getRepository()->saveFUN( stream ); break;
 						case RDOEDIT_DPT: kernel.getRepository()->saveDPT( stream ); break;
-						case RDOEDIT_SMR: kernel.getRepository()->saveSMR( stream ); smr_modified = true; break;
 						case RDOEDIT_PMD: kernel.getRepository()->savePMD( stream ); break;
+						default: break;
 					}
 					edit->setModifyFalse();
 				}
@@ -638,7 +645,6 @@ void RDOStudioModel::beforeModelStart()
 		if ( showMode == SM_Animation && initFrameNumber >= 0 && initFrameNumber < frameManager.count() ) {
 			RDOStudioFrameDoc* doc = frameManager.connectFrameDoc( initFrameNumber );
 			if ( doc ) {
-				doc->SetTitle( format( IDS_FRAME_NAME, frameManager.getFrameName( initFrameNumber ).c_str() ).c_str() );
 				frameManager.getFrameView( initFrameNumber )->SetFocus();
 			}
 		}
@@ -689,10 +695,7 @@ void RDOStudioModel::setShowMode( const ShowMode value )
 	if ( showMode == SM_Animation ) {
 		RDOStudioFrameDoc* doc = frameManager.getFirstExistDoc();
 		if ( !doc ) {
-			doc = frameManager.connectFrameDoc( frameManager.getLastShowedFrame() );
-			if ( doc ) {
-				doc->SetTitle( format( IDS_FRAME_NAME, frameManager.getFrameName( frameManager.getLastShowedFrame() ).c_str() ).c_str()  );
-			}
+			frameManager.connectFrameDoc( frameManager.getLastShowedFrame() );
 		}
 	}
 	if ( showMode == SM_NoShow ) {

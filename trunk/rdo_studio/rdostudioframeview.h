@@ -5,12 +5,14 @@
 #pragma once
 #endif
 
+#include "rdostudioview.h"
+
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioFrameView
 // ----------------------------------------------------------------------------
 class RDOStudioFrameDoc;
 
-class RDOStudioFrameView: public CView
+class RDOStudioFrameView: public RDOStudioView
 {
 friend class RDOStudioFrameManager;
 

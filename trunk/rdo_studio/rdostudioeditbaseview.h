@@ -5,6 +5,8 @@
 #pragma once
 #endif
 
+#include "rdostudioview.h"
+
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioEditBaseView
 // ----------------------------------------------------------------------------
@@ -13,7 +15,7 @@ namespace rdoEditor {
 	class RDOEditorEdit;
 }
 
-class RDOStudioEditBaseView: public CView
+class RDOStudioEditBaseView: public RDOStudioView
 {
 private:
 	UINT timerBuf1;

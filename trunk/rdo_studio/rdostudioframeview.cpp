@@ -15,9 +15,9 @@ static char THIS_FILE[] = __FILE__;
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioFrameView
 // ----------------------------------------------------------------------------
-IMPLEMENT_DYNCREATE(RDOStudioFrameView, CView)
+IMPLEMENT_DYNCREATE(RDOStudioFrameView, RDOStudioView)
 
-BEGIN_MESSAGE_MAP(RDOStudioFrameView, CView)
+BEGIN_MESSAGE_MAP(RDOStudioFrameView, RDOStudioView)
 	//{{AFX_MSG_MAP(RDOStudioFrameView)
 	ON_WM_CREATE()
 	ON_WM_DESTROY()
@@ -29,13 +29,13 @@ BEGIN_MESSAGE_MAP(RDOStudioFrameView, CView)
 	ON_WM_MOUSEWHEEL()
 	ON_WM_PAINT()
 	//}}AFX_MSG_MAP
-	ON_COMMAND(ID_FILE_PRINT, CView::OnFilePrint)
-	ON_COMMAND(ID_FILE_PRINT_DIRECT, CView::OnFilePrint)
-	ON_COMMAND(ID_FILE_PRINT_PREVIEW, CView::OnFilePrintPreview)
+	ON_COMMAND(ID_FILE_PRINT, RDOStudioView::OnFilePrint)
+	ON_COMMAND(ID_FILE_PRINT_DIRECT, RDOStudioView::OnFilePrint)
+	ON_COMMAND(ID_FILE_PRINT_PREVIEW, RDOStudioView::OnFilePrintPreview)
 END_MESSAGE_MAP()
 
 RDOStudioFrameView::RDOStudioFrameView():
-	CView(),
+	RDOStudioView(),
 	frameBmpRect( 0, 0, 0, 0 ),
 	newClientRect( 0, 0, 0, 0 ),
 	xPos( 0 ),
@@ -60,7 +60,7 @@ RDOStudioFrameView::~RDOStudioFrameView()
 
 BOOL RDOStudioFrameView::PreCreateWindow(CREATESTRUCT& cs)
 {
-	if( !CView::PreCreateWindow( cs ) ) return FALSE;
+	if( !RDOStudioView::PreCreateWindow( cs ) ) return FALSE;
 
 	cs.style &= ~WS_BORDER;
 	cs.style |= WS_HSCROLL | WS_VSCROLL;
@@ -71,7 +71,7 @@ BOOL RDOStudioFrameView::PreCreateWindow(CREATESTRUCT& cs)
 
 int RDOStudioFrameView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
-	if ( CView::OnCreate(lpCreateStruct) == -1 ) return -1;
+	if ( RDOStudioView::OnCreate(lpCreateStruct) == -1 ) return -1;
 
 	// Remembering handle to the window in hwnd member
 	hwnd = GetSafeHwnd();
@@ -151,12 +151,12 @@ void RDOStudioFrameView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
 #ifdef _DEBUG
 void RDOStudioFrameView::AssertValid() const
 {
-	CView::AssertValid();
+	RDOStudioView::AssertValid();
 }
 
 void RDOStudioFrameView::Dump(CDumpContext& dc) const
 {
-	CView::Dump(dc);
+	RDOStudioView::Dump(dc);
 }
 
 RDOStudioFrameDoc* RDOStudioFrameView::GetDocument()
@@ -185,12 +185,12 @@ void RDOStudioFrameView::OnDestroy()
 		::DeleteObject( hbmp );
 	}
 
-	CView::OnDestroy();
+	RDOStudioView::OnDestroy();
 }
 
 void RDOStudioFrameView::OnSize(UINT nType, int cx, int cy)
 {
-	CView::OnSize(nType, cx, cy);
+	RDOStudioView::OnSize(nType, cx, cy);
 
 	GetClientRect( &newClientRect );
 
@@ -317,7 +317,7 @@ void RDOStudioFrameView::OnLButtonDown(UINT nFlags, CPoint point)
 
 	lock_draw.Unlock();
 
-	CView::OnLButtonDown( nFlags, point );
+	RDOStudioView::OnLButtonDown( nFlags, point );
 }
 
 void RDOStudioFrameView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
@@ -332,7 +332,7 @@ void RDOStudioFrameView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 	lock_draw.Unlock();
 
-	CView::OnKeyDown(nChar, nRepCnt, nFlags);
+	RDOStudioView::OnKeyDown(nChar, nRepCnt, nFlags);
 }
 
 void RDOStudioFrameView::OnActivateView(BOOL bActivate, CView* pActivateView, CView* pDeactiveView)
@@ -342,7 +342,7 @@ void RDOStudioFrameView::OnActivateView(BOOL bActivate, CView* pActivateView, CV
 		model->frameManager.setLastShowedFrame( index );
 		model->frameManager.setCurrentShowingFrame( index );
 	}
-	CView::OnActivateView( bActivate, pActivateView, pDeactiveView );
+	RDOStudioView::OnActivateView( bActivate, pActivateView, pDeactiveView );
 }
 
 BOOL RDOStudioFrameView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
@@ -378,7 +378,7 @@ void RDOStudioFrameView::OnPaint()
 
 void RDOStudioFrameView::OnDraw( CDC* pDC )
 {
-	CView::OnDraw( pDC );
+	RDOStudioView::OnDraw( pDC );
 }
 
 void RDOStudioFrameView::onDraw()

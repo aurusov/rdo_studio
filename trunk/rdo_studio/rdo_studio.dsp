@@ -174,6 +174,10 @@ SOURCE=.\rdostudiostyle.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\rdostudioview.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdostudioworkspace.cpp
 
 !IF  "$(CFG)" == "rdo_studio - Win32 Release"
@@ -236,6 +240,10 @@ SOURCE=.\rdostudiostatusbar.h
 # Begin Source File
 
 SOURCE=.\rdostudiostyle.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdostudioview.h
 # End Source File
 # Begin Source File
 

@@ -100,6 +100,49 @@ void RDORepositoryFile::resetModelNames()
 	trcMustExist = false;
 }
 
+void RDORepositoryFile::updateModelNames()
+{
+	rdo::binarystream smrStream( ios::in | ios::out );
+	loadFile( modelPath + smrFileName + ".smr", smrStream, true, true );
+	rdoModelObjects::RDOSMRFileInfo fileInfo;
+	kernel.getSimulator()->parseSMRFileInfo( smrStream, fileInfo );
+
+	patFileName = fileInfo.model_name.empty()     ? smrFileName : fileInfo.model_name;
+ 	rtpFileName = fileInfo.model_name.empty()     ? smrFileName : fileInfo.model_name;
+ 	rssFileName = fileInfo.resource_file.empty()  ? smrFileName : fileInfo.resource_file;
+ 	oprFileName = fileInfo.oprIev_file.empty()    ? smrFileName : fileInfo.oprIev_file;
+ 	frmFileName = fileInfo.frame_file.empty()     ? smrFileName : fileInfo.frame_file;
+ 	funFileName = fileInfo.model_name.empty()     ? smrFileName : fileInfo.model_name;
+ 	dptFileName = fileInfo.model_name.empty()     ? smrFileName : fileInfo.model_name;
+ 	pmdFileName = fileInfo.statistic_file.empty() ? smrFileName : fileInfo.statistic_file;
+ 	pmvFileName = fileInfo.results_file.empty()   ? smrFileName : fileInfo.results_file;
+ 	trcFileName = fileInfo.trace_file.empty()     ? smrFileName : fileInfo.trace_file;
+
+	patDescribed = !fileInfo.model_name.empty();
+	rtpDescribed = !fileInfo.model_name.empty();
+	rssDescribed = !fileInfo.resource_file.empty();
+	oprDescribed = !fileInfo.oprIev_file.empty();
+	frmDescribed = !fileInfo.frame_file.empty();
+	funDescribed = !fileInfo.model_name.empty();
+	dptDescribed = !oprDescribed;
+	smrDescribed = true;
+	pmdDescribed = !fileInfo.statistic_file.empty();
+	pmvDescribed = !fileInfo.results_file.empty();
+	trcDescribed = !fileInfo.trace_file.empty();
+
+	patMustExist = !fileInfo.model_name.empty();
+	rtpMustExist = !fileInfo.model_name.empty();
+	rssMustExist = !fileInfo.resource_file.empty();
+	oprMustExist = !fileInfo.oprIev_file.empty();
+	frmMustExist = !fileInfo.frame_file.empty();
+	funMustExist = false;
+	dptMustExist = !oprMustExist;
+	smrMustExist = true;
+	pmdMustExist = !fileInfo.statistic_file.empty();
+	pmvMustExist = !fileInfo.results_file.empty();
+	trcMustExist = !fileInfo.trace_file.empty();
+}
+
 void RDORepositoryFile::newModel()
 {
 	if ( canCloseModel() ) {
@@ -149,45 +192,8 @@ bool RDORepositoryFile::openModel( const string& modelFileName )
 			if ( isFileExists( modelPath + modelName + ".smr" ) ) {
 
 				smrFileName = modelName;
-				rdo::binarystream smrStream( ios::in | ios::out );
-				loadFile( modelPath + smrFileName + ".smr", smrStream, true, true );
-				rdoModelObjects::RDOSMRFileInfo fileInfo;
-				kernel.getSimulator()->parseSMRFileInfo( smrStream, fileInfo );
 
-				patFileName = fileInfo.model_name.empty()     ? smrFileName : fileInfo.model_name;
- 				rtpFileName = fileInfo.model_name.empty()     ? smrFileName : fileInfo.model_name;
- 				rssFileName = fileInfo.resource_file.empty()  ? smrFileName : fileInfo.resource_file;
- 				oprFileName = fileInfo.oprIev_file.empty()    ? smrFileName : fileInfo.oprIev_file;
- 				frmFileName = fileInfo.frame_file.empty()     ? smrFileName : fileInfo.frame_file;
- 				funFileName = fileInfo.model_name.empty()     ? smrFileName : fileInfo.model_name;
- 				dptFileName = fileInfo.model_name.empty()     ? smrFileName : fileInfo.model_name;
- 				pmdFileName = fileInfo.statistic_file.empty() ? smrFileName : fileInfo.statistic_file;
- 				pmvFileName = fileInfo.results_file.empty()   ? smrFileName : fileInfo.results_file;
- 				trcFileName = fileInfo.trace_file.empty()     ? smrFileName : fileInfo.trace_file;
-
-				patDescribed = !fileInfo.model_name.empty();
-				rtpDescribed = !fileInfo.model_name.empty();
-				rssDescribed = !fileInfo.resource_file.empty();
-				oprDescribed = !fileInfo.oprIev_file.empty();
-				frmDescribed = !fileInfo.frame_file.empty();
-				funDescribed = !fileInfo.model_name.empty();
-				dptDescribed = !oprDescribed;
-				smrDescribed = true;
-				pmdDescribed = !fileInfo.statistic_file.empty();
-				pmvDescribed = !fileInfo.results_file.empty();
-				trcDescribed = !fileInfo.trace_file.empty();
-
-				patMustExist = !fileInfo.model_name.empty();
-				rtpMustExist = !fileInfo.model_name.empty();
-				rssMustExist = !fileInfo.resource_file.empty();
-				oprMustExist = !fileInfo.oprIev_file.empty();
-				frmMustExist = !fileInfo.frame_file.empty();
-				funMustExist = false;
-				dptMustExist = !oprMustExist;
-				smrMustExist = true;
-				pmdMustExist = !fileInfo.statistic_file.empty();
-				pmvMustExist = !fileInfo.results_file.empty();
-				trcMustExist = !fileInfo.trace_file.empty();
+				updateModelNames();
 
 				kernel.notify( RDOKernel::openModel );
 				return true;
@@ -539,6 +545,7 @@ void RDORepositoryFile::saveDPT( rdo::binarystream& stream ) const
 void RDORepositoryFile::saveSMR( rdo::binarystream& stream ) const
 {
 	saveFile( modelPath + smrFileName + ".smr", stream );
+	const_cast<RDORepositoryFile*>(this)->updateModelNames();
 }
 
 void RDORepositoryFile::savePMD( rdo::binarystream& stream ) const
@@ -592,10 +599,19 @@ void RDORepositoryFile::beforeModelStart()
 	if ( trace_file.is_open() ) {
 		trace_file.close();
 	}
-	string file_name = modelPath + trcFileName + ".trc";
-	trace_file.open( file_name.c_str(), ios::out | ios::binary );
-	trace_file << "Model_name = " << smrFileName << endl;
-	trace_file << kernel.getSimulator()->getModelStructure().str() << endl;
+	if ( trcDescribed ) {
+		string file_name = modelPath + trcFileName + ".trc";
+		trace_file.open( file_name.c_str(), ios::out | ios::binary );
+		if ( trace_file.is_open() ) {
+			trace_file << "Results_file   = " << pmvFileName << ".pmv" << "    " << static_cast<LPCTSTR>(CTime::GetCurrentTime().Format( "%a %b %d %H:%M:%S %Y" )) << endl;
+			trace_file << "Run_file       = " << getFullName() << endl;
+			trace_file << "Model_name     = " << smrFileName << endl;
+			trace_file << "Resource_file  = " << rssFileName << ".rss" << endl;
+			trace_file << "OprIev_file    = " << oprFileName << ".opr" << endl;
+			trace_file << kernel.getSimulator()->getModelStructure().str() << endl;
+			trace_file << "$Tracing" << endl;
+		}
+	}
 }
 
 void RDORepositoryFile::stopModel()
@@ -605,7 +621,7 @@ void RDORepositoryFile::stopModel()
 	}
 }
 
-void RDORepositoryFile::trace( std::string str )
+void RDORepositoryFile::trace( const string& str )
 {
 	if ( trace_file.is_open() ) {
 		trace_file.write( str.c_str(), str.length() );

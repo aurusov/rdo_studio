@@ -73,10 +73,7 @@ void RDOStudioFrameTreeCtrl::OnLButtonDblClk(UINT nFlags, CPoint point)
 			if ( index != -1 ) {
 				RDOStudioFrameDoc* doc = model->frameManager.getFrameDoc( index );
 				if ( !doc ) {
-					doc = model->frameManager.connectFrameDoc( index );
-					if ( doc ) {
-						doc->SetTitle( format( IDS_FRAME_NAME, model->frameManager.getFrameName( index ).c_str() ).c_str()  );
-					}
+					model->frameManager.connectFrameDoc( index );
 				} else {
 					studioApp.mainFrame->MDIActivate( doc->getView()->GetParentFrame() );
 				}

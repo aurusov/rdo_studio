@@ -56,6 +56,7 @@ private:
 	bool pmvMustExist;
 	bool trcMustExist;
 	void resetModelNames();
+	void updateModelNames();
 
 	bool readOnly;
 
@@ -81,7 +82,7 @@ private:
 	static void traceNotify( std::string str );
 	void beforeModelStart();
 	void stopModel();
-	void trace( std::string str );
+	void trace( const std::string& str );
 
 public:
 	RDORepositoryFile();
