@@ -590,6 +590,8 @@ void RDOStudioChartView::drawGrid( CRect& chartRect )
 			int width = (*it)->eventCount * style->fonts_ticks->tickWidth;
 			RDOTracerTimeNow* timenow = (*it);
 			tmprect.left = rect.left + ( (*it)->time - unwrapTimesList.front()->time ) * timeScale + ticks * style->fonts_ticks->tickWidth - chartShift;
+			if ( tmprect.left < rect.left )
+				tmprect.left = rect.left;
 			if ( *(*it) == drawFromX ) {
 				width -= drawFromEventIndex * style->fonts_ticks->tickWidth;
 			}
@@ -597,6 +599,8 @@ void RDOStudioChartView::drawGrid( CRect& chartRect )
 				width = drawToEventCount * style->fonts_ticks->tickWidth;
 			}
 			tmprect.right = tmprect.left + width;
+			if ( tmprect.right > rect.right )
+				tmprect.right = rect.right;
 			//MFC's FillSolidRect do the same thing
 			::ExtTextOut( hmemdc, 0, 0, ETO_OPAQUE, tmprect, NULL, 0, NULL );
 			ticks += (*it)->eventCount;
