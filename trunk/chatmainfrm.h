@@ -4,6 +4,7 @@
 
 #include "chatchildview.h"
 #include "chatuserlistdock.h"
+#include "chatnetlistdock.h"
 #include "chatpopupmessage.h"
 #include "chatstatusmode.h"
 
@@ -23,7 +24,7 @@ enum CChatMinimizeButtonAction {
 
 class CChatMainFrame: public CFrameWnd
 {
-protected: 
+private: 
 	CToolBar       statusModeToolBar;
 	CStatusBar     statusBar;
 
@@ -58,12 +59,15 @@ protected:
 	void startAutoStatusModeTimer();
 	void stopAutoStatusModeTimer();
 
+	void dockControlBarBesideOf( CControlBar& bar, CControlBar& baseBar );
+
 public:
 	CChatMainFrame();
 	virtual ~CChatMainFrame();
 
 	CChatChildView     childView;
 	CChatUserListDock  userList;
+	CChatNetListDock   netList;
 
 	CChatPopupMessage popupMessage;
 
@@ -123,6 +127,8 @@ protected:
 	afx_msg void OnUpdateTrayOpenHide( CCmdUI *pCmdUI );
 	afx_msg void OnViewUserList();
 	afx_msg void OnUpdateViewUserList(CCmdUI* pCmdUI);
+	afx_msg void OnViewNetwork();
+	afx_msg void OnUpdateViewNetwork(CCmdUI* pCmdUI);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

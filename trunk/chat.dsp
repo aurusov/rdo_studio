@@ -115,6 +115,18 @@ SOURCE=.\chatmainfrm.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\chatnetlist.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\chatnetlistctrl.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\chatnetlistdock.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\chatoptions.cpp
 # End Source File
 # Begin Source File
@@ -185,6 +197,18 @@ SOURCE=.\chatlistboxctrl.h
 # Begin Source File
 
 SOURCE=.\chatmainfrm.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\chatnetlist.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\chatnetlistctrl.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\chatnetlistdock.h
 # End Source File
 # Begin Source File
 

@@ -27,9 +27,11 @@ BEGIN_MESSAGE_MAP( CChatMainFrame, CFrameWnd )
 	ON_COMMAND( ID_TRAYMENU_OPEN, OnTrayOpenHide )
 	ON_COMMAND( ID_APP_EXIT     , OnTrayCloseApp )
 	ON_UPDATE_COMMAND_UI( ID_TRAYMENU_OPEN, OnUpdateTrayOpenHide )
-	ON_COMMAND( ID_TRAYMENU_EXIT, OnTrayCloseApp )
 	ON_COMMAND(ID_VIEW_USERLIST, OnViewUserList)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_USERLIST, OnUpdateViewUserList)
+	ON_COMMAND( ID_TRAYMENU_EXIT, OnTrayCloseApp )
+	ON_COMMAND(ID_VIEW_NETWORK, OnViewNetwork)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_NETWORK, OnUpdateViewNetwork)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -88,6 +90,9 @@ int CChatMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	userList.Create( format( IDS_USERLIST ).c_str(), this, 0 );
 	userList.SetBarStyle( userList.GetBarStyle() | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
 
+	netList.Create( format( IDS_NETLIST ).c_str(), this, 0 );
+	netList.SetBarStyle( netList.GetBarStyle() | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
+
 	statusModeToolBar.CreateEx( this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
 	statusModeToolBar.LoadToolBar( IDR_STATUSMODE_TOOLBAR );
 	statusModeToolBar.GetToolBarCtrl().SetWindowText( format( ID_STATUSMODE_TOOLBAR ).c_str() );
@@ -101,13 +106,15 @@ int CChatMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 //	statusBar.SetPaneInfo( 3, ID_INFOSTATUSBAR           , SBPS_STRETCH, 70 );
 
 	userList.EnableDocking( CBRS_ALIGN_ANY );
+	netList.EnableDocking( CBRS_ALIGN_ANY );
 	statusModeToolBar.EnableDocking( CBRS_ALIGN_ANY );
 
 	EnableDocking( CBRS_ALIGN_ANY );
 
 	DockControlBar( &statusModeToolBar );
 	DockControlBar( &userList, AFX_IDW_DOCKBAR_LEFT );
-//	dockControlBarBesideOf( editToolBar, projectToolBar );
+	dockControlBarBesideOf( netList, userList );
+	ShowControlBar( &netList, false, false );
 
 	closeButtonAction    = (CChatCloseButtonAction)chatApp.GetProfileInt( "General", "closeButtonAction", CCBA_Tray );
 	minimizeButtonAction = (CChatMinimizeButtonAction)chatApp.GetProfileInt( "General", "minimizeButtonAction", CCMA_Minimize );
@@ -125,10 +132,36 @@ int CChatMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	return 0;
 }
 
+void CChatMainFrame::dockControlBarBesideOf( CControlBar& bar, CControlBar& baseBar )
+{
+	RecalcLayout( TRUE );
+
+	CRect rect;
+	baseBar.GetWindowRect( rect );
+
+	DWORD dw = baseBar.GetBarStyle();
+
+	UINT n = 0;
+	n = ( dw & CBRS_ALIGN_TOP          ) ? AFX_IDW_DOCKBAR_TOP    : n;
+	n = ( dw & CBRS_ALIGN_BOTTOM && !n ) ? AFX_IDW_DOCKBAR_BOTTOM : n;
+	n = ( dw & CBRS_ALIGN_LEFT   && !n ) ? AFX_IDW_DOCKBAR_LEFT   : n;
+	n = ( dw & CBRS_ALIGN_RIGHT  && !n ) ? AFX_IDW_DOCKBAR_RIGHT  : n;
+
+	int dx = 0;
+	int dy = 0;
+	if ( n == AFX_IDW_DOCKBAR_TOP || n == AFX_IDW_DOCKBAR_BOTTOM ) dx = 1;
+	if ( n == AFX_IDW_DOCKBAR_LEFT || n == AFX_IDW_DOCKBAR_RIGHT ) dy = 1;
+
+	rect.OffsetRect( dx, dy );
+
+	DockControlBar( &bar, n, rect );
+}
+
 BOOL CChatMainFrame::OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo)
 {
 	if ( childView.OnCmdMsg( nID, nCode, pExtra, pHandlerInfo ) ) return TRUE;
 	if ( userList.OnCmdMsg( nID, nCode, pExtra, pHandlerInfo ) ) return TRUE;
+	if ( netList.OnCmdMsg( nID, nCode, pExtra, pHandlerInfo ) ) return TRUE;
 	return CFrameWnd::OnCmdMsg( nID, nCode, pExtra, pHandlerInfo );
 }
 
@@ -556,4 +589,14 @@ void CChatMainFrame::OnViewUserList()
 void CChatMainFrame::OnUpdateViewUserList(CCmdUI* pCmdUI) 
 {
 	pCmdUI->SetCheck( userList.IsVisible() );
+}
+
+void CChatMainFrame::OnViewNetwork()
+{
+	ShowControlBar( &netList, !netList.IsVisible(), false );
+}
+
+void CChatMainFrame::OnUpdateViewNetwork(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetCheck( netList.IsVisible() );
 }

@@ -381,6 +381,7 @@ BEGIN
     POPUP "&View"
     BEGIN
         MENUITEM "User List",                   ID_VIEW_USERLIST
+        MENUITEM "Network",                     ID_VIEW_NETWORK
         MENUITEM "&Status Mode Toolbar",        ID_VIEW_TOOLBAR
     END
 END
@@ -508,6 +509,7 @@ BEGIN
     IDS_DISCONNECT_VIEWERLOG "%s disconnected"
     IDS_STATUSMODE_CHANGEAUTOMATICALLY "automatically"
     IDS_USERLIST            "User List"
+    IDS_NETLIST             "Network"
 END
 
 #endif    // English (U.S.) resources

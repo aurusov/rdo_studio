@@ -85,6 +85,7 @@
 #define ID_STATUSMODE_NOTAVAILIBLE_INFO 32797
 #define ID_CHAT_OPTIONS                 32798
 #define ID_VIEW_USERLIST                32799
+#define ID_VIEW_NETWORK                 32800
 #define ID_INFOSTATUSBAR                59394
 #define ID_STATUSMODE_TOOLBAR           61204
 #define ID_OPTIONS                      61205
@@ -104,6 +105,7 @@
 #define IDS_DISCONNECT_VIEWERLOG        61219
 #define IDS_STATUSMODE_CHANGEAUTOMATICALLY 61220
 #define IDS_USERLIST                    61221
+#define IDS_NETLIST                     61222
 
 // Next default values for new objects
 // 
@@ -111,7 +113,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        178
-#define _APS_NEXT_COMMAND_VALUE         32800
+#define _APS_NEXT_COMMAND_VALUE         32801
 #define _APS_NEXT_CONTROL_VALUE         1053
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
