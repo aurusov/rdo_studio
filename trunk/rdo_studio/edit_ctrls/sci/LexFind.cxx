@@ -27,7 +27,7 @@
 
 static void ColouriseFindDoc( unsigned int startPos, int length, int initStyle, WordList *keywordlists[], Accessor &styler )
 {
-	WordList& keywords  = *keywordlists[0];
+	WordList& keywords = *keywordlists[0];
 
 	styler.StartAt( startPos );
 
@@ -44,13 +44,7 @@ static void ColouriseFindDoc( unsigned int startPos, int length, int initStyle, 
 					sc.ChangeState( SCE_FIND_KEYWORD );
 				}
 				sc.SetState( SCE_FIND_DEFAULT );
-			} else {
-				char s[100];
-				sc.GetCurrent( s, sizeof(s) );
 			}
-		} else {
-			char s[100];
-			sc.GetCurrent( s, sizeof(s) );
 		}
 
 		if ( sc.state == SCE_FIND_DEFAULT ) {
