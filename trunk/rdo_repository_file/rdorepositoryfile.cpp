@@ -396,8 +396,9 @@ void RDORepositoryFile::loadFile( const string& filename, stringstream& stream, 
 		ifstream file( filename.c_str() );
 		stream << file.rdbuf();
 		file.close();
-	} else if ( mustExist ) {
+	} else {
 		stream.setstate( ios_base::badbit );
+		if ( mustExist ) stream.setstate( stream.rdstate() | ios_base::failbit );
 	}
 }
 

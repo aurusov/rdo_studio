@@ -397,7 +397,7 @@ void RDOStudioModel::openModelFromRepository()
 				}
 				studioApp.mainFrame->stepProgress();
 				if ( canLoad ) {
-					bool stream_error = stream.rdstate() & ios_base::badbit ? true : false;
+					bool stream_error = stream.rdstate() & ios_base::failbit ? true : false;
 					if ( !stream_error ) {
 						edit->load( stream );
 						edit->setReadOnly( kernel.getRepository()->isReadOnly() );
