@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "rdostudiooutput.h"
+#include "rdostudioapp.h"
+#include "rdostudiomainfrm.h"
 #include "rdo_edit/rdoeditorsciedit.h"
 #include "rdo_edit/rdoeditorscilog.h"
 #include "rdo_edit/rdoeditoredit.h"
@@ -28,15 +30,36 @@ RDOStudioOutput::RDOStudioOutput()
 
 RDOStudioOutput::~RDOStudioOutput()
 {
+	RDOStudioApp::eraseMenu( &popupMenu );
 }
 
 int RDOStudioOutput::OnCreate(LPCREATESTRUCT lpCreateStruct) 
 {
 	if (RDOStudioDockWnd::OnCreate(lpCreateStruct) == -1)
 		return -1;
-	
+
 	tab.Create( NULL, NULL, 0, CRect(0, 0, 100, 100), this, -1 );
 	tab.modifyTabStyle( 0, TCS_BOTTOM | TCS_MULTILINE );
+
+	popupMenu.CreatePopupMenu();
+
+	CMenu* mainMenu = AfxGetMainWnd()->GetMenu();
+
+	BOOL maximized;
+	studioApp.mainFrame->MDIGetActive( &maximized );
+	int delta = maximized ? 1 : 0;
+
+	RDOStudioApp::appendMenu( mainMenu->GetSubMenu( 1 + delta ), 4, &popupMenu );
+	RDOStudioApp::appendMenu( mainMenu->GetSubMenu( 1 + delta ), 10, &popupMenu );
+	popupMenu.AppendMenu( MF_SEPARATOR );
+	RDOStudioApp::appendMenu( mainMenu->GetSubMenu( 2 + delta ), 0, &popupMenu );
+	RDOStudioApp::appendMenu( mainMenu->GetSubMenu( 2 + delta ), 1, &popupMenu );
+	RDOStudioApp::appendMenu( mainMenu->GetSubMenu( 2 + delta ), 2, &popupMenu );
+	popupMenu.AppendMenu( MF_SEPARATOR );
+	RDOStudioApp::appendMenu( mainMenu->GetSubMenu( 2 + delta ), 5, &popupMenu );
+	RDOStudioApp::appendMenu( mainMenu->GetSubMenu( 2 + delta ), 6, &popupMenu );
+	RDOStudioApp::appendMenu( mainMenu->GetSubMenu( 2 + delta ), 7, &popupMenu );
+	RDOStudioApp::appendMenu( mainMenu->GetSubMenu( 2 + delta ), 8, &popupMenu );
 
 	build   = new RDOEditorSciLog;
 	debug   = new RDOEditorSciEdit;
@@ -53,7 +76,8 @@ int RDOStudioOutput::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	buildStyle.window->wordWrap          = true;
 	buildStyle.load();
 	build->setEditorStyle( &buildStyle );
-//	build->setReadOnly( true );
+	build->setReadOnly( true );
+	build->setPopupMenu( &popupMenu );
 
 	debugStyle.init( "debugStyle" );
 	debugStyle.window->showHorzScrollBar = false;
@@ -61,6 +85,7 @@ int RDOStudioOutput::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	debugStyle.load();
 	debug->setEditorStyle( &debugStyle );
 	debug->setReadOnly( true );
+	debug->setPopupMenu( &popupMenu );
 
 	resultsStyle.init( "resultsStyle" );
 	resultsStyle.window->showHorzScrollBar = false;
@@ -69,7 +94,8 @@ int RDOStudioOutput::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	results->setEditorStyle( &resultsStyle );
 	results->setViewMargin( false );
 	results->setViewFoldMargin( false );
-//	results->setReadOnly( true );
+	results->setReadOnly( true );
+	results->setPopupMenu( &popupMenu );
 
 	tab.insertItem( build, "Build" );
 	tab.insertItem( debug, "Debug" );

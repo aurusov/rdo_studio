@@ -34,6 +34,8 @@ private:
 	CWnd*                        tracer;
 	rdoEditor::RDOEditorEdit*    results;
 
+	CMenu popupMenu;
+
 	void appendString( const rdoEditor::RDOEditorSciEdit* const edit, const string& str ) const;
 
 public:
