@@ -52,7 +52,7 @@ void RDOKernel::setNotifyReflect( NotifyType notifyType, OnNotify fun )
 		it++;
 	}
 	if ( flag ) {
-		onNotify_list.insert( onNotifyListType::value_type( notifyType, fun  ) );
+		onNotify_list.insert( onNotifyListType::value_type( notifyType, fun ) );
 	}
 }
 
@@ -68,7 +68,7 @@ void RDOKernel::setNotifyReflect( BoolNotifyType notifyType, OnBoolNotify fun )
 		it++;
 	}
 	if ( flag ) {
-		onBoolNotify_list.insert( onBoolNotifyListType::value_type( notifyType, fun  ) );
+		onBoolNotify_list.insert( onBoolNotifyListType::value_type( notifyType, fun ) );
 	}
 }
 
@@ -84,7 +84,7 @@ void RDOKernel::setNotifyReflect( NotifyStringType notifyType, OnNotifyString fu
 		it++;
 	}
 	if ( flag ) {
-		onNotifyString_list.insert( onNotifyStringListType::value_type( notifyType, fun  ) );
+		onNotifyString_list.insert( onNotifyStringListType::value_type( notifyType, fun ) );
 	}
 }
 

@@ -36,3 +36,12 @@ bool startPlugin( const rdoPlugin::Studio* studio )
 void stopPlugin()
 {
 }
+
+const int enumMessages()
+{
+	return 0;
+}
+
+void pluginProc( const int message )
+{
+}

@@ -26,7 +26,8 @@ RDOStudioPlugin::RDOStudioPlugin( const std::string& _modulName ):
 	state( rdoPlugin::psStoped ),
 	restoreState( true ),
 	defaultRunMode( rdoPlugin::prmNoAuto ),
-	runMode( rdoPlugin::prmNoAuto )
+	runMode( rdoPlugin::prmNoAuto ),
+	pluginProc( NULL )
 {
 	lib = ::LoadLibrary( modulName.c_str() );
 	if ( lib ) {
@@ -95,13 +96,25 @@ void RDOStudioPlugin::setState( const rdoPlugin::PluginState value )
 			}
 			if ( state == rdoPlugin::psActive ) {
 				rdoPlugin::PFunStartPlugin startPlugin = reinterpret_cast<rdoPlugin::PFunStartPlugin>(::GetProcAddress( lib, "startPlugin" ));
-				if ( !startPlugin || !startPlugin( plugins->getStudio() ) ) {
+				if ( startPlugin && startPlugin( plugins->getStudio() ) ) {
+					rdoPlugin::PFunEnumMessages enumMessages = reinterpret_cast<rdoPlugin::PFunEnumMessages>(::GetProcAddress( lib, "enumMessages" ));
+					if ( enumMessages ) {
+						while ( const int message = enumMessages() ) {
+							plugins->setMessageReflect( message, this );
+						}
+						pluginProc = reinterpret_cast<rdoPlugin::PFunPluginProc>(::GetProcAddress( lib, "pluginProc" ));
+					} else {
+						pluginProc = NULL;
+					}
+				} else {
 					state = rdoPlugin::psStoped;
 				}
 			}
 		}
 		if ( state == rdoPlugin::psStoped ) {
 			if ( lib ) {
+				plugins->clearMessageReflect( this );
+				pluginProc = NULL;
 				rdoPlugin::PFunStopPlugin stopPlugin = reinterpret_cast<rdoPlugin::PFunStopPlugin>(::GetProcAddress( lib, "stopPlugin" ));
 				if ( stopPlugin ) {
 					stopPlugin();
@@ -234,6 +247,43 @@ void RDOStudioPlugins::init()
 		it++;
 	}
 */
+}
+
+void RDOStudioPlugins::setMessageReflect( const int message, RDOStudioPlugin* plugin )
+{
+	bool flag = true;
+	messageList::iterator it = messages.find( message );
+	while ( it != messages.end() ) {
+		if ( (*it).second == plugin ) {
+			flag = false;
+			break;
+		}
+		it++;
+	}
+	if ( flag ) {
+		messages.insert( messageList::value_type( message, plugin ) );
+	}
+}
+
+void RDOStudioPlugins::clearMessageReflect( RDOStudioPlugin* plugin )
+{
+	messageList::iterator it = messages.begin();
+	while ( it != messages.end() ) {
+		if ( (*it).second == plugin ) {
+			it = messages.erase( it );
+		} else {
+			it++;
+		}
+	}
+}
+
+void RDOStudioPlugins::pluginProc( const int message )
+{
+	messageList::iterator it = messages.lower_bound( message );
+	while ( it != messages.upper_bound( message ) ) {
+		(*it).second->pluginProc( message );
+		it++;
+	}
 }
 
 void RDOStudioPlugins::newModel()

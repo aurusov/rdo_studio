@@ -209,6 +209,8 @@ void RDOStudioMainFrame::OnDestroy()
 	style_chart.save();
 
 	::OleUninitialize();
+	// close model before delete plugins (for PM_MODEL_CLOSE message)
+	model->closeModel();
 	// delete plugins before delete model
 	if ( plugins ) { delete plugins; plugins = NULL; }
 	if ( model   ) { delete model; model = NULL; }

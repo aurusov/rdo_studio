@@ -7,6 +7,7 @@
 #include "rdostudiomodelview.h"
 #include "rdostudioframedoc.h"
 #include "rdostudioframeview.h"
+#include "rdostudioplugins.h"
 #include "rdo_edit/rdoeditortabctrl.h"
 #include "edit_ctrls/rdobuildedit.h"
 #include "edit_ctrls/rdodebugedit.h"
@@ -16,6 +17,7 @@
 #include <rdokernel.h>
 #include <rdorepository.h>
 #include <rdobinarystream.h>
+#include <rdoplugin.h>
 
 using namespace std;
 using namespace rdoEditor;
@@ -41,7 +43,8 @@ RDOStudioModel::RDOStudioModel():
 	modelClosed( true ),
 	frmDescribed( false ),
 	modelTime( 0 ),
-	showMode( SM_NoShow )
+	showMode( SM_NoShow ),
+	prevModify( false )
 {
 	model = this;
 
@@ -84,6 +87,7 @@ void RDOStudioModel::newModel( const bool _useTemplate )
 	output->clearFind();
 	kernel.getRepository()->newModel();
 	output->updateLogConnection();
+	plugins->pluginProc( rdoPlugin::PM_MODEL_NEW );
 }
 
 bool RDOStudioModel::openModel( const string& modelName ) const
@@ -106,6 +110,7 @@ bool RDOStudioModel::openModel( const string& modelName ) const
 		output->updateLogConnection();
 		output->appendStringToBuild( format( IDS_MODEL_LOADING_OK ) );
 		studioApp.setLastProjectName( kernel.getRepository()->getFullName() );
+		plugins->pluginProc( rdoPlugin::PM_MODEL_OPEN );
 	} else {
 		output->appendStringToBuild( format( IDS_MODEL_LOADING_FAILD ) );
 	}
@@ -114,7 +119,11 @@ bool RDOStudioModel::openModel( const string& modelName ) const
 
 bool RDOStudioModel::saveModel() const
 {
-	return kernel.getRepository()->saveModel();
+	bool flag = kernel.getRepository()->saveModel();
+	if ( flag ) {
+		plugins->pluginProc( rdoPlugin::PM_MODEL_SAVE );
+	}
+	return flag;
 }
 
 void RDOStudioModel::saveAsModel() const
@@ -131,6 +140,9 @@ void RDOStudioModel::closeModel() const
 	output->clearResults();
 	output->clearFind();
 	kernel.getRepository()->closeModel();
+	if ( plugins ) {
+		plugins->pluginProc( rdoPlugin::PM_MODEL_CLOSE );
+	}
 }
 
 void RDOStudioModel::buildModel() const
@@ -143,6 +155,7 @@ void RDOStudioModel::buildModel() const
 		output->showBuild();
 		output->appendStringToBuild( format( IDS_MODEL_BUILDING_BEGIN ) );
 		const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->UpdateWindow();
+		plugins->pluginProc( rdoPlugin::PM_MODEL_BUILD );
 		kernel.getSimulator()->parseModel();
 	}
 }
@@ -157,13 +170,17 @@ void RDOStudioModel::runModel() const
 		output->showBuild();
 		output->appendStringToBuild( format( IDS_MODEL_RUNNING_BEGIN ) );
 		const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->UpdateWindow();
+		plugins->pluginProc( rdoPlugin::PM_MODEL_START );
 		kernel.getSimulator()->runModel();
 	}
 }
 
 void RDOStudioModel::stopModel() const
 {
-	if ( hasModel() && isRunning() ) kernel.getSimulator()->stopModel();
+	if ( hasModel() && isRunning() ) {
+		kernel.getSimulator()->stopModel();
+		plugins->pluginProc( rdoPlugin::PM_MODEL_STOP );
+	}
 }
 
 void RDOStudioModel::newModelNotify()
@@ -340,6 +357,10 @@ void RDOStudioModel::updateModify() const
 	RDOStudioModelDoc* doc = getModelDoc();
 	if ( doc ) {
 		doc->updateModify();
+		if ( prevModify != isModify() ) {
+			static_cast<bool>(prevModify) = isModify();
+			plugins->pluginProc( rdoPlugin::PM_MODEL_MODIFY );
+		}
 	}
 }
 
@@ -714,6 +735,7 @@ void RDOStudioModel::setShowMode( const ShowMode value )
 		}
 		kernel.getSimulator()->setShowMode( showMode );
 		tracer->setShowMode( showMode );
+		plugins->pluginProc( rdoPlugin::PM_MODEL_SHOWMODE );
 	}
 }
 

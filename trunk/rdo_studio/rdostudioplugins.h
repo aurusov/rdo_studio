@@ -8,6 +8,7 @@
 #include <rdoplugin.h>
 #include <string>
 #include <vector>
+#include <map>
 
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioPlugin
@@ -29,6 +30,8 @@ private:
 	bool restoreState;
 	rdoPlugin::PluginRunMode defaultRunMode;
 	rdoPlugin::PluginRunMode runMode;
+
+	rdoPlugin::PFunPluginProc pluginProc;
 
 	std::string getProfilePath() const;
 
@@ -66,6 +69,8 @@ static const int PLUGIN_STOPMODEL_MESSAGE  = ::RegisterWindowMessage( "PLUGIN_ST
 
 class RDOStudioPlugins
 {
+friend class RDOStudioPlugin;
+
 private:
 	std::vector< RDOStudioPlugin* > list;
 	void enumPlugins( const std::string& mask );
@@ -73,6 +78,10 @@ private:
 	void init();
 
 	rdoPlugin::Studio studio;
+	typedef std::multimap< const int, RDOStudioPlugin* > messageList;
+	messageList messages;
+	void setMessageReflect( const int message, RDOStudioPlugin* plugin );
+	void clearMessageReflect( RDOStudioPlugin* plugin );
 
 	static void newModel();
 	static bool openModel( const char* modelName );
@@ -112,6 +121,8 @@ public:
 	void modelStop();
 
 	void stopPlugin( const HMODULE lib ) const;
+
+	void pluginProc( const int message );
 
 	rdoPlugin::Studio* getStudio() { return &studio; }
 

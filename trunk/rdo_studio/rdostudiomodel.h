@@ -38,6 +38,8 @@ private:
 	RDOSimulatorNS::ShowMode showMode;
 	void updateFrmDescribed();
 
+	bool prevModify;
+
 	static void newModelNotify();
 	static void openModelNotify();
 	static void saveModelNotify();
