@@ -37,6 +37,7 @@ BEGIN_MESSAGE_MAP(RDOStudioMainFrame, CMDIFrameWnd)
 	ON_UPDATE_COMMAND_UI( ID_COORDSTATUSBAR          , OnUpdateCoordStatusBar )
 	ON_UPDATE_COMMAND_UI( ID_MODIFYSTATUSBAR         , OnUpdateModifyStatusBar )
 	ON_UPDATE_COMMAND_UI( ID_INSERTOVERWRITESTATUSBAR, OnUpdateInsertOverwriteStatusBar )
+	ON_UPDATE_COMMAND_UI( ID_MODELTIMESTATUSBAR      , OnUpdateModelTimeStatusBar )
 END_MESSAGE_MAP()
 
 static UINT indicators[] = {
@@ -78,7 +79,7 @@ int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	statusBar.SetPaneInfo( 0, ID_COORDSTATUSBAR          , SBPS_NORMAL , 70 );
 	statusBar.SetPaneInfo( 1, ID_MODIFYSTATUSBAR         , SBPS_NORMAL , 70 );
 	statusBar.SetPaneInfo( 2, ID_INSERTOVERWRITESTATUSBAR, SBPS_NORMAL , 70 );
-	statusBar.SetPaneInfo( 3, ID_MODELTIMESTATUSBAR      , SBPS_NORMAL , 100 );
+	statusBar.SetPaneInfo( 3, ID_MODELTIMESTATUSBAR      , SBPS_NORMAL , 140 );
 	statusBar.SetPaneInfo( 4, ID_MODELRUNTYPESTATUSBAR   , SBPS_STRETCH, 70 );
 
 	workspace.Create( format( ID_DOCK_WORKSPACE ).c_str(), this, -1 );
@@ -250,6 +251,17 @@ void RDOStudioMainFrame::OnUpdateInsertOverwriteStatusBar( CCmdUI *pCmdUI )
 				str = format( ID_STATUSBAR_OVERWRITE );
 			}
 		}
+	}
+	pCmdUI->SetText( str.c_str() );
+}
+
+void RDOStudioMainFrame::OnUpdateModelTimeStatusBar( CCmdUI *pCmdUI )
+{
+	pCmdUI->Enable();
+	string str = "";
+	RDOStudioModelDoc* doc = studioApp.getModelDoc();
+	if ( doc && doc->isRunning() ) {
+		str = format( ID_STATUSBAR_MODELTIME, kernel.getSimulator()->getModelTime() );
 	}
 	pCmdUI->SetText( str.c_str() );
 }

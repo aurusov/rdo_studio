@@ -93,3 +93,8 @@ void RDOStudioModelDoc::OnCloseDocument()
 {
 	RDOStudioEditBaseDoc::OnCloseDocument();
 }
+
+bool RDOStudioModelDoc::isRunning() const
+{
+	return model->isRunning();
+}
