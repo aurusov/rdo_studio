@@ -28,9 +28,12 @@ class RDOStudioChartDoc : public CDocument
 friend class RDOStudioChartView;
 friend class RDOStudioChartDocInsertTime;
 friend class RDOStudioChartOptionsChart;
+friend class RDOStudioChartOptionsSeries;
+
+DECLARE_DYNCREATE(RDOStudioChartDoc)
 
 protected:
-	DECLARE_DYNCREATE(RDOStudioChartDoc)
+	
 	
 	CMutex mutex;
 	
@@ -43,8 +46,6 @@ protected:
 	timesList::iterator inserted_it;
 	double minTimeOffset;
 	int ticksCount;
-	void incTimeEventsCount( RDOTracerTimeNow* time );
-	bool newValueToSerieAdded( RDOTracerValue* val );
 
 	bool previewMode;
 
@@ -55,9 +56,6 @@ protected:
 	void addToViews( const HWND handle );
 
 	void updateChartViews( const UINT update_type ) const;
-
-	void lock() { mutex.Lock(); };
-	void unlock() { mutex.Unlock(); };
 
 	std::string title;
 
@@ -83,7 +81,11 @@ public:
 	bool serieExists( const RDOTracerSerie* serie ) const;
 
 	std::string getTitle() const { return title; };
-	//void setTitle( const std::string _title );
+	
+	void lock() { mutex.Lock(); };
+	void unlock() { mutex.Unlock(); };
+	void incTimeEventsCount( RDOTracerTimeNow* time );
+	bool newValueToSerieAdded( RDOTracerValue* val );
 
 #ifdef _DEBUG
 	virtual void AssertValid() const;

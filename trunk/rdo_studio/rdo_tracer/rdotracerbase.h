@@ -100,6 +100,8 @@ public:
 	void setModelName( std::string name ) const;
 	void setDrawTrace( const bool value );
 	bool getDrawTrace() const { return drawTrace; };
+	void lock()   { mutex.Lock(); };
+	void unlock() { mutex.Unlock(); };
 };
 
 }; // namespace rdoTracer

@@ -73,6 +73,8 @@ RDOStudioChartDoc::RDOStudioChartDoc( const bool preview )
 
 RDOStudioChartDoc::~RDOStudioChartDoc()
 {
+	tracer->lock();
+
 	mutex.Lock();
 
 	for ( vector< RDOStudioDocSerie* >::iterator it = series.begin(); it != series.end(); it++ ) {
@@ -83,6 +85,8 @@ RDOStudioChartDoc::~RDOStudioChartDoc()
 		tracer->removeChart( this );
 
 	mutex.Unlock();
+
+	tracer->unlock();
 }
 
 int RDOStudioChartDoc::getSerieIndex( RDOStudioDocSerie* serie ) const
