@@ -189,19 +189,57 @@ void RDOStudioOptionsTabs::OnUpdateModify()
 BEGIN_MESSAGE_MAP(RDOStudioOptionsStylesAndColors, CPropertyPage)
 	//{{AFX_MSG_MAP(RDOStudioOptionsStylesAndColors)
 	ON_WM_SIZE()
+	ON_NOTIFY(TVN_SELCHANGED, IDC_STYLEITEM_TREE, OnStyleItemChanged)
+	ON_CBN_SELCHANGE(IDC_PREVIEWAS_COMBO, OnPreviewAsChanged)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RDOStudioOptionsStylesAndColors::RDOStudioOptionsStylesAndColors( RDOStudioOptions& _sheet ):
 	CPropertyPage( IDD ),
-	sheet( &_sheet )
+	sheet( &_sheet ),
+	isCurrentFixed( false ),
+	previewAs( STYLEObject::none )
 {
 	//{{AFX_DATA_INIT(RDOStudioOptionsStylesAndColors)
 	//}}AFX_DATA_INIT
+
+	STYLEObject* object;
+	object = new STYLEObject( STYLEObject::all );
+	object->properties.push_back( new STYLEProperty( object, "All Windows" ) );
+	objects.push_back( object );
+
+	object = new STYLEObject( STYLEObject::source );
+	object->properties.push_back( new STYLEProperty( object, "Source Windows" ) );
+	objects.push_back( object );
+
+	object = new STYLEObject( STYLEObject::build, false );
+	object->properties.push_back( new STYLEProperty( object, "Build Windows" ) );
+	objects.push_back( object );
+
+	object = new STYLEObject( STYLEObject::debug, false );
+	object->properties.push_back( new STYLEProperty( object, "Debug Windows" ) );
+	objects.push_back( object );
+
+	object = new STYLEObject( STYLEObject::trace );
+	object->properties.push_back( new STYLEProperty( object, "Trace Windows" ) );
+	objects.push_back( object );
+
+	object = new STYLEObject( STYLEObject::results );
+	object->properties.push_back( new STYLEProperty( object, "Results Windows" ) );
+	objects.push_back( object );
+
+	object = new STYLEObject( STYLEObject::find );
+	object->properties.push_back( new STYLEProperty( object, "Find Windows" ) );
+	objects.push_back( object );
 }
 
 RDOStudioOptionsStylesAndColors::~RDOStudioOptionsStylesAndColors()
 {
+	list< STYLEObject* >::iterator it = objects.begin();
+	while ( it != objects.end() ) {
+		delete *it;
+		it++;
+	};
 }
 
 void RDOStudioOptionsStylesAndColors::DoDataExchange(CDataExchange* pDX)
@@ -209,10 +247,31 @@ void RDOStudioOptionsStylesAndColors::DoDataExchange(CDataExchange* pDX)
 	CPropertyPage::DoDataExchange(pDX);
 
 	//{{AFX_DATA_MAP(RDOStudioOptionsStylesAndColors)
+	DDX_Control(pDX, IDC_PREVIEWAS_COMBO, m_previewAs);
+	DDX_Control(pDX, IDC_FONTNAME_COMBO, m_fontName);
+	DDX_Control(pDX, IDC_STYLEITEM_TREE, m_styleItem);
 	//}}AFX_DATA_MAP
 
 	DDX_Control( pDX, IDC_FGCOLOR_COMBO, fgColorCB );
 	DDX_Control( pDX, IDC_BGCOLOR_COMBO, bgColorCB );
+}
+
+int CALLBACK RDOStudioOptionsStylesAndColors::EnumFontFamExProc( ENUMLOGFONTEX* lpelfe, NEWTEXTMETRICEX* lpntme, DWORD FontType, LPARAM lParam )
+{
+	list< STYLEFont >* fonts = reinterpret_cast< list< STYLEFont >* >(lParam);
+	bool can_insert = true;
+	list< STYLEFont >::iterator font_it = fonts->begin();
+	while ( font_it != fonts->end() ) {
+		if ( font_it->name == lpelfe->elfLogFont.lfFaceName ) {
+			can_insert = false;
+			break;
+		}
+		font_it++;
+	}
+	if ( can_insert ) {
+		fonts->insert( fonts->end(), STYLEFont( lpelfe->elfLogFont.lfFaceName, lpelfe->elfLogFont.lfPitchAndFamily & FIXED_PITCH ) );
+	}
+	return 1;
 }
 
 BOOL RDOStudioOptionsStylesAndColors::OnInitDialog()
@@ -225,31 +284,83 @@ BOOL RDOStudioOptionsStylesAndColors::OnInitDialog()
 	fgColorCB.insertBaseColors();
 	bgColorCB.insertBaseColors();
 
-	sheet->edit.Create( NULL, NULL, WS_CHILD | WS_VISIBLE, CRect( 0, 0, 444, 223 ), this, -1 );
+	sheet->edit.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, -1 );
 	sheet->edit.setEditorStyle( &sheet->style_editor );
-	CString s;
-	s.LoadString( ID_OPTIONS_COLORS_EDITTEXT );
-	sheet->edit.replaceCurrent( (LPCTSTR)s, 0 );
+	sheet->edit.replaceCurrent( format( ID_OPTIONS_COLORS_EDITTEXT ), 0 );
 	sheet->edit.setReadOnly( true );
 	sheet->edit.bookmarkToggle();
 
-	CListBox* styleLB = (CListBox*)GetDlgItem( IDC_STYLE_LIST );
-	if ( styleLB ) {
-		CRect r;
-		GetClientRect( r );
+	sheet->build.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, -1 );
+	sheet->build.setEditorStyle( &sheet->style_build );
+	sheet->build.appendLine( new rdoEditCtrl::RDOBuildEditLineInfo( "Building Model..." ) );
+	sheet->build.appendLine( new rdoEditCtrl::RDOBuildEditLineInfo( "Wrong parameter value: L", rdoModelObjects::PAT, 40, true ) );
+	sheet->build.appendLine( new rdoEditCtrl::RDOBuildEditLineInfo( "1 error(s) found." ) );
 
-		CRect rectStyleLB;
-		styleLB->GetWindowRect( rectStyleLB );
-		ScreenToClient( rectStyleLB );
+	sheet->debug.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, -1 );
+	sheet->debug.setEditorStyle( &sheet->style_debug );
+	sheet->debug.appendLine( "Start executing\r\n" );
+	sheet->debug.appendLine( "EI 0 1 1 0\r\n" );
+	sheet->debug.appendLine( "ES 0 1\r\n" );
 
-		CRect rectEdit;
-		rectEdit.left   = 0;
-		rectEdit.right  = r.right;
-		rectEdit.top    = rectStyleLB.bottom + 5;
-		rectEdit.bottom = r.bottom;
+	sheet->results.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, -1 );
+	sheet->results.setEditorStyle( &sheet->style_results );
+	sheet->results.setReadOnly( false );
+	sheet->results.replaceCurrent( format( ID_OPTIONS_COLOR_RESULTSTEXT ), 0 );
+	sheet->results.setReadOnly( true );
 
-		sheet->edit.MoveWindow( rectEdit );
+	sheet->find.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, -1 );
+	sheet->find.setEditorStyle( &sheet->style_find );
+	sheet->find.setKeyword( "$Time" );
+	sheet->find.appendLine( new rdoEditCtrl::RDOLogEditLineInfo( "Searching for '$Time'..." ) );
+	sheet->find.appendLine( new rdoEditCtrl::RDOLogEditLineInfo( "$Time = Равномерный(0.25, 0.75)", rdoModelObjects::PAT, 3 ) );
+	sheet->find.appendLine( new rdoEditCtrl::RDOLogEditLineInfo( "$Time = Нормальный(0.45, 0.2)", rdoModelObjects::PAT, 13 ) );
+	sheet->find.appendLine( new rdoEditCtrl::RDOLogEditLineInfo( "'2' occurrence(s) have been found." ) );
+
+	CRect r;
+	GetClientRect( r );
+
+	CRect rectStyleLB;
+	m_styleItem.GetWindowRect( rectStyleLB );
+	ScreenToClient( rectStyleLB );
+
+	CRect rectEdit;
+	rectEdit.left   = 0;
+	rectEdit.right  = r.right;
+	rectEdit.top    = rectStyleLB.bottom + 5;
+	rectEdit.bottom = r.bottom;
+
+	sheet->edit.MoveWindow( rectEdit );
+	sheet->build.MoveWindow( rectEdit );
+	sheet->debug.MoveWindow( rectEdit );
+	sheet->results.MoveWindow( rectEdit );
+	sheet->find.MoveWindow( rectEdit );
+
+	list< STYLEObject* >::iterator obj_it = objects.begin();
+	while ( obj_it != objects.end() ) {
+		list< STYLEProperty* >::iterator prop_it = (*obj_it)->properties.begin();
+		HTREEITEM root = TVI_ROOT;
+		while ( prop_it != (*obj_it)->properties.end() ) {
+			if ( (*prop_it)->root ) {
+				root = TVI_ROOT;
+			}
+			HTREEITEM item = m_styleItem.InsertItem( (*prop_it)->name.c_str(), root );
+			m_styleItem.SetItemData( item, reinterpret_cast<DWORD>(*prop_it) );
+			if ( (*prop_it)->root ) {
+				root = item;
+			}
+			prop_it++;
+		}
+		obj_it++;
 	}
+
+	LOGFONT lf;
+	lf.lfCharSet = sheet->style_editor.font->characterSet;
+	lf.lfFaceName[0] = '\0';
+	::EnumFontFamiliesEx( GetDC()->m_hDC, &lf, reinterpret_cast<FONTENUMPROC>(RDOStudioOptionsStylesAndColors::EnumFontFamExProc), reinterpret_cast<LPARAM>(&fonts), 0 );
+	isCurrentFixed = false;
+	loadFontsIntoCombo( true );
+
+	setPreviewAsCombo( STYLEObject::source );
 
 	return true;
 }
@@ -263,6 +374,131 @@ void RDOStudioOptionsStylesAndColors::OnOK()
 void RDOStudioOptionsStylesAndColors::OnSize(UINT nType, int cx, int cy)
 {
 	CPropertyPage::OnSize(nType, cx, cy);
+}
+
+void RDOStudioOptionsStylesAndColors::loadFontsIntoCombo( bool fixed )
+{
+	if ( isCurrentFixed != fixed ) {
+		m_fontName.ResetContent();
+		list< STYLEFont >::iterator font_it = fonts.begin();
+		while ( font_it != fonts.end() ) {
+			if ( !fixed || ( fixed && font_it->fixed ) ) {
+				m_fontName.AddString( font_it->name.c_str() );
+			}
+			font_it++;
+		}
+		isCurrentFixed = fixed;
+	}
+}
+
+void RDOStudioOptionsStylesAndColors::OnStyleItemChanged(NMHDR* pNMHDR, LRESULT* pResult)
+{
+	NM_TREEVIEW* pNMTreeView = (NM_TREEVIEW*)pNMHDR;
+
+	HTREEITEM item = m_styleItem.GetSelectedItem();
+	if ( item ) {
+		STYLEProperty* prop = reinterpret_cast<STYLEProperty*>(m_styleItem.GetItemData( item ));
+		loadFontsIntoCombo( prop->object->fixedFont );
+		setPreviewAsCombo( prop->object->type );
+		switch ( prop->object->type ) {
+			case STYLEObject::all: {
+				break;
+			}
+			case STYLEObject::source: {
+				break;
+			}
+			case STYLEObject::build: {
+				break;
+			}
+			case STYLEObject::debug: {
+				break;
+			}
+			case STYLEObject::trace: {
+				break;
+			}
+			case STYLEObject::results: {
+				break;
+			}
+			case STYLEObject::find: {
+				break;
+			}
+			default: break;
+		}
+/*
+		int index = m_fontName.FindStringExact( -1, sheet->editorStyle.font.name );
+		if ( index != CB_ERR ) {
+			fontNameCB->SetCurSel( index );
+		} else {
+			fontNameCB->SetCurSel( -1 );
+		}
+*/
+	}
+
+	*pResult = 0;
+}
+
+void RDOStudioOptionsStylesAndColors::OnPreviewAsChanged()
+{
+	int index = m_previewAs.GetCurSel();
+	if ( index != CB_ERR ) {
+		if ( index == 0 ) {
+			setPreviewAsCombo( STYLEObject::source );
+		} else if ( index == 1 ) {
+			setPreviewAsCombo( STYLEObject::build );
+		} else if ( index == 2 ) {
+			setPreviewAsCombo( STYLEObject::debug );
+		} else if ( index == 3 ) {
+			setPreviewAsCombo( STYLEObject::trace );
+		} else if ( index == 4 ) {
+			setPreviewAsCombo( STYLEObject::results );
+		} else if ( index == 5 ) {
+			setPreviewAsCombo( STYLEObject::find );
+		}
+	}
+}
+
+void RDOStudioOptionsStylesAndColors::setPreviewAsCombo( STYLEObject::Type type )
+{
+	if ( previewAs != type && type >= STYLEObject::source ) {
+		previewAs = type;
+		sheet->edit.ShowWindow( SW_HIDE );
+		sheet->build.ShowWindow( SW_HIDE );
+		sheet->debug.ShowWindow( SW_HIDE );
+		sheet->results.ShowWindow( SW_HIDE );
+		sheet->find.ShowWindow( SW_HIDE );
+		switch ( previewAs ) {
+			case STYLEObject::source: {
+				m_previewAs.SetCurSel( 0 );
+				sheet->edit.ShowWindow( SW_SHOW );
+				break;
+			}
+			case STYLEObject::build: {
+				m_previewAs.SetCurSel( 1 );
+				sheet->build.ShowWindow( SW_SHOW );
+				break;
+			}
+			case STYLEObject::debug: {
+				m_previewAs.SetCurSel( 2 );
+				sheet->debug.ShowWindow( SW_SHOW );
+				break;
+			}
+			case STYLEObject::trace: {
+				m_previewAs.SetCurSel( 3 );
+				break;
+			}
+			case STYLEObject::results: {
+				m_previewAs.SetCurSel( 4 );
+				sheet->results.ShowWindow( SW_SHOW );
+				break;
+			}
+			case STYLEObject::find: {
+				m_previewAs.SetCurSel( 5 );
+				sheet->find.ShowWindow( SW_SHOW );
+				break;
+			}
+			default: break;
+		}
+	}
 }
 
 // ----------------------------------------------------------------------------

@@ -22,6 +22,7 @@
 #define IDD_FILEASSOCIATION             154
 #define IDD_OPTIONS_TABS                155
 #define IDC_CLEARAUTO_CHECK             1001
+#define IDC_STYLEITEM_TREE              1001
 #define IDC_BUFFERVALUESTATIC           1002
 #define IDC_BUFFERVALUEEDIT             1003
 #define IDC_THEME_STATIC                1004
@@ -40,7 +41,6 @@
 #define IDC_USEAUTOCOMPLETE_CHECK       1021
 #define IDC_SHOWFULLLIST_RADIO          1022
 #define IDC_SHOWNEARESTWORDSONLY_RADIO  1023
-#define IDC_STYLE_LIST                  1024
 #define IDC_FONTNAME_COMBO              1025
 #define IDC_FONTSIZE_COMBO              1026
 #define IDC_FONTBOLD_CHECK              1029
@@ -345,6 +345,7 @@
 #define ID_MODEL_RUNANIMATION           33137
 #define ID_MODEL_RUNMONITOR             33138
 #define ID_FILE_MODEL_SAVE              33139
+#define ID_OPTIONS_COLOR_RESULTSTEXT    33140
 #define ID_STATUSBAR_READONLY           40000
 #define ID_STATUSBAR_MODIFIED           40001
 #define ID_STATUSBAR_OVERWRITE          40002
@@ -412,7 +413,7 @@
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        156
 #define _APS_NEXT_COMMAND_VALUE         33140
-#define _APS_NEXT_CONTROL_VALUE         1001
+#define _APS_NEXT_CONTROL_VALUE         1002
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

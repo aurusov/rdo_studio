@@ -13,6 +13,7 @@ using namespace rdoEditCtrl;
 // ---------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP( RDODebugEdit, RDOBaseEdit )
 	//{{AFX_MSG_MAP(RDODebugEdit)
+	ON_WM_CREATE()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -22,6 +23,15 @@ RDODebugEdit::RDODebugEdit(): RDOBaseEdit()
 
 RDODebugEdit::~RDODebugEdit()
 {
+}
+
+int RDODebugEdit::OnCreate(LPCREATESTRUCT lpCreateStruct)
+{
+	if ( RDOBaseEdit ::OnCreate(lpCreateStruct) == -1 ) return -1;
+
+	setReadOnly( true );
+
+	return 0;
 }
 
 void RDODebugEdit::appendLine( const string& str )

@@ -30,6 +30,8 @@ public:
 	virtual ~RDOEditorBaseEdit();
 
 	void setEditorStyle( RDOEditorBaseEditStyle* _style );
+
+	void replaceCurrent( const std::string str, const int changePosValue = -1 ) const;
 };
 
 }; // namespace rdoEditor

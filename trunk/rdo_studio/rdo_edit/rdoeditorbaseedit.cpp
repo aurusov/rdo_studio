@@ -167,6 +167,19 @@ void RDOEditorBaseEdit::setEditorStyle( RDOEditorBaseEditStyle* _style )
 	sendEditor( SCI_STYLESETCHARACTERSET, SCE_RDO_OPERATOR, style->font->characterSet );
 }
 
+void RDOEditorBaseEdit::replaceCurrent( const string str, const int changePosValue ) const
+{
+	int pos;
+	if ( changePosValue != -1 ) pos = getCurrentPos();
+
+	sendEditor( SCI_REPLACESEL, 0, (long)str.c_str() );
+
+	if ( changePosValue != -1 ) {
+		pos += changePosValue;
+		setCurrentPos( pos );
+	}
+}
+
 /*
 void RDOEditorBaseEdit::OnHelpKeyword()
 {

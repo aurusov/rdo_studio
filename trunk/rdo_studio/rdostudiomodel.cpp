@@ -186,8 +186,13 @@ void RDOStudioModel::stopModelNotify()
 void RDOStudioModel::parseErrorModelNotify()
 {
 	vector<RDOSyntaxError>* errors = kernel.getSimulator()->getErrors();
+	int i = 0;
 	for ( vector<RDOSyntaxError>::iterator it = errors->begin(); it != errors->end(); it++ ) {
 		studioApp.mainFrame->output.appendStringToBuild( it->message, it->file, it->lineNo - 1 );
+		i++;
+	}
+	if ( i ) {
+		studioApp.mainFrame->output.appendStringToBuild( format( "%d error(s) found.", i ) );
 	}
 }
 

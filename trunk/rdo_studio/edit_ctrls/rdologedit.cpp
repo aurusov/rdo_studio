@@ -95,6 +95,8 @@ int RDOLogEdit::OnCreate( LPCREATESTRUCT lpCreateStruct )
 {
 	if ( RDOBaseEdit::OnCreate(lpCreateStruct) == -1 ) return -1;
 
+	setReadOnly( true );
+
 	sendEditorString( SCI_SETPROPERTY, reinterpret_cast<unsigned long>("withoutselectbyclick"), "1" );
 
 	return 0;

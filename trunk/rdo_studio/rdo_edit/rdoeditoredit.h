@@ -75,8 +75,6 @@ public:
 	virtual ~RDOEditorEdit();
 
 	void setEditorStyle( RDOEditorEditStyle* _style );
-
-	void replaceCurrent( const std::string str, const int changePosValue = -1 ) const;
 };
 
 }; // namespace rdoEditor

@@ -72,8 +72,6 @@ int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	style_debug.load();
 
 	style_results.init( "resultsStyle" );
-	style_results.window->showHorzScrollBar = false;
-	style_results.window->wordWrap          = true;
 	style_results.load();
 
 	style_find.init( "findStyle" );

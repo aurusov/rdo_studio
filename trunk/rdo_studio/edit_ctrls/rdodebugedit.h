@@ -13,6 +13,7 @@ class RDODebugEdit: public RDOBaseEdit
 {
 protected:
 	//{{AFX_MSG(RDODebugEdit)
+	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 

@@ -596,16 +596,3 @@ void RDOEditorEdit::OnUndateBuffer4Clear( CCmdUI* pCmdUI )
 {
 	pCmdUI->Enable( view && !view->buf4.empty() );
 }
-
-void RDOEditorEdit::replaceCurrent( const string str, const int changePosValue ) const
-{
-	int pos;
-	if ( changePosValue != -1 ) pos = getCurrentPos();
-
-	sendEditor( SCI_REPLACESEL, 0, (long)str.c_str() );
-
-	if ( changePosValue != -1 ) {
-		pos += changePosValue;
-		setCurrentPos( pos );
-	}
-}

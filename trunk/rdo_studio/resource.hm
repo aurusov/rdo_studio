@@ -33,7 +33,6 @@
 #define HIDC_SHOWFULLLIST_RADIO         0x809803fe    // IDD_OPTIONS_EDITOR
 #define HIDC_SHOWNEARESTWORDSONLY_RADIO \
                                         0x809803ff    // IDD_OPTIONS_EDITOR
-#define HIDC_STYLE_LIST                 0x80990400    // IDD_OPTIONS_STYLESANDCOLORS
 #define HIDC_TABINDENTS_CHECK           0x809b03f6    // IDD_OPTIONS_TABS
 #define HIDC_TABSIZE_EDIT               0x809b03ef    // IDD_OPTIONS_TABS
 #define HIDC_TABSIZE_STATIC             0x809b0420    // IDD_OPTIONS_TABS
