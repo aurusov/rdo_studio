@@ -1,15 +1,15 @@
-#ifndef RDOEDITORSCIEDITSTYLE_H
-#define RDOEDITORSCIEDITSTYLE_H
+#ifndef RDOBASEEDITSTYLE_H
+#define RDOBASEEDITSTYLE_H
 #pragma once
 
 #include "sci/Scintilla.h"
 
 using namespace std;
 
-namespace rdoEditor {
+namespace rdoStyle {
 
 // ----------------------------------------------------------------------------
-// ---------- RDOEditorSciEditTheme
+// ---------- RDOBaseEditTheme
 // ----------------------------------------------------------------------------
 enum RDOFontStyle {
 	RDOFS_NONE      = 0x00,
@@ -36,15 +36,15 @@ enum RDOFoldStyle {
 	RDOFOLDS_CIRCLECONNECTED
 };
 
-class RDOEditorSciEditTheme
+class RDOBaseEditTheme
 {
 public:
-	RDOEditorSciEditTheme();
-	virtual ~RDOEditorSciEditTheme();
+	RDOBaseEditTheme();
+	virtual ~RDOBaseEditTheme();
 
-	RDOEditorSciEditTheme& operator =( const RDOEditorSciEditTheme& theme );
-	bool operator ==( const RDOEditorSciEditTheme& theme ) const;
-	bool operator !=( const RDOEditorSciEditTheme& theme ) const;
+	RDOBaseEditTheme& operator =( const RDOBaseEditTheme& theme );
+	bool operator ==( const RDOBaseEditTheme& theme ) const;
+	bool operator !=( const RDOBaseEditTheme& theme ) const;
 
 	virtual void load( string regPath );
 	virtual void save( string regPath ) const;
@@ -71,22 +71,22 @@ public:
 	virtual string styleFGColorToHEX( const int styleType = STYLE_DEFAULT ) const;
 	virtual string styleBGColorToHEX( const int styleType = STYLE_DEFAULT ) const;
 
-	static RDOEditorSciEditTheme getDefaultTheme();
+	static RDOBaseEditTheme getDefaultTheme();
 	static string colorToHEX( const COLORREF color );
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOEditorSciEditFont
+// ---------- RDOBaseEditFont
 // ----------------------------------------------------------------------------
-class RDOEditorSciEditFont
+class RDOBaseEditFont
 {
 public:
-	RDOEditorSciEditFont();
-	virtual ~RDOEditorSciEditFont();
+	RDOBaseEditFont();
+	virtual ~RDOBaseEditFont();
 
-	RDOEditorSciEditFont& operator =( const RDOEditorSciEditFont& font );
-	bool operator ==( const RDOEditorSciEditFont& font ) const;
-	bool operator !=( const RDOEditorSciEditFont& font ) const;
+	RDOBaseEditFont& operator =( const RDOBaseEditFont& font );
+	bool operator ==( const RDOBaseEditFont& font ) const;
+	bool operator !=( const RDOBaseEditFont& font ) const;
 
 	virtual void load( string regPath );
 	virtual void save( string regPath ) const;
@@ -98,17 +98,17 @@ public:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOEditorSciEditTab
+// ---------- RDOBaseEditTab
 // ----------------------------------------------------------------------------
-class RDOEditorSciEditTab
+class RDOBaseEditTab
 {
 public:
-	RDOEditorSciEditTab();
-	virtual ~RDOEditorSciEditTab();
+	RDOBaseEditTab();
+	virtual ~RDOBaseEditTab();
 
-	RDOEditorSciEditTab& operator =( const RDOEditorSciEditTab& tab );
-	bool operator ==( const RDOEditorSciEditTab& tab ) const;
-	bool operator !=( const RDOEditorSciEditTab& tab ) const;
+	RDOBaseEditTab& operator =( const RDOBaseEditTab& tab );
+	bool operator ==( const RDOBaseEditTab& tab ) const;
+	bool operator !=( const RDOBaseEditTab& tab ) const;
 
 	virtual void load( string regPath );
 	virtual void save( string regPath ) const;
@@ -122,17 +122,17 @@ public:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOEditorSciEditWindow
+// ---------- RDOBaseEditWindow
 // ----------------------------------------------------------------------------
-class RDOEditorSciEditWindow
+class RDOBaseEditWindow
 {
 public:
-	RDOEditorSciEditWindow();
-	virtual ~RDOEditorSciEditWindow();
+	RDOBaseEditWindow();
+	virtual ~RDOBaseEditWindow();
 
-	RDOEditorSciEditWindow& operator =( const RDOEditorSciEditWindow& window );
-	bool operator ==( const RDOEditorSciEditWindow& window ) const;
-	bool operator !=( const RDOEditorSciEditWindow& window ) const;
+	RDOBaseEditWindow& operator =( const RDOBaseEditWindow& window );
+	bool operator ==( const RDOBaseEditWindow& window ) const;
+	bool operator !=( const RDOBaseEditWindow& window ) const;
 
 	virtual void load( string regPath );
 	virtual void save( string regPath ) const;
@@ -142,9 +142,9 @@ public:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOEditorSciEditStyle
+// ---------- RDOBaseEditStyle
 // ----------------------------------------------------------------------------
-class RDOEditorSciEditStyle
+class RDOBaseEditStyle
 {
 protected:
 	string regPath;
@@ -155,23 +155,23 @@ protected:
 	virtual void initWindow();
 
 public:
-	RDOEditorSciEditStyle();
-	virtual ~RDOEditorSciEditStyle();
+	RDOBaseEditStyle();
+	virtual ~RDOBaseEditStyle();
 
-	RDOEditorSciEditStyle& operator =( const RDOEditorSciEditStyle& style );
-	bool operator ==( const RDOEditorSciEditStyle& style ) const;
-	bool operator !=( const RDOEditorSciEditStyle& style ) const;
+	RDOBaseEditStyle& operator =( const RDOBaseEditStyle& style );
+	bool operator ==( const RDOBaseEditStyle& style ) const;
+	bool operator !=( const RDOBaseEditStyle& style ) const;
 
 	virtual void init( const string& _regPath = "" );
 	virtual void load();
 	virtual void save() const;
 
-	RDOEditorSciEditTheme*  theme;
-	RDOEditorSciEditFont*   font;
-	RDOEditorSciEditTab*    tab;
-	RDOEditorSciEditWindow* window;
+	RDOBaseEditTheme*  theme;
+	RDOBaseEditFont*   font;
+	RDOBaseEditTab*    tab;
+	RDOBaseEditWindow* window;
 };
 
-}; // namespace rdoEditor
+}; // rdoStyle
 
-#endif // RDOEDITORSCIEDITSTYLE_H
+#endif // RDOBASEEDITSTYLE_H

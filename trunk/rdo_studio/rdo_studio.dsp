@@ -416,22 +416,6 @@ SOURCE=.\rdo_edit\rdoeditorproject.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\rdo_edit\rdoeditorsciedit.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\rdoeditorscieditstyle.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\rdoeditorscilog.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\rdoeditorscilogstyle.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\rdo_edit\rdoeditortabctrl.cpp
 # End Source File
 # End Group
@@ -468,267 +452,8 @@ SOURCE=.\rdo_edit\rdoeditorproject.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\rdo_edit\rdoeditorsciedit.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\rdoeditorscieditstyle.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\rdoeditorscilog.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\rdoeditorscilogstyle.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\rdo_edit\rdoeditortabctrl.h
 # End Source File
-# End Group
-# Begin Group "Scintilla"
-
-# PROP Default_Filter ""
-# Begin Group "Scintilla Source Files"
-
-# PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=.\rdo_edit\sci\AutoComplete.cxx
-# SUBTRACT CPP /YX /Yc /Yu
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\sci\CallTip.cxx
-# SUBTRACT CPP /YX /Yc /Yu
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\sci\CellBuffer.cxx
-# SUBTRACT CPP /YX /Yc /Yu
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\sci\ContractionState.cxx
-# SUBTRACT CPP /YX /Yc /Yu
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\sci\Document.cxx
-# SUBTRACT CPP /YX /Yc /Yu
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\sci\DocumentAccessor.cxx
-# SUBTRACT CPP /YX /Yc /Yu
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\sci\Editor.cxx
-# SUBTRACT CPP /YX /Yc /Yu
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\sci\ExternalLexer.cxx
-# SUBTRACT CPP /YX /Yc /Yu
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\sci\Indicator.cxx
-# SUBTRACT CPP /YX /Yc /Yu
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\sci\KeyMap.cxx
-# SUBTRACT CPP /YX /Yc /Yu
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\sci\KeyWords.cxx
-# SUBTRACT CPP /YX /Yc /Yu
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\sci\LexRdo.cxx
-# SUBTRACT CPP /YX /Yc /Yu
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\sci\LineMarker.cxx
-# SUBTRACT CPP /YX /Yc /Yu
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\sci\PlatWin.cxx
-# SUBTRACT CPP /YX /Yc /Yu
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\sci\PropSet.cxx
-# SUBTRACT CPP /YX /Yc /Yu
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\sci\RESearch.cxx
-# SUBTRACT CPP /YX /Yc /Yu
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\sci\ScintillaBase.cxx
-# SUBTRACT CPP /YX /Yc /Yu
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\sci\ScintillaWin.cxx
-# SUBTRACT CPP /YX /Yc /Yu
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\sci\Style.cxx
-# SUBTRACT CPP /YX /Yc /Yu
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\sci\StyleContext.cxx
-# SUBTRACT CPP /YX /Yc /Yu
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\sci\UniConversion.cxx
-# SUBTRACT CPP /YX /Yc /Yu
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\sci\ViewStyle.cxx
-# SUBTRACT CPP /YX /Yc /Yu
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\sci\WindowAccessor.cxx
-# SUBTRACT CPP /YX /Yc /Yu
-# End Source File
-# End Group
-# Begin Group "Scintilla Header Files"
-
-# PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=.\rdo_edit\sci\Accessor.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\sci\AutoComplete.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\sci\CallTip.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\sci\CellBuffer.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\sci\ContractionState.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\sci\Document.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\sci\DocumentAccessor.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\sci\Editor.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\sci\ExternalLexer.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\sci\Indicator.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\sci\KeyMap.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\sci\KeyWords.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\sci\LexRdo.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\sci\LineMarker.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\sci\Platform.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\sci\PlatformRes.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\sci\PropSet.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\sci\RESearch.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\sci\SciLexer.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\sci\Scintilla.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\sci\ScintillaBase.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\sci\ScintillaWidget.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\sci\SString.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\sci\Style.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\sci\StyleContext.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\sci\SVector.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\sci\UniConversion.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\sci\ViewStyle.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\sci\WindowAccessor.h
-# End Source File
-# End Group
 # End Group
 # End Group
 # Begin Group "RDO-Tracer"
@@ -796,27 +521,7 @@ SOURCE=.\rdo_tracer\rdotracertreectrl.h
 # PROP Default_Filter "ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
 # Begin Source File
 
-SOURCE=.\res\editToolbar.bmp
-# End Source File
-# Begin Source File
-
-SOURCE=.\res\editToolbar_d.bmp
-# End Source File
-# Begin Source File
-
-SOURCE=.\res\idr_mode.ico
-# End Source File
-# Begin Source File
-
 SOURCE=.\res\Margin.cur
-# End Source File
-# Begin Source File
-
-SOURCE=.\res\projectToolbar.bmp
-# End Source File
-# Begin Source File
-
-SOURCE=.\res\projectToolbar_d.bmp
 # End Source File
 # Begin Source File
 
@@ -840,23 +545,11 @@ SOURCE=.\res\rdostudiochartdoc.ico
 # End Source File
 # Begin Source File
 
-SOURCE=.\res\rdostudiodoc.ico
-# End Source File
-# Begin Source File
-
 SOURCE=.\res\rdostudioeditdoc.ico
 # End Source File
 # Begin Source File
 
 SOURCE=.\res\rdostudiomodeldoc.ico
-# End Source File
-# Begin Source File
-
-SOURCE=.\res\Toolbar.bmp
-# End Source File
-# Begin Source File
-
-SOURCE=.\res\tracertreectrl.bmp
 # End Source File
 # End Group
 # Begin Group "CSizingControlBar"
@@ -884,6 +577,481 @@ SOURCE=.\sizecbar\scbarg.h
 # Begin Source File
 
 SOURCE=.\sizecbar\sizecbar.h
+# End Source File
+# End Group
+# End Group
+# Begin Group "Edit Ctrls"
+
+# PROP Default_Filter ""
+# Begin Group "Edit Ctrls Source Files"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\edit_ctrls\rdobaseedit.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\rdobaseeditstyle.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\rdologedit.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\rdologeditstyle.cpp
+# End Source File
+# End Group
+# Begin Group "Edit Ctrls Headers Files"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\edit_ctrls\rdobaseedit.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\rdobaseeditstyle.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\rdologedit.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\rdologeditstyle.h
+# End Source File
+# End Group
+# Begin Group "Scintilla"
+
+# PROP Default_Filter ""
+# Begin Group "Scintilla Source Files"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\AutoComplete.cxx
+
+!IF  "$(CFG)" == "rdo_studio - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
+
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\CallTip.cxx
+
+!IF  "$(CFG)" == "rdo_studio - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
+
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\CellBuffer.cxx
+
+!IF  "$(CFG)" == "rdo_studio - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
+
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\ContractionState.cxx
+
+!IF  "$(CFG)" == "rdo_studio - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
+
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\Document.cxx
+
+!IF  "$(CFG)" == "rdo_studio - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
+
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\DocumentAccessor.cxx
+
+!IF  "$(CFG)" == "rdo_studio - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
+
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\Editor.cxx
+
+!IF  "$(CFG)" == "rdo_studio - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
+
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\ExternalLexer.cxx
+
+!IF  "$(CFG)" == "rdo_studio - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
+
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\Indicator.cxx
+
+!IF  "$(CFG)" == "rdo_studio - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
+
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\KeyMap.cxx
+
+!IF  "$(CFG)" == "rdo_studio - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
+
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\KeyWords.cxx
+
+!IF  "$(CFG)" == "rdo_studio - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
+
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\LexRdo.cxx
+
+!IF  "$(CFG)" == "rdo_studio - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
+
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\LineMarker.cxx
+
+!IF  "$(CFG)" == "rdo_studio - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
+
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\PlatWin.cxx
+
+!IF  "$(CFG)" == "rdo_studio - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
+
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\PropSet.cxx
+
+!IF  "$(CFG)" == "rdo_studio - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
+
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\RESearch.cxx
+
+!IF  "$(CFG)" == "rdo_studio - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
+
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\ScintillaBase.cxx
+
+!IF  "$(CFG)" == "rdo_studio - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
+
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\ScintillaWin.cxx
+
+!IF  "$(CFG)" == "rdo_studio - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
+
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\Style.cxx
+
+!IF  "$(CFG)" == "rdo_studio - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
+
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\StyleContext.cxx
+
+!IF  "$(CFG)" == "rdo_studio - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
+
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\UniConversion.cxx
+
+!IF  "$(CFG)" == "rdo_studio - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
+
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\ViewStyle.cxx
+
+!IF  "$(CFG)" == "rdo_studio - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
+
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\WindowAccessor.cxx
+
+!IF  "$(CFG)" == "rdo_studio - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
+
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ENDIF 
+
+# End Source File
+# End Group
+# Begin Group "Scintilla Header Files"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\Accessor.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\AutoComplete.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\CallTip.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\CellBuffer.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\ContractionState.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\Document.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\DocumentAccessor.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\Editor.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\ExternalLexer.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\Indicator.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\KeyMap.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\KeyWords.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\LexRdo.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\LineMarker.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\Platform.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\PlatformRes.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\PropSet.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\RESearch.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\SciLexer.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\Scintilla.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\ScintillaBase.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\ScintillaWidget.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\SString.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\Style.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\StyleContext.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\SVector.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\UniConversion.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\ViewStyle.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\WindowAccessor.h
+# End Source File
+# End Group
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\License.txt
 # End Source File
 # End Group
 # End Group

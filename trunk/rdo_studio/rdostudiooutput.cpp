@@ -2,8 +2,8 @@
 #include "rdostudiooutput.h"
 #include "rdostudioapp.h"
 #include "rdostudiomainfrm.h"
-#include "rdo_edit/rdoeditorsciedit.h"
-#include "rdo_edit/rdoeditorscilog.h"
+#include "edit_ctrls/rdobaseedit.h"
+#include "edit_ctrls/rdologedit.h"
 #include "rdo_edit/rdoeditoredit.h"
 #include "./rdo_tracer/rdotracertrace.h"
 
@@ -62,11 +62,11 @@ int RDOStudioOutput::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	RDOStudioApp::appendMenu( mainMenu->GetSubMenu( 2 + delta ), 9, &popupMenu );
 	RDOStudioApp::appendMenu( mainMenu->GetSubMenu( 2 + delta ), 10, &popupMenu );
 
-	build   = new RDOEditorSciLog;
-	debug   = new RDOEditorSciEdit;
+	build   = new RDOLogEdit;
+	debug   = new RDOBaseEdit;
 	tracer  = (CWnd*)::trace.createLog();
 	results = new RDOEditorEdit;
-	find    = new RDOEditorSciLog;
+	find    = new RDOLogEdit;
 
 	build->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), tab.getTabAsParent(), -1 );
 	debug->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), tab.getTabAsParent(), -1 );
@@ -167,7 +167,7 @@ void RDOStudioOutput::clearFind()
 	find->clearAll();
 }
 
-void RDOStudioOutput::appendString( const RDOEditorSciEdit* const edit, const string& str ) const
+void RDOStudioOutput::appendString( const RDOBaseEdit* const edit, const string& str ) const
 {
 	bool readOnly = edit->isReadOnly();
 	if ( readOnly ) {
@@ -198,6 +198,6 @@ void RDOStudioOutput::appendStringToDebug( const string& str ) const
 
 void RDOStudioOutput::appendStringToFind( const string& str, const rdoModelObjects::RDOFileType fileType, const int lineNumber ) const
 {
-	RDOEditorSciLogLineInfo* line = new RDOEditorSciLogLineInfo( str, fileType, lineNumber );
+	RDOLogEditLineInfo* line = new RDOLogEditLineInfo( str, fileType, lineNumber );
 	find->appendLine( line );
 }

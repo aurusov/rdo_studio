@@ -1,9 +1,9 @@
-#ifndef RDOEDITORSCILOGEDIT_H
-#define RDOEDITORSCILOGEDIT_H
+#ifndef RDOLOGEDIT_H
+#define RDOLOGEDIT_H
 #pragma once
 
-#include "rdoeditorsciedit.h"
-#include "rdoeditorscilogstyle.h"
+#include "rdobaseedit.h"
+#include "rdologeditstyle.h"
 
 #include <rdosimwin.h>
 
@@ -11,24 +11,22 @@
 
 using namespace std;
 
-namespace rdoEditor {
-
 // ----------------------------------------------------------------------------
-// ---------- RDOEditorSciLogLineInfo
+// ---------- RDOLogEditLineInfo
 // ----------------------------------------------------------------------------
-class RDOEditorSciLog;
+class RDOLogEdit;
 
-class RDOEditorSciLogLineInfo
+class RDOLogEditLineInfo
 {
-friend class RDOEditorSciLog;
+friend class RDOLogEdit;
 protected:
 	rdoModelObjects::RDOFileType fileType;
 	int                          lineNumber;
 	string                       message;
 
 public:
-	RDOEditorSciLogLineInfo( const string& _message, const rdoModelObjects::RDOFileType _fileType = rdoModelObjects::PAT, const int _lineNumber = -1 );
-	~RDOEditorSciLogLineInfo();
+	RDOLogEditLineInfo( const string& _message, const rdoModelObjects::RDOFileType _fileType = rdoModelObjects::PAT, const int _lineNumber = -1 );
+	~RDOLogEditLineInfo();
 
 	virtual string getMessage() const;
 };
@@ -36,7 +34,7 @@ public:
 // ----------------------------------------------------------------------------
 // ---------- RDOEditorSciBuildLineInfo
 // ----------------------------------------------------------------------------
-class RDOEditorSciBuildLineInfo: public RDOEditorSciLogLineInfo
+class RDOEditorSciBuildLineInfo: public RDOLogEditLineInfo
 {
 protected:
 	bool error;
@@ -49,41 +47,41 @@ public:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOEditorSciLog
+// ---------- RDOLogEdit
 // ----------------------------------------------------------------------------
-class RDOEditorSciLog: public RDOEditorSciEdit
+class RDOLogEdit: public RDOBaseEdit
 {
 private:
 	int sci_MARKER_LINE;
 
 protected:
-	list< RDOEditorSciLogLineInfo* > lines;
+	list< RDOLogEditLineInfo* > lines;
+	void clearLines();
 
 	void setSelectLine();
 	void clearSelectLine();
 	bool hasSelectLine() const;
 
-	//{{AFX_MSG(RDOEditorSciLog)
+	//{{AFX_MSG(RDOLogEdit)
 	afx_msg int OnCreate( LPCREATESTRUCT lpCreateStruct );
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
-	//{{AFX_VIRTUAL(RDOEditorSciLog)
+	//{{AFX_VIRTUAL(RDOLogEdit)
 	protected:
 	virtual BOOL OnNotify( WPARAM wParam, LPARAM lParam, LRESULT* pResult );
 	//}}AFX_VIRTUAL
 
 public:
-	RDOEditorSciLog();
-	virtual ~RDOEditorSciLog();
+	RDOLogEdit();
+	virtual ~RDOLogEdit();
 
-	virtual void setEditorStyle( RDOEditorSciEditStyle* style );
+	virtual void setEditorStyle( rdoStyle::RDOBaseEditStyle* style );
 
-	void appendLine( RDOEditorSciLogLineInfo* line );
+	virtual void clearAll();
+	void appendLine( RDOLogEditLineInfo* line );
 };
-
-}; // namespace rdoEditor
 
 //{{AFX_INSERT_LOCATION}}
 
-#endif // RDOEDITORSCILOGEDIT_H
+#endif // RDOLOGEDIT_H

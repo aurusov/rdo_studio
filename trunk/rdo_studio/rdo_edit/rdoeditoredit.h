@@ -2,9 +2,9 @@
 #define RDOEDITOREDIT_H
 #pragma once
 
-#include "rdoeditorsciedit.h"
+#include "../edit_ctrls/rdobaseedit.h"
 #include "rdoeditoreditstyle.h"
-#include "sci/Scintilla.h"
+//#include "sci/Scintilla.h"
 
 class RDOStudioEditBaseView;
 
@@ -15,7 +15,7 @@ namespace rdoEditor {
 // ----------------------------------------------------------------------------
 // ---------- RDOEditorEdit
 // ----------------------------------------------------------------------------
-class RDOEditorEdit: public RDOEditorSciEdit
+class RDOEditorEdit: public RDOBaseEdit
 {
 private:
 	int sci_MARKER_ERROR;
@@ -77,7 +77,9 @@ public:
 	RDOEditorEdit( RDOStudioEditBaseView* _view = NULL );
 	virtual ~RDOEditorEdit();
 
-	virtual void setEditorStyle( RDOEditorSciEditStyle* style );
+	virtual void setEditorStyle( rdoStyle::RDOBaseEditStyle* style );
+
+	void replaceCurrent( const string str, const int changePosValue = -1 ) const;
 };
 
 }; // namespace rdoEditor

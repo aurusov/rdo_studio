@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "rdoeditoredit.h"
-#include "sci/SciLexer.h"
-#include "sci/LexRdo.h"
-#include "sci/PropSet.h"
+#include "../edit_ctrls/sci/SciLexer.h"
+#include "../edit_ctrls/sci/LexRdo.h"
+#include "../edit_ctrls/sci/PropSet.h"
 #include "../rdostudioeditbaseview.h"
 #include "../resource.h"
 //#include "../Htmlhelp.h"
@@ -70,7 +70,7 @@ static char* wordCharacters = "0123456789_$abcdefghijklmnopqrstuvwxyzABCDEFGHIJK
 
 // ---------------
 
-BEGIN_MESSAGE_MAP( RDOEditorEdit, RDOEditorSciEdit )
+BEGIN_MESSAGE_MAP( RDOEditorEdit, RDOBaseEdit )
 	//{{AFX_MSG_MAP(RDOEditorEdit)
 	ON_WM_CREATE()
 	ON_COMMAND(ID_EDIT_COMMENTSELECTION, OnEditCommentSelection)
@@ -115,7 +115,7 @@ BEGIN_MESSAGE_MAP( RDOEditorEdit, RDOEditorSciEdit )
 END_MESSAGE_MAP()
 
 RDOEditorEdit::RDOEditorEdit( RDOStudioEditBaseView* _view ):
-	RDOEditorSciEdit(),
+	RDOBaseEdit(),
 	bufSelStart( -1 ),
 	view( _view )
 {
@@ -130,7 +130,7 @@ BOOL RDOEditorEdit::OnNotify( WPARAM wParam, LPARAM lParam, LRESULT* pResult )
 {
 	SCNotification* scn = (SCNotification*)lParam;
 
-	if ( !RDOEditorSciEdit::OnNotify( wParam, lParam, pResult ) || ( scn->nmhdr.hwndFrom == sciHWND && scn->nmhdr.code == SCN_CHARADDED ) ) {
+	if ( !RDOBaseEdit::OnNotify( wParam, lParam, pResult ) || ( scn->nmhdr.hwndFrom == sciHWND && scn->nmhdr.code == SCN_CHARADDED ) ) {
 
 		if ( scn->nmhdr.hwndFrom == sciHWND ) {
 			switch( scn->nmhdr.code ) {
@@ -172,7 +172,7 @@ BOOL RDOEditorEdit::OnNotify( WPARAM wParam, LPARAM lParam, LRESULT* pResult )
 
 int RDOEditorEdit::OnCreate( LPCREATESTRUCT lpCreateStruct )
 {
-	if ( RDOEditorSciEdit::OnCreate(lpCreateStruct) == -1 ) return -1;
+	if ( RDOBaseEdit::OnCreate(lpCreateStruct) == -1 ) return -1;
 	sendEditor( SCI_SETLEXER, SCLEX_RDO );
 	int lexLanguage = sendEditor( SCI_GETLEXER );
 	sendEditor( SCI_SETSTYLEBITS, 5 );
@@ -194,9 +194,9 @@ int RDOEditorEdit::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	return 0;
 }
 
-void RDOEditorEdit::setEditorStyle( RDOEditorSciEditStyle* style )
+void RDOEditorEdit::setEditorStyle( rdoStyle::RDOBaseEditStyle* style )
 {
-	RDOEditorSciEdit::setEditorStyle( style );
+	RDOBaseEdit::setEditorStyle( style );
 
 	// ----------
 	// Colors
@@ -221,33 +221,33 @@ void RDOEditorEdit::setEditorStyle( RDOEditorSciEditStyle* style )
 
 	// ----------
 	// Styles
-	sendEditor( SCI_STYLESETBOLD     , SCE_RDO_DEFAULT, ((RDOEditorEditTheme*)style->theme)->defaultStyle & RDOFS_BOLD      );
-	sendEditor( SCI_STYLESETITALIC   , SCE_RDO_DEFAULT, ((RDOEditorEditTheme*)style->theme)->defaultStyle & RDOFS_ITALIC    );
-	sendEditor( SCI_STYLESETUNDERLINE, SCE_RDO_DEFAULT, ((RDOEditorEditTheme*)style->theme)->defaultStyle & RDOFS_UNDERLINE );
-	sendEditor( SCI_STYLESETBOLD     , SCE_RDO_IDENTIFIER, ((RDOEditorEditTheme*)style->theme)->identifierStyle & RDOFS_BOLD      );
-	sendEditor( SCI_STYLESETITALIC   , SCE_RDO_IDENTIFIER, ((RDOEditorEditTheme*)style->theme)->identifierStyle & RDOFS_ITALIC    );
-	sendEditor( SCI_STYLESETUNDERLINE, SCE_RDO_IDENTIFIER, ((RDOEditorEditTheme*)style->theme)->identifierStyle & RDOFS_UNDERLINE );
-	sendEditor( SCI_STYLESETBOLD     , SCE_RDO_KEYWORD, ((RDOEditorEditTheme*)style->theme)->keywordStyle & RDOFS_BOLD      );
-	sendEditor( SCI_STYLESETITALIC   , SCE_RDO_KEYWORD, ((RDOEditorEditTheme*)style->theme)->keywordStyle & RDOFS_ITALIC    );
-	sendEditor( SCI_STYLESETUNDERLINE, SCE_RDO_KEYWORD, ((RDOEditorEditTheme*)style->theme)->keywordStyle & RDOFS_UNDERLINE );
-	sendEditor( SCI_STYLESETBOLD     , SCE_RDO_FUNCTION, ((RDOEditorEditTheme*)style->theme)->functionsStyle & RDOFS_BOLD      );
-	sendEditor( SCI_STYLESETITALIC   , SCE_RDO_FUNCTION, ((RDOEditorEditTheme*)style->theme)->functionsStyle & RDOFS_ITALIC    );
-	sendEditor( SCI_STYLESETUNDERLINE, SCE_RDO_FUNCTION, ((RDOEditorEditTheme*)style->theme)->functionsStyle & RDOFS_UNDERLINE );
-	sendEditor( SCI_STYLESETBOLD     , SCE_RDO_TRACE, ((RDOEditorEditTheme*)style->theme)->traceStyle & RDOFS_BOLD      );
-	sendEditor( SCI_STYLESETITALIC   , SCE_RDO_TRACE, ((RDOEditorEditTheme*)style->theme)->traceStyle & RDOFS_ITALIC    );
-	sendEditor( SCI_STYLESETUNDERLINE, SCE_RDO_TRACE, ((RDOEditorEditTheme*)style->theme)->traceStyle & RDOFS_UNDERLINE );
-	sendEditor( SCI_STYLESETBOLD     , SCE_RDO_COMMENT, ((RDOEditorEditTheme*)style->theme)->commentStyle & RDOFS_BOLD      );
-	sendEditor( SCI_STYLESETITALIC   , SCE_RDO_COMMENT, ((RDOEditorEditTheme*)style->theme)->commentStyle & RDOFS_ITALIC    );
-	sendEditor( SCI_STYLESETUNDERLINE, SCE_RDO_COMMENT, ((RDOEditorEditTheme*)style->theme)->commentStyle & RDOFS_UNDERLINE );
-	sendEditor( SCI_STYLESETBOLD     , SCE_RDO_NUMBER, ((RDOEditorEditTheme*)style->theme)->numberStyle & RDOFS_BOLD      );
-	sendEditor( SCI_STYLESETITALIC   , SCE_RDO_NUMBER, ((RDOEditorEditTheme*)style->theme)->numberStyle & RDOFS_ITALIC    );
-	sendEditor( SCI_STYLESETUNDERLINE, SCE_RDO_NUMBER, ((RDOEditorEditTheme*)style->theme)->numberStyle & RDOFS_UNDERLINE );
-	sendEditor( SCI_STYLESETBOLD     , SCE_RDO_STRING, ((RDOEditorEditTheme*)style->theme)->stringStyle & RDOFS_BOLD      );
-	sendEditor( SCI_STYLESETITALIC   , SCE_RDO_STRING, ((RDOEditorEditTheme*)style->theme)->stringStyle & RDOFS_ITALIC    );
-	sendEditor( SCI_STYLESETUNDERLINE, SCE_RDO_STRING, ((RDOEditorEditTheme*)style->theme)->stringStyle & RDOFS_UNDERLINE );
-	sendEditor( SCI_STYLESETBOLD     , SCE_RDO_OPERATOR, ((RDOEditorEditTheme*)style->theme)->operatorStyle & RDOFS_BOLD      );
-	sendEditor( SCI_STYLESETITALIC   , SCE_RDO_OPERATOR, ((RDOEditorEditTheme*)style->theme)->operatorStyle & RDOFS_ITALIC    );
-	sendEditor( SCI_STYLESETUNDERLINE, SCE_RDO_OPERATOR, ((RDOEditorEditTheme*)style->theme)->operatorStyle & RDOFS_UNDERLINE );
+	sendEditor( SCI_STYLESETBOLD     , SCE_RDO_DEFAULT, ((RDOEditorEditTheme*)style->theme)->defaultStyle & rdoStyle::RDOFS_BOLD      );
+	sendEditor( SCI_STYLESETITALIC   , SCE_RDO_DEFAULT, ((RDOEditorEditTheme*)style->theme)->defaultStyle & rdoStyle::RDOFS_ITALIC    );
+	sendEditor( SCI_STYLESETUNDERLINE, SCE_RDO_DEFAULT, ((RDOEditorEditTheme*)style->theme)->defaultStyle & rdoStyle::RDOFS_UNDERLINE );
+	sendEditor( SCI_STYLESETBOLD     , SCE_RDO_IDENTIFIER, ((RDOEditorEditTheme*)style->theme)->identifierStyle & rdoStyle::RDOFS_BOLD      );
+	sendEditor( SCI_STYLESETITALIC   , SCE_RDO_IDENTIFIER, ((RDOEditorEditTheme*)style->theme)->identifierStyle & rdoStyle::RDOFS_ITALIC    );
+	sendEditor( SCI_STYLESETUNDERLINE, SCE_RDO_IDENTIFIER, ((RDOEditorEditTheme*)style->theme)->identifierStyle & rdoStyle::RDOFS_UNDERLINE );
+	sendEditor( SCI_STYLESETBOLD     , SCE_RDO_KEYWORD, ((RDOEditorEditTheme*)style->theme)->keywordStyle & rdoStyle::RDOFS_BOLD      );
+	sendEditor( SCI_STYLESETITALIC   , SCE_RDO_KEYWORD, ((RDOEditorEditTheme*)style->theme)->keywordStyle & rdoStyle::RDOFS_ITALIC    );
+	sendEditor( SCI_STYLESETUNDERLINE, SCE_RDO_KEYWORD, ((RDOEditorEditTheme*)style->theme)->keywordStyle & rdoStyle::RDOFS_UNDERLINE );
+	sendEditor( SCI_STYLESETBOLD     , SCE_RDO_FUNCTION, ((RDOEditorEditTheme*)style->theme)->functionsStyle & rdoStyle::RDOFS_BOLD      );
+	sendEditor( SCI_STYLESETITALIC   , SCE_RDO_FUNCTION, ((RDOEditorEditTheme*)style->theme)->functionsStyle & rdoStyle::RDOFS_ITALIC    );
+	sendEditor( SCI_STYLESETUNDERLINE, SCE_RDO_FUNCTION, ((RDOEditorEditTheme*)style->theme)->functionsStyle & rdoStyle::RDOFS_UNDERLINE );
+	sendEditor( SCI_STYLESETBOLD     , SCE_RDO_TRACE, ((RDOEditorEditTheme*)style->theme)->traceStyle & rdoStyle::RDOFS_BOLD      );
+	sendEditor( SCI_STYLESETITALIC   , SCE_RDO_TRACE, ((RDOEditorEditTheme*)style->theme)->traceStyle & rdoStyle::RDOFS_ITALIC    );
+	sendEditor( SCI_STYLESETUNDERLINE, SCE_RDO_TRACE, ((RDOEditorEditTheme*)style->theme)->traceStyle & rdoStyle::RDOFS_UNDERLINE );
+	sendEditor( SCI_STYLESETBOLD     , SCE_RDO_COMMENT, ((RDOEditorEditTheme*)style->theme)->commentStyle & rdoStyle::RDOFS_BOLD      );
+	sendEditor( SCI_STYLESETITALIC   , SCE_RDO_COMMENT, ((RDOEditorEditTheme*)style->theme)->commentStyle & rdoStyle::RDOFS_ITALIC    );
+	sendEditor( SCI_STYLESETUNDERLINE, SCE_RDO_COMMENT, ((RDOEditorEditTheme*)style->theme)->commentStyle & rdoStyle::RDOFS_UNDERLINE );
+	sendEditor( SCI_STYLESETBOLD     , SCE_RDO_NUMBER, ((RDOEditorEditTheme*)style->theme)->numberStyle & rdoStyle::RDOFS_BOLD      );
+	sendEditor( SCI_STYLESETITALIC   , SCE_RDO_NUMBER, ((RDOEditorEditTheme*)style->theme)->numberStyle & rdoStyle::RDOFS_ITALIC    );
+	sendEditor( SCI_STYLESETUNDERLINE, SCE_RDO_NUMBER, ((RDOEditorEditTheme*)style->theme)->numberStyle & rdoStyle::RDOFS_UNDERLINE );
+	sendEditor( SCI_STYLESETBOLD     , SCE_RDO_STRING, ((RDOEditorEditTheme*)style->theme)->stringStyle & rdoStyle::RDOFS_BOLD      );
+	sendEditor( SCI_STYLESETITALIC   , SCE_RDO_STRING, ((RDOEditorEditTheme*)style->theme)->stringStyle & rdoStyle::RDOFS_ITALIC    );
+	sendEditor( SCI_STYLESETUNDERLINE, SCE_RDO_STRING, ((RDOEditorEditTheme*)style->theme)->stringStyle & rdoStyle::RDOFS_UNDERLINE );
+	sendEditor( SCI_STYLESETBOLD     , SCE_RDO_OPERATOR, ((RDOEditorEditTheme*)style->theme)->operatorStyle & rdoStyle::RDOFS_BOLD      );
+	sendEditor( SCI_STYLESETITALIC   , SCE_RDO_OPERATOR, ((RDOEditorEditTheme*)style->theme)->operatorStyle & rdoStyle::RDOFS_ITALIC    );
+	sendEditor( SCI_STYLESETUNDERLINE, SCE_RDO_OPERATOR, ((RDOEditorEditTheme*)style->theme)->operatorStyle & rdoStyle::RDOFS_UNDERLINE );
 
 	// ----------
 	// Font Name
@@ -719,6 +719,19 @@ void RDOEditorEdit::OnUndateBuffer3Clear( CCmdUI* pCmdUI )
 void RDOEditorEdit::OnUndateBuffer4Clear( CCmdUI* pCmdUI )
 {
 	pCmdUI->Enable( view && !view->buf4.empty() );
+}
+
+void RDOEditorEdit::replaceCurrent( const string str, const int changePosValue ) const
+{
+	int pos;
+	if ( changePosValue != -1 ) pos = getCurrentPos();
+
+	sendEditor( SCI_REPLACESEL, 0, (long)str.c_str() );
+
+	if ( changePosValue != -1 ) {
+		pos += changePosValue;
+		setCurrentPos( pos );
+	}
 }
 
 /*

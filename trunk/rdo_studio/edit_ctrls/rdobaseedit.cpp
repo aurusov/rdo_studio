@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "rdoeditorsciedit.h"
+#include "rdobaseedit.h"
 #include "sci/SciLexer.h"
 #include "sci/PropSet.h"
 #include "sci/Scintilla.h"
@@ -9,10 +9,8 @@
 #define new DEBUG_NEW
 #endif
 
-using namespace rdoEditor;
-
 // ----------------------------------------------------------------------------
-// ---------- RDOEditorSciEdit
+// ---------- RDOBaseEdit
 // ---------------------------------------------------------------------------
 
 // ---------------
@@ -52,8 +50,8 @@ using namespace rdoEditor;
 // ---------------
 static const UINT FIND_REPLASE_MSG = ::RegisterWindowMessage( FINDMSGSTRING );
 
-BEGIN_MESSAGE_MAP( RDOEditorSciEdit, CWnd )
-	//{{AFX_MSG_MAP(RDOEditorSciEdit)
+BEGIN_MESSAGE_MAP( RDOBaseEdit, CWnd )
+	//{{AFX_MSG_MAP(RDOBaseEdit)
 	ON_WM_CREATE()
 	ON_WM_SETFOCUS()
 	ON_WM_SIZE()
@@ -122,9 +120,9 @@ BEGIN_MESSAGE_MAP( RDOEditorSciEdit, CWnd )
 
 END_MESSAGE_MAP()
 
-int RDOEditorSciEdit::objectCount = 0;
+int RDOBaseEdit::objectCount = 0;
 
-RDOEditorSciEdit::RDOEditorSciEdit():
+RDOBaseEdit::RDOBaseEdit():
 	CWnd(),
 	sciHWND( 0 ),
 	sciEditor( 0 ),
@@ -150,7 +148,7 @@ RDOEditorSciEdit::RDOEditorSciEdit():
 	sci_FOLDMARGIN_ID   = getNewMarker();
 }
 
-RDOEditorSciEdit::~RDOEditorSciEdit()
+RDOBaseEdit::~RDOBaseEdit()
 {
 	objectCount--;
 	if ( !objectCount ) {
@@ -158,7 +156,7 @@ RDOEditorSciEdit::~RDOEditorSciEdit()
 	}
 }
 
-BOOL RDOEditorSciEdit::PreCreateWindow( CREATESTRUCT& cs )
+BOOL RDOBaseEdit::PreCreateWindow( CREATESTRUCT& cs )
 {
 	if ( !CWnd::PreCreateWindow(cs) ) return FALSE;
 	cs.dwExStyle |= WS_EX_CLIENTEDGE;
@@ -168,7 +166,7 @@ BOOL RDOEditorSciEdit::PreCreateWindow( CREATESTRUCT& cs )
 	return TRUE;
 }
 
-BOOL RDOEditorSciEdit::OnNotify( WPARAM wParam, LPARAM lParam, LRESULT* pResult )
+BOOL RDOBaseEdit::OnNotify( WPARAM wParam, LPARAM lParam, LRESULT* pResult )
 {
 	SCNotification* scn = (SCNotification*)lParam;
 
@@ -201,7 +199,7 @@ BOOL RDOEditorSciEdit::OnNotify( WPARAM wParam, LPARAM lParam, LRESULT* pResult 
 	return FALSE;
 }
 
-BOOL RDOEditorSciEdit::OnCommand(WPARAM wParam, LPARAM lParam) 
+BOOL RDOBaseEdit::OnCommand(WPARAM wParam, LPARAM lParam) 
 {
 	if ( HIWORD( wParam ) == SCEN_SETFOCUS ) {
 		CWnd* parent = GetParent();
@@ -212,7 +210,7 @@ BOOL RDOEditorSciEdit::OnCommand(WPARAM wParam, LPARAM lParam)
 	return CWnd::OnCommand(wParam, lParam);
 }
 
-int RDOEditorSciEdit::OnCreate( LPCREATESTRUCT lpCreateStruct )
+int RDOBaseEdit::OnCreate( LPCREATESTRUCT lpCreateStruct )
 {
 	if ( CWnd::OnCreate(lpCreateStruct) == -1 ) return -1;
 	sciHWND = CreateWindowEx( 0, "Scintilla", "", WS_CHILD | WS_VISIBLE | WS_TABSTOP, 10, 10, 500, 400, m_hWnd, 0, 0, NULL );
@@ -239,7 +237,7 @@ int RDOEditorSciEdit::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	return 0;
 }
 
-void RDOEditorSciEdit::OnSetFocus( CWnd* pOldWnd )
+void RDOBaseEdit::OnSetFocus( CWnd* pOldWnd )
 {
 	CWnd::OnSetFocus( pOldWnd );
 	if ( sciHWND ) {
@@ -250,7 +248,7 @@ void RDOEditorSciEdit::OnSetFocus( CWnd* pOldWnd )
 	}
 }
 
-void RDOEditorSciEdit::OnSize( UINT nType, int cx, int cy )
+void RDOBaseEdit::OnSize( UINT nType, int cx, int cy )
 {
 	CWnd::OnSize( nType, cx, cy );
 	CRect r;
@@ -258,33 +256,33 @@ void RDOEditorSciEdit::OnSize( UINT nType, int cx, int cy )
 	::MoveWindow( sciHWND, r.left, r.top, r.right - r.left, r.bottom - r.top, false );
 }
 
-void RDOEditorSciEdit::OnInitMenuPopup( CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu )
+void RDOBaseEdit::OnInitMenuPopup( CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu )
 {
 	CWnd::OnInitMenuPopup( pPopupMenu, nIndex, bSysMenu );
 	CFrameWnd* pwndFrame = (CFrameWnd*)AfxGetMainWnd();
 	if( pwndFrame ) pwndFrame->SendMessage( WM_INITMENUPOPUP, WPARAM(pPopupMenu->m_hMenu), MAKELPARAM(nIndex, bSysMenu) );
 }
 
-void RDOEditorSciEdit::OnContextMenu( CWnd* pWnd, CPoint pos )
+void RDOBaseEdit::OnContextMenu( CWnd* pWnd, CPoint pos )
 {
 	CWnd::OnContextMenu( pWnd, pos );
 	if ( popupMenu ) popupMenu->TrackPopupMenu( TPM_LEFTALIGN | TPM_RIGHTBUTTON, pos.x, pos.y, this );
 }
 
-int RDOEditorSciEdit::getNewMarker()
+int RDOBaseEdit::getNewMarker()
 {
 	markerCount++;
 	return markerCount;
 }
 
-void RDOEditorSciEdit::defineMarker( int marker, int markerType, COLORREF fore, COLORREF back ) const
+void RDOBaseEdit::defineMarker( int marker, int markerType, COLORREF fore, COLORREF back ) const
 {
   sendEditor( SCI_MARKERDEFINE, marker, markerType );
   sendEditor( SCI_MARKERSETFORE, marker, fore );
   sendEditor( SCI_MARKERSETBACK, marker, back );
 }
 
-void RDOEditorSciEdit::setEditorStyle( RDOEditorSciEditStyle* _style )
+void RDOBaseEdit::setEditorStyle( rdoStyle::RDOBaseEditStyle* _style )
 {
 	style = _style;
 
@@ -295,9 +293,9 @@ void RDOEditorSciEdit::setEditorStyle( RDOEditorSciEditStyle* _style )
 
 	// ----------
 	// Styles
-	sendEditor( SCI_STYLESETBOLD     , STYLE_DEFAULT, style->theme->defaultStyle & RDOFS_BOLD      );
-	sendEditor( SCI_STYLESETITALIC   , STYLE_DEFAULT, style->theme->defaultStyle & RDOFS_ITALIC    );
-	sendEditor( SCI_STYLESETUNDERLINE, STYLE_DEFAULT, style->theme->defaultStyle & RDOFS_UNDERLINE );
+	sendEditor( SCI_STYLESETBOLD     , STYLE_DEFAULT, style->theme->defaultStyle & rdoStyle::RDOFS_BOLD      );
+	sendEditor( SCI_STYLESETITALIC   , STYLE_DEFAULT, style->theme->defaultStyle & rdoStyle::RDOFS_ITALIC    );
+	sendEditor( SCI_STYLESETUNDERLINE, STYLE_DEFAULT, style->theme->defaultStyle & rdoStyle::RDOFS_UNDERLINE );
 
 	// ----------
 	// Font Name
@@ -331,11 +329,11 @@ void RDOEditorSciEdit::setEditorStyle( RDOEditorSciEditStyle* _style )
 	COLORREF bookmarkFgColor = style->theme->bookmarkFgColor;
 	COLORREF bookmarkBgColor = style->theme->bookmarkBgColor;
 	switch ( style->theme->bookmarkStyle ) {
-		case RDOBOOKMARKS_NONE     : defineMarker( sci_MARKER_BOOKMARK, SC_MARK_EMPTY    , bookmarkFgColor, bookmarkBgColor ); break;
-		case RDOBOOKMARKS_CIRCLE   : defineMarker( sci_MARKER_BOOKMARK, SC_MARK_CIRCLE   , bookmarkFgColor, bookmarkBgColor ); break;
-		case RDOBOOKMARKS_RECT     : defineMarker( sci_MARKER_BOOKMARK, SC_MARK_SMALLRECT, bookmarkFgColor, bookmarkBgColor ); break;
-		case RDOBOOKMARKS_ROUNDRECT: defineMarker( sci_MARKER_BOOKMARK, SC_MARK_ROUNDRECT, bookmarkFgColor, bookmarkBgColor ); break;
-		case RDOBOOKMARKS_ARROW    : defineMarker( sci_MARKER_BOOKMARK, SC_MARK_ARROW    , bookmarkFgColor, bookmarkBgColor ); break;
+		case rdoStyle::RDOBOOKMARKS_NONE     : defineMarker( sci_MARKER_BOOKMARK, SC_MARK_EMPTY    , bookmarkFgColor, bookmarkBgColor ); break;
+		case rdoStyle::RDOBOOKMARKS_CIRCLE   : defineMarker( sci_MARKER_BOOKMARK, SC_MARK_CIRCLE   , bookmarkFgColor, bookmarkBgColor ); break;
+		case rdoStyle::RDOBOOKMARKS_RECT     : defineMarker( sci_MARKER_BOOKMARK, SC_MARK_SMALLRECT, bookmarkFgColor, bookmarkBgColor ); break;
+		case rdoStyle::RDOBOOKMARKS_ROUNDRECT: defineMarker( sci_MARKER_BOOKMARK, SC_MARK_ROUNDRECT, bookmarkFgColor, bookmarkBgColor ); break;
+		case rdoStyle::RDOBOOKMARKS_ARROW    : defineMarker( sci_MARKER_BOOKMARK, SC_MARK_ARROW    , bookmarkFgColor, bookmarkBgColor ); break;
 	}
 
 	// ----------
@@ -343,7 +341,7 @@ void RDOEditorSciEdit::setEditorStyle( RDOEditorSciEditStyle* _style )
 	COLORREF foldFgColor = style->theme->foldFgColor;
 	COLORREF foldBgColor = style->theme->foldBgColor;
 	switch ( style->theme->foldStyle ) {
-		case RDOFOLDS_NONE:
+		case rdoStyle::RDOFOLDS_NONE:
 			defineMarker( SC_MARKNUM_FOLDEROPEN   , SC_MARK_EMPTY, foldFgColor, foldBgColor );
 			defineMarker( SC_MARKNUM_FOLDER       , SC_MARK_EMPTY, foldFgColor, foldBgColor );
 			defineMarker( SC_MARKNUM_FOLDERSUB    , SC_MARK_EMPTY, foldFgColor, foldBgColor );
@@ -352,7 +350,7 @@ void RDOEditorSciEdit::setEditorStyle( RDOEditorSciEditStyle* _style )
 			defineMarker( SC_MARKNUM_FOLDEROPENMID, SC_MARK_EMPTY, foldFgColor, foldBgColor );
 			defineMarker( SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_EMPTY, foldFgColor, foldBgColor );
 			break;
-		case RDOFOLDS_PLUS:
+		case rdoStyle::RDOFOLDS_PLUS:
 			defineMarker( SC_MARKNUM_FOLDEROPEN   , SC_MARK_MINUS, foldFgColor, foldBgColor );
 			defineMarker( SC_MARKNUM_FOLDER       , SC_MARK_PLUS , foldFgColor, foldBgColor );
 			defineMarker( SC_MARKNUM_FOLDERSUB    , SC_MARK_EMPTY, foldFgColor, foldBgColor );
@@ -361,7 +359,7 @@ void RDOEditorSciEdit::setEditorStyle( RDOEditorSciEditStyle* _style )
 			defineMarker( SC_MARKNUM_FOLDEROPENMID, SC_MARK_EMPTY, foldFgColor, foldBgColor );
 			defineMarker( SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_EMPTY, foldFgColor, foldBgColor );
 			break;
-		case RDOFOLDS_PLUSCONNECTED:
+		case rdoStyle::RDOFOLDS_PLUSCONNECTED:
 			defineMarker( SC_MARKNUM_FOLDEROPEN   , SC_MARK_MINUS  , foldFgColor, foldBgColor );
 			defineMarker( SC_MARKNUM_FOLDER       , SC_MARK_PLUS   , foldFgColor, foldBgColor );
 			defineMarker( SC_MARKNUM_FOLDERSUB    , SC_MARK_VLINE  , foldFgColor, foldBgColor );
@@ -370,7 +368,7 @@ void RDOEditorSciEdit::setEditorStyle( RDOEditorSciEditStyle* _style )
 			defineMarker( SC_MARKNUM_FOLDEROPENMID, SC_MARK_EMPTY  , foldFgColor, foldBgColor );
 			defineMarker( SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_LCORNER, foldFgColor, foldBgColor );
 			break;
-		case RDOFOLDS_ARROW:
+		case rdoStyle::RDOFOLDS_ARROW:
 			defineMarker( SC_MARKNUM_FOLDEROPEN   , SC_MARK_ARROWDOWN, foldFgColor, foldBgColor );
 			defineMarker( SC_MARKNUM_FOLDER       , SC_MARK_ARROW    , foldFgColor, foldBgColor );
 			defineMarker( SC_MARKNUM_FOLDERSUB    , SC_MARK_EMPTY    , foldFgColor, foldBgColor );
@@ -379,7 +377,7 @@ void RDOEditorSciEdit::setEditorStyle( RDOEditorSciEditStyle* _style )
 			defineMarker( SC_MARKNUM_FOLDEROPENMID, SC_MARK_EMPTY    , foldFgColor, foldBgColor );
 			defineMarker( SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_EMPTY    , foldFgColor, foldBgColor );
 			break;
-		case RDOFOLDS_ARROWCONNECTED:
+		case rdoStyle::RDOFOLDS_ARROWCONNECTED:
 			defineMarker( SC_MARKNUM_FOLDEROPEN   , SC_MARK_ARROWDOWN, foldFgColor, foldBgColor );
 			defineMarker( SC_MARKNUM_FOLDER       , SC_MARK_ARROW    , foldFgColor, foldBgColor );
 			defineMarker( SC_MARKNUM_FOLDERSUB    , SC_MARK_VLINE    , foldFgColor, foldBgColor );
@@ -388,7 +386,7 @@ void RDOEditorSciEdit::setEditorStyle( RDOEditorSciEditStyle* _style )
 			defineMarker( SC_MARKNUM_FOLDEROPENMID, SC_MARK_EMPTY    , foldFgColor, foldBgColor );
 			defineMarker( SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_LCORNER  , foldFgColor, foldBgColor );
 			break;
-		case RDOFOLDS_BOXCONNECTED:
+		case rdoStyle::RDOFOLDS_BOXCONNECTED:
 			defineMarker( SC_MARKNUM_FOLDEROPEN   , SC_MARK_BOXMINUS, foldFgColor, foldBgColor );
 			defineMarker( SC_MARKNUM_FOLDER       , SC_MARK_BOXPLUS , foldFgColor, foldBgColor );
 			defineMarker( SC_MARKNUM_FOLDERSUB    , SC_MARK_VLINE   , foldFgColor, foldBgColor );
@@ -397,7 +395,7 @@ void RDOEditorSciEdit::setEditorStyle( RDOEditorSciEditStyle* _style )
 			defineMarker( SC_MARKNUM_FOLDEROPENMID, SC_MARK_EMPTY   , foldFgColor, foldBgColor );
 			defineMarker( SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_LCORNER , foldFgColor, foldBgColor );
 			break;
-		case RDOFOLDS_CIRCLECONNECTED:
+		case rdoStyle::RDOFOLDS_CIRCLECONNECTED:
 			defineMarker( SC_MARKNUM_FOLDEROPEN   , SC_MARK_CIRCLEMINUS, foldFgColor, foldBgColor );
 			defineMarker( SC_MARKNUM_FOLDER       , SC_MARK_CIRCLEPLUS , foldFgColor, foldBgColor );
 			defineMarker( SC_MARKNUM_FOLDERSUB    , SC_MARK_VLINE      , foldFgColor, foldBgColor );
@@ -414,97 +412,97 @@ void RDOEditorSciEdit::setEditorStyle( RDOEditorSciEditStyle* _style )
 	sendEditor( SCI_SETHSCROLLBAR, style->window->showHorzScrollBar );
 }
 
-void RDOEditorSciEdit::setGroup( RDOEditorSciEditList* _group )
+void RDOBaseEdit::setGroup( RDOBaseEditList* _group )
 {
 	group = _group;
 }
 
-void RDOEditorSciEdit::OnEditUndo() 
+void RDOBaseEdit::OnEditUndo() 
 {
 	sendEditor( SCI_UNDO );
 }
 
-void RDOEditorSciEdit::OnEditRedo() 
+void RDOBaseEdit::OnEditRedo() 
 {
 	sendEditor( SCI_REDO );
 }
 
-void RDOEditorSciEdit::OnEditCut() 
+void RDOBaseEdit::OnEditCut() 
 {
 	sendEditor( SCI_CUT );
 }
 
-void RDOEditorSciEdit::OnEditCopy() 
+void RDOBaseEdit::OnEditCopy() 
 {
 	sendEditor( SCI_COPY );
 }
 
-void RDOEditorSciEdit::OnEditPaste() 
+void RDOBaseEdit::OnEditPaste() 
 {
 	sendEditor( SCI_PASTE );
 }
 
-void RDOEditorSciEdit::OnEditClear() 
+void RDOBaseEdit::OnEditClear() 
 {
 	sendEditor( SCI_CLEAR );
 }
 
-void RDOEditorSciEdit::OnEditCopyAsRTF() 
+void RDOBaseEdit::OnEditCopyAsRTF() 
 {
 	copyAsRTF();
 }
 
-void RDOEditorSciEdit::OnEditSelectAll() 
+void RDOBaseEdit::OnEditSelectAll() 
 {
 	sendEditor( SCI_SELECTALL );
 }
 
-void RDOEditorSciEdit::OnEditUpperCase() 
+void RDOBaseEdit::OnEditUpperCase() 
 {
 	sendEditor( SCI_UPPERCASE );
 }
 
-void RDOEditorSciEdit::OnEditLowerCase() 
+void RDOBaseEdit::OnEditLowerCase() 
 {
 	sendEditor( SCI_LOWERCASE );
 }
 
-void RDOEditorSciEdit::OnUpdateEditUndo(CCmdUI* pCmdUI) 
+void RDOBaseEdit::OnUpdateEditUndo(CCmdUI* pCmdUI) 
 {
 	pCmdUI->Enable( sendEditor(SCI_CANUNDO) );
 }
 
-void RDOEditorSciEdit::OnUpdateEditRedo(CCmdUI* pCmdUI) 
+void RDOBaseEdit::OnUpdateEditRedo(CCmdUI* pCmdUI) 
 {
 	pCmdUI->Enable( sendEditor(SCI_CANREDO) );
 }
 
-void RDOEditorSciEdit::OnIsSelected( CCmdUI* pCmdUI )
+void RDOBaseEdit::OnIsSelected( CCmdUI* pCmdUI )
 {
 	pCmdUI->Enable( isSelected() );
 }
 
-void RDOEditorSciEdit::OnUpdateEditCut(CCmdUI* pCmdUI) 
+void RDOBaseEdit::OnUpdateEditCut(CCmdUI* pCmdUI) 
 {
 	pCmdUI->Enable( !isReadOnly() && isSelected() );
 }
 
-void RDOEditorSciEdit::OnUpdateEditPaste(CCmdUI* pCmdUI) 
+void RDOBaseEdit::OnUpdateEditPaste(CCmdUI* pCmdUI) 
 {
 	pCmdUI->Enable( sendEditor(SCI_CANPASTE) );
 }
 
-void RDOEditorSciEdit::OnUpdateEditClear(CCmdUI* pCmdUI) 
+void RDOBaseEdit::OnUpdateEditClear(CCmdUI* pCmdUI) 
 {
 	pCmdUI->Enable( getCurrentPos() != getLength() || isSelected() );
 }
 
-void RDOEditorSciEdit::OnSelectAll( CCmdUI* pCmdUI )
+void RDOBaseEdit::OnSelectAll( CCmdUI* pCmdUI )
 {
 	pCmdUI->Enable( !isEmpty() );
 }
 
-string RDOEditorSciEdit::getCurrentWord() const
+string RDOBaseEdit::getCurrentWord() const
 {
 	int pos_begin = sendEditor( SCI_WORDSTARTPOSITION, getCurrentPos(), true );
 	int pos_end   = sendEditor( SCI_WORDENDPOSITION, getCurrentPos(), true );
@@ -520,7 +518,7 @@ string RDOEditorSciEdit::getCurrentWord() const
 	return str;
 }
 
-string RDOEditorSciEdit::getSelection() const
+string RDOBaseEdit::getSelection() const
 {
 	CharacterRange cr = getSelectionRange();
 	char* selection = new char[ cr.cpMax - cr.cpMin + 1 ];
@@ -528,7 +526,7 @@ string RDOEditorSciEdit::getSelection() const
 	return selection;
 }
 
-string RDOEditorSciEdit::getCurrentOrSelectedWord() const
+string RDOBaseEdit::getCurrentOrSelectedWord() const
 {
 	if ( isSelected() ) {
 		return getSelection();
@@ -537,7 +535,7 @@ string RDOEditorSciEdit::getCurrentOrSelectedWord() const
 	}
 }
 
-CharacterRange RDOEditorSciEdit::getSelectionRange() const
+CharacterRange RDOBaseEdit::getSelectionRange() const
 {
 	CharacterRange crange;
 	crange.cpMin = sendEditor( SCI_GETSELECTIONSTART );
@@ -545,13 +543,13 @@ CharacterRange RDOEditorSciEdit::getSelectionRange() const
 	return crange;
 }
 
-void RDOEditorSciEdit::gotoLineEnsureVisible( int line ) const
+void RDOBaseEdit::gotoLineEnsureVisible( int line ) const
 {
 	sendEditor( SCI_ENSUREVISIBLEENFORCEPOLICY, line );
 	sendEditor( SCI_GOTOLINE, line );
 }
 
-void RDOEditorSciEdit::ensureRangeVisible( int posStart, int posEnd, bool enforcePolicy ) const
+void RDOBaseEdit::ensureRangeVisible( int posStart, int posEnd, bool enforcePolicy ) const
 {
 	int lineStart = sendEditor( SCI_LINEFROMPOSITION, posStart < posEnd ? posStart : posEnd );
 	int lineEnd   = sendEditor( SCI_LINEFROMPOSITION, posStart > posEnd ? posStart : posEnd );
@@ -560,7 +558,7 @@ void RDOEditorSciEdit::ensureRangeVisible( int posStart, int posEnd, bool enforc
 	}
 }
 
-void RDOEditorSciEdit::OnSearchFind() 
+void RDOBaseEdit::OnSearchFind() 
 {
 	firstFoundPos = -1;
 	CFindReplaceDialog* pDlg = new CFindReplaceDialog();
@@ -568,7 +566,7 @@ void RDOEditorSciEdit::OnSearchFind()
 	pDlg->Create( true, getCurrentOrSelectedWord().c_str(), NULL, flag, this );
 }
 
-void RDOEditorSciEdit::OnSearchReplace() 
+void RDOBaseEdit::OnSearchReplace() 
 {
 	firstFoundPos = -1;
 	CFindReplaceDialog* pDlg = new CFindReplaceDialog();
@@ -576,19 +574,19 @@ void RDOEditorSciEdit::OnSearchReplace()
 	pDlg->Create( false, getCurrentOrSelectedWord().c_str(), NULL, flag, this );
 }
 
-void RDOEditorSciEdit::OnSearchFindNext() 
+void RDOBaseEdit::OnSearchFindNext() 
 {
 	firstFoundPos = -1;
 	findNext( findStr, bSearchDown, bMatchCase, bMatchWholeWord );
 }
 
-void RDOEditorSciEdit::OnSearchFindPrevious() 
+void RDOBaseEdit::OnSearchFindPrevious() 
 {
 	firstFoundPos = -1;
 	findNext( findStr, !bSearchDown, bMatchCase, bMatchWholeWord );
 }
 
-void RDOEditorSciEdit::OnSearchFindNextFast() 
+void RDOBaseEdit::OnSearchFindNextFast() 
 {
 	firstFoundPos = getCurrentPos();
 	findStr       = getCurrentOrSelectedWord();
@@ -596,7 +594,7 @@ void RDOEditorSciEdit::OnSearchFindNextFast()
 	findNext( findStr, bSearchDown, bMatchCase, bMatchWholeWord );
 }
 
-void RDOEditorSciEdit::OnSearchFindPreviousFast() 
+void RDOBaseEdit::OnSearchFindPreviousFast() 
 {
 	firstFoundPos = getCurrentPos();
 	findStr       = getCurrentOrSelectedWord();
@@ -604,7 +602,7 @@ void RDOEditorSciEdit::OnSearchFindPreviousFast()
 	findNext( findStr, !bSearchDown, bMatchCase, bMatchWholeWord );
 }
 
-LRESULT RDOEditorSciEdit::OnFindReplaceMsg( WPARAM wParam, LPARAM lParam )
+LRESULT RDOBaseEdit::OnFindReplaceMsg( WPARAM wParam, LPARAM lParam )
 {
 	CFindReplaceDialog* pDialog = CFindReplaceDialog::GetNotifier( lParam );
 
@@ -644,22 +642,22 @@ LRESULT RDOEditorSciEdit::OnFindReplaceMsg( WPARAM wParam, LPARAM lParam )
 	return 0;
 }
 
-void RDOEditorSciEdit::OnUpdateSearchFindNextPrev(CCmdUI* pCmdUI) 
+void RDOBaseEdit::OnUpdateSearchFindNextPrev(CCmdUI* pCmdUI) 
 {
 	pCmdUI->Enable( !findStr.empty() );
 }
 
-void RDOEditorSciEdit::OnUpdateSearchFind(CCmdUI* pCmdUI) 
+void RDOBaseEdit::OnUpdateSearchFind(CCmdUI* pCmdUI) 
 {
 	pCmdUI->Enable( !isEmpty() );
 }
 
-void RDOEditorSciEdit::OnUpdateSearchReplace(CCmdUI* pCmdUI) 
+void RDOBaseEdit::OnUpdateSearchReplace(CCmdUI* pCmdUI) 
 {
 	pCmdUI->Enable( !isReadOnly() && !isEmpty() );
 }
 
-void RDOEditorSciEdit::findNext( string& findWhat, const bool searchDown, const bool matchCase, const bool matchWholeWord )
+void RDOBaseEdit::findNext( string& findWhat, const bool searchDown, const bool matchCase, const bool matchWholeWord )
 {
 	int findLen = findWhat.length();
 	if ( !findLen ) return;
@@ -713,7 +711,7 @@ void RDOEditorSciEdit::findNext( string& findWhat, const bool searchDown, const 
 	}
 }
 
-void RDOEditorSciEdit::replace( string& findWhat, string& replaceWhat, const bool searchDown, const bool matchCase, const bool matchWholeWord )
+void RDOBaseEdit::replace( string& findWhat, string& replaceWhat, const bool searchDown, const bool matchCase, const bool matchWholeWord )
 {
 	if ( bHaveFound ) {
 		int replaceLen = replaceWhat.length();
@@ -728,7 +726,7 @@ void RDOEditorSciEdit::replace( string& findWhat, string& replaceWhat, const boo
 	findNext( findWhat, searchDown, matchCase, matchWholeWord );
 }
 
-void RDOEditorSciEdit::replaceAll( string& findWhat, string& replaceWhat, const bool matchCase, const bool matchWholeWord )
+void RDOBaseEdit::replaceAll( string& findWhat, string& replaceWhat, const bool matchCase, const bool matchWholeWord )
 {
 	int findLen = findWhat.length();
 	if ( !findLen ) return;
@@ -766,7 +764,7 @@ void RDOEditorSciEdit::replaceAll( string& findWhat, string& replaceWhat, const 
 	}
 }
 
-void RDOEditorSciEdit::clearAll() const
+void RDOBaseEdit::clearAll()
 {
 	bool readOnly = isReadOnly();
 	setReadOnly( false );
@@ -774,7 +772,7 @@ void RDOEditorSciEdit::clearAll() const
 	setReadOnly( readOnly );
 }
 
-bool RDOEditorSciEdit::bookmarkToggle( int line ) const
+bool RDOBaseEdit::bookmarkToggle( int line ) const
 {
 	if ( line == -1 ) line = getCurrentLineNumber();
 	int state = sendEditor( SCI_MARKERGET, line );
@@ -787,7 +785,7 @@ bool RDOEditorSciEdit::bookmarkToggle( int line ) const
 	}
 }
 
-bool RDOEditorSciEdit::bookmarkNext( const bool canLoop, const bool fromCurrentLine, bool* wasLoop ) const
+bool RDOBaseEdit::bookmarkNext( const bool canLoop, const bool fromCurrentLine, bool* wasLoop ) const
 {
 	bool wasFound = false;
 	bool was_loop = false;
@@ -808,7 +806,7 @@ bool RDOEditorSciEdit::bookmarkNext( const bool canLoop, const bool fromCurrentL
 	return wasFound;
 }
 
-bool RDOEditorSciEdit::bookmarkPrev( const bool canLoop, const bool fromCurrentLine, bool* wasLoop ) const
+bool RDOBaseEdit::bookmarkPrev( const bool canLoop, const bool fromCurrentLine, bool* wasLoop ) const
 {
 	bool wasFound = false;
 	bool was_loop = false;
@@ -830,18 +828,18 @@ bool RDOEditorSciEdit::bookmarkPrev( const bool canLoop, const bool fromCurrentL
 	return wasFound;
 }
 
-void RDOEditorSciEdit::bookmarkClearAll() const
+void RDOBaseEdit::bookmarkClearAll() const
 {
 	sendEditor( SCI_MARKERDELETEALL, sci_MARKER_BOOKMARK );
 }
 
-bool RDOEditorSciEdit::hasBookmarks() const
+bool RDOBaseEdit::hasBookmarks() const
 {
 	int nextLine = sendEditor( SCI_MARKERNEXT, 0, 1 << sci_MARKER_BOOKMARK );
 	return nextLine >= 0;
 }
 
-void RDOEditorSciEdit::copyAsRTF()
+void RDOBaseEdit::copyAsRTF()
 {
 	if ( isSelected() ) {
 
@@ -861,7 +859,7 @@ void RDOEditorSciEdit::copyAsRTF()
 }
 
 // ----------------------------------------------------------------------------
-// ---------- RDOEditorSciEdit: some functions for RTF export ---------- BEGIN
+// ---------- RDOBaseEdit: some functions for RTF export ---------- BEGIN
 // ----------------------------------------------------------------------------
 int GetHexChar( char ch ) // 'H'
 {
@@ -993,10 +991,10 @@ void GetRTFStyleChange( char *delta, char *last, const char *current ) // \f0\fs
 	}
 }
 // ----------------------------------------------------------------------------
-// ---------- RDOEditorSciEdit: some functions for RTF export ---------- END
+// ---------- RDOBaseEdit: some functions for RTF export ---------- END
 // ----------------------------------------------------------------------------
 
-void RDOEditorSciEdit::saveAsRTF( CFile& file, int start, int end ) const
+void RDOBaseEdit::saveAsRTF( CFile& file, int start, int end ) const
 {
 	int lengthDoc = getLength();
 	if ( end < 0 ) end = lengthDoc;
@@ -1073,7 +1071,7 @@ void RDOEditorSciEdit::saveAsRTF( CFile& file, int start, int end ) const
 	file.Write( saveStr.c_str(), saveStr.length() );
 }
 
-void RDOEditorSciEdit::expand( int& line, bool doExpand, bool force, int visLevels, int level ) const
+void RDOBaseEdit::expand( int& line, bool doExpand, bool force, int visLevels, int level ) const
 {
 	int lineMaxSubord = sendEditor( SCI_GETLASTCHILD, line, level & SC_FOLDLEVELNUMBERMASK );
 	line++;
@@ -1109,7 +1107,7 @@ void RDOEditorSciEdit::expand( int& line, bool doExpand, bool force, int visLeve
 	}
 }
 
-void RDOEditorSciEdit::foldChanged( int line, int levelNow, int levelPrev ) const
+void RDOBaseEdit::foldChanged( int line, int levelNow, int levelPrev ) const
 {
 	if ( levelNow & SC_FOLDLEVELHEADERFLAG ) {
 		if ( !(levelPrev & SC_FOLDLEVELHEADERFLAG) ) {
@@ -1122,7 +1120,7 @@ void RDOEditorSciEdit::foldChanged( int line, int levelNow, int levelPrev ) cons
 	}
 }
 
-void RDOEditorSciEdit::toggleAllFolds() const
+void RDOBaseEdit::toggleAllFolds() const
 {
 	sendEditor( SCI_COLOURISE, 0, -1 );
 	int maxLine = getLineCount();
@@ -1152,7 +1150,7 @@ void RDOEditorSciEdit::toggleAllFolds() const
 	}
 }
 
-void RDOEditorSciEdit::foldMarginClick( int position, int modifiers ) const
+void RDOBaseEdit::foldMarginClick( int position, int modifiers ) const
 {
 	int lineClick = sendEditor( SCI_LINEFROMPOSITION, position );
 	if ( (modifiers & SCMOD_SHIFT) && (modifiers & SCMOD_CTRL) ) {
@@ -1182,47 +1180,34 @@ void RDOEditorSciEdit::foldMarginClick( int position, int modifiers ) const
 	}
 }
 
-void RDOEditorSciEdit::OnViewToggleCurrentFold() 
+void RDOBaseEdit::OnViewToggleCurrentFold() 
 {
 	sendEditor( SCI_TOGGLEFOLD, getCurrentLineNumber() );
 }
 
-void RDOEditorSciEdit::OnViewToggleAllFolds() 
+void RDOBaseEdit::OnViewToggleAllFolds() 
 {
 	toggleAllFolds();
 }
 
-void RDOEditorSciEdit::OnUpdateFold( CCmdUI* pCmdUI )
+void RDOBaseEdit::OnUpdateFold( CCmdUI* pCmdUI )
 {
 	pCmdUI->Enable( !isEmpty() );
 }
 
-void RDOEditorSciEdit::replaceCurrent( const string str, const int changePosValue ) const
-{
-	int pos;
-	if ( changePosValue != -1 ) pos = getCurrentPos();
-
-	sendEditor( SCI_REPLACESEL, 0, (long)str.c_str() );
-
-	if ( changePosValue != -1 ) {
-		pos += changePosValue;
-		setCurrentPos( pos );
-	}
-}
-
-void RDOEditorSciEdit::appendText( const string& str ) const
+void RDOBaseEdit::appendText( const string& str ) const
 {
 	sendEditor( SCI_INSERTTEXT, getLength(), (long)str.c_str() );
 }
 
-void RDOEditorSciEdit::setCurrentPos( const int value ) const
+void RDOBaseEdit::setCurrentPos( const int value ) const
 {
 	sendEditor( SCI_SETCURRENTPOS, value );
 	sendEditor( SCI_SETSELECTIONSTART, value );
 	sendEditor( SCI_SETSELECTIONEND, value );
 }
 
-void RDOEditorSciEdit::setCurrentPos( const int line, int pos_in_line, const bool convert_rdo_tab ) const
+void RDOBaseEdit::setCurrentPos( const int line, int pos_in_line, const bool convert_rdo_tab ) const
 {
 	int pos = getPositionFromLine( line );
 	int line_length = sendEditor( SCI_LINELENGTH, line );
@@ -1270,14 +1255,14 @@ void RDOEditorSciEdit::setCurrentPos( const int line, int pos_in_line, const boo
 	setCurrentPos( pos );
 }
 
-bool RDOEditorSciEdit::isLineVisible( const int line ) const
+bool RDOBaseEdit::isLineVisible( const int line ) const
 {
 	int first_line = sendEditor( SCI_GETFIRSTVISIBLELINE );
 	int last_line = first_line + sendEditor( SCI_LINESONSCREEN );
 	return line >= first_line && line <= last_line;
 }
 
-void RDOEditorSciEdit::scrollToLine( const int line, int setPosition ) const
+void RDOBaseEdit::scrollToLine( const int line, int setPosition ) const
 {
 	sendEditor( SCI_LINESCROLL, 0, line );
 	if ( setPosition != -1 ) {
@@ -1286,7 +1271,7 @@ void RDOEditorSciEdit::scrollToLine( const int line, int setPosition ) const
 	}
 }
 
-void RDOEditorSciEdit::load( strstream& stream ) const
+void RDOBaseEdit::load( strstream& stream ) const
 {
 	bool readOnly = isReadOnly();
 	setReadOnly( false );
@@ -1297,7 +1282,7 @@ void RDOEditorSciEdit::load( strstream& stream ) const
 	setReadOnly( readOnly );
 }
 
-void RDOEditorSciEdit::save( strstream& stream ) const
+void RDOBaseEdit::save( strstream& stream ) const
 {
 	char currentLine[8000];
 	int cnt = getLineCount();
@@ -1314,13 +1299,13 @@ void RDOEditorSciEdit::save( strstream& stream ) const
 	}
 }
 
-int RDOEditorSciEdit::indentOfBlock( int line ) const
+int RDOBaseEdit::indentOfBlock( int line ) const
 {
 	if ( line < 0 ) return 0;
 	return sendEditor( SCI_GETLINEINDENTATION, line );
 }
 
-void RDOEditorSciEdit::setLineIndentation( int line, int indent ) const
+void RDOBaseEdit::setLineIndentation( int line, int indent ) const
 {
 	if ( indent < 0 ) return;
 	CharacterRange crange = getSelectionRange();
@@ -1354,7 +1339,7 @@ void RDOEditorSciEdit::setLineIndentation( int line, int indent ) const
 	setSelection( crange.cpMin, crange.cpMax );
 }
 
-void RDOEditorSciEdit::autoIndent() const
+void RDOBaseEdit::autoIndent() const
 {
 	CharacterRange crange = getSelectionRange();
 	int selStart      = crange.cpMin;
@@ -1368,12 +1353,12 @@ void RDOEditorSciEdit::autoIndent() const
 	}
 }
 
-void RDOEditorSciEdit::OnBookmarkToggle()
+void RDOBaseEdit::OnBookmarkToggle()
 {
 	bookmarkToggle();
 }
 
-void RDOEditorSciEdit::OnBookmarkNext()
+void RDOBaseEdit::OnBookmarkNext()
 {
 	if ( bookmarkNext( false, true ) ) return;
 
@@ -1383,7 +1368,7 @@ void RDOEditorSciEdit::OnBookmarkNext()
 
 	} else {
 
-		RDOEditorSciEditListIterator it = group->begin();
+		RDOBaseEditListIterator it = group->begin();
 		while ( it ) {
 			if ( *it == this ) break;
 			it++;
@@ -1411,7 +1396,7 @@ void RDOEditorSciEdit::OnBookmarkNext()
 	}
 }
 
-void RDOEditorSciEdit::OnBookmarkPrev()
+void RDOBaseEdit::OnBookmarkPrev()
 {
 	if ( bookmarkPrev( false, true ) ) return;
 
@@ -1421,7 +1406,7 @@ void RDOEditorSciEdit::OnBookmarkPrev()
 
 	} else {
 
-		RDOEditorSciEditListIterator it = group->begin();
+		RDOBaseEditListIterator it = group->begin();
 		while ( it ) {
 			if ( *it == this ) break;
 			it++;
@@ -1449,24 +1434,24 @@ void RDOEditorSciEdit::OnBookmarkPrev()
 	}
 }
 
-void RDOEditorSciEdit::OnBookmarkClearAll()
+void RDOBaseEdit::OnBookmarkClearAll()
 {
 	if ( !group ) {
 		bookmarkClearAll();
 	} else {
-		for ( RDOEditorSciEditListIterator it = group->begin(); it != group->end(); it++ ) {
+		for ( RDOBaseEditListIterator it = group->begin(); it != group->end(); it++ ) {
 			(*it)->bookmarkClearAll();
 		}
 	}
 }
 
-void RDOEditorSciEdit::OnHasBookmarks( CCmdUI* pCmdUI )
+void RDOBaseEdit::OnHasBookmarks( CCmdUI* pCmdUI )
 {
 	bool flag = false;
 	if ( !group ) {
 		flag = hasBookmarks();
 	} else {
-		for ( RDOEditorSciEditListIterator it = group->begin(); it != group->end(); it++ ) {
+		for ( RDOBaseEditListIterator it = group->begin(); it != group->end(); it++ ) {
 			flag = (*it)->hasBookmarks();
 			if ( flag ) break;
 		}
@@ -1474,140 +1459,140 @@ void RDOEditorSciEdit::OnHasBookmarks( CCmdUI* pCmdUI )
 	pCmdUI->Enable( flag );
 }
 
-void RDOEditorSciEdit::OnViewWhiteSpace() 
+void RDOBaseEdit::OnViewWhiteSpace() 
 {
 	if ( !group ) {
 		setViewWhiteSpace( !isViewWhiteSpace() );
 	} else {
 		bool flag = !isViewWhiteSpace();
-		for ( RDOEditorSciEditListIterator it = group->begin(); it != group->end(); it++ ) {
+		for ( RDOBaseEditListIterator it = group->begin(); it != group->end(); it++ ) {
 			(*it)->setViewWhiteSpace( flag );
 		}
 	}
 }
 
-void RDOEditorSciEdit::OnViewEndOfLine() 
+void RDOBaseEdit::OnViewEndOfLine() 
 {
 	if ( !group ) {
 		setEndOfLine( !isViewEndOfLine() );
 	} else {
 		bool flag = !isViewEndOfLine();
-		for ( RDOEditorSciEditListIterator it = group->begin(); it != group->end(); it++ ) {
+		for ( RDOBaseEditListIterator it = group->begin(); it != group->end(); it++ ) {
 			(*it)->setEndOfLine( flag );
 		}
 	}
 }
 
-void RDOEditorSciEdit::OnViewLineNumberMargin() 
+void RDOBaseEdit::OnViewLineNumberMargin() 
 {
 	if ( !group ) {
 		setViewLineNumberMargin( !isViewLineNumberMargin() );
 	} else {
 		bool flag = !isViewLineNumberMargin();
-		for ( RDOEditorSciEditListIterator it = group->begin(); it != group->end(); it++ ) {
+		for ( RDOBaseEditListIterator it = group->begin(); it != group->end(); it++ ) {
 			(*it)->setViewLineNumberMargin( flag );
 		}
 	}
 }
 
-void RDOEditorSciEdit::OnViewMargin() 
+void RDOBaseEdit::OnViewMargin() 
 {
 	if ( !group ) {
 		setViewMargin( !isViewMargin() );
 	} else {
 		bool flag = !isViewMargin();
-		for ( RDOEditorSciEditListIterator it = group->begin(); it != group->end(); it++ ) {
+		for ( RDOBaseEditListIterator it = group->begin(); it != group->end(); it++ ) {
 			(*it)->setViewMargin( flag );
 		}
 	}
 }
 
-void RDOEditorSciEdit::OnViewFoldMargin() 
+void RDOBaseEdit::OnViewFoldMargin() 
 {
 	if ( !group ) {
 		setViewFoldMargin( !isViewFoldMargin() );
 	} else {
 		bool flag = !isViewFoldMargin();
-		for ( RDOEditorSciEditListIterator it = group->begin(); it != group->end(); it++ ) {
+		for ( RDOBaseEditListIterator it = group->begin(); it != group->end(); it++ ) {
 			(*it)->setViewFoldMargin( flag );
 		}
 	}
 }
 
-void RDOEditorSciEdit::OnViewZoomIn() 
+void RDOBaseEdit::OnViewZoomIn() 
 {
 	if ( !group ) {
 		zoomIn();
 	} else {
-		for ( RDOEditorSciEditListIterator it = group->begin(); it != group->end(); it++ ) {
+		for ( RDOBaseEditListIterator it = group->begin(); it != group->end(); it++ ) {
 			(*it)->zoomIn();
 		}
 	}
 }
 
-void RDOEditorSciEdit::OnViewZoomOut() 
+void RDOBaseEdit::OnViewZoomOut() 
 {
 	if ( !group ) {
 		zoomOut();
 	} else {
-		for ( RDOEditorSciEditListIterator it = group->begin(); it != group->end(); it++ ) {
+		for ( RDOBaseEditListIterator it = group->begin(); it != group->end(); it++ ) {
 			(*it)->zoomOut();
 		}
 	}
 }
 
-void RDOEditorSciEdit::OnViewZoomReset() 
+void RDOBaseEdit::OnViewZoomReset() 
 {
 	if ( !group ) {
 		resetZoom();
 	} else {
-		for ( RDOEditorSciEditListIterator it = group->begin(); it != group->end(); it++ ) {
+		for ( RDOBaseEditListIterator it = group->begin(); it != group->end(); it++ ) {
 			(*it)->resetZoom();
 		}
 	}
 }
 
-void RDOEditorSciEdit::OnUpdateWhiteSpace( CCmdUI* pCmdUI )
+void RDOBaseEdit::OnUpdateWhiteSpace( CCmdUI* pCmdUI )
 {
 	pCmdUI->SetCheck( isViewWhiteSpace() );
 }
 
-void RDOEditorSciEdit::OnUpdateEndOfLine( CCmdUI* pCmdUI )
+void RDOBaseEdit::OnUpdateEndOfLine( CCmdUI* pCmdUI )
 {
 	pCmdUI->SetCheck( isViewEndOfLine() );
 }
 
-void RDOEditorSciEdit::OnUpdateViewLineNumberMargin( CCmdUI* pCmdUI )
+void RDOBaseEdit::OnUpdateViewLineNumberMargin( CCmdUI* pCmdUI )
 {
 	pCmdUI->SetCheck( isViewLineNumberMargin() );
 }
 
-void RDOEditorSciEdit::OnUpdateViewMargin( CCmdUI* pCmdUI )
+void RDOBaseEdit::OnUpdateViewMargin( CCmdUI* pCmdUI )
 {
 	pCmdUI->SetCheck( isViewMargin() );
 }
 
-void RDOEditorSciEdit::OnUpdateViewFoldMargin( CCmdUI* pCmdUI )
+void RDOBaseEdit::OnUpdateViewFoldMargin( CCmdUI* pCmdUI )
 {
 	pCmdUI->SetCheck( isViewFoldMargin() );
 }
 
-void RDOEditorSciEdit::OnUpdateZoomIn( CCmdUI *pCmdUI )
+void RDOBaseEdit::OnUpdateZoomIn( CCmdUI *pCmdUI )
 {
 	pCmdUI->Enable( getZoom() < 20 );
 }
 
-void RDOEditorSciEdit::OnUpdateZoomOut( CCmdUI *pCmdUI )
+void RDOBaseEdit::OnUpdateZoomOut( CCmdUI *pCmdUI )
 {
 	pCmdUI->Enable( getZoom() > -10 );
 }
 
-void RDOEditorSciEdit::OnUpdateZoomReset( CCmdUI *pCmdUI )
+void RDOBaseEdit::OnUpdateZoomReset( CCmdUI *pCmdUI )
 {
 	pCmdUI->Enable( getZoom() );
 }
 
-int RDOEditorSciEdit::findLine( string& findWhat, const int startFromLine, const bool matchCase, const bool matchWholeWord ) const
+int RDOBaseEdit::findLine( string& findWhat, const int startFromLine, const bool matchCase, const bool matchWholeWord ) const
 {
 	int findLen = findWhat.length();
 	if ( !findLen ) return -1;
@@ -1627,7 +1612,7 @@ int RDOEditorSciEdit::findLine( string& findWhat, const int startFromLine, const
 	return -1;
 }
 
-string RDOEditorSciEdit::getLine( const int line ) const
+string RDOBaseEdit::getLine( const int line ) const
 {
 	int length = sendEditor( SCI_LINELENGTH, line );
 	string str;

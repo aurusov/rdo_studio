@@ -1,31 +1,29 @@
 #include "stdafx.h"
-#include "rdoeditorscilog.h"
+#include "rdologedit.h"
 #include "../rdostudioapp.h"
 #include "../rdostudiomodel.h"
-#include "rdoeditortabctrl.h"
+#include "../rdo_edit/rdoeditortabctrl.h"
 #include "sci/LexRdo.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 
-using namespace rdoEditor;
-
 // ----------------------------------------------------------------------------
-// ---------- RDOEditorSciLogLineInfo
+// ---------- RDOLogEditLineInfo
 // ----------------------------------------------------------------------------
-RDOEditorSciLogLineInfo::RDOEditorSciLogLineInfo( const string& _message, const rdoModelObjects::RDOFileType _fileType, const int _lineNumber ):
+RDOLogEditLineInfo::RDOLogEditLineInfo( const string& _message, const rdoModelObjects::RDOFileType _fileType, const int _lineNumber ):
 	fileType( _fileType ),
 	lineNumber( _lineNumber ),
 	message( _message )
 {
 }
 
-RDOEditorSciLogLineInfo::~RDOEditorSciLogLineInfo()
+RDOLogEditLineInfo::~RDOLogEditLineInfo()
 {
 }
 
-string RDOEditorSciLogLineInfo::getMessage() const
+string RDOLogEditLineInfo::getMessage() const
 {
 	string file;
 	switch ( fileType ) {
@@ -51,7 +49,7 @@ string RDOEditorSciLogLineInfo::getMessage() const
 // ---------- RDOEditorSciBuildLineInfo
 // ----------------------------------------------------------------------------
 RDOEditorSciBuildLineInfo::RDOEditorSciBuildLineInfo( const string& _message, const rdoModelObjects::RDOFileType _fileType, const int _lineNumber, bool _error ):
-	RDOEditorSciLogLineInfo( _message, _fileType, _lineNumber ),
+	RDOLogEditLineInfo( _message, _fileType, _lineNumber ),
 	error( _error )
 {
 }
@@ -84,31 +82,27 @@ string RDOEditorSciBuildLineInfo::getMessage() const
 }
 
 // ----------------------------------------------------------------------------
-// ---------- RDOEditorSciLog
+// ---------- RDOLogEdit
 // ---------------------------------------------------------------------------
-BEGIN_MESSAGE_MAP( RDOEditorSciLog, RDOEditorSciEdit )
-	//{{AFX_MSG_MAP(RDOEditorSciLog)
+BEGIN_MESSAGE_MAP( RDOLogEdit, RDOBaseEdit )
+	//{{AFX_MSG_MAP(RDOLogEdit)
 	ON_WM_CREATE()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-RDOEditorSciLog::RDOEditorSciLog(): RDOEditorSciEdit()
+RDOLogEdit::RDOLogEdit(): RDOBaseEdit()
 {
 	sci_MARKER_LINE = getNewMarker();
 }
 
-RDOEditorSciLog::~RDOEditorSciLog()
+RDOLogEdit::~RDOLogEdit()
 {
-	list< RDOEditorSciLogLineInfo* >::iterator it = lines.begin();
-	while ( it != lines.end() ) {
-		delete *it;
-		it++;
-	}
+	clearLines();
 }
 
-BOOL RDOEditorSciLog::OnNotify( WPARAM wParam, LPARAM lParam, LRESULT* pResult )
+BOOL RDOLogEdit::OnNotify( WPARAM wParam, LPARAM lParam, LRESULT* pResult )
 {
-	if ( !RDOEditorSciEdit::OnNotify( wParam, lParam, pResult ) ) {
+	if ( !RDOBaseEdit::OnNotify( wParam, lParam, pResult ) ) {
 
 		SCNotification* scn = (SCNotification*)lParam;
 		if ( scn->nmhdr.hwndFrom == sciHWND ) {
@@ -129,22 +123,22 @@ BOOL RDOEditorSciLog::OnNotify( WPARAM wParam, LPARAM lParam, LRESULT* pResult )
 	return FALSE;
 }
 
-int RDOEditorSciLog::OnCreate( LPCREATESTRUCT lpCreateStruct )
+int RDOLogEdit::OnCreate( LPCREATESTRUCT lpCreateStruct )
 {
-	if ( RDOEditorSciEdit::OnCreate(lpCreateStruct) == -1 ) return -1;
+	if ( RDOBaseEdit::OnCreate(lpCreateStruct) == -1 ) return -1;
 	return 0;
 }
 
-void RDOEditorSciLog::setEditorStyle( RDOEditorSciEditStyle* style )
+void RDOLogEdit::setEditorStyle( rdoStyle::RDOBaseEditStyle* style )
 {
-	RDOEditorSciEdit::setEditorStyle( style );
+	RDOBaseEdit::setEditorStyle( style );
 
 	// ----------
 	// Selected Line
-	defineMarker( sci_MARKER_LINE, SC_MARK_BACKGROUND, RGB( 0xFF, 0xFF, 0xFF ), ((RDOEditorSciLogTheme*)style->theme)->selectLineBgColor );
+	defineMarker( sci_MARKER_LINE, SC_MARK_BACKGROUND, RGB( 0xFF, 0xFF, 0xFF ), ((RDOLogEditTheme*)style->theme)->selectLineBgColor );
 }
 
-void RDOEditorSciLog::setSelectLine()
+void RDOLogEdit::setSelectLine()
 {
 	CPoint point;
 	::GetCursorPos( &point );
@@ -153,7 +147,7 @@ void RDOEditorSciLog::setSelectLine()
 	int line = sendEditor( SCI_LINEFROMPOSITION, pos );
 	setCurrentPos( pos );
 
-	list< RDOEditorSciLogLineInfo* >::iterator it = lines.begin();
+	list< RDOLogEditLineInfo* >::iterator it = lines.begin();
 	for ( int i = 0; i < line; i++ ) {
 		if ( it != lines.end() ) {
 			it++;
@@ -164,25 +158,25 @@ void RDOEditorSciLog::setSelectLine()
 			clearSelectLine();
 			sendEditor( SCI_MARKERADD, line, sci_MARKER_LINE );
 		}
-		RDOEditorTabCtrl* tab = model->getTab();
+		rdoEditor::RDOEditorTabCtrl* tab = model->getTab();
 		if ( tab ) {
-			RDOEditorTabItem tabItem;
+			rdoEditor::RDOEditorTabItem tabItem;
 			switch ( (*it)->fileType ) {
-				case rdoModelObjects::PAT: tabItem = RDOEDIT_PAT; break;
-				case rdoModelObjects::RTP: tabItem = RDOEDIT_RTP; break;
-				case rdoModelObjects::RSS: tabItem = RDOEDIT_RSS; break;
-				case rdoModelObjects::OPR: tabItem = RDOEDIT_OPR; break;
-				case rdoModelObjects::FRM: tabItem = RDOEDIT_FRM; break;
-				case rdoModelObjects::FUN: tabItem = RDOEDIT_FUN; break;
-				case rdoModelObjects::DPT: tabItem = RDOEDIT_DPT; break;
-				case rdoModelObjects::SMR: tabItem = RDOEDIT_SMR; break;
-				case rdoModelObjects::PMD: tabItem = RDOEDIT_PMD; break;
-				default: tabItem = RDOEDIT_PAT;
+				case rdoModelObjects::PAT: tabItem = rdoEditor::RDOEDIT_PAT; break;
+				case rdoModelObjects::RTP: tabItem = rdoEditor::RDOEDIT_RTP; break;
+				case rdoModelObjects::RSS: tabItem = rdoEditor::RDOEDIT_RSS; break;
+				case rdoModelObjects::OPR: tabItem = rdoEditor::RDOEDIT_OPR; break;
+				case rdoModelObjects::FRM: tabItem = rdoEditor::RDOEDIT_FRM; break;
+				case rdoModelObjects::FUN: tabItem = rdoEditor::RDOEDIT_FUN; break;
+				case rdoModelObjects::DPT: tabItem = rdoEditor::RDOEDIT_DPT; break;
+				case rdoModelObjects::SMR: tabItem = rdoEditor::RDOEDIT_SMR; break;
+				case rdoModelObjects::PMD: tabItem = rdoEditor::RDOEDIT_PMD; break;
+				default: tabItem = rdoEditor::RDOEDIT_PAT;
 			}
 			if ( tab->getCurrentRDOItem() != tabItem ) {
 				tab->setCurrentRDOItem( tabItem );
 			}
-			RDOEditorSciEdit* edit = tab->getCurrentEdit();
+			RDOBaseEdit* edit = tab->getCurrentEdit();
 			if ( edit ) {
 				edit->scrollToLine( (*it)->lineNumber, edit->getPositionFromLine( (*it)->lineNumber ) );
 				edit->SetFocus();
@@ -191,7 +185,7 @@ void RDOEditorSciLog::setSelectLine()
 	}
 }
 
-void RDOEditorSciLog::clearSelectLine()
+void RDOLogEdit::clearSelectLine()
 {
 	int nextLine = sendEditor( SCI_MARKERNEXT, 0, 1 << sci_MARKER_LINE );
 	if ( nextLine >= 0 ) {
@@ -200,13 +194,29 @@ void RDOEditorSciLog::clearSelectLine()
 	}
 }
 
-bool RDOEditorSciLog::hasSelectLine() const
+bool RDOLogEdit::hasSelectLine() const
 {
 	int nextLine = sendEditor( SCI_MARKERNEXT, 0, 1 << sci_MARKER_LINE );
 	return nextLine >= 0;
 }
 
-void RDOEditorSciLog::appendLine( RDOEditorSciLogLineInfo* line )
+void RDOLogEdit::clearLines()
+{
+	list< RDOLogEditLineInfo* >::iterator it = lines.begin();
+	while ( it != lines.end() ) {
+		delete *it;
+		it++;
+	}
+	lines.clear();
+}
+
+void RDOLogEdit::clearAll()
+{
+	RDOBaseEdit::clearAll();
+	clearLines();
+}
+
+void RDOLogEdit::appendLine( RDOLogEditLineInfo* line )
 {
 	lines.push_back( line );
 	bool readOnly = isReadOnly();

@@ -2,14 +2,14 @@
 #define RDOEDITOREDITSTYLE_H
 #pragma once
 
-#include "rdoeditorscieditstyle.h"
+#include "../edit_ctrls/rdobaseeditstyle.h"
 
 namespace rdoEditor {
 
 // ----------------------------------------------------------------------------
 // ---------- RDOEditorEditTheme
 // ----------------------------------------------------------------------------
-class RDOEditorEditTheme: public RDOEditorSciEditTheme
+class RDOEditorEditTheme: public rdoStyle::RDOBaseEditTheme
 {
 public:
 	RDOEditorEditTheme();
@@ -33,14 +33,14 @@ public:
 
 	COLORREF errorBgColor;
 
-	RDOFontStyle identifierStyle;
-	RDOFontStyle keywordStyle;
-	RDOFontStyle functionsStyle;
-	RDOFontStyle traceStyle;
-	RDOFontStyle commentStyle;
-	RDOFontStyle numberStyle;
-	RDOFontStyle stringStyle;
-	RDOFontStyle operatorStyle;
+	rdoStyle::RDOFontStyle identifierStyle;
+	rdoStyle::RDOFontStyle keywordStyle;
+	rdoStyle::RDOFontStyle functionsStyle;
+	rdoStyle::RDOFontStyle traceStyle;
+	rdoStyle::RDOFontStyle commentStyle;
+	rdoStyle::RDOFontStyle numberStyle;
+	rdoStyle::RDOFontStyle stringStyle;
+	rdoStyle::RDOFontStyle operatorStyle;
 
 	virtual bool styleDefault( const int styleType ) const;
 	virtual bool styleUsing( const int styleType ) const;
@@ -80,7 +80,7 @@ public:
 // ----------------------------------------------------------------------------
 // ---------- RDOEditorEditStyle
 // ----------------------------------------------------------------------------
-class RDOEditorEditStyle: public RDOEditorSciEditStyle
+class RDOEditorEditStyle: public rdoStyle::RDOBaseEditStyle
 {
 protected:
 	virtual void initTheme();

@@ -6,16 +6,16 @@
 #endif
 
 #include "rdostudiodockwnd.h"
-#include "rdo_edit/rdoeditorscieditstyle.h"
-#include "rdo_edit/rdoeditorscilogstyle.h"
+#include "edit_ctrls/rdobaseeditstyle.h"
+#include "edit_ctrls/rdologeditstyle.h"
 #include "rdo_edit/rdoeditoreditstyle.h"
 
 #include <rdotabctrl.h>
 #include <rdosimwin.h>
 
+class RDOBaseEdit;
+class RDOLogEdit;
 namespace rdoEditor {
-	class RDOEditorSciEdit;
-	class RDOEditorSciLog;
 	class RDOEditorEdit;
 }
 
@@ -26,20 +26,20 @@ class RDOStudioOutput: public RDOStudioDockWnd
 {
 private:
 	RDOTabCtrl tab;
-	rdoEditor::RDOEditorSciLogStyle  buildStyle;
-	rdoEditor::RDOEditorSciEditStyle debugStyle;
-	rdoEditor::RDOEditorEditStyle    resultsStyle;
-	rdoEditor::RDOEditorSciLogStyle  findStyle;
+	RDOLogEditStyle               buildStyle;
+	rdoStyle::RDOBaseEditStyle    debugStyle;
+	rdoEditor::RDOEditorEditStyle resultsStyle;
+	RDOLogEditStyle               findStyle;
 
-	rdoEditor::RDOEditorSciLog*  build;
-	rdoEditor::RDOEditorSciEdit* debug;
-	CWnd*                        tracer;
-	rdoEditor::RDOEditorEdit*    results;
-	rdoEditor::RDOEditorSciLog*  find;
+	RDOLogEdit*               build;
+	RDOBaseEdit*              debug;
+	CWnd*                     tracer;
+	rdoEditor::RDOEditorEdit* results;
+	RDOLogEdit*               find;
 
 	CMenu popupMenu;
 
-	void appendString( const rdoEditor::RDOEditorSciEdit* const edit, const string& str ) const;
+	void appendString( const RDOBaseEdit* const edit, const string& str ) const;
 
 public:
 	RDOStudioOutput();

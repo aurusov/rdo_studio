@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "rdoeditortabctrl.h"
-#include "sci/LexRdo.h"
+//#include "../edit_ctrils/sci/LexRdo.h"
 #include "../rdostudioeditbaseview.h"
 #include "../resource.h"
 

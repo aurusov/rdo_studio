@@ -1,24 +1,22 @@
-#ifndef RDOEDITORSCIEDIT_H
-#define RDOEDITORSCIEDIT_H
+#ifndef RDOBASEEDIT_H
+#define RDOBASEEDIT_H
 #pragma once
 
-#include "rdoeditorscieditstyle.h"
+#include "rdobaseeditstyle.h"
 #include "sci/Scintilla.h"
 
 using namespace std;
 
-namespace rdoEditor {
-
 // ----------------------------------------------------------------------------
-// ---------- RDOEditorSciEdit
+// ---------- RDOBaseEdit
 // ----------------------------------------------------------------------------
 typedef long (*sciFunType)( long ptr, unsigned int iMessage, unsigned long wParam, long lParam );
 
-class RDOEditorSciEdit;
-typedef vector< RDOEditorSciEdit* >           RDOEditorSciEditList;
-typedef vector< RDOEditorSciEdit* >::iterator RDOEditorSciEditListIterator;
+class RDOBaseEdit;
+typedef vector< RDOBaseEdit* >           RDOBaseEditList;
+typedef vector< RDOBaseEdit* >::iterator RDOBaseEditListIterator;
 
-class RDOEditorSciEdit: public CWnd
+class RDOBaseEdit: public CWnd
 {
 private:
 	static int objectCount;
@@ -44,8 +42,8 @@ protected:
 	void gotoLineEnsureVisible( int line ) const;
 	void ensureRangeVisible( int posStart, int posEnd, bool enforcePolicy = true ) const;
 
-	RDOEditorSciEditStyle* style;
-	RDOEditorSciEditList*  group;
+	rdoStyle::RDOBaseEditStyle* style;
+	RDOBaseEditList*            group;
 
 	int  firstFoundPos;
 	bool bHaveFound;
@@ -68,7 +66,7 @@ protected:
 	void setLineIndentation( int line, int indent ) const;
 	void autoIndent() const;
 
-	//{{AFX_MSG(RDOEditorSciEdit)
+	//{{AFX_MSG(RDOBaseEdit)
 	afx_msg int OnCreate( LPCREATESTRUCT lpCreateStruct );
 	afx_msg void OnSetFocus( CWnd *pOldWnd );
 	afx_msg void OnSize( UINT nType, int cx, int cy );
@@ -128,7 +126,7 @@ protected:
 	afx_msg LRESULT OnFindReplaceMsg( WPARAM wParam, LPARAM lParam );
 	DECLARE_MESSAGE_MAP()
 
-	//{{AFX_VIRTUAL(RDOEditorSciEdit)
+	//{{AFX_VIRTUAL(RDOBaseEdit)
 	protected:
 	virtual BOOL PreCreateWindow( CREATESTRUCT& cs );
 	virtual BOOL OnNotify( WPARAM wParam, LPARAM lParam, LRESULT* pResult );
@@ -136,13 +134,13 @@ protected:
 	//}}AFX_VIRTUAL
 
 public:
-	RDOEditorSciEdit();
-	virtual ~RDOEditorSciEdit();
+	RDOBaseEdit();
+	virtual ~RDOBaseEdit();
 
-	const RDOEditorSciEditStyle* getEditorStyle() const       { return style; };
-	virtual void setEditorStyle( RDOEditorSciEditStyle* style );
+	const rdoStyle::RDOBaseEditStyle* getEditorStyle() const         { return style; };
+	virtual void setEditorStyle( rdoStyle::RDOBaseEditStyle* style );
 
-	void setGroup( RDOEditorSciEditList* _group );
+	void setGroup( RDOBaseEditList* _group );
 	void setPopupMenu( CMenu* const value )                { popupMenu = value; };
 
 	bool isEmpty() const                                   { return getLength() == 0;                                                         };
@@ -152,10 +150,9 @@ public:
 	bool isModify() const                                  { return sendEditor( SCI_GETMODIFY ) ? true : false; };
 	void setModifyFalse() const                            { sendEditor( SCI_SETSAVEPOINT ); clearUndoBuffer(); };
 
-	void clearAll() const;
+	virtual void clearAll();
 	void clearUndoBuffer() const                           { sendEditor( SCI_EMPTYUNDOBUFFER ); };
 
-	void replaceCurrent( const string str, const int changePosValue = -1 ) const;
 	void appendText( const string& str ) const;
 
 	bool isReadOnly() const                                { return sendEditor( SCI_GETREADONLY ) ? true : false;  };
@@ -211,8 +208,6 @@ public:
 	void saveAsRTF( CFile& file, int start = 0, int end = -1 ) const;
 };
 
-}; // namespace rdoEditor
-
 //{{AFX_INSERT_LOCATION}}
 
-#endif // RDOEDITORSCIEDIT_H
+#endif // RDOBASEEDIT_H

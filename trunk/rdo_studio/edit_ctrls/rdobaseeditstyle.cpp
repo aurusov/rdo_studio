@@ -1,16 +1,16 @@
 #include "stdafx.h"
-#include "rdoeditorscieditstyle.h"
+#include "rdobaseeditstyle.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 
-using namespace rdoEditor;
+using namespace rdoStyle;
 
 // ----------------------------------------------------------------------------
-// ---------- RDOEditorSciEditTheme
+// ---------- RDOBaseEditTheme
 // ----------------------------------------------------------------------------
-RDOEditorSciEditTheme::RDOEditorSciEditTheme()
+RDOBaseEditTheme::RDOBaseEditTheme()
 {
 	defaultColor    = RGB( 0x80, 0x80, 0x80 );
 	backgroundColor = RGB( 0xFF, 0xFF, 0xFF );
@@ -28,11 +28,11 @@ RDOEditorSciEditTheme::RDOEditorSciEditTheme()
 	foldStyle     = RDOFOLDS_PLUS;
 }
 
-RDOEditorSciEditTheme::~RDOEditorSciEditTheme()
+RDOBaseEditTheme::~RDOBaseEditTheme()
 {
 }
 
-RDOEditorSciEditTheme& RDOEditorSciEditTheme::operator =( const RDOEditorSciEditTheme& theme )
+RDOBaseEditTheme& RDOBaseEditTheme::operator =( const RDOBaseEditTheme& theme )
 {
 	defaultColor    = theme.defaultColor;
 	backgroundColor = theme.defaultColor;
@@ -52,7 +52,7 @@ RDOEditorSciEditTheme& RDOEditorSciEditTheme::operator =( const RDOEditorSciEdit
 	return *this;
 }
 
-bool RDOEditorSciEditTheme::operator ==( const RDOEditorSciEditTheme& theme ) const
+bool RDOBaseEditTheme::operator ==( const RDOBaseEditTheme& theme ) const
 {
 	return defaultColor    == theme.defaultColor &&
 	       backgroundColor == theme.backgroundColor &&
@@ -70,12 +70,12 @@ bool RDOEditorSciEditTheme::operator ==( const RDOEditorSciEditTheme& theme ) co
 	       foldStyle     == theme.foldStyle;
 }
 
-bool RDOEditorSciEditTheme::operator !=( const RDOEditorSciEditTheme& theme ) const
+bool RDOBaseEditTheme::operator !=( const RDOBaseEditTheme& theme ) const
 {
 	return !(*this == theme);
 }
 
-void RDOEditorSciEditTheme::load( string regPath )
+void RDOBaseEditTheme::load( string regPath )
 {
 	regPath += "theme";
 	defaultColor     = AfxGetApp()->GetProfileInt( regPath.c_str(), "defaultColor", defaultColor );
@@ -91,7 +91,7 @@ void RDOEditorSciEditTheme::load( string regPath )
 	foldStyle        = (RDOFoldStyle)AfxGetApp()->GetProfileInt( regPath.c_str(), "foldStyle", foldStyle );
 }
 
-void RDOEditorSciEditTheme::save( string regPath ) const
+void RDOBaseEditTheme::save( string regPath ) const
 {
 	regPath += "theme";
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "defaultColor", defaultColor );
@@ -107,51 +107,51 @@ void RDOEditorSciEditTheme::save( string regPath ) const
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "foldStyle", foldStyle );
 }
 
-bool RDOEditorSciEditTheme::styleDefault( const int styleType ) const
+bool RDOBaseEditTheme::styleDefault( const int styleType ) const
 {
 	return styleType == STYLE_DEFAULT;
 }
 
-bool RDOEditorSciEditTheme::styleUsing( const int styleType ) const
+bool RDOBaseEditTheme::styleUsing( const int styleType ) const
 {
 	return styleType == STYLE_DEFAULT;
 }
 
-bool RDOEditorSciEditTheme::styleBold( const int styleType ) const
+bool RDOBaseEditTheme::styleBold( const int styleType ) const
 {
 	return defaultStyle & RDOFS_BOLD ? true : false;
 }
 
-bool RDOEditorSciEditTheme::styleItalic( const int styleType ) const
+bool RDOBaseEditTheme::styleItalic( const int styleType ) const
 {
 	return defaultStyle & RDOFS_ITALIC ? true : false;
 }
 
-string RDOEditorSciEditTheme::styleFGColorToHEX( const int styleType ) const
+string RDOBaseEditTheme::styleFGColorToHEX( const int styleType ) const
 {
 	return colorToHEX( defaultColor );
 }
 
-string RDOEditorSciEditTheme::styleBGColorToHEX( const int styleType ) const
+string RDOBaseEditTheme::styleBGColorToHEX( const int styleType ) const
 {
 	return colorToHEX( backgroundColor );
 }
 
-RDOEditorSciEditTheme RDOEditorSciEditTheme::getDefaultTheme()
+RDOBaseEditTheme RDOBaseEditTheme::getDefaultTheme()
 {
-	RDOEditorSciEditTheme theme;
+	RDOBaseEditTheme theme;
 	return theme;
 }
 
-string RDOEditorSciEditTheme::colorToHEX( const COLORREF color )
+string RDOBaseEditTheme::colorToHEX( const COLORREF color )
 {
 	return format( "#%02X%02X%02X", GetRValue( color ), GetGValue( color ), GetBValue( color ) );
 }
 
 // ----------------------------------------------------------------------------
-// ---------- RDOEditorSciEditFont
+// ---------- RDOBaseEditFont
 // ----------------------------------------------------------------------------
-RDOEditorSciEditFont::RDOEditorSciEditFont()
+RDOBaseEditFont::RDOBaseEditFont()
 {
 	name         = "Courier New";
 	size         = 10;
@@ -162,11 +162,11 @@ RDOEditorSciEditFont::RDOEditorSciEditFont()
 	}
 }
 
-RDOEditorSciEditFont::~RDOEditorSciEditFont()
+RDOBaseEditFont::~RDOBaseEditFont()
 {
 }
 
-RDOEditorSciEditFont& RDOEditorSciEditFont::operator =( const RDOEditorSciEditFont& font )
+RDOBaseEditFont& RDOBaseEditFont::operator =( const RDOBaseEditFont& font )
 {
 	name         = font.name;
 	size         = font.size;
@@ -176,7 +176,7 @@ RDOEditorSciEditFont& RDOEditorSciEditFont::operator =( const RDOEditorSciEditFo
 	return *this;
 }
 
-bool RDOEditorSciEditFont::operator ==( const RDOEditorSciEditFont& font ) const
+bool RDOBaseEditFont::operator ==( const RDOBaseEditFont& font ) const
 {
 	return name         == font.name &&
 	       size         == font.size &&
@@ -184,12 +184,12 @@ bool RDOEditorSciEditFont::operator ==( const RDOEditorSciEditFont& font ) const
 	       characterSet == font.characterSet;
 }
 
-bool RDOEditorSciEditFont::operator !=( const RDOEditorSciEditFont& font ) const
+bool RDOBaseEditFont::operator !=( const RDOBaseEditFont& font ) const
 {
 	return !(*this == font);
 }
 
-void RDOEditorSciEditFont::load( string regPath )
+void RDOBaseEditFont::load( string regPath )
 {
 	regPath += "font";
 	name         = AfxGetApp()->GetProfileString( regPath.c_str(), "name", name.c_str() );
@@ -198,7 +198,7 @@ void RDOEditorSciEditFont::load( string regPath )
 	characterSet = AfxGetApp()->GetProfileInt( regPath.c_str(), "characterSet", characterSet );
 }
 
-void RDOEditorSciEditFont::save( string regPath ) const
+void RDOBaseEditFont::save( string regPath ) const
 {
 	regPath += "font";
 	AfxGetApp()->WriteProfileString( regPath.c_str(), "name", name.c_str() );
@@ -208,9 +208,9 @@ void RDOEditorSciEditFont::save( string regPath ) const
 }
 
 // ----------------------------------------------------------------------------
-// ---------- RDOEditorSciEditTab
+// ---------- RDOBaseEditTab
 // ----------------------------------------------------------------------------
-RDOEditorSciEditTab::RDOEditorSciEditTab()
+RDOBaseEditTab::RDOBaseEditTab()
 {
 	tabSize         = 4;
 	indentSize      = 4;
@@ -220,11 +220,11 @@ RDOEditorSciEditTab::RDOEditorSciEditTab()
 	autoIndent      = true;
 }
 
-RDOEditorSciEditTab::~RDOEditorSciEditTab()
+RDOBaseEditTab::~RDOBaseEditTab()
 {
 }
 
-RDOEditorSciEditTab& RDOEditorSciEditTab::operator =( const RDOEditorSciEditTab& tab )
+RDOBaseEditTab& RDOBaseEditTab::operator =( const RDOBaseEditTab& tab )
 {
 	tabSize         = tab.tabSize;
 	indentSize      = tab.indentSize;
@@ -236,7 +236,7 @@ RDOEditorSciEditTab& RDOEditorSciEditTab::operator =( const RDOEditorSciEditTab&
 	return *this;
 }
 
-bool RDOEditorSciEditTab::operator ==( const RDOEditorSciEditTab& tab ) const
+bool RDOBaseEditTab::operator ==( const RDOBaseEditTab& tab ) const
 {
 	return tabSize         == tab.tabSize &&
 	       indentSize      == tab.indentSize &&
@@ -246,12 +246,12 @@ bool RDOEditorSciEditTab::operator ==( const RDOEditorSciEditTab& tab ) const
 	       autoIndent      == tab.autoIndent;
 }
 
-bool RDOEditorSciEditTab::operator !=( const RDOEditorSciEditTab& tab ) const
+bool RDOBaseEditTab::operator !=( const RDOBaseEditTab& tab ) const
 {
 	return !(*this == tab);
 }
 
-void RDOEditorSciEditTab::load( string regPath )
+void RDOBaseEditTab::load( string regPath )
 {
 	regPath += "tab";
 	tabSize         = AfxGetApp()->GetProfileInt( regPath.c_str(), "tabSize", tabSize );
@@ -262,7 +262,7 @@ void RDOEditorSciEditTab::load( string regPath )
 	autoIndent      = AfxGetApp()->GetProfileInt( regPath.c_str(), "autoIndent", autoIndent ) ? true : false;
 }
 
-void RDOEditorSciEditTab::save( string regPath ) const
+void RDOBaseEditTab::save( string regPath ) const
 {
 	regPath += "tab";
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "tabSize", tabSize );
@@ -274,19 +274,19 @@ void RDOEditorSciEditTab::save( string regPath ) const
 }
 
 // ----------------------------------------------------------------------------
-// ---------- RDOEditorSciEditWindow
+// ---------- RDOBaseEditWindow
 // ----------------------------------------------------------------------------
-RDOEditorSciEditWindow::RDOEditorSciEditWindow()
+RDOBaseEditWindow::RDOBaseEditWindow()
 {
 	wordWrap          = false;
 	showHorzScrollBar = true;
 }
 
-RDOEditorSciEditWindow::~RDOEditorSciEditWindow()
+RDOBaseEditWindow::~RDOBaseEditWindow()
 {
 }
 
-RDOEditorSciEditWindow& RDOEditorSciEditWindow::operator =( const RDOEditorSciEditWindow& window )
+RDOBaseEditWindow& RDOBaseEditWindow::operator =( const RDOBaseEditWindow& window )
 {
 	wordWrap          = window.wordWrap;
 	showHorzScrollBar = window.showHorzScrollBar;
@@ -294,25 +294,25 @@ RDOEditorSciEditWindow& RDOEditorSciEditWindow::operator =( const RDOEditorSciEd
 	return *this;
 }
 
-bool RDOEditorSciEditWindow::operator ==( const RDOEditorSciEditWindow& window ) const
+bool RDOBaseEditWindow::operator ==( const RDOBaseEditWindow& window ) const
 {
 	return wordWrap          == window.wordWrap&&
 	       showHorzScrollBar == window.showHorzScrollBar;
 }
 
-bool RDOEditorSciEditWindow::operator !=( const RDOEditorSciEditWindow& window ) const
+bool RDOBaseEditWindow::operator !=( const RDOBaseEditWindow& window ) const
 {
 	return !(*this == window);
 }
 
-void RDOEditorSciEditWindow::load( string regPath )
+void RDOBaseEditWindow::load( string regPath )
 {
 	regPath += "window";
 	wordWrap          = AfxGetApp()->GetProfileInt( regPath.c_str(), "wordWrap", wordWrap ) ? true : false;
 	showHorzScrollBar = AfxGetApp()->GetProfileInt( regPath.c_str(), "showHorzScrollBar", showHorzScrollBar ) ? true : false;
 }
 
-void RDOEditorSciEditWindow::save( string regPath ) const
+void RDOBaseEditWindow::save( string regPath ) const
 {
 	regPath += "window";
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "wordWrap", wordWrap );
@@ -320,9 +320,9 @@ void RDOEditorSciEditWindow::save( string regPath ) const
 }
 
 // ----------------------------------------------------------------------------
-// ---------- RDOEditorSciEditStyle
+// ---------- RDOBaseEditStyle
 // ----------------------------------------------------------------------------
-RDOEditorSciEditStyle::RDOEditorSciEditStyle():
+RDOBaseEditStyle::RDOBaseEditStyle():
 	regPath( "" ),
 	theme( NULL ),
 	font( NULL ),
@@ -331,7 +331,7 @@ RDOEditorSciEditStyle::RDOEditorSciEditStyle():
 {
 }
 
-RDOEditorSciEditStyle::~RDOEditorSciEditStyle()
+RDOBaseEditStyle::~RDOBaseEditStyle()
 {
 	if ( theme )  { delete theme;  theme = NULL; };
 	if ( font )   { delete font;   font = NULL; };
@@ -339,27 +339,27 @@ RDOEditorSciEditStyle::~RDOEditorSciEditStyle()
 	if ( window ) { delete window; window = NULL; };
 }
 
-void RDOEditorSciEditStyle::initTheme()
+void RDOBaseEditStyle::initTheme()
 {
-	theme = new RDOEditorSciEditTheme;
+	theme = new RDOBaseEditTheme;
 }
 
-void RDOEditorSciEditStyle::initFont()
+void RDOBaseEditStyle::initFont()
 {
-	font = new RDOEditorSciEditFont;
+	font = new RDOBaseEditFont;
 }
 
-void RDOEditorSciEditStyle::initTab()
+void RDOBaseEditStyle::initTab()
 {
-	tab = new RDOEditorSciEditTab;
+	tab = new RDOBaseEditTab;
 }
 
-void RDOEditorSciEditStyle::initWindow()
+void RDOBaseEditStyle::initWindow()
 {
-	window = new RDOEditorSciEditWindow;
+	window = new RDOBaseEditWindow;
 }
 
-RDOEditorSciEditStyle& RDOEditorSciEditStyle::operator =( const RDOEditorSciEditStyle& style )
+RDOBaseEditStyle& RDOBaseEditStyle::operator =( const RDOBaseEditStyle& style )
 {
 	if ( theme  && style.theme )  *theme  = *style.theme;
 	if ( font   && style.font )   *font   = *style.font;
@@ -369,7 +369,7 @@ RDOEditorSciEditStyle& RDOEditorSciEditStyle::operator =( const RDOEditorSciEdit
 	return *this;
 }
 
-bool RDOEditorSciEditStyle::operator ==( const RDOEditorSciEditStyle& style ) const
+bool RDOBaseEditStyle::operator ==( const RDOBaseEditStyle& style ) const
 {
 	bool flag = true;
 	if ( theme  && style.theme  && flag ) flag &= *theme  == *style.theme;
@@ -379,12 +379,12 @@ bool RDOEditorSciEditStyle::operator ==( const RDOEditorSciEditStyle& style ) co
 	return flag;
 }
 
-bool RDOEditorSciEditStyle::operator !=( const RDOEditorSciEditStyle& style ) const
+bool RDOBaseEditStyle::operator !=( const RDOBaseEditStyle& style ) const
 {
 	return !(*this == style);
 }
 
-void RDOEditorSciEditStyle::init( const string& _regPath )
+void RDOBaseEditStyle::init( const string& _regPath )
 {
 	regPath = _regPath;
 	if ( regPath.empty() ) {
@@ -399,7 +399,7 @@ void RDOEditorSciEditStyle::init( const string& _regPath )
 	initWindow();
 }
 
-void RDOEditorSciEditStyle::load()
+void RDOBaseEditStyle::load()
 {
 	if ( theme )  theme->load( regPath );
 	if ( font )   font->load( regPath );
@@ -407,7 +407,7 @@ void RDOEditorSciEditStyle::load()
 	if ( window ) window->load( regPath );
 }
 
-void RDOEditorSciEditStyle::save() const
+void RDOBaseEditStyle::save() const
 {
 	if ( theme )  theme->save( regPath );
 	if ( font )   font->save( regPath );

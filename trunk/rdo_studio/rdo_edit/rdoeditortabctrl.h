@@ -31,7 +31,7 @@ class RDOEditorTabCtrl: public RDOTabCtrl
 private:
 	RDOStudioEditBaseView* view;
 	RDOEditorEditStyle     style;
-	RDOEditorSciEditList   group;
+	RDOBaseEditList        group;
 
 protected:
 	//{{AFX_MSG(RDOEditorTabCtrl)
