@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "rdostudioeditview.h"
 #include "rdostudioeditdoc.h"
+#include "rdostudioapp.h"
+#include "rdostudiomainfrm.h"
 #include "rdo_edit/rdoeditoredit.h"
 #include "resource.h"
 
@@ -88,14 +90,11 @@ RDOStudioEditDoc* RDOStudioEditView::GetDocument()
 
 int RDOStudioEditView::OnCreate(LPCREATESTRUCT lpCreateStruct) 
 {
-	if (RDOStudioEditBaseView::OnCreate(lpCreateStruct) == -1)
-		return -1;
+	if (RDOStudioEditBaseView::OnCreate(lpCreateStruct) == -1) return -1;
 
+	edit->setEditorStyle( &studioApp.mainFrame->default_editorStyle );
 	edit->Create( NULL, NULL, WS_VISIBLE, CRect(0, 0, 100, 100), this, -1 );
 	edit->setPopupMenu( &popupMenu );
-	RDOEditorEditStyle style;
-	style.load();
-//	edit->setEditorStyle( style );
 
 	return 0;
 }

@@ -6,10 +6,6 @@
 #endif
 
 #include "rdostudiodockwnd.h"
-#include "edit_ctrls/rdobaseeditstyle.h"
-#include "edit_ctrls/rdologeditstyle.h"
-#include "edit_ctrls/rdofindeditstyle.h"
-#include "rdo_edit/rdoeditoreditstyle.h"
 
 #include <rdotabctrl.h>
 #include <rdosimwin.h>
@@ -28,10 +24,6 @@ class RDOStudioOutput: public RDOStudioDockWnd
 {
 private:
 	RDOTabCtrl tab;
-	RDOLogEditStyle               buildStyle;
-	rdoBaseEdit::RDOBaseEditStyle debugStyle;
-	rdoEditor::RDOEditorEditStyle resultsStyle;
-	RDOFindEditStyle              findStyle;
 
 	RDOBuildEdit*             build;
 	RDODebugEdit*             debug;

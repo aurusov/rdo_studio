@@ -75,35 +75,21 @@ int RDOStudioOutput::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	results->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), tab.getTabAsParent(), -1 );
 	find->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), tab.getTabAsParent(), -1 );
 
-	buildStyle.init( "buildStyle" );
-	buildStyle.window->showHorzScrollBar = false;
-	buildStyle.window->wordWrap          = true;
-	buildStyle.load();
-	build->setEditorStyle( &buildStyle );
+	build->setEditorStyle( &studioApp.mainFrame->default_buildStyle );
 	build->setReadOnly( true );
 	build->setPopupMenu( &popupMenu );
 
-	debugStyle.init( "debugStyle" );
-	debugStyle.window->showHorzScrollBar = false;
-	debugStyle.window->wordWrap          = true;
-	debugStyle.load();
-	debug->setEditorStyle( &debugStyle );
+	debug->setEditorStyle( &studioApp.mainFrame->default_debugStyle );
 	debug->setReadOnly( true );
 	debug->setPopupMenu( &popupMenu );
 
-	resultsStyle.init( "resultsStyle" );
-	resultsStyle.window->showHorzScrollBar = false;
-	resultsStyle.window->wordWrap          = true;
-	resultsStyle.load();
-	results->setEditorStyle( &resultsStyle );
+	results->setEditorStyle( &studioApp.mainFrame->default_resultsStyle );
 	results->setViewMargin( false );
 	results->setViewFoldMargin( false );
 	results->setReadOnly( true );
 	results->setPopupMenu( &popupMenu );
 
-	findStyle.init( "findStyle" );
-	findStyle.load();
-	find->setEditorStyle( &findStyle );
+	find->setEditorStyle( &studioApp.mainFrame->default_findStyle );
 	find->setReadOnly( true );
 	find->setPopupMenu( &popupMenu );
 

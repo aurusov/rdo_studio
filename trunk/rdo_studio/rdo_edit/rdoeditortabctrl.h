@@ -5,7 +5,6 @@
 #include <rdotabctrl.h>
 
 #include "rdoeditoredit.h"
-#include "rdoeditoreditstyle.h"
 
 class RDOStudioEditBaseView;
 
@@ -30,7 +29,6 @@ class RDOEditorTabCtrl: public RDOTabCtrl
 {
 private:
 	RDOStudioEditBaseView*       view;
-	RDOEditorEditStyle           style;
 	rdoBaseEdit::RDOBaseEditList group;
 
 protected:

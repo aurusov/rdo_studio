@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "rdoeditortabctrl.h"
+#include "../rdostudioapp.h"
+#include "../rdostudiomainfrm.h"
 #include "../rdostudioeditbaseview.h"
 #include "../resource.h"
 
@@ -60,17 +62,15 @@ int RDOEditorTabCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	page8->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), -1 );
 	page9->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), -1 );
 
-	style.init();
-	style.load();
-	page1->setEditorStyle( &style );
-	page2->setEditorStyle( &style );
-	page3->setEditorStyle( &style );
-	page4->setEditorStyle( &style );
-	page5->setEditorStyle( &style );
-	page6->setEditorStyle( &style );
-	page7->setEditorStyle( &style );
-	page8->setEditorStyle( &style );
-	page9->setEditorStyle( &style );
+	page1->setEditorStyle( &studioApp.mainFrame->default_editorStyle );
+	page2->setEditorStyle( &studioApp.mainFrame->default_editorStyle );
+	page3->setEditorStyle( &studioApp.mainFrame->default_editorStyle );
+	page4->setEditorStyle( &studioApp.mainFrame->default_editorStyle );
+	page5->setEditorStyle( &studioApp.mainFrame->default_editorStyle );
+	page6->setEditorStyle( &studioApp.mainFrame->default_editorStyle );
+	page7->setEditorStyle( &studioApp.mainFrame->default_editorStyle );
+	page8->setEditorStyle( &studioApp.mainFrame->default_editorStyle );
+	page9->setEditorStyle( &studioApp.mainFrame->default_editorStyle );
 
 	page1->setPopupMenu( &view->popupMenu );
 	page2->setPopupMenu( &view->popupMenu );

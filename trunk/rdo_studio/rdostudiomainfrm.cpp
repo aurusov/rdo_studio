@@ -58,6 +58,27 @@ int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if ( CMDIFrameWnd::OnCreate(lpCreateStruct) == -1 ) return -1;
 
+	default_editorStyle.init( "editorStyle" );
+	default_editorStyle.load();
+
+	default_buildStyle.init( "buildStyle" );
+	default_buildStyle.window->showHorzScrollBar = false;
+	default_buildStyle.window->wordWrap          = true;
+	default_buildStyle.load();
+
+	default_debugStyle.init( "debugStyle" );
+	default_debugStyle.window->showHorzScrollBar = false;
+	default_debugStyle.window->wordWrap          = true;
+	default_debugStyle.load();
+
+	default_resultsStyle.init( "resultsStyle" );
+	default_resultsStyle.window->showHorzScrollBar = false;
+	default_resultsStyle.window->wordWrap          = true;
+	default_resultsStyle.load();
+
+	default_findStyle.init( "findStyle" );
+	default_findStyle.load();
+
 	fileToolBar.CreateEx( this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
 	fileToolBar.LoadToolBar( IDR_FILETOOLBAR );
 	fileToolBar.GetToolBarCtrl().SetWindowText( format( IDR_FILETOOLBAR ).c_str() );
@@ -116,6 +137,12 @@ int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 void RDOStudioMainFrame::OnDestroy()
 {
+	default_editorStyle.save();
+	default_buildStyle.save();
+	default_debugStyle.save();
+	default_resultsStyle.save();
+	default_findStyle.save();
+
 	::OleUninitialize();
 	if ( model ) { delete model; model = NULL; }
 	CMDIFrameWnd::OnDestroy();

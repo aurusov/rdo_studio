@@ -7,6 +7,10 @@
 
 #include "rdostudioworkspace.h"
 #include "rdostudiooutput.h"
+#include "rdo_edit/rdoeditoreditstyle.h"
+#include "edit_ctrls/rdologeditstyle.h"
+#include "edit_ctrls/rdobaseeditstyle.h"
+#include "edit_ctrls/rdofindeditstyle.h"
 
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioMainFrame
@@ -15,7 +19,7 @@ class RDOStudioMainFrame: public CMDIFrameWnd
 {
 DECLARE_DYNAMIC(RDOStudioMainFrame)
 
-protected:
+private:
 	CToolBar           fileToolBar;
 	CImageList         fileToolBarImageList;
 	CToolBar           buildToolBar;
@@ -33,6 +37,12 @@ public:
 	RDOStudioWorkspace workspace;
 	RDOStudioOutput    output;
 
+	rdoEditor::RDOEditorEditStyle default_editorStyle;
+	RDOLogEditStyle               default_buildStyle;
+	rdoBaseEdit::RDOBaseEditStyle default_debugStyle;
+	rdoEditor::RDOEditorEditStyle default_resultsStyle;
+	RDOFindEditStyle              default_findStyle;
+
 	BOOL OnCmdMsgForDockOnly( UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo );
 
 #ifdef _DEBUG
@@ -40,13 +50,12 @@ public:
 	virtual void Dump(CDumpContext& dc) const;
 #endif
 
-public:
+protected:
 	//{{AFX_VIRTUAL(RDOStudioMainFrame)
 	public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	//}}AFX_VIRTUAL
 
-protected:
 	//{{AFX_MSG(RDOStudioMainFrame)
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnViewFileToolbar();

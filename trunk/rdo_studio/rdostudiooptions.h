@@ -5,6 +5,10 @@
 #pragma once
 #endif
 
+#include "rdo_edit/rdoeditoreditstyle.h"
+#include "edit_ctrls/rdologeditstyle.h"
+#include "edit_ctrls/rdobaseeditstyle.h"
+#include "edit_ctrls/rdofindeditstyle.h"
 #include <rdocolorcombobox.h>
 
 // ----------------------------------------------------------------------------
@@ -55,11 +59,12 @@ public:
 // ----------------------------------------------------------------------------
 class RDOStudioOptions: public CPropertySheet
 {
-//friend class RDOStudioEditorOptions;
-//friend class RDOStudioColorsOptions;
-
 private:
-//	RDOStudioEditStyle prevStyle;
+	rdoEditor::RDOEditorEditStyle editorStyle;
+	RDOLogEditStyle               buildStyle;
+	rdoBaseEdit::RDOBaseEditStyle debugStyle;
+	rdoEditor::RDOEditorEditStyle resultsStyle;
+	RDOFindEditStyle              findStyle;
 
 	RDOStudioOptionsSourceEditor* sourceEditor;
 	RDOStudioOptionsStyleColor*   styleColor;
@@ -80,8 +85,6 @@ protected:
 public:
 	RDOStudioOptions();
 	virtual ~RDOStudioOptions();
-
-//	RDOEditorEditStyle editorStyle;
 };
 
 //{{AFX_INSERT_LOCATION}}
