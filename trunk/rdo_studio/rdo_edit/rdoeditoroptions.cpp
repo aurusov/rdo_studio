@@ -22,10 +22,6 @@ BEGIN_MESSAGE_MAP( RDOEditorEditorOptions, CPropertyPage )
 	ON_BN_CLICKED( IDC_BACKSPACEUNINDENTS_RADIO  , OnUpdateModify )
 	ON_BN_CLICKED( IDC_AUTOINDENT_CHECK          , OnUpdateModify )
 
-	ON_BN_CLICKED( IDC_USEAUTOCOMPLETE_CHECK     , OnUseAutoCompleteCBChanged )
-	ON_BN_CLICKED( IDC_SHOWFULLLIST_RADIO        , OnUpdateModify )
-	ON_BN_CLICKED( IDC_SHOWNEARESTWORDSONLY_RADIO, OnUpdateModify )
-
 	ON_BN_CLICKED( IDC_DEBUGNONE_RADIO               , OnUpdateModify )
 	ON_BN_CLICKED( IDC_DEBUGHOOK_RADIO               , OnUpdateModify )
 	ON_BN_CLICKED( IDC_DEBUGTIMER_RADIO              , OnUpdateModify )
@@ -53,9 +49,6 @@ RDOEditorEditorOptions::RDOEditorEditorOptions( RDOEditorOptions& _sheet, RDODeb
 	backspaceUntabs = tab->backspaceUntabs ? 0 : 1;
 	autoIndent      = tab->autoIndent ? 1 : 0;
 
-	useAutoComplete = sheet->editorStyle.autoComplete.useAutoComplete ? 1 : 0;
-	showFullList    = sheet->editorStyle.autoComplete.showFullList ? 0 : 1;
-
 	debug      = (int)_debug;
 	prev_debug = debug;
 
@@ -78,9 +71,6 @@ void RDOEditorEditorOptions::DoDataExchange( CDataExchange* pDX )
 	DDX_Check( pDX, IDC_TABINDENTS_CHECK     , tabIndents );
 	DDX_Radio( pDX, IDC_BACKSPACEUNTABS_RADIO, backspaceUntabs );
 	DDX_Check( pDX, IDC_AUTOINDENT_CHECK     , autoIndent );
-
-	DDX_Check( pDX, IDC_USEAUTOCOMPLETE_CHECK, useAutoComplete );
-	DDX_Radio( pDX, IDC_SHOWFULLLIST_RADIO   , showFullList );
 
 	DDX_Radio( pDX, IDC_DEBUGNONE_RADIO, debug );
 
@@ -144,14 +134,6 @@ BOOL RDOEditorEditorOptions::OnNotify( WPARAM wParam, LPARAM lParam, LRESULT* pR
 	return CPropertyPage::OnNotify( wParam, lParam, pResult );
 }
 
-void RDOEditorEditorOptions::OnUseAutoCompleteCBChanged()
-{
-	bool use = ((CButton*)GetDlgItem( IDC_USEAUTOCOMPLETE_CHECK ))->GetCheck() ? true : false;
-	GetDlgItem( IDC_SHOWFULLLIST_RADIO )->EnableWindow( use );
-	GetDlgItem( IDC_SHOWNEARESTWORDSONLY_RADIO )->EnableWindow( use );
-	OnUpdateModify();
-}
-
 void RDOEditorEditorOptions::OnUseAutoClearBufferCBChanged()
 {
 	bool use = ((CButton*)GetDlgItem( IDC_CLEARAUTO_CHECK ))->GetCheck() ? true : false;
@@ -182,9 +164,6 @@ void RDOEditorEditorOptions::OnUpdateModify()
 	tab->tabIndents      = tabIndents ? true : false;
 	tab->backspaceUntabs = backspaceUntabs == 0;
 	tab->autoIndent      = autoIndent ? true : false;
-
-	sheet->editorStyle.autoComplete.useAutoComplete = useAutoComplete ? true : false;
-	sheet->editorStyle.autoComplete.showFullList    = showFullList == 0;
 
 	sheet->editorStyle.window.wordWrap          = wordWrap ? true : false;
 	sheet->editorStyle.window.showHorzScrollBar = showHorzScrollBar ? true : false;

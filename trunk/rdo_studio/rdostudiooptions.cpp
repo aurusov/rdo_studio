@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "rdostudiooptions.h"
+#include "rdostudioapp.h"
+#include "rdostudiomainfrm.h"
 #include "resource.h"
 
 #ifdef _DEBUG
@@ -9,43 +11,129 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 // ----------------------------------------------------------------------------
-// ---------- RDOStudioOptionsSourceEditor
+// ---------- RDOStudioOptionsEditor
 // ----------------------------------------------------------------------------
-BEGIN_MESSAGE_MAP(RDOStudioOptionsSourceEditor, CPropertyPage)
-	//{{AFX_MSG_MAP(RDOStudioOptionsSourceEditor)
+BEGIN_MESSAGE_MAP(RDOStudioOptionsEditor, CPropertyPage)
+	//{{AFX_MSG_MAP(RDOStudioOptionsEditor)
+	ON_BN_CLICKED(IDC_USEAUTOCOMPLETE_CHECK, OnUseAutoCompleteCheck)
+	ON_BN_CLICKED(IDC_SHOWFULLLIST_RADIO, OnUpdateModify)
+	ON_BN_CLICKED(IDC_SHOWNEARESTWORDSONLY_RADIO, OnUpdateModify)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-RDOStudioOptionsSourceEditor::RDOStudioOptionsSourceEditor(): CPropertyPage( IDD_OPTIONS_EDITOR_DIALOG )
+RDOStudioOptionsEditor::RDOStudioOptionsEditor( RDOStudioOptions& _sheet ):
+	CPropertyPage( IDD_OPTIONS_EDITOR ),
+	sheet( &_sheet )
+{
+	useAutoComplete = sheet->editorStyle.autoComplete->useAutoComplete ? 1 : 0;
+	showFullList    = sheet->editorStyle.autoComplete->showFullList ? 0 : 1;
+}
+
+RDOStudioOptionsEditor::~RDOStudioOptionsEditor()
 {
 }
 
-RDOStudioOptionsSourceEditor::~RDOStudioOptionsSourceEditor()
+void RDOStudioOptionsEditor::DoDataExchange(CDataExchange* pDX)
 {
+	CPropertyPage::DoDataExchange(pDX);
+
+	DDX_Check( pDX, IDC_USEAUTOCOMPLETE_CHECK, useAutoComplete );
+	DDX_Radio( pDX, IDC_SHOWFULLLIST_RADIO   , showFullList );
+}
+
+BOOL RDOStudioOptionsEditor::OnInitDialog()
+{
+	CPropertyPage::OnInitDialog();
+
+	OnUseAutoCompleteCheck();
+
+	return TRUE;
+}
+
+void RDOStudioOptionsEditor::OnOK() 
+{
+	sheet->apply();
+	CPropertyPage::OnOK();
+}
+
+void RDOStudioOptionsEditor::OnUseAutoCompleteCheck() 
+{
+	bool use = ((CButton*)GetDlgItem( IDC_USEAUTOCOMPLETE_CHECK ))->GetCheck() ? true : false;
+	GetDlgItem( IDC_SHOWFULLLIST_RADIO )->EnableWindow( use );
+	GetDlgItem( IDC_SHOWNEARESTWORDSONLY_RADIO )->EnableWindow( use );
+	OnUpdateModify();
+}
+
+void RDOStudioOptionsEditor::OnUpdateModify() 
+{
+	UpdateData();
+
+	sheet->editorStyle.autoComplete->useAutoComplete = useAutoComplete ? true : false;
+	sheet->editorStyle.autoComplete->showFullList    = showFullList == 0;
+
+//	if ( sheet->colorOptions->edit ) {
+//		sheet->colorOptions->edit.setEditorStyle( sheet->editorStyle );
+//	}
+
+	SetModified( *sheet->editorStyle.autoComplete != *studioApp.mainFrame->default_editorStyle.autoComplete /*|| canClearBuffer != prev_canClearBuffer || clearBufferDelay != prev_clearBufferDelay*/ );
 }
 
 // ----------------------------------------------------------------------------
-// ---------- RDOStudioOptionsStyleColor
+// ---------- RDOStudioOptionsTabs
 // ----------------------------------------------------------------------------
-BEGIN_MESSAGE_MAP(RDOStudioOptionsStyleColor, CPropertyPage)
-	//{{AFX_MSG_MAP(RDOStudioOptionsStyleColor)
+BEGIN_MESSAGE_MAP(RDOStudioOptionsTabs, CPropertyPage)
+	//{{AFX_MSG_MAP(RDOStudioOptionsTabs)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-RDOStudioOptionsStyleColor::RDOStudioOptionsStyleColor(): CPropertyPage( IDD_OPTIONS_COLORS_DIALOG )
+RDOStudioOptionsTabs::RDOStudioOptionsTabs( RDOStudioOptions& _sheet ):
+	CPropertyPage( IDD_OPTIONS_TABS ),
+	sheet( &_sheet )
 {
 }
 
-RDOStudioOptionsStyleColor::~RDOStudioOptionsStyleColor()
+RDOStudioOptionsTabs::~RDOStudioOptionsTabs()
 {
 }
 
-void RDOStudioOptionsStyleColor::DoDataExchange(CDataExchange* pDX) 
+// ----------------------------------------------------------------------------
+// ---------- RDOStudioOptionsColorsAndStyles
+// ----------------------------------------------------------------------------
+BEGIN_MESSAGE_MAP(RDOStudioOptionsColorsAndStyles, CPropertyPage)
+	//{{AFX_MSG_MAP(RDOStudioOptionsColorsAndStyles)
+	//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+RDOStudioOptionsColorsAndStyles::RDOStudioOptionsColorsAndStyles( RDOStudioOptions& _sheet ):
+	CPropertyPage( IDD_OPTIONS_COLORSANDSTYLES ),
+	sheet( &_sheet )
+{
+}
+
+RDOStudioOptionsColorsAndStyles::~RDOStudioOptionsColorsAndStyles()
+{
+}
+
+void RDOStudioOptionsColorsAndStyles::DoDataExchange(CDataExchange* pDX)
 {
 	CPropertyPage::DoDataExchange(pDX);
 
 	DDX_Control( pDX, IDC_FGCOLOR_COMBO, fgColorCB );
 	DDX_Control( pDX, IDC_BGCOLOR_COMBO, bgColorCB );
+}
+
+
+BOOL RDOStudioOptionsColorsAndStyles::OnInitDialog()
+{
+	CPropertyPage::OnInitDialog();
+
+	int itemHeight = ((CComboBox*)GetDlgItem( IDC_THEME_COMBO ))->GetItemHeight( -1 );
+	fgColorCB.setItemHeight( itemHeight );
+	bgColorCB.setItemHeight( itemHeight );
+	fgColorCB.insertBaseColors();
+	bgColorCB.insertBaseColors();
+
+	return true;
 }
 
 // ----------------------------------------------------------------------------
@@ -59,18 +147,30 @@ END_MESSAGE_MAP()
 
 RDOStudioOptions::RDOStudioOptions():
 	CPropertySheet(),
-	sourceEditor( NULL ),
-	styleColor( NULL )
+	editor( NULL ),
+	tabs( NULL ),
+	colorsAndStyles( NULL )
 {
 	SetTitle( format( ID_OPTIONS ).c_str() );
 
-//	editorStyle = style;
-//	prevStyle   = style;
+	editorStyle.init();
+	buildStyle.init();
+	debugStyle.init();
+	resultsStyle.init();
+	findStyle.init();
 
-	sourceEditor = new RDOStudioOptionsSourceEditor();
-	styleColor   = new RDOStudioOptionsStyleColor();
-	AddPage( sourceEditor );
-	AddPage( styleColor );
+	editorStyle  = studioApp.mainFrame->default_editorStyle;
+	buildStyle   = studioApp.mainFrame->default_buildStyle;
+	debugStyle   = studioApp.mainFrame->default_debugStyle;
+	resultsStyle = studioApp.mainFrame->default_resultsStyle;
+	findStyle    = studioApp.mainFrame->default_findStyle;
+
+	editor          = new RDOStudioOptionsEditor( *this );
+	tabs            = new RDOStudioOptionsTabs( *this );
+	colorsAndStyles = new RDOStudioOptionsColorsAndStyles( *this );
+	AddPage( editor );
+	AddPage( tabs );
+	AddPage( colorsAndStyles );
 
 	m_psh.dwFlags |= PSH_USECALLBACK | PSH_HASHELP;
 	m_psh.pfnCallback = AddContextHelpProc;
@@ -78,22 +178,19 @@ RDOStudioOptions::RDOStudioOptions():
 
 RDOStudioOptions::~RDOStudioOptions()
 {
-	if ( sourceEditor ) delete sourceEditor;
-	if ( styleColor ) delete styleColor;
+	if ( editor ) delete editor;
+	if ( tabs ) delete tabs;
+	if ( colorsAndStyles ) delete colorsAndStyles;
 }
 
 void RDOStudioOptions::apply()
 {
-/*
-	RDOEditorTabCtrl* tabCtrl = &((RDOEditorMainFrame*)AfxGetMainWnd())->childView.tab;
-	int itemCount = tabCtrl->getItemCount();
-	for ( int i = 0; i < itemCount; i++ ) {
-		tabCtrl->getItemEdit( i )->setEditorStyle( editorStyle );
-	}
-	editorStyle.save();
-	prevStyle = editorStyle;
-	colorOptions->currentTheme = editorStyle.theme;
-*/
+	studioApp.mainFrame->default_editorStyle  = editorStyle;
+	studioApp.mainFrame->default_buildStyle   = buildStyle;
+	studioApp.mainFrame->default_debugStyle   = debugStyle;
+	studioApp.mainFrame->default_resultsStyle = resultsStyle;
+	studioApp.mainFrame->default_findStyle    = findStyle;
+	studioApp.mainFrame->updateAllStyles();
 }
 
 int CALLBACK RDOStudioOptions::AddContextHelpProc(HWND hwnd, UINT message, LPARAM lParam)
@@ -129,17 +226,4 @@ BOOL RDOStudioOptions::OnHelpInfo(HELPINFO* pHelpInfo)
 //	if ( pHelpInfo->iContextType == HELPINFO_WINDOW )
 //		return HtmlHelp( ::GetDesktopWindow(), filename, HH_HELP_CONTEXT, pHelpInfo->dwContextId) != NULL;
 	return TRUE;
-}
-
-BOOL RDOStudioOptionsStyleColor::OnInitDialog() 
-{
-	CPropertyPage::OnInitDialog();
-
-	int itemHeight = ((CComboBox*)GetDlgItem( IDC_THEME_COMBO ))->GetItemHeight( -1 );
-	fgColorCB.setItemHeight( itemHeight );
-	bgColorCB.setItemHeight( itemHeight );
-	fgColorCB.insertBaseColors();
-	bgColorCB.insertBaseColors();
-
-	return true;
 }

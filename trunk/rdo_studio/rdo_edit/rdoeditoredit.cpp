@@ -27,7 +27,7 @@ public:
 	CString bufName;
 	CString bufValue;
 
-	RDOEditorEditBufferDlg( CString _bufName, CString _bufValue ): CDialog( IDD_BUFFER_DIALOG ), bufName( _bufName ), bufValue( _bufValue ) {};
+	RDOEditorEditBufferDlg( CString _bufName, CString _bufValue ): CDialog( IDD_BUFFER ), bufName( _bufName ), bufValue( _bufValue ) {};
 };
 
 void RDOEditorEditBufferDlg::DoDataExchange( CDataExchange* pDX )

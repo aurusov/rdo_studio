@@ -20,13 +20,13 @@ class RDOStudioMainFrame: public CMDIFrameWnd
 DECLARE_DYNAMIC(RDOStudioMainFrame)
 
 private:
-	CToolBar           fileToolBar;
-	CImageList         fileToolBarImageList;
-	CToolBar           buildToolBar;
-	CImageList         buildToolBarImageList;
-	CToolBar           editToolBar;
-	CImageList         editToolBarImageList;
-	CStatusBar         statusBar;
+	CToolBar   fileToolBar;
+	CImageList fileToolBarImageList;
+	CToolBar   buildToolBar;
+	CImageList buildToolBarImageList;
+	CToolBar   editToolBar;
+	CImageList editToolBarImageList;
+	CStatusBar statusBar;
 
 	void dockControlBarBesideOf( CControlBar& bar, CControlBar& baseBar );
 
@@ -42,6 +42,7 @@ public:
 	rdoBaseEdit::RDOBaseEditStyle default_debugStyle;
 	rdoEditor::RDOEditorEditStyle default_resultsStyle;
 	RDOFindEditStyle              default_findStyle;
+	void updateAllStyles() const;
 
 	BOOL OnCmdMsgForDockOnly( UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo );
 

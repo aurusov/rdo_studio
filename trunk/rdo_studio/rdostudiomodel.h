@@ -82,6 +82,8 @@ public:
 	void updateModify() const;
 
 	rdoEditor::RDOEditorTabCtrl* getTab() const;
+
+	void updateStyleOfAllModel() const;
 };
 
 // ----------------------------------------------------------------------------

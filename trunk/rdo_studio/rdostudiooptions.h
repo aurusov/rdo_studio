@@ -12,46 +12,84 @@
 #include <rdocolorcombobox.h>
 
 // ----------------------------------------------------------------------------
-// ---------- RDOStudioOptionsSourceEditor
+// ---------- RDOStudioOptionsEditor
 // ----------------------------------------------------------------------------
-class RDOStudioOptionsSourceEditor: public CPropertyPage
-{
-protected:
-	//{{AFX_VIRTUAL(RDOStudioOptionsSourceEditor)
-	//}}AFX_VIRTUAL
+class RDOStudioOptions;
 
-	//{{AFX_MSG(RDOStudioOptionsSourceEditor)
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
-
-public:
-	RDOStudioOptionsSourceEditor();
-	virtual ~RDOStudioOptionsSourceEditor();
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOStudioOptionsStyleColor
-// ----------------------------------------------------------------------------
-class RDOStudioOptionsStyleColor: public CPropertyPage
+class RDOStudioOptionsEditor: public CPropertyPage
 {
 private:
-	RDOColorComboBox fgColorCB;
-	RDOColorComboBox bgColorCB;
+	RDOStudioOptions* sheet;
+
+	int useAutoComplete;
+	int showFullList;
 
 protected:
-	//{{AFX_VIRTUAL(RDOStudioOptionsStyleColor)
+	//{{AFX_VIRTUAL(RDOStudioOptionsEditor)
+	public:
+	virtual void OnOK();
 	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);
 	//}}AFX_VIRTUAL
 
-	//{{AFX_MSG(RDOStudioOptionsStyleColor)
+	//{{AFX_MSG(RDOStudioOptionsEditor)
+	afx_msg void OnUseAutoCompleteCheck();
+	virtual BOOL OnInitDialog();
+	afx_msg void OnUpdateModify();
+	//}}AFX_MSG
+	DECLARE_MESSAGE_MAP()
+
+public:
+	RDOStudioOptionsEditor( RDOStudioOptions& _sheet );
+	virtual ~RDOStudioOptionsEditor();
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOStudioOptionsTabs
+// ----------------------------------------------------------------------------
+class RDOStudioOptionsTabs: public CPropertyPage
+{
+private:
+	RDOStudioOptions* sheet;
+
+protected:
+	//{{AFX_VIRTUAL(RDOStudioOptionsTabs)
+	//}}AFX_VIRTUAL
+
+	//{{AFX_MSG(RDOStudioOptionsTabs)
+	//}}AFX_MSG
+	DECLARE_MESSAGE_MAP()
+
+public:
+	RDOStudioOptionsTabs( RDOStudioOptions& _sheet );
+	virtual ~RDOStudioOptionsTabs();
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOStudioOptionsColorsAndStyles
+// ----------------------------------------------------------------------------
+class RDOStudioOptionsColorsAndStyles: public CPropertyPage
+{
+private:
+	RDOStudioOptions* sheet;
+
+	RDOColorComboBox fgColorCB;
+	RDOColorComboBox bgColorCB;
+
+protected:
+	//{{AFX_VIRTUAL(RDOStudioOptionsColorsAndStyles)
+	protected:
+	virtual void DoDataExchange(CDataExchange* pDX);
+	//}}AFX_VIRTUAL
+
+	//{{AFX_MSG(RDOStudioOptionsColorsAndStyles)
 	virtual BOOL OnInitDialog();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
 public:
-	RDOStudioOptionsStyleColor();
-	virtual ~RDOStudioOptionsStyleColor();
+	RDOStudioOptionsColorsAndStyles( RDOStudioOptions& _sheet );
+	virtual ~RDOStudioOptionsColorsAndStyles();
 };
 
 // ----------------------------------------------------------------------------
@@ -59,6 +97,10 @@ public:
 // ----------------------------------------------------------------------------
 class RDOStudioOptions: public CPropertySheet
 {
+friend class RDOStudioOptionsEditor;
+friend class RDOStudioOptionsTabs;
+friend class RDOStudioOptionsColorsAndStyles;
+
 private:
 	rdoEditor::RDOEditorEditStyle editorStyle;
 	RDOLogEditStyle               buildStyle;
@@ -66,8 +108,9 @@ private:
 	rdoEditor::RDOEditorEditStyle resultsStyle;
 	RDOFindEditStyle              findStyle;
 
-	RDOStudioOptionsSourceEditor* sourceEditor;
-	RDOStudioOptionsStyleColor*   styleColor;
+	RDOStudioOptionsEditor*          editor;
+	RDOStudioOptionsTabs*            tabs;
+	RDOStudioOptionsColorsAndStyles* colorsAndStyles;
 
 	void apply();
 	static int CALLBACK AddContextHelpProc(HWND hwnd, UINT message, LPARAM lParam);

@@ -11,22 +11,25 @@
 #define IDB_TREECTRL                    133
 #define IDR_CHARTTYPE                   134
 #define IDR_FRAMETYPE                   135
-#define IDD_BUFFER_DIALOG               142
+#define IDD_BUFFER                      142
 #define IDB_FILETOOLBAR_D               144
 #define IDB_EDITTOOLBAR_D               145
 #define IDR_BUILDTOOLBAR                148
 #define IDR_EDITTOOLBAR                 151
-#define IDD_OPTIONS_EDITOR_DIALOG       152
 #define IDB_BUILDTOOLBAR_D              152
-#define IDD_OPTIONS_COLORS_DIALOG       153
-#define IDD_FILEASSOCIATION_DIALOG      154
+#define IDD_OPTIONS_EDITOR              152
+#define IDD_OPTIONS_COLORSANDSTYLES     153
+#define IDD_FILEASSOCIATION             154
+#define IDD_OPTIONS_TABS                155
 #define IDC_CLEARAUTO_CHECK             1001
 #define IDC_BUFFERVALUESTATIC           1002
 #define IDC_BUFFERVALUEEDIT             1003
 #define IDC_THEME_STATIC                1004
+#define IDC_PREVIEWAS_STATIC            1005
 #define IDC_TABSIZE_EDIT                1007
 #define IDC_INDENTSIZE_EDIT             1008
 #define IDC_THEME_COMBO                 1009
+#define IDC_PREVIEWAS_COMBO             1010
 #define IDC_USETABS_CHECK               1012
 #define IDC_TABINDENTS_CHECK            1014
 #define IDC_BACKSPACEUNTABS_RADIO       1016
@@ -53,17 +56,10 @@
 #define IDC_FOLD_STATIC                 1050
 #define IDC_BOOKMARK_COMBO              1051
 #define IDC_BOOKMARK_STATIC             1052
-#define IDC_TAB_STATIC                  1053
-#define IDC_WINDOW_STATIC               1054
 #define IDC_AUTOCOMPLETE_STATIC         1055
 #define IDC_TABSIZE_STATIC              1056
 #define IDC_INDENTSIZE_STATIC           1057
 #define IDC_BUFFERS_STATIC              1058
-#define IDC_DEBUG_STATIC                1059
-#define IDC_DEBUGNONE_RADIO             1060
-#define IDC_DEBUGHOOK_RADIO             1061
-#define IDC_DEBUGTIMER_RADIO            1062
-#define IDC_DEBUGWAITFORSINGLEOBJECT_RADIO 1063
 #define IDC_CLEARAUTO_EDIT              1065
 #define IDC_CLEARAUTO_STATIC1           1067
 #define IDC_CLEARAUTO_STATIC2           1068
@@ -414,7 +410,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        153
+#define _APS_NEXT_RESOURCE_VALUE        156
 #define _APS_NEXT_COMMAND_VALUE         33140
 #define _APS_NEXT_CONTROL_VALUE         1001
 #define _APS_NEXT_SYMED_VALUE           101

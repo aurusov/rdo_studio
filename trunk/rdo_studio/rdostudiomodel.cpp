@@ -608,3 +608,15 @@ void RDOStudioModel::addNewFrame()
 	frameDocTemplate->OpenDocumentFile( NULL );
 	addNewFrameEvent.SetEvent();
 }
+
+void RDOStudioModel::updateStyleOfAllModel() const
+{
+	POSITION pos = modelDocTemplate->GetFirstDocPosition();
+	while ( pos ) {
+		RDOStudioModelDoc* doc = static_cast<RDOStudioModelDoc*>(modelDocTemplate->GetNextDoc( pos ));
+		RDOEditorTabCtrl* tab = doc->getView()->tab;
+		for ( int i = 0; i < tab->getItemCount(); i++ ) {
+			tab->getItemEdit( i )->setEditorStyle( &studioApp.mainFrame->default_editorStyle );
+		}
+	}
+}

@@ -36,7 +36,7 @@ RDOBaseEditTheme::~RDOBaseEditTheme()
 RDOBaseEditTheme& RDOBaseEditTheme::operator =( const RDOBaseEditTheme& theme )
 {
 	defaultColor    = theme.defaultColor;
-	backgroundColor = theme.defaultColor;
+	backgroundColor = theme.backgroundColor;
 
 	caretColor       = theme.caretColor;
 	selectionBgColor = theme.selectionBgColor;
@@ -394,6 +394,7 @@ void RDOBaseEditStyle::init( const string& _regPath )
 	if ( regPath.find_last_of( '\\' ) != regPath.length() - 1 ) {
 		regPath += '\\';
 	}
+	regPath = "style\\" + regPath;
 	initTheme();
 	initFont();
 	initTab();

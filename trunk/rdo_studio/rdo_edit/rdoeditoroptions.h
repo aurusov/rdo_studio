@@ -26,9 +26,6 @@ protected:
 	int backspaceUntabs;
 	int autoIndent;
 
-	int useAutoComplete;
-	int showFullList;
-
 	int debug;
 	int prev_debug;
 
@@ -45,7 +42,6 @@ protected:
 	virtual void OnOK();
 	virtual BOOL OnNotify( WPARAM wParam, LPARAM lParam, LRESULT* pResult );
 
-	afx_msg void OnUseAutoCompleteCBChanged();
 	afx_msg void OnUseAutoClearBufferCBChanged();
 	afx_msg void OnUseWordWrapCBChanged();
 	afx_msg void OnUpdateModify();

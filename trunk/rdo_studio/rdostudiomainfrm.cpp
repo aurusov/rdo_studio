@@ -280,6 +280,9 @@ void RDOStudioMainFrame::OnViewOptions()
 {
 	RDOStudioOptions dlg;
 	dlg.DoModal();
-//	RDOEditorOptions dlg( childView.tab.getCurrentEdit()->getEditorStyle() );
-//	dlg.DoModal();
+}
+
+void RDOStudioMainFrame::updateAllStyles() const
+{
+	model->updateStyleOfAllModel();
 }
