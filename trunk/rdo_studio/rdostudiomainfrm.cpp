@@ -26,6 +26,7 @@ BEGIN_MESSAGE_MAP(RDOStudioMainFrame, CMDIFrameWnd)
 	ON_COMMAND(ID_VIEW_OUTPUT, OnViewOutput)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_WORKSPACE, OnUpdateViewWorkspace)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_OUTPUT, OnUpdateViewOutput)
+	ON_WM_DESTROY()
 	//}}AFX_MSG_MAP
 	ON_UPDATE_COMMAND_UI( ID_COORDSTATUSBAR          , OnUpdateCoordStatusBar )
 	ON_UPDATE_COMMAND_UI( ID_MODIFYSTATUSBAR         , OnUpdateModifyStatusBar )
@@ -95,7 +96,16 @@ int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	trace.registerClipboardFormat();
 
+	model = new RDOStudioModel;
+
 	return 0;
+}
+
+void RDOStudioMainFrame::OnDestroy()
+{
+	::OleUninitialize();
+	if ( model ) { delete model; model = NULL; }
+	CMDIFrameWnd::OnDestroy();
 }
 
 BOOL RDOStudioMainFrame::PreCreateWindow(CREATESTRUCT& cs)

@@ -55,6 +55,7 @@ protected:
 	afx_msg void OnViewOutput();
 	afx_msg void OnUpdateViewWorkspace(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateViewOutput(CCmdUI* pCmdUI);
+	afx_msg void OnDestroy();
 	//}}AFX_MSG
 	afx_msg void OnUpdateCoordStatusBar( CCmdUI *pCmdUI );
 	afx_msg void OnUpdateModifyStatusBar( CCmdUI *pCmdUI );

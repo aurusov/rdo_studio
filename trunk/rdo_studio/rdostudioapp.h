@@ -38,7 +38,6 @@ public:
 	//{{AFX_VIRTUAL(RDOStudioApp)
 	public:
 	virtual BOOL InitInstance();
-	virtual int ExitInstance();
 	//}}AFX_VIRTUAL
 
 	//{{AFX_MSG(RDOStudioApp)

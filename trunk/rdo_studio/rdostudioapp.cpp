@@ -81,8 +81,6 @@ BOOL RDOStudioApp::InitInstance()
 
 //	LoadStdProfileSettings();  // Load standard INI file options (including MRU)
 
-	model = new RDOStudioModel;
-
 	editDocTemplate = new CMultiDocTemplate( IDR_EDITTYPE, RUNTIME_CLASS(RDOStudioEditDoc), RUNTIME_CLASS(RDOStudioChildFrame), RUNTIME_CLASS(RDOStudioEditView) );
 	AddDocTemplate( editDocTemplate );
 
@@ -115,13 +113,6 @@ BOOL RDOStudioApp::InitInstance()
 	initInstance = true;
 
 	return TRUE;
-}
-
-int RDOStudioApp::ExitInstance() 
-{
-	::OleUninitialize();
-	if ( model ) { delete model; model = NULL; }
-	return CWinApp::ExitInstance();
 }
 
 void RDOStudioApp::OnFileNew() 
@@ -351,12 +342,12 @@ void RDOStudioApp::OnRdoStop()
 
 void RDOStudioApp::OnUpdateRdoRun(CCmdUI* pCmdUI) 
 {
-	pCmdUI->Enable( model && !model->isRunning() );
+	pCmdUI->Enable( model && model->getModelDoc() && !model->isRunning() );
 }
 
 void RDOStudioApp::OnUpdateRdoStop(CCmdUI* pCmdUI) 
 {
-	pCmdUI->Enable( model && model->isRunning() );
+	pCmdUI->Enable( model && model->getModelDoc() && model->isRunning() );
 }
 
 void RDOStudioApp::OnChartStarttrace() 
