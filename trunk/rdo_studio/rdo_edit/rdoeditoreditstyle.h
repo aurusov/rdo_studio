@@ -21,9 +21,6 @@ enum RDOFoldStyle {
 
 class RDOEditorEditTheme: public RDOEditorBaseEditTheme
 {
-private:
-	RDOEditorEditTheme& operator =( const RDOEditorBaseEditTheme& theme );
-
 public:
 	RDOEditorEditTheme();
 	virtual ~RDOEditorEditTheme();

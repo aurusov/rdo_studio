@@ -62,6 +62,36 @@ RDOLogEditTheme RDOLogEditTheme::getDefaultTheme()
 	return theme;
 }
 
+RDOLogEditTheme RDOLogEditTheme::getClassicTheme()
+{
+	RDOLogEditTheme theme;
+	*static_cast<RDOBaseEditTheme*>(&theme) = RDOBaseEditTheme::getClassicTheme();
+
+	theme.selectLineBgColor = RGB( 0x00, 0xC0, 0xEF );
+
+	return theme;
+}
+
+RDOLogEditTheme RDOLogEditTheme::getTwilightTheme()
+{
+	RDOLogEditTheme theme;
+	*static_cast<RDOBaseEditTheme*>(&theme) = RDOBaseEditTheme::getTwilightTheme();
+
+	theme.selectLineBgColor = RGB( 0x00, 0x96, 0xBB );
+
+	return theme;
+}
+
+RDOLogEditTheme RDOLogEditTheme::getOceanTheme()
+{
+	RDOLogEditTheme theme;
+	*static_cast<RDOBaseEditTheme*>(&theme) = RDOBaseEditTheme::getOceanTheme();
+
+	theme.selectLineBgColor = RGB( 0xCA, 0xF4, 0xFF );
+
+	return theme;
+}
+
 // ----------------------------------------------------------------------------
 // ---------- RDOLogEditStyle
 // ----------------------------------------------------------------------------

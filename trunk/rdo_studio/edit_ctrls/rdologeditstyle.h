@@ -25,6 +25,9 @@ public:
 	COLORREF selectLineBgColor;
 
 	static RDOLogEditTheme getDefaultTheme();
+	static RDOLogEditTheme getClassicTheme();
+	static RDOLogEditTheme getTwilightTheme();
+	static RDOLogEditTheme getOceanTheme();
 };
 
 // ----------------------------------------------------------------------------

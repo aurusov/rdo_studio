@@ -129,6 +129,63 @@ RDOBaseEditTheme RDOBaseEditTheme::getDefaultTheme()
 	return theme;
 }
 
+RDOBaseEditTheme RDOBaseEditTheme::getClassicTheme()
+{
+	RDOBaseEditTheme theme;
+
+	theme.defaultColor    = RGB( 0xFF, 0xFF, 0x00 );
+	theme.backgroundColor = RGB( 0x00, 0x00, 0x80 );
+
+	theme.caretColor       = RGB( 0xFF, 0xFF, 0x00 );
+	theme.selectionBgColor = RGB( 0x00, 0x00, 0x40 );
+	theme.bookmarkFgColor  = RGB( 0x00, 0x00, 0x00 );
+	theme.bookmarkBgColor  = RGB( 0x00, 0xFF, 0xFF );
+
+	theme.defaultStyle = RDOFS_NONE;
+
+	theme.bookmarkStyle = RDOBOOKMARKS_CIRCLE;
+
+	return theme;
+}
+
+RDOBaseEditTheme RDOBaseEditTheme::getTwilightTheme()
+{
+	RDOBaseEditTheme theme;
+
+	theme.defaultColor    = RGB( 0xFF, 0xFF, 0xFF );
+	theme.backgroundColor = RGB( 0x00, 0x00, 0x00 );
+
+	theme.caretColor       = RGB( 0xFF, 0xFF, 0xFF );
+	theme.selectionBgColor = RGB( 0x70, 0x70, 0x70 );
+	theme.bookmarkFgColor  = RGB( 0x00, 0x00, 0x00 );
+	theme.bookmarkBgColor  = RGB( 0x00, 0xFF, 0xFF );
+
+	theme.defaultStyle = RDOFS_NONE;
+
+	theme.bookmarkStyle = RDOBOOKMARKS_CIRCLE;
+
+	return theme;
+}
+
+RDOBaseEditTheme RDOBaseEditTheme::getOceanTheme()
+{
+	RDOBaseEditTheme theme;
+
+	theme.defaultColor    = RGB( 0x00, 0x00, 0xFF );
+	theme.backgroundColor = RGB( 0x00, 0xFF, 0xFF );
+
+	theme.caretColor       = RGB( 0x00, 0x00, 0x00 );
+	theme.selectionBgColor = RGB( 0xC0, 0xC0, 0xD0 );
+	theme.bookmarkFgColor  = RGB( 0x00, 0x00, 0x00 );
+	theme.bookmarkBgColor  = RGB( 0xBA, 0xCC, 0xFC );
+
+	theme.defaultStyle = RDOFS_NONE;
+
+	theme.bookmarkStyle = RDOBOOKMARKS_CIRCLE;
+
+	return theme;
+}
+
 string RDOBaseEditTheme::colorToHEX( const COLORREF color )
 {
 	return format( "#%02X%02X%02X", GetRValue( color ), GetGValue( color ), GetBValue( color ) );

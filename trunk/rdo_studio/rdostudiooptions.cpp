@@ -672,16 +672,15 @@ void RDOStudioOptionsColorsStyles::updateStyleItem()
 				m_theme.AddString( format( IDS_COLORSTYLE_EDITOR_THEME_OCEAN ).c_str() );
 				break;
 			}
-			case STYLEObject::build: {
-				break;
-			}
-			case STYLEObject::debug: {
+			case STYLEObject::build:
+			case STYLEObject::debug:
+			case STYLEObject::find: {
+				m_theme.AddString( format( IDS_COLORSTYLE_EDITOR_THEME_CLASSIC ).c_str() );
+				m_theme.AddString( format( IDS_COLORSTYLE_EDITOR_THEME_TWILIGHT ).c_str() );
+				m_theme.AddString( format( IDS_COLORSTYLE_EDITOR_THEME_OCEAN ).c_str() );
 				break;
 			}
 			case STYLEObject::trace: {
-				break;
-			}
-			case STYLEObject::find: {
 				break;
 			}
 			default: break;
@@ -731,6 +730,12 @@ void RDOStudioOptionsColorsStyles::updateTheme()
 			RDOLogEditTheme* theme = static_cast<RDOLogEditTheme*>(sheet->style_build.theme);
 			if ( *theme == RDOLogEditTheme::getDefaultTheme() ) {
 				m_theme.SetCurSel( 1 );
+			} else if ( *theme == RDOLogEditTheme::getClassicTheme() ) {
+				m_theme.SetCurSel( 2 );
+			} else if ( *theme == RDOLogEditTheme::getTwilightTheme() ) {
+				m_theme.SetCurSel( 3 );
+			} else if ( *theme == RDOLogEditTheme::getOceanTheme() ) {
+				m_theme.SetCurSel( 4 );
 			} else {
 				m_theme.SetCurSel( 0 );
 			}
@@ -738,8 +743,14 @@ void RDOStudioOptionsColorsStyles::updateTheme()
 		}
 		case STYLEObject::debug: {
 			RDOBaseEditTheme* theme = static_cast<RDOBaseEditTheme*>(sheet->style_debug.theme);
-			if ( *theme == RDOLogEditTheme::getDefaultTheme() ) {
+			if ( *theme == RDOBaseEditTheme::getDefaultTheme() ) {
 				m_theme.SetCurSel( 1 );
+			} else if ( *theme == RDOBaseEditTheme::getClassicTheme() ) {
+				m_theme.SetCurSel( 2 );
+			} else if ( *theme == RDOBaseEditTheme::getTwilightTheme() ) {
+				m_theme.SetCurSel( 3 );
+			} else if ( *theme == RDOBaseEditTheme::getOceanTheme() ) {
+				m_theme.SetCurSel( 4 );
 			} else {
 				m_theme.SetCurSel( 0 );
 			}
@@ -779,6 +790,12 @@ void RDOStudioOptionsColorsStyles::updateTheme()
 			RDOFindEditTheme* theme = static_cast<RDOFindEditTheme*>(sheet->style_find.theme);
 			if ( *theme == RDOFindEditTheme::getDefaultTheme() ) {
 				m_theme.SetCurSel( 1 );
+			} else if ( *theme == RDOFindEditTheme::getClassicTheme() ) {
+				m_theme.SetCurSel( 2 );
+			} else if ( *theme == RDOFindEditTheme::getTwilightTheme() ) {
+				m_theme.SetCurSel( 3 );
+			} else if ( *theme == RDOFindEditTheme::getOceanTheme() ) {
+				m_theme.SetCurSel( 4 );
 			} else {
 				m_theme.SetCurSel( 0 );
 			}
@@ -821,6 +838,9 @@ void RDOStudioOptionsColorsStyles::OnThemeChanged()
 				RDOLogEditTheme* theme = static_cast<RDOLogEditTheme*>(sheet->style_build.theme);
 				switch ( index ) {
 					case 1: *theme = RDOLogEditTheme::getDefaultTheme(); break;
+					case 2: *theme = RDOLogEditTheme::getClassicTheme(); break;
+					case 3: *theme = RDOLogEditTheme::getTwilightTheme(); break;
+					case 4: *theme = RDOLogEditTheme::getOceanTheme(); break;
 				}
 				break;
 			}
@@ -828,6 +848,9 @@ void RDOStudioOptionsColorsStyles::OnThemeChanged()
 				RDOBaseEditTheme* theme = static_cast<RDOBaseEditTheme*>(sheet->style_debug.theme);
 				switch ( index ) {
 					case 1: *theme = RDOBaseEditTheme::getDefaultTheme(); break;
+					case 2: *theme = RDOBaseEditTheme::getClassicTheme(); break;
+					case 3: *theme = RDOBaseEditTheme::getTwilightTheme(); break;
+					case 4: *theme = RDOBaseEditTheme::getOceanTheme(); break;
 				}
 				break;
 			}
@@ -855,6 +878,9 @@ void RDOStudioOptionsColorsStyles::OnThemeChanged()
 				RDOFindEditTheme* theme = static_cast<RDOFindEditTheme*>(sheet->style_find.theme);
 				switch ( index ) {
 					case 1: *theme = RDOFindEditTheme::getDefaultTheme(); break;
+					case 2: *theme = RDOFindEditTheme::getClassicTheme(); break;
+					case 3: *theme = RDOFindEditTheme::getTwilightTheme(); break;
+					case 4: *theme = RDOFindEditTheme::getOceanTheme(); break;
 				}
 				break;
 			}

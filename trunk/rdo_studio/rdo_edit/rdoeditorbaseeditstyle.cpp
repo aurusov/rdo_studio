@@ -210,8 +210,8 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getDefaultTheme()
 RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getCppTheme()
 {
 	RDOEditorBaseEditTheme theme;
+	*static_cast<RDOBaseEditTheme*>(&theme) = RDOBaseEditTheme::getDefaultTheme();
 
-	theme.defaultColor    = RGB( 0x00, 0x00, 0x00 );
 	theme.identifierColor = RGB( 0x00, 0x00, 0x00 );
 	theme.keywordColor    = RGB( 0x00, 0x00, 0xFF );
 	theme.functionsColor  = RGB( 0x00, 0x00, 0xFF );
@@ -220,14 +220,7 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getCppTheme()
 	theme.numberColor     = RGB( 0x00, 0x00, 0x00 );
 	theme.stringColor     = RGB( 0x00, 0x00, 0x00 );
 	theme.operatorColor   = RGB( 0x00, 0x00, 0x00 );
-	theme.backgroundColor = RGB( 0xFF, 0xFF, 0xFF );
 
-	theme.caretColor       = RGB( 0x00, 0x00, 0x00 );
-	theme.selectionBgColor = RGB( 0xC0, 0xC0, 0xC0 );
-	theme.bookmarkFgColor  = RGB( 0x00, 0x00, 0x00 );
-	theme.bookmarkBgColor  = RGB( 0x00, 0xFF, 0xFF );
-
-	theme.defaultStyle    = RDOFS_NONE;
 	theme.identifierStyle = RDOFS_NONE;
 	theme.keywordStyle    = RDOFS_NONE;
 	theme.functionsStyle  = RDOFS_NONE;
@@ -237,16 +230,14 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getCppTheme()
 	theme.stringStyle     = RDOFS_NONE;
 	theme.operatorStyle   = RDOFS_NONE;
 
-	theme.bookmarkStyle = RDOBOOKMARKS_CIRCLE;
-
 	return theme;
 }
 
 RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getPascalTheme()
 {
 	RDOEditorBaseEditTheme theme;
+	*static_cast<RDOBaseEditTheme*>(&theme) = RDOBaseEditTheme::getDefaultTheme();
 
-	theme.defaultColor    = RGB( 0x00, 0x00, 0x00 );
 	theme.identifierColor = RGB( 0x00, 0x00, 0x00 );
 	theme.keywordColor    = RGB( 0x00, 0x00, 0x00 );
 	theme.functionsColor  = RGB( 0x00, 0x00, 0x00 );
@@ -255,14 +246,7 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getPascalTheme()
 	theme.numberColor     = RGB( 0x00, 0x00, 0x00 );
 	theme.stringColor     = RGB( 0x00, 0x00, 0x00 );
 	theme.operatorColor   = RGB( 0x00, 0x00, 0x00 );
-	theme.backgroundColor = RGB( 0xFF, 0xFF, 0xFF );
 
-	theme.caretColor       = RGB( 0x00, 0x00, 0x00 );
-	theme.selectionBgColor = RGB( 0xC0, 0xC0, 0xC0 );
-	theme.bookmarkFgColor  = RGB( 0x00, 0x00, 0x00 );
-	theme.bookmarkBgColor  = RGB( 0x00, 0xFF, 0xFF );
-
-	theme.defaultStyle    = RDOFS_NONE;
 	theme.identifierStyle = RDOFS_NONE;
 	theme.keywordStyle    = RDOFS_BOLD;
 	theme.functionsStyle  = RDOFS_BOLD;
@@ -272,16 +256,14 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getPascalTheme()
 	theme.stringStyle     = RDOFS_NONE;
 	theme.operatorStyle   = RDOFS_NONE;
 
-	theme.bookmarkStyle = RDOBOOKMARKS_CIRCLE;
-
 	return theme;
 }
 
 RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getHtmlTheme()
 {
 	RDOEditorBaseEditTheme theme;
+	*static_cast<RDOBaseEditTheme*>(&theme) = RDOBaseEditTheme::getDefaultTheme();
 
-	theme.defaultColor    = RGB( 0x00, 0x00, 0x00 );
 	theme.identifierColor = RGB( 0x00, 0x00, 0x00 );
 	theme.keywordColor    = RGB( 0x80, 0x00, 0x80 );
 	theme.functionsColor  = RGB( 0xFF, 0x00, 0x00 );
@@ -290,14 +272,7 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getHtmlTheme()
 	theme.numberColor     = RGB( 0x00, 0x00, 0xFF );
 	theme.stringColor     = RGB( 0x00, 0x00, 0xFF );
 	theme.operatorColor   = RGB( 0x00, 0x00, 0x00 );
-	theme.backgroundColor = RGB( 0xFF, 0xFF, 0xFF );
 
-	theme.caretColor       = RGB( 0x00, 0x00, 0x00 );
-	theme.selectionBgColor = RGB( 0xC0, 0xC0, 0xC0 );
-	theme.bookmarkFgColor  = RGB( 0x00, 0x00, 0x00 );
-	theme.bookmarkBgColor  = RGB( 0x00, 0xFF, 0xFF );
-
-	theme.defaultStyle    = RDOFS_NONE;
 	theme.identifierStyle = RDOFS_NONE;
 	theme.keywordStyle    = RDOFS_NONE;
 	theme.functionsStyle  = RDOFS_NONE;
@@ -307,16 +282,14 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getHtmlTheme()
 	theme.stringStyle     = RDOFS_NONE;
 	theme.operatorStyle   = RDOFS_NONE;
 
-	theme.bookmarkStyle = RDOBOOKMARKS_CIRCLE;
-
 	return theme;
 }
 
 RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getClassicTheme()
 {
 	RDOEditorBaseEditTheme theme;
+	*static_cast<RDOBaseEditTheme*>(&theme) = RDOBaseEditTheme::getClassicTheme();
 
-	theme.defaultColor    = RGB( 0xFF, 0xFF, 0x00 );
 	theme.identifierColor = RGB( 0xFF, 0xFF, 0x00 );
 	theme.keywordColor    = RGB( 0xFF, 0xFF, 0xFF );
 	theme.functionsColor  = RGB( 0xFF, 0xFF, 0xFF );
@@ -325,14 +298,7 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getClassicTheme()
 	theme.numberColor     = RGB( 0xFF, 0xFF, 0x00 );
 	theme.stringColor     = RGB( 0xFF, 0xFF, 0x00 );
 	theme.operatorColor   = RGB( 0xFF, 0xFF, 0x00 );
-	theme.backgroundColor = RGB( 0x00, 0x00, 0x80 );
 
-	theme.caretColor       = RGB( 0xFF, 0xFF, 0x00 );
-	theme.selectionBgColor = RGB( 0x00, 0x00, 0x40 );
-	theme.bookmarkFgColor  = RGB( 0x00, 0x00, 0x00 );
-	theme.bookmarkBgColor  = RGB( 0x00, 0xFF, 0xFF );
-
-	theme.defaultStyle    = RDOFS_NONE;
 	theme.identifierStyle = RDOFS_NONE;
 	theme.keywordStyle    = RDOFS_NONE;
 	theme.functionsStyle  = RDOFS_NONE;
@@ -342,16 +308,14 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getClassicTheme()
 	theme.stringStyle     = RDOFS_NONE;
 	theme.operatorStyle   = RDOFS_NONE;
 
-	theme.bookmarkStyle = RDOBOOKMARKS_CIRCLE;
-
 	return theme;
 }
 
 RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getTwilightTheme()
 {
 	RDOEditorBaseEditTheme theme;
+	*static_cast<RDOBaseEditTheme*>(&theme) = RDOBaseEditTheme::getTwilightTheme();
 
-	theme.defaultColor    = RGB( 0xFF, 0xFF, 0xFF );
 	theme.identifierColor = RGB( 0xFF, 0xFF, 0xFF );
 	theme.keywordColor    = RGB( 0x00, 0xFF, 0xFF );
 	theme.functionsColor  = RGB( 0xFF, 0xFF, 0x00 );
@@ -360,14 +324,7 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getTwilightTheme()
 	theme.numberColor     = RGB( 0xC0, 0xC0, 0xC0 );
 	theme.stringColor     = RGB( 0xFF, 0xFF, 0xFF );
 	theme.operatorColor   = RGB( 0xFF, 0xFF, 0xFF );
-	theme.backgroundColor = RGB( 0x00, 0x00, 0x00 );
 
-	theme.caretColor       = RGB( 0xFF, 0xFF, 0xFF );
-	theme.selectionBgColor = RGB( 0x70, 0x70, 0x70 );
-	theme.bookmarkFgColor  = RGB( 0x00, 0x00, 0x00 );
-	theme.bookmarkBgColor  = RGB( 0x00, 0xFF, 0xFF );
-
-	theme.defaultStyle    = RDOFS_NONE;
 	theme.identifierStyle = RDOFS_NONE;
 	theme.keywordStyle    = RDOFS_BOLD;
 	theme.functionsStyle  = RDOFS_BOLD;
@@ -377,16 +334,14 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getTwilightTheme()
 	theme.stringStyle     = RDOFS_NONE;
 	theme.operatorStyle   = RDOFS_NONE;
 
-	theme.bookmarkStyle = RDOBOOKMARKS_CIRCLE;
-
 	return theme;
 }
 
 RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getOceanTheme()
 {
 	RDOEditorBaseEditTheme theme;
+	*static_cast<RDOBaseEditTheme*>(&theme) = RDOBaseEditTheme::getOceanTheme();
 
-	theme.defaultColor    = RGB( 0x00, 0x00, 0xFF );
 	theme.identifierColor = RGB( 0x00, 0x00, 0xFF );
 	theme.keywordColor    = RGB( 0x00, 0x00, 0x00 );
 	theme.functionsColor  = RGB( 0x00, 0x00, 0x00 );
@@ -395,14 +350,7 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getOceanTheme()
 	theme.numberColor     = RGB( 0x00, 0x00, 0xFF );
 	theme.stringColor     = RGB( 0x00, 0x00, 0xFF );
 	theme.operatorColor   = RGB( 0x00, 0x00, 0xFF );
-	theme.backgroundColor = RGB( 0x00, 0xFF, 0xFF );
 
-	theme.caretColor       = RGB( 0x00, 0x00, 0x00 );
-	theme.selectionBgColor = RGB( 0xC0, 0xC0, 0xD0 );
-	theme.bookmarkFgColor  = RGB( 0x00, 0x00, 0x00 );
-	theme.bookmarkBgColor  = RGB( 0x00, 0xFF, 0xFF );
-
-	theme.defaultStyle    = RDOFS_NONE;
 	theme.identifierStyle = RDOFS_NONE;
 	theme.keywordStyle    = RDOFS_BOLD;
 	theme.functionsStyle  = RDOFS_BOLD;
@@ -411,8 +359,6 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getOceanTheme()
 	theme.numberStyle     = RDOFS_NONE;
 	theme.stringStyle     = RDOFS_NONE;
 	theme.operatorStyle   = RDOFS_NONE;
-
-	theme.bookmarkStyle = RDOBOOKMARKS_CIRCLE;
 
 	return theme;
 }

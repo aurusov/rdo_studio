@@ -51,6 +51,10 @@ public:
 	virtual std::string styleBGColorToHEX( const int styleType = STYLE_DEFAULT ) const;
 
 	static RDOBaseEditTheme getDefaultTheme();
+	static RDOBaseEditTheme getClassicTheme();
+	static RDOBaseEditTheme getTwilightTheme();
+	static RDOBaseEditTheme getOceanTheme();
+
 	static std::string colorToHEX( const COLORREF color );
 };
 

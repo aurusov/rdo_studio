@@ -26,12 +26,6 @@ RDOEditorEditTheme::~RDOEditorEditTheme()
 {
 }
 
-RDOEditorEditTheme& RDOEditorEditTheme::operator =( const RDOEditorBaseEditTheme& theme )
-{
-	RDOEditorBaseEditTheme::operator=( theme );
-	return *this;
-}
-
 RDOEditorEditTheme& RDOEditorEditTheme::operator =( const RDOEditorEditTheme& theme )
 {
 	RDOEditorBaseEditTheme::operator=( theme );
@@ -95,7 +89,7 @@ RDOEditorEditTheme RDOEditorEditTheme::getDefaultTheme()
 RDOEditorEditTheme RDOEditorEditTheme::getCppTheme()
 {
 	RDOEditorEditTheme theme;
-	theme = RDOEditorBaseEditTheme::getCppTheme();
+	*static_cast<RDOEditorBaseEditTheme*>(&theme) = RDOEditorBaseEditTheme::getCppTheme();
 
 	theme.foldFgColor  = RGB( 0xFF, 0xFF, 0xFF );
 	theme.foldBgColor  = RGB( 0x00, 0x00, 0x00 );
@@ -109,7 +103,7 @@ RDOEditorEditTheme RDOEditorEditTheme::getCppTheme()
 RDOEditorEditTheme RDOEditorEditTheme::getPascalTheme()
 {
 	RDOEditorEditTheme theme;
-	theme = RDOEditorBaseEditTheme::getPascalTheme();
+	*static_cast<RDOEditorBaseEditTheme*>(&theme) = RDOEditorBaseEditTheme::getPascalTheme();
 
 	theme.foldFgColor  = RGB( 0xFF, 0xFF, 0xFF );
 	theme.foldBgColor  = RGB( 0x00, 0x00, 0x00 );
@@ -123,7 +117,7 @@ RDOEditorEditTheme RDOEditorEditTheme::getPascalTheme()
 RDOEditorEditTheme RDOEditorEditTheme::getHtmlTheme()
 {
 	RDOEditorEditTheme theme;
-	theme = RDOEditorBaseEditTheme::getHtmlTheme();
+	*static_cast<RDOEditorBaseEditTheme*>(&theme) = RDOEditorBaseEditTheme::getHtmlTheme();
 
 	theme.foldFgColor  = RGB( 0xFF, 0xFF, 0xFF );
 	theme.foldBgColor  = RGB( 0x00, 0x00, 0x00 );
@@ -137,7 +131,7 @@ RDOEditorEditTheme RDOEditorEditTheme::getHtmlTheme()
 RDOEditorEditTheme RDOEditorEditTheme::getClassicTheme()
 {
 	RDOEditorEditTheme theme;
-	theme = RDOEditorBaseEditTheme::getClassicTheme();
+	*static_cast<RDOEditorBaseEditTheme*>(&theme) = RDOEditorBaseEditTheme::getClassicTheme();
 
 	theme.foldFgColor  = RGB( 0xFF, 0xFF, 0xFF );
 	theme.foldBgColor  = RGB( 0x00, 0x00, 0x00 );
@@ -151,7 +145,7 @@ RDOEditorEditTheme RDOEditorEditTheme::getClassicTheme()
 RDOEditorEditTheme RDOEditorEditTheme::getTwilightTheme()
 {
 	RDOEditorEditTheme theme;
-	theme = RDOEditorBaseEditTheme::getTwilightTheme();
+	*static_cast<RDOEditorBaseEditTheme*>(&theme) = RDOEditorBaseEditTheme::getTwilightTheme();
 
 	theme.foldFgColor  = RGB( 0xFF, 0xFF, 0xFF );
 	theme.foldBgColor  = RGB( 0x00, 0x00, 0x00 );
@@ -165,7 +159,7 @@ RDOEditorEditTheme RDOEditorEditTheme::getTwilightTheme()
 RDOEditorEditTheme RDOEditorEditTheme::getOceanTheme()
 {
 	RDOEditorEditTheme theme;
-	theme = RDOEditorBaseEditTheme::getOceanTheme();
+	*static_cast<RDOEditorBaseEditTheme*>(&theme) = RDOEditorBaseEditTheme::getOceanTheme();
 
 	theme.foldFgColor  = RGB( 0xFF, 0xFF, 0xFF );
 	theme.foldBgColor  = RGB( 0x00, 0x00, 0x00 );

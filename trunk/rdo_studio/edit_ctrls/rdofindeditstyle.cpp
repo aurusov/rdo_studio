@@ -107,6 +107,39 @@ RDOFindEditTheme RDOFindEditTheme::getDefaultTheme()
 	return theme;
 }
 
+RDOFindEditTheme RDOFindEditTheme::getClassicTheme()
+{
+	RDOFindEditTheme theme;
+	*static_cast<RDOLogEditTheme*>(&theme) = RDOLogEditTheme::getClassicTheme();
+
+	theme.keywordColor = RGB( 0xFF, 0xFF, 0xFF );
+	theme.keywordStyle = RDOFS_NONE;
+
+	return theme;
+}
+
+RDOFindEditTheme RDOFindEditTheme::getTwilightTheme()
+{
+	RDOFindEditTheme theme;
+	*static_cast<RDOLogEditTheme*>(&theme) = RDOLogEditTheme::getTwilightTheme();
+
+	theme.keywordColor = RGB( 0x00, 0xFF, 0xFF );
+	theme.keywordStyle = RDOFS_BOLD;
+
+	return theme;
+}
+
+RDOFindEditTheme RDOFindEditTheme::getOceanTheme()
+{
+	RDOFindEditTheme theme;
+	*static_cast<RDOLogEditTheme*>(&theme) = RDOLogEditTheme::getOceanTheme();
+
+	theme.keywordColor = RGB( 0x00, 0x00, 0x00 );
+	theme.keywordStyle = RDOFS_BOLD;
+
+	return theme;
+}
+
 // ----------------------------------------------------------------------------
 // ---------- RDOFindEditStyle
 // ----------------------------------------------------------------------------

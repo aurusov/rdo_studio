@@ -33,6 +33,9 @@ public:
 	virtual std::string styleFGColorToHEX( const int styleType = STYLE_DEFAULT ) const;
 
 	static RDOFindEditTheme getDefaultTheme();
+	static RDOFindEditTheme getClassicTheme();
+	static RDOFindEditTheme getTwilightTheme();
+	static RDOFindEditTheme getOceanTheme();
 };
 
 // ----------------------------------------------------------------------------
