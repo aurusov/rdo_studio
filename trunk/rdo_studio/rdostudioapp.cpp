@@ -146,7 +146,6 @@ BOOL RDOStudioApp::InitInstance()
 		string longFileName;
 		if ( shortToLongPath( fileName, longFileName ) ) {
 			fileName = longFileName;
-			TRACE( "%s\r\n", fileName.c_str() );
 		}
 		if ( model->openModel( fileName ) ) {
 			insertReopenItem( kernel.getRepository()->getFullName() );

@@ -3,6 +3,7 @@
 #include "rdostudioapp.h"
 #include "rdostudiomodel.h"
 #include "rdostudiooptions.h"
+#include "rdostudioplugins.h"
 #include "rdo_tracer/rdotracer.h"
 #include "htmlhelp.h"
 #include "resource.h"
@@ -192,6 +193,8 @@ int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	tracer->registerClipboardFormat();
 
 	model = new RDOStudioModel;
+
+	plugins.init();
 
 	return 0;
 }

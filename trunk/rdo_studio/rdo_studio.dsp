@@ -43,7 +43,7 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_AFXDLL" /Yu"stdafx.h" /FD /c
-# ADD CPP /nologo /MT /W3 /GX /O2 /I "../rdo_ctrls" /I "../rdo_kernel" /I "../rdo_repository" /I "../rdo_lib/simulator" /I "../rdo_stream" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /Yu"stdafx.h" /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /I "../rdo_ctrls" /I "../rdo_kernel" /I "../rdo_repository" /I "../rdo_lib/simulator" /I "../rdo_stream" /I "../rdo_plugin" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /Yu"stdafx.h" /FD /c
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x419 /d "NDEBUG" /d "_AFXDLL"
@@ -69,7 +69,7 @@ LINK32=link.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_AFXDLL" /Yu"stdafx.h" /FD /GZ /c
-# ADD CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /I "../rdo_ctrls" /I "../rdo_kernel" /I "../rdo_repository" /I "../rdo_lib/simulator" /I "../rdo_stream" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_AFXDLL" /Yu"stdafx.h" /FD /GZ /c
+# ADD CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /I "../rdo_ctrls" /I "../rdo_kernel" /I "../rdo_repository" /I "../rdo_lib/simulator" /I "../rdo_stream" /I "../rdo_plugin" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_AFXDLL" /Yu"stdafx.h" /FD /GZ /c
 # SUBTRACT CPP /Fr
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
@@ -121,6 +121,10 @@ SOURCE=.\rdostudiooutput.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\rdostudioplugins.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdostudiostatusbar.cpp
 # End Source File
 # Begin Source File
@@ -138,17 +142,7 @@ SOURCE=.\rdostudioworkspace.cpp
 # Begin Source File
 
 SOURCE=.\StdAfx.cpp
-
-!IF  "$(CFG)" == "rdo_studio - Win32 Release"
-
 # ADD CPP /Yc"stdafx.h"
-
-!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
-
-# ADD CPP /Yc"stdafx.h"
-
-!ENDIF 
-
 # End Source File
 # End Group
 # Begin Group "RDO-Studio Header Files"
@@ -177,6 +171,10 @@ SOURCE=.\rdostudiooptions.h
 # Begin Source File
 
 SOURCE=.\rdostudiooutput.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdostudioplugins.h
 # End Source File
 # Begin Source File
 
