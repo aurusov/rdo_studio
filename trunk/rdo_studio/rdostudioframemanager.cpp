@@ -89,14 +89,20 @@ RDOStudioFrameDoc* RDOStudioFrameManager::connectFrameDoc( const HTREEITEM hitem
 	int index = findFrameIndex( hitem );
 	RDOStudioFrameDoc* doc = NULL;
 	if ( index != -1 ) {
-//		CSingleLock lock( &frames[index]->used );
-//		lock.Lock();
+
+		CSingleLock lock( &frames[index]->used );
+		lock.Lock();
 
 		doc = static_cast<RDOStudioFrameDoc*>(frameDocTemplate->OpenDocumentFile( NULL ));
 		frames[index]->doc  = doc;
 		frames[index]->view = doc->getView();
 
-//		lock.Unlock();
+		CSingleLock lock_deleted( getFrameDeleted( index ) );
+		if ( lock_deleted.IsLocked() ) {
+			lock_deleted.Unlock();
+		}
+
+		lock.Unlock();
 	}
 	return doc;
 }

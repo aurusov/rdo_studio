@@ -614,9 +614,11 @@ void RDOStudioModel::showFrame()
 
 					CRect rect;
 					view->GetClientRect( rect );
-					view->RedrawWindow( rect );
-	//				view->InvalidateRect( rect );
-	//				view->SendNotifyMessage( WM_PAINT, 0, 0 );
+					view->InvalidateRect( rect );
+					view->UpdateWindow();
+//					view->RedrawWindow( rect );
+//					view->InvalidateRect( rect );
+//					view->SendNotifyMessage( WM_PAINT, 0, 0 );
 				}
 			}
 			lock_used.Unlock();
