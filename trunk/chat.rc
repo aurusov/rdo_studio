@@ -368,6 +368,50 @@ IDR_SMILE_EYES          GIF     DISCARDABLE     "res\\smile_eyes.gif"
 IDR_SMILE_BEER          GIF     DISCARDABLE     "res\\smile_beer.gif"
 IDR_SMILE_FRIDAY        GIF     DISCARDABLE     "res\\smile_friday.gif"
 IDR_SMILE_LAMER         GIF     DISCARDABLE     "res\\smile_lamer.gif"
+IDR_SMILE_LAUGH         GIF     DISCARDABLE     "res\\smile_laugh.gif"
+IDR_SMILE_LOL           GIF     DISCARDABLE     "res\\smile_lol.gif"
+IDR_SMILE_COOL          GIF     DISCARDABLE     "res\\smile_cool.gif"
+IDR_SMILE_CONFUSED      GIF     DISCARDABLE     "res\\smile_confused.gif"
+IDR_SMILE_EEK           GIF     DISCARDABLE     "res\\smile_eek.gif"
+IDR_SMILE_ROLLEYES      GIF     DISCARDABLE     "res\\smile_rolleyes.gif"
+IDR_SMILE_INSANE        GIF     DISCARDABLE     "res\\smile_insane.gif"
+IDR_SMILE_REDFACE       GIF     DISCARDABLE     "res\\smile_redface.gif"
+IDR_SMILE_MAD           GIF     DISCARDABLE     "res\\smile_mad.gif"
+IDR_SMILE_WEEP          GIF     DISCARDABLE     "res\\smile_weep.gif"
+IDR_SMILE_UP            GIF     DISCARDABLE     "res\\smile_up.gif"
+IDR_SMILE_DOWN          GIF     DISCARDABLE     "res\\smile_down.gif"
+IDR_SMILE_ROTATE        GIF     DISCARDABLE     "res\\smile_rotate.gif"
+IDR_SMILE_SUPER         GIF     DISCARDABLE     "res\\smile_super.gif"
+IDR_SMILE_UPSET         GIF     DISCARDABLE     "res\\smile_upset.gif"
+IDR_SMILE_AMAZED        GIF     DISCARDABLE     "res\\smile_amazed.gif"
+IDR_SMILE_SHUFFLE       GIF     DISCARDABLE     "res\\smile_shuffle.gif"
+IDR_SMILE_SPY           GIF     DISCARDABLE     "res\\smile_spy.gif"
+IDR_SMILE_IDEA          GIF     DISCARDABLE     "res\\smile_idea.gif"
+IDR_SMILE_PUKE          GIF     DISCARDABLE     "res\\smile_puke.gif"
+IDR_SMILE_WINK2         GIF     DISCARDABLE     "res\\smile_wink2.gif"
+IDR_SMILE_SMIRK2        GIF     DISCARDABLE     "res\\smile_smirk2.gif"
+IDR_SMILE_THINK         GIF     DISCARDABLE     "res\\smile_think.gif"
+IDR_SMILE_FEAR          GIF     DISCARDABLE     "res\\smile_fear.gif"
+IDR_SMILE_YES           GIF     DISCARDABLE     "res\\smile_yes.gif"
+IDR_SMILE_NO            GIF     DISCARDABLE     "res\\smile_no.gif"
+IDR_SMILE_CRAZY         GIF     DISCARDABLE     "res\\smile_crazy.gif"
+IDR_SMILE_JOKE          GIF     DISCARDABLE     "res\\smile_joke.gif"
+IDR_SMILE_HAH           GIF     DISCARDABLE     "res\\smile_hah.gif"
+IDR_SMILE_BALLET        GIF     DISCARDABLE     "res\\smile_ballet.gif"
+IDR_SMILE_DRINK         GIF     DISCARDABLE     "res\\smile_drink.gif"
+IDR_SMILE_FART          GIF     DISCARDABLE     "res\\smile_fart.gif"
+IDR_SMILE_BOX           GIF     DISCARDABLE     "res\\smile_box.gif"
+IDR_SMILE_INVALID       GIF     DISCARDABLE     "res\\smile_invalid.gif"
+IDR_SMILE_DUEL          GIF     DISCARDABLE     "res\\smile_duel.gif"
+IDR_SMILE_KOS           GIF     DISCARDABLE     "res\\smile_kos.gif"
+IDR_SMILE_GOSSIP        GIF     DISCARDABLE     "res\\smile_gossip.gif"
+IDR_SMILE_BIS           GIF     DISCARDABLE     "res\\smile_bis.gif"
+IDR_SMILE_HIT           GIF     DISCARDABLE     "res\\smile_hit.gif"
+IDR_SMILE_IVAN          GIF     DISCARDABLE     "res\\smile_ivan.gif"
+IDR_SMILE_VENERA        GIF     DISCARDABLE     "res\\smile_venera.gif"
+IDR_SMILE_MOBILE        GIF     DISCARDABLE     "res\\smile_mobile.gif"
+IDR_SMILE_KULT          GIF     DISCARDABLE     "res\\smile_kult.gif"
+IDR_SMILE_FIGA          GIF     DISCARDABLE     "res\\smile_figa.gif"
 #endif    // Russian resources
 /////////////////////////////////////////////////////////////////////////////
 
@@ -489,8 +533,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,0,185
- PRODUCTVERSION 1,0,0,185
+ FILEVERSION 1,0,0,186
+ PRODUCTVERSION 1,0,0,186
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -508,14 +552,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "Application for chat in localnet\0"
-            VALUE "FileVersion", "1, 0, 0, 185\0"
+            VALUE "FileVersion", "1, 0, 0, 186\0"
             VALUE "InternalName", "localChat\0"
             VALUE "LegalCopyright", "Copyright (C) 2002\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "localchat.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "localChat\0"
-            VALUE "ProductVersion", "1, 0, 0, 185\0"
+            VALUE "ProductVersion", "1, 0, 0, 186\0"
             VALUE "SpecialBuild", "\0"
         END
     END

@@ -368,6 +368,10 @@ SOURCE=.\res\disconnect.wav
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\gif1.bin
+# End Source File
+# Begin Source File
+
 SOURCE=.\res\incoming.wav
 # End Source File
 # Begin Source File
@@ -388,6 +392,14 @@ SOURCE=.\res\popupmsg.wav
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\smile_amazed.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_ballet.gif
+# End Source File
+# Begin Source File
+
 SOURCE=.\res\smile_beer.gif
 # End Source File
 # Begin Source File
@@ -404,7 +416,55 @@ SOURCE=.\res\smile_biggrin.gif
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\smile_bis.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_box.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_confused.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_cool.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_crazy.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_down.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_drink.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_duel.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_eek.gif
+# End Source File
+# Begin Source File
+
 SOURCE=.\res\smile_eyes.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_fart.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_fear.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_figa.gif
 # End Source File
 # Begin Source File
 
@@ -420,7 +480,87 @@ SOURCE=.\res\smile_gigi.gif
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\smile_gossip.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_hah.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_hit.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_idea.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_insane.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_invalid.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_ivan.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_joke.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_kos.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_kult.gif
+# End Source File
+# Begin Source File
+
 SOURCE=.\res\smile_lamer.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_laugh.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_lol.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_mad.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_mobile.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_no.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_puke.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_redface.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_rolleyes.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_rotate.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_shuffle.gif
 # End Source File
 # Begin Source File
 
@@ -432,6 +572,22 @@ SOURCE=.\res\smile_smirk.gif
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\smile_smirk2.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_spy.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_super.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_think.gif
+# End Source File
+# Begin Source File
+
 SOURCE=.\res\smile_tomato.gif
 # End Source File
 # Begin Source File
@@ -440,7 +596,35 @@ SOURCE=.\res\smile_tongue.gif
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\smile_up.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_upset.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_venera.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_weep.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_wht.gif
+# End Source File
+# Begin Source File
+
 SOURCE=.\res\smile_wink.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_wink2.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_yes.gif
 # End Source File
 # Begin Source File
 
