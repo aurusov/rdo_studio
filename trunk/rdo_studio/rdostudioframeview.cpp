@@ -25,6 +25,7 @@ BEGIN_MESSAGE_MAP(RDOStudioFrameView, CView)
 	ON_WM_VSCROLL()
 	ON_WM_LBUTTONDOWN()
 	ON_WM_KEYDOWN()
+	ON_WM_MOUSEWHEEL()
 	//}}AFX_MSG_MAP
 	ON_COMMAND(ID_FILE_PRINT, CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, CView::OnFilePrint)
@@ -272,6 +273,7 @@ void RDOStudioFrameView::OnLButtonDown(UINT nFlags, CPoint point)
 	CSingleLock lock_draw( frameManager->getFrameMutexDraw( index ) );
 	lock_draw.Lock();
 
+	point.Offset( xPos, yPos );
 	RDOStudioFrameManager::Frame* frame = frameManager->frames[index];
 	vector< RDOStudioFrameManager::Area* >* areas_sim = &frame->areas_sim;
 	vector< RDOStudioFrameManager::Area* >::iterator it = areas_sim->begin();
@@ -311,4 +313,20 @@ void RDOStudioFrameView::OnActivateView(BOOL bActivate, CView* pActivateView, CV
 		model->frameManager.setCurrentShowingFrame( index );
 	}
 	CView::OnActivateView( bActivate, pActivateView, pDeactiveView );
+}
+
+BOOL RDOStudioFrameView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
+{
+	SCROLLINFO si;
+	si.cbSize = sizeof( si );
+	si.fMask  = SIF_POS;
+	yPos      -= newClientRect.bottom / 4 * (zDelta >= 0 ? 1 : -1);
+	if ( yPos > frameBmpRect.bottom - newClientRect.bottom ) yPos = frameBmpRect.bottom - newClientRect.bottom;
+	if ( yPos < 0 ) yPos = 0;
+	si.nPos   = yPos;
+	SetScrollInfo( SB_VERT, &si, TRUE );
+	InvalidateRect( NULL );
+	UpdateWindow();
+
+	return TRUE;
 }
