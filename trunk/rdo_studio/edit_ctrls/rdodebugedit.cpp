@@ -1,7 +1,9 @@
 #include "stdafx.h"
 #include "rdodebugedit.h"
 #include "sci/SciLexer.h"
+#include "../rdostudioapp.h"
 #include "../resource.h"
+#include "../htmlhelp.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -18,6 +20,7 @@ using namespace rdoEditCtrl;
 BEGIN_MESSAGE_MAP( RDODebugEdit, RDOBaseEdit )
 	//{{AFX_MSG_MAP(RDODebugEdit)
 	ON_WM_CREATE()
+	ON_COMMAND(ID_HELP_KEYWORD, OnHelpKeyword)
 	//}}AFX_MSG_MAP
 	ON_UPDATE_COMMAND_UI( ID_COORD_STATUSBAR , OnUpdateCoordStatusBar )
 	ON_UPDATE_COMMAND_UI( ID_MODIFY_STATUSBAR, OnUpdateModifyStatusBar )
@@ -65,4 +68,12 @@ void RDODebugEdit::OnUpdateModifyStatusBar( CCmdUI *pCmdUI )
 {
 	pCmdUI->Enable();
 	pCmdUI->SetText( format( ID_STATUSBAR_READONLY ).c_str() );
+}
+
+void RDODebugEdit::OnHelpKeyword()
+{
+	string filename = studioApp.getFullHelpFileName();
+	if ( filename.empty() ) return;
+	filename += "::/html/work_windows_output.htm";
+	::HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_DISPLAY_TOPIC, NULL );
 }

@@ -70,6 +70,11 @@
 		<param name="Local" value="html\work_model_run.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&atilde;&eth;&agrave;&ocirc;&egrave;&ecirc;&egrave;">
+		<param name="Name" value="Автоматическое построение графиков">
+		<param name="Local" value="html\work_model_chart_main.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="PAT">
 		<param name="Name" value="Запуск программного комплекса">
 		<param name="Local" value="html\work_run.htm">

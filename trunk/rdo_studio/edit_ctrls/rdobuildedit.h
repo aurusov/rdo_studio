@@ -31,6 +31,7 @@ protected:
 
 protected:
 	//{{AFX_MSG(RDOBuildEdit)
+	afx_msg void OnHelpKeyword();
 	//}}AFX_MSG
 	afx_msg void OnUpdateCoordStatusBar( CCmdUI *pCmdUI );
 	afx_msg void OnUpdateModifyStatusBar( CCmdUI *pCmdUI );

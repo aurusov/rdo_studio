@@ -50,7 +50,7 @@ void RDOEditorResults::setEditorStyle( RDOEditorResultsStyle* _style )
 
 void RDOEditorResults::OnHelpKeyword()
 {
-	string filename = studioApp.getFullHelpFileName( "RAO-studio.chm" );
+	string filename = studioApp.getFullHelpFileName();
 	if ( filename.empty() ) return;
 
 	string keyword = getCurrentOrSelectedWord();

@@ -2,7 +2,9 @@
 #include "rdofindedit.h"
 #include "sci/SciLexer.h"
 #include "sci/LexFind.h"
+#include "../rdostudioapp.h"
 #include "../resource.h"
+#include "../htmlhelp.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -21,6 +23,7 @@ static char* wordCharacters = "0123456789_$abcdefghijklmnopqrstuvwxyzABCDEFGHIJK
 BEGIN_MESSAGE_MAP( RDOFindEdit, RDOLogEdit )
 	//{{AFX_MSG_MAP(RDOFindEdit)
 	ON_WM_CREATE()
+	ON_COMMAND(ID_HELP_KEYWORD, OnHelpKeyword)
 	//}}AFX_MSG_MAP
 	ON_UPDATE_COMMAND_UI( ID_COORD_STATUSBAR , OnUpdateCoordStatusBar )
 	ON_UPDATE_COMMAND_UI( ID_MODIFY_STATUSBAR, OnUpdateModifyStatusBar )
@@ -100,4 +103,12 @@ void RDOFindEdit::OnUpdateModifyStatusBar( CCmdUI *pCmdUI )
 {
 	pCmdUI->Enable();
 	pCmdUI->SetText( format( ID_STATUSBAR_READONLY ).c_str() );
+}
+
+void RDOFindEdit::OnHelpKeyword()
+{
+	string filename = studioApp.getFullHelpFileName();
+	if ( filename.empty() ) return;
+	filename += "::/html/work_model_find_in_model.htm";
+	::HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_DISPLAY_TOPIC, NULL );
 }
