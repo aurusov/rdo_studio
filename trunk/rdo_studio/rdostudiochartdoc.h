@@ -5,6 +5,7 @@
 #pragma once
 #endif
 
+#include "rdostudiodocserie.h"
 #include "rdo_tracer/rdotracerserie.h"
 
 // ----------------------------------------------------------------------------
@@ -12,36 +13,23 @@
 // ----------------------------------------------------------------------------
 class RDOTracerTimeNow;
 class RDOTracerValue;
-class RDOStudioChartView;
+class RDOStudioDocSerie;
 
 typedef std::list< RDOTracerTimeNow* > timesList;
-
-class RDOStudioDocSerie
-{
-friend class RDOStudioChartDoc;
-protected:
-	RDOTracerSerie* serie;
-	COLORREF color;
-	std::string docSerieTitle;
-public:
-	RDOStudioDocSerie( RDOTracerSerie* _serie ) : serie( _serie ){};
-	~RDOStudioDocSerie() {};
-	RDOTracerSerie* getSerie() const { return serie; };
-	COLORREF getColor() const { return color; };
-	bool operator ==( const RDOTracerSerie* _serie ) const { return serie == _serie; };
-	void drawSerie( RDOStudioChartView* const view, CDC &dc, CRect &rect ) const { serie->drawSerie( view, dc, rect, color ); };
-};
 
 class RDOStudioChartDoc : public CDocument
 {
 friend class RDOStudioChartView;
 friend class RDOStudioChartDocInsertTime;
+friend class RDOStudioChartOptionsChart;
 
 protected:
 	DECLARE_DYNCREATE(RDOStudioChartDoc)
 
-	std::vector< RDOStudioDocSerie > series;
+	std::vector< RDOStudioDocSerie* > series;
+	int getSerieIndex( RDOStudioDocSerie* serie ) const;
 	COLORREF selectColor();
+	RDOTracerSerieMarker selectMarker();
 
 	timesList docTimes;
 	double minTimeOffset;
@@ -70,7 +58,7 @@ public:
 
 	void addSerie( RDOTracerSerie* const serie );
 	void removeSerie( RDOTracerSerie* const serie );
-	bool serieExists( const RDOTracerSerie* serie ) const { return std::find( series.begin(), series.end(), serie ) != series.end(); };
+	bool serieExists( const RDOTracerSerie* serie ) const { return std::find_if( series.begin(), series.end(), std::bind2nd( std::mem_fun1(&RDOStudioDocSerie::isTracerSerie), serie ) ) != series.end(); };
 
 #ifdef _DEBUG
 	virtual void AssertValid() const;

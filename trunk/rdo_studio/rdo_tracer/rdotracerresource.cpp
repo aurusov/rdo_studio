@@ -28,6 +28,38 @@ RDOTracerResParamInfo* RDOTracerResParam::getParamInfo() const
 		return NULL;
 }
 
+void RDOTracerResParam::getCaptions( vector<string> &captions, const int val_count ) const
+{
+	switch( getParamInfo()->getParamType() ) {
+		case RDOPT_INTEGER: {
+			RDOTracerSerie::getCaptionsInt( captions, val_count );
+			break;
+		}
+		case RDOPT_REAL: {
+			RDOTracerSerie::getCaptionsDouble( captions, val_count );
+			break;
+		}
+		case RDOPT_ENUMERATIVE: {
+			RDOTracerSerie::getCaptions( captions, val_count );
+			int delta = getParamInfo()->getEnumCount();
+			int real_val_count = val_count;
+			if ( delta >= real_val_count ) {
+				while ( (int)(( delta ) / ( real_val_count )) != (double)(( delta ) / ( real_val_count )) )
+					real_val_count--;
+			} else {
+				real_val_count = delta;
+			}
+			int valo = minValue;
+			int valoffset = ( delta ) / ( real_val_count - 1 );
+			for ( int i = 0; i < real_val_count; i++ ) {
+				captions.push_back( getParamInfo()->getEnumValue( i ) );
+				valo += valoffset;
+			}
+			break;
+		}
+	}
+}
+
 // ----------------------------------------------------------------------------
 // ---------- RDOTracerResource
 // ----------------------------------------------------------------------------

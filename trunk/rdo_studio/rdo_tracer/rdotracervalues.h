@@ -40,6 +40,7 @@ public:
 	double value;
 	RDOTracerValue( RDOTracerTimeNow* const timenow, const int _eventIndex, const double _value = 0 );
 	~RDOTracerValue();
+	RDOTracerTimeNow* const getModelTime() const { return modeltime; };
 };
 
 #endif // RDOTRACERVALUES_H

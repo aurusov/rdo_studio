@@ -10,7 +10,8 @@
 class RDOTracerResType;
 class RDOTracerResource;
 class RDOTracerPattern;
-class RDOTracerOperation;
+class RDOTracerOperationBase;
+class RDOTracerEvent;
 class RDOTracerResult;
 class RDOTracerTimeNow;
 class RDOTracerSerie;
@@ -48,9 +49,10 @@ private:
 	void addResource( std::string& s );
 	std::vector <RDOTracerPattern*> patterns;
 	void addPattern( std::string& s );
-	std::vector <RDOTracerOperation*> operations;
+	std::vector <RDOTracerOperationBase*> operations;
 	void addOperation( std::string& s );
-	std::vector <RDOTracerOperation*> irregularEvents;
+	void addProductionRule( std::string& s );
+	std::vector <RDOTracerEvent*> irregularEvents;
 	void addIrregularEvent( std::string& s );
 	std::vector <RDOTracerResult*> results;
 	void addResult( std::string& s );
@@ -61,7 +63,7 @@ private:
 	RDOTracerTimeNow* addTime( std::string& time );
 	int eventIndex;
 	
-	RDOTracerOperation* getOperation( std::string& line );
+	RDOTracerOperationBase* getOperation( std::string& line );
 	void startAction( std::string& line, RDOTracerTimeNow* const time );
 	void accomplishAction( std::string& line, RDOTracerTimeNow* const time  );
 	void irregularEvent( std::string& line, RDOTracerTimeNow* const time  );
@@ -72,6 +74,7 @@ private:
 	void resourceElimination( std::string& line, RDOTracerTimeNow* const time  );
 	void resourceChanging( std::string& line, RDOTracerTimeNow* const time  );
 	
+	RDOTracerResult* getResult( std::string& line );
 	void resultChanging( std::string& line, RDOTracerTimeNow* const time  );
 
 	std::list< RDOTracerTimeNow* > timeList;

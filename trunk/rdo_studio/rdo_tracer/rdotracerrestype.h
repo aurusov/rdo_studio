@@ -28,6 +28,7 @@ public:
 	RDOTracerResParamType getParamType() const { return paramType; };
 	int addEnumValue( const std::string& value );
 	std::string getEnumValue( const int index ) const;
+	int getEnumCount() const { return enumValues ? enumValues->size() : 0; };
 };
 
 // ----------------------------------------------------------------------------

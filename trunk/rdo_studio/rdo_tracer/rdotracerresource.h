@@ -21,6 +21,8 @@ public:
 
 	RDOTracerResource* getResource() const { return resource; };
 	RDOTracerResParamInfo* getParamInfo() const;
+
+	virtual void getCaptions( std::vector<std::string> &captions, const int val_count ) const;
 };
 
 // ----------------------------------------------------------------------------

@@ -27,6 +27,8 @@ public:
 	RDOTracerResultKind getResultKind() const { return resultKind; };
 	void setName( const std::string& name ) { Name = name; if ( title.empty() ) title = Name; };
 	const std::string getName() const { return Name; };
+	virtual void getCaptions( std::vector<std::string> &captions, const int val_count ) const;
+	void setValue( std::string& line, RDOTracerTimeNow* const time, const int eventIndex );
 };
 
 #endif // RDOTRACERRESULT_H

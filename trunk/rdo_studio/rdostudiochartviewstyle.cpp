@@ -155,6 +155,7 @@ RDOStudioChartViewStyle::RDOStudioChartViewStyle() : RDOStyleWithTheme()
 
 RDOStudioChartViewStyle::~RDOStudioChartViewStyle()
 {
+	if ( fonts_ticks ) { delete fonts_ticks; fonts_ticks = NULL; }
 }
 
 void RDOStudioChartViewStyle::initTheme()

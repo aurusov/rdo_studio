@@ -420,6 +420,8 @@ void RDOStudioOptionsColorsStyles::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TITLE_FONTSIZE_COMBO, m_title_fontSizeCombo);
 	DDX_Control(pDX, IDC_TICKWIDTH_STATIC, m_tickWidthStatic);
 	DDX_Control(pDX, IDC_TICKWIDTH_EDIT, m_tickWidth);
+	DDX_Text(pDX, IDC_TICKWIDTH_EDIT, sheet->style_chart.fonts_ticks->tickWidth);
+	DDV_MinMaxInt(pDX, sheet->style_chart.fonts_ticks->tickWidth, 2, 100);
 	DDX_Control(pDX, IDC_VERTBORDER_STATIC, m_vertBorderStatic);
 	DDX_Control(pDX, IDC_VERTBORDER_EDIT, m_vertBorder);
 	DDX_Control(pDX, IDC_HORZBORDER_STATIC, m_horzBorderStatic);
@@ -587,7 +589,6 @@ BOOL RDOStudioOptionsColorsStyles::OnInitDialog()
 
 	int vertBorder = sheet->style_trace.borders->vertBorder;
 	int horzBorder = sheet->style_trace.borders->horzBorder;
-	int tickWidth = sheet->style_chart.fonts_ticks->tickWidth;
 	int title_font_size = sheet->style_chart.fonts_ticks->titleFontSize;
 	int legent_font_size = sheet->style_chart.fonts_ticks->legendFontSize;
 	m_vertBorder.SetWindowText( format( "%d", vertBorder ).c_str() );
@@ -595,8 +596,6 @@ BOOL RDOStudioOptionsColorsStyles::OnInitDialog()
 	m_vertBorder.SetLimitText( 2 );
 	m_horzBorder.SetLimitText( 2 );
 
-	m_tickWidth.SetWindowText( format( "%d", tickWidth ).c_str() );
-	m_tickWidth.SetLimitText( 2 );
 	int index = m_title_fontSizeCombo.FindStringExact( -1, format( "%d", title_font_size ).c_str() );
 	if ( index != CB_ERR ) {
 		m_title_fontSizeCombo.SetCurSel( index );
@@ -1322,8 +1321,6 @@ void RDOStudioOptionsColorsStyles::OnUpdateModify()
 	m_horzBorder.GetWindowText( str );
 	sheet->style_trace.borders->horzBorder = atoi( str );
 
-	m_tickWidth.GetWindowText( str );
-	sheet->style_chart.fonts_ticks->tickWidth = atoi( str );
 	int index = m_leg_fontSizeCombo.GetCurSel();
 	if ( index != CB_ERR ) {
 		m_leg_fontSizeCombo.GetLBText( index, str );

@@ -5,6 +5,8 @@
 #include "rdostudiomainfrm.h"
 #include "resource.h"
 #include "rdostudiochartviewstyle.h"
+#include "rdostudiodocserie.h"
+#include "rdostudiochartoptions.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -34,12 +36,13 @@ BEGIN_MESSAGE_MAP(RDOStudioChartView, CView)
 	ON_COMMAND(ID_VIEW_ZOOMIN, OnChartZoomZoomin)
 	ON_COMMAND(ID_VIEW_ZOOMOUT, OnChartZoomZoomout)
 	ON_COMMAND(ID_VIEW_ZOOMRESET, OnChartZoomResetzoom)
-	ON_COMMAND(ID_VIEW_ZOOMAUTO, OnChartZoomZoomauto)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOMIN, OnUpdateChartZoomZoomin)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOMOUT, OnUpdateChartZoomZoomout)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOMRESET, OnUpdateChartZoomResetzoom)
+	ON_COMMAND(ID_VIEW_ZOOMAUTO, OnChartZoomZoomauto)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOMAUTO, OnUpdateChartZoomZoomauto)
 	ON_WM_MOUSEACTIVATE()
+	ON_COMMAND(ID_CHART_OPTIONS, OnChartOptions)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -64,7 +67,9 @@ RDOStudioChartView::RDOStudioChartView( const bool preview )
 	zoomAuto( false ),
 	scale_koeff( 1 ),
 	style( NULL ),
-	previewMode( preview )
+	previewMode( preview ),
+	legendRect( 0, 0, 0, 0 ),
+	needDrawLegend( true )
 {
 	if ( previewMode )
 		timeWrap = false;
@@ -94,26 +99,61 @@ void RDOStudioChartView::recalcLayout()
 
 	RDOStudioChartDoc* doc = GetDocument();
 	
-	string str = doc->GetTitle();
+	//string str = doc->GetTitle();
 
-	chartRect.top = dc.GetTextExtent( str.c_str() ).cy;
+	CRect tmprect;
+	tmprect.CopyRect( &newClientRect );
+	dc.DrawText( doc->GetTitle(), &tmprect, DT_WORDBREAK | DT_CENTER | DT_CALCRECT );
+	chartRect.top = tmprect.Height() + 5;
 
 	dc.SelectObject( &fontAxis );
 
-	double val = 0;
+	//tmprect.CopyRect( &newClientRect );
+	int max_width = 0;
+	if ( yAxis ) {
+		yAxis->getCaptions( captions, valueCountY );
+		int width = 0;
+		for ( vector<string>::iterator it = captions.begin(); it != captions.end(); it++ ) {
+			width = dc.GetTextExtent( (*it).c_str() ).cx;
+			if ( width > max_width ) max_width = width;
+		}
+	}
+	chartRect.left = max_width + 10;
 
-	chartRect.left = dc.GetTextExtent( format( "%.3f", val ).c_str() ).cx + 5;
-
+	double val;
 	if ( !doc->docTimes.empty() )
 		val = doc->docTimes.back()->time;
 	else
 		val = 0;
-	chartRect.right = newClientRect.right - dc.GetTextExtent( format( "%.3f", val ).c_str() ).cx - 5;
+	CSize size_time = dc.GetTextExtent( format( "%.3f", val ).c_str() );
+	chartRect.right = newClientRect.right - size_time.cx - 5;
+
+	chartRect.bottom = newClientRect.bottom - size_time.cy - 7;
 
 	dc.SelectObject( oldFont );
 
-	chartRect.bottom = newClientRect.bottom - chartRect.top - 2 - 3;
-	
+	if ( needDrawLegend ) {
+		CSize size_max( 0, 0);
+		CSize size( 0, 0 );
+		int count = 0;
+		for ( vector< RDOStudioDocSerie* >::iterator it = doc->series.begin(); it != doc->series.end(); it++ ) {
+			size = (*it)->getLegendExtent( dc, fontLegend, chartRect );
+			if ( size.cx && size.cy ) {
+				if ( size.cx > size_max.cx )
+					size_max.cx = size.cx;
+				if ( size.cy > size_max.cy )
+					size_max.cy = size.cy;
+				count ++;
+			}
+		}
+
+		legendRect.top = chartRect.top;
+		legendRect.bottom = legendRect.top + count * size_max.cy + 3;
+		legendRect.left = chartRect.left + ( chartRect.Width() - size_max.cx ) / 2;
+		legendRect.right = legendRect.left + size_max.cx;
+		chartRect.top += legendRect.Height();
+	}
+
 	if ( !doc->docTimes.empty() ) {
 		double timeRange = doc->docTimes.back()->time - doc->docTimes.front()->time;
 		if ( timeRange > 0 ) {
@@ -125,6 +165,9 @@ void RDOStudioChartView::recalcLayout()
 			}
 			if ( zoomAuto || ( auto_zoom > 1 && scale_koeff < auto_zoom ) ) {
 				scale_koeff = auto_zoom;
+			}
+			if ( !zoomAuto && auto_zoom <= 1 ) {
+				scale_koeff = zoom;
 			}
 		} else {
 			timeScale = 0;
@@ -279,14 +322,36 @@ void RDOStudioChartView::drawTitle( CDC &dc, CRect& chartRect )
 {
 	//CRect tmprect;
 	//tmprect.CopyRect( &newClientRect );
+	CRect tmprect;
+	tmprect.CopyRect( &newClientRect );
+	tmprect.top = 0;
+	tmprect.bottom = chartRect.top;
 	int old_bk = dc.SetBkMode( TRANSPARENT );
 	CFont*  oldFont = dc.SelectObject( &fontTitle );
 	COLORREF old_color = dc.SetTextColor( style->getTheme()->titleFGColor );
-	string str = GetDocument()->GetTitle();
+	//string str = GetDocument()->GetTitle();
 	//dc.DrawText( str.c_str(), rect, DT_CENTER );
-	dc.DrawText( str.c_str(), newClientRect, DT_CENTER );
+	dc.DrawText( GetDocument()->GetTitle(), tmprect, DT_CENTER | DT_WORDBREAK );
 	dc.SetTextColor( old_color );
 	dc.SelectObject( oldFont );
+	dc.SetBkMode( old_bk );
+}
+
+void RDOStudioChartView::drawLegend( CDC &dc, CRect& legendRect )
+{
+	int old_bk = dc.SetBkMode( TRANSPARENT );
+	RDOStudioChartDoc* doc = GetDocument();
+	CRect tmprect;
+	tmprect.CopyRect( &legendRect );
+	CSize size;
+	for ( vector< RDOStudioDocSerie* >::iterator it = doc->series.begin(); it != doc->series.end(); it++ ) {
+		CRect rect;
+		size = (*it)->drawInLegend( dc, tmprect, fontLegend, style->getTheme()->legendFgColor );
+		rect.CopyRect( tmprect );
+		rect.bottom = rect.top + size.cx;
+		//dc.Rectangle( rect );
+		tmprect.top += size.cy;
+	}
 	dc.SetBkMode( old_bk );
 }
 
@@ -296,38 +361,27 @@ void RDOStudioChartView::drawYAxis( CDC &dc, CRect& chartRect, const RDOStudioDo
 	CSize size;
 
 	tmprect.CopyRect( &newClientRect );
-	tmprect.left = 5;
-	tmprect.right = chartRect.left;
+	tmprect.right = chartRect.left - 5;
+	tmprect.left  = 5;
 	if ( axisValues && axisValues->getSerie()->getValueCount() ) {
 		int old_bk = dc.SetBkMode( TRANSPARENT );
 		CFont*  oldFont = dc.SelectObject( &fontAxis );
 		COLORREF old_color = dc.SetTextColor( style->getTheme()->axisFgColor );
-		string formatstr = "%.3f";
-		double valoffset = 0;
-		double min = axisValues->getSerie()->getMinValue();
-		double max = axisValues->getSerie()->getMaxValue();
-		int heightoffset = chartRect.Height() / ( valueCountY - 1 );
-		if ( max != min ) {
-			valoffset = ( max - min ) / ( valueCountY - 1 );
-		}
-		double valo = min;
-		int y = chartRect.bottom;
-		string str = format( formatstr.c_str(), valo );
-		size = dc.GetTextExtent( str.c_str() );
-		tmprect.top = y /*- size.cy / 2*/;
-		dc.DrawText( str.c_str(), tmprect, DT_LEFT );
-		valo += valoffset;
-		y -= heightoffset;
-		if ( valoffset ) {
-			for ( int i = 1; i < valueCountY; i++ ) {
-				str = format( formatstr.c_str(), valo );
-				tmprect.top = y /*- size.cy / 2*/;
-				dc.DrawText( str.c_str(), tmprect, DT_LEFT );
-				dc.MoveTo( chartRect.left, y );
-				dc.LineTo( chartRect.left - 3, y );
-				valo += valoffset;
-				y -= heightoffset;
+		int count = captions.size();
+		int heightoffset = roundDouble( (double)chartRect.Height() / (double)( count - 1 ) );
+		tmprect.top = chartRect.bottom;
+		int index = 0;
+		for ( vector<string>::iterator it = captions.begin(); it != captions.end(); it++ ) {
+			index ++;
+			dc.DrawText( (*it).c_str(), tmprect, DT_RIGHT );
+			if ( index != 1 && index < count ) {
+				dc.MoveTo( tmprect.right + 2, tmprect.top );
+				dc.LineTo( chartRect.left, tmprect.top );
 			}
+			if ( index == count - 1 )
+				tmprect.top = chartRect.top;
+			else
+				tmprect.top -= heightoffset;
 		}
 		dc.SetTextColor( old_color );
 		dc.SelectObject( oldFont );
@@ -342,7 +396,7 @@ void RDOStudioChartView::drawXAxis( CDC &dc, CRect& chartRect )
 	CSize size;
 	tmprect.CopyRect( &chartRect );
 	
-	tmprect.top = chartRect.bottom;
+	tmprect.top = chartRect.bottom + 3;
 	tmprect.left = chartRect.left;
 	tmprect.bottom = newClientRect.bottom;
 	tmprect.right = newClientRect.right - 5;
@@ -372,8 +426,10 @@ void RDOStudioChartView::drawXAxis( CDC &dc, CRect& chartRect )
 					str = format( formatstr.c_str(), valo );
 					tmprect.left = x /*- size.cy / 2*/;
 					dc.DrawText( str.c_str(), tmprect, DT_LEFT );
-					dc.MoveTo( x, chartRect.bottom );
-					dc.LineTo( x, chartRect.bottom - 3 );
+					if ( i != valueCountX - 1 ) {
+						dc.MoveTo( x, chartRect.bottom );
+						dc.LineTo( x, chartRect.bottom + 3 );
+					}
 					valo += valoffset;
 					x += widthoffset;
 				}
@@ -388,8 +444,10 @@ void RDOStudioChartView::drawXAxis( CDC &dc, CRect& chartRect )
 				tmprect.left = min( tmprect.left, chartRect.right - 1 );
 				str = format( formatstr.c_str(), (*it)->time );
 				dc.DrawText( str.c_str(), tmprect, DT_LEFT );
-				dc.MoveTo( tmprect.left, chartRect.bottom );
-				dc.LineTo( tmprect.left, chartRect.bottom - 3 );
+				if ( tmprect.left != chartRect.left && tmprect.left != chartRect.right ) {
+					dc.MoveTo( tmprect.left, chartRect.bottom );
+					dc.LineTo( tmprect.left, chartRect.bottom + 3 );
+				}
 
 				ticks += (*it)->eventCount;
 				if ( *(*it) == drawFromX ) {
@@ -501,8 +559,8 @@ void RDOStudioChartView::OnDraw(CDC* pDC)
 
 	
 	//temporary
-	if ( pDoc->series.size() )
-		yAxis = &pDoc->series.at( 0 );
+	//if ( pDoc->series.size() )
+	//	yAxis = pDoc->series.at( 0 );
 	//temporary
 
 	//GetClientRect( &newClientRect );
@@ -526,6 +584,9 @@ void RDOStudioChartView::OnDraw(CDC* pDC)
 
 	//int height = rect.Height();
 	drawTitle( dc, chartRect );
+
+	if ( needDrawLegend )
+		drawLegend( dc, legendRect );
 	
 	if ( chartRect.Height() > 0 && chartRect.Width() > 0 ) {
 
@@ -537,8 +598,8 @@ void RDOStudioChartView::OnDraw(CDC* pDC)
 
 		drawGrid( dc, chartRect );
 
-		for ( vector< RDOStudioDocSerie >::iterator it = pDoc->series.begin(); it != pDoc->series.end(); it++ )
-			it->getSerie()->drawSerie( this, dc, chartRect, it->getColor() );
+		for ( vector< RDOStudioDocSerie* >::iterator it = pDoc->series.begin(); it != pDoc->series.end(); it++ )
+			(*it)->drawSerie( this, dc, chartRect );
 	}
 
 	pDC->BitBlt( 0, 0, newClientRect.Width(), newClientRect.Height(), &dc, 0, 0, SRCCOPY );
@@ -955,4 +1016,10 @@ void RDOStudioChartView::setStyle( RDOStudioChartViewStyle* _style, const bool n
 		Invalidate();
 		UpdateWindow();
 	}
+}
+
+void RDOStudioChartView::OnChartOptions() 
+{
+	RDOStudioChartOptions dlg( this );
+	dlg.DoModal();
 }

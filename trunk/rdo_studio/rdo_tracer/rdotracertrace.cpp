@@ -236,7 +236,14 @@ void RDOTracer::addOperation( string& s )
 	int endpos = s.rfind( ' ' );
 	string patstr = s.substr( endpos );
 	trim( patstr );
-	RDOTracerOperation* opr = new RDOTracerOperation( patterns.at( atoi( patstr.c_str() ) -1 ) );
+	RDOTracerPattern* pattern = patterns.at( atoi( patstr.c_str() ) -1 );
+	
+	RDOTracerOperationBase* opr = NULL;
+
+	if ( pattern->getPatternKind() != RDOPK_RULE )
+		opr = new RDOTracerOperation( pattern );
+	else
+		opr = new RDOTracerEvent( pattern );
 
 	patstr = s.substr( pos, endpos - pos );
 	trim( patstr );
@@ -248,7 +255,18 @@ void RDOTracer::addOperation( string& s )
 
 void RDOTracer::addIrregularEvent( string& s )
 {
-	addOperation( s );
+	int pos = s.find( ' ' );
+	int endpos = s.rfind( ' ' );
+	string patstr = s.substr( endpos );
+	trim( patstr );
+	RDOTracerEvent* event = new RDOTracerEvent( patterns.at( atoi( patstr.c_str() ) -1 ) );
+
+	patstr = s.substr( pos, endpos - pos );
+	trim( patstr );
+	event->setName( patstr );
+	
+	irregularEvents.push_back( event );
+	tree->addOperation( event );
 }
 
 void RDOTracer::addResult( string& s )
@@ -403,6 +421,12 @@ RDOTracerTimeNow* RDOTracer::addTime( string& time )
 		RDOTracerTimeNow* timeNow = new RDOTracerTimeNow( val );
 		timeList.push_back( timeNow );
 		eventIndex = 0;
+		for ( vector <RDOTracerOperationBase*>::iterator it = operations.begin(); it != operations.end(); it++ ) {
+			(*it)->monitorTime( timeNow, eventIndex );
+		}
+		for ( vector <RDOTracerEvent*>::iterator it_ie = irregularEvents.begin(); it_ie != irregularEvents.end(); it_ie++ ) {
+			(*it_ie)->monitorTime( timeNow, eventIndex );
+		}
 	} else {
 		last->eventCount ++;
 		eventIndex ++;
@@ -413,7 +437,7 @@ RDOTracerTimeNow* RDOTracer::addTime( string& time )
 	return timeList.back();
 }
 
-RDOTracerOperation* RDOTracer::getOperation( string& line )
+RDOTracerOperationBase* RDOTracer::getOperation( string& line )
 {
 	getNextValue( line );
 	return operations.at( atoi( getNextValue( line ).c_str() ) - 1 );
@@ -421,20 +445,22 @@ RDOTracerOperation* RDOTracer::getOperation( string& line )
 
 void RDOTracer::startAction( string& line, RDOTracerTimeNow* const time  )
 {
-	getOperation( line )->start( time, eventIndex );
+	static_cast<RDOTracerOperation*>(getOperation( line ))->start( time, eventIndex );
 }
 
 void RDOTracer::accomplishAction( string& line, RDOTracerTimeNow* const time  )
 {
-	getOperation( line )->accomplish( time, eventIndex );
+	static_cast<RDOTracerOperation*>(getOperation( line ))->accomplish( time, eventIndex );
 }
 
 void RDOTracer::irregularEvent( string& line, RDOTracerTimeNow* const time  )
 {
+	irregularEvents.at( atoi( getNextValue( line ).c_str() ) - 1 )->occurs( time, eventIndex );
 }
 
 void RDOTracer::productionRule( string& line, RDOTracerTimeNow* const time  )
 {
+	static_cast<RDOTracerEvent*>(getOperation( line ))->occurs( time, eventIndex );
 }
 
 RDOTracerResource* RDOTracer::getResource( string& line )
@@ -477,8 +503,22 @@ void RDOTracer::resourceChanging( string& line, RDOTracerTimeNow* const time  )
 	res->setParams( line, time, eventIndex );
 }
 
+RDOTracerResult* RDOTracer::getResult( std::string& line )
+{
+	RDOTracerResult* res = NULL;
+	int findid = atoi( getNextValue( line ).c_str() );
+	for ( vector< RDOTracerResult* >::iterator it = results.begin(); it != results.end(); it++ ) {
+		if ( (*it)->id == findid ) {
+			res = *it;
+			break;
+		}
+	}
+	return res;
+}
+
 void RDOTracer::resultChanging( string& line, RDOTracerTimeNow* const time  )
 {
+	getResult( line )->setValue( line, time, eventIndex );
 }
 
 void RDOTracer::deleteTrace()

@@ -2,6 +2,7 @@
 // Microsoft Developer Studio generated include file.
 // Used by rdo_studio.rc
 //
+#define IDD_CHART_OPTIONS_CHART         107
 #define IDR_MAINFRAME                   128
 #define IDR_MODELTYPE                   129
 #define IDC_CURMARGIN                   130
@@ -21,6 +22,7 @@
 #define IDD_FILEASSOCIATION             154
 #define IDD_OPTIONS_TABS                155
 #define IDB_FRAMESTREECTRL              156
+#define IDD_CHART_OPTIONS_SERIES        156
 #define IDC_CLEARAUTO_CHECK             1001
 #define IDC_STYLEITEM_TREE              1002
 #define IDC_BUFFERVALUESTATIC           1003
@@ -79,6 +81,29 @@
 #define IDC_LEGEND_FONTSIZE_STATIC      1054
 #define IDC_TICKWIDTH_EDIT              1055
 #define IDC_TICKWIDTH_STATIC            1056
+#define IDC_CHART_TITLE_STATIC          1057
+#define IDC_CHART_TITLE_EDIT            1058
+#define IDC_DRAW_LEGEND_CHECK           1059
+#define IDC_AXIS_VAL_STATIC             1060
+#define IDC_AXIS_SERIES                 1061
+#define IDC_VAL_COUNT_Y_STATIC          1062
+#define IDC_IDC_VAL_COUNT_Y_EDIT        1063
+#define IDC_VAL_COUNT_X_STATIC          1064
+#define IDC_IDC_VAL_COUNT_X_EDIT        1065
+#define IDC_SERIES_STATIC               1067
+#define IDC_SERIES_COMBO                1068
+#define IDC_SERIE_TITLE_STATIC          1069
+#define IDC_SERIE_TITLE_EDIT            1070
+#define IDC_COLOR_STATIC                1071
+#define IDC_COLOR_COMBO                 1072
+#define IDC_COLOR_BUTTON                1073
+#define IDC_MARKER_COMBO                1074
+#define IDC_MARKER_STATIC               1075
+#define IDC_MARKER_CHECK                1076
+#define IDC_MAKER_SIZE_STATIC           1077
+#define IDC_MARKER_SIZE_EDIT            1078
+#define IDC_LEGEND_CHECK                1079
+#define IDC_EDIT1                       1080
 #define ID_CHART_ADDTONEWCHART          32771
 #define ID_VIEW_WORKSPACE               32774
 #define ID_VIEW_OUTPUT                  32775
@@ -456,6 +481,7 @@
 #define IDS_FRAMES                      40200
 #define IDS_FRAMENAME                   40201
 #define IDS_MODELNAME                   40202
+#define IDS_CHART_OPTIONS               40300
 #define ID_ABOUT_BMSTU                  40910
 #define ID_ABOUT_TEL                    40911
 #define ID_ABOUT_OKBUTTON               40912
@@ -491,9 +517,9 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        157
+#define _APS_NEXT_RESOURCE_VALUE        159
 #define _APS_NEXT_COMMAND_VALUE         33158
-#define _APS_NEXT_CONTROL_VALUE         1057
+#define _APS_NEXT_CONTROL_VALUE         1081
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

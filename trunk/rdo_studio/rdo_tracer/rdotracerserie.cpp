@@ -83,6 +83,51 @@ int RDOTracerSerie::getValueCount() const
 	return values.size();
 }
 
+void RDOTracerSerie::getCaptions( vector<string> &captions, const int val_count ) const
+{
+	if ( !captions.empty() )
+		captions.clear();
+}
+
+void RDOTracerSerie::getCaptionsInt( vector<string> &captions, const int val_count ) const
+{
+	RDOTracerSerie::getCaptions( captions, val_count );
+	int delta = maxValue - minValue;
+	int real_val_count = val_count;
+	if ( ( maxValue - minValue ) > real_val_count ) {
+		while ( (int)(( maxValue - minValue ) / ( real_val_count - 1 )) != (double)(( maxValue - minValue ) / ( real_val_count - 1 )) )
+			real_val_count--;
+	} else {
+		real_val_count = maxValue - minValue + 1;
+	}
+	int valo = minValue;
+	int valoffset = ( maxValue - minValue ) / ( real_val_count - 1 );
+	string formatstr = "%d";
+	for ( int i = 0; i < real_val_count; i++ ) {
+		captions.push_back( format( formatstr.c_str(), valo ) );
+		valo += valoffset;
+	}
+}
+
+void RDOTracerSerie::getCaptionsDouble( vector<string> &captions, const int val_count ) const
+{
+	RDOTracerSerie::getCaptions( captions, val_count );
+	double valoffset = ( maxValue - minValue ) / (double)( val_count - 1 );
+	double valo = minValue;
+	string formatstr = "%.3f";
+	for ( int i = 0; i < val_count; i++ ) {
+		captions.push_back( format( formatstr.c_str(), valo ) );
+		valo += valoffset;
+	}
+}
+
+void RDOTracerSerie::getCaptionsBool( vector<string> &captions, const int val_count ) const
+{
+	RDOTracerSerie::getCaptions( captions, val_count );
+	captions.push_back( "FALSE" );
+	captions.push_back( "TRUE" );
+}
+
 RDOTracerValue* RDOTracerSerie::getLastValue() const
 {
 	if ( !values.size() )
@@ -90,7 +135,7 @@ RDOTracerValue* RDOTracerSerie::getLastValue() const
 	return values.back();
 }
 
-void RDOTracerSerie::drawSerie( RDOStudioChartView* const view, CDC &dc, CRect &rect, const COLORREF color ) const
+void RDOTracerSerie::drawSerie( RDOStudioChartView* const view, CDC &dc, CRect &rect, const COLORREF color, RDOTracerSerieMarker marker, const int marker_size, const bool draw_marker ) const
 {
 	int oldBkMode = dc.SetBkMode( TRANSPARENT );
 	CPen pen;
@@ -149,8 +194,8 @@ void RDOTracerSerie::drawSerie( RDOStudioChartView* const view, CDC &dc, CRect &
 			}
 			lastx = min( lastx, rect.right - 1 );
 
-			if ( lastx >= rect.left )
-				drawMarker( dc, lastx, lasty, color );
+			if ( lastx >= rect.left && draw_marker )
+				drawMarker( dc, lastx, lasty, color, marker, marker_size );
 			else
 				lastx = rect.left;
 			dc.MoveTo( lastx, lasty );
@@ -175,7 +220,8 @@ void RDOTracerSerie::drawSerie( RDOStudioChartView* const view, CDC &dc, CRect &
 					x += ( ticks + (*it)->eventIndex ) * view->style->fonts_ticks->tickWidth;
 				}
 				x = min( x, rect.right - 1 );
-				drawMarker( dc, x, y, color );
+				if ( draw_marker )
+					drawMarker( dc, x, y, color, marker, marker_size );
 				dc.LineTo( x, lasty );
 				dc.LineTo( x, y );
 				lastx = x;
@@ -214,18 +260,69 @@ void RDOTracerSerie::drawSerie( RDOStudioChartView* const view, CDC &dc, CRect &
 	dc.SetBkMode( oldBkMode );
 }
 
-void RDOTracerSerie::drawMarker( CDC &dc, const int x, const int y, const COLORREF color ) const
+void RDOTracerSerie::drawMarker( CDC &dc, const int x, const int y, const COLORREF color, RDOTracerSerieMarker marker, const int marker_size ) const
 {
-	CPen pen;
 	CRect rect;
-	rect.left = x - 3;
-	rect.top = y - 3;
-	rect.bottom = y + 3;
-	rect.right = x + 3;
+	rect.left = x - marker_size;
+	rect.top = y - marker_size;
+	rect.bottom = y + marker_size;
+	rect.right = x + marker_size;
+	CPen pen;
 	pen.CreatePen( PS_SOLID, 0, color );
 	CPen* pOldPen = dc.SelectObject( &pen );
-	dc.Ellipse( &rect );
+	switch( marker ) {
+		case RDOSM_CIRCLE : {
+			drawSircle( dc, rect, color );
+			break;
+		}
+		case RDOSM_SQUARE : {
+			drawSquare( dc, rect, color );
+			break;
+		}
+		case RDOSM_RHOMB : {
+			drawRhomb( dc, rect, color );
+			break;
+		}
+		case RDOSM_CROSS : {
+			drawCross( dc, rect, color );
+			break;
+		}
+	}
 	dc.SelectObject( pOldPen );
+}
+
+void RDOTracerSerie::drawSircle( CDC &dc, CRect& rect, const COLORREF color ) const
+{
+	dc.Ellipse( &rect );
+}
+
+void RDOTracerSerie::drawSquare( CDC &dc, CRect& rect, const COLORREF color ) const
+{
+	dc.Rectangle( &rect );
+}
+
+void RDOTracerSerie::drawRhomb( CDC &dc, CRect& rect, const COLORREF color ) const
+{
+	CPoint pts[4];
+	pts[0].x = rect.left + ( rect.right - rect.left ) / 2;
+	pts[0].y = rect.top;
+	pts[1].x = rect.right;
+	pts[1].y = rect.top + ( rect.bottom - rect.top ) / 2;
+	pts[2].x = pts[0].x;
+	pts[2].y = rect.bottom;
+	pts[3].x = rect.left;
+	pts[3].y = pts[1].y;
+	dc.Polygon( pts, 4 );
+}
+
+void RDOTracerSerie::drawCross( CDC &dc, CRect& rect, const COLORREF color ) const
+{
+	CPoint pos = dc.GetCurrentPosition();
+	dc.MoveTo( rect.left, rect.top );
+	dc.LineTo( rect.right, rect.bottom + 1 );
+	dc.MoveTo( rect.left, rect.bottom );
+	dc.LineTo( rect.right, rect.top - 1 );
+	dc.MoveTo( pos );
 }
 
 int RDOTracerSerie::addToDoc( RDOStudioChartDoc* const doc )

@@ -1088,6 +1088,10 @@ SOURCE=.\rdostudiochartdoc.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\rdostudiochartoptions.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdostudiochartview.cpp
 
 !IF  "$(CFG)" == "rdo_studio - Win32 Release"
@@ -1103,6 +1107,10 @@ SOURCE=.\rdostudiochartview.cpp
 
 SOURCE=.\rdostudiochartviewstyle.cpp
 # End Source File
+# Begin Source File
+
+SOURCE=.\rdostudiodocserie.cpp
+# End Source File
 # End Group
 # Begin Group "RDO-Chart Header Files"
 
@@ -1113,11 +1121,19 @@ SOURCE=.\rdostudiochartdoc.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\rdostudiochartoptions.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdostudiochartview.h
 # End Source File
 # Begin Source File
 
 SOURCE=.\rdostudiochartviewstyle.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdostudiodocserie.h
 # End Source File
 # End Group
 # End Group

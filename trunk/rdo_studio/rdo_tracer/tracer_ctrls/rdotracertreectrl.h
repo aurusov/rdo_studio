@@ -25,7 +25,7 @@ public:
 class RDOTracerResType;
 class RDOTracerResource;
 class RDOTracerPattern;
-class RDOTracerOperation;
+class RDOTracerOperationBase;
 class RDOTracerResult;
 
 class RDOTracerTreeCtrl: public RDOTreeCtrl  
@@ -80,8 +80,8 @@ public:
 	void addResource( RDOTracerResource* res );
 	void updateResource( RDOTracerResource* const res );
 	void addPattern( RDOTracerPattern* pat );
-	void addOperation( RDOTracerOperation* opr );
-	void addIrregularEvent( RDOTracerOperation* opr );
+	void addOperation( RDOTracerOperationBase* opr );
+	//void addIrregularEvent( RDOTracerOperation* opr );
 	void addResult( RDOTracerResult* res );
 	void deleteChildren( const RDOTracerTreeItem* parent );
 	void clear();

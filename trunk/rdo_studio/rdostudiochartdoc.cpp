@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "rdostudiochartdoc.h"
+#include "rdostudiochartview.h"
 #include "rdo_tracer/rdotracertrace.h"
 #include "rdo_tracer/rdotracerserie.h"
 #include "rdo_tracer/rdotracervalues.h"
@@ -69,10 +70,24 @@ RDOStudioChartDoc::RDOStudioChartDoc( const bool preview )
 
 RDOStudioChartDoc::~RDOStudioChartDoc()
 {
-	for ( vector< RDOStudioDocSerie >::iterator it = series.begin(); it != series.end(); it++ )
-		it->serie->removeFromDoc( this );
+	for ( vector< RDOStudioDocSerie* >::iterator it = series.begin(); it != series.end(); it++ ) {
+		(*it)->serie->removeFromDoc( this );
+		delete (*it);
+	}
 	if ( !previewMode )
 		tracer.removeChart( this );
+}
+
+int RDOStudioChartDoc::getSerieIndex( RDOStudioDocSerie* serie ) const
+{
+	int res = -1;
+	int index = 0;
+	for ( vector< RDOStudioDocSerie* >::const_iterator it = series.begin(); it != series.end(); it++ ) {
+		if ( serie == (*it) )
+			res = index;
+		index ++;
+	}
+	return res;
 }
 
 BOOL RDOStudioChartDoc::OnNewDocument()
@@ -116,13 +131,22 @@ bool RDOStudioChartDoc::newValueToSerieAdded( RDOTracerValue* val )
 void RDOStudioChartDoc::addSerie( RDOTracerSerie* const serie )
 {
 	if ( serie && !serieExists( serie ) ) {
-		RDOStudioDocSerie docserie( serie );
+		RDOStudioDocSerie* docserie = new RDOStudioDocSerie( serie );
 		//docserie.serie = serie;
-		docserie.color = selectColor();
-		docserie.docSerieTitle = serie->getTitle();
+		docserie->color = selectColor();
+		docserie->marker = selectMarker();
+		//docserie->docSerieTitle = serie->getTitle();
 		series.push_back( docserie );
 		for_each( serie->begin(), serie->end(), RDOStudioChartDocInsertTime( this ) );
 		serie->addToDoc( this );
+		if ( series.size() == 1 ) {
+			POSITION pos = GetFirstViewPosition();
+			while (pos != NULL) {
+				CView* pView = GetNextView( pos );
+				if ( pView && pView->IsKindOf( RUNTIME_CLASS(RDOStudioChartView) ) )
+					static_cast<RDOStudioChartView*>( pView )->yAxis = docserie;
+			}
+		}
 		UpdateAllViews( NULL );
 	}
 }
@@ -130,10 +154,11 @@ void RDOStudioChartDoc::addSerie( RDOTracerSerie* const serie )
 void RDOStudioChartDoc::removeSerie( RDOTracerSerie* const serie )
 {
 	if ( !serie ) return;
-	vector<RDOStudioDocSerie>::iterator it = find( series.begin(), series.end(), serie );
+	vector<RDOStudioDocSerie*>::iterator it = find_if( series.begin(), series.end(), bind2nd( mem_fun1(&RDOStudioDocSerie::isTracerSerie), serie ) );
 	if ( it != series.end() ) {
-		(*it).serie->removeFromDoc( this );
-		//must be recalc of minTimeOffset
+		(*it)->serie->removeFromDoc( this );
+		//must be recalc of minTimeOffset && tickscount
+		delete (*it);
 		series.erase( it );
 		UpdateAllViews( NULL );
 	}
@@ -162,6 +187,21 @@ COLORREF RDOStudioChartDoc::selectColor()
 		case 13 : res = RGB( 0x00, 0x00, 0xFF ); break;
 		case 14 : res = RGB( 0xFF, 0x00, 0xFF ); break;
 		case 15 : res = RGB( 0x00, 0xFF, 0xFF ); break;
+	};
+	return res;
+}
+
+RDOTracerSerieMarker RDOStudioChartDoc::selectMarker()
+{
+	int count = series.size();
+	int mul = count / 4;
+	int index = count - mul * 4;
+	RDOTracerSerieMarker res = RDOSM_CIRCLE;
+	switch ( index ) {
+		case 0  : res = RDOSM_CIRCLE; break;
+		case 1  : res = RDOSM_SQUARE; break;
+		case 2  : res = RDOSM_RHOMB; break;
+		case 3  : res = RDOSM_CROSS; break;
 	};
 	return res;
 }

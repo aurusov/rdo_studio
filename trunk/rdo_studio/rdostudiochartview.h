@@ -6,7 +6,7 @@
 #endif
 
 #include <afxole.h>
-#include "rdo_tracer/rdotracerserie.h"
+//#include "rdo_tracer/rdotracerserie.h"
 #include "rdo_tracer/rdotracervalues.h"
 #include "rdostudiochartdoc.h"
 
@@ -14,11 +14,14 @@
 // ---------- RDOStudioChartView
 // ----------------------------------------------------------------------------
 class RDOStudioChartViewStyle;
+class RDOTracerSerie;
+class RDOStudioDocSerie;
 
 class RDOStudioChartView : public CView
 {
 //friend class RDOTracerSerie;
 friend class RDOTracerSerieFindValue;
+friend class RDOStudioChartOptionsChart;
 
 protected:
 	DECLARE_DYNCREATE(RDOStudioChartView)
@@ -31,6 +34,7 @@ protected:
 	CBitmap bmp;
 
 	int valueCountX;
+	std::vector<std::string> captions;
 	int valueCountY;
 	
 	bool timeWrap;
@@ -57,6 +61,8 @@ protected:
 	timesList unwrapTimesList;
 	
 	void drawTitle( CDC &dc, CRect& chartRect );
+	CRect legendRect;
+	void drawLegend( CDC &dc, CRect& chartRect );
 	void drawYAxis( CDC &dc, CRect& chartRect, const RDOStudioDocSerie* axisValues);
 	void drawXAxis( CDC &dc, CRect& chartRect );
 	void drawGrid(	CDC &dc, CRect& chartRect );
@@ -79,8 +85,8 @@ protected:
 	CFont fontAxis;
 	void setFonts( const bool needRedraw = true );
 
-	//edited with RDOStudioChartViewOptions
 	RDOStudioDocSerie* yAxis;
+	bool needDrawLegend;
 
 public:
 	RDOStudioChartView( const bool preview = false);
@@ -130,6 +136,7 @@ protected:
 	afx_msg void OnChartZoomZoomauto();
 	afx_msg void OnUpdateChartZoomZoomauto(CCmdUI* pCmdUI);
 	afx_msg int OnMouseActivate( CWnd* pDesktopWnd, UINT nHitTest, UINT message );
+	afx_msg void OnChartOptions();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
