@@ -2,8 +2,9 @@
 #include "rdostudiooutput.h"
 #include "rdostudioapp.h"
 #include "rdostudiomainfrm.h"
-#include "edit_ctrls/rdobaseedit.h"
-#include "edit_ctrls/rdologedit.h"
+#include "edit_ctrls/rdobuildedit.h"
+#include "edit_ctrls/rdodebugedit.h"
+#include "edit_ctrls/rdofindedit.h"
 #include "rdo_edit/rdoeditoredit.h"
 #include "./rdo_tracer/rdotracertrace.h"
 
@@ -62,11 +63,11 @@ int RDOStudioOutput::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	RDOStudioApp::appendMenu( mainMenu->GetSubMenu( 2 + delta ), 9, &popupMenu );
 	RDOStudioApp::appendMenu( mainMenu->GetSubMenu( 2 + delta ), 10, &popupMenu );
 
-	build   = new RDOLogEdit;
-	debug   = new rdoBaseEdit::RDOBaseEdit;
+	build   = new RDOBuildEdit;
+	debug   = new RDODebugEdit;
 	tracer  = (CWnd*)::trace.createLog();
 	results = new RDOEditorEdit;
-	find    = new RDOLogEdit;
+	find    = new RDOFindEdit;
 
 	build->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), tab.getTabAsParent(), -1 );
 	debug->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), tab.getTabAsParent(), -1 );
@@ -167,33 +168,15 @@ void RDOStudioOutput::clearFind()
 	find->clearAll();
 }
 
-void RDOStudioOutput::appendString( const rdoBaseEdit::RDOBaseEdit* const edit, const string& str ) const
-{
-	bool readOnly = edit->isReadOnly();
-	if ( readOnly ) {
-		edit->setReadOnly( false );
-	}
-	bool scroll = edit->isLineVisible( edit->getLineCount() - 1 );
-	edit->appendText( str );
-	if ( scroll ) {
-		int line = edit->getLineCount();
-		int line_to_scroll = line > 0 ? line - 1 : 0;
-		edit->scrollToLine( line_to_scroll, edit->getLength() );
-	}
-	if ( readOnly ) {
-		edit->setReadOnly( true );
-	}
-}
-
 void RDOStudioOutput::appendStringToBuild( const string& str, const rdoModelObjects::RDOFileType fileType, const int lineNumber, const bool error ) const
 {
-	RDOEditorSciBuildLineInfo* line = new RDOEditorSciBuildLineInfo( str, fileType, lineNumber, error );
+	RDOBuildEditLineInfo* line = new RDOBuildEditLineInfo( str, fileType, lineNumber, error );
 	build->appendLine( line );
 }
 
 void RDOStudioOutput::appendStringToDebug( const string& str ) const
 {
-	appendString( debug, str );
+	debug->appendLine( str );
 }
 
 void RDOStudioOutput::appendStringToFind( const string& str, const rdoModelObjects::RDOFileType fileType, const int lineNumber ) const

@@ -25,6 +25,7 @@
 #include <vector>
 #include <strstream>
 #include <map>
+#include <list>
 
 #include "sizecbar/sizecbar.h"
 #include "sizecbar/scbarg.h"

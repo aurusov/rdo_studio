@@ -1197,11 +1197,6 @@ void RDOBaseEdit::OnUpdateFold( CCmdUI* pCmdUI )
 	pCmdUI->Enable( !isEmpty() );
 }
 
-void RDOBaseEdit::appendText( const string& str ) const
-{
-	sendEditor( SCI_INSERTTEXT, getLength(), (long)str.c_str() );
-}
-
 void RDOBaseEdit::setCurrentPos( const int value ) const
 {
 	sendEditor( SCI_SETCURRENTPOS, value );
@@ -1262,6 +1257,11 @@ bool RDOBaseEdit::isLineVisible( const int line ) const
 	int first_line = sendEditor( SCI_GETFIRSTVISIBLELINE );
 	int last_line = first_line + sendEditor( SCI_LINESONSCREEN );
 	return line >= first_line && line <= last_line;
+}
+
+void RDOBaseEdit::appendText( const string& str ) const
+{
+	sendEditor( SCI_INSERTTEXT, getLength(), (long)str.c_str() );
 }
 
 void RDOBaseEdit::scrollToLine( const int line, int setPosition ) const

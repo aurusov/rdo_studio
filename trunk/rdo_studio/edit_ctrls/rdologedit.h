@@ -4,10 +4,7 @@
 
 #include "rdobaseedit.h"
 #include "rdologeditstyle.h"
-
 #include <rdosimwin.h>
-
-#include <list>
 
 using namespace std;
 
@@ -32,21 +29,6 @@ public:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOEditorSciBuildLineInfo
-// ----------------------------------------------------------------------------
-class RDOEditorSciBuildLineInfo: public RDOLogEditLineInfo
-{
-protected:
-	bool error;
-
-public:
-	RDOEditorSciBuildLineInfo( const string& _message, const rdoModelObjects::RDOFileType _fileType = rdoModelObjects::PAT, const int _lineNumber = -1, bool _error = true );
-	~RDOEditorSciBuildLineInfo();
-
-	virtual string getMessage() const;
-};
-
-// ----------------------------------------------------------------------------
 // ---------- RDOLogEdit
 // ----------------------------------------------------------------------------
 class RDOLogEdit: public rdoBaseEdit::RDOBaseEdit
@@ -55,6 +37,9 @@ private:
 	int sci_MARKER_LINE;
 
 protected:
+	RDOLogEdit();
+	virtual ~RDOLogEdit();
+
 	list< RDOLogEditLineInfo* > lines;
 	void clearLines();
 
@@ -63,7 +48,6 @@ protected:
 	bool hasSelectLine() const;
 
 	//{{AFX_MSG(RDOLogEdit)
-	afx_msg int OnCreate( LPCREATESTRUCT lpCreateStruct );
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
@@ -73,9 +57,6 @@ protected:
 	//}}AFX_VIRTUAL
 
 public:
-	RDOLogEdit();
-	virtual ~RDOLogEdit();
-
 	virtual void setEditorStyle( rdoBaseEdit::RDOBaseEditStyle* style );
 
 	virtual void clearAll();

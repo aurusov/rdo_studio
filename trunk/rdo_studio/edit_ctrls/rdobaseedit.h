@@ -67,6 +67,8 @@ protected:
 	void setLineIndentation( int line, int indent ) const;
 	void autoIndent() const;
 
+	void appendText( const string& str ) const;
+
 	//{{AFX_MSG(RDOBaseEdit)
 	afx_msg int OnCreate( LPCREATESTRUCT lpCreateStruct );
 	afx_msg void OnSetFocus( CWnd *pOldWnd );
@@ -153,8 +155,6 @@ public:
 
 	virtual void clearAll();
 	void clearUndoBuffer() const                           { sendEditor( SCI_EMPTYUNDOBUFFER ); };
-
-	void appendText( const string& str ) const;
 
 	bool isReadOnly() const                                { return sendEditor( SCI_GETREADONLY ) ? true : false;  };
 	void setReadOnly( const bool value ) const             { sendEditor( SCI_SETREADONLY, value );                 };

@@ -564,6 +564,18 @@ SOURCE=.\edit_ctrls\rdobaseeditstyle.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\edit_ctrls\rdobuildedit.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\rdodebugedit.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\rdofindedit.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\edit_ctrls\rdologedit.cpp
 # End Source File
 # Begin Source File
@@ -581,6 +593,18 @@ SOURCE=.\edit_ctrls\rdobaseedit.h
 # Begin Source File
 
 SOURCE=.\edit_ctrls\rdobaseeditstyle.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\rdobuildedit.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\rdodebugedit.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\rdofindedit.h
 # End Source File
 # Begin Source File
 
