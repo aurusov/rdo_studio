@@ -42,8 +42,8 @@ void CChatUser::setUserName( const CString& value )
 {
 	if ( userName != value ) {
 		userName = value;
-		if ( chatApp.pFrame && chatApp.pFrame->usersTreeView ) {
-			chatApp.pFrame->usersTreeView->updateUserName( this );
+		if ( chatApp.pFrame ) {
+			chatApp.pFrame->dock.tree.updateUserName( this );
 		}
 	}
 }
@@ -77,8 +77,8 @@ void CChatUser::setStatusMode( const CChatStatusModeType value )
 {
 	if ( statusMode != value ) {
 		statusMode = value;
-		if ( chatApp.pFrame && chatApp.pFrame->usersTreeView ) {
-			chatApp.pFrame->usersTreeView->updateUserStatus( this );
+		if ( chatApp.pFrame ) {
+			chatApp.pFrame->dock.tree.updateUserStatus( this );
 		}
 	}
 }
@@ -100,7 +100,7 @@ void CChatUsers::addUser( const CString& username, const CString& hostname, cons
 	if ( findUserByIP( ip ) == -1 ) {
 		CChatUser* user = new CChatUser( username, hostname, ip, statusMode );
 		Add( user );
-		((CChatMainFrame*)AfxGetMainWnd())->usersTreeView->addUser( user );
+		((CChatMainFrame*)AfxGetMainWnd())->dock.tree.addUser( user );
 	}
 }
 
@@ -108,8 +108,8 @@ void CChatUsers::deleteUser( const int listIndex )
 {
 	if ( listIndex != -1 && listIndex < GetSize() ) {
 		CChatUser* user = (CChatUser*)GetAt( listIndex );
-		if ( chatApp.pFrame && chatApp.pFrame->usersTreeView ) {
-			chatApp.pFrame->usersTreeView->deleteUser( user );
+		if ( chatApp.pFrame ) {
+			chatApp.pFrame->dock.tree.deleteUser( user );
 		}
 		delete user;
 		RemoveAt( listIndex );

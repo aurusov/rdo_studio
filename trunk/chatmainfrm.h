@@ -2,9 +2,9 @@
 #define CHATMAINFRM_H
 #pragma once
 
-#include "rdosplitterwnd.h"
 #include "chatchildview.h"
 #include "chatuserstreectrl.h"
+#include "chatdockwnd.h"
 #include "chatpopupmessage.h"
 #include "chatstatusmode.h"
 
@@ -27,8 +27,6 @@ class CChatMainFrame: public CFrameWnd
 protected: 
 	CToolBar       statusModeToolBar;
 	CStatusBar     statusBar;
-
-	RDOSplitterWnd treeSplitter;
 
 	CFont defFont;
 
@@ -62,7 +60,6 @@ protected:
 	void stopAutoStatusModeTimer();
 
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-	virtual BOOL OnCreateClient( LPCREATESTRUCT lpcs, CCreateContext* pContext );
 	virtual BOOL OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo);
 	virtual BOOL DestroyWindow();
 
@@ -89,8 +86,9 @@ public:
 	CChatMainFrame();
 	virtual ~CChatMainFrame();
 
-	CChatChildView*     childView;
-	CChatUsersTreeCtrl* usersTreeView;
+	CChatChildView     childView;
+	CChatDockWnd       dock;
+//	CChatUsersTreeCtrl* usersTreeView;
 
 	CChatPopupMessage popupMessage;
 

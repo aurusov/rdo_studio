@@ -130,7 +130,7 @@ void CChatUdp::parsCommand( const CString& line )
 {
 	CChatMainFrame* mainFrame = (CChatMainFrame*)AfxGetMainWnd();
 
-//	mainFrame->childView->addStringToViewer( "", line );
+//	mainFrame->childView.addStringToViewer( "", line );
 
 	CString fromHost = getCommandValue( line, "fromhost" );
 	CString fromIP   = getCommandValue( line, "fromip" );
@@ -141,7 +141,7 @@ void CChatUdp::parsCommand( const CString& line )
 		CString username = getCommandValue( line, "connect" );
 		CString s;
 		s.Format( IDS_CONNECT_VIEWERLOG, username );
-		mainFrame->childView->addStringToViewer( username, s, CSTRT_Connect );
+		mainFrame->childView.addStringToViewer( username, s, CSTRT_Connect );
 		chatApp.sounds.play( CST_Connect );
 
 	// CLOSE
@@ -154,7 +154,7 @@ void CChatUdp::parsCommand( const CString& line )
 		}
 		CString s;
 		s.Format( IDS_DISCONNECT_VIEWERLOG, username );
-		mainFrame->childView->addStringToViewer( username, s, CSTRT_Disconnect );
+		mainFrame->childView.addStringToViewer( username, s, CSTRT_Disconnect );
 		chatApp.sounds.play( CST_Disconnect );
 		if ( user ) {
 			chatApp.users.deleteUser( user );
@@ -176,7 +176,7 @@ void CChatUdp::parsCommand( const CString& line )
 			chatApp.users.addUser( username, "", fromIP );
 		} else {
 			if ( user->getUserName() != username ) {
-				mainFrame->childView->addStringToViewer( username, user->getUserName() + " сменил имя на " + username, CSTRT_ChangeName );
+				mainFrame->childView.addStringToViewer( username, user->getUserName() + " сменил имя на " + username, CSTRT_ChangeName );
 				user->setUserName( username );
 			}
 		}
@@ -207,7 +207,7 @@ void CChatUdp::parsCommand( const CString& line )
 			} else {
 				s.Format( IDS_STATUSMODEWITHINFO_VIEWERLOG, username, chatApp.statusModes.getStatusMode( status )->name, s_statusmsg );
 			}
-			mainFrame->childView->addStringToViewer( username, s, CSTRT_ChangeStatusMode );
+			mainFrame->childView.addStringToViewer( username, s, CSTRT_ChangeStatusMode );
 			chatApp.sounds.play( CST_ChangeStatusMode );
 		}
 
@@ -220,7 +220,7 @@ void CChatUdp::parsCommand( const CString& line )
 		} else {
 			fromUser = fromHost;
 		}
-		mainFrame->childView->addStringToViewer( fromUser, msg );
+		mainFrame->childView.addStringToViewer( fromUser, msg );
 
 		if ( !mainFrame->isVisible() ) {
 			mainFrame->modifyTray();
@@ -249,7 +249,7 @@ void CChatUdp::parsCommand( const CString& line )
 		} else {
 			fromUser = fromHost;
 		}
-		mainFrame->childView->addStringToViewer( fromUser, msg, CSTRT_ToCryOut );
+		mainFrame->childView.addStringToViewer( fromUser, msg, CSTRT_ToCryOut );
 
 		if ( !mainFrame->isVisible() ) {
 			mainFrame->modifyTray();

@@ -629,7 +629,11 @@ int CChatViewer::getStrHeight( const int index )
 	CDC* dc = GetDC();
 	CFont* prev_font = dc->SelectObject( &style.fontFSN );
 
-	int height = getString( index )->getHeight( dc, newClientRect.right, style );
+	int height = 0;
+	CChatString* str = getString( index );
+	if ( str ) {
+		height = str->getHeight( dc, newClientRect.right, style );
+	}
 
 	dc->SelectObject( prev_font );
 	ReleaseDC( dc );

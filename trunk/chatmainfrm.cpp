@@ -61,17 +61,13 @@ CChatMainFrame::CChatMainFrame():
 	prev_wnd( 0 ),
 	idle_sec( 0 ),
 	wasAutoChanged( false ),
-	lastStatusMode( CSMT_Online ),
-	childView( NULL ),
-	usersTreeView( NULL )
+	lastStatusMode( CSMT_Online )
 {
 	trayIconData.cbSize = 0;
 }
 
 CChatMainFrame::~CChatMainFrame()
 {
-	if ( childView ) delete childView;
-	if ( usersTreeView ) delete usersTreeView;
 }
 
 BOOL CChatMainFrame::PreCreateWindow( CREATESTRUCT& cs )
@@ -82,47 +78,14 @@ BOOL CChatMainFrame::PreCreateWindow( CREATESTRUCT& cs )
 	return TRUE;
 }
 
-BOOL CChatMainFrame::OnCreateClient( LPCREATESTRUCT lpcs, CCreateContext* pContext )
-{
-	if ( !treeSplitter.CreateStatic( this, 1, 2, WS_CHILD | WS_VISIBLE ) ) return FALSE;
-
-	if ( !treeSplitter.CreateView( 0, 0, RUNTIME_CLASS( CChatUsersTreeCtrl ), CSize(200, 50), pContext ) ||
-		 !treeSplitter.CreateView( 0, 1, RUNTIME_CLASS( CChatChildView ), CSize( 0,0 ), pContext ))
-		return FALSE;
-
-	usersTreeView = (CChatUsersTreeCtrl*)treeSplitter.GetPane( 0, 0 );
-	childView     = (CChatChildView*)treeSplitter.GetPane( 0, 1 );
-/*
-	log      = ( RDOTracerLogCtrl* )logSplitter.GetPane( 1, 0 );
-	graphics = ( RDOTracerChildView* )treeSplitter.GetPane( 0, 1 );
-	tree     = ( RDOTracerTreeCtrl* )treeSplitter.GetPane( 0, 0 );
-	
-	CRect rect;
-	RecalcLayout();
-	logSplitter.GetClientRect( &rect );
-
-#pragma warning( disable : 4244 )
-	logSplitter.SetRowInfo( 0, rect.Height() / 2, 10 );
-	logSplitter.SetRowInfo( 1, rect.Height() / 2, 10 );
-	logSplitter.RecalcLayout();
-	treeSplitter.GetClientRect( &rect );
-	int width = rect.Width() / 3.2;
-	treeSplitter.SetColumnInfo( 0, width, 10 );
-	treeSplitter.SetColumnInfo( 1, rect.Width() - width, 10 );
-	treeSplitter.RecalcLayout();
-#pragma warning( default : 4244 )
-*/
-
-
-
-	return TRUE;
-}
-
 int CChatMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if ( CFrameWnd::OnCreate(lpCreateStruct) == -1 ) return -1;
 
-//	childView.Create( NULL, NULL, AFX_WS_DEFAULT_VIEW, CRect(0, 0, 0, 0), this, AFX_IDW_PANE_FIRST, NULL );
+	childView.Create( NULL, NULL, AFX_WS_DEFAULT_VIEW, CRect(0, 0, 0, 0), this, AFX_IDW_PANE_FIRST, NULL );
+
+	dock.Create( "aa", this, 0 );
+	dock.SetBarStyle( dock.GetBarStyle() | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
 
 	CString s;
 	s.LoadString( ID_STATUSMODE_TOOLBAR );
@@ -130,39 +93,21 @@ int CChatMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	statusModeToolBar.LoadToolBar( IDR_STATUSMODE_TOOLBAR );
 	statusModeToolBar.GetToolBarCtrl().SetWindowText( s );
 
-/*
-	CString s;
-	s.LoadString( ID_TOOLBAR_PROJECT );
-	projectToolBar.CreateEx( this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
-	projectToolBar.LoadToolBar( IDR_PROJECTTOOLBAR );
-	projectToolBar.GetToolBarCtrl().SetWindowText( s );
-
-	projectToolBarImageList.Create( IDB_PROJECTTOOLBAR_D, 16, 0, 0xFF00FF );
-	projectToolBar.GetToolBarCtrl().SetDisabledImageList( &projectToolBarImageList );
-
-	s.LoadString( ID_TOOLBAR_EDIT );
-	editToolBar.CreateEx( this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
-	editToolBar.LoadToolBar( IDR_EDITTOOLBAR );
-	editToolBar.GetToolBarCtrl().SetWindowText( s );
-
-	editToolBarImageList.Create( IDB_EDITTOOLBAR_D, 16, 0, 0xFF00FF );
-	editToolBar.GetToolBarCtrl().SetDisabledImageList( &editToolBarImageList );
-*/
 	statusBar.Create( this );
 	statusBar.SetIndicators( indicators, 1 );
 	statusBar.SetPaneInfo( 0, ID_INFOSTATUSBAR, SBPS_STRETCH, 70 );
-
 //	statusBar.SetPaneInfo( 0, ID_COORDSTATUSBAR          , SBPS_NORMAL , 70 );
 //	statusBar.SetPaneInfo( 1, ID_MODIFYSTATUSBAR         , SBPS_NORMAL , 70 );
 //	statusBar.SetPaneInfo( 2, ID_INSERTOVERWRITESTATUSBAR, SBPS_NORMAL , 70 );
 //	statusBar.SetPaneInfo( 3, ID_INFOSTATUSBAR           , SBPS_STRETCH, 70 );
 
+	dock.EnableDocking( CBRS_ALIGN_ANY );
 	statusModeToolBar.EnableDocking( CBRS_ALIGN_ANY );
-//	editToolBar.EnableDocking( CBRS_ALIGN_ANY );
 
 	EnableDocking( CBRS_ALIGN_ANY );
 
 	DockControlBar( &statusModeToolBar );
+	DockControlBar( &dock, AFX_IDW_DOCKBAR_LEFT );
 //	dockControlBarBesideOf( editToolBar, projectToolBar );
 
 	closeButtonAction    = (CChatCloseButtonAction)chatApp.GetProfileInt( "General", "closeButtonAction", CCBA_Tray );
@@ -183,8 +128,8 @@ int CChatMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 BOOL CChatMainFrame::OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo)
 {
-	if ( childView && childView->OnCmdMsg( nID, nCode, pExtra, pHandlerInfo ) ) return TRUE;
-	if ( usersTreeView && usersTreeView->OnCmdMsg( nID, nCode, pExtra, pHandlerInfo ) ) return TRUE;
+	if ( childView.OnCmdMsg( nID, nCode, pExtra, pHandlerInfo ) ) return TRUE;
+	if ( dock.OnCmdMsg( nID, nCode, pExtra, pHandlerInfo ) ) return TRUE;
 	return CFrameWnd::OnCmdMsg( nID, nCode, pExtra, pHandlerInfo );
 }
 
@@ -200,7 +145,7 @@ BOOL CChatMainFrame::DestroyWindow()
 void CChatMainFrame::OnSetFocus(CWnd* pOldWnd)
 {
 	CFrameWnd::OnSetFocus( pOldWnd );
-	if ( childView ) childView->SetFocus();
+	childView.SetFocus();
 }
 
 void CChatMainFrame::initTray()

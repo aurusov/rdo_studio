@@ -103,6 +103,10 @@ SOURCE=.\chatchildview.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\chatdockwnd.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\chatedit.cpp
 # End Source File
 # Begin Source File
@@ -159,10 +163,6 @@ SOURCE=.\rdocolorcombobox.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\rdosplitterwnd.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\rdotreectrl.cpp
 # End Source File
 # Begin Source File
@@ -181,6 +181,10 @@ SOURCE=.\chatapp.h
 # Begin Source File
 
 SOURCE=.\chatchildview.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\chatdockwnd.h
 # End Source File
 # Begin Source File
 
@@ -237,10 +241,6 @@ SOURCE=.\chatviewerstyle.h
 # Begin Source File
 
 SOURCE=.\rdocolorcombobox.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdosplitterwnd.h
 # End Source File
 # Begin Source File
 
@@ -314,6 +314,34 @@ SOURCE=.\res\tray_message.ico
 
 SOURCE=.\res\userstreectrl.bmp
 # End Source File
+# End Group
+# Begin Group "CSizingControlBar"
+
+# PROP Default_Filter ""
+# Begin Group "CSizingControlBar Source Files"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\sizecbar\scbarg.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\sizecbar\sizecbar.cpp
+# End Source File
+# End Group
+# Begin Group "CSizingControlBar Header Files"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\sizecbar\scbarg.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\sizecbar\sizecbar.h
+# End Source File
+# End Group
 # End Group
 # End Target
 # End Project

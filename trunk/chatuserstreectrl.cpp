@@ -32,7 +32,6 @@ CChatUsersTreeCtrl::~CChatUsersTreeCtrl()
 
 BOOL CChatUsersTreeCtrl::DestroyWindow()
 {
-	((CChatMainFrame*)AfxGetMainWnd())->usersTreeView = NULL;
 	return RDOTreeCtrl::DestroyWindow();
 }
 
