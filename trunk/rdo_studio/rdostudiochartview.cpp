@@ -594,16 +594,24 @@ void RDOStudioChartView::copyToClipboard()
 	if ( !OpenClipboard() || !::EmptyClipboard() )
 		return;
 	
-	HDC hdcSrc = ::GetDC( GetSafeHwnd() );
-	if ( hdcSrc ) {
-		HBITMAP hbm = ::CreateCompatibleBitmap( hdcSrc, newClientRect.Width(), newClientRect.Height() );
+	//HDC hdcSrc = ::GetDC( GetSafeHwnd() );
+	CClientDC cldc( this );
+	CDC dc;
+	if ( dc.CreateCompatibleDC( &cldc ) ) {
+		CBitmap* oldBitmap = dc.SelectObject( &bmp );
+		//HGDIOBJ oldSrcObj = ::SelectObject( hdcSrc, hbm );
+		//HBITMAP hbm = ::CreateCompatibleBitmap( hdcSrc, newClientRect.Width(), newClientRect.Height() );
+		HBITMAP hbm = ::CreateCompatibleBitmap( dc.GetSafeHdc(), newClientRect.Width(), newClientRect.Height() );
 		if ( hbm ) {
-			HDC hdcDst = ::CreateCompatibleDC(hdcSrc);
+			//HDC hdcDst = ::CreateCompatibleDC( hdcSrc );
+			HDC hdcDst = ::CreateCompatibleDC( dc.GetSafeHdc() );
 			if ( hdcDst ) {
 				HGDIOBJ oldObj = ::SelectObject( hdcDst, hbm );
 
+				//::BitBlt( hdcDst, 0, 0, newClientRect.Width(), newClientRect.Height(),
+				//	hdcSrc, newClientRect.left, newClientRect.top, SRCCOPY );
 				::BitBlt( hdcDst, 0, 0, newClientRect.Width(), newClientRect.Height(),
-					hdcSrc, newClientRect.left, newClientRect.top, SRCCOPY );
+					dc.GetSafeHdc(), newClientRect.left, newClientRect.top, SRCCOPY );
 				
 				::SelectObject( hdcDst, oldObj );
 				::DeleteDC( hdcDst );
@@ -612,9 +620,10 @@ void RDOStudioChartView::copyToClipboard()
 			} else {
 				::DeleteObject( hbm );
 			}
+			dc.SelectObject( oldBitmap );
 		}
 
-		::ReleaseDC( GetSafeHwnd(), hdcSrc );
+		//::ReleaseDC( GetSafeHwnd(), hdcSrc );
 	}
 
 	CloseClipboard();
@@ -787,10 +796,14 @@ int RDOStudioChartView::OnCreate( LPCREATESTRUCT lpCreateStruct )
 
 	appendMenu( mainMenu->GetSubMenu( 1 + delta ), 4, &popupMenu );
 	popupMenu.AppendMenu( MF_SEPARATOR );
-	appendMenu( mainMenu->GetSubMenu( 6 + delta ), 4, &popupMenu );
-	appendMenu( mainMenu->GetSubMenu( 6 + delta ), 5, &popupMenu );
+	appendMenu( mainMenu->GetSubMenu( 3 + delta ), 6, &popupMenu );
+	appendMenu( mainMenu->GetSubMenu( 3 + delta ), 7, &popupMenu );
+	appendMenu( mainMenu->GetSubMenu( 3 + delta ), 8, &popupMenu );
+	appendMenu( mainMenu->GetSubMenu( 3 + delta ), 9, &popupMenu );
 	popupMenu.AppendMenu( MF_SEPARATOR );
-	appendMenu( mainMenu->GetSubMenu( 6 + delta ), 7, &popupMenu );
+	appendMenu( mainMenu->GetSubMenu( 6 + delta ), 4, &popupMenu );
+	popupMenu.AppendMenu( MF_SEPARATOR );
+	appendMenu( mainMenu->GetSubMenu( 6 + delta ), 6, &popupMenu );
 
 	return 0;
 }
