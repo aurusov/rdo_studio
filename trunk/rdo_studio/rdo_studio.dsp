@@ -440,10 +440,6 @@ SOURCE=.\sizecbar\sizecbar.h
 # PROP Default_Filter ""
 # Begin Source File
 
-SOURCE=.\rdo_edit\rdoeditorapp.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\rdo_edit\rdoeditorbaseedit.cpp
 # End Source File
 # Begin Source File
@@ -452,27 +448,11 @@ SOURCE=.\rdo_edit\rdoeditorbaseeditstyle.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\rdo_edit\rdoeditorchildview.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\rdo_edit\rdoeditoredit.cpp
 # End Source File
 # Begin Source File
 
 SOURCE=.\rdo_edit\rdoeditoreditstyle.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\rdoeditormainfrm.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\rdoeditoroptions.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\rdoeditorproject.cpp
 # End Source File
 # Begin Source File
 
@@ -492,10 +472,6 @@ SOURCE=.\rdo_edit\rdoeditortabctrl.cpp
 # PROP Default_Filter ""
 # Begin Source File
 
-SOURCE=.\rdo_edit\rdoeditorapp.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\rdo_edit\rdoeditorbaseedit.h
 # End Source File
 # Begin Source File
@@ -504,27 +480,11 @@ SOURCE=.\rdo_edit\rdoeditorbaseeditstyle.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\rdo_edit\rdoeditorchildview.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\rdo_edit\rdoeditoredit.h
 # End Source File
 # Begin Source File
 
 SOURCE=.\rdo_edit\rdoeditoreditstyle.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\rdoeditormainfrm.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\rdoeditoroptions.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_edit\rdoeditorproject.h
 # End Source File
 # Begin Source File
 
