@@ -23,6 +23,7 @@ private:
 		std::vector< char > vec;
 		int current;
 		ios_base::openmode openmode;
+		binarystream* stream;
 
 		virtual std::streambuf* setbuf( char* s, std::streamsize n ) {
 			vec.resize( n );
@@ -33,20 +34,40 @@ private:
 		virtual int_type overflow( int_type c = traits_type::eof() ) {
 			if ( c != traits_type::eof() ) {
 				vec.push_back( traits_type::to_char_type( c ) );
+				stream->clear( goodbit );
 				return traits_type::not_eof( c );
 			} else {
+				stream->clear( eofbit );
 				return traits_type::eof();
 			}
 		}
 		virtual int_type underflow() {
-			return traits_type::to_int_type( vec[current] );
+			if ( current < vec.size() ) {
+				stream->clear( goodbit );
+				return traits_type::to_int_type( vec[current] );
+			} else {
+				stream->clear( eofbit );
+				return traits_type::eof();
+			}
 		}
 		virtual int_type uflow() {
-			int_type c = traits_type::to_int_type( vec[current++] );
-			setg( vec.begin(), &vec[current], vec.end() );
-			return c;
+			if ( current < vec.size() ) {
+				int_type c = traits_type::to_int_type( vec[current++] );
+				int s = vec.size();
+				setg( vec.begin(), &vec[current], vec.end() );
+				if ( current < vec.size() ) {
+					stream->clear( goodbit );
+					return c;
+				} else {
+					stream->clear( eofbit );
+					return traits_type::eof();
+				}
+			} else {
+				stream->clear( eofbit );
+				return traits_type::eof();
+			}
 		}
-		virtual pos_type seekoff( off_type off, ios_base::seekdir way, ios_base::openmode which = ios_base::in | ios_base::out) {
+		virtual pos_type seekoff( off_type off, ios_base::seekdir way, ios_base::openmode which = ios_base::in | ios_base::out ) {
 			switch ( way ) {
 				case ios_base::beg: current = off; break;
 				case ios_base::cur: current += off; break;
