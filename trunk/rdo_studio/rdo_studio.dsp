@@ -787,15 +787,7 @@ SOURCE=.\edit_ctrls\sci\KeyWords.cxx
 # Begin Source File
 
 SOURCE=.\edit_ctrls\sci\LexFind.cxx
-
-!IF  "$(CFG)" == "rdo_studio - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
-
 # SUBTRACT CPP /YX /Yc /Yu
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
