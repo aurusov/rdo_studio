@@ -58,14 +58,16 @@ private:
 				int s = vec.size();
 				char cc = c;
 				if ( current < vec.size() ) {
-					setg( vec.begin(), &vec[current], vec.end() );
+					setg( &vec[current], &vec[current], &vec[current + 1] );
 					stream->setstate( goodbit );
 					return c;
 				} else {
+					setg( &vec[current], &vec[current], &vec[current] );
 					stream->setstate( eofbit );
 					return traits_type::eof();
 				}
 			} else {
+				setg( &vec[current], &vec[current], &vec[current] );
 				stream->setstate( eofbit );
 				return traits_type::eof();
 			}
