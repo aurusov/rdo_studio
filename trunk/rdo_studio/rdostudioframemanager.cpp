@@ -480,8 +480,10 @@ void RDOStudioFrameManager::showFrame( vector<RDOFrame *>::const_iterator& frame
 			if ( view->mustBeInit ) {
 				if ( (*frame)->hasBackPicture ) {
 					BMP* bmp = bitmaps[*(*frame)->picFileName];
-					view->frameBmpRect.right  = bmp->w;
-					view->frameBmpRect.bottom = bmp->h;
+					if ( bmp ) {
+						view->frameBmpRect.right  = bmp->w;
+						view->frameBmpRect.bottom = bmp->h;
+					}
 				} else {
 					view->frameBmpRect.right  = (*frame)->width;
 					view->frameBmpRect.bottom = (*frame)->height;
