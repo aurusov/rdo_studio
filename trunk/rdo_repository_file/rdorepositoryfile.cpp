@@ -3,11 +3,13 @@
 #include "../rdo_studio/resource.h"
 
 #include <rdokernel.h>
+#include <simulator.h>
 
 #include <fstream>
 #include <afxdlgs.h>
 
 using namespace rdoRepository;
+using namespace rdoParse;
 
 // ----------------------------------------------------------------------------
 // ---------- RDORepositoryFile
@@ -61,6 +63,8 @@ bool RDORepositoryFile::openModel( const string& modelFileName )
 
 		if ( flag ) {
 			if ( isFileExists( modelPath + modelName + ".smr" ) ) {
+//				RDOSMRFileInfo fileInfo;
+//				kernel.getSimulator()->parseSMRFileInfo( 
 				kernel.onNotify( RDOKernel::openModel );
 				return true;
 			} else {

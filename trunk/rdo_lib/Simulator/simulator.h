@@ -6,6 +6,7 @@
 #include <string>
 #include <sstream>
 #include <vector>
+//#include <strstream>
 
 using namespace std;
 
@@ -160,6 +161,18 @@ namespace rdoRuntime {
 class RDOTrace;
 namespace rdoParse {
 	class RDOParser ;
+/*
+struct RDOSMRFileInfo
+{
+	string model_name;
+	string resource_file;
+	string oprIev_file;
+	string frame_file;
+	string statistic_file;
+	string results_file;
+	string trace_file;
+};
+*/
 }
 
 class RdoModel
@@ -172,6 +185,7 @@ class RdoModel
 
 public:
 	bool parseModel(string smrFileName);
+//	void parseSMRFileInfo( strstream& smr, rdoParse::RDOSMRFileInfo& info );
 	string getConsole();
 	void executeModel(TracerCallBack tracerCallBack, FrameCallBack frameCallBack, void *param);
 	~RdoModel();
