@@ -185,7 +185,7 @@ void RDOTracerSerie::drawSerie( RDOStudioChartView* const view, CDC &dc, CRect &
 			
 			int lasty = roundDouble( (double)rect.bottom - ky * ( (*it)->value - minValue ) );
 			lasty = min( lasty, rect.bottom - 1 );
-			int lastx = rect.left + roundDouble( ( (*it)->modeltime->time - view->drawFromX.time ) * view->timeScale );
+			int lastx = rect.left + roundDouble( ( (*it)->modeltime->time - view->drawFromX.time ) * view->timeScale ) - view->chartShift;
 			lastx = min( lastx, rect.right - 1 );
 			
 			int ticks = 0;
@@ -203,11 +203,12 @@ void RDOTracerSerie::drawSerie( RDOStudioChartView* const view, CDC &dc, CRect &
 			}
 			lastx = min( lastx, rect.right - 1 );
 
-			if ( lastx >= rect.left && draw_marker )
+			if ( lastx >= rect.left && draw_marker ) {
 				drawMarker( dc, lastx, lasty, color, marker, marker_size, transparent_marker );
+				dc.MoveTo( lastx, lasty );
+			}
 			else
-				lastx = rect.left;
-			dc.MoveTo( lastx, lasty );
+				dc.MoveTo( rect.left, lasty );
 			
 			int x = lastx, y = lasty;
 			if ( view->doUnwrapTime() ) {
@@ -224,7 +225,7 @@ void RDOTracerSerie::drawSerie( RDOStudioChartView* const view, CDC &dc, CRect &
 			while ( it != values.end() && ( (!view->doUnwrapTime() && (*it)->modeltime->time <= view->drawToX.time) || (view->doUnwrapTime() && ((*it)->modeltime->time < view->drawToX.time || ((*it)->modeltime->time == view->drawToX.time && (*it)->eventIndex <= view->drawToEventCount) )) ) ) {
 				y = roundDouble( (double)rect.bottom - ky * ( (*it)->value - minValue ) );
 				y = min( y, rect.bottom - 1 );
-				x = rect.left + roundDouble( ( (*it)->modeltime->time - view->drawFromX.time ) * view->timeScale );
+				x = rect.left + roundDouble( ( (*it)->modeltime->time - view->drawFromX.time ) * view->timeScale ) - view->chartShift;
 				if ( view->doUnwrapTime() ) {
 					x += ( ticks + (*it)->eventIndex ) * view->style->fonts_ticks->tickWidth;
 				}

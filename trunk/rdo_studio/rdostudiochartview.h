@@ -54,6 +54,7 @@ protected:
 	int drawFromEventIndex;
 	RDOTracerTimeNow drawToX;
 	int drawToEventCount;
+	int chartShift;
 	bool setTo( const int from_max_pos );
 	void setFromTo();
 	timesList unwrapTimesList;

@@ -61,6 +61,7 @@ RDOStudioChartView::RDOStudioChartView( const bool preview )
 	timeScale( 0 ),
 	drawFromEventIndex( 0 ),
 	drawToEventCount( 0 ),
+	chartShift( 0 ),
 	zoom( 1 ),
 	old_zoom( 1 ),
 	auto_zoom( 1 ),
@@ -238,6 +239,7 @@ void RDOStudioChartView::setFromTo()
 	drawFromEventIndex = 0;
 	drawToX.eventCount = 0;
 	drawToEventCount = 0;
+	chartShift = 0;
 	unwrapTimesList.clear();
 
 	if ( !doUnwrapTime() ) {
@@ -266,7 +268,8 @@ void RDOStudioChartView::setFromTo()
 			}
 			if ( it_pos < xPos && ( it_max_pos >= xPos ) ) {
 				drawFromX = *(*it);
-				drawFromEventIndex = roundDouble( (double)( xPos - it_pos ) / (double)style->fonts_ticks->tickWidth );
+				drawFromEventIndex = ( xPos - it_pos ) / style->fonts_ticks->tickWidth;
+				chartShift = xPos - ( it_pos + drawFromEventIndex * style->fonts_ticks->tickWidth );
 				need_search_to = setTo( it_max_pos );
 				break;
 			}
@@ -287,6 +290,15 @@ void RDOStudioChartView::setFromTo()
 				drawToX = drawFromX;
 				int delta = drawToX.eventCount * style->fonts_ticks->tickWidth - chartRect.Width();
 				drawToEventCount = delta >= 0 ? roundDouble( (double)delta / (double)style->fonts_ticks->tickWidth ) : drawToX.eventCount;
+				//if ( drawToEventCount * style->fonts_ticks->tickWidth )
+				it_max_pos = drawToX.eventCount * style->fonts_ticks->tickWidth;
+				if ( it_max_pos > chartRect.Width() ) {
+					drawToEventCount = ( it_max_pos - chartRect.Width() ) / style->fonts_ticks->tickWidth;
+					if ( drawToEventCount * style->fonts_ticks->tickWidth < chartRect.Width() )
+						drawToEventCount ++;
+				} else {
+					drawToEventCount = drawToX.eventCount;
+				}
 
 			}
 			int pos = xPos + chartRect.Width();
@@ -299,7 +311,9 @@ void RDOStudioChartView::setFromTo()
 				}
 				if ( it_pos < pos && it_max_pos >= pos ) {
 					drawToX = *(*it);
-					drawToEventCount = roundDouble( (double)( pos - it_pos ) / (double)style->fonts_ticks->tickWidth );
+					drawToEventCount = ( pos - it_pos ) / style->fonts_ticks->tickWidth;
+					if ( it_pos + drawToEventCount * style->fonts_ticks->tickWidth < pos )
+						drawToEventCount ++;
 					break;
 				}
 				if ( it_pos > pos ) {
@@ -428,9 +442,12 @@ void RDOStudioChartView::drawXAxis( CDC &dc, CRect& chartRect )
 			for( timesList::iterator it = unwrapTimesList.begin(); it != unwrapTimesList.end(); it++ ) {
 				int width = (*it)->eventCount * style->fonts_ticks->tickWidth;
 				RDOTracerTimeNow* timenow = (*it);
-				tmprect.left = chartRect.left + ( (*it)->time - unwrapTimesList.front()->time ) * timeScale + ticks * style->fonts_ticks->tickWidth;
+				tmprect.left = chartRect.left + ( (*it)->time - unwrapTimesList.front()->time ) * timeScale + ticks * style->fonts_ticks->tickWidth - chartShift;
 				tmprect.left = min( tmprect.left, chartRect.right - 1 );
 				str = format( formatstr.c_str(), (*it)->time );
+				if ( *(*it) == drawFromX ) {
+					tmprect.left += chartShift;
+				}
 				dc.DrawText( str.c_str(), tmprect, DT_LEFT );
 				if ( tmprect.left != chartRect.left && tmprect.left != chartRect.right ) {
 					dc.MoveTo( tmprect.left, chartRect.bottom );
@@ -473,7 +490,7 @@ void RDOStudioChartView::drawGrid(	CDC &dc, CRect& chartRect )
 			for( ; it != unwrapTimesList.end(); it++ ) {
 				int width = (*it)->eventCount * style->fonts_ticks->tickWidth;
 				RDOTracerTimeNow* timenow = (*it);
-				tmprect.left = rect.left + ( (*it)->time - unwrapTimesList.front()->time ) * timeScale + ticks * style->fonts_ticks->tickWidth;
+				tmprect.left = rect.left + ( (*it)->time - unwrapTimesList.front()->time ) * timeScale + ticks * style->fonts_ticks->tickWidth - chartShift;
 				if ( *(*it) == drawFromX ) {
 					width -= drawFromEventIndex * style->fonts_ticks->tickWidth;
 				}
