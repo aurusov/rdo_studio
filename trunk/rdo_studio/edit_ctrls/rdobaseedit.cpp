@@ -222,6 +222,8 @@ int RDOBaseEdit::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	sendEditor( SCI_SETMARGINMASKN     , sci_FOLDMARGIN_ID, SC_MASK_FOLDERS );
 	sendEditor( SCI_SETMARGINSENSITIVEN, sci_FOLDMARGIN_ID, 1 );
 
+	sendEditor( SCI_SETMARGINWIDTHN, 1, 0 );
+
 	sendEditor( SCI_USEPOPUP, 0 );
 
 	return 0;
