@@ -40,10 +40,46 @@ string RDOEditorSciLogLineInfo::getMessage() const
 		case rdoModelObjects::PMD: file = "PMD"; break;
 		default: file = "";
 	}
-	if ( file.empty() || lineNumber == -1 ) {
+	if ( lineNumber == -1 || file.empty() ) {
 		return message;
 	} else {
 		return format( "%s (%d): %s", file.c_str(), lineNumber + 1, message.c_str() );
+	}
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOEditorSciBuildLineInfo
+// ----------------------------------------------------------------------------
+RDOEditorSciBuildLineInfo::RDOEditorSciBuildLineInfo( const string& _message, const rdoModelObjects::RDOFileType _fileType, const int _lineNumber, bool _error ):
+	RDOEditorSciLogLineInfo( _message, _fileType, _lineNumber ),
+	error( _error )
+{
+}
+
+RDOEditorSciBuildLineInfo::~RDOEditorSciBuildLineInfo()
+{
+}
+
+string RDOEditorSciBuildLineInfo::getMessage() const
+{
+	string file;
+	switch ( fileType ) {
+		case rdoModelObjects::PAT: file = "PAT"; break;
+		case rdoModelObjects::RTP: file = "RTP"; break;
+		case rdoModelObjects::RSS: file = "RSS"; break;
+		case rdoModelObjects::OPR: file = "OPR"; break;
+		case rdoModelObjects::FRM: file = "FRM"; break;
+		case rdoModelObjects::FUN: file = "FUN"; break;
+		case rdoModelObjects::DPT: file = "DPT"; break;
+		case rdoModelObjects::SMR: file = "SMR"; break;
+		case rdoModelObjects::PMD: file = "PMD"; break;
+		default: file = "";
+	}
+	if ( lineNumber == -1 || file.empty() ) {
+		return message;
+	} else {
+		string s = error ? "error" : "warning";
+		return format( "%s (%d): %s: %s", file.c_str(), lineNumber + 1, s.c_str(), message.c_str() );
 	}
 }
 
@@ -63,6 +99,11 @@ RDOEditorSciLog::RDOEditorSciLog(): RDOEditorSciEdit()
 
 RDOEditorSciLog::~RDOEditorSciLog()
 {
+	list< RDOEditorSciLogLineInfo* >::iterator it = lines.begin();
+	while ( it != lines.end() ) {
+		delete *it;
+		it++;
+	}
 }
 
 BOOL RDOEditorSciLog::OnNotify( WPARAM wParam, LPARAM lParam, LRESULT* pResult )
@@ -111,21 +152,22 @@ void RDOEditorSciLog::setSelectLine()
 	int pos  = sendEditor( SCI_POSITIONFROMPOINT, point.x, point.y );
 	int line = sendEditor( SCI_LINEFROMPOSITION, pos );
 	setCurrentPos( pos );
-	if ( sendEditor( SCI_MARKERNEXT, 0, 1 << sci_MARKER_LINE ) != line ) {
-		clearSelectLine();
-		sendEditor( SCI_MARKERADD, line, sci_MARKER_LINE );
-	}
-	list< RDOEditorSciLogLineInfo >::iterator it = lines.begin();
+
+	list< RDOEditorSciLogLineInfo* >::iterator it = lines.begin();
 	for ( int i = 0; i < line; i++ ) {
 		if ( it != lines.end() ) {
 			it++;
 		}
 	}
-	if ( it != lines.end() && (*it).lineNumber != -1 ) {
+	if ( it != lines.end() && (*it)->lineNumber != -1 ) {
+		if ( sendEditor( SCI_MARKERNEXT, 0, 1 << sci_MARKER_LINE ) != line ) {
+			clearSelectLine();
+			sendEditor( SCI_MARKERADD, line, sci_MARKER_LINE );
+		}
 		RDOEditorTabCtrl* tab = model->getTab();
 		if ( tab ) {
 			RDOEditorTabItem tabItem;
-			switch ( (*it).fileType ) {
+			switch ( (*it)->fileType ) {
 				case rdoModelObjects::PAT: tabItem = RDOEDIT_PAT; break;
 				case rdoModelObjects::RTP: tabItem = RDOEDIT_RTP; break;
 				case rdoModelObjects::RSS: tabItem = RDOEDIT_RSS; break;
@@ -142,7 +184,7 @@ void RDOEditorSciLog::setSelectLine()
 			}
 			RDOEditorSciEdit* edit = tab->getCurrentEdit();
 			if ( edit ) {
-				edit->scrollToLine( (*it).lineNumber, edit->getPositionFromLine( (*it).lineNumber ) );
+				edit->scrollToLine( (*it)->lineNumber, edit->getPositionFromLine( (*it)->lineNumber ) );
 				edit->SetFocus();
 			}
 		}
@@ -164,7 +206,7 @@ bool RDOEditorSciLog::hasSelectLine() const
 	return nextLine >= 0;
 }
 
-void RDOEditorSciLog::appendLine( const RDOEditorSciLogLineInfo& line )
+void RDOEditorSciLog::appendLine( RDOEditorSciLogLineInfo* line )
 {
 	lines.push_back( line );
 	bool readOnly = isReadOnly();
@@ -172,7 +214,7 @@ void RDOEditorSciLog::appendLine( const RDOEditorSciLogLineInfo& line )
 		setReadOnly( false );
 	}
 	bool scroll = isLineVisible( getLineCount() - 1 );
-	appendText( line.getMessage() );
+	appendText( line->getMessage() );
 	if ( scroll ) {
 		int line = getLineCount();
 		int line_to_scroll = line > 0 ? line - 1 : 0;

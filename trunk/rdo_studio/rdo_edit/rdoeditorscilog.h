@@ -21,7 +21,7 @@ class RDOEditorSciLog;
 class RDOEditorSciLogLineInfo
 {
 friend class RDOEditorSciLog;
-private:
+protected:
 	rdoModelObjects::RDOFileType fileType;
 	int                          lineNumber;
 	string                       message;
@@ -30,7 +30,22 @@ public:
 	RDOEditorSciLogLineInfo( const string& _message, const rdoModelObjects::RDOFileType _fileType = rdoModelObjects::PAT, const int _lineNumber = -1 );
 	~RDOEditorSciLogLineInfo();
 
-	string getMessage() const;
+	virtual string getMessage() const;
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOEditorSciBuildLineInfo
+// ----------------------------------------------------------------------------
+class RDOEditorSciBuildLineInfo: public RDOEditorSciLogLineInfo
+{
+protected:
+	bool error;
+
+public:
+	RDOEditorSciBuildLineInfo( const string& _message, const rdoModelObjects::RDOFileType _fileType = rdoModelObjects::PAT, const int _lineNumber = -1, bool _error = true );
+	~RDOEditorSciBuildLineInfo();
+
+	virtual string getMessage() const;
 };
 
 // ----------------------------------------------------------------------------
@@ -42,7 +57,7 @@ private:
 	int sci_MARKER_LINE;
 
 protected:
-	list< RDOEditorSciLogLineInfo > lines;
+	list< RDOEditorSciLogLineInfo* > lines;
 
 	void setSelectLine();
 	void clearSelectLine();
@@ -64,7 +79,7 @@ public:
 
 	virtual void setEditorStyle( RDOEditorSciEditStyle* style );
 
-	void appendLine( const RDOEditorSciLogLineInfo& line );
+	void appendLine( RDOEditorSciLogLineInfo* line );
 };
 
 }; // namespace rdoEditor

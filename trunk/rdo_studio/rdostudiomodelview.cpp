@@ -161,8 +161,8 @@ LRESULT RDOStudioModelView::OnFindInModelMsg( WPARAM wParam, LPARAM lParam )
 						case 4: fileType = rdoModelObjects::FRM; break;
 						case 5: fileType = rdoModelObjects::FUN; break;
 						case 6: fileType = rdoModelObjects::DPT; break;
-						case 7: fileType = rdoModelObjects::PMD; break;
-						case 8: fileType = rdoModelObjects::SMR; break;
+						case 7: fileType = rdoModelObjects::SMR; break;
+						case 8: fileType = rdoModelObjects::PMD; break;
 						default: fileType = rdoModelObjects::PAT;
 					}
 					studioApp.mainFrame->output.appendStringToFind( edit->getLine( line ), fileType, line );

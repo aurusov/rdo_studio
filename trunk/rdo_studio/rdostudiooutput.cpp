@@ -185,9 +185,9 @@ void RDOStudioOutput::appendString( const RDOEditorSciEdit* const edit, const st
 	}
 }
 
-void RDOStudioOutput::appendStringToBuild( const string& str, const rdoModelObjects::RDOFileType fileType, const int lineNumber ) const
+void RDOStudioOutput::appendStringToBuild( const string& str, const rdoModelObjects::RDOFileType fileType, const int lineNumber, const bool error ) const
 {
-	RDOEditorSciLogLineInfo line( str, fileType, lineNumber );
+	RDOEditorSciBuildLineInfo* line = new RDOEditorSciBuildLineInfo( str, fileType, lineNumber, error );
 	build->appendLine( line );
 }
 
@@ -198,6 +198,6 @@ void RDOStudioOutput::appendStringToDebug( const string& str ) const
 
 void RDOStudioOutput::appendStringToFind( const string& str, const rdoModelObjects::RDOFileType fileType, const int lineNumber ) const
 {
-	RDOEditorSciLogLineInfo line( str, fileType, lineNumber );
+	RDOEditorSciLogLineInfo* line = new RDOEditorSciLogLineInfo( str, fileType, lineNumber );
 	find->appendLine( line );
 }

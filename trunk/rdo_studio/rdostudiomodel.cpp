@@ -47,11 +47,19 @@ RDOStudioModel::~RDOStudioModel()
 void RDOStudioModel::newModel( const bool _useTemplate )
 {
 	useTemplate = _useTemplate;
+	studioApp.mainFrame->output.clearBuild();
+	studioApp.mainFrame->output.clearDebug();
+	studioApp.mainFrame->output.clearResults();
+	studioApp.mainFrame->output.clearFind();
 	kernel.getRepository()->newModel();
 }
 
 bool RDOStudioModel::openModel( const string& modelName ) const
 {
+	studioApp.mainFrame->output.clearBuild();
+	studioApp.mainFrame->output.clearDebug();
+	studioApp.mainFrame->output.clearResults();
+	studioApp.mainFrame->output.clearFind();
 	return kernel.getRepository()->openModel( modelName );
 }
 
@@ -67,6 +75,10 @@ void RDOStudioModel::saveAsModel() const
 
 void RDOStudioModel::closeModel() const
 {
+	studioApp.mainFrame->output.clearBuild();
+	studioApp.mainFrame->output.clearDebug();
+	studioApp.mainFrame->output.clearResults();
+	studioApp.mainFrame->output.clearFind();
 	kernel.getRepository()->closeModel();
 }
 
@@ -74,6 +86,8 @@ void RDOStudioModel::runModel() const
 {
 	if ( saveModel() ) {
 		studioApp.mainFrame->output.clearBuild();
+		studioApp.mainFrame->output.clearDebug();
+		studioApp.mainFrame->output.clearResults();
 		studioApp.mainFrame->output.showBuild();
 		kernel.getSimulator()->runModel();
 	}
@@ -222,8 +236,8 @@ void RDOStudioModel::openModelFromRepository()
 					case RDOEDIT_OPR: kernel.getRepository()->loadOPR( stream ); break;
 					case RDOEDIT_FRM: kernel.getRepository()->loadFRM( stream ); break;
 					case RDOEDIT_FUN: kernel.getRepository()->loadFUN( stream ); break;
-					case RDOEDIT_SMR: kernel.getRepository()->loadSMR( stream ); break;
 					case RDOEDIT_DPT: kernel.getRepository()->loadDPT( stream ); break;
+					case RDOEDIT_SMR: kernel.getRepository()->loadSMR( stream ); break;
 					case RDOEDIT_PMD: kernel.getRepository()->loadPMD( stream ); break;
 					default: canLoad = false; break;
 				}
@@ -258,8 +272,8 @@ void RDOStudioModel::saveModelToRepository()
 				case RDOEDIT_OPR: kernel.getRepository()->saveOPR( stream ); break;
 				case RDOEDIT_FRM: kernel.getRepository()->saveFRM( stream ); break;
 				case RDOEDIT_FUN: kernel.getRepository()->saveFUN( stream ); break;
-				case RDOEDIT_SMR: kernel.getRepository()->saveSMR( stream ); break;
 				case RDOEDIT_DPT: kernel.getRepository()->saveDPT( stream ); break;
+				case RDOEDIT_SMR: kernel.getRepository()->saveSMR( stream ); break;
 				case RDOEDIT_PMD: kernel.getRepository()->savePMD( stream ); break;
 			}
 			edit->setModifyFalse();
