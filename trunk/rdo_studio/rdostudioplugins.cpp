@@ -145,14 +145,24 @@ RDOStudioPlugins::RDOStudioPlugins()
 {
 	plugins = this;
 
-	studio.model.hasModel       = RDOStudioPlugins::hasModel;
-	studio.model.build          = RDOStudioPlugins::buildModel;
-	studio.model.run            = RDOStudioPlugins::runModel;
-	studio.model.stop           = RDOStudioPlugins::stopModel;
-	studio.model.isRunning      = RDOStudioPlugins::isModelRunning;
-	studio.model.getShowMode    = RDOStudioPlugins::getModelShowMode;
-	studio.model.setShowMode    = RDOStudioPlugins::setModelShowMode;
-	studio.model.isFrmDescribed = RDOStudioPlugins::isModelFrmDescribed;
+	studio.model.hasModel         = RDOStudioPlugins::hasModel;
+	studio.model.build            = RDOStudioPlugins::buildModel;
+	studio.model.run              = RDOStudioPlugins::runModel;
+	studio.model.stop             = RDOStudioPlugins::stopModel;
+	studio.model.isRunning        = RDOStudioPlugins::isModelRunning;
+	studio.model.getShowMode      = RDOStudioPlugins::getModelShowMode;
+	studio.model.setShowMode      = RDOStudioPlugins::setModelShowMode;
+	studio.model.isFrmDescribed   = RDOStudioPlugins::isModelFrmDescribed;
+	studio.model.getShowRate      = RDOStudioPlugins::getModelShowRate;
+	studio.model.setShowRate      = RDOStudioPlugins::setModelShowRate;
+	studio.model.showNextFrame    = RDOStudioPlugins::showModelNextFrame;
+	studio.model.showPrevFrame    = RDOStudioPlugins::showModelPrevFrame;
+	studio.model.canShowNextFrame = RDOStudioPlugins::canShowModelNextFrame;
+	studio.model.canShowPrevFrame = RDOStudioPlugins::canShowModelPrevFrame;
+	studio.model.getFrameCount    = RDOStudioPlugins::modelGetFrameCount;
+	studio.model.getFrameName     = RDOStudioPlugins::getModelFrameName;
+	studio.model.showFrame        = RDOStudioPlugins::modelShowFrame;
+	studio.model.closeAllFrame    = RDOStudioPlugins::modelCloseAllFrame;
 
 	kernel.setNotifyReflect( RDOKernel::beforeModelStart, modelStartNotify );
 	kernel.setNotifyReflect( RDOKernel::endExecuteModel, modelStopNotify );
@@ -267,6 +277,56 @@ void RDOStudioPlugins::setModelShowMode( rdoPlugin::ModelShowMode showMode )
 bool RDOStudioPlugins::isModelFrmDescribed()
 {
 	return model->isFrmDescribed();
+}
+
+double RDOStudioPlugins::getModelShowRate()
+{
+	return model->getShowRate();
+}
+
+void RDOStudioPlugins::setModelShowRate( double value )
+{
+	model->setShowRate( value );
+}
+
+void RDOStudioPlugins::showModelNextFrame()
+{
+	model->showNextFrame();
+}
+
+void RDOStudioPlugins::showModelPrevFrame()
+{
+	model->showPrevFrame();
+}
+
+bool RDOStudioPlugins::canShowModelNextFrame()
+{
+	return model->canShowNextFrame();
+}
+
+bool RDOStudioPlugins::canShowModelPrevFrame()
+{
+	return model->canShowPrevFrame();
+}
+
+int RDOStudioPlugins::modelGetFrameCount()
+{
+	return model->getFrameCount();
+}
+
+const char* RDOStudioPlugins::getModelFrameName( int index )
+{
+	return model->getFrameName( index );
+}
+
+void RDOStudioPlugins::modelShowFrame( int index )
+{
+	model->showFrame( index );
+}
+
+void RDOStudioPlugins::modelCloseAllFrame()
+{
+	model->closeAllFrame();
 }
 
 void RDOStudioPlugins::modelStartNotify()

@@ -39,6 +39,18 @@ protected:
 	afx_msg void OnUpdateModelRunNoshow(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateModelRunAnimation(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateModelRunMonitor(CCmdUI* pCmdUI);
+	afx_msg void OnModelShowrateInc();
+	afx_msg void OnModelShowrateIncFour();
+	afx_msg void OnModelShowrateDecFour();
+	afx_msg void OnModelShowrateDec();
+	afx_msg void OnUpdateModelShowrateInc(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateModelShowrateIncFour(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateModelShowrateDecFour(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateModelShowrateDec(CCmdUI* pCmdUI);
+	afx_msg void OnModelFrameNext();
+	afx_msg void OnModelFramePrev();
+	afx_msg void OnUpdateModelFrameNext(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateModelFramePrev(CCmdUI* pCmdUI);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

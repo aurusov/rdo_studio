@@ -534,22 +534,22 @@ void RDOStudioMainFrame::OnUpdateModelShowRateDec(CCmdUI* pCmdUI)
 
 void RDOStudioMainFrame::OnModelFrameNext()
 {
-	model->frameManager.showNextFrame();
+	model->showNextFrame();
 }
 
 void RDOStudioMainFrame::OnModelFramePrev()
 {
-	model->frameManager.showPrevFrame();
+	model->showPrevFrame();
 }
 
 void RDOStudioMainFrame::OnUpdateModelFrameNext(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable( model->frameManager.canShowNextFrame() );
+	pCmdUI->Enable( model->canShowNextFrame() );
 }
 
 void RDOStudioMainFrame::OnUpdateModelFramePrev(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable( model->frameManager.canShowPrevFrame() );
+	pCmdUI->Enable( model->canShowPrevFrame() );
 }
 
 LRESULT RDOStudioMainFrame::WindowProc( UINT message, WPARAM wParam, LPARAM lParam )

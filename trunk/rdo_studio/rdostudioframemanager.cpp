@@ -668,6 +668,8 @@ void RDOStudioFrameManager::showNextFrame()
 			doc = connectFrameDoc( index );
 		} else {
 			doc->frame->ActivateFrame();
+			setLastShowedFrame( index );
+			setCurrentShowingFrame( index );
 		}
 	}
 }
@@ -682,6 +684,23 @@ void RDOStudioFrameManager::showPrevFrame()
 			doc = connectFrameDoc( index );
 		} else {
 			doc->frame->ActivateFrame();
+			setLastShowedFrame( index );
+			setCurrentShowingFrame( index );
+		}
+	}
+}
+
+void RDOStudioFrameManager::showFrame( const int index )
+{
+	int cnt = count();
+	if ( model->isRunning() && model->getShowMode() != RDOSimulatorNS::SM_NoShow && cnt > 1 && index >= 0 && index < cnt ) {
+		RDOStudioFrameDoc* doc = getFrameDoc( index );
+		if ( !doc ) {
+			doc = connectFrameDoc( index );
+		} else {
+			doc->frame->ActivateFrame();
+			setLastShowedFrame( index );
+			setCurrentShowingFrame( index );
 		}
 	}
 }

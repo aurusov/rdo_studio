@@ -82,6 +82,16 @@ private:
 	static rdoPlugin::ModelShowMode getModelShowMode();
 	static void setModelShowMode( rdoPlugin::ModelShowMode showMode );
 	static bool isModelFrmDescribed();
+	static double getModelShowRate();
+	static void setModelShowRate( double value );
+	static void showModelNextFrame();
+	static void showModelPrevFrame();
+	static bool canShowModelNextFrame();
+	static bool canShowModelPrevFrame();
+	static int modelGetFrameCount();
+	static const char* getModelFrameName( int index );
+	static void modelShowFrame( int index );
+	static void modelCloseAllFrame();
 
 	static void modelStartNotify();
 	static void modelStopNotify();

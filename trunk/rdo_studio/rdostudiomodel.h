@@ -19,7 +19,6 @@ namespace rdoEditor {
 class RDOStudioModel
 {
 friend class RDOStudioModelDoc;
-friend class RDOStudioMainFrame;
 friend class RDOStudioFrameView;
 friend class RDOStudioFrameTreeCtrl;
 
@@ -97,6 +96,15 @@ public:
 	void setShowMode( const RDOSimulatorNS::ShowMode value );
 	double getShowRate() const;
 	void setShowRate( const double value ) const;
+
+	void showNextFrame()                        { frameManager.showNextFrame();                      }
+	void showPrevFrame()                        { frameManager.showPrevFrame();                      }
+	bool canShowNextFrame() const               { return frameManager.canShowNextFrame();            }
+	bool canShowPrevFrame() const               { return frameManager.canShowPrevFrame();            }
+	int  getFrameCount() const                  { return frameManager.count();                       }
+	const char* getFrameName( int index ) const { return frameManager.getFrameName( index ).c_str(); }
+	void showFrame( int index )                 { frameManager.showFrame( index );                   }
+	void closeAllFrame()                        { frameManager.closeAll();                           }
 
 	bool hasModel() const { return getModelDoc() ? true : false; }
 

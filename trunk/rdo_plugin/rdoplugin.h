@@ -31,20 +31,40 @@ typedef bool (*PFunIsRunning)();
 typedef ModelShowMode (*PFunGetShowMode)();
 typedef void (*PFunSetShowMode)( ModelShowMode showMode );
 typedef bool (*PFunIsFrmDescribed)();
+typedef double (*PFunGetShowRate)();
+typedef void (*PFunSetShowRate)( double value );
+typedef void (*PFunShowNextFrame)();
+typedef void (*PFunShowPrevFrame)();
+typedef bool (*PFunCanShowNextFrame)();
+typedef bool (*PFunCanShowPrevFrame)();
+typedef int (*PFunGetFrameCount)();
+typedef const char* (*PFunGetFrameName)( int index );
+typedef void (*PFunShowFrame)( int index );
+typedef void (*PFunCloseAllFrame)();
 
 class Model {
 public:
-	Model(): hasModel( NULL ), build( NULL ), run( NULL ), stop( NULL ), isRunning( NULL ), getShowMode( NULL ), setShowMode( NULL ), isFrmDescribed( NULL ) {};
+	Model(): hasModel( NULL ), build( NULL ), run( NULL ), stop( NULL ), isRunning( NULL ), getShowMode( NULL ), setShowMode( NULL ), isFrmDescribed( NULL ), getShowRate( NULL ), setShowRate( NULL ), showNextFrame( NULL ), showPrevFrame( NULL ), canShowNextFrame( NULL ), canShowPrevFrame( NULL ), getFrameCount( NULL ), getFrameName( NULL ), showFrame( NULL ), closeAllFrame( NULL ) {};
 	virtual ~Model() {};
 
-	PFunHasModel       hasModel;
-	PFunBuild          build;
-	PFunRun            run;
-	PFunStop           stop;
-	PFunIsRunning      isRunning;
-	PFunGetShowMode    getShowMode;
-	PFunSetShowMode    setShowMode;
-	PFunIsFrmDescribed isFrmDescribed;
+	PFunHasModel         hasModel;
+	PFunBuild            build;
+	PFunRun              run;
+	PFunStop             stop;
+	PFunIsRunning        isRunning;
+	PFunGetShowMode      getShowMode;
+	PFunSetShowMode      setShowMode;
+	PFunIsFrmDescribed   isFrmDescribed;
+	PFunGetShowRate      getShowRate;
+	PFunSetShowRate      setShowRate;
+	PFunShowNextFrame    showNextFrame;
+	PFunShowPrevFrame    showPrevFrame;
+	PFunCanShowNextFrame canShowNextFrame;
+	PFunCanShowPrevFrame canShowPrevFrame;
+	PFunGetFrameCount    getFrameCount;
+	PFunGetFrameName     getFrameName;
+	PFunShowFrame        showFrame;
+	PFunCloseAllFrame    closeAllFrame;
 };
 
 class Studio {

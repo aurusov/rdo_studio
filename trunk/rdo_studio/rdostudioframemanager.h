@@ -100,7 +100,7 @@ public:
 	int findFrameIndex( const RDOStudioFrameView* view ) const;
 	RDOStudioFrameDoc* connectFrameDoc( const int index );
 	void disconnectFrameDoc( const RDOStudioFrameDoc* doc ) const;
-	std::string         getFrameName( const int index ) const       { return frames[index]->name;   };
+	const std::string&  getFrameName( const int index ) const       { return frames[index]->name;   };
 	RDOStudioFrameDoc*  getFrameDoc( const int index ) const        { return frames[index]->doc;    };
 	RDOStudioFrameView* getFrameView( const int index ) const       { return frames[index]->view;   };
 	CMutex*             getFrameMutexUsed( const int index ) const  { return &frames[index]->used;  };
@@ -126,6 +126,7 @@ public:
 	void showFrame( const RDOSimulatorNS::RDOFrame* const frame, const int index );
 	void showNextFrame();
 	void showPrevFrame();
+	void showFrame( const int index );
 	bool canShowNextFrame() const;
 	bool canShowPrevFrame() const;
 
