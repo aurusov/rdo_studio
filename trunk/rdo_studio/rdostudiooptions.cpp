@@ -681,6 +681,7 @@ void RDOStudioOptionsStylesAndColors::updateTheme()
 			if ( *static_cast<RDOEditorEditTheme*>(sheet->style_editor.theme) == RDOEditorEditTheme::getDefaultTheme() &&
 				 *static_cast<RDOLogEditTheme*>(sheet->style_build.theme) == RDOLogEditTheme::getDefaultTheme() &&
 				 *static_cast<RDOBaseEditTheme*>(sheet->style_debug.theme) == RDOBaseEditTheme::getDefaultTheme() &&
+				 *static_cast<RDOTracerLogTheme*>(sheet->style_trace.theme) == RDOTracerLogTheme::getDefaultTheme() &&
 				 *static_cast<RDOEditorBaseEditTheme*>(sheet->style_results.theme) == RDOEditorBaseEditTheme::getDefaultTheme() &&
 				 *static_cast<RDOFindEditTheme*>(sheet->style_find.theme) == RDOFindEditTheme::getDefaultTheme() ) {
 				m_theme.SetCurSel( 1 );
@@ -729,6 +730,12 @@ void RDOStudioOptionsStylesAndColors::updateTheme()
 			break;
 		}
 		case STYLEObject::trace: {
+			RDOTracerLogTheme* theme = static_cast<RDOTracerLogTheme*>(sheet->style_trace.theme);
+			if ( *theme == RDOTracerLogTheme::getDefaultTheme() ) {
+				m_theme.SetCurSel( 1 );
+			} else {
+				m_theme.SetCurSel( 0 );
+			}
 			break;
 		}
 		case STYLEObject::results: {
@@ -775,6 +782,7 @@ void RDOStudioOptionsStylesAndColors::OnThemeChanged()
 					*static_cast<RDOEditorEditTheme*>(sheet->style_editor.theme) = RDOEditorEditTheme::getDefaultTheme();
 					*static_cast<RDOLogEditTheme*>(sheet->style_build.theme) = RDOLogEditTheme::getDefaultTheme();
 					*static_cast<RDOBaseEditTheme*>(sheet->style_debug.theme) = RDOBaseEditTheme::getDefaultTheme();
+					*static_cast<RDOTracerLogTheme*>(sheet->style_trace.theme) = RDOTracerLogTheme::getDefaultTheme();
 					*static_cast<RDOEditorBaseEditTheme*>(sheet->style_results.theme) = RDOEditorBaseEditTheme::getDefaultTheme();
 					*static_cast<RDOFindEditTheme*>(sheet->style_find.theme) = RDOFindEditTheme::getDefaultTheme();
 				}
@@ -808,6 +816,10 @@ void RDOStudioOptionsStylesAndColors::OnThemeChanged()
 				break;
 			}
 			case STYLEObject::trace: {
+				RDOTracerLogTheme* theme = static_cast<RDOTracerLogTheme*>(sheet->style_trace.theme);
+				switch ( index ) {
+					case 1: *theme = RDOTracerLogTheme::getDefaultTheme(); break;
+				}
 				break;
 			}
 			case STYLEObject::results: {

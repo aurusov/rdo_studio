@@ -223,6 +223,12 @@ void RDOTracerLogTheme::save( string regPath ) const
 	seu.save( regPath, "seu" );
 }
 
+RDOTracerLogTheme RDOTracerLogTheme::getDefaultTheme()
+{
+	RDOTracerLogTheme theme;
+	return theme;
+}
+
 // ----------------------------------------------------------------------------
 // ---------- RDOTracerLogStyle
 // ----------------------------------------------------------------------------
@@ -370,9 +376,3 @@ void RDOTracerLogStyle::init( const string& _regPath )
 	RDOLogStyle::init( _regPath );
 	font->name = "Courier";
 }
-
-/*RDOTracerLogStyle RDOTracerLogStyle::getDefaultStyle()
-{
-	RDOTracerLogStyle style;
-	return style;
-}*/

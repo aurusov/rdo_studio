@@ -49,6 +49,8 @@ public:
 	RDOLogColorPair sem;
 	RDOLogColorPair sef;
 	RDOLogColorPair seu;
+
+	static RDOTracerLogTheme getDefaultTheme();
 };
 
 // ----------------------------------------------------------------------------
@@ -73,8 +75,6 @@ public:
 	bool operator !=( const RDOTracerLogStyle& style ) const;
 
 	virtual void init( const std::string& _regPath = "" );
-
-	//static RDOTracerLogStyle getDefaultStyle();
 };
 
 }; // namespace rdoTracerLog
