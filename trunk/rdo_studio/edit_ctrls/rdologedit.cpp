@@ -100,6 +100,8 @@ int RDOLogEdit::OnCreate( LPCREATESTRUCT lpCreateStruct )
 {
 	if ( RDOBaseEdit::OnCreate(lpCreateStruct) == -1 ) return -1;
 
+	sendEditor( SCI_SETMODEVENTMASK, SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT );
+
 	setReadOnly( true );
 
 	sendEditorString( SCI_SETPROPERTY, reinterpret_cast<unsigned long>("withoutselectbyclick"), "1" );
@@ -114,7 +116,7 @@ void RDOLogEdit::setEditorStyle( RDOLogEditStyle* _style )
 
 	// ----------
 	// Selected Line
-	defineMarker( sci_MARKER_LINE, SC_MARK_BACKGROUND, RGB( 0xFF, 0xFF, 0xFF ), ((RDOLogEditTheme*)style->theme)->selectLineBgColor );
+	defineMarker( sci_MARKER_LINE, SC_MARK_BACKGROUND, RGB( 0xFF, 0xFF, 0xFF ), static_cast<RDOLogEditTheme*>(style->theme)->selectLineBgColor );
 }
 
 void RDOLogEdit::setSelectLine()

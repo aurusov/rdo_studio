@@ -275,6 +275,11 @@ RDOStudioOptionsStylesAndColors::RDOStudioOptionsStylesAndColors( RDOStudioOptio
 	RDOLogEditTheme* build_theme = static_cast<RDOLogEditTheme*>(sheet->style_build.theme);
 	object = new STYLEObject( STYLEObject::build, sheet->style_build.font->name, sheet->style_build.font->size, false );
 	object->properties.push_back( new STYLEProperty( object, "Build Window", true, build_theme->defaultStyle, build_theme->defaultColor, build_theme->backgroundColor, null_fg_color, null_bg_color ) );
+	object->properties.push_back( new STYLEProperty( object, "text", false, build_theme->defaultStyle, build_theme->defaultColor, build_theme->backgroundColor, null_fg_color, null_bg_color ) );
+	object->properties.push_back( new STYLEProperty( object, "selected line", false, null_font_style, null_fg_color, build_theme->selectLineBgColor, null_fg_color, null_bg_color ) );
+	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_CARET ), false, null_font_style, build_theme->caretColor, null_bg_color, null_fg_color, null_bg_color ) );
+	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_TEXTSELECTION ), false, null_font_style, null_fg_color, build_theme->selectionBgColor, null_fg_color, null_bg_color ) );
+	object->properties.push_back( new STYLEProperty( object, format( ID_COLORSTYLE_EDITOR_BOOKMARK ), false, null_font_style, build_theme->bookmarkFgColor, build_theme->bookmarkBgColor, null_fg_color, null_bg_color ) );
 	objects.push_back( object );
 
 	RDOBaseEditTheme* debug_theme = sheet->style_debug.theme;

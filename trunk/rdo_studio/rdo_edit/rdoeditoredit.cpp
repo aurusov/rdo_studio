@@ -163,7 +163,8 @@ int RDOEditorEdit::OnCreate( LPCREATESTRUCT lpCreateStruct )
 {
 	if ( RDOEditorBaseEdit::OnCreate(lpCreateStruct) == -1 ) return -1;
 
-	sendEditor( SCI_SETMODEVENTMASK, SC_MOD_CHANGEFOLD | SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT );
+	sendEditor( SCI_SETMODEVENTMASK, SC_MOD_CHANGEFOLD );
+
 	sendEditor( SCI_SETMARGINTYPEN     , sci_FOLDMARGIN_ID, SC_MARGIN_SYMBOL );
 	sendEditor( SCI_SETFOLDFLAGS, 16 );
 	sendEditor( SCI_SETMARGINMASKN     , sci_FOLDMARGIN_ID, SC_MASK_FOLDERS );

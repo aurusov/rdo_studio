@@ -830,6 +830,32 @@ SOURCE=.\edit_ctrls\sci\KeyWords.cxx
 # End Source File
 # Begin Source File
 
+SOURCE=.\edit_ctrls\sci\LexBuild.cxx
+
+!IF  "$(CFG)" == "rdo_studio - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
+
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\sci\LexDebug.cxx
+
+!IF  "$(CFG)" == "rdo_studio - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
+
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
 SOURCE=.\edit_ctrls\sci\LexFind.cxx
 # SUBTRACT CPP /YX /Yc /Yu
 # End Source File

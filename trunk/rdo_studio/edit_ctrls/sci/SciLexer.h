@@ -17,6 +17,8 @@
 #define SCLEX_CONTAINER 0
 #define SCLEX_RDO  1
 #define SCLEX_FIND 2
+#define SCLEX_BUILD 3
+#define SCLEX_DEBUG 4
 #define SCLEX_AUTOMATIC 1000
 #define SCE_RDO_DEFAULT 0
 #define SCE_RDO_IDENTIFIER 1
