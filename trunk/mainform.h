@@ -89,6 +89,9 @@ protected slots:
 public:
 	WGMainForm( QWidget* parent = NULL, const char* name = NULL, WFlags fl = 0 );
 	~WGMainForm();
+
+	void readConfig();
+	void writeConfig();
 };
 
 #endif // MAINFORM_H

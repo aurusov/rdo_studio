@@ -6,6 +6,7 @@
 #include "about_winwget_base.h"
 #include "about_wget.h"
 #include "unicode_log.h"
+#include "config_file.h"
 
 #include "pixmap/about.xpm"
 #include "pixmap/delete.xpm"
@@ -34,6 +35,8 @@
 #include <qfiledialog.h>
 #include <qfile.h>
 #include <qtextstream.h>
+
+#define show_section "show"
 
 // -------------------------------------------------------
 // -------- WGMainForm
@@ -179,14 +182,15 @@ WGMainForm::WGMainForm( QWidget* parent, const char* name, WFlags fl ):
 
 	log = new WGLogView( centralWidget() );
 
-	updateControls();
-
 	connect( qApp->clipboard(), SIGNAL(dataChanged()), this, SLOT(slot_clipboard_changed()) );
 
+	readConfig();
+	updateControls();
 }
 
 WGMainForm::~WGMainForm()
 {
+	writeConfig();
 }
 
 void WGMainForm::slot_open_url_list()
@@ -200,6 +204,7 @@ void WGMainForm::slot_open_url_list()
 				QString url = stream.readLine().stripWhiteSpace();
 				if ( !url.isEmpty() && ( url.find("ftp://") == 0 || url.find("http://") == 0 ) ) newDownload( url, true );
 			}
+			file.close();
 		}
 	}
 }
@@ -271,11 +276,11 @@ void WGMainForm::slot_options_default()
 
 		bool ok = true;
 		int v = dialog->RetriesNumberLE->text().toInt( &ok );
-		WGProcess_s->retriesNumber = ok ? v : -1;
+		WGProcess_s->retriesNumber = ok && v >= 0 ? v : -1;
 
 		ok = true;
 		v = dialog->RetriesWaitLE->text().toInt( &ok );
-		WGProcess_s->waitBetweenRetrievals = ok ? v : -1;
+		WGProcess_s->waitBetweenRetrievals = ok && v >= 0 ? v : -1;
 
 		WGProcess_s->checkClipboard = dialog->ClipboardCheckCB->isChecked();
 		WGProcess_s->autostartClipboard = dialog->ClipboardAutoStartCB->isChecked();
@@ -363,6 +368,7 @@ void WGMainForm::updateControls()
 
 	slot_show_log();
 	slot_show_toolbar();
+	slot_show_grid_columns();
 }
 
 void WGMainForm::slot_clipboard_changed()
@@ -438,11 +444,11 @@ void WGMainForm::newDownload( QString url, const bool autostart )
 					
 					bool ok = true;
 					int v = dialog->RetriesNumberLE->text().toInt( &ok );
-					proc->retriesNumber = ok ? v : -1;
+					proc->retriesNumber = ok && v >= 0 ? v : -1;
 
 					ok = true;
 					v = dialog->RetriesWaitLE->text().toInt( &ok );
-					proc->waitBetweenRetrievals = ok ? v : -1;
+					proc->waitBetweenRetrievals = ok && v >= 0 ? v : -1;
 					
 				} else {
 					proc->saveToDir = WGProcess_s->saveToDir;
@@ -494,4 +500,32 @@ void WGMainForm::slot_about_wget()
 void WGMainForm::slot_change_proc_status( WGProcess*, WGProcessStatus )
 {
 	updateControls();
+}
+
+void WGMainForm::readConfig()
+{
+	WGConfigFile config;
+	viewLogAction->setOn( config.read_bool( "log", true, show_section ) );
+	viewToolBarAction->setOn( config.read_bool( "toolbar", true, show_section ) );
+	viewGridColStatusAction->setOn( config.read_bool( "grid_status", true, show_section ) );
+	viewGridColTotalAction->setOn( config.read_bool( "grid_total", true, show_section ) );
+	viewGridColCurrentAction->setOn( config.read_bool( "grid_current", true, show_section ) );
+	viewGridColProgressAction->setOn( config.read_bool( "grid_progress", true, show_section ) );
+	viewGridColSpeedAction->setOn( config.read_bool( "grid_speed", true, show_section ) );
+	viewGridColURLAction->setOn( config.read_bool( "grid_url", true, show_section ) );
+	viewGridColLocalFileAction->setOn( config.read_bool( "grid_localfile", true, show_section ) );
+}
+
+void WGMainForm::writeConfig()
+{
+	WGConfigFile config;
+	config.write( "log"           , viewLogAction->isOn()             , show_section );
+	config.write( "toolbar"       , viewToolBarAction->isOn()         , show_section );
+	config.write( "grid_status"   , viewGridColStatusAction->isOn()   , show_section );
+	config.write( "grid_total"    , viewGridColTotalAction->isOn()    , show_section );
+	config.write( "grid_current"  , viewGridColCurrentAction->isOn()  , show_section );
+	config.write( "grid_progress" , viewGridColProgressAction->isOn() , show_section );
+	config.write( "grid_speed"    , viewGridColSpeedAction->isOn()    , show_section );
+	config.write( "grid_url"      , viewGridColURLAction->isOn()      , show_section );
+	config.write( "grid_localfile", viewGridColLocalFileAction->isOn(), show_section );
 }
