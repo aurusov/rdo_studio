@@ -27,6 +27,7 @@
 static void ColouriseFindDoc( unsigned int startPos, int length, int initStyle, WordList *keywordlists[], Accessor &styler )
 {
 	WordList& keywords = *keywordlists[ SCI_RDO_ENDOFLINEONLY_KEYWORDSINDEX ];
+	if ( !keywords ) return;
 	const char* findKeyword = keywords[0];
 	const int findKeywordLen = strlen( findKeyword );
 	bool matchCase = styler.GetPropertyInt( "find_matchcase", 0 ) ? true : false;
