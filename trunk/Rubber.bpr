@@ -95,6 +95,12 @@ ProductName=
 ProductVersion=1.0.0.0
 Comments=
 
+[Excluded Packages]
+$(BCB)\Bin\dclado50.bpl=Borland ADO DB Components
+C:\WINDOWS\SYSTEM\ibsmp50.bpl=Borland C++ InterBase Alerter Component
+$(BCB)\Bin\bcbsmp50.bpl=Borland C++ Sample Components
+$(BCB)\Bin\dcl31w50.bpl=Delphi 1.0 Compatibility Components
+
 [HistoryLists\hlIncludePath]
 Count=19
 Item0=$(BCB)\bin;$(BCB)\projects;D:\Components\Cb5\;$(BCB)\include;$(BCB)\include\vcl

@@ -1469,7 +1469,7 @@ void __fastcall TRubberStudio::PlaneNewMClick(TObject *Sender)
       si.dwFlags     = STARTF_USESHOWWINDOW;
       unsigned long result = 0;
 
-      AnsiString command_line = MiscFormat("%srdosim.exe %srub_gen.smr", GetNormalDirFromName(Application->ExeName).c_str(), modelDir.c_str());
+      AnsiString command_line = MiscFormat("\"%srdosim.exe\" \"%srub_gen.smr\"", GetNormalDirFromName(Application->ExeName).c_str(), modelDir.c_str());
       if ( plane_precision ) {
         if (!CreateProcess(NULL, command_line.c_str(), NULL, NULL, true, NORMAL_PRIORITY_CLASS, NULL, NULL, &si, &pi))
           throw RubberError(sErrorCreateProcess);
@@ -1484,7 +1484,7 @@ void __fastcall TRubberStudio::PlaneNewMClick(TObject *Sender)
 
       ConnectModels();
 
-      command_line = MiscFormat("%srdosim.exe %srubber.smr", GetNormalDirFromName(Application->ExeName).c_str(), modelDir.c_str());
+      command_line = MiscFormat("\"%srdosim.exe\" \"%srubber.smr\"", GetNormalDirFromName(Application->ExeName).c_str(), modelDir.c_str());
       if (!CreateProcess(NULL, command_line.c_str(), NULL, NULL, true, NORMAL_PRIORITY_CLASS, NULL, NULL, &si, &pi))
         throw RubberError(sErrorCreateProcess);
       ShowWindow(Application->Handle, SW_SHOWMINIMIZED);
