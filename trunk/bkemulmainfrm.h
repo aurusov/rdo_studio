@@ -74,7 +74,16 @@ protected:
 	afx_msg void OnUpdateViewFullScreen(CCmdUI* pCmdUI);
 	afx_msg void OnViewColorMonitor();
 	afx_msg void OnUpdateViewColorMonitor(CCmdUI* pCmdUI);
+	afx_msg void OnEmulatorReset();
+	afx_msg void OnEmulatorSoftReset();
+	afx_msg void OnEmulatorPowerOn();
+	afx_msg void OnEmulatorPoweOff();
+	afx_msg void OnUpdateEmulatorPowerOn(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateEmulatorPoweOff(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateEmulatorReset(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateEmulatorSoftReset(CCmdUI* pCmdUI);
 	//}}AFX_MSG
+	afx_msg void OnFontClicked( UINT nID );
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_VIRTUAL(BKMainFrame)

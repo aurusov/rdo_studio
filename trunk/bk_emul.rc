@@ -75,16 +75,49 @@ IDR_MAINFRAME           ICON    DISCARDABLE     "res\\bk_emul.ico"
 
 IDR_MAINFRAME MENU PRELOAD DISCARDABLE 
 BEGIN
-    POPUP "&File"
+    POPUP "&Emulator"
     BEGIN
+        MENUITEM "Power On",                    ID_EMULATOR_POWERON
+        MENUITEM "Power Off",                   ID_EMULATOR_POWEOFF
+        MENUITEM SEPARATOR
+        MENUITEM "&Reset\tAlt+F11",             ID_EMULATOR_RESET
+        MENUITEM "&Soft Reset\tAlt+F12",        ID_EMULATOR_SOFTRESET
+        MENUITEM SEPARATOR
         MENUITEM "E&xit",                       ID_APP_EXIT
     END
     POPUP "&View"
     BEGIN
-        MENUITEM "&Full Screen\t(Alt+Enter)",   ID_VIEW_FULLSCREEN
+        MENUITEM "&Full Screen\tAlt+Enter",     ID_VIEW_FULLSCREEN
         MENUITEM SEPARATOR
-        MENUITEM "&Color Monitor\t(Alt + F2)",  ID_VIEW_COLORMONITOR
-        MENUITEM "&Font",                       65535
+        MENUITEM "&Color Monitor\tAlt+F2",      ID_VIEW_COLORMONITOR
+        POPUP "&Font"
+        BEGIN
+            MENUITEM "Default",                     ID_VIEW_FONT_DEFAULT
+            MENUITEM "Atlantic",                    ID_VIEW_FONT_ATLANTIC
+            MENUITEM "Big",                         ID_VIEW_FONT_BIG
+            MENUITEM "BK11",                        ID_VIEW_FONT_BK11
+            MENUITEM "Clock",                       ID_VIEW_FONT_CLOCK
+            MENUITEM "Color1",                      ID_VIEW_FONT_COLOR1
+            MENUITEM "Color2",                      ID_VIEW_FONT_COLOR2
+            MENUITEM "Comp",                        ID_VIEW_FONT_COMP
+            MENUITEM "Cursiv",                      ID_VIEW_FONT_CURSIV
+            MENUITEM "Future",                      ID_VIEW_FONT_FUTURE
+            MENUITEM "Gothic",                      ID_VIEW_FONT_GOTHIC
+            MENUITEM "IBM",                         ID_VIEW_FONT_IBM
+            MENUITEM "Modern",                      ID_VIEW_FONT_MODERN
+            MENUITEM "PCFont",                      ID_VIEW_FONT_PCFONT
+            MENUITEM "PRS",                         ID_VIEW_FONT_PRS
+            MENUITEM "PRS2",                        ID_VIEW_FONT_PRS2
+            MENUITEM "PRS3",                        ID_VIEW_FONT_PRS3
+            MENUITEM "Reader",                      ID_VIEW_FONT_READER
+            MENUITEM "RTV21",                       ID_VIEW_FONT_PTV21
+            MENUITEM "Script",                      ID_VIEW_FONT_SCRIPT
+            MENUITEM "Shrift1",                     ID_VIEW_FONT_SHRIFT1
+            MENUITEM "Shrift2",                     ID_VIEW_FONT_SHRIFT2
+            MENUITEM "Super",                       ID_VIEW_FONT_SUPER
+            MENUITEM "Thick",                       ID_VIEW_FONT_THICK
+            MENUITEM "Works",                       ID_VIEW_FONT_WORKS
+        END
     END
     POPUP "&Help"
     BEGIN
@@ -100,8 +133,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,0,68
- PRODUCTVERSION 1,0,0,68
+ FILEVERSION 1,0,0,71
+ PRODUCTVERSION 1,0,0,71
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -119,14 +152,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "BK 0010-01 Emulator\0"
-            VALUE "FileVersion", "1, 0, 0, 68\0"
+            VALUE "FileVersion", "1, 0, 0, 71\0"
             VALUE "InternalName", "BK Emulator\0"
             VALUE "LegalCopyright", "\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "bk_emul.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "BK 0010-01 Emulator\0"
-            VALUE "ProductVersion", "1, 0, 0, 68\0"
+            VALUE "ProductVersion", "1, 0, 0, 71\0"
             VALUE "SpecialBuild", "\0"
         END
     END
@@ -157,6 +190,8 @@ MONITOR_10              ROM     DISCARDABLE     "res\\rom_monitor_10.bin"
 
 IDR_MAINFRAME ACCELERATORS DISCARDABLE 
 BEGIN
+    VK_F11,         ID_EMULATOR_RESET,      VIRTKEY, ALT, NOINVERT
+    VK_F12,         ID_EMULATOR_SOFTRESET,  VIRTKEY, ALT, NOINVERT
     VK_F2,          ID_VIEW_COLORMONITOR,   VIRTKEY, ALT, NOINVERT
     VK_RETURN,      ID_VIEW_FULLSCREEN,     VIRTKEY, ALT, NOINVERT
 END

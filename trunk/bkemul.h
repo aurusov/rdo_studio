@@ -39,7 +39,7 @@ private:
 		void report() const;
 	};
 
-	void loadROM( const std::string& rom ) const;
+	void loadIntoROM( const HRSRC& res ) const;
 
 public:
 	BKEmul();
@@ -52,8 +52,12 @@ public:
 	void powerON();
 	void powerOFF();
 	void reset();
+	void softReset();
 	bool isPowerON()       { return powerOn; }
 	void nextIteration();
+
+	void loadROM( const std::string& rom ) const;
+	void loadFont( const std::string& font ) const;
 
 	BYTE getMemoryByte( WORD address );
 	WORD getMemoryWord( WORD address );

@@ -49,7 +49,7 @@ void BKEmul::reset()
 	BK_SYS_Timer_work = false;
 	memory.clear();
 	loadROM( "MONITOR_10" );
-	loadROM( "MIRAGE120" );
+	loadROM( "BASIC_10_120" );
 	loadROM( "BASIC_10_140" );
 	loadROM( "BASIC_10_160" );
 
@@ -75,15 +75,40 @@ void BKEmul::reset()
 */
 }
 
+void BKEmul::softReset()
+{
+	R_177716_read   = 0120300;           // Задает начальный адрес и флаг отжатой клавиши
+	                                     // ст. байт = 0100000 - адрес старта процессора
+	                                     // 0100 = 1 - клавиша отжата
+	                                     // 0200 = 1 - признак отсутствия арифметического расширения,
+	                                     //            должен быть = 1
+	R_177716_write  = 0000000;           // 0100 = 0
+
+	cpu.reset();
+}
+
 void BKEmul::loadROM( const std::string& rom ) const
 {
-	HRSRC rom_res   = ::FindResource( NULL, rom.c_str(), "ROM" );
-	HGLOBAL rom_mem = ::LoadResource( NULL, rom_res );
-	WORD address;
-	memcpy( &address, (char*)rom_mem, 02 );
-	WORD size;
-	memcpy( &size, (char*)rom_mem + 02, 02 );
-	memcpy( (char*)memory.getMemory() + address, (char*)rom_mem + 04, size );
+	loadIntoROM( ::FindResource( NULL, rom.c_str(), "ROM" ) );
+}
+
+void BKEmul::loadFont( const std::string& font ) const
+{
+	loadIntoROM( ::FindResource( NULL, font.c_str(), "BK_FONT" ) );
+}
+
+void BKEmul::loadIntoROM( const HRSRC& res ) const
+{
+	if ( res ) {
+		HGLOBAL mem = ::LoadResource( NULL, res );
+		if ( mem ) {
+			WORD address;
+			memcpy( &address, (char*)mem, 02 );
+			WORD size;
+			memcpy( &size, (char*)mem + 02, 02 );
+			memcpy( (char*)memory.getMemory() + address, (char*)mem + 04, size );
+		}
+	}
 }
 
 void BKEmul::nextIteration()

@@ -36,7 +36,16 @@ BEGIN_MESSAGE_MAP(BKMainFrame, CFrameWnd)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_FULLSCREEN, OnUpdateViewFullScreen)
 	ON_COMMAND(ID_VIEW_COLORMONITOR, OnViewColorMonitor)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_COLORMONITOR, OnUpdateViewColorMonitor)
+	ON_COMMAND(ID_EMULATOR_RESET, OnEmulatorReset)
+	ON_COMMAND(ID_EMULATOR_SOFTRESET, OnEmulatorSoftReset)
+	ON_COMMAND(ID_EMULATOR_POWERON, OnEmulatorPowerOn)
+	ON_COMMAND(ID_EMULATOR_POWEOFF, OnEmulatorPoweOff)
+	ON_UPDATE_COMMAND_UI(ID_EMULATOR_POWERON, OnUpdateEmulatorPowerOn)
+	ON_UPDATE_COMMAND_UI(ID_EMULATOR_POWEOFF, OnUpdateEmulatorPoweOff)
+	ON_UPDATE_COMMAND_UI(ID_EMULATOR_RESET, OnUpdateEmulatorReset)
+	ON_UPDATE_COMMAND_UI(ID_EMULATOR_SOFTRESET, OnUpdateEmulatorSoftReset)
 	//}}AFX_MSG_MAP
+	ON_COMMAND_RANGE( ID_VIEW_FONT_DEFAULT, ID_VIEW_FONT_WORKS, OnFontClicked )
 END_MESSAGE_MAP()
 
 BKMainFrame::BKMainFrame():
@@ -87,6 +96,8 @@ int BKMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	initDirectDraw();
 
 	timer = SetTimer( timer_ID, 20, NULL );
+
+	GetMenu()->CheckMenuItem( ID_VIEW_FONT_DEFAULT, MF_CHECKED | MF_BYCOMMAND );
 
 	return 0;
 }
@@ -549,4 +560,58 @@ void BKMainFrame::OnViewColorMonitor()
 void BKMainFrame::OnUpdateViewColorMonitor(CCmdUI* pCmdUI)
 {
 	pCmdUI->SetCheck( emul.video.isColorMonitor() );
+}
+
+void BKMainFrame::OnFontClicked( UINT nID )
+{
+	for ( int i = ID_VIEW_FONT_DEFAULT; i <= ID_VIEW_FONT_WORKS; i++ ) {
+		AfxGetMainWnd()->GetMenu()->CheckMenuItem( i, MF_UNCHECKED | MF_BYCOMMAND );
+	}
+	CString s = "";
+	AfxGetMainWnd()->GetMenu()->GetMenuString( nID, s, MF_BYCOMMAND );
+	AfxGetMainWnd()->GetMenu()->CheckMenuItem( nID, MF_CHECKED | MF_BYCOMMAND );
+	if ( !s.IsEmpty() ) {
+		s.MakeUpper();
+		emul.loadFont( static_cast<LPCSTR>(s) );
+	}
+}
+
+void BKMainFrame::OnEmulatorPowerOn()
+{
+	emul.powerON();
+}
+
+void BKMainFrame::OnEmulatorPoweOff()
+{
+	emul.powerOFF();
+}
+
+void BKMainFrame::OnUpdateEmulatorPowerOn(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable( !emul.isPowerON() );
+}
+
+void BKMainFrame::OnUpdateEmulatorPoweOff(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable( emul.isPowerON() );
+}
+
+void BKMainFrame::OnEmulatorReset() 
+{
+	emul.reset();
+}
+
+void BKMainFrame::OnEmulatorSoftReset()
+{
+	emul.softReset();
+}
+
+void BKMainFrame::OnUpdateEmulatorReset(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable( emul.isPowerON() );
+}
+
+void BKMainFrame::OnUpdateEmulatorSoftReset(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable( emul.isPowerON() );
 }

@@ -192,18 +192,6 @@ SOURCE=.\StdAfx.h
 # PROP Default_Filter "ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
 # Begin Source File
 
-SOURCE=.\res\basic_10_120.bin
-# End Source File
-# Begin Source File
-
-SOURCE=.\res\basic_10_140.bin
-# End Source File
-# Begin Source File
-
-SOURCE=.\res\basic_10_160.bin
-# End Source File
-# Begin Source File
-
 SOURCE=.\res\bk_emul.ico
 # End Source File
 # Begin Source File
@@ -316,19 +304,23 @@ SOURCE=.\res\font_works.bin
 # End Source File
 # Begin Source File
 
-SOURCE=.\res\mirage120.bin
+SOURCE=.\res\rom_basic_10_120.bin
 # End Source File
 # Begin Source File
 
-SOURCE=.\res\monitor_10.bin
+SOURCE=.\res\rom_basic_10_140.bin
 # End Source File
 # Begin Source File
 
-SOURCE=.\res\Toolbar.bmp
+SOURCE=.\res\rom_basic_10_160.bin
 # End Source File
 # Begin Source File
 
-SOURCE=.\res\toolbar1.bmp
+SOURCE=.\res\rom_mirage120.bin
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\rom_monitor_10.bin
 # End Source File
 # End Group
 # End Target
