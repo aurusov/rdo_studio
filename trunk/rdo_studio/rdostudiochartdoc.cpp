@@ -111,9 +111,10 @@ void RDOStudioChartDoc::incTimeEventsCount( RDOTracerTimeNow* time )
 {
 	//mutex.Lock(); Document is locked from RDOTracerBase::addTime
 
-	if ( docTimes.back() == time )
+	if ( docTimes.back() == time ) {
 		ticksCount ++;
-	updateChartViews();
+		updateChartViews( UPDATE_TIMETICKS );
+	}
 
 	//mutex.Unlock();
 }
@@ -135,8 +136,7 @@ bool RDOStudioChartDoc::newValueToSerieAdded( RDOTracerValue* val )
 				minTimeOffset = off;
 		}
 	}
-
-	updateChartViews();
+	updateChartViews( UPDATE_NEWVALUE );
 
 	//mutex.Unlock();
 
@@ -177,12 +177,12 @@ void RDOStudioChartDoc::removeFromViews( const HWND handle )
 	mutex.Unlock();
 }
 
-void RDOStudioChartDoc::updateChartViews() const
+void RDOStudioChartDoc::updateChartViews( const UINT update_type ) const
 {
 	const_cast<CMutex&>(mutex).Lock();
 
 	for( vector< HWND >::const_iterator it = views_hwnd.begin(); it != views_hwnd.end(); it++ ) {
-		::SendNotifyMessage( (*it), WM_USER_UPDATE_CHART_VIEW, 0, 0 );
+		::SendNotifyMessage( (*it), WM_USER_UPDATE_CHART_VIEW, WPARAM( update_type ), 0 );
 	}
 	
 	const_cast<CMutex&>(mutex).Unlock();
@@ -194,6 +194,7 @@ void RDOStudioChartDoc::addSerie( RDOTracerSerie* const serie )
 	
 	if ( serie && !serieExists( serie ) ) {
 		RDOStudioDocSerie* docserie = new RDOStudioDocSerie( serie );
+		docserie->lock();
 		docserie->color = selectColor();
 		docserie->marker = selectMarker();
 		series.push_back( docserie );
@@ -207,7 +208,8 @@ void RDOStudioChartDoc::addSerie( RDOTracerSerie* const serie )
 					static_cast<RDOStudioChartView*>( pView )->yAxis = docserie;
 			}
 		}
-		updateChartViews();
+		docserie->unlock();
+		updateChartViews( UPDATE_NEWSERIE );
 	}
 
 	mutex.Unlock();

@@ -13,9 +13,10 @@
 #include "../rdostudioapp.h"
 #include "../rdostudiochildfrm.h"
 #include "../rdostudiomainfrm.h"
-
 #ifdef _DEBUG
 #define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
 #endif
 
 using namespace rdoTracer;
@@ -614,11 +615,16 @@ RDOStudioChartDoc* RDOTracerBase::createNewChart()
 
 RDOStudioChartDoc* RDOTracerBase::addSerieToChart( RDOTracerSerie* const serie, RDOStudioChartDoc* chart )
 {
+	mutex.Lock();
+
 	if ( !chart )
 		chart = createNewChart();
-	if( chart )
+	if( chart ) {
 		chart->addSerie( serie );
+	}
 	return chart;
+
+	mutex.Unlock();
 }
 
 void RDOTracerBase::addChart( RDOStudioChartDoc* const chart )

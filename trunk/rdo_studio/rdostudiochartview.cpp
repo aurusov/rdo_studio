@@ -222,8 +222,6 @@ void RDOStudioChartView::updateScrollBars( const bool need_update )
 		size = 0;
 	}
 
-	doc->mutex.Unlock();
-
 	xMax = max ( 0, size - chartRect.Width() );
 	xPos = min ( xPos, xMax );
 	
@@ -235,6 +233,8 @@ void RDOStudioChartView::updateScrollBars( const bool need_update )
 	si.nPage  = chartRect.Width(); 
 	si.nPos   = xPos;
 	SetScrollInfo( SB_HORZ, &si, need_update );
+
+	doc->mutex.Unlock();
 }
 
 bool RDOStudioChartView::setTo( const int from_max_pos )
@@ -804,7 +804,8 @@ void RDOStudioChartView::OnUpdate(CView* pSender, LPARAM lHint, CObject* pHint)
 
 LRESULT RDOStudioChartView::OnUserUpdateChartView(WPARAM wParam, LPARAM lParam)
 {
-	updateView();
+	if ( doUnwrapTime() || wParam != UPDATE_TIMETICKS )
+		updateView();
 	return 0;
 }
 
@@ -1068,6 +1069,7 @@ void RDOStudioChartView::updateWindow()
 
 void RDOStudioChartView::updateView()
 {
+	GetDocument()->lock();
 	bool lastvisible = maxXVisible();
 	recalcLayout();
 	updateScrollBars( false );
@@ -1076,6 +1078,7 @@ void RDOStudioChartView::updateView()
 	}
 	CView::OnUpdate( NULL, 0, NULL );
 	updateScrollBars( true );
+	GetDocument()->unlock();
 }
 
 void RDOStudioChartView::OnDestroy() 

@@ -9,6 +9,10 @@
 #include "rdo_tracer/rdotracerserie.h"
 
 #define WM_USER_UPDATE_CHART_VIEW WM_USER + 0x156
+#define UPDATE_NEWSERIE  0x000
+#define UPDATE_NEWVALUE  0x001
+#define UPDATE_TIMETICKS 0x002
+
 
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioChartDoc
@@ -49,7 +53,7 @@ protected:
 	void removeFromViews( const HWND handle );
 	void addToViews( const HWND handle );
 
-	void updateChartViews() const;
+	void updateChartViews( const UINT update_type ) const;
 
 	void lock() { mutex.Lock(); };
 	void unlock() { mutex.Unlock(); };
