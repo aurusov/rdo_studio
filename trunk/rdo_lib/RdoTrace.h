@@ -42,7 +42,7 @@ protected:
 	bool isNullTracer;
 
 public:
-   RDOTrace(): isNullTracer(true) {}
+   RDOTrace(): isNullTracer(true), canWriteToStream(false) {}
    RDOTrace(std::string fn): fileName(fn), out(fileName.begin(), std::ios_base::out), isNullTracer(false) {}
 	virtual ~RDOTrace() {}
 

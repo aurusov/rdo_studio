@@ -164,7 +164,7 @@ void RDOTrace::writeIrregularEvent(RDOIETrace *ie, RDOSimulatorTrace *sim)
 
    getOStream() << traceResourcesList('\0', sim, ie->relevantResources) << getEOL();
 
-   if(ie->trace)
+   if(ie->trace && canWrite())
    {
       getOStream() << "EI " << sim->getCurrentTime() 
          << " " << ie->traceId() 
