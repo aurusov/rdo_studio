@@ -171,6 +171,7 @@ void RDOLink::OnMouseMove( UINT nFlags, CPoint point )
 	}
 
 	dc->SelectObject( prevFont );
+	ReleaseDC( dc );
 }
 
 void RDOLink::OnPaint()
@@ -241,6 +242,7 @@ CSize RDOLink::calcSize()
 	CFont* prevFont = dc->SelectObject( &fontOver );
 	dc->DrawText( s, r, DT_SINGLELINE | DT_CALCRECT );
 	dc->SelectObject( prevFont );
+	ReleaseDC( dc );
 	return CSize( r.Width(), r.Height() );
 }
 

@@ -286,6 +286,7 @@ BOOL RDOAbout::OnInitDialog()
 	MoveWindow( &rWindow );
 
 	dc->SelectObject( prevFont );
+	ReleaseDC( dc );
 
 	return true;
 }

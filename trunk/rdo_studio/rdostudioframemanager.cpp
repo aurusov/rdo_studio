@@ -287,8 +287,9 @@ void RDOStudioFrameManager::bmp_insert( const std::string& name )
 		iostream stream( &buf );
 		kernel.getRepository()->loadBMP( name, stream );
 
-		char* bmInfo = NULL;
-		char* pBits  = NULL;
+		char* bmInfo   = NULL;
+		char* pBits    = NULL;
+		CDC* desktopDC = NULL;
 
 		try {
 			// В потоке, перед битовой картой, идет заголовок файла битовой карты
@@ -360,6 +361,7 @@ void RDOStudioFrameManager::bmp_insert( const std::string& name )
 
 		if ( bmInfo ) delete bmInfo;
 		if ( pBits ) delete pBits;
+		if ( desktopDC ) CWnd::GetDesktopWindow()->ReleaseDC( desktopDC );
 	}
 }
 
@@ -398,13 +400,17 @@ void RDOStudioFrameManager::showFrame( const RDOFrame* const frame, const int in
 					view->frameBmpRect.right  = frame->width;
 					view->frameBmpRect.bottom = frame->height;
 				}
-				view->frameBmp.CreateCompatibleBitmap( view->GetDC(), view->frameBmpRect.Width(), view->frameBmpRect.Height() );
+				CDC* dc = view->GetDC();
+				view->frameBmp.CreateCompatibleBitmap( dc, view->frameBmpRect.Width(), view->frameBmpRect.Height() );
+				view->ReleaseDC( dc );
 				view->mustBeInit = false;
 				view->updateScrollBars();
 			}
 
 			CDC dc;
-			dc.CreateCompatibleDC( view->GetDC() );
+			CDC* viewDC = view->GetDC();
+			dc.CreateCompatibleDC( viewDC );
+			view->ReleaseDC( viewDC );
 			CBitmap* pOldBitmap = dc.SelectObject( &view->frameBmp );
 
 			if( !frame->hasBackPicture ) {
