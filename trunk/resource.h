@@ -86,6 +86,8 @@
 #define IDR_SMILE_KULT                  269
 #define IDR_SMILE_FIGA                  270
 #define IDD_ABOUT                       271
+#define IDR_EDIT_TOOLBAR                278
+#define IDB_EDIT_TOOLBAR_D              280
 #define IDC_USERNAME_EDIT               1000
 #define IDC_USERNAME_STATIC             1001
 #define IDC_USER_GROUPBOX               1003
@@ -163,6 +165,11 @@
 #define ID_USER_INGNORE                 32828
 #define ID_HELP_ABOUT                   32841
 #define ID_HELP_CONTENTS                32842
+#define ID_BUTTON32847                  32847
+#define ID_BUTTON32848                  32848
+#define ID_BUTTON32849                  32849
+#define ID_VIEW_EDITTOOLBAR             32850
+#define ID_VIEW_STATUSBAR               32851
 #define IDS_INFOSTATUSBAR               59394
 #define IDS_STATUSMODE_TOOLBAR          61204
 #define IDS_OPTIONS                     61205
@@ -191,14 +198,15 @@
 #define IDS_SENDMESSAGE_DIALOG          61228
 #define IDS_POPUPMESSAGE_WAVE           61229
 #define IDS_NO_HELP_FILE                61230
+#define IDS_EDIT_TOOLBAR                61231
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        272
-#define _APS_NEXT_COMMAND_VALUE         32843
+#define _APS_NEXT_RESOURCE_VALUE        281
+#define _APS_NEXT_COMMAND_VALUE         32852
 #define _APS_NEXT_CONTROL_VALUE         1057
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

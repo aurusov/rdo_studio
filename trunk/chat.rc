@@ -67,8 +67,9 @@ END
 IDB_STATUSMODE          BITMAP  DISCARDABLE     "res\\userstreectrl.bmp"
 IDB_SOUND               BITMAP  DISCARDABLE     "res\\sound.bmp"
 IDB_NET                 BITMAP  DISCARDABLE     "res\\net.bmp"
-IDB_STATISMODE_TOOLBAR_D BITMAP  DISCARDABLE     "res\\statusModeToolbar_d.bmp"
-IDB_MAIN_TOOLBAR_D      BITMAP  DISCARDABLE     "res\\mainToolbar_d.bmp"
+IDB_STATISMODE_TOOLBAR_D BITMAP  DISCARDABLE     "res\\toolbar_statusMode_d.bmp"
+IDB_MAIN_TOOLBAR_D      BITMAP  DISCARDABLE     "res\\toolbar_main_d.bmp"
+IDB_EDIT_TOOLBAR_D      BITMAP  DISCARDABLE     "res\\toolbar_edit_d.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -453,8 +454,9 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 // Bitmap
 //
 
-IDR_STATUSMODE_TOOLBAR  BITMAP  DISCARDABLE     "res\\statusModeToolbar.bmp"
-IDR_MAIN_TOOLBAR        BITMAP  DISCARDABLE     "res\\mainToolbar.bmp"
+IDR_STATUSMODE_TOOLBAR  BITMAP  DISCARDABLE     "res\\toolbar_statusMode.bmp"
+IDR_MAIN_TOOLBAR        BITMAP  DISCARDABLE     "res\\toolbar_main.bmp"
+IDR_EDIT_TOOLBAR        BITMAP  DISCARDABLE     "res\\toolbar_edit.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -472,9 +474,9 @@ BEGIN
     END
     POPUP "&Edit"
     BEGIN
-        MENUITEM "Cu&t",                        ID_EDIT_CUT
-        MENUITEM "&Copy",                       ID_EDIT_COPY
-        MENUITEM "&Paste",                      ID_EDIT_PASTE
+        MENUITEM "Cu&t\tCtrl+X",                ID_EDIT_CUT
+        MENUITEM "&Copy\tCtrl+C",               ID_EDIT_COPY
+        MENUITEM "&Paste\tCtrl+V",              ID_EDIT_PASTE
     END
     POPUP "&Status Mode"
     BEGIN
@@ -503,7 +505,9 @@ BEGIN
     BEGIN
         MENUITEM "&Dock Window",                ID_VIEW_DOCKWINDOW
         MENUITEM "&Main Toolbar",               ID_VIEW_MAINTOOLBAR
+        MENUITEM "&Edit Toolbar",               ID_VIEW_EDITTOOLBAR
         MENUITEM "&Status Mode Toolbar",        ID_VIEW_STATUSMODE_TOOLBAR
+        MENUITEM "Status &Bar",                 ID_VIEW_STATUSBAR
     END
     POPUP "&Help"
     BEGIN
@@ -541,6 +545,13 @@ BEGIN
     BUTTON      ID_USER_SENDMESSAGE
 END
 
+IDR_EDIT_TOOLBAR TOOLBAR DISCARDABLE  16, 15
+BEGIN
+    BUTTON      ID_EDIT_CUT
+    BUTTON      ID_EDIT_COPY
+    BUTTON      ID_EDIT_PASTE
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -551,7 +562,10 @@ IDR_MAINFRAME ACCELERATORS PRELOAD MOVEABLE PURE
 BEGIN
     "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
     "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL, NOINVERT
+    VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT, NOINVERT
     VK_F1,          ID_HELP_CONTENTS,       VIRTKEY, NOINVERT
+    VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
+    VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY, SHIFT, NOINVERT
     VK_RETURN,      ID_CHAT_TOCRYOUT,       VIRTKEY, CONTROL, NOINVERT
     "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL, NOINVERT
 END
@@ -564,8 +578,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,2,0,203
- PRODUCTVERSION 0,2,0,203
+ FILEVERSION 0,2,0,207
+ PRODUCTVERSION 0,2,0,207
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -583,14 +597,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "Application for chat in localnet\0"
-            VALUE "FileVersion", "0, 2, 0, 203\0"
+            VALUE "FileVersion", "0, 2, 0, 207\0"
             VALUE "InternalName", "localChat\0"
             VALUE "LegalCopyright", "Copyright (C) 2002\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "localchat.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "localChat\0"
-            VALUE "ProductVersion", "0, 2, 0, 203\0"
+            VALUE "ProductVersion", "0, 2, 0, 207\0"
             VALUE "SpecialBuild", "\0"
         END
     END
@@ -656,6 +670,7 @@ BEGIN
     IDS_SENDMESSAGE_DIALOG  "Send Message For %s"
     IDS_POPUPMESSAGE_WAVE   "Private message"
     IDS_NO_HELP_FILE        "Cannot find help file ""%s"".\r\nIt must be in the application's directory."
+    IDS_EDIT_TOOLBAR        "Edit"
 END
 
 STRINGTABLE DISCARDABLE 
@@ -683,6 +698,13 @@ STRINGTABLE DISCARDABLE
 BEGIN
     ID_SOUND                "\nSound On/Off"
     ID_USER_SENDMESSAGE     "\nSend Message"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_EDIT_COPY            "\nCopy (Ctrl+C)"
+    ID_EDIT_CUT             "\nCut (Ctrl+X)"
+    ID_EDIT_PASTE           "\nPaste (Ctrl+V)"
 END
 
 #endif    // English (U.S.) resources

@@ -86,14 +86,14 @@ bool CChatEdit::isSelected() const
 void CChatEdit::paste()
 {
 	if ( OpenClipboard() ) {
-		HGLOBAL mem = ::GetClipboardData( CF_OEMTEXT );
-		if ( mem ) {
-			LPTSTR lpstr = static_cast<LPTSTR>(::GlobalLock( mem ));
+		HGLOBAL global_str = ::GetClipboardData( CF_OEMTEXT );
+		if ( global_str ) {
+			LPTSTR lpstr = static_cast<LPTSTR>(::GlobalLock( global_str ));
 			if ( lpstr ) {
 				CString str( lpstr );
 				str.OemToAnsi();
-				SetWindowText( str );
-				::GlobalUnlock( mem );
+				ReplaceSel( str );
+				::GlobalUnlock( global_str );
 			}
 		}
 		CloseClipboard();

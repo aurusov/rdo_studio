@@ -99,6 +99,8 @@ BEGIN_MESSAGE_MAP( CChatMainFrame, CFrameWnd )
 	ON_UPDATE_COMMAND_UI(ID_VIEW_DOCKWINDOW, OnUpdateViewDockWindow)
 	ON_COMMAND(ID_VIEW_MAINTOOLBAR, OnViewMainToolbar)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_MAINTOOLBAR, OnUpdateViewMainToolbar)
+	ON_COMMAND(ID_VIEW_EDITTOOLBAR, OnViewEditToolbar)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_EDITTOOLBAR, OnUpdateViewEditToolbar)
 	ON_COMMAND(ID_VIEW_STATUSMODE_TOOLBAR, OnViewStatusModeToolbar)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_STATUSMODE_TOOLBAR, OnUpdateViewStatusModeToolbar)
 	ON_COMMAND(ID_SOUND, OnSound)
@@ -117,13 +119,15 @@ BEGIN_MESSAGE_MAP( CChatMainFrame, CFrameWnd )
 	ON_UPDATE_COMMAND_UI(ID_EDIT_CUT, OnUpdateEditCut)
 	ON_COMMAND(ID_EDIT_COPY, OnEditCopy)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_COPY, OnUpdateEditCopy)
+	ON_COMMAND(ID_EDIT_PASTE, OnEditPaste)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_PASTE, OnUpdateEditPaste)
 	ON_COMMAND( ID_TRAYMENU_EXIT, OnTrayCloseApp )
 	ON_UPDATE_COMMAND_UI( ID_STATUSMODE_AWAY        , OnUpdateStatusMode )
 	ON_UPDATE_COMMAND_UI( ID_STATUSMODE_NOTAVAILIBLE, OnUpdateStatusMode )
 	ON_UPDATE_COMMAND_UI( ID_STATUSMODE_AWAY_INFO        , OnUpdateStatusModeInfo )
 	ON_UPDATE_COMMAND_UI( ID_STATUSMODE_NOTAVAILIBLE_INFO, OnUpdateStatusModeInfo )
-	ON_COMMAND(ID_EDIT_PASTE, OnEditPaste)
-	ON_UPDATE_COMMAND_UI(ID_EDIT_PASTE, OnUpdateEditPaste)
+	ON_COMMAND(ID_VIEW_STATUSBAR, OnViewStatusBar)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_STATUSBAR, OnUpdateViewStatusBar)
 	//}}AFX_MSG_MAP
 	ON_COMMAND_EX( ID_STATUSMODE_ONLINE      , OnStatusMode )
 	ON_COMMAND_EX( ID_STATUSMODE_AWAY        , OnStatusMode )
@@ -195,6 +199,13 @@ int CChatMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	mainToolBarImageList.Create( IDB_MAIN_TOOLBAR_D, 16, 0, 0xFF00FF );
 	mainToolBar.GetToolBarCtrl().SetDisabledImageList( &mainToolBarImageList );
 
+	editToolBar.CreateEx( this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
+	editToolBar.LoadToolBar( IDR_EDIT_TOOLBAR );
+	editToolBar.GetToolBarCtrl().SetWindowText( format( IDS_EDIT_TOOLBAR ).c_str() );
+
+	editToolBarImageList.Create( IDB_EDIT_TOOLBAR_D, 16, 0, 0xFF00FF );
+	editToolBar.GetToolBarCtrl().SetDisabledImageList( &editToolBarImageList );
+
 	statusModeToolBar.CreateEx( this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
 	statusModeToolBar.LoadToolBar( IDR_STATUSMODE_TOOLBAR );
 	statusModeToolBar.GetToolBarCtrl().SetWindowText( format( IDS_STATUSMODE_TOOLBAR ).c_str() );
@@ -205,19 +216,17 @@ int CChatMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	statusBar.Create( this );
 	statusBar.SetIndicators( indicators, 1 );
 	statusBar.SetPaneInfo( 0, IDS_INFOSTATUSBAR, SBPS_STRETCH, 70 );
-//	statusBar.SetPaneInfo( 0, ID_COORDSTATUSBAR          , SBPS_NORMAL , 70 );
-//	statusBar.SetPaneInfo( 1, ID_MODIFYSTATUSBAR         , SBPS_NORMAL , 70 );
-//	statusBar.SetPaneInfo( 2, ID_INSERTOVERWRITESTATUSBAR, SBPS_NORMAL , 70 );
-//	statusBar.SetPaneInfo( 3, ID_INFOSTATUSBAR           , SBPS_STRETCH, 70 );
 
 	mainToolBar.EnableDocking( CBRS_ALIGN_ANY );
+	editToolBar.EnableDocking( CBRS_ALIGN_ANY );
 	statusModeToolBar.EnableDocking( CBRS_ALIGN_ANY );
 	dock.EnableDocking( CBRS_ALIGN_ANY );
 
 	EnableDocking( CBRS_ALIGN_ANY );
 
 	DockControlBar( &mainToolBar );
-	dockControlBarBesideOf( statusModeToolBar, mainToolBar );
+	dockControlBarBesideOf( editToolBar, mainToolBar );
+	dockControlBarBesideOf( statusModeToolBar, editToolBar );
 	DockControlBar( &dock, AFX_IDW_DOCKBAR_LEFT );
 
 	closeButtonAction    = (CChatCloseButtonAction)chatApp.GetProfileInt( "General", "closeButtonAction", CCBA_Tray );
@@ -232,6 +241,8 @@ int CChatMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	useAutoNotAvailible    = chatApp.GetProfileInt( "AutoStatusMode", "useAutoNotAvailible", true ) ? true : false;
 	autoNotAvailibleMinuts = chatApp.GetProfileInt( "AutoStatusMode", "autoNotAvailibleMinuts", 7 );
 	setUseAutoAway( useAutoAway );
+
+	childView.SetFocus();
 
 	return 0;
 }
@@ -357,11 +368,6 @@ void CChatMainFrame::modifyTray()
 	}
 }
 
-bool CChatMainFrame::getUseAutoAway() const
-{
-	return useAutoAway;
-}
-
 void CChatMainFrame::setUseAutoAway( const bool value )
 {
 	if ( useAutoAway != value ) {
@@ -373,11 +379,6 @@ void CChatMainFrame::setUseAutoAway( const bool value )
 	} else {
 		stopAutoStatusModeTimer();
 	}
-}
-
-int  CChatMainFrame::getAutoAwayMinuts() const
-{
-	return autoAwayMinuts;
 }
 
 void CChatMainFrame::setAutoAwayMinuts( const int minuts )
@@ -393,22 +394,12 @@ void CChatMainFrame::setAutoAwayMinuts( const int minuts )
 	}
 }
 
-bool CChatMainFrame::getUseAutoNotAvailible() const
-{
-	return useAutoNotAvailible;
-}
-
 void CChatMainFrame::setUseAutoNotAvailible( const bool value )
 {
 	if ( useAutoNotAvailible != value ) {
 		useAutoNotAvailible = value;
 		chatApp.WriteProfileInt( "AutoStatusMode", "useAutoNotAvailible", useAutoNotAvailible );
 	}
-}
-
-int  CChatMainFrame::getAutoNotAvailibleMinuts() const
-{
-	return autoNotAvailibleMinuts;
 }
 
 void CChatMainFrame::setAutoNotAvailibleMinuts( const int minuts )
@@ -434,11 +425,6 @@ void CChatMainFrame::stopAutoStatusModeTimer()
 		awayTimer = 0;
 		resetAutoStatusMode();
 	}
-}
-
-bool CChatMainFrame::isAutoStatusMode() const
-{
-	return wasAutoChanged;
 }
 
 void CChatMainFrame::restoreStatusMode()
@@ -479,6 +465,8 @@ void CChatMainFrame::OnTimer( UINT nIDEvent )
 		if ( change_flag ) {
 			if ( isAutoStatusMode() ) {
 				restoreStatusMode();
+			} else {
+				resetAutoStatusMode();
 			}
 		} else {
 			idle_sec++;
@@ -607,11 +595,6 @@ bool CChatMainFrame::isActive()
 	return CWnd::GetActiveWindow() == this;
 }
 
-CChatCloseButtonAction CChatMainFrame::getCloseButtonAction() const
-{
-	return closeButtonAction;
-}
-
 void CChatMainFrame::setCloseButtonAction( const CChatCloseButtonAction value )
 {
 	if ( closeButtonAction != value ) {
@@ -620,22 +603,12 @@ void CChatMainFrame::setCloseButtonAction( const CChatCloseButtonAction value )
 	}
 }
 
-CChatMinimizeButtonAction CChatMainFrame::getMinimizeButtonAction() const
-{
-	return minimizeButtonAction;
-}
-
 void CChatMainFrame::setMinimizeButtonAction( const CChatMinimizeButtonAction value )
 {
 	if ( minimizeButtonAction != value ) {
 		minimizeButtonAction = value;
 		chatApp.WriteProfileInt( "General", "minimizeButtonAction", minimizeButtonAction );
 	}
-}
-
-bool CChatMainFrame::getUseTray() const
-{
-	return useTray;
 }
 
 void CChatMainFrame::setUseTray( const bool value )
@@ -649,11 +622,6 @@ void CChatMainFrame::setUseTray( const bool value )
 	} else {
 		closeTray();
 	}
-}
-
-bool CChatMainFrame::getNotifyAboutMessage() const
-{
-	return notifyAboutMessage;
 }
 
 void CChatMainFrame::setNotifyAboutMessage( const bool value )
@@ -719,6 +687,16 @@ void CChatMainFrame::OnUpdateViewMainToolbar(CCmdUI* pCmdUI)
 	pCmdUI->SetCheck( mainToolBar.GetStyle() & WS_VISIBLE );
 }
 
+void CChatMainFrame::OnViewEditToolbar()
+{
+	ShowControlBar( &editToolBar, !(editToolBar.GetStyle() & WS_VISIBLE), false );
+}
+
+void CChatMainFrame::OnUpdateViewEditToolbar(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetCheck( editToolBar.GetStyle() & WS_VISIBLE );
+}
+
 void CChatMainFrame::OnViewStatusModeToolbar()
 {
 	ShowControlBar( &statusModeToolBar, !(statusModeToolBar.GetStyle() & WS_VISIBLE), false );
@@ -727,6 +705,16 @@ void CChatMainFrame::OnViewStatusModeToolbar()
 void CChatMainFrame::OnUpdateViewStatusModeToolbar(CCmdUI* pCmdUI)
 {
 	pCmdUI->SetCheck( statusModeToolBar.GetStyle() & WS_VISIBLE );
+}
+
+void CChatMainFrame::OnViewStatusBar()
+{
+	ShowControlBar( &statusBar, !(statusBar.GetStyle() & WS_VISIBLE), false );
+}
+
+void CChatMainFrame::OnUpdateViewStatusBar(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetCheck( statusBar.GetStyle() & WS_VISIBLE );
 }
 
 void CChatMainFrame::OnSound()
@@ -892,5 +880,5 @@ void CChatMainFrame::OnEditPaste()
 
 void CChatMainFrame::OnUpdateEditPaste(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable( &childView.edit == GetFocus() );
+	pCmdUI->Enable( &childView.edit == GetFocus() && ::IsClipboardFormatAvailable( CF_TEXT ) );
 }

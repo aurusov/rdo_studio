@@ -630,22 +630,23 @@ void CChatViewer::OnPaint()
 
 bool CChatViewer::isSelected() const
 {
-	return selectedLine != -1;
+	return selectedLine >= 0 && selectedLine < strings.count();
 }
 
 void CChatViewer::copy()
 {
-	if ( OpenClipboard() ) {
+	if ( isSelected() && OpenClipboard() ) {
 		::EmptyClipboard();
-		HGLOBAL mem = ::GlobalAlloc( GHND, strings[selectedLine]->getString().length() + 1 );
+		HGLOBAL global_data = ::GlobalAlloc( GHND, strings[selectedLine]->getString().length() + 1 );
+		char* mem = static_cast<char*>(::GlobalLock( global_data ));
 		memcpy( mem, strings[selectedLine]->getString().c_str(), strings[selectedLine]->getString().length() );
-		::SetClipboardData( CF_TEXT, ::GlobalLock( mem ) );
-		LCID* lcid = reinterpret_cast<DWORD*>(GlobalAlloc( GMEM_MOVEABLE, sizeof(DWORD) ));
+		::SetClipboardData( CF_TEXT, mem );
+		HGLOBAL global_lcid = ::GlobalAlloc( GMEM_MOVEABLE, sizeof(DWORD) );
+		LCID* lcid = static_cast<LCID*>(::GlobalLock( global_lcid ));
 		*lcid = MAKELCID( MAKELANGID(LANG_RUSSIAN, SUBLANG_NEUTRAL), SORT_DEFAULT );
-		SetClipboardData( CF_LOCALE, reinterpret_cast<HANDLE>(lcid) );
+		SetClipboardData( CF_LOCALE, lcid );
 		CloseClipboard();
-		if ( ::GlobalUnlock( mem ) ) {
-			::GlobalFree( mem );
-		}
+		::GlobalUnlock( global_data );
+		::GlobalUnlock( global_lcid );
 	}
 }

@@ -29,6 +29,8 @@ class CChatMainFrame: public CFrameWnd
 private:
 	CToolBar       mainToolBar;
 	CImageList     mainToolBarImageList;
+	CToolBar       editToolBar;
+	CImageList     editToolBarImageList;
 	CToolBar       statusModeToolBar;
 	CImageList     statusModeToolBarImageList;
 	CStatusBar     statusBar;
@@ -82,26 +84,26 @@ public:
 	bool isVisible() const;
 	bool isActive();
 
-	CChatCloseButtonAction getCloseButtonAction() const;
+	CChatCloseButtonAction getCloseButtonAction() const              { return closeButtonAction;    }
 	void setCloseButtonAction( const CChatCloseButtonAction value );
 
-	CChatMinimizeButtonAction getMinimizeButtonAction() const;
+	CChatMinimizeButtonAction getMinimizeButtonAction() const        { return minimizeButtonAction; }
 	void setMinimizeButtonAction( const CChatMinimizeButtonAction value );
 
-	bool getUseTray() const;
+	bool getUseTray() const               { return useTray;            }
 	void setUseTray( const bool value );
-	bool getNotifyAboutMessage() const;
+	bool getNotifyAboutMessage() const    { return notifyAboutMessage; }
 	void setNotifyAboutMessage( const bool value );
 
-	bool getUseAutoAway() const;
+	bool getUseAutoAway() const                         { return useAutoAway;            }
 	void setUseAutoAway( const bool value );
-	int  getAutoAwayMinuts() const;
+	int  getAutoAwayMinuts() const                      { return autoAwayMinuts;         }
 	void setAutoAwayMinuts( const int minuts );
-	bool getUseAutoNotAvailible() const;
+	bool getUseAutoNotAvailible() const                 { return useAutoNotAvailible;    }
 	void setUseAutoNotAvailible( const bool value );
-	int  getAutoNotAvailibleMinuts() const;
+	int  getAutoNotAvailibleMinuts() const              { return autoNotAvailibleMinuts; }
 	void setAutoNotAvailibleMinuts( const int minuts );
-	bool isAutoStatusMode() const;
+	bool isAutoStatusMode() const                       { return wasAutoChanged;         }
 	void restoreStatusMode();
 	void resetAutoStatusMode();
 
@@ -136,8 +138,12 @@ protected:
 	afx_msg void OnUpdateViewDockWindow(CCmdUI* pCmdUI);
 	afx_msg void OnViewMainToolbar();
 	afx_msg void OnUpdateViewMainToolbar(CCmdUI* pCmdUI);
+	afx_msg void OnViewEditToolbar();
+	afx_msg void OnUpdateViewEditToolbar(CCmdUI* pCmdUI);
 	afx_msg void OnViewStatusModeToolbar();
 	afx_msg void OnUpdateViewStatusModeToolbar(CCmdUI* pCmdUI);
+	afx_msg void OnViewStatusBar();
+	afx_msg void OnUpdateViewStatusBar(CCmdUI* pCmdUI);
 	afx_msg void OnSound();
 	afx_msg void OnUpdateSound(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateStatusMode( CCmdUI* pCmdUI );

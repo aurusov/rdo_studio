@@ -380,6 +380,10 @@ SOURCE=.\res\disconnect.wav
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\edit_too.bmp
+# End Source File
+# Begin Source File
+
 SOURCE=.\res\gif1.bin
 # End Source File
 # Begin Source File
@@ -649,6 +653,18 @@ SOURCE=.\res\statusModeToolbar.bmp
 # Begin Source File
 
 SOURCE=.\res\statusModeToolbar_d.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\toolbar_edit.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\toolbar_edit_d.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\toolbar_main.bmp
 # End Source File
 # Begin Source File
 
