@@ -37,14 +37,14 @@ private:
 	static void closeModelNotify();
 	static void canNotCloseModelNotify();
 
-	static void runModelNotify();
+	static void beforeModelStartNotify();
+	static void afterModelStartNotify();
 	static void stopModelNotify();
 	static void parseErrorModelNotify();
+	static void showFrameNotify();
+
 	static void buildNotify( std::string str );
 	static void debugNotify( std::string str );
-
-	static void parseSuccessNotify();
-	static void showFrameNotify();
 
 	void newModelFromRepository();
 	void openModelFromRepository();
@@ -52,8 +52,8 @@ private:
 	void closeModelFromRepository();
 	void canNotCloseModelFromRepository() const;
 
-	void parseSuccess();
-	void parseFrame();
+	void beforeModelStart();
+	void showFrame();
 
 public:
 	RDOStudioModel();

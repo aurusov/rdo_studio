@@ -42,15 +42,15 @@ RDOStudioModel::RDOStudioModel():
 	kernel.setNotifyReflect( RDOKernel::closeModel, closeModelNotify );
 	kernel.setNotifyReflect( RDOKernel::canNotCloseModel, canNotCloseModelNotify );
 
-	kernel.setNotifyReflect( RDOKernel::modelStarted, runModelNotify );
+	kernel.setNotifyReflect( RDOKernel::beforeModelStart, beforeModelStartNotify );
+	kernel.setNotifyReflect( RDOKernel::afterModelStart, afterModelStartNotify );
 	kernel.setNotifyReflect( RDOKernel::endExecuteModel, stopModelNotify );
 	kernel.setNotifyReflect( RDOKernel::modelStopped, stopModelNotify );
 	kernel.setNotifyReflect( RDOKernel::parseError, parseErrorModelNotify );
+	kernel.setNotifyReflect( RDOKernel::showFrame, showFrameNotify );
+
 	kernel.setNotifyReflect( RDOKernel::buildString, buildNotify );
 	kernel.setNotifyReflect( RDOKernel::debugString, debugNotify );
-
-	kernel.setNotifyReflect( RDOKernel::parseSuccess, parseSuccessNotify );
-	kernel.setNotifyReflect( RDOKernel::showFrame, showFrameNotify );
 }
 
 RDOStudioModel::~RDOStudioModel()
@@ -160,7 +160,24 @@ void RDOStudioModel::canNotCloseModelNotify()
 	model->canNotCloseModelFromRepository();
 }
 
-void RDOStudioModel::runModelNotify()
+void RDOStudioModel::beforeModelStartNotify()
+{
+	model->beforeModelStart();
+}
+
+void RDOStudioModel::beforeModelStart()
+{
+	frameManager.clear();
+	vector< const string* > frames = kernel.getSimulator()->getAllFrames();
+	vector< const string* >::iterator it = frames.begin();
+	while ( it != frames.end() ) {
+		frameManager.insertItem( *(*it) );
+		it++;
+	}
+	frameManager.expand();
+}
+
+void RDOStudioModel::afterModelStartNotify()
 {
 	studioApp.mainFrame->output.clearDebug();
 	studioApp.mainFrame->output.showDebug();
@@ -192,6 +209,11 @@ void RDOStudioModel::parseErrorModelNotify()
 	}
 }
 
+void RDOStudioModel::showFrameNotify()
+{
+	model->showFrame();
+}
+
 void RDOStudioModel::buildNotify( string str )
 {
 	studioApp.mainFrame->output.appendStringToBuild( str );
@@ -200,16 +222,6 @@ void RDOStudioModel::buildNotify( string str )
 void RDOStudioModel::debugNotify( string str )
 {
 	studioApp.mainFrame->output.appendStringToDebug( str );
-}
-
-void RDOStudioModel::showFrameNotify()
-{
-	model->parseFrame();
-}
-
-void RDOStudioModel::parseSuccessNotify()
-{
-	model->parseSuccess();
 }
 
 RDOStudioModelDoc* RDOStudioModel::getModelDoc() const
@@ -452,19 +464,7 @@ double RDOStudioModel::getModelTime() const
 	return 0;
 }
 
-void RDOStudioModel::parseSuccess()
-{
-	frameManager.clear();
-	vector< const string* > frames = kernel.getSimulator()->getAllFrames();
-	vector< const string* >::iterator it = frames.begin();
-	while ( it != frames.end() ) {
-		frameManager.insertItem( *(*it) );
-		it++;
-	}
-	frameManager.expand();
-}
-
-void RDOStudioModel::parseFrame()
+void RDOStudioModel::showFrame()
 {
 	const RDOFrame* frame = kernel.getSimulator()->getFrame();
 	int frame_index = 0;
