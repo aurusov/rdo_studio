@@ -24,13 +24,42 @@ typedef void (*OnNotifyString)( string );
 
 class RDOKernel
 {
+public:
+	enum NotifyType       {
+		// these notifies sent by "Repository"
+		newModel,			// when repository created a new model
+		openModel,          // when repository opened exist model
+		saveModel,			// when repository saved current model
+		closeModel,			// when repository closed current model
+		canNotCloseModel,   // when repository can not close current model ('canCloseModel' notify returns 'false' value)
+
+		parseModel,
+		executeModel,
+		stopModel, 
+		// AB 21.02.03 // these notifies sent by "RdoSimulator"
+		parseError,				// on parse error
+		modelStarted, 			// when model successfully parsed and started
+		endExecuteModel,		// successfully end modelling
+		modelStopped };		// model externally stopped 
+
+	enum BoolNotifyType   {
+		// these notifies sent by "Repository"
+		canCloseModel		// repository send this 'bool' notify before closing current model (before 'closeModel' notify). You can return 'false' value for stop closing.
+	};
+
+	enum NotifyStringType {
+		buildString,
+		debugString,
+		traceString
+	};
+
 private:
 	RDORepository* repository;
 	RdoSimulator*  simulator;
 
-	typedef multimap< int, OnNotify >       onNotifyListType;
-	typedef multimap< int, OnBoolNotify >   onBoolNotifyListType;
-	typedef multimap< int, OnNotifyString > onNotifyStringListType;
+	typedef multimap< NotifyType, OnNotify >             onNotifyListType;
+	typedef multimap< BoolNotifyType, OnBoolNotify >     onBoolNotifyListType;
+	typedef multimap< NotifyStringType, OnNotifyString > onNotifyStringListType;
 
 	onNotifyListType       onNotify_list;
 	onBoolNotifyListType   onBoolNotify_list;
@@ -43,24 +72,16 @@ public:
 	RDORepository* getRepository();
 	RdoSimulator*  getSimulator();
 
-	enum NotifyType       { newModel, openModel, saveModel, closeModel, canNotCloseModel, parseModel, executeModel, stopModel, 
-		// AB 21.02.03 // these notifies sent by "RdoSimulator"
-		parseError,				// on parse error
-		modelStarted, 			// when model successfully parsed and started
-		endExecuteModel,		// successfully end modelling
-		modelStopped };		// model externally stopped 
-
-	enum BoolNotifyType   { canCloseModel };
-	enum NotifyStringType { buildString, debugString, traceString };
-
 	void setNotifyReflect( NotifyType notifyType, OnNotify fun );
 	void setNotifyReflect( BoolNotifyType notifyType, OnBoolNotify fun );
 	void setNotifyReflect( NotifyStringType notifyType, OnNotifyString fun );
 
-	void onNotify( NotifyType notifyType ) const;
-	bool onBoolNotifyAnd( BoolNotifyType notifyType ) const;
-	bool onBoolNotifyOr( BoolNotifyType notifyType ) const;
-	void onNotifyString( NotifyStringType notifyType, string str ) const;
+	void notify( NotifyType notifyType ) const;
+	bool boolNotifyAnd( BoolNotifyType notifyType ) const;
+	bool boolNotifyOr( BoolNotifyType notifyType ) const;
+	void notifyString( NotifyStringType notifyType, string str ) const;
+
+	void debug( const char* str, ... );
 };
 
 // ----------------------------------------------------------------------------

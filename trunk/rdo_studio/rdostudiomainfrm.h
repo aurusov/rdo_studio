@@ -49,6 +49,9 @@ protected:
 	afx_msg void OnUpdateInsertOverwriteStatusBar( CCmdUI *pCmdUI );
 	DECLARE_MESSAGE_MAP()
 
+private:
+	static void debugNotify( string str );
+
 protected:
 	CToolBar           projectToolBar;
 	CImageList         projectToolBarImageList;

@@ -105,3 +105,8 @@ void RDOStudioOutput::showResults()
 {
 	results->SetFocus();
 }
+
+void RDOStudioOutput::appendStringToDebug( const string& str )
+{
+	debug->appendText( str );
+}

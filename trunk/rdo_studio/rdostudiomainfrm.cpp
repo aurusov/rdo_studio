@@ -7,6 +7,8 @@
 #include "rdo_edit/rdoeditoredit.h"
 #include "resource.h"
 
+#include <rdokernel.h>
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -99,6 +101,8 @@ int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	DockControlBar( &output, AFX_IDW_DOCKBAR_BOTTOM );
 
 	trace.registerClipboardFormat();
+
+	kernel.setNotifyReflect( RDOKernel::debugString, debugNotify );
 
 	return 0;
 }
@@ -248,4 +252,9 @@ void RDOStudioMainFrame::OnUpdateInsertOverwriteStatusBar( CCmdUI *pCmdUI )
 		}
 	}
 	pCmdUI->SetText( str );
+}
+
+void RDOStudioMainFrame::debugNotify( string str )
+{
+	((RDOStudioMainFrame*)AfxGetMainWnd())->output.appendStringToDebug( str );
 }

@@ -25,8 +25,8 @@ UINT RunningThreadControllingFunction( LPVOID pParam )
 	RdoSimulator *simulator = (RdoSimulator *)pParam;
 	simulator->model->executeModel(NULL, NULL, pParam);
 
-	kernel.onNotify(RDOKernel::endExecuteModel);
-	kernel.onNotifyString( RDOKernel::debugString, "End execute model" );
+	kernel.notify(RDOKernel::endExecuteModel);
+	kernel.notifyString( RDOKernel::debugString, "End execute model" );
 
 	return 0;
 }
@@ -39,13 +39,13 @@ RdoSimulator::runModel(string smrFileName)
 	bool res = model->parseModel(smrFileName);
 	if(!res)
 	{
-		kernel.onNotify(RDOKernel::parseError);
-		kernel.onNotifyString( RDOKernel::buildString, model->getConsole() );
+		kernel.notify(RDOKernel::parseError);
+		kernel.notifyString( RDOKernel::buildString, model->getConsole() );
 	}
 	else
 	{
-		kernel.onNotify(RDOKernel::modelStarted);
-		kernel.onNotifyString( RDOKernel::debugString, "Start execute model" );
+		kernel.notify(RDOKernel::modelStarted);
+		kernel.notifyString( RDOKernel::debugString, "Start execute model" );
 		th = AfxBeginThread(RunningThreadControllingFunction, (LPVOID)this);
 	}
 }
@@ -53,7 +53,7 @@ RdoSimulator::runModel(string smrFileName)
 RdoSimulator::stopModel()
 {
 	terminateModel();
-	kernel.onNotify(RDOKernel::modelStopped);
+	kernel.notify(RDOKernel::modelStopped);
 }
 
 RdoSimulator::terminateModel()

@@ -114,8 +114,6 @@ BEGIN_MESSAGE_MAP( RDOEditorEdit, RDOEditorSciEdit )
 
 END_MESSAGE_MAP()
 
-int RDOEditorEdit::objectCount = 0;
-
 RDOEditorEdit::RDOEditorEdit( RDOStudioEditBaseView* _view ):
 	RDOEditorSciEdit(),
 	bufSelStart( -1 ),

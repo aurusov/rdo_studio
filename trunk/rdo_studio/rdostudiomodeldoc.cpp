@@ -64,13 +64,14 @@ void RDOStudioModelDoc::Dump(CDumpContext& dc) const
 
 void RDOStudioModelDoc::OnRdoRun() 
 {
-	kernel.getSimulator()->runModel( kernel.getRepository()->getFullName() );
+	kernel.debug( "x = %d, y = %d, str = %s\r\n", 2, 80, "ssss" );
+//	kernel.getSimulator()->runModel( kernel.getRepository()->getFullName() );
 //	trace.startTrace();
 }
 
 void RDOStudioModelDoc::OnRdoStop() 
 {
-	kernel.getSimulator()->stopModel();
+//	kernel.getSimulator()->stopModel();
 //	trace.stopTrace();
 }
 

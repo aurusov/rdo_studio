@@ -33,9 +33,9 @@ void RDORepositoryFile::newModel()
 		modelName = "model";
 		modelPath = "";
 		changeLastModelPath();
-		kernel.onNotify( RDOKernel::newModel );
+		kernel.notify( RDOKernel::newModel );
 	} else {
-		kernel.onNotify( RDOKernel::canNotCloseModel );
+		kernel.notify( RDOKernel::canNotCloseModel );
 	}
 }
 
@@ -65,7 +65,7 @@ bool RDORepositoryFile::openModel( const string& modelFileName )
 			if ( isFileExists( modelPath + modelName + ".smr" ) ) {
 //				RDOSMRFileInfo fileInfo;
 //				kernel.getSimulator()->parseSMRFileInfo( 
-				kernel.onNotify( RDOKernel::openModel );
+				kernel.notify( RDOKernel::openModel );
 				return true;
 			} else {
 				CString s;
@@ -76,7 +76,7 @@ bool RDORepositoryFile::openModel( const string& modelFileName )
 		}
 
 	} else {
-		kernel.onNotify( RDOKernel::canNotCloseModel );
+		kernel.notify( RDOKernel::canNotCloseModel );
 	}
 
 	return false;
@@ -89,14 +89,14 @@ void RDORepositoryFile::saveModel()
 		flag = saveAsDlg();
 	}
 	if ( flag ) {
-		kernel.onNotify( RDOKernel::saveModel );
+		kernel.notify( RDOKernel::saveModel );
 	}
 }
 
 void RDORepositoryFile::saveAsModel()
 {
 	if ( saveAsDlg() ) {
-		kernel.onNotify( RDOKernel::saveModel );
+		kernel.notify( RDOKernel::saveModel );
 	}
 }
 
@@ -120,12 +120,12 @@ bool RDORepositoryFile::saveAsDlg()
 
 bool RDORepositoryFile::canCloseModel() const
 {
-	return kernel.onBoolNotifyAnd( RDOKernel::canCloseModel );
+	return kernel.boolNotifyAnd( RDOKernel::canCloseModel );
 }
 
 void RDORepositoryFile::realCloseModel()
 {
-	kernel.onNotify( RDOKernel::closeModel );
+	kernel.notify( RDOKernel::closeModel );
 	modelName = "";
 	modelPath = "";
 	changeLastModelPath();
@@ -136,7 +136,7 @@ void RDORepositoryFile::closeModel()
 	if ( canCloseModel() ) {
 		realCloseModel();
 	} else {
-		kernel.onNotify( RDOKernel::canNotCloseModel );
+		kernel.notify( RDOKernel::canNotCloseModel );
 	}
 }
 

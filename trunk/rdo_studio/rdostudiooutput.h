@@ -43,6 +43,8 @@ public:
 	void showTracer();
 	void showResults();
 
+	void appendStringToDebug( const string& str );
+
 public:
 	//{{AFX_VIRTUAL(RDOStudioOutput)
 	public:

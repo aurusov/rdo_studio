@@ -3,6 +3,9 @@
 #include <rdorepository.h>
 #include <rdosimwin.h>
 
+#include <stdio.h>
+#include <stdarg.h>
+
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioKernel
 // ----------------------------------------------------------------------------
@@ -84,7 +87,7 @@ void RDOKernel::setNotifyReflect( NotifyStringType notifyType, OnNotifyString fu
 	}
 }
 
-void RDOKernel::onNotify( NotifyType notifyType ) const
+void RDOKernel::notify( NotifyType notifyType ) const
 {
 	onNotifyListType::const_iterator it = onNotify_list.lower_bound( notifyType );
 	while ( it != onNotify_list.upper_bound( notifyType ) ) {
@@ -93,7 +96,7 @@ void RDOKernel::onNotify( NotifyType notifyType ) const
 	}
 }
 
-bool RDOKernel::onBoolNotifyAnd( BoolNotifyType notifyType ) const
+bool RDOKernel::boolNotifyAnd( BoolNotifyType notifyType ) const
 {
 	onBoolNotifyListType::const_iterator it = onBoolNotify_list.lower_bound( notifyType );
 	while ( it != onBoolNotify_list.upper_bound( notifyType ) ) {
@@ -105,7 +108,7 @@ bool RDOKernel::onBoolNotifyAnd( BoolNotifyType notifyType ) const
 	return true;
 }
 
-bool RDOKernel::onBoolNotifyOr( BoolNotifyType notifyType ) const
+bool RDOKernel::boolNotifyOr( BoolNotifyType notifyType ) const
 {
 	bool flag = true;
 	onBoolNotifyListType::const_iterator it = onBoolNotify_list.lower_bound( notifyType );
@@ -120,11 +123,30 @@ bool RDOKernel::onBoolNotifyOr( BoolNotifyType notifyType ) const
 	return flag;
 }
 
-void RDOKernel::onNotifyString( NotifyStringType notifyType, string str ) const
+void RDOKernel::notifyString( NotifyStringType notifyType, string str ) const
 {
 	onNotifyStringListType::const_iterator it = onNotifyString_list.lower_bound( notifyType );
 	while ( it != onNotifyString_list.upper_bound( notifyType ) ) {
 		(*it).second( str );
 		it++;
 	}
+}
+
+void RDOKernel::debug( const char* str, ... )
+{
+	string s;
+	s.resize( 1024 );
+	va_list paramList;
+	va_start( paramList, str );
+	int size = _vsnprintf( (char*)s.data(), s.size(), str, paramList );
+	va_end( paramList );
+	if ( size > 0 ) {
+		s.resize( size );
+		va_start( paramList, str );
+		_vsnprintf( (char*)s.data(), size, str, paramList );
+		va_end( paramList );
+	} else {
+		s = "";
+	}
+	notifyString( debugString, s );
 }

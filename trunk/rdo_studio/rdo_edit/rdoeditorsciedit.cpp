@@ -1208,6 +1208,11 @@ void RDOEditorSciEdit::replaceCurrent( const CString str, const int changePosVal
 	}
 }
 
+void RDOEditorSciEdit::appendText( const string& str ) const
+{
+	sendEditor( SCI_INSERTTEXT, getLength(), (long)str.c_str() );
+}
+
 void RDOEditorSciEdit::setCurrentPos( const int value ) const
 {
 	sendEditor( SCI_SETCURRENTPOS, value );

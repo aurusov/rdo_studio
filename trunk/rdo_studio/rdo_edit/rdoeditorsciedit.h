@@ -154,6 +154,7 @@ public:
 	void clearUndoBuffer() const                           { sendEditor( SCI_EMPTYUNDOBUFFER ); };
 
 	void replaceCurrent( const CString str, const int changePosValue = -1 ) const;
+	void appendText( const string& str ) const;
 
 	bool isReadOnly() const                                { return sendEditor( SCI_GETREADONLY ) ? true : false;  };
 	void setReadOnly( const bool value ) const             { sendEditor( SCI_SETREADONLY, value );                 };
