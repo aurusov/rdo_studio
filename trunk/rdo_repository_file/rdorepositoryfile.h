@@ -47,7 +47,7 @@ private:
 	void setName( const std::string& str );
 
 	void loadFile( const std::string& filename, std::stringstream& stream ) const;
-	void saveFile( const std::string& filename, std::stringstream& stream, const bool deleteIfEmpty = true ) const;
+	void saveFile( const std::string& filename, std::stringstream& stream, const bool deleteIfEmpty = false ) const;
 
 	void changeLastModelPath();
 
