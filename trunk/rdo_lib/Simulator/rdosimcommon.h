@@ -123,15 +123,19 @@ struct RDOLineElement: public RDOBoundedElement, public RDOFrameElement
 
 struct RDOSBmpElement: public RDOBoundedElement, public RDOFrameElement
 {
-	string bmp, map;
-	RDOSBmpElement(double _x, double _y, double _w, double _h, string &_bmp, string &_map);
+	bool hasMask;
+	string bmp, mask;
+	RDOSBmpElement(double _x, double _y, double _w, double _h, string &_bmp, string &_mask);
+	RDOSBmpElement(double _x, double _y, double _w, double _h, string &_bmp);
 };
 
 struct RDOBitmapElement: public RDOFrameElement
 {
-	string bmp, map;
+	bool hasMask;
+	string bmp, mask;
 	double x, y;
-	RDOBitmapElement(double _x, double _y, string &_bmp, string &_map);
+	RDOBitmapElement(double _x, double _y, string &_bmp, string &_mask);
+	RDOBitmapElement(double _x, double _y, string &_bmp);
 };
 
 struct RDOActiveElement: public RDOBoundedElement, public RDOFrameElement

@@ -470,6 +470,22 @@ RDOFUNArithm::RDOFUNArithm(string *s)
 		return;
 	}
 
+	const RDOFUNSequence *seq = currParser->findSequence(s);
+	if(seq != NULL && param != NULL)
+		currParser->error("Ambiguity: sequence or parameter usage: " + *s + " ?");
+
+	if(seq != NULL)
+	{
+		RDOFUNParams tmp;
+		const RDOFUNArithm *ar = tmp.createSeqCall(s);
+		type = ar->getType();
+		if(type == 2)
+			enu = ar->enu;
+
+		calc = ar->calc;
+		return;
+	}
+
 	if(!param)
 	{
 		type = 3;

@@ -46,16 +46,32 @@ RDOLineElement::RDOLineElement(double _x, double _y, double _w, double _h, RDOCo
 	type = line_type; 
 }
 
-RDOSBmpElement::RDOSBmpElement(double _x, double _y, double _w, double _h, string &_bmp, string &_map)
-	: RDOBoundedElement(_x, _y, _w, _h), bmp(_bmp), map(_map)
+RDOSBmpElement::RDOSBmpElement(double _x, double _y, double _w, double _h, string &_bmp, string &_mask)
+	: RDOBoundedElement(_x, _y, _w, _h), bmp(_bmp), mask(_mask)
 { 
 	type = s_bmp_type; 
+	hasMask = true;
 }
 
-RDOBitmapElement::RDOBitmapElement(double _x, double _y, string &_bmp, string &_map)
-	: x(_x), y(_y), bmp(_bmp), map(_map)
+RDOSBmpElement::RDOSBmpElement(double _x, double _y, double _w, double _h, string &_bmp)
+	: RDOBoundedElement(_x, _y, _w, _h), bmp(_bmp)
+{ 
+	type = s_bmp_type; 
+	hasMask = false;
+}
+
+RDOBitmapElement::RDOBitmapElement(double _x, double _y, string &_bmp, string &_mask)
+	: x(_x), y(_y), bmp(_bmp), mask(_mask)
 {
 	type = bitmap_type; 
+	hasMask = true;
+}
+
+RDOBitmapElement::RDOBitmapElement(double _x, double _y, string &_bmp)
+	: x(_x), y(_y), bmp(_bmp)
+{
+	type = bitmap_type; 
+	hasMask = false;
 }
 
 RDOActiveElement::RDOActiveElement(double _x, double _y, double _w, double _h, string &_operName)

@@ -321,20 +321,34 @@ RDOSimulatorNS::RDOFrameElement* RDOFRMLine::createElement(RDORuntime *sim)
 
 RDOSimulatorNS::RDOFrameElement* RDOFRMS_bmp::createElement(RDORuntime *sim)
 {
-	return new RDOSimulatorNS::RDOSBmpElement(
-		x->calcValue(sim), 
-		y->calcValue(sim),
-		width->calcValue(sim),
-		height->calcValue(sim), 
-		*picFileName, *mask);
+	if(mask != NULL)
+		return new RDOSimulatorNS::RDOSBmpElement(
+			x->calcValue(sim), 
+			y->calcValue(sim),
+			width->calcValue(sim),
+			height->calcValue(sim), 
+			*picFileName, *mask);
+	else
+		return new RDOSimulatorNS::RDOSBmpElement(
+			x->calcValue(sim), 
+			y->calcValue(sim),
+			width->calcValue(sim),
+			height->calcValue(sim), 
+			*picFileName);
 }
 
 RDOSimulatorNS::RDOFrameElement* RDOFRMBitmap::createElement(RDORuntime *sim)
 {
-	return new RDOSimulatorNS::RDOBitmapElement(
-		x->calcValue(sim), 
-		y->calcValue(sim),
-		*picFileName, *mask);
+	if(mask != NULL)
+		return new RDOSimulatorNS::RDOBitmapElement(
+			x->calcValue(sim), 
+			y->calcValue(sim),
+			*picFileName, *mask);
+	else
+		return new RDOSimulatorNS::RDOBitmapElement(
+			x->calcValue(sim), 
+			y->calcValue(sim),
+			*picFileName);
 }
 
 RDOSimulatorNS::RDOFrameElement* RDOFRMActive::createElement(RDORuntime *sim)
@@ -361,6 +375,35 @@ RDOFRMFrame::~RDOFRMFrame()
 		delete (*it);
 
 	shows.clear();
+}
+
+void RDOFRMFrame::getAllBitmaps(vector<const string *> &vect)
+{
+	if(hasBackPicture)
+		vect.push_back(picFileName);
+
+	for(vector<RDOFRMShow *>::iterator it = shows.begin(); it != shows.end(); it++)
+		(*it)->getAllBitmaps(vect);
+}
+
+void RDOFRMShow::getAllBitmaps(vector<const string *> &vect)
+{
+	for(vector<RDOFRMItem *>::iterator it = items.begin(); it != items.end(); it++)
+		(*it)->getAllBitmaps(vect);
+}
+
+void RDOFRMBitmap::getAllBitmaps(vector<const string *> &vect)
+{
+	vect.push_back(picFileName);
+	if(mask)
+		vect.push_back(mask);
+}
+
+void RDOFRMS_bmp::getAllBitmaps(vector<const string *> &vect)
+{
+	vect.push_back(picFileName);
+	if(mask)
+		vect.push_back(mask);
 }
 
 }		// namespace rdoParse 

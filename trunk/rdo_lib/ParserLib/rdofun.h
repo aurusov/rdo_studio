@@ -94,7 +94,7 @@ private:
 
 public:
 	RDOCalc *createCalc(const RDORTPResParam *const forType = NULL);
-	int getType() { return type; }
+	int getType() const { return type; }
 
 	RDOFUNArithm(int _type, RDOCalc *_calc):
 		type(_type), calc(_calc) {}

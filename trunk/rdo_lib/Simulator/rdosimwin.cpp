@@ -288,6 +288,11 @@ bool RdoSimulator::parseModel()
 		return false;
 	}
 */
+	
+//	vector<const string *> vv = getAllBitmaps();
+
+//	ShowMode sm = getInitialShowMode();
+
 	kernel.notifyString(RDOKernel::buildString, "End parsing\n");
 
 	return true;
@@ -416,6 +421,37 @@ vector<const string *> RdoSimulator::getAllFrames()
 	}
 
 	return vect;
+}
+
+vector<const string *> RdoSimulator::getAllBitmaps()
+{
+	vector<const string *> vect;
+	if(!runtime)
+		return vect;
+
+	int size = runtime->allFrames.size();
+	for(int i = 0; i < size; i++)
+	{
+		RDOFRMFrame *frame = runtime->allFrames.at(i);
+		frame->getAllBitmaps(vect);
+	}
+
+	return vect;
+}
+
+ShowMode RdoSimulator::getInitialShowMode()
+{
+	return parser->smr->showMode;
+}
+
+int RdoSimulator::getInitialFrameNumber()
+{
+	return parser->smr->frameNumber;
+}
+
+double RdoSimulator::getInitialShowRate()
+{
+	return *parser->smr->showRate;
 }
 
 }// namespace RDOSimulatorNS

@@ -53,6 +53,11 @@ public:
 	void addAreaPressed(string& areaName);
 
 	vector<const string *> getAllFrames();
+	vector<const string *> getAllBitmaps();
+
+	ShowMode getInitialShowMode();
+	int getInitialFrameNumber();
+	double getInitialShowRate();
 	
 	friend UINT RunningThreadControllingFunction( LPVOID pParam );
 	friend void frameCallBack(rdoRuntime::RDOConfig *config, void *param);

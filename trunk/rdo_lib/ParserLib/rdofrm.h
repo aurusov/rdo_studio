@@ -42,6 +42,7 @@ protected:
 public:
 	virtual ~RDOFRMItem() {}
 	virtual RDOSimulatorNS::RDOFrameElement* createElement(RDORuntime *sim);
+	virtual void getAllBitmaps(vector<const string *> &vect) {}
 };
 
 class RDOFRMBoundingItem: public virtual RDOFRMItem
@@ -90,6 +91,7 @@ class RDOFRMBitmap: public RDOFRMItem
 public:
 	RDOFRMBitmap(RDOFUNArithm *_x, RDOFUNArithm *_y, string *_picFileName, string *_mask = NULL);
 	RDOSimulatorNS::RDOFrameElement* createElement(RDORuntime *sim);
+	void getAllBitmaps(vector<const string *> &vect);
 };
 
 class RDOFRMS_bmp: public RDOFRMBoundingItem
@@ -99,6 +101,7 @@ class RDOFRMS_bmp: public RDOFRMBoundingItem
 public:
 	RDOFRMS_bmp(RDOFUNArithm *x, RDOFUNArithm *y, RDOFUNArithm *width, RDOFUNArithm *height, string *_picFileName, string *_mask = NULL);
 	RDOSimulatorNS::RDOFrameElement* createElement(RDORuntime *sim);
+	void getAllBitmaps(vector<const string *> &vect);
 };
 
 class RDOFRMRect: public RDOFRMBoundingItem, public RDOFRMColoredItem
@@ -156,6 +159,7 @@ public:
 	RDOFRMShow(RDOFUNLogic* logic);
 	virtual ~RDOFRMShow();
 	bool checkCondition(RDORuntime *sim);
+	void getAllBitmaps(vector<const string *> &vect);
 };
 
 class RDOFRMFrame
@@ -179,6 +183,7 @@ public:
 	bool checkCondition(RDORuntime *sim);
 	RDOSimulatorNS::RDOFrame* createFrame(RDORuntime *sim);
 	string *getName() { return name; }
+	void getAllBitmaps(vector<const string *> &vect);
 };
 
 
