@@ -89,6 +89,7 @@ void frameCallBack(rdoRuntime::RDOConfig *config, void *param)
 		kernel.notify(RDOKernel::showFrame);
 	}
 
+	config->showRate = simulator->getShowRate();
 	config->showAnimation = simulator->getShowMode();
 }
 
@@ -313,6 +314,7 @@ bool RdoSimulator::parseModel()
 	}
 
 	showMode = getInitialShowMode();
+	showRate = getInitialShowRate();
 
 /*
 	if(parser->errors.size() > 0)
