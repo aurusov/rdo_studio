@@ -197,6 +197,27 @@ void RDOStudioOptionsTabs::OnUpdateModify()
 	sheet->style_editor.tab->backspaceUntabs = m_tabBackspaceUntabs == 0;
 	sheet->style_editor.tab->autoIndent      = m_tabAutoIndent ? true : false;
 
+	*sheet->style_build.tab   = *sheet->style_editor.tab;
+	*sheet->style_debug.tab   = *sheet->style_editor.tab;
+	*sheet->style_results.tab = *sheet->style_editor.tab;
+	*sheet->style_find.tab    = *sheet->style_editor.tab;
+
+	if ( sheet->preview_editor.GetSafeHwnd() ) {
+		sheet->preview_editor.setEditorStyle( &sheet->style_editor );
+	}
+	if ( sheet->preview_build.GetSafeHwnd() ) {
+		sheet->preview_build.setEditorStyle( &sheet->style_build );
+	}
+	if ( sheet->preview_debug.GetSafeHwnd() ) {
+		sheet->preview_debug.setEditorStyle( &sheet->style_debug );
+	}
+	if ( sheet->preview_results.GetSafeHwnd() ) {
+		sheet->preview_results.setEditorStyle( &sheet->style_results );
+	}
+	if ( sheet->preview_find.GetSafeHwnd() ) {
+		sheet->preview_find.setEditorStyle( &sheet->style_find );
+	}
+
 	SetModified( *sheet->style_editor.tab != *studioApp.mainFrame->style_editor.tab );
 }
 
