@@ -3,6 +3,7 @@
 #pragma once
 
 #include "../edit_ctrls/rdobaseedit.h"
+#include "../edit_ctrls/rdologedit.h"
 #include "rdoeditoreditstyle.h"
 
 namespace rdoEditor {
@@ -17,8 +18,12 @@ protected:
 	static char* kw1;
 	static char* kw2;
 
+	rdoEditCtrl::RDOLogEdit* log;
+
 	//{{AFX_MSG(RDOEditorBaseEdit)
 	afx_msg int OnCreate( LPCREATESTRUCT lpCreateStruct );
+	afx_msg void OnGotoNext();
+	afx_msg void OnUpdateGotoNext(CCmdUI* pCmdUI);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
@@ -30,6 +35,7 @@ public:
 	virtual ~RDOEditorBaseEdit();
 
 	void setEditorStyle( RDOEditorBaseEditStyle* _style );
+	void setLog( rdoEditCtrl::RDOLogEdit& _log );
 
 	void replaceCurrent( const std::string str, const int changePosValue = -1 ) const;
 };

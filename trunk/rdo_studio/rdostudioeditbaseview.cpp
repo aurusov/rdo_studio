@@ -55,8 +55,6 @@ RDOStudioEditBaseView::RDOStudioEditBaseView():
 
 RDOStudioEditBaseView::~RDOStudioEditBaseView()
 {
-//	WriteProfileInt( "buffer", "clear", canClearBuffer );
-//	WriteProfileInt( "buffer", "delay", clearBufferDelay );
 	eraseMenu( &popupMenu );
 }
 
@@ -71,13 +69,9 @@ BOOL RDOStudioEditBaseView::PreCreateWindow(CREATESTRUCT& cs)
 	return TRUE;
 }
 
-int RDOStudioEditBaseView::OnCreate(LPCREATESTRUCT lpCreateStruct) 
+int RDOStudioEditBaseView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
-	if (CView::OnCreate(lpCreateStruct) == -1)
-		return -1;
-
-//	canClearBuffer   = AfxGetApp()->GetProfileInt( "buffer", "clear", 1 ) ? true : false;
-//	clearBufferDelay = AfxGetApp()->GetProfileInt( "buffer", "delay", 7 );
+	if ( CView::OnCreate(lpCreateStruct) == -1 ) return -1;
 
 	popupMenu.CreatePopupMenu();
 

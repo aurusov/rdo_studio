@@ -16,6 +16,7 @@
 #include "edit_ctrls/rdologeditstyle.h"
 #include "edit_ctrls/rdobaseeditstyle.h"
 #include "edit_ctrls/rdofindeditstyle.h"
+#include "rdo_tracer/tracer_ctrls/rdotracerlogctrl.h"
 #include "resource.h"
 
 // ----------------------------------------------------------------------------
@@ -204,7 +205,7 @@ private:
 	rdoEditor::RDOEditorEdit    edit;
 	rdoEditCtrl::RDOBuildEdit   build;
 	rdoEditCtrl::RDODebugEdit   debug;
-	// trace
+	RDOTracerLogCtrl            tracer;
 	rdoEditor::RDOEditorResults results;
 	rdoEditCtrl::RDOFindEdit    find;
 

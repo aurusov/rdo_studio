@@ -12,9 +12,13 @@ class RDOTab;
 
 class RDOTabCtrl: public CWnd
 {
+friend class RDOTab;
+
 protected:
 	RDOTab* tab;
 	bool autoDelete;
+
+	virtual void changeCurrentItem();
 
 	//{{AFX_MSG(RDOTabCtrl)
 	afx_msg int OnCreate( LPCREATESTRUCT lpCreateStruct );
@@ -47,8 +51,6 @@ public:
 	int   findItem( const CWnd* const item ) const;
 	void  insertItem( CWnd* pWnd, LPCTSTR lpName );
 	void  setCurrentItem( const int index );
-
-	virtual void changeCurrentItem();
 
 	void setAutoDelete( const bool value ) { autoDelete = value; };
 

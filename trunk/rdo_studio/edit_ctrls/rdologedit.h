@@ -16,6 +16,7 @@ class RDOLogEdit;
 class RDOLogEditLineInfo
 {
 friend class RDOLogEdit;
+
 protected:
 	rdoModelObjects::RDOFileType fileType;
 	int                          lineNumber;
@@ -60,6 +61,8 @@ public:
 	virtual ~RDOLogEdit();
 
 	void setEditorStyle( RDOLogEditStyle* _style );
+
+	void gotoNext() const;
 
 	virtual void clearAll();
 	void appendLine( RDOLogEditLineInfo* line );

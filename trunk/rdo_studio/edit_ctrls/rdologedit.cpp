@@ -215,3 +215,7 @@ void RDOLogEdit::appendLine( RDOLogEditLineInfo* line )
 		setReadOnly( true );
 	}
 }
+
+void RDOLogEdit::gotoNext() const
+{
+}

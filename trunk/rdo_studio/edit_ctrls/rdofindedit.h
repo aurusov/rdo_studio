@@ -13,8 +13,6 @@ namespace rdoEditCtrl {
 class RDOFindEdit: public RDOLogEdit
 {
 protected:
-	string keyword;
-
 	//{{AFX_MSG(RDOFindEdit)
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	//}}AFX_MSG
@@ -29,7 +27,7 @@ public:
 
 	void setEditorStyle( RDOFindEditStyle* _style );
 
-	void setKeyword( const string& _keyword, const bool matchCase = false ) const;
+	void setKeyword( const string& keyword, const bool matchCase = false ) const;
 };
 
 }; // namespace rdoEditCtrl

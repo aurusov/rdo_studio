@@ -950,6 +950,7 @@ BEGIN
     VK_F3,          ID_SEARCH_FINDPREVIOUS, VIRTKEY, SHIFT, NOINVERT
     VK_F3,          ID_SEARCH_FINDPREVIOUS_FAST, VIRTKEY, SHIFT, CONTROL, 
                                                     NOINVERT
+    VK_F4,          ID_GOTONEXT,            VIRTKEY, NOINVERT
     VK_F5,          ID_MODEL_RUN,           VIRTKEY, NOINVERT
     VK_F5,          ID_MODEL_RUN,           VIRTKEY, CONTROL, NOINVERT
     VK_F5,          ID_MODEL_STOP,          VIRTKEY, SHIFT, NOINVERT

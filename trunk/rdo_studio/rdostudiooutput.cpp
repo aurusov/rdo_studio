@@ -2,10 +2,12 @@
 #include "rdostudiooutput.h"
 #include "rdostudioapp.h"
 #include "rdostudiomainfrm.h"
+#include "rdostudiomodel.h"
 #include "edit_ctrls/rdobuildedit.h"
 #include "edit_ctrls/rdodebugedit.h"
 #include "edit_ctrls/rdofindedit.h"
 #include "rdo_edit/rdoeditorresults.h"
+#include "rdo_edit/rdoeditortabctrl.h"
 #include "./rdo_tracer/rdotracertrace.h"
 
 #ifdef _DEBUG
@@ -164,4 +166,28 @@ void RDOStudioOutput::appendStringToFind( const string& str, const rdoModelObjec
 {
 	RDOLogEditLineInfo* line = new RDOLogEditLineInfo( str, fileType, lineNumber, posInLine );
 	find->appendLine( line );
+}
+
+void RDOStudioOutput::Tab::changeCurrentItem()
+{
+	studioApp.mainFrame->output.updateLogConnection();
+}
+
+void RDOStudioOutput::updateLogConnection() const
+{
+	int item = tab.getCurrentIndex();
+	RDOLogEdit* log = NULL;
+	if ( item == 0 ) {
+		log = build;
+	} else if ( item == 4 ) {
+		log = find;
+	}
+	if ( log ) {
+		rdoEditor::RDOEditorTabCtrl* editor_tab = model->getTab();
+		if ( editor_tab ) {
+			for ( int i = 0; i < editor_tab->getItemCount(); i++ ) {
+				editor_tab->getItemEdit( i )->setLog( *log );
+			}
+		}
+	}
 }

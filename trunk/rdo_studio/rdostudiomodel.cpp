@@ -70,6 +70,7 @@ void RDOStudioModel::newModel( const bool _useTemplate )
 	studioApp.mainFrame->output.clearResults();
 	studioApp.mainFrame->output.clearFind();
 	kernel.getRepository()->newModel();
+	studioApp.mainFrame->output.updateLogConnection();
 }
 
 bool RDOStudioModel::openModel( const string& modelName ) const
@@ -78,7 +79,11 @@ bool RDOStudioModel::openModel( const string& modelName ) const
 	studioApp.mainFrame->output.clearDebug();
 	studioApp.mainFrame->output.clearResults();
 	studioApp.mainFrame->output.clearFind();
-	return kernel.getRepository()->openModel( modelName );
+	bool flag = kernel.getRepository()->openModel( modelName );
+	if ( flag ) {
+		studioApp.mainFrame->output.updateLogConnection();
+	}
+	return flag;
 }
 
 bool RDOStudioModel::saveModel() const

@@ -302,6 +302,8 @@ BOOL RDOStudioOptionsStylesAndColors::OnInitDialog()
 	sheet->debug.appendLine( "EI 0 1 1 0\r\n" );
 	sheet->debug.appendLine( "ES 0 1\r\n" );
 
+	sheet->tracer.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, -1 );
+
 	sheet->results.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, -1 );
 	sheet->results.setEditorStyle( &sheet->style_results );
 	sheet->results.setReadOnly( false );
@@ -332,6 +334,7 @@ BOOL RDOStudioOptionsStylesAndColors::OnInitDialog()
 	sheet->edit.MoveWindow( rectEdit );
 	sheet->build.MoveWindow( rectEdit );
 	sheet->debug.MoveWindow( rectEdit );
+	sheet->tracer.MoveWindow( rectEdit );
 	sheet->results.MoveWindow( rectEdit );
 	sheet->find.MoveWindow( rectEdit );
 
@@ -464,6 +467,7 @@ void RDOStudioOptionsStylesAndColors::setPreviewAsCombo( STYLEObject::Type type 
 		sheet->edit.ShowWindow( SW_HIDE );
 		sheet->build.ShowWindow( SW_HIDE );
 		sheet->debug.ShowWindow( SW_HIDE );
+		sheet->tracer.ShowWindow( SW_HIDE );
 		sheet->results.ShowWindow( SW_HIDE );
 		sheet->find.ShowWindow( SW_HIDE );
 		switch ( previewAs ) {
@@ -484,6 +488,7 @@ void RDOStudioOptionsStylesAndColors::setPreviewAsCombo( STYLEObject::Type type 
 			}
 			case STYLEObject::trace: {
 				m_previewAs.SetCurSel( 3 );
+				sheet->tracer.ShowWindow( SW_SHOW );
 				break;
 			}
 			case STYLEObject::results: {

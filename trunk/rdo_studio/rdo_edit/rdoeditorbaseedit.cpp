@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "rdoeditorbaseedit.h"
 #include "../edit_ctrls/sci/SciLexer.h"
+#include "../resource.h"
 //#include "../Htmlhelp.h"
 
 #ifdef _DEBUG
@@ -48,10 +49,14 @@ static char* wordCharacters = "0123456789_$abcdefghijklmnopqrstuvwxyzABCDEFGHIJK
 BEGIN_MESSAGE_MAP( RDOEditorBaseEdit, RDOBaseEdit )
 	//{{AFX_MSG_MAP(RDOEditorBaseEdit)
 	ON_WM_CREATE()
+	ON_COMMAND(ID_GOTONEXT, OnGotoNext)
+	ON_UPDATE_COMMAND_UI(ID_GOTONEXT, OnUpdateGotoNext)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-RDOEditorBaseEdit::RDOEditorBaseEdit(): RDOBaseEdit()
+RDOEditorBaseEdit::RDOEditorBaseEdit():
+	RDOBaseEdit(),
+	log( NULL )
 {
 }
 
@@ -165,6 +170,23 @@ void RDOEditorBaseEdit::setEditorStyle( RDOEditorBaseEditStyle* _style )
 	sendEditor( SCI_STYLESETCHARACTERSET, SCE_RDO_NUMBER, style->font->characterSet );
 	sendEditor( SCI_STYLESETCHARACTERSET, SCE_RDO_STRING, style->font->characterSet );
 	sendEditor( SCI_STYLESETCHARACTERSET, SCE_RDO_OPERATOR, style->font->characterSet );
+}
+
+void RDOEditorBaseEdit::setLog( RDOLogEdit& _log )
+{
+	log = &_log;
+}
+
+void RDOEditorBaseEdit::OnGotoNext()
+{
+	if ( log ) {
+		log->gotoNext();
+	}
+}
+
+void RDOEditorBaseEdit::OnUpdateGotoNext(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable( log ? true : false );
 }
 
 void RDOEditorBaseEdit::replaceCurrent( const string str, const int changePosValue ) const

@@ -26,7 +26,13 @@ namespace rdoEditCtrl {
 class RDOStudioOutput: public RDOStudioDockWnd
 {
 private:
-	RDOTabCtrl tab;
+
+	class Tab: public RDOTabCtrl {
+	protected:
+		virtual void changeCurrentItem();
+	};
+
+	Tab tab;
 
 	rdoEditCtrl::RDOBuildEdit*   build;
 	rdoEditCtrl::RDODebugEdit*   debug;
@@ -60,6 +66,8 @@ public:
 	void appendStringToBuild( const string& str, const rdoModelObjects::RDOFileType fileType = rdoModelObjects::PAT, const int lineNumber = -1, const bool error = true ) const;
 	void appendStringToDebug( const string& str ) const;
 	void appendStringToFind( const string& str, const rdoModelObjects::RDOFileType fileType = rdoModelObjects::PAT, const int lineNumber = -1, const int posInLine = 0 ) const;
+
+	void updateLogConnection() const;
 
 public:
 	//{{AFX_VIRTUAL(RDOStudioOutput)
