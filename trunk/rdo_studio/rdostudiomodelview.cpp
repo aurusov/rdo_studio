@@ -3,8 +3,11 @@
 #include "rdostudiomodeldoc.h"
 #include "rdostudioapp.h"
 #include "rdostudiomainfrm.h"
+#include "edit_ctrls/rdofindedit.h"
 #include "rdo_edit/rdoeditortabctrl.h"
 #include "resource.h"
+
+#include <rdokernel.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -29,6 +32,10 @@ BEGIN_MESSAGE_MAP(RDOStudioModelView, RDOStudioEditBaseView)
 	ON_COMMAND(ID_SEARCH_FINDINMODEL, OnSearchFindInModel)
 	//}}AFX_MSG_MAP
 	ON_REGISTERED_MESSAGE( FINDINMODEL_MSG, OnFindInModelMsg )
+	ON_UPDATE_COMMAND_UI( ID_COORDSTATUSBAR          , OnUpdateCoordStatusBar )
+	ON_UPDATE_COMMAND_UI( ID_MODIFYSTATUSBAR         , OnUpdateModifyStatusBar )
+	ON_UPDATE_COMMAND_UI( ID_INSERTOVERWRITESTATUSBAR, OnUpdateInsertOverwriteStatusBar )
+	ON_UPDATE_COMMAND_UI( ID_MODELTIMESTATUSBAR      , OnUpdateModelTimeStatusBar )
 	ON_COMMAND(ID_FILE_PRINT, RDOStudioEditBaseView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, RDOStudioEditBaseView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, RDOStudioEditBaseView::OnFilePrintPreview)
@@ -144,7 +151,8 @@ LRESULT RDOStudioModelView::OnFindInModelMsg( WPARAM wParam, LPARAM lParam )
 		string findStr       = pDialog->GetFindString();
 		bool bMatchCase      = pDialog->MatchCase() ? true : false;
 		bool bMatchWholeWord = pDialog->MatchWholeWord() ? true : false;
-		studioApp.mainFrame->output.setKeywordForFind( findStr, bMatchCase );
+		studioApp.mainFrame->output.getFind()->setKeyword( findStr, bMatchCase );
+//		studioApp.mainFrame->output.setKeywordForFind( findStr, bMatchCase );
 		studioApp.mainFrame->output.appendStringToFind( format( ID_FINDINMODEL_BEGINMSG, findStr.c_str() ) );
 		int count = 0;
 		for ( int i = 0; i < tab->getItemCount(); i++ ) {
@@ -184,4 +192,53 @@ LRESULT RDOStudioModelView::OnFindInModelMsg( WPARAM wParam, LPARAM lParam )
 		studioApp.mainFrame->output.appendStringToFind( s );
 	}
 	return 0;
+}
+
+void RDOStudioModelView::OnUpdateCoordStatusBar( CCmdUI *pCmdUI )
+{
+	pCmdUI->Enable();
+	string str = "";
+	RDOEditorEdit* edit = getEdit();
+	if ( edit ) {
+		int x = edit->getCurrentColumnNumber() + 1;
+		int y = edit->getCurrentLineNumber() + 1;
+		str = format( "%d: %d", x, y );
+	}
+	pCmdUI->SetText( str.c_str() );
+}
+
+void RDOStudioModelView::OnUpdateModifyStatusBar( CCmdUI *pCmdUI )
+{
+	pCmdUI->Enable();
+	string str = "";
+	RDOEditorEdit* edit = getEdit();
+	if ( edit ) {
+		if ( edit->isReadOnly() ) {
+			str = format( ID_STATUSBAR_READONLY );
+		} else if ( edit->isModify() ) {
+			str = format( ID_STATUSBAR_MODIFIED );
+		}
+	}
+	pCmdUI->SetText( str.c_str() );
+}
+
+void RDOStudioModelView::OnUpdateInsertOverwriteStatusBar( CCmdUI *pCmdUI )
+{
+	pCmdUI->Enable();
+	string str = "";
+	RDOEditorEdit* edit = getEdit();
+	if ( edit && edit->isOverwrite() ) {
+		str = format( ID_STATUSBAR_OVERWRITE );
+	}
+	pCmdUI->SetText( str.c_str() );
+}
+
+void RDOStudioModelView::OnUpdateModelTimeStatusBar( CCmdUI *pCmdUI )
+{
+	pCmdUI->Enable();
+	string str = "";
+	if ( GetDocument()->isRunning() ) {
+		str = format( ID_STATUSBAR_MODELTIME, kernel.getSimulator()->getModelTime() );
+	}
+	pCmdUI->SetText( str.c_str() );
 }

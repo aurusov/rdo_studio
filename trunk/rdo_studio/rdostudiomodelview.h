@@ -60,6 +60,10 @@ protected:
 	afx_msg void OnSearchFindInModel();
 	//}}AFX_MSG
 	afx_msg LRESULT OnFindInModelMsg( WPARAM wParam, LPARAM lParam );
+	afx_msg void OnUpdateCoordStatusBar( CCmdUI *pCmdUI );
+	afx_msg void OnUpdateModifyStatusBar( CCmdUI *pCmdUI );
+	afx_msg void OnUpdateInsertOverwriteStatusBar( CCmdUI *pCmdUI );
+	afx_msg void OnUpdateModelTimeStatusBar( CCmdUI *pCmdUI );
 	DECLARE_MESSAGE_MAP()
 };
 
