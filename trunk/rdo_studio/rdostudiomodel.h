@@ -31,6 +31,8 @@ private:
 	bool closeWithDocDelete;
 	bool showCanNotCloseModelMessage;
 
+	bool openError;
+
 	double modelTime;
 	RDOSimulatorNS::ShowMode showMode;
 

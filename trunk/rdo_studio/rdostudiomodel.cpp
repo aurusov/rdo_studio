@@ -34,6 +34,7 @@ RDOStudioModel::RDOStudioModel():
 	useTemplate( false ),
 	closeWithDocDelete( true ),
 	showCanNotCloseModelMessage( true ),
+	openError( false ),
 	modelTime( 0 ),
 	showMode( SM_NoShow )
 {
@@ -84,11 +85,15 @@ bool RDOStudioModel::openModel( const string& modelName ) const
 	studioApp.mainFrame->output.clearDebug();
 	studioApp.mainFrame->output.clearResults();
 	studioApp.mainFrame->output.clearFind();
-	studioApp.mainFrame->output.appendStringToBuild( "Loading model..." );
+	studioApp.mainFrame->output.showBuild();
+	studioApp.mainFrame->output.appendStringToBuild( format( IDS_MODELLOADINGBEGIN ) );
+	static_cast<bool>(openError) = false;
 	bool flag = kernel.getRepository()->openModel( modelName );
-	if ( flag ) {
+	if ( flag && !openError ) {
 		studioApp.mainFrame->output.updateLogConnection();
-		studioApp.mainFrame->output.appendStringToBuild( "Loading model... ok" );
+		studioApp.mainFrame->output.appendStringToBuild( format( IDS_MODELLOADINGOK ) );
+	} else {
+		studioApp.mainFrame->output.appendStringToBuild( format( IDS_MODELLOADINGFAILD ) );
 	}
 	return flag;
 }
@@ -217,7 +222,9 @@ void RDOStudioModel::executeErrorModelNotify()
 	}
 	stopModelNotify();
 	if ( i > 0 ) {
+		studioApp.mainFrame->output.clearBuild();
 		studioApp.mainFrame->output.showBuild();
+		studioApp.mainFrame->output.appendStringToBuild( format( IDS_MODEL_RUNTIMEERROR ) );
 		const_cast<rdoEditCtrl::RDOBuildEdit*>(studioApp.mainFrame->output.getBuild())->gotoNext();
 	}
 }
@@ -356,9 +363,27 @@ void RDOStudioModel::openModelFromRepository()
 					default: canLoad = false; break;
 				}
 				if ( canLoad ) {
-//					if ( stream.rdstate() & ios_base::badbit )
-					edit->load( stream );
-					edit->setReadOnly( kernel.getRepository()->isReadOnly() );
+					bool stream_error = stream.rdstate() & ios_base::badbit ? true : false;
+					if ( !stream_error ) {
+						edit->load( stream );
+						edit->setReadOnly( kernel.getRepository()->isReadOnly() );
+					} else {
+						int obj = 0;
+						switch ( i ) {
+							case RDOEDIT_PAT: obj = IDS_MODELPATTERNS;      break;
+							case RDOEDIT_RTP: obj = IDS_MODELRESOURCETYPES; break;
+							case RDOEDIT_RSS: obj = IDS_MODELRESOURCES;     break;
+							case RDOEDIT_OPR: obj = IDS_MODELOPERATIONS;    break;
+							case RDOEDIT_FRM: obj = IDS_MODELFRAMES;        break;
+							case RDOEDIT_FUN: obj = IDS_MODELFUNCTIONS;     break;
+							case RDOEDIT_DPT: obj = IDS_MODELDPTS;          break;
+							case RDOEDIT_PMD: obj = IDS_MODELPMDS;          break;
+						}
+						if ( obj ) {
+							studioApp.mainFrame->output.appendStringToBuild( format( IDS_MODELCANNOTLOAD, format( obj ).c_str() ) );
+						}
+						openError = true;
+					}
 				}
 				edit->setCurrentPos( 0 );
 				edit->setModifyFalse();

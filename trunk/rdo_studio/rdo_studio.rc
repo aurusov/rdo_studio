@@ -1444,6 +1444,11 @@ BEGIN
     IDS_FRAMES              "Frames"
     IDS_FRAMENAME           "frame: %s"
     IDS_MODELNAME           "model: %s"
+    IDS_MODELLOADINGBEGIN   "Loading model..."
+    IDS_MODELLOADINGOK      "Loading model... ok"
+    IDS_MODELLOADINGFAILD   "Loading model... faild"
+    IDS_MODELCANNOTLOAD     "Can't load %s"
+    IDS_MODELPATTERNS       "patterns"
 END
 
 STRINGTABLE DISCARDABLE 
@@ -1467,6 +1472,18 @@ BEGIN
     IDS_MODELSHOWRATE_FMOREONE "Tempo: %1.1f"
     IDS_MODELSHOWRATE_FLESSONE "Tempo: %1.10f"
     IDS_MODELSHOWRATE_E     "Tempo: %e"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_MODELRESOURCETYPES  "types of resoucres"
+    IDS_MODELRESOURCES      "resources"
+    IDS_MODELOPERATIONS     "operations"
+    IDS_MODELFRAMES         "frames"
+    IDS_MODELFUNCTIONS      "functions"
+    IDS_MODELDPTS           "decision points"
+    IDS_MODELPMDS           "performance measures description"
+    IDS_MODEL_RUNTIMEERROR  "Run time error detected..."
 END
 
 #endif    // Russian resources

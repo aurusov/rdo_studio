@@ -185,7 +185,7 @@ BOOL RDOBaseEdit::OnCommand(WPARAM wParam, LPARAM lParam)
 	if ( HIWORD( wParam ) == SCEN_SETFOCUS ) {
 		CWnd* parent = GetParent();
 		if ( parent ) {
-			parent->SendMessage( WM_COMMAND, MAKELONG(0, WM_SETFOCUS), (LPARAM)m_hWnd );
+//			parent->SendMessage( WM_COMMAND, MAKELONG(0, WM_SETFOCUS), (LPARAM)m_hWnd );
 		}
 	}
 	return CWnd::OnCommand(wParam, lParam);
