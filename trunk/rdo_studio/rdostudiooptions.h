@@ -5,12 +5,13 @@
 #pragma once
 #endif
 
+#include <rdocolorcombobox.h>
 #include "rdo_edit/rdoeditoreditstyle.h"
 #include "rdo_edit/rdoeditorresultsstyle.h"
 #include "edit_ctrls/rdologeditstyle.h"
 #include "edit_ctrls/rdobaseeditstyle.h"
 #include "edit_ctrls/rdofindeditstyle.h"
-#include <rdocolorcombobox.h>
+#include "resource.h"
 
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioOptionsEditor
@@ -22,10 +23,15 @@ class RDOStudioOptionsEditor: public CPropertyPage
 private:
 	RDOStudioOptions* sheet;
 
-	int useAutoComplete;
-	int showFullList;
-
 protected:
+	//{{AFX_DATA(RDOStudioOptionsEditor)
+	enum { IDD = IDD_OPTIONS_EDITOR };
+	BOOL	m_bufferClearAuto;
+	int		m_bufferDelay;
+	BOOL	m_codecompUse;
+	int		m_codecompShowFullList;
+	//}}AFX_DATA
+
 	//{{AFX_VIRTUAL(RDOStudioOptionsEditor)
 	public:
 	virtual void OnOK();
@@ -37,6 +43,7 @@ protected:
 	afx_msg void OnUseAutoCompleteCheck();
 	virtual BOOL OnInitDialog();
 	afx_msg void OnUpdateModify();
+	afx_msg void OnClearAutoCheck();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
@@ -54,10 +61,25 @@ private:
 	RDOStudioOptions* sheet;
 
 protected:
+	//{{AFX_DATA(RDOStudioOptionsTabs)
+	enum { IDD = IDD_OPTIONS_TABS };
+	BOOL	m_tabUse;
+	int		m_tabSize;
+	int		m_tabBackspaceUntabs;
+	int		m_tabIndentSize;
+	BOOL	m_tabAutoIndent;
+	BOOL	m_tabUseTabIndent;
+	//}}AFX_DATA
+
 	//{{AFX_VIRTUAL(RDOStudioOptionsTabs)
+	public:
+	virtual void OnOK();
+	protected:
+	virtual void DoDataExchange(CDataExchange* pDX);
 	//}}AFX_VIRTUAL
 
 	//{{AFX_MSG(RDOStudioOptionsTabs)
+	afx_msg void OnUpdateModify();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 

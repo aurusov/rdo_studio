@@ -2,7 +2,6 @@
 #include "rdostudiooptions.h"
 #include "rdostudioapp.h"
 #include "rdostudiomainfrm.h"
-#include "resource.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -17,16 +16,28 @@ BEGIN_MESSAGE_MAP(RDOStudioOptionsEditor, CPropertyPage)
 	//{{AFX_MSG_MAP(RDOStudioOptionsEditor)
 	ON_BN_CLICKED(IDC_USEAUTOCOMPLETE_CHECK, OnUseAutoCompleteCheck)
 	ON_BN_CLICKED(IDC_SHOWFULLLIST_RADIO, OnUpdateModify)
+	ON_BN_CLICKED(IDC_CLEARAUTO_CHECK, OnClearAutoCheck)
 	ON_BN_CLICKED(IDC_SHOWNEARESTWORDSONLY_RADIO, OnUpdateModify)
+	ON_EN_CHANGE(IDC_CLEARAUTO_EDIT, OnUpdateModify)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RDOStudioOptionsEditor::RDOStudioOptionsEditor( RDOStudioOptions& _sheet ):
-	CPropertyPage( IDD_OPTIONS_EDITOR ),
+	CPropertyPage( IDD ),
 	sheet( &_sheet )
 {
-	useAutoComplete = sheet->style_editor.autoComplete->useAutoComplete ? 1 : 0;
-	showFullList    = sheet->style_editor.autoComplete->showFullList ? 0 : 1;
+	//{{AFX_DATA_INIT(RDOStudioOptionsEditor)
+	m_bufferClearAuto = FALSE;
+	m_bufferDelay = 0;
+	m_codecompUse = FALSE;
+	m_codecompShowFullList = -1;
+	//}}AFX_DATA_INIT
+
+	m_bufferClearAuto = sheet->style_editor.buffer->canClearBuffer ? 1 : 0;
+	m_bufferDelay     = sheet->style_editor.buffer->clearBufferDelay;
+
+	m_codecompUse          = sheet->style_editor.autoComplete->useAutoComplete ? 1 : 0;
+	m_codecompShowFullList = sheet->style_editor.autoComplete->showFullList ? 0 : 1;
 }
 
 RDOStudioOptionsEditor::~RDOStudioOptionsEditor()
@@ -37,14 +48,20 @@ void RDOStudioOptionsEditor::DoDataExchange(CDataExchange* pDX)
 {
 	CPropertyPage::DoDataExchange(pDX);
 
-	DDX_Check( pDX, IDC_USEAUTOCOMPLETE_CHECK, useAutoComplete );
-	DDX_Radio( pDX, IDC_SHOWFULLLIST_RADIO   , showFullList );
+	//{{AFX_DATA_MAP(RDOStudioOptionsEditor)
+	DDX_Check(pDX, IDC_CLEARAUTO_CHECK, m_bufferClearAuto);
+	DDX_Text(pDX, IDC_CLEARAUTO_EDIT, m_bufferDelay);
+	DDV_MinMaxInt(pDX, m_bufferDelay, 1, 100);
+	DDX_Check(pDX, IDC_USEAUTOCOMPLETE_CHECK, m_codecompUse);
+	DDX_Radio(pDX, IDC_SHOWFULLLIST_RADIO, m_codecompShowFullList);
+	//}}AFX_DATA_MAP
 }
 
 BOOL RDOStudioOptionsEditor::OnInitDialog()
 {
 	CPropertyPage::OnInitDialog();
 
+	OnClearAutoCheck();
 	OnUseAutoCompleteCheck();
 
 	return TRUE;
@@ -54,6 +71,15 @@ void RDOStudioOptionsEditor::OnOK()
 {
 	sheet->apply();
 	CPropertyPage::OnOK();
+}
+
+void RDOStudioOptionsEditor::OnClearAutoCheck() 
+{
+	bool use = ((CButton*)GetDlgItem( IDC_CLEARAUTO_CHECK ))->GetCheck() ? true : false;
+	GetDlgItem( IDC_CLEARAUTO_STATIC1 )->EnableWindow( use );
+	GetDlgItem( IDC_CLEARAUTO_EDIT )->EnableWindow( use );
+	GetDlgItem( IDC_CLEARAUTO_STATIC2 )->EnableWindow( use );
+	OnUpdateModify();
 }
 
 void RDOStudioOptionsEditor::OnUseAutoCompleteCheck() 
@@ -68,14 +94,17 @@ void RDOStudioOptionsEditor::OnUpdateModify()
 {
 	UpdateData();
 
-	sheet->style_editor.autoComplete->useAutoComplete = useAutoComplete ? true : false;
-	sheet->style_editor.autoComplete->showFullList    = showFullList == 0;
+	sheet->style_editor.buffer->canClearBuffer   = m_bufferClearAuto ? true : false;
+	sheet->style_editor.buffer->clearBufferDelay = m_bufferDelay;
+
+	sheet->style_editor.autoComplete->useAutoComplete = m_codecompUse ? true : false;
+	sheet->style_editor.autoComplete->showFullList    = m_codecompShowFullList == 0;
 
 //	if ( sheet->colorOptions->edit ) {
 //		sheet->colorOptions->edit.setEditorStyle( sheet->editorStyle );
 //	}
 
-	SetModified( *sheet->style_editor.autoComplete != *studioApp.mainFrame->style_editor.autoComplete /*|| canClearBuffer != prev_canClearBuffer || clearBufferDelay != prev_clearBufferDelay*/ );
+	SetModified( *sheet->style_editor.buffer != *studioApp.mainFrame->style_editor.buffer || *sheet->style_editor.autoComplete != *studioApp.mainFrame->style_editor.autoComplete );
 }
 
 // ----------------------------------------------------------------------------
@@ -83,17 +112,75 @@ void RDOStudioOptionsEditor::OnUpdateModify()
 // ----------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP(RDOStudioOptionsTabs, CPropertyPage)
 	//{{AFX_MSG_MAP(RDOStudioOptionsTabs)
+	ON_EN_CHANGE(IDC_TABSIZE_EDIT, OnUpdateModify)
+	ON_EN_CHANGE(IDC_INDENTSIZE_EDIT, OnUpdateModify)
+	ON_BN_CLICKED(IDC_USETABS_CHECK, OnUpdateModify)
+	ON_BN_CLICKED(IDC_TABINDENTS_CHECK, OnUpdateModify)
+	ON_BN_CLICKED(IDC_BACKSPACEUNTABS_RADIO, OnUpdateModify)
+	ON_BN_CLICKED(IDC_AUTOINDENT_CHECK, OnUpdateModify)
+	ON_BN_CLICKED(IDC_BACKSPACEUNINDENTS_RADIO, OnUpdateModify)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RDOStudioOptionsTabs::RDOStudioOptionsTabs( RDOStudioOptions& _sheet ):
-	CPropertyPage( IDD_OPTIONS_TABS ),
+	CPropertyPage( IDD ),
 	sheet( &_sheet )
 {
+	//{{AFX_DATA_INIT(RDOStudioOptionsTabs)
+	m_tabUse = FALSE;
+	m_tabSize = 0;
+	m_tabBackspaceUntabs = -1;
+	m_tabIndentSize = 0;
+	m_tabAutoIndent = FALSE;
+	m_tabUseTabIndent = FALSE;
+	//}}AFX_DATA_INIT
+
+	m_tabUse             = sheet->style_editor.tab->useTabs ? 1 : 0;
+	m_tabSize            = sheet->style_editor.tab->tabSize;
+	m_tabUseTabIndent    = sheet->style_editor.tab->tabIndents ? 1 : 0;
+	m_tabIndentSize      = sheet->style_editor.tab->indentSize;
+	m_tabBackspaceUntabs = sheet->style_editor.tab->backspaceUntabs ? 0 : 1;
+	m_tabAutoIndent      = sheet->style_editor.tab->autoIndent ? 1 : 0;
 }
 
 RDOStudioOptionsTabs::~RDOStudioOptionsTabs()
 {
+}
+
+void RDOStudioOptionsTabs::DoDataExchange(CDataExchange* pDX)
+{
+	CPropertyPage::DoDataExchange(pDX);
+
+	//{{AFX_DATA_MAP(RDOStudioOptionsTabs)
+	DDX_Check(pDX, IDC_USETABS_CHECK, m_tabUse);
+	DDX_Text(pDX, IDC_TABSIZE_EDIT, m_tabSize);
+	DDV_MinMaxInt(pDX, m_tabSize, 1, 100);
+	DDX_Radio(pDX, IDC_BACKSPACEUNTABS_RADIO, m_tabBackspaceUntabs);
+	DDX_Text(pDX, IDC_INDENTSIZE_EDIT, m_tabIndentSize);
+	DDV_MinMaxInt(pDX, m_tabIndentSize, 1, 100);
+	DDX_Check(pDX, IDC_AUTOINDENT_CHECK, m_tabAutoIndent);
+	DDX_Check(pDX, IDC_TABINDENTS_CHECK, m_tabUseTabIndent);
+	//}}AFX_DATA_MAP
+}
+
+void RDOStudioOptionsTabs::OnOK()
+{
+	sheet->apply();
+	CPropertyPage::OnOK();
+}
+
+void RDOStudioOptionsTabs::OnUpdateModify() 
+{
+	UpdateData();
+
+	sheet->style_editor.tab->useTabs         = m_tabUse ? true : false;
+	sheet->style_editor.tab->tabSize         = m_tabSize;
+	sheet->style_editor.tab->tabIndents      = m_tabUseTabIndent ? true : false;
+	sheet->style_editor.tab->indentSize      = m_tabIndentSize;
+	sheet->style_editor.tab->backspaceUntabs = m_tabBackspaceUntabs == 0;
+	sheet->style_editor.tab->autoIndent      = m_tabAutoIndent ? true : false;
+
+	SetModified( *sheet->style_editor.tab != *studioApp.mainFrame->style_editor.tab );
 }
 
 // ----------------------------------------------------------------------------
@@ -108,6 +195,8 @@ RDOStudioOptionsColorsAndStyles::RDOStudioOptionsColorsAndStyles( RDOStudioOptio
 	CPropertyPage( IDD_OPTIONS_COLORSANDSTYLES ),
 	sheet( &_sheet )
 {
+	//{{AFX_DATA_INIT(RDOStudioOptionsColorsAndStyles)
+	//}}AFX_DATA_INIT
 }
 
 RDOStudioOptionsColorsAndStyles::~RDOStudioOptionsColorsAndStyles()
@@ -117,6 +206,9 @@ RDOStudioOptionsColorsAndStyles::~RDOStudioOptionsColorsAndStyles()
 void RDOStudioOptionsColorsAndStyles::DoDataExchange(CDataExchange* pDX)
 {
 	CPropertyPage::DoDataExchange(pDX);
+
+	//{{AFX_DATA_MAP(RDOStudioOptionsColorsAndStyles)
+	//}}AFX_DATA_MAP
 
 	DDX_Control( pDX, IDC_FGCOLOR_COMBO, fgColorCB );
 	DDX_Control( pDX, IDC_BGCOLOR_COMBO, bgColorCB );
