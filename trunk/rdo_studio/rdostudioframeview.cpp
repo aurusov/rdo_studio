@@ -29,7 +29,8 @@ RDOStudioFrameView::RDOStudioFrameView():
 	CView(),
 	clientBmpRect( 0, 0, 0, 0 ),
 	frameBmpRect( 0, 0, 0, 0 ),
-	newClientRect( 0, 0, 0, 0 )
+	newClientRect( 0, 0, 0, 0 ),
+	mustBeInit( true )
 {
 }
 

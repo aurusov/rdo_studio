@@ -19,7 +19,7 @@ BEGIN_MESSAGE_MAP(RDOStudioFramesTreeCtrl, RDOTreeCtrl)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-vector< RDOStudioFramesTreeCtrl::Item* > RDOStudioFramesTreeCtrl::frames;
+vector< RDOStudioFramesTreeCtrl::TreeCtrlItem* > RDOStudioFramesTreeCtrl::frames;
 
 RDOStudioFramesTreeCtrl::RDOStudioFramesTreeCtrl()
 {
@@ -27,7 +27,7 @@ RDOStudioFramesTreeCtrl::RDOStudioFramesTreeCtrl()
 
 RDOStudioFramesTreeCtrl::~RDOStudioFramesTreeCtrl()
 {
-	std::vector< Item* >::iterator it = frames.begin();
+	std::vector< TreeCtrlItem* >::iterator it = frames.begin();
 	while ( it != frames.end() ) {
 		delete *it++;
 	};
@@ -57,18 +57,21 @@ int RDOStudioFramesTreeCtrl::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 void RDOStudioFramesTreeCtrl::insertItem( const string& name )
 {
-	Item* item = new Item;
-	item->frame_doc = NULL;
-	item->hitem     = InsertItem( name.c_str(), 1, 1, GetRootItem() );
+	TreeCtrlItem* item = new TreeCtrlItem;
+	item->hitem = InsertItem( name.c_str(), 1, 1, GetRootItem() );
+	item->doc   = NULL;
+	item->view  = NULL;
 	frames.push_back( item );
 }
 
 void RDOStudioFramesTreeCtrl::clear()
 {
 	deleteChildren( GetRootItem() );
-	std::vector< Item* >::iterator it = frames.begin();
+	std::vector< TreeCtrlItem* >::iterator it = frames.begin();
 	while ( it != frames.end() ) {
-		(*it)->frame_doc->OnCloseDocument();
+		if ( model->isValidFrameDoc( (*it)->doc ) ) {
+			(*it)->doc->OnCloseDocument();
+		}
 		delete *it++;
 	};
 	frames.clear();
@@ -88,20 +91,23 @@ void RDOStudioFramesTreeCtrl::OnLButtonDblClk(UINT nFlags, CPoint point)
 
 	if ( hitem && ( TVHT_ONITEM & uFlags ) && hitem != GetRootItem() ) {
 		RDOStudioFrameDoc* doc = NULL;
-		std::vector< Item* >::iterator it = frames.begin();
+		std::vector< TreeCtrlItem* >::iterator it = frames.begin();
 		while ( it != frames.end() ) {
 			if ( (*it)->hitem == hitem ) {
-				doc = (*it)->frame_doc;
+				doc = (*it)->doc;
 				break;
 			}
 			it++;
 		};
-		if ( !doc || !model->isValidFrameDoc( doc ) ) {
-			doc = model->addNewFrameDoc();
-			(*it)->frame_doc = doc;
-			doc->SetTitle( format( IDS_FRAMENAME, static_cast<LPCTSTR>(GetItemText( hitem )) ).c_str()  );
-		} else {
-			studioApp.mainFrame->MDIActivate( doc->getView()->GetParentFrame() );
+		if ( it != frames.end() ) {
+			if ( !doc || !model->isValidFrameDoc( doc ) ) {
+				doc = static_cast<RDOStudioFrameDoc*>(model->frameDocTemplate->OpenDocumentFile( NULL ));
+				(*it)->doc  = doc;
+				(*it)->view = doc->getView();
+				doc->SetTitle( format( IDS_FRAMENAME, static_cast<LPCTSTR>(GetItemText( hitem )) ).c_str()  );
+			} else {
+				studioApp.mainFrame->MDIActivate( doc->getView()->GetParentFrame() );
+			}
 		}
 /*
 		RDOStudioFrameDoc* doc = reinterpret_cast<RDOStudioFrameDoc*>(GetItemData( hitem ));

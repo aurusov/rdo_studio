@@ -22,6 +22,7 @@ private:
 	CRect newClientRect;
 	CBitmap clientBmp;
 	CBitmap frameBmp;
+	bool mustBeInit;
 
 public:
 	RDOStudioFrameView();

@@ -73,7 +73,6 @@ public:
 	afx_msg void OnAppAbout();
 	//}}AFX_MSG
 	afx_msg void OnProjectReopen( UINT nID );
-	afx_msg void OnAddNewFrame( WPARAM wParam, LPARAM lParam );
 	DECLARE_MESSAGE_MAP()
 };
 

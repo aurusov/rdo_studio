@@ -91,7 +91,6 @@ BEGIN_MESSAGE_MAP(RDOStudioApp, CWinApp)
 	ON_COMMAND(ID_APP_ABOUT, OnAppAbout)
 	//}}AFX_MSG_MAP
 	ON_COMMAND_RANGE( ID_FILE_REOPEN_1, ID_FILE_REOPEN_10, OnProjectReopen )
-	ON_THREAD_MESSAGE( RDO_ADDNEWFRAME_MSG, OnAddNewFrame )
 	ON_COMMAND(ID_FILE_PRINT_SETUP, CWinApp::OnFilePrintSetup)
 END_MESSAGE_MAP()
 
@@ -591,9 +590,4 @@ void RDOStudioApp::OnAppAbout()
 	aboutDlg.hPixmap = LoadIcon( MAKEINTRESOURCE(IDR_MAINFRAME) );
 	aboutDlg.changeColor( 1, 20, 4 );
 	aboutDlg.DoModal();
-}
-
-void RDOStudioApp::OnAddNewFrame( WPARAM /*wParam*/, LPARAM /*lParam*/ )
-{
-	model->addNewFrame();
 }
