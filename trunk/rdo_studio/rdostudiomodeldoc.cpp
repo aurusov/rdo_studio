@@ -103,8 +103,8 @@ BOOL RDOStudioModelDoc::CanCloseFrame(CFrameWnd* /*pFrame*/)
 
 void RDOStudioModelDoc::OnCloseDocument() 
 {
-	RDOStudioEditBaseDoc::OnCloseDocument();
 	model->stopModel();
+	RDOStudioEditBaseDoc::OnCloseDocument();
 }
 
 string RDOStudioModelDoc::getName() const
