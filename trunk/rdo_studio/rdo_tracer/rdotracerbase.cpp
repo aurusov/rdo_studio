@@ -629,10 +629,9 @@ void RDOTracerBase::getModelStructure( stringstream& stream )
 			if ( s.find( "$Watching" ) != string::npos ) {
 				do {
 					stream >> s;
-					pos = s.find( "" );
-					if ( !s.empty() && pos == string::npos )
+					if ( !s.empty() )
 						addResult( s, stream );
-				} while ( pos == string::npos && !stream.eof() );
+				} while ( !stream.eof() );
 			}
 		}
 	}
