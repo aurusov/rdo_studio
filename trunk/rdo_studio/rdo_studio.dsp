@@ -624,301 +624,117 @@ SOURCE=.\edit_ctrls\rdologeditstyle.h
 # Begin Source File
 
 SOURCE=.\edit_ctrls\sci\AutoComplete.cxx
-
-!IF  "$(CFG)" == "rdo_studio - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
-
 # SUBTRACT CPP /YX /Yc /Yu
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
 SOURCE=.\edit_ctrls\sci\CallTip.cxx
-
-!IF  "$(CFG)" == "rdo_studio - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
-
 # SUBTRACT CPP /YX /Yc /Yu
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
 SOURCE=.\edit_ctrls\sci\CellBuffer.cxx
-
-!IF  "$(CFG)" == "rdo_studio - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
-
 # SUBTRACT CPP /YX /Yc /Yu
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
 SOURCE=.\edit_ctrls\sci\ContractionState.cxx
-
-!IF  "$(CFG)" == "rdo_studio - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
-
 # SUBTRACT CPP /YX /Yc /Yu
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
 SOURCE=.\edit_ctrls\sci\Document.cxx
-
-!IF  "$(CFG)" == "rdo_studio - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
-
 # SUBTRACT CPP /YX /Yc /Yu
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
 SOURCE=.\edit_ctrls\sci\DocumentAccessor.cxx
-
-!IF  "$(CFG)" == "rdo_studio - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
-
 # SUBTRACT CPP /YX /Yc /Yu
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
 SOURCE=.\edit_ctrls\sci\Editor.cxx
-
-!IF  "$(CFG)" == "rdo_studio - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
-
 # SUBTRACT CPP /YX /Yc /Yu
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
 SOURCE=.\edit_ctrls\sci\ExternalLexer.cxx
-
-!IF  "$(CFG)" == "rdo_studio - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
-
 # SUBTRACT CPP /YX /Yc /Yu
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
 SOURCE=.\edit_ctrls\sci\Indicator.cxx
-
-!IF  "$(CFG)" == "rdo_studio - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
-
 # SUBTRACT CPP /YX /Yc /Yu
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
 SOURCE=.\edit_ctrls\sci\KeyMap.cxx
-
-!IF  "$(CFG)" == "rdo_studio - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
-
 # SUBTRACT CPP /YX /Yc /Yu
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
 SOURCE=.\edit_ctrls\sci\KeyWords.cxx
-
-!IF  "$(CFG)" == "rdo_studio - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
-
 # SUBTRACT CPP /YX /Yc /Yu
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
 SOURCE=.\edit_ctrls\sci\LexRdo.cxx
-
-!IF  "$(CFG)" == "rdo_studio - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
-
 # SUBTRACT CPP /YX /Yc /Yu
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
 SOURCE=.\edit_ctrls\sci\LineMarker.cxx
-
-!IF  "$(CFG)" == "rdo_studio - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
-
 # SUBTRACT CPP /YX /Yc /Yu
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
 SOURCE=.\edit_ctrls\sci\PlatWin.cxx
-
-!IF  "$(CFG)" == "rdo_studio - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
-
 # SUBTRACT CPP /YX /Yc /Yu
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
 SOURCE=.\edit_ctrls\sci\PropSet.cxx
-
-!IF  "$(CFG)" == "rdo_studio - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
-
 # SUBTRACT CPP /YX /Yc /Yu
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
 SOURCE=.\edit_ctrls\sci\RESearch.cxx
-
-!IF  "$(CFG)" == "rdo_studio - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
-
 # SUBTRACT CPP /YX /Yc /Yu
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
 SOURCE=.\edit_ctrls\sci\ScintillaBase.cxx
-
-!IF  "$(CFG)" == "rdo_studio - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
-
 # SUBTRACT CPP /YX /Yc /Yu
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
 SOURCE=.\edit_ctrls\sci\ScintillaWin.cxx
-
-!IF  "$(CFG)" == "rdo_studio - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
-
 # SUBTRACT CPP /YX /Yc /Yu
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
 SOURCE=.\edit_ctrls\sci\Style.cxx
-
-!IF  "$(CFG)" == "rdo_studio - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
-
 # SUBTRACT CPP /YX /Yc /Yu
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
 SOURCE=.\edit_ctrls\sci\StyleContext.cxx
-
-!IF  "$(CFG)" == "rdo_studio - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
-
 # SUBTRACT CPP /YX /Yc /Yu
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
 SOURCE=.\edit_ctrls\sci\UniConversion.cxx
-
-!IF  "$(CFG)" == "rdo_studio - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
-
 # SUBTRACT CPP /YX /Yc /Yu
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
 SOURCE=.\edit_ctrls\sci\ViewStyle.cxx
-
-!IF  "$(CFG)" == "rdo_studio - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
-
 # SUBTRACT CPP /YX /Yc /Yu
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
 SOURCE=.\edit_ctrls\sci\WindowAccessor.cxx
-
-!IF  "$(CFG)" == "rdo_studio - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
-
 # SUBTRACT CPP /YX /Yc /Yu
-
-!ENDIF 
-
 # End Source File
 # End Group
 # Begin Group "Scintilla Header Files"
