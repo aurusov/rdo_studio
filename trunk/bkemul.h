@@ -49,6 +49,15 @@ public:
 	BKEmulMemory memory;
 	BKEmulVideo  video;
 
+	// Клавиатура
+	bool RUS;
+	bool ZAGL;
+	bool Shift;
+	bool AR2;
+	bool SU;
+	bool KeyPressed;
+	bool StopPressed;
+
 	void powerON();
 	void powerOFF();
 	void reset();

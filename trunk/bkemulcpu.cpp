@@ -157,17 +157,19 @@ void BKEmulCPU::reset()
 {
 	R0 = R1 = R2 = R3 = R4 = R5 = R6 = R7 = 0;
 
-	// Слово состояние процессора после включения питания должно быть 0340
-	FC = FV = FZ = FN = FT = false;
-	FP1 = FP2 = FP3 = true;
-
-	PR_4 = PR_60 = PR_274 = false;
-
 	R7 = emul.getMemoryWord( 0177716 ) & 0xFF00;
+
+	BK_doRESET();
 }
 
 void BKEmulCPU::nextIteration()
 {
+	// Прерывание по нажатию на клавишу СТОП или по зависанию канала
+	if ( PR_4 ) {
+		BK_doHALT();
+		return;
+	}
+
 	command = emul.getMemoryWord( R7 );
 	R7 += static_cast<WORD>(2);
 	WORD commandID = command >> 12;
@@ -769,6 +771,12 @@ void BKEmulCPU::BK_doIOT()
 
 void BKEmulCPU::BK_doRESET()
 {
+	// Слово состояние процессора после включения питания должно быть 0340
+	FC = FV = FZ = FN = FT = false;
+	FP1 = FP2 = FP3 = true;
+
+	PR_4 = PR_60 = PR_274 = false;
+
 	emul.setMemoryWord( 0177660, 0000100 );
 }
 

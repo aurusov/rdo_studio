@@ -169,6 +169,8 @@ public:
 
 	void reset();
 	void nextIteration();
+
+	void setPR_4() { PR_4 = true; }
 };
 
 } // namespace bkemul

@@ -44,6 +44,8 @@ BEGIN_MESSAGE_MAP(BKMainFrame, CFrameWnd)
 	ON_UPDATE_COMMAND_UI(ID_EMULATOR_POWEOFF, OnUpdateEmulatorPoweOff)
 	ON_UPDATE_COMMAND_UI(ID_EMULATOR_RESET, OnUpdateEmulatorReset)
 	ON_UPDATE_COMMAND_UI(ID_EMULATOR_SOFTRESET, OnUpdateEmulatorSoftReset)
+	ON_WM_KEYDOWN()
+	ON_WM_KEYUP()
 	//}}AFX_MSG_MAP
 	ON_COMMAND_RANGE( ID_VIEW_FONT_DEFAULT, ID_VIEW_FONT_WORKS, OnFontClicked )
 END_MESSAGE_MAP()
@@ -614,4 +616,67 @@ void BKMainFrame::OnUpdateEmulatorReset(CCmdUI* pCmdUI)
 void BKMainFrame::OnUpdateEmulatorSoftReset(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable( emul.isPowerON() );
+}
+
+void BKMainFrame::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
+{
+	CFrameWnd::OnKeyDown(nChar, nRepCnt, nFlags);
+	bool BK_sysKey = false;
+	switch ( nChar ) {
+		// Esc = СТОП
+		case VK_ESCAPE:
+			if ( !emul.StopPressed ) {
+				emul.cpu.setPR_4();
+			}
+			emul.StopPressed = true;
+			BK_sysKey        = true;
+			break;
+		// Shift = Нижний регистр (временная смена регистров)
+		case VK_SHIFT:
+			emul.Shift = true;
+			BK_sysKey  = true;
+			break;
+		// Alt = АР2 (Alt-left) или СУ (Alt-right)
+		case VK_MENU:
+			if ( nFlags & 0x1000000 ) {
+				emul.SU = true;
+			} else {
+				emul.AR2 = true;
+			}
+			BK_sysKey = true;
+			break;
+		// CapsLock = ЗАГЛ/СТР
+		case VK_CAPITAL:
+			emul.ZAGL  = !emul.ZAGL;
+			BK_sysKey = true;
+			break;
+	}
+}
+
+void BKMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
+{
+	CFrameWnd::OnKeyUp(nChar, nRepCnt, nFlags);
+//	DeleteKeyFromList(Key);
+	bool BK_sysKey = false;
+	switch ( nChar ) {
+		// Esc = СТОП
+		case VK_ESCAPE:
+			emul.StopPressed = false;
+			BK_sysKey        = true;
+			break;
+		// Shift = Нижний регистр (временная смена регистров)
+		case VK_SHIFT:
+			emul.Shift = false;
+			BK_sysKey  = true;
+			break;
+		// Alt = АР2 (Alt-left) или СУ (Alt-right)
+		case VK_MENU:
+			if ( nFlags & 0x1000000 ) {
+				emul.SU = false;
+			} else {
+				emul.AR2 = false;
+			}
+			BK_sysKey = true;
+			break;
+	}
 }
