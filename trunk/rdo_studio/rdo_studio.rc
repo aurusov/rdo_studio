@@ -184,7 +184,7 @@ IDC_CURMARGIN           CURSOR  DISCARDABLE     "res\\Margin.cur"
 IDD_OPTIONS_EDITOR DIALOGEX 0, 0, 304, 137
 STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "Editor"
-FONT 8, "MS Sans Serif"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     GROUPBOX        "Auto complete",IDC_AUTOCOMPLETE_STATIC,0,52,136,56,0,0,
                     HIDC_AUTOCOMPLETE_STATIC
@@ -814,11 +814,24 @@ BEGIN
     END
     POPUP "&Chart"
     BEGIN
+        MENUITEM "&Find In Charts",             ID_CHART_FINDINCHARTS
+        MENUITEM "Add To &Chart",               ID_CHART_ADDTOCHART
         MENUITEM "&Add To New Chart",           ID_CHART_ADDTONEWCHART
-        MENUITEM "Time Wrap",                   ID_CHART_TIMEWRAP
         MENUITEM SEPARATOR
         MENUITEM "Start Trace",                 ID_CHART_STARTTRACE
         MENUITEM "Stop Trace",                  ID_CHART_STOPTRACE
+        MENUITEM SEPARATOR
+        POPUP "&Zoom"
+        BEGIN
+            MENUITEM "Zoom &In",                    ID_CHART_ZOOM_ZOOMIN
+            MENUITEM "Zoom &Out",                   ID_CHART_ZOOM_ZOOMOUT
+            MENUITEM "&Reset Zoom",                 ID_CHART_ZOOM_RESETZOOM
+            MENUITEM SEPARATOR
+            MENUITEM "Zoom &Auto",                  ID_CHART_ZOOM_ZOOMAUTO
+        END
+        MENUITEM "Time &Wrap",                  ID_CHART_TIMEWRAP
+        MENUITEM SEPARATOR
+        MENUITEM "&Options",                    ID_CHART_OPTIONS
     END
     POPUP "&Window"
     BEGIN

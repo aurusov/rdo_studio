@@ -349,6 +349,13 @@
 #define ID_VIEW_ZOOMIN                  33146
 #define ID_VIEW_ZOOMOUT                 33147
 #define ID_VIEW_ZOOMRESET               33148
+#define ID_CHART_ZOOM_ZOOMIN            33150
+#define ID_CHART_ZOOM_ZOOMOUT           33151
+#define ID_CHART_ZOOM_RESETZOOM         33152
+#define ID_CHART_ZOOM_ZOOMAUTO          33153
+#define ID_CHART_OPTIONS                33154
+#define ID_CHART_ADDTOCHART             33155
+#define ID_CHART_FINDINCHARTS           33156
 #define ID_STATUSBAR_READONLY           40000
 #define ID_STATUSBAR_MODIFIED           40001
 #define ID_STATUSBAR_OVERWRITE          40002
@@ -415,7 +422,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        156
-#define _APS_NEXT_COMMAND_VALUE         33149
+#define _APS_NEXT_COMMAND_VALUE         33157
 #define _APS_NEXT_CONTROL_VALUE         1049
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
