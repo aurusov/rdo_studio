@@ -33,6 +33,9 @@ RDOStudioFrameManager::RDOStudioFrameManager():
 {
 	frameDocTemplate = new FrameDocTemplate( IDR_FRAMETYPE, RUNTIME_CLASS(RDOStudioFrameDoc), RUNTIME_CLASS(RDOStudioChildFrame), RUNTIME_CLASS(RDOStudioFrameView) );
 	AfxGetApp()->AddDocTemplate( frameDocTemplate );
+
+	dcBmp.CreateCompatibleDC( NULL );
+	dcMask.CreateCompatibleDC( NULL );
 }
 
 RDOStudioFrameManager::~RDOStudioFrameManager()
@@ -277,15 +280,24 @@ void RDOStudioFrameManager::bmp_insert( const std::string& name )
 		CDC memDC;
 		memDC.CreateCompatibleDC( desktopDC );
 		CBitmap memBMP;
-		memBMP.CreateCompatibleBitmap( desktopDC, lpbi->biWidth, lpbi->biHeight );
+		if ( lpbi->biBitCount != 1 ) {
+			memBMP.CreateCompatibleBitmap( desktopDC, lpbi->biWidth, lpbi->biHeight );
+		} else {
+			memBMP.CreateCompatibleBitmap( &memDC, lpbi->biWidth, lpbi->biHeight );
+		}
 		HBITMAP h = (HBITMAP)memBMP;
-		int a = ::SetDIBits( desktopDC->m_hDC, h, 0, lpbi->biHeight, (char*)lpbi + offBits, reinterpret_cast<LPBITMAPINFO>(lpbi), DIB_RGB_COLORS );
+		int a = ::SetDIBits( desktopDC->m_hDC, h, 0, lpbi->biHeight, (LPSTR)(lpbi) + offBits, reinterpret_cast<LPBITMAPINFO>(lpbi), DIB_RGB_COLORS );
 		CBitmap* hOldBitmap1 = memDC.SelectObject( &memBMP );
 
 		CDC dc;
-		dc.CreateCompatibleDC( desktopDC );
 		bitmaps[name] = new CBitmap;
-		bitmaps[name]->CreateCompatibleBitmap( desktopDC, lpbi->biWidth, lpbi->biHeight );
+		if ( lpbi->biBitCount != 1 ) {
+			dc.CreateCompatibleDC( desktopDC );
+			bitmaps[name]->CreateCompatibleBitmap( desktopDC, lpbi->biWidth, lpbi->biHeight );
+		} else {
+			dc.CreateCompatibleDC( &memDC );
+			bitmaps[name]->CreateCompatibleBitmap( &memDC, lpbi->biWidth, lpbi->biHeight );
+		}
 		CBitmap* hOldBitmap2 = dc.SelectObject( bitmaps[name] );
 		dc.BitBlt( 0, 0, lpbi->biWidth, lpbi->biHeight, &memDC, 0, 0, SRCCOPY );
 

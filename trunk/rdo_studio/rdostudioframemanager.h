@@ -89,6 +89,8 @@ public:
 	std::map< std::string, CBitmap* > bitmaps;
 	void bmp_insert( const std::string& name );
 	void bmp_clear();
+	CDC dcBmp;
+	CDC dcMask;
 
 	void expand() const;
 

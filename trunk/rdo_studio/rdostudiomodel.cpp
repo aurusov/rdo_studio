@@ -505,8 +505,16 @@ void RDOStudioModel::showFrame()
 
 				RDOStudioFrameView* view = frameManager.getFrameView( index );
 				if ( view->mustBeInit ) {
-					view->frameBmpRect.right  = (*it)->width;
-					view->frameBmpRect.bottom = (*it)->height;
+					if ( (*it)->hasBackPicture ) {
+						CBitmap* bmp = frameManager.bitmaps[*(*it)->picFileName];
+						BITMAP bmp_info;
+						bmp->GetBitmap( &bmp_info );
+						view->frameBmpRect.right  = bmp_info.bmWidth;
+						view->frameBmpRect.bottom = bmp_info.bmHeight;
+					} else {
+						view->frameBmpRect.right  = (*it)->width;
+						view->frameBmpRect.bottom = (*it)->height;
+					}
 					view->frameBmp.CreateCompatibleBitmap( view->GetDC(), view->frameBmpRect.Width(), view->frameBmpRect.Height() );
 					view->mustBeInit = false;
 					view->updateScrollBars();
@@ -525,6 +533,15 @@ void RDOStudioModel::showFrame()
 					dc.Rectangle( rect );
 					dc.SelectObject( pOldBrush );
 					dc.SelectObject( pOldPen );
+				} else {
+					CBitmap* bmp = frameManager.bitmaps[*(*it)->picFileName];
+					if ( bmp ) {
+						CBitmap* pOldBitmap = frameManager.dcBmp.SelectObject( bmp );
+						BITMAP bmp_info;
+						bmp->GetBitmap( &bmp_info );
+						dc.BitBlt( 0, 0, bmp_info.bmWidth, bmp_info.bmHeight, &frameManager.dcBmp, 0, 0, SRCCOPY );
+						frameManager.dcBmp.SelectObject( pOldBitmap );
+					}
 				}
 
 				int size = (*it)->elements.size();
@@ -623,13 +640,19 @@ void RDOStudioModel::showFrame()
 							RDOBitmapElement* bmpEl = (RDOBitmapElement *)currElement;
 							CBitmap* bmp = frameManager.bitmaps[bmpEl->bmp];
 							if ( bmp ) {
-								CDC dcMemory;
-								dcMemory.CreateCompatibleDC( CWnd::GetDesktopWindow()->GetDC() );
-								CBitmap* pOldBitmap = dcMemory.SelectObject( bmp );
+								CBitmap* mask = bmpEl->hasMask ? frameManager.bitmaps[bmpEl->mask] : NULL;
+								CBitmap* pOldBitmap = frameManager.dcBmp.SelectObject( bmp );
 								BITMAP bmp_info;
 								bmp->GetBitmap( &bmp_info );
-								dc.BitBlt( bmpEl->x, bmpEl->y, bmp_info.bmWidth, bmp_info.bmHeight, &dcMemory, 0, 0, SRCCOPY );
-								dcMemory.SelectObject( pOldBitmap );
+								if ( mask ) {
+									CBitmap* pOldMask = frameManager.dcMask.SelectObject( mask );
+									dc.BitBlt( bmpEl->x, bmpEl->y, bmp_info.bmWidth, bmp_info.bmHeight, &frameManager.dcMask, 0, 0, SRCAND );
+									dc.BitBlt( bmpEl->x, bmpEl->y, bmp_info.bmWidth, bmp_info.bmHeight, &frameManager.dcBmp, 0, 0, SRCPAINT );
+									frameManager.dcMask.SelectObject( pOldMask );
+								} else {
+									dc.BitBlt( bmpEl->x, bmpEl->y, bmp_info.bmWidth, bmp_info.bmHeight, &frameManager.dcBmp, 0, 0, SRCCOPY );
+								}
+								frameManager.dcBmp.SelectObject( pOldBitmap );
 							}
 						}
 						break;
@@ -637,19 +660,26 @@ void RDOStudioModel::showFrame()
 							RDOSBmpElement *sbmpEl = (RDOSBmpElement *)currElement;
 							CBitmap* bmp = frameManager.bitmaps[sbmpEl->bmp];
 							if ( bmp ) {
-								CDC dcMemory;
-								dcMemory.CreateCompatibleDC( &dc );
-								CBitmap* pOldBitmap = dcMemory.SelectObject( bmp );
+								CBitmap* mask = sbmpEl->hasMask ? frameManager.bitmaps[sbmpEl->mask] : NULL;
+								CBitmap* pOldBitmap = frameManager.dcBmp.SelectObject( bmp );
 								BITMAP bmp_info;
 								bmp->GetBitmap( &bmp_info );
-								dc.StretchBlt( sbmpEl->x, sbmpEl->y, sbmpEl->w, sbmpEl->h, &dcMemory, 0, 0, bmp_info.bmWidth, bmp_info.bmHeight, SRCCOPY );
-								dcMemory.SelectObject( pOldBitmap );
+								if ( mask ) {
+									CBitmap* pOldMask = frameManager.dcMask.SelectObject( mask );
+									dc.StretchBlt( sbmpEl->x, sbmpEl->y, sbmpEl->w, sbmpEl->h, &frameManager.dcMask, 0, 0, bmp_info.bmWidth, bmp_info.bmHeight, SRCAND );
+									dc.StretchBlt( sbmpEl->x, sbmpEl->y, sbmpEl->w, sbmpEl->h, &frameManager.dcBmp, 0, 0, bmp_info.bmWidth, bmp_info.bmHeight, SRCPAINT );
+									frameManager.dcMask.SelectObject( pOldMask );
+								} else {
+									dc.StretchBlt( sbmpEl->x, sbmpEl->y, sbmpEl->w, sbmpEl->h, &frameManager.dcBmp, 0, 0, bmp_info.bmWidth, bmp_info.bmHeight, SRCCOPY );
+								}
+								frameManager.dcBmp.SelectObject( pOldBitmap );
 							}
 						}
 						break;
 
 					case RDOFrameElement::active_type:
-						{																		
+						{							
+/*							
 							RDOActiveElement *activeEl = (RDOActiveElement *)currElement;
 							CBrush brush( RGB(196, 0, 196) );
 							CBrush* pOldBrush = dc.SelectObject( &brush );
@@ -662,6 +692,7 @@ void RDOStudioModel::showFrame()
 							dc.LineTo(activeEl->x, activeEl->y + activeEl->h);
 							dc.SelectObject( pOldBrush );
 							dc.SelectObject( pOldPen );
+*/
 						}
 						break;
 					}
