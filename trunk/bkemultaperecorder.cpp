@@ -16,7 +16,9 @@ using namespace std;
 // --------------------------------------------------------------
 // ---------- BKEmulTapeRecorder
 // --------------------------------------------------------------
-BKEmulTapeRecorder::BKEmulTapeRecorder(): findFile( NULL )
+BKEmulTapeRecorder::BKEmulTapeRecorder():
+	findFile( NULL ),
+	last_file( false )
 {
 }
 
@@ -154,60 +156,75 @@ void BKEmulTapeRecorder::doEMT36()
 					// если он уже не открыт (этот механиз похож на callback-функцию, т.к.
 					// вызов этого обработчика происходит из системного монитора после
 					// каждого найденного имени)
-					if ( !findFile ) {
-						findFile = new CFileFind;
-						char dir[ MAX_PATH + 1 ];
-						::GetCurrentDirectory( MAX_PATH, dir );
-						dir[ MAX_PATH ] = 0;
-						string mask = dir;
-						string::size_type pos = mask.find_last_of( '\\' );
-						if ( pos == string::npos ) {
-							pos = mask.find_last_of( '/' );
-						}
-						if ( pos != mask.length() - 1 ) {
-							mask += '\\';
-						}
-						trimRight( file_name );
-						mask += file_name + "*.*";
-						if ( findFile->FindFile( mask.c_str() ) && findFile->FindNextFile() ) {
-							bool flag = true;
-							while ( flag && ( findFile->IsDots() || findFile->IsDirectory() ) ) {
-								flag = findFile->FindNextFile() ? true : false;
-							}
-							if ( flag ) {
-								file_name = findFile->GetFileName();
-							} else {
-								// Нет ни одного файла
-								closeFind();
-								// Останов по команде оператора
-								answer = 4;
-							}
-						} else {
-							// Ошибка открытия первого файла
-							closeFind();
-							// Останов по команде оператора
-							answer = 4;
-						}
+					if ( last_file ) {
+						last_file = false;
+						// Все файлы перечислены, необходимо остановить вывод имен
+						closeFind();
+						// Останов по команде оператора
+						answer = 4;
 					} else {
-						// Находим следующий файл в директории
-						if ( findFile->FindNextFile() ) {
-							bool flag = true;
-							while ( flag && ( findFile->IsDots() || findFile->IsDirectory() ) ) {
-								flag = findFile->FindNextFile() ? true : false;
+						if ( !findFile ) {
+							// Находим первый файл в директории
+							findFile = new CFileFind;
+							char dir[ MAX_PATH + 1 ];
+							::GetCurrentDirectory( MAX_PATH, dir );
+							dir[ MAX_PATH ] = 0;
+							string mask = dir;
+							string::size_type pos = mask.find_last_of( '\\' );
+							if ( pos == string::npos ) {
+								pos = mask.find_last_of( '/' );
 							}
-							if ( flag ) {
-								file_name = findFile->GetFileName();
+							if ( pos != mask.length() - 1 ) {
+								mask += '\\';
+							}
+							trimRight( file_name );
+							mask += file_name + "*.*";
+							if ( findFile->FindFile( mask.c_str() ) && findFile->FindNextFile() ) {
+								bool flag = true;
+								while ( flag && ( findFile->IsDots() || findFile->IsDirectory() ) ) {
+									flag = findFile->FindNextFile() ? true : false;
+								}
+								if ( !findFile->IsDots() && !findFile->IsDirectory() ) {
+									file_name = findFile->GetFileName();
+								} else {
+									// Нет ни одного файла
+									closeFind();
+									// Останов по команде оператора
+									answer = 4;
+								}
 							} else {
-								// Все файлы перечислены, необходимо остановить вывод имен
+								// Ошибка открытия первого файла
 								closeFind();
 								// Останов по команде оператора
 								answer = 4;
 							}
 						} else {
-							// Все файлы перечислены, необходимо остановить вывод имен
-							closeFind();
-							// Останов по команде оператора
-							answer = 4;
+							// Находим следующий файл в директории
+							if ( findFile->FindNextFile() ) {
+								bool flag = true;
+								while ( flag && ( findFile->IsDots() || findFile->IsDirectory() ) ) {
+									flag = findFile->FindNextFile() ? true : false;
+								}
+								if ( !findFile->IsDots() && !findFile->IsDirectory() ) {
+									file_name = findFile->GetFileName();
+								} else {
+									// Все файлы перечислены, необходимо остановить вывод имен
+									closeFind();
+									// Останов по команде оператора
+									answer = 4;
+								}
+							} else {
+								// Находим последний файл в директрии
+								if ( !findFile->IsDots() && !findFile->IsDirectory() ) {
+									file_name = findFile->GetFileName();
+									last_file = true;
+								} else {
+									// Все файлы перечислены, необходимо остановить вывод имен
+									closeFind();
+									// Останов по команде оператора
+									answer = 4;
+								}
+							}
 						}
 					}
 					// Передача имени найденного файла
@@ -241,7 +258,7 @@ void BKEmulTapeRecorder::doEMT36()
 
 		emul.cpu.BK_doRTI();
 
-	} catch( BKEmul::BKMemoryAccessError& /*e*/ ) {
+	} catch ( BKEmul::BKMemoryAccessError& /*e*/ ) {
 		// Ошибка доступа к памяти БК (грузили в ПЗУ)
 		answer = 4;
 		emul.setMemoryByte( memory + 1, answer );

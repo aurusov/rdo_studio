@@ -15,6 +15,7 @@ class BKEmulTapeRecorder
 private:
 
 	CFileFind* findFile;
+	bool last_file;
 	void closeFind();
 
 	void copyToBK( const char* from, WORD to, WORD size ) const;
