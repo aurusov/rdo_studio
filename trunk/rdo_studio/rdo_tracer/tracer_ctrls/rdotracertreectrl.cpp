@@ -295,8 +295,6 @@ bool RDOTracerLogStyle::getItemColors( const string& item, RDOLogColorPair* &col
 			colors = &_theme->std;
 		} else if ( key == "STR" ) {
 			colors = &_theme->str;
-		} else if ( key == "SRK" ) {
-			colors = &_theme->srk;
 		} else if ( key == "SRC" ) {
 			colors = &_theme->src;
 		} else if ( key == "SRE" ) {
