@@ -138,7 +138,7 @@ int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	statusBar.SetPaneInfo( 2, ID_INSERTOVERWRITESTATUSBAR, SBPS_NORMAL , 70 );
 	statusBar.SetPaneInfo( 3, ID_MODELTIMESTATUSBAR      , SBPS_NORMAL , 100 );
 	statusBar.SetPaneInfo( 4, ID_MODELRUNTYPESTATUSBAR   , SBPS_NORMAL , 70 );
-	statusBar.SetPaneInfo( 5, ID_MODELSHOWRATE           , SBPS_NORMAL , 70 );
+	statusBar.SetPaneInfo( 5, ID_MODELSHOWRATE           , SBPS_NORMAL , 120 );
 	statusBar.SetPaneInfo( 6, ID_PROGRESSSTATUSBAR       , SBPS_STRETCH, 70 );
 
 	workspace.Create( format( ID_DOCK_WORKSPACE ).c_str(), this, 0 );
@@ -336,7 +336,14 @@ void RDOStudioMainFrame::OnUpdateModelShowRateStatusBar( CCmdUI *pCmdUI )
 	pCmdUI->Enable();
 	string s = "";
 	if ( model->isRunning() ) {
-		s = format( IDS_MODELSHOWRATE, model->getShowRate() );
+		double showRate = model->getShowRate();
+		if ( showRate < 1e-10 || showRate > 1e10 ) {
+			s = format( IDS_MODELSHOWRATE_E, showRate );
+		} else if ( showRate >= 1 ) {
+			s = format( IDS_MODELSHOWRATE_FMOREONE, showRate );
+		} else {
+			s = format( IDS_MODELSHOWRATE_FLESSONE, showRate );
+		}
 	}
 	pCmdUI->SetText( s.c_str() );
 }

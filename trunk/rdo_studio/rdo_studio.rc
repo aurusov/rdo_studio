@@ -886,9 +886,14 @@ BEGIN
         MENUITEM "&Execute\tF5",                ID_MODEL_RUN
         MENUITEM "&Stop\tShift+F5",             ID_MODEL_STOP
         MENUITEM SEPARATOR
-        MENUITEM "No Show",                     ID_MODEL_RUNNOSHOW
-        MENUITEM "Animation",                   ID_MODEL_RUNANIMATION
-        MENUITEM "Monitor",                     ID_MODEL_RUNMONITOR
+        MENUITEM "&No Show",                    ID_MODEL_RUNNOSHOW
+        MENUITEM "&Animation",                  ID_MODEL_RUNANIMATION
+        MENUITEM "&Monitor",                    ID_MODEL_RUNMONITOR
+        MENUITEM SEPARATOR
+        MENUITEM "&Increase tempo\tAlt+Num+",   ID_MODEL_SHOWRATE_INC
+        MENUITEM "In&crease tempo by 4 times",  ID_MODEL_SHOWRATE_INCFOUR
+        MENUITEM "Dec&rease tempo by 4 times",  ID_MODEL_SHOWRATE_DECFOUR
+        MENUITEM "&Decrease tempo\tAlt+Num-",   ID_MODEL_SHOWRATE_DEC
     END
     POPUP "&Chart"
     BEGIN
@@ -1012,6 +1017,7 @@ BEGIN
     "V",            ID_EMPTYCOMMAND_30,     VIRTKEY, SHIFT, CONTROL, 
                                                     NOINVERT
     VK_ADD,         ID_VIEW_ZOOMIN,         VIRTKEY, CONTROL, NOINVERT
+    VK_ADD,         ID_MODEL_SHOWRATE_INC,  VIRTKEY, ALT, NOINVERT
     VK_BACK,        ID_EDIT_UNDO,           VIRTKEY, ALT, NOINVERT
     VK_CANCEL,      ID_EMPTYCOMMAND_16,     VIRTKEY, CONTROL, NOINVERT
     VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT, NOINVERT
@@ -1039,6 +1045,7 @@ BEGIN
     VK_MULTIPLY,    ID_VIEW_ZOOMAUTO,       VIRTKEY, CONTROL, NOINVERT
     VK_SPACE,       ID_EDIT_COMPLETEWORD,   VIRTKEY, CONTROL, NOINVERT
     VK_SUBTRACT,    ID_VIEW_ZOOMOUT,        VIRTKEY, CONTROL, NOINVERT
+    VK_SUBTRACT,    ID_MODEL_SHOWRATE_DEC,  VIRTKEY, ALT, NOINVERT
     "W",            ID_EMPTYCOMMAND_2,      VIRTKEY, CONTROL, NOINVERT
     "W",            ID_EMPTYCOMMAND_3,      VIRTKEY, SHIFT, CONTROL, 
                                                     NOINVERT
@@ -1441,15 +1448,17 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_MODELSHOWRATE       "Tempo: %e"
-END
-
-STRINGTABLE DISCARDABLE 
-BEGIN
     ID_MODEL_SHOWRATE_INC   "\nIncrease the animation tempo"
     ID_MODEL_SHOWRATE_INCFOUR "\nIncrease the animation tempo by 4 times"
     ID_MODEL_SHOWRATE_DECFOUR "\nDecrease the animation tempo by 4 times"
     ID_MODEL_SHOWRATE_DEC   "\nDecrease the animation tempo"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_MODELSHOWRATE_FMOREONE "Tempo: %1.1f"
+    IDS_MODELSHOWRATE_FLESSONE "Tempo: %1.10f"
+    IDS_MODELSHOWRATE_E     "Tempo: %e"
 END
 
 #endif    // Russian resources

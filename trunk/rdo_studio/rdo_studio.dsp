@@ -1110,6 +1110,10 @@ SOURCE=.\res\Margin.cur
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\modelToolbar_d.bmp
+# End Source File
+# Begin Source File
+
 SOURCE=.\res\modeToolbar.bmp
 # End Source File
 # Begin Source File
