@@ -9,44 +9,57 @@ class RDOStudioOptionsStylesAndColors;
 namespace rdoTracerLog {
 
 // ----------------------------------------------------------------------------
+// ---------- RDOTracerLogTheme
+// ----------------------------------------------------------------------------
+class RDOTracerLogTheme : public RDOLogTheme
+{
+public:
+	RDOTracerLogTheme();
+	virtual ~RDOTracerLogTheme();
+
+	RDOTracerLogTheme& operator =( const RDOTracerLogTheme& theme );
+	bool operator ==( const RDOTracerLogTheme& theme ) const;
+	bool operator !=( const RDOTracerLogTheme& theme ) const;
+
+	virtual void load( std::string regPath );
+	virtual void save( std::string regPath ) const;
+
+	RDOLogColorPair es;
+	RDOLogColorPair eb;
+	RDOLogColorPair ef;
+	RDOLogColorPair ei;
+	RDOLogColorPair er;
+	RDOLogColorPair rc;
+	RDOLogColorPair re;
+	RDOLogColorPair rk;
+	RDOLogColorPair v;
+	RDOLogColorPair s;
+	RDOLogColorPair dps;
+	RDOLogColorPair sb;
+	RDOLogColorPair so;
+	RDOLogColorPair stn;
+	RDOLogColorPair std;
+	RDOLogColorPair str;
+	RDOLogColorPair src;
+	RDOLogColorPair sre;
+	RDOLogColorPair srk;
+	RDOLogColorPair sd;
+	RDOLogColorPair ses;
+	RDOLogColorPair sen;
+	RDOLogColorPair sem;
+	RDOLogColorPair sef;
+	RDOLogColorPair seu;
+};
+
+// ----------------------------------------------------------------------------
 // ---------- RDOTracerLogStyle
 // ----------------------------------------------------------------------------
-typedef struct {
-	COLORREF foregroundColor;
-	COLORREF backgroundColor;
-} RDOColorPair;
-
-
 class RDOTracerLogStyle : public RDOLogStyle
 {
 friend class RDOStudioOptionsStylesAndColors;
 
 protected:
-	RDOColorPair es;
-	RDOColorPair eb;
-	RDOColorPair ef;
-	RDOColorPair ei;
-	RDOColorPair er;
-	RDOColorPair rc;
-	RDOColorPair re;
-	RDOColorPair rk;
-	RDOColorPair v;
-	RDOColorPair s;
-	RDOColorPair dps;
-	RDOColorPair sb;
-	RDOColorPair so;
-	RDOColorPair stn;
-	RDOColorPair std;
-	RDOColorPair str;
-	RDOColorPair src;
-	RDOColorPair sre;
-	RDOColorPair srk;
-	RDOColorPair sd;
-	RDOColorPair ses;
-	RDOColorPair sen;
-	RDOColorPair sem;
-	RDOColorPair sef;
-	RDOColorPair seu;
+	virtual void initTheme();
 
 public:
 	RDOTracerLogStyle();
@@ -58,10 +71,7 @@ public:
 	bool operator ==( const RDOTracerLogStyle& style ) const;
 	bool operator !=( const RDOTracerLogStyle& style ) const;
 
-	static RDOTracerLogStyle getDefaultStyle();
-
-	virtual bool load();
-	virtual bool save() const;
+	//static RDOTracerLogStyle getDefaultStyle();
 };
 
 }; // namespace rdoTracerLog

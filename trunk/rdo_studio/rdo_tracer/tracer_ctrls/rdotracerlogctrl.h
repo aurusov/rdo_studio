@@ -15,10 +15,10 @@ class RDOTracerLogCtrl: public RDOLogCtrl
 DECLARE_DYNCREATE( RDOTracerLogCtrl )
 
 protected:
-	typedef std::map< int, RDOColorPair > RDOColorMap;
+	typedef std::map< int, RDOLogColorPair > RDOColorMap;
 	RDOColorMap subitemColors;
 	bool addingSubitems;
-	RDOColorPair itemColor;
+	RDOLogColorPair itemColor;
 	bool getItemColors( const int index, COLORREF& textColor, COLORREF& backColor ) const;
 	void showFindError( std::string& findStr );
 

@@ -369,10 +369,12 @@ void RDOLogCtrl::OnPaint()
 		for ( int i = firstLine; i < lastLine + 1; i++ ) {
 
 			if ( i != selectedLine || focusOnly ) {
-				if ( !( getItemColors( (*it), front, back ) || getItemColors( i, front, back ) ) ) {
+				/*if ( !( getItemColors( (*it), front, back ) || getItemColors( i, front, back ) ) ) {
 					front = dc->GetTextColor();
 					back  = dc->GetBkColor();
-				}
+				}*/
+				if ( !getItemColors( (*it), front, back ) )
+					getItemColors( i, front, back );
 			} else {
 				front = ::GetSysColor( COLOR_HIGHLIGHTTEXT );
 				back  = ::GetSysColor( COLOR_HIGHLIGHT );
@@ -391,11 +393,11 @@ void RDOLogCtrl::OnPaint()
 			
 			dc->SetTextColor( front );
 
-			rect.left += logStyle->horzBorder;
+			rect.left += logStyle->borders->horzBorder;
 
 			dc->DrawText( (*it).c_str(), rect, DT_SINGLELINE | DT_LEFT | DT_VCENTER );
 
-			rect.left -= logStyle->horzBorder;
+			rect.left -= logStyle->borders->horzBorder;
 			
 			dc->RestoreDC( backdc );
 
@@ -410,7 +412,8 @@ void RDOLogCtrl::OnPaint()
 			it++;
 		}
 
-		dc->FillSolidRect( ps.rcPaint.left, rect.bottom, ps.rcPaint.right, ps.rcPaint.bottom, dc->GetBkColor() );
+		getItemColors( "", front, back );
+		dc->FillSolidRect( ps.rcPaint.left, rect.bottom, ps.rcPaint.right, ps.rcPaint.bottom, back );
 	}
 	
 	dc->RestoreDC( prevDC );
@@ -589,7 +592,7 @@ void RDOLogCtrl::recalcWidth( const int newMaxStrWidth )
 {
 	if ( maxStrWidth != newMaxStrWidth ) {
 		int width = maxStrWidth * charWidth;
-		int newwidth = newMaxStrWidth * charWidth + 2 * logStyle->horzBorder;
+		int newwidth = newMaxStrWidth * charWidth + 2 * logStyle->borders->horzBorder;
 
 		if ( newwidth > width ) {
 			maxStrWidth = newwidth / charWidth;
@@ -873,9 +876,9 @@ void RDOLogCtrl::setFont( const bool needRedraw )
 	memset( &lf, 0, sizeof(lf) );
 	// The negative is to allow for leading
 	lf.lfHeight    = -MulDiv( logStyle->font->size, ::GetDeviceCaps( GetDC()->m_hDC, LOGPIXELSY ), 72 );
-	lf.lfWeight    = logStyle->style & RDOFS_BOLD ? FW_BOLD : FW_NORMAL;
-	lf.lfItalic    = logStyle->style & RDOFS_ITALIC;
-	lf.lfUnderline = logStyle->style & RDOFS_UNDERLINE;
+	lf.lfWeight    = logStyle->theme->style & RDOFS_BOLD ? FW_BOLD : FW_NORMAL;
+	lf.lfItalic    = logStyle->theme->style & RDOFS_ITALIC;
+	lf.lfUnderline = logStyle->theme->style & RDOFS_UNDERLINE;
 	lf.lfCharSet   = logStyle->font->characterSet;
 	strcpy( lf.lfFaceName, logStyle->font->name.c_str() );
 
@@ -887,7 +890,7 @@ void RDOLogCtrl::setFont( const bool needRedraw )
 		CDC* dc = GetDC();
 		CFont* oldFont = dc->SelectObject( &fontLog );
 		dc->GetTextMetrics( &tm );
-		lineHeight = tm.tmHeight + 2 * logStyle->vertBorder;
+		lineHeight = tm.tmHeight + 2 * logStyle->borders->vertBorder;
 		charWidth  = tm.tmAveCharWidth/*tm.tmMaxCharWidth*/;
 		dc->SelectObject( oldFont );
 	}

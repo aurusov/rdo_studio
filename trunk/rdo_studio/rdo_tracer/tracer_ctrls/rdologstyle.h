@@ -7,18 +7,78 @@
 namespace rdoTracerLog {
 
 // ----------------------------------------------------------------------------
+// ---------- RDOLogColorPair
+// ----------------------------------------------------------------------------
+class RDOLogColorPair
+{
+public:
+	RDOLogColorPair();
+	virtual ~RDOLogColorPair();
+
+	RDOLogColorPair& operator =( const RDOLogColorPair& colors );
+	bool operator ==( const RDOLogColorPair& colors ) const;
+	bool operator !=( const RDOLogColorPair& colors ) const;
+
+	virtual void load( std::string regPath, std::string regParam );
+	virtual void save( std::string regPath, std::string regParam ) const;
+
+	COLORREF foregroundColor;
+	COLORREF backgroundColor;
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOLogTheme
+// ----------------------------------------------------------------------------
+class RDOLogTheme
+{
+public:
+	RDOLogTheme();
+	virtual ~RDOLogTheme();
+
+	RDOLogTheme& operator =( const RDOLogTheme& theme );
+	bool operator ==( const RDOLogTheme& theme ) const;
+	bool operator !=( const RDOLogTheme& theme ) const;
+
+	virtual void load( std::string regPath );
+	virtual void save( std::string regPath ) const;
+
+	rdoEditCtrl::RDOFontStyle style;
+
+	RDOLogColorPair defaultColor;
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOLogBorders
+// ----------------------------------------------------------------------------
+class RDOLogBorders
+{
+public:
+	RDOLogBorders();
+	virtual ~RDOLogBorders();
+
+	RDOLogBorders& operator =( const RDOLogBorders& borders );
+	bool operator ==( const RDOLogBorders& borders ) const;
+	bool operator !=( const RDOLogBorders& borders ) const;
+
+	virtual void load( std::string regPath );
+	virtual void save( std::string regPath ) const;
+
+	int vertBorder;
+	int horzBorder;
+};
+
+// ----------------------------------------------------------------------------
 // ---------- RDOLogStyle
 // ----------------------------------------------------------------------------
 class RDOLogStyle: public rdoEditCtrl::RDOBaseCtrlStyle
 {
+protected:
+	virtual void initTheme();
+	virtual void initBorders();
+
 public:
 	RDOLogStyle();
 	virtual ~RDOLogStyle();
-
-	int vertBorder;
-	int horzBorder;
-
-	rdoEditCtrl::RDOFontStyle style;
 
 	virtual bool getItemColors( const int index, COLORREF& textColor, COLORREF& backColor ) const;
 	virtual bool getItemColors( const std::string& item, COLORREF& textColor, COLORREF& backColor ) const;
@@ -27,10 +87,14 @@ public:
 	bool operator ==( const RDOLogStyle& style ) const;
 	bool operator !=( const RDOLogStyle& style ) const;
 
+	virtual void init( const std::string& _regPath = "" );
 	virtual bool load();
 	virtual bool save() const;
 
-	static RDOLogStyle getDefaultStyle();
+	RDOLogTheme*   theme;
+	RDOLogBorders* borders;
+
+	//static RDOLogStyle getDefaultStyle();
 };
 
 }; // namespace rdoTracerLog
