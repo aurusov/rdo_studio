@@ -59,7 +59,7 @@ Results_file rule Run_file Run_StartTime RUN_TIME_ERROR s_bmp search Seconds sel
 set Show Show_if Show_mode Show_rate some Statistic_file such_as table temporary \
 Terminate_if text Time_now Trace_EndTime Trace_file Trace_StartTime triang TRUE \
 uniform until USER_BREAK value watch_par watch_quant watch_state watch_value with_max \
-with_min YES transparent";
+with_min YES transparent Системное_время";
 
 static char* kw1 = "Abs ArcCos ArcSin ArcTan Cos Cotan Exist Exp Floor For_All Frac \
 GetRelResNumber GetResNumber IAbs IMax IMin Int IntPower Ln Log10 Log2 LogN Max Min \

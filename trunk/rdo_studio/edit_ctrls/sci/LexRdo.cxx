@@ -43,7 +43,7 @@ static void ColouriseRdoDoc( unsigned int startPos, int length, int initStyle, W
 			if ( !isRDOLexerIdentifier(sc.ch) ) {
 				char s[100];
 				sc.GetCurrent( s, sizeof(s) );
-				if ( keywords.InList(s) || strcmp( s, "Системное_время") == 0 ) {
+				if ( keywords.InList(s) ) {
 					sc.ChangeState( SCE_RDO_KEYWORD );
 				} else if ( functions.InList(s) ) {
 					sc.ChangeState( SCE_RDO_FUNCTION );
