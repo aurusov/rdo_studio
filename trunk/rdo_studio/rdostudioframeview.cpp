@@ -424,19 +424,23 @@ void RDOStudioFrameView::onDraw()
 			pDC->FillSolidRect( 0, rect.bottom, newClientRect.right, newClientRect.bottom, bgColor );
 		}
 */
-	}
-	if ( newClientRect.right - frameBmpRect.right > 0 ) {
-//		dc.FillSolidRect( frameBmpRect.right, 0, newClientRect.right - frameBmpRect.right, newClientRect.bottom, bgColor );
+		if ( newClientRect.right - frameBmpRect.right > 0 ) {
+//			dc.FillSolidRect( frameBmpRect.right, 0, newClientRect.right - frameBmpRect.right, newClientRect.bottom, bgColor );
+			HBRUSH brush = ::CreateSolidBrush( bgColor );
+			RECT r = { frameBmpRect.right, 0, newClientRect.right, newClientRect.bottom };
+			::FillRect( hdc, &r, brush );
+			::DeleteObject( brush );
+		}
+		if ( newClientRect.bottom - frameBmpRect.bottom > 0 ) {
+//			dc.FillSolidRect( 0, frameBmpRect.bottom, newClientRect.right, newClientRect.bottom - frameBmpRect.bottom, bgColor );
+			HBRUSH brush = ::CreateSolidBrush( bgColor );
+			RECT r = { 0, frameBmpRect.bottom, frameBmpRect.right, newClientRect.bottom };
+			::FillRect( hdc, &r, brush );
+			::DeleteObject( brush );
+		}
+	} else {
 		HBRUSH brush = ::CreateSolidBrush( bgColor );
-		RECT r = { frameBmpRect.right, 0, newClientRect.right, newClientRect.bottom };
-		::FillRect( hdc, &r, brush );
-		::DeleteObject( brush );
-	}
-	if ( newClientRect.bottom - frameBmpRect.bottom > 0 ) {
-//		dc.FillSolidRect( 0, frameBmpRect.bottom, newClientRect.right, newClientRect.bottom - frameBmpRect.bottom, bgColor );
-		HBRUSH brush = ::CreateSolidBrush( bgColor );
-		RECT r = { 0, frameBmpRect.bottom, frameBmpRect.right, newClientRect.bottom };
-		::FillRect( hdc, &r, brush );
+		::FillRect( hdc, &newClientRect, brush );
 		::DeleteObject( brush );
 	}
 }

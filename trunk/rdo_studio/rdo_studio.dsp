@@ -81,8 +81,8 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 Imm32.lib Version.lib Htmlhelp.lib /nologo /subsystem:windows /profile /debug /machine:I386
-# SUBTRACT LINK32 /nodefaultlib
+# ADD LINK32 Imm32.lib Version.lib Htmlhelp.lib /nologo /subsystem:windows /debug /machine:I386
+# SUBTRACT LINK32 /profile /nodefaultlib
 
 !ENDIF 
 
