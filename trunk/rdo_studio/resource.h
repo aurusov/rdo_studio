@@ -103,7 +103,6 @@
 #define IDC_MAKER_SIZE_STATIC           1077
 #define IDC_MARKER_SIZE_EDIT            1078
 #define IDC_LEGEND_CHECK                1079
-#define IDC_EDIT1                       1080
 #define ID_CHART_ADDTONEWCHART          32771
 #define ID_VIEW_WORKSPACE               32774
 #define ID_VIEW_OUTPUT                  32775
@@ -482,6 +481,7 @@
 #define IDS_FRAMENAME                   40201
 #define IDS_MODELNAME                   40202
 #define IDS_CHART_OPTIONS               40300
+#define IDS_CHART_OPTIONS_APPLY         40301
 #define ID_ABOUT_BMSTU                  40910
 #define ID_ABOUT_TEL                    40911
 #define ID_ABOUT_OKBUTTON               40912

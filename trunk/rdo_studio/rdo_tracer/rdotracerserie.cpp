@@ -87,6 +87,15 @@ void RDOTracerSerie::getCaptions( vector<string> &captions, const int val_count 
 {
 	if ( !captions.empty() )
 		captions.clear();
+	if ( serieKind == RDOST_PREVIEW ) {
+		double valoffset = ( maxValue - minValue ) / (double)( val_count - 1 );
+		double valo = minValue;
+		string formatstr = "%.3f";
+		for ( int i = 0; i < val_count; i++ ) {
+			captions.push_back( format( formatstr.c_str(), valo ) );
+			valo += valoffset;
+		}
+	}
 }
 
 void RDOTracerSerie::getCaptionsInt( vector<string> &captions, const int val_count ) const

@@ -81,7 +81,6 @@ RDOStudioChartView::~RDOStudioChartView()
 
 BOOL RDOStudioChartView::PreCreateWindow(CREATESTRUCT& cs) 
 {
-//	return CView::PreCreateWindow(cs);
 	if ( !CView::PreCreateWindow( cs ) ) return FALSE;
 	cs.style = WS_CHILD | WS_VISIBLE | WS_HSCROLL /*| WS_VSCROLL*/ | WS_TABSTOP;
 	cs.dwExStyle |= WS_EX_CLIENTEDGE;
@@ -99,8 +98,6 @@ void RDOStudioChartView::recalcLayout()
 
 	RDOStudioChartDoc* doc = GetDocument();
 	
-	//string str = doc->GetTitle();
-
 	CRect tmprect;
 	tmprect.CopyRect( &newClientRect );
 	dc.DrawText( doc->GetTitle(), &tmprect, DT_WORDBREAK | DT_CENTER | DT_CALCRECT );
@@ -108,7 +105,6 @@ void RDOStudioChartView::recalcLayout()
 
 	dc.SelectObject( &fontAxis );
 
-	//tmprect.CopyRect( &newClientRect );
 	int max_width = 0;
 	if ( yAxis ) {
 		yAxis->getCaptions( captions, valueCountY );
@@ -320,8 +316,6 @@ void RDOStudioChartView::setFromTo()
 
 void RDOStudioChartView::drawTitle( CDC &dc, CRect& chartRect )
 {
-	//CRect tmprect;
-	//tmprect.CopyRect( &newClientRect );
 	CRect tmprect;
 	tmprect.CopyRect( &newClientRect );
 	tmprect.top = 0;
@@ -329,8 +323,6 @@ void RDOStudioChartView::drawTitle( CDC &dc, CRect& chartRect )
 	int old_bk = dc.SetBkMode( TRANSPARENT );
 	CFont*  oldFont = dc.SelectObject( &fontTitle );
 	COLORREF old_color = dc.SetTextColor( style->getTheme()->titleFGColor );
-	//string str = GetDocument()->GetTitle();
-	//dc.DrawText( str.c_str(), rect, DT_CENTER );
 	dc.DrawText( GetDocument()->GetTitle(), tmprect, DT_CENTER | DT_WORDBREAK );
 	dc.SetTextColor( old_color );
 	dc.SelectObject( oldFont );
@@ -345,11 +337,7 @@ void RDOStudioChartView::drawLegend( CDC &dc, CRect& legendRect )
 	tmprect.CopyRect( &legendRect );
 	CSize size;
 	for ( vector< RDOStudioDocSerie* >::iterator it = doc->series.begin(); it != doc->series.end(); it++ ) {
-		CRect rect;
 		size = (*it)->drawInLegend( dc, tmprect, fontLegend, style->getTheme()->legendFgColor );
-		rect.CopyRect( tmprect );
-		rect.bottom = rect.top + size.cx;
-		//dc.Rectangle( rect );
 		tmprect.top += size.cy;
 	}
 	dc.SetBkMode( old_bk );
@@ -553,17 +541,8 @@ void RDOStudioChartView::setZoom( double new_zoom, const bool force_update )
 
 void RDOStudioChartView::OnDraw(CDC* pDC)
 {
-	
-	
 	RDOStudioChartDoc* pDoc = GetDocument();
 
-	
-	//temporary
-	//if ( pDoc->series.size() )
-	//	yAxis = pDoc->series.at( 0 );
-	//temporary
-
-	//GetClientRect( &newClientRect );
 	CRect rect;
 	rect.CopyRect( &newClientRect );
 
@@ -582,7 +561,6 @@ void RDOStudioChartView::OnDraw(CDC* pDC)
 	
 	dc.FillSolidRect( newClientRect, style->theme->backgroundColor );
 
-	//int height = rect.Height();
 	drawTitle( dc, chartRect );
 
 	if ( needDrawLegend )
@@ -668,9 +646,7 @@ int RDOStudioChartView::OnCreate( LPCREATESTRUCT lpCreateStruct )
 {
 	if ( !target.Register( this ) )
 		return -1;
-	//return CView::OnCreate( lpCreateStruct );
 	if ( CView::OnCreate( lpCreateStruct ) == -1 ) return -1;
-	//setFont( logStyle->font, false );
 	
 	if ( !previewMode )
 		setStyle( &studioApp.mainFrame->style_chart, false );

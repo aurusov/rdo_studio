@@ -1427,6 +1427,7 @@ END
 STRINGTABLE DISCARDABLE 
 BEGIN
     IDS_CHART_OPTIONS       "Chart options"
+    IDS_CHART_OPTIONS_APPLY "Apply changes?"
 END
 
 #endif    // Russian resources

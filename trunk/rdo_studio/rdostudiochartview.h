@@ -6,7 +6,6 @@
 #endif
 
 #include <afxole.h>
-//#include "rdo_tracer/rdotracerserie.h"
 #include "rdo_tracer/rdotracervalues.h"
 #include "rdostudiochartdoc.h"
 
@@ -19,7 +18,6 @@ class RDOStudioDocSerie;
 
 class RDOStudioChartView : public CView
 {
-//friend class RDOTracerSerie;
 friend class RDOTracerSerieFindValue;
 friend class RDOStudioChartOptionsChart;
 

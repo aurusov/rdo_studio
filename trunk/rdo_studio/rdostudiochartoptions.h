@@ -63,6 +63,10 @@ private:
 	RDOColorComboBox ColorCB;
 
 protected:
+	
+	bool getModified() const;
+	void restoreValues();
+
 	//{{AFX_DATA(RDOStudioChartOptionsSeries)
 	enum { IDD = IDD_CHART_OPTIONS_SERIES };
 	CComboBox	m_SerieCombo;
@@ -105,7 +109,6 @@ class RDOStudioChartOptions: public CPropertySheet
 {
 friend class RDOStudioChartOptionsChart;
 friend class RDOStudioChartOptionsSeries;
-//friend class RDOStudioOptionsColorsStyles;
 
 private:
 	RDOStudioChartOptionsChart*  chart;

@@ -31,7 +31,6 @@ public:
 	~RDOStudioDocSerie();
 	RDOTracerSerie* getSerie() const { return serie; };
 	COLORREF getColor() const { return color; };
-	//bool operator ==( const RDOTracerSerie* _serie ) const { return serie == _serie; };
 	bool isTracerSerie( const RDOTracerSerie* _serie ) { return serie == _serie; };
 	void drawSerie( RDOStudioChartView* const view, CDC &dc, CRect &rect ) const { serie->drawSerie( view, dc, rect, color, marker, marker_size, needDrawMarker ); };
 	void getCaptions( std::vector<std::string> &captions, const int val_count ) const { serie->getCaptions( captions, val_count ); };

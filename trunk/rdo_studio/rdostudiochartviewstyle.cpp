@@ -9,14 +9,17 @@ using namespace std;
 // ----------------------------------------------------------------------------
 RDOStudioChartViewTheme::RDOStudioChartViewTheme(): RDOStyleTheme()
 {
-	axisFgColor   = RGB( 0xFF, 0x00, 0x00 );
-	titleFGColor  = RGB( 0x00, 0xFF, 0x00 );
-	legendFgColor = RGB( 0x00, 0x00, 0xFF );
-	chartBgColor  = RGB( 0xAA, 0xAA, 0xAA );
-	timeBgColor   = RGB( 0xE7, 0xF8, 0xF8 );
+	defaultColor    = RGB( 0x80, 0x80, 0x80 );
+	backgroundColor = RGB( 0xFF, 0xFF, 0xFF );
+
+	axisFgColor   = RGB( 0x00, 0x00, 0x80 );
+	titleFGColor  = RGB( 0x80, 0x00, 0x00 );
+	legendFgColor = RGB( 0x58, 0x46, 0x3A );
+	chartBgColor  = RGB( 0xF3, 0xFC, 0xFC );
+	timeBgColor   = RGB( 0xBA, 0xEB, 0xEB );
 
 	titleStyle  = RDOStyleFont::BOLD;
-	legendStyle = RDOStyleFont::ITALIC;
+	legendStyle = RDOStyleFont::NONE;
 }
 
 RDOStudioChartViewTheme::~RDOStudioChartViewTheme()

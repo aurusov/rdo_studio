@@ -35,7 +35,6 @@ protected:
 	double minTimeOffset;
 	int ticksCount;
 	void incTimeEventsCount( RDOTracerTimeNow* time );
-	//void addSerieTimes( RDOTracerSerie* const serie );
 	bool newValueToSerieAdded( RDOTracerValue* val );
 
 	bool previewMode;

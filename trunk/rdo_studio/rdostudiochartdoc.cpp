@@ -27,7 +27,6 @@ public:
 void RDOStudioChartDocInsertTime::operator ()( RDOTracerValue* val )
 {
 	if( val ) {
-		//timesList::iterator it = find_if( doc->docTimes.begin(), doc->docTimes.end(), bind2nd( greater_equal<RDOTracerTimeNow*>(), val->modeltime ) );
 		timesList::iterator it = find_if( doc->docTimes.begin(), doc->docTimes.end(), bind2nd( mem_fun1( &RDOTracerTimeNow::compareTimes ), val->modeltime ) );
 		if ( it != doc->docTimes.end() && (*it) == val->modeltime )
 			return;
@@ -132,10 +131,8 @@ void RDOStudioChartDoc::addSerie( RDOTracerSerie* const serie )
 {
 	if ( serie && !serieExists( serie ) ) {
 		RDOStudioDocSerie* docserie = new RDOStudioDocSerie( serie );
-		//docserie.serie = serie;
 		docserie->color = selectColor();
 		docserie->marker = selectMarker();
-		//docserie->docSerieTitle = serie->getTitle();
 		series.push_back( docserie );
 		for_each( serie->begin(), serie->end(), RDOStudioChartDocInsertTime( this ) );
 		serie->addToDoc( this );

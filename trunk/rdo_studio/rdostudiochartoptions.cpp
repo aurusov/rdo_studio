@@ -32,7 +32,6 @@ RDOStudioChartOptionsChart::RDOStudioChartOptionsChart( RDOStudioChartOptions& _
 {
 
 	//{{AFX_DATA_INIT(RDOStudioChartOptionsChart)
-	//m_DrawLegend = sheet->view->needDrawLegend;
 	m_ValCountX = sheet->view->valueCountX;
 	m_ValCountY = sheet->view->valueCountY;
 	m_ChartTitle = sheet->view->GetDocument()->GetTitle();
@@ -102,8 +101,6 @@ void RDOStudioChartOptionsChart::OnUpdateModify()
 	bool legend = m_DrawLegend.GetCheck() ? true : false;
 
 	SetModified( legend != view->needDrawLegend || m_ValCountX != view->valueCountX || m_ValCountY != view->valueCountY || m_ChartTitle != view->GetDocument()->GetTitle() || m_AxisSerie != view->GetDocument()->getSerieIndex( view->yAxis ) );
-
-	//SetModified( *sheet->style_editor.buffer != *studioApp.mainFrame->style_editor.buffer || *sheet->style_editor.autoComplete != *studioApp.mainFrame->style_editor.autoComplete || *sheet->style_editor.margin != *studioApp.mainFrame->style_editor.margin );
 }
 
 void RDOStudioChartOptionsChart::apply() const
@@ -150,6 +147,19 @@ RDOStudioChartOptionsSeries::RDOStudioChartOptionsSeries( RDOStudioChartOptions&
 
 RDOStudioChartOptionsSeries::~RDOStudioChartOptionsSeries()
 {
+}
+
+bool RDOStudioChartOptionsSeries::getModified() const
+{
+	bool res = false;
+	if ( serie ) {
+		CString title;
+		m_SerieTitle.GetWindowText( title );
+		bool marker = m_DrawMarker.GetCheck() ? true : false;
+		bool legend = m_DrawInLegend.GetCheck() ? true : false;
+		res = title != serie->docSerieTitle.c_str() || ColorCB.getCurrentColor() != serie->color || m_Marker.GetCurSel() != serie->marker || marker != serie->needDrawMarker || m_sizeMarker != serie->marker_size || legend != serie->showInLegend;
+	}
+	return res;
 }
 
 void RDOStudioChartOptionsSeries::DoDataExchange(CDataExchange* pDX)
@@ -209,14 +219,7 @@ void RDOStudioChartOptionsSeries::OnUpdateModify()
 {
 	if ( serie ) {
 		UpdateData();
-		CString title;
-		m_SerieTitle.GetWindowText( title );
-		//CString size_str;
-		//m_MarkerSize.GetWindowText( size_str );
-		//int size = atoi( size_str );
-		bool marker = m_DrawMarker.GetCheck() ? true : false;
-		bool legend = m_DrawInLegend.GetCheck() ? true : false;
-		SetModified( title != serie->docSerieTitle.c_str() || ColorCB.getCurrentColor() != serie->color || m_Marker.GetCurSel() != serie->marker || marker != serie->needDrawMarker || m_sizeMarker != serie->marker_size || legend != serie->showInLegend );
+		SetModified( getModified() );
 	}
 }
 
@@ -230,12 +233,22 @@ void RDOStudioChartOptionsSeries::apply() const
 		serie->marker = static_cast<RDOTracerSerieMarker>(m_Marker.GetCurSel());
 		bool marker = m_DrawMarker.GetCheck() ? true : false;
 		serie->needDrawMarker = marker;
-		//CString size_str;
-		//m_MarkerSize.GetWindowText( size_str );
-		//int size = atoi( size_str );
 		serie->marker_size = m_sizeMarker;
 		bool legend = m_DrawInLegend.GetCheck() ? true : false;
 		serie->showInLegend = legend;
+	}
+}
+
+void RDOStudioChartOptionsSeries::restoreValues()
+{
+	if ( serie ) {
+		m_SerieTitle.SetWindowText( serie->docSerieTitle.c_str() );
+		ColorCB.insertColor( serie->color );
+		ColorCB.setCurrentColor( serie->color );
+		m_Marker.SetCurSel( serie->marker );
+		m_DrawMarker.SetCheck( serie->needDrawMarker );
+		m_MarkerSize.SetWindowText( format( "%d", serie->marker_size).c_str() );
+		m_DrawInLegend.SetCheck( serie->showInLegend );
 	}
 }
 
@@ -250,14 +263,22 @@ void RDOStudioChartOptionsSeries::OnSelchangeSeriesCombo()
 	m_MarkerSize.EnableWindow( enable );
 	m_DrawInLegend.EnableWindow( enable );
 	if ( enable ) {
+		if ( serie && getModified() ) {
+			int res = AfxGetMainWnd()->MessageBox( format( IDS_CHART_OPTIONS_APPLY ).c_str(), NULL, MB_ICONQUESTION | MB_YESNOCANCEL );
+			bool continue_flag = true;  
+			switch ( res ) {
+				case IDYES   : sheet->apply(); break;
+				case IDNO    : restoreValues(); break;
+				case IDCANCEL: {
+					continue_flag = false;
+					m_SerieCombo.SetCurSel( sheet->view->GetDocument()->getSerieIndex( serie ) );
+					break;
+				}
+			}
+			if ( !continue_flag ) return;
+		}
 		serie = sheet->view->GetDocument()->series.at( ser );
-		m_SerieTitle.SetWindowText( serie->docSerieTitle.c_str() );
-		ColorCB.insertColor( serie->color );
-		ColorCB.setCurrentColor( serie->color );
-		m_Marker.SetCurSel( serie->marker );
-		m_DrawMarker.SetCheck( serie->needDrawMarker );
-		m_MarkerSize.SetWindowText( format( "%d", serie->marker_size).c_str() );
-		m_DrawInLegend.SetCheck( serie->showInLegend );
+		restoreValues();
 	} else {
 		serie = NULL;
 	}
