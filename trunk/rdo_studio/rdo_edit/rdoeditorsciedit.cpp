@@ -504,7 +504,7 @@ void RDOEditorSciEdit::OnSelectAll( CCmdUI* pCmdUI )
 	pCmdUI->Enable( !isEmpty() );
 }
 
-CString RDOEditorSciEdit::getCurrentWord() const
+string RDOEditorSciEdit::getCurrentWord() const
 {
 	int pos_begin = sendEditor( SCI_WORDSTARTPOSITION, getCurrentPos(), true );
 	int pos_end   = sendEditor( SCI_WORDENDPOSITION, getCurrentPos(), true );
@@ -515,12 +515,12 @@ CString RDOEditorSciEdit::getCurrentWord() const
 	tr.chrg.cpMin = pos_begin;
 	tr.chrg.cpMax = pos_end;
 	sendEditor( SCI_GETTEXTRANGE, 0, (long)&tr );
-	CString str = tr.lpstrText;
+	string str = tr.lpstrText;
 	delete []word;
 	return str;
 }
 
-CString RDOEditorSciEdit::getSelection() const
+string RDOEditorSciEdit::getSelection() const
 {
 	CharacterRange cr = getSelectionRange();
 	char* selection = new char[ cr.cpMax - cr.cpMin + 1 ];
@@ -528,7 +528,7 @@ CString RDOEditorSciEdit::getSelection() const
 	return selection;
 }
 
-CString RDOEditorSciEdit::getCurrentOrSelectedWord() const
+string RDOEditorSciEdit::getCurrentOrSelectedWord() const
 {
 	if ( isSelected() ) {
 		return getSelection();
@@ -565,7 +565,7 @@ void RDOEditorSciEdit::OnSearchFind()
 	firstFoundPos = -1;
 	CFindReplaceDialog* pDlg = new CFindReplaceDialog();
 	DWORD flag = (bSearchDown ? FR_DOWN : 0) | (bMatchCase ? FR_MATCHCASE : 0) | (bMatchWholeWord ? FR_WHOLEWORD : 0);
-	pDlg->Create( true, getCurrentOrSelectedWord(), NULL, flag, this );
+	pDlg->Create( true, getCurrentOrSelectedWord().c_str(), NULL, flag, this );
 }
 
 void RDOEditorSciEdit::OnSearchReplace() 
@@ -573,7 +573,7 @@ void RDOEditorSciEdit::OnSearchReplace()
 	firstFoundPos = -1;
 	CFindReplaceDialog* pDlg = new CFindReplaceDialog();
 	DWORD flag = (bSearchDown ? FR_DOWN : 0) | (bMatchCase ? FR_MATCHCASE : 0) | (bMatchWholeWord ? FR_WHOLEWORD : 0);
-	pDlg->Create( false, getCurrentOrSelectedWord(), NULL, flag, this );
+	pDlg->Create( false, getCurrentOrSelectedWord().c_str(), NULL, flag, this );
 }
 
 void RDOEditorSciEdit::OnSearchFindNext() 
@@ -631,11 +631,13 @@ LRESULT RDOEditorSciEdit::OnFindReplaceMsg( WPARAM wParam, LPARAM lParam )
 
 		} else if ( pDialog->ReplaceCurrent() ) {
 
-			replace( findStr, pDialog->GetReplaceString(), bSearchDown, bMatchCase, bMatchWholeWord );
+			string replaceWhat = (LPCTSTR)pDialog->GetReplaceString();
+			replace( findStr, replaceWhat, bSearchDown, bMatchCase, bMatchWholeWord );
 
 		} else if ( pDialog->ReplaceAll() ) {
 
-			replaceAll( findStr, pDialog->GetReplaceString(), bMatchCase, bMatchWholeWord );
+			string replaceWhat = (LPCTSTR)pDialog->GetReplaceString();
+			replaceAll( findStr, replaceWhat, bMatchCase, bMatchWholeWord );
 
 		}
 	}
@@ -644,7 +646,7 @@ LRESULT RDOEditorSciEdit::OnFindReplaceMsg( WPARAM wParam, LPARAM lParam )
 
 void RDOEditorSciEdit::OnUpdateSearchFindNextPrev(CCmdUI* pCmdUI) 
 {
-	pCmdUI->Enable( !findStr.IsEmpty() );
+	pCmdUI->Enable( !findStr.empty() );
 }
 
 void RDOEditorSciEdit::OnUpdateSearchFind(CCmdUI* pCmdUI) 
@@ -657,9 +659,9 @@ void RDOEditorSciEdit::OnUpdateSearchReplace(CCmdUI* pCmdUI)
 	pCmdUI->Enable( !isReadOnly() && !isEmpty() );
 }
 
-void RDOEditorSciEdit::findNext( CString& findWhat, const bool searchDown, const bool matchCase, const bool matchWholeWord )
+void RDOEditorSciEdit::findNext( string& findWhat, const bool searchDown, const bool matchCase, const bool matchWholeWord )
 {
-	int findLen = findWhat.GetLength();
+	int findLen = findWhat.length();
 	if ( !findLen ) return;
 
 	CharacterRange cr = getSelectionRange();
@@ -675,7 +677,7 @@ void RDOEditorSciEdit::findNext( CString& findWhat, const bool searchDown, const
 	sendEditor( SCI_SETTARGETSTART, startPosition );
 	sendEditor( SCI_SETTARGETEND, endPosition );
 	sendEditor( SCI_SETSEARCHFLAGS, flags );
-	int posFind = sendEditorString( SCI_SEARCHINTARGET, findLen, findWhat );
+	int posFind = sendEditorString( SCI_SEARCHINTARGET, findLen, findWhat.c_str() );
 	if ( posFind == -1 ) {
 		if ( !searchDown ) {
 			startPosition = getLength();
@@ -686,7 +688,7 @@ void RDOEditorSciEdit::findNext( CString& findWhat, const bool searchDown, const
 		}
 		sendEditor( SCI_SETTARGETSTART, startPosition );
 		sendEditor( SCI_SETTARGETEND, endPosition );
-		posFind = sendEditorString( SCI_SEARCHINTARGET, findLen, findWhat );
+		posFind = sendEditorString( SCI_SEARCHINTARGET, findLen, findWhat.c_str() );
 	}
 	if ( posFind == -1 ) {
 		firstFoundPos = -1;
@@ -715,36 +717,36 @@ void RDOEditorSciEdit::findNext( CString& findWhat, const bool searchDown, const
 	}
 }
 
-void RDOEditorSciEdit::replace( CString& findWhat, CString& replaceWhat, const bool searchDown, const bool matchCase, const bool matchWholeWord )
+void RDOEditorSciEdit::replace( string& findWhat, string& replaceWhat, const bool searchDown, const bool matchCase, const bool matchWholeWord )
 {
 	if ( bHaveFound ) {
-		int replaceLen = replaceWhat.GetLength();
+		int replaceLen = replaceWhat.length();
 		CharacterRange cr = getSelectionRange();
 		sendEditor( SCI_SETTARGETSTART, cr.cpMin );
 		sendEditor( SCI_SETTARGETEND, cr.cpMax );
 		int lenReplaced = replaceLen;
-		sendEditorString( SCI_REPLACETARGET, replaceLen, replaceWhat );
+		sendEditorString( SCI_REPLACETARGET, replaceLen, replaceWhat.c_str() );
 		setSelection( cr.cpMin + lenReplaced, cr.cpMin );
 		bHaveFound = false;
 	}
 	findNext( findWhat, searchDown, matchCase, matchWholeWord );
 }
 
-void RDOEditorSciEdit::replaceAll( CString& findWhat, CString& replaceWhat, const bool matchCase, const bool matchWholeWord )
+void RDOEditorSciEdit::replaceAll( string& findWhat, string& replaceWhat, const bool matchCase, const bool matchWholeWord )
 {
-	int findLen = findWhat.GetLength();
+	int findLen = findWhat.length();
 	if ( !findLen ) return;
 
 	int startPosition = 0;
 	int endPosition   = getLength();
 
-	int replaceLen = replaceWhat.GetLength();
+	int replaceLen = replaceWhat.length();
 	int flags = (matchCase ? SCFIND_MATCHCASE : 0) | (matchWholeWord ? SCFIND_WHOLEWORD : 0);
 
 	sendEditor( SCI_SETTARGETSTART, startPosition );
 	sendEditor( SCI_SETTARGETEND, endPosition );
 	sendEditor( SCI_SETSEARCHFLAGS, flags );
-	int posFind = sendEditorString( SCI_SEARCHINTARGET, findLen, findWhat );
+	int posFind = sendEditorString( SCI_SEARCHINTARGET, findLen, findWhat.c_str() );
 
 	if ( (posFind != -1) && (posFind <= endPosition) ) {
 		int lastMatch = posFind;
@@ -752,13 +754,13 @@ void RDOEditorSciEdit::replaceAll( CString& findWhat, CString& replaceWhat, cons
 		while ( posFind != -1 ) {
 			int lenTarget = sendEditor( SCI_GETTARGETEND ) - sendEditor( SCI_GETTARGETSTART );
 			int lenReplaced = replaceLen;
-			sendEditorString( SCI_REPLACETARGET, replaceLen, replaceWhat );
+			sendEditorString( SCI_REPLACETARGET, replaceLen, replaceWhat.c_str() );
 			endPosition += lenReplaced - lenTarget;
 			lastMatch    = posFind + lenReplaced;
 			if ( lenTarget <= 0 ) lastMatch++;
 			sendEditor( SCI_SETTARGETSTART, lastMatch );
 			sendEditor( SCI_SETTARGETEND, endPosition );
-			posFind = sendEditorString( SCI_SEARCHINTARGET, findLen, findWhat );
+			posFind = sendEditorString( SCI_SEARCHINTARGET, findLen, findWhat.c_str() );
 		}
 		setSelection( lastMatch, lastMatch );
 		sendEditor( SCI_ENDUNDOACTION );
@@ -1205,12 +1207,12 @@ void RDOEditorSciEdit::OnUpdateFold( CCmdUI* pCmdUI )
 	pCmdUI->Enable( !isEmpty() );
 }
 
-void RDOEditorSciEdit::replaceCurrent( const CString str, const int changePosValue ) const
+void RDOEditorSciEdit::replaceCurrent( const string str, const int changePosValue ) const
 {
 	int pos;
 	if ( changePosValue != -1 ) pos = getCurrentPos();
 
-	sendEditor( SCI_REPLACESEL, 0, (long)((LPCTSTR)str) );
+	sendEditor( SCI_REPLACESEL, 0, (long)str.c_str() );
 
 	if ( changePosValue != -1 ) {
 		pos += changePosValue;
@@ -1611,9 +1613,9 @@ void RDOEditorSciEdit::OnUpdateZoomReset( CCmdUI *pCmdUI )
 	pCmdUI->Enable( getZoom() );
 }
 
-int RDOEditorSciEdit::findLine( CString& findWhat, const int startFromLine, const bool matchCase, const bool matchWholeWord ) const
+int RDOEditorSciEdit::findLine( string& findWhat, const int startFromLine, const bool matchCase, const bool matchWholeWord ) const
 {
-	int findLen = findWhat.GetLength();
+	int findLen = findWhat.length();
 	if ( !findLen ) return -1;
 
 	int startPosition = sendEditor( SCI_POSITIONFROMLINE, startFromLine );
@@ -1624,7 +1626,7 @@ int RDOEditorSciEdit::findLine( CString& findWhat, const int startFromLine, cons
 	sendEditor( SCI_SETTARGETSTART, startPosition );
 	sendEditor( SCI_SETTARGETEND, endPosition );
 	sendEditor( SCI_SETSEARCHFLAGS, flags );
-	int posFind = sendEditorString( SCI_SEARCHINTARGET, findLen, findWhat );
+	int posFind = sendEditorString( SCI_SEARCHINTARGET, findLen, findWhat.c_str() );
 	if ( posFind != -1 ) {
 		return sendEditor( SCI_LINEFROMPOSITION, posFind );
 	}

@@ -325,17 +325,17 @@ bool RDOEditorEdit::hasErrorLine() const
 void RDOEditorEdit::commentSelection() const
 {
 	if ( isSelected() ) {
-		CString startComment( "{ " );
-		CString endComment( " }" );
-		int startCommentLength = startComment.GetLength();
+		string startComment( "{ " );
+		string endComment( " }" );
+		int startCommentLength = startComment.length();
 		CharacterRange cr = getSelectionRange();
 		int caretPosition = getCurrentPos();
 		bool moveCaret = caretPosition < cr.cpMax;
 		sendEditor( SCI_BEGINUNDOACTION );
-		sendEditorString( SCI_INSERTTEXT, cr.cpMin, startComment );
+		sendEditorString( SCI_INSERTTEXT, cr.cpMin, startComment.c_str() );
 		cr.cpMax += startCommentLength;
 		cr.cpMin += startCommentLength;
-		sendEditorString( SCI_INSERTTEXT, cr.cpMax, endComment );
+		sendEditorString( SCI_INSERTTEXT, cr.cpMax, endComment.c_str() );
 		if ( moveCaret ) {
 			sendEditor( SCI_GOTOPOS      , cr.cpMax );
 			sendEditor( SCI_SETCURRENTPOS, cr.cpMin );
@@ -352,14 +352,14 @@ void RDOEditorEdit::completeWord()
 
 	SetFocus();
 
-	CString s = kw0;
+	string s = kw0;
 	s += " ";
 	s += kw1;
 	s += " ";
 	s += kw2;
 
 	WordList wl;
-	wl.Set( s );
+	wl.Set( s.c_str() );
 	wl.InList( "" );
 	s = "";
 	for ( int i = 0; i < wl.len; i++ ) {
@@ -397,22 +397,22 @@ void RDOEditorEdit::completeWord()
 
 	LPCTSTR list;
 	if ( ((RDOEditorEditStyle*)style)->autoComplete->showFullList ) {
-		list = s;
+		list = s.c_str();
 	} else {
 		list = words;
-		if ( !list ) list = s;
+		if ( !list ) list = s.c_str();
 	}
 
 	if ( list ) {
 
-		CString startKeyWord       = "";
-		CString startKeyWordScroll = wl.wordsNoCase[ wl.len-1 ];
+		string startKeyWord       = "";
+		string startKeyWordScroll = wl.wordsNoCase[ wl.len-1 ];
 		bool useReplace = false;
 		if ( words ) {
 			wl.Set( words );
 			wl.InList( "" );
 			startKeyWord = wl.wordsNoCase[0];
-			if ( wl.len == 1 && strLength <= startKeyWord.GetLength() ) {
+			if ( wl.len == 1 && strLength <= startKeyWord.length() ) {
 				useReplace = true;
 			}
 		}
@@ -421,8 +421,8 @@ void RDOEditorEdit::completeWord()
 			replaceCurrent( startKeyWord );
 		} else {
 			sendEditor( SCI_AUTOCSHOW, strLength, (long)list );
-			sendEditor( SCI_AUTOCSELECT, 0, (long)((LPCTSTR)startKeyWordScroll) );
-			sendEditor( SCI_AUTOCSELECT, 0, (long)((LPCTSTR)startKeyWord) );
+			sendEditor( SCI_AUTOCSELECT, 0, (long)startKeyWordScroll.c_str() );
+			sendEditor( SCI_AUTOCSELECT, 0, (long)startKeyWord.c_str() );
 		}
 	}
 
@@ -457,7 +457,7 @@ void RDOEditorEdit::OnInsertCommand( UINT nID )
 		case ID_INSERT_PMD_PMD              : incPos = 11; break;
 	}
 
-	replaceCurrent( s, incPos );
+	replaceCurrent( (LPCTSTR)s, incPos );
 }
 
 void RDOEditorEdit::OnInsertBuffer1Paste() 
@@ -494,22 +494,22 @@ void RDOEditorEdit::OnInsertBuffer4Paste()
 
 void RDOEditorEdit::OnUndateBuffer1Paste( CCmdUI* pCmdUI )
 {
-	pCmdUI->Enable( view && !view->buf1.IsEmpty() );
+	pCmdUI->Enable( view && !view->buf1.empty() );
 }
 
 void RDOEditorEdit::OnUndateBuffer2Paste( CCmdUI* pCmdUI )
 {
-	pCmdUI->Enable( view && !view->buf2.IsEmpty() );
+	pCmdUI->Enable( view && !view->buf2.empty() );
 }
 
 void RDOEditorEdit::OnUndateBuffer3Paste( CCmdUI* pCmdUI )
 {
-	pCmdUI->Enable( view && !view->buf3.IsEmpty() );
+	pCmdUI->Enable( view && !view->buf3.empty() );
 }
 
 void RDOEditorEdit::OnUndateBuffer4Paste( CCmdUI* pCmdUI )
 {
-	pCmdUI->Enable( view && !view->buf4.IsEmpty() );
+	pCmdUI->Enable( view && !view->buf4.empty() );
 }
 
 void RDOEditorEdit::OnInsertBuffer1Append() 
@@ -545,7 +545,7 @@ void RDOEditorEdit::onBufferAppend( const int bufIndex )
 		pos               = cr.cpMax;
 		canUseSelected    = cr.cpMin != cr.cpMax;
 	}
-	CString s = "";
+	string s = "";
 	switch ( bufIndex ) {
 		case 1: {
 			if ( view->resetBuf1 ) {
@@ -638,7 +638,7 @@ void RDOEditorEdit::onBufferEdit( const int bufIndex )
 	if ( !view ) return;
 
 	CString bufName;
-	CString bufValue;
+	string  bufValue;
 
 	bufName.LoadString( ID_BUFFER_NAME );
 
@@ -649,10 +649,10 @@ void RDOEditorEdit::onBufferEdit( const int bufIndex )
 		case 4: bufName += " 4:"; bufValue = view->buf4; break;
 	}
 
-	if ( bufValue.IsEmpty() ) {
+	if ( bufValue.empty() ) {
 		bufValue = getCurrentOrSelectedWord();
 	}
-	RDOEditorEditBufferDlg dlg( bufName, bufValue );
+	RDOEditorEditBufferDlg dlg( bufName, bufValue.c_str() );
 
 	if ( dlg.DoModal() == IDOK ) {
 
@@ -705,22 +705,22 @@ void RDOEditorEdit::OnInsertBuffer4Clear()
 
 void RDOEditorEdit::OnUndateBuffer1Clear( CCmdUI* pCmdUI )
 {
-	pCmdUI->Enable( view && !view->buf1.IsEmpty() );
+	pCmdUI->Enable( view && !view->buf1.empty() );
 }
 
 void RDOEditorEdit::OnUndateBuffer2Clear( CCmdUI* pCmdUI )
 {
-	pCmdUI->Enable( view && !view->buf2.IsEmpty() );
+	pCmdUI->Enable( view && !view->buf2.empty() );
 }
 
 void RDOEditorEdit::OnUndateBuffer3Clear( CCmdUI* pCmdUI )
 {
-	pCmdUI->Enable( view && !view->buf3.IsEmpty() );
+	pCmdUI->Enable( view && !view->buf3.empty() );
 }
 
 void RDOEditorEdit::OnUndateBuffer4Clear( CCmdUI* pCmdUI )
 {
-	pCmdUI->Enable( view && !view->buf4.IsEmpty() );
+	pCmdUI->Enable( view && !view->buf4.empty() );
 }
 
 /*

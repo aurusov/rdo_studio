@@ -52,10 +52,10 @@ protected:
 	bool bSearchDown;
 	bool bMatchCase;
 	bool bMatchWholeWord;
-	CString findStr;
-	void findNext( CString& findWhat, const bool searchDown = true, const bool matchCase = false, const bool matchWholeWord = false );
-	void replace( CString& findWhat, CString& replaceWhat, const bool searchDown = true, const bool matchCase = false, const bool matchWholeWord = false );
-	void replaceAll( CString& findWhat, CString& replaceWhat, const bool matchCase = false, const bool matchWholeWord = false );
+	string findStr;
+	void findNext( string& findWhat, const bool searchDown = true, const bool matchCase = false, const bool matchWholeWord = false );
+	void replace( string& findWhat, string& replaceWhat, const bool searchDown = true, const bool matchCase = false, const bool matchWholeWord = false );
+	void replaceAll( string& findWhat, string& replaceWhat, const bool matchCase = false, const bool matchWholeWord = false );
 
 	void copyAsRTF();
 
@@ -155,7 +155,7 @@ public:
 	void clearAll() const;
 	void clearUndoBuffer() const                           { sendEditor( SCI_EMPTYUNDOBUFFER ); };
 
-	void replaceCurrent( const CString str, const int changePosValue = -1 ) const;
+	void replaceCurrent( const string str, const int changePosValue = -1 ) const;
 	void appendText( const string& str ) const;
 
 	bool isReadOnly() const                                { return sendEditor( SCI_GETREADONLY ) ? true : false;  };
@@ -198,11 +198,11 @@ public:
 	bool isLineVisible( const int line ) const;
 	void scrollToLine( const int line ) const;
 
-	CString getCurrentWord() const;
-	CString getSelection() const;
-	CString getCurrentOrSelectedWord() const;
+	string getCurrentWord() const;
+	string getSelection() const;
+	string getCurrentOrSelectedWord() const;
 
-	int findLine( CString& findWhat, const int startFromLine, const bool matchCase = false, const bool matchWholeWord = false ) const;
+	int findLine( string& findWhat, const int startFromLine, const bool matchCase = false, const bool matchWholeWord = false ) const;
 	string getLine( const int line ) const;
 
 	void load( strstream& stream ) const;

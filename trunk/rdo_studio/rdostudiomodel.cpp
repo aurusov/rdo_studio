@@ -177,7 +177,7 @@ void RDOStudioModel::newModelFromRepository()
 							case ID_INSERT_FUN_FUN              : incPos = 10; break;
 							case ID_INSERT_SMR_SMR              : incPos = 17; break;
 						}
-						edit->replaceCurrent( s, incPos );
+						edit->replaceCurrent( (LPCTSTR)s, incPos );
 					}
 				}
 				edit->setModifyFalse();

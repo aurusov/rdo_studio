@@ -131,7 +131,7 @@ RDOEditorEdit* RDOStudioModelView::getEdit() const
 void RDOStudioModelView::OnSearchFindInModel() 
 {
 	CFindReplaceDialog* pDlg = new CFindReplaceDialog();
-	pDlg->Create( true, getEdit()->getCurrentOrSelectedWord(), NULL, FR_HIDEUPDOWN, this );
+	pDlg->Create( true, getEdit()->getCurrentOrSelectedWord().c_str(), NULL, FR_HIDEUPDOWN, this );
 }
 
 LRESULT RDOStudioModelView::OnFindInModelMsg( WPARAM wParam, LPARAM lParam )
@@ -141,7 +141,7 @@ LRESULT RDOStudioModelView::OnFindInModelMsg( WPARAM wParam, LPARAM lParam )
 	if ( !pDialog->IsTerminating() ) {
 		studioApp.mainFrame->output.clearFind();
 		studioApp.mainFrame->output.showFind();
-		CString findStr = pDialog->GetFindString();
+		string findStr = pDialog->GetFindString();
 		CString s;
 		s.Format( ID_FINDINMODEL_BEGINMSG, findStr );
 		studioApp.mainFrame->output.appendStringToFind( (LPCTSTR)s );
