@@ -350,6 +350,24 @@ BEGIN
     0
 END
 
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// GIF
+//
+
+IDR_SMILE_SMILE         GIF     DISCARDABLE     "res\\smile_smile.gif"
+IDR_SMILE_FROWN         GIF     DISCARDABLE     "res\\smile_frown.gif"
+IDR_SMILE_TOMATO        GIF     DISCARDABLE     "res\\smile_tomato.gif"
+IDR_SMILE_WINK          GIF     DISCARDABLE     "res\\smile_wink.gif"
+IDR_SMILE_SMIRK         GIF     DISCARDABLE     "res\\smile_smirk.gif"
+IDR_SMILE_TONGUE        GIF     DISCARDABLE     "res\\smile_tongue.gif"
+IDR_SMILE_BIGGRIN       GIF     DISCARDABLE     "res\\smile_biggrin.gif"
+IDR_SMILE_GIGI          GIF     DISCARDABLE     "res\\smile_gigi.gif"
+IDR_SMILE_EYES          GIF     DISCARDABLE     "res\\smile_eyes.gif"
+IDR_SMILE_BEER_1        GIF     DISCARDABLE     "res\\smile_beer_1.gif"
+IDR_SMILE_BEER_2        GIF     DISCARDABLE     "res\\smile_beer_2.gif"
+IDR_SMILE_LAMER         GIF     DISCARDABLE     "res\\smile_lamer.gif"
 #endif    // Russian resources
 /////////////////////////////////////////////////////////////////////////////
 
@@ -471,8 +489,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,0,176
- PRODUCTVERSION 1,0,0,176
+ FILEVERSION 1,0,0,185
+ PRODUCTVERSION 1,0,0,185
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -490,14 +508,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "Application for chat in localnet\0"
-            VALUE "FileVersion", "1, 0, 0, 176\0"
+            VALUE "FileVersion", "1, 0, 0, 185\0"
             VALUE "InternalName", "localChat\0"
             VALUE "LegalCopyright", "Copyright (C) 2002\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "localchat.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "localChat\0"
-            VALUE "ProductVersion", "1, 0, 0, 176\0"
+            VALUE "ProductVersion", "1, 0, 0, 185\0"
             VALUE "SpecialBuild", "\0"
         END
     END
@@ -509,13 +527,6 @@ END
 
 #endif    // !_MAC
 
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// GIF
-//
-
-IDR_EYES                GIF     DISCARDABLE     "res\\eyes.gif"
 
 /////////////////////////////////////////////////////////////////////////////
 //

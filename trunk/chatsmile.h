@@ -15,14 +15,13 @@ class CChatSmile: public CPictureEx
 friend class CChatSmileList;
 
 public:
-	enum Type { eyes };
+	enum Type { smile, frown, wink, smirk, tongue, biggrin, gigi, eyes, beer1, beer2, lamer, tomato };
 
 private:
-	Type type;
-
-public:
 	CChatSmile();
 	virtual ~CChatSmile();
+
+	Type type;
 };
 
 // ----------------------------------------------------------------------------
@@ -37,9 +36,11 @@ public:
 	CChatSmileList();
 	virtual ~CChatSmileList();
 
-	CChatSmile* getSmile( const CChatSmile::Type type );
-	CChatSmile* operator[] ( const int index ) { return list[index]; }
-	int count() const                          { return list.size(); }
+	CChatSmile* addSmile( const CChatSmile::Type type );
+	CChatSmile* operator[] ( const int index ) const { return list[index]; }
+	int count() const                                { return list.size(); }
+
+	void setBgColor( COLORREF color );
 };
 
 //{{AFX_INSERT_LOCATION}}

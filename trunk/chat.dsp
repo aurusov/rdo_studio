@@ -320,6 +320,98 @@ SOURCE=.\res\net.bmp
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\popupmsg.wav
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_beer_1.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_beer_2.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_biggrin.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_draznit.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_eyes.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_frown.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_gigi.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_glaza.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_golivudskaya.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_lamer.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_ogorchenie.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_pivo1.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_pivo2.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_podmigivanie.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_pomidor.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_smile.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_smirk.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_tomato.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_tongue.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_ukhmilka.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_ulibka.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\smile_wink.gif
+# End Source File
+# Begin Source File
+
 SOURCE=.\res\sound.bmp
 # End Source File
 # Begin Source File
@@ -415,9 +507,5 @@ SOURCE=.\PictureEx\PictureEx.h
 # End Source File
 # End Group
 # End Group
-# Begin Source File
-
-SOURCE=.\res\popupmsg.wav
-# End Source File
 # End Target
 # End Project

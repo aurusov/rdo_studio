@@ -11,10 +11,10 @@
 
 #include "chatudp.h"
 #include "chatsound.h"
-#include "chatsmile.h"
 #include "chatstatusmode.h"
 #include "chatuserlist.h"
 #include "chatnetwork.h"
+#include "chatviewerstyle.h"
 
 // ----------------------------------------------------------------------------
 // ---------- CChatApp
@@ -40,10 +40,10 @@ public:
 	CChatMainFrame*     mainFrame;
 	CChatUdp            udp;
 	CChatSoundList      sounds;
-	CChatSmileList      smiles;
 	CChatStatusModeList statusModes;
 	CChatUserList       users;
 	CChatNetwork        network;
+	CChatViewerStyle    style;
 
 	std::string getUserName() const    { return userName; }
 	void setUserName( const std::string& value );

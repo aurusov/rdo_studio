@@ -4,7 +4,6 @@
 //
 #define IDR_MAINFRAME                   128
 #define IDB_STATUSMODE                  131
-#define IDR_EYES                        134
 #define IDD_OPTIONS_GENERAL_DIALOG      136
 #define IDR_INCOMINGMESSAGE_WAVE        142
 #define IDR_CHATRET_WAVE                147
@@ -30,6 +29,18 @@
 #define IDR_POPUPMSG_WAVE               195
 #define IDR_USER_MENU                   196
 #define IDB_MAIN_TOOLBAR_D              197
+#define IDR_SMILE_SMILE                 214
+#define IDR_SMILE_FROWN                 215
+#define IDR_SMILE_TOMATO                216
+#define IDR_SMILE_WINK                  217
+#define IDR_SMILE_SMIRK                 218
+#define IDR_SMILE_TONGUE                219
+#define IDR_SMILE_BIGGRIN               220
+#define IDR_SMILE_GIGI                  221
+#define IDR_SMILE_EYES                  222
+#define IDR_SMILE_BEER_1                223
+#define IDR_SMILE_BEER_2                224
+#define IDR_SMILE_LAMER                 225
 #define IDC_USERNAME_EDIT               1000
 #define IDC_USERNAME_STATIC             1001
 #define IDC_USER_GROUPBOX               1003
@@ -134,7 +145,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        200
+#define _APS_NEXT_RESOURCE_VALUE        226
 #define _APS_NEXT_COMMAND_VALUE         32840
 #define _APS_NEXT_CONTROL_VALUE         1053
 #define _APS_NEXT_SYMED_VALUE           101

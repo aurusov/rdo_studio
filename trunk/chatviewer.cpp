@@ -44,7 +44,6 @@ CChatViewer::CChatViewer():
 	horzScrollBarVisible( false ),
 	vertScrollBarVisible( false )
 {
-	style.init();
 }
 
 CChatViewer::~CChatViewer()
@@ -90,11 +89,11 @@ void CChatViewer::OnHScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBar )
 			break;
 
 		case SB_LINEUP:
-			inc = -style.charWidth;
+			inc = -chatApp.style.charWidth;
 			break;
 
 		case SB_LINEDOWN:
-			inc = style.charWidth;
+			inc = chatApp.style.charWidth;
 			break;
 
 		case SB_THUMBTRACK: {
@@ -120,19 +119,19 @@ void CChatViewer::OnVScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBar )
 			inc = -yPos;
 			break;
 		case SB_PAGEUP:
-			inc = min( -style.charHeight, -yPageSize );
+			inc = min( -chatApp.style.charHeight, -yPageSize );
 			break; 
 
 		case SB_PAGEDOWN:
-			inc = max( style.charHeight, yPageSize );
+			inc = max( chatApp.style.charHeight, yPageSize );
 			break;
 
 		case SB_LINEUP:
-			inc = -style.charHeight;
+			inc = -chatApp.style.charHeight;
 			break;
 
 		case SB_LINEDOWN:
-			inc = style.charHeight;
+			inc = chatApp.style.charHeight;
 			break;
 
 		case SB_THUMBTRACK: {
@@ -159,6 +158,7 @@ void CChatViewer::OnSetFocus( CWnd* pOldWnd )
 {
 	CWnd::OnSetFocus( pOldWnd );
 	hasFocus = true;
+	strings.setSelected( selectedLine );
 	repaintLine( selectedLine );
 }
 
@@ -166,6 +166,7 @@ void CChatViewer::OnKillFocus( CWnd* pNewWnd )
 {
 	CWnd::OnKillFocus( pNewWnd );
 	hasFocus = false;
+	strings.clearSelected( selectedLine );
 	repaintLine( selectedLine );
 }
 
@@ -367,9 +368,11 @@ void CChatViewer::selectLine( const int index )
 	}
 	if ( hasFocus ) {
 		hasFocus = false;
+		strings.clearSelected( selectedLine );
 		repaintLine( selectedLine );
 		selectedLine = index;
 		hasFocus = true;
+		strings.setSelected( selectedLine );
 		repaintLine( selectedLine );
 	}
 }
@@ -403,14 +406,9 @@ void CChatViewer::addString( CChatString* str )
 	}
 }
 
-const CChatViewerStyle& CChatViewer::getStyle() const
-{
-	return style;
-}
-
 void CChatViewer::setStyle( const CChatViewerStyle& _style, const bool needRedraw )
 {
-	style = _style;
+//	style = _style;
 
 	updateScrollBars();
 
@@ -438,10 +436,10 @@ int CChatViewer::findLine( const int _yPos )
 
 	int height = 0;
 	CDC* dc = GetDC();
-	CFont* prev_font = dc->SelectObject( &style.fontFSN );
+	CFont* prev_font = dc->SelectObject( &chatApp.style.fontFSN );
 	int cnt = strings.count();
 	for ( int i = 0; i < cnt; i++ ) {
-		height += strings[i]->getHeight( dc, newClientRect.right, style );
+		height += strings[i]->getHeight( dc, newClientRect.right );
 		if ( height > _yPos ) {
 			dc->SelectObject( prev_font );
 			ReleaseDC( dc );
@@ -462,10 +460,10 @@ int CChatViewer::getStringsSumHeight()
 
 	int height = 0;
 	CDC* dc = GetDC();
-	CFont* prev_font = dc->SelectObject( &style.fontFSN );
+	CFont* prev_font = dc->SelectObject( &chatApp.style.fontFSN );
 	int cnt = strings.count();
 	for ( int i = 0; i < cnt; i++ ) {
-		height += strings[i]->getHeight( dc, newClientRect.right, style );
+		height += strings[i]->getHeight( dc, newClientRect.right );
 	};
 	dc->SelectObject( prev_font );
 	ReleaseDC( dc );
@@ -481,9 +479,9 @@ int CChatViewer::getHeightBeforeLine( const int index )
 
 	int height = 0;
 	CDC* dc = GetDC();
-	CFont* prev_font = dc->SelectObject( &style.fontFSN );
+	CFont* prev_font = dc->SelectObject( &chatApp.style.fontFSN );
 	for ( int i = 0; i < index; i++ ) {
-		height += strings[i]->getHeight( dc, newClientRect.right, style );
+		height += strings[i]->getHeight( dc, newClientRect.right );
 	}
 	dc->SelectObject( prev_font );
 	ReleaseDC( dc );
@@ -498,10 +496,10 @@ bool CChatViewer::sizeChanged()
 	}
 
 	CDC* dc = GetDC();
-	CFont* prev_font = dc->SelectObject( &style.fontFSN );
+	CFont* prev_font = dc->SelectObject( &chatApp.style.fontFSN );
 	int cnt = strings.count();
 	for ( int i = 0; i < cnt; i++ ) {
-		if ( strings[i]->sizeChanged( dc, newClientRect.right, style ) ) {
+		if ( strings[i]->sizeChanged( dc, newClientRect.right ) ) {
 			dc->SelectObject( prev_font );
 			ReleaseDC( dc );
 			return true;
@@ -521,10 +519,10 @@ int CChatViewer::getStringsMaxWidth()
 
 	int max_width = 0;
 	CDC* dc = GetDC();
-	CFont* prev_font = dc->SelectObject( &style.fontFSN );
+	CFont* prev_font = dc->SelectObject( &chatApp.style.fontFSN );
 	int cnt = strings.count();
 	for ( int i = 0; i < cnt; i++ ) {
-		int str_width = strings[i]->getMaxWidth( dc, newClientRect.right, style );
+		int str_width = strings[i]->getMaxWidth( dc, newClientRect.right );
 		if ( str_width > max_width ) {
 			max_width = str_width;
 		}
@@ -538,12 +536,12 @@ int CChatViewer::getStringsMaxWidth()
 int CChatViewer::getStrHeight( const int index )
 {
 	CDC* dc = GetDC();
-	CFont* prev_font = dc->SelectObject( &style.fontFSN );
+	CFont* prev_font = dc->SelectObject( &chatApp.style.fontFSN );
 
 	int height = 0;
 	CChatString* str = getString( index );
 	if ( str ) {
-		height = str->getHeight( dc, newClientRect.right, style );
+		height = str->getHeight( dc, newClientRect.right );
 	}
 
 	dc->SelectObject( prev_font );
@@ -560,10 +558,9 @@ void CChatViewer::OnPaint()
 
 	if ( !IsRectEmpty( &(dc.m_ps.rcPaint) ) ) {
 
-		CFont* prev_font = dc.SelectObject( &style.fontFSN );
+		CFont* prev_font = dc.SelectObject( &chatApp.style.fontFSN );
 
 		COLORREF back;
-		COLORREF front;
 
 		int line_from = findLine( yPos );
 		int line_to   = findLine( yPos + newClientRect.bottom );
@@ -579,28 +576,29 @@ void CChatViewer::OnPaint()
 		for ( int i = 0; i < cnt; i++ ) {
 
 			CChatString* str = strings[ i + line_from ];
-			str->getColors( style, i, front, back );
 			if ( line_from + i == selectedLine && hasFocus ) {
-				back = style.theme.selectedBgColor;
+				back = chatApp.style.theme.selectedBgColor;
+			} else {
+				back = str->getBgColor();
 			}
 			CBrush brush( back );
 			CPen pen( PS_SOLID, 0, back );
 			CPen* prev_pen     = dc.SelectObject( &pen );
 			CBrush* prev_brush = dc.SelectObject( &brush );
 
-			dc.SetTextColor( front );
+			dc.SetTextColor( str->getTextColor() );
 
-			int h = str->getHeight( &dc, newClientRect.right, style );
+			int h = str->getHeight( &dc, newClientRect.right );
 			rect.bottom = rect.top + h;
 
 			dc.Rectangle( &rect );
 
-			rect.left  += style.horzBorder;
+			rect.left  += chatApp.style.horzBorder;
 			rect.right -= xPos;
 
-			str->drawText( &dc, rect, style );
+			str->drawText( &dc, rect );
 
-			rect.left  -= style.horzBorder;
+			rect.left  -= chatApp.style.horzBorder;
 			rect.right += xPos;
 			rect.top   += h;
 
@@ -608,7 +606,7 @@ void CChatViewer::OnPaint()
 			dc.SelectObject( prev_brush );
 		}
 
-		dc.FillSolidRect( dc.m_ps.rcPaint.left, rect.bottom, dc.m_ps.rcPaint.right, dc.m_ps.rcPaint.bottom, style.theme.viewerBgColor );
+		dc.FillSolidRect( dc.m_ps.rcPaint.left, rect.bottom, dc.m_ps.rcPaint.right, dc.m_ps.rcPaint.bottom, chatApp.style.theme.viewerBgColor );
 
 		dc.SelectObject( prev_font );
 	}

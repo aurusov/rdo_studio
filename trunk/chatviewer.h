@@ -6,7 +6,6 @@
 #endif
 
 #include "chatviewerstring.h"
-#include "chatviewerstyle.h"
 
 // ----------------------------------------------------------------------------
 // ---------- CChatViewer
@@ -15,7 +14,6 @@ class CChatViewer: public CWnd
 {
 private:
 	CChatStringList strings;
-	CChatViewerStyle style;
 
 	int xPos;
 	int yPos;
@@ -52,8 +50,8 @@ public:
 	virtual ~CChatViewer();
 
 	void addString( CChatString* str );
+	int getStringCount() const { return strings.count(); }
 
-	const CChatViewerStyle& getStyle() const;
 	void setStyle( const CChatViewerStyle& _style, const bool needRedraw = true );
 
 protected:

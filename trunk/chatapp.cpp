@@ -68,6 +68,8 @@ BOOL CChatApp::InitInstance()
 	mainFrame->SetIcon( LoadIcon( MAKEINTRESOURCE(IDR_MAINFRAME) ), FALSE );
 //	mainFrame->SetIcon( (HICON)::LoadImage( NULL, MAKEINTRESOURCE(IDR_MAINFRAME), IMAGE_ICON, ::GetSystemMetrics( SM_CXSMICON ), ::GetSystemMetrics( SM_CYSMICON ), LR_DEFAULTCOLOR ), FALSE );
 
+	style.init();
+
 	mainFrame->ShowWindow(SW_SHOW);
 	mainFrame->UpdateWindow();
 
