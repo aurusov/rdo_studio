@@ -16,6 +16,7 @@ class RDOStudioChartDoc;
 class RDOStudioChartView : public CView
 {
 //friend class RDOTracerSerie;
+friend class RDOTracerSerieFindValue;
 
 protected:
 	RDOStudioChartView();
@@ -68,6 +69,9 @@ protected:
 	void drawXAxis( CDC &dc, CRect& chartRect );
 	void drawGrid(	CDC &dc, CRect& chartRect );
 
+	CMenu popupMenu;
+	void copyToClipboard();
+
 public:
 	
 	virtual ~RDOStudioChartView();
@@ -101,6 +105,9 @@ protected:
 	afx_msg void OnUpdateChartTimewrap(CCmdUI* pCmdUI);
 	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
+	afx_msg void OnEditCopy();
+	afx_msg void OnInitMenuPopup( CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu );
+	afx_msg void OnContextMenu( CWnd* pWnd, CPoint pos );
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

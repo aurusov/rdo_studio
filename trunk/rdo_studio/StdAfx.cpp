@@ -115,3 +115,8 @@ void eraseMenu( CMenu* from, const int from_index )
 
 	if ( from_index != -1 ) from->DeleteMenu( from_index, MF_BYPOSITION );
 }
+
+int roundDouble( const double val )
+{
+	return ( val - (int)val < 0.5 ) ? (int)val : (int)val + 1;
+}

@@ -7,6 +7,24 @@
 #include "../rdostudiochartdoc.h"
 
 // ----------------------------------------------------------------------------
+// ---------- RDOTracerSerieFindValue
+// ----------------------------------------------------------------------------
+class RDOTracerSerieFindValue
+{
+	RDOStudioChartView* view;
+public:
+	RDOTracerSerieFindValue( RDOStudioChartView* _view ): view( _view ) {};
+	bool operator ()( RDOTracerValue* val );
+};
+
+bool RDOTracerSerieFindValue::operator ()( RDOTracerValue* val )
+{
+	if( val && val->modeltime->time >= view->drawFromX )
+		return true;
+	return false;
+}
+
+// ----------------------------------------------------------------------------
 // ---------- RDOTracerSerie
 // ----------------------------------------------------------------------------
 RDOTracerSerie::RDOTracerSerie( RDOTracerSerieKind _serieKind ) :
@@ -162,12 +180,12 @@ void RDOTracerSerie::getMinMaxValues( RDOTracerValue* const begin, RDOTracerValu
 	}*/
 }
 
-void RDOTracerSerie::drawSerie( RDOStudioChartView* const view, CDC &dc, CRect &rect, const COLORREF color )
+void RDOTracerSerie::drawSerie( RDOStudioChartView* const view, CDC &dc, CRect &rect, const COLORREF color ) const
 {
 	int oldBkMode = dc.SetBkMode( TRANSPARENT );
-	CPen penBlack;
-	penBlack.CreatePen( PS_SOLID, 0, color );
-	CPen* pOldPen = dc.SelectObject( &penBlack );
+	CPen pen;
+	pen.CreatePen( PS_SOLID, 0, color );
+	CPen* pOldPen = dc.SelectObject( &pen );
 	/*long double ky;
 	if ( maxValue != minValue )
 		ky = rect.Height() / ( maxValue - minValue );
@@ -262,8 +280,67 @@ void RDOTracerSerie::drawSerie( RDOStudioChartView* const view, CDC &dc, CRect &
 			dc.LineTo( x, y );
 		}
 	}*/
+	if ( !values.empty() ) {
+		
+		valuesList::const_iterator it = find_if( values.begin(), values.end(), RDOTracerSerieFindValue( view ) );
+		
+		if ( it != values.end() && !( it == values.begin() && (*it)->modeltime->time > view->drawToX ) ) {
+			
+			long double ky;
+			if ( maxValue != minValue )
+				ky = rect.Height() / ( maxValue - minValue );
+			else
+				ky = 0;
+			
+			if ( it != values.begin() && (*it)->modeltime->time > view->drawFromX )
+				it --;
+			
+			int lasty = roundDouble( rect.bottom - ky * ( (*it)->value - minValue ) );
+			int lastx = rect.left + roundDouble( ( (*it)->modeltime->time - view->drawFromX ) * view->timeScale );
+			if ( lastx >= rect.left )
+				drawMarker( dc, lastx, lasty, color );
+			else
+				lastx = rect.left;
+			dc.MoveTo( lastx, lasty );
+			
+			int x = lastx, y = lasty;
+			it ++;
+			while ( it != values.end() && (*it)->modeltime->time <= view->drawToX ) {
+				y = roundDouble( rect.bottom - ky * ( (*it)->value - minValue ) );
+				x = rect.left + roundDouble( ( (*it)->modeltime->time - view->drawFromX ) * view->timeScale );
+				drawMarker( dc, x, y, color );
+				dc.LineTo( x, lasty );
+				dc.LineTo( x, y );
+				lastx = x;
+				lasty = y;
+				it ++;
+			}
+			
+			bool tempres_erased = ( serieKind == RDOST_RESPARAM && ((RDOTracerResParam*)this)->getResource()->isErased() );
+			bool need_continue = true;
+			if ( tempres_erased )
+				need_continue = ( it != values.end() && (*it)->modeltime->time > view->drawToX );
+
+			if ( need_continue )
+				dc.LineTo( rect.right, lasty );
+		}
+	}
 	dc.SelectObject( pOldPen );
 	dc.SetBkMode( oldBkMode );
+}
+
+void RDOTracerSerie::drawMarker( CDC &dc, const int x, const int y, const COLORREF color ) const
+{
+	CPen pen;
+	CRect rect;
+	rect.left = x - 3;
+	rect.top = y - 3;
+	rect.bottom = y + 3;
+	rect.right = x + 3;
+	pen.CreatePen( PS_SOLID, 0, color );
+	CPen* pOldPen = dc.SelectObject( &pen );
+	dc.Ellipse( &rect );
+	dc.SelectObject( pOldPen );
 }
 
 int RDOTracerSerie::addToDoc( RDOStudioChartDoc* const doc )

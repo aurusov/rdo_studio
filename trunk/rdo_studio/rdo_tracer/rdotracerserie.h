@@ -58,7 +58,8 @@ public:
 	void getFromToValues( RDOTracerTimeNow* const from, const int fromEvent, RDOTracerTimeNow* const to, const int toEvent, RDOTracerValue* &begin, RDOTracerValue* &end ) const;
 	void getMinMaxValues( RDOTracerValue* const begin, RDOTracerValue* const end, double &min, double &max ) const;
 
-	void drawSerie( RDOStudioChartView* const view, CDC &dc, CRect &rect, const COLORREF color );
+	void drawSerie( RDOStudioChartView* const view, CDC &dc, CRect &rect, const COLORREF color ) const;
+	void drawMarker( CDC &dc, const int x, const int y, const COLORREF color ) const;
 
 	int addToDoc( RDOStudioChartDoc* const doc );
 	void removeFromDoc( RDOStudioChartDoc* const doc );

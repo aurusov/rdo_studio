@@ -3,6 +3,9 @@
 #include "rdostudiochartdoc.h"
 #include "./rdo_tracer/rdotracertrace.h"
 #include "./rdo_tracer/rdotracervalues.h"
+#include "rdostudioapp.h"
+#include "rdostudiomainfrm.h"
+#include "resource.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -13,13 +16,6 @@ static char THIS_FILE[] = __FILE__;
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioChartView
 // ----------------------------------------------------------------------------
-int roundDouble( double val )
-{
-	int res = val;
-	if ( val - res >= 0.5 ) res++;
-	return res;
-}
-
 IMPLEMENT_DYNCREATE(RDOStudioChartView, CView)
 
 BEGIN_MESSAGE_MAP(RDOStudioChartView, CView)
@@ -31,6 +27,9 @@ BEGIN_MESSAGE_MAP(RDOStudioChartView, CView)
 	ON_UPDATE_COMMAND_UI(ID_CHART_TIMEWRAP, OnUpdateChartTimewrap)
 	ON_WM_HSCROLL()
 	ON_WM_KEYDOWN()
+	ON_COMMAND(ID_EDIT_COPY, OnEditCopy)
+	ON_WM_INITMENUPOPUP()
+	ON_WM_CONTEXTMENU()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -211,7 +210,8 @@ void RDOStudioChartView::updateScrollBars()
 	
 	int size;
 	if ( !GetDocument()->docTimes.empty() )
-		size = roundDouble( GetDocument()->docTimes.back()->time * /*5 / GetDocument()->minTimeOffset*/timeScale );
+		//size = roundDouble( GetDocument()->docTimes.back()->time * /*5 / GetDocument()->minTimeOffset*/timeScale );
+		size = roundDouble( ( GetDocument()->docTimes.back()->time - GetDocument()->docTimes.front()->time ) * timeScale );
 	else
 		size = 0;
 	//int chartwidth = /*newClientRect.Width() - leftMargin - rightMargin*/chartRect.Width();
@@ -449,30 +449,18 @@ void RDOStudioChartView::drawXAxis( CDC &dc, CRect& chartRect )
 	chartRect.bottom -= 2;*/
 	if ( !GetDocument()->docTimes.empty() ) {
 		double valoffset = 0;
-		double min;
 		if ( timeScale ) {
-			/*if ( minXVisible() )
-				min = GetDocument()->docTimes.front()->time;
-			else*/
-				min = xPos / timeScale;
+			drawFromX = GetDocument()->docTimes.front()->time + xPos / timeScale;
+			drawToX = GetDocument()->docTimes.front()->time + (double)( xPos + chartRect.Width() ) / timeScale;
 		} else {
-			min = 0;
-		}
-		double max;
-		if ( timeScale ) {
-			/*if ( maxXVisible() )
-				max = GetDocument()->docTimes.back()->time;
-			else*/
-				max = (double)( xPos + chartRect.Width() ) / timeScale;
-				//max = min + chartRect.Width() / timeScale;
-		} else {
-			max = 0;
+			drawFromX = 0;
+			drawToX = 0;
 		}
 		int widthoffset = chartRect.Width() / ( valueCountX - 1 );
-		if ( max != min ) {
-			valoffset = ( max - min ) / ( valueCountX - 1 );
+		if ( drawToX != drawFromX ) {
+			valoffset = ( drawToX - drawFromX ) / ( valueCountX - 1 );
 		}
-		double valo = min;
+		double valo = drawFromX;
 		int x = chartRect.left;
 		string formatstr = "%.3f";
 		string str = format( formatstr.c_str(), valo );
@@ -523,6 +511,37 @@ void RDOStudioChartView::drawGrid(	CDC &dc, CRect& chartRect )
 			lasttime = timeNow;
 		}
 	}*/
+}
+
+void RDOStudioChartView::copyToClipboard()
+{
+	if ( !OpenClipboard() || !::EmptyClipboard() )
+		return;
+	
+	HDC hdcSrc = ::GetDC( GetSafeHwnd() );
+	if ( hdcSrc ) {
+		HBITMAP hbm = ::CreateCompatibleBitmap( hdcSrc, newClientRect.Width(), newClientRect.Height() );
+		if ( hbm ) {
+			HDC hdcDst = ::CreateCompatibleDC(hdcSrc);
+			if ( hdcDst ) {
+				HGDIOBJ oldObj = ::SelectObject( hdcDst, hbm );
+
+				::BitBlt( hdcDst, 0, 0, newClientRect.Width(), newClientRect.Height(),
+					hdcSrc, newClientRect.left, newClientRect.top, SRCCOPY );
+				
+				::SelectObject( hdcDst, oldObj );
+				::DeleteDC( hdcDst );
+				
+				::SetClipboardData( CF_BITMAP, hbm );
+			} else {
+				::DeleteObject( hbm );
+			}
+		}
+
+		::ReleaseDC( GetSafeHwnd(), hdcSrc );
+	}
+
+	CloseClipboard();
 }
 
 void RDOStudioChartView::OnDraw(CDC* pDC)
@@ -593,7 +612,7 @@ void RDOStudioChartView::OnDraw(CDC* pDC)
 
 		int count = pDoc->series.size();
 		for ( int i = 0; i < count; i++ ) {
-			pDoc->series.at( i ).getSerie()->drawSerie( this, dc, rect, pDoc->series.at( i ).getColor() );
+			pDoc->series.at( i ).getSerie()->drawSerie( this, dc, chartRect, pDoc->series.at( i ).getColor() );
 		}
 	}
 
@@ -663,11 +682,26 @@ int RDOStudioChartView::OnCreate( LPCREATESTRUCT lpCreateStruct )
 {
 	if ( !target.Register( this ) )
 		return -1;
-	return CView::OnCreate( lpCreateStruct );
+	//return CView::OnCreate( lpCreateStruct );
 	if ( CView::OnCreate( lpCreateStruct ) == -1 ) return -1;
 	//setFont( logStyle->font, false );
 	recalcLayout();
 	updateScrollBars();
+
+	popupMenu.CreatePopupMenu();
+
+	CMenu* mainMenu = AfxGetMainWnd()->GetMenu();
+	
+	BOOL maximized;
+	studioApp.mainFrame->MDIGetActive( &maximized );
+	int delta = maximized ? 1 : 0;
+
+	appendMenu( mainMenu->GetSubMenu( 1 + delta ), 4, &popupMenu );
+	popupMenu.AppendMenu( MF_SEPARATOR );
+	appendMenu( mainMenu->GetSubMenu( 2 + delta ), 0, &popupMenu );
+	appendMenu( mainMenu->GetSubMenu( 2 + delta ), 1, &popupMenu );
+	appendMenu( mainMenu->GetSubMenu( 2 + delta ), 2, &popupMenu );
+
 	return 0;
 }
 
@@ -879,4 +913,22 @@ void RDOStudioChartView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	}*/
 	if ( side )
 		setScrollPos( SB_HORZ, pos );
+}
+
+void RDOStudioChartView::OnEditCopy() 
+{
+	copyToClipboard();
+}
+
+void RDOStudioChartView::OnInitMenuPopup( CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu )
+{
+	CView::OnInitMenuPopup( pPopupMenu, nIndex, bSysMenu );
+	CFrameWnd* pwndFrame = (CFrameWnd*)AfxGetMainWnd();
+	if( pwndFrame ) pwndFrame->SendMessage( WM_INITMENUPOPUP, WPARAM(pPopupMenu->m_hMenu), MAKELPARAM(nIndex, bSysMenu) );
+}
+
+void RDOStudioChartView::OnContextMenu( CWnd* pWnd, CPoint pos )
+{
+	CView::OnContextMenu( pWnd, pos );
+	if ( popupMenu.m_hMenu ) popupMenu.TrackPopupMenu( TPM_LEFTALIGN | TPM_RIGHTBUTTON, pos.x, pos.y, this );
 }
