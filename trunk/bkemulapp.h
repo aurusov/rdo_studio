@@ -30,6 +30,7 @@ protected:
 	public:
 	virtual BOOL InitInstance();
 	virtual LRESULT ProcessWndProcException(CException* e, const MSG* pMsg);
+	virtual BOOL OnIdle(LONG lCount);
 	//}}AFX_VIRTUAL
 };
 

@@ -62,3 +62,9 @@ LRESULT BKEmulApp::ProcessWndProcException( CException* e, const MSG* pMsg )
 	}
 	return CWinApp::ProcessWndProcException( e, pMsg );
 }
+
+BOOL BKEmulApp::OnIdle(LONG lCount)
+{
+	emul.nextIteration();
+	return CWinApp::OnIdle(lCount);
+}

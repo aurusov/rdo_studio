@@ -47,6 +47,7 @@ BKChildView::BKChildView():
 	grayColor( 0 ),
 	windowRect( 0, 0, 0, 0 ),
 	screenRect( 0, 0, 0, 0 ),
+	lock( false ),
 	timer( 0 )
 {
 	::SystemParametersInfo( SPI_GETWORKAREA, 0, &screenRect, 0 );
@@ -330,7 +331,14 @@ void BKChildView::draw( const BYTE* bk_video_from, int count_byte, BYTE BK_byte_
 HRESULT BKChildView::displayFrame() const
 {
 	if ( lockSurface() == DD_OK ) {
-		draw( emul.video.getMemory(), emul.video.getMemorySize() );
+		if ( emul.isPowerON() ) {
+			draw( emul.video.getMemory(), emul.video.getMemorySize() );
+		} else {
+			BYTE tmp_memory = 0;
+			for ( int i = 0; i < emul.video.getMemorySize(); i++ ) {
+				draw( &tmp_memory, 1, i & 077, i / 64 );
+			}
+		}
 		unlockSurface();
 	}
 	return DD_OK;
@@ -370,7 +378,8 @@ void BKChildView::OnLButtonDown(UINT nFlags, CPoint point)
 	CWnd::OnLButtonDown( nFlags, point );
 
 	for ( int i = 040000; i < 0100000; i++ ) {
-		emul.video.setMemoryWord( i, 031463 );
+		emul.video.setMemoryWord( i, 031463 + point.x );
+//		emul.video.setMemoryWord( i, 031463 );
 	}
 }
 
@@ -378,14 +387,26 @@ void BKChildView::OnTimer(UINT nIDEvent)
 {
 	CWnd::OnTimer( nIDEvent );
 	if ( nIDEvent == timer ) {
-		static lock = false;
 		if ( !lock ) {
+			static int fps      = 0;
+			static int mseconds = 0;
+			fps++;
+			mseconds += 20;
+			if ( mseconds == 1000 ) {
+				CClientDC dc( this );
+				std::string str = format( "fps = %d", fps );
+				dc.TextOut( 550, 0, str.c_str(), str.length() );
+				fps      = 0;
+				mseconds = 0;
+			}
 			std::vector< WORD >::const_iterator it = updateVideoMemory.begin();
 			if ( it != updateVideoMemory.end() && lockSurface() == DD_OK ) {
 				lock = true;
-				while ( it != updateVideoMemory.end() ) {
-					draw( emul.video.getMemory( *it ), 1, *it & 077, (*it - 040000) / 64 );
-					it++;
+				if ( emul.isPowerON() ) {
+					while ( it != updateVideoMemory.end() ) {
+						draw( emul.video.getMemory( *it ), 1, *it & 077, (*it - 040000) / 64 );
+						it++;
+					}
 				}
 				updateVideoMemory.clear();
 				unlockSurface();

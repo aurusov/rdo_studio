@@ -29,6 +29,7 @@ private:
 	CRect screenRect;
 
 	UINT timer;
+	bool lock;
 	std::vector< WORD > updateVideoMemory;
 	HRESULT initDirectDraw();
 	HRESULT lockSurface() const;

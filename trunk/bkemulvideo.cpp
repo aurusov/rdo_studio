@@ -31,22 +31,22 @@ const BYTE* BKEmulVideo::getMemory( WORD address ) const
 
 BYTE BKEmulVideo::getMemoryByte( WORD address )
 {
-	return emul.memory.getMemoryByte( address );
+	return emul.getMemoryByte( address );
 }
 
 WORD BKEmulVideo::getMemoryWord( WORD address )
 {
-	return emul.memory.getMemoryWord( address );
+	return emul.getMemoryWord( address );
 }
 
 void BKEmulVideo::setMemoryByte( WORD address, BYTE data )
 {
-	emul.memory.setMemoryByte( address, data );
+	emul.setMemoryByte( address, data );
 }
 
 void BKEmulVideo::setMemoryWord( WORD address, WORD data )
 {
-	emul.memory.setMemoryWord( address, data );
+	emul.setMemoryWord( address, data );
 }
 
 void BKEmulVideo::updateMonitor() const
