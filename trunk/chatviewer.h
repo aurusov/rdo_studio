@@ -37,6 +37,8 @@ private:
 	bool scrollHorizontally( int inc );
 
 	bool isVisible( const int index );
+	bool isFirstLineVisible();
+	bool isLastLineVisible();
 	void selectLine( const int index );
 	void repaintLine ( const int index );
 

@@ -5,11 +5,18 @@
 #pragma once
 #endif
 
+#include "chatsmile.h"
+
 // ----------------------------------------------------------------------------
 // ---------- CChatSmileListCtrl
 // ----------------------------------------------------------------------------
 class CChatSmileListCtrl: public CListBox
 {
+private:
+	CChatSmileList list;
+	int smile_max_width;
+	int text_focus_height;
+
 public:
 	CChatSmileListCtrl();
 	virtual ~CChatSmileListCtrl();

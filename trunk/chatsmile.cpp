@@ -19,6 +19,16 @@ CChatSmile::~CChatSmile()
 {
 }
 
+void CChatSmile::setBgColor( COLORREF color )
+{
+	if ( GetBkColor() != color ) {
+		bool flag = IsAnimatedGIF() ? true : false;
+		if ( !flag ) Stop();
+		SetBkColor( color );
+		if ( !flag ) Draw();
+	}
+}
+
 // ----------------------------------------------------------------------------
 // ---------- CChatSmileList
 // ----------------------------------------------------------------------------
@@ -99,6 +109,69 @@ CChatSmile::Type CChatSmileList::getType( std::string str )
 	else if ( str == ":eyes:" )               { return CChatSmile::eyes; }
 	else if ( str == ":tomato:" )             { return CChatSmile::tomato; }
 	return CChatSmile::none;
+}
+
+std::string CChatSmileList::getStr( const CChatSmile::Type type )
+{
+	switch ( type ) {
+		case CChatSmile::smile   : return ":)"; break;
+		case CChatSmile::frown   : return ":("; break;
+		case CChatSmile::wink    : return ";)"; break;
+		case CChatSmile::smirk   : return ":-\\"; break;
+		case CChatSmile::tongue  : return ":p"; break;
+		case CChatSmile::biggrin : return ":D"; break;
+		case CChatSmile::gigi    : return ":gigi:"; break;
+		case CChatSmile::laugh   : return ":laugh:"; break;
+		case CChatSmile::lol     : return ":lol:"; break;
+		case CChatSmile::cool    : return ":cool:"; break;
+		case CChatSmile::confused: return ":confused:"; break;
+		case CChatSmile::eek     : return ":eek:"; break;
+		case CChatSmile::rolleyes: return ":rolleyes:"; break;
+		case CChatSmile::insane  : return ":insane:"; break;
+		case CChatSmile::redface : return ":redface:"; break;
+		case CChatSmile::mad     : return ":mad:"; break;
+		case CChatSmile::weep    : return ":weep:"; break;
+		case CChatSmile::up      : return ":up:"; break;
+		case CChatSmile::down    : return ":down:"; break;
+		case CChatSmile::rotate  : return ":rotate:"; break;
+		case CChatSmile::super   : return ":super:"; break;
+		case CChatSmile::upset   : return ":upset:"; break;
+		case CChatSmile::beer    : return ":beer:"; break;
+		case CChatSmile::amazed  : return ":amazed:"; break;
+		case CChatSmile::shuffle : return ":shuffle:"; break;
+		case CChatSmile::lamer   : return ":lamer:"; break;
+		case CChatSmile::spy     : return ":spy:"; break;
+		case CChatSmile::idea    : return ":idea:"; break;
+		case CChatSmile::puke    : return ":puke:"; break;
+		case CChatSmile::wink2   : return ":wink:"; break;
+		case CChatSmile::smirk2  : return ":smirk:"; break;
+		case CChatSmile::think   : return ":think:"; break;
+		case CChatSmile::fear    : return ":fear:"; break;
+		case CChatSmile::yes     : return ":yes:"; break;
+		case CChatSmile::no      : return ":no:"; break;
+		case CChatSmile::crazy   : return ":crazy:"; break;
+		case CChatSmile::joke    : return ":joke:"; break;
+		case CChatSmile::hah     : return ":hah:"; break;
+		case CChatSmile::ballet  : return ":ballet:"; break;
+		case CChatSmile::friday  : return ":friday:"; break;
+		case CChatSmile::drink   : return ":drink:"; break;
+		case CChatSmile::fart    : return ":fart:"; break;
+		case CChatSmile::box     : return ":box:"; break;
+		case CChatSmile::invalid : return ":invalid:"; break;
+		case CChatSmile::duel    : return ":duel:"; break;
+		case CChatSmile::kos     : return ":kos:"; break;
+		case CChatSmile::gossip  : return ":gossip:"; break;
+		case CChatSmile::bis     : return ":bis:"; break;
+		case CChatSmile::hit     : return ":hit:"; break;
+		case CChatSmile::ivan    : return ":ivan:"; break;
+		case CChatSmile::venera  : return ":venera:"; break;
+		case CChatSmile::mobile  : return ":mobile:"; break;
+		case CChatSmile::kult    : return ":kult:"; break;
+		case CChatSmile::figa    : return ":figa:"; break;
+		case CChatSmile::eyes    : return ":eyes:"; break;
+		case CChatSmile::tomato  : return ":tomato:"; break;
+		default: return "";
+	}
 }
 
 CChatSmile* CChatSmileList::addSmile( const std::string& str, CWnd* parent )
@@ -189,9 +262,10 @@ void CChatSmileList::setBgColor( COLORREF color )
 	std::vector< CChatSmile* >::iterator it = list.begin();
 	while ( it != list.end() ) {
 		CChatSmile* smile = *it++;
-		if ( !smile->IsAnimatedGIF() ) smile->Stop();
-		smile->SetBkColor( color );
-		if ( !smile->IsAnimatedGIF() ) smile->Draw();
+		smile->setBgColor( color );
+//		if ( !smile->IsAnimatedGIF() ) smile->Stop();
+//		smile->SetBkColor( color );
+//		if ( !smile->IsAnimatedGIF() ) smile->Draw();
 	}
 }
 

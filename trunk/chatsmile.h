@@ -15,7 +15,9 @@ class CChatSmile: public CPictureEx
 friend class CChatSmileList;
 
 public:
-	enum Type { none, smile, frown, wink, smirk, tongue, biggrin, gigi, laugh, lol, cool, confused, eek, rolleyes, insane, redface, mad, weep, up, down, rotate, super, upset, beer, amazed, shuffle, lamer, spy, idea, puke, wink2, smirk2, think, fear, yes, no, crazy, joke, hah, ballet, friday, drink, fart, box, invalid, duel, kos, gossip, bis, hit, ivan, venera, mobile, kult, figa, eyes, tomato };
+	enum Type { none = 0, smile, frown, wink, smirk, tongue, biggrin, gigi, laugh, lol, cool, confused, eek, rolleyes, insane, redface, mad, weep, up, down, rotate, super, upset, beer, amazed, shuffle, lamer, spy, idea, puke, wink2, smirk2, think, fear, yes, no, crazy, joke, hah, ballet, friday, drink, fart, box, invalid, duel, kos, gossip, bis, hit, ivan, venera, mobile, kult, figa, eyes, tomato };
+
+	void setBgColor( COLORREF color );
 
 private:
 	CChatSmile();
@@ -38,7 +40,8 @@ public:
 
 	CChatSmile* addSmile( const std::string& str, CWnd* parent );
 	CChatSmile* addSmile( const CChatSmile::Type type, CWnd* parent );
-	CChatSmile::Type getType( std::string str );
+	static CChatSmile::Type getType( std::string str );
+	static std::string getStr( const CChatSmile::Type type );
 	CChatSmile* operator[] ( const int index ) const { return list[index]; }
 	int count() const                                { return list.size(); }
 

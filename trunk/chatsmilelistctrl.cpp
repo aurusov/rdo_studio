@@ -18,7 +18,10 @@ BEGIN_MESSAGE_MAP( CChatSmileListCtrl, CListBox )
 	ON_WM_MEASUREITEM_REFLECT()
 END_MESSAGE_MAP()
 
-CChatSmileListCtrl::CChatSmileListCtrl(): CListBox()
+CChatSmileListCtrl::CChatSmileListCtrl():
+	CListBox(),
+	smile_max_width( 0 ),
+	text_focus_height( 0 )
 {
 }
 
@@ -29,7 +32,7 @@ CChatSmileListCtrl::~CChatSmileListCtrl()
 BOOL CChatSmileListCtrl::PreCreateWindow( CREATESTRUCT& cs )
 {
 	if ( !CListBox::PreCreateWindow(cs) ) return FALSE;
-	cs.style |= WS_VISIBLE | WS_CHILD | LBS_HASSTRINGS | WS_HSCROLL | WS_VSCROLL | LBS_NOTIFY | LBS_OWNERDRAWVARIABLE | LBS_NOINTEGRALHEIGHT /*LBS_MULTICOLUMN*/;
+	cs.style |= WS_VISIBLE | WS_CHILD | LBS_HASSTRINGS | WS_HSCROLL | WS_VSCROLL | LBS_NOTIFY | LBS_OWNERDRAWVARIABLE | LBS_NOINTEGRALHEIGHT, LBS_MULTICOLUMN;
 	cs.dwExStyle |= WS_EX_CLIENTEDGE;
 //	cs.lpszClass = AfxRegisterWndClass( CS_DBLCLKS, ::LoadCursor(NULL, IDC_ARROW) /*, reinterpret_cast<HBRUSH>( COLOR_WINDOW + 1 ), NULL*/ );
 	return TRUE;
@@ -39,10 +42,31 @@ int CChatSmileListCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 {
 	if ( CListBox::OnCreate( lpCreateStruct ) == -1 ) return -1;
 
-	AddString( "q1" );
-	AddString( "q2" );
-	AddString( "q3" );
-	AddString( "q4" );
+	HFONT hf = (HFONT)::GetStockObject( DEFAULT_GUI_FONT );
+	if ( hf ) {
+		SetFont( CFont::FromHandle( hf ) );
+	}
+
+	CDC* dc = GetDC();
+	text_focus_height = dc->DrawText( ":)", CRect( 0, 0, 1, 1 ), DT_SINGLELINE | DT_CALCRECT );
+	if ( text_focus_height <= 0 ) {
+		text_focus_height = 10;
+	}
+	text_focus_height += 2;
+	ReleaseDC( dc );
+	for ( int i = CChatSmile::smile; i <= CChatSmile::tomato; i++ ) {
+		CChatSmile* smile = list.addSmile( static_cast<CChatSmile::Type>(i), this );
+		smile->ShowWindow( SW_HIDE );
+		int index = AddString( CChatSmileList::getStr( static_cast<CChatSmile::Type>(i) ).c_str() );
+		SetItemData( index, reinterpret_cast<DWORD>(smile) );
+		CSize size = smile->GetSize();
+		int smile_height = size.cy + 2;
+		SetItemHeight( index, text_focus_height > smile_height ? text_focus_height : smile_height );
+		if ( size.cx > smile_max_width ) {
+			smile_max_width = size.cx;
+		}
+	}
+	list.setBgColor( ::GetSysColor( COLOR_WINDOW ) );
 
 	return 0;
 }
@@ -63,14 +87,26 @@ void CChatSmileListCtrl::DrawItem( LPDRAWITEMSTRUCT lpDrawItemStruct )
 
 	CRect  focusRect( lpDrawItemStruct->rcItem );
 	CRect  textRect( focusRect );
-	CPoint imagePoint( focusRect.left, focusRect.top );
+	CPoint smilePoint( focusRect.left, focusRect.top );
+
+	CChatSmile* smile = reinterpret_cast<CChatSmile*>(GetItemData( lpDrawItemStruct->itemID ));
+	CSize smile_size = smile->GetSize();
+	smilePoint.x  += 1 + ( smile_max_width - smile_size.cx ) / 2;
+	smilePoint.y  += 1;
+
+	textRect.left += smile_max_width + 1;
+
+//	focusRect.left = textRect.left - 1;
+//	focusRect.DeflateRect( 0, (focusRect.Height() - text_focus_height) / 2 );
 
 	if ( (lpDrawItemStruct->itemState & ODS_SELECTED) && (lpDrawItemStruct->itemAction & (ODA_SELECT | ODA_DRAWENTIRE)) ) {
-		CBrush br( ::GetSysColor(COLOR_HIGHLIGHT) );
-		pDC->FillRect( &focusRect, &br );
+		COLORREF color = ::GetSysColor( COLOR_HIGHLIGHT );
+		pDC->FillSolidRect( &focusRect, color );
+		smile->setBgColor( color );
 	} else if ( !(lpDrawItemStruct->itemState & ODS_SELECTED) && (lpDrawItemStruct->itemAction & ODA_SELECT) ) {
-		CBrush br( ::GetSysColor(COLOR_WINDOW) );
-		pDC->FillRect(&focusRect, &br);
+		COLORREF color = ::GetSysColor( COLOR_WINDOW );
+		pDC->FillSolidRect( &focusRect, color );
+		smile->setBgColor( color );
 	}
 
 	if ( (lpDrawItemStruct->itemAction & ODA_FOCUS) && (lpDrawItemStruct->itemState & ODS_FOCUS) ) {
@@ -78,6 +114,9 @@ void CChatSmileListCtrl::DrawItem( LPDRAWITEMSTRUCT lpDrawItemStruct )
 	} else if ( (lpDrawItemStruct->itemAction & ODA_FOCUS) && !(lpDrawItemStruct->itemState & ODS_FOCUS) ) {
 		pDC->DrawFocusRect( &focusRect );
 	}
+
+	smile->MoveWindow( smilePoint.x, smilePoint.y, smile_size.cx, smile_size.cy );
+	smile->ShowWindow( SW_SHOW );
 
 	int prev_bkMode = pDC->SetBkMode( TRANSPARENT );
 	COLORREF prev_textColor;
@@ -105,5 +144,4 @@ void CChatSmileListCtrl::DrawItem( LPDRAWITEMSTRUCT lpDrawItemStruct )
 
 void CChatSmileListCtrl::MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct)
 {
-	lpMeasureItemStruct->itemHeight = 40;
 }

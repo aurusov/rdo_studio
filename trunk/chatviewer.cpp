@@ -231,10 +231,13 @@ BOOL CChatViewer::OnMouseWheel( UINT nFlags, short zDelta, CPoint pt )
 {
 	WORD scrollNotify = 0xFFFF;
 
-	if ( zDelta < 0 )
+	if ( zDelta < 0 ) {
+		if ( isLastLineVisible() ) return TRUE;
 		scrollNotify = SB_LINEDOWN;
-	else
+	} else {
+		if ( isFirstLineVisible() ) return TRUE;
 		scrollNotify = SB_LINEUP;
+	}
 
 	::SendMessage( m_hWnd, WM_VSCROLL, MAKELONG( scrollNotify, 0 ), NULL );
 
@@ -350,6 +353,30 @@ bool CChatViewer::isVisible( const int index )
 		int height_before = getHeightBeforeLine( index );
 		int line_height   = getStrHeight( index );
 		return height_before + line_height > yPos && height_before < yPos + newClientRect.bottom;
+	} else {
+		return false;
+	}
+}
+
+bool CChatViewer::isFirstLineVisible()
+{
+	int index = 0;
+	if ( strings.count() ) {
+		int height_before = getHeightBeforeLine( index );
+		int line_height   = getStrHeight( index );
+		return height_before >= yPos && height_before < yPos + newClientRect.bottom;
+	} else {
+		return false;
+	}
+}
+
+bool CChatViewer::isLastLineVisible()
+{
+	int index = strings.count() - 1;
+	if ( strings.count() ) {
+		int height_before = getHeightBeforeLine( index );
+		int line_height   = getStrHeight( index );
+		return height_before >= yPos && height_before + line_height <= yPos + newClientRect.bottom;
 	} else {
 		return false;
 	}

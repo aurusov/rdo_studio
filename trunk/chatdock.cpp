@@ -39,13 +39,13 @@ int CChatDock::OnCreate( LPCREATESTRUCT lpCreateStruct )
 
 	m_szVert.cx = 220;
 
-	users.Create( 0, CRect(0, 0, 0, 0), tab.getTabAsParent(), 0 );
-	network.Create( 0, CRect(0, 0, 0, 0), tab.getTabAsParent(), 0 );
-//	smiles.Create( 0, CRect(0, 0, 0, 0), tab.getTabAsParent(), 0 );
+	users.Create( 0, CRect(0, 0, 0, 0), tab.getTabAsParent(), 1 );
+	network.Create( 0, CRect(0, 0, 0, 0), tab.getTabAsParent(), 2 );
+	smiles.Create( 0, CRect(0, 0, 0, 0), tab.getTabAsParent(), 3 );
 
 	tab.insertItem( &users, format( IDS_USERS ).c_str(), 0 );
 	tab.insertItem( &network, format( IDS_NETWORK ).c_str(), 1 );
-//	tab.insertItem( &smiles, format( IDS_SMILES ).c_str(), 2 );
+	tab.insertItem( &smiles, format( IDS_SMILES ).c_str(), 2 );
 
 	return 0;
 }
