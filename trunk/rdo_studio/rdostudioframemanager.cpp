@@ -357,9 +357,6 @@ void RDOStudioFrameManager::showFrame( const RDOFrame* const frame, const int in
 					view->frameBmpRect.right  = frame->width;
 					view->frameBmpRect.bottom = frame->height;
 				}
-//				CDC* dc = view->GetDC();
-//				view->frameBmp.CreateCompatibleBitmap( dc, view->frameBmpRect.Width(), view->frameBmpRect.Height() );
-//				view->ReleaseDC( dc );
 				view->hbmp = ::CreateCompatibleBitmap( view->hdc, view->frameBmpRect.Width(), view->frameBmpRect.Height() );
 				::SelectObject( view->hmemdc, view->hbmp );
 				view->mustBeInit = false;
