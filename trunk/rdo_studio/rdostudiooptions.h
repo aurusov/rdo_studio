@@ -188,11 +188,14 @@ private:
 	static rdoEditCtrl::RDOBookmarkStyle null_bookmarkstyle;
 	static rdoEditor::RDOFoldStyle       null_foldstyle;
 
+	void updateStyleItem();
+	void updateTheme();
 	void OnUpdateModify();
 
 protected:
 	//{{AFX_DATA(RDOStudioOptionsStylesAndColors)
 	enum { IDD = IDD_OPTIONS_STYLESANDCOLORS };
+	CComboBox	m_theme;
 	CButton	m_horzScrollBar;
 	CButton	m_wordWrap;
 	CComboBox	m_fold;
@@ -237,6 +240,7 @@ protected:
 	afx_msg void OnHorzScrollBarClicked();
 	afx_msg void OnBookmarkChanged();
 	afx_msg void OnFoldChanged();
+	afx_msg void OnThemeChanged();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 

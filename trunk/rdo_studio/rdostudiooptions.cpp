@@ -238,6 +238,7 @@ BEGIN_MESSAGE_MAP(RDOStudioOptionsStylesAndColors, CPropertyPage)
 	ON_BN_CLICKED(IDC_HORZSCROLLBAR_CHECK, OnHorzScrollBarClicked)
 	ON_CBN_SELCHANGE(IDC_BOOKMARK_COMBO, OnBookmarkChanged)
 	ON_CBN_SELCHANGE(IDC_FOLD_COMBO, OnFoldChanged)
+	ON_CBN_SELCHANGE(IDC_THEME_COMBO, OnThemeChanged)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -372,6 +373,7 @@ void RDOStudioOptionsStylesAndColors::DoDataExchange(CDataExchange* pDX)
 	CPropertyPage::DoDataExchange(pDX);
 
 	//{{AFX_DATA_MAP(RDOStudioOptionsStylesAndColors)
+	DDX_Control(pDX, IDC_THEME_COMBO, m_theme);
 	DDX_Control(pDX, IDC_HORZSCROLLBAR_CHECK, m_horzScrollBar);
 	DDX_Control(pDX, IDC_WORDWRAP_CHECK, m_wordWrap);
 	DDX_Control(pDX, IDC_FOLD_COMBO, m_fold);
@@ -528,6 +530,13 @@ void RDOStudioOptionsStylesAndColors::OnOK()
 
 void RDOStudioOptionsStylesAndColors::OnStyleItemChanged(NMHDR* /*pNMHDR*/, LRESULT* pResult)
 {
+	updateStyleItem();
+
+	*pResult = 0;
+}
+
+void RDOStudioOptionsStylesAndColors::updateStyleItem()
+{
 	HTREEITEM item = m_styleItem.GetSelectedItem();
 	if ( item ) {
 		STYLEProperty* prop = reinterpret_cast<STYLEProperty*>(m_styleItem.GetItemData( item ));
@@ -629,11 +638,21 @@ void RDOStudioOptionsStylesAndColors::OnStyleItemChanged(NMHDR* /*pNMHDR*/, LRES
 		m_previewAsStatic.ShowWindow( flag_preview ? SW_SHOW : SW_HIDE );
 		setPreviewAsCombo( type );
 
+		// Update theme
+		m_theme.ResetContent();
+		m_theme.AddString( "Current" );
+		m_theme.AddString( "Default" );
 		switch ( type ) {
 			case STYLEObject::all: {
 				break;
 			}
 			case STYLEObject::source: {
+				m_theme.AddString( "C++" );
+				m_theme.AddString( "Pascal" );
+				m_theme.AddString( "HTML" );
+				m_theme.AddString( "Classic" );
+				m_theme.AddString( "Twilight" );
+				m_theme.AddString( "Ocean" );
 				break;
 			}
 			case STYLEObject::build: {
@@ -653,9 +672,102 @@ void RDOStudioOptionsStylesAndColors::OnStyleItemChanged(NMHDR* /*pNMHDR*/, LRES
 			}
 			default: break;
 		}
+		updateTheme();
 	}
+}
 
-	*pResult = 0;
+void RDOStudioOptionsStylesAndColors::updateTheme()
+{
+	switch ( getCurrentObjectType() ) {
+		case STYLEObject::all: {
+			if ( *static_cast<RDOEditorEditTheme*>(sheet->style_editor.theme) == RDOEditorEditTheme::getDefaultTheme() ) {
+				m_theme.SetCurSel( 1 );
+			} else {
+				m_theme.SetCurSel( 0 );
+			}
+			break;
+		}
+		case STYLEObject::source: {
+			RDOEditorEditTheme* theme = static_cast<RDOEditorEditTheme*>(sheet->style_editor.theme);
+			if ( *theme == RDOEditorEditTheme::getDefaultTheme() ) {
+				m_theme.SetCurSel( 1 );
+			} else if ( *theme == RDOEditorEditTheme::getCppTheme() ) {
+				m_theme.SetCurSel( 2 );
+			} else if ( *theme == RDOEditorEditTheme::getPascalTheme() ) {
+				m_theme.SetCurSel( 3 );
+			} else if ( *theme == RDOEditorEditTheme::getHtmlTheme() ) {
+				m_theme.SetCurSel( 4 );
+			} else if ( *theme == RDOEditorEditTheme::getClassicTheme() ) {
+				m_theme.SetCurSel( 5 );
+			} else if ( *theme == RDOEditorEditTheme::getTwilightTheme() ) {
+				m_theme.SetCurSel( 6 );
+			} else if ( *theme == RDOEditorEditTheme::getOceanTheme() ) {
+				m_theme.SetCurSel( 7 );
+			} else {
+				m_theme.SetCurSel( 0 );
+			}
+			break;
+		}
+		case STYLEObject::build: {
+			break;
+		}
+		case STYLEObject::debug: {
+			break;
+		}
+		case STYLEObject::trace: {
+			break;
+		}
+		case STYLEObject::results: {
+			break;
+		}
+		case STYLEObject::find: {
+			break;
+		}
+		default: break;
+	}
+}
+
+void RDOStudioOptionsStylesAndColors::OnThemeChanged()
+{
+	int index = m_theme.GetCurSel();
+	if ( index != CB_ERR ) {
+		switch ( getCurrentObjectType() ) {
+			case STYLEObject::all: {
+				break;
+			}
+			case STYLEObject::source: {
+				RDOEditorEditTheme* theme = static_cast<RDOEditorEditTheme*>(sheet->style_editor.theme);
+				switch ( index ) {
+					case 1: *theme = RDOEditorEditTheme::getDefaultTheme(); break;
+					case 2: *theme = RDOEditorEditTheme::getCppTheme(); break;
+					case 3: *theme = RDOEditorEditTheme::getPascalTheme(); break;
+					case 4: *theme = RDOEditorEditTheme::getHtmlTheme(); break;
+					case 5: *theme = RDOEditorEditTheme::getClassicTheme(); break;
+					case 6: *theme = RDOEditorEditTheme::getTwilightTheme(); break;
+					case 7: *theme = RDOEditorEditTheme::getOceanTheme(); break;
+				}
+				break;
+			}
+			case STYLEObject::build: {
+				break;
+			}
+			case STYLEObject::debug: {
+				break;
+			}
+			case STYLEObject::trace: {
+				break;
+			}
+			case STYLEObject::results: {
+				break;
+			}
+			case STYLEObject::find: {
+				break;
+			}
+			default: break;
+		}
+		updateStyleItem();
+		OnUpdateModify();
+	}
 }
 
 void RDOStudioOptionsStylesAndColors::OnFontNameChanged()
@@ -920,6 +1032,7 @@ void RDOStudioOptionsStylesAndColors::OnUpdateModify()
 {
 	UpdateData();
 
+	updateTheme();
 	updatePropOfAllObject();
 
 	sheet->updateStyles();

@@ -21,6 +21,9 @@ enum RDOFoldStyle {
 
 class RDOEditorEditTheme: public RDOEditorBaseEditTheme
 {
+private:
+	RDOEditorEditTheme& operator =( const RDOEditorBaseEditTheme& theme );
+
 public:
 	RDOEditorEditTheme();
 	virtual ~RDOEditorEditTheme();
@@ -39,7 +42,6 @@ public:
 
 	RDOFoldStyle foldStyle;
 
-/*
 	static RDOEditorEditTheme getDefaultTheme();
 	static RDOEditorEditTheme getCppTheme();
 	static RDOEditorEditTheme getPascalTheme();
@@ -47,7 +49,6 @@ public:
 	static RDOEditorEditTheme getClassicTheme();
 	static RDOEditorEditTheme getTwilightTheme();
 	static RDOEditorEditTheme getOceanTheme();
-*/
 };
 
 // ----------------------------------------------------------------------------
