@@ -166,6 +166,10 @@ SOURCE=.\rdostudiooutput.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\rdostudiostatusbar.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdostudiostyle.cpp
 # End Source File
 # Begin Source File
@@ -224,6 +228,10 @@ SOURCE=.\rdostudiooptions.h
 # Begin Source File
 
 SOURCE=.\rdostudiooutput.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdostudiostatusbar.h
 # End Source File
 # Begin Source File
 

@@ -4,6 +4,8 @@
 #include "rdo_tracer/rdotracer.h"
 #include "rdo_tracer/rdotracerserie.h"
 #include "rdo_tracer/rdotracervalues.h"
+#include "rdostudioapp.h"
+#include "rdostudiomainfrm.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -28,24 +30,25 @@ void RDOStudioChartDocInsertTime::operator ()( RDOTracerValue* val )
 {
 	if( val ) {
 		timesList::iterator it = find_if( doc->inserted_it, doc->docTimes.end(), bind2nd( mem_fun1( &RDOTracerTimeNow::compareTimes ), val->modeltime ) );
-		if ( it != doc->docTimes.end() && (*it) == val->modeltime )
-			return;
-		doc->inserted_it = doc->docTimes.insert( it, val->modeltime );
-		doc->ticksCount += val->modeltime->eventCount;
-		double offl = 1.7E+308;
-		double offr = 1.7E+308;
-		if ( it != doc->docTimes.end() )
-			offr = (*it)->time - (*doc->inserted_it)->time;
-		if ( doc->inserted_it != doc->docTimes.begin() ) {
-			offl = (*doc->inserted_it)->time;
-			timesList::iterator prev_it = doc->inserted_it;
-			prev_it --;
-			offl -= (*prev_it)->time;
+		if ( it == doc->docTimes.end() || (*it) != val->modeltime ) {
+			doc->inserted_it = doc->docTimes.insert( it, val->modeltime );
+			doc->ticksCount += val->modeltime->eventCount;
+			double offl = 1.7E+308;
+			double offr = 1.7E+308;
+			if ( it != doc->docTimes.end() )
+				offr = (*it)->time - (*doc->inserted_it)->time;
+			if ( doc->inserted_it != doc->docTimes.begin() ) {
+				offl = (*doc->inserted_it)->time;
+				timesList::iterator prev_it = doc->inserted_it;
+				prev_it --;
+				offl -= (*prev_it)->time;
+			}
+			double minoff = min( offl, offr );
+			if ( minoff < doc->minTimeOffset )
+				doc->minTimeOffset = minoff;
 		}
-		double minoff = min( offl, offr );
-		if ( minoff < doc->minTimeOffset )
-			doc->minTimeOffset = minoff;
 	}
+	//studioApp.mainFrame->stepProgress();
 }
 
 // ----------------------------------------------------------------------------
@@ -211,7 +214,15 @@ void RDOStudioChartDoc::addSerie( RDOTracerSerie* const serie )
 				}
 			}
 		}
+		
+		//int count;
+		//serie->getValueCount( count );
+		//studioApp.mainFrame->beginProgress( 0, count );
+
 		for_each( serie->begin(), serie->end(), RDOStudioChartDocInsertTime( this ) );
+
+		//studioApp.mainFrame->endProgress();
+
 		serie->addToDoc( this );
 		if ( series.size() == 1 ) {
 			POSITION pos = GetFirstViewPosition();
