@@ -103,10 +103,6 @@ SOURCE=.\bkemulapp.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\bkemulchildview.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\bkemulcpu.cpp
 # End Source File
 # Begin Source File
@@ -157,10 +153,6 @@ SOURCE=.\bkemul.h
 # Begin Source File
 
 SOURCE=.\bkemulapp.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\bkemulchildview.h
 # End Source File
 # Begin Source File
 
@@ -233,6 +225,10 @@ SOURCE=.\res\monitor_10.bin
 # Begin Source File
 
 SOURCE=.\res\Toolbar.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\toolbar1.bmp
 # End Source File
 # End Group
 # End Target

@@ -5,24 +5,51 @@
 #pragma once
 #endif
 
-#include "bkemulchildview.h"
-
 // --------------------------------------------------------------
 // ---------- BKMainFrame
 // --------------------------------------------------------------
+class CDisplay;
+namespace bkemul {
+class BKEmulVideo;
+}
+
 class BKMainFrame: public CFrameWnd
 {
 DECLARE_DYNAMIC(BKMainFrame)
 
+friend class bkemul::BKEmulVideo;
+
 private:
-//	CToolBar    toolBar;
-//	CStatusBar  statusBar;
+	CDisplay* display;
+
+	int   bytePerPixel;
+	int   pitch;
+	DWORD rBits, gBits, bBits;
+	DWORD rZero, gZero, bZero;
+	DWORD rColor, gColor, bColor, grayColor;
+	CRect windowRect;
+	CRect screenRect;
+
+	UINT timer;
+	bool lock;
+	std::vector< WORD > updateVideoMemory;
+	HRESULT initDirectDraw();
+	HRESULT lockSurface() const;
+	HRESULT unlockSurface() const;
+	HRESULT displayFrame() const;
+	HRESULT restoreSurfaces() const;
+
+	DWORD getColor( const COLORREF color ) const;
+
+	void draw( const BYTE* bk_video_from, int count_byte, BYTE BK_byte_X = 0, BYTE BK_line_Y = 0 ) const;
+
+	void updateMonitor() const;
+	void updateScrolling( BYTE delta ) const;
+	void updateBounds();
 	
 public:
 	BKMainFrame();
 	virtual ~BKMainFrame();
-
-	BKChildView childView;
 
 #ifdef _DEBUG
 	virtual void AssertValid() const;
@@ -34,13 +61,17 @@ protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnSetFocus(CWnd *pOldWnd);
 	afx_msg void OnMove(int x, int y);
+	afx_msg void OnClose();
+	afx_msg void OnPaint();
+	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnTimer(UINT nIDEvent);
+	afx_msg void OnGetMinMaxInfo(MINMAXINFO FAR* lpMMI);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
 	//{{AFX_VIRTUAL(BKMainFrame)
 	public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-	virtual BOOL OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo);
 	virtual void RecalcLayout(BOOL bNotify = TRUE);
 	//}}AFX_VIRTUAL
 };

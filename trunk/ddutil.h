@@ -31,6 +31,7 @@ public:
 	~CDisplay();
 
 	HRESULT CreateWindowedDisplay( CWnd* _parentWnd, int _width, int _height );
+    HRESULT CreateFullScreenDisplay( CWnd* _parentWnd, int _width, int _height, int _bpp );
 	virtual HRESULT DestroyObjects();
 
 	LPDIRECTDRAW7        GetDirectDraw()     { return m_pDD;   }

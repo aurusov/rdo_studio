@@ -3,7 +3,6 @@
 #include "bkemul.h"
 #include "bkemulapp.h"
 #include "bkemulmainfrm.h"
-#include "bkemulchildview.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -51,21 +50,21 @@ void BKEmulVideo::setMemoryWord( WORD address, WORD data )
 
 void BKEmulVideo::updateMonitor() const
 {
-	enulApp.mainFrame->childView.updateMonitor();
+	enulApp.mainFrame->updateMonitor();
 }
 
 void BKEmulVideo::updateScrolling( BYTE delta ) const
 {
-	enulApp.mainFrame->childView.updateScrolling( delta );
+	enulApp.mainFrame->updateScrolling( delta );
 }
 
 void BKEmulVideo::updateVideoMemoryByte( WORD address ) const
 {
-	enulApp.mainFrame->childView.updateVideoMemory.push_back( address );
+	enulApp.mainFrame->updateVideoMemory.push_back( address );
 }
 
 void BKEmulVideo::updateVideoMemoryWord( WORD address ) const
 {
-	enulApp.mainFrame->childView.updateVideoMemory.push_back( address );
-	enulApp.mainFrame->childView.updateVideoMemory.push_back( address + 1 );
+	enulApp.mainFrame->updateVideoMemory.push_back( address );
+	enulApp.mainFrame->updateVideoMemory.push_back( address + 1 );
 }

@@ -2,9 +2,8 @@
 #include "bkemul.h"
 #include "resource.h"
 
-#include "bkemulapp.h"
-#include "bkemulmainfrm.h"
-#include "bkemulchildview.h"
+//#include "bkemulapp.h"
+//#include "bkemulmainfrm.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -91,7 +90,7 @@ void BKEmul::nextIteration()
 {
 	try {
 		for ( int i = 0; i < 1000; i++ ) {
-//			CClientDC dc( &enulApp.mainFrame->childView );
+//			CClientDC dc( enulApp.mainFrame );
 //			std::string str = format( "R7 = 0%0o", cpu.regs[ 6 ] );
 //			dc.TextOut( 550, 30, str.c_str(), str.length() );
 			cpu.nextIteration();
@@ -105,19 +104,19 @@ BYTE BKEmul::getMemoryByte( WORD address )
 {
 	switch ( address ) {
 		// ¬ регистре состо€ни€ клавиатуры по чтению доступны 6 и 7 биты, остальные читаютс€ нул€ми
-		case 0177660: return memory.get_byte( address ) & static_cast<BYTE>(0300);
+		case 0177660: return memory.get_byte( address ) & 0300;
 		// ¬ регистре данных клавиатуры доступны биты 0-6, остальные (7-15) читаютс€ нул€ми
 		case 0177662: {
-			BYTE res = memory.get_byte( address ) & static_cast<BYTE>(0177);
+			BYTE res = memory.get_byte( address ) & 0177;
 			// »з регистр данных клавиатуры прочитан код символа (регистр 177660, бит 0200 = 0 - прочитан, 1 - поступил)
 			memory.set_word( 0177660, memory.get_word( 0177660 ) & 0177577 );
 			return res;
 		}
 		// ¬ регистре смещени€ доступны 0-7 и 9 биты, остальные не используютс€ (читаютс€ нул€ми ????)
-		case 0177664: return memory.get_byte( address ) & static_cast<BYTE>(0377);
-		case 0177665: return memory.get_byte( address ) & static_cast<BYTE>(0002);
+		case 0177664: return memory.get_byte( address ) & 0377;
+		case 0177665: return memory.get_byte( address ) & 0002;
 		// ¬ регистре управлени€ таймером биты 8-15 читаютс€ единицами
-		case 0177713: return memory.get_byte( address ) & static_cast<BYTE>(0377);
+		case 0177713: return memory.get_byte( address ) & 0377;
 		// ¬ернуть значение системного регистра по чтению
 		case 0177716: return static_cast<BYTE>(R_177716_read);
 		case 0177717: return 0;
@@ -134,18 +133,18 @@ WORD BKEmul::getMemoryWord( WORD address )
 	WORD data = memory.get_word( address );
 	switch ( address ) {
 		// ¬ регистре состо€ни€ клавиатуры доступны 6 и 7 биты, остальные читаютс€ нул€ми
-		case 0177660: return data & static_cast<WORD>(0000300);
+		case 0177660: return data & 0000300;
 		// ¬ регистре данных клавиатуры доступны биты 0-6, остальные (7-15) читаютс€ нул€ми
 		case 0177662: {
-			data &= static_cast<WORD>(0000177);
+			data &= 0000177;
 			// »з регистр данных клавиатуры прочитан код символа (регистр 177660, бит 0200 = 0 - прочитан, 1 - поступил)
 			memory.set_word( 0177660, memory.get_word( 0177660 ) & 0177577 );
 			return data;
 		}
 		// ¬ регистре смещени€ доступны 0-7 и 9 биты, остальные не используютс€ (читаютс€ нул€ми ????)
-		case 0177664: return data & static_cast<WORD>(0001377);
+		case 0177664: return data & 0001377;
 		// ¬ регистре управлени€ таймером биты 8-15 читаютс€ единицами
-		case 0177712: return data | static_cast<WORD>(0xFF00);
+		case 0177712: return data | 0xFF00;
 		// ¬ернуть значение системного регистра по чтению
 		case 0177716: return R_177716_read;
 		// –егистр параллельного программируемого интерфейса содержит нулевую нагрузку
@@ -167,7 +166,7 @@ void BKEmul::setMemoryByte( WORD address, BYTE data )
 	switch ( address ) {
 		// ¬ регистре состо€ни€ клавиатуры по записи доступен только 6 бит
 		case 0177660: {
-			data = (memory.get_byte( address ) & static_cast<BYTE>(0200)) | static_cast<BYTE>(data & 0100);
+			data = (memory.get_byte( address ) & 0200) | (data & 0100);
 			memory.set_byte( address, data );
 			break;
 		}
@@ -175,7 +174,7 @@ void BKEmul::setMemoryByte( WORD address, BYTE data )
 		// ¬ системном регистре по записи доступны только 4-7 разр€ды выходного регистра 177716
 		case 0177716: {
 			R_177716_write &= 0xFF0F;
-			R_177716_write |= static_cast<BYTE>(data & 0xF0);
+			R_177716_write |= data & 0xF0;
 			emul.doSpeaker();
 			break;
 		}
