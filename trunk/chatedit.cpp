@@ -12,7 +12,9 @@ static char THIS_FILE[] = __FILE__;
 // ---------- CChatEdit
 // ----------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP( CChatEdit, CEdit )
+	//{{AFX_MSG_MAP(CChatEdit)
 	ON_WM_KEYDOWN()
+	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 CChatEdit::CChatEdit(): CEdit()

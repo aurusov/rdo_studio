@@ -10,6 +10,11 @@ static char THIS_FILE[] = __FILE__;
 // ----------------------------------------------------------------------------
 // ---------- CChatListBoxCtrl
 // ----------------------------------------------------------------------------
+BEGIN_MESSAGE_MAP( CChatListBoxCtrl, CListBox )
+	//{{AFX_MSG_MAP(CChatListBoxCtrl)
+	//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
 CChatListBoxCtrl::CChatListBoxCtrl():
 	CListBox(),
 	imageList( NULL )

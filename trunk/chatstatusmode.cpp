@@ -125,6 +125,11 @@ CString CChatStatusModeList::getDefaultName( const CChatStatusModeType statusMod
 // ----------------------------------------------------------------------------
 // ---------- CChatStatusModeDialog
 // ----------------------------------------------------------------------------
+BEGIN_MESSAGE_MAP( CChatStatusModeDialog, CDialog )
+	//{{AFX_MSG_MAP(CChatStatusModeDialog)
+	//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
 CChatStatusModeDialog::CChatStatusModeDialog( UINT nIDTemplate, CWnd* pParentWnd ):
 	CDialog( nIDTemplate, pParentWnd ),
 	info( "" ),

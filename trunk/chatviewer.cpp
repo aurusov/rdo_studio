@@ -11,8 +11,6 @@ static char THIS_FILE[] = __FILE__;
 // ----------------------------------------------------------------------------
 // ---------- CChatViewer
 // ----------------------------------------------------------------------------
-IMPLEMENT_DYNAMIC( CChatViewer, CWnd )
-
 BEGIN_MESSAGE_MAP( CChatViewer, CWnd )
 	//{{AFX_MSG_MAP(CChatViewer)
 	ON_WM_CREATE()

@@ -26,15 +26,20 @@ protected:
 	COLORREF           textColor;
 	COLORREF           backgroundColor;
 
-	virtual BOOL PreCreateWindow( CREATESTRUCT& cs );
-	virtual BOOL DestroyWindow();
-
 	void showMessage();
 
+protected:
+	//{{AFX_VIRTUAL(CChatPopupMessage)
+	protected:
+	virtual BOOL PreCreateWindow( CREATESTRUCT& cs );
+	virtual BOOL DestroyWindow();
+	//}}AFX_VIRTUAL
+
+	//{{AFX_MSG(CChatPopupMessage)
 	afx_msg void OnTimer( UINT nIDEvent );
 	afx_msg BOOL OnEraseBkgnd( CDC* pDC );
+	//}}AFX_MSG
 //	afx_msg void OnPaint();
-
 	DECLARE_MESSAGE_MAP()
 
 public:

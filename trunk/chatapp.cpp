@@ -17,27 +17,23 @@ static char THIS_FILE[] = __FILE__;
 CChatApp chatApp;
 
 BEGIN_MESSAGE_MAP( CChatApp, CWinApp )
-
+	//{{AFX_MSG_MAP(CChatApp)
 	ON_COMMAND_EX( ID_FILE_REFRESHUSERSLIST, OnRefreshUsersList )
-
 	ON_COMMAND_EX( ID_STATUSMODE_ONLINE      , OnStatusMode )
 	ON_COMMAND_EX( ID_STATUSMODE_AWAY        , OnStatusMode )
 	ON_COMMAND_EX( ID_STATUSMODE_NOTAVAILIBLE, OnStatusMode )
 	ON_UPDATE_COMMAND_UI( ID_STATUSMODE_ONLINE      , OnUpdateStatusMode )
 	ON_UPDATE_COMMAND_UI( ID_STATUSMODE_AWAY        , OnUpdateStatusMode )
 	ON_UPDATE_COMMAND_UI( ID_STATUSMODE_NOTAVAILIBLE, OnUpdateStatusMode )
-
 	ON_COMMAND_EX( ID_STATUSMODE_ONLINE_INFO      , OnStatusModeInfo )
 	ON_COMMAND_EX( ID_STATUSMODE_AWAY_INFO        , OnStatusModeInfo )
 	ON_COMMAND_EX( ID_STATUSMODE_NOTAVAILIBLE_INFO, OnStatusModeInfo )
 	ON_UPDATE_COMMAND_UI( ID_STATUSMODE_ONLINE_INFO      , OnUpdateStatusModeInfo )
 	ON_UPDATE_COMMAND_UI( ID_STATUSMODE_AWAY_INFO        , OnUpdateStatusModeInfo )
 	ON_UPDATE_COMMAND_UI( ID_STATUSMODE_NOTAVAILIBLE_INFO, OnUpdateStatusModeInfo )
-
 	ON_COMMAND( ID_CHAT_TOCRYOUT, OnToCryOut )
-
 	ON_COMMAND( ID_CHAT_OPTIONS, OnOptions )
-
+	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 CChatApp::CChatApp():
@@ -45,7 +41,7 @@ CChatApp::CChatApp():
 	userName( "" ),
 	hostName( "" ),
 	ip( "" ),
-	port( 4000 ),
+	port( 4002 ),
 	broadcastIP( "192.168.1.255" )
 {
 }
@@ -294,6 +290,11 @@ CFont& CChatApp::getFont()
 // ----------------------------------------------------------------------------
 // ---------- CChatToCryOutDialog
 // ----------------------------------------------------------------------------
+BEGIN_MESSAGE_MAP( CChatToCryOutDialog, CDialog )
+	//{{AFX_MSG_MAP(CChatToCryOutDialog)
+	//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
 CChatToCryOutDialog::CChatToCryOutDialog( UINT nIDTemplate, CWnd* pParentWnd ):
 	CDialog( nIDTemplate, pParentWnd ),
 	message( "" )
@@ -309,9 +310,4 @@ void CChatToCryOutDialog::DoDataExchange( CDataExchange* pDX )
 	CDialog::DoDataExchange( pDX );
 
 	DDX_Text( pDX, IDC_TOCRYOUT_EDIT, message );
-}
-
-int CChatToCryOutDialog::DoModal()
-{
-	return CDialog::DoModal();
 }

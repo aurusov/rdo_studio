@@ -13,8 +13,16 @@ protected:
 	bool isImage() const;
 	CSize getImageSize() const;
 
+protected:
+	//{{AFX_VIRTUAL(CChatListBoxCtrl)
+	protected:
 	virtual void DrawItem( LPDRAWITEMSTRUCT lpDrawItemStruct );
 	virtual void MeasureItem( LPMEASUREITEMSTRUCT lpMeasureItemStruct );
+	//}}AFX_VIRTUAL
+
+	//{{AFX_MSG(CChatListBoxCtrl)
+	//}}AFX_MSG
+	DECLARE_MESSAGE_MAP()
 
 public:
 	CChatListBoxCtrl();

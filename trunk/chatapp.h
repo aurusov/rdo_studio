@@ -26,11 +26,16 @@ protected:
 
 	CFont font;
 
-	virtual BOOL InitInstance();
-	virtual int ExitInstance();
-
 	bool initSocket();
 
+protected:
+	//{{AFX_VIRTUAL(CChatApp)
+	protected:
+	virtual BOOL InitInstance();
+	virtual int ExitInstance();
+	//}}AFX_VIRTUAL
+
+	//{{AFX_MSG(CChatApp)
 	afx_msg void OnRefreshUsersList( UINT nID = 0 );
 	afx_msg void OnStatusMode( UINT nID );
 	afx_msg void OnUpdateStatusMode( CCmdUI* pCmdUI );
@@ -38,7 +43,7 @@ protected:
 	afx_msg void OnUpdateStatusModeInfo( CCmdUI* pCmdUI );
 	afx_msg void OnToCryOut();
 	afx_msg void OnOptions();
-
+	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
 public:
@@ -66,18 +71,23 @@ public:
 // ----------------------------------------------------------------------------
 // ---------- CChatToCryOutDialog
 // ----------------------------------------------------------------------------
-class CChatToCryOutDialog: CDialog
+class CChatToCryOutDialog: public CDialog
 {
-protected:
-	virtual void DoDataExchange( CDataExchange* pDX );
-
 public:
 	CString message;
 
 	CChatToCryOutDialog( UINT nIDTemplate, CWnd* pParentWnd = NULL );
 	virtual ~CChatToCryOutDialog();
 
-	virtual int DoModal();
+protected:
+	//{{AFX_VIRTUAL(CChatToCryOutDialog)
+	protected:
+	virtual void DoDataExchange( CDataExchange* pDX );
+	//}}AFX_VIRTUAL
+
+	//{{AFX_MSG(CChatToCryOutDialog)
+	//}}AFX_MSG
+	DECLARE_MESSAGE_MAP()
 };
 
 // ----------------------------------------------------------------------------

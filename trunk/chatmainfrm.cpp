@@ -17,19 +17,18 @@ static char THIS_FILE[] = __FILE__;
 #define awayTimer_ID 2
 
 BEGIN_MESSAGE_MAP( CChatMainFrame, CFrameWnd )
-
+	//{{AFX_MSG_MAP(CChatMainFrame)
 	ON_WM_CREATE()
 	ON_WM_SETFOCUS()
 	ON_WM_TIMER()
 	ON_WM_SIZE()
 	ON_WM_CLOSE()
-
 	ON_MESSAGE( MYMSG_NOTIFYTRAY, OnHandleTrayNotify )
 	ON_COMMAND( ID_TRAYMENU_OPEN, OnTrayOpenHide )
 	ON_COMMAND( ID_APP_EXIT     , OnTrayCloseApp )
 	ON_COMMAND( ID_TRAYMENU_EXIT, OnTrayCloseApp )
 	ON_UPDATE_COMMAND_UI( ID_TRAYMENU_OPEN, OnUpdateTrayOpenHide )
-
+	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 static UINT indicators[] =

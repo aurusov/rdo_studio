@@ -8,8 +8,12 @@
 class CChatEdit: public CEdit
 {
 protected:
-	afx_msg void OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags );
+	//{{AFX_VIRTUAL(CChatEdit)
+	//}}AFX_VIRTUAL
 
+	//{{AFX_MSG(CChatEdit)
+	afx_msg void OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags );
+	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
 public:

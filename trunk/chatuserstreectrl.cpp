@@ -12,8 +12,6 @@ static char THIS_FILE[] = __FILE__;
 // ----------------------------------------------------------------------------
 // ---------- CChatUsersTreeCtrl
 // ----------------------------------------------------------------------------
-IMPLEMENT_DYNCREATE( CChatUsersTreeCtrl, RDOTreeCtrl )
-
 BEGIN_MESSAGE_MAP( CChatUsersTreeCtrl, RDOTreeCtrl )
 	//{{AFX_MSG_MAP(CChatUsersTreeCtrl)
 	ON_WM_CREATE()

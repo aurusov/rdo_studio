@@ -13,19 +13,15 @@ static char THIS_FILE[] = __FILE__;
 // ---------- CChatGeneralOptions
 // ----------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP( CChatGeneralOptions, CPropertyPage )
-
+	//{{AFX_MSG_MAP(CChatGeneralOptions)
 	ON_EN_CHANGE( IDC_USERNAME_EDIT, OnUpdateModify )
-
 	ON_BN_CLICKED( IDC_TRAYUSE_CHECK   , OnUseTrayCBChanged )
 	ON_BN_CLICKED( IDC_TRAYNOTIFY_CHECK, OnUpdateModify )
-
 	ON_BN_CLICKED( IDC_CLOSEBUTTON_CLOSE_RADIO   , OnUpdateModify )
 	ON_BN_CLICKED( IDC_CLOSEBUTTON_MINIMIZE_RADIO, OnUpdateModify )
 	ON_BN_CLICKED( IDC_CLOSEBUTTON_TRAY_RADIO    , OnUpdateModify )
-
 	ON_BN_CLICKED( IDC_MINIMIZEBUTTON_MINIMIZE_RADIO, OnUpdateModify )
 	ON_BN_CLICKED( IDC_MINIMIZEBUTTON_TRAY_RADIO    , OnUpdateModify )
-
 	ON_BN_CLICKED(    IDC_POPUPUSE_CHECK             , OnUsePopupCBChanged )
 	ON_CBN_SELCHANGE( IDC_POPUPPOSITION_COMBO        , OnUpdateModify )
 	ON_EN_CHANGE(     IDC_POPUPDELAY_EDIT            , OnUpdateModify )
@@ -33,7 +29,7 @@ BEGIN_MESSAGE_MAP( CChatGeneralOptions, CPropertyPage )
 	ON_CBN_SELCHANGE( IDC_POPUPBACKGROUNDCOLOR_COMBO , OnBgColorCBChanged )
 	ON_BN_CLICKED(    IDC_POPUPTEXTCOLOR_BUTTON      , OnFgColorBClick )
 	ON_BN_CLICKED(    IDC_POPUPBACKGROUNDCOLOR_BUTTON, OnBgColorBClick )
-
+	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 CChatGeneralOptions::CChatGeneralOptions(): CPropertyPage( IDD_OPTIONS_GENERAL_DIALOG )
@@ -198,20 +194,16 @@ void CChatGeneralOptions::OnUpdateModify()
 // ---------- CChatSoundOptions
 // ----------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP( CChatSoundOptions, CPropertyPage )
-
+	//{{AFX_MSG_MAP(CChatSoundOptions)
 	ON_BN_CLICKED( IDC_SOUNDUSE_CHECK, OnUpdateModify )
-
 	ON_LBN_SELCHANGE( IDC_SOUND_LIST, OnListBoxSelectChange )
 	ON_LBN_DBLCLK   ( IDC_SOUND_LIST, OnListBoxDoubleClick  )
-
 	ON_BN_CLICKED( IDC_SOUNDNONE_RADIO    , OnRadioChanged )
 	ON_BN_CLICKED( IDC_SOUNDDEFAULT_RADIO , OnRadioChanged )
 	ON_BN_CLICKED( IDC_SOUNDEXTERNAL_RADIO, OnRadioChanged )
-
 	ON_EN_CHANGE( IDC_SOUNDEXTERNAL_EDIT, OnEditChanged )
-
 	ON_BN_CLICKED( IDC_SOUNDEXTERMAL_BUTTON, OnButtonClicked )
-
+	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 CChatSoundOptions::CChatSoundOptions(): CPropertyPage( IDD_OPTIONS_SOUND_DIALOG )
@@ -384,17 +376,15 @@ void CChatSoundOptions::OnUpdateModify()
 // ---------- CChatStatusModeOptions
 // ----------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP( CChatStatusModeOptions, CPropertyPage )
-
+	//{{AFX_MSG_MAP(CChatStatusModeOptions)
 	ON_LBN_SELCHANGE( IDC_STATUSMODE_LIST, OnListBoxSelectChange )
-
 	ON_EN_CHANGE( IDC_STATUSMODENAME_EDIT, OnNameChanged )
 	ON_EN_CHANGE( IDC_STATUSMODEINFO_EDIT, OnInfoChanged )
-
 	ON_EN_CHANGE( IDC_AUTOMATICALLYSTATUSMODE_AWAY_EDIT, OnUpdateModify )
 	ON_BN_CLICKED( IDC_AUTOMATICALLYSTATUSMODE_AWAY_CHECK, OnAutoAwayChanged )
 	ON_EN_CHANGE( IDC_AUTOMATICALLYSTATUSMODE_NOTAVAILIBLE_EDIT, OnUpdateModify )
 	ON_BN_CLICKED( IDC_AUTOMATICALLYSTATUSMODE_NOTAVAILIBLE_CHECK, OnAutoNotAvailibaleChanged )
-
+	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 CChatStatusModeOptions::CChatStatusModeOptions(): CPropertyPage( IDD_OPTIONS_STATUSMODE_DIALOG )
@@ -564,6 +554,11 @@ void CChatStatusModeOptions::OnUpdateModify()
 // ----------------------------------------------------------------------------
 // ---------- CChatOptions
 // ----------------------------------------------------------------------------
+BEGIN_MESSAGE_MAP( CChatOptions, CPropertySheet )
+	//{{AFX_MSG_MAP(CChatOptions)
+	//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
 CChatOptions::CChatOptions():
 	CPropertySheet(),
 	generalOptions( NULL ),

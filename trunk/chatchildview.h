@@ -10,17 +10,20 @@
 // ----------------------------------------------------------------------------
 class CChatChildView: public CWnd
 {
-DECLARE_DYNCREATE( CChatChildView )
 protected:
 	CChatViewer viewer;
 	CChatEdit   edit;
 
+protected:
+	//{{AFX_VIRTUAL(CChatChildView)
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
+	//}}AFX_VIRTUAL
 
+	//{{AFX_MSG(CChatChildView)
 	afx_msg int OnCreate( LPCREATESTRUCT lpCreateStruct );
 	afx_msg void OnSize( UINT nType, int cx, int cy );
 	afx_msg void OnSetFocus(CWnd *pOldWnd);
-
+	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
 public:

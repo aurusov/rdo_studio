@@ -51,9 +51,6 @@ public:
 // ----------------------------------------------------------------------------
 class CChatStatusModeDialog: CDialog
 {
-protected:
-	virtual void DoDataExchange( CDataExchange* pDX );
-
 public:
 	CString info;
 	int     useAsDefault;
@@ -61,7 +58,17 @@ public:
 	CChatStatusModeDialog( UINT nIDTemplate, CWnd* pParentWnd = NULL );
 	virtual ~CChatStatusModeDialog();
 
+protected:
+	//{{AFX_VIRTUAL(CChatStatusModeDialog)
+	protected:
+	virtual void DoDataExchange( CDataExchange* pDX );
+	public:
 	virtual int DoModal();
+	//}}AFX_VIRTUAL
+
+	//{{AFX_MSG(CChatStatusModeDialog)
+	//}}AFX_MSG
+	DECLARE_MESSAGE_MAP()
 };
 
 #endif // CHATSTATUSMODE_H

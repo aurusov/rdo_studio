@@ -19,11 +19,11 @@ const int x_delta  = 1;
 const int y_delta  = 1;
 
 BEGIN_MESSAGE_MAP( CChatPopupMessage, CDialog )
-
+	//{{AFX_MSG_MAP(CChatPopupMessage)
 	ON_WM_TIMER()
-//	ON_WM_PAINT()
 	ON_WM_ERASEBKGND()
-
+	//}}AFX_MSG_MAP
+//	ON_WM_PAINT()
 END_MESSAGE_MAP()
 
 CChatPopupMessage::CChatPopupMessage():

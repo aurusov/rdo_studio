@@ -11,12 +11,12 @@ static char THIS_FILE[] = __FILE__;
 // ----------------------------------------------------------------------------
 // ---------- CChatChildView
 // ----------------------------------------------------------------------------
-IMPLEMENT_DYNCREATE( CChatChildView, CWnd )
-
 BEGIN_MESSAGE_MAP( CChatChildView, CWnd )
+	//{{AFX_MSG_MAP(CChatChildView)
 	ON_WM_CREATE()
 	ON_WM_SIZE()
 	ON_WM_SETFOCUS()
+	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 CChatChildView::CChatChildView()

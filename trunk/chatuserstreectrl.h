@@ -11,7 +11,6 @@ class CChatUser;
 
 class CChatUsersTreeCtrl: public RDOTreeCtrl
 {
-DECLARE_DYNCREATE( CChatUsersTreeCtrl )
 private:
 	CImageList imageList;
 

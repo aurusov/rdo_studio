@@ -12,8 +12,6 @@
 
 class CChatViewer: public CWnd
 {
-DECLARE_DYNAMIC( CChatViewer )
-
 protected:
 	CChatStringList strings;
 	CChatViewerStyle style;
@@ -63,12 +61,12 @@ protected:
 	int getStringsMaxWidth();
 	int getStrHeight( const int index );
 
-public:
+protected:
 	//{{AFX_VIRTUAL(CChatViewer)
+	protected:
 	virtual BOOL PreCreateWindow( CREATESTRUCT& cs );
 	//}}AFX_VIRTUAL
 
-protected:
 	//{{AFX_MSG(CChatViewer)
 	afx_msg int OnCreate( LPCREATESTRUCT lpCreateStruct );
 	afx_msg void OnSize( UINT nType, int cx, int cy );
