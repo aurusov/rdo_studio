@@ -288,6 +288,21 @@
 		<param name="Local" value="html\work_model_run.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&agrave;&iacute;&egrave;&igrave;&agrave;&ouml;&egrave;&yuml;">
+		<param name="Name" value="Режимы моделирования">
+		<param name="Local" value="html\work_model_frame.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&eth;&aring;&aelig;&egrave;&igrave;&ucirc; &igrave;&icirc;&auml;&aring;&euml;&egrave;&eth;&icirc;&acirc;&agrave;&iacute;&egrave;&yuml;">
+		<param name="Name" value="Режимы моделирования">
+		<param name="Local" value="html\work_model_frame.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&ntilde;&ecirc;&icirc;&eth;&icirc;&ntilde;&ograve;&uuml;">
+		<param name="Name" value="Режимы моделирования">
+		<param name="Local" value="html\work_model_frame.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="&eth;&aring;&ccedil;&oacute;&euml;&uuml;&ograve;&agrave;&ograve;&ucirc; &igrave;&icirc;&auml;&aring;&euml;&egrave;&eth;&icirc;&acirc;&agrave;&iacute;&egrave;&yuml;">
 		<param name="Name" value="Просмотр результатов моделирования">
 		<param name="Local" value="html\work_model_results.htm">
@@ -644,6 +659,21 @@
 			<param name="Local" value="html\work_menu_model.htm">
 			<param name="Name" value="Запуск, настройка запуска">
 			<param name="Local" value="html\work_model_run.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="&agrave;&iacute;&egrave;&igrave;&agrave;&ouml;&egrave;&yuml;">
+			<param name="Name" value="Режимы моделирования">
+			<param name="Local" value="html\work_model_frame.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="&eth;&aring;&aelig;&egrave;&igrave;&ucirc; &igrave;&icirc;&auml;&aring;&euml;&egrave;&eth;&icirc;&acirc;&agrave;&iacute;&egrave;&yuml;">
+			<param name="Name" value="Режимы моделирования">
+			<param name="Local" value="html\work_model_frame.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="&ntilde;&ecirc;&icirc;&eth;&icirc;&ntilde;&ograve;&uuml;">
+			<param name="Name" value="Режимы моделирования">
+			<param name="Local" value="html\work_model_frame.htm">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="&eth;&aring;&ccedil;&oacute;&euml;&uuml;&ograve;&agrave;&ograve;&ucirc;">

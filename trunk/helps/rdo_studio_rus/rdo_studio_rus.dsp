@@ -210,6 +210,10 @@ SOURCE=.\html\work_model_folds.htm
 # End Source File
 # Begin Source File
 
+SOURCE=.\html\work_model_frame.htm
+# End Source File
+# Begin Source File
+
 SOURCE=.\html\work_model_insert.htm
 # End Source File
 # Begin Source File
@@ -374,6 +378,18 @@ SOURCE=.\images\fold.gif
 # End Source File
 # Begin Source File
 
+SOURCE=.\images\frame.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\frame_next.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\frame_prev.gif
+# End Source File
+# Begin Source File
+
 SOURCE=.\images\insert_buffer_edit.gif
 # End Source File
 # Begin Source File
@@ -406,15 +422,15 @@ SOURCE=.\images\previous_bookmark.gif
 # End Source File
 # Begin Source File
 
-SOURCE=.\images\rdo_path.gif
+SOURCE=.\images\progon_animation.gif
 # End Source File
 # Begin Source File
 
-SOURCE=.\images\rdo_reload_pmv.gif
+SOURCE=.\images\progon_monitor.gif
 # End Source File
 # Begin Source File
 
-SOURCE=.\images\rdo_reload_trc.gif
+SOURCE=.\images\progon_noshow.gif
 # End Source File
 # Begin Source File
 
@@ -439,6 +455,22 @@ SOURCE=.\images\search_replace.gif
 # Begin Source File
 
 SOURCE=.\images\search_replace_dlg.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\tempo_minus.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\tempo_minus4.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\tempo_plus.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\tempo_plus4.gif
 # End Source File
 # End Group
 # Begin Group "Scripts"

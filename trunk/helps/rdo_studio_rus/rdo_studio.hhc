@@ -170,6 +170,11 @@
 					<param name="ImageNumber" value="11">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="&Dstrok;&aring;&aelig;&egrave;&igrave;&ucirc; &igrave;&icirc;&auml;&aring;&euml;&egrave;&eth;&icirc;&acirc;&agrave;&iacute;&egrave;&yuml;">
+					<param name="Local" value="html\work_model_frame.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="&Iuml;&eth;&icirc;&ntilde;&igrave;&icirc;&ograve;&eth; &eth;&aring;&ccedil;&oacute;&euml;&uuml;&ograve;&agrave;&ograve;&icirc;&acirc; &igrave;&icirc;&auml;&aring;&euml;&egrave;&eth;&icirc;&acirc;&agrave;&iacute;&egrave;&yuml;">
 					<param name="Local" value="html\work_model_results.htm">
 					<param name="ImageNumber" value="11">
