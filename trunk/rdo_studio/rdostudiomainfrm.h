@@ -15,6 +15,7 @@
 #include "rdo_tracer/tracer_ctrls/rdotracerlogstyle.h"
 #include "rdostudiostyle.h"
 #include "rdostudiochartviewstyle.h"
+#include "rdostudiostatusbar.h"
 
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioMainFrame
@@ -30,7 +31,7 @@ private:
 	CImageList modelToolBarImageList;
 	CToolBar   editToolBar;
 	CImageList editToolBarImageList;
-	CStatusBar statusBar;
+	RDOStudioStatusBar statusBar;
 
 	void dockControlBarBesideOf( CControlBar& bar, CControlBar& baseBar );
 
@@ -52,6 +53,14 @@ public:
 	void updateAllStyles() const;
 
 	void showNewModelTime( const double value ) ;
+
+	void beginProgress( const int lower = 0, const int upper = 100, const int step = 1 );
+	void getProgressRange( int& lower, int& upper ) const { statusBar.getRange( lower, upper ); };
+	void setProgress( const int pos ) { statusBar.setPos( pos ); };
+	int  getProgress() const { return statusBar.getPos(); };
+	void offsetProgress( const int offset ) { statusBar.offsetPos( offset ); };
+	void stepProgress() { statusBar.stepIt(); };
+	void endProgress();
 
 	BOOL OnCmdMsgForDockOnly( UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo );
 

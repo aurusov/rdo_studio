@@ -65,7 +65,8 @@ static UINT indicators[] = {
 	ID_INSERTOVERWRITESTATUSBAR,
 	ID_MODELTIMESTATUSBAR,
 	ID_MODELRUNTYPESTATUSBAR,
-	ID_MODELSHOWRATE
+	ID_MODELSHOWRATE,
+	ID_PROGRESSSTATUSBAR
 };
 
 RDOStudioMainFrame::RDOStudioMainFrame(): CMDIFrameWnd()
@@ -137,7 +138,8 @@ int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	statusBar.SetPaneInfo( 2, ID_INSERTOVERWRITESTATUSBAR, SBPS_NORMAL , 70 );
 	statusBar.SetPaneInfo( 3, ID_MODELTIMESTATUSBAR      , SBPS_NORMAL , 100 );
 	statusBar.SetPaneInfo( 4, ID_MODELRUNTYPESTATUSBAR   , SBPS_NORMAL , 70 );
-	statusBar.SetPaneInfo( 5, ID_MODELSHOWRATE           , SBPS_STRETCH, 70 );
+	statusBar.SetPaneInfo( 5, ID_MODELSHOWRATE           , SBPS_NORMAL , 70 );
+	statusBar.SetPaneInfo( 6, ID_PROGRESSSTATUSBAR       , SBPS_STRETCH, 70 );
 
 	workspace.Create( format( ID_DOCK_WORKSPACE ).c_str(), this, 0 );
 	workspace.SetBarStyle( workspace.GetBarStyle() | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
@@ -350,6 +352,19 @@ void RDOStudioMainFrame::updateAllStyles() const
 	model->updateStyleOfAllModel();
 	output.updateStyles();
 	tracer->updateChartsStyles();
+}
+
+void RDOStudioMainFrame::beginProgress( const int lower, const int upper, const int step )
+{
+	statusBar.setRange( lower, upper );
+	statusBar.setStep( step );
+	statusBar.setPos( lower );
+	statusBar.setProgressVisible( true );
+}
+
+void RDOStudioMainFrame::endProgress()
+{
+	statusBar.setProgressVisible( false );
 }
 
 void RDOStudioMainFrame::OnHelpContents()

@@ -396,6 +396,7 @@
 #define ID_STATUSBAR_MODEL_RUNANIMATION 40005
 #define ID_STATUSBAR_MODEL_RUNMONITOR   40006
 #define ID_BUFFER_NAME                  40007
+#define ID_PROGRESSSTATUSBAR            40008
 #define ID_MODEL_FILETYPE               40011
 #define ID_OPTIONS                      40012
 #define ID_DOCK_WORKSPACE               40013

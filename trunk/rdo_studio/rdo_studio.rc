@@ -1251,6 +1251,7 @@ BEGIN
     ID_STATUSBAR_MODEL_RUNANIMATION "Animation"
     ID_STATUSBAR_MODEL_RUNMONITOR "Monitor"
     ID_BUFFER_NAME          "Buffer"
+    ID_PROGRESSSTATUSBAR    " "
     ID_MODEL_FILETYPE       "RAO Files (*.smr)|*.smr|All Files (*.*)|*.*||"
     ID_OPTIONS              "Options"
     ID_DOCK_WORKSPACE       "Workspace"
