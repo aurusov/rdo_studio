@@ -34,20 +34,16 @@ int RDOStudioWorkspace::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	tab.Create( NULL, NULL, 0, CRect(0, 0, 100, 100), this, 0 );
 	tab.modifyTabStyle( 0, TCS_BOTTOM | TCS_MULTILINE );
 
-	CEdit* page1 = new CEdit;
-	RDOTracerTreeCtrl* page2 = tracer.createTree();
-	CEdit* page3 = new CEdit;
+	RDOTracerTreeCtrl* page1 = tracer.createTree();
+	CEdit* page2 = new CEdit;
 
-	page1->Create( NULL, CRect(0, 0, 0, 0), &tab, 0 );
-	page2->Create( 0, CRect(0, 0, 0, 0), &tab, 0 );
-	page3->Create( NULL, CRect(0, 0, 0, 0), &tab, 0 );
+	page1->Create( 0, CRect(0, 0, 0, 0), &tab, 0 );
+	page2->Create( NULL, CRect(0, 0, 0, 0), &tab, 0 );
 
-	page1->ModifyStyleEx( 0, WS_EX_CLIENTEDGE );
-	page3->ModifyStyleEx( 0, WS_EX_CLIENTEDGE );
+	page2->ModifyStyleEx( 0, WS_EX_CLIENTEDGE );
 
-	tab.insertItem( page1, "Objects" );
-	tab.insertItem( page2, "Tracer" );
-	tab.insertItem( page3, "Frames" );
+	tab.insertItem( page1, "Tracer" );
+	tab.insertItem( page2, "Frames" );
 
 	return 0;
 }
