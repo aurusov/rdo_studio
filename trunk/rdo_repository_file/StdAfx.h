@@ -15,6 +15,8 @@
 #include <afx.h>
 #include <afxwin.h>
 
+#pragma warning( disable : 4786 )
+
 // TODO: reference additional headers your program requires here
 
 //{{AFX_INSERT_LOCATION}}

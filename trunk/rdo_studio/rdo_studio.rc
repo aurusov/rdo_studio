@@ -1251,7 +1251,7 @@ STRINGTABLE DISCARDABLE
 BEGIN
     ID_MSG_NO_HELP_FILE     "Cannot find help file ""%s"".\r\nIt must be in the application's directory."
     ID_MSG_CANTFIND         "Cannot find the string '%s'."
-    ID_MSG_MODELOPEN_ERROR  "Cannot open model."
+    ID_MSG_MODELOPEN_ERROR  "Cannot open model ""%s""."
     ID_MSG_MODELSAVE_QUERY  "Save changes in project ?"
     ID_MSG_MODELCLOSE_ERROR "Cannot close model."
 END
