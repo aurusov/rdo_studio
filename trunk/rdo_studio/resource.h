@@ -26,6 +26,7 @@
 #define IDR_ZOOM_TOOLBAR                160
 #define IDB_ZOOM_TOOLBAR_D              162
 #define IDB_FRAME_OPTIONS_CTRL          164
+#define IDD_ABOUT                       165
 #define IDC_CLEARAUTO_CHECK             1001
 #define IDC_STYLEITEM_TREE              1002
 #define IDC_BUFFERVALUESTATIC           1003
@@ -107,6 +108,14 @@
 #define IDC_MARKER_SIZE_EDIT            1078
 #define IDC_LEGEND_CHECK                1079
 #define IDC_TRANSP_MARKER_CHECK         1081
+#define IDC_ABOUT_CAPTION               1082
+#define IDC_ABOUT_PICTURE               1083
+#define IDC_ABOUT_ADDRESS               1084
+#define IDC_ABOUT_TEL                   1085
+#define IDC_ABOUR_EMAIL_STATIC          1086
+#define IDC_ABOUT_EMAIL                 1087
+#define IDC_ABOUR_WEB_STATIC            1088
+#define IDC_ABOUT_WEB                   1089
 #define ID_CHART_ADDTONEWCHART          32771
 #define ID_VIEW_WORKSPACE               32774
 #define ID_VIEW_OUTPUT                  32775
@@ -561,9 +570,9 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        165
+#define _APS_NEXT_RESOURCE_VALUE        166
 #define _APS_NEXT_COMMAND_VALUE         33183
-#define _APS_NEXT_CONTROL_VALUE         1082
+#define _APS_NEXT_CONTROL_VALUE         1088
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

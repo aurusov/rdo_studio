@@ -188,6 +188,14 @@ BEGIN
         TOPMARGIN, 7
         BOTTOMMARGIN, 114
     END
+
+    IDD_ABOUT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 261
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 125
+    END
 END
 #endif    // APSTUDIO_INVOKED
 
@@ -365,6 +373,24 @@ BEGIN
                     BS_AUTOCHECKBOX | WS_TABSTOP,8,80,52,10,0,
                     HIDC_AUTOINDENT_CHECK
     CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDFRAME,0,8,292,88
+END
+
+IDD_ABOUT DIALOG DISCARDABLE  0, 0, 268, 132
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About RAO Studio"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,208,112,50,14
+    ICON            IDR_MAINFRAME,IDC_ABOUT_PICTURE,16,16,20,20
+    CTEXT           "caption",IDC_ABOUT_CAPTION,52,12,192,8
+    CTEXT           "Moscow State Bauman University of Technology, ""Computer-aided systems for manufacturing automatization"" Department (RK-9), Moscow, Russia",
+                    IDC_ABOUT_ADDRESS,52,28,192,24
+    RTEXT           "Tel (095) 263-6388, (095) 263-6954, (095) 263-6049\r\nFax (095) 263-6170",
+                    IDC_ABOUT_TEL,52,60,192,16
+    RTEXT           "e-mail:",IDC_ABOUR_EMAIL_STATIC,148,84,32,8
+    RTEXT           "evv@rk9.bmstu.ru",IDC_ABOUT_EMAIL,184,84,60,8,SS_NOTIFY
+    RTEXT           "web site:",IDC_ABOUR_WEB_STATIC,148,92,32,8
+    RTEXT           "www.rk9.bmstu.ru",IDC_ABOUT_WEB,184,92,60,8,SS_NOTIFY
 END
 
 
@@ -1093,8 +1119,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,8,0,168
- PRODUCTVERSION 0,8,0,168
+ FILEVERSION 0,8,0,176
+ PRODUCTVERSION 0,8,0,176
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -1112,14 +1138,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "RAO studio\0"
-            VALUE "FileVersion", "0, 8, 0, 168\0"
+            VALUE "FileVersion", "0, 8, 0, 176\0"
             VALUE "InternalName", "RAO-Studio\0"
             VALUE "LegalCopyright", "Copyright (C) 2003\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "RAO-Studio.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "RAO-Studio\0"
-            VALUE "ProductVersion", "0, 8, 0, 168\0"
+            VALUE "ProductVersion", "0, 8, 0, 176\0"
             VALUE "SpecialBuild", "\0"
         END
     END
@@ -1232,7 +1258,7 @@ BEGIN
     ID_INSERT_PAT_PATIRREGULAREVENT 
                             "$Pattern  : irregular_event\r\n$Relevant_resources\r\n\r\n$Time =\r\n$Body\r\n\r\n\tConvert_event\r\n\r\n$End\r\n"
     ID_INSERT_PAT_PATRULE   "$Pattern  : rule\r\n$Relevant_resources\r\n\r\n$Body\r\n\r\n\tChoice from\r\n\tfirst\r\n\tConvert_rule\r\n\r\n$End\r\n"
-    ID_INSERT_SMR_SMR       "Model_name     = \r\n\r\nResource_file  =\r\nOprIev_file    =\r\nStatistic_file =\r\nResults_file   =\r\nTrace_file     =\r\nFrame_file     =\r\nFrame_number   =\r\nShow_mode      = Animation\r\nShow_rate      = 10000.0\r\n\r\nTerminate_if Time_now >= 10*60*60.0\r\n"
+    ID_INSERT_SMR_SMR       "Model_name     = noname\r\n\r\nResource_file  =\r\nOprIev_file    =\r\nStatistic_file =\r\nResults_file   =\r\nTrace_file     =\r\nFrame_file     =\r\nFrame_number   =\r\nShow_mode      = Animation\r\nShow_rate      = 10000.0\r\n\r\nTerminate_if Time_now >= 10*60*60.0\r\n"
 END
 
 STRINGTABLE DISCARDABLE 

@@ -90,11 +90,6 @@ SOURCE=.\rdo_ctrls_pch.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\rdoabout.cpp
-# ADD CPP /Yu"rdo_ctrls_pch.h"
-# End Source File
-# Begin Source File
-
 SOURCE=.\rdocolorcombobox.cpp
 # ADD CPP /Yu"rdo_ctrls_pch.h"
 # End Source File
@@ -119,10 +114,6 @@ SOURCE=.\rdotreectrl.cpp
 # Begin Source File
 
 SOURCE=.\rdo_ctrls_pch.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdoabout.h
 # End Source File
 # Begin Source File
 

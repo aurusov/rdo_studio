@@ -11,7 +11,6 @@
 
 #include <rdokernel.h>
 #include <rdorepository.h>		  
-#include <rdoabout.h>
 
 using namespace std;
 using namespace rdoRepository;
@@ -144,6 +143,11 @@ BOOL RDOStudioApp::InitInstance()
 		if ( pos == fileName.length() - 1 ) {
 			fileName.erase( pos, 1 );
 		}
+		string longFileName;
+		if ( shortToLongPath( fileName, longFileName ) ) {
+			fileName = longFileName;
+			TRACE( "%s\r\n", fileName.c_str() );
+		}
 		if ( model->openModel( fileName ) ) {
 			insertReopenItem( kernel.getRepository()->getFullName() );
 		} else {
@@ -156,6 +160,42 @@ BOOL RDOStudioApp::InitInstance()
 	initInstance = true;
 
 	return TRUE;
+}
+
+bool RDOStudioApp::shortToLongPath( const std::string& shortPath, std::string& longPath )
+{
+	USES_CONVERSION;
+
+	LPSHELLFOLDER psfDesktop = NULL;
+	ULONG         chEaten = 0;
+	LPITEMIDLIST  pidlShellItem = NULL;
+	WCHAR         szLongPath[_MAX_PATH] = { 0 };
+	BOOL          bResult = TRUE;
+
+	// Get the Desktop's shell folder interface
+	HRESULT hr = ::SHGetDesktopFolder( &psfDesktop );
+
+	LPWSTR  lpwShortPath = A2W( shortPath.c_str() );
+
+	// Request an ID list (relative to the desktop) for the short pathname 
+	hr = psfDesktop->ParseDisplayName( NULL, NULL, lpwShortPath, &chEaten, &pidlShellItem, NULL );
+	psfDesktop->Release(); // Release the desktop's IShellFolder
+
+	if ( FAILED( hr ) ) {
+		// If we couldn't get an ID list for short pathname, it must not exist.
+		longPath.empty();
+		return false;
+	} else { 
+		// We did get an ID list, convert it to a long pathname
+		::SHGetPathFromIDListW( pidlShellItem, szLongPath );
+		// Free the ID list allocated by ParseDisplayName
+		LPMALLOC pMalloc = NULL;
+		::SHGetMalloc( &pMalloc );
+		pMalloc->Free( pidlShellItem );
+		pMalloc->Release();
+		longPath = W2A( szLongPath );
+		return true;
+	}
 }
 
 int RDOStudioApp::ExitInstance()
@@ -563,6 +603,9 @@ void RDOStudioApp::setupFileAssociation()
 
 void RDOStudioApp::OnAppAbout()
 {
+	RDOAboutDlg dlg;
+	dlg.DoModal();
+/*
 	RDOAbout aboutDlg;
 	aboutDlg.BMSTU.LoadString( ID_ABOUT_BMSTU );
 	aboutDlg.tel.LoadString( ID_ABOUT_TEL );
@@ -570,4 +613,80 @@ void RDOStudioApp::OnAppAbout()
 	aboutDlg.hPixmap = LoadIcon( MAKEINTRESOURCE(IDR_MAINFRAME) );
 	aboutDlg.changeColor( 1, 20, 4 );
 	aboutDlg.DoModal();
+*/
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOAboutDlg
+// ----------------------------------------------------------------------------
+BEGIN_MESSAGE_MAP( RDOAboutDlg, CDialog )
+	//{{AFX_MSG_MAP(RDOAboutDlg)
+	ON_BN_CLICKED(IDC_ABOUT_EMAIL, OnAboutEmail)
+	ON_BN_CLICKED(IDC_ABOUT_WEB, OnAboutWeb)
+	//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+RDOAboutDlg::RDOAboutDlg():
+	CDialog( IDD )
+{
+	//{{AFX_DATA_INIT(RDOAboutDlg)
+	m_caption = _T("");
+	//}}AFX_DATA_INIT
+	TCHAR szExeName[ MAX_PATH + 1 ];
+	if ( ::GetModuleFileName( NULL, szExeName, MAX_PATH ) ) {
+		DWORD dwHnd;
+		DWORD size = ::GetFileVersionInfoSize( szExeName, &dwHnd );
+		if ( size ) {
+			void* pBuffer = malloc( size );
+			if ( pBuffer != NULL ) {
+				if ( ::GetFileVersionInfo( szExeName, dwHnd, size, pBuffer ) ) {
+					DWORD* pTranslation;
+					UINT   length;
+					if ( ::VerQueryValue( pBuffer, _T("\\VarFileInfo\\Translation"), (void**)&pTranslation, &length ) ) {
+						DWORD translation = *pTranslation;
+						char key[2000];
+						wsprintf( key, _T("\\StringFileInfo\\%04x%04x\\ProductName"), LOWORD( translation ), HIWORD( translation ) );
+						char* productName;
+						if ( ::VerQueryValue( pBuffer, key, (void**)&productName, &length ) ) {
+							VS_FIXEDFILEINFO* fixedInfo;
+							if ( ::VerQueryValue( pBuffer, _T("\\"), (void**)&fixedInfo, &length ) ) {
+								CString s;
+								s.Format( "%s     version %u.%u (build %u)", productName, HIWORD( fixedInfo->dwProductVersionMS ), LOWORD( fixedInfo->dwProductVersionMS ), LOWORD( fixedInfo->dwProductVersionLS ) );
+								m_caption = s;
+							}
+						}
+					}
+				}
+				free( pBuffer );
+			}
+		}
+	}
+}
+
+RDOAboutDlg::~RDOAboutDlg()
+{
+}
+
+void RDOAboutDlg::DoDataExchange( CDataExchange* pDX )
+{
+	CDialog::DoDataExchange(pDX);
+	//{{AFX_DATA_MAP(RDOAboutDlg)
+	DDX_Control(pDX, IDC_ABOUT_WEB, m_web);
+	DDX_Control(pDX, IDC_ABOUT_EMAIL, m_email);
+	DDX_Text(pDX, IDC_ABOUT_CAPTION, m_caption);
+	//}}AFX_DATA_MAP
+}
+
+void RDOAboutDlg::OnAboutEmail() 
+{
+	CString s;
+	m_email.GetWindowText( s );
+	::ShellExecute( m_hWnd, "open", "mailto:" + s, 0, 0, SW_SHOWNORMAL );
+}
+
+void RDOAboutDlg::OnAboutWeb() 
+{
+	CString s;
+	m_web.GetWindowText( s );
+	::ShellExecute( m_hWnd, "open", s, 0, 0, SW_SHOWNORMAL );
 }

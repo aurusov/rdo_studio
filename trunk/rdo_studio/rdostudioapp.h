@@ -9,6 +9,9 @@
 	#error include 'stdafx.h' before including this file for PCH
 #endif
 
+#include <rdolink.h>
+#include "resource.h"
+
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioApp
 // ----------------------------------------------------------------------------
@@ -39,6 +42,7 @@ public:
 	static std::string extractFilePath( const std::string& fileName );
 	static bool isFileExists( const std::string& fileName );
 	static std::string getFullHelpFileName( std::string str = "RAO-studio.chm" );
+	static bool shortToLongPath( const std::string& shortPath, std::string& longPath );
 
 	void setupFileAssociation();
 
@@ -69,6 +73,36 @@ public:
 	afx_msg void OnAppAbout();
 	//}}AFX_MSG
 	afx_msg void OnProjectReopen( UINT nID );
+	DECLARE_MESSAGE_MAP()
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOAboutDlg
+// ----------------------------------------------------------------------------
+class RDOAboutDlg: public CDialog
+{
+public:
+	RDOAboutDlg();
+	virtual ~RDOAboutDlg();
+
+protected:
+	//{{AFX_DATA(RDOAboutDlg)
+	enum { IDD = IDD_ABOUT };
+	RDOLink	m_web;
+	RDOLink	m_email;
+	CString	m_caption;
+	//}}AFX_DATA
+
+	//{{AFX_VIRTUAL(RDOAboutDlg)
+	protected:
+	virtual void DoDataExchange( CDataExchange* pDX );
+	//}}AFX_VIRTUAL
+
+protected:
+	//{{AFX_MSG(RDOAboutDlg)
+	afx_msg void OnAboutEmail();
+	afx_msg void OnAboutWeb();
+	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
 
