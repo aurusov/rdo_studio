@@ -77,6 +77,7 @@ public:
 struct RDOTracerTimeNow {
 	double time;
 	int eventCount;
+	int overallCount;
 };
 
 class RDOTracerValue
@@ -88,7 +89,7 @@ protected:
 	int eventIndex;
 public:
 	double value;
-	RDOTracerValue( RDOTracerTimeNow* const timenow );
+	RDOTracerValue( RDOTracerTimeNow* const timenow, const int _eventIndex );
 	~RDOTracerValue();
 };
 
@@ -126,7 +127,7 @@ public:
 	double getMinValue() const { return minValue; };
 	double getMaxValue() const { return maxValue; };
 
-	void drawSerie( CDC &dc, CRect &rect );
+	void drawSerie( CDC &dc, CRect &rect, const long double scaleX, const bool timeWrap, const int tickWidth, const COLORREF color );
 };
 
 // ----------------------------------------------------------------------------
@@ -166,7 +167,7 @@ public:
 	int addParam( RDOTracerResParam* const value );
 	RDOTracerResParam* getParam( const int index ) const;
 	int getParamIndex( const RDOTracerResParam* const param ) const;
-	void setParams( string& line, RDOTracerTimeNow* const time, const bool erasing = false );
+	void setParams( string& line, RDOTracerTimeNow* const time, const int eventIndex, const bool erasing = false );
 	void setErased( const bool value );
 	bool isErased() { return erased; };
 };
@@ -206,8 +207,8 @@ public:
 	virtual ~RDOTracerOperation();
 
 	RDOTracerPattern* getPattern() const { return pattern; };
-	void start( RDOTracerTimeNow* const time );
-	void accomplish( RDOTracerTimeNow* const time );
+	void start( RDOTracerTimeNow* const time, const int eventIndex );
+	void accomplish( RDOTracerTimeNow* const time, const int eventIndex );
 	void setName( const string& name ) { Name = name; if ( title.empty() ) title = Name; };
 	const string getName() const { return Name; };
 };

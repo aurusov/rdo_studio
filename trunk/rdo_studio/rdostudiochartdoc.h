@@ -14,6 +14,11 @@ using namespace std;
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioChartDoc
 // ----------------------------------------------------------------------------
+struct RDOStudioDocSerie {
+	RDOTracerSerie* serie;
+	COLORREF color;
+};
+
 class RDOStudioChartDoc : public CDocument
 {
 friend class RDOStudioChartView;
@@ -22,8 +27,9 @@ protected:
 	RDOStudioChartDoc();
 	DECLARE_DYNCREATE(RDOStudioChartDoc)
 
-	vector <RDOTracerSerie*> series;
+	vector <RDOStudioDocSerie> series;
 	bool serieExists( const RDOTracerSerie* serie ) const;
+	COLORREF selectColor();
 
 public:
 	//{{AFX_VIRTUAL(RDOStudioChartDoc)

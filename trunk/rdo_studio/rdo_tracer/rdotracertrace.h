@@ -49,6 +49,7 @@ private:
 	void dispathNextString( string& line );
 
 	RDOTracerTimeNow* addTime( string& time );
+	int eventIndex;
 	
 	RDOTracerOperation* getOperation( string& line );
 	void startAction( string& line, RDOTracerTimeNow* const time );
@@ -102,6 +103,8 @@ public:
 	void removeChart( RDOStudioChartDoc* chart );
 	RDOStudioChartDoc* addSerieToChart( RDOTracerSerie* const serie, RDOStudioChartDoc* chart = NULL );
 	RDOTracerTimeNow* getMaxTime() const { return timeVector.back(); };
+	RDOTracerTimeNow* getTime( const int index ) const;
+	int getTimesCount() const { return timeVector.size(); };
 };
 
 // ----------------------------------------------------------------------------

@@ -818,6 +818,7 @@ BEGIN
     POPUP "&Chart"
     BEGIN
         MENUITEM "&Add To New Chart",           ID_CHART_ADDTONEWCHART
+        MENUITEM "Time Wrap",                   ID_CHART_TIMEWRAP
         MENUITEM SEPARATOR
         MENUITEM "Start Trace",                 ID_CHART_STARTTRACE
         MENUITEM "Stop Trace",                  ID_CHART_STOPTRACE

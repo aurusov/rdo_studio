@@ -26,6 +26,17 @@ protected:
 	CRect newClientRect;
 	CBitmap bmp;
 
+	int valueCountX;
+	int valueCountY;
+	RDOTracerSerie* yaxis;
+	int tickWidth;
+	COLORREF timeColor;
+	bool timeWrap;
+
+	void drawYAxis( CDC &dc, CRect& chartRect, const RDOTracerSerie* axisValues);
+	void drawXAxis( CDC &dc, CRect& chartRect, const long double timeRange );
+	void drawGrid(	CDC &dc, CRect& chartRect, const long double timeScale );
+
 public:
 	
 	virtual ~RDOStudioChartView();
@@ -54,6 +65,8 @@ protected:
 	afx_msg int OnCreate( LPCREATESTRUCT lpCreateStruct );
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
+	afx_msg void OnChartTimewrap();
+	afx_msg void OnUpdateChartTimewrap(CCmdUI* pCmdUI);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

@@ -29,7 +29,8 @@ RDOTracerTrace::RDOTracerTrace():
 	timerID( 0 ),
 	tracing( false ),
 	clipboardFormat( 0 ),
-	chartDocTemplate( NULL )
+	chartDocTemplate( NULL ),
+	eventIndex( 0 )
 {
 }
 
@@ -56,28 +57,22 @@ void RDOTracerTrace::getStructureData()
 	string res;
 	if ( !traceFile )
 		return;
-	//graphicsPanel->addToLog( _T("\r\nGetting model structure...\r\n") );
-	//string str;
 	CString str;
 	while ( traceFile->ReadString( str ) && str != "$Tracing" ) {
 		res = str;
 		parseStructureData( res );
 	}
-	//graphicsPanel->addToLog(res);
-	//graphicsPanel->addToLog( _T("... Done\r\n\r\n") );
 	return;
 }
 
 void RDOTracerTrace::parseStructureData( string& structure )
 {
-	//graphicsPanel->addToLog( _T("\r\nParsing model structure...\r\n") );
 	CString str;
 	string s = "Model_name";
 	int startpos = 0;
 	int pos = structure.find( s );
 	if ( pos != string::npos ) {
 		startpos = structure.find( "=", pos + s.length() ) + 1;
-		//modelName = structure.Right( structure.GetLength() - startpos );
 		modelName = structure.substr( startpos );
 		trim( modelName );
 		tree->setModelName( modelName );
@@ -133,7 +128,6 @@ void RDOTracerTrace::parseStructureData( string& structure )
 				addResult( s );
 		} while ( s != "" );
 	}
-	//graphicsPanel->addToLog( _T("... Done\r\n\r\n") );
 }
 
 void RDOTracerTrace::addResourceType( string& s )
@@ -141,13 +135,9 @@ void RDOTracerTrace::addResourceType( string& s )
 	RDOTracerResType* type = new RDOTracerResType( RDOTK_PERMANENT );
 	int pos = s.find( ' ' );
 	int endpos = s.rfind( ' ' );
-	//type->Name = s.Mid( pos, endpos - pos );
 	type->Name = s.substr( pos, endpos - pos );
-	//type->Name.TrimLeft();
-	//type->Name.TrimRight();
 	trim( type->Name );
 	
-	//string pcountstr = s.Right( s.GetLength() - endpos );
 	string pcountstr = s.substr( endpos );
 	trim( pcountstr );
 	int paramcount = atoi( pcountstr.c_str() );
@@ -169,7 +159,6 @@ void RDOTracerTrace::addResourceType( string& s )
 			parType = RDOPT_REAL;
 		RDOTracerResParamInfo* param = new RDOTracerResParamInfo( parType );
 		pos = par.find( ' ', 2 );
-		//pos = par.Find( ' ', pos );
 		endpos = par.find( ' ', pos + 1 );
 		param->Name = par.substr( pos, endpos - pos );
 		trim( param->Name );
@@ -276,18 +265,14 @@ void RDOTracerTrace::addResult( string& s )
 string RDOTracerTrace::getNextString()
 {
 	CString res;
-	//graphicsPanel->addToLog( _T("\r\nGetting next string...\r\n") );
 	if ( !traceFile->ReadString( res ) )
 		res = "Unexpected EOF";
 	log->addStringToLog( res );
-	//graphicsPanel->addToLog( _T(" " + res + "\r\n") );
-	//graphicsPanel->addToLog( _T("... Done\r\n\r\n") );
 	return res;
 }
 
 void RDOTracerTrace::dispathNextString( string& line )
 {
-	//graphicsPanel->addToLog( _T("\r\nDispatching next string...\r\n") );
 	if ( line.empty() )
 		return;
 	if ( line == "Unexpected EOF" ) {
@@ -306,14 +291,9 @@ void RDOTracerTrace::dispathNextString( string& line )
 	}
 
 	string key = getNextValue( line );
-	/*while ( line.GetAt( 0 ) == ' ' )
-		line.Delete( 0, 1 );*/
 	RDOTracerTimeNow* timeNow = addTime( getNextValue( line ) );
-	timeNow->eventCount ++;
 
 	if ( key == _T("ES") ) {
-		/*textColor = es.foregroundColor;
-		backColor = es.backgroundColor;*/
 	} else if ( key == _T("EB") ) {
 		startAction( line, timeNow );
 	} else if ( key == _T("EF") ) {
@@ -400,11 +380,20 @@ string RDOTracerTrace::getNextValue( string& line )
 RDOTracerTimeNow* RDOTracerTrace::addTime( string& time )
 {
 	double val = atof( time.c_str() );
-	if ( timeVector.empty() || timeVector.back()->time != val ) {
+	bool empty = timeVector.empty();
+	RDOTracerTimeNow* last = NULL;
+	if ( !empty ) last = timeVector.back();
+	if ( empty || last->time != val ) {
 		RDOTracerTimeNow* timeNow = new RDOTracerTimeNow();
 		timeNow->time = val;
 		timeNow->eventCount = 0;
+		timeNow->overallCount = empty ? 0 : last->overallCount;
 		timeVector.push_back( timeNow );
+		eventIndex = 0;
+	} else {
+		last->eventCount ++;
+		last->overallCount ++;
+		eventIndex ++;
 	}
 	return timeVector.back();
 }
@@ -417,12 +406,12 @@ RDOTracerOperation* RDOTracerTrace::getOperation( string& line )
 
 void RDOTracerTrace::startAction( string& line, RDOTracerTimeNow* const time  )
 {
-	getOperation( line )->start( time );
+	getOperation( line )->start( time, eventIndex );
 }
 
 void RDOTracerTrace::accomplishAction( string& line, RDOTracerTimeNow* const time  )
 {
-	getOperation( line )->accomplish( time );
+	getOperation( line )->accomplish( time, eventIndex );
 }
 
 void RDOTracerTrace::irregularEvent( string& line, RDOTracerTimeNow* const time  )
@@ -453,25 +442,16 @@ void RDOTracerTrace::resourceCreation( string& line, RDOTracerTimeNow* const tim
 	int id = atoi( getNextValue( line ).c_str() );
 	RDOTracerResource* res = new RDOTracerResource( type, format( "%s #%d", type->Name.c_str(), id ) );
 	res->id = id;
-	res->setParams( line, time );
+	res->setParams( line, time, eventIndex );
 
 	resources.push_back( res );
 	tree->addResource( res );
-
-	/*RDOTracerResource* res = new RDOTracerResource( resTypes.at( atoi( getNextValue( line ) ) - 1 ) );
-	res->id = atoi( getNextValue( line ) );
-	string format = "%s #%d";
-	res->Name.Format( format, res->getType()->Name, res->id );
-	res->setParams( line, time );
-
-	resources.push_back( res );
-	tree->addResource( res );*/
 }
 
 void RDOTracerTrace::resourceElimination( string& line, RDOTracerTimeNow* const time  )
 {
 	RDOTracerResource* res = getResource( line );
-	res->setParams( line, time, true );
+	res->setParams( line, time, eventIndex, true );
 	res->setErased( true );
 	tree->updateResource( res );
 }
@@ -479,7 +459,7 @@ void RDOTracerTrace::resourceElimination( string& line, RDOTracerTimeNow* const 
 void RDOTracerTrace::resourceChanging( string& line, RDOTracerTimeNow* const time  )
 {
 	RDOTracerResource* res = getResource( line );
-	res->setParams( line, time );
+	res->setParams( line, time, eventIndex );
 }
 
 void RDOTracerTrace::resultChanging( string& line, RDOTracerTimeNow* const time  )
@@ -528,7 +508,6 @@ void RDOTracerTrace::deleteTrace()
 
 void RDOTracerTrace::clear()
 {
-	//graphicsPanel->clearLog();
 	deleteTrace();
 	tree->clear();
 }
@@ -560,19 +539,13 @@ void RDOTracerTrace::startTrace()
 		return;
 	clear();
 	log->startTrace();
-//	setControls( TRUE );
 	startTime = CTime::GetCurrentTime();
-	//string timestr = time.Format("Trace started at %c");
-	//graphicsPanel->addToLog( str );
-
-	//treeView->setModelName( modelName );
-	//mainFrame->setModelName( dlg.GetFileTitle() );
 
 	traceFile = new CStdioFile( dlg.GetPathName(), CFile::modeRead | CFile::shareDenyNone );
 	
 	try {
 		getModelStructure();
-		timerID = ::SetTimer( NULL, 0, 50, traceTimerFunc );
+		timerID = ::SetTimer( NULL, 0, 500, traceTimerFunc );
 		tracing = true;
 	} catch ( CException* ) {
 		if (traceFile) {
@@ -587,7 +560,6 @@ void RDOTracerTrace::startTrace()
 void RDOTracerTrace::getModelStructure()
 {
 	getStructureData();
-	//parseStructureData( str );
 }
 
 void RDOTracerTrace::getTraceString()
@@ -653,4 +625,9 @@ void RDOTracerTrace::updateCharts()
 	for ( vector< RDOStudioChartDoc* >::iterator it = charts.begin(); it != charts.end(); it++ ) {
 		(*it)->UpdateAllViews( NULL );
 	}
+}
+
+RDOTracerTimeNow* RDOTracerTrace::getTime( const int index ) const
+{
+	return timeVector.at( index );
 }

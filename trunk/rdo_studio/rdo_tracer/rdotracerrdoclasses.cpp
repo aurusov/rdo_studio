@@ -71,9 +71,9 @@ RDOTracerResParamInfo* RDOTracerResType::getParamInfo( const int index ) const
 // ----------------------------------------------------------------------------
 // ---------- RDOTracerValue
 // ----------------------------------------------------------------------------
-RDOTracerValue::RDOTracerValue( RDOTracerTimeNow* const timenow )
+RDOTracerValue::RDOTracerValue( RDOTracerTimeNow* const timenow, const int _eventIndex )
 	: modeltime( timenow ),
-	eventIndex( timenow->eventCount )
+	eventIndex( _eventIndex )
 {
 }
 
@@ -138,41 +138,52 @@ RDOTracerValue* RDOTracerSerie::getLastValue() const
 	return values.at( values.size() - 1 );
 }
 
-void RDOTracerSerie::drawSerie( CDC &dc, CRect &rect )
+void RDOTracerSerie::drawSerie( CDC &dc, CRect &rect, const long double scaleX, const bool timeWrap, const int tickWidth, const COLORREF color )
 {
 	int oldBkMode = dc.SetBkMode( TRANSPARENT );
 	CPen penBlack;
-	penBlack.CreatePen( PS_SOLID, 0, RGB( 255, 0, 0 ) );
+	penBlack.CreatePen( PS_SOLID, 0, color );
 	CPen* pOldPen = dc.SelectObject( &penBlack );
-	double timerange = trace.getMaxTime()->time;
-	long double kx, ky;
-	if ( timerange )
-		kx = rect.Width() / timerange;
-	else
-		kx = 0;
+	long double ky;
 	if ( maxValue != minValue )
 		ky = rect.Height() / ( maxValue - minValue );
 	else
 		ky = 0;
 	int count = values.size();
-	int prevx = rect.left + kx * values.at( 0 )->modeltime->time;
-	int prevy = rect.bottom - ky * values.at( 0 )->value;
-	dc.MoveTo( prevx, prevy );
-	int x, y;
-	RDOTracerValue* val = NULL;
-	for ( int i = 1; i < count; i++ ) {
-		val = values.at( i );
-		y = rect.bottom;
-		y -= min( ky * val->value, rect.Height() );
-		x = rect.left;
-		x += min ( kx * val->modeltime->time, rect.Width() );
-		dc.LineTo( x, prevy );
-		dc.LineTo( x, y );
-		prevx = x;
-		prevy = y;
-	}
-	if ( !( serieKind == RDOST_RESPARAM && ((RDOTracerResParam*)this)->getResource()->isErased() ) && x < rect.right ) {
-		dc.LineTo( rect.right, y );
+	if ( count ) {
+		int prevx = rect.left + scaleX * values.at( 0 )->modeltime->time;
+		if ( !timeWrap )
+			prevx += tickWidth * values.at( 0 )->eventIndex;
+		int prevy = rect.bottom - ky * values.at( 0 )->value;
+		if ( !timeWrap && serieKind == RDOST_RESPARAM && ((RDOTracerResParam*)this)->getResource()->getType()->getResTypeKind() != RDOTK_TEMPORARY ) {
+			dc.MoveTo( rect.left, prevy );
+			dc.LineTo( prevx, prevy );
+		}
+		dc.MoveTo( prevx, prevy );
+		int x = prevx, y = prevy;
+		RDOTracerValue* val = NULL;
+		for ( int i = 1; i < count; i++ ) {
+			val = values.at( i );
+			y = min( rect.bottom - ky * val->value, rect.bottom );
+			x = rect.left;
+			int wrapoffset = 0;
+			if ( !timeWrap )
+				wrapoffset = tickWidth * ( val->modeltime->overallCount - val->modeltime->eventCount + val->eventIndex );
+			x = min( rect.left + scaleX * val->modeltime->time + wrapoffset, rect.right );
+			dc.LineTo( x, prevy );
+			dc.LineTo( x, y );
+			prevx = x;
+			prevy = y;
+		}
+		if ( !( serieKind == RDOST_RESPARAM && ((RDOTracerResParam*)this)->getResource()->isErased() ) && x < rect.right ) {
+			x = rect.right;
+			if ( !timeWrap && count == 1 )
+				x = rect.left + tickWidth * values.at( 0 )->modeltime->eventCount;
+			else if ( count == 1 )
+				x = prevx;
+				
+			dc.LineTo( x, y );
+		}
 	}
 	dc.SelectObject( pOldPen );
 	dc.SetBkMode( oldBkMode );
@@ -248,14 +259,14 @@ int RDOTracerResource::getParamIndex( const RDOTracerResParam* const param ) con
 	return -1;
 }
 
-void RDOTracerResource::setParams( string& line, RDOTracerTimeNow* const time, const bool erasing )
+void RDOTracerResource::setParams( string& line, RDOTracerTimeNow* const time, const int eventIndex, const bool erasing )
 {
 	int count = params.size();
 	for ( int i = 0; i < count; i++ ) {
 		RDOTracerValue* prevval = params.at( i )->getLastValue();
 		double newval = erasing ? prevval->value : atof( trace.getNextValue( line ).c_str() );
 		if ( !prevval || erasing || prevval->value != newval ) {
-			RDOTracerValue* newvalue = new RDOTracerValue( time );
+			RDOTracerValue* newvalue = new RDOTracerValue( time, eventIndex );
 			newvalue->value = newval;
 			params.at( i )->addValue( newvalue );
 		}
@@ -294,17 +305,17 @@ RDOTracerOperation::~RDOTracerOperation()
 {
 }
 
-void RDOTracerOperation::start( RDOTracerTimeNow* const time )
+void RDOTracerOperation::start( RDOTracerTimeNow* const time, const int eventIndex )
 {
-	RDOTracerValue* newval = new RDOTracerValue( time );
+	RDOTracerValue* newval = new RDOTracerValue( time, eventIndex );
 	RDOTracerValue* prevval = getLastValue();
 	newval->value = prevval ? prevval->value + 1 : 1;
 	addValue( newval );
 }
 
-void RDOTracerOperation::accomplish( RDOTracerTimeNow* const time )
+void RDOTracerOperation::accomplish( RDOTracerTimeNow* const time, const int eventIndex )
 {
-	RDOTracerValue* newval = new RDOTracerValue( time );
+	RDOTracerValue* newval = new RDOTracerValue( time, eventIndex );
 	newval->value = getLastValue()->value - 1;
 	addValue( newval );
 }

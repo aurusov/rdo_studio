@@ -19,6 +19,8 @@ BEGIN_MESSAGE_MAP(RDOStudioChartView, CView)
 	ON_WM_CREATE()
 	ON_WM_ERASEBKGND()
 	ON_WM_SIZE()
+	ON_COMMAND(ID_CHART_TIMEWRAP, OnChartTimewrap)
+	ON_UPDATE_COMMAND_UI(ID_CHART_TIMEWRAP, OnUpdateChartTimewrap)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -26,7 +28,13 @@ RDOStudioChartView::RDOStudioChartView()
 	: CView(),
 	bmpRect( 0, 0, 0, 0 ),
 	newClientRect( 0, 0, 0, 0 ),
-	dragedSerie( NULL )
+	dragedSerie( NULL ),
+	valueCountX ( 5 ),
+	valueCountY ( 5 ),
+	yaxis( NULL ),
+	tickWidth ( 5 ),
+	timeColor ( RGB( 0xE7, 0xF8, 0xF8 ) ),
+	timeWrap ( true )
 {
 }
 
@@ -44,17 +52,126 @@ BOOL RDOStudioChartView::PreCreateWindow(CREATESTRUCT& cs)
 	return TRUE;
 }
 
+void RDOStudioChartView::drawYAxis( CDC &dc, CRect& chartRect, const RDOTracerSerie* axisValues)
+{
+	CRect tmprect;
+	CSize size;
+
+	tmprect.CopyRect( &chartRect );
+	if ( axisValues ) {
+		string formatstr = "%.3f";
+		/*if ( yaxis->getSerieKind() == RDOST_OPERATION )
+			formatstr = "%d";
+		if ( yaxis->getSerieKind() == RDOST_RESPARAM ) {
+			RDOTracerResParam* resparam = (RDOTracerResParam*)yaxis;
+			RDOTracerResParamType type = resparam->getParamInfo()->getParamType();
+			if ( type == RDOPT_INTEGER )
+				formatstr = "%d";
+			else if ( type == RDOPT_ENUMERATIVE )
+				//format = "%s";
+				formatstr = "%d";
+		}*/
+		double valoffset = ( axisValues->getMaxValue() - axisValues->getMinValue() ) / ( valueCountY - 1 );
+		int heightoffset = chartRect.Height() / ( valueCountY - 1 );
+		double valo = axisValues->getMinValue();
+		int y = chartRect.bottom;
+		int maxy = 0;
+		for ( int i = 0; i < valueCountY; i++ ) {
+			string str = format( formatstr.c_str(), valo );
+			size = dc.GetTextExtent( str.c_str() );
+			if ( size.cx > maxy )
+				maxy = size.cx;
+			tmprect.top = y - size.cy / 2;
+			tmprect.bottom += size.cy / 2;
+			dc.DrawText( str.c_str(), tmprect, DT_LEFT );
+			valo += valoffset;
+			y -= heightoffset;
+		}
+
+		chartRect.left += ( maxy + 2 );
+		
+		y = chartRect.bottom;
+		for ( i = 1; i < valueCountY - 1; i++ ) {
+			y -= heightoffset;
+			dc.MoveTo( chartRect.left, y );
+			dc.LineTo( chartRect.left + 3, y );
+		}
+		chartRect.left += 3;
+	}
+}
+
+void RDOStudioChartView::drawXAxis( CDC &dc, CRect& chartRect, const long double timeRange )
+{
+	CRect tmprect;
+	CSize size;
+	tmprect.top = chartRect.bottom;
+	tmprect.left = chartRect.left;
+	tmprect.bottom = newClientRect.bottom;
+	tmprect.right = chartRect.right;
+	
+	string str = format( "%.3f", 0 );
+	dc.DrawText( str.c_str(), tmprect, DT_LEFT );
+	//CSize size = dc.GetTextExtent( str.c_str() );
+	//rect.left += size.cx / 2;
+	if ( timeRange > 0 ) {
+		str = format( "%.3f", timeRange );
+		dc.DrawText( str.c_str(), tmprect, DT_RIGHT );
+		size = dc.GetTextExtent( str.c_str() );
+		//rect.right -= size.cx / 2;
+		chartRect.right -= size.cx;
+		int x = chartRect.left;
+		int widthoffset = chartRect.Width() / ( valueCountX - 1 );
+		double valoffset = timeRange / ( valueCountX - 1 );
+		double tempo = 0;
+		for ( int i = 1; i < valueCountX - 1; i++ ) {
+			tempo += valoffset;
+			x += widthoffset;
+			dc.MoveTo( x, chartRect.bottom );
+			dc.LineTo( x, chartRect.bottom - 3 );
+			str = format( "%.3f", tempo );
+			//size = dc.GetTextExtent( str.c_str() );
+			//tmprect.left = x - size.cx / 2;
+			tmprect.left = x;
+			dc.DrawText( str.c_str(), tmprect, DT_LEFT );
+		}
+	}
+	chartRect.bottom -= 2;
+}
+
+void RDOStudioChartView::drawGrid(	CDC &dc, CRect& chartRect, const long double timeScale )
+{
+	dc.Rectangle( chartRect );
+	chartRect.InflateRect( -1, -1 );
+
+	if ( !timeWrap ) {
+		int count = trace.getTimesCount();
+		CRect tmprect;
+		tmprect.CopyRect( &chartRect );
+		RDOTracerTimeNow* lasttime = NULL;
+		for ( int i = 0; i < count; i++ ) {
+			RDOTracerTimeNow* timeNow = trace.getTime( i );
+			if ( timeNow->eventCount ) {
+				int ticks = ( lasttime ) ? lasttime->overallCount : 0;
+				tmprect.left = chartRect.left + min( timeScale * timeNow->time + tickWidth * ticks, chartRect.right );
+				tmprect.right = min( tmprect.left + tickWidth * timeNow->eventCount, chartRect.right );
+				dc.FillSolidRect( &tmprect, timeColor );
+			}
+			lasttime = timeNow;
+		}
+	}
+}
+
 void RDOStudioChartView::OnDraw(CDC* pDC)
 {
-	int valcountx = 5;
-	int valcounty = 5;
-	RDOTracerSerie* yaxis = NULL;
 	
 	
 	RDOStudioChartDoc* pDoc = GetDocument();
 
+	
+	//temporary
 	if ( pDoc->series.size() )
-		yaxis = pDoc->series.at( 0 );
+		yaxis = pDoc->series.at( 0 ).serie;
+	//temporary
 
 	GetClientRect( &newClientRect );
 	CRect rect;
@@ -94,92 +211,23 @@ void RDOStudioChartView::OnDraw(CDC* pDC)
 	
 	if ( rect.Height() > 0 && rect.Width() > 0 ) {
 		
-		CRect tmprect;
-		CSize size;
-		//draw y aixs
+		drawYAxis( dc, rect, yaxis );
 
-		tmprect.CopyRect( &rect );
-		if ( yaxis ) {
-			string formatstr = "%.3f";
-			/*if ( yaxis->getSerieKind() == RDOST_OPERATION )
-				formatstr = "%d";
-			if ( yaxis->getSerieKind() == RDOST_RESPARAM ) {
-				RDOTracerResParam* resparam = (RDOTracerResParam*)yaxis;
-				RDOTracerResParamType type = resparam->getParamInfo()->getParamType();
-				if ( type == RDOPT_INTEGER )
-					formatstr = "%d";
-				else if ( type == RDOPT_ENUMERATIVE )
-					//format = "%s";
-					formatstr = "%d";
-			}*/
-			double valoffset = ( yaxis->getMaxValue() - yaxis->getMinValue() ) / ( valcounty - 1 );
-			int heightoffset = rect.Height() / ( valcounty - 1 );
-			double valo = yaxis->getMinValue();
-			int y = rect.bottom;
-			int maxx = 0;
-			for ( int j = 0; j < valcounty; j++ ) {
-				//tmprect.left += widthoffset;
-				str = format( formatstr.c_str(), valo );
-				size = dc.GetTextExtent( str.c_str() );
-				if ( size.cx > maxx )
-					maxx = size.cx;
-				tmprect.top = y - size.cy / 2;
-				tmprect.bottom += size.cy / 2;
-				dc.DrawText( str.c_str(), tmprect, DT_LEFT );
-				valo += valoffset;
-				y -= heightoffset;
-			}
-
-			rect.left += ( maxx + 2 );
-			
-			y = rect.bottom;
-			for ( j = 1; j < valcounty - 1; j++ ) {
-				y -= heightoffset;
-				dc.MoveTo( rect.left, y );
-				dc.LineTo( rect.left + 3, y );
-			}
-			rect.left += 3;
-		}
+		long double timerange = trace.getMaxTime()->time;
 		
-		//draw time aixs
-		double timerange = trace.getMaxTime()->time;
-		tmprect.top = rect.bottom;
-		tmprect.left = rect.left;
-		tmprect.bottom = newClientRect.bottom;
-		tmprect.right = rect.right;
-		str = format( "%.3f", 0 );
-		dc.DrawText( str.c_str(), tmprect, DT_LEFT );
-		//CSize size = dc.GetTextExtent( str.c_str() );
-		//rect.left += size.cx / 2;
-		str = format( "%.3f", timerange );
-		dc.DrawText( str.c_str(), tmprect, DT_RIGHT );
-		//size = dc.GetTextExtent( str.c_str() );
-		//rect.right -= size.cx / 2;
-		rect.right -= size.cx;
-		int x = rect.left;
-		int widthoffset = rect.Width() / (valcountx - 1);
-		double valoffset = timerange / (valcountx - 1);
-		double tempo = 0;
-		for ( int j = 1; j < valcountx - 1; j++ ) {
-			tempo += valoffset;
-			x += widthoffset;
-			dc.MoveTo( x, rect.bottom );
-			dc.LineTo( x, rect.bottom - 3 );
-			str = format( "%.3f", tempo );
-			//size = dc.GetTextExtent( str.c_str() );
-			//tmprect.left = x - size.cx / 2;
-			tmprect.left = x;
-			dc.DrawText( str.c_str(), tmprect, DT_LEFT );
-		}
+		drawXAxis( dc, rect, timerange );
 
-		rect.bottom -= 2;
+		long double timeScale;
+		if ( timeWrap )
+			timeScale = ( timerange > 0 ) ? rect.Width() / timerange : 0;
+		else
+			timeScale = ( timerange > 0 ) ? ( rect.Width() - tickWidth * trace.getMaxTime()->overallCount ) / timerange : 0;
 
-		dc.Rectangle( rect );
-		rect.InflateRect( -1, -1 );
+		drawGrid( dc, rect, timeScale );
 
 		int count = pDoc->series.size();
 		for ( int i = 0; i < count; i++ ) {
-			pDoc->series.at( i )->drawSerie( dc, rect );
+			pDoc->series.at( i ).serie->drawSerie( dc, rect, timeScale, timeWrap, tickWidth, pDoc->series.at( i ).color );
 		}
 	}
 
@@ -278,4 +326,16 @@ BOOL RDOStudioChartView::OnEraseBkgnd(CDC* pDC)
 void RDOStudioChartView::OnSize(UINT nType, int cx, int cy) 
 {
 
+}
+
+void RDOStudioChartView::OnChartTimewrap() 
+{
+	timeWrap = !timeWrap;
+	Invalidate();
+	UpdateWindow();
+}
+
+void RDOStudioChartView::OnUpdateChartTimewrap(CCmdUI* pCmdUI) 
+{
+	pCmdUI->SetCheck( timeWrap );
 }
