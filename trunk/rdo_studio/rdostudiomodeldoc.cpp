@@ -5,6 +5,9 @@
 #include "rdo_edit/rdoeditortabctrl.h"
 #include "resource.h"
 
+#include <rdokernel.h>
+#include <rdorepository.h>
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -116,7 +119,7 @@ void RDOStudioModelDoc::setName( const string& str )
 {
 	name = str;
 	trim( name );
-	SetTitle( format( IDS_MODEL_NAME, name.c_str() ).c_str()  );
+	SetTitle( format( IDS_MODEL_NAME, kernel.getRepository()->getFullName().c_str() ).c_str()  );
 }
 
 bool RDOStudioModelDoc::isModify()
