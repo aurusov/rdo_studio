@@ -46,7 +46,7 @@ int RDOStudioFrameTreeCtrl::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	imageList.Create( 16, 16, ILC_COLORDDB | ILC_MASK, 5, 1 );
 	CBitmap bmp;
-	bmp.LoadBitmap( IDB_FRAMESTREECTRL );
+	bmp.LoadBitmap( IDB_FRAMES_TREECTRL );
 	imageList.Add( &bmp, RGB( 255, 0, 255 ) );
 	SetImageList( &imageList, TVSIL_NORMAL );
 	InsertItem( format( IDS_FRAMES ).c_str(), 0, 0 );
@@ -75,7 +75,7 @@ void RDOStudioFrameTreeCtrl::OnLButtonDblClk(UINT nFlags, CPoint point)
 				if ( !doc ) {
 					doc = model->frameManager.connectFrameDoc( index );
 					if ( doc ) {
-						doc->SetTitle( format( IDS_FRAMENAME, model->frameManager.getFrameName( index ).c_str() ).c_str()  );
+						doc->SetTitle( format( IDS_FRAME_NAME, model->frameManager.getFrameName( index ).c_str() ).c_str()  );
 					}
 				} else {
 					studioApp.mainFrame->MDIActivate( doc->getView()->GetParentFrame() );

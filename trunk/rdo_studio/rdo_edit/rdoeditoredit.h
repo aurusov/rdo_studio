@@ -71,8 +71,8 @@ protected:
 	afx_msg void OnUndateBuffer3Clear( CCmdUI* pCmdUI );
 	afx_msg void OnUndateBuffer4Clear( CCmdUI* pCmdUI );
 	afx_msg void OnGotoNext();
-	afx_msg void OnUpdateGotoNext(CCmdUI* pCmdUI);
 	afx_msg void OnGotoPrev();
+	afx_msg void OnUpdateGotoNext(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateGotoPrev(CCmdUI* pCmdUI);
 	afx_msg void OnToggleAllFolds();
 	afx_msg void OnToggleCurrentFold();

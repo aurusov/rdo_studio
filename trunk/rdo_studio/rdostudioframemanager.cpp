@@ -33,7 +33,7 @@ RDOStudioFrameManager::RDOStudioFrameManager():
 	lastShowedFrame( -1 ),
 	currentShowingFrame( -1 )
 {
-	frameDocTemplate = new FrameDocTemplate( IDR_FRAMETYPE, RUNTIME_CLASS(RDOStudioFrameDoc), RUNTIME_CLASS(RDOStudioChildFrame), RUNTIME_CLASS(RDOStudioFrameView) );
+	frameDocTemplate = new FrameDocTemplate( IDR_FRAME_TYPE, RUNTIME_CLASS(RDOStudioFrameDoc), RUNTIME_CLASS(RDOStudioChildFrame), RUNTIME_CLASS(RDOStudioFrameView) );
 	AfxGetApp()->AddDocTemplate( frameDocTemplate );
 
 	dcBmp.CreateCompatibleDC( NULL );

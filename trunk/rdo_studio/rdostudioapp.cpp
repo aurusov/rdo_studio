@@ -115,7 +115,7 @@ BOOL RDOStudioApp::InitInstance()
 	free( (void*)m_pszRegistryKey );
 	m_pszRegistryKey = _tcsdup( _T("RAO-studio") );
 
-	editDocTemplate = new CMultiDocTemplate( IDR_EDITTYPE, RUNTIME_CLASS(RDOStudioEditDoc), RUNTIME_CLASS(RDOStudioChildFrame), RUNTIME_CLASS(RDOStudioEditView) );
+	editDocTemplate = new CMultiDocTemplate( IDR_EDIT_TYPE, RUNTIME_CLASS(RDOStudioEditDoc), RUNTIME_CLASS(RDOStudioChildFrame), RUNTIME_CLASS(RDOStudioEditView) );
 	AddDocTemplate( editDocTemplate );
 	
 	tracer = new rdoTracer::RDOTracer();

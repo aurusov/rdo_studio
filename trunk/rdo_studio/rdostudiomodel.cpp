@@ -40,7 +40,7 @@ RDOStudioModel::RDOStudioModel():
 {
 	model = this;
 
-	modelDocTemplate = new CMultiDocTemplate( IDR_MODELTYPE, RUNTIME_CLASS(RDOStudioModelDoc), RUNTIME_CLASS(RDOStudioChildFrame), RUNTIME_CLASS(RDOStudioModelView) );
+	modelDocTemplate = new CMultiDocTemplate( IDR_MODEL_TYPE, RUNTIME_CLASS(RDOStudioModelDoc), RUNTIME_CLASS(RDOStudioChildFrame), RUNTIME_CLASS(RDOStudioModelView) );
 	AfxGetApp()->AddDocTemplate( modelDocTemplate );
 
 	kernel.setNotifyReflect( RDOKernel::newModel, newModelNotify );
@@ -86,15 +86,15 @@ bool RDOStudioModel::openModel( const string& modelName ) const
 	studioApp.mainFrame->output.clearResults();
 	studioApp.mainFrame->output.clearFind();
 	studioApp.mainFrame->output.showBuild();
-	studioApp.mainFrame->output.appendStringToBuild( format( IDS_MODELLOADINGBEGIN ) );
+	studioApp.mainFrame->output.appendStringToBuild( format( IDS_MODEL_LOADING_BEGIN ) );
 	const_cast<rdoEditCtrl::RDOBuildEdit*>(studioApp.mainFrame->output.getBuild())->UpdateWindow();
 	static_cast<bool>(openError) = false;
 	bool flag = kernel.getRepository()->openModel( modelName );
 	if ( flag && !openError ) {
 		studioApp.mainFrame->output.updateLogConnection();
-		studioApp.mainFrame->output.appendStringToBuild( format( IDS_MODELLOADINGOK ) );
+		studioApp.mainFrame->output.appendStringToBuild( format( IDS_MODEL_LOADING_OK ) );
 	} else {
-		studioApp.mainFrame->output.appendStringToBuild( format( IDS_MODELLOADINGFAILD ) );
+		studioApp.mainFrame->output.appendStringToBuild( format( IDS_MODEL_LOADING_FAILD ) );
 	}
 	return flag;
 }
@@ -126,6 +126,8 @@ void RDOStudioModel::buildModel() const
 		studioApp.mainFrame->output.clearDebug();
 		studioApp.mainFrame->output.clearResults();
 		studioApp.mainFrame->output.showBuild();
+		studioApp.mainFrame->output.appendStringToBuild( format( IDS_MODEL_BUILDING_BEGIN ) );
+		const_cast<rdoEditCtrl::RDOBuildEdit*>(studioApp.mainFrame->output.getBuild())->UpdateWindow();
 		kernel.getSimulator()->parseModel();
 	}
 }
@@ -375,17 +377,17 @@ void RDOStudioModel::openModelFromRepository()
 					} else {
 						int obj = 0;
 						switch ( i ) {
-							case RDOEDIT_PAT: obj = IDS_MODELPATTERNS;      break;
-							case RDOEDIT_RTP: obj = IDS_MODELRESOURCETYPES; break;
-							case RDOEDIT_RSS: obj = IDS_MODELRESOURCES;     break;
-							case RDOEDIT_OPR: obj = IDS_MODELOPERATIONS;    break;
-							case RDOEDIT_FRM: obj = IDS_MODELFRAMES;        break;
-							case RDOEDIT_FUN: obj = IDS_MODELFUNCTIONS;     break;
-							case RDOEDIT_DPT: obj = IDS_MODELDPTS;          break;
-							case RDOEDIT_PMD: obj = IDS_MODELPMDS;          break;
+							case RDOEDIT_PAT: obj = IDS_MODEL_PATTERNS;      break;
+							case RDOEDIT_RTP: obj = IDS_MODEL_RESOURCETYPES; break;
+							case RDOEDIT_RSS: obj = IDS_MODEL_RESOURCES;     break;
+							case RDOEDIT_OPR: obj = IDS_MODEL_OPERATIONS;    break;
+							case RDOEDIT_FRM: obj = IDS_MODEL_FRAMES;        break;
+							case RDOEDIT_FUN: obj = IDS_MODEL_FUNCTIONS;     break;
+							case RDOEDIT_DPT: obj = IDS_MODEL_DPTS;          break;
+							case RDOEDIT_PMD: obj = IDS_MODEL_PMDS;          break;
 						}
 						if ( obj ) {
-							studioApp.mainFrame->output.appendStringToBuild( format( IDS_MODELCANNOTLOAD, format( obj ).c_str() ) );
+							studioApp.mainFrame->output.appendStringToBuild( format( IDS_MODEL_CANNOT_LOAD, format( obj ).c_str() ) );
 							const_cast<rdoEditCtrl::RDOBuildEdit*>(studioApp.mainFrame->output.getBuild())->UpdateWindow();
 						}
 						openError = true;
@@ -542,7 +544,7 @@ void RDOStudioModel::beforeModelStart()
 	if ( showMode == SM_Animation && initFrameNumber >= 0 && initFrameNumber < frameManager.count() ) {
 		RDOStudioFrameDoc* doc = model->frameManager.connectFrameDoc( initFrameNumber );
 		if ( doc ) {
-			doc->SetTitle( format( IDS_FRAMENAME, frameManager.getFrameName( initFrameNumber ).c_str() ).c_str() );
+			doc->SetTitle( format( IDS_FRAME_NAME, frameManager.getFrameName( initFrameNumber ).c_str() ).c_str() );
 		}
 	}
 }
@@ -584,7 +586,7 @@ void RDOStudioModel::setShowMode( const ShowMode value )
 		if ( !doc ) {
 			doc = frameManager.connectFrameDoc( frameManager.getLastShowedFrame() );
 			if ( doc ) {
-				doc->SetTitle( format( IDS_FRAMENAME, frameManager.getFrameName( frameManager.getLastShowedFrame() ).c_str() ).c_str()  );
+				doc->SetTitle( format( IDS_FRAME_NAME, frameManager.getFrameName( frameManager.getLastShowedFrame() ).c_str() ).c_str()  );
 			}
 		}
 	}

@@ -23,12 +23,12 @@ IMPLEMENT_DYNAMIC(RDOStudioMainFrame, CMDIFrameWnd)
 BEGIN_MESSAGE_MAP(RDOStudioMainFrame, CMDIFrameWnd)
 	//{{AFX_MSG_MAP(RDOStudioMainFrame)
 	ON_WM_CREATE()
-	ON_COMMAND(ID_VIEW_TOOLBAR_FILETOOLBAR, OnViewFileToolbar)
-	ON_COMMAND(ID_VIEW_TOOLBAR_MODELTOOLBAR, OnViewModelToolbar)
-	ON_COMMAND(ID_VIEW_TOOLBAR_EDITTOOLBAR, OnViewEditToolbar)
-	ON_UPDATE_COMMAND_UI(ID_VIEW_TOOLBAR_FILETOOLBAR, OnUpdateViewFileToolbar)
-	ON_UPDATE_COMMAND_UI(ID_VIEW_TOOLBAR_MODELTOOLBAR, OnUpdateViewModelToolbar)
-	ON_UPDATE_COMMAND_UI(ID_VIEW_TOOLBAR_EDITTOOLBAR, OnUpdateViewEditToolbar)
+	ON_COMMAND(ID_VIEW_TOOLBAR_FILE_TOOLBAR, OnViewFileToolbar)
+	ON_COMMAND(ID_VIEW_TOOLBAR_MODEL_TOOLBAR, OnViewModelToolbar)
+	ON_COMMAND(ID_VIEW_TOOLBAR_EDIT_TOOLBAR, OnViewEditToolbar)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_TOOLBAR_FILE_TOOLBAR, OnUpdateViewFileToolbar)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_TOOLBAR_MODEL_TOOLBAR, OnUpdateViewModelToolbar)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_TOOLBAR_EDIT_TOOLBAR, OnUpdateViewEditToolbar)
 	ON_COMMAND(ID_VIEW_WORKSPACE, OnViewWorkspace)
 	ON_COMMAND(ID_VIEW_OUTPUT, OnViewOutput)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_WORKSPACE, OnUpdateViewWorkspace)
@@ -36,12 +36,12 @@ BEGIN_MESSAGE_MAP(RDOStudioMainFrame, CMDIFrameWnd)
 	ON_WM_DESTROY()
 	ON_COMMAND(ID_VIEW_OPTIONS, OnViewOptions)
 	ON_COMMAND(ID_HELP_CONTENTS, OnHelpContents)
-	ON_COMMAND(ID_MODEL_RUNNOSHOW, OnModelRunNoShow)
-	ON_COMMAND(ID_MODEL_RUNANIMATION, OnModelRunAnimation)
-	ON_COMMAND(ID_MODEL_RUNMONITOR, OnModelRunMonitor)
-	ON_UPDATE_COMMAND_UI(ID_MODEL_RUNNOSHOW, OnUpdateModelRunNoShow)
-	ON_UPDATE_COMMAND_UI(ID_MODEL_RUNANIMATION, OnUpdateModelRunAnimation)
-	ON_UPDATE_COMMAND_UI(ID_MODEL_RUNMONITOR, OnUpdateModelRunMonitor)
+	ON_COMMAND(ID_MODEL_RUN_NOSHOW, OnModelRunNoShow)
+	ON_COMMAND(ID_MODEL_RUN_ANIMATION, OnModelRunAnimation)
+	ON_COMMAND(ID_MODEL_RUN_MONITOR, OnModelRunMonitor)
+	ON_UPDATE_COMMAND_UI(ID_MODEL_RUN_NOSHOW, OnUpdateModelRunNoShow)
+	ON_UPDATE_COMMAND_UI(ID_MODEL_RUN_ANIMATION, OnUpdateModelRunAnimation)
+	ON_UPDATE_COMMAND_UI(ID_MODEL_RUN_MONITOR, OnUpdateModelRunMonitor)
 	ON_COMMAND(ID_MODEL_SHOWRATE_INC, OnModelShowRateInc)
 	ON_COMMAND(ID_MODEL_SHOWRATE_INCFOUR, OnModelShowRateIncFour)
 	ON_COMMAND(ID_MODEL_SHOWRATE_DECFOUR, OnModelShowRateDecFour)
@@ -55,21 +55,21 @@ BEGIN_MESSAGE_MAP(RDOStudioMainFrame, CMDIFrameWnd)
 	ON_UPDATE_COMMAND_UI(ID_MODEL_FRAME_NEXT, OnUpdateModelFrameNext)
 	ON_UPDATE_COMMAND_UI(ID_MODEL_FRAME_PREV, OnUpdateModelFramePrev)
 	//}}AFX_MSG_MAP
-	ON_UPDATE_COMMAND_UI( ID_COORDSTATUSBAR          , OnUpdateCoordStatusBar )
-	ON_UPDATE_COMMAND_UI( ID_MODIFYSTATUSBAR         , OnUpdateModifyStatusBar )
-	ON_UPDATE_COMMAND_UI( ID_INSERTOVERWRITESTATUSBAR, OnUpdateInsertOverwriteStatusBar )
-	ON_UPDATE_COMMAND_UI( ID_MODELTIMESTATUSBAR      , OnUpdateModelTimeStatusBar )
-	ON_UPDATE_COMMAND_UI( ID_MODELRUNTYPESTATUSBAR   , OnUpdateModelRunTypeStatusBar )
-	ON_UPDATE_COMMAND_UI( ID_MODELSHOWRATE           , OnUpdateModelShowRateStatusBar )
+	ON_UPDATE_COMMAND_UI( ID_COORD_STATUSBAR           , OnUpdateCoordStatusBar )
+	ON_UPDATE_COMMAND_UI( ID_MODIFY_STATUSBAR          , OnUpdateModifyStatusBar )
+	ON_UPDATE_COMMAND_UI( ID_INSERTOVERWRITE_STATUSBAR , OnUpdateInsertOverwriteStatusBar )
+	ON_UPDATE_COMMAND_UI( ID_MODEL_TIME_STATUSBAR      , OnUpdateModelTimeStatusBar )
+	ON_UPDATE_COMMAND_UI( ID_MODEL_RUNTYPE_STATUSBAR   , OnUpdateModelRunTypeStatusBar )
+	ON_UPDATE_COMMAND_UI( ID_MODEL_SHOWRATE_STATUSBAR  , OnUpdateModelShowRateStatusBar )
 END_MESSAGE_MAP()
 
 static UINT indicators[] = {
-	ID_COORDSTATUSBAR,
-	ID_MODIFYSTATUSBAR,
-	ID_INSERTOVERWRITESTATUSBAR,
-	ID_MODELTIMESTATUSBAR,
-	ID_MODELRUNTYPESTATUSBAR,
-	ID_MODELSHOWRATE,
+	ID_COORD_STATUSBAR,
+	ID_MODIFY_STATUSBAR,
+	ID_INSERTOVERWRITE_STATUSBAR,
+	ID_MODEL_TIME_STATUSBAR,
+	ID_MODEL_RUNTYPE_STATUSBAR,
+	ID_MODEL_SHOWRATE_STATUSBAR,
 	ID_PROGRESSSTATUSBAR
 };
 
@@ -115,35 +115,35 @@ int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	style_chart.load();
 
 	fileToolBar.CreateEx( this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
-	fileToolBar.LoadToolBar( IDR_FILETOOLBAR );
-	fileToolBar.GetToolBarCtrl().SetWindowText( format( IDR_FILETOOLBAR ).c_str() );
+	fileToolBar.LoadToolBar( IDR_FILE_TOOLBAR );
+	fileToolBar.GetToolBarCtrl().SetWindowText( format( IDR_FILE_TOOLBAR ).c_str() );
 
-	fileToolBarImageList.Create( IDB_FILETOOLBAR_D, 16, 0, 0xFF00FF );
+	fileToolBarImageList.Create( IDB_FILE_TOOLBAR_D, 16, 0, 0xFF00FF );
 	fileToolBar.GetToolBarCtrl().SetDisabledImageList( &fileToolBarImageList );
 
 	modelToolBar.CreateEx( this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
-	modelToolBar.LoadToolBar( IDR_MODELTOOLBAR );
-	modelToolBar.GetToolBarCtrl().SetWindowText( format( IDR_MODELTOOLBAR ).c_str() );
+	modelToolBar.LoadToolBar( IDR_MODEL_TOOLBAR );
+	modelToolBar.GetToolBarCtrl().SetWindowText( format( IDR_MODEL_TOOLBAR ).c_str() );
 
-	modelToolBarImageList.Create( IDB_MODELTOOLBAR_D, 16, 0, 0xFF00FF );
+	modelToolBarImageList.Create( IDB_MODEL_TOOLBAR_D, 16, 0, 0xFF00FF );
 	modelToolBar.GetToolBarCtrl().SetDisabledImageList( &modelToolBarImageList );
 
 	editToolBar.CreateEx( this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
-	editToolBar.LoadToolBar( IDR_EDITTOOLBAR );
-	editToolBar.GetToolBarCtrl().SetWindowText( format( IDR_EDITTOOLBAR ).c_str() );
+	editToolBar.LoadToolBar( IDR_EDIT_TOOLBAR );
+	editToolBar.GetToolBarCtrl().SetWindowText( format( IDR_EDIT_TOOLBAR ).c_str() );
 
-	editToolBarImageList.Create( IDB_EDITTOOLBAR_D, 16, 0, 0xFF00FF );
+	editToolBarImageList.Create( IDB_EDIT_TOOLBAR_D, 16, 0, 0xFF00FF );
 	editToolBar.GetToolBarCtrl().SetDisabledImageList( &editToolBarImageList );
 
 	statusBar.Create( this );
 	statusBar.SetIndicators( indicators, sizeof(indicators)/sizeof(UINT) );
-	statusBar.SetPaneInfo( 0, ID_COORDSTATUSBAR          , SBPS_NORMAL , 70 );
-	statusBar.SetPaneInfo( 1, ID_MODIFYSTATUSBAR         , SBPS_NORMAL , 70 );
-	statusBar.SetPaneInfo( 2, ID_INSERTOVERWRITESTATUSBAR, SBPS_NORMAL , 70 );
-	statusBar.SetPaneInfo( 3, ID_MODELTIMESTATUSBAR      , SBPS_NORMAL , 100 );
-	statusBar.SetPaneInfo( 4, ID_MODELRUNTYPESTATUSBAR   , SBPS_NORMAL , 70 );
-	statusBar.SetPaneInfo( 5, ID_MODELSHOWRATE           , SBPS_NORMAL , 120 );
-	statusBar.SetPaneInfo( 6, ID_PROGRESSSTATUSBAR       , SBPS_STRETCH, 70 );
+	statusBar.SetPaneInfo( 0, ID_COORD_STATUSBAR           , SBPS_NORMAL , 70 );
+	statusBar.SetPaneInfo( 1, ID_MODIFY_STATUSBAR          , SBPS_NORMAL , 70 );
+	statusBar.SetPaneInfo( 2, ID_INSERTOVERWRITE_STATUSBAR , SBPS_NORMAL , 70 );
+	statusBar.SetPaneInfo( 3, ID_MODEL_TIME_STATUSBAR      , SBPS_NORMAL , 100 );
+	statusBar.SetPaneInfo( 4, ID_MODEL_RUNTYPE_STATUSBAR   , SBPS_NORMAL , 70 );
+	statusBar.SetPaneInfo( 5, ID_MODEL_SHOWRATE_STATUSBAR  , SBPS_NORMAL , 120 );
+	statusBar.SetPaneInfo( 6, ID_PROGRESSSTATUSBAR         , SBPS_STRETCH, 70 );
 	statusBar.setProgressIndicator( ID_PROGRESSSTATUSBAR );
 
 	workspace.Create( format( ID_DOCK_WORKSPACE ).c_str(), this, 0 );
@@ -314,12 +314,12 @@ void RDOStudioMainFrame::OnUpdateInsertOverwriteStatusBar( CCmdUI *pCmdUI )
 void RDOStudioMainFrame::OnUpdateModelTimeStatusBar( CCmdUI *pCmdUI )
 {
 	pCmdUI->Enable();
-	pCmdUI->SetText( format( ID_STATUSBAR_MODELTIME, model->getModelTime() ).c_str() );
+	pCmdUI->SetText( format( ID_STATUSBAR_MODEL_TIME, model->getModelTime() ).c_str() );
 }
 
 void RDOStudioMainFrame::showNewModelTime( const double value )
 {
-	::SendMessage( statusBar.m_hWnd, SB_SETTEXT, 3, reinterpret_cast<LPARAM>(format( ID_STATUSBAR_MODELTIME, value ).c_str()) );
+	::SendMessage( statusBar.m_hWnd, SB_SETTEXT, 3, reinterpret_cast<LPARAM>(format( ID_STATUSBAR_MODEL_TIME, value ).c_str()) );
 }
 
 void RDOStudioMainFrame::OnUpdateModelRunTypeStatusBar( CCmdUI *pCmdUI )
@@ -343,11 +343,11 @@ void RDOStudioMainFrame::OnUpdateModelShowRateStatusBar( CCmdUI *pCmdUI )
 	if ( model->isRunning() ) {
 		double showRate = model->getShowRate();
 		if ( showRate < 1e-10 || showRate > 1e10 ) {
-			s = format( IDS_MODELSHOWRATE_E, showRate );
+			s = format( IDS_MODEL_SHOWRATE_E, showRate );
 		} else if ( showRate >= 1 ) {
-			s = format( IDS_MODELSHOWRATE_FMOREONE, showRate );
+			s = format( IDS_MODEL_SHOWRATE_FMOREONE, showRate );
 		} else {
-			s = format( IDS_MODELSHOWRATE_FLESSONE, showRate );
+			s = format( IDS_MODEL_SHOWRATE_FLESSONE, showRate );
 		}
 	}
 	pCmdUI->SetText( s.c_str() );

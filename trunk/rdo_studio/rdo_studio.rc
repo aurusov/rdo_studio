@@ -70,21 +70,21 @@ END
 // Bitmap
 //
 
-IDB_FILETOOLBAR_D       BITMAP  DISCARDABLE     "res\\fileToolbar_d.bmp"
-IDB_EDITTOOLBAR_D       BITMAP  DISCARDABLE     "res\\editToolbar_d.bmp"
-IDR_FILETOOLBAR         BITMAP  DISCARDABLE     "res\\fileToolbar.bmp"
+IDB_FILE_TOOLBAR_D      BITMAP  DISCARDABLE     "res\\fileToolbar_d.bmp"
+IDB_EDIT_TOOLBAR_D      BITMAP  DISCARDABLE     "res\\editToolbar_d.bmp"
+IDR_FILE_TOOLBAR        BITMAP  DISCARDABLE     "res\\fileToolbar.bmp"
 IDB_TREECTRL            BITMAP  DISCARDABLE     "res\\tracertreectrl.bmp"
-IDR_EDITTOOLBAR         BITMAP  MOVEABLE PURE   "res\\editToolbar.bmp"
-IDR_MODELTOOLBAR        BITMAP  DISCARDABLE     "res\\modeToolbar.bmp"
-IDB_MODELTOOLBAR_D      BITMAP  DISCARDABLE     "res\\modelToolbar_d.bmp"
-IDB_FRAMESTREECTRL      BITMAP  DISCARDABLE     "res\\framestreectrl.bmp"
+IDR_EDIT_TOOLBAR        BITMAP  MOVEABLE PURE   "res\\editToolbar.bmp"
+IDR_MODEL_TOOLBAR       BITMAP  DISCARDABLE     "res\\modeToolbar.bmp"
+IDB_MODEL_TOOLBAR_D     BITMAP  DISCARDABLE     "res\\modelToolbar_d.bmp"
+IDB_FRAMES_TREECTRL     BITMAP  DISCARDABLE     "res\\framestreectrl.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // Toolbar
 //
 
-IDR_FILETOOLBAR TOOLBAR DISCARDABLE  16, 15
+IDR_FILE_TOOLBAR TOOLBAR DISCARDABLE  16, 15
 BEGIN
     BUTTON      ID_FILE_NEW
     BUTTON      ID_FILE_OPEN
@@ -92,7 +92,7 @@ BEGIN
     BUTTON      ID_FILE_SAVE_ALL
 END
 
-IDR_EDITTOOLBAR TOOLBAR DISCARDABLE  16, 15
+IDR_EDIT_TOOLBAR TOOLBAR DISCARDABLE  16, 15
 BEGIN
     BUTTON      ID_EDIT_CUT
     BUTTON      ID_EDIT_COPY
@@ -104,18 +104,18 @@ BEGIN
     BUTTON      ID_SEARCH_FIND
     BUTTON      ID_SEARCH_REPLACE
     SEPARATOR
-    BUTTON      ID_SEARCH_BOOKMARKPREVIOUS
-    BUTTON      ID_SEARCH_BOOKMARKNEXT
+    BUTTON      ID_SEARCH_BOOKMARK_PREVIOUS
+    BUTTON      ID_SEARCH_BOOKMARK_NEXT
 END
 
-IDR_MODELTOOLBAR TOOLBAR DISCARDABLE  16, 15
+IDR_MODEL_TOOLBAR TOOLBAR DISCARDABLE  16, 15
 BEGIN
     BUTTON      ID_MODEL_RUN
     BUTTON      ID_MODEL_STOP
     SEPARATOR
-    BUTTON      ID_MODEL_RUNNOSHOW
-    BUTTON      ID_MODEL_RUNANIMATION
-    BUTTON      ID_MODEL_RUNMONITOR
+    BUTTON      ID_MODEL_RUN_NOSHOW
+    BUTTON      ID_MODEL_RUN_ANIMATION
+    BUTTON      ID_MODEL_RUN_MONITOR
     SEPARATOR
     BUTTON      ID_MODEL_SHOWRATE_INC
     BUTTON      ID_MODEL_SHOWRATE_INCFOUR
@@ -508,9 +508,9 @@ END
 // remains consistent on all systems.
 IDR_MAINFRAME           ICON    DISCARDABLE     "res\\rdo_studio.ico"
 IDR_CHARTTYPE           ICON    DISCARDABLE     "res\\rdostudiochartdoc.ico"
-IDR_MODELTYPE           ICON    DISCARDABLE     "res\\rdostudiomodeldoc.ico"
-IDR_EDITTYPE            ICON    DISCARDABLE     "res\\rdostudioeditdoc.ico"
-IDR_FRAMETYPE           ICON    DISCARDABLE     "res\\rdostudioframedoc.ico"
+IDR_MODEL_TYPE          ICON    DISCARDABLE     "res\\rdostudiomodeldoc.ico"
+IDR_EDIT_TYPE           ICON    DISCARDABLE     "res\\rdostudioeditdoc.ico"
+IDR_FRAME_TYPE          ICON    DISCARDABLE     "res\\rdostudioframedoc.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -567,21 +567,22 @@ BEGIN
     POPUP "&Search"
     BEGIN
         MENUITEM "&Find...\tCtrl+F",            ID_SEARCH_FIND
-        MENUITEM "Find &Next\tF3",              ID_SEARCH_FINDNEXT
-        MENUITEM "Find &Previous\tShift+F3",    ID_SEARCH_FINDPREVIOUS
+        MENUITEM "Find &Next\tF3",              ID_SEARCH_FIND_NEXT
+        MENUITEM "Find &Previous\tShift+F3",    ID_SEARCH_FIND_PREVIOUS
         MENUITEM "&Replace...\tCtrl+R",         ID_SEARCH_REPLACE
         MENUITEM SEPARATOR
-        MENUITEM "Find in Model...",            ID_SEARCH_FINDINMODEL
+        MENUITEM "Find in Model...",            ID_SEARCH_FIND_INMODEL
         MENUITEM SEPARATOR
-        MENUITEM "&Toggle Bookmark\tCtrl+F2",   ID_SEARCH_BOOKMARKTOGGLE
-        MENUITEM "N&ext Bookmark\tF2",          ID_SEARCH_BOOKMARKNEXT
-        MENUITEM "Pre&vious Bookmark\tShift+F2", ID_SEARCH_BOOKMARKPREVIOUS
-        MENUITEM "&Clear Bookmarks\tCtrl+Shift+F2", ID_SEARCH_BOOKMARKSCLEAR
+        MENUITEM "&Toggle Bookmark\tCtrl+F2",   ID_SEARCH_BOOKMARK_TOGGLE
+        MENUITEM "N&ext Bookmark\tF2",          ID_SEARCH_BOOKMARK_NEXT
+        MENUITEM "Pre&vious Bookmark\tShift+F2", ID_SEARCH_BOOKMARK_PREVIOUS
+        MENUITEM "&Clear Bookmarks\tCtrl+Shift+F2", 
+                                                ID_SEARCH_BOOKMARKS_CLEAR
     END
     POPUP "&View"
     BEGIN
-        MENUITEM "Toggle &All Folds\tCtrl+Shift+0", ID_VIEW_TOGGLEALLFOLDS
-        MENUITEM "Toggle &Current Fold",        ID_VIEW_TOGGLECURRENTFOLD
+        MENUITEM "Toggle &All Folds\tCtrl+Shift+0", ID_VIEW_TOGGLE_ALLFOLDS
+        MENUITEM "Toggle &Current Fold",        ID_VIEW_TOGGLE_CURRENTFOLD
         MENUITEM SEPARATOR
         MENUITEM "&Whitespace\tCtrl+Shift+8",   ID_VIEW_WHITESPACE
         MENUITEM "&End of Line\tCtrl+Shift+9",  ID_VIEW_ENDOFLINE
@@ -595,11 +596,11 @@ BEGIN
         MENUITEM "&Output\tAlt+2",              ID_VIEW_OUTPUT
         POPUP "&Toolbar"
         BEGIN
-            MENUITEM "&File Toolbar",               ID_VIEW_TOOLBAR_FILETOOLBAR
+            MENUITEM "&File Toolbar",               ID_VIEW_TOOLBAR_FILE_TOOLBAR
 
-            MENUITEM "&Model Toolbar",              ID_VIEW_TOOLBAR_MODELTOOLBAR
+            MENUITEM "&Model Toolbar",              ID_VIEW_TOOLBAR_MODEL_TOOLBAR
 
-            MENUITEM "&Edit Toolbar",               ID_VIEW_TOOLBAR_EDITTOOLBAR
+            MENUITEM "&Edit Toolbar",               ID_VIEW_TOOLBAR_EDIT_TOOLBAR
 
         END
         MENUITEM SEPARATOR
@@ -889,9 +890,9 @@ BEGIN
         MENUITEM "&Execute\tF5",                ID_MODEL_RUN
         MENUITEM "&Stop\tShift+F5",             ID_MODEL_STOP
         MENUITEM SEPARATOR
-        MENUITEM "&No Show",                    ID_MODEL_RUNNOSHOW
-        MENUITEM "&Animation",                  ID_MODEL_RUNANIMATION
-        MENUITEM "&Monitor",                    ID_MODEL_RUNMONITOR
+        MENUITEM "&No Show",                    ID_MODEL_RUN_NOSHOW
+        MENUITEM "&Animation",                  ID_MODEL_RUN_ANIMATION
+        MENUITEM "&Monitor",                    ID_MODEL_RUN_MONITOR
         MENUITEM SEPARATOR
         MENUITEM "&Increase Tempo\tAlt+Num+",   ID_MODEL_SHOWRATE_INC
         MENUITEM "In&crease Tempo by 4 Times",  ID_MODEL_SHOWRATE_INCFOUR
@@ -933,7 +934,7 @@ END
 IDR_MAINFRAME ACCELERATORS PRELOAD MOVEABLE PURE 
 BEGIN
     "0",            ID_VIEW_WORKSPACE,      VIRTKEY, ALT, NOINVERT
-    "0",            ID_VIEW_TOGGLEALLFOLDS, VIRTKEY, SHIFT, CONTROL, 
+    "0",            ID_VIEW_TOGGLE_ALLFOLDS, VIRTKEY, SHIFT, CONTROL, 
                                                     NOINVERT
     27,             ID_EMPTYCOMMAND_13,     ASCII,  NOINVERT
     28,             ID_EMPTYCOMMAND_15,     ASCII,  NOINVERT
@@ -1029,18 +1030,18 @@ BEGIN
     VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT, NOINVERT
     VK_DIVIDE,      ID_VIEW_ZOOMRESET,      VIRTKEY, CONTROL, NOINVERT
     VK_F1,          ID_HELP_KEYWORD,        VIRTKEY, NOINVERT
-    VK_F2,          ID_SEARCH_BOOKMARKNEXT, VIRTKEY, NOINVERT
-    VK_F2,          ID_SEARCH_BOOKMARKTOGGLE, VIRTKEY, CONTROL, NOINVERT
-    VK_F2,          ID_SEARCH_BOOKMARKPREVIOUS, VIRTKEY, SHIFT, NOINVERT
-    VK_F2,          ID_SEARCH_BOOKMARKSCLEAR, VIRTKEY, SHIFT, CONTROL, 
+    VK_F2,          ID_SEARCH_BOOKMARK_NEXT, VIRTKEY, NOINVERT
+    VK_F2,          ID_SEARCH_BOOKMARK_TOGGLE, VIRTKEY, CONTROL, NOINVERT
+    VK_F2,          ID_SEARCH_BOOKMARK_PREVIOUS, VIRTKEY, SHIFT, NOINVERT
+    VK_F2,          ID_SEARCH_BOOKMARKS_CLEAR, VIRTKEY, SHIFT, CONTROL, 
                                                     NOINVERT
-    VK_F3,          ID_SEARCH_FINDNEXT,     VIRTKEY, NOINVERT
-    VK_F3,          ID_SEARCH_FINDNEXT_FAST, VIRTKEY, CONTROL, NOINVERT
-    VK_F3,          ID_SEARCH_FINDPREVIOUS, VIRTKEY, SHIFT, NOINVERT
-    VK_F3,          ID_SEARCH_FINDPREVIOUS_FAST, VIRTKEY, SHIFT, CONTROL, 
+    VK_F3,          ID_SEARCH_FIND_NEXT,    VIRTKEY, NOINVERT
+    VK_F3,          ID_SEARCH_FIND_NEXT_FAST, VIRTKEY, CONTROL, NOINVERT
+    VK_F3,          ID_SEARCH_FIND_PREVIOUS, VIRTKEY, SHIFT, NOINVERT
+    VK_F3,          ID_SEARCH_FIND_PREVIOUS_FAST, VIRTKEY, SHIFT, CONTROL, 
                                                     NOINVERT
-    VK_F4,          ID_BUILDFINDLOG_GOTONEXT, VIRTKEY, NOINVERT
-    VK_F4,          ID_BUILDFINDLOG_GOTOPREV, VIRTKEY, SHIFT, NOINVERT
+    VK_F4,          ID_BUILDFINDLOG_GOTO_NEXT, VIRTKEY, NOINVERT
+    VK_F4,          ID_BUILDFINDLOG_GOTO_PREV, VIRTKEY, SHIFT, NOINVERT
     VK_F5,          ID_MODEL_RUN,           VIRTKEY, NOINVERT
     VK_F5,          ID_MODEL_RUN,           VIRTKEY, CONTROL, NOINVERT
     VK_F5,          ID_MODEL_STOP,          VIRTKEY, SHIFT, NOINVERT
@@ -1121,27 +1122,27 @@ END
 STRINGTABLE PRELOAD DISCARDABLE 
 BEGIN
     IDR_MAINFRAME           "RAO Studio"
-    IDR_MODELTYPE           "\nmodel\nModel Files\nRAO Model File (*.smr)\n.smr\nRAOStudio.Document\nRAO Document"
-    IDR_EDITTYPE            "\nedit\nEdit File\nRAO Files (.pat;.rtp;.rss;.opr;.frm;.fun;.dpt;.pmd;.pmv;.trc)\n.pat;.rtp;.rss;.opr;.frm;.fun;.dpt;.pmd;.pmv;.trc\nRAOStudio.Document\nRAO Document"
-    IDR_FILETOOLBAR         "File"
+    IDR_MODEL_TYPE          "\nmodel\nModel Files\nRAO Model File (*.smr)\n.smr\nRAOStudio.Document\nRAO Document"
+    IDR_EDIT_TYPE           "\nedit\nEdit File\nRAO Files (.pat;.rtp;.rss;.opr;.frm;.fun;.dpt;.pmd;.pmv;.trc)\n.pat;.rtp;.rss;.opr;.frm;.fun;.dpt;.pmd;.pmv;.trc\nRAOStudio.Document\nRAO Document"
+    IDR_FILE_TOOLBAR        "File"
     IDR_CHARTTYPE           "\nchart\nChart\n\n\nRAOStudio.Document\nRAO Document"
-    IDR_FRAMETYPE           "\nframe\nModel Frame\n\n\nRAOStudio.Document\nRAO Document"
+    IDR_FRAME_TYPE          "\nframe\nModel Frame\n\n\nRAOStudio.Document\nRAO Document"
 END
 
 STRINGTABLE PRELOAD DISCARDABLE 
 BEGIN
     AFX_IDS_APP_TITLE       "RAO-Studio"
     AFX_IDS_IDLEMESSAGE     "Ready"
-    IDS_FRAMEUNKNOW         "unknow"
-    IDS_FRAMEWORKSPACE      "Workspace"
-    IDS_FRAMEEDITOR         "Sources"
-    IDS_FRAMETRACER         "Tracer"
-    IDS_FRAMETRACEROBJECTSLIST "Tracer"
-    IDS_FRAMEOUTPUT         "Output"
-    IDS_FRAMEOUTPUTBUILD    "Build"
-    IDS_FRAMEOUTPUTTRACER   "Tracer"
-    IDS_FRAMEMODELOBJECTSLIST "Objects"
-    IDS_FRAMEANIMATIONFRAMESLIST "Frames"
+    IDS_FRAME_UNKNOW        "unknow"
+    IDS_FRAME_WORKSPACE     "Workspace"
+    IDS_FRAME_EDITOR        "Sources"
+    IDS_FRAME_TRACER        "Tracer"
+    IDS_FRAME_TRACER_OBJECTSLIST "Tracer"
+    IDS_FRAME_OUTPUT        "Output"
+    IDS_FRAME_OUTPUT_BUILD  "Build"
+    IDS_FRAME_OUTPUT_TRACER "Tracer"
+    IDS_FRAME_MODEL_OBJECTSLIST "Objects"
+    IDS_FRAME_ANIMATION_FRAMESLIST "Frames"
 END
 
 STRINGTABLE DISCARDABLE 
@@ -1193,16 +1194,16 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDR_MODELTOOLBAR        "Model"
-    IDR_EDITTOOLBAR         "Edit"
+    IDR_MODEL_TOOLBAR       "Model"
+    IDR_EDIT_TOOLBAR        "Edit"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
     ID_SEARCH_FIND          "\nFind (Ctrl+F)"
     ID_SEARCH_REPLACE       "\nReplace (Ctrl+R)"
-    ID_SEARCH_BOOKMARKNEXT  "\nNext Bookmark (F2)"
-    ID_SEARCH_BOOKMARKPREVIOUS "\nPrevious Bookmark (Shift+F2)"
+    ID_SEARCH_BOOKMARK_NEXT "\nNext Bookmark (F2)"
+    ID_SEARCH_BOOKMARK_PREVIOUS "\nPrevious Bookmark (Shift+F2)"
     ID_FILE_SAVE_ALL        "\nSave All"
 END
 
@@ -1259,7 +1260,7 @@ BEGIN
     ID_STATUSBAR_READONLY   "Read only"
     ID_STATUSBAR_MODIFIED   "Modified"
     ID_STATUSBAR_OVERWRITE  "Overwrite"
-    ID_STATUSBAR_MODELTIME  "Time: %f"
+    ID_STATUSBAR_MODEL_TIME "Time: %f"
     ID_STATUSBAR_MODEL_RUNNOSHOW "No Show"
     ID_STATUSBAR_MODEL_RUNANIMATION "Animation"
     ID_STATUSBAR_MODEL_RUNMONITOR "Monitor"
@@ -1339,12 +1340,12 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    ID_COORDSTATUSBAR       " "
-    ID_MODIFYSTATUSBAR      " "
-    ID_INSERTOVERWRITESTATUSBAR " "
-    ID_MODELTIMESTATUSBAR   " "
-    ID_MODELRUNTYPESTATUSBAR " "
-    ID_MODELSHOWRATE        " "
+    ID_COORD_STATUSBAR      " "
+    ID_MODIFY_STATUSBAR     " "
+    ID_INSERTOVERWRITE_STATUSBAR " "
+    ID_MODEL_TIME_STATUSBAR " "
+    ID_MODEL_RUNTYPE_STATUSBAR " "
+    ID_MODEL_SHOWRATE_STATUSBAR " "
 END
 
 STRINGTABLE DISCARDABLE 
@@ -1370,9 +1371,9 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    ID_MODEL_RUNNOSHOW      "\nNo Show"
-    ID_MODEL_RUNANIMATION   "\nAnimation"
-    ID_MODEL_RUNMONITOR     "\nMonitor"
+    ID_MODEL_RUN_NOSHOW     "\nNo Show"
+    ID_MODEL_RUN_ANIMATION  "\nAnimation"
+    ID_MODEL_RUN_MONITOR    "\nMonitor"
     ID_FILE_MODEL_SAVE      "\nSave (Ctrl+S)"
 END
 
@@ -1442,13 +1443,13 @@ END
 STRINGTABLE DISCARDABLE 
 BEGIN
     IDS_FRAMES              "Frames"
-    IDS_FRAMENAME           "frame: %s"
-    IDS_MODELNAME           "model: %s"
-    IDS_MODELLOADINGBEGIN   "Loading model..."
-    IDS_MODELLOADINGOK      "Loading model... ok"
-    IDS_MODELLOADINGFAILD   "Loading model... faild"
-    IDS_MODELCANNOTLOAD     "Can't load %s"
-    IDS_MODELPATTERNS       "patterns"
+    IDS_FRAME_NAME          "frame: %s"
+    IDS_MODEL_NAME          "model: %s"
+    IDS_MODEL_LOADING_BEGIN "Loading model..."
+    IDS_MODEL_LOADING_OK    "Loading model... ok"
+    IDS_MODEL_LOADING_FAILD "Loading model... faild"
+    IDS_MODEL_CANNOT_LOAD   "Can't load %s"
+    IDS_MODEL_PATTERNS      "patterns"
 END
 
 STRINGTABLE DISCARDABLE 
@@ -1469,21 +1470,22 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_MODELSHOWRATE_FMOREONE "Tempo: %1.1f"
-    IDS_MODELSHOWRATE_FLESSONE "Tempo: %1.10f"
-    IDS_MODELSHOWRATE_E     "Tempo: %e"
+    IDS_MODEL_SHOWRATE_FMOREONE "Tempo: %1.1f"
+    IDS_MODEL_SHOWRATE_FLESSONE "Tempo: %1.10f"
+    IDS_MODEL_SHOWRATE_E    "Tempo: %e"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_MODELRESOURCETYPES  "types of resoucres"
-    IDS_MODELRESOURCES      "resources"
-    IDS_MODELOPERATIONS     "operations"
-    IDS_MODELFRAMES         "frames"
-    IDS_MODELFUNCTIONS      "functions"
-    IDS_MODELDPTS           "decision points"
-    IDS_MODELPMDS           "performance measures description"
+    IDS_MODEL_RESOURCETYPES "types of resoucres"
+    IDS_MODEL_RESOURCES     "resources"
+    IDS_MODEL_OPERATIONS    "operations"
+    IDS_MODEL_FRAMES        "frames"
+    IDS_MODEL_FUNCTIONS     "functions"
+    IDS_MODEL_DPTS          "decision points"
+    IDS_MODEL_PMDS          "performance measures description"
     IDS_MODEL_RUNTIMEERROR  "Run time error detected..."
+    IDS_MODEL_BUILDING_BEGIN "Building..."
 END
 
 #endif    // Russian resources
