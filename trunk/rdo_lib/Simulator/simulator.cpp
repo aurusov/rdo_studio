@@ -142,7 +142,7 @@ bool RdoModel::parseModel(string smrFileName)
 		if(parser->smr->oprIevFileName != NULL)
 		{
 /////////////////   OPR file //////////////////////////////////
-			string oprFileName(*parser->smr->resourceFileName + ".opr");
+			string oprFileName(*parser->smr->oprIevFileName + ".opr");
 			ifstream oprFile(oprFileName.c_str());
 			if(!oprFile.is_open())
 				throw RDOMainException("Cannot open OPR file: " + oprFileName);
@@ -159,7 +159,7 @@ bool RdoModel::parseModel(string smrFileName)
 		else
 		{
 /////////////////   DPT file //////////////////////////////////
-			string dptFileName(*parser->smr->resourceFileName + ".dpt");
+			string dptFileName(*parser->smr->modelName + ".dpt");
 			ifstream dptFile(dptFileName.c_str());
 			if(!dptFile.is_open())
 				throw RDOMainException("Cannot open DPT file: " + dptFileName);

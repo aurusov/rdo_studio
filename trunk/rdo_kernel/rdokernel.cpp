@@ -1,6 +1,7 @@
 #include "rdokernel.h"
 
 #include <rdorepository.h>
+#include <simulator.h>
 
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioKernel
@@ -8,13 +9,15 @@
 RDOKernel kernel;
 
 RDOKernel::RDOKernel():
-	repository( NULL )
+	repository( NULL ),
+	simulator( NULL )
 {
 }
 
 RDOKernel::~RDOKernel()
 {
 	if ( repository ) { delete repository; repository = NULL; }
+	if ( simulator )  { delete simulator; simulator = NULL; }
 }
 
 RDORepository* RDOKernel::getRepository()
@@ -23,6 +26,14 @@ RDORepository* RDOKernel::getRepository()
 		repository = new RDORepository;
 	}
 	return repository;
+}
+
+RdoModel* RDOKernel::getSimulator()
+{
+	if ( !simulator ) {
+		simulator = new RdoModel;
+	}
+	return simulator;
 }
 
 void RDOKernel::setNotifyReflect( NotifyType notifyType, OnNotify fun )
@@ -117,5 +128,3 @@ void RDOKernel::onNotifyString( NotifyStringType notifyType, string str ) const
 		it++;
 	}
 }
-
-#pragma warning( default : 4786 )

@@ -13,6 +13,7 @@
 using namespace std;
 
 class RDORepository;
+class RdoModel;
 
 // ----------------------------------------------------------------------------
 // ---------- RDOKernel
@@ -25,6 +26,7 @@ class RDOKernel
 {
 private:
 	RDORepository* repository;
+	RdoModel*      simulator;
 
 	typedef multimap< int, OnNotify >       onNotifyListType;
 	typedef multimap< int, OnBoolNotify >   onBoolNotifyListType;
@@ -39,8 +41,9 @@ public:
 	virtual ~RDOKernel();
 
 	RDORepository* getRepository();
+	RdoModel*      getSimulator();
 
-	enum NotifyType       { newModel, openModel, saveModel, closeModel, canNotCloseModel };
+	enum NotifyType       { newModel, openModel, saveModel, closeModel, canNotCloseModel, parseModel, executeModel, stopModel };
 	enum BoolNotifyType   { canCloseModel };
 	enum NotifyStringType { buildString, debugString, traceString };
 
