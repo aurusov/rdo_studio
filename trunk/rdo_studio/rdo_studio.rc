@@ -139,7 +139,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 285
         TOPMARGIN, 7
-        BOTTOMMARGIN, 210
+        BOTTOMMARGIN, 222
     END
 
     IDD_FILEASSOCIATION, DIALOG
@@ -184,7 +184,7 @@ IDC_CURMARGIN           CURSOR  DISCARDABLE     "res\\Margin.cur"
 IDD_OPTIONS_EDITOR DIALOGEX 0, 0, 292, 108
 STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "Editor"
-FONT 8, "MS Sans Serif"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     GROUPBOX        "Auto complete",IDC_AUTOCOMPLETE_STATIC,0,52,292,56,0,0,
                     HIDC_AUTOCOMPLETE_STATIC
@@ -210,7 +210,7 @@ BEGIN
                     HIDC_CLEARAUTO_STATIC2
 END
 
-IDD_OPTIONS_STYLESANDCOLORS DIALOGEX 0, 0, 292, 217
+IDD_OPTIONS_STYLESANDCOLORS DIALOGEX 0, 0, 292, 229
 STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "Styles and Colors"
 FONT 8, "MS Sans Serif"
@@ -979,8 +979,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,0,79
- PRODUCTVERSION 1,0,0,79
+ FILEVERSION 1,0,0,80
+ PRODUCTVERSION 1,0,0,80
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -998,14 +998,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "RAO studio\0"
-            VALUE "FileVersion", "1, 0, 0, 79\0"
+            VALUE "FileVersion", "1, 0, 0, 80\0"
             VALUE "InternalName", "RAO-Studio\0"
             VALUE "LegalCopyright", "Copyright (C) 2003\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "RAO-Studio.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "RAO-Studio\0"
-            VALUE "ProductVersion", "1, 0, 0, 79\0"
+            VALUE "ProductVersion", "1, 0, 0, 80\0"
             VALUE "SpecialBuild", "\0"
         END
     END
