@@ -80,6 +80,8 @@ public:
 
 	const std::vector< RDOStudioPlugin* >& getList() { return list; }
 
+	void stopPlugin( const HMODULE lib ) const;
+
 	static int comparePluginsByName( const RDOStudioPlugin* plugin1, const RDOStudioPlugin* plugin2 );
 	static int comparePluginsByVersion( const RDOStudioPlugin* plugin1, const RDOStudioPlugin* plugin2 );
 	static int comparePluginsByRunMode( const RDOStudioPlugin* plugin1, const RDOStudioPlugin* plugin2 );

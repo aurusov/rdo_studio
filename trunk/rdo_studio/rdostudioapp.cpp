@@ -5,9 +5,12 @@
 #include "rdostudiomodel.h"
 #include "rdostudioeditdoc.h"
 #include "rdostudioeditview.h"
+#include "rdostudioplugins.h"
 #include "resource.h"
 #include "rdo_tracer/rdotracer.h"
 #include "htmlhelp.h"
+
+#include <rdoplugin.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -772,4 +775,12 @@ void RDOAboutDlg::OnAboutWeb()
 	CString s;
 	m_web.GetWindowText( s );
 	::ShellExecute( m_hWnd, "open", s, 0, 0, SW_SHOWNORMAL );
+}
+
+BOOL RDOStudioApp::PreTranslateMessage( MSG* pMsg ) 
+{
+	if ( pMsg->message == rdoPlugin::PLUGIN_MUSTEXIT_MESSAGE ) {
+		plugins->stopPlugin( reinterpret_cast<HMODULE>(pMsg->wParam) );
+	}
+	return CWinApp::PreTranslateMessage(pMsg);
 }

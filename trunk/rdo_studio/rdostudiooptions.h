@@ -321,6 +321,8 @@ private:
 	bool sortPluginStateAsceding;
 	bool sortPluginDescriptionAsceding;
 
+	UINT timer;
+
 	void updateRunModeInGrid( const RDOStudioPlugin* plugin, const int index );
 	void updateStateInGrid( const RDOStudioPlugin* plugin, const int index );
 	void updateControls( const RDOStudioPlugin* plugin );
@@ -328,7 +330,7 @@ private:
 protected:
 	//{{AFX_DATA(RDOStudioOptionsPlugins)
 	enum { IDD = IDD_OPTIONS_PLUGINS };
-	CButton	m_saveStateCheckBox;
+	CButton	m_restoreStateCheckBox;
 	CButton	m_stopButton;
 	CButton	m_startButton;
 	CComboBox	m_runModeComboBox;
@@ -353,7 +355,9 @@ protected:
 	afx_msg void OnPluginRunModeButtonClicked();
 	afx_msg void OnPluginStart();
 	afx_msg void OnPluginStop();
-	afx_msg void OnPluginSaveStateCheckBoxClicked();
+	afx_msg void OnPluginRestoreStateCheckBoxClicked();
+	afx_msg void OnTimer(UINT nIDEvent);
+	afx_msg void OnDestroy();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 

@@ -266,6 +266,19 @@ void RDOStudioPlugins::modelStop()
 	}
 }
 
+void RDOStudioPlugins::stopPlugin( const HMODULE lib ) const
+{
+	std::vector< RDOStudioPlugin* >::const_iterator it = list.begin();
+	while ( it != list.end() ) {
+		RDOStudioPlugin* plugin = *it;
+		if ( plugin->lib == lib ) {
+			plugin->setState( rdoPlugin::psStoped );
+			break;
+		}
+		it++;
+	}
+}
+
 int RDOStudioPlugins::comparePluginsByName( const RDOStudioPlugin* plugin1, const RDOStudioPlugin* plugin2 )
 {
 	if ( plugin1 && plugin2 ) {

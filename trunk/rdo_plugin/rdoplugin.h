@@ -22,6 +22,8 @@ struct PluginInfo {
 enum PluginState   { psStoped, psActive };
 enum PluginRunMode { prmNoAuto, prmStudioStartUp, prmModelStartUp };
 
+static const int PLUGIN_MUSTEXIT_MESSAGE = ::RegisterWindowMessage( "PLUGIN_MUSTEXIT_MESSAGE" );
+
 typedef void (*PFunGetPluginInfo)( PluginInfo* );
 typedef PluginRunMode (*PFunGetPluginRunMode)();
 typedef bool (*PFunStartPlugin)();

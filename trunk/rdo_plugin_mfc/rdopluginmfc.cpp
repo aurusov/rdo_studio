@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "rdopluginmfc.h"
+#include "rdopluginmfcdialog.h"
 
 #define RDOPLUGIN_EXPORTS
 #include <rdoplugin.h>
@@ -13,7 +14,7 @@ static char THIS_FILE[] = __FILE__;
 // ----------------------------------------------------------------------------
 // ---------- RDOPluginMFC
 // ----------------------------------------------------------------------------
-RDOPluginMFC theApp;
+RDOPluginMFC pluginMFCApp;
 
 BEGIN_MESSAGE_MAP(RDOPluginMFC, CWinApp)
 	//{{AFX_MSG_MAP(RDOPluginMFC)
@@ -42,12 +43,12 @@ rdoPlugin::PluginRunMode getPluginRunMode()
 	return rdoPlugin::prmNoAuto;
 }
 
-static CDialog* dlg = NULL;
+static RDOPluginMFCDialog* dlg = NULL;
 
 bool startPlugin()
 {
 	if ( !dlg ) {
-		dlg = new CDialog;
+		dlg = new RDOPluginMFCDialog;
 		dlg->Create( IDD_DIALOG, CWnd::FromHandle( ::GetDesktopWindow() ) );
 	}
 	return true;

@@ -439,8 +439,9 @@ BEGIN
     PUSHBUTTON      "Default",IDC_PLUGIN_RUNMODE_BUTTON,100,144,50,14
     PUSHBUTTON      "Start",IDC_PLUGIN_START,8,164,50,14
     PUSHBUTTON      "Stop",IDC_PLUGIN_STOP,64,164,50,14
-    CONTROL         "Restore state at startup",IDC_PLUGIN_SAVESTATE_CHECKBOX,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,128,168,89,10
+    CONTROL         "Restore state at startup",
+                    IDC_PLUGIN_RESTORESTATE_CHECKBOX,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,128,168,89,10
 END
 
 
@@ -1180,8 +1181,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,8,0,198
- PRODUCTVERSION 0,8,0,198
+ FILEVERSION 0,8,0,199
+ PRODUCTVERSION 0,8,0,199
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -1199,14 +1200,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "RAO studio\0"
-            VALUE "FileVersion", "0, 8, 0, 198\0"
+            VALUE "FileVersion", "0, 8, 0, 199\0"
             VALUE "InternalName", "RAO-Studio\0"
             VALUE "LegalCopyright", "Copyright (C) 2003\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "RAO-Studio.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "RAO-Studio\0"
-            VALUE "ProductVersion", "0, 8, 0, 198\0"
+            VALUE "ProductVersion", "0, 8, 0, 199\0"
             VALUE "SpecialBuild", "\0"
         END
     END

@@ -2,7 +2,6 @@
 // Microsoft Developer Studio generated include file.
 // Used by rdo_plugin_mfc.rc
 //
-#define IDD_DIALOG1                     2000
 #define IDD_DIALOG                      2000
 
 // Next default values for new objects

@@ -9,8 +9,6 @@
 	#error include 'stdafx.h' before including this file for PCH
 #endif
 
-#include "resource.h"
-
 // ----------------------------------------------------------------------------
 // ---------- RDOPluginMFC
 // ----------------------------------------------------------------------------
@@ -26,6 +24,8 @@ public:
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
+
+extern RDOPluginMFC pluginMFCApp;
 
 //{{AFX_INSERT_LOCATION}}
 
