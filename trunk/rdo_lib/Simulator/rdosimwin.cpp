@@ -200,7 +200,7 @@ UINT RunningThreadControllingFunction( LPVOID pParam )
 
 bool RdoSimulator::parseModel()
 {
-	kernel.debug("Start parsing\n");
+	kernel.notifyString(RDOKernel::buildString, "Start parsing\n");
 	terminateModel();
 	closeModel();
 
@@ -288,7 +288,8 @@ bool RdoSimulator::parseModel()
 		return false;
 	}
 */
-	kernel.debug("End parsing\n");
+	kernel.notifyString(RDOKernel::buildString, "End parsing\n");
+
 	return true;
 }
 
@@ -399,6 +400,22 @@ double RdoSimulator::getModelTime()
 		return runtime->getTimeNow();
 	else
 		return 0.;
+}
+
+vector<const string *> RdoSimulator::getAllFrames()
+{
+	vector<const string *> vect;
+	if(!runtime)
+		return vect;
+
+	int size = runtime->allFrames.size();
+	for(int i = 0; i < size; i++)
+	{
+		RDOFRMFrame *frame = runtime->allFrames.at(i);
+		vect.push_back(frame->getName());
+	}
+
+	return vect;
 }
 
 }// namespace RDOSimulatorNS

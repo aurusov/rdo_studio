@@ -15,6 +15,7 @@ void addName(std::string *name);
 
 %}
 %option yylineno 
+%x comment
 %%
 
 $Resource_type return(Resource_type);
@@ -154,7 +155,14 @@ active					return(active);
                      return QUOTED_IDENTIF;
                   }
 
-(\{.*\})					;	
+"{"         BEGIN(comment);
+
+<comment>[^}\n]*        /* eat anything that's not a '*' */
+<comment>\n             ;
+<comment>"}"        BEGIN(INITIAL);
+
+
+("{".*"}")					;	
 [\n\t ]+          ;
 [(),=\[\]\.\*\>\<\+\-\/]        return(YYText()[YYLeng()-1]);
 
@@ -178,7 +186,7 @@ active					return(active);
                   return INT_CONST;
                }
 
-[A-Za-zР-пр-џ_$][A-Za-zР-пр-џ0-9_$]*[\n\t ]+set  {       
+[A-Za-zР-пр-џ\xB8_$][A-Za-zР-пр-џ\xB80-9_$]*[\n\t ]+set  {       
 							std::string n1(YYText());
 							int pos = n1.find_first_of("\n\t :");
                      std::string *name = new std::string(n1, 0, pos);
@@ -187,7 +195,7 @@ active					return(active);
                      return IDENTIF_set;
                   }
 
-[A-Za-zР-пр-џ_$][A-Za-zР-пр-џ0-9_$]*[\n\t ]+NoChange[\n\t ]+NoChange  {       
+[A-Za-zР-пр-џ\xB8_$][A-Za-zР-пр-џ\xB80-9_$]*[\n\t ]+NoChange[\n\t ]+NoChange  {       
 							std::string n1(YYText());
 							int pos = n1.find_first_of("\n\t :");
                      std::string *name = new std::string(n1, 0, pos);
@@ -196,7 +204,7 @@ active					return(active);
                      return IDENTIF_NoChange_NoChange;
                   }
 
-[A-Za-zР-пр-џ_$][A-Za-zР-пр-џ0-9_$]*[\n\t ]+NoChange  {       
+[A-Za-zР-пр-џ\xB8_$][A-Za-zР-пр-џ\xB80-9_$]*[\n\t ]+NoChange  {       
 							std::string n1(YYText());
 							int pos = n1.find_first_of("\n\t :");
                      std::string *name = new std::string(n1, 0, pos);
@@ -205,7 +213,7 @@ active					return(active);
                      return IDENTIF_NoChange;
                   }
 
-[A-Za-zР-пр-џ_$][A-Za-zР-пр-џ0-9_$]*[\n\t ]*\:  {       
+[A-Za-zР-пр-џ\xB8_$][A-Za-zР-пр-џ\xB80-9_$]*[\n\t ]*\:  {       
 							std::string n1(YYText());
 							int pos = n1.find_first_of("\n\t :");
                      std::string *name = new std::string(n1, 0, pos);
@@ -214,7 +222,7 @@ active					return(active);
                      return IDENTIF_COLON;
                   }
 
-[A-Za-zР-пр-џ_$][A-Za-zР-пр-џ0-9_$]*  {       
+[A-Za-zР-пр-џ\xB8_$][A-Za-zР-пр-џ\xB80-9_$]*  {       
                      std::string *name = new std::string(YYText());
                      rdoParse::addName(name);
 	                  rdoParse::setYylval((int)name);

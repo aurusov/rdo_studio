@@ -273,6 +273,7 @@ void RDOParser::error( const char *mes )
 	case PMD_FILE: ft = rdoModelObjects::PMD; break;
 	case SMR1_FILE:
 	case SMR2_FILE: ft = rdoModelObjects::SMR; break;
+	case FRM_FILE: ft = rdoModelObjects::FRM; break;
 	}
 	errors.push_back(RDOSimulatorNS::RDOSyntaxError(mes, rdoLineno(), ft));
 	throw rdoParse::RDOSyntaxException("");

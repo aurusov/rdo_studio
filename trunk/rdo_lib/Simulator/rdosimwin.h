@@ -51,6 +51,8 @@ public:
 	const RDOFrame* getFrame();
 	void addKeyPressed(int scanCode);
 	void addAreaPressed(string& areaName);
+
+	vector<const string *> getAllFrames();
 	
 	friend UINT RunningThreadControllingFunction( LPVOID pParam );
 	friend void frameCallBack(rdoRuntime::RDOConfig *config, void *param);
