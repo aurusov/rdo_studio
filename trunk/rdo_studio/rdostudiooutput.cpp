@@ -115,7 +115,7 @@ void RDOStudioOutput::showBuild()
 	tab.setCurrentItem( 0 );
 	build->SetFocus();
 	UpdateWindow();
-	if ( hwnd ) ::SetFocus( hwnd );
+//	if ( hwnd ) ::SetFocus( hwnd );
 }
 
 void RDOStudioOutput::showDebug()
@@ -125,7 +125,7 @@ void RDOStudioOutput::showDebug()
 	tab.setCurrentItem( 1 );
 	debug->SetFocus();
 	UpdateWindow();
-	if ( hwnd ) ::SetFocus( hwnd );
+//	if ( hwnd ) ::SetFocus( hwnd );
 }
 
 void RDOStudioOutput::showTrace()
@@ -135,7 +135,7 @@ void RDOStudioOutput::showTrace()
 	tab.setCurrentItem( 2 );
 	trace->SetFocus();
 	UpdateWindow();
-	if ( hwnd ) ::SetFocus( hwnd );
+//	if ( hwnd ) ::SetFocus( hwnd );
 }
 
 void RDOStudioOutput::showResults()
@@ -145,7 +145,7 @@ void RDOStudioOutput::showResults()
 	tab.setCurrentItem( 3 );
 	results->SetFocus();
 	UpdateWindow();
-	if ( hwnd ) ::SetFocus( hwnd );
+//	if ( hwnd ) ::SetFocus( hwnd );
 }
 
 void RDOStudioOutput::showFind()
@@ -155,7 +155,7 @@ void RDOStudioOutput::showFind()
 	tab.setCurrentItem( 4 );
 	find->SetFocus();
 	UpdateWindow();
-	if ( hwnd ) ::SetFocus( hwnd );
+//	if ( hwnd ) ::SetFocus( hwnd );
 }
 
 void RDOStudioOutput::clearBuild()
