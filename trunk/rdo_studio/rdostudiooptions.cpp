@@ -112,13 +112,13 @@ void RDOStudioOptionsEditor::OnUpdateModify()
 // ----------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP(RDOStudioOptionsTabs, CPropertyPage)
 	//{{AFX_MSG_MAP(RDOStudioOptionsTabs)
-	ON_EN_CHANGE(IDC_TABSIZE_EDIT, OnUpdateModify)
-	ON_EN_CHANGE(IDC_INDENTSIZE_EDIT, OnUpdateModify)
 	ON_BN_CLICKED(IDC_USETABS_CHECK, OnUpdateModify)
+	ON_EN_CHANGE(IDC_TABSIZE_EDIT, OnUpdateModify)
 	ON_BN_CLICKED(IDC_TABINDENTS_CHECK, OnUpdateModify)
+	ON_EN_CHANGE(IDC_INDENTSIZE_EDIT, OnUpdateModify)
 	ON_BN_CLICKED(IDC_BACKSPACEUNTABS_RADIO, OnUpdateModify)
-	ON_BN_CLICKED(IDC_AUTOINDENT_CHECK, OnUpdateModify)
 	ON_BN_CLICKED(IDC_BACKSPACEUNINDENTS_RADIO, OnUpdateModify)
+	ON_BN_CLICKED(IDC_AUTOINDENT_CHECK, OnUpdateModify)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -129,10 +129,10 @@ RDOStudioOptionsTabs::RDOStudioOptionsTabs( RDOStudioOptions& _sheet ):
 	//{{AFX_DATA_INIT(RDOStudioOptionsTabs)
 	m_tabUse = FALSE;
 	m_tabSize = 0;
-	m_tabBackspaceUntabs = -1;
-	m_tabIndentSize = 0;
-	m_tabAutoIndent = FALSE;
 	m_tabUseTabIndent = FALSE;
+	m_tabIndentSize = 0;
+	m_tabBackspaceUntabs = -1;
+	m_tabAutoIndent = FALSE;
 	//}}AFX_DATA_INIT
 
 	m_tabUse             = sheet->style_editor.tab->useTabs ? 1 : 0;
@@ -184,38 +184,38 @@ void RDOStudioOptionsTabs::OnUpdateModify()
 }
 
 // ----------------------------------------------------------------------------
-// ---------- RDOStudioOptionsColorsAndStyles
+// ---------- RDOStudioOptionsStylesAndColors
 // ----------------------------------------------------------------------------
-BEGIN_MESSAGE_MAP(RDOStudioOptionsColorsAndStyles, CPropertyPage)
-	//{{AFX_MSG_MAP(RDOStudioOptionsColorsAndStyles)
+BEGIN_MESSAGE_MAP(RDOStudioOptionsStylesAndColors, CPropertyPage)
+	//{{AFX_MSG_MAP(RDOStudioOptionsStylesAndColors)
+	ON_WM_SIZE()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-RDOStudioOptionsColorsAndStyles::RDOStudioOptionsColorsAndStyles( RDOStudioOptions& _sheet ):
-	CPropertyPage( IDD_OPTIONS_COLORSANDSTYLES ),
+RDOStudioOptionsStylesAndColors::RDOStudioOptionsStylesAndColors( RDOStudioOptions& _sheet ):
+	CPropertyPage( IDD ),
 	sheet( &_sheet )
 {
-	//{{AFX_DATA_INIT(RDOStudioOptionsColorsAndStyles)
+	//{{AFX_DATA_INIT(RDOStudioOptionsStylesAndColors)
 	//}}AFX_DATA_INIT
 }
 
-RDOStudioOptionsColorsAndStyles::~RDOStudioOptionsColorsAndStyles()
+RDOStudioOptionsStylesAndColors::~RDOStudioOptionsStylesAndColors()
 {
 }
 
-void RDOStudioOptionsColorsAndStyles::DoDataExchange(CDataExchange* pDX)
+void RDOStudioOptionsStylesAndColors::DoDataExchange(CDataExchange* pDX)
 {
 	CPropertyPage::DoDataExchange(pDX);
 
-	//{{AFX_DATA_MAP(RDOStudioOptionsColorsAndStyles)
+	//{{AFX_DATA_MAP(RDOStudioOptionsStylesAndColors)
 	//}}AFX_DATA_MAP
 
 	DDX_Control( pDX, IDC_FGCOLOR_COMBO, fgColorCB );
 	DDX_Control( pDX, IDC_BGCOLOR_COMBO, bgColorCB );
 }
 
-
-BOOL RDOStudioOptionsColorsAndStyles::OnInitDialog()
+BOOL RDOStudioOptionsStylesAndColors::OnInitDialog()
 {
 	CPropertyPage::OnInitDialog();
 
@@ -225,7 +225,44 @@ BOOL RDOStudioOptionsColorsAndStyles::OnInitDialog()
 	fgColorCB.insertBaseColors();
 	bgColorCB.insertBaseColors();
 
+	sheet->edit.Create( NULL, NULL, WS_CHILD | WS_VISIBLE, CRect( 0, 0, 444, 223 ), this, -1 );
+	sheet->edit.setEditorStyle( &sheet->style_editor );
+	CString s;
+	s.LoadString( ID_OPTIONS_COLORS_EDITTEXT );
+	sheet->edit.replaceCurrent( (LPCTSTR)s, 0 );
+	sheet->edit.setReadOnly( true );
+	sheet->edit.bookmarkToggle();
+
+	CListBox* styleLB = (CListBox*)GetDlgItem( IDC_STYLE_LIST );
+	if ( styleLB ) {
+		CRect r;
+		GetClientRect( r );
+
+		CRect rectStyleLB;
+		styleLB->GetWindowRect( rectStyleLB );
+		ScreenToClient( rectStyleLB );
+
+		CRect rectEdit;
+		rectEdit.left   = 0;
+		rectEdit.right  = r.right;
+		rectEdit.top    = rectStyleLB.bottom + 5;
+		rectEdit.bottom = r.bottom;
+
+		sheet->edit.MoveWindow( rectEdit );
+	}
+
 	return true;
+}
+
+void RDOStudioOptionsStylesAndColors::OnOK()
+{
+	sheet->apply();
+	CPropertyPage::OnOK();
+}
+
+void RDOStudioOptionsStylesAndColors::OnSize(UINT nType, int cx, int cy)
+{
+	CPropertyPage::OnSize(nType, cx, cy);
 }
 
 // ----------------------------------------------------------------------------
@@ -241,7 +278,7 @@ RDOStudioOptions::RDOStudioOptions():
 	CPropertySheet(),
 	editor( NULL ),
 	tabs( NULL ),
-	colorsAndStyles( NULL )
+	styles( NULL )
 {
 	SetTitle( format( ID_OPTIONS ).c_str() );
 
@@ -257,12 +294,12 @@ RDOStudioOptions::RDOStudioOptions():
 	style_results = studioApp.mainFrame->style_results;
 	style_find    = studioApp.mainFrame->style_find;
 
-	editor          = new RDOStudioOptionsEditor( *this );
-	tabs            = new RDOStudioOptionsTabs( *this );
-	colorsAndStyles = new RDOStudioOptionsColorsAndStyles( *this );
+	editor = new RDOStudioOptionsEditor( *this );
+	tabs   = new RDOStudioOptionsTabs( *this );
+	styles = new RDOStudioOptionsStylesAndColors( *this );
 	AddPage( editor );
 	AddPage( tabs );
-	AddPage( colorsAndStyles );
+	AddPage( styles );
 
 	m_psh.dwFlags |= PSH_USECALLBACK | PSH_HASHELP;
 	m_psh.pfnCallback = AddContextHelpProc;
@@ -270,9 +307,9 @@ RDOStudioOptions::RDOStudioOptions():
 
 RDOStudioOptions::~RDOStudioOptions()
 {
-	if ( editor ) delete editor;
-	if ( tabs ) delete tabs;
-	if ( colorsAndStyles ) delete colorsAndStyles;
+	if ( editor )  { delete editor; editor = NULL; }
+	if ( tabs )    { delete tabs;   tabs = NULL; }
+	if ( styles )  { delete styles; styles = NULL; }
 }
 
 void RDOStudioOptions::apply()

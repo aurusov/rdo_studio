@@ -6,6 +6,7 @@
 #endif
 
 #include <rdocolorcombobox.h>
+#include "rdo_edit/rdoeditoredit.h"
 #include "rdo_edit/rdoeditoreditstyle.h"
 #include "rdo_edit/rdoeditorresultsstyle.h"
 #include "edit_ctrls/rdologeditstyle.h"
@@ -65,10 +66,10 @@ protected:
 	enum { IDD = IDD_OPTIONS_TABS };
 	BOOL	m_tabUse;
 	int		m_tabSize;
-	int		m_tabBackspaceUntabs;
-	int		m_tabIndentSize;
-	BOOL	m_tabAutoIndent;
 	BOOL	m_tabUseTabIndent;
+	int		m_tabIndentSize;
+	int		m_tabBackspaceUntabs;
+	BOOL	m_tabAutoIndent;
 	//}}AFX_DATA
 
 	//{{AFX_VIRTUAL(RDOStudioOptionsTabs)
@@ -89,9 +90,9 @@ public:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOStudioOptionsColorsAndStyles
+// ---------- RDOStudioOptionsStylesAndColors
 // ----------------------------------------------------------------------------
-class RDOStudioOptionsColorsAndStyles: public CPropertyPage
+class RDOStudioOptionsStylesAndColors: public CPropertyPage
 {
 private:
 	RDOStudioOptions* sheet;
@@ -100,19 +101,26 @@ private:
 	RDOColorComboBox bgColorCB;
 
 protected:
-	//{{AFX_VIRTUAL(RDOStudioOptionsColorsAndStyles)
+	//{{AFX_DATA(RDOStudioOptionsStylesAndColors)
+	enum { IDD = IDD_OPTIONS_STYLESANDCOLORS };
+	//}}AFX_DATA
+
+	//{{AFX_VIRTUAL(RDOStudioOptionsStylesAndColors)
+	public:
+	virtual void OnOK();
 	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);
 	//}}AFX_VIRTUAL
 
-	//{{AFX_MSG(RDOStudioOptionsColorsAndStyles)
+	//{{AFX_MSG(RDOStudioOptionsStylesAndColors)
 	virtual BOOL OnInitDialog();
+	afx_msg void OnSize(UINT nType, int cx, int cy);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
 public:
-	RDOStudioOptionsColorsAndStyles( RDOStudioOptions& _sheet );
-	virtual ~RDOStudioOptionsColorsAndStyles();
+	RDOStudioOptionsStylesAndColors( RDOStudioOptions& _sheet );
+	virtual ~RDOStudioOptionsStylesAndColors();
 };
 
 // ----------------------------------------------------------------------------
@@ -122,7 +130,7 @@ class RDOStudioOptions: public CPropertySheet
 {
 friend class RDOStudioOptionsEditor;
 friend class RDOStudioOptionsTabs;
-friend class RDOStudioOptionsColorsAndStyles;
+friend class RDOStudioOptionsStylesAndColors;
 
 private:
 	rdoEditor::RDOEditorEditStyle    style_editor;
@@ -133,7 +141,9 @@ private:
 
 	RDOStudioOptionsEditor*          editor;
 	RDOStudioOptionsTabs*            tabs;
-	RDOStudioOptionsColorsAndStyles* colorsAndStyles;
+	RDOStudioOptionsStylesAndColors* styles;
+
+	rdoEditor::RDOEditorEdit edit;
 
 	void apply();
 	static int CALLBACK AddContextHelpProc(HWND hwnd, UINT message, LPARAM lParam);

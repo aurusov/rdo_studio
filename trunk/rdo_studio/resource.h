@@ -18,7 +18,7 @@
 #define IDR_EDITTOOLBAR                 151
 #define IDB_BUILDTOOLBAR_D              152
 #define IDD_OPTIONS_EDITOR              152
-#define IDD_OPTIONS_COLORSANDSTYLES     153
+#define IDD_OPTIONS_STYLESANDCOLORS     153
 #define IDD_FILEASSOCIATION             154
 #define IDD_OPTIONS_TABS                155
 #define IDC_CLEARAUTO_CHECK             1001
