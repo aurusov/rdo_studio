@@ -2,6 +2,7 @@
 #include "rdostudiooptions.h"
 #include "rdostudioapp.h"
 #include "rdostudiomainfrm.h"
+//#include "htmlhelp.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
