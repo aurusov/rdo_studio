@@ -533,8 +533,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,0,186
- PRODUCTVERSION 1,0,0,186
+ FILEVERSION 1,0,0,188
+ PRODUCTVERSION 1,0,0,188
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -552,14 +552,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "Application for chat in localnet\0"
-            VALUE "FileVersion", "1, 0, 0, 186\0"
+            VALUE "FileVersion", "1, 0, 0, 188\0"
             VALUE "InternalName", "localChat\0"
             VALUE "LegalCopyright", "Copyright (C) 2002\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "localchat.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "localChat\0"
-            VALUE "ProductVersion", "1, 0, 0, 186\0"
+            VALUE "ProductVersion", "1, 0, 0, 188\0"
             VALUE "SpecialBuild", "\0"
         END
     END

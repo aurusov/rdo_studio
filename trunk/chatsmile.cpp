@@ -196,3 +196,12 @@ void CChatSmileList::setBgColor( COLORREF color )
 		if ( !smile->IsAnimatedGIF() ) smile->Draw();
 	}
 }
+
+void CChatSmileList::showAnimation( const bool value )
+{
+	int nCmdShow = value ? SW_SHOW : SW_HIDE;
+	std::vector< CChatSmile* >::iterator it = list.begin();
+	while ( it != list.end() ) {
+		(*it++)->ShowWindow( nCmdShow );
+	}
+}

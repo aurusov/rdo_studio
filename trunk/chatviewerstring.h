@@ -70,6 +70,8 @@ public:
 
 	COLORREF getTextColor() const { return textColor; }
 	COLORREF getBgColor() const   { return bgColor;   }
+
+	void showAnimation( const bool value ) { smiles.showAnimation( value ); }
 };
 
 // ----------------------------------------------------------------------------

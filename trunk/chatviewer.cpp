@@ -42,7 +42,9 @@ CChatViewer::CChatViewer():
 	hasFocus( false ),
 	selectedLine( -1 ),
 	horzScrollBarVisible( false ),
-	vertScrollBarVisible( false )
+	vertScrollBarVisible( false ),
+	prev_line_from( -1 ),
+	prev_line_to( -1 )
 {
 }
 
@@ -547,6 +549,18 @@ void CChatViewer::OnPaint()
 		int line_from = findLine( yPos );
 		int line_to   = findLine( yPos + newClientRect.bottom );
 		if ( line_to == -1 ) line_to = strings.count() - 1;
+		if ( prev_line_from != -1 && prev_line_to != -1 && line_from != -1 ) {
+			int i;
+			for ( i = prev_line_from; i < line_from; i++ ) {
+				strings[i]->showAnimation( false );
+			}
+			for ( i = line_to + 1; i <= prev_line_to; i++ ) {
+				strings[i]->showAnimation( false );
+			}
+		}
+		prev_line_from = line_from;
+		prev_line_to   = line_to;
+
 		CRect rect( -xPos, -yPos, newClientRect.right, 0 );
 		int cnt;
 		if ( line_from != - 1) {
@@ -558,6 +572,7 @@ void CChatViewer::OnPaint()
 		for ( int i = 0; i < cnt; i++ ) {
 
 			CChatString* str = strings[ i + line_from ];
+			str->showAnimation( true );
 			if ( line_from + i == selectedLine && hasFocus ) {
 				back = chatApp.style.theme.selectedBgColor;
 			} else {

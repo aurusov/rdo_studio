@@ -43,6 +43,7 @@ public:
 	int count() const                                { return list.size(); }
 
 	void setBgColor( COLORREF color );
+	void showAnimation( const bool value );
 };
 
 //{{AFX_INSERT_LOCATION}}

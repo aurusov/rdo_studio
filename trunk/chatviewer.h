@@ -28,6 +28,9 @@ private:
 	bool horzScrollBarVisible;
 	bool vertScrollBarVisible;
 
+	int prev_line_from;
+	int prev_line_to;
+
 	void recalcWidth();
 	bool updateScrollBars();
 	bool scrollVertically( int inc );

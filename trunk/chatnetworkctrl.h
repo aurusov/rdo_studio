@@ -23,6 +23,10 @@ private:
 
 	static UINT shellExecute( LPVOID pParam );
 
+public:
+	CChatNetworkCtrl();
+	virtual ~CChatNetworkCtrl();
+
 protected:
 	//{{AFX_VIRTUAL(CChatNetworkCtrl)
 	protected:
@@ -39,10 +43,6 @@ protected:
 	//}}AFX_MSG
 	afx_msg BOOL OnToolTipText( UINT id, NMHDR * pNMHDR, LRESULT * pResult );
 	DECLARE_MESSAGE_MAP()
-
-public:
-	CChatNetworkCtrl();
-	virtual ~CChatNetworkCtrl();
 };
 
 //{{AFX_INSERT_LOCATION}}
