@@ -102,6 +102,9 @@ void tracerCallBack(string *newString, void *param)
 	if(newString->empty())
 		return;
 
+	if(!simulator->canTrace)
+		return;
+
 	for(;;)
 	{
 		int next = newString->find('\n', pos);
@@ -193,6 +196,7 @@ UINT RunningThreadControllingFunction( LPVOID pParam )
 	simulator->runtime->tracerCallBack = tracerCallBack;
 	simulator->runtime->param = pParam;
 	simulator->runtime->frameCallBack = frameCallBack;
+	simulator->canTrace = true;
 
 	try
 	{
@@ -384,6 +388,7 @@ void RdoSimulator::runModel()
 
 void RdoSimulator::stopModel()
 {
+	canTrace = false;
 	terminateModel();
 	closeModel();
 	kernel.notify(RDOKernel::modelStopped);

@@ -31,6 +31,7 @@ class RdoSimulator
 {
 	rdoParse::RDOParser *parser;
 	rdoRuntime::RDORuntime *runtime;
+	bool canTrace;
 
 	CWinThread* th;
 
