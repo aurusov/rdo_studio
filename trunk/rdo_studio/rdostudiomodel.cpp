@@ -634,10 +634,14 @@ string RDOStudioModel::getName() const
 void RDOStudioModel::setName( const string& str )
 {
 	RDOStudioModelDoc* doc = getModelDoc();
+	bool flag = false;
 	if ( doc ) {
+		flag = doc->getName() != str;
 		doc->setName( str );
 	}
-	plugins->pluginProc( rdoPlugin::PM_MODEL_NAME_CHANGED );
+	if ( flag ) {
+		plugins->pluginProc( rdoPlugin::PM_MODEL_NAME_CHANGED );
+	}
 }
 
 bool RDOStudioModel::isModify() const

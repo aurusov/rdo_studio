@@ -45,6 +45,7 @@ protected:
 	BOOL	m_setup;
 	BOOL	m_checkInFuture;
 	BOOL	m_openLastProject;
+	BOOL	m_showFullName;
 	//}}AFX_DATA
 
 	//{{AFX_VIRTUAL(RDOStudioOptionsGeneral)

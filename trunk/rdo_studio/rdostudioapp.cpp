@@ -132,6 +132,7 @@ RDOStudioApp::RDOStudioApp():
 	fileAssociationCheckInFuture( false ),
 	openLastProject( false ),
 	lastProjectName( "" ),
+	showCaptionFullName( false ),
 	autoRun( false ),
 	autoExit( false ),
 	exitCode( 0 ),
@@ -161,6 +162,7 @@ BOOL RDOStudioApp::InitInstance()
 	fileAssociationCheckInFuture = GetProfileInt( "fileAssociation", "checkInFuture", true ) ? true : false;
 	openLastProject              = GetProfileInt( "general", "openLastProject", true ) ? true : false;
 	lastProjectName              = GetProfileString( "general", "lastProject", "" );
+	showCaptionFullName          = GetProfileInt( "general", "showCaptionFullName", false ) ? true : false;
 
 	editDocTemplate = new CMultiDocTemplate( IDR_EDIT_TYPE, RUNTIME_CLASS(RDOStudioEditDoc), RUNTIME_CLASS(RDOStudioChildFrame), RUNTIME_CLASS(RDOStudioEditView) );
 	AddDocTemplate( editDocTemplate );
@@ -598,6 +600,15 @@ void RDOStudioApp::setLastProjectName( const std::string& projectName )
 	insertReopenItem( projectName );
 	if ( lastProjectName != projectName ) {
 		lastProjectName = projectName;
+	}
+}
+
+void RDOStudioApp::setShowCaptionFullName( const bool value )
+{
+	if ( showCaptionFullName != value ) {
+		showCaptionFullName = value;
+		model->setName( model->getName() );
+		WriteProfileInt( "general", "showCaptionFullName", showCaptionFullName );
 	}
 }
 

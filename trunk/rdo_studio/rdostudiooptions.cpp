@@ -27,6 +27,7 @@ BEGIN_MESSAGE_MAP(RDOStudioOptionsGeneral, CPropertyPage)
 	ON_BN_CLICKED(IDC_FILEASSOCIATION_SETUP_CHECK, OnUpdateModify)
 	ON_BN_CLICKED(IDC_FILEASSOCIATION_CHECKINFUTURE_CHECK, OnUpdateModify)
 	ON_BN_CLICKED(IDC_OPENLASTPROJECT_CHECK, OnUpdateModify)
+	ON_BN_CLICKED(IDC_SHOWCAPTIONFULLNAME_CHECK, OnUpdateModify)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -38,11 +39,13 @@ RDOStudioOptionsGeneral::RDOStudioOptionsGeneral( RDOStudioOptions& _sheet ):
 	m_setup = FALSE;
 	m_checkInFuture = FALSE;
 	m_openLastProject = FALSE;
+	m_showFullName = FALSE;
 	//}}AFX_DATA_INIT
 
 	m_setup           = studioApp.getFileAssociationSetup();
 	m_checkInFuture   = studioApp.getFileAssociationCheckInFuture();
 	m_openLastProject = studioApp.getOpenLastProject();
+	m_showFullName    = studioApp.getShowCaptionFullName();
 
 	m_psp.dwFlags |= PSP_HASHELP;
 }
@@ -58,6 +61,7 @@ void RDOStudioOptionsGeneral::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_FILEASSOCIATION_SETUP_CHECK, m_setup);
 	DDX_Check(pDX, IDC_FILEASSOCIATION_CHECKINFUTURE_CHECK, m_checkInFuture);
 	DDX_Check(pDX, IDC_OPENLASTPROJECT_CHECK, m_openLastProject);
+	DDX_Check(pDX, IDC_SHOWCAPTIONFULLNAME_CHECK, m_showFullName);
 	//}}AFX_DATA_MAP
 }
 
@@ -79,7 +83,7 @@ BOOL RDOStudioOptionsGeneral::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pR
 void RDOStudioOptionsGeneral::OnUpdateModify() 
 {
 	UpdateData();
-	SetModified( m_setup != (studioApp.getFileAssociationSetup() ? 1 : 0) || m_checkInFuture != (studioApp.getFileAssociationCheckInFuture() ? 1 : 0) || m_openLastProject != (studioApp.getOpenLastProject() ? 1 : 0) );
+	SetModified( m_setup != (studioApp.getFileAssociationSetup() ? 1 : 0) || m_checkInFuture != (studioApp.getFileAssociationCheckInFuture() ? 1 : 0) || m_openLastProject != (studioApp.getOpenLastProject() ? 1 : 0) || m_showFullName != (studioApp.getShowCaptionFullName() ? 1 : 0) );
 }
 
 // ----------------------------------------------------------------------------
@@ -2146,6 +2150,7 @@ void RDOStudioOptions::apply() const
 	studioApp.setFileAssociationSetup( general->m_setup ? true : false );
 	studioApp.setFileAssociationCheckInFuture( general->m_checkInFuture ? true : false );
 	studioApp.setOpenLastProject( general->m_openLastProject ? true : false );
+	studioApp.setShowCaptionFullName( general->m_showFullName ? true : false );
 }
 
 int CALLBACK RDOStudioOptions::AddContextHelpProc(HWND hwnd, UINT message, LPARAM /*lParam*/)

@@ -37,6 +37,8 @@ private:
 	bool openLastProject;
 	std::string lastProjectName;
 
+	bool showCaptionFullName;
+
 	void setupFileAssociation();
 
 	bool autoRun;
@@ -62,6 +64,9 @@ public:
 
 	std::string getLastProjectName() const            { return lastProjectName;              }
 	void setLastProjectName( const std::string& projectName );
+
+	bool getShowCaptionFullName() const               { return showCaptionFullName;          }
+	void setShowCaptionFullName( const bool value );
 
 	void autoClose( const int exitCode );
 

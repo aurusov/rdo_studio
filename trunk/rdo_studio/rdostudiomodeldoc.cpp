@@ -2,6 +2,7 @@
 #include "rdostudiomodeldoc.h"
 #include "rdostudiomodelview.h"
 #include "rdostudiomodel.h"
+#include "rdostudioapp.h"
 #include "rdo_edit/rdoeditortabctrl.h"
 #include "resource.h"
 
@@ -119,7 +120,11 @@ void RDOStudioModelDoc::setName( const string& str )
 {
 	name = str;
 	trim( name );
-	SetTitle( format( IDS_MODEL_NAME, kernel.getRepository()->getFullName().c_str() ).c_str()  );
+	if ( studioApp.getShowCaptionFullName() ) {
+		SetTitle( format( IDS_MODEL_NAME, kernel.getRepository()->getFullName().c_str() ).c_str()  );
+	} else {
+		SetTitle( format( IDS_MODEL_NAME, name.c_str() ).c_str() );
+	}
 }
 
 bool RDOStudioModelDoc::isModify()
