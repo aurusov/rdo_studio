@@ -149,7 +149,7 @@ bool RDOPMDWatchState::resetPokaz(RDOSimulator *sim)
 bool RDOPMDWatchState::checkPokaz(RDOSimulator *sim)
 {
 	RDORuntime *runtime = dynamic_cast<RDORuntime *>(sim);
-	bool newValue = fabs(logicCalc->calcValue(runtime)) > DBL_EPSILON;
+	bool newValue = fabs(logicCalc->calcValueBase(runtime)) > DBL_EPSILON;
 	if(newValue != currValue)
 	{
 		double currTime = runtime->getCurrentTime();
@@ -251,7 +251,7 @@ bool RDOPMDWatchQuant::checkPokaz(RDOSimulator *sim)
 			continue;
 
 		runtime->pushGroupFunc(*it);
-		if(logicCalc->calcValue(runtime))
+		if(logicCalc->calcValueBase(runtime))
 			newValue++;
 
 		runtime->popGroupFunc();
@@ -381,9 +381,9 @@ bool RDOPMDWatchValue::checkResourceErased(RDOResource *res)
 		return false;
 
 	runtime->pushGroupFunc(res);
-	if(logicCalc->calcValue(runtime))
+	if(logicCalc->calcValueBase(runtime))
 	{
-		currValue = arithmCalc->calcValue(runtime);
+		currValue = arithmCalc->calcValueBase(runtime);
 		runtime->getTracer()->writePokaz(runtime, this);
 
 		sum	+= currValue;
@@ -430,7 +430,7 @@ bool RDOPMDGetValue::calcStat(RDOSimulator *sim)
 
 	runtime->getResult().width(30);
 	runtime->getResult() << left << name 
-		<< "\t" << arithmCalc->calcValue(runtime) << '\n';
+		<< "\t" << arithmCalc->calcValueBase(runtime) << '\n';
 
 	return true;
 }

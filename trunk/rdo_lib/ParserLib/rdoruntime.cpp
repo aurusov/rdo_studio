@@ -190,7 +190,7 @@ bool RDORuntime::endCondition()
 	a++;
 	if(a == 30)
 		int b = 0;
-	return fabs(terminateIfCalc->calcValue(this)) > DBL_EPSILON; 
+	return fabs(terminateIfCalc->calcValueBase(this)) > DBL_EPSILON; 
 }
 
 bool RDORuntime::setTerminateIf(RDOCalc *_terminateIfCalc)
@@ -255,7 +255,7 @@ void RDORuntime::rdoInit(RDOTrace *customTracer, RDOResult *customResult)
 
 void RDORuntime::onInit()
 {
-	for_each(initCalcs.begin(), initCalcs.end(), bind2nd(mem_fun1(&RDOCalc::calcValue), this));
+	for_each(initCalcs.begin(), initCalcs.end(), bind2nd(mem_fun1(&RDOCalc::calcValueBase), this));
 	
 	int size = rules.size();
 	for(int i = 0; i < size; i++)
@@ -316,7 +316,7 @@ RDOValue RDOFunCalcExist::calcValue(RDORuntime *sim) const
 			continue;
 
 		sim->pushGroupFunc(*it);
-		if(condition->calcValue(sim))
+		if(condition->calcValueBase(sim))
 			res = true;
 		sim->popGroupFunc();
 	}
@@ -337,7 +337,7 @@ RDOValue RDOFunCalcNotExist::calcValue(RDORuntime *sim) const
 			continue;
 
 		sim->pushGroupFunc(*it);
-		if(condition->calcValue(sim))
+		if(condition->calcValueBase(sim))
 			res = false;
 		sim->popGroupFunc();
 	}
@@ -358,7 +358,7 @@ RDOValue RDOFunCalcForAll::calcValue(RDORuntime *sim) const
 			continue;
 
 		sim->pushGroupFunc(*it);
-		if(!condition->calcValue(sim))
+		if(!condition->calcValueBase(sim))
 			res = false;
 		sim->popGroupFunc();
 	}
@@ -379,7 +379,7 @@ RDOValue RDOFunCalcNotForAll::calcValue(RDORuntime *sim) const
 			continue;
 
 		sim->pushGroupFunc(*it);
-		if(!condition->calcValue(sim))
+		if(!condition->calcValueBase(sim))
 			res = true;
 		sim->popGroupFunc();
 	}
@@ -411,7 +411,7 @@ RDOValue RDOSelectResourceDirectCalc::calcValue(RDORuntime *sim) const
 {
 	sim->selectRelResource(relNumb, resNumb);
 	if(hasChoice)
-		if(!choice->calcValue(sim))
+		if(!choice->calcValueBase(sim))
 			return 0;
 
 	return 1;
@@ -435,13 +435,13 @@ RDOValue RDOSelectResourceByTypeCalc::calcValue(RDORuntime *sim) const
 
 		sim->selectRelResource(relNumb, (*it)->number);
 		if(hasChoice)
-			if(!choice->calcValue(sim))
+			if(!choice->calcValueBase(sim))
 				continue;
 
 		if(isFirst)
 			return 1;
 
-		RDOValue tmp = first->calcValue(sim);
+		RDOValue tmp = first->calcValueBase(sim);
 		if(tmp > maxVal)
 		{
 			maxVal = tmp;
@@ -472,13 +472,13 @@ RDOValue RDOSelectResourceByTypeCalc::calcValue(RDORuntime *sim) const
 
 RDOValue RDOSetRelParamCalc::calcValue(RDORuntime *sim) const
 {
-	sim->setResParamVal(sim->getRelResNumber(relNumb), parNumb, calc->calcValue(sim));
+	sim->setResParamVal(sim->getRelResNumber(relNumb), parNumb, calc->calcValueBase(sim));
 	return 1;
 }						 
 
 RDOValue RDOSetResourceParamCalc::calcValue(RDORuntime *sim) const
 {
-	sim->setResParamVal(resNumb, parNumb, calc->calcValue(sim));
+	sim->setResParamVal(resNumb, parNumb, calc->calcValueBase(sim));
 	return 1;
 }						 
 
@@ -530,6 +530,19 @@ RDOCalc::RDOCalc()
 	rdoParse::addCalcToRuntime(this); 
 }
 
+RDOValue RDOCalc::calcValueBase(RDORuntime *sim) const
+{
+	try
+	{
+		return calcValue(sim);
+	}
+	catch(RDOException &)
+	{
+		sim->error("in", this);
+	}
+
+	return 0; // unreachable code
+}
 
 RDOSimulator *RDORuntime::clone()
 {
@@ -698,17 +711,17 @@ string RDORuntime::writeActivitiesStructure()
 
 RDOValue RDOCalcDiv::calcValue(RDORuntime *sim) const 
 { 
-   RDOValue rVal = right->calcValue(sim);
+   RDOValue rVal = right->calcValueBase(sim);
    if(rVal == 0)
 		sim->error("Division by zero", this);
 //			throw RDORuntimeException("Division by zero");
 
-   return RDOValue(left->calcValue(sim) / rVal);
+   return RDOValue(left->calcValueBase(sim) / rVal);
 }
 
 RDOValue RDOCalcCheckDiap::calcValue(RDORuntime *sim) const 
 { 
-   RDOValue val = oper->calcValue(sim);
+   RDOValue val = oper->calcValueBase(sim);
    if(val < minVal || val > maxVal)
 		sim->error(("Parameter out of range: " + toString(val)).c_str(), this);
 //			throw RDORuntimeException("parameter out of range");

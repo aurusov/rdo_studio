@@ -294,21 +294,21 @@ public:
 class RDOCalcPlus: public RDOCalcBinary
 {
 public:
-   RDOValue calcValue(RDORuntime *sim) const { return RDOValue(left->calcValue(sim) + right->calcValue(sim)); }
+   RDOValue calcValue(RDORuntime *sim) const { return RDOValue(left->calcValueBase(sim) + right->calcValueBase(sim)); }
 	RDOCalcPlus(RDOCalc *_left, RDOCalc *_right): RDOCalcBinary(_left, _right) {}
 };
 
 class RDOCalcMinus: public RDOCalcBinary
 {
 public:
-   RDOValue calcValue(RDORuntime *sim) const { return RDOValue(left->calcValue(sim) - right->calcValue(sim)); }
+   RDOValue calcValue(RDORuntime *sim) const { return RDOValue(left->calcValueBase(sim) - right->calcValueBase(sim)); }
 	RDOCalcMinus(RDOCalc *_left, RDOCalc *_right): RDOCalcBinary(_left, _right) {}
 };
 
 class RDOCalcMult: public RDOCalcBinary
 {
 public:
-   RDOValue calcValue(RDORuntime *sim) const { return RDOValue(left->calcValue(sim) * right->calcValue(sim)); }
+   RDOValue calcValue(RDORuntime *sim) const { return RDOValue(left->calcValueBase(sim) * right->calcValueBase(sim)); }
 	RDOCalcMult(RDOCalc *_left, RDOCalc *_right): RDOCalcBinary(_left, _right) {}
 };
 
@@ -328,9 +328,9 @@ class RDOCalcAnd: public RDOCalcBinary
 public:
    RDOValue calcValue(RDORuntime *sim) const 
 	{
-		if(!left->calcValue(sim))
+		if(!left->calcValueBase(sim))
 			return false;
-		if(!right->calcValue(sim))
+		if(!right->calcValueBase(sim))
 			return false;
 
 		return true;
@@ -343,9 +343,9 @@ class RDOCalcOr: public RDOCalcBinary
 public:
    RDOValue calcValue(RDORuntime *sim) const 
 	{
-		if(left->calcValue(sim))
+		if(left->calcValueBase(sim))
 			return true;
-		if(right->calcValue(sim))
+		if(right->calcValueBase(sim))
 			return true;
 
 		return false;
@@ -356,42 +356,42 @@ public:
 class RDOCalcIsEqual: public RDOCalcBinary
 {
 public:
-   RDOValue calcValue(RDORuntime *sim) const { return (left->calcValue(sim) == right->calcValue(sim)); }
+   RDOValue calcValue(RDORuntime *sim) const { return (left->calcValueBase(sim) == right->calcValueBase(sim)); }
 	RDOCalcIsEqual(const RDOCalc *const _left, const RDOCalc *const _right): RDOCalcBinary(_left, _right) {}
 };
 
 class RDOCalcIsNotEqual: public RDOCalcBinary
 {
 public:
-   RDOValue calcValue(RDORuntime *sim) const {	return (left->calcValue(sim) != right->calcValue(sim));	}
+   RDOValue calcValue(RDORuntime *sim) const {	return (left->calcValueBase(sim) != right->calcValueBase(sim));	}
 	RDOCalcIsNotEqual(RDOCalc *_left, RDOCalc *_right): RDOCalcBinary(_left, _right) {}
 };
 
 class RDOCalcIsLess: public RDOCalcBinary
 {
 public:
-   RDOValue calcValue(RDORuntime *sim) const {	return (left->calcValue(sim) < right->calcValue(sim));	}
+   RDOValue calcValue(RDORuntime *sim) const {	return (left->calcValueBase(sim) < right->calcValueBase(sim));	}
 	RDOCalcIsLess(RDOCalc *_left, RDOCalc *_right): RDOCalcBinary(_left, _right) {}
 };
 
 class RDOCalcIsGreater: public RDOCalcBinary
 {
 public:
-   RDOValue calcValue(RDORuntime *sim) const {	return (left->calcValue(sim) > right->calcValue(sim));	}
+   RDOValue calcValue(RDORuntime *sim) const {	return (left->calcValueBase(sim) > right->calcValueBase(sim));	}
 	RDOCalcIsGreater(RDOCalc *_left, RDOCalc *_right): RDOCalcBinary(_left, _right) {}
 };
 
 class RDOCalcIsLEQ: public RDOCalcBinary
 {
 public:
-   RDOValue calcValue(RDORuntime *sim) const {	return (left->calcValue(sim) <= right->calcValue(sim));	}
+   RDOValue calcValue(RDORuntime *sim) const {	return (left->calcValueBase(sim) <= right->calcValueBase(sim));	}
 	RDOCalcIsLEQ(RDOCalc *_left, RDOCalc *_right): RDOCalcBinary(_left, _right) {}
 };
 
 class RDOCalcIsGEQ: public RDOCalcBinary
 {
 public:
-   RDOValue calcValue(RDORuntime *sim) const {	return (left->calcValue(sim) >= right->calcValue(sim));	}
+   RDOValue calcValue(RDORuntime *sim) const {	return (left->calcValueBase(sim) >= right->calcValueBase(sim));	}
 	RDOCalcIsGEQ(RDOCalc *_left, RDOCalc *_right): RDOCalcBinary(_left, _right) {}
 };
 
@@ -407,13 +407,13 @@ protected:
 class RDOCalcUMinus: public RDOCalcUnary
 {
 public:
-   RDOValue calcValue(RDORuntime *sim) const { return RDOValue(-oper->calcValue(sim)); }
+   RDOValue calcValue(RDORuntime *sim) const { return RDOValue(-oper->calcValueBase(sim)); }
 };
 
 class RDOCalcDoubleToInt: public RDOCalcUnary
 {
 public:
-   RDOValue calcValue(RDORuntime *sim) const { return RDOValue((int)oper->calcValue(sim)); }
+   RDOValue calcValue(RDORuntime *sim) const { return RDOValue((int)oper->calcValueBase(sim)); }
 	RDOCalcDoubleToInt(RDOCalc *_oper): RDOCalcUnary(_oper) {}
 };
 
@@ -499,8 +499,8 @@ public:
 		{	results.push_back(res); }
    virtual RDOValue calcValue(RDORuntime *sim) const
 	{
-		int index = argCalc->calcValue(sim);
-		return results.at(index)->calcValue(sim);
+		int index = argCalc->calcValueBase(sim);
+		return results.at(index)->calcValueBase(sim);
 	}
 };
 
@@ -526,11 +526,11 @@ public:
 		for(int i = 0; i < size; i++)
 		{
 			RDOCalc *cas = cases[i];
-			if(cas->calcValue(sim))
-				return results[i]->calcValue(sim);
+			if(cas->calcValueBase(sim))
+				return results[i]->calcValueBase(sim);
 		}
 
-		return defaultValue->calcValue(sim);
+		return defaultValue->calcValueBase(sim);
 	}
 };
 
@@ -559,11 +559,11 @@ public:
 		int size = parameters.size();
 		for(int i = 0; i < size; i++)
 		{
-			RDOValue arg = parameters[i]->calcValue(sim);
+			RDOValue arg = parameters[i]->calcValueBase(sim);
 			sim->pushFuncArgument(arg);
 		}
 		sim->resetFuncTop(parameters.size());
-		RDOValue val = function->calcValue(sim);
+		RDOValue val = function->calcValueBase(sim);
 		size = parameters.size();
 		for(i = 0; i < size; i++)
 			sim->popFuncArgument();
@@ -589,8 +589,8 @@ public:
 		int size = conditions.size();
 		for(int i = 0; i < size; i++)
 		{
-			if(conditions[i]->calcValue(sim))
-				return actions[i]->calcValue(sim);
+			if(conditions[i]->calcValueBase(sim))
+				return actions[i]->calcValueBase(sim);
 		}
 		return 0;
 	}
@@ -1025,7 +1025,7 @@ class RDOCalcSetConst: public RDOCalc
 	RDOCalc *value;
 public:
 	RDOCalcSetConst(int _number, RDOCalc *_value): number(_number), value(_value) {}
-   virtual RDOValue calcValue(RDORuntime *sim) const { sim->setConstValue(number, value->calcValue(sim)); return 0; } 
+   virtual RDOValue calcValue(RDORuntime *sim) const { sim->setConstValue(number, value->calcValueBase(sim)); return 0; } 
 };
 
 

@@ -60,13 +60,13 @@ void RDORuleRuntime::convertRule(RDOSimulator *sim)
 	RDORuntime *runtime = (RDORuntime *)sim;
 	int size = beginCalcs.size();
 	for(int i = 0; i < size; i++)
-		beginCalcs.at(i)->calcValue(runtime);
+		beginCalcs.at(i)->calcValueBase(runtime);
 }
 
 double RDOIERuntime::getNextTimeInterval(RDOSimulator *sim)
 {
 	RDORuntime *runtime = (RDORuntime *)sim;
-	return timeField->calcValue(runtime);
+	return timeField->calcValueBase(runtime);
 }
 
 void RDOIERuntime::convertEvent(RDOSimulator *sim)
@@ -75,7 +75,7 @@ void RDOIERuntime::convertEvent(RDOSimulator *sim)
 	choiceFrom(sim);	// to set permanent resource relevent numbers
 	int size = beginCalcs.size();
 	for(int i = 0; i < size; i++)
-		beginCalcs.at(i)->calcValue(runtime);
+		beginCalcs.at(i)->calcValueBase(runtime);
 }
 
 bool RDOPatternRuntime::choiceFrom(RDOSimulator *sim)
@@ -83,7 +83,7 @@ bool RDOPatternRuntime::choiceFrom(RDOSimulator *sim)
 	RDORuntime *runtime = (RDORuntime *)sim;
 	int size = choiceFromCalcs.size();
 	for(int i = 0; i < size; i++)
-		if(!choiceFromCalcs[i]->calcValue(runtime))
+		if(!choiceFromCalcs[i]->calcValueBase(runtime))
 			return 0;
 
 	return 1;
@@ -102,7 +102,7 @@ bool RDOIERuntime::choiceFrom(RDOSimulator *sim)
 double RDOOperationRuntime::getNextTimeInterval(RDOSimulator *sim)
 {
 	RDORuntime *runtime = (RDORuntime *)sim;
-	return timeField->calcValue(runtime);
+	return timeField->calcValueBase(runtime);
 }
 
 void RDOOperationRuntime::convertBegin(RDOSimulator *sim)
@@ -110,7 +110,7 @@ void RDOOperationRuntime::convertBegin(RDOSimulator *sim)
 	RDORuntime *runtime = (RDORuntime *)sim;
 	int size = beginCalcs.size();
 	for(int i = 0; i < size; i++)
-		beginCalcs.at(i)->calcValue(runtime);
+		beginCalcs.at(i)->calcValueBase(runtime);
 }
 
 void RDOOperationRuntime::convertEnd(RDOSimulator *sim)
@@ -118,7 +118,7 @@ void RDOOperationRuntime::convertEnd(RDOSimulator *sim)
 	RDORuntime *runtime = (RDORuntime *)sim;
 	int size = endCalcs.size();
 	for(int i = 0; i < size; i++)
-		endCalcs.at(i)->calcValue(runtime);
+		endCalcs.at(i)->calcValueBase(runtime);
 }
 
 RDOOperationTrace *RDOActivityOperationRuntime::clone2(RDOSimulator *sim) 
@@ -186,7 +186,7 @@ void RDOActivityRuntime::setPatternParameters(RDOSimulator *sim)
 	RDORuntime *runtime = (RDORuntime *)sim;
 	int size = setParamsCalcs.size();
 	for(int i = 0; i < size; i++)
-		setParamsCalcs.at(i)->calcValue(runtime);
+		setParamsCalcs.at(i)->calcValueBase(runtime);
 }
 
 void RDOActivityRuntime::addHotKey(string *hotKey)
@@ -213,7 +213,7 @@ bool RDOActivityRuleRuntime::choiceFrom(RDOSimulator *sim)
 { 
 	((RDORuntime *)sim)->setCurrentActivity(this);
 	if(haveAdditionalCondition)
-		if(!additionalCondition->calcValue(dynamic_cast<RDORuntime *>(sim)))
+		if(!additionalCondition->calcValueBase(dynamic_cast<RDORuntime *>(sim)))
 			return false;
 
 	return ((RDORuleRuntime*)pattern)->choiceFrom(sim); 
@@ -262,7 +262,7 @@ bool RDOActivityOperationRuntime::choiceFrom(RDOSimulator *sim)
 { 
 	((RDORuntime *)sim)->setCurrentActivity(this);
 	if(haveAdditionalCondition)
-		if(!additionalCondition->calcValue(dynamic_cast<RDORuntime *>(sim)))
+		if(!additionalCondition->calcValueBase(dynamic_cast<RDORuntime *>(sim)))
 			return false;
 
 	return ((RDOOperationRuntime*)pattern)->choiceFrom(sim); 

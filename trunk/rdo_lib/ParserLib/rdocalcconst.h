@@ -10,10 +10,11 @@ class RDORuntime;
 
 class RDOCalc
 {
+   virtual RDOValue calcValue(RDORuntime *sim) const = 0;
 public:
 	rdoParse::FileToParse fileToParse;
 	int lineno;
-   virtual RDOValue calcValue(RDORuntime *sim) const = 0;
+   RDOValue calcValueBase(RDORuntime *sim) const;
    virtual ~RDOCalc() {}
    RDOCalc();
 };
