@@ -175,7 +175,7 @@ void RDOStudioFrameView::updateScrollBars()
 	if ( xPos > frameBmpRect.right - newClientRect.right ) xPos = frameBmpRect.right - newClientRect.right;
 	if ( xPos < 0 ) xPos = 0;
 	si.nMin   = 0;
-	si.nMax   = frameBmpRect.right;
+	si.nMax   = frameBmpRect.right - 1;
 	si.nPos   = xPos;
 	si.nPage  = newClientRect.right;
 	SetScrollInfo( SB_HORZ, &si, TRUE );
@@ -183,7 +183,7 @@ void RDOStudioFrameView::updateScrollBars()
 	if ( yPos > frameBmpRect.bottom - newClientRect.bottom ) yPos = frameBmpRect.bottom - newClientRect.bottom;
 	if ( yPos < 0 ) yPos = 0;
 	si.nMin   = 0;
-	si.nMax   = frameBmpRect.bottom;
+	si.nMax   = frameBmpRect.bottom - 1;
 	si.nPos   = yPos;
 	si.nPage  = newClientRect.bottom;
 	SetScrollInfo( SB_VERT, &si, TRUE );
