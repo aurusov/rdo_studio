@@ -364,7 +364,7 @@ void RDOStudioChartOptions::onHelpButton()
 	} else if ( page == styles ) {
 		filename += "::/html/work_options.htm#styles";
 	}
-	HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_DISPLAY_TOPIC, NULL );*/
+	::HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_DISPLAY_TOPIC, NULL );*/
 }
 
 BOOL RDOStudioChartOptions::OnHelpInfo(HELPINFO* pHelpInfo) 
@@ -373,6 +373,6 @@ BOOL RDOStudioChartOptions::OnHelpInfo(HELPINFO* pHelpInfo)
 	if ( filename.empty() ) return TRUE;
 
 	if ( pHelpInfo->iContextType == HELPINFO_WINDOW )
-		return HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_HELP_CONTEXT, pHelpInfo->dwContextId) != NULL;
+		return ::HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_HELP_CONTEXT, pHelpInfo->dwContextId) != NULL;
 	return TRUE;
 }

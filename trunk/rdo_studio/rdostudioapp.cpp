@@ -272,7 +272,7 @@ int RDOStudioApp::ExitInstance()
 		}
 		return exitCode;
 	} else {
-		HtmlHelp( NULL, NULL, HH_CLOSE_ALL, 0 );
+		::HtmlHelp( NULL, NULL, HH_CLOSE_ALL, 0 );
 		if ( tracer ) delete tracer;
 		WriteProfileString( "general", "lastProject", getOpenLastProject() ? lastProjectName.c_str() : "" );
 		return CWinApp::ExitInstance();

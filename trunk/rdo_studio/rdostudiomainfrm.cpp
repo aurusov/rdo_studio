@@ -435,10 +435,10 @@ void RDOStudioMainFrame::endProgress()
 
 void RDOStudioMainFrame::OnHelpContents()
 {
-	string filename = studioApp.getFullHelpFileName( "RAO-studio.chm" );
+	string filename = studioApp.getFullHelpFileName();
 	if ( filename.empty() ) return;
 
-	HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_DISPLAY_TOPIC, NULL );
+	::HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_DISPLAY_TOPIC, NULL );
 }
 
 void RDOStudioMainFrame::OnModelRunNoShow()

@@ -43,7 +43,18 @@ RDORepositoryFile::RDORepositoryFile():
 	modelName( "" ),
 	modelPath( "" ),
 	lastModelPath( "" ),
-	readOnly( false )
+	realOnlyInDlg( false ),
+	patReadOnly( false ),
+	rtpReadOnly( false ),
+	rssReadOnly( false ),
+	oprReadOnly( false ),
+	frmReadOnly( false ),
+	funReadOnly( false ),
+	dptReadOnly( false ),
+	smrReadOnly( false ),
+	pmvReadOnly( false ),
+	pmdReadOnly( false ),
+	trcReadOnly( false )
 {
 	repository = this;
 
@@ -104,7 +115,7 @@ void RDORepositoryFile::resetModelNames()
 void RDORepositoryFile::updateModelNames()
 {
 	rdo::binarystream smrStream( ios::in | ios::out );
-	loadFile( modelPath + smrFileName + ".smr", smrStream, true, true );
+	loadFile( modelPath + smrFileName + ".smr", smrStream, true, true, smrReadOnly );
 	rdoModelObjects::RDOSMRFileInfo fileInfo;
 	kernel.getSimulator()->parseSMRFileInfo( smrStream, fileInfo );
 
@@ -174,7 +185,18 @@ bool RDORepositoryFile::openModel( const string& modelFileName )
 		realCloseModel();
 
 		bool flag = true;
-		readOnly = false;
+		realOnlyInDlg = false;
+		patReadOnly = false;
+		rtpReadOnly = false;
+		rssReadOnly = false;
+		oprReadOnly = false;
+		frmReadOnly = false;
+		funReadOnly = false;
+		dptReadOnly = false;
+		smrReadOnly = false;
+		pmvReadOnly = false;
+		pmdReadOnly = false;
+		trcReadOnly = false;
 		if ( modelFileName.empty() ) {
 			CString s;
 			s.LoadString( ID_MODEL_FILETYPE );
@@ -184,7 +206,18 @@ bool RDORepositoryFile::openModel( const string& modelFileName )
 			}
 			CFileDialog dlg( true, "smr", defaultFileName.c_str(), 0, s, AfxGetMainWnd() );
 			flag = dlg.DoModal() == IDOK;
-			readOnly = dlg.GetReadOnlyPref() == TRUE;
+			realOnlyInDlg = dlg.GetReadOnlyPref() == TRUE;
+			patReadOnly = realOnlyInDlg;
+			rtpReadOnly = realOnlyInDlg;
+			rssReadOnly = realOnlyInDlg;
+			oprReadOnly = realOnlyInDlg;
+			frmReadOnly = realOnlyInDlg;
+			funReadOnly = realOnlyInDlg;
+			dptReadOnly = realOnlyInDlg;
+			smrReadOnly = realOnlyInDlg;
+			pmvReadOnly = realOnlyInDlg;
+			pmdReadOnly = realOnlyInDlg;
+			trcReadOnly = realOnlyInDlg;
 			if ( flag ) {
 				extractName( &dlg );
 			}
@@ -368,6 +401,16 @@ bool RDORepositoryFile::isFileExists( const string& fileName )
 	return finder.FindFile( fileName.c_str() ) ? true : false;
 }
 
+bool RDORepositoryFile::isFileReadOnly( const string& fileName )
+{
+	CFileFind finder;
+	if ( finder.FindFile( fileName.c_str() ) ) {
+		finder.FindNextFile();
+		return finder.IsReadOnly() ? true : false;
+	}
+	return false;
+}
+
 void RDORepositoryFile::changeLastModelPath()
 {
 	string name = !modelName.empty() ? modelName + ".smr" : "*.smr";
@@ -410,15 +453,70 @@ void RDORepositoryFile::setName( const string& str )
 	changeLastModelPath();
 }
 
-bool RDORepositoryFile::isReadOnly() const
+bool RDORepositoryFile::isPATReadOnly() const
 {
-	return readOnly;
+	return patReadOnly;
 }
 
-void RDORepositoryFile::loadFile( const string& filename, rdo::binarystream& stream, const bool described, const bool mustExist ) const
+bool RDORepositoryFile::isRTPReadOnly() const
+{
+	return rtpReadOnly;
+}
+
+bool RDORepositoryFile::isRSSReadOnly() const
+{
+	return rssReadOnly;
+}
+
+bool RDORepositoryFile::isOPRReadOnly() const
+{
+	return oprReadOnly;
+}
+
+bool RDORepositoryFile::isFRMReadOnly() const
+{
+	return frmReadOnly;
+}
+
+bool RDORepositoryFile::isFUNReadOnly() const
+{
+	return funReadOnly;
+}
+
+bool RDORepositoryFile::isDPTReadOnly() const
+{
+	return dptReadOnly;
+}
+
+bool RDORepositoryFile::isSMRReadOnly() const
+{
+	return smrReadOnly;
+}
+
+bool RDORepositoryFile::isPMDReadOnly() const
+{
+	return pmdReadOnly;
+}
+
+bool RDORepositoryFile::isPMVReadOnly() const
+{
+	return pmvReadOnly;
+}
+
+bool RDORepositoryFile::isTRCReadOnly() const
+{
+	return trcReadOnly;
+}
+
+void RDORepositoryFile::loadFile( const string& filename, rdo::binarystream& stream, const bool described, const bool mustExist, bool& reanOnly ) const
 {
 	if ( described ) {
 		if ( isFileExists( filename ) ) {
+			if ( !realOnlyInDlg ) {
+				reanOnly = isFileReadOnly( filename );
+			} else {
+				reanOnly = true;
+			}
 			if ( stream.getOpenMode() & ios::binary ) {
 				ifstream file( filename.c_str(), ios::in | ios::binary );
 				file.seekg( 0, ios::end );
@@ -465,57 +563,57 @@ void RDORepositoryFile::saveFile( const string& filename, rdo::binarystream& str
 
 void RDORepositoryFile::loadPAT( rdo::binarystream& stream ) const
 {
-	loadFile( modelPath + patFileName + ".pat", stream, patDescribed, patMustExist );
+	loadFile( modelPath + patFileName + ".pat", stream, patDescribed, patMustExist, patReadOnly );
 }
 
 void RDORepositoryFile::loadRTP( rdo::binarystream& stream ) const
 {
-	loadFile( modelPath + rtpFileName + ".rtp", stream, rtpDescribed, rtpMustExist );
+	loadFile( modelPath + rtpFileName + ".rtp", stream, rtpDescribed, rtpMustExist, rtpReadOnly );
 }
 
 void RDORepositoryFile::loadRSS( rdo::binarystream& stream ) const
 {
-	loadFile( modelPath + rssFileName + ".rss", stream, rssDescribed, rssMustExist );
+	loadFile( modelPath + rssFileName + ".rss", stream, rssDescribed, rssMustExist, rssReadOnly );
 }
 
 void RDORepositoryFile::loadOPR( rdo::binarystream& stream ) const
 {
-	loadFile( modelPath + oprFileName + ".opr", stream, oprDescribed, oprMustExist );
+	loadFile( modelPath + oprFileName + ".opr", stream, oprDescribed, oprMustExist, oprReadOnly );
 }
 
 void RDORepositoryFile::loadFRM( rdo::binarystream& stream ) const
 {
-	loadFile( modelPath + frmFileName + ".frm", stream, frmDescribed, frmMustExist );
+	loadFile( modelPath + frmFileName + ".frm", stream, frmDescribed, frmMustExist, frmReadOnly );
 }
 
 void RDORepositoryFile::loadFUN( rdo::binarystream& stream ) const
 {
-	loadFile( modelPath + funFileName + ".fun", stream, funDescribed, funMustExist );
+	loadFile( modelPath + funFileName + ".fun", stream, funDescribed, funMustExist, funReadOnly );
 }
 
 void RDORepositoryFile::loadDPT( rdo::binarystream& stream ) const
 {
-	loadFile( modelPath + dptFileName + ".dpt", stream, dptDescribed, dptMustExist );
+	loadFile( modelPath + dptFileName + ".dpt", stream, dptDescribed, dptMustExist, dptReadOnly );
 }
 
 void RDORepositoryFile::loadSMR( rdo::binarystream& stream ) const
 {
-	loadFile( modelPath + smrFileName + ".smr", stream, smrDescribed, smrMustExist );
+	loadFile( modelPath + smrFileName + ".smr", stream, smrDescribed, smrMustExist, smrReadOnly );
 }
 
 void RDORepositoryFile::loadPMD( rdo::binarystream& stream ) const
 {
-	loadFile( modelPath + pmdFileName + ".pmd", stream, pmdDescribed, pmdMustExist );
+	loadFile( modelPath + pmdFileName + ".pmd", stream, pmdDescribed, pmdMustExist, pmdReadOnly );
 }
 
 void RDORepositoryFile::loadPMV( rdo::binarystream& stream ) const
 {
-	loadFile( modelPath + pmvFileName + ".pmv", stream, pmvDescribed, pmvMustExist );
+	loadFile( modelPath + pmvFileName + ".pmv", stream, pmvDescribed, pmvMustExist, pmvReadOnly );
 }
 
 void RDORepositoryFile::loadTRC( rdo::binarystream& stream ) const
 {
-	loadFile( modelPath + trcFileName + ".trc", stream, trcDescribed, trcMustExist );
+	loadFile( modelPath + trcFileName + ".trc", stream, trcDescribed, trcMustExist, trcReadOnly );
 }
 
 void RDORepositoryFile::savePAT( rdo::binarystream& stream ) const

@@ -33,7 +33,17 @@ public:
 	void saveAsModel();
 	void closeModel();
 
-	bool isReadOnly() const;
+	bool isPATReadOnly() const;
+	bool isRTPReadOnly() const;
+	bool isRSSReadOnly() const;
+	bool isOPRReadOnly() const;
+	bool isFRMReadOnly() const;
+	bool isFUNReadOnly() const;
+	bool isDPTReadOnly() const;
+	bool isSMRReadOnly() const;
+	bool isPMDReadOnly() const;
+	bool isPMVReadOnly() const;
+	bool isTRCReadOnly() const;
 
 	void loadPAT( rdo::binarystream& stream ) const;
 	void loadRTP( rdo::binarystream& stream ) const;

@@ -53,9 +53,59 @@ void RDORepository::closeModel()
 	repositoryFile->closeModel();
 }
 
-bool RDORepository::isReadOnly() const
+bool RDORepository::isPATReadOnly() const
 {
-	return repositoryFile->isReadOnly();
+	return repositoryFile->isPATReadOnly();
+}
+
+bool RDORepository::isRTPReadOnly() const
+{
+	return repositoryFile->isRTPReadOnly();
+}
+
+bool RDORepository::isRSSReadOnly() const
+{
+	return repositoryFile->isRSSReadOnly();
+}
+
+bool RDORepository::isOPRReadOnly() const
+{
+	return repositoryFile->isOPRReadOnly();
+}
+
+bool RDORepository::isFRMReadOnly() const
+{
+	return repositoryFile->isFRMReadOnly();
+}
+
+bool RDORepository::isFUNReadOnly() const
+{
+	return repositoryFile->isFUNReadOnly();
+}
+
+bool RDORepository::isDPTReadOnly() const
+{
+	return repositoryFile->isDPTReadOnly();
+}
+
+bool RDORepository::isSMRReadOnly() const
+{
+	return repositoryFile->isSMRReadOnly();
+}
+
+bool RDORepository::isPMVReadOnly() const
+{
+	return repositoryFile->isPMVReadOnly();
+}
+
+bool RDORepository::isPMDReadOnly() const
+{
+	return repositoryFile->isPMDReadOnly();
+}
+
+bool RDORepository::isTRCReadOnly() const
+{
+	return repositoryFile->isTRCReadOnly();
 }
 
 void RDORepository::loadPAT( rdo::binarystream& stream ) const

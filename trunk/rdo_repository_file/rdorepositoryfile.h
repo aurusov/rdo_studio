@@ -58,7 +58,18 @@ private:
 	void resetModelNames();
 	void updateModelNames();
 
-	bool readOnly;
+	bool realOnlyInDlg;
+	mutable bool patReadOnly;
+	mutable bool rtpReadOnly;
+	mutable bool rssReadOnly;
+	mutable bool oprReadOnly;
+	mutable bool frmReadOnly;
+	mutable bool funReadOnly;
+	mutable bool dptReadOnly;
+	mutable bool smrReadOnly;
+	mutable bool pmvReadOnly;
+	mutable bool pmdReadOnly;
+	mutable bool trcReadOnly;
 
 	bool saveAsDlg();
 	bool canCloseModel() const;
@@ -68,10 +79,11 @@ private:
 	void extractName( const std::string& fullname );
 	static std::string extractFilePath( const std::string& fileName );
 	static bool isFileExists( const std::string& fileName );
+	static bool isFileReadOnly( const std::string& fileName );
 
 	void setName( const std::string& str );
 
-	void loadFile( const std::string& filename, rdo::binarystream& stream, const bool described, const bool mustExist ) const;
+	void loadFile( const std::string& filename, rdo::binarystream& stream, const bool described, const bool mustExist, bool& reanOnly ) const;
 	void saveFile( const std::string& filename, rdo::binarystream& stream, const bool deleteIfEmpty = false ) const;
 
 	void changeLastModelPath();
@@ -97,7 +109,17 @@ public:
 	void saveAsModel();
 	void closeModel();
 
-	bool isReadOnly() const;
+	bool isPATReadOnly() const;
+	bool isRTPReadOnly() const;
+	bool isRSSReadOnly() const;
+	bool isOPRReadOnly() const;
+	bool isFRMReadOnly() const;
+	bool isFUNReadOnly() const;
+	bool isDPTReadOnly() const;
+	bool isSMRReadOnly() const;
+	bool isPMDReadOnly() const;
+	bool isPMVReadOnly() const;
+	bool isTRCReadOnly() const;
 
 	void loadPAT( rdo::binarystream& stream ) const;
 	void loadRTP( rdo::binarystream& stream ) const;

@@ -482,7 +482,17 @@ void RDOStudioModel::openModelFromRepository()
 					bool stream_error = stream.rdstate() & ios_base::failbit ? true : false;
 					if ( !stream_error ) {
 						edit->load( stream );
-						edit->setReadOnly( kernel.getRepository()->isReadOnly() );
+						switch ( i ) {
+							case RDOEDIT_PAT: edit->setReadOnly( kernel.getRepository()->isPATReadOnly() ); if ( kernel.getRepository()->isPATReadOnly() ) output->appendStringToBuild( format( IDS_MODEL_FILE_READONLY, getName().c_str(), "pat" ) ); break;
+							case RDOEDIT_RTP: edit->setReadOnly( kernel.getRepository()->isRTPReadOnly() ); if ( kernel.getRepository()->isRTPReadOnly() ) output->appendStringToBuild( format( IDS_MODEL_FILE_READONLY, getName().c_str(), "rtp" ) ); break;
+							case RDOEDIT_RSS: edit->setReadOnly( kernel.getRepository()->isRSSReadOnly() ); if ( kernel.getRepository()->isRSSReadOnly() ) output->appendStringToBuild( format( IDS_MODEL_FILE_READONLY, getName().c_str(), "rss" ) ); break;
+							case RDOEDIT_OPR: edit->setReadOnly( kernel.getRepository()->isOPRReadOnly() ); if ( kernel.getRepository()->isOPRReadOnly() ) output->appendStringToBuild( format( IDS_MODEL_FILE_READONLY, getName().c_str(), "opr" ) ); break;
+							case RDOEDIT_FRM: edit->setReadOnly( kernel.getRepository()->isFRMReadOnly() ); if ( kernel.getRepository()->isFRMReadOnly() ) output->appendStringToBuild( format( IDS_MODEL_FILE_READONLY, getName().c_str(), "frm" ) ); break;
+							case RDOEDIT_FUN: edit->setReadOnly( kernel.getRepository()->isFUNReadOnly() ); if ( kernel.getRepository()->isFUNReadOnly() ) output->appendStringToBuild( format( IDS_MODEL_FILE_READONLY, getName().c_str(), "fun" ) ); break;
+							case RDOEDIT_DPT: edit->setReadOnly( kernel.getRepository()->isDPTReadOnly() ); if ( kernel.getRepository()->isDPTReadOnly() ) output->appendStringToBuild( format( IDS_MODEL_FILE_READONLY, getName().c_str(), "dpt" ) ); break;
+							case RDOEDIT_SMR: edit->setReadOnly( kernel.getRepository()->isSMRReadOnly() ); if ( kernel.getRepository()->isSMRReadOnly() ) output->appendStringToBuild( format( IDS_MODEL_FILE_READONLY, getName().c_str(), "smr" ) ); break;
+							case RDOEDIT_PMD: edit->setReadOnly( kernel.getRepository()->isPMDReadOnly() ); if ( kernel.getRepository()->isPMDReadOnly() ) output->appendStringToBuild( format( IDS_MODEL_FILE_READONLY, getName().c_str(), "pmd" ) ); break;
+						}
 					} else {
 						int obj = 0;
 						switch ( i ) {

@@ -2182,7 +2182,7 @@ void RDOStudioOptions::onHelpButton()
 	} else if ( page == plugins ) {
 		filename += "::/html/work_options.htm";
 	}
-	HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_DISPLAY_TOPIC, NULL );
+	::HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_DISPLAY_TOPIC, NULL );
 }
 
 BOOL RDOStudioOptions::OnHelpInfo(HELPINFO* pHelpInfo) 
@@ -2191,6 +2191,6 @@ BOOL RDOStudioOptions::OnHelpInfo(HELPINFO* pHelpInfo)
 	if ( filename.empty() ) return TRUE;
 
 	if ( pHelpInfo->iContextType == HELPINFO_WINDOW )
-		return HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_HELP_CONTEXT, pHelpInfo->dwContextId) != NULL;
+		return ::HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_HELP_CONTEXT, pHelpInfo->dwContextId) != NULL;
 	return TRUE;
 }

@@ -552,9 +552,10 @@
 #define IDS_COLORSTYLE_FRAME            40228
 #define IDS_COLORSTYLE_FRAME_BORDER     40229
 #define IDS_COLORSTYLE_FRAME_BACKGROUND 40230
-#define IDS_CHART_TITLE                 40231
-#define IDS_CHART_OPTIONS               40300
-#define IDS_CHART_OPTIONS_APPLY         40301
+#define IDS_MODEL_FILE_READONLY         40231
+#define IDS_CHART_TITLE                 40300
+#define IDS_CHART_OPTIONS               40301
+#define IDS_CHART_OPTIONS_APPLY         40302
 #define ID_ABOUT_BMSTU                  40910
 #define ID_ABOUT_TEL                    40911
 #define ID_ABOUT_OKBUTTON               40912
