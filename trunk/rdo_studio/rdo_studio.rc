@@ -880,6 +880,10 @@ BEGIN
         MENUITEM "&Build\tF7",                  ID_MODEL_BUILD
         MENUITEM "&Execute\tF5",                ID_MODEL_RUN
         MENUITEM "&Stop\tShift+F5",             ID_MODEL_STOP
+        MENUITEM SEPARATOR
+        MENUITEM "No Show",                     ID_MODEL_RUNNOSHOW
+        MENUITEM "Animation",                   ID_MODEL_RUNANIMATION
+        MENUITEM "Monitor",                     ID_MODEL_RUNMONITOR
     END
     POPUP "&Chart"
     BEGIN
@@ -1474,7 +1478,7 @@ END
 IDD_CHART_OPTIONS_CHART DIALOGEX 0, 0, 235, 71
 STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "Chart"
-FONT 8, "MS Sans Serif"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     LTEXT           "Title",IDC_CHART_TITLE_STATIC,5,9,14,8
     EDITTEXT        IDC_CHART_TITLE_EDIT,23,5,207,12,ES_AUTOHSCROLL
@@ -1494,7 +1498,7 @@ END
 IDD_CHART_OPTIONS_SERIES DIALOGEX 0, 0, 235, 84
 STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "Series"
-FONT 8, "MS Sans Serif"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     LTEXT           "Chart series",IDC_SERIES_STATIC,5,9,38,8
     COMBOBOX        IDC_SERIES_COMBO,45,5,185,80,CBS_DROPDOWNLIST | 
