@@ -169,10 +169,6 @@ SOURCE=".\cd-rom\index.html"
 # End Source File
 # Begin Source File
 
-SOURCE=".\cd-rom\shared\html\rao-studio.html"
-# End Source File
-# Begin Source File
-
 SOURCE=".\cd-rom\shared\styles\styles.css"
 # End Source File
 # End Group
