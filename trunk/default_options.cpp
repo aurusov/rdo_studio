@@ -60,7 +60,8 @@ void WGDefaultOptionsDlg::slot_cancel()
 
 void WGDefaultOptionsDlg::slot_directory()
 {
-	DirectoryLE->setText( QFileDialog::getExistingDirectory( DirectoryLE->text(), this ) );
+	QString s = QFileDialog::getExistingDirectory( DirectoryLE->text(), this );
+	if ( !s.isEmpty() ) DirectoryLE->setText( s );
 }
 
 void WGDefaultOptionsDlg::slot_restart()
@@ -95,7 +96,8 @@ void WGDefaultOptionsDlg::slot_log()
 
 void WGDefaultOptionsDlg::slot_log_directory()
 {
-	LogDirectoryLE->setText( QFileDialog::getExistingDirectory( LogDirectoryLE->text(), this ) );
+	QString s = QFileDialog::getExistingDirectory( LogDirectoryLE->text(), this );
+	if ( !s.isEmpty() ) LogDirectoryLE->setText( s );
 }
 
 void WGDefaultOptionsDlg::slot_clipboard_check()
