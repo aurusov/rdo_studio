@@ -24,8 +24,6 @@ public:
 	RDODebugEdit();
 	virtual ~RDODebugEdit();
 
-	void setEditorStyle( RDOBaseEditStyle* _style );
-
 	void appendLine( const std::string& str );
 };
 

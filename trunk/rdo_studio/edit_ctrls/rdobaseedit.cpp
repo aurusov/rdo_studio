@@ -195,6 +195,9 @@ int RDOBaseEdit::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	sciFun = (sciFunType)::SendMessage( sciHWND, SCI_GETDIRECTFUNCTION, 0, 0 );
 	sciEditor = (long)::SendMessage( sciHWND, SCI_GETDIRECTPOINTER, 0, 0 );
 
+	sendEditor( SCI_SETLEXER, SCLEX_TEXT );
+	int lexLanguage = sendEditor( SCI_GETLEXER );
+
 	sendEditorString( SCI_SETPROPERTY, reinterpret_cast<unsigned long>("fold"), "1" );
 
 	sendEditor( SCI_SETMARGINWIDTHN, 1, 0 );
@@ -256,14 +259,19 @@ void RDOBaseEdit::setEditorStyle( RDOBaseEditStyle* _style )
 
 	// ----------
 	// Colors
-	sendEditor( SCI_STYLESETFORE, STYLE_DEFAULT, style->theme->defaultColor );
+	sendEditor( SCI_STYLESETBACK, STYLE_DEFAULT, style->theme->defaultColor );
 	sendEditor( SCI_STYLESETBACK, STYLE_DEFAULT, style->theme->backgroundColor );
+	sendEditor( SCI_STYLESETFORE, SCE_TEXT_DEFAULT, style->theme->defaultColor );
+	sendEditor( SCI_STYLESETBACK, SCE_TEXT_DEFAULT, style->theme->backgroundColor );
 
 	// ----------
 	// Styles
 	sendEditor( SCI_STYLESETBOLD     , STYLE_DEFAULT, style->theme->defaultStyle & RDOFS_BOLD      );
 	sendEditor( SCI_STYLESETITALIC   , STYLE_DEFAULT, style->theme->defaultStyle & RDOFS_ITALIC    );
 	sendEditor( SCI_STYLESETUNDERLINE, STYLE_DEFAULT, style->theme->defaultStyle & RDOFS_UNDERLINE );
+	sendEditor( SCI_STYLESETBOLD     , SCE_TEXT_DEFAULT, style->theme->defaultStyle & RDOFS_BOLD      );
+	sendEditor( SCI_STYLESETITALIC   , SCE_TEXT_DEFAULT, style->theme->defaultStyle & RDOFS_ITALIC    );
+	sendEditor( SCI_STYLESETUNDERLINE, SCE_TEXT_DEFAULT, style->theme->defaultStyle & RDOFS_UNDERLINE );
 
 	// ----------
 	// Font Name

@@ -38,8 +38,6 @@ protected:
 public:
 	RDOBuildEdit();
 	virtual ~RDOBuildEdit();
-
-	void setEditorStyle( RDOLogEditStyle* _style );
 };
 
 }; // namespace rdoEditCtrl

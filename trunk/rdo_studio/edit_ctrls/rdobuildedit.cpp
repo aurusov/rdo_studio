@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "rdobuildedit.h"
-#include "sci/SciLexer.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -65,25 +64,5 @@ int RDOBuildEdit::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if ( RDOLogEdit ::OnCreate(lpCreateStruct) == -1 ) return -1;
 
-	sendEditor( SCI_SETLEXER, SCLEX_TEXT );
-	int lexLanguage = sendEditor( SCI_GETLEXER );
-
 	return 0;
-}
-
-void RDOBuildEdit::setEditorStyle( RDOLogEditStyle* _style )
-{
-	RDOLogEdit::setEditorStyle( _style );
-	if ( !style ) return;
-
-	// ----------
-	// Colors
-	sendEditor( SCI_STYLESETFORE, SCE_TEXT_DEFAULT, style->theme->defaultColor );
-	sendEditor( SCI_STYLESETBACK, SCE_TEXT_DEFAULT, style->theme->backgroundColor );
-
-	// ----------
-	// Styles
-	sendEditor( SCI_STYLESETBOLD     , SCE_TEXT_DEFAULT, style->theme->defaultStyle & RDOFS_BOLD      );
-	sendEditor( SCI_STYLESETITALIC   , SCE_TEXT_DEFAULT, style->theme->defaultStyle & RDOFS_ITALIC    );
-	sendEditor( SCI_STYLESETUNDERLINE, SCE_TEXT_DEFAULT, style->theme->defaultStyle & RDOFS_UNDERLINE );
 }
