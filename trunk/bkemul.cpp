@@ -338,6 +338,8 @@ void BKEmul::setPause( const bool value )
 		pause = value;
 		if ( !pause ) {
 			video.updateMonitor();
+			keyboard.R_177716_byte_read = 0300;
+			keyboard.key_list.clear();
 		}
 	}
 }

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "bkemultaperecorder.h"
 #include "bkemul.h"
+#include "resource.h"
 
 #include <fstream>
 
@@ -73,6 +74,8 @@ void BKEmulTapeRecorder::doEMT36()
 	name[16] = 0;
 	string file_name = name;
 
+	char* buf = NULL;
+
 	try {
 		switch ( command ) {
 			// Останов двигателя магнитофона
@@ -85,11 +88,11 @@ void BKEmulTapeRecorder::doEMT36()
 			case 2: {
 				bool canSave = true;
 				if ( isFileExists( file_name ) ) {
-//					switch (ShowQueryMessage(MiscFormat(LoadStr(sOverwriteFile).c_str(), Trim(file_name).c_str()), MB_YESNOCANCEL)) {
-//						case IDYES   : canSave = true; break;
-//						case IDNO    :
-//						case IDCANCEL: canSave = false; break;
-//					}
+					emul.setPause( true );
+					std::string name = file_name;
+					trim( name );
+					canSave = AfxMessageBox( format( IDS_FILEEXISTS, name.c_str() ).c_str(), MB_ICONQUESTION | MB_YESNO ) == IDYES;
+					emul.setPause( false );
 				}
 				if ( canSave ) {
 					ofstream file( file_name.c_str(), ios_base::out | ios_base::binary );
@@ -97,11 +100,12 @@ void BKEmulTapeRecorder::doEMT36()
 					file.write( reinterpret_cast<char*>(&address), 2 );
 					file.write( reinterpret_cast<char*>(&length), 2 );
 					// Записываем побайтно файл из памяти БК в выделенную память со всеми проверками
-					char* buf = new char[ length ];
+					buf = new char[ length ];
 					copyFromBK( address, buf, length );
 					// Переписываем файл в поток
 					file.write( buf, length );
 					delete buf;
+					buf = NULL;
 					// Операция завершена без ошибок
 					answer = 0;
 				} else {
@@ -136,7 +140,7 @@ void BKEmulTapeRecorder::doEMT36()
 					}
 					length = load_length;
 					// Читаем из потока в выделенную память
-					char* buf = new char[ length ];
+					buf = new char[ length ];
 					file.read( buf, length );
 					// Копируем побайтно в память БК со всеми проверками
 					copyToBK( buf, address, length );
@@ -149,6 +153,7 @@ void BKEmulTapeRecorder::doEMT36()
 					// Операция завершена без ошибок
 					answer = 0;
 					delete buf;
+					buf = NULL;
 				} else {
 					// Не найден файл с таким именем
 					answer = 1;
@@ -264,6 +269,10 @@ void BKEmulTapeRecorder::doEMT36()
 		emul.setMemoryByte( memory + 1, answer );
 		emul.setMemoryByte( 0301, answer );
 		emul.cpu.BK_doRTI();
+		if ( buf ) {
+			delete buf;
+			buf = NULL;
+		}
 		throw;
 	}
 }

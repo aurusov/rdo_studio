@@ -48,6 +48,7 @@
 #define ID_EMULATOR_DECREASESPEED       32814
 #define IDS_MEMORYACCESSERROR_BYTE      59394
 #define IDS_MEMORYACCESSERROR_WORD      59395
+#define IDS_FILEEXISTS                  59396
 
 // Next default values for new objects
 // 
