@@ -22,6 +22,7 @@ RDOEditorEditTheme::~RDOEditorEditTheme()
 
 RDOEditorEditTheme& RDOEditorEditTheme::operator =( const RDOEditorEditTheme& theme )
 {
+	RDOEditorBaseEditTheme::operator=( theme );
 	errorBgColor = theme.errorBgColor;
 
 	return *this;
@@ -29,7 +30,9 @@ RDOEditorEditTheme& RDOEditorEditTheme::operator =( const RDOEditorEditTheme& th
 
 bool RDOEditorEditTheme::operator ==( const RDOEditorEditTheme& theme ) const
 {
-	return errorBgColor == theme.errorBgColor;
+	bool flag = RDOEditorBaseEditTheme::operator==( theme );
+	if ( flag ) flag &= errorBgColor == theme.errorBgColor ? true : false;
+	return flag;
 }
 
 bool RDOEditorEditTheme::operator !=( const RDOEditorEditTheme& theme ) const

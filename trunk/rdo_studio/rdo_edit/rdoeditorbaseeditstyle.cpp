@@ -40,6 +40,8 @@ RDOEditorBaseEditTheme::~RDOEditorBaseEditTheme()
 
 RDOEditorBaseEditTheme& RDOEditorBaseEditTheme::operator =( const RDOEditorBaseEditTheme& theme )
 {
+	RDOBaseEditTheme::operator=( theme );
+
 	identifierColor = theme.identifierColor;
 	keywordColor    = theme.keywordColor;
 	functionsColor  = theme.functionsColor;
@@ -63,23 +65,26 @@ RDOEditorBaseEditTheme& RDOEditorBaseEditTheme::operator =( const RDOEditorBaseE
 
 bool RDOEditorBaseEditTheme::operator ==( const RDOEditorBaseEditTheme& theme ) const
 {
-	return identifierColor == theme.identifierColor &&
-	       keywordColor    == theme.keywordColor &&
-	       functionsColor  == theme.functionsColor &&
-	       traceColor      == theme.traceColor &&
-	       commentColor    == theme.commentColor &&
-	       numberColor     == theme.numberColor &&
-	       stringColor     == theme.stringColor &&
-	       operatorColor   == theme.operatorColor &&
+	bool flag = RDOBaseEditTheme::operator==( theme );
 
-	       identifierStyle == theme.identifierStyle &&
-	       keywordStyle    == theme.keywordStyle &&
-	       functionsStyle  == theme.functionsStyle &&
-	       traceStyle      == theme.traceStyle &&
-	       commentStyle    == theme.commentStyle &&
-	       numberStyle     == theme.numberStyle &&
-	       stringStyle     == theme.stringStyle &&
-	       operatorStyle   == theme.operatorStyle;
+	if ( flag ) flag &= identifierColor == theme.identifierColor &&
+	                    keywordColor    == theme.keywordColor &&
+	                    functionsColor  == theme.functionsColor &&
+	                    traceColor      == theme.traceColor &&
+	                    commentColor    == theme.commentColor &&
+	                    numberColor     == theme.numberColor &&
+	                    stringColor     == theme.stringColor &&
+	                    operatorColor   == theme.operatorColor &&
+
+	                    identifierStyle == theme.identifierStyle &&
+	                    keywordStyle    == theme.keywordStyle &&
+	                    functionsStyle  == theme.functionsStyle &&
+	                    traceStyle      == theme.traceStyle &&
+	                    commentStyle    == theme.commentStyle &&
+	                    numberStyle     == theme.numberStyle &&
+	                    stringStyle     == theme.stringStyle &&
+	                    operatorStyle   == theme.operatorStyle;
+	return flag;
 }
 
 bool RDOEditorBaseEditTheme::operator !=( const RDOEditorBaseEditTheme& theme ) const

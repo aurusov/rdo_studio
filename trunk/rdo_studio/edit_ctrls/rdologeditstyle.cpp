@@ -22,6 +22,7 @@ RDOLogEditTheme::~RDOLogEditTheme()
 
 RDOLogEditTheme& RDOLogEditTheme::operator =( const RDOLogEditTheme& theme )
 {
+	RDOBaseEditTheme::operator=( theme );
 	selectLineBgColor = theme.selectLineBgColor;
 
 	return *this;
@@ -29,7 +30,9 @@ RDOLogEditTheme& RDOLogEditTheme::operator =( const RDOLogEditTheme& theme )
 
 bool RDOLogEditTheme::operator ==( const RDOLogEditTheme& theme ) const
 {
-	return selectLineBgColor == theme.selectLineBgColor;
+	bool flag = RDOBaseEditTheme::operator==( theme );
+	if ( flag )	flag &= selectLineBgColor == theme.selectLineBgColor ? true : false;
+	return flag;
 }
 
 bool RDOLogEditTheme::operator !=( const RDOLogEditTheme& theme ) const
@@ -72,7 +75,7 @@ void RDOLogEditStyle::initTheme()
 RDOLogEditStyle& RDOLogEditStyle::operator =( const RDOLogEditStyle& style )
 {
 	RDOBaseEditStyle::operator=( style );
-	if ( theme && style.theme ) *(RDOLogEditTheme*)theme = *(RDOLogEditTheme*)style.theme;
+	if ( theme && style.theme ) *static_cast<RDOLogEditTheme*>(theme) = *static_cast<RDOLogEditTheme*>(style.theme);
 
 	return *this;
 }
@@ -80,7 +83,7 @@ RDOLogEditStyle& RDOLogEditStyle::operator =( const RDOLogEditStyle& style )
 bool RDOLogEditStyle::operator ==( const RDOLogEditStyle& style ) const
 {
 	bool flag = RDOBaseEditStyle::operator==( style );
-	if ( theme && style.theme && flag ) flag &= *(RDOLogEditTheme*)theme == *(RDOLogEditTheme*)style.theme;
+	if ( theme && style.theme && flag ) flag &= *static_cast<RDOLogEditTheme*>(theme) == *static_cast<RDOLogEditTheme*>(style.theme);
 	return flag;
 }
 

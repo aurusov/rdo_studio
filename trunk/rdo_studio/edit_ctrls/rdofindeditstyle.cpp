@@ -29,6 +29,8 @@ RDOFindEditTheme::~RDOFindEditTheme()
 
 RDOFindEditTheme& RDOFindEditTheme::operator =( const RDOFindEditTheme& theme )
 {
+	RDOLogEditTheme::operator=( theme );
+
 	identifierColor = theme.identifierColor;
 	keywordColor    = theme.keywordColor;
 
@@ -40,11 +42,14 @@ RDOFindEditTheme& RDOFindEditTheme::operator =( const RDOFindEditTheme& theme )
 
 bool RDOFindEditTheme::operator ==( const RDOFindEditTheme& theme ) const
 {
-	return identifierColor == theme.identifierColor &&
-	       keywordColor    == theme.keywordColor &&
+	bool flag = RDOLogEditTheme::operator==( theme );
 
-	       identifierStyle == theme.identifierStyle &&
-	       keywordStyle    == theme.keywordStyle;
+	if ( flag ) flag &= identifierColor == theme.identifierColor &&
+	                    keywordColor    == theme.keywordColor &&
+
+	                    identifierStyle == theme.identifierStyle &&
+	                    keywordStyle    == theme.keywordStyle;
+	return flag;
 }
 
 bool RDOFindEditTheme::operator !=( const RDOFindEditTheme& theme ) const
@@ -133,7 +138,7 @@ void RDOFindEditStyle::initTheme()
 RDOFindEditStyle& RDOFindEditStyle::operator =( const RDOFindEditStyle& style )
 {
 	RDOLogEditStyle::operator=( style );
-	if ( theme && style.theme ) *(RDOFindEditTheme*)theme = *(RDOFindEditTheme*)style.theme;
+	if ( theme && style.theme ) *static_cast<RDOFindEditTheme*>(theme) = *static_cast<RDOFindEditTheme*>(style.theme);
 
 	return *this;
 }
@@ -141,7 +146,7 @@ RDOFindEditStyle& RDOFindEditStyle::operator =( const RDOFindEditStyle& style )
 bool RDOFindEditStyle::operator ==( const RDOFindEditStyle& style ) const
 {
 	bool flag = RDOLogEditStyle::operator==( style );
-	if ( theme && style.theme && flag ) flag &= *(RDOFindEditTheme*)theme == *(RDOFindEditTheme*)style.theme;
+	if ( theme && style.theme && flag ) flag &= *static_cast<RDOFindEditTheme*>(theme) == *static_cast<RDOFindEditTheme*>(style.theme);
 	return flag;
 }
 
