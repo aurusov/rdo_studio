@@ -18,6 +18,8 @@ private:
 	WCHAR* m_pwchTip;
 	virtual int OnToolHitTest( CPoint point, TOOLINFO* pTI ) const;
 
+	static UINT shellExecute( LPVOID pParam );
+
 protected:
 	//{{AFX_VIRTUAL(CChatNetworkCtrl)
 	protected:
@@ -27,6 +29,9 @@ protected:
 	//{{AFX_MSG(CChatNetworkCtrl)
 	afx_msg int OnCreate( LPCREATESTRUCT lpCreateStruct );
 	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
+	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnNetworkOpen();
+	afx_msg void OnNetworkInfo();
 	//}}AFX_MSG
 	afx_msg BOOL OnToolTipText( UINT id, NMHDR * pNMHDR, LRESULT * pResult );
 	DECLARE_MESSAGE_MAP()

@@ -20,6 +20,9 @@ BEGIN_MESSAGE_MAP( CChatNetworkCtrl, RDOTreeCtrl )
 	//{{AFX_MSG_MAP(CChatNetworkCtrl)
 	ON_WM_CREATE()
 	ON_WM_LBUTTONDBLCLK()
+	ON_WM_RBUTTONDOWN()
+	ON_COMMAND(ID_NETWORK_OPEN, OnNetworkOpen)
+	ON_COMMAND(ID_NETWORK_INFO, OnNetworkInfo)
 	//}}AFX_MSG_MAP
 	ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTW, 0, 0xFFFF, OnToolTipText)
 	ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTA, 0, 0xFFFF, OnToolTipText)
@@ -64,6 +67,14 @@ int CChatNetworkCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	return 0;
 }
 
+UINT CChatNetworkCtrl::shellExecute( LPVOID pParam )
+{
+	CChatNet* net = reinterpret_cast<CChatNet*>(pParam);
+	::ShellExecute( CWnd::GetDesktopWindow()->m_hWnd, "open", net->getFullPath().c_str(), 0, 0, SW_SHOWNORMAL );
+	net->openingThread = NULL;
+	return 0;
+}
+
 void CChatNetworkCtrl::OnLButtonDblClk( UINT nFlags, CPoint point )
 {
 	RDOTreeCtrl::OnLButtonDblClk( nFlags, point );
@@ -74,7 +85,55 @@ void CChatNetworkCtrl::OnLButtonDblClk( UINT nFlags, CPoint point )
 	if ( hitem && ( uFlags & TVHT_ONITEM ) ) {
 		CChatNet* net = reinterpret_cast<CChatNet*>(GetItemData( hitem ));
 		if ( net->getType() == CChatNet::shared ) {
-			::ShellExecute( chatApp.mainFrame->m_hWnd, "open", static_cast<CChatNetShared*>(net)->getName().c_str(), 0, 0, SW_SHOWNORMAL );
+			net->openingThread = AfxBeginThread( shellExecute, net );
+		}
+	}
+}
+
+void CChatNetworkCtrl::OnRButtonDown( UINT nFlags, CPoint point )
+{
+	UINT uFlags;
+	HTREEITEM hitem = HitTest( point, &uFlags );
+
+	if ( hitem && ( uFlags & TVHT_ONITEM ) ) {
+		SelectItem( hitem );
+		CChatNet* net = reinterpret_cast<CChatNet*>(GetItemData( hitem ));
+		if ( net->getType() == CChatNet::shared || net->getType() == CChatNet::server ) {
+			CMenu menu;
+			menu.LoadMenu( IDR_NETWORK_MENU );
+			CMenu* subMenu = menu.GetSubMenu( 0 );
+			ClientToScreen( &point );
+			if ( net->openingThread ) {
+				subMenu->EnableMenuItem( 0, MF_BYPOSITION | MF_GRAYED );
+			}
+//			if ( net->getType() == CChatNet::shared ) {
+				subMenu->RemoveMenu( 1, MF_BYPOSITION );
+//			}
+			subMenu->TrackPopupMenu( TPM_LEFTALIGN | TPM_RIGHTBUTTON, point.x, point.y, this );
+			menu.DestroyMenu();
+		}
+	}
+
+	RDOTreeCtrl::OnRButtonDown( nFlags, point );
+}
+
+void CChatNetworkCtrl::OnNetworkOpen()
+{
+	HTREEITEM hitem = GetSelectedItem();
+	if ( hitem ) {
+		CChatNet* net = reinterpret_cast<CChatNet*>(GetItemData( hitem ));
+		if ( net->getType() == CChatNet::shared || net->getType() == CChatNet::server ) {
+			net->openingThread = AfxBeginThread( shellExecute, net );
+		}
+	}
+}
+
+void CChatNetworkCtrl::OnNetworkInfo()
+{
+	HTREEITEM hitem = GetSelectedItem();
+	if ( hitem ) {
+		CChatNet* net = reinterpret_cast<CChatNet*>(GetItemData( hitem ));
+		if ( net->getType() == CChatNet::server ) {
 		}
 	}
 }
@@ -131,7 +190,7 @@ BOOL CChatNetworkCtrl::OnToolTipText( UINT id, NMHDR * pNMHDR, LRESULT * pResult
 	{
 		CChatNet* net = reinterpret_cast<CChatNet*>(GetItemData( hitem ));
 		if ( net->getType() == CChatNet::server ) {
-			strTipText = static_cast<CChatNetServer*>(net)->getToolTipInfo().c_str();
+			strTipText = net->getToolTipInfo().c_str();
 		}
 	}
 

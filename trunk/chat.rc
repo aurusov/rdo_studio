@@ -310,6 +310,15 @@ BEGIN
     END
 END
 
+IDR_NETWORK_MENU MENU DISCARDABLE 
+BEGIN
+    POPUP "Network"
+    BEGIN
+        MENUITEM "Open",                        ID_NETWORK_OPEN
+        MENUITEM "Info...",                     ID_NETWORK_INFO
+    END
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -428,8 +437,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,0,152
- PRODUCTVERSION 1,0,0,152
+ FILEVERSION 1,0,0,154
+ PRODUCTVERSION 1,0,0,154
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -447,14 +456,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "Application for chat in localnet\0"
-            VALUE "FileVersion", "1, 0, 0, 152\0"
+            VALUE "FileVersion", "1, 0, 0, 154\0"
             VALUE "InternalName", "localChat\0"
             VALUE "LegalCopyright", "Copyright (C) 2002\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "localchat.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "localChat\0"
-            VALUE "ProductVersion", "1, 0, 0, 152\0"
+            VALUE "ProductVersion", "1, 0, 0, 154\0"
             VALUE "SpecialBuild", "\0"
         END
     END

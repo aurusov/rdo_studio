@@ -9,17 +9,24 @@
 // ----------------------------------------------------------------------------
 class CChatNet
 {
+friend class CChatNetworkCtrl;
 protected:
 	CChatNet();
 	virtual ~CChatNet();
 
-	HTREEITEM item;
+	std::string name;
+	HTREEITEM   item;
+	CWinThread* openingThread;
+	bool isOpening() const;
 
 	virtual std::string getNameForCtrl() const = 0;
 
 public:
 	enum Type { shared, server, domain };
 	virtual getType() const = 0;
+
+	virtual std::string getFullPath() const    { return name; }
+	virtual std::string getToolTipInfo() const { return "";   }
 };
 
 // ----------------------------------------------------------------------------
@@ -33,13 +40,11 @@ private:
 	CChatNetShared();
 	virtual ~CChatNetShared();
 
-	std::string name;
 	std::string comment;
 	virtual std::string getNameForCtrl() const;
-	virtual getType() const { return shared; }
 
 public:
-	std::string getName() const { return name; }
+	virtual getType() const { return shared; }
 };
 
 // ----------------------------------------------------------------------------
@@ -56,13 +61,12 @@ private:
 	std::vector< CChatNetShared* > list;
 	void clear();
 
-	std::string name;
 	std::string ip;
 	virtual std::string getNameForCtrl() const;
-	virtual getType() const { return server; }
 
 public:
-	std::string getToolTipInfo() const;
+	virtual getType() const { return server; }
+	virtual std::string getToolTipInfo() const;
 };
 
 // ----------------------------------------------------------------------------
@@ -77,15 +81,16 @@ private:
 
 	std::vector< CChatNetServer* > list;
 
-	std::string name;
 	virtual std::string getNameForCtrl() const;
-	virtual getType() const { return domain; }
 
 	int findServerByHostName( const std::string& hostname ) const;
 	int findServerByIP( const std::string& ip ) const;
 	CChatNetServer* getServerByHostName( const std::string& hostname ) const;
 	CChatNetServer* getServerByIP( const std::string& ip ) const;
 	void clear();
+
+public:
+	virtual getType() const { return domain; }
 };
 
 // ----------------------------------------------------------------------------

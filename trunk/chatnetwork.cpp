@@ -13,12 +13,30 @@ static char THIS_FILE[] = __FILE__;
 // ----------------------------------------------------------------------------
 // ---------- CChatNet
 // ----------------------------------------------------------------------------
-CChatNet::CChatNet(): item( 0 )
+CChatNet::CChatNet():
+	name( "" ),
+	item( 0 ),
+	openingThread( NULL )
 {
 }
 
 CChatNet::~CChatNet()
 {
+	if ( isOpening() ) {
+		::TerminateThread( openingThread->m_hThread, 1 );
+		delete openingThread;
+		openingThread = NULL;
+	}
+}
+
+bool CChatNet::isOpening() const
+{
+	if ( openingThread ) {
+		DWORD res;
+		::GetExitCodeThread( openingThread->m_hThread, &res );
+		return res == STILL_ACTIVE;
+	}
+	return false;
 }
 
 // ----------------------------------------------------------------------------
@@ -26,7 +44,6 @@ CChatNet::~CChatNet()
 // ----------------------------------------------------------------------------
 CChatNetShared::CChatNetShared():
 	CChatNet(),
-	name( "" ),
 	comment( "" )
 {
 }
@@ -53,7 +70,6 @@ std::string CChatNetShared::getNameForCtrl() const
 // ----------------------------------------------------------------------------
 CChatNetServer::CChatNetServer():
 	CChatNet(),
-	name( "" ),
 	ip( "" )
 {
 }
@@ -95,9 +111,7 @@ std::string CChatNetServer::getToolTipInfo() const
 // ----------------------------------------------------------------------------
 // ---------- CChatNetDomain
 // ----------------------------------------------------------------------------
-CChatNetDomain::CChatNetDomain():
-	CChatNet(),
-	name( "" )
+CChatNetDomain::CChatNetDomain(): CChatNet()
 {
 }
 
@@ -167,6 +181,7 @@ CChatNetwork::~CChatNetwork()
 {
 	if ( enumNetworkThread ) {
 		::TerminateThread( enumNetworkThread->m_hThread, 1 );
+		delete enumNetworkThread;
 		enumNetworkThread = NULL;
 	}
 	clear();
