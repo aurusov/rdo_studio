@@ -73,7 +73,7 @@ private:
 
 public:
 	binarystream( ios_base::openmode mode = ios_base::in | ios_base::out | ios_base::binary );
-	char* data()                                    { return &buf.vec[0];                 }
+	char* data()                                    { return buf.vec.begin();             }
 	std::vector< char >::size_type size()           { return buf.vec.size();              }
 	void resize( std::vector< char >::size_type n ) { buf.vec.resize( n ); buf.initPtr(); }
 //	std::vector< char >& vec()                      { return buf.vec;                     }

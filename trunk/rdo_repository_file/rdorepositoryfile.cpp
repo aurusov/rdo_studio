@@ -398,6 +398,7 @@ void RDORepositoryFile::loadFile( const string& filename, rdo::binarystream& str
 			stream.resize( len );
 			file.read( stream.data(), len );
 			file.close();
+
 /*
 			if ( stream.getOpenMode() & ios::binary ) {
 				ios_base::openmode openmode = ios::in;
