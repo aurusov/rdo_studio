@@ -56,12 +56,15 @@ public:
 	void clearResults();
 	void clearFind();
 
-	const RDOFindEdit* getFind() const { return find; };
+	const RDOBuildEdit*             getBuild() const   { return build;   };
+	const RDODebugEdit*             getDebug() const   { return debug;   };
+	const CWnd*                     getTracer() const  { return tracer;  };
+	const rdoEditor::RDOEditorEdit* getResults() const { return results; };
+	const RDOFindEdit*              getFind() const    { return find;    };
 
 	void appendStringToBuild( const string& str, const rdoModelObjects::RDOFileType fileType = rdoModelObjects::PAT, const int lineNumber = -1, const bool error = true ) const;
 	void appendStringToDebug( const string& str ) const;
 	void appendStringToFind( const string& str, const rdoModelObjects::RDOFileType fileType = rdoModelObjects::PAT, const int lineNumber = -1, const int posInLine = 0 ) const;
-	void setKeywordForFind( const string& keyword, const bool matchCase = false ) const;
 
 public:
 	//{{AFX_VIRTUAL(RDOStudioOutput)

@@ -17,6 +17,8 @@ class RDOStudioModel
 friend class RDOStudioModelDoc;
 
 private:
+	CMultiDocTemplate* modelDocTemplate;
+
 	std::string name;
 	bool useTemplate;
 	bool closeWithDocDelete;
@@ -63,6 +65,9 @@ public:
 
 	bool isModify() const;
 	bool isRunning() const { return running; };
+
+	RDOStudioModelDoc* getModelDoc() const;
+	void updateModify() const;
 
 	rdoEditor::RDOEditorTabCtrl* getTab() const;
 };

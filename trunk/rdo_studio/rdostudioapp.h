@@ -13,7 +13,6 @@
 // ---------- RDOStudioApp
 // ----------------------------------------------------------------------------
 class RDOStudioMainFrame;
-class RDOStudioModelDoc;
 
 class RDOStudioApp: public CWinApp
 {
@@ -22,7 +21,6 @@ friend class RDOStudioModel;
 private:
 	bool initInstance;
 
-	CMultiDocTemplate* modelDocTemplate;
 	CMultiDocTemplate* editDocTemplate;
 
 	std::vector< std::string > reopenList;
@@ -34,12 +32,8 @@ public:
 	RDOStudioApp();
 
 	RDOStudioMainFrame* mainFrame;
-	RDOStudioModelDoc* getModelDoc();
 
 	void insertReopenItem( const std::string& item );
-
-	static void appendMenu( CMenu* from, const int from_index, CMenu* to );
-	static void eraseMenu( CMenu* from, const int from_index = -1 );
 
 	//{{AFX_VIRTUAL(RDOStudioApp)
 	public:

@@ -2,6 +2,7 @@
 #include "rdostudiomodel.h"
 #include "rdostudioapp.h"
 #include "rdostudiomainfrm.h"
+#include "rdostudiochildfrm.h"
 #include "rdostudiomodeldoc.h"
 #include "rdostudiomodelview.h"
 #include "resource.h"
@@ -22,6 +23,7 @@ using namespace RDOSimulatorNS;
 RDOStudioModel* model = NULL;
 
 RDOStudioModel::RDOStudioModel():
+	modelDocTemplate( NULL ),
 	name( "" ),
 	useTemplate( false ),
 	closeWithDocDelete( true ),
@@ -29,6 +31,10 @@ RDOStudioModel::RDOStudioModel():
 	running( false )
 {
 	model = this;
+
+	modelDocTemplate = new CMultiDocTemplate( IDR_MODELTYPE, RUNTIME_CLASS(RDOStudioModelDoc), RUNTIME_CLASS(RDOStudioChildFrame), RUNTIME_CLASS(RDOStudioModelView) );
+	AfxGetApp()->AddDocTemplate( modelDocTemplate );
+
 	kernel.setNotifyReflect( RDOKernel::newModel, newModelNotify );
 	kernel.setNotifyReflect( RDOKernel::openModel, openModelNotify );
 	kernel.setNotifyReflect( RDOKernel::saveModel, saveModelNotify );
@@ -163,9 +169,26 @@ void RDOStudioModel::debugNotify( string str )
 	studioApp.mainFrame->output.appendStringToDebug( str );
 }
 
+RDOStudioModelDoc* RDOStudioModel::getModelDoc() const
+{
+	POSITION pos = modelDocTemplate->GetFirstDocPosition();
+	if ( pos ) {
+		return static_cast<RDOStudioModelDoc*>(modelDocTemplate->GetNextDoc( pos ));
+	}
+	return NULL;
+}
+
+void RDOStudioModel::updateModify() const
+{
+	RDOStudioModelDoc* doc = getModelDoc();
+	if ( doc ) {
+		doc->updateModify();
+	}
+}
+
 RDOEditorTabCtrl* RDOStudioModel::getTab() const
 {
-	RDOStudioModelDoc* doc = studioApp.getModelDoc();
+	RDOStudioModelDoc* doc = getModelDoc();
 	if ( doc ) {
 		RDOStudioModelView* view = doc->getView();
 		if ( view ) {
@@ -177,14 +200,14 @@ RDOEditorTabCtrl* RDOStudioModel::getTab() const
 
 void RDOStudioModel::newModelFromRepository()
 {
-	if ( studioApp.modelDocTemplate ) {
+	if ( modelDocTemplate ) {
 
 		BOOL maximize = false;
 		if ( !studioApp.mainFrame->MDIGetActive( &maximize ) ) {
 			maximize = true;
 		}
 
-		studioApp.modelDocTemplate->OpenDocumentFile( NULL );
+		modelDocTemplate->OpenDocumentFile( NULL );
 		setName( kernel.getRepository()->getName() );
 
 		RDOEditorTabCtrl* tab = getTab();
@@ -234,14 +257,14 @@ void RDOStudioModel::newModelFromRepository()
 
 void RDOStudioModel::openModelFromRepository()
 {
-	if ( studioApp.modelDocTemplate ) {
+	if ( modelDocTemplate ) {
 
 		BOOL maximize = false;
 		if ( !studioApp.mainFrame->MDIGetActive( &maximize ) ) {
 			maximize = true;
 		}
 
-		studioApp.modelDocTemplate->OpenDocumentFile( NULL );
+		modelDocTemplate->OpenDocumentFile( NULL );
 		setName( kernel.getRepository()->getName() );
 
 		RDOEditorTabCtrl* tab = getTab();
@@ -345,7 +368,7 @@ bool RDOStudioModel::canCloseDocument()
 void RDOStudioModel::closeModelFromRepository()
 {
 	if ( closeWithDocDelete ) {
-		RDOStudioModelDoc* doc = studioApp.getModelDoc();
+		RDOStudioModelDoc* doc = getModelDoc();
 		if ( doc ) {
 			doc->OnCloseDocument();
 		}
@@ -373,15 +396,15 @@ void RDOStudioModel::setName( const string& str )
 	static char szDelims[] = " \t\n\r";
 	name.erase( 0, name.find_first_not_of( szDelims ) );
 	name.erase( name.find_last_not_of( szDelims ) + 1, string::npos );
-	studioApp.getModelDoc()->SetTitle( name.c_str() );
+	getModelDoc()->SetTitle( name.c_str() );
 }
 
 bool RDOStudioModel::isModify() const
 {
 	bool flag = false;
-	RDOStudioModelDoc* doc = studioApp.getModelDoc();
+	RDOStudioModelDoc* doc = getModelDoc();
 	if ( doc ) {
-		doc->updateModify();
+		updateModify();
 		flag = doc->IsModified() ? true : false;
 	}
 	return flag;

@@ -2,7 +2,6 @@
 #include "rdostudiomodeldoc.h"
 #include "rdostudiomodelview.h"
 #include "rdostudiomodel.h"
-#include "rdostudioapp.h"
 #include "rdo_edit/rdoeditortabctrl.h"
 #include "resource.h"
 
@@ -80,7 +79,7 @@ RDOStudioModelView* RDOStudioModelDoc::getView() const
 
 BOOL RDOStudioModelDoc::CanCloseFrame(CFrameWnd* pFrame) 
 {
-	if ( studioApp.getModelDoc() == this ) {
+	if ( model->getModelDoc() == this ) {
 		return model->canCloseDocument();
 	}
 	return TRUE;

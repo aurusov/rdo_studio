@@ -59,7 +59,7 @@ RDOStudioEditBaseView::~RDOStudioEditBaseView()
 {
 //	WriteProfileInt( "buffer", "clear", canClearBuffer );
 //	WriteProfileInt( "buffer", "delay", clearBufferDelay );
-	RDOStudioApp::eraseMenu( &popupMenu );
+	eraseMenu( &popupMenu );
 }
 
 BOOL RDOStudioEditBaseView::PreCreateWindow(CREATESTRUCT& cs)
@@ -89,17 +89,17 @@ int RDOStudioEditBaseView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	studioApp.mainFrame->MDIGetActive( &maximized );
 	int delta = maximized ? 1 : 0;
 
-	RDOStudioApp::appendMenu( mainMenu, 4 + delta, &popupMenu );
+	appendMenu( mainMenu, 4 + delta, &popupMenu );
 	popupMenu.AppendMenu( MF_SEPARATOR );
-	RDOStudioApp::appendMenu( mainMenu->GetSubMenu( 1 + delta ), 3, &popupMenu );
-	RDOStudioApp::appendMenu( mainMenu->GetSubMenu( 1 + delta ), 4, &popupMenu );
-	RDOStudioApp::appendMenu( mainMenu->GetSubMenu( 1 + delta ), 5, &popupMenu );
+	appendMenu( mainMenu->GetSubMenu( 1 + delta ), 3, &popupMenu );
+	appendMenu( mainMenu->GetSubMenu( 1 + delta ), 4, &popupMenu );
+	appendMenu( mainMenu->GetSubMenu( 1 + delta ), 5, &popupMenu );
 	popupMenu.AppendMenu( MF_SEPARATOR );
-	RDOStudioApp::appendMenu( mainMenu->GetSubMenu( 1 + delta ), 10, &popupMenu );
+	appendMenu( mainMenu->GetSubMenu( 1 + delta ), 10, &popupMenu );
 	popupMenu.AppendMenu( MF_SEPARATOR );
-	RDOStudioApp::appendMenu( mainMenu->GetSubMenu( 2 + delta ), 0, &popupMenu );
-	RDOStudioApp::appendMenu( mainMenu->GetSubMenu( 2 + delta ), 3, &popupMenu );
-	RDOStudioApp::appendMenu( mainMenu->GetSubMenu( 2 + delta ), 1, &popupMenu );
+	appendMenu( mainMenu->GetSubMenu( 2 + delta ), 0, &popupMenu );
+	appendMenu( mainMenu->GetSubMenu( 2 + delta ), 3, &popupMenu );
+	appendMenu( mainMenu->GetSubMenu( 2 + delta ), 1, &popupMenu );
 
 	return 0;
 }

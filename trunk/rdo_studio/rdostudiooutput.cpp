@@ -31,7 +31,7 @@ RDOStudioOutput::RDOStudioOutput()
 
 RDOStudioOutput::~RDOStudioOutput()
 {
-	RDOStudioApp::eraseMenu( &popupMenu );
+	eraseMenu( &popupMenu );
 }
 
 int RDOStudioOutput::OnCreate(LPCREATESTRUCT lpCreateStruct) 
@@ -50,18 +50,18 @@ int RDOStudioOutput::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	studioApp.mainFrame->MDIGetActive( &maximized );
 	int delta = maximized ? 1 : 0;
 
-	RDOStudioApp::appendMenu( mainMenu->GetSubMenu( 1 + delta ), 4, &popupMenu );
-	RDOStudioApp::appendMenu( mainMenu->GetSubMenu( 1 + delta ), 8, &popupMenu );
-	RDOStudioApp::appendMenu( mainMenu->GetSubMenu( 1 + delta ), 10, &popupMenu );
+	appendMenu( mainMenu->GetSubMenu( 1 + delta ), 4, &popupMenu );
+	appendMenu( mainMenu->GetSubMenu( 1 + delta ), 8, &popupMenu );
+	appendMenu( mainMenu->GetSubMenu( 1 + delta ), 10, &popupMenu );
 	popupMenu.AppendMenu( MF_SEPARATOR );
-	RDOStudioApp::appendMenu( mainMenu->GetSubMenu( 2 + delta ), 0, &popupMenu );
-	RDOStudioApp::appendMenu( mainMenu->GetSubMenu( 2 + delta ), 1, &popupMenu );
-	RDOStudioApp::appendMenu( mainMenu->GetSubMenu( 2 + delta ), 2, &popupMenu );
+	appendMenu( mainMenu->GetSubMenu( 2 + delta ), 0, &popupMenu );
+	appendMenu( mainMenu->GetSubMenu( 2 + delta ), 1, &popupMenu );
+	appendMenu( mainMenu->GetSubMenu( 2 + delta ), 2, &popupMenu );
 	popupMenu.AppendMenu( MF_SEPARATOR );
-	RDOStudioApp::appendMenu( mainMenu->GetSubMenu( 2 + delta ), 7, &popupMenu );
-	RDOStudioApp::appendMenu( mainMenu->GetSubMenu( 2 + delta ), 8, &popupMenu );
-	RDOStudioApp::appendMenu( mainMenu->GetSubMenu( 2 + delta ), 9, &popupMenu );
-	RDOStudioApp::appendMenu( mainMenu->GetSubMenu( 2 + delta ), 10, &popupMenu );
+	appendMenu( mainMenu->GetSubMenu( 2 + delta ), 7, &popupMenu );
+	appendMenu( mainMenu->GetSubMenu( 2 + delta ), 8, &popupMenu );
+	appendMenu( mainMenu->GetSubMenu( 2 + delta ), 9, &popupMenu );
+	appendMenu( mainMenu->GetSubMenu( 2 + delta ), 10, &popupMenu );
 
 	build   = new RDOBuildEdit;
 	debug   = new RDODebugEdit;
@@ -183,9 +183,4 @@ void RDOStudioOutput::appendStringToFind( const string& str, const rdoModelObjec
 {
 	RDOLogEditLineInfo* line = new RDOLogEditLineInfo( str, fileType, lineNumber, posInLine );
 	find->appendLine( line );
-}
-
-void RDOStudioOutput::setKeywordForFind( const string& keyword, const bool matchCase ) const
-{
-	find->setKeyword( keyword, matchCase );
 }

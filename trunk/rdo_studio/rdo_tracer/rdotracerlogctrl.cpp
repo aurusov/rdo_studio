@@ -55,11 +55,11 @@ int RDOTracerLogCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	studioApp.mainFrame->MDIGetActive( &maximized );
 	int delta = maximized ? 1 : 0;
 
-	RDOStudioApp::appendMenu( mainMenu->GetSubMenu( 1 + delta ), 4, &popupMenu );
+	appendMenu( mainMenu->GetSubMenu( 1 + delta ), 4, &popupMenu );
 	popupMenu.AppendMenu( MF_SEPARATOR );
-	RDOStudioApp::appendMenu( mainMenu->GetSubMenu( 2 + delta ), 0, &popupMenu );
-	RDOStudioApp::appendMenu( mainMenu->GetSubMenu( 2 + delta ), 1, &popupMenu );
-	RDOStudioApp::appendMenu( mainMenu->GetSubMenu( 2 + delta ), 2, &popupMenu );
+	appendMenu( mainMenu->GetSubMenu( 2 + delta ), 0, &popupMenu );
+	appendMenu( mainMenu->GetSubMenu( 2 + delta ), 1, &popupMenu );
+	appendMenu( mainMenu->GetSubMenu( 2 + delta ), 2, &popupMenu );
 
 	return 0;
 }

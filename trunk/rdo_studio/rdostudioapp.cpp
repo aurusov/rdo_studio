@@ -3,8 +3,6 @@
 #include "rdostudiomainfrm.h"
 #include "rdostudiochildfrm.h"
 #include "rdostudiomodel.h"
-#include "rdostudiomodeldoc.h"
-#include "rdostudiomodelview.h"
 #include "rdostudioeditdoc.h"
 #include "rdostudioeditview.h"
 #include "resource.h"
@@ -55,7 +53,7 @@ END_MESSAGE_MAP()
 RDOStudioApp::RDOStudioApp():
 	CWinApp(),
 	initInstance( false ),
-	modelDocTemplate( NULL )
+	editDocTemplate( NULL )
 {
 }
 
@@ -82,8 +80,7 @@ BOOL RDOStudioApp::InitInstance()
 
 //	LoadStdProfileSettings();  // Load standard INI file options (including MRU)
 
-	modelDocTemplate = new CMultiDocTemplate( IDR_MODELTYPE, RUNTIME_CLASS(RDOStudioModelDoc), RUNTIME_CLASS(RDOStudioChildFrame), RUNTIME_CLASS(RDOStudioModelView) );
-	AddDocTemplate( modelDocTemplate );
+	model = new RDOStudioModel;
 
 	editDocTemplate = new CMultiDocTemplate( IDR_EDITTYPE, RUNTIME_CLASS(RDOStudioEditDoc), RUNTIME_CLASS(RDOStudioChildFrame), RUNTIME_CLASS(RDOStudioEditView) );
 	AddDocTemplate( editDocTemplate );
@@ -93,8 +90,6 @@ BOOL RDOStudioApp::InitInstance()
 	mainFrame = new RDOStudioMainFrame;
 	if ( !mainFrame->LoadFrame( IDR_MAINFRAME ) ) return FALSE;
 	m_pMainWnd = mainFrame;
-
-	model = new RDOStudioModel;
 
 	loadReopen();
 	updateReopenSubMenu();
@@ -126,65 +121,6 @@ int RDOStudioApp::ExitInstance()
 	::OleUninitialize();
 	if ( model ) { delete model; model = NULL; }
 	return CWinApp::ExitInstance();
-}
-
-void RDOStudioApp::appendMenu( CMenu* from, const int from_index, CMenu* to )
-{
-	CString s;
-	from->GetMenuString( from_index, s, MF_BYPOSITION );
-
-	CMenu* m_from = from->GetSubMenu( from_index );
-	int item_count = 0;
-	if ( m_from ) item_count = m_from->GetMenuItemCount();
-
-	if ( item_count ) {
-
-		CMenu* m_to = new CMenu();
-		m_to->CreateMenu();
-		to->AppendMenu( MF_STRING | MF_POPUP, (int)m_to->m_hMenu, s );
-
-		for ( int i = 0; i < item_count; i++ ) {
-			appendMenu( m_from, i, m_to );
-		}
-
-	} else {
-		UINT itemID = from->GetMenuItemID( from_index );
-		if ( itemID ) {
-			to->AppendMenu( MF_STRING, itemID, s );
-		} else {
-			to->AppendMenu( MF_SEPARATOR );
-		}
-	}
-}
-
-void RDOStudioApp::eraseMenu( CMenu* from, const int from_index )
-{
-	CMenu* m_from;
-	if ( from_index != -1 )	{
-		m_from = from->GetSubMenu( from_index );
-	} else {
-		m_from = from;
-	}
-	int item_count = 0;
-	if ( m_from ) item_count = m_from->GetMenuItemCount();
-
-	if ( item_count ) {
-		for ( int i = item_count-1; i >= 0; i-- ) {
-			eraseMenu( m_from, i );
-		}
-		if ( from_index != -1 ) delete m_from;
-	}
-
-	if ( from_index != -1 ) from->DeleteMenu( from_index, MF_BYPOSITION );
-}
-
-RDOStudioModelDoc* RDOStudioApp::getModelDoc()
-{
-	POSITION pos = modelDocTemplate->GetFirstDocPosition();
-	if ( pos ) {
-		return static_cast<RDOStudioModelDoc*>(modelDocTemplate->GetNextDoc( pos ));
-	}
-	return NULL;
 }
 
 void RDOStudioApp::OnFileNew() 
@@ -221,20 +157,14 @@ void RDOStudioApp::OnFileSaveAll()
 
 void RDOStudioApp::OnUpdateFileClose(CCmdUI* pCmdUI) 
 {
-	pCmdUI->Enable( getModelDoc() ? true : false );
+	pCmdUI->Enable( model->getModelDoc() ? true : false );
 }
 
 void RDOStudioApp::OnUpdateFileSave(CCmdUI* pCmdUI) 
 {
-	POSITION pos;
-	pos = modelDocTemplate->GetFirstDocPosition();
-	while ( pos ) {
-		RDOStudioModelDoc* doc = static_cast<RDOStudioModelDoc*>(modelDocTemplate->GetNextDoc( pos ));
-		if ( doc ) {
-			doc->updateModify();
-		}
-	}
-	pos = editDocTemplate->GetFirstDocPosition();
+	model->updateModify();
+
+	POSITION pos = editDocTemplate->GetFirstDocPosition();
 	while ( pos ) {
 		RDOStudioEditDoc* doc = static_cast<RDOStudioEditDoc*>(editDocTemplate->GetNextDoc( pos ));
 		if ( doc ) {
@@ -254,32 +184,20 @@ void RDOStudioApp::OnUpdateFileSave(CCmdUI* pCmdUI)
 
 void RDOStudioApp::OnUpdateFileSaveAs(CCmdUI* pCmdUI) 
 {
-	pCmdUI->Enable( getModelDoc() ? true : false );
+	pCmdUI->Enable( model->getModelDoc() ? true : false );
 }
 
 void RDOStudioApp::OnUpdateFileSaveAll(CCmdUI* pCmdUI) 
 {
 	bool flag = model->isModify();
 	if ( !flag ) {
-		POSITION pos;
-		pos = modelDocTemplate->GetFirstDocPosition();
+		POSITION pos = editDocTemplate->GetFirstDocPosition();
 		while ( pos ) {
-			RDOStudioModelDoc* doc = static_cast<RDOStudioModelDoc*>(modelDocTemplate->GetNextDoc( pos ));
+			RDOStudioEditDoc* doc = static_cast<RDOStudioEditDoc*>(editDocTemplate->GetNextDoc( pos ));
 			if ( doc ) {
 				doc->updateModify();
 				flag = doc->IsModified() ? true : false;
 				if ( flag ) break;
-			}
-		}
-		if ( !flag ) {
-			pos = editDocTemplate->GetFirstDocPosition();
-			while ( pos ) {
-				RDOStudioEditDoc* doc = static_cast<RDOStudioEditDoc*>(editDocTemplate->GetNextDoc( pos ));
-				if ( doc ) {
-					doc->updateModify();
-					flag = doc->IsModified() ? true : false;
-					if ( flag ) break;
-				}
 			}
 		}
 	}
