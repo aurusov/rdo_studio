@@ -29,7 +29,8 @@ RDOStudioPlugin::RDOStudioPlugin( const std::string& _modulName ):
 	runMode( rdoPlugin::prmNoAuto ),
 	pluginProc( NULL ),
 	trace( NULL ),
-	results( NULL )
+	results( NULL ),
+	closed( false )
 {
 	lib = ::LoadLibrary( modulName.c_str() );
 	if ( lib ) {
@@ -187,6 +188,7 @@ RDOStudioPlugins::RDOStudioPlugins():
 	studio.stopPlugin         = RDOStudioPlugins::stopStudioPlugin;
 	studio.lock               = RDOStudioPlugins::lockPlugin;
 	studio.unlock             = RDOStudioPlugins::unlockPlugin;
+	studio.isClosed           = RDOStudioPlugins::isPluginClosed;
 
 	studio.model.newModel     = RDOStudioPlugins::newModel;
 	studio.model.openModel    = RDOStudioPlugins::openModel;
@@ -375,7 +377,18 @@ void RDOStudioPlugins::clearResults( rdoPlugin::PFunResults _results )
 
 void RDOStudioPlugins::stopStudioPlugin( const HMODULE lib )
 {
+	lockPlugin( lib );
+	std::vector< RDOStudioPlugin* >::const_iterator it = plugins->list.begin();
+	while ( it != plugins->list.end() ) {
+		RDOStudioPlugin* plugin = *it;
+		if ( plugin->lib == lib ) {
+			plugin->closed = true;
+			break;
+		}
+		it++;
+	}
 	AfxGetApp()->PostThreadMessage( PLUGIN_MUSTEXIT_MESSAGE, reinterpret_cast<WPARAM>(lib), 0 );
+	unlockPlugin( lib );
 }
 
 void RDOStudioPlugins::lockPlugin( const HMODULE lib )
@@ -402,6 +415,19 @@ void RDOStudioPlugins::unlockPlugin( const HMODULE lib )
 		}
 		it++;
 	}
+}
+
+bool RDOStudioPlugins::isPluginClosed( const HMODULE lib )
+{
+	std::vector< RDOStudioPlugin* >::const_iterator it = plugins->list.begin();
+	while ( it != plugins->list.end() ) {
+		RDOStudioPlugin* plugin = *it;
+		if ( plugin->lib == lib ) {
+			return plugin->closed;
+		}
+		it++;
+	}
+	return false;
 }
 
 void RDOStudioPlugins::stopPlugin( const HMODULE lib )

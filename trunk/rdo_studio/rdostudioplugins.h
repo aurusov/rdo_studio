@@ -36,6 +36,7 @@ private:
 	rdoPlugin::PFunResults    results;
 
 	CMutex traceMutex;
+	bool closed;
 
 	std::string getProfilePath() const;
 
@@ -103,6 +104,7 @@ private:
 	static void stopStudioPlugin( const HMODULE lib );
 	static void lockPlugin( const HMODULE lib );
 	static void unlockPlugin( const HMODULE lib );
+	static bool isPluginClosed( const HMODULE lib );
 
 	static void newModel();
 	static bool openModel( const char* modelName );

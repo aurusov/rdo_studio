@@ -56,8 +56,8 @@ BEGIN_MESSAGE_MAP(RDOPluginMFCMainFrame, CFrameWnd)
 END_MESSAGE_MAP()
 
 RDOPluginMFCMainFrame::RDOPluginMFCMainFrame():
-	CFrameWnd(),
-	closed( false )
+	CFrameWnd()
+//	closed( false )
 {
 }
 
@@ -114,19 +114,20 @@ void RDOPluginMFCMainFrame::OnSize(UINT nType, int cx, int cy)
 void RDOPluginMFCMainFrame::insertLine( const char* line )
 {
 	pluginMFCApp.studio.lock( AfxGetInstanceHandle() );
-	pluginMFCApp.closeMutex.Lock();
-	if ( !closed ) {
+//	pluginMFCApp.closeMutex.Lock();
+	if ( !pluginMFCApp.studio.isClosed( AfxGetInstanceHandle() ) ) {
 		TRACE( "line1\n" );
 		int length = edit.GetWindowTextLength();
 		edit.SetSel( length, length );
 		CString str;
 		str.Format( "%d. %s\r\n", edit.GetLineCount(), line );
 		edit.ReplaceSel( str );
+		TRACE( str );
 		TRACE( "line2\n" );
 	} else {
 		TRACE( "noline\n" );
 	}
-	pluginMFCApp.closeMutex.Unlock();
+//	pluginMFCApp.closeMutex.Unlock();
 	pluginMFCApp.studio.unlock( AfxGetInstanceHandle() );
 }
 
@@ -318,11 +319,15 @@ LRESULT RDOPluginMFCMainFrame::WindowProc( UINT message, WPARAM wParam, LPARAM l
 		TRACE( "WM_CLOSE\n" );
 //		pluginMFCApp.closeMutex.Lock();
 		TRACE( "close = true\n" );
-		closed = true;
+//		closed = true;
 //		pluginMFCApp.closeMutex.Unlock();
 	} else if ( message == WM_SYSCOMMAND && wParam == SC_CLOSE ) {
 		TRACE( "SC_CLOSE\n" );
-		closed = true;
+//		closed = true;
+		insertLine( "1" );
+		insertLine( "2" );
+		insertLine( "3" );
+		insertLine( "4" );
 		pluginMFCApp.studio.stopPlugin( AfxGetInstanceHandle() );
 	}
 	return CFrameWnd::WindowProc( message, wParam, lParam );

@@ -13,7 +13,7 @@ class RDOPluginMFCMainFrame: public CFrameWnd
 DECLARE_DYNAMIC(RDOPluginMFCMainFrame)
 
 private:
-	bool closed;
+//	bool closed;
 	CEdit edit;
 
 public:

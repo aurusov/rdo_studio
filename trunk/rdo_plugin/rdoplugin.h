@@ -90,10 +90,11 @@ public:
 typedef void (*PFunStopStudioPlugin)( const HMODULE );
 typedef void (*PFunLockPlugin)( const HMODULE );
 typedef void (*PFunUnlockPlugin)( const HMODULE );
+typedef bool (*PFunIsPluginClosed)( const HMODULE );
 
 class Studio {
 public:
-	Studio(): stopPlugin( NULL ), lock( NULL ), unlock( NULL ) {};
+	Studio(): stopPlugin( NULL ), lock( NULL ), unlock( NULL ), isClosed( NULL ) {};
 	virtual ~Studio() {};
 
 	Model model;
@@ -102,6 +103,7 @@ public:
 	PFunStopStudioPlugin stopPlugin;
 	PFunLockPlugin       lock;
 	PFunLockPlugin       unlock;
+	PFunIsPluginClosed   isClosed;
 };
 
 static const int PM_MODEL_NEW                = ::RegisterWindowMessage( "PM_MODEL_NEW_MESSAGE" );

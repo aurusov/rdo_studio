@@ -26,7 +26,7 @@ public:
 
 	rdoPlugin::Studio studio;
 	RDOPluginMFCMainFrame* frame;
-	CMutex closeMutex;
+//	CMutex closeMutex;
 
 protected:
 	//{{AFX_VIRTUAL(RDOPluginMFC)
