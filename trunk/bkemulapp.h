@@ -10,23 +10,26 @@
 #endif
 
 // --------------------------------------------------------------
-// ---------- BKApp
+// ---------- BKEmulApp
 // --------------------------------------------------------------
-class BKApp: public CWinApp
+class BKEmulApp: public CWinApp
 {
 public:
-	BKApp();
+	BKEmulApp();
 
 protected:
-	//{{AFX_MSG(BKApp)
+	//{{AFX_MSG(BKEmulApp)
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
-	//{{AFX_VIRTUAL(BKApp)
+	//{{AFX_VIRTUAL(BKEmulApp)
 	public:
 	virtual BOOL InitInstance();
 	//}}AFX_VIRTUAL
 };
+
+// --------------------------------------------------------------
+extern BKEmulApp enulApp;
 
 //{{AFX_INSERT_LOCATION}}
 

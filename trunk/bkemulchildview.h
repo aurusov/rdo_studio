@@ -17,9 +17,18 @@ private:
 	CDisplay* display;
 	CSurface* surface;
 
+	int   bytePerPixel;
+	int   pitch;
+	DWORD rBits, gBits, bBits;
+	DWORD rZero, gZero, bZero;
+	DWORD rColor, gColor, bColor, grayColor;
+
 	HRESULT initDirectDraw();
 	HRESULT displayFrame();
 	HRESULT restoreSurfaces();
+	bool lockSurface();
+	void unlockSurface();
+	DWORD getColor( const COLORREF color ) const;
 
 public:
 	BKChildView();

@@ -110,7 +110,8 @@ class CSurface
     BOOL                 m_bColorKeyed;
 
 public:
-    LPDIRECTDRAWSURFACE7 GetDDrawSurface() { return m_pdds; }
+    LPDIRECTDRAWSURFACE7 GetDDrawSurface() { return m_pdds;        }
+    DDSURFACEDESC2*      GetSurfaceDesc()  { return &m_ddsd;       }
     BOOL                 IsColorKeyed()    { return m_bColorKeyed; }
 
     HRESULT DrawBitmap( HBITMAP hBMP, DWORD dwBMPOriginX = 0, DWORD dwBMPOriginY = 0, 

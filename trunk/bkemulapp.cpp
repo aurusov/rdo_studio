@@ -10,20 +10,20 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 // --------------------------------------------------------------
-// ---------- BKApp
+// ---------- BKEmulApp
 // --------------------------------------------------------------
-BKApp theApp;
+BKEmulApp enulApp;
 
-BEGIN_MESSAGE_MAP(BKApp, CWinApp)
-	//{{AFX_MSG_MAP(BKApp)
+BEGIN_MESSAGE_MAP(BKEmulApp, CWinApp)
+	//{{AFX_MSG_MAP(BKEmulApp)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-BKApp::BKApp()
+BKEmulApp::BKEmulApp()
 {
 }
 
-BOOL BKApp::InitInstance()
+BOOL BKEmulApp::InitInstance()
 {
 #ifdef _AFXDLL
 	Enable3dControls();
