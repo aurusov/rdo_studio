@@ -1,0 +1,537 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Russian resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_RUS)
+#ifdef _WIN32
+LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
+#pragma code_page(1251)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\chat.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_STATUSMODE          BITMAP  DISCARDABLE     "res\\userstreectrl.bmp"
+IDB_SOUND               BITMAP  DISCARDABLE     "res\\sound.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_OPTIONS_GENERAL_DIALOG DIALOGEX 0, 0, 264, 161
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "General"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    GROUPBOX        "User",IDC_USER_GROUPBOX,0,4,140,32
+    LTEXT           "User name",IDC_USERNAME_STATIC,8,20,35,8
+    EDITTEXT        IDC_USERNAME_EDIT,52,16,80,12,ES_AUTOHSCROLL
+    GROUPBOX        """Close"" button",IDC_CLOSEBUTTON_GROUPBOX,0,40,140,52
+    CONTROL         "Close",IDC_CLOSEBUTTON_CLOSE_RADIO,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP,8,52,33,10
+    CONTROL         "Minimize",IDC_CLOSEBUTTON_MINIMIZE_RADIO,"Button",
+                    BS_AUTORADIOBUTTON,8,64,43,10
+    CONTROL         "Tray",IDC_CLOSEBUTTON_TRAY_RADIO,"Button",
+                    BS_AUTORADIOBUTTON,8,76,30,10
+    GROUPBOX        "Tray",IDC_TRAY_GROUPBOX,144,4,120,44
+    CONTROL         "Use tray",IDC_TRAYUSE_CHECK,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,152,16,42,10
+    CONTROL         "Notify about new message",IDC_TRAYNOTIFY_CHECK,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,152,32,99,10
+    GROUPBOX        """Minimize"" button",IDC_MINIMIZEBUTTON_GROUPBOX,144,52,
+                    120,40
+    CONTROL         "Minimize",IDC_MINIMIZEBUTTON_MINIMIZE_RADIO,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP,152,64,43,10
+    CONTROL         "Tray",IDC_MINIMIZEBUTTON_TRAY_RADIO,"Button",
+                    BS_AUTORADIOBUTTON,152,76,30,10
+    GROUPBOX        "Popup window",IDC_POPUP_GROUPBOX,0,96,264,60
+    CONTROL         "Use popup window",IDC_POPUPUSE_CHECK,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,8,108,77,10
+    LTEXT           "Position",IDC_POPUPPOSITION_STATIC,8,124,26,8
+    COMBOBOX        IDC_POPUPPOSITION_COMBO,36,120,60,48,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Delay (sec.)",IDC_POPUPDELAY_STATIC,8,140,40,8
+    EDITTEXT        IDC_POPUPDELAY_EDIT,56,136,40,12,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    CONTROL         "Spin1",IDC_POPUPDELAY_SPIN,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_ARROWKEYS,88,136,
+                    11,12
+    LTEXT           "Font color",IDC_POPUPTEXTCOLOR_STATIC,104,124,32,8
+    COMBOBOX        IDC_POPUPTEXTCOLOR_COMBO,164,120,80,88,CBS_DROPDOWNLIST | 
+                    CBS_OWNERDRAWFIXED | CBS_HASSTRINGS | WS_VSCROLL | 
+                    WS_TABSTOP
+    PUSHBUTTON      "...",IDC_POPUPTEXTCOLOR_BUTTON,244,120,16,12,0,
+                    WS_EX_STATICEDGE
+    LTEXT           "Background color",IDC_POPUPBACKGROUNDCOLOR_STATIC,104,
+                    140,57,8
+    COMBOBOX        IDC_POPUPBACKGROUNDCOLOR_COMBO,164,136,80,84,
+                    CBS_DROPDOWNLIST | CBS_OWNERDRAWFIXED | CBS_HASSTRINGS | 
+                    WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "...",IDC_POPUPBACKGROUNDCOLOR_BUTTON,244,136,16,12,0,
+                    WS_EX_STATICEDGE
+END
+
+IDD_OPTIONS_SOUND_DIALOG DIALOG DISCARDABLE  0, 0, 264, 185
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Sound"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "Use sound",IDC_SOUNDUSE_CHECK,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,4,4,52,10
+    LISTBOX         IDC_SOUND_LIST,0,16,264,124,LBS_OWNERDRAWVARIABLE | 
+                    LBS_HASSTRINGS | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | 
+                    WS_TABSTOP
+    CONTROL         "None",IDC_SOUNDNONE_RADIO,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP,4,144,33,10
+    CONTROL         "Default",IDC_SOUNDDEFAULT_RADIO,"Button",
+                    BS_AUTORADIOBUTTON,4,156,39,10
+    CONTROL         "External",IDC_SOUNDEXTERNAL_RADIO,"Button",
+                    BS_AUTORADIOBUTTON,4,168,41,10
+    EDITTEXT        IDC_SOUNDEXTERNAL_EDIT,48,164,196,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_SOUNDEXTERMAL_BUTTON,244,164,16,12
+END
+
+IDD_POPUP_DIALOG DIALOG DISCARDABLE  0, 0, 170, 34
+STYLE WS_POPUP | WS_CLIPSIBLINGS | WS_CLIPCHILDREN
+FONT 8, "MS Sans Serif"
+BEGIN
+END
+
+IDD_OPTIONS_STATUSMODE_DIALOG DIALOG DISCARDABLE  0, 0, 264, 148
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Status Mode"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LISTBOX         IDC_STATUSMODE_LIST,0,8,264,48,LBS_OWNERDRAWVARIABLE | 
+                    LBS_HASSTRINGS | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "Name",IDC_STATUSMODENAME_STATIC,4,64,20,8
+    EDITTEXT        IDC_STATUSMODENAME_EDIT,28,60,92,12,ES_AUTOHSCROLL
+    LTEXT           "Info",IDC_STATUSMODEINFO_STATIC,4,80,13,8
+    EDITTEXT        IDC_STATUSMODEINFO_EDIT,28,76,232,12,ES_AUTOHSCROLL
+    GROUPBOX        "Automatically status mode",
+                    IDC_AUTOMATICALLYSTATUSMODE_STATIC,0,96,264,48
+    CONTROL         "Set Away after",IDC_AUTOMATICALLYSTATUSMODE_AWAY_CHECK,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,108,60,16
+    EDITTEXT        IDC_AUTOMATICALLYSTATUSMODE_AWAY_EDIT,96,108,28,12,
+                    ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Spin1",IDC_AUTOMATICALLYSTATUSMODE_AWAY_SPIN,
+                    "msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | 
+                    UDS_ARROWKEYS,116,108,11,12
+    LTEXT           "minuts",IDC_AUTOMATICALLYSTATUSMODE_AWAY_STATIC,128,112,
+                    21,8
+    CONTROL         "Set Not availiable after",
+                    IDC_AUTOMATICALLYSTATUSMODE_NOTAVAILIBLE_CHECK,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,8,124,88,16
+    EDITTEXT        IDC_AUTOMATICALLYSTATUSMODE_NOTAVAILIBLE_EDIT,96,124,28,
+                    12,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Spin1",IDC_AUTOMATICALLYSTATUSMODE_NOTAVAILIBLE_SPIN,
+                    "msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | 
+                    UDS_ARROWKEYS,116,124,11,12
+    LTEXT           "minuts of Away",
+                    IDC_AUTOMATICALLYSTATUSMODE_NOTAVAILIBLE_STATIC,128,128,
+                    48,8
+END
+
+IDD_STATUSMODEINFO_DIALOG DIALOG DISCARDABLE  0, 0, 260, 65
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Info for status mode"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Info",IDC_INFO_STATIC,8,8,13,8
+    EDITTEXT        IDC_INFO_EDIT,28,4,224,12,ES_AUTOHSCROLL
+    CONTROL         "Use as default",IDC_INFO_CHECK,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,8,24,61,10
+    DEFPUSHBUTTON   "Ok",IDOK,72,44,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,136,44,50,14
+END
+
+IDD_TOCRYOUT_DIALOG DIALOG DISCARDABLE  0, 0, 284, 49
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "To cry out message"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_TOCRYOUT_EDIT,8,8,268,12,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,156,28,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,216,28,50,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_OPTIONS_GENERAL_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 257
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 154
+    END
+
+    IDD_OPTIONS_SOUND_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 257
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 178
+    END
+
+    IDD_POPUP_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 163
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 27
+    END
+
+    IDD_OPTIONS_STATUSMODE_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 257
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 141
+    END
+
+    IDD_STATUSMODEINFO_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 253
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 58
+    END
+
+    IDD_TOCRYOUT_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 277
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 42
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\chat.ico"
+IDI_TRAY_MESSAGE        ICON    DISCARDABLE     "res\\tray_message.ico"
+IDI_TRAY_APP            ICON    DISCARDABLE     "res\\tray_app.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// WAVE
+//
+
+IDR_INCOMINGMESSAGE_WAVE WAVE    DISCARDABLE     "res\\incoming.wav"
+IDR_CHATRET_WAVE        WAVE    DISCARDABLE     "res\\chatret.wav"
+IDR_CHATTYPE_WAVE       WAVE    DISCARDABLE     "res\\chattype.wav"
+IDR_CHATBACK_WAVE       WAVE    DISCARDABLE     "res\\chatback.wav"
+IDR_CONNECT_WAVE        WAVE    DISCARDABLE     "res\\connect.wav"
+IDR_DISCONNECT_WAVE     WAVE    DISCARDABLE     "res\\disconnect.wav"
+IDR_CHANGESTATUSMODE_WAVE WAVE    DISCARDABLE     "res\\changestatus.wav"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_TRAY_MENU MENU DISCARDABLE 
+BEGIN
+    POPUP "Tray"
+    BEGIN
+        MENUITEM "Open",                        ID_TRAYMENU_OPEN
+        MENUITEM SEPARATOR
+        MENUITEM "Exit",                        ID_TRAYMENU_EXIT
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_OPTIONS_GENERAL_DIALOG DLGINIT
+BEGIN
+    IDC_POPUPPOSITION_COMBO, 0x403, 13, 0
+0x6952, 0x6867, 0x2d74, 0x6f42, 0x7474, 0x6d6f, "\000" 
+    IDC_POPUPPOSITION_COMBO, 0x403, 10, 0
+0x6952, 0x6867, 0x2d74, 0x6f54, 0x0070, 
+    IDC_POPUPPOSITION_COMBO, 0x403, 12, 0
+0x654c, 0x7466, 0x422d, 0x746f, 0x6f74, 0x006d, 
+    IDC_POPUPPOSITION_COMBO, 0x403, 9, 0
+0x654c, 0x7466, 0x542d, 0x706f, "\000" 
+    0
+END
+
+#endif    // Russian resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_STATUSMODE_TOOLBAR  BITMAP  MOVEABLE PURE   "res\\Toolbar.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MAINFRAME MENU PRELOAD DISCARDABLE 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&Refresh users list",         ID_FILE_REFRESHUSERSLIST
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                       ID_APP_EXIT
+    END
+    POPUP "&Status Mode"
+    BEGIN
+        MENUITEM "O&nline",                     ID_STATUSMODE_ONLINE
+        MENUITEM "&Away",                       ID_STATUSMODE_AWAY
+        MENUITEM "No&t Availible",              ID_STATUSMODE_NOTAVAILIBLE
+        MENUITEM SEPARATOR
+        MENUITEM "On&line...",                  ID_STATUSMODE_ONLINE_INFO
+        MENUITEM "Awa&y...",                    ID_STATUSMODE_AWAY_INFO
+        MENUITEM "Not A&vailible...",           ID_STATUSMODE_NOTAVAILIBLE_INFO
+
+    END
+    POPUP "&Chat"
+    BEGIN
+        MENUITEM "&To cry out...\tCtrl+Enter",  ID_CHAT_TOCRYOUT
+        MENUITEM SEPARATOR
+        MENUITEM "Options...",                  ID_CHAT_OPTIONS
+    END
+    POPUP "&View"
+    BEGIN
+        MENUITEM "&Status Mode Toolbar",        ID_VIEW_TOOLBAR
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_STATUSMODE_TOOLBAR TOOLBAR DISCARDABLE  15, 16
+BEGIN
+    BUTTON      ID_STATUSMODE_ONLINE
+    BUTTON      ID_STATUSMODE_AWAY
+    BUTTON      ID_STATUSMODE_NOTAVAILIBLE
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_MAINFRAME ACCELERATORS PRELOAD MOVEABLE PURE 
+BEGIN
+    "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
+    "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL, NOINVERT
+    VK_BACK,        ID_EDIT_UNDO,           VIRTKEY, ALT, NOINVERT
+    VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT, NOINVERT
+    VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
+    VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY, SHIFT, NOINVERT
+    VK_RETURN,      ID_CHAT_TOCRYOUT,       VIRTKEY, CONTROL, NOINVERT
+    "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL, NOINVERT
+    "Z",            ID_EDIT_UNDO,           VIRTKEY, CONTROL, NOINVERT
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,125
+ PRODUCTVERSION 1,0,0,125
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "Comments", "\0"
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "Application for chat in localnet\0"
+            VALUE "FileVersion", "1, 0, 0, 125\0"
+            VALUE "InternalName", "localChat\0"
+            VALUE "LegalCopyright", "Copyright (C) 2002\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "localchat.exe\0"
+            VALUE "PrivateBuild", "\0"
+            VALUE "ProductName", "localChat\0"
+            VALUE "ProductVersion", "1, 0, 0, 125\0"
+            VALUE "SpecialBuild", "\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE PRELOAD DISCARDABLE 
+BEGIN
+    IDR_MAINFRAME           "localChat"
+END
+
+STRINGTABLE PRELOAD DISCARDABLE 
+BEGIN
+    AFX_IDS_APP_TITLE       "localChat"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_INFOSTATUSBAR        " "
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_STATUSMODE_TOOLBAR   "Status Mode"
+    ID_OPTIONS              "Options"
+    ID_CONNECT_WAVE         "User connect"
+    ID_DISCONNECT_WAVE      "User disconnect"
+    ID_CHANGESTATUSMODE_WAVE "Chage status"
+    ID_INCOMINGMESSAGE_WAVE "Incoming message"
+    ID_CHATTYPE_WAVE        "Char pressed"
+    ID_CHATBACK_WAVE        "Backspace pressed"
+    ID_CHATRET_WAVE         "Return pressed"
+    IDS_STATUSMODE_ONLINE   "Online"
+    IDS_STATUSMODE_AWAY     "Away"
+    IDS_STATUSMODE_NOTAVAILIBLE "Not availible"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_STATUSMODE_VIEWERLOG "%s changed status mode to %s"
+    IDS_STATUSMODEWITHINFO_VIEWERLOG "%s changed status mode to %s (%s)"
+    IDS_CONNECT_VIEWERLOG   "new user in chat: %s"
+    IDS_DISCONNECT_VIEWERLOG "%s disconnected"
+    IDS_STATUSMODE_CHANGEAUTOMATICALLY "automatically"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\chat.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
