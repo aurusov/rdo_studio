@@ -421,9 +421,9 @@ BOOL RDOStudioOptionsStylesAndColors::OnInitDialog()
 
 	setPreviewAsCombo( STYLEObject::source );
 
-	m_styleItem.SelectItem( m_styleItem.GetRootItem() );
-
 	OnUpdateModify();
+
+	m_styleItem.SelectItem( m_styleItem.GetRootItem() );
 
 	return true;
 }
