@@ -14,7 +14,7 @@ WGProcessList* WGProcess_s = NULL;
 
 WGProcessList::WGProcessList( QObject* parent ):
 	QObject( parent ),
-	saveToDir( "" ),
+	saveToDir( QDir::homeDirPath() ),
 	doRestart( true ),
 	dontUseSuffix( false ),
 	dontRetrieveOldFile( false ),
@@ -22,7 +22,7 @@ WGProcessList::WGProcessList( QObject* parent ):
 	username( "" ),
 	password( "" ),
 	writeLog( false ),
-	logDirectory( "" ),
+	logDirectory( QDir::homeDirPath() ),
 	retriesNumber( "" ),
 	waitBetweenRetrievals( "" ),
 	checkClipboard( true ),
