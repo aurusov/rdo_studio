@@ -1028,6 +1028,13 @@ public:
    virtual RDOValue calcValue(RDORuntime *sim) const { sim->setConstValue(number, value->calcValueBase(sim)); return 0; } 
 };
 
+class RDOCalcInt: public RDOCalcUnary
+{
+public:
+   RDOValue calcValue(RDORuntime *sim) const {	return (int)(oper->calcValueBase(sim));	}
+	RDOCalcInt(RDOCalc *oper): RDOCalcUnary(oper) {}
+};
+
 
 }  // namespace rdoRuntime
 

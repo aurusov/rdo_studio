@@ -893,7 +893,14 @@ RDOFUNSequence::RDOFUNSequence(RDOFUNSequenceHeader *_header, int _base):
 RDOCalc *RDOFUNArithm::createCalc(const RDORTPResParam *const forType)
 {
 	if(type != 3)
-		return calc;
+	{
+		if(forType == NULL)
+			return calc;
+		if(forType->getType() != 0)	// not for integer
+			return calc;
+
+		return new RDOCalcInt(calc);
+	}
 
 	if(forType == NULL)
 		currParser->error("Wrong parameter type");
