@@ -112,7 +112,6 @@ int CChatSmileListCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 		if ( size.cx > smile_max_width ) {
 			smile_max_width = size.cx;
 		}
-//		item->height = text_focus_height > size.cy ? text_focus_height : size.cy;
 
 		CRect rect( 0, 0, 1, 1 );
 		dc->DrawText( item->info.c_str(), -1, rect, DT_CENTER | DT_CALCRECT );
