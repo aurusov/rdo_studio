@@ -498,7 +498,7 @@ void RDORepositoryFile::loadBMP( const std::string& name, std::stringstream& str
 	string file_name = modelPath + name + ".bmp";
 	if ( isFileExists( file_name ) ) {
 		ifstream file( file_name.c_str(), ios::in | ios::binary );
-		stream << file;
+		stream << file.rdbuf();
 		file.close();
 	} else {
 		stream.setstate( ios_base::badbit );

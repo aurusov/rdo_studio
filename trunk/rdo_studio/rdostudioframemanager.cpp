@@ -226,10 +226,8 @@ void RDOStudioFrameManager::bmp_insert( const std::string& name )
 
 	bitmaps[name] = NULL;
 
-//	stringstream stream( ios::in | ios::binary );
-//	kernel.getRepository()->loadBMP( name, stream );
-
-	ifstream stream( kernel.getRepository()->getBMPFileName( name ).c_str(), ios::in | ios::binary );
+	stringstream stream( ios::in | ios_base::out | ios::binary );
+	kernel.getRepository()->loadBMP( name, stream );
 
 	HANDLE hDIBInfo = ::GlobalAlloc( GMEM_MOVEABLE, sizeof(BITMAPINFOHEADER) + 256 * sizeof(RGBQUAD) );
 
@@ -309,7 +307,6 @@ void RDOStudioFrameManager::bmp_insert( const std::string& name )
 	}
 
 	::GlobalUnlock( hDIBInfo );
-	stream.close();
 //	::GlobalFree( hDIBInfo );
 
 /*

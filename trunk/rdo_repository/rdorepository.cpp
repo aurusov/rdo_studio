@@ -172,8 +172,3 @@ void RDORepository::loadBMP( const string& name, stringstream& stream ) const
 {
 	repositoryFile->loadBMP( name, stream );
 }
-
-string RDORepository::getBMPFileName( const string& name ) const
-{
-	return repositoryFile->getBMPFileName( name );
-}
