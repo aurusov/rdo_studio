@@ -52,7 +52,10 @@ public:
 	RDOStudioChartViewStyle          style_chart;
 	void updateAllStyles() const;
 
-	void showNewModelTime( const double value ) ;
+	void showWorkspace();
+	void showOutput();
+
+	void showNewModelTime( const double value );
 
 	void beginProgress( const int lower = 0, const int upper = 100, const int step = 1 );
 	void getProgressRange( int& lower, int& upper ) const { statusBar.getRange( lower, upper ); };
@@ -75,6 +78,7 @@ protected:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	//}}AFX_VIRTUAL
 
+protected:
 	//{{AFX_MSG(RDOStudioMainFrame)
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnViewFileToolbar();

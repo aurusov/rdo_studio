@@ -283,6 +283,16 @@ void RDOStudioMainFrame::OnViewOutput()
 	ShowControlBar( &output, !output.IsVisible(), false );
 }
 
+void RDOStudioMainFrame::showWorkspace()
+{
+	ShowControlBar( &workspace, true, false );
+}
+
+void RDOStudioMainFrame::showOutput()
+{
+	ShowControlBar( &output, true, false );
+}
+
 void RDOStudioMainFrame::OnUpdateViewWorkspace(CCmdUI* pCmdUI) 
 {
 	pCmdUI->SetCheck( workspace.IsVisible() );
