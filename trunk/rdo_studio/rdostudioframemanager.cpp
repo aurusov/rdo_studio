@@ -442,7 +442,7 @@ void RDOStudioFrameManager::showFrame( const RDOFrame* const frame, const int in
 							::SetTextColor( hdc, RGB(element->foreground.r, element->foreground.g, element->foreground.b) );
 						}
 
-						UINT nFormat = DT_SINGLELINE;
+						UINT nFormat = DT_SINGLELINE | DT_VCENTER;
 						switch( element->align ) {
 							case RDOTextElement::left  : nFormat |= DT_LEFT; break;
 							case RDOTextElement::right : nFormat |= DT_RIGHT; break;
