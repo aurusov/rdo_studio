@@ -109,17 +109,15 @@ void RDOTracerTreeCtrl::OnDragDrop ( NMHDR * pNotifyStruct, LRESULT* result )
 	*result = 0;
 }
 
-BOOL RDOTracerTreeCtrl::setModelName(const CString& modelName)
+BOOL RDOTracerTreeCtrl::setModelName( const string& modelName )
 {
-	CString str;
-	str.Format( ID_MODEL, modelName );
-	return SetItemText( rootItem, str );
+	return SetItemText( rootItem, format( ID_MODEL, modelName.c_str() ).c_str() );
 }
 
 void RDOTracerTreeCtrl::addResourceType( RDOTracerResType* resType )
 {
 	UINT mask = TVIF_IMAGE | TVIF_PARAM | TVIF_SELECTEDIMAGE | TVIF_TEXT;
-	resType->setTreeItem( InsertItem( mask, resType->Name, 2, 2, 0, 0, (LPARAM)(RDOTracerTreeItem*)resType, rtpItem, TVI_LAST ) );
+	resType->setTreeItem( InsertItem( mask, resType->Name.c_str(), 2, 2, 0, 0, (LPARAM)(RDOTracerTreeItem*)resType, rtpItem, TVI_LAST ) );
 	setHasChildren( rtpItem );
 }
 
@@ -127,11 +125,11 @@ void RDOTracerTreeCtrl::addResource( RDOTracerResource* res )
 {
 	UINT mask =  TVIF_PARAM | TVIF_TEXT;
 	RDOTracerResType* type = res->getType();
-	res->setTreeItem( InsertItem( mask, res->Name, 0, 0, 0, 0, (LPARAM)(RDOTracerTreeItem*)res, type->getTreeItem(), TVI_LAST ) );
+	res->setTreeItem( InsertItem( mask, res->Name.c_str(), 0, 0, 0, 0, (LPARAM)(RDOTracerTreeItem*)res, type->getTreeItem(), TVI_LAST ) );
 	int count = type->getParamsCount();
 	mask |= ( TVIF_IMAGE | TVIF_SELECTEDIMAGE );
 	for ( int i = 0; i < count; i++ )
-		res->getParam( i )->setTreeItem( InsertItem( mask, type->getParamInfo( i )->Name, 5, 5, 0, 0, (LPARAM)(RDOTracerTreeItem*)res->getParam( i ), res->getTreeItem(), TVI_LAST ) );
+		res->getParam( i )->setTreeItem( InsertItem( mask, type->getParamInfo( i )->Name.c_str(), 5, 5, 0, 0, (LPARAM)(RDOTracerTreeItem*)res->getParam( i ), res->getTreeItem(), TVI_LAST ) );
 	updateResource( res );
 	setHasChildren( type->getTreeItem() );
 }
@@ -147,14 +145,14 @@ void RDOTracerTreeCtrl::updateResource( RDOTracerResource* const res )
 void RDOTracerTreeCtrl::addPattern( RDOTracerPattern* pat )
 {
 	UINT mask = TVIF_IMAGE | TVIF_PARAM | TVIF_SELECTEDIMAGE | TVIF_TEXT;
-	pat->setTreeItem( InsertItem( mask, pat->Name, 2, 2, 0, 0, (LPARAM)(RDOTracerTreeItem*)pat, patItem, TVI_LAST ) );
+	pat->setTreeItem( InsertItem( mask, pat->Name.c_str(), 2, 2, 0, 0, (LPARAM)(RDOTracerTreeItem*)pat, patItem, TVI_LAST ) );
 	setHasChildren( patItem );
 }
 
 void RDOTracerTreeCtrl::addOperation( RDOTracerOperation* opr )
 {
 	UINT mask = TVIF_IMAGE | TVIF_PARAM | TVIF_SELECTEDIMAGE | TVIF_TEXT;
-	opr->setTreeItem( InsertItem( mask, opr->getName(), 5, 5, 0, 0, (LPARAM)(RDOTracerTreeItem*)opr, opr->getPattern()->getTreeItem(), TVI_LAST ) );
+	opr->setTreeItem( InsertItem( mask, opr->getName().c_str(), 5, 5, 0, 0, (LPARAM)(RDOTracerTreeItem*)opr, opr->getPattern()->getTreeItem(), TVI_LAST ) );
 	setHasChildren( opr->getPattern()->getTreeItem() );
 }
 
@@ -166,7 +164,7 @@ void RDOTracerTreeCtrl::addIrregularEvent( RDOTracerOperation* opr )
 void RDOTracerTreeCtrl::addResult( RDOTracerResult* res )
 {
 	UINT mask = TVIF_IMAGE | TVIF_PARAM | TVIF_SELECTEDIMAGE | TVIF_TEXT;
-	res->setTreeItem( InsertItem( mask, res->getName(), 5, 5, 0, 0, (LPARAM)(RDOTracerTreeItem*)res, pmvItem, TVI_LAST ) );
+	res->setTreeItem( InsertItem( mask, res->getName().c_str(), 5, 5, 0, 0, (LPARAM)(RDOTracerTreeItem*)res, pmvItem, TVI_LAST ) );
 	setHasChildren( pmvItem );
 }
 

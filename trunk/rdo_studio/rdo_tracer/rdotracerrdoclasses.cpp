@@ -19,7 +19,7 @@ RDOTracerResParamInfo::~RDOTracerResParamInfo()
 		delete enumValues;
 };
 
-int RDOTracerResParamInfo::addEnumValue( const CString& value )
+int RDOTracerResParamInfo::addEnumValue( const string& value )
 {
 	if ( !enumValues )
 		return -1;
@@ -27,9 +27,9 @@ int RDOTracerResParamInfo::addEnumValue( const CString& value )
 	return enumValues->size() - 1;
 }
 
-static CString nullStr = "";
+static string nullStr = "";
 
-CString& RDOTracerResParamInfo::getEnumValue( const int index ) const
+string RDOTracerResParamInfo::getEnumValue( const int index ) const
 {
 	if ( !enumValues )
 		return nullStr;
@@ -99,12 +99,12 @@ RDOTracerSerie::~RDOTracerSerie()
 	}
 };
 
-CString RDOTracerSerie::getTitle() const
+string RDOTracerSerie::getTitle() const
 {
 	return title;
 }
 
-void RDOTracerSerie::setTitle( const CString value)
+void RDOTracerSerie::setTitle( const string& value )
 {
 	if ( title != value )
 		title = value;
@@ -186,7 +186,7 @@ RDOTracerResParam::~RDOTracerResParam()
 // ----------------------------------------------------------------------------
 // ---------- RDOTracerResource
 // ----------------------------------------------------------------------------
-RDOTracerResource::RDOTracerResource( RDOTracerResType* const type, CString& name ) :
+RDOTracerResource::RDOTracerResource( RDOTracerResType* const type, string& name ) :
 	RDOTracerTreeItem(),
 	erased( false ),
 	resType( type ),
@@ -221,19 +221,15 @@ RDOTracerResParam* RDOTracerResource::getParam( const int index ) const
 	return params.at( index );
 }
 
-void RDOTracerResource::setParams( CString& line, RDOTracerTimeNow* const time, const bool erasing )
+void RDOTracerResource::setParams( string& line, RDOTracerTimeNow* const time, const bool erasing )
 {
 	int count = params.size();
 	for ( int i = 0; i < count; i++ ) {
-		double newval = atof( trace.getNextValue( line ) );
 		RDOTracerValue* prevval = params.at( i )->getLastValue();
+		double newval = erasing ? prevval->value : atof( trace.getNextValue( line ).c_str() );
 		if ( !prevval || erasing || prevval->value != newval ) {
 			RDOTracerValue* newvalue = new RDOTracerValue( time );
-			if ( erasing ) {
-				newvalue->value = prevval->value;
-			} else {
-				newvalue->value = newval;
-			}
+			newvalue->value = newval;
 			params.at( i )->addValue( newvalue );
 		}
 	}

@@ -46,3 +46,10 @@ std::string format( UINT resource, ... )
 	}
 	return "";
 }
+
+void trim( std::string& str )
+{
+	static char szDelims[] = " \t\n\r";
+	str.erase( 0, str.find_first_not_of( szDelims ) );
+	str.erase( str.find_last_not_of( szDelims ) + 1, std::string::npos );
+}

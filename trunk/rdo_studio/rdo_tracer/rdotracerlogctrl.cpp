@@ -217,5 +217,3 @@ void RDOTracerLogCtrl::OnUpdateFind( CCmdUI* pCmdUI )
 {
 	pCmdUI->Enable( logStrings.GetCount() );
 }
-
-#pragma warning( default : 4786 )

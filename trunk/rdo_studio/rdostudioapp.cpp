@@ -42,6 +42,10 @@ BEGIN_MESSAGE_MAP(RDOStudioApp, CWinApp)
 	ON_COMMAND(ID_RDO_STOP, OnRdoStop)
 	ON_UPDATE_COMMAND_UI(ID_RDO_RUN, OnUpdateRdoRun)
 	ON_UPDATE_COMMAND_UI(ID_RDO_STOP, OnUpdateRdoStop)
+	ON_COMMAND(ID_CHART_STARTTRACE, OnChartStarttrace)
+	ON_UPDATE_COMMAND_UI(ID_CHART_STARTTRACE, OnUpdateChartStarttrace)
+	ON_COMMAND(ID_CHART_STOPTRACE, OnChartStoptrace)
+	ON_UPDATE_COMMAND_UI(ID_CHART_STOPTRACE, OnUpdateChartStoptrace)
 	//}}AFX_MSG_MAP
 	ON_COMMAND_RANGE( ID_FILE_REOPEN_1, ID_FILE_REOPEN_10, OnProjectReopen )
 	ON_COMMAND(ID_FILE_PRINT_SETUP, CWinApp::OnFilePrintSetup)
@@ -433,4 +437,24 @@ void RDOStudioApp::OnUpdateRdoRun(CCmdUI* pCmdUI)
 void RDOStudioApp::OnUpdateRdoStop(CCmdUI* pCmdUI) 
 {
 	pCmdUI->Enable( model && model->isRunning() );
+}
+
+void RDOStudioApp::OnChartStarttrace() 
+{
+	trace.startTrace();
+}
+
+void RDOStudioApp::OnUpdateChartStarttrace(CCmdUI* pCmdUI) 
+{
+	pCmdUI->Enable( !trace.isTracing() );
+}
+
+void RDOStudioApp::OnChartStoptrace() 
+{
+	trace.stopTrace();
+}
+
+void RDOStudioApp::OnUpdateChartStoptrace(CCmdUI* pCmdUI) 
+{
+	pCmdUI->Enable( trace.isTracing() );
 }

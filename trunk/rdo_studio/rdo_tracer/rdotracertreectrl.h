@@ -58,7 +58,7 @@ public:
 	RDOTracerTreeCtrl();
 	virtual ~RDOTracerTreeCtrl();
 
-	BOOL setModelName( const CString& modelName );
+	BOOL setModelName( const string& modelName );
 	void addResourceType( RDOTracerResType* resType );
 	void addResource( RDOTracerResource* res );
 	void updateResource( RDOTracerResource* const res );

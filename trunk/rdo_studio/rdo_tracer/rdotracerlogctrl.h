@@ -5,10 +5,6 @@
 #include <rdologctrl.h>
 #include "rdotracerlogstyle.h"
 
-#pragma warning( disable : 4786 )
-
-#include <map>
-
 using namespace std;
 
 // ----------------------------------------------------------------------------

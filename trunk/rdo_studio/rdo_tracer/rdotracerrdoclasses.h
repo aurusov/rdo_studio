@@ -2,8 +2,6 @@
 #define RDOTRACERRDOCLASSES_H
 #pragma once
 
-#include <vector>
-
 using namespace std;
 
 // ----------------------------------------------------------------------------
@@ -15,7 +13,7 @@ enum RDOTracerResParamType {
 	RDOPT_ENUMERATIVE
 };
 	
-typedef vector <CString> RDOStringVector;
+typedef vector <string> RDOStringVector;
 
 class RDOTracerResParamInfo
 {
@@ -26,10 +24,10 @@ public:
 	RDOTracerResParamInfo( const RDOTracerResParamType type );
 	virtual ~RDOTracerResParamInfo();
 
-	CString Name;
+	string Name;
 	RDOTracerResParamType getParamType() const { return paramType; };
-	int addEnumValue( const CString& value );
-	CString& getEnumValue( const int index ) const;
+	int addEnumValue( const string& value );
+	string getEnumValue( const int index ) const;
 };
 
 // ----------------------------------------------------------------------------
@@ -66,7 +64,7 @@ public:
 	RDOTracerResType( const RDOTracerResTypeKind kind );
 	virtual ~RDOTracerResType();
 
-	CString Name;
+	string Name;
 	RDOTracerResTypeKind getResTypeKind() const { return restypeKind; };
 	int addParamInfo( RDOTracerResParamInfo* const value );
 	RDOTracerResParamInfo* getParamInfo( const int index ) const;
@@ -101,7 +99,7 @@ public:
 class RDOTracerSerie : public RDOTracerTreeItem
 {
 protected:
-	CString title;
+	string title;
 	vector <RDOTracerValue*> values;
 	double minValue;
 	double maxValue;
@@ -109,8 +107,8 @@ public:
 	RDOTracerSerie();
 	virtual ~RDOTracerSerie();
 
-	CString getTitle() const;
-	void setTitle( const CString value );
+	string getTitle() const;
+	void setTitle( const string& value );
 
 	int addValue( RDOTracerValue* const value );
 	RDOTracerValue* getValue( const int index ) const;
@@ -144,15 +142,15 @@ protected:
 	RDOTracerResType* resType;
 	bool erased;
 public:
-	RDOTracerResource( RDOTracerResType* const type, CString& name );
+	RDOTracerResource( RDOTracerResType* const type, string& name );
 	virtual ~RDOTracerResource();
 
-	CString Name;
+	string Name;
 	int id;
 	RDOTracerResType* getType() const { return resType; };
 	int addParam( RDOTracerResParam* const value );
 	RDOTracerResParam* getParam( const int index ) const;
-	void setParams( CString& line, RDOTracerTimeNow* const time, const bool erasing = false );
+	void setParams( string& line, RDOTracerTimeNow* const time, const bool erasing = false );
 	void setErased( const bool value );
 	bool isErased() { return erased; };
 };
@@ -175,7 +173,7 @@ public:
 	RDOTracerPattern( const RDOTracerPatternKind kind );
 	virtual ~RDOTracerPattern();
 
-	CString Name;
+	string Name;
 	RDOTracerPatternKind getPatternKind() const { return patKind; };
 };
 
@@ -186,7 +184,7 @@ class RDOTracerOperation: public RDOTracerSerie
 {
 protected:
 	RDOTracerPattern* pattern;
-	CString Name;
+	string Name;
 public:
 	RDOTracerOperation( RDOTracerPattern* const pat );
 	virtual ~RDOTracerOperation();
@@ -194,8 +192,8 @@ public:
 	RDOTracerPattern* getPattern() const { return pattern; };
 	void start( RDOTracerTimeNow* const time );
 	void accomplish( RDOTracerTimeNow* const time );
-	void setName( const CString& name ) { Name = name; if ( title.IsEmpty() ) title = Name; };
-	const CString getName() const { return Name; };
+	void setName( const string& name ) { Name = name; if ( title.empty() ) title = Name; };
+	const string getName() const { return Name; };
 };
 
 // ----------------------------------------------------------------------------
@@ -212,18 +210,15 @@ class RDOTracerResult: public RDOTracerSerie
 {
 protected:
 	RDOTracerResultKind resultKind;
-	CString Name;
+	string Name;
 public:
 	RDOTracerResult( const RDOTracerResultKind kind );
 	virtual ~RDOTracerResult();
 
 	int id;
 	RDOTracerResultKind getResultKind() const { return resultKind; };
-	void setName( const CString& name ) {
-		Name = name;
-		if ( title.IsEmpty() ) title = Name;
-	};
-	const CString getName() const { return Name; };
+	void setName( const string& name ) { Name = name; if ( title.empty() ) title = Name; };
+	const string getName() const { return Name; };
 };
 
 #endif // RDOTRACERRDOCLASSES_H

@@ -2,7 +2,6 @@
 #define RDOTRACERTRACE_H
 #pragma once
 
-#include <vector>
 #include "rdotracerrdoclasses.h"
 #include "../resource.h"
 
@@ -21,8 +20,8 @@ private:
 	RDOTracerLogCtrl*   log;
 	RDOTracerTreeCtrl*  tree;
 
-	CString modelName;
-	CString statusStr;
+	string modelName;
+	string statusStr;
 	CTime startTime;
 	CTime stopTime;
 	
@@ -31,38 +30,38 @@ private:
 	void cleanupObjects();
 
 	void getStructureData();
-	void parseStructureData( CString& structure );
+	void parseStructureData( string& structure );
 	
 	vector <RDOTracerResType*> resTypes;
-	void addResourceType( CString& s );
+	void addResourceType( string& s );
 	vector <RDOTracerResource*> resources;
-	void addResource( CString& s );
+	void addResource( string& s );
 	vector <RDOTracerPattern*> patterns;
-	void addPattern( CString& s );
+	void addPattern( string& s );
 	vector <RDOTracerOperation*> operations;
-	void addOperation( CString& s );
+	void addOperation( string& s );
 	vector <RDOTracerOperation*> irregularEvents;
-	void addIrregularEvent( CString& s );
+	void addIrregularEvent( string& s );
 	vector <RDOTracerResult*> results;
-	void addResult( CString& s );
+	void addResult( string& s );
 	
-	CString getNextString();
-	void dispathNextString( CString& line );
+	string getNextString();
+	void dispathNextString( string& line );
 
-	RDOTracerTimeNow* addTime( CString& time );
+	RDOTracerTimeNow* addTime( string& time );
 	
-	RDOTracerOperation* getOperation( CString& line );
-	void startAction( CString& line, RDOTracerTimeNow* const time );
-	void accomplishAction( CString& line, RDOTracerTimeNow* const time  );
-	void irregularEvent( CString& line, RDOTracerTimeNow* const time  );
-	void productionRule( CString& line, RDOTracerTimeNow* const time  );
+	RDOTracerOperation* getOperation( string& line );
+	void startAction( string& line, RDOTracerTimeNow* const time );
+	void accomplishAction( string& line, RDOTracerTimeNow* const time  );
+	void irregularEvent( string& line, RDOTracerTimeNow* const time  );
+	void productionRule( string& line, RDOTracerTimeNow* const time  );
 	
-	RDOTracerResource* getResource( CString& line );
-	void resourceCreation( CString& line, RDOTracerTimeNow* const time  );
-	void resourceElimination( CString& line, RDOTracerTimeNow* const time  );
-	void resourceChanging( CString& line, RDOTracerTimeNow* const time  );
+	RDOTracerResource* getResource( string& line );
+	void resourceCreation( string& line, RDOTracerTimeNow* const time  );
+	void resourceElimination( string& line, RDOTracerTimeNow* const time  );
+	void resourceChanging( string& line, RDOTracerTimeNow* const time  );
 	
-	void resultChanging( CString& line, RDOTracerTimeNow* const time  );
+	void resultChanging( string& line, RDOTracerTimeNow* const time  );
 
 	vector <RDOTracerTimeNow*> timeVector;
 	
@@ -92,10 +91,10 @@ public:
 	void startTrace();
 	void getModelStructure();
 	void getTraceString();
-	CString getNextValue( CString& line );
+	string getNextValue( string& line );
 	void stopTrace();
 	const bool isTracing() const;
-	void registerClipboardFormat() { CString str; str.LoadString( ID_RAO_CLIPBRD );	clipboardFormat = ::RegisterClipboardFormat( str ); }
+	void registerClipboardFormat() { clipboardFormat = ::RegisterClipboardFormat( format(ID_RAO_CLIPBRD).c_str() ); }
 	UINT const getClipboardFormat() const { return clipboardFormat; }
 	RDOStudioChartDoc* createNewChart();
 	void addChart( RDOStudioChartDoc* const chart );

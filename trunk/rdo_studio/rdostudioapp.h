@@ -65,6 +65,10 @@ public:
 	afx_msg void OnRdoStop();
 	afx_msg void OnUpdateRdoRun(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateRdoStop(CCmdUI* pCmdUI);
+	afx_msg void OnChartStarttrace();
+	afx_msg void OnUpdateChartStarttrace(CCmdUI* pCmdUI);
+	afx_msg void OnChartStoptrace();
+	afx_msg void OnUpdateChartStoptrace(CCmdUI* pCmdUI);
 	//}}AFX_MSG
 	afx_msg void OnProjectReopen( UINT nID );
 	DECLARE_MESSAGE_MAP()
