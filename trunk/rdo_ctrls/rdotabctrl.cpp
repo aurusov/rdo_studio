@@ -23,6 +23,7 @@ protected:
 	CWnd* getItemCurrent() const            { return getItem( getCurrentIndex() ); };
 	int   getCurrentIndex() const           { return GetCurSel();                  };
 	int   findItem( const CWnd* const item ) const;
+	int   findItem( const HWND item ) const;
 	void  insertItem( CWnd* pWnd, LPCTSTR lpName );
 	void  setCurrentItem( const int index );
 
@@ -36,7 +37,6 @@ protected:
 	public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	protected:
-	virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
 	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
 	//}}AFX_VIRTUAL
 };
@@ -104,21 +104,21 @@ BOOL RDOTab::OnEraseBkgnd(CDC* pDC)
 	}
 }
 
-BOOL RDOTab::OnCommand(WPARAM wParam, LPARAM lParam) 
+BOOL RDOTab::OnCommand(WPARAM wParam, LPARAM lParam)
 {
 	if ( HIWORD( wParam ) == WM_SETFOCUS ) {
-		CWnd* wnd = CWnd::FromHandle( (HWND)lParam );
-		while ( wnd ) {
-			int pos = findItem( wnd );
+		HWND hwnd = reinterpret_cast<HWND>(lParam);
+		while ( hwnd ) {
+			int pos = findItem( hwnd );
 			if ( pos != -1 ) {
 				setCurrentItem( pos );
 				break;
 			} else {
-				wnd = wnd->GetParent();
+				hwnd = ::GetParent( hwnd );
 			}
 		}
 	}
-	return CTabCtrl::OnCommand(wParam, lParam);
+	return CTabCtrl::OnCommand( wParam, lParam );
 }
 
 void RDOTab::OnSelChanged( NMHDR* /*pNMHDR*/, LRESULT* /*pResult*/ )
@@ -191,6 +191,14 @@ int RDOTab::findItem( const CWnd* const item ) const
 {
 	for ( int i = 0; i < getItemCount(); i++ ) {
 		if ( getItem( i ) == item ) return i;
+	}
+	return -1;
+}
+
+int RDOTab::findItem( const HWND item ) const
+{
+	for ( int i = 0; i < getItemCount(); i++ ) {
+		if ( getItem( i )->m_hWnd == item ) return i;
 	}
 	return -1;
 }
@@ -404,19 +412,4 @@ void RDOTabCtrl::changeCurrentItem()
 void RDOTabCtrl::modifyTabStyle( DWORD dwRemove, DWORD dwAdd, UINT nFlags )
 {
 	tab->ModifyStyle( dwRemove, dwAdd, nFlags );
-}
-
-BOOL RDOTab::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult) 
-{
-	return CTabCtrl::OnNotify(wParam, lParam, pResult);
-}
-
-BOOL RDOTabCtrl::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult) 
-{
-	return CWnd::OnNotify(wParam, lParam, pResult);
-}
-
-BOOL RDOTabCtrl::OnCommand(WPARAM wParam, LPARAM lParam) 
-{
-	return CWnd::OnCommand(wParam, lParam);
 }

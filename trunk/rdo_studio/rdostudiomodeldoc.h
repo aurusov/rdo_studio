@@ -29,8 +29,9 @@ public:
 	public:
 	virtual BOOL OnNewDocument();
 	virtual void Serialize(CArchive& ar);
-	virtual BOOL CanCloseFrame(CFrameWnd* pFrame);
 	virtual void OnCloseDocument();
+	protected:
+	virtual BOOL SaveModified();
 	//}}AFX_VIRTUAL
 
 protected:

@@ -105,9 +105,9 @@ BOOL RDOStudioEditView::OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDL
 	return RDOStudioEditBaseView::OnCmdMsg(nID, nCode, pExtra, pHandlerInfo);
 }
 
-void RDOStudioEditView::OnSetFocus(CWnd* pOldWnd) 
+void RDOStudioEditView::OnSetFocus(CWnd* pOldWnd)
 {
-	RDOStudioEditBaseView::OnSetFocus(pOldWnd);
+	RDOStudioEditBaseView::OnSetFocus( pOldWnd );
 	edit->SetFocus();
 }
 

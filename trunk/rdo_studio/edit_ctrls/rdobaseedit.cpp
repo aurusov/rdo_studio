@@ -181,15 +181,15 @@ BOOL RDOBaseEdit::OnNotify( WPARAM /*wParam*/, LPARAM lParam, LRESULT* /*pResult
 	return FALSE;
 }
 
-BOOL RDOBaseEdit::OnCommand(WPARAM wParam, LPARAM lParam) 
+BOOL RDOBaseEdit::OnCommand(WPARAM wParam, LPARAM lParam)
 {
 	if ( HIWORD( wParam ) == SCEN_SETFOCUS ) {
 		CWnd* parent = GetParent();
 		if ( parent ) {
-//			parent->SendMessage( WM_COMMAND, MAKELONG(0, WM_SETFOCUS), (LPARAM)m_hWnd );
+			parent->SendMessage( WM_COMMAND, MAKELONG(0, WM_SETFOCUS), (LPARAM)m_hWnd );
 		}
 	}
-	return CWnd::OnCommand(wParam, lParam);
+	return CWnd::OnCommand( wParam, lParam );
 }
 
 int RDOBaseEdit::OnCreate( LPCREATESTRUCT lpCreateStruct )
@@ -213,10 +213,7 @@ void RDOBaseEdit::OnSetFocus( CWnd* pOldWnd )
 {
 	CWnd::OnSetFocus( pOldWnd );
 	if ( sciHWND ) {
-		CWnd* wnd = CWnd::FromHandle( sciHWND );
-		if ( wnd ) {
-			wnd->SetFocus();
-		}
+		::SetFocus( sciHWND );
 	}
 }
 
