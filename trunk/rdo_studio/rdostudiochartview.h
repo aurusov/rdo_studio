@@ -24,6 +24,8 @@ friend class RDOStudioChartOptionsChart;
 protected:
 	DECLARE_DYNCREATE(RDOStudioChartView)
 
+	CMutex mutex;
+
 	COleDropTarget target;
 	RDOTracerSerie* dragedSerie;
 
@@ -87,6 +89,9 @@ protected:
 	RDOStudioDocSerie* yAxis;
 	bool needDrawLegend;
 
+	void updateWindow();
+	void updateView();
+
 public:
 	RDOStudioChartView( const bool preview = false);
 	virtual ~RDOStudioChartView();
@@ -136,7 +141,9 @@ protected:
 	afx_msg void OnUpdateChartZoomZoomauto(CCmdUI* pCmdUI);
 	afx_msg int OnMouseActivate( CWnd* pDesktopWnd, UINT nHitTest, UINT message );
 	afx_msg void OnChartOptions();
+	afx_msg void OnDestroy();
 	//}}AFX_MSG
+	afx_msg LRESULT OnUserUpdateChartView(WPARAM wParam = 0, LPARAM lParam = 0);
 	DECLARE_MESSAGE_MAP()
 };
 

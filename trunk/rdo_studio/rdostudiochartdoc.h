@@ -8,6 +8,8 @@
 #include "rdostudiodocserie.h"
 #include "rdo_tracer/rdotracerserie.h"
 
+#define WM_USER_UPDATE_CHART_VIEW WM_USER + 0x156
+
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioChartDoc
 // ----------------------------------------------------------------------------
@@ -25,7 +27,9 @@ friend class RDOStudioChartOptionsChart;
 
 protected:
 	DECLARE_DYNCREATE(RDOStudioChartDoc)
-
+	
+	CMutex mutex;
+	
 	std::vector< RDOStudioDocSerie* > series;
 	int getSerieIndex( RDOStudioDocSerie* serie ) const;
 	COLORREF selectColor();
@@ -40,6 +44,12 @@ protected:
 	bool previewMode;
 
 	int getMaxMarkerSize() const;
+
+	std::vector< HWND > views_hwnd;
+	void removeFromViews( const HWND handle );
+	void addToViews( const HWND handle );
+
+	void updateChartViews() const;
 
 public:
 	//{{AFX_VIRTUAL(RDOStudioChartDoc)
@@ -59,7 +69,7 @@ public:
 
 	void addSerie( RDOTracerSerie* const serie );
 	//void removeSerie( RDOTracerSerie* const serie );
-	bool serieExists( const RDOTracerSerie* serie ) const { return std::find_if( series.begin(), series.end(), std::bind2nd( std::mem_fun1(&RDOStudioDocSerie::isTracerSerie), serie ) ) != series.end(); };
+	bool serieExists( const RDOTracerSerie* serie ) const;
 
 #ifdef _DEBUG
 	virtual void AssertValid() const;

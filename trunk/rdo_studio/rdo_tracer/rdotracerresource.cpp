@@ -43,16 +43,16 @@ void RDOTracerResParam::getCaptions( vector<string> &captions, const int val_cou
 			RDOTracerSerie::getCaptions( captions, val_count );
 			int delta = getParamInfo()->getEnumCount();
 			int real_val_count = val_count;
-			if ( delta >= real_val_count ) {
-				while ( (int)(( delta ) / ( real_val_count )) != (double)(( delta ) / ( real_val_count )) )
+			if ( delta > real_val_count ) {
+				while ( (int)(( delta - 1 ) / ( real_val_count - 1 )) != ( (double)(delta - 1) / ( real_val_count - 1 ) ) )
 					real_val_count--;
 			} else {
 				real_val_count = delta;
 			}
 			int valo = minValue;
-			int valoffset = ( delta ) / ( real_val_count - 1 );
+			int valoffset = ( delta - 1 ) / ( real_val_count - 1 );
 			for ( int i = 0; i < real_val_count; i++ ) {
-				captions.push_back( getParamInfo()->getEnumValue( i ) );
+				captions.push_back( getParamInfo()->getEnumValue( valo ) );
 				valo += valoffset;
 			}
 			break;
@@ -112,7 +112,8 @@ void RDOTracerResource::setParams( string& line, RDOTracerTimeNow* const time, c
 {
 	int count = params.size();
 	for ( int i = 0; i < count; i++ ) {
-		RDOTracerValue* prevval = params.at( i )->getLastValue();
+		RDOTracerValue* prevval;
+		params.at( i )->getLastValue( prevval );
 		double newval = erasing ? prevval->value : atof( tracer->getNextValue( line ).c_str() );
 		if ( !prevval || erasing || prevval->value != newval ) {
 			RDOTracerValue* newvalue = new RDOTracerValue( time, eventIndex );

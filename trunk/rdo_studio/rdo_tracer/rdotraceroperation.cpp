@@ -20,7 +20,8 @@ RDOTracerOperationBase::~RDOTracerOperationBase()
 void RDOTracerOperationBase::incOperationsCount( RDOTracerTimeNow* const time, const int eventIndex )
 {
 	RDOTracerValue* newval = new RDOTracerValue( time, eventIndex );
-	RDOTracerValue* prevval = getLastValue();
+	RDOTracerValue* prevval;
+	getLastValue( prevval );
 	newval->value = prevval ? prevval->value + 1 : 1;
 	addValue( newval );
 }
@@ -54,7 +55,9 @@ void RDOTracerOperation::start( RDOTracerTimeNow* const time, const int eventInd
 void RDOTracerOperation::accomplish( RDOTracerTimeNow* const time, const int eventIndex )
 {
 	RDOTracerValue* newval = new RDOTracerValue( time, eventIndex );
-	newval->value = getLastValue()->value - 1;
+	RDOTracerValue* lastval;
+	getLastValue( lastval );
+	newval->value = lastval->value - 1;
 	addValue( newval );
 }
 
@@ -77,7 +80,8 @@ void RDOTracerEvent::occurs( RDOTracerTimeNow* const time, const int eventIndex 
 
 void RDOTracerEvent::monitorTime( RDOTracerTimeNow* const time, const int eventIndex )
 {
-	RDOTracerValue* prevval = getLastValue();
+	RDOTracerValue* prevval;
+	getLastValue( prevval );
 	RDOTracerValue* newval = NULL;
 	if ( prevval && prevval->value != 0 ) {
 		if ( *prevval->getModelTime() != *time ) {

@@ -3,7 +3,7 @@
 #pragma once
 
 #include "rdotracerbase.h"
-
+#include <rdosimwin.h>
 // ----------------------------------------------------------------------------
 // ---------- RDOTracer
 // ----------------------------------------------------------------------------
@@ -21,6 +21,8 @@ private:
 public:
 	RDOTracer();
 	virtual ~RDOTracer();
+
+	void setShowMode( const RDOSimulatorNS::ShowMode value );
 };
 
 }; // namespace rdoTracer

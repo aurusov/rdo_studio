@@ -66,3 +66,10 @@ void RDOTracer::traceStringNotify( string trace_string )
 {
 	tracer->getTraceString( trace_string );
 }
+
+void RDOTracer::setShowMode( const RDOSimulatorNS::ShowMode value )
+{
+	if ( value == SM_NoShow ) {
+		clearCharts();
+	}
+}

@@ -28,6 +28,8 @@ namespace rdoTracer {
 class RDOTracerBase
 {
 private:
+	CMutex mutex;
+
 	rdoTracerLog::RDOTracerLogCtrl* log;
 	RDOTracerTreeCtrl*  tree;
 
@@ -71,8 +73,6 @@ private:
 
 	CMultiDocTemplate* chartDocTemplate;
 	std::vector <RDOStudioChartDoc*> charts;
-	void updateCharts();
-
 public:
 	RDOTracerBase();
 	virtual ~RDOTracerBase();	
@@ -91,9 +91,9 @@ public:
 	void addChart( RDOStudioChartDoc* const chart );
 	void removeChart( RDOStudioChartDoc* chart );
 	RDOStudioChartDoc* addSerieToChart( RDOTracerSerie* const serie, RDOStudioChartDoc* chart = NULL );
-	RDOTracerTimeNow* getMaxTime() const { return timeList.empty() ? NULL : timeList.back(); };
 	void updateChartsStyles() const;
 	void clear();
+	void clearCharts();
 	void setModelName( std::string name ) const;
 };
 

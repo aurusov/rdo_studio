@@ -66,10 +66,6 @@ public:
 	afx_msg void OnUpdateModelBuild(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateModelRun(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateModelStop(CCmdUI* pCmdUI);
-	afx_msg void OnChartStarttrace();
-	afx_msg void OnUpdateChartStarttrace(CCmdUI* pCmdUI);
-	afx_msg void OnChartStoptrace();
-	afx_msg void OnUpdateChartStoptrace(CCmdUI* pCmdUI);
 	afx_msg void OnAppAbout();
 	//}}AFX_MSG
 	afx_msg void OnProjectReopen( UINT nID );

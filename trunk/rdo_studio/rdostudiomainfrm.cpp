@@ -325,16 +325,19 @@ void RDOStudioMainFrame::OnHelpContents()
 void RDOStudioMainFrame::OnModelRunNoShow()
 {
 	model->setShowMode( RDOSimulatorNS::SM_NoShow );
+	tracer->setShowMode( RDOSimulatorNS::SM_NoShow );
 }
 
 void RDOStudioMainFrame::OnModelRunAnimation()
 {
 	model->setShowMode( RDOSimulatorNS::SM_Animation );
+	tracer->setShowMode( RDOSimulatorNS::SM_Animation );
 }
 
 void RDOStudioMainFrame::OnModelRunMonitor()
 {
 	model->setShowMode( RDOSimulatorNS::SM_Monitor );
+	tracer->setShowMode( RDOSimulatorNS::SM_Monitor );
 }
 
 void RDOStudioMainFrame::OnUpdateModelRunNoShow(CCmdUI* pCmdUI)

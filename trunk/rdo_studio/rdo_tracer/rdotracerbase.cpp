@@ -76,50 +76,6 @@ void RDOTracerBase::addResourceType( string& s, stringstream& stream )
 	}
 	resTypes.push_back( type );
 	tree->addResourceType( type );
-
-	/*int pos = s.find( ' ' );
-	int endpos = s.rfind( ' ' );
-	type->Name = s.substr( pos, endpos - pos );
-	trim( type->Name );
-	
-	string pcountstr = s.substr( endpos );
-	trim( pcountstr );
-	int paramcount = atoi( pcountstr.c_str() );
-	string par;
-	for ( int i = 0; i < paramcount; i++ ) {
-		stream >> par;
-		pos = par.rfind( ' ' );
-		string partype = par.substr( pos );
-		trim( partype );
-		int enumcount = atoi( partype.c_str() );
-		RDOTracerResParamType parType;
-		if ( enumcount )
-			parType = RDOPT_ENUMERATIVE;
-		else if ( partype == "I" )
-			parType = RDOPT_INTEGER;
-		else if ( partype == "R" )
-			parType = RDOPT_REAL;
-		RDOTracerResParamInfo* param = new RDOTracerResParamInfo( parType );
-		pos = par.find( ' ', 2 );
-		endpos = par.find( ' ', pos + 1 );
-		param->Name = par.substr( pos, endpos - pos );
-		trim( param->Name );
-		
-		if ( parType == RDOPT_ENUMERATIVE ) {
-			string en;
-			for ( int j = 0; j < enumcount; j++ ) {
-				stream >> en;
-				pos = en.rfind( ' ' );
-				string enname = en.substr( pos );
-				trim( enname );
-				param->addEnumValue( enname );
-			}
-		}
-		type->addParamInfo( param );
-	}
-	
-	resTypes.push_back( type );
-	tree->addResourceType( type );*/
 }
 
 void RDOTracerBase::addResource( string& s, stringstream& stream )
@@ -293,20 +249,6 @@ void RDOTracerBase::dispathNextString( string& line )
 {
 	if ( line.empty() )
 		return;
-/*	if ( line == "Unexpected EOF" ) {
-		statusStr = line;
-		doStopTrace();
-		return;
-	}
-	if ( line.find( "$Status", 0 ) != string::npos ) {
-		line.erase( 0, 10 );
-		statusStr = line;
-		return;
-	}
-	if ( line.find( "DPS_MM", 0 ) != string::npos ) {
-		doStopTrace();
-		return;
-	}*/
 
 	string key = getNextValue( line );
 	RDOTracerTimeNow* timeNow;
@@ -332,61 +274,20 @@ void RDOTracerBase::dispathNextString( string& line )
 		resourceChanging( line, timeNow );
 	} else if ( key == "V" ) {
 		resultChanging( line, timeNow );
-	}/* else if ( key == _T("$Status") ) {
-		textColor = s.foregroundColor;
-		backColor = s.backgroundColor;
+	}/* else if ( key == "$Status" ) {
 	} else if ( key.Find( "DPS", 0) != -1 ) {
-		textColor = dps.foregroundColor;
-		backColor = dps.backgroundColor;
-	} else if ( key == _T("SB") ) {
-		textColor = sb.foregroundColor;
-		backColor = sb.backgroundColor;
-	} else if ( key == _T("SO") ) {
-		textColor = so.foregroundColor;
-		backColor = so.backgroundColor;
-	} else if ( key == _T("STN") ) {
-		textColor = stn.foregroundColor;
-		backColor = stn.backgroundColor;
-	} else if ( key == _T("STD") ) {
-		textColor = std.foregroundColor;
-		backColor = std.backgroundColor;
-	} else if ( key == _T("STR") ) {
-		textColor = str.foregroundColor;
-		backColor = str.backgroundColor;
-	} else if ( key == _T("SRK") ) {
-		textColor = srk.foregroundColor;
-		backColor = srk.backgroundColor;
-	} else if ( key == _T("SRC") ) {
-		textColor = src.foregroundColor;
-		backColor = src.backgroundColor;
-	} else if ( key == _T("SRE") ) {
-		textColor = sre.foregroundColor;
-		backColor = sre.backgroundColor;
-	} else if ( key == _T("SRK") ) {
-		textColor = srk.foregroundColor;
-		backColor = srk.backgroundColor;
-	} else if ( key == _T("SD") ) {
-		textColor = sd.foregroundColor;
-		backColor = sd.backgroundColor;
-	} else if ( key == _T("SES") ) {
-		textColor = ses.foregroundColor;
-		backColor = ses.backgroundColor;
-	} else if ( key == _T("SEN") ) {
-		textColor = sen.foregroundColor;
-		backColor = sen.backgroundColor;
-	} else if ( key == _T("SEM") ) {
-		textColor = sem.foregroundColor;
-		backColor = sem.backgroundColor;
-	} else if ( key == _T("SEF") ) {
-		textColor = sef.foregroundColor;
-		backColor = sef.backgroundColor;
-	} else if ( key == _T("SEU") ) {
-		textColor = seu.foregroundColor;
-		backColor = seu.backgroundColor;
+	} else if ( key == "SB" ) {
+	} else if ( key == "SO" ) {
+	} else if ( key == "STN" ) {
+	} else if ( key == "STD" ) {
+	} else if ( key == "STR" ) {
+	} else if ( key == "SD" ) {
+	} else if ( key == "SES" ) {
+	} else if ( key == "SEN" ) {
+	} else if ( key == "SEM" ) {
+	} else if ( key == "SEF" ) {
+	} else if ( key == "SEU" ) {
 	}*/
-
-	//graphicsPanel->addToLog( _T("... Done\r\n\r\n") );
-	updateCharts();
 }
 
 string RDOTracerBase::getNextValue( string& line )
@@ -541,31 +442,38 @@ void RDOTracerBase::deleteTrace()
 		delete results.at( i );
 	}
 	results.clear();
-	/*count = timeVector.size();
-	for ( i = 0; i < count; i++ ) {
-		delete timeVector.at( i );
-	}
-	timeVector.clear();*/
 	list< RDOTracerTimeNow* >::iterator it = timeList.begin();
 	while ( it != timeList.end() ) {
 		delete *it;
 		it++;
 	}
 	timeList.clear();
-	//charts.clear();
 }
 
 void RDOTracerBase::clear()
 {
-	while ( !charts.empty() ) {
-		charts.front()->OnCloseDocument();
-	}
-	charts.clear();
+	mutex.Lock();
+
+	clearCharts();
 	deleteTrace();
 	if( tree )
 		tree->clear();
 	if ( log )
 		log->clear();
+
+	mutex.Unlock();
+}
+
+void RDOTracerBase::clearCharts()
+{
+	mutex.Lock();
+
+	while ( !charts.empty() ) {
+		charts.front()->OnCloseDocument();
+	}
+	charts.clear();
+
+	mutex.Unlock();
 }
 
 CMultiDocTemplate* RDOTracerBase::createDocTemplate()
@@ -689,7 +597,7 @@ void RDOTracerBase::getTraceString( string trace_string )
 	if ( log ) {
 		log->addStringToLog( trace_string );
 	}
-	//dispathNextString( trace_string );
+	dispathNextString( trace_string );
 }
 
 RDOStudioChartDoc* RDOTracerBase::createNewChart()
@@ -712,39 +620,31 @@ RDOStudioChartDoc* RDOTracerBase::addSerieToChart( RDOTracerSerie* const serie, 
 
 void RDOTracerBase::addChart( RDOStudioChartDoc* const chart )
 {
+	mutex.Lock();
+	
 	charts.push_back( chart );
+
+	mutex.Unlock();
 }
 
 void RDOTracerBase::removeChart( RDOStudioChartDoc* chart )
 {
+	mutex.Lock();
+	
 	for ( vector< RDOStudioChartDoc* >::iterator it = charts.begin(); it != charts.end(); it++ ) {
 		if ( (*it) == chart ) {
 			charts.erase( it );
 			break;
 		}
 	}
-}
 
-void RDOTracerBase::updateCharts()
-{
-	for ( vector< RDOStudioChartDoc* >::iterator it = charts.begin(); it != charts.end(); it++ ) {
-		(*it)->UpdateAllViews( NULL );
-	}
+	mutex.Unlock();
 }
-
-/*RDOTracerTimeNow* RDOTracerBase::getTime( const int index ) const
-{
-	//return timeVector.at( index );
-	if ( index >= timeList.size() || index < 0 )
-		return NULL;
-	list< RDOTracerTimeNow* >::const_iterator it = timeList.begin();
-	for ( int i = 0; i < index; i++ )
-		it++;
-	return (*it);
-}*/
 
 void RDOTracerBase::updateChartsStyles() const
 {
+	const_cast<CMutex&>(mutex).Lock();
+	
 	for ( vector< RDOStudioChartDoc* >::const_iterator it = charts.begin(); it != charts.end(); it++ ) {
 		POSITION pos = (*it)->GetFirstViewPosition();
 		while ( pos != NULL ) {
@@ -754,6 +654,8 @@ void RDOTracerBase::updateChartsStyles() const
 			}
 		}
 	}
+
+	const_cast<CMutex&>(mutex).Unlock();
 }
 
 void RDOTracerBase::setModelName( string name ) const

@@ -69,12 +69,16 @@ RDOStudioChartDoc::RDOStudioChartDoc( const bool preview )
 
 RDOStudioChartDoc::~RDOStudioChartDoc()
 {
+	mutex.Lock();
+
 	for ( vector< RDOStudioDocSerie* >::iterator it = series.begin(); it != series.end(); it++ ) {
 		(*it)->serie->removeFromDoc( this );
 		delete (*it);
 	}
 	if ( !previewMode )
 		tracer->removeChart( this );
+
+	mutex.Unlock();
 }
 
 int RDOStudioChartDoc::getSerieIndex( RDOStudioDocSerie* serie ) const
@@ -105,39 +109,88 @@ void RDOStudioChartDoc::Serialize(CArchive& ar)
 
 void RDOStudioChartDoc::incTimeEventsCount( RDOTracerTimeNow* time )
 {
+	mutex.Lock();
+
 	if ( docTimes.back() == time )
 		ticksCount ++;
+
+	mutex.Unlock();
 }
 
 bool RDOStudioChartDoc::newValueToSerieAdded( RDOTracerValue* val )
 {
+	mutex.Lock();
+	
 	if ( docTimes.empty() ) {
 		docTimes.push_back( val->modeltime );
 		ticksCount += val->modeltime->eventCount;
-		return true;
+	} else {
+		RDOTracerTimeNow* last = docTimes.back();
+		if ( last != val->modeltime ) {
+			docTimes.push_back( val->modeltime );
+			ticksCount += val->modeltime->eventCount;
+			double off = val->modeltime->time - last->time;
+			if ( off < minTimeOffset )
+				minTimeOffset = off;
+		}
 	}
-	RDOTracerTimeNow* last = docTimes.back();
-	if ( last != val->modeltime ) {
-		docTimes.push_back( val->modeltime );
-		ticksCount += val->modeltime->eventCount;
-		double off = val->modeltime->time - last->time;
-		if ( off < minTimeOffset )
-			minTimeOffset = off;
-	}
+
+	updateChartViews();
+
+	mutex.Unlock();
+
 	return true;
 }
 
 int RDOStudioChartDoc::getMaxMarkerSize() const
 {
+	const_cast<CMutex&>(mutex).Lock();
+	
 	int res = 0;
 	for ( vector< RDOStudioDocSerie* >::const_iterator it = series.begin(); it != series.end(); it++ ) {
 		if ( (*it)->needDrawMarker && (*it)->marker_size > res ) res = (*it)->marker_size;
 	}
+
+	const_cast<CMutex&>(mutex).Unlock();
+
 	return res;
+}
+
+void RDOStudioChartDoc::addToViews( const HWND handle )
+{
+	mutex.Lock();
+
+	views_hwnd.push_back( handle );
+
+	mutex.Unlock();
+}
+
+void RDOStudioChartDoc::removeFromViews( const HWND handle )
+{
+	mutex.Lock();
+
+	vector< HWND >::iterator it = find( views_hwnd.begin(), views_hwnd.end(), handle );
+	if ( it != views_hwnd.end() )
+		views_hwnd.erase( it );
+
+	mutex.Unlock();
+}
+
+void RDOStudioChartDoc::updateChartViews() const
+{
+	const_cast<CMutex&>(mutex).Lock();
+
+	for( vector< HWND >::const_iterator it = views_hwnd.begin(); it != views_hwnd.end(); it++ ) {
+		::SendNotifyMessage( (*it), WM_USER_UPDATE_CHART_VIEW, 0, 0 );
+	}
+	
+	const_cast<CMutex&>(mutex).Unlock();
 }
 
 void RDOStudioChartDoc::addSerie( RDOTracerSerie* const serie )
 {
+	mutex.Lock();
+	
 	if ( serie && !serieExists( serie ) ) {
 		RDOStudioDocSerie* docserie = new RDOStudioDocSerie( serie );
 		docserie->color = selectColor();
@@ -153,8 +206,10 @@ void RDOStudioChartDoc::addSerie( RDOTracerSerie* const serie )
 					static_cast<RDOStudioChartView*>( pView )->yAxis = docserie;
 			}
 		}
-		UpdateAllViews( NULL );
+		updateChartViews();
 	}
+
+	mutex.Unlock();
 }
 
 /*void RDOStudioChartDoc::removeSerie( RDOTracerSerie* const serie )
@@ -166,7 +221,7 @@ void RDOStudioChartDoc::addSerie( RDOTracerSerie* const serie )
 		//must be recalc of minTimeOffset && tickscount
 		delete (*it);
 		series.erase( it );
-		UpdateAllViews( NULL );
+		updateChartViews();
 	}
 }*/
 
@@ -209,6 +264,17 @@ RDOTracerSerieMarker RDOStudioChartDoc::selectMarker()
 		case 2  : res = RDOSM_RHOMB; break;
 		case 3  : res = RDOSM_CROSS; break;
 	};
+	return res;
+}
+
+bool RDOStudioChartDoc::serieExists( const RDOTracerSerie* serie ) const
+{
+	const_cast<CMutex&>(mutex).Lock();
+
+	bool res = find_if( series.begin(), series.end(), bind2nd( mem_fun1(&RDOStudioDocSerie::isTracerSerie), serie ) ) != series.end();
+
+	const_cast<CMutex&>(mutex).Unlock();
+
 	return res;
 }
 
