@@ -36,9 +36,10 @@ RDOStudioPlugins::RDOStudioPlugins()
 
 RDOStudioPlugins::~RDOStudioPlugins()
 {
-	std::vector< RDOStudioPlugin* >::iterator it = list.begin();
+	std::multimap< std::string, RDOStudioPlugin* >::iterator it = list.begin();
 	while ( it != list.end() ) {
-		delete *it++;
+		delete it->second;
+		it++;
 	}
 	list.clear();
 }
@@ -70,7 +71,7 @@ void RDOStudioPlugins::enumPlugins( const std::string& mask )
 							plugin->version_build = info.version_build;
 							plugin->version_info  = info.version_info;
 							plugin->description   = info.description;
-							list.push_back( plugin );
+							list.insert( std::multimap< std::string, RDOStudioPlugin* >::value_type( plugin->name, plugin  ) );
 						}
 						::FreeLibrary( lib );
 					}
@@ -92,9 +93,9 @@ void RDOStudioPlugins::init()
 		enumPlugins( path + "*.*" );
 	}
 	int i = 1;
-	std::vector< RDOStudioPlugin* >::iterator it = list.begin();
+	std::multimap< std::string, RDOStudioPlugin* >::const_iterator it = list.begin();
 	while ( it != list.end() ) {
-		RDOStudioPlugin* plugin = *it;
+		RDOStudioPlugin* plugin = it->second;
 		TRACE( "%d. plugin name = %s, version %d.%d, build %d, version info = %s, description = %s\r\n", i++, plugin->name.c_str(), plugin->version_major, plugin->version_minor, plugin->version_build, plugin->version_info.c_str(), plugin->description.c_str() );
 		it++;
 	}

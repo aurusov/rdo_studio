@@ -2,6 +2,7 @@
 #include "rdostudiooptions.h"
 #include "rdostudioapp.h"
 #include "rdostudiomainfrm.h"
+#include "rdostudioplugins.h"
 #include "htmlhelp.h"
 
 #ifdef _DEBUG
@@ -1614,6 +1615,107 @@ void RDOStudioOptionsColorsStyles::updatePropOfAllObject()
 }
 
 // ----------------------------------------------------------------------------
+// ---------- RDOStudioOptionsPlugins
+// ----------------------------------------------------------------------------
+BEGIN_MESSAGE_MAP(RDOStudioOptionsPlugins, CPropertyPage)
+	//{{AFX_MSG_MAP(RDOStudioOptionsPlugins)
+	ON_NOTIFY(LVN_ITEMCHANGED, IDC_PLUGIN_LIST, OnPluginListSelectChanged)
+	//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+RDOStudioOptionsPlugins::RDOStudioOptionsPlugins( RDOStudioOptions& _sheet ):
+	CPropertyPage( IDD ),
+	sheet( &_sheet )
+{
+	//{{AFX_DATA_INIT(RDOStudioOptionsPlugins)
+	m_pluginInfo = _T("");
+	//}}AFX_DATA_INIT
+
+	m_psp.dwFlags |= PSP_HASHELP;
+}
+
+RDOStudioOptionsPlugins::~RDOStudioOptionsPlugins()
+{
+}
+
+void RDOStudioOptionsPlugins::DoDataExchange(CDataExchange* pDX) 
+{
+	CPropertyPage::DoDataExchange(pDX);
+	//{{AFX_DATA_MAP(RDOStudioOptionsPlugins)
+	DDX_Control(pDX, IDC_PLUGIN_LIST, m_pluginList);
+	DDX_Text(pDX, IDC_PLUGIN_INFO, m_pluginInfo);
+	//}}AFX_DATA_MAP
+}
+
+BOOL RDOStudioOptionsPlugins::OnInitDialog() 
+{
+	CPropertyPage::OnInitDialog();
+
+	m_pluginList.InsertColumn( 0, format( IDS_PLUGIN_NAME ).c_str(), LVCFMT_LEFT, 100 );
+	m_pluginList.InsertColumn( 1, format( IDS_PLUGIN_VERSION ).c_str(), LVCFMT_LEFT, 80, 1 );
+	m_pluginList.SetExtendedStyle( m_pluginList.GetExtendedStyle() | LVS_EX_FULLROWSELECT | LVS_REPORT | LVS_EX_GRIDLINES );
+	std::multimap< std::string, RDOStudioPlugin* >::const_iterator it = plugins.getList().begin();
+	int index = 0;
+	while ( it != plugins.getList().end() ) {
+		RDOStudioPlugin* plugin = it->second;
+		if ( m_pluginList.InsertItem( index, plugin->getName().c_str() ) != -1 ) {
+			m_pluginList.SetItemText( index, 1, format( "%d.%d (build %d)", plugin->getVersionMajor(), plugin->getVersionMinor(), plugin->getVersionBuild() ).c_str() );
+			m_pluginList.SetItemData( index, reinterpret_cast<DWORD>(plugin) );
+		}
+		index++;
+		it++;
+	}
+	if ( index ) {
+		m_pluginList.SetItemState( 0, LVIS_SELECTED, LVIS_SELECTED );
+	}
+
+	return TRUE;
+}
+
+void RDOStudioOptionsPlugins::OnOK() 
+{
+	sheet->apply();
+	CPropertyPage::OnOK();
+}
+
+BOOL RDOStudioOptionsPlugins::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult) 
+{
+	if ( reinterpret_cast<LPNMHDR>(lParam)->code == PSN_HELP ) {
+		sheet->onHelpButton();
+		return true;
+	}
+	return CPropertyPage::OnNotify(wParam, lParam, pResult);
+}
+
+void RDOStudioOptionsPlugins::OnPluginListSelectChanged( NMHDR* pNMHDR, LRESULT* pResult ) 
+{
+	NMLISTVIEW* pNMListView = reinterpret_cast<NM_LISTVIEW*>(pNMHDR);
+
+	bool useItem = true;
+	if ( !(pNMListView->uChanged & LVIF_STATE) ) {
+		useItem = false;
+	}
+
+	if ( useItem && (((pNMListView->uNewState & LVIS_SELECTED) != LVIS_SELECTED) || ((pNMListView->uOldState & LVIS_SELECTED) == LVIS_SELECTED)) ) {
+		useItem = false;
+	}
+
+	if ( useItem ) {
+		RDOStudioPlugin* plugin = reinterpret_cast<RDOStudioPlugin*>(pNMListView->lParam);
+		std::string version = format( "%s - ver %d.%d (build %d)", plugin->getName().c_str(), plugin->getVersionMajor(), plugin->getVersionMinor(), plugin->getVersionBuild() );
+		if ( !plugin->getVersionInfo().empty() ) {
+			version += " " + plugin->getVersionInfo();
+		}
+		m_pluginInfo.Format( "%s\r\r%s", version.c_str(), plugin->getDescription().c_str() );
+	} else {
+		m_pluginInfo = "";
+	}
+	UpdateData( false );
+
+	*pResult = 0;
+}
+
+// ----------------------------------------------------------------------------
 // ---------- RDOStudioOptions
 // ----------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP(RDOStudioOptions, CPropertySheet)
@@ -1624,9 +1726,11 @@ END_MESSAGE_MAP()
 
 RDOStudioOptions::RDOStudioOptions():
 	CPropertySheet(),
+	general( NULL ),
 	editor( NULL ),
 	tabs( NULL ),
-	styles( NULL )
+	styles( NULL ),
+	plugins( NULL )
 {
 	SetTitle( format( ID_OPTIONS ).c_str() );
 
@@ -1652,6 +1756,7 @@ RDOStudioOptions::RDOStudioOptions():
 	editor  = new RDOStudioOptionsEditor( *this );
 	tabs    = new RDOStudioOptionsTabs( *this );
 	styles  = new RDOStudioOptionsColorsStyles( *this );
+	plugins = new RDOStudioOptionsPlugins( *this );
 
 	preview_chart_doc = new RDOStudioChartDoc( true );
 	preview_chart     = new RDOStudioChartView( true );
@@ -1660,6 +1765,7 @@ RDOStudioOptions::RDOStudioOptions():
 	AddPage( editor );
 	AddPage( tabs );
 	AddPage( styles );
+	AddPage( plugins );
 
 	m_psh.dwFlags |= PSH_USECALLBACK | PSH_HASHELP;
 	m_psh.pfnCallback = AddContextHelpProc;
@@ -1678,6 +1784,7 @@ RDOStudioOptions::~RDOStudioOptions()
 	if ( editor )   { delete editor; editor = NULL; }
 	if ( tabs )     { delete tabs;   tabs = NULL; }
 	if ( styles )   { delete styles; styles = NULL; }
+	if ( plugins )  { delete plugins; plugins = NULL; }
 }
 
 void RDOStudioOptions::updateStyles()
@@ -1750,6 +1857,8 @@ void RDOStudioOptions::onHelpButton()
 		filename += "::/html/work_options.htm#tabs";
 	} else if ( page == styles ) {
 		filename += "::/html/work_options.htm#styles";
+	} else if ( page == plugins ) {
+		filename += "::/html/work_options.htm#plugins";
 	}
 	HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_DISPLAY_TOPIC, NULL );
 }

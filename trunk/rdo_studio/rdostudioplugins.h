@@ -7,7 +7,7 @@
 
 #include <rdoplugin.h>
 #include <string>
-#include <vector>
+#include <map>
 
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioPlugin
@@ -27,6 +27,13 @@ private:
 public:
 	RDOStudioPlugin();
 	virtual ~RDOStudioPlugin();
+
+	std::string getName() const { return name; }
+	int getVersionMajor() const { return version_major; }
+	int getVersionMinor() const { return version_minor; }
+	int getVersionBuild() const { return version_build; }
+	std::string getVersionInfo() const { return version_info; }
+	std::string getDescription() const { return description; }
 };
 
 // ----------------------------------------------------------------------------
@@ -35,7 +42,7 @@ public:
 class RDOStudioPlugins
 {
 private:
-	std::vector< RDOStudioPlugin* > list;
+	std::multimap< std::string, RDOStudioPlugin* > list;
 	void enumPlugins( const std::string& mask );
 
 public:
@@ -43,6 +50,8 @@ public:
 	virtual ~RDOStudioPlugins();
 
 	void init();
+
+	const std::multimap< std::string, RDOStudioPlugin* >& getList() { return list; }
 };
 
 // ----------------------------------------------------------------------------

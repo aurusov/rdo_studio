@@ -306,6 +306,40 @@ public:
 };
 
 // ----------------------------------------------------------------------------
+// ---------- RDOStudioOptionsPlugins
+// ----------------------------------------------------------------------------
+class RDOStudioOptionsPlugins: public CPropertyPage
+{
+private:
+	RDOStudioOptions* sheet;
+
+protected:
+	//{{AFX_DATA(RDOStudioOptionsPlugins)
+	enum { IDD = IDD_OPTIONS_PLUGINS };
+	CListCtrl	m_pluginList;
+	CString	m_pluginInfo;
+	//}}AFX_DATA
+
+	//{{AFX_VIRTUAL(RDOStudioOptionsPlugins)
+	public:
+	virtual void OnOK();
+	protected:
+	virtual void DoDataExchange(CDataExchange* pDX);
+	virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
+	//}}AFX_VIRTUAL
+
+	//{{AFX_MSG(RDOStudioOptionsPlugins)
+	virtual BOOL OnInitDialog();
+	afx_msg void OnPluginListSelectChanged(NMHDR* pNMHDR, LRESULT* pResult);
+	//}}AFX_MSG
+	DECLARE_MESSAGE_MAP()
+
+public:
+	RDOStudioOptionsPlugins( RDOStudioOptions& _sheet );
+	virtual ~RDOStudioOptionsPlugins();
+};
+
+// ----------------------------------------------------------------------------
 // ---------- RDOStudioOptions
 // ----------------------------------------------------------------------------
 class RDOStudioOptions: public CPropertySheet
@@ -314,6 +348,7 @@ friend class RDOStudioOptionsGeneral;
 friend class RDOStudioOptionsEditor;
 friend class RDOStudioOptionsTabs;
 friend class RDOStudioOptionsColorsStyles;
+friend class RDOStudioOptionsPlugins;
 
 private:
 	rdoEditor::RDOEditorEditStyle    style_editor;
@@ -329,6 +364,7 @@ private:
 	RDOStudioOptionsEditor*       editor;
 	RDOStudioOptionsTabs*         tabs;
 	RDOStudioOptionsColorsStyles* styles;
+	RDOStudioOptionsPlugins*      plugins;
 
 	rdoEditor::RDOEditorEdit       preview_editor;
 	rdoEditCtrl::RDOBuildEdit      preview_build;
