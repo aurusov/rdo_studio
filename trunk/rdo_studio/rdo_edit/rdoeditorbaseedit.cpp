@@ -1,9 +1,6 @@
 #include "stdafx.h"
 #include "rdoeditorbaseedit.h"
 #include "../edit_ctrls/sci/SciLexer.h"
-#include "../edit_ctrls/sci/LexRdo.h"
-#include "../edit_ctrls/sci/PropSet.h"
-#include "../resource.h"
 //#include "../Htmlhelp.h"
 
 #ifdef _DEBUG
@@ -65,6 +62,7 @@ RDOEditorBase::~RDOEditorBase()
 int RDOEditorBase::OnCreate( LPCREATESTRUCT lpCreateStruct )
 {
 	if ( RDOBaseEdit::OnCreate(lpCreateStruct) == -1 ) return -1;
+
 	sendEditor( SCI_SETLEXER, SCLEX_RDO );
 	int lexLanguage = sendEditor( SCI_GETLEXER );
 	sendEditor( SCI_SETSTYLEBITS, 5 );

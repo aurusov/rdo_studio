@@ -43,8 +43,6 @@ public:
 	bool resetBuf3;
 	bool resetBuf4;
 	int  currentBuffer;
-	bool canClearBuffer;
-	int  clearBufferDelay;
 	void restartBufTimer( const int bufIndex );
 
 #ifdef _DEBUG

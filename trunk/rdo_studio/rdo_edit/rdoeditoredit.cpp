@@ -1,9 +1,8 @@
 #include "stdafx.h"
 #include "rdoeditoredit.h"
-#include "../edit_ctrls/sci/SciLexer.h"
+#include "../rdostudioeditbaseview.h"
 #include "../edit_ctrls/sci/LexRdo.h"
 #include "../edit_ctrls/sci/PropSet.h"
-#include "../rdostudioeditbaseview.h"
 #include "../resource.h"
 
 #ifdef _DEBUG

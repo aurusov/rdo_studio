@@ -71,7 +71,7 @@ protected:
 	//}}AFX_VIRTUAL
 
 public:
-	RDOEditorEdit( RDOStudioEditBaseView* _view = NULL );
+	RDOEditorEdit( RDOStudioEditBaseView* _view );
 	virtual ~RDOEditorEdit();
 
 	void setEditorStyle( RDOEditorEditStyle* _style );

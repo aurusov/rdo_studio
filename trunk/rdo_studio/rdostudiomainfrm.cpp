@@ -58,26 +58,26 @@ int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if ( CMDIFrameWnd::OnCreate(lpCreateStruct) == -1 ) return -1;
 
-	default_editorStyle.init( "editorStyle" );
-	default_editorStyle.load();
+	style_editor.init( "editorStyle" );
+	style_editor.load();
 
-	default_buildStyle.init( "buildStyle" );
-	default_buildStyle.window->showHorzScrollBar = false;
-	default_buildStyle.window->wordWrap          = true;
-	default_buildStyle.load();
+	style_build.init( "buildStyle" );
+	style_build.window->showHorzScrollBar = false;
+	style_build.window->wordWrap          = true;
+	style_build.load();
 
-	default_debugStyle.init( "debugStyle" );
-	default_debugStyle.window->showHorzScrollBar = false;
-	default_debugStyle.window->wordWrap          = true;
-	default_debugStyle.load();
+	style_debug.init( "debugStyle" );
+	style_debug.window->showHorzScrollBar = false;
+	style_debug.window->wordWrap          = true;
+	style_debug.load();
 
-	default_resultsStyle.init( "resultsStyle" );
-	default_resultsStyle.window->showHorzScrollBar = false;
-	default_resultsStyle.window->wordWrap          = true;
-	default_resultsStyle.load();
+	style_results.init( "resultsStyle" );
+	style_results.window->showHorzScrollBar = false;
+	style_results.window->wordWrap          = true;
+	style_results.load();
 
-	default_findStyle.init( "findStyle" );
-	default_findStyle.load();
+	style_find.init( "findStyle" );
+	style_find.load();
 
 	fileToolBar.CreateEx( this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
 	fileToolBar.LoadToolBar( IDR_FILETOOLBAR );
@@ -137,11 +137,11 @@ int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 void RDOStudioMainFrame::OnDestroy()
 {
-	default_editorStyle.save();
-	default_buildStyle.save();
-	default_debugStyle.save();
-	default_resultsStyle.save();
-	default_findStyle.save();
+	style_editor.save();
+	style_build.save();
+	style_debug.save();
+	style_results.save();
+	style_find.save();
 
 	::OleUninitialize();
 	if ( model ) { delete model; model = NULL; }

@@ -76,21 +76,21 @@ int RDOStudioOutput::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	results->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), tab.getTabAsParent(), -1 );
 	find->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), tab.getTabAsParent(), -1 );
 
-	build->setEditorStyle( &studioApp.mainFrame->default_buildStyle );
+	build->setEditorStyle( &studioApp.mainFrame->style_build );
 	build->setReadOnly( true );
 	build->setPopupMenu( &popupMenu );
 
-	debug->setEditorStyle( &studioApp.mainFrame->default_debugStyle );
+	debug->setEditorStyle( &studioApp.mainFrame->style_debug );
 	debug->setReadOnly( true );
 	debug->setPopupMenu( &popupMenu );
 
-	results->setEditorStyle( &studioApp.mainFrame->default_resultsStyle );
+	results->setEditorStyle( &studioApp.mainFrame->style_results );
 	results->setViewMargin( false );
 	results->setViewFoldMargin( false );
 	results->setReadOnly( true );
 	results->setPopupMenu( &popupMenu );
 
-	find->setEditorStyle( &studioApp.mainFrame->default_findStyle );
+	find->setEditorStyle( &studioApp.mainFrame->style_find );
 	find->setReadOnly( true );
 	find->setPopupMenu( &popupMenu );
 

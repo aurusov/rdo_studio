@@ -102,11 +102,11 @@ friend class RDOStudioOptionsTabs;
 friend class RDOStudioOptionsColorsAndStyles;
 
 private:
-	rdoEditor::RDOEditorEditStyle    editorStyle;
-	rdoEditCtrl::RDOLogEditStyle     buildStyle;
-	rdoEditCtrl::RDOBaseEditStyle    debugStyle;
-	rdoEditor::RDOEditorResultsStyle resultsStyle;
-	rdoEditCtrl::RDOFindEditStyle    findStyle;
+	rdoEditor::RDOEditorEditStyle    style_editor;
+	rdoEditCtrl::RDOLogEditStyle     style_build;
+	rdoEditCtrl::RDOBaseEditStyle    style_debug;
+	rdoEditor::RDOEditorResultsStyle style_results;
+	rdoEditCtrl::RDOFindEditStyle    style_find;
 
 	RDOStudioOptionsEditor*          editor;
 	RDOStudioOptionsTabs*            tabs;

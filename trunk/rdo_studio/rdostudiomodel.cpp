@@ -616,7 +616,7 @@ void RDOStudioModel::updateStyleOfAllModel() const
 		RDOStudioModelDoc* doc = static_cast<RDOStudioModelDoc*>(modelDocTemplate->GetNextDoc( pos ));
 		RDOEditorTabCtrl* tab = doc->getView()->tab;
 		for ( int i = 0; i < tab->getItemCount(); i++ ) {
-			tab->getItemEdit( i )->setEditorStyle( &studioApp.mainFrame->default_editorStyle );
+			tab->getItemEdit( i )->setEditorStyle( &studioApp.mainFrame->style_editor );
 		}
 	}
 }

@@ -62,15 +62,15 @@ int RDOEditorTabCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	page8->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), -1 );
 	page9->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), -1 );
 
-	page1->setEditorStyle( &studioApp.mainFrame->default_editorStyle );
-	page2->setEditorStyle( &studioApp.mainFrame->default_editorStyle );
-	page3->setEditorStyle( &studioApp.mainFrame->default_editorStyle );
-	page4->setEditorStyle( &studioApp.mainFrame->default_editorStyle );
-	page5->setEditorStyle( &studioApp.mainFrame->default_editorStyle );
-	page6->setEditorStyle( &studioApp.mainFrame->default_editorStyle );
-	page7->setEditorStyle( &studioApp.mainFrame->default_editorStyle );
-	page8->setEditorStyle( &studioApp.mainFrame->default_editorStyle );
-	page9->setEditorStyle( &studioApp.mainFrame->default_editorStyle );
+	page1->setEditorStyle( &studioApp.mainFrame->style_editor );
+	page2->setEditorStyle( &studioApp.mainFrame->style_editor );
+	page3->setEditorStyle( &studioApp.mainFrame->style_editor );
+	page4->setEditorStyle( &studioApp.mainFrame->style_editor );
+	page5->setEditorStyle( &studioApp.mainFrame->style_editor );
+	page6->setEditorStyle( &studioApp.mainFrame->style_editor );
+	page7->setEditorStyle( &studioApp.mainFrame->style_editor );
+	page8->setEditorStyle( &studioApp.mainFrame->style_editor );
+	page9->setEditorStyle( &studioApp.mainFrame->style_editor );
 
 	page1->setPopupMenu( &view->popupMenu );
 	page2->setPopupMenu( &view->popupMenu );

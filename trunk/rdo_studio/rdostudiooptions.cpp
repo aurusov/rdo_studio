@@ -25,8 +25,8 @@ RDOStudioOptionsEditor::RDOStudioOptionsEditor( RDOStudioOptions& _sheet ):
 	CPropertyPage( IDD_OPTIONS_EDITOR ),
 	sheet( &_sheet )
 {
-	useAutoComplete = sheet->editorStyle.autoComplete->useAutoComplete ? 1 : 0;
-	showFullList    = sheet->editorStyle.autoComplete->showFullList ? 0 : 1;
+	useAutoComplete = sheet->style_editor.autoComplete->useAutoComplete ? 1 : 0;
+	showFullList    = sheet->style_editor.autoComplete->showFullList ? 0 : 1;
 }
 
 RDOStudioOptionsEditor::~RDOStudioOptionsEditor()
@@ -68,14 +68,14 @@ void RDOStudioOptionsEditor::OnUpdateModify()
 {
 	UpdateData();
 
-	sheet->editorStyle.autoComplete->useAutoComplete = useAutoComplete ? true : false;
-	sheet->editorStyle.autoComplete->showFullList    = showFullList == 0;
+	sheet->style_editor.autoComplete->useAutoComplete = useAutoComplete ? true : false;
+	sheet->style_editor.autoComplete->showFullList    = showFullList == 0;
 
 //	if ( sheet->colorOptions->edit ) {
 //		sheet->colorOptions->edit.setEditorStyle( sheet->editorStyle );
 //	}
 
-	SetModified( *sheet->editorStyle.autoComplete != *studioApp.mainFrame->default_editorStyle.autoComplete /*|| canClearBuffer != prev_canClearBuffer || clearBufferDelay != prev_clearBufferDelay*/ );
+	SetModified( *sheet->style_editor.autoComplete != *studioApp.mainFrame->style_editor.autoComplete /*|| canClearBuffer != prev_canClearBuffer || clearBufferDelay != prev_clearBufferDelay*/ );
 }
 
 // ----------------------------------------------------------------------------
@@ -153,17 +153,17 @@ RDOStudioOptions::RDOStudioOptions():
 {
 	SetTitle( format( ID_OPTIONS ).c_str() );
 
-	editorStyle.init();
-	buildStyle.init();
-	debugStyle.init();
-	resultsStyle.init();
-	findStyle.init();
+	style_editor.init();
+	style_build.init();
+	style_debug.init();
+	style_results.init();
+	style_find.init();
 
-	editorStyle  = studioApp.mainFrame->default_editorStyle;
-	buildStyle   = studioApp.mainFrame->default_buildStyle;
-	debugStyle   = studioApp.mainFrame->default_debugStyle;
-	resultsStyle = studioApp.mainFrame->default_resultsStyle;
-	findStyle    = studioApp.mainFrame->default_findStyle;
+	style_editor  = studioApp.mainFrame->style_editor;
+	style_build   = studioApp.mainFrame->style_build;
+	style_debug   = studioApp.mainFrame->style_debug;
+	style_results = studioApp.mainFrame->style_results;
+	style_find    = studioApp.mainFrame->style_find;
 
 	editor          = new RDOStudioOptionsEditor( *this );
 	tabs            = new RDOStudioOptionsTabs( *this );
@@ -185,11 +185,11 @@ RDOStudioOptions::~RDOStudioOptions()
 
 void RDOStudioOptions::apply()
 {
-	studioApp.mainFrame->default_editorStyle  = editorStyle;
-	studioApp.mainFrame->default_buildStyle   = buildStyle;
-	studioApp.mainFrame->default_debugStyle   = debugStyle;
-	studioApp.mainFrame->default_resultsStyle = resultsStyle;
-	studioApp.mainFrame->default_findStyle    = findStyle;
+	studioApp.mainFrame->style_editor  = style_editor;
+	studioApp.mainFrame->style_build   = style_build;
+	studioApp.mainFrame->style_debug   = style_debug;
+	studioApp.mainFrame->style_results = style_results;
+	studioApp.mainFrame->style_find    = style_find;
 	studioApp.mainFrame->updateAllStyles();
 }
 
