@@ -40,15 +40,13 @@ protected:
 	DECLARE_DYNCREATE(RDOStudioChartDoc)
 
 	vector< RDOStudioDocSerie > series;
-	//int findSerie( const RDOTracerSerie* serie ) const;
-	//bool isEqualTracerSerie();
 	bool serieExists( const RDOTracerSerie* serie ) const { return find( series.begin(), series.end(), serie ) != series.end(); };
 	COLORREF selectColor();
 
 	timesList docTimes;
 	double minTimeOffset;
-	//static void insertTime( RDOTracerValue* const val );
 	void addSerieTimes( RDOTracerSerie* const serie );
+	bool newValueToSerieAdded( RDOTracerValue* val );
 
 public:
 	//{{AFX_VIRTUAL(RDOStudioChartDoc)

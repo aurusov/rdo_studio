@@ -4,6 +4,7 @@
 #include "rdotracerresource.h"
 #include "rdotracerrestype.h"
 #include "../rdostudiochartview.h"
+#include "../rdostudiochartdoc.h"
 
 // ----------------------------------------------------------------------------
 // ---------- RDOTracerSerie
@@ -62,6 +63,7 @@ void RDOTracerSerie::setTitle( const string& value )
 int RDOTracerSerie::addValue( RDOTracerValue* const value )
 {
 	values.push_back( value );
+	for_each( documents.begin(), documents.end(), bind2nd( mem_fun1( &RDOStudioChartDoc::newValueToSerieAdded ), value ) );
 	return values.size() - 1;
 }
 

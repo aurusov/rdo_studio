@@ -4,15 +4,6 @@
 // ----------------------------------------------------------------------------
 // ---------- RDOTracerTimeNow
 // ----------------------------------------------------------------------------
-bool RDOTracerTimeNow::checkTimeMoreOrEqual( RDOTracerTimeNow* timenow )
-{
-	bool res = false;
-	if( timenow ) {
-		res = time >= timenow->time;
-	}
-	return res;
-}
-
 bool RDOTracerTimeNow::operator >=( const RDOTracerTimeNow* timenow ) const
 {
 	bool res = false;

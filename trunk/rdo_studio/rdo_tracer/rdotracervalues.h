@@ -15,7 +15,6 @@ public:
 	int eventCount;
 	int overallCount;
 
-	bool checkTimeMoreOrEqual( RDOTracerTimeNow* timenow );
 	bool operator >=( const RDOTracerTimeNow* timenow ) const;
 };
 
