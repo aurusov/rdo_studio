@@ -43,3 +43,9 @@ int CChatDock::OnCreate( LPCREATESTRUCT lpCreateStruct )
 
 	return 0;
 }
+
+BOOL CChatDock::OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo)
+{
+//	if ( tab.OnCmdMsg( nID, nCode, pExtra, pHandlerInfo ) ) return TRUE;
+	return CSizingControlBarG::OnCmdMsg( nID, nCode, pExtra, pHandlerInfo );
+}

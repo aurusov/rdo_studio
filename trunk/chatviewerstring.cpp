@@ -12,9 +12,10 @@ static char THIS_FILE[] = __FILE__;
 // ----------------------------------------------------------------------------
 CChatString::CChatString()
 {
-	userName = "";
-	str      = "";
-	type     = CSTRT_Message;
+	userName   = "";
+	toUserName = "";
+	str        = "";
+	type       = CSTRT_Message;
 	time( &global_time );
 	height      = 0;
 	width       = 0;
@@ -24,8 +25,9 @@ CChatString::CChatString()
 	tmps        = "";
 }
 
-CChatString::CChatString( const std::string& _userName, const std::string& _str, CChatStringType _type ):
+CChatString::CChatString( const std::string& _userName, const std::string& _str, CChatStringType _type, const std::string& _toUserName ):
 	userName( _userName ),
+	toUserName( _toUserName ),
 	str( _str ),
 	type( _type )
 {
@@ -42,11 +44,6 @@ CChatString::~CChatString()
 {
 }
 
-CChatStringType CChatString::getType() const
-{
-	return type;
-}
-
 std::string& CChatString::getString()
 {
 	if ( tmps.empty() ) {
@@ -56,6 +53,10 @@ std::string& CChatString::getString()
 			tmps = str_time + " (" + userName + "): " + str;
 		} else if ( type == CSTRT_ToCryOut ) {
 			tmps = str_time + " (" + userName + " cry out): " + str;
+		} else if ( type == CSTRT_PopupMsgSend ) {
+			tmps = str_time + " (for " + toUserName + "): " + str;
+		} else if ( type == CSTRT_PopupMsgReceive ) {
+			tmps = str_time + " (from " + userName + "): " + str;
 		} else {
 			tmps = str_time + " " + str;
 		}
@@ -89,6 +90,14 @@ void CChatString::drawText( CDC* dc, CRect& r, CChatViewerStyle& style )
 		}
 		case CSTRT_ToCryOut: {
 			fontStyle = style.theme.toCryOutFS;
+			break;
+		}
+		case CSTRT_PopupMsgSend: {
+			fontStyle = style.theme.popupMsgSendFS;
+			break;
+		}
+		case CSTRT_PopupMsgReceive: {
+			fontStyle = style.theme.popupMsgReceiveFS;
 			break;
 		}
 		default: {
@@ -205,6 +214,14 @@ int CChatString::getHeight( CDC* dc, const int _width, CChatViewerStyle& style )
 			}
 			case CSTRT_ToCryOut: {
 				fontStyle = style.theme.toCryOutFS;
+				break;
+			}
+			case CSTRT_PopupMsgSend: {
+				fontStyle = style.theme.popupMsgSendFS;
+				break;
+			}
+			case CSTRT_PopupMsgReceive: {
+				fontStyle = style.theme.popupMsgReceiveFS;
 				break;
 			}
 			default: {
@@ -352,6 +369,16 @@ void CChatString::getColors( const CChatViewerStyle& style, const int lineIndex,
 		case CSTRT_ToCryOut: {
 			textColor = style.theme.toCryOutColor;
 			bgColor   = style.theme.toCryOutBgColor;
+			break;
+		}
+		case CSTRT_PopupMsgSend: {
+			textColor = style.theme.popupMsgSendColor;
+			bgColor   = style.theme.popupMsgSendBgColor;
+			break;
+		}
+		case CSTRT_PopupMsgReceive: {
+			textColor = style.theme.popupMsgReceiveColor;
+			bgColor   = style.theme.popupMsgReceiveBgColor;
 			break;
 		}
 		default: {

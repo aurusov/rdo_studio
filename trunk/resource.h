@@ -20,12 +20,15 @@
 #define IDD_POPUP_DIALOG                168
 #define IDD_OPTIONS_STATUSMODE_DIALOG   170
 #define IDD_STATUSMODEINFO_DIALOG       171
-#define IDD_TOCRYOUT_DIALOG             173
+#define IDD_MESSAGE_DIALOG              173
 #define IDB_NET                         180
 #define IDR_NETWORK_MENU                181
 #define IDR_STATUSMODE_TOOLBAR          189
 #define IDR_MAIN_TOOLBAR                191
 #define IDB_STATISMODE_TOOLBAR_D        193
+#define IDR_POPUPMSG_WAVE               195
+#define IDR_USER_MENU                   196
+#define IDB_MAIN_TOOLBAR_D              197
 #define IDC_USERNAME_EDIT               1000
 #define IDC_USERNAME_STATIC             1001
 #define IDC_USER_GROUPBOX               1003
@@ -74,7 +77,7 @@
 #define IDC_AUTOMATICALLYSTATUSMODE_AWAY_STATIC 1050
 #define IDC_AUTOMATICALLYSTATUSMODE_NOTAVAILIBLE_CHECK 1051
 #define IDC_AUTOMATICALLYSTATUSMODE_NOTAVAILIBLE_EDIT 1052
-#define IDC_TOCRYOUT_EDIT               1052
+#define IDC_MESSAGE_EDIT                1052
 #define IDC_AUTOMATICALLYSTATUSMODE_NOTAVAILIBLE_SPIN 1053
 #define IDC_AUTOMATICALLYSTATUSMODE_NOTAVAILIBLE_STATIC 1054
 #define ID_STATUSMODE_ONLINE            32773
@@ -95,6 +98,8 @@
 #define ID_VIEW_STATUSMODE_TOOLBAR      32814
 #define ID_VIEW_MAINTOOLBAR             32815
 #define ID_SOUND                        32823
+#define ID_USER_SENDMESSAGE             32827
+#define ID_USER_INGNORE                 32828
 #define ID_INFOSTATUSBAR                59394
 #define ID_STATUSMODE_TOOLBAR           61204
 #define ID_OPTIONS                      61205
@@ -119,14 +124,16 @@
 #define IDS_USERS                       61224
 #define IDS_NETWORK                     61225
 #define ID_MAIN_TOOLBAR                 61226
+#define IDS_TOCRYOUT_DIALOG             61227
+#define IDS_SENDMESSAGE_DIALOG          61228
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        194
-#define _APS_NEXT_COMMAND_VALUE         32826
+#define _APS_NEXT_RESOURCE_VALUE        198
+#define _APS_NEXT_COMMAND_VALUE         32840
 #define _APS_NEXT_CONTROL_VALUE         1053
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

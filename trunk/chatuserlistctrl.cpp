@@ -19,6 +19,8 @@ BEGIN_MESSAGE_MAP( CChatUserListCtrl, RDOTreeCtrl )
 	//{{AFX_MSG_MAP(CChatUserListCtrl)
 	ON_WM_CREATE()
 	ON_WM_KEYDOWN()
+	ON_WM_RBUTTONDOWN()
+	ON_WM_CONTEXTMENU()
 	//}}AFX_MSG_MAP
 	ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTW, 0, 0xFFFF, OnToolTipText)
 	ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTA, 0, 0xFFFF, OnToolTipText)
@@ -33,6 +35,7 @@ CChatUserListCtrl::CChatUserListCtrl():
 
 CChatUserListCtrl::~CChatUserListCtrl()
 {
+	eraseMenu( &popupMenu );
 	if ( m_pwchTip ) delete m_pwchTip;
 	if ( m_pchTip  ) delete m_pchTip;
 }
@@ -56,6 +59,11 @@ int CChatUserListCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	bmp.LoadBitmap( IDB_STATUSMODE );
 	imageList.Add( &bmp, RGB( 255, 0, 255 ) );
 	SetImageList( &imageList, TVSIL_NORMAL );
+
+	popupMenu.CreatePopupMenu();
+	CMenu* mainMenu = AfxGetMainWnd()->GetMenu();
+	appendMenu( mainMenu->GetSubMenu( 3 ), 0, &popupMenu );
+	appendMenu( mainMenu->GetSubMenu( 3 ), 1, &popupMenu );
 
 	EnableToolTips();
 
@@ -215,4 +223,23 @@ BOOL CChatUserListCtrl::OnToolTipText( UINT id, NMHDR * pNMHDR, LRESULT * pResul
 	*pResult = 0;
 
 	return TRUE;    // message was handled
+}
+
+void CChatUserListCtrl::OnRButtonDown(UINT nFlags, CPoint point)
+{
+//	RDOTreeCtrl::OnRButtonDown( nFlags, point );
+}
+
+void CChatUserListCtrl::OnContextMenu(CWnd* pWnd, CPoint point)
+{
+	UINT uFlags;
+	ScreenToClient( &point );
+	HTREEITEM hitem = HitTest( point, &uFlags );
+
+	if ( hitem && ( uFlags & TVHT_ONITEM ) ) {
+		SetFocus();
+		SelectItem( hitem );
+		ClientToScreen( &point );
+		popupMenu.TrackPopupMenu( TPM_LEFTALIGN | TPM_RIGHTBUTTON, point.x, point.y, chatApp.mainFrame );
+	}
 }

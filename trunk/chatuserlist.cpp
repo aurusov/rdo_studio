@@ -170,3 +170,18 @@ void CChatUserList::clear( const CChatUser* const dont_delete_user )
 		}
 	}
 }
+
+const CChatUser* CChatUserList::getOnwer() const
+{
+	return getUserByIP( chatApp.getIP() );
+}
+
+const CChatUser* CChatUserList::getSelected() const
+{
+	HTREEITEM hitem = chatApp.mainFrame->dock.users.GetSelectedItem();
+	if ( hitem ) {
+		CChatUser* user = reinterpret_cast<CChatUser*>(chatApp.mainFrame->dock.users.GetItemData( hitem ));
+		return user;
+	}
+	return NULL;
+}

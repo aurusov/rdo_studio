@@ -68,6 +68,7 @@ IDB_STATUSMODE          BITMAP  DISCARDABLE     "res\\userstreectrl.bmp"
 IDB_SOUND               BITMAP  DISCARDABLE     "res\\sound.bmp"
 IDB_NET                 BITMAP  DISCARDABLE     "res\\net.bmp"
 IDB_STATISMODE_TOOLBAR_D BITMAP  DISCARDABLE     "res\\statusModeToolbar_d.bmp"
+IDB_MAIN_TOOLBAR_D      BITMAP  DISCARDABLE     "res\\mainToolbar_d.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -202,12 +203,13 @@ BEGIN
     PUSHBUTTON      "Cancel",IDCANCEL,136,44,50,14
 END
 
-IDD_TOCRYOUT_DIALOG DIALOG DISCARDABLE  0, 0, 284, 49
+IDD_MESSAGE_DIALOG DIALOGEX 0, 0, 284, 49
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "To cry out message"
+EXSTYLE WS_EX_TOOLWINDOW
+CAPTION "Message"
 FONT 8, "MS Sans Serif"
 BEGIN
-    EDITTEXT        IDC_TOCRYOUT_EDIT,8,8,268,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_MESSAGE_EDIT,8,8,268,12,ES_AUTOHSCROLL
     DEFPUSHBUTTON   "OK",IDOK,156,28,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,216,28,50,14
 END
@@ -261,7 +263,7 @@ BEGIN
         BOTTOMMARGIN, 58
     END
 
-    IDD_TOCRYOUT_DIALOG, DIALOG
+    IDD_MESSAGE_DIALOG, DIALOG
     BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 277
@@ -295,6 +297,7 @@ IDR_CHATBACK_WAVE       WAVE    DISCARDABLE     "res\\chatback.wav"
 IDR_CONNECT_WAVE        WAVE    DISCARDABLE     "res\\connect.wav"
 IDR_DISCONNECT_WAVE     WAVE    DISCARDABLE     "res\\disconnect.wav"
 IDR_CHANGESTATUSMODE_WAVE WAVE    DISCARDABLE     "res\\changestatus.wav"
+IDR_POPUPMSG_WAVE       WAVE    DISCARDABLE     "res\\popupmsg.wav"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -317,6 +320,14 @@ BEGIN
     BEGIN
         MENUITEM "Open",                        ID_NETWORK_OPEN
         MENUITEM "Info...",                     ID_NETWORK_INFO
+    END
+END
+
+IDR_USER_MENU MENU DISCARDABLE 
+BEGIN
+    POPUP "User"
+    BEGIN
+        MENUITEM "send message",                ID_USER_SENDMESSAGE
     END
 END
 
@@ -387,10 +398,15 @@ BEGIN
     END
     POPUP "&Chat"
     BEGIN
-        MENUITEM "&To cry out...\tCtrl+Enter",  ID_CHAT_TOCRYOUT
+        MENUITEM "&To Cry Out...\tCtrl+Enter",  ID_CHAT_TOCRYOUT
         MENUITEM "&Sound",                      ID_SOUND
         MENUITEM SEPARATOR
         MENUITEM "&Options...",                 ID_CHAT_OPTIONS
+    END
+    POPUP "&User"
+    BEGIN
+        MENUITEM "&Send Message...",            ID_USER_SENDMESSAGE
+        MENUITEM "&Ingnore",                    ID_USER_INGNORE
     END
     POPUP "&View"
     BEGIN
@@ -425,6 +441,7 @@ BEGIN
     BUTTON      ID_SOUND
     SEPARATOR
     BUTTON      ID_CHAT_TOCRYOUT
+    BUTTON      ID_USER_SENDMESSAGE
 END
 
 
@@ -454,8 +471,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,0,164
- PRODUCTVERSION 1,0,0,164
+ FILEVERSION 1,0,0,168
+ PRODUCTVERSION 1,0,0,168
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -473,14 +490,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "Application for chat in localnet\0"
-            VALUE "FileVersion", "1, 0, 0, 164\0"
+            VALUE "FileVersion", "1, 0, 0, 168\0"
             VALUE "InternalName", "localChat\0"
             VALUE "LegalCopyright", "Copyright (C) 2002\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "localchat.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "localChat\0"
-            VALUE "ProductVersion", "1, 0, 0, 164\0"
+            VALUE "ProductVersion", "1, 0, 0, 168\0"
             VALUE "SpecialBuild", "\0"
         END
     END
@@ -542,11 +559,13 @@ BEGIN
     IDS_USERS               "Users"
     IDS_NETWORK             "Network"
     ID_MAIN_TOOLBAR         "Main"
+    IDS_TOCRYOUT_DIALOG     "To Cry Out Message"
+    IDS_SENDMESSAGE_DIALOG  "Send Message For %s"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    ID_CHAT_TOCRYOUT        "\nTo cry out (Ctrl+Enter)"
+    ID_CHAT_TOCRYOUT        "\nTo Cry Out (Ctrl+Enter)"
     ID_FILE_REFRESHUSERLIST "\nRefresh User List"
     ID_STATUSMODE_ONLINE_INFO "\nOnline..."
     ID_STATUSMODE_AWAY_INFO "\nAway..."
@@ -568,6 +587,7 @@ END
 STRINGTABLE DISCARDABLE 
 BEGIN
     ID_SOUND                "\nSound On/Off"
+    ID_USER_SENDMESSAGE     "\nSend Message"
 END
 
 #endif    // English (U.S.) resources

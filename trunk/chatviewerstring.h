@@ -15,7 +15,9 @@ enum CChatStringType {
 	CSTRT_Disconnect,
 	CSTRT_ChangeName,
 	CSTRT_ChangeStatusMode,
-	CSTRT_ToCryOut
+	CSTRT_ToCryOut,
+	CSTRT_PopupMsgSend,
+	CSTRT_PopupMsgReceive
 };
 
 class CChatString
@@ -25,6 +27,7 @@ private:
 
 protected:
 	std::string     userName;
+	std::string     toUserName;
 	std::string     str;
 	CChatStringType type;
 	long            global_time;
@@ -37,10 +40,10 @@ protected:
 
 public:
 	CChatString();
-	CChatString( const std::string& _userName, const std::string& _str, CChatStringType _type = CSTRT_Message );
+	CChatString( const std::string& _userName, const std::string& _str, CChatStringType _type = CSTRT_Message, const std::string& _toUserName = "" );
 	virtual ~CChatString();
 
-	CChatStringType getType() const;
+	CChatStringType getType() const { return type; }
 	std::string& getString();
 
 	void drawText( CDC* dc, CRect& rect, CChatViewerStyle& style );

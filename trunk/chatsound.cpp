@@ -150,6 +150,13 @@ void CChatSoundList::init()
 	snd->res        = IDR_CHATRET_WAVE;
 	snd->file       = app->GetProfileString( "Sound\\ChatRet", "file", "" );
 	list.push_back( snd );
+	snd = new CChatSound();
+	snd->type       = CST_PopupMsg;
+	snd->useSound   = app->GetProfileInt( "Sound\\PopupMessage", "useSound", true ) ? true : false;
+	snd->useDefault = app->GetProfileInt( "Sound\\PopupMessage", "useDefault", true ) ? true : false;
+	snd->res        = IDR_POPUPMSG_WAVE;
+	snd->file       = app->GetProfileString( "Sound\\PopupMessage", "file", "" );
+	list.push_back( snd );
 }
 
 void CChatSoundList::saveSetting() const
@@ -184,6 +191,10 @@ void CChatSoundList::saveSetting() const
 	app->WriteProfileInt( "Sound\\ChatRet", "useSound", snd->useSound );
 	app->WriteProfileInt( "Sound\\ChatRet", "useDefault", snd->useDefault );
 	app->WriteProfileString( "Sound\\ChatRet", "file", snd->file.c_str() );
+	snd = getSound( CST_PopupMsg );
+	app->WriteProfileInt( "Sound\\IncomingMessage", "useSound", snd->useSound );
+	app->WriteProfileInt( "Sound\\IncomingMessage", "useDefault", snd->useDefault );
+	app->WriteProfileString( "Sound\\IncomingMessage", "file", snd->file.c_str() );
 }
 
 void CChatSoundList::play( const int resID )

@@ -77,8 +77,8 @@ void CChatChildView::OnSetFocus(CWnd* pOldWnd)
 	edit.SetFocus();
 }
 
-void CChatChildView::addStringToViewer( const std::string& userName, const std::string& str, CChatStringType type )
+void CChatChildView::addStringToViewer( const std::string& userName, const std::string& str, CChatStringType type, const std::string& toUserName )
 {
-	CChatString* cstr = new CChatString( userName, str, type );
+	CChatString* cstr = new CChatString( userName, str, type, toUserName );
 	viewer.addString( cstr );
 }

@@ -14,7 +14,8 @@ enum CChatSoundType {
 	CST_IncomingMessage,
 	CST_ChatType,
 	CST_ChatBack,
-	CST_ChatRet
+	CST_ChatRet,
+	CST_PopupMsg,
 };
 
 class CChatSound

@@ -18,7 +18,7 @@ public:
 	CChatChildView();
 	virtual ~CChatChildView();
 
-	void addStringToViewer( const std::string& userName, const std::string& str, CChatStringType type = CSTRT_Message );
+	void addStringToViewer( const std::string& userName, const std::string& str, CChatStringType type = CSTRT_Message, const std::string& toUserName = "" );
 
 protected:
 	//{{AFX_VIRTUAL(CChatChildView)

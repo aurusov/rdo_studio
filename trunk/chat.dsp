@@ -300,6 +300,10 @@ SOURCE=.\res\mainToolbar.bmp
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\mainToolbar_d.bmp
+# End Source File
+# Begin Source File
+
 SOURCE=.\res\net.bmp
 # End Source File
 # Begin Source File
@@ -379,5 +383,9 @@ SOURCE=.\netsearch\Network.h
 # End Source File
 # End Group
 # End Group
+# Begin Source File
+
+SOURCE=.\res\popupmsg.wav
+# End Source File
 # End Target
 # End Project

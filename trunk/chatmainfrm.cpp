@@ -11,47 +11,65 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 // ----------------------------------------------------------------------------
-// ---------- CChatToCryOutDialog
+// ---------- CChatMessageDialog
 // ----------------------------------------------------------------------------
-class CChatToCryOutDialog: public CDialog
+class CChatMessageDialog: public CDialog
 {
+private:
+	std::string caption;
+
 public:
 	CString message;
 
-	CChatToCryOutDialog( UINT nIDTemplate, CWnd* pParentWnd = NULL );
-	virtual ~CChatToCryOutDialog();
+	CChatMessageDialog( UINT nIDTemplate, const std::string& _caption, CWnd* pParentWnd = NULL );
+	virtual ~CChatMessageDialog();
 
 protected:
-	//{{AFX_VIRTUAL(CChatToCryOutDialog)
+	//{{AFX_VIRTUAL(CChatMessageDialog)
 	protected:
 	virtual void DoDataExchange( CDataExchange* pDX );
 	//}}AFX_VIRTUAL
 
-	//{{AFX_MSG(CChatToCryOutDialog)
+	//{{AFX_MSG(CChatMessageDialog)
+	virtual BOOL OnInitDialog();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
 
-BEGIN_MESSAGE_MAP( CChatToCryOutDialog, CDialog )
-	//{{AFX_MSG_MAP(CChatToCryOutDialog)
+BEGIN_MESSAGE_MAP( CChatMessageDialog, CDialog )
+	//{{AFX_MSG_MAP(CChatMessageDialog)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-CChatToCryOutDialog::CChatToCryOutDialog( UINT nIDTemplate, CWnd* pParentWnd ):
+CChatMessageDialog::CChatMessageDialog( UINT nIDTemplate, const std::string& _caption, CWnd* pParentWnd ):
 	CDialog( nIDTemplate, pParentWnd ),
+	caption( _caption ),
 	message( "" )
 {
+	//{{AFX_DATA_INIT(CChatMessageDialog)
+	//}}AFX_DATA_INIT
 }
 
-CChatToCryOutDialog::~CChatToCryOutDialog()
+CChatMessageDialog::~CChatMessageDialog()
 {
 }
 
-void CChatToCryOutDialog::DoDataExchange( CDataExchange* pDX )
+void CChatMessageDialog::DoDataExchange( CDataExchange* pDX )
 {
 	CDialog::DoDataExchange( pDX );
 
-	DDX_Text( pDX, IDC_TOCRYOUT_EDIT, message );
+	//{{AFX_DATA_MAP(CChatMessageDialog)
+	DDX_Text( pDX, IDC_MESSAGE_EDIT, message );
+	//}}AFX_DATA_MAP
+}
+
+BOOL CChatMessageDialog::OnInitDialog()
+{
+	CDialog::OnInitDialog();
+
+	SetWindowText( caption.c_str() );
+
+	return TRUE;
 }
 
 // ----------------------------------------------------------------------------
@@ -81,17 +99,19 @@ BEGIN_MESSAGE_MAP( CChatMainFrame, CFrameWnd )
 	ON_UPDATE_COMMAND_UI(ID_VIEW_MAINTOOLBAR, OnUpdateViewMainToolbar)
 	ON_COMMAND(ID_VIEW_STATUSMODE_TOOLBAR, OnViewStatusModeToolbar)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_STATUSMODE_TOOLBAR, OnUpdateViewStatusModeToolbar)
-	ON_COMMAND( ID_TRAYMENU_EXIT, OnTrayCloseApp )
 	ON_COMMAND(ID_SOUND, OnSound)
 	ON_UPDATE_COMMAND_UI(ID_SOUND, OnUpdateSound)
 	ON_UPDATE_COMMAND_UI( ID_STATUSMODE_ONLINE      , OnUpdateStatusMode )
-	ON_UPDATE_COMMAND_UI( ID_STATUSMODE_AWAY        , OnUpdateStatusMode )
-	ON_UPDATE_COMMAND_UI( ID_STATUSMODE_NOTAVAILIBLE, OnUpdateStatusMode )
 	ON_UPDATE_COMMAND_UI( ID_STATUSMODE_ONLINE_INFO      , OnUpdateStatusModeInfo )
-	ON_UPDATE_COMMAND_UI( ID_STATUSMODE_AWAY_INFO        , OnUpdateStatusModeInfo )
-	ON_UPDATE_COMMAND_UI( ID_STATUSMODE_NOTAVAILIBLE_INFO, OnUpdateStatusModeInfo )
 	ON_COMMAND( ID_CHAT_TOCRYOUT, OnToCryOut )
 	ON_COMMAND( ID_CHAT_OPTIONS, OnOptions )
+	ON_COMMAND( ID_TRAYMENU_EXIT, OnTrayCloseApp )
+	ON_UPDATE_COMMAND_UI( ID_STATUSMODE_AWAY        , OnUpdateStatusMode )
+	ON_UPDATE_COMMAND_UI( ID_STATUSMODE_NOTAVAILIBLE, OnUpdateStatusMode )
+	ON_UPDATE_COMMAND_UI( ID_STATUSMODE_AWAY_INFO        , OnUpdateStatusModeInfo )
+	ON_UPDATE_COMMAND_UI( ID_STATUSMODE_NOTAVAILIBLE_INFO, OnUpdateStatusModeInfo )
+	ON_COMMAND(ID_USER_SENDMESSAGE, OnUserSendMessage)
+	ON_UPDATE_COMMAND_UI(ID_USER_SENDMESSAGE, OnUpdateUserSendMessage)
 	//}}AFX_MSG_MAP
 	ON_COMMAND_EX( ID_STATUSMODE_ONLINE      , OnStatusMode )
 	ON_COMMAND_EX( ID_STATUSMODE_AWAY        , OnStatusMode )
@@ -159,6 +179,9 @@ int CChatMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	mainToolBar.CreateEx( this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
 	mainToolBar.LoadToolBar( IDR_MAIN_TOOLBAR );
 	mainToolBar.GetToolBarCtrl().SetWindowText( format( ID_MAIN_TOOLBAR ).c_str() );
+
+	mainToolBarImageList.Create( IDB_MAIN_TOOLBAR_D, 16, 0, 0xFF00FF );
+	mainToolBar.GetToolBarCtrl().SetDisabledImageList( &mainToolBarImageList );
 
 	statusModeToolBar.CreateEx( this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
 	statusModeToolBar.LoadToolBar( IDR_STATUSMODE_TOOLBAR );
@@ -761,7 +784,7 @@ void CChatMainFrame::OnUpdateStatusModeInfo( CCmdUI* pCmdUI )
 
 void CChatMainFrame::OnToCryOut()
 {
-	CChatToCryOutDialog dlg( IDD_TOCRYOUT_DIALOG );
+	CChatMessageDialog dlg( IDD_MESSAGE_DIALOG, format( IDS_TOCRYOUT_DIALOG ) );
 	if ( dlg.DoModal() == IDOK && !dlg.message.IsEmpty() ) {
 		chatApp.udp.send( "<tocryout:" + dlg.message + ">" );
 	}
@@ -771,4 +794,20 @@ void CChatMainFrame::OnOptions()
 {
 	CChatOptions dlg;
 	dlg.DoModal();
+}
+
+void CChatMainFrame::OnUserSendMessage()
+{
+	const CChatUser* user = chatApp.users.getSelected();
+	if ( user ) {
+		CChatMessageDialog dlg( IDD_MESSAGE_DIALOG, format( IDS_SENDMESSAGE_DIALOG, user->getUserName().c_str() ) );
+		if ( dlg.DoModal() == IDOK && !dlg.message.IsEmpty() ) {
+			chatApp.udp.send( "<tohostip:" + user->getIP() + "><popupmsg:" + std::string(static_cast<LPCTSTR>(dlg.message)) + ">" );
+		}
+	}
+}
+
+void CChatMainFrame::OnUpdateUserSendMessage(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable( chatApp.users.getSelected() != NULL && chatApp.users.getSelected() != chatApp.users.getOnwer() );
 }

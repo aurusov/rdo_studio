@@ -1,6 +1,9 @@
 #ifndef CHATMAINFRM_H
 #define CHATMAINFRM_H
+
+#if _MSC_VER > 1000
 #pragma once
+#endif
 
 #include "chatchildview.h"
 #include "chatdock.h"
@@ -25,6 +28,7 @@ class CChatMainFrame: public CFrameWnd
 {
 private:
 	CToolBar       mainToolBar;
+	CImageList     mainToolBarImageList;
 	CToolBar       statusModeToolBar;
 	CImageList     statusModeToolBarImageList;
 	CStatusBar     statusBar;
@@ -140,6 +144,8 @@ protected:
 	afx_msg void OnUpdateStatusModeInfo( CCmdUI* pCmdUI );
 	afx_msg void OnToCryOut();
 	afx_msg void OnOptions();
+	afx_msg void OnUserSendMessage();
+	afx_msg void OnUpdateUserSendMessage(CCmdUI* pCmdUI);
 	//}}AFX_MSG
 	afx_msg void OnStatusMode( UINT nID );
 	afx_msg void OnStatusModeInfo( UINT nID );

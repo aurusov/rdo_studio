@@ -57,6 +57,9 @@ public:
 	CChatUser* getUserByHostName( const std::string& hostname ) const;
 	CChatUser* getUserByIP( const std::string& ip ) const;
 	void clear( const CChatUser* const dont_delete_user = NULL );
+
+	const CChatUser* getOnwer() const;
+	const CChatUser* getSelected() const;
 };
 
 //{{AFX_INSERT_LOCATION}}
