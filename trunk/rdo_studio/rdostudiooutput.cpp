@@ -57,10 +57,10 @@ int RDOStudioOutput::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	RDOStudioApp::appendMenu( mainMenu->GetSubMenu( 2 + delta ), 1, &popupMenu );
 	RDOStudioApp::appendMenu( mainMenu->GetSubMenu( 2 + delta ), 2, &popupMenu );
 	popupMenu.AppendMenu( MF_SEPARATOR );
-	RDOStudioApp::appendMenu( mainMenu->GetSubMenu( 2 + delta ), 5, &popupMenu );
-	RDOStudioApp::appendMenu( mainMenu->GetSubMenu( 2 + delta ), 6, &popupMenu );
 	RDOStudioApp::appendMenu( mainMenu->GetSubMenu( 2 + delta ), 7, &popupMenu );
 	RDOStudioApp::appendMenu( mainMenu->GetSubMenu( 2 + delta ), 8, &popupMenu );
+	RDOStudioApp::appendMenu( mainMenu->GetSubMenu( 2 + delta ), 9, &popupMenu );
+	RDOStudioApp::appendMenu( mainMenu->GetSubMenu( 2 + delta ), 10, &popupMenu );
 
 	build   = new RDOEditorSciLog;
 	debug   = new RDOEditorSciEdit;
