@@ -1,0 +1,13 @@
+; rdo_edit.def : Declares the module parameters for the DLL.
+
+LIBRARY      "RAO-editor"
+DESCRIPTION  'RAO-editor Windows Dynamic Link Library'
+
+EXPORTS
+	connectRdoApp
+	disconnectRdoApp
+	isConnected
+	setHook
+	callWndProc
+
+SECTIONS .RdoEditDllData READ WRITE SHARED
