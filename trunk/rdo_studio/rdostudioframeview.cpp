@@ -6,6 +6,9 @@
 #include "rdostudiomainfrm.h"
 #include "resource.h"
 
+#include <rdokernel.h>
+#include <rdosimwin.h>
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -28,6 +31,7 @@ BEGIN_MESSAGE_MAP(RDOStudioFrameView, RDOStudioView)
 	ON_WM_KEYDOWN()
 	ON_WM_MOUSEWHEEL()
 	ON_WM_PAINT()
+	ON_WM_KEYUP()
 	//}}AFX_MSG_MAP
 	ON_COMMAND(ID_FILE_PRINT, RDOStudioView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, RDOStudioView::OnFilePrint)
@@ -322,6 +326,7 @@ void RDOStudioFrameView::OnLButtonDown(UINT nFlags, CPoint point)
 
 void RDOStudioFrameView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
+/*
 	RDOStudioFrameManager* frameManager = &model->frameManager;
 	int index = frameManager->findFrameIndex( this );
 	CSingleLock lock_draw( frameManager->getFrameMutexDraw( index ) );
@@ -331,8 +336,18 @@ void RDOStudioFrameView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	frame->keys_pressed.push_back( nChar );
 
 	lock_draw.Unlock();
+*/
+
+	kernel.getSimulator()->keyDown( nChar );
 
 	RDOStudioView::OnKeyDown(nChar, nRepCnt, nFlags);
+}
+
+void RDOStudioFrameView::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
+{
+	kernel.getSimulator()->keyUp( nChar );
+
+	RDOStudioView::OnKeyUp(nChar, nRepCnt, nFlags);
 }
 
 void RDOStudioFrameView::OnActivateView(BOOL bActivate, CView* pActivateView, CView* pDeactiveView)

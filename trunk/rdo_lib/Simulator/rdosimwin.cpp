@@ -58,6 +58,14 @@ void RdoSimulator::addKeyPressed(int scanCode)
 	scanCodes.push_back(scanCode);
 }
 
+void RdoSimulator::keyDown(int scanCode)
+{
+}
+
+void RdoSimulator::keyUp(int scanCode)
+{
+}
+
 void RdoSimulator::addAreaPressed(string& areaName)
 {
 	areasActivated.push_back(areaName);

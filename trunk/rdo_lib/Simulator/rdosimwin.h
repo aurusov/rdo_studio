@@ -58,6 +58,8 @@ public:
 
 	const vector<RDOFrame *>& getFrames();
 	void addKeyPressed(int scanCode);
+	void keyDown(int scanCode);
+	void keyUp(int scanCode);
 	void addAreaPressed(string& areaName);
 
 	vector<const string *> getAllFrames();

@@ -64,7 +64,7 @@ private:
 		CEvent              close;
 		std::vector< Area* >       areas_sim;
 		std::vector< std::string > areas_clicked;
-		std::vector< int >         keys_pressed;
+//		std::vector< int >         keys_pressed;
 		void areas_sim_clear() {
 			std::vector< Area* >::iterator it = areas_sim.begin();
 			while ( it != areas_sim.end() ) {
