@@ -18,12 +18,15 @@ static char THIS_FILE[] = __FILE__;
 #define SAFE_RELEASE( p ) { if( p ) { ( p )->Release(); ( p ) = NULL; } }
 const int bk_width  = 512;
 const int bk_height = 256;
+const int timer_ID  = 1;
 
 BEGIN_MESSAGE_MAP(BKChildView,CWnd )
 	//{{AFX_MSG_MAP(BKChildView)
 	ON_WM_PAINT()
 	ON_WM_CREATE()
 	ON_WM_LBUTTONDOWN()
+	ON_WM_TIMER()
+	ON_WM_CLOSE()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -42,9 +45,12 @@ BKChildView::BKChildView():
 	gColor( 0 ),
 	bColor( 0 ),
 	grayColor( 0 ),
-	windowRect( 0, 0, 0, 0 )
+	windowRect( 0, 0, 0, 0 ),
+	screenRect( 0, 0, 0, 0 ),
+	timer( 0 )
 {
 	::SystemParametersInfo( SPI_GETWORKAREA, 0, &screenRect, 0 );
+	updateVideoMemory.reserve( emul.video.getMemorySize() );
 }
 
 BKChildView::~BKChildView()
@@ -69,7 +75,18 @@ int BKChildView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	updateBounds();
 	initDirectDraw();
 
+	timer = SetTimer( timer_ID, 20, NULL );
+
 	return 0;
+}
+
+void BKChildView::OnClose()
+{
+	if ( timer ) {
+		KillTimer( timer );
+		timer = 0;
+	}
+	CWnd::OnClose();
 }
 
 HRESULT BKChildView::initDirectDraw()
@@ -170,7 +187,7 @@ void BKChildView::draw( const BYTE* bk_video_from, int count_byte, BYTE BK_byte_
 {
 	BYTE* lpSurfMemory = static_cast<BYTE*>(display->getSurfaceDesc()->lpSurface);
 	if ( !lpSurfMemory ) return;
-	bool colorMonitor = emul.isColorMonitor();
+	bool colorMonitor = emul.video.isColorMonitor();
 	switch ( bytePerPixel ) {
 		case 2: {
 //				BYTE BK_line_Y = (BYTE)((~((BK->Memory_word[0177664] & 0xFF) - (BYTE)0330))+1);
@@ -313,7 +330,7 @@ void BKChildView::draw( const BYTE* bk_video_from, int count_byte, BYTE BK_byte_
 HRESULT BKChildView::displayFrame() const
 {
 	if ( lockSurface() == DD_OK ) {
-		draw( emul.getVideoMemory(), emul.getVideoMemorySize() );
+		draw( emul.video.getMemory(), emul.video.getMemorySize() );
 		unlockSurface();
 	}
 	return DD_OK;
@@ -346,7 +363,7 @@ void BKChildView::updateScrolling( BYTE delta ) const
 void BKChildView::updateVideoMemoryByte( WORD address ) const
 {
 	if ( lockSurface() == DD_OK ) {
-		draw( emul.getMemory( address ), 1, address & 077, (address - 040000) / 64 );
+		draw( emul.video.getMemory( address ), 1, address & 077, (address - 040000) / 64 );
 		unlockSurface();
 	}
 }
@@ -354,7 +371,7 @@ void BKChildView::updateVideoMemoryByte( WORD address ) const
 void BKChildView::updateVideoMemoryWord( WORD address ) const
 {
 	if ( lockSurface() == DD_OK ) {
-		draw( emul.getMemory( address ), 2, address & 077, (address - 040000) / 64 );
+		draw( emul.video.getMemory( address ), 2, address & 077, (address - 040000) / 64 );
 		unlockSurface();
 	}
 }
@@ -369,6 +386,13 @@ void BKChildView::OnLButtonDown(UINT nFlags, CPoint point)
 	CWnd::OnLButtonDown( nFlags, point );
 
 	for ( int i = 040000; i < 0100000; i++ ) {
-		emul.setMemoryWord( i, 031463 );
+		emul.video.setMemoryWord( i, 031463 );
+	}
+}
+
+void BKChildView::OnTimer(UINT nIDEvent)
+{
+	CWnd::OnTimer( nIDEvent );
+	if ( nIDEvent == timer ) {
 	}
 }

@@ -28,6 +28,8 @@ private:
 	CRect windowRect;
 	CRect screenRect;
 
+	UINT timer;
+	std::vector< BYTE > updateVideoMemory;
 	HRESULT initDirectDraw();
 	HRESULT lockSurface() const;
 	HRESULT unlockSurface() const;
@@ -54,6 +56,8 @@ protected:
 	afx_msg void OnPaint();
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnTimer(UINT nIDEvent);
+	afx_msg void OnClose();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 

@@ -21,6 +21,16 @@ public:
 	BKEmulVideo();
 	virtual ~BKEmulVideo();
 
+	const BYTE* getMemory( WORD address = 040000 ) const;
+	int getMemorySize() const           { return 040000;       }
+
+	BYTE getMemoryByte( WORD address );
+	WORD getMemoryWord( WORD address );
+	void setMemoryByte( WORD address, BYTE data );
+	void setMemoryWord( WORD address, WORD data );
+
+	bool isColorMonitor() const         { return colorMonitor; }
+
 	void updateMonitor() const;
 	void updateScrolling( BYTE delta ) const;
 	void updateVideoMemoryByte( WORD address ) const;

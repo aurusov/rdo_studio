@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "bkemulvideo.h"
+#include "bkemul.h"
 #include "bkemulapp.h"
 #include "bkemulmainfrm.h"
 #include "bkemulchildview.h"
@@ -21,6 +22,31 @@ BKEmulVideo::BKEmulVideo(): colorMonitor( true )
 
 BKEmulVideo::~BKEmulVideo()
 {
+}
+
+const BYTE* BKEmulVideo::getMemory( WORD address ) const
+{
+	return emul.memory.getMemory( address );
+}
+
+BYTE BKEmulVideo::getMemoryByte( WORD address )
+{
+	return emul.memory.getMemoryByte( address );
+}
+
+WORD BKEmulVideo::getMemoryWord( WORD address )
+{
+	return emul.memory.getMemoryWord( address );
+}
+
+void BKEmulVideo::setMemoryByte( WORD address, BYTE data )
+{
+	emul.memory.setMemoryByte( address, data );
+}
+
+void BKEmulVideo::setMemoryWord( WORD address, WORD data )
+{
+	emul.memory.setMemoryWord( address, data );
 }
 
 void BKEmulVideo::updateMonitor() const
