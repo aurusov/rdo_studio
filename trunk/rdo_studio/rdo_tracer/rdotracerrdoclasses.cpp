@@ -84,8 +84,9 @@ RDOTracerValue::~RDOTracerValue()
 // ----------------------------------------------------------------------------
 // ---------- RDOTracerSerie
 // ----------------------------------------------------------------------------
-RDOTracerSerie::RDOTracerSerie() :
+RDOTracerSerie::RDOTracerSerie( RDOTracerSerieKind _serieKind ) :
 	RDOTracerTreeItem( true ),
+	serieKind( _serieKind ),
 	minValue( 0 ),
 	maxValue( 0 )
 {
@@ -140,21 +141,27 @@ RDOTracerValue* RDOTracerSerie::getLastValue() const
 void RDOTracerSerie::drawSerie( CDC &dc, CRect &rect )
 {
 	int oldBkMode = dc.SetBkMode( TRANSPARENT );
+	CPen penBlack;
+	penBlack.CreatePen( PS_SOLID, 0, RGB( 255, 0, 0 ) );
+	CPen* pOldPen = dc.SelectObject( &penBlack );
 	double timerange = trace.getMaxTime()->time;
-	long double kx = rect.Width() / timerange;
-	long double ky = rect.Height() / ( maxValue - minValue );
+	long double kx, ky;
+	if ( timerange )
+		kx = rect.Width() / timerange;
+	else
+		kx = 0;
+	if ( maxValue != minValue )
+		ky = rect.Height() / ( maxValue - minValue );
+	else
+		ky = 0;
 	int count = values.size();
-	int prevx = rect.left;
+	int prevx = rect.left + kx * values.at( 0 )->modeltime->time;
 	int prevy = rect.bottom - ky * values.at( 0 )->value;
 	dc.MoveTo( prevx, prevy );
 	int x, y;
 	RDOTracerValue* val = NULL;
 	for ( int i = 1; i < count; i++ ) {
 		val = values.at( i );
-		//int x = rect.left + min ( kx * val->modeltime->time, rect.Width() );
-		//int y = max( rect.bottom, rect.bottom - min ( ky * val->value, rect.Height() ) );
-		/*ky * val->value;
-		rect.Height();*/
 		y = rect.bottom;
 		y -= min( ky * val->value, rect.Height() );
 		x = rect.left;
@@ -164,9 +171,10 @@ void RDOTracerSerie::drawSerie( CDC &dc, CRect &rect )
 		prevx = x;
 		prevy = y;
 	}
-	if ( x < rect.right ) {
+	if ( !( serieKind == RDOST_RESPARAM && ((RDOTracerResParam*)this)->getResource()->isErased() ) && x < rect.right ) {
 		dc.LineTo( rect.right, y );
 	}
+	dc.SelectObject( pOldPen );
 	dc.SetBkMode( oldBkMode );
 }
 
@@ -174,13 +182,22 @@ void RDOTracerSerie::drawSerie( CDC &dc, CRect &rect )
 // ---------- RDOTracerResParam
 // ----------------------------------------------------------------------------
 RDOTracerResParam::RDOTracerResParam( RDOTracerResource* const res ) :
-	RDOTracerSerie(),
+	RDOTracerSerie( RDOST_RESPARAM ),
 	resource( res )
 {
 }
 
 RDOTracerResParam::~RDOTracerResParam()
 {
+}
+
+RDOTracerResParamInfo* RDOTracerResParam::getParamInfo() const
+{
+	int index = resource->getParamIndex( this );
+	if ( index != -1 )
+		return resource->getType()->getParamInfo( index );
+	else
+		return NULL;
 }
 
 // ----------------------------------------------------------------------------
@@ -221,6 +238,16 @@ RDOTracerResParam* RDOTracerResource::getParam( const int index ) const
 	return params.at( index );
 }
 
+int RDOTracerResource::getParamIndex( const RDOTracerResParam* const param ) const
+{
+	int count = params.size();
+	for ( int i = 0; i < count; i++ ) {
+		if ( params.at( i ) == param )
+			return i;
+	}
+	return -1;
+}
+
 void RDOTracerResource::setParams( string& line, RDOTracerTimeNow* const time, const bool erasing )
 {
 	int count = params.size();
@@ -258,7 +285,7 @@ RDOTracerPattern::~RDOTracerPattern()
 // ---------- RDOTracerOperation
 // ----------------------------------------------------------------------------
 RDOTracerOperation::RDOTracerOperation( RDOTracerPattern* const pat )
-	: RDOTracerSerie(),
+	: RDOTracerSerie( RDOST_OPERATION ),
 	pattern( pat )
 {
 }
@@ -286,7 +313,7 @@ void RDOTracerOperation::accomplish( RDOTracerTimeNow* const time )
 // ---------- RDOTracerResult
 // ----------------------------------------------------------------------------
 RDOTracerResult::RDOTracerResult( const RDOTracerResultKind kind )
-	: RDOTracerSerie(),
+	: RDOTracerSerie( RDOST_RESULT ),
 	resultKind( kind ),
 	id( 0 )
 {

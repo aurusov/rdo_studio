@@ -46,10 +46,18 @@ BOOL RDOStudioChartView::PreCreateWindow(CREATESTRUCT& cs)
 
 void RDOStudioChartView::OnDraw(CDC* pDC)
 {
+	int valcountx = 5;
+	int valcounty = 5;
+	RDOTracerSerie* yaxis = NULL;
+	
+	
 	RDOStudioChartDoc* pDoc = GetDocument();
+
+	if ( pDoc->series.size() )
+		yaxis = pDoc->series.at( 0 );
+
 	GetClientRect( &newClientRect );
 	CRect rect;
-	//GetClientRect( &newrect );
 	rect.CopyRect( &newClientRect );
 
 	if ( newClientRect.Width() > bmpRect.Width() || newClientRect.Height() > bmpRect.Height() )
@@ -65,41 +73,120 @@ void RDOStudioChartView::OnDraw(CDC* pDC)
 	CBitmap* pOldBitmap = dc.SelectObject( &bmp );
 	
 
+	int oldBkMode = dc.SetBkMode( TRANSPARENT );
+
 	CBrush brush( RGB( 255, 255, 255 ) );
 	CBrush* pOldBrush = dc.SelectObject( &brush );
 	CPen penBlack;
 	penBlack.CreatePen( PS_SOLID, 0, RGB( 0, 0, 0 ) );
 	CPen* pOldPen = dc.SelectObject( &penBlack );
 	
-	//dc.Rectangle( newClientRect );
 	dc.FillSolidRect( newClientRect, RGB( 255, 255, 255 ) );
 
-	CString str = pDoc->GetTitle();
-	//newrect.OffsetRect( 1, 1 );
-	dc.DrawText( str, rect, DT_CENTER | DT_CALCRECT );
-	dc.DrawText( str, newClientRect, DT_CENTER );
+	string str = pDoc->GetTitle();
+	dc.DrawText( str.c_str(), rect, DT_CENTER | DT_CALCRECT );
+	dc.DrawText( str.c_str(), newClientRect, DT_CENTER );
 	int height = rect.Height();
 	rect.top = height;
 	rect.bottom = newClientRect.Height() - height;
-	rect.left = 10;
-	rect.right = newClientRect.right - 10;
+	rect.left = 5;
+	rect.right = newClientRect.right - 5;
 	
 	if ( rect.Height() > 0 && rect.Width() > 0 ) {
+		
+		CRect tmprect;
+		CSize size;
+		//draw y aixs
+
+		tmprect.CopyRect( &rect );
+		if ( yaxis ) {
+			string formatstr = "%.3f";
+			/*if ( yaxis->getSerieKind() == RDOST_OPERATION )
+				formatstr = "%d";
+			if ( yaxis->getSerieKind() == RDOST_RESPARAM ) {
+				RDOTracerResParam* resparam = (RDOTracerResParam*)yaxis;
+				RDOTracerResParamType type = resparam->getParamInfo()->getParamType();
+				if ( type == RDOPT_INTEGER )
+					formatstr = "%d";
+				else if ( type == RDOPT_ENUMERATIVE )
+					//format = "%s";
+					formatstr = "%d";
+			}*/
+			double valoffset = ( yaxis->getMaxValue() - yaxis->getMinValue() ) / ( valcounty - 1 );
+			int heightoffset = rect.Height() / ( valcounty - 1 );
+			double valo = yaxis->getMinValue();
+			int y = rect.bottom;
+			int maxx = 0;
+			for ( int j = 0; j < valcounty; j++ ) {
+				//tmprect.left += widthoffset;
+				str = format( formatstr.c_str(), valo );
+				size = dc.GetTextExtent( str.c_str() );
+				if ( size.cx > maxx )
+					maxx = size.cx;
+				tmprect.top = y - size.cy / 2;
+				tmprect.bottom += size.cy / 2;
+				dc.DrawText( str.c_str(), tmprect, DT_LEFT );
+				valo += valoffset;
+				y -= heightoffset;
+			}
+
+			rect.left += ( maxx + 2 );
+			
+			y = rect.bottom;
+			for ( j = 1; j < valcounty - 1; j++ ) {
+				y -= heightoffset;
+				dc.MoveTo( rect.left, y );
+				dc.LineTo( rect.left + 3, y );
+			}
+			rect.left += 3;
+		}
+		
+		//draw time aixs
+		double timerange = trace.getMaxTime()->time;
+		tmprect.top = rect.bottom;
+		tmprect.left = rect.left;
+		tmprect.bottom = newClientRect.bottom;
+		tmprect.right = rect.right;
+		str = format( "%.3f", 0 );
+		dc.DrawText( str.c_str(), tmprect, DT_LEFT );
+		//CSize size = dc.GetTextExtent( str.c_str() );
+		//rect.left += size.cx / 2;
+		str = format( "%.3f", timerange );
+		dc.DrawText( str.c_str(), tmprect, DT_RIGHT );
+		//size = dc.GetTextExtent( str.c_str() );
+		//rect.right -= size.cx / 2;
+		rect.right -= size.cx;
+		int x = rect.left;
+		int widthoffset = rect.Width() / (valcountx - 1);
+		double valoffset = timerange / (valcountx - 1);
+		double tempo = 0;
+		for ( int j = 1; j < valcountx - 1; j++ ) {
+			tempo += valoffset;
+			x += widthoffset;
+			dc.MoveTo( x, rect.bottom );
+			dc.LineTo( x, rect.bottom - 3 );
+			str = format( "%.3f", tempo );
+			//size = dc.GetTextExtent( str.c_str() );
+			//tmprect.left = x - size.cx / 2;
+			tmprect.left = x;
+			dc.DrawText( str.c_str(), tmprect, DT_LEFT );
+		}
+
+		rect.bottom -= 2;
+
 		dc.Rectangle( rect );
 		rect.InflateRect( -1, -1 );
 
 		int count = pDoc->series.size();
 		for ( int i = 0; i < count; i++ ) {
 			pDoc->series.at( i )->drawSerie( dc, rect );
-			/*dc.DrawText( pDoc->series.at( i )->getTitle(), newrect, DT_LEFT | DT_CALCRECT );
-			dc.DrawText( pDoc->series.at( i )->getTitle(), newrect, DT_LEFT );
-			newrect.OffsetRect( 0, newrect.Height() + 2 );*/
 		}
 	}
 
 	pDC->BitBlt( 0, 0, newClientRect.Width(), newClientRect.Height(), &dc, 0, 0, SRCCOPY );
 	dc.SelectObject( pOldBrush );
 	dc.SelectObject( pOldPen );
+	dc.SetBkMode( oldBkMode );
 	dc.SelectObject( pOldBitmap );
 }
 

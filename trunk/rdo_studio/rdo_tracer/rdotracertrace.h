@@ -78,6 +78,7 @@ private:
 
 	CMultiDocTemplate* chartDocTemplate;
 	vector <RDOStudioChartDoc*> charts;
+	void updateCharts();
 
 public:
 	RDOTracerTrace();
@@ -98,7 +99,7 @@ public:
 	UINT const getClipboardFormat() const { return clipboardFormat; }
 	RDOStudioChartDoc* createNewChart();
 	void addChart( RDOStudioChartDoc* const chart );
-	void removeChart( const RDOStudioChartDoc* const chart );
+	void removeChart( RDOStudioChartDoc* chart );
 	RDOStudioChartDoc* addSerieToChart( RDOTracerSerie* const serie, RDOStudioChartDoc* chart = NULL );
 	RDOTracerTimeNow* getMaxTime() const { return timeVector.back(); };
 };

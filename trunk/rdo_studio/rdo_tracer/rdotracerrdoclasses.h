@@ -95,17 +95,26 @@ public:
 // ----------------------------------------------------------------------------
 // ---------- RDOTracerSerie
 // ----------------------------------------------------------------------------
+enum RDOTracerSerieKind{
+	RDOST_RESPARAM = 0,
+	RDOST_OPERATION,
+	RDOST_RESULT
+};
+
 
 class RDOTracerSerie : public RDOTracerTreeItem
 {
 protected:
+	RDOTracerSerieKind serieKind;
 	string title;
 	vector <RDOTracerValue*> values;
 	double minValue;
 	double maxValue;
 public:
-	RDOTracerSerie();
+	RDOTracerSerie( RDOTracerSerieKind _serieKind );
 	virtual ~RDOTracerSerie();
+	
+	RDOTracerSerieKind getSerieKind() const { return serieKind; };
 
 	string getTitle() const;
 	void setTitle( const string& value );
@@ -114,6 +123,8 @@ public:
 	RDOTracerValue* getValue( const int index ) const;
 	int getValueCount() const;
 	RDOTracerValue* getLastValue() const;
+	double getMinValue() const { return minValue; };
+	double getMaxValue() const { return maxValue; };
 
 	void drawSerie( CDC &dc, CRect &rect );
 };
@@ -126,10 +137,14 @@ class RDOTracerResource;
 class RDOTracerResParam: public RDOTracerSerie
 {
 protected:
+	RDOTracerResParamInfo* paramInfo;
 	RDOTracerResource* resource;
 public:
 	RDOTracerResParam( RDOTracerResource* const res );
 	virtual ~RDOTracerResParam();
+
+	RDOTracerResource* getResource() const { return resource; };
+	RDOTracerResParamInfo* getParamInfo() const;
 };
 
 // ----------------------------------------------------------------------------
@@ -150,6 +165,7 @@ public:
 	RDOTracerResType* getType() const { return resType; };
 	int addParam( RDOTracerResParam* const value );
 	RDOTracerResParam* getParam( const int index ) const;
+	int getParamIndex( const RDOTracerResParam* const param ) const;
 	void setParams( string& line, RDOTracerTimeNow* const time, const bool erasing = false );
 	void setErased( const bool value );
 	bool isErased() { return erased; };

@@ -53,15 +53,10 @@ int RDOTracerTreeCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	imageList.Add( &bmp, RGB( 255, 0, 255 ) );
 	SetImageList( &imageList, TVSIL_NORMAL );
 
-	CString str;
-	str.LoadString( ID_MODEL_START );
-	rootItem = InsertItem( str, 0, 0 );
-	str.LoadString( ID_RESOURCE_TYPES );
-	rtpItem = InsertItem( str, 1, 1, rootItem );
-	str.LoadString( ID_PATTERNS );
-	patItem = InsertItem( str, 1, 1, rootItem );
-	str.LoadString( ID_RESULTS );
-	pmvItem = InsertItem( str, 1, 1, rootItem );
+	rootItem = InsertItem( format( ID_MODEL_START ).c_str(), 0, 0 );
+	rtpItem = InsertItem( format( ID_RESOURCE_TYPES ).c_str(), 1, 1, rootItem );
+	patItem = InsertItem( format( ID_PATTERNS ).c_str(), 1, 1, rootItem );
+	pmvItem = InsertItem( format( ID_RESULTS ).c_str(), 1, 1, rootItem );
 	Expand( rootItem, TVE_EXPAND );
 
 	return 0;
@@ -173,9 +168,7 @@ void RDOTracerTreeCtrl::clear()
 	deleteChildren( rtpItem );
 	deleteChildren( patItem );
 	deleteChildren( pmvItem );
-	CString str;
-	str.LoadString( ID_MODEL_START );
-	SetItemText( rootItem, str );
+	SetItemText( rootItem, format( ID_MODEL_START ).c_str() );
 }
 
 void RDOTracerTreeCtrl::addToNewChart( RDOTracerTreeItem* const item )

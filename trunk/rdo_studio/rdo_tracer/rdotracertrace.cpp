@@ -253,14 +253,10 @@ void RDOTracerTrace::addIrregularEvent( string& s )
 void RDOTracerTrace::addResult( string& s )
 {
 	string str = s;
-	string part = str.substr( 0, str.find_first_not_of( " " ) );
-	str.erase( 0, part.length() );
 	string name = getNextValue( str );
-	part = getNextValue( str );
+	string part = getNextValue( str );
 	int resid = atoi( part.c_str() );
-	int pos = str.rfind( ' ' );
-	part = str.substr( pos );
-	trim( part );
+	part = getNextValue( str );
 	RDOTracerResultKind resKind;
 	if ( part == "watch_par" )
 		resKind = RDORK_WATCHPAR;
@@ -388,13 +384,15 @@ void RDOTracerTrace::dispathNextString( string& line )
 	}*/
 
 	//graphicsPanel->addToLog( _T("... Done\r\n\r\n") );
+	updateCharts();
 }
 
 string RDOTracerTrace::getNextValue( string& line )
 {
-	int pos = line.find_first_not_of( ' ' );
-	string res = line.substr( pos, line.find_first_of( ' ' ) );
-	line.erase( 0, pos + res.length() + 1 );
+	int posstart = line.find_first_not_of( ' ' );
+	int posend = line.find_first_of( ' ', posstart );
+	string res = line.substr( posstart, posend - posstart );
+	line.erase( 0, posend + 1 );
 	trim( res );
 	return res;
 }
@@ -621,7 +619,6 @@ RDOStudioChartDoc* RDOTracerTrace::createNewChart()
 	RDOStudioChartDoc* doc = NULL;
 	if ( chartDocTemplate ) {
 		doc = (RDOStudioChartDoc*)chartDocTemplate->OpenDocumentFile( NULL );
-		charts.push_back( doc );
 	}
 	return doc;
 }
@@ -640,12 +637,20 @@ void RDOTracerTrace::addChart( RDOStudioChartDoc* const chart )
 	charts.push_back( chart );
 }
 
-void RDOTracerTrace::removeChart( const RDOStudioChartDoc* const chart )
+void RDOTracerTrace::removeChart( RDOStudioChartDoc* chart )
 {
 	for ( vector< RDOStudioChartDoc* >::iterator it = charts.begin(); it != charts.end(); it++ ) {
 		if ( (*it) == chart ) {
 			charts.erase( it );
 			break;
 		}
+	}
+}
+
+void RDOTracerTrace::updateCharts()
+{
+	int size = charts.size();
+	for ( vector< RDOStudioChartDoc* >::iterator it = charts.begin(); it != charts.end(); it++ ) {
+		(*it)->UpdateAllViews( NULL );
 	}
 }
