@@ -8,13 +8,13 @@
 #include <string>
 #include <sstream>
 
-namespace rdoRepository {
-	class RDORepositoryFile;
-};
-
 // ----------------------------------------------------------------------------
 // ---------- RDORepository
 // ----------------------------------------------------------------------------
+namespace rdoRepository {
+
+class RDORepositoryFile;
+
 class RDORepository
 {
 private:
@@ -58,6 +58,10 @@ public:
 	void savePMD( std::stringstream& stream ) const;
 	void savePMV( std::stringstream& stream ) const;
 	void saveTRC( std::stringstream& stream ) const;
+
+	void loadBMP( const std::string& name, std::stringstream& stream ) const;
 };
+
+} // namespace rdoRepository
 
 #endif // RDOREPOSITORY_H

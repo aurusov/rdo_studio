@@ -7,6 +7,7 @@
 
 #include <string>
 #include <sstream>
+#include <vector>
 
 class CFileDialog;
 
@@ -89,6 +90,8 @@ public:
 	void savePMD( std::stringstream& stream ) const;
 	void savePMV( std::stringstream& stream ) const;
 	void saveTRC( std::stringstream& stream ) const;
+
+	void loadBMP( const std::string& name, std::stringstream& stream ) const;
 };
 
 }; // namespace rdoRepository

@@ -167,3 +167,8 @@ void RDORepository::saveTRC( stringstream& stream ) const
 {
 	repositoryFile->saveTRC( stream );
 }
+
+void RDORepository::loadBMP( const string& name, stringstream& stream ) const
+{
+	repositoryFile->loadBMP( name, stream );
+}

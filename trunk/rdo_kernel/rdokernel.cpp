@@ -24,10 +24,10 @@ RDOKernel::~RDOKernel()
 	if ( simulator )  { delete simulator; simulator = NULL; }
 }
 
-RDORepository* RDOKernel::getRepository()
+rdoRepository::RDORepository* RDOKernel::getRepository()
 {
 	if ( !repository ) {
-		repository = new RDORepository;
+		repository = new rdoRepository::RDORepository;
 	}
 	return repository;
 }

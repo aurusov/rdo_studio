@@ -15,7 +15,6 @@
 
 using namespace std;
 using namespace rdoEditor;
-using namespace rdoRepository;
 using namespace RDOSimulatorNS;
 
 #ifdef _DEBUG
@@ -174,7 +173,7 @@ void RDOStudioModel::beforeModelStartNotify()
 
 void RDOStudioModel::afterModelStartNotify()
 {
-	studioApp.mainFrame->output.clearDebug();
+//	studioApp.mainFrame->output.clearDebug();
 	studioApp.mainFrame->output.showDebug();
 	RDOStudioModelDoc* doc = model->getModelDoc();
 	if ( doc ) {
@@ -453,6 +452,14 @@ bool RDOStudioModel::isRunning() const
 
 void RDOStudioModel::beforeModelStart()
 {
+	frameManager.bmp_clear();
+	vector< const string* > bitmaps = kernel.getSimulator()->getAllBitmaps();
+	vector< const string* >::iterator bmp = bitmaps.begin();
+	while ( bmp != bitmaps.end() ) {
+		frameManager.bmp_insert( *(*bmp) );
+		bmp++;
+	}
+
 	frameManager.clear();
 	vector< const string* > frames = kernel.getSimulator()->getAllFrames();
 	vector< const string* >::iterator it = frames.begin();
@@ -664,7 +671,7 @@ void RDOStudioModel::showFrame()
 					SYSTEMTIME time2;
 					::GetSystemTime( &time2 );
 					int msec = ( time2.wSecond - time1.wSecond ) * 1000 + ( time2.wMilliseconds - time1.wMilliseconds );
-					TRACE( "time = %d\r\n", msec );
+//					TRACE( "time = %d\r\n", msec );
 				} else if ( res == WAIT_OBJECT_0 + 1 ) {
 				} else {
 				}

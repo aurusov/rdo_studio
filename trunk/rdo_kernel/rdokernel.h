@@ -10,7 +10,9 @@
 #include <map>
 #include <string>
 
+namespace rdoRepository {
 class RDORepository;
+}
 
 namespace RDOSimulatorNS {
 class RdoSimulator;
@@ -57,8 +59,8 @@ public:
 	};
 
 private:
-	RDORepository* repository;
-	RDOSimulatorNS::RdoSimulator*  simulator;
+	rdoRepository::RDORepository* repository;
+	RDOSimulatorNS::RdoSimulator* simulator;
 
 	typedef std::multimap< NotifyType, OnNotify >             onNotifyListType;
 	typedef std::multimap< BoolNotifyType, OnBoolNotify >     onBoolNotifyListType;
@@ -72,8 +74,8 @@ public:
 	RDOKernel();
 	virtual ~RDOKernel();
 
-	RDORepository* getRepository();
-	RDOSimulatorNS::RdoSimulator*  getSimulator();
+	rdoRepository::RDORepository* getRepository();
+	RDOSimulatorNS::RdoSimulator* getSimulator();
 
 	void setNotifyReflect( NotifyType notifyType, OnNotify fun );
 	void setNotifyReflect( BoolNotifyType notifyType, OnBoolNotify fun );

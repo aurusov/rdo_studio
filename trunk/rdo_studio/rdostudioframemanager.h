@@ -5,6 +5,8 @@
 #pragma once
 #endif
 
+#include <fstream>
+
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioFrameManager
 // ----------------------------------------------------------------------------
@@ -31,6 +33,18 @@ private:
 	};
 	static std::vector< Frame* > frames;
 
+	class BMP {
+	friend class RDOStudioFrameManager;
+	private:
+		BMP(): name( "" ), mask( "" ), hasMask( false ) {};
+
+		std::string name;
+		std::string mask;
+		bool hasMask;
+	};
+	std::vector< BMP* > bitmaps;
+	int getNumColors( BITMAPINFOHEADER* pBMIH ) const;
+
 	int lastShowedFrame;
 
 public:
@@ -54,6 +68,9 @@ public:
 	RDOStudioFrameDoc* getFirstExistDoc() const;
 	void closeAll();
 	void clear();
+
+	void bmp_insert( const std::string& name );
+	void bmp_clear();
 
 	void expand() const;
 

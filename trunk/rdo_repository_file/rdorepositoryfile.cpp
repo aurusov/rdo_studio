@@ -492,3 +492,15 @@ void RDORepositoryFile::saveTRC( stringstream& stream ) const
 {
 	saveFile( modelPath + trcFileName + ".trc", stream );
 }
+
+void RDORepositoryFile::loadBMP( const std::string& name, std::stringstream& stream ) const
+{
+	string file_name = modelPath + name + ".bmp";
+	if ( isFileExists( file_name ) ) {
+		ifstream file( file_name.c_str() );
+		stream << file.rdbuf();
+		file.close();
+	} else {
+		stream.setstate( ios_base::badbit );
+	}
+}
