@@ -337,6 +337,7 @@
 #define ID_INSERT_BUFFER4_CLEAR         33104
 #define ID_FILE_RDO_CLOSE               33105
 #define ID_FILE_RDO_SAVE_AS             33106
+#define ID_SEARCH_FINDINMODEL           33117
 #define ID_STATUSBAR_READONLY           40000
 #define ID_STATUSBAR_MODIFIED           40001
 #define ID_STATUSBAR_OVERWRITE          40002
@@ -350,6 +351,9 @@
 #define ID_OPTIONS                      40012
 #define ID_DOCK_WORKSPACE               40013
 #define ID_DOCK_OUTPUT                  40014
+#define ID_FINDINMODEL_BEGINMSG         40015
+#define ID_FINDINMODEL_ENDMSG_COUNT     40016
+#define ID_FINDINMODEL_ENDMSG_NOTFOUND  40017
 #define ID_COLORSTYLE_PLAINTEXT         40100
 #define ID_COLORSTYLE_IDENTIFICATOR     40101
 #define ID_COLORSTYLE_KEYWORD           40102
@@ -405,7 +409,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        139
-#define _APS_NEXT_COMMAND_VALUE         33117
+#define _APS_NEXT_COMMAND_VALUE         33118
 #define _APS_NEXT_CONTROL_VALUE         1001
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

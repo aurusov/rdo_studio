@@ -489,6 +489,8 @@ BEGIN
         MENUITEM "Find &Previous\tShift+F3",    ID_SEARCH_FINDPREVIOUS
         MENUITEM "&Replace...\tCtrl+R",         ID_SEARCH_REPLACE
         MENUITEM SEPARATOR
+        MENUITEM "Find in Model...",            ID_SEARCH_FINDINMODEL
+        MENUITEM SEPARATOR
         MENUITEM "&Toggle Bookmark\tCtrl+F2",   ID_SEARCH_BOOKMARKTOGGLE
         MENUITEM "N&ext Bookmark\tF2",          ID_SEARCH_BOOKMARKNEXT
         MENUITEM "Pre&vious Bookmark\tShift+F2", ID_SEARCH_BOOKMARKPREVIOUS
@@ -1173,6 +1175,7 @@ BEGIN
     ID_OPTIONS              "Options"
     ID_DOCK_WORKSPACE       "Workspace"
     ID_DOCK_OUTPUT          "Output"
+    ID_FINDINMODEL_BEGINMSG "Searching for '%s'...\r\n"
 END
 
 STRINGTABLE DISCARDABLE 
@@ -1247,6 +1250,12 @@ BEGIN
     ID_MSG_MODELSAVE_QUERY  "Save changes in project ?"
     ID_MSG_RDOSTARTFULLDEBUG_ERROR "Cannot start debuger"
     ID_MSG_MODELCLOSE_ERROR "Cannot close model."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_FINDINMODEL_ENDMSG_COUNT "'%d' occurrence(s) have been found.\r\n"
+    ID_FINDINMODEL_ENDMSG_NOTFOUND "Cannot find the string '%s'.\r\n"
 END
 
 #endif    // English (U.S.) resources

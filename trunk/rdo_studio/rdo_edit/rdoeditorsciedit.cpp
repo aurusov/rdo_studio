@@ -1610,3 +1610,32 @@ void RDOEditorSciEdit::OnUpdateZoomReset( CCmdUI *pCmdUI )
 {
 	pCmdUI->Enable( getZoom() );
 }
+
+int RDOEditorSciEdit::findLine( CString& findWhat, const int startFromLine, const bool matchCase, const bool matchWholeWord ) const
+{
+	int findLen = findWhat.GetLength();
+	if ( !findLen ) return -1;
+
+	int startPosition = sendEditor( SCI_POSITIONFROMLINE, startFromLine );
+	int endPosition   = getLength();
+
+	int flags = (matchCase ? SCFIND_MATCHCASE : 0) | (matchWholeWord ? SCFIND_WHOLEWORD : 0);
+
+	sendEditor( SCI_SETTARGETSTART, startPosition );
+	sendEditor( SCI_SETTARGETEND, endPosition );
+	sendEditor( SCI_SETSEARCHFLAGS, flags );
+	int posFind = sendEditorString( SCI_SEARCHINTARGET, findLen, findWhat );
+	if ( posFind != -1 ) {
+		return sendEditor( SCI_LINEFROMPOSITION, posFind );
+	}
+	return -1;
+}
+
+string RDOEditorSciEdit::getLine( const int line ) const
+{
+	int length = sendEditor( SCI_LINELENGTH, line );
+	string str;
+	str.resize( length );
+	sendEditor( SCI_GETLINE, line, (long)str.data() );
+	return str;
+}

@@ -66,11 +66,13 @@ int RDOStudioOutput::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	debug   = new RDOEditorSciEdit;
 	tracer  = (CWnd*)::trace.createLog();
 	results = new RDOEditorEdit;
+	find    = new RDOEditorSciLog;
 
 	build->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), tab.getTabAsParent(), -1 );
 	debug->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), tab.getTabAsParent(), -1 );
 	tracer->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), tab.getTabAsParent(), -1 );
 	results->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), tab.getTabAsParent(), -1 );
+	find->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), tab.getTabAsParent(), -1 );
 
 	buildStyle.init( "buildStyle" );
 	buildStyle.window->showHorzScrollBar = false;
@@ -98,10 +100,19 @@ int RDOStudioOutput::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	results->setReadOnly( true );
 	results->setPopupMenu( &popupMenu );
 
+	findStyle.init( "findStyle" );
+	findStyle.window->showHorzScrollBar = false;
+	findStyle.window->wordWrap          = true;
+	findStyle.load();
+	find->setEditorStyle( &findStyle );
+	find->setReadOnly( true );
+	find->setPopupMenu( &popupMenu );
+
 	tab.insertItem( build, "Build" );
 	tab.insertItem( debug, "Debug" );
 	tab.insertItem( tracer, "Tracer" );
 	tab.insertItem( results, "Results" );
+	tab.insertItem( find, "Find in Model" );
 
 	return 0;
 }
@@ -133,6 +144,31 @@ void RDOStudioOutput::showResults()
 	results->SetFocus();
 }
 
+void RDOStudioOutput::showFind()
+{
+	find->SetFocus();
+}
+
+void RDOStudioOutput::clearBuild()
+{
+	build->clearAll();
+}
+
+void RDOStudioOutput::clearDebug()
+{
+	debug->clearAll();
+}
+
+void RDOStudioOutput::clearResults()
+{
+	results->clearAll();
+}
+
+void RDOStudioOutput::clearFind()
+{
+	find->clearAll();
+}
+
 void RDOStudioOutput::appendString( const RDOEditorSciEdit* const edit, const string& str ) const
 {
 	bool readOnly = edit->isReadOnly();
@@ -160,4 +196,9 @@ void RDOStudioOutput::appendStringToBuild( const string& str ) const
 void RDOStudioOutput::appendStringToDebug( const string& str ) const
 {
 	appendString( debug, str );
+}
+
+void RDOStudioOutput::appendStringToFind( const string& str ) const
+{
+	appendString( find, str );
 }

@@ -28,11 +28,13 @@ private:
 	rdoEditor::RDOEditorSciLogStyle  buildStyle;
 	rdoEditor::RDOEditorSciEditStyle debugStyle;
 	rdoEditor::RDOEditorEditStyle    resultsStyle;
+	rdoEditor::RDOEditorSciLogStyle  findStyle;
 
 	rdoEditor::RDOEditorSciLog*  build;
 	rdoEditor::RDOEditorSciEdit* debug;
 	CWnd*                        tracer;
 	rdoEditor::RDOEditorEdit*    results;
+	rdoEditor::RDOEditorSciLog*  find;
 
 	CMenu popupMenu;
 
@@ -46,9 +48,16 @@ public:
 	void showDebug();
 	void showTracer();
 	void showResults();
+	void showFind();
+
+	void clearBuild();
+	void clearDebug();
+	void clearResults();
+	void clearFind();
 
 	void appendStringToBuild( const string& str ) const;
 	void appendStringToDebug( const string& str ) const;
+	void appendStringToFind( const string& str ) const;
 
 public:
 	//{{AFX_VIRTUAL(RDOStudioOutput)

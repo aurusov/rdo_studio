@@ -1,7 +1,10 @@
 #include "stdafx.h"
 #include "rdostudiomodelview.h"
 #include "rdostudiomodeldoc.h"
+#include "rdostudioapp.h"
+#include "rdostudiomainfrm.h"
 #include "rdo_edit/rdoeditortabctrl.h"
+#include "resource.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -14,6 +17,8 @@ using namespace rdoEditor;
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioModelView
 // ----------------------------------------------------------------------------
+static const UINT FINDINMODEL_MSG = ::RegisterWindowMessage( FINDMSGSTRING );
+
 IMPLEMENT_DYNCREATE(RDOStudioModelView, RDOStudioEditBaseView)
 
 BEGIN_MESSAGE_MAP(RDOStudioModelView, RDOStudioEditBaseView)
@@ -21,7 +26,9 @@ BEGIN_MESSAGE_MAP(RDOStudioModelView, RDOStudioEditBaseView)
 	ON_WM_CREATE()
 	ON_WM_SETFOCUS()
 	ON_WM_SIZE()
+	ON_COMMAND(ID_SEARCH_FINDINMODEL, OnSearchFindInModel)
 	//}}AFX_MSG_MAP
+	ON_REGISTERED_MESSAGE( FINDINMODEL_MSG, OnFindInModelMsg )
 	ON_COMMAND(ID_FILE_PRINT, RDOStudioEditBaseView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, RDOStudioEditBaseView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, RDOStudioEditBaseView::OnFilePrintPreview)
@@ -34,7 +41,7 @@ RDOStudioModelView::RDOStudioModelView(): RDOStudioEditBaseView()
 
 RDOStudioModelView::~RDOStudioModelView()
 {
-	delete tab;
+	if ( tab ) { delete tab; tab = NULL; }
 }
 
 BOOL RDOStudioModelView::PreCreateWindow(CREATESTRUCT& cs)
@@ -119,4 +126,47 @@ void RDOStudioModelView::OnSize(UINT nType, int cx, int cy)
 RDOEditorEdit* RDOStudioModelView::getEdit() const
 {
 	return tab->getCurrentEdit();
+}
+
+void RDOStudioModelView::OnSearchFindInModel() 
+{
+	CFindReplaceDialog* pDlg = new CFindReplaceDialog();
+	pDlg->Create( true, getEdit()->getCurrentOrSelectedWord(), NULL, FR_HIDEUPDOWN, this );
+}
+
+LRESULT RDOStudioModelView::OnFindInModelMsg( WPARAM wParam, LPARAM lParam )
+{
+	CFindReplaceDialog* pDialog = CFindReplaceDialog::GetNotifier( lParam );
+
+	if ( !pDialog->IsTerminating() ) {
+		studioApp.mainFrame->output.clearFind();
+		studioApp.mainFrame->output.showFind();
+		CString findStr = pDialog->GetFindString();
+		CString s;
+		s.Format( ID_FINDINMODEL_BEGINMSG, findStr );
+		studioApp.mainFrame->output.appendStringToFind( (LPCTSTR)s );
+		bool bMatchCase      = pDialog->MatchCase() ? true : false;
+		bool bMatchWholeWord = pDialog->MatchWholeWord() ? true : false;
+		int count = 0;
+		for ( int i = 0; i < tab->getItemCount(); i++ ) {
+			RDOEditorEdit* edit = tab->getItemEdit( i );
+			int line = 0;
+			while ( line != -1 ) {
+				line = edit->findLine( findStr, line, bMatchCase, bMatchWholeWord );
+				if ( line != -1 ) {
+					studioApp.mainFrame->output.appendStringToFind( edit->getLine( line ) );
+					line++;
+					count++;
+				}
+			}
+		}
+		pDialog->SendMessage( WM_CLOSE );
+		if ( count ) {
+			s.Format( ID_FINDINMODEL_ENDMSG_COUNT, count );
+		} else {
+			s.Format( ID_FINDINMODEL_ENDMSG_NOTFOUND );
+		}
+		studioApp.mainFrame->output.appendStringToFind( (LPCTSTR)s );
+	}
+	return 0;
 }
