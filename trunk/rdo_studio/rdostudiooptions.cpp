@@ -522,6 +522,8 @@ BOOL RDOStudioOptionsColorsStyles::OnInitDialog()
 	int horzBorder = sheet->style_trace.borders->horzBorder;
 	m_vertBorder.SetWindowText( format( "%d", vertBorder ).c_str() );
 	m_horzBorder.SetWindowText( format( "%d", horzBorder ).c_str() );
+	m_vertBorder.SetLimitText( 2 );
+	m_horzBorder.SetLimitText( 2 );
 
 	setPreviewAsCombo( STYLEObject::source );
 
