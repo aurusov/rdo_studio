@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "rdostudioframedoc.h"
 #include "rdostudioframeview.h"
+#include "rdostudiomodel.h"
+#include "rdostudioframemanager.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -58,4 +60,10 @@ RDOStudioFrameView* RDOStudioFrameDoc::getView() const
 		return static_cast<RDOStudioFrameView*>(GetNextView( pos ));
 	}
 	return NULL;
+}
+
+void RDOStudioFrameDoc::OnCloseDocument()
+{
+	model->frameManager.disconnectFrameDoc( this );
+	CDocument::OnCloseDocument();
 }

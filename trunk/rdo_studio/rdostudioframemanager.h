@@ -6,7 +6,7 @@
 #endif
 
 // ----------------------------------------------------------------------------
-// ---------- RDOStudioFramesTreeCtrl
+// ---------- RDOStudioFrameManager
 // ----------------------------------------------------------------------------
 class RDOStudioFrameDoc;
 class RDOStudioFrameView;
@@ -32,7 +32,9 @@ public:
 
 	void insertItem( const std::string& name );
 	int findFrameIndex( const HTREEITEM hitem ) const;
-	void addFrameDoc( const HTREEITEM hitem ) const;
+	int findFrameIndex( const RDOStudioFrameDoc* doc ) const;
+	RDOStudioFrameDoc* connectFrameDoc( const HTREEITEM hitem ) const;
+	void disconnectFrameDoc( const RDOStudioFrameDoc* doc ) const;
 	RDOStudioFrameDoc*  getFrameDoc( const int index ) const  { return frames[index]->doc;  };
 	RDOStudioFrameView* getFrameView( const int index ) const { return frames[index]->view; };
 	void clear();

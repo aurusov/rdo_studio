@@ -7,7 +7,7 @@
 #include "rdostudiomainfrm.h"
 #include "rdostudiochildfrm.h"
 #include "rdostudioworkspace.h"
-#include "rdostudioframestreectrl.h"
+#include "rdostudioframetreectrl.h"
 #include "resource.h"
 
 using namespace std;
@@ -55,9 +55,39 @@ int RDOStudioFrameManager::findFrameIndex( const HTREEITEM hitem ) const
 	return -1;
 }
 
-void RDOStudioFrameManager::addFrameDoc( const HTREEITEM hitem ) const
+int RDOStudioFrameManager::findFrameIndex( const RDOStudioFrameDoc* doc ) const
+{
+	vector< Frame* >::iterator it = frames.begin();
+	int index = 0;
+	while ( it != frames.end() ) {
+		if ( (*it)->doc == doc ) {
+			return index;
+		}
+		it++;
+		index++;
+	};
+	return -1;
+}
+
+RDOStudioFrameDoc* RDOStudioFrameManager::connectFrameDoc( const HTREEITEM hitem ) const
 {
 	int index = findFrameIndex( hitem );
+	RDOStudioFrameDoc* doc = NULL;
+	if ( index != -1 ) {
+		doc = static_cast<RDOStudioFrameDoc*>(frameDocTemplate->OpenDocumentFile( NULL ));
+		frames[index]->doc  = doc;
+		frames[index]->view = doc->getView();
+	}
+	return doc;
+}
+
+void RDOStudioFrameManager::disconnectFrameDoc( const RDOStudioFrameDoc* doc ) const
+{
+	int index = findFrameIndex( doc );
+	if ( index != -1 ) {
+		frames[index]->doc  = NULL;
+		frames[index]->view = NULL;
+	}
 }
 
 void RDOStudioFrameManager::clear()

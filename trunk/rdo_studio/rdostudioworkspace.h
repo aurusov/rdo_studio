@@ -6,7 +6,7 @@
 #endif
 
 #include "rdostudiodockwnd.h"
-#include "rdostudioframestreectrl.h"
+#include "rdostudioframetreectrl.h"
 
 #include <rdotabctrl.h>
 
@@ -18,7 +18,7 @@ class RDOStudioWorkspace: public RDOStudioDockWnd
 friend class RDOStudioFrameManager;
 private:
 	RDOTabCtrl tab;
-	RDOStudioFramesTreeCtrl* frames;
+	RDOStudioFrameTreeCtrl* frames;
 
 public:
 	RDOStudioWorkspace();

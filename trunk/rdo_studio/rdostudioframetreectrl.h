@@ -1,5 +1,5 @@
-#ifndef RDOSTUDIOFRAMESTREECTRL_H
-#define RDOSTUDIOFRAMESTREECTRL_H
+#ifndef RDOSTUDIOFRAMETREECTRL_H
+#define RDOSTUDIOFRAMETREECTRL_H
 
 #if _MSC_VER > 1000
 #pragma once
@@ -8,26 +8,26 @@
 #include <rdotreectrl.h>
 
 // ----------------------------------------------------------------------------
-// ---------- RDOStudioFramesTreeCtrl
+// ---------- RDOStudioFrameTreeCtrl
 // ----------------------------------------------------------------------------
-class RDOStudioFramesTreeCtrl: public RDOTreeCtrl
+class RDOStudioFrameTreeCtrl: public RDOTreeCtrl
 {
 private:
 	CImageList imageList;
 
 public:
-	RDOStudioFramesTreeCtrl();
-	virtual ~RDOStudioFramesTreeCtrl();
+	RDOStudioFrameTreeCtrl();
+	virtual ~RDOStudioFrameTreeCtrl();
 
 	void expand();
 
 protected:
-	//{{AFX_VIRTUAL(RDOStudioFramesTreeCtrl)
+	//{{AFX_VIRTUAL(RDOStudioFrameTreeCtrl)
 	protected:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	//}}AFX_VIRTUAL
 
-	//{{AFX_MSG(RDOStudioFramesTreeCtrl)
+	//{{AFX_MSG(RDOStudioFrameTreeCtrl)
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
 	//}}AFX_MSG
@@ -36,4 +36,4 @@ protected:
 
 //{{AFX_INSERT_LOCATION}}
 
-#endif // RDOSTUDIOFRAMESTREECTRL_H
+#endif // RDOSTUDIOFRAMETREECTRL_H

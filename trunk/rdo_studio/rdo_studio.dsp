@@ -664,7 +664,7 @@ SOURCE=.\rdostudioframemanager.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\rdostudioframestreectrl.cpp
+SOURCE=.\rdostudioframetreectrl.cpp
 # End Source File
 # Begin Source File
 
@@ -684,7 +684,7 @@ SOURCE=.\rdostudioframemanager.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\rdostudioframestreectrl.h
+SOURCE=.\rdostudioframetreectrl.h
 # End Source File
 # Begin Source File
 

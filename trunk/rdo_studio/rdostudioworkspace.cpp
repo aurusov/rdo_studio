@@ -40,7 +40,7 @@ int RDOStudioWorkspace::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	RDOTracerTreeCtrl* trace = tracer.createTree();
 	trace->Create( 0, CRect(0, 0, 0, 0), &tab, 0 );
 
-	frames = new RDOStudioFramesTreeCtrl;
+	frames = new RDOStudioFrameTreeCtrl;
 	frames->Create( 0, CRect(0, 0, 0, 0), &tab, 0 );
 
 	tab.insertItem( trace, "Tracer" );

@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "rdostudioframestreectrl.h"
+#include "rdostudioframetreectrl.h"
 #include "rdostudiomodel.h"
 #include "rdostudioframemanager.h"
 #include "rdostudioframedoc.h"
@@ -9,24 +9,24 @@
 #include "resource.h"
 
 // ----------------------------------------------------------------------------
-// ---------- RDOStudioFramesTreeCtrl
+// ---------- RDOStudioFrameTreeCtrl
 // ----------------------------------------------------------------------------
-BEGIN_MESSAGE_MAP(RDOStudioFramesTreeCtrl, RDOTreeCtrl)
-	//{{AFX_MSG_MAP(RDOStudioFramesTreeCtrl)
+BEGIN_MESSAGE_MAP(RDOStudioFrameTreeCtrl, RDOTreeCtrl)
+	//{{AFX_MSG_MAP(RDOStudioFrameTreeCtrl)
 	ON_WM_CREATE()
 	ON_WM_LBUTTONDBLCLK()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-RDOStudioFramesTreeCtrl::RDOStudioFramesTreeCtrl()
+RDOStudioFrameTreeCtrl::RDOStudioFrameTreeCtrl()
 {
 }
 
-RDOStudioFramesTreeCtrl::~RDOStudioFramesTreeCtrl()
+RDOStudioFrameTreeCtrl::~RDOStudioFrameTreeCtrl()
 {
 }
 
-BOOL RDOStudioFramesTreeCtrl::PreCreateWindow(CREATESTRUCT& cs)
+BOOL RDOStudioFrameTreeCtrl::PreCreateWindow(CREATESTRUCT& cs)
 {
 	if ( !RDOTreeCtrl::PreCreateWindow(cs) ) return FALSE;
 	cs.style |= WS_VISIBLE | WS_CHILD | WS_CLIPCHILDREN | WS_TABSTOP | TVS_HASLINES | TVS_SHOWSELALWAYS | TVS_DISABLEDRAGDROP;
@@ -34,7 +34,7 @@ BOOL RDOStudioFramesTreeCtrl::PreCreateWindow(CREATESTRUCT& cs)
 	return TRUE;
 }
 
-int RDOStudioFramesTreeCtrl::OnCreate(LPCREATESTRUCT lpCreateStruct)
+int RDOStudioFrameTreeCtrl::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if ( RDOTreeCtrl::OnCreate(lpCreateStruct) == -1 ) return -1;
 
@@ -48,12 +48,12 @@ int RDOStudioFramesTreeCtrl::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	return 0;
 }
 
-void RDOStudioFramesTreeCtrl::expand()
+void RDOStudioFrameTreeCtrl::expand()
 {
 	Expand( GetRootItem(), TVE_EXPAND );
 }
 
-void RDOStudioFramesTreeCtrl::OnLButtonDblClk(UINT nFlags, CPoint point)
+void RDOStudioFrameTreeCtrl::OnLButtonDblClk(UINT nFlags, CPoint point)
 {
 	RDOTreeCtrl::OnLButtonDblClk(nFlags, point);
 
@@ -65,10 +65,10 @@ void RDOStudioFramesTreeCtrl::OnLButtonDblClk(UINT nFlags, CPoint point)
 		if ( frame_index != -1 ) {
 			RDOStudioFrameDoc* doc = model->frameManager.getFrameDoc( frame_index );
 			if ( !doc || !model->frameManager.isValidFrameDoc( doc ) ) {
-//				doc = static_cast<RDOStudioFrameDoc*>(model->frameDocTemplate->OpenDocumentFile( NULL ));
-//				(*it)->doc  = doc;
-//				(*it)->view = doc->getView();
-				doc->SetTitle( format( IDS_FRAMENAME, static_cast<LPCTSTR>(GetItemText( hitem )) ).c_str()  );
+				doc = model->frameManager.connectFrameDoc( hitem );
+				if ( doc ) {
+					doc->SetTitle( format( IDS_FRAMENAME, static_cast<LPCTSTR>(GetItemText( hitem )) ).c_str()  );
+				}
 			} else {
 				studioApp.mainFrame->MDIActivate( doc->getView()->GetParentFrame() );
 			}

@@ -37,6 +37,7 @@ public:
 	public:
 	virtual void Serialize(CArchive& ar);
 	virtual BOOL OnNewDocument();
+	virtual void OnCloseDocument();
 	//}}AFX_VIRTUAL
 
 protected:

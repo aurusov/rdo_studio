@@ -19,7 +19,8 @@ class RDOStudioModel
 {
 friend class RDOStudioModelDoc;
 friend class RDOStudioApp;
-friend class RDOStudioFramesTreeCtrl;
+friend class RDOStudioFrameDoc;
+friend class RDOStudioFrameTreeCtrl;
 
 private:
 	CMultiDocTemplate* modelDocTemplate;
