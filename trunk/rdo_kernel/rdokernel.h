@@ -40,6 +40,7 @@ public:
 		parseError,				// on parse error
 		parseSuccess,			// on parse success
 		modelStarted, 			// when model successfully parsed and started
+		modelThreadStarted,	// when model thread started
 		endExecuteModel,		// successfully end modelling
 		executeError,		// successfully end modelling
 		modelStopped };		// model externally stopped 
