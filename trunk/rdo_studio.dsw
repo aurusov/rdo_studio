@@ -45,6 +45,18 @@ Package=<4>
 
 ###############################################################################
 
+Project: "rdo_common"=.\rdo_common\rdo_common.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
 Project: "rdo_ctrls"=.\rdo_ctrls\rdo_ctrls.dsp - Package Owner=<4>
 
 Package=<5>
@@ -190,6 +202,9 @@ Package=<4>
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name rdo_plugin_mfc
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name rdo_common
     End Project Dependency
 }}}
 
