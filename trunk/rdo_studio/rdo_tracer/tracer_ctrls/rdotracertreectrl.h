@@ -36,12 +36,12 @@ DECLARE_DYNCREATE( RDOTracerTreeCtrl )
 private:
 	CImageList imageList;
 
-	HTREEITEM rootItem;
-	HTREEITEM rtpItem;
-	HTREEITEM patItem;
-	HTREEITEM pmvItem;
+	RDOTracerTreeItem rootItem;
+	RDOTracerTreeItem rtpItem;
+	RDOTracerTreeItem patItem;
+	RDOTracerTreeItem pmvItem;
 
-	void setHasChildren( const HTREEITEM item );
+	void setHasChildren( const RDOTracerTreeItem* item );
 
 protected:
 	COleDataSource source;
@@ -74,6 +74,7 @@ public:
 	void addOperation( RDOTracerOperation* opr );
 	void addIrregularEvent( RDOTracerOperation* opr );
 	void addResult( RDOTracerResult* res );
+	void deleteChildren( const RDOTracerTreeItem* parent );
 	void clear();
 };
 
