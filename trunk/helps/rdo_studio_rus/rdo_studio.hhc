@@ -53,11 +53,6 @@
 					<param name="ImageNumber" value="11">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
-					<param name="Name" value="&Igrave;&aring;&iacute;&thorn; RAO">
-					<param name="Local" value="html\work_menu_rdo.htm">
-					<param name="ImageNumber" value="11">
-					</OBJECT>
-				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="&Igrave;&aring;&iacute;&thorn; View">
 					<param name="Local" value="html\work_menu_view.htm">
 					<param name="ImageNumber" value="11">
@@ -68,16 +63,26 @@
 					<param name="ImageNumber" value="11">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="&Igrave;&aring;&iacute;&thorn; Model">
+					<param name="Local" value="html\work_menu_model.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="&Igrave;&aring;&iacute;&thorn; Chart">
+					<param name="Local" value="html\work_menu_chart.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="&Igrave;&aring;&iacute;&thorn; Window">
+					<param name="Local" value="html\work_menu_window.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="&Igrave;&aring;&iacute;&thorn; Help">
 					<param name="Local" value="html\work_menu_help.htm">
 					<param name="ImageNumber" value="11">
 					</OBJECT>
 			</UL>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="&Ccedil;&agrave;&ecirc;&euml;&agrave;&auml;&ecirc;&egrave; &atilde;&euml;&agrave;&acirc;&iacute;&icirc;&atilde;&icirc; &icirc;&ecirc;&iacute;&agrave;">
-				<param name="Local" value="html\work_bookmarks.htm">
-				<param name="ImageNumber" value="11">
-				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="&Ntilde;&ograve;&eth;&icirc;&ecirc;&agrave; &ntilde;&icirc;&ntilde;&ograve;&icirc;&yuml;&iacute;&egrave;&yuml;">
 				<param name="Local" value="html\work_status_bar.htm">
@@ -88,6 +93,11 @@
 				<param name="Local" value="html\work_model_intro.htm">
 				</OBJECT>
 			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="&Ccedil;&agrave;&ecirc;&euml;&agrave;&auml;&ecirc;&egrave; &icirc;&ecirc;&iacute;&agrave; &igrave;&icirc;&auml;&aring;&euml;&egrave;">
+					<param name="Local" value="html\work_model_tabsheets.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="&Ntilde;&icirc;&ccedil;&auml;&agrave;&iacute;&egrave;&aring;">
 					<param name="Local" value="html\work_model_creation.htm">

@@ -19,7 +19,6 @@ main=,"rdo_studio.hhc","rdo_studio.hhk","html\intro.htm",,,,,,0x23520,,0x304e,,,
 [FILES]
 html\work_status_bar.htm
 html\intro.htm
-html\work_bookmarks.htm
 html\work_exit.htm
 html\work_help.htm
 html\work_install.htm
@@ -29,7 +28,6 @@ html\work_menu_file.htm
 html\work_menu_help.htm
 html\work_menu_insert.htm
 html\work_menu_intro.htm
-html\work_menu_rdo.htm
 html\work_menu_search.htm
 html\work_menu_view.htm
 html\work_model_bookmarks.htm
@@ -63,6 +61,8 @@ html\rdo_lang_help.htm
 ..\shared\images\next_section.gif
 ..\shared\scripts\navbar.js
 ..\shared\styles\styles.css
+html\work_menu_model.htm
+html\work_model_tabsheets.htm
 
 [ALIAS]
 #include aliases.h

@@ -73,8 +73,8 @@
 		<param name="Name" value="PAT">
 		<param name="Name" value="Запуск программного комплекса">
 		<param name="Local" value="html\work_run.htm">
-		<param name="Name" value="Закладки главного окна">
-		<param name="Local" value="html\work_bookmarks.htm">
+		<param name="Name" value="Закладки окна модели">
+		<param name="Local" value="html\work_model_tabsheets.htm">
 		<param name="Name" value="Меню Insert">
 		<param name="Local" value="html\work_menu_insert.htm">
 		<param name="Name" value="Шаблоны и вставка синтаксических конструкций">
@@ -86,8 +86,8 @@
 		<param name="Name" value="RTP">
 		<param name="Name" value="Запуск программного комплекса">
 		<param name="Local" value="html\work_run.htm">
-		<param name="Name" value="Закладки главного окна">
-		<param name="Local" value="html\work_bookmarks.htm">
+		<param name="Name" value="Закладки окна модели">
+		<param name="Local" value="html\work_model_tabsheets.htm">
 		<param name="Name" value="Меню Insert">
 		<param name="Local" value="html\work_menu_insert.htm">
 		<param name="Name" value="Шаблоны и вставка синтаксических конструкций">
@@ -99,8 +99,8 @@
 		<param name="Name" value="RSS">
 		<param name="Name" value="Запуск программного комплекса">
 		<param name="Local" value="html\work_run.htm">
-		<param name="Name" value="Закладки главного окна">
-		<param name="Local" value="html\work_bookmarks.htm">
+		<param name="Name" value="Закладки окна модели">
+		<param name="Local" value="html\work_model_tabsheets.htm">
 		<param name="Name" value="Меню Insert">
 		<param name="Local" value="html\work_menu_insert.htm">
 		<param name="Name" value="Шаблоны и вставка синтаксических конструкций">
@@ -112,8 +112,8 @@
 		<param name="Name" value="OPR">
 		<param name="Name" value="Запуск программного комплекса">
 		<param name="Local" value="html\work_run.htm">
-		<param name="Name" value="Закладки главного окна">
-		<param name="Local" value="html\work_bookmarks.htm">
+		<param name="Name" value="Закладки окна модели">
+		<param name="Local" value="html\work_model_tabsheets.htm">
 		<param name="Name" value="Меню Insert">
 		<param name="Local" value="html\work_menu_insert.htm">
 		<param name="Name" value="Скрытие фрагментов текста">
@@ -125,8 +125,8 @@
 		<param name="Name" value="FRM">
 		<param name="Name" value="Запуск программного комплекса">
 		<param name="Local" value="html\work_run.htm">
-		<param name="Name" value="Закладки главного окна">
-		<param name="Local" value="html\work_bookmarks.htm">
+		<param name="Name" value="Закладки окна модели">
+		<param name="Local" value="html\work_model_tabsheets.htm">
 		<param name="Name" value="Меню Insert">
 		<param name="Local" value="html\work_menu_insert.htm">
 		<param name="Name" value="Скрытие фрагментов текста">
@@ -138,8 +138,8 @@
 		<param name="Name" value="FUN">
 		<param name="Name" value="Запуск программного комплекса">
 		<param name="Local" value="html\work_run.htm">
-		<param name="Name" value="Закладки главного окна">
-		<param name="Local" value="html\work_bookmarks.htm">
+		<param name="Name" value="Закладки окна модели">
+		<param name="Local" value="html\work_model_tabsheets.htm">
 		<param name="Name" value="Меню Insert">
 		<param name="Local" value="html\work_menu_insert.htm">
 		<param name="Name" value="Скрытие фрагментов текста">
@@ -151,8 +151,8 @@
 		<param name="Name" value="DPT">
 		<param name="Name" value="Запуск программного комплекса">
 		<param name="Local" value="html\work_run.htm">
-		<param name="Name" value="Закладки главного окна">
-		<param name="Local" value="html\work_bookmarks.htm">
+		<param name="Name" value="Закладки окна модели">
+		<param name="Local" value="html\work_model_tabsheets.htm">
 		<param name="Name" value="Меню Insert">
 		<param name="Local" value="html\work_menu_insert.htm">
 		<param name="Name" value="Скрытие фрагментов текста">
@@ -164,8 +164,8 @@
 		<param name="Name" value="SMR">
 		<param name="Name" value="Запуск программного комплекса">
 		<param name="Local" value="html\work_run.htm">
-		<param name="Name" value="Закладки главного окна">
-		<param name="Local" value="html\work_bookmarks.htm">
+		<param name="Name" value="Закладки окна модели">
+		<param name="Local" value="html\work_model_tabsheets.htm">
 		<param name="Name" value="Меню Insert">
 		<param name="Local" value="html\work_menu_insert.htm">
 		<param name="Name" value="Шаблоны и вставка синтаксических конструкций">
@@ -175,8 +175,8 @@
 		<param name="Name" value="PMD">
 		<param name="Name" value="Запуск программного комплекса">
 		<param name="Local" value="html\work_run.htm">
-		<param name="Name" value="Закладки главного окна">
-		<param name="Local" value="html\work_bookmarks.htm">
+		<param name="Name" value="Закладки окна модели">
+		<param name="Local" value="html\work_model_tabsheets.htm">
 		<param name="Name" value="Меню Insert">
 		<param name="Local" value="html\work_menu_insert.htm">
 		<param name="Name" value="Скрытие фрагментов текста">
@@ -188,10 +188,10 @@
 		<param name="Name" value="PMV">
 		<param name="Name" value="Запуск программного комплекса">
 		<param name="Local" value="html\work_run.htm">
-		<param name="Name" value="Закладки главного окна">
-		<param name="Local" value="html\work_bookmarks.htm">
-		<param name="Name" value="Меню RDO">
-		<param name="Local" value="html\work_menu_rdo.htm">
+		<param name="Name" value="Закладки окна модели">
+		<param name="Local" value="html\work_model_tabsheets.htm">
+		<param name="Name" value="Меню Model">
+		<param name="Local" value="html\work_menu_model.htm">
 		<param name="Name" value="Просмотр результатов моделирования">
 		<param name="Local" value="html\work_model_results.htm">
 		</OBJECT>
@@ -199,10 +199,10 @@
 		<param name="Name" value="TRC">
 		<param name="Name" value="Запуск программного комплекса">
 		<param name="Local" value="html\work_run.htm">
-		<param name="Name" value="Закладки главного окна">
-		<param name="Local" value="html\work_bookmarks.htm">
-		<param name="Name" value="Меню RDO">
-		<param name="Local" value="html\work_menu_rdo.htm">
+		<param name="Name" value="Закладки окна модели">
+		<param name="Local" value="html\work_model_tabsheets.htm">
+		<param name="Name" value="Меню Model">
+		<param name="Local" value="html\work_menu_model.htm">
 		<param name="Name" value="Просмотр результатов моделирования">
 		<param name="Local" value="html\work_model_results.htm">
 		</OBJECT>
@@ -284,15 +284,15 @@
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="&ccedil;&agrave;&iuml;&oacute;&ntilde;&ecirc; &igrave;&icirc;&auml;&aring;&euml;&egrave;">
-		<param name="Name" value="Меню RAO">
-		<param name="Local" value="html\work_menu_rdo.htm">
+		<param name="Name" value="Меню Model">
+		<param name="Local" value="html\work_menu_model.htm">
 		<param name="Name" value="Запуск, настройка запуска">
 		<param name="Local" value="html\work_model_run.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="&eth;&aring;&ccedil;&oacute;&euml;&uuml;&ograve;&agrave;&ograve;&ucirc; &igrave;&icirc;&auml;&aring;&euml;&egrave;&eth;&icirc;&acirc;&agrave;&iacute;&egrave;&yuml;">
-		<param name="Name" value="Меню RAO">
-		<param name="Local" value="html\work_menu_rdo.htm">
+		<param name="Name" value="Меню Model">
+		<param name="Local" value="html\work_menu_model.htm">
 		<param name="Name" value="Просмотр результатов моделирования">
 		<param name="Local" value="html\work_model_results.htm">
 		</OBJECT>
@@ -380,8 +380,8 @@
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="&iuml;&icirc;&euml;&aring;">
-		<param name="Name" value="Закладки главного окна">
-		<param name="Local" value="html\work_bookmarks.htm#margin">
+		<param name="Name" value="Закладки окна модели">
+		<param name="Local" value="html\work_model_tabsheets.htm#margin">
 		<param name="Name" value="Меню View">
 		<param name="Local" value="html\work_menu_view.htm#view_margin">
 		</OBJECT>
@@ -466,22 +466,22 @@
 		<param name="Name" value="&Dstrok;&Auml;&Icirc;-&egrave;&igrave;&egrave;&ograve;&agrave;&ograve;&icirc;&eth;">
 		<param name="Name" value="Общие сведения">
 		<param name="Local" value="html\intro.htm#comp_list">
-		<param name="Name" value="Меню RAO">
-		<param name="Local" value="html\work_menu_rdo.htm">
+		<param name="Name" value="Меню Model">
+		<param name="Local" value="html\work_menu_model.htm">
 		<param name="Name" value="Запуск, настройка запуска">
 		<param name="Local" value="html\work_model_run.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="&ccedil;&agrave;&iuml;&oacute;&ntilde;&ecirc; &iuml;&eth;&icirc;&atilde;&icirc;&iacute;&agrave;">
-		<param name="Name" value="Меню RAO">
-		<param name="Local" value="html\work_menu_rdo.htm#rdo_run">
+		<param name="Name" value="Меню Model">
+		<param name="Local" value="html\work_menu_model.htm#rdo_run">
 		<param name="Name" value="Запуск, настройка запуска">
 		<param name="Local" value="html\work_model_run.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="&icirc;&ntilde;&ograve;&agrave;&iacute;&icirc;&acirc;&ecirc;&agrave; &iuml;&eth;&icirc;&atilde;&icirc;&iacute;&agrave;">
-		<param name="Name" value="Меню RAO">
-		<param name="Local" value="html\work_menu_rdo.htm#rdo_stop">
+		<param name="Name" value="Меню Model">
+		<param name="Local" value="html\work_menu_model.htm#rdo_stop">
 		<param name="Name" value="Запуск, настройка запуска">
 		<param name="Local" value="html\work_model_run.htm">
 		</OBJECT>
@@ -492,15 +492,15 @@
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="&ccedil;&agrave;&iuml;&oacute;&ntilde;&ecirc;">
-			<param name="Name" value="Меню RAO">
-			<param name="Local" value="html\work_menu_rdo.htm#rdo_run">
+			<param name="Name" value="Меню Model">
+			<param name="Local" value="html\work_menu_model.htm#rdo_run">
 			<param name="Name" value="Запуск, настройка запуска">
 			<param name="Local" value="html\work_model_run.htm">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="&icirc;&ntilde;&ograve;&agrave;&iacute;&icirc;&acirc;&ecirc;&agrave;">
-			<param name="Name" value="Меню RAO">
-			<param name="Local" value="html\work_menu_rdo.htm#rdo_stop">
+			<param name="Name" value="Меню Model">
+			<param name="Local" value="html\work_menu_model.htm#rdo_stop">
 			<param name="Name" value="Запуск, настройка запуска">
 			<param name="Local" value="html\work_model_run.htm">
 			</OBJECT>
@@ -581,8 +581,8 @@
 			<param name="Name" value="RAO">
 			<param name="Name" value="Запуск, настройка запуска">
 			<param name="Local" value="html\work_model_run.htm">
-			<param name="Name" value="Меню RAO">
-			<param name="Local" value="html\work_menu_rdo.htm">
+			<param name="Name" value="Меню Model">
+			<param name="Local" value="html\work_menu_model.htm">
 			<param name="Name" value="Просмотр результатов моделирования">
 			<param name="Local" value="html\work_model_results.htm">
 			</OBJECT>
@@ -686,15 +686,15 @@
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="&ccedil;&agrave;&iuml;&oacute;&ntilde;&ecirc;">
-			<param name="Name" value="Меню RAO">
-			<param name="Local" value="html\work_menu_rdo.htm">
+			<param name="Name" value="Меню Model">
+			<param name="Local" value="html\work_menu_model.htm">
 			<param name="Name" value="Запуск, настройка запуска">
 			<param name="Local" value="html\work_model_run.htm">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="&eth;&aring;&ccedil;&oacute;&euml;&uuml;&ograve;&agrave;&ograve;&ucirc;">
-			<param name="Name" value="Меню RAO">
-			<param name="Local" value="html\work_menu_rdo.htm">
+			<param name="Name" value="Меню Model">
+			<param name="Local" value="html\work_menu_model.htm">
 			<param name="Name" value="Просмотр результатов моделирования">
 			<param name="Local" value="html\work_model_results.htm">
 			</OBJECT>

@@ -117,11 +117,6 @@ SOURCE=.\html\rdo_lang_help.htm
 # End Source File
 # Begin Source File
 
-SOURCE=.\html\work_bookmarks.htm
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
 SOURCE=.\html\work_exit.htm
 # PROP Exclude_From_Build 1
 # End Source File
@@ -139,6 +134,10 @@ SOURCE=.\html\work_install.htm
 
 SOURCE=.\html\work_intro.htm
 # PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=.\html\work_menu_chart.htm
 # End Source File
 # Begin Source File
 
@@ -167,8 +166,7 @@ SOURCE=.\html\work_menu_intro.htm
 # End Source File
 # Begin Source File
 
-SOURCE=.\html\work_menu_rdo.htm
-# PROP Exclude_From_Build 1
+SOURCE=.\html\work_menu_model.htm
 # End Source File
 # Begin Source File
 
@@ -179,6 +177,10 @@ SOURCE=.\html\work_menu_search.htm
 
 SOURCE=.\html\work_menu_view.htm
 # PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=.\html\work_menu_window.htm
 # End Source File
 # Begin Source File
 
@@ -249,6 +251,10 @@ SOURCE=.\html\work_model_scale.htm
 
 SOURCE=.\html\work_model_search_replace.htm
 # PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=.\html\work_model_tabsheets.htm
 # End Source File
 # Begin Source File
 
