@@ -84,11 +84,11 @@ protected:
 	afx_msg void OnEditSelectAll();
 	afx_msg void OnEditUpperCase();
 	afx_msg void OnEditLowerCase();
-	afx_msg void OnCanUndo( CCmdUI* pCmdUI );
-	afx_msg void OnCanRedo( CCmdUI* pCmdUI );
-	afx_msg void OnIsSelected( CCmdUI* pCmdUI );
-	afx_msg void OnCanPaste( CCmdUI* pCmdUI );
-	afx_msg void OnCanDelete( CCmdUI* pCmdUI );
+	afx_msg void OnUpdateEditUndo(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateEditRedo(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateEditCut(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateEditPaste(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateEditClear(CCmdUI* pCmdUI);
 	afx_msg void OnSelectAll( CCmdUI* pCmdUI );
 	afx_msg void OnSearchFind();
 	afx_msg void OnSearchReplace();
@@ -96,8 +96,9 @@ protected:
 	afx_msg void OnSearchFindPrevious();
 	afx_msg void OnSearchFindNextFast();
 	afx_msg void OnSearchFindPreviousFast();
-	afx_msg void OnUpdateFindReplace( CCmdUI* pCmdUI );
-	afx_msg void OnUpdateFindNextPrev( CCmdUI* pCmdUI );
+	afx_msg void OnUpdateSearchFindNextPrev(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateSearchFind(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateSearchReplace(CCmdUI* pCmdUI);
 	afx_msg void OnViewToggleCurrentFold();
 	afx_msg void OnViewToggleAllFolds();
 	afx_msg void OnUpdateFold( CCmdUI* pCmdUI );
@@ -122,6 +123,7 @@ protected:
 	afx_msg void OnUpdateZoomIn( CCmdUI *pCmdUI );
 	afx_msg void OnUpdateZoomOut( CCmdUI *pCmdUI );
 	afx_msg void OnUpdateZoomReset( CCmdUI *pCmdUI );
+	afx_msg void OnIsSelected(CCmdUI* pCmdUI);
 	//}}AFX_MSG
 	afx_msg LRESULT OnFindReplaceMsg( WPARAM wParam, LPARAM lParam );
 	DECLARE_MESSAGE_MAP()

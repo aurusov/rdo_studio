@@ -69,11 +69,6 @@ BEGIN_MESSAGE_MAP( RDOEditorSciEdit, CWnd )
 	ON_COMMAND(ID_EDIT_SELECT_ALL, OnEditSelectAll)
 	ON_COMMAND(ID_EDIT_UPPERCASE, OnEditUpperCase)
 	ON_COMMAND(ID_EDIT_LOWERCASE, OnEditLowerCase)
-	ON_UPDATE_COMMAND_UI( ID_EDIT_UNDO            , OnCanUndo )
-	ON_UPDATE_COMMAND_UI( ID_EDIT_REDO            , OnCanRedo )
-	ON_UPDATE_COMMAND_UI( ID_EDIT_CUT             , OnIsSelected )
-	ON_UPDATE_COMMAND_UI( ID_EDIT_PASTE           , OnCanPaste )
-	ON_UPDATE_COMMAND_UI( ID_EDIT_CLEAR           , OnCanDelete )
 	ON_UPDATE_COMMAND_UI( ID_EDIT_SELECT_ALL      , OnSelectAll )
 	ON_COMMAND(ID_SEARCH_FIND, OnSearchFind)
 	ON_COMMAND(ID_SEARCH_REPLACE, OnSearchReplace)
@@ -81,18 +76,12 @@ BEGIN_MESSAGE_MAP( RDOEditorSciEdit, CWnd )
 	ON_COMMAND(ID_SEARCH_FINDPREVIOUS, OnSearchFindPrevious)
 	ON_COMMAND(ID_SEARCH_FINDNEXT_FAST, OnSearchFindNextFast)
 	ON_COMMAND(ID_SEARCH_FINDPREVIOUS_FAST, OnSearchFindPreviousFast)
-	ON_UPDATE_COMMAND_UI( ID_SEARCH_FIND        , OnUpdateFindReplace )
-	ON_UPDATE_COMMAND_UI( ID_SEARCH_FINDNEXT    , OnUpdateFindNextPrev )
+	ON_UPDATE_COMMAND_UI(ID_SEARCH_FINDNEXT, OnUpdateSearchFindNextPrev)
+	ON_UPDATE_COMMAND_UI(ID_SEARCH_FIND, OnUpdateSearchFind)
+	ON_UPDATE_COMMAND_UI(ID_SEARCH_REPLACE, OnUpdateSearchReplace)
 	ON_COMMAND(ID_VIEW_EDITOR_TOGGLECURRENTFOLD, OnViewToggleCurrentFold)
 	ON_COMMAND(ID_VIEW_EDITOR_TOGGLEALLFOLDS, OnViewToggleAllFolds)
 	ON_UPDATE_COMMAND_UI( ID_VIEW_EDITOR_TOGGLECURRENTFOLD, OnUpdateFold )
-	ON_UPDATE_COMMAND_UI( ID_EDIT_COPY            , OnIsSelected )
-	ON_UPDATE_COMMAND_UI( ID_EDIT_COPYASRTF       , OnIsSelected )
-	ON_UPDATE_COMMAND_UI( ID_EDIT_UPPERCASE       , OnIsSelected )
-	ON_UPDATE_COMMAND_UI( ID_EDIT_LOWERCASE       , OnIsSelected )
-	ON_UPDATE_COMMAND_UI( ID_SEARCH_REPLACE     , OnUpdateFindReplace )
-	ON_UPDATE_COMMAND_UI( ID_SEARCH_FINDPREVIOUS, OnUpdateFindNextPrev )
-	ON_UPDATE_COMMAND_UI( ID_VIEW_EDITOR_TOGGLEALLFOLDS   , OnUpdateFold )
 	ON_COMMAND( ID_SEARCH_BOOKMARKTOGGLE  , OnBookmarkToggle )
 	ON_COMMAND( ID_SEARCH_BOOKMARKNEXT    , OnBookmarkNext )
 	ON_COMMAND( ID_SEARCH_BOOKMARKPREVIOUS, OnBookmarkPrev )
@@ -114,8 +103,19 @@ BEGIN_MESSAGE_MAP( RDOEditorSciEdit, CWnd )
 	ON_UPDATE_COMMAND_UI( ID_VIEW_EDITOR_ZOOMIN          , OnUpdateZoomIn )
 	ON_UPDATE_COMMAND_UI( ID_VIEW_EDITOR_ZOOMOUT         , OnUpdateZoomOut )
 	ON_UPDATE_COMMAND_UI( ID_VIEW_EDITOR_ZOOMRESET       , OnUpdateZoomReset )
+	ON_UPDATE_COMMAND_UI( ID_EDIT_COPY            , OnIsSelected )
+	ON_UPDATE_COMMAND_UI(ID_EDIT_UNDO, OnUpdateEditUndo)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_REDO, OnUpdateEditRedo)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_CUT, OnUpdateEditCut)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_PASTE, OnUpdateEditPaste)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_CLEAR, OnUpdateEditClear)
+	ON_UPDATE_COMMAND_UI( ID_EDIT_COPYASRTF       , OnIsSelected )
+	ON_UPDATE_COMMAND_UI( ID_EDIT_UPPERCASE       , OnIsSelected )
+	ON_UPDATE_COMMAND_UI( ID_EDIT_LOWERCASE       , OnIsSelected )
+	ON_UPDATE_COMMAND_UI( ID_VIEW_EDITOR_TOGGLEALLFOLDS   , OnUpdateFold )
 	ON_UPDATE_COMMAND_UI( ID_SEARCH_BOOKMARKPREVIOUS, OnHasBookmarks )
 	ON_UPDATE_COMMAND_UI( ID_SEARCH_BOOKMARKSCLEAR  , OnHasBookmarks )
+	ON_UPDATE_COMMAND_UI(ID_SEARCH_FINDPREVIOUS, OnUpdateSearchFindNextPrev)
 	//}}AFX_MSG_MAP
 
 	ON_REGISTERED_MESSAGE( FIND_REPLASE_MSG, OnFindReplaceMsg )
@@ -469,12 +469,12 @@ void RDOEditorSciEdit::OnEditLowerCase()
 	sendEditor( SCI_LOWERCASE );
 }
 
-void RDOEditorSciEdit::OnCanUndo( CCmdUI* pCmdUI )
+void RDOEditorSciEdit::OnUpdateEditUndo(CCmdUI* pCmdUI) 
 {
 	pCmdUI->Enable( sendEditor(SCI_CANUNDO) );
 }
 
-void RDOEditorSciEdit::OnCanRedo( CCmdUI* pCmdUI )
+void RDOEditorSciEdit::OnUpdateEditRedo(CCmdUI* pCmdUI) 
 {
 	pCmdUI->Enable( sendEditor(SCI_CANREDO) );
 }
@@ -484,12 +484,17 @@ void RDOEditorSciEdit::OnIsSelected( CCmdUI* pCmdUI )
 	pCmdUI->Enable( isSelected() );
 }
 
-void RDOEditorSciEdit::OnCanPaste( CCmdUI* pCmdUI )
+void RDOEditorSciEdit::OnUpdateEditCut(CCmdUI* pCmdUI) 
+{
+	pCmdUI->Enable( !isReadOnly() && isSelected() );
+}
+
+void RDOEditorSciEdit::OnUpdateEditPaste(CCmdUI* pCmdUI) 
 {
 	pCmdUI->Enable( sendEditor(SCI_CANPASTE) );
 }
 
-void RDOEditorSciEdit::OnCanDelete( CCmdUI* pCmdUI )
+void RDOEditorSciEdit::OnUpdateEditClear(CCmdUI* pCmdUI) 
 {
 	pCmdUI->Enable( getCurrentPos() != getLength() || isSelected() );
 }
@@ -637,14 +642,19 @@ LRESULT RDOEditorSciEdit::OnFindReplaceMsg( WPARAM wParam, LPARAM lParam )
 	return 0;
 }
 
-void RDOEditorSciEdit::OnUpdateFindNextPrev( CCmdUI* pCmdUI )
+void RDOEditorSciEdit::OnUpdateSearchFindNextPrev(CCmdUI* pCmdUI) 
 {
 	pCmdUI->Enable( !findStr.IsEmpty() );
 }
 
-void RDOEditorSciEdit::OnUpdateFindReplace( CCmdUI* pCmdUI )
+void RDOEditorSciEdit::OnUpdateSearchFind(CCmdUI* pCmdUI) 
 {
 	pCmdUI->Enable( !isEmpty() );
+}
+
+void RDOEditorSciEdit::OnUpdateSearchReplace(CCmdUI* pCmdUI) 
+{
+	pCmdUI->Enable( !isReadOnly() && !isEmpty() );
 }
 
 void RDOEditorSciEdit::findNext( CString& findWhat, const bool searchDown, const bool matchCase, const bool matchWholeWord )
