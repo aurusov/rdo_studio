@@ -696,7 +696,7 @@ BEGIN
         MENUITEM "&Reset Zoom\tCtrl+Num/",      ID_VIEW_ZOOMRESET
         MENUITEM SEPARATOR
         MENUITEM "&Workspace\tAlt+0",           ID_VIEW_WORKSPACE
-        MENUITEM "&Output\tAlt+2",              ID_VIEW_OUTPUT
+        MENUITEM "&Output\tAlt+9",              ID_VIEW_OUTPUT
         POPUP "&Toolbar"
         BEGIN
             MENUITEM "&File Toolbar",               ID_VIEW_TOOLBAR_FILE_TOOLBAR
@@ -1180,8 +1180,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,8,0,192
- PRODUCTVERSION 0,8,0,192
+ FILEVERSION 0,8,0,193
+ PRODUCTVERSION 0,8,0,193
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -1199,14 +1199,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "RAO studio\0"
-            VALUE "FileVersion", "0, 8, 0, 192\0"
+            VALUE "FileVersion", "0, 8, 0, 193\0"
             VALUE "InternalName", "RAO-Studio\0"
             VALUE "LegalCopyright", "Copyright (C) 2003\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "RAO-Studio.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "RAO-Studio\0"
-            VALUE "ProductVersion", "0, 8, 0, 192\0"
+            VALUE "ProductVersion", "0, 8, 0, 193\0"
             VALUE "SpecialBuild", "\0"
         END
     END
@@ -1629,7 +1629,7 @@ END
 STRINGTABLE DISCARDABLE 
 BEGIN
     ID_VIEW_WORKSPACE       "\nWorkspace (Alt+0)"
-    ID_VIEW_OUTPUT          "\nOutput (Alt+2)"
+    ID_VIEW_OUTPUT          "\nOutput (Alt+9)"
 END
 
 STRINGTABLE DISCARDABLE 

@@ -54,6 +54,7 @@ BSC32=bscmake.exe
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /machine:I386
 # ADD LINK32 Imm32.lib Version.lib Htmlhelp.lib /nologo /subsystem:windows /machine:I386
+# SUBTRACT LINK32 /profile
 
 !ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
 
