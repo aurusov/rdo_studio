@@ -69,6 +69,7 @@ RDOStudioChartView::RDOStudioChartView( const bool preview )
 	old_zoom( 1 ),
 	auto_zoom( 1 ),
 	zoomAuto( false ),
+	minZoom( false ),
 	scale_koeff( 1 ),
 	style( NULL ),
 	previewMode( preview ),
@@ -231,14 +232,23 @@ void RDOStudioChartView::recalcLayout()
 		if ( timeRange > 0 ) {
 			long double timeScaleAuto = doUnwrapTime() ? (double)( chartRect.Width() - style->fonts_ticks->tickWidth * doc->ticksCount ) / timeRange : (double)chartRect.Width() / timeRange;
 			timeScale = (double)style->fonts_ticks->tickWidth / doc->minTimeOffset;
+			//bool flag = !zoomAuto && ( scale_koeff == auto_zoom );
 			auto_zoom = timeScaleAuto / timeScale;
-			if ( doUnwrapTime() && auto_zoom < 0 ) {
+			/*if ( doUnwrapTime() && auto_zoom < 0 ) {
 				auto_zoom = 1;
+			}
+			if ( !zoomAuto && auto_zoom <= 1 ) {
+				scale_koeff = zoom;
 			}
 			if ( zoomAuto || ( auto_zoom > 1 && scale_koeff < auto_zoom ) ) {
 				scale_koeff = auto_zoom;
-			}
-			if ( !zoomAuto && auto_zoom <= 1 ) {
+			}*/
+			/*if ( doUnwrapTime() && auto_zoom < 0 ) {
+				auto_zoom = 1;
+			}*/
+			if ( zoomAuto || ( !zoomAuto && auto_zoom > 1 /*&& scale_koeff < auto_zoom*/ ) || minZoom ) {
+				scale_koeff = auto_zoom;
+			} else {
 				scale_koeff = zoom;
 			}
 		} else {
@@ -635,8 +645,11 @@ void RDOStudioChartView::copyToClipboard()
 void RDOStudioChartView::setZoom( double new_zoom, const bool force_update )
 {
 	scale_koeff = new_zoom;
+	minZoom = false;
 	if ( scale_koeff < auto_zoom ) {
-		scale_koeff = auto_zoom;
+		/*scale_koeff = auto_zoom;
+		new_zoom = auto_zoom;*/
+		minZoom = true;
 	}
 	if ( zoom != new_zoom || scale_koeff != new_zoom || force_update ) {
 		zoom = new_zoom;
@@ -789,7 +802,7 @@ void RDOStudioChartView::OnSize(UINT nType, int cx, int cy)
 	if ( GetDocument() ) {
 		recalcLayout();
 		updateScrollBars( false );
-		setZoom( zoom );
+		setZoom( zoom, true );
 	}
 
 	mutex.Unlock();

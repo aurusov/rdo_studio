@@ -76,6 +76,7 @@ protected:
 	double scale_koeff;
 	void setZoom( double new_zoom, const bool force_update = false );
 	bool zoomAuto;
+	bool minZoom;
 
 	bool previewMode;
 	RDOStudioChartViewStyle* style;
