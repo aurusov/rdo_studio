@@ -149,20 +149,7 @@ void RDOStudioModel::parseErrorModelNotify()
 {
 	vector<RDOSyntaxError>* errors = kernel.getSimulator()->getErrors();
 	for ( vector<RDOSyntaxError>::iterator it = errors->begin(); it != errors->end(); it++ ) {
-		rdoModelObjects::RDOFileType fileType = rdoModelObjects::PAT;
-		switch ( it->file ) {
-			case PAT_FILE : fileType = rdoModelObjects::PAT; break;
-			case RTP_FILE : fileType = rdoModelObjects::RTP; break;
-			case RSS_FILE : fileType = rdoModelObjects::RSS; break;
-			case OPR_FILE : fileType = rdoModelObjects::OPR; break;
-			case FRM_FILE : fileType = rdoModelObjects::FRM; break;
-			case FUN_FILE : fileType = rdoModelObjects::FUN; break;
-			case DPT_FILE : fileType = rdoModelObjects::DPT; break;
-			case SMR1_FILE: fileType = rdoModelObjects::SMR; break;
-			case SMR2_FILE: fileType = rdoModelObjects::SMR; break;
-			case PMD_FILE : fileType = rdoModelObjects::PMD; break;
-		}
-		studioApp.mainFrame->output.appendStringToBuild( it->message, fileType, it->lineNo - 1 );
+		studioApp.mainFrame->output.appendStringToBuild( it->message, it->file, it->lineNo - 1 );
 	}
 }
 
