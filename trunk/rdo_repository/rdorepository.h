@@ -7,6 +7,7 @@
 
 #include <string>
 #include <sstream>
+#include <vector>
 
 // ----------------------------------------------------------------------------
 // ---------- RDORepository
@@ -60,6 +61,20 @@ public:
 	void saveTRC( std::stringstream& stream ) const;
 
 	void loadBMP( const std::string& name, std::iostream& stream ) const;
+
+	void loadPAT( std::vector< char >& vec ) const;
+	void loadRTP( std::vector< char >& vec ) const;
+	void loadRSS( std::vector< char >& vec ) const;
+	void loadOPR( std::vector< char >& vec ) const;
+	void loadFRM( std::vector< char >& vec ) const;
+	void loadFUN( std::vector< char >& vec ) const;
+	void loadDPT( std::vector< char >& vec ) const;
+	void loadSMR( std::vector< char >& vec ) const;
+	void loadPMD( std::vector< char >& vec ) const;
+	void loadPMV( std::vector< char >& vec ) const;
+	void loadTRC( std::vector< char >& vec ) const;
+
+	void loadBMP( const std::string& name, std::vector< char >& vec ) const;
 };
 
 } // namespace rdoRepository

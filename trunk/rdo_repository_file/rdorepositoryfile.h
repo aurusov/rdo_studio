@@ -73,6 +73,9 @@ private:
 	void loadFile( const std::string& filename, std::stringstream& stream, const bool described, const bool mustExist ) const;
 	void saveFile( const std::string& filename, std::stringstream& stream, const bool deleteIfEmpty = false ) const;
 
+	void loadFile( const std::string& filename, std::vector< char >& vec, const bool described, const bool mustExist ) const;
+	void saveFile( const std::string& filename, std::vector< char >& vec, const bool deleteIfEmpty = false ) const;
+
 	void changeLastModelPath();
 
 public:
@@ -115,6 +118,32 @@ public:
 	void saveTRC( std::stringstream& stream ) const;
 
 	void loadBMP( const std::string& name, std::iostream& stream ) const;
+
+	void loadPAT( std::vector< char >& vec ) const;
+	void loadRTP( std::vector< char >& vec ) const;
+	void loadRSS( std::vector< char >& vec ) const;
+	void loadOPR( std::vector< char >& vec ) const;
+	void loadFRM( std::vector< char >& vec ) const;
+	void loadFUN( std::vector< char >& vec ) const;
+	void loadDPT( std::vector< char >& vec ) const;
+	void loadSMR( std::vector< char >& vec ) const;
+	void loadPMD( std::vector< char >& vec ) const;
+	void loadPMV( std::vector< char >& vec ) const;
+	void loadTRC( std::vector< char >& vec ) const;
+/*
+	void savePAT( std::vector< char >& vec ) const;
+	void saveRTP( std::vector< char >& vec ) const;
+	void saveRSS( std::vector< char >& vec ) const;
+	void saveOPR( std::vector< char >& vec ) const;
+	void saveFRM( std::vector< char >& vec ) const;
+	void saveFUN( std::vector< char >& vec ) const;
+	void saveDPT( std::vector< char >& vec ) const;
+	void saveSMR( std::vector< char >& vec ) const;
+	void savePMD( std::vector< char >& vec ) const;
+	void savePMV( std::vector< char >& vec ) const;
+	void saveTRC( std::vector< char >& vec ) const;
+*/
+	void loadBMP( const std::string& name, std::vector< char >& vec ) const;
 };
 
 }; // namespace rdoRepository

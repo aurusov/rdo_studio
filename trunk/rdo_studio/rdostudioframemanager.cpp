@@ -227,57 +227,6 @@ void RDOStudioFrameManager::resetCurrentShowingFrame( const int value )
 	if ( value == currentShowingFrame ) setCurrentShowingFrame( -1 );
 }
 
-class binarybuf: public streambuf
-{
-protected:
-	vector< char > buf;
-	int current;
-
-	virtual streambuf* setbuf( char* s, streamsize n ) {
-		buf.reserve( n );
-		buf.assign( s, s + n );
-		current = 0;
-		setg( buf.begin(), buf.begin(), buf.end() );
-		setp( buf.begin(), buf.end() );
-		return this;
-	}
-	virtual int_type overflow( int_type c = traits_type::eof() ) {
-		if ( c != traits_type::eof() ) {
-			buf.push_back( traits_type::to_char_type( c ) );
-			return traits_type::not_eof( c );
-		} else {
-			return traits_type::eof();
-		}
-	}
-	virtual int_type underflow() {
-		return traits_type::to_int_type( buf[current] );
-	}
-	virtual int_type uflow() {
-		int_type c = traits_type::to_int_type( buf[current++] );
-		setg( buf.begin(), &buf[current], buf.end() );
-		return c;
-	}
-	virtual pos_type seekoff( off_type off, ios_base::seekdir way, ios_base::openmode which = ios_base::in | ios_base::out) {
-		switch ( way ) {
-			case ios_base::beg: current = off; break;
-			case ios_base::cur: current += off; break;
-			case ios_base::end: current = buf.size() - off; break;
-		}
-		return current;
-	}
-	virtual pos_type seekpos( pos_type sp, ios_base::openmode which = ios_base::in | ios_base::out ) {
-		current = sp;
-		return current;
-	}
-
-public:
-	binarybuf(): streambuf(), current( 0 ) {
-		setg( buf.begin(), buf.begin(), buf.end() );
-		setp( buf.begin(), buf.end() );
-	}
-	virtual ~binarybuf() { buf.clear(); };
-};
-
 void RDOStudioFrameManager::bmp_insert( const std::string& name )
 {
 	if ( bitmaps.find( name ) == bitmaps.end() ) {
@@ -288,9 +237,8 @@ void RDOStudioFrameManager::bmp_insert( const std::string& name )
 
 		bitmaps[name] = NULL;
 
-		binarybuf buf;
-		iostream stream( &buf );
-		kernel.getRepository()->loadBMP( name, stream );
+		binarystream stream;
+		kernel.getRepository()->loadBMP( name, stream.vec() );
 
 		char* bmInfo   = NULL;
 		char* pBits    = NULL;

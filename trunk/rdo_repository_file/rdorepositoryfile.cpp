@@ -419,6 +419,26 @@ void RDORepositoryFile::saveFile( const string& filename, stringstream& stream, 
 	}
 }
 
+void RDORepositoryFile::loadFile( const string& filename, vector< char >& vec, const bool described, const bool mustExist ) const
+{
+	if ( described ) {
+		if ( isFileExists( filename ) ) {
+			ifstream file( filename.c_str() );
+			file.seekg( 0, ios::end );
+			int len = file.tellg();
+			file.seekg( 0, ios::beg );
+			vec.resize( len );
+			file.read( &vec[0], len );
+			file.close();
+		} else {
+//			stream.setstate( ios_base::badbit );
+//			if ( mustExist ) stream.setstate( stream.rdstate() | ios_base::failbit );
+		}
+	} else {
+//		stream.setstate( ios_base::badbit );
+	}
+}
+
 void RDORepositoryFile::loadPAT( stringstream& stream ) const
 {
 	loadFile( modelPath + patFileName + ".pat", stream, patDescribed, patMustExist );
@@ -538,5 +558,76 @@ void RDORepositoryFile::loadBMP( const string& name, iostream& stream ) const
 		file.close();
 	} else {
 		stream.setstate( ios_base::badbit );
+	}
+}
+
+void RDORepositoryFile::loadPAT( vector< char >& vec ) const
+{
+	loadFile( modelPath + patFileName + ".pat", vec, patDescribed, patMustExist );
+}
+
+void RDORepositoryFile::loadRTP( vector< char >& vec ) const
+{
+	loadFile( modelPath + rtpFileName + ".rtp", vec, rtpDescribed, rtpMustExist );
+}
+
+void RDORepositoryFile::loadRSS( vector< char >& vec ) const
+{
+	loadFile( modelPath + rssFileName + ".rss", vec, rssDescribed, rssMustExist );
+}
+
+void RDORepositoryFile::loadOPR( vector< char >& vec ) const
+{
+	loadFile( modelPath + oprFileName + ".opr", vec, oprDescribed, oprMustExist );
+}
+
+void RDORepositoryFile::loadFRM( vector< char >& vec ) const
+{
+	loadFile( modelPath + frmFileName + ".frm", vec, frmDescribed, frmMustExist );
+}
+
+void RDORepositoryFile::loadFUN( vector< char >& vec ) const
+{
+	loadFile( modelPath + funFileName + ".fun", vec, funDescribed, funMustExist );
+}
+
+void RDORepositoryFile::loadDPT( vector< char >& vec ) const
+{
+	loadFile( modelPath + dptFileName + ".dpt", vec, dptDescribed, dptMustExist );
+}
+
+void RDORepositoryFile::loadSMR( vector< char >& vec ) const
+{
+	loadFile( modelPath + smrFileName + ".smr", vec, smrDescribed, smrMustExist );
+}
+
+void RDORepositoryFile::loadPMD( vector< char >& vec ) const
+{
+	loadFile( modelPath + pmdFileName + ".pmd", vec, pmdDescribed, pmdMustExist );
+}
+
+void RDORepositoryFile::loadPMV( vector< char >& vec ) const
+{
+	loadFile( modelPath + pmvFileName + ".pmv", vec, pmvDescribed, pmvMustExist );
+}
+
+void RDORepositoryFile::loadTRC( vector< char >& vec ) const
+{
+	loadFile( modelPath + trcFileName + ".trc", vec, trcDescribed, trcMustExist );
+}
+
+void RDORepositoryFile::loadBMP( const string& name, vector< char >& vec ) const
+{
+	string file_name = modelPath + name + ".bmp";
+	if ( isFileExists( file_name ) ) {
+		ifstream file( file_name.c_str(), ios::in | ios::binary );
+		file.seekg( 0, ios::end );
+		int len = file.tellg();
+		file.seekg( 0, ios::beg );
+		vec.resize( len );
+		file.read( &vec[0], len );
+		file.close();
+	} else {
+//		stream.setstate( ios_base::badbit );
 	}
 }

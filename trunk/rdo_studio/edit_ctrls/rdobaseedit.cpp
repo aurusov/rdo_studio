@@ -1074,6 +1074,18 @@ void RDOBaseEdit::load( stringstream& stream ) const
 	setReadOnly( readOnly );
 }
 
+void RDOBaseEdit::load( vector< char >& vec ) const
+{
+	bool readOnly = isReadOnly();
+	setReadOnly( false );
+
+	int len = vec.size();
+	string s( vec.begin(), len );
+	sendEditorString( SCI_ADDTEXT, s.length(), s.c_str() );
+
+	setReadOnly( readOnly );
+}
+
 void RDOBaseEdit::save( stringstream& stream ) const
 {
 	char currentLine[8000];
@@ -1089,6 +1101,13 @@ void RDOBaseEdit::save( stringstream& stream ) const
 			stream << str << endl;
 		}
 	}
+}
+
+void RDOBaseEdit::save( vector< char >& vec ) const
+{
+	int len = getLength();
+	vec.resize( len );
+	sendEditorString( SCI_GETTEXT, len, &vec[0] );
 }
 
 int RDOBaseEdit::indentOfBlock( int line ) const

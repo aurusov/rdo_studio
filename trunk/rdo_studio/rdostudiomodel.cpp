@@ -388,6 +388,7 @@ void RDOStudioModel::openModelFromRepository()
 				edit->setReadOnly( false );
 				edit->clearAll();
 				stringstream stream;
+//				binarystream stream;
 				bool canLoad = true;
 				switch ( i ) {
 					case RDOEDIT_PAT: kernel.getRepository()->loadPAT( stream ); break;

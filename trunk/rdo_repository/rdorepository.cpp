@@ -172,3 +172,63 @@ void RDORepository::loadBMP( const string& name, iostream& stream ) const
 {
 	repositoryFile->loadBMP( name, stream );
 }
+
+void RDORepository::loadPAT( vector< char >& vec ) const
+{
+	repositoryFile->loadPAT( vec );
+}
+
+void RDORepository::loadRTP( vector< char >& vec ) const
+{
+	repositoryFile->loadRTP( vec );
+}
+
+void RDORepository::loadRSS( vector< char >& vec ) const
+{
+	repositoryFile->loadRSS( vec );
+}
+
+void RDORepository::loadOPR( vector< char >& vec ) const
+{
+	repositoryFile->loadOPR( vec );
+}
+
+void RDORepository::loadFRM( vector< char >& vec ) const
+{
+	repositoryFile->loadFRM( vec );
+}
+
+void RDORepository::loadFUN( vector< char >& vec ) const
+{
+	repositoryFile->loadFUN( vec );
+}
+
+void RDORepository::loadDPT( vector< char >& vec ) const
+{
+	repositoryFile->loadDPT( vec );
+}
+
+void RDORepository::loadSMR( vector< char >& vec ) const
+{
+	repositoryFile->loadSMR( vec );
+}
+
+void RDORepository::loadPMD( vector< char >& vec ) const
+{
+	repositoryFile->loadPMD( vec );
+}
+
+void RDORepository::loadPMV( vector< char >& vec ) const
+{
+	repositoryFile->loadPMV( vec );
+}
+
+void RDORepository::loadTRC( vector< char >& vec ) const
+{
+	repositoryFile->loadTRC( vec );
+}
+
+void RDORepository::loadBMP( const string& name, vector< char >& vec ) const
+{
+	repositoryFile->loadBMP( name, vec );
+}
