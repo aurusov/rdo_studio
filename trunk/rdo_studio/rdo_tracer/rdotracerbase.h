@@ -73,6 +73,8 @@ private:
 
 	CMultiDocTemplate* chartDocTemplate;
 	std::vector <RDOStudioChartDoc*> charts;
+
+	bool drawTrace;
 public:
 	RDOTracerBase();
 	virtual ~RDOTracerBase();	
@@ -95,6 +97,8 @@ public:
 	void clear();
 	void clearCharts();
 	void setModelName( std::string name ) const;
+	void setDrawTrace( const bool value );
+	bool getDrawTrace() const { return drawTrace; };
 };
 
 }; // namespace rdoTracer

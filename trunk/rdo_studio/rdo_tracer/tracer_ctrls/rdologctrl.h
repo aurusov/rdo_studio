@@ -44,6 +44,8 @@ protected:
 
 	stringList strings;
 	int stringsCount;
+	stringList::iterator yPos_iterator;
+	void setYPosIterator( const int prev_yPos );
 	stringList::iterator findString( int index );
 	stringList::reverse_iterator reverse_findString( int index );
 	stringList::const_iterator const_findString( int index ) const;
@@ -76,6 +78,8 @@ protected:
 	bool canCopy() const { return selectedLine != -1; };
 
 	void updateWindow();
+
+	bool drawLog;
 
 	//{{AFX_MSG(RDOLogCtrl)
 	afx_msg int  OnCreate( LPCREATESTRUCT lpCreateStruct );
@@ -121,6 +125,9 @@ public:
 	virtual void setStyle( RDOLogStyle* style, const bool needRedraw = true );
 
 	void setText( std::string text );
+
+	void setDrawLog( const bool value );
+	bool getDrawLog() const { return drawLog; };
 	
 	//Must be called when moving main frame window
 	//void storeWindowRect();

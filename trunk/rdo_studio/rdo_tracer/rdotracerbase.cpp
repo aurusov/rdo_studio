@@ -31,7 +31,8 @@ RDOTracerBase::RDOTracerBase():
 	tree( NULL ),
 	clipboardFormat( 0 ),
 	chartDocTemplate( NULL ),
-	eventIndex( 0 )
+	eventIndex( 0 ),
+	drawTrace( true )
 {
 }
 
@@ -661,4 +662,14 @@ void RDOTracerBase::updateChartsStyles() const
 void RDOTracerBase::setModelName( string name ) const
 {
 	if ( tree ) tree->setModelName( name );
+}
+
+void RDOTracerBase::setDrawTrace( const bool value )
+{
+	if ( drawTrace != value ) {
+		drawTrace = value;
+		if ( !drawTrace )
+			clearCharts();
+		log->setDrawLog( value );
+	}
 }

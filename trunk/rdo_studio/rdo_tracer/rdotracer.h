@@ -17,6 +17,7 @@ private:
 	static void openModelNotify();
 	static void closeModelNotify();
 	static void beforeModelStartNotify();
+	static void stopModelNotify();
 	static void traceStringNotify( std::string trace_string );
 public:
 	RDOTracer();

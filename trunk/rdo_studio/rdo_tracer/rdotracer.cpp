@@ -32,6 +32,9 @@ RDOTracer::RDOTracer() : RDOTracerBase()
 	kernel.setNotifyReflect( RDOKernel::closeModel, closeModelNotify );
 
 	kernel.setNotifyReflect( RDOKernel::beforeModelStart, beforeModelStartNotify );
+	kernel.setNotifyReflect( RDOKernel::endExecuteModel, stopModelNotify );
+	kernel.setNotifyReflect( RDOKernel::modelStopped, stopModelNotify );
+	kernel.setNotifyReflect( RDOKernel::executeError, stopModelNotify );
 
 	kernel.setNotifyReflect( RDOKernel::traceString, traceStringNotify );
 }
@@ -58,8 +61,14 @@ void RDOTracer::closeModelNotify()
 void RDOTracer::beforeModelStartNotify()
 {
 	tracer->clear();
+	tracer->setShowMode( kernel.getSimulator()->getShowMode() );
 	tracer->setModelName( kernel.getRepository()->getName() );
 	tracer->getModelStructure( kernel.getSimulator()->getModelStructure() );
+}
+
+void RDOTracer::stopModelNotify()
+{
+	tracer->setDrawTrace( true );
 }
 
 void RDOTracer::traceStringNotify( string trace_string )
@@ -70,6 +79,8 @@ void RDOTracer::traceStringNotify( string trace_string )
 void RDOTracer::setShowMode( const RDOSimulatorNS::ShowMode value )
 {
 	if ( value == SM_NoShow ) {
-		clearCharts();
+		tracer->setDrawTrace( false );
+	} else {
+		tracer->setDrawTrace( true );
 	}
 }

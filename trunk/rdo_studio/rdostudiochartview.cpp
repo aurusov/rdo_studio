@@ -463,6 +463,8 @@ void RDOStudioChartView::drawXAxis( CDC &dc, CRect& chartRect )
 				if ( *(*it) == drawFromX ) {
 					tmprect.left += chartShift;
 				}
+				if ( tmprect.left > chartRect.right )
+					tmprect.left = chartRect.right;
 				dc.DrawText( str.c_str(), tmprect, DT_LEFT );
 				if ( tmprect.left != chartRect.left && tmprect.left != chartRect.right ) {
 					dc.MoveTo( tmprect.left, chartRect.bottom );

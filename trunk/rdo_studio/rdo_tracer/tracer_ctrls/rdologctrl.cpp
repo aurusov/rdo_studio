@@ -191,7 +191,8 @@ RDOLogCtrl::RDOLogCtrl( RDOLogStyle* style ):
 	bHaveFound( false ),
 	bSearchDown( true ),
 	bMatchCase( false ),
-	bMatchWholeWord( false )
+	bMatchWholeWord( false ),
+	drawLog( true )
 {
 	//if no style specified default style will be used
 	if ( !logStyle ) {
@@ -365,70 +366,77 @@ void RDOLogCtrl::OnPaint()
 
 	int prevDC = dc->SaveDC();
 
-	dc->SetBkMode( TRANSPARENT );
+	if ( drawLog ) {
 
-	if ( !IsRectEmpty( &(ps.rcPaint) ) ) {
-	
-		CFont*  prevFont  = dc->SelectObject( &fontLog );
+		dc->SetBkMode( TRANSPARENT );
+
+		if ( !IsRectEmpty( &(ps.rcPaint) ) ) {
 		
-		int firstLine = max ( 0, yPos + ps.rcPaint.top / lineHeight );
-		int mul = ps.rcPaint.bottom / lineHeight;
-		if ( ps.rcPaint.bottom > mul * lineHeight ) mul++;
-		int lastLine = min ( stringsCount - 1, yPos + mul - 1 );
-
-		RDOLogColorPair* colors = NULL;
-
-		int y = lineHeight * ( -yPos + firstLine - 1 );
-		CRect rect( charWidth * ( -xPos ), y, ps.rcPaint.right, y + lineHeight );
-		stringList::const_iterator it = findString( firstLine );
-		for ( int i = firstLine; i < lastLine + 1; i++ ) {
-
-			if ( i != selectedLine || focusOnly ) {
-				if ( !getItemColors( (*it), colors ) )
-					getItemColors( i, colors );
-			} else {
-				colors = new RDOLogColorPair();
-				colors->foregroundColor = ::GetSysColor( COLOR_HIGHLIGHTTEXT );
-				colors->backgroundColor  = ::GetSysColor( COLOR_HIGHLIGHT );
-			}
-
-			int backdc = dc->SaveDC();
-
-			CBrush brush ( colors->backgroundColor );
-			CPen pen( PS_SOLID, 1, colors->backgroundColor );
-			dc->SelectObject( &pen );
-			dc->SelectObject( &brush );
-
-			rect.OffsetRect( 0, lineHeight );
-
-			dc->Rectangle( &rect );
+			CFont*  prevFont  = dc->SelectObject( &fontLog );
 			
-			dc->SetTextColor( colors->foregroundColor );
+			int firstLine = max ( 0, yPos + ps.rcPaint.top / lineHeight );
+			int mul = ps.rcPaint.bottom / lineHeight;
+			if ( ps.rcPaint.bottom > mul * lineHeight ) mul++;
+			int lastLine = min ( stringsCount - 1, yPos + mul - 1 );
 
-			rect.left += logStyle->borders->horzBorder;
+			RDOLogColorPair* colors = NULL;
 
-			dc->DrawText( (*it).c_str(), rect, DT_SINGLELINE | DT_LEFT | DT_VCENTER );
+			int y = lineHeight * ( -yPos + firstLine - 1 );
+			CRect rect( charWidth * ( -xPos ), y, ps.rcPaint.right, y + lineHeight );
+			stringList::const_iterator it = const_findString( firstLine );
+			for ( int i = firstLine; i < lastLine + 1; i++ ) {
 
-			rect.left -= logStyle->borders->horzBorder;
-			
-			dc->RestoreDC( backdc );
+				if ( i != selectedLine || focusOnly ) {
+					if ( !getItemColors( (*it), colors ) )
+						getItemColors( i, colors );
+				} else {
+					colors = new RDOLogColorPair();
+					colors->foregroundColor = ::GetSysColor( COLOR_HIGHLIGHTTEXT );
+					colors->backgroundColor  = ::GetSysColor( COLOR_HIGHLIGHT );
+				}
 
-			if ( i == selectedLine && hasFocus ) {
-				CRect focusRect;
-				focusRect.CopyRect( &newClientRect );
-				focusRect.top = rect.top;
-				focusRect.bottom = rect.bottom;
-				dc->DrawFocusRect( &focusRect );
+				int backdc = dc->SaveDC();
+
+				CBrush brush ( colors->backgroundColor );
+				CPen pen( PS_SOLID, 1, colors->backgroundColor );
+				dc->SelectObject( &pen );
+				dc->SelectObject( &brush );
+
+				rect.OffsetRect( 0, lineHeight );
+
+				dc->Rectangle( &rect );
+				
+				dc->SetTextColor( colors->foregroundColor );
+
+				rect.left += logStyle->borders->horzBorder;
+
+				dc->DrawText( (*it).c_str(), rect, DT_SINGLELINE | DT_LEFT | DT_VCENTER );
+
+				rect.left -= logStyle->borders->horzBorder;
+				
+				dc->RestoreDC( backdc );
+
+				if ( i == selectedLine && hasFocus ) {
+					CRect focusRect;
+					focusRect.CopyRect( &newClientRect );
+					focusRect.top = rect.top;
+					focusRect.bottom = rect.bottom;
+					dc->DrawFocusRect( &focusRect );
+				}
+
+				it++;
+				if ( i == selectedLine && !focusOnly && colors ) {
+					delete colors; colors = NULL;
+				}
 			}
 
-			it++;
-			if ( i == selectedLine && !focusOnly && colors ) {
-				delete colors; colors = NULL;
-			}
+			getItemColors( "", colors );
+			dc->FillSolidRect( ps.rcPaint.left, rect.bottom, ps.rcPaint.right, ps.rcPaint.bottom, colors->backgroundColor );
 		}
-
+	} else {
+		RDOLogColorPair* colors = NULL;
 		getItemColors( "", colors );
-		dc->FillSolidRect( ps.rcPaint.left, rect.bottom, ps.rcPaint.right, ps.rcPaint.bottom, colors->backgroundColor );
+		dc->FillSolidRect( newClientRect, colors->backgroundColor );
 	}
 	
 	dc->RestoreDC( prevDC );
@@ -625,7 +633,9 @@ void RDOLogCtrl::updateScrollBars()
 	yPageSize = newClientRect.Height() / lineHeight;
 
 	yMax = max ( 0, stringsCount - yPageSize );
+	int prev_ypos = yPos;
 	yPos = min ( yPos, yMax );
+	setYPosIterator( prev_ypos );
 	int mul = yPageSize;
 	if ( mul * lineHeight < newClientRect.Height() )
 		mul++;
@@ -634,20 +644,36 @@ void RDOLogCtrl::updateScrollBars()
 	SCROLLINFO si;
 	si.cbSize = sizeof( si );
 	si.fMask  = SIF_RANGE | SIF_PAGE | SIF_POS;
-	si.nMin   = 0; 
-	
-	si.nMax   = stringsCount - 1;
-	si.nPage  = yPageSize; 
-	si.nPos   = yPos; 
-	SetScrollInfo( SB_VERT, &si, TRUE );
-	
-	xMax = max ( 0, maxStrWidth - xPageSize );
-	xPos = min ( xPos, xMax ); 
-	
-	si.nMax   = maxStrWidth - 1; 
-	si.nPage  = xPageSize; 
-	si.nPos   = xPos; 
-	SetScrollInfo( SB_HORZ, &si, TRUE );
+	si.nMin   = 0;
+
+	if ( drawLog ) { 
+		
+		si.nMax   = stringsCount - 1;
+		si.nPage  = yPageSize; 
+		si.nPos   = yPos; 
+		SetScrollInfo( SB_VERT, &si, TRUE );
+		
+		xMax = max ( 0, maxStrWidth - xPageSize );
+		xPos = min ( xPos, xMax ); 
+		
+		si.nMax   = maxStrWidth - 1; 
+		si.nPage  = xPageSize; 
+		si.nPos   = xPos; 
+		SetScrollInfo( SB_HORZ, &si, TRUE );
+	} else {
+		si.nMax   = 0;
+		si.nPage  = 0; 
+		si.nPos   = 0; 
+		SetScrollInfo( SB_VERT, &si, FALSE );
+		
+		xMax = max ( 0, maxStrWidth - xPageSize );
+		xPos = min ( xPos, xMax ); 
+		
+		si.nMax   = 0; 
+		si.nPage  = 0; 
+		si.nPos   = 0; 
+		SetScrollInfo( SB_HORZ, &si, FALSE );
+	}
 }
 
 bool RDOLogCtrl::scrollVertically( int inc )
@@ -660,7 +686,9 @@ bool RDOLogCtrl::scrollVertically( int inc )
 	// increment the scrolling position, adjust the position 
 	// of the scroll box, and update the window.
 	if ( inc = max ( -yPos, min ( inc, yMax - yPos ) ) ) {
+		int prev_ypos = yPos;
 		yPos += inc;
+		setYPosIterator( prev_ypos );
 		lastViewableLine += inc;
 		
 		CRect rect;
@@ -840,31 +868,40 @@ void RDOLogCtrl::addStringToLog( const string logStr )
 		bool prevVisible = isVisible( stringsCount - 1 );
 
 		strings.push_back( logStr );
+		if ( !stringsCount )
+			yPos_iterator = strings.begin();
 		stringsCount ++;
 
 		recalcWidth( logStr.length() );
 
-		updateScrollBars();
-
 		int lastString = stringsCount - 1;
 
-		fullRepaintLines = 1;
+		if ( drawLog ) {
 
-		if (  selectedLine != -1 && selectedLine == lastString - 1 ) {
-			selectedLine = lastString;
-			fullRepaintLines ++;
+			updateScrollBars();
+
+
+			fullRepaintLines = 1;
+
+			if (  selectedLine != -1 && selectedLine == lastString - 1 ) {
+				selectedLine = lastString;
+				fullRepaintLines ++;
+			}
+
+			if ( !isFullyVisible( lastString ) && prevVisible && ( !isVisible( selectedLine ) || selectedLine == lastString ) )
+				//::SendMessage( m_hWnd, WM_VSCROLL, MAKELONG(SB_BOTTOM, 0), NULL );
+				scrollVertically( yMax - yPos );
+			else if ( isVisible( lastString ) ) {
+				repaintLine( lastString );
+				if ( fullRepaintLines == 2 )
+					repaintLine( lastString - 1 );
+			}
+
+			fullRepaintLines = 0;
+		} else {
+			if (  selectedLine != -1 && selectedLine == lastString - 1 )
+				selectedLine = lastString;
 		}
-
-		if ( !isFullyVisible( lastString ) && prevVisible && ( !isVisible( selectedLine ) || selectedLine == lastString ) )
-			//::SendMessage( m_hWnd, WM_VSCROLL, MAKELONG(SB_BOTTOM, 0), NULL );
-			scrollVertically( yMax - yPos );
-		else if ( isVisible( lastString ) ) {
-			repaintLine( lastString );
-			if ( fullRepaintLines == 2 )
-				repaintLine( lastString - 1 );
-		}
-
-		fullRepaintLines = 0;
 	}
 
 	mutex.Unlock();
@@ -984,12 +1021,67 @@ void RDOLogCtrl::clear()
 	mutex.Unlock();
 }
 
+void RDOLogCtrl::setYPosIterator( const int prev_yPos )
+{
+	if ( yPos != prev_yPos ) {
+		if ( yPos == 0 ) {
+			yPos_iterator = strings.begin();
+		} else if ( yPos == yMax ) {
+			yPos_iterator = strings.end();
+			for ( int i = stringsCount; i > yMax; i-- )
+				yPos_iterator--;
+		} else {
+			int delta = yPos - prev_yPos;
+			if ( delta > 0 ) {
+				for ( int i = 0; i < delta; i++ )
+					yPos_iterator++;
+			} else {
+				for ( int i = delta; i < 0; i++ )
+					yPos_iterator--;
+			}
+		}
+	}
+}
+
 stringList::iterator RDOLogCtrl::findString( int index )
 {
-	stringList::iterator res = strings.begin();
-	while ( index-- )
-		res ++;
+	stringList::iterator res;
+	
+	if ( index == 0 ) {
+		res = strings.begin();
+	} else if ( index == yPos ) {
+		res = yPos_iterator;
+	} else if ( index == stringsCount - 1 ) {
+		res = strings.end();
+		res --;
+	} else {
+		int deltaPos = index - yPos;
+		int deltaEnd = index - ( stringsCount - 1 );
+		int mod_deltaPos = deltaPos >= 0 ? deltaPos : -1 * deltaPos;
+		int mod_deltaEnd = deltaEnd >= 0 ? deltaEnd : -1 * deltaEnd;
+		int delta = min( index, mod_deltaPos );
+		delta = min( delta, mod_deltaEnd );
+		if ( delta == index ) {
+			res = strings.begin();
+		} else if ( delta == mod_deltaPos ) {
+			res = yPos_iterator;
+			delta = deltaPos;
+		} else if ( delta == mod_deltaEnd ) {
+			res = strings.end();
+			res --;
+			delta = deltaEnd;
+		}
+		if ( delta > 0 ) {
+			for ( int i = 0; i < delta; i++ )
+				res++;
+		} else {
+			for ( int i = delta; i < 0; i++ )
+				res--;
+		}
+	}
+
 	return res;
+	//return const_findString( index );
 }
 
 stringList::reverse_iterator RDOLogCtrl::reverse_findString( int index )
@@ -999,9 +1091,41 @@ stringList::reverse_iterator RDOLogCtrl::reverse_findString( int index )
 
 stringList::const_iterator RDOLogCtrl::const_findString( int index ) const
 {
-	stringList::const_iterator res = strings.begin();
-	while ( index-- )
-		res ++;
+	stringList::const_iterator res;
+	
+	if ( index == 0 ) {
+		res = strings.begin();
+	} else if ( index == yPos ) {
+		res = yPos_iterator;
+	} else if ( index == stringsCount - 1 ) {
+		res = strings.end();
+		res --;
+	} else {
+		int deltaPos = index - yPos;
+		int deltaEnd = index - ( stringsCount - 1 );
+		int mod_deltaPos = deltaPos >= 0 ? deltaPos : -1 * deltaPos;
+		int mod_deltaEnd = deltaEnd >= 0 ? deltaEnd : -1 * deltaEnd;
+		int delta = min( index, mod_deltaPos );
+		delta = min( delta, mod_deltaEnd );
+		if ( delta == index ) {
+			res = strings.begin();
+		} else if ( delta == mod_deltaPos ) {
+			res = yPos_iterator;
+			delta = deltaPos;
+		} else if ( delta == mod_deltaEnd ) {
+			res = strings.end();
+			res --;
+			delta = deltaEnd;
+		}
+		if ( delta > 0 ) {
+			for ( int i = 0; i < delta; i++ )
+				res++;
+		} else {
+			for ( int i = delta; i < 0; i++ )
+				res--;
+		}
+	}
+
 	return res;
 }
 
@@ -1102,5 +1226,16 @@ void RDOLogCtrl::setText( std::string text )
 		addStringToLog( pos ? text.substr( 0, pos ) : "" );
 		text.erase( 0, pos );
 		text.erase( 0, text.find_first_not_of( "\r\n" ) );
+	}
+}
+
+void RDOLogCtrl::setDrawLog( const bool value )
+{
+	if ( drawLog != value ) {
+		drawLog = value;
+		updateScrollBars();
+		Invalidate();
+		updateWindow();
+		makeLineVisible( selectedLine );
 	}
 }
