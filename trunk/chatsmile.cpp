@@ -41,6 +41,7 @@ CChatSmile::Type CChatSmileList::getType( std::string str )
 {
 	tolower( str );
 	if ( str == ":)" || str == ":-)" )        { return CChatSmile::smile; }
+	else if ( str == "(:" || str == "(-:" )   { return CChatSmile::smile; }
 	else if ( str == ":(" || str == ":-(" )   { return CChatSmile::frown; }
 	else if ( str == ";)" || str == ";-)" )   { return CChatSmile::wink; }
 	else if ( str == ":-\\" || str == ":\\" ) { return CChatSmile::smirk; }

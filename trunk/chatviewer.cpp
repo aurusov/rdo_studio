@@ -627,3 +627,25 @@ void CChatViewer::OnPaint()
 		dc.SelectObject( prev_font );
 	}
 }
+
+bool CChatViewer::isSelected() const
+{
+	return selectedLine != -1;
+}
+
+void CChatViewer::copy()
+{
+	if ( OpenClipboard() ) {
+		::EmptyClipboard();
+		HGLOBAL mem = ::GlobalAlloc( GHND, strings[selectedLine]->getString().length() + 1 );
+		memcpy( mem, strings[selectedLine]->getString().c_str(), strings[selectedLine]->getString().length() );
+		::SetClipboardData( CF_TEXT, ::GlobalLock( mem ) );
+		LCID* lcid = reinterpret_cast<DWORD*>(GlobalAlloc( GMEM_MOVEABLE, sizeof(DWORD) ));
+		*lcid = MAKELCID( MAKELANGID(LANG_RUSSIAN, SUBLANG_NEUTRAL), SORT_DEFAULT );
+		SetClipboardData( CF_LOCALE, reinterpret_cast<HANDLE>(lcid) );
+		CloseClipboard();
+		if ( ::GlobalUnlock( mem ) ) {
+			::GlobalFree( mem );
+		}
+	}
+}

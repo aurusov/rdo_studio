@@ -57,6 +57,9 @@ public:
 
 	void setStyle( const CChatViewerStyle& _style, const bool needRedraw = true );
 
+	bool isSelected() const;
+	void copy();
+
 protected:
 	//{{AFX_VIRTUAL(CChatViewer)
 	protected:

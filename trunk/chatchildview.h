@@ -22,7 +22,9 @@ public:
 
 protected:
 	//{{AFX_VIRTUAL(CChatChildView)
+	public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
+	virtual BOOL OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo);
 	//}}AFX_VIRTUAL
 
 	//{{AFX_MSG(CChatChildView)

@@ -10,12 +10,21 @@
 // ----------------------------------------------------------------------------
 class CChatEdit: public CEdit
 {
+private:
+	std::vector< std::string > list;
+	int index;
+
 public:
 	CChatEdit();
 	~CChatEdit();
 
+	bool isSelected() const;
+	void paste();
+
 protected:
 	//{{AFX_VIRTUAL(CChatEdit)
+	protected:
+	virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
 	//}}AFX_VIRTUAL
 
 	//{{AFX_MSG(CChatEdit)

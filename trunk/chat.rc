@@ -470,6 +470,12 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "E&xit",                       ID_APP_EXIT
     END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "Cu&t",                        ID_EDIT_CUT
+        MENUITEM "&Copy",                       ID_EDIT_COPY
+        MENUITEM "&Paste",                      ID_EDIT_PASTE
+    END
     POPUP "&Status Mode"
     BEGIN
         MENUITEM "O&nline",                     ID_STATUSMODE_ONLINE
@@ -501,7 +507,7 @@ BEGIN
     END
     POPUP "&Help"
     BEGIN
-        MENUITEM "&Contents",                   ID_HELP_CONTENTS
+        MENUITEM "&Contents\tF1",               ID_HELP_CONTENTS
         MENUITEM SEPARATOR
         MENUITEM "&About...",                   ID_HELP_ABOUT
     END
@@ -545,13 +551,9 @@ IDR_MAINFRAME ACCELERATORS PRELOAD MOVEABLE PURE
 BEGIN
     "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
     "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL, NOINVERT
-    VK_BACK,        ID_EDIT_UNDO,           VIRTKEY, ALT, NOINVERT
-    VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT, NOINVERT
-    VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
-    VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY, SHIFT, NOINVERT
+    VK_F1,          ID_HELP_CONTENTS,       VIRTKEY, NOINVERT
     VK_RETURN,      ID_CHAT_TOCRYOUT,       VIRTKEY, CONTROL, NOINVERT
     "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL, NOINVERT
-    "Z",            ID_EDIT_UNDO,           VIRTKEY, CONTROL, NOINVERT
 END
 
 
@@ -562,8 +564,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,2,0,201
- PRODUCTVERSION 0,2,0,201
+ FILEVERSION 0,2,0,203
+ PRODUCTVERSION 0,2,0,203
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -581,14 +583,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "Application for chat in localnet\0"
-            VALUE "FileVersion", "0, 2, 0, 201\0"
+            VALUE "FileVersion", "0, 2, 0, 203\0"
             VALUE "InternalName", "localChat\0"
             VALUE "LegalCopyright", "Copyright (C) 2002\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "localchat.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "localChat\0"
-            VALUE "ProductVersion", "0, 2, 0, 201\0"
+            VALUE "ProductVersion", "0, 2, 0, 203\0"
             VALUE "SpecialBuild", "\0"
         END
     END

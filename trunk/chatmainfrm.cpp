@@ -113,11 +113,17 @@ BEGIN_MESSAGE_MAP( CChatMainFrame, CFrameWnd )
 	ON_UPDATE_COMMAND_UI(ID_USER_INGNORE, OnUpdateUserIngnore)
 	ON_COMMAND(ID_HELP_CONTENTS, OnHelpContents)
 	ON_COMMAND(ID_HELP_ABOUT, OnHelpAbout)
+	ON_COMMAND(ID_EDIT_CUT, OnEditCut)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_CUT, OnUpdateEditCut)
+	ON_COMMAND(ID_EDIT_COPY, OnEditCopy)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_COPY, OnUpdateEditCopy)
 	ON_COMMAND( ID_TRAYMENU_EXIT, OnTrayCloseApp )
 	ON_UPDATE_COMMAND_UI( ID_STATUSMODE_AWAY        , OnUpdateStatusMode )
 	ON_UPDATE_COMMAND_UI( ID_STATUSMODE_NOTAVAILIBLE, OnUpdateStatusMode )
 	ON_UPDATE_COMMAND_UI( ID_STATUSMODE_AWAY_INFO        , OnUpdateStatusModeInfo )
 	ON_UPDATE_COMMAND_UI( ID_STATUSMODE_NOTAVAILIBLE_INFO, OnUpdateStatusModeInfo )
+	ON_COMMAND(ID_EDIT_PASTE, OnEditPaste)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_PASTE, OnUpdateEditPaste)
 	//}}AFX_MSG_MAP
 	ON_COMMAND_EX( ID_STATUSMODE_ONLINE      , OnStatusMode )
 	ON_COMMAND_EX( ID_STATUSMODE_AWAY        , OnStatusMode )
@@ -843,4 +849,48 @@ void CChatMainFrame::OnHelpAbout()
 {
 	CChatAbout dlg;
 	dlg.DoModal();
+}
+
+void CChatMainFrame::OnEditCut()
+{
+	if ( &childView.edit == GetFocus() ) {
+		if ( childView.edit.isSelected() ) {
+			childView.edit.Cut();
+		}
+	}
+}
+
+void CChatMainFrame::OnUpdateEditCut(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable( &childView.edit == GetFocus() && childView.edit.isSelected() );
+}
+
+void CChatMainFrame::OnEditCopy()
+{
+	if ( &childView.edit == GetFocus() ) {
+		if ( childView.edit.isSelected() ) {
+			childView.edit.Copy();
+		}
+	} else if ( &childView.viewer == GetFocus() ) {
+		if ( childView.viewer.isSelected() ) {
+			childView.viewer.copy();
+		}
+	}
+}
+
+void CChatMainFrame::OnUpdateEditCopy(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable( (&childView.edit == GetFocus() && childView.edit.isSelected()) || (&childView.viewer == GetFocus() && childView.viewer.isSelected()) );
+}
+
+void CChatMainFrame::OnEditPaste()
+{
+	if ( &childView.edit == GetFocus() ) {
+		childView.edit.paste();
+	}
+}
+
+void CChatMainFrame::OnUpdateEditPaste(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable( &childView.edit == GetFocus() );
 }
