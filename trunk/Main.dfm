@@ -388,6 +388,7 @@ object Form1: TForm1
       Font.Height = -13
       Font.Name = 'Verdana'
       Font.Style = []
+      HideSelection = False
       Images = TreeImages
       Indent = 25
       ParentFont = False
