@@ -54,7 +54,7 @@ td.syntax { padding: .2em .5em .2em .5em; font-weight: bold; font-size: 80%; tex
 
 table.visible { width: 90%; background: #777777; margin-top: .6em; margin-bottom: .3em; margin-left: 0px }
 
-table.screenshot { width: 90%; background: #FFFFFF; margin-top: .6em; margin-bottom: .3em; margin-left: 0px }
+table.screenshot { width: 100%; background: #FFFFFF; margin-top: .6em; margin-bottom: .3em; margin-left: 0px }
 
 th { padding: 4px 8px; background: #dddddd; text-align: left; font-size: 75%; vertical-align: middle; }
 
@@ -62,7 +62,7 @@ td.visible { padding: 4px 8px; background: #ffffff; vertical-align: top; font-si
 
 td.model { padding: 4px 8px; background: #ffffff; vertical-align: top; font-size: 75%; text-align: justify }
 
-td.screenshot { padding: 4px 8px; background: #ffffff; vertical-align: top; font-size: 75%; text-align: justify }
+td.screenshot { padding: 2px 2px; background: #ffffff; vertical-align: top; font-size: 75%; text-align: center }
 
 table.navigation { padding: 0px 0px 0px 0px; background: #FFFFFF; margin: 0px 0px 0px 0px }
 
