@@ -23,7 +23,8 @@ __fastcall TPlDailyTasksReport::TPlDailyTasksReport():
            RecordHeight(0.0),
            DrawingData(false),
            DrawingSmenaTitle(false),
-           Plan("")
+           Plan(""),
+           TableTop(0.0)
 {
   LoadReportParams("DailyTasks", poPortrait);
   CorrectOffsets();
@@ -193,8 +194,8 @@ bool TPlDailyTasksReport::DrawTable()
   TextInRectMm(LastX + 1, LastY + 1, LastX + WulkTempWidth -1, LastY + TasksTableHeaderHeight, LoadStr(sTaskWulkTemp), DT_WORDBREAK | DT_CENTER | DT_VCENTER, NULL);
   LastX += WulkTempWidth;
 
-  EllipseAtMm(LastX - WulkTempWidth + 2.25, LastY + 3.5, LastX - WulkTempWidth + 3.75, LastY + 5, clWhite, bsClear, clBlack, psSolid, 1);
-  EllipseAtMm(LastX - WulkTempWidth + 4.8, LastY + 8.5, LastX - WulkTempWidth + 6.3, LastY + 10, clWhite, bsClear, clBlack, psSolid, 1);
+  EllipseAtMm(LastX - WulkTempWidth + 2.25, LastY + 3.5, LastX - WulkTempWidth + 3.75, LastY + 5, clWhite, bsClear, clBlack, psSolid, 0, true);
+  EllipseAtMm(LastX - WulkTempWidth + 4.8, LastY + 8.5, LastX - WulkTempWidth + 6.3, LastY + 10, clWhite, bsClear, clBlack, psSolid, 0, true);
 
   TextInRectMm(LastX + 1, LastY + 1, LastX + PFNumberWidth -1, LastY + TasksTableHeaderHeight, LoadStr(sTaskPFNumber), DT_WORDBREAK | DT_CENTER | DT_VCENTER, NULL);
   LastX += PFNumberWidth;
@@ -210,37 +211,35 @@ bool TPlDailyTasksReport::DrawTable()
 
 
 // Границы таблицы и линии. Пока до низа страницы.
+  TableTop = LastY;
   double TableOffsetX = (PageWidthMm - OffsetLeft - OffsetRight - ReportTableWidth)/2;
-  RectAtMm(TableOffsetX, LastY, TableOffsetX + ReportTableWidth, LastY + TasksTableHeaderHeight, clWhite, bsClear, clBlack, psSolid, 1);
-  RectAtMm(TableOffsetX, LastY, TableOffsetX + ReportTableWidth, DrawHeight, clWhite, bsClear, clBlack, psSolid, 2);
+  RectAtMm(TableOffsetX, LastY, TableOffsetX + ReportTableWidth, LastY + TasksTableHeaderHeight, clWhite, bsClear, clBlack, psSolid, 0.5, true);
 
   if (RubberStudio->DailyTasks_sortBy != sb_Fio) {
     TableOffsetX += FioWidth;
-    LineAtMm(TableOffsetX, LastY, TableOffsetX, DrawHeight, 1, psSolid);
+    LineAtMm(TableOffsetX, LastY, TableOffsetX, DrawHeight, 0.25, psSolid);
   }
 
   if (RubberStudio->DailyTasks_sortBy != sb_Press) {
     TableOffsetX += PressNameWidth;
-    LineAtMm(TableOffsetX, LastY, TableOffsetX, DrawHeight, 1, psSolid);
+    LineAtMm(TableOffsetX, LastY, TableOffsetX, DrawHeight, 0.25, psSolid);
   }
 
   if (RubberStudio->DailyTasks_sortBy != sb_ProductName) {
     TableOffsetX += DetNameWidth;
-    LineAtMm(TableOffsetX, LastY, TableOffsetX, DrawHeight, 1, psSolid);
+    LineAtMm(TableOffsetX, LastY, TableOffsetX, DrawHeight, 0.25, psSolid);
   }
 
   TableOffsetX += TasksWulkTimeWidth;
-  LineAtMm(TableOffsetX, LastY, TableOffsetX, DrawHeight, 1, psSolid);
+  LineAtMm(TableOffsetX, LastY, TableOffsetX, DrawHeight, 0.25, psSolid);
   TableOffsetX += WulkTempWidth;
-  LineAtMm(TableOffsetX, LastY, TableOffsetX, DrawHeight, 1, psSolid);
+  LineAtMm(TableOffsetX, LastY, TableOffsetX, DrawHeight, 0.25, psSolid);
   TableOffsetX += PFNumberWidth;
-  LineAtMm(TableOffsetX, LastY, TableOffsetX, DrawHeight, 1, psSolid);
+  LineAtMm(TableOffsetX, LastY, TableOffsetX, DrawHeight, 0.25, psSolid);
   TableOffsetX += PressureWidth;
-  LineAtMm(TableOffsetX, LastY, TableOffsetX, DrawHeight, 1, psSolid);
+  LineAtMm(TableOffsetX, LastY, TableOffsetX, DrawHeight, 0.25, psSolid);
   TableOffsetX += QuantityWidth;
-  LineAtMm(TableOffsetX, LastY, TableOffsetX, DrawHeight, 1, psSolid);
-  TableOffsetX += QuantityInFactWidth;
-  LineAtMm(TableOffsetX, LastY, TableOffsetX, DrawHeight, 1, psSolid);
+  LineAtMm(TableOffsetX, LastY, TableOffsetX, DrawHeight, 0.25, psSolid);
 
   LastY += TasksTableHeaderHeight;
   return false;
@@ -317,21 +316,23 @@ bool TPlDailyTasksReport::DrawSmenaTable(int Smena)
 
 // Отрисовка названия группы (группирование по наим., тех. карте или заказчику)
 bool TPlDailyTasksReport::DrawTableGroup(AnsiString GroupTitle, AnsiString GroupFieldName) {
-  double checkrecordheight = (DrawMode == dm_Init) ? MmTextHeight(GroupTitle) : RecordHeight;
-  if (CheckEndDraw(LastY + TableGroupHeight + checkrecordheight + 1 + 2/PixelsPerMmY))
+  TTextDimentions dim;
+  TextInRectMm(0, 0, 0, 0, GroupTitle, DT_CALCRECT, &dim);
+  double checkrecordheight = (DrawMode == dm_Init) ? dim.TextHeight : RecordHeight;
+  if (CheckEndDraw(LastY + TableGroupHeight + checkrecordheight + 1 + 0.5))
     return true;
   TFontStyles style;
   style.Clear();
   style << fsBold << fsItalic;
   double TableOffsetX = (PageWidthMm - OffsetLeft - OffsetRight - ReportTableWidth)/2;
-  RectAtMm(TableOffsetX, LastY, TableOffsetX + ReportTableWidth - 1/PixelsPerMmX, LastY + TableGroupHeight, TColor(TasksGroupFillColor), bsSolid, clBlack, psSolid, 1);
+  RectAtMm(TableOffsetX, LastY, TableOffsetX + ReportTableWidth, LastY + TableGroupHeight, TColor(TasksGroupFillColor), bsSolid, clBlack, psSolid, 0.25, true);
   SetFont("Arial", style, 10);
   switch (RubberStudio->DailyTasks_sortBy) {
     case sb_Fio         : GroupTitle = GetFio(); break;
     case sb_Press       : GroupTitle = Data->ShowDailyTasks->FieldByName("MachineName")->AsString; break;
     case sb_ProductName : GroupTitle = Data->ShowDailyTasks->FieldByName("ProductName")->AsString; break;
   }
-  TextInRectMm(TableOffsetX, LastY - 1/PixelsPerMmY, TableOffsetX + ReportTableWidth, LastY + TableGroupHeight, GroupTitle, DT_WORDBREAK | DT_CENTER | DT_VCENTER, NULL);
+  TextInRectMm(TableOffsetX, LastY - 0.25, TableOffsetX + ReportTableWidth, LastY + TableGroupHeight, GroupTitle, DT_WORDBREAK | DT_CENTER | DT_VCENTER, NULL);
   LastY += TableGroupHeight;
   return false;
 }
@@ -339,9 +340,7 @@ bool TPlDailyTasksReport::DrawTableGroup(AnsiString GroupTitle, AnsiString Group
 // Отрисовка ячейки
 void TPlDailyTasksReport::DrawTableCell(AnsiString &CellText, double CellWidth, UINT Format, double &MaxHeight)
 {
-// ???? - для факта знаки вопроса не нужны, для остальных - не знаю
   if (DrawMode == dm_Init) {
-    //double textheight = TextInRectMm(LastX + 1, LastY + 1, LastX + CellWidth -1, 0, CellText, Format | DT_CALCRECT) + 2;
     TTextDimentions dim;
     TextInRectMm(LastX + 1, LastY + 1, LastX + CellWidth -1, 0, CellText, Format | DT_CALCRECT, &dim);
     dim.TextHeight += 2;
@@ -360,11 +359,13 @@ void TPlDailyTasksReport::CutTable() {
     double TableHeight = PageHeightMm - OffsetBottom - OffsetTop - TasksMiscOffset;
     if (PrintFooter)
       TableHeight -= FooterHeight;
-    RectAtMm(-OffsetLeft, LastY + 1, PageWidthMm - OffsetLeft, TableHeight + 1, clWhite, bsSolid, clWhite, psSolid, 1);
+    RectAtMm(-OffsetLeft, LastY + 1, PageWidthMm - OffsetLeft, TableHeight + 1, clWhite, bsSolid, clWhite, psClear, 0, true);
     double TableOffsetX = (PageWidthMm - OffsetLeft - OffsetRight - ReportTableWidth)/2;
-    LineAtMm(TableOffsetX, LastY + 1, TableOffsetX + ReportTableWidth, LastY + 1, 2, psSolid);
+    if (!TableTop)
+      TableTop = LastY - 1;
+    RectAtMm(TableOffsetX, TableTop, TableOffsetX + ReportTableWidth, LastY + 1, clWhite, bsClear, clBlack, psSolid, 0.5, true);
   }
-  LastY += (1 + 2/PixelsPerMmY);
+  LastY += (1 + 0.5);
 }
 
 bool TPlDailyTasksReport::DrawFio(AnsiString FioTitle, AnsiString Fio)
@@ -383,108 +384,6 @@ bool TPlDailyTasksReport::DrawFio(AnsiString FioTitle, AnsiString Fio)
   LastY += (dim.TextHeight + LineOffsetY);
   return false;
 }
-
-/*
-void TPlDailyTasksReport::DrawReportBottomSum(double value, double CellWidth)
-{
-  AnsiString CellText = RoundDoubleToAnsiString(value);
-  double textheight = TextInRectMm((PageWidthMm - OffsetLeft - OffsetRight - ReportTableWidth) / 2 + 1, LastY + 1, LastX + CellWidth -1, 0, CellText, DT_RIGHT | DT_VCENTER | DT_END_ELLIPSIS | DT_CALCRECT) + 2;
-  TextInRectMm((PageWidthMm - OffsetLeft - OffsetRight - ReportTableWidth) / 2 + 1, LastY + 1, LastX + CellWidth -1, LastY + textheight + 1, CellText, DT_RIGHT | DT_VCENTER | DT_END_ELLIPSIS);
-  LastX += CellWidth;
-}*/
-
-/*
-bool TPlDailyTasksReport::DrawReportBottom()
-{
-  TFontStyles style;
-  style.Clear();
-  SetFont("Arial Narrow", style, 7);
-
-  LastY -= TasksMainOffset;
-
-  LastX = TechCardWidth + NameWidth + PressFormWidth + ToProduceWidth +
-    RubberSortWidth + DetWeightWidth + ZagWeightWidth + RubberQuantityWidth +
-    WulkTimeWidth + LoadTimeWidth + WulkTimeNormaWidth + WulkCostWidth +
-    CutTimeNormaWidth + CutCostWidth + (PageWidthMm - OffsetLeft - OffsetRight - ReportTableWidth) / 2;
-  switch (RubberStudio->SortBy) {
-    case sb_Customer : break;
-    case sb_TechMap  : LastX -= TechCardWidth; break;
-    case sb_Name     : LastX -= NameWidth; break;
-  }
-
-  double textheight = 0;
-  if (DrawingSmenaTitle) {
-    textheight = TextInRectMm((PageWidthMm - OffsetLeft - OffsetRight - ReportTableWidth) / 2 + 1, LastY + 1, LastX + WulkTimeProgWidth -1, 0, RoundDoubleToAnsiString(CurrentvulcanProgramTime), DT_RIGHT | DT_VCENTER | DT_END_ELLIPSIS | DT_CALCRECT) + 2;
-    if (CheckEndDraw(LastY + textheight))
-      return true;
-    DrawReportBottomSum(CurrentvulcanProgramTime , WulkTimeProgWidth);
-    DrawReportBottomSum(CurrentvulcanProgramPrice, WulkSalaryProgWidth);
-    DrawReportBottomSum(CurrentcutProgramTime    , CutTimeProgWidth);
-    DrawReportBottomSum(CurrentcutProgramPrice   , CutSalaryProgWidth);
-    LastX += EdPriceWidth;
-    DrawReportBottomSum(CurrentcustomerProgramPrice, PriceWidth);
-    LastY += TasksMainOffset;
-  } else {
-    if (RubberStudio->PrSortByPartM->Checked && RubberStudio->PrPartSelectM->Count > 1) {
-      double lastX = LastX;
-      textheight = TextInRectMm((PageWidthMm - OffsetLeft - OffsetRight - ReportTableWidth) / 2 + 1, LastY + 1, LastX + WulkTimeProgWidth -1, 0, RoundDoubleToAnsiString(CurrentvulcanProgramTime), DT_RIGHT | DT_VCENTER | DT_END_ELLIPSIS | DT_CALCRECT) + 2;
-      if (CheckEndDraw(LastY + textheight))
-        return true;
-      DrawReportBottomSum(CurrentvulcanProgramTime , WulkTimeProgWidth);
-      DrawReportBottomSum(CurrentvulcanProgramPrice, WulkSalaryProgWidth);
-      DrawReportBottomSum(CurrentcutProgramTime    , CutTimeProgWidth);
-      DrawReportBottomSum(CurrentcutProgramPrice   , CutSalaryProgWidth);
-      LastX += EdPriceWidth;
-      DrawReportBottomSum(CurrentcustomerProgramPrice, PriceWidth);
-      LastY += TasksMainOffset;
-      LastX = lastX;
-    }
-
-    style << fsBold;
-    SetFont("Arial Narrow", style, 7);
-    LastX -= WulkTimeProgWidth;
-    AnsiString text = LoadStr(sProgSum);
-    textheight = TextInRectMm((PageWidthMm - OffsetLeft - OffsetRight - ReportTableWidth) / 2 + 1, LastY + 1, LastX + WulkTimeProgWidth -1, 0, text, DT_RIGHT | DT_VCENTER | DT_END_ELLIPSIS | DT_CALCRECT) + 2;
-    if (CheckEndDraw(LastY + textheight))
-      return true;
-    TextInRectMm((PageWidthMm - OffsetLeft - OffsetRight - ReportTableWidth) / 2 + 1, LastY + 1, LastX + WulkTimeProgWidth -1, LastY + textheight + 1, text, DT_RIGHT | DT_VCENTER | DT_END_ELLIPSIS);
-    double textwidth = MmTextWidth(text);
-    LineAtMm(LastX + WulkTimeProgWidth - textwidth - 1, LastY + textheight + 0.5, ReportTableWidth, LastY + textheight +  0.5, 1, psSolid);
-    LastX += WulkTimeProgWidth;
-    DrawReportBottomSum(RubberStudio->vulcanProgramTime , WulkTimeProgWidth);
-    DrawReportBottomSum(RubberStudio->vulcanProgramPrice, WulkSalaryProgWidth);
-    DrawReportBottomSum(RubberStudio->cutProgramTime    , CutTimeProgWidth);
-    DrawReportBottomSum(RubberStudio->cutProgramPrice   , CutSalaryProgWidth);
-    LastX += EdPriceWidth;
-    DrawReportBottomSum(RubberStudio->customerProgramPrice, PriceWidth);
-    LastY += TasksMainOffset;
-  }
-
-  LastY += TasksMainOffset * 1.5;
-
-  style.Clear();
-  SetFont("Arial", style, 10);
-
-  double offsetleft = 0;
-  double offsetright = 0;
-  if (DrawMode == dm_Init) {
-    ReportBottomLeftWidth = 0;
-    ReportBottomRightWidth = 0;
-  } else {
-    double textwidth = ReportBottomLeftWidth + ReportBottomRightWidth;
-    double space = PageWidthMm - textwidth - OffsetLeft - OffsetRight;
-    offsetleft = space/3;
-    offsetright = PageWidthMm - OffsetRight - space/3 - ReportBottomRightWidth - OffsetLeft;
-  }
-
-  if (DrawReportBottomItem(true, LoadStr(sCompanyCommercialChief), "CompanyCommercialChief", offsetleft))
-    return true;
-  LastY = BottomItemTop;
-  if (DrawReportBottomItem(false, LoadStr(sCompanyEconomist), "CompanyEconomist", offsetright))
-    return true;
-  return false;
-}
-*/
 
 // Окончание отрисовки
 void TPlDailyTasksReport::EndDrawing(TCursor OldCursor)
@@ -597,8 +496,10 @@ void TPlDailyTasksReport::DrawReport(int PageNumber)
         draw_product_line_group = false;
       }
 
-      double checkheight = (DrawMode == dm_Init) ? MmTextHeight(group_value) : RecordHeight;
-      if (CheckEndDraw(LastY + checkheight + 1 + 2/PixelsPerMmY)){
+      TTextDimentions dim;
+      TextInRectMm(0, 0, 0, 0, group_value, DT_CALCRECT, &dim);
+      double checkheight = (DrawMode == dm_Init) ? dim.TextHeight : RecordHeight;
+      if (CheckEndDraw(LastY + checkheight + 1 + 0.5)){
         EndDrawing(oldcur);
         return;
       }
@@ -612,8 +513,8 @@ void TPlDailyTasksReport::DrawReport(int PageNumber)
       if (RubberStudio->DailyTasks_sortBy != sb_ProductName) {
         if (group != previus_product_group) {
           if (draw_product_line_group) {
-            LineAtMm(tableoffset, LastY + 1, tableoffset + ReportTableWidth, LastY + 1, 1, psSolid);
-            LastY += 1 + 1/PixelsPerMmY;
+            LineAtMm(tableoffset, LastY + 1, tableoffset + ReportTableWidth, LastY + 1, 0.25, psSolid);
+            LastY += 1 + 0.25;
             previus_personal = 0;
           }
           if (RubberStudio->DailyTasks_sortBy != sb_Press) {

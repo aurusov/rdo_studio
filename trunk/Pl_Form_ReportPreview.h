@@ -71,8 +71,6 @@ private:
   int LastItemIndex;
   TScaleType LastScaleType;
   void SetPage(int PageNumber);
-  void doZoomFit();
-  void doZoomPageWidth();
   void doSetEnvironement();
   void SetPageButtons();
   void doSetStatus();

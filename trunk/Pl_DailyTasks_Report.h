@@ -8,6 +8,7 @@ class TPlDailyTasksReport :  public TPlBaseReport
 {
 private:
   int FPageNumber;
+  double TableTop;
   double LineOffsetY;
   bool CheckEndDraw(double Value);
   double ReportTableWidth;
@@ -24,8 +25,6 @@ private:
   bool DrawingSmenaTitle;
   bool DrawFio(AnsiString FioTitle, AnsiString Fio);
   bool DrawBottomFio();
-  /*void DrawReportBottomSum(double value, double CellWidth);
-  bool DrawReportBottom();*/
   void EndDrawing(TCursor OldCursor);
   AnsiString GetFio();
   AnsiString Plan;

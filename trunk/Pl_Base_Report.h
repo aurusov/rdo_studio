@@ -23,7 +23,6 @@ class TPlBaseReport :  public TObject
 friend class TPreviewForm;
 friend class TPreviewOptionsForm;
 private:
-  double RealFontSize;
   void GetPrinterParams();
 
   TPreviewForm* PreviewForm;
@@ -100,13 +99,10 @@ protected:
   int RoundDoubleToInt(double Value);
   double RoundTwoDigits(double Value);
 
-  double MmTextWidth(const AnsiString Text);
-  double MmTextHeight(const AnsiString Text);
-  void TextAtMm(double X, double Y, const AnsiString Text);
   void TextInRectMm(double X1, double Y1, double X2, double Y2, const AnsiString Text, UINT Format, TTextDimentions* Dimentions);
-  void LineAtMm(double X1, double Y1, double X2, double Y2, const int PenWidth, const TPenStyle Pen);
-  void RectAtMm(double X1, double Y1, double X2, double Y2, TColor BrushColor, TBrushStyle BrushStyle, TColor PenColor, TPenStyle PenStyle, int PenWidth);
-  void EllipseAtMm(double X1, double Y1, double X2, double Y2, TColor BrushColor, TBrushStyle BrushStyle, TColor PenColor, TPenStyle PenStyle, int PenWidth);
+  void LineAtMm(double X1, double Y1, double X2, double Y2, const double PenWidth, const TPenStyle Pen, const bool AlwaysDraw = false);
+  void RectAtMm(double X1, double Y1, double X2, double Y2, TColor BrushColor, TBrushStyle BrushStyle, TColor PenColor, TPenStyle PenStyle, const double PenWidth, const bool AlwaysDraw = false);
+  void EllipseAtMm(double X1, double Y1, double X2, double Y2, TColor BrushColor, TBrushStyle BrushStyle, TColor PenColor, TPenStyle PenStyle, const double PenWidth, const bool AlwaysDraw = false);
   void SetFont(const AnsiString FontName, const TFontStyles FontStyle, double FontSize);
   void BeginNewPage();
   void CorrectOffsets();

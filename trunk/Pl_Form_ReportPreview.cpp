@@ -169,46 +169,6 @@ void TPreviewForm::ResizeReport()
   }
 }
 
-// Страница целиком
-void TPreviewForm::doZoomFit()
-{
-  ScrollBox->HorzScrollBar->Visible = false;
-  ScrollBox->VertScrollBar->Visible = false;
-  double kx, ky;
-  try {
-    ky = (float)ScrollBox->ClientHeight / ((float)Report->PrinterPageWidth*Report->KWidth);
-    kx = (float)ScrollBox->ClientWidth / ((float)Report->PrinterPageWidth);
-    int NewHeight, NewWidth;
-    if (kx > ky) {
-      NewHeight = ScrollBox->ClientHeight - Report->Decrement;
-      NewWidth  = NewHeight / Report->KWidth;
-    } else {
-      NewWidth = ScrollBox->ClientWidth - Report->Decrement;
-      NewHeight = NewWidth * Report->KWidth;
-    };
-    Report->UpdateReportPreview(NewWidth, NewHeight, FPage);
-    doSetEnvironement();
-  } catch (Exception& e) {
-    throw;
-  }
-}
-
-// По ширине страницы
-void TPreviewForm::doZoomPageWidth()
-{
-  ScrollBox->VertScrollBar->Visible = true;
-  ScrollBox->HorzScrollBar->Visible = false;
-  int NewWidth = ScrollBox->ClientWidth - Report->Decrement;
-  int NewHeight = NewWidth*Report->KWidth;
-  if (NewHeight > ScrollBox->ClientHeight) {
-    NewWidth -= GetSystemMetrics(SM_CXVSCROLL);
-    NewHeight = NewWidth*Report->KWidth;
-  }
-  Report->UpdateReportPreview(NewWidth, NewHeight, FPage);
-  doSetEnvironement();
-}
-
-// Страница целиком
 void TPreviewForm::doSetEnvironement()
 {
   try {
@@ -330,8 +290,24 @@ void TPreviewForm::SetPage(int PageNumber)
     Report->DrawTo = ReportImage->Picture->Bitmap->Canvas;
     Report->DrawReportPage(PageNumber);
     Report->DrawPrintableArea();
-    // Рисуем область отчета
-    Report->RectAtMm(0, 0, Report->PageWidthMm - Report->OffsetLeft - Report->OffsetRight, Report->PageHeightMm - Report->OffsetTop - Report->OffsetBottom, clWhite, bsClear, clBlack, psDot, 1);
+// Рисуем область отчета
+    TBrushStyle oldbrstyle = Report->DrawTo->Brush->Style;
+    TPenStyle oldpenstyle = Report->DrawTo->Pen->Style;
+    TColor oldpencolor = Report->DrawTo->Pen->Color;
+    TColor oldbrcolor =  Report->DrawTo->Brush->Color;
+    int oldpenwidth = Report->DrawTo->Pen->Width;
+    Report->DrawTo->Brush->Color = clWhite;
+    Report->DrawTo->Brush->Style = bsClear;
+    Report->DrawTo->Pen->Color = clBlack;
+    Report->DrawTo->Pen->Style = psDot;
+    Report->DrawTo->Pen->Width = 1;
+    Report->DrawTo->Rectangle(Report->OffsetLeft*Report->PixelsPerMmX, Report->OffsetTop*Report->PixelsPerMmY, (Report->PageWidthMm - Report->OffsetRight)*Report->PixelsPerMmX, (Report->PageHeightMm - Report->OffsetBottom)*Report->PixelsPerMmY);
+    Report->DrawTo->Brush->Color = oldbrcolor;
+    Report->DrawTo->Brush->Style = oldbrstyle;
+    Report->DrawTo->Pen->Color = oldpencolor;
+    Report->DrawTo->Pen->Style = oldpenstyle;
+    Report->DrawTo->Pen->Width = oldpenwidth;
+// Рисуем область отчета
     FPage = PageNumber;
     SetPageButtons();
     doSetStatus();

@@ -8,6 +8,7 @@
 class TPlProgramReport :  public TPlBaseReport
 {
 private:
+  double TableTop;
   int FindSQLSubstring(AnsiString Substring);
   void OpenReportDataSource();
   int FPageNumber;

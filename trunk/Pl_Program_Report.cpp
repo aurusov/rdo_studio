@@ -256,7 +256,6 @@ bool TPlProgramReport::DrawTable()
   style.Clear();
   style << fsBold;
   SetFont("Arial", style, 7);
-//  double textheight = 0;
   TTextDimentions dim;
   dim.TextWidth = 0;
   dim.TextHeight = 0;
@@ -293,47 +292,38 @@ bool TPlProgramReport::DrawTable()
   DrawTableCell(LoadStr(sLoadTime), LoadTimeWidth, DT_WORDBREAK | DT_CENTER | DT_VCENTER, ReportTableHeaderHeight);
 
   if (DrawMode == dm_Init) {
-    //textheight = TextInRectMm(LastX + 1, LastY + 1, LastX + WulkTimeNormaWidth + WulkCostWidth -1, 0, LoadStr(sWulkan), DT_WORDBREAK | DT_CENTER | DT_VCENTER | DT_CALCRECT) + 2;
     TextInRectMm(LastX + 1, LastY + 1, LastX + WulkTimeNormaWidth + WulkCostWidth -1, 0, LoadStr(sWulkan), DT_WORDBREAK | DT_CENTER | DT_VCENTER | DT_CALCRECT, &dim);
     dim.TextHeight += 2;
     TTextDimentions dim1;
-    //double textheight1 = TextInRectMm(LastX + 1, LastY + textheight + 1, LastX + WulkTimeNormaWidth -1, 0, LoadStr(sTimeNorma), DT_WORDBREAK | DT_CENTER | DT_VCENTER | DT_CALCRECT) + 2;
     TextInRectMm(LastX + 1, LastY + dim.TextHeight + 1, LastX + WulkTimeNormaWidth -1, 0, LoadStr(sTimeNorma), DT_WORDBREAK | DT_CENTER | DT_VCENTER | DT_CALCRECT, &dim1);
     dim1.TextHeight += 2;
     LastX += WulkTimeNormaWidth;
     TTextDimentions dim2;
-    //double textheight2 = TextInRectMm(LastX + 1, LastY + textheight + 1, LastX + WulkCostWidth -1, 0, LoadStr(sCost), DT_WORDBREAK | DT_CENTER | DT_VCENTER | DT_CALCRECT) + 2;
     TextInRectMm(LastX + 1, LastY + dim.TextHeight + 1, LastX + WulkCostWidth -1, 0, LoadStr(sCost), DT_WORDBREAK | DT_CENTER | DT_VCENTER | DT_CALCRECT, &dim2);
     dim2.TextHeight += 2;
-    //textheight += max(textheight1, textheight2);
     dim.TextHeight += max(dim1.TextHeight, dim2.TextHeight);
     if (dim.TextHeight > ReportTableHeaderHeight)
       ReportTableHeaderHeight = dim.TextHeight;
   } else {
-    //textheight = TextInRectMm(LastX + 1, LastY + 1, LastX + WulkTimeNormaWidth + WulkCostWidth -1, 0, LoadStr(sWulkan), DT_WORDBREAK | DT_CENTER | DT_VCENTER | DT_CALCRECT) + 2;
     TextInRectMm(LastX + 1, LastY + 1, LastX + WulkTimeNormaWidth + WulkCostWidth -1, 0, LoadStr(sWulkan), DT_WORDBREAK | DT_CENTER | DT_VCENTER | DT_CALCRECT, &dim);
     dim.TextHeight += 2;
-    //double height = TextInRectMm(LastX + 1, LastY + 1, LastX + WulkTimeNormaWidth + WulkCostWidth -1, LastY + 1 + textheight, LoadStr(sWulkan), DT_WORDBREAK | DT_CENTER | DT_VCENTER);
     TTextDimentions dim1;
     TextInRectMm(LastX + 1, LastY + 1, LastX + WulkTimeNormaWidth + WulkCostWidth -1, LastY + 1 + dim.TextHeight, LoadStr(sWulkan), DT_WORDBREAK | DT_CENTER | DT_VCENTER, &dim1);
-    LineAtMm(LastX, LastY + dim1.TextHeight + 1, LastX + WulkTimeNormaWidth + WulkCostWidth, LastY + dim1.TextHeight + 1, 1, psSolid);
+    LineAtMm(LastX, LastY + dim1.TextHeight + 1, LastX + WulkTimeNormaWidth + WulkCostWidth, LastY + dim1.TextHeight + 1, 0.25, psSolid);
     TextInRectMm(LastX + 1, LastY + dim1.TextHeight + 1, LastX + WulkTimeNormaWidth -1, LastY + ReportTableHeaderHeight, LoadStr(sTimeNorma), DT_WORDBREAK | DT_CENTER | DT_VCENTER, NULL);
     LastX += WulkTimeNormaWidth;
     TextInRectMm(LastX + 1, LastY + dim1.TextHeight + 1, LastX + WulkCostWidth -1, LastY + ReportTableHeaderHeight, LoadStr(sCost), DT_WORDBREAK | DT_CENTER | DT_VCENTER, NULL);
-    LineAtMm(LastX, LastY + dim1.TextHeight + 1, LastX, DrawHeight, 1, psSolid);
+    LineAtMm(LastX, LastY + dim1.TextHeight + 1, LastX, DrawHeight, 0.25, psSolid);
   }
   LastX += WulkCostWidth;
 
   if (DrawMode == dm_Init) {
-    //textheight = TextInRectMm(LastX + 1, LastY + 1, LastX + CutTimeNormaWidth + CutCostWidth -1, 0, LoadStr(sCut), DT_WORDBREAK | DT_CENTER | DT_VCENTER | DT_CALCRECT) + 2;
     TextInRectMm(LastX + 1, LastY + 1, LastX + CutTimeNormaWidth + CutCostWidth -1, 0, LoadStr(sCut), DT_WORDBREAK | DT_CENTER | DT_VCENTER | DT_CALCRECT, &dim);
     dim.TextHeight += 2;
-    //double textheight1 = TextInRectMm(LastX + 1, LastY + textheight + 1, LastX + CutTimeNormaWidth -1, 0, LoadStr(sTimeNorma), DT_WORDBREAK | DT_CENTER | DT_VCENTER | DT_CALCRECT) + 2;
     TTextDimentions dim1;
     TextInRectMm(LastX + 1, LastY + dim.TextHeight + 1, LastX + CutTimeNormaWidth -1, 0, LoadStr(sTimeNorma), DT_WORDBREAK | DT_CENTER | DT_VCENTER | DT_CALCRECT, &dim1);
     dim1.TextHeight += 2;
     LastX += CutTimeNormaWidth;
-    //double textheight2 = TextInRectMm(LastX + 1, LastY + textheight + 1, LastX + CutCostWidth -1, 0, LoadStr(sCost), DT_WORDBREAK | DT_CENTER | DT_VCENTER | DT_CALCRECT) + 2;
     TTextDimentions dim2;
     TextInRectMm(LastX + 1, LastY + dim.TextHeight + 1, LastX + CutCostWidth -1, 0, LoadStr(sCost), DT_WORDBREAK | DT_CENTER | DT_VCENTER | DT_CALCRECT, &dim2);
     dim2.TextHeight += 2;
@@ -341,30 +331,25 @@ bool TPlProgramReport::DrawTable()
     if (dim.TextHeight > ReportTableHeaderHeight)
       ReportTableHeaderHeight = dim.TextHeight;
   } else {
-    //textheight = TextInRectMm(LastX + 1, LastY + 1, LastX + CutTimeNormaWidth + CutCostWidth -1, 0, LoadStr(sCut), DT_WORDBREAK | DT_CENTER | DT_VCENTER | DT_CALCRECT) + 2;
     TextInRectMm(LastX + 1, LastY + 1, LastX + CutTimeNormaWidth + CutCostWidth -1, 0, LoadStr(sCut), DT_WORDBREAK | DT_CENTER | DT_VCENTER | DT_CALCRECT, &dim);
     dim.TextHeight += 2;
-    //double height = TextInRectMm(LastX + 1, LastY + 1, LastX + CutTimeNormaWidth + CutCostWidth -1, LastY + 1 + textheight, LoadStr(sCut), DT_WORDBREAK | DT_CENTER | DT_VCENTER);
     TTextDimentions dim1;
     TextInRectMm(LastX + 1, LastY + 1, LastX + CutTimeNormaWidth + CutCostWidth -1, LastY + 1 + dim.TextHeight, LoadStr(sCut), DT_WORDBREAK | DT_CENTER | DT_VCENTER, &dim1);
-    LineAtMm(LastX, LastY + dim1.TextHeight + 1, LastX + CutTimeNormaWidth + CutCostWidth, LastY + dim1.TextHeight + 1, 1, psSolid);
+    LineAtMm(LastX, LastY + dim1.TextHeight + 1, LastX + CutTimeNormaWidth + CutCostWidth, LastY + dim1.TextHeight + 1, 0.25, psSolid);
     TextInRectMm(LastX, LastY + dim1.TextHeight + 1, LastX + CutTimeNormaWidth -1, LastY + ReportTableHeaderHeight, LoadStr(sTimeNorma), DT_WORDBREAK | DT_CENTER | DT_VCENTER, NULL);
     LastX += CutTimeNormaWidth;
     TextInRectMm(LastX + 1, LastY + dim1.TextHeight + 1, LastX + CutCostWidth -1, LastY + ReportTableHeaderHeight, LoadStr(sCost), DT_WORDBREAK | DT_CENTER | DT_VCENTER, NULL);
-    LineAtMm(LastX, LastY + dim1.TextHeight + 1, LastX, DrawHeight, 1, psSolid);
+    LineAtMm(LastX, LastY + dim1.TextHeight + 1, LastX, DrawHeight, 0.25, psSolid);
   }
   LastX += CutCostWidth;
 
   if (DrawMode == dm_Init) {
-    //textheight = TextInRectMm(LastX + 1, LastY + 1, LastX + WulkTimeProgWidth + WulkSalaryProgWidth -1, 0, LoadStr(sWulkanProg), DT_WORDBREAK | DT_CENTER | DT_VCENTER | DT_CALCRECT) + 2;
     TextInRectMm(LastX + 1, LastY + 1, LastX + WulkTimeProgWidth + WulkSalaryProgWidth -1, 0, LoadStr(sWulkanProg), DT_WORDBREAK | DT_CENTER | DT_VCENTER | DT_CALCRECT, &dim);
     dim.TextHeight += 2;
-    //double textheight1 = TextInRectMm(LastX + 0.5, LastY + textheight + 1, LastX + WulkTimeProgWidth -0.5, 0, LoadStr(sProgTime), DT_WORDBREAK | DT_CENTER | DT_VCENTER | DT_CALCRECT) + 2;
     TTextDimentions dim1;
     TextInRectMm(LastX + 0.5, LastY + dim.TextHeight + 1, LastX + WulkTimeProgWidth -0.5, 0, LoadStr(sProgTime), DT_WORDBREAK | DT_CENTER | DT_VCENTER | DT_CALCRECT, &dim1);
     dim1.TextHeight += 2;
     LastX += WulkTimeNormaWidth;
-    //double textheight2 = TextInRectMm(LastX + 1, LastY + textheight + 1, LastX + WulkSalaryProgWidth -1, 0, LoadStr(sSalary), DT_WORDBREAK | DT_CENTER | DT_VCENTER | DT_CALCRECT) + 2;
     TTextDimentions dim2;
     TextInRectMm(LastX + 1, LastY + dim.TextHeight + 1, LastX + WulkSalaryProgWidth -1, 0, LoadStr(sSalary), DT_WORDBREAK | DT_CENTER | DT_VCENTER | DT_CALCRECT, &dim2);
     dim2.TextHeight += 2;
@@ -372,30 +357,25 @@ bool TPlProgramReport::DrawTable()
     if (dim.TextHeight > ReportTableHeaderHeight)
       ReportTableHeaderHeight = dim.TextHeight;
   } else {
-    //textheight = TextInRectMm(LastX + 1, LastY + 1, LastX + WulkTimeProgWidth + WulkSalaryProgWidth -1, 0, LoadStr(sWulkanProg), DT_WORDBREAK | DT_CENTER | DT_VCENTER | DT_CALCRECT) + 2;
     TextInRectMm(LastX + 1, LastY + 1, LastX + WulkTimeProgWidth + WulkSalaryProgWidth -1, 0, LoadStr(sWulkanProg), DT_WORDBREAK | DT_CENTER | DT_VCENTER | DT_CALCRECT, &dim);
     dim.TextHeight += 2;
-    //double height = TextInRectMm(LastX + 1, LastY + 1, LastX + WulkTimeProgWidth + WulkSalaryProgWidth -1, LastY + 1 + textheight, LoadStr(sWulkanProg), DT_WORDBREAK | DT_CENTER | DT_VCENTER);
     TTextDimentions dim1;
     TextInRectMm(LastX + 1, LastY + 1, LastX + WulkTimeProgWidth + WulkSalaryProgWidth -1, LastY + 1 + dim.TextHeight, LoadStr(sWulkanProg), DT_WORDBREAK | DT_CENTER | DT_VCENTER, &dim1);
-    LineAtMm(LastX, LastY + dim1.TextHeight + 1, LastX + WulkTimeProgWidth + WulkSalaryProgWidth, LastY + dim1.TextHeight + 1, 1, psSolid);
+    LineAtMm(LastX, LastY + dim1.TextHeight + 1, LastX + WulkTimeProgWidth + WulkSalaryProgWidth, LastY + dim1.TextHeight + 1, 0.25, psSolid);
     TextInRectMm(LastX + 0.5, LastY + dim1.TextHeight + 1, LastX + WulkTimeProgWidth -0.5, LastY + ReportTableHeaderHeight, LoadStr(sProgTime), DT_WORDBREAK | DT_CENTER | DT_VCENTER, NULL);
     LastX += WulkTimeProgWidth;
     TextInRectMm(LastX + 1, LastY + dim1.TextHeight + 1, LastX + WulkSalaryProgWidth -1, LastY + ReportTableHeaderHeight, LoadStr(sSalary), DT_WORDBREAK | DT_CENTER | DT_VCENTER, NULL);
-    LineAtMm(LastX, LastY + dim1.TextHeight + 1, LastX, DrawHeight, 1, psSolid);
+    LineAtMm(LastX, LastY + dim1.TextHeight + 1, LastX, DrawHeight, 0.25, psSolid);
   }
   LastX += WulkSalaryProgWidth;
 
   if (DrawMode == dm_Init) {
-    //textheight = TextInRectMm(LastX + 1, LastY + 1, LastX + CutTimeProgWidth + CutSalaryProgWidth -1, 0, LoadStr(sCutProg), DT_WORDBREAK | DT_CENTER | DT_VCENTER | DT_CALCRECT) + 2;
     TextInRectMm(LastX + 1, LastY + 1, LastX + CutTimeProgWidth + CutSalaryProgWidth -1, 0, LoadStr(sCutProg), DT_WORDBREAK | DT_CENTER | DT_VCENTER | DT_CALCRECT, &dim);
     dim.TextHeight += 2;
-    //double textheight1 = TextInRectMm(LastX + 0.5, LastY + textheight + 1, LastX + CutTimeProgWidth -0.5, 0, LoadStr(sProgTime), DT_WORDBREAK | DT_CENTER | DT_VCENTER | DT_CALCRECT) + 2;
     TTextDimentions dim1;
     TextInRectMm(LastX + 0.5, LastY + dim.TextHeight + 1, LastX + CutTimeProgWidth -0.5, 0, LoadStr(sProgTime), DT_WORDBREAK | DT_CENTER | DT_VCENTER | DT_CALCRECT, &dim1);
     dim1.TextHeight += 2;
     LastX += CutTimeProgWidth;
-    //double textheight2 = TextInRectMm(LastX + 1, LastY + textheight + 1, LastX + CutSalaryProgWidth -1, 0, LoadStr(sSalary), DT_WORDBREAK | DT_CENTER | DT_VCENTER | DT_CALCRECT) + 2;
     TTextDimentions dim2;
     TextInRectMm(LastX + 1, LastY + dim.TextHeight + 1, LastX + CutSalaryProgWidth -1, 0, LoadStr(sSalary), DT_WORDBREAK | DT_CENTER | DT_VCENTER | DT_CALCRECT, &dim2);
     dim2.TextHeight += 2;
@@ -403,17 +383,15 @@ bool TPlProgramReport::DrawTable()
     if (dim.TextHeight > ReportTableHeaderHeight)
       ReportTableHeaderHeight = dim.TextHeight;
   } else {
-    //textheight = TextInRectMm(LastX + 1, LastY + 1, LastX + CutTimeProgWidth + CutSalaryProgWidth -1, 0, LoadStr(sCutProg), DT_WORDBREAK | DT_CENTER | DT_VCENTER | DT_CALCRECT) + 2;
     TextInRectMm(LastX + 1, LastY + 1, LastX + CutTimeProgWidth + CutSalaryProgWidth -1, 0, LoadStr(sCutProg), DT_WORDBREAK | DT_CENTER | DT_VCENTER | DT_CALCRECT, &dim);
     dim.TextHeight += 2;
-    //double height = TextInRectMm(LastX + 1, LastY + 1, LastX + CutTimeProgWidth + CutSalaryProgWidth -1, LastY + 1 + textheight, LoadStr(sCutProg), DT_WORDBREAK | DT_CENTER | DT_VCENTER);
     TTextDimentions dim1;
     TextInRectMm(LastX + 1, LastY + 1, LastX + CutTimeProgWidth + CutSalaryProgWidth -1, LastY + 1 + dim.TextHeight, LoadStr(sCutProg), DT_WORDBREAK | DT_CENTER | DT_VCENTER, &dim1);
-    LineAtMm(LastX, LastY + dim1.TextHeight + 1, LastX + CutTimeProgWidth + CutSalaryProgWidth, LastY + dim1.TextHeight + 1, 1, psSolid);
+    LineAtMm(LastX, LastY + dim1.TextHeight + 1, LastX + CutTimeProgWidth + CutSalaryProgWidth, LastY + dim1.TextHeight + 1, 0.25, psSolid);
     TextInRectMm(LastX + 0.5, LastY + dim1.TextHeight + 1, LastX + CutTimeProgWidth -0.5, LastY + ReportTableHeaderHeight, LoadStr(sProgTime), DT_WORDBREAK | DT_CENTER | DT_VCENTER, NULL);
     LastX += CutTimeProgWidth;
     TextInRectMm(LastX + 1, LastY + dim1.TextHeight + 1, LastX + CutSalaryProgWidth -1, LastY + ReportTableHeaderHeight, LoadStr(sSalary), DT_WORDBREAK | DT_CENTER | DT_VCENTER, NULL);
-    LineAtMm(LastX, LastY + dim1.TextHeight + 1, LastX, DrawHeight, 1, psSolid);
+    LineAtMm(LastX, LastY + dim1.TextHeight + 1, LastX, DrawHeight, 0.25, psSolid);
   }
   LastX += CutSalaryProgWidth;
 
@@ -423,46 +401,45 @@ bool TPlProgramReport::DrawTable()
   }
 
 // Границы таблицы и линии. Пока до низа страницы.
+  TableTop = LastY;
   double TableOffsetX = (PageWidthMm - OffsetLeft - OffsetRight - ReportTableWidth)/2;
-  RectAtMm(TableOffsetX, LastY, TableOffsetX + ReportTableWidth, LastY + ReportTableHeaderHeight, clWhite, bsClear, clBlack, psSolid, 1);
-  RectAtMm(TableOffsetX, LastY, TableOffsetX + ReportTableWidth, DrawHeight, clWhite, bsClear, clBlack, psSolid, 2);
+  RectAtMm(TableOffsetX, LastY, TableOffsetX + ReportTableWidth, LastY + ReportTableHeaderHeight, clWhite, bsClear, clBlack, psSolid, 0.5, true);
   if (RubberStudio->ProgramContents_sortBy != sb_TechMap) {
     TableOffsetX += TechCardWidth;
-    LineAtMm(TableOffsetX, LastY, TableOffsetX, DrawHeight, 1, psSolid);
+    LineAtMm(TableOffsetX, LastY, TableOffsetX, DrawHeight, 0.25, psSolid);
   }
   if (RubberStudio->ProgramContents_sortBy != sb_Name) {
     TableOffsetX += NameWidth;
-    LineAtMm(TableOffsetX, LastY, TableOffsetX, DrawHeight, 1, psSolid);
+    LineAtMm(TableOffsetX, LastY, TableOffsetX, DrawHeight, 0.25, psSolid);
   }
   TableOffsetX += PressFormWidth;
-  LineAtMm(TableOffsetX, LastY, TableOffsetX, DrawHeight, 1, psSolid);
+  LineAtMm(TableOffsetX, LastY, TableOffsetX, DrawHeight, 0.25, psSolid);
   TableOffsetX += ToProduceWidth;
-  LineAtMm(TableOffsetX, LastY, TableOffsetX, DrawHeight, 1, psSolid);
+  LineAtMm(TableOffsetX, LastY, TableOffsetX, DrawHeight, 0.25, psSolid);
   TableOffsetX += RubberSortWidth;
-  LineAtMm(TableOffsetX, LastY, TableOffsetX, DrawHeight, 1, psSolid);
+  LineAtMm(TableOffsetX, LastY, TableOffsetX, DrawHeight, 0.25, psSolid);
   TableOffsetX += DetWeightWidth;
-  LineAtMm(TableOffsetX, LastY, TableOffsetX, DrawHeight, 1, psSolid);
+  LineAtMm(TableOffsetX, LastY, TableOffsetX, DrawHeight, 0.25, psSolid);
   TableOffsetX += ZagWeightWidth;
-  LineAtMm(TableOffsetX, LastY, TableOffsetX, DrawHeight, 1, psSolid);
+  LineAtMm(TableOffsetX, LastY, TableOffsetX, DrawHeight, 0.25, psSolid);
   TableOffsetX += RubberQuantityWidth;
-  LineAtMm(TableOffsetX, LastY, TableOffsetX, DrawHeight, 1, psSolid);
+  LineAtMm(TableOffsetX, LastY, TableOffsetX, DrawHeight, 0.25, psSolid);
   TableOffsetX += WulkTimeWidth;
-  LineAtMm(TableOffsetX, LastY, TableOffsetX, DrawHeight, 1, psSolid);
+  LineAtMm(TableOffsetX, LastY, TableOffsetX, DrawHeight, 0.25, psSolid);
   TableOffsetX += LoadTimeWidth;
-  LineAtMm(TableOffsetX, LastY, TableOffsetX, DrawHeight, 1, psSolid);
+  LineAtMm(TableOffsetX, LastY, TableOffsetX, DrawHeight, 0.25, psSolid);
   TableOffsetX += (WulkTimeNormaWidth + WulkCostWidth);
-  LineAtMm(TableOffsetX, LastY, TableOffsetX, DrawHeight, 1, psSolid);
+  LineAtMm(TableOffsetX, LastY, TableOffsetX, DrawHeight, 0.25, psSolid);
   TableOffsetX += (CutTimeNormaWidth + CutCostWidth);
-  LineAtMm(TableOffsetX, LastY, TableOffsetX, DrawHeight, 1, psSolid);
+  LineAtMm(TableOffsetX, LastY, TableOffsetX, DrawHeight, 0.25, psSolid);
   TableOffsetX += (WulkTimeProgWidth + WulkSalaryProgWidth);
-  LineAtMm(TableOffsetX, LastY, TableOffsetX, DrawHeight, 1, psSolid);
+  LineAtMm(TableOffsetX, LastY, TableOffsetX, DrawHeight, 0.25, psSolid);
   TableOffsetX += (CutTimeProgWidth + CutSalaryProgWidth);
-  LineAtMm(TableOffsetX, LastY, TableOffsetX, DrawHeight, 1, psSolid);
+  if (RubberStudio->ProgramContents_sortBy != sb_Name && RubberStudio->ProgramContents_sortBy != sb_TechMap)
+    LineAtMm(TableOffsetX, LastY, TableOffsetX, DrawHeight, 0.25, psSolid);
   if (RubberStudio->ProgramContents_sortBy == sb_Customer) {
     TableOffsetX += EdPriceWidth;
-    LineAtMm(TableOffsetX, LastY, TableOffsetX, DrawHeight, 1, psSolid);
-    TableOffsetX += PriceWidth;
-    LineAtMm(TableOffsetX, LastY, TableOffsetX, DrawHeight, 1, psSolid);
+    LineAtMm(TableOffsetX, LastY, TableOffsetX, DrawHeight, 0.25, psSolid);
   }
   LastY += ReportTableHeaderHeight;
   return false;
@@ -519,20 +496,22 @@ AnsiString TPlProgramReport::GetGroupAmount(AnsiString GroupTitle, AnsiString Gr
 
 // Отрисовка названия группы (группирование по наим., тех. карте или заказчику)
 bool TPlProgramReport::DrawTableGroup(AnsiString GroupTitle, AnsiString GroupFieldName, AnsiString Addititon) {
-  double checkrecordheight = (DrawMode == dm_Init) ? MmTextHeight(GroupTitle) : RecordHeight;
-  if (CheckEndDraw(LastY + TableGroupHeight + checkrecordheight + 1 + 2/PixelsPerMmY))
+  TTextDimentions dim;
+  TextInRectMm(0, 0, 0, 0, GroupTitle, DT_CALCRECT, &dim);
+  double checkrecordheight = (DrawMode == dm_Init) ? dim.TextHeight : RecordHeight;
+  if (CheckEndDraw(LastY + TableGroupHeight + checkrecordheight + 1 + 0.5))
     return true;
-  TFontStyles style;
-  style.Clear();
-  style << fsBold << fsItalic;
-  double TableOffsetX = (PageWidthMm - OffsetLeft - OffsetRight - ReportTableWidth)/2;
-  RectAtMm(TableOffsetX, LastY, TableOffsetX + ReportTableWidth - 1/PixelsPerMmX, LastY + TableGroupHeight, TColor(CustFillColor), bsSolid, clBlack, psSolid, 1);
-  SetFont("Arial", style, 10);
   if (RubberStudio->ProgramContents_sortBy != sb_Customer)
     GroupTitle += MiscFormat(LoadStr(sGroupAmount).c_str(), GetGroupAmount(GroupTitle, GroupFieldName, Addititon));
   else
     GroupTitle += MiscFormat(LoadStr(sGroupPrice).c_str(), GetGroupPrice(GroupTitle, GroupFieldName, Addititon));
-  TextInRectMm(TableOffsetX, LastY - 1/PixelsPerMmY, TableOffsetX + ReportTableWidth, LastY + TableGroupHeight, GroupTitle, DT_WORDBREAK | DT_CENTER | DT_VCENTER, NULL);
+  TFontStyles style;
+  style.Clear();
+  style << fsBold << fsItalic;
+  double TableOffsetX = (PageWidthMm - OffsetLeft - OffsetRight - ReportTableWidth)/2;
+  RectAtMm(TableOffsetX, LastY, TableOffsetX + ReportTableWidth, LastY + TableGroupHeight, TColor(CustFillColor), bsSolid, clBlack, psSolid, 0.25, true);
+  SetFont("Arial", style, 10);
+  TextInRectMm(TableOffsetX, LastY - 0.25, TableOffsetX + ReportTableWidth, LastY + TableGroupHeight, GroupTitle, DT_WORDBREAK | DT_CENTER | DT_VCENTER, NULL);
   LastY += TableGroupHeight;
   return false;
 }
@@ -544,7 +523,6 @@ void TPlProgramReport::DrawTableCell(AnsiString &CellText, double CellWidth, UIN
     CellText = LoadStr(sUnknowValue);
   if (DrawMode == dm_Init) {
     TTextDimentions dim;
-    //double textheight = TextInRectMm(LastX + 1, LastY + 1, LastX + CellWidth -1, 0, CellText, Format | DT_CALCRECT) + 2;
     TextInRectMm(LastX + 1, LastY + 1, LastX + CellWidth -1, 0, CellText, Format | DT_CALCRECT, &dim);
     dim.TextHeight += 2;
     if (dim.TextHeight > MaxHeight)
@@ -562,11 +540,13 @@ void TPlProgramReport::CutTable() {
     double TableHeight = PageHeightMm - OffsetBottom - OffsetTop - MiscOffset;
     if (PrintFooter)
       TableHeight -= FooterHeight;
-    RectAtMm(-OffsetLeft, LastY + 1, PageWidthMm - OffsetLeft, TableHeight + 1, clWhite, bsSolid, clWhite, psSolid, 1);
+    RectAtMm(-OffsetLeft, LastY + 1, PageWidthMm - OffsetLeft, TableHeight + 1, clWhite, bsSolid, clWhite, psClear, 0, true);
     double TableOffsetX = (PageWidthMm - OffsetLeft - OffsetRight - ReportTableWidth)/2;
-    LineAtMm(TableOffsetX, LastY + 1, TableOffsetX + ReportTableWidth, LastY + 1, 2, psSolid);
+    if (!TableTop)
+      TableTop = LastY - 1;
+    RectAtMm(TableOffsetX, TableTop, TableOffsetX + ReportTableWidth, LastY + 1, clWhite, bsClear, clBlack, psSolid, 0.5, true);
   }
-  LastY += (1 + 2/PixelsPerMmY);
+  LastY += (1 + 0.5);
 }
 
 // Отрисовка заголовка дополнения
@@ -577,7 +557,7 @@ bool TPlProgramReport::DrawReportAdditionTitle(AnsiString AdditionTitle)
     if (DrawingData)
         CutTable();
     LastY += MainOffset;
-    
+
     if (DrawReportBottom()) {
       return true;
     }
@@ -653,7 +633,6 @@ bool TPlProgramReport::DrawReportBottomItem(bool Left, AnsiString ItemTitle, Ans
 void TPlProgramReport::DrawReportBottomSum(double value, double CellWidth)
 {
   AnsiString CellText = RoundDoubleToAnsiString(value);
-//  double textheight = TextInRectMm((PageWidthMm - OffsetLeft - OffsetRight - ReportTableWidth) / 2 + 1, LastY + 1, LastX + CellWidth -1, 0, CellText, DT_RIGHT | DT_VCENTER | DT_END_ELLIPSIS | DT_CALCRECT) + 2;
   TTextDimentions dim;
   TextInRectMm((PageWidthMm - OffsetLeft - OffsetRight - ReportTableWidth) / 2 + 1, LastY + 1, LastX + CellWidth -1, 0, CellText, DT_RIGHT | DT_VCENTER | DT_END_ELLIPSIS | DT_CALCRECT, &dim);
   dim.TextHeight += 2;
@@ -679,13 +658,11 @@ bool TPlProgramReport::DrawReportBottom()
     case sb_Name     : LastX -= NameWidth; break;
   }
 
-  //double textheight = 0;
   double lastX = LastX;
   TTextDimentions dim;
   dim.TextHeight = 0;
   dim.TextWidth = 0;
   if (DrawingAdditionTitle) {
-    //textheight = TextInRectMm((PageWidthMm - OffsetLeft - OffsetRight - ReportTableWidth) / 2 + 1, LastY + 1, LastX + WulkTimeProgWidth -1, 0, RoundDoubleToAnsiString(CurrentvulcanProgramTime), DT_RIGHT | DT_VCENTER | DT_END_ELLIPSIS | DT_CALCRECT) + 2;
     if (!MainPart) {
       TextInRectMm((PageWidthMm - OffsetLeft - OffsetRight - ReportTableWidth) / 2 + 1, LastY + 1, LastX + WulkTimeProgWidth -1, 0, RoundDoubleToAnsiString(CurrentvulcanProgramTime), DT_RIGHT | DT_VCENTER | DT_END_ELLIPSIS | DT_CALCRECT, &dim);
       dim.TextHeight += 2;
@@ -706,7 +683,6 @@ bool TPlProgramReport::DrawReportBottom()
       return true;
   } else {
     if (RubberStudio->PrSortByPartM->Checked && RubberStudio->PrPartSelectM->Count > 1) {
-      //textheight = TextInRectMm((PageWidthMm - OffsetLeft - OffsetRight - ReportTableWidth) / 2 + 1, LastY + 1, LastX + WulkTimeProgWidth -1, 0, RoundDoubleToAnsiString(CurrentvulcanProgramTime), DT_RIGHT | DT_VCENTER | DT_END_ELLIPSIS | DT_CALCRECT) + 2;
       if (!MainPart) {
         TextInRectMm((PageWidthMm - OffsetLeft - OffsetRight - ReportTableWidth) / 2 + 1, LastY + 1, LastX + WulkTimeProgWidth -1, 0, RoundDoubleToAnsiString(CurrentvulcanProgramTime), DT_RIGHT | DT_VCENTER | DT_END_ELLIPSIS | DT_CALCRECT, &dim);
         dim.TextHeight += 2;
@@ -751,25 +727,14 @@ bool TPlProgramReport::DrawTotal(void)
   SetFont("Arial Narrow", style, 7);
   LastX -= WulkTimeProgWidth;
   AnsiString text = LoadStr(sProgSum);
-  //textheight = TextInRectMm((PageWidthMm - OffsetLeft - OffsetRight - ReportTableWidth) / 2 + 1, LastY + 1, LastX + WulkTimeProgWidth -1, 0, text, DT_RIGHT | DT_VCENTER | DT_END_ELLIPSIS | DT_CALCRECT) + 2;
   TTextDimentions dim;
   TextInRectMm((PageWidthMm - OffsetLeft - OffsetRight - ReportTableWidth) / 2 + 1, LastY + 1, LastX + WulkTimeProgWidth -1, 0, text, DT_RIGHT | DT_VCENTER | DT_END_ELLIPSIS | DT_CALCRECT, &dim);
   dim.TextHeight += 2;
   if (CheckEndDraw(LastY + dim.TextHeight))
     return true;
   TextInRectMm((PageWidthMm - OffsetLeft - OffsetRight - ReportTableWidth) / 2 + 1, LastY + 1, LastX + WulkTimeProgWidth -1, LastY + dim.TextHeight + 1, text, DT_RIGHT | DT_VCENTER | DT_END_ELLIPSIS, NULL);
-  //    double textwidth = MmTextWidth(text);
-  LineAtMm(LastX + WulkTimeProgWidth - dim.TextWidth - 1, LastY + dim.TextHeight + 0.5, ReportTableWidth + (PageWidthMm - OffsetLeft - OffsetRight - ReportTableWidth) / 2, LastY + dim.TextHeight +  0.5, 1, psSolid);
+  LineAtMm(LastX + WulkTimeProgWidth - dim.TextWidth - 1, LastY + dim.TextHeight + 0.5, ReportTableWidth + (PageWidthMm - OffsetLeft - OffsetRight - ReportTableWidth) / 2, LastY + dim.TextHeight +  0.5, 0.25, psSolid);
   LastX += WulkTimeProgWidth;
-/*  DrawReportBottomSum(RubberStudio->vulcanProgramTime , WulkTimeProgWidth);
-  DrawReportBottomSum(RubberStudio->vulcanProgramPrice, WulkSalaryProgWidth);
-  DrawReportBottomSum(RubberStudio->cutProgramTime    , CutTimeProgWidth);
-  DrawReportBottomSum(RubberStudio->cutProgramPrice   , CutSalaryProgWidth);
-  if (RubberStudio->ProgramContents_sortBy == sb_Customer) {
-    LastX += EdPriceWidth;
-    DrawReportBottomSum(RubberStudio->customerProgramPrice, PriceWidth);
-  }
-*/
   DrawReportBottomSum(TotalvulcanProgramTime , WulkTimeProgWidth);
   DrawReportBottomSum(TotalvulcanProgramPrice, WulkSalaryProgWidth);
   DrawReportBottomSum(TotalcutProgramTime    , CutTimeProgWidth);
@@ -931,8 +896,10 @@ void TPlProgramReport::DrawReport(int PageNumber)
           previus_group_value = group_value;
         }
 
-        double checkheight = (DrawMode == dm_Init) ? MmTextHeight(group_value) : RecordHeight;
-        if (CheckEndDraw(LastY + checkheight + 1 + 2/PixelsPerMmY)){
+        TTextDimentions dim;
+        TextInRectMm(0, 0, 0, 0, group_value, DT_CALCRECT, &dim);
+        double checkheight = (DrawMode == dm_Init) ? dim.TextHeight : RecordHeight;
+        if (CheckEndDraw(LastY + checkheight + 1 + 0.5)){
           EndDrawing(oldcur);
           return;
         }
@@ -950,14 +917,9 @@ void TPlProgramReport::DrawReport(int PageNumber)
           DrawTableCell(str, NameWidth, DT_LEFT | DT_VCENTER | DT_END_ELLIPSIS, RecordHeight);
         }
 
-        //double textheight = 0;
-        TTextDimentions dim;
         str = MiscFormat("%d/%d ", Data->Products->FieldByName("PFNumber")->AsInteger, Data->Products->FieldByName("PFPlaces")->AsInteger);
         if (PrintingTargetAddition) {
           if (Data->Products->FieldByName("PFCylindric")->AsBoolean) {
-            //double width = MmTextWidth(str);
-
-            //textheight = TextInRectMm(LastX + 1, LastY + 1, LastX + PressFormWidth -1, 0, str, DT_LEFT | DT_VCENTER | DT_END_ELLIPSIS | DT_CALCRECT)  + 2;
             TextInRectMm(LastX + 1, LastY + 1, LastX + PressFormWidth -1, 0, str, DT_LEFT | DT_VCENTER | DT_END_ELLIPSIS | DT_CALCRECT, &dim);
             dim.TextHeight += 2;
             if (DrawMode == dm_Init) {
@@ -969,7 +931,6 @@ void TPlProgramReport::DrawReport(int PageNumber)
             str = '\306';
             SetFont("Symbol", style, 7);
             double width = dim.TextWidth;
-            //textheight = TextInRectMm(LastX + 1 + width, LastY + 1, LastX + PressFormWidth -1, 0, str, DT_LEFT | DT_VCENTER | DT_END_ELLIPSIS | DT_CALCRECT) + 2;
             TextInRectMm(LastX + 1 + width, LastY + 1, LastX + PressFormWidth -1, 0, str, DT_LEFT | DT_VCENTER | DT_END_ELLIPSIS | DT_CALCRECT, &dim);
             dim.TextHeight += 2;
             if (DrawMode == dm_Init) {
@@ -980,7 +941,6 @@ void TPlProgramReport::DrawReport(int PageNumber)
             width += dim.TextWidth;
             SetFont("Arial Narrow", style, 7);
             str = MiscFormat("%dx%d", Data->Products->FieldByName("PFDiameter")->AsInteger, Data->Products->FieldByName("PFHeight")->AsInteger);
-            //textheight = TextInRectMm(LastX + 1 + width, LastY + 1, LastX + PressFormWidth -1, 0, str, DT_LEFT | DT_VCENTER | DT_END_ELLIPSIS | DT_CALCRECT) + 2;
             TextInRectMm(LastX + 1 + width, LastY + 1, LastX + PressFormWidth -1, 0, str, DT_LEFT | DT_VCENTER | DT_END_ELLIPSIS | DT_CALCRECT, &dim);
             dim.TextHeight += 2;
             if (DrawMode == dm_Init) {
@@ -990,7 +950,6 @@ void TPlProgramReport::DrawReport(int PageNumber)
                 TextInRectMm(LastX + 1 + width, LastY + 1, LastX + PressFormWidth -1, LastY + RecordHeight, str, DT_LEFT | DT_VCENTER | DT_END_ELLIPSIS, NULL);
           } else {
             str = MiscFormat("%s%dx%dx%d", str.c_str(), Data->Products->FieldByName("PFLength")->AsInteger, Data->Products->FieldByName("PFWidth")->AsInteger, Data->Products->FieldByName("PFHeight")->AsInteger);
-            //textheight = TextInRectMm(LastX + 1, LastY + 1, LastX + PressFormWidth -1, 0, str, DT_LEFT | DT_VCENTER | DT_END_ELLIPSIS | DT_CALCRECT) + 2;
             TextInRectMm(LastX + 1, LastY + 1, LastX + PressFormWidth -1, 0, str, DT_LEFT | DT_VCENTER | DT_END_ELLIPSIS | DT_CALCRECT, &dim);
             dim.TextHeight += 2;
             if (DrawMode == dm_Init) {
@@ -1127,9 +1086,8 @@ void TPlProgramReport::DrawReport(int PageNumber)
             rm_str += str;
             Data->RawMaterialInProduct->Next();
           }
-          //textheight = TextInRectMm(tableoffset + MiscOffset, LastY + RecordHeight - 1, tableoffset + ReportTableWidth - MiscOffset, 0, rm_str, DT_CENTER | DT_VCENTER | DT_CALCRECT);
           TextInRectMm(0, 0, 0, 0, rm_str, DT_CENTER | DT_VCENTER | DT_CALCRECT, &dim);
-          if (CheckEndDraw(LastY + RecordHeight + dim.TextHeight + 2/PixelsPerMmY)){
+          if (CheckEndDraw(LastY + RecordHeight + dim.TextHeight + 0.5)){
             LastY += RecordHeight;
             EndDrawing(oldcur);
             LastY -= RecordHeight;

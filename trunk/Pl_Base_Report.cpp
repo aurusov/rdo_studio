@@ -55,7 +55,6 @@ __fastcall TPlBaseReport::TPlBaseReport():
            PrintPageNumbers(true),
            BlackWhite(false),
            FullWidth(0),
-           RealFontSize(0),
            ReportData(NULL)
 {
   OpenReportDataSource();
@@ -255,7 +254,23 @@ void TPlBaseReport::UpdateReportPreview(const int PreviewWidth, const int Previe
 // Рисуем печатаемую область
     DrawPrintableArea();
 // Рисуем область отчета
-    RectAtMm(0, 0, PageWidthMm - OffsetLeft - OffsetRight, PageHeightMm - OffsetTop - OffsetBottom, clWhite, bsClear, clBlack, psDot, 1);
+    TBrushStyle oldbrstyle = DrawTo->Brush->Style;
+    TPenStyle oldpenstyle = DrawTo->Pen->Style;
+    TColor oldpencolor = DrawTo->Pen->Color;
+    TColor oldbrcolor =  DrawTo->Brush->Color;
+    int oldpenwidth = DrawTo->Pen->Width;
+    DrawTo->Brush->Color = clWhite;
+    DrawTo->Brush->Style = bsClear;
+    DrawTo->Pen->Color = clBlack;
+    DrawTo->Pen->Style = psDot;
+    DrawTo->Pen->Width = 1;
+    DrawTo->Rectangle(OffsetLeft*PixelsPerMmX, OffsetTop*PixelsPerMmY, (PageWidthMm - OffsetRight)*PixelsPerMmX, (PageHeightMm - OffsetBottom)*PixelsPerMmY);
+    DrawTo->Brush->Color = oldbrcolor;
+    DrawTo->Brush->Style = oldbrstyle;
+    DrawTo->Pen->Color = oldpencolor;
+    DrawTo->Pen->Style = oldpenstyle;
+    DrawTo->Pen->Width = oldpenwidth;
+// Рисуем область отчета
     PreviewForm->ReportImage->Picture->Bitmap = ReportBitmap;
     delete ReportBitmap;
     ReportBitmap = NULL;
@@ -301,7 +316,9 @@ void TPlBaseReport::Init()
     AnsiString str = LoadStr(sPrinted) + LoadStr(sPages);
     TVarRec v[] = { date, 1, 5};
     AnsiString teststr = Format(str, v, ARRAYSIZE(v) - 1);
-    FooterHeight = MmTextHeight(teststr) + FooterOffset;
+    TTextDimentions dim;
+    TextInRectMm(0, 0, 0, 0, teststr, DT_CALCRECT, &dim);
+    FooterHeight = dim.TextHeight + FooterOffset;
     Pages = 1;
     Page = 0;
 // Прогоняем весь отчет
@@ -375,62 +392,8 @@ void TPlBaseReport::GetDisplayParams()
     }
 }
 
-// Ширина текста в миллиметрах на DrawTo
-double TPlBaseReport::MmTextWidth(const AnsiString Text)
-{
-  int oldsize = DrawTo->Font->Size;
-  double oldppmmX = PixelsPerMmX;
-  double oldppmmY = PixelsPerMmY;
-
-  if (FPrinter && FPrinter->Printers && FPrinter->Printers->Count) {
-    PixelsPerMmX = GetDeviceCaps(FPrinter->Handle, LOGPIXELSX)/Inch;
-    PixelsPerMmY = GetDeviceCaps(FPrinter->Handle, LOGPIXELSY)/Inch;
-  } else {
-    PixelsPerMmX = 180/Inch;
-    PixelsPerMmY = 180/Inch;
-  }
-
-  double size = RealFontSize*(double)PixelsPerMmY/(double)DisplayPixelsPerMmY;
-  DrawTo->Font->Size = RoundFonts ? RoundDoubleToInt(size) : size;
-  double res = (double)DrawTo->TextWidth(Text)/PixelsPerMmX;
-  PixelsPerMmX = oldppmmX;
-  PixelsPerMmY = oldppmmY;
-  DrawTo->Font->Size = oldsize;
-  return res;
-}
-
-// Высота текста в миллиметрах на DrawTo
-double TPlBaseReport::MmTextHeight(const AnsiString Text)
-{
-  int oldsize = DrawTo->Font->Size;
-  double oldppmmX = PixelsPerMmX;
-  double oldppmmY = PixelsPerMmY;
-
-  if (FPrinter && FPrinter->Printers && FPrinter->Printers->Count) {
-    PixelsPerMmX = GetDeviceCaps(FPrinter->Handle, LOGPIXELSX)/Inch;
-    PixelsPerMmY = GetDeviceCaps(FPrinter->Handle, LOGPIXELSY)/Inch;
-  } else {
-    PixelsPerMmX = 180/Inch;
-    PixelsPerMmY = 180/Inch;
-  }
-
-  double size = RealFontSize*(double)PixelsPerMmY/(double)DisplayPixelsPerMmY;
-  DrawTo->Font->Size = RoundFonts ? RoundDoubleToInt(size) : size;
-  double res = (double)DrawTo->TextHeight(Text)/PixelsPerMmY;
-  PixelsPerMmX = oldppmmX;
-  PixelsPerMmY = oldppmmY;
-  DrawTo->Font->Size = oldsize;
-  return res;
-}
-
-// Вывести текст в X,Y (в миллиметрах) на DrawTo
-void TPlBaseReport::TextAtMm(double X, double Y, const AnsiString Text)
-{
-  DrawTo->TextOut((X + OffsetLeft)*PixelsPerMmX, (Y + OffsetTop)*PixelsPerMmY, Text);
-}
-
 // Вписать текст в Ректангл (X1, X2), (Y1, Y2) на DrawTo с переносом слов.
-// Возвращает высоту, занимаемую текстом в мм.
+// Размер ректангла - в Dimentions.
 void TPlBaseReport::TextInRectMm(double X1, double Y1, double X2, double Y2, const AnsiString Text, UINT Format, TTextDimentions* Dimentions)
 {
   TRect rect = TRect((X1 + OffsetLeft)*PixelsPerMmX, (Y1 + OffsetTop)*PixelsPerMmY, (X2 + OffsetLeft)*PixelsPerMmX, (Y2 + OffsetTop)*PixelsPerMmY);
@@ -447,33 +410,45 @@ void TPlBaseReport::TextInRectMm(double X1, double Y1, double X2, double Y2, con
       Dimentions->TextHeight = (rect.bottom - rect.top)/PixelsPerMmY;
     else
       Dimentions->TextHeight = (calcrect.bottom - calcrect.top)/PixelsPerMmY;
-      
+
     Dimentions->TextWidth = (calcrect.right - calcrect.left)/PixelsPerMmX;
   }
   if (Format & DT_VCENTER) {
     rect.top += ((rect.bottom - rect.top) - (calcrect.bottom - calcrect.top))/2;
   }
   DrawText(DrawTo->Handle, Text.c_str(), Text.Length(), &rect, Format);
-  //return textheight;
 }
 
-// Вывести линию в (X1,Y1)-(X2,Y2) (в миллиметрах) на DrawTo
-void TPlBaseReport::LineAtMm(double X1, double Y1, double X2, double Y2, const int PenWidth, const TPenStyle Pen)
+// Вывести линию в (X1,Y1)-(X2,Y2) (в миллиметрах) шириной PenWidth (в миллиметрах) на DrawTo
+// Если AlwaysDraw = true линия выводится всегда (минимум шириной в 1 пиксел)
+void TPlBaseReport::LineAtMm(double X1, double Y1, double X2, double Y2, const double PenWidth, const TPenStyle Pen, const bool AlwaysDraw)
 {
-  TPenStyle oldstyle = DrawTo->Pen->Style;
-  int oldwidth = DrawTo->Pen->Width;
-  DrawTo->Pen->Style = Pen;
-  DrawTo->Pen->Width = PenWidth;
-  DrawTo->MoveTo((X1 + OffsetLeft)*PixelsPerMmX, (Y1 + OffsetTop)*PixelsPerMmY);
-  DrawTo->LineTo((X2 + OffsetLeft)*PixelsPerMmX, (Y2 + OffsetTop)*PixelsPerMmY);
-  DrawTo->Pen->Style = oldstyle;
-  DrawTo->Pen->Width = oldwidth;
+  double ppMm = PixelsPerMmX;
+  if (PixelsPerMmX != PixelsPerMmY) {
+    double dx = X2 - X1;
+    if (dx < 0) dx *= (-1);
+    double dy = Y2 - Y1;
+    if (dy < 0) dy *= (-1);
+    if (dy > dx) ppMm = PixelsPerMmY;
+  }
+  int newwidth = RoundDoubleToInt(PenWidth * ppMm);
+  if (!newwidth && (AlwaysDraw || DrawMode == dm_Print))
+    newwidth = 1;
+  if (newwidth) {
+    TPenStyle oldstyle = DrawTo->Pen->Style;
+    int oldwidth = DrawTo->Pen->Width;
+    DrawTo->Pen->Style = Pen;
+    DrawTo->Pen->Width = newwidth;
+    DrawTo->MoveTo(RoundDoubleToInt((X1 + OffsetLeft)*PixelsPerMmX), RoundDoubleToInt((Y1 + OffsetTop)*PixelsPerMmY));
+    DrawTo->LineTo(RoundDoubleToInt((X2 + OffsetLeft)*PixelsPerMmX), RoundDoubleToInt((Y2 + OffsetTop)*PixelsPerMmY));
+    DrawTo->Pen->Style = oldstyle;
+    DrawTo->Pen->Width = oldwidth;
+  }
 }
 
 // Установка шрифта DrawTo (в режиме просмотра с подбором наиболее похожего размера)
 void TPlBaseReport::SetFont(const AnsiString FontName, const TFontStyles FontStyle, double FontSize)
 {
-  RealFontSize = FontSize;
   if ((DrawMode == dm_Init || Previewing) & (DrawMode != dm_Print)) {
     double ScaledSize = FontSize*(PixelsPerMmY*Inch);
     if (DrawMode == dm_Init) {
@@ -493,8 +468,19 @@ void TPlBaseReport::SetFont(const AnsiString FontName, const TFontStyles FontSty
 }
 
 // Вывести четырехугольник размерами (X1,Y1), (X2,Y2) (в миллиметрах) на DrawTo
-void TPlBaseReport::RectAtMm(double X1, double Y1, double X2, double Y2, TColor BrushColor, TBrushStyle BrushStyle, TColor PenColor, TPenStyle PenStyle, int PenWidth)
+void TPlBaseReport::RectAtMm(double X1, double Y1, double X2, double Y2, TColor BrushColor, TBrushStyle BrushStyle, TColor PenColor, TPenStyle PenStyle, const double PenWidth, const bool AlwaysDraw)
 {
+  double ppMm = PixelsPerMmX;
+  if (PixelsPerMmX != PixelsPerMmY) {
+    double dx = X2 - X1;
+    if (dx < 0) dx *= ((double)(-1));
+    double dy = Y2 - Y1;
+    if (dy < 0) dy *= ((double)(-1));
+    if (dy > dx) ppMm = PixelsPerMmY;
+  }
+  int newwidth = RoundDoubleToInt(PenWidth * ppMm);
+  if (!newwidth && (AlwaysDraw || DrawMode == dm_Print))
+    newwidth = 1;
   TBrushStyle oldbrstyle = DrawTo->Brush->Style;
   TPenStyle oldpenstyle = DrawTo->Pen->Style;
   TColor oldpencolor = DrawTo->Pen->Color;
@@ -504,8 +490,8 @@ void TPlBaseReport::RectAtMm(double X1, double Y1, double X2, double Y2, TColor 
   DrawTo->Brush->Style = BrushStyle;
   DrawTo->Pen->Color = PenColor;
   DrawTo->Pen->Style = PenStyle;
-  DrawTo->Pen->Width = PenWidth;
-  DrawTo->Rectangle((X1 + OffsetLeft)*PixelsPerMmX, (Y1 + OffsetTop)*PixelsPerMmY, (X2 + OffsetLeft)*PixelsPerMmX, (Y2 + OffsetTop)*PixelsPerMmY);
+  DrawTo->Pen->Width = newwidth;
+  DrawTo->Rectangle(RoundDoubleToInt((X1 + OffsetLeft)*PixelsPerMmX), RoundDoubleToInt((Y1 + OffsetTop)*PixelsPerMmY), RoundDoubleToInt((X2 + OffsetLeft)*PixelsPerMmX), RoundDoubleToInt((Y2 + OffsetTop)*PixelsPerMmY));
   DrawTo->Brush->Color = oldbrcolor;
   DrawTo->Brush->Style = oldbrstyle;
   DrawTo->Pen->Color = oldpencolor;
@@ -513,8 +499,19 @@ void TPlBaseReport::RectAtMm(double X1, double Y1, double X2, double Y2, TColor 
   DrawTo->Pen->Width = oldpenwidth;
 }
 
-void TPlBaseReport::EllipseAtMm(double X1, double Y1, double X2, double Y2, TColor BrushColor, TBrushStyle BrushStyle, TColor PenColor, TPenStyle PenStyle, int PenWidth)
+void TPlBaseReport::EllipseAtMm(double X1, double Y1, double X2, double Y2, TColor BrushColor, TBrushStyle BrushStyle, TColor PenColor, TPenStyle PenStyle, const double PenWidth, const bool AlwaysDraw)
 {
+  double ppMm = PixelsPerMmX;
+  if (PixelsPerMmX != PixelsPerMmY) {
+    double dx = X2 - X1;
+    if (dx < 0) dx *= ((double)(-1));
+    double dy = Y2 - Y1;
+    if (dy < 0) dy *= ((double)(-1));
+    if (dy > dx) ppMm = PixelsPerMmY;
+  }
+  int newwidth = RoundDoubleToInt(PenWidth * ppMm);
+  if (!newwidth && (AlwaysDraw || DrawMode == dm_Print))
+    newwidth = 1;
   TBrushStyle oldbrstyle = DrawTo->Brush->Style;
   TPenStyle oldpenstyle = DrawTo->Pen->Style;
   TColor oldpencolor = DrawTo->Pen->Color;
@@ -524,8 +521,8 @@ void TPlBaseReport::EllipseAtMm(double X1, double Y1, double X2, double Y2, TCol
   DrawTo->Brush->Style = BrushStyle;
   DrawTo->Pen->Color = PenColor;
   DrawTo->Pen->Style = PenStyle;
-  DrawTo->Pen->Width = PenWidth;
-  DrawTo->Ellipse((X1 + OffsetLeft)*PixelsPerMmX, (Y1 + OffsetTop)*PixelsPerMmY, (X2 + OffsetLeft)*PixelsPerMmX, (Y2 + OffsetTop)*PixelsPerMmY);
+  DrawTo->Pen->Width = newwidth;
+  DrawTo->Ellipse(RoundDoubleToInt((X1 + OffsetLeft)*PixelsPerMmX), RoundDoubleToInt((Y1 + OffsetTop)*PixelsPerMmY), RoundDoubleToInt((X2 + OffsetLeft)*PixelsPerMmX), RoundDoubleToInt((Y2 + OffsetTop)*PixelsPerMmY));
   DrawTo->Brush->Color = oldbrcolor;
   DrawTo->Brush->Style = oldbrstyle;
   DrawTo->Pen->Color = oldpencolor;
@@ -654,15 +651,11 @@ void TPlBaseReport::DrawHeader()
   style.Clear();
   style << fsItalic;
   SetFont("Arial", style, 11);
-  /*double width = MmTextWidth(Title);
-  TextAtMm(PageWidthMm - width - OffsetLeft - OffsetRight - 3, 0, Title);
-  double height = MmTextHeight(Title);
-  height += 1;*/
   TTextDimentions dim;
   TextInRectMm(3, LastY + 1, PageWidthMm - OffsetLeft - OffsetRight - 3, 0, Title, DT_RIGHT | DT_VCENTER, &dim);
   dim.TextHeight += 2;
   DrawTo->Pen->Color = clBlack;
-  LineAtMm(3, dim.TextHeight, PageWidthMm - OffsetRight - OffsetLeft - 3, dim.TextHeight, 1, psSolid);
+  LineAtMm(3, dim.TextHeight, PageWidthMm - OffsetRight - OffsetLeft - 3, dim.TextHeight, 0.25, psSolid, true);
   HeaderHeight = dim.TextHeight;
   LastY = HeaderHeight + HeaderOffset;
   DrawTo->Font->Style = oldstyles;
@@ -694,21 +687,18 @@ void TPlBaseReport::DrawFooter()
     TVarRec v[] = { date };
     str = Format(str, v, ARRAYSIZE(v) - 1);
     TextInRectMm(3, top - 1, PageWidthMm - OffsetLeft - OffsetRight - 3, 0, str, DT_LEFT | DT_VCENTER, &dim);
-//    TextAtMm(3, top, str);
   }
 
   if (PrintPageNumbers) {
     AnsiString str = LoadStr(sPages);
     TVarRec v1[] = {Page, Pages};
     str = Format(str, v1, ARRAYSIZE(v1) - 1);
-    //double width = MmTextWidth(str);
     TextInRectMm(3, top - 1, PageWidthMm - OffsetLeft - OffsetRight - 3, 0, str, DT_RIGHT | DT_VCENTER, &dim);
-    //TextAtMm(PageWidthMm - width - OffsetLeft - OffsetRight - 3, top, str);
   }
 
   top -= 2;
   DrawTo->Pen->Color = clBlack;
-  LineAtMm(3, top, PageWidthMm - OffsetRight - OffsetLeft - 3, top, 1, psSolid);
+  LineAtMm(3, top, PageWidthMm - OffsetRight - OffsetLeft - 3, top, 0.25, psSolid, true);
   DrawTo->Font->Style = oldstyles;
   DrawTo->Font->Name = oldname;
   DrawTo->Font->Size = oldsize;
