@@ -908,8 +908,8 @@ BEGIN
     "K",            ID_EMPTYCOMMAND_26,     VIRTKEY, CONTROL, NOINVERT
     "K",            ID_EMPTYCOMMAND_27,     VIRTKEY, SHIFT, CONTROL, 
                                                     NOINVERT
-    "M",            ID_EMPTYCOMMAND_39,     VIRTKEY, CONTROL, NOINVERT
-    "M",            ID_EMPTYCOMMAND_40,     VIRTKEY, SHIFT, CONTROL, 
+    "M",            ID_EMPTYCOMMAND_9,      VIRTKEY, CONTROL, NOINVERT
+    "M",            ID_EMPTYCOMMAND_33,     VIRTKEY, SHIFT, CONTROL, 
                                                     NOINVERT
     "N",            ID_FILE_NEW,            VIRTKEY, CONTROL, NOINVERT
     "N",            ID_EMPTYCOMMAND_34,     VIRTKEY, SHIFT, CONTROL, 
@@ -982,8 +982,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,0,74
- PRODUCTVERSION 1,0,0,74
+ FILEVERSION 1,0,0,75
+ PRODUCTVERSION 1,0,0,75
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -1001,14 +1001,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "RAO studio\0"
-            VALUE "FileVersion", "1, 0, 0, 74\0"
+            VALUE "FileVersion", "1, 0, 0, 75\0"
             VALUE "InternalName", "RAO-Studio\0"
             VALUE "LegalCopyright", "Copyright (C) 2003\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "RAO-Studio.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "RAO-Studio\0"
-            VALUE "ProductVersion", "1, 0, 0, 74\0"
+            VALUE "ProductVersion", "1, 0, 0, 75\0"
             VALUE "SpecialBuild", "\0"
         END
     END
@@ -1055,16 +1055,6 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    ID_INDICATOR_EXT        "EXT"
-    ID_INDICATOR_CAPS       "CAP"
-    ID_INDICATOR_NUM        "NUM"
-    ID_INDICATOR_SCRL       "SCRL"
-    ID_INDICATOR_OVR        "OVR"
-    ID_INDICATOR_REC        "REC"
-END
-
-STRINGTABLE DISCARDABLE 
-BEGIN
     ID_FILE_NEW             "\nNew (Ctrl+N)"
     ID_FILE_OPEN            "\nOpen (Ctrl+O)"
     ID_FILE_CLOSE           "Close the active document\nClose"
@@ -1079,26 +1069,6 @@ STRINGTABLE DISCARDABLE
 BEGIN
     ID_APP_ABOUT            "Display program information, version number and copyright\nAbout"
     ID_APP_EXIT             "Quit the application; prompts to save documents\nExit"
-END
-
-STRINGTABLE DISCARDABLE 
-BEGIN
-    ID_FILE_MRU_FILE1       "Open this document"
-    ID_FILE_MRU_FILE2       "Open this document"
-    ID_FILE_MRU_FILE3       "Open this document"
-    ID_FILE_MRU_FILE4       "Open this document"
-    ID_FILE_MRU_FILE5       "Open this document"
-    ID_FILE_MRU_FILE6       "Open this document"
-    ID_FILE_MRU_FILE7       "Open this document"
-    ID_FILE_MRU_FILE8       "Open this document"
-    ID_FILE_MRU_FILE9       "Open this document"
-    ID_FILE_MRU_FILE10      "Open this document"
-    ID_FILE_MRU_FILE11      "Open this document"
-    ID_FILE_MRU_FILE12      "Open this document"
-    ID_FILE_MRU_FILE13      "Open this document"
-    ID_FILE_MRU_FILE14      "Open this document"
-    ID_FILE_MRU_FILE15      "Open this document"
-    ID_FILE_MRU_FILE16      "Open this document"
 END
 
 STRINGTABLE DISCARDABLE 
@@ -1206,14 +1176,16 @@ BEGIN
     ID_STATUSBAR_READONLY   "Read only"
     ID_STATUSBAR_MODIFIED   "Modified"
     ID_STATUSBAR_OVERWRITE  "Overwrite"
-    ID_RDOERROR_SYNTAX      "Syntax error"
-    ID_RDOERROR_RUNTIME     "Run time error"
-    ID_RDOERROR_LOAD        "Load error"
-    ID_RDOERROR_LICENSE     "License error"
+    ID_STATUSBAR_MODELTIME  "Time: %f"
+    ID_STATUSBAR_MODELTYPE_RUN "Run"
+    ID_STATUSBAR_MODELTYPE_ANIMATION "Animation"
+    ID_STATUSBAR_MODELTYPE_MONITOR "Monitor"
     ID_BUFFER_NAME          "Buffer"
     ID_RDO_FILETYPE         "RAO Simulator v3.0|rdosim.exe|RAO Simulator|*.exe|All Files|*.*||"
     ID_MODEL_FILETYPE       "RAO Files (*.smr)|*.smr|All Files (*.*)|*.*||"
     ID_OPTIONS              "Options"
+    ID_DOCK_WORKSPACE       "Workspace"
+    ID_DOCK_OUTPUT          "Output"
 END
 
 STRINGTABLE DISCARDABLE 
@@ -1272,7 +1244,8 @@ BEGIN
     ID_COORDSTATUSBAR       " "
     ID_MODIFYSTATUSBAR      " "
     ID_INSERTOVERWRITESTATUSBAR " "
-    ID_INFOSTATUSBAR        " "
+    ID_MODELTIMESTATUSBAR   " "
+    ID_MODELRUNTYPESTATUSBAR " "
 END
 
 STRINGTABLE DISCARDABLE 

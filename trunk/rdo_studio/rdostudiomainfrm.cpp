@@ -43,7 +43,8 @@ static UINT indicators[] = {
 	ID_COORDSTATUSBAR,
 	ID_MODIFYSTATUSBAR,
 	ID_INSERTOVERWRITESTATUSBAR,
-	ID_INFOSTATUSBAR
+	ID_MODELTIMESTATUSBAR,
+	ID_MODELRUNTYPESTATUSBAR
 };
 
 RDOStudioMainFrame::RDOStudioMainFrame(): CMDIFrameWnd()
@@ -76,16 +77,19 @@ int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	editToolBar.GetToolBarCtrl().SetDisabledImageList( &editToolBarImageList );
 
 	statusBar.Create( this );
-	statusBar.SetIndicators( indicators, 4 );
+	statusBar.SetIndicators( indicators, 5 );
 	statusBar.SetPaneInfo( 0, ID_COORDSTATUSBAR          , SBPS_NORMAL , 70 );
 	statusBar.SetPaneInfo( 1, ID_MODIFYSTATUSBAR         , SBPS_NORMAL , 70 );
 	statusBar.SetPaneInfo( 2, ID_INSERTOVERWRITESTATUSBAR, SBPS_NORMAL , 70 );
-	statusBar.SetPaneInfo( 3, ID_INFOSTATUSBAR           , SBPS_STRETCH, 70 );
+	statusBar.SetPaneInfo( 3, ID_MODELTIMESTATUSBAR      , SBPS_NORMAL , 100 );
+	statusBar.SetPaneInfo( 4, ID_MODELRUNTYPESTATUSBAR   , SBPS_STRETCH, 70 );
 
-	workspace.Create( "Workspace", this, -1 );
+	s.LoadString( ID_DOCK_WORKSPACE );
+	workspace.Create( s, this, -1 );
 	workspace.SetBarStyle( workspace.GetBarStyle() | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
 
-	output.Create( "Output", this, -1 );
+	s.LoadString( ID_DOCK_OUTPUT );
+	output.Create( s, this, -1 );
 	output.SetBarStyle( output.GetBarStyle() | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
 
 	projectToolBar.EnableDocking( CBRS_ALIGN_ANY );
