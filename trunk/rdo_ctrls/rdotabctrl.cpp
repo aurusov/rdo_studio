@@ -238,6 +238,8 @@ void RDOTab::setCurrentItem( const int index )
 // ----------------------------------------------------------------------------
 // ---------- RDOTabCtrl
 // ----------------------------------------------------------------------------
+IMPLEMENT_DYNAMIC( RDOTabCtrl, CWnd )
+
 BEGIN_MESSAGE_MAP( RDOTabCtrl, CWnd )
 	//{{AFX_MSG_MAP(RDOTabCtrl)
 	ON_WM_CREATE()

@@ -12,6 +12,7 @@ class RDOTab;
 
 class RDOTabCtrl: public CWnd
 {
+DECLARE_DYNAMIC( RDOTabCtrl )
 friend class RDOTab;
 
 protected:
