@@ -609,6 +609,7 @@ BOOL RDOStudioOptionsColorsStyles::OnInitDialog()
 	sheet->preview_serie.addValue( new RDOTracerValue( &sheet->preview_times.at( 4 ), 1, 2 ) );
 	sheet->preview_serie.addValue( new RDOTracerValue( &sheet->preview_times.at( 5 ), 0, 3 ) );
 	sheet->preview_chart_doc->addSerie( &sheet->preview_serie );
+	sheet->chart_need_delete = false;
 
 	sheet->preview_frame.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, 0 );
 	sheet->preview_frame.setStyle( &sheet->style_frame );
@@ -1730,7 +1731,8 @@ RDOStudioOptions::RDOStudioOptions():
 	editor( NULL ),
 	tabs( NULL ),
 	styles( NULL ),
-	plugins( NULL )
+	plugins( NULL ),
+	chart_need_delete( true )
 {
 	SetTitle( format( ID_OPTIONS ).c_str() );
 
@@ -1773,10 +1775,10 @@ RDOStudioOptions::RDOStudioOptions():
 
 RDOStudioOptions::~RDOStudioOptions()
 {
-	//dont calll destructors for preview_chart & preview_chart_doc
-	//if the property page that contains them was showed (preview_chart has safe Hwnd)
+	//dont call destructors for preview_chart & preview_chart_doc
+	//if the property page that contains them was showed (chart_need_delete == false)
 	//because framework kills them itself
-	if ( preview_chart_doc && preview_chart && !preview_chart->GetSafeHwnd() ) {
+	if ( chart_need_delete ) {
 		delete preview_chart_doc; preview_chart_doc = NULL;
 		delete preview_chart;     preview_chart = NULL;
 	}

@@ -372,7 +372,8 @@ private:
 	rdoTracerLog::RDOTracerLogCtrl preview_trace;
 	rdoEditor::RDOEditorResults    preview_results;
 	rdoEditCtrl::RDOFindEdit       preview_find;
-	
+
+	bool                           chart_need_delete;
 	RDOStudioChartDoc*             preview_chart_doc;
 	RDOStudioChartView*            preview_chart;
 	std::vector<RDOTracerTimeNow>  preview_times;
