@@ -12,6 +12,7 @@ HEADERS += about_wget.h\
            log_view.h\
            mainform.h\
            wget_process.h\
+           config_file.h\
            processes_list.h
 
 INTERFACES += about_wget_base.ui\
@@ -28,6 +29,7 @@ SOURCES += about_wget.cpp\
            mainform.cpp\
            processes_list.cpp\
            unicode_log.cpp\
+           config_file.cpp\
            wget_process.cpp
 
 win32-msvc:RC_FILE = winwget.rc
