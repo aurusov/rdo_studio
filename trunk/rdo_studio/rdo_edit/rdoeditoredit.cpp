@@ -371,9 +371,7 @@ void RDOEditorEdit::completeWord()
 	int line = getCurrentLineNumber();
 	sendEditor( SCI_GETLINE, line, (long)currentLine );
 
-	int currentPos = getCurrentPos();
-	int lineStart  = sendEditor( SCI_POSITIONFROMLINE, line );
-	currentPos -= lineStart;
+	int currentPos = getCurrentPos() - getPositionFromLine( line );
 
 	int startPos     = currentPos;
 	int startPos_old = startPos;

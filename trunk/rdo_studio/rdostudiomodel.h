@@ -25,8 +25,6 @@ private:
 	bool canNotCloseByModel;
 	bool running;
 
-	rdoEditor::RDOEditorTabCtrl* getTab() const;
-
 	static void newModelNotify();
 	static void openModelNotify();
 	static void saveModelNotify();
@@ -64,6 +62,8 @@ public:
 
 	bool isModify() const;
 	bool isRunning() const { return running; };
+
+	rdoEditor::RDOEditorTabCtrl* getTab() const;
 };
 
 // ----------------------------------------------------------------------------

@@ -129,7 +129,7 @@ RDOEditorTabItem RDOEditorTabCtrl::getCurrentRDOItem() const
 		case  6: return RDOEDIT_DPT;
 		case  7: return RDOEDIT_SMR;
 		case  8: return RDOEDIT_PMD;
-		default: return RDOEDIT_NONE;
+		default: return RDOEDIT_PAT;
 	}
 }
 
@@ -146,7 +146,6 @@ void RDOEditorTabCtrl::setCurrentRDOItem( const RDOEditorTabItem item )
 		case RDOEDIT_DPT: index =  6; break;
 		case RDOEDIT_SMR: index =  7; break;
 		case RDOEDIT_PMD: index =  8; break;
-		default: break;
 	}
 	if ( index != -1 ) setCurrentItem( index );
 }

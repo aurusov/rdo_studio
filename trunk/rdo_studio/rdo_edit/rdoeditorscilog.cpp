@@ -1,5 +1,9 @@
 #include "stdafx.h"
 #include "rdoeditorscilog.h"
+#include "../rdostudioapp.h"
+#include "../rdostudiomodel.h"
+#include "rdoeditortabctrl.h"
+#include "sci/LexRdo.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -39,7 +43,7 @@ string RDOEditorSciLogLineInfo::getMessage() const
 	if ( file.empty() || lineNumber == -1 ) {
 		return message;
 	} else {
-		return format( "%s (%d): %s", file.c_str(), lineNumber, message.c_str() );
+		return format( "%s (%d): %s", file.c_str(), lineNumber + 1, message.c_str() );
 	}
 }
 
@@ -68,7 +72,7 @@ BOOL RDOEditorSciLog::OnNotify( WPARAM wParam, LPARAM lParam, LRESULT* pResult )
 		SCNotification* scn = (SCNotification*)lParam;
 		if ( scn->nmhdr.hwndFrom == sciHWND ) {
 			switch( scn->nmhdr.code ) {
-				case SCN_DOUBLECLICK: {
+				case SCN_RDO_AFTERDBLCLICK: {
 					setSelectLine();
 					return TRUE;
 				}
@@ -117,8 +121,31 @@ void RDOEditorSciLog::setSelectLine()
 			it++;
 		}
 	}
-	if ( it != lines.end() ) {
-		TRACE( "%s\r\n", (*it).getMessage().c_str() );
+	if ( it != lines.end() && (*it).lineNumber != -1 ) {
+		RDOEditorTabCtrl* tab = model->getTab();
+		if ( tab ) {
+			RDOEditorTabItem tabItem;
+			switch ( (*it).fileType ) {
+				case rdoModelObjects::PAT: tabItem = RDOEDIT_PAT; break;
+				case rdoModelObjects::RTP: tabItem = RDOEDIT_RTP; break;
+				case rdoModelObjects::RSS: tabItem = RDOEDIT_RSS; break;
+				case rdoModelObjects::OPR: tabItem = RDOEDIT_OPR; break;
+				case rdoModelObjects::FRM: tabItem = RDOEDIT_FRM; break;
+				case rdoModelObjects::FUN: tabItem = RDOEDIT_FUN; break;
+				case rdoModelObjects::DPT: tabItem = RDOEDIT_DPT; break;
+				case rdoModelObjects::SMR: tabItem = RDOEDIT_SMR; break;
+				case rdoModelObjects::PMD: tabItem = RDOEDIT_PMD; break;
+				default: tabItem = RDOEDIT_PAT;
+			}
+			if ( tab->getCurrentRDOItem() != tabItem ) {
+				tab->setCurrentRDOItem( tabItem );
+			}
+			RDOEditorSciEdit* edit = tab->getCurrentEdit();
+			if ( edit ) {
+				edit->scrollToLine( (*it).lineNumber, edit->getPositionFromLine( (*it).lineNumber ) );
+				edit->SetFocus();
+			}
+		}
 	}
 }
 

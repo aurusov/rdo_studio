@@ -188,15 +188,16 @@ public:
 	void bookmarkClearAll() const;
 	bool hasBookmarks() const;
 
-	int getLength() const                       { return sendEditor( SCI_GETLENGTH );                           };
-	int getLineCount() const                    { return sendEditor( SCI_GETLINECOUNT );                        };
-	int getCurrentPos() const                   { return sendEditor( SCI_GETCURRENTPOS );                       };
+	int getLength() const                           { return sendEditor( SCI_GETLENGTH );                           };
+	int getLineCount() const                        { return sendEditor( SCI_GETLINECOUNT );                        };
+	int getCurrentPos() const                       { return sendEditor( SCI_GETCURRENTPOS );                       };
+	int getPositionFromLine( const int line ) const { return sendEditor( SCI_POSITIONFROMLINE, line );              };
 	void setCurrentPos( const int value ) const;
 	void setCurrentPos( const int line, int pos_in_line, const bool convert_rdo_tab = false ) const;
-	int getCurrentLineNumber() const            { return sendEditor( SCI_LINEFROMPOSITION, getCurrentPos() );   };
-	int getCurrentColumnNumber() const          { return sendEditor( SCI_GETCOLUMN, getCurrentPos() );          };
+	int getCurrentLineNumber() const                { return sendEditor( SCI_LINEFROMPOSITION, getCurrentPos() );   };
+	int getCurrentColumnNumber() const              { return sendEditor( SCI_GETCOLUMN, getCurrentPos() );          };
 	bool isLineVisible( const int line ) const;
-	void scrollToLine( const int line ) const;
+	void scrollToLine( const int line, int setPosition = -1 ) const;
 
 	string getCurrentWord() const;
 	string getSelection() const;

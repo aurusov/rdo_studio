@@ -15,8 +15,7 @@ namespace rdoEditor {
 // ---------- RDOEditorTabCtrl
 // ----------------------------------------------------------------------------
 enum RDOEditorTabItem {
-	RDOEDIT_NONE = -1,
-	RDOEDIT_PAT  = 0,
+	RDOEDIT_PAT = 0,
 	RDOEDIT_RTP,
 	RDOEDIT_RSS,
 	RDOEDIT_OPR,

@@ -3571,11 +3571,11 @@ void Editor::ButtonDown(Point pt, unsigned int curTime, bool shift, bool ctrl, b
 	if (shift & !inSelMargin) {
 		SetSelection(newPos);
 	}
+	bool doubleClick = false;
 	if (((curTime - lastClickTime) < Platform::DoubleClickTime()) && Close(pt, lastClick)) {
 		//Platform::DebugPrintf("Double click %d %d = %d\n", curTime, lastClickTime, curTime - lastClickTime);
 		SetMouseCapture(true);
 		SetEmptySelection(newPos);
-		bool doubleClick = false;
 		// Stop mouse button bounce changing selection type
 		if (curTime != lastClickTime) {
 			if (selectionType == selChar) {
@@ -3661,6 +3661,12 @@ void Editor::ButtonDown(Point pt, unsigned int curTime, bool shift, bool ctrl, b
 	lastClickTime = curTime;
 	lastXChosen = pt.x;
 	ShowCaretAtCurrentPosition();
+
+	if ( doubleClick ) {
+		SCNotification scn;
+		scn.nmhdr.code = SCN_RDO_AFTERDBLCLICK;
+		NotifyParent(scn);
+	}
 }
 
 void Editor::ButtonMove(Point pt) {

@@ -1224,7 +1224,7 @@ void RDOEditorSciEdit::setCurrentPos( const int value ) const
 
 void RDOEditorSciEdit::setCurrentPos( const int line, int pos_in_line, const bool convert_rdo_tab ) const
 {
-	int pos = sendEditor( SCI_POSITIONFROMLINE, line );
+	int pos = getPositionFromLine( line );
 	int line_length = sendEditor( SCI_LINELENGTH, line );
 	char currentLine[8000];
 	bool canUseLine = false;
@@ -1277,9 +1277,13 @@ bool RDOEditorSciEdit::isLineVisible( const int line ) const
 	return line >= first_line && line <= last_line;
 }
 
-void RDOEditorSciEdit::scrollToLine( const int line ) const
+void RDOEditorSciEdit::scrollToLine( const int line, int setPosition ) const
 {
 	sendEditor( SCI_LINESCROLL, 0, line );
+	if ( setPosition != -1 ) {
+		sendEditor( SCI_GOTOPOS, setPosition );
+		setCurrentPos( setPosition );
+	}
 }
 
 void RDOEditorSciEdit::load( strstream& stream ) const
@@ -1355,7 +1359,7 @@ void RDOEditorSciEdit::autoIndent() const
 	CharacterRange crange = getSelectionRange();
 	int selStart      = crange.cpMin;
 	int curLine       = getCurrentLineNumber();
-	int thisLineStart = sendEditor( SCI_POSITIONFROMLINE, curLine );
+	int thisLineStart = getPositionFromLine( curLine );
 	int indentSize    = sendEditor( SCI_GETINDENT );
 	int indentBlock   = indentOfBlock( curLine - 1 );
 
@@ -1608,7 +1612,7 @@ int RDOEditorSciEdit::findLine( string& findWhat, const int startFromLine, const
 	int findLen = findWhat.length();
 	if ( !findLen ) return -1;
 
-	int startPosition = sendEditor( SCI_POSITIONFROMLINE, startFromLine );
+	int startPosition = getPositionFromLine( startFromLine );
 	int endPosition   = getLength();
 
 	int flags = (matchCase ? SCFIND_MATCHCASE : 0) | (matchWholeWord ? SCFIND_WHOLEWORD : 0);

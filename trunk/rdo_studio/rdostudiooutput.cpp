@@ -178,8 +178,7 @@ void RDOStudioOutput::appendString( const RDOEditorSciEdit* const edit, const st
 	if ( scroll ) {
 		int line = edit->getLineCount();
 		int line_to_scroll = line > 0 ? line - 1 : 0;
-		edit->scrollToLine( line_to_scroll );
-		edit->setCurrentPos( edit->getLength() );
+		edit->scrollToLine( line_to_scroll, edit->getLength() );
 	}
 	if ( readOnly ) {
 		edit->setReadOnly( true );
