@@ -62,6 +62,11 @@ int RDORTPResType::getRTPParamNumber(const string *const param) const
 	return -1;
 }
 
+int RDORTPResType::writeModelStructure()
+{
+	return 0;
+}
+
 const RDORTPResParam *RDORTPResParam::constructSuchAs() const 
 { 
 	return this; 

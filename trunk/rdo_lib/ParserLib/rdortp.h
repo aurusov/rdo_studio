@@ -141,6 +141,7 @@ public:
 	bool isPerm() const { return isPermanent; };
 	int getType() const { return type; };
 	const vector<const RDORTPParamDesc *>& getParams() const { return params; }
+	int writeModelStructure();
 };
 
 

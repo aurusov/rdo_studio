@@ -17,5 +17,9 @@ RDORSSResource::RDORSSResource(const string *const _name, const RDORTPResType *c
 	currParam = resType->getParams().begin();
 }
 
+int RDORSSResource::writeModelStructure()
+{
+	return 0;
+}
 
 }		// namespace rdoParse 

@@ -27,6 +27,7 @@ public:
 	const string *const getName() const { return name; }
 	const vector<RDOValue>& getValues() const { return values; }
 	void addValue(RDOValue val) { values.push_back(val); }
+	int writeModelStructure();
 };
 
 

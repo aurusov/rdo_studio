@@ -130,6 +130,8 @@ void RDOParser::parseRTP(istream* arg_yyin, ostream* arg_yyout)
 
 	currParser = this;
 	rtpparse(); 
+	modelStructure << "$Resource_type" << endl;
+	for_each(allRTPResType.begin(), allRTPResType.end(), mem_fun(&RDORTPResType::writeModelStructure));
 	currParser = NULL;
 }
 
@@ -143,6 +145,8 @@ void RDOParser::parseRSS(istream* arg_yyin, ostream* arg_yyout)
 		throw RDOSyntaxException("Internal error 0002");
 
 	currParser = this;
+	modelStructure << "$Resources" << endl;
+	for_each(allRSSResource.begin(), allRSSResource.end(), mem_fun(&RDORSSResource::writeModelStructure));
 	rssparse(); 
 	currParser = NULL;
 }
@@ -170,6 +174,8 @@ void RDOParser::parsePAT(istream* arg_yyin, ostream* arg_yyout)
 		throw RDOSyntaxException("Internal error 0002");
 
 	currParser = this;
+	modelStructure << "$Pattern" << endl;
+	for_each(allPATPatterns.begin(), allPATPatterns.end(), mem_fun(&RDOPATPattern::writeModelStructure));
 	patparse(); 
 	currParser = NULL;
 }
@@ -183,6 +189,7 @@ void RDOParser::parseOPR(istream* arg_yyin, ostream* arg_yyout)
 		throw RDOSyntaxException("Internal error 0030");
 
 	currParser = this;
+	modelStructure << "$Activities" << endl;
 	oprparse(); 
 	currParser = NULL;
 }
@@ -196,6 +203,7 @@ void RDOParser::parseDPT(istream* arg_yyin, ostream* arg_yyout)
 		throw RDOSyntaxException("Internal error 0030");
 
 	currParser = this;
+	modelStructure << "$Activities" << endl;
 	dptparse(); 
 	currParser = NULL;
 }

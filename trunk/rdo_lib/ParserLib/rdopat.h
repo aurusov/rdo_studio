@@ -135,6 +135,8 @@ public:
 	virtual void testGoodForSearchActivity() const;
 	virtual void testGoodForSomeActivity() const;
 	virtual void testGoodForFreeActivity() const;
+
+	int writeModelStructure();
 };
 
 class RDOPATPatternOperation: public RDOPATPattern

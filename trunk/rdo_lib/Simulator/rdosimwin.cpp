@@ -65,9 +65,9 @@ void RdoSimulator::addAreaPressed(string& areaName)
 
 void frameCallBack(rdoRuntime::RDOConfig *config, void *param)
 {
-	if(config->showAnimation == SM_Animation)
+	RdoSimulator *simulator = (RdoSimulator *)param;
+	if((config->showAnimation == SM_Animation) && (config->showAnimation == SM_Animation))
 	{
-		RdoSimulator *simulator = (RdoSimulator *)param;
 		simulator->frame = config->frame;
 
 		kernel.notify(RDOKernel::showFrame);
@@ -81,6 +81,8 @@ void frameCallBack(rdoRuntime::RDOConfig *config, void *param)
 		delete config->frame;
 		Sleep(config->realTimeDelay);
 	}
+
+	config->showAnimation = simulator->getShowMode();
 }
 
 void tracerCallBack(string *newString, void *param)
@@ -277,6 +279,9 @@ bool RdoSimulator::parseModel()
 		closeModel();
 		return false;
 	}
+
+	showMode = getInitialShowMode();
+
 /*
 	if(parser->errors.size() > 0)
 	{
@@ -289,12 +294,11 @@ bool RdoSimulator::parseModel()
 	}
 */
 	
-//	vector<const string *> vv = getAllBitmaps();
-
-//	ShowMode sm = getInitialShowMode();
-
 	kernel.notify(RDOKernel::parseSuccess);
 	kernel.notifyString(RDOKernel::buildString, "End parsing\n");
+
+
+//	kernel.notifyString(RDOKernel::buildString, getModelStructure().c_str());
 
 	return true;
 }
@@ -454,5 +458,11 @@ double RdoSimulator::getInitialShowRate()
 {
 	return *parser->smr->showRate;
 }
+
+string RdoSimulator::getModelStructure()
+{
+	return parser->modelStructure.str();
+}
+
 
 }// namespace RDOSimulatorNS

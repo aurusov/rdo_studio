@@ -100,6 +100,7 @@ public:
 
 	vector<RDOSimulatorNS::RDOSyntaxError> errors;
 
+	stringstream modelStructure;
 	
 	RDOParser();
 	~RDOParser();

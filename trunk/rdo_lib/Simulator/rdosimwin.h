@@ -38,6 +38,8 @@ class RdoSimulator
 
 	void terminateModel();
 	void closeModel(); 
+
+	ShowMode showMode; // current show mode
 public:
 	RdoSimulator();
 	~RdoSimulator();
@@ -58,7 +60,12 @@ public:
 	ShowMode getInitialShowMode();
 	int getInitialFrameNumber();
 	double getInitialShowRate();
-	
+
+	string getModelStructure();
+
+	ShowMode getShowMode() { return showMode; }
+	void setShowMode(ShowMode _showMode) { showMode = _showMode; }
+
 	friend UINT RunningThreadControllingFunction( LPVOID pParam );
 	friend void frameCallBack(rdoRuntime::RDOConfig *config, void *param);
 	friend void tracerCallBack(string *newString, void *param);

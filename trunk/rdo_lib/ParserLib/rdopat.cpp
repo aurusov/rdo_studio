@@ -41,6 +41,11 @@ void RDOPATPattern::testGoodForFreeActivity() const
 	currParser->error("Only IEs amd KEYBOARD OPERATIONs can be used in free activity");
 }
 
+int RDOPATPattern::writeModelStructure()
+{
+	return 0;
+}
+
 void RDOPATPatternRule::testGoodForSearchActivity() const
 {
 	for(vector<RDORelevantResource *>::const_iterator i = relRes.begin();
