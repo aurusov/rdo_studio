@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "rdostudiochartdoc.h"
 #include "./rdo_tracer/rdotracertrace.h"
+#include "./rdo_tracer/rdotracerserie.h"
+#include "./rdo_tracer/rdotracervalues.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -42,7 +44,7 @@ void RDOStudioChartDoc::Serialize(CArchive& ar)
 	}
 }
 
-int RDOStudioChartDoc::findSerie( const RDOTracerSerie* serie ) const
+/*int RDOStudioChartDoc::findSerie( const RDOTracerSerie* serie ) const
 {
 	int res = -1;
 	if ( !serie ) return res;
@@ -53,15 +55,50 @@ int RDOStudioChartDoc::findSerie( const RDOTracerSerie* serie ) const
 	}
 	if ( it == series.end() ) res = -1;
 	return res;
+}*/
+
+void insertTime::operator ()( RDOTracerValue* val )
+{
+	if( val ) {
+		timesList::iterator it = find( times->begin(), times->end(), val->modeltime );
+		if ( it != times->end() )
+			return;
+		it = find_if( times->begin(), times->end(), checkMoreThen( val->modeltime ) );
+		times->insert( it, val->modeltime );
+	}
+}
+
+bool checkMoreThen::operator ()( RDOTracerTimeNow* val )
+{
+	if( val ) {
+		return val->time > checktime->time;
+	}
+}
+
+void RDOStudioChartDoc::addSerieTimes( RDOTracerSerie* const serie )
+{
+	/*int count = serie->getValueCount();
+	if ( !count )
+		return;
+	list< RDOTracerValue* >::const_iterator it = serie->getValueIterator( 0 );
+	RDOTracerTimeNow* last = NULL;
+	for ( int i = 0; i < count; i++, it++ ) {
+		RDOTracerTimeNow* timenow = (*it)->modeltime;
+		if ( last != timenow )
+			docTimes.push_back( timenow );
+		last = timenow;
+	}*/
+	for_each( serie->begin(), serie->end(), insertTime( &docTimes ) );
 }
 
 void RDOStudioChartDoc::addSerie( RDOTracerSerie* const serie )
 {
 	if ( serie && !serieExists( serie ) ) {
-		RDOStudioDocSerie docserie;
-		docserie.serie = serie;
+		RDOStudioDocSerie docserie( serie );
+		//docserie.serie = serie;
 		docserie.color = selectColor();
 		series.push_back( docserie );
+		addSerieTimes( serie );
 		serie->addToDoc( this );
 		UpdateAllViews( NULL );
 	}
@@ -70,10 +107,8 @@ void RDOStudioChartDoc::addSerie( RDOTracerSerie* const serie )
 void RDOStudioChartDoc::removeSerie( RDOTracerSerie* const serie )
 {
 	if ( !serie ) return;
-	int index = findSerie( serie );
-	if ( index != -1) {
-		vector<RDOStudioDocSerie>::iterator it = series.begin();
-		it += index;
+	vector<RDOStudioDocSerie>::iterator it = find( series.begin(), series.end(), serie );
+	if ( it != series.end() ) {
 		(*it).serie->removeFromDoc( this );
 		series.erase( it );
 		UpdateAllViews( NULL );

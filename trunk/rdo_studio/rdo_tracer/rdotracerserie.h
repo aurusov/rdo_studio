@@ -20,20 +20,21 @@ class RDOStudioChartDoc;
 class RDOTracerValue;
 class RDOTracerTimeNow;
 
+typedef list< RDOTracerValue* > valuesList;
+
 class RDOTracerSerie : public RDOTracerTreeItem
 {
 protected:
 	RDOTracerSerieKind serieKind;
 	string title;
 
-	list< RDOTracerValue* > values;
+	valuesList values;
 
 	bool isTemporaryResourceParam() const;
 
-	int findValue( RDOTracerValue* const value ) const;
+	//list< RDOTracerValue* >::const_iterator findValue( RDOTracerValue* const value ) const;
 
 	vector< RDOStudioChartDoc* > documents;
-	int findDoc( RDOStudioChartDoc* const doc ) const;
 public:
 	RDOTracerSerie( RDOTracerSerieKind _serieKind );
 	virtual ~RDOTracerSerie();
@@ -44,8 +45,11 @@ public:
 	void setTitle( const string& value );
 
 	int addValue( RDOTracerValue* const value );
-	RDOTracerValue* getValue( const int index ) const;
+	//RDOTracerValue* getValue( const int index ) const;
+	//list< RDOTracerValue* >::const_iterator getValueIterator( const int index ) const;
 	int getValueCount() const;
+	valuesList::const_iterator begin() const { return values.begin(); };
+	valuesList::const_iterator end() const { return values.end(); };
 	RDOTracerValue* getLastValue() const;
 //	double getMinValue() const { return minValue; };
 //	double getMaxValue() const { return maxValue; };

@@ -281,7 +281,7 @@ void RDOStudioChartView::OnDraw(CDC* pDC)
 	
 	//temporary
 	if ( pDoc->series.size() )
-		yaxis = pDoc->series.at( 0 ).serie;
+		yaxis = pDoc->series.at( 0 ).getSerie();
 	//temporary
 
 	GetClientRect( &newClientRect );
@@ -344,7 +344,7 @@ void RDOStudioChartView::OnDraw(CDC* pDC)
 
 		int count = pDoc->series.size();
 		for ( int i = 0; i < count; i++ ) {
-			pDoc->series.at( i ).serie->drawSerie( this, dc, rect, pDoc->series.at( i ).color );
+			pDoc->series.at( i ).getSerie()->drawSerie( this, dc, rect, pDoc->series.at( i ).getColor() );
 		}
 	}
 

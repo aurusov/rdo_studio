@@ -5,18 +5,47 @@
 #pragma once
 #endif
 
-#include <vector>
-
-#include "./rdo_tracer/rdotracerserie.h"
+#include <algorithm>
 
 using namespace std;
 
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioChartDoc
 // ----------------------------------------------------------------------------
-struct RDOStudioDocSerie {
+class RDOTracerSerie;
+class RDOTracerTimeNow;
+class RDOTracerValue;
+
+typedef list< RDOTracerTimeNow* > timesList;
+
+class RDOStudioDocSerie
+{
+friend class RDOStudioChartDoc;
+protected:
 	RDOTracerSerie* serie;
 	COLORREF color;
+public:
+	RDOStudioDocSerie( RDOTracerSerie* _serie ) : serie( _serie ){};
+	~RDOStudioDocSerie() {};
+	RDOTracerSerie* getSerie() const { return serie; };
+	COLORREF getColor() const { return color; };
+	bool operator ==( const RDOTracerSerie* _serie ) const { return serie == _serie; };
+};
+
+class insertTime
+{
+	timesList* times;
+public:
+	insertTime( timesList* _times ): times( _times ) {};
+	void operator ()( RDOTracerValue* val );
+};
+
+class checkMoreThen
+{
+	RDOTracerTimeNow* checktime;
+public:
+	checkMoreThen( RDOTracerTimeNow* _checktime ): checktime( _checktime ) {};
+	bool operator ()( RDOTracerTimeNow* val );
 };
 
 class RDOStudioChartDoc : public CDocument
@@ -27,10 +56,15 @@ protected:
 	RDOStudioChartDoc();
 	DECLARE_DYNCREATE(RDOStudioChartDoc)
 
-	vector <RDOStudioDocSerie> series;
-	int findSerie( const RDOTracerSerie* serie ) const;
-	bool serieExists( const RDOTracerSerie* serie ) const { return findSerie( serie ) != -1; };
+	vector< RDOStudioDocSerie > series;
+	//int findSerie( const RDOTracerSerie* serie ) const;
+	//bool isEqualTracerSerie();
+	bool serieExists( const RDOTracerSerie* serie ) const { return find( series.begin(), series.end(), serie ) != series.end(); };
 	COLORREF selectColor();
+
+	timesList docTimes;
+	//static void insertTime( RDOTracerValue* const val );
+	void addSerieTimes( RDOTracerSerie* const serie );
 
 public:
 	//{{AFX_VIRTUAL(RDOStudioChartDoc)

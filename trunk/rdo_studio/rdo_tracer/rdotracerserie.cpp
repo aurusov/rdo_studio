@@ -4,6 +4,7 @@
 #include "rdotracerresource.h"
 #include "rdotracerrestype.h"
 #include "../rdostudiochartview.h"
+#include <algorithm>
 
 // ----------------------------------------------------------------------------
 // ---------- RDOTracerSerie
@@ -18,7 +19,7 @@ RDOTracerSerie::RDOTracerSerie( RDOTracerSerieKind _serieKind ) :
 
 RDOTracerSerie::~RDOTracerSerie()
 {
-	list< RDOTracerValue* >::iterator it = values.begin();
+	valuesList::iterator it = values.begin();
 	while ( it != values.end() ) {
 		delete *it;
 		it++;
@@ -32,18 +33,21 @@ bool RDOTracerSerie::isTemporaryResourceParam() const
 	return serieKind == RDOST_RESPARAM && ((RDOTracerResParam*)this)->getResource()->getType()->getResTypeKind() == RDOTK_TEMPORARY;
 };
 
-int RDOTracerSerie::findValue( RDOTracerValue* const value ) const
+/*list< RDOTracerValue* >::const_iterator RDOTracerSerie::findValue( RDOTracerValue* const value ) const
 {
-	int res = -1;
-	for ( list< RDOTracerValue* >::const_iterator it = values.begin(); it != values.end(); it++ ) {
-		res ++;
-		if ( (*it) == value ) {
-			break;
-		}
-	}
-	if ( it == values.end() ) res = -1;
-	return res;
-}
+	//int res = -1;
+	//for ( list< RDOTracerValue* >::const_iterator it = values.begin(); it != values.end(); it++ ) {
+	//	res ++;
+	//	if ( (*it) == value ) {
+	//		break;
+	//	}
+	//}
+	//if ( it == values.end() ) res = -1;
+	//return res;
+	list< RDOTracerValue* >::const_iterator it = find( values.begin(), values.end(), value );
+	if ( it == values.end() ) return -1;
+	return it;
+}*/
 
 string RDOTracerSerie::getTitle() const
 {
@@ -62,7 +66,7 @@ int RDOTracerSerie::addValue( RDOTracerValue* const value )
 	return values.size() - 1;
 }
 
-RDOTracerValue* RDOTracerSerie::getValue( const int index ) const
+/*RDOTracerValue* RDOTracerSerie::getValue( const int index ) const
 {
 	if ( index >= values.size() || index < 0 )
 		return NULL;
@@ -70,7 +74,17 @@ RDOTracerValue* RDOTracerSerie::getValue( const int index ) const
 	for ( int i = 0; i < index; i++ )
 		it++;
 	return (*it);
-}
+}*/
+
+/*list< RDOTracerValue* >::const_iterator RDOTracerSerie::getValueIterator( const int index ) const
+{
+	list< RDOTracerValue* >::const_iterator it = values.begin();
+	if ( index >= values.size() || index < 0 )
+		return it;
+	for ( int i = 0; i < index; i++ )
+		it++;
+	return it;
+}*/
 
 int RDOTracerSerie::getValueCount() const
 {
@@ -247,31 +261,21 @@ void RDOTracerSerie::drawSerie( RDOStudioChartView* const view, CDC &dc, CRect &
 	dc.SetBkMode( oldBkMode );
 }
 
-int RDOTracerSerie::findDoc( RDOStudioChartDoc* const doc ) const
+int RDOTracerSerie::addToDoc( RDOStudioChartDoc* const doc )
 {
 	int res = -1;
 	if ( !doc ) return res;
-	for ( vector <RDOStudioChartDoc*>::const_iterator it = documents.begin(); it != documents.end(); it++ ) {
-		res ++;
-		if ( (*it) == doc ) {
-			break;
-		}
+	if ( find( documents.begin(), documents.end(), doc ) == documents.end() ) {
+		documents.push_back( doc );
+		res = documents.size() - 1;
 	}
 	return res;
 }
 
-int RDOTracerSerie::addToDoc( RDOStudioChartDoc* const doc )
-{
-	if ( !doc ) return -1;
-	documents.push_back( doc );
-	return documents.size() - 1;
-}
-
 void RDOTracerSerie::removeFromDoc( RDOStudioChartDoc* const doc )
 {
-	int index = findDoc( doc );
-	if ( index != -1 ) {
-		vector <RDOStudioChartDoc*>::iterator it = documents.begin();
-		documents.erase( it + index );
+	vector <RDOStudioChartDoc*>::iterator it = find( documents.begin(), documents.end(), doc );
+	if ( it != documents.end() ) {
+		documents.erase( it );
 	}
 }
