@@ -44,16 +44,52 @@ bool CChatStatusMode::operator!= ( const CChatStatusMode& statusMode )
 // ----------------------------------------------------------------------------
 // ---------- CChatStatusModeList
 // ----------------------------------------------------------------------------
-CChatStatusModeList::CChatStatusModeList(): CList< CChatStatusMode*, CChatStatusMode* >()
+CChatStatusModeList::CChatStatusModeList()
 {
 }
 
 CChatStatusModeList::~CChatStatusModeList()
 {
-	while ( POSITION pos = GetTailPosition() ) {
-		delete GetAt( pos );
-		RemoveTail();
+	clear();
+}
+
+void CChatStatusModeList::clear()
+{
+	std::vector< CChatStatusMode* >::iterator it = list.begin();
+	while ( it != list.end() ) {
+		delete *it++;
 	}
+	list.clear();
+}
+
+CChatStatusModeList& CChatStatusModeList::operator= ( const CChatStatusModeList& statusModeList )
+{
+	clear();
+	std::vector< CChatStatusMode* >::const_iterator it = statusModeList.list.begin();
+	while ( it != statusModeList.list.end() ) {
+		CChatStatusMode* status = *it++;
+		list.push_back( new CChatStatusMode( *status ) );
+	}
+	return *this;
+}
+
+bool CChatStatusModeList::operator== ( const CChatStatusModeList& statusModeList )
+{
+	std::vector< CChatStatusMode* >::const_iterator it1 = list.begin();
+	std::vector< CChatStatusMode* >::const_iterator it2 = statusModeList.list.begin();
+	while ( it1 != list.end() && it2 != statusModeList.list.end() ) {
+		CChatStatusMode* status1 = *it1++;
+		CChatStatusMode* status2 = *it2++;
+		if ( *status1 != *status2 ) {
+			return false;
+		};
+	}
+	return true;
+}
+
+bool CChatStatusModeList::operator!= ( const CChatStatusModeList& statusModeList )
+{
+	return !( *this == statusModeList );
 }
 
 void CChatStatusModeList::init()
@@ -64,17 +100,17 @@ void CChatStatusModeList::init()
 	statusMode->type = CSMT_Online;
 	statusMode->name = app->GetProfileString( "StatusMode\\Online", "name", getDefaultName( CSMT_Online ).c_str() );
 	statusMode->info = app->GetProfileString( "StatusMode\\Online", "info", "" );
-	AddTail( statusMode );
+	list.push_back( statusMode );
 	statusMode = new CChatStatusMode();
 	statusMode->type = CSMT_Away;
 	statusMode->name = app->GetProfileString( "StatusMode\\Away", "name", getDefaultName( CSMT_Away ).c_str() );
 	statusMode->info = app->GetProfileString( "StatusMode\\Away", "info", "" );
-	AddTail( statusMode );
+	list.push_back( statusMode );
 	statusMode = new CChatStatusMode();
 	statusMode->type = CSMT_NotAvailible;
 	statusMode->name = app->GetProfileString( "StatusMode\\NotAvailible", "name", getDefaultName( CSMT_NotAvailible ).c_str() );
 	statusMode->info = app->GetProfileString( "StatusMode\\NotAvailible", "info", "" );
-	AddTail( statusMode );
+	list.push_back( statusMode );
 }
 
 void CChatStatusModeList::saveSetting() const
@@ -94,12 +130,12 @@ void CChatStatusModeList::saveSetting() const
 
 CChatStatusMode* CChatStatusModeList::getStatusMode( const CChatStatusModeType statusModeType ) const
 {
-	POSITION pos = GetHeadPosition();
-	for ( int i = 0; i < GetCount(); i++ ) {
-		if ( GetAt( pos )->type == statusModeType ) {
-			return GetAt( pos );
+	std::vector< CChatStatusMode* >::const_iterator it = list.begin();
+	while ( it != list.end() ) {
+		if ( (*it)->type == statusModeType ) {
+			return *it;
 		}
-		GetNext( pos );
+		it++;
 	}
 	return NULL;
 }

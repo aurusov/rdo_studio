@@ -32,11 +32,21 @@ public:
 // ----------------------------------------------------------------------------
 // ---------- CChatStatusModeList
 // ----------------------------------------------------------------------------
-class CChatStatusModeList: public CList< CChatStatusMode*, CChatStatusMode* >
+class CChatStatusModeList
 {
+private:
+	std::vector< CChatStatusMode* > list;
+	void clear();
+
 public:
 	CChatStatusModeList();
 	virtual ~CChatStatusModeList();
+
+	CChatStatusModeList& operator= ( const CChatStatusModeList& statusModeList );
+	bool operator== ( const CChatStatusModeList& statusModeList );
+	bool operator!= ( const CChatStatusModeList& statusModeList );
+	CChatStatusMode* operator[] ( const int index ) { return list[index]; }
+	int count() const                               { return list.size(); }
 
 	CChatStatusMode* getStatusMode( const CChatStatusModeType statusModeType ) const;
 

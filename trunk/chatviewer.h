@@ -8,11 +8,9 @@
 // ----------------------------------------------------------------------------
 // ---------- CChatViewer
 // ----------------------------------------------------------------------------
-#define WM_LOGSELCHANGE WM_USER + 1
-
 class CChatViewer: public CWnd
 {
-protected:
+private:
 	CChatStringList strings;
 	CChatViewerStyle style;
 
@@ -24,9 +22,6 @@ protected:
 	int yPageSize;
 	int maxStrWidth;
 	CRect newClientRect;
-//	CRect clipRect;
-//	CRect prevClientRect;
-//	CRect prevWindowRect;
 	bool hasFocus;
 	int selectedLine;
 	bool horzScrollBarVisible;
@@ -49,6 +44,15 @@ protected:
 	int getStringsMaxWidth();
 	int getStrHeight( const int index );
 
+public:
+	CChatViewer();
+	virtual ~CChatViewer();
+
+	void addString( CChatString* str );
+
+	const CChatViewerStyle& getStyle() const;
+	void setStyle( const CChatViewerStyle& _style, const bool needRedraw = true );
+
 protected:
 	//{{AFX_VIRTUAL(CChatViewer)
 	protected:
@@ -70,15 +74,6 @@ protected:
 	afx_msg void OnPaint();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
-
-public:
-	CChatViewer();
-	virtual ~CChatViewer();
-
-	void addString( CChatString* str );
-
-	const CChatViewerStyle& getStyle() const;
-	void setStyle( const CChatViewerStyle& _style, const bool needRedraw = true );
 };
 
 //{{AFX_INSERT_LOCATION}}

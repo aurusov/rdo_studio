@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "chatoptions.h"
 #include "chatapp.h"
+#include "chatmainfrm.h"
 #include "resource.h"
 
 #ifdef _DEBUG
@@ -36,17 +37,15 @@ CChatGeneralOptions::CChatGeneralOptions(): CPropertyPage( IDD_OPTIONS_GENERAL_D
 {
 	userName = chatApp.getUserName().c_str();
 
-	CChatMainFrame* mainFrame = (CChatMainFrame*)AfxGetMainWnd();
+	useTray            = chatApp.mainFrame->getUseTray() ? 1 : 0;
+	notifyAboutMessage = chatApp.mainFrame->getNotifyAboutMessage() ? 1 : 0;
 
-	useTray            = mainFrame->getUseTray() ? 1 : 0;
-	notifyAboutMessage = mainFrame->getNotifyAboutMessage() ? 1 : 0;
+	closeButtonAction    = chatApp.mainFrame->getCloseButtonAction();
+	minimizeButtonAction = chatApp.mainFrame->getMinimizeButtonAction();
 
-	closeButtonAction    = mainFrame->getCloseButtonAction();
-	minimizeButtonAction = mainFrame->getMinimizeButtonAction();
-
-	usePopup      = mainFrame->popupMessage.getUsePopup() ? 1 : 0;
-	popupPosition = mainFrame->popupMessage.getPosition();
-	popupDelay    = mainFrame->popupMessage.getTimerDelay();
+	usePopup      = chatApp.mainFrame->popupMessage.getUsePopup() ? 1 : 0;
+	popupPosition = chatApp.mainFrame->popupMessage.getPosition();
+	popupDelay    = chatApp.mainFrame->popupMessage.getTimerDelay();
 }
 
 void CChatGeneralOptions::DoDataExchange( CDataExchange* pDX )
@@ -77,15 +76,14 @@ BOOL CChatGeneralOptions::OnInitDialog()
 	spin.SetBuddy( &edit );
 	spin.SetRange( 1, 99 );
 	edit.SetLimitText( 2 );
-	int itemHeight = ((CComboBox*)GetDlgItem( IDC_POPUPPOSITION_COMBO ))->GetItemHeight( -1 );
+	int itemHeight = static_cast<CComboBox*>(GetDlgItem( IDC_POPUPPOSITION_COMBO ))->GetItemHeight( -1 );
 	fgColorCB.setItemHeight( itemHeight );
 	bgColorCB.setItemHeight( itemHeight );
 	fgColorCB.insertBaseColors();
 	bgColorCB.insertBaseColors();
 
-	CChatMainFrame* mainFrame = (CChatMainFrame*)AfxGetMainWnd();
-	fgColorCB.insertColor( mainFrame->popupMessage.getTextColor() );
-	bgColorCB.insertColor( mainFrame->popupMessage.getBackgroundColor() );
+	fgColorCB.insertColor( chatApp.mainFrame->popupMessage.getTextColor() );
+	bgColorCB.insertColor( chatApp.mainFrame->popupMessage.getBackgroundColor() );
 
 	OnUseTrayCBChanged();
 	OnUsePopupCBChanged();
@@ -97,33 +95,31 @@ void CChatGeneralOptions::OnOK()
 {
 	chatApp.setUserName( static_cast<LPCTSTR>(userName) );
 
-	CChatMainFrame* mainFrame = (CChatMainFrame*)AfxGetMainWnd();
+	chatApp.mainFrame->setUseTray( useTray ? true : false );
+	chatApp.mainFrame->setNotifyAboutMessage( notifyAboutMessage ? true : false );
+	chatApp.mainFrame->setCloseButtonAction( (CChatCloseButtonAction)closeButtonAction );
+	chatApp.mainFrame->setMinimizeButtonAction( (CChatMinimizeButtonAction)minimizeButtonAction );
 
-	mainFrame->setUseTray( useTray ? true : false );
-	mainFrame->setNotifyAboutMessage( notifyAboutMessage ? true : false );
-	mainFrame->setCloseButtonAction( (CChatCloseButtonAction)closeButtonAction );
-	mainFrame->setMinimizeButtonAction( (CChatMinimizeButtonAction)minimizeButtonAction );
-
-	mainFrame->popupMessage.setUsePopup( usePopup ? true : false );
-	mainFrame->popupMessage.setPosition( (CChatPopupPosition)popupPosition );
-	mainFrame->popupMessage.setTimerDelay( popupDelay );
-	mainFrame->popupMessage.setTextColor( fgColorCB.getCurrentColor() );
-	mainFrame->popupMessage.setBackgroundColor( bgColorCB.getCurrentColor() );
+	chatApp.mainFrame->popupMessage.setUsePopup( usePopup ? true : false );
+	chatApp.mainFrame->popupMessage.setPosition( (CChatPopupPosition)popupPosition );
+	chatApp.mainFrame->popupMessage.setTimerDelay( popupDelay );
+	chatApp.mainFrame->popupMessage.setTextColor( fgColorCB.getCurrentColor() );
+	chatApp.mainFrame->popupMessage.setBackgroundColor( bgColorCB.getCurrentColor() );
 
 	CPropertyPage::OnOK();
 }
 
 void CChatGeneralOptions::OnUseTrayCBChanged()
 {
-	bool use = ((CButton*)GetDlgItem( IDC_TRAYUSE_CHECK ))->GetCheck() ? true : false;
+	bool use = static_cast<CButton*>(GetDlgItem( IDC_TRAYUSE_CHECK ))->GetCheck() ? true : false;
 	if ( !use ) {
-		if ( ((CButton*)GetDlgItem( IDC_CLOSEBUTTON_TRAY_RADIO ))->GetCheck() ) {
-			((CButton*)GetDlgItem( IDC_CLOSEBUTTON_TRAY_RADIO ))->SetCheck( false );
-			((CButton*)GetDlgItem( IDC_CLOSEBUTTON_CLOSE_RADIO ))->SetCheck( true );
+		if ( static_cast<CButton*>(GetDlgItem( IDC_CLOSEBUTTON_TRAY_RADIO ))->GetCheck() ) {
+			static_cast<CButton*>(GetDlgItem( IDC_CLOSEBUTTON_TRAY_RADIO ))->SetCheck( false );
+			static_cast<CButton*>(GetDlgItem( IDC_CLOSEBUTTON_CLOSE_RADIO ))->SetCheck( true );
 		}
-		if ( ((CButton*)GetDlgItem( IDC_MINIMIZEBUTTON_TRAY_RADIO ))->GetCheck() ) {
-			((CButton*)GetDlgItem( IDC_MINIMIZEBUTTON_TRAY_RADIO ))->SetCheck( false );
-			((CButton*)GetDlgItem( IDC_MINIMIZEBUTTON_MINIMIZE_RADIO ))->SetCheck( true );
+		if ( static_cast<CButton*>(GetDlgItem( IDC_MINIMIZEBUTTON_TRAY_RADIO ))->GetCheck() ) {
+			static_cast<CButton*>(GetDlgItem( IDC_MINIMIZEBUTTON_TRAY_RADIO ))->SetCheck( false );
+			static_cast<CButton*>(GetDlgItem( IDC_MINIMIZEBUTTON_MINIMIZE_RADIO ))->SetCheck( true );
 		}
 	}
 	GetDlgItem( IDC_TRAYNOTIFY_CHECK )->EnableWindow( use );
@@ -134,7 +130,7 @@ void CChatGeneralOptions::OnUseTrayCBChanged()
 
 void CChatGeneralOptions::OnUsePopupCBChanged()
 {
-	bool use = ((CButton*)GetDlgItem( IDC_POPUPUSE_CHECK ))->GetCheck() ? true : false;
+	bool use = static_cast<CButton*>(GetDlgItem( IDC_POPUPUSE_CHECK ))->GetCheck() ? true : false;
 	GetDlgItem( IDC_POPUPPOSITION_STATIC )->EnableWindow( use );
 	GetDlgItem( IDC_POPUPPOSITION_COMBO )->EnableWindow( use );
 	GetDlgItem( IDC_POPUPDELAY_STATIC )->EnableWindow( use );
@@ -185,9 +181,7 @@ void CChatGeneralOptions::OnUpdateModify()
 {
 	UpdateData();
 
-	CChatMainFrame* mainFrame = (CChatMainFrame*)AfxGetMainWnd();
-	
-	SetModified( userName != chatApp.getUserName().c_str() || useTray != ( mainFrame->getUseTray() ? 1 : 0 ) || notifyAboutMessage != ( mainFrame->getNotifyAboutMessage() ? 1 : 0 ) || closeButtonAction != mainFrame->getCloseButtonAction() || minimizeButtonAction != mainFrame->getMinimizeButtonAction() || usePopup != ( mainFrame->popupMessage.getUsePopup() ? 1 : 0 ) || popupPosition != mainFrame->popupMessage.getPosition() || popupDelay != mainFrame->popupMessage.getTimerDelay() || fgColorCB.getCurrentColor() != mainFrame->popupMessage.getTextColor() || bgColorCB.getCurrentColor() != mainFrame->popupMessage.getBackgroundColor() );
+	SetModified( userName != chatApp.getUserName().c_str() || useTray != ( chatApp.mainFrame->getUseTray() ? 1 : 0 ) || notifyAboutMessage != ( chatApp.mainFrame->getNotifyAboutMessage() ? 1 : 0 ) || closeButtonAction != chatApp.mainFrame->getCloseButtonAction() || minimizeButtonAction != chatApp.mainFrame->getMinimizeButtonAction() || usePopup != ( chatApp.mainFrame->popupMessage.getUsePopup() ? 1 : 0 ) || popupPosition != chatApp.mainFrame->popupMessage.getPosition() || popupDelay != chatApp.mainFrame->popupMessage.getTimerDelay() || fgColorCB.getCurrentColor() != chatApp.mainFrame->popupMessage.getTextColor() || bgColorCB.getCurrentColor() != chatApp.mainFrame->popupMessage.getBackgroundColor() );
 }
 
 // ----------------------------------------------------------------------------
@@ -232,16 +226,15 @@ BOOL CChatSoundOptions::OnInitDialog()
 {
 	CPropertyPage::OnInitDialog();
 
-	listBox.setImageList( &imageList );
 	sounds = chatApp.sounds;
-/*
-	for ( int i = 0; i < chatApp.sounds.list.size(); i++ ) {
-		CChatSound* snd = new CChatSound( *chatApp.sounds.list[i] );
-		sounds.AddTail( snd );
-		listBox.addString( chatApp.sounds.getName( snd->type ), snd->useSound ? 0 : -1 );
+
+	listBox.setImageList( &imageList );
+	for ( int i = 0; i < sounds.count(); i++ ) {
+		CChatSound* snd = sounds[i];
+		listBox.addString( sounds.getName( snd->type ), snd->useSound ? 0 : -1 );
 	}
-*/
 	listBox.SetCurSel( 0 );
+
 	OnListBoxSelectChange();
 
 	return true;
@@ -261,16 +254,16 @@ void CChatSoundOptions::OnListBoxSelectChange()
 	if ( current != LB_ERR ) {
 		CChatSound* snd = sounds[current];
 		if ( snd ) {
-			((CButton*)GetDlgItem( IDC_SOUNDNONE_RADIO ))->SetCheck( false );
-			((CButton*)GetDlgItem( IDC_SOUNDDEFAULT_RADIO ))->SetCheck( false );
-			((CButton*)GetDlgItem( IDC_SOUNDEXTERNAL_RADIO ))->SetCheck( false );
+			static_cast<CButton*>(GetDlgItem( IDC_SOUNDNONE_RADIO ))->SetCheck( false );
+			static_cast<CButton*>(GetDlgItem( IDC_SOUNDDEFAULT_RADIO ))->SetCheck( false );
+			static_cast<CButton*>(GetDlgItem( IDC_SOUNDEXTERNAL_RADIO ))->SetCheck( false );
 			if ( !snd->useSound ) {
-				((CButton*)GetDlgItem( IDC_SOUNDNONE_RADIO ))->SetCheck( true );
+				static_cast<CButton*>(GetDlgItem( IDC_SOUNDNONE_RADIO ))->SetCheck( true );
 			} else {
 				if ( snd->useDefault ) {
-					((CButton*)GetDlgItem( IDC_SOUNDDEFAULT_RADIO ))->SetCheck( true );
+					static_cast<CButton*>(GetDlgItem( IDC_SOUNDDEFAULT_RADIO ))->SetCheck( true );
 				} else {
-					((CButton*)GetDlgItem( IDC_SOUNDEXTERNAL_RADIO ))->SetCheck( true );
+					static_cast<CButton*>(GetDlgItem( IDC_SOUNDEXTERNAL_RADIO ))->SetCheck( true );
 				}
 			}
 			GetDlgItem( IDC_SOUNDEXTERNAL_EDIT )->SetWindowText( snd->file.c_str() );
@@ -298,8 +291,8 @@ void CChatSoundOptions::OnRadioChanged()
 	if ( current != LB_ERR ) {
 		CChatSound* snd = sounds[current];
 		if ( snd ) {
-			snd->useSound   = ((CButton*)GetDlgItem( IDC_SOUNDNONE_RADIO ))->GetCheck() ? false : true;
-			snd->useDefault = ((CButton*)GetDlgItem( IDC_SOUNDDEFAULT_RADIO ))->GetCheck() ? true : false;
+			snd->useSound   = static_cast<CButton*>(GetDlgItem( IDC_SOUNDNONE_RADIO ))->GetCheck() ? false : true;
+			snd->useDefault = static_cast<CButton*>(GetDlgItem( IDC_SOUNDDEFAULT_RADIO ))->GetCheck() ? true : false;
 			listBox.setItemImage( current, snd->useSound ? 0 : -1 );
 		}
 	}
@@ -341,7 +334,7 @@ void CChatSoundOptions::OnUpdateModify()
 {
 	UpdateData();
 
-	bool use = ((CButton*)GetDlgItem( IDC_SOUNDUSE_CHECK ))->GetCheck() ? true : false;
+	bool use = static_cast<CButton*>(GetDlgItem( IDC_SOUNDUSE_CHECK ))->GetCheck() ? true : false;
 	GetDlgItem( IDC_SOUND_LIST )->EnableWindow( use );
 	bool selected = use && listBox.GetCurSel() != LB_ERR;
 	GetDlgItem( IDC_SOUNDNONE_RADIO )->EnableWindow( selected );
@@ -350,7 +343,7 @@ void CChatSoundOptions::OnUpdateModify()
 	GetDlgItem( IDC_SOUNDEXTERNAL_EDIT )->EnableWindow( selected );
 	GetDlgItem( IDC_SOUNDEXTERMAL_BUTTON )->EnableWindow( selected );
 	if ( selected ) {
-		bool externalFlag = ((CButton*)GetDlgItem( IDC_SOUNDEXTERNAL_RADIO ))->GetCheck() ? true : false;
+		bool externalFlag = static_cast<CButton*>(GetDlgItem( IDC_SOUNDEXTERNAL_RADIO ))->GetCheck() ? true : false;
 		GetDlgItem( IDC_SOUNDEXTERNAL_EDIT )->EnableWindow( externalFlag );
 		GetDlgItem( IDC_SOUNDEXTERMAL_BUTTON )->EnableWindow( externalFlag );
 	}
@@ -375,12 +368,10 @@ END_MESSAGE_MAP()
 
 CChatStatusModeOptions::CChatStatusModeOptions(): CPropertyPage( IDD_OPTIONS_STATUSMODE_DIALOG )
 {
-	CChatMainFrame* mainFrame = (CChatMainFrame*)AfxGetMainWnd();
-
-	useAutoAway            = mainFrame->getUseAutoAway() ? 1 : 0;
-	autoAwayMinuts         = mainFrame->getAutoAwayMinuts();
-	useAutoNotAvailible    = mainFrame->getUseAutoNotAvailible() ? 1 : 0;
-	autoNotAvailibleMinuts = mainFrame->getAutoNotAvailibleMinuts();
+	useAutoAway            = chatApp.mainFrame->getUseAutoAway() ? 1 : 0;
+	autoAwayMinuts         = chatApp.mainFrame->getAutoAwayMinuts();
+	useAutoNotAvailible    = chatApp.mainFrame->getUseAutoNotAvailible() ? 1 : 0;
+	autoNotAvailibleMinuts = chatApp.mainFrame->getAutoNotAvailibleMinuts();
 
 	imageList.Create( 16, 16, ILC_COLORDDB | ILC_MASK, 1, 3 );
 	CBitmap bmp;
@@ -390,10 +381,6 @@ CChatStatusModeOptions::CChatStatusModeOptions(): CPropertyPage( IDD_OPTIONS_STA
 
 CChatStatusModeOptions::~CChatStatusModeOptions()
 {
-	while ( POSITION pos = statusModes.GetTailPosition() ) {
-		delete statusModes.GetAt( pos );
-		statusModes.RemoveTail();
-	}
 }
 
 void CChatStatusModeOptions::DoDataExchange( CDataExchange* pDX )
@@ -425,13 +412,13 @@ BOOL CChatStatusModeOptions::OnInitDialog()
 	autoNotAvailibaleSpin.SetRange( 1, 99 );
 	autoNotAvailibaleEdit.SetLimitText( 2 );
 
-	listBox.setImageList( &imageList );
-	for ( int i = 0; i < chatApp.statusModes.GetCount(); i++ ) {
-		CChatStatusMode* statusMode = new CChatStatusMode( *chatApp.statusModes.GetAt( chatApp.statusModes.FindIndex( i ) ) );
-		statusModes.AddTail( statusMode );
-		listBox.addString( chatApp.statusModes.getDefaultName( statusMode->type ), statusMode->type );
-	}
+	statusModes = chatApp.statusModes;
 
+	listBox.setImageList( &imageList );
+	for ( int i = 0; i < statusModes.count(); i++ ) {
+		CChatStatusMode* statusMode = statusModes[i];
+		listBox.addString( statusModes.getDefaultName( statusMode->type ), statusMode->type );
+	}
 	listBox.SetCurSel( 0 );
 
 	OnListBoxSelectChange();
@@ -442,18 +429,12 @@ BOOL CChatStatusModeOptions::OnInitDialog()
 
 void CChatStatusModeOptions::OnOK()
 {
-	for ( int i = 0; i < statusModes.GetCount(); i++ ) {
-		CChatStatusMode* statusMode1 = chatApp.statusModes.GetAt( chatApp.statusModes.FindIndex( i ) );
-		CChatStatusMode* statusMode2 = statusModes.GetAt( statusModes.FindIndex( i ) );
-		*statusMode1 = *statusMode2;
-	}
+	chatApp.statusModes = statusModes;
 
-	CChatMainFrame* mainFrame = (CChatMainFrame*)AfxGetMainWnd();
-
-	mainFrame->setUseAutoAway( useAutoAway ? true : false );
-	mainFrame->setAutoAwayMinuts( autoAwayMinuts );
-	mainFrame->setUseAutoNotAvailible( useAutoNotAvailible ? true : false );
-	mainFrame->setAutoNotAvailibleMinuts( autoNotAvailibleMinuts );
+	chatApp.mainFrame->setUseAutoAway( useAutoAway ? true : false );
+	chatApp.mainFrame->setAutoAwayMinuts( autoAwayMinuts );
+	chatApp.mainFrame->setUseAutoNotAvailible( useAutoNotAvailible ? true : false );
+	chatApp.mainFrame->setAutoNotAvailibleMinuts( autoNotAvailibleMinuts );
 
 	CPropertyPage::OnOK();
 }
@@ -462,7 +443,7 @@ void CChatStatusModeOptions::OnListBoxSelectChange()
 {
 	int current = listBox.GetCurSel();
 	if ( current != LB_ERR ) {
-		CChatStatusMode* statusMode = statusModes.GetAt( statusModes.FindIndex( current ) );
+		CChatStatusMode* statusMode = statusModes[current];
 		if ( statusMode ) {
 			GetDlgItem( IDC_STATUSMODENAME_EDIT )->SetWindowText( statusMode->name.c_str() );
 			GetDlgItem( IDC_STATUSMODEINFO_EDIT )->SetWindowText( statusMode->info.c_str() );
@@ -475,7 +456,7 @@ void CChatStatusModeOptions::OnNameChanged()
 {
 	int current = listBox.GetCurSel();
 	if ( current != LB_ERR ) {
-		CChatStatusMode* statusMode = statusModes.GetAt( statusModes.FindIndex( current ) );
+		CChatStatusMode* statusMode = statusModes[current];
 		if ( statusMode ) {
 			CString s = statusMode->name.c_str();
 			GetDlgItem( IDC_STATUSMODENAME_EDIT )->GetWindowText( s );
@@ -489,7 +470,7 @@ void CChatStatusModeOptions::OnInfoChanged()
 {
 	int current = listBox.GetCurSel();
 	if ( current != LB_ERR ) {
-		CChatStatusMode* statusMode = statusModes.GetAt( statusModes.FindIndex( current ) );
+		CChatStatusMode* statusMode = statusModes[current];
 		if ( statusMode ) {
 			CString s = statusMode->info.c_str();
 			GetDlgItem( IDC_STATUSMODEINFO_EDIT )->GetWindowText( s );
@@ -501,12 +482,12 @@ void CChatStatusModeOptions::OnInfoChanged()
 
 void CChatStatusModeOptions::OnAutoAwayChanged()
 {
-	bool use = ((CButton*)GetDlgItem( IDC_AUTOMATICALLYSTATUSMODE_AWAY_CHECK ))->GetCheck() ? true : false;
+	bool use = static_cast<CButton*>(GetDlgItem( IDC_AUTOMATICALLYSTATUSMODE_AWAY_CHECK ))->GetCheck() ? true : false;
 	GetDlgItem( IDC_AUTOMATICALLYSTATUSMODE_AWAY_EDIT )->EnableWindow( use );
 	GetDlgItem( IDC_AUTOMATICALLYSTATUSMODE_AWAY_SPIN )->EnableWindow( use );
 	GetDlgItem( IDC_AUTOMATICALLYSTATUSMODE_AWAY_STATIC )->EnableWindow( use );
 	GetDlgItem( IDC_AUTOMATICALLYSTATUSMODE_NOTAVAILIBLE_CHECK )->EnableWindow( use );
-	bool useNA = use && ((CButton*)GetDlgItem( IDC_AUTOMATICALLYSTATUSMODE_NOTAVAILIBLE_CHECK ))->GetCheck() ? true : false;
+	bool useNA = use && static_cast<CButton*>(GetDlgItem( IDC_AUTOMATICALLYSTATUSMODE_NOTAVAILIBLE_CHECK ))->GetCheck() ? true : false;
 	GetDlgItem( IDC_AUTOMATICALLYSTATUSMODE_NOTAVAILIBLE_EDIT )->EnableWindow( useNA );
 	GetDlgItem( IDC_AUTOMATICALLYSTATUSMODE_NOTAVAILIBLE_SPIN )->EnableWindow( useNA );
 	GetDlgItem( IDC_AUTOMATICALLYSTATUSMODE_NOTAVAILIBLE_STATIC )->EnableWindow( useNA );
@@ -515,7 +496,7 @@ void CChatStatusModeOptions::OnAutoAwayChanged()
 
 void CChatStatusModeOptions::OnAutoNotAvailibaleChanged()
 {
-	bool use = ((CButton*)GetDlgItem( IDC_AUTOMATICALLYSTATUSMODE_NOTAVAILIBLE_CHECK ))->GetCheck() ? true : false;
+	bool use = static_cast<CButton*>(GetDlgItem( IDC_AUTOMATICALLYSTATUSMODE_NOTAVAILIBLE_CHECK ))->GetCheck() ? true : false;
 	GetDlgItem( IDC_AUTOMATICALLYSTATUSMODE_NOTAVAILIBLE_EDIT )->EnableWindow( use );
 	GetDlgItem( IDC_AUTOMATICALLYSTATUSMODE_NOTAVAILIBLE_SPIN )->EnableWindow( use );
 	GetDlgItem( IDC_AUTOMATICALLYSTATUSMODE_NOTAVAILIBLE_STATIC )->EnableWindow( use );
@@ -526,19 +507,7 @@ void CChatStatusModeOptions::OnUpdateModify()
 {
 	UpdateData();
 
-	bool flag = false;
-	for ( int i = 0; i < statusModes.GetCount(); i++ ) {
-		CChatStatusMode* statusMode1 = chatApp.statusModes.GetAt( chatApp.statusModes.FindIndex( i ) );
-		CChatStatusMode* statusMode2 = statusModes.GetAt( statusModes.FindIndex( i ) );
-		if ( *statusMode1 != *statusMode2 ) {
-			flag = true;
-			break;
-		}
-	}
-
-	CChatMainFrame* mainFrame = (CChatMainFrame*)AfxGetMainWnd();
-
-	SetModified( flag || useAutoAway != ( mainFrame->getUseAutoAway() ? 1 : 0 ) || autoAwayMinuts != mainFrame->getAutoAwayMinuts() || useAutoNotAvailible != ( mainFrame->getUseAutoNotAvailible() ? 1 : 0 ) || autoNotAvailibleMinuts != mainFrame->getAutoNotAvailibleMinuts() );
+	SetModified( statusModes != chatApp.statusModes || useAutoAway != ( chatApp.mainFrame->getUseAutoAway() ? 1 : 0 ) || autoAwayMinuts != chatApp.mainFrame->getAutoAwayMinuts() || useAutoNotAvailible != ( chatApp.mainFrame->getUseAutoNotAvailible() ? 1 : 0 ) || autoNotAvailibleMinuts != chatApp.mainFrame->getAutoNotAvailibleMinuts() );
 }
 
 // ----------------------------------------------------------------------------

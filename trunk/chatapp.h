@@ -6,7 +6,6 @@
 	#error include 'stdafx.h' before including this file for PCH
 #endif
 
-#include "chatmainfrm.h"
 #include "chatudp.h"
 #include "chatsound.h"
 #include "chatstatusmode.h"
@@ -15,6 +14,8 @@
 // ----------------------------------------------------------------------------
 // ---------- CChatApp
 // ----------------------------------------------------------------------------
+class CChatMainFrame;
+
 class CChatApp: public CWinApp
 {
 protected:
@@ -31,11 +32,11 @@ protected:
 public:
 	CChatApp();
 
-	CChatMainFrame* pFrame;
-	CChatUdp udp;
-	CChatSoundList sounds;
+	CChatMainFrame*     mainFrame;
+	CChatUdp            udp;
+	CChatSoundList      sounds;
 	CChatStatusModeList statusModes;
-	CChatUserList users;
+	CChatUserList       users;
 
 	std::string getUserName() const    { return userName; }
 	void setUserName( const std::string& value );

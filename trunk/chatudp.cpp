@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "chatudp.h"
 #include "chatapp.h"
+#include "chatmainfrm.h"
 #include "resource.h"
 
 #ifdef _DEBUG
@@ -128,9 +129,7 @@ void CChatUdp::addToBackupBufferAnsPars( const std::string& str )
 
 void CChatUdp::parsCommand( const std::string& line )
 {
-	CChatMainFrame* mainFrame = (CChatMainFrame*)AfxGetMainWnd();
-
-//	mainFrame->childView.addStringToViewer( "", line );
+//	chatApp.mainFrame->childView.addStringToViewer( "", line );
 
 	std::string fromHost = getCommandValue( line, "fromhost" );
 	std::string fromIP   = getCommandValue( line, "fromip" );
@@ -140,7 +139,7 @@ void CChatUdp::parsCommand( const std::string& line )
 	if ( hasCommand( line, "connect" ) ) {
 		std::string username = getCommandValue( line, "connect" );
 		std::string s = format( IDS_CONNECT_VIEWERLOG, username.c_str() );
-		mainFrame->childView.addStringToViewer( username, s, CSTRT_Connect );
+		chatApp.mainFrame->childView.addStringToViewer( username, s, CSTRT_Connect );
 		chatApp.sounds.play( CST_Connect );
 
 	// CLOSE
@@ -152,7 +151,7 @@ void CChatUdp::parsCommand( const std::string& line )
 			username = fromHost;
 		}
 		std::string s = format( IDS_DISCONNECT_VIEWERLOG, username.c_str() );
-		mainFrame->childView.addStringToViewer( username, s, CSTRT_Disconnect );
+		chatApp.mainFrame->childView.addStringToViewer( username, s, CSTRT_Disconnect );
 		chatApp.sounds.play( CST_Disconnect );
 		if ( user ) {
 			chatApp.users.deleteUser( user );
@@ -173,7 +172,7 @@ void CChatUdp::parsCommand( const std::string& line )
 			chatApp.users.addUser( username, "", fromIP );
 		} else {
 			if ( user->getUserName() != username ) {
-				mainFrame->childView.addStringToViewer( username, user->getUserName() + " сменил имя на " + username, CSTRT_ChangeName );
+				chatApp.mainFrame->childView.addStringToViewer( username, user->getUserName() + " сменил имя на " + username, CSTRT_ChangeName );
 				user->setUserName( username );
 			}
 		}
@@ -204,7 +203,7 @@ void CChatUdp::parsCommand( const std::string& line )
 			} else {
 				s = format( IDS_STATUSMODEWITHINFO_VIEWERLOG, username.c_str(), chatApp.statusModes.getStatusMode( status )->name.c_str(), s_statusmsg.c_str() );
 			}
-			mainFrame->childView.addStringToViewer( username, s, CSTRT_ChangeStatusMode );
+			chatApp.mainFrame->childView.addStringToViewer( username, s, CSTRT_ChangeStatusMode );
 			chatApp.sounds.play( CST_ChangeStatusMode );
 		}
 
@@ -217,14 +216,14 @@ void CChatUdp::parsCommand( const std::string& line )
 		} else {
 			fromUser = fromHost;
 		}
-		mainFrame->childView.addStringToViewer( fromUser, msg );
+		chatApp.mainFrame->childView.addStringToViewer( fromUser, msg );
 
-		if ( !mainFrame->isVisible() ) {
-			mainFrame->modifyTray();
+		if ( !chatApp.mainFrame->isVisible() ) {
+			chatApp.mainFrame->modifyTray();
 		}
 
-		if ( !mainFrame->isActive() ) {
-			mainFrame->showPopupMessage( "(" + fromUser + "): " + msg );
+		if ( !chatApp.mainFrame->isActive() ) {
+			chatApp.mainFrame->showPopupMessage( "(" + fromUser + "): " + msg );
 		}
 
 		if ( chatApp.getIP() != fromIP ) {
@@ -246,14 +245,14 @@ void CChatUdp::parsCommand( const std::string& line )
 		} else {
 			fromUser = fromHost;
 		}
-		mainFrame->childView.addStringToViewer( fromUser, msg, CSTRT_ToCryOut );
+		chatApp.mainFrame->childView.addStringToViewer( fromUser, msg, CSTRT_ToCryOut );
 
-		if ( !mainFrame->isVisible() ) {
-			mainFrame->modifyTray();
+		if ( !chatApp.mainFrame->isVisible() ) {
+			chatApp.mainFrame->modifyTray();
 		}
 
-		if ( !mainFrame->isActive() ) {
-			mainFrame->showPopupMessage( "(" + fromUser + " cry out): " + msg );
+		if ( !chatApp.mainFrame->isActive() ) {
+			chatApp.mainFrame->showPopupMessage( "(" + fromUser + " cry out): " + msg );
 		}
 
 		if ( chatApp.getIP() != fromIP ) {

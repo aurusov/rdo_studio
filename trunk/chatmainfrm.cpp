@@ -137,7 +137,7 @@ BOOL CChatMainFrame::DestroyWindow()
 	closeTray();
 	stopAutoStatusModeTimer();
 
-	chatApp.pFrame = NULL;
+	chatApp.mainFrame = NULL;
 	return CFrameWnd::DestroyWindow();
 }
 

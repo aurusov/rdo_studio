@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "chatedit.h"
 #include "chatapp.h"
+#include "chatmainfrm.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -44,5 +45,5 @@ void CChatEdit::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
 	} else if ( ( nChar == VK_SPACE || nChar == 187 || ::IsCharAlphaNumeric( nChar ) ) && nChar != VK_NUMLOCK ) {
 		chatApp.sounds.play( CST_ChatType );
 	}
-	chatApp.pFrame->restoreStatusMode();
+	chatApp.mainFrame->restoreStatusMode();
 }

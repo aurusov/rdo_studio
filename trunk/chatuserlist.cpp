@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "chatuserlist.h"
 #include "chatapp.h"
+#include "chatmainfrm.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -12,7 +13,6 @@ static char THIS_FILE[] = __FILE__;
 // ---------- CChatUser
 // ----------------------------------------------------------------------------
 CChatUser::CChatUser():
-	CObject(),
 	userName( "" ),
 	hostName( "" ),
 	ip( "" ),
@@ -21,7 +21,6 @@ CChatUser::CChatUser():
 }
 
 CChatUser::CChatUser( const std::string& _username, const std::string& _hostname, const std::string& _ip, const CChatStatusModeType _statusMode ):
-	CObject(),
 	userName( _username ),
 	hostName( _hostname ),
 	ip( _ip ),
@@ -37,8 +36,8 @@ void CChatUser::setUserName( const std::string& value )
 {
 	if ( userName != value ) {
 		userName = value;
-		if ( chatApp.pFrame ) {
-			chatApp.pFrame->userList.list.updateUserName( this );
+		if ( chatApp.mainFrame ) {
+			chatApp.mainFrame->userList.list.updateUserName( this );
 		}
 	}
 }
@@ -57,8 +56,8 @@ void CChatUser::setStatusMode( const CChatStatusModeType value )
 {
 	if ( statusMode != value ) {
 		statusMode = value;
-		if ( chatApp.pFrame ) {
-			chatApp.pFrame->userList.list.updateUserStatus( this );
+		if ( chatApp.mainFrame ) {
+			chatApp.mainFrame->userList.list.updateUserStatus( this );
 		}
 	}
 }
@@ -84,7 +83,7 @@ void CChatUserList::addUser( const std::string& username, const std::string& hos
 	if ( findUserByIP( ip ) == -1 ) {
 		CChatUser* user = new CChatUser( username, hostname, ip, statusMode );
 		list.push_back( user );
-		chatApp.pFrame->userList.list.addUser( user );
+		chatApp.mainFrame->userList.list.addUser( user );
 	}
 }
 
@@ -92,8 +91,8 @@ void CChatUserList::deleteUser( const int index )
 {
 	if ( index != -1 && index < list.size() ) {
 		CChatUser* user = list[index];
-		if ( chatApp.pFrame ) {
-			chatApp.pFrame->userList.list.deleteUser( user );
+		if ( chatApp.mainFrame ) {
+			chatApp.mainFrame->userList.list.deleteUser( user );
 		}
 		list.erase( list.begin() + index );
 		delete user;

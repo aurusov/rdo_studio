@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "chatviewer.h"
 #include "chatapp.h"
+#include "chatmainfrm.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -38,18 +39,10 @@ CChatViewer::CChatViewer():
 	yPageSize( 0 ),
 	maxStrWidth( 0 ),
 	newClientRect(0, 0, 0, 0 ),
-//	clipRect( 0, 0, 0, 0 ),
-//	prevClientRect( 0, 0, 0, 0 ),
-//	prevWindowRect( 0, 0, 0, 0 ),
 	hasFocus( false ),
 	selectedLine( -1 ),
 	horzScrollBarVisible( false ),
 	vertScrollBarVisible( false )
-//	firstFoundLine( -1 ),
-//	bHaveFound( false ),
-//	bSearchDown( true ),
-//	bMatchCase( false ),
-//	bMatchWholeWord( false )
 {
 	style.init();
 }
@@ -233,7 +226,7 @@ void CChatViewer::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
 //		::SendMessage( m_hWnd, msg, MAKELONG( scrollNotify, 0 ), NULL );
 //	}
 
-	chatApp.pFrame->restoreStatusMode();
+	chatApp.mainFrame->restoreStatusMode();
 }
 
 BOOL CChatViewer::OnMouseWheel( UINT nFlags, short zDelta, CPoint pt )

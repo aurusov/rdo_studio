@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "chatapp.h"
+#include "chatmainfrm.h"
 #include "chatoptions.h"
 #include "resource.h"
 
@@ -76,15 +77,15 @@ BOOL CChatApp::InitInstance()
 	font->CreateFontIndirect( &lf );
 */
 
-	pFrame = new CChatMainFrame;
-	m_pMainWnd = pFrame;
-	pFrame->LoadFrame( IDR_MAINFRAME, WS_OVERLAPPEDWINDOW | FWS_ADDTOTITLE, NULL, NULL );
-	pFrame->SetIcon( LoadIcon( MAKEINTRESOURCE(IDR_MAINFRAME) ), TRUE );
-	pFrame->SetIcon( LoadIcon( MAKEINTRESOURCE(IDR_MAINFRAME) ), FALSE );
-//	pFrame->SetIcon( (HICON)::LoadImage( NULL, MAKEINTRESOURCE(IDR_MAINFRAME), IMAGE_ICON, ::GetSystemMetrics( SM_CXSMICON ), ::GetSystemMetrics( SM_CYSMICON ), LR_DEFAULTCOLOR ), FALSE );
+	mainFrame = new CChatMainFrame;
+	m_pMainWnd = mainFrame;
+	mainFrame->LoadFrame( IDR_MAINFRAME, WS_OVERLAPPEDWINDOW | FWS_ADDTOTITLE, NULL, NULL );
+	mainFrame->SetIcon( LoadIcon( MAKEINTRESOURCE(IDR_MAINFRAME) ), TRUE );
+	mainFrame->SetIcon( LoadIcon( MAKEINTRESOURCE(IDR_MAINFRAME) ), FALSE );
+//	mainFrame->SetIcon( (HICON)::LoadImage( NULL, MAKEINTRESOURCE(IDR_MAINFRAME), IMAGE_ICON, ::GetSystemMetrics( SM_CXSMICON ), ::GetSystemMetrics( SM_CYSMICON ), LR_DEFAULTCOLOR ), FALSE );
 
-	pFrame->ShowWindow(SW_SHOW);
-	pFrame->UpdateWindow();
+	mainFrame->ShowWindow(SW_SHOW);
+	mainFrame->UpdateWindow();
 
 	userName = GetProfileString( "User", "userName" );
 
@@ -185,7 +186,7 @@ void CChatApp::setStatusMode( const CChatStatusModeType value, const bool automa
 		s = format( "<statusmode:%d><statusmsg:%s>", statusMode->type, statusMode->info.c_str() );
 	}
 	if ( !automatically ) {
-		pFrame->resetAutoStatusMode();
+		mainFrame->resetAutoStatusMode();
 	}
 	udp.send( s );
 }

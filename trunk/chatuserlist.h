@@ -9,7 +9,7 @@
 // ----------------------------------------------------------------------------
 class CChatUserList;
 
-class CChatUser: public CObject
+class CChatUser
 {
 friend class CChatUserList;
 

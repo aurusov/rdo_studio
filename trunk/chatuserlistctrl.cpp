@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "chatuserlistctrl.h"
 #include "chatapp.h"
+#include "chatmainfrm.h"
 #include "resource.h"
 
 #ifdef _DEBUG
@@ -102,5 +103,5 @@ void CChatUserListCtrl::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
 {
 	RDOTreeCtrl::OnKeyDown( nChar, nRepCnt, nFlags );
 
-	chatApp.pFrame->restoreStatusMode();
+	chatApp.mainFrame->restoreStatusMode();
 }

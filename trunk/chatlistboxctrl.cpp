@@ -45,7 +45,8 @@ void CChatListBoxCtrl::DrawItem( LPDRAWITEMSTRUCT lpDrawItemStruct )
 {
 	CDC* pDC = CDC::FromHandle( lpDrawItemStruct->hDC );
 
-	if ( (int)lpDrawItemStruct->itemID < 0 ) {
+	if ( static_cast<int>(lpDrawItemStruct->itemID) < 0 ) {
+		return;
 		if ( (lpDrawItemStruct->itemAction & ODA_FOCUS) && (lpDrawItemStruct->itemState & ODS_FOCUS) ) {
 			pDC->DrawFocusRect( &lpDrawItemStruct->rcItem );
 		} else if ( (lpDrawItemStruct->itemAction & ODA_FOCUS) && !(lpDrawItemStruct->itemState & ODS_FOCUS) ) {
