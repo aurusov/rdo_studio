@@ -57,6 +57,8 @@ RDOStudioPlugin::RDOStudioPlugin( const std::string& _modulName ):
 
 RDOStudioPlugin::~RDOStudioPlugin()
 {
+	restoreState = false;
+	setState( rdoPlugin::psStoped );
 }
 
 bool RDOStudioPlugin::isRDOStudioPlugin( const std::string& modulName )
@@ -176,11 +178,7 @@ RDOStudioPlugins::~RDOStudioPlugins()
 {
 	std::vector< RDOStudioPlugin* >::iterator it = list.begin();
 	while ( it != list.end() ) {
-		RDOStudioPlugin* plugin = *it;
-		plugin->restoreState = false;
-		plugin->setState( rdoPlugin::psStoped );
-		delete plugin;
-		it++;
+		delete *it++;
 	}
 	list.clear();
 
