@@ -15,11 +15,11 @@ class RDOTracerLogCtrl: public RDOLogCtrl
 DECLARE_DYNCREATE( RDOTracerLogCtrl )
 
 protected:
-	typedef std::map< int, RDOLogColorPair > RDOColorMap;
+	typedef std::map< int, RDOLogColorPair* > RDOColorMap;
 	RDOColorMap subitemColors;
 	bool addingSubitems;
-	RDOLogColorPair itemColor;
-	bool getItemColors( const int index, COLORREF& textColor, COLORREF& backColor ) const;
+	RDOLogColorPair* itemColor;
+	virtual bool getItemColors( const int index, RDOLogColorPair* &colors ) const;
 	void showFindError( std::string& findStr );
 
 	CMenu popupMenu;
@@ -47,11 +47,11 @@ public:
 	RDOTracerLogCtrl();
 	virtual ~RDOTracerLogCtrl();
 
-	void addStringToLog( const std::string logStr );
+	virtual void addStringToLog( const std::string logStr );
 
-	void setStyle( RDOTracerLogStyle* style, const bool needRedraw = true );
+	virtual void setStyle( RDOTracerLogStyle* style, const bool needRedraw = true );
 
-	void clear();
+	virtual void clear();
 
 	void startTrace();
 

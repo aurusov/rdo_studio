@@ -77,32 +77,44 @@ bool RDOLogCtrlFindInList::match( string::iterator &wildcards, string::iterator 
 {
 	bool res = true;
 	
+	string strWild;
+	string strComp;
+	if ( wildcards != wildend ) {
+		strWild.assign( wildcards );
+	}
+	if ( strcomp != strend ) {
+		strComp.assign( strcomp );
+	}
+	string::iterator strWildb = strWild.begin();
+	string::iterator strWilde = strWild.end();
+	string::iterator strCompb = strComp.begin();
+	string::iterator strCompe = strComp.end();
+
 	//iterate and delete '?' and '*' one by one
-	while( wildcards != wildend && res && strcomp != strend )
+	while( strWildb != strWilde && res && strCompb != strCompe )
 	{
-		if ( *wildcards == '?' )
-			strcomp ++;
-		else if ( *wildcards == '*' )
+		if ( *strWildb == '?' )
+			strCompb ++;
+		else if ( *strWildb == '*' )
 		{
-			res = scan( wildcards, wildend, strcomp, strend );
-			wildcards --;
+			res = scan( strWildb, strWilde, strCompb, strCompe );
+			strWildb --;
 		}
 		else
 		{
-			res = ( *wildcards == *strcomp );
-			strcomp ++;
+			res = ( *strWildb == *strCompb );
+			strCompb ++;
 		}
-		wildcards ++;
+		strWildb ++;
 	}
-	while ( *wildcards == '*' && res )  wildcards ++;
+	while ( *strWildb == '*' && res )  strWildb ++;
 
-	return res && strcomp == strend && wildcards == wildend;
+	return res && strCompb == strCompe && strWildb == strWilde;
 }
 
 bool RDOLogCtrlFindInList::operator()( string nextstr )
 {
 	if ( !matchWholeWord && strToFind.find_first_of( "*?" ) == string::npos ) {
-		//strtofind.Insert( 0, "*");
 		strToFind.insert( 0, "*");
 		strToFind += "*";
 	}
@@ -114,14 +126,15 @@ bool RDOLogCtrlFindInList::operator()( string nextstr )
 		transform( str.begin(), str.end(), str.begin(), tolower );
 	}
 	
+	log->posFind ++;
+
 	if ( matchWholeWord )
 		return strToFind == str;
-	log->posFind ++;
+
 	string::iterator findstrb = strToFind.begin();
 	string::iterator findstre = strToFind.end();
 	string::iterator strb = str.begin();
 	string::iterator stre = str.end();
-	//return match( strToFind.begin(), strToFind.end(),  str.begin(), str.end() );
 	return match( findstrb, findstre,  strb, stre );
 }
 
@@ -332,14 +345,14 @@ void RDOLogCtrl::OnSize( UINT nType, int cx, int cy )
 		}
 }
 
-bool RDOLogCtrl::getItemColors( const int index,COLORREF& textColor, COLORREF& backColor ) const
+bool RDOLogCtrl::getItemColors( const int index, RDOLogColorPair* &colors ) const
 {
-	return logStyle->getItemColors( index, textColor, backColor );
+	return logStyle->getItemColors( index, colors );
 }
 
-bool RDOLogCtrl::getItemColors( const string& item, COLORREF& textColor, COLORREF& backColor ) const
+bool RDOLogCtrl::getItemColors( const string& item, RDOLogColorPair* &colors ) const
 {
-	return logStyle->getItemColors( item, textColor, backColor );
+	return logStyle->getItemColors( item, colors );
 }
 
 void RDOLogCtrl::OnPaint()
@@ -360,8 +373,7 @@ void RDOLogCtrl::OnPaint()
 		if ( ps.rcPaint.bottom > mul * lineHeight ) mul++;
 		int lastLine = min ( stringsCount - 1, yPos + mul - 1 );
 
-		COLORREF back;
-		COLORREF front;
+		RDOLogColorPair* colors = NULL;
 
 		int y = lineHeight * ( -yPos + firstLine - 1 );
 		CRect rect( charWidth * ( -xPos ), y, ps.rcPaint.right, y + lineHeight );
@@ -369,21 +381,18 @@ void RDOLogCtrl::OnPaint()
 		for ( int i = firstLine; i < lastLine + 1; i++ ) {
 
 			if ( i != selectedLine || focusOnly ) {
-				/*if ( !( getItemColors( (*it), front, back ) || getItemColors( i, front, back ) ) ) {
-					front = dc->GetTextColor();
-					back  = dc->GetBkColor();
-				}*/
-				if ( !getItemColors( (*it), front, back ) )
-					getItemColors( i, front, back );
+				if ( !getItemColors( (*it), colors ) )
+					getItemColors( i, colors );
 			} else {
-				front = ::GetSysColor( COLOR_HIGHLIGHTTEXT );
-				back  = ::GetSysColor( COLOR_HIGHLIGHT );
+				colors = new RDOLogColorPair();
+				colors->foregroundColor = ::GetSysColor( COLOR_HIGHLIGHTTEXT );
+				colors->backgroundColor  = ::GetSysColor( COLOR_HIGHLIGHT );
 			}
 
 			int backdc = dc->SaveDC();
 
-			CBrush brush ( back );
-			CPen pen( PS_SOLID, 1, back );
+			CBrush brush ( colors->backgroundColor );
+			CPen pen( PS_SOLID, 1, colors->backgroundColor );
 			dc->SelectObject( &pen );
 			dc->SelectObject( &brush );
 
@@ -391,7 +400,7 @@ void RDOLogCtrl::OnPaint()
 
 			dc->Rectangle( &rect );
 			
-			dc->SetTextColor( front );
+			dc->SetTextColor( colors->foregroundColor );
 
 			rect.left += logStyle->borders->horzBorder;
 
@@ -410,10 +419,13 @@ void RDOLogCtrl::OnPaint()
 			}
 
 			it++;
+			if ( i == selectedLine && !focusOnly && colors ) {
+				delete colors; colors = NULL;
+			}
 		}
 
-		getItemColors( "", front, back );
-		dc->FillSolidRect( ps.rcPaint.left, rect.bottom, ps.rcPaint.right, ps.rcPaint.bottom, back );
+		getItemColors( "", colors );
+		dc->FillSolidRect( ps.rcPaint.left, rect.bottom, ps.rcPaint.right, ps.rcPaint.bottom, colors->backgroundColor );
 	}
 	
 	dc->RestoreDC( prevDC );

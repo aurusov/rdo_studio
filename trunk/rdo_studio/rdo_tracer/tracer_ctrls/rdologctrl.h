@@ -58,8 +58,8 @@ protected:
 	int find( const bool searchDown, const bool matchCase, const bool matchWholeWord );
 
 	RDOLogStyle* logStyle;
-	virtual bool getItemColors( const int index, COLORREF& textColor, COLORREF& backColor ) const;
-	virtual bool getItemColors( const std::string& item, COLORREF& textColor, COLORREF& backColor ) const;
+	virtual bool getItemColors( const int index, RDOLogColorPair* &colors ) const;
+	virtual bool getItemColors( const std::string& item, RDOLogColorPair* &colors ) const;
 	
 	void recalcWidth( const int newMaxStrWidth );
 	void updateScrollBars();

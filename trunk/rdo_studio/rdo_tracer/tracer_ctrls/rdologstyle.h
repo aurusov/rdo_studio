@@ -80,8 +80,8 @@ public:
 	RDOLogStyle();
 	virtual ~RDOLogStyle();
 
-	virtual bool getItemColors( const int index, COLORREF& textColor, COLORREF& backColor ) const;
-	virtual bool getItemColors( const std::string& item, COLORREF& textColor, COLORREF& backColor ) const;
+	virtual bool getItemColors( const int index, RDOLogColorPair* &colors ) const;
+	virtual bool getItemColors( const std::string& item, RDOLogColorPair* &colors ) const;
 
 	RDOLogStyle& operator =( const RDOLogStyle& style );
 	bool operator ==( const RDOLogStyle& style ) const;

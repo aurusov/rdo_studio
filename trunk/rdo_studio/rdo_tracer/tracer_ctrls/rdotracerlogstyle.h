@@ -68,7 +68,7 @@ public:
 	RDOTracerLogStyle();
 	virtual ~RDOTracerLogStyle();
 
-	bool getItemColors( const std::string& item, COLORREF& textColor, COLORREF& backColor ) const;
+	bool getItemColors( const std::string& item, RDOLogColorPair* &colors ) const;
 
 	RDOTracerLogStyle& operator =( const RDOTracerLogStyle& style );
 	bool operator ==( const RDOTracerLogStyle& style ) const;

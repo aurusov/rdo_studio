@@ -252,101 +252,74 @@ void RDOTracerLogStyle::initBorders()
 	borders->horzBorder = 2;
 }
 
-bool RDOTracerLogStyle::getItemColors( const string& item, COLORREF& textColor, COLORREF& backColor ) const
+bool RDOTracerLogStyle::getItemColors( const string& item, RDOLogColorPair* &colors ) const
 {
 	if ( item.empty() )
-		return RDOLogStyle::getItemColors( "", textColor, backColor );
+		return RDOLogStyle::getItemColors( "", colors );
 	int posstart = item.find_first_not_of( ' ' );
 	int posend = item.find_first_of( ' ', posstart );
 	string key = item.substr( posstart, posend - posstart );
 	trim( key );
 	bool res = true;
 	if ( theme ) {
-		//res = 
 		RDOTracerLogTheme* _theme = static_cast<RDOTracerLogTheme*>(theme);
 		if ( key == "ES" ) {
-			textColor = _theme->es.foregroundColor;
-			backColor = _theme->es.backgroundColor;
+			colors = &_theme->es;
 		} else if ( key == "EB" ) {
-			textColor = _theme->eb.foregroundColor;
-			backColor = _theme->eb.backgroundColor;
+			colors = &_theme->eb;
 		} else if ( key == "EF" ) {
-			textColor = _theme->ef.foregroundColor;
-			backColor = _theme->ef.backgroundColor;
+			colors = &_theme->ef;
 		} else if ( key == "EI" ) {
-			textColor = _theme->ei.foregroundColor;
-			backColor = _theme->ei.backgroundColor;
+			colors = &_theme->ei;
 		} else if ( key == "ER" ) {
-			textColor = _theme->er.foregroundColor;
-			backColor = _theme->er.backgroundColor;
+			colors = &_theme->er;
 		} else if ( key == "RC" ) {
-			textColor = _theme->rc.foregroundColor;
-			backColor = _theme->rc.backgroundColor;
+			colors = &_theme->rc;
 		} else if ( key == "RE" ) {
-			textColor = _theme->re.foregroundColor;
-			backColor = _theme->re.backgroundColor;
+			colors = &_theme->re;
 		} else if ( key == "RK" ) {
-			textColor = _theme->rk.foregroundColor;
-			backColor = _theme->rk.backgroundColor;
+			colors = &_theme->rk;
 		} else if ( key == "V" ) {
-			textColor = _theme->v.foregroundColor;
-			backColor = _theme->v.backgroundColor;
+			colors = &_theme->v;
 		} else if ( key == "$Status" ) {
-			textColor = _theme->s.foregroundColor;
-			backColor = _theme->s.backgroundColor;
+			colors = &_theme->s;
 		} else if ( key.find( "DPS" ) != string::npos ) {
-			textColor = _theme->dps.foregroundColor;
-			backColor = _theme->dps.backgroundColor;
+			colors = &_theme->dps;
 		} else if ( key == "SB" ) {
-			textColor = _theme->sb.foregroundColor;
-			backColor = _theme->sb.backgroundColor;
+			colors = &_theme->sb;
 		} else if ( key == "SO" ) {
-			textColor = _theme->so.foregroundColor;
-			backColor = _theme->so.backgroundColor;
+			colors = &_theme->so;
 		} else if ( key == "STN" ) {
-			textColor = _theme->stn.foregroundColor;
-			backColor = _theme->stn.backgroundColor;
+			colors = &_theme->stn;
 		} else if ( key == "STD" ) {
-			textColor = _theme->std.foregroundColor;
-			backColor = _theme->std.backgroundColor;
+			colors = &_theme->std;
 		} else if ( key == "STR" ) {
-			textColor = _theme->str.foregroundColor;
-			backColor = _theme->str.backgroundColor;
+			colors = &_theme->str;
 		} else if ( key == "SRK" ) {
-			textColor = _theme->srk.foregroundColor;
-			backColor = _theme->srk.backgroundColor;
+			colors = &_theme->srk;
 		} else if ( key == "SRC" ) {
-			textColor = _theme->src.foregroundColor;
-			backColor = _theme->src.backgroundColor;
+			colors = &_theme->src;
 		} else if ( key == "SRE" ) {
-			textColor = _theme->sre.foregroundColor;
-			backColor = _theme->sre.backgroundColor;
+			colors = &_theme->sre;
 		} else if ( key == "SRK" ) {
-			textColor = _theme->srk.foregroundColor;
-			backColor = _theme->srk.backgroundColor;
+			colors = &_theme->srk;
 		} else if ( key == "SD" ) {
-			textColor = _theme->sd.foregroundColor;
-			backColor = _theme->sd.backgroundColor;
+			colors = &_theme->sd;
 		} else if ( key == "SES" ) {
-			textColor = _theme->ses.foregroundColor;
-			backColor = _theme->ses.backgroundColor;
+			colors = &_theme->ses;
 		} else if ( key == "SEN" ) {
-			textColor = _theme->sen.foregroundColor;
-			backColor = _theme->sen.backgroundColor;
+			colors = &_theme->sen;
 		} else if ( key == "SEM" ) {
-			textColor = _theme->sem.foregroundColor;
-			backColor = _theme->sem.backgroundColor;
+			colors = &_theme->sem;
 		} else if ( key == "SEF" ) {
-			textColor = _theme->sef.foregroundColor;
-			backColor = _theme->sef.backgroundColor;
+			colors = &_theme->sef;
 		} else if ( key == "SEU" ) {
-			textColor = _theme->seu.foregroundColor;
-			backColor = _theme->seu.backgroundColor;
+			colors = &_theme->seu;
 		} else {
-			res = RDOLogStyle::getItemColors( "", textColor, backColor );
+			res = RDOLogStyle::getItemColors( "", colors );
 		}
 	} else {
-		res = RDOLogStyle::getItemColors( "", textColor, backColor );
+		res = RDOLogStyle::getItemColors( "", colors );
 	}
 	return res;
 }
