@@ -586,11 +586,11 @@ void RDOEditorEdit::onBufferAppend( const int bufIndex )
 		s += getSelection();
 	} else {
 		char c = (char)sendEditor( SCI_GETCHARAT, pos );
-		int line = sendEditor( SCI_LINEFROMPOSITION, pos );
+		int line = getLineFromPosition( pos );
 		s += c;
 		pos++;
 		if ( c == '\r' || c == '\n' ) {
-			while ( line == sendEditor( SCI_LINEFROMPOSITION, pos ) && ( (char)sendEditor( SCI_GETCHARAT, pos ) == '\r' || (char)sendEditor( SCI_GETCHARAT, pos ) == '\n' ) ) {
+			while ( line == getLineFromPosition( pos ) && ( (char)sendEditor( SCI_GETCHARAT, pos ) == '\r' || (char)sendEditor( SCI_GETCHARAT, pos ) == '\n' ) ) {
 				s += (char)sendEditor( SCI_GETCHARAT, pos );
 				pos++;
 			}

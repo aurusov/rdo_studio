@@ -1,29 +1,8 @@
 #include "stdafx.h"
 #include "rdoeditorapp.h"
-#include "rdoeditormainfrm.h"
 //#include "../Htmlhelp.h"
 
-#include <rdoabout.h>
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 /*
-// ----------------------------------------------------------------------------
-// ---------- RDOEditorApp
-// ----------------------------------------------------------------------------
-RDOEditorApp rdoEditorApp;
-
-RDOEditorApp::RDOEditorApp():
-	CWinApp(),
-	dllHandle( 0 )
-{
-}
-
-RDOEditorApp::~RDOEditorApp()
-{
-}
-
 BOOL RDOEditorApp::InitInstance()
 {
 	CWinApp::InitInstance();
@@ -88,37 +67,6 @@ CString RDOEditorApp::getFullFileName()
 		fileName = szExeName;
 	}
 	return fileName;
-}
-
-CString RDOEditorApp::extractFilePath( CString str )
-{
-	int pos = str.ReverseFind( '\\' );
-	if ( pos == -1 ) {
-		pos = str.ReverseFind( '/' );
-	}
-	if ( pos != -1 && pos < str.GetLength() - 1 ) {
-		str = str.Left( pos + 1 );
-		str.TrimLeft();
-		str.TrimRight();
-	}
-	pos = str.ReverseFind( '\\' );
-	if ( pos == -1 ) {
-		pos = str.ReverseFind( '/' );
-	}
-	if ( pos != str.GetLength() - 1 && str.GetLength() ) {
-		str += "/";
-	}
-	return str;
-}
-
-bool RDOEditorApp::fileExists( CString str )
-{
-	bool result = true;
-	HANDLE hFile;
-	hFile = ::CreateFile( str, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL );
-	if ( hFile == INVALID_HANDLE_VALUE ) result = false;
-	::CloseHandle(hFile);
-	return result;
 }
 
 CString RDOEditorApp::getFullHelpFileName( CString str )

@@ -2,34 +2,6 @@
 #define RDOEDITORAPP_H
 #pragma once
 /*
-#ifndef __AFXWIN_H__
-	#error include 'stdafx.h' before including this file for PCH
-#endif
-
-#define useLog 0
-
-#if useLog == 1
-#define logFileName "c:\\rdo_edit_log.txt"
-#define logWrite( A )                                  \
-{                                                      \
-	CFileStatus status;                                \
-	if( !CFile::GetStatus( logFileName, status ) ) {   \
-		CFile f;                                       \
-		f.Open( logFileName, CFile::modeCreate );      \
-		f.Close();                                     \
-	}                                                  \
-	CFile f;                                           \
-	if ( f.Open( logFileName, CFile::modeWrite ) ) {   \
-		f.SeekToEnd();                                 \
-		CString _s = "app: ";                          \
-		_s += A;                                       \
-		_s += "\r\n";                                  \
-		f.Write( _s, _s.GetLength() );                 \
-		f.Close();                                     \
-	}                                                  \
-}
-#endif
-
 // ----------------------------------------------------------------------------
 // ---------- RDOEditorApp
 // ----------------------------------------------------------------------------
@@ -46,14 +18,9 @@ public:
 
 	static void setCaption( const CString& str );
 
-	static CString getFullFileName();
-	static CString extractFilePath( CString str );
-	static bool fileExists( CString str );
 	static CString getFullHelpFileName( CString str = "RAO-editor.chm" );
 
 	void setupFileAssociation();
-
-	HMODULE dllHandle;
 };
 
 // ----------------------------------------------------------------------------
@@ -72,7 +39,5 @@ public:
 	int checkInFuture;
 };
 
-// ----------------------------------------------------------------------------
-//extern RDOEditorApp rdoEditorApp;
 */
 #endif // RDOEDITORAPP_H
