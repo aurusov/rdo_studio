@@ -111,7 +111,7 @@ void BKEmul::loadIntoROM( const HRSRC& res ) const
 void BKEmul::nextIteration()
 {
 	try {
-		for ( int i = 0; i < 7000; i++ ) {
+		for ( int i = 0; i < 3000; i++ ) {
 //			CClientDC dc( emulApp.mainFrame );
 //			std::string str = format( "PC = 0%0o", cpu.PC() );
 //			dc.TextOut( 300, 30, str.c_str(), str.length() );
