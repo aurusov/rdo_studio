@@ -53,7 +53,8 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /machine:I386
-# ADD LINK32 winmm.lib dxguid.lib dxerr8.lib ddraw.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib /nologo /subsystem:windows /profile /machine:I386
+# ADD LINK32 winmm.lib dxguid.lib dxerr8.lib ddraw.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib /nologo /subsystem:windows /machine:I386
+# SUBTRACT LINK32 /profile
 
 !ELSEIF  "$(CFG)" == "bk_emul - Win32 Debug"
 
@@ -199,6 +200,18 @@ SOURCE=.\StdAfx.h
 # PROP Default_Filter "ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
 # Begin Source File
 
+SOURCE=.\res\basic_10_120.bin
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\basic_10_140.bin
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\basic_10_160.bin
+# End Source File
+# Begin Source File
+
 SOURCE=.\res\bk_emul.ico
 # End Source File
 # Begin Source File
@@ -208,6 +221,14 @@ SOURCE=.\bk_emul.rc
 # Begin Source File
 
 SOURCE=.\res\bk_emul.rc2
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\mirage120.bin
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\monitor_10.bin
 # End Source File
 # Begin Source File
 

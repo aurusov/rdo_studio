@@ -139,7 +139,8 @@ HRESULT BKChildView::initDirectDraw()
 	rColor    = getColor( RGB( 0xFF, 0x00, 0x00 ) );
 	gColor    = getColor( RGB( 0x00, 0xFF, 0x00 ) );
 	bColor    = getColor( RGB( 0x00, 0x00, 0xFF ) );
-	grayColor = getColor( RGB( 0x80, 0x80, 0x80 ) );
+	grayColor = getColor( RGB( 0xF0, 0xF0, 0xF0 ) );
+//	grayColor = getColor( RGB( 0x80, 0x80, 0x80 ) );
 
 	pitch = display->getSurfaceDesc()->lPitch;
 
@@ -229,6 +230,7 @@ void BKChildView::draw( const BYTE* bk_video_from, int count_byte, BYTE BK_byte_
 								*pByte++ = color;
 							} else {
 								pByte += 2;
+								maska <<= 2;
 							}
 							t_memory2 += 2;
 						}
@@ -236,12 +238,12 @@ void BKChildView::draw( const BYTE* bk_video_from, int count_byte, BYTE BK_byte_
 						color = grayColor;
 						WORD* pByte = reinterpret_cast<WORD*>( t_memory1 + t_memory2 * bytePerPixel );
 						for ( int i = 0; i < 8; i++ ) {
-							if ( t_memory2 >= screenRect.left && t_memory2 <= screenRect.right ) {
+							if ( t_memory2 >= screenRect.left && t_memory2 <= screenRect.right && t_memory2 <= windowRect.right ) {
 								*pByte++ = bk_byte_value & maska ? color : 0;
-								maska <<= 1;
 							} else {
 								pByte++;
 							}
+							maska <<= 1;
 							t_memory2++;
 						}
 					}
@@ -298,6 +300,7 @@ void BKChildView::draw( const BYTE* bk_video_from, int count_byte, BYTE BK_byte_
 								*pByte++ = color;
 							} else {
 								pByte += 2;
+								maska <<= 2;
 							}
 							t_memory2 += 2;
 						}
@@ -305,12 +308,12 @@ void BKChildView::draw( const BYTE* bk_video_from, int count_byte, BYTE BK_byte_
 						color = grayColor;
 						DWORD* pByte = reinterpret_cast<DWORD*>( t_memory1 + t_memory2 * bytePerPixel );
 						for ( int i = 0; i < 8; i++ ) {
-							if ( t_memory2 >= screenRect.left && t_memory2 <= screenRect.right ) {
+							if ( t_memory2 >= screenRect.left && t_memory2 <= screenRect.right && t_memory2 <= windowRect.right ) {
 								*pByte++ = bk_byte_value & maska ? color : 0;
-								maska <<= 1;
 							} else {
 								pByte++;
 							}
+							maska <<= 1;
 							t_memory2++;
 						}
 					}
