@@ -84,6 +84,8 @@ public:
 
 	RDOSimulatorNS::ShowMode getShowMode() const { return showMode; };
 	void setShowMode( const RDOSimulatorNS::ShowMode value );
+	double getShowRate() const;
+	void setShowRate( const double value ) const;
 
 	RDOStudioModelDoc* getModelDoc() const;
 	void updateModify() const;

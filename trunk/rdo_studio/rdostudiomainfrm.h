@@ -26,8 +26,8 @@ DECLARE_DYNAMIC(RDOStudioMainFrame)
 private:
 	CToolBar   fileToolBar;
 	CImageList fileToolBarImageList;
-	CToolBar   buildToolBar;
-	CImageList buildToolBarImageList;
+	CToolBar   modelToolBar;
+	CImageList modelToolBarImageList;
 	CToolBar   editToolBar;
 	CImageList editToolBarImageList;
 	CStatusBar statusBar;
@@ -69,10 +69,10 @@ protected:
 	//{{AFX_MSG(RDOStudioMainFrame)
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnViewFileToolbar();
-	afx_msg void OnViewBuildToolbar();
+	afx_msg void OnViewModelToolbar();
 	afx_msg void OnViewEditToolbar();
 	afx_msg void OnUpdateViewFileToolbar(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateViewBuildToolbar(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateViewModelToolbar(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateViewEditToolbar(CCmdUI* pCmdUI);
 	afx_msg void OnViewWorkspace();
 	afx_msg void OnViewOutput();
@@ -87,11 +87,21 @@ protected:
 	afx_msg void OnUpdateModelRunNoShow(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateModelRunAnimation(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateModelRunMonitor(CCmdUI* pCmdUI);
+	afx_msg void OnModelShowRateInc();
+	afx_msg void OnModelShowRateIncFour();
+	afx_msg void OnModelShowRateDecFour();
+	afx_msg void OnModelShowRateDec();
+	afx_msg void OnUpdateModelShowRateInc(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateModelShowRateIncFour(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateModelShowRateDecFour(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateModelShowRateDec(CCmdUI* pCmdUI);
 	//}}AFX_MSG
 	afx_msg void OnUpdateCoordStatusBar( CCmdUI *pCmdUI );
 	afx_msg void OnUpdateModifyStatusBar( CCmdUI *pCmdUI );
 	afx_msg void OnUpdateInsertOverwriteStatusBar( CCmdUI *pCmdUI );
 	afx_msg void OnUpdateModelTimeStatusBar( CCmdUI *pCmdUI );
+	afx_msg void OnUpdateModelRunTypeStatusBar( CCmdUI *pCmdUI );
+	afx_msg void OnUpdateModelShowRateStatusBar( CCmdUI *pCmdUI );
 	DECLARE_MESSAGE_MAP()
 };
 

@@ -14,10 +14,10 @@
 #define IDD_BUFFER                      142
 #define IDB_FILETOOLBAR_D               144
 #define IDB_EDITTOOLBAR_D               145
-#define IDR_BUILDTOOLBAR                148
+#define IDR_MODELTOOLBAR                148
 #define IDR_EDITTOOLBAR                 151
-#define IDB_BUILDTOOLBAR_D              152
 #define IDD_OPTIONS_EDITOR              152
+#define IDB_MODELTOOLBAR_D              152
 #define IDD_OPTIONS_STYLESANDCOLORS     153
 #define IDD_FILEASSOCIATION             154
 #define IDD_OPTIONS_TABS                155
@@ -365,7 +365,7 @@
 #define ID_FILE_MODEL_SAVE_AS           33106
 #define ID_SEARCH_FINDINMODEL           33117
 #define ID_CHART_TIMEWRAP               33121
-#define ID_VIEW_TOOLBAR_BUILDTOOLBAR    33132
+#define ID_VIEW_TOOLBAR_MODELTOOLBAR    33132
 #define ID_MODEL_BUILD                  33133
 #define ID_MODEL_RUN                    33134
 #define ID_MODEL_STOP                   33135
@@ -384,6 +384,10 @@
 #define ID_CHART_OPTIONS                33154
 #define ID_CHART_FINDINCHARTS           33156
 #define ID_VIEW_ZOOMAUTO                33157
+#define ID_MODEL_SHOWRATE_INC           33159
+#define ID_MODEL_SHOWRATE_INCFOUR       33160
+#define ID_MODEL_SHOWRATE_DECFOUR       33161
+#define ID_MODEL_SHOWRATE_DEC           33162
 #define ID_STATUSBAR_READONLY           40000
 #define ID_STATUSBAR_MODIFIED           40001
 #define ID_STATUSBAR_OVERWRITE          40002
@@ -475,6 +479,7 @@
 #define IDS_COLORSTYLE_EDITOR_THEME_CLASSIC 40173
 #define IDS_COLORSTYLE_EDITOR_THEME_TWILIGHT 40174
 #define IDS_COLORSTYLE_EDITOR_THEME_OCEAN 40175
+#define IDS_MODELSHOWRATE               40176
 #define IDS_FRAMES                      40200
 #define IDS_FRAMENAME                   40201
 #define IDS_MODELNAME                   40202
@@ -504,6 +509,7 @@
 #define ID_INSERTOVERWRITESTATUSBAR     59396
 #define ID_MODELTIMESTATUSBAR           59397
 #define ID_MODELRUNTYPESTATUSBAR        59398
+#define ID_MODELSHOWRATE                59399
 #define ID_MSG_NO_HELP_FILE             60000
 #define ID_MSG_CANTFIND                 60001
 #define ID_MSG_MODELOPEN_ERROR          60002
@@ -516,7 +522,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        158
-#define _APS_NEXT_COMMAND_VALUE         33158
+#define _APS_NEXT_COMMAND_VALUE         33163
 #define _APS_NEXT_CONTROL_VALUE         1082
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

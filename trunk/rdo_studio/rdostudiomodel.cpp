@@ -173,7 +173,6 @@ void RDOStudioModel::beforeModelStartNotify()
 
 void RDOStudioModel::afterModelStartNotify()
 {
-//	studioApp.mainFrame->output.clearDebug();
 	studioApp.mainFrame->output.showDebug();
 	RDOStudioModelDoc* doc = model->getModelDoc();
 	if ( doc ) {
@@ -530,4 +529,14 @@ void RDOStudioModel::setShowMode( const ShowMode value )
 		frameManager.closeAll();
 	}
 	kernel.getSimulator()->setShowMode( showMode );
+}
+
+double RDOStudioModel::getShowRate() const
+{
+	return kernel.getSimulator()->getShowRate();
+}
+
+void RDOStudioModel::setShowRate( const double value ) const
+{
+	kernel.getSimulator()->setShowRate( value );
 }

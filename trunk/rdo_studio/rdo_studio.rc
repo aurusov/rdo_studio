@@ -75,8 +75,8 @@ IDB_EDITTOOLBAR_D       BITMAP  DISCARDABLE     "res\\editToolbar_d.bmp"
 IDR_FILETOOLBAR         BITMAP  DISCARDABLE     "res\\fileToolbar.bmp"
 IDB_TREECTRL            BITMAP  DISCARDABLE     "res\\tracertreectrl.bmp"
 IDR_EDITTOOLBAR         BITMAP  MOVEABLE PURE   "res\\editToolbar.bmp"
-IDR_BUILDTOOLBAR        BITMAP  DISCARDABLE     "res\\buildToolbar.bmp"
-IDB_BUILDTOOLBAR_D      BITMAP  DISCARDABLE     "res\\buildToolbar_d.bmp"
+IDR_MODELTOOLBAR        BITMAP  DISCARDABLE     "res\\modeToolbar.bmp"
+IDB_MODELTOOLBAR_D      BITMAP  DISCARDABLE     "res\\modelToolbar_d.bmp"
 IDB_FRAMESTREECTRL      BITMAP  DISCARDABLE     "res\\framestreectrl.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
@@ -108,7 +108,7 @@ BEGIN
     BUTTON      ID_SEARCH_BOOKMARKNEXT
 END
 
-IDR_BUILDTOOLBAR TOOLBAR DISCARDABLE  16, 15
+IDR_MODELTOOLBAR TOOLBAR DISCARDABLE  16, 15
 BEGIN
     BUTTON      ID_MODEL_RUN
     BUTTON      ID_MODEL_STOP
@@ -116,6 +116,11 @@ BEGIN
     BUTTON      ID_MODEL_RUNNOSHOW
     BUTTON      ID_MODEL_RUNANIMATION
     BUTTON      ID_MODEL_RUNMONITOR
+    SEPARATOR
+    BUTTON      ID_MODEL_SHOWRATE_INC
+    BUTTON      ID_MODEL_SHOWRATE_INCFOUR
+    BUTTON      ID_MODEL_SHOWRATE_DECFOUR
+    BUTTON      ID_MODEL_SHOWRATE_DEC
 END
 
 
@@ -583,13 +588,13 @@ BEGIN
         MENUITEM "&Zoom Auto\tCtrl+Num*",       ID_VIEW_ZOOMAUTO
         MENUITEM "&Reset Zoom\tCtrl+Num/",      ID_VIEW_ZOOMRESET
         MENUITEM SEPARATOR
-        MENUITEM "&Workspace",                  ID_VIEW_WORKSPACE
-        MENUITEM "&Output",                     ID_VIEW_OUTPUT
+        MENUITEM "&Workspace\tAlt+0",           ID_VIEW_WORKSPACE
+        MENUITEM "&Output\tAlt+2",              ID_VIEW_OUTPUT
         POPUP "&Toolbar"
         BEGIN
             MENUITEM "&File Toolbar",               ID_VIEW_TOOLBAR_FILETOOLBAR
 
-            MENUITEM "&Build Toolbar",              ID_VIEW_TOOLBAR_BUILDTOOLBAR
+            MENUITEM "&Model Toolbar",              ID_VIEW_TOOLBAR_MODELTOOLBAR
 
             MENUITEM "&Edit Toolbar",               ID_VIEW_TOOLBAR_EDITTOOLBAR
 
@@ -916,6 +921,7 @@ END
 
 IDR_MAINFRAME ACCELERATORS PRELOAD MOVEABLE PURE 
 BEGIN
+    "0",            ID_VIEW_WORKSPACE,      VIRTKEY, ALT, NOINVERT
     "0",            ID_VIEW_TOGGLEALLFOLDS, VIRTKEY, SHIFT, CONTROL, 
                                                     NOINVERT
     27,             ID_EMPTYCOMMAND_13,     ASCII,  NOINVERT
@@ -942,6 +948,7 @@ BEGIN
                                                     NOINVERT
     "8",            ID_VIEW_WHITESPACE,     VIRTKEY, SHIFT, CONTROL, 
                                                     NOINVERT
+    "9",            ID_VIEW_OUTPUT,         VIRTKEY, ALT, NOINVERT
     "9",            ID_VIEW_ENDOFLINE,      VIRTKEY, SHIFT, CONTROL, 
                                                     NOINVERT
     "A",            ID_EDIT_SELECT_ALL,     VIRTKEY, CONTROL, NOINVERT
@@ -1173,7 +1180,7 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDR_BUILDTOOLBAR        "Build"
+    IDR_MODELTOOLBAR        "Model"
     IDR_EDITTOOLBAR         "Edit"
 END
 
@@ -1323,6 +1330,7 @@ BEGIN
     ID_INSERTOVERWRITESTATUSBAR " "
     ID_MODELTIMESTATUSBAR   " "
     ID_MODELRUNTYPESTATUSBAR " "
+    ID_MODELSHOWRATE        " "
 END
 
 STRINGTABLE DISCARDABLE 
@@ -1428,6 +1436,19 @@ STRINGTABLE DISCARDABLE
 BEGIN
     IDS_CHART_OPTIONS       "Chart options"
     IDS_CHART_OPTIONS_APPLY "Apply changes?"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_MODELSHOWRATE       "Tempo: %e"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_MODEL_SHOWRATE_INC   "\nIncrease the animation tempo"
+    ID_MODEL_SHOWRATE_INCFOUR "\nIncrease the animation tempo by 4 times"
+    ID_MODEL_SHOWRATE_DECFOUR "\nDecrease the animation tempo by 4 times"
+    ID_MODEL_SHOWRATE_DEC   "\nDecrease the animation tempo"
 END
 
 #endif    // Russian resources
