@@ -43,13 +43,12 @@ bool RDOEditorEditTheme::operator ==( const RDOEditorEditTheme& theme ) const
 {
 	bool flag = RDOEditorBaseEditTheme::operator==( theme );
 
-	if ( flag ) foldFgColor == theme.foldFgColor &&
-	            foldBgColor == theme.foldBgColor &&
+	if ( flag ) flag &= foldFgColor == theme.foldFgColor &&
+	                    foldBgColor == theme.foldBgColor &&
 
-	            errorBgColor == theme.errorBgColor &&
+	                    errorBgColor == theme.errorBgColor &&
 
-	            foldStyle == theme.foldStyle;
-
+	                    foldStyle == theme.foldStyle;
 	return flag;
 }
 
