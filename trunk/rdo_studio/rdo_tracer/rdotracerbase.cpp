@@ -20,8 +20,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-#include <rdokernel.h>
-
 using namespace rdoTracer;
 using namespace rdoTracerLog;
 using namespace std;
@@ -516,9 +514,6 @@ RDOTracerTreeCtrl* RDOTracerBase::createTree()
 void RDOTracerBase::getModelStructure( stringstream& stream )
 {
 	mutex.Lock();
-
-	string str = stream.str();
-	kernel.debug( str.c_str() );
 
 	string s;
 	
