@@ -7,7 +7,7 @@
 // ----------------------------------------------------------------------------
 // ---------- RDOStringList
 // ----------------------------------------------------------------------------
-class RDOStringList: public CStringList
+/*class RDOStringList: public CStringList
 {
 friend class RDOLogCtrl;
 	
@@ -19,12 +19,14 @@ public:
 	
 	bool match( const CString& wildCards, const CString& str, const bool matchCase, const bool matchWholeWord ) const;
 	int findNext( const CString& findWhat, const int findFrom, const int findTo, const bool searchDown, const bool matchCase, const bool matchWholeWord ) const;
-};
+};*/
 
 // ----------------------------------------------------------------------------
 // ---------- RDOLogCtrl
 // ----------------------------------------------------------------------------
 #define WM_LOGSELCHANGE WM_USER + 1
+
+typedef list< string > stringList;
 
 class RDOLogCtrl: public CWnd  
 {
@@ -52,19 +54,25 @@ protected:
 	int fullRepaintLines;
 	bool focusOnly;
 
+	stringList strings;
+	int stringsCount;
+	bool scan( char*& wildCards, char*&str ) const;
+	bool match( const string& wildCards, const string& str, const bool matchCase, const bool matchWholeWord ) const;
+	int findInList( const string& findWhat, const int findFrom, const int findTo, const bool searchDown, const bool matchCase, const bool matchWholeWord ) const;
+
 	int  firstFoundLine;
 	bool bHaveFound;
 	bool bSearchDown;
 	bool bMatchCase;
 	bool bMatchWholeWord;
-	CString findStr;
+	string findStr;
 	int find( const bool searchDown, const bool matchCase, const bool matchWholeWord );
 
-	RDOStringList logStrings;
+//	RDOStringList logStrings;
 
 	RDOLogStyle* logStyle;
 	virtual bool getItemColors( const int index, COLORREF& textColor, COLORREF& backColor ) const;
-	virtual bool getItemColors( const CString& item, COLORREF& textColor, COLORREF& backColor ) const;
+	virtual bool getItemColors( const string& item, COLORREF& textColor, COLORREF& backColor ) const;
 	
 	void recalcWidth( const int newMaxStrWidth );
 	void updateScrollBars();
@@ -103,15 +111,15 @@ public:
 	RDOLogCtrl( RDOLogStyle* style = NULL );
 	virtual ~RDOLogCtrl();
 
-	virtual void addStringToLog( const CString logStr );
+	virtual void addStringToLog( const string& logStr );
 	
 	bool getFocusOnly() const { return focusOnly; }
 	virtual void setFocusOnly( const bool value ) { focusOnly = value; }
 
-	const RDOStringList& getLogStrings() const;
-	virtual CString getString( const int index ) const;
+	const stringList& getLogStrings() const;
+	virtual string getString( const int index ) const;
 	virtual int getSelectedIndex() const;
-	virtual CString getSelected() const;
+	virtual string getSelected() const;
 	virtual bool makeLineVisible( const int index );
 	virtual void selectLine( const int index );
 	virtual void copy();

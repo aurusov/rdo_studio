@@ -20,7 +20,7 @@ protected:
 	bool addingSubitems;
 	RDOColorPair itemColor;
 	bool getItemColors( const int index, COLORREF& textColor, COLORREF& backColor ) const;
-	void showFindError( CString& findStr );
+	void showFindError( string& findStr );
 
 	CMenu popupMenu;
 	bool bShowMenu;
@@ -47,7 +47,7 @@ public:
 	RDOTracerLogCtrl();
 	virtual ~RDOTracerLogCtrl();
 
-	void addStringToLog( const CString logStr );
+	void addStringToLog( const string& logStr );
 
 	void setStyle( const RDOTracerLogStyle& style, const bool needRedraw = true );
 

@@ -4,6 +4,8 @@
 
 #include "rdologstyle.h"
 
+using namespace std;
+
 // ----------------------------------------------------------------------------
 // ---------- RDOTracerLogStyle
 // ----------------------------------------------------------------------------
@@ -48,7 +50,7 @@ public:
 	RDOTracerLogStyle();
 	virtual ~RDOTracerLogStyle();
 
-	bool getItemColors( const CString& item, COLORREF& textColor, COLORREF& backColor ) const;
+	bool getItemColors( const string& item, COLORREF& textColor, COLORREF& backColor ) const;
 
 	RDOTracerLogStyle& operator =( const RDOTracerLogStyle& style );
 	bool operator ==( const RDOTracerLogStyle& style ) const;

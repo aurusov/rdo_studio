@@ -8,7 +8,7 @@
 // ----------------------------------------------------------------------------
 // ---------- RDOStringList
 // ----------------------------------------------------------------------------
-RDOStringList::RDOStringList( int blockSize )
+/*RDOStringList::RDOStringList( int blockSize )
 	: CStringList( blockSize )
 {
 }
@@ -123,7 +123,7 @@ int RDOStringList::findNext( const CString& findWhat, const int findFrom, const 
 	}
 	
 	return -1;
-}
+}*/
 
 // ----------------------------------------------------------------------------
 // ---------- RDOLogCtrl
@@ -171,6 +171,7 @@ RDOLogCtrl::RDOLogCtrl( RDOLogStyle* style ):
 	fullRepaintLines( 0 ),
 	focusOnly( false ),
 	logStyle( style ),
+	stringsCount( 0 ),
 	firstFoundLine( -1 ),
 	bHaveFound( false ),
 	bSearchDown( true ),
@@ -223,7 +224,7 @@ void RDOLogCtrl::OnSize( UINT nType, int cx, int cy )
 
 		//isFullyVisible() uses newClientRect so call it
 		//after setting up newClientRect
-		bool lastLineVisible = isFullyVisible( logStrings.GetCount() - 1 );
+		bool lastLineVisible = isFullyVisible( stringsCount - 1 );
 		bool lastCharVisible = maxStrWidth == xPos + newClientRect.Width() / charWidth;
 		
 		bool fullVisibleVert = !yPos && lastLineVisible;
@@ -335,7 +336,7 @@ bool RDOLogCtrl::getItemColors( const int index,COLORREF& textColor, COLORREF& b
 	return logStyle->getItemColors( index, textColor, backColor );
 }
 
-bool RDOLogCtrl::getItemColors( const CString& item, COLORREF& textColor, COLORREF& backColor ) const
+bool RDOLogCtrl::getItemColors( const string& item, COLORREF& textColor, COLORREF& backColor ) const
 {
 	return logStyle->getItemColors( item, textColor, backColor );
 }
@@ -356,23 +357,29 @@ void RDOLogCtrl::OnPaint()
 		int firstLine = max ( 0, yPos + ps.rcPaint.top / lineHeight );
 		int mul = ps.rcPaint.bottom / lineHeight;
 		if ( ps.rcPaint.bottom > mul * lineHeight ) mul++;
-		int lastLine = min ( logStrings.GetCount() - 1, yPos + mul - 1 );
+		int lastLine = min ( stringsCount - 1, yPos + mul - 1 );
 
 		COLORREF back;
 		COLORREF front;
 
 		int y = lineHeight * ( -yPos + firstLine - 1 );
 		CRect rect( charWidth * ( -xPos ), y, ps.rcPaint.right, y + lineHeight );
-		POSITION pos = logStrings.FindIndex( firstLine );
+		//POSITION pos = logStrings.FindIndex( firstLine );
+		stringList::const_iterator it = strings.begin();
+		int i = 0;
+		while ( i < firstLine ) {
+			it ++;
+			i ++;
+		}
 
-		for ( int i = firstLine; i < lastLine + 1; i++ ) {
+		for ( i = firstLine; i < lastLine + 1; i++ ) {
 
-			CString str;
+			//CString str;
 
-			str = logStrings.GetNext( pos );
+			//str = logStrings.GetNext( pos );
 			
 			if ( i != selectedLine || focusOnly ) {
-				if ( !( getItemColors( str, front, back ) || getItemColors( i, front, back ) ) ) {
+				if ( !( getItemColors( (*it), front, back ) || getItemColors( i, front, back ) ) ) {
 					front = dc->GetTextColor();
 					back  = dc->GetBkColor();
 				}
@@ -396,7 +403,7 @@ void RDOLogCtrl::OnPaint()
 
 			rect.left += logStyle->horzBorder;
 
-			dc->DrawText( str, rect, DT_SINGLELINE | DT_LEFT | DT_VCENTER );
+			dc->DrawText( (*it).c_str(), rect, DT_SINGLELINE | DT_LEFT | DT_VCENTER );
 
 			rect.left -= logStyle->horzBorder;
 			
@@ -409,6 +416,8 @@ void RDOLogCtrl::OnPaint()
 				focusRect.bottom = rect.bottom;
 				dc->DrawFocusRect( &focusRect );
 			}
+
+			it++;
 		}
 
 		dc->FillSolidRect( ps.rcPaint.left, rect.bottom, ps.rcPaint.right, ps.rcPaint.bottom, dc->GetBkColor() );
@@ -530,7 +539,7 @@ void RDOLogCtrl::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
 			break;
 
 		case VK_NEXT:
-			selectLine( min ( selectedLine + yPageSize, logStrings.GetCount() - 1 ) );
+			selectLine( min ( selectedLine + yPageSize, stringsCount - 1 ) );
 			break;
 
 		case VK_DOWN:
@@ -542,7 +551,7 @@ void RDOLogCtrl::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
 			break;
 
 		case VK_END:
-			selectLine( logStrings.GetCount() - 1 );
+			selectLine( stringsCount - 1 );
 			break;
 
 		case VK_LEFT: {
@@ -583,7 +592,7 @@ void RDOLogCtrl::OnLButtonDown( UINT nFlags, CPoint point )
 {
 	CWnd::OnLButtonDown( nFlags, point );
 	SetFocus();
-	selectLine( min( yPos + point.y / lineHeight, logStrings.GetCount() - 1 ) );
+	selectLine( min( yPos + point.y / lineHeight, stringsCount - 1 ) );
 }
 
 void RDOLogCtrl::recalcWidth( const int newMaxStrWidth )
@@ -604,9 +613,8 @@ void RDOLogCtrl::updateScrollBars()
 {
 	xPageSize = newClientRect.Width() / charWidth;
 	yPageSize = newClientRect.Height() / lineHeight;
-	int count = logStrings.GetCount();
 
-	yMax = max ( 0, count - yPageSize );
+	yMax = max ( 0, stringsCount - yPageSize );
 	yPos = min ( yPos, yMax );
 	int mul = yPageSize;
 	if ( mul * lineHeight < newClientRect.Height() )
@@ -618,7 +626,7 @@ void RDOLogCtrl::updateScrollBars()
 	si.fMask  = SIF_RANGE | SIF_PAGE | SIF_POS; 
 	si.nMin   = 0; 
 	
-	si.nMax   = logStrings.GetCount() - 1; 
+	si.nMax   = stringsCount - 1; 
 	si.nPage  = yPageSize; 
 	si.nPos   = yPos; 
 	SetScrollInfo( SB_VERT, &si, TRUE );
@@ -744,10 +752,10 @@ bool RDOLogCtrl::isFullyVisible( const int index ) const
 
 void RDOLogCtrl::selectLine( const int index )
 {
-	if ( index < 0 || index > logStrings.GetCount() - 1 || index == selectedLine )
+	if ( index < 0 || index > stringsCount - 1 || index == selectedLine )
 		return;
 	int prevSel = selectedLine;
-	int inc = max ( - prevSel, min ( index - prevSel, logStrings.GetCount() - 1 - prevSel ) );
+	int inc = max ( - prevSel, min ( index - prevSel, stringsCount - 1 - prevSel ) );
 
 	if ( inc ) {
 		selectedLine += inc;
@@ -808,18 +816,20 @@ bool RDOLogCtrl::makeLineVisible( const int index )
 	return res;
 }
 
-void RDOLogCtrl::addStringToLog( const CString logStr )
+void RDOLogCtrl::addStringToLog( const string& logStr )
 {
 	if ( GetSafeHwnd() ) {
-		bool prevVisible = isVisible( logStrings.GetCount() - 1 );
+		bool prevVisible = isVisible( stringsCount - 1 );
 
-		logStrings.AddTail( logStr );
+		//logStrings.AddTail( logStr );
+		strings.push_back( logStr );
+		stringsCount ++;
 
-		recalcWidth( logStr.GetLength() );
+		recalcWidth( logStr.length() );
 
 		updateScrollBars();
 
-		int lastString = logStrings.GetCount() - 1;
+		int lastString = stringsCount - 1;
 
 		fullRepaintLines = 1;
 
@@ -841,9 +851,9 @@ void RDOLogCtrl::addStringToLog( const CString logStr )
 	}
 }
 
-const RDOStringList& RDOLogCtrl::getLogStrings() const
+const stringList& RDOLogCtrl::getLogStrings() const
 {
-	return logStrings;
+	return strings;
 }
 
 const RDOLogStyle& RDOLogCtrl::getStyle() const
@@ -879,7 +889,7 @@ void RDOLogCtrl::setFont( const RDOFont& font, const bool needRedraw )
 	lf.lfItalic    = font.style & RDOFS_ITALIC;
 	lf.lfUnderline = font.style & RDOFS_UNDERLINE;
 	lf.lfCharSet   = font.characterSet;
-	strcpy( lf.lfFaceName, font.name );
+	strcpy( lf.lfFaceName, font.name.c_str() );
 
 	if ( !fontLog.CreateFontIndirect( &lf ) )
 		return;
@@ -906,11 +916,18 @@ void RDOLogCtrl::setFont( const RDOFont& font, const bool needRedraw )
 	GetWindowRect( &prevWindowRect );
 }*/
 
-CString RDOLogCtrl::getString( const int index ) const
+string RDOLogCtrl::getString( const int index ) const
 {
-	if ( index >= 0 && index < logStrings.GetCount() ) {
-		POSITION pos = logStrings.FindIndex( index );
-		return logStrings.GetAt( pos );
+	if ( index >= 0 && index < stringsCount ) {
+		//POSITION pos = logStrings.FindIndex( index );
+		//return logStrings.GetAt( pos );
+		stringList::const_iterator it = strings.begin();
+		int i = 0;
+		while ( i <= index ) {
+			it ++;
+			i ++;
+		}
+		return (*it);
 	} else {
 		return "";
 	}
@@ -921,7 +938,7 @@ int RDOLogCtrl::getSelectedIndex() const
 	return selectedLine;
 }
 
-CString RDOLogCtrl::getSelected() const
+string RDOLogCtrl::getSelected() const
 {
 	return getString( selectedLine );
 }
@@ -931,9 +948,9 @@ void RDOLogCtrl::copy()
 	if ( canCopy() ) {
 		if ( !OpenClipboard() || !::EmptyClipboard() )
 			return;
-		CString str = getSelected();
-		char* ptr = (char*)::LocalAlloc( LMEM_FIXED, str.GetLength() + 1 );
-		strcpy( ptr, str );
+		string str = getSelected();
+		char* ptr = (char*)::LocalAlloc( LMEM_FIXED, str.length() + 1 );
+		strcpy( ptr, str.c_str() );
 		::SetClipboardData( CF_TEXT, ptr );
 		CloseClipboard();
 	}
@@ -941,7 +958,9 @@ void RDOLogCtrl::copy()
 
 void RDOLogCtrl::clear()
 {
-	logStrings.RemoveAll();
+	//logStrings.RemoveAll();
+	strings.clear();
+	stringsCount      = 0;
 	maxStrWidth       = 0;
 	lastViewableLine  = 0;
 	selectedLine = -1;
@@ -950,24 +969,169 @@ void RDOLogCtrl::clear()
 	UpdateWindow();
 }
 
+bool RDOLogCtrl::scan( char*& wildCards, char*&str ) const
+{
+	// remove the '?' and '*'
+	for( wildCards ++; *str != '\0' && ( *wildCards == '?' || *wildCards == '*' ); wildCards ++ )
+		if ( *wildCards == '?') str ++;
+	while ( *wildCards == '*') wildCards ++;
+	
+	// if str is empty and Wildcards has more characters or,
+	// Wildcards is empty, return 
+	if ( *str == '\0' && *wildCards != '\0' ) return false;
+	if ( *str == '\0' && *wildCards == '\0' ) return true; 
+	// else search substring
+	else
+	{
+		char* wdsCopy = wildCards;
+		char* strCopy = str;
+		bool  res     = 1;
+		do 
+		{
+			if ( !match( wildCards, str, true, false ) )	strCopy ++;
+			wildCards = wdsCopy;
+			str		  = strCopy;
+			while ( ( *wildCards != *str ) && ( *str != '\0' ) ) str ++;
+			wdsCopy = wildCards;
+			strCopy = str;
+		} while ( ( *str != '\0' ) ? !match( wildCards, str, true, false ) : ( res = false ) != false );
+
+		if ( *str == '\0' && *wildCards == '\0' ) return true;
+
+		return res;
+	}
+}
+
+bool RDOLogCtrl::match( const string& wildCards, const string& str, const bool matchCase, const bool matchWholeWord ) const
+{
+	bool res = true;
+	
+	string strWild = wildCards;
+	string strComp = str;
+	
+	if ( !matchCase ) {
+		transform( strWild.begin(), strWild.end(), strWild.begin(), tolower );
+		transform( strComp.begin(), strComp.end(), strComp.begin(), tolower );
+	}
+	
+	if ( matchWholeWord )
+		return strWild == strComp;
+	
+	char* wildcards = strWild.begin();
+	char* strcomp   = strComp.begin();
+
+	//iterate and delete '?' and '*' one by one
+	while( *wildcards != '\0' && res && *strcomp != '\0' )
+	{
+		if ( *wildcards == '?' )
+			strcomp ++;
+		else if ( *wildcards == '*' )
+		{
+			res = scan( wildcards, strcomp );
+			wildcards --;
+		}
+		else
+		{
+			res = ( *wildcards == *strcomp );
+			strcomp ++;
+		}
+		wildcards ++;
+	}
+	while ( *wildcards == '*' && res )  wildcards ++;
+
+	return res && *strcomp == '\0' && *wildcards == '\0';
+}
+
+int RDOLogCtrl::findInList( const string& findWhat, const int findFrom, const int findTo, const bool searchDown, const bool matchCase, const bool matchWholeWord ) const
+{
+	if ( findFrom < 0 || findFrom >= stringsCount || findTo < 0 || findTo >= stringsCount )
+		return -1;
+
+	string strtofind = findWhat;
+
+	
+	if ( !matchWholeWord && strtofind.find_first_of( "*?" ) == string::npos ) {
+		//strtofind.Insert( 0, "*");
+		strtofind.insert( 0, "*");
+		strtofind += "*";
+	}
+	
+
+	/*CNode* nodeFrom = (CNode*)FindIndex( findFrom );
+	CNode* nodeTo   = (CNode*)FindIndex( findTo );*/
+
+	stringList::const_iterator it_from = strings.begin();
+	int i = 0;
+	for ( ; it_from != strings.end(); it_from ++ ) {
+		if ( i == findFrom )
+			break;
+		i ++;
+	}
+	stringList::const_iterator it_to = strings.begin();
+	i = 0;
+	for ( ; it_to != strings.end(); it_to ++ ) {
+		if ( i == findTo )
+			break;
+		i ++;
+	}
+
+	int found = -1;
+
+	/*int found = -1;
+
+	if ( !searchDown ) {
+		for ( ; nodeFrom != nodeTo->pPrev; nodeFrom = nodeFrom->pPrev ) {
+			found++;
+			if ( match( strtofind, nodeFrom->data, matchCase, matchWholeWord ) )
+				return findFrom - found;
+		}
+	} else {
+		for ( ; nodeFrom != nodeTo->pNext; nodeFrom = nodeFrom->pNext ) {
+			found++;
+			if ( match( strtofind, nodeFrom->data, matchCase, matchWholeWord ) )
+				return findFrom + found;
+		}
+	}*/
+
+	if ( !searchDown ) {
+		it_to --;
+		for ( ; it_from != it_to; it_from -- ) {
+			found++;
+			if ( match( strtofind, (*it_from), matchCase, matchWholeWord ) )
+				return findFrom - found;
+		}
+	} else {
+		it_to ++;
+		for ( ; it_from != it_to; it_from ++ ) {
+			found ++;
+			if ( match( strtofind, (*it_from), matchCase, matchWholeWord ) )
+				return findFrom + found;
+		}
+	}
+	
+	return -1;
+}
+
 int RDOLogCtrl::find( const bool searchDown, const bool matchCase, const bool matchWholeWord )
 {
 	int startPosition = selectedLine + 1;
-	int endPosition = logStrings.GetCount() - 1;
+	int endPosition = stringsCount - 1;
 	if ( !searchDown ) {
 		startPosition = selectedLine - 1;
 		endPosition   = 0;
 	}
-	int posFind = logStrings.findNext( findStr, startPosition, endPosition, searchDown, matchCase, matchWholeWord );
+	//int posFind = logStrings.findNext( findStr, startPosition, endPosition, searchDown, matchCase, matchWholeWord );
+	int posFind = findInList( findStr, startPosition, endPosition, searchDown, matchCase, matchWholeWord );
 	if ( posFind == -1 ) {
 		if ( !searchDown ) {
-			startPosition = logStrings.GetCount() - 1;
+			startPosition = stringsCount - 1;
 			endPosition   = 0;
 		} else {
 			startPosition = 0;
-			endPosition   = logStrings.GetCount() - 1;
+			endPosition   = stringsCount - 1;
 		}
-		posFind = logStrings.findNext( findStr, startPosition, endPosition, searchDown, matchCase, matchWholeWord );
+		//posFind = logStrings.findNext( findStr, startPosition, endPosition, searchDown, matchCase, matchWholeWord );
+		posFind = findInList( findStr, startPosition, endPosition, searchDown, matchCase, matchWholeWord );
 	}
 	if ( posFind == -1 ) {
 		firstFoundLine = -1;

@@ -2,6 +2,8 @@
 #define RDOLOGSTYLE_H
 #pragma once
 
+using namespace std;
+
 // ----------------------------------------------------------------------------
 // ---------- RDOFont
 // ----------------------------------------------------------------------------
@@ -22,7 +24,7 @@ public:
 	bool operator ==( const RDOFont& font ) const;
 	bool operator !=( const RDOFont& font ) const;
 
-	CString      name;
+	string      name;
 	int          size;
 	RDOFontStyle style;
 	int          codepage;
@@ -47,7 +49,7 @@ public:
 	RDOFont font;
 
 	virtual bool getItemColors( const int index, COLORREF& textColor, COLORREF& backColor ) const;
-	virtual bool getItemColors( const CString& item, COLORREF& textColor, COLORREF& backColor ) const;
+	virtual bool getItemColors( const string& item, COLORREF& textColor, COLORREF& backColor ) const;
 
 	RDOLogStyle& operator =( const RDOLogStyle& style );
 	bool operator ==( const RDOLogStyle& style ) const;

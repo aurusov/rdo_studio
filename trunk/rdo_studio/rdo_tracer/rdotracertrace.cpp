@@ -274,7 +274,7 @@ string RDOTracerTrace::getNextString()
 	CString res;
 	if ( !traceFile->ReadString( res ) )
 		res = "Unexpected EOF";
-	log->addStringToLog( res );
+	//log->addStringToLog( res );
 	return res;
 }
 
@@ -580,6 +580,7 @@ void RDOTracerTrace::getModelStructure()
 void RDOTracerTrace::getTraceString()
 {
 	string str = getNextString();
+	log->addStringToLog( str );
 	dispathNextString( str );
 }
 
