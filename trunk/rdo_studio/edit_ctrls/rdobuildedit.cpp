@@ -48,7 +48,6 @@ string RDOBuildEditLineInfo::getMessage() const
 // ---------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP( RDOBuildEdit, RDOLogEdit )
 	//{{AFX_MSG_MAP(RDOBuildEdit)
-	ON_WM_CREATE()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -58,11 +57,4 @@ RDOBuildEdit::RDOBuildEdit(): RDOLogEdit()
 
 RDOBuildEdit::~RDOBuildEdit()
 {
-}
-
-int RDOBuildEdit::OnCreate(LPCREATESTRUCT lpCreateStruct)
-{
-	if ( RDOLogEdit ::OnCreate(lpCreateStruct) == -1 ) return -1;
-
-	return 0;
 }

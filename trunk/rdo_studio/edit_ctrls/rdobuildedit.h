@@ -28,7 +28,6 @@ class RDOBuildEdit: public RDOLogEdit
 {
 protected:
 	//{{AFX_MSG(RDOBuildEdit)
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
