@@ -99,6 +99,9 @@ void tracerCallBack(string *newString, void *param)
 	RdoSimulator *simulator = (RdoSimulator *)param;
 //	kernel.notifyString(RDOKernel.traceString, newString->c_str());
 	int pos = 0;
+	if(newString->empty())
+		return;
+
 	for(;;)
 	{
 		int next = newString->find('\n', pos);
@@ -382,6 +385,7 @@ void RdoSimulator::runModel()
 void RdoSimulator::stopModel()
 {
 	terminateModel();
+	closeModel();
 	kernel.notify(RDOKernel::modelStopped);
 }
 
