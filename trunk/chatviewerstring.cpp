@@ -101,7 +101,6 @@ CChatString::CChatString( const int lineIndex, const std::string& _userName, con
 			flag = false;
 		}
 		std::string str = message.substr( pos_from, pos - pos_from );
-//		trimLeft( str );
 		CChatSmile* smile = smiles.addSmile( str );
 		if ( smile ) {
 			if ( !smile->IsAnimatedGIF() ) smile->Stop();
@@ -194,63 +193,58 @@ void CChatString::drawText( CDC* dc, CRect& r )
 	CRect rect;
 	std::string s = getString();
 	int pos_from = 0;
-	int pos = s.find( ' ', pos_from );
-	int x_pos = r.left;
-	int y_pos = r.top;
+	int pos  = s.find( ' ', pos_from );
+	int left = r.left;
+	int top  = r.top;
 	int smile_index = 0;
 	int height_of_line = getOneLineHeight( dc, r.Width(), pos_from, smile_index );
 	bool flag = true;
 	while ( flag ) {
 		if ( pos == std::string::npos ) {
-			pos = s.length();
+			pos  = s.length();
 			flag = false;
 		}
 		std::string s2 = s.substr( pos_from, pos - pos_from );
-//		trimLeft( s2 );
 		if ( !s2.empty() ) {
 			if ( smiles.getType( s2 ) != CChatSmile::none ) {
-				CChatSmile* smile = smiles[smile_index++];
+				CChatSmile* smile = smiles[smile_index];
 				CSize size = smile->GetSize();
-				if ( x_pos + size.cx > r.right ) {
-					x_pos = r.left;
+				if ( left + size.cx > r.right ) {
+					left = r.left;
 					if ( pos_from != 0 ) {
-						y_pos += height_of_line;
-						smile_index--;
+						top += height_of_line;
 						height_of_line = getOneLineHeight( dc, r.Width(), pos_from, smile_index );
 					}
 				}
-				smile->MoveWindow( x_pos, y_pos + height_of_line - size.cy, x_pos + size.cx, y_pos + height_of_line );
-				x_pos += size.cx;
+				smile->MoveWindow( left, top + height_of_line - size.cy, left + size.cx, top + height_of_line );
+				left += size.cx;
 				if ( flag ) {
-//					rect.left    = x_pos;
-//					rect.top     = y_pos;
-//					rect.right  += x_pos;
-//					rect.bottom += y_pos;
-//					dc->DrawText( " ", &rect, DT_LEFT | DT_SINGLELINE );
-					x_pos += chatApp.style.spaceWidth;
+					left += chatApp.style.spaceWidth;
 				}
+				smile_index++;
 			} else {
 				rect = CRect( 0, 0, 1, 1 );
 				dc->DrawText( s2.c_str(), &rect, DT_LEFT | DT_SINGLELINE | DT_CALCRECT );
-				if ( x_pos + rect.right > r.right ) {
-					x_pos = r.left;
+				if ( left + rect.right > r.right ) {
+					left = r.left;
 					if ( pos_from != 0 ) {
-						y_pos += height_of_line;
+						top += height_of_line;
+						height_of_line = getOneLineHeight( dc, r.Width(), pos_from, smile_index );
 					}
 				}
-				rect.left    = x_pos;
-				rect.top     = y_pos;
-				rect.right  += x_pos;
-				rect.bottom  = y_pos + height_of_line;
+				rect.left    = left;
+				rect.top     = top;
+				rect.right  += left;
+				rect.bottom  = top + height_of_line;
 				dc->DrawText( s2.c_str(), &rect, DT_LEFT | DT_SINGLELINE | DT_BOTTOM );
-				x_pos += rect.Width();
+				left += rect.Width();
 				if ( flag ) {
-					rect.left    = x_pos;
-					rect.top     = y_pos;
-					rect.right  += x_pos;
-					rect.bottom += y_pos;
+					rect.left    = left;
+					rect.top     = top;
+					rect.right  += left;
+					rect.bottom  = top + height_of_line;
 					dc->DrawText( " ", &rect, DT_LEFT | DT_SINGLELINE );
-					x_pos += chatApp.style.spaceWidth;
+					left += chatApp.style.spaceWidth;
 				}
 			}
 		}
@@ -265,38 +259,50 @@ int CChatString::getOneLineHeight( CDC* dc, const int _width, int pos_from, int 
 {
 	CRect rect;
 	std::string s = getString();
-	int pos = s.find( ' ', pos_from );
-	int x_pos = 0;
-	int y_pos = 0;
+	int pos  = s.find( ' ', pos_from );
+	int left = 0;
 	int height_of_line = 0;
 	bool flag = true;
 	while ( flag ) {
 		if ( pos == std::string::npos ) {
-			pos = s.length();
+			pos  = s.length();
 			flag = false;
 		}
 		std::string s2 = s.substr( pos_from, pos - pos_from );
 		if ( !s2.empty() ) {
 			if ( smiles.getType( s2 ) != CChatSmile::none ) {
-				CChatSmile* smile = smiles[smile_index++];
+				CChatSmile* smile = smiles[smile_index];
 				CSize size = smile->GetSize();
-				if ( y_pos < size.cy ) {
-					y_pos = size.cy;
+				if ( !height_of_line ) {
+					height_of_line = size.cy;
 				}
-				if ( x_pos + size.cy > _width ) {
-					return y_pos;
+				if ( left + size.cx > _width ) {
+					return height_of_line;
 				}
-				x_pos += size.cy;
+				if ( height_of_line < size.cy ) {
+					height_of_line = size.cy;
+				}
+				left += size.cx;
+				if ( flag ) {
+					left += chatApp.style.spaceWidth;
+				}
+				smile_index++;
 			} else {
 				rect = CRect( 0, 0, 1, 1 );
 				dc->DrawText( s2.c_str(), &rect, DT_LEFT | DT_SINGLELINE | DT_CALCRECT );
-				if ( y_pos < rect.bottom ) {
-					y_pos = rect.bottom;
+				if ( !height_of_line ) {
+					height_of_line = rect.bottom;
 				}
-				if ( x_pos + rect.right > _width ) {
-					return y_pos;
+				if ( left + rect.right > _width ) {
+					return height_of_line;
 				}
-				x_pos += rect.right;
+				if ( height_of_line < rect.bottom ) {
+					height_of_line = rect.bottom;
+				}
+				left += rect.right;
+				if ( flag ) {
+					left += chatApp.style.spaceWidth;
+				}
 			}
 		}
 
@@ -304,7 +310,7 @@ int CChatString::getOneLineHeight( CDC* dc, const int _width, int pos_from, int 
 		pos = s.find( ' ', pos_from );
 	}
 
-	return y_pos;
+	return height_of_line;
 }
 
 int CChatString::getHeight( CDC* dc, const int _width )
@@ -314,61 +320,62 @@ int CChatString::getHeight( CDC* dc, const int _width )
 		CRect rect;
 		std::string s = getString();
 		int pos_from = 0;
-		int pos = s.find( ' ', pos_from );
-		int x_pos = 0;
-		int y_pos = 0;
+		int pos  = s.find( ' ', pos_from );
+		int left = 0;
+		int top  = 0;
 		int smile_index = 0;
+		int height_of_line = getOneLineHeight( dc, _width, pos_from, smile_index );
+		height = height_of_line;
 		bool flag = true;
 		while ( flag ) {
 			if ( pos == std::string::npos ) {
-				pos = s.length();
+				pos  = s.length();
 				flag = false;
 			}
 			std::string s2 = s.substr( pos_from, pos - pos_from );
 			if ( !s2.empty() ) {
 				if ( smiles.getType( s2 ) != CChatSmile::none ) {
-					CChatSmile* smile = smiles[smile_index++];
+					CChatSmile* smile = smiles[smile_index];
 					CSize size = smile->GetSize();
-					if ( y_pos < size.cy ) {
-						y_pos = size.cy;
-					}
-					if ( x_pos + size.cy > _width ) {
-						x_pos = 0;
+					if ( left + size.cx > _width ) {
+						left = 0;
 						if ( pos_from != 0 ) {
-							y_pos += size.cy;
+							top += height_of_line;
+							height_of_line = getOneLineHeight( dc, _width, pos_from, smile_index );
+							height += height_of_line;
 						}
 					}
-					x_pos += size.cy;
-					if ( maxWidth < size.cy ) {
-						maxWidth = size.cy;
+					left += size.cx;
+					if ( maxWidth < size.cx ) {
+						maxWidth = size.cx;
 					}
-					if ( x_pos > width ) {
-						width = x_pos;
+					if ( left > width ) {
+						width = left;
 					}
 					if ( flag ) {
-						x_pos += chatApp.style.spaceWidth;
+						left += chatApp.style.spaceWidth;
 					}
+					smile_index++;
 				} else {
 					rect = CRect( 0, 0, 1, 1 );
 					dc->DrawText( s2.c_str(), &rect, DT_LEFT | DT_SINGLELINE | DT_CALCRECT );
-					if ( y_pos < rect.bottom ) {
-						y_pos = rect.bottom;
-					}
-					if ( x_pos + rect.right > _width ) {
-						x_pos = 0;
+					if ( left + rect.right > _width ) {
+						left = 0;
 						if ( pos_from != 0 ) {
-							y_pos += rect.bottom;
+							top += height_of_line;
+							height_of_line = getOneLineHeight( dc, _width, pos_from, smile_index );
+							height += height_of_line;
 						}
 					}
-					x_pos += rect.right;
+					left += rect.right;
 					if ( maxWidth < rect.right ) {
 						maxWidth = rect.right;
 					}
-					if ( x_pos > width ) {
-						width = x_pos;
+					if ( left > width ) {
+						width = left;
 					}
 					if ( flag ) {
-						x_pos += chatApp.style.spaceWidth;
+						left += chatApp.style.spaceWidth;
 					}
 				}
 			}
@@ -376,7 +383,6 @@ int CChatString::getHeight( CDC* dc, const int _width )
 			pos_from = pos + 1;
 			pos = s.find( ' ', pos_from );
 		}
-		height = y_pos;
 
 		dc->SelectObject( prev_font );
 
@@ -443,7 +449,7 @@ void CChatStringList::recalculateSize()
 
 void CChatStringList::setSelected( const int _selected )
 {
-	if ( selected != _selected ) {
+	if ( selected != _selected && _selected >=0 && _selected < count() ) {
 		selected = _selected;
 		if ( selected != -1 ) list[ selected ]->selectedON();
 	}
@@ -452,5 +458,5 @@ void CChatStringList::setSelected( const int _selected )
 void CChatStringList::clearSelected( const int _selected )
 {
 	selected = -1;
-	if ( _selected != -1 ) list[ _selected ]->selectedOFF();
+	if ( _selected != -1 && _selected >=0 && _selected < count() ) list[ _selected ]->selectedOFF();
 }

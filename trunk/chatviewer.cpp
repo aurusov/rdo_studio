@@ -176,9 +176,9 @@ void CChatViewer::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
 
 	WORD scrollNotify = 0xFFFF;
 	UINT msg = WM_VSCROLL;
-	
+
 	switch ( nChar ) {
-	
+
 		case VK_UP:
 			selectLine( selectedLine - 1 );
 			break;
@@ -208,7 +208,7 @@ void CChatViewer::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
 //			msg = WM_HSCROLL;
 			break;
 		}
-		
+
 		case VK_RIGHT: {
 //			scrollNotify = SB_LINEDOWN;
 //			msg = WM_HSCROLL;
@@ -385,24 +385,6 @@ void CChatViewer::repaintLine( const int index )
 		rect.bottom = rect.top + getStrHeight( index );
 		InvalidateRect( &rect );
 		UpdateWindow();
-	}
-}
-
-void CChatViewer::addString( CChatString* str )
-{
-	if ( GetSafeHwnd() ) {
-
-		strings.addString( str );
-
-		updateScrollBars();
-
-		int lastString = strings.count() - 1;
-		if ( lastString <= 0 ) lastString = 1;
-
-		if ( isVisible( lastString - 1 ) ) {
-			selectedLine = lastString;
-			::SendMessage( m_hWnd, WM_VSCROLL, MAKELONG( SB_BOTTOM, 0 ), NULL );
-		}
 	}
 }
 
@@ -609,5 +591,24 @@ void CChatViewer::OnPaint()
 		dc.FillSolidRect( dc.m_ps.rcPaint.left, rect.bottom, dc.m_ps.rcPaint.right, dc.m_ps.rcPaint.bottom, chatApp.style.theme.viewerBgColor );
 
 		dc.SelectObject( prev_font );
+	}
+}
+
+void CChatViewer::addString( const std::string& userName, const std::string& message, CChatStringType type, const std::string& toUserName )
+{
+	if ( GetSafeHwnd() ) {
+
+		CChatString* str = new CChatString( getStringCount(), userName, message, type, toUserName );
+		strings.addString( str );
+
+		updateScrollBars();
+
+		int lastString = strings.count() - 1;
+		if ( lastString <= 0 ) lastString = 1;
+
+		if ( isVisible( lastString - 1 ) ) {
+			selectedLine = lastString;
+			::SendMessage( m_hWnd, WM_VSCROLL, MAKELONG( SB_BOTTOM, 0 ), NULL );
+		}
 	}
 }

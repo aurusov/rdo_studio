@@ -49,7 +49,7 @@ public:
 	CChatViewer();
 	virtual ~CChatViewer();
 
-	void addString( CChatString* str );
+	void addString( const std::string& userName, const std::string& message, CChatStringType type = CSTRT_Message, const std::string& toUserName = "" );
 	int getStringCount() const { return strings.count(); }
 
 	void setStyle( const CChatViewerStyle& _style, const bool needRedraw = true );

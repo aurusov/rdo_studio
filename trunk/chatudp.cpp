@@ -129,7 +129,7 @@ void CChatUdp::addToBackupBufferAnsPars( const std::string& str )
 
 void CChatUdp::parsCommand( const std::string& line )
 {
-//	chatApp.mainFrame->childView.addStringToViewer( "", line );
+//	chatApp.mainFrame->childView.viewer.addString( "", line );
 
 	std::string fromHost = getCommandValue( line, "fromhost" );
 	std::string fromIP   = getCommandValue( line, "fromip" );
@@ -145,13 +145,13 @@ void CChatUdp::parsCommand( const std::string& line )
 	if ( hasCommand( line, "connect" ) ) {
 		std::string username = getCommandValue( line, "connect" );
 		std::string s = format( IDS_CONNECT_VIEWERLOG, username.c_str() );
-		chatApp.mainFrame->childView.addStringToViewer( username, s, CSTRT_Connect );
+		chatApp.mainFrame->childView.viewer.addString( username, s, CSTRT_Connect );
 		chatApp.sounds.play( CST_Connect );
 
 	// CLOSE
 	} else if ( hasCommand( line, "close" ) ) {
 		std::string s = format( IDS_DISCONNECT_VIEWERLOG, fromUser.c_str() );
-		chatApp.mainFrame->childView.addStringToViewer( fromUser, s, CSTRT_Disconnect );
+		chatApp.mainFrame->childView.viewer.addString( fromUser, s, CSTRT_Disconnect );
 		chatApp.sounds.play( CST_Disconnect );
 		if ( user ) {
 			chatApp.users.deleteUser( user );
@@ -174,7 +174,7 @@ void CChatUdp::parsCommand( const std::string& line )
 			if ( user->getUserName() != username ) {
 				user->setUserName( username );
 				if ( user->isIgnored() ) return;
-				chatApp.mainFrame->childView.addStringToViewer( username, user->getUserName() + " сменил имя на " + username, CSTRT_ChangeName );
+				chatApp.mainFrame->childView.viewer.addString( username, user->getUserName() + " сменил имя на " + username, CSTRT_ChangeName );
 			}
 		}
 
@@ -205,7 +205,7 @@ void CChatUdp::parsCommand( const std::string& line )
 			} else {
 				s = format( IDS_STATUSMODEWITHINFO_VIEWERLOG, username.c_str(), chatApp.statusModes.getStatusMode( status )->name.c_str(), s_statusmsg.c_str() );
 			}
-			chatApp.mainFrame->childView.addStringToViewer( username, s, CSTRT_ChangeStatusMode );
+			chatApp.mainFrame->childView.viewer.addString( username, s, CSTRT_ChangeStatusMode );
 			chatApp.sounds.play( CST_ChangeStatusMode );
 		}
 
@@ -213,7 +213,7 @@ void CChatUdp::parsCommand( const std::string& line )
 	} else if ( hasCommand( line, "msg" ) ) {
 		if ( user && user->isIgnored() ) return;
 		std::string msg = getCommandValue( line, "msg", true );
-		chatApp.mainFrame->childView.addStringToViewer( fromUser, msg );
+		chatApp.mainFrame->childView.viewer.addString( fromUser, msg );
 
 		if ( !chatApp.mainFrame->isVisible() ) {
 			chatApp.mainFrame->modifyTray();
@@ -237,7 +237,7 @@ void CChatUdp::parsCommand( const std::string& line )
 	} else if ( hasCommand( line, "tocryout" ) ) {
 		if ( user && user->isIgnored() ) return;
 		std::string msg = getCommandValue( line, "tocryout", true );
-		chatApp.mainFrame->childView.addStringToViewer( fromUser, msg, CSTRT_ToCryOut );
+		chatApp.mainFrame->childView.viewer.addString( fromUser, msg, CSTRT_ToCryOut );
 
 		if ( !chatApp.mainFrame->isVisible() ) {
 			chatApp.mainFrame->modifyTray();
@@ -257,11 +257,11 @@ void CChatUdp::parsCommand( const std::string& line )
 		if ( toUser ) {
 			if ( user == chatApp.users.getOnwer() ) {
 				std::string msg = getCommandValue( line, "popupmsg", true );
-				chatApp.mainFrame->childView.addStringToViewer( fromUser, msg, CSTRT_PopupMsgSend, toUser->getUserName() );
+				chatApp.mainFrame->childView.viewer.addString( fromUser, msg, CSTRT_PopupMsgSend, toUser->getUserName() );
 				chatApp.sounds.play( CST_PopupMsg );
 			} else if ( toUser == chatApp.users.getOnwer() ) {
 				std::string msg = getCommandValue( line, "popupmsg", true );
-				chatApp.mainFrame->childView.addStringToViewer( fromUser, msg, CSTRT_PopupMsgReceive, toUser->getUserName() );
+				chatApp.mainFrame->childView.viewer.addString( fromUser, msg, CSTRT_PopupMsgReceive, toUser->getUserName() );
 				chatApp.sounds.play( CST_PopupMsg );
 			}
 		}
