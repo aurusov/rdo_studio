@@ -249,6 +249,7 @@ void RDOParser::parseFRM(istream* arg_yyin, ostream* arg_yyout)
 
 void RDOParser::parseSMR1(istream* arg_yyin, ostream* arg_yyout) 
 {
+	*arg_yyout << " ";
 	rdoLexer lexer(arg_yyin, arg_yyout);
 	fileToParse = SMR1_FILE;
 	out = arg_yyout;

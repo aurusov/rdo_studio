@@ -37,6 +37,7 @@ protected:
 public:
    RDOTrace(): isNullTracer(true) {}
    RDOTrace(std::string fn): fileName(fn), out(fileName.begin(), std::ios_base::out), isNullTracer(false) {}
+	virtual ~RDOTrace() {}
 
 	void startWriting() { canWriteToStream = true; }
 	void stopWriting() { canWriteToStream = false; }

@@ -106,6 +106,14 @@ RdoSimulator::~RdoSimulator()
 	closeModel();
 }
 
+class RDOSimResulter: public RDOResult
+{
+	ostream &stream;
+public:
+	RDOSimResulter(ostream &_stream): stream(_stream) {isNullResult = false;}
+   virtual std::ostream &getOStream() { return stream; }
+};
+
 UINT RunningThreadControllingFunction( LPVOID pParam )
 {
 	RdoSimulator *simulator = (RdoSimulator *)pParam;
@@ -125,7 +133,8 @@ UINT RunningThreadControllingFunction( LPVOID pParam )
 		if(simulator->parser->smr->resultsFileName == NULL) 
 			resulter = new rdoRuntime::RDOResult();
 		else
-			resulter = new rdoRuntime::RDOResult((*simulator->parser->smr->resultsFileName + ".pmv").c_str());
+//			resulter = new rdoRuntime::RDOResult((*simulator->parser->smr->resultsFileName + ".pmv").c_str());
+			resulter = new RDOSimResulter(simulator->resultString);
 
 
 /////////  RDO config initialization ////////////////////////
@@ -191,6 +200,9 @@ UINT RunningThreadControllingFunction( LPVOID pParam )
 		}
 		kernel.notify(RDOKernel::endExecuteModel);
 		kernel.debug("End executing\n");
+
+//		kernel.debug(simulator->getResults().str().c_str());
+
 	}
 	catch(RDOException &)
 	{
@@ -351,7 +363,7 @@ void RdoSimulator::parseSMRFileInfo( stringstream& smr, rdoModelObjects::RDOSMRF
 	parser = new rdoParse::RDOParser();
 	runtime = parser->runTime;
 
-	ostringstream consol;
+	stringstream consol;
 
 	try {
 		parser->parseSMR1(&smr, &consol);
@@ -461,9 +473,14 @@ double RdoSimulator::getInitialShowRate()
 	return *parser->smr->showRate;
 }
 
-string RdoSimulator::getModelStructure()
+stringstream &RdoSimulator::getModelStructure()
 {
-	return parser->modelStructure.str();
+	return parser->modelStructure;
+}
+
+stringstream &RdoSimulator::getResults()
+{
+	return resultString;
 }
 
 

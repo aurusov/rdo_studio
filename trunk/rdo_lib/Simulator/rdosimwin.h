@@ -40,6 +40,8 @@ class RdoSimulator
 	void closeModel(); 
 
 	ShowMode showMode; // current show mode
+
+	stringstream resultString;
 public:
 	RdoSimulator();
 	~RdoSimulator();
@@ -61,7 +63,8 @@ public:
 	int getInitialFrameNumber();
 	double getInitialShowRate();
 
-	string getModelStructure();
+	stringstream &getModelStructure();
+	stringstream &getResults();
 
 	ShowMode getShowMode() { return showMode; }
 	void setShowMode(ShowMode _showMode) { showMode = _showMode; }

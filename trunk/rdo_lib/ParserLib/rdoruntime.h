@@ -64,14 +64,17 @@ namespace rdoRuntime
 class RDOResult
 {
    ofstream out;
-	bool isNullResult;
    virtual std::ostream &getOStream() { return out; }
+protected:
+	bool isNullResult;
 public:
 	RDOResult(const char *const fileName): out(fileName, ios::out), isNullResult(false) {}
 	RDOResult(): isNullResult(true) {}
-	int width(int w) { if(isNullResult) return 0; return out.width(w); }
+	int width(int w) { if(isNullResult) return 0; return getOStream().width(w); }
 	template<class TN>
-		RDOResult& operator << (TN str) { if(!isNullResult) out << str; return *this; }
+		RDOResult& operator << (TN str) { if(!isNullResult) getOStream() << str; return *this; }
+
+	virtual ~RDOResult() {}
 };
 
 
