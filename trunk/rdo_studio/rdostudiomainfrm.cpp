@@ -34,6 +34,10 @@ BEGIN_MESSAGE_MAP(RDOStudioMainFrame, CMDIFrameWnd)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_WORKSPACE, OnUpdateViewWorkspace)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_OUTPUT, OnUpdateViewOutput)
 	//}}AFX_MSG_MAP
+	ON_UPDATE_COMMAND_UI( ID_COORDSTATUSBAR          , OnUpdateCoordStatusBar )
+	ON_UPDATE_COMMAND_UI( ID_MODIFYSTATUSBAR         , OnUpdateModifyStatusBar )
+	ON_UPDATE_COMMAND_UI( ID_INSERTOVERWRITESTATUSBAR, OnUpdateInsertOverwriteStatusBar )
+	ON_UPDATE_COMMAND_UI( ID_MODELTIMESTATUSBAR      , OnUpdateModelTimeStatusBar )
 END_MESSAGE_MAP()
 
 static UINT indicators[] = {
@@ -202,4 +206,28 @@ void RDOStudioMainFrame::buildNotify( string str )
 void RDOStudioMainFrame::debugNotify( string str )
 {
 	studioApp.mainFrame->output.appendStringToDebug( str );
+}
+
+void RDOStudioMainFrame::OnUpdateCoordStatusBar( CCmdUI *pCmdUI )
+{
+	pCmdUI->Enable();
+	pCmdUI->SetText( "" );
+}
+
+void RDOStudioMainFrame::OnUpdateModifyStatusBar( CCmdUI *pCmdUI )
+{
+	pCmdUI->Enable();
+	pCmdUI->SetText( "" );
+}
+
+void RDOStudioMainFrame::OnUpdateInsertOverwriteStatusBar( CCmdUI *pCmdUI )
+{
+	pCmdUI->Enable();
+	pCmdUI->SetText( "" );
+}
+
+void RDOStudioMainFrame::OnUpdateModelTimeStatusBar( CCmdUI *pCmdUI )
+{
+	pCmdUI->Enable();
+	pCmdUI->SetText( "" );
 }
