@@ -40,6 +40,7 @@ protected:
 	RDOTracerSerieMarker selectMarker();
 
 	timesList docTimes;
+	timesList::iterator inserted_it;
 	double minTimeOffset;
 	int ticksCount;
 	void incTimeEventsCount( RDOTracerTimeNow* time );

@@ -67,6 +67,7 @@ public:
 
 	void addValue( RDOTracerValue* const value );
 	void getValueCount( int& count ) const;
+	bool empty() const { return values.empty(); };
 	valuesList::const_iterator begin() const { return values.begin(); };
 	valuesList::const_iterator end() const { return values.end(); };
 	void getLastValue( RDOTracerValue*& val ) const;

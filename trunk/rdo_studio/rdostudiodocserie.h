@@ -39,6 +39,7 @@ public:
 	CSize drawInLegend( CDC &dc, CRect &rect, CFont& font, const COLORREF text_color ) const;
 	void lock() { serie->mutex.Lock(); };
 	void unlock() { serie->mutex.Unlock(); };
+	bool empty() const { return serie->empty(); };
 };
 
 //{{AFX_INSERT_LOCATION}}
