@@ -346,7 +346,7 @@ void RdoSimulator::runModel()
 	if(res)
 	{
 		kernel.notify(RDOKernel::beforeModelStart);
-		kernel.debug("Start executing\n");
+//		kernel.debug("Start executing\n");
 		th = AfxBeginThread(RunningThreadControllingFunction, (LPVOID)this);
 		kernel.notify(RDOKernel::afterModelStart);
 	}
