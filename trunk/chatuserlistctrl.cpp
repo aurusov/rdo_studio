@@ -10,6 +10,8 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+// Using code from Megavarnan Selvaraj for tooltip
+
 // ----------------------------------------------------------------------------
 // ---------- CChatUserListCtrl
 // ----------------------------------------------------------------------------
@@ -115,6 +117,7 @@ void CChatUserListCtrl::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
 	chatApp.mainFrame->restoreStatusMode();
 }
 
+// Using code from Megavarnan Selvaraj
 int CChatUserListCtrl::OnToolHitTest( CPoint point, TOOLINFO* pTI ) const
 {
 	UINT uFlags;
@@ -133,6 +136,7 @@ int CChatUserListCtrl::OnToolHitTest( CPoint point, TOOLINFO* pTI ) const
 	return -1;
 }
 
+// Using code from Megavarnan Selvaraj
 BOOL CChatUserListCtrl::OnToolTipText( UINT id, NMHDR * pNMHDR, LRESULT * pResult )
 {
 	// need to handle both ANSI and UNICODE versions of the message

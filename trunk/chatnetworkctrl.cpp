@@ -11,6 +11,8 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+// Using code from Megavarnan Selvaraj for tooltip
+
 // ----------------------------------------------------------------------------
 // ---------- CChatNetworkCtrl
 // ----------------------------------------------------------------------------
@@ -77,6 +79,7 @@ void CChatNetworkCtrl::OnLButtonDblClk( UINT nFlags, CPoint point )
 	}
 }
 
+// Using code from Megavarnan Selvaraj
 int CChatNetworkCtrl::OnToolHitTest( CPoint point, TOOLINFO* pTI ) const
 {
 	UINT uFlags;
@@ -98,6 +101,7 @@ int CChatNetworkCtrl::OnToolHitTest( CPoint point, TOOLINFO* pTI ) const
 	return -1;
 }
 
+// Using code from Megavarnan Selvaraj
 BOOL CChatNetworkCtrl::OnToolTipText( UINT id, NMHDR * pNMHDR, LRESULT * pResult )
 {
 	// need to handle both ANSI and UNICODE versions of the message
