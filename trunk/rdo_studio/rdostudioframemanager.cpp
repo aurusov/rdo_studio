@@ -446,34 +446,31 @@ void RDOStudioFrameManager::showFrame( const RDOFrame* const frame, const int in
 			frames[index]->keys_pressed.clear();
 
 			int size = frame->elements.size();
-			for(int i = 0; i < size; i++)
-			{
-				RDOFrameElement *currElement = frame->elements.at(i);
-				switch(currElement->type)
-				{
-				case RDOFrameElement::text_type:
-					{				
+			for(int i = 0; i < size; i++) {
+				RDOFrameElement* currElement = frame->elements.at(i);
+				switch( currElement->type ) {
+					case RDOFrameElement::text_type: {
 						int oldBkMode;
 						COLORREF oldBkColor;
 						COLORREF oldTextColor;
 						bool restoreBkColor   = false;
 						bool restoreTextColor = false;
-						RDOTextElement *textEl = (RDOTextElement *)currElement;
-						if( !textEl->background.isTransparent ) {
+						RDOTextElement* element = static_cast<RDOTextElement*>(currElement);
+						if( !element->background.isTransparent ) {
 							oldBkMode  = dc.SetBkMode(OPAQUE);
-							oldBkColor = dc.SetBkColor(RGB(textEl->background.r, textEl->background.g, textEl->background.b));
+							oldBkColor = dc.SetBkColor(RGB(element->background.r, element->background.g, element->background.b));
 							restoreBkColor = true;
 						} else {
 							oldBkMode = dc.SetBkMode(TRANSPARENT);
 						}
 
-						if( !textEl->foreground.isTransparent ) {
-							oldTextColor = dc.SetTextColor(RGB(textEl->foreground.r, textEl->foreground.g, textEl->foreground.b));
+						if( !element->foreground.isTransparent ) {
+							oldTextColor = dc.SetTextColor(RGB(element->foreground.r, element->foreground.g, element->foreground.b));
 							restoreTextColor = true;
 						}
 
 						UINT nFormat = DT_SINGLELINE;
-						switch(textEl->align)
+						switch(element->align)
 						{
 						case RDOTextElement::left:
 							nFormat |= DT_LEFT; break;
@@ -483,108 +480,130 @@ void RDOStudioFrameManager::showFrame( const RDOFrame* const frame, const int in
 							nFormat |= DT_CENTER; break;
 						}
 
-						dc.DrawText(textEl->strText.c_str(), textEl->strText.length(),
-							CRect(textEl->x, textEl->y, textEl->x + textEl->w, textEl->y + textEl->h),
+						dc.DrawText(element->strText.c_str(), element->strText.length(),
+							CRect(element->x, element->y, element->x + element->w, element->y + element->h),
 							nFormat);
 
 						dc.SetBkMode( oldBkMode );
 						if ( restoreBkColor ) dc.SetBkColor( oldBkColor );
 						if ( restoreTextColor ) dc.SetTextColor( oldTextColor );
+						break;
 					}
-					break;
-
-				case RDOFrameElement::rect_type:
-					{																		
-						RDORectElement *rectEl = (RDORectElement *)currElement;
-						CBrush brush( RGB(rectEl->background.r, rectEl->background.g, rectEl->background.b) );
+					case RDOFrameElement::r_rect_type: {
+						RDORRectElement* element = static_cast<RDORRectElement*>(currElement);
+						CBrush brush( RGB(element->background.r, element->background.g, element->background.b) );
 						CBrush* pOldBrush;
-						if( !rectEl->background.isTransparent ) {
+						if( !element->background.isTransparent ) {
 							pOldBrush = dc.SelectObject( &brush );
 						} else {
 							pOldBrush = static_cast<CBrush*>(dc.SelectStockObject( NULL_BRUSH ));
 						}
 
-						CPen pen( PS_SOLID, 0, RGB(rectEl->foreground.r, rectEl->foreground.g, rectEl->foreground.b) );
+						CPen pen( PS_SOLID, 0, RGB(element->foreground.r, element->foreground.g, element->foreground.b) );
 						CPen* pOldPen;
 						bool restorePen = false;
-						if( !rectEl->foreground.isTransparent ) {
+						if( !element->foreground.isTransparent ) {
 							pOldPen = dc.SelectObject( &pen );
 							restorePen = true;
 						}
 
-						dc.Rectangle(rectEl->x, rectEl->y, rectEl->x + rectEl->w, rectEl->y + rectEl->h);
+						int w = min( element->w, element->h ) / 4;
+						dc.RoundRect( element->x, element->y, element->x + element->w, element->y + element->h, w, w );
 
 						dc.SelectObject( pOldBrush );
 						if ( restorePen ) dc.SelectObject( pOldPen );
-					}
-					break;
 
-				case RDOFrameElement::line_type:
-					{																		
-						RDOLineElement *lineEl = (RDOLineElement *)currElement;
-						CPen pen( PS_SOLID, 0, RGB(lineEl->foreground.r, lineEl->foreground.g, lineEl->foreground.b) );
+						break;
+					}
+					case RDOFrameElement::rect_type: {
+						RDORectElement* element = static_cast<RDORectElement*>(currElement);
+						CBrush brush( RGB(element->background.r, element->background.g, element->background.b) );
+						CBrush* pOldBrush;
+						if( !element->background.isTransparent ) {
+							pOldBrush = dc.SelectObject( &brush );
+						} else {
+							pOldBrush = static_cast<CBrush*>(dc.SelectStockObject( NULL_BRUSH ));
+						}
+
+						CPen pen( PS_SOLID, 0, RGB(element->foreground.r, element->foreground.g, element->foreground.b) );
 						CPen* pOldPen;
 						bool restorePen = false;
-						if( !lineEl->foreground.isTransparent ) {
+						if( !element->foreground.isTransparent ) {
 							pOldPen = dc.SelectObject( &pen );
 							restorePen = true;
 						}
 
-						dc.MoveTo(lineEl->x, lineEl->y);
-						dc.LineTo(lineEl->w, lineEl->h);
+						dc.Rectangle( element->x, element->y, element->x + element->w, element->y + element->h );
+
+						dc.SelectObject( pOldBrush );
+						if ( restorePen ) dc.SelectObject( pOldPen );
+
+						break;
+					}
+					case RDOFrameElement::line_type: {
+						RDOLineElement* element = static_cast<RDOLineElement*>(currElement);
+						CPen pen( PS_SOLID, 0, RGB(element->foreground.r, element->foreground.g, element->foreground.b) );
+						CPen* pOldPen;
+						bool restorePen = false;
+						if( !element->foreground.isTransparent ) {
+							pOldPen = dc.SelectObject( &pen );
+							restorePen = true;
+						}
+
+						dc.MoveTo(element->x, element->y);
+						dc.LineTo(element->w, element->h);
 
 						if ( restorePen ) dc.SelectObject( pOldPen );
-					}
-					break;
 
-				case RDOFrameElement::bitmap_type: {
-						RDOBitmapElement* bmpEl = (RDOBitmapElement *)currElement;
-						BMP* bmp = bitmaps[bmpEl->bmp];
+						break;
+					}
+					case RDOFrameElement::bitmap_type: {
+						RDOBitmapElement* element = static_cast<RDOBitmapElement*>(currElement);
+						BMP* bmp = bitmaps[element->bmp];
 						if ( bmp ) {
-							BMP* mask = bmpEl->hasMask ? bitmaps[bmpEl->mask] : NULL;
+							BMP* mask = element->hasMask ? bitmaps[element->mask] : NULL;
 							CBitmap* pOldBitmap = dcBmp.SelectObject( &bmp->bmp );
 							if ( mask ) {
 								CBitmap* pOldMask = dcMask.SelectObject( &mask->bmp );
-								dc.BitBlt( bmpEl->x, bmpEl->y, mask->w, mask->h, &dcMask, 0, 0, SRCAND );
-								dc.BitBlt( bmpEl->x, bmpEl->y, bmp->w, bmp->h, &dcBmp, 0, 0, SRCPAINT );
+								dc.BitBlt( element->x, element->y, mask->w, mask->h, &dcMask, 0, 0, SRCAND );
+								dc.BitBlt( element->x, element->y, bmp->w, bmp->h, &dcBmp, 0, 0, SRCPAINT );
 								dcMask.SelectObject( pOldMask );
 							} else {
-								dc.BitBlt( bmpEl->x, bmpEl->y, bmp->w, bmp->h, &dcBmp, 0, 0, SRCCOPY );
+								dc.BitBlt( element->x, element->y, bmp->w, bmp->h, &dcBmp, 0, 0, SRCCOPY );
 							}
 							dcBmp.SelectObject( pOldBitmap );
 						}
+						break;
 					}
-					break;
-				case RDOFrameElement::s_bmp_type: {
-						RDOSBmpElement *sbmpEl = (RDOSBmpElement *)currElement;
-						BMP* bmp = bitmaps[sbmpEl->bmp];
+					case RDOFrameElement::s_bmp_type: {
+						RDOSBmpElement* element = static_cast<RDOSBmpElement*>(currElement);
+						BMP* bmp = bitmaps[element->bmp];
 						if ( bmp ) {
-							BMP* mask = sbmpEl->hasMask ? bitmaps[sbmpEl->mask] : NULL;
+							BMP* mask = element->hasMask ? bitmaps[element->mask] : NULL;
 							CBitmap* pOldBitmap = dcBmp.SelectObject( &bmp->bmp );
 							if ( mask ) {
 								CBitmap* pOldMask = dcMask.SelectObject( &mask->bmp );
-								dc.StretchBlt( sbmpEl->x, sbmpEl->y, sbmpEl->w, sbmpEl->h, &dcMask, 0, 0, mask->w, mask->h, SRCAND );
-								dc.StretchBlt( sbmpEl->x, sbmpEl->y, sbmpEl->w, sbmpEl->h, &dcBmp, 0, 0, bmp->w, bmp->h, SRCPAINT );
+								dc.StretchBlt( element->x, element->y, element->w, element->h, &dcMask, 0, 0, mask->w, mask->h, SRCAND );
+								dc.StretchBlt( element->x, element->y, element->w, element->h, &dcBmp, 0, 0, bmp->w, bmp->h, SRCPAINT );
 								dcMask.SelectObject( pOldMask );
 							} else {
-								dc.StretchBlt( sbmpEl->x, sbmpEl->y, sbmpEl->w, sbmpEl->h, &dcBmp, 0, 0, bmp->w, bmp->h, SRCCOPY );
+								dc.StretchBlt( element->x, element->y, element->w, element->h, &dcBmp, 0, 0, bmp->w, bmp->h, SRCCOPY );
 							}
 							dcBmp.SelectObject( pOldBitmap );
 						}
+						break;
 					}
-					break;
-
-				case RDOFrameElement::active_type: {
-						RDOActiveElement* activeEl = (RDOActiveElement*)currElement;
+					case RDOFrameElement::active_type: {
+						RDOActiveElement* element = static_cast<RDOActiveElement*>(currElement);
 						Area* area = new Area;
-						area->name = activeEl->operName;
-						area->x    = activeEl->x;
-						area->y    = activeEl->y;
-						area->w    = activeEl->w;
-						area->h    = activeEl->h;
+						area->name = element->operName;
+						area->x    = element->x;
+						area->y    = element->y;
+						area->w    = element->w;
+						area->h    = element->h;
 						frames[index]->areas_sim.push_back( area );
+						break;
 					}
-					break;
 				}
 			}
 			dc.SelectObject( pOldBitmap );
