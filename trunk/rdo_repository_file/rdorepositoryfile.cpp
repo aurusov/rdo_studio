@@ -86,22 +86,22 @@ bool RDORepositoryFile::openModel( const string& modelFileName )
 		if ( flag ) {
 			if ( isFileExists( modelPath + modelName + ".smr" ) ) {
 
-				smrFileName = modelPath + modelName + ".smr";
+				smrFileName = modelPath + modelName;
 				stringstream smrStream;
-				loadFile( smrFileName, smrStream );
+				loadFile( smrFileName + ".smr", smrStream );
 				rdoModelObjects::RDOSMRFileInfo fileInfo;
 				kernel.getSimulator()->parseSMRFileInfo( smrStream, fileInfo );
 
-				patFileName = modelPath + fileInfo.model_name     + ".pat";
-				rtpFileName = modelPath + fileInfo.model_name     + ".rtp";
-				rssFileName = modelPath + fileInfo.resource_file  + ".rss";
-				oprFileName = modelPath + fileInfo.oprIev_file    + ".opr";
-				frmFileName = modelPath + fileInfo.frame_file     + ".frm";
-				funFileName = modelPath + fileInfo.model_name     + ".fun";
-				dptFileName = modelPath + fileInfo.model_name     + ".dpt";
-				pmdFileName = modelPath + fileInfo.statistic_file + ".pmd";
-				pmvFileName = modelPath + fileInfo.results_file   + ".pmv";
-				trcFileName = modelPath + fileInfo.trace_file     + ".trc";
+				patFileName = modelPath + fileInfo.model_name;
+				rtpFileName = modelPath + fileInfo.model_name;
+				rssFileName = modelPath + fileInfo.resource_file;
+				oprFileName = modelPath + fileInfo.oprIev_file;
+				frmFileName = modelPath + fileInfo.frame_file;
+				funFileName = modelPath + fileInfo.model_name;
+				dptFileName = modelPath + fileInfo.model_name;
+				pmdFileName = modelPath + fileInfo.statistic_file;
+				pmvFileName = modelPath + fileInfo.results_file;
+				trcFileName = modelPath + fileInfo.trace_file;
 
 				kernel.notify( RDOKernel::openModel );
 				return true;
@@ -291,7 +291,7 @@ string RDORepositoryFile::getName() const
 
 string RDORepositoryFile::getFullName() const
 {
-	return smrFileName;
+	return smrFileName + ".smr";
 }
 
 void RDORepositoryFile::setName( const string& str )
@@ -335,7 +335,7 @@ void RDORepositoryFile::loadFile( const string& filename, stringstream& stream )
 
 void RDORepositoryFile::saveFile( const string& filename, stringstream& stream, const bool deleteIfEmpty ) const
 {
-	if ( stream.str().length() ) {
+	if ( stream.str().length() || !deleteIfEmpty ) {
 		ofstream file( filename.c_str() );
 		file << stream.str();
 		file.close();
@@ -348,110 +348,132 @@ void RDORepositoryFile::saveFile( const string& filename, stringstream& stream, 
 
 void RDORepositoryFile::loadPAT( stringstream& stream ) const
 {
-	loadFile( patFileName, stream );
+	loadFile( patFileName + ".pat", stream );
 }
 
 void RDORepositoryFile::loadRTP( stringstream& stream ) const
 {
-	loadFile( rtpFileName, stream );
+	loadFile( rtpFileName + ".rtp", stream );
 }
 
 void RDORepositoryFile::loadRSS( stringstream& stream ) const
 {
-	loadFile( rssFileName, stream );
+	loadFile( rssFileName + ".rss", stream );
 }
 
 void RDORepositoryFile::loadOPR( stringstream& stream ) const
 {
-	loadFile( oprFileName, stream );
+	loadFile( oprFileName + ".opr", stream );
 }
 
 void RDORepositoryFile::loadFRM( stringstream& stream ) const
 {
-	loadFile( frmFileName, stream );
+	loadFile( frmFileName + ".frm", stream );
 }
 
 void RDORepositoryFile::loadFUN( stringstream& stream ) const
 {
-	loadFile( funFileName, stream );
+	loadFile( funFileName + ".fun", stream );
 }
 
 void RDORepositoryFile::loadDPT( stringstream& stream ) const
 {
-	loadFile( dptFileName, stream );
+	loadFile( dptFileName + ".dpt", stream );
 }
 
 void RDORepositoryFile::loadSMR( stringstream& stream ) const
 {
-	loadFile( smrFileName, stream );
+	loadFile( smrFileName + ".smr", stream );
 }
 
 void RDORepositoryFile::loadPMD( stringstream& stream ) const
 {
-	loadFile( pmdFileName, stream );
+	loadFile( pmdFileName + ".pmd", stream );
 }
 
 void RDORepositoryFile::loadPMV( stringstream& stream ) const
 {
-	loadFile( pmvFileName, stream );
+	loadFile( pmvFileName + ".pmv", stream );
 }
 
 void RDORepositoryFile::loadTRC( stringstream& stream ) const
 {
-	loadFile( trcFileName, stream );
+	loadFile( trcFileName + ".trc", stream );
 }
 
 void RDORepositoryFile::savePAT( stringstream& stream ) const
 {
-	saveFile( patFileName, stream );
+	if ( !patFileName.empty() ) {
+		saveFile( patFileName + ".pat", stream );
+	}
 }
 
 void RDORepositoryFile::saveRTP( stringstream& stream ) const
 {
-	saveFile( rtpFileName, stream );
+	if ( !rtpFileName.empty() ) {
+		saveFile( rtpFileName + ".rtp", stream );
+	}
 }
 
 void RDORepositoryFile::saveRSS( stringstream& stream ) const
 {
-	saveFile( rssFileName, stream );
+	if ( !rssFileName.empty() ) {
+		saveFile( rssFileName + ".rss", stream );
+	}
 }
 
 void RDORepositoryFile::saveOPR( stringstream& stream ) const
 {
-	saveFile( oprFileName, stream, true );
+	if ( !oprFileName.empty() ) {
+		saveFile( oprFileName + ".opr", stream, true );
+	}
 }
 
 void RDORepositoryFile::saveFRM( stringstream& stream ) const
 {
-	saveFile( frmFileName, stream );
+	if ( !frmFileName.empty() ) {
+		saveFile( frmFileName + ".frm", stream );
+	}
 }
 
 void RDORepositoryFile::saveFUN( stringstream& stream ) const
 {
-	saveFile( funFileName, stream );
+	if ( !funFileName.empty() ) {
+		saveFile( funFileName + ".fun", stream );
+	}
 }
 
 void RDORepositoryFile::saveDPT( stringstream& stream ) const
 {
-	saveFile( dptFileName, stream, true );
+	if ( !dptFileName.empty() ) {
+		saveFile( dptFileName + ".dpt", stream, true );
+	}
 }
 
 void RDORepositoryFile::saveSMR( stringstream& stream ) const
 {
-	saveFile( smrFileName, stream );
+	if ( !smrFileName.empty() ) {
+		saveFile( smrFileName + ".smr", stream );
+	}
 }
 
 void RDORepositoryFile::savePMD( stringstream& stream ) const
 {
-	saveFile( pmdFileName, stream );
+	if ( !pmdFileName.empty() ) {
+		saveFile( pmdFileName + ".pmd", stream );
+	}
 }
 
 void RDORepositoryFile::savePMV( stringstream& stream ) const
 {
-	saveFile( pmvFileName, stream );
+	if ( !pmvFileName.empty() ) {
+		saveFile( pmvFileName + ".pmv", stream );
+	}
 }
 
 void RDORepositoryFile::saveTRC( stringstream& stream ) const
 {
-	saveFile( trcFileName, stream );
+	if ( !trcFileName.empty() ) {
+		saveFile( trcFileName + ".trc", stream );
+	}
 }
