@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "rdostudioworkspace.h"
-#include "rdo_tracer/rdotracertrace.h"
+#include "rdo_tracer/rdotracer.h"
 #include "rdo_tracer/tracer_ctrls/rdotracertreectrl.h"
 #include "resource.h"
 
@@ -37,7 +37,7 @@ int RDOStudioWorkspace::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	tab.Create( NULL, NULL, 0, CRect(0, 0, 100, 100), this, 0 );
 	tab.modifyTabStyle( 0, TCS_BOTTOM | TCS_MULTILINE );
 
-	RDOTracerTreeCtrl* trace = tracer.createTree();
+	RDOTracerTreeCtrl* trace = tracer->createTree();
 	trace->Create( 0, CRect(0, 0, 0, 0), &tab, 0 );
 
 	frames = new RDOStudioFrameTreeCtrl;

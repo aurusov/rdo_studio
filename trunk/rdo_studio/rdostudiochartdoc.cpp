@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "rdostudiochartdoc.h"
 #include "rdostudiochartview.h"
-#include "rdo_tracer/rdotracertrace.h"
+#include "rdo_tracer/rdotracer.h"
 #include "rdo_tracer/rdotracerserie.h"
 #include "rdo_tracer/rdotracervalues.h"
 
@@ -64,7 +64,7 @@ RDOStudioChartDoc::RDOStudioChartDoc( const bool preview )
 	previewMode( preview )
 {
 	if ( !previewMode )
-		tracer.addChart( this );
+		tracer->addChart( this );
 }
 
 RDOStudioChartDoc::~RDOStudioChartDoc()
@@ -74,7 +74,7 @@ RDOStudioChartDoc::~RDOStudioChartDoc()
 		delete (*it);
 	}
 	if ( !previewMode )
-		tracer.removeChart( this );
+		tracer->removeChart( this );
 }
 
 int RDOStudioChartDoc::getSerieIndex( RDOStudioDocSerie* serie ) const

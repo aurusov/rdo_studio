@@ -2,7 +2,7 @@
 #include "rdotracerresource.h"
 #include "rdotracerrestype.h"
 #include "rdotracervalues.h"
-#include "rdotracertrace.h"
+#include "rdotracer.h"
 
 using namespace std;
 
@@ -113,7 +113,7 @@ void RDOTracerResource::setParams( string& line, RDOTracerTimeNow* const time, c
 	int count = params.size();
 	for ( int i = 0; i < count; i++ ) {
 		RDOTracerValue* prevval = params.at( i )->getLastValue();
-		double newval = erasing ? prevval->value : atof( tracer.getNextValue( line ).c_str() );
+		double newval = erasing ? prevval->value : atof( tracer->getNextValue( line ).c_str() );
 		if ( !prevval || erasing || prevval->value != newval ) {
 			RDOTracerValue* newvalue = new RDOTracerValue( time, eventIndex );
 			newvalue->value = newval;

@@ -364,8 +364,6 @@
 #define ID_FILE_MODEL_CLOSE             33105
 #define ID_FILE_MODEL_SAVE_AS           33106
 #define ID_SEARCH_FINDINMODEL           33117
-#define ID_CHART_STARTTRACE             33118
-#define ID_CHART_STOPTRACE              33120
 #define ID_CHART_TIMEWRAP               33121
 #define ID_VIEW_TOOLBAR_BUILDTOOLBAR    33132
 #define ID_MODEL_BUILD                  33133
@@ -384,7 +382,6 @@
 #define ID_VIEW_ZOOMOUT                 33147
 #define ID_VIEW_ZOOMRESET               33148
 #define ID_CHART_OPTIONS                33154
-#define ID_CHART_ADDTOCHART             33155
 #define ID_CHART_FINDINCHARTS           33156
 #define ID_VIEW_ZOOMAUTO                33157
 #define ID_STATUSBAR_READONLY           40000

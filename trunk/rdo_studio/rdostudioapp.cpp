@@ -6,7 +6,7 @@
 #include "rdostudioeditdoc.h"
 #include "rdostudioeditview.h"
 #include "resource.h"
-#include "rdo_tracer/rdotracertrace.h"
+#include "rdo_tracer/rdotracer.h"
 #include "htmlhelp.h"
 
 #include <rdokernel.h>
@@ -84,10 +84,6 @@ BEGIN_MESSAGE_MAP(RDOStudioApp, CWinApp)
 	ON_UPDATE_COMMAND_UI(ID_MODEL_BUILD, OnUpdateModelBuild)
 	ON_UPDATE_COMMAND_UI(ID_MODEL_RUN, OnUpdateModelRun)
 	ON_UPDATE_COMMAND_UI(ID_MODEL_STOP, OnUpdateModelStop)
-	ON_COMMAND(ID_CHART_STARTTRACE, OnChartStarttrace)
-	ON_UPDATE_COMMAND_UI(ID_CHART_STARTTRACE, OnUpdateChartStarttrace)
-	ON_COMMAND(ID_CHART_STOPTRACE, OnChartStoptrace)
-	ON_UPDATE_COMMAND_UI(ID_CHART_STOPTRACE, OnUpdateChartStoptrace)
 	ON_COMMAND(ID_APP_ABOUT, OnAppAbout)
 	//}}AFX_MSG_MAP
 	ON_COMMAND_RANGE( ID_FILE_REOPEN_1, ID_FILE_REOPEN_10, OnProjectReopen )
@@ -121,8 +117,10 @@ BOOL RDOStudioApp::InitInstance()
 
 	editDocTemplate = new CMultiDocTemplate( IDR_EDITTYPE, RUNTIME_CLASS(RDOStudioEditDoc), RUNTIME_CLASS(RDOStudioChildFrame), RUNTIME_CLASS(RDOStudioEditView) );
 	AddDocTemplate( editDocTemplate );
+	
+	tracer = new rdoTracer::RDOTracer();
 
-	AddDocTemplate( tracer.createDocTemplate() );
+	AddDocTemplate( tracer->createDocTemplate() );
 
 	mainFrame = new RDOStudioMainFrame;
 	m_pMainWnd = mainFrame;
@@ -163,6 +161,8 @@ BOOL RDOStudioApp::InitInstance()
 int RDOStudioApp::ExitInstance()
 {
 	HtmlHelp( NULL, NULL, HH_CLOSE_ALL, 0 );
+
+	if( tracer ) delete tracer;
 
 	return CWinApp::ExitInstance();
 }
@@ -410,26 +410,6 @@ void RDOStudioApp::OnUpdateModelRun(CCmdUI* pCmdUI)
 void RDOStudioApp::OnUpdateModelStop(CCmdUI* pCmdUI) 
 {
 	pCmdUI->Enable( model && model->getModelDoc() && model->isRunning() );
-}
-
-void RDOStudioApp::OnChartStarttrace() 
-{
-	tracer.startTrace();
-}
-
-void RDOStudioApp::OnUpdateChartStarttrace(CCmdUI* pCmdUI) 
-{
-	pCmdUI->Enable( !tracer.isTracing() );
-}
-
-void RDOStudioApp::OnChartStoptrace() 
-{
-	tracer.stopTrace();
-}
-
-void RDOStudioApp::OnUpdateChartStoptrace(CCmdUI* pCmdUI) 
-{
-	pCmdUI->Enable( tracer.isTracing() );
 }
 
 string RDOStudioApp::getFullFileName()

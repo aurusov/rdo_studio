@@ -8,7 +8,7 @@
 #include "edit_ctrls/rdofindedit.h"
 #include "rdo_edit/rdoeditorresults.h"
 #include "rdo_edit/rdoeditortabctrl.h"
-#include "rdo_tracer/rdotracertrace.h"
+#include "rdo_tracer/rdotracer.h"
 #include "rdo_tracer/tracer_ctrls/rdotracerlogctrl.h"
 
 #ifdef _DEBUG
@@ -69,7 +69,7 @@ int RDOStudioOutput::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	build   = new RDOBuildEdit;
 	debug   = new RDODebugEdit;
-	trace   = tracer.createLog();
+	trace   = tracer->createLog();
 	results = new RDOEditorResults;
 	find    = new RDOFindEdit;
 

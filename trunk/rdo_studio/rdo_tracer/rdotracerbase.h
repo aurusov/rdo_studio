@@ -1,11 +1,11 @@
-#ifndef RDOTRACERTRACE_H
-#define RDOTRACERTRACE_H
+#ifndef RDOTRACERTBASE_H
+#define RDOTRACERTBASE_H
 #pragma once
 
 #include "../resource.h"
 
 // ----------------------------------------------------------------------------
-// ---------- RDOTracer
+// ---------- RDOTracerBase
 // ----------------------------------------------------------------------------
 class RDOTracerResType;
 class RDOTracerResource;
@@ -25,39 +25,25 @@ class RDOTracerLogCtrl;
 
 namespace rdoTracer {
 
-class RDOTracer  
+class RDOTracerBase
 {
 private:
 	rdoTracerLog::RDOTracerLogCtrl* log;
 	RDOTracerTreeCtrl*  tree;
 
-	std::string modelName;
-	std::string statusStr;
-	CTime startTime;
-	CTime stopTime;
-	
-	CStdioFile* traceFile;
-	UINT        timerID;
-	void cleanupObjects();
-
-	void getStructureData();
-	void parseStructureData( std::string& structure );
-	
 	std::vector <RDOTracerResType*> resTypes;
-	void addResourceType( std::string& s );
+	void addResourceType( std::string& s, std::stringstream& stream );
 	std::vector <RDOTracerResource*> resources;
 	void addResource( std::string& s );
 	std::vector <RDOTracerPattern*> patterns;
 	void addPattern( std::string& s );
 	std::vector <RDOTracerOperationBase*> operations;
 	void addOperation( std::string& s );
-	void addProductionRule( std::string& s );
 	std::vector <RDOTracerEvent*> irregularEvents;
 	void addIrregularEvent( std::string& s );
 	std::vector <RDOTracerResult*> results;
 	void addResult( std::string& s );
 	
-	std::string getNextString();
 	void dispathNextString( std::string& line );
 
 	RDOTracerTimeNow* addTime( std::string& time );
@@ -78,17 +64,9 @@ private:
 	void resultChanging( std::string& line, RDOTracerTimeNow* const time  );
 
 	std::list< RDOTracerTimeNow* > timeList;
-	//double minTimeDifference;
 	
 	void deleteTrace();
-	void clear();
 
-	//void setControls( const bool bstartTrace ) const;
-
-	void doStopTrace();
-
-	bool tracing;
-	
 	UINT clipboardFormat;
 
 	CMultiDocTemplate* chartDocTemplate;
@@ -96,20 +74,17 @@ private:
 	void updateCharts();
 
 public:
-	RDOTracer();
-	virtual ~RDOTracer();	
+	RDOTracerBase();
+	virtual ~RDOTracerBase();	
 	
-//	void setControls();
 	CMultiDocTemplate* createDocTemplate();
 	rdoTracerLog::RDOTracerLogCtrl* createLog();
 	RDOTracerTreeCtrl* createTree();
 	
 	void startTrace();
-	void getModelStructure();
-	void getTraceString();
+	void getModelStructure( std::stringstream& stream );
+	void getTraceString( std::string trace_string );
 	std::string getNextValue( std::string& line );
-	void stopTrace();
-	const bool isTracing() const;
 	void registerClipboardFormat() { clipboardFormat = ::RegisterClipboardFormat( format(ID_RAO_CLIPBRD).c_str() ); }
 	UINT const getClipboardFormat() const { return clipboardFormat; }
 	RDOStudioChartDoc* createNewChart();
@@ -117,15 +92,11 @@ public:
 	void removeChart( RDOStudioChartDoc* chart );
 	RDOStudioChartDoc* addSerieToChart( RDOTracerSerie* const serie, RDOStudioChartDoc* chart = NULL );
 	RDOTracerTimeNow* getMaxTime() const { return timeList.empty() ? NULL : timeList.back(); };
-	RDOTracerTimeNow* getTime( const int index ) const;
-	int getTimesCount() const { return timeList.size(); };
-//	double getMinTimeDifference() const { return minTimeDifference; };
 	void updateChartsStyles() const;
+	void clear();
+	void setModelName( std::string name ) const;
 };
 
 }; // namespace rdoTracer
 
-// ----------------------------------------------------------------------------
-extern rdoTracer::RDOTracer tracer;
-
-#endif // RDOTRACERTRACE_H
+#endif // RDOTRACERTBASE_H

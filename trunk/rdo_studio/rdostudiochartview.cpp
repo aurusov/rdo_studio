@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "rdostudiochartview.h"
-#include "rdo_tracer/rdotracertrace.h"
+#include "rdo_tracer/rdotracer.h"
 #include "rdostudioapp.h"
 #include "rdostudiomainfrm.h"
 #include "resource.h"
@@ -606,7 +606,7 @@ void RDOStudioChartView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
 DROPEFFECT RDOStudioChartView::OnDragEnter( COleDataObject* pDataObject, DWORD dwKeyState, CPoint point )
 {
 	HGLOBAL glb = NULL;
-	UINT format = tracer.getClipboardFormat();
+	UINT format = tracer->getClipboardFormat();
 	if ( pDataObject->IsDataAvailable( format ) ) {
 		glb = pDataObject->GetGlobalData( format );
 		if ( glb ) {
@@ -629,7 +629,7 @@ void RDOStudioChartView::OnDragLeave()
 
 DROPEFFECT RDOStudioChartView::OnDragOver( COleDataObject* pDataObject, DWORD dwKeyState, CPoint point )
 {
-	if ( pDataObject->IsDataAvailable( tracer.getClipboardFormat() ) && dragedSerie )
+	if ( pDataObject->IsDataAvailable( tracer->getClipboardFormat() ) && dragedSerie )
 		return DROPEFFECT_COPY;
 	else
 		return DROPEFFECT_NONE;

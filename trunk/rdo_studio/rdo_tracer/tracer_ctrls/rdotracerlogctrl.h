@@ -54,8 +54,6 @@ public:
 
 	virtual void clear();
 
-	void startTrace();
-
 	bool getShowMenu() const             { return bShowMenu;  };
 	void setShowMenu( const bool value ) { bShowMenu = value; };
 

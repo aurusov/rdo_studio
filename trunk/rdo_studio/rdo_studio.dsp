@@ -415,6 +415,14 @@ SOURCE=.\rdostudioeditview.h
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 # Begin Source File
 
+SOURCE=.\rdo_tracer\rdotracer.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdo_tracer\rdotracerbase.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdo_tracer\rdotraceroperation.cpp
 # End Source File
 # Begin Source File
@@ -439,16 +447,20 @@ SOURCE=.\rdo_tracer\rdotracerserie.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\rdo_tracer\rdotracertrace.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\rdo_tracer\rdotracervalues.cpp
 # End Source File
 # End Group
 # Begin Group "RDO-Tracer Header Files"
 
 # PROP Default_Filter "h;hpp;hxx;hm;inl"
+# Begin Source File
+
+SOURCE=.\rdo_tracer\rdotracer.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdo_tracer\rdotracerbase.h
+# End Source File
 # Begin Source File
 
 SOURCE=.\rdo_tracer\rdotraceroperation.h
@@ -472,10 +484,6 @@ SOURCE=.\rdo_tracer\rdotracerresult.h
 # Begin Source File
 
 SOURCE=.\rdo_tracer\rdotracerserie.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdo_tracer\rdotracertrace.h
 # End Source File
 # Begin Source File
 

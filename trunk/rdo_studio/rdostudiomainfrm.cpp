@@ -3,7 +3,7 @@
 #include "rdostudioapp.h"
 #include "rdostudiomodel.h"
 #include "rdostudiooptions.h"
-#include "rdo_tracer/rdotracertrace.h"
+#include "rdo_tracer/rdotracer.h"
 #include "htmlhelp.h"
 #include "resource.h"
 
@@ -139,7 +139,7 @@ int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	DockControlBar( &workspace, AFX_IDW_DOCKBAR_LEFT );
 	DockControlBar( &output, AFX_IDW_DOCKBAR_BOTTOM );
 
-	tracer.registerClipboardFormat();
+	tracer->registerClipboardFormat();
 
 	model = new RDOStudioModel;
 
@@ -300,7 +300,7 @@ void RDOStudioMainFrame::updateAllStyles() const
 {
 	model->updateStyleOfAllModel();
 	output.updateStyles();
-	tracer.updateChartsStyles();
+	tracer->updateChartsStyles();
 }
 
 void RDOStudioMainFrame::OnHelpContents()
