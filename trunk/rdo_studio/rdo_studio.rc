@@ -1488,6 +1488,11 @@ BEGIN
     IDS_MODEL_BUILDING_BEGIN "Building..."
     IDS_MODEL_BUILDING_RESULTS "%d error(s) found."
     IDS_MODEL_RUNNING_BEGIN "Running..."
+    IDS_MODEL_RESOURCE_LOADING_BEGIN "Loading animation resources...\n"
+    IDS_MODEL_RESOURCE_LOADING_NAME "Loading %s..."
+    IDS_MODEL_RESOURCE_LOADING_NAME_OK "ok\n"
+    IDS_MODEL_RESOURCE_LOADING_NAME_FAILED "failed\n"
+    IDS_MODEL_RESOURCE_LOADING_OK "Loading animation resources...ok\n"
 END
 
 #endif    // Russian resources

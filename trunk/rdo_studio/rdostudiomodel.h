@@ -33,6 +33,7 @@ private:
 
 	bool openError;
 
+	bool frmDescribed;
 	double modelTime;
 	RDOSimulatorNS::ShowMode showMode;
 
@@ -85,7 +86,8 @@ public:
 	bool isRunning() const;
 	double getModelTime() const { return modelTime; };
 
-	RDOSimulatorNS::ShowMode getShowMode() const { return showMode; };
+	bool isFrmDescribed() const                  { return frmDescribed; };
+	RDOSimulatorNS::ShowMode getShowMode() const { return showMode;     };
 	void setShowMode( const RDOSimulatorNS::ShowMode value );
 	double getShowRate() const;
 	void setShowRate( const double value ) const;

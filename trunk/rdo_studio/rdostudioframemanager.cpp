@@ -8,6 +8,7 @@
 #include "rdostudiochildfrm.h"
 #include "rdostudioworkspace.h"
 #include "rdostudioframetreectrl.h"
+#include "edit_ctrls/rdodebugedit.h"
 #include "resource.h"
 
 #include <rdokernel.h>
@@ -281,6 +282,10 @@ void RDOStudioFrameManager::bmp_insert( const std::string& name )
 {
 	if ( bitmaps.find( name ) == bitmaps.end() ) {
 
+		RDOStudioOutput* output = &studioApp.mainFrame->output;
+		output->appendStringToDebug( format( IDS_MODEL_RESOURCE_LOADING_NAME, name.c_str() ) );
+		const_cast<rdoEditCtrl::RDODebugEdit*>(output->getDebug())->UpdateWindow();
+
 		bitmaps[name] = NULL;
 
 		binarybuf buf;
@@ -355,8 +360,12 @@ void RDOStudioFrameManager::bmp_insert( const std::string& name )
 			memDC.SelectObject( hOldBitmap1 );
 			dc.SelectObject( hOldBitmap2 );
 
+			output->appendStringToDebug( format( IDS_MODEL_RESOURCE_LOADING_NAME_OK ) );
+			const_cast<rdoEditCtrl::RDODebugEdit*>(output->getDebug())->UpdateWindow();
+
 		} catch ( BMPReadError ) {
-			TRACE( "catch for %s\r\n", name.c_str() );
+			output->appendStringToDebug( format( IDS_MODEL_RESOURCE_LOADING_NAME_FAILED ) );
+			const_cast<rdoEditCtrl::RDODebugEdit*>(output->getDebug())->UpdateWindow();
 		}
 
 		if ( bmInfo ) delete bmInfo;

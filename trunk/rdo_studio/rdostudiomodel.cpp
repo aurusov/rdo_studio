@@ -9,6 +9,7 @@
 #include "rdostudioframeview.h"
 #include "rdo_edit/rdoeditortabctrl.h"
 #include "edit_ctrls/rdobuildedit.h"
+#include "edit_ctrls/rdodebugedit.h"
 #include "resource.h"
 
 #include <rdokernel.h>
@@ -35,6 +36,7 @@ RDOStudioModel::RDOStudioModel():
 	closeWithDocDelete( true ),
 	showCanNotCloseModelMessage( true ),
 	openError( false ),
+	frmDescribed( false ),
 	modelTime( 0 ),
 	showMode( SM_NoShow )
 {
@@ -349,6 +351,7 @@ void RDOStudioModel::newModelFromRepository()
 					}
 				}
 				edit->setModifyFalse();
+				edit->clearUndoBuffer();
 			}
 		}
 
@@ -422,6 +425,7 @@ void RDOStudioModel::openModelFromRepository()
 				}
 				edit->setCurrentPos( 0 );
 				edit->setModifyFalse();
+				edit->clearUndoBuffer();
 				studioApp.mainFrame->stepProgress();
 			}
 			studioApp.mainFrame->endProgress();
@@ -548,31 +552,51 @@ bool RDOStudioModel::isRunning() const
 
 void RDOStudioModel::beforeModelStart()
 {
-	frameManager.bmp_clear();
-	vector< const string* > bitmaps = kernel.getSimulator()->getAllBitmaps();
-	vector< const string* >::iterator bmp = bitmaps.begin();
-	while ( bmp != bitmaps.end() ) {
-		frameManager.bmp_insert( *(*bmp) );
-		bmp++;
-	}
+	stringstream smrStream;
+	kernel.getRepository()->loadSMR( smrStream );
+	rdoModelObjects::RDOSMRFileInfo fileInfo;
+	kernel.getSimulator()->parseSMRFileInfo( smrStream, fileInfo );
+	frmDescribed = !fileInfo.frame_file.empty();
 
+	frameManager.bmp_clear();
 	frameManager.clear();
-	vector< const string* > frames = kernel.getSimulator()->getAllFrames();
-	vector< const string* >::iterator it = frames.begin();
-	while ( it != frames.end() ) {
-		frameManager.insertItem( *(*it) );
-		it++;
-	}
-	frameManager.expand();
-	int initFrameNumber = kernel.getSimulator()->getInitialFrameNumber() - 1;
-	modelTime = 0;
-	showMode  = kernel.getSimulator()->getInitialShowMode();
-	frameManager.setLastShowedFrame( initFrameNumber );
-	if ( showMode == SM_Animation && initFrameNumber >= 0 && initFrameNumber < frameManager.count() ) {
-		RDOStudioFrameDoc* doc = model->frameManager.connectFrameDoc( initFrameNumber );
-		if ( doc ) {
-			doc->SetTitle( format( IDS_FRAME_NAME, frameManager.getFrameName( initFrameNumber ).c_str() ).c_str() );
+
+	if ( frmDescribed ) {
+		RDOStudioOutput* output = &studioApp.mainFrame->output;
+		output->showDebug();
+		output->appendStringToDebug( format( IDS_MODEL_RESOURCE_LOADING_BEGIN ) );
+		const_cast<rdoEditCtrl::RDODebugEdit*>(output->getDebug())->UpdateWindow();
+
+		vector< const string* > bitmaps = kernel.getSimulator()->getAllBitmaps();
+		vector< const string* >::iterator bmp = bitmaps.begin();
+		while ( bmp != bitmaps.end() ) {
+			frameManager.bmp_insert( *(*bmp) );
+			bmp++;
 		}
+
+		vector< const string* > frames = kernel.getSimulator()->getAllFrames();
+		vector< const string* >::iterator it = frames.begin();
+		while ( it != frames.end() ) {
+			frameManager.insertItem( *(*it) );
+			it++;
+		}
+		frameManager.expand();
+		int initFrameNumber = kernel.getSimulator()->getInitialFrameNumber() - 1;
+		modelTime = 0;
+		showMode  = kernel.getSimulator()->getInitialShowMode();
+		frameManager.setLastShowedFrame( initFrameNumber );
+		if ( showMode == SM_Animation && initFrameNumber >= 0 && initFrameNumber < frameManager.count() ) {
+			RDOStudioFrameDoc* doc = model->frameManager.connectFrameDoc( initFrameNumber );
+			if ( doc ) {
+				doc->SetTitle( format( IDS_FRAME_NAME, frameManager.getFrameName( initFrameNumber ).c_str() ).c_str() );
+			}
+		}
+		output->appendStringToDebug( format( IDS_MODEL_RESOURCE_LOADING_OK ) );
+		const_cast<rdoEditCtrl::RDODebugEdit*>(output->getDebug())->UpdateWindow();
+	} else {
+		modelTime = 0;
+		showMode  = RDOSimulatorNS::SM_NoShow;
+		frameManager.setLastShowedFrame( -1 );
 	}
 }
 

@@ -132,7 +132,7 @@ public:
 	bool isOverwrite() const                               { return sendEditor( SCI_GETOVERTYPE ) ? true : false;                             };
 
 	bool isModify() const                                  { return sendEditor( SCI_GETMODIFY ) ? true : false; };
-	void setModifyFalse() const                            { sendEditor( SCI_SETSAVEPOINT ); clearUndoBuffer(); };
+	void setModifyFalse() const                            { sendEditor( SCI_SETSAVEPOINT );                    };
 
 	virtual void clearAll();
 	void clearUndoBuffer() const                           { sendEditor( SCI_EMPTYUNDOBUFFER ); };
