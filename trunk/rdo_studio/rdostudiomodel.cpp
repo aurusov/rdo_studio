@@ -479,8 +479,7 @@ void RDOStudioModel::showFrame()
 			RDOStudioFrameDoc* doc = frameManager.getFrameDoc( frame_index );
 			if ( doc ) {
 
-				CSingleLock lock_deleted( frameManager.getFrameDeleted( frame_index ) );
-				if ( !lock_deleted.IsLocked() ) {
+				if ( !frameManager.isDeleted( frame_index ) ) {
 
 					CSingleLock lock_draw( frameManager.getFrameDraw( frame_index ) );
 					lock_draw.Lock();
@@ -616,6 +615,7 @@ void RDOStudioModel::showFrame()
 					view->GetClientRect( rect );
 					view->InvalidateRect( rect );
 					view->UpdateWindow();
+
 //					view->RedrawWindow( rect );
 //					view->InvalidateRect( rect );
 //					view->SendNotifyMessage( WM_PAINT, 0, 0 );

@@ -21,13 +21,14 @@ private:
 	class Frame {
 	friend class RDOStudioFrameManager;
 	public:
-		Frame(): hitem( 0 ), doc( NULL ), view( NULL ) {};
+		Frame(): hitem( 0 ), doc( NULL ), view( NULL ), lock_deleted( &deleted ) {};
 		HTREEITEM           hitem;
 		RDOStudioFrameDoc*  doc;
 		RDOStudioFrameView* view;
 		CMutex              used;
 		CMutex              draw;
 		CMutex              deleted;
+		CSingleLock         lock_deleted;
 	};
 	static std::vector< Frame* > frames;
 
@@ -48,6 +49,8 @@ public:
 	CMutex*             getFrameUsed( const int index ) const    { return &frames[index]->used;    };
 	CMutex*             getFrameDraw( const int index ) const    { return &frames[index]->draw;    };
 	CMutex*             getFrameDeleted( const int index ) const { return &frames[index]->deleted; };
+	void setDeleted( const int index, const bool value ) const   { value ? frames[index]->lock_deleted.Lock() : frames[index]->lock_deleted.Unlock(); };
+	bool isDeleted( const int index ) const                      { return frames[index]->lock_deleted.IsLocked() ? true : false; };
 	void clear();
 
 	void expand() const;

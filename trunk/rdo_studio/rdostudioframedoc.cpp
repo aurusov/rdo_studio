@@ -69,15 +69,15 @@ void RDOStudioFrameDoc::OnCloseDocument()
 	CSingleLock lock_used( model->frameManager.getFrameUsed( index ) );
 	lock_used.Lock();
 
-	CSingleLock lock_draw( model->frameManager.getFrameDraw( index ) );
-	lock_draw.Lock();
+//	CSingleLock lock_draw( model->frameManager.getFrameDraw( index ) );
+//	lock_draw.Lock();
 
-	CSingleLock lock_deleted( model->frameManager.getFrameDeleted( index ) );
-	lock_deleted.Lock();
-
+	if ( !model->frameManager.isDeleted( index ) ) {
+		model->frameManager.setDeleted( index, true );
+	}
 	model->frameManager.disconnectFrameDoc( this );
 
-	lock_draw.Unlock();
+//	lock_draw.Unlock();
 	lock_used.Unlock();
 
 	CDocument::OnCloseDocument();

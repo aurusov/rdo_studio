@@ -65,8 +65,7 @@ void RDOStudioFrameView::OnDraw(CDC* pDC)
 	CSingleLock lock_draw( model->frameManager.getFrameDraw( index ) );
 	lock_draw.Lock();
 
-	CSingleLock lock_deleted( model->frameManager.getFrameDeleted( index ) );
-	if ( !lock_deleted.IsLocked() ) {
+	if ( !model->frameManager.isDeleted( index ) ) {
 
 		GetClientRect( &newClientRect );
 //		CRect rect;

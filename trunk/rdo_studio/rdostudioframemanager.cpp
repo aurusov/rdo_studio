@@ -97,9 +97,8 @@ RDOStudioFrameDoc* RDOStudioFrameManager::connectFrameDoc( const HTREEITEM hitem
 		frames[index]->doc  = doc;
 		frames[index]->view = doc->getView();
 
-		CSingleLock lock_deleted( getFrameDeleted( index ) );
-		if ( lock_deleted.IsLocked() ) {
-			lock_deleted.Unlock();
+		if ( isDeleted( index ) ) {
+			setDeleted( index, false );
 		}
 
 		lock.Unlock();
