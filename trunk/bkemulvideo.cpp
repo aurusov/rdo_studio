@@ -82,9 +82,9 @@ void BKEmulVideo::setColorMonitor( const bool value )
 void BKEmulVideo::setSmallScreen( const bool value )
 {
 	if ( smallScreen != value ) {
-		smallScreen = value;
-		if ( smallScreen ) {
+		if ( value ) {
 			emulApp.mainFrame->setSmallScreen();
 		}
+		smallScreen = value;
 	}
 }
