@@ -423,7 +423,7 @@ void RDORepositoryFile::loadFile( const string& filename, vector< char >& vec, c
 {
 	if ( described ) {
 		if ( isFileExists( filename ) ) {
-			ifstream file( filename.c_str() );
+			ifstream file( filename.c_str(), ios::in | ios::binary  );
 			file.seekg( 0, ios::end );
 			int len = file.tellg();
 			file.seekg( 0, ios::beg );
