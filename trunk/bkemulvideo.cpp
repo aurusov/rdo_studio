@@ -15,7 +15,7 @@ using namespace bkemul;
 // --------------------------------------------------------------
 // ---------- BKEmulVideo
 // --------------------------------------------------------------
-BKEmulVideo::BKEmulVideo(): colorMonitor( true )
+BKEmulVideo::BKEmulVideo(): colorMonitor( false )
 {
 }
 
@@ -67,4 +67,12 @@ void BKEmulVideo::updateVideoMemoryWord( WORD address ) const
 {
 	enulApp.mainFrame->updateVideoMemory.push_back( address );
 	enulApp.mainFrame->updateVideoMemory.push_back( address + 1 );
+}
+
+void BKEmulVideo::setColorMonitor( const bool value )
+{
+	if ( colorMonitor != value ) {
+		colorMonitor = value;
+		updateMonitor();
+	}
 }

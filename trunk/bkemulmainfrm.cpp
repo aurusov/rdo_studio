@@ -33,6 +33,9 @@ BEGIN_MESSAGE_MAP(BKMainFrame, CFrameWnd)
 	ON_WM_TIMER()
 	ON_WM_GETMINMAXINFO()
 	ON_COMMAND(ID_VIEW_FULLSCREEN, OnViewFullScreen)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_FULLSCREEN, OnUpdateViewFullScreen)
+	ON_COMMAND(ID_VIEW_COLORMONITOR, OnViewColorMonitor)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_COLORMONITOR, OnUpdateViewColorMonitor)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -531,4 +534,19 @@ void BKMainFrame::setFullScreenMode( const bool value )
 void BKMainFrame::OnViewFullScreen()
 {
 	setFullScreenMode( !isFullScreenMode() );
+}
+
+void BKMainFrame::OnUpdateViewFullScreen(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetCheck( isFullScreenMode() );
+}
+
+void BKMainFrame::OnViewColorMonitor()
+{
+	emul.video.setColorMonitor( !emul.video.isColorMonitor() );
+}
+
+void BKMainFrame::OnUpdateViewColorMonitor(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetCheck( emul.video.isColorMonitor() );
 }

@@ -49,7 +49,7 @@ void BKEmul::reset()
 	BK_SYS_Timer_work = false;
 	memory.clear();
 	loadROM( "MONITOR_10" );
-	loadROM( "BASIC_10_120" );
+	loadROM( "MIRAGE120" );
 	loadROM( "BASIC_10_140" );
 	loadROM( "BASIC_10_160" );
 

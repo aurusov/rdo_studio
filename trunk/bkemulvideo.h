@@ -27,7 +27,8 @@ public:
 	void setMemoryByte( WORD address, BYTE data );
 	void setMemoryWord( WORD address, WORD data );
 
-	bool isColorMonitor() const         { return colorMonitor; }
+	bool isColorMonitor() const                { return colorMonitor; }
+	void setColorMonitor( const bool value );
 
 	void updateMonitor() const;
 	void updateScrolling( BYTE delta ) const;

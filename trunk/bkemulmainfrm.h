@@ -71,6 +71,9 @@ protected:
 	afx_msg void OnTimer(UINT nIDEvent);
 	afx_msg void OnGetMinMaxInfo(MINMAXINFO FAR* lpMMI);
 	afx_msg void OnViewFullScreen();
+	afx_msg void OnUpdateViewFullScreen(CCmdUI* pCmdUI);
+	afx_msg void OnViewColorMonitor();
+	afx_msg void OnUpdateViewColorMonitor(CCmdUI* pCmdUI);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
