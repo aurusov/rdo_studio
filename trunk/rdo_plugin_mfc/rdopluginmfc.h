@@ -15,12 +15,15 @@
 // ----------------------------------------------------------------------------
 // ---------- RDOPluginMFC
 // ----------------------------------------------------------------------------
+class RDOPluginMFCMainFrame;
+
 class RDOPluginMFC: public CWinApp
 {
 public:
 	RDOPluginMFC();
 
 	rdoPlugin::Studio studio;
+	RDOPluginMFCMainFrame* frame;
 
 protected:
 	//{{AFX_VIRTUAL(RDOPluginMFC)

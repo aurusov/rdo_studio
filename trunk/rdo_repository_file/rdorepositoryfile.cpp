@@ -276,10 +276,12 @@ bool RDORepositoryFile::canCloseModel() const
 
 void RDORepositoryFile::realCloseModel()
 {
-	kernel.notify( RDOKernel::closeModel );
-	modelName   = "";
-	modelPath   = "";
-	resetModelNames();
+	if ( !modelName.empty() ) {
+		kernel.notify( RDOKernel::closeModel );
+		modelName   = "";
+		modelPath   = "";
+		resetModelNames();
+	}
 }
 
 void RDORepositoryFile::closeModel()

@@ -50,6 +50,7 @@ BEGIN_MESSAGE_MAP(RDOPluginMFCMainFrame, CFrameWnd)
 	ON_COMMAND(ID_MODEL_CLOSE, OnModelClose)
 	ON_UPDATE_COMMAND_UI(ID_MODEL_SAVE, OnUpdateModelSave)
 	ON_UPDATE_COMMAND_UI(ID_MODEL_CLOSE, OnUpdateModelClose)
+	ON_WM_SIZE()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -65,6 +66,8 @@ BOOL RDOPluginMFCMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 {
 	if( !CFrameWnd::PreCreateWindow(cs) ) return FALSE;
 	cs.dwExStyle |= WS_EX_TOPMOST;
+	cs.dwExStyle &= ~WS_EX_CLIENTEDGE;
+	cs.lpszClass = AfxRegisterWndClass( 0, pluginMFCApp.LoadCursor( IDC_ARROW ), NULL, pluginMFCApp.LoadIcon( IDR_MAINFRAME ) );
 	return TRUE;
 }
 
@@ -74,6 +77,12 @@ int RDOPluginMFCMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	SetWindowPos( &CWnd::wndTopMost, 0, 0, 300, 200, SWP_NOMOVE );
 
+	edit.CreateEx( WS_EX_CLIENTEDGE, _T("EDIT"), NULL, WS_HSCROLL | WS_VSCROLL | WS_CHILD | WS_VISIBLE | WS_TABSTOP | WS_BORDER | ES_AUTOHSCROLL | ES_AUTOVSCROLL | ES_LEFT | ES_MULTILINE | ES_WANTRETURN, CRect( 0, 0, 100, 100 ), this, 0 );
+	edit.ModifyStyle( WS_BORDER, 0 );
+	edit.LimitText();
+	edit.SetFont( CFont::FromHandle( (HFONT)::GetStockObject( DEFAULT_GUI_FONT ) ) );
+	edit.SetReadOnly();
+
 	return 0;
 }
 
@@ -81,6 +90,31 @@ BOOL RDOPluginMFCMainFrame::DestroyWindow()
 {
 	pluginMFCApp.PostThreadMessage( rdoPlugin::PLUGIN_MUSTEXIT_MESSAGE, reinterpret_cast<WPARAM>(AfxGetInstanceHandle()), 0 );
 	return CFrameWnd::DestroyWindow();
+}
+
+BOOL RDOPluginMFCMainFrame::OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo)
+{
+	if ( edit.OnCmdMsg( nID, nCode, pExtra, pHandlerInfo ) ) return TRUE;
+	return CFrameWnd::OnCmdMsg( nID, nCode, pExtra, pHandlerInfo );
+}
+
+void RDOPluginMFCMainFrame::OnSize(UINT nType, int cx, int cy)
+{
+	CFrameWnd::OnSize( nType, cx, cy );
+	if ( edit.GetSafeHwnd() ) {
+		CRect r;
+		GetClientRect( r );
+		edit.MoveWindow( r );
+	}
+}
+
+void RDOPluginMFCMainFrame::insertLine( const char* line )
+{
+	int length = edit.GetWindowTextLength();
+	edit.SetSel( length, length );
+	CString str;
+	str.Format( "%d. %s\r\n", edit.GetLineCount(), line );
+	edit.ReplaceSel( str );
 }
 
 void RDOPluginMFCMainFrame::OnPluginClose()

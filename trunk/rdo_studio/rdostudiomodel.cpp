@@ -41,6 +41,7 @@ RDOStudioModel::RDOStudioModel():
 	showCanNotCloseModelMessage( true ),
 	openError( false ),
 	modelClosed( true ),
+	saveAsFlag( false ),
 	frmDescribed( false ),
 	modelTime( 0 ),
 	showMode( SM_NoShow ),
@@ -87,7 +88,6 @@ void RDOStudioModel::newModel( const bool _useTemplate )
 	output->clearFind();
 	kernel.getRepository()->newModel();
 	output->updateLogConnection();
-	plugins->pluginProc( rdoPlugin::PM_MODEL_NEW );
 }
 
 bool RDOStudioModel::openModel( const string& modelName ) const
@@ -110,7 +110,6 @@ bool RDOStudioModel::openModel( const string& modelName ) const
 		output->updateLogConnection();
 		output->appendStringToBuild( format( IDS_MODEL_LOADING_OK ) );
 		studioApp.setLastProjectName( kernel.getRepository()->getFullName() );
-		plugins->pluginProc( rdoPlugin::PM_MODEL_OPEN );
 	} else {
 		output->appendStringToBuild( format( IDS_MODEL_LOADING_FAILD ) );
 	}
@@ -119,16 +118,14 @@ bool RDOStudioModel::openModel( const string& modelName ) const
 
 bool RDOStudioModel::saveModel() const
 {
-	bool flag = kernel.getRepository()->saveModel();
-	if ( flag ) {
-		plugins->pluginProc( rdoPlugin::PM_MODEL_SAVE );
-	}
-	return flag;
+	return kernel.getRepository()->saveModel();
 }
 
 void RDOStudioModel::saveAsModel() const
 {
+	static_cast<bool>(saveAsFlag) = true;
 	kernel.getRepository()->saveAsModel();
+	static_cast<bool>(saveAsFlag) = false;;
 }
 
 void RDOStudioModel::closeModel() const
@@ -140,9 +137,6 @@ void RDOStudioModel::closeModel() const
 	output->clearResults();
 	output->clearFind();
 	kernel.getRepository()->closeModel();
-	if ( plugins ) {
-		plugins->pluginProc( rdoPlugin::PM_MODEL_CLOSE );
-	}
 }
 
 void RDOStudioModel::buildModel() const
@@ -155,7 +149,6 @@ void RDOStudioModel::buildModel() const
 		output->showBuild();
 		output->appendStringToBuild( format( IDS_MODEL_BUILDING_BEGIN ) );
 		const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->UpdateWindow();
-		plugins->pluginProc( rdoPlugin::PM_MODEL_BUILD );
 		kernel.getSimulator()->parseModel();
 	}
 }
@@ -170,7 +163,6 @@ void RDOStudioModel::runModel() const
 		output->showBuild();
 		output->appendStringToBuild( format( IDS_MODEL_RUNNING_BEGIN ) );
 		const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->UpdateWindow();
-		plugins->pluginProc( rdoPlugin::PM_MODEL_START );
 		kernel.getSimulator()->runModel();
 	}
 }
@@ -179,18 +171,19 @@ void RDOStudioModel::stopModel() const
 {
 	if ( hasModel() && isRunning() ) {
 		kernel.getSimulator()->stopModel();
-		plugins->pluginProc( rdoPlugin::PM_MODEL_STOP );
 	}
 }
 
 void RDOStudioModel::newModelNotify()
 {
 	model->newModelFromRepository();
+	plugins->pluginProc( rdoPlugin::PM_MODEL_NEW );
 }
 
 void RDOStudioModel::openModelNotify()
 {
 	model->openModelFromRepository();
+	plugins->pluginProc( rdoPlugin::PM_MODEL_OPEN );
 }
 
 void RDOStudioModel::saveModelNotify()
@@ -206,6 +199,9 @@ bool RDOStudioModel::canCloseModelNotify()
 void RDOStudioModel::closeModelNotify()
 {
 	model->closeModelFromRepository();
+	if ( plugins ) {
+		plugins->pluginProc( rdoPlugin::PM_MODEL_CLOSE );
+	}
 }
 
 void RDOStudioModel::canNotCloseModelNotify()
@@ -216,6 +212,7 @@ void RDOStudioModel::canNotCloseModelNotify()
 void RDOStudioModel::beforeModelStartNotify()
 {
 	model->beforeModelStart();
+	plugins->pluginProc( rdoPlugin::PM_MODEL_BEFORE_START );
 }
 
 void RDOStudioModel::afterModelStartNotify()
@@ -233,6 +230,7 @@ void RDOStudioModel::afterModelStartNotify()
 		RDOStudioFrameView* view = model->frameManager.getFrameView( index );
 		if ( view ) view->SetFocus();
 	}
+	plugins->pluginProc( rdoPlugin::PM_MODEL_AFTER_START );
 }
 
 void RDOStudioModel::endExecuteModelNotify()
@@ -252,6 +250,8 @@ void RDOStudioModel::endExecuteModelNotify()
 		output->appendStringToResults( str );
 	}
 
+	plugins->pluginProc( rdoPlugin::PM_MODEL_FINISHED );
+
 	studioApp.autoClose();
 }
 
@@ -262,6 +262,8 @@ void RDOStudioModel::stopModelNotify()
 	RDOStudioOutput* output = &studioApp.mainFrame->output;
 	output->appendStringToDebug( format( IDS_MODEL_STOPED ) );
 	const_cast<rdoEditCtrl::RDODebugEdit*>(output->getDebug())->UpdateWindow();
+
+	plugins->pluginProc( rdoPlugin::PM_MODEL_STOP_CANCEL );
 
 	studioApp.autoClose();
 }
@@ -289,6 +291,7 @@ void RDOStudioModel::parseSuccessNotify()
 	if ( i ) {
 		const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->gotoNext();
 	}
+	plugins->pluginProc( rdoPlugin::PM_MODEL_BUILD_OK );
 }
 
 void RDOStudioModel::parseErrorNotify()
@@ -304,6 +307,8 @@ void RDOStudioModel::parseErrorNotify()
 		output->appendStringToBuild( format( IDS_MODEL_BUILDING_RESULTS, i ) );
 		const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->gotoNext();
 	}
+
+	plugins->pluginProc( rdoPlugin::PM_MODEL_BUILD_FAILD );
 
 	studioApp.autoClose();
 }
@@ -324,6 +329,8 @@ void RDOStudioModel::executeErrorNotify()
 	if ( i ) {
 		const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->gotoNext();
 	}
+
+	plugins->pluginProc( rdoPlugin::PM_MODEL_STOP_RUNTIME_ERROR );
 
 	studioApp.autoClose();
 }
@@ -357,10 +364,10 @@ void RDOStudioModel::updateModify() const
 	RDOStudioModelDoc* doc = getModelDoc();
 	if ( doc ) {
 		doc->updateModify();
-		if ( prevModify != isModify() ) {
-			static_cast<bool>(prevModify) = isModify();
-			plugins->pluginProc( rdoPlugin::PM_MODEL_MODIFY );
-		}
+	}
+	if ( prevModify != isModify() ) {
+		static_cast<bool>(prevModify) = isModify();
+		plugins->pluginProc( rdoPlugin::PM_MODEL_MODIFY );
 	}
 }
 
@@ -515,10 +522,11 @@ void RDOStudioModel::openModelFromRepository()
 void RDOStudioModel::saveModelToRepository()
 {
 	bool smr_modified = false;
+	bool wasSaved = false;
 	RDOEditorTabCtrl* tab = getTab();
 	if ( tab ) {
 		RDOEditorEdit* smr_edit = tab->getItemEdit( RDOEDIT_SMR );
-		if ( smr_edit->isModify() ) {
+		if ( smr_edit->isModify() || saveAsFlag ) {
 			rdo::binarystream stream;
 			smr_edit->save( stream );
 			kernel.getRepository()->saveSMR( stream );
@@ -527,14 +535,14 @@ void RDOStudioModel::saveModelToRepository()
 		int cnt = tab->getItemCount();
 		int progress_cnt = 0;
 		for ( int i = 0; i < cnt; i++ ) {
-			if ( tab->getItemEdit( i )->isModify() ) progress_cnt++;
+			if ( tab->getItemEdit( i )->isModify() || saveAsFlag ) progress_cnt++;
 		}
 		if ( progress_cnt ) {
 			studioApp.mainFrame->beginProgress( 0, progress_cnt * 2 + 1 );
 			studioApp.mainFrame->stepProgress();
 			for ( int i = 0; i < cnt; i++ ) {
 				RDOEditorEdit* edit = tab->getItemEdit( i );
-				if ( edit->isModify() ) {
+				if ( edit->isModify() || saveAsFlag ) {
 					rdo::binarystream stream;
 					edit->save( stream );
 					studioApp.mainFrame->stepProgress();
@@ -554,12 +562,17 @@ void RDOStudioModel::saveModelToRepository()
 				studioApp.mainFrame->stepProgress();
 			}
 			studioApp.mainFrame->endProgress();
+			wasSaved = true;
 		}
 	}
 	setName( kernel.getRepository()->getName() );
 	studioApp.insertReopenItem( kernel.getRepository()->getFullName() );
 
 	if ( smr_modified ) updateFrmDescribed();
+
+	if ( wasSaved ) {
+		plugins->pluginProc( rdoPlugin::PM_MODEL_SAVE );
+	}
 }
 
 void RDOStudioModel::updateFrmDescribed()
@@ -624,6 +637,7 @@ void RDOStudioModel::setName( const string& str )
 	if ( doc ) {
 		doc->setName( str );
 	}
+	plugins->pluginProc( rdoPlugin::PM_MODEL_NAME_CHANGED );
 }
 
 bool RDOStudioModel::isModify() const

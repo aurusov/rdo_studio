@@ -32,6 +32,7 @@ private:
 
 	bool openError;
 	bool modelClosed;
+	bool saveAsFlag;
 
 	bool frmDescribed;
 	double modelTime;

@@ -95,15 +95,20 @@ public:
 };
 
 static const int PLUGIN_MUSTEXIT_MESSAGE = ::RegisterWindowMessage( "PLUGIN_MUSTEXIT_MESSAGE" );
-static const int PM_MODEL_NEW      = ::RegisterWindowMessage( "PM_MODEL_NEW_MESSAGE" );
-static const int PM_MODEL_OPEN     = ::RegisterWindowMessage( "PM_MODEL_OPEN_MESSAGE" );
-static const int PM_MODEL_SAVE     = ::RegisterWindowMessage( "PM_MODEL_SAVE_MESSAGE" );
-static const int PM_MODEL_CLOSE    = ::RegisterWindowMessage( "PM_MODEL_CLOSE_MESSAGE" );
-static const int PM_MODEL_MODIFY   = ::RegisterWindowMessage( "PM_MODEL_MODIFY_MESSAGE" );
-static const int PM_MODEL_BUILD    = ::RegisterWindowMessage( "PM_MODEL_BUILD_MESSAGE" );
-static const int PM_MODEL_START    = ::RegisterWindowMessage( "PM_MODEL_START_MESSAGE" );
-static const int PM_MODEL_STOP     = ::RegisterWindowMessage( "PM_MODEL_STOP_MESSAGE" );
-static const int PM_MODEL_SHOWMODE = ::RegisterWindowMessage( "PM_MODEL_SHOWMODE_MESSAGE" );
+static const int PM_MODEL_NEW                = ::RegisterWindowMessage( "PM_MODEL_NEW_MESSAGE" );
+static const int PM_MODEL_OPEN               = ::RegisterWindowMessage( "PM_MODEL_OPEN_MESSAGE" );
+static const int PM_MODEL_SAVE               = ::RegisterWindowMessage( "PM_MODEL_SAVE_MESSAGE" );
+static const int PM_MODEL_CLOSE              = ::RegisterWindowMessage( "PM_MODEL_CLOSE_MESSAGE" );
+static const int PM_MODEL_NAME_CHANGED       = ::RegisterWindowMessage( "PM_MODEL_NAME_CHANGED_MESSAGE" );
+static const int PM_MODEL_MODIFY             = ::RegisterWindowMessage( "PM_MODEL_MODIFY_MESSAGE" );
+static const int PM_MODEL_BUILD_OK           = ::RegisterWindowMessage( "PM_MODEL_BUILD_OK_MESSAGE" );
+static const int PM_MODEL_BUILD_FAILD        = ::RegisterWindowMessage( "PM_MODEL_BUILD_FAILD_MESSAGE" );
+static const int PM_MODEL_BEFORE_START       = ::RegisterWindowMessage( "PM_MODEL_BEFORE_START" );
+static const int PM_MODEL_AFTER_START        = ::RegisterWindowMessage( "PM_MODEL_AFTER_START" );
+static const int PM_MODEL_FINISHED           = ::RegisterWindowMessage( "PM_MODEL_FINISHED_MESSAGE" );
+static const int PM_MODEL_STOP_CANCEL        = ::RegisterWindowMessage( "PM_MODEL_STOP_CANCEL_MESSAGE" );
+static const int PM_MODEL_STOP_RUNTIME_ERROR = ::RegisterWindowMessage( "PM_MODEL_STOP_RUNTIME_ERROR_MESSAGE" );
+static const int PM_MODEL_SHOWMODE           = ::RegisterWindowMessage( "PM_MODEL_SHOWMODE_MESSAGE" );
 
 typedef void (*PFunGetPluginInfo)( PluginInfo* );
 typedef bool (*PFunStartPlugin)( const Studio* studio );

@@ -12,14 +12,20 @@ class RDOPluginMFCMainFrame: public CFrameWnd
 {
 DECLARE_DYNAMIC(RDOPluginMFCMainFrame)
 
+private:
+	CEdit edit;
+
 public:
 	RDOPluginMFCMainFrame();
 	virtual ~RDOPluginMFCMainFrame();
+
+	void insertLine( const char* line );
 
 protected:
 	//{{AFX_VIRTUAL(RDOPluginMFCMainFrame)
 	public:
 	virtual BOOL DestroyWindow();
+	virtual BOOL OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo);
 	protected:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	//}}AFX_VIRTUAL
@@ -57,6 +63,7 @@ protected:
 	afx_msg void OnModelClose();
 	afx_msg void OnUpdateModelSave(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateModelClose(CCmdUI* pCmdUI);
+	afx_msg void OnSize(UINT nType, int cx, int cy);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

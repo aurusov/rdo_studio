@@ -20,7 +20,8 @@ BEGIN_MESSAGE_MAP(RDOPluginMFC, CWinApp)
 END_MESSAGE_MAP()
 
 RDOPluginMFC::RDOPluginMFC():
-	CWinApp()
+	CWinApp(),
+	frame( NULL )
 {
 }
 
@@ -46,14 +47,15 @@ bool startPlugin( const rdoPlugin::Studio* _studio )
 	pluginMFCApp.studio = *_studio;
 //	TRACE( "studio.run    = %d\n", pluginMFCApp.studio.model.run );
 	if ( !pluginMFCApp.m_pMainWnd ) {
-		RDOPluginMFCMainFrame* frame = new RDOPluginMFCMainFrame;
-		pluginMFCApp.m_pMainWnd = frame;
-		if ( !frame->LoadFrame( IDR_MAINFRAME ) ) {
-			delete frame;
+		pluginMFCApp.frame = new RDOPluginMFCMainFrame;
+		pluginMFCApp.m_pMainWnd = pluginMFCApp.frame;
+		if ( !pluginMFCApp.frame->LoadFrame( IDR_MAINFRAME ) ) {
+			delete pluginMFCApp.frame;
+			pluginMFCApp.frame = NULL;
 			return false;
 		}
-		frame->ShowWindow( SW_SHOW );
-		frame->UpdateWindow();
+		pluginMFCApp.frame->ShowWindow( SW_SHOW );
+		pluginMFCApp.frame->UpdateWindow();
 	}
 	return true;
 }
@@ -64,14 +66,15 @@ void stopPlugin()
 		pluginMFCApp.m_pMainWnd->DestroyWindow();
 		delete pluginMFCApp.m_pMainWnd;
 		pluginMFCApp.m_pMainWnd = NULL;
+		pluginMFCApp.frame = NULL;
 	}
 }
 
 const int enumMessages()
 {
 	static int i = 0;
-	static const int cnt = 9;
-	int messages[ cnt ] = { rdoPlugin::PM_MODEL_NEW, rdoPlugin::PM_MODEL_OPEN, rdoPlugin::PM_MODEL_SAVE, rdoPlugin::PM_MODEL_CLOSE, rdoPlugin::PM_MODEL_MODIFY, rdoPlugin::PM_MODEL_BUILD, rdoPlugin::PM_MODEL_START, rdoPlugin::PM_MODEL_STOP, rdoPlugin::PM_MODEL_SHOWMODE };
+	static const int cnt = 14;
+	int messages[ cnt ] = { rdoPlugin::PM_MODEL_NEW, rdoPlugin::PM_MODEL_OPEN, rdoPlugin::PM_MODEL_SAVE, rdoPlugin::PM_MODEL_CLOSE, rdoPlugin::PM_MODEL_NAME_CHANGED, rdoPlugin::PM_MODEL_MODIFY, rdoPlugin::PM_MODEL_BUILD_OK, rdoPlugin::PM_MODEL_BUILD_FAILD, rdoPlugin::PM_MODEL_BEFORE_START, rdoPlugin::PM_MODEL_AFTER_START, rdoPlugin::PM_MODEL_FINISHED, rdoPlugin::PM_MODEL_STOP_CANCEL, rdoPlugin::PM_MODEL_STOP_RUNTIME_ERROR, rdoPlugin::PM_MODEL_SHOWMODE };
 	if ( i < cnt ) {
 		return messages[i++];
 	}
@@ -81,22 +84,32 @@ const int enumMessages()
 void pluginProc( const int message )
 {
 	if ( message == rdoPlugin::PM_MODEL_NEW ) {
-		TRACE( "PM_MODEL_NEW\n" );
+		pluginMFCApp.frame->insertLine( "PM_MODEL_NEW" );
 	} else if ( message == rdoPlugin::PM_MODEL_OPEN ) {
-		TRACE( "PM_MODEL_OPEN\n" );
+		pluginMFCApp.frame->insertLine( "PM_MODEL_OPEN" );
 	} else if ( message == rdoPlugin::PM_MODEL_SAVE ) {
-		TRACE( "PM_MODEL_SAVE\n" );
+		pluginMFCApp.frame->insertLine( "PM_MODEL_SAVE" );
 	} else if ( message == rdoPlugin::PM_MODEL_CLOSE ) {
-		TRACE( "PM_MODEL_CLOSE\n" );
+		pluginMFCApp.frame->insertLine( "PM_MODEL_CLOSE" );
+	} else if ( message == rdoPlugin::PM_MODEL_NAME_CHANGED ) {
+		pluginMFCApp.frame->insertLine( "PM_MODEL_NAME_CHANGED" );
 	} else if ( message == rdoPlugin::PM_MODEL_MODIFY ) {
-		TRACE( "PM_MODEL_MODIFY\n" );
-	} else if ( message == rdoPlugin::PM_MODEL_BUILD ) {
-		TRACE( "PM_MODEL_BUILD\n" );
-	} else if ( message == rdoPlugin::PM_MODEL_START ) {
-		TRACE( "PM_MODEL_START\n" );
-	} else if ( message == rdoPlugin::PM_MODEL_STOP ) {
-		TRACE( "PM_MODEL_STOP\n" );
+		pluginMFCApp.frame->insertLine( "PM_MODEL_MODIFY" );
+	} else if ( message == rdoPlugin::PM_MODEL_BUILD_OK ) {
+		pluginMFCApp.frame->insertLine( "PM_MODEL_BUILD_OK" );
+	} else if ( message == rdoPlugin::PM_MODEL_BUILD_FAILD ) {
+		pluginMFCApp.frame->insertLine( "PM_MODEL_BUILD_FAILD" );
+	} else if ( message == rdoPlugin::PM_MODEL_BEFORE_START ) {
+		pluginMFCApp.frame->insertLine( "PM_MODEL_BEFORE_START" );
+	} else if ( message == rdoPlugin::PM_MODEL_AFTER_START ) {
+		pluginMFCApp.frame->insertLine( "PM_MODEL_AFTER_START" );
+	} else if ( message == rdoPlugin::PM_MODEL_FINISHED ) {
+		pluginMFCApp.frame->insertLine( "PM_MODEL_FINISHED" );
+	} else if ( message == rdoPlugin::PM_MODEL_STOP_CANCEL ) {
+		pluginMFCApp.frame->insertLine( "PM_MODEL_STOP_CANCEL" );
+	} else if ( message == rdoPlugin::PM_MODEL_STOP_RUNTIME_ERROR ) {
+		pluginMFCApp.frame->insertLine( "PM_MODEL_STOP_RUNTIME_ERROR" );
 	} else if ( message == rdoPlugin::PM_MODEL_SHOWMODE ) {
-		TRACE( "PM_MODEL_SHOWMODE\n" );
+		pluginMFCApp.frame->insertLine( "PM_MODEL_SHOWMODE" );
 	}
 }
