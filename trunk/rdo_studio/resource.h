@@ -11,6 +11,7 @@
 #define IDB_TREECTRL                    133
 #define IDR_CHARTTYPE                   134
 #define IDR_FRAMETYPE                   135
+#define IDB_FRAME_TREECTRL              139
 #define IDD_BUFFER_DIALOG               142
 #define IDB_PROJECTTOOLBAR_D            144
 #define IDB_EDITTOOLBAR_D               145
@@ -412,7 +413,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        139
+#define _APS_NEXT_RESOURCE_VALUE        144
 #define _APS_NEXT_COMMAND_VALUE         33122
 #define _APS_NEXT_CONTROL_VALUE         1001
 #define _APS_NEXT_SYMED_VALUE           101

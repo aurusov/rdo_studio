@@ -909,11 +909,23 @@ SOURCE=.\edit_ctrls\sci\License.txt
 # PROP Default_Filter "ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
 # Begin Source File
 
+SOURCE=.\res\bitmap1.bmp
+# End Source File
+# Begin Source File
+
 SOURCE=.\res\editToolbar.bmp
 # End Source File
 # Begin Source File
 
 SOURCE=.\res\editToolbar_d.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\frametreectrl.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\icon1.ico
 # End Source File
 # Begin Source File
 

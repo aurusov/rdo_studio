@@ -74,6 +74,7 @@ IDB_PROJECTTOOLBAR_D    BITMAP  DISCARDABLE     "res\\projectToolbar_d.bmp"
 IDB_EDITTOOLBAR_D       BITMAP  DISCARDABLE     "res\\editToolbar_d.bmp"
 IDR_PROJECTTOOLBAR      BITMAP  DISCARDABLE     "res\\projectToolbar.bmp"
 IDB_TREECTRL            BITMAP  DISCARDABLE     "res\\tracertreectrl.bmp"
+IDR_EDITTOOLBAR         BITMAP  MOVEABLE PURE   "res\\editToolbar.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -89,6 +90,22 @@ BEGIN
     SEPARATOR
     BUTTON      ID_RDO_RUN
     BUTTON      ID_RDO_STOP
+END
+
+IDR_EDITTOOLBAR TOOLBAR DISCARDABLE  16, 15
+BEGIN
+    BUTTON      ID_EDIT_CUT
+    BUTTON      ID_EDIT_COPY
+    BUTTON      ID_EDIT_PASTE
+    SEPARATOR
+    BUTTON      ID_EDIT_UNDO
+    BUTTON      ID_EDIT_REDO
+    SEPARATOR
+    BUTTON      ID_SEARCH_FIND
+    BUTTON      ID_SEARCH_REPLACE
+    SEPARATOR
+    BUTTON      ID_SEARCH_BOOKMARKPREVIOUS
+    BUTTON      ID_SEARCH_BOOKMARKNEXT
 END
 
 
@@ -376,57 +393,8 @@ END
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDR_CHARTTYPE           ICON    DISCARDABLE     "res\\rdostudiochartdoc.ico"
-#endif    // Russian resources
-/////////////////////////////////////////////////////////////////////////////
-
-
-/////////////////////////////////////////////////////////////////////////////
-// English (U.S.) resources
-
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
-#ifdef _WIN32
-LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
-#pragma code_page(1252)
-#endif //_WIN32
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Bitmap
-//
-
-IDR_EDITTOOLBAR         BITMAP  MOVEABLE PURE   "res\\editToolbar.bmp"
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Toolbar
-//
-
-IDR_EDITTOOLBAR TOOLBAR DISCARDABLE  16, 15
-BEGIN
-    BUTTON      ID_EDIT_CUT
-    BUTTON      ID_EDIT_COPY
-    BUTTON      ID_EDIT_PASTE
-    SEPARATOR
-    BUTTON      ID_EDIT_UNDO
-    BUTTON      ID_EDIT_REDO
-    SEPARATOR
-    BUTTON      ID_SEARCH_FIND
-    BUTTON      ID_SEARCH_REPLACE
-    SEPARATOR
-    BUTTON      ID_SEARCH_BOOKMARKPREVIOUS
-    BUTTON      ID_SEARCH_BOOKMARKNEXT
-END
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Icon
-//
-
-// Icon with lowest ID value placed first to ensure application icon
-// remains consistent on all systems.
 IDR_MAINFRAME           ICON    DISCARDABLE     "res\\rdo_studio.ico"
+IDR_CHARTTYPE           ICON    DISCARDABLE     "res\\rdostudiochartdoc.ico"
 IDR_MODELTYPE           ICON    DISCARDABLE     "res\\rdostudiomodeldoc.ico"
 IDR_EDITTYPE            ICON    DISCARDABLE     "res\\rdostudioeditdoc.ico"
 IDR_FRAMETYPE           ICON    DISCARDABLE     "res\\rdostudioframedoc.ico"
@@ -1264,7 +1232,7 @@ BEGIN
     ID_FINDINMODEL_ENDMSG_NOTFOUND "Cannot find the string '%s'.\r\n"
 END
 
-#endif    // English (U.S.) resources
+#endif    // Russian resources
 /////////////////////////////////////////////////////////////////////////////
 
 
