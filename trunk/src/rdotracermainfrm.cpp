@@ -115,7 +115,7 @@ BOOL RDOTracerMainFrame::PreCreateWindow( CREATESTRUCT& cs )
 		return FALSE;
 	}
 	catch ( ... ) {
-		AfxMessageBox( format( IDS_PRECREATEERROR, format( IDS_UNKNOWNERROR ).c_str() ).c_str() );
+		rdoTracerApp.showUnknownException( IDS_PRECREATEERROR );
 		return FALSE;
 	}
 
@@ -185,7 +185,7 @@ BOOL RDOTracerMainFrame::OnCreateClient( LPCREATESTRUCT lpcs, CCreateContext* pC
 		return FALSE;
 	}
 	catch ( ... ) {
-		AfxMessageBox( format( IDS_CREATECLIENTERROR, format( IDS_UNKNOWNERROR ).c_str() ).c_str() );
+		rdoTracerApp.showUnknownException( IDS_CREATECLIENTERROR );
 		return FALSE;
 	}
 
@@ -253,7 +253,7 @@ int RDOTracerMainFrame::OnCreate( LPCREATESTRUCT lpCreateStruct )
 		return -1;
 	}
 	catch ( ... ) {
-		AfxMessageBox( format( IDS_CREATEERROR, format( IDS_UNKNOWNERROR ).c_str() ).c_str() );
+		rdoTracerApp.showUnknownException( IDS_CREATEERROR );
 		return -1;
 	}
 

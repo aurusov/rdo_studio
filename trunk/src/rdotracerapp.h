@@ -47,6 +47,7 @@ public:
 	static std::string getFullHelpFileName( std::string str = "RAO-tracer.chm" );
 	
 	void showMFCException( const UINT errorTypeID, CException& e ) const;
+	void showUnknownException( const UINT errorTypeID ) const;
 };
 
 // ----------------------------------------------------------------------------

@@ -533,7 +533,7 @@ BEGIN
     IDS_IETRACINGERROR      "Error while tracing irregular event #%d: %s, pattern #%d: %s.\n"
     IDS_RULETRACINGERROR    "Error while tracing production rule #%d: %s, pattern #%d: %s.\n"
     IDS_INITINSTANCEERROR   "Cannot init application instance:\n%s"
-    IDS_UNKNOWNERROR        "Unknown error."
+    IDS_UNKNOWNERROR        "Unknown error. GetLastError() reports:\n%s"
     IDS_OLEINITERROR        "Cannot initialize OLE."
     IDS_PRECREATEBASEERROR  "Cannot precreate base class window."
     IDS_PRECREATEERROR      "Cannot precreate main frame window:\n%s"
@@ -673,8 +673,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,0,25
- PRODUCTVERSION 1,0,0,25
+ FILEVERSION 1,0,0,27
+ PRODUCTVERSION 1,0,0,27
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -692,14 +692,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "RAO Tracer\0"
-            VALUE "FileVersion", "1, 0, 0, 25\0"
+            VALUE "FileVersion", "1, 0, 0, 27\0"
             VALUE "InternalName", "RAO Tracer\0"
             VALUE "LegalCopyright", "Copyright (C) 2003\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "rdo_tracer.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "RAO Tracer\0"
-            VALUE "ProductVersion", "1, 0, 0, 25\0"
+            VALUE "ProductVersion", "1, 0, 0, 27\0"
             VALUE "SpecialBuild", "\0"
         END
     END

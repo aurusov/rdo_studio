@@ -72,15 +72,11 @@ BOOL RDOTracerApp::InitInstance()
 		return FALSE;
 	}
 	catch ( CException &e ) {
-		//e.ReportError();
-		//TCHAR szCause[255];
-		//e.GetErrorMessage( szCause, 255 );
-		//AfxMessageBox( format( IDS_INITINSTANCEERROR, szCause ).c_str() );
 		showMFCException( IDS_INITINSTANCEERROR, e );
 		return FALSE;
 	}
 	catch ( ... ) {
-		AfxMessageBox( format( IDS_INITINSTANCEERROR, format( IDS_UNKNOWNERROR ).c_str() ).c_str() );
+		showUnknownException( IDS_INITINSTANCEERROR );
 		return FALSE;
 	}
 
@@ -227,4 +223,12 @@ void RDOTracerApp::showMFCException( const UINT errorTypeID, CException& e ) con
 	TCHAR szCause[255];
 	e.GetErrorMessage( szCause, 255 );
 	AfxMessageBox( format( errorTypeID, szCause ).c_str() );
+}
+
+void RDOTracerApp::showUnknownException( const UINT errorTypeID ) const
+{
+	LPVOID lpMsgBuf;
+	::FormatMessage( FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, NULL, GetLastError(), MAKELANGID( LANG_NEUTRAL, SUBLANG_DEFAULT ), (LPTSTR) &lpMsgBuf, 0, NULL );
+	AfxMessageBox( format( errorTypeID, format( IDS_UNKNOWNERROR, (LPCTSTR)lpMsgBuf ).c_str() ).c_str() );
+	::LocalFree( lpMsgBuf );
 }
