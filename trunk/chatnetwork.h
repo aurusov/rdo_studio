@@ -117,6 +117,7 @@ public:
 
 	void refresh();
 	bool refreshFinished() const { return enumNetworkThread == NULL; }
+	void stopEnum();
 };
 
 //{{AFX_INSERT_LOCATION}}

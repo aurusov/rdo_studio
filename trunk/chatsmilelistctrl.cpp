@@ -1,5 +1,8 @@
 #include "stdafx.h"
 #include "chatsmilelistctrl.h"
+#include "chatapp.h"
+#include "chatmainfrm.h"
+#include "chatsplash.h"
 #include "resource.h"
 
 #ifdef _DEBUG
@@ -18,12 +21,17 @@ BEGIN_MESSAGE_MAP( CChatSmileListCtrl, CWnd )
 	ON_WM_SIZE()
 	ON_WM_HSCROLL()
 	ON_WM_VSCROLL()
+	ON_WM_MOUSEWHEEL()
+	ON_WM_SETFOCUS()
+	ON_WM_KILLFOCUS()
+	ON_WM_LBUTTONDOWN()
+	ON_WM_KEYDOWN()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 CChatSmileListCtrl::CChatSmileListCtrl():
 	CWnd(),
-	smile_max_width( 0 ),
+	smile_max_width( 100 ),
 	text_max_width( 0 ),
 	text_focus_height( 0 ),
 	prev_line_from( -1 ),
@@ -46,6 +54,7 @@ CChatSmileListCtrl::~CChatSmileListCtrl()
 {
 	std::vector< Item* >::iterator it = list.begin();
 	while ( it != list.end() ) {
+		delete (*it)->smile;
 		delete *it++;
 	}
 	list.clear();
@@ -87,177 +96,36 @@ int CChatSmileListCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 		text_focus_height = 10;
 	}
 	text_focus_height += 2;
-	for ( int i = CChatSmile::smile; i <= CChatSmile::tomato; i++ ) {
-		Item* item   = new Item;
-		item->smile  = NULL;
-		item->type   = static_cast<CChatSmile::Type>(i);
-		item->info   = CChatSmileList::getStr( item->type );
-		item->height = 0;
 
-//		CChatSmile* smile = list.addSmile( static_cast<CChatSmile::Type>(i), this );
-//		smile->ShowWindow( SW_HIDE );
-//		CSize size = smile->GetSize();
-//		size.cx += 2;
-//		size.cy += 2;
-//		int smile_height = size.cy;
-//		heights.push_back( text_focus_height > smile_height ? text_focus_height : smile_height );
-//		if ( size.cx > smile_max_width ) {
-//			smile_max_width = size.cx;
-//		}
+	chatApp.splash->setProgress( CChatSmile::smile, CChatSmile::tomato + 1 );
+	for ( int i = CChatSmile::smile; i <= CChatSmile::tomato; i++ ) {
+		Item* item  = new Item;
+		item->smile = new CChatSmile( static_cast<CChatSmile::Type>(i), this );
+		item->smile->showAnimation( false );
+		item->smile->setBgColor( ::GetSysColor( COLOR_WINDOW ) );
+		item->info = CChatSmileList::getStr( item->smile->getType() );
+		CSize size = item->smile->GetSize();
+		size.cx += 2;
+		size.cy += 2;
+		if ( size.cx > smile_max_width ) {
+			smile_max_width = size.cx;
+		}
+		item->height = text_focus_height > size.cy ? text_focus_height : size.cy;
+
 		CRect rect( 0, 0, 1, 1 );
 		dc->DrawText( CChatSmileList::getStr( static_cast<CChatSmile::Type>(i) ).c_str(), -1, rect, DT_SINGLELINE | DT_CALCRECT );
 		if ( rect.Width() > text_max_width ) {
 			text_max_width = rect.Width();
 		}
 		list.push_back( item );
+		chatApp.splash->stepProgress();
 	}
+	chatApp.splash->hideProgress();
 	dc->SelectObject( prev_font );
 	ReleaseDC( dc );
-//	list.setBgColor( ::GetSysColor( COLOR_WINDOW ) );
 
 	return 0;
 }
-
-/*
-BEGIN_MESSAGE_MAP( CChatSmileListCtrl, CListBox )
-	ON_WM_CREATE()
-	ON_WM_VSCROLL()
-	ON_WM_MEASUREITEM_REFLECT()
-END_MESSAGE_MAP()
-
-CChatSmileListCtrl::CChatSmileListCtrl():
-	CListBox(),
-	smile_max_width( 0 ),
-	text_focus_height( 0 )
-{
-}
-
-CChatSmileListCtrl::~CChatSmileListCtrl()
-{
-}
-
-BOOL CChatSmileListCtrl::PreCreateWindow( CREATESTRUCT& cs )
-{
-	if ( !CListBox::PreCreateWindow(cs) ) return FALSE;
-	cs.style |= WS_VISIBLE | WS_CHILD | LBS_HASSTRINGS | WS_HSCROLL | WS_VSCROLL | LBS_NOTIFY | LBS_OWNERDRAWVARIABLE | LBS_NOINTEGRALHEIGHT, LBS_MULTICOLUMN;
-	cs.dwExStyle |= WS_EX_CLIENTEDGE;
-//	cs.lpszClass = AfxRegisterWndClass( CS_DBLCLKS, ::LoadCursor(NULL, IDC_ARROW), reinterpret_cast<HBRUSH>( COLOR_WINDOW + 1 ), NULL );
-	return TRUE;
-}
-
-int CChatSmileListCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
-{
-	if ( CListBox::OnCreate( lpCreateStruct ) == -1 ) return -1;
-
-	HFONT hf = (HFONT)::GetStockObject( DEFAULT_GUI_FONT );
-	if ( hf ) {
-		SetFont( CFont::FromHandle( hf ) );
-	}
-
-	CDC* dc = GetDC();
-	text_focus_height = dc->DrawText( ":)", CRect( 0, 0, 1, 1 ), DT_SINGLELINE | DT_CALCRECT );
-	if ( text_focus_height <= 0 ) {
-		text_focus_height = 10;
-	}
-	text_focus_height += 2;
-	ReleaseDC( dc );
-	for ( int i = CChatSmile::smile; i <= CChatSmile::tomato; i++ ) {
-		CChatSmile* smile = list.addSmile( static_cast<CChatSmile::Type>(i), this );
-		smile->ShowWindow( SW_HIDE );
-		int index = AddString( CChatSmileList::getStr( static_cast<CChatSmile::Type>(i) ).c_str() );
-		SetItemData( index, reinterpret_cast<DWORD>(smile) );
-		CSize size = smile->GetSize();
-		int smile_height = size.cy + 2;
-		SetItemHeight( index, text_focus_height > smile_height ? text_focus_height : smile_height );
-		if ( size.cx > smile_max_width ) {
-			smile_max_width = size.cx;
-		}
-	}
-	list.setBgColor( ::GetSysColor( COLOR_WINDOW ) );
-
-	return 0;
-}
-
-void CChatSmileListCtrl::DrawItem( LPDRAWITEMSTRUCT lpDrawItemStruct )
-{
-	CDC* pDC = CDC::FromHandle( lpDrawItemStruct->hDC );
-
-	if ( static_cast<int>(lpDrawItemStruct->itemID) < 0 ) {
-		return;
-		if ( (lpDrawItemStruct->itemAction & ODA_FOCUS) && (lpDrawItemStruct->itemState & ODS_FOCUS) ) {
-			pDC->DrawFocusRect( &lpDrawItemStruct->rcItem );
-		} else if ( (lpDrawItemStruct->itemAction & ODA_FOCUS) && !(lpDrawItemStruct->itemState & ODS_FOCUS) ) {
-			pDC->DrawFocusRect( &lpDrawItemStruct->rcItem ); 
-		}
-		return;
-	}
-
-	CRect  focusRect( lpDrawItemStruct->rcItem );
-	CRect  textRect( focusRect );
-	CPoint smilePoint( focusRect.left, focusRect.top );
-
-	CChatSmile* smile = reinterpret_cast<CChatSmile*>(GetItemData( lpDrawItemStruct->itemID ));
-	CSize smile_size = smile->GetSize();
-	smilePoint.x  += 1 + ( smile_max_width - smile_size.cx ) / 2;
-	smilePoint.y  += 1;
-
-	textRect.left += smile_max_width + 1;
-
-//	focusRect.left = textRect.left - 1;
-//	focusRect.DeflateRect( 0, (focusRect.Height() - text_focus_height) / 2 );
-
-	if ( (lpDrawItemStruct->itemState & ODS_SELECTED) && (lpDrawItemStruct->itemAction & (ODA_SELECT | ODA_DRAWENTIRE)) ) {
-		COLORREF color = ::GetSysColor( COLOR_HIGHLIGHT );
-		pDC->FillSolidRect( &focusRect, color );
-		smile->setBgColor( color );
-	} else if ( !(lpDrawItemStruct->itemState & ODS_SELECTED) && (lpDrawItemStruct->itemAction & ODA_SELECT) ) {
-		COLORREF color = ::GetSysColor( COLOR_WINDOW );
-		pDC->FillSolidRect( &focusRect, color );
-		smile->setBgColor( color );
-	}
-
-	if ( (lpDrawItemStruct->itemAction & ODA_FOCUS) && (lpDrawItemStruct->itemState & ODS_FOCUS) ) {
-		pDC->DrawFocusRect( &focusRect );
-	} else if ( (lpDrawItemStruct->itemAction & ODA_FOCUS) && !(lpDrawItemStruct->itemState & ODS_FOCUS) ) {
-		pDC->DrawFocusRect( &focusRect );
-	}
-
-	smile->MoveWindow( smilePoint.x, smilePoint.y, smile_size.cx, smile_size.cy );
-	smile->ShowWindow( SW_SHOW );
-
-	int prev_bkMode = pDC->SetBkMode( TRANSPARENT );
-	COLORREF prev_textColor;
-
-	if ( lpDrawItemStruct->itemState & ODS_SELECTED ) {
-		prev_textColor = pDC->SetTextColor( ::GetSysColor(COLOR_HIGHLIGHTTEXT) );
-	} else if ( lpDrawItemStruct->itemState & ODS_DISABLED ) {
-		prev_textColor = pDC->SetTextColor( ::GetSysColor(COLOR_GRAYTEXT) );
-	} else {
-		prev_textColor = pDC->SetTextColor( ::GetSysColor(COLOR_WINDOWTEXT) );
-	}
-
-	CString str;
-	GetText( lpDrawItemStruct->itemID, str );
-
-	UINT nFormat = DT_LEFT | DT_SINGLELINE | DT_VCENTER;
-	if ( GetStyle() & LBS_USETABSTOPS ) {
-		nFormat |= DT_EXPANDTABS;
-	}
-	pDC->DrawText( str, -1, &textRect, nFormat );
-
-	pDC->SetTextColor( prev_textColor );
-	pDC->SetBkMode( prev_bkMode );
-}
-
-void CChatSmileListCtrl::MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct)
-{
-}
-
-void CChatSmileListCtrl::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
-{
-	CListBox ::OnVScroll(nSBCode, nPos, pScrollBar);
-}
-*/
 
 void CChatSmileListCtrl::OnSize(UINT nType, int cx, int cy)
 {
@@ -342,6 +210,23 @@ void CChatSmileListCtrl::OnVScroll( UINT nSBCode, UINT nPos, CScrollBar* pScroll
 	scrollVertically( inc );
 }
 
+BOOL CChatSmileListCtrl::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
+{
+	WORD scrollNotify = 0xFFFF;
+
+	if ( zDelta < 0 ) {
+		if ( isLastLineVisible() ) return TRUE;
+		scrollNotify = SB_LINEDOWN;
+	} else {
+		if ( isFirstLineVisible() ) return TRUE;
+		scrollNotify = SB_LINEUP;
+	}
+
+	::SendMessage( m_hWnd, WM_VSCROLL, MAKELONG( scrollNotify, 0 ), NULL );
+
+	return TRUE;
+}
+
 bool CChatSmileListCtrl::updateScrollBars()
 {
 	yMax      = max( getStringsSumHeight(), newClientRect.bottom - 1 );
@@ -361,9 +246,9 @@ bool CChatSmileListCtrl::updateScrollBars()
 	xPageSize = newClientRect.right;
 	xPos      = min( xPos, max( 0, xMax - newClientRect.right ) );
 
-	si.nMax   = xMax; 
-	si.nPage  = xPageSize; 
-	si.nPos   = xPos; 
+	si.nMax   = xMax;
+	si.nPage  = xPageSize;
+	si.nPos   = xPos;
 	SetScrollInfo( SB_HORZ, &si, TRUE );
 
 	bool new_horzScrollBarVisible = xMax > newClientRect.Width();
@@ -432,6 +317,41 @@ bool CChatSmileListCtrl::scrollHorizontally( int inc )
 	return true;
 }
 
+bool CChatSmileListCtrl::isVisible( const int index )
+{
+	if ( index != -1 ) {
+		int height_before = getHeightBeforeLine( index );
+		int line_height   = list[index]->height;
+		return height_before + line_height > yPos && height_before < yPos + newClientRect.bottom;
+	} else {
+		return false;
+	}
+}
+
+bool CChatSmileListCtrl::isFirstLineVisible()
+{
+	int index = 0;
+	if ( !list.empty() ) {
+		int height_before = getHeightBeforeLine( index );
+		int line_height   = list[index]->height;
+		return height_before >= yPos && height_before < yPos + newClientRect.bottom;
+	} else {
+		return false;
+	}
+}
+
+bool CChatSmileListCtrl::isLastLineVisible()
+{
+	int index = list.size() - 1;
+	if ( !list.empty() ) {
+		int height_before = getHeightBeforeLine( index );
+		int line_height   = list[index]->height;
+		return height_before >= yPos && height_before + line_height <= yPos + newClientRect.bottom;
+	} else {
+		return false;
+	}
+}
+
 int CChatSmileListCtrl::getStringsSumHeight()
 {
 	if ( !list.size() ) {
@@ -481,18 +401,16 @@ void CChatSmileListCtrl::OnPaint()
 
 		COLORREF back;
 
-//		int line_from = findLine( yPos );
-//		int line_to   = findLine( yPos + newClientRect.bottom );
-		int line_from = 0;
-		int line_to   = list.size() - 1;
+		int line_from = findLine( yPos );
+		int line_to   = findLine( yPos + newClientRect.bottom );
 		if ( line_to == -1 ) line_to = list.size() - 1;
 		if ( prev_line_from != -1 && prev_line_to != -1 && line_from != -1 ) {
 			int i;
 			for ( i = prev_line_from; i < line_from; i++ ) {
-//				list.showAnimation( false );
+				list[i]->smile->showAnimation( false );
 			}
 			for ( i = line_to + 1; i <= prev_line_to; i++ ) {
-//				list.showAnimation( false );
+				list[i]->smile->showAnimation( false );
 			}
 		}
 		prev_line_from = line_from;
@@ -509,16 +427,9 @@ void CChatSmileListCtrl::OnPaint()
 		for ( int i = 0; i < cnt; i++ ) {
 
 			CChatSmile* smile = list[ i + line_from ]->smile;
-			if ( !smile ) {
-				smile = new CChatSmile( list[ i + line_from ]->type, this );
-				list[ i + line_from ]->smile = smile;
-			}
-			smile->ShowWindow( SW_SHOW );
-			if ( line_from + i == selectedLine && hasFocus ) {
-				back = ::GetSysColor( COLOR_HIGHLIGHT );
-			} else {
-				back = ::GetSysColor( COLOR_WINDOW );
-			}
+			smile->showAnimation( true );
+
+			back = ::GetSysColor( COLOR_WINDOW );
 			CBrush brush( back );
 			CPen pen( PS_SOLID, 0, back );
 			CPen* prev_pen     = dc.SelectObject( &pen );
@@ -549,12 +460,18 @@ void CChatSmileListCtrl::OnPaint()
 			bg_rect.right = rect.right;
 			dc.Rectangle( &bg_rect );
 
-			rect.left  += smile_max_width;
+			rect.left  += smile_max_width + 2;
 //			rect.right -= xPos;
 
-			dc.DrawText( CChatSmileList::getStr( smile->getType() ).c_str(), -1, &rect, DT_LEFT | DT_SINGLELINE | DT_VCENTER );
+			if ( line_from + i == selectedLine && hasFocus ) {
+				CRect bg_rect( smile_max_width, rect.top, rect.right, rect.bottom );
+				dc.FillSolidRect( bg_rect, ::GetSysColor( COLOR_HIGHLIGHT ) );
+				dc.DrawFocusRect( bg_rect );
+			}
+			dc.SetBkMode( TRANSPARENT );
+			dc.DrawText( list[ i + line_from ]->info.c_str(), -1, &rect, DT_LEFT | DT_SINGLELINE | DT_VCENTER );
 
-			rect.left  -= smile_max_width;
+			rect.left  -= smile_max_width + 2;
 //			rect.right += xPos;
 			rect.top   += h;
 
@@ -565,5 +482,134 @@ void CChatSmileListCtrl::OnPaint()
 		dc.FillSolidRect( dc.m_ps.rcPaint.left, rect.bottom, dc.m_ps.rcPaint.right, dc.m_ps.rcPaint.bottom, ::GetSysColor( COLOR_WINDOW ) );
 
 		dc.SelectObject( prev_font );
+	}
+}
+
+void CChatSmileListCtrl::OnSetFocus(CWnd* pOldWnd)
+{
+	CWnd::OnSetFocus( pOldWnd );
+	hasFocus = true;
+	repaintLine( selectedLine );
+}
+
+void CChatSmileListCtrl::OnKillFocus(CWnd* pNewWnd)
+{
+	CWnd::OnKillFocus( pNewWnd );
+	hasFocus = false;
+	repaintLine( selectedLine );
+}
+
+void CChatSmileListCtrl::selectLine( const int index )
+{
+	if ( index < 0 || index > list.size() - 1 || index == selectedLine ) {
+		return;
+	}
+	int height_before = getHeightBeforeLine( index );
+	int line_height   = list[index]->height;
+	if ( height_before >= yPos && height_before + line_height > yPos + newClientRect.bottom ) {
+		scrollVertically( height_before - yPos );
+//		scrollVertically( line_height );
+	} else if ( !( height_before >= yPos && height_before + line_height <= yPos + newClientRect.bottom ) ) {
+		scrollVertically( height_before - yPos );
+	}
+	if ( hasFocus ) {
+		hasFocus = false;
+//		strings.clearSelected( selectedLine );
+		repaintLine( selectedLine );
+		selectedLine = index;
+		hasFocus = true;
+//		strings.setSelected( selectedLine );
+		repaintLine( selectedLine );
+	}
+}
+
+void CChatSmileListCtrl::repaintLine( const int index )
+{
+	if ( isVisible( index ) ) {
+		CRect rect( newClientRect );
+		rect.top    = getHeightBeforeLine( index ) - yPos;
+		rect.bottom = rect.top + list[index]->height;
+		InvalidateRect( &rect );
+		UpdateWindow();
+	}
+}
+
+int CChatSmileListCtrl::findLine( const int _yPos )
+{
+	if ( list.empty() ) {
+		return -1;
+	}
+
+	int height = 0;
+	CDC* dc = GetDC();
+	CFont* prev_font = dc->SelectObject( &chatApp.style.fontFSN );
+	int cnt = list.size();
+	for ( int i = 0; i < cnt; i++ ) {
+		height += list[i]->height;
+		if ( height > _yPos ) {
+			dc->SelectObject( prev_font );
+			ReleaseDC( dc );
+			return i;
+		}
+	};
+	dc->SelectObject( prev_font );
+	ReleaseDC( dc );
+
+	return -1;
+}
+
+void CChatSmileListCtrl::OnLButtonDown(UINT nFlags, CPoint point)
+{
+	CWnd::OnLButtonDown(nFlags, point);
+	SetFocus();
+	selectLine( findLine( yPos + point.y ) );
+}
+
+void CChatSmileListCtrl::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
+{
+	CWnd::OnKeyDown(nChar, nRepCnt, nFlags);
+
+	WORD scrollNotify = 0xFFFF;
+	UINT msg = WM_VSCROLL;
+
+	switch ( nChar ) {
+
+		case VK_UP:
+			selectLine( selectedLine - 1 );
+			break;
+
+		case VK_PRIOR:
+//			selectLine( max ( selectedLine - yPageSize, 0 ) );
+			break;
+
+		case VK_NEXT:
+//			selectLine( min ( selectedLine + yPageSize, strings.count() - 1 ) );
+			break;
+
+		case VK_DOWN:
+			selectLine( selectedLine + 1 );
+			break;
+
+		case VK_HOME:
+			selectLine( 0 );
+			break;
+
+		case VK_END:
+			selectLine( list.size() - 1 );
+			break;
+
+		case VK_LEFT: {
+//			scrollNotify = SB_LINEUP;
+//			msg = WM_HSCROLL;
+			break;
+		}
+
+		case VK_RIGHT: {
+//			scrollNotify = SB_LINEDOWN;
+//			msg = WM_HSCROLL;
+			break;
+		}
+		default:
+			break;
 	}
 }

@@ -12,21 +12,20 @@
 // ----------------------------------------------------------------------------
 class CChatSmileListCtrl: public CWnd
 {
+friend class CChatSmileThread;
+
 private:
 
 	struct Item {
-		CChatSmile*      smile;
-		CChatSmile::Type type;
-		std::string      info;
-		int              height;
+		CChatSmile* smile;
+		std::string info;
+		int         height;
 	};
 	std::vector< Item* > list;
 
-//	CChatSmileList list;
 	int smile_max_width;
 	int text_max_width;
 	int text_focus_height;
-//	std::vector< int > heights;
 	int prev_line_from;
 	int prev_line_to;
 	int xPos;
@@ -46,6 +45,13 @@ private:
 	bool scrollVertically( int inc );
 	bool scrollHorizontally( int inc );
 
+	bool isVisible( const int index );
+	bool isFirstLineVisible();
+	bool isLastLineVisible();
+	void selectLine( const int index );
+	void repaintLine ( const int index );
+
+	int findLine( const int _yPos );
 	int getStringsSumHeight();
 	int getHeightBeforeLine( const int index );
 
@@ -65,34 +71,14 @@ protected:
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 	afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
+	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
+	afx_msg void OnSetFocus(CWnd* pOldWnd);
+	afx_msg void OnKillFocus(CWnd* pNewWnd);
+	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
-
-/*
-class CChatSmileListCtrl: public CListBox
-{
-private:
-	CChatSmileList list;
-	int smile_max_width;
-	int text_focus_height;
-
-public:
-	CChatSmileListCtrl();
-	virtual ~CChatSmileListCtrl();
-
-protected:
-	public:
-	virtual void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
-	virtual void MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct);
-	protected:
-	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-
-	afx_msg int OnCreate( LPCREATESTRUCT lpCreateStruct );
-	afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
-	DECLARE_MESSAGE_MAP()
-};
-*/
 
 //{{AFX_INSERT_LOCATION}}
 

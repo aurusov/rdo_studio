@@ -96,6 +96,11 @@ void CChatSmile::setBgColor( COLORREF color )
 	}
 }
 
+void CChatSmile::showAnimation( const bool value )
+{
+	ShowWindow( value ? SW_SHOW : SW_HIDE );
+}
+
 // ----------------------------------------------------------------------------
 // ---------- CChatSmileList
 // ----------------------------------------------------------------------------

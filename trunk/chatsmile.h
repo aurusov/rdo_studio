@@ -24,6 +24,7 @@ public:
 	Type getType() const { return type; }
 
 	void setBgColor( COLORREF color );
+	void showAnimation( const bool value );
 
 private:
 	Type type;

@@ -89,6 +89,7 @@
 #define IDR_EDIT_TOOLBAR                278
 #define IDB_EDIT_TOOLBAR_D              280
 #define IDB_DOCK                        281
+#define IDD_INIT                        282
 #define IDC_USERNAME_EDIT               1000
 #define IDC_USERNAME_STATIC             1001
 #define IDC_USER_GROUPBOX               1003
@@ -201,15 +202,21 @@
 #define IDS_SMILES                      61232
 #define IDS_IP_UNKNOW                   61233
 #define IDS_STATUSINFO_VALUE            61234
+#define IDS_CHANGENAME_VIEWERLOG        61235
+#define IDS_SPLASH_INITINFO             61236
+#define IDS_SPLASH_INITINFO_FONT        61237
+#define IDS_SPLASH_INITINFO_SOCKET      61238
+#define IDS_SPLASH_INITINFO_SMILES      61239
+#define IDS_SPLASH_RUNNING              61240
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        282
+#define _APS_NEXT_RESOURCE_VALUE        283
 #define _APS_NEXT_COMMAND_VALUE         32852
 #define _APS_NEXT_CONTROL_VALUE         1057
-#define _APS_NEXT_SYMED_VALUE           101
+#define _APS_NEXT_SYMED_VALUE           104
 #endif
 #endif

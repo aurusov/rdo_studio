@@ -192,11 +192,7 @@ CChatNetwork::CChatNetwork(): enumNetworkThread( NULL )
 
 CChatNetwork::~CChatNetwork()
 {
-	if ( enumNetworkThread ) {
-		::TerminateThread( enumNetworkThread->m_hThread, 1 );
-		delete enumNetworkThread;
-		enumNetworkThread = NULL;
-	}
+	stopEnum();
 	clear();
 }
 
@@ -286,4 +282,13 @@ BOOL CChatNetwork::OnHitResource( NETRESOURCE& res )
 		}
 	}
 	return TRUE;
+}
+
+void CChatNetwork::stopEnum()
+{
+	if ( enumNetworkThread ) {
+		::TerminateThread( enumNetworkThread->m_hThread, 1 );
+		delete enumNetworkThread;
+		enumNetworkThread = NULL;
+	}
 }
