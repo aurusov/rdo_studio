@@ -90,8 +90,10 @@ RDOStudioFrameDoc* RDOStudioFrameManager::connectFrameDoc( const HTREEITEM hitem
 	RDOStudioFrameDoc* doc = NULL;
 	if ( index != -1 ) {
 
-		CSingleLock lock( &frames[index]->used );
+		CSingleLock lock( getFrameUsed( index ) );
 		lock.Lock();
+		CSingleLock lock2( getFrameDraw( index ) );
+		lock2.Lock();
 
 		doc = static_cast<RDOStudioFrameDoc*>(frameDocTemplate->OpenDocumentFile( NULL ));
 		frames[index]->doc  = doc;
@@ -101,6 +103,7 @@ RDOStudioFrameDoc* RDOStudioFrameManager::connectFrameDoc( const HTREEITEM hitem
 			setDeleted( index, false );
 		}
 
+		lock2.Unlock();
 		lock.Unlock();
 	}
 	return doc;
@@ -110,7 +113,7 @@ void RDOStudioFrameManager::disconnectFrameDoc( const RDOStudioFrameDoc* doc ) c
 {
 	int index = findFrameIndex( doc );
 	if ( index != -1 ) {
-//		CSingleLock lock( &frames[index]->used );
+//		CSingleLock lock( getFrameUsed( index ) );
 //		lock.Lock();
 
 		frames[index]->doc  = NULL;

@@ -476,10 +476,10 @@ void RDOStudioModel::showFrame()
 			CSingleLock lock_used( frameManager.getFrameUsed( frame_index ) );
 			lock_used.Lock();
 
-			RDOStudioFrameDoc* doc = frameManager.getFrameDoc( frame_index );
-			if ( doc ) {
+			if ( !frameManager.isDeleted( frame_index ) ) {
 
-				if ( !frameManager.isDeleted( frame_index ) ) {
+				RDOStudioFrameDoc* doc = frameManager.getFrameDoc( frame_index );
+				if ( doc ) {
 
 					CSingleLock lock_draw( frameManager.getFrameDraw( frame_index ) );
 					lock_draw.Lock();
@@ -499,9 +499,8 @@ void RDOStudioModel::showFrame()
 					if( !(*it)->hasBackPicture ) {
 						CBrush brush( RGB( (*it)->r, (*it)->g, (*it)->b ) );
 						CBrush* pOldBrush = dc.SelectObject( &brush );
-						CPen penBlack;
-						penBlack.CreatePen( PS_SOLID, 0, RGB( 0x00, 0x00, 0x00 ) );
-						CPen* pOldPen = dc.SelectObject( &penBlack );
+						CPen pen( PS_SOLID, 0, RGB( 0x00, 0x00, 0x00 ) );
+						CPen* pOldPen = dc.SelectObject( &pen );
 						CRect rect( 0, 0, (*it)->width, (*it)->height );
 						dc.Rectangle( rect );
 						dc.SelectObject( pOldBrush );
@@ -515,18 +514,25 @@ void RDOStudioModel::showFrame()
 						switch(currElement->type)
 						{
 						case RDOFrameElement::text_type:
-							{																		
+							{				
+								int oldBkMode;
+								COLORREF oldBkColor;
+								COLORREF oldTextColor;
+								bool restoreBkColor   = false;
+								bool restoreTextColor = false;
 								RDOTextElement *textEl = (RDOTextElement *)currElement;
-								if(!textEl->background.isTransparent)
-								{
-									dc.SetBkMode(OPAQUE);
-									dc.SetBkColor(RGB(textEl->background.r, textEl->background.g, textEl->background.b));
+								if( !textEl->background.isTransparent ) {
+									oldBkMode  = dc.SetBkMode(OPAQUE);
+									oldBkColor = dc.SetBkColor(RGB(textEl->background.r, textEl->background.g, textEl->background.b));
+									restoreBkColor = true;
+								} else {
+									oldBkMode = dc.SetBkMode(TRANSPARENT);
 								}
-								else
-									dc.SetBkMode(TRANSPARENT);
 
-								if(!textEl->foreground.isTransparent)
-									dc.SetTextColor(RGB(textEl->foreground.r, textEl->foreground.g, textEl->foreground.b));
+								if( !textEl->foreground.isTransparent ) {
+									oldTextColor = dc.SetTextColor(RGB(textEl->foreground.r, textEl->foreground.g, textEl->foreground.b));
+									restoreTextColor = true;
+								}
 
 								UINT nFormat = DT_SINGLELINE;
 								switch(textEl->align)
@@ -542,37 +548,54 @@ void RDOStudioModel::showFrame()
 								dc.DrawText(textEl->strText.c_str(), textEl->strText.length(),
 									CRect(textEl->x, textEl->y, textEl->x + textEl->w, textEl->y + textEl->h),
 									nFormat);
+
+								dc.SetBkMode( oldBkMode );
+								if ( restoreBkColor ) dc.SetBkColor( oldBkColor );
+								if ( restoreTextColor ) dc.SetTextColor( oldTextColor );
 							}
 							break;
 
 						case RDOFrameElement::rect_type:
 							{																		
 								RDORectElement *rectEl = (RDORectElement *)currElement;
-								CBrush brush(RGB(rectEl->background.r, rectEl->background.g, rectEl->background.b));
-								if(!rectEl->background.isTransparent)
-								{
-									dc.SelectObject(brush);
+								CBrush brush( RGB(rectEl->background.r, rectEl->background.g, rectEl->background.b) );
+								CBrush* pOldBrush;
+								if( !rectEl->background.isTransparent ) {
+									pOldBrush = dc.SelectObject( &brush );
+								} else {
+									pOldBrush = static_cast<CBrush*>(dc.SelectStockObject( NULL_BRUSH ));
 								}
-								else
-									dc.SelectStockObject(NULL_BRUSH);
 
-								CPen pen(PS_SOLID, 0, RGB(rectEl->foreground.r, rectEl->foreground.g, rectEl->foreground.b));
-								if(!rectEl->foreground.isTransparent)
-									dc.SelectObject(pen);
+								CPen pen( PS_SOLID, 0, RGB(rectEl->foreground.r, rectEl->foreground.g, rectEl->foreground.b) );
+								CPen* pOldPen;
+								bool restorePen = false;
+								if( !rectEl->foreground.isTransparent ) {
+									pOldPen = dc.SelectObject( &pen );
+									restorePen = true;
+								}
 
 								dc.Rectangle(rectEl->x, rectEl->y, rectEl->x + rectEl->w, rectEl->y + rectEl->h);
+
+								dc.SelectObject( pOldBrush );
+								if ( restorePen ) dc.SelectObject( pOldPen );
 							}
 							break;
 
 						case RDOFrameElement::line_type:
 							{																		
 								RDOLineElement *lineEl = (RDOLineElement *)currElement;
-								CPen pen(PS_SOLID, 0, RGB(lineEl->foreground.r, lineEl->foreground.g, lineEl->foreground.b));
-								if(!lineEl->foreground.isTransparent)
-									dc.SelectObject(pen);
+								CPen pen( PS_SOLID, 0, RGB(lineEl->foreground.r, lineEl->foreground.g, lineEl->foreground.b) );
+								CPen* pOldPen;
+								bool restorePen = false;
+								if( !lineEl->foreground.isTransparent ) {
+									pOldPen = dc.SelectObject( &pen );
+									restorePen = true;
+								}
 
 								dc.MoveTo(lineEl->x, lineEl->y);
 								dc.LineTo(lineEl->w, lineEl->h);
+
+								if ( restorePen ) dc.SelectObject( pOldPen );
 							}
 							break;
 
@@ -580,29 +603,33 @@ void RDOStudioModel::showFrame()
 							{																		
 								RDOSBmpElement *sbmpEl = (RDOSBmpElement *)currElement;
 								CBrush brush(RGB(196, 196, 0));
-								dc.SelectObject(brush);
+								CBrush* pOldBrush = dc.SelectObject( &brush );
 								CPen pen(PS_SOLID, 3, RGB(0, 196, 196));
-								dc.SelectObject(pen);
+								CPen* pOldPen = dc.SelectObject( &pen );
 								dc.Rectangle(sbmpEl->x, sbmpEl->y, sbmpEl->x + sbmpEl->w, sbmpEl->y + sbmpEl->h);
 								dc.MoveTo(sbmpEl->x, sbmpEl->y);
 								dc.LineTo(sbmpEl->x + sbmpEl->w, sbmpEl->y + sbmpEl->h);
 								dc.MoveTo(sbmpEl->x + sbmpEl->w, sbmpEl->y);
 								dc.LineTo(sbmpEl->x, sbmpEl->y + sbmpEl->h);
+								dc.SelectObject( pOldBrush );
+								dc.SelectObject( pOldPen );
 							}
 							break;
 
 						case RDOFrameElement::active_type:
 							{																		
 								RDOActiveElement *activeEl = (RDOActiveElement *)currElement;
-								CBrush brush(RGB(196, 0, 196));
-								dc.SelectObject(brush);
-								CPen pen(PS_SOLID, 2, RGB(196, 196, 0));
-								dc.SelectObject(pen);
+								CBrush brush( RGB(196, 0, 196) );
+								CBrush* pOldBrush = dc.SelectObject( &brush );
+								CPen pen( PS_SOLID, 2, RGB(196, 196, 0) );
+								CPen* pOldPen = dc.SelectObject( &pen );
 								dc.Rectangle(activeEl->x, activeEl->y, activeEl->x + activeEl->w, activeEl->y + activeEl->h);
 								dc.MoveTo(activeEl->x, activeEl->y);
 								dc.LineTo(activeEl->x + activeEl->w, activeEl->y + activeEl->h);
 								dc.MoveTo(activeEl->x + activeEl->w, activeEl->y);
 								dc.LineTo(activeEl->x, activeEl->y + activeEl->h);
+								dc.SelectObject( pOldBrush );
+								dc.SelectObject( pOldPen );
 							}
 							break;
 						}
@@ -615,10 +642,6 @@ void RDOStudioModel::showFrame()
 					view->GetClientRect( rect );
 					view->InvalidateRect( rect );
 					view->UpdateWindow();
-
-//					view->RedrawWindow( rect );
-//					view->InvalidateRect( rect );
-//					view->SendNotifyMessage( WM_PAINT, 0, 0 );
 				}
 			}
 			lock_used.Unlock();

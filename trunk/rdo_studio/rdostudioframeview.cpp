@@ -27,7 +27,6 @@ END_MESSAGE_MAP()
 
 RDOStudioFrameView::RDOStudioFrameView():
 	CView(),
-	clientBmpRect( 0, 0, 0, 0 ),
 	frameBmpRect( 0, 0, 0, 0 ),
 	newClientRect( 0, 0, 0, 0 ),
 	mustBeInit( true )
@@ -68,32 +67,18 @@ void RDOStudioFrameView::OnDraw(CDC* pDC)
 	if ( !model->frameManager.isDeleted( index ) ) {
 
 		GetClientRect( &newClientRect );
-//		CRect rect;
-//		rect.CopyRect( &newClientRect );
-
-		if ( newClientRect.Width() > clientBmpRect.Width() || newClientRect.Height() > clientBmpRect.Height() ) {
-			if ( clientBmp.GetSafeHandle() ) clientBmp.DeleteObject();
-			clientBmp.CreateCompatibleBitmap( pDC, newClientRect.Width(), newClientRect.Height() );
-			clientBmpRect = newClientRect;
-		}
 
 		CDC dc;
 		dc.CreateCompatibleDC( pDC );
-		CBitmap* pOldBitmap = dc.SelectObject( &clientBmp );
+		CBitmap* pOldBitmap = dc.SelectObject( &frameBmp );
 
-		int oldBkMode = dc.SetBkMode( TRANSPARENT );
+		pDC->BitBlt( 0, 0, frameBmpRect.right, frameBmpRect.bottom, &dc, 0, 0, SRCCOPY );
+		COLORREF color = studioApp.mainFrame->style_frame.theme->backgroundColor;
+		pDC->FillSolidRect( frameBmpRect.right, 0, newClientRect.right - frameBmpRect.right, newClientRect.bottom, color );
+		pDC->FillSolidRect( 0, frameBmpRect.bottom, newClientRect.right, newClientRect.bottom - frameBmpRect.bottom, color );
 
-		dc.FillSolidRect( newClientRect, studioApp.mainFrame->style_frame.theme->backgroundColor );
-
-		CDC dc2;
-		dc2.CreateCompatibleDC( pDC );
-		CBitmap* pOldBitmap2 = dc2.SelectObject( &frameBmp );
-		dc.BitBlt( 0, 0, newClientRect.Width(), newClientRect.Height(), &dc2, 0, 0, SRCCOPY );
-		dc2.SelectObject( pOldBitmap2 );
-
-		pDC->BitBlt( 0, 0, newClientRect.Width(), newClientRect.Height(), &dc, 0, 0, SRCCOPY );
-		dc.SetBkMode( oldBkMode );
 		dc.SelectObject( pOldBitmap );
+
 	}
 
 	lock_draw.Unlock();

@@ -84,8 +84,9 @@ int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	style_find.load();
 
 	style_frame.init( "frame" );
+	style_frame.theme->backgroundColor = RGB( 0, 128, 128 );
 	style_frame.load();
-	
+
 	style_chart.init( "chart" );
 	style_chart.load();
 

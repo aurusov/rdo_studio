@@ -66,8 +66,12 @@ void RDOStudioFrameDoc::OnCloseDocument()
 {
 	int index = model->frameManager.findFrameIndex( this );
 
-	CSingleLock lock_used( model->frameManager.getFrameUsed( index ) );
-	lock_used.Lock();
+	CSyncObject* ppObjects[] = { model->frameManager.getFrameUsed( index ), model->frameManager.getFrameDraw( index ) };
+	CMultiLock locks( ppObjects, 2 );
+	locks.Lock();
+
+//	CSingleLock lock_used( model->frameManager.getFrameUsed( index ) );
+//	lock_used.Lock();
 
 //	CSingleLock lock_draw( model->frameManager.getFrameDraw( index ) );
 //	lock_draw.Lock();
@@ -77,8 +81,9 @@ void RDOStudioFrameDoc::OnCloseDocument()
 	}
 	model->frameManager.disconnectFrameDoc( this );
 
-//	lock_draw.Unlock();
-	lock_used.Unlock();
-
 	CDocument::OnCloseDocument();
+
+	locks.Unlock();
+//	lock_draw.Unlock();
+//	lock_used.Unlock();
 }

@@ -17,10 +17,8 @@ friend class RDOStudioModel;
 DECLARE_DYNCREATE(RDOStudioFrameView)
 
 private:
-	CRect clientBmpRect;
 	CRect frameBmpRect;
 	CRect newClientRect;
-	CBitmap clientBmp;
 	CBitmap frameBmp;
 	bool mustBeInit;
 
