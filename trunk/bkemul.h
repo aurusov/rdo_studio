@@ -29,19 +29,6 @@ private:
 
 	void doSpeaker() const;
 
-	class BKMemoryAccessError
-	{
-	friend class BKEmul;
-	private:
-		WORD address;
-		WORD data;
-		bool isByte;
-
-		BKMemoryAccessError( const WORD _address, const WORD _data, const bool _isByte = true );
-
-		void report() const;
-	};
-
 	void loadIntoROM( const HRSRC& res ) const;
 
 public:
@@ -69,6 +56,19 @@ public:
 	WORD getMemoryWord( WORD address );
 	void setMemoryByte( WORD address, BYTE data );
 	void setMemoryWord( WORD address, WORD data );
+
+	class BKMemoryAccessError
+	{
+	friend class BKEmul;
+	private:
+		WORD address;
+		WORD data;
+		bool isByte;
+
+		BKMemoryAccessError( const WORD _address, const WORD _data, const bool _isByte = true );
+
+		void report() const;
+	};
 };
 
 } // namespace bkemul
