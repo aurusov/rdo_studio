@@ -15,10 +15,7 @@ using namespace bkemul;
 BKEmulMemory::BKEmulMemory()
 {
 	memory.resize( 64 * 1024 );
-	std::vector< unsigned char >::iterator it = memory.begin();
-	while ( it != memory.end() ) {
-		(*it++) = 0xFF;
-	}
+	clear();
 }
 
 BKEmulMemory::~BKEmulMemory()
