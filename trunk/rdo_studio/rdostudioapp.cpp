@@ -298,7 +298,7 @@ void RDOStudioApp::OnFileSaveAll()
 
 void RDOStudioApp::OnUpdateFileClose(CCmdUI* pCmdUI) 
 {
-	pCmdUI->Enable( model->getModelDoc() ? true : false );
+	pCmdUI->Enable( model->hasModel() );
 }
 
 void RDOStudioApp::OnUpdateFileSave(CCmdUI* pCmdUI) 
@@ -325,7 +325,7 @@ void RDOStudioApp::OnUpdateFileSave(CCmdUI* pCmdUI)
 
 void RDOStudioApp::OnUpdateFileSaveAs(CCmdUI* pCmdUI) 
 {
-	pCmdUI->Enable( model->getModelDoc() ? true : false );
+	pCmdUI->Enable( model->hasModel() );
 }
 
 void RDOStudioApp::OnUpdateFileSaveAll(CCmdUI* pCmdUI) 
@@ -494,17 +494,17 @@ void RDOStudioApp::OnModelStop()
 
 void RDOStudioApp::OnUpdateModelBuild(CCmdUI* pCmdUI) 
 {
-	pCmdUI->Enable( model && model->getModelDoc() && !model->isRunning() );
+	pCmdUI->Enable( model->hasModel() && !model->isRunning() );
 }
 
 void RDOStudioApp::OnUpdateModelRun(CCmdUI* pCmdUI) 
 {
-	pCmdUI->Enable( model && model->getModelDoc() && !model->isRunning() );
+	pCmdUI->Enable( model->hasModel() && !model->isRunning() );
 }
 
 void RDOStudioApp::OnUpdateModelStop(CCmdUI* pCmdUI) 
 {
-	pCmdUI->Enable( model && model->isRunning() );
+	pCmdUI->Enable( model->isRunning() );
 }
 
 string RDOStudioApp::getFullFileName()

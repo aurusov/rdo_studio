@@ -68,6 +68,8 @@ private:
 	void showFrame();
 	void stopModelFromSimulator();
 
+	RDOStudioModelDoc* getModelDoc() const;
+
 public:
 	RDOStudioModel();
 	~RDOStudioModel();
@@ -96,7 +98,8 @@ public:
 	double getShowRate() const;
 	void setShowRate( const double value ) const;
 
-	RDOStudioModelDoc* getModelDoc() const;
+	bool hasModel() const { return getModelDoc() ? true : false; }
+
 	void updateModify() const;
 
 	rdoEditor::RDOEditorTabCtrl* getTab() const;

@@ -129,7 +129,7 @@ void RDOStudioPlugin::setRunMode( const rdoPlugin::PluginRunMode value )
 {
 	if ( runMode != value ) {
 		runMode = value;
-		if ( runMode == rdoPlugin::prmModelStartUp && model && !model->isRunning() ) {
+		if ( runMode == rdoPlugin::prmModelStartUp && !model->isRunning() ) {
 			setState( rdoPlugin::psStoped );
 		}
 		AfxGetApp()->WriteProfileInt( getProfilePath().c_str(), "runMode", runMode );
@@ -145,8 +145,14 @@ RDOStudioPlugins::RDOStudioPlugins()
 {
 	plugins = this;
 
-	studio.runModel       = RDOStudioPlugins::runModel;
-	studio.isModelRunning = RDOStudioPlugins::isModelRunning;
+	studio.model.hasModel       = RDOStudioPlugins::hasModel;
+	studio.model.build          = RDOStudioPlugins::buildModel;
+	studio.model.run            = RDOStudioPlugins::runModel;
+	studio.model.stop           = RDOStudioPlugins::stopModel;
+	studio.model.isRunning      = RDOStudioPlugins::isModelRunning;
+	studio.model.getShowMode    = RDOStudioPlugins::getModelShowMode;
+	studio.model.setShowMode    = RDOStudioPlugins::setModelShowMode;
+	studio.model.isFrmDescribed = RDOStudioPlugins::isModelFrmDescribed;
 
 	kernel.setNotifyReflect( RDOKernel::beforeModelStart, modelStartNotify );
 	kernel.setNotifyReflect( RDOKernel::endExecuteModel, modelStopNotify );
@@ -214,16 +220,53 @@ void RDOStudioPlugins::init()
 */
 }
 
+bool RDOStudioPlugins::hasModel()
+{
+	return model->hasModel();
+}
+
+void RDOStudioPlugins::buildModel()
+{
+	model->buildModel();
+}
+
 void RDOStudioPlugins::runModel()
 {
-	if ( model ) {
-		model->runModel();
-	}
+	model->runModel();
+}
+
+void RDOStudioPlugins::stopModel()
+{
+	model->stopModel();
 }
 
 bool RDOStudioPlugins::isModelRunning()
 {
-	return model && model->isRunning();
+	return model->isRunning();
+}
+
+rdoPlugin::ModelShowMode RDOStudioPlugins::getModelShowMode()
+{
+	switch ( model->getShowMode() ) {
+		case RDOSimulatorNS::SM_NoShow   : return rdoPlugin::NoShow;
+		case RDOSimulatorNS::SM_Animation: return rdoPlugin::Animation;
+		case RDOSimulatorNS::SM_Monitor  : return rdoPlugin::Monitor;
+	}
+	return rdoPlugin::NoShow;
+}
+
+void RDOStudioPlugins::setModelShowMode( rdoPlugin::ModelShowMode showMode )
+{
+	switch ( showMode ) {
+		case rdoPlugin::NoShow   : model->setShowMode( RDOSimulatorNS::SM_NoShow ); break;
+		case rdoPlugin::Animation: model->setShowMode( RDOSimulatorNS::SM_Animation ); break;
+		case rdoPlugin::Monitor  : model->setShowMode( RDOSimulatorNS::SM_Monitor ); break;
+	}
+}
+
+bool RDOStudioPlugins::isModelFrmDescribed()
+{
+	return model->isFrmDescribed();
 }
 
 void RDOStudioPlugins::modelStartNotify()

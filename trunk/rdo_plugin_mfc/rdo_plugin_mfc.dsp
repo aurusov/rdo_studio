@@ -93,10 +93,19 @@ LINK32=link.exe
 # Begin Source File
 
 SOURCE=.\rdopluginmfc.cpp
+
+!IF  "$(CFG)" == "rdo_plugin_mfc - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "rdo_plugin_mfc - Win32 Debug"
+
+# ADD CPP /Yu
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
-SOURCE=.\rdopluginmfcdialog.cpp
+SOURCE=.\rdopluginmfcmainframe.cpp
 # End Source File
 # Begin Source File
 
@@ -113,7 +122,7 @@ SOURCE=.\rdopluginmfc.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\rdopluginmfcdialog.h
+SOURCE=.\rdopluginmfcmainframe.h
 # End Source File
 # Begin Source File
 
@@ -146,6 +155,10 @@ SOURCE=.\rdo_plugin_mfc.rc
 # Begin Source File
 
 SOURCE=.\res\rdo_plugin_mfc.rc2
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\rdo_studio.ico
 # End Source File
 # End Group
 # End Target

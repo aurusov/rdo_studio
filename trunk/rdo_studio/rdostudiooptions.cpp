@@ -1916,8 +1916,8 @@ void RDOStudioOptionsPlugins::updateControls( const RDOStudioPlugin* plugin )
 		m_runModeComboBox.EnableWindow( true );
 		m_runModeButton.EnableWindow( plugin->getRunMode() != plugin->getDefaultRunMode() );
 		m_runModeComboBox.SetCurSel( plugin->getRunMode() );
-		bool startPlugin = plugin->getState() == rdoPlugin::psStoped && (plugin->getRunMode() == rdoPlugin::prmNoAuto || plugin->getRunMode() == rdoPlugin::prmStudioStartUp || (plugin->getRunMode() == rdoPlugin::prmModelStartUp && model && model->isRunning()) );
-		bool stopPlugin  = plugin->getState() == rdoPlugin::psActive && (plugin->getRunMode() == rdoPlugin::prmNoAuto || plugin->getRunMode() == rdoPlugin::prmStudioStartUp || (plugin->getRunMode() == rdoPlugin::prmModelStartUp && model && model->isRunning()) );
+		bool startPlugin = plugin->getState() == rdoPlugin::psStoped && (plugin->getRunMode() == rdoPlugin::prmNoAuto || plugin->getRunMode() == rdoPlugin::prmStudioStartUp || (plugin->getRunMode() == rdoPlugin::prmModelStartUp && model->isRunning()) );
+		bool stopPlugin  = plugin->getState() == rdoPlugin::psActive && (plugin->getRunMode() == rdoPlugin::prmNoAuto || plugin->getRunMode() == rdoPlugin::prmStudioStartUp || (plugin->getRunMode() == rdoPlugin::prmModelStartUp && model->isRunning()) );
 		m_startButton.EnableWindow( startPlugin );
 		m_stopButton.EnableWindow( stopPlugin );
 		m_restoreStateCheckBox.EnableWindow( plugin->getRunMode() == rdoPlugin::prmNoAuto );

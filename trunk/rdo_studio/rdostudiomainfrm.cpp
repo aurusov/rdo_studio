@@ -95,6 +95,8 @@ int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if ( CMDIFrameWnd::OnCreate(lpCreateStruct) == -1 ) return -1;
 
+	model = new RDOStudioModel;
+
 	style_editor.init( "editor" );
 	style_editor.load();
 
@@ -191,8 +193,6 @@ int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	modelToolBar.SetButtonStyle( 5, TBBS_CHECKBOX | TBBS_CHECKGROUP );
 
 	tracer->registerClipboardFormat();
-
-	model = new RDOStudioModel;
 
 	plugins = new RDOStudioPlugins;
 
@@ -443,19 +443,16 @@ void RDOStudioMainFrame::OnHelpContents()
 void RDOStudioMainFrame::OnModelRunNoShow()
 {
 	model->setShowMode( RDOSimulatorNS::SM_NoShow );
-	tracer->setShowMode( RDOSimulatorNS::SM_NoShow );
 }
 
 void RDOStudioMainFrame::OnModelRunAnimation()
 {
 	model->setShowMode( RDOSimulatorNS::SM_Animation );
-	tracer->setShowMode( RDOSimulatorNS::SM_Animation );
 }
 
 void RDOStudioMainFrame::OnModelRunMonitor()
 {
 	model->setShowMode( RDOSimulatorNS::SM_Monitor );
-	tracer->setShowMode( RDOSimulatorNS::SM_Monitor );
 }
 
 void RDOStudioMainFrame::OnUpdateModelRunNoShow(CCmdUI* pCmdUI)
@@ -517,42 +514,42 @@ void RDOStudioMainFrame::OnModelShowRateDec()
 
 void RDOStudioMainFrame::OnUpdateModelShowRateInc(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable( model && model->isRunning() && model->getShowMode() != RDOSimulatorNS::SM_NoShow && model->getShowRate() * 1.5 <= DBL_MAX );
+	pCmdUI->Enable( model->isRunning() && model->getShowMode() != RDOSimulatorNS::SM_NoShow && model->getShowRate() * 1.5 <= DBL_MAX );
 }
 
 void RDOStudioMainFrame::OnUpdateModelShowRateIncFour(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable( model && model->isRunning() && model->getShowMode() != RDOSimulatorNS::SM_NoShow && model->getShowRate() * 4 <= DBL_MAX );
+	pCmdUI->Enable( model->isRunning() && model->getShowMode() != RDOSimulatorNS::SM_NoShow && model->getShowRate() * 4 <= DBL_MAX );
 }
 
 void RDOStudioMainFrame::OnUpdateModelShowRateDecFour(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable( model && model->isRunning() && model->getShowMode() != RDOSimulatorNS::SM_NoShow && model->getShowRate() / 4 >= DBL_MIN );
+	pCmdUI->Enable( model->isRunning() && model->getShowMode() != RDOSimulatorNS::SM_NoShow && model->getShowRate() / 4 >= DBL_MIN );
 }
 
 void RDOStudioMainFrame::OnUpdateModelShowRateDec(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable( model && model->isRunning() && model->getShowMode() != RDOSimulatorNS::SM_NoShow && model->getShowRate() / 1.5 >= DBL_MIN );
+	pCmdUI->Enable( model->isRunning() && model->getShowMode() != RDOSimulatorNS::SM_NoShow && model->getShowRate() / 1.5 >= DBL_MIN );
 }
 
 void RDOStudioMainFrame::OnModelFrameNext()
 {
-	if ( model ) model->frameManager.showNextFrame();
+	model->frameManager.showNextFrame();
 }
 
 void RDOStudioMainFrame::OnModelFramePrev()
 {
-	if ( model ) model->frameManager.showPrevFrame();
+	model->frameManager.showPrevFrame();
 }
 
 void RDOStudioMainFrame::OnUpdateModelFrameNext(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable( model && model->frameManager.canShowNextFrame() );
+	pCmdUI->Enable( model->frameManager.canShowNextFrame() );
 }
 
 void RDOStudioMainFrame::OnUpdateModelFramePrev(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable( model && model->frameManager.canShowPrevFrame() );
+	pCmdUI->Enable( model->frameManager.canShowPrevFrame() );
 }
 
 LRESULT RDOStudioMainFrame::WindowProc( UINT message, WPARAM wParam, LPARAM lParam )

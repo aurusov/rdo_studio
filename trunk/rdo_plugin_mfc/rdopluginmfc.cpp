@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "rdopluginmfc.h"
-#include "rdopluginmfcdialog.h"
+#include "rdopluginmfcmainframe.h"
+#include "resource.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -37,29 +38,31 @@ void getPluginInfo( rdoPlugin::PluginInfo* info )
 	info->defaultRunMode = rdoPlugin::prmNoAuto;
 }
 
-static RDOPluginMFCDialog* dlg = NULL;
-
 bool startPlugin( const rdoPlugin::Studio* _studio )
 {
-	TRACE( "plugin handle    = %d\n", AfxGetInstanceHandle() );
-	TRACE( "studio           = %d\n", &pluginMFCApp.studio );
-	TRACE( "studio.runModel1 = %d\n", pluginMFCApp.studio.runModel );
+//	TRACE( "plugin handle = %d\n", AfxGetInstanceHandle() );
+//	TRACE( "studio        = %d\n", &pluginMFCApp.studio );
+//	TRACE( "studio.run    = %d\n", pluginMFCApp.studio.model.run );
 	pluginMFCApp.studio = *_studio;
-	TRACE( "studio.runModel2 = %d\n", pluginMFCApp.studio.runModel );
-	if ( !dlg ) {
-		dlg = new RDOPluginMFCDialog;
-		dlg->Create( IDD_PLUGIN_DIALOG, CWnd::FromHandle( ::GetDesktopWindow() ) );
-//		dlg->SetIcon( pluginMFCApp.LoadIcon( MAKEINTRESOURCE(IDD_PLUGIN_DIALOG) ), TRUE );
-		dlg->SetIcon( (HICON)::LoadImage( pluginMFCApp.m_hInstance, MAKEINTRESOURCE(IDD_PLUGIN_DIALOG), IMAGE_ICON, ::GetSystemMetrics( SM_CXSMICON ), ::GetSystemMetrics( SM_CYSMICON ), LR_DEFAULTCOLOR ), TRUE );
+//	TRACE( "studio.run    = %d\n", pluginMFCApp.studio.model.run );
+	if ( !pluginMFCApp.m_pMainWnd ) {
+		RDOPluginMFCMainFrame* frame = new RDOPluginMFCMainFrame;
+		pluginMFCApp.m_pMainWnd = frame;
+		if ( !frame->LoadFrame( IDR_MAINFRAME ) ) {
+			delete frame;
+			return false;
+		}
+		frame->ShowWindow( SW_SHOW );
+		frame->UpdateWindow();
 	}
 	return true;
 }
 
 void stopPlugin()
 {
-	if ( dlg ) {
-		dlg->DestroyWindow();
-		delete dlg;
-		dlg = NULL;
+	if ( pluginMFCApp.m_pMainWnd && pluginMFCApp.m_pMainWnd->GetSafeHwnd() ) {
+		pluginMFCApp.m_pMainWnd->DestroyWindow();
+		delete pluginMFCApp.m_pMainWnd;
+		pluginMFCApp.m_pMainWnd = NULL;
 	}
 }

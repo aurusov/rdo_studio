@@ -10,6 +10,7 @@
 #include "rdo_edit/rdoeditortabctrl.h"
 #include "edit_ctrls/rdobuildedit.h"
 #include "edit_ctrls/rdodebugedit.h"
+#include "rdo_tracer/rdotracer.h"
 #include "resource.h"
 
 #include <rdokernel.h>
@@ -134,7 +135,7 @@ void RDOStudioModel::closeModel() const
 
 void RDOStudioModel::buildModel() const
 {
-	if ( saveModel() ) {
+	if ( hasModel() && !isRunning() && saveModel() ) {
 		RDOStudioOutput* output = &studioApp.mainFrame->output;
 		output->clearBuild();
 		output->clearDebug();
@@ -148,7 +149,7 @@ void RDOStudioModel::buildModel() const
 
 void RDOStudioModel::runModel() const
 {
-	if ( !isRunning() && saveModel() ) {
+	if ( hasModel() && !isRunning() && saveModel() ) {
 		RDOStudioOutput* output = &studioApp.mainFrame->output;
 		output->clearBuild();
 		output->clearDebug();
@@ -162,7 +163,7 @@ void RDOStudioModel::runModel() const
 
 void RDOStudioModel::stopModel() const
 {
-	if ( isRunning() ) kernel.getSimulator()->stopModel();
+	if ( hasModel() && isRunning() ) kernel.getSimulator()->stopModel();
 }
 
 void RDOStudioModel::newModelNotify()
@@ -700,17 +701,20 @@ void RDOStudioModel::updateStyleOfAllModel() const
 
 void RDOStudioModel::setShowMode( const ShowMode value )
 {
-	showMode = value;
-	if ( showMode == SM_Animation ) {
-		RDOStudioFrameDoc* doc = frameManager.getFirstExistDoc();
-		if ( !doc ) {
-			frameManager.connectFrameDoc( frameManager.getLastShowedFrame() );
+	if ( isRunning() ) {
+		showMode = value;
+		if ( showMode == SM_Animation ) {
+			RDOStudioFrameDoc* doc = frameManager.getFirstExistDoc();
+			if ( !doc ) {
+				frameManager.connectFrameDoc( frameManager.getLastShowedFrame() );
+			}
 		}
+		if ( showMode == SM_NoShow ) {
+			frameManager.closeAll();
+		}
+		kernel.getSimulator()->setShowMode( showMode );
+		tracer->setShowMode( showMode );
 	}
-	if ( showMode == SM_NoShow ) {
-		frameManager.closeAll();
-	}
-	kernel.getSimulator()->setShowMode( showMode );
 }
 
 double RDOStudioModel::getShowRate() const

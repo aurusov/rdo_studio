@@ -11,6 +11,7 @@ namespace rdoPlugin {
 
 enum PluginState   { psStoped, psActive };
 enum PluginRunMode { prmNoAuto, prmStudioStartUp, prmModelStartUp };
+enum ModelShowMode { NoShow, Animation, Monitor };
 
 struct PluginInfo {
 	const char* name;
@@ -22,16 +23,36 @@ struct PluginInfo {
 	PluginRunMode defaultRunMode;
 };
 
-typedef void (*PFunRunModel)();
-typedef bool (*PFunIsModelRunning)();
+typedef bool (*PFunHasModel)();
+typedef void (*PFunBuild)();
+typedef void (*PFunRun)();
+typedef void (*PFunStop)();
+typedef bool (*PFunIsRunning)();
+typedef ModelShowMode (*PFunGetShowMode)();
+typedef void (*PFunSetShowMode)( ModelShowMode showMode );
+typedef bool (*PFunIsFrmDescribed)();
+
+class Model {
+public:
+	Model(): hasModel( NULL ), build( NULL ), run( NULL ), stop( NULL ), isRunning( NULL ), getShowMode( NULL ), setShowMode( NULL ), isFrmDescribed( NULL ) {};
+	virtual ~Model() {};
+
+	PFunHasModel       hasModel;
+	PFunBuild          build;
+	PFunRun            run;
+	PFunStop           stop;
+	PFunIsRunning      isRunning;
+	PFunGetShowMode    getShowMode;
+	PFunSetShowMode    setShowMode;
+	PFunIsFrmDescribed isFrmDescribed;
+};
 
 class Studio {
 public:
-	Studio(): runModel( NULL ) {};
+	Studio() {};
 	virtual ~Studio() {};
 
-	PFunRunModel       runModel;
-	PFunIsModelRunning isModelRunning;
+	Model model;
 };
 
 static const int PLUGIN_MUSTEXIT_MESSAGE = ::RegisterWindowMessage( "PLUGIN_MUSTEXIT_MESSAGE" );

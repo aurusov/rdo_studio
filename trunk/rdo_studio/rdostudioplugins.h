@@ -74,8 +74,14 @@ private:
 
 	rdoPlugin::Studio studio;
 
+	static bool hasModel();
+	static void buildModel();
 	static void runModel();
+	static void stopModel();
 	static bool isModelRunning();
+	static rdoPlugin::ModelShowMode getModelShowMode();
+	static void setModelShowMode( rdoPlugin::ModelShowMode showMode );
+	static bool isModelFrmDescribed();
 
 	static void modelStartNotify();
 	static void modelStopNotify();
