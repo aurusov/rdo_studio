@@ -1,6 +1,9 @@
 #ifndef CHATVIEWER_H
 #define CHATVIEWER_H
+
+#if _MSC_VER > 1000
 #pragma once
+#endif
 
 #include "chatviewerstring.h"
 #include "chatviewerstyle.h"

@@ -135,6 +135,10 @@ SOURCE=.\chatpopupmessage.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\chatsmile.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\chatsound.cpp
 # End Source File
 # Begin Source File
@@ -213,6 +217,10 @@ SOURCE=.\chatoptions.h
 # Begin Source File
 
 SOURCE=.\chatpopupmessage.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\chatsmile.h
 # End Source File
 # Begin Source File
 

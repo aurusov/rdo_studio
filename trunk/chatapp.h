@@ -1,6 +1,9 @@
 #ifndef CHATAPP_H
 #define CHATAPP_H
+
+#if _MSC_VER > 1000
 #pragma once
+#endif
 
 #ifndef __AFXWIN_H__
 	#error include 'stdafx.h' before including this file for PCH
@@ -8,6 +11,7 @@
 
 #include "chatudp.h"
 #include "chatsound.h"
+#include "chatsmile.h"
 #include "chatstatusmode.h"
 #include "chatuserlist.h"
 #include "chatnetwork.h"
@@ -36,6 +40,7 @@ public:
 	CChatMainFrame*     mainFrame;
 	CChatUdp            udp;
 	CChatSoundList      sounds;
+	CChatSmileList      smiles;
 	CChatStatusModeList statusModes;
 	CChatUserList       users;
 	CChatNetwork        network;

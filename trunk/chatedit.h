@@ -1,6 +1,9 @@
 #ifndef CHATEDIT_H
 #define CHATEDIT_H
+
+#if _MSC_VER > 1000
 #pragma once
+#endif
 
 // ----------------------------------------------------------------------------
 // ---------- CChatEdit

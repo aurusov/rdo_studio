@@ -68,12 +68,7 @@ int CChatViewer::OnCreate( LPCREATESTRUCT lpCreateStruct )
 
 void CChatViewer::OnSize( UINT nType, int cx, int cy )
 {
-	POSITION pos = strings.GetHeadPosition();
-	while ( pos ) {
-		strings.GetAt( pos )->recalculateSize();
-		strings.GetNext( pos );
-	};
-
+	strings.recalculateSize();
 	GetClientRect( &newClientRect );
 	InvalidateRect( &newClientRect );
 	updateScrollBars();
@@ -192,7 +187,7 @@ void CChatViewer::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
 			break;
 
 		case VK_NEXT:
-//			selectLine( min ( selectedLine + yPageSize, strings.GetCount() - 1 ) );
+//			selectLine( min ( selectedLine + yPageSize, strings.count() - 1 ) );
 			break;
 
 		case VK_DOWN:
@@ -204,7 +199,7 @@ void CChatViewer::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
 			break;
 
 		case VK_END:
-			selectLine( strings.GetCount() - 1 );
+			selectLine( strings.count() - 1 );
 			break;
 
 		case VK_LEFT: {
@@ -359,7 +354,7 @@ bool CChatViewer::isVisible( const int index )
 
 void CChatViewer::selectLine( const int index )
 {
-	if ( index < 0 || index > strings.GetCount() - 1 || index == selectedLine ) {
+	if ( index < 0 || index > strings.count() - 1 || index == selectedLine ) {
 		return;
 	}
 	int height_before = getHeightBeforeLine( index );
@@ -394,11 +389,11 @@ void CChatViewer::addString( CChatString* str )
 {
 	if ( GetSafeHwnd() ) {
 
-		strings.AddTail( str );
+		strings.addString( str );
 
 		updateScrollBars();
 
-		int lastString = strings.GetCount() - 1;
+		int lastString = strings.count() - 1;
 		if ( lastString <= 0 ) lastString = 1;
 
 		if ( isVisible( lastString - 1 ) ) {
@@ -419,11 +414,7 @@ void CChatViewer::setStyle( const CChatViewerStyle& _style, const bool needRedra
 
 	updateScrollBars();
 
-	POSITION pos = strings.GetHeadPosition();
-	while ( pos ) {
-		strings.GetAt( pos )->recalculateSize();
-		strings.GetNext( pos );
-	};
+	strings.recalculateSize();
 
 	if ( needRedraw ) {
 		Invalidate();
@@ -433,33 +424,29 @@ void CChatViewer::setStyle( const CChatViewerStyle& _style, const bool needRedra
 
 CChatString* CChatViewer::getString( const int index ) const
 {
-	POSITION pos = strings.FindIndex( index );
-	if ( pos ) {
-		return strings.GetAt( pos );
+	if ( index >= 0 && index < strings.count() ) {
+		return strings[index];
 	}
 	return NULL;
 }
 
 int CChatViewer::findLine( const int _yPos )
 {
-	if ( !strings.GetCount() ) {
+	if ( !strings.count() ) {
 		return -1;
 	}
 
-	int index  = 0;
 	int height = 0;
-	POSITION pos = strings.GetHeadPosition();
 	CDC* dc = GetDC();
 	CFont* prev_font = dc->SelectObject( &style.fontFSN );
-	while ( pos ) {
-		height += strings.GetAt( pos )->getHeight( dc, newClientRect.right, style );
+	int cnt = strings.count();
+	for ( int i = 0; i < cnt; i++ ) {
+		height += strings[i]->getHeight( dc, newClientRect.right, style );
 		if ( height > _yPos ) {
 			dc->SelectObject( prev_font );
 			ReleaseDC( dc );
-			return index;
+			return i;
 		}
-		index++;
-		strings.GetNext( pos );
 	};
 	dc->SelectObject( prev_font );
 	ReleaseDC( dc );
@@ -469,17 +456,16 @@ int CChatViewer::findLine( const int _yPos )
 
 int CChatViewer::getStringsSumHeight()
 {
-	if ( !strings.GetCount() ) {
+	if ( !strings.count() ) {
 		return 0;
 	}
 
 	int height = 0;
-	POSITION pos = strings.GetHeadPosition();
 	CDC* dc = GetDC();
 	CFont* prev_font = dc->SelectObject( &style.fontFSN );
-	while ( pos ) {
-		height += strings.GetAt( pos )->getHeight( dc, newClientRect.right, style );
-		strings.GetNext( pos );
+	int cnt = strings.count();
+	for ( int i = 0; i < cnt; i++ ) {
+		height += strings[i]->getHeight( dc, newClientRect.right, style );
 	};
 	dc->SelectObject( prev_font );
 	ReleaseDC( dc );
@@ -489,17 +475,15 @@ int CChatViewer::getStringsSumHeight()
 
 int CChatViewer::getHeightBeforeLine( const int index )
 {
-	if ( index < 0 || !strings.GetCount() ) {
+	if ( index < 0 || !strings.count() ) {
 		return -1;
 	}
 
 	int height = 0;
-	POSITION pos = strings.GetHeadPosition();
 	CDC* dc = GetDC();
 	CFont* prev_font = dc->SelectObject( &style.fontFSN );
 	for ( int i = 0; i < index; i++ ) {
-		height += strings.GetAt( pos )->getHeight( dc, newClientRect.right, style );
-		strings.GetNext( pos );
+		height += strings[i]->getHeight( dc, newClientRect.right, style );
 	}
 	dc->SelectObject( prev_font );
 	ReleaseDC( dc );
@@ -509,20 +493,19 @@ int CChatViewer::getHeightBeforeLine( const int index )
 
 bool CChatViewer::sizeChanged()
 {
-	if ( !strings.GetCount() ) {
+	if ( !strings.count() ) {
 		return true;
 	}
 
-	POSITION pos = strings.GetHeadPosition();
 	CDC* dc = GetDC();
 	CFont* prev_font = dc->SelectObject( &style.fontFSN );
-	while ( pos ) {
-		if ( strings.GetAt( pos )->sizeChanged( dc, newClientRect.right, style ) ) {
+	int cnt = strings.count();
+	for ( int i = 0; i < cnt; i++ ) {
+		if ( strings[i]->sizeChanged( dc, newClientRect.right, style ) ) {
 			dc->SelectObject( prev_font );
 			ReleaseDC( dc );
 			return true;
 		}
-		strings.GetNext( pos );
 	};
 	dc->SelectObject( prev_font );
 	ReleaseDC( dc );
@@ -532,20 +515,19 @@ bool CChatViewer::sizeChanged()
 
 int CChatViewer::getStringsMaxWidth()
 {
-	if ( !strings.GetCount() ) {
+	if ( !strings.count() ) {
 		return 0;
 	}
 
 	int max_width = 0;
-	POSITION pos = strings.GetHeadPosition();
 	CDC* dc = GetDC();
 	CFont* prev_font = dc->SelectObject( &style.fontFSN );
-	while ( pos ) {
-		int str_width = strings.GetAt( pos )->getMaxWidth( dc, newClientRect.right, style );
+	int cnt = strings.count();
+	for ( int i = 0; i < cnt; i++ ) {
+		int str_width = strings[i]->getMaxWidth( dc, newClientRect.right, style );
 		if ( str_width > max_width ) {
 			max_width = str_width;
 		}
-		strings.GetNext( pos );
 	};
 	dc->SelectObject( prev_font );
 	ReleaseDC( dc );
@@ -585,9 +567,8 @@ void CChatViewer::OnPaint()
 
 		int line_from = findLine( yPos );
 		int line_to   = findLine( yPos + newClientRect.bottom );
-		if ( line_to == -1 ) line_to = strings.GetCount() - 1;
+		if ( line_to == -1 ) line_to = strings.count() - 1;
 		CRect rect( -xPos, -yPos, newClientRect.right, 0 );
-		POSITION pos = strings.FindIndex( line_from );
 		int cnt;
 		if ( line_from != - 1) {
 			cnt = line_to - line_from + 1;
@@ -597,7 +578,7 @@ void CChatViewer::OnPaint()
 		}
 		for ( int i = 0; i < cnt; i++ ) {
 
-			CChatString* str = strings.GetAt( pos );
+			CChatString* str = strings[ i + line_from ];
 			str->getColors( style, i, front, back );
 			if ( line_from + i == selectedLine && hasFocus ) {
 				back = style.theme.selectedBgColor;
@@ -622,7 +603,6 @@ void CChatViewer::OnPaint()
 			rect.left  -= style.horzBorder;
 			rect.right += xPos;
 			rect.top   += h;
-			strings.GetNext( pos );
 
 			dc.SelectObject( prev_pen );
 			dc.SelectObject( prev_brush );

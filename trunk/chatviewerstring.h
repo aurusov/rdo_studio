@@ -1,10 +1,11 @@
 #ifndef CHATVIEWERSTRING_H
 #define CHATVIEWERSTRING_H
+
+#if _MSC_VER > 1000
 #pragma once
+#endif
 
 #include "chatviewerstyle.h"
-
-#include <afxtempl.h>
 
 // ----------------------------------------------------------------------------
 // ---------- CChatString
@@ -58,11 +59,20 @@ public:
 // ----------------------------------------------------------------------------
 // ---------- CChatStringList
 // ----------------------------------------------------------------------------
-class CChatStringList: public CList< CChatString*, CChatString* >
+class CChatStringList
 {
+private:
+	std::vector< CChatString* > list;
+
 public:
-	CChatStringList( int blockSize = 10 );
+	CChatStringList();
 	virtual ~CChatStringList();
+
+	void addString( CChatString* str )          { list.push_back( str ); }
+	int count() const                           { return list.size();    }
+	CChatString* operator[] ( int index ) const { return list[index];    }
+
+	void recalculateSize();
 };
 
 //{{AFX_INSERT_LOCATION}}

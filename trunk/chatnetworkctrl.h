@@ -1,6 +1,9 @@
 #ifndef CHATNETWORKCTRL_H
 #define CHATNETWORKCTRL_H
+
+#if _MSC_VER > 1000
 #pragma once
+#endif
 
 #include <rdotreectrl.h>
 

@@ -1,6 +1,9 @@
 #ifndef CHATUDP_H
 #define CHATUDP_H
+
+#if _MSC_VER > 1000
 #pragma once
+#endif
 
 #include <afxsock.h>
 

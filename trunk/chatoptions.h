@@ -1,6 +1,9 @@
 #ifndef CHATOPTIONS_H
 #define CHATOPTIONS_H
+
+#if _MSC_VER > 1000
 #pragma once
+#endif
 
 #include "chatlistboxctrl.h"
 #include "chatsound.h"

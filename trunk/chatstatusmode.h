@@ -1,8 +1,9 @@
 #ifndef CHATSTATUSMODE_H
 #define CHATSTATUSMODE_H
-#pragma once
 
-#include <afxtempl.h>
+#if _MSC_VER > 1000
+#pragma once
+#endif
 
 // ----------------------------------------------------------------------------
 // ---------- CChatStatusMode

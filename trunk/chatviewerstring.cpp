@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "chatviewerstring.h"
+#include "chatapp.h"
+#include "chatsmile.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -68,42 +70,15 @@ void CChatString::drawText( CDC* dc, CRect& r, CChatViewerStyle& style )
 {
 	CChatFontStyle fontStyle;
 	switch ( type ) {
-		case CSTRT_Message: {
-			fontStyle = style.theme.messageFS;
-			break;
-		}
-		case CSTRT_Connect: {
-			fontStyle = style.theme.connectFS;
-			break;
-		}
-		case CSTRT_Disconnect: {
-			fontStyle = style.theme.disconnectFS;
-			break;
-		}
-		case CSTRT_ChangeName: {
-			fontStyle = style.theme.changeNameFS;
-			break;
-		}
-		case CSTRT_ChangeStatusMode: {
-			fontStyle = style.theme.changeStatusModeFS;
-			break;
-		}
-		case CSTRT_ToCryOut: {
-			fontStyle = style.theme.toCryOutFS;
-			break;
-		}
-		case CSTRT_PopupMsgSend: {
-			fontStyle = style.theme.popupMsgSendFS;
-			break;
-		}
-		case CSTRT_PopupMsgReceive: {
-			fontStyle = style.theme.popupMsgReceiveFS;
-			break;
-		}
-		default: {
-			fontStyle = CFS_NONE;
-			break;
-		}
+		case CSTRT_Message         : fontStyle = style.theme.messageFS; break;
+		case CSTRT_Connect         : fontStyle = style.theme.connectFS; break;
+		case CSTRT_Disconnect      : fontStyle = style.theme.disconnectFS; break;
+		case CSTRT_ChangeName      : fontStyle = style.theme.changeNameFS; break;
+		case CSTRT_ChangeStatusMode: fontStyle = style.theme.changeStatusModeFS; break;
+		case CSTRT_ToCryOut        : fontStyle = style.theme.toCryOutFS; break;
+		case CSTRT_PopupMsgSend    : fontStyle = style.theme.popupMsgSendFS; break;
+		case CSTRT_PopupMsgReceive : fontStyle = style.theme.popupMsgReceiveFS; break;
+		default                    : fontStyle = CFS_NONE; break;
 	}
 
 	CFont* prev_font = NULL;
@@ -155,27 +130,31 @@ void CChatString::drawText( CDC* dc, CRect& r, CChatViewerStyle& style )
 		std::string s2 = s.substr( pos_from, pos - pos_from );
 		trimLeft( s2 );
 		if ( !s2.empty() ) {
-			rect = CRect( 0, 0, 1, 1 );
-			dc->DrawText( s2.c_str(), &rect, DT_LEFT | DT_SINGLELINE | DT_CALCRECT );
-			if ( x_pos + rect.right > r.right ) {
-				x_pos = r.left;
-				if ( pos_from != 0 ) {
-					y_pos += rect.bottom;
+			if ( s2 == "aaaa" ) {
+				chatApp.smiles.getSmile( CChatSmile::eyes );
+			} else {
+				rect = CRect( 0, 0, 1, 1 );
+				dc->DrawText( s2.c_str(), &rect, DT_LEFT | DT_SINGLELINE | DT_CALCRECT );
+				if ( x_pos + rect.right > r.right ) {
+					x_pos = r.left;
+					if ( pos_from != 0 ) {
+						y_pos += rect.bottom;
+					}
 				}
-			}
-			rect.left    = x_pos;
-			rect.top     = y_pos;
-			rect.right  += x_pos;
-			rect.bottom += y_pos;
-			dc->DrawText( s2.c_str(), &rect, DT_LEFT | DT_SINGLELINE );
-			x_pos += rect.Width();
-			if ( flag ) {
 				rect.left    = x_pos;
 				rect.top     = y_pos;
 				rect.right  += x_pos;
 				rect.bottom += y_pos;
-				dc->DrawText( " ", &rect, DT_LEFT | DT_SINGLELINE );
-				x_pos += style.spaceWidth;
+				dc->DrawText( s2.c_str(), &rect, DT_LEFT | DT_SINGLELINE );
+				x_pos += rect.Width();
+				if ( flag ) {
+					rect.left    = x_pos;
+					rect.top     = y_pos;
+					rect.right  += x_pos;
+					rect.bottom += y_pos;
+					dc->DrawText( " ", &rect, DT_LEFT | DT_SINGLELINE );
+					x_pos += style.spaceWidth;
+				}
 			}
 		}
 		pos_from = pos + 1;
@@ -192,42 +171,15 @@ int CChatString::getHeight( CDC* dc, const int _width, CChatViewerStyle& style )
 	if ( !height ) {
 		CChatFontStyle fontStyle;
 		switch ( type ) {
-			case CSTRT_Message: {
-				fontStyle = style.theme.messageFS;
-				break;
-			}
-			case CSTRT_Connect: {
-				fontStyle = style.theme.connectFS;
-				break;
-			}
-			case CSTRT_Disconnect: {
-				fontStyle = style.theme.disconnectFS;
-				break;
-			}
-			case CSTRT_ChangeName: {
-				fontStyle = style.theme.changeNameFS;
-				break;
-			}
-			case CSTRT_ChangeStatusMode: {
-				fontStyle = style.theme.changeStatusModeFS;
-				break;
-			}
-			case CSTRT_ToCryOut: {
-				fontStyle = style.theme.toCryOutFS;
-				break;
-			}
-			case CSTRT_PopupMsgSend: {
-				fontStyle = style.theme.popupMsgSendFS;
-				break;
-			}
-			case CSTRT_PopupMsgReceive: {
-				fontStyle = style.theme.popupMsgReceiveFS;
-				break;
-			}
-			default: {
-				fontStyle = CFS_NONE;
-				break;
-			}
+			case CSTRT_Message         : fontStyle = style.theme.messageFS; break;
+			case CSTRT_Connect         : fontStyle = style.theme.connectFS; break;
+			case CSTRT_Disconnect      : fontStyle = style.theme.disconnectFS; break;
+			case CSTRT_ChangeName      : fontStyle = style.theme.changeNameFS; break;
+			case CSTRT_ChangeStatusMode: fontStyle = style.theme.changeStatusModeFS; break;
+			case CSTRT_ToCryOut        : fontStyle = style.theme.toCryOutFS; break;
+			case CSTRT_PopupMsgSend    : fontStyle = style.theme.popupMsgSendFS; break;
+			case CSTRT_PopupMsgReceive : fontStyle = style.theme.popupMsgReceiveFS; break;
+			default                    : fontStyle = CFS_NONE; break;
 		}
 
 		CFont* prev_font = NULL;
@@ -392,15 +344,23 @@ void CChatString::getColors( const CChatViewerStyle& style, const int lineIndex,
 // ----------------------------------------------------------------------------
 // ---------- CChatStringList
 // ----------------------------------------------------------------------------
-CChatStringList::CChatStringList( int blockSize ): CList< CChatString*, CChatString* >( blockSize )
+CChatStringList::CChatStringList()
 {
 }
 
 CChatStringList::~CChatStringList()
 {
-	POSITION pos = GetHeadPosition();
-	while ( pos ) {
-		delete GetAt( pos );
-		GetNext( pos );
+	std::vector< CChatString* >::iterator it = list.begin();
+	while ( it != list.end() ) {
+		delete *it++;
+	}
+	list.clear();
+}
+
+void CChatStringList::recalculateSize()
+{
+	std::vector< CChatString* >::iterator it = list.begin();
+	while ( it != list.end() ) {
+		(*it++)->recalculateSize();
 	}
 }

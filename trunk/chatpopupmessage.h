@@ -1,6 +1,9 @@
 #ifndef CHATPOPUPMESSAGE_H
 #define CHATPOPUPMESSAGE_H
+
+#if _MSC_VER > 1000
 #pragma once
+#endif
 
 // ----------------------------------------------------------------------------
 // ---------- CChatPopupMessage
