@@ -116,7 +116,8 @@ void RDOStudioChartView::recalcLayout()
 	if ( !doc->docTimes.empty() ) {
 		double timeRange = doc->docTimes.back()->time - doc->docTimes.front()->time;
 		if ( timeRange > 0 ) {
-			long double timeScaleAuto = doUnwrapTime() ? (double)( chartRect.Width() - tickWidth * doc->docTimes.back()->overallCount ) / timeRange : (double)chartRect.Width() / timeRange;
+			//long double timeScaleAuto = doUnwrapTime() ? (double)( chartRect.Width() - tickWidth * doc->docTimes.back()->overallCount ) / timeRange : (double)chartRect.Width() / timeRange;
+			long double timeScaleAuto = (double)chartRect.Width() / timeRange;
 			timeScale = (double)tickWidth / doc->minTimeOffset;
 			auto_zoom = timeScaleAuto / timeScale;
 			if ( zoomAuto || auto_zoom > 1 ) {
