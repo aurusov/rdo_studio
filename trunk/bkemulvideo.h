@@ -12,8 +12,6 @@ namespace bkemul {
 // --------------------------------------------------------------
 class BKEmulVideo
 {
-friend class BKEmul;
-
 private:
 	bool colorMonitor;
 

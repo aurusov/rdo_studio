@@ -360,22 +360,6 @@ void BKChildView::updateScrolling( BYTE delta ) const
 {
 }
 
-void BKChildView::updateVideoMemoryByte( WORD address ) const
-{
-	if ( lockSurface() == DD_OK ) {
-		draw( emul.video.getMemory( address ), 1, address & 077, (address - 040000) / 64 );
-		unlockSurface();
-	}
-}
-
-void BKChildView::updateVideoMemoryWord( WORD address ) const
-{
-	if ( lockSurface() == DD_OK ) {
-		draw( emul.video.getMemory( address ), 2, address & 077, (address - 040000) / 64 );
-		unlockSurface();
-	}
-}
-
 void BKChildView::updateBounds()
 {
 	GetWindowRect( windowRect );
@@ -394,5 +378,19 @@ void BKChildView::OnTimer(UINT nIDEvent)
 {
 	CWnd::OnTimer( nIDEvent );
 	if ( nIDEvent == timer ) {
+		static lock = false;
+		if ( !lock ) {
+			std::vector< WORD >::const_iterator it = updateVideoMemory.begin();
+			if ( it != updateVideoMemory.end() && lockSurface() == DD_OK ) {
+				lock = true;
+				while ( it != updateVideoMemory.end() ) {
+					draw( emul.video.getMemory( *it ), 1, *it & 077, (*it - 040000) / 64 );
+					it++;
+				}
+				updateVideoMemory.clear();
+				unlockSurface();
+				lock = false;
+			}
+		}
 	}
 }

@@ -29,7 +29,7 @@ private:
 	CRect screenRect;
 
 	UINT timer;
-	std::vector< BYTE > updateVideoMemory;
+	std::vector< WORD > updateVideoMemory;
 	HRESULT initDirectDraw();
 	HRESULT lockSurface() const;
 	HRESULT unlockSurface() const;
@@ -42,8 +42,6 @@ private:
 
 	void updateMonitor() const;
 	void updateScrolling( BYTE delta ) const;
-	void updateVideoMemoryByte( WORD address ) const;
-	void updateVideoMemoryWord( WORD address ) const;
 
 public:
 	BKChildView();

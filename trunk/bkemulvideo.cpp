@@ -61,10 +61,11 @@ void BKEmulVideo::updateScrolling( BYTE delta ) const
 
 void BKEmulVideo::updateVideoMemoryByte( WORD address ) const
 {
-	enulApp.mainFrame->childView.updateVideoMemoryByte( address );
+	enulApp.mainFrame->childView.updateVideoMemory.push_back( address );
 }
 
 void BKEmulVideo::updateVideoMemoryWord( WORD address ) const
 {
-	enulApp.mainFrame->childView.updateVideoMemoryWord( address );
+	enulApp.mainFrame->childView.updateVideoMemory.push_back( address );
+	enulApp.mainFrame->childView.updateVideoMemory.push_back( address + 1 );
 }
