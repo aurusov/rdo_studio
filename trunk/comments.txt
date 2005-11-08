@@ -56,3 +56,47 @@ Poka ne znau.
 Vrode bi popravil.
 
 ---------- 1.35. При формировании файла трассировки не выводится список изменений ($Changes). В старом РДО ключевое слово $Changes выводится, даже если изменений нет. См. модель barder_trace. Может ты в симуляторе добавишь метод getTraceChanges() ? Тогда репозитарий его просто вызовет в уведомлении beforeModelStart и запишет в трассировку перед записью структуры модели. См. модель barber_trace.
+
+
+
+1.36. При формировании файла трассировки, в новом РДО, 
+ВСЕГДА выводится полный список собираемых показателей ($Watching), 
+даже если у них нет признака трассировки. Также выводится показатель get_value, 
+который не может быть трассирован. В старом РДО ключевое слово $Watching выводится, 
+даже если показателей вообще нет. См. модель barber_trace.
+--------------------
+Sdelal kak v starom RDO.
+
+
+1.37. Новое РДО никак не может сообщить, что модель завершилась из-за отсутствия всех событий, 
+т.е. NORMAL_TERMINATION и NO_MORE_EVENTS идентичны. Надо добавить новый нотифай в 
+kernel imho или сделать один нотифай с параметром перечислимого типа 
+(5-ть значение, т.к. есть еще parser error), а сам тип положить в rdo_common. 
+Пример реализации см. в архиве trace_end (там еще модель лежит nomoreevents). 
+При этом, получаем логическое дублирование уведомлений, что не есть хорошо, 
+надо оставить какой-то один вариает (или каждое уведомление отдельным натифаем, 
+или одно уведомление с параметрами, как в примере). Надо переговорить imho.
+----------------------
+dobavil rdoModel::EC_NoMoreEvents s kotorim vizivaetsja
+kernel.callback(RDOKernel::modelExit, exitCode);
+
+
+
+
+
+1.55. Если в паттерне не дописано ключенвое слово $Body, 
+то студия выдает малосодержательную ошибку "parse error". 
+Когда студент на консультации спросил где тут ошибка, я сам не понял. 
+Пришлось переписывать паттерн ручками (или как-то так:). 
+Дома я тоже не смог найти ошибку и переписал паттерн отруки. 
+Но теперь у меня был windiff, который о покзал в чём разница. См. модель nobody.
+------------
+Model' ne nashel, no ne vagno. K sogaleniu ja ne mogu sdes' vidat' chto-to
+tipa "expected $Body", skoree ja prodolgau parsit' etu strochku kak prodolgenie instrukcii $Time
+t.e. dlja menja oshibka v arifmeticheskom viragenii dlja $Time.
+Ja sdelal #define YYERROR_VERBOSE, i teper' v oshibki vkluchautsja soobshenija bisona,
+v nashem sluchae eto prosto "unexpected IDENTIF", chto konechno sootvetstvuet dejstvitel'nosti
+no ne ochen' pomogaet. Esli est' idei kak sdelat' poluchshe, davaj.
+
+
+

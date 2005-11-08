@@ -314,6 +314,23 @@ void RDOTrace::writeModelBegin(RDOSimulatorTrace *sim)
       << " 3" << std::endl << getEOL();
 }
 
+void RDOTrace::writeTraceEnd(RDOSimulatorTrace *sim)
+{
+	if(isNullTracer)
+		return;
+
+   getOStream() << "ES " << sim->getCurrentTime() 
+      << " 2" << std::endl << getEOL();
+}
+
+void RDOTrace::writeStatus(RDOSimulatorTrace *sim, char *status)
+{
+	if(isNullTracer)
+		return;
+
+   getOStream() << "$Status = " << status << " " << sim->getCurrentTime() << std::endl << getEOL();
+}
+
 bool RDOPokazTrace::tracePokaz()
 {
 	if(!trace || !wasChanged)

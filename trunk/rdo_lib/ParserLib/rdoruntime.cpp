@@ -804,7 +804,8 @@ string RDORuntime::writePokazStructure()
 	for(int i = 0; i < allPokaz.size(); i++)
 	{
 		RDOPMDPokaz *curr = allPokaz.at(i);
-		curr->writePokazStructure(stream);
+		if(curr->trace)
+			curr->writePokazStructure(stream);
 	}
 
 	return stream.str();
@@ -901,6 +902,23 @@ void RDORuntime::onPutToTreeNode()
 	}
 
 }
+
+void RDORuntime::postProcess()
+{
+	getTracer()->startWriting();
+   RDOSimulatorTrace::postProcess();
+	switch(whyStop)
+	{
+	case rdoModel::EC_NoMoreEvents:
+		getTracer()->writeStatus(this, "NO_MORE_EVENTS");
+		break;
+	case rdoModel::EC_OK:
+		getTracer()->writeStatus(this, "NORMAL_TERMINATION");
+		break;
+	}
+	getTracer()->stopWriting();
+}
+
 
 
 }	// namespace rdoRuntime

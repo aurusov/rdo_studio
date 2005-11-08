@@ -69,6 +69,9 @@ public:
 
    virtual void writeTraceBegin(RDOSimulatorTrace *sim);
    virtual void writeModelBegin(RDOSimulatorTrace *sim);
+   virtual void writeTraceEnd(RDOSimulatorTrace *sim);
+   virtual void writeStatus(RDOSimulatorTrace *sim, char *status);
+
    virtual void writePermanentResources(RDOSimulatorTrace *sim, std::vector<RDOResourceTrace *> perm);
 
    virtual std::string traceResourcesListNumbers(RDOSimulatorTrace *sim, std::vector<RDOResourceTrace *> resArray);

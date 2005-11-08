@@ -41,7 +41,7 @@ enum RDOFileType { PAT = 0, RTP, RSS, OPR, FRM, FUN, DPT, SMR, PMD, PMV, TRC };
 
 namespace rdoModel {
 
-enum RDOExitCode { EC_OK = 0, EC_ParserError, EC_RunTimeError, EC_UserBreak, EC_ModelNotFound };
+enum RDOExitCode { EC_OK = 0, EC_ParserError, EC_RunTimeError, EC_UserBreak, EC_ModelNotFound, EC_NoMoreEvents };
 
 };
 

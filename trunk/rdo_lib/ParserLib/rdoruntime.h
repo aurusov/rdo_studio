@@ -239,6 +239,12 @@ public:
 	vector<RDOFRMFrame *> allFrames;
 
 	void onPutToTreeNode();
+
+	rdoModel::RDOExitCode whyStop;
+	void onNothingMoreToDo() {whyStop = rdoModel::EC_NoMoreEvents;}
+   void onEndCondition() {whyStop = rdoModel::EC_OK;}
+	
+	void postProcess();
 };
 /*
 struct RDORuntimeException: public RDOException

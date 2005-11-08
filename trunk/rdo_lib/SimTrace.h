@@ -47,8 +47,8 @@ protected:
 	
    void incrementResourceIdReference(int id);
 
-   void preProcess();
-   void postProcess();
+   virtual void preProcess();
+   virtual void postProcess();
    void checkPermanentResources();
    void checkRSSDefinedResources();
 

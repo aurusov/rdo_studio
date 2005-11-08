@@ -248,6 +248,7 @@ UINT RunningThreadControllingFunction( LPVOID pParam )
 	{
 		simulator->runtime->rdoInit(tracer, resulter);
 		simulator->runtime->rdoRun();
+		exitCode = simulator->runtime->whyStop;
 		simulator->runtime->rdoDestroy();
 		kernel.notify(RDOKernel::endExecuteModel);
 //		kernel.debug("End executing\n");

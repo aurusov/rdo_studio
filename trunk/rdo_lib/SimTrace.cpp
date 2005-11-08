@@ -152,6 +152,7 @@ void RDOSimulatorTrace::preProcess()
 void RDOSimulatorTrace::postProcess()
 {
    RDOSimulator::postProcess();
+   getTracer()->writeTraceEnd(this);
 	getTracer()->stopWriting();
 }
 
