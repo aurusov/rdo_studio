@@ -135,7 +135,7 @@ private:
 	static void modelStartNotify();
 	static void endExecuteModelNotify();
 	static void modelStopNotify();
-	static void traceNotify( std::string str );
+	static void traceNotify( const std::string& str );
 
 public:
 	RDOStudioPlugins();

@@ -1175,6 +1175,14 @@ SOURCE=..\Changes.txt
 # End Source File
 # Begin Source File
 
+SOURCE=".\res\RAO-studio.manifest"
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\rdo_studio.manifest
+# End Source File
+# Begin Source File
+
 SOURCE=..\TODO.txt
 # End Source File
 # End Target

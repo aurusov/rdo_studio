@@ -44,7 +44,8 @@ int RDOStudioOutput::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;
 
 	tab.Create( NULL, NULL, 0, CRect(0, 0, 100, 100), this, 0 );
-	tab.modifyTabStyle( 0, TCS_BOTTOM | TCS_MULTILINE );
+	tab.modifyTabStyle( 0, TCS_MULTILINE );
+//	tab.modifyTabStyle( 0, TCS_BOTTOM | TCS_MULTILINE );
 
 	popupMenu.CreatePopupMenu();
 
@@ -150,22 +151,22 @@ void RDOStudioOutput::showFind()
 
 void RDOStudioOutput::clearBuild()
 {
-	build->clearAll();
+	if ( build ) build->clearAll();
 }
 
 void RDOStudioOutput::clearDebug()
 {
-	debug->clearAll();
+	if ( debug ) debug->clearAll();
 }
 
 void RDOStudioOutput::clearResults()
 {
-	results->clearAll();
+	if ( results ) results->clearAll();
 }
 
 void RDOStudioOutput::clearFind()
 {
-	find->clearAll();
+	if ( find ) find->clearAll();
 }
 
 void RDOStudioOutput::appendStringToBuild( const string& str, const rdoModelObjects::RDOFileType fileType, const int lineNumber, const bool error ) const

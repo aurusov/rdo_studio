@@ -251,7 +251,7 @@ bool RDORepositoryFile::saveAsDlg()
 
 bool RDORepositoryFile::canCloseModel() const
 {
-	return kernel.boolNotifyAnd( RDOKernel::canCloseModel );
+	return kernel.notifyBoolAnd( RDOKernel::canCloseModel );
 }
 
 void RDORepositoryFile::realCloseModel()
@@ -451,7 +451,7 @@ void RDORepositoryFile::stopModelNotify()
 	repository->stopModel();
 }
 
-void RDORepositoryFile::traceNotify( std::string str )
+void RDORepositoryFile::traceNotify( const std::string& str )
 {
 	repository->trace( str );
 }

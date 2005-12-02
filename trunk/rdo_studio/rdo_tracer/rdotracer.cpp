@@ -34,7 +34,15 @@ RDOTracer::RDOTracer() :
 	clear_after_stop = false;
 	
 	tracer = this;
+}
 
+RDOTracer::~RDOTracer()
+{
+	tracer = NULL;
+}
+
+void RDOTracer::initNotify()
+{
 	kernel.setNotifyReflect( RDOKernel::closeModel, closeModelNotify );
 
 	kernel.setNotifyReflect( RDOKernel::beforeModelStart, beforeModelStartNotify );
@@ -43,11 +51,6 @@ RDOTracer::RDOTracer() :
 	kernel.setNotifyReflect( RDOKernel::executeError, modelStoppedNotify );
 
 	kernel.setNotifyReflect( RDOKernel::traceString, traceStringNotify );
-}
-
-RDOTracer::~RDOTracer()
-{
-	tracer = NULL;
 }
 
 void RDOTracer::closeModelNotify()
@@ -80,7 +83,7 @@ void RDOTracer::modelStoppedNotify()
 	tracer->setDrawTrace( true );
 }
 
-void RDOTracer::traceStringNotify( string trace_string )
+void RDOTracer::traceStringNotify( const string& trace_string )
 {
 	tracer->getTraceString( trace_string );
 }

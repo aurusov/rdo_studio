@@ -35,7 +35,8 @@ int RDOStudioWorkspace::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;
 
 	tab.Create( NULL, NULL, 0, CRect(0, 0, 100, 100), this, 0 );
-	tab.modifyTabStyle( 0, TCS_BOTTOM | TCS_MULTILINE );
+	tab.modifyTabStyle( 0, TCS_MULTILINE );
+//	tab.modifyTabStyle( 0, TCS_BOTTOM | TCS_MULTILINE );
 
 	RDOTracerTreeCtrl* trace = tracer->createTree();
 	trace->Create( 0, CRect(0, 0, 0, 0), &tab, 0 );

@@ -199,7 +199,7 @@ int RDOBaseEdit::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	sciEditor = (long)::SendMessage( sciHWND, SCI_GETDIRECTPOINTER, 0, 0 );
 
 	sendEditor( SCI_SETLEXER, SCLEX_TEXT );
-	int lexLanguage = sendEditor( SCI_GETLEXER );
+//	int lexLanguage = sendEditor( SCI_GETLEXER );
 
 	sendEditor( SCI_SETMARGINWIDTHN, 1, 0 );
 

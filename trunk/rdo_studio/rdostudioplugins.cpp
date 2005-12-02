@@ -622,7 +622,7 @@ void RDOStudioPlugins::modelStopNotify()
 	AfxGetApp()->PostThreadMessage( PLUGIN_STOPMODEL_MESSAGE, 0, 0 );
 }
 
-void RDOStudioPlugins::traceNotify( std::string str )
+void RDOStudioPlugins::traceNotify( const std::string& str )
 {
 	plugins->mutex.Lock();
 	std::vector< RDOStudioPlugin* >::const_iterator it = plugins->trace.begin();

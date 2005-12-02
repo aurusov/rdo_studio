@@ -28,6 +28,8 @@ public:
 	RDOEditorResults();
 	virtual ~RDOEditorResults();
 
+//	virtual BOOL DestroyWindow();
+
 	void setEditorStyle( RDOEditorResultsStyle* _style );
 };
 

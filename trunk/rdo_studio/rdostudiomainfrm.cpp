@@ -83,7 +83,9 @@ static UINT indicators[] = {
 	ID_PROGRESSSTATUSBAR
 };
 
-RDOStudioMainFrame::RDOStudioMainFrame(): CMDIFrameWnd()
+RDOStudioMainFrame::RDOStudioMainFrame():
+	CMDIFrameWnd(),
+	syncUI( NULL )
 {
 }
 
@@ -94,6 +96,9 @@ RDOStudioMainFrame::~RDOStudioMainFrame()
 int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if ( CMDIFrameWnd::OnCreate(lpCreateStruct) == -1 ) return -1;
+
+	syncUI = new RDOMainFrmSyncUI( *this, ::GetCurrentThreadId() );
+	kernel.insertSyncUI( syncUI );
 
 	model = new RDOStudioModel;
 
@@ -125,28 +130,34 @@ int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	style_chart.init( "chart" );
 	style_chart.load();
 
-	fileToolBar.CreateEx( this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
+	bool winxp = false;
+	OSVERSIONINFO osv;
+	osv.dwOSVersionInfoSize = sizeof( OSVERSIONINFO );
+	if ( ::GetVersionEx( &osv ) ) {
+		winxp = osv.dwMajorVersion >= 5 && osv.dwMinorVersion == 1;
+	}
+	fileToolBar.CreateEx( this, winxp ? 0 : TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
 	fileToolBar.LoadToolBar( IDR_FILE_TOOLBAR );
 	fileToolBar.GetToolBarCtrl().SetWindowText( rdo::format( IDR_FILE_TOOLBAR ).c_str() );
 
 	fileToolBarImageList.Create( IDB_FILE_TOOLBAR_D, 16, 0, 0xFF00FF );
 	fileToolBar.GetToolBarCtrl().SetDisabledImageList( &fileToolBarImageList );
 
-	editToolBar.CreateEx( this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
+	editToolBar.CreateEx( this, winxp ? 0 : TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
 	editToolBar.LoadToolBar( IDR_EDIT_TOOLBAR );
 	editToolBar.GetToolBarCtrl().SetWindowText( rdo::format( IDR_EDIT_TOOLBAR ).c_str() );
 
 	editToolBarImageList.Create( IDB_EDIT_TOOLBAR_D, 16, 0, 0xFF00FF );
 	editToolBar.GetToolBarCtrl().SetDisabledImageList( &editToolBarImageList );
 
-	zoomToolBar.CreateEx( this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
+	zoomToolBar.CreateEx( this, winxp ? 0 : TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
 	zoomToolBar.LoadToolBar( IDR_ZOOM_TOOLBAR );
 	zoomToolBar.GetToolBarCtrl().SetWindowText( rdo::format( IDR_ZOOM_TOOLBAR ).c_str() );
 
 	zoomToolBarImageList.Create( IDB_ZOOM_TOOLBAR_D, 16, 0, 0xFF00FF );
 	zoomToolBar.GetToolBarCtrl().SetDisabledImageList( &zoomToolBarImageList );
 
-	modelToolBar.CreateEx( this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
+	modelToolBar.CreateEx( this, winxp ? 0 : TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
 	modelToolBar.LoadToolBar( IDR_MODEL_TOOLBAR );
 	modelToolBar.GetToolBarCtrl().SetWindowText( rdo::format( IDR_MODEL_TOOLBAR ).c_str() );
 
@@ -214,6 +225,11 @@ void RDOStudioMainFrame::OnDestroy()
 	// delete plugins before delete model
 	if ( plugins ) { delete plugins; plugins = NULL; }
 	if ( model   ) { delete model; model = NULL; }
+
+	kernel.removeSyncUI( syncUI );
+	delete syncUI;
+	syncUI = NULL;
+
 	CMDIFrameWnd::OnDestroy();
 }
 
@@ -555,10 +571,31 @@ void RDOStudioMainFrame::OnUpdateModelFramePrev(CCmdUI* pCmdUI)
 
 LRESULT RDOStudioMainFrame::WindowProc( UINT message, WPARAM wParam, LPARAM lParam )
 {
+	static int k = 0;
 	if ( message == WORKSPACE_SHOW_MESSAGE ) {
 		OnWorkspaceShow();
 	} else if ( message == OUTPUT_SHOW_MESSAGE ) {
 		OnOutputShow();
+	} else if ( message == FM_KERNEL_NOTIFY ) {
+//		TRACE( "\n%d FM_KERNEL_NOTIFY", k );
+//		k++;
+		syncUI->notify( static_cast<RDOKernel::NotifyType>(wParam) );
+//		k--;
+	} else if ( message == FM_KERNEL_NOTIFYSTRING ) {
+//		TRACE( "\n%d FM_KERNEL_NOTIFYSTRING", k );
+//		k++;
+		syncUI->notifyString( static_cast<RDOKernel::NotifyStringType>(wParam), *((const std::string*)lParam) );
+//		k--;
+	} else if ( message == FM_KERNEL_NOTIFYBOOLAND ) {
+//		TRACE( "\n%d FM_KERNEL_NOTIFYBOOLAND", k );
+//		k++;
+		syncUI->notifyBoolAnd( static_cast<RDOKernel::NotifyBoolType>(wParam) );
+//		k--;
+	} else if ( message == FM_KERNEL_NOTIFYBOOLOR ) {
+//		TRACE( "\n%d FM_KERNEL_NOTIFYBOOLOR", k );
+//		k++;
+		syncUI->notifyBoolOr( static_cast<RDOKernel::NotifyBoolType>(wParam) );
+//		k--;
 	}
 	return CMDIFrameWnd::WindowProc(message, wParam, lParam);
 }

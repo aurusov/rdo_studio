@@ -161,7 +161,8 @@ void tracerCallBack(string *newString, void *param)
 
 RdoSimulator::RdoSimulator(): 
 	runtime(NULL), 
-	parser(NULL), 
+	parser(NULL),
+	syncUI( NULL ),
 	th(NULL)
 //	,
 //	shiftPressed(false),
@@ -185,6 +186,15 @@ public:
 UINT RunningThreadControllingFunction( LPVOID pParam )
 {
 	RdoSimulator *simulator = (RdoSimulator *)pParam;
+	// UA 03.12.05 // изменил работу с уведомлениями
+	// Теперь каждая треда должна регистироваться в кернеле.
+	if ( simulator->syncUI ) {
+		kernel.removeSyncUI( simulator->syncUI );
+		delete simulator->syncUI;
+		simulator->syncUI = NULL;
+	}
+	simulator->syncUI = new RdoSimulator::RDOSimSyncUI( *simulator, ::GetCurrentThreadId() );
+	kernel.insertSyncUI( simulator->syncUI );
 
 	RDOTrace *tracer;
 	rdoRuntime::RDOResult *resulter;
@@ -457,6 +467,14 @@ void RdoSimulator::terminateModel()
 	if(th != NULL)
 	{
 		TerminateThread(th->m_hThread, -1);
+		// UA 03.12.05 // изменил работу с уведомлениями
+		// Теперь каждая треда должна регистироваться в кернеле.
+		// Убираем треду из кернела после её завершения.
+		if ( syncUI ) {
+			kernel.removeSyncUI( syncUI );
+			delete syncUI;
+			syncUI = NULL;
+		}
 		delete th;
 		th = NULL;
 	}

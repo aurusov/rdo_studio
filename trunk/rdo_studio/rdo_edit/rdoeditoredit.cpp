@@ -102,7 +102,8 @@ RDOEditorEdit::RDOEditorEdit( RDOStudioEditBaseView* _view ):
 	RDOEditorBaseEdit(),
 	bufSelStart( -1 ),
 	view( _view ),
-	log( NULL )
+	log( NULL ),
+	canClearErrorLine( true )
 {
 	sci_FOLDMARGIN_ID = getNewMarker();
 	sci_MARKER_ERROR  = getNewMarker();
@@ -144,7 +145,7 @@ BOOL RDOEditorEdit::OnNotify( WPARAM wParam, LPARAM lParam, LRESULT* pResult )
 					if ( scn->modificationType & SC_MOD_CHANGEFOLD ) {
 						foldChanged( scn->line, scn->foldLevelNow, scn->foldLevelPrev );
 					}
-					if ( hasErrorLine() ) clearErrorLine();
+					if ( canClearErrorLine && hasErrorLine() ) clearErrorLine();
 					return TRUE;
 				}
 				case SCN_MARGINCLICK: {
@@ -482,6 +483,18 @@ void RDOEditorEdit::completeWord()
 		word = wl.GetNearestWord( str, wordLength, true );
 	}
 	char* words = wl.GetNearestWords( str, wordLength, true );
+	if ( words ) {
+		string _s = words;
+		while ( _s.find( '?' ) != string::npos ) {
+			string::size_type pos1 = _s.find( '?' );
+			string::size_type pos2 = _s.find( ' ', pos1 );
+			_s.erase( pos1, pos2 - pos1 );
+		}
+//		delete []words; 
+		words = new char[ _s.length() + 1 ];
+		strcpy( words, _s.c_str() );
+		words[ _s.length() + 1 ] = '\0';
+	}
 
 	LPCTSTR list;
 	if ( ((RDOEditorEditStyle*)style)->autoComplete->showFullList ) {
@@ -514,7 +527,7 @@ void RDOEditorEdit::completeWord()
 		}
 	}
 
-	if ( words ) delete []words;
+//	if ( words ) delete words;
 }
 
 void RDOEditorEdit::setErrorLine( int line )

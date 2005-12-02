@@ -57,8 +57,8 @@ private:
 	static void executeErrorNotify();
 	static void showFrameNotify();
 
-	static void buildNotify( std::string str );
-	static void debugNotify( std::string str );
+	static void buildNotify( const std::string& str );
+	static void debugNotify( const std::string& str );
 
 	static void modelExitCallback( int exitCode );
 

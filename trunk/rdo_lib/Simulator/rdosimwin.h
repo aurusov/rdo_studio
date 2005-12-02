@@ -9,6 +9,7 @@
 #include <afxwin.h>
 
 #include <rdocommon.h>
+#include <rdokernel.h>
 
 #include <rdobinarystream.h>
 #include <rdocommon.h>
@@ -33,6 +34,19 @@ class RdoSimulator
 	rdoParse::RDOParser *parser;
 	rdoRuntime::RDORuntime *runtime;
 	bool canTrace;
+
+	// UA 03.12.05 // изменил работу с уведомлениями
+	// Теперь каждая треда должна регистироваться в кернеле.
+	class RDOSimSyncUI: public RDOKernel::RDOKernelSync
+	{
+	private:
+		RdoSimulator& sim;
+
+	public:
+		RDOSimSyncUI( RdoSimulator& _sim, unsigned long int _th_id ): RDOKernel::RDOKernelSync( _th_id ), sim( _sim ) {}
+		virtual ~RDOSimSyncUI() {}
+	};
+	RDOSimSyncUI* syncUI;
 
 	CWinThread* th;
 

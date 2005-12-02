@@ -12,18 +12,11 @@ namespace rdoEditor {
 // ----------------------------------------------------------------------------
 class RDOEditorBaseEdit: public rdoEditCtrl::RDOBaseEdit
 {
-private:
-	static char* p_kw0;
-	static char* p_kw1;
-	static char* p_kw2;
-	char* getKW0();
-	char* getKW1();
-	char* getKW2();
-
 protected:
-	static char* kw0;
-	static char* kw1;
-	static char* kw2;
+	std::string kw0;
+	std::string kw1;
+	std::string kw2;
+	static std::string convertToLexer( const std::string& kw );
 
 	//{{AFX_MSG(RDOEditorBaseEdit)
 	afx_msg int OnCreate( LPCREATESTRUCT lpCreateStruct );
@@ -36,6 +29,8 @@ protected:
 public:
 	RDOEditorBaseEdit();
 	virtual ~RDOEditorBaseEdit();
+
+	virtual BOOL DestroyWindow();
 
 	void setEditorStyle( RDOEditorBaseEditStyle* _style );
 

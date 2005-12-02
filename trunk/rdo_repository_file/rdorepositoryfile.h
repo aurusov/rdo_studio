@@ -68,7 +68,7 @@ private:
 	std::ofstream trace_file;
 	static void beforeModelStartNotify();
 	static void stopModelNotify();
-	static void traceNotify( std::string str );
+	static void traceNotify( const std::string& str );
 	void beforeModelStart();
 	void stopModel();
 	void trace( const std::string& str );

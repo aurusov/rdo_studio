@@ -156,7 +156,7 @@ BOOL RDOStudioApp::InitInstance()
 
 	editDocTemplate = new CMultiDocTemplate( IDR_EDIT_TYPE, RUNTIME_CLASS(RDOStudioEditDoc), RUNTIME_CLASS(RDOStudioChildFrame), RUNTIME_CLASS(RDOStudioEditView) );
 	AddDocTemplate( editDocTemplate );
-	
+
 	tracer = new rdoTracer::RDOTracer();
 
 	AddDocTemplate( tracer->createDocTemplate() );
@@ -164,6 +164,7 @@ BOOL RDOStudioApp::InitInstance()
 	mainFrame = new RDOStudioMainFrame;
 	m_pMainWnd = mainFrame;
 	if ( !mainFrame->LoadFrame( IDR_MAINFRAME ) ) return FALSE;
+	tracer->initNotify();
 
 	loadReopen();
 	updateReopenSubMenu();

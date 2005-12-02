@@ -2,6 +2,7 @@
 // Microsoft Developer Studio generated include file.
 // Used by rdo_studio.rc
 //
+#define IDR_RT_MANIFEST1                1
 #define IDD_CHART_OPTIONS_CHART         107
 #define IDR_MAINFRAME                   128
 #define IDR_MODEL_TYPE                  129
@@ -593,7 +594,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        173
+#define _APS_NEXT_RESOURCE_VALUE        176
 #define _APS_NEXT_COMMAND_VALUE         33183
 #define _APS_NEXT_CONTROL_VALUE         1110
 #define _APS_NEXT_SYMED_VALUE           101

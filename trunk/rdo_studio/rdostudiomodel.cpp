@@ -334,12 +334,12 @@ void RDOStudioModel::showFrameNotify()
 	model->showFrame();
 }
 
-void RDOStudioModel::buildNotify( string str )
+void RDOStudioModel::buildNotify( const string& str )
 {
 	studioApp.mainFrame->output.appendStringToBuild( str );
 }
 
-void RDOStudioModel::debugNotify( string str )
+void RDOStudioModel::debugNotify( const string& str )
 {
 	studioApp.mainFrame->output.appendStringToDebug( str );
 }
@@ -706,9 +706,9 @@ void RDOStudioModel::showFrame()
 {
 	modelTime = kernel.getSimulator()->getModelTime();
 	studioApp.mainFrame->showNewModelTime( modelTime );
-	while ( getShowMode() == SM_Monitor ) {
-		::Sleep( 500 );
-	}
+//	while ( getShowMode() == SM_Monitor ) {
+//		::Sleep( 500 );
+//	}
 	const vector<RDOFrame *>& frames = kernel.getSimulator()->getFrames();
 	vector<RDOFrame *>::const_iterator it = frames.begin();
 	int index = 0;

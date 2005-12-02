@@ -37,7 +37,8 @@ void RDOColorComboBox::DrawItem( LPDRAWITEMSTRUCT lpDrawItemStruct )
 	COLORREF colorBg;
 	if ( itemState & ODS_SELECTED ) {
 		colorBg = GetSysColor( COLOR_HIGHLIGHT );
-		dc.SetTextColor( ( 0x00FFFFFF & ~(colorText) ) );
+		dc.SetTextColor( GetSysColor( COLOR_HIGHLIGHTTEXT ) );
+//		dc.SetTextColor( ( 0x00FFFFFF & ~(colorText) ) );
 	} else {
 		colorBg = GetSysColor( COLOR_WINDOW );
 		dc.SetTextColor( colorText );
@@ -45,7 +46,7 @@ void RDOColorComboBox::DrawItem( LPDRAWITEMSTRUCT lpDrawItemStruct )
 	dc.SetBkColor( colorBg );
 	if ( !(itemState & ODS_DISABLED) ) dc.FillSolidRect( &rectItem, colorBg );
 
-	if ( itemState & ODS_FOCUS ) dc.DrawFocusRect( &rectItem );
+//	if ( itemState & ODS_FOCUS ) dc.DrawFocusRect( &rectItem );
 
 	int itemIndex = lpDrawItemStruct->itemID;
 	if ( itemIndex != -1 ) {

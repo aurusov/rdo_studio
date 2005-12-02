@@ -33,6 +33,13 @@ RDOEditorResults::~RDOEditorResults()
 {
 }
 
+/*
+BOOL RDOEditorResults::DestroyWindow()
+{
+	return RDOEditorBaseEdit::DestroyWindow();
+}
+*/
+
 int RDOEditorResults::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if ( RDOEditorBaseEdit ::OnCreate(lpCreateStruct) == -1 ) return -1;

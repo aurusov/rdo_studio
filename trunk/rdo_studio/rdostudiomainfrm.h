@@ -18,9 +18,16 @@
 #include "rdostudiostatusbar.h"
 #include "rdostudioframestyle.h"
 
+#include <rdokernel.h>
+
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioMainFrame
 // ----------------------------------------------------------------------------
+static const int FM_KERNEL_NOTIFY        = ::RegisterWindowMessage( "FM_KERNEL_NOTIFY" );
+static const int FM_KERNEL_NOTIFYSTRING  = ::RegisterWindowMessage( "FM_KERNEL_NOTIFYSTRING" );
+static const int FM_KERNEL_NOTIFYBOOLAND = ::RegisterWindowMessage( "FM_KERNEL_NOTIFYBOOLAND" );
+static const int FM_KERNEL_NOTIFYBOOLOR  = ::RegisterWindowMessage( "FM_KERNEL_NOTIFYBOOLOR" );
+
 class RDOStudioMainFrame: public CMDIFrameWnd
 {
 DECLARE_DYNAMIC(RDOStudioMainFrame)
@@ -76,6 +83,31 @@ public:
 #endif
 
 protected:
+
+	class RDOMainFrmSyncUI: public RDOKernel::RDOKernelSync
+	{
+	private:
+		RDOStudioMainFrame& frame;
+
+	protected:
+		virtual void notify_fromkernel( RDOKernel::NotifyType notifyType ) {
+			frame.SendNotifyMessage( FM_KERNEL_NOTIFY, notifyType, 0 );
+		}
+		virtual void notifyString_fromkernel( RDOKernel::NotifyStringType notifyType, const std::string& str ) {
+			frame.SendNotifyMessage( FM_KERNEL_NOTIFYSTRING, notifyType, (long)&str );
+		}
+		virtual void notifyBoolAnd_fromkernel( RDOKernel::NotifyBoolType notifyType ) {
+			frame.SendNotifyMessage( FM_KERNEL_NOTIFYBOOLAND, notifyType, 0 );
+		}
+		virtual void notifyBoolOr_fromkernel( RDOKernel::NotifyBoolType notifyType ) {
+			frame.SendNotifyMessage( FM_KERNEL_NOTIFYBOOLOR, notifyType, 0 );
+		}
+	public:
+		RDOMainFrmSyncUI( RDOStudioMainFrame& _frame, unsigned long int _th_id ): RDOKernel::RDOKernelSync( _th_id ), frame( _frame ) {}
+		virtual ~RDOMainFrmSyncUI() {}
+	};
+	RDOMainFrmSyncUI* syncUI;
+
 	//{{AFX_VIRTUAL(RDOStudioMainFrame)
 	public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);

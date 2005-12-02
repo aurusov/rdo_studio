@@ -15,10 +15,12 @@ private:
 	static void closeModelNotify();
 	static void beforeModelStartNotify();
 	static void modelStoppedNotify();
-	static void traceStringNotify( std::string trace_string );
+	static void traceStringNotify( const std::string& trace_string );
 public:
 	RDOTracer();
 	virtual ~RDOTracer();
+
+	void initNotify();
 
 	void setShowMode( const RDOSimulatorNS::ShowMode value );
 };
