@@ -1122,6 +1122,10 @@ SOURCE=.\res\projectToolbar_d.bmp
 # End Source File
 # Begin Source File
 
+SOURCE=".\res\RAO-studio.manifest"
+# End Source File
+# Begin Source File
+
 SOURCE=.\res\rdo_studio.ico
 # End Source File
 # Begin Source File
@@ -1172,14 +1176,6 @@ SOURCE=.\res\zoomToolbar_d.bmp
 # Begin Source File
 
 SOURCE=..\Changes.txt
-# End Source File
-# Begin Source File
-
-SOURCE=".\res\RAO-studio.manifest"
-# End Source File
-# Begin Source File
-
-SOURCE=.\res\rdo_studio.manifest
 # End Source File
 # Begin Source File
 
