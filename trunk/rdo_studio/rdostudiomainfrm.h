@@ -84,7 +84,7 @@ public:
 
 protected:
 
-	class RDOMainFrmSyncUI: public RDOKernel::RDOKernelSync
+	class RDOMainFrmSyncClient: public RDOKernel::RDOKernelSync
 	{
 	private:
 		RDOStudioMainFrame& frame;
@@ -103,10 +103,10 @@ protected:
 			frame.SendNotifyMessage( FM_KERNEL_NOTIFYBOOLOR, notifyType, 0 );
 		}
 	public:
-		RDOMainFrmSyncUI( RDOStudioMainFrame& _frame, unsigned long int _th_id ): RDOKernel::RDOKernelSync( _th_id ), frame( _frame ) {}
-		virtual ~RDOMainFrmSyncUI() {}
+		RDOMainFrmSyncClient( RDOStudioMainFrame& _frame, unsigned long int _th_id ): RDOKernel::RDOKernelSync( _th_id ), frame( _frame ) {}
+		virtual ~RDOMainFrmSyncClient() {}
 	};
-	RDOMainFrmSyncUI* syncUI;
+	RDOMainFrmSyncClient* syncObject;
 
 	//{{AFX_VIRTUAL(RDOStudioMainFrame)
 	public:

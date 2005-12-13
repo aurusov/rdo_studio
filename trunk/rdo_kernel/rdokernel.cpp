@@ -98,7 +98,7 @@ void RDOKernel::notify( NotifyType notifyType )
 	}
 }
 
-void RDOKernel::notify_fromUI( RDOKernelSync* sync, NotifyType notifyType )
+void RDOKernel::notify_fromclient( RDOKernelSync* sync, NotifyType notifyType )
 {
 	RDOKernelSync::onNotifyListType::const_iterator it = sync->onNotify_list.lower_bound( notifyType );
 	while ( it != sync->onNotify_list.upper_bound( notifyType ) ) {
@@ -164,7 +164,7 @@ void RDOKernel::notifyString( NotifyStringType notifyType, const string& str )
 	}
 }
 
-void RDOKernel::notifyString_fromUI( RDOKernelSync* sync, NotifyStringType notifyType, const string& str )
+void RDOKernel::notifyString_fromclient( RDOKernelSync* sync, NotifyStringType notifyType, const string& str )
 {
 	RDOKernelSync::onNotifyStringListType::const_iterator it = sync->onNotifyString_list.lower_bound( notifyType );
 	while ( it != sync->onNotifyString_list.upper_bound( notifyType ) ) {
@@ -267,7 +267,7 @@ bool RDOKernel::notifyBoolOr( NotifyBoolType notifyType )
 	return flag;
 }
 
-void RDOKernel::notifyBoolAnd_fromUI( RDOKernelSync* sync, NotifyBoolType notifyType )
+void RDOKernel::notifyBoolAnd_fromclient( RDOKernelSync* sync, NotifyBoolType notifyType )
 {
 	RDOKernelSync::onNotifyBoolListType::const_iterator it = sync->onNotifyBool_list.lower_bound( notifyType );
 	while ( it != sync->onNotifyBool_list.upper_bound( notifyType ) ) {
@@ -283,7 +283,7 @@ void RDOKernel::notifyBoolAnd_fromUI( RDOKernelSync* sync, NotifyBoolType notify
 	return;
 }
 
-void RDOKernel::notifyBoolOr_fromUI( RDOKernelSync* sync, NotifyBoolType notifyType )
+void RDOKernel::notifyBoolOr_fromclient( RDOKernelSync* sync, NotifyBoolType notifyType )
 {
 	bool flag = true;
 	RDOKernelSync::onNotifyBoolListType::const_iterator it = sync->onNotifyBool_list.lower_bound( notifyType );
@@ -364,40 +364,13 @@ void RDOKernel::debug( const char* str, ... )
 	notifyString( debugString, string( s.begin(), s.end() ) );
 }
 
-int RDOKernel::notify_lock()
-{
-	mutex_notify.Lock();
-	int lock_level = notify_count;
-	notify_count++;
-	mutex_notify.Unlock();
-	return lock_level;
-}
-
-void RDOKernel::notify_unlock()
-{
-	mutex_notify.Lock();
-	notify_count--;
-	mutex_notify.Unlock();
-}
-
-void RDOKernel::notify_wait( int lock_level )
-{
-	mutex_notify.Lock();
-	while ( notify_count > lock_level ) {
-		mutex_notify.Unlock();
-		::Sleep( 1 );
-		mutex_notify.Lock();
-	}
-	mutex_notify.Unlock();
-}
-
-void RDOKernel::insertSyncUI( RDOKernelSync* syncUI )
+void RDOKernel::insertSyncClient( RDOKernelSync* syncUI )
 {
 	syncUI->kernel = this;
 	sync.push_back( syncUI );
 }
 
-void RDOKernel::removeSyncUI( RDOKernelSync* syncUI )
+void RDOKernel::removeSyncClient( RDOKernelSync* syncUI )
 {
 	sync.remove( syncUI );
 }

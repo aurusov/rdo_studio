@@ -112,18 +112,18 @@ public:
 		virtual ~RDOKernelSync() {}
 
 		void notify( NotifyType notifyType ) {
-			kernel->notify_fromUI( this, notifyType );
+			kernel->notify_fromclient( this, notifyType );
 		}
 		void notifyString( NotifyStringType notifyType, const std::string& str ) {
-			kernel->notifyString_fromUI( this, notifyType, str );
+			kernel->notifyString_fromclient( this, notifyType, str );
 		}
 		void notifyBoolAnd( NotifyBoolType notifyType ) {
 			bool_and_value = false;
-			kernel->notifyBoolAnd_fromUI( this, notifyType );
+			kernel->notifyBoolAnd_fromclient( this, notifyType );
 		}
 		void notifyBoolOr( NotifyBoolType notifyType ) {
 			bool_or_value = false;
-			kernel->notifyBoolOr_fromUI( this, notifyType );
+			kernel->notifyBoolOr_fromclient( this, notifyType );
 		}
 	};
 	friend class RDOKernelSync;
@@ -147,14 +147,32 @@ private:
 	CMutex mutex_notify;
 	int notify_count;
 
-	int notify_lock();
-	void notify_unlock();
-	void notify_wait( int lock_level );
+	int notify_lock() {
+		mutex_notify.Lock();
+		int lock_level = notify_count;
+		notify_count++;
+		mutex_notify.Unlock();
+		return lock_level;
+	}
+	void notify_unlock() {
+		mutex_notify.Lock();
+		notify_count--;
+		mutex_notify.Unlock();
+	}
+	void notify_wait( int lock_level ) {
+		mutex_notify.Lock();
+		while ( notify_count > lock_level ) {
+			mutex_notify.Unlock();
+			::Sleep( 1 );
+			mutex_notify.Lock();
+		}
+		mutex_notify.Unlock();
+	}
 
-	void notify_fromUI( RDOKernelSync* sync, NotifyType notifyType );
-	void notifyString_fromUI( RDOKernelSync* sync, NotifyStringType notifyType, const std::string& str );
-	void notifyBoolAnd_fromUI( RDOKernelSync* sync, NotifyBoolType notifyType );
-	void notifyBoolOr_fromUI( RDOKernelSync* sync, NotifyBoolType notifyType );
+	void notify_fromclient( RDOKernelSync* sync, NotifyType notifyType );
+	void notifyString_fromclient( RDOKernelSync* sync, NotifyStringType notifyType, const std::string& str );
+	void notifyBoolAnd_fromclient( RDOKernelSync* sync, NotifyBoolType notifyType );
+	void notifyBoolOr_fromclient( RDOKernelSync* sync, NotifyBoolType notifyType );
 /*
 template < typename T1, class T2, class T3 >
 void _setNotifyReflect( T2 notifyType, T3 fun )
@@ -198,8 +216,8 @@ public:
 	rdoRepository::RDORepository* getRepository();
 	RDOSimulatorNS::RdoSimulator* getSimulator();
 
-	void insertSyncUI( RDOKernelSync* syncUI );
-	void removeSyncUI( RDOKernelSync* syncUI );
+	void insertSyncClient( RDOKernelSync* syncUI );
+	void removeSyncClient( RDOKernelSync* syncUI );
 
 	void setNotifyReflect( NotifyType notifyType, OnNotify fun );
 	void setNotifyReflect( NotifyStringType notifyType, OnNotifyString fun );

@@ -162,7 +162,7 @@ void tracerCallBack(string *newString, void *param)
 RdoSimulator::RdoSimulator(): 
 	runtime(NULL), 
 	parser(NULL),
-	syncUI( NULL ),
+	syncObject( NULL ),
 	th(NULL)
 //	,
 //	shiftPressed(false),
@@ -188,13 +188,7 @@ UINT RunningThreadControllingFunction( LPVOID pParam )
 	RdoSimulator *simulator = (RdoSimulator *)pParam;
 	// UA 03.12.05 // изменил работу с уведомлениями
 	// Теперь каждая треда должна регистироваться в кернеле.
-	if ( simulator->syncUI ) {
-		kernel.removeSyncUI( simulator->syncUI );
-		delete simulator->syncUI;
-		simulator->syncUI = NULL;
-	}
-	simulator->syncUI = new RdoSimulator::RDOSimSyncUI( *simulator, ::GetCurrentThreadId() );
-	kernel.insertSyncUI( simulator->syncUI );
+	simulator->createSync();
 
 	RDOTrace *tracer;
 	rdoRuntime::RDOResult *resulter;
@@ -295,6 +289,10 @@ UINT RunningThreadControllingFunction( LPVOID pParam )
 	simulator->th = NULL;
 
 	kernel.callback(RDOKernel::modelExit, exitCode);
+
+	// UA 14.12.05 // изменил работу с уведомлениями
+	// Теперь каждая треда должна регистироваться в кернеле.
+	simulator->deleteSync();
 
 	return 0;
 }
@@ -470,11 +468,7 @@ void RdoSimulator::terminateModel()
 		// UA 03.12.05 // изменил работу с уведомлениями
 		// Теперь каждая треда должна регистироваться в кернеле.
 		// Убираем треду из кернела после её завершения.
-		if ( syncUI ) {
-			kernel.removeSyncUI( syncUI );
-			delete syncUI;
-			syncUI = NULL;
-		}
+		deleteSync();
 		delete th;
 		th = NULL;
 	}
