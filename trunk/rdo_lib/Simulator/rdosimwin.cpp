@@ -90,6 +90,11 @@ void RdoSimulator::addAreaPressed(string& areaName)
 void frameCallBack(rdoRuntime::RDOConfig *config, void *param)
 {
 	RdoSimulator *simulator = (RdoSimulator *)param;
+	// UA 14.12.05 // из-за того, что треды теперь реально независимы,
+	// перенес режим паузы в симулятор
+	while ( simulator->getShowMode() == SM_Monitor ) {
+		::Sleep( 500 );
+	}
 	if((config->showAnimation == SM_Animation) && (simulator->showMode == SM_Animation))
 	{
 		Sleep(config->realTimeDelay);
