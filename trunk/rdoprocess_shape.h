@@ -62,7 +62,7 @@ public:
 	virtual void moveTo( const int x, const int y );
 
 	const CSize getSize() { return getBoundingRect().Size(); }
-	CPoint getCenter()    { return CPoint( getX() + getSize().cx / 2, getY() + getSize().cy / 2 ); }
+	CPoint getCenter()    { return CPoint( getSize().cx / 2, getSize().cy / 2 ); }
 	CRect getBoundingRect();
 
 	const CPoint& getSnapToPoint() const { return snap_to_point; }

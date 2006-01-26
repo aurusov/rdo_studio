@@ -90,12 +90,12 @@ void RDOPROCShape::move( const int _x, const int _y )
 
 void RDOPROCShape::setX( const int value )
 {
-	moveTo( value, getY() );
+	moveTo( value, y );
 }
 
 void RDOPROCShape::setY( const int value )
 {
-	moveTo( getX(), value );
+	moveTo( x, value );
 }
 
 void RDOPROCShape::moveTo( const int _x, const int _y )
@@ -128,12 +128,17 @@ CRect RDOPROCShape::getBoundingRect()
 	}
 
 	CRect rect( bound_rect );
-	rect.OffsetRect( getX(), getY() );
+	rect.OffsetRect( x, y );
+	rect.bottom += flowchart->getPenShapeWidth();
+	rect.right  += flowchart->getPenShapeWidth();
 	return rect;
 }
 
 void RDOPROCShape::moving( const int dx, const int dy )
 {
+	x += dx;
+	y += dy;
+/*
 	if ( x + dx < 0 ) {
 		x = 0;
 	} else {
@@ -144,6 +149,7 @@ void RDOPROCShape::moving( const int dx, const int dy )
 	} else {
 		y += dy;
 	}
+*/
 //	update_grid_pos = true;
 	flowchart->modify();
 }
@@ -161,7 +167,7 @@ int RDOPROCShape::getMovingStopX( const int dx ) const
 {
 	int delta = x + dx;
 	if ( delta < 0 ) {
-		return -delta;
+//		return -delta;
 	}
 	return 0;
 }
@@ -170,7 +176,7 @@ int RDOPROCShape::getMovingStopY( const int dy ) const
 {
 	int delta = y + dy;
 	if ( delta < 0 ) {
-		return -delta;
+//		return -delta;
 	}
 	return 0;
 }
@@ -212,12 +218,6 @@ void RDOPROCShape::draw( CDC& dc )
 {
 	drawPolyline( dc );
 
-	CPen pen_red( PS_SOLID, 1, RGB(-1,0,0) );
-	CBrush brush_white( RGB(-1,-1,-1) );
-	dc.SelectObject( pen_red );
-	dc.SelectObject( brush_white );
-	dc.Ellipse( snap_to_point.x - 2, snap_to_point.y - 2, snap_to_point.x + 2, snap_to_point.y + 2 );
-
 /*
 	if ( flowChart->getShowShapeName() ) {
 		painter.setPen( flowChart->getShapeColor() );
@@ -228,19 +228,4 @@ void RDOPROCShape::draw( CDC& dc )
 	drawConnectorsInput( painter );
 	drawConnectorsOutput( painter );
 */
-
-	if ( selected ) {
-		dc.SelectObject( flowchart->getPenShapeColor() );
-		dc.SelectObject( flowchart->getBrushSelectBox() );
-		int x = getX() + flowchart->getPaperBorderWidth();
-		int y = getY() + flowchart->getPaperBorderHeight();
-		int w = getSize().cx + flowchart->getPenShapeWidth() - 1;
-		int h = getSize().cy + flowchart->getPenShapeWidth() - 1;
-		int box_size   = 7;
-		int box_size_2 = 3;
-		dc.Rectangle( x - box_size_2, y - box_size_2, x - box_size_2 + box_size, y - box_size_2 + box_size );
-		dc.Rectangle( x + w - box_size_2, y - box_size_2, x + w - box_size_2 + box_size, y - box_size_2 + box_size );
-		dc.Rectangle( x - box_size_2, y + h - box_size_2, x - box_size_2 + box_size, y + h - box_size_2 + box_size );
-		dc.Rectangle( x + w - box_size_2, y + h - box_size_2, x + w - box_size_2 + box_size, y + h - box_size_2 + box_size );
-	}
 }

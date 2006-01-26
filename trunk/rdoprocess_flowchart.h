@@ -8,6 +8,9 @@
 #include <list>
 #include <vector>
 
+#define TEST_SPEED 1
+#undef TEST_SPEED
+
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCFlowChart
 // ----------------------------------------------------------------------------
@@ -28,6 +31,8 @@ private:
 	int border_h;
 	int paper_border_w;
 	int paper_border_h;
+	int paper_border;
+	int paper_shadow;
 	int pixmap_w_real;
 	int pixmap_h_real;
 	int pixmap_w_show;
@@ -46,19 +51,19 @@ private:
 	CFont*   font_first;
 	CBitmap* bmp_first;
 
-	CPen     pen_border;
-	CPen     pen_shadow;
 	CPen     pen_black;
 	CPen     pen_shape_default;
 	CPen     pen_shape_color;
-	CBrush   brush_border;
-	CBrush   brush_shadow;
 	CBrush   brush_select_box;
 	CPoint   border_points[5];
+	COLORREF paper_border_color;
+	COLORREF paper_shadow_color;
 	COLORREF paper_bg_color;
 
 	void makeNewPixmap();
-//	void updateScrollBars();
+	CSize getFlowSize( const std::list< RDOPROCShape* >& list ) const;
+	CSize getFlowSize() const { return getFlowSize( shapes ); }
+	void updateScrollBars();
 	void updateDC();
 	virtual void modify();
 
@@ -83,9 +88,9 @@ private:
 //	bool showConnectorPoint;
 
 	RDOPROCObject* rpobj;
-	std::vector< RDOPROCShape* > shapes;
+	std::list< RDOPROCShape* > shapes;
 
-	std::vector< RDOPROCShape* >::iterator find( const RDOPROCShape* shape );
+	std::list< RDOPROCShape* >::iterator find( const RDOPROCShape* shape );
 
 	CRect getBoundingRect( RDOPROCShape* shape ) const;
 	RDOPROCShape* findObject( const int x, const int y ) const;
@@ -101,6 +106,14 @@ private:
 
 	static void correctPoint( const std::vector< CPoint >& pa, CPoint& point );
 
+#ifdef TEST_SPEED
+	int sec_cnt;
+	int sec_timer;
+	int makepixmap_cnt;
+	int makegrid_cnt;
+	int makegridempty_cnt;
+#endif
+
 public:
 	RDOPROCFlowChart();
 	virtual ~RDOPROCFlowChart();
@@ -111,15 +124,15 @@ public:
 	int getGridStep() const                  { return grid_step;   }
 //	void setGridStep( const int value );
 
-	const CPen&   getPenShape() const       { return pen_shape_default; }
-	const CPen&   getPenShapeColor() const  { return pen_shape_color;   }
-	const CBrush& getBrushSelectBox() const { return brush_select_box;  }
+//	const CPen&   getPenShape() const       { return pen_shape_default; }
+//	const CPen&   getPenShapeColor() const  { return pen_shape_color;   }
+//	const CBrush& getBrushSelectBox() const { return brush_select_box;  }
 	
 	int getPenShapeWidth() const             { return shape_pen_width; }
-	int getPaperBorderWidth() const          { return paper_border_w;  }
+//	int getPaperBorderWidth() const          { return paper_border_w;  }
 //	void setPaperBorderWidth( const int value );
 
-	int getPaperBorderHeight() const         { return paper_border_h; }
+//	int getPaperBorderHeight() const         { return paper_border_h; }
 //	void setPaperBorderHeight( const int value );
 
 	void selectShapeOff();
