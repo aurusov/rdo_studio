@@ -391,9 +391,11 @@ void RDOPROCFlowChart::makeGrid()
 		if ( !grid_bmp.m_hObject ) {
 			// brush
 			if ( grid_step < 10 ) {
-				grid_bmp_width = grid_step * 10;
+				grid_bmp_width = grid_step * 50;
+			} else if ( grid_step < 25 ) {
+				grid_bmp_width = grid_step * 25;
 			} else {
-				grid_bmp_width = grid_step;
+				grid_bmp_width = grid_step * 10;
 			}
 			if ( !grid_dc.m_hDC ) {
 				grid_dc.CreateCompatibleDC( dc );
@@ -418,10 +420,12 @@ void RDOPROCFlowChart::makeGrid()
 	} else {
 		if ( !grid_bmp.m_hObject ) {
 			// brush
-			if ( grid_step < 10 ) {
-				grid_bmp_width = grid_step * 100;
+			if ( grid_step < 100 ) {
+				grid_bmp_width = grid_step * 4;
+			} else if ( grid_step < 300 ) {
+				grid_bmp_width = grid_step * 2;
 			} else {
-				grid_bmp_width = grid_step * 10;
+				grid_bmp_width = grid_step;
 			}
 			if ( !grid_dc.m_hDC ) {
 				grid_dc.CreateCompatibleDC( dc );
@@ -571,9 +575,11 @@ void RDOPROCFlowChart::OnPaint()
 			int x_start = scroll_x_pos / grid_bmp_width;
 			int y_start = scroll_y_pos / grid_bmp_width;
 			int x_stop  = x_start + pixmap_w_show / grid_bmp_width + 1;
-			int y_stop  = y_start + pixmap_w_show / grid_bmp_width + 1;
+			int y_stop  = y_start + pixmap_h_show / grid_bmp_width + 1;
 			int w = min( pixmap_w_show, grid_bmp_width );
 			int h = min( pixmap_h_show, grid_bmp_width );
+			w = grid_bmp_width;
+			h = w;
 #ifdef TEST_SPEED // =====================================
 			if ( cnt3 == 0 ) {
 #endif // ================================================
