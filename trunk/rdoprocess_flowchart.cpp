@@ -180,8 +180,10 @@ void RDOPROCFlowChart::OnDestroy()
 		mem_dc.RestoreDC( saved_mem_dc );
 		mem_dc.DeleteDC();
 	}
-	grid_dc.SelectObject( bmp_first );
-	grid_bmp.DeleteObject();
+	if ( grid_bmp.GetSafeHandle() ) {
+		grid_dc.SelectObject( bmp_first );
+		grid_bmp.DeleteObject();
+	}
 	CWnd::OnDestroy();
 }
 
@@ -440,18 +442,12 @@ void RDOPROCFlowChart::makeGrid()
 				pen.CreatePen( PS_DOT, 1, grid_color );
 			}
 			grid_dc.SelectObject( pen );
-//			CPoint _grid_pa[2];
 			int y1 = 0;
 			int y2 = grid_bmp_width;
 			for ( int i = 0; i < grid_bmp_width / grid_step; i++ ) {
 				int x = i * grid_step;
 				grid_dc.MoveTo( x, y1 );
 				grid_dc.LineTo( x, y2 );
-//				_grid_pa[ 0 ].x = x;
-//				_grid_pa[ 0 ].y = y1;
-//				_grid_pa[ 1 ].x = x;
-//				_grid_pa[ 1 ].y = y2;
-//				grid_dc.Polyline( &_grid_pa[0], 2 );
 			}
 			int x1 = 0;
 			int x2 = grid_bmp_width;
@@ -459,11 +455,6 @@ void RDOPROCFlowChart::makeGrid()
 				int y = j * grid_step;
 				grid_dc.MoveTo( x1, y );
 				grid_dc.LineTo( x2, y );
-//				_grid_pa[ 0 ].x = x1;
-//				_grid_pa[ 0 ].y = y;
-//				_grid_pa[ 1 ].x = x2;
-//				_grid_pa[ 1 ].y = y;
-//				grid_dc.Polyline( &_grid_pa[0], 2 );
 			}
 		}
 		// points array
@@ -545,19 +536,6 @@ void RDOPROCFlowChart::OnPaint()
 		dc.LineTo( client_width - border_w, client_height - border_h );
 		dc.LineTo( border_w - 1, client_height - border_h );
 		dc.LineTo( border_w - 1, border_h - 1 );
-/*
-		border_points[0].x = border_w - 1;
-		border_points[0].y = border_h - 1;
-		border_points[1].x = client_width - border_w;
-		border_points[1].y = border_h - 1;
-		border_points[2].x = client_width - border_w;
-		border_points[2].y = client_height - border_h;
-		border_points[3].x = border_w - 1;
-		border_points[3].y = client_height - border_h;
-		border_points[4].x = border_w - 1;
-		border_points[4].y = border_h - 1;
-		dc.Polyline( border_points, 5 );
-*/
 	}
 
 #ifdef TEST_SPEED // =====================================
@@ -576,10 +554,6 @@ void RDOPROCFlowChart::OnPaint()
 			int y_start = scroll_y_pos / grid_bmp_width;
 			int x_stop  = x_start + pixmap_w_show / grid_bmp_width + 1;
 			int y_stop  = y_start + pixmap_h_show / grid_bmp_width + 1;
-			int w = min( pixmap_w_show, grid_bmp_width );
-			int h = min( pixmap_h_show, grid_bmp_width );
-			w = grid_bmp_width;
-			h = w;
 #ifdef TEST_SPEED // =====================================
 			if ( cnt3 == 0 ) {
 #endif // ================================================
@@ -589,7 +563,7 @@ void RDOPROCFlowChart::OnPaint()
 #endif // ================================================
 			for ( int i = x_start; i <= x_stop; i++ ) {
 				for ( int j = y_start; j <= y_stop; j++ ) {
-					mem_dc.BitBlt( -scroll_x_pos + paper_border_w + i * grid_bmp_width, -scroll_y_pos + paper_border_h + j * grid_bmp_width, w, h, &grid_dc, 0, 0, SRCCOPY );
+					mem_dc.BitBlt( -scroll_x_pos + paper_border_w + i * grid_bmp_width, -scroll_y_pos + paper_border_h + j * grid_bmp_width, grid_bmp_width, grid_bmp_width, &grid_dc, 0, 0, SRCCOPY );
 				}
 			}
 		}
