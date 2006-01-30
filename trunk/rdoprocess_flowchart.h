@@ -55,7 +55,7 @@ private:
 	CPen     pen_shape_default;
 	CPen     pen_shape_color;
 	CBrush   brush_select_box;
-	CPoint   border_points[5];
+//	CPoint   border_points[5];
 	COLORREF paper_border_color;
 	COLORREF paper_shadow_color;
 	COLORREF paper_bg_color;
