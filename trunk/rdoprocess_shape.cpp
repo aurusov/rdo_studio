@@ -154,33 +154,6 @@ void RDOPROCShape::moving( const int dx, const int dy )
 	flowchart->modify();
 }
 
-/*
-void RDOPROCShape::movingGrid( const int dx, const int dy )
-{
-	x += dx * flowchart->getGridStep();
-	y += dy * flowchart->getGridStep();
-	update_grid_pos = true;
-}
-*/
-
-int RDOPROCShape::getMovingStopX( const int dx ) const
-{
-	int delta = x + dx;
-	if ( delta < 0 ) {
-//		return -delta;
-	}
-	return 0;
-}
-
-int RDOPROCShape::getMovingStopY( const int dy ) const
-{
-	int delta = y + dy;
-	if ( delta < 0 ) {
-//		return -delta;
-	}
-	return 0;
-}
-
 void RDOPROCShape::drawPolyline( CDC& dc )
 {
 	if ( pa.size() < 2 ) return;

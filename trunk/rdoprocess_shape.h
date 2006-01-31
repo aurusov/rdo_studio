@@ -44,8 +44,6 @@ protected:
 //	virtual void drawConnectorsOutput( CDC& dc );
 
 	virtual void moving( const int dx, const int dy );
-	int getMovingStopX( const int dx ) const;
-	int getMovingStopY( const int dy ) const;
 
 public:
 	RDOPROCShape( RDOPROCFlowChart* flowchart, RDOPROCObject* parent );

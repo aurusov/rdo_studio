@@ -1161,18 +1161,21 @@ void RDOPROCFlowChart::moving( const int global_mouse_x, const int global_mouse_
 	if ( !movingShapes.empty() ) {
 		int dx = global_mouse_x - global_old_x;
 		int dy = global_mouse_y - global_old_y;
+		// Отсечь выход за границы листа (левый верхний угол)
 		std::list< RDOPROCShape* >::const_iterator it = movingShapes.begin();
 		while ( it != movingShapes.end() ) {
-			int stop_x = (*it)->getMovingStopX( dx );
-			int stop_y = (*it)->getMovingStopY( dy );
-			if ( stop_x ) {
-				dx += stop_x;
+			RDOPROCShape* shape = *it;
+			int delta = shape->getX() + dx;
+			if ( delta < 0 ) {
+				dx -= delta;
 			}
-			if ( stop_y ) {
-				dy += stop_y;
+			delta = shape->getY() + dy;
+			if ( delta < 0 ) {
+				dy -= delta;
 			}
 			it++;
 		}
+		// Переместить объекты
 		it = movingShapes.begin();
 		while ( it != movingShapes.end() ) {
 			(*it)->moving( dx, dy );
