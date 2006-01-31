@@ -58,6 +58,13 @@ END
 
 #endif    // APSTUDIO_INVOKED
 
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// 24
+//
+
+IDR_RT_MANIFEST1        24      MOVEABLE PURE   "res\\rdo_process.manifest"
 #endif    // Russian resources
 /////////////////////////////////////////////////////////////////////////////
 
@@ -211,8 +218,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,0,9
- PRODUCTVERSION 1,0,0,9
+ FILEVERSION 1,0,0,10
+ PRODUCTVERSION 1,0,0,10
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -229,13 +236,13 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "rdo_process MFC Application\0"
-            VALUE "FileVersion", "1, 0, 0, 9\0"
+            VALUE "FileVersion", "1, 0, 0, 10\0"
             VALUE "InternalName", "rdo_process\0"
             VALUE "LegalCopyright", "Copyright (C) 2006\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "rdo_process.EXE\0"
             VALUE "ProductName", "rdo_process Application\0"
-            VALUE "ProductVersion", "1, 0, 0, 9\0"
+            VALUE "ProductVersion", "1, 0, 0, 10\0"
         END
     END
     BLOCK "VarFileInfo"

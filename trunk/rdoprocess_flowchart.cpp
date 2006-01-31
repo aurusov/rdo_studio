@@ -22,6 +22,7 @@ const int grid_timer_id = 1;
 
 #ifdef TEST_SPEED // =====================================
 const int sec_timer_id = 2;
+const int base_speed = 10000;
 #endif // ================================================
 
 BEGIN_MESSAGE_MAP( RDOPROCFlowChart,CWnd )
@@ -310,7 +311,7 @@ void RDOPROCFlowChart::makeNewPixmap()
 	int pixmap_h_show_old = pixmap_h_show;
 
 #ifdef TEST_SPEED // =====================================
-	for ( int cnt = 0; cnt <= 100000; cnt++ ) {
+	for ( int cnt = 0; cnt <= base_speed * 10; cnt++ ) {
 #endif // ================================================
 
 	CRect client_rect;
@@ -376,7 +377,7 @@ void RDOPROCFlowChart::makeGrid()
 	SYSTEMTIME t1;
 	SYSTEMTIME t2;
 	::GetSystemTime( &t1 );
-	for ( int cnt = 0; cnt <= 100000; cnt++ ) {
+	for ( int cnt = 0; cnt <= base_speed * 10; cnt++ ) {
 #endif // ================================================
 
 	CSize size = getFlowSize();
@@ -497,35 +498,49 @@ void RDOPROCFlowChart::OnPaint()
 	SYSTEMTIME t6;
 	SYSTEMTIME t7;
 	::GetSystemTime( &t0 );
-	int base_speed = 1000;
 #endif // ================================================
 
 	CPaintDC dc( this );
 	dc.SaveDC();
-
-#ifdef TEST_SPEED // =====================================
-	for ( int cnt1 = 0; cnt1 <= base_speed * 10; cnt1++ ) {
-#endif // ================================================
 
 	CRect client_rect;
 	GetClientRect( &client_rect );
 	client_width  = client_rect.Width();
 	client_height = client_rect.Height();
 
-	dc.FillSolidRect( 0, 0, border_w - paper_border, client_height, paper_border_color );
-	dc.FillSolidRect( client_width - border_w + paper_border + paper_shadow, 0, border_w - paper_border - paper_shadow, client_height, paper_border_color );
-	dc.FillSolidRect( border_w - paper_border, 0, client_width - border_w * 2 + paper_border * 2 + paper_shadow, border_h - paper_border, paper_border_color );
-	dc.FillSolidRect( border_w - paper_border, client_height - border_h + paper_border + paper_shadow, client_width - border_w * 2 + paper_border * 2 + paper_shadow, border_h - paper_border - paper_shadow, paper_border_color );
-	dc.FillSolidRect( border_w - paper_border, client_height - border_h + paper_border, paper_shadow, paper_shadow, paper_border_color );
-	dc.FillSolidRect( client_width - border_w + paper_border, border_h - paper_border, paper_shadow, paper_shadow, paper_border_color );
+
+	if ( client_width < border_w * 2 || client_height < border_h * 2 ) {
 
 #ifdef TEST_SPEED // =====================================
-	}
-	::GetSystemTime( &t1 );
-	for ( int cnt2 = 0; cnt2 <= base_speed * 10; cnt2++ ) {
+		for ( int cnt1 = 0; cnt1 <= base_speed * 10; cnt1++ ) {
 #endif // ================================================
 
-	if ( client_width > border_w * 2 && client_height > border_h * 2 ) {
+		dc.FillSolidRect( 0, 0, client_width, client_height, paper_border_color );
+
+#ifdef TEST_SPEED // =====================================
+		}
+		::GetSystemTime( &t1 );
+#endif // ================================================
+
+	} else {
+
+#ifdef TEST_SPEED // =====================================
+		for ( int cnt1 = 0; cnt1 <= base_speed * 10; cnt1++ ) {
+#endif // ================================================
+
+		dc.FillSolidRect( 0, 0, border_w - paper_border, client_height, paper_border_color );
+		dc.FillSolidRect( client_width - border_w + paper_border + paper_shadow, 0, border_w - paper_border - paper_shadow, client_height, paper_border_color );
+		dc.FillSolidRect( border_w - paper_border, 0, client_width - border_w * 2 + paper_border * 2 + paper_shadow, border_h - paper_border, paper_border_color );
+		dc.FillSolidRect( border_w - paper_border, client_height - border_h + paper_border + paper_shadow, client_width - border_w * 2 + paper_border * 2 + paper_shadow, border_h - paper_border - paper_shadow, paper_border_color );
+		dc.FillSolidRect( border_w - paper_border, client_height - border_h + paper_border, paper_shadow, paper_shadow, paper_border_color );
+		dc.FillSolidRect( client_width - border_w + paper_border, border_h - paper_border, paper_shadow, paper_shadow, paper_border_color );
+
+#ifdef TEST_SPEED // =====================================
+		}
+		::GetSystemTime( &t1 );
+		for ( int cnt2 = 0; cnt2 <= base_speed * 10; cnt2++ ) {
+#endif // ================================================
+
 		const int shadow_border_w = 2;
 		const int shadow_border_h = 2;
 		dc.FillSolidRect( client_width - border_w + paper_border, border_h + shadow_border_h - paper_border, shadow_border_w, client_height - border_h * 2 + shadow_border_w, paper_shadow_color );
@@ -536,139 +551,138 @@ void RDOPROCFlowChart::OnPaint()
 		dc.LineTo( client_width - border_w, client_height - border_h );
 		dc.LineTo( border_w - 1, client_height - border_h );
 		dc.LineTo( border_w - 1, border_h - 1 );
-	}
 
 #ifdef TEST_SPEED // =====================================
-	}
-	::GetSystemTime( &t2 );
+		}
+		::GetSystemTime( &t2 );
 #endif // ================================================
 
-	if ( pixmap_w_show > 0 && pixmap_h_show > 0 ) {
+		if ( pixmap_w_show > 0 && pixmap_h_show > 0 ) {
 
 #ifdef TEST_SPEED // =====================================
-		for ( int cnt3 = 0; cnt3 <= base_speed; cnt3++ ) {
+			for ( int cnt3 = 0; cnt3 <= base_speed; cnt3++ ) {
 #endif // ================================================
 
-		if ( grid_show ) {
-			int x_start = scroll_x_pos / grid_bmp_width;
-			int y_start = scroll_y_pos / grid_bmp_width;
-			int x_stop  = x_start + pixmap_w_show / grid_bmp_width + 1;
-			int y_stop  = y_start + pixmap_h_show / grid_bmp_width + 1;
+			if ( grid_show ) {
+				int x_start = scroll_x_pos / grid_bmp_width;
+				int y_start = scroll_y_pos / grid_bmp_width;
+				int x_stop  = x_start + pixmap_w_show / grid_bmp_width + 1;
+				int y_stop  = y_start + pixmap_h_show / grid_bmp_width + 1;
 #ifdef TEST_SPEED // =====================================
-			if ( cnt3 == 0 ) {
+				if ( cnt3 == 0 ) {
 #endif // ================================================
-			TRACE( "x_start = %d, y_start = %d, x_stop = %d, y_stop = %d\n", x_start, y_start, x_stop, y_stop );
+				TRACE( "x_start = %d, y_start = %d, x_stop = %d, y_stop = %d\n", x_start, y_start, x_stop, y_stop );
 #ifdef TEST_SPEED // =====================================
-			}
+				}
 #endif // ================================================
-			for ( int i = x_start; i <= x_stop; i++ ) {
-				for ( int j = y_start; j <= y_stop; j++ ) {
-					mem_dc.BitBlt( -scroll_x_pos + paper_border_w + i * grid_bmp_width, -scroll_y_pos + paper_border_h + j * grid_bmp_width, grid_bmp_width, grid_bmp_width, &grid_dc, 0, 0, SRCCOPY );
+				for ( int i = x_start; i <= x_stop; i++ ) {
+					for ( int j = y_start; j <= y_stop; j++ ) {
+						mem_dc.BitBlt( -scroll_x_pos + paper_border_w + i * grid_bmp_width, -scroll_y_pos + paper_border_h + j * grid_bmp_width, grid_bmp_width, grid_bmp_width, &grid_dc, 0, 0, SRCCOPY );
+					}
 				}
 			}
-		}
 
 #ifdef TEST_SPEED // =====================================
-		}
-		::GetSystemTime( &t3 );
+			}
+			::GetSystemTime( &t3 );
 
-		for ( int cnt4 = 0; cnt4 <= base_speed * 10; cnt4++ ) {
+			for ( int cnt4 = 0; cnt4 <= base_speed * 10; cnt4++ ) {
+				std::list< RDOPROCShape* >::iterator it = shapes.begin();
+				while ( it != shapes.end() ) {
+					RDOPROCShape* shape = *it;
+					shape->translate( -scroll_x_pos + shape->getX() + paper_border_w + shape_pen_width / 2, -scroll_y_pos + shape->getY() + paper_border_h + shape_pen_width / 2 );
+					shape->translate( scroll_x_pos - shape->getX() - paper_border_w - shape_pen_width / 2, scroll_y_pos - shape->getY() - paper_border_h - shape_pen_width / 2 );
+					it++;
+				}
+			}
+			::GetSystemTime( &t4 );
+#endif // ================================================
+
 			std::list< RDOPROCShape* >::iterator it = shapes.begin();
 			while ( it != shapes.end() ) {
 				RDOPROCShape* shape = *it;
 				shape->translate( -scroll_x_pos + shape->getX() + paper_border_w + shape_pen_width / 2, -scroll_y_pos + shape->getY() + paper_border_h + shape_pen_width / 2 );
+				it++;
+			}
+
+#ifdef TEST_SPEED // =====================================
+			for ( int cnt5 = 0; cnt5 <= base_speed; cnt5++ ) {
+#endif // ================================================
+
+			it = shapes.begin();
+			while ( it != shapes.end() ) {
+				int saved = mem_dc.SaveDC();
+				mem_dc.SelectObject( pen_shape_default );
+				(*it)->draw( mem_dc );
+				mem_dc.RestoreDC( saved );
+				it++;
+			}
+
+#ifdef TEST_SPEED // =====================================
+			}
+			::GetSystemTime( &t5 );
+#endif // ================================================
+
+#ifdef TEST_SPEED // =====================================
+			for ( int cnt6 = 0; cnt6 <= base_speed * 10; cnt6++ ) {
+#endif // ================================================
+
+			mem_dc.FillSolidRect( 0, 0, pixmap_w_show, paper_border_h, paper_bg_color );
+			mem_dc.FillSolidRect( 0, paper_border_h, paper_border_w, pixmap_h_show - paper_border_h, paper_bg_color );
+			mem_dc.FillSolidRect( pixmap_w_show - paper_border_w, paper_border_h, paper_border_w, pixmap_h_show - paper_border_h, paper_bg_color );
+			mem_dc.FillSolidRect( paper_border_w, pixmap_h_show - paper_border_h, pixmap_w_show - paper_border_w * 2, paper_border_h, paper_bg_color );
+
+#ifdef TEST_SPEED // =====================================
+			}
+			::GetSystemTime( &t6 );
+#endif // ================================================
+
+			it = shapes.begin();
+			while ( it != shapes.end() ) {
+				RDOPROCShape* shape = *it;
+//				CPoint snap_to_point = shape->getCenter();
+//				snap_to_point.Offset( shape->getX() + paper_border_w, shape->getY() + paper_border_h );
+				const CPoint& snap_to_point = shape->getSnapToPoint();
+				if ( snap_to_point.x > paper_border_w && snap_to_point.y > paper_border_h && snap_to_point.x <= pixmap_w_show - paper_border_w && snap_to_point.y <= pixmap_h_show - paper_border_h ) {
+					CPen pen_red( PS_SOLID, 1, RGB(-1,0,0) );
+					CBrush brush_white( RGB(-1,-1,-1) );
+					mem_dc.SelectObject( pen_red );
+					mem_dc.SelectObject( brush_white );
+					mem_dc.Ellipse( snap_to_point.x - 2, snap_to_point.y - 2, snap_to_point.x + 2, snap_to_point.y + 2 );
+				}
+				if ( shape->isSelected() ) {
+					mem_dc.SelectObject( pen_shape_color );
+					mem_dc.SelectObject( brush_select_box );
+					int x = shape->getX() + paper_border_w - scroll_x_pos;
+					int y = shape->getY() + paper_border_h - scroll_y_pos;
+					int w = shape->getSize().cx - 1;
+					int h = shape->getSize().cy - 1;
+					int box_size   = 7;
+					int box_size_2 = 3;
+					if ( x >= paper_border_w && y >= paper_border_h && x < pixmap_w_show - paper_border_w && y < pixmap_h_show - paper_border_h )
+						mem_dc.Rectangle( x - box_size_2, y - box_size_2, x - box_size_2 + box_size, y - box_size_2 + box_size );
+					if ( x >= paper_border_w && y + h >= paper_border_h && x < pixmap_w_show - paper_border_w && y + h < pixmap_h_show - paper_border_h )
+						mem_dc.Rectangle( x - box_size_2, y + h - box_size_2, x - box_size_2 + box_size, y + h - box_size_2 + box_size );
+					if ( x + w >= paper_border_w && y >= paper_border_h && x + w < pixmap_w_show - paper_border_w && y < pixmap_h_show - paper_border_h )
+						mem_dc.Rectangle( x + w - box_size_2, y - box_size_2, x + w - box_size_2 + box_size, y - box_size_2 + box_size );
+					if ( x + w >= paper_border_w && y + h >= paper_border_h && x + w < pixmap_w_show - paper_border_w && y + h < pixmap_h_show - paper_border_h )
+						mem_dc.Rectangle( x + w - box_size_2, y + h - box_size_2, x + w - box_size_2 + box_size, y + h - box_size_2 + box_size );
+				}
 				shape->translate( scroll_x_pos - shape->getX() - paper_border_w - shape_pen_width / 2, scroll_y_pos - shape->getY() - paper_border_h - shape_pen_width / 2 );
 				it++;
 			}
-		}
-		::GetSystemTime( &t4 );
-#endif // ================================================
-
-		std::list< RDOPROCShape* >::iterator it = shapes.begin();
-		while ( it != shapes.end() ) {
-			RDOPROCShape* shape = *it;
-			shape->translate( -scroll_x_pos + shape->getX() + paper_border_w + shape_pen_width / 2, -scroll_y_pos + shape->getY() + paper_border_h + shape_pen_width / 2 );
-			it++;
-		}
 
 #ifdef TEST_SPEED // =====================================
-		for ( int cnt5 = 0; cnt5 <= base_speed; cnt5++ ) {
+			for ( int cnt7 = 0; cnt7 <= base_speed * 5; cnt7++ ) {
 #endif // ================================================
 
-		it = shapes.begin();
-		while ( it != shapes.end() ) {
-			int saved = mem_dc.SaveDC();
-			mem_dc.SelectObject( pen_shape_default );
-			(*it)->draw( mem_dc );
-			mem_dc.RestoreDC( saved );
-			it++;
-		}
+			dc.BitBlt( border_w, border_h, pixmap_w_show, pixmap_h_show, &mem_dc, 0, 0, SRCCOPY );
 
 #ifdef TEST_SPEED // =====================================
-		}
-		::GetSystemTime( &t5 );
-#endif // ================================================
-
-#ifdef TEST_SPEED // =====================================
-		for ( int cnt6 = 0; cnt6 <= base_speed * 10; cnt6++ ) {
-#endif // ================================================
-
-		mem_dc.FillSolidRect( 0, 0, pixmap_w_show, paper_border_h, paper_bg_color );
-		mem_dc.FillSolidRect( 0, paper_border_h, paper_border_w, pixmap_h_show - paper_border_h, paper_bg_color );
-		mem_dc.FillSolidRect( pixmap_w_show - paper_border_w, paper_border_h, paper_border_w, pixmap_h_show - paper_border_h, paper_bg_color );
-		mem_dc.FillSolidRect( paper_border_w, pixmap_h_show - paper_border_h, pixmap_w_show - paper_border_w * 2, paper_border_h, paper_bg_color );
-
-#ifdef TEST_SPEED // =====================================
-		}
-		::GetSystemTime( &t6 );
-#endif // ================================================
-
-		it = shapes.begin();
-		while ( it != shapes.end() ) {
-			RDOPROCShape* shape = *it;
-//			CPoint snap_to_point = shape->getCenter();
-//			snap_to_point.Offset( shape->getX() + paper_border_w, shape->getY() + paper_border_h );
-			const CPoint& snap_to_point = shape->getSnapToPoint();
-			if ( snap_to_point.x > paper_border_w && snap_to_point.y > paper_border_h && snap_to_point.x <= pixmap_w_show - paper_border_w && snap_to_point.y <= pixmap_h_show - paper_border_h ) {
-				CPen pen_red( PS_SOLID, 1, RGB(-1,0,0) );
-				CBrush brush_white( RGB(-1,-1,-1) );
-				mem_dc.SelectObject( pen_red );
-				mem_dc.SelectObject( brush_white );
-				mem_dc.Ellipse( snap_to_point.x - 2, snap_to_point.y - 2, snap_to_point.x + 2, snap_to_point.y + 2 );
 			}
-			if ( shape->isSelected() ) {
-				mem_dc.SelectObject( pen_shape_color );
-				mem_dc.SelectObject( brush_select_box );
-				int x = shape->getX() + paper_border_w - scroll_x_pos;
-				int y = shape->getY() + paper_border_h - scroll_y_pos;
-				int w = shape->getSize().cx - 1;
-				int h = shape->getSize().cy - 1;
-				int box_size   = 7;
-				int box_size_2 = 3;
-				if ( x >= paper_border_w && y >= paper_border_h && x < pixmap_w_show - paper_border_w && y < pixmap_h_show - paper_border_h )
-					mem_dc.Rectangle( x - box_size_2, y - box_size_2, x - box_size_2 + box_size, y - box_size_2 + box_size );
-				if ( x >= paper_border_w && y + h >= paper_border_h && x < pixmap_w_show - paper_border_w && y + h < pixmap_h_show - paper_border_h )
-					mem_dc.Rectangle( x - box_size_2, y + h - box_size_2, x - box_size_2 + box_size, y + h - box_size_2 + box_size );
-				if ( x + w >= paper_border_w && y >= paper_border_h && x + w < pixmap_w_show - paper_border_w && y < pixmap_h_show - paper_border_h )
-					mem_dc.Rectangle( x + w - box_size_2, y - box_size_2, x + w - box_size_2 + box_size, y - box_size_2 + box_size );
-				if ( x + w >= paper_border_w && y + h >= paper_border_h && x + w < pixmap_w_show - paper_border_w && y + h < pixmap_h_show - paper_border_h )
-					mem_dc.Rectangle( x + w - box_size_2, y + h - box_size_2, x + w - box_size_2 + box_size, y + h - box_size_2 + box_size );
-			}
-			shape->translate( scroll_x_pos - shape->getX() - paper_border_w - shape_pen_width / 2, scroll_y_pos - shape->getY() - paper_border_h - shape_pen_width / 2 );
-			it++;
-		}
-
-#ifdef TEST_SPEED // =====================================
-		for ( int cnt7 = 0; cnt7 <= base_speed * 5; cnt7++ ) {
+			::GetSystemTime( &t7 );
 #endif // ================================================
-
-		dc.BitBlt( border_w, border_h, pixmap_w_show, pixmap_h_show, &mem_dc, 0, 0, SRCCOPY );
-
-#ifdef TEST_SPEED // =====================================
 		}
-		::GetSystemTime( &t7 );
-#endif // ================================================
-
 	}
 	dc.RestoreDC( -1 );
 

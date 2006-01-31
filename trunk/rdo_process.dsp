@@ -187,6 +187,10 @@ SOURCE=.\res\rdo_process.ico
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\rdo_process.manifest
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdo_process.rc
 # End Source File
 # Begin Source File

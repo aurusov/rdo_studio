@@ -8,7 +8,7 @@
 #include <list>
 #include <vector>
 
-#define TEST_SPEED 1
+#define TEST_SPEED TRUE
 #undef TEST_SPEED
 
 // ----------------------------------------------------------------------------
@@ -55,7 +55,6 @@ private:
 	CPen     pen_shape_default;
 	CPen     pen_shape_color;
 	CBrush   brush_select_box;
-//	CPoint   border_points[5];
 	COLORREF paper_border_color;
 	COLORREF paper_shadow_color;
 	COLORREF paper_bg_color;
