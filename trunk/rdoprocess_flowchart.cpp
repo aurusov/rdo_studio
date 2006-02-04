@@ -1203,6 +1203,7 @@ void RDOPROCFlowChart::moving( const int global_mouse_x, const int global_mouse_
 			it++;
 		}
 		updateScrollBars();
+		makeGrid();
 /*
 //		if ( dx > 0 ) {
 			CSize size = getFlowSize( movingShapes );
