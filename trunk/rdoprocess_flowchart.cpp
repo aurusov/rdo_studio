@@ -266,14 +266,21 @@ void RDOPROCFlowChart::updateScrollBars()
 	si.cbSize = sizeof( si );
 	si.fMask  = SIF_RANGE | SIF_PAGE | SIF_POS;
 
+	int max_x = size.cx + border_w * 2 + paper_border_w * 2 - 1;
+	int max_y = size.cy + border_h * 2 + paper_border_h * 2 - 1;
+	if ( scroll_x_pos + pixmap_w_show > max_x ) scroll_x_pos = max_x - pixmap_w_show;
+	if ( scroll_y_pos + pixmap_h_show > max_y ) scroll_y_pos = max_y - pixmap_h_show;
+	if ( scroll_x_pos < 0 ) scroll_x_pos = 0;
+	if ( scroll_y_pos < 0 ) scroll_y_pos = 0;
+
 	si.nMin   = 0;
-	si.nMax   = size.cx + border_w * 2 + paper_border_w * 2 - 1;
+	si.nMax   = max_x;
 	si.nPos   = scroll_x_pos;
 	si.nPage  = client_width;
 	SetScrollInfo( SB_HORZ, &si, TRUE );
 
 	si.nMin   = 0;
-	si.nMax   = size.cy + border_h * 2 + paper_border_h * 2 - 1;
+	si.nMax   = max_y;
 	si.nPos   = scroll_y_pos;
 	si.nPage  = client_height;
 	SetScrollInfo( SB_VERT, &si, TRUE );
@@ -1195,7 +1202,7 @@ void RDOPROCFlowChart::moving( const int global_mouse_x, const int global_mouse_
 			(*it)->moving( dx, dy );
 			it++;
 		}
-//		updateScrollBars();
+		updateScrollBars();
 /*
 //		if ( dx > 0 ) {
 			CSize size = getFlowSize( movingShapes );
