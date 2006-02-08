@@ -9,6 +9,8 @@
 	#error include 'stdafx.h' before including this file for PCH
 #endif
 
+#include "rdoprocess_object.h"
+
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCApp
 // ----------------------------------------------------------------------------
@@ -20,6 +22,8 @@ protected:
 
 public:
 	RDOPROCApp();
+
+	RDOPROCObject project;
 
 	//{{AFX_VIRTUAL(RDOPROCApp)
 	public:
@@ -33,6 +37,8 @@ public:
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
+
+extern RDOPROCApp rpapp;
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.

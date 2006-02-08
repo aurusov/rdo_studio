@@ -10,15 +10,17 @@ static char THIS_FILE[] = __FILE__;
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCShapeAction
 // ----------------------------------------------------------------------------
-RDOPROCShapeAction::RDOPROCShapeAction( RDOPROCFlowChart* _flowchart, RDOPROCObject* parent ):
-	RDOPROCShape( _flowchart, parent )
+RDOPROCShapeAction::RDOPROCShapeAction( RDOPROCObject* _parent, RDOPROCFlowChart* _flowchart ):
+	RDOPROCShape( _parent, _flowchart )
 {
-	pa.push_back( CPoint(0, 0) );
-	pa.push_back( CPoint(80, 0) );
-	pa.push_back( CPoint(80, 50) );
-	pa.push_back( CPoint(0, 50) );
-	pa.push_back( CPoint(0, 0) );
+	pa_src.push_back( CPoint(-40, -25) );
+	pa_src.push_back( CPoint(40, -25) );
+	pa_src.push_back( CPoint(40, 25) );
+	pa_src.push_back( CPoint(-40, 25) );
+	pa_src.push_back( CPoint(-40, -25) );
 	setName( _T("Action") );
+
+	matrix_scale.data[0][0] = 2;
 }
 
 RDOPROCShapeAction::~RDOPROCShapeAction()

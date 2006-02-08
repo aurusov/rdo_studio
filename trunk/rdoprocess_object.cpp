@@ -179,7 +179,3 @@ void RDOPROCObject::selectChildOff( RDOPROCObject* withoutObj )
 		it++;
 	}
 }
-
-void RDOPROCObject::draw( CDC& dc )
-{
-}

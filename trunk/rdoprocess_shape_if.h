@@ -13,7 +13,7 @@
 class RDOPROCShapeIf: public RDOPROCShape
 {
 public:
-	RDOPROCShapeIf( RDOPROCFlowChart* flowchart, RDOPROCObject* parent );
+	RDOPROCShapeIf( RDOPROCObject* parent, RDOPROCFlowChart* flowchart );
 	virtual ~RDOPROCShapeIf();
 };
 

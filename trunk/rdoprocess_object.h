@@ -49,8 +49,6 @@ public:
 
 	bool isSelected() const { return selected; }
 	void setSelected( const bool value );
-
-	virtual void draw( CDC& dc );
 };
 
 #endif // RDO_PROCESS_OBJECT_H

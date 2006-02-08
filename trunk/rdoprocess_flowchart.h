@@ -5,6 +5,8 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
+#include "rdoprocess_chart_object.h"
+
 #include <list>
 #include <vector>
 
@@ -12,12 +14,28 @@
 #undef TEST_SPEED
 
 // ----------------------------------------------------------------------------
+// ---------- RDOPROCFlowChartObject
+// ----------------------------------------------------------------------------
+class RDOPROCFlowChartObject: public RDOPROCChartObject
+{
+friend class RDOPROCFlowChart;
+
+public:
+	RDOPROCFlowChartObject( RDOPROCObject* parent, RDOPROCChartObject* chart_parent, RDOPROCFlowChart* flowchart );
+
+	virtual void setSelected( bool value ) {};
+	virtual void moveTo( int x, int y ) {};
+	virtual void draw( CDC& dc ) {};
+};
+
+// ----------------------------------------------------------------------------
 // ---------- RDOPROCFlowChart
 // ----------------------------------------------------------------------------
-class RDOPROCObject;
+class RDOPROCShape;
 
 class RDOPROCFlowChart: public CWnd
 {
+friend class RDOPROCChartObject;
 friend class RDOPROCShape;
 
 private:
@@ -39,8 +57,8 @@ private:
 	int pixmap_h_show;
 	int client_width;
 	int client_height;
-	int scroll_x_pos;
-	int scroll_y_pos;
+//	int scroll_x_pos;
+//	int scroll_y_pos;
 	int shape_pen_width;
 
 	CDC      mem_dc;
@@ -65,7 +83,7 @@ private:
 	void updateScrollBars();
 	void updateDC();
 	virtual void modify();
-
+/*
 	GridMode grid_mode;
 	GridType grid_type;
 	bool     grid_show;
@@ -81,12 +99,13 @@ private:
 	int      grid_bmp_width;
 	std::vector< CPoint >      grid_pa;
 	std::list< RDOPROCShape* > grid_shapes;
+*/
 	void makeGrid();
 
 //	bool showShapeName;
 //	bool showConnectorPoint;
 
-	RDOPROCObject* rpobj;
+	RDOPROCFlowChartObject* chobj;
 	std::list< RDOPROCShape* > shapes;
 
 	std::list< RDOPROCShape* >::iterator find( const RDOPROCShape* shape );
@@ -120,7 +139,7 @@ public:
 	void snapToGrid( RDOPROCShape* shape );
 //	void snapToGridAllShapes();
 
-	int getGridStep() const                  { return grid_step;   }
+//	int getGridStep() const                  { return grid_step;   }
 //	void setGridStep( const int value );
 
 //	const CPen&   getPenShape() const       { return pen_shape_default; }

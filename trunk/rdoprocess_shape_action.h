@@ -13,7 +13,7 @@
 class RDOPROCShapeAction: public RDOPROCShape
 {
 public:
-	RDOPROCShapeAction( RDOPROCFlowChart* flowchart, RDOPROCObject* parent );
+	RDOPROCShapeAction( RDOPROCObject* parent, RDOPROCFlowChart* flowchart );
 	virtual ~RDOPROCShapeAction();
 };
 

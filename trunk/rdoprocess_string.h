@@ -45,6 +45,19 @@ public:
 		return rp::string( buffer );
 	}
 
+	static rp::string fromdouble( double value ) {
+		char buffer[40];
+		_gcvt( value, 10, buffer );
+		rp::string str( buffer );
+		if ( str[str.length()-1] == '.' ) {
+			str += '0';
+		} else if ( str[str.length()-1] == ',' ) {
+			str[str.length()-1] = '.';
+			str += '0';
+		}
+		return str;
+	}
+
 	rp::string tolower() {
 		rp::string str( *this );
 		toLower tr( std::locale("rus") );

@@ -13,7 +13,7 @@ static char THIS_FILE[] = __FILE__;
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCApp
 // ----------------------------------------------------------------------------
-RDOPROCApp rdoprocessApp;
+RDOPROCApp rpapp;
 
 BEGIN_MESSAGE_MAP(RDOPROCApp, CWinApp)
 	//{{AFX_MSG_MAP(RDOPROCApp)
@@ -24,6 +24,7 @@ END_MESSAGE_MAP()
 
 RDOPROCApp::RDOPROCApp()
 {
+	project.setName( "project" );
 }
 
 BOOL RDOPROCApp::InitInstance()

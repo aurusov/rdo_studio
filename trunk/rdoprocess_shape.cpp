@@ -13,11 +13,10 @@ static char THIS_FILE[] = __FILE__;
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCShape
 // ----------------------------------------------------------------------------
-RDOPROCShape::RDOPROCShape( RDOPROCFlowChart* _flowchart, RDOPROCObject* parent ):
-	RDOPROCObject( parent ),
-	flowchart( _flowchart ),
-	x( 0 ),
-	y( 0 ),
+RDOPROCShape::RDOPROCShape( RDOPROCObject* _parent, RDOPROCFlowChart* _flowchart ):
+	RDOPROCChartObject( _parent, _flowchart->chobj, _flowchart ),
+//	x( 0 ),
+//	y( 0 ),
 	bound_rect( 0, 0, 0, 0 ),
 	snap_to_point( 0, 0 )
 {
@@ -29,92 +28,24 @@ RDOPROCShape::~RDOPROCShape()
 	flowchart->deleteShape( this );
 }
 
-void RDOPROCShape::translate( const int dx, const int dy )
+void RDOPROCShape::transformToGlobal()
 {
-	trans tr( dx, dy );
-	std::transform( pa.begin(), pa.end(), pa.begin(), tr );
+	RDOPROCChartObject::transformToGlobal();
 //	conI.translate( dx, dy );
 //	conO.translate( dx, dy );
-	snap_to_point.Offset( dx, dy );
-}
-
-bool RDOPROCShape::pointInPolygon( const int x, const int y ) const
-{
-	if ( pa.size() > 2 ) {
-		unsigned int i;
-		unsigned int j;
-		int k0 = 0;
-		bool flag = true;
-		for ( i = 0, j = 1; i < pa.size()-1; i++, j++ ) {
-			const CPoint& p1 = pa[i];
-			const CPoint& p2 = pa[j];
-			int k = (y - p1.y)*(p2.x - p1.x) - (x - p1.x)*(p2.y - p1.y);
-			if ( k == 0 ) {
-				break;
-			} else {
-				if ( k0 == 0 ) {
-					k0 = k;
-				} else {
-					if ( k0 * k < 0 ) {
-						flag = false;
-						break;
-					}
-				}
-			}
-		}
-		return flag;
-	}
-	return false;
-}
-
-void RDOPROCShape::setSelected( const bool value )
-{
-	bool _selected = selected;
-	RDOPROCObject::setSelected( value );
-	if ( flowchart && _selected != value ) {
-		flowchart->selectShape( this, value );
-	}
-}
-
-void RDOPROCShape::move( const int _x, const int _y )
-{
-	x = _x;
-	y = _y;
-	if ( x < 0 ) {
-		x = 0;
-	}
-	if ( y < 0 ) {
-		y = 0;
-	}
-}
-
-void RDOPROCShape::setX( const int value )
-{
-	moveTo( value, y );
-}
-
-void RDOPROCShape::setY( const int value )
-{
-	moveTo( x, value );
-}
-
-void RDOPROCShape::moveTo( const int _x, const int _y )
-{
-	move( _x, _y );
-	flowchart->snapToGrid( this );
-	flowchart->modify();
+//	snap_to_point.Offset( dx, dy );
 }
 
 CRect RDOPROCShape::getBoundingRect()
 {
 	if ( bound_rect.IsRectNull() ) {
-		if ( !pa.empty() ) {
-			int x_min = pa[0].x;
-			int y_min = pa[0].y;
-			int x_max = pa[0].x;
-			int y_max = pa[0].y;
-			std::vector< CPoint >::const_iterator it = pa.begin() + 1;
-			while ( it != pa.end() ) {
+		if ( !pa_global.empty() ) {
+			int x_min = pa_global[0].x;
+			int y_min = pa_global[0].y;
+			int x_max = pa_global[0].x;
+			int y_max = pa_global[0].y;
+			std::vector< CPoint >::const_iterator it = pa_global.begin() + 1;
+			while ( it != pa_global.end() ) {
 				if ( x_min > it->x ) x_min = it->x;
 				if ( y_min > it->y ) y_min = it->y;
 				if ( x_max < it->x ) x_max = it->x;
@@ -128,37 +59,33 @@ CRect RDOPROCShape::getBoundingRect()
 	}
 
 	CRect rect( bound_rect );
-	rect.OffsetRect( x, y );
+	rect.OffsetRect( matrix_transform.dx(), matrix_transform.dy() );
 	rect.bottom += flowchart->getPenShapeWidth();
 	rect.right  += flowchart->getPenShapeWidth();
 	return rect;
 }
 
-void RDOPROCShape::moving( const int dx, const int dy )
+void RDOPROCShape::setSelected( bool value )
 {
-	x += dx;
-	y += dy;
-/*
-	if ( x + dx < 0 ) {
-		x = 0;
-	} else {
-		x += dx;
+	bool _selected = selected;
+	RDOPROCObject::setSelected( value );
+	if ( flowchart && _selected != value ) {
+		flowchart->selectShape( this, value );
 	}
-	if ( y + dy < 0 ) {
-		y = 0;
-	} else {
-		y += dy;
-	}
-*/
-//	update_grid_pos = true;
+}
+
+void RDOPROCShape::setPosition( int x, int y )
+{
+	RDOPROCChartObject::setPosition( x, y );
+	flowchart->snapToGrid( this );
 	flowchart->modify();
 }
 
 void RDOPROCShape::drawPolyline( CDC& dc )
 {
-	if ( pa.size() < 2 ) return;
+	if ( pa_global.size() < 2 ) return;
 	dc.BeginPath();
-	dc.Polyline( &pa[0], pa.size() );
+	dc.Polyline( &pa_global[0], pa_global.size() );
 	dc.EndPath();
 	dc.StrokePath();
 }
