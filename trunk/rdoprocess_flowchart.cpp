@@ -5,8 +5,6 @@
 #include "rdoprocess_shape_if.h"
 #include "rdoprocess_app.h"
 
-#include <math.h>
-
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -26,7 +24,6 @@ RDOPROCFlowChartObject::RDOPROCFlowChartObject( RDOPROCObject* _parent, RDOPROCC
 // ----------------------------------------------------------------------------
 const int grid_dx_plus = 1;
 const int grid_dy_plus = 2;
-const double pi = 3.14159265358979323846;
 const int grid_timer_id = 1;
 
 #ifdef TEST_SPEED // =====================================
@@ -62,9 +59,6 @@ RDOPROCFlowChart::RDOPROCFlowChart():
 	pixmap_h_show( 0 ),
 	client_width( 0 ),
 	client_height( 0 ),
-//	scroll_x_pos( 0 ),
-//	scroll_y_pos( 0 ),
-	shape_pen_width( 2 ),
 	mem_bmp( NULL ),
 	saved_dc( 0 ),
 	saved_mem_dc( 0 ),
@@ -72,25 +66,12 @@ RDOPROCFlowChart::RDOPROCFlowChart():
 	bmp_first( NULL ),
 	pen_black( PS_SOLID, 1, RGB(0x00, 0x00, 0x00) ),
 	pen_shape_color( PS_SOLID, 1, RGB(0x00, 0x00, 0x00) ),
-	brush_select_box( RGB(0x00, 0xFF, 0x00) ),
+	pen_selected_line( PS_DOT, 1, RGB(0x00, 0xFF, 0x00) ),
+	pen_selected_box( PS_SOLID, 1, RGB(0x00, 0x00, 0x00) ),
+	brush_selected_box( RGB(0x00, 0xFF, 0x00) ),
 	paper_border_color( RGB(0xC0, 0xC0, 0xC0) ),
 	paper_shadow_color( RGB(0x80, 0x80, 0x80) ),
 	paper_bg_color( RGB(0xFF, 0xFF, 0xFF) ),
-/*
-	grid_mode( gtSnapToCenter ),
-	grid_type( dtDotLines ),
-	grid_show( true ),
-	grid_step( 100 ),
-//	grid_wasMouseMoving( false ),
-	grid_timer( 0 ),
-	grid_cnt_x( 0 ),
-	grid_cnt_y( 0 ),
-	grid_delta( 5 ),
-	grid_color( RGB(0xC0, 0xC0, 0xC0) ),
-	grid_bmp_width( 0 ),
-*/
-//	showShapeName( true ),
-//	showConnectorPoint( true ),
 	chobj( NULL ),
 	global_old_x( 0 ),
 	global_old_y( 0 )
@@ -102,15 +83,8 @@ RDOPROCFlowChart::RDOPROCFlowChart():
 	makegrid_cnt( 0 ),
 	makegridempty_cnt( 0 )
 #endif // ================================================
-//	movingShapes( NULL )
 {
 	chobj = new RDOPROCFlowChartObject( &rpapp.project, NULL, this );
-
-	LOGBRUSH lb;
-	lb.lbStyle = BS_SOLID;
-	lb.lbColor = RGB(0x00, 0x00, 0x00);
-	lb.lbHatch = 0;
-	pen_shape_default.CreatePen( PS_GEOMETRIC | PS_SOLID | PS_ENDCAP_SQUARE | PS_JOIN_MITER, shape_pen_width, &lb );
 }
 
 RDOPROCFlowChart::~RDOPROCFlowChart()
@@ -261,12 +235,12 @@ CSize RDOPROCFlowChart::getFlowSize( const std::list< RDOPROCShape* >& list ) co
 	int max_y = 0;
 	std::list< RDOPROCShape* >::const_iterator it = list.begin();
 	while ( it != list.end() ) {
-		CRect rect = (*it)->getBoundingRect();
-		if ( rect.BottomRight().x > max_x ) {
-			max_x = rect.BottomRight().x;
+		rp::RPRect rect = (*it)->getBoundingRect();
+		if ( rect.getMaxX() > max_x ) {
+			max_x = rect.getMaxX();
 		}
-		if ( rect.BottomRight().y > max_y ) {
-			max_y = rect.BottomRight().y;
+		if ( rect.getMaxY() > max_y ) {
+			max_y = rect.getMaxY();
 		}
 		it++;
 	}
@@ -362,11 +336,11 @@ void RDOPROCFlowChart::makeNewPixmap()
 		ReleaseDC( dc );
 		mem_dc.SelectObject( mem_bmp );
 	}
-	pixmap_w_show = client_width - border_w * 2;
+	pixmap_w_show = client_width - border_w * 2 - paper_border_w * 2;
 	if ( pixmap_w_show > pixmap_w_real ) {
 		pixmap_w_show = pixmap_w_real;
 	}
-	pixmap_h_show = client_height - border_h * 2;
+	pixmap_h_show = client_height - border_h * 2 - paper_border_h * 2;
 	if ( pixmap_h_show > pixmap_h_real ) {
 		pixmap_h_show = pixmap_h_real;
 	}
@@ -563,6 +537,15 @@ void RDOPROCFlowChart::OnPaint()
 		dc.FillSolidRect( border_w - paper_border, client_height - border_h + paper_border, paper_shadow, paper_shadow, paper_border_color );
 		dc.FillSolidRect( client_width - border_w + paper_border, border_h - paper_border, paper_shadow, paper_shadow, paper_border_color );
 
+		if ( client_width > border_w * 2 + paper_border_w * 2 && client_height > border_h * 2 + paper_border_h * 2 ) {
+			dc.FillSolidRect( border_w, border_h, paper_border_w, client_height - border_h * 2, paper_bg_color );
+			dc.FillSolidRect( border_w + paper_border_w, border_h, client_width - border_w * 2 - paper_border_w, paper_border_h, paper_bg_color );
+			dc.FillSolidRect( client_width - border_w - paper_border_w, border_h + paper_border_h, paper_border_w, client_height - border_h * 2 - paper_border_h, paper_bg_color );
+			dc.FillSolidRect( border_w + paper_border_w, client_height - border_h - paper_border_h, client_width - border_w * 2 - paper_border_w * 2, paper_border_h, paper_bg_color );
+		} else {
+			dc.FillSolidRect( border_w, border_h, client_width - border_w * 2, client_height - border_h * 2, paper_bg_color );
+		}
+
 #ifdef TEST_SPEED // =====================================
 		}
 		::GetSystemTime( &t1 );
@@ -610,7 +593,7 @@ void RDOPROCFlowChart::OnPaint()
 				}
 			}
 */
-			mem_dc.FillSolidRect( paper_border_w, paper_border_h, pixmap_w_show - paper_border_w * 2, pixmap_h_show - paper_border_h * 2, paper_bg_color );
+			mem_dc.FillSolidRect( 0, 0, pixmap_w_show, pixmap_h_show, paper_bg_color );
 
 #ifdef TEST_SPEED // =====================================
 			}
@@ -619,9 +602,6 @@ void RDOPROCFlowChart::OnPaint()
 			for ( int cnt4 = 0; cnt4 <= base_speed * 10; cnt4++ ) {
 				std::list< RDOPROCShape* >::iterator it = shapes.begin();
 				while ( it != shapes.end() ) {
-					RDOPROCShape* shape = *it;
-					shape->translate( -scroll_x_pos + shape->getX() + paper_border_w + shape_pen_width / 2, -scroll_y_pos + shape->getY() + paper_border_h + shape_pen_width / 2 );
-					shape->translate( scroll_x_pos - shape->getX() - paper_border_w - shape_pen_width / 2, scroll_y_pos - shape->getY() - paper_border_h - shape_pen_width / 2 );
 					it++;
 				}
 			}
@@ -631,7 +611,6 @@ void RDOPROCFlowChart::OnPaint()
 			std::list< RDOPROCShape* >::iterator it = shapes.begin();
 			while ( it != shapes.end() ) {
 				RDOPROCShape* shape = *it;
-//				shape->translate( -chobj->matrix_transform.dx() + shape->getX() + paper_border_w + shape_pen_width / 2, -chobj->matrix_transform.dy() + shape->getY() + paper_border_h + shape_pen_width / 2 );
 				shape->transformToGlobal();
 				it++;
 			}
@@ -643,7 +622,6 @@ void RDOPROCFlowChart::OnPaint()
 			it = shapes.begin();
 			while ( it != shapes.end() ) {
 				int saved = mem_dc.SaveDC();
-				mem_dc.SelectObject( pen_shape_default );
 				(*it)->draw( mem_dc );
 				mem_dc.RestoreDC( saved );
 				it++;
@@ -657,12 +635,6 @@ void RDOPROCFlowChart::OnPaint()
 #ifdef TEST_SPEED // =====================================
 			for ( int cnt6 = 0; cnt6 <= base_speed * 10; cnt6++ ) {
 #endif // ================================================
-
-			mem_dc.FillSolidRect( 0, 0, pixmap_w_show, paper_border_h, paper_bg_color );
-			mem_dc.FillSolidRect( 0, paper_border_h, paper_border_w, pixmap_h_show - paper_border_h, paper_bg_color );
-			mem_dc.FillSolidRect( pixmap_w_show - paper_border_w, paper_border_h, paper_border_w, pixmap_h_show - paper_border_h, paper_bg_color );
-			mem_dc.FillSolidRect( paper_border_w, pixmap_h_show - paper_border_h, pixmap_w_show - paper_border_w * 2, paper_border_h, paper_bg_color );
-
 #ifdef TEST_SPEED // =====================================
 			}
 			::GetSystemTime( &t6 );
@@ -671,9 +643,8 @@ void RDOPROCFlowChart::OnPaint()
 			it = shapes.begin();
 			while ( it != shapes.end() ) {
 				RDOPROCShape* shape = *it;
-//				CPoint snap_to_point = shape->getCenter();
-//				snap_to_point.Offset( shape->getX() + paper_border_w, shape->getY() + paper_border_h );
-				const CPoint& snap_to_point = shape->getSnapToPoint();
+/*
+				CPoint snap_to_point = shape->getCenter();
 				if ( snap_to_point.x > paper_border_w && snap_to_point.y > paper_border_h && snap_to_point.x <= pixmap_w_show - paper_border_w && snap_to_point.y <= pixmap_h_show - paper_border_h ) {
 					CPen pen_red( PS_SOLID, 1, RGB(-1,0,0) );
 					CBrush brush_white( RGB(-1,-1,-1) );
@@ -681,25 +652,45 @@ void RDOPROCFlowChart::OnPaint()
 					mem_dc.SelectObject( brush_white );
 					mem_dc.Ellipse( snap_to_point.x - 2, snap_to_point.y - 2, snap_to_point.x + 2, snap_to_point.y + 2 );
 				}
+*/
 				if ( shape->isSelected() ) {
-					mem_dc.SelectObject( pen_shape_color );
-					mem_dc.SelectObject( brush_select_box );
-					int x = shape->getX() + paper_border_w - chobj->matrix_transform.dx();
-					int y = shape->getY() + paper_border_h - chobj->matrix_transform.dy();
-					int w = shape->getSize().cx - 1;
-					int h = shape->getSize().cy - 1;
-					int box_size   = 7;
-					int box_size_2 = 3;
-					if ( x >= paper_border_w && y >= paper_border_h && x < pixmap_w_show - paper_border_w && y < pixmap_h_show - paper_border_h )
-						mem_dc.Rectangle( x - box_size_2, y - box_size_2, x - box_size_2 + box_size, y - box_size_2 + box_size );
-					if ( x >= paper_border_w && y + h >= paper_border_h && x < pixmap_w_show - paper_border_w && y + h < pixmap_h_show - paper_border_h )
-						mem_dc.Rectangle( x - box_size_2, y + h - box_size_2, x - box_size_2 + box_size, y + h - box_size_2 + box_size );
-					if ( x + w >= paper_border_w && y >= paper_border_h && x + w < pixmap_w_show - paper_border_w && y < pixmap_h_show - paper_border_h )
-						mem_dc.Rectangle( x + w - box_size_2, y - box_size_2, x + w - box_size_2 + box_size, y - box_size_2 + box_size );
-					if ( x + w >= paper_border_w && y + h >= paper_border_h && x + w < pixmap_w_show - paper_border_w && y + h < pixmap_h_show - paper_border_h )
-						mem_dc.Rectangle( x + w - box_size_2, y + h - box_size_2, x + w - box_size_2 + box_size, y + h - box_size_2 + box_size );
+					// Центр вращения
+					CPoint center = shape->getRotateCenter();
+					CPen pen_red( PS_SOLID, 1, RGB(0,0,0) );
+					CBrush brush_white( RGB(-1,-1,0) );
+					mem_dc.SelectObject( pen_red );
+					mem_dc.SelectObject( brush_white );
+					mem_dc.Ellipse( center.x - 5, center.y - 5, center.x + 5, center.y + 5 );
+					// Прямоугольник вокруг фигуры
+//					rp::RPRect rect = shape->getBoundingRect();
+					rp::RPRect rect = shape->getBoundingRect().extendByPerimetr( shape->main_pen_width * sqrt(2) / 2.0 );
+					int x0 = rect.p0().x;
+					int x1 = rect.p1().x;
+					int x2 = rect.p2().x;
+					int x3 = rect.p3().x;
+					int y0 = rect.p0().y;
+					int y1 = rect.p1().y;
+					int y2 = rect.p2().y;
+					int y3 = rect.p3().y;
+					mem_dc.SelectObject( pen_selected_line );
+					mem_dc.MoveTo( x0, y0 );
+					mem_dc.LineTo( x1, y1 );
+					mem_dc.LineTo( x2, y2 );
+					mem_dc.LineTo( x3, y3 );
+					mem_dc.LineTo( x0, y0 );
+					mem_dc.SelectObject( pen_selected_box );
+					mem_dc.SelectObject( brush_selected_box );
+					int box_size    = 7;
+					int box_size_2  = 4;
+					mem_dc.Rectangle( x0 - box_size_2, y0 - box_size_2, x0 + box_size_2, y0 + box_size_2 );
+					mem_dc.Rectangle( x1 - box_size_2, y1 - box_size_2, x1 + box_size_2, y1 + box_size_2 );
+					mem_dc.Rectangle( x2 - box_size_2, y2 - box_size_2, x2 + box_size_2, y2 + box_size_2 );
+					mem_dc.Rectangle( x3 - box_size_2, y3 - box_size_2, x3 + box_size_2, y3 + box_size_2 );
+					mem_dc.Rectangle( (x0 + x1)/2 - box_size_2, (y0 + y1)/2 - box_size_2, (x0 + x1)/2 + box_size_2, (y0 + y1)/2 + box_size_2 );
+					mem_dc.Rectangle( (x1 + x2)/2 - box_size_2, (y1 + y2)/2 - box_size_2, (x1 + x2)/2 + box_size_2, (y1 + y2)/2 + box_size_2 );
+					mem_dc.Rectangle( (x2 + x3)/2 - box_size_2, (y2 + y3)/2 - box_size_2, (x2 + x3)/2 + box_size_2, (y2 + y3)/2 + box_size_2 );
+					mem_dc.Rectangle( (x3 + x0)/2 - box_size_2, (y3 + y0)/2 - box_size_2, (x3 + x0)/2 + box_size_2, (y3 + y0)/2 + box_size_2 );
 				}
-//				shape->translate( chobj->matrix_transform.dx() - shape->getX() - paper_border_w - shape_pen_width / 2, chobj->matrix_transform.dy() - shape->getY() - paper_border_h - shape_pen_width / 2 );
 				it++;
 			}
 
@@ -707,7 +698,7 @@ void RDOPROCFlowChart::OnPaint()
 			for ( int cnt7 = 0; cnt7 <= base_speed * 5; cnt7++ ) {
 #endif // ================================================
 
-			dc.BitBlt( border_w, border_h, pixmap_w_show, pixmap_h_show, &mem_dc, 0, 0, SRCCOPY );
+			dc.BitBlt( border_w + paper_border_w, border_h + paper_border_h, pixmap_w_show, pixmap_h_show, &mem_dc, 0, 0, SRCCOPY );
 
 #ifdef TEST_SPEED // =====================================
 			}
@@ -738,25 +729,25 @@ void RDOPROCFlowChart::OnHScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBa
 	switch( nSBCode ) {
 		case SB_PAGEUP:
 			GetScrollInfo( SB_HORZ, &si, SIF_PAGE );
-			chobj->matrix_transform.dx() -= si.nPage;
+			chobj->matrix_transform.dx() += si.nPage;
 			break; 
 
 		case SB_PAGEDOWN:
 			GetScrollInfo( SB_HORZ, &si, SIF_PAGE );
-			chobj->matrix_transform.dx() += si.nPage;
+			chobj->matrix_transform.dx() -= si.nPage;
 			break;
 
 		case SB_LINEUP:
-			chobj->matrix_transform.dx()--;
+			chobj->matrix_transform.dx()++;
 			break;
 
 		case SB_LINEDOWN:
-			chobj->matrix_transform.dx()++;
+			chobj->matrix_transform.dx()--;
 			break;
 
 		case SB_THUMBTRACK: {
 			GetScrollInfo( SB_HORZ, &si, SIF_TRACKPOS );
-			chobj->matrix_transform.dx() += si.nTrackPos - chobj->matrix_transform.dx();
+			chobj->matrix_transform.dx() -= si.nTrackPos - chobj->matrix_transform.dx();
 			break;
 		}
 	}
@@ -777,25 +768,25 @@ void RDOPROCFlowChart::OnVScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBa
 	switch( nSBCode ) {
 		case SB_PAGEUP:
 			GetScrollInfo( SB_VERT, &si, SIF_PAGE );
-			chobj->matrix_transform.dy() -= si.nPage;
+			chobj->matrix_transform.dy() += si.nPage;
 			break; 
 
 		case SB_PAGEDOWN:
 			GetScrollInfo( SB_VERT, &si, SIF_PAGE );
-			chobj->matrix_transform.dy() += si.nPage;
+			chobj->matrix_transform.dy() -= si.nPage;
 			break;
 
 		case SB_LINEUP:
-			chobj->matrix_transform.dy()--;
+			chobj->matrix_transform.dy()++;
 			break;
 
 		case SB_LINEDOWN:
-			chobj->matrix_transform.dy()++;
+			chobj->matrix_transform.dy()--;
 			break;
 
 		case SB_THUMBTRACK: {
 			GetScrollInfo( SB_VERT, &si, SIF_TRACKPOS );
-			chobj->matrix_transform.dy() += si.nTrackPos - chobj->matrix_transform.dy();
+			chobj->matrix_transform.dy() -= si.nTrackPos - chobj->matrix_transform.dy();
 			break;
 		}
 	}
@@ -1020,133 +1011,17 @@ void RDOPROCFlowChart::setShowConnectorPoint( const bool value )
 }
 */
 
-void RDOPROCFlowChart::correctPoint( const std::vector< CPoint >& pa, CPoint& point )
-{
-	return;
-//	std::vector< CPoint >::const_iterator it = pa.begin();
-//	while ( it != pa.end() ) {
-//		if ( RDOPROCFlowChart::getLength( *it, point ) < 1.5 ) {
-//			point = *it;
-//			break;
-//		}
-//		it++;
-//	}
-}
-
-double RDOPROCFlowChart::getLength( const CPoint& point1, const CPoint& point2 )
-{
-	try {
-		return sqrt( (point1.x - point2.x)*(point1.x - point2.x) + (point1.y - point2.y)*(point1.y - point2.y) );
-	} catch (...) {
-		return -1;
-	}
-}
-
-CPoint RDOPROCFlowChart::getPerpendicular( const CPoint& line_point1, const CPoint& line_point2, const CPoint& point, bool& null, bool* inside )
-{
-	double l1 = line_point2.x - line_point1.x;
-	double l2 = line_point2.y - line_point1.y;
-	double k = l1*l1 + l2*l2;
-	if ( k > 1e-20 ) {
-		double u = ((point.x - line_point1.x)*(line_point2.x - line_point1.x) + (point.y - line_point1.y)*(line_point2.y - line_point1.y))/k;
-		if ( inside ) {
-			*inside = u >= 0 && u <= 1;
-		}
-		null = false;
-		return CPoint( static_cast<int>(line_point1.x + u*(line_point2.x - line_point1.x)), static_cast<int>(line_point1.y + u*(line_point2.y - line_point1.y)) );
-	} else {
-		if ( inside ) {
-			*inside = false;
-		}
-	}
-	null = true;
-	return CPoint();
-}
-
-double RDOPROCFlowChart::getDistance( const CPoint& line_point1, const CPoint& line_point2, const CPoint& point, bool* inside )
-{
-	bool null;
-	CPoint p = getPerpendicular( line_point1, line_point2, point, null, inside );
-	if ( !null ) {
-		double l1 = p.x - point.x;
-		double l2 = p.y - point.y;
-		return sqrt( l1*l1 + l2*l2 );
-	}
-	return -1.0;
-}
-
-CPoint RDOPROCFlowChart::getIntersection( const std::vector< CPoint >& pa, const double x1, const double y1, const double x2, const double y2, const double x3, const double y3, const double x4, const double y4, double& Ka, double& Kb, double& K, double& Ua, double& Ub )
-{
-	K  = (y4 - y3)*(x2 - x1) - (x4 - x3)*(y2 - y1);
-	Ka = (x4 - x3)*(y1 - y3) - (y4 - y3)*(x1 - x3);
-	Kb = (x2 - x1)*(y1 - y3) - (y2 - y1)*(x1 - x3);
-	try {
-		Ua = Ka/K;
-		Ub = Kb/K;
-		double x = x1 + Ua*(x2 - x1);
-		double y = y1 + Ua*(y2 - y1);
-		CPoint point( static_cast<int>(x), static_cast<int>(y) );
-		if ( point.x >= x1 - 1 && point.x <= x1 + 1 ) {
-			point.x = static_cast<int>(x1);
-		}
-		if ( point.y >= y1 - 1 && point.y <= y1 + 1 ) {
-			point.y = static_cast<int>(y1);
-		}
-		if ( point.x >= x2 - 1 && point.x <= x2 + 1 ) {
-			point.x = static_cast<int>(x2);
-		}
-		if ( point.y >= y2 - 1 && point.y <= y2 + 1 ) {
-			point.y = static_cast<int>(y2);
-		}
-		if ( point.x >= x3 - 1 && point.x <= x3 + 1 ) {
-			point.x = static_cast<int>(x3);
-		}
-		if ( point.y >= y3 - 1 && point.y <= y3 + 1 ) {
-			point.y = static_cast<int>(y3);
-		}
-		if ( point.x >= x4 - 1 && point.x <= x4 + 1 ) {
-			point.x = static_cast<int>(x4);
-		}
-		if ( point.y >= y4 - 1 && point.y <= y4 + 1 ) {
-			point.y = static_cast<int>(y4);
-		}
-		RDOPROCFlowChart::correctPoint( pa, point );
-		return point;
-	} catch ( ... ) {
-		return CPoint( 0, 0 );
-	}
-}
-
-double RDOPROCFlowChart::getCorner( int x1, int y1, int x2, int y2 )
-{
-	double a_len = sqrt(static_cast<double>((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2)));
-	double a_sin = static_cast<double>((y1-y2))/a_len;
-	double a_cos = static_cast<double>((x2-x1))/a_len;
-	double alpha = acos( a_cos ) * 180.0 / pi;
-	if ( a_sin < 0.0 ) {
-		alpha = 360.0 - alpha;
-	}
-	return alpha;
-}
-
-CRect RDOPROCFlowChart::getBoundingRect( RDOPROCShape* shape ) const
-{
-	CRect rect = shape->getBoundingRect();
-	rect.OffsetRect( border_w + paper_border_w, border_h + paper_border_h );
-	return rect;
-}
-
 RDOPROCShape* RDOPROCFlowChart::findObject( const int _x, const int _y ) const
 {
-	int x = _x + chobj->matrix_transform.dx_const();
-	int y = _y + chobj->matrix_transform.dy_const();
+//	return shape_if;
+	int x = _x - border_w - paper_border_w;
+	int y = _y - border_h - paper_border_h;
 	std::list< RDOPROCShape* >::const_iterator it = shapes.begin();
 	while ( it != shapes.end() ) {
 		RDOPROCShape* shape = *it;
-		if ( getBoundingRect( shape ).PtInRect( CPoint(x, y) ) ) {
-			int dx = shape->getX() + paper_border_w + paper_border_w;
-			int dy = shape->getY() + paper_border_h + paper_border_h;
-//			shape->translate( dx, dy );
+		rp::RPRect rect = shape->getBoundingRect().extendByPerimetr( shape->main_pen_width * sqrt(2) / 2.0 );
+		if ( rect.pointInRect( x, y ) ) {
+			shape->meshToGlobal();
 			bool flag = shape->pointInPolygon( x, y );
 //			shape->translate( -dx, -dy );
 			if ( flag ) {
@@ -1354,20 +1229,6 @@ void RDOPROCFlowChart::OnLButtonUp( UINT nFlags, CPoint point )
 
 void RDOPROCFlowChart::OnMouseMove( UINT nFlags, CPoint point )
 {
-	static double alpha = 0;
-//	shape_action->setRotation( alpha );
-	shape_if->setRotation( alpha++ );
-/*
-	shape_if->setRotation( 0 );
-	shape_if->setRotation( 45 );
-	shape_if->setRotation( 90 );
-	shape_if->setRotation( 135 );
-	shape_if->setRotation( 180 );
-	shape_if->setRotation( 225 );
-	shape_if->setRotation( 270 );
-	shape_if->setRotation( 315 );
-	shape_if->setRotation( 360 );
-*/
 	updateDC();
 
 	CWnd::OnMouseMove( nFlags, point );
@@ -1385,5 +1246,12 @@ void RDOPROCFlowChart::OnMouseMove( UINT nFlags, CPoint point )
 	if ( !movingShapes.empty() ) {
 		ClientToScreen( &point );
 		moving( point.x, point.y );
+		static int alpha = 0;
+		std::list< RDOPROCShape* >::iterator it = movingShapes.begin();
+		while ( it != movingShapes.end() ) {
+			(*it)->setRotation( alpha );
+			it++;
+		}
+		alpha++;
 	}
 }

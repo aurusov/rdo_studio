@@ -29,21 +29,6 @@ RDOPROCMatrix::~RDOPROCMatrix()
 {
 }
 
-rp::string RDOPROCMatrix::print() const
-{
-	rp::string str = "";
-	str += rp::string::fromdouble( data[0][0] ) + ' ';
-	str += rp::string::fromdouble( data[0][1] ) + ' ';
-	str += rp::string::fromdouble( data[0][2] ) + '\n';
-	str += rp::string::fromdouble( data[1][0] ) + ' ';
-	str += rp::string::fromdouble( data[1][1] ) + ' ';
-	str += rp::string::fromdouble( data[1][2] ) + '\n';
-	str += rp::string::fromdouble( data[2][0] ) + ' ';
-	str += rp::string::fromdouble( data[2][1] ) + ' ';
-	str += rp::string::fromdouble( data[2][2] ) + '\n';
-	return str;
-}
-
 RDOPROCMatrix& RDOPROCMatrix::operator= ( const RDOPROCMatrix& matrix )
 {
 	data[0][0] = matrix.data[0][0];
@@ -56,16 +41,6 @@ RDOPROCMatrix& RDOPROCMatrix::operator= ( const RDOPROCMatrix& matrix )
 	data[1][2] = matrix.data[1][2];
 	data[2][2] = matrix.data[2][2];
 	return *this;
-}
-
-CPoint RDOPROCMatrix::operator* ( const CPoint& point )
-{
-	double x = data[0][0] * point.x + data[0][1] * point.y + data[0][2];
-	double y = data[1][0] * point.x + data[1][1] * point.y + data[1][2];
-	double w = data[2][0] * point.x + data[2][1] * point.y + data[2][2];
-	x /= w;
-	y /= w;
-	return CPoint( x, y );
 }
 
 RDOPROCMatrix RDOPROCMatrix::t() const
@@ -121,4 +96,14 @@ RDOPROCMatrix operator* ( const RDOPROCMatrix& matrix1, const RDOPROCMatrix& mat
 	matrix.data[1][2] = matrix1.data[1][0] * matrix2.data[0][2] + matrix1.data[1][1] * matrix2.data[1][2] + matrix1.data[1][2] * matrix2.data[2][2];
 	matrix.data[2][2] = matrix1.data[2][0] * matrix2.data[0][2] + matrix1.data[2][1] * matrix2.data[1][2] + matrix1.data[2][2] * matrix2.data[2][2];
 	return matrix;
+}
+
+CPoint operator* ( const RDOPROCMatrix& matrix, const CPoint& point )
+{
+	double x = matrix.data[0][0] * point.x + matrix.data[0][1] * point.y + matrix.data[0][2];
+	double y = matrix.data[1][0] * point.x + matrix.data[1][1] * point.y + matrix.data[1][2];
+	double w = matrix.data[2][0] * point.x + matrix.data[2][1] * point.y + matrix.data[2][2];
+	x /= w;
+	y /= w;
+	return CPoint( x, y );
 }

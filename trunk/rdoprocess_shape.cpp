@@ -15,9 +15,6 @@ static char THIS_FILE[] = __FILE__;
 // ----------------------------------------------------------------------------
 RDOPROCShape::RDOPROCShape( RDOPROCObject* _parent, RDOPROCFlowChart* _flowchart ):
 	RDOPROCChartObject( _parent, _flowchart->chobj, _flowchart ),
-//	x( 0 ),
-//	y( 0 ),
-	bound_rect( 0, 0, 0, 0 ),
 	snap_to_point( 0, 0 )
 {
 	flowchart->insertShape( this );
@@ -26,43 +23,6 @@ RDOPROCShape::RDOPROCShape( RDOPROCObject* _parent, RDOPROCFlowChart* _flowchart
 RDOPROCShape::~RDOPROCShape()
 {
 	flowchart->deleteShape( this );
-}
-
-void RDOPROCShape::transformToGlobal()
-{
-	RDOPROCChartObject::transformToGlobal();
-//	conI.translate( dx, dy );
-//	conO.translate( dx, dy );
-//	snap_to_point.Offset( dx, dy );
-}
-
-CRect RDOPROCShape::getBoundingRect()
-{
-	if ( bound_rect.IsRectNull() ) {
-		if ( !pa_global.empty() ) {
-			int x_min = pa_global[0].x;
-			int y_min = pa_global[0].y;
-			int x_max = pa_global[0].x;
-			int y_max = pa_global[0].y;
-			std::vector< CPoint >::const_iterator it = pa_global.begin() + 1;
-			while ( it != pa_global.end() ) {
-				if ( x_min > it->x ) x_min = it->x;
-				if ( y_min > it->y ) y_min = it->y;
-				if ( x_max < it->x ) x_max = it->x;
-				if ( y_max < it->y ) y_max = it->y;
-				it++;
-			}
-			bound_rect.SetRect( x_min, y_min, x_max, y_max );
-		} else {
-			bound_rect.SetRect( 0, 0, 0, 0 );
-		}
-	}
-
-	CRect rect( bound_rect );
-	rect.OffsetRect( matrix_transform.dx(), matrix_transform.dy() );
-	rect.bottom += flowchart->getPenShapeWidth();
-	rect.right  += flowchart->getPenShapeWidth();
-	return rect;
 }
 
 void RDOPROCShape::setSelected( bool value )
@@ -84,6 +44,7 @@ void RDOPROCShape::setPosition( int x, int y )
 void RDOPROCShape::drawPolyline( CDC& dc )
 {
 	if ( pa_global.size() < 2 ) return;
+	dc.SelectObject( main_pen );
 	dc.BeginPath();
 	dc.Polyline( &pa_global[0], pa_global.size() );
 	dc.EndPath();

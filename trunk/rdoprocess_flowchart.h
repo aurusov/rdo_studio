@@ -57,9 +57,6 @@ private:
 	int pixmap_h_show;
 	int client_width;
 	int client_height;
-//	int scroll_x_pos;
-//	int scroll_y_pos;
-	int shape_pen_width;
 
 	CDC      mem_dc;
 	CBitmap* mem_bmp;
@@ -70,9 +67,10 @@ private:
 	CBitmap* bmp_first;
 
 	CPen     pen_black;
-	CPen     pen_shape_default;
 	CPen     pen_shape_color;
-	CBrush   brush_select_box;
+	CPen     pen_selected_line;
+	CPen     pen_selected_box;
+	CBrush   brush_selected_box;
 	COLORREF paper_border_color;
 	COLORREF paper_shadow_color;
 	COLORREF paper_bg_color;
@@ -110,7 +108,6 @@ private:
 
 	std::list< RDOPROCShape* >::iterator find( const RDOPROCShape* shape );
 
-	CRect getBoundingRect( RDOPROCShape* shape ) const;
 	RDOPROCShape* findObject( const int x, const int y ) const;
 
 	void moving_start( RDOPROCShape* shape, const int global_mouse_x, const int global_mouse_y );
@@ -119,10 +116,7 @@ private:
 
 	int                        global_old_x;
 	int                        global_old_y;
-//	RDOPROCShape*              movingShape;
 	std::list< RDOPROCShape* > movingShapes;
-
-	static void correctPoint( const std::vector< CPoint >& pa, CPoint& point );
 
 #ifdef TEST_SPEED
 	int sec_cnt;
@@ -137,58 +131,9 @@ public:
 	virtual ~RDOPROCFlowChart();
 
 	void snapToGrid( RDOPROCShape* shape );
-//	void snapToGridAllShapes();
-
-//	int getGridStep() const                  { return grid_step;   }
-//	void setGridStep( const int value );
-
-//	const CPen&   getPenShape() const       { return pen_shape_default; }
-//	const CPen&   getPenShapeColor() const  { return pen_shape_color;   }
-//	const CBrush& getBrushSelectBox() const { return brush_select_box;  }
 	
-	int getPenShapeWidth() const             { return shape_pen_width; }
-//	int getPaperBorderWidth() const          { return paper_border_w;  }
-//	void setPaperBorderWidth( const int value );
-
-//	int getPaperBorderHeight() const         { return paper_border_h; }
-//	void setPaperBorderHeight( const int value );
-
 	void selectShapeOff();
 	void selectShape( RDOPROCShape* shape, const bool value = true );
-
-/*
-	GridMode getGridMode() const             { return grid_mode;   }
-	void setGridMode( const GridMode value );
-
-	GridType getGridType() const             { return grid_type;   }
-	void setGridType( const GridType value );
-
-	bool getGridShow() const                 { return grid_show;   }
-	void setGridShow( const bool value );
-
-	int getGridDelta() const                 { return grid_delta;  }
-	void setGridDelta( const int value );
-
-	const COLORREF& getGridColor() const     { return grid_color;  }
-	void setGridColor( const COLORREF& value );
-
-	const COLORREF& getPaperColor() const    { return paper_bg_color; }
-	void setPaperColor( const COLORREF& value );
-
-	const COLORREF& getShapeColor() const    { return shape_color; }
-	void setShapeColor( const COLORREF& value );
-
-	bool getShowShapeName() const                { return showShapeName;                     }
-	void setShowShapeName( const bool value );
-
-	bool getShowConnectorPoint() const           { return showConnectorPoint;                }
-	void setShowConnectorPoint( const bool value );
-*/
-	static double getLength( const CPoint& point1, const CPoint& point2 );
-	static CPoint getPerpendicular( const CPoint& line_point1, const CPoint& line_point2, const CPoint& point, bool& null, bool* inside = NULL );
-	static double getDistance( const CPoint& line_point1, const CPoint& line_point2, const CPoint& point, bool* inside = NULL );
-	static CPoint getIntersection( const std::vector< CPoint >& pa, const double x1, const double y1, const double x2, const double y2, const double x3, const double y3, const double x4, const double y4, double& Ka, double& Kb, double& K, double& Ua, double& Ub );
-	static double getCorner( int x1, int y1, int x2, int y2 );
 
 	//{{AFX_VIRTUAL(RDOPROCFlowChart)
 	public:
