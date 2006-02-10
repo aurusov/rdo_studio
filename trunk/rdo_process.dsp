@@ -102,6 +102,10 @@ SOURCE=.\rdoprocess_childfrm.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\rdoprocess_dockwnd.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdoprocess_flowchart.cpp
 # End Source File
 # Begin Source File
@@ -115,6 +119,10 @@ SOURCE=.\rdoprocess_matrix.cpp
 # Begin Source File
 
 SOURCE=.\rdoprocess_object.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdoprocess_project.cpp
 # End Source File
 # Begin Source File
 
@@ -155,6 +163,10 @@ SOURCE=.\rdoprocess_childfrm.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\rdoprocess_dockwnd.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdoprocess_flowchart.h
 # End Source File
 # Begin Source File
@@ -168,6 +180,10 @@ SOURCE=.\rdoprocess_matrix.h
 # Begin Source File
 
 SOURCE=.\rdoprocess_object.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdoprocess_project.h
 # End Source File
 # Begin Source File
 
@@ -217,6 +233,34 @@ SOURCE=.\res\rdo_process.rc2
 
 SOURCE=.\res\Toolbar.bmp
 # End Source File
+# End Group
+# Begin Group "SizeCBar"
+
+# PROP Default_Filter ""
+# Begin Group "SizeCBar Source Files"
+
+# PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
+# Begin Source File
+
+SOURCE=.\sizecbar\scbarg.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\sizecbar\sizecbar.cpp
+# End Source File
+# End Group
+# Begin Group "SizeCBar Header Files"
+
+# PROP Default_Filter "h;hpp;hxx;hm;inl"
+# Begin Source File
+
+SOURCE=.\sizecbar\scbarg.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\sizecbar\sizecbar.h
+# End Source File
+# End Group
 # End Group
 # End Target
 # End Project

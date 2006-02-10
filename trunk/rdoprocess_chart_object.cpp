@@ -166,17 +166,17 @@ RPRect& RPRect::extendByPerimetr( int delta )
 // ----------------------------------------------------------------------------
 RDOPROCChartObject::RDOPROCChartObject( RDOPROCObject* _parent, RDOPROCChartObject* _chart_parent, RDOPROCFlowChart* _flowchart ):
 	RDOPROCObject( _parent ),
+	rotate_center( 0, 0 ),
 	rotate_center_inited( false ),
 	chart_parent( _chart_parent ),
 	flowchart( _flowchart ),
-	main_pen_width( 20 )
+	main_pen_width( 2 )
 {
 	LOGBRUSH lb;
 	lb.lbStyle = BS_SOLID;
 	lb.lbColor = RGB(0x00, 0x00, 0x00);
 	lb.lbHatch = 0;
-//	main_pen.CreatePen( PS_GEOMETRIC | PS_SOLID | PS_ENDCAP_SQUARE | PS_JOIN_MITER, main_pen_width, &lb );
-	main_pen.CreatePen( PS_GEOMETRIC | PS_SOLID | PS_ENDCAP_SQUARE | PS_JOIN_MITER, main_pen_width, RGB(0,0,0) );
+	main_pen.CreatePen( PS_GEOMETRIC | PS_SOLID | PS_ENDCAP_SQUARE | PS_JOIN_MITER, main_pen_width, &lb );
 }
 
 RDOPROCChartObject::~RDOPROCChartObject()
@@ -185,7 +185,10 @@ RDOPROCChartObject::~RDOPROCChartObject()
 
 RDOPROCMatrix RDOPROCChartObject::globalMatrix() const
 {
-	return chart_parent ? chart_parent->globalMatrix() * matrix_transform * matrix_rotate * matrix_scale : matrix_transform * matrix_rotate * matrix_scale;
+	RDOPROCMatrix r_center;
+	r_center.dx() = rotate_center.x;
+	r_center.dy() = rotate_center.y;
+	return chart_parent ? chart_parent->globalMatrix() * matrix_transform * r_center * matrix_rotate * r_center.obr() * matrix_scale : matrix_transform * r_center * matrix_rotate * r_center.obr() * matrix_scale;
 }
 
 RDOPROCMatrix RDOPROCChartObject::parentMatrix() const

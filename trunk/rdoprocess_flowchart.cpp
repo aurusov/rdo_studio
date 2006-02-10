@@ -662,8 +662,7 @@ void RDOPROCFlowChart::OnPaint()
 					mem_dc.SelectObject( brush_white );
 					mem_dc.Ellipse( center.x - 5, center.y - 5, center.x + 5, center.y + 5 );
 					// Прямоугольник вокруг фигуры
-//					rp::RPRect rect = shape->getBoundingRect();
-					rp::RPRect rect = shape->getBoundingRect().extendByPerimetr( shape->main_pen_width * sqrt(2) / 2.0 );
+					rp::RPRect rect = shape->getBoundingRect();
 					int x0 = rect.p0().x;
 					int x1 = rect.p1().x;
 					int x2 = rect.p2().x;
@@ -1246,12 +1245,5 @@ void RDOPROCFlowChart::OnMouseMove( UINT nFlags, CPoint point )
 	if ( !movingShapes.empty() ) {
 		ClientToScreen( &point );
 		moving( point.x, point.y );
-		static int alpha = 0;
-		std::list< RDOPROCShape* >::iterator it = movingShapes.begin();
-		while ( it != movingShapes.end() ) {
-			(*it)->setRotation( alpha );
-			it++;
-		}
-		alpha++;
 	}
 }

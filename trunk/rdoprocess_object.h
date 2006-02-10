@@ -49,6 +49,8 @@ public:
 
 	bool isSelected() const { return selected; }
 	void setSelected( const bool value );
+
+	bool hasChild() const { return !child.empty(); }
 };
 
 #endif // RDO_PROCESS_OBJECT_H

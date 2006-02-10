@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "rdoprocess_mainfrm.h"
+#include "rdoprocess_app.h"
 #include "resource.h"
 
 #ifdef _DEBUG
@@ -16,6 +17,11 @@ IMPLEMENT_DYNAMIC(RDOPROCMainFrame, CMDIFrameWnd)
 BEGIN_MESSAGE_MAP(RDOPROCMainFrame, CMDIFrameWnd)
 	//{{AFX_MSG_MAP(RDOPROCMainFrame)
 	ON_WM_CREATE()
+	ON_UPDATE_COMMAND_UI(ID_FLOW_CONNECTOR, OnUpdateFlowConnector)
+	ON_UPDATE_COMMAND_UI(ID_FLOW_ROTATE, OnUpdateFlowRotate)
+	ON_UPDATE_COMMAND_UI(ID_FLOW_SELECT, OnUpdateFlowSelect)
+	ON_COMMAND(ID_FLOW_SELECT, OnFlowSelect)
+	ON_COMMAND(ID_FLOW_ROTATE, OnFlowRotate)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -57,11 +63,16 @@ int RDOPROCMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;      // fail to create
 	}
 
-	// TODO: Delete these three lines if you don't want the toolbar to
-	//  be dockable
-	m_wndToolBar.EnableDocking(CBRS_ALIGN_ANY);
-	EnableDocking(CBRS_ALIGN_ANY);
-	DockControlBar(&m_wndToolBar);
+	projectBar.Create( "Project Bar", this, 0 );
+	projectBar.SetBarStyle( projectBar.GetBarStyle() | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
+	projectBar.EnableDocking( CBRS_ALIGN_ANY );
+
+	m_wndToolBar.EnableDocking( CBRS_ALIGN_ANY );
+
+	EnableDocking( CBRS_ALIGN_ANY );
+
+	DockControlBar( &m_wndToolBar );
+	DockControlBar( &projectBar, AFX_IDW_DOCKBAR_LEFT );
 
 	return 0;
 }
@@ -88,3 +99,31 @@ void RDOPROCMainFrame::Dump(CDumpContext& dc) const
 }
 
 #endif
+
+void RDOPROCMainFrame::OnUpdateFlowSelect( CCmdUI* pCmdUI )
+{
+	pCmdUI->Enable( rpapp.project.hasChild() );
+}
+
+void RDOPROCMainFrame::OnUpdateFlowConnector( CCmdUI* pCmdUI )
+{
+	pCmdUI->Enable( rpapp.project.hasChild() );
+}
+
+void RDOPROCMainFrame::OnUpdateFlowRotate( CCmdUI* pCmdUI )
+{
+	pCmdUI->Enable( rpapp.project.hasChild() );
+}
+
+void RDOPROCMainFrame::OnFlowSelect()
+{
+	CMDIChildWnd* mdi = MDIGetActive();
+	if ( mdi ) {
+		TRACE( "select\n" );
+	}
+}
+
+void RDOPROCMainFrame::OnFlowRotate()
+{
+	TRACE( "rotate\n" );
+}

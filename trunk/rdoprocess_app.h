@@ -9,7 +9,7 @@
 	#error include 'stdafx.h' before including this file for PCH
 #endif
 
-#include "rdoprocess_object.h"
+#include "rdoprocess_project.h"
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCApp
@@ -23,7 +23,7 @@ protected:
 public:
 	RDOPROCApp();
 
-	RDOPROCObject project;
+	RDOPROCProject project;
 
 	//{{AFX_VIRTUAL(RDOPROCApp)
 	public:
