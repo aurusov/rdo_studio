@@ -4,6 +4,7 @@
 #include "rdoprocess_shape_action.h"
 #include "rdoprocess_shape_if.h"
 #include "rdoprocess_app.h"
+#include "resource.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -17,6 +18,20 @@ static char THIS_FILE[] = __FILE__;
 RDOPROCFlowChartObject::RDOPROCFlowChartObject( RDOPROCObject* _parent, RDOPROCChartObject* _chart_parent, RDOPROCFlowChart* _flowchart ):
 	RDOPROCChartObject( _parent, _chart_parent, _flowchart )
 {
+	rpapp.connect( this, RP_FLOWSTATE_CHANGED );
+}
+
+void RDOPROCFlowChartObject::notify( RDOPROCObject* from, UINT message, WPARAM wParam, LPARAM lParam )
+{
+	if ( message == RP_FLOWSTATE_CHANGED ) {
+		flowchart->updateFlowState();
+		RDOPROCProject::FlowState flow_state = static_cast<RDOPROCProject::FlowState>(wParam);
+		switch ( flow_state ) {
+			case RDOPROCProject::flow_select   : break;
+			case RDOPROCProject::flow_connector: break;
+			case RDOPROCProject::flow_rotate   : break;
+		}
+	}
 }
 
 // ----------------------------------------------------------------------------
@@ -42,6 +57,7 @@ BEGIN_MESSAGE_MAP( RDOPROCFlowChart,CWnd )
 	ON_WM_LBUTTONUP()
 	ON_WM_MOUSEMOVE()
 	ON_WM_TIMER()
+	ON_WM_SETCURSOR()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -654,13 +670,15 @@ void RDOPROCFlowChart::OnPaint()
 				}
 */
 				if ( shape->isSelected() ) {
-					// Центр вращения
-					CPoint center = shape->getRotateCenter();
-					CPen pen_red( PS_SOLID, 1, RGB(0,0,0) );
-					CBrush brush_white( RGB(-1,-1,0) );
-					mem_dc.SelectObject( pen_red );
-					mem_dc.SelectObject( brush_white );
-					mem_dc.Ellipse( center.x - 5, center.y - 5, center.x + 5, center.y + 5 );
+					if ( rpapp.project.getFlowState() == RDOPROCProject::flow_rotate ) {
+						// Центр вращения
+						CPoint center = shape->getRotateCenter();
+						CPen pen_red( PS_SOLID, 1, RGB(0,0,0) );
+						CBrush brush_white( RGB(-1,-1,0) );
+						mem_dc.SelectObject( pen_red );
+						mem_dc.SelectObject( brush_white );
+						mem_dc.Ellipse( center.x - 5, center.y - 5, center.x + 5, center.y + 5 );
+					}
 					// Прямоугольник вокруг фигуры
 					rp::RPRect rect = shape->getBoundingRect();
 					int x0 = rect.p0().x;
@@ -681,10 +699,17 @@ void RDOPROCFlowChart::OnPaint()
 					mem_dc.SelectObject( brush_selected_box );
 					int box_size    = 7;
 					int box_size_2  = 4;
-					mem_dc.Rectangle( x0 - box_size_2, y0 - box_size_2, x0 + box_size_2, y0 + box_size_2 );
-					mem_dc.Rectangle( x1 - box_size_2, y1 - box_size_2, x1 + box_size_2, y1 + box_size_2 );
-					mem_dc.Rectangle( x2 - box_size_2, y2 - box_size_2, x2 + box_size_2, y2 + box_size_2 );
-					mem_dc.Rectangle( x3 - box_size_2, y3 - box_size_2, x3 + box_size_2, y3 + box_size_2 );
+					if ( rpapp.project.getFlowState() == RDOPROCProject::flow_rotate ) {
+						mem_dc.Ellipse( x0 - 5, y0 - 5, x0 + 5, y0 + 5 );
+						mem_dc.Ellipse( x1 - 5, y1 - 5, x1 + 5, y1 + 5 );
+						mem_dc.Ellipse( x2 - 5, y2 - 5, x2 + 5, y2 + 5 );
+						mem_dc.Ellipse( x3 - 5, y3 - 5, x3 + 5, y3 + 5 );
+					} else {
+						mem_dc.Rectangle( x0 - box_size_2, y0 - box_size_2, x0 + box_size_2, y0 + box_size_2 );
+						mem_dc.Rectangle( x1 - box_size_2, y1 - box_size_2, x1 + box_size_2, y1 + box_size_2 );
+						mem_dc.Rectangle( x2 - box_size_2, y2 - box_size_2, x2 + box_size_2, y2 + box_size_2 );
+						mem_dc.Rectangle( x3 - box_size_2, y3 - box_size_2, x3 + box_size_2, y3 + box_size_2 );
+					}
 					mem_dc.Rectangle( (x0 + x1)/2 - box_size_2, (y0 + y1)/2 - box_size_2, (x0 + x1)/2 + box_size_2, (y0 + y1)/2 + box_size_2 );
 					mem_dc.Rectangle( (x1 + x2)/2 - box_size_2, (y1 + y2)/2 - box_size_2, (x1 + x2)/2 + box_size_2, (y1 + y2)/2 + box_size_2 );
 					mem_dc.Rectangle( (x2 + x3)/2 - box_size_2, (y2 + y3)/2 - box_size_2, (x2 + x3)/2 + box_size_2, (y2 + y3)/2 + box_size_2 );
@@ -896,116 +921,6 @@ void RDOPROCFlowChart::snapToGridAllShapes()
 	while ( it != shapes.end() ) {
 		snapToGrid( *it );
 		it++;
-	}
-}
-
- void RDOPROCFlowChart::setPaperBorderWidth( const int value )
-{
-	if ( paper_border_w != value ) {
-		paper_border_w = value;
-		grid_pa.resize( 0 );
-		makeGrid();
-//		updateScrollView();
-		updateDC();
-	}
-}
-
-void RDOPROCFlowChart::setPaperBorderHeight( const int value )
-{
-	if ( paper_border_h != value ) {
-		paper_border_h = value;
-		grid_pa.resize( 0 );
-		makeGrid();
-//		updateScrollView();
-		updateDC();
-	}
-}
-
-void RDOPROCFlowChart::setPaperColor( const COLORREF& value )
-{
-	if ( paper_bg_color != value ) {
-		paper_bg_color = value;
-		updateDC();
-	}
-}
-
-void RDOPROCFlowChart::setShapeColor( const COLORREF& value )
-{
-	if ( shape_color != value ) {
-		shape_color = value;
-		updateDC();
-	}
-}
-
-void RDOPROCFlowChart::setGridMode( const GridMode value )
-{
-	if ( grid_mode != value ) {
-		grid_mode = value;
-		grid_pa.resize( 0 );
-		makeGrid();
-		snapToGridAllShapes();
-		updateDC();
-	}
-}
-
-void RDOPROCFlowChart::setGridType( const GridType value )
-{
-	if ( grid_type != value ) {
-		grid_type = value;
-		grid_pa.resize( 0 );
-		makeGrid();
-		updateDC();
-	}
-}
-
-void RDOPROCFlowChart::setGridShow( const bool value )
-{
-	if ( grid_show != value ) {
-		grid_show = value;
-		updateDC();
-	}
-}
-
-void RDOPROCFlowChart::setGridStep( const int value )
-{
-	if ( grid_step != value ) {
-		grid_step = value;
-		grid_pa.resize( 0 );
-		makeGrid();
-		snapToGridAllShapes();
-		updateDC();
-	}
-}
-
-void RDOPROCFlowChart::setGridDelta( const int value )
-{
-	if ( grid_delta != value ) {
-		grid_delta = value;
-		updateDC();
-	}
-}
-
-void RDOPROCFlowChart::setGridColor( const COLORREF& value )
-{
-	if ( grid_color != value ) {
-		grid_color = value;
-		updateDC();
-	}
-}
-
-void RDOPROCFlowChart::setShowShapeName( const bool value )
-{
-	if ( showShapeName != value ) {
-		showShapeName = value;
-		updateDC();
-	}
-}
-
-void RDOPROCFlowChart::setShowConnectorPoint( const bool value )
-{
-	if ( showConnectorPoint != value ) {
-		showConnectorPoint = value;
-		updateDC();
 	}
 }
 */
@@ -1246,4 +1161,19 @@ void RDOPROCFlowChart::OnMouseMove( UINT nFlags, CPoint point )
 		ClientToScreen( &point );
 		moving( point.x, point.y );
 	}
+}
+
+void RDOPROCFlowChart::updateFlowState()
+{
+	updateDC();
+}
+
+BOOL RDOPROCFlowChart::OnSetCursor( CWnd* pWnd, UINT nHitTest, UINT message )
+{
+	switch ( rpapp.project.getFlowState() ) {
+		case RDOPROCProject::flow_select   : ::SetCursor( rpapp.cursors[IDC_FLOW_SELECT] ); break;
+		case RDOPROCProject::flow_connector: ::SetCursor( rpapp.cursors[IDC_FLOW_CONNECTOR] ); break;
+		case RDOPROCProject::flow_rotate   : ::SetCursor( rpapp.cursors[IDC_FLOW_ROTATE] ); break;
+	}
+	return TRUE;
 }

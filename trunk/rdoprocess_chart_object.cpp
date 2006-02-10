@@ -297,7 +297,6 @@ bool RDOPROCChartObject::getPlanarData( const CPoint& p1, const CPoint& p2, cons
 		double a = a2 - a1;
 		if ( a < 0 ) a += 360;
 		double b = 180 + a1 + a / 2;
-		TRACE( "a1 = %f, a2 = %f, a2 - a1 = %f, b = %f\n", a1, a2, a2 - a1, b );
 		cos_b = cos( b * pi / 180.0 );
 		sin_b = sin( b * pi / 180.0 );
 		return true;

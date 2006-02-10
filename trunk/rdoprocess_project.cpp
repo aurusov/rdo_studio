@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "rdoprocess_project.h"
+#include "rdoprocess_app.h"
+#include "resource.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -24,5 +26,6 @@ void RDOPROCProject::setFlowState( FlowState value )
 {
 	if ( flow_state != value ) {
 		flow_state = value;
+		rpapp.sendMessage( this, RP_FLOWSTATE_CHANGED, flow_state, 0  );
 	}
 }

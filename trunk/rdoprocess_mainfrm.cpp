@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "rdoprocess_mainfrm.h"
 #include "rdoprocess_app.h"
+#include "rdoprocess_string.h"
 #include "resource.h"
 
 #ifdef _DEBUG
@@ -22,6 +23,7 @@ BEGIN_MESSAGE_MAP(RDOPROCMainFrame, CMDIFrameWnd)
 	ON_UPDATE_COMMAND_UI(ID_FLOW_SELECT, OnUpdateFlowSelect)
 	ON_COMMAND(ID_FLOW_SELECT, OnFlowSelect)
 	ON_COMMAND(ID_FLOW_ROTATE, OnFlowRotate)
+	ON_COMMAND(ID_FLOW_CONNECTOR, OnFlowConnector)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -63,7 +65,7 @@ int RDOPROCMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;      // fail to create
 	}
 
-	projectBar.Create( "Project Bar", this, 0 );
+	projectBar.Create( rp::string::format( ID_DOCK_PROJECT_BAR ).c_str(), this, 0 );
 	projectBar.SetBarStyle( projectBar.GetBarStyle() | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
 	projectBar.EnableDocking( CBRS_ALIGN_ANY );
 
@@ -117,13 +119,15 @@ void RDOPROCMainFrame::OnUpdateFlowRotate( CCmdUI* pCmdUI )
 
 void RDOPROCMainFrame::OnFlowSelect()
 {
-	CMDIChildWnd* mdi = MDIGetActive();
-	if ( mdi ) {
-		TRACE( "select\n" );
-	}
+	rpapp.project.setFlowState( RDOPROCProject::flow_select );
+}
+
+void RDOPROCMainFrame::OnFlowConnector()
+{
+	rpapp.project.setFlowState( RDOPROCProject::flow_connector );
 }
 
 void RDOPROCMainFrame::OnFlowRotate()
 {
-	TRACE( "rotate\n" );
+	rpapp.project.setFlowState( RDOPROCProject::flow_rotate );
 }

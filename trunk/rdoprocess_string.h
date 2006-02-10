@@ -33,6 +33,8 @@ public:
 	string(): std::basic_string< char >() {};
 	string( const char* str ): std::basic_string< char >( str ) {};
 	string( const std::string& str ): std::basic_string< char >( str ) {};
+	static string format( const char* str, ... );
+	static string format( unsigned int resource, ... );
 
 	int      toint() const    { return atoi( c_str() ); }
 	long int tolong() const   { return atol( c_str() ); }

@@ -26,6 +26,7 @@ public:
 	virtual void setSelected( bool value ) {};
 	virtual void moveTo( int x, int y ) {};
 	virtual void draw( CDC& dc ) {};
+	virtual void notify( RDOPROCObject* from, UINT message, WPARAM wParam, LPARAM lParam );
 };
 
 // ----------------------------------------------------------------------------
@@ -36,6 +37,7 @@ class RDOPROCShape;
 class RDOPROCFlowChart: public CWnd
 {
 friend class RDOPROCChartObject;
+friend class RDOPROCFlowChartObject;
 friend class RDOPROCShape;
 
 private:
@@ -126,6 +128,8 @@ private:
 	int makegridempty_cnt;
 #endif
 
+	void updateFlowState();
+
 public:
 	RDOPROCFlowChart();
 	virtual ~RDOPROCFlowChart();
@@ -153,6 +157,7 @@ protected:
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg void OnTimer(UINT nIDEvent);
+	afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

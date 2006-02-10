@@ -20,10 +20,17 @@ protected:
 	HMENU m_hMDIMenu;
 	HACCEL m_hMDIAccel;
 
+	typedef std::multimap< UINT, RDOPROCObject* > Connected;
+	Connected connected;
+
 public:
 	RDOPROCApp();
 
 	RDOPROCProject project;
+	std::map< UINT, HCURSOR > cursors;
+
+	void connect( RDOPROCObject* to, UINT message );
+	void sendMessage( RDOPROCObject* from, UINT message, WPARAM wParam, LPARAM lParam );
 
 	//{{AFX_VIRTUAL(RDOPROCApp)
 	public:

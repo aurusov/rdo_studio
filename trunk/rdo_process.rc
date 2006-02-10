@@ -65,6 +65,15 @@ END
 //
 
 IDR_RT_MANIFEST1        24      MOVEABLE PURE   "res\\rdo_process.manifest"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Cursor
+//
+
+IDC_FLOW_SELECT         CURSOR  DISCARDABLE     "res\\flow_select.cur"
+IDC_FLOW_ROTATE         CURSOR  DISCARDABLE     "res\\flow_rotate.cur"
+IDC_FLOW_CONNECTOR      CURSOR  DISCARDABLE     "res\\flow_connector.cur"
 #endif    // Russian resources
 /////////////////////////////////////////////////////////////////////////////
 
@@ -287,17 +296,6 @@ END
 STRINGTABLE PRELOAD DISCARDABLE 
 BEGIN
     AFX_IDS_APP_TITLE       "rdo_process"
-    AFX_IDS_IDLEMESSAGE     "Ready"
-END
-
-STRINGTABLE DISCARDABLE 
-BEGIN
-    ID_INDICATOR_EXT        "EXT"
-    ID_INDICATOR_CAPS       "CAP"
-    ID_INDICATOR_NUM        "NUM"
-    ID_INDICATOR_SCRL       "SCRL"
-    ID_INDICATOR_OVR        "OVR"
-    ID_INDICATOR_REC        "REC"
 END
 
 STRINGTABLE DISCARDABLE 
@@ -314,56 +312,22 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    ID_NEXT_PANE            "Switch to the next window pane\nNext Pane"
-    ID_PREV_PANE            "Switch back to the previous window pane\nPrevious Pane"
-END
-
-STRINGTABLE DISCARDABLE 
-BEGIN
     ID_WINDOW_ARRANGE       "Arrange icons at the bottom of the window\nArrange Icons"
     ID_WINDOW_CASCADE       "Arrange windows so they overlap\nCascade Windows"
     ID_WINDOW_TILE_HORZ     "Arrange windows as non-overlapping tiles\nTile Windows"
     ID_WINDOW_TILE_VERT     "Arrange windows as non-overlapping tiles\nTile Windows"
-    ID_WINDOW_SPLIT         "Split the active window into panes\nSplit"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    ID_EDIT_CLEAR           "Erase the selection\nErase"
-    ID_EDIT_CLEAR_ALL       "Erase everything\nErase All"
     ID_EDIT_COPY            "Copy the selection and put it on the Clipboard\nCopy"
     ID_EDIT_CUT             "Cut the selection and put it on the Clipboard\nCut"
-    ID_EDIT_FIND            "Find the specified text\nFind"
     ID_EDIT_PASTE           "Insert Clipboard contents\nPaste"
-    ID_EDIT_REPEAT          "Repeat the last action\nRepeat"
-    ID_EDIT_REPLACE         "Replace specific text with different text\nReplace"
-    ID_EDIT_SELECT_ALL      "Select the entire document\nSelect All"
-    ID_EDIT_UNDO            "Undo the last action\nUndo"
-    ID_EDIT_REDO            "Redo the previously undone action\nRedo"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    ID_VIEW_TOOLBAR         "Show or hide the toolbar\nToggle ToolBar"
-    ID_VIEW_STATUS_BAR      "Show or hide the status bar\nToggle StatusBar"
-END
-
-STRINGTABLE DISCARDABLE 
-BEGIN
-    AFX_IDS_SCSIZE          "Change the window size"
-    AFX_IDS_SCMOVE          "Change the window position"
-    AFX_IDS_SCMINIMIZE      "Reduce the window to an icon"
-    AFX_IDS_SCMAXIMIZE      "Enlarge the window to full size"
-    AFX_IDS_SCNEXTWINDOW    "Switch to the next document window"
-    AFX_IDS_SCPREVWINDOW    "Switch to the previous document window"
-    AFX_IDS_SCCLOSE         "Close the active window and prompts to save the documents"
-END
-
-STRINGTABLE DISCARDABLE 
-BEGIN
-    AFX_IDS_SCRESTORE       "Restore the window to normal size"
-    AFX_IDS_SCTASKLIST      "Activate Task List"
-    AFX_IDS_MDICHILD        "Activate this window"
+    ID_DOCK_PROJECT_BAR     "Project Bar"
 END
 
 #endif    // English (U.S.) resources

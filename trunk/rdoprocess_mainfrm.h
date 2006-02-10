@@ -41,6 +41,7 @@ protected:
 	afx_msg void OnUpdateFlowSelect(CCmdUI* pCmdUI);
 	afx_msg void OnFlowSelect();
 	afx_msg void OnFlowRotate();
+	afx_msg void OnFlowConnector();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

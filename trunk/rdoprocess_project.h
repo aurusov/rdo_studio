@@ -10,10 +10,12 @@
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCProject
 // ----------------------------------------------------------------------------
+static const UINT RP_FLOWSTATE_CHANGED = ::RegisterWindowMessage( "RP_FLOWSTATE_CHANGED" );
+
 class RDOPROCProject: public RDOPROCObject
 {
 public:
-	enum FlowState { flow_select, flow_connector, flow_rotate };
+	enum FlowState { flow_select = 0, flow_connector, flow_rotate };
 
 protected:
 	FlowState flow_state;

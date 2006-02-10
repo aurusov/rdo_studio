@@ -2,6 +2,7 @@
 #include "rdoprocess_app.h"
 #include "rdoprocess_mainfrm.h"
 #include "rdoprocess_childfrm.h"
+#include "rdoprocess_object.h"
 #include "resource.h"
 
 #ifdef _DEBUG
@@ -45,6 +46,10 @@ BOOL RDOPROCApp::InitInstance()
 	// such as the name of your company or organization.
 	SetRegistryKey(_T("Local AppWizard-Generated Applications"));
 
+
+	cursors[ IDC_FLOW_SELECT ]    = AfxGetApp()->LoadCursor(IDC_FLOW_SELECT);
+	cursors[ IDC_FLOW_CONNECTOR ] = AfxGetApp()->LoadCursor(IDC_FLOW_CONNECTOR);
+	cursors[ IDC_FLOW_ROTATE ]    = AfxGetApp()->LoadCursor(IDC_FLOW_ROTATE);
 
 	// To create the main window, this code creates a new frame window
 	// object and then sets it as the application's main window object.
@@ -135,4 +140,18 @@ void RDOPROCApp::OnAppAbout()
 {
 	RDOPROCAboutDlg aboutDlg;
 	aboutDlg.DoModal();
+}
+
+void RDOPROCApp::connect( RDOPROCObject* to, UINT message )
+{
+	connected.insert( Connected::value_type( message, to ) );
+}
+
+void RDOPROCApp::sendMessage( RDOPROCObject* from, UINT message, WPARAM wParam, LPARAM lParam )
+{
+	Connected::iterator it = connected.find( message );
+	while ( it != connected.end() ) {
+		it->second->notify( from, message, wParam, lParam );
+		it++;
+	}
 }

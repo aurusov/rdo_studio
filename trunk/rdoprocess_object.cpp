@@ -179,3 +179,7 @@ void RDOPROCObject::selectChildOff( RDOPROCObject* withoutObj )
 		it++;
 	}
 }
+
+void RDOPROCObject::notify( RDOPROCObject* from, UINT message, WPARAM wParam, LPARAM lParam )
+{
+}

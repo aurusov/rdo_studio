@@ -51,6 +51,8 @@ public:
 	void setSelected( const bool value );
 
 	bool hasChild() const { return !child.empty(); }
+
+	virtual void notify( RDOPROCObject* from, UINT message, WPARAM wParam, LPARAM lParam );
 };
 
 #endif // RDO_PROCESS_OBJECT_H
