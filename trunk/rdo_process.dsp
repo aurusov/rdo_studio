@@ -114,6 +114,10 @@ SOURCE=.\rdoprocess_mainfrm.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\rdoprocess_math.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdoprocess_matrix.cpp
 # End Source File
 # Begin Source File
@@ -122,7 +126,15 @@ SOURCE=.\rdoprocess_object.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\rdoprocess_polygon.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdoprocess_project.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdoprocess_rect.cpp
 # End Source File
 # Begin Source File
 
@@ -175,6 +187,10 @@ SOURCE=.\rdoprocess_mainfrm.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\rdoprocess_math.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdoprocess_matrix.h
 # End Source File
 # Begin Source File
@@ -183,7 +199,15 @@ SOURCE=.\rdoprocess_object.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\rdoprocess_polygon.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdoprocess_project.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdoprocess_rect.h
 # End Source File
 # Begin Source File
 

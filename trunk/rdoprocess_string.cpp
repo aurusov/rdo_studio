@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include "rdoprocess_string.h"
 
-#include <vector>
-
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE

@@ -7,7 +7,6 @@
 
 #include <string>
 #include <locale>
-#include <algorithm>
 
 namespace rp {
 
@@ -75,6 +74,6 @@ public:
 
 };
 
-};
+}
 
 #endif // RDO_PROCESS_GLOBAL_H

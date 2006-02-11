@@ -7,9 +7,6 @@
 
 #include "rdoprocess_chart_object.h"
 
-#include <list>
-#include <vector>
-
 #define TEST_SPEED TRUE
 #undef TEST_SPEED
 
