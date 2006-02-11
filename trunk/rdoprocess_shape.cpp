@@ -12,8 +12,8 @@ static char THIS_FILE[] = __FILE__;
 // ---------- RDOPROCShape
 // ----------------------------------------------------------------------------
 RDOPROCShape::RDOPROCShape( RDOPROCObject* _parent, RDOPROCFlowChart* _flowchart ):
-	RDOPROCChartObject( _parent, _flowchart->chobj, _flowchart ),
-	snap_to_point( 0, 0 )
+	RDOPROCChartObject( _parent, _flowchart->chobj, _flowchart )
+//	snap_to_point( 0, 0 )
 {
 	flowchart->insertShape( this );
 }
@@ -21,15 +21,6 @@ RDOPROCShape::RDOPROCShape( RDOPROCObject* _parent, RDOPROCFlowChart* _flowchart
 RDOPROCShape::~RDOPROCShape()
 {
 	flowchart->deleteShape( this );
-}
-
-void RDOPROCShape::setSelected( bool value )
-{
-	bool _selected = selected;
-	RDOPROCObject::setSelected( value );
-	if ( flowchart && _selected != value ) {
-		flowchart->selectShape( this, value );
-	}
 }
 
 void RDOPROCShape::setPosition( int x, int y )

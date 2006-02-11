@@ -17,7 +17,7 @@ class RDOPROCShape: public RDOPROCChartObject
 friend class RDOPROCFlowChart;
 
 protected:
-	CPoint snap_to_point;
+//	CPoint snap_to_point;
 
 	virtual void drawPolyline( CDC& dc );
 //	virtual void drawConnectorsInput( CDC& dc );
@@ -28,11 +28,8 @@ public:
 	virtual ~RDOPROCShape();
 
 	virtual void setPosition( int x, int y );
-	virtual void setSelected( bool value );
 
-	const CSize getSize() { return CSize(); /*getBoundingRect().Size();*/ }
-
-	const CPoint& getSnapToPoint() const { return snap_to_point; }
+//	const CPoint& getSnapToPoint() const { return snap_to_point; }
 
 	virtual void draw( CDC& dc );
 };

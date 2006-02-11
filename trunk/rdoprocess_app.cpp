@@ -25,11 +25,13 @@ END_MESSAGE_MAP()
 
 RDOPROCApp::RDOPROCApp()
 {
+	log.open( "log.txt" );
 	project.setName( "project" );
 }
 
 BOOL RDOPROCApp::InitInstance()
 {
+	log << "RDOPROCApp::InitInstance().." << std::endl;
 	// Standard initialization
 	// If you are not using these features and wish to reduce the size
 	//  of your final executable, you should remove from the following
@@ -45,7 +47,6 @@ BOOL RDOPROCApp::InitInstance()
 	// TODO: You should modify this string to be something appropriate
 	// such as the name of your company or organization.
 	SetRegistryKey(_T("Local AppWizard-Generated Applications"));
-
 
 	cursors[ IDC_FLOW_SELECT ]    = AfxGetApp()->LoadCursor(IDC_FLOW_SELECT);
 	cursors[ IDC_FLOW_CONNECTOR ] = AfxGetApp()->LoadCursor(IDC_FLOW_CONNECTOR);
@@ -73,6 +74,7 @@ BOOL RDOPROCApp::InitInstance()
 	pFrame->ShowWindow(m_nCmdShow);
 	pFrame->UpdateWindow();
 
+	log << "RDOPROCApp::InitInstance().. ok" << std::endl;
 	return TRUE;
 }
 

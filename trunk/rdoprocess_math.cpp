@@ -13,15 +13,6 @@ namespace rp {
 
 double math::pi = 3.14159265358979323846;
 
-double math::getLength( const CPoint& point1, const CPoint& point2 )
-{
-	try {
-		return sqrt( (point1.x - point2.x)*(point1.x - point2.x) + (point1.y - point2.y)*(point1.y - point2.y) );
-	} catch (...) {
-		return -1;
-	}
-}
-
 bool math::getPlanarData( const CPoint& p1, const CPoint& p2, double& len, double& cos_a, double& sin_a )
 {
 	len = math::getLength( p1, p2 );
@@ -79,16 +70,42 @@ double math::getDistance( const CPoint& line_point1, const CPoint& line_point2, 
 	return -1.0;
 }
 
-double math::getAlpha( int x1, int y1, int x2, int y2 )
+double math::getAlpha( const CPoint& p1, const CPoint& p2 )
 {
-	double a_len = sqrt(static_cast<double>((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2)));
-	double a_sin = static_cast<double>((y1-y2))/a_len;
-	double a_cos = static_cast<double>((x2-x1))/a_len;
-	double alpha = acos( a_cos ) * 180.0 / pi;
-	if ( a_sin < 0.0 ) {
-		alpha = 360.0 - alpha;
+	double len = math::getLength( p1, p2 );
+	if ( len != -1 ) {
+		double sin_a = static_cast<double>((p1.y-p2.y))/len;
+		double cos_a = static_cast<double>((p2.x-p1.x))/len;
+		double alpha = acos( cos_a ) * 180.0 / pi;
+		if ( sin_a < 0.0 ) {
+			alpha = 360.0 - alpha;
+		}
+		return alpha;
 	}
-	return alpha;
+	return 0;
+}
+
+double math::getAlpha( const CPoint& p1, const CPoint& p2_center, const CPoint& p3 )
+{
+	double len1 = math::getLength( p1, p2_center );
+	double len2 = math::getLength( p2_center, p3 );
+	TRACE( "len1 = %f, len2 = %f\n", len1, len2 );
+	if ( len1 != -1 && len2 != -1 ) {
+		double cos_a1 = static_cast<double>((p1.x-p2_center.x))/len1;
+		double sin_a1 = static_cast<double>((p2_center.y-p1.y))/len1;
+		double cos_a2 = static_cast<double>((p3.x-p2_center.x))/len2;
+		double sin_a2 = static_cast<double>((p2_center.y-p3.y))/len2;
+		double a1 = acos( cos_a1 ) * 180.0 / pi;
+		if ( sin_a1 < 0.0 ) {
+			a1 = 360.0 - a1;
+		}
+		double a2 = acos( cos_a2 ) * 180.0 / pi;
+		if ( sin_a2 < 0.0 ) {
+			a2 = 360.0 - a2;
+		}
+		return a2 - a1;
+	}
+	return 0;
 }
 
 CPoint math::getPerpendicular( const CPoint& line_point1, const CPoint& line_point2, const CPoint& point, bool& null, bool* inside )

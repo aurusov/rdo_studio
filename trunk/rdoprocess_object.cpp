@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "rdoprocess_object.h"
+#include "rdoprocess_app.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -23,29 +24,17 @@ RDOPROCObject::RDOPROCObject( RDOPROCObject* parent ):
 
 RDOPROCObject::~RDOPROCObject()
 {
-	::SendMessage( HWND_BROADCAST, RP_OBJ_BEFOREDELETE, reinterpret_cast<WPARAM>(this), 0  );
-//	modify();
+	rpapp.sendMessage( this, RP_OBJ_BEFOREDELETE );
 	if ( isSelected() ) {
 		setSelected( false );
 	}
 	clear();
-//	delete properties;
 	if ( rpoparent ) {
 		std::vector< RDOPROCObject* >::iterator it = std::find( rpoparent->child.begin(), rpoparent->child.end(), this );
 		if ( it != rpoparent->child.end() ) {
 			rpoparent->child.erase( it );
 		}
 	}
-/*
-	if ( !deleted && qobj ) {
-		delete qobj;
-		qobj = NULL;
-	}
-	if ( !isObjectWidget() && designerWidget ) {
-		delete designerWidget;
-		designerWidget = NULL;
-	}
-*/
 }
 
 void RDOPROCObject::clear()
@@ -71,7 +60,7 @@ void RDOPROCObject::setName( const rp::string& value )
 	} else {
 		::MessageBox( NULL, _T("Name can't be empty"), "Error", MB_OK | MB_ICONERROR );
 	}
-	::SendMessage( HWND_BROADCAST, RP_OBJ_NAMECHANGED, reinterpret_cast<WPARAM>(this), 0  );
+	rpapp.sendMessage( this, RP_OBJ_NAMECHANGED );
 }
 
 bool RDOPROCObject::isChildNameCorrect( const RDOPROCObject* obj ) const
@@ -97,52 +86,15 @@ void RDOPROCObject::setCorrectChildName( RDOPROCObject* obj )
 	}
 }
 
-void RDOPROCObject::set_selected( const bool value )
+void RDOPROCObject::setSelected( const bool value )
 {
 	if ( selected != value ) {
 		selected = value;
+		rpapp.sendMessage( this, RP_OBJ_SELCHANGED, value );
+	}
+}
+
 /*
-		if ( rpoparent ) {
-			if ( moveBorder ) {
-				delete moveBorder;
-				moveBorder = NULL;
-			}
-			if ( selected && info.isShowInDesigner() && !info.isWidgetContaner() ) {
-				moveBorder = new CBDObjectMoveBorder( this, getDesignerWidget()->parentWidget() );
-				moveBorder->stackUnder( getDesignerWidget() );
-				updateObjectMoveBorder();
-			}
-			if ( selected ) {
-				RDOPROCObject* contaner = rpoparent;
-				while ( rpoparent ) {
-					if ( rpoparent->getInfo().isWidgetContaner() ) {
-						break;
-					}
-					contaner = contaner->getCBDParent();
-				}
-				if ( contaner ) {
-					if ( !contaner->getDesignerWidget()->isShown() ) {
-						contaner->setSelected( true );
-					}
-					setSelected( true );
-				}
-			}
-		}
-*/
-	}
-}
-
-void RDOPROCObject::setSelected( const bool value )
-{
-	if ( rpoparent ) {
-		rpoparent->selectChildObject( this, value );
-	} else if ( selected != value ) {
-		set_selected( value );
-		::SendMessage( HWND_BROADCAST, RP_OBJ_SELCHANGED, reinterpret_cast<WPARAM>(this), 0  );
-	}
-}
-
-
 void RDOPROCObject::selectChildObject( RDOPROCObject* obj, const bool value )
 {
 	RDOPROCObject* root;
@@ -164,8 +116,7 @@ void RDOPROCObject::selectChildObject( RDOPROCObject* obj, const bool value )
 		}
 		it++;
 	}
-//	cbdf::project()->setCurrentObject( value ? obj : NULL );
-	::SendMessage( HWND_BROADCAST, RP_OBJ_SELCHANGED, reinterpret_cast<WPARAM>(this), 0  );
+	rpapp.sendMessage( this, RP_OBJ_SELCHANGED );
 }
 
 void RDOPROCObject::selectChildOff( RDOPROCObject* withoutObj )
@@ -179,6 +130,7 @@ void RDOPROCObject::selectChildOff( RDOPROCObject* withoutObj )
 		it++;
 	}
 }
+*/
 
 void RDOPROCObject::notify( RDOPROCObject* from, UINT message, WPARAM wParam, LPARAM lParam )
 {

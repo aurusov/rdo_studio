@@ -1,6 +1,8 @@
 #ifndef RDO_PROCESS_APP_H
 #define RDO_PROCESS_APP_H
 
+#include <fstream>
+
 #if _MSC_VER > 1000
 #pragma once
 #endif // _MSC_VER > 1000
@@ -26,11 +28,12 @@ protected:
 public:
 	RDOPROCApp();
 
-	RDOPROCProject project;
+	RDOPROCProject            project;
 	std::map< UINT, HCURSOR > cursors;
+	std::ofstream             log;
 
 	void connect( RDOPROCObject* to, UINT message );
-	void sendMessage( RDOPROCObject* from, UINT message, WPARAM wParam, LPARAM lParam );
+	void sendMessage( RDOPROCObject* from, UINT message, WPARAM wParam = 0, LPARAM lParam = 0 );
 
 	//{{AFX_VIRTUAL(RDOPROCApp)
 	public:

@@ -12,6 +12,7 @@
 #define ID_FLOW_SELECT                  32771
 #define ID_FLOW_CONNECTOR               32772
 #define ID_FLOW_ROTATE                  32773
+#define AFX_IDS_IDLEMESSAGE2            57346
 #define ID_DOCK_PROJECT_BAR             61216
 
 // Next default values for new objects

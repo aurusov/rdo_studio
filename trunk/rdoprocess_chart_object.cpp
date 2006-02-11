@@ -18,7 +18,8 @@ RDOPROCChartObject::RDOPROCChartObject( RDOPROCObject* _parent, RDOPROCChartObje
 	rotate_center_inited( false ),
 	chart_parent( _chart_parent ),
 	flowchart( _flowchart ),
-	main_pen_width( 2 )
+	main_pen_width( 2 ),
+	rotation_alpha( 0 )
 {
 	LOGBRUSH lb;
 	lb.lbStyle = BS_SOLID;
@@ -67,15 +68,26 @@ void RDOPROCChartObject::moving( int dx, int dy )
 
 void RDOPROCChartObject::setRotation( double alpha )
 {
-	alpha = alpha * rp::math::pi / 180.0;
-	double cosa = cos( alpha );
-	double sina = sin( alpha );
-//	if ( fabs(cosa) < 1e-10 ) cosa = 0;
-//	if ( fabs(sina) < 1e-10 ) sina = 0;
-	matrix_rotate.data[0][0] = cosa;
-	matrix_rotate.data[1][1] = cosa;
-	matrix_rotate.data[0][1] = -sina;
-	matrix_rotate.data[1][0] = sina;
+	rotation_alpha = alpha;
+	TRACE( "ra = %f\n", rotation_alpha );
+	alpha *= rp::math::pi / 180.0;
+	double cos_a = cos( alpha );
+	double sin_a = sin( alpha );
+//	if ( fabs(cos_a) < 1e-10 ) cos_a = 0;
+//	if ( fabs(sin_a) < 1e-10 ) sin_a = 0;
+	matrix_rotate.data[0][0] = cos_a;
+	matrix_rotate.data[1][1] = cos_a;
+	matrix_rotate.data[0][1] = -sin_a;
+	matrix_rotate.data[1][0] = sin_a;
+	flowchart->modify();
+}
+
+void RDOPROCChartObject::setSelected( bool value )
+{
+	RDOPROCObject::setSelected( value );
+	if ( flowchart ) {
+		flowchart->updateDC();
+	}
 }
 
 rp::RPRect RDOPROCChartObject::getBoundingRect( bool global ) const
@@ -99,4 +111,9 @@ rp::RPRect RDOPROCChartObject::getBoundingRect( bool global ) const
 		bound_rect = rect;
 	}
 	return bound_rect;
+}
+
+RDOPROCChartObject::PossibleCommand RDOPROCChartObject::getPossibleCommand( int global_x, int global_y ) const
+{
+	return pcmd_none;
 }

@@ -28,14 +28,12 @@ protected:
 	std::vector< RDOPROCObject* >::const_iterator end()   const { return child.end();   }
 	void clear();
 
-	void selectChildObject( RDOPROCObject* obj, const bool value );
-	void selectChildOff( RDOPROCObject* withoutObj = NULL );
+//	void selectChildObject( RDOPROCObject* obj, const bool value );
+//	void selectChildOff( RDOPROCObject* withoutObj = NULL );
 	// <-- manager
 
 	rp::string name;
-
-	bool selected;
-	virtual void set_selected( const bool value = true );
+	bool       selected;
 
 public:
 	RDOPROCObject( RDOPROCObject* parent = NULL );
@@ -48,7 +46,7 @@ public:
 	void setName( const rp::string& value );
 
 	bool isSelected() const { return selected; }
-	void setSelected( const bool value );
+	virtual void setSelected( const bool value );
 
 	bool hasChild() const { return !child.empty(); }
 

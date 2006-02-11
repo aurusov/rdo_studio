@@ -17,13 +17,14 @@ class RDOPROCFlowChartObject: public RDOPROCChartObject
 {
 friend class RDOPROCFlowChart;
 
+protected:
+	virtual void notify( RDOPROCObject* from, UINT message, WPARAM wParam, LPARAM lParam );
+
 public:
 	RDOPROCFlowChartObject( RDOPROCObject* parent, RDOPROCChartObject* chart_parent, RDOPROCFlowChart* flowchart );
 
-	virtual void setSelected( bool value ) {};
 	virtual void moveTo( int x, int y ) {};
 	virtual void draw( CDC& dc ) {};
-	virtual void notify( RDOPROCObject* from, UINT message, WPARAM wParam, LPARAM lParam );
 };
 
 // ----------------------------------------------------------------------------
@@ -78,8 +79,13 @@ private:
 	CSize getFlowSize( const std::list< RDOPROCShape* >& list ) const;
 	CSize getFlowSize() const { return getFlowSize( shapes ); }
 	void updateScrollBars();
-	void updateDC();
 	virtual void modify();
+
+	void clientToZero( CPoint& point ) const {
+		point.x -= border_w + paper_border_w;
+		point.y -= border_h + paper_border_h;
+	}
+
 /*
 	GridMode grid_mode;
 	GridType grid_type;
@@ -107,7 +113,7 @@ private:
 
 	std::list< RDOPROCShape* >::iterator find( const RDOPROCShape* shape );
 
-	RDOPROCShape* findObject( const int x, const int y ) const;
+	RDOPROCShape* findObject( CPoint point ) const;
 
 	void moving_start( RDOPROCShape* shape, const int global_mouse_x, const int global_mouse_y );
 	void moving( const int global_mouse_x, const int global_mouse_y );
@@ -131,10 +137,11 @@ public:
 	RDOPROCFlowChart();
 	virtual ~RDOPROCFlowChart();
 
+	void updateDC();
+
 	void snapToGrid( RDOPROCShape* shape );
-	
+
 	void selectShapeOff();
-	void selectShape( RDOPROCShape* shape, const bool value = true );
 
 	//{{AFX_VIRTUAL(RDOPROCFlowChart)
 	public:
