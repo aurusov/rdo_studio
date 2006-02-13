@@ -5,7 +5,7 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#include "rdoprocess_polygon.h"
+#include "rdoprocess_polyline.h"
 #include "rdoprocess_matrix.h"
 
 namespace rp {
@@ -91,7 +91,7 @@ public:
 
 	void extendFromCenter( int delta );
 	rect& extendByPerimetr( int delta );
-	bool pointInRect( int x, int y ) const;
+	bool pointInRect( const CPoint& point ) const;
 
 #ifdef _DEBUG
 	void trace() const {

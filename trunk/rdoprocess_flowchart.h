@@ -27,17 +27,14 @@ public:
 	virtual void draw( CDC& dc ) {};
 	virtual rp::rect getBoundingRect( bool global = true ) const { return rp::rect(); }
 	virtual void transformToGlobal() {};
-	virtual bool pointInPolygon( int x, int y, bool byperimetr = true ) { return true; }
+	virtual bool pointInPolygon( const CPoint& point, bool byperimetr = true ) { return true; }
 };
 
 // ----------------------------------------------------------------------------
 // ---------- RPFlowChart
 // ----------------------------------------------------------------------------
-class RPShape;
-
 class RPFlowChart: public CWnd
 {
-friend class RPChartObject;
 friend class RPFlowChartObject;
 friend class RPShape;
 
@@ -60,6 +57,7 @@ private:
 	int pixmap_h_show;
 	int client_width;
 	int client_height;
+	const int select_box_size2;
 
 	CDC      mem_dc;
 	CBitmap* mem_bmp;
@@ -80,9 +78,8 @@ private:
 
 	void makeNewPixmap();
 	CSize getFlowSize( const std::list< RPChartObject* >& list ) const;
-	CSize getFlowSize() const { return getFlowSize( shapes ); }
+	CSize getFlowSize() const { return getFlowSize( objects ); }
 	void updateScrollBars();
-	virtual void modify();
 
 	void clientToZero( CPoint& point ) const {
 		point.x -= border_w + paper_border_w;
@@ -112,19 +109,17 @@ private:
 //	bool showConnectorPoint;
 
 	RPFlowChartObject* flowobj;
-	std::list< RPChartObject* > shapes;
+	std::list< RPChartObject* > objects;
 
 	std::list< RPChartObject* >::iterator find( const RPChartObject* shape );
 
 	RPChartObject* findObjectByMousePoint( CPoint point ) const;
 
-	void moving_start( RPChartObject* shape, const int global_mouse_x, const int global_mouse_y );
-	void moving( const int global_mouse_x, const int global_mouse_y );
-	void moving_stop();
+	void moving( const CPoint& global_mouse_pos );
 
-	int                        global_old_x;
-	int                        global_old_y;
-	std::list< RPChartObject* > movingShapes;
+	CPoint                      global_mouse_pos_prev;
+	std::list< RPChartObject* > moving_objects;
+	RPChartObject*              one_object;
 
 #ifdef TEST_SPEED
 	int sec_cnt;
@@ -141,6 +136,7 @@ public:
 	virtual ~RPFlowChart();
 
 	void updateDC();
+	virtual void modify();
 
 	void snapToGrid( RPShape* shape );
 

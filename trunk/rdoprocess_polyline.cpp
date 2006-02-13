@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "rdoprocess_polygon.h"
+#include "rdoprocess_polyline.h"
 #include "rdoprocess_math.h"
 
 #ifdef _DEBUG
@@ -13,7 +13,7 @@ namespace rp {
 // ----------------------------------------------------------------------------
 // ---------- polyline
 // ----------------------------------------------------------------------------
-bool polyline::pointInPolygon( int x, int y ) const
+bool polyline::pointInPolygon( const CPoint& point ) const
 {
 	if ( size() > 2 ) {
 		unsigned int i;
@@ -23,7 +23,7 @@ bool polyline::pointInPolygon( int x, int y ) const
 		for ( i = 0, j = 1; i < size()-1; i++, j++ ) {
 			const CPoint& p1 = (*this)[i];
 			const CPoint& p2 = (*this)[j];
-			int k = (y - p1.y)*(p2.x - p1.x) - (x - p1.x)*(p2.y - p1.y);
+			int k = (point.y - p1.y)*(p2.x - p1.x) - (point.x - p1.x)*(p2.y - p1.y);
 			if ( k == 0 ) {
 				break;
 			} else {

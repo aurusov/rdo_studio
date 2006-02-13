@@ -130,7 +130,7 @@ SOURCE=.\rdoprocess_object.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\rdoprocess_polygon.cpp
+SOURCE=.\rdoprocess_polyline.cpp
 # End Source File
 # Begin Source File
 
@@ -207,7 +207,7 @@ SOURCE=.\rdoprocess_object.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\rdoprocess_polygon.h
+SOURCE=.\rdoprocess_polyline.h
 # End Source File
 # Begin Source File
 
@@ -256,6 +256,30 @@ SOURCE=.\res\flow_connector.cur
 # Begin Source File
 
 SOURCE=.\res\flow_rotate.cur
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\flow_rotate_center.cur
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\flow_rotate_tl.cur
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\flow_scale_lr.cur
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\flow_scale_tb.cur
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\flow_scale_tlbr.cur
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\flow_scale_trbl.cur
 # End Source File
 # Begin Source File
 

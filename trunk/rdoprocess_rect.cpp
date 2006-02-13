@@ -13,7 +13,7 @@ namespace rp {
 // ----------------------------------------------------------------------------
 // ---------- rect
 // ----------------------------------------------------------------------------
-bool rect::pointInRect( int x, int y ) const
+bool rect::pointInRect( const CPoint& point ) const
 {
 	unsigned int i;
 	unsigned int j;
@@ -23,7 +23,7 @@ bool rect::pointInRect( int x, int y ) const
 		if ( j == 4 ) j = 0;
 		const CPoint& p1 = pa[i];
 		const CPoint& p2 = pa[j];
-		int k = (y - p1.y)*(p2.x - p1.x) - (x - p1.x)*(p2.y - p1.y);
+		int k = (point.y - p1.y)*(p2.x - p1.x) - (point.x - p1.x)*(p2.y - p1.y);
 		if ( k == 0 ) {
 			break;
 		} else {

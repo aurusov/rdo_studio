@@ -55,9 +55,18 @@ BOOL RPApp::InitInstance()
 	// such as the name of your company or organization.
 	SetRegistryKey(_T("Local AppWizard-Generated Applications"));
 
-	cursors[ IDC_FLOW_SELECT ]    = AfxGetApp()->LoadCursor(IDC_FLOW_SELECT);
-	cursors[ IDC_FLOW_CONNECTOR ] = AfxGetApp()->LoadCursor(IDC_FLOW_CONNECTOR);
-	cursors[ IDC_FLOW_ROTATE ]    = AfxGetApp()->LoadCursor(IDC_FLOW_ROTATE);
+	cursors[ IDC_FLOW_SELECT ]        = AfxGetApp()->LoadCursor(IDC_FLOW_SELECT);
+	cursors[ IDC_FLOW_CONNECTOR ]     = AfxGetApp()->LoadCursor(IDC_FLOW_CONNECTOR);
+	cursors[ IDC_FLOW_ROTATE ]        = AfxGetApp()->LoadCursor(IDC_FLOW_ROTATE);
+	cursors[ IDC_FLOW_ROTATE_CENTER ] = AfxGetApp()->LoadCursor(IDC_FLOW_ROTATE_CENTER);
+	cursors[ IDC_FLOW_ROTATE_TL ]     = AfxGetApp()->LoadCursor(IDC_FLOW_ROTATE_TL);
+//	cursors[ IDC_FLOW_ROTATE_TR ]     = AfxGetApp()->LoadCursor(IDC_FLOW_ROTATE_TL);
+//	cursors[ IDC_FLOW_ROTATE_BL ]     = AfxGetApp()->LoadCursor(IDC_FLOW_ROTATE_TL);
+//	cursors[ IDC_FLOW_ROTATE_BR ]     = AfxGetApp()->LoadCursor(IDC_FLOW_ROTATE_TL);
+	cursors[ IDC_FLOW_SCALE_LR ]      = AfxGetApp()->LoadCursor(IDC_FLOW_SCALE_LR);
+	cursors[ IDC_FLOW_SCALE_TB ]      = AfxGetApp()->LoadCursor(IDC_FLOW_SCALE_TB);
+	cursors[ IDC_FLOW_SCALE_TLBR ]    = AfxGetApp()->LoadCursor(IDC_FLOW_SCALE_TLBR);
+	cursors[ IDC_FLOW_SCALE_TRBL ]    = AfxGetApp()->LoadCursor(IDC_FLOW_SCALE_TRBL);
 
 	// To create the main window, this code creates a new frame window
 	// object and then sets it as the application's main window object.

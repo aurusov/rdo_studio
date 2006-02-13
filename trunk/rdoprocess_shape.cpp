@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "rdoprocess_shape.h"
 #include "rdoprocess_flowchart.h"
+#include "rdoprocess_app.h"
+#include "rdoprocess_math.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -120,8 +122,13 @@ void RPShape::draw( CDC& dc )
 */
 }
 
-
 RPChartObject::PossibleCommand RPShape::getPossibleCommand( int global_x, int global_y ) const
 {
-	return RPChartObject::pcmd_move;
+	rp::rect rect = getBoundingRect();
+	CPoint mouse( global_x, global_y );
+	if ( isRotateCenter( mouse ) ) return RPChartObject::pcmd_rotate_center;
+	if ( rpapp.project().getFlowState() == RPProject::flow_rotate ) {
+		double len = rp::math::getLength( getRotateCenter(), mouse );
+	}
+	return RPChartObject::pcmd_none;
 }

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "rdoprocess_chart_object.h"
 #include "rdoprocess_flowchart.h"
+#include "rdoprocess_app.h"
 #include "rdoprocess_math.h"
 
 #ifdef _DEBUG
@@ -82,4 +83,12 @@ void RPChartObject::setSelected( bool value )
 	if ( _sel != value && flowchart ) {
 		flowchart->updateDC();
 	}
+}
+
+bool RPChartObject::isRotateCenter( const CPoint& point ) const
+{
+	if ( rpapp.project().getFlowState() == RPProject::flow_rotate ) {
+		return rp::math::getLength( getRotateCenter(), point ) <= 5;
+	}
+	return false;
 }

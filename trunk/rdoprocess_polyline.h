@@ -1,5 +1,5 @@
-#ifndef RDO_PROCESS_POLYGON_H
-#define RDO_PROCESS_POLYGON_H
+#ifndef RDO_PROCESS_POLYLINE_H
+#define RDO_PROCESS_POLYLINE_H
 
 #if _MSC_VER > 1000
 #pragma once
@@ -65,9 +65,9 @@ public:
 	}
 	void extendFromCenter( int delta );
 	polyline& extendByPerimetr( int delta );
-	bool pointInPolygon( int x, int y ) const;
+	bool pointInPolygon( const CPoint& point ) const;
 };
 
 }
 
-#endif // RDO_PROCESS_POLYGON_H
+#endif // RDO_PROCESS_POLYLINE_H

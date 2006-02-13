@@ -50,13 +50,13 @@ public:
 	// Перевод всех элементов фигуры в глобальные координаты (включает выход meshToGlobal)
 	virtual void transformToGlobal();
 	// Находится ли точка внутри фигуры
-	virtual bool pointInPolygon( int x, int y, bool byperimetr = true ) {
+	virtual bool pointInPolygon( const CPoint& point, bool byperimetr = true ) {
 		transformToGlobal();
 //		meshToGlobal();
 		if ( byperimetr ) {
-			return pa_global.extendByPerimetr( main_pen_width * sqrt(2) / 2.0 ).pointInPolygon( x, y );
+			return pa_global.extendByPerimetr( main_pen_width * sqrt(2) / 2.0 ).pointInPolygon( point );
 		} else {
-			return pa_global.pointInPolygon( x, y );
+			return pa_global.pointInPolygon( point );
 		}
 	}
 	virtual PossibleCommand getPossibleCommand( int global_x, int global_y ) const;

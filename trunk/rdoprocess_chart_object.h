@@ -7,7 +7,7 @@
 
 #include "rdoprocess_object.h"
 #include "rdoprocess_matrix.h"
-#include "rdoprocess_polygon.h"
+#include "rdoprocess_polyline.h"
 #include "rdoprocess_rect.h"
 
 // ----------------------------------------------------------------------------
@@ -18,8 +18,8 @@ class RPChartObject: public RPObject
 friend class RPFlowChart;
 
 private:
-	CPoint rotate_center;
-	bool   rotate_center_inited;
+	mutable CPoint rotate_center;
+	mutable bool   rotate_center_inited;
 
 protected:
 	RPChartObject* chart_parent;
@@ -77,7 +77,7 @@ public:
 		return globalMatrix() * getBoundingRect( false ).getCenter();
 	}
 	// Центр поворота в глобальных координатах
-	CPoint getRotateCenter() {
+	CPoint getRotateCenter() const {
 		if ( !rotate_center_inited ) {
 			rotate_center = getBoundingRect( false ).getCenter();
 			rotate_center_inited = true;
@@ -88,12 +88,28 @@ public:
 	// Перевод всех элементов фигуры в глобальные координаты (включает выход meshToGlobal)
 	virtual void transformToGlobal() = 0;
 	// Находится ли точка внутри фигуры
-	virtual bool pointInPolygon( int x, int y, bool byperimetr = true ) = 0;
+	virtual bool pointInPolygon( const CPoint& point, bool byperimetr = true ) = 0;
+	// Находится ли точка на центре вращения фигуры
+	bool isRotateCenter( const CPoint& point ) const;
 
 	enum PossibleCommand {
-		pcmd_none = 0, //!< Над объектом не может быть произведено никакое действие
-		pcmd_move,     //!< Объект может быть перемещен
-		pcmd_rotate    //!< Объект можно повернуть
+		pcmd_none = 0,      //!< Над объектом не может быть произведено никакое действие
+		pcmd_move,          //!< Объект может быть перемещен
+		pcmd_rotate,        //!< Объект можно повернуть
+		pcmd_rotate_tl,     //!< Объект можно повернуть за левый верхний угол
+		pcmd_rotate_tr,     //!< Объект можно повернуть за правый верхний угол
+		pcmd_rotate_bl,     //!< Объект можно повернуть за левый нижний угол
+		pcmd_rotate_br,     //!< Объект можно повернуть за левый нижний угол
+		pcmd_rotate_center, //!< Может быть изменен центр врещения объекта
+		pcmd_scale,         //!< Объект может быть масштабирован
+		pcmd_scale_l,       //!< Объект может быть масштабирован за левую сторону
+		pcmd_scale_r,       //!< Объект может быть масштабирован за правую сторону
+		pcmd_scale_t,       //!< Объект может быть масштабирован за верх
+		pcmd_scale_b,       //!< Объект может быть масштабирован за низ
+		pcmd_scale_tl,      //!< Объект может быть масштабирован за левый верхний угол
+		pcmd_scale_tr,      //!< Объект может быть масштабирован за правый верхний угол
+		pcmd_scale_bl,      //!< Объект может быть масштабирован за левый нижний угол
+		pcmd_scale_br       //!< Объект может быть масштабирован за правый нижний угол
 	};
 	virtual PossibleCommand getPossibleCommand( int global_x, int global_y ) const { return pcmd_none; }
 };
