@@ -11,37 +11,37 @@
 namespace rp {
 
 // ----------------------------------------------------------------------------
-// ---------- RPRect
+// ---------- rect
 // ----------------------------------------------------------------------------
-class RPRect {
+class rect {
 private:
-	RPPolygon pa;
+	polyline pa;
 public:
-	RPRect() {
+	rect() {
 		pa.reserve( 4 );
 		pa.push_back( CPoint(0, 0) );
 		pa.push_back( CPoint(0, 0) );
 		pa.push_back( CPoint(0, 0) );
 		pa.push_back( CPoint(0, 0) );
 	}
-	RPRect( int x_min, int y_min, int x_max, int y_max  ) {
+	rect( int x_min, int y_min, int x_max, int y_max  ) {
 		pa.reserve( 4 );
 		pa.push_back( CPoint(x_min, y_min) );
 		pa.push_back( CPoint(x_max, y_min) );
 		pa.push_back( CPoint(x_max, y_max) );
 		pa.push_back( CPoint(x_min, y_max) );
 	}
-	RPRect( const CRect& rect ) {
+	rect( const CRect& rect ) {
 		pa.reserve( 4 );
 		pa.push_back( CPoint(rect.left, rect.top) );
 		pa.push_back( CPoint(rect.right, rect.top) );
 		pa.push_back( CPoint(rect.right, rect.bottom) );
 		pa.push_back( CPoint(rect.left, rect.bottom) );
 	}
-	RPRect( const RPRect& rect ) {
+	rect( const rect& rect ) {
 		pa = rect.pa;
 	}
-	RPRect& operator= ( const RPRect& rect ) {
+	rect& operator= ( const rect& rect ) {
 		pa = rect.pa;
 		return *this;
 	}
@@ -78,7 +78,7 @@ public:
 	CPoint getCenter() const {
 		return CPoint( (pa[0].x + pa[2].x)/2, (pa[0].y + pa[2].y)/2 );
 	}
-	void transform( const RDOPROCMatrix& matrix ) {
+	void transform( const rp::matrix& matrix ) {
 		pa[0] = matrix * pa[0];
 		pa[1] = matrix * pa[1];
 		pa[2] = matrix * pa[2];
@@ -90,7 +90,7 @@ public:
 	CPoint& p3() { return pa[3]; }
 
 	void extendFromCenter( int delta );
-	RPRect& extendByPerimetr( int delta );
+	rect& extendByPerimetr( int delta );
 	bool pointInRect( int x, int y ) const;
 
 #ifdef _DEBUG

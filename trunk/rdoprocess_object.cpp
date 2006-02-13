@@ -9,11 +9,11 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 // ----------------------------------------------------------------------------
-// ---------- RDOPROCObject
+// ---------- RPObject
 // ----------------------------------------------------------------------------
-RDOPROCObject::RDOPROCObject( RDOPROCObject* parent ):
+RPObject::RPObject( RPObject* parent, const rp::string& _name ):
 	rpoparent( parent ),
-	name( "object" ),
+	name( _name ),
 	selected( false )
 {
 	if ( rpoparent ) {
@@ -22,33 +22,33 @@ RDOPROCObject::RDOPROCObject( RDOPROCObject* parent ):
 	}
 }
 
-RDOPROCObject::~RDOPROCObject()
+RPObject::~RPObject()
 {
-	rpapp.sendMessage( this, RP_OBJ_BEFOREDELETE );
+	rpapp.sendMessage( this, rp::msg::RP_OBJ_BEFOREDELETE );
+	clear();
 	if ( isSelected() ) {
 		setSelected( false );
 	}
-	clear();
 	if ( rpoparent ) {
-		std::vector< RDOPROCObject* >::iterator it = std::find( rpoparent->child.begin(), rpoparent->child.end(), this );
+		std::vector< RPObject* >::iterator it = std::find( rpoparent->child.begin(), rpoparent->child.end(), this );
 		if ( it != rpoparent->child.end() ) {
 			rpoparent->child.erase( it );
 		}
 	}
 }
 
-void RDOPROCObject::clear()
+void RPObject::clear()
 {
-	std::vector< RDOPROCObject* >::iterator it = child.begin();
+	std::vector< RPObject* >::iterator it = child.begin();
 	while ( it != child.end() ) {
-		RDOPROCObject* obj = *it;
+		RPObject* obj = *it;
 		delete obj;
 		it = child.begin();
 	}
 	child.clear();
 }
 
-void RDOPROCObject::setName( const rp::string& value )
+void RPObject::setName( const rp::string& value )
 {
 	if ( !value.empty() ) {
 		rp::string prev_name = name;
@@ -60,12 +60,12 @@ void RDOPROCObject::setName( const rp::string& value )
 	} else {
 		::MessageBox( NULL, _T("Name can't be empty"), "Error", MB_OK | MB_ICONERROR );
 	}
-	rpapp.sendMessage( this, RP_OBJ_NAMECHANGED );
+	rpapp.sendMessage( this, rp::msg::RP_OBJ_NAMECHANGED );
 }
 
-bool RDOPROCObject::isChildNameCorrect( const RDOPROCObject* obj ) const
+bool RPObject::isChildNameCorrect( const RPObject* obj ) const
 {
-	std::vector< RDOPROCObject* >::const_iterator it = begin();
+	std::vector< RPObject* >::const_iterator it = begin();
 	while ( it != end() ) {
 		if ( *it != obj ) {
 			if ( (*it)->getName().tolower() == obj->getName().tolower() ) {
@@ -77,7 +77,7 @@ bool RDOPROCObject::isChildNameCorrect( const RDOPROCObject* obj ) const
 	return true;
 }
 
-void RDOPROCObject::setCorrectChildName( RDOPROCObject* obj )
+void RPObject::setCorrectChildName( RPObject* obj )
 {
 	rp::string name = obj->getName();
 	int i = 2;
@@ -86,52 +86,24 @@ void RDOPROCObject::setCorrectChildName( RDOPROCObject* obj )
 	}
 }
 
-void RDOPROCObject::setSelected( const bool value )
+void RPObject::setSelected( bool value )
 {
 	if ( selected != value ) {
 		selected = value;
-		rpapp.sendMessage( this, RP_OBJ_SELCHANGED, value );
+		rpapp.sendMessage( this, rp::msg::RP_OBJ_SELCHANGED, value );
 	}
 }
 
-/*
-void RDOPROCObject::selectChildObject( RDOPROCObject* obj, const bool value )
+void RPObject::selectChildOff( RPObject* withoutObj )
 {
-	RDOPROCObject* root;
-	if ( rpoparent ) {
-		root = rpoparent;
-		while ( root->rpoparent ) {
-			root = root->rpoparent;
-		}
-	} else {
-		root = this;
-	}
-	root->selectChildOff( value ? obj : NULL );
-	std::vector< RDOPROCObject* >::iterator it = child.begin();
+	std::vector< RPObject* >::iterator it = child.begin();
 	while ( it != child.end() ) {
-		RDOPROCObject* object = *it;
-		if ( object == obj ) {
-			object->set_selected( value );
-			break;
-		}
-		it++;
-	}
-	rpapp.sendMessage( this, RP_OBJ_SELCHANGED );
-}
-
-void RDOPROCObject::selectChildOff( RDOPROCObject* withoutObj )
-{
-	std::vector< RDOPROCObject* >::iterator it = child.begin();
-	while ( it != child.end() ) {
+		RPObject* obj = *it;
+		TRACE( "%s\n", obj->getName().c_str() );
 		if ( (*it) != withoutObj ) {
-			(*it)->set_selected( false );
+			(*it)->setSelected( false );
 		}
 		(*it)->selectChildOff( withoutObj );
 		it++;
 	}
-}
-*/
-
-void RDOPROCObject::notify( RDOPROCObject* from, UINT message, WPARAM wParam, LPARAM lParam )
-{
 }

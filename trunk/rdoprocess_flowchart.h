@@ -11,36 +11,39 @@
 #undef TEST_SPEED
 
 // ----------------------------------------------------------------------------
-// ---------- RDOPROCFlowChartObject
+// ---------- RPFlowChartObject
 // ----------------------------------------------------------------------------
-class RDOPROCFlowChartObject: public RDOPROCChartObject
+class RPFlowChartObject: public RPChartObject
 {
-friend class RDOPROCFlowChart;
+friend class RPFlowChart;
 
 protected:
-	virtual void notify( RDOPROCObject* from, UINT message, WPARAM wParam, LPARAM lParam );
+	virtual void notify( RPObject* from, UINT message, WPARAM wParam, LPARAM lParam );
 
 public:
-	RDOPROCFlowChartObject( RDOPROCObject* parent, RDOPROCChartObject* chart_parent, RDOPROCFlowChart* flowchart );
+	RPFlowChartObject( RPObject* parent, RPChartObject* chart_parent, RPFlowChart* flowchart );
 
 	virtual void moveTo( int x, int y ) {};
 	virtual void draw( CDC& dc ) {};
+	virtual rp::rect getBoundingRect( bool global = true ) const { return rp::rect(); }
+	virtual void transformToGlobal() {};
+	virtual bool pointInPolygon( int x, int y, bool byperimetr = true ) { return true; }
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOPROCFlowChart
+// ---------- RPFlowChart
 // ----------------------------------------------------------------------------
-class RDOPROCShape;
+class RPShape;
 
-class RDOPROCFlowChart: public CWnd
+class RPFlowChart: public CWnd
 {
-friend class RDOPROCChartObject;
-friend class RDOPROCFlowChartObject;
-friend class RDOPROCShape;
+friend class RPChartObject;
+friend class RPFlowChartObject;
+friend class RPShape;
 
 private:
-	void insertShape( RDOPROCShape* shape );
-	void deleteShape( RDOPROCShape* shape );
+	void insertShape( RPShape* shape );
+	void deleteShape( RPShape* shape );
 
 	enum GridMode { gtSnapOff, gtSnapToPoint, gtSnapToCenter };
 	enum GridType { gtPoints, gtSolidLines, dtDotLines };
@@ -76,7 +79,7 @@ private:
 	COLORREF paper_bg_color;
 
 	void makeNewPixmap();
-	CSize getFlowSize( const std::list< RDOPROCShape* >& list ) const;
+	CSize getFlowSize( const std::list< RPChartObject* >& list ) const;
 	CSize getFlowSize() const { return getFlowSize( shapes ); }
 	void updateScrollBars();
 	virtual void modify();
@@ -101,27 +104,27 @@ private:
 	CBitmap  grid_bmp;
 	int      grid_bmp_width;
 	std::vector< CPoint >      grid_pa;
-	std::list< RDOPROCShape* > grid_shapes;
+	std::list< RPShape* > grid_shapes;
 */
 	void makeGrid();
 
 //	bool showShapeName;
 //	bool showConnectorPoint;
 
-	RDOPROCFlowChartObject* chobj;
-	std::list< RDOPROCShape* > shapes;
+	RPFlowChartObject* flowobj;
+	std::list< RPChartObject* > shapes;
 
-	std::list< RDOPROCShape* >::iterator find( const RDOPROCShape* shape );
+	std::list< RPChartObject* >::iterator find( const RPChartObject* shape );
 
-	RDOPROCShape* findObject( CPoint point ) const;
+	RPChartObject* findObjectByMousePoint( CPoint point ) const;
 
-	void moving_start( RDOPROCShape* shape, const int global_mouse_x, const int global_mouse_y );
+	void moving_start( RPChartObject* shape, const int global_mouse_x, const int global_mouse_y );
 	void moving( const int global_mouse_x, const int global_mouse_y );
 	void moving_stop();
 
 	int                        global_old_x;
 	int                        global_old_y;
-	std::list< RDOPROCShape* > movingShapes;
+	std::list< RPChartObject* > movingShapes;
 
 #ifdef TEST_SPEED
 	int sec_cnt;
@@ -134,16 +137,14 @@ private:
 	void updateFlowState();
 
 public:
-	RDOPROCFlowChart();
-	virtual ~RDOPROCFlowChart();
+	RPFlowChart();
+	virtual ~RPFlowChart();
 
 	void updateDC();
 
-	void snapToGrid( RDOPROCShape* shape );
+	void snapToGrid( RPShape* shape );
 
-	void selectShapeOff();
-
-	//{{AFX_VIRTUAL(RDOPROCFlowChart)
+	//{{AFX_VIRTUAL(RPFlowChart)
 	public:
 	virtual BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
 	protected:
@@ -151,7 +152,7 @@ public:
 	//}}AFX_VIRTUAL
 
 protected:
-	//{{AFX_MSG(RDOPROCFlowChart)
+	//{{AFX_MSG(RPFlowChart)
 	afx_msg void OnPaint();
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);

@@ -5,6 +5,7 @@
 #include "rdoprocess_shape_if.h"
 #include "rdoprocess_app.h"
 #include "rdoprocess_math.h"
+#include "rdoprocess_messages.h"
 #include "resource.h"
 
 #ifdef _DEBUG
@@ -14,29 +15,29 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 // ----------------------------------------------------------------------------
-// ---------- RDOPROCFlowChartObject
+// ---------- RPFlowChartObject
 // ----------------------------------------------------------------------------
-RDOPROCFlowChartObject::RDOPROCFlowChartObject( RDOPROCObject* _parent, RDOPROCChartObject* _chart_parent, RDOPROCFlowChart* _flowchart ):
-	RDOPROCChartObject( _parent, _chart_parent, _flowchart )
+RPFlowChartObject::RPFlowChartObject( RPObject* _parent, RPChartObject* _chart_parent, RPFlowChart* _flowchart ):
+	RPChartObject( _parent, _chart_parent, _flowchart, _T("Flowchart") )
 {
-	rpapp.connect( this, RP_FLOWSTATE_CHANGED );
+	rpapp.msg().connect( this, rp::msg::RP_FLOWSTATE_CHANGED );
 }
 
-void RDOPROCFlowChartObject::notify( RDOPROCObject* from, UINT message, WPARAM wParam, LPARAM lParam )
+void RPFlowChartObject::notify( RPObject* from, UINT message, WPARAM wParam, LPARAM lParam )
 {
-	if ( message == RP_FLOWSTATE_CHANGED ) {
+	if ( message == rp::msg::RP_FLOWSTATE_CHANGED ) {
 		flowchart->updateFlowState();
-		RDOPROCProject::FlowState flow_state = static_cast<RDOPROCProject::FlowState>(wParam);
+		RPProject::FlowState flow_state = static_cast<RPProject::FlowState>(wParam);
 		switch ( flow_state ) {
-			case RDOPROCProject::flow_select   : break;
-			case RDOPROCProject::flow_connector: break;
-			case RDOPROCProject::flow_rotate   : break;
+			case RPProject::flow_select   : break;
+			case RPProject::flow_connector: break;
+			case RPProject::flow_rotate   : break;
 		}
 	}
 }
 
 // ----------------------------------------------------------------------------
-// ---------- RDOPROCFlowChart
+// ---------- RPFlowChart
 // ----------------------------------------------------------------------------
 const int grid_dx_plus = 1;
 const int grid_dy_plus = 2;
@@ -47,8 +48,8 @@ const int sec_timer_id = 2;
 const int base_speed = 10000;
 #endif // ================================================
 
-BEGIN_MESSAGE_MAP( RDOPROCFlowChart,CWnd )
-	//{{AFX_MSG_MAP(RDOPROCFlowChart)
+BEGIN_MESSAGE_MAP( RPFlowChart,CWnd )
+	//{{AFX_MSG_MAP(RPFlowChart)
 	ON_WM_PAINT()
 	ON_WM_SIZE()
 	ON_WM_HSCROLL()
@@ -63,7 +64,7 @@ BEGIN_MESSAGE_MAP( RDOPROCFlowChart,CWnd )
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-RDOPROCFlowChart::RDOPROCFlowChart():
+RPFlowChart::RPFlowChart():
 	CWnd(),
 	border_w( 7 ),
 	border_h( 7 ),
@@ -90,7 +91,7 @@ RDOPROCFlowChart::RDOPROCFlowChart():
 	paper_border_color( RGB(0xC0, 0xC0, 0xC0) ),
 	paper_shadow_color( RGB(0x80, 0x80, 0x80) ),
 	paper_bg_color( RGB(0xFF, 0xFF, 0xFF) ),
-	chobj( NULL ),
+	flowobj( NULL ),
 	global_old_x( 0 ),
 	global_old_y( 0 )
 #ifdef TEST_SPEED // =====================================
@@ -102,14 +103,14 @@ RDOPROCFlowChart::RDOPROCFlowChart():
 	makegridempty_cnt( 0 )
 #endif // ================================================
 {
-	chobj = new RDOPROCFlowChartObject( &rpapp.project, NULL, this );
+	flowobj = new RPFlowChartObject( &rpapp.project(), NULL, this );
 }
 
-RDOPROCFlowChart::~RDOPROCFlowChart()
+RPFlowChart::~RPFlowChart()
 {
 }
 
-BOOL RDOPROCFlowChart::PreCreateWindow( CREATESTRUCT& cs )
+BOOL RPFlowChart::PreCreateWindow( CREATESTRUCT& cs )
 {
 	if ( !CWnd::PreCreateWindow(cs) ) return FALSE;
 
@@ -120,10 +121,10 @@ BOOL RDOPROCFlowChart::PreCreateWindow( CREATESTRUCT& cs )
 	return TRUE;
 }
 
-RDOPROCShapeAction* shape_action = NULL;
-RDOPROCShapeIf*     shape_if     = NULL;
+RPShapeAction* shape_action = NULL;
+RPShapeIf*     shape_if     = NULL;
 
-BOOL RDOPROCFlowChart::Create( LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext )
+BOOL RPFlowChart::Create( LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext )
 {
 	if ( !CWnd::Create( lpszClassName, lpszWindowName, dwStyle, rect, pParentWnd, nID, pContext ) ) return false;
 
@@ -146,8 +147,8 @@ BOOL RDOPROCFlowChart::Create( LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DW
 //	updateFont();
 	updateScrollBars();
 
-	shape_action = new RDOPROCShapeAction( chobj, this );
-	shape_if = new RDOPROCShapeIf( chobj, this );
+	shape_action = new RPShapeAction( flowobj, this );
+	shape_if = new RPShapeIf( flowobj, this );
 	shape_if->setPosition( 200, 100 );
 
 #ifdef TEST_SPEED // =====================================
@@ -157,7 +158,7 @@ BOOL RDOPROCFlowChart::Create( LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DW
 	return true;
 }
 
-void RDOPROCFlowChart::OnDestroy()
+void RPFlowChart::OnDestroy()
 {
 #ifdef TEST_SPEED // =====================================
 	if ( sec_timer ) {
@@ -169,9 +170,9 @@ void RDOPROCFlowChart::OnDestroy()
 //		KillTimer( grid_timer );
 //		grid_timer = 0;
 //	}
-	if ( chobj ) {
-		delete chobj;
-		chobj = NULL;
+	if ( flowobj ) {
+		delete flowobj;
+		flowobj = NULL;
 	}
 	CDC* dc = GetDC();
 	if ( dc ) {
@@ -195,12 +196,12 @@ void RDOPROCFlowChart::OnDestroy()
 	CWnd::OnDestroy();
 }
 
-std::list< RDOPROCShape* >::iterator RDOPROCFlowChart::find( const RDOPROCShape* shape )
+std::list< RPChartObject* >::iterator RPFlowChart::find( const RPChartObject* shape )
 {
 	return std::find( shapes.begin(), shapes.end(), shape );
 }
 
-void RDOPROCFlowChart::insertShape( RDOPROCShape* shape )
+void RPFlowChart::insertShape( RPShape* shape )
 {
 	if ( find( shape ) == shapes.end() ) {
 		shapes.push_back( shape );
@@ -223,37 +224,29 @@ void RDOPROCFlowChart::insertShape( RDOPROCShape* shape )
 	updateDC();
 }
 
-void RDOPROCFlowChart::deleteShape( RDOPROCShape* shape )
+void RPFlowChart::deleteShape( RPShape* shape )
 {
-	std::list< RDOPROCShape* >::iterator it = find( shape );
-	if ( it != shapes.end() ) {
-/*
-		std::list< CBDFlowChartConnector >::iterator connector = connectors.begin();
-		while ( connector != connectors.end() ) {
-			if ( connector->shape_from == shape || connector->shape_to == shape ) {
-				connector = connectors.erase( connector );
-			} else {
-				connector++;
-			}
-		}
-*/
-		shapes.erase( it );
+//	std::list< RPShape* >::iterator it = find( shape );
+//	if ( it != shapes.end() ) {
+//		shapes.erase( it );
+
 //		if ( movingShape == shape ) {
 //			movingShape = NULL;
 //			moving_stop();
 //		}
-		updateScrollBars();
-		updateDC();
-	}
+
+//		updateScrollBars();
+//		updateDC();
+//	}
 }
 
-CSize RDOPROCFlowChart::getFlowSize( const std::list< RDOPROCShape* >& list ) const
+CSize RPFlowChart::getFlowSize( const std::list< RPChartObject* >& list ) const
 {
 	int max_x = 0;
 	int max_y = 0;
-	std::list< RDOPROCShape* >::const_iterator it = list.begin();
+	std::list< RPChartObject* >::const_iterator it = list.begin();
 	while ( it != list.end() ) {
-		rp::RPRect rect = (*it)->getBoundingRect();
+		rp::rect rect = (*it)->getBoundingRect();
 		if ( rect.getMaxX() > max_x ) {
 			max_x = rect.getMaxX();
 		}
@@ -265,7 +258,7 @@ CSize RDOPROCFlowChart::getFlowSize( const std::list< RDOPROCShape* >& list ) co
 	return CSize( max_x, max_y );
 }
 
-void RDOPROCFlowChart::updateScrollBars()
+void RPFlowChart::updateScrollBars()
 {
 	CSize size = getFlowSize();
 
@@ -275,14 +268,14 @@ void RDOPROCFlowChart::updateScrollBars()
 
 	int max_x = size.cx + border_w * 2 + paper_border_w * 2 - 1;
 	int max_y = size.cy + border_h * 2 + paper_border_h * 2 - 1;
-	int scroll_x_pos = chobj->matrix_transform.dx();
-	int scroll_y_pos = chobj->matrix_transform.dy();
+	int scroll_x_pos = flowobj->matrix_transform.dx();
+	int scroll_y_pos = flowobj->matrix_transform.dy();
 	if ( scroll_x_pos + pixmap_w_show > max_x ) scroll_x_pos = max_x - pixmap_w_show;
 	if ( scroll_y_pos + pixmap_h_show > max_y ) scroll_y_pos = max_y - pixmap_h_show;
 	if ( scroll_x_pos < 0 ) scroll_x_pos = 0;
 	if ( scroll_y_pos < 0 ) scroll_y_pos = 0;
-	chobj->matrix_transform.dx() = scroll_x_pos;
-	chobj->matrix_transform.dy() = scroll_y_pos;
+	flowobj->matrix_transform.dx() = scroll_x_pos;
+	flowobj->matrix_transform.dy() = scroll_y_pos;
 
 	si.nMin   = 0;
 	si.nMax   = max_x;
@@ -297,17 +290,17 @@ void RDOPROCFlowChart::updateScrollBars()
 	SetScrollInfo( SB_VERT, &si, TRUE );
 }
 
-void RDOPROCFlowChart::updateDC()
+void RPFlowChart::updateDC()
 {
 	InvalidateRect( NULL );
 	UpdateWindow();
 }
 
-void RDOPROCFlowChart::modify()
+void RPFlowChart::modify()
 {
 }
 
-void RDOPROCFlowChart::OnSize( UINT nType, int cx, int cy )
+void RPFlowChart::OnSize( UINT nType, int cx, int cy )
 {
 	CWnd::OnSize( nType, cx, cy );
 //	grid_pa.resize( 0 );
@@ -315,7 +308,7 @@ void RDOPROCFlowChart::OnSize( UINT nType, int cx, int cy )
 	updateDC();
 }
 
-void RDOPROCFlowChart::makeNewPixmap()
+void RPFlowChart::makeNewPixmap()
 {
 #ifdef TEST_SPEED // =====================================
 	makepixmap_cnt++;
@@ -377,7 +370,7 @@ void RDOPROCFlowChart::makeNewPixmap()
 	}
 }
 
-void RDOPROCFlowChart::makeGrid()
+void RPFlowChart::makeGrid()
 {
 /*
 #ifdef TEST_SPEED // =====================================
@@ -506,7 +499,7 @@ void RDOPROCFlowChart::makeGrid()
 */
 }
 
-void RDOPROCFlowChart::OnPaint() 
+void RPFlowChart::OnPaint() 
 {
 #ifdef TEST_SPEED // =====================================
 	SYSTEMTIME t0;
@@ -618,7 +611,7 @@ void RDOPROCFlowChart::OnPaint()
 			::GetSystemTime( &t3 );
 
 			for ( int cnt4 = 0; cnt4 <= base_speed * 10; cnt4++ ) {
-				std::list< RDOPROCShape* >::iterator it = shapes.begin();
+				std::list< RPShape* >::iterator it = shapes.begin();
 				while ( it != shapes.end() ) {
 					it++;
 				}
@@ -626,9 +619,9 @@ void RDOPROCFlowChart::OnPaint()
 			::GetSystemTime( &t4 );
 #endif // ================================================
 
-			std::list< RDOPROCShape* >::iterator it = shapes.begin();
+			std::list< RPChartObject* >::iterator it = shapes.begin();
 			while ( it != shapes.end() ) {
-				RDOPROCShape* shape = *it;
+				RPChartObject* shape = *it;
 				shape->transformToGlobal();
 				it++;
 			}
@@ -660,7 +653,7 @@ void RDOPROCFlowChart::OnPaint()
 
 			it = shapes.begin();
 			while ( it != shapes.end() ) {
-				RDOPROCShape* shape = *it;
+				RPChartObject* shape = *it;
 /*
 				CPoint snap_to_point = shape->getCenter();
 				if ( snap_to_point.x > paper_border_w && snap_to_point.y > paper_border_h && snap_to_point.x <= pixmap_w_show - paper_border_w && snap_to_point.y <= pixmap_h_show - paper_border_h ) {
@@ -672,7 +665,7 @@ void RDOPROCFlowChart::OnPaint()
 				}
 */
 				if ( shape->isSelected() ) {
-					if ( rpapp.project.getFlowState() == RDOPROCProject::flow_rotate ) {
+					if ( rpapp.project().getFlowState() == RPProject::flow_rotate ) {
 						// Центр вращения
 						CPoint center = shape->getRotateCenter();
 						CPen pen_red( PS_SOLID, 1, RGB(0,0,0) );
@@ -682,7 +675,7 @@ void RDOPROCFlowChart::OnPaint()
 						mem_dc.Ellipse( center.x - 5, center.y - 5, center.x + 5, center.y + 5 );
 					}
 					// Прямоугольник вокруг фигуры
-					rp::RPRect rect = shape->getBoundingRect();
+					rp::rect rect = shape->getBoundingRect();
 					int x0 = rect.p0().x;
 					int x1 = rect.p1().x;
 					int x2 = rect.p2().x;
@@ -701,7 +694,7 @@ void RDOPROCFlowChart::OnPaint()
 					mem_dc.SelectObject( brush_selected_box );
 					int box_size    = 7;
 					int box_size_2  = 4;
-					if ( rpapp.project.getFlowState() == RDOPROCProject::flow_rotate ) {
+					if ( rpapp.project().getFlowState() == RPProject::flow_rotate ) {
 						mem_dc.Ellipse( x0 - 5, y0 - 5, x0 + 5, y0 + 5 );
 						mem_dc.Ellipse( x1 - 5, y1 - 5, x1 + 5, y1 + 5 );
 						mem_dc.Ellipse( x2 - 5, y2 - 5, x2 + 5, y2 + 5 );
@@ -748,85 +741,85 @@ void RDOPROCFlowChart::OnPaint()
 
 }
 
-void RDOPROCFlowChart::OnHScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBar )
+void RPFlowChart::OnHScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBar )
 {
 	SCROLLINFO si;
 	si.cbSize = sizeof( si );
 	switch( nSBCode ) {
 		case SB_PAGEUP:
 			GetScrollInfo( SB_HORZ, &si, SIF_PAGE );
-			chobj->matrix_transform.dx() += si.nPage;
+			flowobj->matrix_transform.dx() += si.nPage;
 			break; 
 
 		case SB_PAGEDOWN:
 			GetScrollInfo( SB_HORZ, &si, SIF_PAGE );
-			chobj->matrix_transform.dx() -= si.nPage;
+			flowobj->matrix_transform.dx() -= si.nPage;
 			break;
 
 		case SB_LINEUP:
-			chobj->matrix_transform.dx()++;
+			flowobj->matrix_transform.dx()++;
 			break;
 
 		case SB_LINEDOWN:
-			chobj->matrix_transform.dx()--;
+			flowobj->matrix_transform.dx()--;
 			break;
 
 		case SB_THUMBTRACK: {
 			GetScrollInfo( SB_HORZ, &si, SIF_TRACKPOS );
-			chobj->matrix_transform.dx() -= si.nTrackPos - chobj->matrix_transform.dx();
+			flowobj->matrix_transform.dx() -= si.nTrackPos - flowobj->matrix_transform.dx();
 			break;
 		}
 	}
 	CSize size = getFlowSize();
 	int width = size.cx - pixmap_w_show + paper_border_w * 2;
-	if ( chobj->matrix_transform.dx() > width ) chobj->matrix_transform.dx() = width;
-	if ( chobj->matrix_transform.dx() < 0 ) chobj->matrix_transform.dx() = 0;
+	if ( flowobj->matrix_transform.dx() > width ) flowobj->matrix_transform.dx() = width;
+	if ( flowobj->matrix_transform.dx() < 0 ) flowobj->matrix_transform.dx() = 0;
 	si.fMask = SIF_POS;
-	si.nPos  = chobj->matrix_transform.dx();
+	si.nPos  = flowobj->matrix_transform.dx();
 	SetScrollInfo( SB_HORZ, &si, TRUE );
 	updateDC();
 }
 
-void RDOPROCFlowChart::OnVScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBar )
+void RPFlowChart::OnVScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBar )
 {
 	SCROLLINFO si;
 	si.cbSize = sizeof( si );
 	switch( nSBCode ) {
 		case SB_PAGEUP:
 			GetScrollInfo( SB_VERT, &si, SIF_PAGE );
-			chobj->matrix_transform.dy() += si.nPage;
+			flowobj->matrix_transform.dy() += si.nPage;
 			break; 
 
 		case SB_PAGEDOWN:
 			GetScrollInfo( SB_VERT, &si, SIF_PAGE );
-			chobj->matrix_transform.dy() -= si.nPage;
+			flowobj->matrix_transform.dy() -= si.nPage;
 			break;
 
 		case SB_LINEUP:
-			chobj->matrix_transform.dy()++;
+			flowobj->matrix_transform.dy()++;
 			break;
 
 		case SB_LINEDOWN:
-			chobj->matrix_transform.dy()--;
+			flowobj->matrix_transform.dy()--;
 			break;
 
 		case SB_THUMBTRACK: {
 			GetScrollInfo( SB_VERT, &si, SIF_TRACKPOS );
-			chobj->matrix_transform.dy() -= si.nTrackPos - chobj->matrix_transform.dy();
+			flowobj->matrix_transform.dy() -= si.nTrackPos - flowobj->matrix_transform.dy();
 			break;
 		}
 	}
 	CSize size = getFlowSize();
 	int height = size.cy - pixmap_h_show + paper_border_h * 2;
-	if ( chobj->matrix_transform.dy() > height ) chobj->matrix_transform.dy() = height;
-	if ( chobj->matrix_transform.dy() < 0 ) chobj->matrix_transform.dy() = 0;
+	if ( flowobj->matrix_transform.dy() > height ) flowobj->matrix_transform.dy() = height;
+	if ( flowobj->matrix_transform.dy() < 0 ) flowobj->matrix_transform.dy() = 0;
 	si.fMask = SIF_POS;
-	si.nPos  = chobj->matrix_transform.dy();
+	si.nPos  = flowobj->matrix_transform.dy();
 	SetScrollInfo( SB_VERT, &si, TRUE );
 	updateDC();
 }
 
-void RDOPROCFlowChart::snapToGrid( RDOPROCShape* shape )
+void RPFlowChart::snapToGrid( RPShape* shape )
 {
 /*
 	if ( shape ) {
@@ -878,15 +871,15 @@ void RDOPROCFlowChart::snapToGrid( RDOPROCShape* shape )
 		int dx = 0;
 		int dy = 0;
 		if ( grid_mode == gtSnapToPoint ) {
-			double len1 = RDOPROCFlowChart::getDistance( c_pa[1], c_pa[2], center );
-			double len2 = RDOPROCFlowChart::getDistance( c_pa[3], c_pa[0], center );
+			double len1 = RPFlowChart::getDistance( c_pa[1], c_pa[2], center );
+			double len2 = RPFlowChart::getDistance( c_pa[3], c_pa[0], center );
 			if ( len1 < len2 ) {
 				dx = c_pa[1].x - center.x;
 			} else {
 				dx = c_pa[3].x - center.x;
 			}
-			len1 = RDOPROCFlowChart::getDistance( c_pa[0], c_pa[1], center );
-			len2 = RDOPROCFlowChart::getDistance( c_pa[2], c_pa[3], center );
+			len1 = RPFlowChart::getDistance( c_pa[0], c_pa[1], center );
+			len2 = RPFlowChart::getDistance( c_pa[2], c_pa[3], center );
 			if ( len1 < len2 ) {
 				dy = c_pa[1].y - center.y;
 			} else {
@@ -917,9 +910,9 @@ void RDOPROCFlowChart::snapToGrid( RDOPROCShape* shape )
 */
 }
 /*
-void RDOPROCFlowChart::snapToGridAllShapes()
+void RPFlowChart::snapToGridAllShapes()
 {
-	std::vector< RDOPROCShape* >::const_iterator it = shapes.begin();
+	std::vector< RPShape* >::const_iterator it = shapes.begin();
 	while ( it != shapes.end() ) {
 		snapToGrid( *it );
 		it++;
@@ -927,15 +920,16 @@ void RDOPROCFlowChart::snapToGridAllShapes()
 }
 */
 
-RDOPROCShape* RDOPROCFlowChart::findObject( CPoint point ) const
+RPChartObject* RPFlowChart::findObjectByMousePoint( CPoint point ) const
 {
 	clientToZero( point );
-	std::list< RDOPROCShape* >::const_iterator it = shapes.begin();
+	std::list< RPChartObject* >::const_iterator it = shapes.begin();
 	while ( it != shapes.end() ) {
-		RDOPROCShape* shape = *it;
-		rp::RPRect rect = shape->getBoundingRect().extendByPerimetr( shape->main_pen_width * sqrt(2) / 2.0 );
+		RPChartObject* shape = *it;
+		rp::rect rect = shape->getBoundingRect().extendByPerimetr( shape->getPenWidth() * sqrt(2) / 2.0 );
 		if ( rect.pointInRect( point.x, point.y ) ) {
-			shape->meshToGlobal();
+			shape->transformToGlobal();
+//			shape->meshToGlobal();
 			bool flag = shape->pointInPolygon( point.x, point.y );
 			if ( flag ) {
 				return shape;
@@ -947,10 +941,10 @@ RDOPROCShape* RDOPROCFlowChart::findObject( CPoint point ) const
 }
 
 /*
-void RDOPROCFlowChart::buildMovingChild( std::list< RDOPROCShape* >& movingChildShapes, RDOPROCShape* from )
+void RPFlowChart::buildMovingChild( std::list< RPShape* >& movingChildShapes, RPShape* from )
 {
-	const std::list< RDOPROCShape* >& output = from->getOutputShapes();
-	std::list< RDOPROCShape* >::const_iterator it = output.begin();
+	const std::list< RPShape* >& output = from->getOutputShapes();
+	std::list< RPShape* >::const_iterator it = output.begin();
 	while ( it != output.end() ) {
 		if ( std::find( movingChildShapes.begin(), movingChildShapes.end(), *it ) == movingChildShapes.end() ) {
 			movingChildShapes.push_back( *it );
@@ -961,17 +955,7 @@ void RDOPROCFlowChart::buildMovingChild( std::list< RDOPROCShape* >& movingChild
 }
 */
 
-void RDOPROCFlowChart::selectShapeOff()
-{
-	std::list< RDOPROCShape* >::iterator it = shapes.begin();
-	while ( it != shapes.end() ) {
-		(*it)->setSelected( false );
-		it++;
-	}
-	updateDC();
-}
-
-void RDOPROCFlowChart::moving_start( RDOPROCShape* shape, const int global_mouse_x, const int global_mouse_y )
+void RPFlowChart::moving_start( RPChartObject* shape, const int global_mouse_x, const int global_mouse_y )
 {
 	shape->setSelected( true );
 //	movingShape = shape;
@@ -980,17 +964,17 @@ void RDOPROCFlowChart::moving_start( RDOPROCShape* shape, const int global_mouse
 	SetCapture();
 }
 
-void RDOPROCFlowChart::moving( const int global_mouse_x, const int global_mouse_y )
+void RPFlowChart::moving( const int global_mouse_x, const int global_mouse_y )
 {
 	if ( !movingShapes.empty() ) {
 		// Переместить объекты
-		if ( rpapp.project.getFlowState() == RDOPROCProject::flow_select ) {
+		if ( rpapp.project().getFlowState() == RPProject::flow_select ) {
 			int dx = global_mouse_x - global_old_x;
 			int dy = global_mouse_y - global_old_y;
 			// Отсечь выход за границы листа (левый верхний угол)
-			std::list< RDOPROCShape* >::iterator it = movingShapes.begin();
+			std::list< RPChartObject* >::iterator it = movingShapes.begin();
 			while ( it != movingShapes.end() ) {
-				RDOPROCShape* shape = *it;
+				RPChartObject* shape = *it;
 				int delta = shape->getX() + dx;
 				if ( delta < 0 ) {
 					dx -= delta;
@@ -1006,16 +990,16 @@ void RDOPROCFlowChart::moving( const int global_mouse_x, const int global_mouse_
 				(*it)->moving( dx, dy );
 				it++;
 			}
-		} else if ( rpapp.project.getFlowState() == RDOPROCProject::flow_rotate ) {
+		} else if ( rpapp.project().getFlowState() == RPProject::flow_rotate ) {
 			CPoint point_old( global_old_x, global_old_y );
 			CPoint point_new( global_mouse_x, global_mouse_y );
 			ScreenToClient( &point_old );
 			ScreenToClient( &point_new );
 			clientToZero( point_old );
 			clientToZero( point_new );
-			std::list< RDOPROCShape* >::iterator it = movingShapes.begin();
+			std::list< RPChartObject* >::iterator it = movingShapes.begin();
 			while ( it != movingShapes.end() ) {
-				RDOPROCShape* shape = *it;
+				RPChartObject* shape = *it;
 				shape->setRotation( shape->getRotation() - rp::math::getAlpha( point_old, shape->getRotateCenter(), point_new ) );
 				it++;
 			}
@@ -1051,7 +1035,7 @@ void RDOPROCFlowChart::moving( const int global_mouse_x, const int global_mouse_
 	}
 }
 
-void RDOPROCFlowChart::moving_stop()
+void RPFlowChart::moving_stop()
 {
 	::ReleaseCapture();
 	movingShapes.clear();
@@ -1068,7 +1052,7 @@ void RDOPROCFlowChart::moving_stop()
 	updateScrollBars();
 }
 
-void RDOPROCFlowChart::OnTimer( UINT nIDEvent )
+void RPFlowChart::OnTimer( UINT nIDEvent )
 {
 #ifdef TEST_SPEED // =====================================
 	if ( nIDEvent == sec_timer ) {
@@ -1080,7 +1064,7 @@ void RDOPROCFlowChart::OnTimer( UINT nIDEvent )
 #endif // ================================================
 //	if ( nIDEvent == grid_timer ) {
 //		if ( grid_mode != gtSnapOff /*&& grid_wasMouseMoving*/ && !grid_shapes.empty() ) {
-//			std::list< RDOPROCShape* >::const_iterator it = grid_shapes.begin();
+//			std::list< RPShape* >::const_iterator it = grid_shapes.begin();
 //			while ( it != grid_shapes.end() ) {
 //				snapToGrid( *it );
 //				it++;
@@ -1092,17 +1076,17 @@ void RDOPROCFlowChart::OnTimer( UINT nIDEvent )
 	CWnd::OnTimer( nIDEvent );
 }
 
-void RDOPROCFlowChart::OnLButtonDown( UINT nFlags, CPoint point )
+void RPFlowChart::OnLButtonDown( UINT nFlags, CPoint point )
 {
 	CWnd::OnLButtonDown( nFlags, point );
-	RDOPROCShape* object = findObject( point );
+	RPChartObject* object = findObjectByMousePoint( point );
 //	clearSelectedConnector();
 	if ( object ) {
 		ClientToScreen( &point );
 		moving_start( object, point.x, point.y );
 		movingShapes.clear();
 		if ( nFlags & MK_CONTROL ) {
-			std::list< RDOPROCShape* >::const_iterator it = shapes.begin();
+			std::list< RPChartObject* >::const_iterator it = shapes.begin();
 			while ( it != shapes.end() ) {
 				movingShapes.push_back( *it );
 				it++;
@@ -1115,7 +1099,7 @@ void RDOPROCFlowChart::OnLButtonDown( UINT nFlags, CPoint point )
 			movingShapes.push_back( object );
 		}
 	} else {
-		selectShapeOff();
+		flowobj->setSelected( true );
 /*
 		std::list< CBDFlowChartConnector >::iterator connector = connectors.begin();
 		std::list< CBDFlowChartConnector >::iterator connector_found = connectors.end();
@@ -1136,14 +1120,14 @@ void RDOPROCFlowChart::OnLButtonDown( UINT nFlags, CPoint point )
 	}
 }
 
-void RDOPROCFlowChart::OnLButtonUp( UINT nFlags, CPoint point )
+void RPFlowChart::OnLButtonUp( UINT nFlags, CPoint point )
 {
 	CWnd::OnLButtonUp( nFlags, point );
 	moving_stop();
 //	resetPreview();
 }
 
-void RDOPROCFlowChart::OnMouseMove( UINT nFlags, CPoint point )
+void RPFlowChart::OnMouseMove( UINT nFlags, CPoint point )
 {
 	updateDC();
 
@@ -1165,25 +1149,29 @@ void RDOPROCFlowChart::OnMouseMove( UINT nFlags, CPoint point )
 	}
 }
 
-void RDOPROCFlowChart::updateFlowState()
+void RPFlowChart::updateFlowState()
 {
 	updateDC();
 }
 
-BOOL RDOPROCFlowChart::OnSetCursor( CWnd* pWnd, UINT nHitTest, UINT message )
+BOOL RPFlowChart::OnSetCursor( CWnd* pWnd, UINT nHitTest, UINT message )
 {
 	CPoint point;
 	::GetCursorPos( &point );
 	ScreenToClient( &point );
-	RDOPROCShape* object = findObject( point );
+	RPChartObject* object = findObjectByMousePoint( point );
 	if ( object ) {
-		RDOPROCChartObject::PossibleCommand pcmd = object->getPossibleCommand( point.x, point.y );
-
+		RPChartObject::PossibleCommand pcmd = object->getPossibleCommand( point.x, point.y );
+		switch ( pcmd ) {
+			case RPChartObject::pcmd_none  :
+			case RPChartObject::pcmd_move  : ::SetCursor( rpapp.cursors[IDC_FLOW_SELECT] ); break;
+			case RPChartObject::pcmd_rotate: ::SetCursor( rpapp.cursors[IDC_FLOW_ROTATE] ); break;
+		}
 	} else {
-		switch ( rpapp.project.getFlowState() ) {
-			case RDOPROCProject::flow_select   : ::SetCursor( rpapp.cursors[IDC_FLOW_SELECT] ); break;
-			case RDOPROCProject::flow_connector: ::SetCursor( rpapp.cursors[IDC_FLOW_CONNECTOR] ); break;
-			case RDOPROCProject::flow_rotate   : ::SetCursor( rpapp.cursors[IDC_FLOW_ROTATE] ); break;
+		switch ( rpapp.project().getFlowState() ) {
+			case RPProject::flow_select   : ::SetCursor( rpapp.cursors[IDC_FLOW_SELECT] ); break;
+			case RPProject::flow_connector: ::SetCursor( rpapp.cursors[IDC_FLOW_CONNECTOR] ); break;
+			case RPProject::flow_rotate   : ::SetCursor( rpapp.cursors[IDC_FLOW_ROTATE] ); break;
 		}
 	}
 	return TRUE;

@@ -8,33 +8,33 @@
 #endif // _MSC_VER > 1000
 
 // ----------------------------------------------------------------------------
-// ---------- RDOPROCMainFrame
+// ---------- RPMainFrame
 // ----------------------------------------------------------------------------
-class RDOPROCMainFrame: public CMDIFrameWnd
+class RPMainFrame: public CMDIFrameWnd
 {
-DECLARE_DYNAMIC(RDOPROCMainFrame)
+DECLARE_DYNAMIC(RPMainFrame)
 
 protected:
 	CStatusBar  m_wndStatusBar;
 	CToolBar    m_wndToolBar;
 
-	RDOPROCDockWnd projectBar;
+	RPDockWnd projectBar;
 
 public:
-	RDOPROCMainFrame();
-	virtual ~RDOPROCMainFrame();
+	RPMainFrame();
+	virtual ~RPMainFrame();
 
 #ifdef _DEBUG
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;
 #endif
 
-	//{{AFX_VIRTUAL(RDOPROCMainFrame)
+	//{{AFX_VIRTUAL(RPMainFrame)
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	//}}AFX_VIRTUAL
 
 protected:
-	//{{AFX_MSG(RDOPROCMainFrame)
+	//{{AFX_MSG(RPMainFrame)
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnUpdateFlowConnector(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateFlowRotate(CCmdUI* pCmdUI);

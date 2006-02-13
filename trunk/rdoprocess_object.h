@@ -9,48 +9,46 @@
 #include <vector>
 
 // ----------------------------------------------------------------------------
-// ---------- RDOPROCObject
+// ---------- RPObject
 // ----------------------------------------------------------------------------
-static const int RP_OBJ_BEFOREDELETE = ::RegisterWindowMessage( "RP_OBJ_BEFOREDELETE" );
-static const int RP_OBJ_NAMECHANGED  = ::RegisterWindowMessage( "RP_OBJ_NAMECHANGED" );
-static const int RP_OBJ_SELCHANGED   = ::RegisterWindowMessage( "RP_OBJ_SELCHANGED" );
+namespace rp {
+class msg;
+}
 
-class RDOPROCObject
+class RPObject
 {
+friend class rp::msg;
+
 protected:
 	// --> manager
-	RDOPROCObject*                rpoparent;
-	std::vector< RDOPROCObject* > child;
-	bool isChildNameCorrect( const RDOPROCObject* obj ) const;
-	void setCorrectChildName( RDOPROCObject* obj );
+	RPObject*                rpoparent;
+	std::vector< RPObject* > child;
+	bool isChildNameCorrect( const RPObject* obj ) const;
+	void setCorrectChildName( RPObject* obj );
 
-	std::vector< RDOPROCObject* >::const_iterator begin() const { return child.begin(); }
-	std::vector< RDOPROCObject* >::const_iterator end()   const { return child.end();   }
+	std::vector< RPObject* >::const_iterator begin() const { return child.begin(); }
+	std::vector< RPObject* >::const_iterator end()   const { return child.end();   }
 	void clear();
 
-//	void selectChildObject( RDOPROCObject* obj, const bool value );
-//	void selectChildOff( RDOPROCObject* withoutObj = NULL );
+	void selectChildOff( RPObject* withoutObj = NULL );
 	// <-- manager
 
 	rp::string name;
 	bool       selected;
 
-public:
-	RDOPROCObject( RDOPROCObject* parent = NULL );
-	virtual ~RDOPROCObject();
+	virtual void notify( RPObject* from, UINT message, WPARAM wParam, LPARAM lParam ) {};
 
-	// --> manager
-	// <-- manager
+public:
+	RPObject( RPObject* parent = NULL, const rp::string& name = "object" );
+	virtual ~RPObject();
 
 	rp::string getName() const { return name; }
 	void setName( const rp::string& value );
 
 	bool isSelected() const { return selected; }
-	virtual void setSelected( const bool value );
+	virtual void setSelected( bool value );
 
 	bool hasChild() const { return !child.empty(); }
-
-	virtual void notify( RDOPROCObject* from, UINT message, WPARAM wParam, LPARAM lParam );
 };
 
 #endif // RDO_PROCESS_OBJECT_H

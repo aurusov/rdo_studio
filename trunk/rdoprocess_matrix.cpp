@@ -7,10 +7,12 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+using namespace rp;
+
 // ----------------------------------------------------------------------------
-// ---------- RDOPROCMatrix
+// ---------- matrix
 // ----------------------------------------------------------------------------
-RDOPROCMatrix::RDOPROCMatrix()
+matrix::matrix()
 {
 	for ( int i = 0; i < 3; i++ )
 		for ( int j = 0; j < 3; j++ )
@@ -20,32 +22,32 @@ RDOPROCMatrix::RDOPROCMatrix()
 	data[2][2] = 1.0;
 }
 
-RDOPROCMatrix::RDOPROCMatrix( const RDOPROCMatrix& matrix )
+matrix::matrix( const matrix& m )
 {
-	*this = matrix;
+	*this = m;
 }
 
-RDOPROCMatrix::~RDOPROCMatrix()
+matrix::~matrix()
 {
 }
 
-RDOPROCMatrix& RDOPROCMatrix::operator= ( const RDOPROCMatrix& matrix )
+matrix& matrix::operator= ( const matrix& m )
 {
-	data[0][0] = matrix.data[0][0];
-	data[1][0] = matrix.data[1][0];
-	data[2][0] = matrix.data[2][0];
-	data[0][1] = matrix.data[0][1];
-	data[1][1] = matrix.data[1][1];
-	data[2][1] = matrix.data[2][1];
-	data[0][2] = matrix.data[0][2];
-	data[1][2] = matrix.data[1][2];
-	data[2][2] = matrix.data[2][2];
+	data[0][0] = m.data[0][0];
+	data[1][0] = m.data[1][0];
+	data[2][0] = m.data[2][0];
+	data[0][1] = m.data[0][1];
+	data[1][1] = m.data[1][1];
+	data[2][1] = m.data[2][1];
+	data[0][2] = m.data[0][2];
+	data[1][2] = m.data[1][2];
+	data[2][2] = m.data[2][2];
 	return *this;
 }
 
-RDOPROCMatrix RDOPROCMatrix::t() const
+matrix matrix::t() const
 {
-	RDOPROCMatrix m;
+	matrix m;
 	m.data[0][0] = data[0][0];
 	m.data[1][1] = data[1][1];
 	m.data[2][2] = data[2][2];
@@ -58,9 +60,9 @@ RDOPROCMatrix RDOPROCMatrix::t() const
 	return m;
 }
 
-RDOPROCMatrix RDOPROCMatrix::obr() const
+matrix matrix::obr() const
 {
-	RDOPROCMatrix m;
+	matrix m;
 	double a11 = data[1][1] * data[2][2] - data[1][2] * data[2][1];
 	double a12 = data[1][2] * data[2][0] - data[1][0] * data[2][2];
 	double a13 = data[1][0] * data[2][1] - data[2][0] * data[1][1];
@@ -83,26 +85,26 @@ RDOPROCMatrix RDOPROCMatrix::obr() const
 	return m;
 }
 
-RDOPROCMatrix operator* ( const RDOPROCMatrix& matrix1, const RDOPROCMatrix& matrix2 )
+rp::matrix operator* ( const rp::matrix& m1, const rp::matrix& m2 )
 {
-	RDOPROCMatrix matrix;
-	matrix.data[0][0] = matrix1.data[0][0] * matrix2.data[0][0] + matrix1.data[0][1] * matrix2.data[1][0] + matrix1.data[0][2] * matrix2.data[2][0];
-	matrix.data[1][0] = matrix1.data[1][0] * matrix2.data[0][0] + matrix1.data[1][1] * matrix2.data[1][0] + matrix1.data[1][2] * matrix2.data[2][0];
-	matrix.data[2][0] = matrix1.data[2][0] * matrix2.data[0][0] + matrix1.data[2][1] * matrix2.data[1][0] + matrix1.data[2][2] * matrix2.data[2][0];
-	matrix.data[0][1] = matrix1.data[0][0] * matrix2.data[0][1] + matrix1.data[0][1] * matrix2.data[1][1] + matrix1.data[0][2] * matrix2.data[2][1];
-	matrix.data[1][1] = matrix1.data[1][0] * matrix2.data[0][1] + matrix1.data[1][1] * matrix2.data[1][1] + matrix1.data[1][2] * matrix2.data[2][1];
-	matrix.data[2][1] = matrix1.data[2][0] * matrix2.data[0][1] + matrix1.data[2][1] * matrix2.data[1][1] + matrix1.data[2][2] * matrix2.data[2][1];
-	matrix.data[0][2] = matrix1.data[0][0] * matrix2.data[0][2] + matrix1.data[0][1] * matrix2.data[1][2] + matrix1.data[0][2] * matrix2.data[2][2];
-	matrix.data[1][2] = matrix1.data[1][0] * matrix2.data[0][2] + matrix1.data[1][1] * matrix2.data[1][2] + matrix1.data[1][2] * matrix2.data[2][2];
-	matrix.data[2][2] = matrix1.data[2][0] * matrix2.data[0][2] + matrix1.data[2][1] * matrix2.data[1][2] + matrix1.data[2][2] * matrix2.data[2][2];
-	return matrix;
+	rp::matrix m;
+	m.data[0][0] = m1.data[0][0] * m2.data[0][0] + m1.data[0][1] * m2.data[1][0] + m1.data[0][2] * m2.data[2][0];
+	m.data[1][0] = m1.data[1][0] * m2.data[0][0] + m1.data[1][1] * m2.data[1][0] + m1.data[1][2] * m2.data[2][0];
+	m.data[2][0] = m1.data[2][0] * m2.data[0][0] + m1.data[2][1] * m2.data[1][0] + m1.data[2][2] * m2.data[2][0];
+	m.data[0][1] = m1.data[0][0] * m2.data[0][1] + m1.data[0][1] * m2.data[1][1] + m1.data[0][2] * m2.data[2][1];
+	m.data[1][1] = m1.data[1][0] * m2.data[0][1] + m1.data[1][1] * m2.data[1][1] + m1.data[1][2] * m2.data[2][1];
+	m.data[2][1] = m1.data[2][0] * m2.data[0][1] + m1.data[2][1] * m2.data[1][1] + m1.data[2][2] * m2.data[2][1];
+	m.data[0][2] = m1.data[0][0] * m2.data[0][2] + m1.data[0][1] * m2.data[1][2] + m1.data[0][2] * m2.data[2][2];
+	m.data[1][2] = m1.data[1][0] * m2.data[0][2] + m1.data[1][1] * m2.data[1][2] + m1.data[1][2] * m2.data[2][2];
+	m.data[2][2] = m1.data[2][0] * m2.data[0][2] + m1.data[2][1] * m2.data[1][2] + m1.data[2][2] * m2.data[2][2];
+	return m;
 }
 
-CPoint operator* ( const RDOPROCMatrix& matrix, const CPoint& point )
+CPoint operator* ( const rp::matrix& m, const CPoint& point )
 {
-	double x = matrix.data[0][0] * point.x + matrix.data[0][1] * point.y + matrix.data[0][2];
-	double y = matrix.data[1][0] * point.x + matrix.data[1][1] * point.y + matrix.data[1][2];
-	double w = matrix.data[2][0] * point.x + matrix.data[2][1] * point.y + matrix.data[2][2];
+	double x = m.data[0][0] * point.x + m.data[0][1] * point.y + m.data[0][2];
+	double y = m.data[1][0] * point.x + m.data[1][1] * point.y + m.data[1][2];
+	double w = m.data[2][0] * point.x + m.data[2][1] * point.y + m.data[2][2];
 	x /= w;
 	y /= w;
 	return CPoint( x, y );

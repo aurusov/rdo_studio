@@ -11,12 +11,12 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 // ----------------------------------------------------------------------------
-// ---------- RDOPROCMainFrame
+// ---------- RPMainFrame
 // ----------------------------------------------------------------------------
-IMPLEMENT_DYNAMIC(RDOPROCMainFrame, CMDIFrameWnd)
+IMPLEMENT_DYNAMIC(RPMainFrame, CMDIFrameWnd)
 
-BEGIN_MESSAGE_MAP(RDOPROCMainFrame, CMDIFrameWnd)
-	//{{AFX_MSG_MAP(RDOPROCMainFrame)
+BEGIN_MESSAGE_MAP(RPMainFrame, CMDIFrameWnd)
+	//{{AFX_MSG_MAP(RPMainFrame)
 	ON_WM_CREATE()
 	ON_UPDATE_COMMAND_UI(ID_FLOW_CONNECTOR, OnUpdateFlowConnector)
 	ON_UPDATE_COMMAND_UI(ID_FLOW_ROTATE, OnUpdateFlowRotate)
@@ -35,15 +35,15 @@ static UINT indicators[] =
 	ID_INDICATOR_SCRL,
 };
 
-RDOPROCMainFrame::RDOPROCMainFrame()
+RPMainFrame::RPMainFrame()
 {
 }
 
-RDOPROCMainFrame::~RDOPROCMainFrame()
+RPMainFrame::~RPMainFrame()
 {
 }
 
-int RDOPROCMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
+int RPMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CMDIFrameWnd::OnCreate(lpCreateStruct) == -1)
 		return -1;
@@ -79,7 +79,7 @@ int RDOPROCMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	return 0;
 }
 
-BOOL RDOPROCMainFrame::PreCreateWindow(CREATESTRUCT& cs)
+BOOL RPMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 {
 	if( !CMDIFrameWnd::PreCreateWindow(cs) )
 		return FALSE;
@@ -90,44 +90,44 @@ BOOL RDOPROCMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 }
 
 #ifdef _DEBUG
-void RDOPROCMainFrame::AssertValid() const
+void RPMainFrame::AssertValid() const
 {
 	CMDIFrameWnd::AssertValid();
 }
 
-void RDOPROCMainFrame::Dump(CDumpContext& dc) const
+void RPMainFrame::Dump(CDumpContext& dc) const
 {
 	CMDIFrameWnd::Dump(dc);
 }
 
 #endif
 
-void RDOPROCMainFrame::OnUpdateFlowSelect( CCmdUI* pCmdUI )
+void RPMainFrame::OnUpdateFlowSelect( CCmdUI* pCmdUI )
 {
-	pCmdUI->Enable( rpapp.project.hasChild() );
+	pCmdUI->Enable( rpapp.project().hasChild() );
 }
 
-void RDOPROCMainFrame::OnUpdateFlowConnector( CCmdUI* pCmdUI )
+void RPMainFrame::OnUpdateFlowConnector( CCmdUI* pCmdUI )
 {
-	pCmdUI->Enable( rpapp.project.hasChild() );
+	pCmdUI->Enable( rpapp.project().hasChild() );
 }
 
-void RDOPROCMainFrame::OnUpdateFlowRotate( CCmdUI* pCmdUI )
+void RPMainFrame::OnUpdateFlowRotate( CCmdUI* pCmdUI )
 {
-	pCmdUI->Enable( rpapp.project.hasChild() );
+	pCmdUI->Enable( rpapp.project().hasChild() );
 }
 
-void RDOPROCMainFrame::OnFlowSelect()
+void RPMainFrame::OnFlowSelect()
 {
-	rpapp.project.setFlowState( RDOPROCProject::flow_select );
+	rpapp.project().setFlowState( RPProject::flow_select );
 }
 
-void RDOPROCMainFrame::OnFlowConnector()
+void RPMainFrame::OnFlowConnector()
 {
-	rpapp.project.setFlowState( RDOPROCProject::flow_connector );
+	rpapp.project().setFlowState( RPProject::flow_connector );
 }
 
-void RDOPROCMainFrame::OnFlowRotate()
+void RPMainFrame::OnFlowRotate()
 {
-	rpapp.project.setFlowState( RDOPROCProject::flow_rotate );
+	rpapp.project().setFlowState( RPProject::flow_rotate );
 }

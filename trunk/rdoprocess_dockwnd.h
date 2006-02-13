@@ -6,21 +6,21 @@
 #endif
 
 // ----------------------------------------------------------------------------
-// ---------- RDOPROCDockWnd
+// ---------- RPDockWnd
 // ----------------------------------------------------------------------------
-class RDOPROCDockWnd: public CSizingControlBarG
+class RPDockWnd: public CSizingControlBarG
 {
 public:
-	RDOPROCDockWnd();
-	virtual ~RDOPROCDockWnd();
+	RPDockWnd();
+	virtual ~RPDockWnd();
 
 protected:
-	//{{AFX_VIRTUAL(RDOPROCDockWnd)
+	//{{AFX_VIRTUAL(RPDockWnd)
 	protected:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	//}}AFX_VIRTUAL
 
-	//{{AFX_MSG(RDOPROCDockWnd)
+	//{{AFX_MSG(RPDockWnd)
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()

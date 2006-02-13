@@ -2,7 +2,6 @@
 #include "rdoprocess_app.h"
 #include "rdoprocess_mainfrm.h"
 #include "rdoprocess_childfrm.h"
-#include "rdoprocess_object.h"
 #include "resource.h"
 
 #ifdef _DEBUG
@@ -12,26 +11,34 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 // ----------------------------------------------------------------------------
-// ---------- RDOPROCApp
+// ---------- RPApp
 // ----------------------------------------------------------------------------
-RDOPROCApp rpapp;
+RPApp rpapp;
 
-BEGIN_MESSAGE_MAP(RDOPROCApp, CWinApp)
-	//{{AFX_MSG_MAP(RDOPROCApp)
+BEGIN_MESSAGE_MAP(RPApp, CWinApp)
+	//{{AFX_MSG_MAP(RPApp)
 	ON_COMMAND(ID_APP_ABOUT, OnAppAbout)
 	ON_COMMAND(ID_FILE_NEW, OnFileNew)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-RDOPROCApp::RDOPROCApp()
+RPApp::RPApp():
+	CWinApp(),
+	_msg( NULL ),
+	_project( NULL )
 {
 	log.open( "log.txt" );
-	project.setName( "project" );
 }
 
-BOOL RDOPROCApp::InitInstance()
+BOOL RPApp::InitInstance()
 {
-	log << "RDOPROCApp::InitInstance().." << std::endl;
+	log << "RPApp::InitInstance().." << std::endl;
+
+	_msg = new rp::msg();
+
+	_project = new RPProject();
+	project().setName( "project" );
+
 	// Standard initialization
 	// If you are not using these features and wish to reduce the size
 	//  of your final executable, you should remove from the following
@@ -55,7 +62,7 @@ BOOL RDOPROCApp::InitInstance()
 	// To create the main window, this code creates a new frame window
 	// object and then sets it as the application's main window object.
 
-	CMDIFrameWnd* pFrame = new RDOPROCMainFrame;
+	CMDIFrameWnd* pFrame = new RPMainFrame;
 	m_pMainWnd = pFrame;
 
 	// create main MDI frame window
@@ -74,12 +81,20 @@ BOOL RDOPROCApp::InitInstance()
 	pFrame->ShowWindow(m_nCmdShow);
 	pFrame->UpdateWindow();
 
-	log << "RDOPROCApp::InitInstance().. ok" << std::endl;
+	log << "RPApp::InitInstance().. ok" << std::endl;
 	return TRUE;
 }
 
-int RDOPROCApp::ExitInstance() 
+int RPApp::ExitInstance() 
 {
+	if ( _project ) {
+		delete _project;
+		_project = NULL;
+	}
+	if ( _msg ) {
+		delete _msg;
+		_msg = NULL;
+	}
 	if (m_hMDIMenu != NULL)
 		FreeResource(m_hMDIMenu);
 	if (m_hMDIAccel != NULL)
@@ -88,72 +103,58 @@ int RDOPROCApp::ExitInstance()
 	return CWinApp::ExitInstance();
 }
 
-void RDOPROCApp::OnFileNew() 
+void RPApp::OnFileNew() 
 {
-	RDOPROCMainFrame* pFrame = STATIC_DOWNCAST(RDOPROCMainFrame, m_pMainWnd);
+	RPMainFrame* pFrame = STATIC_DOWNCAST(RPMainFrame, m_pMainWnd);
 
 	// create a new MDI child window
 	pFrame->CreateNewChild(
-		RUNTIME_CLASS(RDOPROCChildFrame), IDR_RDO_PRTYPE, m_hMDIMenu, m_hMDIAccel);
+		RUNTIME_CLASS(RPChildFrame), IDR_RDO_PRTYPE, m_hMDIMenu, m_hMDIAccel);
 }
 
 // ----------------------------------------------------------------------------
-// ---------- RDOPROCApp
+// ---------- RPApp
 // ----------------------------------------------------------------------------
-class RDOPROCAboutDlg: public CDialog
+class RPAboutDlg: public CDialog
 {
 public:
-	RDOPROCAboutDlg();
+	RPAboutDlg();
 
-	//{{AFX_DATA(RDOPROCAboutDlg)
+	//{{AFX_DATA(RPAboutDlg)
 	enum { IDD = IDD_ABOUTBOX };
 	//}}AFX_DATA
 
-	//{{AFX_VIRTUAL(RDOPROCAboutDlg)
+	//{{AFX_VIRTUAL(RPAboutDlg)
 	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 
 protected:
-	//{{AFX_MSG(RDOPROCAboutDlg)
+	//{{AFX_MSG(RPAboutDlg)
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
 
-BEGIN_MESSAGE_MAP(RDOPROCAboutDlg, CDialog)
-	//{{AFX_MSG_MAP(RDOPROCAboutDlg)
+BEGIN_MESSAGE_MAP(RPAboutDlg, CDialog)
+	//{{AFX_MSG_MAP(RPAboutDlg)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-RDOPROCAboutDlg::RDOPROCAboutDlg() : CDialog(RDOPROCAboutDlg::IDD)
+RPAboutDlg::RPAboutDlg() : CDialog(RPAboutDlg::IDD)
 {
-	//{{AFX_DATA_INIT(RDOPROCAboutDlg)
+	//{{AFX_DATA_INIT(RPAboutDlg)
 	//}}AFX_DATA_INIT
 }
 
-void RDOPROCAboutDlg::DoDataExchange(CDataExchange* pDX)
+void RPAboutDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CAboutDlg)
 	//}}AFX_DATA_MAP
 }
 
-void RDOPROCApp::OnAppAbout()
+void RPApp::OnAppAbout()
 {
-	RDOPROCAboutDlg aboutDlg;
+	RPAboutDlg aboutDlg;
 	aboutDlg.DoModal();
-}
-
-void RDOPROCApp::connect( RDOPROCObject* to, UINT message )
-{
-	connected.insert( Connected::value_type( message, to ) );
-}
-
-void RDOPROCApp::sendMessage( RDOPROCObject* from, UINT message, WPARAM wParam, LPARAM lParam )
-{
-	Connected::iterator it = connected.find( message );
-	while ( it != connected.end() ) {
-		it->second->notify( from, message, wParam, lParam );
-		it++;
-	}
 }

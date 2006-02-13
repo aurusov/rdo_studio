@@ -9,28 +9,68 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 // ----------------------------------------------------------------------------
-// ---------- RDOPROCShape
+// ---------- RPShape
 // ----------------------------------------------------------------------------
-RDOPROCShape::RDOPROCShape( RDOPROCObject* _parent, RDOPROCFlowChart* _flowchart ):
-	RDOPROCChartObject( _parent, _flowchart->chobj, _flowchart )
+RPShape::RPShape( RPObject* _parent, RPFlowChart* _flowchart, const rp::string& _name ):
+	RPChartObject( _parent, _flowchart->flowobj, _flowchart, _name )
 //	snap_to_point( 0, 0 )
 {
 	flowchart->insertShape( this );
 }
 
-RDOPROCShape::~RDOPROCShape()
+RPShape::~RPShape()
 {
 	flowchart->deleteShape( this );
 }
 
-void RDOPROCShape::setPosition( int x, int y )
+void RPShape::setPosition( int x, int y )
 {
-	RDOPROCChartObject::setPosition( x, y );
+	RPChartObject::setPosition( x, y );
 	flowchart->snapToGrid( this );
-	flowchart->modify();
+}
+/*
+void RPShape::meshToGlobal()
+{
+	if ( pa_global.size() != pa_src.size() ) {
+		pa_global.resize( pa_src.size() );
+	}
+	trans tr( globalMatrix() );
+	std::transform( pa_src.begin(), pa_src.end(), pa_global.begin(), tr );
+}
+*/
+void RPShape::transformToGlobal()
+{
+	if ( pa_global.size() != pa_src.size() ) {
+		pa_global.resize( pa_src.size() );
+	}
+	trans tr( globalMatrix() );
+	std::transform( pa_src.begin(), pa_src.end(), pa_global.begin(), tr );
 }
 
-void RDOPROCShape::drawPolyline( CDC& dc )
+rp::rect RPShape::getBoundingRect( bool global ) const
+{
+	rp::rect bound_rect;
+	if ( !pa_src.empty() ) {
+		int x_min = pa_src[0].x;
+		int y_min = pa_src[0].y;
+		int x_max = pa_src[0].x;
+		int y_max = pa_src[0].y;
+		std::vector< CPoint >::const_iterator it = pa_src.begin() + 1;
+		while ( it != pa_src.end() ) {
+			if ( x_min > it->x ) x_min = it->x;
+			if ( y_min > it->y ) y_min = it->y;
+			if ( x_max < it->x ) x_max = it->x;
+			if ( y_max < it->y ) y_max = it->y;
+			it++;
+		}
+		rp::rect rect( x_min, y_min, x_max, y_max );
+		if ( global ) rect.transform( globalMatrix() );
+		bound_rect = rect;
+	}
+	return bound_rect;
+}
+
+void RPShape::drawPolyline( CDC& dc )
 {
 	if ( pa_global.size() < 2 ) return;
 	dc.SelectObject( main_pen );
@@ -41,7 +81,7 @@ void RDOPROCShape::drawPolyline( CDC& dc )
 }
 
 /*
-void RDOPROCShape::drawConnectorsInput( CDC& dc )
+void RPShape::drawConnectorsInput( CDC& dc )
 {
 	if ( flowChart->getShowConnectorPoint() ) {
 		painter.setPen( flowChart->getShapeColor() );
@@ -52,7 +92,7 @@ void RDOPROCShape::drawConnectorsInput( CDC& dc )
 	}
 }
 
-void RDOPROCShape::drawConnectorsOutput( CDC& dc )
+void RPShape::drawConnectorsOutput( CDC& dc )
 {
 	if ( flowChart->getShowConnectorPoint() ) {
 		painter.setPen( flowChart->getShapeColor() );
@@ -64,7 +104,7 @@ void RDOPROCShape::drawConnectorsOutput( CDC& dc )
 }
 */
 
-void RDOPROCShape::draw( CDC& dc )
+void RPShape::draw( CDC& dc )
 {
 	drawPolyline( dc );
 
@@ -78,4 +118,10 @@ void RDOPROCShape::draw( CDC& dc )
 	drawConnectorsInput( painter );
 	drawConnectorsOutput( painter );
 */
+}
+
+
+RPChartObject::PossibleCommand RPShape::getPossibleCommand( int global_x, int global_y ) const
+{
+	return RPChartObject::pcmd_move;
 }

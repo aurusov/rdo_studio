@@ -11,9 +11,9 @@ static char THIS_FILE[] = __FILE__;
 namespace rp {
 
 // ----------------------------------------------------------------------------
-// ---------- RPRect
+// ---------- rect
 // ----------------------------------------------------------------------------
-bool RPRect::pointInRect( int x, int y ) const
+bool rect::pointInRect( int x, int y ) const
 {
 	unsigned int i;
 	unsigned int j;
@@ -40,7 +40,7 @@ bool RPRect::pointInRect( int x, int y ) const
 	return flag;
 }
 
-void RPRect::extendFromCenter( int delta )
+void rect::extendFromCenter( int delta )
 {
 	double len, cos_a, sin_a;
 	CPoint center = getCenter();
@@ -66,7 +66,7 @@ void RPRect::extendFromCenter( int delta )
 	}
 }
 
-RPRect& RPRect::extendByPerimetr( int delta )
+rect& rect::extendByPerimetr( int delta )
 {
 	double cos_b, sin_b;
 	if ( rp::math::getPlanarData( pa[3], pa[0], pa[1], cos_b, sin_b ) ) {

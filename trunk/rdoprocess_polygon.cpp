@@ -11,9 +11,9 @@ static char THIS_FILE[] = __FILE__;
 namespace rp {
 
 // ----------------------------------------------------------------------------
-// ---------- RPPolygon
+// ---------- polyline
 // ----------------------------------------------------------------------------
-bool RPPolygon::pointInPolygon( int x, int y ) const
+bool polyline::pointInPolygon( int x, int y ) const
 {
 	if ( size() > 2 ) {
 		unsigned int i;
@@ -42,7 +42,7 @@ bool RPPolygon::pointInPolygon( int x, int y ) const
 	return false;
 }
 
-void RPPolygon::extendFromCenter( int delta )
+void polyline::extendFromCenter( int delta )
 {
 	if ( size() < 2 ) return;
 	double len, cos_a, sin_a;
@@ -58,7 +58,7 @@ void RPPolygon::extendFromCenter( int delta )
 	}
 }
 
-RPPolygon& RPPolygon::extendByPerimetr( int delta )
+polyline& polyline::extendByPerimetr( int delta )
 {
 	if ( size() < 3 ) return *this;
 	bool polygon = isPolygon();

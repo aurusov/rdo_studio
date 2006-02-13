@@ -9,10 +9,10 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 // ----------------------------------------------------------------------------
-// ---------- RDOPROCShapeIf
+// ---------- RPShapeIf
 // ----------------------------------------------------------------------------
-RDOPROCShapeIf::RDOPROCShapeIf( RDOPROCObject* _parent, RDOPROCFlowChart* _flowchart ):
-	RDOPROCShape( _parent, _flowchart )
+RPShapeIf::RPShapeIf( RPObject* _parent, RPFlowChart* _flowchart ):
+	RPShape( _parent, _flowchart, _T("If") )
 {
 	pa_src.push_back( CPoint(0, -35) );
 	pa_src.push_back( CPoint(35, 0) );
@@ -21,9 +21,8 @@ RDOPROCShapeIf::RDOPROCShapeIf( RDOPROCObject* _parent, RDOPROCFlowChart* _flowc
 	pa_src.push_back( CPoint(0, -35) );
 //	snap_to_point.x = getSize().cx / 2;
 //	snap_to_point.y = getSize().cy / 2;
-	setName( _T("If") );
 }
 
-RDOPROCShapeIf::~RDOPROCShapeIf()
+RPShapeIf::~RPShapeIf()
 {
 }

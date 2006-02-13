@@ -8,21 +8,20 @@
 #include "rdoprocess_object.h"
 
 // ----------------------------------------------------------------------------
-// ---------- RDOPROCProject
+// ---------- RPProject
 // ----------------------------------------------------------------------------
-static const UINT RP_FLOWSTATE_CHANGED = ::RegisterWindowMessage( "RP_FLOWSTATE_CHANGED" );
-
-class RDOPROCProject: public RDOPROCObject
+class RPProject: public RPObject
 {
 public:
 	enum FlowState { flow_select = 0, flow_connector, flow_rotate };
 
 protected:
 	FlowState flow_state;
+	virtual void notify( RPObject* from, UINT message, WPARAM wParam, LPARAM lParam );
 
 public:
-	RDOPROCProject();
-	virtual ~RDOPROCProject();
+	RPProject();
+	virtual ~RPProject();
 
 	FlowState getFlowState() const { return flow_state; }
 	void setFlowState( FlowState value );

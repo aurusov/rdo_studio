@@ -8,13 +8,13 @@
 #include "rdoprocess_shape.h"
 
 // ----------------------------------------------------------------------------
-// ---------- RDOPROCShapeIf
+// ---------- RPShapeIf
 // ----------------------------------------------------------------------------
-class RDOPROCShapeIf: public RDOPROCShape
+class RPShapeIf: public RPShape
 {
 public:
-	RDOPROCShapeIf( RDOPROCObject* parent, RDOPROCFlowChart* flowchart );
-	virtual ~RDOPROCShapeIf();
+	RPShapeIf( RPObject* parent, RPFlowChart* flowchart );
+	virtual ~RPShapeIf();
 };
 
 #endif // RDO_PROCESS_SHAPE_IF_H

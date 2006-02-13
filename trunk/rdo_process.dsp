@@ -122,6 +122,10 @@ SOURCE=.\rdoprocess_matrix.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\rdoprocess_messages.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdoprocess_object.cpp
 # End Source File
 # Begin Source File
@@ -192,6 +196,10 @@ SOURCE=.\rdoprocess_math.h
 # Begin Source File
 
 SOURCE=.\rdoprocess_matrix.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdoprocess_messages.h
 # End Source File
 # Begin Source File
 

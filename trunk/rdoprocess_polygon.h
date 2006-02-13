@@ -8,9 +8,9 @@
 namespace rp {
 
 // ----------------------------------------------------------------------------
-// ---------- RPPolygon
+// ---------- polyline
 // ----------------------------------------------------------------------------
-class RPPolygon: public std::vector< CPoint > {
+class polyline: public std::vector< CPoint > {
 public:
 	int getMinX() const {
 		if ( empty() ) return 0;
@@ -64,7 +64,7 @@ public:
 		return (*begin() == *(end() -1)) ? true : false;
 	}
 	void extendFromCenter( int delta );
-	RPPolygon& extendByPerimetr( int delta );
+	polyline& extendByPerimetr( int delta );
 	bool pointInPolygon( int x, int y ) const;
 };
 

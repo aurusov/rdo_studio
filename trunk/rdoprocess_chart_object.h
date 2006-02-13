@@ -11,51 +11,40 @@
 #include "rdoprocess_rect.h"
 
 // ----------------------------------------------------------------------------
-// ---------- RDOPROCChartObject
+// ---------- RPChartObject
 // ----------------------------------------------------------------------------
-class RDOPROCFlowChart;
-
-class RDOPROCChartObject: public RDOPROCObject
+class RPChartObject: public RPObject
 {
+friend class RPFlowChart;
+
 private:
 	CPoint rotate_center;
 	bool   rotate_center_inited;
 
 protected:
-	RDOPROCChartObject* chart_parent;
-	RDOPROCFlowChart* flowchart;
+	RPChartObject* chart_parent;
+	RPFlowChart* flowchart;
 	int  main_pen_width;
 	CPen main_pen;
 
-	struct trans {
-		trans( RDOPROCMatrix& _matrix ): matrix( _matrix ) {};
-		CPoint operator()( const CPoint& point ) {
-			return matrix * point;
-		}
-		RDOPROCMatrix& matrix;
-	};
-	rp::RPPolygon pa_src;
-	rp::RPPolygon pa_global;
-
-	RDOPROCMatrix matrix_transform;
-	RDOPROCMatrix matrix_rotate;
-	RDOPROCMatrix matrix_scale;
+	rp::matrix matrix_transform;
+	rp::matrix matrix_rotate;
+	rp::matrix matrix_scale;
 	double rotation_alpha;
 
-	RDOPROCMatrix globalMatrix() const;
-	RDOPROCMatrix parentMatrix() const;
+	rp::matrix globalMatrix() const;
+	rp::matrix parentMatrix() const;
 
 	virtual void moving( int dx, int dy );
 
 public:
-	RDOPROCChartObject( RDOPROCObject* parent, RDOPROCChartObject* chart_parent, RDOPROCFlowChart* flowchart );
-	virtual ~RDOPROCChartObject();
+	RPChartObject( RPObject* parent, RPChartObject* chart_parent, RPFlowChart* flowchart, const rp::string& name = "object" );
+	virtual ~RPChartObject();
+
+	int getPenWidth() const { return main_pen_width; }
 
 	// Позиция
-	virtual void setPosition( double posx, double posy ) {
-		matrix_transform.dx() = posx;
-		matrix_transform.dy() = posy;
-	}
+	virtual void setPosition( double posx, double posy );
 	double getX()               { return matrix_transform.dx();                }
 	double getY()               { return matrix_transform.dy();                }
 	void setX( double value )   { setPosition( value, matrix_transform.dy() ); }
@@ -72,7 +61,7 @@ public:
 	void setScaleY( double value ) { setScale( matrix_scale.sx(), value ); }
 
 	// Поворот
-	double RDOPROCChartObject::getRotation() const { return rotation_alpha; }
+	double RPChartObject::getRotation() const { return rotation_alpha; }
 	virtual void setRotation( double alpha );
 
 	// Выделить/снять выделение с фигуры
@@ -81,7 +70,7 @@ public:
 	virtual void draw( CDC& dc ) = 0;
 
 	// Габориты фигуры
-	virtual rp::RPRect getBoundingRect( bool global = true ) const;
+	virtual rp::rect getBoundingRect( bool global = true ) const = 0;
 
 	// Центр в глобальных координатах
 	CPoint getCenter() const {
@@ -96,22 +85,17 @@ public:
 		return globalMatrix() * rotate_center;
 	}
 
-	// Перевод pa_src в pa_global для дальнейшей отрисовки
-	void meshToGlobal();
 	// Перевод всех элементов фигуры в глобальные координаты (включает выход meshToGlobal)
-	virtual void transformToGlobal();
+	virtual void transformToGlobal() = 0;
 	// Находится ли точка внутри фигуры
-	virtual bool pointInPolygon( int x, int y, bool byperimetr = true ) {
-		meshToGlobal();
-		if ( byperimetr ) {
-			return pa_global.extendByPerimetr( main_pen_width * sqrt(2) / 2.0 ).pointInPolygon( x, y );
-		} else {
-			return pa_global.pointInPolygon( x, y );
-		}
-	}
+	virtual bool pointInPolygon( int x, int y, bool byperimetr = true ) = 0;
 
-	enum PossibleCommand { pcmd_none, pcmd_move, pcmd_rotate };
-	PossibleCommand getPossibleCommand( int global_x, int global_y ) const;
+	enum PossibleCommand {
+		pcmd_none = 0, //!< Над объектом не может быть произведено никакое действие
+		pcmd_move,     //!< Объект может быть перемещен
+		pcmd_rotate    //!< Объект можно повернуть
+	};
+	virtual PossibleCommand getPossibleCommand( int global_x, int global_y ) const { return pcmd_none; }
 };
 
 #endif // RDO_PROCESS_CHART_OBJECT_H

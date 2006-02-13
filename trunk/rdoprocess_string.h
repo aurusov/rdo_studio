@@ -13,13 +13,21 @@ namespace rp {
 class string: public std::string
 {
 protected:
+	//! Структура (функторал), которая используется для перевода символа в нижний регистр
 	struct toLower {
+		//! Конструктор
+		/*! \param loc - Локаль. Через неё определяется нижний регистр для символа.
+\nПример:\code
+toLower tr( std::locale("rus") );
+		\endcode
+		*/
 		toLower( std::locale loc ): m_loc(loc) {};
 		char operator()(char c) {
 			return std::tolower( c, m_loc );
 		}
 		std::locale m_loc;
 	};
+	//! Структура (функторал), которая используется для перевода символа в верхний регистр
 	struct toUpper {
 		toUpper( std::locale loc ): m_loc(loc) {};
 		char operator()(char c) {
@@ -29,23 +37,44 @@ protected:
 	};
 
 public:
+	//! Конструктор по-умолчанию, создает пустую строку.
 	string(): std::basic_string< char >() {};
+	//! Создает строку по указателю.
 	string( const char* str ): std::basic_string< char >( str ) {};
+	//! Конструктор копии.
 	string( const std::string& str ): std::basic_string< char >( str ) {};
-	static string format( const char* str, ... );
-	static string format( unsigned int resource, ... );
+	static rp::string format( const char* str, ... );
+	static rp::string format( unsigned int resource, ... );
 
 	int      toint() const    { return atoi( c_str() ); }
 	long int tolong() const   { return atol( c_str() ); }
 	float    tofloat() const  { return atof( c_str() ); }
 	double   todouble() const { return strtod( c_str(), NULL ); }
 
+	//! Переводит целое число в строчку.
+	/*! \param value - целое число для перевода в строку.
+		\return Строковое представление целого числа.
+		\par Пример:
+		\code
+rp::string str = rp::string::fromint( 20 );
+		\endcode
+		\sa fromdouble()
+	*/
 	static rp::string fromint( int value ) {
 		char buffer[20];
 		_itoa( value, buffer, 10 );
 		return rp::string( buffer );
 	}
 
+	//! Переводит вещественное число в строчку.
+	/*! \param value - вещественное число для перевода в строку.
+		\return Строковое представление вещественного числа.
+		\par Пример:
+		\code
+rp::string str = rp::string::fromdouble( 20.2 );
+		\endcode
+		\sa fromint()
+	*/
 	static rp::string fromdouble( double value ) {
 		char buffer[40];
 		_gcvt( value, 10, buffer );
@@ -59,12 +88,20 @@ public:
 		return str;
 	}
 
+	//! Переводит все символы строки в строчные.
+	/*! \return Новая строка, все символы которой строчные, исходная остается без изменений.
+		\sa toupper()
+	*/
 	rp::string tolower() {
 		rp::string str( *this );
 		toLower tr( std::locale("rus") );
 		std::transform( str.begin(), str.end(), str.begin(), tr );
 		return str;
 	}
+	//! Переводит все символы строки в заглавные.
+	/*! \return Новая строка, все символы которой заглавные, исходная остается без изменений.
+		\sa tolower()
+	*/
 	rp::string toupper() {
 		rp::string str( *this );
 		toUpper tr( std::locale("rus") );

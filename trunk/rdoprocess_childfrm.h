@@ -8,31 +8,31 @@
 #include "rdoprocess_flowchart.h"
 
 // ----------------------------------------------------------------------------
-// ---------- RDOPROCChildFrame
+// ---------- RPChildFrame
 // ----------------------------------------------------------------------------
-class RDOPROCChildFrame: public CMDIChildWnd
+class RPChildFrame: public CMDIChildWnd
 {
-DECLARE_DYNCREATE(RDOPROCChildFrame)
+DECLARE_DYNCREATE(RPChildFrame)
 
 public:
-	RDOPROCFlowChart m_wndView;
+	RPFlowChart m_wndView;
 
-	RDOPROCChildFrame();
-	virtual ~RDOPROCChildFrame();
+	RPChildFrame();
+	virtual ~RPChildFrame();
 
 #ifdef _DEBUG
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;
 #endif
 
-	//{{AFX_VIRTUAL(RDOPROCChildFrame)
+	//{{AFX_VIRTUAL(RPChildFrame)
 	public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	virtual BOOL OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo);
 	//}}AFX_VIRTUAL
 
 protected:
-	//{{AFX_MSG(RDOPROCChildFrame)
+	//{{AFX_MSG(RPChildFrame)
 	afx_msg void OnFileClose();
 	afx_msg void OnSetFocus(CWnd* pOldWnd);
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);

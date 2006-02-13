@@ -8,13 +8,13 @@
 #include "rdoprocess_shape.h"
 
 // ----------------------------------------------------------------------------
-// ---------- RDOPROCShapeAction
+// ---------- RPShapeAction
 // ----------------------------------------------------------------------------
-class RDOPROCShapeAction: public RDOPROCShape
+class RPShapeAction: public RPShape
 {
 public:
-	RDOPROCShapeAction( RDOPROCObject* parent, RDOPROCFlowChart* flowchart );
-	virtual ~RDOPROCShapeAction();
+	RPShapeAction( RPObject* parent, RPFlowChart* flowchart );
+	virtual ~RPShapeAction();
 };
 
 #endif // RDO_PROCESS_SHAPE_ACTION_H

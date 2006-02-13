@@ -8,21 +8,20 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 // ----------------------------------------------------------------------------
-// ---------- RDOPROCShapeAction
+// ---------- RPShapeAction
 // ----------------------------------------------------------------------------
-RDOPROCShapeAction::RDOPROCShapeAction( RDOPROCObject* _parent, RDOPROCFlowChart* _flowchart ):
-	RDOPROCShape( _parent, _flowchart )
+RPShapeAction::RPShapeAction( RPObject* _parent, RPFlowChart* _flowchart ):
+	RPShape( _parent, _flowchart, _T("Action") )
 {
 	pa_src.push_back( CPoint(-40, -25) );
 	pa_src.push_back( CPoint(40, -25) );
 	pa_src.push_back( CPoint(40, 25) );
 	pa_src.push_back( CPoint(-40, 25) );
 	pa_src.push_back( CPoint(-40, -25) );
-	setName( _T("Action") );
 
 	matrix_scale.data[0][0] = 2;
 }
 
-RDOPROCShapeAction::~RDOPROCShapeAction()
+RPShapeAction::~RPShapeAction()
 {
 }

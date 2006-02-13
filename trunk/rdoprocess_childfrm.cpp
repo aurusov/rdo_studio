@@ -8,27 +8,27 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 // ----------------------------------------------------------------------------
-// ---------- RDOPROCChildFrame
+// ---------- RPChildFrame
 // ----------------------------------------------------------------------------
-IMPLEMENT_DYNCREATE(RDOPROCChildFrame, CMDIChildWnd)
+IMPLEMENT_DYNCREATE(RPChildFrame, CMDIChildWnd)
 
-BEGIN_MESSAGE_MAP(RDOPROCChildFrame, CMDIChildWnd)
-	//{{AFX_MSG_MAP(RDOPROCChildFrame)
+BEGIN_MESSAGE_MAP(RPChildFrame, CMDIChildWnd)
+	//{{AFX_MSG_MAP(RPChildFrame)
 		ON_COMMAND(ID_FILE_CLOSE, OnFileClose)
 		ON_WM_SETFOCUS()
 		ON_WM_CREATE()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-RDOPROCChildFrame::RDOPROCChildFrame()
+RPChildFrame::RPChildFrame()
 {
 }
 
-RDOPROCChildFrame::~RDOPROCChildFrame()
+RPChildFrame::~RPChildFrame()
 {
 }
 
-BOOL RDOPROCChildFrame::PreCreateWindow(CREATESTRUCT& cs)
+BOOL RPChildFrame::PreCreateWindow(CREATESTRUCT& cs)
 {
 	// TODO: Modify the Window class or styles here by modifying
 	//  the CREATESTRUCT cs
@@ -41,7 +41,7 @@ BOOL RDOPROCChildFrame::PreCreateWindow(CREATESTRUCT& cs)
 	return TRUE;
 }
 
-int RDOPROCChildFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) 
+int RPChildFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) 
 {
 	if ( CMDIChildWnd::OnCreate(lpCreateStruct) == -1 ) return -1;
 	
@@ -54,13 +54,13 @@ int RDOPROCChildFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	return 0;
 }
 
-void RDOPROCChildFrame::OnSetFocus(CWnd* pOldWnd) 
+void RPChildFrame::OnSetFocus(CWnd* pOldWnd) 
 {
 	CMDIChildWnd::OnSetFocus( pOldWnd );
 	m_wndView.SetFocus();
 }
 
-BOOL RDOPROCChildFrame::OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo) 
+BOOL RPChildFrame::OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo) 
 {
 	// let the view have first crack at the command
 	if ( m_wndView.OnCmdMsg(nID, nCode, pExtra, pHandlerInfo) ) return TRUE;
@@ -70,19 +70,19 @@ BOOL RDOPROCChildFrame::OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDL
 }
 
 #ifdef _DEBUG
-void RDOPROCChildFrame::AssertValid() const
+void RPChildFrame::AssertValid() const
 {
 	CMDIChildWnd::AssertValid();
 }
 
-void RDOPROCChildFrame::Dump(CDumpContext& dc) const
+void RPChildFrame::Dump(CDumpContext& dc) const
 {
 	CMDIChildWnd::Dump(dc);
 }
 
 #endif //_DEBUG
 
-void RDOPROCChildFrame::OnFileClose() 
+void RPChildFrame::OnFileClose() 
 {
 	// To close the frame, just send a WM_CLOSE, which is the equivalent
 	// choosing close from the system menu.

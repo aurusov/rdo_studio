@@ -7,17 +7,19 @@
 
 #include "rdoprocess_string.h"
 
+namespace rp {
+
 // ----------------------------------------------------------------------------
-// ---------- RDOPROCMatrix
+// ---------- matrix
 // ----------------------------------------------------------------------------
-class RDOPROCMatrix
+class matrix
 {
 public:
 	double data[3][3];
 
-	RDOPROCMatrix();
-	RDOPROCMatrix( const RDOPROCMatrix& matrix );
-	~RDOPROCMatrix();
+	matrix();
+	matrix( const matrix& m );
+	~matrix();
 
 #ifdef _DEBUG
 	void trace() const {
@@ -34,13 +36,15 @@ public:
 	double dx_const() const { return data[0][2]; }
 	double dy_const() const { return data[1][2]; }
 
-	RDOPROCMatrix& operator= ( const RDOPROCMatrix& matrix );
+	matrix& operator= ( const matrix& m );
 
-	RDOPROCMatrix t() const;
-	RDOPROCMatrix obr() const;
+	matrix t() const;
+	matrix obr() const;
 };
 
-RDOPROCMatrix operator* ( const RDOPROCMatrix& matrix1, const RDOPROCMatrix& matrix2 );
-CPoint operator* ( const RDOPROCMatrix& matrix, const CPoint& point );
+}
+
+rp::matrix operator* ( const rp::matrix& m1, const rp::matrix& m2 );
+CPoint operator* ( const rp::matrix& m, const CPoint& point );
 
 #endif // RDO_PROCESS_FLOWCHART_H

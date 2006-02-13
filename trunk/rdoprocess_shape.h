@@ -10,28 +10,56 @@
 #include <vector>
 
 // ----------------------------------------------------------------------------
-// ---------- RDOPROCShape
+// ---------- RPShape
 // ----------------------------------------------------------------------------
-class RDOPROCShape: public RDOPROCChartObject
+class RPShape: public RPChartObject
 {
-friend class RDOPROCFlowChart;
+friend class RPFlowChart;
 
 protected:
 //	CPoint snap_to_point;
+
+	struct trans {
+		trans( rp::matrix& _matrix ): matrix( _matrix ) {};
+		CPoint operator()( const CPoint& point ) {
+			return matrix * point;
+		}
+		rp::matrix& matrix;
+	};
+	rp::polyline pa_src;
+	rp::polyline pa_global;
 
 	virtual void drawPolyline( CDC& dc );
 //	virtual void drawConnectorsInput( CDC& dc );
 //	virtual void drawConnectorsOutput( CDC& dc );
 
 public:
-	RDOPROCShape( RDOPROCObject* parent, RDOPROCFlowChart* flowchart );
-	virtual ~RDOPROCShape();
+	RPShape( RPObject* parent, RPFlowChart* flowchart, const rp::string& name = "object" );
+	virtual ~RPShape();
 
 	virtual void setPosition( int x, int y );
 
 //	const CPoint& getSnapToPoint() const { return snap_to_point; }
 
 	virtual void draw( CDC& dc );
+
+	// Габориты фигуры
+	virtual rp::rect getBoundingRect( bool global = true ) const;
+	// Перевод pa_src в pa_global для дальнейшей отрисовки
+//	void meshToGlobal();
+	// Перевод всех элементов фигуры в глобальные координаты (включает выход meshToGlobal)
+	virtual void transformToGlobal();
+	// Находится ли точка внутри фигуры
+	virtual bool pointInPolygon( int x, int y, bool byperimetr = true ) {
+		transformToGlobal();
+//		meshToGlobal();
+		if ( byperimetr ) {
+			return pa_global.extendByPerimetr( main_pen_width * sqrt(2) / 2.0 ).pointInPolygon( x, y );
+		} else {
+			return pa_global.pointInPolygon( x, y );
+		}
+	}
+	virtual PossibleCommand getPossibleCommand( int global_x, int global_y ) const;
 };
 
 #endif // RDO_PROCESS_SHAPE_H

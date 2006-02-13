@@ -8,23 +8,23 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 // ----------------------------------------------------------------------------
-// ---------- RDOPROCDockWnd
+// ---------- RPDockWnd
 // ----------------------------------------------------------------------------
-BEGIN_MESSAGE_MAP(RDOPROCDockWnd, CSizingControlBarG)
-	//{{AFX_MSG_MAP(RDOPROCDockWnd)
+BEGIN_MESSAGE_MAP(RPDockWnd, CSizingControlBarG)
+	//{{AFX_MSG_MAP(RPDockWnd)
 	ON_WM_CREATE()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-RDOPROCDockWnd::RDOPROCDockWnd()
+RPDockWnd::RPDockWnd()
 {
 }
 
-RDOPROCDockWnd::~RDOPROCDockWnd()
+RPDockWnd::~RPDockWnd()
 {
 }
 
-int RDOPROCDockWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) 
+int RPDockWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) 
 {
 	if (CSizingControlBarG::OnCreate(lpCreateStruct) == -1)
 		return -1;
@@ -34,7 +34,7 @@ int RDOPROCDockWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	return 0;
 }
 
-BOOL RDOPROCDockWnd::PreCreateWindow(CREATESTRUCT& cs) 
+BOOL RPDockWnd::PreCreateWindow(CREATESTRUCT& cs) 
 {
 	if ( !CSizingControlBarG::PreCreateWindow(cs) ) return FALSE;
 //	cs.style = WS_CHILD | WS_VISIBLE | WS_HSCROLL | WS_VSCROLL | WS_TABSTOP;
