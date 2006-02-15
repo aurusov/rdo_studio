@@ -20,6 +20,9 @@ friend class RPFlowChart;
 private:
 	mutable CPoint rotate_center;
 	mutable bool   rotate_center_inited;
+CPoint p0;
+CPoint p1;
+CPoint p2;
 
 protected:
 	RPChartObject* chart_parent;
@@ -32,8 +35,30 @@ protected:
 	rp::matrix matrix_scale;
 	double rotation_alpha;
 
-	rp::matrix globalMatrix() const;
-	rp::matrix parentMatrix() const;
+	rp::matrix selfMatrix() const {
+		rp::matrix r_center;
+		r_center.dx() = -rotate_center.x;
+		r_center.dy() = -rotate_center.y;
+		return matrix_transform * r_center.obr() * matrix_rotate * r_center * matrix_scale;
+	}
+	rp::matrix globalMatrix() const {
+		return chart_parent ? chart_parent->globalMatrix() * selfMatrix() : selfMatrix();
+	}
+	rp::matrix parentMatrix( bool self = true ) const {
+		if ( self ) {
+			return chart_parent ? chart_parent->parentMatrix( false ) : rp::matrix();
+		} else {
+			return chart_parent ? chart_parent->parentMatrix( false ) * selfMatrix() : selfMatrix();
+		}
+	}
+	rp::matrix rotateCenterMatrix( bool self = true ) const {
+		return parentMatrix() * matrix_transform;
+//		if ( self ) {
+//			return chart_parent ? chart_parent->rotateCenterMatrix( false ) * matrix_transform : matrix_transform;
+//		} else {
+//			return chart_parent ? chart_parent->rotateCenterMatrix( false ) * selfMatrix() : selfMatrix();
+//		}
+	}
 
 	virtual void moving( int dx, int dy );
 
@@ -63,11 +88,22 @@ public:
 	// Поворот
 	double RPChartObject::getRotation() const { return rotation_alpha; }
 	virtual void setRotation( double alpha );
+	// Центр поворота в глобальных координатах
+	CPoint getRotateCenter() const {
+		if ( !rotate_center_inited ) {
+			rotate_center = getBoundingRect( false ).getCenter();
+			rotate_center_inited = true;
+		}
+		return rotateCenterMatrix() * rotate_center;
+	}
+	void setRotateCenter( const CPoint& point );
+	// Находится ли точка на центре вращения фигуры
+	bool isRotateCenter( const CPoint& point ) const;
 
 	// Выделить/снять выделение с фигуры
 	virtual void setSelected( bool value );
 	// Отрисовка фигуры
-	virtual void draw( CDC& dc ) = 0;
+	virtual void draw( CDC& dc );
 
 	// Габориты фигуры
 	virtual rp::rect getBoundingRect( bool global = true ) const = 0;
@@ -76,21 +112,11 @@ public:
 	CPoint getCenter() const {
 		return globalMatrix() * getBoundingRect( false ).getCenter();
 	}
-	// Центр поворота в глобальных координатах
-	CPoint getRotateCenter() const {
-		if ( !rotate_center_inited ) {
-			rotate_center = getBoundingRect( false ).getCenter();
-			rotate_center_inited = true;
-		}
-		return globalMatrix() * rotate_center;
-	}
 
 	// Перевод всех элементов фигуры в глобальные координаты (включает выход meshToGlobal)
 	virtual void transformToGlobal() = 0;
 	// Находится ли точка внутри фигуры
 	virtual bool pointInPolygon( const CPoint& point, bool byperimetr = true ) = 0;
-	// Находится ли точка на центре вращения фигуры
-	bool isRotateCenter( const CPoint& point ) const;
 
 	enum PossibleCommand {
 		pcmd_none = 0,      //!< Над объектом не может быть произведено никакое действие

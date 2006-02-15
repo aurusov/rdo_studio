@@ -94,7 +94,7 @@ RPFlowChart::RPFlowChart():
 	paper_bg_color( RGB(0xFF, 0xFF, 0xFF) ),
 	flowobj( NULL ),
 	global_mouse_pos_prev( 0, 0 ),
-	one_object( NULL )
+	object_rotate_center( NULL )
 #ifdef TEST_SPEED // =====================================
 	,
 	sec_cnt( 0 ),
@@ -958,10 +958,133 @@ void RPFlowChart::buildMovingChild( std::list< RPShape* >& movingChildShapes, RP
 }
 */
 
-void RPFlowChart::moving( const CPoint& global_mouse_pos )
+void RPFlowChart::OnTimer( UINT nIDEvent )
 {
-	if ( !moving_objects.empty() ) {
-		// Переместить объекты
+#ifdef TEST_SPEED // =====================================
+	if ( nIDEvent == sec_timer ) {
+		TRACE( "%d. makepixmap = %d, makegrid = %d, makegrid_empty = %d\n", sec_cnt++, makepixmap_cnt, makegrid_cnt, makegridempty_cnt );
+		makegrid_cnt      = 0;
+		makegridempty_cnt = 0;
+		makepixmap_cnt    = 0;
+	}
+#endif // ================================================
+//	if ( nIDEvent == grid_timer ) {
+//		if ( grid_mode != gtSnapOff /*&& grid_wasMouseMoving*/ && !grid_objects.empty() ) {
+//			std::list< RPShape* >::const_iterator it = grid_objects.begin();
+//			while ( it != grid_objects.end() ) {
+//				snapToGrid( *it );
+//				it++;
+//			}
+//			grid_objects.clear();
+////		grid_wasMouseMoving = false;
+//		}
+//	}
+	CWnd::OnTimer( nIDEvent );
+}
+
+void RPFlowChart::OnLButtonDown( UINT nFlags, CPoint local_mouse_pos )
+{
+	CWnd::OnLButtonDown( nFlags, local_mouse_pos );
+	// Проверим, а не попалили в центр вращения какой-либо фигуры.
+	// Сам центр может находится вне фигуры.
+	object_rotate_center = NULL;
+	if ( rpapp.project().getFlowState() == RPProject::flow_rotate ) {
+		CPoint mouse = local_mouse_pos;
+		clientToZero( mouse );
+		std::list< RPChartObject* >::const_iterator it = objects.begin();
+		while ( it != objects.end() ) {
+			RPChartObject* obj = *it;
+			if ( obj->isSelected() && obj->isRotateCenter( mouse ) ) {
+				object_rotate_center = obj;
+				break;
+			}
+			it++;
+		}
+	}
+	// Если не нашли центр вращения, то определаем перемещаемые фигуры
+	if ( !object_rotate_center ) {
+		RPChartObject* object = findObjectByMousePoint( local_mouse_pos );
+//		clearSelectedConnector();
+		if ( object ) {
+			ClientToScreen( &local_mouse_pos );
+			global_mouse_pos_prev = local_mouse_pos;
+			SetCapture();
+			object->setSelected( true );
+			moving_objects.clear();
+			if ( nFlags & MK_CONTROL ) {
+				moving_objects.assign( objects.begin(), objects.end() );
+			} else if ( nFlags & MK_SHIFT ) {
+				moving_objects.push_back( object );
+//				buildMovingChild( movingShape );
+			} else {
+				moving_objects.push_back( object );
+			}
+		} else {
+			flowobj->setSelected( true );
+/*
+			std::list< CBDFlowChartConnector >::iterator connector = connectors.begin();
+			std::list< CBDFlowChartConnector >::iterator connector_found = connectors.end();
+			int distance = -1;
+			QPoint point( event->x() + scrollView->contentsX() - scrollView->paper_border, event->y() + scrollView->contentsY() - scrollView->paper_border );
+			while ( connector != connectors.end() ) {
+				int dist = connector->minDistance( point );
+				if ( dist != -1 && (distance == -1 || distance > dist ) ) {
+					distance = dist;
+					connector_found = connector;
+				}
+				connector++;
+			}
+			if ( connector_found != connectors.end() && distance < 5 ) {
+				connector_found->selected = true;
+			}
+*/
+		}
+	}
+}
+
+void RPFlowChart::OnLButtonUp( UINT nFlags, CPoint local_mouse_pos )
+{
+	CWnd::OnLButtonUp( nFlags, local_mouse_pos );
+	::ReleaseCapture();
+	moving_objects.clear();
+	object_rotate_center = NULL;
+/*
+	grid_objects.clear();
+	grid_objects.assign( moving_objects.begin(), moving_objects.end() );
+//	movingShape = NULL;
+	moving_objects.clear();
+	if ( !grid_objects.empty() ) {
+		if ( grid_timer ) KillTimer( grid_timer );
+		grid_timer = SetTimer( grid_timer_id, 100, NULL );
+	}
+*/
+	updateScrollBars();
+//	resetPreview();
+}
+
+void RPFlowChart::OnMouseMove( UINT nFlags, CPoint local_mouse_pos )
+{
+	CWnd::OnMouseMove( nFlags, local_mouse_pos );
+
+	CPoint global_mouse_pos = local_mouse_pos;
+	ClientToScreen( &global_mouse_pos );
+
+	CPoint global_pos = local_mouse_pos;
+	clientToZero( global_pos );
+
+	// Если выбран один объект, но он имеет приоритет в обработке
+	// Проверается на изменение масштаба, поворота или центра поворота
+	if ( object_rotate_center ) {
+//		CPoint point_old = global_mouse_pos_prev;
+//		CPoint point_new = global_mouse_pos;
+//		ScreenToClient( &point_old );
+//		ScreenToClient( &point_new );
+//		clientToZero( point_old );
+//		clientToZero( point_new );
+		object_rotate_center->setRotateCenter( global_pos );
+		updateDC();
+	} else if ( !moving_objects.empty() ) {
+		// Перемещаем другие объекты
 		if ( rpapp.project().getFlowState() == RPProject::flow_select ) {
 			int dx = global_mouse_pos.x - global_mouse_pos_prev.x;
 			int dy = global_mouse_pos.y - global_mouse_pos_prev.y;
@@ -1028,131 +1151,6 @@ void RPFlowChart::moving( const CPoint& global_mouse_pos )
 	}
 }
 
-void RPFlowChart::OnTimer( UINT nIDEvent )
-{
-#ifdef TEST_SPEED // =====================================
-	if ( nIDEvent == sec_timer ) {
-		TRACE( "%d. makepixmap = %d, makegrid = %d, makegrid_empty = %d\n", sec_cnt++, makepixmap_cnt, makegrid_cnt, makegridempty_cnt );
-		makegrid_cnt      = 0;
-		makegridempty_cnt = 0;
-		makepixmap_cnt    = 0;
-	}
-#endif // ================================================
-//	if ( nIDEvent == grid_timer ) {
-//		if ( grid_mode != gtSnapOff /*&& grid_wasMouseMoving*/ && !grid_objects.empty() ) {
-//			std::list< RPShape* >::const_iterator it = grid_objects.begin();
-//			while ( it != grid_objects.end() ) {
-//				snapToGrid( *it );
-//				it++;
-//			}
-//			grid_objects.clear();
-////		grid_wasMouseMoving = false;
-//		}
-//	}
-	CWnd::OnTimer( nIDEvent );
-}
-
-void RPFlowChart::OnLButtonDown( UINT nFlags, CPoint local_mouse_pos )
-{
-	CWnd::OnLButtonDown( nFlags, local_mouse_pos );
-	// Проверим, а не попалили в центр вращения какой-либо фигуры.
-	// Сам центр может находится вне фигуры.
-	one_object = NULL;
-	if ( rpapp.project().getFlowState() == RPProject::flow_rotate ) {
-		CPoint mouse = local_mouse_pos;
-		clientToZero( mouse );
-		std::list< RPChartObject* >::const_iterator it = objects.begin();
-		while ( it != objects.end() ) {
-			RPChartObject* obj = *it;
-			if ( obj->isSelected() && obj->isRotateCenter( mouse ) ) {
-				one_object = obj;
-				break;
-			}
-			it++;
-		}
-	}
-	// Если не нашли центр вращения, то определаем перемещаемые фигуры
-	if ( !one_object ) {
-		RPChartObject* object = findObjectByMousePoint( local_mouse_pos );
-//		clearSelectedConnector();
-		if ( object ) {
-			ClientToScreen( &local_mouse_pos );
-			global_mouse_pos_prev = local_mouse_pos;
-			SetCapture();
-			object->setSelected( true );
-			moving_objects.clear();
-			if ( nFlags & MK_CONTROL ) {
-				moving_objects.assign( objects.begin(), objects.end() );
-			} else if ( nFlags & MK_SHIFT ) {
-				moving_objects.push_back( object );
-//				buildMovingChild( movingShape );
-			} else {
-				moving_objects.push_back( object );
-			}
-		} else {
-			flowobj->setSelected( true );
-/*
-			std::list< CBDFlowChartConnector >::iterator connector = connectors.begin();
-			std::list< CBDFlowChartConnector >::iterator connector_found = connectors.end();
-			int distance = -1;
-			QPoint point( event->x() + scrollView->contentsX() - scrollView->paper_border, event->y() + scrollView->contentsY() - scrollView->paper_border );
-			while ( connector != connectors.end() ) {
-				int dist = connector->minDistance( point );
-				if ( dist != -1 && (distance == -1 || distance > dist ) ) {
-					distance = dist;
-					connector_found = connector;
-				}
-				connector++;
-			}
-			if ( connector_found != connectors.end() && distance < 5 ) {
-				connector_found->selected = true;
-			}
-*/
-		}
-	}
-}
-
-void RPFlowChart::OnLButtonUp( UINT nFlags, CPoint local_mouse_pos )
-{
-	CWnd::OnLButtonUp( nFlags, local_mouse_pos );
-	::ReleaseCapture();
-	moving_objects.clear();
-/*
-	grid_objects.clear();
-	grid_objects.assign( moving_objects.begin(), moving_objects.end() );
-//	movingShape = NULL;
-	moving_objects.clear();
-	if ( !grid_objects.empty() ) {
-		if ( grid_timer ) KillTimer( grid_timer );
-		grid_timer = SetTimer( grid_timer_id, 100, NULL );
-	}
-*/
-	updateScrollBars();
-//	resetPreview();
-}
-
-void RPFlowChart::OnMouseMove( UINT nFlags, CPoint local_mouse_pos )
-{
-	updateDC();
-
-	CWnd::OnMouseMove( nFlags, local_mouse_pos );
-/*
-	if ( new_shape ) {
-		new_shape->move( event->x() - new_shape->getSize().width()/2 - scrollView->pixmap_x - scrollView->paper_border + scrollView->contentsX(), event->y() - new_shape->getSize().height()/2 - scrollView->pixmap_y - scrollView->paper_border + scrollView->contentsY() );
-		updateScrollView();
-		updateDC();
-	} else if ( new_connector ) {
-		new_connector_pos.setX( event->x() - scrollView->pixmap_x + scrollView->contentsX() );
-		new_connector_pos.setY( event->y() - scrollView->pixmap_y + scrollView->contentsY() );
-		updateDC();
-	} else if ( movingShape ) {
-*/
-	if ( !moving_objects.empty() ) {
-		ClientToScreen( &local_mouse_pos );
-		moving( local_mouse_pos );
-	}
-}
-
 void RPFlowChart::updateFlowState()
 {
 	updateDC();
@@ -1162,16 +1160,21 @@ BOOL RPFlowChart::OnSetCursor( CWnd* pWnd, UINT nHitTest, UINT message )
 {
 	CPoint point;
 	::GetCursorPos( &point );
-	TRACE( "x = %d, y = %d\n", point.x, point.y );
 	ScreenToClient( &point );
 	clientToZero( point );
 	RPChartObject* object = NULL;
 	std::list< RPChartObject* >::const_iterator it = objects.begin();
 	while ( it != objects.end() ) {
 		RPChartObject* obj = *it;
-		if ( obj->isSelected() && obj->getBoundingRect().extendByPerimetr( select_box_size2 + 1 ).pointInRect( point ) ) {
-			object = obj;
-			break;
+		if ( obj->isSelected() ) {
+			if ( obj->isRotateCenter( point ) ) {
+				object = obj;
+				break;
+			}
+			if ( obj->getBoundingRect().extendByPerimetr( select_box_size2 + 1 ).pointInRect( point ) ) {
+				object = obj;
+				break;
+			}
 		}
 		it++;
 	}

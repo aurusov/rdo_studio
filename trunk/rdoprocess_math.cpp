@@ -89,7 +89,6 @@ double math::getAlpha( const CPoint& p1, const CPoint& p2_center, const CPoint& 
 {
 	double len1 = math::getLength( p1, p2_center );
 	double len2 = math::getLength( p2_center, p3 );
-	TRACE( "len1 = %f, len2 = %f\n", len1, len2 );
 	if ( len1 != -1 && len2 != -1 ) {
 		double cos_a1 = static_cast<double>((p1.x-p2_center.x))/len1;
 		double sin_a1 = static_cast<double>((p2_center.y-p1.y))/len1;

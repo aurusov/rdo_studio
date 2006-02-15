@@ -115,11 +115,9 @@ private:
 
 	RPChartObject* findObjectByMousePoint( CPoint point ) const;
 
-	void moving( const CPoint& global_mouse_pos );
-
 	CPoint                      global_mouse_pos_prev;
 	std::list< RPChartObject* > moving_objects;
-	RPChartObject*              one_object;
+	RPChartObject*              object_rotate_center;
 
 #ifdef TEST_SPEED
 	int sec_cnt;

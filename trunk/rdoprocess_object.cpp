@@ -99,7 +99,6 @@ void RPObject::selectChildOff( RPObject* withoutObj )
 	std::vector< RPObject* >::iterator it = child.begin();
 	while ( it != child.end() ) {
 		RPObject* obj = *it;
-		TRACE( "%s\n", obj->getName().c_str() );
 		if ( (*it) != withoutObj ) {
 			(*it)->setSelected( false );
 		}

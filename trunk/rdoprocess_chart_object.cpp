@@ -40,19 +40,6 @@ void RPChartObject::setPosition( double posx, double posy )
 	flowchart->modify();
 }
 
-rp::matrix RPChartObject::globalMatrix() const
-{
-	rp::matrix r_center;
-	r_center.dx() = rotate_center.x;
-	r_center.dy() = rotate_center.y;
-	return chart_parent ? chart_parent->globalMatrix() * matrix_transform * r_center * matrix_rotate * r_center.obr() * matrix_scale : matrix_transform * r_center * matrix_rotate * r_center.obr() * matrix_scale;
-}
-
-rp::matrix RPChartObject::parentMatrix() const
-{
-	return chart_parent ? chart_parent->matrix_transform : rp::matrix();
-}
-
 void RPChartObject::moving( int dx, int dy )
 {
 	matrix_transform.dx() += dx;
@@ -63,7 +50,7 @@ void RPChartObject::moving( int dx, int dy )
 void RPChartObject::setRotation( double alpha )
 {
 	rotation_alpha = alpha;
-	TRACE( "ra = %f\n", rotation_alpha );
+	TRACE( "alpha = %f\n", alpha );
 	alpha *= rp::math::pi / 180.0;
 	double cos_a = cos( alpha );
 	double sin_a = sin( alpha );
@@ -74,6 +61,35 @@ void RPChartObject::setRotation( double alpha )
 	matrix_rotate.data[0][1] = -sin_a;
 	matrix_rotate.data[1][0] = sin_a;
 	flowchart->modify();
+}
+
+void RPChartObject::setRotateCenter( const CPoint& point )
+{
+	CPoint rotate_center_prev = rotate_center;
+	rotate_center = rotateCenterMatrix().obr() * point;
+	p0 = CPoint( 0, 0 );
+	p1 = rotate_center_prev;
+	p2 = rotate_center;
+	if ( p1 != p2 ) {
+		double len01 = rp::math::getLength( p0, p1 );
+		double len02 = rp::math::getLength( p0, p2 );
+		double len12 = rp::math::getLength( p1, p2 );
+		double cos_a = (len01*len01 + len02*len02 - len12*len12) / (2*len01*len02);
+		double alpha = acos(cos_a) * 180.0 / rp::math::pi;
+		TRACE( "delta = %f\n", alpha );
+//		setRotation( rotation_alpha + alpha );
+	}
+}
+
+void RPChartObject::draw( CDC& dc )
+{
+	rp::matrix gm = globalMatrix();
+	CPen pen1( PS_SOLID, 1, RGB(-1,0,-1) );
+	dc.SelectObject( pen1 );
+	dc.MoveTo( gm * p0 );
+	dc.LineTo( gm * p1 );
+	dc.LineTo( gm * p2 );
+	dc.LineTo( gm * p0 );
 }
 
 void RPChartObject::setSelected( bool value )

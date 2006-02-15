@@ -80,6 +80,17 @@ void RPShape::drawPolyline( CDC& dc )
 	dc.Polyline( &pa_global[0], pa_global.size() );
 	dc.EndPath();
 	dc.StrokePath();
+
+	rp::matrix gm = globalMatrix();
+	CPen pen1( PS_SOLID, 1, RGB(-1,0,0) );
+	dc.SelectObject( pen1 );
+	dc.MoveTo( gm * CPoint(-70,0) );
+	dc.LineTo( gm * CPoint(70,0) );
+	CPen pen2( PS_SOLID, 1, RGB(0,-1,0) );
+	dc.SelectObject( pen2 );
+	dc.MoveTo( gm * CPoint(0,-70) );
+	dc.LineTo( gm * CPoint(0,70) );
+	dc.DrawText( rp::string::format( "alpha = %f", rotation_alpha ).c_str(), CRect( gm * CPoint(0,70), CSize(100,100)), DT_SINGLELINE );
 }
 
 /*
@@ -109,6 +120,7 @@ void RPShape::drawConnectorsOutput( CDC& dc )
 void RPShape::draw( CDC& dc )
 {
 	drawPolyline( dc );
+	RPChartObject::draw( dc );
 
 /*
 	if ( flowChart->getShowShapeName() ) {
