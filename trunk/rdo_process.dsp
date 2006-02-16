@@ -130,6 +130,10 @@ SOURCE=.\rdoprocess_object.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\rdoprocess_point.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdoprocess_polyline.cpp
 # End Source File
 # Begin Source File
@@ -204,6 +208,10 @@ SOURCE=.\rdoprocess_messages.h
 # Begin Source File
 
 SOURCE=.\rdoprocess_object.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdoprocess_point.h
 # End Source File
 # Begin Source File
 

@@ -9,6 +9,8 @@
 #include "rdoprocess_matrix.h"
 #include "rdoprocess_polyline.h"
 #include "rdoprocess_rect.h"
+#include "rdoprocess_point.h"
+#include "rdoprocess_math.h"
 
 // ----------------------------------------------------------------------------
 // ---------- RPChartObject
@@ -18,8 +20,8 @@ class RPChartObject: public RPObject
 friend class RPFlowChart;
 
 private:
-	mutable CPoint rotate_center;
-	mutable bool   rotate_center_inited;
+	mutable rp::point rotate_center;
+	mutable bool      rotate_center_inited;
 
 protected:
 	RPChartObject* chart_parent;
@@ -29,11 +31,12 @@ protected:
 
 	rp::matrix matrix_transform;
 	rp::matrix matrix_rotate;
+	rp::matrix matrix_transform_post;
 	rp::matrix matrix_scale;
 	double rotation_alpha;
 
 	rp::matrix selfMatrix() const {
-		return matrix_transform * matrix_rotate * matrix_scale;
+		return matrix_transform * matrix_rotate * matrix_transform_post * matrix_scale;
 	}
 	rp::matrix globalMatrix() const {
 		return chart_parent ? chart_parent->globalMatrix() * selfMatrix() : selfMatrix();
@@ -45,8 +48,19 @@ protected:
 			return chart_parent ? chart_parent->parentMatrix( false ) * selfMatrix() : selfMatrix();
 		}
 	}
-	rp::matrix rotateCenterMatrix( bool self = true ) const {
+	rp::matrix rotateCenterMatrix() const {
 		return parentMatrix() * matrix_transform;
+	}
+	static void fillRotateMatrix( rp::matrix& m_rotate, double alpha ) {
+		alpha *= rp::math::pi / 180.0;
+		double cos_a = cos( alpha );
+		double sin_a = sin( alpha );
+//		if ( fabs(cos_a) < 1e-10 ) cos_d = 0;
+//		if ( fabs(sin_a) < 1e-10 ) sin_d = 0;
+		m_rotate.data[0][0] = cos_a;
+		m_rotate.data[1][1] = cos_a;
+		m_rotate.data[0][1] = sin_a;
+		m_rotate.data[1][0] = -sin_a;
 	}
 
 	virtual void moving( int dx, int dy );
@@ -59,10 +73,17 @@ public:
 
 	// Позиция
 	virtual void setPosition( double posx, double posy );
-	double getX()               { return matrix_transform.dx();                }
-	double getY()               { return matrix_transform.dy();                }
+	double getX() const         { return matrix_transform.dx_const();          }
+	double getY() const         { return matrix_transform.dy_const();          }
 	void setX( double value )   { setPosition( value, matrix_transform.dy() ); }
 	void setY( double value )   { setPosition( matrix_transform.dx(), value ); }
+
+	// Позиция
+	virtual void setPositionPost( double posx, double posy );
+	double getPostX() const       { return matrix_transform_post.dx_const();              }
+	double getPostY() const       { return matrix_transform_post.dy_const();              }
+	void setPostX( double value ) { setPositionPost( value, matrix_transform_post.dy() ); }
+	void setPostY( double value ) { setPositionPost( matrix_transform_post.dx(), value ); }
 
 	// Масштаб
 	virtual void setScale( double sx, double sy );
@@ -74,15 +95,18 @@ public:
 	// Поворот
 	double RPChartObject::getRotation() const { return rotation_alpha; }
 	virtual void setRotation( double alpha );
-	// Центр поворота в глобальных координатах
-	CPoint getRotateCenter() const {
+	// Вернуть центр поворота в глобальных координатах
+	rp::point getRotateCenter() const {
 		if ( !rotate_center_inited ) {
 			rotate_center = getBoundingRect( false ).getCenter();
 			rotate_center_inited = true;
 		}
 		return rotateCenterMatrix() * rotate_center;
 	}
-	void setRotateCenter( const CPoint& point ) { rotate_center = rotateCenterMatrix().obr() * point; }
+	// Установить центр поворота в глобальных координатах
+	void setRotateCenter( const rp::point& point ) { rotate_center = rotateCenterMatrix().obr() * point; }
+	// Изменить центр поворота в локальных координатах
+	void setRotateCenterLocalDelta( double dx, double dy );
 	// Совпадает ли точка на центре вращения фигуры
 	bool isRotateCenter( const CPoint& point ) const;
 

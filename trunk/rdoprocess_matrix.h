@@ -6,6 +6,7 @@
 #endif // _MSC_VER > 1000
 
 #include "rdoprocess_string.h"
+#include "rdoprocess_point.h"
 
 namespace rp {
 
@@ -46,5 +47,6 @@ public:
 
 rp::matrix operator* ( const rp::matrix& m1, const rp::matrix& m2 );
 CPoint operator* ( const rp::matrix& m, const CPoint& point );
+rp::point operator* ( const rp::matrix& m, const rp::point& point );
 
 #endif // RDO_PROCESS_FLOWCHART_H

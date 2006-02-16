@@ -1079,15 +1079,19 @@ void RPFlowChart::OnMouseMove( UINT nFlags, CPoint local_mouse_pos )
 				rp::rect rect = one_object->getBoundingRect();
 				if ( (alpha > 270 + 45 || alpha <= 45) || (alpha > 90 + 45  && alpha <= 180 + 45) ) {
 					double len = rp::math::getLength( rect.p_l(), rect.p_r() );
-//					dx /= 2;
-					double len2 = len + dx * 2;
-					one_object->setScaleX( one_object->getScaleX() * len2 / len );
-//					one_object->setPosition( one_object->getX() + dx, one_object->getY() );
+					one_object->setScaleX( one_object->getScaleX() * (len + dx) / len );
+					dx /= 2;
+					dx *= (alpha > 270 + 45 || alpha <= 45) ? 1 : -1;
+					one_object->setPostX( one_object->getPostX() + dx );
+					one_object->setRotateCenterLocalDelta( dx, 0 );
 				}
 				if ( (alpha > 45 && alpha <= 90 + 45) || (alpha > 180 + 45 && alpha <= 270 + 45) ) {
 					double len = rp::math::getLength( rect.p_t(), rect.p_b() );
-					double len2 = len + dx * 2;
-					one_object->setScaleY( one_object->getScaleY() * len2 / len );
+					one_object->setScaleY( one_object->getScaleY() * (len + dx) / len );
+					dx /= 2;
+					dx *= (alpha > 45 && alpha <= 90 + 45) ? 1 : -1;
+					one_object->setPostY( one_object->getPostY() + dx );
+					one_object->setRotateCenterLocalDelta( 0, dx );
 				}
 				updateDC();
 				break;

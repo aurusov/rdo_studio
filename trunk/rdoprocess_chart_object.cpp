@@ -2,7 +2,6 @@
 #include "rdoprocess_chart_object.h"
 #include "rdoprocess_flowchart.h"
 #include "rdoprocess_app.h"
-#include "rdoprocess_math.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -40,6 +39,13 @@ void RPChartObject::setPosition( double posx, double posy )
 	flowchart->modify();
 }
 
+void RPChartObject::setPositionPost( double posx, double posy )
+{
+	matrix_transform_post.dx() = posx;
+	matrix_transform_post.dy() = posy;
+	flowchart->modify();
+}
+
 void RPChartObject::setScale( double sx, double sy ) 
 {
 	matrix_scale.sx() = sx;
@@ -60,21 +66,32 @@ void RPChartObject::setRotation( double alpha )
 	while ( alpha > 360 ) alpha -= 360.0;
 	double alpha_delta = alpha - rotation_alpha;
 	rotation_alpha = alpha;
-	alpha_delta *= rp::math::pi / 180.0;
-	double cos_a = cos( alpha_delta );
-	double sin_a = sin( alpha_delta );
-//	if ( fabs(cos_a) < 1e-10 ) cos_d = 0;
-//	if ( fabs(sin_a) < 1e-10 ) sin_d = 0;
+
 	rp::matrix m_rotate;
-	m_rotate.data[0][0] = cos_a;
-	m_rotate.data[1][1] = cos_a;
-	m_rotate.data[0][1] = sin_a;
-	m_rotate.data[1][0] = -sin_a;
+	RPChartObject::fillRotateMatrix( m_rotate, alpha_delta );
+
 	rp::matrix r_center;
 	r_center.dx() = -rotate_center.x;
 	r_center.dy() = -rotate_center.y;
+
 	matrix_rotate = r_center.obr() * m_rotate * r_center * matrix_rotate;
 	flowchart->modify();
+}
+
+void RPChartObject::setRotateCenterLocalDelta( double dx, double dy )
+{
+	rp::matrix m_delta;
+	m_delta.dx() = dx;
+	m_delta.dy() = dy;
+
+	rp::matrix m_rotate;
+	RPChartObject::fillRotateMatrix( m_rotate, rotation_alpha );
+
+	rp::matrix m = m_rotate * m_delta * parentMatrix();
+	rp::point point = getRotateCenter();
+	point.x += m.dx();
+	point.y += m.dy();
+	setRotateCenter( point );
 }
 
 void RPChartObject::setSelected( bool value )
