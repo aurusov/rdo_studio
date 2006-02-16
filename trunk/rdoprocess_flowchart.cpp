@@ -924,41 +924,6 @@ void RPFlowChart::snapToGridAllShapes()
 }
 */
 
-RPChartObject* RPFlowChart::findObjectByMousePoint( CPoint point ) const
-{
-	clientToZero( point );
-	std::list< RPChartObject* >::const_iterator it = objects.begin();
-	while ( it != objects.end() ) {
-		RPChartObject* object = *it;
-		rp::rect rect = object->getBoundingRect().extendByPerimetr( object->getPenWidth() * sqrt(2) / 2.0 );
-		if ( rect.pointInRect( point ) ) {
-			object->transformToGlobal();
-//			object->meshToGlobal();
-			bool flag = object->pointInPolygon( point );
-			if ( flag ) {
-				return object;
-			}
-		}
-		it++;
-	}
-	return NULL;
-}
-
-/*
-void RPFlowChart::buildMovingChild( std::list< RPShape* >& movingChildShapes, RPShape* from )
-{
-	const std::list< RPShape* >& output = from->getOutputShapes();
-	std::list< RPShape* >::const_iterator it = output.begin();
-	while ( it != output.end() ) {
-		if ( std::find( movingChildobjects.begin(), movingChildobjects.end(), *it ) == movingChildobjects.end() ) {
-			movingChildobjects.push_back( *it );
-			buildMovingChild( movingChildShapes, *it );
-		}
-		it++;
-	}
-}
-*/
-
 void RPFlowChart::OnTimer( UINT nIDEvent )
 {
 #ifdef TEST_SPEED // =====================================

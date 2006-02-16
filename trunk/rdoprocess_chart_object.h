@@ -20,9 +20,6 @@ friend class RPFlowChart;
 private:
 	mutable CPoint rotate_center;
 	mutable bool   rotate_center_inited;
-CPoint p0;
-CPoint p1;
-CPoint p2;
 
 protected:
 	RPChartObject* chart_parent;
@@ -36,10 +33,7 @@ protected:
 	double rotation_alpha;
 
 	rp::matrix selfMatrix() const {
-//		rp::matrix r_center;
-//		r_center.dx() = -rotate_center.x;
-//		r_center.dy() = -rotate_center.y;
-		return matrix_transform * /*r_center.obr() **/ matrix_rotate /** r_center*/ * matrix_scale;
+		return matrix_transform * matrix_rotate * matrix_scale;
 	}
 	rp::matrix globalMatrix() const {
 		return chart_parent ? chart_parent->globalMatrix() * selfMatrix() : selfMatrix();
@@ -53,11 +47,6 @@ protected:
 	}
 	rp::matrix rotateCenterMatrix( bool self = true ) const {
 		return parentMatrix() * matrix_transform;
-//		if ( self ) {
-//			return chart_parent ? chart_parent->rotateCenterMatrix( false ) * matrix_transform : matrix_transform;
-//		} else {
-//			return chart_parent ? chart_parent->rotateCenterMatrix( false ) * selfMatrix() : selfMatrix();
-//		}
 	}
 
 	virtual void moving( int dx, int dy );
@@ -113,7 +102,7 @@ public:
 		return globalMatrix() * getBoundingRect( false ).getCenter();
 	}
 
-	// Перевод всех элементов фигуры в глобальные координаты (включает выход meshToGlobal)
+	// Перевод всех элементов фигуры в глобальные координаты
 	virtual void transformToGlobal() = 0;
 	// Находится ли точка внутри фигуры
 	virtual bool pointInPolygon( const CPoint& point, bool byperimetr = true ) = 0;

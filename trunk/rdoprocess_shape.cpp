@@ -30,16 +30,7 @@ void RPShape::setPosition( int x, int y )
 	RPChartObject::setPosition( x, y );
 	flowchart->snapToGrid( this );
 }
-/*
-void RPShape::meshToGlobal()
-{
-	if ( pa_global.size() != pa_src.size() ) {
-		pa_global.resize( pa_src.size() );
-	}
-	trans tr( globalMatrix() );
-	std::transform( pa_src.begin(), pa_src.end(), pa_global.begin(), tr );
-}
-*/
+
 void RPShape::transformToGlobal()
 {
 	if ( pa_global.size() != pa_src.size() ) {
