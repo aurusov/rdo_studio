@@ -49,6 +49,8 @@ void RPChartObject::moving( int dx, int dy )
 
 void RPChartObject::setRotation( double alpha )
 {
+	while ( alpha < 0 ) alpha += 360.0;
+	while ( alpha > 360 ) alpha -= 360.0;
 	rotation_alpha = alpha;
 	TRACE( "alpha = %f\n", alpha );
 	alpha *= rp::math::pi / 180.0;
