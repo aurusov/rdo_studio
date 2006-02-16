@@ -45,14 +45,11 @@ public:
 
 	// Габориты фигуры
 	virtual rp::rect getBoundingRect( bool global = true ) const;
-	// Перевод pa_src в pa_global для дальнейшей отрисовки
-//	void meshToGlobal();
-	// Перевод всех элементов фигуры в глобальные координаты (включает выход meshToGlobal)
+	// Перевод всех элементов фигуры в глобальные координаты
 	virtual void transformToGlobal();
 	// Находится ли точка внутри фигуры
 	virtual bool pointInPolygon( const CPoint& point, bool byperimetr = true ) {
 		transformToGlobal();
-//		meshToGlobal();
 		if ( byperimetr ) {
 			return pa_global.extendByPerimetr( main_pen_width * sqrt(2) / 2.0 ).pointInPolygon( point );
 		} else {

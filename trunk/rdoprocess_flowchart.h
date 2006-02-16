@@ -113,8 +113,6 @@ private:
 
 	std::list< RPChartObject* >::iterator find( const RPChartObject* shape );
 
-	RPChartObject* findObjectByMousePoint( CPoint point ) const;
-
 	CPoint                         global_mouse_pos_prev;
 	std::list< RPChartObject* >    moving_objects;
 	RPChartObject*                 one_object;

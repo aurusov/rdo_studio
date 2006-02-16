@@ -36,10 +36,10 @@ protected:
 	double rotation_alpha;
 
 	rp::matrix selfMatrix() const {
-		rp::matrix r_center;
-		r_center.dx() = -rotate_center.x;
-		r_center.dy() = -rotate_center.y;
-		return matrix_transform * r_center.obr() * matrix_rotate * r_center * matrix_scale;
+//		rp::matrix r_center;
+//		r_center.dx() = -rotate_center.x;
+//		r_center.dy() = -rotate_center.y;
+		return matrix_transform * /*r_center.obr() **/ matrix_rotate /** r_center*/ * matrix_scale;
 	}
 	rp::matrix globalMatrix() const {
 		return chart_parent ? chart_parent->globalMatrix() * selfMatrix() : selfMatrix();
@@ -96,14 +96,14 @@ public:
 		}
 		return rotateCenterMatrix() * rotate_center;
 	}
-	void setRotateCenter( const CPoint& point );
+	void setRotateCenter( const CPoint& point ) { rotate_center = rotateCenterMatrix().obr() * point; }
 	// Совпадает ли точка на центре вращения фигуры
 	bool isRotateCenter( const CPoint& point ) const;
 
 	// Выделить/снять выделение с фигуры
 	virtual void setSelected( bool value );
 	// Отрисовка фигуры
-	virtual void draw( CDC& dc );
+	virtual void draw( CDC& dc ) = 0;
 
 	// Габориты фигуры
 	virtual rp::rect getBoundingRect( bool global = true ) const = 0;

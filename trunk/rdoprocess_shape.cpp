@@ -120,7 +120,6 @@ void RPShape::drawConnectorsOutput( CDC& dc )
 void RPShape::draw( CDC& dc )
 {
 	drawPolyline( dc );
-	RPChartObject::draw( dc );
 
 /*
 	if ( flowChart->getShowShapeName() ) {

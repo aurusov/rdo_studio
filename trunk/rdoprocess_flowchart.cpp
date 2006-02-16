@@ -1103,7 +1103,7 @@ void RPFlowChart::OnMouseMove( UINT nFlags, CPoint local_mouse_pos )
 				ScreenToClient( &point_new );
 				clientToZero( point_old );
 				clientToZero( point_new );
-				one_object->setRotation( one_object->getRotation() - rp::math::getAlpha( point_old, one_object->getRotateCenter(), point_new ) );
+				one_object->setRotation( one_object->getRotation() + rp::math::getAlpha( point_old, one_object->getRotateCenter(), point_new ) );
 				updateDC();
 				break;
 			}
