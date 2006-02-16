@@ -667,16 +667,6 @@ void RPFlowChart::OnPaint()
 				}
 */
 				if ( object->isSelected() ) {
-					if ( rpapp.project().getFlowState() == RPProject::flow_rotate ) {
-						// Центр вращения
-						CPoint center = object->getRotateCenter();
-						CPen pen_red( PS_SOLID, 1, RGB(0,0,0) );
-						CBrush brush_white( RGB(-1,-1,0) );
-						int radius = getSensitivity();
-						mem_dc.SelectObject( pen_red );
-						mem_dc.SelectObject( brush_white );
-						mem_dc.Ellipse( center.x - radius, center.y - radius, center.x + radius, center.y + radius );
-					}
 					// Прямоугольник вокруг фигуры
 					rp::rect rect = object->getBoundingRect();
 					int x0 = rect.p0().x;
@@ -713,6 +703,16 @@ void RPFlowChart::OnPaint()
 					mem_dc.Rectangle( (x1 + x2)/2 - box_size_2, (y1 + y2)/2 - box_size_2, (x1 + x2)/2 + box_size_2, (y1 + y2)/2 + box_size_2 );
 					mem_dc.Rectangle( (x2 + x3)/2 - box_size_2, (y2 + y3)/2 - box_size_2, (x2 + x3)/2 + box_size_2, (y2 + y3)/2 + box_size_2 );
 					mem_dc.Rectangle( (x3 + x0)/2 - box_size_2, (y3 + y0)/2 - box_size_2, (x3 + x0)/2 + box_size_2, (y3 + y0)/2 + box_size_2 );
+					if ( rpapp.project().getFlowState() == RPProject::flow_rotate ) {
+						// Центр вращения
+						CPoint center = object->getRotateCenter();
+						CPen pen_red( PS_SOLID, 1, RGB(0,0,0) );
+						CBrush brush_white( RGB(-1,-1,0) );
+						int radius = getSensitivity();
+						mem_dc.SelectObject( pen_red );
+						mem_dc.SelectObject( brush_white );
+						mem_dc.Ellipse( center.x - radius, center.y - radius, center.x + radius, center.y + radius );
+					}
 				}
 				it++;
 			}

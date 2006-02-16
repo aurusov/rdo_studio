@@ -126,6 +126,8 @@ void RPShape::draw( CDC& dc )
 
 RPChartObject::PossibleCommand RPShape::getPossibleCommand( const CPoint& global_pos ) const
 {
+	// Отдельно проверим на перемещение центра вращения. Он отрисовывается поверх выделения, значит и проверяться должен первым.
+	if ( rpapp.project().getFlowState() == RPProject::flow_rotate && isSelected() && isRotateCenter( global_pos ) ) return RPChartObject::pcmd_rotate_center;
 	rp::rect rect = getBoundingRect();
 	int sensitivity = flowchart->getSensitivity();
 	double alpha = getRotation();
