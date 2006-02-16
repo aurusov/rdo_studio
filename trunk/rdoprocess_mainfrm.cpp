@@ -105,16 +105,19 @@ void RPMainFrame::Dump(CDumpContext& dc) const
 void RPMainFrame::OnUpdateFlowSelect( CCmdUI* pCmdUI )
 {
 	pCmdUI->Enable( rpapp.project().hasChild() );
+	pCmdUI->SetCheck( rpapp.project().getFlowState() == RPProject::flow_select );
 }
 
 void RPMainFrame::OnUpdateFlowConnector( CCmdUI* pCmdUI )
 {
 	pCmdUI->Enable( rpapp.project().hasChild() );
+	pCmdUI->SetCheck( rpapp.project().getFlowState() == RPProject::flow_connector );
 }
 
 void RPMainFrame::OnUpdateFlowRotate( CCmdUI* pCmdUI )
 {
 	pCmdUI->Enable( rpapp.project().hasChild() );
+	pCmdUI->SetCheck( rpapp.project().getFlowState() == RPProject::flow_rotate );
 }
 
 void RPMainFrame::OnFlowSelect()

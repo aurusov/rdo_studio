@@ -115,9 +115,10 @@ private:
 
 	RPChartObject* findObjectByMousePoint( CPoint point ) const;
 
-	CPoint                      global_mouse_pos_prev;
-	std::list< RPChartObject* > moving_objects;
-	RPChartObject*              object_rotate_center;
+	CPoint                         global_mouse_pos_prev;
+	std::list< RPChartObject* >    moving_objects;
+	RPChartObject*                 one_object;
+	RPChartObject::PossibleCommand one_object_pcmd;
 
 #ifdef TEST_SPEED
 	int sec_cnt;
@@ -137,6 +138,8 @@ public:
 	virtual void modify();
 
 	void snapToGrid( RPShape* shape );
+
+	int getSensitivity() const { return select_box_size2 + 1; }
 
 	//{{AFX_VIRTUAL(RPFlowChart)
 	public:

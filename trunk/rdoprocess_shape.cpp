@@ -80,7 +80,7 @@ void RPShape::drawPolyline( CDC& dc )
 	dc.Polyline( &pa_global[0], pa_global.size() );
 	dc.EndPath();
 	dc.StrokePath();
-
+/*
 	rp::matrix gm = globalMatrix();
 	CPen pen1( PS_SOLID, 1, RGB(-1,0,0) );
 	dc.SelectObject( pen1 );
@@ -91,6 +91,7 @@ void RPShape::drawPolyline( CDC& dc )
 	dc.MoveTo( gm * CPoint(0,-70) );
 	dc.LineTo( gm * CPoint(0,70) );
 	dc.DrawText( rp::string::format( "alpha = %f", rotation_alpha ).c_str(), CRect( gm * CPoint(0,70), CSize(100,100)), DT_SINGLELINE );
+*/
 }
 
 /*
@@ -134,13 +135,31 @@ void RPShape::draw( CDC& dc )
 */
 }
 
-RPChartObject::PossibleCommand RPShape::getPossibleCommand( int global_x, int global_y ) const
+RPChartObject::PossibleCommand RPShape::getPossibleCommand( const CPoint& global_pos ) const
 {
 	rp::rect rect = getBoundingRect();
-	CPoint mouse( global_x, global_y );
-	if ( isRotateCenter( mouse ) ) return RPChartObject::pcmd_rotate_center;
-	if ( rpapp.project().getFlowState() == RPProject::flow_rotate ) {
-		double len = rp::math::getLength( getRotateCenter(), mouse );
+	int sensitivity = flowchart->getSensitivity();
+	if ( rpapp.project().getFlowState() == RPProject::flow_select ) {
+		if ( rp::math::getLength( rect.p_tl(), global_pos ) <= sensitivity ) return RPChartObject::pcmd_scale_tl;
+		if ( rp::math::getLength( rect.p_tr(), global_pos ) <= sensitivity ) return RPChartObject::pcmd_scale_tr;
+		if ( rp::math::getLength( rect.p_bl(), global_pos ) <= sensitivity ) return RPChartObject::pcmd_scale_bl;
+		if ( rp::math::getLength( rect.p_br(), global_pos ) <= sensitivity ) return RPChartObject::pcmd_scale_br;
+		if ( rp::math::getLength( rect.p_l(), global_pos ) <= sensitivity ) return RPChartObject::pcmd_scale_l;
+		if ( rp::math::getLength( rect.p_r(), global_pos ) <= sensitivity ) return RPChartObject::pcmd_scale_r;
+		if ( rp::math::getLength( rect.p_t(), global_pos ) <= sensitivity ) return RPChartObject::pcmd_scale_t;
+		if ( rp::math::getLength( rect.p_b(), global_pos ) <= sensitivity ) return RPChartObject::pcmd_scale_b;
+		if ( pa_global.pointInPolygon( global_pos ) ) return RPChartObject::pcmd_move;
+	} else if ( rpapp.project().getFlowState() == RPProject::flow_rotate ) {
+		if ( isRotateCenter( global_pos ) ) return RPChartObject::pcmd_rotate_center;
+		if ( rp::math::getLength( rect.p_tl(), global_pos ) <= sensitivity ) return RPChartObject::pcmd_rotate_tl;
+		if ( rp::math::getLength( rect.p_tr(), global_pos ) <= sensitivity ) return RPChartObject::pcmd_rotate_tr;
+		if ( rp::math::getLength( rect.p_bl(), global_pos ) <= sensitivity ) return RPChartObject::pcmd_rotate_bl;
+		if ( rp::math::getLength( rect.p_br(), global_pos ) <= sensitivity ) return RPChartObject::pcmd_rotate_br;
+		if ( rp::math::getLength( rect.p_l(), global_pos ) <= sensitivity ) return RPChartObject::pcmd_scale_l;
+		if ( rp::math::getLength( rect.p_r(), global_pos ) <= sensitivity ) return RPChartObject::pcmd_scale_r;
+		if ( rp::math::getLength( rect.p_t(), global_pos ) <= sensitivity ) return RPChartObject::pcmd_scale_t;
+		if ( rp::math::getLength( rect.p_b(), global_pos ) <= sensitivity ) return RPChartObject::pcmd_scale_b;
+		if ( pa_global.pointInPolygon( global_pos ) ) return RPChartObject::pcmd_move;
 	}
 	return RPChartObject::pcmd_none;
 }

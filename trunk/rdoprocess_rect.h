@@ -84,10 +84,18 @@ public:
 		pa[2] = matrix * pa[2];
 		pa[3] = matrix * pa[3];
 	}
-	CPoint& p0() { return pa[0]; }
-	CPoint& p1() { return pa[1]; }
-	CPoint& p2() { return pa[2]; }
-	CPoint& p3() { return pa[3]; }
+	CPoint& p0()   { return pa[0]; }
+	CPoint& p1()   { return pa[1]; }
+	CPoint& p2()   { return pa[2]; }
+	CPoint& p3()   { return pa[3]; }
+	CPoint& p_tl() { return pa[0]; }
+	CPoint& p_tr() { return pa[1]; }
+	CPoint& p_br() { return pa[2]; }
+	CPoint& p_bl() { return pa[3]; }
+	CPoint  p_t()  { return CPoint( (pa[0].x + pa[1].x) / 2, (pa[0].y + pa[1].y) / 2 ); }
+	CPoint  p_b()  { return CPoint( (pa[3].x + pa[2].x) / 2, (pa[3].y + pa[2].y) / 2 ); }
+	CPoint  p_l()  { return CPoint( (pa[0].x + pa[3].x) / 2, (pa[0].y + pa[3].y) / 2 ); }
+	CPoint  p_r()  { return CPoint( (pa[1].x + pa[2].x) / 2, (pa[1].y + pa[2].y) / 2 ); }
 
 	void extendFromCenter( int delta );
 	rect& extendByPerimetr( int delta );

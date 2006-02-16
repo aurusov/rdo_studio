@@ -83,6 +83,7 @@ void RPChartObject::setRotateCenter( const CPoint& point )
 
 void RPChartObject::draw( CDC& dc )
 {
+/*
 	rp::matrix gm = globalMatrix();
 	CPen pen1( PS_SOLID, 1, RGB(-1,0,-1) );
 	dc.SelectObject( pen1 );
@@ -90,6 +91,7 @@ void RPChartObject::draw( CDC& dc )
 	dc.LineTo( gm * p1 );
 	dc.LineTo( gm * p2 );
 	dc.LineTo( gm * p0 );
+*/
 }
 
 void RPChartObject::setSelected( bool value )
@@ -104,7 +106,7 @@ void RPChartObject::setSelected( bool value )
 bool RPChartObject::isRotateCenter( const CPoint& point ) const
 {
 	if ( rpapp.project().getFlowState() == RPProject::flow_rotate ) {
-		return rp::math::getLength( getRotateCenter(), point ) <= 5;
+		return rp::math::getLength( getRotateCenter(), point ) <= flowchart->getSensitivity();
 	}
 	return false;
 }

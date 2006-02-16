@@ -97,7 +97,7 @@ public:
 		return rotateCenterMatrix() * rotate_center;
 	}
 	void setRotateCenter( const CPoint& point );
-	// Находится ли точка на центре вращения фигуры
+	// Совпадает ли точка на центре вращения фигуры
 	bool isRotateCenter( const CPoint& point ) const;
 
 	// Выделить/снять выделение с фигуры
@@ -137,7 +137,7 @@ public:
 		pcmd_scale_bl,      //!< Объект может быть масштабирован за левый нижний угол
 		pcmd_scale_br       //!< Объект может быть масштабирован за правый нижний угол
 	};
-	virtual PossibleCommand getPossibleCommand( int global_x, int global_y ) const { return pcmd_none; }
+	virtual PossibleCommand getPossibleCommand( const CPoint& global_pos ) const { return pcmd_none; }
 };
 
 #endif // RDO_PROCESS_CHART_OBJECT_H

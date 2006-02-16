@@ -56,6 +56,7 @@ BOOL RPApp::InitInstance()
 	SetRegistryKey(_T("Local AppWizard-Generated Applications"));
 
 	cursors[ IDC_FLOW_SELECT ]        = AfxGetApp()->LoadCursor(IDC_FLOW_SELECT);
+	cursors[ IDC_FLOW_MOVE ]        = AfxGetApp()->LoadCursor(IDC_FLOW_MOVE);
 	cursors[ IDC_FLOW_CONNECTOR ]     = AfxGetApp()->LoadCursor(IDC_FLOW_CONNECTOR);
 	cursors[ IDC_FLOW_ROTATE ]        = AfxGetApp()->LoadCursor(IDC_FLOW_ROTATE);
 	cursors[ IDC_FLOW_ROTATE_CENTER ] = AfxGetApp()->LoadCursor(IDC_FLOW_ROTATE_CENTER);

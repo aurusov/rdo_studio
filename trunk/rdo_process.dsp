@@ -255,6 +255,10 @@ SOURCE=.\res\flow_connector.cur
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\flow_move.cur
+# End Source File
+# Begin Source File
+
 SOURCE=.\res\flow_rotate.cur
 # End Source File
 # Begin Source File

@@ -15,6 +15,7 @@
 #define IDC_FLOW_SCALE_TLBR             143
 #define IDC_FLOW_ROTATE_TL              144
 #define IDC_FLOW_ROTATE_CENTER          145
+#define IDC_FLOW_MOVE                   146
 #define ID_FLOW_SELECT                  32771
 #define ID_FLOW_CONNECTOR               32772
 #define ID_FLOW_ROTATE                  32773
@@ -26,7 +27,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        146
+#define _APS_NEXT_RESOURCE_VALUE        147
 #define _APS_NEXT_COMMAND_VALUE         32774
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           101

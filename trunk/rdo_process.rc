@@ -80,6 +80,7 @@ IDC_FLOW_SCALE_TRBL     CURSOR  DISCARDABLE     "res\\flow_scale_trbl.cur"
 IDC_FLOW_SCALE_TLBR     CURSOR  DISCARDABLE     "res\\flow_scale_tlbr.cur"
 IDC_FLOW_ROTATE_TL      CURSOR  DISCARDABLE     "res\\flow_rotate_tl.cur"
 IDC_FLOW_ROTATE_CENTER  CURSOR  DISCARDABLE     "res\\flow_rotate_center.cur"
+IDC_FLOW_MOVE           CURSOR  DISCARDABLE     "res\\flow_move.cur"
 #endif    // Russian resources
 /////////////////////////////////////////////////////////////////////////////
 
@@ -233,8 +234,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,0,34
- PRODUCTVERSION 1,0,0,34
+ FILEVERSION 1,0,0,35
+ PRODUCTVERSION 1,0,0,35
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -251,13 +252,13 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "rdo_process MFC Application\0"
-            VALUE "FileVersion", "1, 0, 0, 34\0"
+            VALUE "FileVersion", "1, 0, 0, 35\0"
             VALUE "InternalName", "rdo_process\0"
             VALUE "LegalCopyright", "Copyright (C) 2006\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "rdo_process.EXE\0"
             VALUE "ProductName", "rdo_process Application\0"
-            VALUE "ProductVersion", "1, 0, 0, 34\0"
+            VALUE "ProductVersion", "1, 0, 0, 35\0"
         END
     END
     BLOCK "VarFileInfo"
