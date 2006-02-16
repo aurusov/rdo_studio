@@ -65,12 +65,9 @@ public:
 	void setY( double value )   { setPosition( matrix_transform.dx(), value ); }
 
 	// Масштаб
-	virtual void setScale( double sx, double sy ) {
-		matrix_scale.sx() = sx;
-		matrix_scale.sy() = sy;
-	}
-	int getScaleX()                { return matrix_scale.sx();             }
-	int getScaleY()                { return matrix_scale.sy();             }
+	virtual void setScale( double sx, double sy );
+	double getScaleX()             { return matrix_scale.sx();             }
+	double getScaleY()             { return matrix_scale.sy();             }
 	void setScaleX( double value ) { setScale( value, matrix_scale.sy() ); }
 	void setScaleY( double value ) { setScale( matrix_scale.sx(), value ); }
 

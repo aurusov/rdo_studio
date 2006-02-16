@@ -960,7 +960,7 @@ void RPFlowChart::OnLButtonDown( UINT nFlags, CPoint local_mouse_pos )
 			RPChartObject* obj = *it;
 			// ѕроверим, а не попалили в центр вращени€ какой-либо фигуры.
 			// —ам центр может находитс€ вне фигуры, поэтому проверим дл€ начала все центры всех фигур
-			if ( obj->isSelected() && obj->isRotateCenter( global_pos ) ) {
+			if ( obj->isRotateCenter( global_pos ) ) {
 				one_object      = obj;
 				one_object_pcmd = RPChartObject::pcmd_rotate_center;
 				break;
@@ -1051,6 +1051,9 @@ void RPFlowChart::OnMouseMove( UINT nFlags, CPoint local_mouse_pos )
 	// ѕровераетс€ на изменение масштаба, поворота или центра поворота.
 	// Ёти операции не могут быть групповыми.
 	if ( one_object ) {
+		double alpha = one_object->getRotation();
+		double dx = global_mouse_pos.x - global_mouse_pos_prev.x;
+		double dy = global_mouse_pos.y - global_mouse_pos_prev.y;
 		switch ( one_object_pcmd ) {
 			case RPChartObject::pcmd_rotate_center: {
 				one_object->setRotateCenter( global_pos );
@@ -1069,6 +1072,23 @@ void RPFlowChart::OnMouseMove( UINT nFlags, CPoint local_mouse_pos )
 				clientToZero( point_old );
 				clientToZero( point_new );
 				one_object->setRotation( one_object->getRotation() + rp::math::getAlpha( point_old, one_object->getRotateCenter(), point_new ) );
+				updateDC();
+				break;
+			}
+			case RPChartObject::pcmd_scale_r      : {
+				rp::rect rect = one_object->getBoundingRect();
+				if ( (alpha > 270 + 45 || alpha <= 45) || (alpha > 90 + 45  && alpha <= 180 + 45) ) {
+					double len = rp::math::getLength( rect.p_l(), rect.p_r() );
+//					dx /= 2;
+					double len2 = len + dx * 2;
+					one_object->setScaleX( one_object->getScaleX() * len2 / len );
+//					one_object->setPosition( one_object->getX() + dx, one_object->getY() );
+				}
+				if ( (alpha > 45 && alpha <= 90 + 45) || (alpha > 180 + 45 && alpha <= 270 + 45) ) {
+					double len = rp::math::getLength( rect.p_t(), rect.p_b() );
+					double len2 = len + dx * 2;
+					one_object->setScaleY( one_object->getScaleY() * len2 / len );
+				}
 				updateDC();
 				break;
 			}
@@ -1133,7 +1153,7 @@ void RPFlowChart::updateFlowState()
 }
 
 // ‘ункци€ вызываетс€ при перемещении мышки над окном и при клике, но не вызываетс€,
-// когда машка перемещаетс€ над окном с зажатой клавишей
+// когда мышка перемещаетс€ над окном с зажатой клавишей
 BOOL RPFlowChart::OnSetCursor( CWnd* pWnd, UINT nHitTest, UINT message )
 {
 	CPoint point;
@@ -1146,7 +1166,7 @@ BOOL RPFlowChart::OnSetCursor( CWnd* pWnd, UINT nHitTest, UINT message )
 	std::list< RPChartObject* >::const_iterator it = objects.begin();
 	while ( it != objects.end() ) {
 		RPChartObject* obj = *it;
-		if ( obj->isSelected() && obj->isRotateCenter( point ) ) {
+		if ( obj->isRotateCenter( point ) ) {
 			object = obj;
 			break;
 		}
@@ -1161,23 +1181,23 @@ BOOL RPFlowChart::OnSetCursor( CWnd* pWnd, UINT nHitTest, UINT message )
 		RPChartObject::PossibleCommand _pcmd = object->getPossibleCommand( point );
 		if ( object->isSelected() ) {
 			switch ( _pcmd ) {
-				case RPChartObject::pcmd_none         : one_object_pcmd = _pcmd; break;
-				case RPChartObject::pcmd_scale        : one_object_pcmd = _pcmd; cursor = rpapp.cursors[IDC_FLOW_SELECT]; break;
+				case RPChartObject::pcmd_none         : break;
+				case RPChartObject::pcmd_scale        : cursor = rpapp.cursors[IDC_FLOW_SELECT]; break;
 				case RPChartObject::pcmd_move         : one_object_pcmd = _pcmd; cursor = rpapp.cursors[IDC_FLOW_MOVE]; break;
 				case RPChartObject::pcmd_rotate       :
 				case RPChartObject::pcmd_rotate_tl    :
 				case RPChartObject::pcmd_rotate_tr    :
 				case RPChartObject::pcmd_rotate_bl    :
-				case RPChartObject::pcmd_rotate_br    : one_object_pcmd = _pcmd; cursor = rpapp.cursors[IDC_FLOW_ROTATE_TL]; break;
-				case RPChartObject::pcmd_rotate_center: one_object_pcmd = _pcmd; cursor = rpapp.cursors[IDC_FLOW_ROTATE_CENTER]; break;
+				case RPChartObject::pcmd_rotate_br    : cursor = rpapp.cursors[IDC_FLOW_ROTATE_TL]; break;
+				case RPChartObject::pcmd_rotate_center: cursor = rpapp.cursors[IDC_FLOW_ROTATE_CENTER]; break;
 				case RPChartObject::pcmd_scale_l      :
-				case RPChartObject::pcmd_scale_r      : one_object_pcmd = _pcmd; cursor = rpapp.cursors[IDC_FLOW_SCALE_LR]; break;
+				case RPChartObject::pcmd_scale_r      : cursor = rpapp.cursors[IDC_FLOW_SCALE_LR]; break;
 				case RPChartObject::pcmd_scale_t      :
-				case RPChartObject::pcmd_scale_b      : one_object_pcmd = _pcmd; cursor = rpapp.cursors[IDC_FLOW_SCALE_TB]; break;
+				case RPChartObject::pcmd_scale_b      : cursor = rpapp.cursors[IDC_FLOW_SCALE_TB]; break;
 				case RPChartObject::pcmd_scale_tl     :
-				case RPChartObject::pcmd_scale_br     : one_object_pcmd = _pcmd; cursor = rpapp.cursors[IDC_FLOW_SCALE_TLBR]; break;
+				case RPChartObject::pcmd_scale_br     : cursor = rpapp.cursors[IDC_FLOW_SCALE_TLBR]; break;
 				case RPChartObject::pcmd_scale_tr     :
-				case RPChartObject::pcmd_scale_bl     : one_object_pcmd = _pcmd; cursor = rpapp.cursors[IDC_FLOW_SCALE_TRBL]; break;
+				case RPChartObject::pcmd_scale_bl     : cursor = rpapp.cursors[IDC_FLOW_SCALE_TRBL]; break;
 			}
 		} else {
 			switch ( _pcmd ) {

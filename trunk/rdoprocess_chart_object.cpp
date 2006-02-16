@@ -40,6 +40,13 @@ void RPChartObject::setPosition( double posx, double posy )
 	flowchart->modify();
 }
 
+void RPChartObject::setScale( double sx, double sy ) 
+{
+	matrix_scale.sx() = sx;
+	matrix_scale.sy() = sy;
+	flowchart->modify();
+}
+
 void RPChartObject::moving( int dx, int dy )
 {
 	matrix_transform.dx() += dx;
@@ -51,14 +58,13 @@ void RPChartObject::setRotation( double alpha )
 {
 	while ( alpha < 0 ) alpha += 360.0;
 	while ( alpha > 360 ) alpha -= 360.0;
-	double delta = alpha - rotation_alpha;
+	double alpha_delta = alpha - rotation_alpha;
 	rotation_alpha = alpha;
-	TRACE( "alpha = %f\n", alpha );
-	delta *= rp::math::pi / 180.0;
-	double cos_a = cos( delta );
-	double sin_a = sin( delta );
-//	if ( fabs(cos_a) < 1e-10 ) cos_a = 0;
-//	if ( fabs(sin_a) < 1e-10 ) sin_a = 0;
+	alpha_delta *= rp::math::pi / 180.0;
+	double cos_a = cos( alpha_delta );
+	double sin_a = sin( alpha_delta );
+//	if ( fabs(cos_a) < 1e-10 ) cos_d = 0;
+//	if ( fabs(sin_a) < 1e-10 ) sin_d = 0;
 	rp::matrix m_rotate;
 	m_rotate.data[0][0] = cos_a;
 	m_rotate.data[1][1] = cos_a;
@@ -82,7 +88,7 @@ void RPChartObject::setSelected( bool value )
 
 bool RPChartObject::isRotateCenter( const CPoint& point ) const
 {
-	if ( rpapp.project().getFlowState() == RPProject::flow_rotate ) {
+	if ( rpapp.project().getFlowState() == RPProject::flow_rotate && isSelected() ) {
 		return rp::math::getLength( getRotateCenter(), point ) <= flowchart->getSensitivity();
 	}
 	return false;

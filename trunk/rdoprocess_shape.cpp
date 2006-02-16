@@ -127,7 +127,7 @@ void RPShape::draw( CDC& dc )
 RPChartObject::PossibleCommand RPShape::getPossibleCommand( const CPoint& global_pos ) const
 {
 	// Отдельно проверим на перемещение центра вращения. Он отрисовывается поверх выделения, значит и проверяться должен первым.
-	if ( rpapp.project().getFlowState() == RPProject::flow_rotate && isSelected() && isRotateCenter( global_pos ) ) return RPChartObject::pcmd_rotate_center;
+	if ( isRotateCenter( global_pos ) ) return RPChartObject::pcmd_rotate_center;
 	rp::rect rect = getBoundingRect();
 	int sensitivity = flowchart->getSensitivity();
 	double alpha = getRotation();
@@ -136,81 +136,80 @@ RPChartObject::PossibleCommand RPShape::getPossibleCommand( const CPoint& global
 	if ( any ) {
 		if ( rp::math::getLength( rect.p_l(), global_pos ) <= sensitivity ) {
 			if ( alpha > 270 + 45 || alpha <= 45       ) return RPChartObject::pcmd_scale_l;
-			if ( alpha > 45       && alpha <= 90 + 45  ) return RPChartObject::pcmd_scale_t;
+			if ( alpha > 45       && alpha <= 90 + 45  ) return RPChartObject::pcmd_scale_b;
 			if ( alpha > 90 + 45  && alpha <= 180 + 45 ) return RPChartObject::pcmd_scale_r;
-			if ( alpha > 180 + 45 && alpha <= 270 + 45 ) return RPChartObject::pcmd_scale_b;
+			if ( alpha > 180 + 45 && alpha <= 270 + 45 ) return RPChartObject::pcmd_scale_t;
 		}
 		if ( rp::math::getLength( rect.p_r(), global_pos ) <= sensitivity ) {
 			if ( alpha > 270 + 45 || alpha <= 45       ) return RPChartObject::pcmd_scale_r;
-			if ( alpha > 45       && alpha <= 90 + 45  ) return RPChartObject::pcmd_scale_b;
+			if ( alpha > 45       && alpha <= 90 + 45  ) return RPChartObject::pcmd_scale_t;
 			if ( alpha > 90 + 45  && alpha <= 180 + 45 ) return RPChartObject::pcmd_scale_l;
-			if ( alpha > 180 + 45 && alpha <= 270 + 45 ) return RPChartObject::pcmd_scale_t;
+			if ( alpha > 180 + 45 && alpha <= 270 + 45 ) return RPChartObject::pcmd_scale_b;
 		}
 		if ( rp::math::getLength( rect.p_t(), global_pos ) <= sensitivity ) {
 			if ( alpha > 270 + 45 || alpha <= 45       ) return RPChartObject::pcmd_scale_t;
-			if ( alpha > 45       && alpha <= 90 + 45  ) return RPChartObject::pcmd_scale_r;
+			if ( alpha > 45       && alpha <= 90 + 45  ) return RPChartObject::pcmd_scale_l;
 			if ( alpha > 90 + 45  && alpha <= 180 + 45 ) return RPChartObject::pcmd_scale_b;
-			if ( alpha > 180 + 45 && alpha <= 270 + 45 ) return RPChartObject::pcmd_scale_l;
+			if ( alpha > 180 + 45 && alpha <= 270 + 45 ) return RPChartObject::pcmd_scale_r;
 		}
 		if ( rp::math::getLength( rect.p_b(), global_pos ) <= sensitivity ) {
 			if ( alpha > 270 + 45 || alpha <= 45       ) return RPChartObject::pcmd_scale_b;
-			if ( alpha > 45       && alpha <= 90 + 45  ) return RPChartObject::pcmd_scale_l;
+			if ( alpha > 45       && alpha <= 90 + 45  ) return RPChartObject::pcmd_scale_r;
 			if ( alpha > 90 + 45  && alpha <= 180 + 45 ) return RPChartObject::pcmd_scale_t;
-			if ( alpha > 180 + 45 && alpha <= 270 + 45 ) return RPChartObject::pcmd_scale_r;
+			if ( alpha > 180 + 45 && alpha <= 270 + 45 ) return RPChartObject::pcmd_scale_l;
 		}
 	}
 	if ( rpapp.project().getFlowState() == RPProject::flow_select ) {
 		// Только при перемещении
 		if ( rp::math::getLength( rect.p_tl(), global_pos ) <= sensitivity ) {
 			if ( alpha > 270 + 45 || alpha <= 45       ) return RPChartObject::pcmd_scale_tl;
-			if ( alpha > 45       && alpha <= 90 + 45  ) return RPChartObject::pcmd_scale_tr;
+			if ( alpha > 45       && alpha <= 90 + 45  ) return RPChartObject::pcmd_scale_bl;
 			if ( alpha > 90 + 45  && alpha <= 180 + 45 ) return RPChartObject::pcmd_scale_br;
-			if ( alpha > 180 + 45 && alpha <= 270 + 45 ) return RPChartObject::pcmd_scale_bl;
+			if ( alpha > 180 + 45 && alpha <= 270 + 45 ) return RPChartObject::pcmd_scale_tr;
 		}
 		if ( rp::math::getLength( rect.p_tr(), global_pos ) <= sensitivity ) {
 			if ( alpha > 270 + 45 || alpha <= 45       ) return RPChartObject::pcmd_scale_tr;
-			if ( alpha > 45       && alpha <= 90 + 45  ) return RPChartObject::pcmd_scale_br;
+			if ( alpha > 45       && alpha <= 90 + 45  ) return RPChartObject::pcmd_scale_tl;
 			if ( alpha > 90 + 45  && alpha <= 180 + 45 ) return RPChartObject::pcmd_scale_bl;
-			if ( alpha > 180 + 45 && alpha <= 270 + 45 ) return RPChartObject::pcmd_scale_tl;
+			if ( alpha > 180 + 45 && alpha <= 270 + 45 ) return RPChartObject::pcmd_scale_br;
 		}
 		if ( rp::math::getLength( rect.p_bl(), global_pos ) <= sensitivity ) {
 			if ( alpha > 270 + 45 || alpha <= 45       ) return RPChartObject::pcmd_scale_bl;
-			if ( alpha > 45       && alpha <= 90 + 45  ) return RPChartObject::pcmd_scale_tl;
+			if ( alpha > 45       && alpha <= 90 + 45  ) return RPChartObject::pcmd_scale_br;
 			if ( alpha > 90 + 45  && alpha <= 180 + 45 ) return RPChartObject::pcmd_scale_tr;
-			if ( alpha > 180 + 45 && alpha <= 270 + 45 ) return RPChartObject::pcmd_scale_br;
+			if ( alpha > 180 + 45 && alpha <= 270 + 45 ) return RPChartObject::pcmd_scale_tl;
 		}
 		if ( rp::math::getLength( rect.p_br(), global_pos ) <= sensitivity ) {
 			if ( alpha > 270 + 45 || alpha <= 45       ) return RPChartObject::pcmd_scale_br;
-			if ( alpha > 45       && alpha <= 90 + 45  ) return RPChartObject::pcmd_scale_bl;
+			if ( alpha > 45       && alpha <= 90 + 45  ) return RPChartObject::pcmd_scale_tr;
 			if ( alpha > 90 + 45  && alpha <= 180 + 45 ) return RPChartObject::pcmd_scale_tl;
-			if ( alpha > 180 + 45 && alpha <= 270 + 45 ) return RPChartObject::pcmd_scale_tr;
+			if ( alpha > 180 + 45 && alpha <= 270 + 45 ) return RPChartObject::pcmd_scale_bl;
 		}
 	} else if ( rpapp.project().getFlowState() == RPProject::flow_rotate ) {
 		// Только при вращении
-		if ( isSelected() && isRotateCenter( global_pos ) ) return RPChartObject::pcmd_rotate_center;
 		if ( rp::math::getLength( rect.p_tl(), global_pos ) <= sensitivity ) {
 			if ( alpha > 270 + 45 || alpha <= 45       ) return RPChartObject::pcmd_rotate_tl;
-			if ( alpha > 45       && alpha <= 90 + 45  ) return RPChartObject::pcmd_rotate_tr;
+			if ( alpha > 45       && alpha <= 90 + 45  ) return RPChartObject::pcmd_rotate_bl;
 			if ( alpha > 90 + 45  && alpha <= 180 + 45 ) return RPChartObject::pcmd_rotate_br;
-			if ( alpha > 180 + 45 && alpha <= 270 + 45 ) return RPChartObject::pcmd_rotate_bl;
+			if ( alpha > 180 + 45 && alpha <= 270 + 45 ) return RPChartObject::pcmd_rotate_tr;
 		}
 		if ( rp::math::getLength( rect.p_tr(), global_pos ) <= sensitivity ) {
 			if ( alpha > 270 + 45 || alpha <= 45       ) return RPChartObject::pcmd_rotate_tr;
-			if ( alpha > 45       && alpha <= 90 + 45  ) return RPChartObject::pcmd_rotate_br;
+			if ( alpha > 45       && alpha <= 90 + 45  ) return RPChartObject::pcmd_rotate_tl;
 			if ( alpha > 90 + 45  && alpha <= 180 + 45 ) return RPChartObject::pcmd_rotate_bl;
-			if ( alpha > 180 + 45 && alpha <= 270 + 45 ) return RPChartObject::pcmd_rotate_tl;
+			if ( alpha > 180 + 45 && alpha <= 270 + 45 ) return RPChartObject::pcmd_rotate_br;
 		}
 		if ( rp::math::getLength( rect.p_bl(), global_pos ) <= sensitivity ) {
 			if ( alpha > 270 + 45 || alpha <= 45       ) return RPChartObject::pcmd_rotate_bl;
-			if ( alpha > 45       && alpha <= 90 + 45  ) return RPChartObject::pcmd_rotate_tl;
+			if ( alpha > 45       && alpha <= 90 + 45  ) return RPChartObject::pcmd_rotate_br;
 			if ( alpha > 90 + 45  && alpha <= 180 + 45 ) return RPChartObject::pcmd_rotate_tr;
-			if ( alpha > 180 + 45 && alpha <= 270 + 45 ) return RPChartObject::pcmd_rotate_br;
+			if ( alpha > 180 + 45 && alpha <= 270 + 45 ) return RPChartObject::pcmd_rotate_tl;
 		}
 		if ( rp::math::getLength( rect.p_br(), global_pos ) <= sensitivity ) {
 			if ( alpha > 270 + 45 || alpha <= 45       ) return RPChartObject::pcmd_rotate_br;
-			if ( alpha > 45       && alpha <= 90 + 45  ) return RPChartObject::pcmd_rotate_bl;
+			if ( alpha > 45       && alpha <= 90 + 45  ) return RPChartObject::pcmd_rotate_tr;
 			if ( alpha > 90 + 45  && alpha <= 180 + 45 ) return RPChartObject::pcmd_rotate_tl;
-			if ( alpha > 180 + 45 && alpha <= 270 + 45 ) return RPChartObject::pcmd_rotate_tr;
+			if ( alpha > 180 + 45 && alpha <= 270 + 45 ) return RPChartObject::pcmd_rotate_bl;
 		}
 	}
 	// Общая часть и для перемещения и для вращения
