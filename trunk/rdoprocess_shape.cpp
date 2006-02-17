@@ -124,92 +124,222 @@ void RPShape::draw( CDC& dc )
 */
 }
 
-RPChartObject::PossibleCommand RPShape::getPossibleCommand( const CPoint& global_pos ) const
+RPChartObject::PossibleCommand RPShape::getPossibleCommand( const CPoint& global_pos, bool for_cursor ) const
 {
 	// Отдельно проверим на перемещение центра вращения. Он отрисовывается поверх выделения, значит и проверяться должен первым.
 	if ( isRotateCenter( global_pos ) ) return RPChartObject::pcmd_rotate_center;
 	rp::rect rect = getBoundingRect();
 	int sensitivity = flowchart->getSensitivity();
+	angle90 a90 = getAngle90();
+	angle45 a45 = getAngle45();
 	double alpha = getRotation();
 	bool any = rpapp.project().getFlowState() == RPProject::flow_select || rpapp.project().getFlowState() == RPProject::flow_rotate;
 	// Общая часть и для перемещения и для вращения
 	if ( any ) {
-		if ( rp::math::getLength( rect.p_l(), global_pos ) <= sensitivity ) {
-			if ( alpha > 270 + 45 || alpha <= 45       ) return RPChartObject::pcmd_scale_l;
-			if ( alpha > 45       && alpha <= 90 + 45  ) return RPChartObject::pcmd_scale_b;
-			if ( alpha > 90 + 45  && alpha <= 180 + 45 ) return RPChartObject::pcmd_scale_r;
-			if ( alpha > 180 + 45 && alpha <= 270 + 45 ) return RPChartObject::pcmd_scale_t;
-		}
 		if ( rp::math::getLength( rect.p_r(), global_pos ) <= sensitivity ) {
-			if ( alpha > 270 + 45 || alpha <= 45       ) return RPChartObject::pcmd_scale_r;
-			if ( alpha > 45       && alpha <= 90 + 45  ) return RPChartObject::pcmd_scale_t;
-			if ( alpha > 90 + 45  && alpha <= 180 + 45 ) return RPChartObject::pcmd_scale_l;
-			if ( alpha > 180 + 45 && alpha <= 270 + 45 ) return RPChartObject::pcmd_scale_b;
+			if ( for_cursor ) {
+				switch ( a45 ) {
+					case angle45_0  : return RPChartObject::pcmd_scale_r;
+					case angle45_90 : return RPChartObject::pcmd_scale_t;
+					case angle45_180: return RPChartObject::pcmd_scale_l;
+					case angle45_270: return RPChartObject::pcmd_scale_b;
+					case angle45_45 : return RPChartObject::pcmd_scale_tr;
+					case angle45_135: return RPChartObject::pcmd_scale_tl;
+					case angle45_225: return RPChartObject::pcmd_scale_bl;
+					case angle45_315: return RPChartObject::pcmd_scale_br;
+				}
+			} else {
+				switch ( a90 ) {
+					case angle90_0  : return RPChartObject::pcmd_scale_r;
+					case angle90_90 : return RPChartObject::pcmd_scale_t;
+					case angle90_180: return RPChartObject::pcmd_scale_l;
+					case angle90_270: return RPChartObject::pcmd_scale_b;
+				}
+			}
+		}
+		if ( rp::math::getLength( rect.p_l(), global_pos ) <= sensitivity ) {
+			if ( for_cursor ) {
+				switch ( a45 ) {
+					case angle45_0  : return RPChartObject::pcmd_scale_l;
+					case angle45_90 : return RPChartObject::pcmd_scale_b;
+					case angle45_180: return RPChartObject::pcmd_scale_r;
+					case angle45_270: return RPChartObject::pcmd_scale_t;
+					case angle45_45 : return RPChartObject::pcmd_scale_bl;
+					case angle45_135: return RPChartObject::pcmd_scale_br;
+					case angle45_225: return RPChartObject::pcmd_scale_tr;
+					case angle45_315: return RPChartObject::pcmd_scale_tl;
+				}
+			} else {
+				switch ( a90 ) {
+					case angle90_0  : return RPChartObject::pcmd_scale_l;
+					case angle90_90 : return RPChartObject::pcmd_scale_b;
+					case angle90_180: return RPChartObject::pcmd_scale_r;
+					case angle90_270: return RPChartObject::pcmd_scale_t;
+				}
+			}
 		}
 		if ( rp::math::getLength( rect.p_t(), global_pos ) <= sensitivity ) {
-			if ( alpha > 270 + 45 || alpha <= 45       ) return RPChartObject::pcmd_scale_t;
-			if ( alpha > 45       && alpha <= 90 + 45  ) return RPChartObject::pcmd_scale_l;
-			if ( alpha > 90 + 45  && alpha <= 180 + 45 ) return RPChartObject::pcmd_scale_b;
-			if ( alpha > 180 + 45 && alpha <= 270 + 45 ) return RPChartObject::pcmd_scale_r;
+			if ( for_cursor ) {
+				switch ( a45 ) {
+					case angle45_0  : return RPChartObject::pcmd_scale_t;
+					case angle45_90 : return RPChartObject::pcmd_scale_l;
+					case angle45_180: return RPChartObject::pcmd_scale_b;
+					case angle45_270: return RPChartObject::pcmd_scale_r;
+					case angle45_45 : return RPChartObject::pcmd_scale_tl;
+					case angle45_135: return RPChartObject::pcmd_scale_bl;
+					case angle45_225: return RPChartObject::pcmd_scale_br;
+					case angle45_315: return RPChartObject::pcmd_scale_tr;
+				}
+			} else {
+				switch ( a90 ) {
+					case angle90_0  : return RPChartObject::pcmd_scale_t;
+					case angle90_90 : return RPChartObject::pcmd_scale_l;
+					case angle90_180: return RPChartObject::pcmd_scale_b;
+					case angle90_270: return RPChartObject::pcmd_scale_r;
+				}
+			}
 		}
 		if ( rp::math::getLength( rect.p_b(), global_pos ) <= sensitivity ) {
-			if ( alpha > 270 + 45 || alpha <= 45       ) return RPChartObject::pcmd_scale_b;
-			if ( alpha > 45       && alpha <= 90 + 45  ) return RPChartObject::pcmd_scale_r;
-			if ( alpha > 90 + 45  && alpha <= 180 + 45 ) return RPChartObject::pcmd_scale_t;
-			if ( alpha > 180 + 45 && alpha <= 270 + 45 ) return RPChartObject::pcmd_scale_l;
+			if ( for_cursor ) {
+				switch ( a45 ) {
+					case angle45_0  : return RPChartObject::pcmd_scale_b;
+					case angle45_90 : return RPChartObject::pcmd_scale_r;
+					case angle45_180: return RPChartObject::pcmd_scale_t;
+					case angle45_270: return RPChartObject::pcmd_scale_l;
+					case angle45_45 : return RPChartObject::pcmd_scale_br;
+					case angle45_135: return RPChartObject::pcmd_scale_tr;
+					case angle45_225: return RPChartObject::pcmd_scale_tl;
+					case angle45_315: return RPChartObject::pcmd_scale_bl;
+				}
+			} else {
+				switch ( a90 ) {
+					case angle90_0  : return RPChartObject::pcmd_scale_b;
+					case angle90_90 : return RPChartObject::pcmd_scale_r;
+					case angle90_180: return RPChartObject::pcmd_scale_t;
+					case angle90_270: return RPChartObject::pcmd_scale_l;
+				}
+			}
 		}
 	}
 	if ( rpapp.project().getFlowState() == RPProject::flow_select ) {
 		// Только при перемещении
 		if ( rp::math::getLength( rect.p_tl(), global_pos ) <= sensitivity ) {
-			if ( alpha > 270 + 45 || alpha <= 45       ) return RPChartObject::pcmd_scale_tl;
-			if ( alpha > 45       && alpha <= 90 + 45  ) return RPChartObject::pcmd_scale_bl;
-			if ( alpha > 90 + 45  && alpha <= 180 + 45 ) return RPChartObject::pcmd_scale_br;
-			if ( alpha > 180 + 45 && alpha <= 270 + 45 ) return RPChartObject::pcmd_scale_tr;
+			if ( for_cursor ) {
+				switch ( a45 ) {
+					case angle45_0  : return RPChartObject::pcmd_scale_tl;
+					case angle45_90 : return RPChartObject::pcmd_scale_bl;
+					case angle45_180: return RPChartObject::pcmd_scale_br;
+					case angle45_270: return RPChartObject::pcmd_scale_tr;
+					case angle45_45 : return RPChartObject::pcmd_scale_l;
+					case angle45_135: return RPChartObject::pcmd_scale_b;
+					case angle45_225: return RPChartObject::pcmd_scale_r;
+					case angle45_315: return RPChartObject::pcmd_scale_t;
+				}
+			} else {
+				switch ( a90 ) {
+					case angle90_0  : return RPChartObject::pcmd_scale_tl;
+					case angle90_90 : return RPChartObject::pcmd_scale_bl;
+					case angle90_180: return RPChartObject::pcmd_scale_br;
+					case angle90_270: return RPChartObject::pcmd_scale_tr;
+				}
+			}
 		}
 		if ( rp::math::getLength( rect.p_tr(), global_pos ) <= sensitivity ) {
-			if ( alpha > 270 + 45 || alpha <= 45       ) return RPChartObject::pcmd_scale_tr;
-			if ( alpha > 45       && alpha <= 90 + 45  ) return RPChartObject::pcmd_scale_tl;
-			if ( alpha > 90 + 45  && alpha <= 180 + 45 ) return RPChartObject::pcmd_scale_bl;
-			if ( alpha > 180 + 45 && alpha <= 270 + 45 ) return RPChartObject::pcmd_scale_br;
+			if ( for_cursor ) {
+				switch ( a45 ) {
+					case angle45_0  : return RPChartObject::pcmd_scale_tr;
+					case angle45_90 : return RPChartObject::pcmd_scale_tl;
+					case angle45_180: return RPChartObject::pcmd_scale_bl;
+					case angle45_270: return RPChartObject::pcmd_scale_br;
+					case angle45_45 : return RPChartObject::pcmd_scale_t;
+					case angle45_135: return RPChartObject::pcmd_scale_l;
+					case angle45_225: return RPChartObject::pcmd_scale_b;
+					case angle45_315: return RPChartObject::pcmd_scale_r;
+				}
+			} else {
+				switch ( a90 ) {
+					case angle90_0  : return RPChartObject::pcmd_scale_tr;
+					case angle90_90 : return RPChartObject::pcmd_scale_tl;
+					case angle90_180: return RPChartObject::pcmd_scale_bl;
+					case angle90_270: return RPChartObject::pcmd_scale_br;
+				}
+			}
 		}
 		if ( rp::math::getLength( rect.p_bl(), global_pos ) <= sensitivity ) {
-			if ( alpha > 270 + 45 || alpha <= 45       ) return RPChartObject::pcmd_scale_bl;
-			if ( alpha > 45       && alpha <= 90 + 45  ) return RPChartObject::pcmd_scale_br;
-			if ( alpha > 90 + 45  && alpha <= 180 + 45 ) return RPChartObject::pcmd_scale_tr;
-			if ( alpha > 180 + 45 && alpha <= 270 + 45 ) return RPChartObject::pcmd_scale_tl;
+			if ( for_cursor ) {
+				switch ( a45 ) {
+					case angle45_0  : return RPChartObject::pcmd_scale_bl;
+					case angle45_90 : return RPChartObject::pcmd_scale_br;
+					case angle45_180: return RPChartObject::pcmd_scale_tr;
+					case angle45_270: return RPChartObject::pcmd_scale_tl;
+					case angle45_45 : return RPChartObject::pcmd_scale_b;
+					case angle45_135: return RPChartObject::pcmd_scale_r;
+					case angle45_225: return RPChartObject::pcmd_scale_t;
+					case angle45_315: return RPChartObject::pcmd_scale_l;
+				}
+			} else {
+				switch ( a90 ) {
+					case angle90_0  : return RPChartObject::pcmd_scale_bl;
+					case angle90_90 : return RPChartObject::pcmd_scale_br;
+					case angle90_180: return RPChartObject::pcmd_scale_tr;
+					case angle90_270: return RPChartObject::pcmd_scale_tl;
+				}
+			}
 		}
 		if ( rp::math::getLength( rect.p_br(), global_pos ) <= sensitivity ) {
-			if ( alpha > 270 + 45 || alpha <= 45       ) return RPChartObject::pcmd_scale_br;
-			if ( alpha > 45       && alpha <= 90 + 45  ) return RPChartObject::pcmd_scale_tr;
-			if ( alpha > 90 + 45  && alpha <= 180 + 45 ) return RPChartObject::pcmd_scale_tl;
-			if ( alpha > 180 + 45 && alpha <= 270 + 45 ) return RPChartObject::pcmd_scale_bl;
+			if ( for_cursor ) {
+				switch ( a45 ) {
+					case angle45_0  : return RPChartObject::pcmd_scale_br;
+					case angle45_90 : return RPChartObject::pcmd_scale_tr;
+					case angle45_180: return RPChartObject::pcmd_scale_tl;
+					case angle45_270: return RPChartObject::pcmd_scale_bl;
+					case angle45_45 : return RPChartObject::pcmd_scale_r;
+					case angle45_135: return RPChartObject::pcmd_scale_t;
+					case angle45_225: return RPChartObject::pcmd_scale_l;
+					case angle45_315: return RPChartObject::pcmd_scale_b;
+				}
+			} else {
+				switch ( a90 ) {
+					case angle90_0  : return RPChartObject::pcmd_scale_br;
+					case angle90_90 : return RPChartObject::pcmd_scale_tr;
+					case angle90_180: return RPChartObject::pcmd_scale_tl;
+					case angle90_270: return RPChartObject::pcmd_scale_bl;
+				}
+			}
 		}
 	} else if ( rpapp.project().getFlowState() == RPProject::flow_rotate ) {
 		// Только при вращении
 		if ( rp::math::getLength( rect.p_tl(), global_pos ) <= sensitivity ) {
-			if ( alpha > 270 + 45 || alpha <= 45       ) return RPChartObject::pcmd_rotate_tl;
-			if ( alpha > 45       && alpha <= 90 + 45  ) return RPChartObject::pcmd_rotate_bl;
-			if ( alpha > 90 + 45  && alpha <= 180 + 45 ) return RPChartObject::pcmd_rotate_br;
-			if ( alpha > 180 + 45 && alpha <= 270 + 45 ) return RPChartObject::pcmd_rotate_tr;
+			switch ( a90 ) {
+				case angle90_0  : return RPChartObject::pcmd_rotate_tl;
+				case angle90_90 : return RPChartObject::pcmd_rotate_bl;
+				case angle90_180: return RPChartObject::pcmd_rotate_br;
+				case angle90_270: return RPChartObject::pcmd_rotate_tr;
+			}
 		}
 		if ( rp::math::getLength( rect.p_tr(), global_pos ) <= sensitivity ) {
-			if ( alpha > 270 + 45 || alpha <= 45       ) return RPChartObject::pcmd_rotate_tr;
-			if ( alpha > 45       && alpha <= 90 + 45  ) return RPChartObject::pcmd_rotate_tl;
-			if ( alpha > 90 + 45  && alpha <= 180 + 45 ) return RPChartObject::pcmd_rotate_bl;
-			if ( alpha > 180 + 45 && alpha <= 270 + 45 ) return RPChartObject::pcmd_rotate_br;
+			switch ( a90 ) {
+				case angle90_0  : return RPChartObject::pcmd_rotate_tr;
+				case angle90_90 : return RPChartObject::pcmd_rotate_tl;
+				case angle90_180: return RPChartObject::pcmd_rotate_bl;
+				case angle90_270: return RPChartObject::pcmd_rotate_br;
+			}
 		}
 		if ( rp::math::getLength( rect.p_bl(), global_pos ) <= sensitivity ) {
-			if ( alpha > 270 + 45 || alpha <= 45       ) return RPChartObject::pcmd_rotate_bl;
-			if ( alpha > 45       && alpha <= 90 + 45  ) return RPChartObject::pcmd_rotate_br;
-			if ( alpha > 90 + 45  && alpha <= 180 + 45 ) return RPChartObject::pcmd_rotate_tr;
-			if ( alpha > 180 + 45 && alpha <= 270 + 45 ) return RPChartObject::pcmd_rotate_tl;
+			switch ( a90 ) {
+				case angle90_0  : return RPChartObject::pcmd_rotate_bl;
+				case angle90_90 : return RPChartObject::pcmd_rotate_br;
+				case angle90_180: return RPChartObject::pcmd_rotate_tr;
+				case angle90_270: return RPChartObject::pcmd_rotate_tl;
+			}
 		}
 		if ( rp::math::getLength( rect.p_br(), global_pos ) <= sensitivity ) {
-			if ( alpha > 270 + 45 || alpha <= 45       ) return RPChartObject::pcmd_rotate_br;
-			if ( alpha > 45       && alpha <= 90 + 45  ) return RPChartObject::pcmd_rotate_tr;
-			if ( alpha > 90 + 45  && alpha <= 180 + 45 ) return RPChartObject::pcmd_rotate_tl;
-			if ( alpha > 180 + 45 && alpha <= 270 + 45 ) return RPChartObject::pcmd_rotate_bl;
+			switch ( a90 ) {
+				case angle90_0  : return RPChartObject::pcmd_rotate_br;
+				case angle90_90 : return RPChartObject::pcmd_rotate_tr;
+				case angle90_180: return RPChartObject::pcmd_rotate_tl;
+				case angle90_270: return RPChartObject::pcmd_rotate_bl;
+			}
 		}
 	}
 	// Общая часть и для перемещения и для вращения

@@ -36,6 +36,8 @@ public:
 	double& sy() { return data[1][1]; }
 	double dx_const() const { return data[0][2]; }
 	double dy_const() const { return data[1][2]; }
+	double sx_const() const { return data[0][0]; }
+	double sy_const() const { return data[1][1]; }
 
 	matrix& operator= ( const matrix& m );
 

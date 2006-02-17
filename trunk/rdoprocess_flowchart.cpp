@@ -1182,7 +1182,7 @@ BOOL RPFlowChart::OnSetCursor( CWnd* pWnd, UINT nHitTest, UINT message )
 	}
 	if ( object ) {
 		object->transformToGlobal();
-		RPChartObject::PossibleCommand _pcmd = object->getPossibleCommand( point );
+		RPChartObject::PossibleCommand _pcmd = object->getPossibleCommand( point, true );
 		if ( object->isSelected() ) {
 			switch ( _pcmd ) {
 				case RPChartObject::pcmd_none         : break;

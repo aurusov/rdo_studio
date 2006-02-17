@@ -48,6 +48,8 @@ void RPChartObject::setPositionPost( double posx, double posy )
 
 void RPChartObject::setScale( double sx, double sy ) 
 {
+	if ( sx >= 0 && sx < 1e-2 ) sx = 1e-2;
+	if ( sy >= 0 && sy < 1e-2 ) sy = 1e-2;
 	matrix_scale.sx() = sx;
 	matrix_scale.sy() = sy;
 	flowchart->modify();
@@ -63,7 +65,7 @@ void RPChartObject::moving( int dx, int dy )
 void RPChartObject::setRotation( double alpha )
 {
 	while ( alpha < 0 ) alpha += 360.0;
-	while ( alpha > 360 ) alpha -= 360.0;
+	while ( alpha >= 360 ) alpha -= 360.0;
 	double alpha_delta = alpha - rotation_alpha;
 	rotation_alpha = alpha;
 

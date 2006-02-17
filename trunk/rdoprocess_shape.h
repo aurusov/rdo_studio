@@ -56,7 +56,7 @@ public:
 			return pa_global.pointInPolygon( point );
 		}
 	}
-	virtual PossibleCommand getPossibleCommand( const CPoint& global_pos ) const;
+	virtual PossibleCommand getPossibleCommand( const CPoint& global_pos, bool for_cursor = false ) const;
 };
 
 #endif // RDO_PROCESS_SHAPE_H

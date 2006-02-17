@@ -87,8 +87,8 @@ public:
 
 	// Масштаб
 	virtual void setScale( double sx, double sy );
-	double getScaleX()             { return matrix_scale.sx();             }
-	double getScaleY()             { return matrix_scale.sy();             }
+	double getScaleX() const       { return matrix_scale.sx_const();       }
+	double getScaleY() const       { return matrix_scale.sy_const();       }
 	void setScaleX( double value ) { setScale( value, matrix_scale.sy() ); }
 	void setScaleY( double value ) { setScale( matrix_scale.sx(), value ); }
 
@@ -109,6 +109,46 @@ public:
 	void setRotateCenterLocalDelta( double dx, double dy );
 	// Совпадает ли точка на центре вращения фигуры
 	bool isRotateCenter( const CPoint& point ) const;
+
+	enum angle90 {
+		angle90_0 = 0,  //!< Угол поворота объекта alpha > 270 + 45 || alpha <= 45
+		angle90_90,     //!< Угол поворота объекта alpha > 45       && alpha <= 90 + 45
+		angle90_180,    //!< Угол поворота объекта alpha > 90 + 45  && alpha <= 180 + 45
+		angle90_270     //!< Угол поворота объекта alpha > 180 + 45 && alpha <= 270 + 45
+	};
+	// Вернуть дискретный угол поворота (дискрета 90 градусов)
+	angle90 getAngle90() const {
+		double alpha = getRotation();
+		if ( alpha > 270 + 45 || alpha <= 45       ) return RPChartObject::angle90_0;
+		if ( alpha > 45       && alpha <= 90 + 45  ) return RPChartObject::angle90_90;
+		if ( alpha > 90 + 45  && alpha <= 180 + 45 ) return RPChartObject::angle90_180;
+		if ( alpha > 180 + 45 && alpha <= 270 + 45 ) return RPChartObject::angle90_270;
+		return RPChartObject::angle90_0;
+	}
+
+	enum angle45 {
+		angle45_0 = 0,  //!< Угол поворота объекта alpha > 360 - 22 || alpha <= 22
+		angle45_90,     //!< Угол поворота объекта alpha > 90 - 22  && alpha <= 90 + 22
+		angle45_180,    //!< Угол поворота объекта alpha > 180 - 22 && alpha <= 180 + 22
+		angle45_270,    //!< Угол поворота объекта alpha > 270 - 22 && alpha <= 270 + 22
+		angle45_45,     //!< Угол поворота объекта alpha > 45 -  22 && alpha <= 45 + 22
+		angle45_135,    //!< Угол поворота объекта alpha > 135 - 22 && alpha <= 135 + 22
+		angle45_225,    //!< Угол поворота объекта alpha > 225 - 22 && alpha <= 225 + 22
+		angle45_315,    //!< Угол поворота объекта alpha > 315 - 22 && alpha <= 315 + 22
+	};
+	// Вернуть дискретный угол поворота (дискрета 45 градусов)
+	angle45 getAngle45() const {
+		double alpha = getRotation();
+		if ( alpha > 360 - 22 || alpha <= 22       ) return RPChartObject::angle45_0;
+		if ( alpha > 90 - 22  && alpha <= 90 + 22  ) return RPChartObject::angle45_90;
+		if ( alpha > 180 - 22 && alpha <= 180 + 22 ) return RPChartObject::angle45_180;
+		if ( alpha > 270 - 22 && alpha <= 270 + 22 ) return RPChartObject::angle45_270;
+		if ( alpha > 45 -  22 && alpha <= 45 + 22  ) return RPChartObject::angle45_45;
+		if ( alpha > 135 - 22 && alpha <= 135 + 22 ) return RPChartObject::angle45_135;
+		if ( alpha > 225 - 22 && alpha <= 225 + 22 ) return RPChartObject::angle45_225;
+		if ( alpha > 315 - 22 && alpha <= 315 + 22 ) return RPChartObject::angle45_315;
+		return RPChartObject::angle45_0;
+	}
 
 	// Выделить/снять выделение с фигуры
 	virtual void setSelected( bool value );
@@ -147,7 +187,7 @@ public:
 		pcmd_scale_bl,      //!< Объект может быть масштабирован за левый нижний угол
 		pcmd_scale_br       //!< Объект может быть масштабирован за правый нижний угол
 	};
-	virtual PossibleCommand getPossibleCommand( const CPoint& global_pos ) const { return pcmd_none; }
+	virtual PossibleCommand getPossibleCommand( const CPoint& global_pos, bool for_cursor = false ) const { return pcmd_none; }
 };
 
 #endif // RDO_PROCESS_CHART_OBJECT_H
