@@ -108,7 +108,7 @@ public:
 	// Изменить центр поворота в локальных координатах
 	void setRotateCenterLocalDelta( double dx, double dy );
 	// Совпадает ли точка на центре вращения фигуры
-	bool isRotateCenter( const CPoint& point ) const;
+	bool isRotateCenter( const rp::point& point ) const;
 
 	enum angle90 {
 		angle90_0 = 0,  //!< Угол поворота объекта alpha > 270 + 45 || alpha <= 45
@@ -154,19 +154,20 @@ public:
 	virtual void setSelected( bool value );
 	// Отрисовка фигуры
 	virtual void draw( CDC& dc ) = 0;
+	virtual void draw1( CDC& dc ) {};
 
 	// Габориты фигуры
 	virtual rp::rect getBoundingRect( bool global = true ) const = 0;
 
 	// Центр в глобальных координатах
-	CPoint getCenter() const {
+	rp::point getCenter() const {
 		return globalMatrix() * getBoundingRect( false ).getCenter();
 	}
 
 	// Перевод всех элементов фигуры в глобальные координаты
 	virtual void transformToGlobal() = 0;
 	// Находится ли точка внутри фигуры
-	virtual bool pointInPolygon( const CPoint& point, bool byperimetr = true ) = 0;
+	virtual bool pointInPolygon( const rp::point& point, bool byperimetr = true ) = 0;
 
 	enum PossibleCommand {
 		pcmd_none = 0,      //!< Над объектом не может быть произведено никакое действие
@@ -187,7 +188,7 @@ public:
 		pcmd_scale_bl,      //!< Объект может быть масштабирован за левый нижний угол
 		pcmd_scale_br       //!< Объект может быть масштабирован за правый нижний угол
 	};
-	virtual PossibleCommand getPossibleCommand( const CPoint& global_pos, bool for_cursor = false ) const { return pcmd_none; }
+	virtual PossibleCommand getPossibleCommand( const rp::point& global_pos, bool for_cursor = false ) { return pcmd_none; }
 };
 
 #endif // RDO_PROCESS_CHART_OBJECT_H

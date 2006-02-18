@@ -13,7 +13,7 @@ namespace rp {
 // ----------------------------------------------------------------------------
 // ---------- rect
 // ----------------------------------------------------------------------------
-bool rect::pointInRect( const CPoint& point ) const
+bool rect::pointInRect( const rp::point& point ) const
 {
 	unsigned int i;
 	unsigned int j;
@@ -21,8 +21,8 @@ bool rect::pointInRect( const CPoint& point ) const
 	bool flag = true;
 	for ( i = 0, j = 1; i < 4; i++, j++ ) {
 		if ( j == 4 ) j = 0;
-		const CPoint& p1 = pa[i];
-		const CPoint& p2 = pa[j];
+		const rp::point& p1 = pa[i];
+		const rp::point& p2 = pa[j];
 		int k = (point.y - p1.y)*(p2.x - p1.x) - (point.x - p1.x)*(p2.y - p1.y);
 		if ( k == 0 ) {
 			break;
@@ -40,10 +40,11 @@ bool rect::pointInRect( const CPoint& point ) const
 	return flag;
 }
 
-void rect::extendFromCenter( int delta )
+/*
+void rect::extendFromCenter( double delta )
 {
 	double len, cos_a, sin_a;
-	CPoint center = getCenter();
+	rp::point center = getCenter();
 	if ( rp::math::getPlanarData( center, pa[0], len, cos_a, sin_a ) ) {
 		len += delta;
 		pa[0].x = cos_a * len + center.x;
@@ -65,25 +66,26 @@ void rect::extendFromCenter( int delta )
 		pa[3].y = center.y - sin_a * len;
 	}
 }
+*/
 
-rect& rect::extendByPerimetr( int delta )
+rect& rect::extendByPerimetr( double delta )
 {
-	double cos_b, sin_b;
-	if ( rp::math::getPlanarData( pa[3], pa[0], pa[1], cos_b, sin_b ) ) {
-		pa[0].x += cos_b * static_cast<double>(delta);
-		pa[0].y -= sin_b * static_cast<double>(delta);
+	double cos_b, sin_b, koef;
+	if ( rp::math::getPlanarData( pa[3], pa[0], pa[1], cos_b, sin_b, koef ) ) {
+		pa[0].x += cos_b * delta;
+		pa[0].y -= sin_b * delta;
 	}
-	if ( rp::math::getPlanarData( pa[0], pa[1], pa[2], cos_b, sin_b ) ) {
-		pa[1].x += cos_b * static_cast<double>(delta);
-		pa[1].y -= sin_b * static_cast<double>(delta);
+	if ( rp::math::getPlanarData( pa[0], pa[1], pa[2], cos_b, sin_b, koef ) ) {
+		pa[1].x += cos_b * delta;
+		pa[1].y -= sin_b * delta;
 	}
-	if ( rp::math::getPlanarData( pa[1], pa[2], pa[3], cos_b, sin_b ) ) {
-		pa[2].x += cos_b * static_cast<double>(delta);
-		pa[2].y -= sin_b * static_cast<double>(delta);
+	if ( rp::math::getPlanarData( pa[1], pa[2], pa[3], cos_b, sin_b, koef ) ) {
+		pa[2].x += cos_b * delta;
+		pa[2].y -= sin_b * delta;
 	}
-	if ( rp::math::getPlanarData( pa[2], pa[3], pa[0], cos_b, sin_b ) ) {
-		pa[3].x += cos_b * static_cast<double>(delta);
-		pa[3].y -= sin_b * static_cast<double>(delta);
+	if ( rp::math::getPlanarData( pa[2], pa[3], pa[0], cos_b, sin_b, koef ) ) {
+		pa[3].x += cos_b * delta;
+		pa[3].y -= sin_b * delta;
 	}
 	return *this;
 }

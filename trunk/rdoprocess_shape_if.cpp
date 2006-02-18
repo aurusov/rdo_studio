@@ -14,11 +14,11 @@ static char THIS_FILE[] = __FILE__;
 RPShapeIf::RPShapeIf( RPObject* _parent, RPFlowChart* _flowchart ):
 	RPShape( _parent, _flowchart, _T("If") )
 {
-	pa_src.push_back( CPoint(0, -35) );
-	pa_src.push_back( CPoint(35, 0) );
-	pa_src.push_back( CPoint(0, 35) );
-	pa_src.push_back( CPoint(-35, 0) );
-	pa_src.push_back( CPoint(0, -35) );
+	pa_src.push_back( rp::point(0, -35) );
+	pa_src.push_back( rp::point(35, 0) );
+	pa_src.push_back( rp::point(0, 35) );
+	pa_src.push_back( rp::point(-35, 0) );
+	pa_src.push_back( rp::point(0, -35) );
 //	snap_to_point.x = getSize().cx / 2;
 //	snap_to_point.y = getSize().cy / 2;
 }

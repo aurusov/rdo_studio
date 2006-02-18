@@ -19,24 +19,24 @@ private:
 public:
 	rect() {
 		pa.reserve( 4 );
-		pa.push_back( CPoint(0, 0) );
-		pa.push_back( CPoint(0, 0) );
-		pa.push_back( CPoint(0, 0) );
-		pa.push_back( CPoint(0, 0) );
+		pa.push_back( rp::point(0, 0) );
+		pa.push_back( rp::point(0, 0) );
+		pa.push_back( rp::point(0, 0) );
+		pa.push_back( rp::point(0, 0) );
 	}
-	rect( int x_min, int y_min, int x_max, int y_max  ) {
+	rect( double x_min, double y_min, double x_max, double y_max  ) {
 		pa.reserve( 4 );
-		pa.push_back( CPoint(x_min, y_min) );
-		pa.push_back( CPoint(x_max, y_min) );
-		pa.push_back( CPoint(x_max, y_max) );
-		pa.push_back( CPoint(x_min, y_max) );
+		pa.push_back( rp::point(x_min, y_min) );
+		pa.push_back( rp::point(x_max, y_min) );
+		pa.push_back( rp::point(x_max, y_max) );
+		pa.push_back( rp::point(x_min, y_max) );
 	}
 	rect( const CRect& rect ) {
 		pa.reserve( 4 );
-		pa.push_back( CPoint(rect.left, rect.top) );
-		pa.push_back( CPoint(rect.right, rect.top) );
-		pa.push_back( CPoint(rect.right, rect.bottom) );
-		pa.push_back( CPoint(rect.left, rect.bottom) );
+		pa.push_back( rp::point(rect.left, rect.top) );
+		pa.push_back( rp::point(rect.right, rect.top) );
+		pa.push_back( rp::point(rect.right, rect.bottom) );
+		pa.push_back( rp::point(rect.left, rect.bottom) );
 	}
 	rect( const rect& rect ) {
 		pa = rect.pa;
@@ -75,8 +75,8 @@ public:
 		if ( max_y < pa[3].y ) max_y = pa[3].y;
 		return max_y;
 	}
-	CPoint getCenter() const {
-		return CPoint( (pa[0].x + pa[2].x)/2, (pa[0].y + pa[2].y)/2 );
+	rp::point getCenter() const {
+		return rp::point( (pa[0].x + pa[2].x)/2, (pa[0].y + pa[2].y)/2 );
 	}
 	void transform( const rp::matrix& matrix ) {
 		pa[0] = matrix * pa[0];
@@ -84,22 +84,22 @@ public:
 		pa[2] = matrix * pa[2];
 		pa[3] = matrix * pa[3];
 	}
-	CPoint& p0()   { return pa[0]; }
-	CPoint& p1()   { return pa[1]; }
-	CPoint& p2()   { return pa[2]; }
-	CPoint& p3()   { return pa[3]; }
-	CPoint& p_tl() { return pa[0]; }
-	CPoint& p_tr() { return pa[1]; }
-	CPoint& p_br() { return pa[2]; }
-	CPoint& p_bl() { return pa[3]; }
-	CPoint  p_t()  { return CPoint( (pa[0].x + pa[1].x) / 2, (pa[0].y + pa[1].y) / 2 ); }
-	CPoint  p_b()  { return CPoint( (pa[3].x + pa[2].x) / 2, (pa[3].y + pa[2].y) / 2 ); }
-	CPoint  p_l()  { return CPoint( (pa[0].x + pa[3].x) / 2, (pa[0].y + pa[3].y) / 2 ); }
-	CPoint  p_r()  { return CPoint( (pa[1].x + pa[2].x) / 2, (pa[1].y + pa[2].y) / 2 ); }
+	rp::point& p0()   { return pa[0]; }
+	rp::point& p1()   { return pa[1]; }
+	rp::point& p2()   { return pa[2]; }
+	rp::point& p3()   { return pa[3]; }
+	rp::point& p_tl() { return pa[0]; }
+	rp::point& p_tr() { return pa[1]; }
+	rp::point& p_br() { return pa[2]; }
+	rp::point& p_bl() { return pa[3]; }
+	rp::point  p_t()  { return rp::point( (pa[0].x + pa[1].x) / 2, (pa[0].y + pa[1].y) / 2 ); }
+	rp::point  p_b()  { return rp::point( (pa[3].x + pa[2].x) / 2, (pa[3].y + pa[2].y) / 2 ); }
+	rp::point  p_l()  { return rp::point( (pa[0].x + pa[3].x) / 2, (pa[0].y + pa[3].y) / 2 ); }
+	rp::point  p_r()  { return rp::point( (pa[1].x + pa[2].x) / 2, (pa[1].y + pa[2].y) / 2 ); }
 
-	void extendFromCenter( int delta );
-	rect& extendByPerimetr( int delta );
-	bool pointInRect( const CPoint& point ) const;
+	bool pointInRect( const rp::point& point ) const;
+//	void extendFromCenter( double delta );
+	rect& extendByPerimetr( double delta );
 
 #ifdef _DEBUG
 	void trace() const {

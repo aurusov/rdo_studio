@@ -636,6 +636,10 @@ void RPFlowChart::OnPaint()
 			while ( it != objects.end() ) {
 				int saved = mem_dc.SaveDC();
 				(*it)->draw( mem_dc );
+				RPChartObject* obj = *it;
+				obj->transformToGlobal();
+				static_cast<RPShape*>(obj)->pa_global.extendByPerimetr( obj->main_pen_width / 2.0 );
+				obj->draw1( mem_dc );
 				mem_dc.RestoreDC( saved );
 				it++;
 			}
@@ -705,7 +709,7 @@ void RPFlowChart::OnPaint()
 					mem_dc.Rectangle( (x3 + x0)/2 - box_size_2, (y3 + y0)/2 - box_size_2, (x3 + x0)/2 + box_size_2, (y3 + y0)/2 + box_size_2 );
 					if ( rpapp.project().getFlowState() == RPProject::flow_rotate ) {
 						// Центр вращения
-						CPoint center = object->getRotateCenter();
+						rp::point center = object->getRotateCenter();
 						CPen pen_red( PS_SOLID, 1, RGB(0,0,0) );
 						CBrush brush_white( RGB(-1,-1,0) );
 						int radius = getSensitivity();
@@ -953,7 +957,7 @@ void RPFlowChart::OnLButtonDown( UINT nFlags, CPoint local_mouse_pos )
 	one_object = NULL;
 	RPChartObject::PossibleCommand pcmd = RPChartObject::pcmd_none;
 	if ( rpapp.project().getFlowState() == RPProject::flow_select || rpapp.project().getFlowState() == RPProject::flow_rotate ) {
-		CPoint global_pos = local_mouse_pos;
+		rp::point global_pos = local_mouse_pos;
 		clientToZero( global_pos );
 		std::list< RPChartObject* >::const_iterator it = objects.begin();
 		while ( it != objects.end() ) {
@@ -966,7 +970,7 @@ void RPFlowChart::OnLButtonDown( UINT nFlags, CPoint local_mouse_pos )
 				break;
 			}
 			// Проверяем поворот с перемещением
-			if ( obj->getBoundingRect().extendByPerimetr( getSensitivity() ).pointInRect( global_pos ) ) {
+			if ( obj->getBoundingRect().extendByPerimetr( getSensitivity() ).pointInRect( global_pos ) || obj->pointInPolygon( global_pos ) ) {
 				obj->transformToGlobal();
 				pcmd = obj->getPossibleCommand( global_pos );
 				switch ( pcmd ) {
@@ -1044,7 +1048,7 @@ void RPFlowChart::OnMouseMove( UINT nFlags, CPoint local_mouse_pos )
 	ClientToScreen( &global_mouse_pos );
 
 	// Глобальные координаты мышки в 2D движке (на текущем листе)
-	CPoint global_pos = local_mouse_pos;
+	rp::point global_pos = local_mouse_pos;
 	clientToZero( global_pos );
 
 	// Если выбран один объект, но он имеет приоритет в обработке.
@@ -1174,7 +1178,7 @@ BOOL RPFlowChart::OnSetCursor( CWnd* pWnd, UINT nHitTest, UINT message )
 			object = obj;
 			break;
 		}
-		if ( obj->getBoundingRect().extendByPerimetr( getSensitivity() ).pointInRect( point ) ) {
+		if ( obj->getBoundingRect().extendByPerimetr( getSensitivity() ).pointInRect( point ) || obj->pointInPolygon( point ) ) {
 			object = obj;
 			break;
 		}

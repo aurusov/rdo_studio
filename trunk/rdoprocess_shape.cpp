@@ -48,7 +48,7 @@ rp::rect RPShape::getBoundingRect( bool global ) const
 		int y_min = pa_src[0].y;
 		int x_max = pa_src[0].x;
 		int y_max = pa_src[0].y;
-		std::vector< CPoint >::const_iterator it = pa_src.begin() + 1;
+		std::vector< rp::point >::const_iterator it = pa_src.begin() + 1;
 		while ( it != pa_src.end() ) {
 			if ( x_min > it->x ) x_min = it->x;
 			if ( y_min > it->y ) y_min = it->y;
@@ -68,7 +68,11 @@ void RPShape::drawPolyline( CDC& dc )
 	if ( pa_global.size() < 2 ) return;
 	dc.SelectObject( main_pen );
 	dc.BeginPath();
-	dc.Polyline( &pa_global[0], pa_global.size() );
+	if ( pa_global.isPolygon() ) {
+		dc.Polygon( &pa_global.getWinPolyline()[0], pa_global.size() );
+	} else {
+		dc.Polyline( &pa_global.getWinPolyline()[0], pa_global.size() );
+	}
 	dc.EndPath();
 	dc.StrokePath();
 
@@ -124,7 +128,21 @@ void RPShape::draw( CDC& dc )
 */
 }
 
-RPChartObject::PossibleCommand RPShape::getPossibleCommand( const CPoint& global_pos, bool for_cursor ) const
+void RPShape::draw1( CDC& dc )
+{
+	CPen pen( PS_SOLID, 1, RGB(-1,0,0) );
+	dc.SelectObject( pen );
+	dc.BeginPath();
+	if ( pa_global.isPolygon() ) {
+		dc.Polygon( &pa_global.getWinPolyline()[0], pa_global.size() );
+	} else {
+//		dc.Polyline( &pa_global.getWinPolyline()[0], pa_global.size() );
+	}
+	dc.EndPath();
+	dc.StrokePath();
+}
+
+RPChartObject::PossibleCommand RPShape::getPossibleCommand( const rp::point& global_pos, bool for_cursor )
 {
 	// Отдельно проверим на перемещение центра вращения. Он отрисовывается поверх выделения, значит и проверяться должен первым.
 	if ( isRotateCenter( global_pos ) ) return RPChartObject::pcmd_rotate_center;
@@ -344,7 +362,9 @@ RPChartObject::PossibleCommand RPShape::getPossibleCommand( const CPoint& global
 	}
 	// Общая часть и для перемещения и для вращения
 	if ( any ) {
-		if ( pa_global.pointInPolygon( global_pos ) ) return RPChartObject::pcmd_move;
+		if ( pointInPolygon( global_pos ) ) {
+			return RPChartObject::pcmd_move;
+		}
 	}
 	return RPChartObject::pcmd_none;
 }

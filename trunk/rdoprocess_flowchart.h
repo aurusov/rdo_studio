@@ -27,7 +27,7 @@ public:
 	virtual void draw( CDC& dc ) {};
 	virtual rp::rect getBoundingRect( bool global = true ) const { return rp::rect(); }
 	virtual void transformToGlobal() {};
-	virtual bool pointInPolygon( const CPoint& point, bool byperimetr = true ) { return true; }
+	virtual bool pointInPolygon( const rp::point& point, bool byperimetr = true ) { return true; }
 };
 
 // ----------------------------------------------------------------------------
@@ -82,6 +82,10 @@ private:
 	void updateScrollBars();
 
 	void clientToZero( CPoint& point ) const {
+		point.x -= border_w + paper_border_w;
+		point.y -= border_h + paper_border_h;
+	}
+	void clientToZero( rp::point& point ) const {
 		point.x -= border_w + paper_border_w;
 		point.y -= border_h + paper_border_h;
 	}

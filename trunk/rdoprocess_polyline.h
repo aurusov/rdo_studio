@@ -5,16 +5,25 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
+#include "rdoprocess_point.h"
+
 namespace rp {
 
 // ----------------------------------------------------------------------------
 // ---------- polyline
 // ----------------------------------------------------------------------------
-class polyline: public std::vector< CPoint > {
+class polyline: public std::vector< rp::point > {
+protected:
+	struct trans {
+		trans() {};
+		CPoint operator()( const rp::point point ) {
+			return CPoint( point.x, point.y );
+		}
+	};
 public:
 	int getMinX() const {
 		if ( empty() ) return 0;
-		std::vector< CPoint >::const_iterator it = begin();
+		std::vector< rp::point >::const_iterator it = begin();
 		int value = it->x;
 		it++;
 		while ( it != end() ) {
@@ -25,7 +34,7 @@ public:
 	}
 	int getMinY() const {
 		if ( empty() ) return 0;
-		std::vector< CPoint >::const_iterator it = begin();
+		std::vector< rp::point >::const_iterator it = begin();
 		int value = it->y;
 		it++;
 		while ( it != end() ) {
@@ -36,7 +45,7 @@ public:
 	}
 	int getMaxX() const {
 		if ( empty() ) return 0;
-		std::vector< CPoint >::const_iterator it = begin();
+		std::vector< rp::point >::const_iterator it = begin();
 		int value = it->x;
 		it++;
 		while ( it != end() ) {
@@ -47,7 +56,7 @@ public:
 	}
 	int getMaxY() const {
 		if ( empty() ) return 0;
-		std::vector< CPoint >::const_iterator it = begin();
+		std::vector< rp::point >::const_iterator it = begin();
 		int value = it->y;
 		it++;
 		while ( it != end() ) {
@@ -56,16 +65,26 @@ public:
 		}
 		return value;
 	}
-	CPoint getCenter() const {
-		return CPoint( (getMaxX() + getMinX()) / 2, (getMaxY() + getMinY()) / 2 );
+	rp::point getCenter() const {
+		return rp::point( (getMaxX() + getMinX()) / 2, (getMaxY() + getMinY()) / 2 );
 	}
 	bool isPolygon() const {
 		if ( size() < 3 ) return false;
-		return (*begin() == *(end() -1)) ? true : false;
+		rp::point p1 = *begin();
+		rp::point p2 = *(end()-1);
+		TRACE( "%3.2f - %3.2f = %3.2f, %3.2f - %3.2f = %3.2f\n", p1.x, p2.x, fabs(p1.x - p2.x), p1.y, p2.y, fabs( p1.y - p2.y ) );
+		return (*begin() == *(end()-1)) ? true : false;
 	}
-	void extendFromCenter( int delta );
-	polyline& extendByPerimetr( int delta );
-	bool pointInPolygon( const CPoint& point ) const;
+	bool pointInPolygon( const rp::point& point ) const;
+//	void extendFromCenter( double delta );
+	polyline& extendByPerimetr( double delta );
+
+	std::vector< CPoint > getWinPolyline() const {
+		std::vector< CPoint > pa( size() );
+		trans tr;
+		std::transform( begin(), end(), pa.begin(), tr );
+		return pa;
+	}
 };
 
 }

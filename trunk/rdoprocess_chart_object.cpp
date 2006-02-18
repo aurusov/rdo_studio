@@ -18,7 +18,7 @@ RPChartObject::RPChartObject( RPObject* _parent, RPChartObject* _chart_parent, R
 	rotate_center_inited( false ),
 	chart_parent( _chart_parent ),
 	flowchart( _flowchart ),
-	main_pen_width( 2 ),
+	main_pen_width( 20 ),
 	rotation_alpha( 0 )
 {
 	LOGBRUSH lb;
@@ -105,7 +105,7 @@ void RPChartObject::setSelected( bool value )
 	}
 }
 
-bool RPChartObject::isRotateCenter( const CPoint& point ) const
+bool RPChartObject::isRotateCenter( const rp::point& point ) const
 {
 	if ( rpapp.project().getFlowState() == RPProject::flow_rotate && isSelected() ) {
 		return rp::math::getLength( getRotateCenter(), point ) <= flowchart->getSensitivity();

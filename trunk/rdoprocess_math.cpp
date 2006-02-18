@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include "rdoprocess_math.h"
 
-#include <vector>
-
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -13,7 +11,7 @@ namespace rp {
 
 double math::pi = 3.14159265358979323846;
 
-bool math::getPlanarData( const CPoint& p1, const CPoint& p2, double& len, double& cos_a, double& sin_a )
+bool math::getPlanarData( const rp::point& p1, const rp::point& p2, double& len, double& cos_a, double& sin_a )
 {
 	len = math::getLength( p1, p2 );
 	if ( len != -1 ) {
@@ -28,7 +26,7 @@ bool math::getPlanarData( const CPoint& p1, const CPoint& p2, double& len, doubl
 	}
 }
 
-bool math::getPlanarData( const CPoint& p1, const CPoint& p2, const CPoint& p3, double& cos_b, double& sin_b )
+bool math::getPlanarData( const rp::point& p1, const rp::point& p2, const rp::point& p3, double& cos_b, double& sin_b, double& koef )
 {
 	double len1 = math::getLength( p1, p2 );
 	double len2 = math::getLength( p2, p3 );
@@ -50,18 +48,25 @@ bool math::getPlanarData( const CPoint& p1, const CPoint& p2, const CPoint& p3, 
 		double b = 180 + a1 + a / 2;
 		cos_b = cos( b * pi / 180.0 );
 		sin_b = sin( b * pi / 180.0 );
+		koef  = sin( a * pi / 180.0 / 2.0 );
+		if ( fabs(koef) > 1e-10 ) {
+			koef = 1 / koef;
+		} else {
+			koef = 1e+10;
+		}
 		return true;
 	} else {
 		cos_b = 1;
 		sin_b = 0;
+		koef  = 1;
 		return false;
 	}
 }
 
-double math::getDistance( const CPoint& line_point1, const CPoint& line_point2, const CPoint& point, bool* inside )
+double math::getDistance( const rp::point& line_point1, const rp::point& line_point2, const rp::point& point, bool* inside )
 {
 	bool null;
-	CPoint p = math::getPerpendicular( line_point1, line_point2, point, null, inside );
+	rp::point p = math::getPerpendicular( line_point1, line_point2, point, null, inside );
 	if ( !null ) {
 		double l1 = p.x - point.x;
 		double l2 = p.y - point.y;
@@ -70,7 +75,7 @@ double math::getDistance( const CPoint& line_point1, const CPoint& line_point2, 
 	return -1.0;
 }
 
-double math::getAlpha( const CPoint& p1, const CPoint& p2 )
+double math::getAlpha( const rp::point& p1, const rp::point& p2 )
 {
 	double len = math::getLength( p1, p2 );
 	if ( len != -1 ) {
@@ -85,7 +90,7 @@ double math::getAlpha( const CPoint& p1, const CPoint& p2 )
 	return 0;
 }
 
-double math::getAlpha( const CPoint& p1, const CPoint& p2_center, const CPoint& p3 )
+double math::getAlpha( const rp::point& p1, const rp::point& p2_center, const rp::point& p3 )
 {
 	double len1 = math::getLength( p1, p2_center );
 	double len2 = math::getLength( p2_center, p3 );
@@ -107,7 +112,7 @@ double math::getAlpha( const CPoint& p1, const CPoint& p2_center, const CPoint& 
 	return 0;
 }
 
-CPoint math::getPerpendicular( const CPoint& line_point1, const CPoint& line_point2, const CPoint& point, bool& null, bool* inside )
+rp::point math::getPerpendicular( const rp::point& line_point1, const rp::point& line_point2, const rp::point& point, bool& null, bool* inside )
 {
 	double l1 = line_point2.x - line_point1.x;
 	double l2 = line_point2.y - line_point1.y;
@@ -118,17 +123,17 @@ CPoint math::getPerpendicular( const CPoint& line_point1, const CPoint& line_poi
 			*inside = u >= 0 && u <= 1;
 		}
 		null = false;
-		return CPoint( static_cast<int>(line_point1.x + u*(line_point2.x - line_point1.x)), static_cast<int>(line_point1.y + u*(line_point2.y - line_point1.y)) );
+		return rp::point( static_cast<int>(line_point1.x + u*(line_point2.x - line_point1.x)), static_cast<int>(line_point1.y + u*(line_point2.y - line_point1.y)) );
 	} else {
 		if ( inside ) {
 			*inside = false;
 		}
 	}
 	null = true;
-	return CPoint();
+	return rp::point();
 }
 
-CPoint math::getIntersection( const std::vector< CPoint >& pa, const double x1, const double y1, const double x2, const double y2, const double x3, const double y3, const double x4, const double y4, double& Ka, double& Kb, double& K, double& Ua, double& Ub )
+rp::point math::getIntersection( const std::vector< rp::point >& pa, const double x1, const double y1, const double x2, const double y2, const double x3, const double y3, const double x4, const double y4, double& Ka, double& Kb, double& K, double& Ua, double& Ub )
 {
 	K  = (y4 - y3)*(x2 - x1) - (x4 - x3)*(y2 - y1);
 	Ka = (x4 - x3)*(y1 - y3) - (y4 - y3)*(x1 - x3);
@@ -138,7 +143,7 @@ CPoint math::getIntersection( const std::vector< CPoint >& pa, const double x1, 
 		Ub = Kb/K;
 		double x = x1 + Ua*(x2 - x1);
 		double y = y1 + Ua*(y2 - y1);
-		CPoint point( static_cast<int>(x), static_cast<int>(y) );
+		rp::point point( static_cast<int>(x), static_cast<int>(y) );
 		if ( point.x >= x1 - 1 && point.x <= x1 + 1 ) {
 			point.x = static_cast<int>(x1);
 		}
@@ -165,7 +170,7 @@ CPoint math::getIntersection( const std::vector< CPoint >& pa, const double x1, 
 		}
 		return point;
 	} catch ( ... ) {
-		return CPoint( 0, 0 );
+		return rp::point( 0, 0 );
 	}
 }
 

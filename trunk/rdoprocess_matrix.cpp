@@ -100,16 +100,6 @@ rp::matrix operator* ( const rp::matrix& m1, const rp::matrix& m2 )
 	return m;
 }
 
-CPoint operator* ( const rp::matrix& m, const CPoint& point )
-{
-	double x = m.data[0][0] * point.x + m.data[0][1] * point.y + m.data[0][2];
-	double y = m.data[1][0] * point.x + m.data[1][1] * point.y + m.data[1][2];
-	double w = m.data[2][0] * point.x + m.data[2][1] * point.y + m.data[2][2];
-	x /= w;
-	y /= w;
-	return CPoint( x, y );
-}
-
 rp::point operator* ( const rp::matrix& m, const rp::point& point )
 {
 	double x = m.data[0][0] * point.x + m.data[0][1] * point.y + m.data[0][2];
@@ -118,4 +108,14 @@ rp::point operator* ( const rp::matrix& m, const rp::point& point )
 	x /= w;
 	y /= w;
 	return rp::point( x, y );
+}
+
+CPoint operator* ( const rp::matrix& m, const CPoint& point )
+{
+	double x = m.data[0][0] * point.x + m.data[0][1] * point.y + m.data[0][2];
+	double y = m.data[1][0] * point.x + m.data[1][1] * point.y + m.data[1][2];
+	double w = m.data[2][0] * point.x + m.data[2][1] * point.y + m.data[2][2];
+	x /= w;
+	y /= w;
+	return CPoint( x, y );
 }

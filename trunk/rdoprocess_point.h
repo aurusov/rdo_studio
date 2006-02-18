@@ -25,7 +25,10 @@ public:
 		y = point.y;
 		return *this;
 	}
-	operator CPoint() { return CPoint( x, y ); }
+	bool operator== ( const rp::point& point ) const {
+		return fabs(x - point.x) < 1.0 && fabs(y - point.y) < 1.0;
+	}
+//	operator CPoint() { return CPoint( x, y ); }
 };
 
 }

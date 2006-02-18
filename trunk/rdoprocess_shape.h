@@ -21,7 +21,7 @@ protected:
 
 	struct trans {
 		trans( rp::matrix& _matrix ): matrix( _matrix ) {};
-		CPoint operator()( const CPoint& point ) {
+		rp::point operator()( const rp::point& point ) {
 			return matrix * point;
 		}
 		rp::matrix& matrix;
@@ -42,21 +42,22 @@ public:
 //	const CPoint& getSnapToPoint() const { return snap_to_point; }
 
 	virtual void draw( CDC& dc );
+	virtual void draw1( CDC& dc );
 
 	// Габориты фигуры
 	virtual rp::rect getBoundingRect( bool global = true ) const;
 	// Перевод всех элементов фигуры в глобальные координаты
 	virtual void transformToGlobal();
 	// Находится ли точка внутри фигуры
-	virtual bool pointInPolygon( const CPoint& point, bool byperimetr = true ) {
+	virtual bool pointInPolygon( const rp::point& point, bool byperimetr = true ) {
 		transformToGlobal();
 		if ( byperimetr ) {
-			return pa_global.extendByPerimetr( main_pen_width * sqrt(2) / 2.0 ).pointInPolygon( point );
+			return pa_global.extendByPerimetr( static_cast<double>(main_pen_width) / 2.0 ).pointInPolygon( point );
 		} else {
 			return pa_global.pointInPolygon( point );
 		}
 	}
-	virtual PossibleCommand getPossibleCommand( const CPoint& global_pos, bool for_cursor = false ) const;
+	virtual PossibleCommand getPossibleCommand( const rp::point& global_pos, bool for_cursor = false );
 };
 
 #endif // RDO_PROCESS_SHAPE_H
