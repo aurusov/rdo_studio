@@ -2,6 +2,7 @@
 #include "rdoprocess_mainfrm.h"
 #include "rdoprocess_app.h"
 #include "rdoprocess_string.h"
+#include "ctrl/rdoprocess_pagectrl.h"
 #include "resource.h"
 
 #ifdef _DEBUG
@@ -66,8 +67,86 @@ int RPMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	}
 
 	projectBar.Create( rp::string::format( ID_DOCK_PROJECT_BAR ).c_str(), this, 0 );
-	projectBar.SetBarStyle( projectBar.GetBarStyle() | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
 	projectBar.EnableDocking( CBRS_ALIGN_ANY );
+
+	CListCtrl* listctrl = new CListCtrl();
+	listctrl->Create( LVS_LIST | LVS_SINGLESEL, CRect(0,0,1,1), projectBar.prepareNewPage(), -1 );
+	::SetWindowLong( listctrl->m_hWnd, GWL_EXSTYLE, ::GetWindowLong( listctrl->m_hWnd, GWL_EXSTYLE ) | WS_EX_CLIENTEDGE );
+	listctrl->InsertItem( 0, "test 1" );
+	listctrl->InsertItem( 1, "test 2" );
+	listctrl->InsertItem( 2, "test 3" );
+	listctrl->InsertItem( 3, "test 4" );
+	projectBar.insertPage( listctrl, "Basic Process" );
+
+	CListCtrl* listctrl2 = new CListCtrl();
+	listctrl2->Create( LVS_LIST | LVS_SINGLESEL, CRect(0,0,1,1), projectBar.prepareNewPage(), -1 );
+	::SetWindowLong( listctrl2->m_hWnd, GWL_EXSTYLE, ::GetWindowLong( listctrl2->m_hWnd, GWL_EXSTYLE ) | WS_EX_CLIENTEDGE );
+	listctrl2->InsertItem( 0, "q 1" );
+	listctrl2->InsertItem( 1, "qqqqqqqqqqq 2" );
+	listctrl2->InsertItem( 2, "q 3" );
+	listctrl2->InsertItem( 3, "q 4" );
+	listctrl2->InsertItem( 3, "q 4" );
+	listctrl2->InsertItem( 3, "q 4" );
+	listctrl2->InsertItem( 3, "q 4" );
+	listctrl2->InsertItem( 3, "q 4" );
+	listctrl2->InsertItem( 3, "q 4" );
+	listctrl2->InsertItem( 3, "q 4" );
+	listctrl2->InsertItem( 3, "q 4" );
+	listctrl2->InsertItem( 3, "q 4" );
+	listctrl2->InsertItem( 3, "q 4" );
+	listctrl2->InsertItem( 3, "q 4" );
+	listctrl2->InsertItem( 3, "q 4" );
+	listctrl2->InsertItem( 3, "q 4" );
+	listctrl2->InsertItem( 3, "q 4" );
+	listctrl2->InsertItem( 3, "q 4" );
+	listctrl2->InsertItem( 3, "q 4" );
+	listctrl2->InsertItem( 3, "q 4" );
+	listctrl2->InsertItem( 3, "q 4" );
+	listctrl2->InsertItem( 3, "q 4" );
+	listctrl2->InsertItem( 3, "q 4" );
+	listctrl2->InsertItem( 3, "q 4" );
+	listctrl2->InsertItem( 3, "q 4" );
+	listctrl2->InsertItem( 3, "q 4" );
+	listctrl2->InsertItem( 3, "q 4" );
+	listctrl2->InsertItem( 3, "q 4" );
+	listctrl2->InsertItem( 3, "q 4" );
+	listctrl2->InsertItem( 3, "q 4" );
+	projectBar.insertPage( listctrl2, "Second Page" );
+
+	CListCtrl* listctrl3 = new CListCtrl();
+	listctrl3->Create( LVS_LIST | LVS_SINGLESEL, CRect(0,0,1,1), projectBar.prepareNewPage(), -1 );
+	::SetWindowLong( listctrl3->m_hWnd, GWL_EXSTYLE, ::GetWindowLong( listctrl3->m_hWnd, GWL_EXSTYLE ) | WS_EX_CLIENTEDGE );
+	listctrl3->InsertItem( 0, "объект 1" );
+	listctrl3->InsertItem( 1, "объект 2" );
+	listctrl3->InsertItem( 1, "объект 2" );
+	listctrl3->InsertItem( 1, "объект 2" );
+	listctrl3->InsertItem( 1, "объект 2" );
+	listctrl3->InsertItem( 1, "объект 2" );
+	listctrl3->InsertItem( 1, "объект 2" );
+	listctrl3->InsertItem( 1, "объект 2" );
+	listctrl3->InsertItem( 1, "объект 2" );
+	listctrl3->InsertItem( 1, "объект 2" );
+	listctrl3->InsertItem( 1, "объект 2" );
+	listctrl3->InsertItem( 1, "объект 2" );
+	listctrl3->InsertItem( 1, "объект 2" );
+	listctrl3->InsertItem( 1, "объект 2" );
+	listctrl3->InsertItem( 1, "объект 2" );
+	listctrl3->InsertItem( 1, "объект 2" );
+	listctrl3->InsertItem( 1, "объект 2" );
+	listctrl3->InsertItem( 1, "объект 2" );
+	listctrl3->InsertItem( 1, "объект 2" );
+	listctrl3->InsertItem( 1, "объект 2" );
+	listctrl3->InsertItem( 1, "объект 2" );
+	listctrl3->InsertItem( 1, "объект 2" );
+	listctrl3->InsertItem( 1, "объект 2" );
+	listctrl3->InsertItem( 1, "объект 2" );
+	listctrl3->InsertItem( 1, "объект 2" );
+	listctrl3->InsertItem( 1, "объект 2" );
+	listctrl3->InsertItem( 1, "объект 2" );
+	listctrl3->InsertItem( 1, "объект 2" );
+	projectBar.insertPage( listctrl3, "Третья страница" );
+
+	projectBar.selectFirst();
 
 	m_wndToolBar.EnableDocking( CBRS_ALIGN_ANY );
 

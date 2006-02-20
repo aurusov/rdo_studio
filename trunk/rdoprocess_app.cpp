@@ -2,6 +2,7 @@
 #include "rdoprocess_app.h"
 #include "rdoprocess_mainfrm.h"
 #include "rdoprocess_childfrm.h"
+#include "ctrl/rdoprocess_pagectrl.h"
 #include "resource.h"
 
 #ifdef _DEBUG
@@ -24,6 +25,7 @@ END_MESSAGE_MAP()
 
 RPApp::RPApp():
 	CWinApp(),
+	mainFrame( NULL ),
 	_msg( NULL ),
 	_project( NULL )
 {
@@ -72,24 +74,23 @@ BOOL RPApp::InitInstance()
 	// To create the main window, this code creates a new frame window
 	// object and then sets it as the application's main window object.
 
-	CMDIFrameWnd* pFrame = new RPMainFrame;
-	m_pMainWnd = pFrame;
+	mainFrame  = new RPMainFrame;
+	m_pMainWnd = mainFrame;
 
 	// create main MDI frame window
-	if (!pFrame->LoadFrame(IDR_MAINFRAME))
-		return FALSE;
+	if ( !mainFrame->LoadFrame(IDR_MAINFRAME) ) return FALSE;
 
 	// try to load shared MDI menus and accelerator table
 	//TODO: add additional member variables and load calls for
 	//	additional menu types your application may need. 
 
 	HINSTANCE hInst = AfxGetResourceHandle();
-	m_hMDIMenu  = ::LoadMenu(hInst, MAKEINTRESOURCE(IDR_RDO_PRTYPE));
-	m_hMDIAccel = ::LoadAccelerators(hInst, MAKEINTRESOURCE(IDR_RDO_PRTYPE));
+	m_hMDIMenu  = ::LoadMenu( hInst, MAKEINTRESOURCE(IDR_RDO_PRTYPE) );
+	m_hMDIAccel = ::LoadAccelerators( hInst, MAKEINTRESOURCE(IDR_RDO_PRTYPE) );
 
 	// The main window has been initialized, so show and update it.
-	pFrame->ShowWindow(m_nCmdShow);
-	pFrame->UpdateWindow();
+	mainFrame->ShowWindow( m_nCmdShow );
+	mainFrame->UpdateWindow();
 
 	log << "RPApp::InitInstance().. ok" << std::endl;
 	return TRUE;
@@ -105,12 +106,21 @@ int RPApp::ExitInstance()
 		delete _msg;
 		_msg = NULL;
 	}
+
 	if (m_hMDIMenu != NULL)
 		FreeResource(m_hMDIMenu);
 	if (m_hMDIAccel != NULL)
 		FreeResource(m_hMDIAccel);
 
 	return CWinApp::ExitInstance();
+}
+
+BOOL RPApp::PreTranslateMessage( MSG* pMsg )
+{
+	if ( pMsg->message == RP_PAGECTRL_DELETEITEM ) {
+		mainFrame->projectBar.removePage( reinterpret_cast<RPPageCtrlItem*>(pMsg->wParam) );
+	}
+	return CWinApp::PreTranslateMessage( pMsg );
 }
 
 void RPApp::OnFileNew() 

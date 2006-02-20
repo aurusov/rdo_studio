@@ -23,11 +23,14 @@ RPApp содержит объект project.
 // ----------------------------------------------------------------------------
 // ---------- RPApp
 // ----------------------------------------------------------------------------
+class RPMainFrame;
+
 class RPApp: public CWinApp
 {
 friend rp::msg::~msg();
 
 protected:
+	RPMainFrame* mainFrame;
 	HMENU m_hMDIMenu;
 	HACCEL m_hMDIAccel;
 
@@ -50,6 +53,7 @@ public:
 	public:
 	virtual BOOL InitInstance();
 	virtual int ExitInstance();
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	//}}AFX_VIRTUAL
 
 	//{{AFX_MSG(RPApp)

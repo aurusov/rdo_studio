@@ -27,8 +27,8 @@
 #include <list>
 #include <algorithm>
 
-#include "sizecbar/sizecbar.h"
-#include "sizecbar/scbarg.h"
+#include "ctrl/sizecbar/sizecbar.h"
+#include "ctrl/sizecbar/scbarg.h"
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.

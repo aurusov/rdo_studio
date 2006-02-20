@@ -35,6 +35,8 @@ protected:
 	rp::matrix matrix_scale;
 	double rotation_alpha;
 
+	std::list< rp::matrix > backup;
+
 	rp::matrix selfMatrix() const {
 		return matrix_transform * matrix_rotate * matrix_transform_post * matrix_scale;
 	}
@@ -50,6 +52,9 @@ protected:
 	}
 	rp::matrix rotateCenterMatrix() const {
 		return parentMatrix() * matrix_transform;
+	}
+	rp::matrix globalRotate() const {
+		return chart_parent ? chart_parent->globalRotate() * matrix_rotate : matrix_rotate;
 	}
 	static void fillRotateMatrix( rp::matrix& m_rotate, double alpha ) {
 		alpha *= rp::math::pi / 180.0;
@@ -110,6 +115,7 @@ public:
 	// Совпадает ли точка на центре вращения фигуры
 	bool isRotateCenter( const rp::point& point ) const;
 
+	// Дискретный угол поворота (дискрета 90 градусов)
 	enum angle90 {
 		angle90_0 = 0,  //!< Угол поворота объекта alpha > 270 + 45 || alpha <= 45
 		angle90_90,     //!< Угол поворота объекта alpha > 45       && alpha <= 90 + 45
@@ -126,6 +132,7 @@ public:
 		return RPChartObject::angle90_0;
 	}
 
+	// Дискретный угол поворота (дискрета 45 градусов)
 	enum angle45 {
 		angle45_0 = 0,  //!< Угол поворота объекта alpha > 360 - 22 || alpha <= 22
 		angle45_90,     //!< Угол поворота объекта alpha > 90 - 22  && alpha <= 90 + 22
@@ -149,6 +156,21 @@ public:
 		if ( alpha > 315 - 22 && alpha <= 315 + 22 ) return RPChartObject::angle45_315;
 		return RPChartObject::angle45_0;
 	}
+
+	// Стек для бекапа матриц
+	void backup_push() {
+		backup.push_back( matrix_transform );
+		backup.push_back( matrix_rotate );
+		backup.push_back( matrix_transform_post );
+		backup.push_back( matrix_scale );
+	}
+	void backup_pop() {
+		matrix_scale          = backup.back(); backup.pop_back();
+		matrix_transform_post = backup.back(); backup.pop_back();
+		matrix_rotate         = backup.back(); backup.pop_back();
+		matrix_transform      = backup.back(); backup.pop_back();
+	}
+	void backup_clear() { backup.clear(); }
 
 	// Выделить/снять выделение с фигуры
 	virtual void setSelected( bool value );

@@ -1,7 +1,7 @@
 #ifndef RDO_PROCESS_MAINFRM_H
 #define RDO_PROCESS_MAINFRM_H
 
-#include "rdoprocess_dockwnd.h"
+#include "ctrl/rdoprocess_projectbar.h"
 
 #if _MSC_VER > 1000
 #pragma once
@@ -18,11 +18,11 @@ protected:
 	CStatusBar  m_wndStatusBar;
 	CToolBar    m_wndToolBar;
 
-	RPDockWnd projectBar;
-
 public:
 	RPMainFrame();
 	virtual ~RPMainFrame();
+
+	RPProjectBar projectBar;
 
 #ifdef _DEBUG
 	virtual void AssertValid() const;

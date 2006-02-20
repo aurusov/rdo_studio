@@ -18,15 +18,10 @@ bool polyline::pointInPolygon( const rp::point& point ) const
 	if ( size() > 2 ) {
 		unsigned int i;
 		unsigned int j;
-		int k0 = 0;
+		int k0    = 0;
 		bool flag = true;
 		bool polygon = isPolygon();
-		int cnt = polygon ? size() - 1 : size();
-		if ( !polygon ) {
-			TRACE( "================================= !polygon\n" );
-		} else {
-			TRACE( "polygon\n" );
-		}
+		int  cnt     = polygon ? size() - 1 : size();
 		for ( i = 0, j = 1; i < cnt; i++, j++ ) {
 			if ( !polygon && j == cnt ) j = 0;
 			const rp::point& p1 = (*this)[i];

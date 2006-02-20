@@ -70,9 +70,6 @@ public:
 	}
 	bool isPolygon() const {
 		if ( size() < 3 ) return false;
-		rp::point p1 = *begin();
-		rp::point p2 = *(end()-1);
-		TRACE( "%3.2f - %3.2f = %3.2f, %3.2f - %3.2f = %3.2f\n", p1.x, p2.x, fabs(p1.x - p2.x), p1.y, p2.y, fabs( p1.y - p2.y ) );
 		return (*begin() == *(end()-1)) ? true : false;
 	}
 	bool pointInPolygon( const rp::point& point ) const;

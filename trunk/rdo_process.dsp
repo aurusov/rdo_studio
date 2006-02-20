@@ -102,10 +102,6 @@ SOURCE=.\rdoprocess_childfrm.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\rdoprocess_dockwnd.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\rdoprocess_flowchart.cpp
 # End Source File
 # Begin Source File
@@ -180,10 +176,6 @@ SOURCE=.\rdoprocess_chart_object.h
 # Begin Source File
 
 SOURCE=.\rdoprocess_childfrm.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdoprocess_dockwnd.h
 # End Source File
 # Begin Source File
 
@@ -299,6 +291,18 @@ SOURCE=.\res\flow_select.cur
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\pagectrl_close.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\pagectrl_close_over.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\pagectrl_page.bmp
+# End Source File
+# Begin Source File
+
 SOURCE=.\res\rdo_process.ico
 # End Source File
 # Begin Source File
@@ -318,31 +322,71 @@ SOURCE=.\res\rdo_process.rc2
 SOURCE=.\res\Toolbar.bmp
 # End Source File
 # End Group
+# Begin Group "Ctrl"
+
+# PROP Default_Filter ""
+# Begin Group "Ctrl Source Files"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\ctrl\rdoprocess_dockwnd.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ctrl\rdoprocess_pagectrl.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ctrl\rdoprocess_projectbar.cpp
+# End Source File
+# End Group
+# Begin Group "Ctrl Header Files"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\ctrl\rdoprocess_dockwnd.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\ctrl\rdoprocess_pagectrl.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\ctrl\rdoprocess_projectbar.h
+# End Source File
+# End Group
 # Begin Group "SizeCBar"
 
 # PROP Default_Filter ""
-# Begin Group "SizeCBar Source Files"
-
-# PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 # Begin Source File
 
-SOURCE=.\sizecbar\scbarg.cpp
+SOURCE=.\ctrl\sizecbar\scbarg.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\sizecbar\sizecbar.cpp
+SOURCE=.\ctrl\sizecbar\scbarg.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\ctrl\sizecbar\sizecbar.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ctrl\sizecbar\sizecbar.h
 # End Source File
 # End Group
-# Begin Group "SizeCBar Header Files"
+# Begin Group "mctranspblt"
 
-# PROP Default_Filter "h;hpp;hxx;hm;inl"
+# PROP Default_Filter ""
 # Begin Source File
 
-SOURCE=.\sizecbar\scbarg.h
+SOURCE=.\ctrl\mctranspblt\McTransparentBlit.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\sizecbar\sizecbar.h
+SOURCE=.\ctrl\mctranspblt\McTransparentBlit.h
 # End Source File
 # End Group
 # End Group

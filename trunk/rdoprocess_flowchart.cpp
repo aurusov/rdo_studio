@@ -1055,6 +1055,7 @@ void RPFlowChart::OnMouseMove( UINT nFlags, CPoint local_mouse_pos )
 	// Проверается на изменение масштаба, поворота или центра поворота.
 	// Эти операции не могут быть групповыми.
 	if ( one_object ) {
+		RPChartObject::angle90 a90 = one_object->getAngle90();
 		double alpha = one_object->getRotation();
 		double dx = global_mouse_pos.x - global_mouse_pos_prev.x;
 		double dy = global_mouse_pos.y - global_mouse_pos_prev.y;
@@ -1080,23 +1081,38 @@ void RPFlowChart::OnMouseMove( UINT nFlags, CPoint local_mouse_pos )
 				break;
 			}
 			case RPChartObject::pcmd_scale_r      : {
+				one_object->backup_push();
 				rp::rect rect = one_object->getBoundingRect();
-				if ( (alpha > 270 + 45 || alpha <= 45) || (alpha > 90 + 45  && alpha <= 180 + 45) ) {
+				if ( a90 == RPChartObject::angle90_0 || a90 == RPChartObject::angle90_180 ) {
 					double len = rp::math::getLength( rect.p_l(), rect.p_r() );
 					one_object->setScaleX( one_object->getScaleX() * (len + dx) / len );
-					dx /= 2;
-					dx *= (alpha > 270 + 45 || alpha <= 45) ? 1 : -1;
-					one_object->setPostX( one_object->getPostX() + dx );
-					one_object->setRotateCenterLocalDelta( dx, 0 );
+					double _dx = a90 == RPChartObject::angle90_0 ? dx / 2 : -dx / 2;
+					one_object->setPostX( one_object->getPostX() + _dx );
+					rp::rect rect2 = one_object->getBoundingRect();
+					rp::point point( rect.p_l().x - rect2.p_l().x, 0 );
+					point = one_object->globalRotate().obr() * point;
+					if ( fabs(point.x) > 1e-10 ) {
+						one_object->backup_pop();
+						dx += point.x;
+						if ( dx ) {
+							one_object->setScaleX( one_object->getScaleX() * (len + dx) / len );
+							double _dx = a90 == RPChartObject::angle90_0 ? dx / 2 : -dx / 2;
+							one_object->setPostX( one_object->getPostX() + _dx );
+						}
+					}
+					if ( dx ) {
+						one_object->setRotateCenterLocalDelta( dx, 0 );
+					}
 				}
-				if ( (alpha > 45 && alpha <= 90 + 45) || (alpha > 180 + 45 && alpha <= 270 + 45) ) {
+				if ( a90 == RPChartObject::angle90_90 || a90 == RPChartObject::angle90_270 ) {
 					double len = rp::math::getLength( rect.p_t(), rect.p_b() );
 					one_object->setScaleY( one_object->getScaleY() * (len + dx) / len );
 					dx /= 2;
-					dx *= (alpha > 45 && alpha <= 90 + 45) ? 1 : -1;
+					dx *= a90 == RPChartObject::angle90_90 ? 1 : -1;
 					one_object->setPostY( one_object->getPostY() + dx );
 					one_object->setRotateCenterLocalDelta( 0, dx );
 				}
+				one_object->backup_clear();
 				updateDC();
 				break;
 			}
