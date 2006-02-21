@@ -159,6 +159,8 @@ void RPPageCtrl::removePage( RPPageCtrlItem* page )
 		std::list< RPPageCtrlItem* >::iterator it_next = items.erase( it );
 		if ( it_current == it ) {
 			it_current = it_next;
+			if ( it_current == items.end() ) it_current--;
+			if ( it_current == items.end() ) it_current = items.begin();
 		}
 		delete page;
 		repaint();
