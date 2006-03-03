@@ -45,7 +45,6 @@ public:
 		pa = rect.pa;
 		return *this;
 	}
-/*
 	int getMinX() const {
 		int min_x = pa[0].x;
 		if ( min_x > pa[1].x ) min_x = pa[1].x;
@@ -60,7 +59,6 @@ public:
 		if ( min_y > pa[3].y ) min_y = pa[3].y;
 		return min_y;
 	}
-*/
 	int getMaxX() const {
 		int max_x = pa[0].x;
 		if ( max_x < pa[1].x ) max_x = pa[1].x;
@@ -92,10 +90,14 @@ public:
 	rp::point& p_tr() { return pa[1]; }
 	rp::point& p_br() { return pa[2]; }
 	rp::point& p_bl() { return pa[3]; }
-	rp::point  p_t()  { return rp::point( (pa[0].x + pa[1].x) / 2, (pa[0].y + pa[1].y) / 2 ); }
-	rp::point  p_b()  { return rp::point( (pa[3].x + pa[2].x) / 2, (pa[3].y + pa[2].y) / 2 ); }
-	rp::point  p_l()  { return rp::point( (pa[0].x + pa[3].x) / 2, (pa[0].y + pa[3].y) / 2 ); }
-	rp::point  p_r()  { return rp::point( (pa[1].x + pa[2].x) / 2, (pa[1].y + pa[2].y) / 2 ); }
+	const rp::point& p_tl() const { return pa[0]; }
+	const rp::point& p_tr() const { return pa[1]; }
+	const rp::point& p_br() const { return pa[2]; }
+	const rp::point& p_bl() const { return pa[3]; }
+	rp::point  p_t() const { return rp::point( (pa[0].x + pa[1].x) / 2, (pa[0].y + pa[1].y) / 2 ); }
+	rp::point  p_b() const { return rp::point( (pa[3].x + pa[2].x) / 2, (pa[3].y + pa[2].y) / 2 ); }
+	rp::point  p_l() const { return rp::point( (pa[0].x + pa[3].x) / 2, (pa[0].y + pa[3].y) / 2 ); }
+	rp::point  p_r() const { return rp::point( (pa[1].x + pa[2].x) / 2, (pa[1].y + pa[2].y) / 2 ); }
 
 	bool pointInRect( const rp::point& point ) const;
 //	void extendFromCenter( double delta );
@@ -103,10 +105,10 @@ public:
 
 #ifdef _DEBUG
 	void trace() const {
-		TRACE( "p0.x = %d, p0.y = %d\n", pa[0].x, pa[0].y );
-		TRACE( "p1.x = %d, p1.y = %d\n", pa[1].x, pa[1].y );
-		TRACE( "p2.x = %d, p2.y = %d\n", pa[2].x, pa[2].y );
-		TRACE( "p3.x = %d, p3.y = %d\n", pa[3].x, pa[3].y );
+		TRACE( "p0.x = %f, p0.y = %f\n", pa[0].x, pa[0].y );
+		TRACE( "p1.x = %f, p1.y = %f\n", pa[1].x, pa[1].y );
+		TRACE( "p2.x = %f, p2.y = %f\n", pa[2].x, pa[2].y );
+		TRACE( "p3.x = %f, p3.y = %f\n", pa[3].x, pa[3].y );
 	}
 #endif
 };

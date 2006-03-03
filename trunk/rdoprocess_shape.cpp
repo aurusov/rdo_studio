@@ -13,8 +13,8 @@ static char THIS_FILE[] = __FILE__;
 // ----------------------------------------------------------------------------
 // ---------- RPShape
 // ----------------------------------------------------------------------------
-RPShape::RPShape( RPObject* _parent, RPFlowChart* _flowchart, const rp::string& _name ):
-	RPChartObject( _parent, _flowchart->flowobj, _flowchart, _name )
+RPShape::RPShape( RPObject* _parent, RPChartObject* _chart_parent, RPFlowChart* _flowchart, const rp::string& _name ):
+	RPChartObject( _parent, _chart_parent, _flowchart, _name )
 //	snap_to_point( 0, 0 )
 {
 	flowchart->insertShape( this );
@@ -151,9 +151,192 @@ RPChartObject::PossibleCommand RPShape::getPossibleCommand( const rp::point& glo
 	angle90 a90 = getAngle90();
 	angle45 a45 = getAngle45();
 	double alpha = getRotation();
+	// ќтдельно проверим на раст€жение за правый нижний угол, т.к. фигуру, сжатую в ноль, лучше раст€гивать из него
+	if ( rpapp.project().getFlowState() == RPProject::flow_select ) {
+		if ( rp::math::getLength( rect.p_tl(), global_pos ) <= sensitivity ) {
+			if ( for_cursor ) {
+				switch ( a45 ) {
+					case angle45_180: return RPChartObject::pcmd_scale_br;
+				}
+			} else {
+				switch ( a90 ) {
+					case angle90_180: return RPChartObject::pcmd_scale_br;
+				}
+			}
+		}
+		if ( rp::math::getLength( rect.p_tr(), global_pos ) <= sensitivity ) {
+			if ( for_cursor ) {
+				switch ( a45 ) {
+					case angle45_270: return RPChartObject::pcmd_scale_br;
+				}
+			} else {
+				switch ( a90 ) {
+					case angle90_270: return RPChartObject::pcmd_scale_br;
+				}
+			}
+		}
+		if ( rp::math::getLength( rect.p_bl(), global_pos ) <= sensitivity ) {
+			if ( for_cursor ) {
+				switch ( a45 ) {
+					case angle45_90 : return RPChartObject::pcmd_scale_br;
+				}
+			} else {
+				switch ( a90 ) {
+					case angle90_90 : return RPChartObject::pcmd_scale_br;
+				}
+			}
+		}
+		if ( rp::math::getLength( rect.p_br(), global_pos ) <= sensitivity ) {
+			if ( for_cursor ) {
+				switch ( a45 ) {
+					case angle45_0  : return RPChartObject::pcmd_scale_br;
+				}
+			} else {
+				switch ( a90 ) {
+					case angle90_0  : return RPChartObject::pcmd_scale_br;
+				}
+			}
+		}
+		// ќтдельно проверим на раст€жение за левый нижний угол, т.к. фигуру, сжатую в горизонтальную линию, лучше раст€гивать именно из него, а не в лево-вверх
+		if ( rp::math::getLength( rect.p_tl(), global_pos ) <= sensitivity ) {
+			if ( for_cursor ) {
+				switch ( a45 ) {
+					case angle45_90 : return RPChartObject::pcmd_scale_bl;
+				}
+			} else {
+				switch ( a90 ) {
+					case angle90_90 : return RPChartObject::pcmd_scale_bl;
+				}
+			}
+		}
+		if ( rp::math::getLength( rect.p_tr(), global_pos ) <= sensitivity ) {
+			if ( for_cursor ) {
+				switch ( a45 ) {
+					case angle45_180: return RPChartObject::pcmd_scale_bl;
+				}
+			} else {
+				switch ( a90 ) {
+					case angle90_180: return RPChartObject::pcmd_scale_bl;
+				}
+			}
+		}
+		if ( rp::math::getLength( rect.p_bl(), global_pos ) <= sensitivity ) {
+			if ( for_cursor ) {
+				switch ( a45 ) {
+					case angle45_0  : return RPChartObject::pcmd_scale_bl;
+				}
+			} else {
+				switch ( a90 ) {
+					case angle90_0  : return RPChartObject::pcmd_scale_bl;
+				}
+			}
+		}
+		if ( rp::math::getLength( rect.p_br(), global_pos ) <= sensitivity ) {
+			if ( for_cursor ) {
+				switch ( a45 ) {
+					case angle45_270: return RPChartObject::pcmd_scale_bl;
+				}
+			} else {
+				switch ( a90 ) {
+					case angle90_270: return RPChartObject::pcmd_scale_bl;
+				}
+			}
+		}
+	}
 	bool any = rpapp.project().getFlowState() == RPProject::flow_select || rpapp.project().getFlowState() == RPProject::flow_rotate;
 	// ќбща€ часть и дл€ перемещени€ и дл€ вращени€
 	if ( any ) {
+		// ќтдельно проверим на раст€жение за нижний центр, т.к. фигуру, сжатую в горизонтальную линию, лучше раст€гивать вниз за него, а не вверх
+		if ( rp::math::getLength( rect.p_r(), global_pos ) <= sensitivity ) {
+			if ( for_cursor ) {
+				switch ( a45 ) {
+					case angle45_270: return RPChartObject::pcmd_scale_b;
+				}
+			} else {
+				switch ( a90 ) {
+					case angle90_270: return RPChartObject::pcmd_scale_b;
+				}
+			}
+		}
+		if ( rp::math::getLength( rect.p_l(), global_pos ) <= sensitivity ) {
+			if ( for_cursor ) {
+				switch ( a45 ) {
+					case angle45_90 : return RPChartObject::pcmd_scale_b;
+				}
+			} else {
+				switch ( a90 ) {
+					case angle90_90 : return RPChartObject::pcmd_scale_b;
+				}
+			}
+		}
+		if ( rp::math::getLength( rect.p_t(), global_pos ) <= sensitivity ) {
+			if ( for_cursor ) {
+				switch ( a45 ) {
+					case angle45_180: return RPChartObject::pcmd_scale_b;
+				}
+			} else {
+				switch ( a90 ) {
+					case angle90_180: return RPChartObject::pcmd_scale_b;
+				}
+			}
+		}
+		if ( rp::math::getLength( rect.p_b(), global_pos ) <= sensitivity ) {
+			if ( for_cursor ) {
+				switch ( a45 ) {
+					case angle45_0  : return RPChartObject::pcmd_scale_b;
+				}
+			} else {
+				switch ( a90 ) {
+					case angle90_0  : return RPChartObject::pcmd_scale_b;
+				}
+			}
+		}
+		// ќтдельно проверим на раст€жение за правый центр, т.к. фигуру, сжатую в вертикальную линию, лучше раст€гивать вправо за него, а не влево
+		if ( rp::math::getLength( rect.p_r(), global_pos ) <= sensitivity ) {
+			if ( for_cursor ) {
+				switch ( a45 ) {
+					case angle45_0  : return RPChartObject::pcmd_scale_r;
+				}
+			} else {
+				switch ( a90 ) {
+					case angle90_0  : return RPChartObject::pcmd_scale_r;
+				}
+			}
+		}
+		if ( rp::math::getLength( rect.p_l(), global_pos ) <= sensitivity ) {
+			if ( for_cursor ) {
+				switch ( a45 ) {
+					case angle45_180: return RPChartObject::pcmd_scale_r;
+				}
+			} else {
+				switch ( a90 ) {
+					case angle90_180: return RPChartObject::pcmd_scale_r;
+				}
+			}
+		}
+		if ( rp::math::getLength( rect.p_t(), global_pos ) <= sensitivity ) {
+			if ( for_cursor ) {
+				switch ( a45 ) {
+					case angle45_270: return RPChartObject::pcmd_scale_r;
+				}
+			} else {
+				switch ( a90 ) {
+					case angle90_270: return RPChartObject::pcmd_scale_r;
+				}
+			}
+		}
+		if ( rp::math::getLength( rect.p_b(), global_pos ) <= sensitivity ) {
+			if ( for_cursor ) {
+				switch ( a45 ) {
+					case angle45_90 : return RPChartObject::pcmd_scale_r;
+				}
+			} else {
+				switch ( a90 ) {
+					case angle90_90 : return RPChartObject::pcmd_scale_r;
+				}
+			}
+		}
+		// ƒл€ остальных (нижний центр тоже провер€етс€)
 		if ( rp::math::getLength( rect.p_r(), global_pos ) <= sensitivity ) {
 			if ( for_cursor ) {
 				switch ( a45 ) {

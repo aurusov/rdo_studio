@@ -13,7 +13,7 @@
 class RPShapeIf: public RPShape
 {
 public:
-	RPShapeIf( RPObject* parent, RPFlowChart* flowchart );
+	RPShapeIf( RPObject* parent, RPChartObject* chart_parent, RPFlowChart* flowchart );
 	virtual ~RPShapeIf();
 };
 

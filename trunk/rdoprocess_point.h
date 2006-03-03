@@ -29,6 +29,12 @@ public:
 		return fabs(x - point.x) < 1.0 && fabs(y - point.y) < 1.0;
 	}
 //	operator CPoint() { return CPoint( x, y ); }
+
+#ifdef _DEBUG
+	void trace() {
+		TRACE( "x = %f, y = %f\n", x, y );
+	}
+#endif
 };
 
 }

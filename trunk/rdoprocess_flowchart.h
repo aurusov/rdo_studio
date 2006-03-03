@@ -57,6 +57,7 @@ private:
 	int pixmap_h_show;
 	int client_width;
 	int client_height;
+	CRect scroll_bar_size;
 	const int select_box_size2;
 
 	CDC      mem_dc;
@@ -77,8 +78,8 @@ private:
 	COLORREF paper_bg_color;
 
 	void makeNewPixmap();
-	CSize getFlowSize( const std::list< RPChartObject* >& list ) const;
-	CSize getFlowSize() const { return getFlowSize( objects ); }
+	rp::rect getFlowSize( const std::list< RPChartObject* >& list ) const;
+	rp::rect getFlowSize() const { return getFlowSize( objects ); }
 	void updateScrollBars();
 
 	void clientToZero( CPoint& point ) const {
@@ -121,6 +122,9 @@ private:
 	std::list< RPChartObject* >    moving_objects;
 	RPChartObject*                 one_object;
 	RPChartObject::PossibleCommand one_object_pcmd;
+
+	void getScaleDelta( rp::point& delta, RPChartObject::angle90 a90, RPChartObject::PossibleCommand pcmd ) const;
+	void getRectDelta( rp::rect& rect_old, rp::rect& rect_new, rp::point& delta, RPChartObject::angle90 a90, RPChartObject::PossibleCommand pcmd ) const;
 
 #ifdef TEST_SPEED
 	int sec_cnt;

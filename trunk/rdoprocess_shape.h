@@ -34,7 +34,7 @@ protected:
 //	virtual void drawConnectorsOutput( CDC& dc );
 
 public:
-	RPShape( RPObject* parent, RPFlowChart* flowchart, const rp::string& name = "object" );
+	RPShape( RPObject* parent, RPChartObject* chart_parent, RPFlowChart* flowchart, const rp::string& name = "object" );
 	virtual ~RPShape();
 
 	virtual void setPosition( int x, int y );
@@ -46,6 +46,12 @@ public:
 
 	// Габориты фигуры
 	virtual rp::rect getBoundingRect( bool global = true ) const;
+	virtual rp::rect getMaxRect() {
+		transformToGlobal();
+		pa_global.extendByPerimetr( static_cast<double>(main_pen_width) / 2.0 );
+		return rp::rect( pa_global.getMinX(), pa_global.getMinY(), pa_global.getMaxX(), pa_global.getMaxY() );
+	}
+
 	// Перевод всех элементов фигуры в глобальные координаты
 	virtual void transformToGlobal();
 	// Находится ли точка внутри фигуры

@@ -27,12 +27,14 @@ void RPFlowChartObject::notify( RPObject* from, UINT message, WPARAM wParam, LPA
 {
 	if ( message == rp::msg::RP_FLOWSTATE_CHANGED ) {
 		flowchart->updateFlowState();
+/*
 		RPProject::FlowState flow_state = static_cast<RPProject::FlowState>(wParam);
 		switch ( flow_state ) {
 			case RPProject::flow_select   : break;
 			case RPProject::flow_connector: break;
 			case RPProject::flow_rotate   : break;
 		}
+*/
 	}
 }
 
@@ -78,6 +80,7 @@ RPFlowChart::RPFlowChart():
 	pixmap_h_show( 0 ),
 	client_width( 0 ),
 	client_height( 0 ),
+	scroll_bar_size( CRect(0,0,0,0) ),
 	select_box_size2( 4 ),
 	mem_bmp( NULL ),
 	saved_dc( 0 ),
@@ -149,8 +152,9 @@ BOOL RPFlowChart::Create( LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD d
 //	updateFont();
 	updateScrollBars();
 
-	shape_action = new RPShapeAction( flowobj, this );
-	shape_if = new RPShapeIf( flowobj, this );
+	shape_action = new RPShapeAction( flowobj, flowobj, this );
+//	shape_action->setPosition( 200, 100 );
+	shape_if = new RPShapeIf( flowobj, flowobj, this );
 	shape_if->setPosition( 200, 100 );
 
 #ifdef TEST_SPEED // =====================================
@@ -242,34 +246,72 @@ void RPFlowChart::deleteShape( RPShape* shape )
 	}
 }
 
-CSize RPFlowChart::getFlowSize( const std::list< RPChartObject* >& list ) const
+rp::rect RPFlowChart::getFlowSize( const std::list< RPChartObject* >& list ) const
 {
-	int max_x = 0;
-	int max_y = 0;
+	double max_x = 0;
+	double max_y = 0;
+	double min_x = 0;
+	double min_y = 0;
 	std::list< RPChartObject* >::const_iterator it = list.begin();
-	while ( it != list.end() ) {
-		rp::rect rect = (*it)->getBoundingRect();
-		if ( rect.getMaxX() > max_x ) {
-			max_x = rect.getMaxX();
-		}
-		if ( rect.getMaxY() > max_y ) {
-			max_y = rect.getMaxY();
-		}
+	if ( it != list.end() ) {
+		rp::rect rect = (*it)->getMaxRect();
+		max_x = rect.getMaxX();
+		max_y = rect.getMaxY();
+		min_x = rect.getMinX();
+		min_y = rect.getMinY();
 		it++;
 	}
-	return CSize( max_x, max_y );
+	while ( it != list.end() ) {
+		rp::rect rect = (*it)->getMaxRect();
+		double _max_x = rect.getMaxX();
+		double _max_y = rect.getMaxY();
+		double _min_x = rect.getMinX();
+		double _min_y = rect.getMinY();
+		if ( _max_x > max_x ) max_x = _max_x;
+		if ( _max_y > max_y ) max_y = _max_y;
+		if ( _min_x < min_x ) min_x = _min_x;
+		if ( _min_y < min_y ) min_y = _min_y;
+		it++;
+	}
+	min_x -= flowobj->matrix_transform.dx();
+	max_x -= flowobj->matrix_transform.dx();
+	min_y -= flowobj->matrix_transform.dy();
+	max_y -= flowobj->matrix_transform.dy();
+	return rp::rect( min_x, min_y, max_x, max_y );
 }
 
 void RPFlowChart::updateScrollBars()
 {
-	CSize size = getFlowSize();
+	rp::rect rect = getFlowSize();
+	if ( scroll_bar_size.left   > rect.getMinX() ) scroll_bar_size.left   = rect.getMinX();
+	if ( scroll_bar_size.top    > rect.getMinY() ) scroll_bar_size.top    = rect.getMinY();
+	if ( scroll_bar_size.right  < rect.getMaxX() ) scroll_bar_size.right  = rect.getMaxX();
+	if ( scroll_bar_size.bottom < rect.getMaxY() ) scroll_bar_size.bottom = rect.getMaxY();
+	if ( scroll_bar_size.left   > -pixmap_w_show ) scroll_bar_size.left   = -pixmap_w_show;
+	if ( scroll_bar_size.top    > -pixmap_h_show ) scroll_bar_size.top    = -pixmap_h_show;
+	if ( scroll_bar_size.right  <  pixmap_w_show ) scroll_bar_size.right  = pixmap_w_show;
+	if ( scroll_bar_size.bottom <  pixmap_h_show ) scroll_bar_size.bottom = pixmap_h_show;
 
 	SCROLLINFO si;
-	si.cbSize = sizeof( si );
-	si.fMask  = SIF_RANGE | SIF_PAGE | SIF_POS;
+	si.cbSize = sizeof( SCROLLINFO );
+	si.fMask  = SIF_PAGE | SIF_RANGE | SIF_POS;
 
-	int max_x = size.cx + border_w * 2 + paper_border_w * 2 - 1;
-	int max_y = size.cy + border_h * 2 + paper_border_h * 2 - 1;
+	si.nMin   = scroll_bar_size.left;
+	si.nMax   = scroll_bar_size.right - pixmap_w_show;
+	si.nPos   = -flowobj->matrix_transform.dx();
+	si.nPage  = pixmap_w_show;
+	TRACE( "min = %d, max = %d, page = %d\n", si.nMin, si.nMax, si.nPage );
+	SetScrollInfo( SB_HORZ, &si, TRUE );
+
+	si.nMin   = scroll_bar_size.top;
+	si.nMax   = scroll_bar_size.bottom;
+	si.nPos   = -flowobj->matrix_transform.dy();
+	si.nPage  = pixmap_h_show;
+	SetScrollInfo( SB_VERT, &si, TRUE );
+
+/*
+	int max_x = rect.p_tr().x - rect.p_tl().x + border_w * 2 + paper_border_w * 2 - 1;
+	int max_y = rect.p_bl().y - rect.p_tl().y + border_h * 2 + paper_border_h * 2 - 1;
 	int scroll_x_pos = flowobj->matrix_transform.dx();
 	int scroll_y_pos = flowobj->matrix_transform.dy();
 	if ( scroll_x_pos + pixmap_w_show > max_x ) scroll_x_pos = max_x - pixmap_w_show;
@@ -290,6 +332,7 @@ void RPFlowChart::updateScrollBars()
 	si.nPos   = scroll_y_pos;
 	si.nPage  = client_height;
 	SetScrollInfo( SB_VERT, &si, TRUE );
+*/
 }
 
 void RPFlowChart::updateDC()
@@ -752,38 +795,44 @@ void RPFlowChart::OnPaint()
 void RPFlowChart::OnHScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBar )
 {
 	SCROLLINFO si;
-	si.cbSize = sizeof( si );
-	switch( nSBCode ) {
-		case SB_PAGEUP:
+	si.cbSize = sizeof( SCROLLINFO );
+	switch ( nSBCode ) {
+		case SB_PAGEUP: {
 			GetScrollInfo( SB_HORZ, &si, SIF_PAGE );
 			flowobj->matrix_transform.dx() += si.nPage;
 			break; 
-
-		case SB_PAGEDOWN:
+		}
+		case SB_PAGEDOWN: {
 			GetScrollInfo( SB_HORZ, &si, SIF_PAGE );
 			flowobj->matrix_transform.dx() -= si.nPage;
 			break;
-
-		case SB_LINEUP:
-			flowobj->matrix_transform.dx()++;
+		}
+		case SB_LINEUP: {
+			flowobj->matrix_transform.dx() += 50;
 			break;
-
-		case SB_LINEDOWN:
-			flowobj->matrix_transform.dx()--;
+		}
+		case SB_LINEDOWN: {
+			flowobj->matrix_transform.dx() -= 50;
 			break;
-
+		}
 		case SB_THUMBTRACK: {
 			GetScrollInfo( SB_HORZ, &si, SIF_TRACKPOS );
-			flowobj->matrix_transform.dx() -= si.nTrackPos - flowobj->matrix_transform.dx();
+			flowobj->matrix_transform.dx() = -si.nTrackPos;
 			break;
 		}
 	}
-	CSize size = getFlowSize();
-	int width = size.cx - pixmap_w_show + paper_border_w * 2;
-	if ( flowobj->matrix_transform.dx() > width ) flowobj->matrix_transform.dx() = width;
-	if ( flowobj->matrix_transform.dx() < 0 ) flowobj->matrix_transform.dx() = 0;
-	si.fMask = SIF_POS;
-	si.nPos  = flowobj->matrix_transform.dx();
+
+	if ( scroll_bar_size.left  > -flowobj->matrix_transform.dx() ) scroll_bar_size.left  = -flowobj->matrix_transform.dx();
+	if ( scroll_bar_size.right < -flowobj->matrix_transform.dx() ) {
+		scroll_bar_size.right = -flowobj->matrix_transform.dx();
+		TRACE( "new right = %d\n", scroll_bar_size.right );
+	}
+
+	si.fMask  = SIF_PAGE | SIF_RANGE | SIF_POS;
+	si.nMin   = scroll_bar_size.left;
+	si.nMax   = scroll_bar_size.right;
+	si.nPos   = -flowobj->matrix_transform.dx();
+	si.nPage  = pixmap_w_show;
 	SetScrollInfo( SB_HORZ, &si, TRUE );
 	updateDC();
 }
@@ -791,38 +840,41 @@ void RPFlowChart::OnHScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBar )
 void RPFlowChart::OnVScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBar )
 {
 	SCROLLINFO si;
-	si.cbSize = sizeof( si );
-	switch( nSBCode ) {
-		case SB_PAGEUP:
+	si.cbSize = sizeof( SCROLLINFO );
+	switch ( nSBCode ) {
+		case SB_PAGEUP: {
 			GetScrollInfo( SB_VERT, &si, SIF_PAGE );
 			flowobj->matrix_transform.dy() += si.nPage;
 			break; 
-
-		case SB_PAGEDOWN:
+		}
+		case SB_PAGEDOWN: {
 			GetScrollInfo( SB_VERT, &si, SIF_PAGE );
 			flowobj->matrix_transform.dy() -= si.nPage;
 			break;
-
-		case SB_LINEUP:
-			flowobj->matrix_transform.dy()++;
+		}
+		case SB_LINEUP: {
+			flowobj->matrix_transform.dy() += 50;
 			break;
-
-		case SB_LINEDOWN:
-			flowobj->matrix_transform.dy()--;
+		}
+		case SB_LINEDOWN: {
+			flowobj->matrix_transform.dy() -= 50;
 			break;
-
+		}
 		case SB_THUMBTRACK: {
 			GetScrollInfo( SB_VERT, &si, SIF_TRACKPOS );
-			flowobj->matrix_transform.dy() -= si.nTrackPos - flowobj->matrix_transform.dy();
+			flowobj->matrix_transform.dy() = -si.nTrackPos;
 			break;
 		}
 	}
-	CSize size = getFlowSize();
-	int height = size.cy - pixmap_h_show + paper_border_h * 2;
-	if ( flowobj->matrix_transform.dy() > height ) flowobj->matrix_transform.dy() = height;
-	if ( flowobj->matrix_transform.dy() < 0 ) flowobj->matrix_transform.dy() = 0;
-	si.fMask = SIF_POS;
-	si.nPos  = flowobj->matrix_transform.dy();
+
+	if ( scroll_bar_size.top    > -flowobj->matrix_transform.dy() ) scroll_bar_size.top    = -flowobj->matrix_transform.dy();
+	if ( scroll_bar_size.bottom < -flowobj->matrix_transform.dy() ) scroll_bar_size.bottom = -flowobj->matrix_transform.dy();
+
+	si.fMask  = SIF_PAGE | SIF_RANGE | SIF_POS;
+	si.nMin   = scroll_bar_size.top;
+	si.nMax   = scroll_bar_size.bottom;
+	si.nPos   = -flowobj->matrix_transform.dy();
+	si.nPage  = pixmap_h_show;
 	SetScrollInfo( SB_VERT, &si, TRUE );
 	updateDC();
 }
@@ -1039,6 +1091,258 @@ void RPFlowChart::OnLButtonUp( UINT nFlags, CPoint local_mouse_pos )
 //	resetPreview();
 }
 
+void RPFlowChart::getScaleDelta( rp::point& delta, RPChartObject::angle90 a90, RPChartObject::PossibleCommand pcmd ) const
+{
+	switch ( pcmd ) {
+		case RPChartObject::pcmd_scale_tl: {
+			switch ( a90 ) {
+				case RPChartObject::angle90_0  : delta.x = -delta.x; delta.y = -delta.y; break;
+				case RPChartObject::angle90_90 : delta.y = -delta.y; break;
+				case RPChartObject::angle90_180: break;
+				case RPChartObject::angle90_270: delta.x = -delta.x; break;
+			}
+			break;
+		}
+		case RPChartObject::pcmd_scale_tr: {
+			switch ( a90 ) {
+				case RPChartObject::angle90_0  : delta.y = -delta.y; break;
+				case RPChartObject::angle90_90 : break;
+				case RPChartObject::angle90_180: delta.x = -delta.x; break;
+				case RPChartObject::angle90_270: delta.x = -delta.x; delta.y = -delta.y; break;
+			}
+			break;
+		}
+		case RPChartObject::pcmd_scale_br: {
+			switch ( a90 ) {
+				case RPChartObject::angle90_0  : break;
+				case RPChartObject::angle90_90 : delta.x = -delta.x; break;
+				case RPChartObject::angle90_180: delta.x = -delta.x; delta.y = -delta.y; break;
+				case RPChartObject::angle90_270: delta.y = -delta.y; break;
+			}
+			break;
+		}
+		case RPChartObject::pcmd_scale_bl: {
+			switch ( a90 ) {
+				case RPChartObject::angle90_0  : delta.x = -delta.x; break;
+				case RPChartObject::angle90_90 : delta.x = -delta.x; delta.y = -delta.y; break;
+				case RPChartObject::angle90_180: delta.y = -delta.y; break;
+				case RPChartObject::angle90_270: break;
+			}
+			break;
+		}
+		case RPChartObject::pcmd_scale_r: {
+			switch ( a90 ) {
+				case RPChartObject::angle90_0  : delta.x = delta.x ; delta.y = 0; break;
+				case RPChartObject::angle90_90 : delta.y = delta.y ; delta.x = 0; break;
+				case RPChartObject::angle90_180: delta.x = -delta.x; delta.y = 0; break;
+				case RPChartObject::angle90_270: delta.y = -delta.y; delta.x = 0; break;
+			}
+			break;
+		}
+		case RPChartObject::pcmd_scale_l: {
+			switch ( a90 ) {
+				case RPChartObject::angle90_0  : delta.x = -delta.x; delta.y = 0; break;
+				case RPChartObject::angle90_90 : delta.y = -delta.y; delta.x = 0; break;
+				case RPChartObject::angle90_180: delta.x = delta.x ; delta.y = 0; break;
+				case RPChartObject::angle90_270: delta.y = delta.y ; delta.x = 0; break;
+			}
+			break;
+		}
+		case RPChartObject::pcmd_scale_t: {
+			switch ( a90 ) {
+				case RPChartObject::angle90_0  : delta.y = -delta.y; delta.x = 0; break;
+				case RPChartObject::angle90_90 : delta.x = delta.x ; delta.y = 0; break;
+				case RPChartObject::angle90_180: delta.y = delta.y ; delta.x = 0; break;
+				case RPChartObject::angle90_270: delta.x = -delta.x; delta.y = 0; break;
+			}
+			break;
+		}
+		case RPChartObject::pcmd_scale_b: {
+			switch ( a90 ) {
+				case RPChartObject::angle90_0  : delta.y = delta.y ; delta.x = 0; break;
+				case RPChartObject::angle90_90 : delta.x = -delta.x; delta.y = 0; break;
+				case RPChartObject::angle90_180: delta.y = -delta.y; delta.x = 0; break;
+				case RPChartObject::angle90_270: delta.x = delta.x ; delta.y = 0; break;
+			}
+			break;
+		}
+	}
+}
+
+void RPFlowChart::getRectDelta( rp::rect& rect_old, rp::rect& rect_new, rp::point& delta, RPChartObject::angle90 a90, RPChartObject::PossibleCommand pcmd ) const
+{
+	switch ( pcmd ) {
+		case RPChartObject::pcmd_scale_tl: {
+			switch ( a90 ) {
+				case RPChartObject::angle90_0  : {
+					delta.x = rect_old.p_br().x - rect_new.p_br().x;
+					delta.y = rect_old.p_br().y - rect_new.p_br().y;
+					break;
+				}
+				case RPChartObject::angle90_90 : {
+					delta.x = rect_old.p_bl().x - rect_new.p_bl().x;
+					delta.y = rect_old.p_bl().y - rect_new.p_bl().y;
+					break;
+				}
+				case RPChartObject::angle90_180: {
+					delta.x = rect_old.p_tl().x - rect_new.p_tl().x;
+					delta.y = rect_old.p_tl().y - rect_new.p_tl().y;
+					break;
+				}
+				case RPChartObject::angle90_270: {
+					delta.x = rect_old.p_tr().x - rect_new.p_tr().x;
+					delta.y = rect_old.p_tr().y - rect_new.p_tr().y;
+					break;
+				}
+			}
+			break;
+		}
+		case RPChartObject::pcmd_scale_tr: {
+			switch ( a90 ) {
+				case RPChartObject::angle90_0  : {
+					delta.x = rect_old.p_bl().x - rect_new.p_bl().x;
+					delta.y = rect_old.p_bl().y - rect_new.p_bl().y;
+					break;
+				}
+				case RPChartObject::angle90_90 : {
+					delta.x = rect_old.p_tl().x - rect_new.p_tl().x;
+					delta.y = rect_old.p_tl().y - rect_new.p_tl().y;
+					break;
+				}
+				case RPChartObject::angle90_180: {
+					delta.x = rect_old.p_tr().x - rect_new.p_tr().x;
+					delta.y = rect_old.p_tr().y - rect_new.p_tr().y;
+					break;
+				}
+				case RPChartObject::angle90_270: {
+					delta.x = rect_old.p_br().x - rect_new.p_br().x;
+					delta.y = rect_old.p_br().y - rect_new.p_br().y;
+					break;
+				}
+			}
+			break;
+		}
+		case RPChartObject::pcmd_scale_br: {
+			switch ( a90 ) {
+				case RPChartObject::angle90_0  : {
+					delta.x = rect_old.p_tl().x - rect_new.p_tl().x;
+					delta.y = rect_old.p_tl().y - rect_new.p_tl().y;
+					break;
+				}
+				case RPChartObject::angle90_90 : {
+					delta.x = rect_old.p_tr().x - rect_new.p_tr().x;
+					delta.y = rect_old.p_tr().y - rect_new.p_tr().y;
+					break;
+				}
+				case RPChartObject::angle90_180: {
+					delta.x = rect_old.p_br().x - rect_new.p_br().x;
+					delta.y = rect_old.p_br().y - rect_new.p_br().y;
+					break;
+				}
+				case RPChartObject::angle90_270: {
+					delta.x = rect_old.p_bl().x - rect_new.p_bl().x;
+					delta.y = rect_old.p_bl().y - rect_new.p_bl().y;
+					break;
+				}
+			}
+			break;
+		}
+		case RPChartObject::pcmd_scale_bl: {
+			switch ( a90 ) {
+				case RPChartObject::angle90_0  : {
+					delta.x = rect_old.p_tr().x - rect_new.p_tr().x;
+					delta.y = rect_old.p_tr().y - rect_new.p_tr().y;
+					break;
+				}
+				case RPChartObject::angle90_90 : {
+					delta.x = rect_old.p_br().x - rect_new.p_br().x;
+					delta.y = rect_old.p_br().y - rect_new.p_br().y;
+					break;
+				}
+				case RPChartObject::angle90_180: {
+					delta.x = rect_old.p_bl().x - rect_new.p_bl().x;
+					delta.y = rect_old.p_bl().y - rect_new.p_bl().y;
+					break;
+				}
+				case RPChartObject::angle90_270: {
+					delta.x = rect_old.p_tl().x - rect_new.p_tl().x;
+					delta.y = rect_old.p_tl().y - rect_new.p_tl().y;
+					break;
+				}
+			}
+			break;
+		}
+		case RPChartObject::pcmd_scale_r: {
+			switch ( a90 ) {
+				case RPChartObject::angle90_0  :
+				case RPChartObject::angle90_90 : {
+					delta.x = rect_old.p_tl().x - rect_new.p_tl().x;
+					delta.y = rect_old.p_tl().y - rect_new.p_tl().y;
+					break;
+				}
+				case RPChartObject::angle90_180:
+				case RPChartObject::angle90_270: {
+					delta.x = rect_new.p_tl().x - rect_old.p_tl().x;
+					delta.y = rect_new.p_tl().y - rect_old.p_tl().y;
+					break;
+				}
+			}
+			break;
+		}
+		case RPChartObject::pcmd_scale_l: {
+			switch ( a90 ) {
+				case RPChartObject::angle90_0  :
+				case RPChartObject::angle90_90 : {
+					delta.x = rect_new.p_tl().x - rect_old.p_tl().x;
+					delta.y = rect_new.p_tl().y - rect_old.p_tl().y;
+					break;
+				}
+				case RPChartObject::angle90_180:
+				case RPChartObject::angle90_270: {
+					delta.x = rect_old.p_tl().x - rect_new.p_tl().x;
+					delta.y = rect_old.p_tl().y - rect_new.p_tl().y;
+					break;
+				}
+			}
+			break;
+		}
+		case RPChartObject::pcmd_scale_t: {
+			switch ( a90 ) {
+				case RPChartObject::angle90_0  :
+				case RPChartObject::angle90_270: {
+					delta.x = rect_new.p_tl().x - rect_old.p_tl().x;
+					delta.y = rect_new.p_tl().y - rect_old.p_tl().y;
+					break;
+				}
+				case RPChartObject::angle90_90 :
+				case RPChartObject::angle90_180: {
+					delta.x = rect_old.p_tl().x - rect_new.p_tl().x;
+					delta.y = rect_old.p_tl().y - rect_new.p_tl().y;
+					break;
+				}
+			}
+			break;
+		}
+		case RPChartObject::pcmd_scale_b: {
+			switch ( a90 ) {
+				case RPChartObject::angle90_0  :
+				case RPChartObject::angle90_270: {
+					delta.x = rect_old.p_tl().x - rect_new.p_tl().x;
+					delta.y = rect_old.p_tl().y - rect_new.p_tl().y;
+					break;
+				}
+				case RPChartObject::angle90_90 :
+				case RPChartObject::angle90_180: {
+					delta.x = rect_new.p_tl().x - rect_old.p_tl().x;
+					delta.y = rect_new.p_tl().y - rect_old.p_tl().y;
+					break;
+				}
+			}
+			break;
+		}
+	}
+}
+
 void RPFlowChart::OnMouseMove( UINT nFlags, CPoint local_mouse_pos )
 {
 	CWnd::OnMouseMove( nFlags, local_mouse_pos );
@@ -1056,6 +1360,7 @@ void RPFlowChart::OnMouseMove( UINT nFlags, CPoint local_mouse_pos )
 	// Эти операции не могут быть групповыми.
 	if ( one_object ) {
 		RPChartObject::angle90 a90 = one_object->getAngle90();
+		bool   horz  = a90 == RPChartObject::angle90_0 || a90 == RPChartObject::angle90_180;
 		double alpha = one_object->getRotation();
 		double dx = global_mouse_pos.x - global_mouse_pos_prev.x;
 		double dy = global_mouse_pos.y - global_mouse_pos_prev.y;
@@ -1080,39 +1385,31 @@ void RPFlowChart::OnMouseMove( UINT nFlags, CPoint local_mouse_pos )
 				updateDC();
 				break;
 			}
-			case RPChartObject::pcmd_scale_r      : {
-				one_object->backup_push();
-				rp::rect rect = one_object->getBoundingRect();
-				if ( a90 == RPChartObject::angle90_0 || a90 == RPChartObject::angle90_180 ) {
-					double len = rp::math::getLength( rect.p_l(), rect.p_r() );
-					one_object->setScaleX( one_object->getScaleX() * (len + dx) / len );
-					double _dx = a90 == RPChartObject::angle90_0 ? dx / 2 : -dx / 2;
-					one_object->setPostX( one_object->getPostX() + _dx );
-					rp::rect rect2 = one_object->getBoundingRect();
-					rp::point point( rect.p_l().x - rect2.p_l().x, 0 );
-					point = one_object->globalRotate().obr() * point;
-					if ( fabs(point.x) > 1e-10 ) {
-						one_object->backup_pop();
-						dx += point.x;
-						if ( dx ) {
-							one_object->setScaleX( one_object->getScaleX() * (len + dx) / len );
-							double _dx = a90 == RPChartObject::angle90_0 ? dx / 2 : -dx / 2;
-							one_object->setPostX( one_object->getPostX() + _dx );
-						}
-					}
-					if ( dx ) {
-						one_object->setRotateCenterLocalDelta( dx, 0 );
-					}
+			case RPChartObject::pcmd_scale_t      :
+			case RPChartObject::pcmd_scale_b      :
+			case RPChartObject::pcmd_scale_l      :
+			case RPChartObject::pcmd_scale_r      :
+			case RPChartObject::pcmd_scale_tl     :
+			case RPChartObject::pcmd_scale_tr     :
+			case RPChartObject::pcmd_scale_bl     :
+			case RPChartObject::pcmd_scale_br     : {
+				rp::rect  rect = one_object->getBoundingRect();
+				rp::point point_delta( one_object->globalRotate().obr() * rp::point(dx, dy) );
+				rp::point len( rp::math::getLength( rect.p_tl(), rect.p_tr() ), rp::math::getLength( rect.p_tl(), rect.p_bl() ) );
+				getScaleDelta( point_delta, a90, one_object_pcmd );
+				if ( len.x + point_delta.x < 0 ) {
+					point_delta.x = -len.x;
 				}
-				if ( a90 == RPChartObject::angle90_90 || a90 == RPChartObject::angle90_270 ) {
-					double len = rp::math::getLength( rect.p_t(), rect.p_b() );
-					one_object->setScaleY( one_object->getScaleY() * (len + dx) / len );
-					dx /= 2;
-					dx *= a90 == RPChartObject::angle90_90 ? 1 : -1;
-					one_object->setPostY( one_object->getPostY() + dx );
-					one_object->setRotateCenterLocalDelta( 0, dx );
+				if ( len.y + point_delta.y < 0 ) {
+					point_delta.y = -len.y;
 				}
-				one_object->backup_clear();
+				one_object->setScaleX( one_object->getScaleX() * (len.x + point_delta.x ) / len.x );
+				one_object->setScaleY( one_object->getScaleY() * (len.y + point_delta.y ) / len.y );
+				getRectDelta( rect, one_object->getBoundingRect(), point_delta, a90, one_object_pcmd );
+				point_delta = one_object->globalRotate().obr() * point_delta;
+				one_object->setPostX( one_object->getPostX() + point_delta.x );
+				one_object->setPostY( one_object->getPostY() + point_delta.y );
+				one_object->setRotateCenterLocalDelta( point_delta.x, point_delta.y );
 				updateDC();
 				break;
 			}

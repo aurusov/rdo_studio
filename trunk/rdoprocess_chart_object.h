@@ -22,7 +22,16 @@ friend class RPFlowChart;
 private:
 	mutable rp::point rotate_center;
 	mutable bool      rotate_center_inited;
-
+/*
+	class Backup {
+	public:
+		rp::matrix matrix_transform;
+		rp::matrix matrix_rotate;
+		rp::matrix matrix_transform_post;
+		rp::matrix matrix_scale;
+		int        rotation_alpha;
+	};
+*/
 protected:
 	RPChartObject* chart_parent;
 	RPFlowChart* flowchart;
@@ -35,7 +44,7 @@ protected:
 	rp::matrix matrix_scale;
 	double rotation_alpha;
 
-	std::list< rp::matrix > backup;
+//	std::list< Backup > backup;
 
 	rp::matrix selfMatrix() const {
 		return matrix_transform * matrix_rotate * matrix_transform_post * matrix_scale;
@@ -43,8 +52,8 @@ protected:
 	rp::matrix globalMatrix() const {
 		return chart_parent ? chart_parent->globalMatrix() * selfMatrix() : selfMatrix();
 	}
-	rp::matrix parentMatrix( bool self = true ) const {
-		if ( self ) {
+	rp::matrix parentMatrix( bool first = true ) const {
+		if ( first ) {
 			return chart_parent ? chart_parent->parentMatrix( false ) : rp::matrix();
 		} else {
 			return chart_parent ? chart_parent->parentMatrix( false ) * selfMatrix() : selfMatrix();
@@ -54,7 +63,9 @@ protected:
 		return parentMatrix() * matrix_transform;
 	}
 	rp::matrix globalRotate() const {
-		return chart_parent ? chart_parent->globalRotate() * matrix_rotate : matrix_rotate;
+		rp::matrix m_rotate;
+		RPChartObject::fillRotateMatrix( m_rotate, rotation_alpha );
+		return chart_parent ? chart_parent->globalRotate() * m_rotate : m_rotate;
 	}
 	static void fillRotateMatrix( rp::matrix& m_rotate, double alpha ) {
 		alpha *= rp::math::pi / 180.0;
@@ -156,22 +167,28 @@ public:
 		if ( alpha > 315 - 22 && alpha <= 315 + 22 ) return RPChartObject::angle45_315;
 		return RPChartObject::angle45_0;
 	}
-
+/*
 	// Стек для бекапа матриц
 	void backup_push() {
-		backup.push_back( matrix_transform );
-		backup.push_back( matrix_rotate );
-		backup.push_back( matrix_transform_post );
-		backup.push_back( matrix_scale );
+		Backup bkp;
+		bkp.matrix_transform      = matrix_transform;
+		bkp.matrix_rotate         = matrix_rotate;
+		bkp.matrix_transform_post = matrix_transform_post;
+		bkp.matrix_scale          = matrix_scale;
+		bkp.rotation_alpha        = rotation_alpha;
+		backup.push_back( bkp );
 	}
 	void backup_pop() {
-		matrix_scale          = backup.back(); backup.pop_back();
-		matrix_transform_post = backup.back(); backup.pop_back();
-		matrix_rotate         = backup.back(); backup.pop_back();
-		matrix_transform      = backup.back(); backup.pop_back();
+		Backup bkp = backup.back();
+		backup.pop_back();
+		matrix_transform      = bkp.matrix_transform;
+		matrix_rotate         = bkp.matrix_rotate;
+		matrix_transform_post = bkp.matrix_transform_post;
+		matrix_scale          = bkp.matrix_scale;
+		rotation_alpha        = bkp.rotation_alpha;
 	}
 	void backup_clear() { backup.clear(); }
-
+*/
 	// Выделить/снять выделение с фигуры
 	virtual void setSelected( bool value );
 	// Отрисовка фигуры
@@ -180,6 +197,7 @@ public:
 
 	// Габориты фигуры
 	virtual rp::rect getBoundingRect( bool global = true ) const = 0;
+	virtual rp::rect getMaxRect()  { return getBoundingRect(); }
 
 	// Центр в глобальных координатах
 	rp::point getCenter() const {
