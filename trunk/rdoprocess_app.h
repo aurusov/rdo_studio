@@ -13,6 +13,8 @@
 
 #include "rdoprocess_project.h"
 #include "rdoprocess_messages.h"
+#include "ctrl/rdolink.h"
+#include "resource.h"
 
 /*! Класс приложения. При старте программы автоматически создается один экземпляр.
 К нему можно обратится по имени rpapp. Базовый класс CWinApp используется библиотекой MFC для инициализации
@@ -59,6 +61,36 @@ public:
 	//{{AFX_MSG(RPApp)
 	afx_msg void OnAppAbout();
 	afx_msg void OnFileNew();
+	//}}AFX_MSG
+	DECLARE_MESSAGE_MAP()
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RPAboutDlg
+// ----------------------------------------------------------------------------
+class RPAboutDlg: public CDialog
+{
+public:
+	RPAboutDlg();
+	virtual ~RPAboutDlg();
+
+protected:
+	//{{AFX_DATA(RPAboutDlg)
+	enum { IDD = IDD_ABOUT };
+	RDOLink	m_web;
+	RDOLink	m_email;
+	CString	m_caption;
+	//}}AFX_DATA
+
+	//{{AFX_VIRTUAL(RPAboutDlg)
+	protected:
+	virtual void DoDataExchange( CDataExchange* pDX );
+	//}}AFX_VIRTUAL
+
+protected:
+	//{{AFX_MSG(RPAboutDlg)
+	afx_msg void OnAboutEmail();
+	afx_msg void OnAboutWeb();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

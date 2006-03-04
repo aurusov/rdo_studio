@@ -19,6 +19,15 @@
 #define IDB_PAGECTRL_CLOSE              147
 #define IDB_PAGECTRL_CLOSE_OVER         148
 #define IDB_PAGECTRL_PAGE               149
+#define IDD_ABOUT                       165
+#define IDC_ABOUT_CAPTION               1082
+#define IDC_ABOUT_PICTURE               1083
+#define IDC_ABOUT_ADDRESS               1084
+#define IDC_ABOUT_TEL                   1085
+#define IDC_ABOUR_EMAIL_STATIC          1086
+#define IDC_ABOUT_EMAIL                 1087
+#define IDC_ABOUR_WEB_STATIC            1088
+#define IDC_ABOUT_WEB                   1089
 #define ID_FLOW_SELECT                  32771
 #define ID_FLOW_CONNECTOR               32772
 #define ID_FLOW_ROTATE                  32773

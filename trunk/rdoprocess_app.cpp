@@ -132,49 +132,83 @@ void RPApp::OnFileNew()
 		RUNTIME_CLASS(RPChildFrame), IDR_RDO_PRTYPE, m_hMDIMenu, m_hMDIAccel);
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RPApp
-// ----------------------------------------------------------------------------
-class RPAboutDlg: public CDialog
-{
-public:
-	RPAboutDlg();
-
-	//{{AFX_DATA(RPAboutDlg)
-	enum { IDD = IDD_ABOUTBOX };
-	//}}AFX_DATA
-
-	//{{AFX_VIRTUAL(RPAboutDlg)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-protected:
-	//{{AFX_MSG(RPAboutDlg)
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
-};
-
-BEGIN_MESSAGE_MAP(RPAboutDlg, CDialog)
-	//{{AFX_MSG_MAP(RPAboutDlg)
-	//}}AFX_MSG_MAP
-END_MESSAGE_MAP()
-
-RPAboutDlg::RPAboutDlg() : CDialog(RPAboutDlg::IDD)
-{
-	//{{AFX_DATA_INIT(RPAboutDlg)
-	//}}AFX_DATA_INIT
-}
-
-void RPAboutDlg::DoDataExchange(CDataExchange* pDX)
-{
-	CDialog::DoDataExchange(pDX);
-	//{{AFX_DATA_MAP(CAboutDlg)
-	//}}AFX_DATA_MAP
-}
-
 void RPApp::OnAppAbout()
 {
 	RPAboutDlg aboutDlg;
 	aboutDlg.DoModal();
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RPAboutDlg
+// ----------------------------------------------------------------------------
+BEGIN_MESSAGE_MAP( RPAboutDlg, CDialog )
+	//{{AFX_MSG_MAP(RPAboutDlg)
+	ON_BN_CLICKED(IDC_ABOUT_EMAIL, OnAboutEmail)
+	ON_BN_CLICKED(IDC_ABOUT_WEB, OnAboutWeb)
+	//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+RPAboutDlg::RPAboutDlg():
+	CDialog( IDD )
+{
+	//{{AFX_DATA_INIT(RPAboutDlg)
+	m_caption = _T("");
+	//}}AFX_DATA_INIT
+	TCHAR szExeName[ MAX_PATH + 1 ];
+	if ( ::GetModuleFileName( NULL, szExeName, MAX_PATH ) ) {
+		DWORD dwHnd;
+		DWORD size = ::GetFileVersionInfoSize( szExeName, &dwHnd );
+		if ( size ) {
+			void* pBuffer = malloc( size );
+			if ( pBuffer != NULL ) {
+				if ( ::GetFileVersionInfo( szExeName, dwHnd, size, pBuffer ) ) {
+					DWORD* pTranslation;
+					UINT   length;
+					if ( ::VerQueryValue( pBuffer, _T("\\VarFileInfo\\Translation"), (void**)&pTranslation, &length ) ) {
+						DWORD translation = *pTranslation;
+						char key[2000];
+						wsprintf( key, _T("\\StringFileInfo\\%04x%04x\\ProductName"), LOWORD( translation ), HIWORD( translation ) );
+						char* productName;
+						if ( ::VerQueryValue( pBuffer, key, (void**)&productName, &length ) ) {
+							VS_FIXEDFILEINFO* fixedInfo;
+							if ( ::VerQueryValue( pBuffer, _T("\\"), (void**)&fixedInfo, &length ) ) {
+								CString s;
+								s.Format( "%s     version %u.%u (build %u)", productName, HIWORD( fixedInfo->dwProductVersionMS ), LOWORD( fixedInfo->dwProductVersionMS ), LOWORD( fixedInfo->dwProductVersionLS ) );
+								m_caption = s;
+							}
+						}
+					}
+				}
+				free( pBuffer );
+			}
+		}
+	}
+}
+
+RPAboutDlg::~RPAboutDlg()
+{
+}
+
+void RPAboutDlg::DoDataExchange( CDataExchange* pDX )
+{
+	CDialog::DoDataExchange(pDX);
+	//{{AFX_DATA_MAP(RPAboutDlg)
+	DDX_Control(pDX, IDC_ABOUT_WEB, m_web);
+	DDX_Control(pDX, IDC_ABOUT_EMAIL, m_email);
+	DDX_Text(pDX, IDC_ABOUT_CAPTION, m_caption);
+	//}}AFX_DATA_MAP
+}
+
+void RPAboutDlg::OnAboutEmail() 
+{
+	CString s;
+	m_email.GetWindowText( s );
+	::ShellExecute( m_hWnd, "open", "mailto:" + s, 0, 0, SW_SHOWNORMAL );
+}
+
+void RPAboutDlg::OnAboutWeb() 
+{
+	CString s;
+	m_web.GetWindowText( s );
+	::ShellExecute( m_hWnd, "open", s, 0, 0, SW_SHOWNORMAL );
 }

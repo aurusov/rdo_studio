@@ -52,7 +52,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /machine:I386
-# ADD LINK32 /nologo /subsystem:windows /machine:I386
+# ADD LINK32 Version.lib /nologo /subsystem:windows /machine:I386
 
 !ELSEIF  "$(CFG)" == "rdo_process - Win32 Debug"
 
@@ -65,6 +65,7 @@ LINK32=link.exe
 # PROP Use_Debug_Libraries 1
 # PROP Output_Dir "Debug"
 # PROP Intermediate_Dir "Debug"
+# PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_AFXDLL" /Yu"stdafx.h" /FD /GZ /c
 # ADD CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /Yu"stdafx.h" /FD /GZ /c
@@ -77,7 +78,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 /nologo /subsystem:windows /debug /machine:I386 /pdbtype:sept
+# ADD LINK32 Version.lib /nologo /subsystem:windows /debug /machine:I386 /pdbtype:sept
 
 !ENDIF 
 
@@ -330,6 +331,10 @@ SOURCE=.\res\Toolbar.bmp
 # PROP Default_Filter ""
 # Begin Source File
 
+SOURCE=.\ctrl\rdolink.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ctrl\rdoprocess_dockwnd.cpp
 # End Source File
 # Begin Source File
@@ -344,6 +349,10 @@ SOURCE=.\ctrl\rdoprocess_projectbar.cpp
 # Begin Group "Ctrl Header Files"
 
 # PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\ctrl\rdolink.h
+# End Source File
 # Begin Source File
 
 SOURCE=.\ctrl\rdoprocess_dockwnd.h

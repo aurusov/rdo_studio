@@ -90,6 +90,50 @@ IDC_FLOW_MOVE           CURSOR  DISCARDABLE     "res\\flow_move.cur"
 IDB_PAGECTRL_CLOSE      BITMAP  DISCARDABLE     "res\\pagectrl_close.bmp"
 IDB_PAGECTRL_CLOSE_OVER BITMAP  DISCARDABLE     "res\\pagectrl_close_over.bmp"
 IDB_PAGECTRL_PAGE       BITMAP  DISCARDABLE     "res\\pagectrl_page.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUT DIALOG DISCARDABLE  0, 0, 268, 132
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "О програме РДО-Процесс"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,208,112,50,14
+    ICON            IDR_MAINFRAME,IDC_ABOUT_PICTURE,16,16,20,20
+    CTEXT           "caption",IDC_ABOUT_CAPTION,52,12,192,8
+    CTEXT           "МГТУ им. Н.Э.Баумана, кафедра ""Комьютерные системы автоматизации производства"" (РК-9), Москва, Россия",
+                    IDC_ABOUT_ADDRESS,52,28,192,24
+    RTEXT           "тел. (095) 263-6388, (095) 263-6954, (095) 263-6049\r\nфакс (095) 263-6170",
+                    IDC_ABOUT_TEL,52,60,192,16
+    RTEXT           "почта:",IDC_ABOUR_EMAIL_STATIC,128,84,32,8
+    LTEXT           "rdo@rk9.bmstu.ru",IDC_ABOUT_EMAIL,164,84,80,8,SS_NOTIFY
+    RTEXT           "сайт:",IDC_ABOUR_WEB_STATIC,128,92,32,8
+    LTEXT           "http://rdo.rk9.bmstu.ru",IDC_ABOUT_WEB,164,92,80,8,
+                    SS_NOTIFY
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_ABOUT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 261
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 125
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
 #endif    // Russian resources
 /////////////////////////////////////////////////////////////////////////////
 
@@ -105,19 +149,19 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 
 /////////////////////////////////////////////////////////////////////////////
 //
+// Bitmap
+//
+
+IDR_MAINFRAME           BITMAP  MOVEABLE PURE   "res\\Toolbar.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
 // Icon
 //
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
 IDR_MAINFRAME           ICON    DISCARDABLE     "res\\rdo_process.ico"
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Bitmap
-//
-
-IDR_MAINFRAME           BITMAP  MOVEABLE PURE   "res\\Toolbar.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -218,24 +262,6 @@ BEGIN
 END
 
 
-/////////////////////////////////////////////////////////////////////////////
-//
-// Dialog
-//
-
-IDD_ABOUTBOX DIALOG DISCARDABLE  0, 0, 235, 55
-STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "About rdo_process"
-FONT 8, "MS Sans Serif"
-BEGIN
-    ICON            IDR_MAINFRAME,IDC_STATIC,11,17,20,20
-    LTEXT           "rdo_process Version 1.0",IDC_STATIC,40,10,119,8,
-                    SS_NOPREFIX
-    LTEXT           "Copyright (C) 2006",IDC_STATIC,40,25,119,8
-    DEFPUSHBUTTON   "OK",IDOK,178,7,50,14,WS_GROUP
-END
-
-
 #ifndef _MAC
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -243,8 +269,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,0,43
- PRODUCTVERSION 1,0,0,43
+ FILEVERSION 0,1,0,43
+ PRODUCTVERSION 0,1,0,43
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -257,17 +283,20 @@ VS_VERSION_INFO VERSIONINFO
 BEGIN
     BLOCK "StringFileInfo"
     BEGIN
-        BLOCK "040904B0"
+        BLOCK "040904b0"
         BEGIN
+            VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
-            VALUE "FileDescription", "rdo_process MFC Application\0"
-            VALUE "FileVersion", "1, 0, 0, 43\0"
-            VALUE "InternalName", "rdo_process\0"
+            VALUE "FileDescription", "Simulation Sistem\0"
+            VALUE "FileVersion", "0, 1, 0, 43\0"
+            VALUE "InternalName", "RAO-Process\0"
             VALUE "LegalCopyright", "Copyright (C) 2006\0"
             VALUE "LegalTrademarks", "\0"
-            VALUE "OriginalFilename", "rdo_process.EXE\0"
-            VALUE "ProductName", "rdo_process Application\0"
-            VALUE "ProductVersion", "1, 0, 0, 43\0"
+            VALUE "OriginalFilename", "rao-process.exe\0"
+            VALUE "PrivateBuild", "\0"
+            VALUE "ProductName", "RAO-Process\0"
+            VALUE "ProductVersion", "0, 1, 0, 43\0"
+            VALUE "SpecialBuild", "\0"
         END
     END
     BLOCK "VarFileInfo"
@@ -277,25 +306,6 @@ BEGIN
 END
 
 #endif    // !_MAC
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// DESIGNINFO
-//
-
-#ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO DISCARDABLE 
-BEGIN
-    IDD_ABOUTBOX, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 228
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 48
-    END
-END
-#endif    // APSTUDIO_INVOKED
 
 
 /////////////////////////////////////////////////////////////////////////////
