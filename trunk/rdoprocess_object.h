@@ -6,7 +6,7 @@
 #endif // _MSC_VER > 1000
 
 #include "rdoprocess_string.h"
-#include <vector>
+#include <list>
 
 // ----------------------------------------------------------------------------
 // ---------- RPObject
@@ -22,12 +22,12 @@ friend class rp::msg;
 protected:
 	// --> manager
 	RPObject*                rpoparent;
-	std::vector< RPObject* > child;
+	std::list< RPObject* > child;
 	bool isChildNameCorrect( const RPObject* obj ) const;
 	void setCorrectChildName( RPObject* obj );
 
-	std::vector< RPObject* >::const_iterator begin() const { return child.begin(); }
-	std::vector< RPObject* >::const_iterator end()   const { return child.end();   }
+	std::list< RPObject* >::const_iterator begin() const { return child.begin(); }
+	std::list< RPObject* >::const_iterator end()   const { return child.end();   }
 	void clear();
 
 	void selectChildOff( RPObject* withoutObj = NULL );
@@ -49,6 +49,10 @@ public:
 	virtual void setSelected( bool value );
 
 	bool hasChild() const { return !child.empty(); }
+	std::list< RPObject* >::const_iterator find_child( const RPObject* object ) {
+		return std::find( child.begin(), child.end(), object );
+	};
+
 };
 
 #endif // RDO_PROCESS_OBJECT_H

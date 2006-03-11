@@ -18,6 +18,7 @@
 class RPChartObject: public RPObject
 {
 friend class RPFlowChart;
+friend class RPFlowChartObject;
 
 private:
 	mutable rp::point rotate_center;
@@ -80,6 +81,9 @@ protected:
 	}
 
 	virtual void moving( int dx, int dy );
+
+	virtual void onLMouseDown() {};
+	virtual void onRMouseDown() {};
 
 public:
 	RPChartObject( RPObject* parent, RPChartObject* chart_parent, RPFlowChart* flowchart, const rp::string& name = "object" );

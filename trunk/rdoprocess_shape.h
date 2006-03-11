@@ -14,7 +14,7 @@
 // ----------------------------------------------------------------------------
 class RPShape: public RPChartObject
 {
-friend class RPFlowChart;
+friend class RPFlowChartObject;
 
 protected:
 //	CPoint snap_to_point;

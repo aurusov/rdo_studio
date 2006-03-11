@@ -17,17 +17,63 @@ class RPFlowChartObject: public RPChartObject
 {
 friend class RPFlowChart;
 
+private:
+	bool init_ok;
+	int border_w;
+	int border_h;
+	int paper_border_w;
+	int paper_border_h;
+	int paper_border;
+	int paper_shadow;
+	int pixmap_w_real;
+	int pixmap_h_real;
+	int pixmap_w_show;
+	int pixmap_h_show;
+	int client_width;
+	int client_height;
+	const int select_box_size2;
+
+	CPen     pen_black;
+	CPen     pen_shape_color;
+	CPen     pen_selected_line;
+	CPen     pen_selected_box;
+	CBrush   brush_selected_box;
+	COLORREF paper_border_color;
+	COLORREF paper_shadow_color;
+	COLORREF paper_bg_color;
+
+	CDC      mem_dc;
+	CBitmap* mem_bmp;
+	CBitmap* bmp_first;
+	CFont*   font_first;
+	int      saved_mem_dc;
+
+#ifdef TEST_SPEED
+	int makepixmap_cnt;
+#endif
+
 protected:
 	virtual void notify( RPObject* from, UINT message, WPARAM wParam, LPARAM lParam );
+	void makeNewPixmap();
 
 public:
 	RPFlowChartObject( RPObject* parent, RPChartObject* chart_parent, RPFlowChart* flowchart );
+	virtual ~RPFlowChartObject();
 
 	virtual void moveTo( int x, int y ) {};
-	virtual void draw( CDC& dc ) {};
+	virtual void draw( CDC& dc );
 	virtual rp::rect getBoundingRect( bool global = true ) const { return rp::rect(); }
 	virtual void transformToGlobal() {};
 	virtual bool pointInPolygon( const rp::point& point, bool byperimetr = true ) { return true; }
+
+	void clientToZero( CPoint& point ) const {
+		point.x -= border_w + paper_border_w;
+		point.y -= border_h + paper_border_h;
+	}
+	void clientToZero( rp::point& point ) const {
+		point.x -= border_w + paper_border_w;
+		point.y -= border_h + paper_border_h;
+	}
 };
 
 // ----------------------------------------------------------------------------
@@ -45,51 +91,21 @@ private:
 	enum GridMode { gtSnapOff, gtSnapToPoint, gtSnapToCenter };
 	enum GridType { gtPoints, gtSolidLines, dtDotLines };
 
-	int border_w;
-	int border_h;
-	int paper_border_w;
-	int paper_border_h;
-	int paper_border;
-	int paper_shadow;
-	int pixmap_w_real;
-	int pixmap_h_real;
-	int pixmap_w_show;
-	int pixmap_h_show;
-	int client_width;
-	int client_height;
+	int   saved_dc;
+
 	CRect scroll_bar_size;
-	const int select_box_size2;
 
-	CDC      mem_dc;
-	CBitmap* mem_bmp;
-
-	int      saved_dc;
-	int      saved_mem_dc;
-	CFont*   font_first;
-	CBitmap* bmp_first;
-
-	CPen     pen_black;
-	CPen     pen_shape_color;
-	CPen     pen_selected_line;
-	CPen     pen_selected_box;
-	CBrush   brush_selected_box;
-	COLORREF paper_border_color;
-	COLORREF paper_shadow_color;
-	COLORREF paper_bg_color;
-
-	void makeNewPixmap();
 	rp::rect getFlowSize( const std::list< RPChartObject* >& list ) const;
-	rp::rect getFlowSize() const { return getFlowSize( objects ); }
+	rp::rect getFlowSize() const {
+		std::list< RPChartObject* > objects;
+		std::list< RPObject* >::const_iterator it = flowobj->begin();
+		while ( it != flowobj->end() ) {
+			objects.push_back( static_cast<RPChartObject*>(*it) );
+			it++;
+		}
+		return getFlowSize( objects );
+	}
 	void updateScrollBars();
-
-	void clientToZero( CPoint& point ) const {
-		point.x -= border_w + paper_border_w;
-		point.y -= border_h + paper_border_h;
-	}
-	void clientToZero( rp::point& point ) const {
-		point.x -= border_w + paper_border_w;
-		point.y -= border_h + paper_border_h;
-	}
 
 /*
 	GridMode grid_mode;
@@ -114,9 +130,6 @@ private:
 //	bool showConnectorPoint;
 
 	RPFlowChartObject* flowobj;
-	std::list< RPChartObject* > objects;
-
-	std::list< RPChartObject* >::iterator find( const RPChartObject* shape );
 
 	CPoint                         global_mouse_pos_prev;
 	std::list< RPChartObject* >    moving_objects;
@@ -129,7 +142,6 @@ private:
 #ifdef TEST_SPEED
 	int sec_cnt;
 	int sec_timer;
-	int makepixmap_cnt;
 	int makegrid_cnt;
 	int makegridempty_cnt;
 #endif
@@ -145,7 +157,7 @@ public:
 
 	void snapToGrid( RPShape* shape );
 
-	int getSensitivity() const { return select_box_size2 + 1; }
+	int getSensitivity() const { return flowobj->select_box_size2 + 1; }
 
 	//{{AFX_VIRTUAL(RPFlowChart)
 	public:

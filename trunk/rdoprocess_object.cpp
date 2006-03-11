@@ -30,7 +30,7 @@ RPObject::~RPObject()
 		setSelected( false );
 	}
 	if ( rpoparent ) {
-		std::vector< RPObject* >::iterator it = std::find( rpoparent->child.begin(), rpoparent->child.end(), this );
+		std::list< RPObject* >::iterator it = std::find( rpoparent->child.begin(), rpoparent->child.end(), this );
 		if ( it != rpoparent->child.end() ) {
 			rpoparent->child.erase( it );
 		}
@@ -39,7 +39,7 @@ RPObject::~RPObject()
 
 void RPObject::clear()
 {
-	std::vector< RPObject* >::iterator it = child.begin();
+	std::list< RPObject* >::iterator it = child.begin();
 	while ( it != child.end() ) {
 		RPObject* obj = *it;
 		delete obj;
@@ -65,7 +65,7 @@ void RPObject::setName( const rp::string& value )
 
 bool RPObject::isChildNameCorrect( const RPObject* obj ) const
 {
-	std::vector< RPObject* >::const_iterator it = begin();
+	std::list< RPObject* >::const_iterator it = begin();
 	while ( it != end() ) {
 		if ( *it != obj ) {
 			if ( (*it)->getName().tolower() == obj->getName().tolower() ) {
@@ -96,7 +96,7 @@ void RPObject::setSelected( bool value )
 
 void RPObject::selectChildOff( RPObject* withoutObj )
 {
-	std::vector< RPObject* >::iterator it = child.begin();
+	std::list< RPObject* >::iterator it = child.begin();
 	while ( it != child.end() ) {
 		RPObject* obj = *it;
 		if ( (*it) != withoutObj ) {

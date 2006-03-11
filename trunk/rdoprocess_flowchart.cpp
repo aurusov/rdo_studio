@@ -14,13 +14,79 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+#ifdef TEST_SPEED // =====================================
+const int sec_timer_id = 2;
+const int base_speed = 10000;
+#endif // ================================================
+
 // ----------------------------------------------------------------------------
 // ---------- RPFlowChartObject
 // ----------------------------------------------------------------------------
 RPFlowChartObject::RPFlowChartObject( RPObject* _parent, RPChartObject* _chart_parent, RPFlowChart* _flowchart ):
-	RPChartObject( _parent, _chart_parent, _flowchart, _T("Flowchart") )
+	RPChartObject( _parent, _chart_parent, _flowchart, _T("Flowchart") ),
+	init_ok( false ),
+	border_w( 7 ),
+	border_h( 7 ),
+	paper_border_w( 7 ),
+	paper_border_h( 7 ),
+	paper_border( 1 ),
+	paper_shadow( 2 ),
+	pixmap_w_real( 0 ),
+	pixmap_h_real( 0 ),
+	pixmap_w_show( 0 ),
+	pixmap_h_show( 0 ),
+	client_width( 0 ),
+	client_height( 0 ),
+	select_box_size2( 4 ),
+	pen_black( PS_SOLID, 1, RGB(0x00, 0x00, 0x00) ),
+	pen_shape_color( PS_SOLID, 1, RGB(0x00, 0x00, 0x00) ),
+	pen_selected_line( PS_DOT, 1, RGB(0x00, 0xFF, 0x00) ),
+	pen_selected_box( PS_SOLID, 1, RGB(0x00, 0x00, 0x00) ),
+	brush_selected_box( RGB(0x00, 0xFF, 0x00) ),
+	paper_border_color( RGB(0xC0, 0xC0, 0xC0) ),
+	paper_shadow_color( RGB(0x80, 0x80, 0x80) ),
+	paper_bg_color( RGB(0xFF, 0xFF, 0xFF) ),
+	mem_bmp( NULL ),
+	bmp_first( NULL ),
+	font_first( NULL ),
+	saved_mem_dc( 0 )
+#ifdef TEST_SPEED
+	,
+	makepixmap_cnt( 0 )
+#endif
 {
 	rpapp.msg().connect( this, rp::msg::RP_FLOWSTATE_CHANGED );
+
+	CDC* dc = flowchart->GetDC();
+	if ( !mem_dc.CreateCompatibleDC( dc ) ) {
+		flowchart->ReleaseDC( dc );
+		return;
+	}
+	flowchart->ReleaseDC( dc );
+
+	// Запомнить состояния DC для восстановления перед удалением
+	saved_mem_dc = mem_dc.SaveDC();
+	font_first   = mem_dc.GetCurrentFont();
+	bmp_first    = mem_dc.GetCurrentBitmap();
+	if ( !saved_mem_dc ) return;
+
+	mem_dc.SetBkMode( TRANSPARENT );
+
+	init_ok = true;
+}
+
+RPFlowChartObject::~RPFlowChartObject()
+{
+	if ( mem_dc.m_hDC ) {
+		mem_dc.SelectObject( font_first );
+		mem_dc.SelectObject( bmp_first );
+		if ( mem_bmp ) {
+			mem_bmp->DeleteObject();
+			delete mem_bmp;
+		}
+		mem_dc.RestoreDC( saved_mem_dc );
+		mem_dc.DeleteDC();
+	}
 }
 
 void RPFlowChartObject::notify( RPObject* from, UINT message, WPARAM wParam, LPARAM lParam )
@@ -38,17 +104,324 @@ void RPFlowChartObject::notify( RPObject* from, UINT message, WPARAM wParam, LPA
 	}
 }
 
+void RPFlowChartObject::draw( CDC& dc )
+{
+#ifdef TEST_SPEED // =====================================
+	SYSTEMTIME t0;
+	SYSTEMTIME t1;
+	SYSTEMTIME t2;
+	SYSTEMTIME t3;
+	SYSTEMTIME t4;
+	SYSTEMTIME t5;
+	SYSTEMTIME t6;
+	SYSTEMTIME t7;
+	::GetSystemTime( &t0 );
+#endif // ================================================
+
+	std::list< RPChartObject* > objects;
+	std::list< RPObject* >::const_iterator it = begin();
+	while ( it != end() ) {
+		objects.push_back( static_cast<RPChartObject*>(*it) );
+		it++;
+	}
+
+	CRect client_rect;
+	flowchart->GetClientRect( &client_rect );
+	client_width  = client_rect.Width();
+	client_height = client_rect.Height();
+
+	if ( client_width < border_w * 2 || client_height < border_h * 2 ) {
+
+#ifdef TEST_SPEED // =====================================
+		for ( int cnt1 = 0; cnt1 <= base_speed * 10; cnt1++ ) {
+#endif // ================================================
+
+		dc.FillSolidRect( 0, 0, client_width, client_height, paper_border_color );
+
+#ifdef TEST_SPEED // =====================================
+		}
+		::GetSystemTime( &t1 );
+#endif // ================================================
+
+	} else {
+
+#ifdef TEST_SPEED // =====================================
+		for ( int cnt1 = 0; cnt1 <= base_speed * 10; cnt1++ ) {
+#endif // ================================================
+
+		dc.FillSolidRect( 0, 0, border_w - paper_border, client_height, paper_border_color );
+		dc.FillSolidRect( client_width - border_w + paper_border + paper_shadow, 0, border_w - paper_border - paper_shadow, client_height, paper_border_color );
+		dc.FillSolidRect( border_w - paper_border, 0, client_width - border_w * 2 + paper_border * 2 + paper_shadow, border_h - paper_border, paper_border_color );
+		dc.FillSolidRect( border_w - paper_border, client_height - border_h + paper_border + paper_shadow, client_width - border_w * 2 + paper_border * 2 + paper_shadow, border_h - paper_border - paper_shadow, paper_border_color );
+		dc.FillSolidRect( border_w - paper_border, client_height - border_h + paper_border, paper_shadow, paper_shadow, paper_border_color );
+		dc.FillSolidRect( client_width - border_w + paper_border, border_h - paper_border, paper_shadow, paper_shadow, paper_border_color );
+
+		if ( client_width > border_w * 2 + paper_border_w * 2 && client_height > border_h * 2 + paper_border_h * 2 ) {
+			dc.FillSolidRect( border_w, border_h, paper_border_w, client_height - border_h * 2, paper_bg_color );
+			dc.FillSolidRect( border_w + paper_border_w, border_h, client_width - border_w * 2 - paper_border_w, paper_border_h, paper_bg_color );
+			dc.FillSolidRect( client_width - border_w - paper_border_w, border_h + paper_border_h, paper_border_w, client_height - border_h * 2 - paper_border_h, paper_bg_color );
+			dc.FillSolidRect( border_w + paper_border_w, client_height - border_h - paper_border_h, client_width - border_w * 2 - paper_border_w * 2, paper_border_h, paper_bg_color );
+		} else {
+			dc.FillSolidRect( border_w, border_h, client_width - border_w * 2, client_height - border_h * 2, paper_bg_color );
+		}
+
+#ifdef TEST_SPEED // =====================================
+		}
+		::GetSystemTime( &t1 );
+		for ( int cnt2 = 0; cnt2 <= base_speed * 10; cnt2++ ) {
+#endif // ================================================
+
+		const int shadow_border_w = 2;
+		const int shadow_border_h = 2;
+		dc.FillSolidRect( client_width - border_w + paper_border, border_h + shadow_border_h - paper_border, shadow_border_w, client_height - border_h * 2 + shadow_border_w, paper_shadow_color );
+		dc.FillSolidRect( border_w + shadow_border_w - paper_border, client_height - border_h + paper_border, client_width - border_w * 2, shadow_border_h, paper_shadow_color );
+		dc.SelectObject( pen_black );
+		dc.MoveTo( border_w - 1, border_h - 1 );
+		dc.LineTo( client_width - border_w, border_h - 1 );
+		dc.LineTo( client_width - border_w, client_height - border_h );
+		dc.LineTo( border_w - 1, client_height - border_h );
+		dc.LineTo( border_w - 1, border_h - 1 );
+
+#ifdef TEST_SPEED // =====================================
+		}
+		::GetSystemTime( &t2 );
+#endif // ================================================
+
+		if ( pixmap_w_show > 0 && pixmap_h_show > 0 ) {
+
+#ifdef TEST_SPEED // =====================================
+			for ( int cnt3 = 0; cnt3 <= base_speed; cnt3++ ) {
+#endif // ================================================
+/*
+			if ( grid_show ) {
+				int x_start = scroll_x_pos / grid_bmp_width;
+				int y_start = scroll_y_pos / grid_bmp_width;
+				int x_stop  = x_start + pixmap_w_show / grid_bmp_width + 1;
+				int y_stop  = y_start + pixmap_h_show / grid_bmp_width + 1;
+#ifdef TEST_SPEED // =====================================
+				if ( cnt3 == 0 ) {
+#endif // ================================================
+				TRACE( "x_start = %d, y_start = %d, x_stop = %d, y_stop = %d\n", x_start, y_start, x_stop, y_stop );
+#ifdef TEST_SPEED // =====================================
+				}
+#endif // ================================================
+				for ( int i = x_start; i <= x_stop; i++ ) {
+					for ( int j = y_start; j <= y_stop; j++ ) {
+						mem_dc.BitBlt( -scroll_x_pos + paper_border_w + i * grid_bmp_width, -scroll_y_pos + paper_border_h + j * grid_bmp_width, grid_bmp_width, grid_bmp_width, &grid_dc, 0, 0, SRCCOPY );
+					}
+				}
+			}
+*/
+			mem_dc.FillSolidRect( 0, 0, pixmap_w_show, pixmap_h_show, paper_bg_color );
+
+#ifdef TEST_SPEED // =====================================
+			}
+			::GetSystemTime( &t3 );
+
+			for ( int cnt4 = 0; cnt4 <= base_speed * 10; cnt4++ ) {
+				std::list< RPChartObject* >::iterator it = objects.begin();
+				while ( it != objects.end() ) {
+					it++;
+				}
+			}
+			::GetSystemTime( &t4 );
+#endif // ================================================
+
+			std::list< RPChartObject* >::iterator it = objects.begin();
+			while ( it != objects.end() ) {
+				RPChartObject* object = *it;
+				object->transformToGlobal();
+				it++;
+			}
+
+#ifdef TEST_SPEED // =====================================
+			for ( int cnt5 = 0; cnt5 <= base_speed; cnt5++ ) {
+#endif // ================================================
+
+			it = objects.begin();
+			while ( it != objects.end() ) {
+				int saved = mem_dc.SaveDC();
+				(*it)->draw( mem_dc );
+				RPChartObject* obj = *it;
+				obj->transformToGlobal();
+				static_cast<RPShape*>(obj)->pa_global.extendByPerimetr( obj->main_pen_width / 2.0 );
+				obj->draw1( mem_dc );
+				mem_dc.RestoreDC( saved );
+				it++;
+			}
+
+#ifdef TEST_SPEED // =====================================
+			}
+			::GetSystemTime( &t5 );
+#endif // ================================================
+
+#ifdef TEST_SPEED // =====================================
+			for ( int cnt6 = 0; cnt6 <= base_speed * 10; cnt6++ ) {
+#endif // ================================================
+#ifdef TEST_SPEED // =====================================
+			}
+			::GetSystemTime( &t6 );
+#endif // ================================================
+
+			it = objects.begin();
+			while ( it != objects.end() ) {
+				RPChartObject* object = *it;
+/*
+				CPoint snap_to_point = shape->getCenter();
+				if ( snap_to_point.x > paper_border_w && snap_to_point.y > paper_border_h && snap_to_point.x <= pixmap_w_show - paper_border_w && snap_to_point.y <= pixmap_h_show - paper_border_h ) {
+					CPen pen_red( PS_SOLID, 1, RGB(-1,0,0) );
+					CBrush brush_white( RGB(-1,-1,-1) );
+					mem_dc.SelectObject( pen_red );
+					mem_dc.SelectObject( brush_white );
+					mem_dc.Ellipse( snap_to_point.x - 2, snap_to_point.y - 2, snap_to_point.x + 2, snap_to_point.y + 2 );
+				}
+*/
+				if ( object->isSelected() ) {
+					// Прямоугольник вокруг фигуры
+					rp::rect rect = object->getBoundingRect();
+					int x0 = rect.p0().x;
+					int x1 = rect.p1().x;
+					int x2 = rect.p2().x;
+					int x3 = rect.p3().x;
+					int y0 = rect.p0().y;
+					int y1 = rect.p1().y;
+					int y2 = rect.p2().y;
+					int y3 = rect.p3().y;
+					mem_dc.SelectObject( pen_selected_line );
+					mem_dc.MoveTo( x0, y0 );
+					mem_dc.LineTo( x1, y1 );
+					mem_dc.LineTo( x2, y2 );
+					mem_dc.LineTo( x3, y3 );
+					mem_dc.LineTo( x0, y0 );
+					mem_dc.SelectObject( pen_selected_box );
+					mem_dc.SelectObject( brush_selected_box );
+					int box_size    = select_box_size2 * 2 -1;
+					int box_size_2  = select_box_size2;
+					if ( rpapp.project().getFlowState() == RPProject::flow_rotate ) {
+						int radius = flowchart->getSensitivity();
+						mem_dc.Ellipse( x0 - radius, y0 - radius, x0 + radius, y0 + radius );
+						mem_dc.Ellipse( x1 - radius, y1 - radius, x1 + radius, y1 + radius );
+						mem_dc.Ellipse( x2 - radius, y2 - radius, x2 + radius, y2 + radius );
+						mem_dc.Ellipse( x3 - radius, y3 - radius, x3 + radius, y3 + radius );
+					} else {
+						mem_dc.Rectangle( x0 - box_size_2, y0 - box_size_2, x0 + box_size_2, y0 + box_size_2 );
+						mem_dc.Rectangle( x1 - box_size_2, y1 - box_size_2, x1 + box_size_2, y1 + box_size_2 );
+						mem_dc.Rectangle( x2 - box_size_2, y2 - box_size_2, x2 + box_size_2, y2 + box_size_2 );
+						mem_dc.Rectangle( x3 - box_size_2, y3 - box_size_2, x3 + box_size_2, y3 + box_size_2 );
+					}
+					mem_dc.Rectangle( (x0 + x1)/2 - box_size_2, (y0 + y1)/2 - box_size_2, (x0 + x1)/2 + box_size_2, (y0 + y1)/2 + box_size_2 );
+					mem_dc.Rectangle( (x1 + x2)/2 - box_size_2, (y1 + y2)/2 - box_size_2, (x1 + x2)/2 + box_size_2, (y1 + y2)/2 + box_size_2 );
+					mem_dc.Rectangle( (x2 + x3)/2 - box_size_2, (y2 + y3)/2 - box_size_2, (x2 + x3)/2 + box_size_2, (y2 + y3)/2 + box_size_2 );
+					mem_dc.Rectangle( (x3 + x0)/2 - box_size_2, (y3 + y0)/2 - box_size_2, (x3 + x0)/2 + box_size_2, (y3 + y0)/2 + box_size_2 );
+					if ( rpapp.project().getFlowState() == RPProject::flow_rotate ) {
+						// Центр вращения
+						rp::point center = object->getRotateCenter();
+						CPen pen_red( PS_SOLID, 1, RGB(0,0,0) );
+						CBrush brush_white( RGB(-1,-1,0) );
+						int radius = flowchart->getSensitivity();
+						mem_dc.SelectObject( pen_red );
+						mem_dc.SelectObject( brush_white );
+						mem_dc.Ellipse( center.x - radius, center.y - radius, center.x + radius, center.y + radius );
+					}
+				}
+				it++;
+			}
+
+#ifdef TEST_SPEED // =====================================
+			for ( int cnt7 = 0; cnt7 <= base_speed * 5; cnt7++ ) {
+#endif // ================================================
+
+			dc.BitBlt( border_w + paper_border_w, border_h + paper_border_h, pixmap_w_show, pixmap_h_show, &mem_dc, 0, 0, SRCCOPY );
+
+#ifdef TEST_SPEED // =====================================
+			}
+			::GetSystemTime( &t7 );
+#endif // ================================================
+		}
+	}
+
+#ifdef TEST_SPEED // =====================================
+	int delay1 = (t1.wMinute * 1000 * 60 + t1.wSecond * 1000 + t1.wMilliseconds) - (t0.wMinute * 1000 * 60 + t0.wSecond * 1000 + t0.wMilliseconds);
+	int delay2 = (t2.wMinute * 1000 * 60 + t2.wSecond * 1000 + t2.wMilliseconds) - (t1.wMinute * 1000 * 60 + t1.wSecond * 1000 + t1.wMilliseconds);
+	int delay3 = ((t3.wMinute * 1000 * 60 + t3.wSecond * 1000 + t3.wMilliseconds) - (t2.wMinute * 1000 * 60 + t2.wSecond * 1000 + t2.wMilliseconds)) * 10;
+	int delay4 = (t4.wMinute * 1000 * 60 + t4.wSecond * 1000 + t4.wMilliseconds) - (t3.wMinute * 1000 * 60 + t3.wSecond * 1000 + t3.wMilliseconds);
+	int delay5 = ((t5.wMinute * 1000 * 60 + t5.wSecond * 1000 + t5.wMilliseconds) - (t4.wMinute * 1000 * 60 + t4.wSecond * 1000 + t4.wMilliseconds)) * 10;
+	int delay6 = (t6.wMinute * 1000 * 60 + t6.wSecond * 1000 + t6.wMilliseconds) - (t5.wMinute * 1000 * 60 + t5.wSecond * 1000 + t5.wMilliseconds);
+	int delay7 = ((t7.wMinute * 1000 * 60 + t7.wSecond * 1000 + t7.wMilliseconds) - (t6.wMinute * 1000 * 60 + t6.wSecond * 1000 + t6.wMilliseconds)) * 2;
+	int delay0 = delay1 + delay2 + delay3 + delay4 + delay5 + delay6 + delay7;
+	TRACE( "paint_delay = %d: %d, %d, %d, %d, %d, %d, %d\n", delay0, delay1, delay2, delay3, delay4, delay5, delay6, delay7 );
+#endif // ================================================
+
+}
+
+void RPFlowChartObject::makeNewPixmap()
+{
+#ifdef TEST_SPEED // =====================================
+	makepixmap_cnt++;
+
+	SYSTEMTIME t1;
+	SYSTEMTIME t2;
+	::GetSystemTime( &t1 );
+#endif // ================================================
+
+	int pixmap_w_show_old = pixmap_w_show;
+	int pixmap_h_show_old = pixmap_h_show;
+
+#ifdef TEST_SPEED // =====================================
+	for ( int cnt = 0; cnt <= base_speed * 10; cnt++ ) {
+#endif // ================================================
+
+	CRect client_rect;
+	flowchart->GetClientRect( &client_rect );
+	client_width  = client_rect.Width();
+	client_height = client_rect.Height();
+
+	int new_pixmap_w_real = client_width - border_w * 2;
+	int new_pixmap_h_real = client_height - border_h * 2;
+	if ( pixmap_w_real < new_pixmap_w_real || pixmap_h_real < new_pixmap_h_real ) {
+		if ( mem_bmp ) {
+			mem_dc.SelectObject( bmp_first );
+			mem_bmp->DeleteObject();
+			delete mem_bmp;
+			mem_bmp = NULL;
+		}
+		pixmap_w_real = new_pixmap_w_real;
+		pixmap_h_real = new_pixmap_h_real;
+		mem_bmp = new CBitmap();
+		CDC* dc = flowchart->GetDC();
+		mem_bmp->CreateCompatibleBitmap( dc, pixmap_w_real, pixmap_h_real );
+		flowchart->ReleaseDC( dc );
+		mem_dc.SelectObject( mem_bmp );
+	}
+	pixmap_w_show = client_width - border_w * 2 - paper_border_w * 2;
+	if ( pixmap_w_show > pixmap_w_real ) {
+		pixmap_w_show = pixmap_w_real;
+	}
+	pixmap_h_show = client_height - border_h * 2 - paper_border_h * 2;
+	if ( pixmap_h_show > pixmap_h_real ) {
+		pixmap_h_show = pixmap_h_real;
+	}
+
+	flowchart->updateScrollBars();
+
+#ifdef TEST_SPEED // =====================================
+	}
+	::GetSystemTime( &t2 );
+	int delay = (t2.wMinute * 1000 * 60 + t2.wSecond * 1000 + t2.wMilliseconds) - (t1.wMinute * 1000 * 60 + t1.wSecond * 1000 + t1.wMilliseconds);
+	TRACE( "makepixmap_delay = %d\n", delay );
+#endif // ================================================
+
+	if ( pixmap_w_show_old != pixmap_w_show || pixmap_h_show_old != pixmap_h_show ) {
+		flowchart->makeGrid();
+	}
+}
+
 // ----------------------------------------------------------------------------
 // ---------- RPFlowChart
 // ----------------------------------------------------------------------------
 const int grid_dx_plus = 1;
 const int grid_dy_plus = 2;
 const int grid_timer_id = 1;
-
-#ifdef TEST_SPEED // =====================================
-const int sec_timer_id = 2;
-const int base_speed = 10000;
-#endif // ================================================
 
 BEGIN_MESSAGE_MAP( RPFlowChart,CWnd )
 	//{{AFX_MSG_MAP(RPFlowChart)
@@ -68,33 +441,8 @@ END_MESSAGE_MAP()
 
 RPFlowChart::RPFlowChart():
 	CWnd(),
-	border_w( 7 ),
-	border_h( 7 ),
-	paper_border_w( 7 ),
-	paper_border_h( 7 ),
-	paper_border( 1 ),
-	paper_shadow( 2 ),
-	pixmap_w_real( 0 ),
-	pixmap_h_real( 0 ),
-	pixmap_w_show( 0 ),
-	pixmap_h_show( 0 ),
-	client_width( 0 ),
-	client_height( 0 ),
-	scroll_bar_size( CRect(0,0,0,0) ),
-	select_box_size2( 4 ),
-	mem_bmp( NULL ),
 	saved_dc( 0 ),
-	saved_mem_dc( 0 ),
-	font_first( NULL ),
-	bmp_first( NULL ),
-	pen_black( PS_SOLID, 1, RGB(0x00, 0x00, 0x00) ),
-	pen_shape_color( PS_SOLID, 1, RGB(0x00, 0x00, 0x00) ),
-	pen_selected_line( PS_DOT, 1, RGB(0x00, 0xFF, 0x00) ),
-	pen_selected_box( PS_SOLID, 1, RGB(0x00, 0x00, 0x00) ),
-	brush_selected_box( RGB(0x00, 0xFF, 0x00) ),
-	paper_border_color( RGB(0xC0, 0xC0, 0xC0) ),
-	paper_shadow_color( RGB(0x80, 0x80, 0x80) ),
-	paper_bg_color( RGB(0xFF, 0xFF, 0xFF) ),
+	scroll_bar_size( CRect(0,0,0,0) ),
 	flowobj( NULL ),
 	global_mouse_pos_prev( 0, 0 ),
 	one_object( NULL ),
@@ -103,12 +451,10 @@ RPFlowChart::RPFlowChart():
 	,
 	sec_cnt( 0 ),
 	sec_timer( 0 ),
-	makepixmap_cnt( 0 ),
 	makegrid_cnt( 0 ),
 	makegridempty_cnt( 0 )
 #endif // ================================================
 {
-	flowobj = new RPFlowChartObject( &rpapp.project(), NULL, this );
 }
 
 RPFlowChart::~RPFlowChart()
@@ -133,21 +479,11 @@ BOOL RPFlowChart::Create( LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD d
 {
 	if ( !CWnd::Create( lpszClassName, lpszWindowName, dwStyle, rect, pParentWnd, nID, pContext ) ) return false;
 
-	CDC* dc = GetDC();
-	if ( !mem_dc.CreateCompatibleDC( dc ) ) {
-		ReleaseDC( dc );
-		return false;
-	}
-
 	// Запомнить состояния DC для восстановления перед удалением
-	saved_dc     = dc->SaveDC();
-	saved_mem_dc = mem_dc.SaveDC();
-	font_first   = mem_dc.GetCurrentFont();
-	bmp_first    = mem_dc.GetCurrentBitmap();
-	ReleaseDC( dc );
-	if ( !saved_dc || !saved_mem_dc ) return false;
+	CDC* dc  = GetDC();
+	saved_dc = dc->SaveDC();
 
-	mem_dc.SetBkMode( TRANSPARENT );
+	flowobj  = new RPFlowChartObject( &rpapp.project(), NULL, this );
 
 //	updateFont();
 	updateScrollBars();
@@ -185,16 +521,6 @@ void RPFlowChart::OnDestroy()
 		dc->RestoreDC( saved_dc );
 	}
 	ReleaseDC( dc );
-	if ( mem_dc.m_hDC ) {
-		mem_dc.SelectObject( font_first );
-		mem_dc.SelectObject( bmp_first );
-		if ( mem_bmp ) {
-			mem_bmp->DeleteObject();
-			delete mem_bmp;
-		}
-		mem_dc.RestoreDC( saved_mem_dc );
-		mem_dc.DeleteDC();
-	}
 //	if ( grid_bmp.GetSafeHandle() ) {
 //		grid_dc.SelectObject( bmp_first );
 //		grid_bmp.DeleteObject();
@@ -202,15 +528,10 @@ void RPFlowChart::OnDestroy()
 	CWnd::OnDestroy();
 }
 
-std::list< RPChartObject* >::iterator RPFlowChart::find( const RPChartObject* object )
-{
-	return std::find( objects.begin(), objects.end(), object );
-}
-
 void RPFlowChart::insertShape( RPShape* shape )
 {
-	if ( find( shape ) == objects.end() ) {
-		objects.push_back( shape );
+	if ( flowobj->find_child( shape ) == flowobj->end() ) {
+//		objects.push_back( shape );
 /*
 		if ( !connectors_before_create.empty() ) {
 			std::list< CBDFlowChartConnector >::iterator it = connectors_before_create.begin();
@@ -232,9 +553,9 @@ void RPFlowChart::insertShape( RPShape* shape )
 
 void RPFlowChart::deleteShape( RPShape* shape )
 {
-	std::list< RPChartObject* >::iterator it = find( shape );
-	if ( it != objects.end() ) {
-		objects.erase( it );
+	std::list< RPObject* >::const_iterator it = flowobj->find_child( shape );
+	if ( it != flowobj->end() ) {
+//		objects.erase( it );
 
 //		if ( movingShape == shape ) {
 //			movingShape = NULL;
@@ -287,26 +608,26 @@ void RPFlowChart::updateScrollBars()
 	if ( scroll_bar_size.top    > rect.getMinY() ) scroll_bar_size.top    = rect.getMinY();
 	if ( scroll_bar_size.right  < rect.getMaxX() ) scroll_bar_size.right  = rect.getMaxX();
 	if ( scroll_bar_size.bottom < rect.getMaxY() ) scroll_bar_size.bottom = rect.getMaxY();
-	if ( scroll_bar_size.left   > -pixmap_w_show ) scroll_bar_size.left   = -pixmap_w_show;
-	if ( scroll_bar_size.top    > -pixmap_h_show ) scroll_bar_size.top    = -pixmap_h_show;
-	if ( scroll_bar_size.right  <  pixmap_w_show ) scroll_bar_size.right  = pixmap_w_show;
-	if ( scroll_bar_size.bottom <  pixmap_h_show ) scroll_bar_size.bottom = pixmap_h_show;
+	if ( scroll_bar_size.left   > -flowobj->pixmap_w_show ) scroll_bar_size.left   = -flowobj->pixmap_w_show;
+	if ( scroll_bar_size.top    > -flowobj->pixmap_h_show ) scroll_bar_size.top    = -flowobj->pixmap_h_show;
+	if ( scroll_bar_size.right  <  flowobj->pixmap_w_show ) scroll_bar_size.right  = flowobj->pixmap_w_show;
+	if ( scroll_bar_size.bottom <  flowobj->pixmap_h_show ) scroll_bar_size.bottom = flowobj->pixmap_h_show;
 
 	SCROLLINFO si;
 	si.cbSize = sizeof( SCROLLINFO );
 	si.fMask  = SIF_PAGE | SIF_RANGE | SIF_POS;
 
 	si.nMin   = scroll_bar_size.left;
-	si.nMax   = scroll_bar_size.right - pixmap_w_show;
+	si.nMax   = scroll_bar_size.right - flowobj->pixmap_w_show;
 	si.nPos   = -flowobj->matrix_transform.dx();
-	si.nPage  = pixmap_w_show;
+	si.nPage  = flowobj->pixmap_w_show;
 	TRACE( "min = %d, max = %d, page = %d\n", si.nMin, si.nMax, si.nPage );
 	SetScrollInfo( SB_HORZ, &si, TRUE );
 
 	si.nMin   = scroll_bar_size.top;
 	si.nMax   = scroll_bar_size.bottom;
 	si.nPos   = -flowobj->matrix_transform.dy();
-	si.nPage  = pixmap_h_show;
+	si.nPage  = flowobj->pixmap_h_show;
 	SetScrollInfo( SB_VERT, &si, TRUE );
 
 /*
@@ -349,70 +670,8 @@ void RPFlowChart::OnSize( UINT nType, int cx, int cy )
 {
 	CWnd::OnSize( nType, cx, cy );
 //	grid_pa.resize( 0 );
-	makeNewPixmap();
+	if ( flowobj ) flowobj->makeNewPixmap();
 	updateDC();
-}
-
-void RPFlowChart::makeNewPixmap()
-{
-#ifdef TEST_SPEED // =====================================
-	makepixmap_cnt++;
-
-	SYSTEMTIME t1;
-	SYSTEMTIME t2;
-	::GetSystemTime( &t1 );
-#endif // ================================================
-
-	int pixmap_w_show_old = pixmap_w_show;
-	int pixmap_h_show_old = pixmap_h_show;
-
-#ifdef TEST_SPEED // =====================================
-	for ( int cnt = 0; cnt <= base_speed * 10; cnt++ ) {
-#endif // ================================================
-
-	CRect client_rect;
-	GetClientRect( &client_rect );
-	client_width  = client_rect.Width();
-	client_height = client_rect.Height();
-
-	int new_pixmap_w_real = client_width - border_w * 2;
-	int new_pixmap_h_real = client_height - border_h * 2;
-	if ( pixmap_w_real < new_pixmap_w_real || pixmap_h_real < new_pixmap_h_real ) {
-		if ( mem_bmp ) {
-			mem_dc.SelectObject( bmp_first );
-			mem_bmp->DeleteObject();
-			delete mem_bmp;
-			mem_bmp = NULL;
-		}
-		pixmap_w_real = new_pixmap_w_real;
-		pixmap_h_real = new_pixmap_h_real;
-		mem_bmp = new CBitmap();
-		CDC* dc = GetDC();
-		mem_bmp->CreateCompatibleBitmap( dc, pixmap_w_real, pixmap_h_real );
-		ReleaseDC( dc );
-		mem_dc.SelectObject( mem_bmp );
-	}
-	pixmap_w_show = client_width - border_w * 2 - paper_border_w * 2;
-	if ( pixmap_w_show > pixmap_w_real ) {
-		pixmap_w_show = pixmap_w_real;
-	}
-	pixmap_h_show = client_height - border_h * 2 - paper_border_h * 2;
-	if ( pixmap_h_show > pixmap_h_real ) {
-		pixmap_h_show = pixmap_h_real;
-	}
-
-	updateScrollBars();
-
-#ifdef TEST_SPEED // =====================================
-	}
-	::GetSystemTime( &t2 );
-	int delay = (t2.wMinute * 1000 * 60 + t2.wSecond * 1000 + t2.wMilliseconds) - (t1.wMinute * 1000 * 60 + t1.wSecond * 1000 + t1.wMilliseconds);
-	TRACE( "makepixmap_delay = %d\n", delay );
-#endif // ================================================
-
-	if ( pixmap_w_show_old != pixmap_w_show || pixmap_h_show_old != pixmap_h_show ) {
-		makeGrid();
-	}
 }
 
 void RPFlowChart::makeGrid()
@@ -546,250 +805,10 @@ void RPFlowChart::makeGrid()
 
 void RPFlowChart::OnPaint() 
 {
-#ifdef TEST_SPEED // =====================================
-	SYSTEMTIME t0;
-	SYSTEMTIME t1;
-	SYSTEMTIME t2;
-	SYSTEMTIME t3;
-	SYSTEMTIME t4;
-	SYSTEMTIME t5;
-	SYSTEMTIME t6;
-	SYSTEMTIME t7;
-	::GetSystemTime( &t0 );
-#endif // ================================================
-
 	CPaintDC dc( this );
 	dc.SaveDC();
-
-	CRect client_rect;
-	GetClientRect( &client_rect );
-	client_width  = client_rect.Width();
-	client_height = client_rect.Height();
-
-
-	if ( client_width < border_w * 2 || client_height < border_h * 2 ) {
-
-#ifdef TEST_SPEED // =====================================
-		for ( int cnt1 = 0; cnt1 <= base_speed * 10; cnt1++ ) {
-#endif // ================================================
-
-		dc.FillSolidRect( 0, 0, client_width, client_height, paper_border_color );
-
-#ifdef TEST_SPEED // =====================================
-		}
-		::GetSystemTime( &t1 );
-#endif // ================================================
-
-	} else {
-
-#ifdef TEST_SPEED // =====================================
-		for ( int cnt1 = 0; cnt1 <= base_speed * 10; cnt1++ ) {
-#endif // ================================================
-
-		dc.FillSolidRect( 0, 0, border_w - paper_border, client_height, paper_border_color );
-		dc.FillSolidRect( client_width - border_w + paper_border + paper_shadow, 0, border_w - paper_border - paper_shadow, client_height, paper_border_color );
-		dc.FillSolidRect( border_w - paper_border, 0, client_width - border_w * 2 + paper_border * 2 + paper_shadow, border_h - paper_border, paper_border_color );
-		dc.FillSolidRect( border_w - paper_border, client_height - border_h + paper_border + paper_shadow, client_width - border_w * 2 + paper_border * 2 + paper_shadow, border_h - paper_border - paper_shadow, paper_border_color );
-		dc.FillSolidRect( border_w - paper_border, client_height - border_h + paper_border, paper_shadow, paper_shadow, paper_border_color );
-		dc.FillSolidRect( client_width - border_w + paper_border, border_h - paper_border, paper_shadow, paper_shadow, paper_border_color );
-
-		if ( client_width > border_w * 2 + paper_border_w * 2 && client_height > border_h * 2 + paper_border_h * 2 ) {
-			dc.FillSolidRect( border_w, border_h, paper_border_w, client_height - border_h * 2, paper_bg_color );
-			dc.FillSolidRect( border_w + paper_border_w, border_h, client_width - border_w * 2 - paper_border_w, paper_border_h, paper_bg_color );
-			dc.FillSolidRect( client_width - border_w - paper_border_w, border_h + paper_border_h, paper_border_w, client_height - border_h * 2 - paper_border_h, paper_bg_color );
-			dc.FillSolidRect( border_w + paper_border_w, client_height - border_h - paper_border_h, client_width - border_w * 2 - paper_border_w * 2, paper_border_h, paper_bg_color );
-		} else {
-			dc.FillSolidRect( border_w, border_h, client_width - border_w * 2, client_height - border_h * 2, paper_bg_color );
-		}
-
-#ifdef TEST_SPEED // =====================================
-		}
-		::GetSystemTime( &t1 );
-		for ( int cnt2 = 0; cnt2 <= base_speed * 10; cnt2++ ) {
-#endif // ================================================
-
-		const int shadow_border_w = 2;
-		const int shadow_border_h = 2;
-		dc.FillSolidRect( client_width - border_w + paper_border, border_h + shadow_border_h - paper_border, shadow_border_w, client_height - border_h * 2 + shadow_border_w, paper_shadow_color );
-		dc.FillSolidRect( border_w + shadow_border_w - paper_border, client_height - border_h + paper_border, client_width - border_w * 2, shadow_border_h, paper_shadow_color );
-		dc.SelectObject( pen_black );
-		dc.MoveTo( border_w - 1, border_h - 1 );
-		dc.LineTo( client_width - border_w, border_h - 1 );
-		dc.LineTo( client_width - border_w, client_height - border_h );
-		dc.LineTo( border_w - 1, client_height - border_h );
-		dc.LineTo( border_w - 1, border_h - 1 );
-
-#ifdef TEST_SPEED // =====================================
-		}
-		::GetSystemTime( &t2 );
-#endif // ================================================
-
-		if ( pixmap_w_show > 0 && pixmap_h_show > 0 ) {
-
-#ifdef TEST_SPEED // =====================================
-			for ( int cnt3 = 0; cnt3 <= base_speed; cnt3++ ) {
-#endif // ================================================
-/*
-			if ( grid_show ) {
-				int x_start = scroll_x_pos / grid_bmp_width;
-				int y_start = scroll_y_pos / grid_bmp_width;
-				int x_stop  = x_start + pixmap_w_show / grid_bmp_width + 1;
-				int y_stop  = y_start + pixmap_h_show / grid_bmp_width + 1;
-#ifdef TEST_SPEED // =====================================
-				if ( cnt3 == 0 ) {
-#endif // ================================================
-				TRACE( "x_start = %d, y_start = %d, x_stop = %d, y_stop = %d\n", x_start, y_start, x_stop, y_stop );
-#ifdef TEST_SPEED // =====================================
-				}
-#endif // ================================================
-				for ( int i = x_start; i <= x_stop; i++ ) {
-					for ( int j = y_start; j <= y_stop; j++ ) {
-						mem_dc.BitBlt( -scroll_x_pos + paper_border_w + i * grid_bmp_width, -scroll_y_pos + paper_border_h + j * grid_bmp_width, grid_bmp_width, grid_bmp_width, &grid_dc, 0, 0, SRCCOPY );
-					}
-				}
-			}
-*/
-			mem_dc.FillSolidRect( 0, 0, pixmap_w_show, pixmap_h_show, paper_bg_color );
-
-#ifdef TEST_SPEED // =====================================
-			}
-			::GetSystemTime( &t3 );
-
-			for ( int cnt4 = 0; cnt4 <= base_speed * 10; cnt4++ ) {
-				std::list< RPShape* >::iterator it = objects.begin();
-				while ( it != objects.end() ) {
-					it++;
-				}
-			}
-			::GetSystemTime( &t4 );
-#endif // ================================================
-
-			std::list< RPChartObject* >::iterator it = objects.begin();
-			while ( it != objects.end() ) {
-				RPChartObject* object = *it;
-				object->transformToGlobal();
-				it++;
-			}
-
-#ifdef TEST_SPEED // =====================================
-			for ( int cnt5 = 0; cnt5 <= base_speed; cnt5++ ) {
-#endif // ================================================
-
-			it = objects.begin();
-			while ( it != objects.end() ) {
-				int saved = mem_dc.SaveDC();
-				(*it)->draw( mem_dc );
-				RPChartObject* obj = *it;
-				obj->transformToGlobal();
-				static_cast<RPShape*>(obj)->pa_global.extendByPerimetr( obj->main_pen_width / 2.0 );
-				obj->draw1( mem_dc );
-				mem_dc.RestoreDC( saved );
-				it++;
-			}
-
-#ifdef TEST_SPEED // =====================================
-			}
-			::GetSystemTime( &t5 );
-#endif // ================================================
-
-#ifdef TEST_SPEED // =====================================
-			for ( int cnt6 = 0; cnt6 <= base_speed * 10; cnt6++ ) {
-#endif // ================================================
-#ifdef TEST_SPEED // =====================================
-			}
-			::GetSystemTime( &t6 );
-#endif // ================================================
-
-			it = objects.begin();
-			while ( it != objects.end() ) {
-				RPChartObject* object = *it;
-/*
-				CPoint snap_to_point = shape->getCenter();
-				if ( snap_to_point.x > paper_border_w && snap_to_point.y > paper_border_h && snap_to_point.x <= pixmap_w_show - paper_border_w && snap_to_point.y <= pixmap_h_show - paper_border_h ) {
-					CPen pen_red( PS_SOLID, 1, RGB(-1,0,0) );
-					CBrush brush_white( RGB(-1,-1,-1) );
-					mem_dc.SelectObject( pen_red );
-					mem_dc.SelectObject( brush_white );
-					mem_dc.Ellipse( snap_to_point.x - 2, snap_to_point.y - 2, snap_to_point.x + 2, snap_to_point.y + 2 );
-				}
-*/
-				if ( object->isSelected() ) {
-					// Прямоугольник вокруг фигуры
-					rp::rect rect = object->getBoundingRect();
-					int x0 = rect.p0().x;
-					int x1 = rect.p1().x;
-					int x2 = rect.p2().x;
-					int x3 = rect.p3().x;
-					int y0 = rect.p0().y;
-					int y1 = rect.p1().y;
-					int y2 = rect.p2().y;
-					int y3 = rect.p3().y;
-					mem_dc.SelectObject( pen_selected_line );
-					mem_dc.MoveTo( x0, y0 );
-					mem_dc.LineTo( x1, y1 );
-					mem_dc.LineTo( x2, y2 );
-					mem_dc.LineTo( x3, y3 );
-					mem_dc.LineTo( x0, y0 );
-					mem_dc.SelectObject( pen_selected_box );
-					mem_dc.SelectObject( brush_selected_box );
-					int box_size    = select_box_size2 * 2 -1;
-					int box_size_2  = select_box_size2;
-					if ( rpapp.project().getFlowState() == RPProject::flow_rotate ) {
-						int radius = getSensitivity();
-						mem_dc.Ellipse( x0 - radius, y0 - radius, x0 + radius, y0 + radius );
-						mem_dc.Ellipse( x1 - radius, y1 - radius, x1 + radius, y1 + radius );
-						mem_dc.Ellipse( x2 - radius, y2 - radius, x2 + radius, y2 + radius );
-						mem_dc.Ellipse( x3 - radius, y3 - radius, x3 + radius, y3 + radius );
-					} else {
-						mem_dc.Rectangle( x0 - box_size_2, y0 - box_size_2, x0 + box_size_2, y0 + box_size_2 );
-						mem_dc.Rectangle( x1 - box_size_2, y1 - box_size_2, x1 + box_size_2, y1 + box_size_2 );
-						mem_dc.Rectangle( x2 - box_size_2, y2 - box_size_2, x2 + box_size_2, y2 + box_size_2 );
-						mem_dc.Rectangle( x3 - box_size_2, y3 - box_size_2, x3 + box_size_2, y3 + box_size_2 );
-					}
-					mem_dc.Rectangle( (x0 + x1)/2 - box_size_2, (y0 + y1)/2 - box_size_2, (x0 + x1)/2 + box_size_2, (y0 + y1)/2 + box_size_2 );
-					mem_dc.Rectangle( (x1 + x2)/2 - box_size_2, (y1 + y2)/2 - box_size_2, (x1 + x2)/2 + box_size_2, (y1 + y2)/2 + box_size_2 );
-					mem_dc.Rectangle( (x2 + x3)/2 - box_size_2, (y2 + y3)/2 - box_size_2, (x2 + x3)/2 + box_size_2, (y2 + y3)/2 + box_size_2 );
-					mem_dc.Rectangle( (x3 + x0)/2 - box_size_2, (y3 + y0)/2 - box_size_2, (x3 + x0)/2 + box_size_2, (y3 + y0)/2 + box_size_2 );
-					if ( rpapp.project().getFlowState() == RPProject::flow_rotate ) {
-						// Центр вращения
-						rp::point center = object->getRotateCenter();
-						CPen pen_red( PS_SOLID, 1, RGB(0,0,0) );
-						CBrush brush_white( RGB(-1,-1,0) );
-						int radius = getSensitivity();
-						mem_dc.SelectObject( pen_red );
-						mem_dc.SelectObject( brush_white );
-						mem_dc.Ellipse( center.x - radius, center.y - radius, center.x + radius, center.y + radius );
-					}
-				}
-				it++;
-			}
-
-#ifdef TEST_SPEED // =====================================
-			for ( int cnt7 = 0; cnt7 <= base_speed * 5; cnt7++ ) {
-#endif // ================================================
-
-			dc.BitBlt( border_w + paper_border_w, border_h + paper_border_h, pixmap_w_show, pixmap_h_show, &mem_dc, 0, 0, SRCCOPY );
-
-#ifdef TEST_SPEED // =====================================
-			}
-			::GetSystemTime( &t7 );
-#endif // ================================================
-		}
-	}
+	flowobj->draw( dc );
 	dc.RestoreDC( -1 );
-
-#ifdef TEST_SPEED // =====================================
-	int delay1 = (t1.wMinute * 1000 * 60 + t1.wSecond * 1000 + t1.wMilliseconds) - (t0.wMinute * 1000 * 60 + t0.wSecond * 1000 + t0.wMilliseconds);
-	int delay2 = (t2.wMinute * 1000 * 60 + t2.wSecond * 1000 + t2.wMilliseconds) - (t1.wMinute * 1000 * 60 + t1.wSecond * 1000 + t1.wMilliseconds);
-	int delay3 = ((t3.wMinute * 1000 * 60 + t3.wSecond * 1000 + t3.wMilliseconds) - (t2.wMinute * 1000 * 60 + t2.wSecond * 1000 + t2.wMilliseconds)) * 10;
-	int delay4 = (t4.wMinute * 1000 * 60 + t4.wSecond * 1000 + t4.wMilliseconds) - (t3.wMinute * 1000 * 60 + t3.wSecond * 1000 + t3.wMilliseconds);
-	int delay5 = ((t5.wMinute * 1000 * 60 + t5.wSecond * 1000 + t5.wMilliseconds) - (t4.wMinute * 1000 * 60 + t4.wSecond * 1000 + t4.wMilliseconds)) * 10;
-	int delay6 = (t6.wMinute * 1000 * 60 + t6.wSecond * 1000 + t6.wMilliseconds) - (t5.wMinute * 1000 * 60 + t5.wSecond * 1000 + t5.wMilliseconds);
-	int delay7 = ((t7.wMinute * 1000 * 60 + t7.wSecond * 1000 + t7.wMilliseconds) - (t6.wMinute * 1000 * 60 + t6.wSecond * 1000 + t6.wMilliseconds)) * 2;
-	int delay0 = delay1 + delay2 + delay3 + delay4 + delay5 + delay6 + delay7;
-	TRACE( "paint_delay = %d: %d, %d, %d, %d, %d, %d, %d\n", delay0, delay1, delay2, delay3, delay4, delay5, delay6, delay7 );
-#endif // ================================================
-
 }
 
 void RPFlowChart::OnHScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBar )
@@ -832,7 +851,7 @@ void RPFlowChart::OnHScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBar )
 	si.nMin   = scroll_bar_size.left;
 	si.nMax   = scroll_bar_size.right;
 	si.nPos   = -flowobj->matrix_transform.dx();
-	si.nPage  = pixmap_w_show;
+	si.nPage  = flowobj->pixmap_w_show;
 	SetScrollInfo( SB_HORZ, &si, TRUE );
 	updateDC();
 }
@@ -874,7 +893,7 @@ void RPFlowChart::OnVScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBar )
 	si.nMin   = scroll_bar_size.top;
 	si.nMax   = scroll_bar_size.bottom;
 	si.nPos   = -flowobj->matrix_transform.dy();
-	si.nPage  = pixmap_h_show;
+	si.nPage  = flowobj->pixmap_h_show;
 	SetScrollInfo( SB_VERT, &si, TRUE );
 	updateDC();
 }
@@ -984,10 +1003,10 @@ void RPFlowChart::OnTimer( UINT nIDEvent )
 {
 #ifdef TEST_SPEED // =====================================
 	if ( nIDEvent == sec_timer ) {
-		TRACE( "%d. makepixmap = %d, makegrid = %d, makegrid_empty = %d\n", sec_cnt++, makepixmap_cnt, makegrid_cnt, makegridempty_cnt );
+		TRACE( "%d. makepixmap = %d, makegrid = %d, makegrid_empty = %d\n", sec_cnt++, flowobj->makepixmap_cnt, makegrid_cnt, makegridempty_cnt );
 		makegrid_cnt      = 0;
 		makegridempty_cnt = 0;
-		makepixmap_cnt    = 0;
+		flowobj->makepixmap_cnt = 0;
 	}
 #endif // ================================================
 //	if ( nIDEvent == grid_timer ) {
@@ -1010,10 +1029,10 @@ void RPFlowChart::OnLButtonDown( UINT nFlags, CPoint local_mouse_pos )
 	RPChartObject::PossibleCommand pcmd = RPChartObject::pcmd_none;
 	if ( rpapp.project().getFlowState() == RPProject::flow_select || rpapp.project().getFlowState() == RPProject::flow_rotate ) {
 		rp::point global_pos = local_mouse_pos;
-		clientToZero( global_pos );
-		std::list< RPChartObject* >::const_iterator it = objects.begin();
-		while ( it != objects.end() ) {
-			RPChartObject* obj = *it;
+		flowobj->clientToZero( global_pos );
+		std::list< RPObject* >::const_iterator it = flowobj->begin();
+		while ( it != flowobj->end() ) {
+			RPChartObject* obj = static_cast<RPChartObject*>(*it);
 			// Проверим, а не попалили в центр вращения какой-либо фигуры.
 			// Сам центр может находится вне фигуры, поэтому проверим для начала все центры всех фигур
 			if ( obj->isRotateCenter( global_pos ) ) {
@@ -1058,7 +1077,7 @@ void RPFlowChart::OnLButtonDown( UINT nFlags, CPoint local_mouse_pos )
 		if ( pcmd == RPChartObject::pcmd_move ) {
 			moving_objects.clear();
 			if ( nFlags & MK_CONTROL ) {
-				moving_objects.assign( objects.begin(), objects.end() );
+//				moving_objects.assign( flowobj->begin(), flowobj->end() );
 			} else {
 				moving_objects.push_back( one_object );
 			}
@@ -1353,7 +1372,7 @@ void RPFlowChart::OnMouseMove( UINT nFlags, CPoint local_mouse_pos )
 
 	// Глобальные координаты мышки в 2D движке (на текущем листе)
 	rp::point global_pos = local_mouse_pos;
-	clientToZero( global_pos );
+	flowobj->clientToZero( global_pos );
 
 	// Если выбран один объект, но он имеет приоритет в обработке.
 	// Проверается на изменение масштаба, поворота или центра поворота.
@@ -1379,8 +1398,8 @@ void RPFlowChart::OnMouseMove( UINT nFlags, CPoint local_mouse_pos )
 				CPoint point_new = global_mouse_pos;
 				ScreenToClient( &point_old );
 				ScreenToClient( &point_new );
-				clientToZero( point_old );
-				clientToZero( point_new );
+				flowobj->clientToZero( point_old );
+				flowobj->clientToZero( point_new );
 				one_object->setRotation( one_object->getRotation() + rp::math::getAlpha( point_old, one_object->getRotateCenter(), point_new ) );
 				updateDC();
 				break;
@@ -1415,7 +1434,7 @@ void RPFlowChart::OnMouseMove( UINT nFlags, CPoint local_mouse_pos )
 			}
 		}
 	}
-	// Перемещаем делаем отдельно. Перемещать можно много фигур.
+	// Перемещение делаем отдельно. Перемещать можно много фигур.
 	if ( one_object_pcmd == RPChartObject::pcmd_move ) {
 		int dx = global_mouse_pos.x - global_mouse_pos_prev.x;
 		int dy = global_mouse_pos.y - global_mouse_pos_prev.y;
@@ -1480,13 +1499,13 @@ BOOL RPFlowChart::OnSetCursor( CWnd* pWnd, UINT nHitTest, UINT message )
 	CPoint point;
 	::GetCursorPos( &point );
 	ScreenToClient( &point );
-	clientToZero( point );
+	flowobj->clientToZero( point );
 	HCURSOR cursor        = NULL;
 	RPChartObject* object = NULL;
 	one_object_pcmd       = RPChartObject::pcmd_none;
-	std::list< RPChartObject* >::const_iterator it = objects.begin();
-	while ( it != objects.end() ) {
-		RPChartObject* obj = *it;
+	std::list< RPObject* >::const_iterator it = flowobj->begin();
+	while ( it != flowobj->end() ) {
+		RPChartObject* obj = static_cast<RPChartObject*>(*it);
 		if ( obj->isRotateCenter( point ) ) {
 			object = obj;
 			break;
