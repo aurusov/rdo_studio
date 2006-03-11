@@ -551,3 +551,34 @@ RPChartObject::PossibleCommand RPShape::getPossibleCommand( const rp::point& glo
 	}
 	return RPChartObject::pcmd_none;
 }
+
+void RPShape::onLButtonDown( UINT nFlags, CPoint flowchart_mouse_pos )
+{
+	RPChartObject::onLButtonDown( nFlags, flowchart_mouse_pos );
+	TRACE( "onLButtonDown\n" );
+}
+
+void RPShape::onLButtonUp( UINT nFlags, CPoint flowchart_mouse_pos )
+{
+	TRACE( "onLButtonUp\n" );
+}
+
+void RPShape::onLButtonDblClk( UINT nFlags, CPoint flowchart_mouse_pos )
+{
+	TRACE( "onLButtonDblClk\n" );
+}
+
+void RPShape::onRButtonDown( UINT nFlags, CPoint flowchart_mouse_pos )
+{
+	TRACE( "onRButtonDown\n" );
+}
+
+void RPShape::onRButtonUp( UINT nFlags, CPoint flowchart_mouse_pos )
+{
+	TRACE( "onRButtonUp\n" );
+}
+
+void RPShape::onMouseMove( UINT nFlags, CPoint flowchart_mouse_pos )
+{
+	TRACE( "onMouseMove\n" );
+}

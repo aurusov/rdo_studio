@@ -2,7 +2,7 @@
 
 [General Info]
 Version=1
-LastClass=RPChildFrame
+LastClass=RPFlowChart
 LastTemplate=CDialog
 NewFileInclude1=#include "stdafx.h"
 NewFileInclude2=#include "rdo_process.h"
@@ -101,9 +101,12 @@ LastObject=ID_APP_ABOUT
 
 [CLS:RPFlowChart]
 Type=0
-BaseClass=CWnd
+BaseClass=CWnd 
 HeaderFile=rdoprocess_flowchart.h
 ImplementationFile=rdoprocess_flowchart.cpp
+Filter=W
+VirtualFilter=WC
+LastObject=RPFlowChart
 
 [CLS:RPMainFrame]
 Type=0

@@ -33,6 +33,13 @@ protected:
 //	virtual void drawConnectorsInput( CDC& dc );
 //	virtual void drawConnectorsOutput( CDC& dc );
 
+	virtual void onLButtonDown( UINT nFlags, CPoint flowchart_mouse_pos );
+	virtual void onLButtonUp( UINT nFlags, CPoint flowchart_mouse_pos );
+	virtual void onLButtonDblClk( UINT nFlags, CPoint flowchart_mouse_pos );
+	virtual void onRButtonDown( UINT nFlags, CPoint flowchart_mouse_pos );
+	virtual void onRButtonUp( UINT nFlags, CPoint flowchart_mouse_pos );
+	virtual void onMouseMove( UINT nFlags, CPoint flowchart_mouse_pos );
+
 public:
 	RPShape( RPObject* parent, RPChartObject* chart_parent, RPFlowChart* flowchart, const rp::string& name = "object" );
 	virtual ~RPShape();

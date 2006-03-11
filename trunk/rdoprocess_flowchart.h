@@ -48,6 +48,11 @@ private:
 	CFont*   font_first;
 	int      saved_mem_dc;
 
+	CPoint                         global_mouse_pos_prev;
+	std::list< RPChartObject* >    moving_objects;
+	RPChartObject*                 one_object;
+	RPChartObject::PossibleCommand one_object_pcmd;
+
 #ifdef TEST_SPEED
 	int makepixmap_cnt;
 #endif
@@ -55,6 +60,26 @@ private:
 protected:
 	virtual void notify( RPObject* from, UINT message, WPARAM wParam, LPARAM lParam );
 	void makeNewPixmap();
+
+	RPChartObject* find( const CPoint& flowchart_mouse_pos ) {
+		rp::point global_flow_pos = flowchart_mouse_pos;
+		clientToZero( global_flow_pos );
+		std::list< RPObject* >::const_iterator it = begin();
+		while ( it != end() ) {
+			RPChartObject* obj = static_cast<RPChartObject*>(*it);
+			if ( obj->pointInPolygon( global_flow_pos ) ) {
+				return obj;
+			}
+			it++;
+		}
+		return NULL;
+	}
+	virtual void onLButtonDown( UINT nFlags, CPoint flowchart_mouse_pos );
+	virtual void onLButtonUp( UINT nFlags, CPoint flowchart_mouse_pos );
+	virtual void onLButtonDblClk( UINT nFlags, CPoint flowchart_mouse_pos );
+	virtual void onRButtonDown( UINT nFlags, CPoint flowchart_mouse_pos );
+	virtual void onRButtonUp( UINT nFlags, CPoint flowchart_mouse_pos );
+	virtual void onMouseMove( UINT nFlags, CPoint flowchart_mouse_pos );
 
 public:
 	RPFlowChartObject( RPObject* parent, RPChartObject* chart_parent, RPFlowChart* flowchart );
@@ -131,11 +156,6 @@ private:
 
 	RPFlowChartObject* flowobj;
 
-	CPoint                         global_mouse_pos_prev;
-	std::list< RPChartObject* >    moving_objects;
-	RPChartObject*                 one_object;
-	RPChartObject::PossibleCommand one_object_pcmd;
-
 	void getScaleDelta( rp::point& delta, RPChartObject::angle90 a90, RPChartObject::PossibleCommand pcmd ) const;
 	void getRectDelta( rp::rect& rect_old, rp::rect& rect_new, rp::point& delta, RPChartObject::angle90 a90, RPChartObject::PossibleCommand pcmd ) const;
 
@@ -178,6 +198,9 @@ protected:
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg void OnTimer(UINT nIDEvent);
 	afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
+	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
+	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

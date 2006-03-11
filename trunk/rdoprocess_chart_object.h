@@ -82,8 +82,14 @@ protected:
 
 	virtual void moving( int dx, int dy );
 
-	virtual void onLMouseDown() {};
-	virtual void onRMouseDown() {};
+	virtual void onLButtonDown( UINT nFlags, CPoint flowchart_mouse_pos ) {
+		if ( !isSelected() ) setSelected( true );
+	};
+	virtual void onLButtonUp( UINT nFlags, CPoint flowchart_mouse_pos ) {};
+	virtual void onLButtonDblClk( UINT nFlags, CPoint flowchart_mouse_pos ) {};
+	virtual void onRButtonDown( UINT nFlags, CPoint flowchart_mouse_pos ) {};
+	virtual void onRButtonUp( UINT nFlags, CPoint flowchart_mouse_pos ) {};
+	virtual void onMouseMove( UINT nFlags, CPoint flowchart_mouse_pos ) {};
 
 public:
 	RPChartObject( RPObject* parent, RPChartObject* chart_parent, RPFlowChart* flowchart, const rp::string& name = "object" );

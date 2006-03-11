@@ -49,7 +49,10 @@ RPFlowChartObject::RPFlowChartObject( RPObject* _parent, RPChartObject* _chart_p
 	mem_bmp( NULL ),
 	bmp_first( NULL ),
 	font_first( NULL ),
-	saved_mem_dc( 0 )
+	saved_mem_dc( 0 ),
+	global_mouse_pos_prev( 0, 0 ),
+	one_object( NULL ),
+	one_object_pcmd( RPChartObject::pcmd_none )
 #ifdef TEST_SPEED
 	,
 	makepixmap_cnt( 0 )
@@ -416,6 +419,227 @@ void RPFlowChartObject::makeNewPixmap()
 	}
 }
 
+void RPFlowChartObject::onLButtonDown( UINT nFlags, CPoint flowchart_mouse_pos )
+{
+	one_object = NULL;
+	RPChartObject::PossibleCommand pcmd = RPChartObject::pcmd_none;
+	if ( rpapp.project().getFlowState() == RPProject::flow_select || rpapp.project().getFlowState() == RPProject::flow_rotate ) {
+		rp::point global_pos = flowchart_mouse_pos;
+		clientToZero( global_pos );
+		std::list< RPObject* >::const_iterator it = begin();
+		while ( it != end() ) {
+			RPChartObject* obj = static_cast<RPChartObject*>(*it);
+			// Проверим, а не попалили в центр вращения какой-либо фигуры.
+			// Сам центр может находится вне фигуры, поэтому проверим для начала все центры всех фигур
+			if ( obj->isRotateCenter( global_pos ) ) {
+				one_object      = obj;
+				one_object_pcmd = RPChartObject::pcmd_rotate_center;
+				break;
+			}
+			// Проверяем поворот с перемещением
+			if ( obj->getBoundingRect().extendByPerimetr( flowchart->getSensitivity() ).pointInRect( global_pos ) || obj->pointInPolygon( global_pos ) ) {
+				obj->transformToGlobal();
+				pcmd = obj->getPossibleCommand( global_pos );
+				switch ( pcmd ) {
+					case RPChartObject::pcmd_rotate_tl    :
+					case RPChartObject::pcmd_rotate_tr    : 
+					case RPChartObject::pcmd_rotate_bl    :
+					case RPChartObject::pcmd_rotate_br    :
+					case RPChartObject::pcmd_scale        :
+					case RPChartObject::pcmd_move         :
+					case RPChartObject::pcmd_scale_l      :
+					case RPChartObject::pcmd_scale_r      :
+					case RPChartObject::pcmd_scale_t      :
+					case RPChartObject::pcmd_scale_b      :
+					case RPChartObject::pcmd_scale_tl     :
+					case RPChartObject::pcmd_scale_br     :
+					case RPChartObject::pcmd_scale_tr     :
+					case RPChartObject::pcmd_scale_bl     : one_object = obj; one_object_pcmd = pcmd; break;
+				}
+			}
+			if ( pcmd != RPChartObject::pcmd_none ) break;
+			it++;
+		}
+	}
+	// Запомнили глобальные координаты мышки (глобальные в виндах, а не 2D движке ). Пригодятся в других функциях.
+	flowchart->ClientToScreen( &flowchart_mouse_pos );
+	global_mouse_pos_prev = flowchart_mouse_pos;
+	// Монопольно захватили мышку
+	flowchart->SetCapture();
+	// Нашли фигуру
+	if ( one_object ) {
+		one_object->onLButtonDown( nFlags, flowchart_mouse_pos );
+		// Фигура для перемещения найдена
+		if ( pcmd == RPChartObject::pcmd_move ) {
+			moving_objects.clear();
+			if ( nFlags & MK_CONTROL ) {
+//				moving_objects.assign( flowobj->begin(), flowobj->end() );
+			} else {
+				moving_objects.push_back( one_object );
+			}
+		}
+	} else {
+		// Никого не нашли, выбираем лист
+		setSelected( true );
+	}
+}
+
+void RPFlowChartObject::onLButtonUp( UINT nFlags, CPoint flowchart_mouse_pos )
+{
+	// Отдали виндам мышку
+	::ReleaseCapture();
+	// Почистили все списки
+	moving_objects.clear();
+	if ( one_object ) one_object->onLButtonUp( nFlags, flowchart_mouse_pos );
+	one_object = NULL;
+	// Обновить скролл
+	flowchart->updateScrollBars();
+}
+
+void RPFlowChartObject::onLButtonDblClk( UINT nFlags, CPoint flowchart_mouse_pos )
+{
+	RPChartObject* obj = find( flowchart_mouse_pos );
+	if ( obj ) obj->onLButtonDblClk( nFlags, flowchart_mouse_pos );
+}
+
+void RPFlowChartObject::onRButtonDown( UINT nFlags, CPoint flowchart_mouse_pos )
+{
+	RPChartObject* obj = find( flowchart_mouse_pos );
+	if ( obj ) obj->onRButtonDown( nFlags, flowchart_mouse_pos );
+}
+
+void RPFlowChartObject::onRButtonUp( UINT nFlags, CPoint flowchart_mouse_pos )
+{
+	RPChartObject* obj = find( flowchart_mouse_pos );
+	if ( obj ) obj->onRButtonUp( nFlags, flowchart_mouse_pos );
+}
+
+void RPFlowChartObject::onMouseMove( UINT nFlags, CPoint flowchart_mouse_pos )
+{
+	RPChartObject* obj = find( flowchart_mouse_pos );
+	if ( obj ) obj->onMouseMove( nFlags, flowchart_mouse_pos );
+
+	// Глобальные коодинаты мышки в винде
+	CPoint global_mouse_pos = flowchart_mouse_pos;
+	flowchart->ClientToScreen( &global_mouse_pos );
+
+	// Глобальные координаты мышки в 2D движке (на текущем листе)
+	rp::point global_pos = flowchart_mouse_pos;
+	clientToZero( global_pos );
+
+	// Если выбран один объект, но он имеет приоритет в обработке.
+	// Проверается на изменение масштаба, поворота или центра поворота.
+	// Эти операции не могут быть групповыми.
+	if ( one_object ) {
+		RPChartObject::angle90 a90 = one_object->getAngle90();
+		bool   horz  = a90 == RPChartObject::angle90_0 || a90 == RPChartObject::angle90_180;
+		double alpha = one_object->getRotation();
+		double dx = global_mouse_pos.x - global_mouse_pos_prev.x;
+		double dy = global_mouse_pos.y - global_mouse_pos_prev.y;
+		switch ( one_object_pcmd ) {
+			case RPChartObject::pcmd_rotate_center: {
+				one_object->setRotateCenter( global_pos );
+				flowchart->updateDC();
+				break;
+			}
+			case RPChartObject::pcmd_rotate       :
+			case RPChartObject::pcmd_rotate_tl    :
+			case RPChartObject::pcmd_rotate_tr    :
+			case RPChartObject::pcmd_rotate_bl    :
+			case RPChartObject::pcmd_rotate_br    : {
+				CPoint point_old = global_mouse_pos_prev;
+				CPoint point_new = global_mouse_pos;
+				flowchart->ScreenToClient( &point_old );
+				flowchart->ScreenToClient( &point_new );
+				clientToZero( point_old );
+				clientToZero( point_new );
+				one_object->setRotation( one_object->getRotation() + rp::math::getAlpha( point_old, one_object->getRotateCenter(), point_new ) );
+				flowchart->updateDC();
+				break;
+			}
+			case RPChartObject::pcmd_scale_t      :
+			case RPChartObject::pcmd_scale_b      :
+			case RPChartObject::pcmd_scale_l      :
+			case RPChartObject::pcmd_scale_r      :
+			case RPChartObject::pcmd_scale_tl     :
+			case RPChartObject::pcmd_scale_tr     :
+			case RPChartObject::pcmd_scale_bl     :
+			case RPChartObject::pcmd_scale_br     : {
+				rp::rect  rect = one_object->getBoundingRect();
+				rp::point point_delta( one_object->globalRotate().obr() * rp::point(dx, dy) );
+				rp::point len( rp::math::getLength( rect.p_tl(), rect.p_tr() ), rp::math::getLength( rect.p_tl(), rect.p_bl() ) );
+				flowchart->getScaleDelta( point_delta, a90, one_object_pcmd );
+				if ( len.x + point_delta.x < 0 ) {
+					point_delta.x = -len.x;
+				}
+				if ( len.y + point_delta.y < 0 ) {
+					point_delta.y = -len.y;
+				}
+				one_object->setScaleX( one_object->getScaleX() * (len.x + point_delta.x ) / len.x );
+				one_object->setScaleY( one_object->getScaleY() * (len.y + point_delta.y ) / len.y );
+				flowchart->getRectDelta( rect, one_object->getBoundingRect(), point_delta, a90, one_object_pcmd );
+				point_delta = one_object->globalRotate().obr() * point_delta;
+				one_object->setPostX( one_object->getPostX() + point_delta.x );
+				one_object->setPostY( one_object->getPostY() + point_delta.y );
+				one_object->setRotateCenterLocalDelta( point_delta.x, point_delta.y );
+				flowchart->updateDC();
+				break;
+			}
+		}
+	}
+	// Перемещение делаем отдельно. Перемещать можно много фигур.
+	if ( one_object_pcmd == RPChartObject::pcmd_move ) {
+		int dx = global_mouse_pos.x - global_mouse_pos_prev.x;
+		int dy = global_mouse_pos.y - global_mouse_pos_prev.y;
+/*
+		// Отсечь выход за границы листа (левый верхний угол)
+		std::list< RPChartObject* >::iterator it = moving_objects.begin();
+		while ( it != moving_objects.end() ) {
+			RPChartObject* object = *it;
+			int delta = object->getX() + dx;
+			if ( delta < 0 ) {
+				dx -= delta;
+			}
+			delta = object->getY() + dy;
+			if ( delta < 0 ) {
+				dy -= delta;
+			}
+			it++;
+		}
+*/
+		std::list< RPChartObject* >::iterator it = moving_objects.begin();
+		while ( it != moving_objects.end() ) {
+			(*it)->moving( dx, dy );
+			it++;
+		}
+		flowchart->updateScrollBars();
+		flowchart->makeGrid();
+/*
+//		if ( dx > 0 ) {
+			CSize size = getFlowSize( movingShapes );
+			int max_x = size.cx + border_w + paper_border_w;
+			int width = pixmap_w_show + scroll_x_pos;
+//			TRACE( "dx = %d, max_x = %d, width = %d\n", dx, max_x, width );
+			if ( max_x > width ) {
+				SCROLLINFO si;
+				si.cbSize = sizeof( si );
+				si.fMask  = SIF_RANGE | SIF_PAGE | SIF_POS;
+
+				scroll_x_pos += dx;
+				si.nMin   = 0;
+				si.nMax   = max_x;
+				si.nPos   = scroll_x_pos;
+				si.nPage  = client_width;
+				SetScrollInfo( SB_HORZ, &si, TRUE );
+			}
+			makeGrid();
+//		}
+*/
+		flowchart->updateDC();
+	}
+	global_mouse_pos_prev = global_mouse_pos;
+}
+
 // ----------------------------------------------------------------------------
 // ---------- RPFlowChart
 // ----------------------------------------------------------------------------
@@ -436,6 +660,9 @@ BEGIN_MESSAGE_MAP( RPFlowChart,CWnd )
 	ON_WM_TIMER()
 	ON_WM_SETCURSOR()
 	ON_WM_NCHITTEST()
+	ON_WM_RBUTTONDOWN()
+	ON_WM_RBUTTONUP()
+	ON_WM_LBUTTONDBLCLK()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -443,10 +670,7 @@ RPFlowChart::RPFlowChart():
 	CWnd(),
 	saved_dc( 0 ),
 	scroll_bar_size( CRect(0,0,0,0) ),
-	flowobj( NULL ),
-	global_mouse_pos_prev( 0, 0 ),
-	one_object( NULL ),
-	one_object_pcmd( RPChartObject::pcmd_none )
+	flowobj( NULL )
 #ifdef TEST_SPEED // =====================================
 	,
 	sec_cnt( 0 ),
@@ -1025,77 +1249,13 @@ void RPFlowChart::OnTimer( UINT nIDEvent )
 void RPFlowChart::OnLButtonDown( UINT nFlags, CPoint local_mouse_pos )
 {
 	CWnd::OnLButtonDown( nFlags, local_mouse_pos );
-	one_object = NULL;
-	RPChartObject::PossibleCommand pcmd = RPChartObject::pcmd_none;
-	if ( rpapp.project().getFlowState() == RPProject::flow_select || rpapp.project().getFlowState() == RPProject::flow_rotate ) {
-		rp::point global_pos = local_mouse_pos;
-		flowobj->clientToZero( global_pos );
-		std::list< RPObject* >::const_iterator it = flowobj->begin();
-		while ( it != flowobj->end() ) {
-			RPChartObject* obj = static_cast<RPChartObject*>(*it);
-			// Проверим, а не попалили в центр вращения какой-либо фигуры.
-			// Сам центр может находится вне фигуры, поэтому проверим для начала все центры всех фигур
-			if ( obj->isRotateCenter( global_pos ) ) {
-				one_object      = obj;
-				one_object_pcmd = RPChartObject::pcmd_rotate_center;
-				break;
-			}
-			// Проверяем поворот с перемещением
-			if ( obj->getBoundingRect().extendByPerimetr( getSensitivity() ).pointInRect( global_pos ) || obj->pointInPolygon( global_pos ) ) {
-				obj->transformToGlobal();
-				pcmd = obj->getPossibleCommand( global_pos );
-				switch ( pcmd ) {
-					case RPChartObject::pcmd_rotate_tl    :
-					case RPChartObject::pcmd_rotate_tr    : 
-					case RPChartObject::pcmd_rotate_bl    :
-					case RPChartObject::pcmd_rotate_br    :
-					case RPChartObject::pcmd_scale        :
-					case RPChartObject::pcmd_move         :
-					case RPChartObject::pcmd_scale_l      :
-					case RPChartObject::pcmd_scale_r      :
-					case RPChartObject::pcmd_scale_t      :
-					case RPChartObject::pcmd_scale_b      :
-					case RPChartObject::pcmd_scale_tl     :
-					case RPChartObject::pcmd_scale_br     :
-					case RPChartObject::pcmd_scale_tr     :
-					case RPChartObject::pcmd_scale_bl     : one_object = obj; one_object_pcmd = pcmd; break;
-				}
-			}
-			if ( pcmd != RPChartObject::pcmd_none ) break;
-			it++;
-		}
-	}
-	// Запомнили глобальные координаты мышки (глобальные в виндах, а не 2D движке ). Пригодятся в других функциях.
-	ClientToScreen( &local_mouse_pos );
-	global_mouse_pos_prev = local_mouse_pos;
-	// Монопольно захватили мышку
-	SetCapture();
-	// Нашли фигуру
-	if ( one_object ) {
-		if ( !one_object->isSelected() ) one_object->setSelected( true );
-		// Фигура для перемещения найдена
-		if ( pcmd == RPChartObject::pcmd_move ) {
-			moving_objects.clear();
-			if ( nFlags & MK_CONTROL ) {
-//				moving_objects.assign( flowobj->begin(), flowobj->end() );
-			} else {
-				moving_objects.push_back( one_object );
-			}
-		}
-	} else {
-		// Никого не нашли, выбираем лист
-		flowobj->setSelected( true );
-	}
+	flowobj->onLButtonDown( nFlags, local_mouse_pos );
 }
 
 void RPFlowChart::OnLButtonUp( UINT nFlags, CPoint local_mouse_pos )
 {
 	CWnd::OnLButtonUp( nFlags, local_mouse_pos );
-	// Отдали виндам мышку
-	::ReleaseCapture();
-	// Почистили все списки
-	moving_objects.clear();
-	one_object = NULL;
+	flowobj->onLButtonUp( nFlags, local_mouse_pos );
 /*
 	grid_objects.clear();
 	grid_objects.assign( moving_objects.begin(), moving_objects.end() );
@@ -1106,7 +1266,6 @@ void RPFlowChart::OnLButtonUp( UINT nFlags, CPoint local_mouse_pos )
 		grid_timer = SetTimer( grid_timer_id, 100, NULL );
 	}
 */
-	updateScrollBars();
 //	resetPreview();
 }
 
@@ -1365,126 +1524,7 @@ void RPFlowChart::getRectDelta( rp::rect& rect_old, rp::rect& rect_new, rp::poin
 void RPFlowChart::OnMouseMove( UINT nFlags, CPoint local_mouse_pos )
 {
 	CWnd::OnMouseMove( nFlags, local_mouse_pos );
-
-	// Глобальные коодинаты мышки в винде
-	CPoint global_mouse_pos = local_mouse_pos;
-	ClientToScreen( &global_mouse_pos );
-
-	// Глобальные координаты мышки в 2D движке (на текущем листе)
-	rp::point global_pos = local_mouse_pos;
-	flowobj->clientToZero( global_pos );
-
-	// Если выбран один объект, но он имеет приоритет в обработке.
-	// Проверается на изменение масштаба, поворота или центра поворота.
-	// Эти операции не могут быть групповыми.
-	if ( one_object ) {
-		RPChartObject::angle90 a90 = one_object->getAngle90();
-		bool   horz  = a90 == RPChartObject::angle90_0 || a90 == RPChartObject::angle90_180;
-		double alpha = one_object->getRotation();
-		double dx = global_mouse_pos.x - global_mouse_pos_prev.x;
-		double dy = global_mouse_pos.y - global_mouse_pos_prev.y;
-		switch ( one_object_pcmd ) {
-			case RPChartObject::pcmd_rotate_center: {
-				one_object->setRotateCenter( global_pos );
-				updateDC();
-				break;
-			}
-			case RPChartObject::pcmd_rotate       :
-			case RPChartObject::pcmd_rotate_tl    :
-			case RPChartObject::pcmd_rotate_tr    :
-			case RPChartObject::pcmd_rotate_bl    :
-			case RPChartObject::pcmd_rotate_br    : {
-				CPoint point_old = global_mouse_pos_prev;
-				CPoint point_new = global_mouse_pos;
-				ScreenToClient( &point_old );
-				ScreenToClient( &point_new );
-				flowobj->clientToZero( point_old );
-				flowobj->clientToZero( point_new );
-				one_object->setRotation( one_object->getRotation() + rp::math::getAlpha( point_old, one_object->getRotateCenter(), point_new ) );
-				updateDC();
-				break;
-			}
-			case RPChartObject::pcmd_scale_t      :
-			case RPChartObject::pcmd_scale_b      :
-			case RPChartObject::pcmd_scale_l      :
-			case RPChartObject::pcmd_scale_r      :
-			case RPChartObject::pcmd_scale_tl     :
-			case RPChartObject::pcmd_scale_tr     :
-			case RPChartObject::pcmd_scale_bl     :
-			case RPChartObject::pcmd_scale_br     : {
-				rp::rect  rect = one_object->getBoundingRect();
-				rp::point point_delta( one_object->globalRotate().obr() * rp::point(dx, dy) );
-				rp::point len( rp::math::getLength( rect.p_tl(), rect.p_tr() ), rp::math::getLength( rect.p_tl(), rect.p_bl() ) );
-				getScaleDelta( point_delta, a90, one_object_pcmd );
-				if ( len.x + point_delta.x < 0 ) {
-					point_delta.x = -len.x;
-				}
-				if ( len.y + point_delta.y < 0 ) {
-					point_delta.y = -len.y;
-				}
-				one_object->setScaleX( one_object->getScaleX() * (len.x + point_delta.x ) / len.x );
-				one_object->setScaleY( one_object->getScaleY() * (len.y + point_delta.y ) / len.y );
-				getRectDelta( rect, one_object->getBoundingRect(), point_delta, a90, one_object_pcmd );
-				point_delta = one_object->globalRotate().obr() * point_delta;
-				one_object->setPostX( one_object->getPostX() + point_delta.x );
-				one_object->setPostY( one_object->getPostY() + point_delta.y );
-				one_object->setRotateCenterLocalDelta( point_delta.x, point_delta.y );
-				updateDC();
-				break;
-			}
-		}
-	}
-	// Перемещение делаем отдельно. Перемещать можно много фигур.
-	if ( one_object_pcmd == RPChartObject::pcmd_move ) {
-		int dx = global_mouse_pos.x - global_mouse_pos_prev.x;
-		int dy = global_mouse_pos.y - global_mouse_pos_prev.y;
-/*
-		// Отсечь выход за границы листа (левый верхний угол)
-		std::list< RPChartObject* >::iterator it = moving_objects.begin();
-		while ( it != moving_objects.end() ) {
-			RPChartObject* object = *it;
-			int delta = object->getX() + dx;
-			if ( delta < 0 ) {
-				dx -= delta;
-			}
-			delta = object->getY() + dy;
-			if ( delta < 0 ) {
-				dy -= delta;
-			}
-			it++;
-		}
-*/
-		std::list< RPChartObject* >::iterator it = moving_objects.begin();
-		while ( it != moving_objects.end() ) {
-			(*it)->moving( dx, dy );
-			it++;
-		}
-		updateScrollBars();
-		makeGrid();
-/*
-//		if ( dx > 0 ) {
-			CSize size = getFlowSize( movingShapes );
-			int max_x = size.cx + border_w + paper_border_w;
-			int width = pixmap_w_show + scroll_x_pos;
-//			TRACE( "dx = %d, max_x = %d, width = %d\n", dx, max_x, width );
-			if ( max_x > width ) {
-				SCROLLINFO si;
-				si.cbSize = sizeof( si );
-				si.fMask  = SIF_RANGE | SIF_PAGE | SIF_POS;
-
-				scroll_x_pos += dx;
-				si.nMin   = 0;
-				si.nMax   = max_x;
-				si.nPos   = scroll_x_pos;
-				si.nPage  = client_width;
-				SetScrollInfo( SB_HORZ, &si, TRUE );
-			}
-			makeGrid();
-//		}
-*/
-		updateDC();
-	}
-	global_mouse_pos_prev = global_mouse_pos;
+	flowobj->onMouseMove( nFlags, local_mouse_pos );
 }
 
 void RPFlowChart::updateFlowState()
@@ -1502,7 +1542,7 @@ BOOL RPFlowChart::OnSetCursor( CWnd* pWnd, UINT nHitTest, UINT message )
 	flowobj->clientToZero( point );
 	HCURSOR cursor        = NULL;
 	RPChartObject* object = NULL;
-	one_object_pcmd       = RPChartObject::pcmd_none;
+	flowobj->one_object_pcmd = RPChartObject::pcmd_none;
 	std::list< RPObject* >::const_iterator it = flowobj->begin();
 	while ( it != flowobj->end() ) {
 		RPChartObject* obj = static_cast<RPChartObject*>(*it);
@@ -1523,7 +1563,7 @@ BOOL RPFlowChart::OnSetCursor( CWnd* pWnd, UINT nHitTest, UINT message )
 			switch ( _pcmd ) {
 				case RPChartObject::pcmd_none         : break;
 				case RPChartObject::pcmd_scale        : cursor = rpapp.cursors[IDC_FLOW_SELECT]; break;
-				case RPChartObject::pcmd_move         : one_object_pcmd = _pcmd; cursor = rpapp.cursors[IDC_FLOW_MOVE]; break;
+				case RPChartObject::pcmd_move         : flowobj->one_object_pcmd = _pcmd; cursor = rpapp.cursors[IDC_FLOW_MOVE]; break;
 				case RPChartObject::pcmd_rotate       :
 				case RPChartObject::pcmd_rotate_tl    :
 				case RPChartObject::pcmd_rotate_tr    :
@@ -1541,7 +1581,7 @@ BOOL RPFlowChart::OnSetCursor( CWnd* pWnd, UINT nHitTest, UINT message )
 			}
 		} else {
 			switch ( _pcmd ) {
-				case RPChartObject::pcmd_move         : one_object_pcmd = _pcmd; cursor = rpapp.cursors[IDC_FLOW_MOVE]; break;
+				case RPChartObject::pcmd_move         : flowobj->one_object_pcmd = _pcmd; cursor = rpapp.cursors[IDC_FLOW_MOVE]; break;
 			}
 		}
 	}
@@ -1557,4 +1597,22 @@ BOOL RPFlowChart::OnSetCursor( CWnd* pWnd, UINT nHitTest, UINT message )
 		return true;
 	}
 	return false;
+}
+
+void RPFlowChart::OnRButtonDown( UINT nFlags, CPoint local_mouse_pos )
+{
+	CWnd::OnRButtonDown( nFlags, local_mouse_pos );
+	flowobj->onRButtonDown( nFlags, local_mouse_pos );
+}
+
+void RPFlowChart::OnRButtonUp( UINT nFlags, CPoint local_mouse_pos )
+{
+	CWnd::OnRButtonUp( nFlags, local_mouse_pos );
+	flowobj->onRButtonUp( nFlags, local_mouse_pos );
+}
+
+void RPFlowChart::OnLButtonDblClk( UINT nFlags, CPoint local_mouse_pos )
+{
+	CWnd::OnLButtonDblClk( nFlags, local_mouse_pos );
+	flowobj->onLButtonDblClk( nFlags, local_mouse_pos );
 }
