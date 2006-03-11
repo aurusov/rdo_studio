@@ -48,7 +48,7 @@ private:
 	CFont*   font_first;
 	int      saved_mem_dc;
 
-	CPoint                         global_mouse_pos_prev;
+	CPoint                         global_win_pos_prev;
 	std::list< RPChartObject* >    moving_objects;
 	RPChartObject*                 one_object;
 	RPChartObject::PossibleCommand one_object_pcmd;
@@ -61,25 +61,25 @@ protected:
 	virtual void notify( RPObject* from, UINT message, WPARAM wParam, LPARAM lParam );
 	void makeNewPixmap();
 
-	RPChartObject* find( const CPoint& flowchart_mouse_pos ) {
-		rp::point global_flow_pos = flowchart_mouse_pos;
-		clientToZero( global_flow_pos );
+	RPChartObject* find( const CPoint& local_win_pos ) {
+		rp::point global_chart_pos = local_win_pos;
+		clientToZero( global_chart_pos );
 		std::list< RPObject* >::const_iterator it = begin();
 		while ( it != end() ) {
 			RPChartObject* obj = static_cast<RPChartObject*>(*it);
-			if ( obj->pointInPolygon( global_flow_pos ) ) {
+			if ( obj->pointInPolygon( global_chart_pos ) ) {
 				return obj;
 			}
 			it++;
 		}
 		return NULL;
 	}
-	virtual void onLButtonDown( UINT nFlags, CPoint flowchart_mouse_pos );
-	virtual void onLButtonUp( UINT nFlags, CPoint flowchart_mouse_pos );
-	virtual void onLButtonDblClk( UINT nFlags, CPoint flowchart_mouse_pos );
-	virtual void onRButtonDown( UINT nFlags, CPoint flowchart_mouse_pos );
-	virtual void onRButtonUp( UINT nFlags, CPoint flowchart_mouse_pos );
-	virtual void onMouseMove( UINT nFlags, CPoint flowchart_mouse_pos );
+	virtual void onLButtonDown( UINT nFlags, CPoint local_win_pos );
+	virtual void onLButtonUp( UINT nFlags, CPoint local_win_pos );
+	virtual void onLButtonDblClk( UINT nFlags, CPoint local_win_pos );
+	virtual void onRButtonDown( UINT nFlags, CPoint local_win_pos );
+	virtual void onRButtonUp( UINT nFlags, CPoint local_win_pos );
+	virtual void onMouseMove( UINT nFlags, CPoint local_win_pos );
 
 public:
 	RPFlowChartObject( RPObject* parent, RPChartObject* chart_parent, RPFlowChart* flowchart );
