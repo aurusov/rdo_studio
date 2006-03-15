@@ -13,7 +13,7 @@
 class RPShapeAction: public RPShape
 {
 public:
-	RPShapeAction( RPObject* parent, RPChartObject* chart_parent, RPFlowChart* flowchart );
+	RPShapeAction( RPObject* parent );
 	virtual ~RPShapeAction();
 };
 

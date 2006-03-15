@@ -18,6 +18,44 @@ bool polyline::pointInPolygon( const rp::point& point ) const
 	if ( size() > 2 ) {
 		unsigned int i;
 		unsigned int j;
+		double k0 = 0;
+		bool flag = true;
+		bool polygon = isPolygon();
+		int  cnt     = polygon ? size() - 1 : size();
+		for ( i = 0, j = 1; i < cnt; i++, j++ ) {
+			if ( !polygon && j == cnt ) j = 0;
+			const rp::point& p1 = (*this)[i];
+			const rp::point& p2 = (*this)[j];
+			double k = (point.y - p1.y)*(p2.x - p1.x) - (point.x - p1.x)*(p2.y - p1.y);
+			if ( fabs(k) < 1 ) {
+				// ѕопали в линию (пр€мую), необходимо проверить на попадание в отрезок фигуры
+				double x_min = p1.x < p2.x ? p1.x : p2.x;
+				double x_max = p1.x > p2.x ? p1.x : p2.x;
+				double y_min = p1.y < p2.y ? p1.y : p2.y;
+				double y_max = p1.y > p2.y ? p1.y : p2.y;
+				if ( point.x >= x_min && point.x <= x_max && point.y >= y_min && point.y <= y_max ) return true;
+			} else {
+				if ( fabs(k0) < 1 ) {
+					k0 = k;
+				} else {
+					if ( k0 * k < 0 ) {
+						flag = false;
+						break;
+					}
+				}
+			}
+		}
+		return flag;
+	}
+	return false;
+}
+
+/*
+bool polyline::pointInPolygon( const rp::point& point ) const
+{
+	if ( size() > 2 ) {
+		unsigned int i;
+		unsigned int j;
 		int k0    = 0;
 		bool flag = true;
 		bool polygon = isPolygon();
@@ -44,7 +82,7 @@ bool polyline::pointInPolygon( const rp::point& point ) const
 	}
 	return false;
 }
-
+*/
 /*
 void polyline::extendFromCenter( double delta )
 {

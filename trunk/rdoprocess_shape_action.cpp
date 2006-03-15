@@ -10,8 +10,8 @@ static char THIS_FILE[] = __FILE__;
 // ----------------------------------------------------------------------------
 // ---------- RPShapeAction
 // ----------------------------------------------------------------------------
-RPShapeAction::RPShapeAction( RPObject* _parent, RPChartObject* _chart_parent, RPFlowChart* _flowchart ):
-	RPShape( _parent, _chart_parent, _flowchart, _T("Action") )
+RPShapeAction::RPShapeAction( RPObject* _parent ):
+	RPShape( _parent, _T("Action") )
 {
 	pa_src.push_back( rp::point(-40, -25) );
 	pa_src.push_back( rp::point(40, -25) );

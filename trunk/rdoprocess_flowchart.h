@@ -13,6 +13,8 @@
 // ----------------------------------------------------------------------------
 // ---------- RPFlowChartObject
 // ----------------------------------------------------------------------------
+class RPShape;
+
 class RPFlowChartObject: public RPChartObject
 {
 friend class RPFlowChart;
@@ -31,7 +33,7 @@ private:
 	int pixmap_h_show;
 	int client_width;
 	int client_height;
-	const int select_box_size2;
+	static const int select_box_size2;
 
 	CPen     pen_black;
 	CPen     pen_shape_color;
@@ -58,7 +60,12 @@ private:
 #endif
 
 protected:
+	RPFlowChart* flowchart;
+
 	virtual void notify( RPObject* from, UINT message, WPARAM wParam, LPARAM lParam );
+	virtual void modify();
+	virtual void update();
+	virtual bool isFlowChart() const { return true; }
 	void makeNewPixmap();
 
 	RPChartObject* find( const CPoint& local_win_pos ) {
@@ -66,14 +73,26 @@ protected:
 		clientToZero( global_chart_pos );
 		std::list< RPObject* >::const_iterator it = begin();
 		while ( it != end() ) {
-			RPChartObject* obj = static_cast<RPChartObject*>(*it);
-			if ( obj->pointInPolygon( global_chart_pos ) ) {
-				return obj;
+			if ( (*it)->isChartObject() ) {
+				RPChartObject* obj = static_cast<RPChartObject*>(*it);
+				if ( obj->pointInPolygon( global_chart_pos ) ) {
+					return obj;
+				}
 			}
 			it++;
 		}
 		return NULL;
 	}
+
+	virtual RPProject::Cursor getCursor( const rp::point& global_pos );
+
+	rp::rect getFlowSize( const std::list< RPChartObject* >& list ) const;
+	rp::rect getFlowSize() const {
+		std::list< RPChartObject* > objects;
+		getChartObjects( objects );
+		return getFlowSize( objects );
+	}
+
 	virtual void onLButtonDown( UINT nFlags, CPoint local_win_pos );
 	virtual void onLButtonUp( UINT nFlags, CPoint local_win_pos );
 	virtual void onLButtonDblClk( UINT nFlags, CPoint local_win_pos );
@@ -82,8 +101,16 @@ protected:
 	virtual void onMouseMove( UINT nFlags, CPoint local_win_pos );
 
 public:
-	RPFlowChartObject( RPObject* parent, RPChartObject* chart_parent, RPFlowChart* flowchart );
+	RPFlowChartObject( RPObject* parent, RPFlowChart* flowchart );
 	virtual ~RPFlowChartObject();
+
+	void snapToGrid( RPShape* shape );
+
+	static int getSensitivity()               { return select_box_size2 + 1; }
+	int getSelectBoxSize2() const             { return select_box_size2;     }
+	const CPen& getPenSelectedLine() const    { return pen_selected_line;    }
+	const CPen& getPenSelectedBox() const     { return pen_selected_box;     }
+	const CBrush& getBrushSelectedBox() const { return brush_selected_box;   }
 
 	virtual void moveTo( int x, int y ) {};
 	virtual void draw( CDC& dc );
@@ -107,29 +134,14 @@ public:
 class RPFlowChart: public CWnd
 {
 friend class RPFlowChartObject;
-friend class RPShape;
 
 private:
-	void insertShape( RPShape* shape );
-	void deleteShape( RPShape* shape );
-
 	enum GridMode { gtSnapOff, gtSnapToPoint, gtSnapToCenter };
 	enum GridType { gtPoints, gtSolidLines, dtDotLines };
 
 	int   saved_dc;
-
 	CRect scroll_bar_size;
 
-	rp::rect getFlowSize( const std::list< RPChartObject* >& list ) const;
-	rp::rect getFlowSize() const {
-		std::list< RPChartObject* > objects;
-		std::list< RPObject* >::const_iterator it = flowobj->begin();
-		while ( it != flowobj->end() ) {
-			objects.push_back( static_cast<RPChartObject*>(*it) );
-			it++;
-		}
-		return getFlowSize( objects );
-	}
 	void updateScrollBars();
 
 /*
@@ -156,9 +168,6 @@ private:
 
 	RPFlowChartObject* flowobj;
 
-	void getScaleDelta( rp::point& delta, RPChartObject::angle90 a90, RPChartObject::PossibleCommand pcmd ) const;
-	void getRectDelta( rp::rect& rect_old, rp::rect& rect_new, rp::point& delta, RPChartObject::angle90 a90, RPChartObject::PossibleCommand pcmd ) const;
-
 #ifdef TEST_SPEED
 	int sec_cnt;
 	int sec_timer;
@@ -166,18 +175,9 @@ private:
 	int makegridempty_cnt;
 #endif
 
-	void updateFlowState();
-
 public:
 	RPFlowChart();
 	virtual ~RPFlowChart();
-
-	void updateDC();
-	virtual void modify();
-
-	void snapToGrid( RPShape* shape );
-
-	int getSensitivity() const { return flowobj->select_box_size2 + 1; }
 
 	//{{AFX_VIRTUAL(RPFlowChart)
 	public:

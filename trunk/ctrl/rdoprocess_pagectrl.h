@@ -113,6 +113,8 @@ protected:
 
 protected:
 	//{{AFX_VIRTUAL(RPPageCtrlItem)
+	public:
+	virtual BOOL DestroyWindow();
 	protected:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	//}}AFX_VIRTUAL

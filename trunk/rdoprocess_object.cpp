@@ -12,13 +12,13 @@ static char THIS_FILE[] = __FILE__;
 // ---------- RPObject
 // ----------------------------------------------------------------------------
 RPObject::RPObject( RPObject* parent, const rp::string& _name ):
-	rpoparent( parent ),
+	parent( parent ),
 	name( _name ),
 	selected( false )
 {
-	if ( rpoparent ) {
-		rpoparent->child.push_back( this );
-		rpoparent->setCorrectChildName( this );
+	if ( parent ) {
+		parent->child.push_back( this );
+		parent->setCorrectChildName( this );
 	}
 }
 
@@ -29,10 +29,10 @@ RPObject::~RPObject()
 	if ( isSelected() ) {
 		setSelected( false );
 	}
-	if ( rpoparent ) {
-		std::list< RPObject* >::iterator it = std::find( rpoparent->child.begin(), rpoparent->child.end(), this );
-		if ( it != rpoparent->child.end() ) {
-			rpoparent->child.erase( it );
+	if ( parent ) {
+		std::list< RPObject* >::iterator it = std::find( parent->child.begin(), parent->child.end(), this );
+		if ( it != parent->child.end() ) {
+			parent->child.erase( it );
 		}
 	}
 }
@@ -53,7 +53,7 @@ void RPObject::setName( const rp::string& value )
 	if ( !value.empty() ) {
 		rp::string prev_name = name;
 		name = value;
-		if ( rpoparent && !rpoparent->isChildNameCorrect( this ) ) {
+		if ( parent && !parent->isChildNameCorrect( this ) ) {
 			name = prev_name;
 			::MessageBox( NULL, _T("Name alredy used"), "Error", MB_OK | MB_ICONERROR );
 		}

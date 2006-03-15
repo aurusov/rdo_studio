@@ -22,8 +22,10 @@ const int base_speed = 10000;
 // ----------------------------------------------------------------------------
 // ---------- RPFlowChartObject
 // ----------------------------------------------------------------------------
-RPFlowChartObject::RPFlowChartObject( RPObject* _parent, RPChartObject* _chart_parent, RPFlowChart* _flowchart ):
-	RPChartObject( _parent, _chart_parent, _flowchart, _T("Flowchart") ),
+const int RPFlowChartObject::select_box_size2 = 4;
+
+RPFlowChartObject::RPFlowChartObject( RPObject* _parent, RPFlowChart* _flowchart ):
+	RPChartObject( _parent, _T("Flowchart") ),
 	init_ok( false ),
 	border_w( 7 ),
 	border_h( 7 ),
@@ -37,7 +39,6 @@ RPFlowChartObject::RPFlowChartObject( RPObject* _parent, RPChartObject* _chart_p
 	pixmap_h_show( 0 ),
 	client_width( 0 ),
 	client_height( 0 ),
-	select_box_size2( 4 ),
 	pen_black( PS_SOLID, 1, RGB(0x00, 0x00, 0x00) ),
 	pen_shape_color( PS_SOLID, 1, RGB(0x00, 0x00, 0x00) ),
 	pen_selected_line( PS_DOT, 1, RGB(0x00, 0xFF, 0x00) ),
@@ -52,7 +53,8 @@ RPFlowChartObject::RPFlowChartObject( RPObject* _parent, RPChartObject* _chart_p
 	saved_mem_dc( 0 ),
 	global_win_pos_prev( 0, 0 ),
 	one_object( NULL ),
-	one_object_pcmd( RPChartObject::pcmd_none )
+	one_object_pcmd( RPChartObject::pcmd_none ),
+	flowchart( _flowchart )
 #ifdef TEST_SPEED
 	,
 	makepixmap_cnt( 0 )
@@ -94,17 +96,64 @@ RPFlowChartObject::~RPFlowChartObject()
 
 void RPFlowChartObject::notify( RPObject* from, UINT message, WPARAM wParam, LPARAM lParam )
 {
-	if ( message == rp::msg::RP_FLOWSTATE_CHANGED ) {
-		flowchart->updateFlowState();
-/*
-		RPProject::FlowState flow_state = static_cast<RPProject::FlowState>(wParam);
-		switch ( flow_state ) {
-			case RPProject::flow_select   : break;
-			case RPProject::flow_connector: break;
-			case RPProject::flow_rotate   : break;
-		}
-*/
+	if ( message == rp::msg::RP_FLOWSTATE_CHANGED ) update();
+}
+
+void RPFlowChartObject::modify()
+{
+}
+
+void RPFlowChartObject::update()
+{
+	flowchart->InvalidateRect( NULL );
+	flowchart->UpdateWindow();
+}
+
+RPProject::Cursor RPFlowChartObject::getCursor( const rp::point& global_pos )
+{
+	RPProject::Cursor cursor = RPChartObject::getCursor( global_pos );
+	if ( cursor != RPProject::cursor_flow_select ) return cursor;
+
+	switch ( rpapp.project().getFlowState() ) {
+		case RPProject::flow_select   : return RPProject::cursor_flow_select;
+		case RPProject::flow_connector: return RPProject::cursor_flow_connector;
+		case RPProject::flow_rotate   : return RPProject::cursor_flow_rotate;
 	}
+	return RPProject::cursor_flow_select;
+}
+
+rp::rect RPFlowChartObject::getFlowSize( const std::list< RPChartObject* >& list ) const
+{
+	double max_x = 0;
+	double max_y = 0;
+	double min_x = 0;
+	double min_y = 0;
+	std::list< RPChartObject* >::const_iterator it = list.begin();
+	if ( it != list.end() ) {
+		rp::rect rect = (*it)->getMaxRect();
+		max_x = rect.getMaxX();
+		max_y = rect.getMaxY();
+		min_x = rect.getMinX();
+		min_y = rect.getMinY();
+		it++;
+	}
+	while ( it != list.end() ) {
+		rp::rect rect = (*it)->getMaxRect();
+		double _max_x = rect.getMaxX();
+		double _max_y = rect.getMaxY();
+		double _min_x = rect.getMinX();
+		double _min_y = rect.getMinY();
+		if ( _max_x > max_x ) max_x = _max_x;
+		if ( _max_y > max_y ) max_y = _max_y;
+		if ( _min_x < min_x ) min_x = _min_x;
+		if ( _min_y < min_y ) min_y = _min_y;
+		it++;
+	}
+	min_x -= matrix_transform.dx_const();
+	max_x -= matrix_transform.dx_const();
+	min_y -= matrix_transform.dy_const();
+	max_y -= matrix_transform.dy_const();
+	return rp::rect( min_x, min_y, max_x, max_y );
 }
 
 void RPFlowChartObject::draw( CDC& dc )
@@ -122,11 +171,7 @@ void RPFlowChartObject::draw( CDC& dc )
 #endif // ================================================
 
 	std::list< RPChartObject* > objects;
-	std::list< RPObject* >::const_iterator it = begin();
-	while ( it != end() ) {
-		objects.push_back( static_cast<RPChartObject*>(*it) );
-		it++;
-	}
+	getChartObjects( objects );
 
 	CRect client_rect;
 	flowchart->GetClientRect( &client_rect );
@@ -230,24 +275,22 @@ void RPFlowChartObject::draw( CDC& dc )
 			::GetSystemTime( &t4 );
 #endif // ================================================
 
-			std::list< RPChartObject* >::iterator it = objects.begin();
-			while ( it != objects.end() ) {
-				RPChartObject* object = *it;
-				object->transformToGlobal();
-				it++;
-			}
+//			std::list< RPChartObject* >::iterator it = objects.begin();
+//			while ( it != objects.end() ) {
+//				RPChartObject* object = *it;
+//				object->transformToGlobal();
+//				it++;
+//			}
 
 #ifdef TEST_SPEED // =====================================
 			for ( int cnt5 = 0; cnt5 <= base_speed; cnt5++ ) {
 #endif // ================================================
 
-			it = objects.begin();
+			std::list< RPChartObject* >::iterator it = objects.begin();
 			while ( it != objects.end() ) {
 				int saved = mem_dc.SaveDC();
-				(*it)->draw( mem_dc );
 				RPChartObject* obj = *it;
-				obj->transformToGlobal();
-				static_cast<RPShape*>(obj)->pa_global.extendByPerimetr( obj->main_pen_width / 2.0 );
+				obj->draw( mem_dc );
 				obj->draw1( mem_dc );
 				mem_dc.RestoreDC( saved );
 				it++;
@@ -269,6 +312,12 @@ void RPFlowChartObject::draw( CDC& dc )
 			it = objects.begin();
 			while ( it != objects.end() ) {
 				RPChartObject* object = *it;
+				if ( object->isSelected() ) {
+					int saved = mem_dc.SaveDC();
+					object->draw_selected( mem_dc );
+					mem_dc.RestoreDC( saved );
+				}
+				it++;
 /*
 				CPoint snap_to_point = shape->getCenter();
 				if ( snap_to_point.x > paper_border_w && snap_to_point.y > paper_border_h && snap_to_point.x <= pixmap_w_show - paper_border_w && snap_to_point.y <= pixmap_h_show - paper_border_h ) {
@@ -279,55 +328,6 @@ void RPFlowChartObject::draw( CDC& dc )
 					mem_dc.Ellipse( snap_to_point.x - 2, snap_to_point.y - 2, snap_to_point.x + 2, snap_to_point.y + 2 );
 				}
 */
-				if ( object->isSelected() ) {
-					// Прямоугольник вокруг фигуры
-					rp::rect rect = object->getBoundingRect();
-					int x0 = rect.p0().x;
-					int x1 = rect.p1().x;
-					int x2 = rect.p2().x;
-					int x3 = rect.p3().x;
-					int y0 = rect.p0().y;
-					int y1 = rect.p1().y;
-					int y2 = rect.p2().y;
-					int y3 = rect.p3().y;
-					mem_dc.SelectObject( pen_selected_line );
-					mem_dc.MoveTo( x0, y0 );
-					mem_dc.LineTo( x1, y1 );
-					mem_dc.LineTo( x2, y2 );
-					mem_dc.LineTo( x3, y3 );
-					mem_dc.LineTo( x0, y0 );
-					mem_dc.SelectObject( pen_selected_box );
-					mem_dc.SelectObject( brush_selected_box );
-					int box_size    = select_box_size2 * 2 -1;
-					int box_size_2  = select_box_size2;
-					if ( rpapp.project().getFlowState() == RPProject::flow_rotate ) {
-						int radius = flowchart->getSensitivity();
-						mem_dc.Ellipse( x0 - radius, y0 - radius, x0 + radius, y0 + radius );
-						mem_dc.Ellipse( x1 - radius, y1 - radius, x1 + radius, y1 + radius );
-						mem_dc.Ellipse( x2 - radius, y2 - radius, x2 + radius, y2 + radius );
-						mem_dc.Ellipse( x3 - radius, y3 - radius, x3 + radius, y3 + radius );
-					} else {
-						mem_dc.Rectangle( x0 - box_size_2, y0 - box_size_2, x0 + box_size_2, y0 + box_size_2 );
-						mem_dc.Rectangle( x1 - box_size_2, y1 - box_size_2, x1 + box_size_2, y1 + box_size_2 );
-						mem_dc.Rectangle( x2 - box_size_2, y2 - box_size_2, x2 + box_size_2, y2 + box_size_2 );
-						mem_dc.Rectangle( x3 - box_size_2, y3 - box_size_2, x3 + box_size_2, y3 + box_size_2 );
-					}
-					mem_dc.Rectangle( (x0 + x1)/2 - box_size_2, (y0 + y1)/2 - box_size_2, (x0 + x1)/2 + box_size_2, (y0 + y1)/2 + box_size_2 );
-					mem_dc.Rectangle( (x1 + x2)/2 - box_size_2, (y1 + y2)/2 - box_size_2, (x1 + x2)/2 + box_size_2, (y1 + y2)/2 + box_size_2 );
-					mem_dc.Rectangle( (x2 + x3)/2 - box_size_2, (y2 + y3)/2 - box_size_2, (x2 + x3)/2 + box_size_2, (y2 + y3)/2 + box_size_2 );
-					mem_dc.Rectangle( (x3 + x0)/2 - box_size_2, (y3 + y0)/2 - box_size_2, (x3 + x0)/2 + box_size_2, (y3 + y0)/2 + box_size_2 );
-					if ( rpapp.project().getFlowState() == RPProject::flow_rotate ) {
-						// Центр вращения
-						rp::point center = object->getRotateCenter();
-						CPen pen_red( PS_SOLID, 1, RGB(0,0,0) );
-						CBrush brush_white( RGB(-1,-1,0) );
-						int radius = flowchart->getSensitivity();
-						mem_dc.SelectObject( pen_red );
-						mem_dc.SelectObject( brush_white );
-						mem_dc.Ellipse( center.x - radius, center.y - radius, center.x + radius, center.y + radius );
-					}
-				}
-				it++;
 			}
 
 #ifdef TEST_SPEED // =====================================
@@ -419,6 +419,97 @@ void RPFlowChartObject::makeNewPixmap()
 	}
 }
 
+void RPFlowChartObject::snapToGrid( RPShape* shape )
+{
+/*
+	if ( shape ) {
+		if ( grid_pa.empty() ) return;
+		CPoint center;
+		if ( grid_mode == gtSnapToPoint ) {
+			center = CPoint( shape->getSnapToPoint() );
+			center.Offset( shape->getX() + paper_border_w, shape->getY() + paper_border_h );
+		} else {
+			center = shape->getCenter();
+			center += CPoint( shape->getX() + paper_border_w, shape->getY() + paper_border_h );
+		}
+		int c_x = ((center.x - paper_border_w) / grid_step);
+		int c_y = ((center.y - paper_border_h) / grid_step);
+		bool makeNewGrid = false;
+		const int point_cnt = 4;
+		std::vector< CPoint > c_pa;
+		c_pa.resize( point_cnt );
+		if ( c_x < 0 ) {
+			c_x = 0;
+		}
+		if ( c_y < 0 ) {
+			c_y = 0;
+		}
+		if ( grid_type == gtPoints ) {
+			if ( c_x > grid_cnt_x ) {
+				c_x = grid_cnt_x;
+			}
+			if ( c_y > grid_cnt_y ) {
+				c_y = grid_cnt_y;
+			}
+			c_pa[0] = grid_pa[ c_x + c_y * grid_cnt_x ];
+			c_pa[1] = grid_pa[ c_x + 1 + c_y * grid_cnt_x ];
+			c_pa[2] = grid_pa[ c_x + 1 + (c_y + 1) * grid_cnt_x ];
+			c_pa[3] = grid_pa[ c_x + (c_y + 1) * grid_cnt_x ];
+		} else {
+			int x1 = grid_pa[ c_x * 2 ].x;
+			int y1 = grid_pa[ grid_cnt_x * 2 + c_y * 2 ].y;
+			int x2 = x1 + grid_step;
+			int y2 = y1 + grid_step;
+			if ( c_x >= grid_cnt_x - grid_dx_plus || c_y >= grid_cnt_y - grid_dy_plus ) {
+				makeNewGrid = true;
+			}
+			c_pa[0] = CPoint( x1, y1 );
+			c_pa[1] = CPoint( x2, y1 );
+			c_pa[2] = CPoint( x2, y2 );
+			c_pa[3] = CPoint( x1, y2 );
+		}
+		int dx = 0;
+		int dy = 0;
+		if ( grid_mode == gtSnapToPoint ) {
+			double len1 = RPFlowChart::getDistance( c_pa[1], c_pa[2], center );
+			double len2 = RPFlowChart::getDistance( c_pa[3], c_pa[0], center );
+			if ( len1 < len2 ) {
+				dx = c_pa[1].x - center.x;
+			} else {
+				dx = c_pa[3].x - center.x;
+			}
+			len1 = RPFlowChart::getDistance( c_pa[0], c_pa[1], center );
+			len2 = RPFlowChart::getDistance( c_pa[2], c_pa[3], center );
+			if ( len1 < len2 ) {
+				dy = c_pa[1].y - center.y;
+			} else {
+				dy = c_pa[3].y - center.y;
+			}
+			if ( abs(dx) > grid_delta ) {
+				dx = 0;
+			}
+			if ( abs(dy) > grid_delta ) {
+				dy = 0;
+			}
+		} else {
+			dx = ( c_pa[0].x + (c_pa[1].x - c_pa[0].x)/2 ) - center.x;
+			dy = ( c_pa[0].y + (c_pa[3].y - c_pa[0].y)/2 ) - center.y;
+		}
+		if ( (dx || dy) && grid_mode != gtSnapOff ) {
+			shape->move( shape->getX() + dx, shape->getY() + dy );
+		}
+		if ( dx || dy || makeNewGrid ) {
+			if ( makeNewGrid ) {
+				grid_pa.resize( 0 );
+				makeGrid();
+				updateScrollBars();
+			}
+			updateDC();
+		}
+	}
+*/
+}
+
 void RPFlowChartObject::onLButtonDown( UINT nFlags, CPoint local_win_pos )
 {
 	rp::point global_chart_pos = local_win_pos;
@@ -438,7 +529,7 @@ void RPFlowChartObject::onLButtonDown( UINT nFlags, CPoint local_win_pos )
 				break;
 			}
 			// Проверяем поворот с перемещением
-			if ( obj->getBoundingRect().extendByPerimetr( flowchart->getSensitivity() ).pointInRect( global_chart_pos ) || obj->pointInPolygon( global_chart_pos ) ) {
+			if ( obj->getBoundingRect().extendByPerimetr( RPFlowChartObject::getSensitivity() ).pointInRect( global_chart_pos ) || obj->pointInPolygon( global_chart_pos ) ) {
 				obj->transformToGlobal();
 				pcmd = obj->getPossibleCommand( global_chart_pos );
 				switch ( pcmd ) {
@@ -558,7 +649,7 @@ void RPFlowChartObject::onMouseMove( UINT nFlags, CPoint local_win_pos )
 		switch ( one_object_pcmd ) {
 			case RPChartObject::pcmd_rotate_center: {
 				one_object->setRotateCenter( global_chart_pos );
-				flowchart->updateDC();
+				update();
 				break;
 			}
 			case RPChartObject::pcmd_rotate       :
@@ -573,7 +664,7 @@ void RPFlowChartObject::onMouseMove( UINT nFlags, CPoint local_win_pos )
 				clientToZero( point_old );
 				clientToZero( point_new );
 				one_object->setRotation( one_object->getRotation() + rp::math::getAlpha( point_old, one_object->getRotateCenter(), point_new ) );
-				flowchart->updateDC();
+				update();
 				break;
 			}
 			case RPChartObject::pcmd_scale_t      :
@@ -587,7 +678,7 @@ void RPFlowChartObject::onMouseMove( UINT nFlags, CPoint local_win_pos )
 				rp::rect  rect = one_object->getBoundingRect();
 				rp::point point_delta( one_object->globalRotate().obr() * rp::point(dx, dy) );
 				rp::point len( rp::math::getLength( rect.p_tl(), rect.p_tr() ), rp::math::getLength( rect.p_tl(), rect.p_bl() ) );
-				flowchart->getScaleDelta( point_delta, a90, one_object_pcmd );
+				RPChartObject::getScaleDelta( point_delta, a90, one_object_pcmd );
 				if ( len.x + point_delta.x < 0 ) {
 					point_delta.x = -len.x;
 				}
@@ -596,12 +687,12 @@ void RPFlowChartObject::onMouseMove( UINT nFlags, CPoint local_win_pos )
 				}
 				one_object->setScaleX( one_object->getScaleX() * (len.x + point_delta.x ) / len.x );
 				one_object->setScaleY( one_object->getScaleY() * (len.y + point_delta.y ) / len.y );
-				flowchart->getRectDelta( rect, one_object->getBoundingRect(), point_delta, a90, one_object_pcmd );
+				RPChartObject::getRectDelta( rect, one_object->getBoundingRect(), point_delta, a90, one_object_pcmd );
 				point_delta = one_object->globalRotate().obr() * point_delta;
 				one_object->setPostX( one_object->getPostX() + point_delta.x );
 				one_object->setPostY( one_object->getPostY() + point_delta.y );
 				one_object->setRotateCenterLocalDelta( point_delta.x, point_delta.y );
-				flowchart->updateDC();
+				update();
 				break;
 			}
 		}
@@ -654,7 +745,7 @@ void RPFlowChartObject::onMouseMove( UINT nFlags, CPoint local_win_pos )
 			makeGrid();
 //		}
 */
-		flowchart->updateDC();
+		update();
 	}
 	global_win_pos_prev = global_win_pos;
 }
@@ -726,14 +817,14 @@ BOOL RPFlowChart::Create( LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD d
 	CDC* dc  = GetDC();
 	saved_dc = dc->SaveDC();
 
-	flowobj  = new RPFlowChartObject( &rpapp.project(), NULL, this );
+	flowobj  = new RPFlowChartObject( &rpapp.project(), this );
 
 //	updateFont();
 	updateScrollBars();
 
-	shape_action = new RPShapeAction( flowobj, flowobj, this );
+	shape_action = new RPShapeAction( flowobj );
 //	shape_action->setPosition( 200, 100 );
-	shape_if = new RPShapeIf( flowobj, flowobj, this );
+	shape_if = new RPShapeIf( shape_action );
 	shape_if->setPosition( 200, 100 );
 
 #ifdef TEST_SPEED // =====================================
@@ -771,82 +862,9 @@ void RPFlowChart::OnDestroy()
 	CWnd::OnDestroy();
 }
 
-void RPFlowChart::insertShape( RPShape* shape )
-{
-	if ( flowobj->find_child( shape ) == flowobj->end() ) {
-//		objects.push_back( shape );
-/*
-		if ( !connectors_before_create.empty() ) {
-			std::list< CBDFlowChartConnector >::iterator it = connectors_before_create.begin();
-			while ( it != connectors_before_create.end() ) {
-				if ( it->shape_from == new_shape ) {
-					it->shape_from = shape;
-				} else if ( it->shape_to == new_shape ) {
-					it->shape_to = shape;
-				}
-				connectors.push_back( *it );
-				it++;
-			}
-			connectors_before_create.clear();
-		}
-*/
-	}
-	updateDC();
-}
-
-void RPFlowChart::deleteShape( RPShape* shape )
-{
-	std::list< RPObject* >::const_iterator it = flowobj->find_child( shape );
-	if ( it != flowobj->end() ) {
-//		objects.erase( it );
-
-//		if ( movingShape == shape ) {
-//			movingShape = NULL;
-//			moving_stop();
-//		}
-
-		updateScrollBars();
-		updateDC();
-	}
-}
-
-rp::rect RPFlowChart::getFlowSize( const std::list< RPChartObject* >& list ) const
-{
-	double max_x = 0;
-	double max_y = 0;
-	double min_x = 0;
-	double min_y = 0;
-	std::list< RPChartObject* >::const_iterator it = list.begin();
-	if ( it != list.end() ) {
-		rp::rect rect = (*it)->getMaxRect();
-		max_x = rect.getMaxX();
-		max_y = rect.getMaxY();
-		min_x = rect.getMinX();
-		min_y = rect.getMinY();
-		it++;
-	}
-	while ( it != list.end() ) {
-		rp::rect rect = (*it)->getMaxRect();
-		double _max_x = rect.getMaxX();
-		double _max_y = rect.getMaxY();
-		double _min_x = rect.getMinX();
-		double _min_y = rect.getMinY();
-		if ( _max_x > max_x ) max_x = _max_x;
-		if ( _max_y > max_y ) max_y = _max_y;
-		if ( _min_x < min_x ) min_x = _min_x;
-		if ( _min_y < min_y ) min_y = _min_y;
-		it++;
-	}
-	min_x -= flowobj->matrix_transform.dx();
-	max_x -= flowobj->matrix_transform.dx();
-	min_y -= flowobj->matrix_transform.dy();
-	max_y -= flowobj->matrix_transform.dy();
-	return rp::rect( min_x, min_y, max_x, max_y );
-}
-
 void RPFlowChart::updateScrollBars()
 {
-	rp::rect rect = getFlowSize();
+	rp::rect rect = flowobj->getFlowSize();
 	if ( scroll_bar_size.left   > rect.getMinX() ) scroll_bar_size.left   = rect.getMinX();
 	if ( scroll_bar_size.top    > rect.getMinY() ) scroll_bar_size.top    = rect.getMinY();
 	if ( scroll_bar_size.right  < rect.getMaxX() ) scroll_bar_size.right  = rect.getMaxX();
@@ -899,22 +917,14 @@ void RPFlowChart::updateScrollBars()
 */
 }
 
-void RPFlowChart::updateDC()
-{
-	InvalidateRect( NULL );
-	UpdateWindow();
-}
-
-void RPFlowChart::modify()
-{
-}
-
 void RPFlowChart::OnSize( UINT nType, int cx, int cy )
 {
 	CWnd::OnSize( nType, cx, cy );
 //	grid_pa.resize( 0 );
-	if ( flowobj ) flowobj->makeNewPixmap();
-	updateDC();
+	if ( flowobj ) {
+		flowobj->makeNewPixmap();
+		flowobj->update();
+	}
 }
 
 void RPFlowChart::makeGrid()
@@ -1096,7 +1106,7 @@ void RPFlowChart::OnHScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBar )
 	si.nPos   = -flowobj->matrix_transform.dx();
 	si.nPage  = flowobj->pixmap_w_show;
 	SetScrollInfo( SB_HORZ, &si, TRUE );
-	updateDC();
+	if ( flowobj ) flowobj->update();
 }
 
 void RPFlowChart::OnVScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBar )
@@ -1138,99 +1148,9 @@ void RPFlowChart::OnVScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBar )
 	si.nPos   = -flowobj->matrix_transform.dy();
 	si.nPage  = flowobj->pixmap_h_show;
 	SetScrollInfo( SB_VERT, &si, TRUE );
-	updateDC();
+	if ( flowobj ) flowobj->update();
 }
 
-void RPFlowChart::snapToGrid( RPShape* shape )
-{
-/*
-	if ( shape ) {
-		if ( grid_pa.empty() ) return;
-		CPoint center;
-		if ( grid_mode == gtSnapToPoint ) {
-			center = CPoint( shape->getSnapToPoint() );
-			center.Offset( shape->getX() + paper_border_w, shape->getY() + paper_border_h );
-		} else {
-			center = shape->getCenter();
-			center += CPoint( shape->getX() + paper_border_w, shape->getY() + paper_border_h );
-		}
-		int c_x = ((center.x - paper_border_w) / grid_step);
-		int c_y = ((center.y - paper_border_h) / grid_step);
-		bool makeNewGrid = false;
-		const int point_cnt = 4;
-		std::vector< CPoint > c_pa;
-		c_pa.resize( point_cnt );
-		if ( c_x < 0 ) {
-			c_x = 0;
-		}
-		if ( c_y < 0 ) {
-			c_y = 0;
-		}
-		if ( grid_type == gtPoints ) {
-			if ( c_x > grid_cnt_x ) {
-				c_x = grid_cnt_x;
-			}
-			if ( c_y > grid_cnt_y ) {
-				c_y = grid_cnt_y;
-			}
-			c_pa[0] = grid_pa[ c_x + c_y * grid_cnt_x ];
-			c_pa[1] = grid_pa[ c_x + 1 + c_y * grid_cnt_x ];
-			c_pa[2] = grid_pa[ c_x + 1 + (c_y + 1) * grid_cnt_x ];
-			c_pa[3] = grid_pa[ c_x + (c_y + 1) * grid_cnt_x ];
-		} else {
-			int x1 = grid_pa[ c_x * 2 ].x;
-			int y1 = grid_pa[ grid_cnt_x * 2 + c_y * 2 ].y;
-			int x2 = x1 + grid_step;
-			int y2 = y1 + grid_step;
-			if ( c_x >= grid_cnt_x - grid_dx_plus || c_y >= grid_cnt_y - grid_dy_plus ) {
-				makeNewGrid = true;
-			}
-			c_pa[0] = CPoint( x1, y1 );
-			c_pa[1] = CPoint( x2, y1 );
-			c_pa[2] = CPoint( x2, y2 );
-			c_pa[3] = CPoint( x1, y2 );
-		}
-		int dx = 0;
-		int dy = 0;
-		if ( grid_mode == gtSnapToPoint ) {
-			double len1 = RPFlowChart::getDistance( c_pa[1], c_pa[2], center );
-			double len2 = RPFlowChart::getDistance( c_pa[3], c_pa[0], center );
-			if ( len1 < len2 ) {
-				dx = c_pa[1].x - center.x;
-			} else {
-				dx = c_pa[3].x - center.x;
-			}
-			len1 = RPFlowChart::getDistance( c_pa[0], c_pa[1], center );
-			len2 = RPFlowChart::getDistance( c_pa[2], c_pa[3], center );
-			if ( len1 < len2 ) {
-				dy = c_pa[1].y - center.y;
-			} else {
-				dy = c_pa[3].y - center.y;
-			}
-			if ( abs(dx) > grid_delta ) {
-				dx = 0;
-			}
-			if ( abs(dy) > grid_delta ) {
-				dy = 0;
-			}
-		} else {
-			dx = ( c_pa[0].x + (c_pa[1].x - c_pa[0].x)/2 ) - center.x;
-			dy = ( c_pa[0].y + (c_pa[3].y - c_pa[0].y)/2 ) - center.y;
-		}
-		if ( (dx || dy) && grid_mode != gtSnapOff ) {
-			shape->move( shape->getX() + dx, shape->getY() + dy );
-		}
-		if ( dx || dy || makeNewGrid ) {
-			if ( makeNewGrid ) {
-				grid_pa.resize( 0 );
-				makeGrid();
-				updateScrollBars();
-			}
-			updateDC();
-		}
-	}
-*/
-}
 /*
 void RPFlowChart::snapToGridAllShapes()
 {
@@ -1306,273 +1226,43 @@ void RPFlowChart::OnLButtonDblClk( UINT nFlags, CPoint local_win_pos )
 	flowobj->onLButtonDblClk( nFlags, local_win_pos );
 }
 
-void RPFlowChart::getScaleDelta( rp::point& delta, RPChartObject::angle90 a90, RPChartObject::PossibleCommand pcmd ) const
-{
-	switch ( pcmd ) {
-		case RPChartObject::pcmd_scale_tl: {
-			switch ( a90 ) {
-				case RPChartObject::angle90_0  : delta.x = -delta.x; delta.y = -delta.y; break;
-				case RPChartObject::angle90_90 : delta.y = -delta.y; break;
-				case RPChartObject::angle90_180: break;
-				case RPChartObject::angle90_270: delta.x = -delta.x; break;
-			}
-			break;
-		}
-		case RPChartObject::pcmd_scale_tr: {
-			switch ( a90 ) {
-				case RPChartObject::angle90_0  : delta.y = -delta.y; break;
-				case RPChartObject::angle90_90 : break;
-				case RPChartObject::angle90_180: delta.x = -delta.x; break;
-				case RPChartObject::angle90_270: delta.x = -delta.x; delta.y = -delta.y; break;
-			}
-			break;
-		}
-		case RPChartObject::pcmd_scale_br: {
-			switch ( a90 ) {
-				case RPChartObject::angle90_0  : break;
-				case RPChartObject::angle90_90 : delta.x = -delta.x; break;
-				case RPChartObject::angle90_180: delta.x = -delta.x; delta.y = -delta.y; break;
-				case RPChartObject::angle90_270: delta.y = -delta.y; break;
-			}
-			break;
-		}
-		case RPChartObject::pcmd_scale_bl: {
-			switch ( a90 ) {
-				case RPChartObject::angle90_0  : delta.x = -delta.x; break;
-				case RPChartObject::angle90_90 : delta.x = -delta.x; delta.y = -delta.y; break;
-				case RPChartObject::angle90_180: delta.y = -delta.y; break;
-				case RPChartObject::angle90_270: break;
-			}
-			break;
-		}
-		case RPChartObject::pcmd_scale_r: {
-			switch ( a90 ) {
-				case RPChartObject::angle90_0  : delta.x = delta.x ; delta.y = 0; break;
-				case RPChartObject::angle90_90 : delta.y = delta.y ; delta.x = 0; break;
-				case RPChartObject::angle90_180: delta.x = -delta.x; delta.y = 0; break;
-				case RPChartObject::angle90_270: delta.y = -delta.y; delta.x = 0; break;
-			}
-			break;
-		}
-		case RPChartObject::pcmd_scale_l: {
-			switch ( a90 ) {
-				case RPChartObject::angle90_0  : delta.x = -delta.x; delta.y = 0; break;
-				case RPChartObject::angle90_90 : delta.y = -delta.y; delta.x = 0; break;
-				case RPChartObject::angle90_180: delta.x = delta.x ; delta.y = 0; break;
-				case RPChartObject::angle90_270: delta.y = delta.y ; delta.x = 0; break;
-			}
-			break;
-		}
-		case RPChartObject::pcmd_scale_t: {
-			switch ( a90 ) {
-				case RPChartObject::angle90_0  : delta.y = -delta.y; delta.x = 0; break;
-				case RPChartObject::angle90_90 : delta.x = delta.x ; delta.y = 0; break;
-				case RPChartObject::angle90_180: delta.y = delta.y ; delta.x = 0; break;
-				case RPChartObject::angle90_270: delta.x = -delta.x; delta.y = 0; break;
-			}
-			break;
-		}
-		case RPChartObject::pcmd_scale_b: {
-			switch ( a90 ) {
-				case RPChartObject::angle90_0  : delta.y = delta.y ; delta.x = 0; break;
-				case RPChartObject::angle90_90 : delta.x = -delta.x; delta.y = 0; break;
-				case RPChartObject::angle90_180: delta.y = -delta.y; delta.x = 0; break;
-				case RPChartObject::angle90_270: delta.x = delta.x ; delta.y = 0; break;
-			}
-			break;
-		}
-	}
-}
-
-void RPFlowChart::getRectDelta( rp::rect& rect_old, rp::rect& rect_new, rp::point& delta, RPChartObject::angle90 a90, RPChartObject::PossibleCommand pcmd ) const
-{
-	switch ( pcmd ) {
-		case RPChartObject::pcmd_scale_tl: {
-			switch ( a90 ) {
-				case RPChartObject::angle90_0  : {
-					delta.x = rect_old.p_br().x - rect_new.p_br().x;
-					delta.y = rect_old.p_br().y - rect_new.p_br().y;
-					break;
-				}
-				case RPChartObject::angle90_90 : {
-					delta.x = rect_old.p_bl().x - rect_new.p_bl().x;
-					delta.y = rect_old.p_bl().y - rect_new.p_bl().y;
-					break;
-				}
-				case RPChartObject::angle90_180: {
-					delta.x = rect_old.p_tl().x - rect_new.p_tl().x;
-					delta.y = rect_old.p_tl().y - rect_new.p_tl().y;
-					break;
-				}
-				case RPChartObject::angle90_270: {
-					delta.x = rect_old.p_tr().x - rect_new.p_tr().x;
-					delta.y = rect_old.p_tr().y - rect_new.p_tr().y;
-					break;
-				}
-			}
-			break;
-		}
-		case RPChartObject::pcmd_scale_tr: {
-			switch ( a90 ) {
-				case RPChartObject::angle90_0  : {
-					delta.x = rect_old.p_bl().x - rect_new.p_bl().x;
-					delta.y = rect_old.p_bl().y - rect_new.p_bl().y;
-					break;
-				}
-				case RPChartObject::angle90_90 : {
-					delta.x = rect_old.p_tl().x - rect_new.p_tl().x;
-					delta.y = rect_old.p_tl().y - rect_new.p_tl().y;
-					break;
-				}
-				case RPChartObject::angle90_180: {
-					delta.x = rect_old.p_tr().x - rect_new.p_tr().x;
-					delta.y = rect_old.p_tr().y - rect_new.p_tr().y;
-					break;
-				}
-				case RPChartObject::angle90_270: {
-					delta.x = rect_old.p_br().x - rect_new.p_br().x;
-					delta.y = rect_old.p_br().y - rect_new.p_br().y;
-					break;
-				}
-			}
-			break;
-		}
-		case RPChartObject::pcmd_scale_br: {
-			switch ( a90 ) {
-				case RPChartObject::angle90_0  : {
-					delta.x = rect_old.p_tl().x - rect_new.p_tl().x;
-					delta.y = rect_old.p_tl().y - rect_new.p_tl().y;
-					break;
-				}
-				case RPChartObject::angle90_90 : {
-					delta.x = rect_old.p_tr().x - rect_new.p_tr().x;
-					delta.y = rect_old.p_tr().y - rect_new.p_tr().y;
-					break;
-				}
-				case RPChartObject::angle90_180: {
-					delta.x = rect_old.p_br().x - rect_new.p_br().x;
-					delta.y = rect_old.p_br().y - rect_new.p_br().y;
-					break;
-				}
-				case RPChartObject::angle90_270: {
-					delta.x = rect_old.p_bl().x - rect_new.p_bl().x;
-					delta.y = rect_old.p_bl().y - rect_new.p_bl().y;
-					break;
-				}
-			}
-			break;
-		}
-		case RPChartObject::pcmd_scale_bl: {
-			switch ( a90 ) {
-				case RPChartObject::angle90_0  : {
-					delta.x = rect_old.p_tr().x - rect_new.p_tr().x;
-					delta.y = rect_old.p_tr().y - rect_new.p_tr().y;
-					break;
-				}
-				case RPChartObject::angle90_90 : {
-					delta.x = rect_old.p_br().x - rect_new.p_br().x;
-					delta.y = rect_old.p_br().y - rect_new.p_br().y;
-					break;
-				}
-				case RPChartObject::angle90_180: {
-					delta.x = rect_old.p_bl().x - rect_new.p_bl().x;
-					delta.y = rect_old.p_bl().y - rect_new.p_bl().y;
-					break;
-				}
-				case RPChartObject::angle90_270: {
-					delta.x = rect_old.p_tl().x - rect_new.p_tl().x;
-					delta.y = rect_old.p_tl().y - rect_new.p_tl().y;
-					break;
-				}
-			}
-			break;
-		}
-		case RPChartObject::pcmd_scale_r: {
-			switch ( a90 ) {
-				case RPChartObject::angle90_0  :
-				case RPChartObject::angle90_90 : {
-					delta.x = rect_old.p_tl().x - rect_new.p_tl().x;
-					delta.y = rect_old.p_tl().y - rect_new.p_tl().y;
-					break;
-				}
-				case RPChartObject::angle90_180:
-				case RPChartObject::angle90_270: {
-					delta.x = rect_new.p_tl().x - rect_old.p_tl().x;
-					delta.y = rect_new.p_tl().y - rect_old.p_tl().y;
-					break;
-				}
-			}
-			break;
-		}
-		case RPChartObject::pcmd_scale_l: {
-			switch ( a90 ) {
-				case RPChartObject::angle90_0  :
-				case RPChartObject::angle90_90 : {
-					delta.x = rect_new.p_tl().x - rect_old.p_tl().x;
-					delta.y = rect_new.p_tl().y - rect_old.p_tl().y;
-					break;
-				}
-				case RPChartObject::angle90_180:
-				case RPChartObject::angle90_270: {
-					delta.x = rect_old.p_tl().x - rect_new.p_tl().x;
-					delta.y = rect_old.p_tl().y - rect_new.p_tl().y;
-					break;
-				}
-			}
-			break;
-		}
-		case RPChartObject::pcmd_scale_t: {
-			switch ( a90 ) {
-				case RPChartObject::angle90_0  :
-				case RPChartObject::angle90_270: {
-					delta.x = rect_new.p_tl().x - rect_old.p_tl().x;
-					delta.y = rect_new.p_tl().y - rect_old.p_tl().y;
-					break;
-				}
-				case RPChartObject::angle90_90 :
-				case RPChartObject::angle90_180: {
-					delta.x = rect_old.p_tl().x - rect_new.p_tl().x;
-					delta.y = rect_old.p_tl().y - rect_new.p_tl().y;
-					break;
-				}
-			}
-			break;
-		}
-		case RPChartObject::pcmd_scale_b: {
-			switch ( a90 ) {
-				case RPChartObject::angle90_0  :
-				case RPChartObject::angle90_270: {
-					delta.x = rect_old.p_tl().x - rect_new.p_tl().x;
-					delta.y = rect_old.p_tl().y - rect_new.p_tl().y;
-					break;
-				}
-				case RPChartObject::angle90_90 :
-				case RPChartObject::angle90_180: {
-					delta.x = rect_new.p_tl().x - rect_old.p_tl().x;
-					delta.y = rect_new.p_tl().y - rect_old.p_tl().y;
-					break;
-				}
-			}
-			break;
-		}
-	}
-}
-
 void RPFlowChart::OnMouseMove( UINT nFlags, CPoint local_win_pos )
 {
 	CWnd::OnMouseMove( nFlags, local_win_pos );
 	flowobj->onMouseMove( nFlags, local_win_pos );
 }
 
-void RPFlowChart::updateFlowState()
-{
-	updateDC();
-}
-
 // Функция вызывается при перемещении мышки над окном и при клике, но не вызывается,
 // когда мышка перемещается над окном с зажатой клавишей
 BOOL RPFlowChart::OnSetCursor( CWnd* pWnd, UINT nHitTest, UINT message )
 {
+	CPoint point;
+	::GetCursorPos( &point );
+	ScreenToClient( &point );
+	flowobj->clientToZero( point );
+	HCURSOR cur = NULL;
+	RPProject::Cursor cursor = flowobj->getCursor( point );
+	switch ( cursor ) {
+		case RPProject::cursor_flow_select       : cur = rpapp.cursors[IDC_FLOW_SELECT]; break;
+		case RPProject::cursor_flow_move         : cur = rpapp.cursors[IDC_FLOW_MOVE]; break;
+		case RPProject::cursor_flow_connector    : cur = rpapp.cursors[IDC_FLOW_CONNECTOR]; break;
+		case RPProject::cursor_flow_rotate       : cur = rpapp.cursors[IDC_FLOW_ROTATE]; break;
+		case RPProject::cursor_flow_rotate_center: cur = rpapp.cursors[IDC_FLOW_ROTATE_CENTER]; break;
+		case RPProject::cursor_flow_rotate_tl    :
+		case RPProject::cursor_flow_rotate_tr    :
+		case RPProject::cursor_flow_rotate_bl    :
+		case RPProject::cursor_flow_rotate_br    : cur = rpapp.cursors[IDC_FLOW_ROTATE_TL]; break;
+		case RPProject::cursor_flow_scale_lr     : cur = rpapp.cursors[IDC_FLOW_SCALE_LR]; break;
+		case RPProject::cursor_flow_scale_tb     : cur = rpapp.cursors[IDC_FLOW_SCALE_TB]; break;
+		case RPProject::cursor_flow_scale_tlbr   : cur = rpapp.cursors[IDC_FLOW_SCALE_TLBR]; break;
+		case RPProject::cursor_flow_scale_trbl   : cur = rpapp.cursors[IDC_FLOW_SCALE_TRBL]; break;
+	}
+	if ( cur ) {
+		::SetCursor( cur );
+		return true;
+	}
+	return false;
+/*
 	CPoint point;
 	::GetCursorPos( &point );
 	ScreenToClient( &point );
@@ -1587,7 +1277,7 @@ BOOL RPFlowChart::OnSetCursor( CWnd* pWnd, UINT nHitTest, UINT message )
 			object = obj;
 			break;
 		}
-		if ( obj->getBoundingRect().extendByPerimetr( getSensitivity() ).pointInRect( point ) || obj->pointInPolygon( point ) ) {
+		if ( obj->getBoundingRect().extendByPerimetr( RPFlowChartObject::getSensitivity() ).pointInRect( point ) || obj->pointInPolygon( point ) ) {
 			object = obj;
 			break;
 		}
@@ -1634,4 +1324,5 @@ BOOL RPFlowChart::OnSetCursor( CWnd* pWnd, UINT nHitTest, UINT message )
 		return true;
 	}
 	return false;
+*/
 }

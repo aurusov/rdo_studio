@@ -21,7 +21,7 @@ friend class rp::msg;
 
 protected:
 	// --> manager
-	RPObject*                rpoparent;
+	RPObject*              parent;
 	std::list< RPObject* > child;
 	bool isChildNameCorrect( const RPObject* obj ) const;
 	void setCorrectChildName( RPObject* obj );
@@ -38,6 +38,8 @@ protected:
 
 	virtual void notify( RPObject* from, UINT message, WPARAM wParam, LPARAM lParam ) {};
 
+	virtual void modify() {};
+
 public:
 	RPObject( RPObject* parent = NULL, const rp::string& name = "object" );
 	virtual ~RPObject();
@@ -47,6 +49,8 @@ public:
 
 	bool isSelected() const { return selected; }
 	virtual void setSelected( bool value );
+
+	virtual bool isChartObject() const { return false; }
 
 	bool hasChild() const { return !child.empty(); }
 	std::list< RPObject* >::const_iterator find_child( const RPObject* object ) {

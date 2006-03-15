@@ -25,7 +25,12 @@ bool rect::pointInRect( const rp::point& point ) const
 		const rp::point& p2 = pa[j];
 		int k = (point.y - p1.y)*(p2.x - p1.x) - (point.x - p1.x)*(p2.y - p1.y);
 		if ( k == 0 ) {
-			break;
+			// ѕопали в линию (пр€мую), необходимо проверить на попадание в отрезок фигуры
+			double x_min = p1.x < p2.x ? p1.x : p2.x;
+			double x_max = p1.x > p2.x ? p1.x : p2.x;
+			double y_min = p1.y < p2.y ? p1.y : p2.y;
+			double y_max = p1.y > p2.y ? p1.y : p2.y;
+			if ( point.x >= x_min && point.x <= x_max && point.y >= y_min && point.y <= y_max ) return true;
 		} else {
 			if ( k0 == 0 ) {
 				k0 = k;

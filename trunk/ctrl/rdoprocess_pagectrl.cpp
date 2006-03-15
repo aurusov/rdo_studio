@@ -64,6 +64,13 @@ void RPPageCtrl::OnDestroy()
 		KillTimer( over_timer );
 		over_timer = 0;
 	}
+	std::list< RPPageCtrlItem* >::iterator it = items.begin();
+	while ( it != items.end() ) {
+		(*it)->DestroyWindow();
+		delete *it;
+		items.erase( it );
+		it = items.begin();
+	}
 	CWnd::OnDestroy();
 }
 
@@ -162,6 +169,7 @@ void RPPageCtrl::removePage( RPPageCtrlItem* page )
 			if ( it_current == items.end() ) it_current--;
 			if ( it_current == items.end() ) it_current = items.begin();
 		}
+		page->DestroyWindow();
 		delete page;
 		repaint();
 	}
@@ -487,6 +495,16 @@ int RPPageCtrlItem::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	label.SetWindowPos( NULL, 0, 0, 0, pagectrl->label_height, 0 );
 
 	return 0;
+}
+
+BOOL RPPageCtrlItem::DestroyWindow()
+{
+	if ( wnd ) {
+		wnd->DestroyWindow();
+		delete wnd;
+		wnd = NULL;
+	}
+	return CWnd::DestroyWindow();
 }
 
 void RPPageCtrlItem::OnSize( UINT nType, int cx, int cy )

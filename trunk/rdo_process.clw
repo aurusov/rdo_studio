@@ -2,7 +2,7 @@
 
 [General Info]
 Version=1
-LastClass=RPFlowChart
+LastClass=RPPageCtrlItem
 LastTemplate=CDialog
 NewFileInclude1=#include "stdafx.h"
 NewFileInclude2=#include "rdo_process.h"
@@ -24,10 +24,10 @@ Class12=RPFlowChart
 Class13=RPMainFrame
 
 ResourceCount=4
-Resource1=IDR_MAINFRAME (English (U.S.))
+Resource1=IDD_ABOUT
 Resource2=IDR_RDO_PRTYPE (English (U.S.))
 Resource3=IDD_ABOUTBOX (English (U.S.))
-Resource4=IDD_ABOUT
+Resource4=IDR_MAINFRAME (English (U.S.))
 
 [CLS:RPDockWnd]
 Type=0
@@ -52,6 +52,9 @@ Type=0
 BaseClass=CWnd
 HeaderFile=ctrl\rdoprocess_pagectrl.h
 ImplementationFile=ctrl\rdoprocess_pagectrl.cpp
+Filter=W
+VirtualFilter=WC
+LastObject=RPPageCtrlItem
 
 [CLS:RPProjectBar]
 Type=0
@@ -83,12 +86,6 @@ LastObject=CSCBMiniDockFrameWnd
 Type=0
 BaseClass=CWinApp
 HeaderFile=rdoprocess_app.h
-ImplementationFile=rdoprocess_app.cpp
-
-[CLS:RPAboutDlg]
-Type=0
-BaseClass=CDialog
-HeaderFile=rdoprocess_app.cpp
 ImplementationFile=rdoprocess_app.cpp
 
 [CLS:RPChildFrame]

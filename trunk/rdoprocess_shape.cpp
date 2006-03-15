@@ -13,22 +13,54 @@ static char THIS_FILE[] = __FILE__;
 // ----------------------------------------------------------------------------
 // ---------- RPShape
 // ----------------------------------------------------------------------------
-RPShape::RPShape( RPObject* _parent, RPChartObject* _chart_parent, RPFlowChart* _flowchart, const rp::string& _name ):
-	RPChartObject( _parent, _chart_parent, _flowchart, _name )
+RPShape::RPShape( RPObject* _parent, const rp::string& _name ):
+	RPChartObject( _parent, _name )
 //	snap_to_point( 0, 0 )
 {
-	flowchart->insertShape( this );
 }
 
 RPShape::~RPShape()
 {
-	flowchart->deleteShape( this );
+}
+
+RPProject::Cursor RPShape::getCursor( const rp::point& global_pos )
+{
+	RPProject::Cursor cursor = RPChartObject::getCursor( global_pos );
+	if ( cursor != RPProject::cursor_flow_select ) return cursor;
+
+	if ( isRotateCenter( global_pos ) ) return RPProject::cursor_flow_rotate_center;
+	if ( getBoundingRect().extendByPerimetr( RPFlowChartObject::getSensitivity() ).pointInRect( global_pos ) || pointInPolygon( global_pos ) ) {
+		transformToGlobal();
+		RPChartObject::PossibleCommand pcmd = getPossibleCommand( global_pos, true );
+		if ( isSelected() ) {
+			switch ( pcmd ) {
+				case RPChartObject::pcmd_move         : return RPProject::cursor_flow_move;
+				case RPChartObject::pcmd_rotate_tl    : return RPProject::cursor_flow_rotate_tl;
+				case RPChartObject::pcmd_rotate_tr    : return RPProject::cursor_flow_rotate_tr;
+				case RPChartObject::pcmd_rotate_bl    : return RPProject::cursor_flow_rotate_bl;
+				case RPChartObject::pcmd_rotate_br    : return RPProject::cursor_flow_rotate_br;
+				case RPChartObject::pcmd_scale_l      :
+				case RPChartObject::pcmd_scale_r      : return RPProject::cursor_flow_scale_lr;
+				case RPChartObject::pcmd_scale_t      :
+				case RPChartObject::pcmd_scale_b      : return RPProject::cursor_flow_scale_tb;
+				case RPChartObject::pcmd_scale_tl     :
+				case RPChartObject::pcmd_scale_br     : return RPProject::cursor_flow_scale_tlbr;
+				case RPChartObject::pcmd_scale_tr     :
+				case RPChartObject::pcmd_scale_bl     : return RPProject::cursor_flow_scale_trbl;
+			}
+		} else {
+			switch ( pcmd ) {
+				case RPChartObject::pcmd_move         : return RPProject::cursor_flow_move;
+			}
+		}
+	}
+	return RPProject::cursor_flow_select;
 }
 
 void RPShape::setPosition( int x, int y )
 {
 	RPChartObject::setPosition( x, y );
-	flowchart->snapToGrid( this );
+	if (flowChart()) flowChart()->snapToGrid( this );
 }
 
 void RPShape::transformToGlobal()
@@ -114,6 +146,7 @@ void RPShape::drawConnectorsOutput( CDC& dc )
 
 void RPShape::draw( CDC& dc )
 {
+	RPChartObject::draw( dc );
 	drawPolyline( dc );
 
 /*
@@ -128,8 +161,63 @@ void RPShape::draw( CDC& dc )
 */
 }
 
+void RPShape::draw_selected( CDC& dc )
+{
+	RPChartObject::draw_selected( dc );
+
+	// Прямоугольник вокруг фигуры
+	rp::rect rect = getBoundingRect();
+	int x0 = rect.p0().x;
+	int x1 = rect.p1().x;
+	int x2 = rect.p2().x;
+	int x3 = rect.p3().x;
+	int y0 = rect.p0().y;
+	int y1 = rect.p1().y;
+	int y2 = rect.p2().y;
+	int y3 = rect.p3().y;
+	RPFlowChartObject* flowchart = flowChart();
+	dc.SelectObject( flowchart->getPenSelectedLine() );
+	dc.MoveTo( x0, y0 );
+	dc.LineTo( x1, y1 );
+	dc.LineTo( x2, y2 );
+	dc.LineTo( x3, y3 );
+	dc.LineTo( x0, y0 );
+	dc.SelectObject( flowchart->getPenSelectedBox() );
+	dc.SelectObject( flowchart->getBrushSelectedBox() );
+	int box_size    = flowchart->getSelectBoxSize2() * 2 -1;
+	int box_size_2  = flowchart->getSelectBoxSize2();
+	if ( rpapp.project().getFlowState() == RPProject::flow_rotate ) {
+		int radius = RPFlowChartObject::getSensitivity();
+		dc.Ellipse( x0 - radius, y0 - radius, x0 + radius, y0 + radius );
+		dc.Ellipse( x1 - radius, y1 - radius, x1 + radius, y1 + radius );
+		dc.Ellipse( x2 - radius, y2 - radius, x2 + radius, y2 + radius );
+		dc.Ellipse( x3 - radius, y3 - radius, x3 + radius, y3 + radius );
+	} else {
+		dc.Rectangle( x0 - box_size_2, y0 - box_size_2, x0 + box_size_2, y0 + box_size_2 );
+		dc.Rectangle( x1 - box_size_2, y1 - box_size_2, x1 + box_size_2, y1 + box_size_2 );
+		dc.Rectangle( x2 - box_size_2, y2 - box_size_2, x2 + box_size_2, y2 + box_size_2 );
+		dc.Rectangle( x3 - box_size_2, y3 - box_size_2, x3 + box_size_2, y3 + box_size_2 );
+	}
+	dc.Rectangle( (x0 + x1)/2 - box_size_2, (y0 + y1)/2 - box_size_2, (x0 + x1)/2 + box_size_2, (y0 + y1)/2 + box_size_2 );
+	dc.Rectangle( (x1 + x2)/2 - box_size_2, (y1 + y2)/2 - box_size_2, (x1 + x2)/2 + box_size_2, (y1 + y2)/2 + box_size_2 );
+	dc.Rectangle( (x2 + x3)/2 - box_size_2, (y2 + y3)/2 - box_size_2, (x2 + x3)/2 + box_size_2, (y2 + y3)/2 + box_size_2 );
+	dc.Rectangle( (x3 + x0)/2 - box_size_2, (y3 + y0)/2 - box_size_2, (x3 + x0)/2 + box_size_2, (y3 + y0)/2 + box_size_2 );
+	if ( rpapp.project().getFlowState() == RPProject::flow_rotate ) {
+		// Центр вращения
+		rp::point center = getRotateCenter();
+		CPen pen_red( PS_SOLID, 1, RGB(0,0,0) );
+		CBrush brush_white( RGB(-1,-1,0) );
+		int radius = RPFlowChartObject::getSensitivity();
+		dc.SelectObject( pen_red );
+		dc.SelectObject( brush_white );
+		dc.Ellipse( center.x - radius, center.y - radius, center.x + radius, center.y + radius );
+	}
+}
+
 void RPShape::draw1( CDC& dc )
 {
+	transformToGlobal();
+	pa_global.extendByPerimetr( main_pen_width / 2.0 );
 	CPen pen( PS_SOLID, 1, RGB(-1,0,0) );
 	dc.SelectObject( pen );
 	dc.BeginPath();
@@ -147,7 +235,7 @@ RPChartObject::PossibleCommand RPShape::getPossibleCommand( const rp::point& glo
 	// Отдельно проверим на перемещение центра вращения. Он отрисовывается поверх выделения, значит и проверяться должен первым.
 	if ( isRotateCenter( global_pos ) ) return RPChartObject::pcmd_rotate_center;
 	rp::rect rect = getBoundingRect();
-	int sensitivity = flowchart->getSensitivity();
+	int sensitivity = RPFlowChartObject::getSensitivity();
 	angle90 a90 = getAngle90();
 	angle45 a45 = getAngle45();
 	double alpha = getRotation();

@@ -11,14 +11,54 @@
 #include "rdoprocess_rect.h"
 #include "rdoprocess_point.h"
 #include "rdoprocess_math.h"
+#include "rdoprocess_project.h"
 
 // ----------------------------------------------------------------------------
 // ---------- RPChartObject
 // ----------------------------------------------------------------------------
 class RPChartObject: public RPObject
 {
-friend class RPFlowChart;
 friend class RPFlowChartObject;
+
+public:
+	// Дискретный угол поворота (дискрета 90 градусов)
+	enum angle90 {
+		angle90_0 = 0,  //!< Угол поворота объекта alpha > 270 + 45 || alpha <= 45
+		angle90_90,     //!< Угол поворота объекта alpha > 45       && alpha <= 90 + 45
+		angle90_180,    //!< Угол поворота объекта alpha > 90 + 45  && alpha <= 180 + 45
+		angle90_270     //!< Угол поворота объекта alpha > 180 + 45 && alpha <= 270 + 45
+	};
+	// Дискретный угол поворота (дискрета 45 градусов)
+	enum angle45 {
+		angle45_0 = 0,  //!< Угол поворота объекта alpha > 360 - 22 || alpha <= 22
+		angle45_90,     //!< Угол поворота объекта alpha > 90 - 22  && alpha <= 90 + 22
+		angle45_180,    //!< Угол поворота объекта alpha > 180 - 22 && alpha <= 180 + 22
+		angle45_270,    //!< Угол поворота объекта alpha > 270 - 22 && alpha <= 270 + 22
+		angle45_45,     //!< Угол поворота объекта alpha > 45 -  22 && alpha <= 45 + 22
+		angle45_135,    //!< Угол поворота объекта alpha > 135 - 22 && alpha <= 135 + 22
+		angle45_225,    //!< Угол поворота объекта alpha > 225 - 22 && alpha <= 225 + 22
+		angle45_315,    //!< Угол поворота объекта alpha > 315 - 22 && alpha <= 315 + 22
+	};
+	// Возможная команда над объектом
+	enum PossibleCommand {
+		pcmd_none = 0,      //!< Над объектом не может быть произведено никакое действие
+		pcmd_move,          //!< Объект может быть перемещен
+		pcmd_rotate,        //!< Объект можно повернуть
+		pcmd_rotate_tl,     //!< Объект можно повернуть за левый верхний угол
+		pcmd_rotate_tr,     //!< Объект можно повернуть за правый верхний угол
+		pcmd_rotate_bl,     //!< Объект можно повернуть за левый нижний угол
+		pcmd_rotate_br,     //!< Объект можно повернуть за левый нижний угол
+		pcmd_rotate_center, //!< Может быть изменен центр врещения объекта
+		pcmd_scale,         //!< Объект может быть масштабирован
+		pcmd_scale_l,       //!< Объект может быть масштабирован за левую сторону
+		pcmd_scale_r,       //!< Объект может быть масштабирован за правую сторону
+		pcmd_scale_t,       //!< Объект может быть масштабирован за верх
+		pcmd_scale_b,       //!< Объект может быть масштабирован за низ
+		pcmd_scale_tl,      //!< Объект может быть масштабирован за левый верхний угол
+		pcmd_scale_tr,      //!< Объект может быть масштабирован за правый верхний угол
+		pcmd_scale_bl,      //!< Объект может быть масштабирован за левый нижний угол
+		pcmd_scale_br       //!< Объект может быть масштабирован за правый нижний угол
+	};
 
 private:
 	mutable rp::point rotate_center;
@@ -34,10 +74,24 @@ private:
 	};
 */
 protected:
-	RPChartObject* chart_parent;
-	RPFlowChart* flowchart;
+	RPChartObject*     chartParent() const { return !isFlowChart() && parent && parent->isChartObject() ? static_cast<RPChartObject*>(parent) : NULL; }
+	RPFlowChartObject* flowChart() const;
+	virtual bool isFlowChart() const { return false; }
 	int  main_pen_width;
 	CPen main_pen;
+
+	void getChartObjects( std::list< RPChartObject* >& objects ) const {
+		std::list< RPObject* >::const_iterator it = begin();
+		while ( it != end() ) {
+			if ( (*it)->isChartObject() ) objects.push_back( static_cast<RPChartObject*>(*it) );
+			it++;
+		}
+	}
+
+	virtual void modify();
+	virtual void update();
+
+	virtual RPProject::Cursor getCursor( const rp::point& global_pos );
 
 	rp::matrix matrix_transform;
 	rp::matrix matrix_rotate;
@@ -50,14 +104,23 @@ protected:
 	rp::matrix selfMatrix() const {
 		return matrix_transform * matrix_rotate * matrix_transform_post * matrix_scale;
 	}
-	rp::matrix globalMatrix() const {
-		return chart_parent ? chart_parent->globalMatrix() * selfMatrix() : selfMatrix();
+	rp::matrix globalMatrix( bool self = true ) const {
+		if ( self ) {
+			return chartParent() ? chartParent()->globalMatrix( false ) * selfMatrix() : selfMatrix();
+		} else {
+			return chartParent() ? chartParent()->globalMatrix( false ) * matrix_transform * matrix_rotate * matrix_transform_post : matrix_transform * matrix_rotate * matrix_transform_post;
+		}
+//		return chartParent() ? chartParent()->globalMatrix() * selfMatrix() : selfMatrix();
+	}
+	rp::matrix flowchartMatrix() const {
+		RPChartObject* flowchart = reinterpret_cast<RPChartObject*>(flowChart());
+		return flowchart ? flowchart->selfMatrix() : rp::matrix();
 	}
 	rp::matrix parentMatrix( bool first = true ) const {
 		if ( first ) {
-			return chart_parent ? chart_parent->parentMatrix( false ) : rp::matrix();
+			return chartParent() ? chartParent()->parentMatrix( false ) : rp::matrix();
 		} else {
-			return chart_parent ? chart_parent->parentMatrix( false ) * selfMatrix() : selfMatrix();
+			return chartParent() ? chartParent()->parentMatrix( false ) * selfMatrix() : selfMatrix();
 		}
 	}
 	rp::matrix rotateCenterMatrix() const {
@@ -66,7 +129,7 @@ protected:
 	rp::matrix globalRotate() const {
 		rp::matrix m_rotate;
 		RPChartObject::fillRotateMatrix( m_rotate, rotation_alpha );
-		return chart_parent ? chart_parent->globalRotate() * m_rotate : m_rotate;
+		return chartParent() ? chartParent()->globalRotate() * m_rotate : m_rotate;
 	}
 	static void fillRotateMatrix( rp::matrix& m_rotate, double alpha ) {
 		alpha *= rp::math::pi / 180.0;
@@ -91,9 +154,14 @@ protected:
 	virtual void onRButtonUp( UINT nFlags, CPoint global_chart_pos ) {};
 	virtual void onMouseMove( UINT nFlags, CPoint global_chart_pos ) {};
 
+	static void getScaleDelta( rp::point& delta, RPChartObject::angle90 a90, RPChartObject::PossibleCommand pcmd );
+	static void getRectDelta( rp::rect& rect_old, rp::rect& rect_new, rp::point& delta, RPChartObject::angle90 a90, RPChartObject::PossibleCommand pcmd );
+
 public:
-	RPChartObject( RPObject* parent, RPChartObject* chart_parent, RPFlowChart* flowchart, const rp::string& name = "object" );
+	RPChartObject( RPObject* parent, const rp::string& name = "object" );
 	virtual ~RPChartObject();
+
+	virtual bool isChartObject() const { return true; }
 
 	int getPenWidth() const { return main_pen_width; }
 
@@ -136,13 +204,6 @@ public:
 	// Совпадает ли точка на центре вращения фигуры
 	bool isRotateCenter( const rp::point& point ) const;
 
-	// Дискретный угол поворота (дискрета 90 градусов)
-	enum angle90 {
-		angle90_0 = 0,  //!< Угол поворота объекта alpha > 270 + 45 || alpha <= 45
-		angle90_90,     //!< Угол поворота объекта alpha > 45       && alpha <= 90 + 45
-		angle90_180,    //!< Угол поворота объекта alpha > 90 + 45  && alpha <= 180 + 45
-		angle90_270     //!< Угол поворота объекта alpha > 180 + 45 && alpha <= 270 + 45
-	};
 	// Вернуть дискретный угол поворота (дискрета 90 градусов)
 	angle90 getAngle90() const {
 		double alpha = getRotation();
@@ -153,17 +214,6 @@ public:
 		return RPChartObject::angle90_0;
 	}
 
-	// Дискретный угол поворота (дискрета 45 градусов)
-	enum angle45 {
-		angle45_0 = 0,  //!< Угол поворота объекта alpha > 360 - 22 || alpha <= 22
-		angle45_90,     //!< Угол поворота объекта alpha > 90 - 22  && alpha <= 90 + 22
-		angle45_180,    //!< Угол поворота объекта alpha > 180 - 22 && alpha <= 180 + 22
-		angle45_270,    //!< Угол поворота объекта alpha > 270 - 22 && alpha <= 270 + 22
-		angle45_45,     //!< Угол поворота объекта alpha > 45 -  22 && alpha <= 45 + 22
-		angle45_135,    //!< Угол поворота объекта alpha > 135 - 22 && alpha <= 135 + 22
-		angle45_225,    //!< Угол поворота объекта alpha > 225 - 22 && alpha <= 225 + 22
-		angle45_315,    //!< Угол поворота объекта alpha > 315 - 22 && alpha <= 315 + 22
-	};
 	// Вернуть дискретный угол поворота (дискрета 45 градусов)
 	angle45 getAngle45() const {
 		double alpha = getRotation();
@@ -202,7 +252,8 @@ public:
 	// Выделить/снять выделение с фигуры
 	virtual void setSelected( bool value );
 	// Отрисовка фигуры
-	virtual void draw( CDC& dc ) = 0;
+	virtual void draw( CDC& dc );
+	virtual void draw_selected( CDC& dc );
 	virtual void draw1( CDC& dc ) {};
 
 	// Габориты фигуры
@@ -219,25 +270,6 @@ public:
 	// Находится ли точка внутри фигуры
 	virtual bool pointInPolygon( const rp::point& point, bool byperimetr = true ) = 0;
 
-	enum PossibleCommand {
-		pcmd_none = 0,      //!< Над объектом не может быть произведено никакое действие
-		pcmd_move,          //!< Объект может быть перемещен
-		pcmd_rotate,        //!< Объект можно повернуть
-		pcmd_rotate_tl,     //!< Объект можно повернуть за левый верхний угол
-		pcmd_rotate_tr,     //!< Объект можно повернуть за правый верхний угол
-		pcmd_rotate_bl,     //!< Объект можно повернуть за левый нижний угол
-		pcmd_rotate_br,     //!< Объект можно повернуть за левый нижний угол
-		pcmd_rotate_center, //!< Может быть изменен центр врещения объекта
-		pcmd_scale,         //!< Объект может быть масштабирован
-		pcmd_scale_l,       //!< Объект может быть масштабирован за левую сторону
-		pcmd_scale_r,       //!< Объект может быть масштабирован за правую сторону
-		pcmd_scale_t,       //!< Объект может быть масштабирован за верх
-		pcmd_scale_b,       //!< Объект может быть масштабирован за низ
-		pcmd_scale_tl,      //!< Объект может быть масштабирован за левый верхний угол
-		pcmd_scale_tr,      //!< Объект может быть масштабирован за правый верхний угол
-		pcmd_scale_bl,      //!< Объект может быть масштабирован за левый нижний угол
-		pcmd_scale_br       //!< Объект может быть масштабирован за правый нижний угол
-	};
 	virtual PossibleCommand getPossibleCommand( const rp::point& global_pos, bool for_cursor = false ) { return pcmd_none; }
 };
 

@@ -14,8 +14,6 @@
 // ----------------------------------------------------------------------------
 class RPShape: public RPChartObject
 {
-friend class RPFlowChartObject;
-
 protected:
 //	CPoint snap_to_point;
 
@@ -33,6 +31,8 @@ protected:
 //	virtual void drawConnectorsInput( CDC& dc );
 //	virtual void drawConnectorsOutput( CDC& dc );
 
+	virtual RPProject::Cursor getCursor( const rp::point& global_pos );
+
 	virtual void onLButtonDown( UINT nFlags, CPoint flowchart_mouse_pos );
 	virtual void onLButtonUp( UINT nFlags, CPoint flowchart_mouse_pos );
 	virtual void onLButtonDblClk( UINT nFlags, CPoint flowchart_mouse_pos );
@@ -41,7 +41,7 @@ protected:
 	virtual void onMouseMove( UINT nFlags, CPoint flowchart_mouse_pos );
 
 public:
-	RPShape( RPObject* parent, RPChartObject* chart_parent, RPFlowChart* flowchart, const rp::string& name = "object" );
+	RPShape( RPObject* parent, const rp::string& name = "object" );
 	virtual ~RPShape();
 
 	virtual void setPosition( int x, int y );
@@ -49,6 +49,7 @@ public:
 //	const CPoint& getSnapToPoint() const { return snap_to_point; }
 
 	virtual void draw( CDC& dc );
+	virtual void draw_selected( CDC& dc );
 	virtual void draw1( CDC& dc );
 
 	// Габориты фигуры
