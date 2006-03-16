@@ -70,6 +70,19 @@ RPProject::Cursor RPChartObject::getCursor( const rp::point& global_pos )
 	return RPProject::cursor_flow_select;
 }
 
+RPChartObject* RPChartObject::find( const rp::point& global_chart_pos )
+{
+	std::list< RPChartObject* > objects;
+	getChartObjects( objects );
+	std::list< RPChartObject* >::iterator it = objects.begin();
+	while ( it != objects.end() ) {
+		RPChartObject* obj = (*it)->find( global_chart_pos );
+		if ( obj ) return obj;
+		it++;
+	}
+	return (getBoundingRect().extendByPerimetr( RPFlowChartObject::getSensitivity() ).pointInRect( global_chart_pos ) || pointInPolygon( global_chart_pos )) ? this : NULL;
+}
+
 void RPChartObject::draw( CDC& dc )
 {
 	// Перевод фигуры в глобальные координаты

@@ -553,7 +553,7 @@ void RPFlowChartObject::onLButtonDown( UINT nFlags, CPoint local_win_pos )
 			it++;
 		}
 	}
-	// Запомнили глобальные координаты мышки (глобальные в виндах, а не 2D движке ). Пригодятся в других функциях.
+	// Запомнили глобальные координаты мышки (глобальные в виндах, а не 2D движке). Пригодятся в других функциях.
 	global_win_pos_prev = local_win_pos;
 	flowchart->ClientToScreen( &global_win_pos_prev );
 	// Монопольно захватили мышку
@@ -864,7 +864,7 @@ void RPFlowChart::OnDestroy()
 
 void RPFlowChart::updateScrollBars()
 {
-	rp::rect rect = flowobj->getFlowSize();
+	rp::rect rect = flowobj->getBoundingRect();
 	if ( scroll_bar_size.left   > rect.getMinX() ) scroll_bar_size.left   = rect.getMinX();
 	if ( scroll_bar_size.top    > rect.getMinY() ) scroll_bar_size.top    = rect.getMinY();
 	if ( scroll_bar_size.right  < rect.getMaxX() ) scroll_bar_size.right  = rect.getMaxX();

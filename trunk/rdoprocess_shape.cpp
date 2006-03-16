@@ -50,7 +50,19 @@ RPProject::Cursor RPShape::getCursor( const rp::point& global_pos )
 			}
 		} else {
 			switch ( pcmd ) {
-				case RPChartObject::pcmd_move         : return RPProject::cursor_flow_move;
+				case RPChartObject::pcmd_move         :
+				case RPChartObject::pcmd_rotate_tl    :
+				case RPChartObject::pcmd_rotate_tr    :
+				case RPChartObject::pcmd_rotate_bl    :
+				case RPChartObject::pcmd_rotate_br    :
+				case RPChartObject::pcmd_scale_l      :
+				case RPChartObject::pcmd_scale_r      :
+				case RPChartObject::pcmd_scale_t      :
+				case RPChartObject::pcmd_scale_b      :
+				case RPChartObject::pcmd_scale_tl     :
+				case RPChartObject::pcmd_scale_br     :
+				case RPChartObject::pcmd_scale_tr     :
+				case RPChartObject::pcmd_scale_bl     : return RPProject::cursor_flow_move;
 			}
 		}
 	}

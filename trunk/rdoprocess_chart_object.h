@@ -92,6 +92,7 @@ protected:
 	virtual void update();
 
 	virtual RPProject::Cursor getCursor( const rp::point& global_pos );
+	virtual RPChartObject* find( const rp::point& global_chart_pos );
 
 	rp::matrix matrix_transform;
 	rp::matrix matrix_rotate;
@@ -268,7 +269,7 @@ public:
 	// Перевод всех элементов фигуры в глобальные координаты
 	virtual void transformToGlobal() = 0;
 	// Находится ли точка внутри фигуры
-	virtual bool pointInPolygon( const rp::point& point, bool byperimetr = true ) = 0;
+	virtual bool pointInPolygon( const rp::point& point ) = 0;
 
 	virtual PossibleCommand getPossibleCommand( const rp::point& global_pos, bool for_cursor = false ) { return pcmd_none; }
 };

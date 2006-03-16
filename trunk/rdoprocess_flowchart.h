@@ -87,11 +87,6 @@ protected:
 	virtual RPProject::Cursor getCursor( const rp::point& global_pos );
 
 	rp::rect getFlowSize( const std::list< RPChartObject* >& list ) const;
-	rp::rect getFlowSize() const {
-		std::list< RPChartObject* > objects;
-		getChartObjects( objects );
-		return getFlowSize( objects );
-	}
 
 	virtual void onLButtonDown( UINT nFlags, CPoint local_win_pos );
 	virtual void onLButtonUp( UINT nFlags, CPoint local_win_pos );
@@ -114,9 +109,13 @@ public:
 
 	virtual void moveTo( int x, int y ) {};
 	virtual void draw( CDC& dc );
-	virtual rp::rect getBoundingRect( bool global = true ) const { return rp::rect(); }
+	virtual rp::rect getBoundingRect( bool global = true ) const {
+		std::list< RPChartObject* > objects;
+		getChartObjects( objects );
+		return getFlowSize( objects );
+	}
 	virtual void transformToGlobal() {};
-	virtual bool pointInPolygon( const rp::point& point, bool byperimetr = true ) { return true; }
+	virtual bool pointInPolygon( const rp::point& point ) { return true; }
 
 	void clientToZero( CPoint& point ) const {
 		point.x -= border_w + paper_border_w;

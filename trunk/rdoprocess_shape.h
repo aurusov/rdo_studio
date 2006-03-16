@@ -63,13 +63,9 @@ public:
 	// Перевод всех элементов фигуры в глобальные координаты
 	virtual void transformToGlobal();
 	// Находится ли точка внутри фигуры
-	virtual bool pointInPolygon( const rp::point& point, bool byperimetr = true ) {
+	virtual bool pointInPolygon( const rp::point& point ) {
 		transformToGlobal();
-		if ( byperimetr ) {
-			return pa_global.extendByPerimetr( static_cast<double>(main_pen_width) / 2.0 ).pointInPolygon( point );
-		} else {
-			return pa_global.pointInPolygon( point );
-		}
+		return pa_global.extendByPerimetr( static_cast<double>(main_pen_width) / 2.0 ).pointInPolygon( point );
 	}
 	virtual PossibleCommand getPossibleCommand( const rp::point& global_pos, bool for_cursor = false );
 };
