@@ -109,9 +109,11 @@ void RPFlowChartObject::update()
 	flowchart->UpdateWindow();
 }
 
-RPProject::Cursor RPFlowChartObject::getCursor( const rp::point& global_pos )
+RPProject::Cursor RPFlowChartObject::getCursor( const rp::point& global_chart_pos )
 {
-	RPProject::Cursor cursor = RPChartObject::getCursor( global_pos );
+	if ( pointInNCArea( global_chart_pos ) ) return RPProject::cursor_flow_select;
+
+	RPProject::Cursor cursor = RPChartObject::getCursor( global_chart_pos );
 	if ( cursor != RPProject::cursor_flow_select ) return cursor;
 
 	switch ( rpapp.project().getFlowState() ) {
@@ -120,6 +122,11 @@ RPProject::Cursor RPFlowChartObject::getCursor( const rp::point& global_pos )
 		case RPProject::flow_rotate   : return RPProject::cursor_flow_rotate;
 	}
 	return RPProject::cursor_flow_select;
+}
+
+bool RPFlowChartObject::pointInPolygon( const rp::point& global_chart_pos )
+{
+	return global_chart_pos.x >= 0 && global_chart_pos.y >= 0 && global_chart_pos.x <= pixmap_w_show && global_chart_pos.y <= pixmap_h_show;
 }
 
 rp::rect RPFlowChartObject::getFlowSize( const std::list< RPChartObject* >& list ) const
@@ -529,8 +536,7 @@ void RPFlowChartObject::onLButtonDown( UINT nFlags, CPoint local_win_pos )
 				break;
 			}
 			// Проверяем поворот с перемещением
-			if ( obj->getBoundingRect().extendByPerimetr( RPFlowChartObject::getSensitivity() ).pointInRect( global_chart_pos ) || obj->pointInPolygon( global_chart_pos ) ) {
-				obj->transformToGlobal();
+			if ( obj->pointInPolygon(global_chart_pos) || obj->pointInNCArea(global_chart_pos) ) {
 				pcmd = obj->getPossibleCommand( global_chart_pos );
 				switch ( pcmd ) {
 					case RPChartObject::pcmd_rotate_tl    :
@@ -594,7 +600,7 @@ void RPFlowChartObject::onLButtonUp( UINT nFlags, CPoint local_win_pos )
 
 void RPFlowChartObject::onLButtonDblClk( UINT nFlags, CPoint local_win_pos )
 {
-	RPChartObject* obj = find( local_win_pos );
+	RPChartObject* obj = findByWinPos( local_win_pos );
 	if ( obj ) {
 		CPoint global_chart_pos = local_win_pos;
 		clientToZero( global_chart_pos );
@@ -604,7 +610,7 @@ void RPFlowChartObject::onLButtonDblClk( UINT nFlags, CPoint local_win_pos )
 
 void RPFlowChartObject::onRButtonDown( UINT nFlags, CPoint local_win_pos )
 {
-	RPChartObject* obj = find( local_win_pos );
+	RPChartObject* obj = findByWinPos( local_win_pos );
 	if ( obj ) {
 		CPoint global_chart_pos = local_win_pos;
 		clientToZero( global_chart_pos );
@@ -614,7 +620,7 @@ void RPFlowChartObject::onRButtonDown( UINT nFlags, CPoint local_win_pos )
 
 void RPFlowChartObject::onRButtonUp( UINT nFlags, CPoint local_win_pos )
 {
-	RPChartObject* obj = find( local_win_pos );
+	RPChartObject* obj = findByWinPos( local_win_pos );
 	if ( obj ) {
 		CPoint global_chart_pos = local_win_pos;
 		clientToZero( global_chart_pos );
@@ -632,7 +638,7 @@ void RPFlowChartObject::onMouseMove( UINT nFlags, CPoint local_win_pos )
 	rp::point global_chart_pos = local_win_pos;
 	clientToZero( global_chart_pos );
 
-	RPChartObject* obj = find( local_win_pos );
+	RPChartObject* obj = findByWinPos( local_win_pos );
 	if ( obj ) {
 		obj->onMouseMove( nFlags, CPoint( global_chart_pos.x, global_chart_pos.y ) );
 	}

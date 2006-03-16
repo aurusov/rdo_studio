@@ -23,15 +23,14 @@ RPShape::~RPShape()
 {
 }
 
-RPProject::Cursor RPShape::getCursor( const rp::point& global_pos )
+RPProject::Cursor RPShape::getCursor( const rp::point& global_chart_pos )
 {
-	RPProject::Cursor cursor = RPChartObject::getCursor( global_pos );
+	RPProject::Cursor cursor = RPChartObject::getCursor( global_chart_pos );
 	if ( cursor != RPProject::cursor_flow_select ) return cursor;
 
-	if ( isRotateCenter( global_pos ) ) return RPProject::cursor_flow_rotate_center;
-	if ( getBoundingRect().extendByPerimetr( RPFlowChartObject::getSensitivity() ).pointInRect( global_pos ) || pointInPolygon( global_pos ) ) {
-		transformToGlobal();
-		RPChartObject::PossibleCommand pcmd = getPossibleCommand( global_pos, true );
+	if ( isRotateCenter( global_chart_pos ) ) return RPProject::cursor_flow_rotate_center;
+	if ( pointInPolygon(global_chart_pos) || pointInNCArea(global_chart_pos) ) {
+		RPChartObject::PossibleCommand pcmd = getPossibleCommand( global_chart_pos, true );
 		if ( isSelected() ) {
 			switch ( pcmd ) {
 				case RPChartObject::pcmd_move         : return RPProject::cursor_flow_move;
@@ -67,6 +66,28 @@ RPProject::Cursor RPShape::getCursor( const rp::point& global_pos )
 		}
 	}
 	return RPProject::cursor_flow_select;
+}
+
+bool RPShape::pointInNCArea( const rp::point& global_chart_pos )
+{
+//	return getBoundingRect().extendByPerimetr( RPFlowChartObject::getSensitivity() ).pointInRect( global_chart_pos );
+	if ( !isSelected() ) return false;
+	switch ( getPossibleCommand( global_chart_pos ) ) {
+		case RPChartObject::pcmd_rotate_center:
+		case RPChartObject::pcmd_rotate_tl    :
+		case RPChartObject::pcmd_rotate_tr    :
+		case RPChartObject::pcmd_rotate_bl    :
+		case RPChartObject::pcmd_rotate_br    :
+		case RPChartObject::pcmd_scale_l      :
+		case RPChartObject::pcmd_scale_r      :
+		case RPChartObject::pcmd_scale_t      :
+		case RPChartObject::pcmd_scale_b      :
+		case RPChartObject::pcmd_scale_tl     :
+		case RPChartObject::pcmd_scale_br     :
+		case RPChartObject::pcmd_scale_tr     :
+		case RPChartObject::pcmd_scale_bl     : return true;
+	}
+	return false;
 }
 
 void RPShape::setPosition( int x, int y )
@@ -242,10 +263,10 @@ void RPShape::draw1( CDC& dc )
 	dc.StrokePath();
 }
 
-RPChartObject::PossibleCommand RPShape::getPossibleCommand( const rp::point& global_pos, bool for_cursor )
+RPChartObject::PossibleCommand RPShape::getPossibleCommand( const rp::point& global_chart_pos, bool for_cursor )
 {
 	// Отдельно проверим на перемещение центра вращения. Он отрисовывается поверх выделения, значит и проверяться должен первым.
-	if ( isRotateCenter( global_pos ) ) return RPChartObject::pcmd_rotate_center;
+	if ( isRotateCenter( global_chart_pos ) ) return RPChartObject::pcmd_rotate_center;
 	rp::rect rect = getBoundingRect();
 	int sensitivity = RPFlowChartObject::getSensitivity();
 	angle90 a90 = getAngle90();
@@ -253,7 +274,7 @@ RPChartObject::PossibleCommand RPShape::getPossibleCommand( const rp::point& glo
 	double alpha = getRotation();
 	// Отдельно проверим на растяжение за правый нижний угол, т.к. фигуру, сжатую в ноль, лучше растягивать из него
 	if ( rpapp.project().getFlowState() == RPProject::flow_select ) {
-		if ( rp::math::getLength( rect.p_tl(), global_pos ) <= sensitivity ) {
+		if ( rp::math::getLength( rect.p_tl(), global_chart_pos ) <= sensitivity ) {
 			if ( for_cursor ) {
 				switch ( a45 ) {
 					case angle45_180: return RPChartObject::pcmd_scale_br;
@@ -264,7 +285,7 @@ RPChartObject::PossibleCommand RPShape::getPossibleCommand( const rp::point& glo
 				}
 			}
 		}
-		if ( rp::math::getLength( rect.p_tr(), global_pos ) <= sensitivity ) {
+		if ( rp::math::getLength( rect.p_tr(), global_chart_pos ) <= sensitivity ) {
 			if ( for_cursor ) {
 				switch ( a45 ) {
 					case angle45_270: return RPChartObject::pcmd_scale_br;
@@ -275,7 +296,7 @@ RPChartObject::PossibleCommand RPShape::getPossibleCommand( const rp::point& glo
 				}
 			}
 		}
-		if ( rp::math::getLength( rect.p_bl(), global_pos ) <= sensitivity ) {
+		if ( rp::math::getLength( rect.p_bl(), global_chart_pos ) <= sensitivity ) {
 			if ( for_cursor ) {
 				switch ( a45 ) {
 					case angle45_90 : return RPChartObject::pcmd_scale_br;
@@ -286,7 +307,7 @@ RPChartObject::PossibleCommand RPShape::getPossibleCommand( const rp::point& glo
 				}
 			}
 		}
-		if ( rp::math::getLength( rect.p_br(), global_pos ) <= sensitivity ) {
+		if ( rp::math::getLength( rect.p_br(), global_chart_pos ) <= sensitivity ) {
 			if ( for_cursor ) {
 				switch ( a45 ) {
 					case angle45_0  : return RPChartObject::pcmd_scale_br;
@@ -298,7 +319,7 @@ RPChartObject::PossibleCommand RPShape::getPossibleCommand( const rp::point& glo
 			}
 		}
 		// Отдельно проверим на растяжение за левый нижний угол, т.к. фигуру, сжатую в горизонтальную линию, лучше растягивать именно из него, а не в лево-вверх
-		if ( rp::math::getLength( rect.p_tl(), global_pos ) <= sensitivity ) {
+		if ( rp::math::getLength( rect.p_tl(), global_chart_pos ) <= sensitivity ) {
 			if ( for_cursor ) {
 				switch ( a45 ) {
 					case angle45_90 : return RPChartObject::pcmd_scale_bl;
@@ -309,7 +330,7 @@ RPChartObject::PossibleCommand RPShape::getPossibleCommand( const rp::point& glo
 				}
 			}
 		}
-		if ( rp::math::getLength( rect.p_tr(), global_pos ) <= sensitivity ) {
+		if ( rp::math::getLength( rect.p_tr(), global_chart_pos ) <= sensitivity ) {
 			if ( for_cursor ) {
 				switch ( a45 ) {
 					case angle45_180: return RPChartObject::pcmd_scale_bl;
@@ -320,7 +341,7 @@ RPChartObject::PossibleCommand RPShape::getPossibleCommand( const rp::point& glo
 				}
 			}
 		}
-		if ( rp::math::getLength( rect.p_bl(), global_pos ) <= sensitivity ) {
+		if ( rp::math::getLength( rect.p_bl(), global_chart_pos ) <= sensitivity ) {
 			if ( for_cursor ) {
 				switch ( a45 ) {
 					case angle45_0  : return RPChartObject::pcmd_scale_bl;
@@ -331,7 +352,7 @@ RPChartObject::PossibleCommand RPShape::getPossibleCommand( const rp::point& glo
 				}
 			}
 		}
-		if ( rp::math::getLength( rect.p_br(), global_pos ) <= sensitivity ) {
+		if ( rp::math::getLength( rect.p_br(), global_chart_pos ) <= sensitivity ) {
 			if ( for_cursor ) {
 				switch ( a45 ) {
 					case angle45_270: return RPChartObject::pcmd_scale_bl;
@@ -347,7 +368,7 @@ RPChartObject::PossibleCommand RPShape::getPossibleCommand( const rp::point& glo
 	// Общая часть и для перемещения и для вращения
 	if ( any ) {
 		// Отдельно проверим на растяжение за нижний центр, т.к. фигуру, сжатую в горизонтальную линию, лучше растягивать вниз за него, а не вверх
-		if ( rp::math::getLength( rect.p_r(), global_pos ) <= sensitivity ) {
+		if ( rp::math::getLength( rect.p_r(), global_chart_pos ) <= sensitivity ) {
 			if ( for_cursor ) {
 				switch ( a45 ) {
 					case angle45_270: return RPChartObject::pcmd_scale_b;
@@ -358,7 +379,7 @@ RPChartObject::PossibleCommand RPShape::getPossibleCommand( const rp::point& glo
 				}
 			}
 		}
-		if ( rp::math::getLength( rect.p_l(), global_pos ) <= sensitivity ) {
+		if ( rp::math::getLength( rect.p_l(), global_chart_pos ) <= sensitivity ) {
 			if ( for_cursor ) {
 				switch ( a45 ) {
 					case angle45_90 : return RPChartObject::pcmd_scale_b;
@@ -369,7 +390,7 @@ RPChartObject::PossibleCommand RPShape::getPossibleCommand( const rp::point& glo
 				}
 			}
 		}
-		if ( rp::math::getLength( rect.p_t(), global_pos ) <= sensitivity ) {
+		if ( rp::math::getLength( rect.p_t(), global_chart_pos ) <= sensitivity ) {
 			if ( for_cursor ) {
 				switch ( a45 ) {
 					case angle45_180: return RPChartObject::pcmd_scale_b;
@@ -380,7 +401,7 @@ RPChartObject::PossibleCommand RPShape::getPossibleCommand( const rp::point& glo
 				}
 			}
 		}
-		if ( rp::math::getLength( rect.p_b(), global_pos ) <= sensitivity ) {
+		if ( rp::math::getLength( rect.p_b(), global_chart_pos ) <= sensitivity ) {
 			if ( for_cursor ) {
 				switch ( a45 ) {
 					case angle45_0  : return RPChartObject::pcmd_scale_b;
@@ -392,7 +413,7 @@ RPChartObject::PossibleCommand RPShape::getPossibleCommand( const rp::point& glo
 			}
 		}
 		// Отдельно проверим на растяжение за правый центр, т.к. фигуру, сжатую в вертикальную линию, лучше растягивать вправо за него, а не влево
-		if ( rp::math::getLength( rect.p_r(), global_pos ) <= sensitivity ) {
+		if ( rp::math::getLength( rect.p_r(), global_chart_pos ) <= sensitivity ) {
 			if ( for_cursor ) {
 				switch ( a45 ) {
 					case angle45_0  : return RPChartObject::pcmd_scale_r;
@@ -403,7 +424,7 @@ RPChartObject::PossibleCommand RPShape::getPossibleCommand( const rp::point& glo
 				}
 			}
 		}
-		if ( rp::math::getLength( rect.p_l(), global_pos ) <= sensitivity ) {
+		if ( rp::math::getLength( rect.p_l(), global_chart_pos ) <= sensitivity ) {
 			if ( for_cursor ) {
 				switch ( a45 ) {
 					case angle45_180: return RPChartObject::pcmd_scale_r;
@@ -414,7 +435,7 @@ RPChartObject::PossibleCommand RPShape::getPossibleCommand( const rp::point& glo
 				}
 			}
 		}
-		if ( rp::math::getLength( rect.p_t(), global_pos ) <= sensitivity ) {
+		if ( rp::math::getLength( rect.p_t(), global_chart_pos ) <= sensitivity ) {
 			if ( for_cursor ) {
 				switch ( a45 ) {
 					case angle45_270: return RPChartObject::pcmd_scale_r;
@@ -425,7 +446,7 @@ RPChartObject::PossibleCommand RPShape::getPossibleCommand( const rp::point& glo
 				}
 			}
 		}
-		if ( rp::math::getLength( rect.p_b(), global_pos ) <= sensitivity ) {
+		if ( rp::math::getLength( rect.p_b(), global_chart_pos ) <= sensitivity ) {
 			if ( for_cursor ) {
 				switch ( a45 ) {
 					case angle45_90 : return RPChartObject::pcmd_scale_r;
@@ -437,7 +458,7 @@ RPChartObject::PossibleCommand RPShape::getPossibleCommand( const rp::point& glo
 			}
 		}
 		// Для остальных (нижний центр тоже проверяется)
-		if ( rp::math::getLength( rect.p_r(), global_pos ) <= sensitivity ) {
+		if ( rp::math::getLength( rect.p_r(), global_chart_pos ) <= sensitivity ) {
 			if ( for_cursor ) {
 				switch ( a45 ) {
 					case angle45_0  : return RPChartObject::pcmd_scale_r;
@@ -458,7 +479,7 @@ RPChartObject::PossibleCommand RPShape::getPossibleCommand( const rp::point& glo
 				}
 			}
 		}
-		if ( rp::math::getLength( rect.p_l(), global_pos ) <= sensitivity ) {
+		if ( rp::math::getLength( rect.p_l(), global_chart_pos ) <= sensitivity ) {
 			if ( for_cursor ) {
 				switch ( a45 ) {
 					case angle45_0  : return RPChartObject::pcmd_scale_l;
@@ -479,7 +500,7 @@ RPChartObject::PossibleCommand RPShape::getPossibleCommand( const rp::point& glo
 				}
 			}
 		}
-		if ( rp::math::getLength( rect.p_t(), global_pos ) <= sensitivity ) {
+		if ( rp::math::getLength( rect.p_t(), global_chart_pos ) <= sensitivity ) {
 			if ( for_cursor ) {
 				switch ( a45 ) {
 					case angle45_0  : return RPChartObject::pcmd_scale_t;
@@ -500,7 +521,7 @@ RPChartObject::PossibleCommand RPShape::getPossibleCommand( const rp::point& glo
 				}
 			}
 		}
-		if ( rp::math::getLength( rect.p_b(), global_pos ) <= sensitivity ) {
+		if ( rp::math::getLength( rect.p_b(), global_chart_pos ) <= sensitivity ) {
 			if ( for_cursor ) {
 				switch ( a45 ) {
 					case angle45_0  : return RPChartObject::pcmd_scale_b;
@@ -524,7 +545,7 @@ RPChartObject::PossibleCommand RPShape::getPossibleCommand( const rp::point& glo
 	}
 	if ( rpapp.project().getFlowState() == RPProject::flow_select ) {
 		// Только при перемещении
-		if ( rp::math::getLength( rect.p_tl(), global_pos ) <= sensitivity ) {
+		if ( rp::math::getLength( rect.p_tl(), global_chart_pos ) <= sensitivity ) {
 			if ( for_cursor ) {
 				switch ( a45 ) {
 					case angle45_0  : return RPChartObject::pcmd_scale_tl;
@@ -545,7 +566,7 @@ RPChartObject::PossibleCommand RPShape::getPossibleCommand( const rp::point& glo
 				}
 			}
 		}
-		if ( rp::math::getLength( rect.p_tr(), global_pos ) <= sensitivity ) {
+		if ( rp::math::getLength( rect.p_tr(), global_chart_pos ) <= sensitivity ) {
 			if ( for_cursor ) {
 				switch ( a45 ) {
 					case angle45_0  : return RPChartObject::pcmd_scale_tr;
@@ -566,7 +587,7 @@ RPChartObject::PossibleCommand RPShape::getPossibleCommand( const rp::point& glo
 				}
 			}
 		}
-		if ( rp::math::getLength( rect.p_bl(), global_pos ) <= sensitivity ) {
+		if ( rp::math::getLength( rect.p_bl(), global_chart_pos ) <= sensitivity ) {
 			if ( for_cursor ) {
 				switch ( a45 ) {
 					case angle45_0  : return RPChartObject::pcmd_scale_bl;
@@ -587,7 +608,7 @@ RPChartObject::PossibleCommand RPShape::getPossibleCommand( const rp::point& glo
 				}
 			}
 		}
-		if ( rp::math::getLength( rect.p_br(), global_pos ) <= sensitivity ) {
+		if ( rp::math::getLength( rect.p_br(), global_chart_pos ) <= sensitivity ) {
 			if ( for_cursor ) {
 				switch ( a45 ) {
 					case angle45_0  : return RPChartObject::pcmd_scale_br;
@@ -610,7 +631,7 @@ RPChartObject::PossibleCommand RPShape::getPossibleCommand( const rp::point& glo
 		}
 	} else if ( rpapp.project().getFlowState() == RPProject::flow_rotate ) {
 		// Только при вращении
-		if ( rp::math::getLength( rect.p_tl(), global_pos ) <= sensitivity ) {
+		if ( rp::math::getLength( rect.p_tl(), global_chart_pos ) <= sensitivity ) {
 			switch ( a90 ) {
 				case angle90_0  : return RPChartObject::pcmd_rotate_tl;
 				case angle90_90 : return RPChartObject::pcmd_rotate_bl;
@@ -618,7 +639,7 @@ RPChartObject::PossibleCommand RPShape::getPossibleCommand( const rp::point& glo
 				case angle90_270: return RPChartObject::pcmd_rotate_tr;
 			}
 		}
-		if ( rp::math::getLength( rect.p_tr(), global_pos ) <= sensitivity ) {
+		if ( rp::math::getLength( rect.p_tr(), global_chart_pos ) <= sensitivity ) {
 			switch ( a90 ) {
 				case angle90_0  : return RPChartObject::pcmd_rotate_tr;
 				case angle90_90 : return RPChartObject::pcmd_rotate_tl;
@@ -626,7 +647,7 @@ RPChartObject::PossibleCommand RPShape::getPossibleCommand( const rp::point& glo
 				case angle90_270: return RPChartObject::pcmd_rotate_br;
 			}
 		}
-		if ( rp::math::getLength( rect.p_bl(), global_pos ) <= sensitivity ) {
+		if ( rp::math::getLength( rect.p_bl(), global_chart_pos ) <= sensitivity ) {
 			switch ( a90 ) {
 				case angle90_0  : return RPChartObject::pcmd_rotate_bl;
 				case angle90_90 : return RPChartObject::pcmd_rotate_br;
@@ -634,7 +655,7 @@ RPChartObject::PossibleCommand RPShape::getPossibleCommand( const rp::point& glo
 				case angle90_270: return RPChartObject::pcmd_rotate_tl;
 			}
 		}
-		if ( rp::math::getLength( rect.p_br(), global_pos ) <= sensitivity ) {
+		if ( rp::math::getLength( rect.p_br(), global_chart_pos ) <= sensitivity ) {
 			switch ( a90 ) {
 				case angle90_0  : return RPChartObject::pcmd_rotate_br;
 				case angle90_90 : return RPChartObject::pcmd_rotate_tr;
@@ -645,7 +666,7 @@ RPChartObject::PossibleCommand RPShape::getPossibleCommand( const rp::point& glo
 	}
 	// Общая часть и для перемещения и для вращения
 	if ( any ) {
-		if ( pointInPolygon( global_pos ) ) {
+		if ( pointInPolygon( global_chart_pos ) ) {
 			return RPChartObject::pcmd_move;
 		}
 	}

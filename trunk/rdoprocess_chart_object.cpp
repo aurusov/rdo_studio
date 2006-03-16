@@ -57,13 +57,13 @@ void RPChartObject::update()
 	}
 }
 
-RPProject::Cursor RPChartObject::getCursor( const rp::point& global_pos )
+RPProject::Cursor RPChartObject::getCursor( const rp::point& global_chart_pos )
 {
 	std::list< RPChartObject* > objects;
 	getChartObjects( objects );
 	std::list< RPChartObject* >::iterator it = objects.begin();
 	while ( it != objects.end() ) {
-		RPProject::Cursor cursor = (*it)->getCursor( global_pos );
+		RPProject::Cursor cursor = (*it)->getCursor( global_chart_pos );
 		if ( cursor != RPProject::cursor_flow_select ) return cursor;
 		it++;
 	}
@@ -80,7 +80,7 @@ RPChartObject* RPChartObject::find( const rp::point& global_chart_pos )
 		if ( obj ) return obj;
 		it++;
 	}
-	return (getBoundingRect().extendByPerimetr( RPFlowChartObject::getSensitivity() ).pointInRect( global_chart_pos ) || pointInPolygon( global_chart_pos )) ? this : NULL;
+	return (pointInPolygon(global_chart_pos) || pointInNCArea(global_chart_pos)) ? this : NULL;
 }
 
 void RPChartObject::draw( CDC& dc )
@@ -190,10 +190,10 @@ void RPChartObject::setSelected( bool value )
 	}
 }
 
-bool RPChartObject::isRotateCenter( const rp::point& point ) const
+bool RPChartObject::isRotateCenter( const rp::point& global_chart_pos ) const
 {
 	if ( rpapp.project().getFlowState() == RPProject::flow_rotate && isSelected() ) {
-		return rp::math::getLength( getRotateCenter(), point ) <= RPFlowChartObject::getSensitivity();
+		return rp::math::getLength( getRotateCenter(), global_chart_pos ) <= RPFlowChartObject::getSensitivity();
 	}
 	return false;
 }

@@ -31,7 +31,7 @@ protected:
 //	virtual void drawConnectorsInput( CDC& dc );
 //	virtual void drawConnectorsOutput( CDC& dc );
 
-	virtual RPProject::Cursor getCursor( const rp::point& global_pos );
+	virtual RPProject::Cursor getCursor( const rp::point& global_chart_pos );
 
 	virtual void onLButtonDown( UINT nFlags, CPoint flowchart_mouse_pos );
 	virtual void onLButtonUp( UINT nFlags, CPoint flowchart_mouse_pos );
@@ -63,11 +63,14 @@ public:
 	// Перевод всех элементов фигуры в глобальные координаты
 	virtual void transformToGlobal();
 	// Находится ли точка внутри фигуры
-	virtual bool pointInPolygon( const rp::point& point ) {
+	virtual bool pointInPolygon( const rp::point& global_chart_pos ) {
 		transformToGlobal();
-		return pa_global.extendByPerimetr( static_cast<double>(main_pen_width) / 2.0 ).pointInPolygon( point );
+		return pa_global.extendByPerimetr( static_cast<double>(main_pen_width) / 2.0 ).pointInPolygon( global_chart_pos );
 	}
-	virtual PossibleCommand getPossibleCommand( const rp::point& global_pos, bool for_cursor = false );
+	// Находится ли точка в служебной (неклиентской) части фигуры (прямоугольник выделения, к примеру)
+	virtual bool pointInNCArea( const rp::point& global_chart_pos );
+	// Возможная команда над объектом
+	virtual PossibleCommand getPossibleCommand( const rp::point& global_chart_pos, bool for_cursor = false );
 };
 
 #endif // RDO_PROCESS_SHAPE_H

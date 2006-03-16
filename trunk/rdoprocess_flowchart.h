@@ -68,23 +68,14 @@ protected:
 	virtual bool isFlowChart() const { return true; }
 	void makeNewPixmap();
 
-	RPChartObject* find( const CPoint& local_win_pos ) {
+	RPChartObject* findByWinPos( const CPoint& local_win_pos ) {
 		rp::point global_chart_pos = local_win_pos;
 		clientToZero( global_chart_pos );
-		std::list< RPObject* >::const_iterator it = begin();
-		while ( it != end() ) {
-			if ( (*it)->isChartObject() ) {
-				RPChartObject* obj = static_cast<RPChartObject*>(*it);
-				if ( obj->pointInPolygon( global_chart_pos ) ) {
-					return obj;
-				}
-			}
-			it++;
-		}
-		return NULL;
+		RPChartObject* obj = RPChartObject::find( global_chart_pos );
+		return obj != this ? obj : NULL;
 	}
 
-	virtual RPProject::Cursor getCursor( const rp::point& global_pos );
+	virtual RPProject::Cursor getCursor( const rp::point& global_chart_pos );
 
 	rp::rect getFlowSize( const std::list< RPChartObject* >& list ) const;
 
@@ -107,15 +98,20 @@ public:
 	const CPen& getPenSelectedBox() const     { return pen_selected_box;     }
 	const CBrush& getBrushSelectedBox() const { return brush_selected_box;   }
 
-	virtual void moveTo( int x, int y ) {};
+	// Отрисовка фигуры
 	virtual void draw( CDC& dc );
+	// Габориты фигуры
 	virtual rp::rect getBoundingRect( bool global = true ) const {
 		std::list< RPChartObject* > objects;
 		getChartObjects( objects );
 		return getFlowSize( objects );
 	}
+	// Перевод всех элементов фигуры в глобальные координаты
 	virtual void transformToGlobal() {};
-	virtual bool pointInPolygon( const rp::point& point ) { return true; }
+	// Находится ли точка внутри фигуры
+	virtual bool pointInPolygon( const rp::point& global_chart_pos );
+	// Находится ли точка в служебной (неклиентской) части фигуры (прямоугольник выделения, к примеру)
+	virtual bool pointInNCArea( const rp::point& global_chart_pos ) { return !pointInPolygon( global_chart_pos ); }
 
 	void clientToZero( CPoint& point ) const {
 		point.x -= border_w + paper_border_w;

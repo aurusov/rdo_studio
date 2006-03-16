@@ -91,7 +91,7 @@ protected:
 	virtual void modify();
 	virtual void update();
 
-	virtual RPProject::Cursor getCursor( const rp::point& global_pos );
+	virtual RPProject::Cursor getCursor( const rp::point& global_chart_pos );
 	virtual RPChartObject* find( const rp::point& global_chart_pos );
 
 	rp::matrix matrix_transform;
@@ -199,11 +199,11 @@ public:
 		return rotateCenterMatrix() * rotate_center;
 	}
 	// Установить центр поворота в глобальных координатах
-	void setRotateCenter( const rp::point& point ) { rotate_center = rotateCenterMatrix().obr() * point; }
+	void setRotateCenter( const rp::point& global_chart_pos ) { rotate_center = rotateCenterMatrix().obr() * global_chart_pos; }
 	// Изменить центр поворота в локальных координатах
 	void setRotateCenterLocalDelta( double dx, double dy );
 	// Совпадает ли точка на центре вращения фигуры
-	bool isRotateCenter( const rp::point& point ) const;
+	bool isRotateCenter( const rp::point& global_chart_pos ) const;
 
 	// Вернуть дискретный угол поворота (дискрета 90 градусов)
 	angle90 getAngle90() const {
@@ -269,9 +269,11 @@ public:
 	// Перевод всех элементов фигуры в глобальные координаты
 	virtual void transformToGlobal() = 0;
 	// Находится ли точка внутри фигуры
-	virtual bool pointInPolygon( const rp::point& point ) = 0;
-
-	virtual PossibleCommand getPossibleCommand( const rp::point& global_pos, bool for_cursor = false ) { return pcmd_none; }
+	virtual bool pointInPolygon( const rp::point& global_chart_pos ) = 0;
+	// Находится ли точка в служебной (неклиентской) части фигуры (прямоугольник выделения, к примеру)
+	virtual bool pointInNCArea( const rp::point& global_chart_pos ) = 0;
+	// Возможная команда над объектом
+	virtual PossibleCommand getPossibleCommand( const rp::point& global_chart_pos, bool for_cursor = false ) { return pcmd_none; }
 };
 
 #endif // RDO_PROCESS_CHART_OBJECT_H
