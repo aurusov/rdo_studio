@@ -5,11 +5,7 @@
 #include "rdoprocess_shape_action.h"
 #include "rdoprocess_shape_if.h"
 #include "rdoprocess_shape_create_MJ.h" // MJ
-
 #include "rdoprocess_app.h"
-#include "rdoprocess_math.h"
-#include "rdoprocess_messages.h"
-#include "resource.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
