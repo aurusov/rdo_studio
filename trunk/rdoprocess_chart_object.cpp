@@ -136,13 +136,6 @@ void RPChartObject::setScale( double sx, double sy )
 	modify();
 }
 
-void RPChartObject::moving( int dx, int dy )
-{
-	matrix_transform.dx() += dx;
-	matrix_transform.dy() += dy;
-	modify();
-}
-
 void RPChartObject::setRotation( double alpha )
 {
 	while ( alpha < 0 ) alpha += 360.0;

@@ -948,7 +948,10 @@ void RPShape::command_make( const rp::point& global_chart_pos )
 	rp::point mouse_delta = flowchart->mouse_delta();
 	switch ( pcmd ) {
 		case RPShape::pcmd_move: {
-			moving( mouse_delta.x, mouse_delta.y );
+			mouse_delta = parentRotate().obr() * mouse_delta;
+			matrix_transform.dx() += mouse_delta.x;
+			matrix_transform.dy() += mouse_delta.y;
+			modify();
 			update();
 			break;
 		}

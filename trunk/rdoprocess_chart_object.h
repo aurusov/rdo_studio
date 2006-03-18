@@ -97,6 +97,15 @@ protected:
 		RPChartObject::fillRotateMatrix( m_rotate, rotation_alpha );
 		return chartParent() ? chartParent()->globalRotate() * m_rotate : m_rotate;
 	}
+	rp::matrix parentRotate( bool first = true ) const {
+		if ( first ) {
+			return chartParent() ? chartParent()->parentRotate( false ) : rp::matrix();
+		} else {
+			rp::matrix m_rotate;
+			RPChartObject::fillRotateMatrix( m_rotate, rotation_alpha );
+			return chartParent() ? chartParent()->parentRotate( false ) * m_rotate : m_rotate;
+		}
+	}
 	static void fillRotateMatrix( rp::matrix& m_rotate, double alpha ) {
 		alpha *= rp::math::pi / 180.0;
 		double cos_a = cos( alpha );
@@ -108,8 +117,6 @@ protected:
 		m_rotate.data[0][1] = sin_a;
 		m_rotate.data[1][0] = -sin_a;
 	}
-
-	virtual void moving( int dx, int dy );
 
 	virtual void onLButtonDown( UINT nFlags, CPoint global_chart_pos ) {
 		if ( !isSelected() ) setSelected( true );
