@@ -105,27 +105,32 @@ protected:
 	rp::matrix selfMatrix() const {
 		return matrix_transform * matrix_rotate * matrix_transform_post * matrix_scale;
 	}
-	rp::matrix globalMatrix( bool self = true ) const {
-		if ( self ) {
+	rp::matrix selfMatrix_noScale() const {
+		return matrix_transform * matrix_rotate * matrix_transform_post;
+	}
+	rp::matrix globalMatrix( bool first = true ) const {
+		if ( first ) {
 			return chartParent() ? chartParent()->globalMatrix( false ) * selfMatrix() : selfMatrix();
 		} else {
-			return chartParent() ? chartParent()->globalMatrix( false ) * matrix_transform * matrix_rotate * matrix_transform_post : matrix_transform * matrix_rotate * matrix_transform_post;
+			return chartParent() ? chartParent()->globalMatrix( false ) * selfMatrix_noScale() : selfMatrix_noScale();
 		}
-//		return chartParent() ? chartParent()->globalMatrix() * selfMatrix() : selfMatrix();
 	}
 	rp::matrix flowchartMatrix() const {
+		// занимаемся приведением типов только потому, что
+		// в этом хедере не определен класс RPFlowChartObject,
+		// а инклюдить "rdoprocess_flowchart.h" не хочется
 		RPChartObject* flowchart = reinterpret_cast<RPChartObject*>(flowChart());
 		return flowchart ? flowchart->selfMatrix() : rp::matrix();
 	}
-	rp::matrix parentMatrix( bool first = true ) const {
+	rp::matrix parentMatrix_noScale( bool first = true ) const {
 		if ( first ) {
-			return chartParent() ? chartParent()->parentMatrix( false ) : rp::matrix();
+			return chartParent() ? chartParent()->parentMatrix_noScale( false ) : rp::matrix();
 		} else {
-			return chartParent() ? chartParent()->parentMatrix( false ) * selfMatrix() : selfMatrix();
+			return chartParent() ? chartParent()->parentMatrix_noScale( false ) * selfMatrix_noScale() : selfMatrix_noScale();
 		}
 	}
 	rp::matrix rotateCenterMatrix() const {
-		return parentMatrix() * matrix_transform;
+		return parentMatrix_noScale() * matrix_transform;
 	}
 	rp::matrix globalRotate() const {
 		rp::matrix m_rotate;

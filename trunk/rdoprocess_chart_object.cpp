@@ -170,7 +170,7 @@ void RPChartObject::setRotateCenterLocalDelta( double dx, double dy )
 	rp::matrix m_rotate;
 	RPChartObject::fillRotateMatrix( m_rotate, rotation_alpha );
 
-	rp::matrix m = m_rotate * m_delta * parentMatrix();
+	rp::matrix m = m_rotate * m_delta * parentMatrix_noScale();
 	rp::point point = getRotateCenter();
 	point.x += m.dx();
 	point.y += m.dy();
