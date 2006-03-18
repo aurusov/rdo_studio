@@ -95,10 +95,6 @@ SOURCE=.\rdoprocess_app.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\rdoprocess_chart_object.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\rdoprocess_childfrm.cpp
 # End Source File
 # Begin Source File
@@ -124,6 +120,18 @@ SOURCE=.\rdoprocess_messages.cpp
 # Begin Source File
 
 SOURCE=.\rdoprocess_object.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdoprocess_object_chart.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdoprocess_object_flowchart.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdoprocess_object_matrix.cpp
 # End Source File
 # Begin Source File
 
@@ -184,10 +192,6 @@ SOURCE=.\rdoprocess_app.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\rdoprocess_chart_object.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\rdoprocess_childfrm.h
 # End Source File
 # Begin Source File
@@ -213,6 +217,18 @@ SOURCE=.\rdoprocess_messages.h
 # Begin Source File
 
 SOURCE=.\rdoprocess_object.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdoprocess_object_chart.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdoprocess_object_flowchart.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdoprocess_object_matrix.h
 # End Source File
 # Begin Source File
 

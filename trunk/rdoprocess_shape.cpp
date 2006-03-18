@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "rdoprocess_shape.h"
-#include "rdoprocess_flowchart.h"
+#include "rdoprocess_object_flowchart.h"
 #include "rdoprocess_app.h"
 #include "rdoprocess_math.h"
 
@@ -14,7 +14,7 @@ static char THIS_FILE[] = __FILE__;
 // ---------- RPShape
 // ----------------------------------------------------------------------------
 RPShape::RPShape( RPObject* _parent, const rp::string& _name ):
-	RPChartObject( _parent, _name ),
+	RPObjectMatrix( _parent, _name ),
 	pcmd( pcmd_none )
 //	snap_to_point( 0, 0 )
 {
@@ -26,7 +26,7 @@ RPShape::~RPShape()
 
 RPProject::Cursor RPShape::getCursor( const rp::point& global_chart_pos )
 {
-	RPProject::Cursor cursor = RPChartObject::getCursor( global_chart_pos );
+	RPProject::Cursor cursor = RPObjectChart::getCursor( global_chart_pos );
 	if ( cursor != RPProject::cursor_flow_select ) return cursor;
 
 	if ( isRotateCenter( global_chart_pos ) ) return RPProject::cursor_flow_rotate_center;
@@ -71,7 +71,7 @@ RPProject::Cursor RPShape::getCursor( const rp::point& global_chart_pos )
 
 bool RPShape::pointInNCArea( const rp::point& global_chart_pos )
 {
-//	return getBoundingRect().extendByPerimetr( RPFlowChartObject::getSensitivity() ).pointInRect( global_chart_pos );
+//	return getBoundingRect().extendByPerimetr( RPObjectFlowChart::getSensitivity() ).pointInRect( global_chart_pos );
 	if ( !isSelected() ) return false;
 	switch ( getPossibleCommand( global_chart_pos ) ) {
 		case RPShape::pcmd_rotate_center:
@@ -93,7 +93,7 @@ bool RPShape::pointInNCArea( const rp::point& global_chart_pos )
 
 void RPShape::setPosition( int x, int y )
 {
-	RPChartObject::setPosition( x, y );
+	RPObjectMatrix::setPosition( x, y );
 	if (flowChart()) flowChart()->snapToGrid( this );
 }
 
@@ -180,7 +180,7 @@ void RPShape::drawConnectorsOutput( CDC& dc )
 
 void RPShape::draw( CDC& dc )
 {
-	RPChartObject::draw( dc );
+	RPObjectChart::draw( dc );
 
 	// Перевод фигуры в глобальные координаты
 	transformToGlobal();
@@ -202,7 +202,7 @@ void RPShape::draw( CDC& dc )
 
 void RPShape::draw_selected( CDC& dc )
 {
-	RPChartObject::draw_selected( dc );
+	RPObjectChart::draw_selected( dc );
 
 	// Прямоугольник вокруг фигуры
 	rp::rect rect = getBoundingRect();
@@ -214,7 +214,7 @@ void RPShape::draw_selected( CDC& dc )
 	int y1 = rect.p1().y;
 	int y2 = rect.p2().y;
 	int y3 = rect.p3().y;
-	RPFlowChartObject* flowchart = flowChart();
+	RPObjectFlowChart* flowchart = flowChart();
 	dc.SelectObject( flowchart->getPenSelectedLine() );
 	dc.MoveTo( x0, y0 );
 	dc.LineTo( x1, y1 );
@@ -226,7 +226,7 @@ void RPShape::draw_selected( CDC& dc )
 	int box_size    = flowchart->getSelectBoxSize2() * 2 -1;
 	int box_size_2  = flowchart->getSelectBoxSize2();
 	if ( rpapp.project().getFlowState() == RPProject::flow_rotate ) {
-		int radius = RPFlowChartObject::getSensitivity();
+		int radius = RPObjectFlowChart::getSensitivity();
 		dc.Ellipse( x0 - radius, y0 - radius, x0 + radius, y0 + radius );
 		dc.Ellipse( x1 - radius, y1 - radius, x1 + radius, y1 + radius );
 		dc.Ellipse( x2 - radius, y2 - radius, x2 + radius, y2 + radius );
@@ -246,7 +246,7 @@ void RPShape::draw_selected( CDC& dc )
 		rp::point center = getRotateCenter();
 		CPen pen_red( PS_SOLID, 1, RGB(0,0,0) );
 		CBrush brush_white( RGB(-1,-1,0) );
-		int radius = RPFlowChartObject::getSensitivity();
+		int radius = RPObjectFlowChart::getSensitivity();
 		dc.SelectObject( pen_red );
 		dc.SelectObject( brush_white );
 		dc.Ellipse( center.x - radius, center.y - radius, center.x + radius, center.y + radius );
@@ -274,7 +274,7 @@ RPShape::PossibleCommand RPShape::getPossibleCommand( const rp::point& global_ch
 	// Отдельно проверим на перемещение центра вращения. Он отрисовывается поверх выделения, значит и проверяться должен первым.
 	if ( isRotateCenter( global_chart_pos ) ) return RPShape::pcmd_rotate_center;
 	rp::rect rect = getBoundingRect();
-	int sensitivity = RPFlowChartObject::getSensitivity();
+	int sensitivity = RPObjectFlowChart::getSensitivity();
 	angle90 a90 = getAngle90();
 	angle45 a45 = getAngle45();
 	double alpha = getRotation();
@@ -933,15 +933,15 @@ void RPShape::getRectDelta( rp::rect& rect_old, rp::rect& rect_new, rp::point& d
 
 void RPShape::command_before( const rp::point& global_chart_pos )
 {
-	RPChartObject::command_before( global_chart_pos );
+	RPObjectChart::command_before( global_chart_pos );
 	pcmd = getPossibleCommand( global_chart_pos );
 }
 
 void RPShape::command_make( const rp::point& global_chart_pos )
 {
-	RPChartObject::command_make( global_chart_pos );
+	RPObjectChart::command_make( global_chart_pos );
 
-	RPFlowChartObject* flowchart = flowChart();
+	RPObjectFlowChart* flowchart = flowChart();
 	RPShape::angle90 a90 = getAngle90();
 	bool   horz  = a90 == RPShape::angle90_0 || a90 == RPShape::angle90_180;
 	double alpha = getRotation();

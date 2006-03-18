@@ -5,15 +5,19 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#include "rdoprocess_chart_object.h"
+#include "rdoprocess_object_matrix.h"
 
 #include <vector>
 
 // ----------------------------------------------------------------------------
 // ---------- RPShape
 // ----------------------------------------------------------------------------
-class RPShape: public RPChartObject
+class RPShape: public RPObjectMatrix
 {
+private:
+	mutable rp::point rotate_center;
+	mutable bool      rotate_center_inited;
+
 protected:
 //	CPoint snap_to_point;
 
