@@ -678,33 +678,61 @@ RPChartObject::PossibleCommand RPShape::getPossibleCommand( const rp::point& glo
 	return RPChartObject::pcmd_none;
 }
 
-void RPShape::onLButtonDown( UINT nFlags, CPoint global_chart_pos )
+void RPShape::makeCommand( PossibleCommand pcmd, const rp::point& global_chart_pos )
 {
-	RPChartObject::onLButtonDown( nFlags, global_chart_pos );
-	TRACE( "onLButtonDown\n" );
-}
+	RPChartObject::makeCommand( pcmd, global_chart_pos );
 
-void RPShape::onLButtonUp( UINT nFlags, CPoint global_chart_pos )
-{
-	TRACE( "onLButtonUp\n" );
-}
-
-void RPShape::onLButtonDblClk( UINT nFlags, CPoint global_chart_pos )
-{
-	TRACE( "onLButtonDblClk\n" );
-}
-
-void RPShape::onRButtonDown( UINT nFlags, CPoint global_chart_pos )
-{
-	TRACE( "onRButtonDown\n" );
-}
-
-void RPShape::onRButtonUp( UINT nFlags, CPoint global_chart_pos )
-{
-	TRACE( "onRButtonUp\n" );
-}
-
-void RPShape::onMouseMove( UINT nFlags, CPoint global_chart_pos )
-{
-	TRACE( "onMouseMove\n" );
+	RPFlowChartObject* flowchart = flowChart();
+	RPChartObject::angle90 a90 = getAngle90();
+	bool   horz  = a90 == RPChartObject::angle90_0 || a90 == RPChartObject::angle90_180;
+	double alpha = getRotation();
+	rp::point mouse_delta = flowchart->mouse_delta();
+	switch ( pcmd ) {
+		case RPChartObject::pcmd_move: {
+			moving( mouse_delta.x, mouse_delta.y );
+			update();
+			break;
+		}
+		case RPChartObject::pcmd_rotate_center: {
+			setRotateCenter( global_chart_pos );
+			update();
+			break;
+		}
+		case RPChartObject::pcmd_rotate_tl    :
+		case RPChartObject::pcmd_rotate_tr    :
+		case RPChartObject::pcmd_rotate_bl    :
+		case RPChartObject::pcmd_rotate_br    : {
+			setRotation( getRotation() + rp::math::getAlpha( flowchart->mouse_prev(), getRotateCenter(), flowchart->mouse_current() ) );
+			update();
+			break;
+		}
+		case RPChartObject::pcmd_scale_t      :
+		case RPChartObject::pcmd_scale_b      :
+		case RPChartObject::pcmd_scale_l      :
+		case RPChartObject::pcmd_scale_r      :
+		case RPChartObject::pcmd_scale_tl     :
+		case RPChartObject::pcmd_scale_tr     :
+		case RPChartObject::pcmd_scale_bl     :
+		case RPChartObject::pcmd_scale_br     : {
+			rp::rect  rect = getBoundingRect();
+			rp::point point_delta( globalRotate().obr() * mouse_delta );
+			rp::point len( rp::math::getLength( rect.p_tl(), rect.p_tr() ), rp::math::getLength( rect.p_tl(), rect.p_bl() ) );
+			RPChartObject::getScaleDelta( point_delta, a90, pcmd );
+			if ( len.x + point_delta.x < 0 ) {
+				point_delta.x = -len.x;
+			}
+			if ( len.y + point_delta.y < 0 ) {
+				point_delta.y = -len.y;
+			}
+			setScaleX( getScaleX() * (len.x + point_delta.x ) / len.x );
+			setScaleY( getScaleY() * (len.y + point_delta.y ) / len.y );
+			RPChartObject::getRectDelta( rect, getBoundingRect(), point_delta, a90, pcmd );
+			point_delta = globalRotate().obr() * point_delta;
+			setPostX( getPostX() + point_delta.x );
+			setPostY( getPostY() + point_delta.y );
+			setRotateCenterLocalDelta( point_delta.x, point_delta.y );
+			update();
+			break;
+		}
+	}
 }

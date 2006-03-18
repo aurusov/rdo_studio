@@ -33,13 +33,6 @@ protected:
 
 	virtual RPProject::Cursor getCursor( const rp::point& global_chart_pos );
 
-	virtual void onLButtonDown( UINT nFlags, CPoint global_chart_pos );
-	virtual void onLButtonUp( UINT nFlags, CPoint global_chart_pos );
-	virtual void onLButtonDblClk( UINT nFlags, CPoint global_chart_pos );
-	virtual void onRButtonDown( UINT nFlags, CPoint global_chart_pos );
-	virtual void onRButtonUp( UINT nFlags, CPoint global_chart_pos );
-	virtual void onMouseMove( UINT nFlags, CPoint global_chart_pos );
-
 public:
 	RPShape( RPObject* parent, const rp::string& name = "object" );
 	virtual ~RPShape();
@@ -62,6 +55,7 @@ public:
 
 	// Перевод всех элементов фигуры в глобальные координаты
 	virtual void transformToGlobal();
+
 	// Находится ли точка внутри фигуры
 	virtual bool pointInPolygon( const rp::point& global_chart_pos ) {
 		transformToGlobal();
@@ -69,8 +63,11 @@ public:
 	}
 	// Находится ли точка в служебной (неклиентской) части фигуры (прямоугольник выделения, к примеру)
 	virtual bool pointInNCArea( const rp::point& global_chart_pos );
+
 	// Возможная команда над объектом
 	virtual PossibleCommand getPossibleCommand( const rp::point& global_chart_pos, bool for_cursor = false );
+	// Выполнить команду над объектом
+	virtual void makeCommand( PossibleCommand pcmd, const rp::point& global_chart_pos );
 };
 
 #endif // RDO_PROCESS_SHAPE_H

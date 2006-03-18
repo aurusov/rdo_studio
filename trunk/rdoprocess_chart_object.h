@@ -43,13 +43,11 @@ public:
 	enum PossibleCommand {
 		pcmd_none = 0,      //!< Над объектом не может быть произведено никакое действие
 		pcmd_move,          //!< Объект может быть перемещен
-		pcmd_rotate,        //!< Объект можно повернуть
 		pcmd_rotate_tl,     //!< Объект можно повернуть за левый верхний угол
 		pcmd_rotate_tr,     //!< Объект можно повернуть за правый верхний угол
 		pcmd_rotate_bl,     //!< Объект можно повернуть за левый нижний угол
 		pcmd_rotate_br,     //!< Объект можно повернуть за левый нижний угол
 		pcmd_rotate_center, //!< Может быть изменен центр врещения объекта
-		pcmd_scale,         //!< Объект может быть масштабирован
 		pcmd_scale_l,       //!< Объект может быть масштабирован за левую сторону
 		pcmd_scale_r,       //!< Объект может быть масштабирован за правую сторону
 		pcmd_scale_t,       //!< Объект может быть масштабирован за верх
@@ -274,12 +272,16 @@ public:
 
 	// Перевод всех элементов фигуры в глобальные координаты
 	virtual void transformToGlobal() = 0;
+
 	// Находится ли точка внутри фигуры
 	virtual bool pointInPolygon( const rp::point& global_chart_pos ) = 0;
 	// Находится ли точка в служебной (неклиентской) части фигуры (прямоугольник выделения, к примеру)
 	virtual bool pointInNCArea( const rp::point& global_chart_pos ) = 0;
+
 	// Возможная команда над объектом
 	virtual PossibleCommand getPossibleCommand( const rp::point& global_chart_pos, bool for_cursor = false ) { return pcmd_none; }
+	// Выполнить команду над объектом
+	virtual void makeCommand( PossibleCommand pcmd, const rp::point& global_chart_pos ) {};
 };
 
 #endif // RDO_PROCESS_CHART_OBJECT_H
