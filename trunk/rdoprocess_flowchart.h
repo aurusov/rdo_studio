@@ -127,10 +127,9 @@ private:
 	CFont*   font_first;
 	int      saved_mem_dc;
 
-	CPoint                         global_win_pos_current;
-	CPoint                         global_win_pos_prev;
-	RPChartObject*                 one_object;
-	RPChartObject::PossibleCommand one_object_pcmd;
+	CPoint         global_win_pos_current;
+	CPoint         global_win_pos_prev;
+	RPChartObject* one_object;
 
 #ifdef TEST_SPEED
 	int makepixmap_cnt;
