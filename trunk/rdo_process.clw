@@ -2,13 +2,13 @@
 
 [General Info]
 Version=1
-LastClass=RPPageCtrlItem
+LastClass=RPShapeCreateDlg1_MJ
 LastTemplate=CDialog
 NewFileInclude1=#include "stdafx.h"
 NewFileInclude2=#include "rdo_process.h"
 LastPage=0
 
-ClassCount=13
+ClassCount=15
 Class1=RPDockWnd
 Class2=RPPageCtrl
 Class3=RPPageCtrlItemLabel
@@ -23,11 +23,15 @@ Class11=RPChildFrame
 Class12=RPFlowChart
 Class13=RPMainFrame
 
-ResourceCount=4
-Resource1=IDD_ABOUT
+ResourceCount=6
+Resource1=IDD_DIALOG_CREATE_1_MJ
 Resource2=IDR_RDO_PRTYPE (English (U.S.))
 Resource3=IDD_ABOUTBOX (English (U.S.))
-Resource4=IDR_MAINFRAME (English (U.S.))
+Resource4=IDD_ABOUT
+Class14=RPShapeCreateDlg1_MJ
+Resource5=IDD_DIALOG_CREATE_2_MJ
+Class15=RPShapeCreateDlg2_MJ
+Resource6=IDR_MAINFRAME (English (U.S.))
 
 [CLS:RPDockWnd]
 Type=0
@@ -54,7 +58,7 @@ HeaderFile=ctrl\rdoprocess_pagectrl.h
 ImplementationFile=ctrl\rdoprocess_pagectrl.cpp
 Filter=W
 VirtualFilter=WC
-LastObject=RPPageCtrlItem
+LastObject=ID_APP_ABOUT
 
 [CLS:RPProjectBar]
 Type=0
@@ -189,4 +193,66 @@ Control6=IDC_ABOUR_EMAIL_STATIC,static,1342308354
 Control7=IDC_ABOUT_EMAIL,static,1342308608
 Control8=IDC_ABOUR_WEB_STATIC,static,1342308354
 Control9=IDC_ABOUT_WEB,static,1342308608
+
+[DLG:IDD_DIALOG_CREATE_1_MJ]
+Type=1
+Class=RPShapeCreateDlg1_MJ
+ControlCount=22
+Control1=IDOK,button,1342242817
+Control2=IDCANCEL,button,1342242816
+Control3=IDC_EDIT1,edit,1350631552
+Control4=IDC_STATIC,static,1342308352
+Control5=IDC_STATIC,static,1342308352
+Control6=IDC_EDIT2,edit,1350631552
+Control7=IDC_EDIT3,edit,1350631552
+Control8=IDC_STATIC,static,1342308352
+Control9=IDC_STATIC,button,1342177287
+Control10=IDC_STATIC,static,1342308352
+Control11=IDC_COMBO1,combobox,1344340226
+Control12=IDC_EDIT4,edit,1350631552
+Control13=IDC_EDIT5,edit,1484849280
+Control14=IDC_EDIT6,edit,1476460672
+Control15=IDC_EDIT7,edit,1476460672
+Control16=IDC_EDIT8,edit,1350631552
+Control17=IDC_STATIC,static,1342308352
+Control18=IDC_STATIC,static,1342308352
+Control19=IDC_STATIC,static,1342308352
+Control20=IDC_STATIC,static,1342308352
+Control21=IDC_STATIC,static,1342308352
+Control22=IDC_BUTTON1,button,1342242816
+
+[CLS:RPShapeCreateDlg1_MJ]
+Type=0
+HeaderFile=rdoprocess_shape_create_dlg1_MJ.h
+ImplementationFile=rdoprocess_shape_create_dlg1_MJ.cpp
+BaseClass=CDialog
+Filter=D
+VirtualFilter=dWC
+LastObject=IDC_BUTTON1
+
+[DLG:IDD_DIALOG_CREATE_2_MJ]
+Type=1
+Class=RPShapeCreateDlg2_MJ
+ControlCount=13
+Control1=IDOK,button,1342242817
+Control2=IDCANCEL,button,1342242816
+Control3=IDC_STATIC,static,1342308352
+Control4=IDC_EDIT1,edit,1350631552
+Control5=IDC_STATIC,static,1342308352
+Control6=IDC_EDIT2,edit,1350631552
+Control7=IDC_STATIC,static,1342308352
+Control8=IDC_STATIC,static,1342308352
+Control9=IDC_EDIT3,edit,1350631552
+Control10=IDC_EDIT4,edit,1350631552
+Control11=IDC_STATIC,static,1342308352
+Control12=IDC_EDIT5,edit,1350631552
+Control13=IDC_STATIC,button,1342177287
+
+[CLS:RPShapeCreateDlg2_MJ]
+Type=0
+HeaderFile=rdoprocess_shape_create_dlg2_MJ.h
+ImplementationFile=rdoprocess_shape_create_dlg2_MJ.cpp
+BaseClass=CDialog
+Filter=D
+VirtualFilter=dWC
 

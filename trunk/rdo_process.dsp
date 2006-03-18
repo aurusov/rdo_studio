@@ -151,6 +151,18 @@ SOURCE=.\rdoprocess_shape_action.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\rdoprocess_shape_create_dlg1_MJ.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdoprocess_shape_create_dlg2_MJ.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdoprocess_shape_create_MJ.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdoprocess_shape_if.cpp
 # End Source File
 # Begin Source File
@@ -225,6 +237,18 @@ SOURCE=.\rdoprocess_shape.h
 # Begin Source File
 
 SOURCE=.\rdoprocess_shape_action.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdoprocess_shape_create_dlg1_MJ.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdoprocess_shape_create_dlg2_MJ.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdoprocess_shape_create_MJ.h
 # End Source File
 # Begin Source File
 

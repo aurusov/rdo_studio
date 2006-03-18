@@ -23,6 +23,9 @@ RPShapeIf::RPShapeIf( RPObject* _parent ):
 //	snap_to_point.y = getSize().cy / 2;
 }
 
+
+
+	
 RPShapeIf::~RPShapeIf()
 {
 }

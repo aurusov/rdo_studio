@@ -19,7 +19,19 @@
 #define IDB_PAGECTRL_CLOSE              147
 #define IDB_PAGECTRL_CLOSE_OVER         148
 #define IDB_PAGECTRL_PAGE               149
+#define IDD_DIALOG_CREATE_1_MJ          150
+#define IDD_DIALOG_CREATE_2_MJ          152
 #define IDD_ABOUT                       165
+#define IDC_EDIT1                       1000
+#define IDC_EDIT2                       1001
+#define IDC_EDIT3                       1002
+#define IDC_COMBO1                      1003
+#define IDC_EDIT4                       1004
+#define IDC_EDIT5                       1005
+#define IDC_EDIT6                       1006
+#define IDC_EDIT7                       1007
+#define IDC_EDIT8                       1008
+#define IDC_BUTTON1                     1010
 #define IDC_ABOUT_CAPTION               1082
 #define IDC_ABOUT_PICTURE               1083
 #define IDC_ABOUT_ADDRESS               1084
@@ -39,9 +51,9 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        150
+#define _APS_NEXT_RESOURCE_VALUE        153
 #define _APS_NEXT_COMMAND_VALUE         32774
-#define _APS_NEXT_CONTROL_VALUE         1000
+#define _APS_NEXT_CONTROL_VALUE         1011
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

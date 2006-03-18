@@ -18,3 +18,4 @@ public:
 };
 
 #endif // RDO_PROCESS_SHAPE_ACTION_H
+
