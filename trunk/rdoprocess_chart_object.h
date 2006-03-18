@@ -254,7 +254,8 @@ public:
 	virtual void setSelected( bool value );
 	// Отрисовка фигуры
 	virtual void draw( CDC& dc );
-	virtual void draw_selected( CDC& dc );
+	virtual void draw_after( CDC& dc );
+	virtual void draw_selected( CDC& dc ) {};
 	virtual void draw1( CDC& dc ) {};
 
 	// Габориты фигуры

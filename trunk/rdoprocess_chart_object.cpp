@@ -85,9 +85,6 @@ RPChartObject* RPChartObject::find( const rp::point& global_chart_pos )
 
 void RPChartObject::draw( CDC& dc )
 {
-	// Перевод фигуры в глобальные координаты
-	transformToGlobal();
-
 	// Вызов отрисовки потомков
 	std::list< RPChartObject* > objects;
 	getChartObjects( objects );
@@ -101,20 +98,19 @@ void RPChartObject::draw( CDC& dc )
 	}
 }
 
-void RPChartObject::draw_selected( CDC& dc )
+void RPChartObject::draw_after( CDC& dc )
 {
-	// Вызов отрисовки потомков
+	// Вызов отрисовки потомков.
 	std::list< RPChartObject* > objects;
 	getChartObjects( objects );
 	std::list< RPChartObject* >::iterator it = objects.begin();
 	while ( it != objects.end() ) {
-		if ( (*it)->isSelected() ) {
-			int saved = dc.SaveDC();
-			(*it)->draw_selected( dc );
-			dc.RestoreDC( saved );
-		}
+		int saved = dc.SaveDC();
+		(*it)->draw_after( dc );
+		dc.RestoreDC( saved );
 		it++;
 	}
+	if ( isSelected() ) draw_selected( dc );
 }
 
 void RPChartObject::setPosition( double posx, double posy )

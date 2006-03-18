@@ -319,11 +319,9 @@ void RPFlowChartObject::draw( CDC& dc )
 			it = objects.begin();
 			while ( it != objects.end() ) {
 				RPChartObject* object = *it;
-				if ( object->isSelected() ) {
-					int saved = mem_dc.SaveDC();
-					object->draw_selected( mem_dc );
-					mem_dc.RestoreDC( saved );
-				}
+				int saved = mem_dc.SaveDC();
+				object->draw_after( mem_dc );
+				mem_dc.RestoreDC( saved );
 				it++;
 /*
 				CPoint snap_to_point = shape->getCenter();
@@ -529,41 +527,9 @@ void RPFlowChartObject::onLButtonDown( UINT nFlags, CPoint local_win_pos )
 	clientToZero( global_chart_pos );
 
 	one_object = NULL;
-	RPChartObject::PossibleCommand pcmd = RPChartObject::pcmd_none;
 	if ( rpapp.project().getFlowState() == RPProject::flow_select || rpapp.project().getFlowState() == RPProject::flow_rotate ) {
-		std::list< RPObject* >::const_iterator it = begin();
-		while ( it != end() ) {
-			RPChartObject* obj = static_cast<RPChartObject*>(*it);
-			// Проверим, а не попалили в центр вращения какой-либо фигуры.
-			// Сам центр может находится вне фигуры, поэтому проверим для начала все центры всех фигур
-			if ( obj->isRotateCenter( global_chart_pos ) ) {
-				one_object      = obj;
-				one_object_pcmd = RPChartObject::pcmd_rotate_center;
-				break;
-			}
-			// Проверяем поворот с перемещением
-			if ( obj->pointInPolygon(global_chart_pos) || obj->pointInNCArea(global_chart_pos) ) {
-				pcmd = obj->getPossibleCommand( global_chart_pos );
-				switch ( pcmd ) {
-					case RPChartObject::pcmd_rotate_tl    :
-					case RPChartObject::pcmd_rotate_tr    : 
-					case RPChartObject::pcmd_rotate_bl    :
-					case RPChartObject::pcmd_rotate_br    :
-					case RPChartObject::pcmd_scale        :
-					case RPChartObject::pcmd_move         :
-					case RPChartObject::pcmd_scale_l      :
-					case RPChartObject::pcmd_scale_r      :
-					case RPChartObject::pcmd_scale_t      :
-					case RPChartObject::pcmd_scale_b      :
-					case RPChartObject::pcmd_scale_tl     :
-					case RPChartObject::pcmd_scale_br     :
-					case RPChartObject::pcmd_scale_tr     :
-					case RPChartObject::pcmd_scale_bl     : one_object = obj; one_object_pcmd = pcmd; break;
-				}
-			}
-			if ( pcmd != RPChartObject::pcmd_none ) break;
-			it++;
-		}
+		one_object      = find( global_chart_pos );
+		one_object_pcmd = one_object ? one_object->getPossibleCommand( global_chart_pos ) : RPChartObject::pcmd_none;
 	}
 	// Запомнили глобальные координаты мышки (глобальные в виндах, а не 2D движке). Пригодятся в других функциях.
 	global_win_pos_prev = local_win_pos;
@@ -574,13 +540,9 @@ void RPFlowChartObject::onLButtonDown( UINT nFlags, CPoint local_win_pos )
 	if ( one_object ) {
 		one_object->onLButtonDown( nFlags, CPoint( global_chart_pos.x, global_chart_pos.y ) );
 		// Фигура для перемещения найдена
-		if ( pcmd == RPChartObject::pcmd_move ) {
+		if ( one_object_pcmd == RPChartObject::pcmd_move ) {
 			moving_objects.clear();
-			if ( nFlags & MK_CONTROL ) {
-//				moving_objects.assign( flowobj->begin(), flowobj->end() );
-			} else {
-				moving_objects.push_back( one_object );
-			}
+			moving_objects.push_back( one_object );
 		}
 	} else {
 		// Никого не нашли, выбираем лист
@@ -888,7 +850,7 @@ void RPFlowChart::updateScrollBars()
 	si.nMax   = scroll_bar_size.right - flowobj->pixmap_w_show;
 	si.nPos   = -flowobj->matrix_transform.dx();
 	si.nPage  = flowobj->pixmap_w_show;
-	TRACE( "min = %d, max = %d, page = %d\n", si.nMin, si.nMax, si.nPage );
+//	TRACE( "min = %d, max = %d, page = %d\n", si.nMin, si.nMax, si.nPage );
 	SetScrollInfo( SB_HORZ, &si, TRUE );
 
 	si.nMin   = scroll_bar_size.top;
@@ -1268,67 +1230,4 @@ BOOL RPFlowChart::OnSetCursor( CWnd* pWnd, UINT nHitTest, UINT message )
 		return true;
 	}
 	return false;
-/*
-	CPoint point;
-	::GetCursorPos( &point );
-	ScreenToClient( &point );
-	flowobj->clientToZero( point );
-	HCURSOR cursor        = NULL;
-	RPChartObject* object = NULL;
-	flowobj->one_object_pcmd = RPChartObject::pcmd_none;
-	std::list< RPObject* >::const_iterator it = flowobj->begin();
-	while ( it != flowobj->end() ) {
-		RPChartObject* obj = static_cast<RPChartObject*>(*it);
-		if ( obj->isRotateCenter( point ) ) {
-			object = obj;
-			break;
-		}
-		if ( obj->getBoundingRect().extendByPerimetr( RPFlowChartObject::getSensitivity() ).pointInRect( point ) || obj->pointInPolygon( point ) ) {
-			object = obj;
-			break;
-		}
-		it++;
-	}
-	if ( object ) {
-		object->transformToGlobal();
-		RPChartObject::PossibleCommand _pcmd = object->getPossibleCommand( point, true );
-		if ( object->isSelected() ) {
-			switch ( _pcmd ) {
-				case RPChartObject::pcmd_none         : break;
-				case RPChartObject::pcmd_scale        : cursor = rpapp.cursors[IDC_FLOW_SELECT]; break;
-				case RPChartObject::pcmd_move         : flowobj->one_object_pcmd = _pcmd; cursor = rpapp.cursors[IDC_FLOW_MOVE]; break;
-				case RPChartObject::pcmd_rotate       :
-				case RPChartObject::pcmd_rotate_tl    :
-				case RPChartObject::pcmd_rotate_tr    :
-				case RPChartObject::pcmd_rotate_bl    :
-				case RPChartObject::pcmd_rotate_br    : cursor = rpapp.cursors[IDC_FLOW_ROTATE_TL]; break;
-				case RPChartObject::pcmd_rotate_center: cursor = rpapp.cursors[IDC_FLOW_ROTATE_CENTER]; break;
-				case RPChartObject::pcmd_scale_l      :
-				case RPChartObject::pcmd_scale_r      : cursor = rpapp.cursors[IDC_FLOW_SCALE_LR]; break;
-				case RPChartObject::pcmd_scale_t      :
-				case RPChartObject::pcmd_scale_b      : cursor = rpapp.cursors[IDC_FLOW_SCALE_TB]; break;
-				case RPChartObject::pcmd_scale_tl     :
-				case RPChartObject::pcmd_scale_br     : cursor = rpapp.cursors[IDC_FLOW_SCALE_TLBR]; break;
-				case RPChartObject::pcmd_scale_tr     :
-				case RPChartObject::pcmd_scale_bl     : cursor = rpapp.cursors[IDC_FLOW_SCALE_TRBL]; break;
-			}
-		} else {
-			switch ( _pcmd ) {
-				case RPChartObject::pcmd_move         : flowobj->one_object_pcmd = _pcmd; cursor = rpapp.cursors[IDC_FLOW_MOVE]; break;
-			}
-		}
-	}
-	if ( !cursor ) {
-		switch ( rpapp.project().getFlowState() ) {
-			case RPProject::flow_select   : cursor = rpapp.cursors[IDC_FLOW_SELECT]; break;
-			case RPProject::flow_connector: cursor = rpapp.cursors[IDC_FLOW_CONNECTOR]; break;
-			case RPProject::flow_rotate   : cursor = rpapp.cursors[IDC_FLOW_ROTATE]; break;
-		}
-	}
-	if ( cursor ) {
-		::SetCursor( cursor );
-		return true;
-	}
-	return false;
-*/
 }

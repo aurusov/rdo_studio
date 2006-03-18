@@ -180,6 +180,11 @@ void RPShape::drawConnectorsOutput( CDC& dc )
 void RPShape::draw( CDC& dc )
 {
 	RPChartObject::draw( dc );
+
+	// Перевод фигуры в глобальные координаты
+	transformToGlobal();
+
+	// Отрисовка полигона
 	drawPolyline( dc );
 
 /*
