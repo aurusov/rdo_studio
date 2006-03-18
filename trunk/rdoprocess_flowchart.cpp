@@ -517,6 +517,12 @@ void RPFlowChartObject::snapToGrid( RPShape* shape )
 */
 }
 
+RPChartObject* RPFlowChartObject::find( const rp::point& global_chart_pos )
+{
+	RPChartObject* obj = RPChartObject::find( global_chart_pos );
+	return obj != this ? obj : NULL;
+}
+
 void RPFlowChartObject::onLButtonDown( UINT nFlags, CPoint local_win_pos )
 {
 	rp::point global_chart_pos = local_win_pos;
@@ -600,32 +606,26 @@ void RPFlowChartObject::onLButtonUp( UINT nFlags, CPoint local_win_pos )
 
 void RPFlowChartObject::onLButtonDblClk( UINT nFlags, CPoint local_win_pos )
 {
-	RPChartObject* obj = findByWinPos( local_win_pos );
-	if ( obj ) {
-		CPoint global_chart_pos = local_win_pos;
-		clientToZero( global_chart_pos );
-		obj->onLButtonDblClk( nFlags, global_chart_pos );
-	}
+	CPoint global_chart_pos = local_win_pos;
+	clientToZero( global_chart_pos );
+	RPChartObject* obj = find( global_chart_pos );
+	if ( obj ) obj->onLButtonDblClk( nFlags, global_chart_pos );
 }
 
 void RPFlowChartObject::onRButtonDown( UINT nFlags, CPoint local_win_pos )
 {
-	RPChartObject* obj = findByWinPos( local_win_pos );
-	if ( obj ) {
-		CPoint global_chart_pos = local_win_pos;
-		clientToZero( global_chart_pos );
-		obj->onRButtonDown( nFlags, global_chart_pos );
-	}
+	CPoint global_chart_pos = local_win_pos;
+	clientToZero( global_chart_pos );
+	RPChartObject* obj = find( global_chart_pos );
+	if ( obj ) obj->onRButtonDown( nFlags, global_chart_pos );
 }
 
 void RPFlowChartObject::onRButtonUp( UINT nFlags, CPoint local_win_pos )
 {
-	RPChartObject* obj = findByWinPos( local_win_pos );
-	if ( obj ) {
-		CPoint global_chart_pos = local_win_pos;
-		clientToZero( global_chart_pos );
-		obj->onRButtonUp( nFlags, global_chart_pos );
-	}
+	CPoint global_chart_pos = local_win_pos;
+	clientToZero( global_chart_pos );
+	RPChartObject* obj = find( global_chart_pos );
+	if ( obj ) obj->onRButtonUp( nFlags, global_chart_pos );
 }
 
 void RPFlowChartObject::onMouseMove( UINT nFlags, CPoint local_win_pos )
@@ -638,7 +638,7 @@ void RPFlowChartObject::onMouseMove( UINT nFlags, CPoint local_win_pos )
 	rp::point global_chart_pos = local_win_pos;
 	clientToZero( global_chart_pos );
 
-	RPChartObject* obj = findByWinPos( local_win_pos );
+	RPChartObject* obj = find( global_chart_pos );
 	if ( obj ) {
 		obj->onMouseMove( nFlags, CPoint( global_chart_pos.x, global_chart_pos.y ) );
 	}

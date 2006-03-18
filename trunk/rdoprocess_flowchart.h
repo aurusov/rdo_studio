@@ -68,14 +68,8 @@ protected:
 	virtual bool isFlowChart() const { return true; }
 	void makeNewPixmap();
 
-	RPChartObject* findByWinPos( const CPoint& local_win_pos ) {
-		rp::point global_chart_pos = local_win_pos;
-		clientToZero( global_chart_pos );
-		RPChartObject* obj = RPChartObject::find( global_chart_pos );
-		return obj != this ? obj : NULL;
-	}
-
 	virtual RPProject::Cursor getCursor( const rp::point& global_chart_pos );
+	virtual RPChartObject* find( const rp::point& global_chart_pos );
 
 	rp::rect getFlowSize( const std::list< RPChartObject* >& list ) const;
 

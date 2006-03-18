@@ -33,12 +33,12 @@ protected:
 
 	virtual RPProject::Cursor getCursor( const rp::point& global_chart_pos );
 
-	virtual void onLButtonDown( UINT nFlags, CPoint flowchart_mouse_pos );
-	virtual void onLButtonUp( UINT nFlags, CPoint flowchart_mouse_pos );
-	virtual void onLButtonDblClk( UINT nFlags, CPoint flowchart_mouse_pos );
-	virtual void onRButtonDown( UINT nFlags, CPoint flowchart_mouse_pos );
-	virtual void onRButtonUp( UINT nFlags, CPoint flowchart_mouse_pos );
-	virtual void onMouseMove( UINT nFlags, CPoint flowchart_mouse_pos );
+	virtual void onLButtonDown( UINT nFlags, CPoint global_chart_pos );
+	virtual void onLButtonUp( UINT nFlags, CPoint global_chart_pos );
+	virtual void onLButtonDblClk( UINT nFlags, CPoint global_chart_pos );
+	virtual void onRButtonDown( UINT nFlags, CPoint global_chart_pos );
+	virtual void onRButtonUp( UINT nFlags, CPoint global_chart_pos );
+	virtual void onMouseMove( UINT nFlags, CPoint global_chart_pos );
 
 public:
 	RPShape( RPObject* parent, const rp::string& name = "object" );
