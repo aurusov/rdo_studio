@@ -4,7 +4,7 @@
 #include "rdoprocess_object.h"
 #include "rdoprocess_shape_action.h"
 #include "rdoprocess_shape_if.h"
-#include "rdoprocess_shape_create_MJ.h" //MJ
+#include "rdoprocess_shape_create_MJ.h" // MJ
 
 #include "rdoprocess_app.h"
 #include "rdoprocess_math.h"
@@ -78,10 +78,9 @@ BOOL RPFlowChart::PreCreateWindow( CREATESTRUCT& cs )
 	return TRUE;
 }
 
-RPShapeAction* shape_action = NULL;
-RPShapeIf*     shape_if     = NULL;
-RPShapeCreateMJ* shape_create     = NULL; //MJ
-
+RPShapeAction*   shape_action = NULL;
+RPShapeIf*       shape_if     = NULL;
+RPShapeCreateMJ* shape_create = NULL; // MJ
 
 BOOL RPFlowChart::Create( LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext )
 {
@@ -101,13 +100,10 @@ BOOL RPFlowChart::Create( LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD d
 	shape_if = new RPShapeIf(  flowobj  );
 	shape_if->setPosition( 200, 100 );
 
-//MJ start
-shape_create = new RPShapeCreateMJ(  flowobj  );
-shape_create->setPosition( 100,100 );
-//MJ end
-
-
-
+	// MJ start
+	shape_create = new RPShapeCreateMJ(  flowobj  );
+	shape_create->setPosition( 100,100 );
+	// MJ end
 
 #ifdef TEST_SPEED // =====================================
 	sec_timer = SetTimer( sec_timer_id, 1000, NULL );
