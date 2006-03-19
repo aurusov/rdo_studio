@@ -61,6 +61,8 @@ public:
 	virtual bool isChartObject() const { return true;  }
 	virtual bool isFlowChart() const   { return false; }
 	virtual bool isMatrix() const      { return false; }
+	virtual bool isShape() const       { return false; }
+	virtual bool isConnector() const   { return false; }
 
 	virtual void onLButtonDown( UINT nFlags, CPoint global_chart_pos ) {
 		if ( !isSelected() ) setSelected( true );
@@ -74,7 +76,6 @@ public:
 	// Отрисовка фигуры
 	virtual void draw( CDC& dc );
 	virtual void draw_after( CDC& dc );
-	virtual void draw1( CDC& dc ) {};
 
 	// Габориты фигуры
 	virtual rp::rect getBoundingRect( bool global = true ) const = 0;
@@ -84,39 +85,6 @@ public:
 	virtual void command_before( const rp::point& global_chart_pos ) {};
 	// Выполнить команду над объектом
 	virtual void command_make( const rp::point& global_chart_pos ) {};
-
-/*
-	class Backup {
-	public:
-		rp::matrix matrix_transform;
-		rp::matrix matrix_rotate;
-		rp::matrix matrix_transform_post;
-		rp::matrix matrix_scale;
-		int        rotation_alpha;
-	};
-	std::list< Backup > backup;
-
-	// Стек для бекапа матриц
-	void backup_push() {
-		Backup bkp;
-		bkp.matrix_transform      = matrix_transform;
-		bkp.matrix_rotate         = matrix_rotate;
-		bkp.matrix_transform_post = matrix_transform_post;
-		bkp.matrix_scale          = matrix_scale;
-		bkp.rotation_alpha        = rotation_alpha;
-		backup.push_back( bkp );
-	}
-	void backup_pop() {
-		Backup bkp = backup.back();
-		backup.pop_back();
-		matrix_transform      = bkp.matrix_transform;
-		matrix_rotate         = bkp.matrix_rotate;
-		matrix_transform_post = bkp.matrix_transform_post;
-		matrix_scale          = bkp.matrix_scale;
-		rotation_alpha        = bkp.rotation_alpha;
-	}
-	void backup_clear() { backup.clear(); }
-*/
 };
 
 #endif // RDO_PROCESS_OBJECT_CHART_H

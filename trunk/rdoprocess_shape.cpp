@@ -26,7 +26,7 @@ RPShape::~RPShape()
 
 RPProject::Cursor RPShape::getCursor( const rp::point& global_chart_pos )
 {
-	RPProject::Cursor cursor = RPObjectChart::getCursor( global_chart_pos );
+	RPProject::Cursor cursor = RPObjectMatrix::getCursor( global_chart_pos );
 	if ( cursor != RPProject::cursor_flow_select ) return cursor;
 
 	if ( isRotateCenter( global_chart_pos ) ) return RPProject::cursor_flow_rotate_center;
@@ -141,17 +141,6 @@ void RPShape::drawPolyline( CDC& dc )
 	}
 	dc.EndPath();
 	dc.StrokePath();
-
-	rp::matrix gm = globalMatrix();
-	CPen pen1( PS_SOLID, 1, RGB(-1,0,0) );
-	dc.SelectObject( pen1 );
-	dc.MoveTo( gm * CPoint(-70,0) );
-	dc.LineTo( gm * CPoint(70,0) );
-	CPen pen2( PS_SOLID, 1, RGB(0,-1,0) );
-	dc.SelectObject( pen2 );
-	dc.MoveTo( gm * CPoint(0,-70) );
-	dc.LineTo( gm * CPoint(0,70) );
-	dc.DrawText( rp::string::format( "alpha = %f", rotation_alpha ).c_str(), CRect( gm * CPoint(0,70), CSize(100,100)), DT_SINGLELINE );
 }
 
 /*
@@ -180,14 +169,39 @@ void RPShape::drawConnectorsOutput( CDC& dc )
 
 void RPShape::draw( CDC& dc )
 {
-	RPObjectChart::draw( dc );
+	RPObjectMatrix::draw( dc );
 
 	// Перевод фигуры в глобальные координаты
 	transformToGlobal();
 
 	// Отрисовка полигона
 	drawPolyline( dc );
+/*
+	rp::matrix gm = globalMatrix();
+	CPen pen1( PS_SOLID, 1, RGB(-1,0,0) );
+	dc.SelectObject( pen1 );
+	dc.MoveTo( gm * CPoint(-70,0) );
+	dc.LineTo( gm * CPoint(70,0) );
+	CPen pen2( PS_SOLID, 1, RGB(0,-1,0) );
+	dc.SelectObject( pen2 );
+	dc.MoveTo( gm * CPoint(0,-70) );
+	dc.LineTo( gm * CPoint(0,70) );
+	dc.DrawText( rp::string::format( "alpha = %f", getRotationGlobal() ).c_str(), CRect( gm * CPoint(0,70), CSize(100,100)), DT_SINGLELINE );
+//	dc.DrawText( rp::string::format( "alpha = %f", rotation_alpha ).c_str(), CRect( gm * CPoint(0,70), CSize(100,100)), DT_SINGLELINE );
 
+	transformToGlobal();
+	pa_global.extendByPerimetr( main_pen_width / 2.0 );
+	CPen pen( PS_SOLID, 1, RGB(-1,0,0) );
+	dc.SelectObject( pen );
+	dc.BeginPath();
+	if ( pa_global.isPolygon() ) {
+		dc.Polygon( &pa_global.getWinPolyline()[0], pa_global.size() );
+	} else {
+//		dc.Polyline( &pa_global.getWinPolyline()[0], pa_global.size() );
+	}
+	dc.EndPath();
+	dc.StrokePath();
+*/
 /*
 	if ( flowChart->getShowShapeName() ) {
 		painter.setPen( flowChart->getShapeColor() );
@@ -202,7 +216,7 @@ void RPShape::draw( CDC& dc )
 
 void RPShape::draw_selected( CDC& dc )
 {
-	RPObjectChart::draw_selected( dc );
+	RPObjectMatrix::draw_selected( dc );
 
 	// Прямоугольник вокруг фигуры
 	rp::rect rect = getBoundingRect();
@@ -253,22 +267,6 @@ void RPShape::draw_selected( CDC& dc )
 	}
 }
 
-void RPShape::draw1( CDC& dc )
-{
-	transformToGlobal();
-	pa_global.extendByPerimetr( main_pen_width / 2.0 );
-	CPen pen( PS_SOLID, 1, RGB(-1,0,0) );
-	dc.SelectObject( pen );
-	dc.BeginPath();
-	if ( pa_global.isPolygon() ) {
-		dc.Polygon( &pa_global.getWinPolyline()[0], pa_global.size() );
-	} else {
-//		dc.Polyline( &pa_global.getWinPolyline()[0], pa_global.size() );
-	}
-	dc.EndPath();
-	dc.StrokePath();
-}
-
 RPShape::PossibleCommand RPShape::getPossibleCommand( const rp::point& global_chart_pos, bool for_cursor )
 {
 	// Отдельно проверим на перемещение центра вращения. Он отрисовывается поверх выделения, значит и проверяться должен первым.
@@ -277,7 +275,6 @@ RPShape::PossibleCommand RPShape::getPossibleCommand( const rp::point& global_ch
 	int sensitivity = RPObjectFlowChart::getSensitivity();
 	angle90 a90 = getAngle90();
 	angle45 a45 = getAngle45();
-	double alpha = getRotation();
 	// Отдельно проверим на растяжение за правый нижний угол, т.к. фигуру, сжатую в ноль, лучше растягивать из него
 	if ( rpapp.project().getFlowState() == RPProject::flow_select ) {
 		if ( rp::math::getLength( rect.p_tl(), global_chart_pos ) <= sensitivity ) {
@@ -933,18 +930,38 @@ void RPShape::getRectDelta( rp::rect& rect_old, rp::rect& rect_new, rp::point& d
 
 void RPShape::command_before( const rp::point& global_chart_pos )
 {
-	RPObjectChart::command_before( global_chart_pos );
+	RPObjectMatrix::command_before( global_chart_pos );
 	pcmd = getPossibleCommand( global_chart_pos );
+}
+
+void RPShape::setPositionPostDelta( double posx, double posy )
+{
+	std::list< RPObjectChart* > objects;
+	getChartObjects( objects );
+	std::list< RPObjectChart* >::iterator it = objects.begin();
+	while ( it != objects.end() ) {
+		if ( (*it)->isShape() ) {
+			RPShape* obj = static_cast<RPShape*>(*it);
+//			obj->setPositionPostDelta( posx, posy );
+//			obj->RPObjectMatrix::setPositionPost( posx, posy );
+		}
+		it++;
+	}
+	setPositionPost( posx, posy );
+}
+
+void RPShape::setPositionPost( double posx, double posy )
+{
+	RPObjectMatrix::setPositionPost( posx, posy );
 }
 
 void RPShape::command_make( const rp::point& global_chart_pos )
 {
-	RPObjectChart::command_make( global_chart_pos );
+	RPObjectMatrix::command_make( global_chart_pos );
 
 	RPObjectFlowChart* flowchart = flowChart();
 	RPShape::angle90 a90 = getAngle90();
-	bool   horz  = a90 == RPShape::angle90_0 || a90 == RPShape::angle90_180;
-	double alpha = getRotation();
+	bool horz = a90 == RPShape::angle90_0 || a90 == RPShape::angle90_180;
 	rp::point mouse_delta = flowchart->mouse_delta();
 	switch ( pcmd ) {
 		case RPShape::pcmd_move: {
@@ -990,6 +1007,7 @@ void RPShape::command_make( const rp::point& global_chart_pos )
 			setScaleY( getScaleY() * (len.y + point_delta.y ) / len.y );
 			RPShape::getRectDelta( rect, getBoundingRect(), point_delta, a90, pcmd );
 			point_delta = globalRotate().obr() * point_delta;
+//			setPositionPostDelta( getPostX() + point_delta.x, getPostY() + point_delta.y );
 			setPostX( getPostX() + point_delta.x );
 			setPostY( getPostY() + point_delta.y );
 			setRotateCenterLocalDelta( point_delta.x, point_delta.y );

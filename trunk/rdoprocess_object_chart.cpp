@@ -13,7 +13,7 @@ static char THIS_FILE[] = __FILE__;
 // ----------------------------------------------------------------------------
 RPObjectChart::RPObjectChart( RPObject* _parent, const rp::string& _name ):
 	RPObject( _parent, _name ),
-	main_pen_width( 20 )
+	main_pen_width( 2 )
 {
 	LOGBRUSH lb;
 	lb.lbStyle = BS_SOLID;
@@ -88,7 +88,6 @@ void RPObjectChart::draw( CDC& dc )
 	while ( it != objects.end() ) {
 		int saved = dc.SaveDC();
 		(*it)->draw( dc );
-		(*it)->draw1( dc );
 		dc.RestoreDC( saved );
 		it++;
 	}

@@ -64,7 +64,7 @@ protected:
 
 	// ¬ернуть дискретный угол поворота (дискрета 90 градусов)
 	angle90 getAngle90() const {
-		double alpha = getRotation();
+		double alpha = getRotationGlobal();
 		if ( alpha > 270 + 45 || alpha <= 45       ) return RPShape::angle90_0;
 		if ( alpha > 45       && alpha <= 90 + 45  ) return RPShape::angle90_90;
 		if ( alpha > 90 + 45  && alpha <= 180 + 45 ) return RPShape::angle90_180;
@@ -74,7 +74,7 @@ protected:
 
 	// ¬ернуть дискретный угол поворота (дискрета 45 градусов)
 	angle45 getAngle45() const {
-		double alpha = getRotation();
+		double alpha = getRotationGlobal();
 		if ( alpha > 360 - 22 || alpha <= 22       ) return RPShape::angle45_0;
 		if ( alpha > 90 - 22  && alpha <= 90 + 22  ) return RPShape::angle45_90;
 		if ( alpha > 180 - 22 && alpha <= 180 + 22 ) return RPShape::angle45_180;
@@ -105,6 +105,11 @@ protected:
 
 	virtual RPProject::Cursor getCursor( const rp::point& global_chart_pos );
 
+	void setPositionPostDelta( double posx, double posy );
+	virtual void setPositionPost( double posx, double posy );
+
+	virtual bool isShape() const { return true; }
+
 public:
 	RPShape( RPObject* parent, const rp::string& name = "object" );
 	virtual ~RPShape();
@@ -115,7 +120,6 @@ public:
 
 	virtual void draw( CDC& dc );
 	virtual void draw_selected( CDC& dc );
-	virtual void draw1( CDC& dc );
 
 	// √абориты фигуры
 	virtual rp::rect getBoundingRect( bool global = true ) const;

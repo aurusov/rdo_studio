@@ -32,19 +32,34 @@ protected:
 	rp::matrix matrix_scale;
 	double rotation_alpha;
 
-	rp::matrix selfMatrix() const {
-		return matrix_transform * matrix_rotate * matrix_transform_post * matrix_scale;
+	enum m_mask {
+		m_tr  = 0x01,
+		m_rt  = 0x02,
+		m_pt  = 0x04,
+		m_sc  = 0x08,
+		m_all = 0x0F
+	};
+
+	rp::matrix selfMatrix( int mask = m_all ) const {
+		if ( mask == m_all ) return matrix_transform * matrix_rotate * matrix_transform_post * matrix_scale;
+		rp::matrix m;
+		if ( mask & m_tr ) m = matrix_transform;
+		if ( mask & m_rt ) m = m * matrix_rotate;
+		if ( mask & m_pt ) m = m * matrix_transform_post;
+		if ( mask & m_sc ) m = m * matrix_scale;
+		return m;
 	}
-	rp::matrix selfMatrix_noScale() const {
-		return matrix_transform * matrix_rotate * matrix_transform_post;
-	}
-	rp::matrix globalMatrix( bool first = true ) const {
+	rp::matrix parentMatrix( int mask = m_all, bool first = true ) const {
 		RPObjectMatrix* matrix_parent = matrixParent();
 		if ( first ) {
-			return matrix_parent ? matrix_parent->globalMatrix( false ) * selfMatrix() : selfMatrix();
+			return matrix_parent ? matrix_parent->parentMatrix( mask, false ) : rp::matrix();
 		} else {
-			return matrix_parent ? matrix_parent->globalMatrix( false ) * selfMatrix_noScale() : selfMatrix_noScale();
+			return matrix_parent ? matrix_parent->parentMatrix( mask, false ) * selfMatrix( mask ) : selfMatrix( mask );
 		}
+	}
+	rp::matrix globalMatrix( int mask_parent = m_all & ~m_sc, int mask_self = m_all ) const {
+		RPObjectMatrix* matrix_parent = matrixParent();
+		return matrix_parent ? matrix_parent->parentMatrix( mask_parent, false ) * selfMatrix( mask_self ) : selfMatrix( mask_self );
 	}
 	rp::matrix flowchartMatrix() const {
 		// занимаемс€ приведением типов только потому, что
@@ -53,16 +68,13 @@ protected:
 		RPObjectMatrix* flowchart = reinterpret_cast<RPObjectMatrix*>(flowChart());
 		return flowchart ? flowchart->selfMatrix() : rp::matrix();
 	}
-	rp::matrix parentMatrix_noScale( bool first = true ) const {
+	rp::matrix parentRotate( bool first = true ) const {
 		RPObjectMatrix* matrix_parent = matrixParent();
 		if ( first ) {
-			return matrix_parent ? matrix_parent->parentMatrix_noScale( false ) : rp::matrix();
+			return matrix_parent ? matrix_parent->parentRotate( false ) : rp::matrix();
 		} else {
-			return matrix_parent ? matrix_parent->parentMatrix_noScale( false ) * selfMatrix_noScale() : selfMatrix_noScale();
+			return globalRotate();
 		}
-	}
-	rp::matrix rotateCenterMatrix() const {
-		return parentMatrix_noScale() * matrix_transform;
 	}
 	rp::matrix globalRotate() const {
 		rp::matrix m_rotate;
@@ -70,27 +82,60 @@ protected:
 		RPObjectMatrix* matrix_parent = matrixParent();
 		return matrix_parent ? matrix_parent->globalRotate() * m_rotate : m_rotate;
 	}
-	rp::matrix parentRotate( bool first = true ) const {
-		RPObjectMatrix* matrix_parent = matrixParent();
-		if ( first ) {
-			return matrix_parent ? matrix_parent->parentRotate( false ) : rp::matrix();
-		} else {
-			rp::matrix m_rotate;
-			RPObjectMatrix::fillRotateMatrix( m_rotate, rotation_alpha );
-			return matrix_parent ? matrix_parent->parentRotate( false ) * m_rotate : m_rotate;
+	rp::matrix rotateCenterMatrix() const {
+		return parentMatrix( m_all & ~m_sc ) * matrix_transform;
+	}
+	// ¬ернуть центр поворота в глобальных координатах
+	rp::point getRotateCenter() const {
+		if ( !rotate_center_inited ) {
+			rotate_center = getBoundingRect( false ).getCenter();
+			rotate_center_inited = true;
 		}
+		return rotateCenterMatrix() * rotate_center;
+	}
+	// ”становить центр поворота в глобальных координатах
+	void setRotateCenter( const rp::point& global_chart_pos ) {
+		rotate_center = rotateCenterMatrix().obr() * global_chart_pos;
 	}
 	static void fillRotateMatrix( rp::matrix& m_rotate, double alpha ) {
 		alpha *= rp::math::pi / 180.0;
 		double cos_a = cos( alpha );
 		double sin_a = sin( alpha );
-//		if ( fabs(cos_a) < 1e-10 ) cos_d = 0;
-//		if ( fabs(sin_a) < 1e-10 ) sin_d = 0;
+//		if ( fabs(cos_a) < 1e-10 ) cos_a = 0;
+//		if ( fabs(sin_a) < 1e-10 ) sin_a = 0;
 		m_rotate.data[0][0] = cos_a;
 		m_rotate.data[1][1] = cos_a;
 		m_rotate.data[0][1] = sin_a;
 		m_rotate.data[1][0] = -sin_a;
 	}
+
+/*
+	rp::matrix selfMatrix() const {
+		return matrix_transform * matrix_rotate * matrix_transform_post * matrix_scale;
+	}
+	rp::matrix selfMatrix_noScale() const {
+		return matrix_transform * matrix_rotate * matrix_transform_post;
+	}
+	rp::matrix parentMatrix_noScale( bool first = true ) const {
+		RPObjectMatrix* matrix_parent = matrixParent();
+		if ( first ) {
+			return matrix_parent ? matrix_parent->parentMatrix_noScale( false ) : rp::matrix();
+		} else {
+			return matrix_parent ? matrix_parent->parentMatrix_noScale( false ) * selfMatrix( m_all & ~m_sc ) : selfMatrix( m_all & ~m_sc );
+		}
+	}
+	rp::matrix rotateCenterMatrix() const {
+		return parentMatrix_noScale() * matrix_transform;
+	}
+	rp::matrix globalMatrix( bool first = true ) const {
+		RPObjectMatrix* matrix_parent = matrixParent();
+		if ( first ) {
+			return matrix_parent ? matrix_parent->globalMatrix( false ) * selfMatrix() : selfMatrix();
+		} else {
+			return matrix_parent ? matrix_parent->globalMatrix( false ) * selfMatrix( m_all & ~m_sc ) : selfMatrix( m_all & ~m_sc );
+		}
+	}
+*/
 
 	// ѕозици€
 	virtual void setPosition( double posx, double posy );
@@ -115,17 +160,19 @@ protected:
 
 	// ѕоворот
 	double getRotation() const { return rotation_alpha; }
-	virtual void setRotation( double alpha );
-	// ¬ернуть центр поворота в глобальных координатах
-	rp::point getRotateCenter() const {
-		if ( !rotate_center_inited ) {
-			rotate_center = getBoundingRect( false ).getCenter();
-			rotate_center_inited = true;
+	double getRotationGlobal( bool first = true ) const {
+		RPObjectMatrix* matrix_parent = matrixParent();
+		if ( first ) {
+			double alpha = matrix_parent ? matrix_parent->getRotationGlobal() + rotation_alpha : rotation_alpha;
+			while ( alpha < 0 )   alpha += 360;
+			while ( alpha >= 360 ) alpha -= 360;
+			return alpha;
+		} else {
+			return matrix_parent ? matrix_parent->getRotationGlobal() + rotation_alpha : rotation_alpha;
 		}
-		return rotateCenterMatrix() * rotate_center;
 	}
-	// ”становить центр поворота в глобальных координатах
-	void setRotateCenter( const rp::point& global_chart_pos ) { rotate_center = rotateCenterMatrix().obr() * global_chart_pos; }
+	virtual void setRotation( double alpha );
+
 	// »зменить центр поворота в локальных координатах
 	void setRotateCenterLocalDelta( double dx, double dy );
 	// —овпадает ли точка на центре вращени€ фигуры
@@ -137,6 +184,39 @@ protected:
 public:
 	RPObjectMatrix( RPObject* parent, const rp::string& name = "object" );
 	virtual ~RPObjectMatrix();
+
+/*
+	class Backup {
+	public:
+		rp::matrix matrix_transform;
+		rp::matrix matrix_rotate;
+		rp::matrix matrix_transform_post;
+		rp::matrix matrix_scale;
+		int        rotation_alpha;
+	};
+	std::list< Backup > backup;
+
+	// —тек дл€ бекапа матриц
+	void backup_push() {
+		Backup bkp;
+		bkp.matrix_transform      = matrix_transform;
+		bkp.matrix_rotate         = matrix_rotate;
+		bkp.matrix_transform_post = matrix_transform_post;
+		bkp.matrix_scale          = matrix_scale;
+		bkp.rotation_alpha        = rotation_alpha;
+		backup.push_back( bkp );
+	}
+	void backup_pop() {
+		Backup bkp = backup.back();
+		backup.pop_back();
+		matrix_transform      = bkp.matrix_transform;
+		matrix_rotate         = bkp.matrix_rotate;
+		matrix_transform_post = bkp.matrix_transform_post;
+		matrix_scale          = bkp.matrix_scale;
+		rotation_alpha        = bkp.rotation_alpha;
+	}
+	void backup_clear() { backup.clear(); }
+*/
 };
 
 #endif // RDO_PROCESS_OBJECT_MATRIX_H

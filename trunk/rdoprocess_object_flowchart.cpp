@@ -287,7 +287,6 @@ void RPObjectFlowChart::draw( CDC& dc )
 				int saved = mem_dc.SaveDC();
 				RPObjectChart* obj = *it;
 				obj->draw( mem_dc );
-				obj->draw1( mem_dc );
 				mem_dc.RestoreDC( saved );
 				it++;
 			}
@@ -506,32 +505,33 @@ void RPObjectFlowChart::snapToGrid( RPObjectMatrix* shape )
 
 RPObjectChart* RPObjectFlowChart::find( const rp::point& global_chart_pos )
 {
-	RPObjectChart* obj = RPObjectChart::find( global_chart_pos );
+	RPObjectChart* obj = RPObjectMatrix::find( global_chart_pos );
 	return obj != this ? obj : NULL;
 }
 
 void RPObjectFlowChart::onLButtonDown( UINT nFlags, CPoint local_win_pos )
 {
-	// Запомнили глобальные координаты мышки (глобальные в виндах, а не 2D движке). Пригодятся в других функциях.
+	// Запомнили глобальные координаты мышки (глобальные в виндах, а не 2D-движке). Пригодятся в других функциях.
 	global_win_pos_prev = local_win_pos;
 	flowchart->ClientToScreen( &global_win_pos_prev );
 	global_win_pos_current = global_win_pos_prev;
+	// Глобальные координаты в 2D-движке
+	rp::point global_chart_pos = local_win_pos;
+	clientToZero( global_chart_pos );
 	// Монопольно захватили мышку
 	flowchart->SetCapture();
 	// Нашли объект под мышкой
 	if ( rpapp.project().getFlowState() == RPProject::flow_select || rpapp.project().getFlowState() == RPProject::flow_rotate ) {
-		rp::point global_chart_pos = local_win_pos;
-		clientToZero( global_chart_pos );
 		one_object = find( global_chart_pos );
 		if ( one_object ) {
 			// Нашли фигуру
 			one_object->onLButtonDown( nFlags, CPoint( global_chart_pos.x, global_chart_pos.y ) );
 			one_object->command_before( global_chart_pos );
+			return;
 		}
-		return;
 	}
 	// Никого не нашли, выбираем лист
-	setSelected( true );
+	RPObjectMatrix::onLButtonDown( nFlags, CPoint( global_chart_pos.x, global_chart_pos.y ) );
 }
 
 void RPObjectFlowChart::onMouseMove( UINT nFlags, CPoint local_win_pos )

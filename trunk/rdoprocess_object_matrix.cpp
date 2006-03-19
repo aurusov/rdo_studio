@@ -75,7 +75,7 @@ void RPObjectMatrix::setRotateCenterLocalDelta( double dx, double dy )
 	rp::matrix m_rotate;
 	RPObjectMatrix::fillRotateMatrix( m_rotate, rotation_alpha );
 
-	rp::matrix m = m_rotate * m_delta * parentMatrix_noScale();
+	rp::matrix m = globalRotate() * m_delta;
 	rp::point point = getRotateCenter();
 	point.x += m.dx();
 	point.y += m.dy();
