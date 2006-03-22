@@ -19,8 +19,9 @@ private:
 	enum GridMode { gtSnapOff, gtSnapToPoint, gtSnapToCenter };
 	enum GridType { gtPoints, gtSolidLines, dtDotLines };
 
-	int   saved_dc;
-	CRect scroll_bar_size;
+	int    saved_dc;
+	CRect  scroll_bar_size;
+	CPoint scroll_delta;
 
 	void updateScrollBars();
 

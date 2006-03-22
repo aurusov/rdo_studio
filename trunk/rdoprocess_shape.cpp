@@ -133,14 +133,17 @@ void RPShape::drawPolyline( CDC& dc )
 {
 	if ( pa_global.size() < 2 ) return;
 	dc.SelectObject( main_pen );
-	dc.BeginPath();
+	CBrush brushRed(RGB(255, 0, 0));
+	CBrush* pOldBrush = dc.SelectObject(&brushRed);
+//	dc.BeginPath();
 	if ( pa_global.isPolygon() ) {
 		dc.Polygon( &pa_global.getWinPolyline()[0], pa_global.size() );
 	} else {
 		dc.Polyline( &pa_global.getWinPolyline()[0], pa_global.size() );
 	}
-	dc.EndPath();
-	dc.StrokePath();
+//	dc.EndPath();
+//	dc.StrokePath();
+	dc.SelectObject(pOldBrush);
 }
 
 /*

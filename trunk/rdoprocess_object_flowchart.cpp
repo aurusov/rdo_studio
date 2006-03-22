@@ -282,13 +282,17 @@ void RPObjectFlowChart::draw( CDC& dc )
 			for ( int cnt5 = 0; cnt5 <= base_speed; cnt5++ ) {
 #endif // ================================================
 
-			std::list< RPObjectChart* >::iterator it = objects.begin();
-			while ( it != objects.end() ) {
-				int saved = mem_dc.SaveDC();
-				RPObjectChart* obj = *it;
-				obj->draw( mem_dc );
-				mem_dc.RestoreDC( saved );
-				it++;
+			std::list< RPObjectChart* >::iterator it = objects.end();
+			it--;
+			if ( it != objects.end() ) {
+				while ( true ) {
+					int saved = mem_dc.SaveDC();
+					RPObjectChart* obj = *it;
+					obj->draw( mem_dc );
+					mem_dc.RestoreDC( saved );
+					if ( it == objects.begin() ) break;
+					it--;
+				}
 			}
 
 #ifdef TEST_SPEED // =====================================
