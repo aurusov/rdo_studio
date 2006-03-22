@@ -20,8 +20,9 @@ private:
 	enum GridType { gtPoints, gtSolidLines, dtDotLines };
 
 	int    saved_dc;
-	CRect  scroll_bar_size;
+	bool   scroll_inited;
 	CPoint scroll_delta;
+	CPoint scroll_size;
 
 	void updateScrollBars();
 
