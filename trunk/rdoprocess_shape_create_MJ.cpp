@@ -22,12 +22,12 @@ static char THIS_FILE[]=__FILE__;
 RPShapeCreateMJ::RPShapeCreateMJ( RPObject* _parent ):
 	RPShape( _parent, _T("Create") )
 {
-	pa_src.push_back( rp::point(-40, -25) );
-	pa_src.push_back( rp::point(20, -25) );
-	pa_src.push_back( rp::point(40, 0) );
-	pa_src.push_back( rp::point(20, 25) );
-	pa_src.push_back( rp::point(-40, 25) );
-	pa_src.push_back( rp::point(-40, -25) );
+	pa_src.push_back( rp::point(-20, -25) );
+	pa_src.push_back( rp::point(15, -25) );
+	pa_src.push_back( rp::point(25, 0) );
+	pa_src.push_back( rp::point(15, 25) );
+	pa_src.push_back( rp::point(-20, 25) );
+	pa_src.push_back( rp::point(-20, -25) );
 
 	matrix_scale.data[0][0] = 2;
 }

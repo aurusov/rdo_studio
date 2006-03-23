@@ -4,7 +4,14 @@
 #include "rdoprocess_object.h"
 #include "rdoprocess_shape_action.h"
 #include "rdoprocess_shape_if.h"
-#include "rdoprocess_shape_create_MJ.h" // MJ
+
+//MJ start
+#include "rdoprocess_shape_process_MJ.h" 
+#include "rdoprocess_shape_create_MJ.h"
+#include "rdoprocess_shape_terminate_MJ.h"
+ 
+
+// MJ end
 #include "rdoprocess_app.h"
 
 #ifdef _DEBUG
@@ -76,9 +83,12 @@ BOOL RPFlowChart::PreCreateWindow( CREATESTRUCT& cs )
 	return TRUE;
 }
 
-RPShapeAction*   shape_action = NULL;
-RPShapeIf*       shape_if     = NULL;
-RPShapeCreateMJ* shape_create = NULL; // MJ
+RPShapeAction*       shape_action  = NULL;
+RPShapeIf*           shape_if      = NULL;
+RPShapeCreateMJ*     shape_create  = NULL; // MJ
+RPShapeProcessMJ*    shape_process = NULL; // MJ
+RPShapeTerminateMJ*  shape_terminate = NULL; // MJ
+
 
 BOOL RPFlowChart::Create( LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext )
 {
@@ -101,6 +111,14 @@ BOOL RPFlowChart::Create( LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD d
 	// MJ start
 	shape_create = new RPShapeCreateMJ( flowobj );
 	shape_create->setPosition( 100,100 );
+	
+	
+	shape_process = new RPShapeProcessMJ(  flowobj  );
+	shape_process->setPosition( 100,150 );
+	
+	
+    shape_terminate = new RPShapeTerminateMJ(  flowobj  );
+	shape_terminate->setPosition( 100,200 );
 	// MJ end
 
 #ifdef TEST_SPEED // =====================================

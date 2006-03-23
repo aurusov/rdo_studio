@@ -50,6 +50,7 @@ BOOL RPShapeCreateDlg1_MJ::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	m_create_dlg1_combo1_MJ.SetCurSel(0);
+	
 	return TRUE;
 }
 
