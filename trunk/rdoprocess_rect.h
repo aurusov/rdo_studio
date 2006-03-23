@@ -76,6 +76,9 @@ public:
 	rp::point getCenter() const {
 		return rp::point( (pa[0].x + pa[2].x)/2, (pa[0].y + pa[2].y)/2 );
 	}
+	rp::rect getBoundingRect() const {
+		return pa.getBoundingRect();
+	}
 	void transform( const rp::matrix& matrix ) {
 		pa[0] = matrix * pa[0];
 		pa[1] = matrix * pa[1];

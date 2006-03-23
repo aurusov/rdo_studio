@@ -14,10 +14,6 @@
 // ----------------------------------------------------------------------------
 class RPShape: public RPObjectMatrix
 {
-private:
-	mutable rp::point rotate_center;
-	mutable bool      rotate_center_inited;
-
 protected:
 //	CPoint snap_to_point;
 

@@ -29,7 +29,7 @@ RPShapeCreateMJ::RPShapeCreateMJ( RPObject* _parent ):
 	pa_src.push_back( rp::point(-20, 25) );
 	pa_src.push_back( rp::point(-20, -25) );
 
-	matrix_scale.data[0][0] = 4;
+	matrix_scale.data[0][0] = 2;
 }
 
 

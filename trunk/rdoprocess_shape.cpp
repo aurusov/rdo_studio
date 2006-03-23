@@ -131,6 +131,9 @@ void RPShape::transformToGlobal()
 
 rp::rect RPShape::getBoundingRect( bool global ) const
 {
+	if ( name == "Create" ) {
+		int i = 1;
+	}
 	rp::rect bound_rect;
 	if ( !pa_src.empty() ) {
 		int x_min = pa_src[0].x;
@@ -146,7 +149,11 @@ rp::rect RPShape::getBoundingRect( bool global ) const
 			it++;
 		}
 		rp::rect rect( x_min, y_min, x_max, y_max );
-		if ( global ) rect.transform( globalMatrix() );
+		if ( global ) {
+			rect.transform( globalMatrix() );
+		} else {
+			rect.transform( matrix_scale );
+		}
 		bound_rect = rect;
 	}
 	return bound_rect;
@@ -209,56 +216,15 @@ void RPShape::draw( CDC& dc )
 	CFont* f = CFont::FromHandle( hf );
 	f->GetLogFont( &lf );
 	lf.lfEscapement = getRotationGlobal() * 10;
-	lf.lfOrientation = getRotationGlobal() * 10;
 	CFont font;
 	font.CreateFontIndirect( &lf );
 	CFont* old_font = dc.SelectObject( &font );
-	rp::point center = getCenter();
-	rp::rect rect_local = getBoundingRect( false );
-	rect_local.transform( matrix_scale );
-	CRect rect_text;
-	rect_text.left   = rect_local.p0().x + center.x;
-	rect_text.right  = rect_local.p1().x + center.x;
-	rect_text.top    = rect_local.p0().y + center.y;
-	rect_text.bottom = rect_local.p2().y + center.y;
-	dc.MoveTo( rect_text.left, rect_text.top );
-	dc.LineTo( rect_text.right, rect_text.top );
-	dc.LineTo( rect_text.right, rect_text.bottom );
-	dc.LineTo( rect_text.left, rect_text.bottom );
-	dc.LineTo( rect_text.left, rect_text.top );
+	CRect calc( 0, 0, 1, 1 );
+	dc.DrawText( name.c_str(), &calc, DT_CALCRECT | DT_SINGLELINE );
+	rp::point center( -calc.Width()/2, -calc.Height()/2 );
+	center = globalMatrix( m_all & ~m_sc, m_all & ~m_sc ) * center;
 	dc.TextOut( center.x, center.y, name.c_str() );
 	dc.SelectObject( old_font );
-/*
-      if (cosA > 1) {
-        cosA = 1;
-      } else {
-        if (cosA < -1)
-          cosA = -1;
-      }
-      int alpha = acos(cosA) * 180 / 3.14159265358979;
-      bool flag = p1.y >= p2.y;
-      if ((flag && alpha <= 120) || (!flag && alpha < 60)) {
-        logFont.lfEscapement = flag ? alpha * 10 : (360 - alpha) * 10;
-        flag = true;
-      } else {
-        logFont.lfEscapement = flag ? (alpha - 180) * 10 : (180 - alpha) * 10;
-        flag = false;
-      }
-        HFONT oldFont = SelectObject(canvas->Handle, font);
-        if (oldFont) {
-          canvas->Brush->Style = bsClear;
-          length /= 2;
-          int dX = flag ? (size.cx / 2) : -(size.cx / 2);
-          int dY = flag ? (size.cy + 2) : -(size.cy + 2);
-          int x = p1.x + cosA * length - cosA * dX - sinA * dY;
-          int y = p1.y - sinA * length + sinA * dX - cosA * dY;
-          canvas->MoveTo(x, y);
-          canvas->TextOut(x, y, s);
-          font = SelectObject(canvas->Handle, oldFont);
-          DeleteObject(font);
-        }
-      }
-*/
 
 /*
 	rp::matrix gm = globalMatrix();

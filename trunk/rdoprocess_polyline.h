@@ -12,6 +12,8 @@ namespace rp {
 // ----------------------------------------------------------------------------
 // ---------- polyline
 // ----------------------------------------------------------------------------
+class rect;
+
 class polyline: public std::vector< rp::point > {
 protected:
 	struct trans {
@@ -65,6 +67,7 @@ public:
 		}
 		return value;
 	}
+	rp::rect getBoundingRect() const;
 	rp::point getCenter() const {
 		return rp::point( (getMaxX() + getMinX()) / 2, (getMaxY() + getMinY()) / 2 );
 	}
