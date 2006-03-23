@@ -118,38 +118,16 @@ bool RPObjectFlowChart::pointInPolygon( const rp::point& global_chart_pos )
 	return global_chart_pos.x >= 0 && global_chart_pos.y >= 0 && global_chart_pos.x <= pixmap_w_show && global_chart_pos.y <= pixmap_h_show;
 }
 
-rp::rect RPObjectFlowChart::getFlowSize( const std::list< RPObjectChart* >& list ) const
+rp::rect RPObjectFlowChart::getBoundingRect( bool global ) const
 {
-	double max_x = 0;
-	double max_y = 0;
-	double min_x = 0;
-	double min_y = 0;
-	std::list< RPObjectChart* >::const_iterator it = list.begin();
-	if ( it != list.end() ) {
-		rp::rect rect = (*it)->getMaxRect();
-		max_x = rect.getMaxX();
-		max_y = rect.getMaxY();
-		min_x = rect.getMinX();
-		min_y = rect.getMinY();
-		it++;
-	}
-	while ( it != list.end() ) {
-		rp::rect rect = (*it)->getMaxRect();
-		double _max_x = rect.getMaxX();
-		double _max_y = rect.getMaxY();
-		double _min_x = rect.getMinX();
-		double _min_y = rect.getMinY();
-		if ( _max_x > max_x ) max_x = _max_x;
-		if ( _max_y > max_y ) max_y = _max_y;
-		if ( _min_x < min_x ) min_x = _min_x;
-		if ( _min_y < min_y ) min_y = _min_y;
-		it++;
-	}
-	min_x -= matrix_transform.dx_const();
-	max_x -= matrix_transform.dx_const();
-	min_y -= matrix_transform.dy_const();
-	max_y -= matrix_transform.dy_const();
-	return rp::rect( min_x, min_y, max_x, max_y );
+	rp::rect rect = const_cast<RPObjectFlowChart*>(this)->getMaxRect();
+	return rp::rect( rect.getMinX() + 100, rect.getMinY() + 100, rect.getMaxX() - 100, rect.getMaxY() - 100 );
+}
+
+rp::rect RPObjectFlowChart::getMaxRect()
+{
+	rp::rect rect = RPObjectMatrix::getMaxRect();
+	return rp::rect( rect.getMinX() - matrix_transform.dx_const() - 100, rect.getMinY() - matrix_transform.dy_const() - 100, rect.getMaxX() - matrix_transform.dx_const() + 100, rect.getMaxY() - matrix_transform.dy_const() + 100 );
 }
 
 void RPObjectFlowChart::draw( CDC& dc )

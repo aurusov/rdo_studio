@@ -108,6 +108,8 @@ protected:
 		m_rotate.data[0][1] = sin_a;
 		m_rotate.data[1][0] = -sin_a;
 	}
+	// Габориты фигуры
+	virtual rp::rect getMaxRect();
 
 /*
 	rp::matrix selfMatrix() const {

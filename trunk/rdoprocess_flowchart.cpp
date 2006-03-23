@@ -158,32 +158,32 @@ void RPFlowChart::OnDestroy()
 
 void RPFlowChart::updateScrollBars()
 {
-	rp::rect rect = flowobj->getBoundingRect();
+	rp::rect rect = flowobj->getMaxRect();
 	if ( scroll_delta.x < -rect.getMinX() ) scroll_delta.x = -rect.getMinX();
 	if ( scroll_delta.y < -rect.getMinY() ) scroll_delta.y = -rect.getMinY();
-	if ( scroll_delta.x < flowobj->pixmap_w_show ) scroll_delta.x = flowobj->pixmap_w_show;
-	if ( scroll_delta.y < flowobj->pixmap_h_show ) scroll_delta.y = flowobj->pixmap_h_show;
+//	if ( scroll_delta.x < flowobj->pixmap_w_show ) scroll_delta.x = flowobj->pixmap_w_show;
+//	if ( scroll_delta.y < flowobj->pixmap_h_show ) scroll_delta.y = flowobj->pixmap_h_show;
 
-	if ( scroll_size.x  < rect.getMaxX() ) scroll_size.x  = rect.getMaxX();
-	if ( scroll_size.y  < rect.getMaxY() ) scroll_size.y  = rect.getMaxY();
-	if ( scroll_size.x  <  flowobj->pixmap_w_show ) scroll_size.x  = flowobj->pixmap_w_show;
-	if ( scroll_size.y  <  flowobj->pixmap_h_show ) scroll_size.y  = flowobj->pixmap_h_show;
+	if ( scroll_size.x  < rect.getMaxX() ) scroll_size.x = rect.getMaxX();
+	if ( scroll_size.y  < rect.getMaxY() ) scroll_size.y = rect.getMaxY();
+	if ( scroll_size.x  < flowobj->pixmap_w_show ) scroll_size.x = flowobj->pixmap_w_show;
+	if ( scroll_size.y  < flowobj->pixmap_h_show ) scroll_size.y = flowobj->pixmap_h_show;
 
 	SCROLLINFO si;
 	si.cbSize = sizeof( SCROLLINFO );
 	si.fMask  = SIF_PAGE | SIF_RANGE | SIF_POS;
 
 	si.nMin   = 0;
-	si.nMax   = scroll_size.x + scroll_delta.x + flowobj->pixmap_w_show;
+	si.nMax   = scroll_size.x + scroll_delta.x;
 	si.nPos   = scroll_delta.x - flowobj->matrix_transform.dx();
 	si.nPage  = flowobj->pixmap_w_show;
-	SetScrollInfo( SB_HORZ, &si, TRUE );
+	SetScrollInfo( SB_HORZ, &si );
 
 	si.nMin   = 0;
-	si.nMax   = scroll_size.y + scroll_delta.y + flowobj->pixmap_h_show;
+	si.nMax   = scroll_size.y + scroll_delta.y;
 	si.nPos   = scroll_delta.y - flowobj->matrix_transform.dy();
 	si.nPage  = flowobj->pixmap_h_show;
-	SetScrollInfo( SB_VERT, &si, TRUE );
+	SetScrollInfo( SB_VERT, &si );
 }
 
 void RPFlowChart::OnSize( UINT nType, int cx, int cy )
@@ -378,10 +378,10 @@ void RPFlowChart::OnHScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBar )
 	}
 	si.fMask  = SIF_PAGE | SIF_RANGE | SIF_POS;
 	si.nMin   = 0;
-	si.nMax   = scroll_size.x + scroll_delta.x + flowobj->pixmap_w_show;
+	si.nMax   = scroll_size.x + scroll_delta.x;
 	si.nPos   = scroll_delta.x - flowobj->matrix_transform.dx();
 	si.nPage  = flowobj->pixmap_w_show;
-	SetScrollInfo( SB_HORZ, &si, TRUE );
+	SetScrollInfo( SB_HORZ, &si );
 	if ( flowobj ) flowobj->update();
 }
 
@@ -429,10 +429,10 @@ void RPFlowChart::OnVScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBar )
 	}
 	si.fMask  = SIF_PAGE | SIF_RANGE | SIF_POS;
 	si.nMin   = 0;
-	si.nMax   = scroll_size.y + scroll_delta.y + flowobj->pixmap_h_show;
+	si.nMax   = scroll_size.y + scroll_delta.y;
 	si.nPos   = scroll_delta.y - flowobj->matrix_transform.dy();
 	si.nPage  = flowobj->pixmap_h_show;
-	SetScrollInfo( SB_VERT, &si, TRUE );
+	SetScrollInfo( SB_VERT, &si );
 	if ( flowobj ) flowobj->update();
 }
 

@@ -24,6 +24,30 @@ RPShape::~RPShape()
 {
 }
 
+RPObjectChart* RPShape::find( const rp::point& global_chart_pos )
+{
+	if ( pointInPolygon(global_chart_pos) || pointInNCArea(global_chart_pos) ) {
+		return this;
+	}
+	return RPObjectMatrix::find( global_chart_pos );
+}
+
+rp::rect RPShape::getMaxRect()
+{
+	rp::rect rect = RPObjectMatrix::getMaxRect();
+	double max_x = rect.getMaxX();
+	double max_y = rect.getMaxY();
+	double min_x = rect.getMinX();
+	double min_y = rect.getMinY();
+	transformToGlobal();
+	pa_global.extendByPerimetr( static_cast<double>(main_pen_width) / 2.0 );
+	if ( pa_global.getMaxX() > max_x ) max_x = pa_global.getMaxX();
+	if ( pa_global.getMaxY() > max_y ) max_y = pa_global.getMaxY();
+	if ( pa_global.getMinX() < min_x ) min_x = pa_global.getMinX();
+	if ( pa_global.getMinY() < min_y ) min_y = pa_global.getMinY();
+	return rp::rect( min_x, min_y, max_x, max_y );
+}
+
 RPProject::Cursor RPShape::getCursor( const rp::point& global_chart_pos )
 {
 	RPProject::Cursor cursor = RPObjectMatrix::getCursor( global_chart_pos );
@@ -71,7 +95,6 @@ RPProject::Cursor RPShape::getCursor( const rp::point& global_chart_pos )
 
 bool RPShape::pointInNCArea( const rp::point& global_chart_pos )
 {
-//	return getBoundingRect().extendByPerimetr( RPObjectFlowChart::getSensitivity() ).pointInRect( global_chart_pos );
 	if ( !isSelected() ) return false;
 	switch ( getPossibleCommand( global_chart_pos ) ) {
 		case RPShape::pcmd_rotate_center:

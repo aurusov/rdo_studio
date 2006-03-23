@@ -109,6 +109,7 @@ protected:
 	virtual void setPositionPost( double posx, double posy );
 
 	virtual bool isShape() const { return true; }
+	virtual RPObjectChart* find( const rp::point& global_chart_pos );
 
 public:
 	RPShape( RPObject* parent, const rp::string& name = "object" );
@@ -123,11 +124,7 @@ public:
 
 	// Габориты фигуры
 	virtual rp::rect getBoundingRect( bool global = true ) const;
-	virtual rp::rect getMaxRect() {
-		transformToGlobal();
-		pa_global.extendByPerimetr( static_cast<double>(main_pen_width) / 2.0 );
-		return rp::rect( pa_global.getMinX(), pa_global.getMinY(), pa_global.getMaxX(), pa_global.getMaxY() );
-	}
+	virtual rp::rect getMaxRect();
 
 	// Перевод всех элементов фигуры в глобальные координаты
 	virtual void transformToGlobal();

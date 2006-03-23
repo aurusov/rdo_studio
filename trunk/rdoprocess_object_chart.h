@@ -78,8 +78,8 @@ public:
 	virtual void draw_after( CDC& dc );
 
 	// Габориты фигуры
-	virtual rp::rect getBoundingRect( bool global = true ) const = 0;
-	virtual rp::rect getMaxRect()  { return getBoundingRect(); }
+	virtual rp::rect getBoundingRect( bool global = true )  const = 0;
+	virtual rp::rect getMaxRect() { return getBoundingRect(); }
 
 	// Перед выполнение команды (объект должен подготовить команду)
 	virtual void command_before( const rp::point& global_chart_pos ) {};

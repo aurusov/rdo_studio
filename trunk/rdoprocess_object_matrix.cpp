@@ -89,3 +89,35 @@ bool RPObjectMatrix::isRotateCenter( const rp::point& global_chart_pos ) const
 	}
 	return false;
 }
+
+rp::rect RPObjectMatrix::getMaxRect()
+{
+	double max_x = 0;
+	double max_y = 0;
+	double min_x = 0;
+	double min_y = 0;
+	std::list< RPObjectChart* > objects;
+	getChartObjects( objects );
+	std::list< RPObjectChart* >::iterator it = objects.begin();
+	if ( it != objects.end() ) {
+		rp::rect rect = (*it)->getMaxRect();
+		max_x  = rect.getMaxX();
+		max_y  = rect.getMaxY();
+		min_x  = rect.getMinX();
+		min_y  = rect.getMinY();
+		it++;
+	}
+	while ( it != objects.end() ) {
+		rp::rect rect = (*it)->getMaxRect();
+		double _max_x = rect.getMaxX();
+		double _max_y = rect.getMaxY();
+		double _min_x = rect.getMinX();
+		double _min_y = rect.getMinY();
+		if ( _max_x > max_x ) max_x = _max_x;
+		if ( _max_y > max_y ) max_y = _max_y;
+		if ( _min_x < min_x ) min_x = _min_x;
+		if ( _min_y < min_y ) min_y = _min_y;
+		it++;
+	}
+	return rp::rect( min_x, min_y, max_x, max_y );
+}

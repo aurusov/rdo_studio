@@ -104,11 +104,8 @@ public:
 	// Отрисовка фигуры
 	virtual void draw( CDC& dc );
 	// Габориты фигуры
-	virtual rp::rect getBoundingRect( bool global = true ) const {
-		std::list< RPObjectChart* > objects;
-		getChartObjects( objects );
-		return getFlowSize( objects );
-	}
+	virtual rp::rect getBoundingRect( bool global = true ) const;
+	virtual rp::rect getMaxRect();
 	// Перевод всех элементов фигуры в глобальные координаты
 	virtual void transformToGlobal() {};
 	// Находится ли точка внутри фигуры
