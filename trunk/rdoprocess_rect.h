@@ -45,29 +45,29 @@ public:
 		pa = rect.pa;
 		return *this;
 	}
-	int getMinX() const {
-		int min_x = pa[0].x;
+	double getMinX() const {
+		double min_x = pa[0].x;
 		if ( min_x > pa[1].x ) min_x = pa[1].x;
 		if ( min_x > pa[2].x ) min_x = pa[2].x;
 		if ( min_x > pa[3].x ) min_x = pa[3].x;
 		return min_x;
 	}
-	int getMinY() const {
-		int min_y = pa[0].y;
+	double getMinY() const {
+		double min_y = pa[0].y;
 		if ( min_y > pa[1].y ) min_y = pa[1].y;
 		if ( min_y > pa[2].y ) min_y = pa[2].y;
 		if ( min_y > pa[3].y ) min_y = pa[3].y;
 		return min_y;
 	}
-	int getMaxX() const {
-		int max_x = pa[0].x;
+	double getMaxX() const {
+		double max_x = pa[0].x;
 		if ( max_x < pa[1].x ) max_x = pa[1].x;
 		if ( max_x < pa[2].x ) max_x = pa[2].x;
 		if ( max_x < pa[3].x ) max_x = pa[3].x;
 		return max_x;
 	}
-	int getMaxY() const {
-		int max_y = pa[0].y;
+	double getMaxY() const {
+		double max_y = pa[0].y;
 		if ( max_y < pa[1].y ) max_y = pa[1].y;
 		if ( max_y < pa[2].y ) max_y = pa[2].y;
 		if ( max_y < pa[3].y ) max_y = pa[3].y;

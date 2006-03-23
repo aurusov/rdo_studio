@@ -202,6 +202,64 @@ void RPShape::draw( CDC& dc )
 
 	// Отрисовка полигона
 	drawPolyline( dc );
+
+	// Вывод имени
+	LOGFONT lf;
+	HFONT hf = (HFONT)::GetStockObject( DEFAULT_GUI_FONT );
+	CFont* f = CFont::FromHandle( hf );
+	f->GetLogFont( &lf );
+	lf.lfEscapement = getRotationGlobal() * 10;
+	lf.lfOrientation = getRotationGlobal() * 10;
+	CFont font;
+	font.CreateFontIndirect( &lf );
+	CFont* old_font = dc.SelectObject( &font );
+	rp::point center = getCenter();
+	rp::rect rect_local = getBoundingRect( false );
+	rect_local.transform( matrix_scale );
+	CRect rect_text;
+	rect_text.left   = rect_local.p0().x + center.x;
+	rect_text.right  = rect_local.p1().x + center.x;
+	rect_text.top    = rect_local.p0().y + center.y;
+	rect_text.bottom = rect_local.p2().y + center.y;
+	dc.MoveTo( rect_text.left, rect_text.top );
+	dc.LineTo( rect_text.right, rect_text.top );
+	dc.LineTo( rect_text.right, rect_text.bottom );
+	dc.LineTo( rect_text.left, rect_text.bottom );
+	dc.LineTo( rect_text.left, rect_text.top );
+	dc.TextOut( center.x, center.y, name.c_str() );
+	dc.SelectObject( old_font );
+/*
+      if (cosA > 1) {
+        cosA = 1;
+      } else {
+        if (cosA < -1)
+          cosA = -1;
+      }
+      int alpha = acos(cosA) * 180 / 3.14159265358979;
+      bool flag = p1.y >= p2.y;
+      if ((flag && alpha <= 120) || (!flag && alpha < 60)) {
+        logFont.lfEscapement = flag ? alpha * 10 : (360 - alpha) * 10;
+        flag = true;
+      } else {
+        logFont.lfEscapement = flag ? (alpha - 180) * 10 : (180 - alpha) * 10;
+        flag = false;
+      }
+        HFONT oldFont = SelectObject(canvas->Handle, font);
+        if (oldFont) {
+          canvas->Brush->Style = bsClear;
+          length /= 2;
+          int dX = flag ? (size.cx / 2) : -(size.cx / 2);
+          int dY = flag ? (size.cy + 2) : -(size.cy + 2);
+          int x = p1.x + cosA * length - cosA * dX - sinA * dY;
+          int y = p1.y - sinA * length + sinA * dX - cosA * dY;
+          canvas->MoveTo(x, y);
+          canvas->TextOut(x, y, s);
+          font = SelectObject(canvas->Handle, oldFont);
+          DeleteObject(font);
+        }
+      }
+*/
+
 /*
 	rp::matrix gm = globalMatrix();
 	CPen pen1( PS_SOLID, 1, RGB(-1,0,0) );
@@ -263,8 +321,8 @@ void RPShape::draw_selected( CDC& dc )
 	dc.LineTo( x0, y0 );
 	dc.SelectObject( flowchart->getPenSelectedBox() );
 	dc.SelectObject( flowchart->getBrushSelectedBox() );
-	int box_size    = flowchart->getSelectBoxSize2() * 2 -1;
-	int box_size_2  = flowchart->getSelectBoxSize2();
+	int box_size   = flowchart->getSelectBoxSize2() * 2 -1;
+	int box_size_2 = flowchart->getSelectBoxSize2();
 	if ( rpapp.project().getFlowState() == RPProject::flow_rotate ) {
 		int radius = RPObjectFlowChart::getSensitivity();
 		dc.Ellipse( x0 - radius, y0 - radius, x0 + radius, y0 + radius );
