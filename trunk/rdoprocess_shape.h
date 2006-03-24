@@ -134,7 +134,7 @@ public:
 	virtual bool pointInNCArea( const rp::point& global_chart_pos );
 
 	// Перед выполнение команды (объект должен подготовить команду)
-	virtual void command_before( const rp::point& global_chart_pos );
+	virtual void command_before( const rp::point& global_chart_pos, bool first_click );
 	// Выполнить команду над объектом
 	virtual void command_make( const rp::point& global_chart_pos );
 };

@@ -978,10 +978,10 @@ void RPShape::getRectDelta( rp::rect& rect_old, rp::rect& rect_new, rp::point& d
 	}
 }
 
-void RPShape::command_before( const rp::point& global_chart_pos )
+void RPShape::command_before( const rp::point& global_chart_pos, bool first_click )
 {
-	RPObjectMatrix::command_before( global_chart_pos );
-	pcmd = getPossibleCommand( global_chart_pos );
+	RPObjectMatrix::command_before( global_chart_pos, first_click );
+	pcmd = first_click ? RPShape::pcmd_move : getPossibleCommand( global_chart_pos );
 }
 
 void RPShape::setPositionPostDelta( double posx, double posy )

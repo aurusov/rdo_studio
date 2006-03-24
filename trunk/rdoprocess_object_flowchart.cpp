@@ -507,8 +507,9 @@ void RPObjectFlowChart::onLButtonDown( UINT nFlags, CPoint local_win_pos )
 		one_object = find( global_chart_pos );
 		if ( one_object ) {
 			// Нашли фигуру
+			bool selected = one_object->isSelected();
 			one_object->onLButtonDown( nFlags, CPoint( global_chart_pos.x, global_chart_pos.y ) );
-			one_object->command_before( global_chart_pos );
+			one_object->command_before( global_chart_pos, !selected );
 			return;
 		}
 	}
