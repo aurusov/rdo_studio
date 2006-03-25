@@ -15,7 +15,6 @@ static char THIS_FILE[] = __FILE__;
 RPObjectMatrix::RPObjectMatrix( RPObject* _parent, const rp::string& _name ):
 	RPObjectChart( _parent, _name ),
 	rotate_center( 0, 0 ),
-	rotate_center_inited( false ),
 	rotation_alpha( 0 )
 {
 }

@@ -528,6 +528,7 @@ void RPObjectFlowChart::onLButtonDown( UINT nFlags, CPoint local_win_pos )
 		}
 	}
 	// Никого не нашли, выбираем лист
+	one_selected = NULL;
 	RPObjectMatrix::onLButtonDown( nFlags, CPoint( global_chart_pos.x, global_chart_pos.y ) );
 }
 

@@ -16,8 +16,7 @@
 class RPObjectMatrix: public RPObjectChart
 {
 private:
-	mutable rp::point rotate_center;
-	mutable bool      rotate_center_inited;
+	rp::point rotate_center;
 
 protected:
 	virtual bool isMatrix() const { return true; }
@@ -87,10 +86,6 @@ protected:
 	}
 	// Вернуть центр поворота в глобальных координатах
 	rp::point getRotateCenter() const {
-		if ( !rotate_center_inited ) {
-			rotate_center = getBoundingRect( false ).getCenter();
-			rotate_center_inited = true;
-		}
 		return rotateCenterMatrix() * rotate_center;
 	}
 	// Установить центр поворота в глобальных координатах

@@ -225,8 +225,14 @@ void RPShape::draw( CDC& dc )
 	center = globalMatrix( m_all & ~m_sc, m_all & ~m_sc ) * center;
 	dc.TextOut( center.x, center.y, name.c_str() );
 	dc.SelectObject( old_font );
-
 /*
+	rp::rect rect = getBoundingRect().getBoundingRect();
+	dc.MoveTo( rect.p0().x, rect.p0().y );
+	dc.LineTo( rect.p1().x, rect.p1().y );
+	dc.LineTo( rect.p2().x, rect.p2().y );
+	dc.LineTo( rect.p3().x, rect.p3().y );
+	dc.LineTo( rect.p0().x, rect.p0().y );
+
 	rp::matrix gm = globalMatrix();
 	CPen pen1( PS_SOLID, 1, RGB(-1,0,0) );
 	dc.SelectObject( pen1 );
@@ -236,9 +242,10 @@ void RPShape::draw( CDC& dc )
 	dc.SelectObject( pen2 );
 	dc.MoveTo( gm * CPoint(0,-70) );
 	dc.LineTo( gm * CPoint(0,70) );
-	dc.DrawText( rp::string::format( "alpha = %f", getRotationGlobal() ).c_str(), CRect( gm * CPoint(0,70), CSize(100,100)), DT_SINGLELINE );
+*/
+//	dc.DrawText( rp::string::format( "alpha = %f", getRotationGlobal() ).c_str(), CRect( gm * CPoint(0,70), CSize(100,100)), DT_SINGLELINE );
 //	dc.DrawText( rp::string::format( "alpha = %f", rotation_alpha ).c_str(), CRect( gm * CPoint(0,70), CSize(100,100)), DT_SINGLELINE );
-
+/*
 	transformToGlobal();
 	pa_global.extendByPerimetr( main_pen_width / 2.0 );
 	CPen pen( PS_SOLID, 1, RGB(-1,0,0) );
@@ -806,6 +813,8 @@ void RPShape::getScaleDelta( rp::point& delta, RPShape::angle90 a90, RPShape::Po
 
 void RPShape::getRectDelta( rp::rect& rect_old, rp::rect& rect_new, rp::point& delta, RPShape::angle90 a90, RPShape::PossibleCommand pcmd )
 {
+	rp::point c_old = rect_old.getCenter();
+	rp::point c_new = rect_new.getCenter();
 	switch ( pcmd ) {
 		case RPShape::pcmd_scale_tl: {
 			switch ( a90 ) {
@@ -917,8 +926,8 @@ void RPShape::getRectDelta( rp::rect& rect_old, rp::rect& rect_new, rp::point& d
 				}
 				case RPShape::angle90_180:
 				case RPShape::angle90_270: {
-					delta.x = rect_new.p_tl().x - rect_old.p_tl().x;
-					delta.y = rect_new.p_tl().y - rect_old.p_tl().y;
+					delta.x = rect_old.p_br().x - rect_new.p_br().x;
+					delta.y = rect_old.p_br().y - rect_new.p_br().y;
 					break;
 				}
 			}
@@ -928,8 +937,8 @@ void RPShape::getRectDelta( rp::rect& rect_old, rp::rect& rect_new, rp::point& d
 			switch ( a90 ) {
 				case RPShape::angle90_0  :
 				case RPShape::angle90_90 : {
-					delta.x = rect_new.p_tl().x - rect_old.p_tl().x;
-					delta.y = rect_new.p_tl().y - rect_old.p_tl().y;
+					delta.x = rect_old.p_br().x - rect_new.p_br().x;
+					delta.y = rect_old.p_br().y - rect_new.p_br().y;
 					break;
 				}
 				case RPShape::angle90_180:
@@ -945,8 +954,8 @@ void RPShape::getRectDelta( rp::rect& rect_old, rp::rect& rect_new, rp::point& d
 			switch ( a90 ) {
 				case RPShape::angle90_0  :
 				case RPShape::angle90_270: {
-					delta.x = rect_new.p_tl().x - rect_old.p_tl().x;
-					delta.y = rect_new.p_tl().y - rect_old.p_tl().y;
+					delta.x = rect_old.p_br().x - rect_new.p_br().x;
+					delta.y = rect_old.p_br().y - rect_new.p_br().y;
 					break;
 				}
 				case RPShape::angle90_90 :
@@ -968,20 +977,14 @@ void RPShape::getRectDelta( rp::rect& rect_old, rp::rect& rect_new, rp::point& d
 				}
 				case RPShape::angle90_90 :
 				case RPShape::angle90_180: {
-					delta.x = rect_new.p_tl().x - rect_old.p_tl().x;
-					delta.y = rect_new.p_tl().y - rect_old.p_tl().y;
+					delta.x = rect_old.p_br().x - rect_new.p_br().x;
+					delta.y = rect_old.p_br().y - rect_new.p_br().y;
 					break;
 				}
 			}
 			break;
 		}
 	}
-}
-
-void RPShape::command_before( const rp::point& global_chart_pos, bool first_click )
-{
-	RPObjectMatrix::command_before( global_chart_pos, first_click );
-	pcmd = first_click ? RPShape::pcmd_move : getPossibleCommand( global_chart_pos );
 }
 
 void RPShape::setPositionPostDelta( double posx, double posy )
@@ -1003,6 +1006,12 @@ void RPShape::setPositionPostDelta( double posx, double posy )
 void RPShape::setPositionPost( double posx, double posy )
 {
 	RPObjectMatrix::setPositionPost( posx, posy );
+}
+
+void RPShape::command_before( const rp::point& global_chart_pos, bool first_click )
+{
+	RPObjectMatrix::command_before( global_chart_pos, first_click );
+	pcmd = first_click ? RPShape::pcmd_move : getPossibleCommand( global_chart_pos );
 }
 
 void RPShape::command_make( const rp::point& global_chart_pos )
