@@ -26,7 +26,7 @@ RPShape::~RPShape()
 
 RPObjectChart* RPShape::find( const rp::point& global_chart_pos )
 {
-	if ( pointInPolygon(global_chart_pos) || pointInNCArea(global_chart_pos) ) {
+	if ( pointInShape(global_chart_pos) ) {
 		return this;
 	}
 	return RPObjectMatrix::find( global_chart_pos );
@@ -54,7 +54,7 @@ RPProject::Cursor RPShape::getCursor( const rp::point& global_chart_pos )
 	if ( cursor != RPProject::cursor_flow_select ) return cursor;
 
 	if ( isRotateCenter( global_chart_pos ) ) return RPProject::cursor_flow_rotate_center;
-	if ( pointInPolygon(global_chart_pos) || pointInNCArea(global_chart_pos) ) {
+	if ( pointInShape(global_chart_pos) ) {
 		RPShape::PossibleCommand pcmd = getPossibleCommand( global_chart_pos, true );
 		if ( isSelected() ) {
 			switch ( pcmd ) {

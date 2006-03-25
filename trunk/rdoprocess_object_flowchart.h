@@ -49,6 +49,7 @@ private:
 	CPoint         global_win_pos_current;
 	CPoint         global_win_pos_prev;
 	RPObjectChart* one_object;
+	RPObjectChart* one_selected;
 
 #ifdef TEST_SPEED
 	int makepixmap_cnt;

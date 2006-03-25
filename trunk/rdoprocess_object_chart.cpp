@@ -76,7 +76,7 @@ RPObjectChart* RPObjectChart::find( const rp::point& global_chart_pos )
 		if ( obj ) return obj;
 		it++;
 	}
-	return (pointInPolygon(global_chart_pos) || pointInNCArea(global_chart_pos)) ? this : NULL;
+	return pointInShape( global_chart_pos ) ? this : NULL;
 }
 
 void RPObjectChart::draw( CDC& dc )

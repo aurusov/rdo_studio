@@ -35,7 +35,6 @@ protected:
 	virtual void modify();
 	virtual void update();
 
-	virtual RPProject::Cursor getCursor( const rp::point& global_chart_pos );
 	virtual RPObjectChart* find( const rp::point& global_chart_pos );
 
 	int getPenWidth() const { return main_pen_width; }
@@ -72,6 +71,13 @@ public:
 	virtual void onRButtonDown( UINT nFlags, CPoint global_chart_pos ) {};
 	virtual void onRButtonUp( UINT nFlags, CPoint global_chart_pos ) {};
 	virtual void onMouseMove( UINT nFlags, CPoint global_chart_pos ) {};
+
+	// Находится ли точка внутри фигуры
+	bool pointInShape( const rp::point& global_chart_pos ) {
+		return pointInPolygon( global_chart_pos ) || pointInNCArea( global_chart_pos );
+	}
+
+	virtual RPProject::Cursor getCursor( const rp::point& global_chart_pos );
 
 	// Отрисовка фигуры
 	virtual void draw( CDC& dc );

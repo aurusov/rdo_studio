@@ -43,6 +43,7 @@ RPObjectFlowChart::RPObjectFlowChart( RPObject* _parent, RPFlowChart* _flowchart
 	global_win_pos_current( 0, 0 ),
 	global_win_pos_prev( 0, 0 ),
 	one_object( NULL ),
+	one_selected( NULL ),
 	flowchart( _flowchart )
 #ifdef TEST_SPEED
 	,
@@ -50,6 +51,7 @@ RPObjectFlowChart::RPObjectFlowChart( RPObject* _parent, RPFlowChart* _flowchart
 #endif
 {
 	rpapp.msg().connect( this, rp::msg::RP_FLOWSTATE_CHANGED );
+	rpapp.msg().connect( this, rp::msg::RP_OBJ_SELCHANGED );
 
 	CDC* dc = flowchart->GetDC();
 	if ( !mem_dc.CreateCompatibleDC( dc ) ) {
@@ -86,6 +88,9 @@ RPObjectFlowChart::~RPObjectFlowChart()
 void RPObjectFlowChart::notify( RPObject* from, UINT message, WPARAM wParam, LPARAM lParam )
 {
 	if ( message == rp::msg::RP_FLOWSTATE_CHANGED ) update();
+	if ( message == rp::msg::RP_OBJ_SELCHANGED && from && from->isChartObject() && static_cast<RPObjectFlowChart*>(from)->flowChart() == this && from->isSelected() ) {
+		one_selected = static_cast<RPObjectFlowChart*>(from);
+	}
 }
 
 void RPObjectFlowChart::modify()
@@ -101,6 +106,11 @@ void RPObjectFlowChart::update()
 RPProject::Cursor RPObjectFlowChart::getCursor( const rp::point& global_chart_pos )
 {
 	if ( pointInNCArea( global_chart_pos ) ) return RPProject::cursor_flow_select;
+
+	if ( one_selected && one_selected->pointInShape(global_chart_pos) ) {
+		RPProject::Cursor cursor = one_selected->getCursor( global_chart_pos );
+		if ( cursor != RPProject::cursor_flow_select ) return cursor;
+	}
 
 	RPProject::Cursor cursor = RPObjectMatrix::getCursor( global_chart_pos );
 	if ( cursor != RPProject::cursor_flow_select ) return cursor;
@@ -504,7 +514,11 @@ void RPObjectFlowChart::onLButtonDown( UINT nFlags, CPoint local_win_pos )
 	flowchart->SetCapture();
 	// Нашли объект под мышкой
 	if ( rpapp.project().getFlowState() == RPProject::flow_select || rpapp.project().getFlowState() == RPProject::flow_rotate ) {
-		one_object = find( global_chart_pos );
+		if ( one_selected && one_selected->pointInShape(global_chart_pos) ) {
+			one_object = one_selected;
+		} else {
+			one_object = find( global_chart_pos );
+		}
 		if ( one_object ) {
 			// Нашли фигуру
 			bool selected = one_object->isSelected();
