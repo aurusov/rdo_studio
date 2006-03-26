@@ -31,7 +31,7 @@ RPShapeTerminateMJ::RPShapeTerminateMJ( RPObject* _parent ):
 
 void RPShapeTerminateMJ::onLButtonDblClk( UINT nFlags, CPoint global_chart_pos )
 {
-RPShapeTerminateDlg1_MJ dlg;
+RPShapeTerminateDlg1_MJ dlg(NULL,this);
 dlg.DoModal();
 
 }

@@ -7,6 +7,7 @@
 // rdoprocess_shape_terminate_dlg1_MJ.h : header file
 //
 #include"resource.h"
+#include "rdoprocess_shape_terminate_MJ.h"
 /////////////////////////////////////////////////////////////////////////////
 // RPShapeTerminateDlg1_MJ dialog
 
@@ -14,12 +15,14 @@ class RPShapeTerminateDlg1_MJ : public CDialog
 {
 // Construction
 public:
-	RPShapeTerminateDlg1_MJ(CWnd* pParent = NULL);   // standard constructor
+	RPShapeTerminateDlg1_MJ(CWnd* pParent = NULL, RPShapeTerminateMJ* ppParent=NULL);   // standard constructor
+    virtual BOOL OnInitDialog();
 
+	RPShapeTerminateMJ* pParentMJ; // ссылка на родителя
 // Dialog Data
 	//{{AFX_DATA(RPShapeTerminateDlg1_MJ)
 	enum { IDD = IDD_DIALOG_TERMINATE_1_MJ };
-		// NOTE: the ClassWizard will add data members here
+	CString	m_name;
 	//}}AFX_DATA
 
 

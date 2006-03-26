@@ -15,20 +15,35 @@ static char THIS_FILE[] = __FILE__;
 // RPShapeTerminateDlg1_MJ dialog
 
 
-RPShapeTerminateDlg1_MJ::RPShapeTerminateDlg1_MJ(CWnd* pParent /*=NULL*/)
+RPShapeTerminateDlg1_MJ::RPShapeTerminateDlg1_MJ(CWnd* pParent /*=NULL*/,RPShapeTerminateMJ* ppParent)
 	: CDialog(RPShapeTerminateDlg1_MJ::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(RPShapeTerminateDlg1_MJ)
-		// NOTE: the ClassWizard will add member initialization here
+	m_name = _T("");
 	//}}AFX_DATA_INIT
+
+	pParentMJ = ppParent;
 }
+
+
+
+BOOL RPShapeTerminateDlg1_MJ::OnInitDialog()
+{
+// отображение имени блока
+	CString str( pParentMJ->getName().c_str() );
+    m_name = str;
+	UpdateData(FALSE);
+
+return TRUE;
+}
+
 
 
 void RPShapeTerminateDlg1_MJ::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(RPShapeTerminateDlg1_MJ)
-		// NOTE: the ClassWizard will add DDX and DDV calls here
+	DDX_Text(pDX, IDC_EDIT1, m_name);
 	//}}AFX_DATA_MAP
 }
 
@@ -43,7 +58,9 @@ END_MESSAGE_MAP()
 
 void RPShapeTerminateDlg1_MJ::OnOK() 
 {
-	// TODO: Add extra validation here
+	UpdateData(TRUE);
+	pParentMJ->setName( rp::string(m_name));
+	pParentMJ->update_modifyMJ();
 	
 	CDialog::OnOK();
 }

@@ -6,15 +6,21 @@
 #endif // _MSC_VER > 1000
 // rdoprocess_shape_create_dlg1_MJ.h : header file
 //
+#include "rdoprocess_shape_create_MJ.h"
+
+
 #include "resource.h"
 /////////////////////////////////////////////////////////////////////////////
 // RPShapeCreateDlg1_MJ dialog
 
 class RPShapeCreateDlg1_MJ : public CDialog
 {
-// Construction
+protected:
+	RPShapeCreateMJ* pParentMJ; // ссылка на объект, который вызвал диалог
+	
+	// Construction
 public:
-	RPShapeCreateDlg1_MJ(CWnd* pParent = NULL);   // standard constructor
+	RPShapeCreateDlg1_MJ(CWnd* pParent = NULL,RPShapeCreateMJ* ppParent=NULL);   // standard constructor
 virtual BOOL OnInitDialog();
 // Dialog Data
 	//{{AFX_DATA(RPShapeCreateDlg1_MJ)
@@ -28,6 +34,7 @@ virtual BOOL OnInitDialog();
 	CString	m_create_dlg1_dispersion_MJ;
 	CString	m_create_dlg1_min_MJ;
 	CString	m_create_dlg1_max_MJ;
+	CString	m_name;
 	//}}AFX_DATA
 
 
@@ -46,6 +53,7 @@ protected:
 	//{{AFX_MSG(RPShapeCreateDlg1_MJ)
 	afx_msg void OnCloseupCombo1();
 	afx_msg void OnButton1();
+	virtual void OnOK();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

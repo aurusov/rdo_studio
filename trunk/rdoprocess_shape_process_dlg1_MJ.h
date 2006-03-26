@@ -7,6 +7,7 @@
 // rdoprocess_shape_process_dlg1_MJ.h : header file
 //
 #include"resource.h"
+#include "rdoprocess_shape_process_MJ.h"
 /////////////////////////////////////////////////////////////////////////////
 // RPShapeProcessDlg1_MJ dialog
 
@@ -14,11 +15,16 @@ class RPShapeProcessDlg1_MJ : public CDialog
 {
 // Construction
 public:
-	RPShapeProcessDlg1_MJ(CWnd* pParent = NULL);   // standard constructor
+	RPShapeProcessDlg1_MJ(CWnd* pParent = NULL,RPShapeProcessMJ* ppParent=NULL);   // standard constructor
     virtual BOOL OnInitDialog();
+
+	RPShapeProcessMJ* pParentMJ; // ссылка на родителя
 // Dialog Data
 	//{{AFX_DATA(RPShapeProcessDlg1_MJ)
 	enum { IDD = IDD_DIALOG_PROCESS_1_MJ };
+	CListBox	m_ResList;
+	CButton	m_DelRes;
+	CButton	m_AddRes;
 	CEdit	m_proc_dlg1_max_control_MJ;
 	CEdit	m_proc_dlg1_min_control_MJ;
 	CEdit	m_proc_dlg1_disp_control_MJ;
@@ -27,6 +33,7 @@ public:
 	CComboBox	m_combo;
 	CComboBox	m_type;
 	CComboBox	m_action;
+	CString	m_name;
 	//}}AFX_DATA
 
 
@@ -45,6 +52,8 @@ protected:
 	afx_msg void OnCloseupCombo1();
 	afx_msg void OnCloseupCombo3();
 	afx_msg void OnButton1();
+	virtual void OnOK();
+	afx_msg void OnCloseupCombo2();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

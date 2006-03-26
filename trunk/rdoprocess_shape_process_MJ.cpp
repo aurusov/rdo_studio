@@ -31,7 +31,7 @@ RPShapeProcessMJ::RPShapeProcessMJ( RPObject* _parent ):
 
 void RPShapeProcessMJ::onLButtonDblClk( UINT nFlags, CPoint global_chart_pos )
 {
-RPShapeProcessDlg1_MJ dlg;
+RPShapeProcessDlg1_MJ dlg(NULL,this);
 dlg.DoModal();
 
 }	

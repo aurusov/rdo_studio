@@ -2,7 +2,7 @@
 
 [General Info]
 Version=1
-LastClass=RPShapeTerminateDlg1_MJ
+LastClass=RPShapeProcessDlg1_MJ
 LastTemplate=CDialog
 NewFileInclude1=#include "stdafx.h"
 NewFileInclude2=#include "rdo_process.h"
@@ -24,18 +24,18 @@ Class12=RPFlowChart
 Class13=RPMainFrame
 
 ResourceCount=9
-Resource1=IDD_ABOUT
+Resource1=IDD_DIALOG_TERMINATE_1_MJ
 Resource2=IDR_RDO_PRTYPE (English (U.S.))
 Resource3=IDD_ABOUTBOX (English (U.S.))
-Resource4=IDD_DIALOG_CREATE_2_MJ
+Resource4=IDD_DIALOG_CREATE_1_MJ
 Class14=RPShapeCreateDlg1_MJ
-Resource5=IDD_DIALOG_CREATE_1_MJ
+Resource5=IDD_DIALOG_PROCESS_2_MJ
 Class15=RPShapeCreateDlg2_MJ
-Resource6=IDD_DIALOG_TERMINATE_1_MJ
+Resource6=IDD_ABOUT
 Class16=RPShapeProcessDlg1_MJ
-Resource7=IDD_DIALOG_PROCESS_2_MJ
+Resource7=IDD_DIALOG_PROCESS_1_MJ
 Class17=RPShapeProcessDlg2_MJ
-Resource8=IDD_DIALOG_PROCESS_1_MJ
+Resource8=IDD_DIALOG_CREATE_2_MJ
 Class18=RPShapeTerminateDlg1_MJ
 Resource9=IDR_MAINFRAME (English (U.S.))
 
@@ -234,7 +234,7 @@ ImplementationFile=rdoprocess_shape_create_dlg1_MJ.cpp
 BaseClass=CDialog
 Filter=D
 VirtualFilter=dWC
-LastObject=ID_APP_ABOUT
+LastObject=IDC_EDIT1
 
 [DLG:IDD_DIALOG_CREATE_2_MJ]
 Type=1
@@ -284,7 +284,7 @@ Control15=IDC_STATIC,static,1342308352
 Control16=IDC_STATIC,static,1342308352
 Control17=IDC_EDIT1,edit,1350631552
 Control18=IDC_STATIC,static,1342308352
-Control19=IDC_COMBO2,combobox,1344340227
+Control19=IDC_COMBO2,combobox,1344339971
 Control20=IDC_STATIC,static,1342308352
 Control21=IDC_EDIT2,edit,1350631552
 Control22=IDC_STATIC,button,1342177287
@@ -303,7 +303,7 @@ HeaderFile=rdoprocess_shape_process_dlg1_MJ.h
 ImplementationFile=rdoprocess_shape_process_dlg1_MJ.cpp
 BaseClass=CDialog
 Filter=D
-LastObject=ID_APP_ABOUT
+LastObject=IDC_COMBO4
 VirtualFilter=dWC
 
 [DLG:IDD_DIALOG_PROCESS_2_MJ]

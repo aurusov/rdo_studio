@@ -116,3 +116,11 @@ void RPObjectChart::setSelected( bool value )
 		update();
 	}
 }
+
+//MJ start
+void RPObjectChart::update_modifyMJ()
+{
+RPObjectChart::update();
+RPObjectChart::modify();
+}
+//MJ stop

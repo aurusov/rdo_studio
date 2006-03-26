@@ -2,6 +2,8 @@
 //
 
 #include "stdafx.h"
+
+
 //#include "rdo_process.h"
 #include "rdoprocess_shape_create_dlg1_MJ.h"
 #include "rdoprocess_shape_create_dlg2_MJ.h"
@@ -16,7 +18,7 @@ static char THIS_FILE[] = __FILE__;
 // RPShapeCreateDlg1_MJ dialog
 
 
-RPShapeCreateDlg1_MJ::RPShapeCreateDlg1_MJ(CWnd* pParent /*=NULL*/)
+RPShapeCreateDlg1_MJ::RPShapeCreateDlg1_MJ(CWnd* pParent /*=NULL*/,RPShapeCreateMJ* ppParent)
 	: CDialog(RPShapeCreateDlg1_MJ::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(RPShapeCreateDlg1_MJ)
@@ -24,8 +26,9 @@ RPShapeCreateDlg1_MJ::RPShapeCreateDlg1_MJ(CWnd* pParent /*=NULL*/)
 	m_create_dlg1_dispersion_MJ = _T("");
 	m_create_dlg1_min_MJ = _T("");
 	m_create_dlg1_max_MJ = _T("");
+	m_name = _T("");
 	//}}AFX_DATA_INIT
-
+    pParentMJ = ppParent;
 }
 
 
@@ -42,6 +45,7 @@ void RPShapeCreateDlg1_MJ::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT5, m_create_dlg1_dispersion_MJ);
 	DDX_Text(pDX, IDC_EDIT6, m_create_dlg1_min_MJ);
 	DDX_Text(pDX, IDC_EDIT7, m_create_dlg1_max_MJ);
+	DDX_Text(pDX, IDC_EDIT1, m_name);
 	//}}AFX_DATA_MAP
 }
 
@@ -50,6 +54,11 @@ BOOL RPShapeCreateDlg1_MJ::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	m_create_dlg1_combo1_MJ.SetCurSel(0);
+	
+	 //отображение имени блока в окне
+	CString str( pParentMJ->getName().c_str() );
+    m_name = str;
+	UpdateData(FALSE);
 	
 	return TRUE;
 }
@@ -108,4 +117,12 @@ void RPShapeCreateDlg1_MJ::OnButton1()
 	RPShapeCreateDlg2_MJ dlg2;
 	dlg2.DoModal();
 	
+}
+
+void RPShapeCreateDlg1_MJ::OnOK() 
+{
+UpdateData(TRUE);
+pParentMJ->setName(std::string(m_name));
+pParentMJ->update_modifyMJ();	
+	CDialog::OnOK();
 }

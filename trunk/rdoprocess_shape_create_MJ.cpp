@@ -35,7 +35,7 @@ RPShapeCreateMJ::RPShapeCreateMJ( RPObject* _parent ):
 
 void RPShapeCreateMJ::onLButtonDblClk( UINT nFlags, CPoint global_chart_pos )
 {
-RPShapeCreateDlg1_MJ dlg;
+RPShapeCreateDlg1_MJ dlg(NULL,this);
 dlg.DoModal();
 
 }

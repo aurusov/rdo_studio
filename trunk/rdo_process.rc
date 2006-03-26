@@ -118,7 +118,7 @@ END
 IDD_DIALOG_CREATE_1_MJ DIALOGEX 0, 0, 317, 179
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Create"
-FONT 8, "MS Sans Serif"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,252,152,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,197,152,50,14
@@ -198,8 +198,8 @@ BEGIN
     LTEXT           "Имя блока",IDC_STATIC,15,10,38,8
     EDITTEXT        IDC_EDIT1,54,7,125,14,ES_AUTOHSCROLL
     LTEXT           "Действие",IDC_STATIC,17,30,34,8
-    COMBOBOX        IDC_COMBO2,53,27,126,12,CBS_DROPDOWNLIST | CBS_SORT | 
-                    WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO2,53,27,126,12,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
     LTEXT           "Приоритет",IDC_STATIC,200,30,37,8
     EDITTEXT        IDC_EDIT2,240,26,40,14,ES_AUTOHSCROLL
     GROUPBOX        "Ресурсы",IDC_STATIC,20,84,300,53
@@ -327,11 +327,17 @@ BEGIN
 0xeadd, 0xeff1, 0xedee, 0xede5, 0xe8f6, 0xebe0, 0xedfc, 0xe9fb, "\000" 
     IDC_COMBO1, 0x403, 11, 0
 0xeecd, 0xecf0, 0xebe0, 0xedfc, 0xe9fb, "\000" 
+    IDC_COMBO2, 0x403, 10, 0
+0xe0c7, 0xe5e4, 0xe6f0, 0xf2e0, 0x00fc, 
     IDC_COMBO2, 0x403, 28, 0
 0xe0c7, 0xffed, 0xfcf2, 0xc720, 0xe4e0, 0xf0e5, 0xe0e6, 0xfcf2, 0xce20, 
 0xe2f1, 0xe1ee, 0xe4ee, 0xf2e8, 0x00fc, 
-    IDC_COMBO2, 0x403, 10, 0
-0xe0c7, 0xe5e4, 0xe6f0, 0xf2e0, 0x00fc, 
+    IDC_COMBO2, 0x403, 18, 0
+0xe0c7, 0xffed, 0xfcf2, 0xc720, 0xe4e0, 0xf0e5, 0xe0e6, 0xfcf2, 0x0020, 
+
+    IDC_COMBO2, 0x403, 21, 0
+0xe0c7, 0xe5e4, 0xe6f0, 0xf2e0, 0x20fc, 0xf1ce, 0xeee2, 0xeee1, 0xe8e4, 
+0xfcf2, "\000" 
     IDC_COMBO3, 0x403, 5, 0
 0x4946, 0x4f46, "\000" 
     IDC_COMBO3, 0x403, 5, 0
