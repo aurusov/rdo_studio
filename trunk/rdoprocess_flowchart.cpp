@@ -104,7 +104,7 @@ BOOL RPFlowChart::Create( LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD d
 	updateScrollBars();
 
 	shape_action = new RPShapeAction( flowobj );
-//	shape_action->setPosition( 200, 100 );
+	shape_action->setPosition( 100, 45 );
 	shape_if = new RPShapeIf(  shape_action  );
 	shape_if->setPosition( 200, 100 );
 
@@ -541,6 +541,11 @@ BOOL RPFlowChart::OnSetCursor( CWnd* pWnd, UINT nHitTest, UINT message )
 		case RPProject::cursor_flow_scale_tb     : cur = rpapp.cursors[IDC_FLOW_SCALE_TB]; break;
 		case RPProject::cursor_flow_scale_tlbr   : cur = rpapp.cursors[IDC_FLOW_SCALE_TLBR]; break;
 		case RPProject::cursor_flow_scale_trbl   : cur = rpapp.cursors[IDC_FLOW_SCALE_TRBL]; break;
+		case RPProject::cursor_flow_dock_in      :
+		case RPProject::cursor_flow_dock_out     :
+		case RPProject::cursor_flow_dock_inout   :
+		case RPProject::cursor_flow_dock_fly     : cur = rpapp.cursors[IDC_FLOW_DOCK_IN]; break;
+		case RPProject::cursor_flow_dock_not     : cur = rpapp.cursors[IDC_FLOW_DOCK_NOT]; break;
 	}
 	if ( cur ) {
 		::SetCursor( cur );

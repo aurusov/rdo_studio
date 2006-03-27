@@ -19,10 +19,12 @@ RPShapeIf::RPShapeIf( RPObject* _parent ):
 	pa_src.push_back( rp::point(0, 35) );
 	pa_src.push_back( rp::point(-35, 0) );
 	pa_src.push_back( rp::point(0, -35) );
-//	snap_to_point.x = getSize().cx / 2;
-//	snap_to_point.y = getSize().cy / 2;
+
+	docks.push_back( RPConnectorDock( this, RPConnectorDock::in,  rp::point( -35, 0  ) ) );
+	docks.push_back( RPConnectorDock( this, RPConnectorDock::out, rp::point(  35, 0  ) ) );
+	docks.push_back( RPConnectorDock( this, RPConnectorDock::out, rp::point(   0, 35 ) ) );
 }
-	
+
 RPShapeIf::~RPShapeIf()
 {
 }

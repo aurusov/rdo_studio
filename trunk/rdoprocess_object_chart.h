@@ -47,9 +47,6 @@ protected:
 	// Находится ли точка в служебной (неклиентской) части фигуры (прямоугольник выделения, к примеру)
 	virtual bool pointInNCArea( const rp::point& global_chart_pos ) = 0;
 
-	// Выделить/снять выделение с фигуры
-	virtual void setSelected( bool value );
-
 	// Отрисовка фигуры
 	virtual void draw_selected( CDC& dc ) {};
 
@@ -73,6 +70,9 @@ public:
 	virtual void onRButtonDown( UINT nFlags, CPoint global_chart_pos ) {};
 	virtual void onRButtonUp( UINT nFlags, CPoint global_chart_pos ) {};
 	virtual void onMouseMove( UINT nFlags, CPoint global_chart_pos ) {};
+
+	// Выделить/снять выделение с фигуры
+	virtual void setSelected( bool value );
 
 	// Находится ли точка внутри фигуры
 	bool pointInShape( const rp::point& global_chart_pos ) {

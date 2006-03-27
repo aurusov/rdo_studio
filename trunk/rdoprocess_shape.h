@@ -12,10 +12,39 @@
 // ----------------------------------------------------------------------------
 // ---------- RPShape
 // ----------------------------------------------------------------------------
+class RPShape;
+
+class RPConnectorDock
+{
+protected:
+	RPShape* _shape;
+
+public:
+	enum Type {
+		in    = 0x01,
+		out   = 0x02,
+		inout = 0x03,
+		fly   = 0x04,
+		all   = 0x07
+	};
+	bool      can_connect;
+	Type      type;
+	rp::point point;
+	const RPShape& shape() const { return *_shape; }
+
+	RPConnectorDock( RPShape* __shape, Type _type, const rp::point& _point ): _shape( __shape ), can_connect( true ), type( _type ), point( _point ) {};
+	~RPConnectorDock() {};
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RPShape
+// ----------------------------------------------------------------------------
 class RPShape: public RPObjectMatrix
 {
 protected:
 //	CPoint snap_to_point;
+
+	std::vector< RPConnectorDock > docks;
 
 	// Дискретный угол поворота (дискрета 90 градусов)
 	enum angle90 {
@@ -51,7 +80,12 @@ protected:
 		pcmd_scale_tl,      //!< Объект может быть масштабирован за левый верхний угол
 		pcmd_scale_tr,      //!< Объект может быть масштабирован за правый верхний угол
 		pcmd_scale_bl,      //!< Объект может быть масштабирован за левый нижний угол
-		pcmd_scale_br       //!< Объект может быть масштабирован за правый нижний угол
+		pcmd_scale_br,      //!< Объект может быть масштабирован за правый нижний угол
+		pcmd_dock_in,       //!< Доступен входной док объекта
+		pcmd_dock_out,      //!< Доступен выходной док объекта
+		pcmd_dock_inout,    //!< Доступен двунаправленный док объекта
+		pcmd_dock_fly,      //!< Док может быть перемещен
+		pcmd_dock_not       //!< Док недоступен
 	};
 	PossibleCommand pcmd;
 
@@ -96,8 +130,7 @@ protected:
 	rp::polyline pa_global;
 
 	virtual void drawPolyline( CDC& dc );
-//	virtual void drawConnectorsInput( CDC& dc );
-//	virtual void drawConnectorsOutput( CDC& dc );
+	virtual void drawDocks( CDC& dc );
 
 	virtual RPProject::Cursor getCursor( const rp::point& global_chart_pos );
 

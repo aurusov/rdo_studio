@@ -70,6 +70,8 @@ BOOL RPApp::InitInstance()
 	cursors[ IDC_FLOW_SCALE_TB ]      = AfxGetApp()->LoadCursor(IDC_FLOW_SCALE_TB);
 	cursors[ IDC_FLOW_SCALE_TLBR ]    = AfxGetApp()->LoadCursor(IDC_FLOW_SCALE_TLBR);
 	cursors[ IDC_FLOW_SCALE_TRBL ]    = AfxGetApp()->LoadCursor(IDC_FLOW_SCALE_TRBL);
+	cursors[ IDC_FLOW_DOCK_IN ]       = AfxGetApp()->LoadCursor(IDC_FLOW_DOCK_IN);
+	cursors[ IDC_FLOW_DOCK_NOT ]      = AfxGetApp()->LoadCursor(IDC_FLOW_DOCK_NOT);
 
 	// To create the main window, this code creates a new frame window
 	// object and then sets it as the application's main window object.

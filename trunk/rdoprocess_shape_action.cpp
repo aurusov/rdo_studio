@@ -19,6 +19,9 @@ RPShapeAction::RPShapeAction( RPObject* _parent ):
 	pa_src.push_back( rp::point(-40, 25) );
 	pa_src.push_back( rp::point(-40, -25) );
 
+	docks.push_back( RPConnectorDock( this, RPConnectorDock::in,  rp::point( -40, 0 ) ) );
+	docks.push_back( RPConnectorDock( this, RPConnectorDock::out, rp::point(  40, 0 ) ) );
+
 	matrix_scale.data[0][0] = 2;
 }
 

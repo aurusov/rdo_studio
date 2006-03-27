@@ -7,6 +7,7 @@
 
 #include "rdoprocess_object_matrix.h"
 #include "rdoprocess_flowchart.h"
+#include "rdoprocess_connector.h"
 
 // ----------------------------------------------------------------------------
 // ---------- RPObjectFlowChart
@@ -55,7 +56,12 @@ private:
 	int makepixmap_cnt;
 #endif
 
+public:
+	enum ConnectorTypeWanted { ctw_non, ctw_begin, ctw_end };
+
 protected:
+	ConnectorTypeWanted ct_wanted;
+
 	RPFlowChart* flowchart;
 
 	virtual void notify( RPObject* from, UINT message, WPARAM wParam, LPARAM lParam );
@@ -81,6 +87,8 @@ public:
 	virtual ~RPObjectFlowChart();
 
 	void snapToGrid( RPObjectMatrix* shape );
+
+	ConnectorTypeWanted getConnectorTypeWanted() const { return ct_wanted; }
 
 	static int getSensitivity()               { return select_box_size2 + 1; }
 	int getSelectBoxSize2() const             { return select_box_size2;     }

@@ -83,10 +83,7 @@ void RPObjectMatrix::setRotateCenterLocalDelta( double dx, double dy )
 
 bool RPObjectMatrix::isRotateCenter( const rp::point& global_chart_pos ) const
 {
-	if ( rpapp.project().getFlowState() == RPProject::flow_rotate && isSelected() ) {
-		return rp::math::getLength( getRotateCenter(), global_chart_pos ) <= RPObjectFlowChart::getSensitivity();
-	}
-	return false;
+	return rp::math::getLength( getRotateCenter(), global_chart_pos ) <= RPObjectFlowChart::getSensitivity();
 }
 
 rp::rect RPObjectMatrix::getMaxRect()

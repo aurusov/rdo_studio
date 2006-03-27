@@ -27,7 +27,12 @@ public:
 		cursor_flow_scale_lr,
 		cursor_flow_scale_tb,
 		cursor_flow_scale_tlbr,
-		cursor_flow_scale_trbl
+		cursor_flow_scale_trbl,
+		cursor_flow_dock_in,
+		cursor_flow_dock_out,
+		cursor_flow_dock_inout,
+		cursor_flow_dock_fly,
+		cursor_flow_dock_not
 	};
 
 protected:

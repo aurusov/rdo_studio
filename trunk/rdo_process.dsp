@@ -99,6 +99,10 @@ SOURCE=.\rdoprocess_childfrm.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\rdoprocess_connector.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdoprocess_flowchart.cpp
 # End Source File
 # Begin Source File
@@ -213,6 +217,10 @@ SOURCE=.\rdoprocess_app.h
 # Begin Source File
 
 SOURCE=.\rdoprocess_childfrm.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdoprocess_connector.h
 # End Source File
 # Begin Source File
 
@@ -332,7 +340,23 @@ SOURCE=.\arrow.cur
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\cursor1.cur
+# End Source File
+# Begin Source File
+
 SOURCE=.\res\flow_connector.cur
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\flow_doc_not.cur
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\flow_dock_in.cur
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\flow_dock_not.cur
 # End Source File
 # Begin Source File
 

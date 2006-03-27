@@ -24,6 +24,8 @@
 #define IDD_DIALOG_PROCESS_1_MJ         153
 #define IDD_DIALOG_PROCESS_2_MJ         155
 #define IDD_DIALOG_TERMINATE_1_MJ       156
+#define IDC_FLOW_DOCK_IN                157
+#define IDC_FLOW_DOCK_NOT               158
 #define IDD_ABOUT                       165
 #define IDC_EDIT1                       1000
 #define IDC_EDIT2                       1001
@@ -59,7 +61,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        157
+#define _APS_NEXT_RESOURCE_VALUE        158
 #define _APS_NEXT_COMMAND_VALUE         32774
 #define _APS_NEXT_CONTROL_VALUE         1016
 #define _APS_NEXT_SYMED_VALUE           101

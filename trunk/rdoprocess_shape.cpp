@@ -53,7 +53,8 @@ RPProject::Cursor RPShape::getCursor( const rp::point& global_chart_pos )
 	RPProject::Cursor cursor = RPObjectMatrix::getCursor( global_chart_pos );
 	if ( cursor != RPProject::cursor_flow_select ) return cursor;
 
-	if ( isRotateCenter( global_chart_pos ) ) return RPProject::cursor_flow_rotate_center;
+	if ( rpapp.project().getFlowState() == RPProject::flow_rotate && isSelected() && isRotateCenter( global_chart_pos ) ) return RPProject::cursor_flow_rotate_center;
+
 	if ( pointInShape(global_chart_pos) ) {
 		RPShape::PossibleCommand pcmd = getPossibleCommand( global_chart_pos, true );
 		if ( isSelected() ) {
@@ -71,6 +72,11 @@ RPProject::Cursor RPShape::getCursor( const rp::point& global_chart_pos )
 				case RPShape::pcmd_scale_br     : return RPProject::cursor_flow_scale_tlbr;
 				case RPShape::pcmd_scale_tr     :
 				case RPShape::pcmd_scale_bl     : return RPProject::cursor_flow_scale_trbl;
+				case RPShape::pcmd_dock_in      : return RPProject::cursor_flow_dock_in;
+				case RPShape::pcmd_dock_out     : return RPProject::cursor_flow_dock_out;
+				case RPShape::pcmd_dock_inout   : return RPProject::cursor_flow_dock_inout;
+				case RPShape::pcmd_dock_fly     : return RPProject::cursor_flow_dock_fly;
+				case RPShape::pcmd_dock_not     : return RPProject::cursor_flow_dock_not;
 			}
 		} else {
 			switch ( pcmd ) {
@@ -87,6 +93,11 @@ RPProject::Cursor RPShape::getCursor( const rp::point& global_chart_pos )
 				case RPShape::pcmd_scale_br     :
 				case RPShape::pcmd_scale_tr     :
 				case RPShape::pcmd_scale_bl     : return RPProject::cursor_flow_move;
+				case RPShape::pcmd_dock_in      : return RPProject::cursor_flow_dock_in;
+				case RPShape::pcmd_dock_out     : return RPProject::cursor_flow_dock_out;
+				case RPShape::pcmd_dock_inout   : return RPProject::cursor_flow_dock_inout;
+				case RPShape::pcmd_dock_fly     : return RPProject::cursor_flow_dock_fly;
+				case RPShape::pcmd_dock_not     : return RPProject::cursor_flow_dock_not;
 			}
 		}
 	}
@@ -95,6 +106,19 @@ RPProject::Cursor RPShape::getCursor( const rp::point& global_chart_pos )
 
 bool RPShape::pointInNCArea( const rp::point& global_chart_pos )
 {
+	// Проверяем на попадание в док
+	if ( rpapp.project().getFlowState() == RPProject::flow_connector ) {
+		rp::matrix gm = globalMatrix();
+		std::vector< RPConnectorDock >::const_iterator it = docks.begin();
+		while ( it != docks.end() ) {
+			rp::point point = gm * it->point;
+			if ( rp::math::getLength( point, global_chart_pos ) <= RPObjectFlowChart::getSensitivity() ) {
+				return true;
+			}
+			it++;
+		}
+	}
+	// Проверяем на попадание в обрамляющий прямоугольник на растяжение/поворот
 	if ( !isSelected() ) return false;
 	switch ( getPossibleCommand( global_chart_pos ) ) {
 		case RPShape::pcmd_rotate_center:
@@ -176,6 +200,25 @@ void RPShape::drawPolyline( CDC& dc )
 	dc.SelectObject( old_brush );
 }
 
+void RPShape::drawDocks( CDC& dc )
+{
+	if ( rpapp.project().getFlowState() != RPProject::flow_connector ) return;
+	CPen pen( PS_SOLID, 1, RGB(0x00, 0x00, 0x00) );
+	CPen* old_pen = dc.SelectObject( &pen );
+	CBrush brush( RGB(0xF0, 0xFF, 0x00) );
+	CBrush* old_brush = dc.SelectObject( &brush );
+	int radius = RPObjectFlowChart::getSensitivity();
+	rp::matrix gm = globalMatrix();
+	std::vector< RPConnectorDock >::const_iterator it = docks.begin();
+	while ( it != docks.end() ) {
+		rp::point point = gm * it->point;
+		dc.Ellipse( point.x - radius + 1, point.y - radius + 1, point.x + radius, point.y + radius );
+		it++;
+	}
+	dc.SelectObject( old_brush );
+	dc.SelectObject( old_pen );
+}
+
 /*
 void RPShape::drawConnectorsInput( CDC& dc )
 {
@@ -184,17 +227,6 @@ void RPShape::drawConnectorsInput( CDC& dc )
 		painter.setBrush( flowChart->getConnectorDockColor() );
 		for ( unsigned int i = 0; i < conI.size(); i++ ) {
 			painter.drawEllipse( conI.point(i).x() - 3, conI.point(i).y() - 3, 7, 7 );
-		}
-	}
-}
-
-void RPShape::drawConnectorsOutput( CDC& dc )
-{
-	if ( flowChart->getShowConnectorPoint() ) {
-		painter.setPen( flowChart->getShapeColor() );
-		painter.setBrush( flowChart->getConnectorDockColor() );
-		for ( unsigned int i = 0; i < conO.size(); i++ ) {
-			painter.drawEllipse( conO.point(i).x() - 3, conO.point(i).y() - 3, 7, 7 );
 		}
 	}
 }
@@ -209,6 +241,9 @@ void RPShape::draw( CDC& dc )
 
 	// Отрисовка полигона
 	drawPolyline( dc );
+
+	// Отрисовка доков для конекторов
+	drawDocks( dc );
 
 	// Вывод имени
 	LOGFONT lf;
@@ -327,12 +362,34 @@ void RPShape::draw_selected( CDC& dc )
 RPShape::PossibleCommand RPShape::getPossibleCommand( const rp::point& global_chart_pos, bool for_cursor )
 {
 	// Отдельно проверим на перемещение центра вращения. Он отрисовывается поверх выделения, значит и проверяться должен первым.
-	if ( isRotateCenter( global_chart_pos ) ) return RPShape::pcmd_rotate_center;
-	rp::rect rect = getBoundingRect();
+	if ( rpapp.project().getFlowState() == RPProject::flow_rotate && isSelected() && isRotateCenter( global_chart_pos ) ) return RPShape::pcmd_rotate_center;
+
 	int sensitivity = RPObjectFlowChart::getSensitivity();
 	angle90 a90 = getAngle90();
 	angle45 a45 = getAngle45();
+
+	// Проверим на попадание в dock для коннекторов
+	if ( rpapp.project().getFlowState() == RPProject::flow_connector ) {
+		rp::matrix gm = globalMatrix();
+		std::vector< RPConnectorDock >::const_iterator it = docks.begin();
+		while ( it != docks.end() ) {
+			rp::point point = gm * it->point;
+			if ( rp::math::getLength( point, global_chart_pos ) <= RPObjectFlowChart::getSensitivity() ) {
+				if ( !it->can_connect ) return PossibleCommand::pcmd_dock_not;
+				if ( it->type & RPConnectorDock::fly   ) return PossibleCommand::pcmd_dock_fly;
+				if ( (it->type & RPConnectorDock::inout) == RPConnectorDock::inout ) return PossibleCommand::pcmd_dock_inout;
+				if ( it->type & RPConnectorDock::in    ) {
+					return (flowChart()->getConnectorTypeWanted() == RPObjectFlowChart::ctw_end) ? PossibleCommand::pcmd_dock_in : PossibleCommand::pcmd_dock_not;
+				}
+				if ( it->type & RPConnectorDock::out   ) return PossibleCommand::pcmd_dock_out;
+				return PossibleCommand::pcmd_dock_not;
+			}
+			it++;
+		}
+	}
+
 	// Отдельно проверим на растяжение за правый нижний угол, т.к. фигуру, сжатую в ноль, лучше растягивать из него
+	rp::rect rect = getBoundingRect();
 	if ( rpapp.project().getFlowState() == RPProject::flow_select ) {
 		if ( rp::math::getLength( rect.p_tl(), global_chart_pos ) <= sensitivity ) {
 			if ( for_cursor ) {

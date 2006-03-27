@@ -44,6 +44,7 @@ RPObjectFlowChart::RPObjectFlowChart( RPObject* _parent, RPFlowChart* _flowchart
 	global_win_pos_prev( 0, 0 ),
 	one_object( NULL ),
 	one_selected( NULL ),
+	ct_wanted( ctw_non ),
 	flowchart( _flowchart )
 #ifdef TEST_SPEED
 	,
@@ -87,7 +88,15 @@ RPObjectFlowChart::~RPObjectFlowChart()
 
 void RPObjectFlowChart::notify( RPObject* from, UINT message, WPARAM wParam, LPARAM lParam )
 {
-	if ( message == rp::msg::RP_FLOWSTATE_CHANGED ) update();
+	if ( message == rp::msg::RP_FLOWSTATE_CHANGED ) {
+		if ( one_selected && wParam == RPProject::flow_connector ) {
+			one_selected->setSelected( false );
+			ct_wanted = ctw_begin;
+		} else {
+			ct_wanted = ctw_non;
+		}
+		update();
+	}
 	if ( message == rp::msg::RP_OBJ_SELCHANGED && from && from->isChartObject() && static_cast<RPObjectFlowChart*>(from)->flowChart() == this && from->isSelected() ) {
 		one_selected = static_cast<RPObjectFlowChart*>(from);
 	}
@@ -105,16 +114,20 @@ void RPObjectFlowChart::update()
 
 RPProject::Cursor RPObjectFlowChart::getCursor( const rp::point& global_chart_pos )
 {
+	// Вышли за пределы листа
 	if ( pointInNCArea( global_chart_pos ) ) return RPProject::cursor_flow_select;
 
+	// Если есть выделенный объект, то проверим сначала его
 	if ( one_selected && one_selected->pointInShape(global_chart_pos) ) {
 		RPProject::Cursor cursor = one_selected->getCursor( global_chart_pos );
 		if ( cursor != RPProject::cursor_flow_select ) return cursor;
 	}
 
+	// Проверили все объекты на листе
 	RPProject::Cursor cursor = RPObjectMatrix::getCursor( global_chart_pos );
 	if ( cursor != RPProject::cursor_flow_select ) return cursor;
 
+	// Объектов не нашли, выставляем курсор для листа
 	switch ( rpapp.project().getFlowState() ) {
 		case RPProject::flow_select   : return RPProject::cursor_flow_select;
 		case RPProject::flow_connector: return RPProject::cursor_flow_connector;
