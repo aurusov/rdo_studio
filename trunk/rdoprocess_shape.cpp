@@ -50,10 +50,10 @@ rp::rect RPShape::getMaxRect()
 
 RPProject::Cursor RPShape::getCursor( const rp::point& global_chart_pos )
 {
+	if ( rpapp.project().getFlowState() == RPProject::flow_rotate && isSelected() && isRotateCenter( global_chart_pos ) ) return RPProject::cursor_flow_rotate_center;
+
 	RPProject::Cursor cursor = RPObjectMatrix::getCursor( global_chart_pos );
 	if ( cursor != RPProject::cursor_flow_select ) return cursor;
-
-	if ( rpapp.project().getFlowState() == RPProject::flow_rotate && isSelected() && isRotateCenter( global_chart_pos ) ) return RPProject::cursor_flow_rotate_center;
 
 	if ( pointInShape(global_chart_pos) ) {
 		RPShape::PossibleCommand pcmd = getPossibleCommand( global_chart_pos, true );
@@ -155,9 +155,6 @@ void RPShape::transformToGlobal()
 
 rp::rect RPShape::getBoundingRect( bool global ) const
 {
-	if ( name == "Create" ) {
-		int i = 1;
-	}
 	rp::rect bound_rect;
 	if ( !pa_src.empty() ) {
 		int x_min = pa_src[0].x;

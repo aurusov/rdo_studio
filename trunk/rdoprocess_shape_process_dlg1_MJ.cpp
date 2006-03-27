@@ -94,6 +94,7 @@ BEGIN_MESSAGE_MAP(RPShapeProcessDlg1_MJ, CDialog)
 	ON_BN_CLICKED(IDC_BUTTON1, OnButton1)
 	ON_CBN_CLOSEUP(IDC_COMBO2, OnCloseupCombo2)
 	ON_WM_CTLCOLOR()
+	ON_BN_CLICKED(IDC_BUTTON2, OnButton2)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -158,7 +159,6 @@ void RPShapeProcessDlg1_MJ::OnButton1()
 {
 	RPShapeProcessDlg2_MJ dlg;
 	dlg.DoModal();
-	
 }
 
 void RPShapeProcessDlg1_MJ::OnOK() 
@@ -232,4 +232,10 @@ HBRUSH RPShapeProcessDlg1_MJ::OnCtlColor( CDC* pDC, CWnd* pWnd, UINT nCtlColor )
 	} else {
 		return CDialog::OnCtlColor( pDC, pWnd, nCtlColor );
 	}
+}
+
+void RPShapeProcessDlg1_MJ::OnButton2() 
+{
+
+
 }

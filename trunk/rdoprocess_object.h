@@ -44,6 +44,8 @@ public:
 	RPObject( RPObject* parent = NULL, const rp::string& name = "object" );
 	virtual ~RPObject();
 
+	virtual void list_name();
+
 	rp::string getName() const { return name; }
 	virtual bool setName( const rp::string& value );
 
@@ -60,3 +62,4 @@ public:
 };
 
 #endif // RDO_PROCESS_OBJECT_H
+

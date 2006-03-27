@@ -6,6 +6,7 @@
 //#include "rdo_process.h"
 #include "rdoprocess_shape_process_MJ.h"
 #include "rdoprocess_shape_process_dlg1_MJ.h"
+#include "rdoprocess_app.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -29,14 +30,19 @@ RPShapeProcessMJ::RPShapeProcessMJ( RPObject* _parent ):
 	matrix_scale.data[0][0] = 2;
 }
 
-void RPShapeProcessMJ::onLButtonDblClk( UINT nFlags, CPoint global_chart_pos )
-{
-RPShapeProcessDlg1_MJ dlg(NULL,this);
-dlg.DoModal();
-
-}	
-	
 RPShapeProcessMJ::~RPShapeProcessMJ()
 {
+}
 
+void RPShapeProcessMJ::onLButtonDblClk( UINT nFlags, CPoint global_chart_pos )
+{
+	// RPShapeProcessDlg1_MJ dlg(NULL,this);
+	// dlg.DoModal();
+	rpapp.project().list_name();
+}
+
+void RPShapeProcessMJ::list_name()
+{
+	RPShape::list_name();
+	TRACE( "*** Process ***\n" );
 }

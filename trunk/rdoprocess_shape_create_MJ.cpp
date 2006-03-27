@@ -41,3 +41,9 @@ void RPShapeCreateMJ::onLButtonDblClk( UINT nFlags, CPoint global_chart_pos )
 	RPShapeCreateDlg1_MJ dlg( NULL, this );
 	dlg.DoModal();
 }
+
+void RPShapeCreateMJ::list_name()
+{
+	RPShape::list_name();
+	TRACE( "*** Create ***\n" );
+}

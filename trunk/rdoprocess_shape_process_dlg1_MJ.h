@@ -72,6 +72,7 @@ protected:
 	virtual void OnOK();
 	afx_msg void OnCloseupCombo2();
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+	afx_msg void OnButton2();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

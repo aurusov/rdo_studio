@@ -110,3 +110,54 @@ void RPObject::selectChildOff( RPObject* withoutObj )
 		it++;
 	}
 }
+
+void RPObject::list_name()
+{
+	TRACE( "%s\n", getName().c_str() );
+	std::list< RPObject* >::const_iterator it = child.begin();
+	while( it != child.end() ) {
+		(*it)->list_name();
+		it++;
+	}
+}
+
+/*
+void RPObject::list_name()
+{
+	std::list< RPObject* >::const_iterator it = child.begin();
+	if ( it != child.end() ) {
+		TRACE( "%s\n", (*it)->getName().c_str() );
+	}
+	while(it != child.end())
+	{
+		TRACE( "%s\n", (*it)->getName().c_str() );
+	      
+		if(!(*it)->child.empty())
+		{
+		RPObject::child_name((*it));
+		}
+		
+	it++;
+	}
+}
+
+void RPObject::child_name(RPObject* obj)
+{
+std::list< RPObject* >::const_iterator it = obj->child.begin();
+	
+	while(it!= obj->child.end())
+	{
+		TRACE( "%s\n", (*it)->getName().c_str() );
+	      
+		if(!(*it)->child.empty())
+		{
+		RPObject::child_name((*it));
+		}
+		
+	it++;
+	}
+
+	
+
+}
+*/

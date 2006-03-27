@@ -17,6 +17,7 @@ public:
 	RPShapeProcessMJ( RPObject* parent );
 	virtual ~RPShapeProcessMJ();
 	virtual void onLButtonDblClk( UINT nFlags, CPoint global_chart_pos );
+	virtual void list_name();
 };
 
 #endif // !defined(AFX_RDOPROCESS_SHAPE_PROCESS_MJ_H__A5AEB64C_2CE8_46D3_9E6B_86368CB68269__INCLUDED_)

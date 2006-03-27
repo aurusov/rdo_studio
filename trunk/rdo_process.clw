@@ -31,12 +31,12 @@ Class19=RPShapeProcessDlg2_MJ
 Class20=RPShapeTerminateDlg1_MJ
 
 ResourceCount=8
-Resource1=IDD_DIALOG_PROCESS_1_MJ
-Resource2=IDD_DIALOG_CREATE_1_MJ
-Resource3=IDD_DIALOG_CREATE_2_MJ
-Resource4=IDD_ABOUT
-Resource5=IDD_DIALOG_PROCESS_2_MJ
-Resource6=IDD_DIALOG_TERMINATE_1_MJ
+Resource1=IDD_DIALOG_CREATE_1_MJ
+Resource2=IDD_DIALOG_TERMINATE_1_MJ
+Resource3=IDD_ABOUT
+Resource4=IDD_DIALOG_PROCESS_2_MJ
+Resource5=IDD_DIALOG_CREATE_2_MJ
+Resource6=IDD_DIALOG_PROCESS_1_MJ
 Resource7=IDR_RDO_PRTYPE (English (U.S.))
 Resource8=IDR_MAINFRAME (English (U.S.))
 
@@ -152,7 +152,7 @@ HeaderFile=rdoprocess_shape_process_dlg1_MJ.h
 ImplementationFile=rdoprocess_shape_process_dlg1_MJ.cpp
 Filter=D
 VirtualFilter=dWC
-LastObject=RPShapeProcessDlg1_MJ
+LastObject=IDC_BUTTON1
 
 [CLS:RPShapeProcessDlg2_MJ]
 Type=0

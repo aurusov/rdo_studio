@@ -84,12 +84,16 @@ void RPObjectChart::draw( CDC& dc )
 	// Вызов отрисовки потомков
 	std::list< RPObjectChart* > objects;
 	getChartObjects( objects );
-	std::list< RPObjectChart* >::iterator it = objects.begin();
-	while ( it != objects.end() ) {
-		int saved = dc.SaveDC();
-		(*it)->draw( dc );
-		dc.RestoreDC( saved );
-		it++;
+	std::list< RPObjectChart* >::iterator it = objects.end();
+	it--;
+	if ( it != objects.end() ) {
+		while ( true ) {
+			int saved = dc.SaveDC();
+			(*it)->draw( dc );
+			dc.RestoreDC( saved );
+			if ( it == objects.begin() ) break;
+			it--;
+		}
 	}
 }
 
