@@ -58,9 +58,8 @@ END_MESSAGE_MAP()
 
 void RPShapeTerminateDlg1_MJ::OnOK() 
 {
-	UpdateData(TRUE);
-	pParentMJ->setName( rp::string(m_name));
-	pParentMJ->update_modifyMJ();
-	
-	CDialog::OnOK();
+	UpdateData( true );
+	if ( pParentMJ->setName( rp::string(m_name) ) ) {
+		CDialog::OnOK();
+	}
 }

@@ -48,7 +48,7 @@ void RPObject::clear()
 	child.clear();
 }
 
-void RPObject::setName( const rp::string& value )
+bool RPObject::setName( const rp::string& value )
 {
 	if ( !value.empty() ) {
 		rp::string prev_name = name;
@@ -56,11 +56,15 @@ void RPObject::setName( const rp::string& value )
 		if ( parent && !parent->isChildNameCorrect( this ) ) {
 			name = prev_name;
 			::MessageBox( NULL, _T("Name alredy used"), "Error", MB_OK | MB_ICONERROR );
+			return false;
 		}
 	} else {
 		::MessageBox( NULL, _T("Name can't be empty"), "Error", MB_OK | MB_ICONERROR );
+		return false;
 	}
+	modify();
 	rpapp.sendMessage( this, rp::msg::RP_OBJ_NAMECHANGED );
+	return true;
 }
 
 bool RPObject::isChildNameCorrect( const RPObject* obj ) const

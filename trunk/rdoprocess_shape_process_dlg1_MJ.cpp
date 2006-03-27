@@ -14,12 +14,19 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 
+BEGIN_MESSAGE_MAP(RPListBox, CListBox)
+	//{{AFX_MSG_MAP(RPListBox)
+	//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
 /////////////////////////////////////////////////////////////////////////////
 // RPShapeProcessDlg1_MJ dialog
 
 
 RPShapeProcessDlg1_MJ::RPShapeProcessDlg1_MJ(CWnd* pParent /*=NULL*/,RPShapeProcessMJ* ppParent)
-	: CDialog(RPShapeProcessDlg1_MJ::IDD, pParent)
+	: CDialog(RPShapeProcessDlg1_MJ::IDD, pParent),
+	brush1( RGB(0xFF, 0x00, 0x00) ),
+	brush2( RGB(0x00, 0xFF, 0x00) )
 {
 	//{{AFX_DATA_INIT(RPShapeProcessDlg1_MJ)
 	m_name = _T("");
@@ -55,6 +62,10 @@ BOOL RPShapeProcessDlg1_MJ::OnInitDialog()
 	m_combo.SetCurSel(0);
 	m_action.SetCurSel(0);
 
+//	m_ResList.AddString( "строка 1" );
+//	m_ResList.AddString( "строка 2" );
+//	m_ResList.AddString( "строка 3" );
+
 	m_type.SetCurSel(0); // по умолчанию закон fifo
 	m_parameter.EnableWindow(FALSE);// параметр не видно
 
@@ -82,6 +93,7 @@ BEGIN_MESSAGE_MAP(RPShapeProcessDlg1_MJ, CDialog)
 	ON_CBN_CLOSEUP(IDC_COMBO3, OnCloseupCombo3)
 	ON_BN_CLICKED(IDC_BUTTON1, OnButton1)
 	ON_CBN_CLOSEUP(IDC_COMBO2, OnCloseupCombo2)
+	ON_WM_CTLCOLOR()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -151,65 +163,73 @@ void RPShapeProcessDlg1_MJ::OnButton1()
 
 void RPShapeProcessDlg1_MJ::OnOK() 
 {
-//вывод и ввод имени блока
-UpdateData(TRUE);
-pParentMJ->setName(std::string(m_name));
-pParentMJ->update_modifyMJ();	
+	// вывод и ввод имени блока
+	UpdateData(TRUE);
+	pParentMJ->setName(std::string(m_name));
 	CDialog::OnOK();	
-	CDialog::OnOK();
 }
 
 void RPShapeProcessDlg1_MJ::OnCloseupCombo2() 
 {
 	int cur = m_action.GetCurSel();
 
-switch(cur) // определяем активные окна исходя из закона
-{
-case 0: // задержать
-		m_type.EnableWindow(FALSE); // невидимая очередь
-		m_parameter.EnableWindow(FALSE);// невидимая очередь
-		m_AddRes.EnableWindow(FALSE); 
-		m_DelRes.EnableWindow(FALSE); 
-		m_ResList.EnableWindow(FALSE); 
+	switch(cur) // определяем активные окна исходя из закона
+	{
+	case 0: // задержать
+			m_type.EnableWindow(FALSE); // невидимая очередь
+			m_parameter.EnableWindow(FALSE);// невидимая очередь
+			m_AddRes.EnableWindow(FALSE); 
+			m_DelRes.EnableWindow(FALSE); 
+			m_ResList.EnableWindow(FALSE); 
+			
+						break;	
+	case 1: //занять задержать освободить
+			m_type.EnableWindow(TRUE);// невидимая очередь
+				 if(m_type.GetCurSel() == 0 || m_type.GetCurSel() == 1)
+					   m_parameter.EnableWindow(FALSE);
+				 else
+					   m_parameter.EnableWindow(TRUE);
+
+			m_AddRes.EnableWindow(TRUE); 
+			m_DelRes.EnableWindow(TRUE); 
+			m_ResList.EnableWindow(TRUE); 
 		
-					break;	
-case 1: //занять задержать освободить
-	    m_type.EnableWindow(TRUE);// невидимая очередь
-             if(m_type.GetCurSel() == 0 || m_type.GetCurSel() == 1)
-                   m_parameter.EnableWindow(FALSE);
-			 else
-                   m_parameter.EnableWindow(TRUE);
-
-		m_AddRes.EnableWindow(TRUE); 
-		m_DelRes.EnableWindow(TRUE); 
-		m_ResList.EnableWindow(TRUE); 
-	
-				break;
-
-case 2: // занять задержать
-	m_type.EnableWindow(TRUE);// невидимая очередь
-             if(m_type.GetCurSel() == 0 || m_type.GetCurSel() == 1)
-                   m_parameter.EnableWindow(FALSE);
-			 else
-                   m_parameter.EnableWindow(TRUE);
-
-		m_AddRes.EnableWindow(TRUE); 
-		m_DelRes.EnableWindow(TRUE); 
-		m_ResList.EnableWindow(TRUE); 
 					break;
 
+	case 2: // занять задержать
+		m_type.EnableWindow(TRUE);// невидимая очередь
+				if(m_type.GetCurSel() == 0 || m_type.GetCurSel() == 1)
+					m_parameter.EnableWindow(FALSE);
+				else
+					m_parameter.EnableWindow(TRUE);
+
+			m_AddRes.EnableWindow(TRUE); 
+			m_DelRes.EnableWindow(TRUE); 
+			m_ResList.EnableWindow(TRUE); 
+						break;
 
 
-case 3: // задержать освободить
-	m_type.EnableWindow(TRUE);// невидимая очередь
-             if(m_type.GetCurSel() == 0 || m_type.GetCurSel() == 1)
-                   m_parameter.EnableWindow(FALSE);
-			 else
-                   m_parameter.EnableWindow(TRUE);
 
-		m_AddRes.EnableWindow(FALSE); 
-		m_DelRes.EnableWindow(FALSE); 
-		m_ResList.EnableWindow(FALSE); 
-					break;
-}	
+	case 3: // задержать освободить
+		m_type.EnableWindow(TRUE);// невидимая очередь
+				 if(m_type.GetCurSel() == 0 || m_type.GetCurSel() == 1)
+					   m_parameter.EnableWindow(FALSE);
+				 else
+					   m_parameter.EnableWindow(TRUE);
+
+			m_AddRes.EnableWindow(FALSE); 
+			m_DelRes.EnableWindow(FALSE); 
+			m_ResList.EnableWindow(FALSE); 
+						break;
+	}	
+}
+
+HBRUSH RPShapeProcessDlg1_MJ::OnCtlColor( CDC* pDC, CWnd* pWnd, UINT nCtlColor )
+{
+	return CDialog::OnCtlColor( pDC, pWnd, nCtlColor );
+	if ( nCtlColor == CTLCOLOR_LISTBOX && pWnd == &m_ResList ) {
+		return m_ResList.IsWindowEnabled() ? brush1 : brush2;
+	} else {
+		return CDialog::OnCtlColor( pDC, pWnd, nCtlColor );
+	}
 }

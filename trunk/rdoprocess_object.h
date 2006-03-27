@@ -45,7 +45,7 @@ public:
 	virtual ~RPObject();
 
 	rp::string getName() const { return name; }
-	void setName( const rp::string& value );
+	virtual bool setName( const rp::string& value );
 
 	bool isSelected() const { return selected; }
 	virtual void setSelected( bool value );

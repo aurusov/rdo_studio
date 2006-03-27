@@ -54,7 +54,11 @@ public:
 	RPObjectChart( RPObject* parent, const rp::string& name = "object" );
 	virtual ~RPObjectChart();
 
-    void update_modifyMJ();//MJ вызывает протектные update and modify
+	virtual bool setName( const rp::string& value ) {
+		bool res = RPObject::setName( value );
+		if ( res ) update();
+		return res;
+	}
 
 	virtual bool isChartObject() const { return true;  }
 	virtual bool isFlowChart() const   { return false; }

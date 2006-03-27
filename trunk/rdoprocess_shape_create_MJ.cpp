@@ -32,18 +32,12 @@ RPShapeCreateMJ::RPShapeCreateMJ( RPObject* _parent ):
 	matrix_scale.data[0][0] = 2;
 }
 
+RPShapeCreateMJ::~RPShapeCreateMJ()
+{
+}
 
 void RPShapeCreateMJ::onLButtonDblClk( UINT nFlags, CPoint global_chart_pos )
 {
-RPShapeCreateDlg1_MJ dlg(NULL,this);
-dlg.DoModal();
-
-}
-
-
-
-
-RPShapeCreateMJ::~RPShapeCreateMJ()
-{
-
+	RPShapeCreateDlg1_MJ dlg( NULL, this );
+	dlg.DoModal();
 }

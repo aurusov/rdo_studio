@@ -11,6 +11,21 @@
 /////////////////////////////////////////////////////////////////////////////
 // RPShapeProcessDlg1_MJ dialog
 
+class RPListBox: public CListBox
+{
+public:
+	//{{AFX_DATA(RPListBox)
+	//}}AFX_DATA
+
+	//{{AFX_VIRTUAL(RPListBox)
+	//}}AFX_VIRTUAL
+
+protected:
+	//{{AFX_MSG(RPListBox)
+	//}}AFX_MSG
+	DECLARE_MESSAGE_MAP()
+};
+
 class RPShapeProcessDlg1_MJ : public CDialog
 {
 // Construction
@@ -22,7 +37,7 @@ public:
 // Dialog Data
 	//{{AFX_DATA(RPShapeProcessDlg1_MJ)
 	enum { IDD = IDD_DIALOG_PROCESS_1_MJ };
-	CListBox	m_ResList;
+	RPListBox	m_ResList;
 	CButton	m_DelRes;
 	CButton	m_AddRes;
 	CEdit	m_proc_dlg1_max_control_MJ;
@@ -46,6 +61,8 @@ public:
 
 // Implementation
 protected:
+	CBrush brush1;
+	CBrush brush2;
 
 	// Generated message map functions
 	//{{AFX_MSG(RPShapeProcessDlg1_MJ)
@@ -54,6 +71,7 @@ protected:
 	afx_msg void OnButton1();
 	virtual void OnOK();
 	afx_msg void OnCloseupCombo2();
+	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
