@@ -44,6 +44,7 @@ RPObjectFlowChart::RPObjectFlowChart( RPObject* _parent, RPFlowChart* _flowchart
 	global_win_pos_prev( 0, 0 ),
 	one_object( NULL ),
 	one_selected( NULL ),
+	one_connector( NULL ),
 	ct_wanted( ctw_non ),
 	flowchart( _flowchart )
 #ifdef TEST_SPEED
@@ -89,8 +90,8 @@ RPObjectFlowChart::~RPObjectFlowChart()
 void RPObjectFlowChart::notify( RPObject* from, UINT message, WPARAM wParam, LPARAM lParam )
 {
 	if ( message == rp::msg::RP_FLOWSTATE_CHANGED ) {
-		if ( one_selected && wParam == RPProject::flow_connector ) {
-			one_selected->setSelected( false );
+		if ( wParam == RPProject::flow_connector ) {
+			if ( one_selected ) one_selected->setSelected( false );
 			ct_wanted = ctw_begin;
 		} else {
 			ct_wanted = ctw_non;
@@ -526,19 +527,19 @@ void RPObjectFlowChart::onLButtonDown( UINT nFlags, CPoint local_win_pos )
 	// Монопольно захватили мышку
 	flowchart->SetCapture();
 	// Нашли объект под мышкой
-	if ( rpapp.project().getFlowState() == RPProject::flow_select || rpapp.project().getFlowState() == RPProject::flow_rotate ) {
-		if ( one_selected && one_selected->pointInShape(global_chart_pos) ) {
-			one_object = one_selected;
-		} else {
-			one_object = find( global_chart_pos );
-		}
-		if ( one_object ) {
-			// Нашли фигуру
-			bool selected = one_object->isSelected();
+	if ( one_selected && one_selected->pointInShape(global_chart_pos) ) {
+		one_object = one_selected;
+	} else {
+		one_object = find( global_chart_pos );
+	}
+	if ( one_object ) {
+		// Нашли фигуру
+		bool selected = one_object->isSelected();
+		if ( rpapp.project().getFlowState() == RPProject::flow_select || rpapp.project().getFlowState() == RPProject::flow_rotate ) {
 			one_object->onLButtonDown( nFlags, CPoint( global_chart_pos.x, global_chart_pos.y ) );
-			one_object->command_before( global_chart_pos, !selected );
-			return;
 		}
+		one_object->command_before( global_chart_pos, !selected );
+		return;
 	}
 	// Никого не нашли, выбираем лист
 	one_selected = NULL;

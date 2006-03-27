@@ -51,6 +51,7 @@ private:
 	CPoint         global_win_pos_prev;
 	RPObjectChart* one_object;
 	RPObjectChart* one_selected;
+	RPConnector*   one_connector;
 
 #ifdef TEST_SPEED
 	int makepixmap_cnt;
@@ -88,7 +89,8 @@ public:
 
 	void snapToGrid( RPObjectMatrix* shape );
 
-	ConnectorTypeWanted getConnectorTypeWanted() const { return ct_wanted; }
+	ConnectorTypeWanted getConnectorTypeWanted() const { return ct_wanted;     }
+	RPConnector* getOneConnector()                     { return one_connector; }
 
 	static int getSensitivity()               { return select_box_size2 + 1; }
 	int getSelectBoxSize2() const             { return select_box_size2;     }

@@ -45,6 +45,7 @@ protected:
 //	CPoint snap_to_point;
 
 	std::vector< RPConnectorDock > docks;
+	RPConnectorDock* find_dock( const rp::point& global_chart_pos );
 
 	// ƒискретный угол поворота (дискрета 90 градусов)
 	enum angle90 {
@@ -133,9 +134,6 @@ protected:
 	virtual void drawDocks( CDC& dc );
 
 	virtual RPProject::Cursor getCursor( const rp::point& global_chart_pos );
-
-	void setPositionPostDelta( double posx, double posy );
-	virtual void setPositionPost( double posx, double posy );
 
 	virtual bool isShape() const { return true; }
 	virtual RPObjectChart* find( const rp::point& global_chart_pos );

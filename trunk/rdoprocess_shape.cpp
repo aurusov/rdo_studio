@@ -359,6 +359,90 @@ void RPShape::draw_selected( CDC& dc )
 	}
 }
 
+void RPShape::command_before( const rp::point& global_chart_pos, bool first_click )
+{
+	RPObjectMatrix::command_before( global_chart_pos, first_click );
+	pcmd = ((rpapp.project().getFlowState() == RPProject::flow_select || rpapp.project().getFlowState() == RPProject::flow_rotate) && first_click) ? RPShape::pcmd_move : getPossibleCommand( global_chart_pos );
+}
+
+void RPShape::command_make( const rp::point& global_chart_pos )
+{
+	RPObjectMatrix::command_make( global_chart_pos );
+
+	RPObjectFlowChart* flowchart = flowChart();
+	RPShape::angle90 a90 = getAngle90();
+	bool horz = a90 == RPShape::angle90_0 || a90 == RPShape::angle90_180;
+	rp::point mouse_delta = flowchart->mouse_delta();
+	switch ( pcmd ) {
+		case RPShape::pcmd_move: {
+			mouse_delta = parentRotate().obr() * mouse_delta;
+			matrix_transform.dx() += mouse_delta.x;
+			matrix_transform.dy() += mouse_delta.y;
+			modify();
+			update();
+			break;
+		}
+		case RPShape::pcmd_rotate_center: {
+			setRotateCenter( global_chart_pos );
+			update();
+			break;
+		}
+		case RPShape::pcmd_dock_out     : {
+			break;
+		}
+		case RPShape::pcmd_rotate_tl    :
+		case RPShape::pcmd_rotate_tr    :
+		case RPShape::pcmd_rotate_bl    :
+		case RPShape::pcmd_rotate_br    : {
+			setRotation( getRotation() + rp::math::getAlpha( flowchart->mouse_prev(), getRotateCenter(), flowchart->mouse_current() ) );
+			update();
+			break;
+		}
+		case RPShape::pcmd_scale_t      :
+		case RPShape::pcmd_scale_b      :
+		case RPShape::pcmd_scale_l      :
+		case RPShape::pcmd_scale_r      :
+		case RPShape::pcmd_scale_tl     :
+		case RPShape::pcmd_scale_tr     :
+		case RPShape::pcmd_scale_bl     :
+		case RPShape::pcmd_scale_br     : {
+			rp::rect  rect = getBoundingRect();
+			rp::point point_delta( globalRotate().obr() * mouse_delta );
+			rp::point len( rp::math::getLength( rect.p_tl(), rect.p_tr() ), rp::math::getLength( rect.p_tl(), rect.p_bl() ) );
+			RPShape::getScaleDelta( point_delta, a90, pcmd );
+			if ( len.x + point_delta.x < 0 ) {
+				point_delta.x = -len.x;
+			}
+			if ( len.y + point_delta.y < 0 ) {
+				point_delta.y = -len.y;
+			}
+			setScaleX( getScaleX() * (len.x + point_delta.x ) / len.x );
+			setScaleY( getScaleY() * (len.y + point_delta.y ) / len.y );
+			RPShape::getRectDelta( rect, getBoundingRect(), point_delta, a90, pcmd );
+			point_delta = globalRotate().obr() * point_delta;
+			setPostX( getPostX() + point_delta.x );
+			setPostY( getPostY() + point_delta.y );
+			setRotateCenterLocalDelta( point_delta.x, point_delta.y );
+			update();
+			break;
+		}
+	}
+}
+
+RPConnectorDock* RPShape::find_dock( const rp::point& global_chart_pos )
+{
+	rp::matrix gm = globalMatrix();
+	std::vector< RPConnectorDock >::iterator it = docks.begin();
+	while ( it != docks.end() ) {
+		rp::point point = gm * it->point;
+		if ( rp::math::getLength( point, global_chart_pos ) <= RPObjectFlowChart::getSensitivity() ) {
+			return it;
+		}
+		it++;
+	}
+	return NULL;
+}
+
 RPShape::PossibleCommand RPShape::getPossibleCommand( const rp::point& global_chart_pos, bool for_cursor )
 {
 	// Отдельно проверим на перемещение центра вращения. Он отрисовывается поверх выделения, значит и проверяться должен первым.
@@ -370,21 +454,18 @@ RPShape::PossibleCommand RPShape::getPossibleCommand( const rp::point& global_ch
 
 	// Проверим на попадание в dock для коннекторов
 	if ( rpapp.project().getFlowState() == RPProject::flow_connector ) {
-		rp::matrix gm = globalMatrix();
-		std::vector< RPConnectorDock >::const_iterator it = docks.begin();
-		while ( it != docks.end() ) {
-			rp::point point = gm * it->point;
-			if ( rp::math::getLength( point, global_chart_pos ) <= RPObjectFlowChart::getSensitivity() ) {
-				if ( !it->can_connect ) return PossibleCommand::pcmd_dock_not;
-				if ( it->type & RPConnectorDock::fly   ) return PossibleCommand::pcmd_dock_fly;
-				if ( (it->type & RPConnectorDock::inout) == RPConnectorDock::inout ) return PossibleCommand::pcmd_dock_inout;
-				if ( it->type & RPConnectorDock::in    ) {
-					return (flowChart()->getConnectorTypeWanted() == RPObjectFlowChart::ctw_end) ? PossibleCommand::pcmd_dock_in : PossibleCommand::pcmd_dock_not;
-				}
-				if ( it->type & RPConnectorDock::out   ) return PossibleCommand::pcmd_dock_out;
-				return PossibleCommand::pcmd_dock_not;
+		RPConnectorDock* dock = find_dock( global_chart_pos );
+		if ( dock ) {
+			if ( !dock->can_connect ) return PossibleCommand::pcmd_dock_not;
+			if ( dock->type & RPConnectorDock::fly ) return PossibleCommand::pcmd_dock_fly;
+			if ( (dock->type & RPConnectorDock::inout) == RPConnectorDock::inout ) return PossibleCommand::pcmd_dock_inout;
+			if ( dock->type & RPConnectorDock::in ) {
+				return (flowChart()->getConnectorTypeWanted() == RPObjectFlowChart::ctw_end) ? PossibleCommand::pcmd_dock_in : PossibleCommand::pcmd_dock_not;
 			}
-			it++;
+			if ( dock->type & RPConnectorDock::out ) {
+				return (flowChart()->getConnectorTypeWanted() == RPObjectFlowChart::ctw_begin) ? PossibleCommand::pcmd_dock_out : PossibleCommand::pcmd_dock_not;
+			}
+			return PossibleCommand::pcmd_dock_not;
 		}
 	}
 
@@ -481,9 +562,9 @@ RPShape::PossibleCommand RPShape::getPossibleCommand( const rp::point& global_ch
 			}
 		}
 	}
-	bool any = rpapp.project().getFlowState() == RPProject::flow_select || rpapp.project().getFlowState() == RPProject::flow_rotate;
+	bool select_or_rotate = rpapp.project().getFlowState() == RPProject::flow_select || rpapp.project().getFlowState() == RPProject::flow_rotate;
 	// Общая часть и для перемещения и для вращения
-	if ( any ) {
+	if ( select_or_rotate ) {
 		// Отдельно проверим на растяжение за нижний центр, т.к. фигуру, сжатую в горизонтальную линию, лучше растягивать вниз за него, а не вверх
 		if ( rp::math::getLength( rect.p_r(), global_chart_pos ) <= sensitivity ) {
 			if ( for_cursor ) {
@@ -781,8 +862,8 @@ RPShape::PossibleCommand RPShape::getPossibleCommand( const rp::point& global_ch
 			}
 		}
 	}
-	// Общая часть и для перемещения и для вращения
-	if ( any ) {
+	// Общая часть для перемещения, вращения и коннектора
+	if ( select_or_rotate || rpapp.project().getFlowState() == RPProject::flow_connector ) {
 		if ( pointInPolygon( global_chart_pos ) ) {
 			return RPShape::pcmd_move;
 		}
@@ -1039,95 +1120,6 @@ void RPShape::getRectDelta( rp::rect& rect_old, rp::rect& rect_new, rp::point& d
 					break;
 				}
 			}
-			break;
-		}
-	}
-}
-
-void RPShape::setPositionPostDelta( double posx, double posy )
-{
-	std::list< RPObjectChart* > objects;
-	getChartObjects( objects );
-	std::list< RPObjectChart* >::iterator it = objects.begin();
-	while ( it != objects.end() ) {
-		if ( (*it)->isShape() ) {
-			RPShape* obj = static_cast<RPShape*>(*it);
-//			obj->setPositionPostDelta( posx, posy );
-//			obj->RPObjectMatrix::setPositionPost( posx, posy );
-		}
-		it++;
-	}
-	setPositionPost( posx, posy );
-}
-
-void RPShape::setPositionPost( double posx, double posy )
-{
-	RPObjectMatrix::setPositionPost( posx, posy );
-}
-
-void RPShape::command_before( const rp::point& global_chart_pos, bool first_click )
-{
-	RPObjectMatrix::command_before( global_chart_pos, first_click );
-	pcmd = first_click ? RPShape::pcmd_move : getPossibleCommand( global_chart_pos );
-}
-
-void RPShape::command_make( const rp::point& global_chart_pos )
-{
-	RPObjectMatrix::command_make( global_chart_pos );
-
-	RPObjectFlowChart* flowchart = flowChart();
-	RPShape::angle90 a90 = getAngle90();
-	bool horz = a90 == RPShape::angle90_0 || a90 == RPShape::angle90_180;
-	rp::point mouse_delta = flowchart->mouse_delta();
-	switch ( pcmd ) {
-		case RPShape::pcmd_move: {
-			mouse_delta = parentRotate().obr() * mouse_delta;
-			matrix_transform.dx() += mouse_delta.x;
-			matrix_transform.dy() += mouse_delta.y;
-			modify();
-			update();
-			break;
-		}
-		case RPShape::pcmd_rotate_center: {
-			setRotateCenter( global_chart_pos );
-			update();
-			break;
-		}
-		case RPShape::pcmd_rotate_tl    :
-		case RPShape::pcmd_rotate_tr    :
-		case RPShape::pcmd_rotate_bl    :
-		case RPShape::pcmd_rotate_br    : {
-			setRotation( getRotation() + rp::math::getAlpha( flowchart->mouse_prev(), getRotateCenter(), flowchart->mouse_current() ) );
-			update();
-			break;
-		}
-		case RPShape::pcmd_scale_t      :
-		case RPShape::pcmd_scale_b      :
-		case RPShape::pcmd_scale_l      :
-		case RPShape::pcmd_scale_r      :
-		case RPShape::pcmd_scale_tl     :
-		case RPShape::pcmd_scale_tr     :
-		case RPShape::pcmd_scale_bl     :
-		case RPShape::pcmd_scale_br     : {
-			rp::rect  rect = getBoundingRect();
-			rp::point point_delta( globalRotate().obr() * mouse_delta );
-			rp::point len( rp::math::getLength( rect.p_tl(), rect.p_tr() ), rp::math::getLength( rect.p_tl(), rect.p_bl() ) );
-			RPShape::getScaleDelta( point_delta, a90, pcmd );
-			if ( len.x + point_delta.x < 0 ) {
-				point_delta.x = -len.x;
-			}
-			if ( len.y + point_delta.y < 0 ) {
-				point_delta.y = -len.y;
-			}
-			setScaleX( getScaleX() * (len.x + point_delta.x ) / len.x );
-			setScaleY( getScaleY() * (len.y + point_delta.y ) / len.y );
-			RPShape::getRectDelta( rect, getBoundingRect(), point_delta, a90, pcmd );
-			point_delta = globalRotate().obr() * point_delta;
-//			setPositionPostDelta( getPostX() + point_delta.x, getPostY() + point_delta.y );
-			setPostX( getPostX() + point_delta.x );
-			setPostY( getPostY() + point_delta.y );
-			setRotateCenterLocalDelta( point_delta.x, point_delta.y );
-			update();
 			break;
 		}
 	}
