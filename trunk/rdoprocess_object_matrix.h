@@ -18,6 +18,15 @@ class RPObjectMatrix: public RPObjectChart
 private:
 	rp::point rotate_center;
 
+public:
+	enum m_mask {
+		m_tr  = 0x01,
+		m_rt  = 0x02,
+		m_pt  = 0x04,
+		m_sc  = 0x08,
+		m_all = 0x0F
+	};
+
 protected:
 	virtual bool isMatrix() const { return true; }
 	RPObjectMatrix* matrixParent() const {
@@ -30,14 +39,6 @@ protected:
 	rp::matrix matrix_transform_post;
 	rp::matrix matrix_scale;
 	double rotation_alpha;
-
-	enum m_mask {
-		m_tr  = 0x01,
-		m_rt  = 0x02,
-		m_pt  = 0x04,
-		m_sc  = 0x08,
-		m_all = 0x0F
-	};
 
 	rp::matrix selfMatrix( int mask = m_all ) const {
 		if ( mask == m_all ) return matrix_transform * matrix_rotate * matrix_transform_post * matrix_scale;
@@ -55,10 +56,6 @@ protected:
 		} else {
 			return matrix_parent ? matrix_parent->parentMatrix( mask, false ) * selfMatrix( mask ) : selfMatrix( mask );
 		}
-	}
-	rp::matrix globalMatrix( int mask_parent = m_all & ~m_sc, int mask_self = m_all ) const {
-		RPObjectMatrix* matrix_parent = matrixParent();
-		return matrix_parent ? matrix_parent->parentMatrix( mask_parent, false ) * selfMatrix( mask_self ) : selfMatrix( mask_self );
 	}
 	rp::matrix flowchartMatrix() const {
 		// занимаемся приведением типов только потому, что
@@ -181,6 +178,11 @@ protected:
 public:
 	RPObjectMatrix( RPObject* parent, const rp::string& name = "object" );
 	virtual ~RPObjectMatrix();
+
+	rp::matrix globalMatrix( int mask_parent = m_all & ~m_sc, int mask_self = m_all ) const {
+		RPObjectMatrix* matrix_parent = matrixParent();
+		return matrix_parent ? matrix_parent->parentMatrix( mask_parent, false ) * selfMatrix( mask_self ) : selfMatrix( mask_self );
+	}
 
 /*
 	class Backup {

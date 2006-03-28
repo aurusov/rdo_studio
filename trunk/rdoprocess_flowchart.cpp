@@ -103,8 +103,8 @@ BOOL RPFlowChart::Create( LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD d
 
 	shape_action = new RPShapeAction( flowobj );
 	shape_action->setPosition( 100, 45 );
-	shape_if = new RPShapeIf( shape_action );
-	shape_if->setPosition( 200, 100 );
+	shape_if = new RPShapeIf( flowobj );
+	shape_if->setPosition( 300, 100 );
 
 	// MJ start
 	shape_create = new RPShapeCreateMJ( flowobj );

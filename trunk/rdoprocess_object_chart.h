@@ -33,7 +33,6 @@ protected:
 	}
 
 	virtual void modify();
-	virtual void update();
 
 	virtual RPObjectChart* find( const rp::point& global_chart_pos );
 
@@ -59,6 +58,8 @@ public:
 		if ( res ) update();
 		return res;
 	}
+
+	virtual void update();
 
 	virtual bool isChartObject() const { return true;  }
 	virtual bool isFlowChart() const   { return false; }
@@ -90,7 +91,7 @@ public:
 	virtual void draw_after( CDC& dc );
 
 	// Габориты фигуры
-	virtual rp::rect getBoundingRect( bool global = true )  const = 0;
+	virtual rp::rect getBoundingRect( bool global = true ) const = 0;
 	virtual rp::rect getMaxRect() { return getBoundingRect(); }
 
 	// Перед выполнение команды (объект должен подготовить команду)

@@ -6,35 +6,9 @@
 #endif // _MSC_VER > 1000
 
 #include "rdoprocess_object_matrix.h"
+#include "rdoprocess_connector.h"
 
 #include <vector>
-
-// ----------------------------------------------------------------------------
-// ---------- RPShape
-// ----------------------------------------------------------------------------
-class RPShape;
-
-class RPConnectorDock
-{
-protected:
-	RPShape* _shape;
-
-public:
-	enum Type {
-		in    = 0x01,
-		out   = 0x02,
-		inout = 0x03,
-		fly   = 0x04,
-		all   = 0x07
-	};
-	bool      can_connect;
-	Type      type;
-	rp::point point;
-	const RPShape& shape() const { return *_shape; }
-
-	RPConnectorDock( RPShape* __shape, Type _type, const rp::point& _point ): _shape( __shape ), can_connect( true ), type( _type ), point( _point ) {};
-	~RPConnectorDock() {};
-};
 
 // ----------------------------------------------------------------------------
 // ---------- RPShape
@@ -137,6 +111,8 @@ protected:
 
 	virtual bool isShape() const { return true; }
 	virtual RPObjectChart* find( const rp::point& global_chart_pos );
+
+	virtual void onRButtonDown( UINT nFlags, CPoint global_chart_pos );
 
 public:
 	RPShape( RPObject* parent, const rp::string& name = "object" );

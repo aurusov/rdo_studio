@@ -90,7 +90,8 @@ public:
 	void snapToGrid( RPObjectMatrix* shape );
 
 	ConnectorTypeWanted getConnectorTypeWanted() const { return ct_wanted;     }
-	RPConnector* getOneConnector()                     { return one_connector; }
+	void insert_connector( RPConnectorDock* dock );
+//	RPConnector* getOneConnector()                     { return one_connector; }
 
 	static int getSensitivity()               { return select_box_size2 + 1; }
 	int getSelectBoxSize2() const             { return select_box_size2;     }

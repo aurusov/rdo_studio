@@ -504,6 +504,26 @@ RPObjectChart* RPObjectFlowChart::find( const rp::point& global_chart_pos )
 	return obj != this ? obj : NULL;
 }
 
+void RPObjectFlowChart::insert_connector( RPConnectorDock* dock )
+{
+	if ( !one_connector && dock ) {
+		one_connector = new RPConnector( this );
+		one_connector->dock_begin = dock;
+		dock->connectors.push_back( one_connector );
+		ct_wanted = ctw_end;
+		update();
+		return;
+	}
+	if ( one_connector && dock ) {
+		one_connector->dock_end = dock;
+		dock->connectors.push_back( one_connector );
+		one_connector = NULL;
+		ct_wanted = ctw_begin;
+		update();
+		return;
+	}
+}
+
 void RPObjectFlowChart::onLButtonDown( UINT nFlags, CPoint local_win_pos )
 {
 	// Запомнили глобальные координаты мышки (глобальные в виндах, а не 2D-движке). Пригодятся в других функциях.
@@ -549,6 +569,8 @@ void RPObjectFlowChart::onMouseMove( UINT nFlags, CPoint local_win_pos )
 	if ( obj ) obj->onMouseMove( nFlags, CPoint( global_chart_pos.x, global_chart_pos.y ) );
 	// Выполнение команды над выделенным объектом
 	if ( one_object ) one_object->command_make( global_chart_pos );
+
+	if ( one_connector ) one_connector->update();
 
 	global_win_pos_prev = global_win_pos_current;
 }

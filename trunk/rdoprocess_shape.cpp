@@ -108,15 +108,7 @@ bool RPShape::pointInNCArea( const rp::point& global_chart_pos )
 {
 	// Проверяем на попадание в док
 	if ( rpapp.project().getFlowState() == RPProject::flow_connector ) {
-		rp::matrix gm = globalMatrix();
-		std::vector< RPConnectorDock >::const_iterator it = docks.begin();
-		while ( it != docks.end() ) {
-			rp::point point = gm * it->point;
-			if ( rp::math::getLength( point, global_chart_pos ) <= RPObjectFlowChart::getSensitivity() ) {
-				return true;
-			}
-			it++;
-		}
+		if ( find_dock(global_chart_pos) ) return true;
 	}
 	// Проверяем на попадание в обрамляющий прямоугольник на растяжение/поворот
 	if ( !isSelected() ) return false;
@@ -208,7 +200,7 @@ void RPShape::drawDocks( CDC& dc )
 	rp::matrix gm = globalMatrix();
 	std::vector< RPConnectorDock >::const_iterator it = docks.begin();
 	while ( it != docks.end() ) {
-		rp::point point = gm * it->point;
+		rp::point point = it->getPosition();
 		dc.Ellipse( point.x - radius + 1, point.y - radius + 1, point.x + radius, point.y + radius );
 		it++;
 	}
@@ -360,6 +352,20 @@ void RPShape::command_before( const rp::point& global_chart_pos, bool first_clic
 {
 	RPObjectMatrix::command_before( global_chart_pos, first_click );
 	pcmd = ((rpapp.project().getFlowState() == RPProject::flow_select || rpapp.project().getFlowState() == RPProject::flow_rotate) && first_click) ? RPShape::pcmd_move : getPossibleCommand( global_chart_pos );
+	if ( pcmd == pcmd_dock_out ) {
+		RPObjectFlowChart* flowchart = flowChart();
+		RPConnectorDock* dock = find_dock( global_chart_pos );
+		if ( flowchart ) {
+			flowchart->insert_connector( dock );
+		}
+	}
+	if ( pcmd == pcmd_dock_in ) {
+		RPObjectFlowChart* flowchart = flowChart();
+		RPConnectorDock* dock = find_dock( global_chart_pos );
+		if ( flowchart ) {
+			flowchart->insert_connector( dock );
+		}
+	}
 }
 
 void RPShape::command_make( const rp::point& global_chart_pos )
@@ -431,8 +437,7 @@ RPConnectorDock* RPShape::find_dock( const rp::point& global_chart_pos )
 	rp::matrix gm = globalMatrix();
 	std::vector< RPConnectorDock >::iterator it = docks.begin();
 	while ( it != docks.end() ) {
-		rp::point point = gm * it->point;
-		if ( rp::math::getLength( point, global_chart_pos ) <= RPObjectFlowChart::getSensitivity() ) {
+		if ( rp::math::getLength( it->getPosition(), global_chart_pos ) <= RPObjectFlowChart::getSensitivity() ) {
 			return it;
 		}
 		it++;
@@ -1119,5 +1124,30 @@ void RPShape::getRectDelta( rp::rect& rect_old, rp::rect& rect_new, rp::point& d
 			}
 			break;
 		}
+	}
+}
+
+void RPShape::onRButtonDown( UINT nFlags, CPoint global_chart_pos )
+{
+	std::vector< RPConnectorDock >::const_iterator it = docks.begin();
+	while ( it != docks.end() ) {
+		std::list< RPConnector* >::const_iterator conn_it = it->connectors.begin();
+		while ( conn_it != it->connectors.end() ) {
+			RPConnectorDock* dock = (*conn_it)->getConnectedDock( *it );
+			if ( dock ) {
+				TRACE( "%s", getName().c_str() );
+				const RPObjectMatrix& obj = dock->object_matrix();
+				if ( (dock->type & RPConnectorDock::inout) == RPConnectorDock::inout ) {
+					TRACE( " <--> " );
+				} else if ( dock->type & RPConnectorDock::in ) {
+					TRACE( " ---> " );
+				} else if ( dock->type & RPConnectorDock::out ) {
+					TRACE( " <--- " );
+				}
+				TRACE( "%s\n", obj.getName().c_str() );
+			}
+			conn_it++;
+		}
+		it++;
 	}
 }
