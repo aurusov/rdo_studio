@@ -22,6 +22,12 @@ RPShape::RPShape( RPObject* _parent, const rp::string& _name ):
 
 RPShape::~RPShape()
 {
+	std::vector< RPConnectorDock* >::iterator it = docks.begin();
+	while ( it != docks.end() ) {
+		RPConnectorDock* dock = *it;
+		it = docks.erase( it );
+		if ( dock ) delete dock;
+	}
 }
 
 RPObjectChart* RPShape::find( const rp::point& global_chart_pos )
@@ -194,17 +200,17 @@ void RPShape::drawDocks( CDC& dc )
 	if ( rpapp.project().getFlowState() != RPProject::flow_connector ) return;
 	CPen pen( PS_SOLID, 1, RGB(0x00, 0x00, 0x00) );
 	CPen* old_pen = dc.SelectObject( &pen );
-	CBrush brush( RGB(0xF0, 0xFF, 0x00) );
-	CBrush* old_brush = dc.SelectObject( &brush );
 	int radius = RPObjectFlowChart::getSensitivity();
 	rp::matrix gm = globalMatrix();
-	std::vector< RPConnectorDock >::const_iterator it = docks.begin();
+	std::vector< RPConnectorDock* >::const_iterator it = docks.begin();
 	while ( it != docks.end() ) {
-		rp::point point = it->getPosition();
+		rp::point point = gm * (*it)->getPosition( false );
+		CBrush brush( (*it)->color() );
+		CBrush* old_brush = dc.SelectObject( &brush );
 		dc.Ellipse( point.x - radius + 1, point.y - radius + 1, point.x + radius, point.y + radius );
+		dc.SelectObject( old_brush );
 		it++;
 	}
-	dc.SelectObject( old_brush );
 	dc.SelectObject( old_pen );
 }
 
@@ -435,10 +441,10 @@ void RPShape::command_make( const rp::point& global_chart_pos )
 RPConnectorDock* RPShape::find_dock( const rp::point& global_chart_pos )
 {
 	rp::matrix gm = globalMatrix();
-	std::vector< RPConnectorDock >::iterator it = docks.begin();
+	std::vector< RPConnectorDock* >::iterator it = docks.begin();
 	while ( it != docks.end() ) {
-		if ( rp::math::getLength( it->getPosition(), global_chart_pos ) <= RPObjectFlowChart::getSensitivity() ) {
-			return it;
+		if ( rp::math::getLength( gm * (*it)->getPosition( false ), global_chart_pos ) <= RPObjectFlowChart::getSensitivity() ) {
+			return *it;
 		}
 		it++;
 	}
@@ -458,13 +464,13 @@ RPShape::PossibleCommand RPShape::getPossibleCommand( const rp::point& global_ch
 	if ( rpapp.project().getFlowState() == RPProject::flow_connector ) {
 		RPConnectorDock* dock = find_dock( global_chart_pos );
 		if ( dock ) {
-			if ( !dock->can_connect ) return PossibleCommand::pcmd_dock_not;
-			if ( dock->type & RPConnectorDock::fly ) return PossibleCommand::pcmd_dock_fly;
-			if ( (dock->type & RPConnectorDock::inout) == RPConnectorDock::inout ) return PossibleCommand::pcmd_dock_inout;
-			if ( dock->type & RPConnectorDock::in ) {
+			if ( !dock->can_connect() ) return PossibleCommand::pcmd_dock_not;
+			if ( dock->isType( RPConnectorDock::fly ) ) return PossibleCommand::pcmd_dock_fly;
+			if ( dock->isType( RPConnectorDock::inout )  ) return PossibleCommand::pcmd_dock_inout;
+			if ( dock->isType( RPConnectorDock::in ) ) {
 				return (flowChart()->getConnectorTypeWanted() == RPObjectFlowChart::ctw_end) ? PossibleCommand::pcmd_dock_in : PossibleCommand::pcmd_dock_not;
 			}
-			if ( dock->type & RPConnectorDock::out ) {
+			if ( dock->isType( RPConnectorDock::out ) ) {
 				return (flowChart()->getConnectorTypeWanted() == RPObjectFlowChart::ctw_begin) ? PossibleCommand::pcmd_dock_out : PossibleCommand::pcmd_dock_not;
 			}
 			return PossibleCommand::pcmd_dock_not;
@@ -1129,19 +1135,19 @@ void RPShape::getRectDelta( rp::rect& rect_old, rp::rect& rect_new, rp::point& d
 
 void RPShape::onRButtonDown( UINT nFlags, CPoint global_chart_pos )
 {
-	std::vector< RPConnectorDock >::const_iterator it = docks.begin();
+	std::vector< RPConnectorDock* >::const_iterator it = docks.begin();
 	while ( it != docks.end() ) {
-		std::list< RPConnector* >::const_iterator conn_it = it->connectors.begin();
-		while ( conn_it != it->connectors.end() ) {
-			RPConnectorDock* dock = (*conn_it)->getConnectedDock( *it );
+		std::list< RPConnector* >::const_iterator conn_it = (*it)->connectors.begin();
+		while ( conn_it != (*it)->connectors.end() ) {
+			RPConnectorDock* dock = (*conn_it)->getConnectedDock( **it );
 			if ( dock ) {
 				TRACE( "%s", getName().c_str() );
 				const RPObjectMatrix& obj = dock->object_matrix();
-				if ( (dock->type & RPConnectorDock::inout) == RPConnectorDock::inout ) {
+				if ( dock->isType( RPConnectorDock::inout ) ) {
 					TRACE( " <--> " );
-				} else if ( dock->type & RPConnectorDock::in ) {
+				} else if ( dock->isType( RPConnectorDock::in ) ) {
 					TRACE( " ---> " );
-				} else if ( dock->type & RPConnectorDock::out ) {
+				} else if ( dock->isType( RPConnectorDock::out ) ) {
 					TRACE( " <--- " );
 				}
 				TRACE( "%s\n", obj.getName().c_str() );

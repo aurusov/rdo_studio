@@ -9,6 +9,30 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 // ----------------------------------------------------------------------------
+// ---------- RPConnectorDockGreen
+// ----------------------------------------------------------------------------
+class RPConnectorDockGreen: public RPConnectorDockOne
+{
+public:
+	RPConnectorDockGreen( RPObjectMatrix* __object_matrix, Type _type, const rp::point& _point ): RPConnectorDockOne( __object_matrix, _type, _point ) {};
+	virtual ~RPConnectorDockGreen() {};
+
+	virtual COLORREF color() const { return RGB(0x80, 0xFF, 0x00); }
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RPConnectorDockRed
+// ----------------------------------------------------------------------------
+class RPConnectorDockRed: public RPConnectorDockOne
+{
+public:
+	RPConnectorDockRed( RPObjectMatrix* __object_matrix, Type _type, const rp::point& _point ): RPConnectorDockOne( __object_matrix, _type, _point ) {};
+	virtual ~RPConnectorDockRed() {};
+
+	virtual COLORREF color() const { return RGB(0xFF, 0x80, 0x00); }
+};
+
+// ----------------------------------------------------------------------------
 // ---------- RPShapeIf
 // ----------------------------------------------------------------------------
 RPShapeIf::RPShapeIf( RPObject* _parent ):
@@ -20,9 +44,9 @@ RPShapeIf::RPShapeIf( RPObject* _parent ):
 	pa_src.push_back( rp::point(-35, 0) );
 	pa_src.push_back( rp::point(0, -35) );
 
-	docks.push_back( RPConnectorDock( this, RPConnectorDock::in,  rp::point( -35, 0  ) ) );
-	docks.push_back( RPConnectorDock( this, RPConnectorDock::out, rp::point(  35, 0  ) ) );
-	docks.push_back( RPConnectorDock( this, RPConnectorDock::out, rp::point(   0, 35 ) ) );
+	docks.push_back( new RPConnectorDock( this, RPConnectorDock::in,  rp::point( -35, 0  ) ) );
+	docks.push_back( new RPConnectorDockGreen( this, RPConnectorDock::out, rp::point(  35, 0  ) ) );
+	docks.push_back( new RPConnectorDockRed( this, RPConnectorDock::out, rp::point(   0, 35 ) ) );
 }
 
 RPShapeIf::~RPShapeIf()

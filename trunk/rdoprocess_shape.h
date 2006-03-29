@@ -13,12 +13,14 @@
 // ----------------------------------------------------------------------------
 // ---------- RPShape
 // ----------------------------------------------------------------------------
+// class RPConnectorDock;
+
 class RPShape: public RPObjectMatrix
 {
 protected:
 //	CPoint snap_to_point;
 
-	std::vector< RPConnectorDock > docks;
+	std::vector< RPConnectorDock* > docks;
 	RPConnectorDock* find_dock( const rp::point& global_chart_pos );
 
 	// ƒискретный угол поворота (дискрета 90 градусов)

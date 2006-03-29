@@ -17,10 +17,6 @@ class RPConnector;
 
 class RPConnectorDock
 {
-protected:
-	RPObjectMatrix* _object_matrix;
-	rp::point point;
-
 public:
 	enum Type {
 		in    = 0x01,
@@ -29,14 +25,49 @@ public:
 		fly   = 0x04,
 		all   = 0x07
 	};
-	bool can_connect;
-	Type type;
-	std::list< RPConnector* > connectors;
-	const RPObjectMatrix& object_matrix() const  { return *_object_matrix; }
-	rp::point getPosition() const { return _object_matrix->globalMatrix() * point; }
 
-	RPConnectorDock( RPObjectMatrix* __object_matrix, Type _type, const rp::point& _point ): _object_matrix( __object_matrix ), can_connect( true ), type( _type ), point( _point ) {};
-	~RPConnectorDock() {};
+protected:
+	RPObjectMatrix* _object_matrix;
+	rp::point       point;
+	Type            type;
+
+public:
+	RPConnectorDock( RPObjectMatrix* __object_matrix, Type _type, const rp::point& _point ): _object_matrix( __object_matrix ), type( _type ), point( _point ) {};
+	virtual ~RPConnectorDock() {};
+
+	std::list< RPConnector* > connectors;
+
+	virtual bool can_connect() const { return true;                  }
+	virtual COLORREF color() const   { return RGB(0xF0, 0xFF, 0x00); }
+	Type getType() const             { return type;                  }
+	bool isType( Type _type ) const {
+		switch ( _type ) {
+			case fly  : return type & fly ? true : false;
+			case in   : return type & in  ? true : false;
+			case out  : return type & out ? true : false;
+			case inout: return (type & inout) == inout ? true : false;
+			case all  : return (type & all  ) == all   ? true : false;
+		}
+		return false;
+	}
+	const RPObjectMatrix& object_matrix() const {
+		return *_object_matrix;
+	}
+	rp::point getPosition( bool global = true ) const {
+		return global ? _object_matrix->globalMatrix() * point : point ;
+	}
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RPConnectorDockOne
+// ----------------------------------------------------------------------------
+class RPConnectorDockOne: public RPConnectorDock
+{
+public:
+	RPConnectorDockOne( RPObjectMatrix* __object_matrix, Type _type, const rp::point& _point ): RPConnectorDock( __object_matrix, _type, _point ) {};
+	virtual ~RPConnectorDockOne() {};
+
+	virtual bool can_connect() const { return connectors.empty(); }
 };
 
 // ----------------------------------------------------------------------------
