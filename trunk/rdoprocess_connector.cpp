@@ -37,15 +37,15 @@ RPConnector::~RPConnector()
 void RPConnector::draw( CDC& dc )
 {
 	if ( dock_begin && !dock_end ) {
-		rp::point p1 = dock_begin->getPosition();
+		rp::point p1 = dock_begin->getDeltaPosition();
 		rp::point p2 = flowChart()->mouse_current();
 		CPen* old_pen = dc.SelectObject( &main_pen );
 		dc.MoveTo( p1.x, p1.y );
 		dc.LineTo( p2.x, p2.y );
 		dc.SelectObject( old_pen );
 	} else if ( dock_begin && dock_end ) {
-		rp::point p1 = dock_begin->getPosition();
-		rp::point p2 = dock_end->getPosition();
+		rp::point p1 = dock_begin->getDeltaPosition();
+		rp::point p2 = dock_end->getDeltaPosition();
 		CPen* old_pen = dc.SelectObject( &main_pen );
 		dc.MoveTo( p1.x, p1.y );
 		dc.LineTo( p2.x, p2.y );

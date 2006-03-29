@@ -64,6 +64,14 @@ public:
 		while ( res <  360 ) res += 360;
 		return res;
 	}
+	rp::point getDeltaPosition( bool global = true ) const {
+		rp::point pos    = getPosition( global );
+		double    rotate = getNorm( global );
+		rp::point res;
+		res.x = pos.x + cos( rotate * rp::math::pi / 180.0 ) * RPConnectorDock::delta;
+		res.y = pos.y - sin( rotate * rp::math::pi / 180.0 ) * RPConnectorDock::delta;
+		return res;
+	}
 };
 
 // ----------------------------------------------------------------------------

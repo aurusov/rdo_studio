@@ -206,12 +206,11 @@ void RPShape::drawDocks( CDC& dc )
 	while ( it != docks.end() ) {
 		rp::point point = gm * (*it)->getPosition( false );
 
-		rp::point norm_point;
-		double norm_rotate = (*it)->getNorm();
-		norm_point.x = point.x + cos( norm_rotate * rp::math::pi / 180.0 ) * RPConnectorDock::delta;
-		norm_point.y = point.y - sin( norm_rotate * rp::math::pi / 180.0 ) * RPConnectorDock::delta;
-		dc.MoveTo( point.x, point.y );
-		dc.LineTo( norm_point.x, norm_point.y );
+//		if ( !(*it)->connectors.empty() ) {
+			rp::point norm_point = (*it)->getDeltaPosition();
+			dc.MoveTo( point.x, point.y );
+			dc.LineTo( norm_point.x, norm_point.y );
+//		}
 
 		CBrush brush( (*it)->color() );
 		CBrush* old_brush = dc.SelectObject( &brush );
