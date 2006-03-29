@@ -26,9 +26,7 @@ RPShapeTerminateMJ::RPShapeTerminateMJ( RPObject* _parent ):
 	pa_src.push_back( rp::point(-25, 25) );
 	pa_src.push_back( rp::point(-50, 0) );
 
-
-	docks.push_back( new RPConnectorDock( this, RPConnectorDock::in,  rp::point( -50, 0 ) ) );
-
+	docks.push_back( new RPConnectorDock( this, RPConnectorDock::in,  rp::point( -50, 0 ), 180 ) );
 }
 
 void RPShapeTerminateMJ::onLButtonDblClk( UINT nFlags, CPoint global_chart_pos )

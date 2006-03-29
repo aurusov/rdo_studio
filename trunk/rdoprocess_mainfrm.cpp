@@ -215,10 +215,8 @@ void RPMainFrame::OnFlowRotate()
 	rpapp.project().setFlowState( RPProject::flow_rotate );
 }
 
-	// MJ start 29.03.06 обработчик кнопки генерирования
+// MJ start 29.03.06 обработчик кнопки генерирования
 void RPMainFrame::OnGenerate() 
 {
-RPObject::list_name();
-
 }
-	// MJ stop
+// MJ stop

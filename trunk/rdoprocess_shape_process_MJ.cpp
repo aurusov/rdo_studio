@@ -27,9 +27,8 @@ RPShapeProcessMJ::RPShapeProcessMJ( RPObject* _parent ):
 	pa_src.push_back( rp::point(-50, 25) );
 	pa_src.push_back( rp::point(-50, -25) );
 
-
-docks.push_back( new RPConnectorDock( this, RPConnectorDock::in,  rp::point( -50, 0 ) ) );
-docks.push_back( new RPConnectorDockOne( this, RPConnectorDock::out, rp::point(  50, 0 ) ) );
+	docks.push_back( new RPConnectorDock( this, RPConnectorDock::in,  rp::point( -50, 0 ), 180 ) );
+	docks.push_back( new RPConnectorDockOne( this, RPConnectorDock::out, rp::point(  50, 0 ), 0 ) );
 
 }
 
