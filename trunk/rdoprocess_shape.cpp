@@ -205,10 +205,6 @@ void RPShape::drawDocks( CDC& dc )
 	std::vector< RPConnectorDock* >::const_iterator it = docks.begin();
 	while ( it != docks.end() ) {
 		rp::point point = gm * (*it)->getPosition( false );
-		CBrush brush( (*it)->color() );
-		CBrush* old_brush = dc.SelectObject( &brush );
-		dc.Ellipse( point.x - radius + 1, point.y - radius + 1, point.x + radius, point.y + radius );
-		dc.SelectObject( old_brush );
 
 		rp::point norm_point;
 		double norm_rotate = (*it)->getNorm();
@@ -216,6 +212,12 @@ void RPShape::drawDocks( CDC& dc )
 		norm_point.y = point.y - sin( norm_rotate * rp::math::pi / 180.0 ) * RPConnectorDock::delta;
 		dc.MoveTo( point.x, point.y );
 		dc.LineTo( norm_point.x, norm_point.y );
+
+		CBrush brush( (*it)->color() );
+		CBrush* old_brush = dc.SelectObject( &brush );
+		dc.Ellipse( point.x - radius + 1, point.y - radius + 1, point.x + radius, point.y + radius );
+		dc.SelectObject( old_brush );
+
 		it++;
 	}
 	dc.SelectObject( old_pen );

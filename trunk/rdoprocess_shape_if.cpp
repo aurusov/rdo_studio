@@ -44,9 +44,9 @@ RPShapeIf::RPShapeIf( RPObject* _parent ):
 	pa_src.push_back( rp::point(-35, 0) );
 	pa_src.push_back( rp::point(0, -35) );
 
-	docks.push_back( new RPConnectorDock( this, RPConnectorDock::in,  rp::point( -35, 0 ), 180 ) );
-	docks.push_back( new RPConnectorDockGreen( this, RPConnectorDock::out, rp::point( 35, 0 ), 0 ) );
-	docks.push_back( new RPConnectorDockRed( this, RPConnectorDock::out, rp::point( 0, 35 ), 270 ) );
+	docks.push_back( new RPConnectorDock     ( this, RPConnectorDock::in,  rp::point( -35, 0  ), 180 ) );
+	docks.push_back( new RPConnectorDockGreen( this, RPConnectorDock::out, rp::point(  35, 0  ), 0   ) );
+	docks.push_back( new RPConnectorDockRed  ( this, RPConnectorDock::out, rp::point(   0, 35 ), 270 ) );
 }
 
 RPShapeIf::~RPShapeIf()
