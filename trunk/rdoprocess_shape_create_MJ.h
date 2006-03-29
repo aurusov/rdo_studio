@@ -18,6 +18,24 @@ public:
 	virtual ~RPShapeCreateMJ();
 	virtual void onLButtonDblClk( UINT nFlags, CPoint global_chart_pos );
 	virtual void list_name();
+
+
+	//переменные для генерации
+	CString gname; // имя
+	double gfirst; // время первого
+	double gamount; // кол-во создаваемых
+	int gtype; // закон прибытия
+	int base_gen;
+	//атрибуты законов
+	double gexp;
+	double gdisp;
+	double gmax;
+	double gmin;
+
+	//второе окно
+	int inf; // бесконечноть
+	int gID; // ID группы
+	double gpar1, gpar2, gpar3;
 };
 
 #endif // !defined(AFX_RDOPROCESS_SHAPE_CREATE_MJ_H__B043A584_EC30_4198_83AE_4C54E356FDAF__INCLUDED_)

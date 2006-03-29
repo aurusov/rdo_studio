@@ -60,7 +60,7 @@ BOOL RPShapeProcessDlg1_MJ::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	m_combo.SetCurSel(0);
-	m_action.SetCurSel(0);
+	m_action.SetCurSel(1);
 
 //	m_ResList.AddString( "строка 1" );
 //	m_ResList.AddString( "строка 2" );

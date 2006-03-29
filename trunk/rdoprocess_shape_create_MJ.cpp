@@ -30,6 +30,29 @@ RPShapeCreateMJ::RPShapeCreateMJ( RPObject* _parent ):
 	pa_src.push_back( rp::point(-20, -25) );
 
 	matrix_scale.data[0][0] = 2;
+
+	// инициализация параметров для генерирования
+	gname; // имя
+	 gfirst=0; // время первого
+	gamount=1000000; // кол-во создаваемых
+	gtype=0; // закон прибытия
+	base_gen=1234567890;
+	//атрибуты законов
+	gexp=0;
+	gdisp=0;
+	gmax=0;
+	gmin=0;
+
+	//второе окно
+	inf=1000000; // бесконечноть
+	gID=1; // ID группы
+	gpar1=0;
+	gpar2=0;
+	gpar3=0;
+
+
+
+
 }
 
 RPShapeCreateMJ::~RPShapeCreateMJ()

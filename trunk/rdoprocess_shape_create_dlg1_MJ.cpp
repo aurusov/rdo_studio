@@ -22,11 +22,14 @@ RPShapeCreateDlg1_MJ::RPShapeCreateDlg1_MJ(CWnd* pParent /*=NULL*/,RPShapeCreate
 	: CDialog(RPShapeCreateDlg1_MJ::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(RPShapeCreateDlg1_MJ)
-	m_create_dlg1_edit_expectation_MJ = _T("");
-	m_create_dlg1_dispersion_MJ = _T("");
-	m_create_dlg1_min_MJ = _T("");
-	m_create_dlg1_max_MJ = _T("");
 	m_name = _T("");
+	m_dlgfirst = 0.0;
+	m_dlgamount = 0;
+	m_dlgexp = 0.0;
+	m_dlgdisp = 0.0;
+	m_dlgmin = 0.0;
+	m_dlgmax = 0.0;
+	m_dlgbase_gen = 0;
 	//}}AFX_DATA_INIT
     pParentMJ = ppParent;
 }
@@ -41,11 +44,14 @@ void RPShapeCreateDlg1_MJ::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDIT5, m_create_dlg1_disp_control_MJ);
 	DDX_Control(pDX, IDC_EDIT4, m_create_dlg1_exp_control_MJ);
 	DDX_Control(pDX, IDC_COMBO1, m_create_dlg1_combo1_MJ);
-	DDX_Text(pDX, IDC_EDIT4, m_create_dlg1_edit_expectation_MJ);
-	DDX_Text(pDX, IDC_EDIT5, m_create_dlg1_dispersion_MJ);
-	DDX_Text(pDX, IDC_EDIT6, m_create_dlg1_min_MJ);
-	DDX_Text(pDX, IDC_EDIT7, m_create_dlg1_max_MJ);
 	DDX_Text(pDX, IDC_EDIT1, m_name);
+	DDX_Text(pDX, IDC_EDIT2, m_dlgfirst);
+	DDX_Text(pDX, IDC_EDIT3, m_dlgamount);
+	DDX_Text(pDX, IDC_EDIT4, m_dlgexp);
+	DDX_Text(pDX, IDC_EDIT5, m_dlgdisp);
+	DDX_Text(pDX, IDC_EDIT6, m_dlgmin);
+	DDX_Text(pDX, IDC_EDIT7, m_dlgmax);
+	DDX_Text(pDX, IDC_EDIT8, m_dlgbase_gen);
 	//}}AFX_DATA_MAP
 }
 
@@ -53,13 +59,37 @@ void RPShapeCreateDlg1_MJ::DoDataExchange(CDataExchange* pDX)
 BOOL RPShapeCreateDlg1_MJ::OnInitDialog()
 {
 	CDialog::OnInitDialog();
-	m_create_dlg1_combo1_MJ.SetCurSel(0);
+	
 	
 	 //отображение имени блока в окне
 	CString str( pParentMJ->getName().c_str() );
     m_name = str;
 	UpdateData(FALSE);
 	
+// инициализация из вызвавшего объекта
+
+	m_dlgfirst=pParentMJ->gfirst; // время первого
+	m_dlgamount=pParentMJ->	gamount; // кол-во создаваемых
+	m_create_dlg1_combo1_MJ.SetCurSel(pParentMJ->gtype); // закон прибытия
+     RPShapeCreateDlg1_MJ::OnCloseupCombo1();
+
+	m_dlgbase_gen=pParentMJ->base_gen;
+	//атрибуты законов
+	m_dlgexp=pParentMJ->gexp;
+	m_dlgdisp=pParentMJ->gdisp;
+	m_dlgmax=pParentMJ->gmax;
+	m_dlgmin=pParentMJ->gmin;
+
+	//второе окно
+	pParentMJ->inf; // бесконечноть
+	pParentMJ->gID; // ID группы
+	pParentMJ->gpar1;
+	pParentMJ->gpar2;
+	pParentMJ->gpar3;
+
+UpdateData(FALSE);
+
+
 	return TRUE;
 }
 
@@ -125,4 +155,18 @@ void RPShapeCreateDlg1_MJ::OnOK()
 	pParentMJ->setName( std::string(m_name) );
 //	pParentMJ->update_modify();	
 	CDialog::OnOK();
+
+	// запись параметров в объект
+	// инициализация из вызвавшего объекта
+UpdateData(TRUE);
+	pParentMJ->gfirst=m_dlgfirst; // время первого
+	pParentMJ->gamount=m_dlgamount; // кол-во создаваемых
+	pParentMJ->gtype=m_create_dlg1_combo1_MJ.GetCurSel(); // закон прибытия
+	pParentMJ->base_gen=m_dlgbase_gen;
+	//атрибуты законов
+	pParentMJ->gexp=m_dlgexp;
+	pParentMJ->gdisp=m_dlgdisp;
+	pParentMJ->gmax=m_dlgmax;
+	pParentMJ->gmin=m_dlgmin;
+
 }

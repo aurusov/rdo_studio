@@ -2,7 +2,7 @@
 
 [General Info]
 Version=1
-LastClass=RPShapeProcessDlg1_MJ
+LastClass=RPShapeCreateDlg1_MJ
 LastTemplate=CDialog
 NewFileInclude1=#include "stdafx.h"
 NewFileInclude2=#include "rdo_process.h"
@@ -31,12 +31,12 @@ Class19=RPShapeProcessDlg2_MJ
 Class20=RPShapeTerminateDlg1_MJ
 
 ResourceCount=8
-Resource1=IDD_DIALOG_CREATE_1_MJ
-Resource2=IDD_DIALOG_TERMINATE_1_MJ
-Resource3=IDD_ABOUT
-Resource4=IDD_DIALOG_PROCESS_2_MJ
-Resource5=IDD_DIALOG_CREATE_2_MJ
-Resource6=IDD_DIALOG_PROCESS_1_MJ
+Resource1=IDD_DIALOG_TERMINATE_1_MJ
+Resource2=IDD_DIALOG_CREATE_2_MJ
+Resource3=IDD_DIALOG_CREATE_1_MJ
+Resource4=IDD_DIALOG_PROCESS_1_MJ
+Resource5=IDD_ABOUT
+Resource6=IDD_DIALOG_PROCESS_2_MJ
 Resource7=IDR_RDO_PRTYPE (English (U.S.))
 Resource8=IDR_MAINFRAME (English (U.S.))
 
@@ -129,6 +129,9 @@ Type=0
 BaseClass=CDialog
 HeaderFile=rdoprocess_shape_create_dlg1_MJ.h
 ImplementationFile=rdoprocess_shape_create_dlg1_MJ.cpp
+LastObject=IDC_EDIT2
+Filter=D
+VirtualFilter=dWC
 
 [CLS:RPShapeCreateDlg2_MJ]
 Type=0
@@ -152,7 +155,7 @@ HeaderFile=rdoprocess_shape_process_dlg1_MJ.h
 ImplementationFile=rdoprocess_shape_process_dlg1_MJ.cpp
 Filter=D
 VirtualFilter=dWC
-LastObject=IDC_BUTTON1
+LastObject=IDC_COMBO2
 
 [CLS:RPShapeProcessDlg2_MJ]
 Type=0
