@@ -61,7 +61,7 @@ public:
 	double getNorm( bool global = true ) const {
 		double res = global ? _object_matrix->getRotationGlobal() + norm : norm;
 		while ( res >= 360 ) res -= 360;
-		while ( res <  360 ) res += 360;
+		while ( res <    0 ) res += 360;
 		return res;
 	}
 	rp::point getDeltaPosition( bool global = true ) const {
@@ -90,6 +90,10 @@ public:
 // ---------- RPConnector
 // ----------------------------------------------------------------------------
 class RPConnectorDock;
+class RPShape;
+
+#define CON_DEBUG 1
+#undef CON_DEBUG
 
 class RPConnector: public RPObjectChart
 {
@@ -98,6 +102,19 @@ friend class RPObjectFlowChart;
 protected:
 	RPConnectorDock* dock_begin;
 	RPConnectorDock* dock_end;
+
+	rp::polyline borders;
+	int recursive;
+
+#ifdef CON_DEBUG
+	void makeConnector( CDC& dc, const rp::point& p1, const rp::point& p2, double norm1, double norm2, rp::polyline& pa );
+	bool getShortLine( CDC& dc, const rp::polyline& pa, const rp::point& from, const rp::point& to, double& lengthA2, rp::point& B1, rp::point& B2, rp::point& interborder );
+	bool isVectoreIntersect( CDC& dc, RPShape* shape, const rp::point& vect_begin, const rp::point& vect_end ) const;
+#else if
+	void makeConnector( const rp::point& p1, const rp::point& p2, double norm1, double norm2, rp::polyline& pa );
+	bool getShortLine( const rp::polyline& pa, const rp::point& from, const rp::point& to, double& lengthA2, rp::point& B1, rp::point& B2, rp::point& interborder );
+	bool isVectoreIntersect( RPShape* shape, const rp::point& vect_begin, const rp::point& vect_end ) const;
+#endif
 
 	// Перевод всех элементов фигуры в глобальные координаты
 	virtual void transformToGlobal() {};

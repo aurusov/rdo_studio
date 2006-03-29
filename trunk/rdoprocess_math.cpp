@@ -133,44 +133,44 @@ rp::point math::getPerpendicular( const rp::point& line_point1, const rp::point&
 	return rp::point();
 }
 
-rp::point math::getIntersection( const std::vector< rp::point >& pa, const double x1, const double y1, const double x2, const double y2, const double x3, const double y3, const double x4, const double y4, double& Ka, double& Kb, double& K, double& Ua, double& Ub )
+rp::point math::getIntersection( const rp::point& p1, const rp::point& p2, const rp::point& p3, const rp::point p4, double& Ka, double& Kb, double& K, double& Ua, double& Ub )
 {
-	K  = (y4 - y3)*(x2 - x1) - (x4 - x3)*(y2 - y1);
-	Ka = (x4 - x3)*(y1 - y3) - (y4 - y3)*(x1 - x3);
-	Kb = (x2 - x1)*(y1 - y3) - (y2 - y1)*(x1 - x3);
+	K  = (p4.y - p3.y)*(p2.x - p1.x) - (p4.x - p3.x)*(p2.y - p1.y);
+	Ka = (p4.x - p3.x)*(p1.y - p3.y) - (p4.y - p3.y)*(p1.x - p3.x);
+	Kb = (p2.x - p1.x)*(p1.y - p3.y) - (p2.y - p1.y)*(p1.x - p3.x);
 	try {
 		Ua = Ka/K;
 		Ub = Kb/K;
-		double x = x1 + Ua*(x2 - x1);
-		double y = y1 + Ua*(y2 - y1);
-		rp::point point( static_cast<int>(x), static_cast<int>(y) );
-		if ( point.x >= x1 - 1 && point.x <= x1 + 1 ) {
-			point.x = static_cast<int>(x1);
+		double x = p1.x + Ua*(p2.x - p1.x);
+		double y = p1.y + Ua*(p2.y - p1.y);
+		rp::point point( x, y );
+		if ( point.x >= p1.x - 1 && point.x <= p1.x + 1 ) {
+			point.x = p1.x;
 		}
-		if ( point.y >= y1 - 1 && point.y <= y1 + 1 ) {
-			point.y = static_cast<int>(y1);
+		if ( point.y >= p1.y - 1 && point.y <= p1.y + 1 ) {
+			point.y = p1.y;
 		}
-		if ( point.x >= x2 - 1 && point.x <= x2 + 1 ) {
-			point.x = static_cast<int>(x2);
+		if ( point.x >= p2.x - 1 && point.x <= p2.x + 1 ) {
+			point.x = p2.x;
 		}
-		if ( point.y >= y2 - 1 && point.y <= y2 + 1 ) {
-			point.y = static_cast<int>(y2);
+		if ( point.y >= p2.y - 1 && point.y <= p2.y + 1 ) {
+			point.y = p2.y;
 		}
-		if ( point.x >= x3 - 1 && point.x <= x3 + 1 ) {
-			point.x = static_cast<int>(x3);
+		if ( point.x >= p3.x - 1 && point.x <= p3.x + 1 ) {
+			point.x = p3.x;
 		}
-		if ( point.y >= y3 - 1 && point.y <= y3 + 1 ) {
-			point.y = static_cast<int>(y3);
+		if ( point.y >= p3.y - 1 && point.y <= p3.y + 1 ) {
+			point.y = p3.y;
 		}
-		if ( point.x >= x4 - 1 && point.x <= x4 + 1 ) {
-			point.x = static_cast<int>(x4);
+		if ( point.x >= p4.x - 1 && point.x <= p4.x + 1 ) {
+			point.x = p4.x;
 		}
-		if ( point.y >= y4 - 1 && point.y <= y4 + 1 ) {
-			point.y = static_cast<int>(y4);
+		if ( point.y >= p4.y - 1 && point.y <= p4.y + 1 ) {
+			point.y = p4.y;
 		}
 		return point;
 	} catch ( ... ) {
-		return rp::point( 0, 0 );
+		return rp::point();
 	}
 }
 

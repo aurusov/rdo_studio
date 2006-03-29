@@ -28,7 +28,7 @@ public:
 	static bool getPlanarData( const rp::point& p1, const rp::point& p2, double& len, double& cos_a, double& sin_a );
 	static bool getPlanarData( const rp::point& p1, const rp::point& p2, const rp::point& p3, double& cos_b, double& sin_b, double& koef );
 	static rp::point getPerpendicular( const rp::point& line_point1, const rp::point& line_point2, const rp::point& point, bool& null, bool* inside = NULL );
-	static rp::point getIntersection( const std::vector< rp::point >& pa, const double x1, const double y1, const double x2, const double y2, const double x3, const double y3, const double x4, const double y4, double& Ka, double& Kb, double& K, double& Ua, double& Ub );
+	static rp::point getIntersection( const rp::point& p1, const rp::point& p2, const rp::point& p3, const rp::point p4, double& Ka, double& Kb, double& K, double& Ua, double& Ub );
 };
 
 }

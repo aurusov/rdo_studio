@@ -130,6 +130,14 @@ public:
 	// Габориты фигуры
 	virtual rp::rect getBoundingRect( bool global = true ) const;
 	virtual rp::rect getMaxRect();
+	rp::rect getBoundingRectNoRotateOuter() {
+		transformToGlobal();
+		return getBoundingRect().getBoundingRect();
+	}
+	rp::rect getBoundingRectNoRotateIner() {
+		transformToGlobal();
+		return pa_global.getBoundingRect();
+	}
 
 	// Перевод всех элементов фигуры в глобальные координаты
 	virtual void transformToGlobal();

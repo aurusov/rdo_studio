@@ -24,14 +24,6 @@ protected:
 	int  main_pen_width;
 	CPen main_pen;
 
-	void getChartObjects( std::list< RPObjectChart* >& objects ) const {
-		std::list< RPObject* >::const_iterator it = begin();
-		while ( it != end() ) {
-			if ( (*it)->isChartObject() ) objects.push_back( static_cast<RPObjectChart*>(*it) );
-			it++;
-		}
-	}
-
 	virtual void modify();
 
 	virtual RPObjectChart* find( const rp::point& global_chart_pos );
@@ -66,6 +58,14 @@ public:
 	virtual bool isMatrix() const      { return false; }
 	virtual bool isShape() const       { return false; }
 	virtual bool isConnector() const   { return false; }
+
+	void getChartObjects( std::list< RPObjectChart* >& objects ) const {
+		std::list< RPObject* >::const_iterator it = begin();
+		while ( it != end() ) {
+			if ( (*it)->isChartObject() ) objects.push_back( static_cast<RPObjectChart*>(*it) );
+			it++;
+		}
+	}
 
 	virtual void onLButtonDown( UINT nFlags, CPoint global_chart_pos ) {
 		if ( !isSelected() ) setSelected( true );

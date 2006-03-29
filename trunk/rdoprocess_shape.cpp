@@ -197,7 +197,7 @@ void RPShape::drawPolyline( CDC& dc )
 
 void RPShape::drawDocks( CDC& dc )
 {
-//	if ( rpapp.project().getFlowState() != RPProject::flow_connector ) return;
+	if ( rpapp.project().getFlowState() != RPProject::flow_connector ) return;
 	CPen pen( PS_SOLID, 1, RGB(0x00, 0x00, 0x00) );
 	CPen* old_pen = dc.SelectObject( &pen );
 	int radius = RPObjectFlowChart::getSensitivity();
