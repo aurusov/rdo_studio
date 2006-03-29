@@ -197,7 +197,7 @@ void RPShape::drawPolyline( CDC& dc )
 
 void RPShape::drawDocks( CDC& dc )
 {
-	if ( rpapp.project().getFlowState() != RPProject::flow_connector ) return;
+//	if ( rpapp.project().getFlowState() != RPProject::flow_connector ) return;
 	CPen pen( PS_SOLID, 1, RGB(0x00, 0x00, 0x00) );
 	CPen* old_pen = dc.SelectObject( &pen );
 	int radius = RPObjectFlowChart::getSensitivity();
@@ -209,6 +209,13 @@ void RPShape::drawDocks( CDC& dc )
 		CBrush* old_brush = dc.SelectObject( &brush );
 		dc.Ellipse( point.x - radius + 1, point.y - radius + 1, point.x + radius, point.y + radius );
 		dc.SelectObject( old_brush );
+
+		rp::point norm_point;
+		double norm_rotate = (*it)->getNorm();
+		norm_point.x = point.x + cos( norm_rotate * rp::math::pi / 180.0 ) * RPConnectorDock::delta;
+		norm_point.y = point.y - sin( norm_rotate * rp::math::pi / 180.0 ) * RPConnectorDock::delta;
+		dc.MoveTo( point.x, point.y );
+		dc.LineTo( norm_point.x, norm_point.y );
 		it++;
 	}
 	dc.SelectObject( old_pen );

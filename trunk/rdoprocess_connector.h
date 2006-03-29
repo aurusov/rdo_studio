@@ -25,14 +25,16 @@ public:
 		fly   = 0x04,
 		all   = 0x07
 	};
+	static const int delta;
 
 protected:
 	RPObjectMatrix* _object_matrix;
 	rp::point       point;
 	Type            type;
+	double          norm;
 
 public:
-	RPConnectorDock( RPObjectMatrix* __object_matrix, Type _type, const rp::point& _point ): _object_matrix( __object_matrix ), type( _type ), point( _point ) {};
+	RPConnectorDock( RPObjectMatrix* __object_matrix, Type _type, const rp::point& _point, double _norm ): _object_matrix( __object_matrix ), type( _type ), point( _point ), norm( _norm ) {};
 	virtual ~RPConnectorDock() {};
 
 	std::list< RPConnector* > connectors;
@@ -56,6 +58,12 @@ public:
 	rp::point getPosition( bool global = true ) const {
 		return global ? _object_matrix->globalMatrix() * point : point ;
 	}
+	double getNorm( bool global = true ) const {
+		double res = global ? _object_matrix->getRotationGlobal() + norm : norm;
+		while ( res >= 360 ) res -= 360;
+		while ( res <  360 ) res += 360;
+		return res;
+	}
 };
 
 // ----------------------------------------------------------------------------
@@ -64,7 +72,7 @@ public:
 class RPConnectorDockOne: public RPConnectorDock
 {
 public:
-	RPConnectorDockOne( RPObjectMatrix* __object_matrix, Type _type, const rp::point& _point ): RPConnectorDock( __object_matrix, _type, _point ) {};
+	RPConnectorDockOne( RPObjectMatrix* __object_matrix, Type _type, const rp::point& _point, double _norm ): RPConnectorDock( __object_matrix, _type, _point, _norm ) {};
 	virtual ~RPConnectorDockOne() {};
 
 	virtual bool can_connect() const { return connectors.empty(); }

@@ -14,7 +14,7 @@ static char THIS_FILE[] = __FILE__;
 class RPConnectorDockGreen: public RPConnectorDockOne
 {
 public:
-	RPConnectorDockGreen( RPObjectMatrix* __object_matrix, Type _type, const rp::point& _point ): RPConnectorDockOne( __object_matrix, _type, _point ) {};
+	RPConnectorDockGreen( RPObjectMatrix* __object_matrix, Type _type, const rp::point& _point, double _norm ): RPConnectorDockOne( __object_matrix, _type, _point, _norm ) {};
 	virtual ~RPConnectorDockGreen() {};
 
 	virtual COLORREF color() const { return RGB(0x80, 0xFF, 0x00); }
@@ -26,7 +26,7 @@ public:
 class RPConnectorDockRed: public RPConnectorDockOne
 {
 public:
-	RPConnectorDockRed( RPObjectMatrix* __object_matrix, Type _type, const rp::point& _point ): RPConnectorDockOne( __object_matrix, _type, _point ) {};
+	RPConnectorDockRed( RPObjectMatrix* __object_matrix, Type _type, const rp::point& _point, double _norm ): RPConnectorDockOne( __object_matrix, _type, _point, _norm ) {};
 	virtual ~RPConnectorDockRed() {};
 
 	virtual COLORREF color() const { return RGB(0xFF, 0x80, 0x00); }
@@ -44,9 +44,9 @@ RPShapeIf::RPShapeIf( RPObject* _parent ):
 	pa_src.push_back( rp::point(-35, 0) );
 	pa_src.push_back( rp::point(0, -35) );
 
-	docks.push_back( new RPConnectorDock( this, RPConnectorDock::in,  rp::point( -35, 0  ) ) );
-	docks.push_back( new RPConnectorDockGreen( this, RPConnectorDock::out, rp::point(  35, 0  ) ) );
-	docks.push_back( new RPConnectorDockRed( this, RPConnectorDock::out, rp::point(   0, 35 ) ) );
+	docks.push_back( new RPConnectorDock( this, RPConnectorDock::in,  rp::point( -35, 0 ), 180 ) );
+	docks.push_back( new RPConnectorDockGreen( this, RPConnectorDock::out, rp::point( 35, 0 ), 0 ) );
+	docks.push_back( new RPConnectorDockRed( this, RPConnectorDock::out, rp::point( 0, 35 ), 270 ) );
 }
 
 RPShapeIf::~RPShapeIf()

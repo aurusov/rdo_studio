@@ -154,17 +154,6 @@ protected:
 
 	// Поворот
 	double getRotation() const { return rotation_alpha; }
-	double getRotationGlobal( bool first = true ) const {
-		RPObjectMatrix* matrix_parent = matrixParent();
-		if ( first ) {
-			double alpha = matrix_parent ? matrix_parent->getRotationGlobal() + rotation_alpha : rotation_alpha;
-			while ( alpha < 0 )   alpha += 360;
-			while ( alpha >= 360 ) alpha -= 360;
-			return alpha;
-		} else {
-			return matrix_parent ? matrix_parent->getRotationGlobal() + rotation_alpha : rotation_alpha;
-		}
-	}
 	virtual void setRotation( double alpha );
 
 	// Изменить центр поворота в локальных координатах
@@ -182,6 +171,18 @@ public:
 	rp::matrix globalMatrix( int mask_parent = m_all & ~m_sc, int mask_self = m_all ) const {
 		RPObjectMatrix* matrix_parent = matrixParent();
 		return matrix_parent ? matrix_parent->parentMatrix( mask_parent, false ) * selfMatrix( mask_self ) : selfMatrix( mask_self );
+	}
+
+	double getRotationGlobal( bool first = true ) const {
+		RPObjectMatrix* matrix_parent = matrixParent();
+		if ( first ) {
+			double alpha = matrix_parent ? matrix_parent->getRotationGlobal() + rotation_alpha : rotation_alpha;
+			while ( alpha < 0 )   alpha += 360;
+			while ( alpha >= 360 ) alpha -= 360;
+			return alpha;
+		} else {
+			return matrix_parent ? matrix_parent->getRotationGlobal() + rotation_alpha : rotation_alpha;
+		}
 	}
 
 /*
