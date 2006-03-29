@@ -21,13 +21,16 @@ static char THIS_FILE[]=__FILE__;
 RPShapeProcessMJ::RPShapeProcessMJ( RPObject* _parent ):
 	RPShape( _parent, _T("Process") )
 {
-	pa_src.push_back( rp::point(-25, -25) );
-	pa_src.push_back( rp::point(25, -25) );
-	pa_src.push_back( rp::point(25, 25) );
-	pa_src.push_back( rp::point(-25, 25) );
-	pa_src.push_back( rp::point(-25, -25) );
+	pa_src.push_back( rp::point(-50, -25) );
+	pa_src.push_back( rp::point(50, -25) );
+	pa_src.push_back( rp::point(50, 25) );
+	pa_src.push_back( rp::point(-50, 25) );
+	pa_src.push_back( rp::point(-50, -25) );
 
-	matrix_scale.data[0][0] = 2;
+
+docks.push_back( new RPConnectorDock( this, RPConnectorDock::in,  rp::point( -50, 0 ) ) );
+docks.push_back( new RPConnectorDockOne( this, RPConnectorDock::out, rp::point(  50, 0 ) ) );
+
 }
 
 RPShapeProcessMJ::~RPShapeProcessMJ()

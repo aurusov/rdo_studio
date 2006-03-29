@@ -22,14 +22,19 @@ static char THIS_FILE[]=__FILE__;
 RPShapeCreateMJ::RPShapeCreateMJ( RPObject* _parent ):
 	RPShape( _parent, _T("Create") )
 {
-	pa_src.push_back( rp::point(-20, -25) );
-	pa_src.push_back( rp::point(15, -25) );
-	pa_src.push_back( rp::point(25, 0) );
-	pa_src.push_back( rp::point(15, 25) );
-	pa_src.push_back( rp::point(-20, 25) );
-	pa_src.push_back( rp::point(-20, -25) );
+	pa_src.push_back( rp::point(-50, -25) );
+	pa_src.push_back( rp::point(25, -25) );
+	pa_src.push_back( rp::point(50, 0) );
+	pa_src.push_back( rp::point(25, 25) );
+	pa_src.push_back( rp::point(-50, 25) );
+	pa_src.push_back( rp::point(-50, -25) );
 
-	matrix_scale.data[0][0] = 2;
+	docks.push_back( new RPConnectorDock( this, RPConnectorDock::in,  rp::point( -50, 0 ) ) );
+	docks.push_back( new RPConnectorDockOne( this, RPConnectorDock::out, rp::point(  50, 0 ) ) );
+
+
+
+	
 
 	// инициализация параметров для генерирования
 	gname; // имя
@@ -65,8 +70,9 @@ void RPShapeCreateMJ::onLButtonDblClk( UINT nFlags, CPoint global_chart_pos )
 	dlg.DoModal();
 }
 
-void RPShapeCreateMJ::list_name()
+/*void RPShapeCreateMJ::list_name()
 {
 	RPShape::list_name();
 	TRACE( "*** Create ***\n" );
 }
+*/

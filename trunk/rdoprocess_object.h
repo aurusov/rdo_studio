@@ -44,7 +44,8 @@ public:
 	RPObject( RPObject* parent = NULL, const rp::string& name = "object" );
 	virtual ~RPObject();
 
-	virtual void list_name();
+	void list_name();
+    virtual void generate(){}; // MJ 29.03.06 ф-ия генериовнаия
 
 	rp::string getName() const { return name; }
 	virtual bool setName( const rp::string& value );

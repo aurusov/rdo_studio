@@ -2,7 +2,7 @@
 
 [General Info]
 Version=1
-LastClass=RPShapeCreateDlg1_MJ
+LastClass=RPMainFrame
 LastTemplate=CDialog
 NewFileInclude1=#include "stdafx.h"
 NewFileInclude2=#include "rdo_process.h"
@@ -31,12 +31,12 @@ Class19=RPShapeProcessDlg2_MJ
 Class20=RPShapeTerminateDlg1_MJ
 
 ResourceCount=8
-Resource1=IDD_DIALOG_TERMINATE_1_MJ
-Resource2=IDD_DIALOG_CREATE_2_MJ
-Resource3=IDD_DIALOG_CREATE_1_MJ
-Resource4=IDD_DIALOG_PROCESS_1_MJ
-Resource5=IDD_ABOUT
-Resource6=IDD_DIALOG_PROCESS_2_MJ
+Resource1=IDD_DIALOG_PROCESS_2_MJ
+Resource2=IDD_DIALOG_CREATE_1_MJ
+Resource3=IDD_ABOUT
+Resource4=IDD_DIALOG_TERMINATE_1_MJ
+Resource5=IDD_DIALOG_PROCESS_1_MJ
+Resource6=IDD_DIALOG_CREATE_2_MJ
 Resource7=IDR_RDO_PRTYPE (English (U.S.))
 Resource8=IDR_MAINFRAME (English (U.S.))
 
@@ -93,12 +93,14 @@ Type=0
 BaseClass=baseCSCBMiniDockFrameWnd
 HeaderFile=ctrl\sizecbar\sizecbar.h
 ImplementationFile=ctrl\sizecbar\sizecbar.cpp
+LastObject=CSCBMiniDockFrameWnd
 
 [CLS:RPApp]
 Type=0
 BaseClass=CWinApp
 HeaderFile=rdoprocess_app.h
 ImplementationFile=rdoprocess_app.cpp
+LastObject=ID_FLOW_ROTATE
 
 [CLS:RPAboutDlg]
 Type=0
@@ -123,6 +125,9 @@ Type=0
 BaseClass=CMDIFrameWnd
 HeaderFile=rdoprocess_mainfrm.h
 ImplementationFile=rdoprocess_mainfrm.cpp
+LastObject=ID_GENERATE
+Filter=T
+VirtualFilter=fWC
 
 [CLS:RPShapeCreateDlg1_MJ]
 Type=0
@@ -138,6 +143,9 @@ Type=0
 BaseClass=CDialog
 HeaderFile=rdoprocess_shape_create_dlg2_MJ.h
 ImplementationFile=rdoprocess_shape_create_dlg2_MJ.cpp
+Filter=D
+VirtualFilter=dWC
+LastObject=ID_FLOW_ROTATE
 
 [CLS:RPListBox]
 Type=0
@@ -283,7 +291,7 @@ Control4=IDC_EDIT1,edit,1350631552
 
 [TB:IDR_MAINFRAME (English (U.S.))]
 Type=1
-Class=?
+Class=RPMainFrame
 Command1=ID_FILE_NEW
 Command2=ID_EDIT_CUT
 Command3=ID_EDIT_COPY
@@ -291,7 +299,8 @@ Command4=ID_EDIT_PASTE
 Command5=ID_FLOW_SELECT
 Command6=ID_FLOW_CONNECTOR
 Command7=ID_FLOW_ROTATE
-CommandCount=7
+Command8=ID_GENERATE
+CommandCount=8
 
 [MNU:IDR_MAINFRAME (English (U.S.))]
 Type=1

@@ -42,6 +42,7 @@ protected:
 	afx_msg void OnFlowSelect();
 	afx_msg void OnFlowRotate();
 	afx_msg void OnFlowConnector();
+	afx_msg void OnGenerate();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

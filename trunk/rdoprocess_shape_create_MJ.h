@@ -17,7 +17,7 @@ public:
 	RPShapeCreateMJ( RPObject* parent );
 	virtual ~RPShapeCreateMJ();
 	virtual void onLButtonDblClk( UINT nFlags, CPoint global_chart_pos );
-	virtual void list_name();
+	//virtual void list_name();
 
 
 	//переменные для генерации

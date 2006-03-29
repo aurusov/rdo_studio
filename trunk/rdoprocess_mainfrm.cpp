@@ -4,7 +4,7 @@
 #include "rdoprocess_string.h"
 #include "ctrl/rdoprocess_pagectrl.h"
 #include "resource.h"
-
+#include "rdoprocess_object.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -25,6 +25,7 @@ BEGIN_MESSAGE_MAP(RPMainFrame, CMDIFrameWnd)
 	ON_COMMAND(ID_FLOW_SELECT, OnFlowSelect)
 	ON_COMMAND(ID_FLOW_ROTATE, OnFlowRotate)
 	ON_COMMAND(ID_FLOW_CONNECTOR, OnFlowConnector)
+	ON_COMMAND(ID_GENERATE, OnGenerate)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -213,3 +214,11 @@ void RPMainFrame::OnFlowRotate()
 {
 	rpapp.project().setFlowState( RPProject::flow_rotate );
 }
+
+	// MJ start 29.03.06 обработчик кнопки генерирования
+void RPMainFrame::OnGenerate() 
+{
+RPObject::list_name();
+
+}
+	// MJ stop

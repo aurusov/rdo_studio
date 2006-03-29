@@ -144,7 +144,7 @@ UpdateData(FALSE);
 
 void RPShapeCreateDlg1_MJ::OnButton1() 
 {
-	RPShapeCreateDlg2_MJ dlg2;
+	RPShapeCreateDlg2_MJ dlg2(NULL,pParentMJ);
 	dlg2.DoModal();
 	
 }

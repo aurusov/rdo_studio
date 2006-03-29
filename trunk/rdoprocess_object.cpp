@@ -117,6 +117,7 @@ void RPObject::list_name()
 	std::list< RPObject* >::const_iterator it = child.begin();
 	while( it != child.end() ) {
 		(*it)->list_name();
+	TRACE( "%s\n", (*it)->getName().c_str() );
 		it++;
 	}
 }

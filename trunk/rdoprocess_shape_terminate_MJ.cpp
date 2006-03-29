@@ -19,14 +19,16 @@ static char THIS_FILE[]=__FILE__;
 RPShapeTerminateMJ::RPShapeTerminateMJ( RPObject* _parent ):
 	RPShape( _parent, _T("Terminate") )
 {
-	pa_src.push_back( rp::point(-25, 0) );
-	pa_src.push_back( rp::point(-15, -25) );
-	pa_src.push_back( rp::point(20, -25) );
-	pa_src.push_back( rp::point(20, 25) );
-	pa_src.push_back( rp::point(-15, 25) );
-	pa_src.push_back( rp::point(-25, 0) );
+	pa_src.push_back( rp::point(-50, 0) );
+	pa_src.push_back( rp::point(-25, -25) );
+	pa_src.push_back( rp::point(50, -25) );
+	pa_src.push_back( rp::point(50, 25) );
+	pa_src.push_back( rp::point(-25, 25) );
+	pa_src.push_back( rp::point(-50, 0) );
 
-	matrix_scale.data[0][0] = 2;
+
+	docks.push_back( new RPConnectorDock( this, RPConnectorDock::in,  rp::point( -50, 0 ) ) );
+
 }
 
 void RPShapeTerminateMJ::onLButtonDblClk( UINT nFlags, CPoint global_chart_pos )
