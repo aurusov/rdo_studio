@@ -218,10 +218,10 @@ void RPMainFrame::OnFlowRotate()
 	// MJ start 29.03.06 обработчик кнопки генерирования
 void RPMainFrame::OnGenerate() 
 {
-	rpapp.project().list_name();
+	
 	rpapp.RDOfiles->pattern.open("PATTERN.pat");
-
-
+	rpapp.project().list_name();
+	
 	rpapp.RDOfiles->pattern.close();
 
 }

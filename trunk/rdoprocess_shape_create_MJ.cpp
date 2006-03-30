@@ -74,8 +74,16 @@ void RPShapeCreateMJ::onLButtonDblClk( UINT nFlags, CPoint global_chart_pos )
 */
 
 
-void RPShapeCreateMJ::generate()
+void RPShapeCreateMJ::generate_MJ()
 {
-	rpapp.RDOfiles->pattern <<"блок генерации";
-
+rpapp.RDOfiles->pattern <<"имя следующего блока - "<<id_next
+<<endl<<"имя - "<<getName().c_str()
+<<endl<<"время первого - "<<gfirst
+<<endl<< "кол-во создаваемых - "<<gamount
+<<endl<<"закон прибытия - "<<gtype
+<<endl<<"база генератора - "<<base_gen
+<<endl<<"атрибуты закона - "<<"exp - "<<gexp<<" disp"<<gdisp<<" max - " <<gmax<<" min - "<<gmin
+<<endl<<"второе окно! бесконечноть - "<<inf
+<<endl<<"ID группы - "<<gID
+<<endl<<"параметры - "<<"1-  "<<gpar1<< " 2 - "<<gpar2<<" 3 - "<<gpar3<<endl;
 }

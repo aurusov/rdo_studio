@@ -1165,3 +1165,26 @@ void RPShape::onRButtonDown( UINT nFlags, CPoint global_chart_pos )
 		it++;
 	}
 }
+
+void RPShape::find_next_block_MJ()
+{
+std::vector< RPConnectorDock* >::const_iterator it = docks.begin();
+	while ( it != docks.end() ) {
+		std::list< RPConnector* >::const_iterator conn_it = (*it)->connectors.begin();
+		while ( conn_it != (*it)->connectors.end() ) {
+			RPConnectorDock* dock = (*conn_it)->getConnectedDock( **it );
+			if ( dock ) {
+				TRACE( "%s", getName().c_str() );
+				const RPObjectMatrix& obj = dock->object_matrix();
+			
+				if ( dock->isType( RPConnectorDock::in ) ) 
+				{
+				RPObject::id_next = obj.getName().c_str();
+				} 
+				
+			}
+			conn_it++;
+		}
+		it++;
+	}
+}

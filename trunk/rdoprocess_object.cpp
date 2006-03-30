@@ -118,8 +118,9 @@ void RPObject::list_name()
 	while( it != child.end() ) {
 	
 		TRACE( "%s\n", (*it)->getName().c_str() );
+	    (*it)->find_next_block_MJ();
 		(*it)->list_name();
-		(*it)->generate();
+		(*it)->generate_MJ();
 		it++;
 	}
 }
