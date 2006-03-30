@@ -4,7 +4,7 @@
 
 // Generated Help ID header file
 #define APSTUDIO_HIDDEN_SYMBOLS
-#include "resource.h"
+#include "resource.hm"
 #undef APSTUDIO_HIDDEN_SYMBOLS
 
 #define APSTUDIO_READONLY_SYMBOLS
@@ -125,7 +125,7 @@ END
 IDD_DIALOG_CREATE_1_MJ DIALOGEX 0, 0, 317, 170
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Create"
-FONT 8, "MS Sans Serif"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,199,149,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,260,149,50,14
@@ -160,12 +160,12 @@ END
 IDD_DIALOG_CREATE_2_MJ DIALOGEX 0, 0, 182, 142
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Дополнительные настройки"
-FONT 8, "MS Sans Serif"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,120,120,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,65,120,50,14
     LTEXT           "Временная бесконечность",IDC_STATIC,11,14,92,8,0,0,
-                    IDC_STATIC
+                    HIDC_STATIC
     EDITTEXT        IDC_EDIT1,108,10,62,14,ES_AUTOHSCROLL,WS_EX_STATICEDGE
     LTEXT           "ID группы",IDC_STATIC,69,34,34,8
     EDITTEXT        IDC_EDIT2,108,31,61,15,ES_AUTOHSCROLL,WS_EX_STATICEDGE
@@ -181,7 +181,7 @@ END
 IDD_DIALOG_PROCESS_1_MJ DIALOGEX 0, 0, 341, 238
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Process"
-FONT 8, "MS Sans Serif"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,221,217,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,275,217,50,14
@@ -496,8 +496,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,1,0,57
- PRODUCTVERSION 0,1,0,57
+ FILEVERSION 0,1,0,58
+ PRODUCTVERSION 0,1,0,58
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -515,14 +515,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "Simulation Sistem\0"
-            VALUE "FileVersion", "0, 1, 0, 57\0"
+            VALUE "FileVersion", "0, 1, 0, 58\0"
             VALUE "InternalName", "RAO-Process\0"
             VALUE "LegalCopyright", "Copyright (C) 2006\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "rao-process.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "RAO-Process\0"
-            VALUE "ProductVersion", "0, 1, 0, 57\0"
+            VALUE "ProductVersion", "0, 1, 0, 58\0"
             VALUE "SpecialBuild", "\0"
         END
     END

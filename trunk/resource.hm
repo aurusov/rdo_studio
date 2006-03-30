@@ -1,0 +1,4 @@
+// Microsoft Developer Studio generated Help ID include file.
+// Used by rdo_process.rc
+//
+#define HIDC_STATIC                     0x8098ffff    // IDD_DIALOG_CREATE_2_MJ
