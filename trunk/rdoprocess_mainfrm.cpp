@@ -219,5 +219,14 @@ void RPMainFrame::OnFlowRotate()
 void RPMainFrame::OnGenerate() 
 {
 	rpapp.project().list_name();
+	
+	rpapp.RDOfiles->pattern.open("PATTERN.pat");
+	rpapp.RDOfiles->pattern <<"ну ка попробуем протестировать";
+	rpapp.RDOfiles->pattern <<endl<<"плпытка написать вторую строку";
+	rpapp.RDOfiles->pattern <<endl<<rpapp.RDOfiles->pattern;
+
+
+	rpapp.RDOfiles->pattern.close();
+
 }
 	// MJ stop

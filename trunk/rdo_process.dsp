@@ -103,6 +103,10 @@ SOURCE=.\rdoprocess_connector.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\rdoprocess_creation_RDO_files_MJ.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdoprocess_flowchart.cpp
 # End Source File
 # Begin Source File
@@ -221,6 +225,10 @@ SOURCE=.\rdoprocess_childfrm.h
 # Begin Source File
 
 SOURCE=.\rdoprocess_connector.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdoprocess_creation_RDO_files_MJ.h
 # End Source File
 # Begin Source File
 

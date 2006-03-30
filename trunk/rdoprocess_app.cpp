@@ -30,6 +30,11 @@ RPApp::RPApp():
 	_project( NULL )
 {
 	log.open( "log.txt" );
+
+	//MJ start Для создания класса файлов РДО и ссылки на него
+		RDOfiles  = NULL;
+		RDOfiles  = new RPCreationRDOFilesMJ();
+	// MJ stop
 }
 
 BOOL RPApp::InitInstance()
