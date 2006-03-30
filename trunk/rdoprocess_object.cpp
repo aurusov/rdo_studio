@@ -110,14 +110,15 @@ void RPObject::selectChildOff( RPObject* withoutObj )
 		it++;
 	}
 }
-
+	// MJ start 30.03.06  бегает по list объектов и вызывает генерирование
 void RPObject::list_name()
 {
-	TRACE( "%s\n", getName().c_str() );
+//	TRACE( "%s\n", getName().c_str() );
 	std::list< RPObject* >::const_iterator it = child.begin();
 	while( it != child.end() ) {
+	
+		TRACE( "%s\n", (*it)->getName().c_str() );
 		(*it)->list_name();
-	TRACE( "%s\n", (*it)->getName().c_str() );
 		it++;
 	}
 }
@@ -162,3 +163,5 @@ std::list< RPObject* >::const_iterator it = obj->child.begin();
 
 }
 */
+
+// MJ stop
