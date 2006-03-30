@@ -119,6 +119,7 @@ void RPObject::list_name()
 	
 		TRACE( "%s\n", (*it)->getName().c_str() );
 		(*it)->list_name();
+		(*it)->generate();
 		it++;
 	}
 }

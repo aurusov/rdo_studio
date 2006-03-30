@@ -72,3 +72,10 @@ void RPShapeCreateMJ::onLButtonDblClk( UINT nFlags, CPoint global_chart_pos )
 	TRACE( "*** Create ***\n" );
 }
 */
+
+
+void RPShapeCreateMJ::generate()
+{
+	rpapp.RDOfiles->pattern <<"блок генерации";
+
+}

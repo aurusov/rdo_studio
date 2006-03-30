@@ -8,6 +8,7 @@
 #if _MSC_VER > 1000
 #pragma once
 #endif // _MSC_VER > 1000
+#include "rdoprocess_app.h"
 
 #include "rdoprocess_shape.h"
 
@@ -18,7 +19,7 @@ public:
 	virtual ~RPShapeCreateMJ();
 	virtual void onLButtonDblClk( UINT nFlags, CPoint global_chart_pos );
 	//virtual void list_name();
-
+	virtual void generate();
 
 	//переменные для генерации
 	CString gname; // имя
@@ -26,6 +27,7 @@ public:
 	double gamount; // кол-во создаваемых
 	int gtype; // закон прибытия
 	int base_gen;
+	
 	//атрибуты законов
 	double gexp;
 	double gdisp;
@@ -36,6 +38,9 @@ public:
 	int inf; // бесконечноть
 	int gID; // ID группы
 	double gpar1, gpar2, gpar3;
+
+	//id следующего
+	CString id_next;
 };
 
 #endif // !defined(AFX_RDOPROCESS_SHAPE_CREATE_MJ_H__B043A584_EC30_4198_83AE_4C54E356FDAF__INCLUDED_)
