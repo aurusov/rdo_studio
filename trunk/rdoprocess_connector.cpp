@@ -36,6 +36,144 @@ RPConnector::~RPConnector()
 {
 }
 
+void RPConnector::next_step( CDC& dc, const rp::point& p1, const rp::point& p2, double norm1, double norm2, rp::polyline& pl )
+{
+	recursive++;
+	if ( recursive > 100 ) {
+		TRACE( "recursive > 100\n" );
+		return;
+	}
+	if ( p1 == p2 ) {
+		TRACE( "found !!!\n" );
+		return;
+	}
+	double alpha1 = norm1 * rp::math::pi / 180.0;
+	double alpha2 = norm2 * rp::math::pi / 180.0;
+	double k_cos1 = cos( alpha1 );
+	double k_cos2 = cos( alpha2 );
+	double k_sin1 = sin( alpha1 );
+	double k_sin2 = sin( alpha2 );
+	if ( fabs(k_cos1) < 1e-15 ) {
+		k_cos1 = 0;
+	}
+	if ( fabs(k_cos2) < 1e-15 ) {
+		k_cos2 = 0;
+	}
+	if ( fabs(k_sin1) < 1e-15 ) {
+		k_sin1 = 0;
+	}
+	if ( fabs(k_sin2) < 1e-15 ) {
+		k_sin2 = 0;
+	}
+	// —оздали отрезки p1->p12 и p2->21 в направлении нормалей
+	double len = 1e10;
+	rp::point p12( p1.x + len * k_cos1, p1.y - len * k_sin1 );
+	rp::point p22( p2.x + len * k_cos2, p2.y - len * k_sin2 );
+/*
+	rp::point _p12( p1.x + 200 * k_cos1, p1.y - 200 * k_sin1 );
+	rp::point _p22( p2.x + 200 * k_cos2, p2.y - 200 * k_sin2 );
+	dc.TextOut( p1.x, p1.y, rp::string::fromdouble( norm1 ).c_str() );
+	dc.TextOut( p2.x, p2.y, rp::string::fromdouble( norm2 ).c_str() );
+
+	dc.SaveDC();
+	CPen pen_green( PS_SOLID, 1, RGB(0x00, 0xFF, 0x00) );
+	dc.SelectObject( &pen_green );
+	dc.MoveTo( p1.x, p1.y );
+	dc.LineTo( _p12.x, _p12.y );
+	dc.MoveTo( p2.x, p2.y );
+	dc.LineTo( _p22.x, _p22.y );
+	dc.RestoreDC( -1 );
+
+	RPShape* shape = (RPShape*)(&dock_begin->object());
+	rp::rect rect = shape->getBoundingRectNoRotateOuter().extendByPerimetr( RPConnectorDock::delta );
+	dc.SaveDC();
+	CPen pen_red( PS_DASH, 1, RGB(0xFF, 0x00, 0x00) );
+	dc.SelectObject( &pen_red );
+	dc.MoveTo( rect.p0().x, rect.p0().y );
+	dc.LineTo( rect.p1().x, rect.p1().y );
+	dc.LineTo( rect.p2().x, rect.p2().y );
+	dc.LineTo( rect.p3().x, rect.p3().y );
+	dc.LineTo( rect.p0().x, rect.p0().y );
+	shape = (RPShape*)(&dock_end->object());
+	rect = shape->getBoundingRectNoRotateOuter().extendByPerimetr( RPConnectorDock::delta );
+	dc.MoveTo( rect.p0().x, rect.p0().y );
+	dc.LineTo( rect.p1().x, rect.p1().y );
+	dc.LineTo( rect.p2().x, rect.p2().y );
+	dc.LineTo( rect.p3().x, rect.p3().y );
+	dc.LineTo( rect.p0().x, rect.p0().y );
+	dc.RestoreDC( -1 );
+*/
+
+/*
+	double a  = rp::math::getAlpha( p1, p2 );
+	double a1 = a - norm1;
+	double a2 = 180 - a + norm2;
+	if ( a1 >= 270 ) a1 -= 360;
+	if ( a1 <= -270) a1 += 360;
+	if ( a2 >= 270 ) a2 -= 360;
+*/
+	double Ka, Kb, K, Ua, Ub;
+	rp::point inter = rp::math::getIntersection( p1, p12, p2, p22, Ka, Kb, K, Ua, Ub );
+	bool intersect  = Ua >= 0 && Ua <= 1 && Ub >= 0 && Ub <= 1;
+	bool parallel   = fabs(K) == 0.0;
+	bool same       = fabs(K) == 0.0 && fabs(Ka) == 0.0 && fabs(Kb) == 0.0;
+	if ( intersect ) {
+		// ¬сЄ нормально, фигуры пересекаютс€ своими пр€мыми под углом в 90-то градусов
+		pl.push_back( inter );
+		return;
+	} else {
+		RPShape* shape = (RPShape*)(&dock_begin->object());
+		rp::rect rect = shape->getBoundingRectNoRotateOuter().extendByPerimetr( RPConnectorDock::delta );
+		if ( !rect.isIntersection( p1, p2, inter ) ) {
+			shape = (RPShape*)(&dock_end->object());
+			rect = shape->getBoundingRectNoRotateOuter().extendByPerimetr( RPConnectorDock::delta );
+			if ( !rect.isIntersection( p1, p2, inter ) ) {
+				// ¬сЄ нормально, можем соедин€ть фигуры, направл€ющие которых под 180 друг к другу, т.е. нужен поворот
+				// ѕродливаем отрезок первой фигуры на половину рассто€ни€
+				double dx = (p2.x - p1.x) / 2;
+				double dy = (p2.y - p1.y) / 2;
+				rp::point p( p1.x + dx * k_cos1, p1.y - dy * k_sin1 );
+				double a  = rp::math::getAlpha( p1, p2 );
+				double a1 = a - norm1;
+				if ( a1 >= 270 ) a1 -= 360;
+				if ( a1 <= -270) a1 += 360;
+//				if ( recursive == 1 )
+//					dc.TextOut( 10, 10, rp::string::fromdouble( a1 ).c_str() );
+				if ( a1 != 0 ) {
+					// ѕовернуть и найти простую точку пересечени€ лучей
+					pl.push_back( p );
+					next_step( dc, p, p2, a1 < 0 ? norm1 - 90 : norm1 + 90, norm2, pl );
+				} else {
+					// ≈сли a1 == 0, то получаетс€ пр€ма€ лини€, т.е. точку p в список тоек заносить не надо
+				}
+				return;
+			} else {
+				// ѕересекли вторую фигуры
+/*
+				dc.SaveDC();
+				CPen pen_black( PS_SOLID, 1, RGB(0x00, 0x00, 0x00) );
+				CBrush brush_yellow( RGB(0xFF, 0xFF, 0x00) );
+				dc.SelectObject( &pen_black );
+				dc.SelectObject( &brush_yellow );
+				dc.Ellipse( inter.x - 3, inter.y - 3, inter.x + 3, inter.y + 3 );
+				dc.RestoreDC( -1 );
+*/
+			}
+		} else {
+			// ѕересекли первую фигуры
+/*
+			dc.SaveDC();
+			CPen pen_black( PS_SOLID, 1, RGB(0x00, 0x00, 0x00) );
+			CBrush brush_green( RGB(0x00, 0xFF, 0x00) );
+			dc.SelectObject( &pen_black );
+			dc.SelectObject( &brush_green );
+			dc.Ellipse( inter.x - 3, inter.y - 3, inter.x + 3, inter.y + 3 );
+			dc.RestoreDC( -1 );
+*/
+		}
+	}
+}
+
 void RPConnector::draw( CDC& dc )
 {
 	if ( dock_begin && !dock_end ) {
@@ -47,15 +185,43 @@ void RPConnector::draw( CDC& dc )
 		dc.Polyline( &pl.getWinPolyline()[0], pl.size() );
 		dc.SelectObject( old_pen );
 	} else if ( dock_begin && dock_end ) {
+		rp::point p1 = dock_begin->getPosition();
+		rp::point p2 = dock_begin->getOutpoint();
+		rp::point p3 = dock_end->getOutpoint();
+		rp::point p4 = dock_end->getPosition();
 		rp::polyline pl;
-		pl.push_back( dock_begin->getPosition() );
-		pl.push_back( dock_begin->getDeltaPosition() );
-		pl.push_back( dock_end->getDeltaPosition() );
-		pl.push_back( dock_end->getPosition() );
+		pl.push_back( p1 );
+		pl.push_back( p2 );
+
+		recursive = 0;
+		double norm1 = rp::math::getAlpha(p1, p2);
+		if ( norm1 > 45   && norm1 < 135 ) {
+			norm1 = 90;
+		} else if ( norm1 >= 135 && norm1 < 225 ) {
+			norm1 = 180;
+		} else if ( norm1 >= 225 && norm1 < 315 ) {
+			norm1 = 270;
+		} else {
+			norm1 = 0;
+		}
+		double norm2 = rp::math::getAlpha(p4, p3);
+		if ( norm2 > 45   && norm2 < 135 ) {
+			norm2 = 90;
+		} else if ( norm2 >= 135 && norm2 < 225 ) {
+			norm2 = 180;
+		} else if ( norm2 >= 225 && norm2 < 315 ) {
+			norm2 = 270;
+		} else {
+			norm2 = 0;
+		}
+		next_step( dc, p2, p3, norm1, norm2, pl );
+
+		pl.push_back( p3 );
+		pl.push_back( p4 );
+
 		CPen* old_pen = dc.SelectObject( &main_pen );
 		dc.Polyline( &pl.getWinPolyline()[0], pl.size() );
 		dc.SelectObject( old_pen );
-
 /*
 		rp::point p1 = dock_begin->getDeltaPosition();
 		rp::point p2 = dock_end->getDeltaPosition();

@@ -30,6 +30,8 @@ protected:
 	rp::polyline borders;
 	int recursive;
 
+	void next_step( CDC& dc, const rp::point& p1, const rp::point& p2, double norm1, double norm2, rp::polyline& pl );
+
 #ifdef CON_DEBUG
 	void makeConnector( CDC& dc, const rp::point& p1, const rp::point& p2, double norm1, double norm2, rp::polyline& pa );
 	bool getShortLine( CDC& dc, const rp::polyline& pa, const rp::point& from, const rp::point& to, double& lengthA2, rp::point& B1, rp::point& B2, rp::point& interborder );
@@ -127,6 +129,47 @@ public:
 		rp::point res;
 		res.x = pos.x + cos( rotate * rp::math::pi / 180.0 ) * RPConnectorDock::delta;
 		res.y = pos.y - sin( rotate * rp::math::pi / 180.0 ) * RPConnectorDock::delta;
+		return res;
+	}
+	rp::point getOutpoint() const {
+		rp::point pos = getPosition();
+		rp::point res;
+		rp::rect rect = parent->getBoundingRectNoRotateOuter().extendByPerimetr( RPConnectorDock::delta );
+		double len = 1e20;
+		double l;
+		bool null;
+		rp::point p = rp::math::getPerpendicular( rect.p0(), rect.p1(), pos, null );
+		if ( !null ) {
+			l = rp::math::getLength( p, pos );
+			if ( l < len ) {
+				len = l;
+				res = p;
+			}
+		}
+		p = rp::math::getPerpendicular( rect.p1(), rect.p2(), pos, null );
+		if ( !null ) {
+			l = rp::math::getLength( p, pos );
+			if ( l < len ) {
+				len = l;
+				res = p;
+			}
+		}
+		p = rp::math::getPerpendicular( rect.p2(), rect.p3(), pos, null );
+		if ( !null ) {
+			l = rp::math::getLength( p, pos );
+			if ( l < len ) {
+				len = l;
+				res = p;
+			}
+		}
+		p = rp::math::getPerpendicular( rect.p3(), rect.p0(), pos, null );
+		if ( !null ) {
+			l = rp::math::getLength( p, pos );
+			if ( l < len ) {
+				len = l;
+				res = p;
+			}
+		}
 		return res;
 	}
 	// Док сам создает коннектор

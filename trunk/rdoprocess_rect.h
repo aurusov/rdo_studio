@@ -105,6 +105,7 @@ public:
 	bool pointInRect( const rp::point& point ) const;
 //	void extendFromCenter( double delta );
 	rect& extendByPerimetr( double delta );
+	bool isIntersection( const rp::point& p1, const rp::point& p2, rp::point& inter );
 
 #ifdef _DEBUG
 	void trace() const {

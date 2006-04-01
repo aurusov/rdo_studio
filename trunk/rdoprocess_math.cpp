@@ -67,11 +67,7 @@ double math::getDistance( const rp::point& line_point1, const rp::point& line_po
 {
 	bool null;
 	rp::point p = math::getPerpendicular( line_point1, line_point2, point, null, inside );
-	if ( !null ) {
-		double l1 = p.x - point.x;
-		double l2 = p.y - point.y;
-		return sqrt( l1*l1 + l2*l2 );
-	}
+	if ( !null ) return math::getLength( p, point );
 	return -1.0;
 }
 

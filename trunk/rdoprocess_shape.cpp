@@ -182,6 +182,8 @@ void RPShape::drawPolyline( CDC& dc )
 {
 	if ( pa_global.size() < 2 ) return;
 	dc.SelectObject( main_pen );
+//	dc.Polyline( &pa_global.getWinPolyline()[0], pa_global.size() );
+//	return;
 	CBrush brush( RGB(0xFF, 0xFF, 0xA0) );
 	CBrush* old_brush = dc.SelectObject( &brush );
 //	dc.BeginPath();
@@ -366,14 +368,7 @@ void RPShape::command_before( const rp::point& global_chart_pos, bool first_clic
 {
 	RPObjectMatrix::command_before( global_chart_pos, first_click );
 	pcmd = ((rpapp.project().getFlowState() == RPProject::flow_select || rpapp.project().getFlowState() == RPProject::flow_rotate) && first_click) ? RPShape::pcmd_move : getPossibleCommand( global_chart_pos );
-	if ( pcmd == pcmd_dock_out ) {
-		RPObjectFlowChart* flowchart = flowChart();
-		RPConnectorDock* dock = find_dock( global_chart_pos );
-		if ( flowchart ) {
-			flowchart->insert_connector( dock );
-		}
-	}
-	if ( pcmd == pcmd_dock_in ) {
+	if ( pcmd == pcmd_dock_in || pcmd == pcmd_dock_out || pcmd == pcmd_dock_inout ) {
 		RPObjectFlowChart* flowchart = flowChart();
 		RPConnectorDock* dock = find_dock( global_chart_pos );
 		if ( flowchart ) {

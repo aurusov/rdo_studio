@@ -95,4 +95,43 @@ rect& rect::extendByPerimetr( double delta )
 	return *this;
 }
 
+bool rect::isIntersection( const rp::point& p1, const rp::point& p2, rp::point& _inter )
+{
+	double Ka, Kb, K, Ua, Ub;
+	rp::point inter;
+	if ( fabs(rp::math::getDistance( pa[0], pa[1], p1 )) > 2 && fabs(rp::math::getDistance( pa[0], pa[1], p2 )) > 2 ) {
+		inter = rp::math::getIntersection( pa[0], pa[1], p1, p2, Ka, Kb, K, Ua, Ub );
+		bool intersect = Ua >= 0 && Ua <= 1 && Ub >= 0 && Ub <= 1;
+		if ( intersect  ) {
+			_inter = inter;
+			return true;
+		}
+	}
+	if ( fabs(rp::math::getDistance( pa[1], pa[2], p1 )) > 2 && fabs(rp::math::getDistance( pa[1], pa[2], p2 )) > 2 ) {
+		inter = rp::math::getIntersection( pa[1], pa[2], p1, p2, Ka, Kb, K, Ua, Ub );
+		bool intersect = Ua >= 0 && Ua <= 1 && Ub >= 0 && Ub <= 1;
+		if ( intersect  ) {
+			_inter = inter;
+			return true;
+		}
+	}
+	if ( fabs(rp::math::getDistance( pa[2], pa[3], p1 )) > 2 && fabs(rp::math::getDistance( pa[2], pa[3], p2 )) > 2 ) {
+		inter = rp::math::getIntersection( pa[2], pa[3], p1, p2, Ka, Kb, K, Ua, Ub );
+		bool intersect = Ua >= 0 && Ua <= 1 && Ub >= 0 && Ub <= 1;
+		if ( intersect  ) {
+			_inter = inter;
+			return true;
+		}
+	}
+	if ( fabs(rp::math::getDistance( pa[3], pa[0], p1 )) > 2 && fabs(rp::math::getDistance( pa[3], pa[0], p2 )) > 2 ) {
+		inter = rp::math::getIntersection( pa[3], pa[0], p1, p2, Ka, Kb, K, Ua, Ub );
+		bool intersect = Ua >= 0 && Ua <= 1 && Ub >= 0 && Ub <= 1;
+		if ( intersect  ) {
+			_inter = inter;
+			return true;
+		}
+	}
+	return false;
+}
+
 }

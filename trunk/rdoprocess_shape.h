@@ -133,11 +133,11 @@ public:
 	// Габориты фигуры
 	virtual rp::rect getBoundingRect( bool global = true ) const;
 	virtual rp::rect getMaxRect();
-	rp::rect getBoundingRectNoRotateOuter() {
+	virtual rp::rect getBoundingRectNoRotateOuter() {
 		transformToGlobal();
 		return getBoundingRect().getBoundingRect();
 	}
-	rp::rect getBoundingRectNoRotateIner() {
+	virtual rp::rect getBoundingRectNoRotateIner() {
 		transformToGlobal();
 		return pa_global.getBoundingRect();
 	}

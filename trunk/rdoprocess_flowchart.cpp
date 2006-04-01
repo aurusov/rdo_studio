@@ -101,6 +101,13 @@ BOOL RPFlowChart::Create( LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD d
 //	updateFont();
 	updateScrollBars();
 
+/*
+	RPShapeAction* action = new RPShapeAction( flowobj );
+	action->setPosition( 100, 45 );
+	action = new RPShapeAction( flowobj );
+	action->setPosition( 250, 145 );
+*/
+
 	shape_action = new RPShapeAction( flowobj );
 	shape_action->setPosition( 100, 45 );
 	shape_if = new RPShapeIf( flowobj );
