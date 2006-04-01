@@ -129,7 +129,7 @@ public:
 		res.y = pos.y - sin( rotate * rp::math::pi / 180.0 ) * RPConnectorDock::delta;
 		return res;
 	}
-	// Док сам создает конектор
+	// Док сам создает коннектор
 	virtual RPConnector* make_connector( RPObject* _parent ) { return new RPConnector( _parent ); }
 };
 
@@ -148,24 +148,18 @@ public:
 // ----------------------------------------------------------------------------
 // ---------- RPConnectorResource
 // ----------------------------------------------------------------------------
-class RPConnectorResource: public RPConnector
-{
-public:
-	RPConnectorResource( RPObject* parent, const rp::string& name = "connector" );
-	virtual ~RPConnectorResource();
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RPConnectorResource
-// ----------------------------------------------------------------------------
 class RPConnectorDockResource: public RPConnectorDock
 {
 public:
 	RPConnectorDockResource( RPObjectMatrix* _parent, Type _type, const rp::point& _point, double _norm ): RPConnectorDock( _parent, _type, _point, _norm ) {};
 	virtual ~RPConnectorDockResource() {};
 
-	// Док сам создает конектор
-	virtual RPConnector* make_connector( RPObject* _parent ) { return new RPConnectorResource( _parent ); }
+	// Док сам создает коннектор
+	virtual RPConnector* make_connector( RPObject* _parent ) {
+		RPConnector* conn = new RPConnector( _parent );
+		conn->setPen( CPen(PS_DOT, 1, RGB(0x00, 0x00, 0x80)) );
+		return conn;
+	}
 };
 
 #endif // RDO_PROCESS_CONNECTOR_H

@@ -26,6 +26,15 @@ RPObjectChart::~RPObjectChart()
 {
 }
 
+void RPObjectChart::setPen( CPen& pen )
+{
+	LOGPEN logpen;
+	if ( pen.GetLogPen( &logpen ) ) {
+		main_pen.DeleteObject();
+		main_pen.CreatePenIndirect( &logpen );
+	}
+}
+
 RPObjectFlowChart* RPObjectChart::flowChart() const
 {
 	RPObjectChart* chart_parent = chartParent();

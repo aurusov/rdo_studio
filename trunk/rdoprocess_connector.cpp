@@ -457,16 +457,3 @@ RPConnectorDock* RPConnector::getConnectedDock( const RPConnectorDock& dock ) co
 	if ( &dock == dock_end ) return dock_begin;
 	return NULL;
 }
-
-// ----------------------------------------------------------------------------
-// ---------- RPConnectorResource
-// ----------------------------------------------------------------------------
-RPConnectorResource::RPConnectorResource( RPObject* _parent, const rp::string& _name ): RPConnector( _parent, _name )
-{
-	main_pen.DeleteObject();
-	main_pen.CreatePen( PS_DOT, 1, RGB(0x00, 0x00, 0x80) );
-}
-
-RPConnectorResource::~RPConnectorResource()
-{
-}

@@ -51,6 +51,7 @@ public:
 		if ( res ) update();
 		return res;
 	}
+	void setPen( CPen& pen );
 
 	virtual void update();
 
