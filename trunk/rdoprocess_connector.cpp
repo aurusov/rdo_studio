@@ -39,19 +39,32 @@ RPConnector::~RPConnector()
 void RPConnector::draw( CDC& dc )
 {
 	if ( dock_begin && !dock_end ) {
-		rp::point p1 = dock_begin->getDeltaPosition();
-		rp::point p2 = flowChart()->mouse_current();
+		rp::polyline pl;
+		pl.push_back( dock_begin->getPosition() );
+		pl.push_back( dock_begin->getDeltaPosition() );
+		pl.push_back( flowChart()->mouse_current() );
 		CPen* old_pen = dc.SelectObject( &main_pen );
-		dc.MoveTo( p1.x, p1.y );
-		dc.LineTo( p2.x, p2.y );
+		dc.Polyline( &pl.getWinPolyline()[0], pl.size() );
 		dc.SelectObject( old_pen );
 	} else if ( dock_begin && dock_end ) {
+		rp::polyline pl;
+		pl.push_back( dock_begin->getPosition() );
+		pl.push_back( dock_begin->getDeltaPosition() );
+		pl.push_back( dock_end->getDeltaPosition() );
+		pl.push_back( dock_end->getPosition() );
+		CPen* old_pen = dc.SelectObject( &main_pen );
+		dc.Polyline( &pl.getWinPolyline()[0], pl.size() );
+		dc.SelectObject( old_pen );
+
+/*
 		rp::point p1 = dock_begin->getDeltaPosition();
 		rp::point p2 = dock_end->getDeltaPosition();
 		CPen* old_pen = dc.SelectObject( &main_pen );
 		dc.MoveTo( p1.x, p1.y );
 		dc.LineTo( p2.x, p2.y );
 		dc.SelectObject( old_pen );
+*/
+
 /*
 		double norm1 = dock_begin->getNorm();
 		double norm2 = dock_end->getNorm();

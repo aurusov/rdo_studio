@@ -207,9 +207,9 @@ void RPShape::drawDocks( CDC& dc )
 		rp::point point = gm * (*it)->getPosition( false );
 
 //		if ( !(*it)->connectors.empty() ) {
-			rp::point norm_point = (*it)->getDeltaPosition();
-			dc.MoveTo( point.x, point.y );
-			dc.LineTo( norm_point.x, norm_point.y );
+//			rp::point norm_point = (*it)->getDeltaPosition();
+//			dc.MoveTo( point.x, point.y );
+//			dc.LineTo( norm_point.x, norm_point.y );
 //		}
 
 		CBrush brush( (*it)->color() );
