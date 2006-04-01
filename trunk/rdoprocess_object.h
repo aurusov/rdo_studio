@@ -45,9 +45,10 @@ public:
 	virtual ~RPObject();
 
 	void list_name();
-    virtual void generate_MJ(){}; // MJ 29.03.06 ф-ия генериовнаия
+    virtual void generate_MJ() {}; // MJ 29.03.06 ф-ия генериовнаия
 	virtual void find_next_block_MJ() {};// MJ 30.03.06 создает ф-ию которая перекрывается в RPShape для поиска следующего блока
 	CString id_next; //MJ 30.03.06 id следующего блока, заведено здесь для функции, которая пробегает полисту
+
 	rp::string getName() const { return name; }
 	virtual bool setName( const rp::string& value );
 
@@ -59,12 +60,8 @@ public:
 	bool hasChild() const { return !child.empty(); }
 	std::list< RPObject* >::const_iterator find_child( const RPObject* object ) {
 		return std::find( child.begin(), child.end(), object );
-	
-		
-	
 	};
 
 };
 
 #endif // RDO_PROCESS_OBJECT_H
-

@@ -18,8 +18,7 @@ class RPObjectFlowChart;
 class RPObjectChart: public RPObject
 {
 protected:
-	RPObjectChart*     chartParent() const { return !isFlowChart() && parent && parent->isChartObject() ? static_cast<RPObjectChart*>(parent) : NULL; }
-	RPObjectFlowChart* flowChart() const;
+	RPObjectChart* chartParent() const { return !isFlowChart() && parent && parent->isChartObject() ? static_cast<RPObjectChart*>(parent) : NULL; }
 
 	int  main_pen_width;
 	CPen main_pen;
@@ -44,6 +43,8 @@ protected:
 public:
 	RPObjectChart( RPObject* parent, const rp::string& name = "object" );
 	virtual ~RPObjectChart();
+
+	RPObjectFlowChart* flowChart() const;
 
 	virtual bool setName( const rp::string& value ) {
 		bool res = RPObject::setName( value );

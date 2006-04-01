@@ -1150,7 +1150,7 @@ void RPShape::onRButtonDown( UINT nFlags, CPoint global_chart_pos )
 			RPConnectorDock* dock = (*conn_it)->getConnectedDock( **it );
 			if ( dock ) {
 				TRACE( "%s", getName().c_str() );
-				const RPObjectMatrix& obj = dock->object_matrix();
+				const RPObjectChart& obj = dock->object();
 				if ( dock->isType( RPConnectorDock::inout ) ) {
 					TRACE( " <--> " );
 				} else if ( dock->isType( RPConnectorDock::in ) ) {
@@ -1175,7 +1175,7 @@ std::vector< RPConnectorDock* >::const_iterator it = docks.begin();
 			RPConnectorDock* dock = (*conn_it)->getConnectedDock( **it );
 			if ( dock ) {
 				TRACE( "%s", getName().c_str() );
-				const RPObjectMatrix& obj = dock->object_matrix();
+				const RPObjectChart& obj = dock->object();
 			
 				if ( dock->isType( RPConnectorDock::in ) ) 
 				{

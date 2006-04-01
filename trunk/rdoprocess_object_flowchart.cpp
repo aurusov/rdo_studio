@@ -507,7 +507,7 @@ RPObjectChart* RPObjectFlowChart::find( const rp::point& global_chart_pos )
 void RPObjectFlowChart::insert_connector( RPConnectorDock* dock )
 {
 	if ( !one_connector && dock ) {
-		one_connector = new RPConnector( this );
+		one_connector = dock->make_connector( this );
 		one_connector->dock_begin = dock;
 		dock->connectors.push_back( one_connector );
 		ct_wanted = ctw_end;
