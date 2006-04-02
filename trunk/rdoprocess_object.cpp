@@ -20,6 +20,8 @@ RPObject::RPObject( RPObject* parent, const rp::string& _name ):
 		parent->child.push_back( this );
 		parent->setCorrectChildName( this );
 	}
+	
+	type ="block"; // инициализация типа блоков, по умолчанию
 }
 
 RPObject::~RPObject()
@@ -167,3 +169,22 @@ std::list< RPObject* >::const_iterator it = obj->child.begin();
 */
 
 // MJ stop
+
+void RPObject::list_name_for_resource_MJ(std::list< RPObject* >* list_resource)
+{
+//	TRACE( "%s\n", getName().c_str() );
+	std::list< RPObject* >::const_iterator it = child.begin();
+	while( it != child.end() ) {
+	
+		
+	    if((*it)->type == "resource")
+		{
+		TRACE( "%s\n", (*it)->getName().c_str() );
+         list_resource->push_back(*it);
+		}
+			
+		(*it)->list_name_for_resource_MJ(list_resource);
+		it++;
+	}
+}
+

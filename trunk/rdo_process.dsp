@@ -195,6 +195,14 @@ SOURCE=.\rdoprocess_shape_process_MJ.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\rdoprocess_shape_resource.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdoprocess_shape_resource_DLG1_MJ.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdoprocess_shape_terminate_dlg1_MJ.cpp
 # End Source File
 # Begin Source File
@@ -317,6 +325,14 @@ SOURCE=.\rdoprocess_shape_process_dlg2_MJ.h
 # Begin Source File
 
 SOURCE=.\rdoprocess_shape_process_MJ.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdoprocess_shape_resource.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdoprocess_shape_resource_DLG1_MJ.h
 # End Source File
 # Begin Source File
 

@@ -7,7 +7,7 @@
 
 #include "rdoprocess_string.h"
 #include <list>
-
+//#include "rdoprocess_shape_process_dlg2_MJ.h" // MJ 02.04.06 диалог процесса передает ссылку на себя в list_resource_find_MJ чтобы она у него создавала ресурсы 
 // ----------------------------------------------------------------------------
 // ---------- RPObject
 // ----------------------------------------------------------------------------
@@ -41,6 +41,7 @@ protected:
 	virtual void modify() {};
 
 public:
+	
 	RPObject( RPObject* parent = NULL, const rp::string& name = "object" );
 	virtual ~RPObject();
 
@@ -48,6 +49,8 @@ public:
     virtual void generate_MJ() {}; // MJ 29.03.06 ф-ия генериовнаия
 	virtual void find_next_block_MJ() {};// MJ 30.03.06 создает ф-ию которая перекрывается в RPShape для поиска следующего блока
 	CString id_next; //MJ 30.03.06 id следующего блока, заведено здесь для функции, которая пробегает полисту
+	CString type; // MJ 1.04.06 для определения типа блоков
+	void list_name_for_resource_MJ(std::list< RPObject* >* list_resource);
 
 	rp::string getName() const { return name; }
 	virtual bool setName( const rp::string& value );

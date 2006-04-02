@@ -17,6 +17,7 @@ DECLARE_DYNAMIC(RPMainFrame)
 protected:
 	CStatusBar  m_wndStatusBar;
 	CToolBar    m_wndToolBar;
+	CToolBar    m_wndToolBlockBarMJ; // MJ 2.04.06 панель для блоков
 
 public:
 	RPMainFrame();

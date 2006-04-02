@@ -37,6 +37,8 @@ public:
 // Dialog Data
 	//{{AFX_DATA(RPShapeProcessDlg1_MJ)
 	enum { IDD = IDD_DIALOG_PROCESS_1_MJ };
+	CComboBox	m_gtype;
+	CComboBox	m_gqueque;
 	RPListBox	m_ResList;
 	CButton	m_DelRes;
 	CButton	m_AddRes;
@@ -45,10 +47,15 @@ public:
 	CEdit	m_proc_dlg1_disp_control_MJ;
 	CEdit	m_proc_dlg1_exp_control_MJ;
 	CComboBox	m_parameter;
-	CComboBox	m_combo;
-	CComboBox	m_type;
 	CComboBox	m_action;
 	CString	m_name;
+	CString	m_list_text;
+	int		m_gprior;
+	double	m_gexp;
+	double	m_gdisp;
+	double	m_gmin;
+	double	m_gmax;
+	int		m_gbase_gen;
 	//}}AFX_DATA
 
 

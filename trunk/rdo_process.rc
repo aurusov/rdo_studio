@@ -97,6 +97,7 @@ IDC_FLOW_DOCK_NOT       CURSOR  DISCARDABLE     "res\\flow_dock_not.cur"
 IDB_PAGECTRL_CLOSE      BITMAP  DISCARDABLE     "res\\pagectrl_close.bmp"
 IDB_PAGECTRL_CLOSE_OVER BITMAP  DISCARDABLE     "res\\pagectrl_close_over.bmp"
 IDB_PAGECTRL_PAGE       BITMAP  DISCARDABLE     "res\\pagectrl_page.bmp"
+TOOLBARBLOCKMJ          BITMAP  DISCARDABLE     "res\\toolbar1.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -247,6 +248,21 @@ BEGIN
     EDITTEXT        IDC_EDIT1,79,15,116,14,ES_AUTOHSCROLL
 END
 
+IDD_DIALOG_RESOURCE_DLG1 DIALOG DISCARDABLE  0, 0, 238, 73
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Resource"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,124,52,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,181,52,50,14
+    EDITTEXT        IDC_EDIT1,54,13,111,14,ES_AUTOHSCROLL
+    LTEXT           "Имя блока",IDC_STATIC,13,15,38,8
+    LTEXT           "Одновременно может обсдуживаться ",IDC_STATIC,13,34,132,
+                    8
+    EDITTEXT        IDC_EDIT2,145,31,21,14,ES_AUTOHSCROLL
+    LTEXT           "транзактов",IDC_STATIC,170,34,40,8
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -303,6 +319,14 @@ BEGIN
         TOPMARGIN, 7
         BOTTOMMARGIN, 50
     END
+
+    IDD_DIALOG_RESOURCE_DLG1, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 231
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 66
+    END
 END
 #endif    // APSTUDIO_INVOKED
 
@@ -357,6 +381,21 @@ BEGIN
 0xe0cc, 0xf1ea, 0xece8, 0xe7e8, 0xf6e0, 0xffe8, 0xef20, 0xf0e0, 0xece0, 
 0xf2e5, 0xe0f0, "\000" 
     0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+TOOLBARBLOCKMJ TOOLBAR DISCARDABLE  16, 15
+BEGIN
+    BUTTON      ID_BUTTON32779
+    BUTTON      ID_BUTTON32781
+    BUTTON      ID_BUTTON32782
+    SEPARATOR
+    BUTTON      ID_BUTTON32783
 END
 
 #endif    // Russian resources

@@ -6,7 +6,8 @@
 #endif // _MSC_VER > 1000
 // rdoprocess_shape_process_dlg2_MJ.h : header file
 //
-
+#include "rdoprocess_shape_process_dlg1_MJ.h"
+#include <list>
 /////////////////////////////////////////////////////////////////////////////
 // RPShapeProcessDlg2_MJ dialog
 
@@ -14,12 +15,21 @@ class RPShapeProcessDlg2_MJ : public CDialog
 {
 // Construction
 public:
-	RPShapeProcessDlg2_MJ(CWnd* pParent = NULL);   // standard constructor
+	void list_name_resource();
+	RPShapeProcessDlg2_MJ(CWnd* pParent = NULL,RPShapeProcessMJ* ppParent=NULL,RPShapeProcessDlg1_MJ* pParentDlg = NULL );   // standard constructor
+	virtual BOOL OnInitDialog();
+	
+	RPShapeProcessMJ* pParentMJ;
+	RPShapeProcessDlg1_MJ* pParentDlgMJ;
 
+
+	std::list< RPObject* > list_resource_MJ;
+	std::list< RPObject* >* list_resource_dlg2;
 // Dialog Data
 	//{{AFX_DATA(RPShapeProcessDlg2_MJ)
 	enum { IDD = IDD_DIALOG_PROCESS_2_MJ };
-		// NOTE: the ClassWizard will add data members here
+	CComboBox	m_combo_res_control;
+	CString	m_combo_res_value;
 	//}}AFX_DATA
 
 
@@ -35,7 +45,8 @@ protected:
 
 	// Generated message map functions
 	//{{AFX_MSG(RPShapeProcessDlg2_MJ)
-		// NOTE: the ClassWizard will add member functions here
+	afx_msg void OnCloseupCombo1();
+	virtual void OnOK();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

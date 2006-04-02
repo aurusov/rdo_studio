@@ -9,6 +9,8 @@
 #include "rdoprocess_shape_process_MJ.h" 
 #include "rdoprocess_shape_create_MJ.h"
 #include "rdoprocess_shape_terminate_MJ.h"
+#include "rdoprocess_shape_resource.h"
+
 // MJ end
 
 #include "rdoprocess_app.h"
@@ -87,6 +89,7 @@ RPShapeIf*          shape_if      = NULL;
 RPShapeCreateMJ*    shape_create  = NULL; // MJ
 RPShapeProcessMJ*   shape_process = NULL; // MJ
 RPShapeTerminateMJ* shape_terminate = NULL; // MJ
+RPShapeResource_MJ*    shape_resource = NULL; // MJ 1.04.06
 
 BOOL RPFlowChart::Create( LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext )
 {
@@ -122,6 +125,12 @@ BOOL RPFlowChart::Create( LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD d
 
 	shape_terminate = new RPShapeTerminateMJ( flowobj );
 	shape_terminate->setPosition( 100,200 );
+
+	shape_resource = new RPShapeResource_MJ( flowobj );
+	shape_resource->setPosition( 100,250 );
+
+	shape_resource = new RPShapeResource_MJ( flowobj );
+	shape_resource->setPosition( 100,300 );
 	// MJ end
 
 #ifdef TEST_SPEED // =====================================

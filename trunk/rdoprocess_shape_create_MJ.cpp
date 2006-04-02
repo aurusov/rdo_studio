@@ -22,6 +22,10 @@ static char THIS_FILE[]=__FILE__;
 RPShapeCreateMJ::RPShapeCreateMJ( RPObject* _parent ):
 	RPShape( _parent, _T("Create") )
 {
+
+	// инициализация типа блока 
+	type ="block";	
+			
 	pa_src.push_back( rp::point(-50, -25) );
 	pa_src.push_back( rp::point(25, -25) );
 	pa_src.push_back( rp::point(50, 0) );
@@ -29,7 +33,6 @@ RPShapeCreateMJ::RPShapeCreateMJ( RPObject* _parent ):
 	pa_src.push_back( rp::point(-50, 25) );
 	pa_src.push_back( rp::point(-50, -25) );
 
-	docks.push_back( new RPConnectorDock( this, RPConnectorDock::in,  rp::point( -50, 0 ), 180 ) );
 	docks.push_back( new RPConnectorDockOne( this, RPConnectorDock::out, rp::point(  50, 0 ), 0 ) );
 
 	// инициализация параметров для генерирования
@@ -50,9 +53,6 @@ RPShapeCreateMJ::RPShapeCreateMJ( RPObject* _parent ):
 	gpar1=0;
 	gpar2=0;
 	gpar3=0;
-
-
-
 
 }
 

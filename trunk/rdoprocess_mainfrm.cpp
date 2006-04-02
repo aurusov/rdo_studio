@@ -59,6 +59,12 @@ int RPMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_wndToolBar.CreateEx( this, winxp ? 0 : TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
 	m_wndToolBar.LoadToolBar( IDR_MAINFRAME );
 
+	//MJ start 02.04.06
+	m_wndToolBlockBarMJ.CreateEx( this, winxp ? 0 : TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
+	m_wndToolBlockBarMJ.LoadToolBar(TOOLBARBLOCKMJ);
+	//MJstop
+
+
 	if (!m_wndStatusBar.Create(this) ||
 		!m_wndStatusBar.SetIndicators(indicators,
 		  sizeof(indicators)/sizeof(UINT)))

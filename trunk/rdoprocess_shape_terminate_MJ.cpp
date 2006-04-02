@@ -19,6 +19,9 @@ static char THIS_FILE[]=__FILE__;
 RPShapeTerminateMJ::RPShapeTerminateMJ( RPObject* _parent ):
 	RPShape( _parent, _T("Terminate") )
 {
+	// инициализация типа блока 
+	type ="block";
+		
 	pa_src.push_back( rp::point(-50, 0) );
 	pa_src.push_back( rp::point(-25, -25) );
 	pa_src.push_back( rp::point(50, -25) );
@@ -40,4 +43,10 @@ dlg.DoModal();
 RPShapeTerminateMJ::~RPShapeTerminateMJ()
 {
 
+}
+
+void RPShapeTerminateMJ::generate_MJ()
+{
+	rpapp.RDOfiles->pattern <<endl<<endl<<"имя следующего блока - "<<id_next
+	<<endl<<"имя - "<<getName().c_str();
 }

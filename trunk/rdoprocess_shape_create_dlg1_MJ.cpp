@@ -52,6 +52,7 @@ void RPShapeCreateDlg1_MJ::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT6, m_dlgmin);
 	DDX_Text(pDX, IDC_EDIT7, m_dlgmax);
 	DDX_Text(pDX, IDC_EDIT8, m_dlgbase_gen);
+	DDV_MinMaxInt(pDX, m_dlgbase_gen, -2147483648, 2147483647);
 	//}}AFX_DATA_MAP
 }
 
@@ -71,7 +72,7 @@ BOOL RPShapeCreateDlg1_MJ::OnInitDialog()
 	m_dlgfirst=pParentMJ->gfirst; // время первого
 	m_dlgamount=pParentMJ->	gamount; // кол-во создаваемых
 	m_create_dlg1_combo1_MJ.SetCurSel(pParentMJ->gtype); // закон прибытия
-     RPShapeCreateDlg1_MJ::OnCloseupCombo1();
+    RPShapeCreateDlg1_MJ::OnCloseupCombo1();
 
 	m_dlgbase_gen=pParentMJ->base_gen;
 	//атрибуты законов
@@ -109,9 +110,9 @@ void RPShapeCreateDlg1_MJ::OnCloseupCombo1()
 {
 
 int cur = m_create_dlg1_combo1_MJ.GetCurSel();
-
-switch(cur) // определяем активные окна исходя из закона
-{
+UpdateData(TRUE);
+	switch(cur) // определяем активные окна исходя из закона
+	{
 case 0: // константа
 	m_create_dlg1_exp_control_MJ.EnableWindow(TRUE);
 	m_create_dlg1_disp_control_MJ.EnableWindow(FALSE);
@@ -137,10 +138,11 @@ case 3: // экспоненциальный
 	m_create_dlg1_min_control_MJ.EnableWindow(FALSE);
 					break;
 
+	}
+
+	UpdateData(FALSE);	
 }
 
-UpdateData(FALSE);	
-}
 
 void RPShapeCreateDlg1_MJ::OnButton1() 
 {

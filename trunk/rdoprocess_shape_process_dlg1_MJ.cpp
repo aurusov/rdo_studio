@@ -5,14 +5,14 @@
 //#include "rdo_process.h"
 #include "rdoprocess_shape_process_dlg1_MJ.h"
 #include "rdoprocess_shape_process_dlg2_MJ.h"
-
+#include "rdoprocess_app.h"
 //#include "resource.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
-
+#include<list>
 
 BEGIN_MESSAGE_MAP(RPListBox, CListBox)
 	//{{AFX_MSG_MAP(RPListBox)
@@ -30,6 +30,13 @@ RPShapeProcessDlg1_MJ::RPShapeProcessDlg1_MJ(CWnd* pParent /*=NULL*/,RPShapeProc
 {
 	//{{AFX_DATA_INIT(RPShapeProcessDlg1_MJ)
 	m_name = _T("");
+	m_list_text = _T("");
+	m_gprior = 0;
+	m_gexp = 0.0;
+	m_gdisp = 0.0;
+	m_gmin = 0.0;
+	m_gmax = 0.0;
+	m_gbase_gen = 0;
 	//}}AFX_DATA_INIT
 
     pParentMJ = ppParent;
@@ -40,6 +47,8 @@ void RPShapeProcessDlg1_MJ::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(RPShapeProcessDlg1_MJ)
+	DDX_Control(pDX, IDC_COMBO1, m_gtype);
+	DDX_Control(pDX, IDC_COMBO3, m_gqueque);
 	DDX_Control(pDX, IDC_LIST1, m_ResList);
 	DDX_Control(pDX, IDC_BUTTON2, m_DelRes);
 	DDX_Control(pDX, IDC_BUTTON1, m_AddRes);
@@ -48,10 +57,16 @@ void RPShapeProcessDlg1_MJ::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDIT5, m_proc_dlg1_disp_control_MJ);
 	DDX_Control(pDX, IDC_EDIT4, m_proc_dlg1_exp_control_MJ);
 	DDX_Control(pDX, IDC_COMBO4, m_parameter);
-	DDX_Control(pDX, IDC_COMBO1, m_combo);
-	DDX_Control(pDX, IDC_COMBO3, m_type);
 	DDX_Control(pDX, IDC_COMBO2, m_action);
 	DDX_Text(pDX, IDC_EDIT1, m_name);
+	DDX_LBString(pDX, IDC_LIST1, m_list_text);
+	DDX_Text(pDX, IDC_EDIT2, m_gprior);
+	DDX_Text(pDX, IDC_EDIT4, m_gexp);
+	DDX_Text(pDX, IDC_EDIT5, m_gdisp);
+	DDX_Text(pDX, IDC_EDIT6, m_gmin);
+	DDX_Text(pDX, IDC_EDIT7, m_gmax);
+	DDX_Text(pDX, IDC_EDIT8, m_gbase_gen);
+	DDV_MinMaxInt(pDX, m_gbase_gen, -2147483648, 2147483647);
 	//}}AFX_DATA_MAP
 }
 
@@ -59,21 +74,41 @@ void RPShapeProcessDlg1_MJ::DoDataExchange(CDataExchange* pDX)
 BOOL RPShapeProcessDlg1_MJ::OnInitDialog()
 {
 	CDialog::OnInitDialog();
-	m_combo.SetCurSel(0);
-	m_action.SetCurSel(1);
-
-//	m_ResList.AddString( "строка 1" );
-//	m_ResList.AddString( "строка 2" );
-//	m_ResList.AddString( "строка 3" );
-
-	m_type.SetCurSel(0); // по умолчанию закон fifo
-	m_parameter.EnableWindow(FALSE);// параметр не видно
-
-	// отображение имени в окне
+		 //отображение имени блока в окне
 	CString str( pParentMJ->getName().c_str() );
     m_name = str;
 	UpdateData(FALSE);
+	
+// инициализация из вызвавшего объекта
+	m_gtype.SetCurSel(pParentMJ->gtype); // закон прибытия
+	m_gbase_gen=pParentMJ->base_gen;
+	//атрибуты законов
+	m_gexp=pParentMJ->gexp;
+	m_gdisp=pParentMJ->gdisp;
+	m_gmax=pParentMJ->gmax;
+	m_gmin=pParentMJ->gmin;
 
+
+m_action.SetCurSel(pParentMJ->action);
+m_gprior = pParentMJ->prior;
+m_gqueque.SetCurSel(pParentMJ->queue);
+//m_parameter.SetCurSel(pParentMJ->parameter);
+
+
+//бегает по списку ресурсовlist_resource_procMJ
+std::list<CString>::iterator it = pParentMJ->list_resource_procMJ.begin();
+	while( it != pParentMJ->list_resource_procMJ.end() ) 
+	{
+	m_ResList.AddString(*it);
+	it++;
+	}	
+
+
+
+
+UpdateData(FALSE);
+OnCloseupCombo2(); 
+OnCloseupCombo1();
 	return TRUE;
 }
 
@@ -103,7 +138,7 @@ END_MESSAGE_MAP()
 
 void RPShapeProcessDlg1_MJ::OnCloseupCombo1() 
 {
-int cur = m_combo.GetCurSel();
+int cur = m_gtype.GetCurSel();
 
 switch(cur) // определяем активные окна исходя из закона
 {
@@ -131,12 +166,14 @@ case 3: // экспоненциальный
 	m_proc_dlg1_max_control_MJ.EnableWindow(FALSE);
 	m_proc_dlg1_min_control_MJ.EnableWindow(FALSE);
 					break;
+
+
 }	
 }
 
 void RPShapeProcessDlg1_MJ::OnCloseupCombo3() 
 {
-int cur = m_type.GetCurSel();
+int cur = m_gqueque.GetCurSel();
 
 switch(cur) // определяем активные окна исходя из закона
 {
@@ -157,7 +194,7 @@ case 3: // максимизация
 
 void RPShapeProcessDlg1_MJ::OnButton1() 
 {
-	RPShapeProcessDlg2_MJ dlg;
+	RPShapeProcessDlg2_MJ dlg(NULL,pParentMJ,this);
 	dlg.DoModal();
 }
 
@@ -166,6 +203,25 @@ void RPShapeProcessDlg1_MJ::OnOK()
 	// вывод и ввод имени блока
 	UpdateData(TRUE);
 	pParentMJ->setName(std::string(m_name));
+
+	
+// инициализация из вызвавшего объекта
+	pParentMJ->gtype= m_gtype.GetCurSel(); // закон прибытия
+	pParentMJ->base_gen=m_gbase_gen;
+	//атрибуты законов
+	pParentMJ->gexp=m_gexp;
+	pParentMJ->gdisp=m_gdisp;
+	pParentMJ->gmax=m_gmax;
+	pParentMJ->gmin=m_gmin;
+
+
+pParentMJ->action=m_action.GetCurSel();
+pParentMJ->prior = m_gprior ;
+pParentMJ->queue=m_gqueque.GetCurSel();
+
+
+
+
 	CDialog::OnOK();	
 }
 
@@ -176,7 +232,7 @@ void RPShapeProcessDlg1_MJ::OnCloseupCombo2()
 	switch(cur) // определяем активные окна исходя из закона
 	{
 	case 0: // задержать
-			m_type.EnableWindow(FALSE); // невидимая очередь
+			m_gqueque.EnableWindow(FALSE); // невидимая очередь
 			m_parameter.EnableWindow(FALSE);// невидимая очередь
 			m_AddRes.EnableWindow(FALSE); 
 			m_DelRes.EnableWindow(FALSE); 
@@ -184,8 +240,8 @@ void RPShapeProcessDlg1_MJ::OnCloseupCombo2()
 			
 						break;	
 	case 1: //занять задержать освободить
-			m_type.EnableWindow(TRUE);// невидимая очередь
-				 if(m_type.GetCurSel() == 0 || m_type.GetCurSel() == 1)
+			m_gqueque.EnableWindow(TRUE);// невидимая очередь
+				 if(m_gqueque.GetCurSel() == 0 || m_gqueque.GetCurSel() == 1)
 					   m_parameter.EnableWindow(FALSE);
 				 else
 					   m_parameter.EnableWindow(TRUE);
@@ -197,8 +253,8 @@ void RPShapeProcessDlg1_MJ::OnCloseupCombo2()
 					break;
 
 	case 2: // занять задержать
-		m_type.EnableWindow(TRUE);// невидимая очередь
-				if(m_type.GetCurSel() == 0 || m_type.GetCurSel() == 1)
+		m_gqueque.EnableWindow(TRUE);// невидимая очередь
+				if(m_gqueque.GetCurSel() == 0 || m_gqueque.GetCurSel() == 1)
 					m_parameter.EnableWindow(FALSE);
 				else
 					m_parameter.EnableWindow(TRUE);
@@ -211,8 +267,8 @@ void RPShapeProcessDlg1_MJ::OnCloseupCombo2()
 
 
 	case 3: // задержать освободить
-		m_type.EnableWindow(TRUE);// невидимая очередь
-				 if(m_type.GetCurSel() == 0 || m_type.GetCurSel() == 1)
+		m_gqueque.EnableWindow(TRUE);// невидимая очередь
+				 if(m_gqueque.GetCurSel() == 0 || m_gqueque.GetCurSel() == 1)
 					   m_parameter.EnableWindow(FALSE);
 				 else
 					   m_parameter.EnableWindow(TRUE);

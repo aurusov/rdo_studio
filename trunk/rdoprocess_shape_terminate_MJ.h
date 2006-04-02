@@ -10,13 +10,14 @@
 #endif // _MSC_VER > 1000
 
 #include "rdoprocess_shape.h"
-
+#include "rdoprocess_app.h"
 class RPShapeTerminateMJ : public RPShape  
 {
 public:
 	RPShapeTerminateMJ( RPObject* parent );
 	virtual ~RPShapeTerminateMJ();
     virtual void onLButtonDblClk( UINT nFlags, CPoint global_chart_pos );
+	virtual void generate_MJ();
 };
 
 #endif // !defined(AFX_RDOPROCESS_SHAPE_TERMINATE_MJ_H__86CC09DB_DB23_4B8C_9EC4_080002103CDF__INCLUDED_)
