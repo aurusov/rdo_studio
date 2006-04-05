@@ -27,9 +27,18 @@ RPToolBarBlockMJ::~RPToolBarBlockMJ()
 
 BEGIN_MESSAGE_MAP(RPToolBarBlockMJ, CStatusBarCtrl)
 	//{{AFX_MSG_MAP(RPToolBarBlockMJ)
+	ON_COMMAND(ID_BUTTON32779, OnButton32779)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // RPToolBarBlockMJ message handlers
 
+
+void RPToolBarBlockMJ::OnButton32779() 
+{
+	shape_create = new RPShapeCreateMJ( flowobj );
+	shape_create->setPosition( 100,100 );
+
+	
+}

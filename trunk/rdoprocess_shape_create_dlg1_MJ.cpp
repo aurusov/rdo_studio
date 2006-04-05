@@ -69,11 +69,13 @@ BOOL RPShapeCreateDlg1_MJ::OnInitDialog()
 	
 // инициализация из вызвавшего объекта
 
-	m_dlgfirst=pParentMJ->gfirst; // время первого
-	m_dlgamount=pParentMJ->	gamount; // кол-во создаваемых
-	m_create_dlg1_combo1_MJ.SetCurSel(pParentMJ->gtype); // закон прибытия
-    RPShapeCreateDlg1_MJ::OnCloseupCombo1();
 
+	m_create_dlg1_combo1_MJ.SetCurSel(pParentMJ->gtype); // закон прибытия
+   
+
+	
+	m_dlgfirst=pParentMJ->gfirst; // время первого
+	m_dlgamount=pParentMJ->gamount; // кол-во создаваемых
 	m_dlgbase_gen=pParentMJ->base_gen;
 	//атрибуты законов
 	m_dlgexp=pParentMJ->gexp;
@@ -90,7 +92,7 @@ BOOL RPShapeCreateDlg1_MJ::OnInitDialog()
 
 UpdateData(FALSE);
 
-
+ RPShapeCreateDlg1_MJ::OnCloseupCombo1();
 	return TRUE;
 }
 

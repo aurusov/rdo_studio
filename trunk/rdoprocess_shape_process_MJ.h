@@ -19,7 +19,7 @@ public:
 	virtual void onLButtonDblClk( UINT nFlags, CPoint global_chart_pos );
 	virtual void list_name();
 	virtual void generate_MJ();
-
+	void define_rule();
 
 		//переменные для генерации
 	CString gname; // имя

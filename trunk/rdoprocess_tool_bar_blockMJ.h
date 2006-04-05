@@ -34,6 +34,7 @@ public:
 	// Generated message map functions
 protected:
 	//{{AFX_MSG(RPToolBarBlockMJ)
+	afx_msg void OnButton32779();
 	//}}AFX_MSG
 
 	DECLARE_MESSAGE_MAP()

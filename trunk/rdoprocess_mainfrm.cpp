@@ -225,10 +225,15 @@ void RPMainFrame::OnFlowRotate()
 void RPMainFrame::OnGenerate() 
 {
 	
-	rpapp.RDOfiles->pattern.open("PATTERN.pat");
+	rpapp.RDOfiles->pattern.open("aaa\\PATTERN.pat");
+	rpapp.RDOfiles->resourse.open("aaa\\RESOURSE.res");
+	rpapp.RDOfiles->function.open("aaa\\FUNCTION.fun");
+	
 	rpapp.project().list_name();
 	
 	rpapp.RDOfiles->pattern.close();
+	rpapp.RDOfiles->resourse.close();
+	rpapp.RDOfiles->function.close();
 
 }
 	// MJ stop

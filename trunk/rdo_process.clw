@@ -2,7 +2,7 @@
 
 [General Info]
 Version=1
-LastClass=RPShapeProcessDlg1_MJ
+LastClass=RPShapeCreateDlg1_MJ
 LastTemplate=CStatusBarCtrl
 NewFileInclude1=#include "stdafx.h"
 NewFileInclude2=#include "rdo_process.h"
@@ -32,15 +32,15 @@ Class20=RPShapeTerminateDlg1_MJ
 
 ResourceCount=11
 Resource1=TOOLBARBLOCKMJ
-Resource2=IDD_DIALOG_RESOURCE_DLG1
-Resource3=IDD_DIALOG_CREATE_1_MJ
-Resource4=IDD_DIALOG_PROCESS_2_MJ
-Resource5=IDD_DIALOG_TERMINATE_1_MJ
-Resource6=IDD_DIALOG_CREATE_2_MJ
+Resource2=IDD_DIALOG_CREATE_1_MJ
+Resource3=IDD_DIALOG_PROCESS_1_MJ
+Resource4=IDD_ABOUT
+Resource5=IDD_DIALOG_RESOURCE_DLG1
+Resource6=IDD_DIALOG_PROCESS_2_MJ
 Resource7=IDR_RDO_PRTYPE (English (U.S.))
-Resource8=IDD_ABOUT
+Resource8=IDD_DIALOG_CREATE_2_MJ
 Class21=RPShapeResourceDLG1_MJ
-Resource9=IDD_DIALOG_PROCESS_1_MJ
+Resource9=IDD_DIALOG_TERMINATE_1_MJ
 Resource10=IDR_TOOLBAR1
 Class22=RPToolBarBlockMJ
 Resource11=IDR_MAINFRAME (English (U.S.))
@@ -139,7 +139,7 @@ Type=0
 BaseClass=CDialog
 HeaderFile=rdoprocess_shape_create_dlg1_MJ.h
 ImplementationFile=rdoprocess_shape_create_dlg1_MJ.cpp
-LastObject=IDC_EDIT8
+LastObject=IDC_EDIT2
 Filter=D
 VirtualFilter=dWC
 
@@ -396,5 +396,5 @@ ImplementationFile=rdoprocess_tool_bar_blockMJ.cpp
 BaseClass=CStatusBarCtrl
 Filter=W
 VirtualFilter=WC
-LastObject=ID_BUTTON32779
+LastObject=ID_APP_ABOUT
 

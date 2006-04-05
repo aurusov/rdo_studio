@@ -15,6 +15,7 @@
 class RPShapeCreateMJ : public RPShape  
 {
 public:
+	void define_rule();
 	RPShapeCreateMJ( RPObject* parent );
 	virtual ~RPShapeCreateMJ();
 	virtual void onLButtonDblClk( UINT nFlags, CPoint global_chart_pos );

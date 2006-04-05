@@ -76,7 +76,8 @@ void RPShapeCreateMJ::onLButtonDblClk( UINT nFlags, CPoint global_chart_pos )
 
 void RPShapeCreateMJ::generate_MJ()
 {
-rpapp.RDOfiles->pattern <<"имя следующего блока - "<<id_next
+/*
+rpapp.RDOfiles->function <<"имя следующего блока - "<<id_next
 <<endl<<"имя - "<<getName().c_str()
 <<endl<<"время первого - "<<gfirst
 <<endl<< "кол-во создаваемых - "<<gamount
@@ -85,5 +86,119 @@ rpapp.RDOfiles->pattern <<"имя следующего блока - "<<id_next
 <<endl<<"атрибуты закона - "<<"exp - "<<gexp<<" disp"<<gdisp<<" max - " <<gmax<<" min - "<<gmin
 <<endl<<"второе окно! бесконечноть - "<<inf
 <<endl<<"ID группы - "<<gID
-<<endl<<"параметры - "<<"1-  "<<gpar1<< " 2 - "<<gpar2<<" 3 - "<<gpar3<<endl;
+<<endl<<"параметры - "<<"1-  "<<gpar1<< " 2 - "<<gpar2<<" 3 - "<<gpar3;
+*/
+
+// ГЕНЕРАЦИЯ ресурсов РДО ФАЙЛ *.fun
+rpapp.RDOfiles->resourse<<endl<<"{-------блок cretae ------" <<getName().c_str()<<"-------------------}" <<endl
+
+<<endl<<"Create_"<<getName().c_str()<<" : Creates false 0";
+
+
+
+// ГЕНЕРАЦИЯ паттернов РДО ФАЙЛ *.fun
+
+rpapp.RDOfiles->pattern <<endl<<"{-------блок cretae ------" <<getName().c_str()<<"-------------------}" <<endl
+
+
+	<<endl<<"$Pattern  Block_" <<getName().c_str()<<" : irregular_event trace"
+	<<endl<<"$Relevant_resources"
+	<<endl<<"_parameter : "<<getName().c_str()<<"_res  Keep"
+	<<endl<<" _transact  : Group_of_transacts_X  Create"
+    <<endl<<"$Time = fun_"<<getName().c_str()<<"(_parameter.par_1, _parameter.amount)" 
+	<<endl<<"$Body"
+	<<endl<<"_parameter"
+	<<endl<<" Convert_event"
+	<<endl<<"par_1      set true {говорит о том , что это уже не первый}"
+	<<endl<<"par_amount set _parameter.par_amount + 1" 
+	<<endl	
+	<<endl<<"_transact"
+	<<endl<<"    Convert_event" 
+	<<endl	 
+	<<endl	 
+	<<endl<<"Место_нахождения            set "<<getName().c_str()<<" {ID создающего блока}"
+	<<endl<<"Место_нахождения_будущее    set "<<id_next          <<" {ID куда идет коннектор}"
+	
+	
+    //Место_в_очереди set 0
+	//Состояние_транзакта         set 0
+	
+	<<endl<<"Идентификационный_номер_транзакта set (_parameter.par_amount - 1)"
+    <<endl<<"Идентификационный_номер_группы_транзактов set "<<getName().c_str()<<" {ID создающего блока}"
+	<<endl<<"Состояние_транспортировки set ожидает	"
+	<<endl<<"$End";
+
+
+
+
+
+
+
+// ГЕНЕРАЦИЯ ФУНКЦИЙ РДО ФАЙЛ *.fun
+rpapp.RDOfiles->function<<endl<<"{-------блок cretae ------" <<getName().c_str()<<"-------------------}" <<endl
+
+<<endl<<"$Function  fun_"<<getName().c_str()<<" : integer"
+<<endl<<"$Type = algorithmic"
+<<endl<<"$Parameters"
+<<endl<<" _par        : such_as Creates.par_1 {проверяет первый или нет}"
+<<endl<<"  _par_amount : integer {проверка не перешёл ли максим}"
+<<endl<<"$Body"
+<<endl<<"  Calculate_if _par_amount > "<<gamount<<"{колличество создаваемых танзактов}  fun="<<inf
+<<endl 
+<<endl<<"  Calculate_if _par = false and _par_amount <= "<<gamount<<"{колличество создаваемых танзактов} "
+<<endl<<"  fun="<<gfirst<<"{время появление первого транзакта}"
+<<endl  
+<<endl<<"  Calculate_if _par = true and _par_amount <= "<<gamount<<"{колличество создаваемых танзактов} "
+<<endl<<"  fun=";
+define_rule();
+
+
+}
+
+
+	void RPShapeCreateMJ::define_rule()
+{
+int cur = gtype;
+CString rule;
+	switch(cur) // определяем активные окна исходя из закона
+	{
+case 0: // константа 
+
+	rpapp.RDOfiles->function<<gexp<<" {закон появления транзактов}"
+	<<endl<<"$End";
+			break;	
+
+case 1: // нормальный
+
+	rpapp.RDOfiles->function
+	<<"Нормальный_закон_" <<getName().c_str()<<"("<<gexp<<","<<gdisp<<") {закон появления транзактов}"
+	<<endl
+	<<endl<<"$End"
+	<<endl<<"$Sequence Нормальный_закон_" <<getName().c_str()<<" : real "
+	<<endl<<"$Type = normal "<<base_gen
+	<<endl<<"$End";
+
+			break;
+case 2: // равномерный закон
+	rpapp.RDOfiles->function
+	<<"Равномерный_закон_" <<getName().c_str()<<"("<<gmin<<","<<gmax<<") {закон появления транзактов}"
+	<<endl
+	<<endl<<"$End"
+	<<endl<<"$Sequence Равномерный_закон_" <<getName().c_str()<<" : real "
+	<<endl<<"$Type = uniform "<<base_gen
+	<<endl<<"$End";
+			break;
+case 3: // экспоненциальный
+	rpapp.RDOfiles->function
+	<<"Экспонинциальный_закон_" <<getName().c_str()<<"("<<gexp<<") {закон появления транзактов}"
+	<<endl
+	<<endl<<"$End"
+	<<endl<<"$Sequence Экспонинциальный_закон_" <<getName().c_str()<<" : real "
+	<<endl<<"$Type = exponential "<<base_gen
+	<<endl<<"$End";
+			break;
+
+	}
+
+
 }

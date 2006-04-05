@@ -71,10 +71,61 @@ void RPShapeProcessMJ::list_name()
 }
 
 
+// // ГЕНЕРАЦИЯ ресурсов РДО ФАЙЛ *.fun
+void RPShapeProcessMJ::define_rule()
+{
+		int cur = gtype;
+		CString rule;
+		switch(cur) // определяем активные окна исходя из закона
+		{
+	case 0: // константа 
+
+	rpapp.RDOfiles->pattern<<gexp;
+
+				break;	
+
+	case 1: // нормальный
+	
+	rpapp.RDOfiles->pattern<<"Нормальный_закон_" <<getName().c_str()<<"("<<gexp<<","<<gdisp<<")";
+		
+
+	rpapp.RDOfiles->function
+	<<endl<<endl<<endl<<"$Sequence Нормальный_закон_" <<getName().c_str()<<" : real "
+	<<endl<<"$Type = normal "<<base_gen
+	<<endl<<"$End";
+						break;
+						
+	case 2: // равномерный закон
+	
+		
+	rpapp.RDOfiles->pattern
+	<<"Равномерный_закон_" <<getName().c_str()<<"("<<gmin<<","<<gmax<<")";
+	
+	rpapp.RDOfiles->function
+	<<endl<<endl<<endl<<"$Sequence Равномерный_закон_" <<getName().c_str()<<" : real "
+	<<endl<<"$Type = uniform "<<base_gen
+	<<endl<<"$End";
+			break;
+	case 3: // экспоненциальный
+	rpapp.RDOfiles->pattern
+	<<"Экспонинциальный_закон_" <<getName().c_str()<<"("<<gexp<<")";
+
+	rpapp.RDOfiles->function
+	<<endl<<endl<<endl<<"$Sequence Экспонинциальный_закон_" <<getName().c_str()<<" : real "
+	<<endl<<"$Type = exponential "<<base_gen
+	<<endl<<"$End";
+						break;
+
+		}
+
+
+}
+
+
 void RPShapeProcessMJ::generate_MJ()
 {
 	RPShape::generate_MJ();
-
+/*
 rpapp.RDOfiles->pattern <<endl<<endl<<"имя следующего блока - "<<id_next
 <<endl<<"имя - "<<getName().c_str()
 
@@ -92,4 +143,226 @@ std::list<CString>::iterator it = list_resource_procMJ.begin();
 	rpapp.RDOfiles->pattern <<(*it)<<"     ";
 	it++;
 	}	
+
+
+*/
+// ГЕНЕРАЦИЯ ресурсов РДО ФАЙЛ *.res
+	rpapp.RDOfiles->resourse<<endl<<"{-------блок process ------" <<getName().c_str()<<"-------------------}" <<endl
+
+	<<endl<<"Block_process_"<<getName().c_str()<<" : Block_process свободен"
+	<<endl<<"Queue_"<<getName().c_str()<<": Queue 0 свободен {кол-во человек в очереди и состояния выходной очереди }";
+
+
+// ГЕНЕРАЦИЯ паттерное РДО ФАЙЛ *.pat
+rpapp.RDOfiles->pattern <<endl<<endl<<"{---------постановка в очекредь--------"<<getName().c_str()<<"-----------------------}"
+<<endl
+
+	<<endl<<"$Pattern Block_queue_"<<getName().c_str()<<" : rule {}trace"
+	<<endl<<"$Relevant_resources"
+	<<endl<<"	 _transact  : Group_of_transacts_X  Keep"
+	<<endl<<"	_block     : Queue_"<<getName().c_str()<<" Keep"
+	<<endl
+	<<endl<<"$Body"
+	<<endl<<"_transact"
+	<<endl<<"Choice from   _transact.Состояние_транспортировки = ожидает and" 
+	<<endl<<"	_transact.Место_нахождения = "<<getName().c_str()<<" and _transact.Место_нахождения_будущее = "<<getName().c_str()
+	<<endl<<"	first"
+	<<endl<<"Convert_rule "
+	<<endl<<"	Состояние_транспортировки set в_очереди"
+	<<endl	
+	<<endl<<"_block"
+	<<endl<<"Choice from 1=1"
+	<<endl<<"first"
+	<<endl<<"	Convert_rule"
+	<<endl<<"	Размер_очереди set _block.Размер_очереди + 1"
+	<<endl<<"$End"
+	<<endl
+
+	//------------------------------------------------
+	
+	<<endl<<"{---------освобождение из очереди------"<<getName().c_str()<<"---------------}"<<endl
+	<<endl<<"$Pattern Block_queue_release_"<<getName().c_str()<<" : rule {}trace"
+	<<endl
+	<<endl<<"$Relevant_resources"
+	<<endl<<"_transact  : Group_of_transacts_X  Keep"
+	<<endl<<"_block     : Queue_<<getName().c_str()"<<" Keep"
+	<<endl<<"_block_proc : Block_process_"<<getName().c_str()<<" NoChange"
+	<<endl<<"	$Body"
+	<<endl<<"_transact"
+	<<endl<<"	Choice from   _transact.Состояние_транспортировки = в_очереди and" 
+	<<endl<<"	_transact.Место_нахождения = "<<getName().c_str()<<" and _transact.Место_нахождения_будущее = "<<getName().c_str()
+	<<endl<<"		first"
+	<<endl<<"	Convert_rule" 
+	<<endl<<"		Состояние_транспортировки set в_очереди_выход"
+	<<endl<<"		Место_нахождения_будущее  set "<<id_next
+	<<endl
+	<<endl<<"_block"
+	<<endl<<"	Choice from _block.Выход_очереди = свободен"
+	<<endl<<"		first"
+	<<endl<<"	Convert_rule"
+	<<endl<<"		Размер_очереди set _block.Размер_очереди - 1"
+	<<endl<<"		Выход_очереди set занят"
+	<<endl
+	<<endl<<"_block_proc"
+	<<endl<<"	Choice from _block_proc.Состояние=свободен"
+	<<endl<<"		first"
+	<<endl
+	<<endl<<"$End"
+	
+	//----------------------------------------------------------------------------
+		
+	<<endl<<"{---------процесс-----"<<getName().c_str()<<"----------------}"<<endl
+
+
+
+	<<endl<<"$Pattern Блок_опперации_"<<getName().c_str()<<" : operation  {срабатывание закона}trace"
+	<<endl<<"	$Relevant_resources"
+	<<endl<<"	{непосредственно сам БЛОК процесса}"
+	<<endl<<"_block_queue     : Queue_"<<getName().c_str()<<" Keep NoChange"
+	<<endl
+	<<endl<<"_block : Block_process_"<<getName().c_str()<<" Keep Keep"
+	<<endl
+	<<endl
+
+	<<endl<<"	{тут перечислены релевантные ресурсы, которые стрелкой подходят снизу к "
+	<<endl<<"	блоку, а если это просто блок задержуи то ненадо}"
+	<<endl
+	<<endl;
+
+// перечисление рессурсов
+std::list<CString>::iterator it = list_resource_procMJ.begin();
+	while( it != list_resource_procMJ.end() ) 
+	{
+	
+	rpapp.RDOfiles->pattern <<endl
+	<<endl<<"_resource_"<<(*it)<<" : Resource_"<<(*it)<<" Keep Keep";
+
+	it++;
+	}
+
+
+
+rpapp.RDOfiles->pattern <<endl
+	<<endl<<"	{перечислить все группы транзактов которые создаются - ВРУЧЕУЮ ПОЛЬЗОВАТЕЛЕМ}"
+	<<endl<<"_transact_X : Group_of_transacts_X Keep Keep"
+	<<endl
+	<<endl
+	<<"$Time = ";
+	define_rule(); // функция будет создавать закон и записывать его также в *.fun
+	rpapp.RDOfiles->pattern<<" {закон определяющий продолжительность действия}"
+	<<endl
+	<<endl
+	<<endl<<"$Body"
+	<<endl
+	<<endl<<"_block_queue"
+	<<endl<<"	Choice from _block_queue.Выход_очереди = занят "
+	<<endl<<"		first"
+	<<endl<<"	Convert_begin"
+	<<endl<<"		Выход_очереди set свободен"
+    <<endl
+	<<endl
+	  
+	<<endl<<"_transact_X"	
+	<<endl<<"	Choice from _transact_X.Состояние_транспортировки = в_очереди_выход and"
+	<<endl<<"	_transact_X.Место_нахождения = "<<getName().c_str() 
+	<<endl<<"		first"
+	<<endl<<"	Convert_begin"
+	
+	
+	<<endl<<"		Состояние_транспортировки set захвачен"
+	<<endl<<"		Место_нахождения_будущее set "<<id_next
+	<<endl
+	<<endl<<"	Convert_end"
+	<<endl<<"		Состояние_транспортировки set ожидает"
+	
+	
+	<<endl<<"{ТАКИМ ОБРАЗОМ ИДЕНТИЧНО НУЖНО ПРОЙТИСЬ ПО ВСЕМ РЕЛЛЕВАНТНЫМ РЕСУРСАМ}	"
+	<<endl<<endl;
+
+
+
+
+//описание рессурса
+	it = list_resource_procMJ.begin();
+	while( it != list_resource_procMJ.end() ) 
+	{
+	
+	rpapp.RDOfiles->pattern <<endl
+
+
+	<<endl<<"_resource_"<<(*it) 
+    <<endl<<"	Choice from" 
+	<<endl<<"	_resource_"<<(*it)<<".Состояние=свободен"
+	<<endl<<"		first"
+    <<endl<<"	Convert_begin"
+	<<endl<<"		Колличество_транзактов set _resource_"<<(*it)<<".Колличество_транзактов + 1"
+	<<endl<<"		Состояние              set" 
+	<<endl<<"		fun_resource_"<<(*it)<<"(_resource_"<<(*it)<<".Колличество_транзактов,_resource_"<<(*it)<<".Состояние,"
+	<<endl<<"		_resource_"<<(*it)<<".Максим_колличество)"
+	<<endl
+    <<endl<<"	Convert_end"
+	<<endl<<"		Колличество_транзактов set _resource_"<<(*it)<<".Колличество_транзактов - 1"
+	<<endl<<"		Состояние              set" 
+	<<endl<<"		fun_resource_"<<(*it)<<"(_resource_"<<(*it)<<".Колличество_транзактов,_resource_"<<(*it)<<".Состояние,"
+	<<endl<<"		_resource_"<<(*it)<<".Максим_колличество)";
+
+	it++;
+	}
+
+
+
+
+rpapp.RDOfiles->pattern <<endl<<endl
+
+	<<endl<<"_block"
+	<<endl<<"  Choice from"
+	<<endl<<"  _block.Состояние = свободен"
+	<<endl<<"		first"
+	<<endl<<"	Convert_begin"
+	<<endl<<"		Состояние set fun_resource_"<<getName().c_str()<<"_sieze(";
+
+
+	it = list_resource_procMJ.begin();
+	while( it != list_resource_procMJ.end() ) 
+	{
+	
+	rpapp.RDOfiles->pattern <<endl
+	<<endl<<"_resource_"<<(*it)<<".Состояние,";
+
+	it++;
+	}
+
+    rpapp.RDOfiles->pattern <<")"<<endl
+
+
+
+
+	<<endl<<"Convert_end  "
+    <<endl<<endl<<"		Состояние set fun_resource_"<<getName().c_str()<<"_release(";
+
+
+	it = list_resource_procMJ.begin();
+	while( it != list_resource_procMJ.end() ) 
+	{
+	it++;
+	if(it==list_resource_procMJ.end())
+	{
+	it--;
+		rpapp.RDOfiles->pattern <<endl
+		<<endl<<"_resource_"<<(*it)<<".Состояние";
+	}
+	else
+	{
+	it--;
+		rpapp.RDOfiles->pattern <<endl
+		<<endl<<"_resource_"<<(*it)<<".Состояние,";
+	}
+
+	it++;
+	}
+
+    rpapp.RDOfiles->pattern <<")"<<endl
+	<<endl<<"$End";
+
+
 }
