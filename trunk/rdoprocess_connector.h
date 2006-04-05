@@ -30,7 +30,7 @@ protected:
 	rp::polyline borders;
 	int recursive;
 
-	void next_step( CDC& dc, const rp::point& p1, const rp::point& p2, double norm1, double norm2, rp::polyline& pl );
+	void next_step( CDC& dc, const rp::point& p1, const rp::point& p2, double norm1, double norm2, rp::polyline& pa, rp::polyline& pa_post );
 
 #ifdef CON_DEBUG
 	void makeConnector( CDC& dc, const rp::point& p1, const rp::point& p2, double norm1, double norm2, rp::polyline& pa );
@@ -126,10 +126,9 @@ public:
 	rp::point getDeltaPosition( bool global = true ) const {
 		rp::point pos    = getPosition( global );
 		double    rotate = getNorm( global );
-		rp::point res;
-		res.x = pos.x + cos( rotate * rp::math::pi / 180.0 ) * RPConnectorDock::delta;
-		res.y = pos.y - sin( rotate * rp::math::pi / 180.0 ) * RPConnectorDock::delta;
-		return res;
+		double    cos_a, sin_a;
+		rp::math::getCosSin( rotate, cos_a, sin_a );
+		return rp::point( pos.x + cos_a * RPConnectorDock::delta, pos.y - sin_a * RPConnectorDock::delta );
 	}
 	rp::point getOutpoint() const {
 		rp::point pos = getPosition();

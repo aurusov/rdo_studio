@@ -36,7 +36,7 @@ RPConnector::~RPConnector()
 {
 }
 
-void RPConnector::next_step( CDC& dc, const rp::point& p1, const rp::point& p2, double norm1, double norm2, rp::polyline& pl )
+void RPConnector::next_step( CDC& dc, const rp::point& p1, const rp::point& p2, double norm1, double norm2, rp::polyline& pa, rp::polyline& pa_post )
 {
 	recursive++;
 	if ( recursive > 100 ) {
@@ -47,24 +47,10 @@ void RPConnector::next_step( CDC& dc, const rp::point& p1, const rp::point& p2, 
 		TRACE( "found !!!\n" );
 		return;
 	}
-	double alpha1 = norm1 * rp::math::pi / 180.0;
-	double alpha2 = norm2 * rp::math::pi / 180.0;
-	double k_cos1 = cos( alpha1 );
-	double k_cos2 = cos( alpha2 );
-	double k_sin1 = sin( alpha1 );
-	double k_sin2 = sin( alpha2 );
-	if ( fabs(k_cos1) < 1e-15 ) {
-		k_cos1 = 0;
-	}
-	if ( fabs(k_cos2) < 1e-15 ) {
-		k_cos2 = 0;
-	}
-	if ( fabs(k_sin1) < 1e-15 ) {
-		k_sin1 = 0;
-	}
-	if ( fabs(k_sin2) < 1e-15 ) {
-		k_sin2 = 0;
-	}
+	double k_cos1, k_cos2, k_sin1, k_sin2;
+	rp::math::getCosSin( norm1, k_cos1, k_sin1 );
+	rp::math::getCosSin( norm2, k_cos2, k_sin2 );
+
 	// —оздали отрезки p1->p12 и p2->21 в направлении нормалей
 	double len = 1e10;
 	rp::point p12( p1.x + len * k_cos1, p1.y - len * k_sin1 );
@@ -103,15 +89,6 @@ void RPConnector::next_step( CDC& dc, const rp::point& p1, const rp::point& p2, 
 	dc.LineTo( rect.p0().x, rect.p0().y );
 	dc.RestoreDC( -1 );
 */
-
-/*
-	double a  = rp::math::getAlpha( p1, p2 );
-	double a1 = a - norm1;
-	double a2 = 180 - a + norm2;
-	if ( a1 >= 270 ) a1 -= 360;
-	if ( a1 <= -270) a1 += 360;
-	if ( a2 >= 270 ) a2 -= 360;
-*/
 	double Ka, Kb, K, Ua, Ub;
 	rp::point inter = rp::math::getIntersection( p1, p12, p2, p22, Ka, Kb, K, Ua, Ub );
 	bool intersect  = Ua >= 0 && Ua <= 1 && Ub >= 0 && Ub <= 1;
@@ -119,57 +96,81 @@ void RPConnector::next_step( CDC& dc, const rp::point& p1, const rp::point& p2, 
 	bool same       = fabs(K) == 0.0 && fabs(Ka) == 0.0 && fabs(Kb) == 0.0;
 	if ( intersect ) {
 		// ¬сЄ нормально, фигуры пересекаютс€ своими пр€мыми под углом в 90-то градусов
-		pl.push_back( inter );
+		pa.push_back( inter );
 		return;
 	} else {
-		RPShape* shape = (RPShape*)(&dock_begin->object());
-		rp::rect rect = shape->getBoundingRectNoRotateOuter().extendByPerimetr( RPConnectorDock::delta );
-		if ( !rect.isIntersection( p1, p2, inter ) ) {
-			shape = (RPShape*)(&dock_end->object());
-			rect = shape->getBoundingRectNoRotateOuter().extendByPerimetr( RPConnectorDock::delta );
-			if ( !rect.isIntersection( p1, p2, inter ) ) {
-				// ¬сЄ нормально, можем соедин€ть фигуры, направл€ющие которых под 180 друг к другу, т.е. нужен поворот
-				// ѕродливаем отрезок первой фигуры на половину рассто€ни€
-				double dx = (p2.x - p1.x) / 2;
-				double dy = (p2.y - p1.y) / 2;
-				rp::point p( p1.x + dx * k_cos1, p1.y - dy * k_sin1 );
-				double a  = rp::math::getAlpha( p1, p2 );
-				double a1 = a - norm1;
-				if ( a1 >= 270 ) a1 -= 360;
-				if ( a1 <= -270) a1 += 360;
-//				if ( recursive == 1 )
-//					dc.TextOut( 10, 10, rp::string::fromdouble( a1 ).c_str() );
-				if ( a1 != 0 ) {
-					// ѕовернуть и найти простую точку пересечени€ лучей
-					pl.push_back( p );
-					next_step( dc, p, p2, a1 < 0 ? norm1 - 90 : norm1 + 90, norm2, pl );
-				} else {
-					// ≈сли a1 == 0, то получаетс€ пр€ма€ лини€, т.е. точку p в список тоек заносить не надо
-				}
-				return;
+		RPShape* shape1 = (RPShape*)(&dock_begin->object());
+		RPShape* shape2 = (RPShape*)(&dock_end->object());
+		rp::rect rect1_small = shape1->getBoundingRectNoRotateOuter();
+		rp::rect rect2_small = shape2->getBoundingRectNoRotateOuter();
+		rp::rect rect1_big   = rect1_small.extendByPerimetr( RPConnectorDock::delta );
+		rp::rect rect2_big   = rect2_small.extendByPerimetr( RPConnectorDock::delta );
+		std::list< rp::point > inter1_big_point, inter2_big_point, inter1_small_point, inter2_small_point;
+		bool inter1_flag = rect1_big.isIntersection( p1, p2, inter1_big_point );
+		bool inter2_flag = rect2_big.isIntersection( p1, p2, inter2_big_point );
+
+		double a  = rp::math::getAlpha( p1, p2 );
+		double a1 = a - norm1;
+		double a2 = 180 - a + norm2;
+		if ( a1 >= 270 ) a1 -= 360;
+		if ( a1 <= -270) a1 += 360;
+		if ( a2 >= 180 ) a2 -= 360;
+//		if ( recursive == 1 )
+//			dc.TextOut( 10, 10, rp::string::fromdouble( a1 ).c_str() );
+/*
+		dc.SaveDC();
+		CPen pen( PS_SOLID, 1, RGB(0x00, 0x00, 0x00) );
+		dc.SelectObject( &pen );
+		CBrush brush1( inter1_flag && inter2_flag ? RGB(0xFF, 0x00, 0x00) : RGB(0x00, 0xFF, 0x00) );
+		dc.SelectObject( &brush1 );
+		std::list< rp::point >::const_iterator it = inter1_big_point.begin();
+		while ( it != inter1_big_point.end() ) {
+			dc.Ellipse( it->x - 3, it->y - 3, it->x + 3, it->y + 3 );
+			it++;
+		}
+		CBrush brush2( inter1_flag && inter2_flag ? RGB(0xFF, 0x00, 0x00) : RGB(0xFF, 0xFF, 0x00) );
+		dc.SelectObject( &brush2 );
+		it = inter2_big_point.begin();
+		while ( it != inter2_big_point.end() ) {
+			dc.Ellipse( it->x - 3, it->y - 3, it->x + 3, it->y + 3 );
+			it++;
+		}
+		dc.RestoreDC( -1 );
+*/
+		if ( !inter1_flag && !inter2_flag ) {
+			// ¬сЄ нормально, можем соедин€ть фигуры, направл€ющие которых под 180 друг к другу, т.е. нужен поворот
+			// ѕродливаем отрезок первой фигуры на половину рассто€ни€
+			double dx = (p2.x - p1.x) / 2;
+			double dy = (p2.y - p1.y) / 2;
+			rp::point p( p1.x + dx * k_cos1, p1.y - dy * k_sin1 );
+			if ( a1 != 0 ) {
+				// ѕовернуть и найти простую точку пересечени€ лучей
+				pa.push_back( p );
+				next_step( dc, p, p2, a1 < 0 ? norm1 - 90 : norm1 + 90, norm2, pa, pa_post );
 			} else {
-				// ѕересекли вторую фигуры
-/*
-				dc.SaveDC();
-				CPen pen_black( PS_SOLID, 1, RGB(0x00, 0x00, 0x00) );
-				CBrush brush_yellow( RGB(0xFF, 0xFF, 0x00) );
-				dc.SelectObject( &pen_black );
-				dc.SelectObject( &brush_yellow );
-				dc.Ellipse( inter.x - 3, inter.y - 3, inter.x + 3, inter.y + 3 );
-				dc.RestoreDC( -1 );
-*/
+				// ≈сли a1 == 0, то получаетс€ пр€ма€ лини€, т.е. точку p в список тоек заносить не надо
 			}
-		} else {
+			return;
+		} else if ( inter1_flag && !inter2_flag ) {
 			// ѕересекли первую фигуры
-/*
-			dc.SaveDC();
-			CPen pen_black( PS_SOLID, 1, RGB(0x00, 0x00, 0x00) );
-			CBrush brush_green( RGB(0x00, 0xFF, 0x00) );
-			dc.SelectObject( &pen_black );
-			dc.SelectObject( &brush_green );
-			dc.Ellipse( inter.x - 3, inter.y - 3, inter.x + 3, inter.y + 3 );
-			dc.RestoreDC( -1 );
-*/
+			next_step( dc, p1, p2, a1 < 0 ? norm1 - 90 : norm1 + 90, norm2, pa, pa_post );
+			return;
+
+		} else if ( !inter1_flag && inter2_flag ) {
+			// ѕересекли вторую фигуры
+			norm2 = a2 < 0 ? norm2 + 90 : norm2 - 90;
+			rp::math::getCosSin( norm2, k_cos2, k_sin2 );
+			p22.x = p2.x + len * k_cos2;
+			p22.y = p2.y - len * k_sin2;
+			inter2_big_point.clear();
+			if ( rect2_big.isIntersection( p2, p22, inter2_big_point ) ) {
+				pa_post.push_back( inter2_big_point.front() );
+				next_step( dc, p1, inter2_big_point.front(), norm1, norm2, pa, pa_post );
+			}
+			return;
+
+		} else if ( inter1_flag && inter2_flag ) {
+			// ѕересекли обе фигуры
 		}
 	}
 }
@@ -177,21 +178,21 @@ void RPConnector::next_step( CDC& dc, const rp::point& p1, const rp::point& p2, 
 void RPConnector::draw( CDC& dc )
 {
 	if ( dock_begin && !dock_end ) {
-		rp::polyline pl;
-		pl.push_back( dock_begin->getPosition() );
-		pl.push_back( dock_begin->getDeltaPosition() );
-		pl.push_back( flowChart()->mouse_current() );
+		rp::polyline pa;
+		pa.push_back( dock_begin->getPosition() );
+		pa.push_back( dock_begin->getDeltaPosition() );
+		pa.push_back( flowChart()->mouse_current() );
 		CPen* old_pen = dc.SelectObject( &main_pen );
-		dc.Polyline( &pl.getWinPolyline()[0], pl.size() );
+		dc.Polyline( &pa.getWinPolyline()[0], pa.size() );
 		dc.SelectObject( old_pen );
 	} else if ( dock_begin && dock_end ) {
 		rp::point p1 = dock_begin->getPosition();
 		rp::point p2 = dock_begin->getOutpoint();
 		rp::point p3 = dock_end->getOutpoint();
 		rp::point p4 = dock_end->getPosition();
-		rp::polyline pl;
-		pl.push_back( p1 );
-		pl.push_back( p2 );
+		rp::polyline pa, pa_post;
+		pa.push_back( p1 );
+		pa.push_back( p2 );
 
 		recursive = 0;
 		double norm1 = rp::math::getAlpha(p1, p2);
@@ -214,13 +215,21 @@ void RPConnector::draw( CDC& dc )
 		} else {
 			norm2 = 0;
 		}
-		next_step( dc, p2, p3, norm1, norm2, pl );
+		next_step( dc, p2, p3, norm1, norm2, pa, pa_post );
+		if ( !pa_post.empty() ) {
+			rp::polyline::iterator it = pa_post.end() - 1;
+			while ( true ) {
+				pa.push_back( *it );
+				if ( it == pa_post.begin() ) break;
+				it--;
+			}
+		}
 
-		pl.push_back( p3 );
-		pl.push_back( p4 );
+		pa.push_back( p3 );
+		pa.push_back( p4 );
 
 		CPen* old_pen = dc.SelectObject( &main_pen );
-		dc.Polyline( &pl.getWinPolyline()[0], pl.size() );
+		dc.Polyline( &pa.getWinPolyline()[0], pa.size() );
 		dc.SelectObject( old_pen );
 /*
 		rp::point p1 = dock_begin->getDeltaPosition();
@@ -234,12 +243,9 @@ void RPConnector::draw( CDC& dc )
 /*
 		double norm1 = dock_begin->getNorm();
 		double norm2 = dock_end->getNorm();
-		double alpha1 = norm1 * rp::math::pi / 180.0;
-		double alpha2 = norm2 * rp::math::pi / 180.0;
-		double k_cos1 = cos( alpha1 );
-		double k_cos2 = cos( alpha2 );
-		double k_sin1 = sin( alpha1 );
-		double k_sin2 = sin( alpha2 );
+		double k_cos1, k_cos2, k_sin1, k_sin2;
+		rp::math::getCosSin( norm1, k_cos1, k_sin1 );
+		rp::math::getCosSin( norm2, k_cos2, k_sin2 );
 		double len = RPConnectorDock::delta;
 		rp::point p11 = dock_begin->getPosition();
 		rp::point p12 = dock_begin->getDeltaPosition();
@@ -292,24 +298,9 @@ void RPConnector::makeConnector( const rp::point& p1, const rp::point& p2, doubl
 		TRACE( "found !!!\n" );
 		return;
 	}
-	double alpha1 = norm1 * rp::math::pi / 180.0;
-	double alpha2 = norm2 * rp::math::pi / 180.0;
-	double k_cos1 = cos( alpha1 );
-	double k_cos2 = cos( alpha2 );
-	double k_sin1 = sin( alpha1 );
-	double k_sin2 = sin( alpha2 );
-	if ( fabs(k_cos1) < 1e-15 ) {
-		k_cos1 = 0;
-	}
-	if ( fabs(k_cos2) < 1e-15 ) {
-		k_cos2 = 0;
-	}
-	if ( fabs(k_sin1) < 1e-15 ) {
-		k_sin1 = 0;
-	}
-	if ( fabs(k_sin2) < 1e-15 ) {
-		k_sin2 = 0;
-	}
+	double k_cos1, k_cos2, k_sin1, k_sin2;
+	rp::math::getCosSin( norm1, k_cos1, k_sin1 );
+	rp::math::getCosSin( norm2, k_cos2, k_sin2 );
 	double len = 1e10;
 	rp::point p12( p1.x + len * k_cos1, p1.y - len * k_sin1 );
 	rp::point p21( p2.x + len * k_cos2, p2.y - len * k_sin2 );

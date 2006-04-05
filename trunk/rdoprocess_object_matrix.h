@@ -90,11 +90,8 @@ protected:
 		rotate_center = rotateCenterMatrix().obr() * global_chart_pos;
 	}
 	static void fillRotateMatrix( rp::matrix& m_rotate, double alpha ) {
-		alpha *= rp::math::pi / 180.0;
-		double cos_a = cos( alpha );
-		double sin_a = sin( alpha );
-//		if ( fabs(cos_a) < 1e-10 ) cos_a = 0;
-//		if ( fabs(sin_a) < 1e-10 ) sin_a = 0;
+		double cos_a, sin_a;
+		rp::math::getCosSin( alpha, cos_a, sin_a );
 		m_rotate.data[0][0] = cos_a;
 		m_rotate.data[1][1] = cos_a;
 		m_rotate.data[0][1] = sin_a;

@@ -29,6 +29,7 @@ public:
 	static bool getPlanarData( const rp::point& p1, const rp::point& p2, const rp::point& p3, double& cos_b, double& sin_b, double& koef );
 	static rp::point getPerpendicular( const rp::point& line_point1, const rp::point& line_point2, const rp::point& point, bool& null, bool* inside = NULL );
 	static rp::point getIntersection( const rp::point& p1, const rp::point& p2, const rp::point& p3, const rp::point p4, double& Ka, double& Kb, double& K, double& Ua, double& Ub );
+	static void getCosSin( double alpha, double& cos_a, double& sin_a );
 };
 
 }

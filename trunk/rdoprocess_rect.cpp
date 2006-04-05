@@ -95,43 +95,41 @@ rect& rect::extendByPerimetr( double delta )
 	return *this;
 }
 
-bool rect::isIntersection( const rp::point& p1, const rp::point& p2, rp::point& _inter )
+bool rect::isIntersection( const rp::point& p1, const rp::point& p2, std::list< rp::point >& _inter )
 {
+	rp::rect rect_big = *this;
+	rect_big.extendByPerimetr( 10 );
 	double Ka, Kb, K, Ua, Ub;
 	rp::point inter;
 	if ( fabs(rp::math::getDistance( pa[0], pa[1], p1 )) > 2 && fabs(rp::math::getDistance( pa[0], pa[1], p2 )) > 2 ) {
-		inter = rp::math::getIntersection( pa[0], pa[1], p1, p2, Ka, Kb, K, Ua, Ub );
+		inter = rp::math::getIntersection( rp::point(rect_big.pa[0].x, pa[0].y), rp::point(rect_big.pa[1].x, pa[1].y), p1, p2, Ka, Kb, K, Ua, Ub );
 		bool intersect = Ua >= 0 && Ua <= 1 && Ub >= 0 && Ub <= 1;
 		if ( intersect  ) {
-			_inter = inter;
-			return true;
+			_inter.push_back( inter );
 		}
 	}
 	if ( fabs(rp::math::getDistance( pa[1], pa[2], p1 )) > 2 && fabs(rp::math::getDistance( pa[1], pa[2], p2 )) > 2 ) {
-		inter = rp::math::getIntersection( pa[1], pa[2], p1, p2, Ka, Kb, K, Ua, Ub );
+		inter = rp::math::getIntersection( rp::point(pa[1].x, rect_big.pa[1].y), rp::point(pa[2].x, rect_big.pa[2].y), p1, p2, Ka, Kb, K, Ua, Ub );
 		bool intersect = Ua >= 0 && Ua <= 1 && Ub >= 0 && Ub <= 1;
 		if ( intersect  ) {
-			_inter = inter;
-			return true;
+			_inter.push_back( inter );
 		}
 	}
 	if ( fabs(rp::math::getDistance( pa[2], pa[3], p1 )) > 2 && fabs(rp::math::getDistance( pa[2], pa[3], p2 )) > 2 ) {
-		inter = rp::math::getIntersection( pa[2], pa[3], p1, p2, Ka, Kb, K, Ua, Ub );
+		inter = rp::math::getIntersection( rp::point(rect_big.pa[2].x, pa[2].y), rp::point(rect_big.pa[3].x, pa[3].y), p1, p2, Ka, Kb, K, Ua, Ub );
 		bool intersect = Ua >= 0 && Ua <= 1 && Ub >= 0 && Ub <= 1;
 		if ( intersect  ) {
-			_inter = inter;
-			return true;
+			_inter.push_back( inter );
 		}
 	}
 	if ( fabs(rp::math::getDistance( pa[3], pa[0], p1 )) > 2 && fabs(rp::math::getDistance( pa[3], pa[0], p2 )) > 2 ) {
-		inter = rp::math::getIntersection( pa[3], pa[0], p1, p2, Ka, Kb, K, Ua, Ub );
+		inter = rp::math::getIntersection( rp::point(pa[3].x, rect_big.pa[3].y), rp::point(pa[0].x, rect_big.pa[0].y), p1, p2, Ka, Kb, K, Ua, Ub );
 		bool intersect = Ua >= 0 && Ua <= 1 && Ub >= 0 && Ub <= 1;
 		if ( intersect  ) {
-			_inter = inter;
-			return true;
+			_inter.push_back( inter );
 		}
 	}
-	return false;
+	return _inter.empty() ? false : true;
 }
 
 }

@@ -17,6 +17,8 @@ bool math::getPlanarData( const rp::point& p1, const rp::point& p2, double& len,
 	if ( len != -1 ) {
 		cos_a = static_cast<double>((p2.x-p1.x))/len;
 		sin_a = static_cast<double>((p1.y-p2.y))/len;
+		if ( fabs(cos_a) < 1e-15 ) cos_a = 0;
+		if ( fabs(sin_a) < 1e-15 ) sin_a = 0;
 		return true;
 	} else {
 		len   = 0;
@@ -45,10 +47,8 @@ bool math::getPlanarData( const rp::point& p1, const rp::point& p2, const rp::po
 		}
 		double a = a2 - a1;
 		if ( a < 0 ) a += 360;
-		double b = 180 + a1 + a / 2;
-		cos_b = cos( b * pi / 180.0 );
-		sin_b = sin( b * pi / 180.0 );
-		koef  = sin( a * pi / 180.0 / 2.0 );
+		math::getCosSin( 180 + a1 + a / 2, cos_b, sin_b );
+		koef = sin( a * pi / 180.0 / 2.0 );
 		if ( fabs(koef) > 1e-10 ) {
 			koef = 1 / koef;
 		} else {
@@ -168,6 +168,15 @@ rp::point math::getIntersection( const rp::point& p1, const rp::point& p2, const
 	} catch ( ... ) {
 		return rp::point();
 	}
+}
+
+void math::getCosSin( double alpha, double& cos_a, double& sin_a )
+{
+	double alpha_rad = alpha * pi / 180.0;
+	cos_a = cos( alpha_rad );
+	sin_a = sin( alpha_rad );
+	if ( fabs(cos_a) < 1e-15 ) cos_a = 0;
+	if ( fabs(sin_a) < 1e-15 ) sin_a = 0;
 }
 
 }

@@ -103,7 +103,6 @@ BOOL RPFlowChart::Create( LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD d
 
 //	updateFont();
 	updateScrollBars();
-
 /*
 	RPShapeAction* action = new RPShapeAction( flowobj );
 	action->setPosition( 100, 45 );
@@ -132,6 +131,7 @@ BOOL RPFlowChart::Create( LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD d
 	shape_resource = new RPShapeResource_MJ( flowobj );
 	shape_resource->setPosition( 100,300 );
 	// MJ end
+
 
 #ifdef TEST_SPEED // =====================================
 	sec_timer = SetTimer( sec_timer_id, 1000, NULL );
