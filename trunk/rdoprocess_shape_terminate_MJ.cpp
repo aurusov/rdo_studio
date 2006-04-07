@@ -6,6 +6,7 @@
 //#include "rdo_process.h"
 #include "rdoprocess_shape_terminate_MJ.h"
 #include "rdoprocess_shape_terminate_dlg1_MJ.h"
+#include "rdoprocess_app.h"
 #ifdef _DEBUG
 #undef THIS_FILE
 static char THIS_FILE[]=__FILE__;
@@ -47,6 +48,15 @@ RPShapeTerminateMJ::~RPShapeTerminateMJ()
 
 void RPShapeTerminateMJ::generate_MJ()
 {
+
+	//çàïîëíÿåì ëèñò íàçâàíèÿìè ïàòòåğíîâ äëÿ *.opr
+		CString name_value1("Áëîê_óäàëåíèÿ_");
+		CString name_value2(getName().c_str());
+		CString name_value(name_value1 + name_value2);
+		rpapp.project().list_pattern_names.push_back(name_value);
+
+
+
 	/*
 	rpapp.RDOfiles->pattern <<endl<<endl<<"èìÿ ñëåäóşùåãî áëîêà - "<<id_next
 	<<endl<<"èìÿ - "<<getName().c_str();
@@ -55,9 +65,9 @@ void RPShapeTerminateMJ::generate_MJ()
 // ÃÅÍÅĞÀÖÈß ğåñóğñîâ ĞÄÎ ÔÀÉË *.res
 
 
-	rpapp.RDOfiles->resourse<<endl<<"{-------áëîê process ------" <<getName().c_str()<<"-------------------}" <<endl
+	rpapp.RDOfiles->resourse<<endl<<endl<<"{-------áëîê process ------" <<getName().c_str()<<"-------------------}" <<endl
 
-	<<endl<<"Block_Del_"<<getName().c_str()<<" : Block_Del 0";
+	<<"Block_Del_"<<getName().c_str()<<" : Block_Del 0";
 
 
 
@@ -74,10 +84,9 @@ rpapp.RDOfiles->pattern <<endl
 <<endl<<"$Pattern Áëîê_óäàëåíèÿ_"<<getName().c_str()<<" : rule  {ñğàáàòûâàíèå çàêîíà}trace"
 <<endl<<"	$Relevant_resources"
 <<endl
-
+<<endl<<"		_transact_X : Group_of_transacts_X Erase"
 <<endl<<"		_block : Block_Del_"<<getName().c_str()<<" Keep"
 <<endl<<"			{ïåğå÷èñëèòü âñå ãğóïïû òğàíçàêòîâ êîòîğûå ñîçäàşòñÿ - ÂĞÓ×ÅÓŞ ÏÎËÜÇÎÂÀÒÅËÅÌ}"
-<<endl<<"		_transact_X : Group_of_transacts_X Erase"
 <<endl
 <<endl
 <<endl
@@ -91,7 +100,9 @@ rpapp.RDOfiles->pattern <<endl
 <<endl
 <<endl<<"	_block"
 <<endl<<"		  Choice from 1=1"
-<<endl<<"		 Êîëëè÷åñòâî_óäàëåííûõ set _block.Êîëëè÷åñòâî_óäàëåííûõ+1"
+<<endl<<"			first"
+<<endl<<"		Convert_rule	"
+<<endl<<"		 Êîëëè÷åñòâî_óäàëåííûõ set _block.Êîëëè÷åñòâî_óäàëåííûõ + 1"
 <<endl	 
 <<endl<<"$End";
 

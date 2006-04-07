@@ -121,8 +121,10 @@ public:
 	RPShape( RPObject* parent, const rp::string& name = "object" );
 	virtual ~RPShape();
 
-	virtual void find_next_block_MJ(); // MJ ф-ия перекрытая RPObject для нахождения следующего блока
+	virtual void find_next_block_MJ();		 // MJ ф-ия перекрытая RPObject для нахождения следующего блока
 
+	
+	
 	virtual void setPosition( int x, int y );
 
 //	const CPoint& getSnapToPoint() const { return snap_to_point; }

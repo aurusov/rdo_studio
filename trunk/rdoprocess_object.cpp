@@ -11,6 +11,8 @@ static char THIS_FILE[] = __FILE__;
 // ----------------------------------------------------------------------------
 // ---------- RPObject
 // ----------------------------------------------------------------------------
+
+
 RPObject::RPObject( RPObject* parent, const rp::string& _name ):
 	parent( parent ),
 	name( _name ),
@@ -21,7 +23,7 @@ RPObject::RPObject( RPObject* parent, const rp::string& _name ):
 		parent->setCorrectChildName( this );
 	}
 	
-	type ="block"; // инициализация типа блоков, по умолчанию
+	type ="block"; // MJ инициализация типа блоков, по умолчанию
 }
 
 RPObject::~RPObject()
@@ -127,52 +129,32 @@ void RPObject::list_name()
 	}
 }
 
-/*
-void RPObject::list_name()
+void RPObject::list_name_for_type_res()
 {
+//	TRACE( "%s\n", getName().c_str() );
 	std::list< RPObject* >::const_iterator it = child.begin();
-	if ( it != child.end() ) {
-		TRACE( "%s\n", (*it)->getName().c_str() );
-	}
-	while(it != child.end())
+	while( it != child.end() ) 
 	{
-		TRACE( "%s\n", (*it)->getName().c_str() );
-	      
-		if(!(*it)->child.empty())
-		{
-		RPObject::child_name((*it));
-		}
-		
+	
+
+		rpapp.RDOfiles->typeres<<(*it)->getName().c_str()<<", ";
+		(*it)->list_name_for_type_res();	
+
 	it++;
+	
 	}
 }
 
-void RPObject::child_name(RPObject* obj)
-{
-std::list< RPObject* >::const_iterator it = obj->child.begin();
-	
-	while(it!= obj->child.end())
-	{
-		TRACE( "%s\n", (*it)->getName().c_str() );
-	      
-		if(!(*it)->child.empty())
-		{
-		RPObject::child_name((*it));
-		}
-		
-	it++;
-	}
 
 	
 
-}
-*/
+
 
 // MJ stop
 
 void RPObject::list_name_for_resource_MJ(std::list< RPObject* >* list_resource)
 {
-//	TRACE( "%s\n", getName().c_str() );
+
 	std::list< RPObject* >::const_iterator it = child.begin();
 	while( it != child.end() ) {
 	
@@ -188,3 +170,4 @@ void RPObject::list_name_for_resource_MJ(std::list< RPObject* >* list_resource)
 	}
 }
 
+ 

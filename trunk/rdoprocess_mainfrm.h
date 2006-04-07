@@ -20,6 +20,7 @@ protected:
 	CToolBar    m_wndToolBlockBarMJ; // MJ 2.04.06 панель для блоков
 
 public:
+	void blank_rdo_MJ();
 	RPMainFrame();
 	virtual ~RPMainFrame();
 

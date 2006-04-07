@@ -46,10 +46,13 @@ public:
 	virtual ~RPObject();
 
 	void list_name();
+	void list_name_for_type_res();
     virtual void generate_MJ() {}; // MJ 29.03.06 ф-ия генериовнаия
 	virtual void find_next_block_MJ() {};// MJ 30.03.06 создает ф-ию которая перекрывается в RPShape для поиска следующего блока
 	CString id_next; //MJ 30.03.06 id следующего блока, заведено здесь для функции, которая пробегает полисту
 	CString type; // MJ 1.04.06 для определения типа блоков
+	std::list< CString > list_pattern_names; // MJ 7.04.06 хранятся имена всех паттернов для записи в файл *.opr generate() заполняет его
+
 	void list_name_for_resource_MJ(std::list< RPObject* >* list_resource);
 
 	rp::string getName() const { return name; }

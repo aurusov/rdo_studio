@@ -125,6 +125,23 @@ void RPShapeProcessMJ::define_rule()
 void RPShapeProcessMJ::generate_MJ()
 {
 	RPShape::generate_MJ();
+
+	//заполняем лист названиями паттернов для *.opr
+		CString name_value1("Блок_постановка_в_очередь_");
+		CString name_value2(getName().c_str());
+		CString name_value(name_value1 + name_value2);
+		rpapp.project().list_pattern_names.push_back(name_value);
+
+		name_value1 = "Блок_переход_из_очереди_к_процессу_";
+		name_value2 = getName().c_str();
+		name_value = name_value1 + name_value2;
+		rpapp.project().list_pattern_names.push_back(name_value);
+
+		name_value1 = "Блок_опперации_";
+		name_value2 = getName().c_str();
+		name_value = name_value1 + name_value2;
+		rpapp.project().list_pattern_names.push_back(name_value);
+
 /*
 rpapp.RDOfiles->pattern <<endl<<endl<<"имя следующего блока - "<<id_next
 <<endl<<"имя - "<<getName().c_str()
@@ -147,9 +164,9 @@ std::list<CString>::iterator it = list_resource_procMJ.begin();
 
 */
 // ГЕНЕРАЦИЯ ресурсов РДО ФАЙЛ *.res
-	rpapp.RDOfiles->resourse<<endl<<"{-------блок process ------" <<getName().c_str()<<"-------------------}" <<endl
+	rpapp.RDOfiles->resourse<<endl<<endl<<"{-------блок process ------" <<getName().c_str()<<"-------------------}" <<endl
 
-	<<endl<<"Block_process_"<<getName().c_str()<<" : Block_process свободен"
+	<<"Block_process_"<<getName().c_str()<<" : Block_process свободен"
 	<<endl<<"Queue_"<<getName().c_str()<<": Queue 0 свободен {кол-во человек в очереди и состояния выходной очереди }";
 
 
@@ -157,7 +174,7 @@ std::list<CString>::iterator it = list_resource_procMJ.begin();
 rpapp.RDOfiles->pattern <<endl<<endl<<"{---------постановка в очекредь--------"<<getName().c_str()<<"-----------------------}"
 <<endl
 
-	<<endl<<"$Pattern Block_queue_"<<getName().c_str()<<" : rule {}trace"
+	<<endl<<"$Pattern Блок_постановка_в_очередь_"<<getName().c_str()<<" : rule {}trace"
 	<<endl<<"$Relevant_resources"
 	<<endl<<"	 _transact  : Group_of_transacts_X  Keep"
 	<<endl<<"	_block     : Queue_"<<getName().c_str()<<" Keep"
@@ -181,12 +198,12 @@ rpapp.RDOfiles->pattern <<endl<<endl<<"{---------постановка в очекредь--------"<
 	//------------------------------------------------
 	
 	<<endl<<"{---------освобождение из очереди------"<<getName().c_str()<<"---------------}"<<endl
-	<<endl<<"$Pattern Block_queue_release_"<<getName().c_str()<<" : rule {}trace"
+	<<endl<<"$Pattern Блок_переход_из_очереди_к_процессу_"<<getName().c_str()<<" : rule {}trace"
 	<<endl
 	<<endl<<"$Relevant_resources"
-	<<endl<<"_transact  : Group_of_transacts_X  Keep"
-	<<endl<<"_block     : Queue_<<getName().c_str()"<<" Keep"
-	<<endl<<"_block_proc : Block_process_"<<getName().c_str()<<" NoChange"
+	<<endl<<"	_transact  : Group_of_transacts_X  Keep"
+	<<endl<<"	_block     : Queue_"<<getName().c_str()<<" Keep"
+	<<endl<<"	_block_proc : Block_process_"<<getName().c_str()<<" NoChange"
 	<<endl<<"	$Body"
 	<<endl<<"_transact"
 	<<endl<<"	Choice from   _transact.Состояние_транспортировки = в_очереди and" 
@@ -220,7 +237,6 @@ rpapp.RDOfiles->pattern <<endl<<endl<<"{---------постановка в очекредь--------"<
 	<<endl<<"	{непосредственно сам БЛОК процесса}"
 	<<endl<<"_block_queue     : Queue_"<<getName().c_str()<<" Keep NoChange"
 	<<endl
-	<<endl<<"_block : Block_process_"<<getName().c_str()<<" Keep Keep"
 	<<endl
 	<<endl
 
@@ -245,7 +261,7 @@ std::list<CString>::iterator it = list_resource_procMJ.begin();
 rpapp.RDOfiles->pattern <<endl
 	<<endl<<"	{перечислить все группы транзактов которые создаются - ВРУЧЕУЮ ПОЛЬЗОВАТЕЛЕМ}"
 	<<endl<<"_transact_X : Group_of_transacts_X Keep Keep"
-	<<endl
+	<<endl<<"_block : Block_process_"<<getName().c_str()<<" Keep Keep"
 	<<endl
 	<<"$Time = ";
 	define_rule(); // функция будет создавать закон и записывать его также в *.fun
@@ -319,15 +335,25 @@ rpapp.RDOfiles->pattern <<endl<<endl
 	<<endl<<"  _block.Состояние = свободен"
 	<<endl<<"		first"
 	<<endl<<"	Convert_begin"
-	<<endl<<"		Состояние set fun_resource_"<<getName().c_str()<<"_sieze(";
+	<<endl<<"		Состояние set fun_resource_"<<getName().c_str()<<"_seize(";
 
 
-	it = list_resource_procMJ.begin();
+it = list_resource_procMJ.begin();
 	while( it != list_resource_procMJ.end() ) 
 	{
-	
-	rpapp.RDOfiles->pattern <<endl
-	<<endl<<"_resource_"<<(*it)<<".Состояние,";
+	it++;
+	if(it==list_resource_procMJ.end())
+	{
+	it--;
+		rpapp.RDOfiles->pattern <<endl
+		<<endl<<"_resource_"<<(*it)<<".Состояние";
+	}
+	else
+	{
+	it--;
+		rpapp.RDOfiles->pattern <<endl
+		<<endl<<"_resource_"<<(*it)<<".Состояние,";
+	}
 
 	it++;
 	}
@@ -338,7 +364,7 @@ rpapp.RDOfiles->pattern <<endl<<endl
 
 
 	<<endl<<"Convert_end  "
-    <<endl<<endl<<"		Состояние set fun_resource_"<<getName().c_str()<<"_release(";
+    <<endl<<endl<<"		Состояние set fun_resource_"<<getName().c_str()<<"_seize(";
 
 
 	it = list_resource_procMJ.begin();
@@ -363,6 +389,43 @@ rpapp.RDOfiles->pattern <<endl<<endl
 
     rpapp.RDOfiles->pattern <<")"<<endl
 	<<endl<<"$End";
+
+
+// ГЕНЕРАЦИЯ ФУНКЦИЙ РДО ФАЙЛ *.fun эта ф-ия проверяет свободен ли блок, еще в функц генерится сверху
+rpapp.RDOfiles->function<<endl<<"{-------блок cretae ------" <<getName().c_str()<<"-------------------}" <<endl
+
+	<<endl<<"$Function  fun_resource_"<<getName().c_str()<<"_seize : such_as Block_process.Состояние"
+	<<endl<<"$Type = algorithmic"
+	<<endl<<"$Parameters";
+	
+		it = list_resource_procMJ.begin();
+		while( it != list_resource_procMJ.end() ) 
+		{
+			
+	rpapp.RDOfiles->function 
+	<<endl<<"		_resource_"<<(*it)<<": such_as Resource.Состояние";
+		it++;
+		}
+	
+	rpapp.RDOfiles->function 
+	<<endl<<"	$Body";
+	
+		it = list_resource_procMJ.begin();
+		while( it != list_resource_procMJ.end() ) 
+		{
+			
+	rpapp.RDOfiles->function 
+	<<endl<<"	Calculate_if _resource_"<<(*it)<<" = занят fun_resource_"<<getName().c_str()<<"_seize = занят";
+		it++;
+		}
+	
+	rpapp.RDOfiles->function 
+	<<endl  
+	<<endl<<"  Calculate_if 1=1 fun_resource_"<<getName().c_str()<<"_seize=свободен"
+	<<endl
+	<<endl<<"	$End";	
+
+
 
 
 }

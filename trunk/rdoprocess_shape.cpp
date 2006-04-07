@@ -13,6 +13,9 @@ static char THIS_FILE[] = __FILE__;
 // ----------------------------------------------------------------------------
 // ---------- RPShape
 // ----------------------------------------------------------------------------
+
+
+
 RPShape::RPShape( RPObject* _parent, const rp::string& _name ):
 	RPObjectMatrix( _parent, _name ),
 	pcmd( pcmd_none )

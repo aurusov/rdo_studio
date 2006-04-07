@@ -59,7 +59,51 @@ void RPShapeResource_MJ::onLButtonDblClk( UINT nFlags, CPoint global_chart_pos )
 
 void RPShapeResource_MJ::generate_MJ()
 {
-	rpapp.RDOfiles->pattern <<endl<<endl<<"имя следующего блока - "<<id_next
+	/*rpapp.RDOfiles->pattern <<endl<<endl<<"имя следующего блока - "<<id_next
 	<<endl<<"имя - "<<getName().c_str()
 	<<endl<<"всего может обслуживать одновременно - "<<gamount;
+*/
+
+	
+// ГЕНЕРАЦИЯ ФУНКЦИЙ РДО ФАЙЛ *.fun
+rpapp.RDOfiles->function<<endl<<"{-------ресурс ------" <<getName().c_str()<<"-------------------}" <<endl
+	
+	
+	
+	
+<<endl<<"$Function  fun_resource_" <<getName().c_str()<<" : such_as Resource.Состояние {освобождение или занятие ресурса}"
+<<endl<<"	$Type = algorithmic"
+<<endl<<"	$Parameters"
+<<endl<<"		 _amount        : integer {сколько транзактов уже обслуживается}"
+<<endl<<"		 _state         : such_as Resource.Состояние {состяние ресурса}"
+<<endl<<"		 _max           : integer      { макс колличество которое может обслуживаться"
+<<endl<<"после которого рессурс переходит в состяоние занят}"
+<<endl
+<<endl<<"$Body"
+<<endl<<"	Calculate_if _amount >= _max and _state = свободен"
+<<endl<<"		fun_resource_" <<getName().c_str()<<" = занят"
+<<endl<<"	{занимает если кол-во превысило максимум}"
+<<endl 
+<<endl<<"	Calculate_if _amount < _max and _state = занят"
+<<endl<<"		fun_resource_" <<getName().c_str()<<" = свободен"
+<<endl    
+<<endl<<"	Calculate_if 1=1"
+<<endl<<"		fun_resource_" <<getName().c_str()<<" = _state"
+<<endl
+<<endl<<"$End";
+
+
+
+// ГЕНЕРАЦИЯ ресурсов РДО ФАЙЛ *.res
+rpapp.RDOfiles->resourse<<endl<<endl<<"{-------ресурс ------" <<getName().c_str()<<"-------------------}" <<endl
+
+<<"Resource_"<<getName().c_str()<<" : Resource свободен 0 1";
+
+
+
+
+
+
+
+
 }
