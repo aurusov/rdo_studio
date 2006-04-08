@@ -5,6 +5,9 @@
 #include "ctrl/rdoprocess_pagectrl.h"
 #include "resource.h"
 #include "rdoprocess_object.h"
+
+#include "rdoprocess_generation_type_MJ.h" // MJ äèàëîãîâîå îêíî êíîïêè òèïà ãåíåğèğîâàíèÿ íà òóëáàğå
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -26,6 +29,7 @@ BEGIN_MESSAGE_MAP(RPMainFrame, CMDIFrameWnd)
 	ON_COMMAND(ID_FLOW_ROTATE, OnFlowRotate)
 	ON_COMMAND(ID_FLOW_CONNECTOR, OnFlowConnector)
 	ON_COMMAND(ID_GENERATE, OnGenerate)
+	ON_COMMAND(ID_GEN_TYPE, OnGenType)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -246,11 +250,18 @@ void RPMainFrame::OnGenerate()
 	rpapp.RDOfiles->typeres.close();
 	
 	
+	rpapp.RDOfiles->smr.close();
 	
 	
-	//ÃÅÍÅĞÈĞÎÂÀÍÈÅ  ÑÒÀÒÈÑÒÈÊÈ *.opr òóò ò.ê. äîëæíû áûòü óæå ñãåíåğèğîâàííû âñå ôàéëû
+	
+	rpapp.RDOfiles->statistic<<
+	endl<<"$End";
+	rpapp.RDOfiles->statistic.close();
+	
+	
+	//ÃÅÍÅĞÈĞÎÂÀÍÈÅ  ÎÏÅĞÀÖÈÉ *.opr òóò ò.ê. äîëæíû áûòü óæå ñãåíåğèğîâàííû âñå ôàéëû
 
-		
+		rpapp.project().list_pattern_names.push_back("Áëîê_îñòàíîâà_ìîäåëèğîâàíèÿ_ïî_âğåìåíè");
 
 					rpapp.RDOfiles->operations<<"$Operations";
 
@@ -277,8 +288,8 @@ rpapp.project().list_pattern_names.clear();
 	
 	
 	
-	rpapp.RDOfiles->smr.close();
-	rpapp.RDOfiles->statistic.close();
+
+	
 }
 	// MJ stop
 
@@ -375,8 +386,8 @@ rpapp.RDOfiles->resourse<<"$Resources";
 //ÃÅÍÅĞÈĞÎÂÀÍÈÅ  ÑÒÀÒÈÑÒÈÊÈ *.pmd
 rpapp.RDOfiles->statistic<<
 
-endl<<"$Results"
-<<endl<<"$End";
+endl<<"$Results";
+
 
 
 //ÃÅÍÅĞÈĞÎÂÀÍÈÅ  SMR *.smr
@@ -389,11 +400,11 @@ endl<<"Model_name = RDO_PROCESS"
 <<endl<<"Statistic_file = RDO_PROCESS" //PMD
 <<endl<<"Results_file   = RDO_PROCESS"
 //<<endl<<"Frame_file     = RDO_PROCESS"
-<<endl<<"Frame_number   = 1"
-<<endl<<"Show_mode      = Animation"
-<<endl<<"Show_rate      = 10000000.0"
+//<<endl<<"Frame_number   = 1"
+//<<endl<<"Show_mode      = Animation"
+//<<endl<<"Show_rate      = 10000000.0"
 <<endl
-<<endl<<"Terminate_if  Time_now >= 1000.0";
+<<endl<<"Terminate_if  Time_now >= "<< rpapp.project().generate_time_MJ;
 
 
 
@@ -418,4 +429,24 @@ rpapp.RDOfiles->pattern
 <<endl
 <<endl<<"	$End";
 
+
+rpapp.RDOfiles->pattern
+<<endl<<"{----------------ÃÅÍÅĞÀÖÈß åñëè îñòàíàâëèâàåòñÿ ïî âğåìåíè-------------------------------------------}"
+<<endl
+<<endl<<"$Pattern  Áëîê_îñòàíîâà_ìîäåëèğîâàíèÿ_ïî_âğåìåíè : irregular_event trace "
+<<endl<<"$Relevant_resources"
+<<endl<<"_parameter : Group_of_transacts_X  NoChange {íóæåí äëÿ òîãî, ÷òî áåç íåãî ãëş÷èò}"
+<<endl<<"$Time ="<< rpapp.project().generate_time_MJ
+<<endl<<"$Body"
+<<endl<<"_parameter"
+<<endl<<"$End";
+
+
+
+}
+
+void RPMainFrame::OnGenType() 
+{
+	RP_GENERATION_TYPE_MJ dlg;
+	dlg.DoModal();	
 }

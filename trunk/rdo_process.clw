@@ -2,13 +2,13 @@
 
 [General Info]
 Version=1
-LastClass=RPShapeCreateDlg1_MJ
-LastTemplate=CStatusBarCtrl
+LastClass=RP_GENERATION_TYPE_MJ
+LastTemplate=CDialog
 NewFileInclude1=#include "stdafx.h"
 NewFileInclude2=#include "rdo_process.h"
 LastPage=0
 
-ClassCount=22
+ClassCount=23
 Class1=RDOLink
 Class2=RPDockWnd
 Class3=RPPageCtrl
@@ -30,20 +30,22 @@ Class18=RPShapeProcessDlg1_MJ
 Class19=RPShapeProcessDlg2_MJ
 Class20=RPShapeTerminateDlg1_MJ
 
-ResourceCount=11
+ResourceCount=12
 Resource1=TOOLBARBLOCKMJ
 Resource2=IDD_DIALOG_CREATE_1_MJ
-Resource3=IDD_DIALOG_PROCESS_1_MJ
-Resource4=IDD_ABOUT
-Resource5=IDD_DIALOG_RESOURCE_DLG1
-Resource6=IDD_DIALOG_PROCESS_2_MJ
+Resource3=IDD_ABOUT
+Resource4=IDD_DIALOG_RESOURCE_DLG1
+Resource5=IDD_DIALOG_CREATE_2_MJ
+Resource6=IDD_DIALOG_TERMINATE_1_MJ
 Resource7=IDR_RDO_PRTYPE (English (U.S.))
-Resource8=IDD_DIALOG_CREATE_2_MJ
+Resource8=IDD_DIALOG_GEN_TYPE
 Class21=RPShapeResourceDLG1_MJ
-Resource9=IDD_DIALOG_TERMINATE_1_MJ
+Resource9=IDD_DIALOG_PROCESS_1_MJ
 Resource10=IDR_TOOLBAR1
 Class22=RPToolBarBlockMJ
-Resource11=IDR_MAINFRAME (English (U.S.))
+Resource11=IDD_DIALOG_PROCESS_2_MJ
+Class23=RP_GENERATION_TYPE_MJ
+Resource12=IDR_MAINFRAME (English (U.S.))
 
 [CLS:RDOLink]
 Type=0
@@ -130,7 +132,7 @@ Type=0
 BaseClass=CMDIFrameWnd
 HeaderFile=rdoprocess_mainfrm.h
 ImplementationFile=rdoprocess_mainfrm.cpp
-LastObject=IDC_EDIT1
+LastObject=ID_GEN_TYPE
 Filter=T
 VirtualFilter=fWC
 
@@ -139,7 +141,7 @@ Type=0
 BaseClass=CDialog
 HeaderFile=rdoprocess_shape_create_dlg1_MJ.h
 ImplementationFile=rdoprocess_shape_create_dlg1_MJ.cpp
-LastObject=IDC_EDIT2
+LastObject=ID_APP_ABOUT
 Filter=D
 VirtualFilter=dWC
 
@@ -308,7 +310,8 @@ Command5=ID_FLOW_SELECT
 Command6=ID_FLOW_CONNECTOR
 Command7=ID_FLOW_ROTATE
 Command8=ID_GENERATE
-CommandCount=8
+Command9=ID_GEN_TYPE
+CommandCount=9
 
 [MNU:IDR_MAINFRAME (English (U.S.))]
 Type=1
@@ -397,4 +400,23 @@ BaseClass=CStatusBarCtrl
 Filter=W
 VirtualFilter=WC
 LastObject=ID_APP_ABOUT
+
+[DLG:IDD_DIALOG_GEN_TYPE]
+Type=1
+Class=RP_GENERATION_TYPE_MJ
+ControlCount=5
+Control1=IDOK,button,1342242817
+Control2=IDCANCEL,button,1342242816
+Control3=IDC_COMBO1,combobox,1344339970
+Control4=IDC_EDIT1,edit,1350631552
+Control5=IDC_STATIC,static,1342308352
+
+[CLS:RP_GENERATION_TYPE_MJ]
+Type=0
+HeaderFile=rdoprocess_generation_type_MJ.h
+ImplementationFile=rdoprocess_generation_type_MJ.cpp
+BaseClass=CDialog
+Filter=D
+VirtualFilter=dWC
+LastObject=IDC_COMBO1
 

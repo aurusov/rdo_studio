@@ -121,6 +121,9 @@ BOOL RPFlowChart::Create( LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD d
 
 	shape_process = new RPShapeProcessMJ( flowobj );
 	shape_process->setPosition( 100,150 );
+	
+	shape_process = new RPShapeProcessMJ( flowobj );
+	shape_process->setPosition( 100,150 );
 
 	shape_terminate = new RPShapeTerminateMJ( flowobj );
 	shape_terminate->setPosition( 100,200 );

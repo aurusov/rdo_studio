@@ -111,6 +111,10 @@ SOURCE=.\rdoprocess_flowchart.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\rdoprocess_generation_type_MJ.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdoprocess_mainfrm.cpp
 # End Source File
 # Begin Source File
@@ -241,6 +245,10 @@ SOURCE=.\rdoprocess_creation_RDO_files_MJ.h
 # Begin Source File
 
 SOURCE=.\rdoprocess_flowchart.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdoprocess_generation_type_MJ.h
 # End Source File
 # Begin Source File
 

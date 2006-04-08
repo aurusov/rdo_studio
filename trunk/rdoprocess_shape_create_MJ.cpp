@@ -124,7 +124,7 @@ rpapp.RDOfiles->pattern <<endl<<"{-------блок cretae ------" <<getName().c_str()
 	<<endl	 
 	<<endl	 
 	<<endl<<"		Место_нахождения            set "<<getName().c_str()<<" {ID создающего блока}"
-	<<endl<<"		Место_нахождения_будущее    set "<<id_next          <<" {ID куда идет коннектор}"
+	<<endl<<"		Место_нахождения_будущее    set "<<id_next.c_str()          <<" {ID куда идет коннектор}"
 	
 	
     //Место_в_очереди set 0

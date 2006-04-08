@@ -28,6 +28,7 @@
 #define IDC_FLOW_DOCK_NOT               158
 #define IDD_DIALOG_RESOURCE_DLG1        159
 #define TOOLBARBLOCKMJ                  160
+#define IDD_DIALOG_GEN_TYPE             162
 #define IDD_ABOUT                       165
 #define IDC_EDIT1                       1000
 #define IDC_EDIT2                       1001
@@ -60,6 +61,7 @@
 #define ID_BUTTON32781                  32781
 #define ID_BUTTON32782                  32782
 #define ID_BUTTON32783                  32783
+#define ID_GEN_TYPE                     32785
 #define AFX_IDS_IDLEMESSAGE2            57346
 #define ID_DOCK_PROJECT_BAR             61216
 
@@ -68,8 +70,8 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        162
-#define _APS_NEXT_COMMAND_VALUE         32784
+#define _APS_NEXT_RESOURCE_VALUE        164
+#define _APS_NEXT_COMMAND_VALUE         32787
 #define _APS_NEXT_CONTROL_VALUE         1016
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

@@ -142,27 +142,19 @@ void RPShapeProcessMJ::generate_MJ()
 		name_value = name_value1 + name_value2;
 		rpapp.project().list_pattern_names.push_back(name_value);
 
-/*
-rpapp.RDOfiles->pattern <<endl<<endl<<"èìÿ ñëåäóşùåãî áëîêà - "<<id_next
-<<endl<<"èìÿ - "<<getName().c_str()
-
-<<endl<<"çàêîí ïğèáûòèÿ - "<<gtype
-<<endl<<"áàçà ãåíåğàòîğà - "<<base_gen
-<<endl<<"àòğèáóòû çàêîíà - "<<"exp - "<<gexp<<" disp"<<gdisp<<" max - " <<gmax<<" min - "<<gmin
-<<endl<<"äåéñòâèå"<<action
-<<endl<<"çàêîí"<<queue<<endl
-
-<<"ĞÅÑÓĞÑÛ :";
-
-std::list<CString>::iterator it = list_resource_procMJ.begin();
-	while( it != list_resource_procMJ.end() ) 
-	{
-	rpapp.RDOfiles->pattern <<(*it)<<"     ";
-	it++;
-	}	
 
 
-*/
+	// ÃÅÍÅĞÀÖÈß ñòàòèñòèêè ĞÄÎ ÔÀÉË *.pmd
+	rpapp.RDOfiles->statistic
+
+	<<endl<<"Çàíÿòîñòü_Áëîêà_" <<getName().c_str()<<
+	  ":  watch_state"<<" Block_process_"<<getName().c_str()<<".Ñîñòîÿíèå = çàíÿò"
+
+	<<endl<<"Î÷åğåäü_Áëîêà_" <<getName().c_str()<<
+	  ":  watch_par"<<" Queue_"<<getName().c_str()<<".Ğàçìåğ_î÷åğåäè";
+
+
+
 // ÃÅÍÅĞÀÖÈß ğåñóğñîâ ĞÄÎ ÔÀÉË *.res
 	rpapp.RDOfiles->resourse<<endl<<endl<<"{-------áëîê process ------" <<getName().c_str()<<"-------------------}" <<endl
 
@@ -203,7 +195,23 @@ rpapp.RDOfiles->pattern <<endl<<endl<<"{---------ïîñòàíîâêà â î÷åêğåäü--------"<
 	<<endl<<"$Relevant_resources"
 	<<endl<<"	_transact  : Group_of_transacts_X  Keep"
 	<<endl<<"	_block     : Queue_"<<getName().c_str()<<" Keep"
-	<<endl<<"	_block_proc : Block_process_"<<getName().c_str()<<" NoChange"
+	<<endl<<"	_block_proc : Block_process_"<<getName().c_str()<<" NoChange";
+
+
+	// ïåğå÷èñëåíèå ğåññóğñîâ
+	std::list<CString>::iterator it = list_resource_procMJ.begin();
+	while( it != list_resource_procMJ.end() ) 
+	{
+	
+	rpapp.RDOfiles->pattern <<endl
+	<<endl<<"_resource_"<<(*it)<<" : Resource_"<<(*it)<<" NoChange";
+
+	it++;
+	}
+
+
+	rpapp.RDOfiles->pattern <<endl
+
 	<<endl<<"	$Body"
 	<<endl<<"_transact"
 	<<endl<<"	Choice from   _transact.Ñîñòîÿíèå_òğàíñïîğòèğîâêè = â_î÷åğåäè and" 
@@ -211,7 +219,7 @@ rpapp.RDOfiles->pattern <<endl<<endl<<"{---------ïîñòàíîâêà â î÷åêğåäü--------"<
 	<<endl<<"		first"
 	<<endl<<"	Convert_rule" 
 	<<endl<<"		Ñîñòîÿíèå_òğàíñïîğòèğîâêè set â_î÷åğåäè_âûõîä"
-	<<endl<<"		Ìåñòî_íàõîæäåíèÿ_áóäóùåå  set "<<id_next
+	<<endl<<"		Ìåñòî_íàõîæäåíèÿ_áóäóùåå  set "<<id_next.c_str()
 	<<endl
 	<<endl<<"_block"
 	<<endl<<"	Choice from _block.Âûõîä_î÷åğåäè = ñâîáîäåí"
@@ -221,9 +229,27 @@ rpapp.RDOfiles->pattern <<endl<<endl<<"{---------ïîñòàíîâêà â î÷åêğåäü--------"<
 	<<endl<<"		Âûõîä_î÷åğåäè set çàíÿò"
 	<<endl
 	<<endl<<"_block_proc"
-	<<endl<<"	Choice from _block_proc.Ñîñòîÿíèå=ñâîáîäåí"
+	<<endl<<"	Choice from 1=1"
 	<<endl<<"		first"
-	<<endl
+	<<endl;
+
+	it = list_resource_procMJ.begin();
+	while( it != list_resource_procMJ.end() ) 
+	{
+	
+	rpapp.RDOfiles->pattern <<endl
+
+
+	<<endl<<"_resource_"<<(*it) 
+    <<endl<<"	Choice from" 
+	<<endl<<"	_resource_"<<(*it)<<".Ñîñòîÿíèå=ñâîáîäåí"
+	<<endl<<"		first";
+
+	it++;
+	}
+
+
+rpapp.RDOfiles->pattern
 	<<endl<<"$End"
 	
 	//----------------------------------------------------------------------------
@@ -246,7 +272,7 @@ rpapp.RDOfiles->pattern <<endl<<endl<<"{---------ïîñòàíîâêà â î÷åêğåäü--------"<
 	<<endl;
 
 // ïåğå÷èñëåíèå ğåññóğñîâ
-std::list<CString>::iterator it = list_resource_procMJ.begin();
+ it = list_resource_procMJ.begin();
 	while( it != list_resource_procMJ.end() ) 
 	{
 	
@@ -286,7 +312,7 @@ rpapp.RDOfiles->pattern <<endl
 	
 	
 	<<endl<<"		Ñîñòîÿíèå_òğàíñïîğòèğîâêè set çàõâà÷åí"
-	<<endl<<"		Ìåñòî_íàõîæäåíèÿ_áóäóùåå set "<<id_next
+	<<endl<<"		Ìåñòî_íàõîæäåíèÿ_áóäóùåå set "<<id_next.c_str()
 	<<endl
 	<<endl<<"	Convert_end"
 	<<endl<<"		Ñîñòîÿíèå_òğàíñïîğòèğîâêè set îæèäàåò"
@@ -332,10 +358,13 @@ rpapp.RDOfiles->pattern <<endl<<endl
 
 	<<endl<<"_block"
 	<<endl<<"  Choice from"
-	<<endl<<"  _block.Ñîñòîÿíèå = ñâîáîäåí"
+	<<endl<<"  1=1"
 	<<endl<<"		first"
 	<<endl<<"	Convert_begin"
-	<<endl<<"		Ñîñòîÿíèå set fun_resource_"<<getName().c_str()<<"_seize(";
+	<<endl<<"		Ñîñòîÿíèå set çàíÿò" 
+	
+			/*
+	fun_resource_"<<getName().c_str()<<"_seize(";
 
 
 it = list_resource_procMJ.begin();
@@ -361,10 +390,12 @@ it = list_resource_procMJ.begin();
     rpapp.RDOfiles->pattern <<")"<<endl
 
 
-
+*/
 
 	<<endl<<"Convert_end  "
-    <<endl<<endl<<"		Ñîñòîÿíèå set fun_resource_"<<getName().c_str()<<"_seize(";
+    <<endl<<endl<<"		Ñîñòîÿíèå set ñâîáîäåí "
+	/*
+	fun_resource_"<<getName().c_str()<<"_seize(";
 
 
 	it = list_resource_procMJ.begin();
@@ -388,6 +419,8 @@ it = list_resource_procMJ.begin();
 	}
 
     rpapp.RDOfiles->pattern <<")"<<endl
+
+  */
 	<<endl<<"$End";
 
 

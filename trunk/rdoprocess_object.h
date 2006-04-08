@@ -45,15 +45,18 @@ public:
 	RPObject( RPObject* parent = NULL, const rp::string& name = "object" );
 	virtual ~RPObject();
 
-	void list_name();
-	void list_name_for_type_res();
-    virtual void generate_MJ() {}; // MJ 29.03.06 ф-ия генериовнаия
-	virtual void find_next_block_MJ() {};// MJ 30.03.06 создает ф-ию которая перекрывается в RPShape для поиска следующего блока
-	CString id_next; //MJ 30.03.06 id следующего блока, заведено здесь для функции, которая пробегает полисту
-	CString type; // MJ 1.04.06 для определения типа блоков
+
+
+	rp::string id_next; // MJ 30.03.06 id следующего блока, заведено здесь для функции, которая пробегает полисту
+	rp::string type; // MJ 1.04.06 для определения типа блоков
+
+	void list_name();				// MJ бегает по всему листу объектов, вызывается при генерировании
+	void list_name_for_type_res();  // MJ используется для генерирования типов рессурсов, просто возвращает именя всех блоков которые есть на экране, чтобы заполнить тип куда пойти
+    virtual void generate_MJ() {};  // MJ 29.03.06 ф-ия генериовнаия
+	virtual void find_next_block_MJ() {}; // MJ 30.03.06 создает ф-ию которая перекрывается в RPShape для поиска следующего блока
 	std::list< CString > list_pattern_names; // MJ 7.04.06 хранятся имена всех паттернов для записи в файл *.opr generate() заполняет его
 
-	void list_name_for_resource_MJ(std::list< RPObject* >* list_resource);
+	void list_name_for_resource_MJ(std::list< RPObject* >* list_resource); // MJ возвращает те ссылки из списка где тип рессурс, используется в процессе для выбора ресурсов
 
 	rp::string getName() const { return name; }
 	virtual bool setName( const rp::string& value );

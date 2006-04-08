@@ -17,6 +17,9 @@ RPProject::RPProject():
 	flow_state( flow_select )
 {
 	rpapp.msg().connect( this, rp::msg::RP_OBJ_SELCHANGED );
+
+generate_time_MJ = 100;
+
 }
 
 RPProject::~RPProject()

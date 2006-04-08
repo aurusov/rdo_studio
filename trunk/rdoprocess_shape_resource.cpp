@@ -64,6 +64,15 @@ void RPShapeResource_MJ::generate_MJ()
 	<<endl<<"всего может обслуживать одновременно - "<<gamount;
 */
 
+	// ГЕНЕРАЦИЯ статистики РДО ФАЙЛ *.pmd
+	rpapp.RDOfiles->statistic
+
+	<<endl<<"Занятость_Ресурса_" <<getName().c_str()<<
+	  ":  watch_state "<<"Resource_"<<getName().c_str()<<".Состояние = занят";
+
+
+
+
 	
 // ГЕНЕРАЦИЯ ФУНКЦИЙ РДО ФАЙЛ *.fun
 rpapp.RDOfiles->function<<endl<<"{-------ресурс ------" <<getName().c_str()<<"-------------------}" <<endl

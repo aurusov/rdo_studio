@@ -43,6 +43,8 @@ public:
 	RPProject();
 	virtual ~RPProject();
 
+	double generate_time_MJ;
+
 	FlowState getFlowState() const { return flow_state; }
 	void setFlowState( FlowState value );
 };

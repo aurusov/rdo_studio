@@ -1177,7 +1177,7 @@ std::vector< RPConnectorDock* >::const_iterator it = docks.begin();
 			
 				if ( dock->isType( RPConnectorDock::in ) ) 
 				{
-				RPObject::id_next = obj.getName().c_str();
+				RPObject::id_next = obj.getName();
 				} 
 				
 			}
