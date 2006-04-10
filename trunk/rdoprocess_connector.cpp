@@ -69,7 +69,7 @@ void RPConnector::next_step( CDC& dc, const rp::point& p1, const rp::point& p2, 
 	dc.MoveTo( p2.x, p2.y );
 	dc.LineTo( _p22.x, _p22.y );
 	dc.RestoreDC( -1 );
-*/
+
 	RPShape* shape = (RPShape*)(&dock_begin->object());
 	rp::rect rect = shape->getBoundingRectNoRotateOuter().extendByPerimetr( RPConnectorDock::delta );
 	dc.SaveDC();
@@ -88,7 +88,7 @@ void RPConnector::next_step( CDC& dc, const rp::point& p1, const rp::point& p2, 
 	dc.LineTo( rect.p3().x, rect.p3().y );
 	dc.LineTo( rect.p0().x, rect.p0().y );
 	dc.RestoreDC( -1 );
-
+*/
 	double Ka, Kb, K, Ua, Ub;
 	rp::point inter = rp::math::getIntersection( p1, p12, p2, p22, Ka, Kb, K, Ua, Ub );
 	bool intersect  = Ua >= 0 && Ua <= 1 && Ub >= 0 && Ub <= 1;
@@ -116,9 +116,8 @@ void RPConnector::next_step( CDC& dc, const rp::point& p1, const rp::point& p2, 
 		if ( a1 <= -180 ) a1 += 360;
 		if ( a2 >= 180  ) a2 -= 360;
 		if ( a2 <= -180 ) a2 += 360;
-//		if ( recursive == 2 )
-//			dc.TextOut( 10, 10, rp::string::fromdouble( a1 ).c_str() );
-
+//		dc.TextOut( 10, 20 * recursive, rp::string::fromdouble( a1 ).c_str() );
+/*
 		dc.SaveDC();
 		CPen pen( PS_SOLID, 1, RGB(0x00, 0x00, 0x00) );
 		dc.SelectObject( &pen );
@@ -137,12 +136,12 @@ void RPConnector::next_step( CDC& dc, const rp::point& p1, const rp::point& p2, 
 			it++;
 		}
 		dc.RestoreDC( -1 );
-
+*/
 		if ( !inter1_flag && !inter2_flag ) {
 			// ¬сЄ нормально, можем соедин€ть фигуры, направл€ющие которых параллельны и смотр€т друг на друга.
 			// Ќужно сделать зиг-заг. ѕродливаем отрезок первой фигуры на половину рассто€ни€
-			double dx = (p2.x - p1.x) / 2;
-			double dy = (p2.y - p1.y) / 2;
+			double dx = fabs(p2.x - p1.x) / 2;
+			double dy = fabs(p2.y - p1.y) / 2;
 			rp::point p( p1.x + dx * k_cos1, p1.y - dy * k_sin1 );
 			if ( a1 != 0 ) {
 				// ѕовернуть и найти простую точку пересечени€ лучей
@@ -160,6 +159,15 @@ void RPConnector::next_step( CDC& dc, const rp::point& p1, const rp::point& p2, 
 			p12.y = p1.y - len * k_sin1;
 			inter1_big_point.clear();
 			if ( rect1_big.isIntersection( p1, p12, inter1_big_point ) ) {
+/*
+				dc.SaveDC();
+				CPen pen( PS_SOLID, 1, RGB(0x00, 0x00, 0x00) );
+				dc.SelectObject( &pen );
+				CBrush brush1( RGB(0xFF, 0xF0, 0xFF) );
+				dc.SelectObject( &brush1 );
+				dc.Ellipse( inter1_big_point.front().x - 3, inter1_big_point.front().y - 3, inter1_big_point.front().x + 3, inter1_big_point.front().y + 3 );
+				dc.RestoreDC( -1 );
+*/
 				pa.push_back( inter1_big_point.front() );
 				next_step( dc, inter1_big_point.front(), p2, norm1, norm2, pa, pa_post );
 			}
@@ -173,6 +181,15 @@ void RPConnector::next_step( CDC& dc, const rp::point& p1, const rp::point& p2, 
 			p22.y = p2.y - len * k_sin2;
 			inter2_big_point.clear();
 			if ( rect2_big.isIntersection( p2, p22, inter2_big_point ) ) {
+/*
+				dc.SaveDC();
+				CPen pen( PS_SOLID, 1, RGB(0x00, 0x00, 0x00) );
+				dc.SelectObject( &pen );
+				CBrush brush1( RGB(0xFF, 0x00, 0xFF) );
+				dc.SelectObject( &brush1 );
+				dc.Ellipse( inter2_big_point.front().x - 3, inter2_big_point.front().y - 3, inter2_big_point.front().x + 3, inter2_big_point.front().y + 3 );
+				dc.RestoreDC( -1 );
+*/
 				pa_post.push_back( inter2_big_point.front() );
 				next_step( dc, p1, inter2_big_point.front(), norm1, norm2, pa, pa_post );
 			}
