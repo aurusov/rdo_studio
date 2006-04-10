@@ -41,7 +41,6 @@ bool polyline::pointInPolygon( const rp::point& point ) const
 				}
 			}
 		}
-		TRACE( "%d\n", counter );
 		return counter % 2 ? true : false;
 	}
 	return false;
@@ -86,8 +85,8 @@ bool polyline::pointInPolygon( const rp::point& point ) const
 	}
 	return false;
 }
-*/
-/*
+
+
 bool polyline::pointInPolygon( const rp::point& point ) const
 {
 	if ( size() > 2 ) {
@@ -112,9 +111,7 @@ bool polyline::pointInPolygon( const rp::point& point ) const
 	}
 	return false;
 }
-*/
 
-/*
 void polyline::extendFromCenter( double delta )
 {
 	if ( size() < 2 ) return;
