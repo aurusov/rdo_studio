@@ -18,7 +18,8 @@ static char THIS_FILE[] = __FILE__;
 
 RPShape::RPShape( RPObject* _parent, const rp::string& _name ):
 	RPObjectMatrix( _parent, _name ),
-	pcmd( pcmd_none )
+	pcmd( pcmd_none ),
+	brush( RGB(0xFF, 0xFF, 0xA0) )
 //	snap_to_point( 0, 0 )
 {
 }
@@ -187,7 +188,6 @@ void RPShape::drawPolyline( CDC& dc )
 	dc.SelectObject( main_pen );
 //	dc.Polyline( &pa_global.getWinPolyline()[0], pa_global.size() );
 //	return;
-	CBrush brush( RGB(0xFF, 0xFF, 0xA0) );
 	CBrush* old_brush = dc.SelectObject( &brush );
 //	dc.BeginPath();
 	if ( pa_global.isPolygon() ) {

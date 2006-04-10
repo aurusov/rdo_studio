@@ -69,7 +69,7 @@ void RPConnector::next_step( CDC& dc, const rp::point& p1, const rp::point& p2, 
 	dc.MoveTo( p2.x, p2.y );
 	dc.LineTo( _p22.x, _p22.y );
 	dc.RestoreDC( -1 );
-
+*/
 	RPShape* shape = (RPShape*)(&dock_begin->object());
 	rp::rect rect = shape->getBoundingRectNoRotateOuter().extendByPerimetr( RPConnectorDock::delta );
 	dc.SaveDC();
@@ -88,7 +88,7 @@ void RPConnector::next_step( CDC& dc, const rp::point& p1, const rp::point& p2, 
 	dc.LineTo( rect.p3().x, rect.p3().y );
 	dc.LineTo( rect.p0().x, rect.p0().y );
 	dc.RestoreDC( -1 );
-*/
+
 	double Ka, Kb, K, Ua, Ub;
 	rp::point inter = rp::math::getIntersection( p1, p12, p2, p22, Ka, Kb, K, Ua, Ub );
 	bool intersect  = Ua >= 0 && Ua <= 1 && Ub >= 0 && Ub <= 1;
@@ -118,7 +118,7 @@ void RPConnector::next_step( CDC& dc, const rp::point& p1, const rp::point& p2, 
 		if ( a2 <= -180 ) a2 += 360;
 //		if ( recursive == 2 )
 //			dc.TextOut( 10, 10, rp::string::fromdouble( a1 ).c_str() );
-/*
+
 		dc.SaveDC();
 		CPen pen( PS_SOLID, 1, RGB(0x00, 0x00, 0x00) );
 		dc.SelectObject( &pen );
@@ -137,7 +137,7 @@ void RPConnector::next_step( CDC& dc, const rp::point& p1, const rp::point& p2, 
 			it++;
 		}
 		dc.RestoreDC( -1 );
-*/
+
 		if ( !inter1_flag && !inter2_flag ) {
 			// ¬сЄ нормально, можем соедин€ть фигуры, направл€ющие которых параллельны и смотр€т друг на друга.
 			// Ќужно сделать зиг-заг. ѕродливаем отрезок первой фигуры на половину рассто€ни€

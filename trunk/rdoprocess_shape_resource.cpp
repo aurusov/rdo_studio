@@ -23,8 +23,24 @@ RPShapeResource_MJ::RPShapeResource_MJ( RPObject* _parent ):
 	gamount=1;
 
 	// инициализация типа блока 
+
 	type ="resource";
-		
+
+	pa_src.push_back( rp::point(-50, -10) );
+	pa_src.push_back( rp::point(-35, -25) );
+	pa_src.push_back( rp::point(35, -25) );
+	pa_src.push_back( rp::point(50, -10) );
+	pa_src.push_back( rp::point(50, 10) );
+	pa_src.push_back( rp::point(35, 25) );
+	pa_src.push_back( rp::point(-35, 25) );
+	pa_src.push_back( rp::point(-50, 10) );
+	pa_src.push_back( rp::point(50, 10) );
+	pa_src.push_back( rp::point(-50, 10) );
+	pa_src.push_back( rp::point(-50, -10) );
+	pa_src.push_back( rp::point(50, -10) );
+	pa_src.push_back( rp::point(-50, -10) );
+
+/*
 	pa_src.push_back( rp::point(-50, -10) );
 	pa_src.push_back( rp::point(-35, -25) );
 	pa_src.push_back( rp::point(35, -25) );
@@ -39,8 +55,8 @@ RPShapeResource_MJ::RPShapeResource_MJ( RPObject* _parent ):
 	pa_src.push_back( rp::point(50, -10) );
 	pa_src.push_back( rp::point(50, 10) );
 	pa_src.push_back( rp::point(-50, 10) );
-
-docks.push_back( new RPConnectorDockResource( this, RPConnectorDock::out,  rp::point( 0, -25 ), 90 ) );
+*/
+	docks.push_back( new RPConnectorDockResource( this, RPConnectorDock::out,  rp::point( 0, -25 ), 90 ) );
 }
 
 RPShapeResource_MJ::~RPShapeResource_MJ()
@@ -48,14 +64,11 @@ RPShapeResource_MJ::~RPShapeResource_MJ()
 
 }
 
-
 void RPShapeResource_MJ::onLButtonDblClk( UINT nFlags, CPoint global_chart_pos )
 {
 	RPShapeResourceDLG1_MJ dlg(NULL,this);
 	dlg.DoModal();
-
 }
-
 
 void RPShapeResource_MJ::generate_MJ()
 {

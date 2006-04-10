@@ -20,6 +20,8 @@ class RPShape: public RPObjectMatrix
 protected:
 //	CPoint snap_to_point;
 
+	CBrush brush;
+
 	std::vector< RPConnectorDock* > docks;
 	RPConnectorDock* find_dock( const rp::point& global_chart_pos );
 

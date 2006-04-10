@@ -17,6 +17,40 @@ namespace rp {
 bool polyline::pointInPolygon( const rp::point& point ) const
 {
 	if ( size() > 2 ) {
+		int counter  = 0;
+		unsigned int i, j;
+		bool polygon = isPolygon();
+		int  cnt     = polygon ? size() - 1 : size();
+		for ( i = 0, j = 1; i < cnt; i++, j++ ) {
+			if ( !polygon && j == cnt ) {
+				j = 0;
+			}
+			const rp::point& p1 = (*this)[i];
+			const rp::point& p2 = (*this)[j];
+			double y_min = p1.y < p2.y ? p1.y : p2.y;
+			if ( point.y >= y_min ) {
+				double y_max = p1.y > p2.y ? p1.y : p2.y;
+				if ( point.y <= y_max ) {
+					double x_max = p1.x > p2.x ? p1.x : p2.x;
+					if ( point.x <= x_max ) {
+						if ( fabs(p1.y - p2.y) > 1 ) {
+							double xinters = (point.y-p1.y)*(p2.x-p1.x)/(p2.y-p1.y)+p1.x;
+							if ( fabs(p1.x - p2.x) <= 1 || point.x <= xinters ) counter++;
+						}
+					}
+				}
+			}
+		}
+		TRACE( "%d\n", counter );
+		return counter % 2 ? true : false;
+	}
+	return false;
+}
+
+/*
+bool polyline::pointInPolygon( const rp::point& point ) const
+{
+	if ( size() > 2 ) {
 		unsigned int i;
 		unsigned int j;
 		double k0 = 0;
@@ -24,7 +58,9 @@ bool polyline::pointInPolygon( const rp::point& point ) const
 		bool polygon = isPolygon();
 		int  cnt     = polygon ? size() - 1 : size();
 		for ( i = 0, j = 1; i < cnt; i++, j++ ) {
-			if ( !polygon && j == cnt ) j = 0;
+			if ( !polygon && j == cnt ) {
+				j = 0;
+			}
 			const rp::point& p1 = (*this)[i];
 			const rp::point& p2 = (*this)[j];
 			double k = (point.y - p1.y)*(p2.x - p1.x) - (point.x - p1.x)*(p2.y - p1.y);
@@ -50,33 +86,26 @@ bool polyline::pointInPolygon( const rp::point& point ) const
 	}
 	return false;
 }
-
+*/
 /*
 bool polyline::pointInPolygon( const rp::point& point ) const
 {
 	if ( size() > 2 ) {
 		unsigned int i;
 		unsigned int j;
-		int k0    = 0;
-		bool flag = true;
+		bool flag = false;
 		bool polygon = isPolygon();
 		int  cnt     = polygon ? size() - 1 : size();
 		for ( i = 0, j = 1; i < cnt; i++, j++ ) {
-			if ( !polygon && j == cnt ) j = 0;
+			if ( !polygon && j == cnt ) {
+				j = cnt-1;
+			}
 			const rp::point& p1 = (*this)[i];
 			const rp::point& p2 = (*this)[j];
-			int k = (point.y - p1.y)*(p2.x - p1.x) - (point.x - p1.x)*(p2.y - p1.y);
-			if ( k == 0 ) {
-				break;
-			} else {
-				if ( k0 == 0 ) {
-					k0 = k;
-				} else {
-					if ( k0 * k < 0 ) {
-						flag = false;
-						break;
-					}
-				}
+			if ( (((p1.y <= point.y) && (point.y < p2.y)) || ((p2.y <= point.y) && (point.y < p1.y))) &&
+			    (point.x < (p2.x - p1.x) * (point.y - p1.y) / (p2.y - p1.y) + p1.x))
+			{
+				flag = !flag;
 			}
 		}
 		return flag;
@@ -84,6 +113,7 @@ bool polyline::pointInPolygon( const rp::point& point ) const
 	return false;
 }
 */
+
 /*
 void polyline::extendFromCenter( double delta )
 {
