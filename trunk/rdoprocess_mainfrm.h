@@ -2,6 +2,7 @@
 #define RDO_PROCESS_MAINFRM_H
 
 #include "ctrl/rdoprocess_projectbar.h"
+#include "ctrl/rdoprocess_toolbar.h"
 
 #if _MSC_VER > 1000
 #pragma once
@@ -18,6 +19,10 @@ protected:
 	CStatusBar  m_wndStatusBar;
 	CToolBar    m_wndToolBar;
 	CToolBar    m_wndToolBlockBarMJ; // MJ 2.04.06 панель для блоков
+	CComboBox   m_wndCombo;
+	RPToolBar   m_wndStyleAndColorToolBar;
+
+	void dockControlBarBesideOf( CControlBar& bar, CControlBar& baseBar );
 
 public:
 	void blank_rdo_MJ();
@@ -46,6 +51,7 @@ protected:
 	afx_msg void OnFlowConnector();
 	afx_msg void OnGenerate();
 	afx_msg void OnGenType();
+	afx_msg void OnUpdateBtnFillBrush(CCmdUI* pCmdUI);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

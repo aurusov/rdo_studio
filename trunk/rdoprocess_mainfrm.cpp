@@ -30,6 +30,9 @@ BEGIN_MESSAGE_MAP(RPMainFrame, CMDIFrameWnd)
 	ON_COMMAND(ID_FLOW_CONNECTOR, OnFlowConnector)
 	ON_COMMAND(ID_GENERATE, OnGenerate)
 	ON_COMMAND(ID_GEN_TYPE, OnGenType)
+	ON_UPDATE_COMMAND_UI(ID_BTN_FILL_BRUSH, OnUpdateBtnFillBrush)
+	ON_UPDATE_COMMAND_UI(ID_BTN_FILL_PEN, OnUpdateBtnFillBrush)
+	ON_UPDATE_COMMAND_UI(ID_BTN_FILL_FONT, OnUpdateBtnFillBrush)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -54,20 +57,29 @@ int RPMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	if (CMDIFrameWnd::OnCreate(lpCreateStruct) == -1)
 		return -1;
 
-	bool winxp = false;
-	OSVERSIONINFO osv;
-	osv.dwOSVersionInfoSize = sizeof( OSVERSIONINFO );
-	if ( ::GetVersionEx( &osv ) ) {
-		winxp = osv.dwMajorVersion >= 5 && osv.dwMinorVersion == 1;
-	}
-	m_wndToolBar.CreateEx( this, winxp ? 0 : TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
+	m_wndToolBar.CreateEx( this, 0, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
 	m_wndToolBar.LoadToolBar( IDR_MAINFRAME );
+	m_wndToolBar.ModifyStyle( 0, TBSTYLE_FLAT );
+	m_wndToolBar.SetWindowText( rp::string::format( IDS_TOOLBAR_MAIN ).c_str() );
+
+	m_wndStyleAndColorToolBar.CreateEx( this, 0, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_FLYBY );
+	m_wndStyleAndColorToolBar.LoadToolBar( IDR_STYLEANDCOLOR );
+	m_wndStyleAndColorToolBar.ModifyStyle( 0, TBSTYLE_FLAT );
+	m_wndStyleAndColorToolBar.SendMessage( TB_SETEXTENDEDSTYLE, 0, TBSTYLE_EX_DRAWDDARROWS );
+	m_wndStyleAndColorToolBar.SetWindowText( rp::string::format( IDS_TOOLBAR_STYLEANDCOLOR ).c_str() );
+
+	int index = m_wndStyleAndColorToolBar.SendMessage( TB_COMMANDTOINDEX, ID_BTN_FILL_BRUSH );
+	m_wndStyleAndColorToolBar.SetButtonStyle( index, m_wndStyleAndColorToolBar.GetButtonStyle( index ) | TBSTYLE_DROPDOWN );
+	index = m_wndStyleAndColorToolBar.SendMessage( TB_COMMANDTOINDEX, ID_BTN_FILL_PEN );
+	m_wndStyleAndColorToolBar.SetButtonStyle( index, m_wndStyleAndColorToolBar.GetButtonStyle( index ) | TBSTYLE_DROPDOWN );
+	index = m_wndStyleAndColorToolBar.SendMessage( TB_COMMANDTOINDEX, ID_BTN_FILL_FONT );
+	m_wndStyleAndColorToolBar.SetButtonStyle( index, m_wndStyleAndColorToolBar.GetButtonStyle( index ) | TBSTYLE_DROPDOWN );
 
 	//MJ start 02.04.06
-	m_wndToolBlockBarMJ.CreateEx( this, winxp ? 0 : TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
-	m_wndToolBlockBarMJ.LoadToolBar(TOOLBARBLOCKMJ);
+	m_wndToolBlockBarMJ.CreateEx( this, 0, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
+	m_wndToolBlockBarMJ.LoadToolBar( TOOLBARBLOCKMJ );
+	m_wndToolBlockBarMJ.ModifyStyle( 0, TBSTYLE_FLAT );
 	//MJstop
-
 
 	if (!m_wndStatusBar.Create(this) ||
 		!m_wndStatusBar.SetIndicators(indicators,
@@ -87,7 +99,7 @@ int RPMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	listctrl->InsertItem( 1, "test 2" );
 	listctrl->InsertItem( 2, "test 3" );
 	listctrl->InsertItem( 3, "test 4" );
-	projectBar.insertPage( listctrl, "Basic Process" );
+	projectBar.insertPage( listctrl, "Первая страница" );
 
 	CListCtrl* listctrl2 = new CListCtrl();
 	listctrl2->Create( LVS_LIST | LVS_SINGLESEL, CRect(0,0,1,1), projectBar.prepareNewPage(), -1 );
@@ -122,7 +134,7 @@ int RPMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	listctrl2->InsertItem( 3, "q 4" );
 	listctrl2->InsertItem( 3, "q 4" );
 	listctrl2->InsertItem( 3, "q 4" );
-	projectBar.insertPage( listctrl2, "Second Page" );
+	projectBar.insertPage( listctrl2, "Вторая страница" );
 
 	CListCtrl* listctrl3 = new CListCtrl();
 	listctrl3->Create( LVS_LIST | LVS_SINGLESEL, CRect(0,0,1,1), projectBar.prepareNewPage(), -1 );
@@ -160,13 +172,41 @@ int RPMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	projectBar.selectFirst();
 
 	m_wndToolBar.EnableDocking( CBRS_ALIGN_ANY );
-
+	m_wndStyleAndColorToolBar.EnableDocking( CBRS_ALIGN_ANY );
+	m_wndToolBlockBarMJ.EnableDocking( CBRS_ALIGN_ANY );
 	EnableDocking( CBRS_ALIGN_ANY );
 
 	DockControlBar( &m_wndToolBar );
+	dockControlBarBesideOf( m_wndStyleAndColorToolBar, m_wndToolBar );
+	dockControlBarBesideOf( m_wndToolBlockBarMJ, m_wndStyleAndColorToolBar );
 	DockControlBar( &projectBar, AFX_IDW_DOCKBAR_LEFT );
 
 	return 0;
+}
+
+void RPMainFrame::dockControlBarBesideOf( CControlBar& bar, CControlBar& baseBar )
+{
+	RecalcLayout( TRUE );
+
+	CRect rect;
+	baseBar.GetWindowRect( rect );
+
+	DWORD dw = baseBar.GetBarStyle();
+
+	UINT n = 0;
+	n = ( dw & CBRS_ALIGN_TOP          ) ? AFX_IDW_DOCKBAR_TOP    : n;
+	n = ( dw & CBRS_ALIGN_BOTTOM && !n ) ? AFX_IDW_DOCKBAR_BOTTOM : n;
+	n = ( dw & CBRS_ALIGN_LEFT   && !n ) ? AFX_IDW_DOCKBAR_LEFT   : n;
+	n = ( dw & CBRS_ALIGN_RIGHT  && !n ) ? AFX_IDW_DOCKBAR_RIGHT  : n;
+
+	int dx = 0;
+	int dy = 0;
+	if ( n == AFX_IDW_DOCKBAR_TOP || n == AFX_IDW_DOCKBAR_BOTTOM ) dx = 1;
+	if ( n == AFX_IDW_DOCKBAR_LEFT || n == AFX_IDW_DOCKBAR_RIGHT ) dy = 1;
+
+	rect.OffsetRect( dx, dy );
+
+	DockControlBar( &bar, n, rect );
 }
 
 BOOL RPMainFrame::PreCreateWindow(CREATESTRUCT& cs)
@@ -449,4 +489,9 @@ void RPMainFrame::OnGenType()
 {
 	RP_GENERATION_TYPE_MJ dlg;
 	dlg.DoModal();	
+}
+
+void RPMainFrame::OnUpdateBtnFillBrush( CCmdUI* pCmdUI )
+{
+	pCmdUI->Enable();
 }

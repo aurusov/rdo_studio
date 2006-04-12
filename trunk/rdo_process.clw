@@ -2,56 +2,79 @@
 
 [General Info]
 Version=1
-LastClass=RP_GENERATION_TYPE_MJ
+LastClass=RPToolBar
 LastTemplate=CDialog
 NewFileInclude1=#include "stdafx.h"
 NewFileInclude2=#include "rdo_process.h"
 LastPage=0
 
-ClassCount=23
-Class1=RDOLink
-Class2=RPDockWnd
-Class3=RPPageCtrl
-Class4=RPPageCtrlItemLabel
-Class5=RPPageCtrlItem
-Class6=RPProjectBar
-Class7=CSizingControlBarG
-Class8=CSizingControlBar
-Class9=CSCBMiniDockFrameWnd
-Class10=RPApp
-Class11=RPAboutDlg
-Class12=RPChildFrame
-Class13=RPFlowChart
-Class14=RPMainFrame
-Class15=RPShapeCreateDlg1_MJ
-Class16=RPShapeCreateDlg2_MJ
-Class17=RPListBox
-Class18=RPShapeProcessDlg1_MJ
-Class19=RPShapeProcessDlg2_MJ
-Class20=RPShapeTerminateDlg1_MJ
+ClassCount=27
+Class1=CColourPicker
+Class2=CColourPopup
+Class3=RDOLink
+Class4=RPColorPicker
+Class5=RPDockWnd
+Class6=RPPageCtrl
+Class7=RPPageCtrlItemLabel
+Class8=RPPageCtrlItem
+Class9=RPProjectBar
+Class10=RPToolBar
+Class11=CSizingControlBarG
+Class12=CSizingControlBar
+Class13=CSCBMiniDockFrameWnd
+Class14=RPApp
+Class15=RPAboutDlg
+Class16=RPChildFrame
+Class17=RPFlowChart
+Class18=RP_GENERATION_TYPE_MJ
+Class19=RPMainFrame
+Class20=RPShapeCreateDlg1_MJ
+Class21=RPShapeCreateDlg2_MJ
+Class22=RPListBox
+Class23=RPShapeProcessDlg1_MJ
+Class24=RPShapeProcessDlg2_MJ
+Class25=RPShapeResourceDLG1_MJ
+Class26=RPShapeTerminateDlg1_MJ
+Class27=RPToolBarBlockMJ
 
 ResourceCount=12
-Resource1=TOOLBARBLOCKMJ
-Resource2=IDD_DIALOG_CREATE_1_MJ
-Resource3=IDD_ABOUT
-Resource4=IDD_DIALOG_RESOURCE_DLG1
-Resource5=IDD_DIALOG_CREATE_2_MJ
-Resource6=IDD_DIALOG_TERMINATE_1_MJ
-Resource7=IDR_RDO_PRTYPE (English (U.S.))
-Resource8=IDD_DIALOG_GEN_TYPE
-Class21=RPShapeResourceDLG1_MJ
-Resource9=IDD_DIALOG_PROCESS_1_MJ
-Resource10=IDR_TOOLBAR1
-Class22=RPToolBarBlockMJ
-Resource11=IDD_DIALOG_PROCESS_2_MJ
-Class23=RP_GENERATION_TYPE_MJ
-Resource12=IDR_MAINFRAME (English (U.S.))
+Resource1=IDR_RDO_PRTYPE (English (U.S.))
+Resource2=IDD_DIALOG_GEN_TYPE
+Resource3=TOOLBARBLOCKMJ
+Resource4=IDD_ABOUT
+Resource5=IDD_DIALOG_CREATE_1_MJ
+Resource6=IDD_DIALOG_CREATE_2_MJ
+Resource7=IDD_DIALOG_PROCESS_1_MJ
+Resource8=IDD_DIALOG_PROCESS_2_MJ
+Resource9=IDD_DIALOG_TERMINATE_1_MJ
+Resource10=IDD_DIALOG_RESOURCE_DLG1
+Resource11=IDR_STYLEANDCOLOR
+Resource12=IDR_MAINFRAME
+
+[CLS:CColourPicker]
+Type=0
+BaseClass=CButton
+HeaderFile=ctrl\colourpicker\ColourPicker.h
+ImplementationFile=ctrl\colourpicker\ColourPicker.cpp
+LastObject=CColourPicker
+
+[CLS:CColourPopup]
+Type=0
+BaseClass=CWnd
+HeaderFile=ctrl\colourpicker\ColourPopup.h
+ImplementationFile=ctrl\colourpicker\ColourPopup.cpp
 
 [CLS:RDOLink]
 Type=0
 BaseClass=CWnd
 HeaderFile=ctrl\rdolink.h
 ImplementationFile=ctrl\rdolink.cpp
+
+[CLS:RPColorPicker]
+Type=0
+BaseClass=CWnd
+HeaderFile=ctrl\rdoprocess_colorpicker.h
+ImplementationFile=ctrl\rdoprocess_colorpicker.cpp
 
 [CLS:RPDockWnd]
 Type=0
@@ -83,6 +106,14 @@ BaseClass=RPDockWnd
 HeaderFile=ctrl\rdoprocess_projectbar.h
 ImplementationFile=ctrl\rdoprocess_projectbar.cpp
 
+[CLS:RPToolBar]
+Type=0
+BaseClass=CToolBar
+HeaderFile=ctrl\rdoprocess_toolbar.h
+ImplementationFile=ctrl\rdoprocess_toolbar.cpp
+Filter=W
+LastObject=RPToolBar
+
 [CLS:CSizingControlBarG]
 Type=0
 BaseClass=baseCSizingControlBarG
@@ -100,14 +131,12 @@ Type=0
 BaseClass=baseCSCBMiniDockFrameWnd
 HeaderFile=ctrl\sizecbar\sizecbar.h
 ImplementationFile=ctrl\sizecbar\sizecbar.cpp
-LastObject=CSCBMiniDockFrameWnd
 
 [CLS:RPApp]
 Type=0
 BaseClass=CWinApp
 HeaderFile=rdoprocess_app.h
 ImplementationFile=rdoprocess_app.cpp
-LastObject=ID_FLOW_ROTATE
 
 [CLS:RPAboutDlg]
 Type=0
@@ -127,65 +156,65 @@ BaseClass=CWnd
 HeaderFile=rdoprocess_flowchart.h
 ImplementationFile=rdoprocess_flowchart.cpp
 
+[CLS:RP_GENERATION_TYPE_MJ]
+Type=0
+BaseClass=CDialog
+HeaderFile=rdoprocess_generation_type_MJ.h
+ImplementationFile=rdoprocess_generation_type_MJ.cpp
+
 [CLS:RPMainFrame]
 Type=0
 BaseClass=CMDIFrameWnd
 HeaderFile=rdoprocess_mainfrm.h
 ImplementationFile=rdoprocess_mainfrm.cpp
-LastObject=ID_GEN_TYPE
-Filter=T
-VirtualFilter=fWC
 
 [CLS:RPShapeCreateDlg1_MJ]
 Type=0
 BaseClass=CDialog
 HeaderFile=rdoprocess_shape_create_dlg1_MJ.h
 ImplementationFile=rdoprocess_shape_create_dlg1_MJ.cpp
-LastObject=ID_APP_ABOUT
-Filter=D
-VirtualFilter=dWC
 
 [CLS:RPShapeCreateDlg2_MJ]
 Type=0
 BaseClass=CDialog
 HeaderFile=rdoprocess_shape_create_dlg2_MJ.h
 ImplementationFile=rdoprocess_shape_create_dlg2_MJ.cpp
-Filter=D
-VirtualFilter=dWC
-LastObject=ID_FLOW_ROTATE
 
 [CLS:RPListBox]
 Type=0
 BaseClass=CListBox
 HeaderFile=rdoprocess_shape_process_dlg1_MJ.h
 ImplementationFile=rdoprocess_shape_process_dlg1_MJ.cpp
-Filter=W
-VirtualFilter=bWC
-LastObject=ID_APP_ABOUT
 
 [CLS:RPShapeProcessDlg1_MJ]
 Type=0
 BaseClass=CDialog
 HeaderFile=rdoprocess_shape_process_dlg1_MJ.h
 ImplementationFile=rdoprocess_shape_process_dlg1_MJ.cpp
-Filter=D
-VirtualFilter=dWC
-LastObject=IDC_BUTTON1
 
 [CLS:RPShapeProcessDlg2_MJ]
 Type=0
 BaseClass=CDialog
 HeaderFile=rdoprocess_shape_process_dlg2_MJ.h
 ImplementationFile=rdoprocess_shape_process_dlg2_MJ.cpp
-Filter=D
-VirtualFilter=dWC
-LastObject=IDC_COMBO1
+
+[CLS:RPShapeResourceDLG1_MJ]
+Type=0
+BaseClass=CDialog
+HeaderFile=rdoprocess_shape_resource_DLG1_MJ.h
+ImplementationFile=rdoprocess_shape_resource_DLG1_MJ.cpp
 
 [CLS:RPShapeTerminateDlg1_MJ]
 Type=0
 BaseClass=CDialog
 HeaderFile=rdoprocess_shape_terminate_dlg1_MJ.h
 ImplementationFile=rdoprocess_shape_terminate_dlg1_MJ.cpp
+
+[CLS:RPToolBarBlockMJ]
+Type=0
+BaseClass=CStatusBarCtrl
+HeaderFile=rdoprocess_tool_bar_blockMJ.h
+ImplementationFile=rdoprocess_tool_bar_blockMJ.cpp
 
 [DLG:IDD_ABOUT]
 Type=1
@@ -200,6 +229,16 @@ Control6=IDC_ABOUR_EMAIL_STATIC,static,1342308354
 Control7=IDC_ABOUT_EMAIL,static,1342308608
 Control8=IDC_ABOUR_WEB_STATIC,static,1342308354
 Control9=IDC_ABOUT_WEB,static,1342308608
+
+[DLG:IDD_DIALOG_GEN_TYPE]
+Type=1
+Class=RP_GENERATION_TYPE_MJ
+ControlCount=5
+Control1=IDOK,button,1342242817
+Control2=IDCANCEL,button,1342242816
+Control3=IDC_COMBO1,combobox,1344339970
+Control4=IDC_EDIT1,edit,1350631552
+Control5=IDC_STATIC,static,1342308352
 
 [DLG:IDD_DIALOG_CREATE_1_MJ]
 Type=1
@@ -290,6 +329,18 @@ Control2=IDCANCEL,button,1342242816
 Control3=IDC_STATIC,static,1342308352
 Control4=IDC_COMBO1,combobox,1344340226
 
+[DLG:IDD_DIALOG_RESOURCE_DLG1]
+Type=1
+Class=RPShapeResourceDLG1_MJ
+ControlCount=7
+Control1=IDOK,button,1342242817
+Control2=IDCANCEL,button,1342242816
+Control3=IDC_EDIT1,edit,1350631552
+Control4=IDC_STATIC,static,1342308352
+Control5=IDC_STATIC,static,1342308352
+Control6=IDC_EDIT2,edit,1350631552
+Control7=IDC_STATIC,static,1342308352
+
 [DLG:IDD_DIALOG_TERMINATE_1_MJ]
 Type=1
 Class=RPShapeTerminateDlg1_MJ
@@ -299,9 +350,18 @@ Control2=IDCANCEL,button,1342242816
 Control3=IDC_STATIC,static,1342308352
 Control4=IDC_EDIT1,edit,1350631552
 
-[TB:IDR_MAINFRAME (English (U.S.))]
+[TB:TOOLBARBLOCKMJ]
 Type=1
-Class=RPMainFrame
+Class=?
+Command1=ID_BUTTON32779
+Command2=ID_BUTTON32781
+Command3=ID_BUTTON32782
+Command4=ID_BUTTON32783
+CommandCount=4
+
+[TB:IDR_MAINFRAME]
+Type=1
+Class=?
 Command1=ID_FILE_NEW
 Command2=ID_EDIT_CUT
 Command3=ID_EDIT_COPY
@@ -313,7 +373,15 @@ Command8=ID_GENERATE
 Command9=ID_GEN_TYPE
 CommandCount=9
 
-[MNU:IDR_MAINFRAME (English (U.S.))]
+[TB:IDR_STYLEANDCOLOR]
+Type=1
+Class=?
+Command1=ID_BTN_FILL_BRUSH
+Command2=ID_BTN_FILL_PEN
+Command3=ID_BTN_FILL_FONT
+CommandCount=3
+
+[MNU:IDR_MAINFRAME]
 Type=1
 Class=?
 Command1=ID_FILE_NEW
@@ -341,7 +409,7 @@ Command12=ID_WINDOW_ARRANGE
 Command13=ID_APP_ABOUT
 CommandCount=13
 
-[ACL:IDR_MAINFRAME (English (U.S.))]
+[ACL:IDR_MAINFRAME]
 Type=1
 Class=?
 Command1=ID_EDIT_COPY
@@ -356,67 +424,4 @@ Command9=ID_EDIT_PASTE
 Command10=ID_EDIT_CUT
 Command11=ID_EDIT_UNDO
 CommandCount=11
-
-[DLG:IDD_DIALOG_RESOURCE_DLG1]
-Type=1
-Class=RPShapeResourceDLG1_MJ
-ControlCount=7
-Control1=IDOK,button,1342242817
-Control2=IDCANCEL,button,1342242816
-Control3=IDC_EDIT1,edit,1350631552
-Control4=IDC_STATIC,static,1342308352
-Control5=IDC_STATIC,static,1342308352
-Control6=IDC_EDIT2,edit,1350631552
-Control7=IDC_STATIC,static,1342308352
-
-[CLS:RPShapeResourceDLG1_MJ]
-Type=0
-HeaderFile=rdoprocess_shape_resource_DLG1_MJ.h
-ImplementationFile=rdoprocess_shape_resource_DLG1_MJ.cpp
-BaseClass=CDialog
-Filter=D
-VirtualFilter=dWC
-LastObject=IDC_EDIT2
-
-[TB:IDR_TOOLBAR1]
-Type=1
-Command1=ID_BUTTON32779
-CommandCount=1
-
-[TB:TOOLBARBLOCKMJ]
-Type=1
-Class=RPToolBarBlockMJ
-Command1=ID_BUTTON32779
-Command2=ID_BUTTON32781
-Command3=ID_BUTTON32782
-Command4=ID_BUTTON32783
-CommandCount=4
-
-[CLS:RPToolBarBlockMJ]
-Type=0
-HeaderFile=rdoprocess_tool_bar_blockMJ.h
-ImplementationFile=rdoprocess_tool_bar_blockMJ.cpp
-BaseClass=CStatusBarCtrl
-Filter=W
-VirtualFilter=WC
-LastObject=ID_APP_ABOUT
-
-[DLG:IDD_DIALOG_GEN_TYPE]
-Type=1
-Class=RP_GENERATION_TYPE_MJ
-ControlCount=5
-Control1=IDOK,button,1342242817
-Control2=IDCANCEL,button,1342242816
-Control3=IDC_COMBO1,combobox,1344339970
-Control4=IDC_EDIT1,edit,1350631552
-Control5=IDC_STATIC,static,1342308352
-
-[CLS:RP_GENERATION_TYPE_MJ]
-Type=0
-HeaderFile=rdoprocess_generation_type_MJ.h
-ImplementationFile=rdoprocess_generation_type_MJ.cpp
-BaseClass=CDialog
-Filter=D
-VirtualFilter=dWC
-LastObject=IDC_COMBO1
 

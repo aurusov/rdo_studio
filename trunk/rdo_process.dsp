@@ -462,6 +462,10 @@ SOURCE=.\res\Toolbar.bmp
 
 SOURCE=.\res\toolbar1.bmp
 # End Source File
+# Begin Source File
+
+SOURCE=.\res\toolbar_styleandcolor.bmp
+# End Source File
 # End Group
 # Begin Group "Ctrl"
 
@@ -475,23 +479,11 @@ SOURCE=.\ctrl\rdolink.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ctrl\rdoprocess_dockwnd.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\ctrl\rdoprocess_pagectrl.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\ctrl\rdoprocess_projectbar.cpp
-# End Source File
-# End Group
-# Begin Group "Ctrl Header Files"
-
-# PROP Default_Filter ""
-# Begin Source File
-
 SOURCE=.\ctrl\rdolink.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\ctrl\rdoprocess_dockwnd.cpp
 # End Source File
 # Begin Source File
 
@@ -499,11 +491,27 @@ SOURCE=.\ctrl\rdoprocess_dockwnd.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\ctrl\rdoprocess_pagectrl.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ctrl\rdoprocess_pagectrl.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\ctrl\rdoprocess_projectbar.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ctrl\rdoprocess_projectbar.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\ctrl\rdoprocess_toolbar.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ctrl\rdoprocess_toolbar.h
 # End Source File
 # End Group
 # Begin Group "SizeCBar"
@@ -536,6 +544,26 @@ SOURCE=.\ctrl\mctranspblt\McTransparentBlit.cpp
 # Begin Source File
 
 SOURCE=.\ctrl\mctranspblt\McTransparentBlit.h
+# End Source File
+# End Group
+# Begin Group "ColourPicker"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\ctrl\colourpicker\ColourPicker.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ctrl\colourpicker\ColourPicker.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\ctrl\colourpicker\ColourPopup.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ctrl\colourpicker\ColourPopup.h
 # End Source File
 # End Group
 # End Group

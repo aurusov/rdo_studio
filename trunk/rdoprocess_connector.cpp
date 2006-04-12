@@ -196,6 +196,28 @@ void RPConnector::next_step( CDC& dc, const rp::point& p1, const rp::point& p2, 
 			return;
 		} else if ( inter1_flag && inter2_flag ) {
 			// Пересекли обе фигуры
+			// Пересекли первую фигуры
+			norm1 = a1 < 0 ? norm1 - 90 : norm1 + 90;
+			rp::math::getCosSin( norm1, k_cos1, k_sin1 );
+			p12.x = p1.x + len * k_cos1;
+			p12.y = p1.y - len * k_sin1;
+			inter1_big_point.clear();
+			bool flag1 = rect1_big.isIntersection( p1, p12, inter1_big_point );
+			if ( flag1 ) {
+				pa.push_back( inter1_big_point.front() );
+			}
+			// Пересекли вторую фигуры
+			norm2 = a2 < 0 ? norm2 + 90 : norm2 - 90;
+			rp::math::getCosSin( norm2, k_cos2, k_sin2 );
+			p22.x = p2.x + len * k_cos2;
+			p22.y = p2.y - len * k_sin2;
+			inter2_big_point.clear();
+			bool flag2 = rect2_big.isIntersection( p2, p22, inter2_big_point );
+			if ( flag2 ) {
+				pa_post.push_back( inter2_big_point.front() );
+			}
+			next_step( dc, flag1 ? inter1_big_point.front() : p1, flag2 ? inter2_big_point.front() : p2, norm1, norm2, pa, pa_post );
+			return;
 		}
 	}
 }

@@ -29,6 +29,7 @@
 #define IDD_DIALOG_RESOURCE_DLG1        159
 #define TOOLBARBLOCKMJ                  160
 #define IDD_DIALOG_GEN_TYPE             162
+#define IDR_STYLEANDCOLOR               164
 #define IDD_ABOUT                       165
 #define IDC_EDIT1                       1000
 #define IDC_EDIT2                       1001
@@ -62,16 +63,21 @@
 #define ID_BUTTON32782                  32782
 #define ID_BUTTON32783                  32783
 #define ID_GEN_TYPE                     32785
+#define ID_BTN_FILL_BRUSH               32788
+#define ID_BTN_FILL_PEN                 32789
+#define ID_BTN_FILL_FONT                32790
 #define AFX_IDS_IDLEMESSAGE2            57346
 #define ID_DOCK_PROJECT_BAR             61216
+#define IDS_TOOLBAR_MAIN                61217
+#define IDS_TOOLBAR_STYLEANDCOLOR       61218
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        164
-#define _APS_NEXT_COMMAND_VALUE         32787
+#define _APS_NEXT_RESOURCE_VALUE        166
+#define _APS_NEXT_COMMAND_VALUE         32794
 #define _APS_NEXT_CONTROL_VALUE         1016
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

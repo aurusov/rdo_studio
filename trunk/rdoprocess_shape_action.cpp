@@ -13,10 +13,10 @@ static char THIS_FILE[] = __FILE__;
 RPShapeAction::RPShapeAction( RPObject* _parent ):
 	RPShape( _parent, _T("Action") )
 {
-//	brush.DeleteObject();
-//	LOGBRUSH lb;
-//	lb.lbStyle = BS_NULL;
-//	brush.CreateBrushIndirect( &lb );
+	brush.DeleteObject();
+	LOGBRUSH lb;
+	lb.lbStyle = BS_NULL;
+	brush.CreateBrushIndirect( &lb );
 
 	pa_src.push_back( rp::point(-40, -25) );
 	pa_src.push_back( rp::point(40, -25) );
