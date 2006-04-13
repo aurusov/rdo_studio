@@ -37,7 +37,10 @@ public:
 #endif
 
 	//{{AFX_VIRTUAL(RPMainFrame)
+	public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
+	protected:
+	virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
 	//}}AFX_VIRTUAL
 
 protected:
@@ -53,6 +56,9 @@ protected:
 	afx_msg void OnGenType();
 	afx_msg void OnUpdateBtnFillBrush(CCmdUI* pCmdUI);
 	//}}AFX_MSG
+	afx_msg LONG OnSelEndOK(UINT lParam, LONG wParam);
+	afx_msg LONG OnSelEndCancel(UINT lParam, LONG wParam);
+	afx_msg LONG OnSelChange(UINT lParam, LONG wParam);
 	DECLARE_MESSAGE_MAP()
 };
 

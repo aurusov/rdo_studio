@@ -2,7 +2,7 @@
 
 [General Info]
 Version=1
-LastClass=RPToolBar
+LastClass=RPMainFrame
 LastTemplate=CDialog
 NewFileInclude1=#include "stdafx.h"
 NewFileInclude2=#include "rdo_process.h"
@@ -39,17 +39,17 @@ Class27=RPToolBarBlockMJ
 
 ResourceCount=12
 Resource1=IDR_RDO_PRTYPE (English (U.S.))
-Resource2=IDD_DIALOG_GEN_TYPE
-Resource3=TOOLBARBLOCKMJ
-Resource4=IDD_ABOUT
-Resource5=IDD_DIALOG_CREATE_1_MJ
-Resource6=IDD_DIALOG_CREATE_2_MJ
-Resource7=IDD_DIALOG_PROCESS_1_MJ
-Resource8=IDD_DIALOG_PROCESS_2_MJ
-Resource9=IDD_DIALOG_TERMINATE_1_MJ
-Resource10=IDD_DIALOG_RESOURCE_DLG1
-Resource11=IDR_STYLEANDCOLOR
-Resource12=IDR_MAINFRAME
+Resource2=IDD_DIALOG_TERMINATE_1_MJ
+Resource3=IDD_DIALOG_RESOURCE_DLG1
+Resource4=IDD_DIALOG_GEN_TYPE
+Resource5=TOOLBARBLOCKMJ
+Resource6=IDD_ABOUT
+Resource7=IDD_DIALOG_CREATE_1_MJ
+Resource8=IDD_DIALOG_CREATE_2_MJ
+Resource9=IDD_DIALOG_PROCESS_1_MJ
+Resource10=IDD_DIALOG_PROCESS_2_MJ
+Resource11=IDR_MAINFRAME
+Resource12=IDR_STYLEANDCOLOR
 
 [CLS:CColourPicker]
 Type=0
@@ -167,6 +167,9 @@ Type=0
 BaseClass=CMDIFrameWnd
 HeaderFile=rdoprocess_mainfrm.h
 ImplementationFile=rdoprocess_mainfrm.cpp
+Filter=T
+VirtualFilter=fWC
+LastObject=RPMainFrame
 
 [CLS:RPShapeCreateDlg1_MJ]
 Type=0
@@ -378,7 +381,7 @@ Type=1
 Class=?
 Command1=ID_BTN_FILL_BRUSH
 Command2=ID_BTN_FILL_PEN
-Command3=ID_BTN_FILL_FONT
+Command3=ID_BTN_FILL_TEXT
 CommandCount=3
 
 [MNU:IDR_MAINFRAME]

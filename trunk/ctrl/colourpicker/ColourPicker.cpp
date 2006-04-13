@@ -147,7 +147,7 @@ BOOL CColourPicker::OnClicked()
     m_bActive = TRUE;
     CRect rect;
     GetWindowRect(rect);
-    new CColourPopup(CPoint(rect.left, rect.bottom),    // Point to display popup
+    new CColourPopup(0, CPoint(rect.left, rect.bottom),    // Point to display popup
                      GetColour(),                       // Selected colour
                      this,                              // parent
                      m_strDefaultText,                  // "Default" text area

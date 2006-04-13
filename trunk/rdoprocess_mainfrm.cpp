@@ -3,6 +3,7 @@
 #include "rdoprocess_app.h"
 #include "rdoprocess_string.h"
 #include "ctrl/rdoprocess_pagectrl.h"
+#include "ctrl/ColourPicker/ColourPopup.h"
 #include "resource.h"
 #include "rdoprocess_object.h"
 
@@ -34,6 +35,9 @@ BEGIN_MESSAGE_MAP(RPMainFrame, CMDIFrameWnd)
 	ON_UPDATE_COMMAND_UI(ID_BTN_FILL_PEN, OnUpdateBtnFillBrush)
 	ON_UPDATE_COMMAND_UI(ID_BTN_FILL_FONT, OnUpdateBtnFillBrush)
 	//}}AFX_MSG_MAP
+	ON_MESSAGE(CPN_SELENDOK,     OnSelEndOK)
+	ON_MESSAGE(CPN_SELENDCANCEL, OnSelEndCancel)
+	ON_MESSAGE(CPN_SELCHANGE,    OnSelChange)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -494,4 +498,51 @@ void RPMainFrame::OnGenType()
 void RPMainFrame::OnUpdateBtnFillBrush( CCmdUI* pCmdUI )
 {
 	pCmdUI->Enable();
+}
+
+
+BOOL RPMainFrame::OnNotify( WPARAM wParam, LPARAM lParam, LRESULT* pResult )
+{
+	NMHDR* data = reinterpret_cast<NMHDR*>(lParam);
+	if ( data->code == TBN_DROPDOWN ) {
+		NMTOOLBAR* tb_data = reinterpret_cast<NMTOOLBAR*>(data);
+		RPToolBar* tb = static_cast<RPToolBar*>(CWnd::FromHandle( data->hwndFrom ));
+		CRect rect;
+		tb->GetItemRect( tb->CommandToIndex( tb_data->iItem ), rect );
+		tb->ClientToScreen( rect );
+		unsigned int resID;
+		COLORREF color;
+		switch ( tb_data->iItem ) {
+			case ID_BTN_FILL_BRUSH: color = tb->color_brush; resID = IDS_COLORPICKER_NONE_BRUSH; break;
+			case ID_BTN_FILL_PEN  : color = tb->color_pen; resID = IDS_COLORPICKER_NONE_PEN; break;
+			case ID_BTN_FILL_TEXT : color = tb->color_text; resID = IDS_COLORPICKER_DEFAULT; break;
+			default: resID = IDS_COLORPICKER_DEFAULT; break;
+		}
+		new CColourPopup( tb_data->iItem, CPoint(rect.left, rect.bottom), color, this, rp::string::format( resID ).c_str(), rp::string::format( IDS_COLORPICKER_MORE ).c_str() );
+		return false;
+	}
+	return CMDIFrameWnd::OnNotify( wParam, lParam, pResult );
+}
+
+LONG RPMainFrame::OnSelEndOK( UINT lParam, LONG wParam )
+{
+	COLORREF color = static_cast<COLORREF>(lParam);
+	switch ( wParam ) {
+		case ID_BTN_FILL_BRUSH: m_wndStyleAndColorToolBar.color_brush = color; break;
+		case ID_BTN_FILL_PEN  : m_wndStyleAndColorToolBar.color_pen   = color; break;
+		case ID_BTN_FILL_TEXT : m_wndStyleAndColorToolBar.color_text  = color; break;
+		default: break;
+	}
+	m_wndStyleAndColorToolBar.RedrawWindow();
+	return TRUE;
+}
+
+LONG RPMainFrame::OnSelEndCancel( UINT lParam, LONG wParam )
+{
+	return TRUE;
+}
+
+LONG RPMainFrame::OnSelChange( UINT lParam, LONG wParam )
+{
+	return TRUE;
 }

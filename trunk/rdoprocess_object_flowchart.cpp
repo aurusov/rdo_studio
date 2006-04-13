@@ -151,6 +151,7 @@ rp::rect RPObjectFlowChart::getBoundingRect( bool global ) const
 rp::rect RPObjectFlowChart::getMaxRect()
 {
 	rp::rect rect = RPObjectMatrix::getMaxRect();
+	double i = rect.getMaxX();
 	return rp::rect( rect.getMinX() - matrix_transform.dx_const() - 100, rect.getMinY() - matrix_transform.dy_const() - 100, rect.getMaxX() - matrix_transform.dx_const() + 100, rect.getMaxY() - matrix_transform.dy_const() + 100 );
 }
 

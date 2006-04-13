@@ -14,6 +14,10 @@ public:
 	RPToolBar();
 	virtual ~RPToolBar();
 
+	COLORREF color_brush;
+	COLORREF color_pen;
+	COLORREF color_text;
+
 protected:
 	//{{AFX_VIRTUAL(RPToolBar)
 	//}}AFX_VIRTUAL

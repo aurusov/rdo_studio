@@ -66,10 +66,15 @@
 #define ID_BTN_FILL_BRUSH               32788
 #define ID_BTN_FILL_PEN                 32789
 #define ID_BTN_FILL_FONT                32790
+#define ID_BTN_FILL_TEXT                32790
 #define AFX_IDS_IDLEMESSAGE2            57346
 #define ID_DOCK_PROJECT_BAR             61216
 #define IDS_TOOLBAR_MAIN                61217
 #define IDS_TOOLBAR_STYLEANDCOLOR       61218
+#define IDS_COLORPICKER_NONE_BRUSH      61219
+#define IDS_COLORPICKER_NONE_PEN        61220
+#define IDS_COLORPICKER_DEFAULT         61221
+#define IDS_COLORPICKER_MORE            61222
 
 // Next default values for new objects
 // 

@@ -52,7 +52,12 @@ bool math::getPlanarData( const rp::point& p1, const rp::point& p2, const rp::po
 		if ( fabs(koef) > 1e-10 ) {
 			koef = 1 / koef;
 		} else {
-			koef = 1e+10;
+			// ѕо идеи, при очень маленьком koef, мы должны получить очень большое 1/koef,
+			// но это приводит к сбо€м в scrollbar'е, т.к. получаетс€ очень большой
+			// пр€моугольник (getMaxRect()), из-за умножени€ на этот koef координат точки
+			// в extendByPerimetr. ѕриравн€ем koef к 1, чтобы он не вли€л на новое значение координат.
+//			koef = 1e+10; - было
+			koef = 1;
 		}
 		return true;
 	} else {

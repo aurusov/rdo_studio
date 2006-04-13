@@ -451,7 +451,7 @@ IDR_STYLEANDCOLOR TOOLBAR DISCARDABLE  16, 15
 BEGIN
     BUTTON      ID_BTN_FILL_BRUSH
     BUTTON      ID_BTN_FILL_PEN
-    BUTTON      ID_BTN_FILL_FONT
+    BUTTON      ID_BTN_FILL_TEXT
 END
 
 
@@ -517,8 +517,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,1,0,60
- PRODUCTVERSION 0,1,0,60
+ FILEVERSION 0,1,0,62
+ PRODUCTVERSION 0,1,0,62
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -536,14 +536,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "Simulation Sistem\0"
-            VALUE "FileVersion", "0, 1, 0, 60\0"
+            VALUE "FileVersion", "0, 1, 0, 62\0"
             VALUE "InternalName", "RAO-Process\0"
             VALUE "LegalCopyright", "Copyright (C) 2006\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "rao-process.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "RAO-Process\0"
-            VALUE "ProductVersion", "0, 1, 0, 60\0"
+            VALUE "ProductVersion", "0, 1, 0, 62\0"
             VALUE "SpecialBuild", "\0"
         END
     END
@@ -578,6 +578,10 @@ BEGIN
     ID_DOCK_PROJECT_BAR     "Проект"
     IDS_TOOLBAR_MAIN        "Основные"
     IDS_TOOLBAR_STYLEANDCOLOR "Силь и цвет"
+    IDS_COLORPICKER_NONE_BRUSH "Нет заливки"
+    IDS_COLORPICKER_NONE_PEN "Нет линии"
+    IDS_COLORPICKER_DEFAULT "По умолчанию"
+    IDS_COLORPICKER_MORE    "Другие цвета..."
 END
 
 STRINGTABLE DISCARDABLE 

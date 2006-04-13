@@ -47,7 +47,7 @@ class CColourPopup : public CWnd
 // Construction
 public:
     CColourPopup();
-    CColourPopup(CPoint p, COLORREF crColour, CWnd* pParentWnd,
+    CColourPopup(int commandID, CPoint p, COLORREF crColour, CWnd* pParentWnd,
                  LPCTSTR szDefaultText = NULL, LPCTSTR szCustomText = NULL);
     void Initialise();
 
@@ -56,7 +56,7 @@ public:
 
 // Operations
 public:
-    BOOL Create(CPoint p, COLORREF crColour, CWnd* pParentWnd, 
+    BOOL Create(int commandID, CPoint p, COLORREF crColour, CWnd* pParentWnd, 
                 LPCTSTR szDefaultText = NULL, LPCTSTR szCustomText = NULL);
 
 // Overrides
@@ -101,6 +101,7 @@ protected:
     COLORREF       m_crInitialColour, m_crColour;
     CToolTipCtrl   m_ToolTip;
     CWnd*          m_pParent;
+	int            m_nCommandID;
 
     // Generated message map functions
 protected:

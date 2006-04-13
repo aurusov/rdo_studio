@@ -100,12 +100,14 @@ ColourTableEntry CColourPopup::m_crColours[] =
 /////////////////////////////////////////////////////////////////////////////
 // CColourPopup
 
-CColourPopup::CColourPopup()
+CColourPopup::CColourPopup():
+	CWnd(),
+	m_nCommandID( 0 )
 {
     Initialise();
 }
 
-CColourPopup::CColourPopup(CPoint p, COLORREF crColour, CWnd* pParentWnd,
+CColourPopup::CColourPopup(int commandID, CPoint p, COLORREF crColour, CWnd* pParentWnd,
                            LPCTSTR szDefaultText /* = NULL */,
                            LPCTSTR szCustomText  /* = NULL */)
 {
@@ -116,7 +118,7 @@ CColourPopup::CColourPopup(CPoint p, COLORREF crColour, CWnd* pParentWnd,
     m_strDefaultText = (szDefaultText)? szDefaultText : _T("");
     m_strCustomText  = (szCustomText)?  szCustomText  : _T("");
 
-    CColourPopup::Create(p, crColour, pParentWnd, szDefaultText, szCustomText);
+    CColourPopup::Create(commandID, p, crColour, pParentWnd, szDefaultText, szCustomText);
 }
 
 void CColourPopup::Initialise()
@@ -171,15 +173,16 @@ CColourPopup::~CColourPopup()
     m_Palette.DeleteObject();
 }
 
-BOOL CColourPopup::Create(CPoint p, COLORREF crColour, CWnd* pParentWnd,
+BOOL CColourPopup::Create(int commandID, CPoint p, COLORREF crColour, CWnd* pParentWnd,
                           LPCTSTR szDefaultText /* = NULL */,
                           LPCTSTR szCustomText  /* = NULL */)
 {
     ASSERT(pParentWnd && ::IsWindow(pParentWnd->GetSafeHwnd()));
-    ASSERT(pParentWnd->IsKindOf(RUNTIME_CLASS(CColourPicker)));
+//    ASSERT(pParentWnd->IsKindOf(RUNTIME_CLASS(CColourPicker)));
 
-    m_pParent  = pParentWnd;
-    m_crColour = m_crInitialColour = crColour;
+	m_nCommandID = commandID;
+    m_pParent    = pParentWnd;
+    m_crColour   = m_crInitialColour = crColour;
 
     // Get the class name and create the window
     CString szClassName = AfxRegisterWndClass(CS_CLASSDC|CS_SAVEBITS|CS_HREDRAW|CS_VREDRAW,
@@ -704,16 +707,16 @@ void CColourPopup::ChangeSelection(int nIndex)
 
     // Store the current colour
     if (m_nCurrentSel == CUSTOM_BOX_VALUE)
-        m_pParent->SendMessage(CPN_SELCHANGE, (WPARAM) m_crInitialColour, 0);
+        m_pParent->SendMessage(CPN_SELCHANGE, (WPARAM) m_crInitialColour, m_nCommandID);
     else if (m_nCurrentSel == DEFAULT_BOX_VALUE)
     {
         m_crColour = CLR_DEFAULT;
-        m_pParent->SendMessage(CPN_SELCHANGE, (WPARAM) CLR_DEFAULT, 0);
+        m_pParent->SendMessage(CPN_SELCHANGE, (WPARAM) CLR_DEFAULT, m_nCommandID);
     }
     else
     {
         m_crColour = GetColour(m_nCurrentSel);
-        m_pParent->SendMessage(CPN_SELCHANGE, (WPARAM) m_crColour, 0);
+        m_pParent->SendMessage(CPN_SELCHANGE, (WPARAM) m_crColour, m_nCommandID);
     }
 }
 
@@ -735,7 +738,7 @@ void CColourPopup::EndSelection(int nMessage)
     if (nMessage == CPN_SELENDCANCEL)
         m_crColour = m_crInitialColour;
 
-    m_pParent->SendMessage(nMessage, (WPARAM) m_crColour, 0);
+    m_pParent->SendMessage(nMessage, (WPARAM) m_crColour, m_nCommandID);
     
     DestroyWindow();
 }
