@@ -4,7 +4,7 @@
 #include "rdoprocess_childfrm.h"
 #include "ctrl/rdoprocess_pagectrl.h"
 #include "resource.h"
-
+#include "rdo_process_project_RDO_proc_MJ.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -43,7 +43,7 @@ BOOL RPApp::InitInstance()
 
 	_msg = new rp::msg();
 
-	_project = new RPProject();
+	_project = new RPProject_RDO_Proc_MJ();
 	project().setName( "project" );
 
 	// Standard initialization
