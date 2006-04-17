@@ -6,6 +6,7 @@
 #include "ctrl/ColourPicker/ColourPopup.h"
 #include "resource.h"
 #include "rdoprocess_object.h"
+#include "rdoprocess_object_chart.h"
 
 #include "rdoprocess_generation_type_MJ.h" // MJ диалоговое окно кнопки типа генерирования на тулбаре
 
@@ -16,6 +17,71 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 // ----------------------------------------------------------------------------
+// ---------- RPMainFrameMsg
+// ----------------------------------------------------------------------------
+RPMainFrameMsg::RPMainFrameMsg(): RPObject( NULL )
+{
+	rpapp.msg().connect( this, rp::msg::RP_FLOWSTATE_CHANGED );
+	rpapp.msg().connect( this, rp::msg::RP_OBJ_SELCHANGED );
+	rpapp.msg().connect( this, rp::msg::RP_OBJ_BEFOREDELETE );
+}
+
+void RPMainFrameMsg::notify( RPObject* from, UINT message, WPARAM wParam, LPARAM lParam )
+{
+	RPMainFrame* frame = static_cast<RPMainFrame*>(AfxGetMainWnd());
+	if ( message == rp::msg::RP_FLOWSTATE_CHANGED ) {
+		bool enable = wParam != RPProject::flow_none;
+		bool check_select    = false;
+		bool check_connector = false;
+		bool check_rotate    = false;
+		if ( enable ) {
+			switch ( wParam ) {
+				case RPProject::flow_select   : {
+					check_select    = true;
+					check_connector = false;
+					check_rotate    = false;
+					break;
+				}
+				case RPProject::flow_connector: {
+					check_select    = false;
+					check_connector = true;
+					check_rotate    = false;
+					break;
+				}
+				case RPProject::flow_rotate   : {
+					check_select    = false;
+					check_connector = false;
+					check_rotate    = true;
+					break;
+				}
+			}
+		}
+		frame->m_wndToolBar.GetToolBarCtrl().EnableButton( ID_FLOW_SELECT   , enable );
+		frame->m_wndToolBar.GetToolBarCtrl().EnableButton( ID_FLOW_CONNECTOR, enable );
+		frame->m_wndToolBar.GetToolBarCtrl().EnableButton( ID_FLOW_ROTATE   , enable );
+		frame->m_wndToolBar.GetToolBarCtrl().CheckButton( ID_FLOW_SELECT   , check_select );
+		frame->m_wndToolBar.GetToolBarCtrl().CheckButton( ID_FLOW_CONNECTOR, check_connector );
+		frame->m_wndToolBar.GetToolBarCtrl().CheckButton( ID_FLOW_ROTATE   , check_rotate );
+	} else if ( message == rp::msg::RP_OBJ_SELCHANGED ) {
+		bool fill_brush = false;
+		bool fill_pen   = false;
+		bool fill_text  = false;
+		if ( from->isSelected() && from->isChartObject() ) {
+			fill_pen   = static_cast<RPObjectChart*>(from)->isFlowChart() ? false : true;
+			fill_brush = static_cast<RPObjectChart*>(from)->isShape() || static_cast<RPObjectChart*>(from)->isFlowChart();
+			fill_text  = static_cast<RPObjectChart*>(from)->isShape();
+		}
+		frame->m_wndStyleAndColorToolBar.GetToolBarCtrl().EnableButton( ID_BTN_FILL_BRUSH, fill_brush );
+		frame->m_wndStyleAndColorToolBar.GetToolBarCtrl().EnableButton( ID_BTN_FILL_PEN  , fill_pen );
+		frame->m_wndStyleAndColorToolBar.GetToolBarCtrl().EnableButton( ID_BTN_FILL_TEXT , fill_text );
+	} else if ( message == rp::msg::RP_OBJ_BEFOREDELETE ) {
+		frame->m_wndStyleAndColorToolBar.GetToolBarCtrl().EnableButton( ID_BTN_FILL_BRUSH, false );
+		frame->m_wndStyleAndColorToolBar.GetToolBarCtrl().EnableButton( ID_BTN_FILL_PEN  , false );
+		frame->m_wndStyleAndColorToolBar.GetToolBarCtrl().EnableButton( ID_BTN_FILL_TEXT , false );
+	}
+}
+
+// ----------------------------------------------------------------------------
 // ---------- RPMainFrame
 // ----------------------------------------------------------------------------
 IMPLEMENT_DYNAMIC(RPMainFrame, CMDIFrameWnd)
@@ -23,17 +89,17 @@ IMPLEMENT_DYNAMIC(RPMainFrame, CMDIFrameWnd)
 BEGIN_MESSAGE_MAP(RPMainFrame, CMDIFrameWnd)
 	//{{AFX_MSG_MAP(RPMainFrame)
 	ON_WM_CREATE()
-	ON_UPDATE_COMMAND_UI(ID_FLOW_CONNECTOR, OnUpdateFlowConnector)
-	ON_UPDATE_COMMAND_UI(ID_FLOW_ROTATE, OnUpdateFlowRotate)
-	ON_UPDATE_COMMAND_UI(ID_FLOW_SELECT, OnUpdateFlowSelect)
+	ON_UPDATE_COMMAND_UI(ID_FLOW_CONNECTOR, OnUpdateFlowSelect)
 	ON_COMMAND(ID_FLOW_SELECT, OnFlowSelect)
 	ON_COMMAND(ID_FLOW_ROTATE, OnFlowRotate)
 	ON_COMMAND(ID_FLOW_CONNECTOR, OnFlowConnector)
 	ON_COMMAND(ID_GENERATE, OnGenerate)
 	ON_COMMAND(ID_GEN_TYPE, OnGenType)
 	ON_UPDATE_COMMAND_UI(ID_BTN_FILL_BRUSH, OnUpdateBtnFillBrush)
-	ON_UPDATE_COMMAND_UI(ID_BTN_FILL_PEN, OnUpdateBtnFillBrush)
+	ON_UPDATE_COMMAND_UI(ID_FLOW_ROTATE, OnUpdateFlowSelect)
+	ON_UPDATE_COMMAND_UI(ID_FLOW_SELECT, OnUpdateFlowSelect)
 	ON_UPDATE_COMMAND_UI(ID_BTN_FILL_FONT, OnUpdateBtnFillBrush)
+	ON_UPDATE_COMMAND_UI(ID_BTN_FILL_PEN, OnUpdateBtnFillBrush)
 	//}}AFX_MSG_MAP
 	ON_MESSAGE(CPN_SELENDOK,     OnSelEndOK)
 	ON_MESSAGE(CPN_SELENDCANCEL, OnSelEndCancel)
@@ -48,7 +114,9 @@ static UINT indicators[] =
 	ID_INDICATOR_SCRL,
 };
 
-RPMainFrame::RPMainFrame()
+RPMainFrame::RPMainFrame():
+	CMDIFrameWnd(),
+	m_msg( NULL )
 {
 }
 
@@ -65,6 +133,9 @@ int RPMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_wndToolBar.LoadToolBar( IDR_MAINFRAME );
 	m_wndToolBar.ModifyStyle( 0, TBSTYLE_FLAT );
 	m_wndToolBar.SetWindowText( rp::string::format( IDS_TOOLBAR_MAIN ).c_str() );
+	m_wndToolBar.GetToolBarCtrl().EnableButton( ID_FLOW_SELECT, false );
+	m_wndToolBar.GetToolBarCtrl().EnableButton( ID_FLOW_CONNECTOR, false );
+	m_wndToolBar.GetToolBarCtrl().EnableButton( ID_FLOW_ROTATE, false );
 
 	m_wndStyleAndColorToolBar.CreateEx( this, 0, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_FLYBY );
 	m_wndStyleAndColorToolBar.LoadToolBar( IDR_STYLEANDCOLOR );
@@ -78,6 +149,10 @@ int RPMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_wndStyleAndColorToolBar.SetButtonStyle( index, m_wndStyleAndColorToolBar.GetButtonStyle( index ) | TBSTYLE_DROPDOWN );
 	index = m_wndStyleAndColorToolBar.SendMessage( TB_COMMANDTOINDEX, ID_BTN_FILL_FONT );
 	m_wndStyleAndColorToolBar.SetButtonStyle( index, m_wndStyleAndColorToolBar.GetButtonStyle( index ) | TBSTYLE_DROPDOWN );
+
+	m_wndStyleAndColorToolBar.GetToolBarCtrl().EnableButton( ID_BTN_FILL_BRUSH, false );
+	m_wndStyleAndColorToolBar.GetToolBarCtrl().EnableButton( ID_BTN_FILL_PEN  , false );
+	m_wndStyleAndColorToolBar.GetToolBarCtrl().EnableButton( ID_BTN_FILL_TEXT , false );
 
 	//MJ start 02.04.06
 	m_wndToolBlockBarMJ.CreateEx( this, 0, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
@@ -185,7 +260,19 @@ int RPMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	dockControlBarBesideOf( m_wndToolBlockBarMJ, m_wndStyleAndColorToolBar );
 	DockControlBar( &projectBar, AFX_IDW_DOCKBAR_LEFT );
 
+	m_msg = new RPMainFrameMsg();
+
 	return 0;
+}
+
+BOOL RPMainFrame::DestroyWindow()
+{
+	if ( m_msg ) {
+		rpapp.msg().disconnect( m_msg );
+		delete m_msg;
+		m_msg = NULL;
+	}
+	return CMDIFrameWnd::DestroyWindow();
 }
 
 void RPMainFrame::dockControlBarBesideOf( CControlBar& bar, CControlBar& baseBar )
@@ -238,20 +325,8 @@ void RPMainFrame::Dump(CDumpContext& dc) const
 
 void RPMainFrame::OnUpdateFlowSelect( CCmdUI* pCmdUI )
 {
-	pCmdUI->Enable( rpapp.project().hasChild() );
-	pCmdUI->SetCheck( rpapp.project().getFlowState() == RPProject::flow_select );
-}
-
-void RPMainFrame::OnUpdateFlowConnector( CCmdUI* pCmdUI )
-{
-	pCmdUI->Enable( rpapp.project().hasChild() );
-	pCmdUI->SetCheck( rpapp.project().getFlowState() == RPProject::flow_connector );
-}
-
-void RPMainFrame::OnUpdateFlowRotate( CCmdUI* pCmdUI )
-{
-	pCmdUI->Enable( rpapp.project().hasChild() );
-	pCmdUI->SetCheck( rpapp.project().getFlowState() == RPProject::flow_rotate );
+	pCmdUI->Enable( m_wndToolBar.GetToolBarCtrl().IsButtonEnabled(pCmdUI->m_nID) );
+	pCmdUI->SetCheck( m_wndToolBar.GetToolBarCtrl().IsButtonChecked(pCmdUI->m_nID) );
 }
 
 void RPMainFrame::OnFlowSelect()
@@ -497,9 +572,8 @@ void RPMainFrame::OnGenType()
 
 void RPMainFrame::OnUpdateBtnFillBrush( CCmdUI* pCmdUI )
 {
-	pCmdUI->Enable();
+	pCmdUI->Enable( m_wndStyleAndColorToolBar.GetToolBarCtrl().IsButtonEnabled(pCmdUI->m_nID) );
 }
-
 
 BOOL RPMainFrame::OnNotify( WPARAM wParam, LPARAM lParam, LRESULT* pResult )
 {
@@ -544,5 +618,6 @@ LONG RPMainFrame::OnSelEndCancel( UINT lParam, LONG wParam )
 
 LONG RPMainFrame::OnSelChange( UINT lParam, LONG wParam )
 {
+	m_wndStyleAndColorToolBar.GetToolBarCtrl().EnableButton( ID_BTN_FILL_PEN, FALSE );
 	return TRUE;
 }

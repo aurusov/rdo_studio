@@ -11,8 +11,6 @@ static char THIS_FILE[] = __FILE__;
 // ----------------------------------------------------------------------------
 // ---------- RPObject
 // ----------------------------------------------------------------------------
-
-
 RPObject::RPObject( RPObject* parent, const rp::string& _name ):
 	parent( parent ),
 	name( _name ),
@@ -114,14 +112,14 @@ void RPObject::selectChildOff( RPObject* withoutObj )
 		it++;
 	}
 }
-	// MJ start 30.03.06  бегает по list объектов и вызывает генерирование
+
+// MJ start 30.03.06  бегает по list объектов и вызывает генерирование
 void RPObject::list_name()
 {
 //	TRACE( "%s\n", getName().c_str() );
 	std::list< RPObject* >::const_iterator it = child.begin();
 	while( it != child.end() ) {
-	
-		TRACE( "%s\n", (*it)->getName().c_str() );
+//		TRACE( "%s\n", (*it)->getName().c_str() );
 	    (*it)->find_next_block_MJ();
 		(*it)->list_name();
 		(*it)->generate_MJ();

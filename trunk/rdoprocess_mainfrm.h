@@ -3,10 +3,22 @@
 
 #include "ctrl/rdoprocess_projectbar.h"
 #include "ctrl/rdoprocess_toolbar.h"
+#include "rdoprocess_object.h"
 
 #if _MSC_VER > 1000
 #pragma once
 #endif // _MSC_VER > 1000
+
+// ----------------------------------------------------------------------------
+// ---------- RPMainFrameMsg
+// ----------------------------------------------------------------------------
+class RPMainFrameMsg: public RPObject
+{
+friend class RPMainFrame;
+protected:
+	RPMainFrameMsg();
+	virtual void notify( RPObject* from, UINT message, WPARAM wParam, LPARAM lParam );
+};
 
 // ----------------------------------------------------------------------------
 // ---------- RPMainFrame
@@ -15,12 +27,15 @@ class RPMainFrame: public CMDIFrameWnd
 {
 DECLARE_DYNAMIC(RPMainFrame)
 
+friend class RPMainFrameMsg;
+
 protected:
 	CStatusBar  m_wndStatusBar;
 	CToolBar    m_wndToolBar;
 	CToolBar    m_wndToolBlockBarMJ; // MJ 2.04.06 панель для блоков
 	CComboBox   m_wndCombo;
 	RPToolBar   m_wndStyleAndColorToolBar;
+	RPMainFrameMsg* m_msg;
 
 	void dockControlBarBesideOf( CControlBar& bar, CControlBar& baseBar );
 
@@ -39,6 +54,7 @@ public:
 	//{{AFX_VIRTUAL(RPMainFrame)
 	public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
+	virtual BOOL DestroyWindow();
 	protected:
 	virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
 	//}}AFX_VIRTUAL
@@ -46,8 +62,6 @@ public:
 protected:
 	//{{AFX_MSG(RPMainFrame)
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	afx_msg void OnUpdateFlowConnector(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateFlowRotate(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateFlowSelect(CCmdUI* pCmdUI);
 	afx_msg void OnFlowSelect();
 	afx_msg void OnFlowRotate();

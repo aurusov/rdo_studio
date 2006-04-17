@@ -10,7 +10,6 @@
 #include "rdoprocess_shape_create_MJ.h"
 #include "rdoprocess_shape_terminate_MJ.h"
 #include "rdoprocess_shape_resource.h"
-
 // MJ end
 
 #include "rdoprocess_app.h"
@@ -45,10 +44,10 @@ BEGIN_MESSAGE_MAP( RPFlowChart,CWnd )
 	ON_WM_MOUSEMOVE()
 	ON_WM_TIMER()
 	ON_WM_SETCURSOR()
-	ON_WM_NCHITTEST()
 	ON_WM_RBUTTONDOWN()
 	ON_WM_RBUTTONUP()
 	ON_WM_LBUTTONDBLCLK()
+	ON_WM_NCHITTEST()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 

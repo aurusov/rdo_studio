@@ -2,7 +2,7 @@
 
 [General Info]
 Version=1
-LastClass=RPMainFrame
+LastClass=RPChildFrame
 LastTemplate=CDialog
 NewFileInclude1=#include "stdafx.h"
 NewFileInclude2=#include "rdo_process.h"
@@ -39,16 +39,16 @@ Class27=RPToolBarBlockMJ
 
 ResourceCount=12
 Resource1=IDR_RDO_PRTYPE (English (U.S.))
-Resource2=IDD_DIALOG_GEN_TYPE
-Resource3=TOOLBARBLOCKMJ
-Resource4=IDD_ABOUT
-Resource5=IDD_DIALOG_CREATE_1_MJ
-Resource6=IDR_STYLEANDCOLOR
-Resource7=IDD_DIALOG_PROCESS_1_MJ
-Resource8=IDD_DIALOG_PROCESS_2_MJ
-Resource9=IDD_DIALOG_TERMINATE_1_MJ
-Resource10=IDD_DIALOG_RESOURCE_DLG1
-Resource11=IDD_DIALOG_CREATE_2_MJ
+Resource2=IDD_DIALOG_PROCESS_1_MJ
+Resource3=IDD_DIALOG_PROCESS_2_MJ
+Resource4=IDD_DIALOG_TERMINATE_1_MJ
+Resource5=IDD_DIALOG_RESOURCE_DLG1
+Resource6=IDD_DIALOG_CREATE_1_MJ
+Resource7=TOOLBARBLOCKMJ
+Resource8=IDD_ABOUT
+Resource9=IDR_STYLEANDCOLOR
+Resource10=IDD_DIALOG_CREATE_2_MJ
+Resource11=IDD_DIALOG_GEN_TYPE
 Resource12=IDR_MAINFRAME
 
 [CLS:CColourPicker]
@@ -149,12 +149,18 @@ Type=0
 BaseClass=CMDIChildWnd
 HeaderFile=rdoprocess_childfrm.h
 ImplementationFile=rdoprocess_childfrm.cpp
+Filter=M
+VirtualFilter=mfWC
+LastObject=RPChildFrame
 
 [CLS:RPFlowChart]
 Type=0
-BaseClass=CWnd
+BaseClass=CWnd 
 HeaderFile=rdoprocess_flowchart.h
 ImplementationFile=rdoprocess_flowchart.cpp
+Filter=W
+VirtualFilter=WC
+LastObject=RPFlowChart
 
 [CLS:RP_GENERATION_TYPE_MJ]
 Type=0

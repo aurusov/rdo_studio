@@ -10,10 +10,12 @@
 // ----------------------------------------------------------------------------
 // ---------- RPProject
 // ----------------------------------------------------------------------------
+class RPObjectFlowChart;
+
 class RPProject: public RPObject
 {
 public:
-	enum FlowState { flow_select = 0, flow_connector, flow_rotate };
+	enum FlowState { flow_none = 0, flow_select, flow_connector, flow_rotate };
 	enum Cursor {
 		cursor_flow_select = 0,
 		cursor_flow_move,
@@ -39,6 +41,8 @@ protected:
 	FlowState flow_state;
 	virtual void notify( RPObject* from, UINT message, WPARAM wParam, LPARAM lParam );
 
+	RPObjectFlowChart* activeFlowChart;
+
 public:
 	RPProject();
 	virtual ~RPProject();
@@ -47,6 +51,9 @@ public:
 
 	FlowState getFlowState() const { return flow_state; }
 	void setFlowState( FlowState value );
+
+	RPObjectFlowChart* getActiveFlowChart() const { return activeFlowChart; }
+	void setActiveFlowChart( RPObjectFlowChart* flowChart );
 };
 
 #endif // RDO_PROCESS_CHART_OBJECT_H

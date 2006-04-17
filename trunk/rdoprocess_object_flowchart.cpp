@@ -113,6 +113,12 @@ void RPObjectFlowChart::update()
 	flowchart->UpdateWindow();
 }
 
+void RPObjectFlowChart::setActive( bool value )
+{
+	if ( value ) setSelected( true );
+	rpapp.project().setActiveFlowChart( value ? this : NULL );
+}
+
 RPProject::Cursor RPObjectFlowChart::getCursor( const rp::point& global_chart_pos )
 {
 	// Вышли за пределы листа

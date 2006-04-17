@@ -34,12 +34,17 @@ void RPToolBar::OnPaint()
 	CToolBar::OnPaint();
 	CClientDC dc( this );
 	CPen pen( PS_SOLID, 1, RGB(0x00, 0x00, 0x00) );
-	CBrush brush( color_brush );
-	CPen* old_pen     = dc.SelectObject( &pen );
-	CBrush* old_brush = dc.SelectObject( &brush );
+	CPen* old_pen = dc.SelectObject( &pen );
 
 	CToolBarCtrl& tb = GetToolBarCtrl();
 	CRect rect;
+	CBrush brush;
+	if ( tb.IsButtonEnabled(ID_BTN_FILL_BRUSH) ) {
+		brush.CreateSolidBrush( color_brush );
+	} else {
+		brush.CreateStockObject( NULL_BRUSH );
+	}
+	CBrush* old_brush = dc.SelectObject( &brush );
 	tb.GetRect( ID_BTN_FILL_BRUSH, rect );
 	rect.right = rect.left + LOWORD(tb.GetButtonSize());
 	rect.right  -= 3;
@@ -50,7 +55,11 @@ void RPToolBar::OnPaint()
 
 	dc.SelectObject( old_brush );
 	brush.DeleteObject();
-	brush.CreateSolidBrush( color_pen );
+	if ( tb.IsButtonEnabled(ID_BTN_FILL_PEN) ) {
+		brush.CreateSolidBrush( color_pen );
+	} else {
+		brush.CreateStockObject( NULL_BRUSH );
+	}
 	old_brush = dc.SelectObject( &brush );
 	tb.GetRect( ID_BTN_FILL_PEN, rect );
 	rect.right = rect.left + LOWORD(tb.GetButtonSize());
@@ -62,7 +71,11 @@ void RPToolBar::OnPaint()
 
 	dc.SelectObject( old_brush );
 	brush.DeleteObject();
-	brush.CreateSolidBrush( color_text );
+	if ( tb.IsButtonEnabled(ID_BTN_FILL_FONT) ) {
+		brush.CreateSolidBrush( color_text );
+	} else {
+		brush.CreateStockObject( NULL_BRUSH );
+	}
 	old_brush = dc.SelectObject( &brush );
 	tb.GetRect( ID_BTN_FILL_FONT, rect );
 	rect.right = rect.left + LOWORD(tb.GetButtonSize());

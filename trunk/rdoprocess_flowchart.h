@@ -14,6 +14,7 @@
 class RPFlowChart: public CWnd
 {
 friend class RPObjectFlowChart;
+friend class RPChildFrame;
 
 private:
 	enum GridMode { gtSnapOff, gtSnapToPoint, gtSnapToCenter };

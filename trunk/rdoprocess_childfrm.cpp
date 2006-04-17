@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "rdoprocess_childfrm.h"
+#include "rdoprocess_object_flowchart.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -17,6 +18,7 @@ BEGIN_MESSAGE_MAP(RPChildFrame, CMDIChildWnd)
 		ON_COMMAND(ID_FILE_CLOSE, OnFileClose)
 		ON_WM_SETFOCUS()
 		ON_WM_CREATE()
+	ON_WM_MDIACTIVATE()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -88,4 +90,10 @@ void RPChildFrame::OnFileClose()
 	// choosing close from the system menu.
 
 	SendMessage(WM_CLOSE);
+}
+
+void RPChildFrame::OnMDIActivate( BOOL bActivate, CWnd* pActivateWnd, CWnd* pDeactivateWnd )
+{
+	m_wndView.flowobj->setActive( bActivate ? true : false );
+	CMDIChildWnd::OnMDIActivate( bActivate, pActivateWnd, pDeactivateWnd );
 }

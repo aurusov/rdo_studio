@@ -104,8 +104,6 @@ rp::rect RPObjectMatrix::getMaxRect()
 		it++;
 	}
 	while ( it != objects.end() ) {
-		RPObjectChart* obj = *it;
-		TRACE( "%s\n", obj->getName().c_str() );
 		rp::rect rect = (*it)->getMaxRect();
 		double _max_x = rect.getMaxX();
 		double _max_y = rect.getMaxY();

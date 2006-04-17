@@ -38,6 +38,27 @@ public:
 	static const UINT RP_OBJ_NAMECHANGED;
 	static const UINT RP_OBJ_SELCHANGED;
 	static const UINT RP_FLOWSTATE_CHANGED;
+
+/*
+	Параметры сообщений:
+	RP_OBJ_BEFOREDELETE:
+		from    - удаляемый объект,
+		wParam  - не используется,
+		lParam  - не используется
+	RP_OBJ_NAMECHANGED:
+		from    - объект, у которого сменилось имя,
+		wParam  - не используется,
+		lParam  - не используется
+	RP_OBJ_SELCHANGED:
+		from    - объект, у которого изменилось выделение,
+		wParam  - новое значение (true/false),
+		lParam  - не используется
+	RP_FLOWSTATE_CHANGED:
+		from    - указатель но проект,
+		wParam  - новое состояние проекта,
+		lParam  - не используется
+*/
+
 };
 
 }
