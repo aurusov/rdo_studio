@@ -10,6 +10,7 @@
 // ----------------------------------------------------------------------------
 // ---------- RPProject
 // ----------------------------------------------------------------------------
+class RPObject;
 class RPObjectFlowChart;
 
 class RPProject: public RPObject
@@ -41,6 +42,7 @@ protected:
 	FlowState flow_state;
 	virtual void notify( RPObject* from, UINT message, WPARAM wParam, LPARAM lParam );
 
+	RPObject*          activeObject;
 	RPObjectFlowChart* activeFlowChart;
 
 public:
@@ -49,8 +51,10 @@ public:
 
 	double generate_time_MJ;
 
-	FlowState getFlowState() const { return flow_state; }
+	FlowState getFlowState() const                { return flow_state;      }
 	void setFlowState( FlowState value );
+
+	RPObject* getActiveObject() const             { return activeObject;    }
 
 	RPObjectFlowChart* getActiveFlowChart() const { return activeFlowChart; }
 	void setActiveFlowChart( RPObjectFlowChart* flowChart );

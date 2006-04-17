@@ -26,8 +26,11 @@ RPShapeResource_MJ::RPShapeResource_MJ( RPObject* _parent ):
 
 	type ="resource";
 
-	brush.DeleteObject();
-	brush.CreateSolidBrush( RGB(0xF0, 0xF0, 0xF0) );
+	main_pen_default.DeleteObject();
+	main_pen_default.CreatePen( PS_SOLID, main_pen_width, RGB( 0x00, 0x00, 0x00 ) );
+	setPen( main_pen_default );
+	bg_brush.DeleteObject();
+	bg_brush.CreateSolidBrush( RGB(0xF0, 0xF0, 0xF0) );
 
 	pa_src.push_back( rp::point(-50, -10) );
 	pa_src.push_back( rp::point(-35, -25) );

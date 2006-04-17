@@ -101,6 +101,8 @@ public:
 	const CPen& getPenSelectedBox() const     { return pen_selected_box;     }
 	const CBrush& getBrushSelectedBox() const { return brush_selected_box;   }
 
+	void setBgBrush( const CBrush& brush );
+
 	rp::point mouse_current() const           {
 		CPoint point = global_win_pos_current;
 		flowchart->ScreenToClient( &point );

@@ -15,6 +15,7 @@ static char THIS_FILE[] = __FILE__;
 RPProject::RPProject():
 	RPObject( NULL ),
 	flow_state( flow_none ),
+	activeObject( NULL ),
 	activeFlowChart( NULL )
 {
 	rpapp.msg().connect( this, rp::msg::RP_OBJ_SELCHANGED );
@@ -38,7 +39,8 @@ void RPProject::notify( RPObject* from, UINT message, WPARAM wParam, LPARAM lPar
 {
 	if ( message == rp::msg::RP_OBJ_SELCHANGED ) {
 		rpapp.msg().disconnect( this, rp::msg::RP_OBJ_SELCHANGED );
-		selectChildOff( wParam ? from : NULL );
+		activeObject = wParam ? from : NULL;
+		selectChildOff( activeObject );
 		rpapp.msg().connect( this, rp::msg::RP_OBJ_SELCHANGED );
 	}
 }

@@ -221,7 +221,7 @@ BOOL CColourPopup::Create(int commandID, CPoint p, COLORREF crColour, CWnd* pPar
 BEGIN_MESSAGE_MAP(CColourPopup, CWnd)
     //{{AFX_MSG_MAP(CColourPopup)
     ON_WM_NCDESTROY()
-    ON_WM_LBUTTONUP()
+    ON_WM_LBUTTONDOWN()
     ON_WM_PAINT()
     ON_WM_MOUSEMOVE()
     ON_WM_KEYDOWN()
@@ -460,18 +460,23 @@ void CColourPopup::OnMouseMove(UINT nFlags, CPoint point)
     CWnd::OnMouseMove(nFlags, point);
 }
 
-// End selection on LButtonUp
-void CColourPopup::OnLButtonUp(UINT nFlags, CPoint point) 
+// End selection on LButtonDown
+void CColourPopup::OnLButtonDown(UINT nFlags, CPoint point) 
 {    
-    CWnd::OnLButtonUp(nFlags, point);
+    CWnd::OnLButtonDown(nFlags, point);
 
     DWORD pos = GetMessagePos();
     point = CPoint(LOWORD(pos), HIWORD(pos));
 
-    if (m_WindowRect.PtInRect(point))
+	CRect default_rect( m_DefaultTextRect );
+	ClientToScreen( default_rect );
+	if (default_rect.PtInRect(point)) {
+        EndSelection(CPN_SELENDDEFAULT);
+	} else if (m_WindowRect.PtInRect(point)) {
         EndSelection(CPN_SELENDOK);
-    else
+	} else {
         EndSelection(CPN_SELENDCANCEL);
+	}
 }
 
 /////////////////////////////////////////////////////////////////////////////

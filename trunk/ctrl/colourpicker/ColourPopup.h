@@ -29,6 +29,7 @@
 #define CPN_CLOSEUP          WM_USER + 1003        // Colour Picker close up
 #define CPN_SELENDOK         WM_USER + 1004        // Colour Picker end OK
 #define CPN_SELENDCANCEL     WM_USER + 1005        // Colour Picker end (cancelled)
+#define CPN_SELENDDEFAULT    WM_USER + 1006        // Colour Picker end OK (default)
 
 // forward declaration
 class CColourPicker;
@@ -107,7 +108,7 @@ protected:
 protected:
     //{{AFX_MSG(CColourPopup)
     afx_msg void OnNcDestroy();
-    afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
+    afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
     afx_msg void OnPaint();
     afx_msg void OnMouseMove(UINT nFlags, CPoint point);
     afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);

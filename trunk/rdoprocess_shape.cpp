@@ -13,15 +13,15 @@ static char THIS_FILE[] = __FILE__;
 // ----------------------------------------------------------------------------
 // ---------- RPShape
 // ----------------------------------------------------------------------------
-
-
-
 RPShape::RPShape( RPObject* _parent, const rp::string& _name ):
 	RPObjectMatrix( _parent, _name ),
 	pcmd( pcmd_none ),
-	brush( RGB(0xFF, 0xFF, 0xA0) )
+	bg_brush( RGB(0xFF, 0xFF, 0xA0) ),
+	text_color( RGB(0x00, 0x00, 0x00 ) ),
+	text_show( true )
 //	snap_to_point( 0, 0 )
 {
+	text_font.CreateStockObject( DEFAULT_GUI_FONT );
 }
 
 RPShape::~RPShape()
@@ -185,10 +185,10 @@ rp::rect RPShape::getBoundingRect( bool global ) const
 void RPShape::drawPolyline( CDC& dc )
 {
 	if ( pa_global.size() < 2 ) return;
-	dc.SelectObject( main_pen );
+	dc.SelectObject( const_cast<CPen*>(&getPen()) );
 //	dc.Polyline( &pa_global.getWinPolyline()[0], pa_global.size() );
 //	return;
-	CBrush* old_brush = dc.SelectObject( &brush );
+	CBrush* old_brush = dc.SelectObject( &bg_brush );
 //	dc.BeginPath();
 	if ( pa_global.isPolygon() ) {
 		dc.Polygon( &pa_global.getWinPolyline()[0], pa_global.size() );
@@ -254,20 +254,21 @@ void RPShape::draw( CDC& dc )
 	drawDocks( dc );
 
 	// Вывод имени
-	LOGFONT lf;
-	HFONT hf = (HFONT)::GetStockObject( DEFAULT_GUI_FONT );
-	CFont* f = CFont::FromHandle( hf );
-	f->GetLogFont( &lf );
-	lf.lfEscapement = getRotationGlobal() * 10;
-	CFont font;
-	font.CreateFontIndirect( &lf );
-	CFont* old_font = dc.SelectObject( &font );
-	CRect calc( 0, 0, 1, 1 );
-	dc.DrawText( name.c_str(), &calc, DT_CALCRECT | DT_SINGLELINE );
-	rp::point center( -calc.Width()/2, -calc.Height()/2 );
-	center = globalMatrix( m_all & ~m_sc, m_all & ~m_sc ) * center;
-	dc.TextOut( center.x, center.y, name.c_str() );
-	dc.SelectObject( old_font );
+	if ( text_show ) {
+		LOGFONT lf;
+		text_font.GetLogFont( &lf );
+		lf.lfEscapement = getRotationGlobal() * 10;
+		CFont font;
+		font.CreateFontIndirect( &lf );
+		CFont* old_font = dc.SelectObject( &font );
+		CRect calc( 0, 0, 1, 1 );
+		dc.DrawText( name.c_str(), &calc, DT_CALCRECT | DT_SINGLELINE );
+		rp::point center( -calc.Width()/2, -calc.Height()/2 );
+		center = globalMatrix( m_all & ~m_sc, m_all & ~m_sc ) * center;
+		dc.SetTextColor( text_color );
+		dc.TextOut( center.x, center.y, name.c_str() );
+		dc.SelectObject( old_font );
+	}
 /*
 	rp::rect rect = getBoundingRect().getBoundingRect();
 	dc.MoveTo( rect.p0().x, rect.p0().y );
@@ -1166,7 +1167,7 @@ void RPShape::onRButtonDown( UINT nFlags, CPoint global_chart_pos )
 
 void RPShape::find_next_block_MJ()
 {
-std::vector< RPConnectorDock* >::const_iterator it = docks.begin();
+	std::vector< RPConnectorDock* >::const_iterator it = docks.begin();
 	while ( it != docks.end() ) {
 		std::list< RPConnector* >::const_iterator conn_it = (*it)->connectors.begin();
 		while ( conn_it != (*it)->connectors.end() ) {
@@ -1184,5 +1185,35 @@ std::vector< RPConnectorDock* >::const_iterator it = docks.begin();
 			conn_it++;
 		}
 		it++;
+	}
+}
+
+void RPShape::setBgBrush( const CBrush& brush )
+{
+	LOGBRUSH lb;
+	if ( const_cast<CBrush&>(brush).GetLogBrush( &lb ) ) {
+		bg_brush.DeleteObject();
+		bg_brush.CreateBrushIndirect( &lb );
+		modify();
+		update();
+	}
+}
+
+void RPShape::setTextFont( const CFont& font, COLORREF color, bool show )
+{
+	if ( show ) {
+		LOGFONT lf;
+		if ( const_cast<CFont&>(font).GetLogFont( &lf ) ) {
+			text_font.DeleteObject();
+			text_font.CreateFontIndirect( &lf );
+			text_color = color;
+			text_show  = show;
+			modify();
+			update();
+		}
+	} else {
+		text_show  = show;
+		modify();
+		update();
 	}
 }

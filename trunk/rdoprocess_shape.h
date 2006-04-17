@@ -20,7 +20,10 @@ class RPShape: public RPObjectMatrix
 protected:
 //	CPoint snap_to_point;
 
-	CBrush brush;
+	CBrush   bg_brush;
+	CFont    text_font;
+	COLORREF text_color;
+	bool     text_show;
 
 	std::vector< RPConnectorDock* > docks;
 	RPConnectorDock* find_dock( const rp::point& global_chart_pos );
@@ -119,15 +122,20 @@ protected:
 	virtual void onRButtonDown( UINT nFlags, CPoint global_chart_pos );
 
 public:
-
 	RPShape( RPObject* parent, const rp::string& name = "object" );
 	virtual ~RPShape();
 
 	virtual void find_next_block_MJ();		 // MJ ф-ия перекрытая RPObject для нахождения следующего блока
-
-	
 	
 	virtual void setPosition( int x, int y );
+
+	void setBgBrush( const CBrush& brush );
+
+	const CFont& getTextFont( COLORREF& color ) const {
+		color = text_color;
+		return text_font;
+	}
+	void setTextFont( const CFont& font, COLORREF color, bool show );
 
 //	const CPoint& getSnapToPoint() const { return snap_to_point; }
 

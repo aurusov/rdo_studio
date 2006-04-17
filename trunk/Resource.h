@@ -75,6 +75,7 @@
 #define IDS_COLORPICKER_NONE_PEN        61220
 #define IDS_COLORPICKER_DEFAULT         61221
 #define IDS_COLORPICKER_MORE            61222
+#define IDS_COLORPICKER_NONE_TEXT       61223
 
 // Next default values for new objects
 // 

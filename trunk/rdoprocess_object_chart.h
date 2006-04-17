@@ -17,11 +17,14 @@ class RPObjectFlowChart;
 
 class RPObjectChart: public RPObject
 {
+private:
+	CPen main_pen;
+
 protected:
 	RPObjectChart* chartParent() const { return !isFlowChart() && parent && parent->isChartObject() ? static_cast<RPObjectChart*>(parent) : NULL; }
 
 	int  main_pen_width;
-	CPen main_pen;
+	CPen main_pen_default;
 
 	virtual void modify();
 
@@ -51,7 +54,10 @@ public:
 		if ( res ) update();
 		return res;
 	}
-	void setPen( CPen& pen );
+
+	const CPen& getDefaultPen() const { return main_pen_default; }
+	const CPen& getPen() const        { return main_pen;         }
+	void setPen( const CPen& pen );
 
 	virtual void update();
 

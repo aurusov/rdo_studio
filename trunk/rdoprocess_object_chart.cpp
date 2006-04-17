@@ -19,19 +19,34 @@ RPObjectChart::RPObjectChart( RPObject* _parent, const rp::string& _name ):
 	lb.lbStyle = BS_SOLID;
 	lb.lbColor = RGB(0x00, 0x00, 0x00);
 	lb.lbHatch = 0;
-	main_pen.CreatePen( PS_GEOMETRIC | PS_SOLID | PS_ENDCAP_SQUARE | PS_JOIN_MITER, main_pen_width, &lb );
+	main_pen_default.CreatePen( PS_GEOMETRIC | PS_SOLID | PS_ENDCAP_SQUARE | PS_JOIN_MITER, main_pen_width, &lb );
+	setPen( main_pen_default );
 }
 
 RPObjectChart::~RPObjectChart()
 {
 }
 
-void RPObjectChart::setPen( CPen& pen )
+void RPObjectChart::setPen( const CPen& pen )
 {
-	LOGPEN logpen;
-	if ( pen.GetLogPen( &logpen ) ) {
+	LOGPEN lp;
+	if ( const_cast<CPen&>(pen).GetLogPen( &lp ) ) {
 		main_pen.DeleteObject();
-		main_pen.CreatePenIndirect( &logpen );
+		main_pen.CreatePenIndirect( &lp );
+		modify();
+		update();
+	} else {
+		EXTLOGPEN lp;
+		if ( const_cast<CPen&>(pen).GetExtLogPen( &lp ) ) {
+			LOGBRUSH lb;
+			lb.lbStyle = lp.elpBrushStyle;
+			lb.lbColor = lp.elpColor;
+			lb.lbHatch = 0;
+			main_pen.DeleteObject();
+			main_pen.CreatePen( lp.elpPenStyle, lp.elpWidth, &lb );
+			modify();
+			update();
+		}
 	}
 }
 

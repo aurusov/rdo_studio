@@ -17,6 +17,9 @@ public:
 	COLORREF color_brush;
 	COLORREF color_pen;
 	COLORREF color_text;
+	bool     empty_brush;
+	bool     empty_pen;
+	bool     empty_text;
 
 protected:
 	//{{AFX_VIRTUAL(RPToolBar)

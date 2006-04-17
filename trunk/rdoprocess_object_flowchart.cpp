@@ -621,3 +621,11 @@ void RPObjectFlowChart::onRButtonUp( UINT nFlags, CPoint local_win_pos )
 	RPObjectChart* obj = find( global_chart_pos );
 	if ( obj ) obj->onRButtonUp( nFlags, global_chart_pos );
 }
+
+void RPObjectFlowChart::setBgBrush( const CBrush& brush )
+{
+	LOGBRUSH lb;
+	const_cast<CBrush&>(brush).GetLogBrush( &lb );
+	paper_bg_color = lb.lbColor;
+	update();
+}

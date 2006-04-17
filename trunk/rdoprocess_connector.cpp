@@ -24,12 +24,9 @@ RPConnector::RPConnector( RPObject* _parent, const rp::string& _name ):
 	recursive( 0 )
 {
 	main_pen_width = 1;
-	main_pen.DeleteObject();
-	LOGBRUSH lb;
-	lb.lbStyle = BS_SOLID;
-	lb.lbColor = RGB(0x00, 0x00, 0x00);
-	lb.lbHatch = 0;
-	main_pen.CreatePen( PS_GEOMETRIC | PS_SOLID | PS_ENDCAP_SQUARE | PS_JOIN_MITER, main_pen_width, &lb );
+	main_pen_default.DeleteObject();
+	main_pen_default.CreatePen( PS_SOLID, 1, RGB(0x00, 0x00, 0x00) );
+	setPen( main_pen_default );
 }
 
 RPConnector::~RPConnector()
@@ -229,7 +226,7 @@ void RPConnector::draw( CDC& dc )
 		pa.push_back( dock_begin->getPosition() );
 		pa.push_back( dock_begin->getDeltaPosition() );
 		pa.push_back( flowChart()->mouse_current() );
-		CPen* old_pen = dc.SelectObject( &main_pen );
+		CPen* old_pen = dc.SelectObject( const_cast<CPen*>(&getPen()) );
 		dc.Polyline( &pa.getWinPolyline()[0], pa.size() );
 		dc.SelectObject( old_pen );
 	} else if ( dock_begin && dock_end ) {
@@ -275,7 +272,7 @@ void RPConnector::draw( CDC& dc )
 		pa.push_back( p3 );
 		pa.push_back( p4 );
 
-		CPen* old_pen = dc.SelectObject( &main_pen );
+		CPen* old_pen = dc.SelectObject( const_cast<CPen*>(&getPen()) );
 		dc.Polyline( &pa.getWinPolyline()[0], pa.size() );
 		dc.SelectObject( old_pen );
 /*

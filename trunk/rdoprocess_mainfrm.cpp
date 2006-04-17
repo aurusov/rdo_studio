@@ -7,6 +7,8 @@
 #include "resource.h"
 #include "rdoprocess_object.h"
 #include "rdoprocess_object_chart.h"
+#include "rdoprocess_object_flowchart.h"
+#include "rdoprocess_shape.h"
 
 #include "rdoprocess_generation_type_MJ.h" // MJ диалоговое окно кнопки типа генерирования на тулбаре
 
@@ -96,14 +98,16 @@ BEGIN_MESSAGE_MAP(RPMainFrame, CMDIFrameWnd)
 	ON_COMMAND(ID_GENERATE, OnGenerate)
 	ON_COMMAND(ID_GEN_TYPE, OnGenType)
 	ON_UPDATE_COMMAND_UI(ID_BTN_FILL_BRUSH, OnUpdateBtnFillBrush)
+	ON_COMMAND(ID_BTN_FILL_BRUSH, OnBtnFillBrush)
+	ON_COMMAND(ID_BTN_FILL_PEN, OnBtnFillPen)
 	ON_UPDATE_COMMAND_UI(ID_FLOW_ROTATE, OnUpdateFlowSelect)
 	ON_UPDATE_COMMAND_UI(ID_FLOW_SELECT, OnUpdateFlowSelect)
 	ON_UPDATE_COMMAND_UI(ID_BTN_FILL_FONT, OnUpdateBtnFillBrush)
 	ON_UPDATE_COMMAND_UI(ID_BTN_FILL_PEN, OnUpdateBtnFillBrush)
+	ON_COMMAND(ID_BTN_FILL_TEXT, OnBtnFillText)
 	//}}AFX_MSG_MAP
 	ON_MESSAGE(CPN_SELENDOK,     OnSelEndOK)
-	ON_MESSAGE(CPN_SELENDCANCEL, OnSelEndCancel)
-	ON_MESSAGE(CPN_SELCHANGE,    OnSelChange)
+	ON_MESSAGE(CPN_SELENDDEFAULT,OnSelEndDefault)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -589,7 +593,7 @@ BOOL RPMainFrame::OnNotify( WPARAM wParam, LPARAM lParam, LRESULT* pResult )
 		switch ( tb_data->iItem ) {
 			case ID_BTN_FILL_BRUSH: color = tb->color_brush; resID = IDS_COLORPICKER_NONE_BRUSH; break;
 			case ID_BTN_FILL_PEN  : color = tb->color_pen; resID = IDS_COLORPICKER_NONE_PEN; break;
-			case ID_BTN_FILL_TEXT : color = tb->color_text; resID = IDS_COLORPICKER_DEFAULT; break;
+			case ID_BTN_FILL_TEXT : color = tb->color_text; resID = IDS_COLORPICKER_NONE_TEXT; break;
 			default: resID = IDS_COLORPICKER_DEFAULT; break;
 		}
 		new CColourPopup( tb_data->iItem, CPoint(rect.left, rect.bottom), color, this, rp::string::format( resID ).c_str(), rp::string::format( IDS_COLORPICKER_MORE ).c_str() );
@@ -602,22 +606,130 @@ LONG RPMainFrame::OnSelEndOK( UINT lParam, LONG wParam )
 {
 	COLORREF color = static_cast<COLORREF>(lParam);
 	switch ( wParam ) {
-		case ID_BTN_FILL_BRUSH: m_wndStyleAndColorToolBar.color_brush = color; break;
-		case ID_BTN_FILL_PEN  : m_wndStyleAndColorToolBar.color_pen   = color; break;
-		case ID_BTN_FILL_TEXT : m_wndStyleAndColorToolBar.color_text  = color; break;
+		case ID_BTN_FILL_BRUSH: {
+			m_wndStyleAndColorToolBar.color_brush = color;
+			m_wndStyleAndColorToolBar.empty_brush = false;
+			OnBtnFillBrush();
+			break;
+		}
+		case ID_BTN_FILL_PEN  : {
+			m_wndStyleAndColorToolBar.color_pen = color;
+			m_wndStyleAndColorToolBar.empty_pen = false;
+			OnBtnFillPen();
+			break;
+		}
+		case ID_BTN_FILL_TEXT : {
+			m_wndStyleAndColorToolBar.color_text = color;
+			m_wndStyleAndColorToolBar.empty_text = false;
+			OnBtnFillText();
+			break;
+		}
 		default: break;
 	}
 	m_wndStyleAndColorToolBar.RedrawWindow();
 	return TRUE;
 }
 
-LONG RPMainFrame::OnSelEndCancel( UINT lParam, LONG wParam )
+LONG RPMainFrame::OnSelEndDefault(UINT lParam, LONG wParam)
 {
+	switch ( wParam ) {
+		case ID_BTN_FILL_BRUSH: {
+			m_wndStyleAndColorToolBar.empty_brush = true;
+			OnBtnFillBrush();
+			break;
+		}
+		case ID_BTN_FILL_PEN  : {
+			m_wndStyleAndColorToolBar.empty_pen = true;
+			OnBtnFillPen();
+			break;
+		}
+		case ID_BTN_FILL_TEXT : {
+			m_wndStyleAndColorToolBar.empty_text = true;
+			OnBtnFillText();
+			break;
+		}
+		default: break;
+	}
+	m_wndStyleAndColorToolBar.RedrawWindow();
 	return TRUE;
 }
 
-LONG RPMainFrame::OnSelChange( UINT lParam, LONG wParam )
+void RPMainFrame::OnBtnFillBrush()
 {
-	m_wndStyleAndColorToolBar.GetToolBarCtrl().EnableButton( ID_BTN_FILL_PEN, FALSE );
-	return TRUE;
+	RPObject* obj = rpapp.project().getActiveObject();
+	if ( obj ) {
+		if ( obj->isChartObject() ) {
+			CBrush brush;
+			if ( !m_wndStyleAndColorToolBar.empty_brush ) {
+				brush.CreateSolidBrush( m_wndStyleAndColorToolBar.color_brush );
+			} else {
+				brush.CreateStockObject( NULL_BRUSH );
+			}
+			if ( static_cast<RPObjectChart*>(obj)->isFlowChart() ) {
+				if ( m_wndStyleAndColorToolBar.empty_brush ) {
+					brush.DeleteObject();
+					brush.CreateSolidBrush( RGB(0xFF, 0xFF, 0xFF) );
+				}
+				static_cast<RPObjectFlowChart*>(obj)->setBgBrush( brush );
+			} else if ( static_cast<RPObjectChart*>(obj)->isShape() ) {
+				static_cast<RPShape*>(obj)->setBgBrush( brush );
+			}
+		}
+	}
+}
+
+void RPMainFrame::OnBtnFillPen()
+{
+	RPObject* obj = rpapp.project().getActiveObject();
+	if ( obj && obj->isChartObject() ) {
+		const CPen& old_pen = static_cast<RPObjectChart*>(obj)->getDefaultPen();
+		CPen pen;
+		bool flag = false;
+		if ( !m_wndStyleAndColorToolBar.empty_pen ) {
+			LOGPEN lp;
+			if ( const_cast<CPen&>(old_pen).GetLogPen( &lp ) ) {
+				lp.lopnColor = m_wndStyleAndColorToolBar.color_pen;
+				flag = pen.CreatePenIndirect( &lp ) ? true : false;
+			} else {
+				EXTLOGPEN exlp;
+				if ( const_cast<CPen&>(old_pen).GetExtLogPen( &exlp ) ) {
+					LOGBRUSH lb;
+					lb.lbStyle = exlp.elpBrushStyle;
+					lb.lbColor = m_wndStyleAndColorToolBar.color_pen;
+					lb.lbHatch = 0;
+					flag = pen.CreatePen( exlp.elpPenStyle, exlp.elpWidth, &lb ) ? true : false;
+				}
+			}
+		} else {
+			LOGPEN lp;
+			if ( const_cast<CPen&>(old_pen).GetLogPen( &lp ) ) {
+				lp.lopnStyle = PS_NULL;
+				flag = pen.CreatePenIndirect( &lp ) ? true : false;
+			} else {
+				EXTLOGPEN exlp;
+				if ( const_cast<CPen&>(old_pen).GetExtLogPen( &exlp ) ) {
+					LOGBRUSH lb;
+					lb.lbStyle = BS_NULL;
+					lb.lbHatch = 0;
+					flag = pen.CreatePen( exlp.elpPenStyle, exlp.elpWidth, &lb ) ? true : false;
+				}
+			}
+		}
+		if ( flag ) static_cast<RPObjectChart*>(obj)->setPen( pen );
+	}
+}
+
+void RPMainFrame::OnBtnFillText()
+{
+	RPObject* obj = rpapp.project().getActiveObject();
+	if ( obj && obj->isChartObject() && static_cast<RPObjectChart*>(obj)->isShape() ) {
+		LOGFONT lf;
+		COLORREF color;
+		if ( const_cast<CFont&>(static_cast<RPShape*>(obj)->getTextFont( color )).GetLogFont( &lf ) ) {
+			CFont font;
+			if ( font.CreateFontIndirect( &lf ) ) {
+				static_cast<RPShape*>(obj)->setTextFont( font, m_wndStyleAndColorToolBar.color_text, !m_wndStyleAndColorToolBar.empty_text );
+			}
+		}
+	}
 }

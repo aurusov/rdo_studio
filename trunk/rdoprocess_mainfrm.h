@@ -69,10 +69,12 @@ protected:
 	afx_msg void OnGenerate();
 	afx_msg void OnGenType();
 	afx_msg void OnUpdateBtnFillBrush(CCmdUI* pCmdUI);
+	afx_msg void OnBtnFillBrush();
+	afx_msg void OnBtnFillPen();
+	afx_msg void OnBtnFillText();
 	//}}AFX_MSG
 	afx_msg LONG OnSelEndOK(UINT lParam, LONG wParam);
-	afx_msg LONG OnSelEndCancel(UINT lParam, LONG wParam);
-	afx_msg LONG OnSelChange(UINT lParam, LONG wParam);
+	afx_msg LONG OnSelEndDefault(UINT lParam, LONG wParam);
 	DECLARE_MESSAGE_MAP()
 };
 
