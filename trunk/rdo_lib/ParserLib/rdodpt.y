@@ -108,6 +108,7 @@
 %token value_before		360
 %token value_after		361
 %token some					362
+%token Process				363
 
 %token Frame				400
 %token Show_if				401
@@ -158,7 +159,8 @@ namespace rdoParse
 dpt_main:	
 	| dpt_main dpt_activ_search_end
 	| dpt_main dpt_activ_some_end
-	| dpt_main dpt_activ_free_end;
+	| dpt_main dpt_activ_free_end
+	| dpt_main dpt_process_end;
 
 
 /* ///////////////////////  SEARCH POINT ///////////////////////////// */
@@ -236,6 +238,13 @@ dpt_activ_free_descr_param:	dpt_activ_free_descr_param INT_CONST			{ ((RDODPTFre
 								|		dpt_activ_free_descr_keyb;
 																									                                                                    
 dpt_activ_free_end:	dpt_activ_free End												{ if($1 != NULL) ((RDODPTFreeActivity *)$1)->end(); };
+
+
+/* ///////////////////////  PROCESS ///////////////////////////// */
+
+dpt_process:		Process			{};
+dpt_process_src:	IDENTIF			{ TRACE( "%s\n", ((string *)$1)->c_str() ); }
+dpt_process_end:	dpt_process dpt_process_src End	{};
 
 
 

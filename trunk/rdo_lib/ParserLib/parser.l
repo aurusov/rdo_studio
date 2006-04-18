@@ -122,6 +122,7 @@ $Compare_tops			return(Compare_tops);
 NO							return(NO);				        
 YES						return(YES);				     
 $Activities				return(Activities);		     
+$Process				return(Process);		     
 value[\n\t ]+before	return(value_before);	     
 value[\n\t ]+after	return(value_after);	        
 value_before			return(value_before);	     

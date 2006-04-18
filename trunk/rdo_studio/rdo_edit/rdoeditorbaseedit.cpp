@@ -67,7 +67,7 @@ RDOEditorBaseEdit::RDOEditorBaseEdit():
 	RDOBaseEdit(),
 	kw0( "$Activities?0 $Back_picture?0 $Body?0 $Changes?0 $Compare_tops?0 $Condition?0 \
 $Constant?0 $Decision_point?0 $Default?0 $End?0 $End_picture?0 $Evaluate_by?0 $Frame?0 $Function?0 \
-$Include?0 $Operations?0 $Parameters?0 $Pattern?0 $Relevant_resources?0 $Resource_type?0 \
+$Include?0 $Operations?0 $Parameters?0 $Pattern?0 $Process?0 $Relevant_resources?0 $Resource_type?0 \
 $Resources?0 $Result_values?0 $Results?0 $Sequence?0 $Status?0 $Term_condition?0 $Time?0 $Tracing?0 \
 $Type?0 $Watching?0 active?0 AExpCalcCounter?0 after?0 algorithmic?0 all?0 and?0 Animation?0 before?0 \
 BExpCalcCounter?0 bitmap?0 Break_point?0 by_hist?0 Calculate_if?0 Choice?0 Convert_begin?0 \
