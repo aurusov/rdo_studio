@@ -130,36 +130,34 @@ int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	style_chart.init( "chart" );
 	style_chart.load();
 
-	bool winxp = false;
-	OSVERSIONINFO osv;
-	osv.dwOSVersionInfoSize = sizeof( OSVERSIONINFO );
-	if ( ::GetVersionEx( &osv ) ) {
-		winxp = osv.dwMajorVersion >= 5 && osv.dwMinorVersion == 1;
-	}
-	fileToolBar.CreateEx( this, winxp ? 0 : TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
+	fileToolBar.CreateEx( this, 0, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
 	fileToolBar.LoadToolBar( IDR_FILE_TOOLBAR );
-	fileToolBar.GetToolBarCtrl().SetWindowText( rdo::format( IDR_FILE_TOOLBAR ).c_str() );
+	fileToolBar.ModifyStyle( 0, TBSTYLE_FLAT );
+	fileToolBar.SetWindowText( rdo::format( IDR_FILE_TOOLBAR ).c_str() );
 
 	fileToolBarImageList.Create( IDB_FILE_TOOLBAR_D, 16, 0, 0xFF00FF );
 	fileToolBar.GetToolBarCtrl().SetDisabledImageList( &fileToolBarImageList );
 
-	editToolBar.CreateEx( this, winxp ? 0 : TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
+	editToolBar.CreateEx( this, 0, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
 	editToolBar.LoadToolBar( IDR_EDIT_TOOLBAR );
-	editToolBar.GetToolBarCtrl().SetWindowText( rdo::format( IDR_EDIT_TOOLBAR ).c_str() );
+	editToolBar.ModifyStyle( 0, TBSTYLE_FLAT );
+	editToolBar.SetWindowText( rdo::format( IDR_EDIT_TOOLBAR ).c_str() );
 
 	editToolBarImageList.Create( IDB_EDIT_TOOLBAR_D, 16, 0, 0xFF00FF );
 	editToolBar.GetToolBarCtrl().SetDisabledImageList( &editToolBarImageList );
 
-	zoomToolBar.CreateEx( this, winxp ? 0 : TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
+	zoomToolBar.CreateEx( this, 0, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
 	zoomToolBar.LoadToolBar( IDR_ZOOM_TOOLBAR );
-	zoomToolBar.GetToolBarCtrl().SetWindowText( rdo::format( IDR_ZOOM_TOOLBAR ).c_str() );
+	zoomToolBar.ModifyStyle( 0, TBSTYLE_FLAT );
+	zoomToolBar.SetWindowText( rdo::format( IDR_ZOOM_TOOLBAR ).c_str() );
 
 	zoomToolBarImageList.Create( IDB_ZOOM_TOOLBAR_D, 16, 0, 0xFF00FF );
 	zoomToolBar.GetToolBarCtrl().SetDisabledImageList( &zoomToolBarImageList );
 
-	modelToolBar.CreateEx( this, winxp ? 0 : TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
+	modelToolBar.CreateEx( this, 0, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
 	modelToolBar.LoadToolBar( IDR_MODEL_TOOLBAR );
-	modelToolBar.GetToolBarCtrl().SetWindowText( rdo::format( IDR_MODEL_TOOLBAR ).c_str() );
+	modelToolBar.ModifyStyle( 0, TBSTYLE_FLAT );
+	modelToolBar.SetWindowText( rdo::format( IDR_MODEL_TOOLBAR ).c_str() );
 
 	modelToolBarImageList.Create( IDB_MODEL_TOOLBAR_D, 16, 0, 0xFF00FF );
 	modelToolBar.GetToolBarCtrl().SetDisabledImageList( &modelToolBarImageList );
