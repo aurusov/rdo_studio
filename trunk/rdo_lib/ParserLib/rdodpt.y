@@ -244,6 +244,7 @@ dpt_activ_free_end:	dpt_activ_free End												{ if($1 != NULL) ((RDODPTFreeA
 
 dpt_process:		Process			{};
 dpt_process_src:	IDENTIF			{ TRACE( "%s\n", ((string *)$1)->c_str() ); }
+					| dpt_process_src IDENTIF { TRACE( "%s\n", ((string *)$2)->c_str() ); }
 dpt_process_end:	dpt_process dpt_process_src End	{};
 
 
