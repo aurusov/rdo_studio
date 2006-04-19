@@ -671,7 +671,7 @@ BEGIN
         MENUITEM "&Paste\tCtrl+V",              ID_EDIT_PASTE
         MENUITEM "&Delete\tDel",                ID_EDIT_CLEAR
         MENUITEM SEPARATOR
-        MENUITEM "Cop&y As RTF",                ID_EDIT_COPYASRTF
+        MENUITEM "Cop&y As RTF\tCtrl+Shift+C",  ID_EDIT_COPYASRTF
         MENUITEM SEPARATOR
         MENUITEM "Select &All\tCtrl+A",         ID_EDIT_SELECT_ALL
         MENUITEM SEPARATOR
@@ -688,7 +688,7 @@ BEGIN
         MENUITEM "Find &Previous\tShift+F3",    ID_SEARCH_FIND_PREVIOUS
         MENUITEM "&Replace...\tCtrl+R",         ID_SEARCH_REPLACE
         MENUITEM SEPARATOR
-        MENUITEM "Find in Model...",            ID_SEARCH_FIND_INMODEL
+        MENUITEM "Find in Model...\tCtrl+Shift+F", ID_SEARCH_FIND_INMODEL
         MENUITEM SEPARATOR
         MENUITEM "&Toggle Bookmark\tCtrl+F2",   ID_SEARCH_BOOKMARK_TOGGLE
         MENUITEM "N&ext Bookmark\tF2",          ID_SEARCH_BOOKMARK_NEXT
@@ -1090,7 +1090,7 @@ BEGIN
     "B",            ID_EMPTYCOMMAND_32,     VIRTKEY, SHIFT, CONTROL, 
                                                     NOINVERT
     "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
-    "C",            ID_EMPTYCOMMAND_29,     VIRTKEY, SHIFT, CONTROL, 
+    "C",            ID_EDIT_COPYASRTF,      VIRTKEY, SHIFT, CONTROL, 
                                                     NOINVERT
     "D",            ID_EMPTYCOMMAND_19,     VIRTKEY, CONTROL, NOINVERT
     "D",            ID_EMPTYCOMMAND_20,     VIRTKEY, SHIFT, CONTROL, 
@@ -1099,7 +1099,7 @@ BEGIN
     "E",            ID_EMPTYCOMMAND_5,      VIRTKEY, SHIFT, CONTROL, 
                                                     NOINVERT
     "F",            ID_SEARCH_FIND,         VIRTKEY, CONTROL, NOINVERT
-    "F",            ID_EMPTYCOMMAND_21,     VIRTKEY, SHIFT, CONTROL, 
+    "F",            ID_SEARCH_FIND_INMODEL, VIRTKEY, SHIFT, CONTROL, 
                                                     NOINVERT
     "G",            ID_EMPTYCOMMAND_22,     VIRTKEY, CONTROL, NOINVERT
     "G",            ID_EMPTYCOMMAND_23,     VIRTKEY, SHIFT, CONTROL, 
@@ -1194,8 +1194,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,8,0,258
- PRODUCTVERSION 0,8,0,258
+ FILEVERSION 0,8,0,259
+ PRODUCTVERSION 0,8,0,259
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -1213,14 +1213,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "RAO studio\0"
-            VALUE "FileVersion", "0, 8, 0, 258\0"
+            VALUE "FileVersion", "0, 8, 0, 259\0"
             VALUE "InternalName", "RAO-Studio\0"
             VALUE "LegalCopyright", "Copyright (C) 2003\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "RAO-Studio.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "RAO-Studio\0"
-            VALUE "ProductVersion", "0, 8, 0, 258\0"
+            VALUE "ProductVersion", "0, 8, 0, 259\0"
             VALUE "SpecialBuild", "\0"
         END
     END
