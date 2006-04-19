@@ -120,6 +120,7 @@ protected:
 	RDOLink	m_web;
 	RDOLink	m_email;
 	CString	m_caption;
+	CString	m_developer;
 	//}}AFX_DATA
 
 	//{{AFX_VIRTUAL(RDOAboutDlg)

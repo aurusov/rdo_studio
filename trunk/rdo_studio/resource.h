@@ -130,6 +130,7 @@
 #define IDC_PLUGIN_START                1104
 #define IDC_PLUGIN_STOP                 1105
 #define IDC_PLUGIN_RESTORESTATE_CHECKBOX 1109
+#define IDC_DEVELOPERS                  1118
 #define ID_CHART_ADDTONEWCHART          32771
 #define ID_VIEW_WORKSPACE               32774
 #define ID_VIEW_OUTPUT                  32775
@@ -417,6 +418,7 @@
 #define ID_SEARCH_FIND_NEXT             33171
 #define ID_SEARCH_FIND_PREVIOUS         33172
 #define ID_VIEW_TOOLBAR_ZOOM_TOOLBAR    33181
+#define IDS_DEVELOPERS                  34000
 #define ID_STATUSBAR_READONLY           40000
 #define ID_STATUSBAR_MODIFIED           40001
 #define ID_STATUSBAR_OVERWRITE          40002
@@ -596,7 +598,7 @@
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        176
 #define _APS_NEXT_COMMAND_VALUE         33183
-#define _APS_NEXT_CONTROL_VALUE         1110
+#define _APS_NEXT_CONTROL_VALUE         1119
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

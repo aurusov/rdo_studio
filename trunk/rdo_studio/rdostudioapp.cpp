@@ -724,7 +724,12 @@ RDOAboutDlg::RDOAboutDlg():
 {
 	//{{AFX_DATA_INIT(RDOAboutDlg)
 	m_caption = _T("");
+	m_developer = _T("");
 	//}}AFX_DATA_INIT
+	CString s;
+	s.Format( IDS_DEVELOPERS );
+	m_developer = s;
+
 	TCHAR szExeName[ MAX_PATH + 1 ];
 	if ( ::GetModuleFileName( NULL, szExeName, MAX_PATH ) ) {
 		DWORD dwHnd;
@@ -743,7 +748,6 @@ RDOAboutDlg::RDOAboutDlg():
 						if ( ::VerQueryValue( pBuffer, key, (void**)&productName, &length ) ) {
 							VS_FIXEDFILEINFO* fixedInfo;
 							if ( ::VerQueryValue( pBuffer, _T("\\"), (void**)&fixedInfo, &length ) ) {
-								CString s;
 								s.Format( "%s     version %u.%u (build %u)", productName, HIWORD( fixedInfo->dwProductVersionMS ), LOWORD( fixedInfo->dwProductVersionMS ), LOWORD( fixedInfo->dwProductVersionLS ) );
 								m_caption = s;
 							}
@@ -767,6 +771,7 @@ void RDOAboutDlg::DoDataExchange( CDataExchange* pDX )
 	DDX_Control(pDX, IDC_ABOUT_WEB, m_web);
 	DDX_Control(pDX, IDC_ABOUT_EMAIL, m_email);
 	DDX_Text(pDX, IDC_ABOUT_CAPTION, m_caption);
+	DDX_Text(pDX, IDC_DEVELOPERS, m_developer);
 	//}}AFX_DATA_MAP
 }
 
