@@ -116,6 +116,7 @@
 # define	value_after	361
 # define	some	362
 # define	Process	363
+# define	SIEZE	364
 # define	Frame	400
 # define	Show_if	401
 # define	Back_picture	402
@@ -133,7 +134,7 @@
 # define	active	414
 # define	QUOTED_IDENTIF	415
 
-#line 129 ".\\rdortp.y"
+#line 130 ".\\rdortp.y"
 
 #include "pch.h"
 #ifdef _DEBUG
@@ -159,10 +160,10 @@ namespace rdoParse
 
 #define	YYFINAL		55
 #define	YYFLAG		-32768
-#define	YYNTBASE	132
+#define	YYNTBASE	133
 
 /* YYTRANSLATE(YYLEX) -- Bison token number corresponding to YYLEX. */
-#define YYTRANSLATE(x) ((unsigned)(x) <= 415 ? yytranslate[x] : 147)
+#define YYTRANSLATE(x) ((unsigned)(x) <= 415 ? yytranslate[x] : 148)
 
 /* YYTRANSLATE[YYLEX] -- Bison token number corresponding to YYLEX. */
 static const short yytranslate[] =
@@ -171,12 +172,12 @@ static const short yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-     128,   129,     2,     2,   130,     2,   131,     2,     2,     2,
+     129,   130,     2,     2,   131,     2,   132,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,   125,     2,     2,     2,     2,     2,     2,     2,     2,
+       2,   126,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,   126,     2,   127,     2,     2,     2,     2,     2,     2,
+       2,   127,     2,   128,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -203,12 +204,12 @@ static const short yytranslate[] =
       75,    76,    77,    78,    79,    80,    81,    82,    83,    84,
       85,    86,    87,    88,    89,    90,    91,    92,    93,    94,
       95,    96,    97,    98,    99,   100,   101,   102,   103,   104,
-     105,   106,   107,   108,     2,     2,     2,     2,     2,     2,
+     105,   106,   107,   108,   109,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-     109,   110,   111,   112,   113,   114,   115,   116,   117,   118,
-     119,   120,   121,   122,   123,   124
+     110,   111,   112,   113,   114,   115,   116,   117,   118,   119,
+     120,   121,   122,   123,   124,   125
 };
 
 #if YYDEBUG
@@ -221,15 +222,15 @@ static const short yyprhs[] =
 };
 static const short yyrhs[] =
 {
-      -1,   132,   134,     0,     3,    18,   135,     0,   133,     5,
-     136,     8,     0,     4,     0,     9,     0,     0,   136,   137,
-       0,    18,   141,     0,     0,   125,    10,     0,     0,   125,
-      12,     0,     0,   125,    11,     0,     6,   142,   140,     0,
-       7,   143,   139,     0,   144,   138,     0,   146,     0,   146,
-     125,    11,     0,   146,   125,    12,     0,   146,   125,    10,
-       0,     0,   126,    11,    14,    11,   127,     0,     0,   126,
-      12,    14,    12,   127,     0,   128,   145,   129,     0,    10,
-       0,   145,   130,    10,     0,    13,    10,   131,    10,     0
+      -1,   133,   135,     0,     3,    18,   136,     0,   134,     5,
+     137,     8,     0,     4,     0,     9,     0,     0,   137,   138,
+       0,    18,   142,     0,     0,   126,    10,     0,     0,   126,
+      12,     0,     0,   126,    11,     0,     6,   143,   141,     0,
+       7,   144,   140,     0,   145,   139,     0,   147,     0,   147,
+     126,    11,     0,   147,   126,    12,     0,   147,   126,    10,
+       0,     0,   127,    11,    14,    11,   128,     0,     0,   127,
+      12,    14,    12,   128,     0,   129,   146,   130,     0,    10,
+       0,   146,   131,    10,     0,    13,    10,   132,    10,     0
 };
 
 #endif
@@ -238,10 +239,10 @@ static const short yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined. */
 static const short yyrline[] =
 {
-       0,   147,   148,   150,   161,   163,   164,   166,   167,   173,
-     181,   182,   184,   185,   187,   188,   190,   196,   203,   212,
-     216,   220,   224,   230,   234,   240,   244,   253,   255,   259,
-     266
+       0,   148,   149,   151,   162,   164,   165,   167,   168,   174,
+     182,   183,   185,   186,   188,   189,   191,   197,   204,   213,
+     217,   221,   225,   231,   235,   241,   245,   254,   256,   260,
+     267
 };
 #endif
 
@@ -273,24 +274,24 @@ static const char *const yytname[] =
   "search_keyword", "trace_stat", "trace_tops", "trace_all", 
   "Condition_keyword", "Term_condition", "Evaluate_by", "Compare_tops", 
   "NO", "YES", "Activities", "value_before", "value_after", "some", 
-  "Process", "Frame", "Show_if", "Back_picture", "Show", "frm_cell", 
-  "text", "transparent", "bitmap", "s_bmp", "rect_keyword", "r_rect", 
-  "line", "ellipse", "triang", "active", "QUOTED_IDENTIF", "'='", "'['", 
-  "']'", "'('", "')'", "','", "'.'", "rtp_list", "rtp_res_type_hdr", 
-  "rtp_res_type", "rtp_vid_res", "rtp_body", "rtp_param_desc", 
-  "rtp_enum_default_val", "rtp_real_default_val", "rtp_int_default_val", 
-  "rtp_param_type", "rtp_int_diap", "rtp_real_diap", "rtp_enum", 
-  "rtp_enum_list", "rtp_such_as", 0
+  "Process", "SIEZE", "Frame", "Show_if", "Back_picture", "Show", 
+  "frm_cell", "text", "transparent", "bitmap", "s_bmp", "rect_keyword", 
+  "r_rect", "line", "ellipse", "triang", "active", "QUOTED_IDENTIF", 
+  "'='", "'['", "']'", "'('", "')'", "','", "'.'", "rtp_list", 
+  "rtp_res_type_hdr", "rtp_res_type", "rtp_vid_res", "rtp_body", 
+  "rtp_param_desc", "rtp_enum_default_val", "rtp_real_default_val", 
+  "rtp_int_default_val", "rtp_param_type", "rtp_int_diap", 
+  "rtp_real_diap", "rtp_enum", "rtp_enum_list", "rtp_such_as", 0
 };
 #endif
 
 /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives. */
 static const short yyr1[] =
 {
-       0,   132,   132,   133,   134,   135,   135,   136,   136,   137,
-     138,   138,   139,   139,   140,   140,   141,   141,   141,   141,
-     141,   141,   141,   142,   142,   143,   143,   144,   145,   145,
-     146
+       0,   133,   133,   134,   135,   136,   136,   137,   137,   138,
+     139,   139,   140,   140,   141,   141,   142,   142,   142,   142,
+     142,   142,   142,   143,   143,   144,   144,   145,   146,   146,
+     147
 };
 
 /* YYR2[YYN] -- Number of symbols composing right hand side of rule YYN. */
@@ -324,11 +325,11 @@ static const short yydefgoto[] =
 static const short yypact[] =
 {
   -32768,     2,   -12,     3,-32768,     0,-32768,-32768,-32768,-32768,
-      -5,-32768,    -6,-32768,  -114,  -109,     8,     9,-32768,  -105,
-    -104,    11,  -102,    12,  -100,  -103,-32768,  -119,    16,-32768,
+      -5,-32768,    -6,-32768,  -115,  -110,     8,     9,-32768,  -106,
+    -105,    11,  -103,    12,  -101,  -104,-32768,  -120,    16,-32768,
        4,    13,    18,-32768,    17,    20,-32768,    23,-32768,    24,
   -32768,-32768,-32768,-32768,    19,-32768,    25,-32768,-32768,-32768,
-     -92,   -91,-32768,-32768,    38,-32768
+     -93,   -92,-32768,-32768,    38,-32768
 };
 
 static const short yypgoto[] =
@@ -338,7 +339,7 @@ static const short yypgoto[] =
 };
 
 
-#define	YYLAST		122
+#define	YYLAST		123
 
 
 static const short yytable[] =
@@ -355,15 +356,15 @@ static const short yytable[] =
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,    17
+       0,     0,     0,    17
 };
 
 static const short yycheck[] =
 {
        6,     7,     0,     8,     4,     3,    18,    13,     5,     9,
-     129,   130,   126,    18,    10,    11,    12,   126,    10,    10,
-     125,   125,    11,   125,    12,   125,    10,    14,   131,    11,
-      11,    14,    12,    10,    10,   127,   127,    12,     0,    -1,
+     130,   131,   127,    18,    10,    11,    12,   127,    10,    10,
+     126,   126,    11,   126,    12,   126,    10,    14,   132,    11,
+      11,    14,    12,    10,    10,   128,   128,    12,     0,    -1,
       -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
       -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
       -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
@@ -372,7 +373,7 @@ static const short yycheck[] =
       -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
       -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
       -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
-      -1,    -1,   128
+      -1,    -1,    -1,   129
 };
 /* -*-C-*-  Note some compilers choke on comments on `#line' lines.  */
 #line 3 "..\\System\\bison.simple"
@@ -1082,7 +1083,7 @@ yyreduce:
   switch (yyn) {
 
 case 3:
-#line 150 ".\\rdortp.y"
+#line 151 ".\\rdortp.y"
 {
 	string *name = (string *)yyvsp[-1];
 	if(currParser->findRTPResType(name))
@@ -1095,22 +1096,22 @@ case 3:
 ;
     break;}
 case 5:
-#line 163 ".\\rdortp.y"
+#line 164 ".\\rdortp.y"
 { yyval = 1; ;
     break;}
 case 6:
-#line 164 ".\\rdortp.y"
+#line 165 ".\\rdortp.y"
 { yyval = 0; ;
     break;}
 case 8:
-#line 167 ".\\rdortp.y"
+#line 168 ".\\rdortp.y"
 {
 							RDORTPParamDesc *param = (RDORTPParamDesc*)yyvsp[0];
 							currParser->lastRTPResType->add(param);
 						;
     break;}
 case 9:
-#line 173 ".\\rdortp.y"
+#line 174 ".\\rdortp.y"
 {
 						string *name = (string *)yyvsp[-1];
 						RDORTPResParam *parType = (RDORTPResParam *)yyvsp[0];
@@ -1120,31 +1121,31 @@ case 9:
 					;
     break;}
 case 10:
-#line 181 ".\\rdortp.y"
+#line 182 ".\\rdortp.y"
 {	yyval = (int)(new RDORTPEnumDefVal()); ;
     break;}
 case 11:
-#line 182 ".\\rdortp.y"
+#line 183 ".\\rdortp.y"
 {	yyval = (int)(new RDORTPEnumDefVal((string *)yyvsp[0])); ;
     break;}
 case 12:
-#line 184 ".\\rdortp.y"
+#line 185 ".\\rdortp.y"
 {	yyval = (int)(new RDORTPRealDefVal());	;
     break;}
 case 13:
-#line 185 ".\\rdortp.y"
+#line 186 ".\\rdortp.y"
 {yyval = (int)(new RDORTPRealDefVal(*((double *)yyvsp[0])));	;
     break;}
 case 14:
-#line 187 ".\\rdortp.y"
+#line 188 ".\\rdortp.y"
 {	yyval = (int)(new RDORTPIntDefVal());	;
     break;}
 case 15:
-#line 188 ".\\rdortp.y"
+#line 189 ".\\rdortp.y"
 {	yyval = (int)(new RDORTPIntDefVal(yyvsp[0])); ;
     break;}
 case 16:
-#line 190 ".\\rdortp.y"
+#line 191 ".\\rdortp.y"
 { 
                                                 RDORTPIntDiap *diap = (RDORTPIntDiap *)yyvsp[-1];
                                                 RDORTPIntDefVal *dv = (RDORTPIntDefVal *)yyvsp[0];
@@ -1153,7 +1154,7 @@ case 16:
 															;
     break;}
 case 17:
-#line 196 ".\\rdortp.y"
+#line 197 ".\\rdortp.y"
 { 
                                                 RDORTPRealDiap *diap = (RDORTPRealDiap *)yyvsp[-1];
                                                 RDORTPRealDefVal *dv = (RDORTPRealDefVal *)yyvsp[0];
@@ -1162,7 +1163,7 @@ case 17:
 															;
     break;}
 case 18:
-#line 203 ".\\rdortp.y"
+#line 204 ".\\rdortp.y"
 { 
                                                 RDORTPEnum *enu = (RDORTPEnum *)yyvsp[-1];
                                                 RDORTPEnumDefVal *dv = (RDORTPEnumDefVal *)yyvsp[0];
@@ -1173,56 +1174,56 @@ case 18:
 															;
     break;}
 case 19:
-#line 212 ".\\rdortp.y"
+#line 213 ".\\rdortp.y"
 {
 											RDORTPParamDesc *desc = (RDORTPParamDesc *)yyvsp[0];
 											yyval = (int)desc->getType()->constructSuchAs();
 										;
     break;}
 case 20:
-#line 216 ".\\rdortp.y"
+#line 217 ".\\rdortp.y"
 {
 											RDORTPParamDesc *desc = (RDORTPParamDesc *)yyvsp[-2];
 											yyval = (int)desc->getType()->constructSuchAs((int)yyvsp[0]);
 										;
     break;}
 case 21:
-#line 220 ".\\rdortp.y"
+#line 221 ".\\rdortp.y"
 {
 											RDORTPParamDesc *desc = (RDORTPParamDesc *)yyvsp[-2];
 											yyval = (int)desc->getType()->constructSuchAs((double *)yyvsp[0]);
 										;
     break;}
 case 22:
-#line 224 ".\\rdortp.y"
+#line 225 ".\\rdortp.y"
 {
 											RDORTPParamDesc *desc = (RDORTPParamDesc *)yyvsp[-2];
 											yyval = (int)desc->getType()->constructSuchAs((string *)yyvsp[0]);
 										;
     break;}
 case 23:
-#line 230 ".\\rdortp.y"
+#line 231 ".\\rdortp.y"
 {
 						RDORTPIntDiap *diap = new RDORTPIntDiap();
 						yyval = (int)diap;
 					;
     break;}
 case 24:
-#line 234 ".\\rdortp.y"
+#line 235 ".\\rdortp.y"
 {
 						RDORTPIntDiap *diap = new RDORTPIntDiap(yyvsp[-3], yyvsp[-1]);
 						yyval = (int)diap;
 					;
     break;}
 case 25:
-#line 240 ".\\rdortp.y"
+#line 241 ".\\rdortp.y"
 {
 						RDORTPRealDiap *diap = new RDORTPRealDiap();
 						yyval = (int)diap;
 					;
     break;}
 case 26:
-#line 244 ".\\rdortp.y"
+#line 245 ".\\rdortp.y"
 {
 						double min = *((double *)yyvsp[-3]);
 						double max = *((double *)yyvsp[-1]);
@@ -1231,18 +1232,18 @@ case 26:
 					;
     break;}
 case 27:
-#line 253 ".\\rdortp.y"
+#line 254 ".\\rdortp.y"
 { yyval = yyvsp[-1]; ;
     break;}
 case 28:
-#line 255 ".\\rdortp.y"
+#line 256 ".\\rdortp.y"
 {
 							RDORTPEnum *enu = new RDORTPEnum((string *)yyvsp[0]);
 							yyval = (int)enu;
 						;
     break;}
 case 29:
-#line 259 ".\\rdortp.y"
+#line 260 ".\\rdortp.y"
 {
 							RDORTPEnum *enu = (RDORTPEnum *)yyvsp[-2];
 							enu->add((string *)yyvsp[0]);
@@ -1250,7 +1251,7 @@ case 29:
 						;
     break;}
 case 30:
-#line 266 ".\\rdortp.y"
+#line 267 ".\\rdortp.y"
 {
 							string *type = (string *)yyvsp[-2];
 							string *param = (string *)yyvsp[0];
@@ -1498,7 +1499,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 281 ".\\rdortp.y"
+#line 282 ".\\rdortp.y"
 
 
 }
