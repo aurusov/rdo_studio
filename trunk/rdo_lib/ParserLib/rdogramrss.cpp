@@ -115,6 +115,8 @@
 # define	value_before	360
 # define	value_after	361
 # define	some	362
+# define	Process	363
+# define	SIEZE	364
 # define	Frame	400
 # define	Show_if	401
 # define	Back_picture	402
@@ -132,7 +134,7 @@
 # define	active	414
 # define	QUOTED_IDENTIF	415
 
-#line 128 ".\\rdorss.y"
+#line 131 ".\\rdorss.y"
 
 #include "pch.h"
 #ifdef _DEBUG
@@ -160,20 +162,20 @@ namespace rdoParse
 
 #define	YYFINAL		19
 #define	YYFLAG		-32768
-#define	YYNTBASE	126
+#define	YYNTBASE	128
 
 /* YYTRANSLATE(YYLEX) -- Bison token number corresponding to YYLEX. */
-#define YYTRANSLATE(x) ((unsigned)(x) <= 415 ? yytranslate[x] : 133)
+#define YYTRANSLATE(x) ((unsigned)(x) <= 415 ? yytranslate[x] : 135)
 
 /* YYTRANSLATE[YYLEX] -- Bison token number corresponding to YYLEX. */
-static const char yytranslate[] =
+static const short yytranslate[] =
 {
        0,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,   125,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,   124,     2,
+       2,     2,   127,     2,     2,     2,     2,     2,     2,     2,
+       2,     2,     2,     2,     2,     2,     2,     2,   126,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -204,12 +206,12 @@ static const char yytranslate[] =
       75,    76,    77,    78,    79,    80,    81,    82,    83,    84,
       85,    86,    87,    88,    89,    90,    91,    92,    93,    94,
       95,    96,    97,    98,    99,   100,   101,   102,   103,   104,
-     105,   106,   107,     2,     2,     2,     2,     2,     2,     2,
+     105,   106,   107,   108,   109,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-     108,   109,   110,   111,   112,   113,   114,   115,   116,   117,
-     118,   119,   120,   121,   122,   123
+     110,   111,   112,   113,   114,   115,   116,   117,   118,   119,
+     120,   121,   122,   123,   124,   125
 };
 
 #if YYDEBUG
@@ -220,9 +222,9 @@ static const short yyprhs[] =
 };
 static const short yyrhs[] =
 {
-      -1,    15,   127,     8,     0,     0,   127,   129,     0,    18,
-      10,     0,   128,   130,   131,     0,     0,    16,     0,    17,
-       0,     0,   131,   132,     0,   125,     0,    10,     0,    11,
+      -1,    15,   129,     8,     0,     0,   129,   131,     0,    18,
+      10,     0,   130,   132,   133,     0,     0,    16,     0,    17,
+       0,     0,   133,   134,     0,   127,     0,    10,     0,    11,
        0,    12,     0
 };
 
@@ -232,8 +234,8 @@ static const short yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined. */
 static const short yyrline[] =
 {
-       0,   151,   152,   154,   155,   157,   174,   180,   181,   182,
-     184,   185,   187,   202,   216,   231
+       0,   154,   155,   157,   158,   160,   177,   183,   184,   185,
+     187,   188,   190,   205,   219,   234
 };
 #endif
 
@@ -265,19 +267,19 @@ static const char *const yytname[] =
   "search_keyword", "trace_stat", "trace_tops", "trace_all", 
   "Condition_keyword", "Term_condition", "Evaluate_by", "Compare_tops", 
   "NO", "YES", "Activities", "value_before", "value_after", "some", 
-  "Frame", "Show_if", "Back_picture", "Show", "frm_cell", "text", 
-  "transparent", "bitmap", "s_bmp", "rect_keyword", "r_rect", "line", 
-  "ellipse", "triang", "active", "QUOTED_IDENTIF", "':'", "'*'", 
-  "rss_list", "rss_resources", "rss_res_type", "rss_res_descr", 
-  "rss_trace", "rss_start_vals", "rss_value", 0
+  "Process", "SIEZE", "Frame", "Show_if", "Back_picture", "Show", 
+  "frm_cell", "text", "transparent", "bitmap", "s_bmp", "rect_keyword", 
+  "r_rect", "line", "ellipse", "triang", "active", "QUOTED_IDENTIF", 
+  "':'", "'*'", "rss_list", "rss_resources", "rss_res_type", 
+  "rss_res_descr", "rss_trace", "rss_start_vals", "rss_value", 0
 };
 #endif
 
 /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives. */
 static const short yyr1[] =
 {
-       0,   126,   126,   127,   127,   128,   129,   130,   130,   130,
-     131,   131,   132,   132,   132,   132
+       0,   128,   128,   129,   129,   130,   131,   132,   132,   132,
+     133,   133,   134,   134,   134,   134
 };
 
 /* YYR2[YYN] -- Number of symbols composing right hand side of rule YYN. */
@@ -313,7 +315,7 @@ static const short yypgoto[] =
 };
 
 
-#define	YYLAST		115
+#define	YYLAST		117
 
 
 static const short yytable[] =
@@ -329,7 +331,7 @@ static const short yytable[] =
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,    15
+       0,     0,     0,     0,     0,     0,     0,    15
 };
 
 static const short yycheck[] =
@@ -345,7 +347,7 @@ static const short yycheck[] =
       -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
       -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
       -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
-      -1,    -1,    -1,    -1,    -1,   125
+      -1,    -1,    -1,    -1,    -1,    -1,    -1,   127
 };
 /* -*-C-*-  Note some compilers choke on comments on `#line' lines.  */
 #line 3 "..\\System\\bison.simple"
@@ -1055,7 +1057,7 @@ yyreduce:
   switch (yyn) {
 
 case 5:
-#line 157 ".\\rdorss.y"
+#line 160 ".\\rdorss.y"
 {
 						string *name = (string *)yyvsp[-1];
 						string *type = (string *)yyvsp[0];
@@ -1073,7 +1075,7 @@ case 5:
 					;
     break;}
 case 6:
-#line 174 ".\\rdorss.y"
+#line 177 ".\\rdorss.y"
 { 
 						RDORSSResource *res = (RDORSSResource *)yyvsp[-2];
 						RDOCalcCreateNumberedResource *createResource = new RDOCalcCreateNumberedResource(res->getType()->getType(), yyvsp[-1] != 0, res->getValues(), res->getNumber(), res->getType()->isPerm());
@@ -1081,19 +1083,19 @@ case 6:
 					;
     break;}
 case 7:
-#line 180 ".\\rdorss.y"
+#line 183 ".\\rdorss.y"
 { yyval = 0; ;
     break;}
 case 8:
-#line 181 ".\\rdorss.y"
+#line 184 ".\\rdorss.y"
 { yyval = 1; ;
     break;}
 case 9:
-#line 182 ".\\rdorss.y"
+#line 185 ".\\rdorss.y"
 { yyval = 0; ;
     break;}
 case 12:
-#line 187 ".\\rdorss.y"
+#line 190 ".\\rdorss.y"
 { 
 						if(currParser->lastRSSResource->currParam == currParser->lastRSSResource->getType()->getParams().end())
 							currParser->error("Too many parameters");
@@ -1110,7 +1112,7 @@ case 12:
 					;
     break;}
 case 13:
-#line 202 ".\\rdorss.y"
+#line 205 ".\\rdorss.y"
 { 
 						if(currParser->lastRSSResource->currParam == currParser->lastRSSResource->getType()->getParams().end())
 							currParser->error("Too many parameters");
@@ -1127,7 +1129,7 @@ case 13:
 					;
     break;}
 case 14:
-#line 216 ".\\rdorss.y"
+#line 219 ".\\rdorss.y"
 { 
 						if(currParser->lastRSSResource->currParam == currParser->lastRSSResource->getType()->getParams().end())
 							currParser->error("Too many parameters");
@@ -1144,7 +1146,7 @@ case 14:
 					;
     break;}
 case 15:
-#line 231 ".\\rdorss.y"
+#line 234 ".\\rdorss.y"
 { 
 						if(currParser->lastRSSResource->currParam == currParser->lastRSSResource->getType()->getParams().end())
 							currParser->error("Too many parameters");
@@ -1393,7 +1395,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 246 ".\\rdorss.y"
+#line 249 ".\\rdorss.y"
 
 
 }

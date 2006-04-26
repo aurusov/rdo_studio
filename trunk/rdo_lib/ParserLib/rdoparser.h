@@ -5,6 +5,7 @@ using namespace std;
 #include "rdolexinterface.h"
 #include "rdoStdFuncs.h"
 #include "rdocalcconst.h"
+#include "rdoparser_base.h"
 
 #include <rdocommon.h>
 
@@ -51,7 +52,7 @@ struct RDOSMR1OkException: public RDOException
 
 class RDOParser
 {
-	ostream* out;
+	std::ostream* out;
 public:
 	FileToParse fileToParse;
 
@@ -96,7 +97,8 @@ public:
 	vector<RDOSimulatorNS::RDOSyntaxError> errors;
 
 	stringstream modelStructure;
-	
+	stringstream& getModelStructure();
+
 	RDOParser();
 	~RDOParser();
 
@@ -108,20 +110,22 @@ public:
 	const RDOFUNSequence *findSequence(const string *const name) const;
 	const RDOPATPattern *findPattern(const string *const name) const;
 	
+	std::map< int, rdoParserBase > parsers;
+
 	void setYylval(int val);
-   void parseRTP(istream* arg_yyin, ostream* arg_yyout);
-   void parseRSS(istream* arg_yyin, ostream* arg_yyout);
-   void parseFUN(istream* arg_yyin, ostream* arg_yyout);
-   void parsePAT(istream* arg_yyin, ostream* arg_yyout);
-   void parseOPR(istream* arg_yyin, ostream* arg_yyout);
-   void parseDPT(istream* arg_yyin, ostream* arg_yyout);
-   void parsePMD(istream* arg_yyin, ostream* arg_yyout);
-   void parseFRM(istream* arg_yyin, ostream* arg_yyout);
-   void parseSMR1(istream* arg_yyin, ostream* arg_yyout);
-   void parseSMR2(istream* arg_yyin, ostream* arg_yyout);
+   void parseRTP(std::istream* arg_yyin, std::ostream* arg_yyout);
+   void parseRSS(std::istream* arg_yyin, std::ostream* arg_yyout);
+   void parseFUN(std::istream* arg_yyin, std::ostream* arg_yyout);
+   void parsePAT(std::istream* arg_yyin, std::ostream* arg_yyout);
+   void parseOPR(std::istream* arg_yyin, std::ostream* arg_yyout);
+   void parseDPT(std::istream* arg_yyin, std::ostream* arg_yyout);
+   void parsePMD(std::istream* arg_yyin, std::ostream* arg_yyout);
+   void parseFRM(std::istream* arg_yyin, std::ostream* arg_yyout);
+   void parseSMR1(std::istream* arg_yyin, std::ostream* arg_yyout);
+   void parseSMR2(std::istream* arg_yyin, std::ostream* arg_yyout);
 	void error( const char *mes );
 	void error( string mes ) { error(mes.c_str()); }
-	int lex(void);
+	int lex();
 	void addConstant(RDORTPParamDesc *const _cons);
 	const RDOFUNConstant *RDOParser::findFUNConst(const string *const _cons) const;
 

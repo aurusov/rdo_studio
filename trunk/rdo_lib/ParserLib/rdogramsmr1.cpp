@@ -115,6 +115,8 @@
 # define	value_before	360
 # define	value_after	361
 # define	some	362
+# define	Process	363
+# define	SIEZE	364
 # define	Frame	400
 # define	Show_if	401
 # define	Back_picture	402
@@ -132,7 +134,7 @@
 # define	active	414
 # define	QUOTED_IDENTIF	415
 
-#line 129 ".\\rdosmr1.y"
+#line 131 ".\\rdosmr1.y"
 
 #include "pch.h"
 #ifdef _DEBUG
@@ -158,13 +160,13 @@ namespace rdoParse
 
 #define	YYFINAL		46
 #define	YYFLAG		-32768
-#define	YYNTBASE	125
+#define	YYNTBASE	127
 
 /* YYTRANSLATE(YYLEX) -- Bison token number corresponding to YYLEX. */
-#define YYTRANSLATE(x) ((unsigned)(x) <= 415 ? yytranslate[x] : 128)
+#define YYTRANSLATE(x) ((unsigned)(x) <= 415 ? yytranslate[x] : 130)
 
 /* YYTRANSLATE[YYLEX] -- Bison token number corresponding to YYLEX. */
-static const char yytranslate[] =
+static const short yytranslate[] =
 {
        0,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -172,7 +174,7 @@ static const char yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,   124,     2,     2,     2,     2,     2,     2,     2,     2,
+       2,   126,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -202,12 +204,12 @@ static const char yytranslate[] =
       75,    76,    77,    78,    79,    80,    81,    82,    83,    84,
       85,    86,    87,    88,    89,    90,    91,    92,    93,    94,
       95,    96,    97,    98,    99,   100,   101,   102,   103,   104,
-     105,   106,   107,     2,     2,     2,     2,     2,     2,     2,
+     105,   106,   107,   108,   109,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-     108,   109,   110,   111,   112,   113,   114,   115,   116,   117,
-     118,   119,   120,   121,   122,   123
+     110,   111,   112,   113,   114,   115,   116,   117,   118,   119,
+     120,   121,   122,   123,   124,   125
 };
 
 #if YYDEBUG
@@ -218,13 +220,13 @@ static const short yyprhs[] =
 };
 static const short yyrhs[] =
 {
-      73,   124,    10,     0,   125,     0,   126,    74,   124,    10,
-       0,   126,    75,   124,    10,     0,   126,    76,   124,    10,
-       0,   126,    77,   124,    10,     0,   126,    78,   124,    10,
-       0,   126,    79,   124,    10,     0,   126,    80,   124,   127,
-       0,   126,    81,   124,    11,     0,   126,    82,   124,    12,
-       0,   126,    83,   124,    12,     0,   126,    84,   124,    12,
-       0,   126,    85,   124,    12,     0,    89,     0,    90,     0,
+      73,   126,    10,     0,   127,     0,   128,    74,   126,    10,
+       0,   128,    75,   126,    10,     0,   128,    76,   126,    10,
+       0,   128,    77,   126,    10,     0,   128,    78,   126,    10,
+       0,   128,    79,   126,    10,     0,   128,    80,   126,   129,
+       0,   128,    81,   126,    11,     0,   128,    82,   126,    12,
+       0,   128,    83,   126,    12,     0,   128,    84,   126,    12,
+       0,   128,    85,   126,    12,     0,    89,     0,    90,     0,
       91,     0
 };
 
@@ -234,8 +236,8 @@ static const short yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined. */
 static const short yyrline[] =
 {
-       0,   149,   151,   152,   153,   154,   155,   156,   157,   158,
-     159,   160,   161,   162,   163,   165,   166,   167
+       0,   151,   153,   154,   155,   156,   157,   158,   159,   160,
+     161,   162,   163,   164,   165,   167,   168,   169
 };
 #endif
 
@@ -267,18 +269,18 @@ static const char *const yytname[] =
   "search_keyword", "trace_stat", "trace_tops", "trace_all", 
   "Condition_keyword", "Term_condition", "Evaluate_by", "Compare_tops", 
   "NO", "YES", "Activities", "value_before", "value_after", "some", 
-  "Frame", "Show_if", "Back_picture", "Show", "frm_cell", "text", 
-  "transparent", "bitmap", "s_bmp", "rect_keyword", "r_rect", "line", 
-  "ellipse", "triang", "active", "QUOTED_IDENTIF", "'='", "smr_model", 
-  "smr_descr", "smr_show_mode", 0
+  "Process", "SIEZE", "Frame", "Show_if", "Back_picture", "Show", 
+  "frm_cell", "text", "transparent", "bitmap", "s_bmp", "rect_keyword", 
+  "r_rect", "line", "ellipse", "triang", "active", "QUOTED_IDENTIF", 
+  "'='", "smr_model", "smr_descr", "smr_show_mode", 0
 };
 #endif
 
 /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives. */
 static const short yyr1[] =
 {
-       0,   125,   126,   126,   126,   126,   126,   126,   126,   126,
-     126,   126,   126,   126,   126,   127,   127,   127
+       0,   127,   128,   128,   128,   128,   128,   128,   128,   128,
+     128,   128,   128,   128,   128,   129,   129,   129
 };
 
 /* YYR2[YYN] -- Number of symbols composing right hand side of rule YYN. */
@@ -307,8 +309,8 @@ static const short yydefgoto[] =
 
 static const short yypact[] =
 {
-     -69,  -119,-32768,     0,    -4,  -117,  -116,  -115,  -114,  -113,
-    -112,  -111,  -110,  -109,  -108,  -107,  -106,-32768,     9,    10,
+     -69,  -121,-32768,     0,    -4,  -119,  -118,  -117,  -116,  -115,
+    -114,  -113,  -112,  -111,  -110,  -109,  -108,-32768,     9,    10,
       11,    12,    13,    14,   -88,    15,    16,    17,    18,    19,
   -32768,-32768,-32768,-32768,-32768,-32768,-32768,-32768,-32768,-32768,
   -32768,-32768,-32768,-32768,-32768,    25,-32768
@@ -338,8 +340,8 @@ static const short yytable[] =
 
 static const short yycheck[] =
 {
-       0,    89,    90,    91,    73,   124,    10,   124,   124,   124,
-     124,   124,   124,   124,   124,   124,   124,   124,   124,    10,
+       0,    89,    90,    91,    73,   126,    10,   126,   126,   126,
+     126,   126,   126,   126,   126,   126,   126,   126,   126,    10,
       10,    10,    10,    10,    10,     0,    11,    -1,    12,    12,
       12,    12,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
       -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
@@ -1056,67 +1058,67 @@ yyreduce:
   switch (yyn) {
 
 case 1:
-#line 149 ".\\rdosmr1.y"
+#line 151 ".\\rdosmr1.y"
 { yyval = (int)(new RDOSMR((string *)yyvsp[0])); ;
     break;}
 case 3:
-#line 152 ".\\rdosmr1.y"
+#line 154 ".\\rdosmr1.y"
 { ((RDOSMR *)yyvsp[-3])->setValue("Resource_file",	&RDOSMR::resourceFileName,	(string *)yyvsp[0]); yyval = yyvsp[-3]; ;
     break;}
 case 4:
-#line 153 ".\\rdosmr1.y"
+#line 155 ".\\rdosmr1.y"
 { ((RDOSMR *)yyvsp[-3])->setValue("OprIev_file",		&RDOSMR::oprIevFileName,	(string *)yyvsp[0]); yyval = yyvsp[-3]; ;
     break;}
 case 5:
-#line 154 ".\\rdosmr1.y"
+#line 156 ".\\rdosmr1.y"
 { ((RDOSMR *)yyvsp[-3])->setValue("Frame_file",		&RDOSMR::frameFileName,		(string *)yyvsp[0]); yyval = yyvsp[-3]; ;
     break;}
 case 6:
-#line 155 ".\\rdosmr1.y"
+#line 157 ".\\rdosmr1.y"
 { ((RDOSMR *)yyvsp[-3])->setValue("Statistic_file",	&RDOSMR::statisticFileName,(string *)yyvsp[0]); yyval = yyvsp[-3]; ;
     break;}
 case 7:
-#line 156 ".\\rdosmr1.y"
+#line 158 ".\\rdosmr1.y"
 { ((RDOSMR *)yyvsp[-3])->setValue("Results_file",	&RDOSMR::resultsFileName,	(string *)yyvsp[0]); yyval = yyvsp[-3]; ;
     break;}
 case 8:
-#line 157 ".\\rdosmr1.y"
+#line 159 ".\\rdosmr1.y"
 { ((RDOSMR *)yyvsp[-3])->setValue("Trace_file",		&RDOSMR::traceFileName,		(string *)yyvsp[0]); yyval = yyvsp[-3]; ;
     break;}
 case 9:
-#line 158 ".\\rdosmr1.y"
+#line 160 ".\\rdosmr1.y"
 { ((RDOSMR *)yyvsp[-3])->setShowMode((RDOSimulatorNS::ShowMode)yyvsp[0]); yyval = yyvsp[-3]; ;
     break;}
 case 10:
-#line 159 ".\\rdosmr1.y"
+#line 161 ".\\rdosmr1.y"
 { ((RDOSMR *)yyvsp[-3])->setFrameNumber(yyvsp[0]); yyval = yyvsp[-3]; ;
     break;}
 case 11:
-#line 160 ".\\rdosmr1.y"
+#line 162 ".\\rdosmr1.y"
 { ((RDOSMR *)yyvsp[-3])->setValue("Show_rate",		&RDOSMR::showRate,			(double *)yyvsp[0]); yyval = yyvsp[-3]; ;
     break;}
 case 12:
-#line 161 ".\\rdosmr1.y"
+#line 163 ".\\rdosmr1.y"
 { ((RDOSMR *)yyvsp[-3])->setValue("Run_StartTime",	&RDOSMR::runStartTime,		(double *)yyvsp[0]); yyval = yyvsp[-3]; ;
     break;}
 case 13:
-#line 162 ".\\rdosmr1.y"
+#line 164 ".\\rdosmr1.y"
 { ((RDOSMR *)yyvsp[-3])->setValue("Trace_StartTime",&RDOSMR::traceStartTime,	(double *)yyvsp[0]); yyval = yyvsp[-3]; ;
     break;}
 case 14:
-#line 163 ".\\rdosmr1.y"
+#line 165 ".\\rdosmr1.y"
 { ((RDOSMR *)yyvsp[-3])->setValue("Trace_EndTime",	&RDOSMR::traceEndTime,		(double *)yyvsp[0]); yyval = yyvsp[-3]; ;
     break;}
 case 15:
-#line 165 ".\\rdosmr1.y"
+#line 167 ".\\rdosmr1.y"
 { yyval = RDOSimulatorNS::SM_NoShow;		;
     break;}
 case 16:
-#line 166 ".\\rdosmr1.y"
+#line 168 ".\\rdosmr1.y"
 { yyval = RDOSimulatorNS::SM_Monitor;	;
     break;}
 case 17:
-#line 167 ".\\rdosmr1.y"
+#line 169 ".\\rdosmr1.y"
 { yyval = RDOSimulatorNS::SM_Animation; ;
     break;}
 }
@@ -1352,7 +1354,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 169 ".\\rdosmr1.y"
+#line 171 ".\\rdosmr1.y"
 
 
 }

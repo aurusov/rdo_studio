@@ -335,6 +335,32 @@ SOURCE=.\rdoparser.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\rdoparser_base.cpp
+
+!IF  "$(CFG)" == "ParserLib - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "ParserLib - Win32 Debug"
+
+# ADD CPP /Yu"pch.h"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdoparser_lexer.cpp
+
+!IF  "$(CFG)" == "ParserLib - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "ParserLib - Win32 Debug"
+
+# ADD CPP /Yu"pch.h"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdopat.cpp
 
 !IF  "$(CFG)" == "ParserLib - Win32 Release"
@@ -432,6 +458,14 @@ SOURCE=.\rdosmr.cpp
 # PROP Default_Filter "h;hpp;hxx;hm;inl"
 # Begin Source File
 
+SOURCE=..\System\bison.simple
+# End Source File
+# Begin Source File
+
+SOURCE=..\System\FlexLexer.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\pch.h
 # End Source File
 # Begin Source File
@@ -480,6 +514,14 @@ SOURCE=.\rdoparser.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\rdoparser_base.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdoparser_lexer.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdopat.h
 # End Source File
 # Begin Source File
@@ -509,6 +551,10 @@ SOURCE=.\rdosmr.h
 # Begin Source File
 
 SOURCE=.\rdoStdFuncs.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\System\unistd.h
 # End Source File
 # End Group
 # Begin Source File

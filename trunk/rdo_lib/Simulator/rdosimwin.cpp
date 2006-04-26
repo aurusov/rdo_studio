@@ -628,7 +628,7 @@ double RdoSimulator::getInitialShowRate()
 
 stringstream &RdoSimulator::getModelStructure()
 {
-	return parser->modelStructure;
+	return parser->getModelStructure();
 }
 
 stringstream &RdoSimulator::getResults()

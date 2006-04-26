@@ -115,6 +115,8 @@
 # define	value_before	360
 # define	value_after	361
 # define	some	362
+# define	Process	363
+# define	SIEZE	364
 # define	Frame	400
 # define	Show_if	401
 # define	Back_picture	402
@@ -132,7 +134,7 @@
 # define	active	414
 # define	QUOTED_IDENTIF	415
 
-#line 129 ".\\rdosmr2.y"
+#line 131 ".\\rdosmr2.y"
 
 #include "pch.h"
 #ifdef _DEBUG
@@ -159,10 +161,10 @@ namespace rdoParse
 
 #define	YYFINAL		118
 #define	YYFLAG		-32768
-#define	YYNTBASE	137
+#define	YYNTBASE	139
 
 /* YYTRANSLATE(YYLEX) -- Bison token number corresponding to YYLEX. */
-#define YYTRANSLATE(x) ((unsigned)(x) <= 415 ? yytranslate[x] : 148)
+#define YYTRANSLATE(x) ((unsigned)(x) <= 415 ? yytranslate[x] : 150)
 
 /* YYTRANSLATE[YYLEX] -- Bison token number corresponding to YYLEX. */
 static const short yytranslate[] =
@@ -171,12 +173,12 @@ static const short yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-     134,   135,   126,   124,   136,   125,   129,   127,     2,     2,
+     136,   137,   128,   126,   138,   127,   131,   129,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-     130,   128,   131,     2,     2,     2,     2,     2,     2,     2,
+     132,   130,   133,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,   132,     2,   133,     2,     2,     2,     2,     2,     2,
+       2,   134,     2,   135,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -203,12 +205,12 @@ static const short yytranslate[] =
       75,    76,    77,    78,    79,    80,    81,    82,    83,    84,
       85,    86,    87,    88,    89,    90,    91,    92,    93,    94,
       95,    96,    97,    98,    99,   100,   101,   102,   103,   104,
-     105,   106,   107,     2,     2,     2,     2,     2,     2,     2,
+     105,   106,   107,   108,   109,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-     108,   109,   110,   111,   112,   113,   114,   115,   116,   117,
-     118,   119,   120,   121,   122,   123
+     110,   111,   112,   113,   114,   115,   116,   117,   118,   119,
+     120,   121,   122,   123,   124,   125
 };
 
 #if YYDEBUG
@@ -223,27 +225,27 @@ static const short yyprhs[] =
 };
 static const short yyrhs[] =
 {
-      73,   128,    10,     0,   137,     0,   138,    74,   128,    10,
-       0,   138,    75,   128,    10,     0,   138,    76,   128,    10,
-       0,   138,    77,   128,    10,     0,   138,    78,   128,    10,
-       0,   138,    79,   128,    10,     0,   138,    80,   128,   139,
-       0,   138,    81,   128,    11,     0,   138,    82,   128,    12,
-       0,   138,    83,   128,    12,     0,   138,    84,   128,    12,
-       0,   138,    85,   128,    12,     0,    89,     0,    90,     0,
-      91,     0,   138,     0,   140,    86,   141,     0,   140,    87,
-      10,   141,     0,   140,    10,   128,   142,     0,   140,    10,
-     129,    10,   128,   142,     0,   140,    10,   129,    88,   128,
-      11,     0,   142,   128,   142,     0,   142,    31,   142,     0,
-     142,   130,   142,     0,   142,   131,   142,     0,   142,    32,
-     142,     0,   142,    33,   142,     0,   141,    36,   141,     0,
-     141,    35,   141,     0,   132,   141,   133,     0,   147,     0,
-     142,   124,   142,     0,   142,   125,   142,     0,   142,   126,
-     142,     0,   142,   127,   142,     0,   134,   142,   135,     0,
-     143,     0,    10,   129,    10,     0,    11,     0,    12,     0,
-      10,     0,    10,   134,   144,   135,     0,     0,   144,   142,
-       0,   144,   136,   142,     0,    27,     0,    28,     0,    29,
-       0,    30,     0,   145,   134,    18,     0,   146,   141,   135,
-       0,   146,    34,   135,     0
+      73,   130,    10,     0,   139,     0,   140,    74,   130,    10,
+       0,   140,    75,   130,    10,     0,   140,    76,   130,    10,
+       0,   140,    77,   130,    10,     0,   140,    78,   130,    10,
+       0,   140,    79,   130,    10,     0,   140,    80,   130,   141,
+       0,   140,    81,   130,    11,     0,   140,    82,   130,    12,
+       0,   140,    83,   130,    12,     0,   140,    84,   130,    12,
+       0,   140,    85,   130,    12,     0,    89,     0,    90,     0,
+      91,     0,   140,     0,   142,    86,   143,     0,   142,    87,
+      10,   143,     0,   142,    10,   130,   144,     0,   142,    10,
+     131,    10,   130,   144,     0,   142,    10,   131,    88,   130,
+      11,     0,   144,   130,   144,     0,   144,    31,   144,     0,
+     144,   132,   144,     0,   144,   133,   144,     0,   144,    32,
+     144,     0,   144,    33,   144,     0,   143,    36,   143,     0,
+     143,    35,   143,     0,   134,   143,   135,     0,   149,     0,
+     144,   126,   144,     0,   144,   127,   144,     0,   144,   128,
+     144,     0,   144,   129,   144,     0,   136,   144,   137,     0,
+     145,     0,    10,   131,    10,     0,    11,     0,    12,     0,
+      10,     0,    10,   136,   146,   137,     0,     0,   146,   144,
+       0,   146,   138,   144,     0,    27,     0,    28,     0,    29,
+       0,    30,     0,   147,   136,    18,     0,   148,   143,   137,
+       0,   148,    34,   137,     0
 };
 
 #endif
@@ -252,12 +254,12 @@ static const short yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined. */
 static const short yyrline[] =
 {
-       0,   155,   157,   158,   159,   160,   161,   162,   163,   164,
-     165,   166,   167,   168,   169,   171,   172,   173,   175,   176,
-     177,   178,   179,   180,   182,   183,   184,   185,   186,   187,
-     188,   189,   190,   191,   194,   195,   196,   197,   198,   199,
-     200,   201,   202,   203,   205,   207,   208,   209,   212,   213,
-     214,   215,   217,   219,   220
+       0,   157,   159,   160,   161,   162,   163,   164,   165,   166,
+     167,   168,   169,   170,   171,   173,   174,   175,   177,   178,
+     179,   180,   181,   182,   184,   185,   186,   187,   188,   189,
+     190,   191,   192,   193,   196,   197,   198,   199,   200,   201,
+     202,   203,   204,   205,   207,   209,   210,   211,   214,   215,
+     216,   217,   219,   221,   222
 };
 #endif
 
@@ -289,25 +291,26 @@ static const char *const yytname[] =
   "search_keyword", "trace_stat", "trace_tops", "trace_all", 
   "Condition_keyword", "Term_condition", "Evaluate_by", "Compare_tops", 
   "NO", "YES", "Activities", "value_before", "value_after", "some", 
-  "Frame", "Show_if", "Back_picture", "Show", "frm_cell", "text", 
-  "transparent", "bitmap", "s_bmp", "rect_keyword", "r_rect", "line", 
-  "ellipse", "triang", "active", "QUOTED_IDENTIF", "'+'", "'-'", "'*'", 
-  "'/'", "'='", "'.'", "'<'", "'>'", "'['", "']'", "'('", "')'", "','", 
-  "smr_model", "smr_descr", "smr_show_mode", "smr_cond", "smr_logic", 
-  "smr_arithm", "smr_arithm_func_call", "smr_arithm_func_call_pars", 
-  "fun_group_keyword", "fun_group_header", "fun_group", 0
+  "Process", "SIEZE", "Frame", "Show_if", "Back_picture", "Show", 
+  "frm_cell", "text", "transparent", "bitmap", "s_bmp", "rect_keyword", 
+  "r_rect", "line", "ellipse", "triang", "active", "QUOTED_IDENTIF", 
+  "'+'", "'-'", "'*'", "'/'", "'='", "'.'", "'<'", "'>'", "'['", "']'", 
+  "'('", "')'", "','", "smr_model", "smr_descr", "smr_show_mode", 
+  "smr_cond", "smr_logic", "smr_arithm", "smr_arithm_func_call", 
+  "smr_arithm_func_call_pars", "fun_group_keyword", "fun_group_header", 
+  "fun_group", 0
 };
 #endif
 
 /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives. */
 static const short yyr1[] =
 {
-       0,   137,   138,   138,   138,   138,   138,   138,   138,   138,
-     138,   138,   138,   138,   138,   139,   139,   139,   140,   140,
-     140,   140,   140,   140,   141,   141,   141,   141,   141,   141,
-     141,   141,   141,   141,   142,   142,   142,   142,   142,   142,
-     142,   142,   142,   142,   143,   144,   144,   144,   145,   145,
-     145,   145,   146,   147,   147
+       0,   139,   140,   140,   140,   140,   140,   140,   140,   140,
+     140,   140,   140,   140,   140,   141,   141,   141,   142,   142,
+     142,   142,   142,   142,   143,   143,   143,   143,   143,   143,
+     143,   143,   143,   143,   144,   144,   144,   144,   144,   144,
+     144,   144,   144,   144,   145,   146,   146,   146,   147,   147,
+     147,   147,   148,   149,   149
 };
 
 /* YYR2[YYN] -- Number of symbols composing right hand side of rule YYN. */
@@ -348,18 +351,18 @@ static const short yydefgoto[] =
 
 static const short yypact[] =
 {
-     -38,   -87,-32768,   -31,    11,    73,   -44,   -42,   -41,   -40,
-     -39,   -37,   -36,   -35,   -34,   -33,   -29,   -28,  -101,     3,
-      86,-32768,    91,    92,    94,    95,    97,    98,   -52,   103,
-     106,   107,   108,   109,    -2,     2,   -74,-32768,-32768,-32768,
-  -32768,-32768,-32768,     3,    -2,    43,   -15,-32768,   -12,    -5,
+     -38,   -89,-32768,   -31,    11,    73,   -46,   -44,   -43,   -42,
+     -41,   -39,   -37,   -36,   -35,   -34,   -30,   -29,  -103,     3,
+      82,-32768,    89,    92,    93,    94,    97,    98,   -52,    99,
+     104,   108,   109,   110,    -2,     2,   -76,-32768,-32768,-32768,
+  -32768,-32768,-32768,     3,    -2,    43,   -15,-32768,   -27,    -5,
   -32768,     3,-32768,-32768,-32768,-32768,-32768,-32768,-32768,-32768,
-  -32768,-32768,-32768,-32768,-32768,-32768,-32768,   -63,     0,     5,
-     113,-32768,   -16,   -68,     3,     3,    -2,    -2,    -2,    -2,
+  -32768,-32768,-32768,-32768,-32768,-32768,-32768,   -65,    -7,    -6,
+     115,-32768,   -16,   -70,     3,     3,    -2,    -2,    -2,    -2,
       -2,    -2,    -2,    -2,    -2,    -2,   112,    -4,   -32,    43,
-      -2,   123,-32768,   -10,-32768,-32768,   100,-32768,   -63,   -63,
-     -63,   -46,   -46,-32768,-32768,   -63,   -63,   -63,-32768,-32768,
-  -32768,   -63,-32768,-32768,    -2,   -63,   -63,   138,-32768
+      -2,   121,-32768,   -10,-32768,-32768,   100,-32768,   -65,   -65,
+     -65,   -48,   -48,-32768,-32768,   -65,   -65,   -65,-32768,-32768,
+  -32768,   -65,-32768,-32768,    -2,   -65,   -65,   135,-32768
 };
 
 static const short yypgoto[] =
@@ -369,7 +372,7 @@ static const short yypgoto[] =
 };
 
 
-#define	YYLAST		138
+#define	YYLAST		139
 
 
 static const short yytable[] =
@@ -383,29 +386,29 @@ static const short yytable[] =
       71,    79,    80,    81,    82,    96,    97,    95,    98,    99,
      100,   101,   102,   103,   104,   105,   106,   107,    74,    75,
       81,    82,   111,    21,    22,   115,    23,    24,    25,    26,
-      69,    27,    28,    29,    30,    31,    51,    19,    20,    32,
-      33,    52,    53,   110,    54,    55,   116,    56,    57,    79,
-      80,    81,    82,    83,    62,    84,    85,    94,    63,    64,
-      65,    66,    86,    92,    44,   113,   114,    43,    90,    44,
-     108,   109,    44,    91,   112,    43,    75,    44,   118
+      69,    27,    51,    28,    29,    30,    31,    19,    20,    52,
+      32,    33,    53,    54,    55,   110,   116,    56,    57,    86,
+      62,    79,    80,    81,    82,    83,    63,    84,    85,    94,
+      64,    65,    66,    90,    91,    92,    44,   113,   114,    43,
+     108,    44,   112,   109,    44,   118,    75,    43,     0,    44
 };
 
 static const short yycheck[] =
 {
       10,    11,    12,    35,    36,    10,    11,    12,    10,    11,
       12,     0,    10,    10,    11,    12,    31,    32,    33,    35,
-      36,    10,    27,    28,    29,    30,    34,   128,   129,    34,
+      36,    10,    27,    28,    29,    30,    34,   130,   131,    34,
       27,    28,    29,    30,    43,    73,    44,    89,    90,    91,
-      49,   128,    51,    74,    75,    76,    77,    78,    79,    80,
-      81,    82,    83,    84,    85,   129,   124,   125,   126,   127,
-     134,   124,   125,   126,   127,    74,    75,   135,    76,    77,
+      49,   130,    51,    74,    75,    76,    77,    78,    79,    80,
+      81,    82,    83,    84,    85,   131,   126,   127,   128,   129,
+     136,   126,   127,   128,   129,    74,    75,   137,    76,    77,
       78,    79,    80,    81,    82,    83,    84,    85,    35,    36,
-     126,   127,    90,    10,   128,    93,   128,   128,   128,   128,
-      88,   128,   128,   128,   128,   128,    10,    86,    87,   128,
-     128,    10,    10,   135,    10,    10,   114,    10,    10,   124,
-     125,   126,   127,   128,    11,   130,   131,   133,    12,    12,
-      12,    12,   134,    10,   134,   135,   136,   132,   128,   134,
-      18,   135,   134,   128,    11,   132,    36,   134,     0
+     128,   129,    90,    10,   130,    93,   130,   130,   130,   130,
+      88,   130,    10,   130,   130,   130,   130,    86,    87,    10,
+     130,   130,    10,    10,    10,   137,   114,    10,    10,   136,
+      11,   126,   127,   128,   129,   130,    12,   132,   133,   135,
+      12,    12,    12,   130,   130,    10,   136,   137,   138,   134,
+      18,   136,    11,   137,   136,     0,    36,   134,    -1,   136
 };
 /* -*-C-*-  Note some compilers choke on comments on `#line' lines.  */
 #line 3 "..\\System\\bison.simple"
@@ -1115,139 +1118,139 @@ yyreduce:
   switch (yyn) {
 
 case 19:
-#line 176 ".\\rdosmr2.y"
+#line 178 ".\\rdosmr2.y"
 { currParser->smr->setTerminateIf((RDOFUNLogic *)yyvsp[0]); ;
     break;}
 case 21:
-#line 178 ".\\rdosmr2.y"
+#line 180 ".\\rdosmr2.y"
 { currParser->smr->setConstValue((string *)yyvsp[-2], (RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 22:
-#line 179 ".\\rdosmr2.y"
+#line 181 ".\\rdosmr2.y"
 { currParser->smr->setResParValue((string *)yyvsp[-4], (string *)yyvsp[-2], (RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 23:
-#line 180 ".\\rdosmr2.y"
+#line 182 ".\\rdosmr2.y"
 { currParser->smr->setSeed((string *)yyvsp[-4], yyvsp[0]); ;
     break;}
 case 24:
-#line 182 ".\\rdosmr2.y"
+#line 184 ".\\rdosmr2.y"
 { yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] == *(RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 25:
-#line 183 ".\\rdosmr2.y"
+#line 185 ".\\rdosmr2.y"
 { yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] != *(RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 26:
-#line 184 ".\\rdosmr2.y"
+#line 186 ".\\rdosmr2.y"
 { yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] <  *(RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 27:
-#line 185 ".\\rdosmr2.y"
+#line 187 ".\\rdosmr2.y"
 { yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] >  *(RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 28:
-#line 186 ".\\rdosmr2.y"
+#line 188 ".\\rdosmr2.y"
 { yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] <= *(RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 29:
-#line 187 ".\\rdosmr2.y"
+#line 189 ".\\rdosmr2.y"
 { yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] >= *(RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 30:
-#line 188 ".\\rdosmr2.y"
+#line 190 ".\\rdosmr2.y"
 { yyval = (int)(*(RDOFUNLogic *)yyvsp[-2] && *(RDOFUNLogic *)yyvsp[0]); ;
     break;}
 case 31:
-#line 189 ".\\rdosmr2.y"
+#line 191 ".\\rdosmr2.y"
 { yyval = (int)(*(RDOFUNLogic *)yyvsp[-2] || *(RDOFUNLogic *)yyvsp[0]); ;
     break;}
 case 32:
-#line 190 ".\\rdosmr2.y"
+#line 192 ".\\rdosmr2.y"
 { yyval = yyvsp[-1]; ;
     break;}
 case 33:
-#line 191 ".\\rdosmr2.y"
+#line 193 ".\\rdosmr2.y"
 { yyval = yyvsp[0]; ;
     break;}
 case 34:
-#line 194 ".\\rdosmr2.y"
+#line 196 ".\\rdosmr2.y"
 { yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] + *(RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 35:
-#line 195 ".\\rdosmr2.y"
+#line 197 ".\\rdosmr2.y"
 { yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] - *(RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 36:
-#line 196 ".\\rdosmr2.y"
+#line 198 ".\\rdosmr2.y"
 { yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] * *(RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 37:
-#line 197 ".\\rdosmr2.y"
+#line 199 ".\\rdosmr2.y"
 { yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] / *(RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 38:
-#line 198 ".\\rdosmr2.y"
+#line 200 ".\\rdosmr2.y"
 { yyval = yyvsp[-1]; ;
     break;}
 case 40:
-#line 200 ".\\rdosmr2.y"
+#line 202 ".\\rdosmr2.y"
 { yyval = (int)(new RDOFUNArithm((string *)yyvsp[-2], (string *)yyvsp[0])); ;
     break;}
 case 41:
-#line 201 ".\\rdosmr2.y"
+#line 203 ".\\rdosmr2.y"
 { yyval = (int)(new RDOFUNArithm((int)yyvsp[0])); ;
     break;}
 case 42:
-#line 202 ".\\rdosmr2.y"
+#line 204 ".\\rdosmr2.y"
 { yyval = (int)(new RDOFUNArithm((double*)yyvsp[0])); ;
     break;}
 case 43:
-#line 203 ".\\rdosmr2.y"
+#line 205 ".\\rdosmr2.y"
 { yyval = (int)(new RDOFUNArithm((string *)yyvsp[0])); ;
     break;}
 case 44:
-#line 205 ".\\rdosmr2.y"
+#line 207 ".\\rdosmr2.y"
 { yyval = (int)((RDOFUNParams *)yyvsp[-1])->createCall((string *)yyvsp[-3]) ;
     break;}
 case 45:
-#line 207 ".\\rdosmr2.y"
+#line 209 ".\\rdosmr2.y"
 { yyval = (int)(new RDOFUNParams()); ;
     break;}
 case 46:
-#line 208 ".\\rdosmr2.y"
+#line 210 ".\\rdosmr2.y"
 { yyval = (int)(((RDOFUNParams *)yyvsp[-1])->addParameter((RDOFUNArithm *)yyvsp[0])); ;
     break;}
 case 47:
-#line 209 ".\\rdosmr2.y"
+#line 211 ".\\rdosmr2.y"
 { yyval = (int)(((RDOFUNParams *)yyvsp[-2])->addParameter((RDOFUNArithm *)yyvsp[0])); ;
     break;}
 case 48:
-#line 212 ".\\rdosmr2.y"
+#line 214 ".\\rdosmr2.y"
 { yyval = 1; ;
     break;}
 case 49:
-#line 213 ".\\rdosmr2.y"
+#line 215 ".\\rdosmr2.y"
 { yyval = 2; ;
     break;}
 case 50:
-#line 214 ".\\rdosmr2.y"
+#line 216 ".\\rdosmr2.y"
 { yyval = 3; ;
     break;}
 case 51:
-#line 215 ".\\rdosmr2.y"
+#line 217 ".\\rdosmr2.y"
 { yyval = 4; ;
     break;}
 case 52:
-#line 217 ".\\rdosmr2.y"
+#line 219 ".\\rdosmr2.y"
 { yyval = (int)(new RDOFUNGroup(yyvsp[-2], (string *)yyvsp[0])); ;
     break;}
 case 53:
-#line 219 ".\\rdosmr2.y"
+#line 221 ".\\rdosmr2.y"
 { yyval = (int)(((RDOFUNGroup *)yyvsp[-2])->createFunLogin((RDOFUNLogic *)yyvsp[-1])); ;
     break;}
 case 54:
-#line 220 ".\\rdosmr2.y"
+#line 222 ".\\rdosmr2.y"
 { yyval = (int)(((RDOFUNGroup *)yyvsp[-2])->createFunLogin()); ;
     break;}
 }
@@ -1483,7 +1486,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 231 ".\\rdosmr2.y"
+#line 233 ".\\rdosmr2.y"
 
 
 }

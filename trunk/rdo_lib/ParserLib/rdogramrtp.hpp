@@ -129,6 +129,4 @@
 # define	QUOTED_IDENTIF	415
 
 
-extern YYSTYPE rtplval;
-
 #endif /* not BISON_RDOGRAMRTP_HPP */
