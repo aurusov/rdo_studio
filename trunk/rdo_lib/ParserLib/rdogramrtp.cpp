@@ -136,8 +136,8 @@
 
 #line 1 ".\\rdortp.y"
 
-//#define YYPARSE_PARAM lexer
-//#define YYLEX_PARAM lexer
+#define YYPARSE_PARAM lexer
+#define YYLEX_PARAM lexer
 #line 138 ".\\rdortp.y"
 
 #include "pch.h"
@@ -148,11 +148,14 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 #include "rdoparser.h"
-#include "rdoparselex.h"
+//#include "rdoparselex.h"
 #include "rdortp.h"
 
 namespace rdoParse 
 {
+int rtpparse( void* lexer );
+int rtplex( int* lpval, void* lexer );
+void rtperror( char* mes );
 #ifndef YYSTYPE
 #define YYSTYPE int
 #endif
@@ -243,10 +246,10 @@ static const short yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined. */
 static const short yyrline[] =
 {
-       0,   156,   157,   159,   170,   172,   173,   175,   176,   182,
-     190,   191,   193,   194,   196,   197,   199,   205,   212,   221,
-     225,   229,   233,   239,   243,   249,   253,   262,   264,   268,
-     275
+       0,   159,   160,   162,   173,   175,   176,   178,   179,   185,
+     193,   194,   196,   197,   199,   200,   202,   208,   215,   224,
+     228,   232,   236,   242,   246,   252,   256,   265,   267,   271,
+     278
 };
 #endif
 
@@ -1089,7 +1092,7 @@ yyreduce:
   switch (yyn) {
 
 case 3:
-#line 159 ".\\rdortp.y"
+#line 162 ".\\rdortp.y"
 {
 	string *name = (string *)yyvsp[-1];
 	if(currParser->findRTPResType(name))
@@ -1102,22 +1105,22 @@ case 3:
 ;
     break;}
 case 5:
-#line 172 ".\\rdortp.y"
+#line 175 ".\\rdortp.y"
 { yyval = 1; ;
     break;}
 case 6:
-#line 173 ".\\rdortp.y"
+#line 176 ".\\rdortp.y"
 { yyval = 0; ;
     break;}
 case 8:
-#line 176 ".\\rdortp.y"
+#line 179 ".\\rdortp.y"
 {
 							RDORTPParamDesc *param = (RDORTPParamDesc*)yyvsp[0];
 							currParser->lastRTPResType->add(param);
 						;
     break;}
 case 9:
-#line 182 ".\\rdortp.y"
+#line 185 ".\\rdortp.y"
 {
 						string *name = (string *)yyvsp[-1];
 						RDORTPResParam *parType = (RDORTPResParam *)yyvsp[0];
@@ -1127,31 +1130,31 @@ case 9:
 					;
     break;}
 case 10:
-#line 190 ".\\rdortp.y"
+#line 193 ".\\rdortp.y"
 {	yyval = (int)(new RDORTPEnumDefVal()); ;
     break;}
 case 11:
-#line 191 ".\\rdortp.y"
+#line 194 ".\\rdortp.y"
 {	yyval = (int)(new RDORTPEnumDefVal((string *)yyvsp[0])); ;
     break;}
 case 12:
-#line 193 ".\\rdortp.y"
+#line 196 ".\\rdortp.y"
 {	yyval = (int)(new RDORTPRealDefVal());	;
     break;}
 case 13:
-#line 194 ".\\rdortp.y"
+#line 197 ".\\rdortp.y"
 {yyval = (int)(new RDORTPRealDefVal(*((double *)yyvsp[0])));	;
     break;}
 case 14:
-#line 196 ".\\rdortp.y"
+#line 199 ".\\rdortp.y"
 {	yyval = (int)(new RDORTPIntDefVal());	;
     break;}
 case 15:
-#line 197 ".\\rdortp.y"
+#line 200 ".\\rdortp.y"
 {	yyval = (int)(new RDORTPIntDefVal(yyvsp[0])); ;
     break;}
 case 16:
-#line 199 ".\\rdortp.y"
+#line 202 ".\\rdortp.y"
 { 
                                                 RDORTPIntDiap *diap = (RDORTPIntDiap *)yyvsp[-1];
                                                 RDORTPIntDefVal *dv = (RDORTPIntDefVal *)yyvsp[0];
@@ -1160,7 +1163,7 @@ case 16:
 															;
     break;}
 case 17:
-#line 205 ".\\rdortp.y"
+#line 208 ".\\rdortp.y"
 { 
                                                 RDORTPRealDiap *diap = (RDORTPRealDiap *)yyvsp[-1];
                                                 RDORTPRealDefVal *dv = (RDORTPRealDefVal *)yyvsp[0];
@@ -1169,7 +1172,7 @@ case 17:
 															;
     break;}
 case 18:
-#line 212 ".\\rdortp.y"
+#line 215 ".\\rdortp.y"
 { 
                                                 RDORTPEnum *enu = (RDORTPEnum *)yyvsp[-1];
                                                 RDORTPEnumDefVal *dv = (RDORTPEnumDefVal *)yyvsp[0];
@@ -1180,56 +1183,56 @@ case 18:
 															;
     break;}
 case 19:
-#line 221 ".\\rdortp.y"
+#line 224 ".\\rdortp.y"
 {
 											RDORTPParamDesc *desc = (RDORTPParamDesc *)yyvsp[0];
 											yyval = (int)desc->getType()->constructSuchAs();
 										;
     break;}
 case 20:
-#line 225 ".\\rdortp.y"
+#line 228 ".\\rdortp.y"
 {
 											RDORTPParamDesc *desc = (RDORTPParamDesc *)yyvsp[-2];
 											yyval = (int)desc->getType()->constructSuchAs((int)yyvsp[0]);
 										;
     break;}
 case 21:
-#line 229 ".\\rdortp.y"
+#line 232 ".\\rdortp.y"
 {
 											RDORTPParamDesc *desc = (RDORTPParamDesc *)yyvsp[-2];
 											yyval = (int)desc->getType()->constructSuchAs((double *)yyvsp[0]);
 										;
     break;}
 case 22:
-#line 233 ".\\rdortp.y"
+#line 236 ".\\rdortp.y"
 {
 											RDORTPParamDesc *desc = (RDORTPParamDesc *)yyvsp[-2];
 											yyval = (int)desc->getType()->constructSuchAs((string *)yyvsp[0]);
 										;
     break;}
 case 23:
-#line 239 ".\\rdortp.y"
+#line 242 ".\\rdortp.y"
 {
 						RDORTPIntDiap *diap = new RDORTPIntDiap();
 						yyval = (int)diap;
 					;
     break;}
 case 24:
-#line 243 ".\\rdortp.y"
+#line 246 ".\\rdortp.y"
 {
 						RDORTPIntDiap *diap = new RDORTPIntDiap(yyvsp[-3], yyvsp[-1]);
 						yyval = (int)diap;
 					;
     break;}
 case 25:
-#line 249 ".\\rdortp.y"
+#line 252 ".\\rdortp.y"
 {
 						RDORTPRealDiap *diap = new RDORTPRealDiap();
 						yyval = (int)diap;
 					;
     break;}
 case 26:
-#line 253 ".\\rdortp.y"
+#line 256 ".\\rdortp.y"
 {
 						double min = *((double *)yyvsp[-3]);
 						double max = *((double *)yyvsp[-1]);
@@ -1238,18 +1241,18 @@ case 26:
 					;
     break;}
 case 27:
-#line 262 ".\\rdortp.y"
+#line 265 ".\\rdortp.y"
 { yyval = yyvsp[-1]; ;
     break;}
 case 28:
-#line 264 ".\\rdortp.y"
+#line 267 ".\\rdortp.y"
 {
 							RDORTPEnum *enu = new RDORTPEnum((string *)yyvsp[0]);
 							yyval = (int)enu;
 						;
     break;}
 case 29:
-#line 268 ".\\rdortp.y"
+#line 271 ".\\rdortp.y"
 {
 							RDORTPEnum *enu = (RDORTPEnum *)yyvsp[-2];
 							enu->add((string *)yyvsp[0]);
@@ -1257,7 +1260,7 @@ case 29:
 						;
     break;}
 case 30:
-#line 275 ".\\rdortp.y"
+#line 278 ".\\rdortp.y"
 {
 							string *type = (string *)yyvsp[-2];
 							string *param = (string *)yyvsp[0];
@@ -1505,7 +1508,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 290 ".\\rdortp.y"
+#line 293 ".\\rdortp.y"
 
 
 }

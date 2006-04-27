@@ -3,11 +3,12 @@
 
 namespace rdoParse 
 {
-
-int rtpparse();
-int rtplex( int* lpval );
-extern int* rtplval;
-void rtperror( char *mes );
+/*
+int rtpparse( void* lexer );
+int rtplex( int* lpval, void* lexer );
+void rtperror( char* mes );
+//extern int* rtplval;
+*/
 
 int rssparse();
 void rsserror( char *mes );

@@ -7,6 +7,10 @@ using namespace std;
 namespace rdoParse 
 {
 
+int rtpparse( void* lexer );
+int rtplex( int* lpval, void* lexer );
+void rtperror( char* mes );
+
 struct RDORTPIntDefVal;
 
 struct RDORTPIntDiap: public RDODeletable

@@ -6,7 +6,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-#include "rdoparser_base.h"
+#include "rdoparser_lexer.h"
 #include "rdoparselex.h"
 #include "rdoparser.h"
 #include "rdoruntime.h"
@@ -16,7 +16,6 @@ static char THIS_FILE[] = __FILE__;
 #include "rdopat.h"
 #include "rdodpt.h"
 #include "rdosmr.h"
-
 
 //#include "stdHeaders.h"
 
@@ -43,12 +42,12 @@ void rtperror( char *mes )
 {
 	rdoParse::currParser->error(mes);
 }
-int rtplex( int* lpval )
+int rtplex( int* lpval, void* lexer )
 {
-//	((rdoFlexLexer*)lexer)->m_lpval = lpval;
+	((rdoFlexLexer*)lexer)->m_lpval = lpval;
 //	return ((rdoFlexLexer*)lexer)->yylex();
 //	return rdoParse::currParser->lex( value );
-	rdoParse::rtplval = lpval;
+//	rdoParse::rtplval = lpval;
 	return rdoParse::currParser->lex();
 }
 void rsserror( char *mes )
@@ -167,10 +166,11 @@ stringstream& RDOParser::getModelStructure()
 }
 
 RDOParser *currParser;
+rdoParserBase* _parser = NULL;
 
 void RDOParser::parseRTP(std::istream* arg_yyin, std::ostream* arg_yyout) 
 {
-	rdoParserBase parser( rtpparse, rtperror, rtplex, arg_yyin, arg_yyout );
+	_parser = &parsers[0];
 
 	resourceTypeCounter = 1;
 	fileToParse = RTP_FILE;
@@ -179,7 +179,7 @@ void RDOParser::parseRTP(std::istream* arg_yyin, std::ostream* arg_yyout)
 		throw RDOSyntaxException("Internal error 0002");
 
 	currParser = this;
-	parser.parser_fun();
+	parsers[0].parse();
 	currParser = NULL;
 
 /*
@@ -392,9 +392,8 @@ RDOParser::RDOParser():
 	lastFUNFunction = NULL;
 	lastPATPattern = NULL;
 
-//	rdoParserBase rtp( rtpparse, rtperror, rtplex, NULL, NULL );
-
-//	parsers[0] = rtp;
+	rdoParserBase rtp( rdoModelObjects::RTP, rtpparse, rtperror, rtplex );
+	parsers[0] = rtp;
 }
 
 void RDOParser::setYylval(int val)
@@ -402,7 +401,8 @@ void RDOParser::setYylval(int val)
 	switch(fileToParse)
 	{
 	case RTP_FILE:
-		*rtplval = val;
+		*_parser->m_lexer->m_lpval = val;
+//		*rtplval = val;
 		break;
 	case RSS_FILE:
 		rsslval = val;

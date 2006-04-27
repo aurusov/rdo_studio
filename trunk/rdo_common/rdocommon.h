@@ -6,8 +6,6 @@
 #include <string>
 #include <vector>
 
-using namespace std;
-
 namespace rdo {
 
 std::string format( const char* str, ... );
@@ -23,13 +21,13 @@ bool isFileExists( const std::string& fileName );
 namespace rdoModelObjects {
 
 struct RDOSMRFileInfo {
-	string model_name;
-	string resource_file;
-	string oprIev_file;
-	string frame_file;
-	string statistic_file;
-	string results_file;
-	string trace_file;
+	std::string model_name;
+	std::string resource_file;
+	std::string oprIev_file;
+	std::string frame_file;
+	std::string statistic_file;
+	std::string results_file;
+	std::string trace_file;
 	bool error;
 
 	RDOSMRFileInfo(): model_name( "" ), resource_file( "" ), oprIev_file( "" ), frame_file( "" ), statistic_file( "" ), results_file( "" ), trace_file( "" ), error( false ) {};
@@ -57,10 +55,10 @@ enum ShowMode
 
 struct RDOSyntaxError
 {
-	string message;
+	std::string message;
 	int lineNo;
 	rdoModelObjects::RDOFileType file;
-	RDOSyntaxError(string _message, int _lineNo, rdoModelObjects::RDOFileType _file)
+	RDOSyntaxError(std::string _message, int _lineNo, rdoModelObjects::RDOFileType _file)
 		: message(_message), lineNo(_lineNo), file(_file)	{}
 };
 
@@ -112,8 +110,8 @@ struct RDOTextElement: public RDOColoredElement, public RDOBoundedElement, publi
 		center
 	} align;
 
-	RDOTextElement(double _x, double _y, double _w, double _h, RDOColor &_background, RDOColor &_foreground, string &_text, RDOTextAlign _align);
-	string strText;
+	RDOTextElement(double _x, double _y, double _w, double _h, RDOColor &_background, RDOColor &_foreground, std::string &_text, RDOTextAlign _align);
+	std::string strText;
 };
 
 struct RDORectElement: public RDOColoredElement, public RDOBoundedElement, public RDOFrameElement
@@ -146,24 +144,24 @@ struct RDOLineElement: public RDOBoundedElement, public RDOFrameElement
 struct RDOSBmpElement: public RDOBoundedElement, public RDOFrameElement
 {
 	bool hasMask;
-	string bmp, mask;
-	RDOSBmpElement(double _x, double _y, double _w, double _h, string &_bmp, string &_mask);
-	RDOSBmpElement(double _x, double _y, double _w, double _h, string &_bmp);
+	std::string bmp, mask;
+	RDOSBmpElement(double _x, double _y, double _w, double _h, std::string &_bmp, std::string &_mask);
+	RDOSBmpElement(double _x, double _y, double _w, double _h, std::string &_bmp);
 };
 
 struct RDOBitmapElement: public RDOFrameElement
 {
 	bool hasMask;
-	string bmp, mask;
+	std::string bmp, mask;
 	double x, y;
-	RDOBitmapElement(double _x, double _y, string &_bmp, string &_mask);
-	RDOBitmapElement(double _x, double _y, string &_bmp);
+	RDOBitmapElement(double _x, double _y, std::string &_bmp, std::string &_mask);
+	RDOBitmapElement(double _x, double _y, std::string &_bmp);
 };
 
 struct RDOActiveElement: public RDOBoundedElement, public RDOFrameElement
 {
-	string operName;
-	RDOActiveElement(double _x, double _y, double _w, double _h, string &_operName);
+	std::string operName;
+	RDOActiveElement(double _x, double _y, double _w, double _h, std::string &_operName);
 };
 
 struct RDONullElement: public RDOFrameElement
@@ -175,9 +173,9 @@ struct RDOFrame
 {
 	int r, g, b;	// background
 	bool hasBackPicture;
-	string* picFileName;	// back picture
+	std::string* picFileName;	// back picture
 	int width, height;	// frame size
-	vector<RDOFrameElement *> elements;
+	std::vector<RDOFrameElement *> elements;
 	~RDOFrame();
 };
 

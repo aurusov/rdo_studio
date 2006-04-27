@@ -67,26 +67,26 @@ void trimRight( std::string& str )
 	str.erase( str.find_last_not_of( szDelims ) + 1, std::string::npos );
 }
 
-string extractFilePath( const string& fileName )
+std::string extractFilePath( const std::string& fileName )
 {
-	string s;
-	string::size_type pos = fileName.find_last_of( '\\' );
-	if ( pos == string::npos ) {
+	std::string s;
+	std::string::size_type pos = fileName.find_last_of( '\\' );
+	if ( pos == std::string::npos ) {
 		pos = fileName.find_last_of( '/' );
 	}
-	if ( pos == string::npos ) {
+	if ( pos == std::string::npos ) {
 		return "";
 	}
-	if ( pos != string::npos && pos < fileName.length() - 1 ) {
+	if ( pos != std::string::npos && pos < fileName.length() - 1 ) {
 		s.assign( fileName.begin(), pos + 1 );
 		static char szDelims[] = " \t\n\r";
 		s.erase( 0, s.find_first_not_of( szDelims ) );
-		s.erase( s.find_last_not_of( szDelims ) + 1, string::npos );
+		s.erase( s.find_last_not_of( szDelims ) + 1, std::string::npos );
 	} else {
 		s = fileName;
 	}
 	pos = s.find_last_of( '\\' );
-	if ( pos == string::npos ) {
+	if ( pos == std::string::npos ) {
 		pos = s.find_last_of( '/' );
 	}
 	if ( pos != s.length() - 1 && s.length() ) {
@@ -95,7 +95,7 @@ string extractFilePath( const string& fileName )
 	return s;
 }
 
-bool isFileExists( const string& fileName )
+bool isFileExists( const std::string& fileName )
 {
 	CFileFind finder;
 	return finder.FindFile( fileName.c_str() ) ? true : false;
@@ -108,13 +108,13 @@ namespace RDOSimulatorNS
 
 RDOFrame::~RDOFrame()
 {
-	for(vector<RDOFrameElement *>::iterator it = elements.begin(); it != elements.end(); it++)
+	for(std::vector<RDOFrameElement *>::iterator it = elements.begin(); it != elements.end(); it++)
 		delete (*it);
 
 	elements.clear();
 }
 
-RDOTextElement::RDOTextElement(double _x, double _y, double _w, double _h, RDOColor &_background, RDOColor &_foreground, string &_text, RDOTextAlign _align)
+RDOTextElement::RDOTextElement(double _x, double _y, double _w, double _h, RDOColor &_background, RDOColor &_foreground, std::string &_text, RDOTextAlign _align)
 	: RDOBoundedElement(_x, _y, _w, _h), RDOColoredElement(_background, _foreground), strText(_text), align(_align)
 { 
 	type = text_type; 
@@ -140,35 +140,35 @@ RDOLineElement::RDOLineElement(double _x, double _y, double _w, double _h, RDOCo
 	type = line_type; 
 }
 
-RDOSBmpElement::RDOSBmpElement(double _x, double _y, double _w, double _h, string &_bmp, string &_mask)
+RDOSBmpElement::RDOSBmpElement(double _x, double _y, double _w, double _h, std::string &_bmp, std::string &_mask)
 	: RDOBoundedElement(_x, _y, _w, _h), bmp(_bmp), mask(_mask)
 { 
 	type = s_bmp_type; 
 	hasMask = true;
 }
 
-RDOSBmpElement::RDOSBmpElement(double _x, double _y, double _w, double _h, string &_bmp)
+RDOSBmpElement::RDOSBmpElement(double _x, double _y, double _w, double _h, std::string &_bmp)
 	: RDOBoundedElement(_x, _y, _w, _h), bmp(_bmp)
 { 
 	type = s_bmp_type; 
 	hasMask = false;
 }
 
-RDOBitmapElement::RDOBitmapElement(double _x, double _y, string &_bmp, string &_mask)
+RDOBitmapElement::RDOBitmapElement(double _x, double _y, std::string &_bmp, std::string &_mask)
 	: x(_x), y(_y), bmp(_bmp), mask(_mask)
 {
 	type = bitmap_type; 
 	hasMask = true;
 }
 
-RDOBitmapElement::RDOBitmapElement(double _x, double _y, string &_bmp)
+RDOBitmapElement::RDOBitmapElement(double _x, double _y, std::string &_bmp)
 	: x(_x), y(_y), bmp(_bmp)
 {
 	type = bitmap_type; 
 	hasMask = false;
 }
 
-RDOActiveElement::RDOActiveElement(double _x, double _y, double _w, double _h, string &_operName)
+RDOActiveElement::RDOActiveElement(double _x, double _y, double _w, double _h, std::string &_operName)
 	: RDOBoundedElement(_x, _y, _w, _h), operName(_operName)
 { 
 	type = active_type; 

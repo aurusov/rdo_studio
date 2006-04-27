@@ -52,12 +52,17 @@ struct RDOSMR1OkException: public RDOException
 
 class RDOParser
 {
+private:
 	std::ostream* out;
+
+protected:
+	std::map< int, rdoParserBase > parsers;
+
 public:
 	FileToParse fileToParse;
 
-   vector<string *> allRTPNames;
-   vector<double *> allRTPDoubles;
+	vector<string *> allRTPNames;
+	vector<double *> allRTPDoubles;
 
 	vector<RDORTPParamDesc *>	allRTPParamDesc;
 	vector<RDORTPResType *>	allRTPResType;
@@ -110,19 +115,17 @@ public:
 	const RDOFUNSequence *findSequence(const string *const name) const;
 	const RDOPATPattern *findPattern(const string *const name) const;
 	
-	std::map< int, rdoParserBase > parsers;
-
 	void setYylval(int val);
-   void parseRTP(std::istream* arg_yyin, std::ostream* arg_yyout);
-   void parseRSS(std::istream* arg_yyin, std::ostream* arg_yyout);
-   void parseFUN(std::istream* arg_yyin, std::ostream* arg_yyout);
-   void parsePAT(std::istream* arg_yyin, std::ostream* arg_yyout);
-   void parseOPR(std::istream* arg_yyin, std::ostream* arg_yyout);
-   void parseDPT(std::istream* arg_yyin, std::ostream* arg_yyout);
-   void parsePMD(std::istream* arg_yyin, std::ostream* arg_yyout);
-   void parseFRM(std::istream* arg_yyin, std::ostream* arg_yyout);
-   void parseSMR1(std::istream* arg_yyin, std::ostream* arg_yyout);
-   void parseSMR2(std::istream* arg_yyin, std::ostream* arg_yyout);
+	void parseRTP(std::istream* arg_yyin, std::ostream* arg_yyout);
+	void parseRSS(std::istream* arg_yyin, std::ostream* arg_yyout);
+	void parseFUN(std::istream* arg_yyin, std::ostream* arg_yyout);
+	void parsePAT(std::istream* arg_yyin, std::ostream* arg_yyout);
+	void parseOPR(std::istream* arg_yyin, std::ostream* arg_yyout);
+	void parseDPT(std::istream* arg_yyin, std::ostream* arg_yyout);
+	void parsePMD(std::istream* arg_yyin, std::ostream* arg_yyout);
+	void parseFRM(std::istream* arg_yyin, std::ostream* arg_yyout);
+	void parseSMR1(std::istream* arg_yyin, std::ostream* arg_yyout);
+	void parseSMR2(std::istream* arg_yyin, std::ostream* arg_yyout);
 	void error( const char *mes );
 	void error( string mes ) { error(mes.c_str()); }
 	int lex();

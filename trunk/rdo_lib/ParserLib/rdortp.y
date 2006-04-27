@@ -1,6 +1,6 @@
 %{
-//#define YYPARSE_PARAM lexer
-//#define YYLEX_PARAM lexer
+#define YYPARSE_PARAM lexer
+#define YYLEX_PARAM lexer
 %}
 
 %pure-parser
@@ -144,11 +144,14 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 #include "rdoparser.h"
-#include "rdoparselex.h"
+//#include "rdoparselex.h"
 #include "rdortp.h"
 
 namespace rdoParse 
 {
+int rtpparse( void* lexer );
+int rtplex( int* lpval, void* lexer );
+void rtperror( char* mes );
 %}
 
 %%

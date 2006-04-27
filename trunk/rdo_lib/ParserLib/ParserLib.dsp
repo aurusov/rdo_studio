@@ -41,7 +41,7 @@ RSC=rc.exe
 # PROP Intermediate_Dir "Release"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GR /GX /O2 /I "." /I ".." /I "..\System" /I "..\simulator" /I "../../rdo_common" /D "_LIB" /D "_UNISTD_H_" /D "WIN32" /D "NDEBUG" /D "_MBCS" /FD /c
+# ADD CPP /nologo /MT /W3 /GR /GX /O2 /I "." /I ".." /I "..\System" /I "..\simulator" /I "../../rdo_common" /I "../../rdo_stream" /I "../../rdo_kernel" /I "../../rdo_repository" /D "_LIB" /D "_UNISTD_H_" /D "WIN32" /D "NDEBUG" /D "_MBCS" /FD /c
 # SUBTRACT CPP /Fr /YX
 # ADD BASE RSC /l 0x419 /d "NDEBUG"
 # ADD RSC /l 0x419 /d "NDEBUG"
@@ -65,7 +65,7 @@ LIB32=link.exe -lib
 # PROP Intermediate_Dir "Debug"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /YX /FD /GZ /c
-# ADD CPP /nologo /MDd /W3 /Gm /Gi /GR /GX /ZI /Od /I "." /I ".." /I "..\System" /I "..\simulator" /I "../../rdo_common" /D "_LIB" /D "_UNISTD_H_" /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_AFXDLL" /FR /YX /FD /GZ /c
+# ADD CPP /nologo /MDd /W3 /Gm /Gi /GR /GX /ZI /Od /I "." /I ".." /I "..\System" /I "..\simulator" /I "../../rdo_common" /I "../../rdo_stream" /I "../../rdo_kernel" /I "../../rdo_repository" /D "_LIB" /D "_UNISTD_H_" /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_AFXDLL" /FR /YX /FD /GZ /c
 # ADD BASE RSC /l 0x419 /d "_DEBUG"
 # ADD RSC /l 0x419 /d "_DEBUG" /d "_AFXDLL"
 BSC32=bscmake.exe
@@ -563,6 +563,14 @@ SOURCE=.\parser.l
 
 !IF  "$(CFG)" == "ParserLib - Win32 Release"
 
+# Begin Custom Build
+InputPath=.\parser.l
+
+"rdolex.cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	..\System\flex.exe -ordolex.cpp -+ $(InputPath)
+
+# End Custom Build
+
 !ELSEIF  "$(CFG)" == "ParserLib - Win32 Debug"
 
 # Begin Custom Build
@@ -581,6 +589,14 @@ InputPath=.\parser.l
 SOURCE=.\rdodpt.y
 
 !IF  "$(CFG)" == "ParserLib - Win32 Release"
+
+# Begin Custom Build
+InputPath=.\rdodpt.y
+
+"rdogramdpt.cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	..\System\bison.exe -pdpt --skeleton=..\System\bison.simple -ordogramdpt.cpp $(InputPath)
+
+# End Custom Build
 
 !ELSEIF  "$(CFG)" == "ParserLib - Win32 Debug"
 
@@ -601,6 +617,14 @@ SOURCE=.\rdofrm.y
 
 !IF  "$(CFG)" == "ParserLib - Win32 Release"
 
+# Begin Custom Build
+InputPath=.\rdofrm.y
+
+"rdogramfrm.cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	..\System\bison.exe -pfrm --skeleton=..\System\bison.simple -ordogramfrm.cpp $(InputPath)
+
+# End Custom Build
+
 !ELSEIF  "$(CFG)" == "ParserLib - Win32 Debug"
 
 # Begin Custom Build
@@ -619,6 +643,14 @@ InputPath=.\rdofrm.y
 SOURCE=.\rdofun.y
 
 !IF  "$(CFG)" == "ParserLib - Win32 Release"
+
+# Begin Custom Build
+InputPath=.\rdofun.y
+
+"rdogramfun.cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	..\System\bison.exe -pfun --skeleton=..\System\bison.simple -ordogramfun.cpp $(InputPath)
+
+# End Custom Build
 
 !ELSEIF  "$(CFG)" == "ParserLib - Win32 Debug"
 
@@ -639,6 +671,14 @@ SOURCE=.\rdoopr.y
 
 !IF  "$(CFG)" == "ParserLib - Win32 Release"
 
+# Begin Custom Build
+InputPath=.\rdoopr.y
+
+"rdogramopr.cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	..\System\bison.exe -popr --skeleton=..\System\bison.simple -ordogramopr.cpp $(InputPath)
+
+# End Custom Build
+
 !ELSEIF  "$(CFG)" == "ParserLib - Win32 Debug"
 
 # Begin Custom Build
@@ -657,6 +697,14 @@ InputPath=.\rdoopr.y
 SOURCE=.\rdopat.y
 
 !IF  "$(CFG)" == "ParserLib - Win32 Release"
+
+# Begin Custom Build
+InputPath=.\rdopat.y
+
+"rdogrampat.cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	..\System\bison.exe -ppat --skeleton=..\System\bison.simple -ordogrampat.cpp $(InputPath)
+
+# End Custom Build
 
 !ELSEIF  "$(CFG)" == "ParserLib - Win32 Debug"
 
@@ -677,6 +725,14 @@ SOURCE=.\rdopmd.y
 
 !IF  "$(CFG)" == "ParserLib - Win32 Release"
 
+# Begin Custom Build
+InputPath=.\rdopmd.y
+
+"rdogrampmd.cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	..\System\bison.exe -ppmd --skeleton=..\System\bison.simple -ordogrampmd.cpp $(InputPath)
+
+# End Custom Build
+
 !ELSEIF  "$(CFG)" == "ParserLib - Win32 Debug"
 
 # Begin Custom Build
@@ -696,6 +752,14 @@ SOURCE=.\rdorss.y
 
 !IF  "$(CFG)" == "ParserLib - Win32 Release"
 
+# Begin Custom Build
+InputPath=.\rdorss.y
+
+"rdogramrss.cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	..\System\bison.exe -prss --skeleton=..\System\bison.simple -ordogramrss.cpp $(InputPath)
+
+# End Custom Build
+
 !ELSEIF  "$(CFG)" == "ParserLib - Win32 Debug"
 
 # Begin Custom Build
@@ -714,6 +778,19 @@ InputPath=.\rdorss.y
 SOURCE=.\rdortp.y
 
 !IF  "$(CFG)" == "ParserLib - Win32 Release"
+
+# Begin Custom Build
+InputPath=.\rdortp.y
+
+BuildCmds= \
+	..\System\bison.exe -d -prtp --skeleton=..\System\bison.simple -ordogramrtp.cpp $(InputPath)
+
+"rdogramrtp.cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+   $(BuildCmds)
+
+"rdogramrtp.hpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+   $(BuildCmds)
+# End Custom Build
 
 !ELSEIF  "$(CFG)" == "ParserLib - Win32 Debug"
 
@@ -739,6 +816,14 @@ SOURCE=.\rdosmr1.y
 
 !IF  "$(CFG)" == "ParserLib - Win32 Release"
 
+# Begin Custom Build
+InputPath=.\rdosmr1.y
+
+"rdogramsmr1.cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	..\System\bison.exe -psmr1 --skeleton=..\System\bison.simple -ordogramsmr1.cpp $(InputPath)
+
+# End Custom Build
+
 !ELSEIF  "$(CFG)" == "ParserLib - Win32 Debug"
 
 # Begin Custom Build
@@ -757,6 +842,14 @@ InputPath=.\rdosmr1.y
 SOURCE=.\rdosmr2.y
 
 !IF  "$(CFG)" == "ParserLib - Win32 Release"
+
+# Begin Custom Build
+InputPath=.\rdosmr2.y
+
+"rdogramsmr2.cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	..\System\bison.exe -psmr2 --skeleton=..\System\bison.simple -ordogramsmr2.cpp $(InputPath)
+
+# End Custom Build
 
 !ELSEIF  "$(CFG)" == "ParserLib - Win32 Debug"
 
