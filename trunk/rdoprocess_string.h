@@ -43,8 +43,6 @@ public:
 	string( const char* str ): std::basic_string< char >( str ) {};
 	//! Конструктор копии.
 	string( const std::string& str ): std::basic_string< char >( str ) {};
-	static rp::string format( const char* str, ... );
-	static rp::string format( unsigned int resource, ... );
 
 	int      toint() const    { return atoi( c_str() ); }
 	long int tolong() const   { return atol( c_str() ); }
@@ -110,6 +108,10 @@ rp::string str = rp::string::fromdouble( 20.2 );
 	}
 
 };
+
+rp::string format( const char* str, ... );
+rp::string format( unsigned int resource, ... );
+
 
 }
 

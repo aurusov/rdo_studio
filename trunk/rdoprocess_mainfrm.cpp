@@ -136,7 +136,7 @@ int RPMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_wndToolBar.CreateEx( this, 0, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
 	m_wndToolBar.LoadToolBar( IDR_MAINFRAME );
 	m_wndToolBar.ModifyStyle( 0, TBSTYLE_FLAT );
-	m_wndToolBar.SetWindowText( rp::string::format( IDS_TOOLBAR_MAIN ).c_str() );
+	m_wndToolBar.SetWindowText( rp::format( IDS_TOOLBAR_MAIN ).c_str() );
 	m_wndToolBar.GetToolBarCtrl().EnableButton( ID_FLOW_SELECT, false );
 	m_wndToolBar.GetToolBarCtrl().EnableButton( ID_FLOW_CONNECTOR, false );
 	m_wndToolBar.GetToolBarCtrl().EnableButton( ID_FLOW_ROTATE, false );
@@ -145,7 +145,7 @@ int RPMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_wndStyleAndColorToolBar.LoadToolBar( IDR_STYLEANDCOLOR );
 	m_wndStyleAndColorToolBar.ModifyStyle( 0, TBSTYLE_FLAT );
 	m_wndStyleAndColorToolBar.SendMessage( TB_SETEXTENDEDSTYLE, 0, TBSTYLE_EX_DRAWDDARROWS );
-	m_wndStyleAndColorToolBar.SetWindowText( rp::string::format( IDS_TOOLBAR_STYLEANDCOLOR ).c_str() );
+	m_wndStyleAndColorToolBar.SetWindowText( rp::format( IDS_TOOLBAR_STYLEANDCOLOR ).c_str() );
 
 	int index = m_wndStyleAndColorToolBar.SendMessage( TB_COMMANDTOINDEX, ID_BTN_FILL_BRUSH );
 	m_wndStyleAndColorToolBar.SetButtonStyle( index, m_wndStyleAndColorToolBar.GetButtonStyle( index ) | TBSTYLE_DROPDOWN );
@@ -172,7 +172,7 @@ int RPMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;      // fail to create
 	}
 
-	projectBar.Create( rp::string::format( ID_DOCK_PROJECT_BAR ).c_str(), this, 0 );
+	projectBar.Create( rp::format( ID_DOCK_PROJECT_BAR ).c_str(), this, 0 );
 	projectBar.EnableDocking( CBRS_ALIGN_ANY );
 
 	CListCtrl* listctrl = new CListCtrl();
@@ -596,7 +596,7 @@ BOOL RPMainFrame::OnNotify( WPARAM wParam, LPARAM lParam, LRESULT* pResult )
 			case ID_BTN_FILL_TEXT : color = tb->color_text; resID = IDS_COLORPICKER_NONE_TEXT; break;
 			default: resID = IDS_COLORPICKER_DEFAULT; break;
 		}
-		new CColourPopup( tb_data->iItem, CPoint(rect.left, rect.bottom), color, this, rp::string::format( resID ).c_str(), rp::string::format( IDS_COLORPICKER_MORE ).c_str() );
+		new CColourPopup( tb_data->iItem, CPoint(rect.left, rect.bottom), color, this, rp::format( resID ).c_str(), rp::format( IDS_COLORPICKER_MORE ).c_str() );
 		return false;
 	}
 	return CMDIFrameWnd::OnNotify( wParam, lParam, pResult );

@@ -9,7 +9,7 @@ static char THIS_FILE[] = __FILE__;
 
 namespace rp {
 
-string string::format( const char* str, ... )
+string format( const char* str, ... )
 {
 	std::vector< char > s;
 	s.resize( 256 );
@@ -27,7 +27,7 @@ string string::format( const char* str, ... )
 	return std::string( s.begin(), s.end() );
 }
 
-string string::format( unsigned int resource, ... )
+string format( unsigned int resource, ... )
 {
 	CString str;
 	if ( str.LoadString( resource ) ) {
