@@ -39,13 +39,11 @@ std::stringstream& RDOParser::getModelStructure()
 		modelStructure << std::endl << "$Pattern" << std::endl;
 		std::for_each(allPATPatterns.begin(), allPATPatterns.end(), std::mem_fun(&RDOPATPattern::writeModelStructure));
 
-		// OPR
+		// OPR/DPT
 		modelStructure << std::endl << "$Activities" << std::endl;
 		modelStructure << runTime->writeActivitiesStructure();
 
-		// DPT
-		modelStructure << std::endl << "$Activities" << std::endl;
-		modelStructure << runTime->writeActivitiesStructure();
+		// DPT only
 		for( int i = 0; i < allDPTSearch.size(); i++ ) {
 			int counter = 1;
 			for( int j = 0; j < allDPTSearch.at(i)->getActivities().size(); j++ ) {
