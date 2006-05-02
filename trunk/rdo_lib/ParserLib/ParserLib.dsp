@@ -296,19 +296,6 @@ SOURCE=.\rdolex.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\rdolexinterface.cpp
-
-!IF  "$(CFG)" == "ParserLib - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "ParserLib - Win32 Debug"
-
-# ADD CPP /Yu"pch.h"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
 SOURCE=.\rdoopr.cpp
 
 !IF  "$(CFG)" == "ParserLib - Win32 Release"
@@ -508,10 +495,6 @@ SOURCE=.\rdogramrtp.hpp
 # Begin Source File
 
 SOURCE=.\rdohotkey.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdolexinterface.h
 # End Source File
 # Begin Source File
 
