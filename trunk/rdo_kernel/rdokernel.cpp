@@ -141,7 +141,7 @@ void RDOKernel::setNotifyReflect( NotifyStringType notifyType, OnNotifyString fu
 	}
 }
 
-void RDOKernel::notifyString( NotifyStringType notifyType, const string& str )
+void RDOKernel::notifyString( NotifyStringType notifyType, const std::string& str )
 {
 	unsigned long int th_id_current = ::GetCurrentThreadId();
 	std::list< RDOKernelSync* >::iterator sync_it = sync.begin();
@@ -162,7 +162,7 @@ void RDOKernel::notifyString( NotifyStringType notifyType, const string& str )
 	}
 }
 
-void RDOKernel::notifyString_fromclient( RDOKernelSync* sync, NotifyStringType notifyType, const string& str )
+void RDOKernel::notifyString_fromclient( RDOKernelSync* sync, NotifyStringType notifyType, const std::string& str )
 {
 	RDOKernelSync::onNotifyStringListType::const_iterator it = sync->onNotifyString_list.lower_bound( notifyType );
 	while ( it != sync->onNotifyString_list.upper_bound( notifyType ) ) {
@@ -346,7 +346,7 @@ void RDOKernel::callbackNext( CallbackType callbackType, OnCallback fun, int par
 
 void RDOKernel::debug( const char* str, ... )
 {
-	vector< char > s;
+	std::vector< char > s;
 	s.resize( 256 );
 	va_list paramList;
 	int size = -1;
@@ -359,7 +359,7 @@ void RDOKernel::debug( const char* str, ... )
 		}
 	}
 	s.resize( size );
-	notifyString( debugString, string( s.begin(), s.end() ) );
+	notifyString( debugString, std::string( s.begin(), s.end() ) );
 }
 
 void RDOKernel::insertSyncClient( RDOKernelSync* syncUI )

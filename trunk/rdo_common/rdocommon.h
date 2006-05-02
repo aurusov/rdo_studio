@@ -33,7 +33,23 @@ struct RDOSMRFileInfo {
 	RDOSMRFileInfo(): model_name( "" ), resource_file( "" ), oprIev_file( "" ), frame_file( "" ), statistic_file( "" ), results_file( "" ), trace_file( "" ), error( false ) {};
 };
 
-enum RDOFileType { PAT = 0, RTP, RSS, OPR, FRM, FUN, DPT, SMR, PMD, PMV, TRC };
+enum RDOFileType  { PAT = 0, RTP, RSS, OPR, FRM, FUN, DPT, SMR, PMD, PMV, TRC };
+
+enum RDOParseType {
+	obNONE = 0x0000,
+	obPRE  = 0x0001,
+	obRTP  = 0x0002,
+	obRSS  = 0x0004,
+	obFUN  = 0x0008,
+	obPAT  = 0x0010,
+	obOPR  = 0x0020,
+	obDPT  = 0x0040,
+	obPMD  = 0x0080,
+	obFRM  = 0x0100,
+	obSMR  = 0x0200,
+	obPOST = 0x0400,
+	obALL  = 0x07FF
+};
 
 };
 
