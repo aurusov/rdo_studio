@@ -8,7 +8,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-using namespace std;
 using namespace rdoEditor;
 using namespace rdoStyle;
 using namespace rdoEditCtrl;
@@ -96,7 +95,7 @@ bool RDOEditorBaseEditTheme::operator !=( const RDOEditorBaseEditTheme& theme ) 
 	return !(*this == theme);
 }
 
-void RDOEditorBaseEditTheme::load( string regPath )
+void RDOEditorBaseEditTheme::load( std::string regPath )
 {
 	RDOBaseEditTheme::load( regPath );
 
@@ -119,7 +118,7 @@ void RDOEditorBaseEditTheme::load( string regPath )
 	operatorStyle          = static_cast<RDOStyleFont::style>(AfxGetApp()->GetProfileInt( regPath.c_str(), "operatorStyle", operatorStyle ));
 }
 
-void RDOEditorBaseEditTheme::save( string regPath ) const
+void RDOEditorBaseEditTheme::save( std::string regPath ) const
 {
 	RDOBaseEditTheme::save( regPath );
 
@@ -188,7 +187,7 @@ bool RDOEditorBaseEditTheme::styleItalic( const int styleType ) const
 	return false;
 }
 
-string RDOEditorBaseEditTheme::styleFGColorToHEX( const int styleType ) const
+std::string RDOEditorBaseEditTheme::styleFGColorToHEX( const int styleType ) const
 {
 	switch ( styleType ) {
 		case SCE_RDO_DEFAULT   : return colorToHEX( defaultColor );

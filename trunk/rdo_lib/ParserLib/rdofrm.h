@@ -1,7 +1,6 @@
 #ifndef RDOFRM_FRM
 #define RDOFRM_FRM
 
-//using namespace std;
 //#include "rdoStdFuncs.h"
 //#include "rdortp.h"
 
@@ -26,6 +25,10 @@ using namespace rdoRuntime;
 namespace rdoParse 
 {
 
+int frmparse( void* lexer );
+int frmlex( int* lpval, void* lexer );
+void frmerror( char* mes );
+
 class RDOFRMColor
 {
 public:
@@ -42,7 +45,7 @@ protected:
 public:
 	virtual ~RDOFRMItem() {}
 	virtual RDOSimulatorNS::RDOFrameElement* createElement(RDORuntime *sim);
-	virtual void getAllBitmaps(vector<const string *> &vect) {}
+	virtual void getAllBitmaps(std::vector<const std::string *> &vect) {}
 };
 
 class RDOFRMBoundingItem: public virtual RDOFRMItem
@@ -71,14 +74,14 @@ class RDOFRMText: public RDOFRMBoundingItem, public RDOFRMColoredItem
 {
 	int align;
 	RDOCalc *value;
-	string *txt;
+	std::string *txt;
 	bool isTextString;
 	int type;
 	RDORTPEnum *enu;
 public:
 	RDOFRMText(RDOFUNArithm *x, RDOFUNArithm *y, RDOFUNArithm *width, RDOFUNArithm *height, RDOFRMColor *bgColor, RDOFRMColor *color);
 	void setText(int _align, RDOFUNArithm *_value);
-	void setText(int _align, string *_txt);
+	void setText(int _align, std::string *_txt);
 	RDOSimulatorNS::RDOFrameElement* createElement(RDORuntime *sim);
 };
 
@@ -86,22 +89,22 @@ class RDOFRMBitmap: public RDOFRMItem
 {
 	RDOCalc *x;
 	RDOCalc *y;
-	string *picFileName;
-	string *mask;
+	std::string *picFileName;
+	std::string *mask;
 public:
-	RDOFRMBitmap(RDOFUNArithm *_x, RDOFUNArithm *_y, string *_picFileName, string *_mask = NULL);
+	RDOFRMBitmap(RDOFUNArithm *_x, RDOFUNArithm *_y, std::string *_picFileName, std::string *_mask = NULL);
 	RDOSimulatorNS::RDOFrameElement* createElement(RDORuntime *sim);
-	void getAllBitmaps(vector<const string *> &vect);
+	void getAllBitmaps(std::vector<const std::string *> &vect);
 };
 
 class RDOFRMS_bmp: public RDOFRMBoundingItem
 {
-	string *picFileName;
-	string *mask;
+	std::string *picFileName;
+	std::string *mask;
 public:
-	RDOFRMS_bmp(RDOFUNArithm *x, RDOFUNArithm *y, RDOFUNArithm *width, RDOFUNArithm *height, string *_picFileName, string *_mask = NULL);
+	RDOFRMS_bmp(RDOFUNArithm *x, RDOFUNArithm *y, RDOFUNArithm *width, RDOFUNArithm *height, std::string *_picFileName, std::string *_mask = NULL);
 	RDOSimulatorNS::RDOFrameElement* createElement(RDORuntime *sim);
-	void getAllBitmaps(vector<const string *> &vect);
+	void getAllBitmaps(std::vector<const std::string *> &vect);
 };
 
 class RDOFRMRect: public RDOFRMBoundingItem, public RDOFRMColoredItem
@@ -143,9 +146,9 @@ public:
 
 class RDOFRMActive: public RDOFRMBoundingItem
 {
-	string *operName;
+	std::string *operName;
 public:
-	RDOFRMActive(RDOFUNArithm *x, RDOFUNArithm *y, RDOFUNArithm *width, RDOFUNArithm *height, string *_operName);
+	RDOFRMActive(RDOFUNArithm *x, RDOFUNArithm *y, RDOFUNArithm *width, RDOFUNArithm *height, std::string *_operName);
 	RDOSimulatorNS::RDOFrameElement* createElement(RDORuntime *sim);
 };
 
@@ -154,27 +157,27 @@ class RDOFRMShow
 {
 	friend RDOFRMFrame;
 	RDOCalc *conditionCalc;
-	vector<RDOFRMItem *> items;
+	std::vector<RDOFRMItem *> items;
 public:
 	RDOFRMShow(RDOFUNLogic* logic);
 	virtual ~RDOFRMShow();
 	bool checkCondition(RDORuntime *sim);
-	void getAllBitmaps(vector<const string *> &vect);
+	void getAllBitmaps(std::vector<const std::string *> &vect);
 };
 
 class RDOFRMFrame
 {
-	string *name;
+	std::string *name;
 	RDOCalc *conditionCalc;
 	int r, g, b;	// background
 	bool hasBackPicture;
-	string* picFileName;	// back picture
+	std::string* picFileName;	// back picture
 	int width, height;	// frame size
-	vector<RDOFRMShow *> shows;
+	std::vector<RDOFRMShow *> shows;
 public:
-	RDOFRMFrame(string *_name, RDOFUNLogic *_logic = NULL);
+	RDOFRMFrame(std::string *_name, RDOFUNLogic *_logic = NULL);
 	void setBackground(int _r = 0, int _g = 100, int _b = 0);
-	void setBackPicture(string* _picFileName);
+	void setBackPicture(std::string* _picFileName);
 	void setBackPicture(int _width, int _height);
 	void startShow(RDOFUNLogic* logic = NULL);
 	void addItem(RDOFRMItem *item);
@@ -182,8 +185,8 @@ public:
 	virtual ~RDOFRMFrame();
 	bool checkCondition(RDORuntime *sim);
 	RDOSimulatorNS::RDOFrame* createFrame(RDORuntime *sim);
-	string *getName() { return name; }
-	void getAllBitmaps(vector<const string *> &vect);
+	std::string *getName() { return name; }
+	void getAllBitmaps(std::vector<const std::string *> &vect);
 };
 
 

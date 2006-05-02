@@ -2,7 +2,6 @@
 
 #include <rdorepositoryfile.h>
 
-using namespace std;
 using namespace rdoRepository;
 
 // ----------------------------------------------------------------------------
@@ -18,12 +17,12 @@ RDORepository::~RDORepository()
 	if ( repositoryFile ) { delete repositoryFile; repositoryFile = 0L; };
 }
 
-string RDORepository::getName() const
+std::string RDORepository::getName() const
 {
 	return repositoryFile->getName();
 }
 
-string RDORepository::getFullName() const
+std::string RDORepository::getFullName() const
 {
 	return repositoryFile->getFullName();
 }
@@ -33,7 +32,7 @@ void RDORepository::newModel()
 	repositoryFile->newModel();
 }
 
-bool RDORepository::openModel( const string& modelName )
+bool RDORepository::openModel( const std::string& modelName )
 {
 	return repositoryFile->openModel( modelName );
 }
@@ -98,7 +97,7 @@ void RDORepository::save( rdoModelObjects::RDOFileType type, rdo::binarystream& 
 	repositoryFile->save( type, stream );
 }
 
-void RDORepository::loadBMP( const string& name, rdo::binarystream& stream ) const
+void RDORepository::loadBMP( const std::string& name, rdo::binarystream& stream ) const
 {
 	repositoryFile->loadBMP( name, stream );
 }

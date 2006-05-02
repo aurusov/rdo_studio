@@ -14,6 +14,11 @@ using namespace rdoRuntime;
 
 namespace rdoParse 
 {
+
+int pmdparse( void* lexer );
+int pmdlex( int* lpval, void* lexer );
+void pmderror( char* mes );
+
 struct RDOFUNLogic;
 struct RDOFUNGroup;
 struct RDOFUNArithm;
@@ -22,13 +27,13 @@ struct RDOFUNArithm;
 class RDOPMDPokaz: public RDOPokazTrace
 {
 protected:
-	const string const name;
+	const std::string const name;
 	void endOfCreation();
 public:
-	RDOPMDPokaz(const string *const _name, bool _trace);
+	RDOPMDPokaz(const std::string *const _name, bool _trace);
 	virtual ~RDOPMDPokaz() {}
 	virtual bool checkResourceErased(RDOResource *res) { return false; }
-	virtual void writePokazStructure(ostream &stream) const = 0;
+	virtual void writePokazStructure(std::ostream &stream) const = 0;
 };
 
 //////////////////////////// class RDOPMDWatchPar /////////////////////////////////
@@ -47,12 +52,12 @@ class RDOPMDWatchPar: public RDOPMDPokaz
 	double timeBegin;
 	double timePrev;
 public:
-	RDOPMDWatchPar(string *_name, bool _trace, string *_resName, string *_parName);
-   string traceValue();
+	RDOPMDWatchPar(std::string *_name, bool _trace, std::string *_resName, std::string *_parName);
+	std::string traceValue();
 	bool resetPokaz(RDOSimulator *sim);
 	bool checkPokaz(RDOSimulator *sim);
 	bool calcStat(RDOSimulator *sim);
-	void writePokazStructure(ostream &stream) const;
+	void writePokazStructure(std::ostream &stream) const;
 };
 
 //////////////////////////// class RDOPMDWatchState /////////////////////////////////
@@ -70,12 +75,12 @@ class RDOPMDWatchState: public RDOPMDPokaz
 	double timeBegin;
 	double timePrev;
 public:
-	RDOPMDWatchState(string *_name, bool _trace, RDOFUNLogic *_logic);
-   string traceValue();
+	RDOPMDWatchState(std::string *_name, bool _trace, RDOFUNLogic *_logic);
+	std::string traceValue();
 	bool resetPokaz(RDOSimulator *sim);
 	bool checkPokaz(RDOSimulator *sim);
 	bool calcStat(RDOSimulator *sim);
-	void writePokazStructure(ostream &stream) const;
+	void writePokazStructure(std::ostream &stream) const;
 };
 
 //////////////////////////// class RDOPMDWatchQuant /////////////////////////////////
@@ -94,14 +99,14 @@ class RDOPMDWatchQuant: public RDOPMDPokaz
 	double timeBegin;
 	double timePrev;
 public:
-	RDOPMDWatchQuant(string *_name, bool _trace, string *_resTypeName);
+	RDOPMDWatchQuant(std::string *_name, bool _trace, std::string *_resTypeName);
 	void setLogic(RDOFUNLogic *_logic);
 	void setLogicNoCheck();
-   string traceValue();
+	std::string traceValue();
 	bool resetPokaz(RDOSimulator *sim);
 	bool checkPokaz(RDOSimulator *sim);
 	bool calcStat(RDOSimulator *sim);
-	void writePokazStructure(ostream &stream) const;
+	void writePokazStructure(std::ostream &stream) const;
 };
 
 //////////////////////////// class RDOPMDWatchValue /////////////////////////////////
@@ -118,15 +123,15 @@ class RDOPMDWatchValue: public RDOPMDPokaz
 	double minValue;
 	double maxValue;
 public:
-	RDOPMDWatchValue(string *_name, bool _trace, string *_resTypeName);
+	RDOPMDWatchValue(std::string *_name, bool _trace, std::string *_resTypeName);
 	void setLogic(RDOFUNLogic *_logic, RDOFUNArithm *_arithm);
 	void setLogicNoCheck(RDOFUNArithm *_arithm);
-   string traceValue();
+	std::string traceValue();
 	bool resetPokaz(RDOSimulator *sim);
 	bool checkPokaz(RDOSimulator *sim);
 	bool calcStat(RDOSimulator *sim);
 	bool checkResourceErased(RDOResource *res);
-	void writePokazStructure(ostream &stream) const;
+	void writePokazStructure(std::ostream &stream) const;
 };
 
 //////////////////////////// class RDOPMDGetValue /////////////////////////////////
@@ -134,12 +139,12 @@ class RDOPMDGetValue: public RDOPMDPokaz
 {
 	RDOCalc *arithmCalc;
 public:
-	RDOPMDGetValue(string *_name, RDOFUNArithm *_arithm);
-   string traceValue();
+	RDOPMDGetValue(std::string *_name, RDOFUNArithm *_arithm);
+	std::string traceValue();
 	bool resetPokaz(RDOSimulator *sim);
 	bool checkPokaz(RDOSimulator *sim);
 	bool calcStat(RDOSimulator *sim);
-	void writePokazStructure(ostream &stream) const;
+	void writePokazStructure(std::ostream &stream) const;
 };
 
 

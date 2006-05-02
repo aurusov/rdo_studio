@@ -1570,15 +1570,11 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 #include "rdogramrtp.hpp"
-namespace rdoParse {
-void setYylval(int val);
-double *addDouble(double *val);
-void addName(std::string *name);
-}
+#include "rdoparser.h"
 
 #define comment 1
 
-#line 1582 "rdolex.cpp"
+#line 1578 "rdolex.cpp"
 
 /* Macros after this point can all be overridden by user definitions in
  * section 1.
@@ -1705,10 +1701,10 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
 
-#line 20 ".\\parser.l"
+#line 16 ".\\parser.l"
 
 
-#line 1712 "rdolex.cpp"
+#line 1708 "rdolex.cpp"
 
 	if ( yy_init )
 		{
@@ -1801,647 +1797,647 @@ do_action:	/* This label is used only to access EOF actions. */
 	{ /* beginning of action switch */
 case 1:
 YY_RULE_SETUP
-#line 22 ".\\parser.l"
+#line 18 ".\\parser.l"
 return(Resource_type);
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 23 ".\\parser.l"
+#line 19 ".\\parser.l"
 return(permanent);
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 24 ".\\parser.l"
+#line 20 ".\\parser.l"
 return(Parameters);
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 25 ".\\parser.l"
+#line 21 ".\\parser.l"
 return(integer);
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 26 ".\\parser.l"
+#line 22 ".\\parser.l"
 return(real);
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 27 ".\\parser.l"
+#line 23 ".\\parser.l"
 return(End);
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 28 ".\\parser.l"
+#line 24 ".\\parser.l"
 return(temporary);
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 29 ".\\parser.l"
+#line 25 ".\\parser.l"
 return(such_as);
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 30 ".\\parser.l"
+#line 26 ".\\parser.l"
 return(dblpoint);
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 32 ".\\parser.l"
+#line 28 ".\\parser.l"
 return(Resources);
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 33 ".\\parser.l"
+#line 29 ".\\parser.l"
 return(trace_keyword);
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 34 ".\\parser.l"
+#line 30 ".\\parser.l"
 return(no_trace);
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 36 ".\\parser.l"
+#line 32 ".\\parser.l"
 return(Constant);
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 37 ".\\parser.l"
+#line 33 ".\\parser.l"
 return(Body);
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 38 ".\\parser.l"
+#line 34 ".\\parser.l"
 return(Function_keyword);
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 39 ".\\parser.l"
+#line 35 ".\\parser.l"
 return(Type_keyword);
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 40 ".\\parser.l"
+#line 36 ".\\parser.l"
 return(algorithmic);
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 41 ".\\parser.l"
+#line 37 ".\\parser.l"
 return(table_keyword);
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 42 ".\\parser.l"
+#line 38 ".\\parser.l"
 return(list_keyword);
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 43 ".\\parser.l"
+#line 39 ".\\parser.l"
 return(Calculate_if);
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 44 ".\\parser.l"
+#line 40 ".\\parser.l"
 return(Sequence);
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 45 ".\\parser.l"
+#line 41 ".\\parser.l"
 return(uniform);
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 46 ".\\parser.l"
+#line 42 ".\\parser.l"
 return(exponential);
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 47 ".\\parser.l"
+#line 43 ".\\parser.l"
 return(normal_keyword);
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 48 ".\\parser.l"
+#line 44 ".\\parser.l"
 return(by_hist);
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 49 ".\\parser.l"
+#line 45 ".\\parser.l"
 return(enumerative);
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 51 ".\\parser.l"
+#line 47 ".\\parser.l"
 return(Exist);
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 52 ".\\parser.l"
+#line 48 ".\\parser.l"
 return(Not_Exist);
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 53 ".\\parser.l"
+#line 49 ".\\parser.l"
 return(For_All);
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 54 ".\\parser.l"
+#line 50 ".\\parser.l"
 return(Not_For_All);
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 55 ".\\parser.l"
+#line 51 ".\\parser.l"
 return(neq);
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 56 ".\\parser.l"
+#line 52 ".\\parser.l"
 return(leq);
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 57 ".\\parser.l"
+#line 53 ".\\parser.l"
 return(geq);
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 58 ".\\parser.l"
+#line 54 ".\\parser.l"
 return(NoCheck);
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 59 ".\\parser.l"
+#line 55 ".\\parser.l"
 return(Calculate_if);
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 60 ".\\parser.l"
+#line 56 ".\\parser.l"
 return(or_keyword);
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 61 ".\\parser.l"
+#line 57 ".\\parser.l"
 return(and_keyword);
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 64 ".\\parser.l"
+#line 60 ".\\parser.l"
 return(Pattern);
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 65 ".\\parser.l"
+#line 61 ".\\parser.l"
 return(operation);
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 66 ".\\parser.l"
+#line 62 ".\\parser.l"
 return(irregular_event);
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 67 ".\\parser.l"
+#line 63 ".\\parser.l"
 return(rule_keyword);
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 68 ".\\parser.l"
+#line 64 ".\\parser.l"
 return(keyboard);
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 69 ".\\parser.l"
+#line 65 ".\\parser.l"
 return(Relevant_resources);
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 70 ".\\parser.l"
+#line 66 ".\\parser.l"
 return(Keep);
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 71 ".\\parser.l"
+#line 67 ".\\parser.l"
 return(Create_keyword);
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 72 ".\\parser.l"
+#line 68 ".\\parser.l"
 return(Erase);
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 73 ".\\parser.l"
+#line 69 ".\\parser.l"
 return(NonExist);
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 74 ".\\parser.l"
+#line 70 ".\\parser.l"
 return(NoChange);
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 75 ".\\parser.l"
+#line 71 ".\\parser.l"
 return(Time);
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 76 ".\\parser.l"
+#line 72 ".\\parser.l"
 return(Choice);
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 77 ".\\parser.l"
+#line 73 ".\\parser.l"
 return(from_keyword);
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 78 ".\\parser.l"
+#line 74 ".\\parser.l"
 return(first_keyword);
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 79 ".\\parser.l"
+#line 75 ".\\parser.l"
 return(Convert_begin);
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 80 ".\\parser.l"
+#line 76 ".\\parser.l"
 return(Convert_end);
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 81 ".\\parser.l"
+#line 77 ".\\parser.l"
 return(Convert_rule);
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 82 ".\\parser.l"
+#line 78 ".\\parser.l"
 return(Convert_event);
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 83 ".\\parser.l"
+#line 79 ".\\parser.l"
 return(with_max);
 	YY_BREAK
 case 58:
 YY_RULE_SETUP
-#line 84 ".\\parser.l"
+#line 80 ".\\parser.l"
 return(with_min);
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
-#line 85 ".\\parser.l"
+#line 81 ".\\parser.l"
 return(Operations);
 	YY_BREAK
 case 60:
 YY_RULE_SETUP
-#line 86 ".\\parser.l"
+#line 82 ".\\parser.l"
 return(Results);
 	YY_BREAK
 case 61:
 YY_RULE_SETUP
-#line 87 ".\\parser.l"
+#line 83 ".\\parser.l"
 return(watch_par);
 	YY_BREAK
 case 62:
 YY_RULE_SETUP
-#line 88 ".\\parser.l"
+#line 84 ".\\parser.l"
 return(watch_state);
 	YY_BREAK
 case 63:
 YY_RULE_SETUP
-#line 89 ".\\parser.l"
+#line 85 ".\\parser.l"
 return(watch_quant);
 	YY_BREAK
 case 64:
 YY_RULE_SETUP
-#line 90 ".\\parser.l"
+#line 86 ".\\parser.l"
 return(watch_value);
 	YY_BREAK
 case 65:
 YY_RULE_SETUP
-#line 91 ".\\parser.l"
+#line 87 ".\\parser.l"
 return(get_value);
 	YY_BREAK
 case 66:
 YY_RULE_SETUP
-#line 93 ".\\parser.l"
+#line 89 ".\\parser.l"
 return(Model_name);
 	YY_BREAK
 case 67:
 YY_RULE_SETUP
-#line 94 ".\\parser.l"
+#line 90 ".\\parser.l"
 return(Resource_file);
 	YY_BREAK
 case 68:
 YY_RULE_SETUP
-#line 95 ".\\parser.l"
+#line 91 ".\\parser.l"
 return(OprIev_file);
 	YY_BREAK
 case 69:
 YY_RULE_SETUP
-#line 96 ".\\parser.l"
+#line 92 ".\\parser.l"
 return(Frame_file);	
 	YY_BREAK
 case 70:
 YY_RULE_SETUP
-#line 97 ".\\parser.l"
+#line 93 ".\\parser.l"
 return(Statistic_file);
 	YY_BREAK
 case 71:
 YY_RULE_SETUP
-#line 98 ".\\parser.l"
+#line 94 ".\\parser.l"
 return(Results_file);
 	YY_BREAK
 case 72:
 YY_RULE_SETUP
-#line 99 ".\\parser.l"
+#line 95 ".\\parser.l"
 return(Trace_file);
 	YY_BREAK
 case 73:
 YY_RULE_SETUP
-#line 100 ".\\parser.l"
+#line 96 ".\\parser.l"
 return(Show_mode);
 	YY_BREAK
 case 74:
 YY_RULE_SETUP
-#line 101 ".\\parser.l"
+#line 97 ".\\parser.l"
 return(Frame_number);
 	YY_BREAK
 case 75:
 YY_RULE_SETUP
-#line 102 ".\\parser.l"
+#line 98 ".\\parser.l"
 return(Show_rate);
 	YY_BREAK
 case 76:
 YY_RULE_SETUP
-#line 103 ".\\parser.l"
+#line 99 ".\\parser.l"
 return(Run_StartTime);
 	YY_BREAK
 case 77:
 YY_RULE_SETUP
-#line 104 ".\\parser.l"
+#line 100 ".\\parser.l"
 return(Trace_StartTime);
 	YY_BREAK
 case 78:
 YY_RULE_SETUP
-#line 105 ".\\parser.l"
+#line 101 ".\\parser.l"
 return(Trace_EndTime);
 	YY_BREAK
 case 79:
 YY_RULE_SETUP
-#line 106 ".\\parser.l"
+#line 102 ".\\parser.l"
 return(Terminate_if);
 	YY_BREAK
 case 80:
 YY_RULE_SETUP
-#line 107 ".\\parser.l"
+#line 103 ".\\parser.l"
 return(Break_point);
 	YY_BREAK
 case 81:
 YY_RULE_SETUP
-#line 108 ".\\parser.l"
+#line 104 ".\\parser.l"
 return(Seed);
 	YY_BREAK
 case 82:
 YY_RULE_SETUP
-#line 109 ".\\parser.l"
+#line 105 ".\\parser.l"
 return(NoShow);
 	YY_BREAK
 case 83:
 YY_RULE_SETUP
-#line 110 ".\\parser.l"
+#line 106 ".\\parser.l"
 return(Monitor);
 	YY_BREAK
 case 84:
 YY_RULE_SETUP
-#line 111 ".\\parser.l"
+#line 107 ".\\parser.l"
 return(Animation);
 	YY_BREAK
 case 85:
 YY_RULE_SETUP
-#line 114 ".\\parser.l"
+#line 110 ".\\parser.l"
 return(Decision_point);
 	YY_BREAK
 case 86:
 YY_RULE_SETUP
-#line 115 ".\\parser.l"
+#line 111 ".\\parser.l"
 return(search_keyword);
 	YY_BREAK
 case 87:
 YY_RULE_SETUP
-#line 116 ".\\parser.l"
+#line 112 ".\\parser.l"
 return(trace_stat);
 	YY_BREAK
 case 88:
 YY_RULE_SETUP
-#line 117 ".\\parser.l"
+#line 113 ".\\parser.l"
 return(trace_tops);
 	YY_BREAK
 case 89:
 YY_RULE_SETUP
-#line 118 ".\\parser.l"
+#line 114 ".\\parser.l"
 return(trace_all);
 	YY_BREAK
 case 90:
 YY_RULE_SETUP
-#line 119 ".\\parser.l"
+#line 115 ".\\parser.l"
 return(Condition_keyword);
 	YY_BREAK
 case 91:
 YY_RULE_SETUP
-#line 120 ".\\parser.l"
+#line 116 ".\\parser.l"
 return(Term_condition);
 	YY_BREAK
 case 92:
 YY_RULE_SETUP
-#line 121 ".\\parser.l"
+#line 117 ".\\parser.l"
 return(Evaluate_by);
 	YY_BREAK
 case 93:
 YY_RULE_SETUP
-#line 122 ".\\parser.l"
+#line 118 ".\\parser.l"
 return(Compare_tops);
 	YY_BREAK
 case 94:
 YY_RULE_SETUP
-#line 123 ".\\parser.l"
+#line 119 ".\\parser.l"
 return(NO);
 	YY_BREAK
 case 95:
 YY_RULE_SETUP
-#line 124 ".\\parser.l"
+#line 120 ".\\parser.l"
 return(YES);
 	YY_BREAK
 case 96:
 YY_RULE_SETUP
-#line 125 ".\\parser.l"
+#line 121 ".\\parser.l"
 return(Activities);
 	YY_BREAK
 case 97:
 YY_RULE_SETUP
-#line 126 ".\\parser.l"
+#line 122 ".\\parser.l"
 return(Process);
 	YY_BREAK
 case 98:
 YY_RULE_SETUP
-#line 127 ".\\parser.l"
+#line 123 ".\\parser.l"
 return(SIEZE);
 	YY_BREAK
 case 99:
 YY_RULE_SETUP
-#line 128 ".\\parser.l"
+#line 124 ".\\parser.l"
 return(value_before);
 	YY_BREAK
 case 100:
 YY_RULE_SETUP
-#line 129 ".\\parser.l"
+#line 125 ".\\parser.l"
 return(value_after);
 	YY_BREAK
 case 101:
 YY_RULE_SETUP
-#line 130 ".\\parser.l"
+#line 126 ".\\parser.l"
 return(value_before);
 	YY_BREAK
 case 102:
 YY_RULE_SETUP
-#line 131 ".\\parser.l"
+#line 127 ".\\parser.l"
 return(value_after);
 	YY_BREAK
 case 103:
 YY_RULE_SETUP
-#line 132 ".\\parser.l"
+#line 128 ".\\parser.l"
 return(some);
 	YY_BREAK
 case 104:
 YY_RULE_SETUP
-#line 134 ".\\parser.l"
+#line 130 ".\\parser.l"
 return(Frame);
 	YY_BREAK
 case 105:
 YY_RULE_SETUP
-#line 135 ".\\parser.l"
+#line 131 ".\\parser.l"
 return(Show_if);
 	YY_BREAK
 case 106:
 YY_RULE_SETUP
-#line 136 ".\\parser.l"
+#line 132 ".\\parser.l"
 return(Back_picture);
 	YY_BREAK
 case 107:
 YY_RULE_SETUP
-#line 137 ".\\parser.l"
+#line 133 ".\\parser.l"
 return(Show);
 	YY_BREAK
 case 108:
 YY_RULE_SETUP
-#line 138 ".\\parser.l"
+#line 134 ".\\parser.l"
 return(frm_cell);
 	YY_BREAK
 case 109:
 YY_RULE_SETUP
-#line 139 ".\\parser.l"
+#line 135 ".\\parser.l"
 return(text);
 	YY_BREAK
 case 110:
 YY_RULE_SETUP
-#line 140 ".\\parser.l"
+#line 136 ".\\parser.l"
 return(transparent);
 	YY_BREAK
 case 111:
 YY_RULE_SETUP
-#line 141 ".\\parser.l"
+#line 137 ".\\parser.l"
 return(bitmap);
 	YY_BREAK
 case 112:
 YY_RULE_SETUP
-#line 142 ".\\parser.l"
+#line 138 ".\\parser.l"
 return(s_bmp);
 	YY_BREAK
 case 113:
 YY_RULE_SETUP
-#line 143 ".\\parser.l"
+#line 139 ".\\parser.l"
 return(rect_keyword);
 	YY_BREAK
 case 114:
 YY_RULE_SETUP
-#line 144 ".\\parser.l"
+#line 140 ".\\parser.l"
 return(r_rect);
 	YY_BREAK
 case 115:
 YY_RULE_SETUP
-#line 145 ".\\parser.l"
+#line 141 ".\\parser.l"
 return(line);
 	YY_BREAK
 case 116:
 YY_RULE_SETUP
-#line 146 ".\\parser.l"
+#line 142 ".\\parser.l"
 return(ellipse);
 	YY_BREAK
 case 117:
 YY_RULE_SETUP
-#line 147 ".\\parser.l"
+#line 143 ".\\parser.l"
 return(triang);
 	YY_BREAK
 case 118:
 YY_RULE_SETUP
-#line 148 ".\\parser.l"
+#line 144 ".\\parser.l"
 return(active);
 	YY_BREAK
 case 119:
 YY_RULE_SETUP
-#line 150 ".\\parser.l"
+#line 146 ".\\parser.l"
 {
 						std::string n1(YYText());
 						int len = n1.length();
 						std::string *name = new std::string(n1, 1, len-2);
-						rdoParse::addName(name);
-						rdoParse::setYylval((int)name);
+						rdoParse::currParser->addName(name);
+						rdoParse::currParser->setYylval((int)name);
 						return QUOTED_IDENTIF;
 					}
 	YY_BREAK
 case 120:
 YY_RULE_SETUP
-#line 159 ".\\parser.l"
+#line 155 ".\\parser.l"
 BEGIN(comment);
 	YY_BREAK
 case 121:
 YY_RULE_SETUP
-#line 161 ".\\parser.l"
+#line 157 ".\\parser.l"
 /* eat anything that's not a '*' */
 	YY_BREAK
 case 122:
 YY_RULE_SETUP
-#line 162 ".\\parser.l"
+#line 158 ".\\parser.l"
 ;
 	YY_BREAK
 case 123:
 YY_RULE_SETUP
-#line 163 ".\\parser.l"
+#line 159 ".\\parser.l"
 BEGIN(INITIAL);
 	YY_BREAK
 case 124:
 YY_RULE_SETUP
-#line 166 ".\\parser.l"
+#line 162 ".\\parser.l"
 ;	
 	YY_BREAK
 case 125:
 YY_RULE_SETUP
-#line 167 ".\\parser.l"
+#line 163 ".\\parser.l"
 ;
 	YY_BREAK
 case 126:
 YY_RULE_SETUP
-#line 168 ".\\parser.l"
+#line 164 ".\\parser.l"
 return(YYText()[YYLeng()-1]);
 	YY_BREAK
 case 127:
 YY_RULE_SETUP
-#line 170 ".\\parser.l"
+#line 166 ".\\parser.l"
 {
 							std::string n1(YYText(), YYLeng()-2);
-							rdoParse::setYylval(atoi(n1.c_str()));
+							rdoParse::currParser->setYylval(atoi(n1.c_str()));
 							unput('.');
 							unput('.');
 							return INT_CONST;
@@ -2449,85 +2445,85 @@ YY_RULE_SETUP
 	YY_BREAK
 case 128:
 YY_RULE_SETUP
-#line 178 ".\\parser.l"
+#line 174 ".\\parser.l"
 {
-							double *val = rdoParse::addDouble(new double(atof(YYText())));
-							rdoParse::setYylval((int)val);
+							double *val = rdoParse::currParser->addDouble(new double(atof(YYText())));
+							rdoParse::currParser->setYylval((int)val);
 							return REAL_CONST;
 						}
 	YY_BREAK
 case 129:
 YY_RULE_SETUP
-#line 184 ".\\parser.l"
+#line 180 ".\\parser.l"
 {
-					rdoParse::setYylval(atoi(YYText()));
+					rdoParse::currParser->setYylval(atoi(YYText()));
 					return INT_CONST;
 				}
 	YY_BREAK
 case 130:
 YY_RULE_SETUP
-#line 189 ".\\parser.l"
+#line 185 ".\\parser.l"
 {
 					std::string n1(YYText());
 					int pos = n1.find_first_of("\n\t :");
 					std::string *name = new std::string(n1, 0, pos);
-					rdoParse::addName(name);
-					rdoParse::setYylval((int)name);
+					rdoParse::currParser->addName(name);
+					rdoParse::currParser->setYylval((int)name);
 					return IDENTIF_set;
 				}
 	YY_BREAK
 case 131:
 YY_RULE_SETUP
-#line 198 ".\\parser.l"
+#line 194 ".\\parser.l"
 {
 					std::string n1(YYText());
 					int pos = n1.find_first_of("\n\t :");
 					std::string *name = new std::string(n1, 0, pos);
-					rdoParse::addName(name);
-					rdoParse::setYylval((int)name);
+					rdoParse::currParser->addName(name);
+					rdoParse::currParser->setYylval((int)name);
 					return IDENTIF_NoChange_NoChange;
 				}
 	YY_BREAK
 case 132:
 YY_RULE_SETUP
-#line 207 ".\\parser.l"
+#line 203 ".\\parser.l"
 {
 					std::string n1(YYText());
 					int pos = n1.find_first_of("\n\t :");
 					std::string *name = new std::string(n1, 0, pos);
-					rdoParse::addName(name);
-					rdoParse::setYylval((int)name);
+					rdoParse::currParser->addName(name);
+					rdoParse::currParser->setYylval((int)name);
 					return IDENTIF_NoChange;
 				}
 	YY_BREAK
 case 133:
 YY_RULE_SETUP
-#line 216 ".\\parser.l"
+#line 212 ".\\parser.l"
 {
 					std::string n1(YYText());
 					int pos = n1.find_first_of("\n\t :");
 					std::string *name = new std::string(n1, 0, pos);
-					rdoParse::addName(name);
-					rdoParse::setYylval((int)name);
+					rdoParse::currParser->addName(name);
+					rdoParse::currParser->setYylval((int)name);
 					return IDENTIF_COLON;
 				}
 	YY_BREAK
 case 134:
 YY_RULE_SETUP
-#line 225 ".\\parser.l"
+#line 221 ".\\parser.l"
 {
 					std::string *name = new std::string(YYText());
-					rdoParse::addName(name);
-					rdoParse::setYylval((int)name);
+					rdoParse::currParser->addName(name);
+					rdoParse::currParser->setYylval((int)name);
 					return IDENTIF;
 				}
 	YY_BREAK
 case 135:
 YY_RULE_SETUP
-#line 232 ".\\parser.l"
+#line 228 ".\\parser.l"
 ECHO;
 	YY_BREAK
-#line 2531 "rdolex.cpp"
+#line 2527 "rdolex.cpp"
 			case YY_STATE_EOF(INITIAL):
 			case YY_STATE_EOF(comment):
 				yyterminate();
@@ -3333,5 +3329,5 @@ int main()
 	return 0;
 	}
 #endif
-#line 232 ".\\parser.l"
+#line 228 ".\\parser.l"
 

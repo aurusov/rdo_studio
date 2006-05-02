@@ -12,10 +12,22 @@ static char THIS_FILE[] = __FILE__;
 #include "rdopat.h"
 #include "rdopatrtime.h"
 #include "rdoruntime.h"
+#include "rdoparser_lexer.h"
 
 namespace rdoParse 
 {
-RDOOPROperation::RDOOPROperation(string *_oprName, string *patName)
+
+int oprlex( int* lpval, void* lexer )
+{
+	((RDOFlexLexer*)lexer)->m_lpval = lpval;
+	return ((RDOFlexLexer*)lexer)->yylex();
+}
+void oprerror( char* mes )
+{
+	rdoParse::currParser->error( mes );
+}
+
+RDOOPROperation::RDOOPROperation(std::string *_oprName, std::string *patName)
 :name(_oprName)
 {
 	pattern = currParser->findPattern(patName);
@@ -48,7 +60,7 @@ void RDOOPROperation::addParam(double *realParam)
 	currParam++;
 }
 
-void RDOOPROperation::addParam(string *stringParam)
+void RDOOPROperation::addParam(std::string *stringParam)
 {
 	if(pattern->params.size() <= currParam)
 		currParser->error("Too much parameters for pattern : " + *pattern->getName() + " in operation: " + *getName());
@@ -59,7 +71,7 @@ void RDOOPROperation::addParam(string *stringParam)
 	currParam++;
 }
 
-void RDOOPROperation::addHotKey(string *hotKey)
+void RDOOPROperation::addHotKey(std::string *hotKey)
 {
 	activity->addHotKey(hotKey);
 }

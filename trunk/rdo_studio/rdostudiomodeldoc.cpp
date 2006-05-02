@@ -15,8 +15,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-using namespace std;
-
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioModelDoc
 // ----------------------------------------------------------------------------
@@ -111,12 +109,12 @@ void RDOStudioModelDoc::OnCloseDocument()
 	RDOStudioEditBaseDoc::OnCloseDocument();
 }
 
-string RDOStudioModelDoc::getName() const
+std::string RDOStudioModelDoc::getName() const
 {
 	return name;
 }
 
-void RDOStudioModelDoc::setName( const string& str )
+void RDOStudioModelDoc::setName( const std::string& str )
 {
 	name = str;
 	rdo::trim( name );

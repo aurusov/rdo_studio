@@ -13,14 +13,14 @@ struct RDOConfig
 {
 //////// Interactive /////////////////
 	RDOSimulatorNS::ShowMode showAnimation;
-	vector<string> allFrameNames;
+	std::vector<std::string> allFrameNames;
 	int currFrameToShow;
-	vector<int> keysPressed;
+	std::vector<int> keysPressed;
 	bool mouseClicked;
-	vector<string> activeAreasMouseClicked;
+	std::vector<std::string> activeAreasMouseClicked;
 	
 //////// Frame /////////////////////
-	vector<RDOSimulatorNS::RDOFrame *> frames;
+	std::vector<RDOSimulatorNS::RDOFrame *> frames;
 
 //////// Timing ///////////////////
 	double currTime;			// model time
@@ -29,7 +29,7 @@ struct RDOConfig
 	double realTimeDelay;	// msec
 };
 
-typedef void (*TracerCallBack) (string *newString, void *param);
+typedef void (*TracerCallBack) (std::string *newString, void *param);
 typedef void (*FrameCallBack) (RDOConfig *config, void *param);
 
 } //namespace rdoRuntime
@@ -65,12 +65,12 @@ namespace rdoRuntime
 
 class RDOResult
 {
-   ofstream out;
+   std::ofstream out;
    virtual std::ostream &getOStream() { return out; }
 protected:
 	bool isNullResult;
 public:
-	RDOResult(const char *const fileName): out(fileName, ios::out), isNullResult(false) {}
+	RDOResult(const char *const fileName): out(fileName, std::ios::out), isNullResult(false) {}
 	RDOResult(): isNullResult(true) {}
 	int width(int w) { if(isNullResult) return 0; return getOStream().width(w); }
 	template<class TN>
@@ -78,7 +78,6 @@ public:
 
 	virtual ~RDOResult() {}
 };
-
 
 class RDOCalcSeqNextNormal;
 class RDOCalcSeqNextByHist;
@@ -121,37 +120,37 @@ friend RDOPMDWatchState;
 
 	friend void rdoParse::addCalcToRuntime(RDOCalc *calc);
 
-   vector<RDOResource *> allResources;
-   vector<RDOResourceTrace *> permanentResources;
-   RDOTrace *tracer;
-	list<RDOCalc *>		allCalcs;
-	list<RDOCalc *>		initCalcs;
+	std::vector<RDOResource *> allResources;
+	std::vector<RDOResourceTrace *> permanentResources;
+	RDOTrace *tracer;
+	std::list<RDOCalc *> allCalcs;
+	std::list<RDOCalc *> initCalcs;
 
-   vector<RDOValue>	funcStack;
-   vector<RDOResource *>	groupFuncStack;
+	std::vector<RDOValue>      funcStack;
+	std::vector<RDOResource *> groupFuncStack;
 	int currFuncTop;
 	int savedFuncTop;
 
-   RDOTrace *getTracer();
-   void onInit();
-   void onDestroy();
-	vector<RDOResourceTrace *> getPermanentResources();
+	RDOTrace *getTracer();
+	void onInit();
+	void onDestroy();
+	std::vector<RDOResourceTrace *> getPermanentResources();
 
-	vector<RDOBaseOperation *> allBaseOperations; // including rules, ies, operations, allDPTs
+	std::vector<RDOBaseOperation *> allBaseOperations; // including rules, ies, operations, allDPTs
 																		 // to preserve order
 
-	vector<RDOActivityRuleRuntime *> rules;
-	vector<RDOActivityIERuntime *> ies;
-	vector<RDOActivityOperationRuntime *> operations;
-	vector<RDOPMDPokaz *> allPokaz;
+	std::vector<RDOActivityRuleRuntime *> rules;
+	std::vector<RDOActivityIERuntime *> ies;
+	std::vector<RDOActivityOperationRuntime *> operations;
+	std::vector<RDOPMDPokaz *> allPokaz;
 
-	vector<RDOPatternRuntime *> allPatterns;
+	std::vector<RDOPatternRuntime *> allPatterns;
 
-	vector<RDOSearchRuntime *> allDPTs;
+	std::vector<RDOSearchRuntime *> allDPTs;
 
 	RDOActivityRuntime *currActivity;
 
-	vector<RDOValue> patternParameters;
+	std::vector<RDOValue> patternParameters;
 
 	time_t physic_time;
 	virtual void preProcess()
@@ -163,21 +162,21 @@ friend RDOPMDWatchState;
 	RDOResult *result;	// Output class for results (PMV)
 
 	RDOCalc *terminateIfCalc;
-   vector<RDOValue>	allConstants;
+	std::vector<RDOValue> allConstants;
 
-   RDOSimulator *clone();
-   bool operator == (RDOSimulator &other);
+	RDOSimulator *clone();
+	bool operator == (RDOSimulator &other);
 
 public:
-	vector<RDOSimulatorNS::RDOSyntaxError> errors;
+	std::vector<RDOSimulatorNS::RDOSyntaxError> errors;
 	void error( const char *mes, const rdoRuntime::RDOCalc *calc );
 	bool checkKeyPressed(int scanCode);
 	void eraseKeyPressed(int scanCode);
-	bool checkAreaActivated(string *oprName);
+	bool checkAreaActivated(std::string *oprName);
 	void setConstValue(int numberOfConst, RDOValue value);
 	RDOValue getConstValue(int numberOfConst);
 	RDOResult& getResult() { return *result; }
-   void rdoInit(RDOTrace *customTracer, RDOResult *customResult);
+	void rdoInit(RDOTrace *customTracer, RDOResult *customResult);
 
 	double getTimeNow() { return getCurrentTime(); }
 	double getSeconds() { return (time(NULL) - physic_time); }
@@ -228,21 +227,21 @@ public:
 	{ 
 		return patternParameters.at(parNumb);
 	}
-	string writeActivitiesStructure();
-	string writePokazStructure();
+	std::string writeActivitiesStructure();
+	std::string writePokazStructure();
 
-   void rdoDelay(double fromTime, double toTime);
+	void rdoDelay(double fromTime, double toTime);
   	TracerCallBack tracerCallBack;
 	FrameCallBack frameCallBack;
 	void *param;		// this param send back to tracerCallBack and frameCallBack
 	RDOConfig config;
-	vector<RDOFRMFrame *> allFrames;
+	std::vector<RDOFRMFrame *> allFrames;
 
 	void onPutToTreeNode();
 
 	rdoModel::RDOExitCode whyStop;
 	void onNothingMoreToDo() {whyStop = rdoModel::EC_NoMoreEvents;}
-   void onEndCondition() {whyStop = rdoModel::EC_OK;}
+	void onEndCondition() {whyStop = rdoModel::EC_OK;}
 	
 	void postProcess();
 };
@@ -272,9 +271,9 @@ class RDOResource: public RDOResourceTrace
 public:
    int number; // unique for all resources alive in system
 	int type;
-   vector<RDOValue> params;
-   string getTypeId();
-   string traceParametersValue();
+   std::vector<RDOValue> params;
+   std::string getTypeId();
+   std::string traceParametersValue();
 	RDOResource(RDORuntime *rt): RDOResourceTrace(rt), referenceCount(0) {}
    bool operator != (RDOResource &other);
 	int referenceCount;
@@ -464,22 +463,22 @@ class RDOCalcCreateResource: public RDOCalc
 {
 	int type;
 	bool traceFlag;
-   vector<RDOValue> paramsCalcs;
+	std::vector<RDOValue> paramsCalcs;
 public:
-	RDOCalcCreateResource(int _type, bool _traceFlag, const vector<RDOValue> &_paramsCalcs);
-   virtual RDOValue calcValue(RDORuntime *sim) const;
+	RDOCalcCreateResource(int _type, bool _traceFlag, const std::vector<RDOValue> &_paramsCalcs);
+	virtual RDOValue calcValue(RDORuntime *sim) const;
 };
 
 class RDOCalcCreateNumberedResource: public RDOCalc
 {
 	int type;
 	bool traceFlag;
-   vector<RDOValue> paramsCalcs;
+	std::vector<RDOValue> paramsCalcs;
 	int number;
 	bool isPermanent;
 public:
-	RDOCalcCreateNumberedResource(int _type, bool _traceFlag, const vector<RDOValue> &_paramsCalcs, int _number, bool _isPermanent);
-   virtual RDOValue calcValue(RDORuntime *sim) const;
+	RDOCalcCreateNumberedResource(int _type, bool _traceFlag, const std::vector<RDOValue> &_paramsCalcs, int _number, bool _isPermanent);
+	virtual RDOValue calcValue(RDORuntime *sim) const;
 };
 
 class RDOCalcCreateEmptyResource: public RDOCalc
@@ -490,7 +489,7 @@ class RDOCalcCreateEmptyResource: public RDOCalc
 	int numParameters;
 public:
 	RDOCalcCreateEmptyResource(int _type, bool _traceFlag, int _relResNumber, int _numParameters);
-   virtual RDOValue calcValue(RDORuntime *sim) const;
+	virtual RDOValue calcValue(RDORuntime *sim) const;
 };
 
 
@@ -508,7 +507,7 @@ class RDOFunCalc: public RDOCalc
 
 class RDOFuncTableCalc: public RDOFunCalc
 {
-	vector<RDOCalcConst *> results;
+	std::vector<RDOCalcConst *> results;
 	RDOCalc *argCalc;
 public:
 	RDOFuncTableCalc(RDOCalc *_argCalc):
@@ -524,8 +523,8 @@ public:
 
 class RDOFunListCalc: public RDOFunCalc
 {
-	vector<RDOCalc *> cases;
-	vector<RDOCalcConst *> results;
+	std::vector<RDOCalc *> cases;
+	std::vector<RDOCalcConst *> results;
 	RDOCalcConst *defaultValue;
 
 public:
@@ -566,12 +565,12 @@ public:
 
 class RDOCalcFunctionCall: public RDOCalc
 {
-	vector<const RDOCalc *> parameters;
+	std::vector<const RDOCalc *> parameters;
 	const RDOFunCalc *const function;
 public:
 	RDOCalcFunctionCall(const RDOFunCalc *const _function): function(_function) {}
 	void addParameter(const RDOCalc *calc) { parameters.push_back(calc); }
-   virtual RDOValue calcValue(RDORuntime *sim) const
+	virtual RDOValue calcValue(RDORuntime *sim) const
 	{
 		sim->pushFuncTop();
 		int size = parameters.size();
@@ -593,8 +592,8 @@ public:
 
 class RDOFunAlgorithmicCalc: public RDOFunCalc
 {
-	vector<RDOCalc *> conditions;
-	vector<RDOCalc *> actions;
+	std::vector<RDOCalc *> conditions;
+	std::vector<RDOCalc *> actions;
 public:
 	void addCalcIf(RDOCalc *cond, RDOCalc *act)
 	{
@@ -758,7 +757,7 @@ class RDOFunCalcIMax: public RDOFunCalc
 {
 public:
    virtual RDOValue calcValue(RDORuntime *sim) const	{
-		return RDOValue((int)_MAX(sim->getFuncArgument(0), sim->getFuncArgument(1)));
+		return RDOValue((int)std::_MAX(sim->getFuncArgument(0), sim->getFuncArgument(1)));
 	}
 };
 
@@ -766,7 +765,7 @@ class RDOFunCalcIMin: public RDOFunCalc
 {
 public:
    virtual RDOValue calcValue(RDORuntime *sim) const	{
-		return RDOValue((int)_MIN(sim->getFuncArgument(0), sim->getFuncArgument(1)));
+		return RDOValue((int)std::_MIN(sim->getFuncArgument(0), sim->getFuncArgument(1)));
 	}
 };
 
@@ -822,7 +821,7 @@ class RDOFunCalcMax: public RDOFunCalc
 {
 public:
    virtual RDOValue calcValue(RDORuntime *sim) const	{
-		return RDOValue(_MAX(sim->getFuncArgument(0), sim->getFuncArgument(1)));
+		return RDOValue(std::_MAX(sim->getFuncArgument(0), sim->getFuncArgument(1)));
 	}
 };
 
@@ -830,7 +829,7 @@ class RDOFunCalcMin: public RDOFunCalc
 {
 public:
    virtual RDOValue calcValue(RDORuntime *sim) const	{
-		return RDOValue(_MIN(sim->getFuncArgument(0), sim->getFuncArgument(1)));
+		return RDOValue(std::_MIN(sim->getFuncArgument(0), sim->getFuncArgument(1)));
 	}
 };
 
@@ -982,7 +981,7 @@ public:
 class RDOSelectResourceCommon
 {
 public:
-   virtual vector<int> getPossibleNumbers(RDORuntime *sim) const = 0;
+	virtual std::vector<int> getPossibleNumbers(RDORuntime *sim) const = 0;
 	virtual bool callChoice(RDORuntime *sim) const = 0;
 };
 
@@ -991,7 +990,7 @@ class RDOSelectResourceDirectCommonCalc: public RDOSelectResourceDirectCalc, pub
 public:
 	RDOSelectResourceDirectCommonCalc(int _relNumb, int _resNumb, RDOPATFirst *_first, RDOPATChoice *_choice):
 		RDOSelectResourceDirectCalc(_relNumb, _resNumb, _first, _choice) {}
-   vector<int> getPossibleNumbers(RDORuntime *sim) const;
+	std::vector<int> getPossibleNumbers(RDORuntime *sim) const;
 	virtual bool callChoice(RDORuntime *sim) const;
 };
 
@@ -1000,21 +999,21 @@ class RDOSelectResourceByTypeCommonCalc: public RDOSelectResourceByTypeCalc, pub
 public:
 	RDOSelectResourceByTypeCommonCalc(int _relNumb, int _resType, RDOPATFirst *_first, RDOPATChoice *_choice):
 		RDOSelectResourceByTypeCalc(_relNumb, _resType, _first, _choice) {}
-   vector<int> getPossibleNumbers(RDORuntime *sim) const;
+	std::vector<int> getPossibleNumbers(RDORuntime *sim) const;
 	virtual bool callChoice(RDORuntime *sim) const;
 };
 
 class RDOSelectResourceCommonCalc: public RDOCalc
 {
 	RDOCalc *choice;
-	vector<RDOSelectResourceCommon *> resSelectors;
+	std::vector<RDOSelectResourceCommon *> resSelectors;
 	bool useCommonWithMax;
 public:
-	RDOSelectResourceCommonCalc(const vector<RDOSelectResourceCommon *> &_resSelectors, bool _useCommonWithMax, RDOCalc *_choice):
+	RDOSelectResourceCommonCalc(const std::vector<RDOSelectResourceCommon *> &_resSelectors, bool _useCommonWithMax, RDOCalc *_choice):
 		resSelectors(_resSelectors), useCommonWithMax(_useCommonWithMax), choice(_choice) {}
-   virtual RDOValue calcValue(RDORuntime *sim) const;
+	virtual RDOValue calcValue(RDORuntime *sim) const;
 private:
-	void getBest(vector<vector<int> > &allNumbs, int level, vector<int> &res, RDOValue &bestVal, RDORuntime *sim, bool &hasBest) const;
+	void getBest(std::vector<std::vector<int> > &allNumbs, int level, std::vector<int> &res, RDOValue &bestVal, RDORuntime *sim, bool &hasBest) const;
 };
 
 
@@ -1026,7 +1025,7 @@ class RDOSetRelParamCalc: public RDOCalc
 public:
 	RDOSetRelParamCalc(int _relNumb, int _parNumb, RDOCalc *_calc):
 		relNumb(_relNumb), parNumb(_parNumb), calc(_calc) {}
-   virtual RDOValue calcValue(RDORuntime *sim) const;
+	virtual RDOValue calcValue(RDORuntime *sim) const;
 };
 
 class RDOSetResourceParamCalc: public RDOCalc
@@ -1047,7 +1046,7 @@ class RDOSetPatternParamCalc: public RDOCalc
 public:
 	RDOSetPatternParamCalc(int _parNumb, RDOValue _val):
 		parNumb(_parNumb), val(_val) {}
-   virtual RDOValue calcValue(RDORuntime *sim) const { sim->setPatternParameter(parNumb, val); return 0; }
+	virtual RDOValue calcValue(RDORuntime *sim) const { sim->setPatternParameter(parNumb, val); return 0; }
 };
 
 class RDOCalcPatParam: public RDOCalc
@@ -1055,7 +1054,7 @@ class RDOCalcPatParam: public RDOCalc
 	int numberOfParam;
 public:
 	RDOCalcPatParam(int _numberOfParam): numberOfParam(_numberOfParam)	{}
-   virtual RDOValue calcValue(RDORuntime *sim) const;
+	virtual RDOValue calcValue(RDORuntime *sim) const;
 };
 
 class RDOCalcGetTimeNow: public RDOCalc
@@ -1075,7 +1074,7 @@ class RDOCalcGetConst: public RDOCalc
 	int number;
 public:
 	RDOCalcGetConst(int _number): number(_number) {}
-   virtual RDOValue calcValue(RDORuntime *sim) const { return sim->getConstValue(number); } 
+	virtual RDOValue calcValue(RDORuntime *sim) const { return sim->getConstValue(number); } 
 };
 
 class RDOCalcSetConst: public RDOCalc
@@ -1084,13 +1083,13 @@ class RDOCalcSetConst: public RDOCalc
 	RDOCalc *value;
 public:
 	RDOCalcSetConst(int _number, RDOCalc *_value): number(_number), value(_value) {}
-   virtual RDOValue calcValue(RDORuntime *sim) const { sim->setConstValue(number, value->calcValueBase(sim)); return 0; } 
+	virtual RDOValue calcValue(RDORuntime *sim) const { sim->setConstValue(number, value->calcValueBase(sim)); return 0; } 
 };
 
 class RDOCalcInt: public RDOCalcUnary
 {
 public:
-   RDOValue calcValue(RDORuntime *sim) const {	return (int)(oper->calcValueBase(sim));	}
+	RDOValue calcValue(RDORuntime *sim) const {	return (int)(oper->calcValueBase(sim));	}
 	RDOCalcInt(RDOCalc *oper): RDOCalcUnary(oper) {}
 };
 

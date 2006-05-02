@@ -18,8 +18,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-using namespace std;
-
 // ----------------------------------------------------------------------------
 // ---------- RDOTracerTreeCtrl
 // ----------------------------------------------------------------------------
@@ -147,7 +145,7 @@ void RDOTracerTreeCtrl::OnDragDrop ( NMHDR * pNotifyStruct, LRESULT* result )
 	*result = 0;
 }
 
-BOOL RDOTracerTreeCtrl::setModelName( const string& modelName )
+BOOL RDOTracerTreeCtrl::setModelName( const std::string& modelName )
 {
 	return SetItemText( rootItem.getTreeItem(), rdo::format( ID_MODEL, modelName.c_str() ).c_str() );
 }
@@ -301,7 +299,7 @@ void RDOTracerTreeCtrl::OnChartFindincharts()
 
 void RDOTracerTreeCtrl::OnHelpKeyword()
 {
-	string filename = studioApp.getFullHelpFileName();
+	std::string filename = studioApp.getFullHelpFileName();
 	if ( filename.empty() ) return;
 	filename += "::/html/work_model_chart_main.htm";
 	::HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_DISPLAY_TOPIC, NULL );

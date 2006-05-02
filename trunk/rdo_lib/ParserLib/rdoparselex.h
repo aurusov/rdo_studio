@@ -8,7 +8,6 @@ int rtpparse( void* lexer );
 int rtplex( int* lpval, void* lexer );
 void rtperror( char* mes );
 //extern int* rtplval;
-*/
 
 int rssparse();
 void rsserror( char *mes );
@@ -54,6 +53,7 @@ int smr2parse(void);
 void smr2error( char *mes );
 int smr2lex(void);
 extern int smr2lval;
+*/
 
 }
 

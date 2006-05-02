@@ -5,8 +5,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-using namespace std;
-
 #include "rdopmd.h"
 #include "rdoparser.h"
 #include "rdorss.h"
@@ -14,13 +12,23 @@ using namespace std;
 #include "rdofun.h"
 #include "rdocalcconst.h"
 #include "rdoruntime.h"
-
+#include "rdoparser_lexer.h"
 
 namespace rdoParse 
 {
 
+int pmdlex( int* lpval, void* lexer )
+{
+	((RDOFlexLexer*)lexer)->m_lpval = lpval;
+	return ((RDOFlexLexer*)lexer)->yylex();
+}
+void pmderror( char* mes )
+{
+	rdoParse::currParser->error( mes );
+}
+
 //////////////////////////// RDOPMDPokaz::RDOPMDPokaz /////////////////////////////////
-RDOPMDPokaz::RDOPMDPokaz(const string *const _name, bool _trace)
+RDOPMDPokaz::RDOPMDPokaz(const std::string *const _name, bool _trace)
 	: name(*_name), RDOPokazTrace(currParser->runTime) 
 {
 	trace = _trace; 
@@ -33,7 +41,7 @@ void RDOPMDPokaz::endOfCreation()
 }
 
 //////////////////////////// RDOPMDWatchPar::RDOPMDWatchPar /////////////////////////////////
-RDOPMDWatchPar::RDOPMDWatchPar(string *_name, bool _trace, string *_resName, string *_parName)
+RDOPMDWatchPar::RDOPMDWatchPar(std::string *_name, bool _trace, std::string *_resName, std::string *_parName)
 	: RDOPMDPokaz(_name, _trace) 
 {
 	const RDORSSResource *const res = currParser->findRSSResource(_resName);
@@ -56,7 +64,7 @@ RDOPMDWatchPar::RDOPMDWatchPar(string *_name, bool _trace, string *_resName, str
 	endOfCreation();
 }
 
-string RDOPMDWatchPar::traceValue()
+std::string RDOPMDWatchPar::traceValue()
 {
 	return toString(currValue);
 }
@@ -114,7 +122,7 @@ bool RDOPMDWatchPar::calcStat(RDOSimulator *sim)
 	double average = sum / (currTime - timeBegin);
 
 	runtime->getResult().width(30);
-	runtime->getResult() << left << name 
+	runtime->getResult() << std::left << name 
 		<< "\t" << traceValue()
 		<< "\t" << watchNumber
 		<< "\t" << average 
@@ -126,13 +134,13 @@ bool RDOPMDWatchPar::calcStat(RDOSimulator *sim)
 }
 
 //////////////////////////// RDOPMDWatchState::RDOPMDWatchState /////////////////////////////////
-RDOPMDWatchState::RDOPMDWatchState(string *_name, bool _trace, RDOFUNLogic *_logic)
+RDOPMDWatchState::RDOPMDWatchState(std::string *_name, bool _trace, RDOFUNLogic *_logic)
 	: RDOPMDPokaz(_name, _trace), logicCalc(_logic->calc)
 {
 	endOfCreation();
 }
 
-string RDOPMDWatchState::traceValue()
+std::string RDOPMDWatchState::traceValue()
 {
 	return currValue?"TRUE":"FALSE";
 }
@@ -218,7 +226,7 @@ bool RDOPMDWatchState::calcStat(RDOSimulator *sim)
 	double average = sum / (currTime - timeBegin);
 
 	runtime->getResult().width(30);
-	runtime->getResult() << left << name 
+	runtime->getResult() << std::left << name 
 		<< "\t" << traceValue() 
 		<< "\t" << watchNumber
 		<< "\t" << average 
@@ -230,7 +238,7 @@ bool RDOPMDWatchState::calcStat(RDOSimulator *sim)
 }
 
 //////////////////////////// RDOPMDWatchQuant::RDOPMDWatchQuant /////////////////////////////////
-RDOPMDWatchQuant::RDOPMDWatchQuant(string *_name, bool _trace, string *_resTypeName)
+RDOPMDWatchQuant::RDOPMDWatchQuant(std::string *_name, bool _trace, std::string *_resTypeName)
 	: RDOPMDPokaz(_name, _trace)
 {
 	funGroup = new RDOFUNGroup(5, _resTypeName);
@@ -249,7 +257,7 @@ void RDOPMDWatchQuant::setLogicNoCheck()
 	currParser->fUNGroupStack.pop_back();
 }
 
-string RDOPMDWatchQuant::traceValue()
+std::string RDOPMDWatchQuant::traceValue()
 {
 	return toString(currValue);
 }
@@ -274,7 +282,7 @@ bool RDOPMDWatchQuant::checkPokaz(RDOSimulator *sim)
 	RDORuntime *runtime = dynamic_cast<RDORuntime *>(sim);
 
 	int newValue = 0;
-	for(vector<RDOResource *>::iterator it = runtime->allResources.begin(); 
+	for(std::vector<RDOResource *>::iterator it = runtime->allResources.begin(); 
 													it != runtime->allResources.end(); it++)
 	{
 		if(*it == NULL)
@@ -324,7 +332,7 @@ bool RDOPMDWatchQuant::calcStat(RDOSimulator *sim)
 	double average = sum / (currTime - timeBegin);
 
 	runtime->getResult().width(30);
-	runtime->getResult() << left << name 
+	runtime->getResult() << std::left << name 
 		<< "\t" << traceValue()
 		<< "\t" << watchNumber
 		<< "\t" << average 
@@ -336,7 +344,7 @@ bool RDOPMDWatchQuant::calcStat(RDOSimulator *sim)
 }
 
 //////////////////////////// RDOPMDWatchValue::RDOPMDWatchValue /////////////////////////////////
-RDOPMDWatchValue::RDOPMDWatchValue(string *_name, bool _trace, string *_resTypeName)
+RDOPMDWatchValue::RDOPMDWatchValue(std::string *_name, bool _trace, std::string *_resTypeName)
 	: RDOPMDPokaz(_name, _trace)
 {
 	funGroup = new RDOFUNGroup(5, _resTypeName);
@@ -358,7 +366,7 @@ void RDOPMDWatchValue::setLogicNoCheck(RDOFUNArithm *_arithm)
 	currParser->fUNGroupStack.pop_back();
 }
 
-string RDOPMDWatchValue::traceValue()
+std::string RDOPMDWatchValue::traceValue()
 {
 	return toString(currValue);
 }
@@ -396,7 +404,7 @@ bool RDOPMDWatchValue::calcStat(RDOSimulator *sim)
 	}
 
 	runtime->getResult().width(30);
-	runtime->getResult() << left << name 
+	runtime->getResult() << std::left << name 
 		<< "\t" << watchNumber
 		<< "\t" << average 
 		<< "\t" << averageSqr
@@ -439,13 +447,13 @@ bool RDOPMDWatchValue::checkResourceErased(RDOResource *res)
 }
 
 //////////////////////////// RDOPMDGetValue::RDOPMDGetValue /////////////////////////////////
-RDOPMDGetValue::RDOPMDGetValue(string *_name, RDOFUNArithm *_arithm)
+RDOPMDGetValue::RDOPMDGetValue(std::string *_name, RDOFUNArithm *_arithm)
 	: RDOPMDPokaz(_name, false), arithmCalc(_arithm->createCalc())
 {
 	endOfCreation();
 }
 
-string RDOPMDGetValue::traceValue()
+std::string RDOPMDGetValue::traceValue()
 {
 	return "ERROR";
 }
@@ -465,35 +473,35 @@ bool RDOPMDGetValue::calcStat(RDOSimulator *sim)
 	RDORuntime *runtime = dynamic_cast<RDORuntime *>(sim);
 
 	runtime->getResult().width(30);
-	runtime->getResult() << left << name 
+	runtime->getResult() << std::left << name 
 		<< "\t" << arithmCalc->calcValueBase(runtime) << '\n';
 
 	return true;
 }
 
-void RDOPMDWatchPar::writePokazStructure(ostream &stream) const
+void RDOPMDWatchPar::writePokazStructure(std::ostream &stream) const
 {
-	stream << "\t" << name << "\t" << traceId() << "\twatch_par" << endl;
+	stream << "\t" << name << "\t" << traceId() << "\twatch_par" << std::endl;
 }
 
-void RDOPMDWatchState::writePokazStructure(ostream &stream) const
+void RDOPMDWatchState::writePokazStructure(std::ostream &stream) const
 {
-	stream << "\t" << name << "\t" << traceId() << "\twatch_state" << endl;
+	stream << "\t" << name << "\t" << traceId() << "\twatch_state" << std::endl;
 }
 
-void RDOPMDWatchQuant::writePokazStructure(ostream &stream) const
+void RDOPMDWatchQuant::writePokazStructure(std::ostream &stream) const
 {
-	stream << "\t" << name << "\t" << traceId() << "\twatch_quant" << endl;
+	stream << "\t" << name << "\t" << traceId() << "\twatch_quant" << std::endl;
 }
 
-void RDOPMDWatchValue::writePokazStructure(ostream &stream) const
+void RDOPMDWatchValue::writePokazStructure(std::ostream &stream) const
 {
-	stream << "\t" << name << "\t" << traceId() << "\twatch_value" << endl;
+	stream << "\t" << name << "\t" << traceId() << "\twatch_value" << std::endl;
 }
 
-void RDOPMDGetValue::writePokazStructure(ostream &stream) const
+void RDOPMDGetValue::writePokazStructure(std::ostream &stream) const
 {
-	stream << "\t" << name << "\t" << traceId() << "\tget_value" << endl;
+	stream << "\t" << name << "\t" << traceId() << "\tget_value" << std::endl;
 }
 
 }		// namespace rdoParse 

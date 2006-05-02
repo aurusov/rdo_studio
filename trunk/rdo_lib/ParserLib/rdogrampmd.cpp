@@ -134,7 +134,11 @@
 # define	active	414
 # define	QUOTED_IDENTIF	415
 
-#line 131 ".\\rdopmd.y"
+#line 1 ".\\rdopmd.y"
+
+#define YYPARSE_PARAM lexer
+#define YYLEX_PARAM lexer
+#line 138 ".\\rdopmd.y"
 
 #include "pch.h"
 #ifdef _DEBUG
@@ -247,11 +251,11 @@ static const short yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined. */
 static const short yyrline[] =
 {
-       0,   154,   156,   158,   159,   161,   162,   163,   165,   167,
-     169,   170,   171,   172,   173,   174,   175,   177,   181,   182,
-     183,   184,   185,   186,   187,   188,   189,   190,   193,   194,
-     195,   196,   197,   198,   199,   200,   201,   202,   204,   206,
-     207,   208,   211,   212,   213,   214,   216,   218,   219
+       0,   161,   163,   165,   166,   168,   169,   170,   172,   174,
+     176,   177,   178,   179,   180,   181,   182,   184,   188,   189,
+     190,   191,   192,   193,   194,   195,   196,   197,   200,   201,
+     202,   203,   204,   205,   206,   207,   208,   209,   211,   213,
+     214,   215,   218,   219,   220,   221,   223,   225,   226
 };
 #endif
 
@@ -401,6 +405,8 @@ static const short yycheck[] =
      134,    -1,   136,    -1,    -1,    -1,    -1,    -1,   134,    -1,
      136
 };
+#define YYPURE 1
+
 /* -*-C-*-  Note some compilers choke on comments on `#line' lines.  */
 #line 3 "..\\System\\bison.simple"
 
@@ -1109,171 +1115,171 @@ yyreduce:
   switch (yyn) {
 
 case 5:
-#line 161 ".\\rdopmd.y"
+#line 168 ".\\rdopmd.y"
 { yyval = 0; ;
     break;}
 case 6:
-#line 162 ".\\rdopmd.y"
+#line 169 ".\\rdopmd.y"
 { yyval = 1; ;
     break;}
 case 7:
-#line 163 ".\\rdopmd.y"
+#line 170 ".\\rdopmd.y"
 { yyval = 0; ;
     break;}
 case 8:
-#line 165 ".\\rdopmd.y"
-{ yyval = (int)(new RDOPMDWatchQuant((string *)yyvsp[-3], yyvsp[-2] != 0, (string *)yyvsp[0])); ;
+#line 172 ".\\rdopmd.y"
+{ yyval = (int)(new RDOPMDWatchQuant((std::string *)yyvsp[-3], yyvsp[-2] != 0, (std::string *)yyvsp[0])); ;
     break;}
 case 9:
-#line 167 ".\\rdopmd.y"
-{ yyval = (int)(new RDOPMDWatchValue((string *)yyvsp[-3], yyvsp[-2] != 0, (string *)yyvsp[0])); ;
+#line 174 ".\\rdopmd.y"
+{ yyval = (int)(new RDOPMDWatchValue((std::string *)yyvsp[-3], yyvsp[-2] != 0, (std::string *)yyvsp[0])); ;
     break;}
 case 10:
-#line 169 ".\\rdopmd.y"
-{ yyval = (int)(new RDOPMDWatchPar(  (string *)yyvsp[-5], yyvsp[-4] != 0, (string *)yyvsp[-2], (string *)yyvsp[0])); ;
+#line 176 ".\\rdopmd.y"
+{ yyval = (int)(new RDOPMDWatchPar(  (std::string *)yyvsp[-5], yyvsp[-4] != 0, (std::string *)yyvsp[-2], (std::string *)yyvsp[0])); ;
     break;}
 case 11:
-#line 170 ".\\rdopmd.y"
-{ yyval = (int)(new RDOPMDWatchState((string *)yyvsp[-3], yyvsp[-2] != 0, (RDOFUNLogic *)yyvsp[0])); ;
+#line 177 ".\\rdopmd.y"
+{ yyval = (int)(new RDOPMDWatchState((std::string *)yyvsp[-3], yyvsp[-2] != 0, (RDOFUNLogic *)yyvsp[0])); ;
     break;}
 case 12:
-#line 171 ".\\rdopmd.y"
+#line 178 ".\\rdopmd.y"
 { ((RDOPMDWatchQuant *)yyvsp[-1])->setLogic((RDOFUNLogic *)yyvsp[0]); yyval = yyvsp[-1]; ;
     break;}
 case 13:
-#line 172 ".\\rdopmd.y"
+#line 179 ".\\rdopmd.y"
 { ((RDOPMDWatchQuant *)yyvsp[-1])->setLogicNoCheck();				yyval = yyvsp[-1]; ;
     break;}
 case 14:
-#line 173 ".\\rdopmd.y"
+#line 180 ".\\rdopmd.y"
 { ((RDOPMDWatchValue *)yyvsp[-2])->setLogic((RDOFUNLogic *)yyvsp[-1],	(RDOFUNArithm *)yyvsp[0]); yyval = yyvsp[-2]; ;
     break;}
 case 15:
-#line 174 ".\\rdopmd.y"
+#line 181 ".\\rdopmd.y"
 { ((RDOPMDWatchValue *)yyvsp[-2])->setLogicNoCheck(					(RDOFUNArithm *)yyvsp[0]);	yyval = yyvsp[-2]; ;
     break;}
 case 16:
-#line 175 ".\\rdopmd.y"
-{ yyval = (int)(new RDOPMDGetValue((string *)yyvsp[-2], (RDOFUNArithm *)yyvsp[0])); ;
+#line 182 ".\\rdopmd.y"
+{ yyval = (int)(new RDOPMDGetValue((std::string *)yyvsp[-2], (RDOFUNArithm *)yyvsp[0])); ;
     break;}
 case 18:
-#line 181 ".\\rdopmd.y"
+#line 188 ".\\rdopmd.y"
 { yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] == *(RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 19:
-#line 182 ".\\rdopmd.y"
+#line 189 ".\\rdopmd.y"
 { yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] != *(RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 20:
-#line 183 ".\\rdopmd.y"
+#line 190 ".\\rdopmd.y"
 { yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] <  *(RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 21:
-#line 184 ".\\rdopmd.y"
+#line 191 ".\\rdopmd.y"
 { yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] >  *(RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 22:
-#line 185 ".\\rdopmd.y"
+#line 192 ".\\rdopmd.y"
 { yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] <= *(RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 23:
-#line 186 ".\\rdopmd.y"
+#line 193 ".\\rdopmd.y"
 { yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] >= *(RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 24:
-#line 187 ".\\rdopmd.y"
+#line 194 ".\\rdopmd.y"
 { yyval = (int)(*(RDOFUNLogic *)yyvsp[-2] && *(RDOFUNLogic *)yyvsp[0]); ;
     break;}
 case 25:
-#line 188 ".\\rdopmd.y"
+#line 195 ".\\rdopmd.y"
 { yyval = (int)(*(RDOFUNLogic *)yyvsp[-2] || *(RDOFUNLogic *)yyvsp[0]); ;
     break;}
 case 26:
-#line 189 ".\\rdopmd.y"
+#line 196 ".\\rdopmd.y"
 { yyval = yyvsp[-1]; ;
     break;}
 case 27:
-#line 190 ".\\rdopmd.y"
+#line 197 ".\\rdopmd.y"
 { yyval = yyvsp[0]; ;
     break;}
 case 28:
-#line 193 ".\\rdopmd.y"
+#line 200 ".\\rdopmd.y"
 { yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] + *(RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 29:
-#line 194 ".\\rdopmd.y"
+#line 201 ".\\rdopmd.y"
 { yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] - *(RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 30:
-#line 195 ".\\rdopmd.y"
+#line 202 ".\\rdopmd.y"
 { yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] * *(RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 31:
-#line 196 ".\\rdopmd.y"
+#line 203 ".\\rdopmd.y"
 { yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] / *(RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 32:
-#line 197 ".\\rdopmd.y"
+#line 204 ".\\rdopmd.y"
 { yyval = yyvsp[-1]; ;
     break;}
 case 34:
-#line 199 ".\\rdopmd.y"
-{ yyval = (int)(new RDOFUNArithm((string *)yyvsp[-2], (string *)yyvsp[0])); ;
+#line 206 ".\\rdopmd.y"
+{ yyval = (int)(new RDOFUNArithm((std::string *)yyvsp[-2], (std::string *)yyvsp[0])); ;
     break;}
 case 35:
-#line 200 ".\\rdopmd.y"
+#line 207 ".\\rdopmd.y"
 { yyval = (int)(new RDOFUNArithm((int)yyvsp[0])); ;
     break;}
 case 36:
-#line 201 ".\\rdopmd.y"
+#line 208 ".\\rdopmd.y"
 { yyval = (int)(new RDOFUNArithm((double*)yyvsp[0])); ;
     break;}
 case 37:
-#line 202 ".\\rdopmd.y"
-{ yyval = (int)(new RDOFUNArithm((string *)yyvsp[0])); ;
+#line 209 ".\\rdopmd.y"
+{ yyval = (int)(new RDOFUNArithm((std::string *)yyvsp[0])); ;
     break;}
 case 38:
-#line 204 ".\\rdopmd.y"
-{ yyval = (int)((RDOFUNParams *)yyvsp[-1])->createCall((string *)yyvsp[-3]) ;
+#line 211 ".\\rdopmd.y"
+{ yyval = (int)((RDOFUNParams *)yyvsp[-1])->createCall((std::string *)yyvsp[-3]) ;
     break;}
 case 39:
-#line 206 ".\\rdopmd.y"
+#line 213 ".\\rdopmd.y"
 { yyval = (int)(new RDOFUNParams()); ;
     break;}
 case 40:
-#line 207 ".\\rdopmd.y"
+#line 214 ".\\rdopmd.y"
 { yyval = (int)(((RDOFUNParams *)yyvsp[-1])->addParameter((RDOFUNArithm *)yyvsp[0])); ;
     break;}
 case 41:
-#line 208 ".\\rdopmd.y"
+#line 215 ".\\rdopmd.y"
 { yyval = (int)(((RDOFUNParams *)yyvsp[-2])->addParameter((RDOFUNArithm *)yyvsp[0])); ;
     break;}
 case 42:
-#line 211 ".\\rdopmd.y"
+#line 218 ".\\rdopmd.y"
 { yyval = 1; ;
     break;}
 case 43:
-#line 212 ".\\rdopmd.y"
+#line 219 ".\\rdopmd.y"
 { yyval = 2; ;
     break;}
 case 44:
-#line 213 ".\\rdopmd.y"
+#line 220 ".\\rdopmd.y"
 { yyval = 3; ;
     break;}
 case 45:
-#line 214 ".\\rdopmd.y"
+#line 221 ".\\rdopmd.y"
 { yyval = 4; ;
     break;}
 case 46:
-#line 216 ".\\rdopmd.y"
-{ yyval = (int)(new RDOFUNGroup(yyvsp[-2], (string *)yyvsp[0])); ;
+#line 223 ".\\rdopmd.y"
+{ yyval = (int)(new RDOFUNGroup(yyvsp[-2], (std::string *)yyvsp[0])); ;
     break;}
 case 47:
-#line 218 ".\\rdopmd.y"
+#line 225 ".\\rdopmd.y"
 { yyval = (int)(((RDOFUNGroup *)yyvsp[-2])->createFunLogin((RDOFUNLogic *)yyvsp[-1])); ;
     break;}
 case 48:
-#line 219 ".\\rdopmd.y"
+#line 226 ".\\rdopmd.y"
 { yyval = (int)(((RDOFUNGroup *)yyvsp[-2])->createFunLogin()); ;
     break;}
 }
@@ -1509,7 +1515,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 226 ".\\rdopmd.y"
+#line 233 ".\\rdopmd.y"
 
 
 }

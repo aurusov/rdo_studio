@@ -1,3 +1,10 @@
+%{
+#define YYPARSE_PARAM lexer
+#define YYLEX_PARAM lexer
+%}
+
+%pure-parser
+
 %token Resource_type		257
 %token permanent			258
 %token Parameters			259
@@ -148,15 +155,15 @@ namespace rdoParse
 
 %%
 
-smr_model: Model_name '=' IDENTIF		{ $$ = (int)(new RDOSMR((string *)$3)); };
+smr_model: Model_name '=' IDENTIF		{ $$ = (int)(new RDOSMR((std::string *)$3)); };
 
 smr_descr: smr_model
-		|	smr_descr Resource_file		'=' IDENTIF			{ ((RDOSMR *)$1)->setValue("Resource_file",	&RDOSMR::resourceFileName,	(string *)$4); $$ = $1; }
-		|	smr_descr OprIev_file		'=' IDENTIF			{ ((RDOSMR *)$1)->setValue("OprIev_file",		&RDOSMR::oprIevFileName,	(string *)$4); $$ = $1; }
-		|	smr_descr Frame_file			'=' IDENTIF			{ ((RDOSMR *)$1)->setValue("Frame_file",		&RDOSMR::frameFileName,		(string *)$4); $$ = $1; }
-		|	smr_descr Statistic_file	'=' IDENTIF			{ ((RDOSMR *)$1)->setValue("Statistic_file",	&RDOSMR::statisticFileName,(string *)$4); $$ = $1; }
-		|	smr_descr Results_file		'=' IDENTIF			{ ((RDOSMR *)$1)->setValue("Results_file",	&RDOSMR::resultsFileName,	(string *)$4); $$ = $1; }
-		|	smr_descr Trace_file			'=' IDENTIF			{ ((RDOSMR *)$1)->setValue("Trace_file",		&RDOSMR::traceFileName,		(string *)$4); $$ = $1; }
+		|	smr_descr Resource_file		'=' IDENTIF			{ ((RDOSMR *)$1)->setValue("Resource_file",	&RDOSMR::resourceFileName,	(std::string *)$4); $$ = $1; }
+		|	smr_descr OprIev_file		'=' IDENTIF			{ ((RDOSMR *)$1)->setValue("OprIev_file",		&RDOSMR::oprIevFileName,	(std::string *)$4); $$ = $1; }
+		|	smr_descr Frame_file			'=' IDENTIF			{ ((RDOSMR *)$1)->setValue("Frame_file",		&RDOSMR::frameFileName,		(std::string *)$4); $$ = $1; }
+		|	smr_descr Statistic_file	'=' IDENTIF			{ ((RDOSMR *)$1)->setValue("Statistic_file",	&RDOSMR::statisticFileName,(std::string *)$4); $$ = $1; }
+		|	smr_descr Results_file		'=' IDENTIF			{ ((RDOSMR *)$1)->setValue("Results_file",	&RDOSMR::resultsFileName,	(std::string *)$4); $$ = $1; }
+		|	smr_descr Trace_file			'=' IDENTIF			{ ((RDOSMR *)$1)->setValue("Trace_file",		&RDOSMR::traceFileName,		(std::string *)$4); $$ = $1; }
 		|	smr_descr Show_mode			'=' smr_show_mode	{ ((RDOSMR *)$1)->setShowMode((RDOSimulatorNS::ShowMode)$4); $$ = $1; }
 		|	smr_descr Frame_number		'=' INT_CONST		{ ((RDOSMR *)$1)->setFrameNumber($4); $$ = $1; }
 		|	smr_descr Show_rate			'=' REAL_CONST		{ ((RDOSMR *)$1)->setValue("Show_rate",		&RDOSMR::showRate,			(double *)$4); $$ = $1; }

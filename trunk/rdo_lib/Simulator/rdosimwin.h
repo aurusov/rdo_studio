@@ -14,8 +14,6 @@
 #include <rdobinarystream.h>
 #include <rdocommon.h>
 
-using namespace std;
-
 namespace rdoRuntime {
 	class RDORuntime;
 	class RDOResult;
@@ -53,11 +51,11 @@ class RdoSimulator
 
 	CWinThread* th;
 
-	vector<RDOFrame *> frames;
-	vector<int> scanCodes;
+	std::vector<RDOFrame *> frames;
+	std::vector<int> scanCodes;
 //	bool shiftPressed;
 //	bool ctrlPressed;
-	vector<string> areasActivated;
+	std::vector<std::string> areasActivated;
 
 	void terminateModel();
 	void closeModel(); 
@@ -65,32 +63,32 @@ class RdoSimulator
 	ShowMode showMode; // current show mode
 	double showRate; // current show mode
 
-	stringstream resultString;
+	std::stringstream resultString;
 public:
 	RdoSimulator();
 	~RdoSimulator();
 	bool parseModel();
 	void runModel();
 	void stopModel();
-	vector<RDOSyntaxError>* getErrors();
+	std::vector<RDOSyntaxError>* getErrors();
 	double getModelTime();
 	void parseSMRFileInfo( rdo::binarystream& smr, rdoModelObjects::RDOSMRFileInfo& info );
 
-	const vector<RDOFrame *>& getFrames();
+	const std::vector<RDOFrame *>& getFrames();
 //	void addKeyPressed(int scanCode);
 	void keyDown(int scanCode);
 	void keyUp(int scanCode);
-	void addAreaPressed(string& areaName);
+	void addAreaPressed(std::string& areaName);
 
-	vector<const string *> getAllFrames();
-	vector<const string *> getAllBitmaps();
+	std::vector<const std::string *> getAllFrames();
+	std::vector<const std::string *> getAllBitmaps();
 
 	ShowMode getInitialShowMode();
 	int getInitialFrameNumber();
 	double getInitialShowRate();
 
-	stringstream &getModelStructure();
-	stringstream &getResults();
+	std::stringstream &getModelStructure();
+	std::stringstream &getResults();
 
 	ShowMode getShowMode() { return showMode; }
 	void setShowMode(ShowMode _showMode) { showMode = _showMode; }
@@ -99,7 +97,7 @@ public:
 
 	friend UINT RunningThreadControllingFunction( LPVOID pParam );
 	friend void frameCallBack(rdoRuntime::RDOConfig *config, void *param);
-	friend void tracerCallBack(string *newString, void *param);
+	friend void tracerCallBack(std::string *newString, void *param);
 };
 
 } // namespace RDOSimulatorNS

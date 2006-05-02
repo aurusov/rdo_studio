@@ -12,11 +12,22 @@ static char THIS_FILE[] = __FILE__;
 #include "rdortp.h"
 #include "rdopatrtime.h"
 #include "rdoruntime.h"
+#include "rdoparser_lexer.h"
 
 namespace rdoParse 
 {
 
-RDOPATPattern::RDOPATPattern(const string *const _name, const bool _trace):
+int patlex( int* lpval, void* lexer )
+{
+	((RDOFlexLexer*)lexer)->m_lpval = lpval;
+	return ((RDOFlexLexer*)lexer)->yylex();
+}
+void paterror( char* mes )
+{
+	rdoParse::currParser->error( mes );
+}
+
+RDOPATPattern::RDOPATPattern(const std::string *const _name, const bool _trace):
 	name(_name), trace(_trace), useCommonChoice(false)
 {
 	if(currParser->findPattern(name))
@@ -41,7 +52,7 @@ void RDOPATPattern::testGoodForFreeActivity() const
 	currParser->error("Only IEs and KEYBOARD OPERATIONs can be used in free activity");
 }
 
-string RDOPATPattern::getPatternId() const
+std::string RDOPATPattern::getPatternId() const
 { 
 	return patRuntime->getPatternId(); 
 }
@@ -52,13 +63,13 @@ int RDOPATPattern::writeModelStructure() const
 	for(int i = 0; i < relRes.size(); i++)
 		currParser->modelStructure << " " << relRes.at(i)->getType()->getType();
 
-	currParser->modelStructure << endl;
+	currParser->modelStructure << std::endl;
 	return 0;
 }
 
 void RDOPATPatternRule::testGoodForSearchActivity() const
 {
-	for(vector<RDORelevantResource *>::const_iterator i = relRes.begin();
+	for(std::vector<RDORelevantResource *>::const_iterator i = relRes.begin();
 			i != relRes.end(); i++)
 	{
 		if(((*i)->begin == CS_Create) ||
@@ -69,10 +80,10 @@ void RDOPATPatternRule::testGoodForSearchActivity() const
 	}
 }
 
-const RDOFUNFunctionParam *RDOPATPattern::findPATPatternParam(const string *const paramName) const
+const RDOFUNFunctionParam *RDOPATPattern::findPATPatternParam(const std::string *const paramName) const
 {
-	vector<RDOFUNFunctionParam *>::const_iterator it = 
-		find_if(params.begin(), params.end(), compareName<RDOFUNFunctionParam>(paramName));
+	std::vector<RDOFUNFunctionParam *>::const_iterator it = 
+		std::find_if(params.begin(), params.end(), compareName<RDOFUNFunctionParam>(paramName));
 
 	if(it == params.end())
 		return NULL;
@@ -80,10 +91,10 @@ const RDOFUNFunctionParam *RDOPATPattern::findPATPatternParam(const string *cons
 	return (*it);
 }
 
-const RDORelevantResource *RDOPATPattern::findRelevantResource(const string *const resName) const
+const RDORelevantResource *RDOPATPattern::findRelevantResource(const std::string *const resName) const
 {
-	vector<RDORelevantResource *>::const_iterator it = 
-		find_if(relRes.begin(), relRes.end(), compareName<RDORelevantResource>(resName));
+	std::vector<RDORelevantResource *>::const_iterator it = 
+		std::find_if(relRes.begin(), relRes.end(), compareName<RDORelevantResource>(resName));
 
 	if(it == relRes.end())
 		return NULL;
@@ -91,10 +102,10 @@ const RDORelevantResource *RDOPATPattern::findRelevantResource(const string *con
 	return (*it);
 }
 
-int RDOPATPattern::findPATPatternParamNum(const string *const paramName)	const
+int RDOPATPattern::findPATPatternParamNum(const std::string *const paramName)	const
 {
-	vector<RDOFUNFunctionParam *>::const_iterator it = 
-		find_if(params.begin(), params.end(), compareName<RDOFUNFunctionParam>(paramName));
+	std::vector<RDOFUNFunctionParam *>::const_iterator it = 
+		std::find_if(params.begin(), params.end(), compareName<RDOFUNFunctionParam>(paramName));
 
 	if(it == params.end())
 		return -1;
@@ -102,10 +113,10 @@ int RDOPATPattern::findPATPatternParamNum(const string *const paramName)	const
 	return it - params.begin();
 }
 
-int RDOPATPattern::findRelevantResourceNum(const string *const resName) const
+int RDOPATPattern::findRelevantResourceNum(const std::string *const resName) const
 {
-	vector<RDORelevantResource *>::const_iterator it = 
-		find_if(relRes.begin(), relRes.end(), compareName<RDORelevantResource>(resName));
+	std::vector<RDORelevantResource *>::const_iterator it = 
+		std::find_if(relRes.begin(), relRes.end(), compareName<RDORelevantResource>(resName));
 
 	if(it == relRes.end())
 		return -1;
@@ -121,20 +132,20 @@ void RDOPATPattern::add(RDOFUNFunctionParam *const _param)
 	params.push_back(_param); 
 }
 
-void RDOPATPattern::addRelRes(string *relName, string *res, ConvertStatus beg, ConvertStatus end)
+void RDOPATPattern::addRelRes(std::string *relName, std::string *res, ConvertStatus beg, ConvertStatus end)
 {
 	currParser->error("Needed 1 converter status for this pattern type");
 }
-void RDOPATPattern::addRelRes(string *relName, string *res, ConvertStatus beg)
+void RDOPATPattern::addRelRes(std::string *relName, std::string *res, ConvertStatus beg)
 {
 	currParser->error("Needed 2 converter statuses for this pattern type");
 }
-void RDOPATPattern::addRelRes(string *relName, string *resName, string *convBeg)
+void RDOPATPattern::addRelRes(std::string *relName, std::string *resName, std::string *convBeg)
 {
 	currParser->error("Needed 1 converter status for this pattern type");
 }
 
-void RDOPATPatternOperation::addRelRes(string *relName, string *resName, string *convBeg)
+void RDOPATPatternOperation::addRelRes(std::string *relName, std::string *resName, std::string *convBeg)
 {
 	ConvertStatus beg;
 	if(!convBeg->compare("Keep"))
@@ -153,7 +164,7 @@ void RDOPATPatternOperation::addRelRes(string *relName, string *resName, string 
 	addRelRes(relName, resName, beg, CS_NoChange);
 }
 
-void RDOPATPatternOperation::addRelRes(string *relName, string *resName, ConvertStatus beg, ConvertStatus end)
+void RDOPATPatternOperation::addRelRes(std::string *relName, std::string *resName, ConvertStatus beg, ConvertStatus end)
 {
 	switch(beg)
 	{
@@ -206,7 +217,7 @@ void RDOPATPatternOperation::addRelRes(string *relName, string *resName, Convert
 	relRes.push_back(new RDORelevantResourceByType(relName, relRes.size(), type, beg, end));
 }
 
-void RDOPATPatternRule::addRelRes(string *relName, string *resName, ConvertStatus beg)
+void RDOPATPatternRule::addRelRes(std::string *relName, std::string *resName, ConvertStatus beg)
 {
 	if(beg == CS_NonExist)
 		currParser->error("Cannot use NonExist status in rule");
@@ -234,7 +245,7 @@ void RDOPATPatternRule::addRelRes(string *relName, string *resName, ConvertStatu
 	relRes.push_back(new RDORelevantResourceByType(relName, relRes.size(), type, beg));
 }
 
-void RDOPATPatternEvent::addRelRes(string *relName, string *resName, ConvertStatus beg)
+void RDOPATPatternEvent::addRelRes(std::string *relName, std::string *resName, ConvertStatus beg)
 {
 	const RDORSSResource *const res = currParser->findRSSResource(resName);
 	if(res)
@@ -280,10 +291,10 @@ void RDOPATPattern::setTime(RDOFUNArithm *arithm)
 //	time = arithm; 
 }
 
-void RDOPATPattern::addRelResBody(string *resName) 
+void RDOPATPattern::addRelResBody(std::string *resName) 
 { 
-	vector<RDORelevantResource *>::const_iterator it = 
-		find_if(relRes.begin(), relRes.end(), compareName<RDORelevantResource>(resName));
+	std::vector<RDORelevantResource *>::const_iterator it = 
+		std::find_if(relRes.begin(), relRes.end(), compareName<RDORelevantResource>(resName));
 
 	if(it == relRes.end())
 		currParser->error("Name of relevant resource expected instead of: " + *resName);
@@ -348,7 +359,7 @@ void RDOPATPattern::end()
 			return;
 		}
 
-		vector<RDOSelectResourceCommon *> resSelectors;
+		std::vector<RDOSelectResourceCommon *> resSelectors;
 		for(int i = 0; i < size; i++)
 			resSelectors.push_back(relRes.at(i)->createSelectResourceCommonChoiceCalc());
 
@@ -382,7 +393,7 @@ void RDOPATPattern::addRelResConvert()
 		patRuntime->addEndCalc(new RDOCalcEraseRes(currRelRes->numberOfResource));
 }
 
-RDOPATPatternOperation::RDOPATPatternOperation(string *_name, bool _trace, int patternCounter):
+RDOPATPatternOperation::RDOPATPatternOperation(std::string *_name, bool _trace, int patternCounter):
 	RDOPATPattern(_name, _trace) 
 { 
 //	currParser->runTime->addRuntimeOperation((RDOOperationRuntime *)(patRuntime = new RDOOperationRuntime(currParser->runTime, _trace))); 
@@ -390,18 +401,18 @@ RDOPATPatternOperation::RDOPATPatternOperation(string *_name, bool _trace, int p
 	patRuntime->setPatternId(patternCounter);
 }
 
-RDOPATPatternOperation::RDOPATPatternOperation(string *_name, bool _trace):
+RDOPATPatternOperation::RDOPATPatternOperation(std::string *_name, bool _trace):
 	RDOPATPattern(_name, _trace) 
 {}
 
-RDOPATPatternKeyboard::RDOPATPatternKeyboard(string *_name, bool _trace, int patternCounter)
+RDOPATPatternKeyboard::RDOPATPatternKeyboard(std::string *_name, bool _trace, int patternCounter)
 	: RDOPATPatternOperation(_name, _trace)
 {
 	patRuntime = new RDOKeyboardRuntime(currParser->runTime, _trace); 
 	patRuntime->setPatternId(patternCounter);
 }
  
-RDOPATPatternEvent::RDOPATPatternEvent(string *_name, bool _trace, int patternCounter):
+RDOPATPatternEvent::RDOPATPatternEvent(std::string *_name, bool _trace, int patternCounter):
 	RDOPATPattern(_name, _trace) 
 { 
 //	currParser->runTime->addRuntimeIE((RDOIERuntime *)(patRuntime = new RDOIERuntime(currParser->runTime, _trace))); 
@@ -409,7 +420,7 @@ RDOPATPatternEvent::RDOPATPatternEvent(string *_name, bool _trace, int patternCo
 	patRuntime->setPatternId(patternCounter);
 }
 
-RDOPATPatternRule::RDOPATPatternRule(string *_name, bool _trace, int patternCounter):
+RDOPATPatternRule::RDOPATPatternRule(std::string *_name, bool _trace, int patternCounter):
 	RDOPATPattern(_name, _trace) 
 { 
 //	currParser->runTime->addRuntimeRule((RDORuleRuntime *)(patRuntime = new RDORuleRuntime(currParser->runTime, _trace))); 
@@ -475,20 +486,20 @@ void RDOPATParamsSet::checkParamsNumbers(RDORelevantResource *currRelRes)
 		if(parNumb == -1)
 			currParser->error("Wrong resource parameter name: " + *paramNames.at(i));
 
-		if(find(paramNumbs.begin(), paramNumbs.end(), parNumb) != paramNumbs.end())
+		if(std::find(paramNumbs.begin(), paramNumbs.end(), parNumb) != paramNumbs.end())
 			currParser->error("Second appearence of the same resource parameter name: " + *paramNames.at(i));
 
 		paramNumbs.push_back(parNumb);
 	}
 }
 
-void RDOPATParamsSet::addIdentif(string *paramName, RDOFUNArithm *paramArithm)
+void RDOPATParamsSet::addIdentif(std::string *paramName, RDOFUNArithm *paramArithm)
 {
 	paramNames.push_back(paramName);
 	paramArithms.push_back(paramArithm);
 }
 
-void RDOPATParamsSet::addIdentif(string *paramName)
+void RDOPATParamsSet::addIdentif(std::string *paramName)
 {
 	paramNames.push_back(paramName);
 	paramArithms.push_back(NULL);

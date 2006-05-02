@@ -87,7 +87,7 @@ void RDOFindEdit::setEditorStyle( RDOFindEditStyle* _style )
 	sendEditor( SCI_STYLESETCHARACTERSET, SCE_FIND_KEYWORD, style->font->characterSet );
 }
 
-void RDOFindEdit::setKeyword( const string& keyword, const bool matchCase ) const
+void RDOFindEdit::setKeyword( const std::string& keyword, const bool matchCase ) const
 {
 	sendEditorString( SCI_SETPROPERTY, reinterpret_cast<unsigned long>("find_matchcase"), matchCase ? "1" : "0" );
 	sendEditorString( SCI_SETKEYWORDS, SCI_RDO_ENDOFLINEONLY_KEYWORDSINDEX, keyword.c_str() );
@@ -107,7 +107,7 @@ void RDOFindEdit::OnUpdateModifyStatusBar( CCmdUI *pCmdUI )
 
 void RDOFindEdit::OnHelpKeyword()
 {
-	string filename = studioApp.getFullHelpFileName();
+	std::string filename = studioApp.getFullHelpFileName();
 	if ( filename.empty() ) return;
 	filename += "::/html/work_model_find_in_model.htm";
 	::HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_DISPLAY_TOPIC, NULL );

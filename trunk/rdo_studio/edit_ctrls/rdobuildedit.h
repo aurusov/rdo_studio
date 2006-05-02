@@ -15,10 +15,10 @@ protected:
 	bool error;
 
 public:
-	RDOBuildEditLineInfo( const string& _message, const rdoModelObjects::RDOFileType _fileType = rdoModelObjects::PAT, const int _lineNumber = -1, bool _error = true );
+	RDOBuildEditLineInfo( const std::string& _message, const rdoModelObjects::RDOFileType _fileType = rdoModelObjects::PAT, const int _lineNumber = -1, bool _error = true );
 	~RDOBuildEditLineInfo();
 
-	virtual string getMessage() const;
+	virtual std::string getMessage() const;
 };
 
 // ----------------------------------------------------------------------------

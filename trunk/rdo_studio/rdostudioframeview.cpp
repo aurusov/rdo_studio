@@ -311,8 +311,8 @@ void RDOStudioFrameView::OnLButtonDown(UINT nFlags, CPoint point)
 
 	point.Offset( xPos, yPos );
 	RDOStudioFrameManager::Frame* frame = frameManager->frames[index];
-	vector< RDOStudioFrameManager::Area* >* areas_sim = &frame->areas_sim;
-	vector< RDOStudioFrameManager::Area* >::iterator it = areas_sim->begin();
+	std::vector< RDOStudioFrameManager::Area* >* areas_sim = &frame->areas_sim;
+	std::vector< RDOStudioFrameManager::Area* >::iterator it = areas_sim->begin();
 	while ( it != areas_sim->end() ) {
 		RDOStudioFrameManager::Area* area = *it++;
 		CRect rect( area->x, area->y, area->x + area->w, area->y + area->h );
@@ -449,7 +449,7 @@ void RDOStudioFrameView::onDraw()
 
 void RDOStudioFrameView::OnHelpKeyword()
 {
-	string filename = studioApp.getFullHelpFileName();
+	std::string filename = studioApp.getFullHelpFileName();
 	if ( filename.empty() ) return;
 	filename += "::/html/work_model_frame.htm";
 	::HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_DISPLAY_TOPIC, NULL );

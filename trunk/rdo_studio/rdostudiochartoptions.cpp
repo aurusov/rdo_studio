@@ -11,8 +11,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-using namespace std;
-
 #define MIN_X_Y_M   2
 #define MAX_X_Y     100
 #define MAX_M       6
@@ -69,7 +67,7 @@ BOOL RDOStudioChartOptionsChart::OnInitDialog()
 
 	RDOStudioChartDoc* doc = sheet->view->GetDocument();
 
-	for ( vector< RDOStudioDocSerie* >::iterator it = doc->series.begin(); it != doc->series.end(); it++ ) {
+	for ( std::vector< RDOStudioDocSerie* >::iterator it = doc->series.begin(); it != doc->series.end(); it++ ) {
 		m_AxisSerieCombo.AddString( (*it)->serie->getTitle().c_str() );
 	}
 	
@@ -238,7 +236,7 @@ BOOL RDOStudioChartOptionsSeries::OnInitDialog()
 
 	RDOStudioChartDoc* doc = sheet->view->GetDocument();
 
-	for ( vector< RDOStudioDocSerie* >::iterator it = doc->series.begin(); it != doc->series.end(); it++ ) {
+	for ( std::vector< RDOStudioDocSerie* >::iterator it = doc->series.begin(); it != doc->series.end(); it++ ) {
 		m_SerieCombo.AddString( (*it)->serie->getTitle().c_str() );
 	}
 	
@@ -448,7 +446,7 @@ void RDOStudioChartOptions::onHelpButton()
 
 BOOL RDOStudioChartOptions::OnHelpInfo(HELPINFO* pHelpInfo) 
 {
-	string filename = studioApp.getFullHelpFileName();
+	std::string filename = studioApp.getFullHelpFileName();
 	if ( filename.empty() ) return TRUE;
 
 	if ( pHelpInfo->iContextType == HELPINFO_WINDOW )

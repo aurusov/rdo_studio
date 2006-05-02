@@ -19,7 +19,6 @@
 #include <rdobinarystream.h>
 #include <rdoplugin.h>
 
-using namespace std;
 using namespace rdoEditor;
 using namespace RDOSimulatorNS;
 
@@ -92,7 +91,7 @@ void RDOStudioModel::newModel( const bool _useTemplate )
 	output->updateLogConnection();
 }
 
-bool RDOStudioModel::openModel( const string& modelName ) const
+bool RDOStudioModel::openModel( const std::string& modelName ) const
 {
 	RDOStudioOutput* output = &studioApp.mainFrame->output;
 	output->clearBuild();
@@ -243,7 +242,7 @@ void RDOStudioModel::endExecuteModelNotify()
 	output->appendStringToDebug( rdo::format( IDS_MODEL_FINISHED ) );
 	const_cast<rdoEditCtrl::RDODebugEdit*>(output->getDebug())->UpdateWindow();
 
-	string str = kernel.getSimulator()->getResults().str();
+	std::string str = kernel.getSimulator()->getResults().str();
 	if ( str.length() ) {
 		rdo::binarystream stream;
 		stream.write( str.c_str(), str.length() );
@@ -279,9 +278,9 @@ void RDOStudioModel::stopModelFromSimulator()
 void RDOStudioModel::parseSuccessNotify()
 {
 	RDOStudioOutput* output = &studioApp.mainFrame->output;
-	vector<RDOSyntaxError>* errors = kernel.getSimulator()->getErrors();
+	std::vector<RDOSyntaxError>* errors = kernel.getSimulator()->getErrors();
 	int i = 0;
-	for ( vector<RDOSyntaxError>::iterator it = errors->begin(); it != errors->end(); it++ ) {
+	for ( std::vector<RDOSyntaxError>::iterator it = errors->begin(); it != errors->end(); it++ ) {
 		output->appendStringToBuild( it->message, it->file, it->lineNo - 1 );
 		i++;
 	}
@@ -295,9 +294,9 @@ void RDOStudioModel::parseSuccessNotify()
 void RDOStudioModel::parseErrorNotify()
 {
 	RDOStudioOutput* output = &studioApp.mainFrame->output;
-	vector<RDOSyntaxError>* errors = kernel.getSimulator()->getErrors();
+	std::vector<RDOSyntaxError>* errors = kernel.getSimulator()->getErrors();
 	int i = 0;
-	for ( vector<RDOSyntaxError>::iterator it = errors->begin(); it != errors->end(); it++ ) {
+	for ( std::vector<RDOSyntaxError>::iterator it = errors->begin(); it != errors->end(); it++ ) {
 		output->appendStringToBuild( it->message, it->file, it->lineNo - 1 );
 		i++;
 	}
@@ -315,9 +314,9 @@ void RDOStudioModel::executeErrorNotify()
 	output->clearBuild();
 	output->showBuild();
 	output->appendStringToBuild( rdo::format( IDS_MODEL_RUNTIMEERROR ) );
-	vector<RDOSyntaxError>* errors = kernel.getSimulator()->getErrors();
+	std::vector<RDOSyntaxError>* errors = kernel.getSimulator()->getErrors();
 	int i = 0;
-	for ( vector<RDOSyntaxError>::iterator it = errors->begin(); it != errors->end(); it++ ) {
+	for ( std::vector<RDOSyntaxError>::iterator it = errors->begin(); it != errors->end(); it++ ) {
 		output->appendStringToBuild( it->message, it->file, it->lineNo - 1 );
 		i++;
 	}
@@ -334,12 +333,12 @@ void RDOStudioModel::showFrameNotify()
 	model->showFrame();
 }
 
-void RDOStudioModel::buildNotify( const string& str )
+void RDOStudioModel::buildNotify( const std::string& str )
 {
 	studioApp.mainFrame->output.appendStringToBuild( str );
 }
 
-void RDOStudioModel::debugNotify( const string& str )
+void RDOStudioModel::debugNotify( const std::string& str )
 {
 	studioApp.mainFrame->output.appendStringToDebug( str );
 }
@@ -413,7 +412,7 @@ void RDOStudioModel::newModelFromRepository()
 						case rdoModelObjects::SMR: resID = ID_INSERT_SMR_SMR; break;
 					}
 					if ( resID != - 1 ) {
-						string s = rdo::format( resID );
+						std::string s = rdo::format( resID );
 						if ( !s.empty() ) {
 							int incPos = -1;
 							switch ( resID ) {
@@ -473,7 +472,7 @@ void RDOStudioModel::openModelFromRepository()
 				}
 				studioApp.mainFrame->stepProgress();
 				if ( canLoad ) {
-					bool stream_error = stream.rdstate() & ios_base::failbit ? true : false;
+					bool stream_error = stream.rdstate() & std::ios_base::failbit ? true : false;
 					if ( !stream_error ) {
 						bool readonly = kernel.getRepository()->isReadOnly( type );
 						edit->load( stream );
@@ -618,7 +617,7 @@ void RDOStudioModel::canNotCloseModelFromRepository() const
 	}
 }
 
-string RDOStudioModel::getName() const
+std::string RDOStudioModel::getName() const
 {
 	RDOStudioModelDoc* doc = getModelDoc();
 	if ( doc ) {
@@ -627,7 +626,7 @@ string RDOStudioModel::getName() const
 	return "";
 }
 
-void RDOStudioModel::setName( const string& str )
+void RDOStudioModel::setName( const std::string& str )
 {
 	RDOStudioModelDoc* doc = getModelDoc();
 	bool flag = false;
@@ -669,15 +668,15 @@ void RDOStudioModel::beforeModelStart()
 		output->appendStringToDebug( rdo::format( IDS_MODEL_RESOURCE_LOADING_BEGIN ) );
 		const_cast<rdoEditCtrl::RDODebugEdit*>(output->getDebug())->UpdateWindow();
 
-		vector< const string* > bitmaps = kernel.getSimulator()->getAllBitmaps();
-		vector< const string* >::iterator bmp = bitmaps.begin();
+		std::vector< const std::string* > bitmaps = kernel.getSimulator()->getAllBitmaps();
+		std::vector< const std::string* >::iterator bmp = bitmaps.begin();
 		while ( bmp != bitmaps.end() ) {
 			frameManager.bmp_insert( *(*bmp) );
 			bmp++;
 		}
 
-		vector< const string* > frames = kernel.getSimulator()->getAllFrames();
-		vector< const string* >::iterator it = frames.begin();
+		std::vector< const std::string* > frames = kernel.getSimulator()->getAllFrames();
+		std::vector< const std::string* >::iterator it = frames.begin();
 		while ( it != frames.end() ) {
 			frameManager.insertItem( *(*it) );
 			it++;
@@ -709,8 +708,8 @@ void RDOStudioModel::showFrame()
 //	while ( getShowMode() == SM_Monitor ) {
 //		::Sleep( 500 );
 //	}
-	const vector<RDOFrame *>& frames = kernel.getSimulator()->getFrames();
-	vector<RDOFrame *>::const_iterator it = frames.begin();
+	const std::vector<RDOFrame *>& frames = kernel.getSimulator()->getFrames();
+	std::vector<RDOFrame *>::const_iterator it = frames.begin();
 	int index = 0;
 	while ( it != frames.end() ) {
 		if ( *it ) {

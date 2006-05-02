@@ -147,11 +147,8 @@ static char THIS_FILE[] = __FILE__;
 //#include "rdoparselex.h"
 #include "rdortp.h"
 
-namespace rdoParse 
+namespace rdoParse
 {
-int rtpparse( void* lexer );
-int rtplex( int* lpval, void* lexer );
-void rtperror( char* mes );
 %}
 
 %%
@@ -160,7 +157,7 @@ rtp_list:
          | rtp_list rtp_res_type;
 
 rtp_res_type_hdr:	Resource_type IDENTIF_COLON rtp_vid_res {
-	string *name = (string *)$2;
+	std::string *name = (std::string *)$2;
 	if(currParser->findRTPResType(name))
 		currParser->error(("Second appearance of the same resource type : " + *(name)).c_str());
 
@@ -183,7 +180,7 @@ rtp_body:
 
 
 rtp_param_desc: IDENTIF_COLON rtp_param_type	{
-						string *name = (string *)$1;
+						std::string *name = (std::string *)$1;
 						RDORTPResParam *parType = (RDORTPResParam *)$2;
 						RDORTPParamDesc *param = new RDORTPParamDesc(name, parType);
 						currParser->allRTPParamDesc.push_back(param);
@@ -191,7 +188,7 @@ rtp_param_desc: IDENTIF_COLON rtp_param_type	{
 					};
          
 rtp_enum_default_val:	{	$$ = (int)(new RDORTPEnumDefVal()); }
-         | '=' IDENTIF	{	$$ = (int)(new RDORTPEnumDefVal((string *)$2)); };
+         | '=' IDENTIF	{	$$ = (int)(new RDORTPEnumDefVal((std::string *)$2)); };
 
 rtp_real_default_val:	{	$$ = (int)(new RDORTPRealDefVal());	}
          | '=' REAL_CONST {$$ = (int)(new RDORTPRealDefVal(*((double *)$2)));	};
@@ -235,7 +232,7 @@ rtp_param_type: integer rtp_int_diap rtp_int_default_val  {
 										}
                    | rtp_such_as	'=' IDENTIF	{
 											RDORTPParamDesc *desc = (RDORTPParamDesc *)$1;
-											$$ = (int)desc->getType()->constructSuchAs((string *)$3);
+											$$ = (int)desc->getType()->constructSuchAs((std::string *)$3);
 										};
 
 
@@ -265,19 +262,19 @@ rtp_real_diap: {
 rtp_enum:   '(' rtp_enum_list ')'	{ $$ = $2; };
          
 rtp_enum_list:  IDENTIF		{
-							RDORTPEnum *enu = new RDORTPEnum((string *)$1);
+							RDORTPEnum *enu = new RDORTPEnum((std::string *)$1);
 							$$ = (int)enu;
 						}
          | rtp_enum_list ',' IDENTIF	{
 							RDORTPEnum *enu = (RDORTPEnum *)$1;
-							enu->add((string *)$3);
+							enu->add((std::string *)$3);
 							$$ = (int)enu;
 						};
 
 
 rtp_such_as:   such_as IDENTIF '.' IDENTIF {
-							string *type = (string *)$2;
-							string *param = (string *)$4;
+							std::string *type = (std::string *)$2;
+							std::string *param = (std::string *)$4;
 							const RDORTPResType *const rt = currParser->findRTPResType(type);
 							if(!rt)
 								currParser->error(("Invalid resource type in such_as: " + *type).c_str());

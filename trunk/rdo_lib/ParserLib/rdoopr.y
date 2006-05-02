@@ -1,3 +1,10 @@
+%{
+#define YYPARSE_PARAM lexer
+#define YYLEX_PARAM lexer
+%}
+
+%pure-parser
+
 %token Resource_type		257
 %token permanent			258
 %token Parameters			259
@@ -149,14 +156,14 @@ opr_main:	opr_end;
 
 opr_header:	Operations;
 
-opr_body:	opr_header IDENTIF_COLON IDENTIF	{ $$ = (int)(new RDOOPROperation((string *)$2, (string *)$3)); }
-			|	opr_param  IDENTIF_COLON IDENTIF { ((RDOOPROperation *)$1)->endOfDefinition(); $$ = (int)(new RDOOPROperation((string *)$2, (string *)$3)); };
+opr_body:	opr_header IDENTIF_COLON IDENTIF	{ $$ = (int)(new RDOOPROperation((std::string *)$2, (std::string *)$3)); }
+			|	opr_param  IDENTIF_COLON IDENTIF { ((RDOOPROperation *)$1)->endOfDefinition(); $$ = (int)(new RDOOPROperation((std::string *)$2, (std::string *)$3)); };
 
 opr_keyb:	opr_body
-			|	opr_keyb QUOTED_IDENTIF			{ ((RDOOPROperation *)$1)->addHotKey((string *)$2); }
-			|	opr_keyb '+' QUOTED_IDENTIF	{ ((RDOOPROperation *)$1)->addHotKey((string *)$3); };
+			|	opr_keyb QUOTED_IDENTIF			{ ((RDOOPROperation *)$1)->addHotKey((std::string *)$2); }
+			|	opr_keyb '+' QUOTED_IDENTIF	{ ((RDOOPROperation *)$1)->addHotKey((std::string *)$3); };
 
-opr_param:	opr_param IDENTIF		{ ((RDOOPROperation *)$1)->addParam((string *)$2); }
+opr_param:	opr_param IDENTIF		{ ((RDOOPROperation *)$1)->addParam((std::string *)$2); }
 			|	opr_param INT_CONST	{ ((RDOOPROperation *)$1)->addParam((int)$2); }
 			|	opr_param REAL_CONST	{ ((RDOOPROperation *)$1)->addParam((double *)$2); }
 			|	opr_param '*'			{ ((RDOOPROperation *)$1)->addParam(); }

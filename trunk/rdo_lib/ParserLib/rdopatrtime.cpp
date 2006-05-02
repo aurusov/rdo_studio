@@ -18,7 +18,7 @@ void RDOPatternRuntime::addEndCalc(RDOCalc *calc)
 	throw RDOInternalException("parser internal error 0005");
 }
 
-RDOActivityRuntime *RDOPatternRuntime::createActivity(RDOCalc *condition, string *_oprName)
+RDOActivityRuntime *RDOPatternRuntime::createActivity(RDOCalc *condition, std::string *_oprName)
 {
 	throw RDOInternalException("parser internal error 0501");
 }
@@ -38,11 +38,11 @@ RDOIERuntime::RDOIERuntime(RDORuntime *rTime, bool _trace)
 RDOOperationRuntime::RDOOperationRuntime(RDORuntime *rTime, bool _trace)
 	:RDOPatternRuntime(rTime, _trace) {}
 
-vector<RDOResourceTrace *> RDOActivityRuntime::getRelevantResources(RDOSimulator *sim)
+std::vector<RDOResourceTrace *> RDOActivityRuntime::getRelevantResources(RDOSimulator *sim)
 {
 	RDORuntime *runtime = (RDORuntime *)sim;
 
-	vector<RDOResourceTrace *> result;
+	std::vector<RDOResourceTrace *> result;
 	int size = relResNumbers.size();
 	for(int i = 0; i < size; i++)
 		result.push_back(runtime->findResource(relResNumbers[i]));
@@ -132,49 +132,49 @@ RDOOperationTrace *RDOActivityOperationRuntime::clone2(RDOSimulator *sim)
 	return newActivity;
 }
 
-RDOActivityRuntime *RDORuleRuntime::createActivity(string *_oprName)
+RDOActivityRuntime *RDORuleRuntime::createActivity(std::string *_oprName)
 {
 	RDOActivityRuleRuntime *rule = new RDOActivityRuleRuntime(runtime, this, trace, _oprName);
 	currParser->runTime->addRuntimeRule(rule); 
 	return rule;
 }
 
-RDOActivityRuntime *RDORuleRuntime::createActivity(RDOCalc *condition, string *_oprName)
+RDOActivityRuntime *RDORuleRuntime::createActivity(RDOCalc *condition, std::string *_oprName)
 {
 	RDOActivityRuleRuntime *rule = new RDOActivityRuleRuntime(runtime, this, trace, condition, _oprName);
 	currParser->runTime->addRuntimeRule(rule); 
 	return rule;
 }
 
-RDOActivityRuntime *RDOIERuntime::createActivity(string *_oprName)
+RDOActivityRuntime *RDOIERuntime::createActivity(std::string *_oprName)
 {
 	RDOActivityIERuntime *ie = new RDOActivityIERuntime(runtime, this, trace, _oprName);
 	currParser->runTime->addRuntimeIE(ie); 
 	return ie;
 }
 
-RDOActivityRuntime *RDOOperationRuntime::createActivity(string *_oprName)
+RDOActivityRuntime *RDOOperationRuntime::createActivity(std::string *_oprName)
 {
 	RDOActivityOperationRuntime *oper = new RDOActivityOperationRuntime(runtime, this, trace, _oprName);
 	currParser->runTime->addRuntimeOperation(oper); 
 	return oper;
 }
 
-RDOActivityRuntime *RDOOperationRuntime::createActivity(RDOCalc *condition, string *_oprName)
+RDOActivityRuntime *RDOOperationRuntime::createActivity(RDOCalc *condition, std::string *_oprName)
 {
 	RDOActivityOperationRuntime *oper = new RDOActivityOperationRuntime(runtime, this, trace, condition, _oprName);
 	currParser->runTime->addRuntimeOperation(oper); 
 	return oper;
 }
 
-RDOActivityRuntime *RDOKeyboardRuntime::createActivity(string *_oprName)
+RDOActivityRuntime *RDOKeyboardRuntime::createActivity(std::string *_oprName)
 {
 	RDOActivityKeyboardRuntime *oper = new RDOActivityKeyboardRuntime(runtime, this, trace, _oprName);
 	currParser->runTime->addRuntimeOperation(oper); 
 	return oper;
 }
 
-RDOActivityRuntime *RDOKeyboardRuntime::createActivity(RDOCalc *condition, string *_oprName)
+RDOActivityRuntime *RDOKeyboardRuntime::createActivity(RDOCalc *condition, std::string *_oprName)
 {
 	RDOActivityKeyboardRuntime *oper = new RDOActivityKeyboardRuntime(runtime, this, trace, condition, _oprName);
 	currParser->runTime->addRuntimeOperation(oper); 
@@ -189,24 +189,24 @@ void RDOActivityRuntime::setPatternParameters(RDOSimulator *sim)
 		setParamsCalcs.at(i)->calcValueBase(runtime);
 }
 
-void RDOActivityRuntime::addHotKey(string *hotKey)
+void RDOActivityRuntime::addHotKey(std::string *hotKey)
 {
 	currParser->error("This pattern is not of keyboard type");
 }
 
-RDOActivityRuleRuntime::RDOActivityRuleRuntime(RDORuntime *rTime, RDOPatternRuntime *_pattern, bool _trace, string *_oprName)
+RDOActivityRuleRuntime::RDOActivityRuleRuntime(RDORuntime *rTime, RDOPatternRuntime *_pattern, bool _trace, std::string *_oprName)
 	: RDORuleTrace(rTime), RDOActivityRuntime(_pattern, _oprName) { trace = _trace; haveAdditionalCondition = false;}
 
-RDOActivityRuleRuntime::RDOActivityRuleRuntime(RDORuntime *rTime, RDOPatternRuntime *_pattern, bool _trace, RDOCalc *condition, string *_oprName)
+RDOActivityRuleRuntime::RDOActivityRuleRuntime(RDORuntime *rTime, RDOPatternRuntime *_pattern, bool _trace, RDOCalc *condition, std::string *_oprName)
 	: RDORuleTrace(rTime), RDOActivityRuntime(_pattern, _oprName), additionalCondition(condition) { trace = _trace; haveAdditionalCondition = true;}
 
-RDOActivityIERuntime::RDOActivityIERuntime(RDORuntime *rTime, RDOPatternRuntime *_pattern, bool _trace, string *_oprName)
+RDOActivityIERuntime::RDOActivityIERuntime(RDORuntime *rTime, RDOPatternRuntime *_pattern, bool _trace, std::string *_oprName)
 	: RDOIETrace(rTime), RDOActivityRuntime(_pattern, _oprName) { trace = _trace; }
 
-RDOActivityOperationRuntime::RDOActivityOperationRuntime(RDORuntime *rTime, RDOPatternRuntime *_pattern, bool _trace, string *_oprName)
+RDOActivityOperationRuntime::RDOActivityOperationRuntime(RDORuntime *rTime, RDOPatternRuntime *_pattern, bool _trace, std::string *_oprName)
 	: RDOOperationTrace(rTime), RDOActivityRuntime(_pattern, _oprName) { trace = _trace; haveAdditionalCondition = false;}
 
-RDOActivityOperationRuntime::RDOActivityOperationRuntime(RDORuntime *rTime, RDOPatternRuntime *_pattern, bool _trace, RDOCalc *condition, string *_oprName)
+RDOActivityOperationRuntime::RDOActivityOperationRuntime(RDORuntime *rTime, RDOPatternRuntime *_pattern, bool _trace, RDOCalc *condition, std::string *_oprName)
 	: RDOOperationTrace(rTime), RDOActivityRuntime(_pattern, _oprName), additionalCondition(condition) { trace = _trace; haveAdditionalCondition = true;}
 
 bool RDOActivityRuleRuntime::choiceFrom(RDOSimulator *sim) 
@@ -268,7 +268,7 @@ bool RDOActivityOperationRuntime::choiceFrom(RDOSimulator *sim)
 	return ((RDOOperationRuntime*)pattern)->choiceFrom(sim); 
 }
 
-void RDOActivityKeyboardRuntime::addHotKey(string *hotKey)
+void RDOActivityKeyboardRuntime::addHotKey(std::string *hotKey)
 {
 	keyScanCodes.push_back(rdoHotKeyToolkit.codeFromString(hotKey));
 }
@@ -292,9 +292,9 @@ bool RDOActivityKeyboardRuntime::choiceFrom(RDOSimulator *sim)
 	return RDOActivityOperationRuntime::choiceFrom(sim); 
 }
 
-void RDOActivityRuntime::writeModelStructure(stringstream &stream)
+void RDOActivityRuntime::writeModelStructure(std::stringstream &stream)
 {
-	stream << *oprName << " " << pattern->getPatternId() << endl;
+	stream << *oprName << " " << pattern->getPatternId() << std::endl;
 }
 
 void RDOActivityRuntime::incrementRelevantResourceReference(RDOSimulator *sim)

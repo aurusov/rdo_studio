@@ -16,7 +16,7 @@ using namespace rdoEditCtrl;
 // ----------------------------------------------------------------------------
 // ---------- RDOBuildEditLineInfo
 // ----------------------------------------------------------------------------
-RDOBuildEditLineInfo::RDOBuildEditLineInfo( const string& _message, const rdoModelObjects::RDOFileType _fileType, const int _lineNumber, bool _error ):
+RDOBuildEditLineInfo::RDOBuildEditLineInfo( const std::string& _message, const rdoModelObjects::RDOFileType _fileType, const int _lineNumber, bool _error ):
 	RDOLogEditLineInfo( _message, _fileType, _lineNumber ),
 	error( _error )
 {
@@ -26,9 +26,9 @@ RDOBuildEditLineInfo::~RDOBuildEditLineInfo()
 {
 }
 
-string RDOBuildEditLineInfo::getMessage() const
+std::string RDOBuildEditLineInfo::getMessage() const
 {
-	string file;
+	std::string file;
 	switch ( fileType ) {
 		case rdoModelObjects::PAT: file = "PAT"; break;
 		case rdoModelObjects::RTP: file = "RTP"; break;
@@ -44,7 +44,7 @@ string RDOBuildEditLineInfo::getMessage() const
 	if ( lineNumber < 0 || file.empty() ) {
 		return message;
 	} else {
-		string s = error ? "error" : "warning";
+		std::string s = error ? "error" : "warning";
 		return rdo::format( "%s (%d): %s: %s", file.c_str(), lineNumber + 1, s.c_str(), message.c_str() );
 	}
 }
@@ -88,7 +88,7 @@ void RDOBuildEdit::OnUpdateModifyStatusBar( CCmdUI *pCmdUI )
 
 void RDOBuildEdit::OnHelpKeyword()
 {
-	string filename = studioApp.getFullHelpFileName();
+	std::string filename = studioApp.getFullHelpFileName();
 	if ( filename.empty() ) return;
 	filename += "::/html/work_windows_output.htm";
 	::HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_DISPLAY_TOPIC, NULL );

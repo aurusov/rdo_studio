@@ -1,3 +1,10 @@
+%{
+#define YYPARSE_PARAM lexer
+#define YYLEX_PARAM lexer
+%}
+
+%pure-parser
+
 %token Resource_type		257
 %token permanent			258
 %token Parameters			259
@@ -158,8 +165,8 @@ rss_resources:
 			| rss_resources rss_res_descr  ;
 
 rss_res_type:	IDENTIF_COLON IDENTIF	{
-						string *name = (string *)$1;
-						string *type = (string *)$2;
+						std::string *name = (std::string *)$1;
+						std::string *type = (std::string *)$2;
 						const RDORTPResType *const resType = currParser->findRTPResType(type);
 						if(!resType)
 							currParser->error(("Invalid resource type: " + *type).c_str());
@@ -207,7 +214,7 @@ rss_value:	'*'			{
 							currParser->error("Too many parameters");
 						try
 						{
-							RDOValue val = (*(currParser->lastRSSResource->currParam))->getType()->getRSSEnumValue((string *)$1);
+							RDOValue val = (*(currParser->lastRSSResource->currParam))->getType()->getRSSEnumValue((std::string *)$1);
 							currParser->lastRSSResource->addValue(val);
 							currParser->lastRSSResource->currParam++;
 						}

@@ -13,10 +13,20 @@ static char THIS_FILE[] = __FILE__;
 #include "rdoruntime.h"
 #include "RdoFunc.h"
 #include "rdodpt.h"
-
+#include "rdoparser_lexer.h"
 
 namespace rdoParse 
 {
+
+int funlex( int* lpval, void* lexer )
+{
+	((RDOFlexLexer*)lexer)->m_lpval = lpval;
+	return ((RDOFlexLexer*)lexer)->yylex();
+}
+void funerror( char* mes )
+{
+	rdoParse::currParser->error( mes );
+}
 
 void RDOParser::addConstant(RDORTPParamDesc *const _cons)
 {
@@ -28,10 +38,10 @@ void RDOParser::addConstant(RDORTPParamDesc *const _cons)
 	runTime->setConstValue(newConst->number, newConst->descr->getType()->getRSSDefaultValue());
 }
 
-const RDOFUNConstant *RDOParser::findFUNConst(const string *const _cons) const
+const RDOFUNConstant *RDOParser::findFUNConst(const std::string *const _cons) const
 {
-	vector<RDOFUNConstant *>::const_iterator it = 
-		find_if(allFUNConstant.begin(), allFUNConstant.end(), compareName<RDOFUNConstant>(_cons));
+	std::vector<RDOFUNConstant *>::const_iterator it = 
+		std::find_if(allFUNConstant.begin(), allFUNConstant.end(), compareName<RDOFUNConstant>(_cons));
 
 	if(it == allFUNConstant.end())
 		return NULL;
@@ -39,10 +49,10 @@ const RDOFUNConstant *RDOParser::findFUNConst(const string *const _cons) const
 	return (*it);
 }
 
-const RDOFUNFunctionParam *const RDOFUNFunction::findFUNFunctionParam(const string *const paramName) const 
+const RDOFUNFunctionParam *const RDOFUNFunction::findFUNFunctionParam(const std::string *const paramName) const 
 {
-	vector<const RDOFUNFunctionParam *>::const_iterator it = 
-		find_if(params.begin(), params.end(), compareName<RDOFUNFunctionParam>(paramName));
+	std::vector<const RDOFUNFunctionParam *>::const_iterator it = 
+		std::find_if(params.begin(), params.end(), compareName<RDOFUNFunctionParam>(paramName));
 
 	if(it == params.end())
 		return NULL;
@@ -50,10 +60,10 @@ const RDOFUNFunctionParam *const RDOFUNFunction::findFUNFunctionParam(const stri
 	return (*it);
 }
 
-int RDOFUNFunction::findFUNFunctionParamNum(const string *const paramName) const
+int RDOFUNFunction::findFUNFunctionParamNum(const std::string *const paramName) const
 {
-	vector<const RDOFUNFunctionParam *>::const_iterator it = 
-		find_if(params.begin(), params.end(), compareName<RDOFUNFunctionParam>(paramName));
+	std::vector<const RDOFUNFunctionParam *>::const_iterator it = 
+		std::find_if(params.begin(), params.end(), compareName<RDOFUNFunctionParam>(paramName));
 
 	if(it == params.end())
 		return -1;
@@ -119,7 +129,7 @@ void RDOFUNFunction::createListCalc()
 		}
 		functionCalc = funCalc;
 	}
-	catch(out_of_range ex)
+	catch(std::out_of_range ex)
 	{
 		currParser->error(("Wrong element number in list function " + *name).c_str());
 	}
@@ -164,7 +174,7 @@ void RDOFUNFunction::createTableCalc()
 		}
 		functionCalc = funCalc;
 	}
-	catch(out_of_range ex)
+	catch(std::out_of_range ex)
 	{
 		currParser->error(("Wrong element number in list function " + *name).c_str());
 	}
@@ -198,7 +208,7 @@ RDOCalcConst *RDOFUNFunctionListElementEq::createResultCalc(const RDORTPResParam
 	return NULL;	// unreachable code
 }
 
-RDOFUNArithm::RDOFUNArithm(string *resName, string *parName)
+RDOFUNArithm::RDOFUNArithm(std::string *resName, std::string *parName)
 {
 	const RDORSSResource *const res = currParser->findRSSResource(resName); 
 	if(!res)
@@ -206,10 +216,10 @@ RDOFUNArithm::RDOFUNArithm(string *resName, string *parName)
 		if(currParser->fUNGroupStack.empty() || 
 			*currParser->fUNGroupStack.back()->resType->getName() != *resName)
 		{
-			if((currParser->fileToParse != PAT_FILE) ||
+			if((currParser->fileToParse != rdoModelObjects::PAT) ||
 				!currParser->lastPATPattern->findRelevantResource(resName))
 			{
-				if((currParser->fileToParse == DPT_FILE) && 
+				if((currParser->fileToParse == rdoModelObjects::DPT) && 
 					(currParser->lastDPTSearch != NULL) && 
 					(currParser->lastDPTSearch->lastActivity->getRule()->findRelevantResource(resName) != NULL))
 				{
@@ -281,7 +291,7 @@ RDODeletable::RDODeletable()
 
 RDODeletable::~RDODeletable() 
 { 
-	currParser->allDeletables.erase(find(currParser->allDeletables.begin(), currParser->allDeletables.end(), this));
+	currParser->allDeletables.erase(std::find(currParser->allDeletables.begin(), currParser->allDeletables.end(), this));
 }
 
 RDOFUNArithm *RDOFUNArithm::operator +(RDOFUNArithm &second)
@@ -455,7 +465,7 @@ RDOFUNArithm::RDOFUNArithm(double *d)
 	calc = new RDOCalcConst(*d);
 }
 
-RDOFUNArithm::RDOFUNArithm(string *s)
+RDOFUNArithm::RDOFUNArithm(std::string *s)
 {
 	if((*s == "Time_now") || (*s == "Системное_время"))
 	{
@@ -472,9 +482,9 @@ RDOFUNArithm::RDOFUNArithm(string *s)
 	}
 
 	const RDOFUNFunctionParam *param = NULL;
-	if(currParser->fileToParse == FUN_FILE)
+	if(currParser->fileToParse == rdoModelObjects::FUN)
 		param = currParser->lastFUNFunction->findFUNFunctionParam(s);
-	else if(currParser->fileToParse == PAT_FILE)
+	else if(currParser->fileToParse == rdoModelObjects::PAT)
 		param = currParser->lastPATPattern->findPATPatternParam(s);
 
 	const RDOFUNConstant *cons = currParser->findFUNConst(s);
@@ -518,13 +528,13 @@ RDOFUNArithm::RDOFUNArithm(string *s)
 	if(type == 2)
 		enu = ((RDORTPEnumResParam *)param->getType())->enu;
 
-	if(currParser->fileToParse == FUN_FILE)
+	if(currParser->fileToParse == rdoModelObjects::FUN)
 		calc = new RDOCalcFuncParam(currParser->lastFUNFunction->findFUNFunctionParamNum(s));
-	else if(currParser->fileToParse == PAT_FILE)
+	else if(currParser->fileToParse == rdoModelObjects::PAT)
 		calc = new RDOCalcPatParam(currParser->lastPATPattern->findPATPatternParamNum(s));
 }
 
-const RDOFUNArithm *RDOFUNParams::createSeqCall(const string *const seqName) const
+const RDOFUNArithm *RDOFUNParams::createSeqCall(const std::string *const seqName) const
 {
 	const RDOFUNSequence *const seq = currParser->findSequence(seqName);
 	if(!seq)
@@ -623,7 +633,7 @@ const RDOFUNArithm *RDOFUNSequenceEnumerative::createCallCalc(const RDOFUNParams
 	return res;
 }
 
-const RDOFUNArithm *RDOFUNParams::createCall(const string *const funName) const 
+const RDOFUNArithm *RDOFUNParams::createCall(const std::string *const funName) const 
 {
 	const RDOFUNFunction *const func = currParser->findFunction(funName);
 	if(!func)
@@ -698,7 +708,7 @@ void RDOFUNFunction::createAlgorithmicCalc()
 	functionCalc = funcCalc;
 }
 
-RDOFUNCalculateIf::RDOFUNCalculateIf(RDOFUNLogic *_condition, string *_funName, RDOFUNArithm *_action):
+RDOFUNCalculateIf::RDOFUNCalculateIf(RDOFUNLogic *_condition, std::string *_funName, RDOFUNArithm *_action):
 	condition (_condition),
 	funName	 (_funName),
 	action	 (_action)
@@ -707,7 +717,7 @@ RDOFUNCalculateIf::RDOFUNCalculateIf(RDOFUNLogic *_condition, string *_funName, 
 		currParser->error("function name expected");
 }
 
-RDOFUNGroup::RDOFUNGroup(int _funType, const string *const _resType):
+RDOFUNGroup::RDOFUNGroup(int _funType, const std::string *const _resType):
 	funType(_funType)
 {
 	resType = currParser->findRTPResType(_resType);
@@ -835,7 +845,7 @@ void RDOFUNSequenceByHistReal::createCalcs()
 	next = new RDOCalcSeqNextByHist(gen);
 }
 
-void RDOFUNSequenceByHistEnum::addEnum(string *_val, double *_freq)
+void RDOFUNSequenceByHistEnum::addEnum(std::string *_val, double *_freq)
 {
 	val.push_back(header->type->getRSSEnumValue(_val));
 	freq.push_back(*_freq);
@@ -888,7 +898,7 @@ void RDOFUNSequenceEnumerativeReal::createCalcs()
 	next = new RDOCalcSeqNextByHist(gen);
 }
 
-void RDOFUNSequenceEnumerativeEnum::addEnum(string *_val)
+void RDOFUNSequenceEnumerativeEnum::addEnum(std::string *_val)
 {
 	val.push_back(header->type->getRSSEnumValue(_val));
 }

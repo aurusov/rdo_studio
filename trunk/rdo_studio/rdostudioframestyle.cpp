@@ -7,7 +7,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-using namespace std;
 using namespace rdoStyle;
 
 // ----------------------------------------------------------------------------
@@ -83,7 +82,7 @@ bool RDOStudioFrameStyle::operator !=( const RDOStudioFrameStyle& style ) const
 	return !(*this == style);
 }
 
-void RDOStudioFrameStyle::init( const string& _regPath )
+void RDOStudioFrameStyle::init( const std::string& _regPath )
 {
 	RDOStyleWithTheme::init( _regPath );
 	*font = rdoStyle::RDOStyleFont::getFrameFont();

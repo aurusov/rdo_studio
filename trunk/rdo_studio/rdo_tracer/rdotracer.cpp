@@ -15,7 +15,6 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 
-using namespace std;
 using namespace rdoRepository;
 using namespace RDOSimulatorNS;
 using namespace rdoTracer;
@@ -83,7 +82,7 @@ void RDOTracer::modelStoppedNotify()
 	tracer->setDrawTrace( true );
 }
 
-void RDOTracer::traceStringNotify( const string& trace_string )
+void RDOTracer::traceStringNotify( const std::string& trace_string )
 {
 	tracer->getTraceString( trace_string );
 }

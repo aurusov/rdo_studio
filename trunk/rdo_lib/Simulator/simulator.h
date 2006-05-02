@@ -8,9 +8,6 @@
 #include <vector>
 #include <rdocommon.h>
 
-using namespace std;
-
-
 namespace rdoRuntime {
 	class RDORuntime;
 	class RDOResult;
@@ -29,15 +26,15 @@ struct RDOSMRFileInfo;
 class RdoModel
 {
 	rdoRuntime::RDORuntime *runtime;
-	ostringstream consol;
+	std::ostringstream consol;
 	RDOTrace *tracer;
 	rdoRuntime::RDOResult *resulter;
 	rdoParse::RDOParser *parser;
 
 public:
-	bool parseModel(string smrFileName);
-	void parseSMRFileInfo(strstream& smr, RDOSMRFileInfo& info);
-	string getConsole();
+	bool parseModel(std::string smrFileName);
+	void parseSMRFileInfo(std::strstream& smr, RDOSMRFileInfo& info);
+	std::string getConsole();
 	void executeModel(TracerCallBack tracerCallBack, FrameCallBack frameCallBack, void *param);
 	~RdoModel();
 };

@@ -12,7 +12,6 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 using namespace rdoTracerLog;
-using namespace std;
 
 // ----------------------------------------------------------------------------
 // ---------- RDOTracerLogCtrl
@@ -90,7 +89,7 @@ bool RDOTracerLogCtrl::getItemColors( const int index, RDOLogColorPair* &colors 
 	return res;
 }
 
-void RDOTracerLogCtrl::showFindError( string& findStr )
+void RDOTracerLogCtrl::showFindError( std::string& findStr )
 {
 	MessageBox( rdo::format( ID_MSG_CANTFIND, findStr.c_str() ).c_str(), NULL, MB_OK | MB_ICONWARNING );
 	SetFocus();
@@ -106,14 +105,14 @@ void RDOTracerLogCtrl::clear()
 	mutex.Unlock();
 }
 
-void RDOTracerLogCtrl::addStringToLog( const string logStr )
+void RDOTracerLogCtrl::addStringToLog( const std::string logStr )
 {
 	mutex.Lock();
 	
 	if ( !logStr.empty() ) {
 		int posstart = logStr.find_first_not_of( ' ' );
 		int posend = logStr.find_first_of( ' ', posstart );
-		string key = logStr.substr( posstart, posend - posstart );
+		std::string key = logStr.substr( posstart, posend - posstart );
 		rdo::trim( key );
 
 		RDOLogColorPair* colors = NULL;
@@ -151,7 +150,7 @@ void RDOTracerLogCtrl::OnFind()
 	firstFoundLine = -1;
 	CFindReplaceDialog* pDlg = new CFindReplaceDialog();
 	DWORD flag = (bSearchDown ? FR_DOWN : 0) | (bMatchCase ? FR_MATCHCASE : 0) | (bMatchWholeWord ? FR_WHOLEWORD : 0);
-	string str;
+	std::string str;
 	getSelected( str );
 	pDlg->Create( true, str.c_str(), NULL, flag, this );
 }
@@ -236,14 +235,14 @@ void RDOTracerLogCtrl::OnUpdateFind( CCmdUI* pCmdUI )
 
 void RDOTracerLogCtrl::OnHelpKeyword()
 {
-	string filename = studioApp.getFullHelpFileName();
+	std::string filename = studioApp.getFullHelpFileName();
 	if ( filename.empty() ) return;
 
-	string line;
+	std::string line;
 
 	getSelected( line );
 
-	string keyword = "trc";
+	std::string keyword = "trc";
 	if ( !line.empty() ) {
 		int posstart = line.find_first_not_of( ' ' );
 		int posend = line.find_first_of( ' ', posstart );
@@ -273,7 +272,7 @@ void RDOTracerLogCtrl::OnHelpKeyword()
 void RDOTracerLogCtrl::OnUpdateCoordStatusBar( CCmdUI *pCmdUI )
 {
 	pCmdUI->Enable();
-	string str = "";
+	std::string str = "";
 	if ( selectedLine != -1 ) {
 		int x = 1;
 		int y = selectedLine + 1;

@@ -1,8 +1,6 @@
 #ifndef RDOHOT_KEY
 #define RDOHOT_KEY
 
-using namespace std;
-
 namespace rdoParse 
 {
 /*
@@ -53,10 +51,10 @@ const int RDONUMPAD9	= 0x149;
 */
 class RDOHotKeyToolkit
 {
-	map<string, int> keys;
+	std::map<std::string, int> keys;
 public:
 	RDOHotKeyToolkit();
-	int codeFromString(string *key);
+	int codeFromString(std::string *key);
 };
 
 extern RDOHotKeyToolkit rdoHotKeyToolkit;

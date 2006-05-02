@@ -134,7 +134,11 @@
 # define	active	414
 # define	QUOTED_IDENTIF	415
 
-#line 131 ".\\rdosmr1.y"
+#line 1 ".\\rdosmr1.y"
+
+#define YYPARSE_PARAM lexer
+#define YYLEX_PARAM lexer
+#line 138 ".\\rdosmr1.y"
 
 #include "pch.h"
 #ifdef _DEBUG
@@ -236,8 +240,8 @@ static const short yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined. */
 static const short yyrline[] =
 {
-       0,   151,   153,   154,   155,   156,   157,   158,   159,   160,
-     161,   162,   163,   164,   165,   167,   168,   169
+       0,   158,   160,   161,   162,   163,   164,   165,   166,   167,
+     168,   169,   170,   171,   172,   174,   175,   176
 };
 #endif
 
@@ -350,6 +354,8 @@ static const short yycheck[] =
       -1,    -1,    -1,    -1,    74,    75,    76,    77,    78,    79,
       80,    81,    82,    83,    84,    85
 };
+#define YYPURE 1
+
 /* -*-C-*-  Note some compilers choke on comments on `#line' lines.  */
 #line 3 "..\\System\\bison.simple"
 
@@ -1058,67 +1064,67 @@ yyreduce:
   switch (yyn) {
 
 case 1:
-#line 151 ".\\rdosmr1.y"
-{ yyval = (int)(new RDOSMR((string *)yyvsp[0])); ;
+#line 158 ".\\rdosmr1.y"
+{ yyval = (int)(new RDOSMR((std::string *)yyvsp[0])); ;
     break;}
 case 3:
-#line 154 ".\\rdosmr1.y"
-{ ((RDOSMR *)yyvsp[-3])->setValue("Resource_file",	&RDOSMR::resourceFileName,	(string *)yyvsp[0]); yyval = yyvsp[-3]; ;
+#line 161 ".\\rdosmr1.y"
+{ ((RDOSMR *)yyvsp[-3])->setValue("Resource_file",	&RDOSMR::resourceFileName,	(std::string *)yyvsp[0]); yyval = yyvsp[-3]; ;
     break;}
 case 4:
-#line 155 ".\\rdosmr1.y"
-{ ((RDOSMR *)yyvsp[-3])->setValue("OprIev_file",		&RDOSMR::oprIevFileName,	(string *)yyvsp[0]); yyval = yyvsp[-3]; ;
+#line 162 ".\\rdosmr1.y"
+{ ((RDOSMR *)yyvsp[-3])->setValue("OprIev_file",		&RDOSMR::oprIevFileName,	(std::string *)yyvsp[0]); yyval = yyvsp[-3]; ;
     break;}
 case 5:
-#line 156 ".\\rdosmr1.y"
-{ ((RDOSMR *)yyvsp[-3])->setValue("Frame_file",		&RDOSMR::frameFileName,		(string *)yyvsp[0]); yyval = yyvsp[-3]; ;
+#line 163 ".\\rdosmr1.y"
+{ ((RDOSMR *)yyvsp[-3])->setValue("Frame_file",		&RDOSMR::frameFileName,		(std::string *)yyvsp[0]); yyval = yyvsp[-3]; ;
     break;}
 case 6:
-#line 157 ".\\rdosmr1.y"
-{ ((RDOSMR *)yyvsp[-3])->setValue("Statistic_file",	&RDOSMR::statisticFileName,(string *)yyvsp[0]); yyval = yyvsp[-3]; ;
+#line 164 ".\\rdosmr1.y"
+{ ((RDOSMR *)yyvsp[-3])->setValue("Statistic_file",	&RDOSMR::statisticFileName,(std::string *)yyvsp[0]); yyval = yyvsp[-3]; ;
     break;}
 case 7:
-#line 158 ".\\rdosmr1.y"
-{ ((RDOSMR *)yyvsp[-3])->setValue("Results_file",	&RDOSMR::resultsFileName,	(string *)yyvsp[0]); yyval = yyvsp[-3]; ;
+#line 165 ".\\rdosmr1.y"
+{ ((RDOSMR *)yyvsp[-3])->setValue("Results_file",	&RDOSMR::resultsFileName,	(std::string *)yyvsp[0]); yyval = yyvsp[-3]; ;
     break;}
 case 8:
-#line 159 ".\\rdosmr1.y"
-{ ((RDOSMR *)yyvsp[-3])->setValue("Trace_file",		&RDOSMR::traceFileName,		(string *)yyvsp[0]); yyval = yyvsp[-3]; ;
+#line 166 ".\\rdosmr1.y"
+{ ((RDOSMR *)yyvsp[-3])->setValue("Trace_file",		&RDOSMR::traceFileName,		(std::string *)yyvsp[0]); yyval = yyvsp[-3]; ;
     break;}
 case 9:
-#line 160 ".\\rdosmr1.y"
+#line 167 ".\\rdosmr1.y"
 { ((RDOSMR *)yyvsp[-3])->setShowMode((RDOSimulatorNS::ShowMode)yyvsp[0]); yyval = yyvsp[-3]; ;
     break;}
 case 10:
-#line 161 ".\\rdosmr1.y"
+#line 168 ".\\rdosmr1.y"
 { ((RDOSMR *)yyvsp[-3])->setFrameNumber(yyvsp[0]); yyval = yyvsp[-3]; ;
     break;}
 case 11:
-#line 162 ".\\rdosmr1.y"
+#line 169 ".\\rdosmr1.y"
 { ((RDOSMR *)yyvsp[-3])->setValue("Show_rate",		&RDOSMR::showRate,			(double *)yyvsp[0]); yyval = yyvsp[-3]; ;
     break;}
 case 12:
-#line 163 ".\\rdosmr1.y"
+#line 170 ".\\rdosmr1.y"
 { ((RDOSMR *)yyvsp[-3])->setValue("Run_StartTime",	&RDOSMR::runStartTime,		(double *)yyvsp[0]); yyval = yyvsp[-3]; ;
     break;}
 case 13:
-#line 164 ".\\rdosmr1.y"
+#line 171 ".\\rdosmr1.y"
 { ((RDOSMR *)yyvsp[-3])->setValue("Trace_StartTime",&RDOSMR::traceStartTime,	(double *)yyvsp[0]); yyval = yyvsp[-3]; ;
     break;}
 case 14:
-#line 165 ".\\rdosmr1.y"
+#line 172 ".\\rdosmr1.y"
 { ((RDOSMR *)yyvsp[-3])->setValue("Trace_EndTime",	&RDOSMR::traceEndTime,		(double *)yyvsp[0]); yyval = yyvsp[-3]; ;
     break;}
 case 15:
-#line 167 ".\\rdosmr1.y"
+#line 174 ".\\rdosmr1.y"
 { yyval = RDOSimulatorNS::SM_NoShow;		;
     break;}
 case 16:
-#line 168 ".\\rdosmr1.y"
+#line 175 ".\\rdosmr1.y"
 { yyval = RDOSimulatorNS::SM_Monitor;	;
     break;}
 case 17:
-#line 169 ".\\rdosmr1.y"
+#line 176 ".\\rdosmr1.y"
 { yyval = RDOSimulatorNS::SM_Animation; ;
     break;}
 }
@@ -1354,7 +1360,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 171 ".\\rdosmr1.y"
+#line 178 ".\\rdosmr1.y"
 
 
 }

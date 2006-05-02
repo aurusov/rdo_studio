@@ -1,7 +1,6 @@
 #ifndef RDORTP_RTP
 #define RDORTP_RTP
 
-using namespace std;
 #include "rdoStdFuncs.h"
 
 namespace rdoParse 
@@ -28,7 +27,7 @@ struct RDORTPDefVal: public RDODeletable
 	RDORTPDefVal(bool _exist): exist(_exist) {}
 	virtual int GetIntValue() const;
 	virtual double GetRealValue() const;
-	virtual const string *GetEnumValue() const;
+	virtual const std::string *GetEnumValue() const;
 };
 
 struct RDORTPIntDefVal: public RDORTPDefVal
@@ -46,9 +45,9 @@ struct RDORTPResParam: public RDODeletable
 	virtual const RDORTPResParam *constructSuchAs() const;
 	virtual const RDORTPResParam *constructSuchAs(const int defVal) const;
 	virtual const RDORTPResParam *constructSuchAs(const double *const defVal) const;
-	virtual const RDORTPResParam *constructSuchAs(const string *const defVal) const;
+	virtual const RDORTPResParam *constructSuchAs(const std::string *const defVal) const;
 	virtual RDOValue getRSSDefaultValue() const = 0;
-	virtual RDOValue getRSSEnumValue(const string *const val) const;
+	virtual RDOValue getRSSEnumValue(const std::string *const val) const;
 	virtual RDOValue getRSSIntValue(const int val) const;
 	virtual RDOValue getRSSRealValue(const double *const val) const;
 	virtual int getDiapTableFunc() const = 0;
@@ -101,27 +100,27 @@ struct RDORTPRealResParam: public RDORTPResParam
 
 struct RDORTPEnum: public RDODeletable
 {
-	vector<const string *>	enumVals;
-	RDORTPEnum(const string *const first) { enumVals.push_back(first); }
-	void add(const string *const next);
-	int findValue(const string *const val) const;
+	std::vector<const std::string *> enumVals;
+	RDORTPEnum(const std::string *const first) { enumVals.push_back(first); }
+	void add(const std::string *const next);
+	int findValue(const std::string *const val) const;
 };
 
 struct RDORTPEnumDefVal: public RDORTPDefVal
 {
-	const string *const value;
-	RDORTPEnumDefVal(const string *const _value): value(_value), RDORTPDefVal(true) {}
+	const std::string *const value;
+	RDORTPEnumDefVal(const std::string *const _value): value(_value), RDORTPDefVal(true) {}
 	RDORTPEnumDefVal(): value(NULL), RDORTPDefVal(false) {}
-	const string *GetEnumValue() const { return value; }
+	const std::string *GetEnumValue() const { return value; }
 };
 
 struct RDORTPEnumResParam: public RDORTPResParam
 {
 	RDORTPEnum *enu;
 	RDORTPEnumResParam(RDORTPEnum *_enu, RDORTPEnumDefVal *_dv): enu(_enu), RDORTPResParam(_dv) {}
-	const RDORTPResParam *constructSuchAs(const string *const defVal) const ;
+	const RDORTPResParam *constructSuchAs(const std::string *const defVal) const ;
 	RDOValue getRSSDefaultValue()const ;
-	RDOValue getRSSEnumValue(const string *const val)const ;
+	RDOValue getRSSEnumValue(const std::string *const val)const ;
 	int getDiapTableFunc() const;
 	int getType() const {return 2;}
 	int writeModelStructure() const;
@@ -130,31 +129,31 @@ struct RDORTPEnumResParam: public RDORTPResParam
 
 class RDORTPParamDesc: public RDODeletable
 {
-	const string *const name;
+	const std::string *const name;
 	const RDORTPResParam *const parType;
 public:
-	RDORTPParamDesc(const string *const _name, const RDORTPResParam *const _parType);
-	const string *const getName() const { return name; };
+	RDORTPParamDesc(const std::string *const _name, const RDORTPResParam *const _parType);
+	const std::string *const getName() const { return name; };
 	const RDORTPResParam *const getType() const { return parType; };
 	int writeModelStructure() const;
 };
 
 class RDORTPResType: public RDODeletable
 {
-	const string *const name;
-	vector<const RDORTPParamDesc *>	params;
+	const std::string *const name;
+	std::vector<const RDORTPParamDesc *>	params;
 	const bool isPermanent;		
 	const int type;		
 public:
-	RDORTPResType(const string *const _name, const bool _isPermanent, const int _type):
+	RDORTPResType(const std::string *const _name, const bool _isPermanent, const int _type):
 		name(_name), isPermanent(_isPermanent), type(_type) {}
 	void add(const RDORTPParamDesc *const _param);
-	const RDORTPParamDesc *findRTPParam(const string *const param) const;
-	int getRTPParamNumber(const string *const param) const;
-	const string *const getName() const { return name; };
+	const RDORTPParamDesc *findRTPParam(const std::string *const param) const;
+	int getRTPParamNumber(const std::string *const param) const;
+	const std::string *const getName() const { return name; };
 	bool isPerm() const { return isPermanent; };
 	int getType() const { return type; };
-	const vector<const RDORTPParamDesc *>& getParams() const { return params; }
+	const std::vector<const RDORTPParamDesc *>& getParams() const { return params; }
 	int writeModelStructure() const;
 };
 

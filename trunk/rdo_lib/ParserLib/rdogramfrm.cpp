@@ -134,7 +134,11 @@
 # define	active	414
 # define	QUOTED_IDENTIF	415
 
-#line 131 ".\\rdofrm.y"
+#line 1 ".\\rdofrm.y"
+
+#define YYPARSE_PARAM lexer
+#define YYLEX_PARAM lexer
+#line 138 ".\\rdofrm.y"
 
 #include "pch.h"
 #ifdef _DEBUG
@@ -272,14 +276,14 @@ static const short yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined. */
 static const short yyrline[] =
 {
-       0,   160,   161,   166,   167,   169,   170,   172,   173,   175,
-     176,   178,   179,   180,   182,   183,   184,   185,   186,   187,
-     188,   189,   190,   191,   193,   197,   199,   200,   202,   203,
-     204,   205,   207,   208,   210,   211,   213,   214,   216,   218,
-     220,   222,   224,   226,   231,   232,   233,   234,   235,   236,
-     237,   238,   239,   240,   243,   244,   245,   246,   247,   248,
-     249,   250,   251,   252,   254,   255,   256,   259,   260,   261,
-     262,   264,   266,   267
+       0,   167,   168,   173,   174,   176,   177,   179,   180,   182,
+     183,   185,   186,   187,   189,   190,   191,   192,   193,   194,
+     195,   196,   197,   198,   200,   204,   206,   207,   209,   210,
+     211,   212,   214,   215,   217,   218,   220,   221,   223,   225,
+     227,   229,   231,   233,   238,   239,   240,   241,   242,   243,
+     244,   245,   246,   247,   250,   251,   252,   253,   254,   255,
+     256,   257,   258,   259,   261,   262,   263,   266,   267,   268,
+     269,   271,   273,   274
 };
 #endif
 
@@ -521,6 +525,8 @@ static const short yycheck[] =
       -1,    -1,   134,   126,   127,   128,   129,    -1,    -1,    -1,
       -1,   134
 };
+#define YYPURE 1
+
 /* -*-C-*-  Note some compilers choke on comments on `#line' lines.  */
 #line 3 "..\\System\\bison.simple"
 
@@ -1229,275 +1235,275 @@ yyreduce:
   switch (yyn) {
 
 case 3:
-#line 166 ".\\rdofrm.y"
-{ yyval = (int)(new RDOFRMFrame((string *)yyvsp[0])); ;
+#line 173 ".\\rdofrm.y"
+{ yyval = (int)(new RDOFRMFrame((std::string *)yyvsp[0])); ;
     break;}
 case 4:
-#line 167 ".\\rdofrm.y"
-{ yyval = (int)(new RDOFRMFrame((string *)yyvsp[-2], (RDOFUNLogic *)yyvsp[0])); ;
+#line 174 ".\\rdofrm.y"
+{ yyval = (int)(new RDOFRMFrame((std::string *)yyvsp[-2], (RDOFUNLogic *)yyvsp[0])); ;
     break;}
 case 5:
-#line 169 ".\\rdofrm.y"
+#line 176 ".\\rdofrm.y"
 { ((RDOFRMFrame *)yyvsp[-2])->setBackground(); ;
     break;}
 case 6:
-#line 170 ".\\rdofrm.y"
+#line 177 ".\\rdofrm.y"
 { ((RDOFRMFrame *)yyvsp[-7])->setBackground(yyvsp[-3], yyvsp[-2], yyvsp[-1]); ;
     break;}
 case 7:
-#line 172 ".\\rdofrm.y"
+#line 179 ".\\rdofrm.y"
 { ((RDOFRMFrame *)yyvsp[-2])->setBackPicture(yyvsp[-1], yyvsp[0]); ;
     break;}
 case 8:
-#line 173 ".\\rdofrm.y"
-{ ((RDOFRMFrame *)yyvsp[-1])->setBackPicture((string*)yyvsp[0]); ;
+#line 180 ".\\rdofrm.y"
+{ ((RDOFRMFrame *)yyvsp[-1])->setBackPicture((std::string*)yyvsp[0]); ;
     break;}
 case 11:
-#line 178 ".\\rdofrm.y"
+#line 185 ".\\rdofrm.y"
 { ((RDOFRMFrame *)yyvsp[0])->startShow(); ;
     break;}
 case 12:
-#line 179 ".\\rdofrm.y"
+#line 186 ".\\rdofrm.y"
 { ((RDOFRMFrame *)yyvsp[-1])->startShow(); ;
     break;}
 case 13:
-#line 180 ".\\rdofrm.y"
+#line 187 ".\\rdofrm.y"
 { ((RDOFRMFrame *)yyvsp[-2])->startShow((RDOFUNLogic *)yyvsp[0]); ;
     break;}
 case 15:
-#line 183 ".\\rdofrm.y"
+#line 190 ".\\rdofrm.y"
 { ((RDOFRMFrame *)yyvsp[-1])->addItem((RDOFRMText *)yyvsp[0]); ;
     break;}
 case 16:
-#line 184 ".\\rdofrm.y"
+#line 191 ".\\rdofrm.y"
 { ((RDOFRMFrame *)yyvsp[-1])->addItem((RDOFRMBitmap *)yyvsp[0]); ;
     break;}
 case 17:
-#line 185 ".\\rdofrm.y"
+#line 192 ".\\rdofrm.y"
 { ((RDOFRMFrame *)yyvsp[-1])->addItem((RDOFRMRect *)yyvsp[0]); ;
     break;}
 case 18:
-#line 186 ".\\rdofrm.y"
+#line 193 ".\\rdofrm.y"
 { ((RDOFRMFrame *)yyvsp[-1])->addItem((RDOFRMLine *)yyvsp[0]); ;
     break;}
 case 19:
-#line 187 ".\\rdofrm.y"
+#line 194 ".\\rdofrm.y"
 { ((RDOFRMFrame *)yyvsp[-1])->addItem((RDOFRMEllipse *)yyvsp[0]); ;
     break;}
 case 20:
-#line 188 ".\\rdofrm.y"
+#line 195 ".\\rdofrm.y"
 { ((RDOFRMFrame *)yyvsp[-1])->addItem((RDOFRMR_rect *)yyvsp[0]); ;
     break;}
 case 21:
-#line 189 ".\\rdofrm.y"
+#line 196 ".\\rdofrm.y"
 { ((RDOFRMFrame *)yyvsp[-1])->addItem((RDOFRMTriang *)yyvsp[0]); ;
     break;}
 case 22:
-#line 190 ".\\rdofrm.y"
+#line 197 ".\\rdofrm.y"
 { ((RDOFRMFrame *)yyvsp[-1])->addItem((RDOFRMS_bmp *)yyvsp[0]); ;
     break;}
 case 23:
-#line 191 ".\\rdofrm.y"
+#line 198 ".\\rdofrm.y"
 { ((RDOFRMFrame *)yyvsp[-1])->addItem((RDOFRMActive *)yyvsp[0]); ;
     break;}
 case 24:
-#line 193 ".\\rdofrm.y"
+#line 200 ".\\rdofrm.y"
 { ((RDOFRMFrame *)yyvsp[-1])->end(); ;
     break;}
 case 25:
-#line 197 ".\\rdofrm.y"
+#line 204 ".\\rdofrm.y"
 { yyval = (int)(new RDOFRMText((RDOFUNArithm *)yyvsp[-11], (RDOFUNArithm *)yyvsp[-9], (RDOFUNArithm *)yyvsp[-7], (RDOFUNArithm *)yyvsp[-5], (RDOFRMColor *)yyvsp[-3], (RDOFRMColor *)yyvsp[-1])); ;
     break;}
 case 26:
-#line 199 ".\\rdofrm.y"
+#line 206 ".\\rdofrm.y"
 { ((RDOFRMText *)yyvsp[-3])->setText(yyvsp[-2], (RDOFUNArithm *)yyvsp[-1]); ;
     break;}
 case 27:
-#line 200 ".\\rdofrm.y"
-{ ((RDOFRMText *)yyvsp[-3])->setText(yyvsp[-2], (string *)yyvsp[-1]); ;
+#line 207 ".\\rdofrm.y"
+{ ((RDOFRMText *)yyvsp[-3])->setText(yyvsp[-2], (std::string *)yyvsp[-1]); ;
     break;}
 case 28:
-#line 202 ".\\rdofrm.y"
+#line 209 ".\\rdofrm.y"
 { yyval = 1; ;
     break;}
 case 29:
-#line 203 ".\\rdofrm.y"
+#line 210 ".\\rdofrm.y"
 { yyval = 1; ;
     break;}
 case 30:
-#line 204 ".\\rdofrm.y"
+#line 211 ".\\rdofrm.y"
 { yyval = 2; ;
     break;}
 case 31:
-#line 205 ".\\rdofrm.y"
+#line 212 ".\\rdofrm.y"
 { yyval = 3; ;
     break;}
 case 32:
-#line 207 ".\\rdofrm.y"
+#line 214 ".\\rdofrm.y"
 { yyval = (int)(new RDOFRMColor()); ;
     break;}
 case 33:
-#line 208 ".\\rdofrm.y"
+#line 215 ".\\rdofrm.y"
 { yyval = (int)(new RDOFRMColor(yyvsp[-3], yyvsp[-2], yyvsp[-1])); ;
     break;}
 case 34:
-#line 210 ".\\rdofrm.y"
-{ yyval = (int)(new RDOFRMBitmap((RDOFUNArithm *)yyvsp[-5], (RDOFUNArithm *)yyvsp[-3], (string *)yyvsp[-1])); ;
+#line 217 ".\\rdofrm.y"
+{ yyval = (int)(new RDOFRMBitmap((RDOFUNArithm *)yyvsp[-5], (RDOFUNArithm *)yyvsp[-3], (std::string *)yyvsp[-1])); ;
     break;}
 case 35:
-#line 211 ".\\rdofrm.y"
-{ yyval = (int)(new RDOFRMBitmap((RDOFUNArithm *)yyvsp[-7], (RDOFUNArithm *)yyvsp[-5], (string *)yyvsp[-3], (string *)yyvsp[-1])); ;
+#line 218 ".\\rdofrm.y"
+{ yyval = (int)(new RDOFRMBitmap((RDOFUNArithm *)yyvsp[-7], (RDOFUNArithm *)yyvsp[-5], (std::string *)yyvsp[-3], (std::string *)yyvsp[-1])); ;
     break;}
 case 36:
-#line 213 ".\\rdofrm.y"
-{ yyval = (int)(new RDOFRMS_bmp((RDOFUNArithm *)yyvsp[-9], (RDOFUNArithm *)yyvsp[-7], (RDOFUNArithm *)yyvsp[-5], (RDOFUNArithm *)yyvsp[-3], (string *)yyvsp[-1])); ;
+#line 220 ".\\rdofrm.y"
+{ yyval = (int)(new RDOFRMS_bmp((RDOFUNArithm *)yyvsp[-9], (RDOFUNArithm *)yyvsp[-7], (RDOFUNArithm *)yyvsp[-5], (RDOFUNArithm *)yyvsp[-3], (std::string *)yyvsp[-1])); ;
     break;}
 case 37:
-#line 214 ".\\rdofrm.y"
-{ yyval = (int)(new RDOFRMS_bmp((RDOFUNArithm *)yyvsp[-11], (RDOFUNArithm *)yyvsp[-9], (RDOFUNArithm *)yyvsp[-7], (RDOFUNArithm *)yyvsp[-5], (string *)yyvsp[-3], (string *)yyvsp[-1])); ;
+#line 221 ".\\rdofrm.y"
+{ yyval = (int)(new RDOFRMS_bmp((RDOFUNArithm *)yyvsp[-11], (RDOFUNArithm *)yyvsp[-9], (RDOFUNArithm *)yyvsp[-7], (RDOFUNArithm *)yyvsp[-5], (std::string *)yyvsp[-3], (std::string *)yyvsp[-1])); ;
     break;}
 case 38:
-#line 216 ".\\rdofrm.y"
+#line 223 ".\\rdofrm.y"
 { yyval = (int)(new RDOFRMRect((RDOFUNArithm *)yyvsp[-11], (RDOFUNArithm *)yyvsp[-9], (RDOFUNArithm *)yyvsp[-7], (RDOFUNArithm *)yyvsp[-5], (RDOFRMColor *)yyvsp[-3], (RDOFRMColor *)yyvsp[-1])); ;
     break;}
 case 39:
-#line 218 ".\\rdofrm.y"
+#line 225 ".\\rdofrm.y"
 { yyval = (int)(new RDOFRMR_rect((RDOFUNArithm *)yyvsp[-11], (RDOFUNArithm *)yyvsp[-9], (RDOFUNArithm *)yyvsp[-7], (RDOFUNArithm *)yyvsp[-5], (RDOFRMColor *)yyvsp[-3], (RDOFRMColor *)yyvsp[-1])); ;
     break;}
 case 40:
-#line 220 ".\\rdofrm.y"
+#line 227 ".\\rdofrm.y"
 { yyval = (int)(new RDOFRMLine((RDOFUNArithm *)yyvsp[-9], (RDOFUNArithm *)yyvsp[-7], (RDOFUNArithm *)yyvsp[-5], (RDOFUNArithm *)yyvsp[-3], (RDOFRMColor *)yyvsp[-1])); ;
     break;}
 case 41:
-#line 222 ".\\rdofrm.y"
+#line 229 ".\\rdofrm.y"
 { yyval = (int)(new RDOFRMEllipse((RDOFUNArithm *)yyvsp[-11], (RDOFUNArithm *)yyvsp[-9], (RDOFUNArithm *)yyvsp[-7], (RDOFUNArithm *)yyvsp[-5], (RDOFRMColor *)yyvsp[-3], (RDOFRMColor *)yyvsp[-1])); ;
     break;}
 case 42:
-#line 224 ".\\rdofrm.y"
+#line 231 ".\\rdofrm.y"
 { yyval = (int)(new RDOFRMTriang((RDOFUNArithm *)yyvsp[-15], (RDOFUNArithm *)yyvsp[-13], (RDOFUNArithm *)yyvsp[-11], (RDOFUNArithm *)yyvsp[-9], (RDOFUNArithm *)yyvsp[-7], (RDOFUNArithm *)yyvsp[-5], (RDOFRMColor *)yyvsp[-3], (RDOFRMColor *)yyvsp[-1])); ;
     break;}
 case 43:
-#line 226 ".\\rdofrm.y"
-{ yyval = (int)(new RDOFRMActive((RDOFUNArithm *)yyvsp[-7], (RDOFUNArithm *)yyvsp[-5], (RDOFUNArithm *)yyvsp[-3], (RDOFUNArithm *)yyvsp[-1], (string *)yyvsp[-9])); ;
+#line 233 ".\\rdofrm.y"
+{ yyval = (int)(new RDOFRMActive((RDOFUNArithm *)yyvsp[-7], (RDOFUNArithm *)yyvsp[-5], (RDOFUNArithm *)yyvsp[-3], (RDOFUNArithm *)yyvsp[-1], (std::string *)yyvsp[-9])); ;
     break;}
 case 44:
-#line 231 ".\\rdofrm.y"
+#line 238 ".\\rdofrm.y"
 { yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] == *(RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 45:
-#line 232 ".\\rdofrm.y"
+#line 239 ".\\rdofrm.y"
 { yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] != *(RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 46:
-#line 233 ".\\rdofrm.y"
+#line 240 ".\\rdofrm.y"
 { yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] <  *(RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 47:
-#line 234 ".\\rdofrm.y"
+#line 241 ".\\rdofrm.y"
 { yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] >  *(RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 48:
-#line 235 ".\\rdofrm.y"
+#line 242 ".\\rdofrm.y"
 { yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] <= *(RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 49:
-#line 236 ".\\rdofrm.y"
+#line 243 ".\\rdofrm.y"
 { yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] >= *(RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 50:
-#line 237 ".\\rdofrm.y"
+#line 244 ".\\rdofrm.y"
 { yyval = (int)(*(RDOFUNLogic *)yyvsp[-2] && *(RDOFUNLogic *)yyvsp[0]); ;
     break;}
 case 51:
-#line 238 ".\\rdofrm.y"
+#line 245 ".\\rdofrm.y"
 { yyval = (int)(*(RDOFUNLogic *)yyvsp[-2] || *(RDOFUNLogic *)yyvsp[0]); ;
     break;}
 case 52:
-#line 239 ".\\rdofrm.y"
+#line 246 ".\\rdofrm.y"
 { yyval = yyvsp[-1]; ;
     break;}
 case 53:
-#line 240 ".\\rdofrm.y"
+#line 247 ".\\rdofrm.y"
 { yyval = yyvsp[0]; ;
     break;}
 case 54:
-#line 243 ".\\rdofrm.y"
+#line 250 ".\\rdofrm.y"
 { yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] + *(RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 55:
-#line 244 ".\\rdofrm.y"
+#line 251 ".\\rdofrm.y"
 { yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] - *(RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 56:
-#line 245 ".\\rdofrm.y"
+#line 252 ".\\rdofrm.y"
 { yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] * *(RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 57:
-#line 246 ".\\rdofrm.y"
+#line 253 ".\\rdofrm.y"
 { yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] / *(RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 58:
-#line 247 ".\\rdofrm.y"
+#line 254 ".\\rdofrm.y"
 { yyval = yyvsp[-1]; ;
     break;}
 case 59:
-#line 248 ".\\rdofrm.y"
-{ yyval = (int)((RDOFUNParams *)yyvsp[-1])->createCall((string *)yyvsp[-3]) ;
+#line 255 ".\\rdofrm.y"
+{ yyval = (int)((RDOFUNParams *)yyvsp[-1])->createCall((std::string *)yyvsp[-3]) ;
     break;}
 case 60:
-#line 249 ".\\rdofrm.y"
-{ yyval = (int)(new RDOFUNArithm((string *)yyvsp[-2], (string *)yyvsp[0])); ;
+#line 256 ".\\rdofrm.y"
+{ yyval = (int)(new RDOFUNArithm((std::string *)yyvsp[-2], (std::string *)yyvsp[0])); ;
     break;}
 case 61:
-#line 250 ".\\rdofrm.y"
+#line 257 ".\\rdofrm.y"
 { yyval = (int)(new RDOFUNArithm((int)yyvsp[0])); ;
     break;}
 case 62:
-#line 251 ".\\rdofrm.y"
+#line 258 ".\\rdofrm.y"
 { yyval = (int)(new RDOFUNArithm((double*)yyvsp[0])); ;
     break;}
 case 63:
-#line 252 ".\\rdofrm.y"
-{ yyval = (int)(new RDOFUNArithm((string *)yyvsp[0])); ;
+#line 259 ".\\rdofrm.y"
+{ yyval = (int)(new RDOFUNArithm((std::string *)yyvsp[0])); ;
     break;}
 case 64:
-#line 254 ".\\rdofrm.y"
+#line 261 ".\\rdofrm.y"
 { yyval = (int)(new RDOFUNParams()); ;
     break;}
 case 65:
-#line 255 ".\\rdofrm.y"
+#line 262 ".\\rdofrm.y"
 { yyval = (int)(((RDOFUNParams *)yyvsp[-1])->addParameter((RDOFUNArithm *)yyvsp[0])); ;
     break;}
 case 66:
-#line 256 ".\\rdofrm.y"
+#line 263 ".\\rdofrm.y"
 { yyval = (int)(((RDOFUNParams *)yyvsp[-2])->addParameter((RDOFUNArithm *)yyvsp[0])); ;
     break;}
 case 67:
-#line 259 ".\\rdofrm.y"
+#line 266 ".\\rdofrm.y"
 { yyval = 1; ;
     break;}
 case 68:
-#line 260 ".\\rdofrm.y"
+#line 267 ".\\rdofrm.y"
 { yyval = 2; ;
     break;}
 case 69:
-#line 261 ".\\rdofrm.y"
+#line 268 ".\\rdofrm.y"
 { yyval = 3; ;
     break;}
 case 70:
-#line 262 ".\\rdofrm.y"
+#line 269 ".\\rdofrm.y"
 { yyval = 4; ;
     break;}
 case 71:
-#line 264 ".\\rdofrm.y"
-{ yyval = (int)(new RDOFUNGroup(yyvsp[-2], (string *)yyvsp[0])); ;
+#line 271 ".\\rdofrm.y"
+{ yyval = (int)(new RDOFUNGroup(yyvsp[-2], (std::string *)yyvsp[0])); ;
     break;}
 case 72:
-#line 266 ".\\rdofrm.y"
+#line 273 ".\\rdofrm.y"
 { yyval = (int)(((RDOFUNGroup *)yyvsp[-2])->createFunLogin((RDOFUNLogic *)yyvsp[-1])); ;
     break;}
 case 73:
-#line 267 ".\\rdofrm.y"
+#line 274 ".\\rdofrm.y"
 { yyval = (int)(((RDOFUNGroup *)yyvsp[-2])->createFunLogin()); ;
     break;}
 }
@@ -1733,7 +1739,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 274 ".\\rdofrm.y"
+#line 281 ".\\rdofrm.y"
 
 
 }

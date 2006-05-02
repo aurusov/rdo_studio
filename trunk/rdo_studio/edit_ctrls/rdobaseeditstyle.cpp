@@ -7,7 +7,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-using namespace std;
 using namespace rdoStyle;
 using namespace rdoEditCtrl;
 
@@ -70,7 +69,7 @@ bool RDOBaseEditTheme::operator !=( const RDOBaseEditTheme& theme ) const
 	return !(*this == theme);
 }
 
-void RDOBaseEditTheme::load( string regPath )
+void RDOBaseEditTheme::load( std::string regPath )
 {
 	regPath += "theme";
 	defaultColor     = AfxGetApp()->GetProfileInt( regPath.c_str(), "defaultColor", defaultColor );
@@ -83,7 +82,7 @@ void RDOBaseEditTheme::load( string regPath )
 	bookmarkStyle    = static_cast<RDOBookmarkStyle>(AfxGetApp()->GetProfileInt( regPath.c_str(), "bookmarkStyle", bookmarkStyle ));
 }
 
-void RDOBaseEditTheme::save( string regPath ) const
+void RDOBaseEditTheme::save( std::string regPath ) const
 {
 	regPath += "theme";
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "defaultColor", defaultColor );
@@ -116,12 +115,12 @@ bool RDOBaseEditTheme::styleItalic( const int /*styleType*/ ) const
 	return defaultStyle & RDOStyleFont::ITALIC ? true : false;
 }
 
-string RDOBaseEditTheme::styleFGColorToHEX( const int /*styleType*/ ) const
+std::string RDOBaseEditTheme::styleFGColorToHEX( const int /*styleType*/ ) const
 {
 	return colorToHEX( defaultColor );
 }
 
-string RDOBaseEditTheme::styleBGColorToHEX( const int /*styleType*/ ) const
+std::string RDOBaseEditTheme::styleBGColorToHEX( const int /*styleType*/ ) const
 {
 	return colorToHEX( backgroundColor );
 }
@@ -189,7 +188,7 @@ RDOBaseEditTheme RDOBaseEditTheme::getOceanTheme()
 	return theme;
 }
 
-string RDOBaseEditTheme::colorToHEX( const COLORREF color )
+std::string RDOBaseEditTheme::colorToHEX( const COLORREF color )
 {
 	return rdo::format( "#%02X%02X%02X", GetRValue( color ), GetGValue( color ), GetBValue( color ) );
 }
@@ -238,7 +237,7 @@ bool RDOBaseEditTab::operator !=( const RDOBaseEditTab& tab ) const
 	return !(*this == tab);
 }
 
-void RDOBaseEditTab::load( string regPath )
+void RDOBaseEditTab::load( std::string regPath )
 {
 	regPath += "tab";
 	tabSize         = AfxGetApp()->GetProfileInt( regPath.c_str(), "tabSize", tabSize );
@@ -249,7 +248,7 @@ void RDOBaseEditTab::load( string regPath )
 	autoIndent      = AfxGetApp()->GetProfileInt( regPath.c_str(), "autoIndent", autoIndent ) ? true : false;
 }
 
-void RDOBaseEditTab::save( string regPath ) const
+void RDOBaseEditTab::save( std::string regPath ) const
 {
 	regPath += "tab";
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "tabSize", tabSize );
@@ -292,14 +291,14 @@ bool RDOBaseEditWindow::operator !=( const RDOBaseEditWindow& window ) const
 	return !(*this == window);
 }
 
-void RDOBaseEditWindow::load( string regPath )
+void RDOBaseEditWindow::load( std::string regPath )
 {
 	regPath += "window";
 	wordWrap          = AfxGetApp()->GetProfileInt( regPath.c_str(), "wordWrap", wordWrap ) ? true : false;
 	showHorzScrollBar = AfxGetApp()->GetProfileInt( regPath.c_str(), "showHorzScrollBar", showHorzScrollBar ) ? true : false;
 }
 
-void RDOBaseEditWindow::save( string regPath ) const
+void RDOBaseEditWindow::save( std::string regPath ) const
 {
 	regPath += "window";
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "wordWrap", wordWrap );
@@ -361,7 +360,7 @@ bool RDOBaseEditStyle::operator !=( const RDOBaseEditStyle& style ) const
 	return !(*this == style);
 }
 
-void RDOBaseEditStyle::init( const string& _regPath )
+void RDOBaseEditStyle::init( const std::string& _regPath )
 {
 	RDOStyleWithTheme::init( _regPath );
 	initTab();

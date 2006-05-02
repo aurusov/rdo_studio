@@ -12,13 +12,12 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-using namespace std;
 using namespace rdoEditCtrl;
 
 // ----------------------------------------------------------------------------
 // ---------- RDOLogEditLineInfo
 // ----------------------------------------------------------------------------
-RDOLogEditLineInfo::RDOLogEditLineInfo( const string& _message, const rdoModelObjects::RDOFileType _fileType, const int _lineNumber, const int _posInLine ):
+RDOLogEditLineInfo::RDOLogEditLineInfo( const std::string& _message, const rdoModelObjects::RDOFileType _fileType, const int _lineNumber, const int _posInLine ):
 	fileType( _fileType ),
 	lineNumber( _lineNumber ),
 	posInLine( _posInLine ),
@@ -30,9 +29,9 @@ RDOLogEditLineInfo::~RDOLogEditLineInfo()
 {
 }
 
-string RDOLogEditLineInfo::getMessage() const
+std::string RDOLogEditLineInfo::getMessage() const
 {
-	string file;
+	std::string file;
 	switch ( fileType ) {
 		case rdoModelObjects::PAT: file = "PAT"; break;
 		case rdoModelObjects::RTP: file = "RTP"; break;
@@ -131,7 +130,7 @@ void RDOLogEdit::setSelectLine()
 	setCurrentPos( pos );
 	current_line = line;
 
-	list< RDOLogEditLineInfo* >::iterator it = lines.begin();
+	std::list< RDOLogEditLineInfo* >::iterator it = lines.begin();
 	for ( int i = 0; i < line; i++ ) {
 		if ( it != lines.end() ) {
 			it++;
@@ -145,7 +144,7 @@ void RDOLogEdit::setSelectLine()
 void RDOLogEdit::gotoNext()
 {
 	current_line++;
-	list< RDOLogEditLineInfo* >::iterator it = lines.begin();
+	std::list< RDOLogEditLineInfo* >::iterator it = lines.begin();
 	int i;
 	for ( i = 0; i < current_line; i++ ) {
 		if ( it != lines.end() ) {
@@ -184,7 +183,7 @@ void RDOLogEdit::gotoPrev()
 	}
 	if ( current_line < 0 ) return;
 
-	list< RDOLogEditLineInfo* >::iterator it = lines.begin();
+	std::list< RDOLogEditLineInfo* >::iterator it = lines.begin();
 	int i;
 	for ( i = 0; i < current_line; i++ ) {
 		it++;
@@ -268,7 +267,7 @@ bool RDOLogEdit::hasSelectLine() const
 
 void RDOLogEdit::clearLines()
 {
-	list< RDOLogEditLineInfo* >::iterator it = lines.begin();
+	std::list< RDOLogEditLineInfo* >::iterator it = lines.begin();
 	while ( it != lines.end() ) {
 		delete *it;
 		it++;
@@ -291,7 +290,7 @@ void RDOLogEdit::appendLine( RDOLogEditLineInfo* line )
 		setReadOnly( false );
 	}
 	bool scroll = isLineVisible( getLineCount() - 1 );
-	string str = line->getMessage();
+	std::string str = line->getMessage();
 	rdo::trimRight( str );
 	str += "\r\n";
 	appendText( str );

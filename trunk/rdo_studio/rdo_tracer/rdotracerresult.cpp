@@ -8,8 +8,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-using namespace std;
-
 // ----------------------------------------------------------------------------
 // ---------- RDOTracerResult
 // ----------------------------------------------------------------------------
@@ -24,7 +22,7 @@ RDOTracerResult::~RDOTracerResult()
 {
 }
 
-void RDOTracerResult::getCaptions( vector<string> &captions, const int val_count ) const
+void RDOTracerResult::getCaptions( std::vector<std::string> &captions, const int val_count ) const
 {
 	switch( resultKind ) {
 		case RDORK_WATCHQUANT: {
@@ -43,7 +41,7 @@ void RDOTracerResult::getCaptions( vector<string> &captions, const int val_count
 	}
 }
 
-void RDOTracerResult::setValue( string& line, RDOTracerTimeNow* const time, const int eventIndex )
+void RDOTracerResult::setValue( std::string& line, RDOTracerTimeNow* const time, const int eventIndex )
 {
 	RDOTracerValue* newvalue = new RDOTracerValue( time, eventIndex );
 	double newval;

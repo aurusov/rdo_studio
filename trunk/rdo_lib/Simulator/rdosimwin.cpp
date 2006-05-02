@@ -35,10 +35,10 @@ class RDORuntimeTracer: public RDOTrace, public RDOEndL
 {
 	LPVOID pParam;
   	TracerCallBack tracerCallBack;
-	stringstream stream;
+	std::stringstream stream;
 public:
-   ostream &getOStream() { return stream; }
-   RDOEndL& getEOL() { return *this; }
+	std::ostream &getOStream() { return stream; }
+	RDOEndL& getEOL() { return *this; }
 	void onEndl()
 	{
 		tracerCallBack(&stream.str(), pParam);
@@ -49,7 +49,7 @@ public:
 };
 
 
-const vector<RDOFrame *>& RdoSimulator::getFrames()
+const std::vector<RDOFrame *>& RdoSimulator::getFrames()
 {
 	return frames;
 }
@@ -78,11 +78,11 @@ void RdoSimulator::keyUp(int scanCode)
 //	else if(scanCode == VK_CONTROL)
 //		ctrlPressed = false;
 
-	scanCodes.erase(remove(scanCodes.begin(), scanCodes.end(), scanCode), scanCodes.end());
+	scanCodes.erase(std::remove(scanCodes.begin(), scanCodes.end(), scanCode), scanCodes.end());
 //	kernel.debug("keyUp: %d", scanCode); 
 }
 
-void RdoSimulator::addAreaPressed(string& areaName)
+void RdoSimulator::addAreaPressed(std::string& areaName)
 {
 	areasActivated.push_back(areaName);
 }
@@ -138,7 +138,7 @@ void frameCallBack(rdoRuntime::RDOConfig *config, void *param)
 	config->showAnimation = simulator->getShowMode();
 }
 
-void tracerCallBack(string *newString, void *param)
+void tracerCallBack(std::string *newString, void *param)
 {
 	RdoSimulator *simulator = (RdoSimulator *)param;
 //	kernel.notifyString(RDOKernel.traceString, newString->c_str());
@@ -152,9 +152,9 @@ void tracerCallBack(string *newString, void *param)
 	for(;;)
 	{
 		int next = newString->find('\n', pos);
-		string str = newString->substr(pos, next-pos);
+		std::string str = newString->substr(pos, next-pos);
 		kernel.notifyString(RDOKernel.traceString, str.c_str());
-		if(next == string::npos)
+		if(next == std::string::npos)
 			break;
 		pos = next + 1;
 		if(pos >= newString->length())
@@ -182,10 +182,10 @@ RdoSimulator::~RdoSimulator()
 
 class RDOSimResulter: public RDOResult
 {
-	ostream &stream;
+	std::ostream &stream;
 public:
-	RDOSimResulter(ostream &_stream): stream(_stream) {isNullResult = false;}
-   virtual std::ostream &getOStream() { return stream; }
+	RDOSimResulter(std::ostream &_stream): stream(_stream) {isNullResult = false;}
+	virtual std::ostream &getOStream() { return stream; }
 };
 
 UINT RunningThreadControllingFunction( LPVOID pParam )
@@ -268,7 +268,7 @@ UINT RunningThreadControllingFunction( LPVOID pParam )
 	}
 	catch(RDOInternalException &ex)		  
 	{
-		string mess = "Internal exception: " + ex.mess;
+		std::string mess = "Internal exception: " + ex.mess;
 		kernel.debug(mess.c_str());
 		exitCode = rdoModel::EC_RunTimeError;
 	}
@@ -283,7 +283,7 @@ UINT RunningThreadControllingFunction( LPVOID pParam )
 	}
 	catch(RDOInternalException &ex)		  
 	{
-		string mess = "Internal exception: " + ex.mess;
+		std::string mess = "Internal exception: " + ex.mess;
 		kernel.debug(mess.c_str());
 		exitCode = rdoModel::EC_RunTimeError;
 	}
@@ -311,7 +311,7 @@ bool RdoSimulator::parseModel()
 	parser = new rdoParse::RDOParser();
 	runtime = parser->runTime;
 
-	ostringstream consol;
+	std::ostringstream consol;
 
 /*
 		rdo::binarystream RTPstream1;
@@ -339,6 +339,8 @@ bool RdoSimulator::parseModel()
 
 
 	try {
+		parser->parse();
+/*
 /////////////////   SMR file //////////////////////////////////
 		rdo::binarystream SMRstream;
 		kernel.getRepository()->load(rdoModelObjects::SMR, SMRstream);
@@ -398,9 +400,10 @@ bool RdoSimulator::parseModel()
 		kernel.getRepository()->load(rdoModelObjects::SMR, SMRstream2);
 		if(SMRstream2.good())
 			parser->parseSMR2(&SMRstream2, &consol);
+*/
 	}
 	// UA 19.08.04 // добавил код возврата
-	catch(RDOSyntaxException &ex) 
+	catch( RDOSyntaxException& /*ex*/ ) 
 	{
 //		string mess = ex.getType() + " : " + ex.mess;
 //		kernel.notifyString(RDOKernel::buildString, mess);
@@ -411,7 +414,7 @@ bool RdoSimulator::parseModel()
 	}
 	catch(RDOInternalException &ex)
 	{
-		string mess = "Internal exception: " + ex.mess;
+		std::string mess = "Internal exception: " + ex.mess;
 		kernel.notifyString(RDOKernel::buildString, mess);
 		kernel.notify(RDOKernel::parseError);
 		closeModel();
@@ -498,10 +501,11 @@ void RdoSimulator::parseSMRFileInfo( rdo::binarystream& smr, rdoModelObjects::RD
 	parser = new rdoParse::RDOParser();
 	runtime = parser->runTime;
 
-	stringstream consol;
+	std::stringstream consol;
 
 	try {
-		parser->parseSMR1(&smr, &consol);
+		parser->parse( rdoModelObjects::obPRE, smr );
+//		parser->parseSMR1(&smr, &consol);
 	}
 	catch(RDOSyntaxException &) 
 	{
@@ -512,7 +516,7 @@ void RdoSimulator::parseSMRFileInfo( rdo::binarystream& smr, rdoModelObjects::RD
 	}
 	catch(RDOInternalException &ex)
 	{
-		string mess = "Internal exception: " + ex.mess;
+		std::string mess = "Internal exception: " + ex.mess;
 		kernel.notifyString(RDOKernel::buildString, mess);
 		kernel.notify(RDOKernel::parseSMRError);
 		closeModel();
@@ -556,9 +560,9 @@ void RdoSimulator::parseSMRFileInfo( rdo::binarystream& smr, rdoModelObjects::RD
 	info.error = false;
 }
 
-vector<RDOSyntaxError>* RdoSimulator::getErrors()
+std::vector<RDOSyntaxError>* RdoSimulator::getErrors()
 {
-	vector<RDOSyntaxError>* res = NULL;
+	std::vector<RDOSyntaxError>* res = NULL;
 
 	if(!parser)
 		return NULL;
@@ -579,9 +583,9 @@ double RdoSimulator::getModelTime()
 		return 0.;
 }
 
-vector<const string *> RdoSimulator::getAllFrames()
+std::vector<const std::string *> RdoSimulator::getAllFrames()
 {
-	vector<const string *> vect;
+	std::vector<const std::string *> vect;
 	if(!runtime)
 		return vect;
 
@@ -595,9 +599,9 @@ vector<const string *> RdoSimulator::getAllFrames()
 	return vect;
 }
 
-vector<const string *> RdoSimulator::getAllBitmaps()
+std::vector<const std::string *> RdoSimulator::getAllBitmaps()
 {
-	vector<const string *> vect;
+	std::vector<const std::string *> vect;
 	if(!runtime)
 		return vect;
 
@@ -626,12 +630,12 @@ double RdoSimulator::getInitialShowRate()
 	return *parser->smr->showRate;
 }
 
-stringstream &RdoSimulator::getModelStructure()
+std::stringstream &RdoSimulator::getModelStructure()
 {
 	return parser->getModelStructure();
 }
 
-stringstream &RdoSimulator::getResults()
+std::stringstream &RdoSimulator::getResults()
 {
 	return resultString;
 }

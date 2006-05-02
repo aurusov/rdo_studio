@@ -8,7 +8,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-using namespace std;
 using namespace rdoEditCtrl;
 using namespace rdoStyle;
 
@@ -49,7 +48,7 @@ bool RDOFindEditTheme::operator !=( const RDOFindEditTheme& theme ) const
 	return !(*this == theme);
 }
 
-void RDOFindEditTheme::load( string regPath )
+void RDOFindEditTheme::load( std::string regPath )
 {
 	RDOLogEditTheme::load( regPath );
 
@@ -58,7 +57,7 @@ void RDOFindEditTheme::load( string regPath )
 	keywordStyle = static_cast<RDOStyleFont::style>(AfxGetApp()->GetProfileInt( regPath.c_str(), "keywordStyle", keywordStyle ));
 }
 
-void RDOFindEditTheme::save( string regPath ) const
+void RDOFindEditTheme::save( std::string regPath ) const
 {
 	RDOLogEditTheme::save( regPath );
 
@@ -95,7 +94,7 @@ bool RDOFindEditTheme::styleItalic( const int styleType ) const
 	return false;
 }
 
-string RDOFindEditTheme::styleFGColorToHEX( const int styleType ) const
+std::string RDOFindEditTheme::styleFGColorToHEX( const int styleType ) const
 {
 	switch ( styleType ) {
 		case SCE_FIND_DEFAULT: return colorToHEX( defaultColor );

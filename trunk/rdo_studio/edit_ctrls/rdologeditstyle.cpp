@@ -7,7 +7,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-using namespace std;
 using namespace rdoEditCtrl;
 
 // ----------------------------------------------------------------------------
@@ -42,7 +41,7 @@ bool RDOLogEditTheme::operator !=( const RDOLogEditTheme& theme ) const
 	return !(*this == theme);
 }
 
-void RDOLogEditTheme::load( string regPath )
+void RDOLogEditTheme::load( std::string regPath )
 {
 	RDOBaseEditTheme::load( regPath );
 
@@ -50,7 +49,7 @@ void RDOLogEditTheme::load( string regPath )
 	selectLineBgColor = AfxGetApp()->GetProfileInt( regPath.c_str(), "selectLineBgColor", selectLineBgColor );
 }
 
-void RDOLogEditTheme::save( string regPath ) const
+void RDOLogEditTheme::save( std::string regPath ) const
 {
 	RDOBaseEditTheme::save( regPath );
 

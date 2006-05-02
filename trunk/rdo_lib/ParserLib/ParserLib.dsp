@@ -361,6 +361,19 @@ SOURCE=.\rdoparser_lexer.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\rdoparser_rdo.cpp
+
+!IF  "$(CFG)" == "ParserLib - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "ParserLib - Win32 Debug"
+
+# ADD CPP /Yu"pch.h"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdopat.cpp
 
 !IF  "$(CFG)" == "ParserLib - Win32 Release"
@@ -519,6 +532,10 @@ SOURCE=.\rdoparser_base.h
 # Begin Source File
 
 SOURCE=.\rdoparser_lexer.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdoparser_rdo.h
 # End Source File
 # Begin Source File
 

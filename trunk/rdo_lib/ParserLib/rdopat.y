@@ -1,3 +1,10 @@
+%{
+#define YYPARSE_PARAM lexer
+#define YYLEX_PARAM lexer
+%}
+
+%pure-parser
+
 %token Resource_type		257
 %token permanent			258
 %token Parameters			259
@@ -157,10 +164,10 @@ pat_list:
 			| pat_list pat_pattern;
 
 
-pat_header:	Pattern IDENTIF_COLON operation			pat_trace	{ $$ = (int)(new RDOPATPatternOperation(	(string *)$2, $4 != 0, currParser->patternCounter++)); }
-			|	Pattern IDENTIF_COLON irregular_event	pat_trace	{ $$ = (int)(new RDOPATPatternEvent(		(string *)$2, $4 != 0, currParser->patternCounter++)); }
-			|	Pattern IDENTIF_COLON rule_keyword		pat_trace	{ $$ = (int)(new RDOPATPatternRule(			(string *)$2, $4 != 0, currParser->patternCounter++)); }
-			|	Pattern IDENTIF_COLON keyboard			pat_trace	{ $$ = (int)(new RDOPATPatternKeyboard(	(string *)$2, $4 != 0, currParser->patternCounter++)); };
+pat_header:	Pattern IDENTIF_COLON operation			pat_trace	{ $$ = (int)(new RDOPATPatternOperation(	(std::string *)$2, $4 != 0, currParser->patternCounter++)); }
+			|	Pattern IDENTIF_COLON irregular_event	pat_trace	{ $$ = (int)(new RDOPATPatternEvent(		(std::string *)$2, $4 != 0, currParser->patternCounter++)); }
+			|	Pattern IDENTIF_COLON rule_keyword		pat_trace	{ $$ = (int)(new RDOPATPatternRule(			(std::string *)$2, $4 != 0, currParser->patternCounter++)); }
+			|	Pattern IDENTIF_COLON keyboard			pat_trace	{ $$ = (int)(new RDOPATPatternKeyboard(	(std::string *)$2, $4 != 0, currParser->patternCounter++)); };
 
 pat_trace:						{ $$ = 0; }
 			| trace_keyword	{ $$ = 1; }
@@ -169,25 +176,25 @@ pat_trace:						{ $$ = 0; }
 
 pat_params_begin:	pat_header Parameters	{ $$ = $1; };
 
-pat_params:	pat_params_begin IDENTIF_COLON pat_type	{ ((RDOPATPattern *)$1)->add(new RDOFUNFunctionParam((string *)$2, (RDORTPResParam *)$3)); $$ = $1; }
-			| pat_params IDENTIF_COLON pat_type				{ ((RDOPATPattern *)$1)->add(new RDOFUNFunctionParam((string *)$2, (RDORTPResParam *)$3)); $$ = $1; };	
+pat_params:	pat_params_begin IDENTIF_COLON pat_type	{ ((RDOPATPattern *)$1)->add(new RDOFUNFunctionParam((std::string *)$2, (RDORTPResParam *)$3)); $$ = $1; }
+			| pat_params IDENTIF_COLON pat_type				{ ((RDOPATPattern *)$1)->add(new RDOFUNFunctionParam((std::string *)$2, (RDORTPResParam *)$3)); $$ = $1; };	
 
 pat_params_end: pat_params Relevant_resources	{ $$ = $1; }
 			| 		 pat_header Relevant_resources	{ $$ = $1; };
 
 
-pat_rel_res:	pat_params_end IDENTIF_COLON IDENTIF pat_conv pat_conv	{ ((RDOPATPattern *)$1)->addRelRes((string *)$2, (string *)$3, (ConvertStatus)$4,	(ConvertStatus)$5);	$$ = $1; }
-			|		pat_rel_res		IDENTIF_COLON IDENTIF pat_conv pat_conv	{ ((RDOPATPattern *)$1)->addRelRes((string *)$2, (string *)$3, (ConvertStatus)$4,	(ConvertStatus)$5);	$$ = $1; }
-			|		pat_params_end IDENTIF_COLON IDENTIF pat_conv 				{ ((RDOPATPattern *)$1)->addRelRes((string *)$2, (string *)$3, (ConvertStatus)$4);								$$ = $1; }
-			|		pat_rel_res		IDENTIF_COLON IDENTIF pat_conv				{ ((RDOPATPattern *)$1)->addRelRes((string *)$2, (string *)$3, (ConvertStatus)$4);								$$ = $1; }
-			|		pat_params_end IDENTIF_COLON IDENTIF_NoChange pat_conv	{ ((RDOPATPattern *)$1)->addRelRes((string *)$2, (string *)$3, CS_NoChange,			(ConvertStatus)$4);	$$ = $1; }
-			|		pat_rel_res		IDENTIF_COLON IDENTIF_NoChange pat_conv	{ ((RDOPATPattern *)$1)->addRelRes((string *)$2, (string *)$3, CS_NoChange,			(ConvertStatus)$4);	$$ = $1; }
-			|		pat_params_end IDENTIF_COLON IDENTIF_NoChange_NoChange	{ ((RDOPATPattern *)$1)->addRelRes((string *)$2, (string *)$3, CS_NoChange,			CS_NoChange);			$$ = $1; }
-			|		pat_rel_res		IDENTIF_COLON IDENTIF_NoChange_NoChange	{ ((RDOPATPattern *)$1)->addRelRes((string *)$2, (string *)$3, CS_NoChange,			CS_NoChange);			$$ = $1; }
-			|		pat_params_end IDENTIF_COLON IDENTIF_NoChange 				{ ((RDOPATPattern *)$1)->addRelRes((string *)$2, (string *)$3, CS_NoChange);										$$ = $1; }
-			|		pat_rel_res		IDENTIF_COLON IDENTIF_NoChange				{ ((RDOPATPattern *)$1)->addRelRes((string *)$2, (string *)$3, CS_NoChange);										$$ = $1; }
-			|		pat_params_end IDENTIF_COLON IDENTIF IDENTIF_NoChange 	{ ((RDOPATPattern *)$1)->addRelRes((string *)$2, (string *)$3, (string *)$4);										$$ = $1; }
-			|		pat_rel_res		IDENTIF_COLON IDENTIF IDENTIF_NoChange 	{ ((RDOPATPattern *)$1)->addRelRes((string *)$2, (string *)$3, (string *)$4);										$$ = $1; };
+pat_rel_res:	pat_params_end IDENTIF_COLON IDENTIF pat_conv pat_conv	{ ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, (ConvertStatus)$4,	(ConvertStatus)$5);	$$ = $1; }
+			|		pat_rel_res		IDENTIF_COLON IDENTIF pat_conv pat_conv	{ ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, (ConvertStatus)$4,	(ConvertStatus)$5);	$$ = $1; }
+			|		pat_params_end IDENTIF_COLON IDENTIF pat_conv 				{ ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, (ConvertStatus)$4);								$$ = $1; }
+			|		pat_rel_res		IDENTIF_COLON IDENTIF pat_conv				{ ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, (ConvertStatus)$4);								$$ = $1; }
+			|		pat_params_end IDENTIF_COLON IDENTIF_NoChange pat_conv	{ ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, CS_NoChange,			(ConvertStatus)$4);	$$ = $1; }
+			|		pat_rel_res		IDENTIF_COLON IDENTIF_NoChange pat_conv	{ ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, CS_NoChange,			(ConvertStatus)$4);	$$ = $1; }
+			|		pat_params_end IDENTIF_COLON IDENTIF_NoChange_NoChange	{ ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, CS_NoChange,			CS_NoChange);			$$ = $1; }
+			|		pat_rel_res		IDENTIF_COLON IDENTIF_NoChange_NoChange	{ ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, CS_NoChange,			CS_NoChange);			$$ = $1; }
+			|		pat_params_end IDENTIF_COLON IDENTIF_NoChange 				{ ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, CS_NoChange);										$$ = $1; }
+			|		pat_rel_res		IDENTIF_COLON IDENTIF_NoChange				{ ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, CS_NoChange);										$$ = $1; }
+			|		pat_params_end IDENTIF_COLON IDENTIF IDENTIF_NoChange 	{ ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, (std::string *)$4);										$$ = $1; }
+			|		pat_rel_res		IDENTIF_COLON IDENTIF IDENTIF_NoChange 	{ ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, (std::string *)$4);										$$ = $1; };
 
 pat_conv:	Keep				{ $$ = CS_Keep;		}
 			|	Create_keyword	{ $$ = CS_Create;		}
@@ -203,8 +210,8 @@ pat_time:	pat_common_choice	Body							{	$$ = $1; }
 			| pat_common_choice Time '=' pat_arithm Body {	((RDOPATPattern *)$1)->setTime((RDOFUNArithm *)$4); $$ = $1; };
 
 
-pat_body:	pat_time	IDENTIF		{	((RDOPATPattern *)$1)->addRelResBody((string *)$2); $$ = $1; }
-			|	pat_convert IDENTIF	{	((RDOPATPattern *)$1)->addRelResBody((string *)$2); $$ = $1; };
+pat_body:	pat_time	IDENTIF		{	((RDOPATPattern *)$1)->addRelResBody((std::string *)$2); $$ = $1; }
+			|	pat_convert IDENTIF	{	((RDOPATPattern *)$1)->addRelResBody((std::string *)$2); $$ = $1; };
 
 pat_res_usage: pat_body	pat_choice pat_first	{	((RDOPATPattern *)$1)->addRelResUsage((RDOPATChoice *)$2, (RDOPATFirst *)$3); $$ = $1; };
 
@@ -230,8 +237,8 @@ pat_convert:  pat_res_usage	{	((RDOPATPattern *)$1)->addRelResConvert(); $$ = $1
 					{	((RDOPATPattern *)$1)->addRelResConvertEvent($3 != 0, (RDOPATParamsSet *)$4); $$ = $1; };
 
 pat_params_set:												{  $$ = (int) new RDOPATParamsSet(); }
-			|	pat_params_set IDENTIF_set pat_arithm	{	((RDOPATParamsSet *)$1)->addIdentif((string *)$2, (RDOFUNArithm *)$3); $$ = $1;}
-			|	pat_params_set IDENTIF_NoChange			{	((RDOPATParamsSet *)$1)->addIdentif((string *)$2); $$ = $1;};
+			|	pat_params_set IDENTIF_set pat_arithm	{	((RDOPATParamsSet *)$1)->addIdentif((std::string *)$2, (RDOFUNArithm *)$3); $$ = $1;}
+			|	pat_params_set IDENTIF_NoChange			{	((RDOPATParamsSet *)$1)->addIdentif((std::string *)$2); $$ = $1;};
 
 pat_pattern:	pat_convert		End {	((RDOPATPattern *)$1)->end(); $$ = $1;}
 			|		pat_time			End {	((RDOPATPattern *)$1)->end(); $$ = $1;};
@@ -301,12 +308,12 @@ pat_type: integer fun_const_int_diap fun_const_int_default_val  {
 						if(!dv->exist)
 							$$ = (int)desc->getType()->constructSuchAs();
 						else
-							$$ = (int)desc->getType()->constructSuchAs((string *)dv->value);
+							$$ = (int)desc->getType()->constructSuchAs((std::string *)dv->value);
 					};
 
 
 fun_const_enum_default_val:	'=' IDENTIF	{
-						string *val = (string *)$2;
+						std::string *val = (std::string *)$2;
 						RDORTPEnumDefVal *dv = new RDORTPEnumDefVal(val);
 						$$ = (int)dv;	  
 					};
@@ -350,19 +357,19 @@ fun_const_real_diap: {
 fun_const_enum:   '(' fun_const_enum_list ')'	{ $$ = $2; };
          
 fun_const_enum_list:  IDENTIF		{
-							RDORTPEnum *enu = new RDORTPEnum((string *)$1);
+							RDORTPEnum *enu = new RDORTPEnum((std::string *)$1);
 							$$ = (int)enu;
 						}
          | fun_const_enum_list ',' IDENTIF	{
 							RDORTPEnum *enu = (RDORTPEnum *)$1;
-							enu->add((string *)$3);
+							enu->add((std::string *)$3);
 							$$ = (int)enu;
 						};
 
 
 fun_const_such_as:   such_as IDENTIF '.' IDENTIF {
-							string *type = (string *)$2;
-							string *param = (string *)$4;
+							std::string *type = (std::string *)$2;
+							std::string *param = (std::string *)$4;
 							const RDORTPResType *const rt = currParser->findRTPResType(type);
 							if(!rt)
 								currParser->error(("Invalid resource type in such_as: " + *type).c_str());
@@ -374,7 +381,7 @@ fun_const_such_as:   such_as IDENTIF '.' IDENTIF {
 							$$ = (int)rp;
 						} 
 					| such_as IDENTIF {
-							string *constName = (string *)$2;
+							std::string *constName = (std::string *)$2;
 							const RDOFUNConstant *const cons = currParser->findFUNConst(constName);
 							if(!cons)
 								currParser->error(("Invalid constant reference: " + *constName).c_str());
@@ -402,12 +409,12 @@ pat_arithm: pat_arithm '+' pat_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOFU
 			|	pat_arithm '/' pat_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 / *(RDOFUNArithm *)$3); }
 			|	'(' pat_arithm ')'			{ $$ = $2; }
 			|	pat_arithm_func_call
-			|	IDENTIF '.' IDENTIF			{ $$ = (int)(new RDOFUNArithm((string *)$1, (string *)$3)); }
+			|	IDENTIF '.' IDENTIF			{ $$ = (int)(new RDOFUNArithm((std::string *)$1, (std::string *)$3)); }
 			|	INT_CONST						{ $$ = (int)(new RDOFUNArithm((int)$1)); }
 			|	REAL_CONST						{ $$ = (int)(new RDOFUNArithm((double*)$1)); }
-			|	IDENTIF							{ $$ = (int)(new RDOFUNArithm((string *)$1)); };
+			|	IDENTIF							{ $$ = (int)(new RDOFUNArithm((std::string *)$1)); };
 
-pat_arithm_func_call:	IDENTIF '(' pat_arithm_func_call_pars ')' { $$ = (int)((RDOFUNParams *)$3)->createCall((string *)$1) };
+pat_arithm_func_call:	IDENTIF '(' pat_arithm_func_call_pars ')' { $$ = (int)((RDOFUNParams *)$3)->createCall((std::string *)$1) };
 
 pat_arithm_func_call_pars:								{ $$ = (int)(new RDOFUNParams()); };
 			| pat_arithm_func_call_pars pat_arithm	{ $$ = (int)(((RDOFUNParams *)$1)->addParameter((RDOFUNArithm *)$2)); };
@@ -419,7 +426,7 @@ fun_group_keyword:	Exist			{ $$ = 1; }
 						|	For_All		{ $$ = 3; }
 						|	Not_For_All	{ $$ = 4; };
 
-fun_group_header:	fun_group_keyword '(' IDENTIF_COLON { $$ = (int)(new RDOFUNGroup($1, (string *)$3)); };
+fun_group_header:	fun_group_keyword '(' IDENTIF_COLON { $$ = (int)(new RDOFUNGroup($1, (std::string *)$3)); };
 
 fun_group:	fun_group_header pat_logic ')'		{ $$ = (int)(((RDOFUNGroup *)$1)->createFunLogin((RDOFUNLogic *)$2)); }
 					|	fun_group_header NoCheck ')'	{ $$ = (int)(((RDOFUNGroup *)$1)->createFunLogin()); };

@@ -10,12 +10,35 @@ static char THIS_FILE[] = __FILE__;
 #include "rdoruntime.h"
 #include "rdofun.h"
 #include "rdorss.h"
+#include "rdoparser_lexer.h"
+#include "rdoparser_rdo.h"
 
 namespace rdoParse 
 {
 
+int smr1lex( int* lpval, void* lexer )
+{
+	((RDOFlexLexer*)lexer)->m_lpval = lpval;
+	return ((RDOFlexLexer*)lexer)->yylex();
+}
+void smr1error( char* mes )
+{
+	throw RDOSMR1OkException("");
+//	rdoParse::currParser->error( mes );
+}
+
+int smr2lex( int* lpval, void* lexer )
+{
+	((RDOFlexLexer*)lexer)->m_lpval = lpval;
+	return ((RDOFlexLexer*)lexer)->yylex();
+}
+void smr2error( char* mes )
+{
+	rdoParse::currParser->error( mes );
+}
+
 //////////////////////////// RDOSMR::RDOSMR /////////////////////////////////
-RDOSMR::RDOSMR(string *_modelName)
+RDOSMR::RDOSMR(std::string *_modelName)
 	: modelName(_modelName),
 	resourceFileName(NULL),
 	oprIevFileName(NULL),
@@ -36,10 +59,10 @@ RDOSMR::RDOSMR(string *_modelName)
 	currParser->setSMR(this);
 }
 
-void RDOSMR::setValue(const char *descrName, string* RDOSMR::*pMem, string* newValue)
+void RDOSMR::setValue(const char *descrName, std::string* RDOSMR::*pMem, std::string* newValue)
 {
 	if(this->*pMem != NULL)
-		currParser->error("Second appearence of " + string(descrName) + " descriptor");
+		currParser->error("Second appearence of " + std::string(descrName) + " descriptor");
 
 	this->*pMem = newValue;
 }
@@ -47,7 +70,7 @@ void RDOSMR::setValue(const char *descrName, string* RDOSMR::*pMem, string* newV
 void RDOSMR::setValue(const char *descrName, double* RDOSMR::*pMem, double* newValue)
 {
 	if(this->*pMem != NULL)
-		currParser->error("Second appearence of " + string(descrName) + " descriptor");
+		currParser->error("Second appearence of " + std::string(descrName) + " descriptor");
 
 	this->*pMem = newValue;
 }
@@ -76,7 +99,7 @@ void RDOSMR::setTerminateIf(RDOFUNLogic *logic)
 		currParser->error("Second Terminate_if entry");
 }
 
-void RDOSMR::setConstValue(string *constName, RDOFUNArithm *arithm)
+void RDOSMR::setConstValue(std::string *constName, RDOFUNArithm *arithm)
 {
 	const RDOFUNConstant *cons = currParser->findFUNConst(constName);
 	if(!cons)
@@ -86,7 +109,7 @@ void RDOSMR::setConstValue(string *constName, RDOFUNArithm *arithm)
 	currParser->runTime->addInitCalc(new RDOCalcSetConst(cons->number, calc));
 }
 
-void RDOSMR::setResParValue(string *resName, string *parName, RDOFUNArithm *arithm)
+void RDOSMR::setResParValue(std::string *resName, std::string *parName, RDOFUNArithm *arithm)
 {
 	const RDORSSResource *res = currParser->findRSSResource(resName);
 	if(!res)
@@ -101,7 +124,7 @@ void RDOSMR::setResParValue(string *resName, string *parName, RDOFUNArithm *arit
 	currParser->runTime->addInitCalc(new RDOSetResourceParamCalc(res->getNumber(), parNumb, calc));
 }
 
-void RDOSMR::setSeed(string *seqName, int _base)
+void RDOSMR::setSeed(std::string *seqName, int _base)
 {
 	const RDOFUNSequence *seq = currParser->findSequence(seqName);
 	if(!seq)

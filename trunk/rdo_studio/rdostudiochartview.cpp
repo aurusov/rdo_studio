@@ -180,7 +180,7 @@ void RDOStudioChartView::recalcLayout()
 	
 	CRect tmprect;
 	tmprect.CopyRect( &newClientRect );
-	string str = doc->getTitle();
+	std::string str = doc->getTitle();
 	::DrawText( hmemdc, str.c_str(), str.length(), tmprect, DT_WORDBREAK | DT_CENTER | DT_CALCRECT );
 	chartRect.top = tmprect.Height() + 5;
 
@@ -192,7 +192,7 @@ void RDOStudioChartView::recalcLayout()
 	size_max.cy = 0;
 	if ( yAxis ) {
 		yAxis->getCaptions( captions, valueCountY );
-		for ( vector<string>::iterator it = captions.begin(); it != captions.end(); it++ ) {
+		for ( std::vector<std::string>::iterator it = captions.begin(); it != captions.end(); it++ ) {
 			::GetTextExtentPoint32( hmemdc, (*it).c_str(), (*it).length(), &sz );
 			if ( sz.cx > size_max.cx ) size_max.cx = sz.cx;
 		}
@@ -210,7 +210,7 @@ void RDOStudioChartView::recalcLayout()
 		::SelectObject( hmemdc, hfontLegend );
 
 		int count = 0;
-		for ( vector< RDOStudioDocSerie* >::iterator it = doc->series.begin(); it != doc->series.end(); it++ ) {
+		for ( std::vector< RDOStudioDocSerie* >::iterator it = doc->series.begin(); it != doc->series.end(); it++ ) {
 			(*it)->getLegendExtent( hmemdc, chartRect, sz );
 			if ( sz.cx && sz.cy ) {
 				if ( sz.cx > size_max.cx )
@@ -423,7 +423,7 @@ void RDOStudioChartView::drawTitle( CRect& chartRect )
 	::SelectObject( hmemdc, hfontTitle );
 	::SetTextColor( hmemdc, style->getTheme()->titleFGColor );
 	
-	string str = GetDocument()->getTitle();
+	std::string str = GetDocument()->getTitle();
 	::DrawText( hmemdc, str.c_str(), str.length(), tmprect, DT_CENTER | DT_WORDBREAK );
 }
 
@@ -434,7 +434,7 @@ void RDOStudioChartView::drawLegend( CRect& legendRect )
 	tmprect.CopyRect( &legendRect );
 	SIZE size;
 	::SelectObject( hmemdc, hfontLegend );
-	for ( vector< RDOStudioDocSerie* >::iterator it = doc->series.begin(); it != doc->series.end(); it++ ) {
+	for ( std::vector< RDOStudioDocSerie* >::iterator it = doc->series.begin(); it != doc->series.end(); it++ ) {
 		(*it)->drawInLegend( hmemdc, tmprect, style->getTheme()->legendFgColor, size );
 		tmprect.top += size.cy;
 	}
@@ -458,7 +458,7 @@ void RDOStudioChartView::drawYAxis( CRect& chartRect, const RDOStudioDocSerie* a
 			int heightoffset = roundDouble( (double)chartRect.Height() / (double)( count - 1 ) );
 			tmprect.top = chartRect.bottom;
 			int index = 0;
-			for ( vector<string>::iterator it = captions.begin(); it != captions.end(); it++ ) {
+			for ( std::vector<std::string>::iterator it = captions.begin(); it != captions.end(); it++ ) {
 				index ++;
 				::DrawText( hmemdc, (*it).c_str(), (*it).length(), tmprect, DT_RIGHT );
 				if ( index != 1 && index < count ) {
@@ -485,7 +485,7 @@ void RDOStudioChartView::drawXAxis( CRect& chartRect )
 	
 	RDOStudioChartDoc* doc = GetDocument();
 	if ( !doc->docTimes.empty() ) {
-		string formatstr = "%.3f";
+		std::string formatstr = "%.3f";
 		
 		::SelectObject( hmemdc, hfontAxis );
 		::SetTextColor( hmemdc, style->getTheme()->axisFgColor );
@@ -498,7 +498,7 @@ void RDOStudioChartView::drawXAxis( CRect& chartRect )
 			}
 			double valo = drawFromX.time;
 			int x = chartRect.left;
-			string str = rdo::format( formatstr.c_str(), valo );
+			std::string str = rdo::format( formatstr.c_str(), valo );
 			tmprect.left = x;
 			::DrawText( hmemdc, str.c_str(), str.length(), tmprect, DT_LEFT );
 			valo += valoffset;
@@ -518,7 +518,7 @@ void RDOStudioChartView::drawXAxis( CRect& chartRect )
 			}
 		} else {
 			int ticks = 0;
-			string str;
+			std::string str;
 			int lastx = 0;
 			SIZE sz;
 			for( timesList::iterator it = unwrapTimesList.begin(); it != unwrapTimesList.end(); it++ ) {
@@ -712,7 +712,7 @@ void RDOStudioChartView::onDraw()
 			}
 		}
 
-		for ( vector< RDOStudioDocSerie* >::iterator it = doc->series.begin(); it != doc->series.end(); it++ )
+		for ( std::vector< RDOStudioDocSerie* >::iterator it = doc->series.begin(); it != doc->series.end(); it++ )
 			(*it)->drawSerie( this, hmemdc, chartRect );
 	}
 
@@ -1193,7 +1193,7 @@ void RDOStudioChartView::OnUpdateViewZoomauto(CCmdUI* pCmdUI)
 
 void RDOStudioChartView::OnHelpKeyword()
 {
-	string filename = studioApp.getFullHelpFileName();
+	std::string filename = studioApp.getFullHelpFileName();
 	if ( filename.empty() ) return;
 	filename += "::/html/work_model_chart_main.htm";
 	::HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_DISPLAY_TOPIC, NULL );

@@ -14,23 +14,27 @@ using namespace rdoRuntime;
 namespace rdoParse 
 {
 
+int oprparse( void* lexer );
+int oprlex( int* lpval, void* lexer );
+void oprerror( char* mes );
+
 class RDOPATPattern;
 
 class RDOOPROperation: public RDODeletable
 {
-	const string *const name;
+	const std::string *const name;
 	const RDOPATPattern *pattern;
 	int currParam;
 	RDOActivityRuntime *activity;
 public:
-	RDOOPROperation(string *_oprName, string *patName);
+	RDOOPROperation(std::string *_oprName, std::string *patName);
 	void endOfDefinition();
-	void addParam(string *stringParam);
+	void addParam(std::string *stringParam);
 	void addParam(int intParam);
 	void addParam(double *realParam);
 	void addParam();
-	const string *const getName() const { return name; }
-	void addHotKey(string *hotKey);
+	const std::string *const getName() const { return name; }
+	void addHotKey(std::string *hotKey);
 };
 
 

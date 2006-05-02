@@ -26,18 +26,19 @@ static char THIS_FILE[] = __FILE__;
 
 class RDOMainException: public RDOException
 {
-   string getType() const { return "RDO main programm error"; }
+	std::string getType() const { return "RDO main programm error"; }
 public:
 	RDOMainException(char *mess): RDOException(mess) {}
-	RDOMainException(string mess): RDOException(mess.c_str()) {}
+	RDOMainException(std::string mess): RDOException(mess.c_str()) {}
 };
 
-void RdoModel::parseSMRFileInfo( strstream& smr, RDOSMRFileInfo& info )
+void RdoModel::parseSMRFileInfo( std::strstream& smr, RDOSMRFileInfo& info )
 {
 }
 
-bool RdoModel::parseModel(string smrFileName)
-{ 
+bool RdoModel::parseModel(std::string smrFileName)
+{
+/*
 	runtime = NULL;
 
 	try
@@ -279,6 +280,7 @@ bool RdoModel::parseModel(string smrFileName)
 		return false;
 	}
 
+*/
 	return true;
 }
 
@@ -299,7 +301,7 @@ void RdoModel::executeModel(TracerCallBack tracerCallBack, FrameCallBack frameCa
 			runtime->rdoInit(tracer, resulter);
 		}
 		catch(RDOException &ex) {
-			consol << ex.getType().c_str() << " : " << ex.mess.c_str() << " during initialisation\n" << flush;
+			consol << ex.getType().c_str() << " : " << ex.mess.c_str() << " during initialisation\n" << std::flush;
 			throw;
 		}
 
@@ -308,14 +310,14 @@ void RdoModel::executeModel(TracerCallBack tracerCallBack, FrameCallBack frameCa
 			runtime->rdoRun();
 		}
 		catch(RDOException &ex) {
-			consol << ex.getType().c_str() << " : " << ex.mess.c_str() << " during execution\n" << flush;
+			consol << ex.getType().c_str() << " : " << ex.mess.c_str() << " during execution\n" << std::flush;
 			throw;
 		}
 		try {
 			runtime->rdoDestroy();
 		}
 		catch(RDOException &ex) {
-			consol << ex.getType().c_str() << " : " << ex.mess.c_str() << " during ending\n" << flush;
+			consol << ex.getType().c_str() << " : " << ex.mess.c_str() << " during ending\n" << std::flush;
 			throw;
 		}
 		consol << "End executing\n";
@@ -331,7 +333,7 @@ RdoModel::~RdoModel()
 	delete parser;
 }
 
-string RdoModel::getConsole()
+std::string RdoModel::getConsole()
 {
 	return consol.str();
 }

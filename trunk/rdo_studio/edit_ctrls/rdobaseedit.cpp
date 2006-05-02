@@ -11,7 +11,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-using namespace std;
 using namespace rdoEditCtrl;
 using namespace rdoStyle;
 
@@ -407,7 +406,7 @@ void RDOBaseEdit::OnSelectAll( CCmdUI* pCmdUI )
 	pCmdUI->Enable( !isEmpty() );
 }
 
-string RDOBaseEdit::getCurrentWord() const
+std::string RDOBaseEdit::getCurrentWord() const
 {
 	int pos_begin = sendEditor( SCI_WORDSTARTPOSITION, getCurrentPos(), true );
 	int pos_end   = sendEditor( SCI_WORDENDPOSITION, getCurrentPos(), true );
@@ -418,22 +417,22 @@ string RDOBaseEdit::getCurrentWord() const
 	tr.chrg.cpMin = pos_begin;
 	tr.chrg.cpMax = pos_end;
 	sendEditor( SCI_GETTEXTRANGE, 0, (long)&tr );
-	string str( tr.lpstrText );
+	std::string str( tr.lpstrText );
 	delete[] word;
 	return str;
 }
 
-string RDOBaseEdit::getSelection() const
+std::string RDOBaseEdit::getSelection() const
 {
 	CharacterRange cr = getSelectionRange();
 	char* selection = new char[ cr.cpMax - cr.cpMin + 1 ];
 	sendEditor( SCI_GETSELTEXT, 0, (long)selection );
-	string str( selection );
+	std::string str( selection );
 	delete[] selection;
 	return str;
 }
 
-string RDOBaseEdit::getCurrentOrSelectedWord() const
+std::string RDOBaseEdit::getCurrentOrSelectedWord() const
 {
 	if ( isSelected() ) {
 		return getSelection();
@@ -536,12 +535,12 @@ LRESULT RDOBaseEdit::OnFindReplaceMsg( WPARAM /*wParam*/, LPARAM lParam )
 
 		} else if ( pDialog->ReplaceCurrent() ) {
 
-			string replaceWhat = static_cast<LPCTSTR>(pDialog->GetReplaceString());
+			std::string replaceWhat = static_cast<LPCTSTR>(pDialog->GetReplaceString());
 			replace( findStr, replaceWhat, bSearchDown, bMatchCase, bMatchWholeWord );
 
 		} else if ( pDialog->ReplaceAll() ) {
 
-			string replaceWhat = static_cast<LPCTSTR>(pDialog->GetReplaceString());
+			std::string replaceWhat = static_cast<LPCTSTR>(pDialog->GetReplaceString());
 			replaceAll( findStr, replaceWhat, bMatchCase, bMatchWholeWord );
 
 		}
@@ -564,7 +563,7 @@ void RDOBaseEdit::OnUpdateSearchReplace(CCmdUI* pCmdUI)
 	pCmdUI->Enable( !isReadOnly() && !isEmpty() );
 }
 
-void RDOBaseEdit::findNext( string& findWhat, const bool searchDown, const bool matchCase, const bool matchWholeWord )
+void RDOBaseEdit::findNext( std::string& findWhat, const bool searchDown, const bool matchCase, const bool matchWholeWord )
 {
 	int findLen = findWhat.length();
 	if ( !findLen ) return;
@@ -618,7 +617,7 @@ void RDOBaseEdit::findNext( string& findWhat, const bool searchDown, const bool 
 	}
 }
 
-void RDOBaseEdit::replace( string& findWhat, string& replaceWhat, const bool searchDown, const bool matchCase, const bool matchWholeWord )
+void RDOBaseEdit::replace( std::string& findWhat, std::string& replaceWhat, const bool searchDown, const bool matchCase, const bool matchWholeWord )
 {
 	if ( bHaveFound ) {
 		int replaceLen = replaceWhat.length();
@@ -633,7 +632,7 @@ void RDOBaseEdit::replace( string& findWhat, string& replaceWhat, const bool sea
 	findNext( findWhat, searchDown, matchCase, matchWholeWord );
 }
 
-void RDOBaseEdit::replaceAll( string& findWhat, string& replaceWhat, const bool matchCase, const bool matchWholeWord )
+void RDOBaseEdit::replaceAll( std::string& findWhat, std::string& replaceWhat, const bool matchCase, const bool matchWholeWord )
 {
 	int findLen = findWhat.length();
 	if ( !findLen ) return;
@@ -916,7 +915,7 @@ void RDOBaseEdit::saveAsRTF( CFile& file, int start, int end ) const
 	int colorCount = 1;
 	int i;
 
-	string saveStr;
+	std::string saveStr;
 
 	saveStr = "";
 	saveStr += RTF_HEADEROPEN;
@@ -1044,7 +1043,7 @@ bool RDOBaseEdit::isLineVisible( const int line ) const
 	return line >= first_line && line <= last_line;
 }
 
-void RDOBaseEdit::appendText( const string& str ) const
+void RDOBaseEdit::appendText( const std::string& str ) const
 {
 	sendEditorString( SCI_ADDTEXT, str.length(), str.c_str() );
 }
@@ -1320,7 +1319,7 @@ void RDOBaseEdit::OnUpdateZoomReset( CCmdUI *pCmdUI )
 	pCmdUI->Enable( getZoom() );
 }
 
-int RDOBaseEdit::findPos( string& findWhat, const int startFromLine, const bool matchCase, const bool matchWholeWord ) const
+int RDOBaseEdit::findPos( std::string& findWhat, const int startFromLine, const bool matchCase, const bool matchWholeWord ) const
 {
 	int findLen = findWhat.length();
 	if ( !findLen ) return -1;
@@ -1336,10 +1335,10 @@ int RDOBaseEdit::findPos( string& findWhat, const int startFromLine, const bool 
 	return sendEditorString( SCI_SEARCHINTARGET, findLen, findWhat.c_str() );
 }
 
-string RDOBaseEdit::getLine( const int line ) const
+std::string RDOBaseEdit::getLine( const int line ) const
 {
 	int length = sendEditor( SCI_LINELENGTH, line );
-	string str;
+	std::string str;
 	str.resize( length );
 	sendEditor( SCI_GETLINE, line, (long)str.data() );
 	return str;

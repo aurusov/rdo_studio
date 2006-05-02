@@ -15,7 +15,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-using namespace std;
 using namespace rdoEditor;
 using namespace rdoEditCtrl;
 
@@ -417,8 +416,8 @@ void RDOEditorEdit::OnUpdateFold(CCmdUI* pCmdUI)
 void RDOEditorEdit::commentSelection() const
 {
 	if ( isSelected() ) {
-		string startComment( "{ " );
-		string endComment( " }" );
+		std::string startComment( "{ " );
+		std::string endComment( " }" );
 		int startCommentLength = startComment.length();
 		CharacterRange cr = getSelectionRange();
 		int caretPosition = getCurrentPos();
@@ -444,7 +443,7 @@ void RDOEditorEdit::completeWord()
 
 	SetFocus();
 
-	string s = kw0;
+	std::string s = kw0;
 	s += " ";
 	s += kw1;
 	s += " ";
@@ -484,10 +483,10 @@ void RDOEditorEdit::completeWord()
 	}
 	char* words = wl.GetNearestWords( str, wordLength, true );
 	if ( words ) {
-		string _s = words;
-		while ( _s.find( '?' ) != string::npos ) {
-			string::size_type pos1 = _s.find( '?' );
-			string::size_type pos2 = _s.find( ' ', pos1 );
+		std::string _s = words;
+		while ( _s.find( '?' ) != std::string::npos ) {
+			std::string::size_type pos1 = _s.find( '?' );
+			std::string::size_type pos2 = _s.find( ' ', pos1 );
 			_s.erase( pos1, pos2 - pos1 );
 		}
 //		delete []words; 
@@ -506,8 +505,8 @@ void RDOEditorEdit::completeWord()
 
 	if ( list ) {
 
-		string startKeyWord       = "";
-		string startKeyWordScroll = wl.wordsNoCase[ wl.len-1 ];
+		std::string startKeyWord       = "";
+		std::string startKeyWordScroll = wl.wordsNoCase[ wl.len-1 ];
 		bool useReplace = false;
 		if ( words ) {
 			wl.Set( words );
@@ -668,7 +667,7 @@ void RDOEditorEdit::onBufferAppend( const int bufIndex )
 		pos               = cr.cpMax;
 		canUseSelected    = cr.cpMin != cr.cpMax;
 	}
-	string s = "";
+	std::string s = "";
 	switch ( bufIndex ) {
 		case 1: {
 			if ( view->resetBuf1 ) {
@@ -760,8 +759,8 @@ void RDOEditorEdit::onBufferEdit( const int bufIndex )
 {
 	if ( !view ) return;
 
-	string bufName;
-	string bufValue;
+	std::string bufName;
+	std::string bufValue;
 
 	bufName = rdo::format( ID_BUFFER_NAME );
 
@@ -882,18 +881,18 @@ void RDOEditorEdit::OnUpdateGotoPrev(CCmdUI* pCmdUI)
 
 void RDOEditorEdit::OnHelpKeyword()
 {
-	string filename = studioApp.getFullHelpFileName();
+	std::string filename = studioApp.getFullHelpFileName();
 	if ( filename.empty() ) return;
 
-	string keyword = getCurrentOrSelectedWord();
+	std::string keyword = getCurrentOrSelectedWord();
 
-	string s = kw0;
+	std::string s = kw0;
 	s += " ";
 	s += kw1;
 	s += " ";
 	s += kw2;
 
-	if ( s.find_first_of( keyword ) == string::npos || keyword.empty() ) {
+	if ( s.find_first_of( keyword ) == std::string::npos || keyword.empty() ) {
 		RDOEditorTabCtrl* tab = model->getTab();
 		if ( tab ) {
 			switch( tab->getCurrentRDOItem() ) {

@@ -16,7 +16,6 @@
 #include <rdorepository.h>
 #include <rdobinarystream.h>
 
-using namespace std;
 using namespace RDOSimulatorNS;
 
 #ifdef _DEBUG
@@ -28,7 +27,7 @@ static char THIS_FILE[] = __FILE__;
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioFrameManager
 // ----------------------------------------------------------------------------
-vector< RDOStudioFrameManager::Frame* > RDOStudioFrameManager::frames;
+std::vector< RDOStudioFrameManager::Frame* > RDOStudioFrameManager::frames;
 
 RDOStudioFrameManager::RDOStudioFrameManager():
 	frameDocTemplate( NULL ),
@@ -45,13 +44,13 @@ RDOStudioFrameManager::RDOStudioFrameManager():
 RDOStudioFrameManager::~RDOStudioFrameManager()
 {
 	bmp_clear();
-	vector< Frame* >::iterator it = frames.begin();
+	std::vector< Frame* >::iterator it = frames.begin();
 	while ( it != frames.end() ) {
 		delete *it++;
 	};
 }
 
-void RDOStudioFrameManager::insertItem( const string& name )
+void RDOStudioFrameManager::insertItem( const std::string& name )
 {
 	Frame* item = new Frame;
 	item->hitem = studioApp.mainFrame->workspace.frames->InsertItem( name.c_str(), 1, 1, studioApp.mainFrame->workspace.frames->GetRootItem() );
@@ -63,7 +62,7 @@ void RDOStudioFrameManager::insertItem( const string& name )
 
 int RDOStudioFrameManager::findFrameIndex( const HTREEITEM hitem ) const
 {
-	vector< Frame* >::iterator it = frames.begin();
+	std::vector< Frame* >::iterator it = frames.begin();
 	int index = 0;
 	while ( it != frames.end() ) {
 		if ( (*it)->hitem == hitem ) {
@@ -77,7 +76,7 @@ int RDOStudioFrameManager::findFrameIndex( const HTREEITEM hitem ) const
 
 int RDOStudioFrameManager::findFrameIndex( const RDOStudioFrameDoc* doc ) const
 {
-	vector< Frame* >::iterator it = frames.begin();
+	std::vector< Frame* >::iterator it = frames.begin();
 	int index = 0;
 	while ( it != frames.end() ) {
 		if ( (*it)->doc == doc ) {
@@ -91,7 +90,7 @@ int RDOStudioFrameManager::findFrameIndex( const RDOStudioFrameDoc* doc ) const
 
 int RDOStudioFrameManager::findFrameIndex( const RDOStudioFrameView* view ) const
 {
-	vector< Frame* >::iterator it = frames.begin();
+	std::vector< Frame* >::iterator it = frames.begin();
 	int index = 0;
 	while ( it != frames.end() ) {
 		if ( (*it)->view == view ) {
@@ -142,7 +141,7 @@ void RDOStudioFrameManager::disconnectFrameDoc( const RDOStudioFrameDoc* doc ) c
 void RDOStudioFrameManager::closeAll()
 {
 	int backup = lastShowedFrame;
-	vector< Frame* >::iterator it = frames.begin();
+	std::vector< Frame* >::iterator it = frames.begin();
 	while ( it != frames.end() ) {
 		RDOStudioFrameDoc* doc = (*it)->doc;
 		if ( isValidFrameDoc( doc ) ) {
@@ -158,7 +157,7 @@ void RDOStudioFrameManager::closeAll()
 void RDOStudioFrameManager::clear()
 {
 	studioApp.mainFrame->workspace.frames->deleteChildren( studioApp.mainFrame->workspace.frames->GetRootItem() );
-	vector< Frame* >::iterator it = frames.begin();
+	std::vector< Frame* >::iterator it = frames.begin();
 	while ( it != frames.end() ) {
 		RDOStudioFrameDoc* doc = (*it)->doc;
 		if ( isValidFrameDoc( doc ) ) {
@@ -175,7 +174,7 @@ void RDOStudioFrameManager::clear()
 
 RDOStudioFrameDoc* RDOStudioFrameManager::getFirstExistDoc() const
 {
-	vector< Frame* >::const_iterator it = frames.begin();
+	std::vector< Frame* >::const_iterator it = frames.begin();
 	while ( it != frames.end() ) {
 		if ( isValidFrameDoc( (*it)->doc ) ) {
 			return (*it)->doc;
@@ -283,7 +282,7 @@ void RDOStudioFrameManager::bmp_insert( const std::string& name )
 			memcpy( bmInfo + sizeof(bmInfoHeader), &rgb_q, nNumColors * sizeof(RGBQUAD) );
 
 			pBits = new char[ bmInfoHeader.biSizeImage ];
-			stream.seekg( bmFileHeader.bfOffBits, ios::beg );
+			stream.seekg( bmFileHeader.bfOffBits, std::ios::beg );
 			if ( !stream.good() ) throw BMPReadError();
 			stream.read( pBits, bmInfoHeader.biSizeImage );
 			if ( !(stream.good() || stream.eof()) ) throw BMPReadError();
@@ -326,7 +325,7 @@ void RDOStudioFrameManager::bmp_insert( const std::string& name )
 
 void RDOStudioFrameManager::bmp_clear()
 {
-	map< string, BMP* >::iterator it = bitmaps.begin();
+	std::map< std::string, BMP* >::iterator it = bitmaps.begin();
 	while ( it != bitmaps.end() ) {
 		delete it->second;
 		it++;
@@ -411,8 +410,8 @@ void RDOStudioFrameManager::showFrame( const RDOFrame* const frame, const int in
 				view->bgColor = RGB( frame->r, frame->g, frame->b );
 			}
 
-			vector< string >* areas_clicked = &frames[index]->areas_clicked;
-			vector< string >::iterator it = areas_clicked->begin();
+			std::vector< std::string >* areas_clicked = &frames[index]->areas_clicked;
+			std::vector< std::string >::iterator it = areas_clicked->begin();
 			while ( it != areas_clicked->end() ) {
 				kernel.getSimulator()->addAreaPressed( *it++ );
 			};
@@ -719,7 +718,7 @@ bool RDOStudioFrameManager::canShowPrevFrame() const
 
 void RDOStudioFrameManager::updateStyles() const
 {
-	vector< Frame* >::iterator it = frames.begin();
+	std::vector< Frame* >::iterator it = frames.begin();
 	while ( it != frames.end() ) {
 		RDOStudioFrameView* view = (*it++)->view;
 		if ( view ) {

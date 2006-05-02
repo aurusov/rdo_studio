@@ -14,8 +14,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-using namespace std;
-
 // ----------------------------------------------------------------------------
 // ---------- RDOTracerSerieFindValue
 // ----------------------------------------------------------------------------
@@ -67,12 +65,12 @@ bool RDOTracerSerie::isTemporaryResourceParam() const
 	return serieKind == RDOST_RESPARAM && ((RDOTracerResParam*)this)->getResource()->getType()->getResTypeKind() == RDOTK_TEMPORARY;
 };
 
-string RDOTracerSerie::getTitle() const
+std::string RDOTracerSerie::getTitle() const
 {
 	return title;
 }
 
-void RDOTracerSerie::setTitle( const string& value )
+void RDOTracerSerie::setTitle( const std::string& value )
 {
 	if ( title != value )
 		title = value;
@@ -80,7 +78,7 @@ void RDOTracerSerie::setTitle( const string& value )
 
 void RDOTracerSerie::addValue( RDOTracerValue* const value )
 {
-	for ( vector< RDOStudioChartDoc* >::iterator it = documents.begin(); it != documents.end(); it++ )
+	for ( std::vector< RDOStudioChartDoc* >::iterator it = documents.begin(); it != documents.end(); it++ )
 		(*it)->lock();
 
 	mutex.Lock();
@@ -94,7 +92,7 @@ void RDOTracerSerie::addValue( RDOTracerValue* const value )
 
 	value_count++;
 
-	for_each( documents.begin(), documents.end(), bind2nd( mem_fun1( &RDOStudioChartDoc::newValueToSerieAdded ), value ) );
+	std::for_each( documents.begin(), documents.end(), std::bind2nd( std::mem_fun1( &RDOStudioChartDoc::newValueToSerieAdded ), value ) );
 	
 	mutex.Unlock();
 
@@ -111,7 +109,7 @@ void RDOTracerSerie::getValueCount( int& count ) const
 	const_cast<CMutex&>(mutex).Unlock();
 }
 
-void RDOTracerSerie::getCaptions( vector<string> &captions, const int val_count ) const
+void RDOTracerSerie::getCaptions( std::vector<std::string> &captions, const int val_count ) const
 {
 	const_cast<CMutex&>(mutex).Lock();
 
@@ -120,7 +118,7 @@ void RDOTracerSerie::getCaptions( vector<string> &captions, const int val_count 
 	if ( serieKind == RDOST_PREVIEW ) {
 		double valoffset = ( maxValue - minValue ) / (double)( val_count - 1 );
 		double valo = minValue;
-		string formatstr = "%.3f";
+		std::string formatstr = "%.3f";
 		if ( value_count > 1 ) {
 			for ( int i = 0; i < val_count; i++ ) {
 				captions.push_back( rdo::format( formatstr.c_str(), valo ) );
@@ -134,7 +132,7 @@ void RDOTracerSerie::getCaptions( vector<string> &captions, const int val_count 
 	const_cast<CMutex&>(mutex).Unlock();
 }
 
-void RDOTracerSerie::getCaptionsInt( vector<string> &captions, const int val_count ) const
+void RDOTracerSerie::getCaptionsInt( std::vector<std::string> &captions, const int val_count ) const
 {
 	const_cast<CMutex&>(mutex).Lock();
 
@@ -149,7 +147,7 @@ void RDOTracerSerie::getCaptionsInt( vector<string> &captions, const int val_cou
 	}
 	int valo = minValue;
 	int valoffset = ( maxValue - minValue ) / ( real_val_count - 1 );
-	string formatstr = "%d";
+	std::string formatstr = "%d";
 	for ( int i = 0; i < real_val_count; i++ ) {
 		captions.push_back( rdo::format( formatstr.c_str(), valo ) );
 		valo += valoffset;
@@ -158,7 +156,7 @@ void RDOTracerSerie::getCaptionsInt( vector<string> &captions, const int val_cou
 	const_cast<CMutex&>(mutex).Unlock();
 }
 
-void RDOTracerSerie::getCaptionsDouble( vector<string> &captions, const int val_count ) const
+void RDOTracerSerie::getCaptionsDouble( std::vector<std::string> &captions, const int val_count ) const
 {
 	const_cast<CMutex&>(mutex).Lock();
 
@@ -166,7 +164,7 @@ void RDOTracerSerie::getCaptionsDouble( vector<string> &captions, const int val_
 	
 	double valoffset = ( maxValue - minValue ) / (double)( val_count - 1 );
 	double valo = minValue;
-	string formatstr = "%.3f";
+	std::string formatstr = "%.3f";
 	if ( value_count > 1 ) {
 		for ( int i = 0; i < val_count; i++ ) {
 			captions.push_back( rdo::format( formatstr.c_str(), valo ) );
@@ -179,7 +177,7 @@ void RDOTracerSerie::getCaptionsDouble( vector<string> &captions, const int val_
 	const_cast<CMutex&>(mutex).Unlock();
 }
 
-void RDOTracerSerie::getCaptionsBool( vector<string> &captions, const int val_count ) const
+void RDOTracerSerie::getCaptionsBool( std::vector<std::string> &captions, const int val_count ) const
 {
 	RDOTracerSerie::getCaptions( captions, val_count );
 	captions.push_back( "FALSE" );
@@ -204,7 +202,7 @@ void RDOTracerSerie::drawSerie( RDOStudioChartView* const view, HDC &dc, CRect &
 	
 	if ( !values.empty() ) {
 		
-		valuesList::const_iterator it = find_if( values.begin(), values.end(), RDOTracerSerieFindValue( view ) );
+		valuesList::const_iterator it = std::find_if( values.begin(), values.end(), RDOTracerSerieFindValue( view ) );
 
 		if ( it == values.end() && !values.empty() && !isTemporaryResourceParam() ) {
 			it --;
@@ -403,7 +401,7 @@ void RDOTracerSerie::addToDoc( RDOStudioChartDoc* const doc )
 {
 	mutex.Lock();
 	
-	if ( doc && find( documents.begin(), documents.end(), doc ) == documents.end() ) {
+	if ( doc && std::find( documents.begin(), documents.end(), doc ) == documents.end() ) {
 		documents.push_back( doc );
 	}
 
@@ -414,7 +412,7 @@ void RDOTracerSerie::removeFromDoc( RDOStudioChartDoc* const doc )
 {
 	mutex.Lock();
 	
-	vector <RDOStudioChartDoc*>::iterator it = find( documents.begin(), documents.end(), doc );
+	std::vector <RDOStudioChartDoc*>::iterator it = std::find( documents.begin(), documents.end(), doc );
 	if ( it != documents.end() ) {
 		documents.erase( it );
 	}

@@ -1,13 +1,10 @@
 #ifndef RDO_STD_FUNCS_
 #define RDO_STD_FUNCS_
 
-using namespace std;
-
-
 struct RDOException
 {
-   string mess;
-   virtual string getType() const = 0;
+   std::string mess;
+   virtual std::string getType() const = 0;
    RDOException(const char *str): mess(str) {}
 };
 
@@ -37,11 +34,11 @@ struct comparePointers
 template <class T> 
 struct compareName
 {
-	const string * const name;
-	compareName(const string * const _name): name(_name) {}
+	const std::string * const name;
+	compareName(const std::string * const _name): name(_name) {}
 	bool operator() (const T * other) { return ((*(other->getName())) == (*name)); }
 };
-
+/*
 enum FileToParse
 {
 	RTP_FILE,
@@ -55,7 +52,7 @@ enum FileToParse
 	SMR1_FILE,
 	SMR2_FILE
 };
-
+*/
 
 }
 
@@ -96,14 +93,14 @@ inline const_mem_fun1_t<_Ret,_Tp,_Arg> mem_fun1(_Ret (_Tp::*__f)(_Arg) const)
 }	// namespace std
 
 
-inline string operator +(char *str1, string &str2)
+inline std::string operator +(char *str1, std::string &str2)
 {
-	return string(str1).append(str2);
+	return std::string(str1).append(str2);
 }
 
-inline string operator +(string &str1, char *str2)
+inline std::string operator +(std::string &str1, char *str2)
 {
-	return string(str1).append(str2);
+	return std::string(str1).append(str2);
 }
 
 #endif //RDO_STD_FUNCS_

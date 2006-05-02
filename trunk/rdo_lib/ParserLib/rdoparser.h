@@ -1,8 +1,6 @@
 #ifndef RDOPARSER_PARSER
 #define RDOPARSER_PARSER
 
-using namespace std;
-#include "rdolexinterface.h"
 #include "rdoStdFuncs.h"
 #include "rdocalcconst.h"
 #include "rdoparser_base.h"
@@ -16,7 +14,7 @@ class RDORuntime;
 
 using namespace rdoRuntime;
 
-namespace rdoParse 
+namespace rdoParse
 {
 
 class RDORTPParamDesc;
@@ -34,20 +32,14 @@ class RDODPTFreeActivity;
 
 struct RDOSyntaxException: public RDOException
 {
-   string getType() const { return "RDO Syntax Error"; }
+   std::string getType() const { return "RDO Syntax Error"; }
    RDOSyntaxException(const char *str): RDOException(str) {}
 };
 
 struct RDOInternalException: public RDOException
 {
-   string getType() const { return "RDO Syntax Error"; }
+   std::string getType() const { return "RDO Syntax Error"; }
    RDOInternalException(const char *str): RDOException(str) {}
-};
-
-struct RDOSMR1OkException: public RDOException
-{
-   string getType() const { return ""; }
-   RDOSMR1OkException(const char *str): RDOException(str) {}
 };
 
 class RDOParser
@@ -56,30 +48,30 @@ private:
 	std::ostream* out;
 
 protected:
-	std::map< int, rdoParserBase > parsers;
+	RDOParserList parsers;
 
 public:
-	FileToParse fileToParse;
+	rdoModelObjects::RDOFileType fileToParse;
 
-	vector<string *> allRTPNames;
-	vector<double *> allRTPDoubles;
+	std::vector<std::string *> allRTPNames;
+	std::vector<double *> allRTPDoubles;
 
-	vector<RDORTPParamDesc *>	allRTPParamDesc;
-	vector<RDORTPResType *>	allRTPResType;
+	std::vector<RDORTPParamDesc *>	allRTPParamDesc;
+	std::vector<RDORTPResType *>	allRTPResType;
 
-	vector<RDORSSResource *>	allRSSResource;
+	std::vector<RDORSSResource *>	allRSSResource;
 	
-	vector<RDOFUNConstant *>	allFUNConstant;
-	vector<RDOFUNFunction *>	allFUNFunctions;
-	vector<RDOFUNSequence *>	allFUNSequences;
+	std::vector<RDOFUNConstant *>	allFUNConstant;
+	std::vector<RDOFUNFunction *>	allFUNFunctions;
+	std::vector<RDOFUNSequence *>	allFUNSequences;
 
-	vector<RDOPATPattern *>	allPATPatterns;
+	std::vector<RDOPATPattern *>	allPATPatterns;
 
-	vector<RDODPTSearch *>	allDPTSearch;
-	vector<RDODPTSome *>		allDPTSome;
-	vector<RDODPTFreeActivity *>		allFreeActivity;
+	std::vector<RDODPTSearch *>	allDPTSearch;
+	std::vector<RDODPTSome *>		allDPTSome;
+	std::vector<RDODPTFreeActivity *>		allFreeActivity;
 
-	vector<RDODeletable *>	allDeletables;
+	std::vector<RDODeletable *>	allDeletables;
 
 	RDORTPResType  *lastRTPResType;
 	RDORSSResource *lastRSSResource;
@@ -87,7 +79,7 @@ public:
 	RDOPATPattern  *lastPATPattern;
 	RDODPTSearch   *lastDPTSearch;
 	
-	vector<RDOFUNGroup *> fUNGroupStack;
+	std::vector<RDOFUNGroup *> fUNGroupStack;
 
 	int resourceTypeCounter;
 	int resourceCounter;
@@ -99,23 +91,27 @@ public:
 
 	RDOSMR *smr;
 
-	vector<RDOSimulatorNS::RDOSyntaxError> errors;
+	std::vector<RDOSimulatorNS::RDOSyntaxError> errors;
 
-	stringstream modelStructure;
-	stringstream& getModelStructure();
+	std::stringstream modelStructure;
+	std::stringstream& getModelStructure();
 
 	RDOParser();
 	~RDOParser();
 
 	void setSMR(RDOSMR *_smr) { smr = _smr; }
 
-	const RDORTPResType *findRTPResType(const string *const type) const;
-	const RDORSSResource *findRSSResource(const string *const name) const;
-	const RDOFUNFunction *findFunction(const string *const name) const;
-	const RDOFUNSequence *findSequence(const string *const name) const;
-	const RDOPATPattern *findPattern(const string *const name) const;
-	
-	void setYylval(int val);
+	const RDORTPResType *findRTPResType(const std::string *const type) const;
+	const RDORSSResource *findRSSResource(const std::string *const name) const;
+	const RDOFUNFunction *findFunction(const std::string *const name) const;
+	const RDOFUNSequence *findSequence(const std::string *const name) const;
+	const RDOPATPattern *findPattern(const std::string *const name) const;
+
+	RDOParserBase* parser;
+	void parse( int files = rdoModelObjects::obALL );
+	void parse( rdoModelObjects::RDOParseType file );
+	void parse( rdoModelObjects::RDOParseType file, std::istream& stream );
+/*
 	void parseRTP(std::istream* arg_yyin, std::ostream* arg_yyout);
 	void parseRSS(std::istream* arg_yyin, std::ostream* arg_yyout);
 	void parseFUN(std::istream* arg_yyin, std::ostream* arg_yyout);
@@ -126,19 +122,28 @@ public:
 	void parseFRM(std::istream* arg_yyin, std::ostream* arg_yyout);
 	void parseSMR1(std::istream* arg_yyin, std::ostream* arg_yyout);
 	void parseSMR2(std::istream* arg_yyin, std::ostream* arg_yyout);
+*/
 	void error( const char *mes );
-	void error( string mes ) { error(mes.c_str()); }
-	int lex();
+	void error( std::string mes ) { error(mes.c_str()); }
+//	int lex();
 	void addConstant(RDORTPParamDesc *const _cons);
-	const RDOFUNConstant *RDOParser::findFUNConst(const string *const _cons) const;
+	const RDOFUNConstant *RDOParser::findFUNConst(const std::string *const _cons) const;
 
 	void LoadStdFunctions();
-	string *registerName(const char *name)
+	std::string *registerName(const char *name)
 	{
-		string *newName = new string(name);
+		std::string *newName = new std::string(name);
 		allRTPNames.push_back(newName);
 		return newName;
 	}
+
+	void setYylval( int val )         { parser->set_lexer_value( val ); }
+	void addName( std::string* name ) { allRTPNames.push_back(name);    }
+	double* addDouble( double* val ) {
+		allRTPDoubles.push_back( val );
+		return val;
+	}
+
 };
 
 extern RDOParser *currParser;

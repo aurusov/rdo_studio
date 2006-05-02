@@ -10,7 +10,6 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 using namespace rdoTracerLog;
-using namespace std;
 using namespace rdoStyle;
 
 namespace rdoTracerLog {
@@ -21,20 +20,20 @@ namespace rdoTracerLog {
 class RDOLogCtrlFindInList
 {
 	RDOLogCtrl* log;
-	string strToFind;
+	std::string strToFind;
 	bool matchCase;
 	bool matchWholeWord;
 	
-	bool scan( string::iterator &wildCards, string::iterator &wildend, string::iterator &str, string::iterator &strend ) const;
-	bool match( string::iterator &wildcards, string::iterator &wildend, string::iterator &strcomp, string::iterator &strend ) const;
+	bool scan( std::string::iterator &wildCards, std::string::iterator &wildend, std::string::iterator &str, std::string::iterator &strend ) const;
+	bool match( std::string::iterator &wildcards, std::string::iterator &wildend, std::string::iterator &strcomp, std::string::iterator &strend ) const;
 public:
-	RDOLogCtrlFindInList( RDOLogCtrl* _log, string _strToFind, bool _matchCase, bool _matchWholeWord );
-	bool operator()( string nextstr );
+	RDOLogCtrlFindInList( RDOLogCtrl* _log, std::string _strToFind, bool _matchCase, bool _matchWholeWord );
+	bool operator()( std::string nextstr );
 };
 
 }; // namespace rdoTracerLog
 
-RDOLogCtrlFindInList::RDOLogCtrlFindInList( RDOLogCtrl* _log, string _strToFind, bool _matchCase, bool _matchWholeWord )
+RDOLogCtrlFindInList::RDOLogCtrlFindInList( RDOLogCtrl* _log, std::string _strToFind, bool _matchCase, bool _matchWholeWord )
 	: log( _log ),
 	strToFind( _strToFind ),
 	matchCase( _matchCase ),
@@ -42,7 +41,7 @@ RDOLogCtrlFindInList::RDOLogCtrlFindInList( RDOLogCtrl* _log, string _strToFind,
 {
 }
 
-bool RDOLogCtrlFindInList::scan( string::iterator &wildCards, string::iterator &wildend, string::iterator &str, string::iterator &strend ) const
+bool RDOLogCtrlFindInList::scan( std::string::iterator &wildCards, std::string::iterator &wildend, std::string::iterator &str, std::string::iterator &strend ) const
 {
 	// remove the '?' and '*'
 	for( wildCards ++; str != strend && ( *wildCards == '?' || *wildCards == '*' ); wildCards ++ )
@@ -56,8 +55,8 @@ bool RDOLogCtrlFindInList::scan( string::iterator &wildCards, string::iterator &
 	// else search substring
 	else
 	{
-		string::iterator wdsCopy = wildCards;
-		string::iterator strCopy = str;
+		std::string::iterator wdsCopy = wildCards;
+		std::string::iterator strCopy = str;
 		bool res = 1;
 		do 
 		{
@@ -75,22 +74,22 @@ bool RDOLogCtrlFindInList::scan( string::iterator &wildCards, string::iterator &
 	}
 }
 
-bool RDOLogCtrlFindInList::match( string::iterator &wildcards, string::iterator &wildend, string::iterator &strcomp, string::iterator &strend ) const
+bool RDOLogCtrlFindInList::match( std::string::iterator &wildcards, std::string::iterator &wildend, std::string::iterator &strcomp, std::string::iterator &strend ) const
 {
 	bool res = true;
 	
-	string strWild;
-	string strComp;
+	std::string strWild;
+	std::string strComp;
 	if ( wildcards != wildend ) {
 		strWild.assign( wildcards );
 	}
 	if ( strcomp != strend ) {
 		strComp.assign( strcomp );
 	}
-	string::iterator strWildb = strWild.begin();
-	string::iterator strWilde = strWild.end();
-	string::iterator strCompb = strComp.begin();
-	string::iterator strCompe = strComp.end();
+	std::string::iterator strWildb = strWild.begin();
+	std::string::iterator strWilde = strWild.end();
+	std::string::iterator strCompb = strComp.begin();
+	std::string::iterator strCompe = strComp.end();
 
 	//iterate and delete '?' and '*' one by one
 	while( strWildb != strWilde && res && strCompb != strCompe )
@@ -114,18 +113,18 @@ bool RDOLogCtrlFindInList::match( string::iterator &wildcards, string::iterator 
 	return res && strCompb == strCompe && strWildb == strWilde;
 }
 
-bool RDOLogCtrlFindInList::operator()( string nextstr )
+bool RDOLogCtrlFindInList::operator()( std::string nextstr )
 {
-	if ( !matchWholeWord && strToFind.find_first_of( "*?" ) == string::npos ) {
+	if ( !matchWholeWord && strToFind.find_first_of( "*?" ) == std::string::npos ) {
 		strToFind.insert( 0, "*");
 		strToFind += "*";
 	}
 
-	string str = nextstr;
+	std::string str = nextstr;
 	
 	if ( !matchCase ) {
-		transform( strToFind.begin(), strToFind.end(), strToFind.begin(), tolower );
-		transform( str.begin(), str.end(), str.begin(), tolower );
+		std::transform( strToFind.begin(), strToFind.end(), strToFind.begin(), tolower );
+		std::transform( str.begin(), str.end(), str.begin(), tolower );
 	}
 	
 	log->posFind ++;
@@ -133,10 +132,10 @@ bool RDOLogCtrlFindInList::operator()( string nextstr )
 	if ( matchWholeWord )
 		return strToFind == str;
 
-	string::iterator findstrb = strToFind.begin();
-	string::iterator findstre = strToFind.end();
-	string::iterator strb = str.begin();
-	string::iterator stre = str.end();
+	std::string::iterator findstrb = strToFind.begin();
+	std::string::iterator findstre = strToFind.end();
+	std::string::iterator strb = str.begin();
+	std::string::iterator stre = str.end();
 	return match( findstrb, findstre,  strb, stre );
 }
 
@@ -375,7 +374,7 @@ bool RDOLogCtrl::getItemColors( const int index, RDOLogColorPair* &colors ) cons
 	return logStyle->getItemColors( index, colors );
 }
 
-bool RDOLogCtrl::getItemColors( const string& item, RDOLogColorPair* &colors ) const
+bool RDOLogCtrl::getItemColors( const std::string& item, RDOLogColorPair* &colors ) const
 {
 	return logStyle->getItemColors( item, colors );
 }
@@ -869,7 +868,7 @@ bool RDOLogCtrl::makeLineVisible( const int index )
 	return res;
 }
 
-void RDOLogCtrl::addStringToLog( const string logStr )
+void RDOLogCtrl::addStringToLog( const std::string logStr )
 {
 	mutex.Lock();
 
@@ -983,11 +982,11 @@ void RDOLogCtrl::setFont( const bool needRedraw )
 	mutex.Unlock();
 }
 
-void RDOLogCtrl::getString( const int index, string& str ) const
+void RDOLogCtrl::getString( const int index, std::string& str ) const
 {
 	const_cast<CMutex&>(mutex).Lock();
 
-	string res = "";
+	std::string res = "";
 
 	if ( index >= 0 && index < stringsCount )
 		str.assign( *const_findString( index ) );
@@ -1000,7 +999,7 @@ int RDOLogCtrl::getSelectedIndex() const
 	return selectedLine;
 }
 
-void RDOLogCtrl::getSelected( string& str ) const
+void RDOLogCtrl::getSelected( std::string& str ) const
 {
 	getString( selectedLine, str );
 }
@@ -1010,7 +1009,7 @@ void RDOLogCtrl::copy()
 	if ( canCopy() ) {
 		if ( !OpenClipboard() || !::EmptyClipboard() )
 			return;
-		string str;
+		std::string str;
 		getSelected( str );
 		char* ptr = (char*)::LocalAlloc( LMEM_FIXED, str.length() + 1 );
 		strcpy( ptr, str.c_str() );
@@ -1156,7 +1155,7 @@ void RDOLogCtrl::find( int& result, const bool searchDown, const bool matchCase,
 
 	result = -1;
 
-	string strtofind = findStr;
+	std::string strtofind = findStr;
 	
 	stringList::iterator it;
 	stringList::reverse_iterator it_r;
@@ -1170,7 +1169,7 @@ void RDOLogCtrl::find( int& result, const bool searchDown, const bool matchCase,
 
 	posFind = -1;
 	if ( searchDown ) {
-		it = find_if(
+		it = std::find_if(
 				findString( startPos ),
 				strings.end(),
 				RDOLogCtrlFindInList( this, findStr, matchCase, matchWholeWord )
@@ -1179,7 +1178,7 @@ void RDOLogCtrl::find( int& result, const bool searchDown, const bool matchCase,
 			posFind = -1;
 			startPos = 0;
 			endPos   = stringsCount - 1;
-			it = find_if(
+			it = std::find_if(
 				strings.begin(),
 				strings.end(),
 				RDOLogCtrlFindInList( this, findStr, matchCase, matchWholeWord )
@@ -1190,7 +1189,7 @@ void RDOLogCtrl::find( int& result, const bool searchDown, const bool matchCase,
 		else
 			posFind += startPos;
 	} else {
-		it_r = find_if(
+		it_r = std::find_if(
 				reverse_findString( startPos + 1 ),
 				strings.rend(),
 				RDOLogCtrlFindInList( this, findStr, matchCase, matchWholeWord )
@@ -1199,7 +1198,7 @@ void RDOLogCtrl::find( int& result, const bool searchDown, const bool matchCase,
 			posFind = -1;
 			startPos = stringsCount - 1;
 			endPos   = 0;
-			it_r = find_if(
+			it_r = std::find_if(
 				strings.rbegin(),
 				strings.rend(),
 				RDOLogCtrlFindInList( this, findStr, matchCase, matchWholeWord )
@@ -1235,7 +1234,7 @@ void RDOLogCtrl::setText( std::string text )
 	clear();
 	while ( !text.empty() ) {
 		int pos = text.find_first_of( "\r\n" );
-		if ( pos == string::npos )
+		if ( pos == std::string::npos )
 			pos = text.length();
 		addStringToLog( pos ? text.substr( 0, pos ) : "" );
 		text.erase( 0, pos );

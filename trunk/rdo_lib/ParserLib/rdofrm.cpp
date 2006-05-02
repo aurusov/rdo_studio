@@ -9,10 +9,20 @@ static char THIS_FILE[] = __FILE__;
 #include "rdofrm.h"
 #include "rdoparser.h"
 #include "rdoruntime.h"
-
+#include "rdoparser_lexer.h"
 
 namespace rdoParse 
 {
+
+int frmlex( int* lpval, void* lexer )
+{
+	((RDOFlexLexer*)lexer)->m_lpval = lpval;
+	return ((RDOFlexLexer*)lexer)->yylex();
+}
+void frmerror( char* mes )
+{
+	rdoParse::currParser->error( mes );
+}
 
 RDOFRMColor::RDOFRMColor()
 {
@@ -56,21 +66,21 @@ void RDOFRMText::setText(int _align, RDOFUNArithm *_value)
 	isTextString = false;
 }
 
-void RDOFRMText::setText(int _align, string *_txt)
+void RDOFRMText::setText(int _align, std::string *_txt)
 {
 	align = _align;
 	txt = _txt;
 	isTextString = true;
 }
 
-RDOFRMBitmap::RDOFRMBitmap(RDOFUNArithm *_x, RDOFUNArithm *_y, string *_picFileName, string *_mask)
+RDOFRMBitmap::RDOFRMBitmap(RDOFUNArithm *_x, RDOFUNArithm *_y, std::string *_picFileName, std::string *_mask)
 	: picFileName(_picFileName), mask(_mask)
 {
 	x = _x?_x->createCalc():NULL;
 	y = _y?_y->createCalc():NULL;
 }
 
-RDOFRMS_bmp::RDOFRMS_bmp(RDOFUNArithm *x, RDOFUNArithm *y, RDOFUNArithm *width, RDOFUNArithm *height, string *_picFileName, string *_mask)
+RDOFRMS_bmp::RDOFRMS_bmp(RDOFUNArithm *x, RDOFUNArithm *y, RDOFUNArithm *width, RDOFUNArithm *height, std::string *_picFileName, std::string *_mask)
 	: RDOFRMBoundingItem(x, y, width, height), picFileName(_picFileName), mask(_mask)
 {}
 
@@ -103,7 +113,7 @@ RDOFRMTriang::RDOFRMTriang(RDOFUNArithm *_x1, RDOFUNArithm *_y1, RDOFUNArithm *_
 	y3 = _y3?_y3->createCalc():NULL;
 }
 
-RDOFRMActive::RDOFRMActive(RDOFUNArithm *x, RDOFUNArithm *y, RDOFUNArithm *width, RDOFUNArithm *height, string *_operName)
+RDOFRMActive::RDOFRMActive(RDOFUNArithm *x, RDOFUNArithm *y, RDOFUNArithm *width, RDOFUNArithm *height, std::string *_operName)
 	: RDOFRMBoundingItem(x, y, width, height), operName(_operName)
 {}
 
@@ -112,7 +122,7 @@ RDOFRMShow::RDOFRMShow(RDOFUNLogic* logic)
 	conditionCalc = logic?logic->calc:NULL;
 }
 
-RDOFRMFrame::RDOFRMFrame(string *_name, RDOFUNLogic *logic)
+RDOFRMFrame::RDOFRMFrame(std::string *_name, RDOFUNLogic *logic)
 	: name(_name)
 {
 	conditionCalc = logic?logic->calc:NULL;
@@ -124,7 +134,7 @@ void RDOFRMFrame::setBackground(int _r, int _g, int _b)
 	r = _r; g = _g; b = _b;
 }
 
-void RDOFRMFrame::setBackPicture(string* _picFileName)
+void RDOFRMFrame::setBackPicture(std::string* _picFileName)
 {
 	hasBackPicture = true;
 	picFileName = _picFileName;
@@ -229,7 +239,7 @@ RDOSimulatorNS::RDOFrameElement* RDOFRMText::createElement(RDORuntime *sim)
 	RDOSimulatorNS::RDOColor bg = getBg();
 	RDOSimulatorNS::RDOColor fg = getFg();
 
-	string t;
+	std::string t;
 	if(isTextString)
 		t = *txt;
 	else
@@ -363,7 +373,7 @@ RDOSimulatorNS::RDOFrameElement* RDOFRMActive::createElement(RDORuntime *sim)
 
 RDOFRMShow::~RDOFRMShow()
 {
-	for(vector<RDOFRMItem *>::iterator it = items.begin(); it != items.end(); it++)
+	for(std::vector<RDOFRMItem *>::iterator it = items.begin(); it != items.end(); it++)
 		delete (*it);
 
 	items.clear();
@@ -371,35 +381,35 @@ RDOFRMShow::~RDOFRMShow()
 
 RDOFRMFrame::~RDOFRMFrame()
 {
-	for(vector<RDOFRMShow *>::iterator it = shows.begin(); it != shows.end(); it++)
+	for(std::vector<RDOFRMShow *>::iterator it = shows.begin(); it != shows.end(); it++)
 		delete (*it);
 
 	shows.clear();
 }
 
-void RDOFRMFrame::getAllBitmaps(vector<const string *> &vect)
+void RDOFRMFrame::getAllBitmaps(std::vector<const std::string *> &vect)
 {
 	if(hasBackPicture)
 		vect.push_back(picFileName);
 
-	for(vector<RDOFRMShow *>::iterator it = shows.begin(); it != shows.end(); it++)
+	for(std::vector<RDOFRMShow *>::iterator it = shows.begin(); it != shows.end(); it++)
 		(*it)->getAllBitmaps(vect);
 }
 
-void RDOFRMShow::getAllBitmaps(vector<const string *> &vect)
+void RDOFRMShow::getAllBitmaps(std::vector<const std::string *> &vect)
 {
-	for(vector<RDOFRMItem *>::iterator it = items.begin(); it != items.end(); it++)
+	for(std::vector<RDOFRMItem *>::iterator it = items.begin(); it != items.end(); it++)
 		(*it)->getAllBitmaps(vect);
 }
 
-void RDOFRMBitmap::getAllBitmaps(vector<const string *> &vect)
+void RDOFRMBitmap::getAllBitmaps(std::vector<const std::string *> &vect)
 {
 	vect.push_back(picFileName);
 	if(mask)
 		vect.push_back(mask);
 }
 
-void RDOFRMS_bmp::getAllBitmaps(vector<const string *> &vect)
+void RDOFRMS_bmp::getAllBitmaps(std::vector<const std::string *> &vect)
 {
 	vect.push_back(picFileName);
 	if(mask)

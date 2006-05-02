@@ -7,7 +7,6 @@
 
 #include <afxdlgs.h>
 
-using namespace std;
 using namespace rdoRepository;
 
 // ----------------------------------------------------------------------------
@@ -67,7 +66,7 @@ void RDORepositoryFile::resetModelNames()
 
 bool RDORepositoryFile::updateModelNames()
 {
-	rdo::binarystream smrStream( ios::in | ios::out );
+	rdo::binarystream smrStream( std::ios::in | std::ios::out );
 	loadFile( getFullFileName( rdoModelObjects::SMR ), smrStream, true, true, files[ rdoModelObjects::SMR ].readonly );
 	rdoModelObjects::RDOSMRFileInfo fileInfo;
 	kernel.getSimulator()->parseSMRFileInfo( smrStream, fileInfo );
@@ -140,7 +139,7 @@ void RDORepositoryFile::newModel()
 	}
 }
 
-bool RDORepositoryFile::openModel( const string& modelFileName )
+bool RDORepositoryFile::openModel( const std::string& modelFileName )
 {
 	if ( canCloseModel() ) {
 
@@ -156,7 +155,7 @@ bool RDORepositoryFile::openModel( const string& modelFileName )
 		if ( modelFileName.empty() ) {
 			CString s;
 			s.LoadString( ID_MODEL_FILETYPE );
-			string defaultFileName = "";
+			std::string defaultFileName = "";
 			if ( rdo::isFileExists( lastModelPath ) ) {
 				defaultFileName = lastModelPath;
 			}
@@ -190,7 +189,7 @@ bool RDORepositoryFile::openModel( const string& modelFileName )
 				}
 
 			} else {
-				AfxMessageBox( rdo::format( ID_MSG_MODELOPEN_ERROR, string(modelPath + modelName + files[ rdoModelObjects::SMR ].extention).c_str() ).c_str(), MB_ICONSTOP | MB_OK );
+				AfxMessageBox( rdo::format( ID_MSG_MODELOPEN_ERROR, std::string(modelPath + modelName + files[ rdoModelObjects::SMR ].extention).c_str() ).c_str(), MB_ICONSTOP | MB_OK );
 				setName( "" );
 			}
 		}
@@ -225,7 +224,7 @@ bool RDORepositoryFile::saveAsDlg()
 {
 	CString s;
 	s.LoadString( ID_MODEL_FILETYPE );
-	string defaultFileName = "";
+	std::string defaultFileName = "";
 	if ( rdo::isFileExists( lastModelPath ) ) {
 		defaultFileName = lastModelPath;
 	}
@@ -277,47 +276,47 @@ void RDORepositoryFile::extractName( const CFileDialog* const dlg )
 {
 	if ( !dlg ) return;
 
-	string fullname  = dlg->GetPathName();
-	string filename  = dlg->GetFileName();
-	string extention = dlg->GetFileExt();
+	std::string fullname  = dlg->GetPathName();
+	std::string filename  = dlg->GetFileName();
+	std::string extention = dlg->GetFileExt();
 
 	modelPath = rdo::extractFilePath( fullname );
 
 	if ( extention.empty() ) {
 		setName( filename );
 	} else {
-		string name( filename.begin(), filename.length() - extention.length() - 1 );
+		std::string name( filename.begin(), filename.length() - extention.length() - 1 );
 		setName( name );
 	}
 }
 
-void RDORepositoryFile::extractName( const string& fullname )
+void RDORepositoryFile::extractName( const std::string& fullname )
 {
 	modelPath = rdo::extractFilePath( fullname );
 
-	string name = fullname;
-	string::size_type pos = name.find_last_of( '.' );
-	if ( pos != string::npos ) {
-		string s;
+	std::string name = fullname;
+	std::string::size_type pos = name.find_last_of( '.' );
+	if ( pos != std::string::npos ) {
+		std::string s;
 		s.assign( name.begin(), pos );
 		name = s;
 	}
 	static char szDelims[] = " \t\n\r";
 	name.erase( 0, name.find_first_not_of( szDelims ) );
-	name.erase( name.find_last_not_of( szDelims ) + 1, string::npos );
+	name.erase( name.find_last_not_of( szDelims ) + 1, std::string::npos );
 	pos = name.find_last_of( '\\' );
-	if ( pos == string::npos ) {
+	if ( pos == std::string::npos ) {
 		pos = name.find_last_of( '/' );
 	}
-	if ( pos != string::npos ) {
-		string s( name, pos + 1, name.length() - pos );
+	if ( pos != std::string::npos ) {
+		std::string s( name, pos + 1, name.length() - pos );
 		setName( s );
 	} else {
 		setName( "" );
 	}
 }
 
-bool RDORepositoryFile::isFileReadOnly( const string& fileName )
+bool RDORepositoryFile::isFileReadOnly( const std::string& fileName )
 {
 	CFileFind finder;
 	if ( finder.FindFile( fileName.c_str() ) ) {
@@ -329,7 +328,7 @@ bool RDORepositoryFile::isFileReadOnly( const string& fileName )
 
 void RDORepositoryFile::changeLastModelPath()
 {
-	string name = !modelName.empty() ? modelName + files[ rdoModelObjects::SMR ].extention : "*" + files[ rdoModelObjects::SMR ].extention;
+	std::string name = !modelName.empty() ? modelName + files[ rdoModelObjects::SMR ].extention : "*" + files[ rdoModelObjects::SMR ].extention;
 	if ( !modelPath.empty() ) {
 		lastModelPath = modelPath + name;
 	} else {
@@ -346,12 +345,12 @@ void RDORepositoryFile::changeLastModelPath()
 	AfxGetApp()->WriteProfileString( "repository", "lastModelPath", lastModelPath.c_str() );
 }
 
-void RDORepositoryFile::setName( const string& str )
+void RDORepositoryFile::setName( const std::string& str )
 {
 	modelName = str;
 	static char szDelims[] = " \t\n\r";
 	modelName.erase( 0, modelName.find_first_not_of( szDelims ) );
-	modelName.erase( modelName.find_last_not_of( szDelims ) + 1, string::npos );
+	modelName.erase( modelName.find_last_not_of( szDelims ) + 1, std::string::npos );
 	if ( modelName.empty() ) {
 		modelPath = "";
 		resetModelNames();
@@ -359,7 +358,7 @@ void RDORepositoryFile::setName( const string& str )
 	changeLastModelPath();
 }
 
-void RDORepositoryFile::loadFile( const string& filename, rdo::binarystream& stream, const bool described, const bool mustExist, bool& reanOnly ) const
+void RDORepositoryFile::loadFile( const std::string& filename, rdo::binarystream& stream, const bool described, const bool mustExist, bool& reanOnly ) const
 {
 	if ( described ) {
 		if ( rdo::isFileExists( filename ) ) {
@@ -368,39 +367,39 @@ void RDORepositoryFile::loadFile( const string& filename, rdo::binarystream& str
 			} else {
 				reanOnly = true;
 			}
-			if ( stream.getOpenMode() & ios::binary ) {
-				ifstream file( filename.c_str(), ios::in | ios::binary );
-				file.seekg( 0, ios::end );
+			if ( stream.getOpenMode() & std::ios::binary ) {
+				std::ifstream file( filename.c_str(), std::ios::in | std::ios::binary );
+				file.seekg( 0, std::ios::end );
 				int len = file.tellg();
-				file.seekg( 0, ios::beg );
+				file.seekg( 0, std::ios::beg );
 				stream.resize( len );
 				file.read( stream.data(), len );
 				file.close();
 			} else {
-				ifstream file( filename.c_str() );
+				std::ifstream file( filename.c_str() );
 				stream << file.rdbuf();
 				file.close();
 			}
 		} else {
-			stream.setstate( ios_base::badbit );
-			if ( mustExist ) stream.setstate( stream.rdstate() | ios_base::failbit );
+			stream.setstate( std::ios_base::badbit );
+			if ( mustExist ) stream.setstate( stream.rdstate() | std::ios_base::failbit );
 		}
 	} else {
-		stream.setstate( ios_base::badbit );
+		stream.setstate( std::ios_base::badbit );
 	}
 }
 
-void RDORepositoryFile::saveFile( const string& filename, rdo::binarystream& stream, const bool deleteIfEmpty ) const
+void RDORepositoryFile::saveFile( const std::string& filename, rdo::binarystream& stream, const bool deleteIfEmpty ) const
 {
 	if ( !filename.empty() ) {
 		bool file_exist = rdo::isFileExists( filename );
 		if ( stream.size() || ( file_exist && !deleteIfEmpty ) ) {
-			if ( stream.getOpenMode() & ios::binary ) {
-				ofstream file( filename.c_str(), ios::out | ios::binary );
+			if ( stream.getOpenMode() & std::ios::binary ) {
+				std::ofstream file( filename.c_str(), std::ios::out | std::ios::binary );
 				file.write( stream.data(), stream.size() );
 				file.close();
 			} else {
-				ofstream file( filename.c_str() );
+				std::ofstream file( filename.c_str() );
 				file << stream.rdbuf();
 				file.close();
 			}
@@ -425,19 +424,19 @@ void RDORepositoryFile::save( rdoModelObjects::RDOFileType type, rdo::binarystre
 	}
 }
 
-void RDORepositoryFile::loadBMP( const string& name, rdo::binarystream& stream ) const
+void RDORepositoryFile::loadBMP( const std::string& name, rdo::binarystream& stream ) const
 {
-	string file_name = modelPath + name + ".bmp";
+	std::string file_name = modelPath + name + ".bmp";
 	if ( rdo::isFileExists( file_name ) ) {
-		ifstream file( file_name.c_str(), ios::in | ios::binary );
-		file.seekg( 0, ios::end );
+		std::ifstream file( file_name.c_str(), std::ios::in | std::ios::binary );
+		file.seekg( 0, std::ios::end );
 		int len = file.tellg();
-		file.seekg( 0, ios::beg );
+		file.seekg( 0, std::ios::beg );
 		stream.resize( len );
 		file.read( stream.data(), len );
 		file.close();
 	} else {
-		stream.setstate( ios_base::badbit );
+		stream.setstate( std::ios_base::badbit );
 	}
 }
 
@@ -462,15 +461,15 @@ void RDORepositoryFile::beforeModelStart()
 		trace_file.close();
 	}
 	if ( files[ rdoModelObjects::TRC ].described ) {
-		trace_file.open( getFullFileName( rdoModelObjects::TRC ).c_str(), ios::out | ios::binary );
+		trace_file.open( getFullFileName( rdoModelObjects::TRC ).c_str(), std::ios::out | std::ios::binary );
 		if ( trace_file.is_open() ) {
-			trace_file << "Results_file   = " << getFileExtName( rdoModelObjects::PMV ) << "    " << static_cast<LPCTSTR>(CTime::GetCurrentTime().Format( "%a %b %d %H:%M:%S %Y" )) << endl;
-			trace_file << "Run_file       = " << getFileExtName( rdoModelObjects::SMR ) << endl;
-			trace_file << "Model_name     = " << files[ rdoModelObjects::SMR ].filename << endl;
-			trace_file << "Resource_file  = " << files[ rdoModelObjects::RSS ].filename << files[ rdoModelObjects::RSS ].extention << endl;
-			trace_file << "OprIev_file    = " << files[ rdoModelObjects::OPR ].filename << files[ rdoModelObjects::OPR ].extention << endl;
-			trace_file << kernel.getSimulator()->getModelStructure().str() << endl;
-			trace_file << "$Tracing" << endl;
+			trace_file << "Results_file   = " << getFileExtName( rdoModelObjects::PMV ) << "    " << static_cast<LPCTSTR>(CTime::GetCurrentTime().Format( "%a %b %d %H:%M:%S %Y" )) << std::endl;
+			trace_file << "Run_file       = " << getFileExtName( rdoModelObjects::SMR ) << std::endl;
+			trace_file << "Model_name     = " << files[ rdoModelObjects::SMR ].filename << std::endl;
+			trace_file << "Resource_file  = " << files[ rdoModelObjects::RSS ].filename << files[ rdoModelObjects::RSS ].extention << std::endl;
+			trace_file << "OprIev_file    = " << files[ rdoModelObjects::OPR ].filename << files[ rdoModelObjects::OPR ].extention << std::endl;
+			trace_file << kernel.getSimulator()->getModelStructure().str() << std::endl;
+			trace_file << "$Tracing" << std::endl;
 		}
 	}
 }
@@ -482,7 +481,7 @@ void RDORepositoryFile::stopModel()
 	}
 }
 
-void RDORepositoryFile::trace( const string& str )
+void RDORepositoryFile::trace( const std::string& str )
 {
 	if ( trace_file.is_open() ) {
 		trace_file.write( str.c_str(), str.length() );

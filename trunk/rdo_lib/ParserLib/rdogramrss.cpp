@@ -134,7 +134,11 @@
 # define	active	414
 # define	QUOTED_IDENTIF	415
 
-#line 131 ".\\rdorss.y"
+#line 1 ".\\rdorss.y"
+
+#define YYPARSE_PARAM lexer
+#define YYLEX_PARAM lexer
+#line 138 ".\\rdorss.y"
 
 #include "pch.h"
 #ifdef _DEBUG
@@ -234,8 +238,8 @@ static const short yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined. */
 static const short yyrline[] =
 {
-       0,   154,   155,   157,   158,   160,   177,   183,   184,   185,
-     187,   188,   190,   205,   219,   234
+       0,   161,   162,   164,   165,   167,   184,   190,   191,   192,
+     194,   195,   197,   212,   226,   241
 };
 #endif
 
@@ -349,6 +353,8 @@ static const short yycheck[] =
       -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
       -1,    -1,    -1,    -1,    -1,    -1,    -1,   127
 };
+#define YYPURE 1
+
 /* -*-C-*-  Note some compilers choke on comments on `#line' lines.  */
 #line 3 "..\\System\\bison.simple"
 
@@ -1057,10 +1063,10 @@ yyreduce:
   switch (yyn) {
 
 case 5:
-#line 160 ".\\rdorss.y"
+#line 167 ".\\rdorss.y"
 {
-						string *name = (string *)yyvsp[-1];
-						string *type = (string *)yyvsp[0];
+						std::string *name = (std::string *)yyvsp[-1];
+						std::string *type = (std::string *)yyvsp[0];
 						const RDORTPResType *const resType = currParser->findRTPResType(type);
 						if(!resType)
 							currParser->error(("Invalid resource type: " + *type).c_str());
@@ -1075,7 +1081,7 @@ case 5:
 					;
     break;}
 case 6:
-#line 177 ".\\rdorss.y"
+#line 184 ".\\rdorss.y"
 { 
 						RDORSSResource *res = (RDORSSResource *)yyvsp[-2];
 						RDOCalcCreateNumberedResource *createResource = new RDOCalcCreateNumberedResource(res->getType()->getType(), yyvsp[-1] != 0, res->getValues(), res->getNumber(), res->getType()->isPerm());
@@ -1083,19 +1089,19 @@ case 6:
 					;
     break;}
 case 7:
-#line 183 ".\\rdorss.y"
+#line 190 ".\\rdorss.y"
 { yyval = 0; ;
     break;}
 case 8:
-#line 184 ".\\rdorss.y"
+#line 191 ".\\rdorss.y"
 { yyval = 1; ;
     break;}
 case 9:
-#line 185 ".\\rdorss.y"
+#line 192 ".\\rdorss.y"
 { yyval = 0; ;
     break;}
 case 12:
-#line 190 ".\\rdorss.y"
+#line 197 ".\\rdorss.y"
 { 
 						if(currParser->lastRSSResource->currParam == currParser->lastRSSResource->getType()->getParams().end())
 							currParser->error("Too many parameters");
@@ -1112,13 +1118,13 @@ case 12:
 					;
     break;}
 case 13:
-#line 205 ".\\rdorss.y"
+#line 212 ".\\rdorss.y"
 { 
 						if(currParser->lastRSSResource->currParam == currParser->lastRSSResource->getType()->getParams().end())
 							currParser->error("Too many parameters");
 						try
 						{
-							RDOValue val = (*(currParser->lastRSSResource->currParam))->getType()->getRSSEnumValue((string *)yyvsp[0]);
+							RDOValue val = (*(currParser->lastRSSResource->currParam))->getType()->getRSSEnumValue((std::string *)yyvsp[0]);
 							currParser->lastRSSResource->addValue(val);
 							currParser->lastRSSResource->currParam++;
 						}
@@ -1129,7 +1135,7 @@ case 13:
 					;
     break;}
 case 14:
-#line 219 ".\\rdorss.y"
+#line 226 ".\\rdorss.y"
 { 
 						if(currParser->lastRSSResource->currParam == currParser->lastRSSResource->getType()->getParams().end())
 							currParser->error("Too many parameters");
@@ -1146,7 +1152,7 @@ case 14:
 					;
     break;}
 case 15:
-#line 234 ".\\rdorss.y"
+#line 241 ".\\rdorss.y"
 { 
 						if(currParser->lastRSSResource->currParam == currParser->lastRSSResource->getType()->getParams().end())
 							currParser->error("Too many parameters");
@@ -1395,7 +1401,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 249 ".\\rdorss.y"
+#line 256 ".\\rdorss.y"
 
 
 }

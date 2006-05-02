@@ -1,7 +1,6 @@
 #ifndef RDODPT_DPT
 #define RDODPT_DPT
 
-using namespace std;
 #include "rdoStdFuncs.h"
 
 #include "rdofun.h"
@@ -19,6 +18,10 @@ using namespace rdoRuntime;
 
 namespace rdoParse 
 {
+
+int dptparse( void* lexer );
+int dptlex( int* lpval, void* lexer );
+void dpterror( char* mes );
 
 /////////////////////////  "SEARCH" DECISION POINT /////////////////////////
 
@@ -38,19 +41,19 @@ enum DPTSearchValue
 
 class RDODPTSearchActivity: public RDODeletable
 {
-	string *name;
+	std::string *name;
 	RDOPATPatternRule *rule;
 	DPTSearchValue value;
 	RDOFUNArithm *ruleCost;
 	int currParamNum;
-	vector<RDOValue> params;
+	std::vector<RDOValue> params;
 public:
-	RDODPTSearchActivity(string *_name, string *_ruleName);
+	RDODPTSearchActivity(std::string *_name, std::string *_ruleName);
 	void setValue(DPTSearchValue _value, RDOFUNArithm *_ruleCost);
-	const string *getName() const { return name; }
+	const std::string *getName() const { return name; }
 	void addParam(int _param);
 	void addParam(double * _param);
-	void addParam(string *_param);
+	void addParam(std::string *_param);
 	void addParam();
 	RDOPATPatternRule *getRule() { return rule; }
 
@@ -59,22 +62,22 @@ public:
 
 class RDODPTSearch: public RDODeletable
 {
-	const string *const name;
+	const std::string *const name;
 	DPTSearchTrace trace;
 	RDOFUNLogic *conditon;
 	RDOFUNLogic *termConditon;
 	RDOFUNArithm *evalBy;
 	bool compTops;
-	vector<RDODPTSearchActivity *> activities;
+	std::vector<RDODPTSearchActivity *> activities;
 public:
 	RDODPTSearchActivity *lastActivity;
 public:
-	RDODPTSearch(string *_name, DPTSearchTrace _trace = DPTnotrace);
+	RDODPTSearch(std::string *_name, DPTSearchTrace _trace = DPTnotrace);
 	void setCondition(RDOFUNLogic *_conditon = NULL) { conditon = _conditon; }
 	void setTermCondition(RDOFUNLogic *_termConditon) { termConditon = _termConditon; }
 	void setEvaluateBy(RDOFUNArithm *_evalBy) { evalBy = _evalBy; }
 	void setCompareTops(bool _compTops) { compTops = _compTops; }
-	void addNewActivity(string *_name, string *_ruleName);
+	void addNewActivity(std::string *_name, std::string *_ruleName);
 	template <typename T>
 		void addActivityParam(T _param)
 	{
@@ -86,8 +89,8 @@ public:
 	void setActivityValue(DPTSearchValue _value, RDOFUNArithm *_ruleCost);
 	void end();
 
-	const string *getName() const { return name; }
-	vector<RDODPTSearchActivity *> & getActivities() { return activities; }
+	const std::string *getName() const { return name; }
+	std::vector<RDODPTSearchActivity *> & getActivities() { return activities; }
 };
 
 
@@ -95,16 +98,16 @@ public:
 
 class RDODPTSomeActivity: public RDODeletable
 {
-	string *name;
+	std::string *name;
 	const RDOPATPattern *pattern;
 	int currParamNum;
-	vector<RDOValue> params;
+	std::vector<RDOValue> params;
 public:
-	RDODPTSomeActivity(string *_name, string *_ruleName);
-	const string *getName() const { return name; }
+	RDODPTSomeActivity(std::string *_name, std::string *_ruleName);
+	const std::string *getName() const { return name; }
 	void addParam(int _param);
 	void addParam(double * _param);
-	void addParam(string *_param);
+	void addParam(std::string *_param);
 	void addParam();
 
 	void createActivityRuntime(RDOFUNLogic *conditon);
@@ -112,14 +115,14 @@ public:
 
 class RDODPTSome: public RDODeletable
 {
-	const string *const name;
+	const std::string *const name;
 	RDOFUNLogic *conditon;
-	vector<RDODPTSomeActivity *> activities;
+	std::vector<RDODPTSomeActivity *> activities;
 	RDODPTSomeActivity *lastActivity;
 public:
-	RDODPTSome(string *_name);
+	RDODPTSome(std::string *_name);
 	void setCondition(RDOFUNLogic *_conditon = NULL) { conditon = _conditon; }
-	void addNewActivity(string *_name, string *_patternName);
+	void addNewActivity(std::string *_name, std::string *_patternName);
 	template <typename T>
 		void addActivityParam(T _param)
 	{
@@ -130,7 +133,7 @@ public:
 
 	void end();
 
-	const string *getName() const { return name; }
+	const std::string *getName() const { return name; }
 };
 
 
@@ -138,20 +141,20 @@ public:
 
 class RDODPTFreeActivity: public RDODeletable
 {
-	string *name;
+	std::string *name;
 	const RDOPATPattern *pattern;
 	int currParamNum;
-	vector<RDOValue> params;
-	vector<string *> hotKeys;
+	std::vector<RDOValue> params;
+	std::vector<std::string *> hotKeys;
 public:
-	RDODPTFreeActivity(string *_name, string *_ruleName);
-	const string *getName() const { return name; }
+	RDODPTFreeActivity(std::string *_name, std::string *_ruleName);
+	const std::string *getName() const { return name; }
 	void addParam(int _param);
 	void addParam(double * _param);
-	void addParam(string *_param);
+	void addParam(std::string *_param);
 	void addParam();
 	void end();
-	void addHotKey(string *hotKey) { hotKeys.push_back(hotKey); }
+	void addHotKey(std::string *hotKey) { hotKeys.push_back(hotKey); }
 };
 
 }		// namespace rdoParse 

@@ -8,27 +8,38 @@ static char THIS_FILE[] = __FILE__;
 #include "rdodpt.h"
 #include "rdoparser.h"
 #include "rdopatrtime.h"
+#include "rdoparser_lexer.h"
 
 namespace rdoParse 
 {
 
+int dptlex( int* lpval, void* lexer )
+{
+	((RDOFlexLexer*)lexer)->m_lpval = lpval;
+	return ((RDOFlexLexer*)lexer)->yylex();
+}
+void dpterror( char* mes )
+{
+	rdoParse::currParser->error( mes );
+}
+
 /////////////////////////  "SEARCH" DECISION POINT /////////////////////////
 
-RDODPTSearch::RDODPTSearch(string *_name, DPTSearchTrace _trace)
+RDODPTSearch::RDODPTSearch(std::string *_name, DPTSearchTrace _trace)
 	: name(_name), trace(_trace) 
 {
-	if(find_if(currParser->allDPTSome.begin(), currParser->allDPTSome.end(), compareName<RDODPTSome>(_name)) != currParser->allDPTSome.end())
+	if(std::find_if(currParser->allDPTSome.begin(), currParser->allDPTSome.end(), compareName<RDODPTSome>(_name)) != currParser->allDPTSome.end())
 		currParser->error("DPT name: " + *_name + " already defined");
 
-	if(find_if(currParser->allDPTSearch.begin(), currParser->allDPTSearch.end(), compareName<RDODPTSearch>(_name)) != currParser->allDPTSearch.end())
+	if(std::find_if(currParser->allDPTSearch.begin(), currParser->allDPTSearch.end(), compareName<RDODPTSearch>(_name)) != currParser->allDPTSearch.end())
 		currParser->error("DPT name: " + *_name + " already defined");
 
 	currParser->allDPTSearch.push_back(currParser->lastDPTSearch = this);
 }
 
-void RDODPTSearch::addNewActivity(string *_name, string *_ruleName)
+void RDODPTSearch::addNewActivity(std::string *_name, std::string *_ruleName)
 {
-	if(find_if(activities.begin(), activities.end(), compareName<RDODPTSearchActivity>(_name)) != activities.end())
+	if(std::find_if(activities.begin(), activities.end(), compareName<RDODPTSearchActivity>(_name)) != activities.end())
 		currParser->error("Activity name: " + *_name + " already defined");
 
 	lastActivity = new RDODPTSearchActivity(_name, _ruleName);
@@ -81,7 +92,7 @@ void RDODPTSearch::end()
 	}
 }
 
-RDODPTSearchActivity::RDODPTSearchActivity(string *_name, string *_ruleName)
+RDODPTSearchActivity::RDODPTSearchActivity(std::string *_name, std::string *_ruleName)
 	: name(_name) 
 {
 	const RDOPATPattern *pat = currParser->findPattern(_ruleName);
@@ -119,7 +130,7 @@ void RDODPTSearchActivity::addParam(double *_param)
 	params.push_back(val);
 }
 
-void RDODPTSearchActivity::addParam(string *_param) 
+void RDODPTSearchActivity::addParam(std::string *_param) 
 {
 	if(currParamNum >= rule->params.size())
 		currParser->error("Too many parameters for rule: " + *rule->getName());
@@ -156,22 +167,22 @@ RDOSearchActivityRuntime *RDODPTSearchActivity::createActivityRuntime(RDORuntime
 
 /////////////////////////  "SOME" DECISION POINT //////////////////////
 
-RDODPTSome::RDODPTSome(string *_name)
+RDODPTSome::RDODPTSome(std::string *_name)
 	: name(_name)
 {
-	if(find_if(currParser->allDPTSome.begin(), currParser->allDPTSome.end(), compareName<RDODPTSome>(_name)) != currParser->allDPTSome.end())
+	if(std::find_if(currParser->allDPTSome.begin(), currParser->allDPTSome.end(), compareName<RDODPTSome>(_name)) != currParser->allDPTSome.end())
 		currParser->error("DPT name: " + *_name + " already defined");
 
-	if(find_if(currParser->allDPTSearch.begin(), currParser->allDPTSearch.end(), compareName<RDODPTSearch>(_name)) != currParser->allDPTSearch.end())
+	if(std::find_if(currParser->allDPTSearch.begin(), currParser->allDPTSearch.end(), compareName<RDODPTSearch>(_name)) != currParser->allDPTSearch.end())
 		currParser->error("DPT name: " + *_name + " already defined");
 
 	currParser->allDPTSome.push_back(this);
 	currParser->lastDPTSearch = NULL;
 }
 
-void RDODPTSome::addNewActivity(string *_name, string *_patternName)
+void RDODPTSome::addNewActivity(std::string *_name, std::string *_patternName)
 {
-	if(find_if(activities.begin(), activities.end(), compareName<RDODPTSomeActivity>(_name)) != activities.end())
+	if(std::find_if(activities.begin(), activities.end(), compareName<RDODPTSomeActivity>(_name)) != activities.end())
 		currParser->error("Activity name: " + *_name + " already defined");
 
 	lastActivity = new RDODPTSomeActivity(_name, _patternName);
@@ -185,7 +196,7 @@ void RDODPTSome::end()
 		activities.at(i)->createActivityRuntime(conditon);
 }
 
-RDODPTSomeActivity::RDODPTSomeActivity(string *_name, string *_patternName)
+RDODPTSomeActivity::RDODPTSomeActivity(std::string *_name, std::string *_patternName)
 	: name(_name) 
 {
 	pattern = currParser->findPattern(_patternName);
@@ -213,7 +224,7 @@ void RDODPTSomeActivity::addParam(double *_param)
 	params.push_back(val);
 }
 
-void RDODPTSomeActivity::addParam(string *_param) 
+void RDODPTSomeActivity::addParam(std::string *_param) 
 {
 	if(currParamNum >= pattern->params.size())
 		currParser->error("Too many parameters for pattern: " + *pattern->getName());
@@ -249,10 +260,10 @@ void RDODPTSomeActivity::createActivityRuntime(RDOFUNLogic *conditon)
 
 /////////////////////////  FREE ACTIVITIES /////////////////////////
 
-RDODPTFreeActivity::RDODPTFreeActivity(string *_name, string *_patternName)
+RDODPTFreeActivity::RDODPTFreeActivity(std::string *_name, std::string *_patternName)
 	: name(_name) 
 {
-	if(find_if(currParser->allFreeActivity.begin(), currParser->allFreeActivity.end(), compareName<RDODPTFreeActivity>(_name)) != currParser->allFreeActivity.end())
+	if(std::find_if(currParser->allFreeActivity.begin(), currParser->allFreeActivity.end(), compareName<RDODPTFreeActivity>(_name)) != currParser->allFreeActivity.end())
 		currParser->error("Free activity name: " + *_name + " already defined");
 
 	currParser->allFreeActivity.push_back(this);
@@ -283,7 +294,7 @@ void RDODPTFreeActivity::addParam(double *_param)
 	params.push_back(val);
 }
 
-void RDODPTFreeActivity::addParam(string *_param) 
+void RDODPTFreeActivity::addParam(std::string *_param) 
 {
 	if(currParamNum >= pattern->params.size())
 		currParser->error("Too many parameters for pattern: " + *pattern->getName());

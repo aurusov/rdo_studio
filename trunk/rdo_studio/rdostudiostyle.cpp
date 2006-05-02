@@ -7,7 +7,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-using namespace std;
 using namespace rdoStyle;
 
 // ----------------------------------------------------------------------------
@@ -51,7 +50,7 @@ bool RDOStyleFont::operator !=( const RDOStyleFont& font ) const
 	return !(*this == font);
 }
 
-void RDOStyleFont::load( string regPath )
+void RDOStyleFont::load( std::string regPath )
 {
 	regPath += "font";
 	name         = AfxGetApp()->GetProfileString( regPath.c_str(), "name", name.c_str() );
@@ -60,7 +59,7 @@ void RDOStyleFont::load( string regPath )
 	characterSet = AfxGetApp()->GetProfileInt( regPath.c_str(), "characterSet", characterSet );
 }
 
-void RDOStyleFont::save( string regPath ) const
+void RDOStyleFont::save( std::string regPath ) const
 {
 	regPath += "font";
 	AfxGetApp()->WriteProfileString( regPath.c_str(), "name", name.c_str() );
@@ -149,7 +148,7 @@ bool RDOStyleTheme::operator !=( const RDOStyleTheme& theme ) const
 	return !(*this == theme);
 }
 
-void RDOStyleTheme::load( string regPath )
+void RDOStyleTheme::load( std::string regPath )
 {
 	regPath += "theme";
 	defaultColor    = AfxGetApp()->GetProfileInt( regPath.c_str(), "defaultColor", defaultColor );
@@ -157,7 +156,7 @@ void RDOStyleTheme::load( string regPath )
 	defaultStyle    = static_cast<RDOStyleFont::style>(AfxGetApp()->GetProfileInt( regPath.c_str(), "defaultStyle", defaultStyle ));
 }
 
-void RDOStyleTheme::save( string regPath ) const
+void RDOStyleTheme::save( std::string regPath ) const
 {
 	regPath += "theme";
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "defaultColor", defaultColor );
@@ -203,7 +202,7 @@ bool RDOStyle::operator !=( const RDOStyle& style ) const
 	return !(*this == style);
 }
 
-void RDOStyle::init( const string& _regPath )
+void RDOStyle::init( const std::string& _regPath )
 {
 	regPath = _regPath;
 	rdo::trim( regPath );
@@ -273,7 +272,7 @@ bool RDOStyleWithTheme::operator !=( const RDOStyleWithTheme& style ) const
 	return !(*this == style);
 }
 
-void RDOStyleWithTheme::init( const string& _regPath )
+void RDOStyleWithTheme::init( const std::string& _regPath )
 {
 	RDOStyle::init( _regPath );
 	initTheme();

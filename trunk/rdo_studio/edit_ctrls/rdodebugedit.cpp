@@ -11,7 +11,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-using namespace std;
 using namespace rdoEditCtrl;
 
 // ----------------------------------------------------------------------------
@@ -43,7 +42,7 @@ int RDODebugEdit::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	return 0;
 }
 
-void RDODebugEdit::appendLine( const string& str )
+void RDODebugEdit::appendLine( const std::string& str )
 {
 	bool readOnly = isReadOnly();
 	setReadOnly( false );
@@ -72,7 +71,7 @@ void RDODebugEdit::OnUpdateModifyStatusBar( CCmdUI *pCmdUI )
 
 void RDODebugEdit::OnHelpKeyword()
 {
-	string filename = studioApp.getFullHelpFileName();
+	std::string filename = studioApp.getFullHelpFileName();
 	if ( filename.empty() ) return;
 	filename += "::/html/work_windows_output.htm";
 	::HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_DISPLAY_TOPIC, NULL );

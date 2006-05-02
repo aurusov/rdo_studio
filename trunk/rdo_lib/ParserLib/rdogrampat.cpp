@@ -134,7 +134,11 @@
 # define	active	414
 # define	QUOTED_IDENTIF	415
 
-#line 131 ".\\rdopat.y"
+#line 1 ".\\rdopat.y"
+
+#define YYPARSE_PARAM lexer
+#define YYLEX_PARAM lexer
+#line 138 ".\\rdopat.y"
 
 #include "pch.h"
 #ifdef _DEBUG
@@ -278,18 +282,18 @@ static const short yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined. */
 static const short yyrline[] =
 {
-       0,   156,   157,   160,   161,   162,   163,   165,   166,   167,
-     170,   172,   173,   175,   176,   179,   180,   181,   182,   183,
-     184,   185,   186,   187,   188,   189,   190,   192,   193,   194,
-     195,   197,   198,   199,   200,   202,   203,   206,   207,   209,
-     211,   212,   213,   215,   216,   217,   218,   220,   221,   223,
-     225,   227,   229,   232,   233,   234,   236,   237,   243,   249,
-     255,   261,   267,   274,   281,   285,   290,   298,   308,   315,
-     321,   327,   331,   337,   341,   350,   352,   356,   363,   376,
-     387,   388,   389,   390,   391,   392,   393,   394,   395,   396,
-     399,   400,   401,   402,   403,   404,   405,   406,   407,   408,
-     410,   412,   413,   414,   417,   418,   419,   420,   422,   424,
-     425
+       0,   163,   164,   167,   168,   169,   170,   172,   173,   174,
+     177,   179,   180,   182,   183,   186,   187,   188,   189,   190,
+     191,   192,   193,   194,   195,   196,   197,   199,   200,   201,
+     202,   204,   205,   206,   207,   209,   210,   213,   214,   216,
+     218,   219,   220,   222,   223,   224,   225,   227,   228,   230,
+     232,   234,   236,   239,   240,   241,   243,   244,   250,   256,
+     262,   268,   274,   281,   288,   292,   297,   305,   315,   322,
+     328,   334,   338,   344,   348,   357,   359,   363,   370,   383,
+     394,   395,   396,   397,   398,   399,   400,   401,   402,   403,
+     406,   407,   408,   409,   410,   411,   412,   413,   414,   415,
+     417,   419,   420,   421,   424,   425,   426,   427,   429,   431,
+     432
 };
 #endif
 
@@ -493,6 +497,8 @@ static const short yycheck[] =
       11,    14,    12,    10,    10,   134,    18,    11,    36,    12,
      132,   132,     0,    18,    47,    82,    -1,    -1,    80
 };
+#define YYPURE 1
+
 /* -*-C-*-  Note some compilers choke on comments on `#line' lines.  */
 #line 3 "..\\System\\bison.simple"
 
@@ -1201,223 +1207,223 @@ yyreduce:
   switch (yyn) {
 
 case 3:
-#line 160 ".\\rdopat.y"
-{ yyval = (int)(new RDOPATPatternOperation(	(string *)yyvsp[-2], yyvsp[0] != 0, currParser->patternCounter++)); ;
+#line 167 ".\\rdopat.y"
+{ yyval = (int)(new RDOPATPatternOperation(	(std::string *)yyvsp[-2], yyvsp[0] != 0, currParser->patternCounter++)); ;
     break;}
 case 4:
-#line 161 ".\\rdopat.y"
-{ yyval = (int)(new RDOPATPatternEvent(		(string *)yyvsp[-2], yyvsp[0] != 0, currParser->patternCounter++)); ;
+#line 168 ".\\rdopat.y"
+{ yyval = (int)(new RDOPATPatternEvent(		(std::string *)yyvsp[-2], yyvsp[0] != 0, currParser->patternCounter++)); ;
     break;}
 case 5:
-#line 162 ".\\rdopat.y"
-{ yyval = (int)(new RDOPATPatternRule(			(string *)yyvsp[-2], yyvsp[0] != 0, currParser->patternCounter++)); ;
+#line 169 ".\\rdopat.y"
+{ yyval = (int)(new RDOPATPatternRule(			(std::string *)yyvsp[-2], yyvsp[0] != 0, currParser->patternCounter++)); ;
     break;}
 case 6:
-#line 163 ".\\rdopat.y"
-{ yyval = (int)(new RDOPATPatternKeyboard(	(string *)yyvsp[-2], yyvsp[0] != 0, currParser->patternCounter++)); ;
+#line 170 ".\\rdopat.y"
+{ yyval = (int)(new RDOPATPatternKeyboard(	(std::string *)yyvsp[-2], yyvsp[0] != 0, currParser->patternCounter++)); ;
     break;}
 case 7:
-#line 165 ".\\rdopat.y"
+#line 172 ".\\rdopat.y"
 { yyval = 0; ;
     break;}
 case 8:
-#line 166 ".\\rdopat.y"
+#line 173 ".\\rdopat.y"
 { yyval = 1; ;
     break;}
 case 9:
-#line 167 ".\\rdopat.y"
+#line 174 ".\\rdopat.y"
 { yyval = 0; ;
     break;}
 case 10:
-#line 170 ".\\rdopat.y"
+#line 177 ".\\rdopat.y"
 { yyval = yyvsp[-1]; ;
     break;}
 case 11:
-#line 172 ".\\rdopat.y"
-{ ((RDOPATPattern *)yyvsp[-2])->add(new RDOFUNFunctionParam((string *)yyvsp[-1], (RDORTPResParam *)yyvsp[0])); yyval = yyvsp[-2]; ;
+#line 179 ".\\rdopat.y"
+{ ((RDOPATPattern *)yyvsp[-2])->add(new RDOFUNFunctionParam((std::string *)yyvsp[-1], (RDORTPResParam *)yyvsp[0])); yyval = yyvsp[-2]; ;
     break;}
 case 12:
-#line 173 ".\\rdopat.y"
-{ ((RDOPATPattern *)yyvsp[-2])->add(new RDOFUNFunctionParam((string *)yyvsp[-1], (RDORTPResParam *)yyvsp[0])); yyval = yyvsp[-2]; ;
+#line 180 ".\\rdopat.y"
+{ ((RDOPATPattern *)yyvsp[-2])->add(new RDOFUNFunctionParam((std::string *)yyvsp[-1], (RDORTPResParam *)yyvsp[0])); yyval = yyvsp[-2]; ;
     break;}
 case 13:
-#line 175 ".\\rdopat.y"
+#line 182 ".\\rdopat.y"
 { yyval = yyvsp[-1]; ;
     break;}
 case 14:
-#line 176 ".\\rdopat.y"
+#line 183 ".\\rdopat.y"
 { yyval = yyvsp[-1]; ;
     break;}
 case 15:
-#line 179 ".\\rdopat.y"
-{ ((RDOPATPattern *)yyvsp[-4])->addRelRes((string *)yyvsp[-3], (string *)yyvsp[-2], (ConvertStatus)yyvsp[-1],	(ConvertStatus)yyvsp[0]);	yyval = yyvsp[-4]; ;
+#line 186 ".\\rdopat.y"
+{ ((RDOPATPattern *)yyvsp[-4])->addRelRes((std::string *)yyvsp[-3], (std::string *)yyvsp[-2], (ConvertStatus)yyvsp[-1],	(ConvertStatus)yyvsp[0]);	yyval = yyvsp[-4]; ;
     break;}
 case 16:
-#line 180 ".\\rdopat.y"
-{ ((RDOPATPattern *)yyvsp[-4])->addRelRes((string *)yyvsp[-3], (string *)yyvsp[-2], (ConvertStatus)yyvsp[-1],	(ConvertStatus)yyvsp[0]);	yyval = yyvsp[-4]; ;
+#line 187 ".\\rdopat.y"
+{ ((RDOPATPattern *)yyvsp[-4])->addRelRes((std::string *)yyvsp[-3], (std::string *)yyvsp[-2], (ConvertStatus)yyvsp[-1],	(ConvertStatus)yyvsp[0]);	yyval = yyvsp[-4]; ;
     break;}
 case 17:
-#line 181 ".\\rdopat.y"
-{ ((RDOPATPattern *)yyvsp[-3])->addRelRes((string *)yyvsp[-2], (string *)yyvsp[-1], (ConvertStatus)yyvsp[0]);								yyval = yyvsp[-3]; ;
+#line 188 ".\\rdopat.y"
+{ ((RDOPATPattern *)yyvsp[-3])->addRelRes((std::string *)yyvsp[-2], (std::string *)yyvsp[-1], (ConvertStatus)yyvsp[0]);								yyval = yyvsp[-3]; ;
     break;}
 case 18:
-#line 182 ".\\rdopat.y"
-{ ((RDOPATPattern *)yyvsp[-3])->addRelRes((string *)yyvsp[-2], (string *)yyvsp[-1], (ConvertStatus)yyvsp[0]);								yyval = yyvsp[-3]; ;
+#line 189 ".\\rdopat.y"
+{ ((RDOPATPattern *)yyvsp[-3])->addRelRes((std::string *)yyvsp[-2], (std::string *)yyvsp[-1], (ConvertStatus)yyvsp[0]);								yyval = yyvsp[-3]; ;
     break;}
 case 19:
-#line 183 ".\\rdopat.y"
-{ ((RDOPATPattern *)yyvsp[-3])->addRelRes((string *)yyvsp[-2], (string *)yyvsp[-1], CS_NoChange,			(ConvertStatus)yyvsp[0]);	yyval = yyvsp[-3]; ;
+#line 190 ".\\rdopat.y"
+{ ((RDOPATPattern *)yyvsp[-3])->addRelRes((std::string *)yyvsp[-2], (std::string *)yyvsp[-1], CS_NoChange,			(ConvertStatus)yyvsp[0]);	yyval = yyvsp[-3]; ;
     break;}
 case 20:
-#line 184 ".\\rdopat.y"
-{ ((RDOPATPattern *)yyvsp[-3])->addRelRes((string *)yyvsp[-2], (string *)yyvsp[-1], CS_NoChange,			(ConvertStatus)yyvsp[0]);	yyval = yyvsp[-3]; ;
+#line 191 ".\\rdopat.y"
+{ ((RDOPATPattern *)yyvsp[-3])->addRelRes((std::string *)yyvsp[-2], (std::string *)yyvsp[-1], CS_NoChange,			(ConvertStatus)yyvsp[0]);	yyval = yyvsp[-3]; ;
     break;}
 case 21:
-#line 185 ".\\rdopat.y"
-{ ((RDOPATPattern *)yyvsp[-2])->addRelRes((string *)yyvsp[-1], (string *)yyvsp[0], CS_NoChange,			CS_NoChange);			yyval = yyvsp[-2]; ;
+#line 192 ".\\rdopat.y"
+{ ((RDOPATPattern *)yyvsp[-2])->addRelRes((std::string *)yyvsp[-1], (std::string *)yyvsp[0], CS_NoChange,			CS_NoChange);			yyval = yyvsp[-2]; ;
     break;}
 case 22:
-#line 186 ".\\rdopat.y"
-{ ((RDOPATPattern *)yyvsp[-2])->addRelRes((string *)yyvsp[-1], (string *)yyvsp[0], CS_NoChange,			CS_NoChange);			yyval = yyvsp[-2]; ;
+#line 193 ".\\rdopat.y"
+{ ((RDOPATPattern *)yyvsp[-2])->addRelRes((std::string *)yyvsp[-1], (std::string *)yyvsp[0], CS_NoChange,			CS_NoChange);			yyval = yyvsp[-2]; ;
     break;}
 case 23:
-#line 187 ".\\rdopat.y"
-{ ((RDOPATPattern *)yyvsp[-2])->addRelRes((string *)yyvsp[-1], (string *)yyvsp[0], CS_NoChange);										yyval = yyvsp[-2]; ;
+#line 194 ".\\rdopat.y"
+{ ((RDOPATPattern *)yyvsp[-2])->addRelRes((std::string *)yyvsp[-1], (std::string *)yyvsp[0], CS_NoChange);										yyval = yyvsp[-2]; ;
     break;}
 case 24:
-#line 188 ".\\rdopat.y"
-{ ((RDOPATPattern *)yyvsp[-2])->addRelRes((string *)yyvsp[-1], (string *)yyvsp[0], CS_NoChange);										yyval = yyvsp[-2]; ;
+#line 195 ".\\rdopat.y"
+{ ((RDOPATPattern *)yyvsp[-2])->addRelRes((std::string *)yyvsp[-1], (std::string *)yyvsp[0], CS_NoChange);										yyval = yyvsp[-2]; ;
     break;}
 case 25:
-#line 189 ".\\rdopat.y"
-{ ((RDOPATPattern *)yyvsp[-3])->addRelRes((string *)yyvsp[-2], (string *)yyvsp[-1], (string *)yyvsp[0]);										yyval = yyvsp[-3]; ;
+#line 196 ".\\rdopat.y"
+{ ((RDOPATPattern *)yyvsp[-3])->addRelRes((std::string *)yyvsp[-2], (std::string *)yyvsp[-1], (std::string *)yyvsp[0]);										yyval = yyvsp[-3]; ;
     break;}
 case 26:
-#line 190 ".\\rdopat.y"
-{ ((RDOPATPattern *)yyvsp[-3])->addRelRes((string *)yyvsp[-2], (string *)yyvsp[-1], (string *)yyvsp[0]);										yyval = yyvsp[-3]; ;
+#line 197 ".\\rdopat.y"
+{ ((RDOPATPattern *)yyvsp[-3])->addRelRes((std::string *)yyvsp[-2], (std::string *)yyvsp[-1], (std::string *)yyvsp[0]);										yyval = yyvsp[-3]; ;
     break;}
 case 27:
-#line 192 ".\\rdopat.y"
+#line 199 ".\\rdopat.y"
 { yyval = CS_Keep;		;
     break;}
 case 28:
-#line 193 ".\\rdopat.y"
+#line 200 ".\\rdopat.y"
 { yyval = CS_Create;		;
     break;}
 case 29:
-#line 194 ".\\rdopat.y"
+#line 201 ".\\rdopat.y"
 { yyval = CS_Erase;		;
     break;}
 case 30:
-#line 195 ".\\rdopat.y"
+#line 202 ".\\rdopat.y"
 { yyval = CS_NonExist;	;
     break;}
 case 32:
-#line 198 ".\\rdopat.y"
+#line 205 ".\\rdopat.y"
 {	((RDOPATPattern *)yyvsp[-1])->setCommonChoiceFirst(); yyval = yyvsp[-1]; ;
     break;}
 case 33:
-#line 199 ".\\rdopat.y"
+#line 206 ".\\rdopat.y"
 {	((RDOPATPattern *)yyvsp[-2])->setCommonChoiceWithMin((RDOFUNArithm *)yyvsp[0]); yyval = yyvsp[-2]; ;
     break;}
 case 34:
-#line 200 ".\\rdopat.y"
+#line 207 ".\\rdopat.y"
 {	((RDOPATPattern *)yyvsp[-2])->setCommonChoiceWithMax((RDOFUNArithm *)yyvsp[0]); yyval = yyvsp[-2]; ;
     break;}
 case 35:
-#line 202 ".\\rdopat.y"
+#line 209 ".\\rdopat.y"
 {	yyval = yyvsp[-1]; ;
     break;}
 case 36:
-#line 203 ".\\rdopat.y"
+#line 210 ".\\rdopat.y"
 {	((RDOPATPattern *)yyvsp[-4])->setTime((RDOFUNArithm *)yyvsp[-1]); yyval = yyvsp[-4]; ;
     break;}
 case 37:
-#line 206 ".\\rdopat.y"
-{	((RDOPATPattern *)yyvsp[-1])->addRelResBody((string *)yyvsp[0]); yyval = yyvsp[-1]; ;
+#line 213 ".\\rdopat.y"
+{	((RDOPATPattern *)yyvsp[-1])->addRelResBody((std::string *)yyvsp[0]); yyval = yyvsp[-1]; ;
     break;}
 case 38:
-#line 207 ".\\rdopat.y"
-{	((RDOPATPattern *)yyvsp[-1])->addRelResBody((string *)yyvsp[0]); yyval = yyvsp[-1]; ;
+#line 214 ".\\rdopat.y"
+{	((RDOPATPattern *)yyvsp[-1])->addRelResBody((std::string *)yyvsp[0]); yyval = yyvsp[-1]; ;
     break;}
 case 39:
-#line 209 ".\\rdopat.y"
+#line 216 ".\\rdopat.y"
 {	((RDOPATPattern *)yyvsp[-2])->addRelResUsage((RDOPATChoice *)yyvsp[-1], (RDOPATFirst *)yyvsp[0]); yyval = yyvsp[-2]; ;
     break;}
 case 40:
-#line 211 ".\\rdopat.y"
+#line 218 ".\\rdopat.y"
 {	yyval = (int) new RDOPATChoice(); ;
     break;}
 case 41:
-#line 212 ".\\rdopat.y"
+#line 219 ".\\rdopat.y"
 {	yyval = (int) new RDOPATChoice(1); ;
     break;}
 case 42:
-#line 213 ".\\rdopat.y"
+#line 220 ".\\rdopat.y"
 {	yyval = (int) new RDOPATChoice((RDOFUNLogic *)yyvsp[0]); ;
     break;}
 case 43:
-#line 215 ".\\rdopat.y"
+#line 222 ".\\rdopat.y"
 {	yyval = (int) new RDOPATFirst(); ;
     break;}
 case 44:
-#line 216 ".\\rdopat.y"
+#line 223 ".\\rdopat.y"
 {	yyval = (int) new RDOPATFirst(1); ;
     break;}
 case 45:
-#line 217 ".\\rdopat.y"
+#line 224 ".\\rdopat.y"
 {	yyval = (int) new RDOPATFirst(true, (RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 46:
-#line 218 ".\\rdopat.y"
+#line 225 ".\\rdopat.y"
 {	yyval = (int) new RDOPATFirst(false, (RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 47:
-#line 220 ".\\rdopat.y"
+#line 227 ".\\rdopat.y"
 {	((RDOPATPattern *)yyvsp[0])->addRelResConvert(); yyval = yyvsp[0]; ;
     break;}
 case 48:
-#line 222 ".\\rdopat.y"
+#line 229 ".\\rdopat.y"
 {	((RDOPATPattern *)yyvsp[-3])->addRelResConvertBegin(yyvsp[-1] != 0, (RDOPATParamsSet *)yyvsp[0]); yyval = yyvsp[-3]; ;
     break;}
 case 49:
-#line 224 ".\\rdopat.y"
+#line 231 ".\\rdopat.y"
 {	((RDOPATPattern *)yyvsp[-3])->addRelResConvertEnd(yyvsp[-1] != 0, (RDOPATParamsSet *)yyvsp[0]); yyval = yyvsp[-3]; ;
     break;}
 case 50:
-#line 226 ".\\rdopat.y"
+#line 233 ".\\rdopat.y"
 {	((RDOPATPattern *)yyvsp[-6])->addRelResConvertBeginEnd(yyvsp[-4] != 0, (RDOPATParamsSet *)yyvsp[-3], yyvsp[-1] != 0, (RDOPATParamsSet *)yyvsp[0]); yyval = yyvsp[-6]; ;
     break;}
 case 51:
-#line 228 ".\\rdopat.y"
+#line 235 ".\\rdopat.y"
 {	((RDOPATPattern *)yyvsp[-3])->addRelResConvertRule(yyvsp[-1] != 0, (RDOPATParamsSet *)yyvsp[0]); yyval = yyvsp[-3]; ;
     break;}
 case 52:
-#line 230 ".\\rdopat.y"
+#line 237 ".\\rdopat.y"
 {	((RDOPATPattern *)yyvsp[-3])->addRelResConvertEvent(yyvsp[-1] != 0, (RDOPATParamsSet *)yyvsp[0]); yyval = yyvsp[-3]; ;
     break;}
 case 53:
-#line 232 ".\\rdopat.y"
+#line 239 ".\\rdopat.y"
 {  yyval = (int) new RDOPATParamsSet(); ;
     break;}
 case 54:
-#line 233 ".\\rdopat.y"
-{	((RDOPATParamsSet *)yyvsp[-2])->addIdentif((string *)yyvsp[-1], (RDOFUNArithm *)yyvsp[0]); yyval = yyvsp[-2];;
+#line 240 ".\\rdopat.y"
+{	((RDOPATParamsSet *)yyvsp[-2])->addIdentif((std::string *)yyvsp[-1], (RDOFUNArithm *)yyvsp[0]); yyval = yyvsp[-2];;
     break;}
 case 55:
-#line 234 ".\\rdopat.y"
-{	((RDOPATParamsSet *)yyvsp[-1])->addIdentif((string *)yyvsp[0]); yyval = yyvsp[-1];;
+#line 241 ".\\rdopat.y"
+{	((RDOPATParamsSet *)yyvsp[-1])->addIdentif((std::string *)yyvsp[0]); yyval = yyvsp[-1];;
     break;}
 case 56:
-#line 236 ".\\rdopat.y"
+#line 243 ".\\rdopat.y"
 {	((RDOPATPattern *)yyvsp[-1])->end(); yyval = yyvsp[-1];;
     break;}
 case 57:
-#line 237 ".\\rdopat.y"
+#line 244 ".\\rdopat.y"
 {	((RDOPATPattern *)yyvsp[-1])->end(); yyval = yyvsp[-1];;
     break;}
 case 58:
-#line 243 ".\\rdopat.y"
+#line 250 ".\\rdopat.y"
 { 
 						RDORTPIntDiap *diap = (RDORTPIntDiap *)yyvsp[-1];
 						RDORTPIntDefVal *dv = (RDORTPIntDefVal *)yyvsp[0];
@@ -1426,7 +1432,7 @@ case 58:
 					;
     break;}
 case 59:
-#line 249 ".\\rdopat.y"
+#line 256 ".\\rdopat.y"
 { 
                   RDORTPIntDiap *diap = (RDORTPIntDiap *)yyvsp[0];
                   RDORTPIntDefVal *dv = new RDORTPIntDefVal();
@@ -1435,7 +1441,7 @@ case 59:
 					;
     break;}
 case 60:
-#line 255 ".\\rdopat.y"
+#line 262 ".\\rdopat.y"
 { 
                   RDORTPRealDiap *diap = (RDORTPRealDiap *)yyvsp[-1];
                   RDORTPRealDefVal *dv = (RDORTPRealDefVal *)yyvsp[0];
@@ -1444,7 +1450,7 @@ case 60:
 					;
     break;}
 case 61:
-#line 261 ".\\rdopat.y"
+#line 268 ".\\rdopat.y"
 { 
                   RDORTPRealDiap *diap = (RDORTPRealDiap *)yyvsp[0];
                   RDORTPRealDefVal *dv = new RDORTPRealDefVal();
@@ -1453,7 +1459,7 @@ case 61:
 					;
     break;}
 case 62:
-#line 267 ".\\rdopat.y"
+#line 274 ".\\rdopat.y"
 { 
                   RDORTPEnum *enu = (RDORTPEnum *)yyvsp[-1];
                   RDORTPEnumDefVal *dv = (RDORTPEnumDefVal *)yyvsp[0];
@@ -1463,7 +1469,7 @@ case 62:
 					;
     break;}
 case 63:
-#line 274 ".\\rdopat.y"
+#line 281 ".\\rdopat.y"
 { 
                   RDORTPEnum *enu = (RDORTPEnum *)yyvsp[0];
                   RDORTPEnumDefVal *dv = new RDORTPEnumDefVal();
@@ -1472,14 +1478,14 @@ case 63:
 					;
     break;}
 case 64:
-#line 281 ".\\rdopat.y"
+#line 288 ".\\rdopat.y"
 {
 						RDORTPParamDesc *desc = (RDORTPParamDesc *)yyvsp[0];
 						yyval = (int)desc->getType()->constructSuchAs();
 					;
     break;}
 case 65:
-#line 285 ".\\rdopat.y"
+#line 292 ".\\rdopat.y"
 {
 						RDORTPParamDesc *desc = (RDORTPParamDesc *)yyvsp[-1];
 						RDORTPIntDefVal *dv = (RDORTPIntDefVal *)yyvsp[0];
@@ -1487,7 +1493,7 @@ case 65:
 					;
     break;}
 case 66:
-#line 290 ".\\rdopat.y"
+#line 297 ".\\rdopat.y"
 {
 						RDORTPParamDesc *desc = (RDORTPParamDesc *)yyvsp[-1];
 						RDORTPRealDefVal *dv = (RDORTPRealDefVal *)yyvsp[0];
@@ -1498,26 +1504,26 @@ case 66:
 					;
     break;}
 case 67:
-#line 298 ".\\rdopat.y"
+#line 305 ".\\rdopat.y"
 {
 						RDORTPParamDesc *desc = (RDORTPParamDesc *)yyvsp[-1];
 						RDORTPEnumDefVal *dv = (RDORTPEnumDefVal *)yyvsp[0];
 						if(!dv->exist)
 							yyval = (int)desc->getType()->constructSuchAs();
 						else
-							yyval = (int)desc->getType()->constructSuchAs((string *)dv->value);
+							yyval = (int)desc->getType()->constructSuchAs((std::string *)dv->value);
 					;
     break;}
 case 68:
-#line 308 ".\\rdopat.y"
+#line 315 ".\\rdopat.y"
 {
-						string *val = (string *)yyvsp[0];
+						std::string *val = (std::string *)yyvsp[0];
 						RDORTPEnumDefVal *dv = new RDORTPEnumDefVal(val);
 						yyval = (int)dv;	  
 					;
     break;}
 case 69:
-#line 315 ".\\rdopat.y"
+#line 322 ".\\rdopat.y"
 {
 						double val = *((double *)yyvsp[0]);
 						RDORTPRealDefVal *dv = new RDORTPRealDefVal(val);
@@ -1525,35 +1531,35 @@ case 69:
 					;
     break;}
 case 70:
-#line 321 ".\\rdopat.y"
+#line 328 ".\\rdopat.y"
 {
 						RDORTPIntDefVal *dv = new RDORTPIntDefVal(yyvsp[0]);
 						yyval = (int)dv;
 					;
     break;}
 case 71:
-#line 327 ".\\rdopat.y"
+#line 334 ".\\rdopat.y"
 {
 						RDORTPIntDiap *diap = new RDORTPIntDiap();
 						yyval = (int)diap;
 					;
     break;}
 case 72:
-#line 331 ".\\rdopat.y"
+#line 338 ".\\rdopat.y"
 {
 						RDORTPIntDiap *diap = new RDORTPIntDiap(yyvsp[-3], yyvsp[-1]);
 						yyval = (int)diap;
 					;
     break;}
 case 73:
-#line 337 ".\\rdopat.y"
+#line 344 ".\\rdopat.y"
 {
 						RDORTPRealDiap *diap = new RDORTPRealDiap();
 						yyval = (int)diap;
 					;
     break;}
 case 74:
-#line 341 ".\\rdopat.y"
+#line 348 ".\\rdopat.y"
 {
 						double min = *((double *)yyvsp[-3]);
 						double max = *((double *)yyvsp[-1]);
@@ -1562,29 +1568,29 @@ case 74:
 					;
     break;}
 case 75:
-#line 350 ".\\rdopat.y"
+#line 357 ".\\rdopat.y"
 { yyval = yyvsp[-1]; ;
     break;}
 case 76:
-#line 352 ".\\rdopat.y"
+#line 359 ".\\rdopat.y"
 {
-							RDORTPEnum *enu = new RDORTPEnum((string *)yyvsp[0]);
+							RDORTPEnum *enu = new RDORTPEnum((std::string *)yyvsp[0]);
 							yyval = (int)enu;
 						;
     break;}
 case 77:
-#line 356 ".\\rdopat.y"
+#line 363 ".\\rdopat.y"
 {
 							RDORTPEnum *enu = (RDORTPEnum *)yyvsp[-2];
-							enu->add((string *)yyvsp[0]);
+							enu->add((std::string *)yyvsp[0]);
 							yyval = (int)enu;
 						;
     break;}
 case 78:
-#line 363 ".\\rdopat.y"
+#line 370 ".\\rdopat.y"
 {
-							string *type = (string *)yyvsp[-2];
-							string *param = (string *)yyvsp[0];
+							std::string *type = (std::string *)yyvsp[-2];
+							std::string *param = (std::string *)yyvsp[0];
 							const RDORTPResType *const rt = currParser->findRTPResType(type);
 							if(!rt)
 								currParser->error(("Invalid resource type in such_as: " + *type).c_str());
@@ -1597,9 +1603,9 @@ case 78:
 						;
     break;}
 case 79:
-#line 376 ".\\rdopat.y"
+#line 383 ".\\rdopat.y"
 {
-							string *constName = (string *)yyvsp[0];
+							std::string *constName = (std::string *)yyvsp[0];
 							const RDOFUNConstant *const cons = currParser->findFUNConst(constName);
 							if(!cons)
 								currParser->error(("Invalid constant reference: " + *constName).c_str());
@@ -1608,123 +1614,123 @@ case 79:
 						;
     break;}
 case 80:
-#line 387 ".\\rdopat.y"
+#line 394 ".\\rdopat.y"
 { yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] == *(RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 81:
-#line 388 ".\\rdopat.y"
+#line 395 ".\\rdopat.y"
 { yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] != *(RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 82:
-#line 389 ".\\rdopat.y"
+#line 396 ".\\rdopat.y"
 { yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] <  *(RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 83:
-#line 390 ".\\rdopat.y"
+#line 397 ".\\rdopat.y"
 { yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] >  *(RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 84:
-#line 391 ".\\rdopat.y"
+#line 398 ".\\rdopat.y"
 { yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] <= *(RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 85:
-#line 392 ".\\rdopat.y"
+#line 399 ".\\rdopat.y"
 { yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] >= *(RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 86:
-#line 393 ".\\rdopat.y"
+#line 400 ".\\rdopat.y"
 { yyval = (int)(*(RDOFUNLogic *)yyvsp[-2] && *(RDOFUNLogic *)yyvsp[0]); ;
     break;}
 case 87:
-#line 394 ".\\rdopat.y"
+#line 401 ".\\rdopat.y"
 { yyval = (int)(*(RDOFUNLogic *)yyvsp[-2] || *(RDOFUNLogic *)yyvsp[0]); ;
     break;}
 case 88:
-#line 395 ".\\rdopat.y"
+#line 402 ".\\rdopat.y"
 { yyval = yyvsp[-1]; ;
     break;}
 case 89:
-#line 396 ".\\rdopat.y"
+#line 403 ".\\rdopat.y"
 { yyval = yyvsp[0]; ;
     break;}
 case 90:
-#line 399 ".\\rdopat.y"
+#line 406 ".\\rdopat.y"
 { yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] + *(RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 91:
-#line 400 ".\\rdopat.y"
+#line 407 ".\\rdopat.y"
 { yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] - *(RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 92:
-#line 401 ".\\rdopat.y"
+#line 408 ".\\rdopat.y"
 { yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] * *(RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 93:
-#line 402 ".\\rdopat.y"
+#line 409 ".\\rdopat.y"
 { yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] / *(RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 94:
-#line 403 ".\\rdopat.y"
+#line 410 ".\\rdopat.y"
 { yyval = yyvsp[-1]; ;
     break;}
 case 96:
-#line 405 ".\\rdopat.y"
-{ yyval = (int)(new RDOFUNArithm((string *)yyvsp[-2], (string *)yyvsp[0])); ;
+#line 412 ".\\rdopat.y"
+{ yyval = (int)(new RDOFUNArithm((std::string *)yyvsp[-2], (std::string *)yyvsp[0])); ;
     break;}
 case 97:
-#line 406 ".\\rdopat.y"
+#line 413 ".\\rdopat.y"
 { yyval = (int)(new RDOFUNArithm((int)yyvsp[0])); ;
     break;}
 case 98:
-#line 407 ".\\rdopat.y"
+#line 414 ".\\rdopat.y"
 { yyval = (int)(new RDOFUNArithm((double*)yyvsp[0])); ;
     break;}
 case 99:
-#line 408 ".\\rdopat.y"
-{ yyval = (int)(new RDOFUNArithm((string *)yyvsp[0])); ;
+#line 415 ".\\rdopat.y"
+{ yyval = (int)(new RDOFUNArithm((std::string *)yyvsp[0])); ;
     break;}
 case 100:
-#line 410 ".\\rdopat.y"
-{ yyval = (int)((RDOFUNParams *)yyvsp[-1])->createCall((string *)yyvsp[-3]) ;
+#line 417 ".\\rdopat.y"
+{ yyval = (int)((RDOFUNParams *)yyvsp[-1])->createCall((std::string *)yyvsp[-3]) ;
     break;}
 case 101:
-#line 412 ".\\rdopat.y"
+#line 419 ".\\rdopat.y"
 { yyval = (int)(new RDOFUNParams()); ;
     break;}
 case 102:
-#line 413 ".\\rdopat.y"
+#line 420 ".\\rdopat.y"
 { yyval = (int)(((RDOFUNParams *)yyvsp[-1])->addParameter((RDOFUNArithm *)yyvsp[0])); ;
     break;}
 case 103:
-#line 414 ".\\rdopat.y"
+#line 421 ".\\rdopat.y"
 { yyval = (int)(((RDOFUNParams *)yyvsp[-2])->addParameter((RDOFUNArithm *)yyvsp[0])); ;
     break;}
 case 104:
-#line 417 ".\\rdopat.y"
+#line 424 ".\\rdopat.y"
 { yyval = 1; ;
     break;}
 case 105:
-#line 418 ".\\rdopat.y"
+#line 425 ".\\rdopat.y"
 { yyval = 2; ;
     break;}
 case 106:
-#line 419 ".\\rdopat.y"
+#line 426 ".\\rdopat.y"
 { yyval = 3; ;
     break;}
 case 107:
-#line 420 ".\\rdopat.y"
+#line 427 ".\\rdopat.y"
 { yyval = 4; ;
     break;}
 case 108:
-#line 422 ".\\rdopat.y"
-{ yyval = (int)(new RDOFUNGroup(yyvsp[-2], (string *)yyvsp[0])); ;
+#line 429 ".\\rdopat.y"
+{ yyval = (int)(new RDOFUNGroup(yyvsp[-2], (std::string *)yyvsp[0])); ;
     break;}
 case 109:
-#line 424 ".\\rdopat.y"
+#line 431 ".\\rdopat.y"
 { yyval = (int)(((RDOFUNGroup *)yyvsp[-2])->createFunLogin((RDOFUNLogic *)yyvsp[-1])); ;
     break;}
 case 110:
-#line 425 ".\\rdopat.y"
+#line 432 ".\\rdopat.y"
 { yyval = (int)(((RDOFUNGroup *)yyvsp[-2])->createFunLogin()); ;
     break;}
 }
@@ -1960,7 +1966,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 432 ".\\rdopat.y"
+#line 439 ".\\rdopat.y"
 
 
 }

@@ -1,7 +1,6 @@
 #ifndef RDO_DTP_RUNTIME
 #define RDO_DTP_RUNTIME
 
-using namespace std;
 #include "searchtrace.h"
 
 #include "rdoruntime.h"

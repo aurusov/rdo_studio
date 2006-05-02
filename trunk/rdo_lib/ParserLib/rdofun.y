@@ -1,3 +1,10 @@
+%{
+#define YYPARSE_PARAM lexer
+#define YYLEX_PARAM lexer
+%}
+
+%pure-parser
+
 %token Resource_type		257
 %token permanent			258
 %token Parameters			259
@@ -165,7 +172,7 @@ fun_const_body:
 
 
 fun_const_param_desc: IDENTIF_COLON fun_const_param_type	{
-						string *name = (string *)$1;
+						std::string *name = (std::string *)$1;
 						RDORTPResParam *parType = (RDORTPResParam *)$2;
 						RDORTPParamDesc *param = new RDORTPParamDesc(name, parType);
 						currParser->allRTPParamDesc.push_back(param);
@@ -176,7 +183,7 @@ fun_const_param_desc: IDENTIF_COLON fun_const_param_type	{
 					};
          
 fun_const_enum_default_val:	'=' IDENTIF	{
-						string *val = (string *)$2;
+						std::string *val = (std::string *)$2;
 						RDORTPEnumDefVal *dv = new RDORTPEnumDefVal(val);
 						$$ = (int)dv;	  
 					};
@@ -255,7 +262,7 @@ fun_const_param_type: integer fun_const_int_diap fun_const_int_default_val  {
 											if(!dv->exist)
 												$$ = (int)desc->getType()->constructSuchAs();
 											else
-												$$ = (int)desc->getType()->constructSuchAs((string *)dv->value);
+												$$ = (int)desc->getType()->constructSuchAs((std::string *)dv->value);
 										};
 
 
@@ -285,19 +292,19 @@ fun_const_real_diap: {
 fun_const_enum:   '(' fun_const_enum_list ')'	{ $$ = $2; };
          
 fun_const_enum_list:  IDENTIF		{
-							RDORTPEnum *enu = new RDORTPEnum((string *)$1);
+							RDORTPEnum *enu = new RDORTPEnum((std::string *)$1);
 							$$ = (int)enu;
 						}
          | fun_const_enum_list ',' IDENTIF	{
 							RDORTPEnum *enu = (RDORTPEnum *)$1;
-							enu->add((string *)$3);
+							enu->add((std::string *)$3);
 							$$ = (int)enu;
 						};
 
 
 fun_const_such_as:   such_as IDENTIF '.' IDENTIF {
-							string *type = (string *)$2;
-							string *param = (string *)$4;
+							std::string *type = (std::string *)$2;
+							std::string *param = (std::string *)$4;
 							const RDORTPResType *const rt = currParser->findRTPResType(type);
 							if(!rt)
 								currParser->error("Invalid resource type in such_as: " + *type);
@@ -309,7 +316,7 @@ fun_const_such_as:   such_as IDENTIF '.' IDENTIF {
 							$$ = (int)rp;
 						} 
 					| such_as IDENTIF {
-							string *constName = (string *)$2;
+							std::string *constName = (std::string *)$2;
 							const RDOFUNConstant *const cons = currParser->findFUNConst(constName);
 							if(!cons)
 								currParser->error("Invalid constant reference: " + *constName);
@@ -326,7 +333,7 @@ fun_func_seq:
 fun_func_descr:	fun_func_header fun_func_footer;
 
 fun_func_header:	Function_keyword IDENTIF_COLON fun_const_param_type	{
-	string *name = (string *)$2;
+	std::string *name = (std::string *)$2;
 	if(currParser->findFunction(name))
 		currParser->error(("Second appearance of the same function: " + *(name)).c_str());
 
@@ -353,7 +360,7 @@ fun_func_footer:	Type_keyword '=' algorithmic Parameters fun_func_params Body fu
 
 fun_func_params:	
 			|	fun_func_params IDENTIF_COLON fun_const_param_type	{
-	string *name = (string *)$2;
+	std::string *name = (std::string *)$2;
 	RDORTPResParam *type = (RDORTPResParam *)$3;
 	RDOFUNFunctionParam *param = new RDOFUNFunctionParam(name, type);
 	currParser->lastFUNFunction->add(param);	// the function must check uniquness of parameters names
@@ -371,7 +378,7 @@ fun_func_list_value:	'='	{
 			| fun_std_value	{ $$ = $1; };
 
 fun_std_value: IDENTIF	{
-	RDOFUNFunctionListElementItentif *value = new RDOFUNFunctionListElementItentif((string *)$1);
+	RDOFUNFunctionListElementItentif *value = new RDOFUNFunctionListElementItentif((std::string *)$1);
 	currParser->lastFUNFunction->add(value);
 	$$ = (int)value;
 }
@@ -389,7 +396,7 @@ fun_std_value: IDENTIF	{
 fun_func_algorithmic_body: 
 			| fun_func_algorithmic_body fun_func_algorithmic_calc_if { currParser->lastFUNFunction->add((RDOFUNCalculateIf*)$2); };
 
-fun_func_algorithmic_calc_if:	Calculate_if fun_logic 	IDENTIF '=' fun_arithm { $$ = (int)(new RDOFUNCalculateIf((RDOFUNLogic *)$2, (string *)$3, (RDOFUNArithm *)$5)); };
+fun_func_algorithmic_calc_if:	Calculate_if fun_logic 	IDENTIF '=' fun_arithm { $$ = (int)(new RDOFUNCalculateIf((RDOFUNLogic *)$2, (std::string *)$3, (RDOFUNArithm *)$5)); };
 
 fun_logic: fun_arithm '=' fun_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 == *(RDOFUNArithm *)$3); }
 			| fun_arithm neq fun_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 != *(RDOFUNArithm *)$3); }
@@ -409,12 +416,12 @@ fun_arithm: fun_arithm '+' fun_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOFU
 			|	fun_arithm '/' fun_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 / *(RDOFUNArithm *)$3); }
 			|	'(' fun_arithm ')'			{ $$ = $2; }
 			|	fun_arithm_func_call
-			|	IDENTIF '.' IDENTIF			{ $$ = (int)(new RDOFUNArithm((string *)$1, (string *)$3)); }
+			|	IDENTIF '.' IDENTIF			{ $$ = (int)(new RDOFUNArithm((std::string *)$1, (std::string *)$3)); }
 			|	INT_CONST						{ $$ = (int)(new RDOFUNArithm((int)$1)); }
 			|	REAL_CONST						{ $$ = (int)(new RDOFUNArithm((double*)$1)); }
-			|	IDENTIF							{ $$ = (int)(new RDOFUNArithm((string *)$1)); };
+			|	IDENTIF							{ $$ = (int)(new RDOFUNArithm((std::string *)$1)); };
 
-fun_arithm_func_call:	IDENTIF '(' fun_arithm_func_call_pars ')' { $$ = (int)((RDOFUNParams *)$3)->createCall((string *)$1) };
+fun_arithm_func_call:	IDENTIF '(' fun_arithm_func_call_pars ')' { $$ = (int)((RDOFUNParams *)$3)->createCall((std::string *)$1) };
 
 fun_arithm_func_call_pars:								{ $$ = (int)(new RDOFUNParams()); };
 			| fun_arithm_func_call_pars fun_arithm	{ $$ = (int)(((RDOFUNParams *)$1)->addParameter((RDOFUNArithm *)$2)); };
@@ -426,7 +433,7 @@ fun_group_keyword:	Exist			{ $$ = 1; }
 						|	For_All		{ $$ = 3; }
 						|	Not_For_All	{ $$ = 4; };
 
-fun_group_header:	fun_group_keyword '(' IDENTIF_COLON { $$ = (int)(new RDOFUNGroup($1, (string *)$3)); };
+fun_group_header:	fun_group_keyword '(' IDENTIF_COLON { $$ = (int)(new RDOFUNGroup($1, (std::string *)$3)); };
 
 fun_group:	fun_group_header fun_logic ')'		{ $$ = (int)(((RDOFUNGroup *)$1)->createFunLogin((RDOFUNLogic *)$2)); }
 					|	fun_group_header NoCheck ')'	{ $$ = (int)(((RDOFUNGroup *)$1)->createFunLogin()); };
@@ -441,7 +448,7 @@ fun_seq_descr:	fun_seq_uniform
 			| fun_seq_by_hist
 			| fun_seq_enumerative;
 
-fun_seq_header:	Sequence IDENTIF_COLON fun_const_param_type Type_keyword '=' { $$ = (int)(new RDOFUNSequenceHeader((string *)$2, (RDORTPResParam *)$3)); };
+fun_seq_header:	Sequence IDENTIF_COLON fun_const_param_type Type_keyword '=' { $$ = (int)(new RDOFUNSequenceHeader((std::string *)$2, (RDORTPResParam *)$3)); };
 
 fun_seq_uniform:	fun_seq_header uniform End	{ $$ = (int)(new RDOFUNSequenceUniform((RDOFUNSequenceHeader *)$1)); }
 			| fun_seq_header uniform INT_CONST End { $$ = (int)(new RDOFUNSequenceUniform((RDOFUNSequenceHeader *)$1, $3)); };
@@ -462,8 +469,8 @@ fun_seq_by_hist_body_int:	fun_seq_by_hist_header INT_CONST INT_CONST REAL_CONST	
 fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CONST	{ $$ = (int)(new RDOFUNSequenceByHistReal((RDOFUNSequenceByHistHeader *)$1, (double*)$2, (double*)$3, (double*)$4)); } 
 			| fun_seq_by_hist_body_real REAL_CONST REAL_CONST REAL_CONST					{ ((RDOFUNSequenceByHistReal *)$1)->addReal((double*)$2, (double*)$3, (double*)$4); $$ = $1; };
 
-fun_seq_by_hist_body_enum:	fun_seq_by_hist_header IDENTIF REAL_CONST						{ $$ = (int)(new RDOFUNSequenceByHistEnum((RDOFUNSequenceByHistHeader *)$1, (string*)$2, (double*)$3)); } 
-			| fun_seq_by_hist_body_enum IDENTIF REAL_CONST										{ ((RDOFUNSequenceByHistEnum *)$1)->addEnum((string*)$2, (double*)$3); $$ = $1; };
+fun_seq_by_hist_body_enum:	fun_seq_by_hist_header IDENTIF REAL_CONST						{ $$ = (int)(new RDOFUNSequenceByHistEnum((RDOFUNSequenceByHistHeader *)$1, (std::string*)$2, (double*)$3)); } 
+			| fun_seq_by_hist_body_enum IDENTIF REAL_CONST										{ ((RDOFUNSequenceByHistEnum *)$1)->addEnum((std::string*)$2, (double*)$3); $$ = $1; };
 
 fun_seq_by_hist:	fun_seq_by_hist_body_int End	{ ((RDOFUNSequenceByHist *)$1)->createCalcs(); }
 			| fun_seq_by_hist_body_real End			{ ((RDOFUNSequenceByHist *)$1)->createCalcs(); }
@@ -479,8 +486,8 @@ fun_seq_enumerative_body_int:	fun_seq_enumerative_header INT_CONST		{ $$ = (int)
 fun_seq_enumerative_body_real:	fun_seq_enumerative_header REAL_CONST 	{ $$ = (int)(new RDOFUNSequenceEnumerativeReal((RDOFUNSequenceEnumerativeHeader *)$1, (double*)$2)); } 
 			| fun_seq_enumerative_body_real REAL_CONST 							{ ((RDOFUNSequenceEnumerativeReal *)$1)->addReal((double*)$2); $$ = $1; };                        
 																								                                                                                                                       
-fun_seq_enumerative_body_enum:	fun_seq_enumerative_header IDENTIF 		{ $$ = (int)(new RDOFUNSequenceEnumerativeEnum((RDOFUNSequenceEnumerativeHeader *)$1, (string*)$2)); }         
-			| fun_seq_enumerative_body_enum IDENTIF 								{ ((RDOFUNSequenceEnumerativeEnum *)$1)->addEnum((string*)$2); $$ = $1; };                                
+fun_seq_enumerative_body_enum:	fun_seq_enumerative_header IDENTIF 		{ $$ = (int)(new RDOFUNSequenceEnumerativeEnum((RDOFUNSequenceEnumerativeHeader *)$1, (std::string*)$2)); }         
+			| fun_seq_enumerative_body_enum IDENTIF 								{ ((RDOFUNSequenceEnumerativeEnum *)$1)->addEnum((std::string*)$2); $$ = $1; };                                
 
 fun_seq_enumerative:	fun_seq_enumerative_body_int End		{ ((RDOFUNSequenceEnumerative *)$1)->createCalcs(); }  
 			| fun_seq_enumerative_body_real End					{ ((RDOFUNSequenceEnumerative *)$1)->createCalcs(); }  

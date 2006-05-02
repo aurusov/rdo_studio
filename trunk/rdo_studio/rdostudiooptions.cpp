@@ -481,7 +481,7 @@ RDOStudioOptionsColorsStyles::RDOStudioOptionsColorsStyles( RDOStudioOptions& _s
 
 RDOStudioOptionsColorsStyles::~RDOStudioOptionsColorsStyles()
 {
-	list< STYLEObject* >::iterator it = objects.begin();
+	std::list< STYLEObject* >::iterator it = objects.begin();
 	while ( it != objects.end() ) {
 		delete *it++;
 	};
@@ -529,9 +529,9 @@ void RDOStudioOptionsColorsStyles::DoDataExchange(CDataExchange* pDX)
 
 int CALLBACK RDOStudioOptionsColorsStyles::EnumFontFamExProc( ENUMLOGFONTEX* lpelfe, NEWTEXTMETRICEX* /*lpntme*/, DWORD /*FontType*/, LPARAM lParam )
 {
-	list< STYLEFont >* fonts = reinterpret_cast< list< STYLEFont >* >(lParam);
+	std::list< STYLEFont >* fonts = reinterpret_cast< std::list< STYLEFont >* >(lParam);
 	bool can_insert = true;
-	list< STYLEFont >::iterator font_it = fonts->begin();
+	std::list< STYLEFont >::iterator font_it = fonts->begin();
 	while ( font_it != fonts->end() ) {
 		if ( font_it->name == lpelfe->elfLogFont.lfFaceName ) {
 			can_insert = false;
@@ -644,9 +644,9 @@ BOOL RDOStudioOptionsColorsStyles::OnInitDialog()
 	sheet->preview_chart->MoveWindow( rectEdit );
 	sheet->preview_frame.MoveWindow( rectEdit );
 
-	list< STYLEObject* >::const_iterator obj_it = objects.begin();
+	std::list< STYLEObject* >::const_iterator obj_it = objects.begin();
 	while ( obj_it != objects.end() ) {
-		list< STYLEProperty* >::iterator prop_it = (*obj_it)->properties.begin();
+		std::list< STYLEProperty* >::iterator prop_it = (*obj_it)->properties.begin();
 		HTREEITEM root = TVI_ROOT;
 		while ( prop_it != (*obj_it)->properties.end() ) {
 			if ( prop_it == (*obj_it)->properties.begin() ) {
@@ -739,7 +739,7 @@ void RDOStudioOptionsColorsStyles::updateStyleItem()
 		} else {
 			loadFontsIntoCombo( prop->object->font_fixed );
 		}
-		list< STYLEFont >::const_iterator it = fonts.begin();
+		std::list< STYLEFont >::const_iterator it = fonts.begin();
 		bool flag = false;
 		while ( it != fonts.end() ) {
 			if ( it->name == prop->object->font_name ) {
@@ -1303,11 +1303,11 @@ void RDOStudioOptionsColorsStyles::OnFgColorChanged()
 	if ( &prop->fg_color != &null_fg_color ) {
 		prop->fg_color = fgColorCB.getCurrentColor();
 		if ( &prop->fg_color == &all_fg_color ) {
-			list< STYLEObject* >::const_iterator it = objects.begin();
+			std::list< STYLEObject* >::const_iterator it = objects.begin();
 			if ( it != objects.end() ) {
 				it++;
 				while ( it != objects.end() ) {
-					list< STYLEProperty* >::const_iterator it_prop = (*it)->properties.begin();
+					std::list< STYLEProperty* >::const_iterator it_prop = (*it)->properties.begin();
 					if ( it_prop != (*it)->properties.end() ) {
 						(*it_prop)->fg_color = all_fg_color;
 					}
@@ -1326,11 +1326,11 @@ void RDOStudioOptionsColorsStyles::OnBgColorChanged()
 	if ( &prop->bg_color != &null_bg_color ) {
 		prop->bg_color = bgColorCB.getCurrentColor();
 		if ( &prop->bg_color == &all_bg_color ) {
-			list< STYLEObject* >::const_iterator it = objects.begin();
+			std::list< STYLEObject* >::const_iterator it = objects.begin();
 			if ( it != objects.end() ) {
 				it++;
 				while ( it != objects.end() ) {
-					list< STYLEProperty* >::const_iterator it_prop = (*it)->properties.begin();
+					std::list< STYLEProperty* >::const_iterator it_prop = (*it)->properties.begin();
 					if ( it_prop != (*it)->properties.end() ) {
 						(*it_prop)->bg_color = all_bg_color;
 					}
@@ -1489,7 +1489,7 @@ void RDOStudioOptionsColorsStyles::loadFontsIntoCombo( bool fixed )
 {
 	if ( isCurrentFixed != fixed ) {
 		m_fontName.ResetContent();
-		list< STYLEFont >::iterator font_it = fonts.begin();
+		std::list< STYLEFont >::iterator font_it = fonts.begin();
 		while ( font_it != fonts.end() ) {
 			if ( !fixed || ( fixed && font_it->fixed ) ) {
 				m_fontName.AddString( font_it->name.c_str() );
@@ -1578,14 +1578,14 @@ void RDOStudioOptionsColorsStyles::setPreviewAsCombo( STYLEObject::Type type )
 
 void RDOStudioOptionsColorsStyles::updatePropOfAllObject()
 {
-	list< STYLEObject* >::const_iterator it = objects.begin();
+	std::list< STYLEObject* >::const_iterator it = objects.begin();
 	if ( it != objects.end() ) {
 		it++;
 		if ( it != objects.end() ) {
 			all_font_name  = (*it)->font_name;
 			all_font_size  = (*it)->font_size;
 			bool use_color = false;
-			list< STYLEProperty* >::const_iterator prop = (*it)->properties.begin();
+			std::list< STYLEProperty* >::const_iterator prop = (*it)->properties.begin();
 			if ( prop != (*it)->properties.end() ) {
 				all_fg_color = (*prop)->fg_color;
 				all_bg_color = (*prop)->bg_color;
@@ -2168,7 +2168,7 @@ int CALLBACK RDOStudioOptions::AddContextHelpProc(HWND hwnd, UINT message, LPARA
 
 void RDOStudioOptions::onHelpButton()
 {
-	string filename = studioApp.getFullHelpFileName();
+	std::string filename = studioApp.getFullHelpFileName();
 	if ( filename.empty() ) return;
 
 	CPropertyPage* page = GetActivePage( );
@@ -2188,7 +2188,7 @@ void RDOStudioOptions::onHelpButton()
 
 BOOL RDOStudioOptions::OnHelpInfo(HELPINFO* pHelpInfo) 
 {
-	string filename = studioApp.getFullHelpFileName();
+	std::string filename = studioApp.getFullHelpFileName();
 	if ( filename.empty() ) return TRUE;
 
 	if ( pHelpInfo->iContextType == HELPINFO_WINDOW )

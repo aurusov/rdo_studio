@@ -7,7 +7,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-using namespace std;
 using namespace rdoEditor;
 using namespace rdoEditCtrl;
 
@@ -60,7 +59,7 @@ bool RDOEditorEditTheme::operator !=( const RDOEditorEditTheme& theme ) const
 	return !(*this == theme);
 }
 
-void RDOEditorEditTheme::load( string regPath )
+void RDOEditorEditTheme::load( std::string regPath )
 {
 	RDOEditorBaseEditTheme::load( regPath );
 
@@ -71,7 +70,7 @@ void RDOEditorEditTheme::load( string regPath )
 	foldStyle    = (RDOFoldStyle)AfxGetApp()->GetProfileInt( regPath.c_str(), "foldStyle", foldStyle );
 }
 
-void RDOEditorEditTheme::save( string regPath ) const
+void RDOEditorEditTheme::save( std::string regPath ) const
 {
 	RDOEditorBaseEditTheme::save( regPath );
 
@@ -204,14 +203,14 @@ bool RDOEditorEditAutoComplete::operator !=( const RDOEditorEditAutoComplete& au
 	return !(*this == autoComplete);
 }
 
-void RDOEditorEditAutoComplete::load( string regPath )
+void RDOEditorEditAutoComplete::load( std::string regPath )
 {
 	regPath += "autoComplete";
 	useAutoComplete = AfxGetApp()->GetProfileInt( regPath.c_str(), "useAutoComplete", useAutoComplete ) ? true : false;
 	showFullList    = AfxGetApp()->GetProfileInt( regPath.c_str(), "showFullList", showFullList ) ? true : false;
 }
 
-void RDOEditorEditAutoComplete::save( string regPath ) const
+void RDOEditorEditAutoComplete::save( std::string regPath ) const
 {
 	regPath += "autoComplete";
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "useAutoComplete", useAutoComplete );
@@ -299,7 +298,7 @@ bool RDOEditorEditMargin::operator !=( const RDOEditorEditMargin& margin ) const
 	return !(*this == margin);
 }
 
-void RDOEditorEditMargin::load( string regPath )
+void RDOEditorEditMargin::load( std::string regPath )
 {
 	regPath += "margin";
 	fold       = AfxGetApp()->GetProfileInt( regPath.c_str(), "fold", fold ) ? true : false;
@@ -307,7 +306,7 @@ void RDOEditorEditMargin::load( string regPath )
 	lineNumber = AfxGetApp()->GetProfileInt( regPath.c_str(), "lineNumber", lineNumber ) ? true : false;
 }
 
-void RDOEditorEditMargin::save( string regPath ) const
+void RDOEditorEditMargin::save( std::string regPath ) const
 {
 	regPath += "margin";
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "fold", fold );
@@ -379,7 +378,7 @@ bool RDOEditorEditStyle::operator !=( const RDOEditorEditStyle& style ) const
 	return !(*this == style);
 }
 
-void RDOEditorEditStyle::init( const string& _regPath )
+void RDOEditorEditStyle::init( const std::string& _regPath )
 {
 	RDOEditorBaseEditStyle::init( _regPath );
 	initAutoComplete();

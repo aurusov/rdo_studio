@@ -10,7 +10,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-using namespace std;
 using namespace rdoEditor;
 
 // ----------------------------------------------------------------------------
@@ -57,18 +56,18 @@ void RDOEditorResults::setEditorStyle( RDOEditorResultsStyle* _style )
 
 void RDOEditorResults::OnHelpKeyword()
 {
-	string filename = studioApp.getFullHelpFileName();
+	std::string filename = studioApp.getFullHelpFileName();
 	if ( filename.empty() ) return;
 
-	string keyword = getCurrentOrSelectedWord();
+	std::string keyword = getCurrentOrSelectedWord();
 
-	string s = kw0;
+	std::string s = kw0;
 	s += " ";
 	s += kw1;
 	s += " ";
 	s += kw2;
 
-	if ( s.find_first_of( keyword ) == string::npos || keyword.empty() ) {
+	if ( s.find_first_of( keyword ) == std::string::npos || keyword.empty() ) {
 		keyword = "pmv";
 	}
 

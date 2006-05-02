@@ -2,6 +2,7 @@
 #define RDO_CALC_CONST
 
 #include "rdoStdFuncs.h"
+#include <rdocommon.h>
 
 namespace rdoRuntime
 {
@@ -10,13 +11,13 @@ class RDORuntime;
 
 class RDOCalc
 {
-   virtual RDOValue calcValue(RDORuntime *sim) const = 0;
+	virtual RDOValue calcValue(RDORuntime *sim) const = 0;
 public:
-	rdoParse::FileToParse fileToParse;
+	rdoModelObjects::RDOFileType fileToParse;
 	int lineno;
-   RDOValue calcValueBase(RDORuntime *sim) const;
-   virtual ~RDOCalc() {}
-   RDOCalc();
+	RDOValue calcValueBase(RDORuntime *sim) const;
+	virtual ~RDOCalc() {}
+	RDOCalc();
 };
 
 class RDOCalcConst: public RDOCalc

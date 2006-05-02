@@ -1,3 +1,10 @@
+%{
+#define YYPARSE_PARAM lexer
+#define YYLEX_PARAM lexer
+%}
+
+%pure-parser
+
 %token Resource_type		257
 %token permanent			258
 %token Parameters			259
@@ -177,9 +184,9 @@ smr_show_mode:		NoShow
 smr_cond:	smr_descr
 		|	smr_cond Terminate_if smr_logic						{ currParser->smr->setTerminateIf((RDOFUNLogic *)$3); }
 		|	smr_cond Break_point IDENTIF	smr_logic
-		|	smr_cond IDENTIF					'=' smr_arithm		{ currParser->smr->setConstValue((string *)$2, (RDOFUNArithm *)$4); }
-		|	smr_cond IDENTIF '.' IDENTIF	'=' smr_arithm		{ currParser->smr->setResParValue((string *)$2, (string *)$4, (RDOFUNArithm *)$6); }
-		|	smr_cond IDENTIF '.' Seed		'=' INT_CONST		{ currParser->smr->setSeed((string *)$2, $6); };
+		|	smr_cond IDENTIF					'=' smr_arithm		{ currParser->smr->setConstValue((std::string *)$2, (RDOFUNArithm *)$4); }
+		|	smr_cond IDENTIF '.' IDENTIF	'=' smr_arithm		{ currParser->smr->setResParValue((std::string *)$2, (std::string *)$4, (RDOFUNArithm *)$6); }
+		|	smr_cond IDENTIF '.' Seed		'=' INT_CONST		{ currParser->smr->setSeed((std::string *)$2, $6); };
 
 smr_logic: smr_arithm '=' smr_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 == *(RDOFUNArithm *)$3); }
 			| smr_arithm neq smr_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 != *(RDOFUNArithm *)$3); }
@@ -199,12 +206,12 @@ smr_arithm: smr_arithm '+' smr_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOFU
 			|	smr_arithm '/' smr_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 / *(RDOFUNArithm *)$3); }
 			|	'(' smr_arithm ')'			{ $$ = $2; }
 			|	smr_arithm_func_call
-			|	IDENTIF '.' IDENTIF			{ $$ = (int)(new RDOFUNArithm((string *)$1, (string *)$3)); }
+			|	IDENTIF '.' IDENTIF			{ $$ = (int)(new RDOFUNArithm((std::string *)$1, (std::string *)$3)); }
 			|	INT_CONST						{ $$ = (int)(new RDOFUNArithm((int)$1)); }
 			|	REAL_CONST						{ $$ = (int)(new RDOFUNArithm((double*)$1)); }
-			|	IDENTIF							{ $$ = (int)(new RDOFUNArithm((string *)$1)); };
+			|	IDENTIF							{ $$ = (int)(new RDOFUNArithm((std::string *)$1)); };
 
-smr_arithm_func_call:	IDENTIF '(' smr_arithm_func_call_pars ')' { $$ = (int)((RDOFUNParams *)$3)->createCall((string *)$1) };
+smr_arithm_func_call:	IDENTIF '(' smr_arithm_func_call_pars ')' { $$ = (int)((RDOFUNParams *)$3)->createCall((std::string *)$1) };
 
 smr_arithm_func_call_pars:								{ $$ = (int)(new RDOFUNParams()); };
 			| smr_arithm_func_call_pars smr_arithm	{ $$ = (int)(((RDOFUNParams *)$1)->addParameter((RDOFUNArithm *)$2)); };
@@ -216,7 +223,7 @@ fun_group_keyword:	Exist			{ $$ = 1; }
 						|	For_All		{ $$ = 3; }
 						|	Not_For_All	{ $$ = 4; };
 
-fun_group_header:	fun_group_keyword '(' IDENTIF_COLON { $$ = (int)(new RDOFUNGroup($1, (string *)$3)); };
+fun_group_header:	fun_group_keyword '(' IDENTIF_COLON { $$ = (int)(new RDOFUNGroup($1, (std::string *)$3)); };
 
 fun_group:	fun_group_header smr_logic ')'		{ $$ = (int)(((RDOFUNGroup *)$1)->createFunLogin((RDOFUNLogic *)$2)); }
 					|	fun_group_header NoCheck ')'	{ $$ = (int)(((RDOFUNGroup *)$1)->createFunLogin()); };

@@ -15,25 +15,34 @@ using namespace rdoRuntime;
 
 namespace rdoParse 
 {
+
+int smr1parse( void* lexer );
+int smr1lex( int* lpval, void* lexer );
+void smr1error( char* mes );
+
+int smr2parse( void* lexer );
+int smr2lex( int* lpval, void* lexer );
+void smr2error( char* mes );
+
 struct RDOFUNLogic;
 struct RDOFUNArithm;
 
 class BreakPoint: public RDODeletable
 {
-	string *name;
+	std::string *name;
 	RDOFUNLogic *logic;
 };
 
 class RDOSMR: public RDODeletable
 {
 public:
-	string *modelName;
-	string *resourceFileName;
-	string *oprIevFileName;
-	string *frameFileName;
-	string *statisticFileName;
-	string *resultsFileName;
-	string *traceFileName;
+	std::string *modelName;
+	std::string *resourceFileName;
+	std::string *oprIevFileName;
+	std::string *frameFileName;
+	std::string *statisticFileName;
+	std::string *resultsFileName;
+	std::string *traceFileName;
 
 	RDOSimulatorNS::ShowMode showMode;
 
@@ -47,20 +56,20 @@ public:
 	double *traceEndTime;
 
 	RDOFUNLogic *terminateIf;
-	vector<BreakPoint *> breakPoints;
+	std::vector<BreakPoint *> breakPoints;
 	RDOCalc *startCalcs;
 
 public:
-	RDOSMR(string *_modelName);
-	void setValue(const char* descrName, string* RDOSMR::*pMem, string* newValue);
+	RDOSMR(std::string *_modelName);
+	void setValue(const char* descrName, std::string* RDOSMR::*pMem, std::string* newValue);
 	void setValue(const char* descrName, double* RDOSMR::*pMem, double* newValue);
 
 	void setShowMode(RDOSimulatorNS::ShowMode sm);
 	void setFrameNumber(int fn);
 	void setTerminateIf(RDOFUNLogic *logic);
-	void setConstValue(string *constName, RDOFUNArithm *arithm);
-	void setResParValue(string *resName, string *parName, RDOFUNArithm *arithm);
-	void setSeed(string *seqName, int _base);
+	void setConstValue(std::string *constName, RDOFUNArithm *arithm);
+	void setResParValue(std::string *resName, std::string *parName, RDOFUNArithm *arithm);
+	void setSeed(std::string *seqName, int _base);
 };
 
 }		// namespace rdoParse 

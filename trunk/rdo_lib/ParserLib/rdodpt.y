@@ -1,3 +1,10 @@
+%{
+#define YYPARSE_PARAM lexer
+#define YYLEX_PARAM lexer
+%}
+
+%pure-parser
+
 %token Resource_type		257
 %token permanent			258
 %token Parameters			259
@@ -169,11 +176,11 @@ dpt_main:
 
 /* ///////////////////////  SEARCH POINT ///////////////////////////// */
 
-dpt_begin_search:	Decision_point IDENTIF_COLON search_keyword					{ $$ = (int)(new RDODPTSearch((string *)$2)); }
-					|	Decision_point IDENTIF_COLON search_keyword no_trace		{ $$ = (int)(new RDODPTSearch((string *)$2, DPTnotrace)); }
-					|	Decision_point IDENTIF_COLON search_keyword trace_stat	{ $$ = (int)(new RDODPTSearch((string *)$2, DPTtracestat)); }
-					|	Decision_point IDENTIF_COLON search_keyword trace_tops	{ $$ = (int)(new RDODPTSearch((string *)$2, DPTtracetops)); }
-					|	Decision_point IDENTIF_COLON search_keyword trace_all		{ $$ = (int)(new RDODPTSearch((string *)$2, DPTtraceall)); };
+dpt_begin_search:	Decision_point IDENTIF_COLON search_keyword					{ $$ = (int)(new RDODPTSearch((std::string *)$2)); }
+					|	Decision_point IDENTIF_COLON search_keyword no_trace		{ $$ = (int)(new RDODPTSearch((std::string *)$2, DPTnotrace)); }
+					|	Decision_point IDENTIF_COLON search_keyword trace_stat	{ $$ = (int)(new RDODPTSearch((std::string *)$2, DPTtracestat)); }
+					|	Decision_point IDENTIF_COLON search_keyword trace_tops	{ $$ = (int)(new RDODPTSearch((std::string *)$2, DPTtracetops)); }
+					|	Decision_point IDENTIF_COLON search_keyword trace_all		{ $$ = (int)(new RDODPTSearch((std::string *)$2, DPTtraceall)); };
 
 dpt_condition_search:	dpt_begin_search Condition_keyword dpt_logic			{ ((RDODPTSearch *)$$)->setCondition((RDOFUNLogic *)$3); }
 						|		dpt_begin_search Condition_keyword NoCheck			{ ((RDODPTSearch *)$$)->setCondition(); };
@@ -188,12 +195,12 @@ dpt_compare_search:	dpt_evaluate_search Compare_tops '=' NO					{ ((RDODPTSearch
 dpt_activ_search:	dpt_compare_search Activities
 					|	dpt_activ_search_descr_value;
 
-dpt_activ_search_descr:	dpt_activ_search IDENTIF_COLON IDENTIF					{ ((RDODPTSearch *)$$)->addNewActivity((string *)$2, (string *)$3); };		
+dpt_activ_search_descr:	dpt_activ_search IDENTIF_COLON IDENTIF					{ ((RDODPTSearch *)$$)->addNewActivity((std::string *)$2, (std::string *)$3); };		
 
 dpt_activ_search_descr_param:	dpt_activ_search_descr								
 								|		dpt_activ_search_descr_param INT_CONST			{ ((RDODPTSearch *)$$)->addActivityParam((int)$2); }
 								|		dpt_activ_search_descr_param REAL_CONST		{ ((RDODPTSearch *)$$)->addActivityParam((double *)$2); }
-								|		dpt_activ_search_descr_param IDENTIF			{ ((RDODPTSearch *)$$)->addActivityParam((string *)$2); }
+								|		dpt_activ_search_descr_param IDENTIF			{ ((RDODPTSearch *)$$)->addActivityParam((std::string *)$2); }
 								|		dpt_activ_search_descr_param '*'					{ ((RDODPTSearch *)$$)->addActivityParam(); };
 
 dpt_activ_search_descr_value:	dpt_activ_search_descr_param value_before	dpt_arithm		{ ((RDODPTSearch *)$$)->setActivityValue(DPT_value_before, (RDOFUNArithm *)$3); }
@@ -204,8 +211,8 @@ dpt_activ_search_end:	dpt_activ_search End											{ ((RDODPTSearch *)$$)->end
 
 /* ///////////////////////  SOME POINT ///////////////////////////// */
 
-dpt_begin_some:	Decision_point IDENTIF_COLON some								{ $$ = (int)(new RDODPTSome((string *)$2)); }
-					|	Decision_point IDENTIF_COLON some no_trace					{ $$ = (int)(new RDODPTSome((string *)$2)); };
+dpt_begin_some:	Decision_point IDENTIF_COLON some								{ $$ = (int)(new RDODPTSome((std::string *)$2)); }
+					|	Decision_point IDENTIF_COLON some no_trace					{ $$ = (int)(new RDODPTSome((std::string *)$2)); };
 
 dpt_condition_some:	dpt_begin_some Condition_keyword dpt_logic				{ ((RDODPTSome *)$$)->setCondition((RDOFUNLogic *)$3); }
 						|	dpt_begin_some Condition_keyword NoCheck					{ ((RDODPTSome *)$$)->setCondition(); };
@@ -213,12 +220,12 @@ dpt_condition_some:	dpt_begin_some Condition_keyword dpt_logic				{ ((RDODPTSome
 dpt_activ_some:	dpt_condition_some Activities
 					|	dpt_activ_some_descr_param;
 
-dpt_activ_some_descr:	dpt_activ_some IDENTIF_COLON IDENTIF					{ ((RDODPTSome *)$$)->addNewActivity((string *)$2, (string *)$3); };	
+dpt_activ_some_descr:	dpt_activ_some IDENTIF_COLON IDENTIF					{ ((RDODPTSome *)$$)->addNewActivity((std::string *)$2, (std::string *)$3); };	
 
 dpt_activ_some_descr_param:	dpt_activ_some_descr
 								|		dpt_activ_some_descr_param INT_CONST			{ ((RDODPTSome *)$$)->addActivityParam((int)$2); }      
 								|		dpt_activ_some_descr_param REAL_CONST			{ ((RDODPTSome *)$$)->addActivityParam((double *)$2); } 
-								|		dpt_activ_some_descr_param IDENTIF				{ ((RDODPTSome *)$$)->addActivityParam((string *)$2); }
+								|		dpt_activ_some_descr_param IDENTIF				{ ((RDODPTSome *)$$)->addActivityParam((std::string *)$2); }
 								|		dpt_activ_some_descr_param '*'					{ ((RDODPTSome *)$$)->addActivityParam(); };
 
 dpt_activ_some_end:	dpt_activ_some End												{ ((RDODPTSome *)$$)->end();};
@@ -229,15 +236,15 @@ dpt_activ_some_end:	dpt_activ_some End												{ ((RDODPTSome *)$$)->end();};
 dpt_activ_free:	Activities																{ $$ = NULL; };
 					|	dpt_activ_free_descr_param { ((RDODPTFreeActivity *)$1)->end();};										
 																									
-dpt_activ_free_descr:	dpt_activ_free IDENTIF_COLON IDENTIF					{ $$ = (int)(new RDODPTFreeActivity((string *)$2, (string *)$3)); };
+dpt_activ_free_descr:	dpt_activ_free IDENTIF_COLON IDENTIF					{ $$ = (int)(new RDODPTFreeActivity((std::string *)$2, (std::string *)$3)); };
 																									                                                                    
 dpt_activ_free_descr_keyb:	dpt_activ_free_descr
-			|	dpt_activ_free_descr_keyb QUOTED_IDENTIF			{ ((RDODPTFreeActivity *)$1)->addHotKey((string *)$2); }
-			|	dpt_activ_free_descr_keyb '+' QUOTED_IDENTIF	{ ((RDODPTFreeActivity *)$1)->addHotKey((string *)$3); };
+			|	dpt_activ_free_descr_keyb QUOTED_IDENTIF			{ ((RDODPTFreeActivity *)$1)->addHotKey((std::string *)$2); }
+			|	dpt_activ_free_descr_keyb '+' QUOTED_IDENTIF	{ ((RDODPTFreeActivity *)$1)->addHotKey((std::string *)$3); };
 
 dpt_activ_free_descr_param:	dpt_activ_free_descr_param INT_CONST			{ ((RDODPTFreeActivity *)$1)->addParam((int)$2); }                  
 								|		dpt_activ_free_descr_param REAL_CONST			{ ((RDODPTFreeActivity *)$1)->addParam((double *)$2); }             
-								|		dpt_activ_free_descr_param IDENTIF				{ ((RDODPTFreeActivity *)$1)->addParam((string *)$2); }             
+								|		dpt_activ_free_descr_param IDENTIF				{ ((RDODPTFreeActivity *)$1)->addParam((std::string *)$2); }             
 								|		dpt_activ_free_descr_param '*'					{ ((RDODPTFreeActivity *)$1)->addParam(); }
 								|		dpt_activ_free_descr_keyb;
 																									                                                                    
@@ -251,11 +258,11 @@ dpt_process:		Process	dpt_process_input {};
 dpt_process_input:
 					| dpt_process_input dpt_process_line;
 
-dpt_process_line:	IDENTIF	{ $$=$1; TRACE( "%s\n", ((string *)$1)->c_str() ); }
+dpt_process_line:	IDENTIF	{ $$=$1; TRACE( "%s\n", ((std::string *)$1)->c_str() ); }
 					| SIEZE IDENTIF {
 										$$=$2;
-										TRACE( "SIEZE found, resource name = %s\n", ((string *)$2)->c_str() );
-	std::string res_name( *(string*)$2 );
+										TRACE( "SIEZE found, resource name = %s\n", ((std::string *)$2)->c_str() );
+	std::string res_name( *(std::string*)$2 );
 	std::string res_type_name = "RTP_" + res_name;
 
 	const RDORTPResType* res_type = currParser->findRTPResType( &res_type_name );
@@ -301,11 +308,11 @@ dpt_arithm: dpt_arithm '+' dpt_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOFU
 			|	dpt_arithm '*' dpt_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 * *(RDOFUNArithm *)$3); }
 			|	dpt_arithm '/' dpt_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 / *(RDOFUNArithm *)$3); }
 			|	'(' dpt_arithm ')'			{ $$ = $2; }
-			|	IDENTIF '(' dpt_arithm_func_call_pars ')' { $$ = (int)((RDOFUNParams *)$3)->createCall((string *)$1) };
-			|	IDENTIF '.' IDENTIF			{ $$ = (int)(new RDOFUNArithm((string *)$1, (string *)$3)); }
+			|	IDENTIF '(' dpt_arithm_func_call_pars ')' { $$ = (int)((RDOFUNParams *)$3)->createCall((std::string *)$1) };
+			|	IDENTIF '.' IDENTIF			{ $$ = (int)(new RDOFUNArithm((std::string *)$1, (std::string *)$3)); }
 			|	INT_CONST						{ $$ = (int)(new RDOFUNArithm((int)$1)); }
 			|	REAL_CONST						{ $$ = (int)(new RDOFUNArithm((double*)$1)); }
-			|	IDENTIF							{ $$ = (int)(new RDOFUNArithm((string *)$1)); };
+			|	IDENTIF							{ $$ = (int)(new RDOFUNArithm((std::string *)$1)); };
 
 dpt_arithm_func_call_pars:								{ $$ = (int)(new RDOFUNParams()); };
 			| dpt_arithm_func_call_pars dpt_arithm	{ $$ = (int)(((RDOFUNParams *)$1)->addParameter((RDOFUNArithm *)$2)); };
@@ -317,7 +324,7 @@ fun_group_keyword:	Exist			{ $$ = 1; }
 						|	For_All		{ $$ = 3; }
 						|	Not_For_All	{ $$ = 4; };
 
-fun_group_header:	fun_group_keyword '(' IDENTIF_COLON { $$ = (int)(new RDOFUNGroup($1, (string *)$3)); };
+fun_group_header:	fun_group_keyword '(' IDENTIF_COLON { $$ = (int)(new RDOFUNGroup($1, (std::string *)$3)); };
 
 fun_group:	fun_group_header dpt_logic ')'		{ $$ = (int)(((RDOFUNGroup *)$1)->createFunLogin((RDOFUNLogic *)$2)); }
 					|	fun_group_header NoCheck ')'	{ $$ = (int)(((RDOFUNGroup *)$1)->createFunLogin()); };

@@ -8,22 +8,33 @@ static char THIS_FILE[] = __FILE__;
 #include "rdortp.h"
 #include "rdoparser.h"
 #include "rdoDefines.h"
+#include "rdoparser_lexer.h"
 
 namespace rdoParse 
 {
 
-void RDORTPEnum::add(const string *const next) 
+int rtplex( int* lpval, void* lexer )
+{
+	((RDOFlexLexer*)lexer)->m_lpval = lpval;
+	return ((RDOFlexLexer*)lexer)->yylex();
+}
+void rtperror( char* mes )
+{
+	rdoParse::currParser->error( mes );
+}
+
+void RDORTPEnum::add(const std::string *const next) 
 { 
-	if(find_if(enumVals.begin(), enumVals.end(), comparePointers<string>(next)) != enumVals.end())
+	if(std::find_if(enumVals.begin(), enumVals.end(), comparePointers<std::string>(next)) != enumVals.end())
 		currParser->error(("Second appearance of the same value name: " + *next).c_str());
 
 	enumVals.push_back(next); 
 }
 
-int RDORTPEnum::findValue(const string *const val) const
+int RDORTPEnum::findValue(const std::string *const val) const
 {
-	vector<const string *>::const_iterator it = 
-		find_if(enumVals.begin(), enumVals.end(), comparePointers<string>(val));
+	std::vector<const std::string *>::const_iterator it = 
+		std::find_if(enumVals.begin(), enumVals.end(), comparePointers<std::string>(val));
 
 	if(it == enumVals.end())
 		currParser->error("Wrong parameter value: " + *val);
@@ -40,9 +51,9 @@ void RDORTPResType::add(const RDORTPParamDesc *const _param)
 	params.push_back(_param); 
 
 }
-const RDORTPParamDesc *RDORTPResType::findRTPParam(const string *const param) const
+const RDORTPParamDesc *RDORTPResType::findRTPParam(const std::string *const param) const
 {
-	vector<const RDORTPParamDesc *>::const_iterator it = find_if(params.begin(), 
+	std::vector<const RDORTPParamDesc *>::const_iterator it = std::find_if(params.begin(), 
 		params.end(), 
 		compareName<RDORTPParamDesc>(param));
 	if(it != params.end())
@@ -51,9 +62,9 @@ const RDORTPParamDesc *RDORTPResType::findRTPParam(const string *const param) co
 	return NULL;
 }
 
-int RDORTPResType::getRTPParamNumber(const string *const param) const
+int RDORTPResType::getRTPParamNumber(const std::string *const param) const
 {
-	vector<const RDORTPParamDesc *>::const_iterator it = find_if(params.begin(), 
+	std::vector<const RDORTPParamDesc *>::const_iterator it = std::find_if(params.begin(), 
 		params.end(), 
 		compareName<RDORTPParamDesc>(param));
 	if(it != params.end())
@@ -64,7 +75,10 @@ int RDORTPResType::getRTPParamNumber(const string *const param) const
 
 int RDORTPResType::writeModelStructure() const
 {
-	currParser->modelStructure << getType() << " " << *getName() << " " << getParams().size() << endl;
+	int s1 = getType();
+	std::string s2 = *getName();
+	int s3 = getParams().size();
+	currParser->modelStructure << getType() << " " << *getName() << " " << getParams().size() << std::endl;
 	for(int i = 0; i < getParams().size(); i++)
 	{
 		currParser->modelStructure << "  " << (i+1) << " ";
@@ -83,21 +97,21 @@ int RDORTPParamDesc::writeModelStructure() const
 
 int RDORTPIntResParam::writeModelStructure() const
 {
-	currParser->modelStructure << "I" << endl;
+	currParser->modelStructure << "I" << std::endl;
 	return 0;
 }
 
 int RDORTPRealResParam::writeModelStructure() const
 {
-	currParser->modelStructure << "R" << endl;
+	currParser->modelStructure << "R" << std::endl;
 	return 0;
 }
 
 int RDORTPEnumResParam::writeModelStructure() const
 {
-	currParser->modelStructure << "E " << enu->enumVals.size() << endl;
+	currParser->modelStructure << "E " << enu->enumVals.size() << std::endl;
 	for(int i = 0; i < enu->enumVals.size(); i++)
-		currParser->modelStructure << "    " << i << " " << *enu->enumVals.at(i) << endl;
+		currParser->modelStructure << "    " << i << " " << *enu->enumVals.at(i) << std::endl;
 	return 0;
 }
 
@@ -107,41 +121,41 @@ const RDORTPResParam *RDORTPResParam::constructSuchAs() const
 }
 const RDORTPResParam *RDORTPResParam::constructSuchAs(const int defVal) const
 {
-	ostringstream str;
+	std::ostringstream str;
 	str << "Invalid default value: " << defVal;
 	currParser->error(str.str().c_str());
 	return NULL;	// unreachable code...
 }
 const RDORTPResParam *RDORTPResParam::constructSuchAs(const double *const defVal) const
 {
-	ostringstream str;
+	std::ostringstream str;
 	str << "Invalid default value: " << *defVal;
 	currParser->error(str.str().c_str());
 	return NULL;	// unreachable code...
 }
-const RDORTPResParam *RDORTPResParam::constructSuchAs(const string *const defVal) const 
+const RDORTPResParam *RDORTPResParam::constructSuchAs(const std::string *const defVal) const 
 {
 	currParser->error(("Invalid default value: " + *defVal).c_str());
 	return NULL;	// unreachable code...
 }
 
-RDOValue RDORTPResParam::getRSSEnumValue(const string *const val) const 
+RDOValue RDORTPResParam::getRSSEnumValue(const std::string *const val) const 
 {
-	ostringstream str;
+	std::ostringstream str;
 	str << "Unexpected parameter value: " << *val;
 	currParser->error(str.str().c_str());
 	return NULL;	// unreachable code...
 }
 RDOValue RDORTPResParam::getRSSIntValue(const int val) const 
 {
-	ostringstream str;
+	std::ostringstream str;
 	str << "Unexpected parameter value: " << val;
 	currParser->error(str.str().c_str());
 	return NULL;	// unreachable code...
 }
 RDOValue RDORTPResParam::getRSSRealValue(const double *const val) const
 {
-	ostringstream str;
+	std::ostringstream str;
 	str << "Unexpected parameter value: " << *val;
 	currParser->error(str.str().c_str());
 	return NULL;	// unreachable code...
@@ -200,7 +214,7 @@ RDOValue RDORTPEnumResParam::getRSSDefaultValue() const
 
 	return RDOValue(enu->findValue(dv->GetEnumValue()));
 }
-RDOValue RDORTPEnumResParam::getRSSEnumValue(const string *const val) const
+RDOValue RDORTPEnumResParam::getRSSEnumValue(const std::string *const val) const
 {
 	return enu->findValue(val);
 }
@@ -249,7 +263,7 @@ const RDORTPResParam *RDORTPRealResParam::constructSuchAs(const double *const de
 	return rp;
 }
 
-const RDORTPResParam *RDORTPEnumResParam::constructSuchAs(const string *const defVal) const 
+const RDORTPResParam *RDORTPEnumResParam::constructSuchAs(const std::string *const defVal) const 
 {
 	enu->findValue(defVal);	 // if no value - Syntax exception will be thrown
 	RDORTPEnumDefVal *newDV = new RDORTPEnumDefVal(defVal);
@@ -269,7 +283,7 @@ double RDORTPDefVal::GetRealValue() const
 	return 0.;	// unreachable code...
 }
 
-const string *RDORTPDefVal::GetEnumValue() const
+const std::string *RDORTPDefVal::GetEnumValue() const
 {
 	currParser->error("Invalid default value");
 	return NULL;	// unreachable code...
@@ -297,7 +311,7 @@ int RDORTPEnumResParam::getDiapTableFunc() const
 	return enu->enumVals.size();
 }
 
-RDORTPParamDesc::RDORTPParamDesc(const string *const _name, const RDORTPResParam *const _parType)
+RDORTPParamDesc::RDORTPParamDesc(const std::string *const _name, const RDORTPResParam *const _parType)
 	: name(_name), parType(_parType) 
 {
 }

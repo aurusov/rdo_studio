@@ -1,31 +1,34 @@
 #ifndef RDORSS_RSS
 #define RDORSS_RSS
 
-using namespace std;
 #include "rdoStdFuncs.h"
 
 namespace rdoParse 
 {
+
+int rssparse( void* lexer );
+int rsslex( int* lpval, void* lexer );
+void rsserror( char* mes );
 
 class RDORTPResType;
 class RDORTPParamDesc;
 
 class RDORSSResource: public RDODeletable
 {
-	const string *const name;
+	const std::string *const name;
 	const RDORTPResType *const resType;
 	const int number;		// in system
-	vector<RDOValue> values;
+	std::vector<RDOValue> values;
 
 public:
-	vector<const RDORTPParamDesc *>::const_iterator currParam;
+	std::vector<const RDORTPParamDesc *>::const_iterator currParam;
 
 public:
-	RDORSSResource(const string *const _name, const RDORTPResType *const _resType, const int _number); 
+	RDORSSResource(const std::string *const _name, const RDORTPResType *const _resType, const int _number); 
 	const RDORTPResType *const getType() const { return resType; }
 	int getNumber() const { return number; }
-	const string *const getName() const { return name; }
-	const vector<RDOValue>& getValues() const { return values; }
+	const std::string *const getName() const { return name; }
+	const std::vector<RDOValue>& getValues() const { return values; }
 	void addValue(RDOValue val) { values.push_back(val); }
 	int writeModelStructure();
 };

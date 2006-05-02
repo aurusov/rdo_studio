@@ -169,25 +169,25 @@ void RDOStudioOutput::clearFind()
 	if ( find ) find->clearAll();
 }
 
-void RDOStudioOutput::appendStringToBuild( const string& str, const rdoModelObjects::RDOFileType fileType, const int lineNumber, const bool error ) const
+void RDOStudioOutput::appendStringToBuild( const std::string& str, const rdoModelObjects::RDOFileType fileType, const int lineNumber, const bool error ) const
 {
 	RDOBuildEditLineInfo* line = new RDOBuildEditLineInfo( str, fileType, lineNumber, error );
 	build->appendLine( line );
 }
 
-void RDOStudioOutput::appendStringToDebug( const string& str ) const
+void RDOStudioOutput::appendStringToDebug( const std::string& str ) const
 {
 	debug->appendLine( str );
 }
 
-void RDOStudioOutput::appendStringToResults( const string& str ) const
+void RDOStudioOutput::appendStringToResults( const std::string& str ) const
 {
 	results->setReadOnly( false );
 	results->appendText( str );
 	results->setReadOnly( true );
 }
 
-void RDOStudioOutput::appendStringToFind( const string& str, const rdoModelObjects::RDOFileType fileType, const int lineNumber, const int posInLine ) const
+void RDOStudioOutput::appendStringToFind( const std::string& str, const rdoModelObjects::RDOFileType fileType, const int lineNumber, const int posInLine ) const
 {
 	RDOLogEditLineInfo* line = new RDOLogEditLineInfo( str, fileType, lineNumber, posInLine );
 	find->appendLine( line );

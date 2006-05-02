@@ -41,7 +41,7 @@ private:
 
 protected:
 	int current_line;
-	list< RDOLogEditLineInfo* > lines;
+	std::list< RDOLogEditLineInfo* > lines;
 	void clearLines();
 
 	void setSelectLine();

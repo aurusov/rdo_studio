@@ -1,7 +1,6 @@
 #ifndef RDOPAT_PAT
 #define RDOPAT_PAT
 
-using namespace std;
 #include "rdoStdFuncs.h"
 
 namespace rdoRuntime
@@ -15,6 +14,10 @@ using namespace rdoRuntime;
 
 namespace rdoParse 
 {
+
+int patparse( void* lexer );
+int patlex( int* lpval, void* lexer );
+void paterror( char* mes );
 
 class RDORTPResType;
 class RDOPATChoice;
@@ -40,7 +43,7 @@ enum ConvertStatus
 
 class RDORelevantResource: public RDODeletable
 {
-	const string *const name;
+	const std::string *const name;
 public:
 	const ConvertStatus begin;
 	const ConvertStatus end;
@@ -49,10 +52,10 @@ public:
 	RDOPATFirst *first;
 
 	bool alreadyHaveConverter;
-	RDORelevantResource(const string *const _name, const int _numberOfResource, const ConvertStatus _begin, const ConvertStatus _end):
+	RDORelevantResource(const std::string *const _name, const int _numberOfResource, const ConvertStatus _begin, const ConvertStatus _end):
 		name(_name), numberOfResource(_numberOfResource), begin(_begin), end(_end), alreadyHaveConverter(false) {}
 	virtual const RDORTPResType *const getType() const = 0 ;
-	const string *const getName() const { return name; };
+	const std::string *const getName() const { return name; };
 	virtual RDOCalc *createSelectFirstResourceCalc() = 0;			// first without choice
 	virtual RDOCalc *createSelectFirstResourceChoiceCalc() = 0;	// first with choice
 	virtual RDOCalc *createSelectResourceChoiceCalc() = 0;		// first/withmax/withmin with choice
@@ -63,7 +66,7 @@ class RDORelevantResourceDirect: public RDORelevantResource
 {
 	const RDORSSResource *const res;
 public:
-	RDORelevantResourceDirect(const string *const _name, const int _numberOfResource, const RDORSSResource *const _res, const ConvertStatus _begin, const ConvertStatus _end = CS_NoChange): 
+	RDORelevantResourceDirect(const std::string *const _name, const int _numberOfResource, const RDORSSResource *const _res, const ConvertStatus _begin, const ConvertStatus _end = CS_NoChange): 
 		RDORelevantResource(_name, _numberOfResource, _begin, _end), res(_res) {}
 	const RDORTPResType *const getType() const;
 	RDOCalc *createSelectFirstResourceCalc();
@@ -76,7 +79,7 @@ class RDORelevantResourceByType: public RDORelevantResource
 {
 	const RDORTPResType *const type;
 public:
-	RDORelevantResourceByType(const string *const _name, const int _numberOfResource, const RDORTPResType *const _type, const ConvertStatus _begin, const ConvertStatus _end = CS_NoChange): 
+	RDORelevantResourceByType(const std::string *const _name, const int _numberOfResource, const RDORTPResType *const _type, const ConvertStatus _begin, const ConvertStatus _end = CS_NoChange): 
 		RDORelevantResource(_name, _numberOfResource, _begin, _end), type(_type) {}
 	const RDORTPResType *const getType() const { return type; };
 	RDOCalc *createSelectFirstResourceCalc();
@@ -92,8 +95,8 @@ friend RDODPTSearchActivity;
 friend RDODPTSomeActivity;
 friend RDODPTFreeActivity;
 	const bool trace;
-	vector<RDOFUNFunctionParam *>	params;
-	const string *const name;
+	std::vector<RDOFUNFunctionParam *>	params;
+	const std::string *const name;
 
 	bool useCommonChoice;
 	bool useCommonWithMax;
@@ -102,31 +105,31 @@ friend RDODPTFreeActivity;
 //	RDOFUNArithm *time;
 
 protected:
-	vector<RDORelevantResource *>	relRes;
+	std::vector<RDORelevantResource *>	relRes;
 	RDORelevantResource *currRelRes;
 
 	RDOPatternRuntime *patRuntime;
 
 protected:
-	RDOPATPattern(const string *const _name, const bool _trace);
+	RDOPATPattern(const std::string *const _name, const bool _trace);
 	virtual ~RDOPATPattern() {}
 
 public:
 	void add(RDOFUNFunctionParam *const _param);
-	const RDOFUNFunctionParam *findPATPatternParam(const string *const paramName) const;
-	int findPATPatternParamNum(const string *const paramName) const;
-	const RDORelevantResource *findRelevantResource(const string *const resName) const;
-	int findRelevantResourceNum(const string *const resName) const;
-	virtual void addRelRes(string *relName, string *resName, ConvertStatus beg, ConvertStatus end);
-	virtual void addRelRes(string *relName, string *resName, ConvertStatus beg);
-	virtual void addRelRes(string *relName, string *resName, string *convBeg);
-	const string *const getName() const { return name; }
+	const RDOFUNFunctionParam *findPATPatternParam(const std::string *const paramName) const;
+	int findPATPatternParamNum(const std::string *const paramName) const;
+	const RDORelevantResource *findRelevantResource(const std::string *const resName) const;
+	int findRelevantResourceNum(const std::string *const resName) const;
+	virtual void addRelRes(std::string *relName, std::string *resName, ConvertStatus beg, ConvertStatus end);
+	virtual void addRelRes(std::string *relName, std::string *resName, ConvertStatus beg);
+	virtual void addRelRes(std::string *relName, std::string *resName, std::string *convBeg);
+	const std::string *const getName() const { return name; }
 
 	void setCommonChoiceFirst();
 	void setCommonChoiceWithMin(RDOFUNArithm *arithm);
 	void setCommonChoiceWithMax(RDOFUNArithm *arithm);
 	virtual void setTime(RDOFUNArithm *arithm);
-	void addRelResBody(string *resName);
+	void addRelResBody(std::string *resName);
 	virtual void addRelResUsage(RDOPATChoice *choice, RDOPATFirst *first);
 	virtual void addRelResConvert();
 	virtual void addRelResConvertBegin(		bool trace, RDOPATParamsSet *parSet);
@@ -142,17 +145,17 @@ public:
 
 	int writeModelStructure() const;
 	virtual char getModelStructureLetter() const = 0;
-	string getPatternId() const;
+	std::string getPatternId() const;
 };
 
 class RDOPATPatternOperation: public RDOPATPattern
 {
 protected:
-	RDOPATPatternOperation(string *_name, bool _trace);
+	RDOPATPatternOperation(std::string *_name, bool _trace);
 public:
-	RDOPATPatternOperation(string *_name, bool _trace, int patternCounter);
-	void addRelRes(string *relName, string *resName, ConvertStatus beg, ConvertStatus end);
-	void addRelRes(string *relName, string *resName, string *convBeg);
+	RDOPATPatternOperation(std::string *_name, bool _trace, int patternCounter);
+	void addRelRes(std::string *relName, std::string *resName, ConvertStatus beg, ConvertStatus end);
+	void addRelRes(std::string *relName, std::string *resName, std::string *convBeg);
 	void addRelResConvertBegin(	bool trace, RDOPATParamsSet *parSet);
 	void addRelResConvertEnd(		bool trace, RDOPATParamsSet *parSet);
 	void addRelResConvertBeginEnd(bool trace, RDOPATParamsSet *parSet, bool trace2, RDOPATParamsSet *parSet2);
@@ -163,8 +166,8 @@ public:
 class RDOPATPatternEvent: public RDOPATPattern
 {
 public:
-	RDOPATPatternEvent(string *_name, bool _trace, int patternCounter);
-	void addRelRes(string *relName, string *resName, ConvertStatus beg);
+	RDOPATPatternEvent(std::string *_name, bool _trace, int patternCounter);
+	void addRelRes(std::string *relName, std::string *resName, ConvertStatus beg);
 	void addRelResUsage(RDOPATChoice *choice, RDOPATFirst *first);
 	void addRelResConvertEvent(bool trace, RDOPATParamsSet *parSet);
 	void testGoodForFreeActivity() const {}
@@ -174,8 +177,8 @@ public:
 class RDOPATPatternRule: public RDOPATPattern
 {
 public:
-	RDOPATPatternRule(string *_name, bool _trace, int patternCounter);
-	void addRelRes(string *relName, string *resName, ConvertStatus beg);
+	RDOPATPatternRule(std::string *_name, bool _trace, int patternCounter);
+	void addRelRes(std::string *relName, std::string *resName, ConvertStatus beg);
 	void setTime(RDOFUNArithm *arithm);
 	void addRelResConvertRule(bool trace, RDOPATParamsSet *parSet);
 	void testGoodForSearchActivity() const;
@@ -186,7 +189,7 @@ public:
 class RDOPATPatternKeyboard: public RDOPATPatternOperation
 {
 public:
-	RDOPATPatternKeyboard(string *_name, bool _trace, int patternCounter);
+	RDOPATPatternKeyboard(std::string *_name, bool _trace, int patternCounter);
 	char getModelStructureLetter() const { return 'K'; };
 	void testGoodForFreeActivity() const {}
 };
@@ -219,12 +222,12 @@ public:
 
 class RDOPATParamsSet: public RDODeletable
 {
-	vector<string *> paramNames;	
+	std::vector<std::string *> paramNames;	
 public:
-	vector<RDOFUNArithm *> paramArithms;	
-	vector<int> paramNumbs;	
-	void addIdentif(string *paramName, RDOFUNArithm *paramArithm);
-	void addIdentif(string *paramName);
+	std::vector<RDOFUNArithm *> paramArithms;	
+	std::vector<int> paramNumbs;	
+	void addIdentif(std::string *paramName, RDOFUNArithm *paramArithm);
+	void addIdentif(std::string *paramName);
 	void checkParamsNumbers(RDORelevantResource *currRelRes);
 };
 

@@ -134,7 +134,11 @@
 # define	active	414
 # define	QUOTED_IDENTIF	415
 
-#line 131 ".\\rdoopr.y"
+#line 1 ".\\rdoopr.y"
+
+#define YYPARSE_PARAM lexer
+#define YYLEX_PARAM lexer
+#line 138 ".\\rdoopr.y"
 
 #include "pch.h"
 #ifdef _DEBUG
@@ -231,8 +235,8 @@ static const short yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined. */
 static const short yyrline[] =
 {
-       0,   148,   150,   152,   153,   155,   156,   157,   159,   160,
-     161,   162,   163,   165
+       0,   155,   157,   159,   160,   162,   163,   164,   166,   167,
+     168,   169,   170,   172
 };
 #endif
 
@@ -348,6 +352,8 @@ static const short yycheck[] =
       -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
       -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,   127
 };
+#define YYPURE 1
+
 /* -*-C-*-  Note some compilers choke on comments on `#line' lines.  */
 #line 3 "..\\System\\bison.simple"
 
@@ -1056,39 +1062,39 @@ yyreduce:
   switch (yyn) {
 
 case 3:
-#line 152 ".\\rdoopr.y"
-{ yyval = (int)(new RDOOPROperation((string *)yyvsp[-1], (string *)yyvsp[0])); ;
+#line 159 ".\\rdoopr.y"
+{ yyval = (int)(new RDOOPROperation((std::string *)yyvsp[-1], (std::string *)yyvsp[0])); ;
     break;}
 case 4:
-#line 153 ".\\rdoopr.y"
-{ ((RDOOPROperation *)yyvsp[-2])->endOfDefinition(); yyval = (int)(new RDOOPROperation((string *)yyvsp[-1], (string *)yyvsp[0])); ;
+#line 160 ".\\rdoopr.y"
+{ ((RDOOPROperation *)yyvsp[-2])->endOfDefinition(); yyval = (int)(new RDOOPROperation((std::string *)yyvsp[-1], (std::string *)yyvsp[0])); ;
     break;}
 case 6:
-#line 156 ".\\rdoopr.y"
-{ ((RDOOPROperation *)yyvsp[-1])->addHotKey((string *)yyvsp[0]); ;
+#line 163 ".\\rdoopr.y"
+{ ((RDOOPROperation *)yyvsp[-1])->addHotKey((std::string *)yyvsp[0]); ;
     break;}
 case 7:
-#line 157 ".\\rdoopr.y"
-{ ((RDOOPROperation *)yyvsp[-2])->addHotKey((string *)yyvsp[0]); ;
+#line 164 ".\\rdoopr.y"
+{ ((RDOOPROperation *)yyvsp[-2])->addHotKey((std::string *)yyvsp[0]); ;
     break;}
 case 8:
-#line 159 ".\\rdoopr.y"
-{ ((RDOOPROperation *)yyvsp[-1])->addParam((string *)yyvsp[0]); ;
+#line 166 ".\\rdoopr.y"
+{ ((RDOOPROperation *)yyvsp[-1])->addParam((std::string *)yyvsp[0]); ;
     break;}
 case 9:
-#line 160 ".\\rdoopr.y"
+#line 167 ".\\rdoopr.y"
 { ((RDOOPROperation *)yyvsp[-1])->addParam((int)yyvsp[0]); ;
     break;}
 case 10:
-#line 161 ".\\rdoopr.y"
+#line 168 ".\\rdoopr.y"
 { ((RDOOPROperation *)yyvsp[-1])->addParam((double *)yyvsp[0]); ;
     break;}
 case 11:
-#line 162 ".\\rdoopr.y"
+#line 169 ".\\rdoopr.y"
 { ((RDOOPROperation *)yyvsp[-1])->addParam(); ;
     break;}
 case 13:
-#line 165 ".\\rdoopr.y"
+#line 172 ".\\rdoopr.y"
 { ((RDOOPROperation *)yyvsp[-1])->endOfDefinition(); ;
     break;}
 }
@@ -1324,7 +1330,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 168 ".\\rdoopr.y"
+#line 175 ".\\rdoopr.y"
 
 
 }

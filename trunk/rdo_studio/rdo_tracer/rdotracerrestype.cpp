@@ -7,8 +7,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-using namespace std;
-
 // ----------------------------------------------------------------------------
 // ---------- RDOTracerResParamInfo
 // ----------------------------------------------------------------------------
@@ -26,7 +24,7 @@ RDOTracerResParamInfo::~RDOTracerResParamInfo()
 		delete enumValues;
 };
 
-int RDOTracerResParamInfo::addEnumValue( const string& value )
+int RDOTracerResParamInfo::addEnumValue( const std::string& value )
 {
 	if ( !enumValues )
 		return -1;
@@ -34,9 +32,9 @@ int RDOTracerResParamInfo::addEnumValue( const string& value )
 	return enumValues->size() - 1;
 }
 
-static string nullStr = "";
+static std::string nullStr = "";
 
-string RDOTracerResParamInfo::getEnumValue( const int index ) const
+std::string RDOTracerResParamInfo::getEnumValue( const int index ) const
 {
 	if ( !enumValues )
 		return nullStr;

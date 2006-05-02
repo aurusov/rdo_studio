@@ -145,7 +145,7 @@ LRESULT RDOStudioModelView::OnFindInModelMsg( WPARAM /*wParam*/, LPARAM lParam )
 	if ( !pDialog->IsTerminating() ) {
 		studioApp.mainFrame->output.clearFind();
 		studioApp.mainFrame->output.showFind();
-		string findStr       = pDialog->GetFindString();
+		std::string findStr  = pDialog->GetFindString();
 		bool bMatchCase      = pDialog->MatchCase() ? true : false;
 		bool bMatchWholeWord = pDialog->MatchWholeWord() ? true : false;
 		studioApp.mainFrame->output.getFind()->setKeyword( findStr, bMatchCase );
@@ -166,7 +166,7 @@ LRESULT RDOStudioModelView::OnFindInModelMsg( WPARAM /*wParam*/, LPARAM lParam )
 			}
 		}
 		pDialog->SendMessage( WM_CLOSE );
-		string s;
+		std::string s;
 		if ( count ) {
 			s = rdo::format( ID_FINDINMODEL_ENDMSG_COUNT, count );
 		} else {
@@ -180,7 +180,7 @@ LRESULT RDOStudioModelView::OnFindInModelMsg( WPARAM /*wParam*/, LPARAM lParam )
 void RDOStudioModelView::OnUpdateCoordStatusBar( CCmdUI *pCmdUI )
 {
 	pCmdUI->Enable();
-	string str = "";
+	std::string str = "";
 	RDOEditorEdit* edit = getEdit();
 	if ( edit ) {
 		int x = edit->getCurrentColumnNumber() + 1;
@@ -193,7 +193,7 @@ void RDOStudioModelView::OnUpdateCoordStatusBar( CCmdUI *pCmdUI )
 void RDOStudioModelView::OnUpdateModifyStatusBar( CCmdUI *pCmdUI )
 {
 	pCmdUI->Enable();
-	string str = "";
+	std::string str = "";
 	RDOEditorEdit* edit = getEdit();
 	if ( edit ) {
 		if ( edit->isReadOnly() ) {
@@ -208,7 +208,7 @@ void RDOStudioModelView::OnUpdateModifyStatusBar( CCmdUI *pCmdUI )
 void RDOStudioModelView::OnUpdateInsertOverwriteStatusBar( CCmdUI *pCmdUI )
 {
 	pCmdUI->Enable();
-	string str = "";
+	std::string str = "";
 	RDOEditorEdit* edit = getEdit();
 	if ( edit && edit->isOverwrite() ) {
 		str = rdo::format( ID_STATUSBAR_OVERWRITE );

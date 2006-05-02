@@ -30,7 +30,7 @@ public:
 
 	void setEditorStyle( RDOFindEditStyle* _style );
 
-	void setKeyword( const string& keyword, const bool matchCase = false ) const;
+	void setKeyword( const std::string& keyword, const bool matchCase = false ) const;
 };
 
 }; // namespace rdoEditCtrl

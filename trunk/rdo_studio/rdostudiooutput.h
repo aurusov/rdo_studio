@@ -66,10 +66,10 @@ public:
 	const rdoEditor::RDOEditorResults*    getResults() const { return results; };
 	const rdoEditCtrl::RDOFindEdit*       getFind() const    { return find;    };
 
-	void appendStringToBuild( const string& str, const rdoModelObjects::RDOFileType fileType = rdoModelObjects::PAT, const int lineNumber = -1, const bool error = true ) const;
-	void appendStringToDebug( const string& str ) const;
-	void appendStringToResults( const string& str ) const;
-	void appendStringToFind( const string& str, const rdoModelObjects::RDOFileType fileType = rdoModelObjects::PAT, const int lineNumber = -1, const int posInLine = 0 ) const;
+	void appendStringToBuild( const std::string& str, const rdoModelObjects::RDOFileType fileType = rdoModelObjects::PAT, const int lineNumber = -1, const bool error = true ) const;
+	void appendStringToDebug( const std::string& str ) const;
+	void appendStringToResults( const std::string& str ) const;
+	void appendStringToFind( const std::string& str, const rdoModelObjects::RDOFileType fileType = rdoModelObjects::PAT, const int lineNumber = -1, const int posInLine = 0 ) const;
 
 	void updateLogConnection() const;
 	void updateStyles() const;

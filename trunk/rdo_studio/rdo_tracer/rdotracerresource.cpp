@@ -10,8 +10,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-using namespace std;
-
 // ----------------------------------------------------------------------------
 // ---------- RDOTracerResParam
 // ----------------------------------------------------------------------------
@@ -34,7 +32,7 @@ RDOTracerResParamInfo* RDOTracerResParam::getParamInfo() const
 		return NULL;
 }
 
-void RDOTracerResParam::getCaptions( vector<string> &captions, const int val_count ) const
+void RDOTracerResParam::getCaptions( std::vector<std::string> &captions, const int val_count ) const
 {
 	const_cast<CMutex&>(mutex).Lock();
 
@@ -73,7 +71,7 @@ void RDOTracerResParam::getCaptions( vector<string> &captions, const int val_cou
 // ----------------------------------------------------------------------------
 // ---------- RDOTracerResource
 // ----------------------------------------------------------------------------
-RDOTracerResource::RDOTracerResource( RDOTracerResType* const type, string& name ) :
+RDOTracerResource::RDOTracerResource( RDOTracerResType* const type, std::string& name ) :
 	RDOTracerTreeItem(),
 	erased( false ),
 	resType( type ),
@@ -129,7 +127,7 @@ int RDOTracerResource::getParamIndex( const RDOTracerResParam* const param ) con
 	return -1;
 }
 
-void RDOTracerResource::setParams( string& line, RDOTracerTimeNow* const time, const int eventIndex, const bool erasing )
+void RDOTracerResource::setParams( std::string& line, RDOTracerTimeNow* const time, const int eventIndex, const bool erasing )
 {
 	int count = params.size();
 	for ( int i = 0; i < count; i++ ) {

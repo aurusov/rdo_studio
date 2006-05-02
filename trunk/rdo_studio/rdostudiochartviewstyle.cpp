@@ -8,7 +8,6 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 using namespace rdoStyle;
-using namespace std;
 
 // ----------------------------------------------------------------------------
 // ---------- RDOLogTheme
@@ -70,7 +69,7 @@ bool RDOStudioChartViewTheme::operator !=( const RDOStudioChartViewTheme& theme 
 	return !(*this == theme);
 }
 
-void RDOStudioChartViewTheme::load( string regPath )
+void RDOStudioChartViewTheme::load( std::string regPath )
 {
 	RDOStyleTheme::load( regPath );
 	regPath += "theme";
@@ -84,7 +83,7 @@ void RDOStudioChartViewTheme::load( string regPath )
 	legendStyle   = static_cast<RDOStyleFont::style>(AfxGetApp()->GetProfileInt( regPath.c_str(), "legendStyle", legendStyle ));
 }
 
-void RDOStudioChartViewTheme::save( string regPath ) const
+void RDOStudioChartViewTheme::save( std::string regPath ) const
 {
 	RDOStyleTheme::save( regPath );
 
@@ -139,7 +138,7 @@ bool RDOStudioChartViewFontsTicks::operator !=( const RDOStudioChartViewFontsTic
 	return !(*this == fonts_ticks);
 }
 
-void RDOStudioChartViewFontsTicks::load( string regPath )
+void RDOStudioChartViewFontsTicks::load( std::string regPath )
 {
 	regPath += "fonts_ticks";
 	titleFontSize  = AfxGetApp()->GetProfileInt( regPath.c_str(), "titleFontSize", titleFontSize );
@@ -147,7 +146,7 @@ void RDOStudioChartViewFontsTicks::load( string regPath )
 	tickWidth      = AfxGetApp()->GetProfileInt( regPath.c_str(), "tickWidth", tickWidth );
 }
 
-void RDOStudioChartViewFontsTicks::save( string regPath ) const
+void RDOStudioChartViewFontsTicks::save( std::string regPath ) const
 {
 	regPath += "fonts_ticks";
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "titleFontSize", titleFontSize );

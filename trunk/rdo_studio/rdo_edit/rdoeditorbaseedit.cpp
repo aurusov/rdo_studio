@@ -12,7 +12,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-using namespace std;
 using namespace rdoEditor;
 using namespace rdoStyle;
 
@@ -99,10 +98,10 @@ BOOL RDOEditorBaseEdit::DestroyWindow()
 
 std::string RDOEditorBaseEdit::convertToLexer( const std::string& kw )
 {
-	string s = kw;
-	while ( s.find( '?' ) != string::npos ) {
-		string::size_type pos1 = s.find( '?' );
-		string::size_type pos2 = s.find( ' ', pos1 );
+	std::string s = kw;
+	while ( s.find( '?' ) != std::string::npos ) {
+		std::string::size_type pos1 = s.find( '?' );
+		std::string::size_type pos2 = s.find( ' ', pos1 );
 		s.erase( pos1, pos2 - pos1 );
 	}
 	return s;
@@ -226,7 +225,7 @@ void RDOEditorBaseEdit::setEditorStyle( RDOEditorBaseEditStyle* _style )
 	sendEditor( SCI_STYLESETCHARACTERSET, SCE_RDO_OPERATOR, style->font->characterSet );
 }
 
-void RDOEditorBaseEdit::replaceCurrent( const string str, const int changePosValue ) const
+void RDOEditorBaseEdit::replaceCurrent( const std::string str, const int changePosValue ) const
 {
 	int pos = 0;
 	if ( changePosValue != -1 ) pos = getCurrentPos();

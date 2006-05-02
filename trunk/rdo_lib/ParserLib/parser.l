@@ -7,11 +7,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 #include "rdogramrtp.hpp"
-namespace rdoParse {
-void setYylval(int val);
-double *addDouble(double *val);
-void addName(std::string *name);
-}
+#include "rdoparser.h"
 
 %}
 %option yylineno
@@ -151,8 +147,8 @@ active				return(active);
 						std::string n1(YYText());
 						int len = n1.length();
 						std::string *name = new std::string(n1, 1, len-2);
-						rdoParse::addName(name);
-						rdoParse::setYylval((int)name);
+						rdoParse::currParser->addName(name);
+						rdoParse::currParser->setYylval((int)name);
 						return QUOTED_IDENTIF;
 					}
 
@@ -169,20 +165,20 @@ active				return(active);
 
 ([+-]?[0-9]+"..")		{
 							std::string n1(YYText(), YYLeng()-2);
-							rdoParse::setYylval(atoi(n1.c_str()));
+							rdoParse::currParser->setYylval(atoi(n1.c_str()));
 							unput('.');
 							unput('.');
 							return INT_CONST;
 						}
 
 ([+-]?[0-9]+"."[0-9]*([Ee][+-]?[0-9]+)?) {
-							double *val = rdoParse::addDouble(new double(atof(YYText())));
-							rdoParse::setYylval((int)val);
+							double *val = rdoParse::currParser->addDouble(new double(atof(YYText())));
+							rdoParse::currParser->setYylval((int)val);
 							return REAL_CONST;
 						}
 
 [+-]?[0-9]+		{
-					rdoParse::setYylval(atoi(YYText()));
+					rdoParse::currParser->setYylval(atoi(YYText()));
 					return INT_CONST;
 				}
 
@@ -190,8 +186,8 @@ active				return(active);
 					std::string n1(YYText());
 					int pos = n1.find_first_of("\n\t :");
 					std::string *name = new std::string(n1, 0, pos);
-					rdoParse::addName(name);
-					rdoParse::setYylval((int)name);
+					rdoParse::currParser->addName(name);
+					rdoParse::currParser->setYylval((int)name);
 					return IDENTIF_set;
 				}
 
@@ -199,8 +195,8 @@ active				return(active);
 					std::string n1(YYText());
 					int pos = n1.find_first_of("\n\t :");
 					std::string *name = new std::string(n1, 0, pos);
-					rdoParse::addName(name);
-					rdoParse::setYylval((int)name);
+					rdoParse::currParser->addName(name);
+					rdoParse::currParser->setYylval((int)name);
 					return IDENTIF_NoChange_NoChange;
 				}
 
@@ -208,8 +204,8 @@ active				return(active);
 					std::string n1(YYText());
 					int pos = n1.find_first_of("\n\t :");
 					std::string *name = new std::string(n1, 0, pos);
-					rdoParse::addName(name);
-					rdoParse::setYylval((int)name);
+					rdoParse::currParser->addName(name);
+					rdoParse::currParser->setYylval((int)name);
 					return IDENTIF_NoChange;
 				}
 
@@ -217,15 +213,15 @@ active				return(active);
 					std::string n1(YYText());
 					int pos = n1.find_first_of("\n\t :");
 					std::string *name = new std::string(n1, 0, pos);
-					rdoParse::addName(name);
-					rdoParse::setYylval((int)name);
+					rdoParse::currParser->addName(name);
+					rdoParse::currParser->setYylval((int)name);
 					return IDENTIF_COLON;
 				}
 
 [A-Za-zР-пр-џ\xB8_$][A-Za-zР-пр-џ\xB80-9_$]*  {
 					std::string *name = new std::string(YYText());
-					rdoParse::addName(name);
-					rdoParse::setYylval((int)name);
+					rdoParse::currParser->addName(name);
+					rdoParse::currParser->setYylval((int)name);
 					return IDENTIF;
 				}
 

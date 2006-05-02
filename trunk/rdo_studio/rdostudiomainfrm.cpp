@@ -393,7 +393,7 @@ void RDOStudioMainFrame::showNewModelTime( const double value )
 void RDOStudioMainFrame::OnUpdateModelRunTypeStatusBar( CCmdUI *pCmdUI )
 {
 	pCmdUI->Enable();
-	string s = "";
+	std::string s = "";
 	if ( model->isRunning() ) {
 		switch ( model->getShowMode() ) {
 			case RDOSimulatorNS::SM_NoShow   : s = rdo::format( ID_STATUSBAR_MODEL_RUNNOSHOW ); break;
@@ -407,7 +407,7 @@ void RDOStudioMainFrame::OnUpdateModelRunTypeStatusBar( CCmdUI *pCmdUI )
 void RDOStudioMainFrame::OnUpdateModelShowRateStatusBar( CCmdUI *pCmdUI )
 {
 	pCmdUI->Enable();
-	string s = "";
+	std::string s = "";
 	if ( model->isRunning() ) {
 		double showRate = model->getShowRate();
 		if ( showRate < 1e-10 || showRate > 1e10 ) {
@@ -449,7 +449,7 @@ void RDOStudioMainFrame::endProgress()
 
 void RDOStudioMainFrame::OnHelpContents()
 {
-	string filename = studioApp.getFullHelpFileName();
+	std::string filename = studioApp.getFullHelpFileName();
 	if ( filename.empty() ) return;
 
 	::HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_DISPLAY_TOPIC, NULL );

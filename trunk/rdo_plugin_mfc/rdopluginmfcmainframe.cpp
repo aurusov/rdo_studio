@@ -12,8 +12,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-using namespace std;
-
 std::string format( const char* str, ... )
 {
 	std::vector< char > s;
@@ -756,7 +754,7 @@ bool RDOPluginMFCLogCtrl::makeLineVisible( const int index )
 	return res;
 }
 
-void RDOPluginMFCLogCtrl::addStringToLog( string logStr )
+void RDOPluginMFCLogCtrl::addStringToLog( std::string logStr )
 {
 	if ( hwnd ) {
 
@@ -806,11 +804,11 @@ void RDOPluginMFCLogCtrl::addStringToLog( string logStr )
 	}
 }
 
-void RDOPluginMFCLogCtrl::getString( const int index, string& str ) const
+void RDOPluginMFCLogCtrl::getString( const int index, std::string& str ) const
 {
 	const_cast<CMutex&>(mutex).Lock();
 
-	string res = "";
+	std::string res = "";
 
 	if ( index >= 0 && index < stringsCount )
 		str.assign( *const_findString( index ) );
@@ -823,7 +821,7 @@ int RDOPluginMFCLogCtrl::getSelectedIndex() const
 	return selectedLine;
 }
 
-void RDOPluginMFCLogCtrl::getSelected( string& str ) const
+void RDOPluginMFCLogCtrl::getSelected( std::string& str ) const
 {
 	getString( selectedLine, str );
 }
