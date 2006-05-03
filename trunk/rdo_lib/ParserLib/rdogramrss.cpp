@@ -238,8 +238,8 @@ static const short yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined. */
 static const short yyrline[] =
 {
-       0,   161,   162,   164,   165,   167,   184,   190,   191,   192,
-     194,   195,   197,   212,   226,   241
+       0,   161,   162,   164,   165,   167,   184,   195,   196,   197,
+     199,   200,   202,   217,   231,   246
 };
 #endif
 
@@ -1083,25 +1083,30 @@ case 5:
 case 6:
 #line 184 ".\\rdorss.y"
 { 
-						RDORSSResource *res = (RDORSSResource *)yyvsp[-2];
-						RDOCalcCreateNumberedResource *createResource = new RDOCalcCreateNumberedResource(res->getType()->getType(), yyvsp[-1] != 0, res->getValues(), res->getNumber(), res->getType()->isPerm());
-						currParser->runTime->addInitCalc(createResource);
+						if ( currParser->lastRSSResource && currParser->lastRSSResource->currParam != currParser->lastRSSResource->getType()->getParams().end() )
+							currParser->error( _T("Заданы не все параметры ресурса: " + *currParser->lastRSSResource->getName()) );
+// Перенес в отдельный парсер RSS_POST, т.к. есть еще парсер DPT_RSS
+//						RDORSSResource *res = (RDORSSResource *)$1;
+//						RDOCalcCreateNumberedResource *createResource = new RDOCalcCreateNumberedResource(res->getType()->getType(), $2 != 0, res->getValues(), res->getNumber(), res->getType()->isPerm());
+//						currParser->runTime->addInitCalc(createResource);
+// Вместо этого, пришлось сохранить признак трассировки для последеющего использования в RSS_POST
+						((RDORSSResource*)yyvsp[-2])->setTrace( yyvsp[-1] != 0 );
 					;
     break;}
 case 7:
-#line 190 ".\\rdorss.y"
+#line 195 ".\\rdorss.y"
 { yyval = 0; ;
     break;}
 case 8:
-#line 191 ".\\rdorss.y"
+#line 196 ".\\rdorss.y"
 { yyval = 1; ;
     break;}
 case 9:
-#line 192 ".\\rdorss.y"
+#line 197 ".\\rdorss.y"
 { yyval = 0; ;
     break;}
 case 12:
-#line 197 ".\\rdorss.y"
+#line 202 ".\\rdorss.y"
 { 
 						if(currParser->lastRSSResource->currParam == currParser->lastRSSResource->getType()->getParams().end())
 							currParser->error("Too many parameters");
@@ -1118,7 +1123,7 @@ case 12:
 					;
     break;}
 case 13:
-#line 212 ".\\rdorss.y"
+#line 217 ".\\rdorss.y"
 { 
 						if(currParser->lastRSSResource->currParam == currParser->lastRSSResource->getType()->getParams().end())
 							currParser->error("Too many parameters");
@@ -1135,7 +1140,7 @@ case 13:
 					;
     break;}
 case 14:
-#line 226 ".\\rdorss.y"
+#line 231 ".\\rdorss.y"
 { 
 						if(currParser->lastRSSResource->currParam == currParser->lastRSSResource->getType()->getParams().end())
 							currParser->error("Too many parameters");
@@ -1152,7 +1157,7 @@ case 14:
 					;
     break;}
 case 15:
-#line 241 ".\\rdorss.y"
+#line 246 ".\\rdorss.y"
 { 
 						if(currParser->lastRSSResource->currParam == currParser->lastRSSResource->getType()->getParams().end())
 							currParser->error("Too many parameters");
@@ -1401,7 +1406,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 256 ".\\rdorss.y"
+#line 261 ".\\rdorss.y"
 
 
 }

@@ -29,6 +29,20 @@ public:
 };
 
 // ----------------------------------------------------------------------------
+// ---------- RDOParserRSSPost
+// ----------------------------------------------------------------------------
+class RDOParserRSSPost: public RDOParserBase
+{
+public:
+	RDOParserRSSPost(): RDOParserBase( rdoModelObjects::RSS, NULL, NULL, NULL ) {};
+
+	virtual void parse();
+	virtual void parse( std::istream& in_stream ) { parse();   }
+	virtual void set_lexer_value( int value )     {            }
+	virtual int lineno()                          { return -1; }
+};
+
+// ----------------------------------------------------------------------------
 // ---------- RDOParserFUN
 // ----------------------------------------------------------------------------
 class RDOParserFUN: public RDOParserRDO

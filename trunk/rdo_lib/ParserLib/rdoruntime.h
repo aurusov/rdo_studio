@@ -192,9 +192,9 @@ public:
 	void addDPT(RDOSearchRuntime *dpt);
 
 	void addInitCalc(RDOCalc *initCalc) { initCalcs.push_back(initCalc); }
-   RDOValue getResParamVal(const int nRes, const int nParam) const;
-   void setResParamVal(const int nRes, const int nParam, RDOValue val);
-   int getRelResNumber(const int nRelRes) const;
+	RDOValue getResParamVal(const int nRes, const int nParam) const;
+	void setResParamVal(const int nRes, const int nParam, RDOValue val);
+	int getRelResNumber(const int nRelRes) const;
 	RDOValue eraseRes(const int resNumb, const RDOCalc *fromCalc);
 	RDOResource *createNewResource();
 	RDOResource *createNewResource(int number, bool isPermanent);

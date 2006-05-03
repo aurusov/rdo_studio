@@ -111,21 +111,8 @@ public:
 	void parse( int files = rdoModelObjects::obALL );
 	void parse( rdoModelObjects::RDOParseType file );
 	void parse( rdoModelObjects::RDOParseType file, std::istream& stream );
-/*
-	void parseRTP(std::istream* arg_yyin, std::ostream* arg_yyout);
-	void parseRSS(std::istream* arg_yyin, std::ostream* arg_yyout);
-	void parseFUN(std::istream* arg_yyin, std::ostream* arg_yyout);
-	void parsePAT(std::istream* arg_yyin, std::ostream* arg_yyout);
-	void parseOPR(std::istream* arg_yyin, std::ostream* arg_yyout);
-	void parseDPT(std::istream* arg_yyin, std::ostream* arg_yyout);
-	void parsePMD(std::istream* arg_yyin, std::ostream* arg_yyout);
-	void parseFRM(std::istream* arg_yyin, std::ostream* arg_yyout);
-	void parseSMR1(std::istream* arg_yyin, std::ostream* arg_yyout);
-	void parseSMR2(std::istream* arg_yyin, std::ostream* arg_yyout);
-*/
-	void error( const char *mes );
-	void error( std::string mes ) { error(mes.c_str()); }
-//	int lex();
+	void error( const char* mes );
+	void error( const std::string& mes ) { error( mes.c_str() ); }
 	void addConstant(RDORTPParamDesc *const _cons);
 	const RDOFUNConstant *RDOParser::findFUNConst(const std::string *const _cons) const;
 
@@ -138,7 +125,7 @@ public:
 	}
 
 	void setYylval( int val )         { parser->set_lexer_value( val ); }
-	void addName( std::string* name ) { allRTPNames.push_back(name);    }
+	void addName( std::string* name ) { allRTPNames.push_back( name );  }
 	double* addDouble( double* val ) {
 		allRTPDoubles.push_back( val );
 		return val;

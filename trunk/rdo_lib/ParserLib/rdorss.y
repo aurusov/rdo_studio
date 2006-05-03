@@ -182,9 +182,14 @@ rss_res_type:	IDENTIF_COLON IDENTIF	{
 
 
 rss_res_descr:  rss_res_type rss_trace rss_start_vals  { 
-						RDORSSResource *res = (RDORSSResource *)$1;
-						RDOCalcCreateNumberedResource *createResource = new RDOCalcCreateNumberedResource(res->getType()->getType(), $2 != 0, res->getValues(), res->getNumber(), res->getType()->isPerm());
-						currParser->runTime->addInitCalc(createResource);
+						if ( currParser->lastRSSResource && currParser->lastRSSResource->currParam != currParser->lastRSSResource->getType()->getParams().end() )
+							currParser->error( _T("Заданы не все параметры ресурса: " + *currParser->lastRSSResource->getName()) );
+// Перенес в отдельный парсер RSS_POST, т.к. есть еще парсер DPT_RSS
+//						RDORSSResource *res = (RDORSSResource *)$1;
+//						RDOCalcCreateNumberedResource *createResource = new RDOCalcCreateNumberedResource(res->getType()->getType(), $2 != 0, res->getValues(), res->getNumber(), res->getType()->isPerm());
+//						currParser->runTime->addInitCalc(createResource);
+// Вместо этого, пришлось сохранить признак трассировки для последеющего использования в RSS_POST
+						((RDORSSResource*)$1)->setTrace( $2 != 0 );
 					};
 
 rss_trace:		{ $$ = 0; }

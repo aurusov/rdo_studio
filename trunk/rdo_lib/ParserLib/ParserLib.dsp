@@ -151,6 +151,19 @@ SOURCE=.\rdogramdpt.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\rdogramdpt_rss.cpp
+
+!IF  "$(CFG)" == "ParserLib - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "ParserLib - Win32 Debug"
+
+# SUBTRACT CPP /YX
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdogramfrm.cpp
 
 !IF  "$(CFG)" == "ParserLib - Win32 Release"
@@ -605,6 +618,25 @@ InputPath=.\rdodpt.y
 
 "rdogramdpt.cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
 	..\System\bison.exe -pdpt --skeleton=..\System\bison.simple -ordogramdpt.cpp $(InputPath)
+
+# End Custom Build
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdodpt_rss.y
+
+!IF  "$(CFG)" == "ParserLib - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "ParserLib - Win32 Debug"
+
+# Begin Custom Build
+InputPath=.\rdodpt_rss.y
+
+"rdogramdpt_rss.cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	..\System\bison.exe -pdpt_rss_ --skeleton=..\System\bison.simple -ordogramdpt_rss.cpp $(InputPath)
 
 # End Custom Build
 

@@ -26,10 +26,10 @@ public:
 	RDOParserBase( rdoModelObjects::RDOFileType _type, t_bison_parse_fun _parser_fun, t_bison_error_fun _error_fun, t_flex_lexer_fun _lexer_fun ): type( _type ), parser_fun( _parser_fun ), error_fun( _error_fun ), lexer_fun( _lexer_fun ) {};
 	virtual ~RDOParserBase() {};
 
-	virtual void parse()                          {            }
-	virtual void parse( std::istream& in_stream ) {            }
-	virtual void set_lexer_value( int value )     {            }
-	virtual int lineno()                          { return -1; }
+	virtual void parse()                          = 0;
+	virtual void parse( std::istream& in_stream ) = 0;
+	virtual void set_lexer_value( int value )     = 0;
+	virtual int lineno()                          = 0;
 };
 
 // ----------------------------------------------------------------------------
@@ -55,7 +55,6 @@ public:
 	static void getParserMinMax( rdoModelObjects::RDOParseType type, int& min, int& max );
 	static std::list< rdoModelObjects::RDOFileType > getParserFiles( int files );
 };
-
 
 } // namespace rdoParse
 

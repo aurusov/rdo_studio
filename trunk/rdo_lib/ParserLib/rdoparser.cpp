@@ -19,6 +19,24 @@ namespace rdoParse
 
 RDOParser* currParser = NULL;
 
+RDOParser::RDOParser():
+	out(&std::cout),
+	parser( NULL )
+{
+	runTime = new RDORuntime();
+	patternCounter = 1;
+	pokazCounter = 1;
+	constCounter = 0;
+	smr = NULL;
+	lastDPTSearch = NULL;
+	lastRTPResType = NULL;
+	lastRSSResource = NULL;
+	lastFUNFunction = NULL;
+	lastPATPattern = NULL;
+
+	parsers.reset();
+}
+
 std::stringstream& RDOParser::getModelStructure()
 {
 	modelStructure.str("");
@@ -66,6 +84,10 @@ void RDOParser::parse( int files )
 	resourceTypeCounter = 1;
 	resourceCounter = 0;
 
+	int min1, max1, min2, max2;
+	RDOParserList::getParserMinMax( rdoModelObjects::obPRE , min1, max1 );
+	RDOParserList::getParserMinMax( rdoModelObjects::obPOST, min2, max2 );
+
 	if ( files & rdoModelObjects::obPRE ) {
 		parse( rdoModelObjects::obPRE );
 	}
@@ -74,7 +96,7 @@ void RDOParser::parse( int files )
 
 	std::map< int, RDOParserBase* >::const_iterator it = parsers.begin();
 	while ( it != parsers.end() ) {
-		if ( std::find( file_list.begin(), file_list.end(), it->second->type ) != file_list.end() ) {
+		if ( it->first > max1 && it->first < min2 && std::find( file_list.begin(), file_list.end(), it->second->type ) != file_list.end() ) {
 			parser      = it->second;
 			fileToParse = it->second->type;
 			currParser  = this;
@@ -132,232 +154,10 @@ void RDOParser::parse( rdoModelObjects::RDOParseType file, std::istream& stream 
 	}
 }
 
-/*
-void RDOParser::parseRTP(std::istream* arg_yyin, std::ostream* arg_yyout) 
+void RDOParser::error( const char* mes ) 
 {
-	_parser = &parsers[0];
-
-	resourceTypeCounter = 1;
-	fileToParse = rdoModelObjects::RTP;
-	out = arg_yyout;
-	if(currParser != NULL)
-		throw RDOSyntaxException("Internal error 0002");
-
-	currParser = this;
-	parsers[0].parse();
-	currParser = NULL;
-
-//	resourceTypeCounter = 1;
-//	rdoLexer lexer(arg_yyin, arg_yyout);
-//	fileToParse = RTP_FILE;
-//	out = arg_yyout;
-//	if(currParser != NULL)
-//		throw RDOSyntaxException("Internal error 0002");
-//
-//	currParser = this;
-//	rtpparse();
-//	modelStructure << std::endl << "$Resource_type" << std::endl;
-//	for_each(allRTPResType.begin(), allRTPResType.end(), mem_fun(&RDORTPResType::writeModelStructure));
-//	currParser = NULL;
-}
-
-void RDOParser::parseRSS(std::istream* arg_yyin, std::ostream* arg_yyout) 
-{
-	resourceCounter = 0;
-	rdoLexer lexer(arg_yyin, arg_yyout);
-	fileToParse = rdoModelObjects::RSS;
-	out = arg_yyout;
-	if(currParser != NULL)
-		throw RDOSyntaxException("Internal error 0002");
-
-	currParser = this;
-	rssparse(); 
-//	modelStructure << std::endl << "$Resources" << std::endl;
-//	for_each(allRSSResource.begin(), allRSSResource.end(), mem_fun(&RDORSSResource::writeModelStructure));
-	currParser = NULL;
-}
-
-void RDOParser::parseFUN(std::istream* arg_yyin, std::ostream* arg_yyout) 
-{
-	rdoLexer lexer(arg_yyin, arg_yyout);
-	fileToParse = rdoModelObjects::FUN;
-	out = arg_yyout;
-	if(currParser != NULL)
-		throw RDOSyntaxException("Internal error 0002");
-
-	currParser = this;
-	LoadStdFunctions();
-	funparse(); 
-	currParser = NULL;
-}
-
-void RDOParser::parsePAT(std::istream* arg_yyin, std::ostream* arg_yyout) 
-{
-	rdoLexer lexer(arg_yyin, arg_yyout);
-	fileToParse = rdoModelObjects::PAT;
-	out = arg_yyout;
-	if(currParser != NULL)
-		throw RDOSyntaxException("Internal error 0002");
-
-	currParser = this;
-	patparse(); 
-//	modelStructure << std::endl << "$Pattern" << std::endl;
-//	for_each(allPATPatterns.begin(), allPATPatterns.end(), mem_fun(&RDOPATPattern::writeModelStructure));
-	currParser = NULL;
-}
-
-void RDOParser::parseOPR(std::istream* arg_yyin, std::ostream* arg_yyout) 
-{
-	rdoLexer lexer(arg_yyin, arg_yyout);
-	fileToParse = rdoModelObjects::OPR;
-	out = arg_yyout;
-	if(currParser != NULL)
-		throw RDOSyntaxException("Internal error 0030");
-
-	currParser = this;
-	oprparse(); 
-//	modelStructure << std::endl << "$Activities" << std::endl;
-//	modelStructure << runTime->writeActivitiesStructure();
-	currParser = NULL;
-}
-
-void RDOParser::parseDPT(std::istream* arg_yyin, std::ostream* arg_yyout) 
-{
-	rdoLexer lexer(arg_yyin, arg_yyout);
-	fileToParse = rdoModelObjects::DPT;
-	out = arg_yyout;
-	if(currParser != NULL)
-		throw RDOSyntaxException("Internal error 0030");
-
-	currParser = this;
-	dptparse();
-
-//	modelStructure << std::endl << "$Activities" << std::endl;
-//	modelStructure << runTime->writeActivitiesStructure();
-//	for(int i = 0; i < allDPTSearch.size(); i++)
-//	{
-//		int counter = 1;
-//		for(int j = 0; j < allDPTSearch.at(i)->getActivities().size(); j++)
-//		{
-//			RDODPTSearchActivity *curr = allDPTSearch.at(i)->getActivities().at(j);
-//			modelStructure << counter++ << " " << *curr->getName() << " " << 
-//				curr->getRule()->getPatternId() << std::endl;
-//		}
-//	}
-	currParser = NULL;
-}
-
-void RDOParser::parsePMD(std::istream* arg_yyin, std::ostream* arg_yyout) 
-{
-	rdoLexer lexer(arg_yyin, arg_yyout);
-	fileToParse = rdoModelObjects::PMD;
-	out = arg_yyout;
-	if(currParser != NULL)
-		throw RDOSyntaxException("Internal error 0031");
-
-	currParser = this;
-	pmdparse(); 
-//	modelStructure << std::endl << "$Watching" << std::endl;
-//	modelStructure << runTime->writePokazStructure();
-	currParser = NULL;
-}
-
-void RDOParser::parseFRM(std::istream* arg_yyin, std::ostream* arg_yyout) 
-{
-	rdoLexer lexer(arg_yyin, arg_yyout);
-	fileToParse = rdoModelObjects::FRM;
-	out = arg_yyout;
-	if(currParser != NULL)
-		throw RDOSyntaxException("Internal error 0032");
-
-	currParser = this;
-	frmparse(); 
-	currParser = NULL;
-}
-
-void RDOParser::parseSMR1(std::istream* arg_yyin, std::ostream* arg_yyout) 
-{
-	*arg_yyout << " ";
-	rdoLexer lexer(arg_yyin, arg_yyout);
-	fileToParse = rdoModelObjects::SMR;
-	out = arg_yyout;
-	if(currParser != NULL)
-		throw RDOSyntaxException("Internal error 0032");
-
-	currParser = this;
-	try
-	{
-		smr1parse(); 
-	}
-	catch(RDOSMR1OkException &)
-	{
-		// Everithing ok, just end of first part parsing
-	}
-
-	if(currParser->smr && !currParser->smr->showRate)	// was not initialised
-	{
-		currParser->smr->showRate = addDouble(new double(60.));
-	}
-
-	currParser = NULL;
-}
-
-void RDOParser::parseSMR2(std::istream* arg_yyin, std::ostream* arg_yyout) 
-{
-	rdoLexer lexer(arg_yyin, arg_yyout);
-	fileToParse = rdoModelObjects::SMR;
-	out = arg_yyout;
-	if(currParser != NULL)
-		throw RDOSyntaxException("Internal error 0033");
-
-	currParser = this;
-	smr2parse(); 
-	currParser = NULL;
-}
-*/
-void RDOParser::error( const char *mes ) 
-{
-/*
-	rdoModelObjects::RDOFileType ft = rdoModelObjects::PAT;
-	switch(fileToParse)
-	{
-	case RTP_FILE: ft = rdoModelObjects::RTP; break;
-	case RSS_FILE: ft = rdoModelObjects::RSS; break;
-	case FUN_FILE: ft = rdoModelObjects::FUN; break;
-	case PAT_FILE: ft = rdoModelObjects::PAT; break;
-	case OPR_FILE: ft = rdoModelObjects::OPR; break;
-	case DPT_FILE: ft = rdoModelObjects::DPT; break;
-	case PMD_FILE: ft = rdoModelObjects::PMD; break;
-	case SMR1_FILE:
-	case SMR2_FILE: ft = rdoModelObjects::SMR; break;
-	case FRM_FILE: ft = rdoModelObjects::FRM; break;
-	}
-*/
-	errors.push_back(RDOSimulatorNS::RDOSyntaxError(mes, parser->lineno(), fileToParse));
-	throw rdoParse::RDOSyntaxException("");
-}
-
-//int RDOParser::lex()
-//{
-//	return rdoYylex();
-//}
-
-RDOParser::RDOParser():
-	out(&std::cout),
-	parser( NULL )
-{
-	runTime = new RDORuntime();
-	patternCounter = 1;
-	pokazCounter = 1;
-	constCounter = 0;
-	smr = NULL;
-	lastDPTSearch = NULL;
-	lastRTPResType = NULL;
-	lastRSSResource = NULL;
-	lastFUNFunction = NULL;
-	lastPATPattern = NULL;
-
-	parsers.reset();
+	errors.push_back( RDOSimulatorNS::RDOSyntaxError( mes, parser->lineno(), fileToParse ) );
+	throw rdoParse::RDOSyntaxException( "" );
 }
 
 const RDORTPResType *RDOParser::findRTPResType(const std::string *const type) const

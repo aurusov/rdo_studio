@@ -23,6 +23,10 @@ int dptparse( void* lexer );
 int dptlex( int* lpval, void* lexer );
 void dpterror( char* mes );
 
+int dpt_rss_parse( void* lexer );
+int dpt_rss_lex( int* lpval, void* lexer );
+void dpt_rss_error( char* mes );
+
 /////////////////////////  "SEARCH" DECISION POINT /////////////////////////
 
 enum DPTSearchTrace
@@ -155,6 +159,15 @@ public:
 	void addParam();
 	void end();
 	void addHotKey(std::string *hotKey) { hotKeys.push_back(hotKey); }
+};
+
+///////////////////////// PROCESS /////////////////////////
+
+class RDODPTProcess
+{
+public:
+	static std::string name_prefix;
+	static std::string name_sufix;
 };
 
 }		// namespace rdoParse 

@@ -173,7 +173,6 @@ dpt_main:
 	| dpt_main dpt_activ_free_end
 	| dpt_main dpt_process_end;
 
-
 /* ///////////////////////  SEARCH POINT ///////////////////////////// */
 
 dpt_begin_search:	Decision_point IDENTIF_COLON search_keyword					{ $$ = (int)(new RDODPTSearch((std::string *)$2)); }
@@ -258,36 +257,10 @@ dpt_process:		Process	dpt_process_input {};
 dpt_process_input:
 					| dpt_process_input dpt_process_line;
 
-dpt_process_line:	IDENTIF	{ $$=$1; TRACE( "%s\n", ((std::string *)$1)->c_str() ); }
-					| SIEZE IDENTIF {
-										$$=$2;
-										TRACE( "SIEZE found, resource name = %s\n", ((std::string *)$2)->c_str() );
-	std::string res_name( *(std::string*)$2 );
-	std::string res_type_name = "RTP_" + res_name;
-
-	const RDORTPResType* res_type = currParser->findRTPResType( &res_type_name );
-	if ( res_type ) {
-
-	} else {
-//		currParser->error(("Second appearance of the same resource type : " + *(name)).c_str());
-		RDORTPResType* res_type = new RDORTPResType( &res_type_name, true, currParser->resourceTypeCounter++ );
-		currParser->allRTPResType.push_back( res_type );
-		currParser->lastRTPResType = res_type;
-
-//		if( currParser->findRSSResource(name) )
-//			currParser->error(("Double resource name: " + *name).c_str());
-
-		RDORSSResource* res = new RDORSSResource( &res_name, res_type, currParser->resourceCounter++ );
-		currParser->lastRSSResource = res;
-		currParser->allRSSResource.push_back( res );
-
-		$$ = (int)res_type;
-	}
-									};
+dpt_process_line:	IDENTIF			{}
+					| SIEZE IDENTIF	{};
 
 dpt_process_end:	dpt_process End	{};
-
-
 
 /* ///////////////////////  ARITHMETIC/LOGIC ///////////////////////////// */
 

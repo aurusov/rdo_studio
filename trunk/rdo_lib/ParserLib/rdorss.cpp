@@ -23,8 +23,9 @@ void rsserror( char* mes )
 	rdoParse::currParser->error( mes );
 }
 
-RDORSSResource::RDORSSResource(const std::string *const _name, const RDORTPResType *const _resType, const int _number)
-	: name(_name), resType(_resType), number(_number)	
+RDORSSResource::RDORSSResource(const std::string *const _name, const RDORTPResType *const _resType, const int _number):
+	name(_name), resType(_resType), number(_number),
+	trace( false )
 {
 	currParam = resType->getParams().begin();
 }

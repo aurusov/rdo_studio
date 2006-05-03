@@ -40,6 +40,7 @@ struct RDORTPIntDefVal: public RDORTPDefVal
 
 struct RDORTPResParam: public RDODeletable
 {
+	enum ParamType { pt_int = 0, pt_real = 1, pt_enum = 2 };
 	RDORTPDefVal *dv;
 	RDORTPResParam(RDORTPDefVal *_dv): dv(_dv) {}
 	virtual const RDORTPResParam *constructSuchAs() const;
@@ -51,7 +52,7 @@ struct RDORTPResParam: public RDODeletable
 	virtual RDOValue getRSSIntValue(const int val) const;
 	virtual RDOValue getRSSRealValue(const double *const val) const;
 	virtual int getDiapTableFunc() const = 0;
-	virtual int getType() const = 0;
+	virtual ParamType getType() const = 0;
 	virtual int writeModelStructure() const = 0;
 };
 
@@ -63,7 +64,7 @@ struct RDORTPIntResParam: public RDORTPResParam
 	RDOValue getRSSDefaultValue()const ;
 	RDOValue getRSSIntValue(const int val)const ;	// the function also check range if exist
 	int getDiapTableFunc() const;
-	int getType() const {return 0;}
+	ParamType getType() const { return pt_int; }
 	int writeModelStructure() const;
 };
 
@@ -94,7 +95,7 @@ struct RDORTPRealResParam: public RDORTPResParam
 	RDOValue getRSSRealValue(const double *const val)const ; 	// the function also check range if exist
 	RDOValue getRSSIntValue(const int val) const;					// this function too
 	int getDiapTableFunc() const;
-	int getType() const {return 1;}
+	ParamType getType() const { return pt_real; }
 	int writeModelStructure() const;
 };
 
@@ -122,7 +123,7 @@ struct RDORTPEnumResParam: public RDORTPResParam
 	RDOValue getRSSDefaultValue()const ;
 	RDOValue getRSSEnumValue(const std::string *const val)const ;
 	int getDiapTableFunc() const;
-	int getType() const {return 2;}
+	ParamType getType() const { return pt_enum; }
 	int writeModelStructure() const;
 };
 

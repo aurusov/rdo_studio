@@ -1,15 +1,15 @@
-/* A Bison parser, made from .\rdodpt.y
+/* A Bison parser, made from .\rdodpt_rss.y
    by GNU bison 1.34.  */
 
 #define YYBISON 1  /* Identify Bison output.  */
 
-#define yyparse dptparse
-#define yylex dptlex
-#define yyerror dpterror
-#define yylval dptlval
-#define yychar dptchar
-#define yydebug dptdebug
-#define yynerrs dptnerrs
+#define yyparse dpt_rss_parse
+#define yylex dpt_rss_lex
+#define yyerror dpt_rss_error
+#define yylval dpt_rss_lval
+#define yychar dpt_rss_char
+#define yydebug dpt_rss_debug
+#define yynerrs dpt_rss_nerrs
 # define	Resource_type	257
 # define	permanent	258
 # define	Parameters	259
@@ -134,11 +134,11 @@
 # define	active	414
 # define	QUOTED_IDENTIF	415
 
-#line 1 ".\\rdodpt.y"
+#line 1 ".\\rdodpt_rss.y"
 
 #define YYPARSE_PARAM lexer
 #define YYLEX_PARAM lexer
-#line 138 ".\\rdodpt.y"
+#line 138 ".\\rdodpt_rss.y"
 
 #include "pch.h"
 #ifdef _DEBUG
@@ -146,8 +146,6 @@
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
-
-//#include <FlexLexer.h>
 
 #include "rdoparser.h"
 #include "rdoparselex.h"
@@ -229,42 +227,43 @@ static const short yyprhs[] =
       72,    74,    77,    80,    83,    86,    90,    94,    97,   101,
      106,   110,   114,   117,   119,   123,   125,   128,   131,   134,
      137,   140,   142,   144,   148,   150,   153,   157,   160,   163,
-     166,   169,   171,   174,   177,   178,   181,   183,   186,   189,
-     193,   197,   201,   205,   209,   213,   217,   221,   225,   227,
-     231,   235,   239,   243,   247,   252,   256,   258,   260,   262,
-     263,   266,   270,   272,   274,   276,   278,   282,   286
+     166,   169,   171,   174,   178,   182,   186,   190,   194,   198,
+     202,   206,   210,   212,   216,   220,   224,   228,   232,   237,
+     241,   243,   245,   247,   248,   251,   255,   257,   259,   261,
+     263,   267,   271,   275,   278,   279,   282,   284,   286,   289
 };
 static const short yyrhs[] =
 {
       -1,   139,   149,     0,   139,   155,     0,   139,   160,     0,
-     139,   164,     0,    93,    18,    94,     0,    93,    18,    94,
+     139,   170,     0,    93,    18,    94,     0,    93,    18,    94,
       17,     0,    93,    18,    94,    95,     0,    93,    18,    94,
-      96,     0,    93,    18,    94,    97,     0,   140,    98,   165,
-       0,   140,    98,    34,     0,   141,    99,   165,     0,   142,
-     100,   166,     0,   143,   101,   130,   102,     0,   143,   101,
+      96,     0,    93,    18,    94,    97,     0,   140,    98,   161,
+       0,   140,    98,    34,     0,   141,    99,   161,     0,   142,
+     100,   162,     0,   143,   101,   130,   102,     0,   143,   101,
      130,   103,     0,   144,   104,     0,   148,     0,   145,    18,
       10,     0,   146,     0,   147,    11,     0,   147,    12,     0,
-     147,    10,     0,   147,   128,     0,   147,   105,   166,     0,
-     147,   106,   166,     0,   145,     8,     0,    93,    18,   107,
-       0,    93,    18,   107,    17,     0,   150,    98,   165,     0,
+     147,    10,     0,   147,   128,     0,   147,   105,   162,     0,
+     147,   106,   162,     0,   145,     8,     0,    93,    18,   107,
+       0,    93,    18,   107,    17,     0,   150,    98,   161,     0,
      150,    98,    34,     0,   151,   104,     0,   154,     0,   152,
       18,    10,     0,   153,     0,   154,    11,     0,   154,    12,
        0,   154,    10,     0,   154,   128,     0,   152,     8,     0,
      104,     0,   159,     0,   156,    18,    10,     0,   157,     0,
      158,   125,     0,   158,   126,   125,     0,   159,    11,     0,
      159,    12,     0,   159,    10,     0,   159,   128,     0,   158,
-       0,   156,     8,     0,   108,   162,     0,     0,   162,   163,
-       0,    10,     0,   109,    10,     0,   161,     8,     0,   166,
-     130,   166,     0,   166,    31,   166,     0,   166,   131,   166,
-       0,   166,   132,   166,     0,   166,    32,   166,     0,   166,
-      33,   166,     0,   165,    36,   165,     0,   165,    35,   165,
-       0,   133,   165,   134,     0,   170,     0,   166,   126,   166,
-       0,   166,   127,   166,     0,   166,   128,   166,     0,   166,
-     129,   166,     0,   135,   166,   136,     0,    10,   135,   167,
-     136,     0,    10,   137,    10,     0,    11,     0,    12,     0,
-      10,     0,     0,   167,   166,     0,   167,   138,   166,     0,
-      27,     0,    28,     0,    29,     0,    30,     0,   168,   135,
-      18,     0,   169,   165,   136,     0,   169,    34,   136,     0
+       0,   156,     8,     0,   162,   130,   162,     0,   162,    31,
+     162,     0,   162,   131,   162,     0,   162,   132,   162,     0,
+     162,    32,   162,     0,   162,    33,   162,     0,   161,    36,
+     161,     0,   161,    35,   161,     0,   133,   161,   134,     0,
+     166,     0,   162,   126,   162,     0,   162,   127,   162,     0,
+     162,   128,   162,     0,   162,   129,   162,     0,   135,   162,
+     136,     0,    10,   135,   163,   136,     0,    10,   137,    10,
+       0,    11,     0,    12,     0,    10,     0,     0,   163,   162,
+       0,   163,   138,   162,     0,    27,     0,    28,     0,    29,
+       0,    30,     0,   164,   135,    18,     0,   165,   161,   136,
+       0,   165,    34,   136,     0,   108,   168,     0,     0,   168,
+     169,     0,    10,     0,   109,     0,   109,    10,     0,   167,
+       8,     0
 };
 
 #endif
@@ -273,15 +272,15 @@ static const short yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined. */
 static const short yyrline[] =
 {
-       0,   170,   171,   172,   173,   174,   178,   179,   180,   181,
-     182,   184,   185,   187,   189,   191,   192,   194,   195,   197,
-     199,   200,   201,   202,   203,   205,   206,   208,   213,   214,
-     216,   217,   219,   220,   222,   224,   225,   226,   227,   228,
-     230,   235,   236,   238,   240,   241,   242,   244,   245,   246,
-     247,   248,   250,   255,   257,   258,   260,   261,   263,   267,
-     268,   269,   270,   271,   272,   273,   274,   275,   276,   279,
-     280,   281,   282,   283,   284,   285,   286,   287,   288,   290,
-     291,   292,   295,   296,   297,   298,   300,   302,   303
+       0,   168,   169,   170,   171,   172,   176,   177,   178,   179,
+     180,   182,   183,   185,   187,   189,   190,   192,   193,   195,
+     197,   198,   199,   200,   201,   203,   204,   206,   210,   211,
+     213,   214,   216,   217,   219,   221,   222,   223,   224,   225,
+     227,   231,   232,   234,   236,   237,   238,   240,   241,   242,
+     243,   244,   246,   250,   251,   252,   253,   254,   255,   256,
+     257,   258,   259,   261,   262,   263,   264,   265,   266,   267,
+     268,   269,   270,   272,   273,   274,   276,   277,   278,   279,
+     281,   283,   284,   288,   290,   291,   293,   294,   295,   359
 };
 #endif
 
@@ -317,7 +316,7 @@ static const char *const yytname[] =
   "frm_cell", "text", "transparent", "bitmap", "s_bmp", "rect_keyword", 
   "r_rect", "line", "ellipse", "triang", "active", "QUOTED_IDENTIF", 
   "'+'", "'-'", "'*'", "'/'", "'='", "'<'", "'>'", "'['", "']'", "'('", 
-  "')'", "'.'", "','", "dpt_main", "dpt_begin_search", 
+  "')'", "'.'", "','", "dptrtp_main", "dpt_begin_search", 
   "dpt_condition_search", "dpt_term_search", "dpt_evaluate_search", 
   "dpt_compare_search", "dpt_activ_search", "dpt_activ_search_descr", 
   "dpt_activ_search_descr_param", "dpt_activ_search_descr_value", 
@@ -325,10 +324,10 @@ static const char *const yytname[] =
   "dpt_activ_some", "dpt_activ_some_descr", "dpt_activ_some_descr_param", 
   "dpt_activ_some_end", "dpt_activ_free", "dpt_activ_free_descr", 
   "dpt_activ_free_descr_keyb", "dpt_activ_free_descr_param", 
-  "dpt_activ_free_end", "dpt_process", "dpt_process_input", 
-  "dpt_process_line", "dpt_process_end", "dpt_logic", "dpt_arithm", 
+  "dpt_activ_free_end", "dpt_logic", "dpt_arithm", 
   "dpt_arithm_func_call_pars", "fun_group_keyword", "fun_group_header", 
-  "fun_group", 0
+  "fun_group", "dpt_process", "dpt_process_input", "dpt_process_line", 
+  "dpt_process_end", 0
 };
 #endif
 
@@ -340,10 +339,10 @@ static const short yyr1[] =
      147,   147,   147,   147,   147,   148,   148,   149,   150,   150,
      151,   151,   152,   152,   153,   154,   154,   154,   154,   154,
      155,   156,   156,   157,   158,   158,   158,   159,   159,   159,
-     159,   159,   160,   161,   162,   162,   163,   163,   164,   165,
-     165,   165,   165,   165,   165,   165,   165,   165,   165,   166,
-     166,   166,   166,   166,   166,   166,   166,   166,   166,   167,
-     167,   167,   168,   168,   168,   168,   169,   170,   170
+     159,   159,   160,   161,   161,   161,   161,   161,   161,   161,
+     161,   161,   161,   162,   162,   162,   162,   162,   162,   162,
+     162,   162,   162,   163,   163,   163,   164,   164,   164,   164,
+     165,   166,   166,   167,   168,   168,   169,   169,   169,   170
 };
 
 /* YYR2[YYN] -- Number of symbols composing right hand side of rule YYN. */
@@ -354,10 +353,10 @@ static const short yyr2[] =
        1,     2,     2,     2,     2,     3,     3,     2,     3,     4,
        3,     3,     2,     1,     3,     1,     2,     2,     2,     2,
        2,     1,     1,     3,     1,     2,     3,     2,     2,     2,
-       2,     1,     2,     2,     0,     2,     1,     2,     2,     3,
-       3,     3,     3,     3,     3,     3,     3,     3,     1,     3,
-       3,     3,     3,     3,     4,     3,     1,     1,     1,     0,
-       2,     3,     1,     1,     1,     1,     3,     3,     3
+       2,     1,     2,     3,     3,     3,     3,     3,     3,     3,
+       3,     3,     1,     3,     3,     3,     3,     3,     4,     3,
+       1,     1,     1,     0,     2,     3,     1,     1,     1,     1,
+       3,     3,     3,     2,     0,     2,     1,     1,     2,     2
 };
 
 /* YYDEFACT[S] -- default rule to reduce with in state S when YYTABLE
@@ -365,29 +364,29 @@ static const short yyr2[] =
    error. */
 static const short yydefact[] =
 {
-       1,     0,     0,    41,    54,     0,     0,     0,     0,     0,
+       1,     0,     0,    41,    84,     0,     0,     0,     0,     0,
        0,    20,     0,    18,     2,     0,     0,     0,    35,    33,
-       3,     0,    44,    51,    42,     4,     0,     5,     0,    53,
+       3,     0,    44,    51,    42,     4,     0,     5,     0,    83,
        0,     0,     0,     0,    17,    27,     0,    23,    21,    22,
        0,     0,    24,     0,    32,    40,     0,    38,    36,    37,
-      39,    52,     0,    45,     0,    49,    47,    48,    50,    58,
-       6,    28,    56,     0,    55,    78,    76,    77,    82,    83,
-      84,    85,    12,     0,     0,    11,     0,     0,     0,    68,
+      39,    52,     0,    45,     0,    49,    47,    48,    50,    89,
+       6,    28,    86,    87,    85,    72,    70,    71,    76,    77,
+      78,    79,    12,     0,     0,    11,     0,     0,     0,    62,
       13,    14,     0,    19,    25,    26,    31,    30,    34,    43,
-      46,     7,     8,     9,    10,    29,    57,    79,     0,     0,
+      46,     7,     8,     9,    10,    29,    88,    73,     0,     0,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,    15,    16,     0,    75,
-      67,    73,    66,    65,    60,    63,    64,    69,    70,    71,
-      72,    59,    61,    62,    86,    88,    87,    74,     0,    80,
-      81,     0,     0
+       0,     0,     0,     0,     0,     0,    15,    16,     0,    69,
+      61,    67,    60,    59,    54,    57,    58,    63,    64,    65,
+      66,    53,    55,    56,    80,    82,    81,    68,     0,    74,
+      75,     0,     0
 };
 
 static const short yydefgoto[] =
 {
        1,     5,     6,     7,     8,     9,    10,    11,    12,    13,
       14,    15,    16,    17,    18,    19,    20,    21,    22,    23,
-      24,    25,    26,    29,    64,    27,    75,    76,   118,    77,
-      78,    79
+      24,    25,    75,    76,   118,    77,    78,    79,    26,    29,
+      64,    27
 };
 
 static const short yypact[] =
@@ -413,7 +412,7 @@ static const short yypgoto[] =
 {
   -32768,-32768,-32768,-32768,-32768,-32768,-32768,-32768,-32768,-32768,
   -32768,-32768,-32768,-32768,-32768,-32768,-32768,-32768,-32768,-32768,
-  -32768,-32768,-32768,-32768,-32768,-32768,   123,    35,-32768,-32768,
+  -32768,-32768,   123,    35,-32768,-32768,-32768,-32768,-32768,-32768,
   -32768,-32768
 };
 
@@ -1184,296 +1183,362 @@ yyreduce:
   switch (yyn) {
 
 case 6:
-#line 178 ".\\rdodpt.y"
-{ yyval = (int)(new RDODPTSearch((std::string *)yyvsp[-1])); ;
+#line 176 ".\\rdodpt_rss.y"
+{;
     break;}
 case 7:
-#line 179 ".\\rdodpt.y"
-{ yyval = (int)(new RDODPTSearch((std::string *)yyvsp[-2], DPTnotrace)); ;
+#line 177 ".\\rdodpt_rss.y"
+{;
     break;}
 case 8:
-#line 180 ".\\rdodpt.y"
-{ yyval = (int)(new RDODPTSearch((std::string *)yyvsp[-2], DPTtracestat)); ;
+#line 178 ".\\rdodpt_rss.y"
+{;
     break;}
 case 9:
-#line 181 ".\\rdodpt.y"
-{ yyval = (int)(new RDODPTSearch((std::string *)yyvsp[-2], DPTtracetops)); ;
+#line 179 ".\\rdodpt_rss.y"
+{;
     break;}
 case 10:
-#line 182 ".\\rdodpt.y"
-{ yyval = (int)(new RDODPTSearch((std::string *)yyvsp[-2], DPTtraceall)); ;
+#line 180 ".\\rdodpt_rss.y"
+{;
     break;}
 case 11:
-#line 184 ".\\rdodpt.y"
-{ ((RDODPTSearch *)yyval)->setCondition((RDOFUNLogic *)yyvsp[0]); ;
+#line 182 ".\\rdodpt_rss.y"
+{;
     break;}
 case 12:
-#line 185 ".\\rdodpt.y"
-{ ((RDODPTSearch *)yyval)->setCondition(); ;
+#line 183 ".\\rdodpt_rss.y"
+{;
     break;}
 case 13:
-#line 187 ".\\rdodpt.y"
-{ ((RDODPTSearch *)yyval)->setTermCondition((RDOFUNLogic *)yyvsp[0]); ;
+#line 185 ".\\rdodpt_rss.y"
+{;
     break;}
 case 14:
-#line 189 ".\\rdodpt.y"
-{ ((RDODPTSearch *)yyval)->setEvaluateBy((RDOFUNArithm *)yyvsp[0]); ;
+#line 187 ".\\rdodpt_rss.y"
+{;
     break;}
 case 15:
-#line 191 ".\\rdodpt.y"
-{ ((RDODPTSearch *)yyval)->setCompareTops(false); ;
+#line 189 ".\\rdodpt_rss.y"
+{;
     break;}
 case 16:
-#line 192 ".\\rdodpt.y"
-{ ((RDODPTSearch *)yyval)->setCompareTops(true); ;
+#line 190 ".\\rdodpt_rss.y"
+{;
     break;}
 case 19:
-#line 197 ".\\rdodpt.y"
-{ ((RDODPTSearch *)yyval)->addNewActivity((std::string *)yyvsp[-1], (std::string *)yyvsp[0]); ;
+#line 195 ".\\rdodpt_rss.y"
+{;
     break;}
 case 21:
-#line 200 ".\\rdodpt.y"
-{ ((RDODPTSearch *)yyval)->addActivityParam((int)yyvsp[0]); ;
+#line 198 ".\\rdodpt_rss.y"
+{;
     break;}
 case 22:
-#line 201 ".\\rdodpt.y"
-{ ((RDODPTSearch *)yyval)->addActivityParam((double *)yyvsp[0]); ;
+#line 199 ".\\rdodpt_rss.y"
+{;
     break;}
 case 23:
-#line 202 ".\\rdodpt.y"
-{ ((RDODPTSearch *)yyval)->addActivityParam((std::string *)yyvsp[0]); ;
+#line 200 ".\\rdodpt_rss.y"
+{;
     break;}
 case 24:
-#line 203 ".\\rdodpt.y"
-{ ((RDODPTSearch *)yyval)->addActivityParam(); ;
+#line 201 ".\\rdodpt_rss.y"
+{;
     break;}
 case 25:
-#line 205 ".\\rdodpt.y"
-{ ((RDODPTSearch *)yyval)->setActivityValue(DPT_value_before, (RDOFUNArithm *)yyvsp[0]); ;
+#line 203 ".\\rdodpt_rss.y"
+{;
     break;}
 case 26:
-#line 206 ".\\rdodpt.y"
-{ ((RDODPTSearch *)yyval)->setActivityValue(DPT_value_after, (RDOFUNArithm *)yyvsp[0]); ;
+#line 204 ".\\rdodpt_rss.y"
+{;
     break;}
 case 27:
-#line 208 ".\\rdodpt.y"
-{ ((RDODPTSearch *)yyval)->end();;
+#line 206 ".\\rdodpt_rss.y"
+{;
     break;}
 case 28:
-#line 213 ".\\rdodpt.y"
-{ yyval = (int)(new RDODPTSome((std::string *)yyvsp[-1])); ;
+#line 210 ".\\rdodpt_rss.y"
+{;
     break;}
 case 29:
-#line 214 ".\\rdodpt.y"
-{ yyval = (int)(new RDODPTSome((std::string *)yyvsp[-2])); ;
+#line 211 ".\\rdodpt_rss.y"
+{;
     break;}
 case 30:
-#line 216 ".\\rdodpt.y"
-{ ((RDODPTSome *)yyval)->setCondition((RDOFUNLogic *)yyvsp[0]); ;
+#line 213 ".\\rdodpt_rss.y"
+{;
     break;}
 case 31:
-#line 217 ".\\rdodpt.y"
-{ ((RDODPTSome *)yyval)->setCondition(); ;
+#line 214 ".\\rdodpt_rss.y"
+{;
     break;}
 case 34:
-#line 222 ".\\rdodpt.y"
-{ ((RDODPTSome *)yyval)->addNewActivity((std::string *)yyvsp[-1], (std::string *)yyvsp[0]); ;
+#line 219 ".\\rdodpt_rss.y"
+{;
     break;}
 case 36:
-#line 225 ".\\rdodpt.y"
-{ ((RDODPTSome *)yyval)->addActivityParam((int)yyvsp[0]); ;
+#line 222 ".\\rdodpt_rss.y"
+{;
     break;}
 case 37:
-#line 226 ".\\rdodpt.y"
-{ ((RDODPTSome *)yyval)->addActivityParam((double *)yyvsp[0]); ;
+#line 223 ".\\rdodpt_rss.y"
+{;
     break;}
 case 38:
-#line 227 ".\\rdodpt.y"
-{ ((RDODPTSome *)yyval)->addActivityParam((std::string *)yyvsp[0]); ;
+#line 224 ".\\rdodpt_rss.y"
+{;
     break;}
 case 39:
-#line 228 ".\\rdodpt.y"
-{ ((RDODPTSome *)yyval)->addActivityParam(); ;
+#line 225 ".\\rdodpt_rss.y"
+{;
     break;}
 case 40:
-#line 230 ".\\rdodpt.y"
-{ ((RDODPTSome *)yyval)->end();;
+#line 227 ".\\rdodpt_rss.y"
+{;
     break;}
 case 41:
-#line 235 ".\\rdodpt.y"
-{ yyval = NULL; ;
+#line 231 ".\\rdodpt_rss.y"
+{;
     break;}
 case 42:
-#line 236 ".\\rdodpt.y"
-{ ((RDODPTFreeActivity *)yyvsp[0])->end();;
+#line 232 ".\\rdodpt_rss.y"
+{;
     break;}
 case 43:
-#line 238 ".\\rdodpt.y"
-{ yyval = (int)(new RDODPTFreeActivity((std::string *)yyvsp[-1], (std::string *)yyvsp[0])); ;
+#line 234 ".\\rdodpt_rss.y"
+{;
     break;}
 case 45:
-#line 241 ".\\rdodpt.y"
-{ ((RDODPTFreeActivity *)yyvsp[-1])->addHotKey((std::string *)yyvsp[0]); ;
+#line 237 ".\\rdodpt_rss.y"
+{;
     break;}
 case 46:
-#line 242 ".\\rdodpt.y"
-{ ((RDODPTFreeActivity *)yyvsp[-2])->addHotKey((std::string *)yyvsp[0]); ;
+#line 238 ".\\rdodpt_rss.y"
+{;
     break;}
 case 47:
-#line 244 ".\\rdodpt.y"
-{ ((RDODPTFreeActivity *)yyvsp[-1])->addParam((int)yyvsp[0]); ;
+#line 240 ".\\rdodpt_rss.y"
+{;
     break;}
 case 48:
-#line 245 ".\\rdodpt.y"
-{ ((RDODPTFreeActivity *)yyvsp[-1])->addParam((double *)yyvsp[0]); ;
+#line 241 ".\\rdodpt_rss.y"
+{;
     break;}
 case 49:
-#line 246 ".\\rdodpt.y"
-{ ((RDODPTFreeActivity *)yyvsp[-1])->addParam((std::string *)yyvsp[0]); ;
+#line 242 ".\\rdodpt_rss.y"
+{;
     break;}
 case 50:
-#line 247 ".\\rdodpt.y"
-{ ((RDODPTFreeActivity *)yyvsp[-1])->addParam(); ;
+#line 243 ".\\rdodpt_rss.y"
+{;
     break;}
 case 52:
-#line 250 ".\\rdodpt.y"
-{ if(yyvsp[-1] != NULL) ((RDODPTFreeActivity *)yyvsp[-1])->end(); ;
+#line 246 ".\\rdodpt_rss.y"
+{;
     break;}
 case 53:
-#line 255 ".\\rdodpt.y"
+#line 250 ".\\rdodpt_rss.y"
+{;
+    break;}
+case 54:
+#line 251 ".\\rdodpt_rss.y"
+{;
+    break;}
+case 55:
+#line 252 ".\\rdodpt_rss.y"
 {;
     break;}
 case 56:
-#line 260 ".\\rdodpt.y"
+#line 253 ".\\rdodpt_rss.y"
 {;
     break;}
 case 57:
-#line 261 ".\\rdodpt.y"
+#line 254 ".\\rdodpt_rss.y"
 {;
     break;}
 case 58:
-#line 263 ".\\rdodpt.y"
+#line 255 ".\\rdodpt_rss.y"
 {;
     break;}
 case 59:
-#line 267 ".\\rdodpt.y"
-{ yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] == *(RDOFUNArithm *)yyvsp[0]); ;
+#line 256 ".\\rdodpt_rss.y"
+{;
     break;}
 case 60:
-#line 268 ".\\rdodpt.y"
-{ yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] != *(RDOFUNArithm *)yyvsp[0]); ;
+#line 257 ".\\rdodpt_rss.y"
+{;
     break;}
 case 61:
-#line 269 ".\\rdodpt.y"
-{ yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] <  *(RDOFUNArithm *)yyvsp[0]); ;
+#line 258 ".\\rdodpt_rss.y"
+{;
     break;}
 case 62:
-#line 270 ".\\rdodpt.y"
-{ yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] >  *(RDOFUNArithm *)yyvsp[0]); ;
+#line 259 ".\\rdodpt_rss.y"
+{;
     break;}
 case 63:
-#line 271 ".\\rdodpt.y"
-{ yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] <= *(RDOFUNArithm *)yyvsp[0]); ;
+#line 261 ".\\rdodpt_rss.y"
+{;
     break;}
 case 64:
-#line 272 ".\\rdodpt.y"
-{ yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] >= *(RDOFUNArithm *)yyvsp[0]); ;
+#line 262 ".\\rdodpt_rss.y"
+{;
     break;}
 case 65:
-#line 273 ".\\rdodpt.y"
-{ yyval = (int)(*(RDOFUNLogic *)yyvsp[-2] && *(RDOFUNLogic *)yyvsp[0]); ;
+#line 263 ".\\rdodpt_rss.y"
+{;
     break;}
 case 66:
-#line 274 ".\\rdodpt.y"
-{ yyval = (int)(*(RDOFUNLogic *)yyvsp[-2] || *(RDOFUNLogic *)yyvsp[0]); ;
+#line 264 ".\\rdodpt_rss.y"
+{;
     break;}
 case 67:
-#line 275 ".\\rdodpt.y"
-{ yyval = yyvsp[-1]; ;
+#line 265 ".\\rdodpt_rss.y"
+{;
     break;}
 case 68:
-#line 276 ".\\rdodpt.y"
-{ yyval = yyvsp[0]; ;
+#line 266 ".\\rdodpt_rss.y"
+{;
     break;}
 case 69:
-#line 279 ".\\rdodpt.y"
-{ yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] + *(RDOFUNArithm *)yyvsp[0]); ;
+#line 267 ".\\rdodpt_rss.y"
+{;
     break;}
 case 70:
-#line 280 ".\\rdodpt.y"
-{ yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] - *(RDOFUNArithm *)yyvsp[0]); ;
+#line 268 ".\\rdodpt_rss.y"
+{;
     break;}
 case 71:
-#line 281 ".\\rdodpt.y"
-{ yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] * *(RDOFUNArithm *)yyvsp[0]); ;
+#line 269 ".\\rdodpt_rss.y"
+{;
     break;}
 case 72:
-#line 282 ".\\rdodpt.y"
-{ yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] / *(RDOFUNArithm *)yyvsp[0]); ;
+#line 270 ".\\rdodpt_rss.y"
+{;
     break;}
 case 73:
-#line 283 ".\\rdodpt.y"
-{ yyval = yyvsp[-1]; ;
+#line 272 ".\\rdodpt_rss.y"
+{;
     break;}
 case 74:
-#line 284 ".\\rdodpt.y"
-{ yyval = (int)((RDOFUNParams *)yyvsp[-1])->createCall((std::string *)yyvsp[-3]) ;
+#line 273 ".\\rdodpt_rss.y"
+{;
     break;}
 case 75:
-#line 285 ".\\rdodpt.y"
-{ yyval = (int)(new RDOFUNArithm((std::string *)yyvsp[-2], (std::string *)yyvsp[0])); ;
+#line 274 ".\\rdodpt_rss.y"
+{;
     break;}
 case 76:
-#line 286 ".\\rdodpt.y"
-{ yyval = (int)(new RDOFUNArithm((int)yyvsp[0])); ;
+#line 276 ".\\rdodpt_rss.y"
+{;
     break;}
 case 77:
-#line 287 ".\\rdodpt.y"
-{ yyval = (int)(new RDOFUNArithm((double*)yyvsp[0])); ;
+#line 277 ".\\rdodpt_rss.y"
+{;
     break;}
 case 78:
-#line 288 ".\\rdodpt.y"
-{ yyval = (int)(new RDOFUNArithm((std::string *)yyvsp[0])); ;
+#line 278 ".\\rdodpt_rss.y"
+{;
     break;}
 case 79:
-#line 290 ".\\rdodpt.y"
-{ yyval = (int)(new RDOFUNParams()); ;
+#line 279 ".\\rdodpt_rss.y"
+{;
     break;}
 case 80:
-#line 291 ".\\rdodpt.y"
-{ yyval = (int)(((RDOFUNParams *)yyvsp[-1])->addParameter((RDOFUNArithm *)yyvsp[0])); ;
+#line 281 ".\\rdodpt_rss.y"
+{;
     break;}
 case 81:
-#line 292 ".\\rdodpt.y"
-{ yyval = (int)(((RDOFUNParams *)yyvsp[-2])->addParameter((RDOFUNArithm *)yyvsp[0])); ;
+#line 283 ".\\rdodpt_rss.y"
+{;
     break;}
 case 82:
-#line 295 ".\\rdodpt.y"
-{ yyval = 1; ;
+#line 284 ".\\rdodpt_rss.y"
+{;
     break;}
 case 83:
-#line 296 ".\\rdodpt.y"
-{ yyval = 2; ;
-    break;}
-case 84:
-#line 297 ".\\rdodpt.y"
-{ yyval = 3; ;
-    break;}
-case 85:
-#line 298 ".\\rdodpt.y"
-{ yyval = 4; ;
+#line 288 ".\\rdodpt_rss.y"
+{;
     break;}
 case 86:
-#line 300 ".\\rdodpt.y"
-{ yyval = (int)(new RDOFUNGroup(yyvsp[-2], (std::string *)yyvsp[0])); ;
+#line 293 ".\\rdodpt_rss.y"
+{ TRACE( "%s\n", ((std::string *)yyvsp[0])->c_str() ); ;
     break;}
 case 87:
-#line 302 ".\\rdodpt.y"
-{ yyval = (int)(((RDOFUNGroup *)yyvsp[-2])->createFunLogin((RDOFUNLogic *)yyvsp[-1])); ;
+#line 294 ".\\rdodpt_rss.y"
+{ currParser->error( std::string(_T("Ожидается имя ресурса")).c_str() ); ;
     break;}
 case 88:
-#line 303 ".\\rdodpt.y"
-{ yyval = (int)(((RDOFUNGroup *)yyvsp[-2])->createFunLogin()); ;
+#line 295 ".\\rdodpt_rss.y"
+{
+
+	std::string* res_name      = (std::string*)yyvsp[0];
+	std::string* res_type_name = currParser->registerName( std::string( RDODPTProcess::name_prefix + *res_name + RDODPTProcess::name_sufix ).c_str() );
+
+	// Найти тип ресурса, если его нет, то создать
+	RDORTPResType* res_type = const_cast<RDORTPResType*>(currParser->findRTPResType( res_type_name ));
+	if ( !res_type ) {
+		res_type = new RDORTPResType( res_type_name, true, currParser->resourceTypeCounter++ );
+		currParser->allRTPResType.push_back( res_type );
+		currParser->lastRTPResType = res_type;
+	}
+
+	// Найти параметр Состояние внутри типа, если его нет, то создать
+	std::string* rtp_param_name = currParser->registerName( "Состояние" );
+	std::string* rtp_state_free = currParser->registerName( "Свободен" );
+	std::string* rtp_state_bizy = currParser->registerName( "Занят" );
+	bool param_added = false;
+	RDORTPParamDesc* rtp_param = const_cast<RDORTPParamDesc*>(res_type->findRTPParam( rtp_param_name ));
+	if ( !rtp_param ) {
+		RDORTPEnum* state_enum = new RDORTPEnum( rtp_state_free );
+		state_enum->add( rtp_state_bizy );
+
+		RDORTPEnumDefVal* state_default = new RDORTPEnumDefVal( rtp_state_free );
+
+		RDORTPEnumResParam* rtp_param_enum = new RDORTPEnumResParam( state_enum, state_default );
+
+		rtp_param = new RDORTPParamDesc( rtp_param_name, rtp_param_enum );
+		currParser->allRTPParamDesc.push_back( rtp_param );
+		currParser->lastRTPResType->add( rtp_param );
+		param_added = true;
+	} else {
+		// Параметр Состояние есть, надо проверить, чтобы в нем были значения Свободен и Занят
+		// Для начала проверим тип параметра
+		if ( rtp_param->getType()->getType() == RDORTPResParam::pt_enum ) {
+			// Теперь проверим сами значения
+			try {
+				rtp_param->getType()->getRSSEnumValue( rtp_state_free );
+				rtp_param->getType()->getRSSEnumValue( rtp_state_bizy );
+			} catch ( RDOSyntaxException& ) {
+				currParser->error( std::string(_T("У типа ресурса \"") + *res_type_name + "\" перечислимый параметр \"" + *rtp_param_name + "\" должен иметь как минимум два обязательных значения: " + *rtp_state_free + " и " + *rtp_state_bizy ).c_str() );
+			}
+		} else {
+			// Параметр Состояние есть, но он не перечислимого типа
+			currParser->error( std::string(_T("У типа ресурса \"") + *res_type_name + "\" параметр \"" + *rtp_param_name + "\" не является перечислимым типом" ).c_str() );
+		}
+	}
+
+	bool res_added = false;
+	RDORSSResource* res = const_cast<RDORSSResource*>(currParser->findRSSResource( res_name ));
+	if ( !res ) {
+		res = new RDORSSResource( res_name, res_type, currParser->resourceCounter++ );
+		res->setTrace( true );
+		currParser->lastRSSResource = res;
+		currParser->allRSSResource.push_back( res );
+		res_added = true;
+	}
+	if ( param_added ) {
+		RDOValue state_val = rtp_param->getType()->getRSSDefaultValue();
+		res->addValue( state_val );
+		res->currParam++;
+	}
+;
+    break;}
+case 89:
+#line 359 ".\\rdodpt_rss.y"
+{;
     break;}
 }
 
@@ -1708,7 +1773,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 310 ".\\rdodpt.y"
+#line 361 ".\\rdodpt_rss.y"
 
 
 }

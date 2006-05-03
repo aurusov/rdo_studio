@@ -23,6 +23,16 @@ void dpterror( char* mes )
 	rdoParse::currParser->error( mes );
 }
 
+int dpt_rss_lex( int* lpval, void* lexer )
+{
+	((RDOFlexLexer*)lexer)->m_lpval = lpval;
+	return ((RDOFlexLexer*)lexer)->yylex();
+}
+void dpt_rss_error( char* mes )
+{
+	rdoParse::currParser->error( mes );
+}
+
 /////////////////////////  "SEARCH" DECISION POINT /////////////////////////
 
 RDODPTSearch::RDODPTSearch(std::string *_name, DPTSearchTrace _trace)
@@ -325,5 +335,8 @@ void RDODPTFreeActivity::end()
 	for(i = 0; i < size; i++)
 		activity->addHotKey(hotKeys.at(i));
 }
+
+std::string RDODPTProcess::name_prefix = "";
+std::string RDODPTProcess::name_sufix  = "s";
 
 }		// namespace rdoParse 

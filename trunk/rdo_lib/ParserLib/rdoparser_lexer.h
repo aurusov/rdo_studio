@@ -9,6 +9,8 @@ namespace rdoParse
 // ----------------------------------------------------------------------------
 // ---------- RDOFlexLexer
 // ----------------------------------------------------------------------------
+class RDOParserBase;
+
 class RDOFlexLexer: public yyFlexLexer
 {
 private:
@@ -16,9 +18,10 @@ private:
 	std::ostream* yyout;
 
 public:
-	RDOFlexLexer( std::istream* _yyin, std::ostream* _yyout ): yyin( _yyin ), yyout( _yyout ) {};
+	RDOFlexLexer( RDOParserBase* parser, std::istream* _yyin, std::ostream* _yyout ): m_parser( parser ), yyin( _yyin ), yyout( _yyout ) {};
 
-	int* m_lpval;
+	int*           m_lpval;
+	RDOParserBase* m_parser;
 
 protected:
 	virtual int LexerInput( char* buf, int max_size );
