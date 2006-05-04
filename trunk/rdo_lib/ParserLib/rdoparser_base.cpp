@@ -61,7 +61,7 @@ void RDOParserList::reset()
 	insertParser( rdoModelObjects::obPMD, new RDOParserRDO( rdoModelObjects::PMD, pmdparse, pmderror, pmdlex ) );
 	insertParser( rdoModelObjects::obFRM, new RDOParserRDO( rdoModelObjects::FRM, frmparse, frmerror, frmlex ) );
 	insertParser( rdoModelObjects::obSMR, new RDOParserRDO( rdoModelObjects::SMR, smr2parse, smr2error, smr2lex ) );
-	insertParser( rdoModelObjects::obPOST, new RDOParserRSSPost() );
+	insertParser( rdoModelObjects::obRSS, new RDOParserRSSPost() );
 }
 
 int RDOParserList::insertParser( rdoModelObjects::RDOParseType type, RDOParserBase* parser )
@@ -74,11 +74,17 @@ int RDOParserList::insertParser( rdoModelObjects::RDOParseType type, RDOParserBa
 			list[min] = parser;
 			return min;
 		} else {
-			it == list.lower_bound( max + 1 );
-			if ( it == list.end() ) return 0;
-			int index = it->first + 1;
-			list[index] = parser;
-			return index;
+			int index = it->first;
+			while ( it != list.end() && it->first <= max ) {
+				index++;
+				it++;
+			}
+			if ( index <= max ) {
+				list[index] = parser;
+				return index;
+			} else {
+				return 0;
+			}
 		}
 	}
 	return 0;
@@ -87,17 +93,17 @@ int RDOParserList::insertParser( rdoModelObjects::RDOParseType type, RDOParserBa
 void RDOParserList::getParserMinMax( rdoModelObjects::RDOParseType type, int& min, int& max )
 {
 	switch ( type ) {
-		case rdoModelObjects::obPRE : min = 1;    max = 100; break;
-		case rdoModelObjects::obRTP : min = 101;  max = 200; break;
-		case rdoModelObjects::obRSS : min = 201;  max = 300; break;
-		case rdoModelObjects::obFUN : min = 301;  max = 400; break;
-		case rdoModelObjects::obPAT : min = 401;  max = 500; break;
-		case rdoModelObjects::obOPR : min = 501;  max = 600; break;
-		case rdoModelObjects::obDPT : min = 601;  max = 700; break;
-		case rdoModelObjects::obPMD : min = 701;  max = 800; break;
-		case rdoModelObjects::obFRM : min = 801;  max = 900; break;
-		case rdoModelObjects::obSMR : min = 901;  max = 1000; break;
-		case rdoModelObjects::obPOST: min = 1001; max = 1100; break;
+		case rdoModelObjects::obPRE : min = 100;  max = 199;  break;
+		case rdoModelObjects::obRTP : min = 200;  max = 299;  break;
+		case rdoModelObjects::obRSS : min = 300;  max = 399;  break;
+		case rdoModelObjects::obFUN : min = 400;  max = 499;  break;
+		case rdoModelObjects::obPAT : min = 500;  max = 599;  break;
+		case rdoModelObjects::obOPR : min = 600;  max = 699;  break;
+		case rdoModelObjects::obDPT : min = 700;  max = 799;  break;
+		case rdoModelObjects::obPMD : min = 800;  max = 899;  break;
+		case rdoModelObjects::obFRM : min = 900;  max = 999;  break;
+		case rdoModelObjects::obSMR : min = 1000; max = 1099; break;
+		case rdoModelObjects::obPOST: min = 1100; max = 1199; break;
 		default: min = -1; max = -1; break;
 	}
 }

@@ -340,16 +340,23 @@ dpt_process_line:	IDENTIF	{ TRACE( "%s\n", ((std::string *)$1)->c_str() ); }
 		}
 	}
 
-	bool res_added = false;
+	// Ќайти ресурс, если его нет, то создать
 	RDORSSResource* res = const_cast<RDORSSResource*>(currParser->findRSSResource( res_name ));
 	if ( !res ) {
 		res = new RDORSSResource( res_name, res_type, currParser->resourceCounter++ );
 		res->setTrace( true );
 		currParser->lastRSSResource = res;
 		currParser->allRSSResource.push_back( res );
-		res_added = true;
-	}
-	if ( param_added ) {
+
+		// ѕропишем значени€ параметров дл€ созданного ресурса. Ѕерутс€ как значени€ по-умолчанию
+		const std::vector<const RDORTPParamDesc *>& res_params = res->getType()->getParams();
+		res->currParam = res_params.begin();
+		while ( res->currParam != res_params.end() ) {
+			RDOValue res_param_val = (*res->currParam)->getType()->getRSSDefaultValue();
+			res->addValue( res_param_val );
+			res->currParam++;
+		}
+	} else if ( param_added ) {
 		RDOValue state_val = rtp_param->getType()->getRSSDefaultValue();
 		res->addValue( state_val );
 		res->currParam++;
