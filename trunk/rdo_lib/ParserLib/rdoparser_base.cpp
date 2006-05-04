@@ -61,7 +61,7 @@ void RDOParserList::reset()
 	insertParser( rdoModelObjects::obPMD, new RDOParserRDO( rdoModelObjects::PMD, pmdparse, pmderror, pmdlex ) );
 	insertParser( rdoModelObjects::obFRM, new RDOParserRDO( rdoModelObjects::FRM, frmparse, frmerror, frmlex ) );
 	insertParser( rdoModelObjects::obSMR, new RDOParserRDO( rdoModelObjects::SMR, smr2parse, smr2error, smr2lex ) );
-	insertParser( rdoModelObjects::obRSS, new RDOParserRSSPost() );
+	insertParser( rdoModelObjects::obPOST, new RDOParserRSSPost() );
 }
 
 int RDOParserList::insertParser( rdoModelObjects::RDOParseType type, RDOParserBase* parser )
