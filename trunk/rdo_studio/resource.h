@@ -560,9 +560,6 @@
 #define IDS_CHART_OPTIONS               40301
 #define IDS_CHART_OPTIONS_APPLY         40302
 #define IDS_CHART_OPTIONS_INT_VERIFY    40303
-#define ID_ABOUT_BMSTU                  40910
-#define ID_ABOUT_TEL                    40911
-#define ID_ABOUT_OKBUTTON               40912
 #define ID_MODEL_START                  40913
 #define ID_RESOURCE_TYPES               40914
 #define ID_PATTERNS                     40915

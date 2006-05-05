@@ -1197,8 +1197,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,8,0,268
- PRODUCTVERSION 0,8,0,268
+ FILEVERSION 0,8,0,272
+ PRODUCTVERSION 0,8,0,272
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -1216,14 +1216,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "RAO studio\0"
-            VALUE "FileVersion", "0, 8, 0, 268\0"
+            VALUE "FileVersion", "0, 8, 0, 272\0"
             VALUE "InternalName", "RAO-Studio\0"
             VALUE "LegalCopyright", "Copyright (C) 2003\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "RAO-Studio.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "RAO-Studio\0"
-            VALUE "ProductVersion", "0, 8, 0, 268\0"
+            VALUE "ProductVersion", "0, 8, 0, 272\0"
             VALUE "SpecialBuild", "\0"
         END
     END
@@ -1440,13 +1440,6 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    ID_ABOUT_BMSTU          "Moscow State Bauman University of Technology, ""Computer-aided systems for manufacturing automatization"" Department (RK-9), Moscow, Russia"
-    ID_ABOUT_TEL            "Tel (095) 263-6388, (095) 263-6954, (095) 263-6049\r\nFax (095) 263-6170"
-END
-
-STRINGTABLE DISCARDABLE 
-BEGIN
-    ID_ABOUT_OKBUTTON       "Close"
     ID_MODEL_START          "Model"
     ID_RESOURCE_TYPES       "Resource types"
     ID_PATTERNS             "Patterns"
@@ -1666,7 +1659,7 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_DEVELOPERS          "RAO-Studio v0.8 (РДО v2.0, 2003-2006 годы)\r\n\tЕмельянов В.В.\r\n\tБарс А.В.\r\n\tЗахаров П.А.\r\n\tУрусов А.В.\r\n\r\nRAO-Simulator v3.0 (РДО v1.0, 1989-1999 годы)\r\n\tЕмельянов В.В.\r\n\tЯсиновский С.И.\r\n\tОвсянников М.В."
+    IDS_DEVELOPERS          "RAO-Studio v0.8 (РДО v2.0, 2003-2006 годы)\r\n\tЕмельянов В.В.\r\n\tБарс А.В.\r\n\tЗахаров П.А.\r\n\tУрусов А.В.\r\n\r\nRAO-Simulator v3.0 (РДО v1.0, 1991-1999 годы)\r\n\tЕмельянов В.В.\r\n\tЯсиновский С.И.\r\n\tОвсянников М.В."
 END
 
 #endif    // Russian resources
