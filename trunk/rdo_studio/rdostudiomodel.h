@@ -36,7 +36,7 @@ private:
 
 	bool frmDescribed;
 	double modelTime;
-	RDOSimulatorNS::ShowMode showMode;
+	rdosim::ShowMode showMode;
 	void updateFrmDescribed();
 
 	bool prevModify;
@@ -98,8 +98,8 @@ public:
 	double getModelTime() const { return modelTime; };
 
 	bool isFrmDescribed() const                  { return frmDescribed; };
-	RDOSimulatorNS::ShowMode getShowMode() const { return showMode;     };
-	void setShowMode( const RDOSimulatorNS::ShowMode value );
+	rdosim::ShowMode getShowMode() const { return showMode;     };
+	void setShowMode( const rdosim::ShowMode value );
 	double getShowRate() const;
 	void setShowRate( const double value ) const;
 

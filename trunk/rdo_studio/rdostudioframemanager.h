@@ -12,7 +12,7 @@
 // ----------------------------------------------------------------------------
 class RDOStudioFrameDoc;
 class RDOStudioFrameView;
-namespace RDOSimulatorNS {
+namespace rdosim {
 	struct RDOFrame;
 }
 
@@ -123,7 +123,7 @@ public:
 	void setLastShowedFrame( const int value );
 	void setCurrentShowingFrame( const int value );
 	void resetCurrentShowingFrame( const int value );
-	void showFrame( const RDOSimulatorNS::RDOFrame* const frame, const int index );
+	void showFrame( const rdosim::RDOFrame* const frame, const int index );
 	void showNextFrame();
 	void showPrevFrame();
 	void showFrame( const int index );

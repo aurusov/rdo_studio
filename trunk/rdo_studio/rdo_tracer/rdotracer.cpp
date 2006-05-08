@@ -16,7 +16,7 @@ static char THIS_FILE[] = __FILE__;
 
 
 using namespace rdoRepository;
-using namespace RDOSimulatorNS;
+using namespace rdosim;
 using namespace rdoTracer;
 
 RDOTracer* tracer = NULL;
@@ -87,7 +87,7 @@ void RDOTracer::traceStringNotify( const std::string& trace_string )
 	tracer->getTraceString( trace_string );
 }
 
-void RDOTracer::setShowMode( const RDOSimulatorNS::ShowMode value )
+void RDOTracer::setShowMode( const rdosim::ShowMode value )
 {
 	if ( value == SM_NoShow ) {
 		tracer->setDrawTrace( false );

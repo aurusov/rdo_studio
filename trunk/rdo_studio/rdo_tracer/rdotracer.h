@@ -22,7 +22,7 @@ public:
 
 	void initNotify();
 
-	void setShowMode( const RDOSimulatorNS::ShowMode value );
+	void setShowMode( const rdosim::ShowMode value );
 };
 
 }; // namespace rdoTracer

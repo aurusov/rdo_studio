@@ -16,7 +16,7 @@
 #include <rdorepository.h>
 #include <rdobinarystream.h>
 
-using namespace RDOSimulatorNS;
+using namespace rdosim;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -660,7 +660,7 @@ void RDOStudioFrameManager::showFrame( const RDOFrame* const frame, const int in
 void RDOStudioFrameManager::showNextFrame()
 {
 	int cnt = count();
-	if ( model->isRunning() && model->getShowMode() != RDOSimulatorNS::SM_NoShow && cnt > 1 && currentShowingFrame < cnt-1 ) {
+	if ( model->isRunning() && model->getShowMode() != rdosim::SM_NoShow && cnt > 1 && currentShowingFrame < cnt-1 ) {
 		int index = currentShowingFrame + 1;
 		RDOStudioFrameDoc* doc = getFrameDoc( index );
 		if ( !doc ) {
@@ -676,7 +676,7 @@ void RDOStudioFrameManager::showNextFrame()
 void RDOStudioFrameManager::showPrevFrame()
 {
 	int cnt = count();
-	if ( model->isRunning() && model->getShowMode() != RDOSimulatorNS::SM_NoShow && cnt > 1 && currentShowingFrame > 0 ) {
+	if ( model->isRunning() && model->getShowMode() != rdosim::SM_NoShow && cnt > 1 && currentShowingFrame > 0 ) {
 		int index = currentShowingFrame - 1;
 		RDOStudioFrameDoc* doc = getFrameDoc( index );
 		if ( !doc ) {
@@ -692,7 +692,7 @@ void RDOStudioFrameManager::showPrevFrame()
 void RDOStudioFrameManager::showFrame( const int index )
 {
 	int cnt = count();
-	if ( model->isRunning() && model->getShowMode() != RDOSimulatorNS::SM_NoShow && cnt > 1 && index >= 0 && index < cnt ) {
+	if ( model->isRunning() && model->getShowMode() != rdosim::SM_NoShow && cnt > 1 && index >= 0 && index < cnt ) {
 		RDOStudioFrameDoc* doc = getFrameDoc( index );
 		if ( !doc ) {
 			doc = connectFrameDoc( index );
@@ -707,13 +707,13 @@ void RDOStudioFrameManager::showFrame( const int index )
 bool RDOStudioFrameManager::canShowNextFrame() const
 {
 	int cnt = count();
-	return model->isRunning() && model->getShowMode() != RDOSimulatorNS::SM_NoShow && cnt > 1 && ( currentShowingFrame == -1 || currentShowingFrame < cnt-1 );
+	return model->isRunning() && model->getShowMode() != rdosim::SM_NoShow && cnt > 1 && ( currentShowingFrame == -1 || currentShowingFrame < cnt-1 );
 }
 
 bool RDOStudioFrameManager::canShowPrevFrame() const
 {
 	int cnt = count();
-	return model->isRunning() && model->getShowMode() != RDOSimulatorNS::SM_NoShow && cnt > 1 && currentShowingFrame > 0;
+	return model->isRunning() && model->getShowMode() != rdosim::SM_NoShow && cnt > 1 && currentShowingFrame > 0;
 }
 
 void RDOStudioFrameManager::updateStyles() const

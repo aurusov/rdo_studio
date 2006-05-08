@@ -20,7 +20,7 @@
 #include <rdoplugin.h>
 
 using namespace rdoEditor;
-using namespace RDOSimulatorNS;
+using namespace rdosim;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -133,10 +133,12 @@ void RDOStudioModel::closeModel() const
 {
 	stopModel();
 	RDOStudioOutput* output = &studioApp.mainFrame->output;
-	output->clearBuild();
-	output->clearDebug();
-	output->clearResults();
-	output->clearFind();
+	if ( output && output->GetSafeHwnd() ) {
+		output->clearBuild();
+		output->clearDebug();
+		output->clearResults();
+		output->clearFind();
+	}
 	kernel.getRepository()->closeModel();
 }
 
@@ -281,7 +283,8 @@ void RDOStudioModel::parseSuccessNotify()
 	std::vector<RDOSyntaxError>* errors = kernel.getSimulator()->getErrors();
 	int i = 0;
 	for ( std::vector<RDOSyntaxError>::iterator it = errors->begin(); it != errors->end(); it++ ) {
-		output->appendStringToBuild( it->message, it->file, it->lineNo - 1 );
+		output->appendStringToBuild( it->message, it->file, it->error_line );
+//		output->appendStringToBuild( it->message, it->file, it->lineNo - 1 );
 		i++;
 	}
 	output->appendStringToBuild( rdo::format( IDS_MODEL_BUILDING_RESULTS, i ) );
@@ -297,7 +300,8 @@ void RDOStudioModel::parseErrorNotify()
 	std::vector<RDOSyntaxError>* errors = kernel.getSimulator()->getErrors();
 	int i = 0;
 	for ( std::vector<RDOSyntaxError>::iterator it = errors->begin(); it != errors->end(); it++ ) {
-		output->appendStringToBuild( it->message, it->file, it->lineNo - 1 );
+		output->appendStringToBuild( it->message, it->file, it->error_line );
+//		output->appendStringToBuild( it->message, it->file, it->lineNo - 1 );
 		i++;
 	}
 	if ( i ) {
@@ -316,9 +320,9 @@ void RDOStudioModel::executeErrorNotify()
 	output->appendStringToBuild( rdo::format( IDS_MODEL_RUNTIMEERROR ) );
 	std::vector<RDOSyntaxError>* errors = kernel.getSimulator()->getErrors();
 	int i = 0;
-	for ( std::vector<RDOSyntaxError>::iterator it = errors->begin(); it != errors->end(); it++ ) {
-		output->appendStringToBuild( it->message, it->file, it->lineNo - 1 );
-		i++;
+	for ( std::vector<RDOSyntaxError>::iterator it = errors->begin(); it != errors->end(); it++, i++ ) {
+		output->appendStringToBuild( it->message, it->file, it->error_line );
+//		output->appendStringToBuild( it->message, it->file, it->lineNo - 1 );
 	}
 	model->stopModelFromSimulator();
 	if ( i ) {
@@ -696,7 +700,7 @@ void RDOStudioModel::beforeModelStart()
 		const_cast<rdoEditCtrl::RDODebugEdit*>(output->getDebug())->UpdateWindow();
 	} else {
 		modelTime = 0;
-		showMode  = RDOSimulatorNS::SM_NoShow;
+		showMode  = rdosim::SM_NoShow;
 		frameManager.setLastShowedFrame( -1 );
 	}
 }

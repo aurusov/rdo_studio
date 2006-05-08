@@ -134,6 +134,7 @@
 #define ID_CHART_ADDTONEWCHART          32771
 #define ID_VIEW_WORKSPACE               32774
 #define ID_VIEW_OUTPUT                  32775
+#define ID_VIEW_WORKSPACE_CAPTION       32776
 #define ID_EDIT_UPPERCASE               32780
 #define ID_EDIT_LOWERCASE               32781
 #define ID_SEARCH_FIND                  32787

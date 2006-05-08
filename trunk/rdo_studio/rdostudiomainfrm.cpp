@@ -396,9 +396,9 @@ void RDOStudioMainFrame::OnUpdateModelRunTypeStatusBar( CCmdUI *pCmdUI )
 	std::string s = "";
 	if ( model->isRunning() ) {
 		switch ( model->getShowMode() ) {
-			case RDOSimulatorNS::SM_NoShow   : s = rdo::format( ID_STATUSBAR_MODEL_RUNNOSHOW ); break;
-			case RDOSimulatorNS::SM_Animation: s = rdo::format( ID_STATUSBAR_MODEL_RUNANIMATION ); break;
-			case RDOSimulatorNS::SM_Monitor  : s = rdo::format( ID_STATUSBAR_MODEL_RUNMONITOR ); break;
+			case rdosim::SM_NoShow   : s = rdo::format( ID_STATUSBAR_MODEL_RUNNOSHOW ); break;
+			case rdosim::SM_Animation: s = rdo::format( ID_STATUSBAR_MODEL_RUNANIMATION ); break;
+			case rdosim::SM_Monitor  : s = rdo::format( ID_STATUSBAR_MODEL_RUNMONITOR ); break;
 		}
 	}
 	pCmdUI->SetText( s.c_str() );
@@ -457,38 +457,38 @@ void RDOStudioMainFrame::OnHelpContents()
 
 void RDOStudioMainFrame::OnModelRunNoShow()
 {
-	model->setShowMode( RDOSimulatorNS::SM_NoShow );
+	model->setShowMode( rdosim::SM_NoShow );
 }
 
 void RDOStudioMainFrame::OnModelRunAnimation()
 {
-	model->setShowMode( RDOSimulatorNS::SM_Animation );
+	model->setShowMode( rdosim::SM_Animation );
 }
 
 void RDOStudioMainFrame::OnModelRunMonitor()
 {
-	model->setShowMode( RDOSimulatorNS::SM_Monitor );
+	model->setShowMode( rdosim::SM_Monitor );
 }
 
 void RDOStudioMainFrame::OnUpdateModelRunNoShow(CCmdUI* pCmdUI)
 {
 	bool flag = model->isRunning() && model->isFrmDescribed();
 	pCmdUI->Enable( flag );
-	pCmdUI->SetCheck( flag ? model->getShowMode() == RDOSimulatorNS::SM_NoShow : 0 );
+	pCmdUI->SetCheck( flag ? model->getShowMode() == rdosim::SM_NoShow : 0 );
 }
 
 void RDOStudioMainFrame::OnUpdateModelRunAnimation(CCmdUI* pCmdUI)
 {
 	bool flag = model->isRunning() && model->isFrmDescribed();
 	pCmdUI->Enable( flag );
-	pCmdUI->SetCheck( flag ? model->getShowMode() == RDOSimulatorNS::SM_Animation : 0 );
+	pCmdUI->SetCheck( flag ? model->getShowMode() == rdosim::SM_Animation : 0 );
 }
 
 void RDOStudioMainFrame::OnUpdateModelRunMonitor(CCmdUI* pCmdUI)
 {
 	bool flag = model->isRunning() && model->isFrmDescribed();
 	pCmdUI->Enable( flag );
-	pCmdUI->SetCheck( flag ? model->getShowMode() == RDOSimulatorNS::SM_Monitor : 0 );
+	pCmdUI->SetCheck( flag ? model->getShowMode() == rdosim::SM_Monitor : 0 );
 }
 
 void RDOStudioMainFrame::OnModelShowRateInc()
@@ -529,22 +529,22 @@ void RDOStudioMainFrame::OnModelShowRateDec()
 
 void RDOStudioMainFrame::OnUpdateModelShowRateInc(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable( model->isRunning() && model->getShowMode() != RDOSimulatorNS::SM_NoShow && model->getShowRate() * 1.5 <= DBL_MAX );
+	pCmdUI->Enable( model->isRunning() && model->getShowMode() != rdosim::SM_NoShow && model->getShowRate() * 1.5 <= DBL_MAX );
 }
 
 void RDOStudioMainFrame::OnUpdateModelShowRateIncFour(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable( model->isRunning() && model->getShowMode() != RDOSimulatorNS::SM_NoShow && model->getShowRate() * 4 <= DBL_MAX );
+	pCmdUI->Enable( model->isRunning() && model->getShowMode() != rdosim::SM_NoShow && model->getShowRate() * 4 <= DBL_MAX );
 }
 
 void RDOStudioMainFrame::OnUpdateModelShowRateDecFour(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable( model->isRunning() && model->getShowMode() != RDOSimulatorNS::SM_NoShow && model->getShowRate() / 4 >= DBL_MIN );
+	pCmdUI->Enable( model->isRunning() && model->getShowMode() != rdosim::SM_NoShow && model->getShowRate() / 4 >= DBL_MIN );
 }
 
 void RDOStudioMainFrame::OnUpdateModelShowRateDec(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable( model->isRunning() && model->getShowMode() != RDOSimulatorNS::SM_NoShow && model->getShowRate() / 1.5 >= DBL_MIN );
+	pCmdUI->Enable( model->isRunning() && model->getShowMode() != rdosim::SM_NoShow && model->getShowRate() / 1.5 >= DBL_MIN );
 }
 
 void RDOStudioMainFrame::OnModelFrameNext()
