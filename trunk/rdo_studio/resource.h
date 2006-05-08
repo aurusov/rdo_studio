@@ -134,7 +134,6 @@
 #define ID_CHART_ADDTONEWCHART          32771
 #define ID_VIEW_WORKSPACE               32774
 #define ID_VIEW_OUTPUT                  32775
-#define ID_VIEW_WORKSPACE_CAPTION       32776
 #define ID_EDIT_UPPERCASE               32780
 #define ID_EDIT_LOWERCASE               32781
 #define ID_SEARCH_FIND                  32787
@@ -561,22 +560,19 @@
 #define IDS_CHART_OPTIONS               40301
 #define IDS_CHART_OPTIONS_APPLY         40302
 #define IDS_CHART_OPTIONS_INT_VERIFY    40303
+#define IDS_TAB_BUILD                   40304
+#define IDS_TAB_DEBUG                   40305
+#define IDS_TAB_TRACE                   40306
+#define IDS_TAB_RESULT                  40307
+#define IDS_TAB_FIND                    40308
+#define IDS_TAB_TRACER                  40309
+#define IDS_TAB_FRAMES                  40310
 #define ID_MODEL_START                  40913
 #define ID_RESOURCE_TYPES               40914
 #define ID_PATTERNS                     40915
 #define ID_RESULTS                      40916
 #define ID_MODEL                        40917
 #define ID_RAO_CLIPBRD                  40918
-#define IDS_FRAME_UNKNOW                57346
-#define IDS_FRAME_WORKSPACE             57347
-#define IDS_FRAME_EDITOR                57348
-#define IDS_FRAME_TRACER                57349
-#define IDS_FRAME_TRACER_OBJECTSLIST    57350
-#define IDS_FRAME_OUTPUT                57351
-#define IDS_FRAME_OUTPUT_BUILD          57352
-#define IDS_FRAME_OUTPUT_TRACER         57353
-#define IDS_FRAME_MODEL_OBJECTSLIST     57354
-#define IDS_FRAME_ANIMATION_FRAMESLIST  57355
 #define ID_COORD_STATUSBAR              59394
 #define ID_MODIFY_STATUSBAR             59395
 #define ID_INSERTOVERWRITE_STATUSBAR    59396
@@ -594,7 +590,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        176
+#define _APS_NEXT_RESOURCE_VALUE        177
 #define _APS_NEXT_COMMAND_VALUE         33183
 #define _APS_NEXT_CONTROL_VALUE         1119
 #define _APS_NEXT_SYMED_VALUE           101

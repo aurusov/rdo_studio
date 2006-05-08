@@ -44,8 +44,8 @@ int RDOStudioWorkspace::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	frames = new RDOStudioFrameTreeCtrl;
 	frames->Create( 0, CRect(0, 0, 0, 0), &tab, 0 );
 
-	tab.insertItem( trace, "Tracer" );
-	tab.insertItem( frames, "Frames" );
+	tab.insertItem( trace, rdo::format( IDS_TAB_TRACER ).c_str() );
+	tab.insertItem( frames, rdo::format( IDS_TAB_FRAMES ).c_str() );
 
 	return 0;
 }

@@ -94,11 +94,11 @@ int RDOStudioOutput::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	find->setEditorStyle( &studioApp.mainFrame->style_find );
 	find->setPopupMenu( &popupMenu );
 
-	tab.insertItem( build, "Build" );
-	tab.insertItem( debug, "Debug" );
-	tab.insertItem( trace, "Trace" );
-	tab.insertItem( results, "Results" );
-	tab.insertItem( find, "Find in Model" );
+	tab.insertItem( build, rdo::format( IDS_TAB_BUILD ).c_str() );
+	tab.insertItem( debug, rdo::format( IDS_TAB_DEBUG ).c_str() );
+	tab.insertItem( trace, rdo::format( IDS_TAB_TRACE ).c_str() );
+	tab.insertItem( results, rdo::format( IDS_TAB_RESULT ).c_str() );
+	tab.insertItem( find, rdo::format( IDS_TAB_FIND ).c_str() );
 
 	return 0;
 }
