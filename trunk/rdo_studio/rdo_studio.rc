@@ -1261,64 +1261,54 @@ END
 STRINGTABLE PRELOAD DISCARDABLE 
 BEGIN
     AFX_IDS_APP_TITLE       "RAO-Studio"
-    AFX_IDS_IDLEMESSAGE     "Ready"
-    IDS_FRAME_UNKNOW        "unknow"
-    IDS_FRAME_WORKSPACE     "Workspace"
-    IDS_FRAME_EDITOR        "Sources"
-    IDS_FRAME_TRACER        "Tracer"
-    IDS_FRAME_TRACER_OBJECTSLIST "Tracer"
-    IDS_FRAME_OUTPUT        "Output"
-    IDS_FRAME_OUTPUT_BUILD  "Build"
-    IDS_FRAME_OUTPUT_TRACER "Tracer"
-    IDS_FRAME_MODEL_OBJECTSLIST "Objects"
-    IDS_FRAME_ANIMATION_FRAMESLIST "Frames"
+    AFX_IDS_IDLEMESSAGE     "Готово"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    ID_FILE_NEW             "\nNew (Ctrl+N)"
-    ID_FILE_OPEN            "\nOpen (Ctrl+O)"
-    ID_FILE_CLOSE           "Close the active document\nClose"
-    ID_FILE_SAVE_AS         "Save the active document with a new name\nSave As"
-    ID_FILE_PAGE_SETUP      "Change the printing options\nPage Setup"
-    ID_FILE_PRINT_SETUP     "Change the printer and printing options\nPrint Setup"
-    ID_FILE_PRINT           "Print the active document\nPrint"
-    ID_FILE_PRINT_PREVIEW   "Display full pages\nPrint Preview"
+    ID_FILE_NEW             "\nНовая модель (Ctrl+N)"
+    ID_FILE_OPEN            "\nОткрыть (Ctrl+O)"
+    ID_FILE_CLOSE           "Закрыть модель\nЗакрыть"
+    ID_FILE_SAVE_AS         "Записать модель под новым именем\nЗаписать под новым именем"
+    ID_FILE_PAGE_SETUP      "Изменить настройки печати\nНастройки печати"
+    ID_FILE_PRINT_SETUP     "Изменить настройки принтера\nНастройки принтера"
+    ID_FILE_PRINT           "Распечатать модель\nПечать"
+    ID_FILE_PRINT_PREVIEW   "Печать с предварительным просмотром \nПредварительный просмотр"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    ID_APP_ABOUT            "Display program information, version number and copyright\nAbout"
-    ID_APP_EXIT             "Quit the application; prompts to save documents\nExit"
+    ID_APP_ABOUT            "Показать информация о программе\nО программе"
+    ID_APP_EXIT             "Выход из приложения\nВыход"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    ID_NEXT_PANE            "Switch to the next window pane\nNext Pane"
-    ID_PREV_PANE            "Switch back to the previous window pane\nPrevious Pane"
+    ID_NEXT_PANE            "Переключиться на следующее окно\nСлед. окно"
+    ID_PREV_PANE            "Переключиться на предыдущее окно\nПред. окно"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    AFX_IDS_SCSIZE          "Change the window size"
-    AFX_IDS_SCMOVE          "Change the window position"
-    AFX_IDS_SCMINIMIZE      "Reduce the window to an icon"
-    AFX_IDS_SCMAXIMIZE      "Enlarge the window to full size"
-    AFX_IDS_SCNEXTWINDOW    "Switch to the next document window"
-    AFX_IDS_SCPREVWINDOW    "Switch to the previous document window"
-    AFX_IDS_SCCLOSE         "Close the active window and prompts to save the documents"
+    AFX_IDS_SCSIZE          "Изменить размер окна"
+    AFX_IDS_SCMOVE          "Изменить позицию окна"
+    AFX_IDS_SCMINIMIZE      "Свернуть окно"
+    AFX_IDS_SCMAXIMIZE      "Развернуть окно"
+    AFX_IDS_SCNEXTWINDOW    "Переключиться к следующему окну"
+    AFX_IDS_SCPREVWINDOW    "Переключиться к предыдущему окну"
+    AFX_IDS_SCCLOSE         "Закрыть окно"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    AFX_IDS_SCRESTORE       "Restore the window to normal size"
-    AFX_IDS_SCTASKLIST      "Activate Task List"
-    AFX_IDS_MDICHILD        "Activate this window"
+    AFX_IDS_SCRESTORE       "Восстановить окно"
+    AFX_IDS_SCTASKLIST      "Показать список задач"
+    AFX_IDS_MDICHILD        "Показать окно"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    AFX_IDS_PREVIEW_CLOSE   "Close print preview mode\nCancel Preview"
+    AFX_IDS_PREVIEW_CLOSE   "Завершить предварительный просмотр\nЗавершить предварительный просмотр"
 END
 
 STRINGTABLE DISCARDABLE 
@@ -1441,23 +1431,23 @@ END
 STRINGTABLE DISCARDABLE 
 BEGIN
     ID_MODEL_START          "Модель"
-    ID_RESOURCE_TYPES       "Resource types"
-    ID_PATTERNS             "Patterns"
-    ID_RESULTS              "Results"
-    ID_MODEL                "Model : %s"
+    ID_RESOURCE_TYPES       "Типы ресурсов"
+    ID_PATTERNS             "Образцы"
+    ID_RESULTS              "Результаты"
+    ID_MODEL                "Модель : %s"
     ID_RAO_CLIPBRD          "RAO Studio Serie"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    ID_EDIT_CLEAR           "Erase the selection\nErase"
-    ID_EDIT_CLEAR_ALL       "Erase everything\nErase All"
-    ID_EDIT_COPY            "Copy the selection and put it on the Clipboard\nCopy (Ctrl+C)"
-    ID_EDIT_CUT             "Cut the selection and put it on the Clipboard\nCut (Ctrl+X)"
-    ID_EDIT_PASTE           "Insert Clipboard contents\nPaste (Ctrl+V)"
-    ID_EDIT_SELECT_ALL      "Select the entire document\nSelect All"
-    ID_EDIT_UNDO            "Undo the last action\nUndo (Ctrl+Z)"
-    ID_EDIT_REDO            "Redo the previously undone action\nRedo (Ctrl+Y)"
+    ID_EDIT_CLEAR           "Удалить выделенное\nУдалить"
+    ID_EDIT_CLEAR_ALL       "Удалить всё\nУдалить всё"
+    ID_EDIT_COPY            "Копировать в буфер обмена\nКопировать (Ctrl+C)"
+    ID_EDIT_CUT             "Вырезать в буфер обмена\nВырезать (Ctrl+X)"
+    ID_EDIT_PASTE           "Вставить из буфера обмена\nВставить (Ctrl+V)"
+    ID_EDIT_SELECT_ALL      "Выделить весь документ\nВыбрать всё"
+    ID_EDIT_UNDO            "Отменить последнее действие\nОтменить (Ctrl+Z)"
+    ID_EDIT_REDO            "Повторить отмененное действие\nПовторить (Ctrl+Y)"
 END
 
 STRINGTABLE DISCARDABLE 
@@ -1472,11 +1462,11 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    ID_MSG_NO_HELP_FILE     "Cannot find help file ""%s"".\r\nIt must be in the application's directory."
-    ID_MSG_CANTFIND         "Cannot find the string '%s'."
-    ID_MSG_MODELOPEN_ERROR  "Cannot open model ""%s""."
-    ID_MSG_MODELSAVE_QUERY  "Save changes in project ?"
-    ID_MSG_MODELCLOSE_ERROR "Cannot close model."
+    ID_MSG_NO_HELP_FILE     "Невозможно найти файл справки '%s'.\r\nОн должен быть расположен в директории с RAO-studio."
+    ID_MSG_CANTFIND         "Невозможно найти строчку '%s'."
+    ID_MSG_MODELOPEN_ERROR  "Невозможно открыть модель '%s'."
+    ID_MSG_MODELSAVE_QUERY  "Сохранить модель ?"
+    ID_MSG_MODELCLOSE_ERROR "Невозможно закрыть модель."
 END
 
 STRINGTABLE DISCARDABLE 
@@ -1826,16 +1816,6 @@ STRINGTABLE PRELOAD DISCARDABLE
 BEGIN
     AFX_IDS_APP_TITLE       "RAO-Studio"
     AFX_IDS_IDLEMESSAGE     "Ready"
-    IDS_FRAME_UNKNOW        "unknow"
-    IDS_FRAME_WORKSPACE     "Workspace"
-    IDS_FRAME_EDITOR        "Sources"
-    IDS_FRAME_TRACER        "Tracer"
-    IDS_FRAME_TRACER_OBJECTSLIST "Tracer"
-    IDS_FRAME_OUTPUT        "Output"
-    IDS_FRAME_OUTPUT_BUILD  "Build"
-    IDS_FRAME_OUTPUT_TRACER "Tracer"
-    IDS_FRAME_MODEL_OBJECTSLIST "Objects"
-    IDS_FRAME_ANIMATION_FRAMESLIST "Frames"
 END
 
 STRINGTABLE DISCARDABLE 
@@ -2036,9 +2016,9 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    ID_MSG_NO_HELP_FILE     "Cannot find help file ""%s"".\r\nIt must be in the application's directory."
+    ID_MSG_NO_HELP_FILE     "Cannot find help file '%s'.\r\nIt must be in the application's directory."
     ID_MSG_CANTFIND         "Cannot find the string '%s'."
-    ID_MSG_MODELOPEN_ERROR  "Cannot open model ""%s""."
+    ID_MSG_MODELOPEN_ERROR  "Cannot open model '%s'."
     ID_MSG_MODELSAVE_QUERY  "Save changes in project ?"
     ID_MSG_MODELCLOSE_ERROR "Cannot close model."
 END
