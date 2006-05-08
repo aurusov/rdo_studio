@@ -10,6 +10,8 @@
 #define yychar funchar
 #define yydebug fundebug
 #define yynerrs funnerrs
+#define YYLSP_NEEDED 1
+
 # define	Resource_type	257
 # define	permanent	258
 # define	Parameters	259
@@ -148,7 +150,6 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 #include "rdoparser.h"
-#include "rdoparselex.h"
 #include "rdortp.h"
 #include "rdofun.h"
 
@@ -157,6 +158,20 @@ namespace rdoParse
 #ifndef YYSTYPE
 #define YYSTYPE int
 #endif
+
+#ifndef YYLTYPE
+typedef struct yyltype
+{
+  int first_line;
+  int first_column;
+
+  int last_line;
+  int last_column;
+} yyltype;
+
+# define YYLTYPE yyltype
+#endif
+
 #ifndef YYDEBUG
 # define YYDEBUG 0
 #endif
@@ -282,7 +297,7 @@ static const short yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined. */
 static const short yyrline[] =
 {
-       0,   162,   164,   165,   167,   168,   174,   185,   192,   198,
+       0,   161,   163,   164,   166,   167,   174,   185,   192,   198,
      204,   210,   216,   222,   228,   235,   242,   246,   251,   259,
      269,   273,   279,   283,   292,   294,   298,   305,   318,   329,
      330,   331,   333,   335,   348,   352,   356,   361,   362,   370,
@@ -1221,10 +1236,11 @@ yyreduce:
   switch (yyn) {
 
 case 5:
-#line 168 ".\\rdofun.y"
+#line 167 ".\\rdofun.y"
 {
 							RDORTPParamDesc *cons = (RDORTPParamDesc*)yyvsp[0];
 							currParser->addConstant(cons);
+							yyloc;
 						;
     break;}
 case 6:

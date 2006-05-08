@@ -145,7 +145,6 @@ static char THIS_FILE[] = __FILE__;
 
 #include <FlexLexer.h>
 
-#include "rdoparselex.h"
 #include "rdofun.h"
 #include "rdofrm.h"
 
@@ -170,7 +169,7 @@ frm_main:
 
 /* ///////////////////////  FRAME ///////////////////////////// */
 
-frm_begin: Frame IDENTIF							{ $$ = (int)(new RDOFRMFrame((std::string *)$2)); }
+frm_begin: Frame IDENTIF							{ $$ = (int)(new RDOFRMFrame((std::string *)$2)); @$; }
 			| Frame IDENTIF Show_if frm_logic	{ $$ = (int)(new RDOFRMFrame((std::string *)$2, (RDOFUNLogic *)$4)); };
 
 frm_background: frm_begin Back_picture '='													{ ((RDOFRMFrame *)$1)->setBackground(); }

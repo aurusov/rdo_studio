@@ -18,10 +18,11 @@ static char THIS_FILE[] = __FILE__;
 namespace rdoParse 
 {
 
-int funlex( int* lpval, void* lexer )
+int funlex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer )
 {
-	((RDOFlexLexer*)lexer)->m_lpval = lpval;
-	return ((RDOFlexLexer*)lexer)->yylex();
+	reinterpret_cast<RDOFlexLexer*>(lexer)->m_lpval = lpval;
+	reinterpret_cast<RDOFlexLexer*>(lexer)->m_lploc = llocp;
+	return reinterpret_cast<RDOFlexLexer*>(lexer)->yylex();
 }
 void funerror( char* mes )
 {
@@ -216,10 +217,10 @@ RDOFUNArithm::RDOFUNArithm(std::string *resName, std::string *parName)
 		if(currParser->fUNGroupStack.empty() || 
 			*currParser->fUNGroupStack.back()->resType->getName() != *resName)
 		{
-			if((currParser->fileToParse != rdoModelObjects::PAT) ||
+			if((currParser->getFileToParse() != rdoModelObjects::PAT) ||
 				!currParser->lastPATPattern->findRelevantResource(resName))
 			{
-				if((currParser->fileToParse == rdoModelObjects::DPT) && 
+				if((currParser->getFileToParse() == rdoModelObjects::DPT) && 
 					(currParser->lastDPTSearch != NULL) && 
 					(currParser->lastDPTSearch->lastActivity->getRule()->findRelevantResource(resName) != NULL))
 				{
@@ -482,9 +483,9 @@ RDOFUNArithm::RDOFUNArithm(std::string *s)
 	}
 
 	const RDOFUNFunctionParam *param = NULL;
-	if(currParser->fileToParse == rdoModelObjects::FUN)
+	if(currParser->getFileToParse() == rdoModelObjects::FUN)
 		param = currParser->lastFUNFunction->findFUNFunctionParam(s);
-	else if(currParser->fileToParse == rdoModelObjects::PAT)
+	else if(currParser->getFileToParse() == rdoModelObjects::PAT)
 		param = currParser->lastPATPattern->findPATPatternParam(s);
 
 	const RDOFUNConstant *cons = currParser->findFUNConst(s);
@@ -528,9 +529,9 @@ RDOFUNArithm::RDOFUNArithm(std::string *s)
 	if(type == 2)
 		enu = ((RDORTPEnumResParam *)param->getType())->enu;
 
-	if(currParser->fileToParse == rdoModelObjects::FUN)
+	if(currParser->getFileToParse() == rdoModelObjects::FUN)
 		calc = new RDOCalcFuncParam(currParser->lastFUNFunction->findFUNFunctionParamNum(s));
-	else if(currParser->fileToParse == rdoModelObjects::PAT)
+	else if(currParser->getFileToParse() == rdoModelObjects::PAT)
 		calc = new RDOCalcPatParam(currParser->lastPATPattern->findPATPatternParamNum(s));
 }
 

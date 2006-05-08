@@ -4,6 +4,20 @@
 # ifndef YYSTYPE
 #  define YYSTYPE int
 # endif
+
+#ifndef YYLTYPE
+typedef struct yyltype
+{
+  int first_line;
+  int first_column;
+
+  int last_line;
+  int last_column;
+} yyltype;
+
+# define YYLTYPE yyltype
+#endif
+
 # define	Resource_type	257
 # define	permanent	258
 # define	Parameters	259

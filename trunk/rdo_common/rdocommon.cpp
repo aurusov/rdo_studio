@@ -10,14 +10,20 @@ namespace rdo {
 
 std::string format( const char* str, ... )
 {
+	va_list params;
+	va_start( params, str );
+	std::string res = format( str, params );
+	va_end( params );
+	return res;
+}
+
+std::string format( const char* str, va_list& params )
+{
 	std::vector< char > s;
 	s.resize( 256 );
-	va_list paramList;
 	int size = -1;
 	while ( size == -1 ) {
-		va_start( paramList, str );
-		size = _vsnprintf( s.begin(), s.size(), str, paramList );
-		va_end( paramList );
+		size = _vsnprintf( s.begin(), s.size(), str, params );
 		if ( size == -1 ) {
 			s.resize( s.size() + 256 );
 		}
@@ -28,22 +34,18 @@ std::string format( const char* str, ... )
 
 std::string format( unsigned int resource, ... )
 {
+	va_list params;
+	va_start( params, resource );
+	std::string res = format( resource, params );
+	va_end( params );
+	return res;
+}
+
+std::string format( unsigned int resource, va_list& params )
+{
 	CString str;
 	if ( str.LoadString( resource ) ) {
-		std::vector< char > s;
-		s.resize( 256 );
-		va_list paramList;
-		int size = -1;
-		while ( size == -1 ) {
-			va_start( paramList, resource );
-			size = _vsnprintf( s.begin(), s.size(), static_cast<LPCTSTR>(str), paramList );
-			va_end( paramList );
-			if ( size == -1 ) {
-				s.resize( s.size() + 256 );
-			}
-		}
-		s.resize( size );
-		return std::string( s.begin(), s.end() );
+		return format( static_cast<LPCTSTR>(str), params );
 	}
 	return "";
 }
@@ -103,7 +105,7 @@ bool isFileExists( const std::string& fileName )
 
 } // namespace rdo
 
-namespace RDOSimulatorNS
+namespace rdosim
 {
 
 RDOFrame::~RDOFrame()
@@ -192,5 +194,5 @@ RDOTriangElement::RDOTriangElement(double _x1, double _y1, double _x2, double _y
 	type = triang_type; 
 }
 
-}// namespace RDOSimulatorNS
+} // namespace rdosim
 

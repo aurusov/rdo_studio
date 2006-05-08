@@ -1,6 +1,7 @@
 #ifndef RDOPARSER_PARSER
 #define RDOPARSER_PARSER
 
+#include "rdogramma.h"
 #include "rdoStdFuncs.h"
 #include "rdocalcconst.h"
 #include "rdoparser_base.h"
@@ -44,42 +45,38 @@ struct RDOInternalException: public RDOException
 
 class RDOParser
 {
-private:
-	std::ostream* out;
-
 protected:
-	RDOParserList parsers;
+	RDOParserList  parsers;
+	RDOParserBase* parser;
 
 public:
-	rdoModelObjects::RDOFileType fileToParse;
+	std::vector<std::string *>			allRTPNames;
+	std::vector<double *>				allRTPDoubles;
 
-	std::vector<std::string *> allRTPNames;
-	std::vector<double *> allRTPDoubles;
+	std::vector<RDORTPParamDesc *>		allRTPParamDesc;
+	std::vector<RDORTPResType *>		allRTPResType;
 
-	std::vector<RDORTPParamDesc *>	allRTPParamDesc;
-	std::vector<RDORTPResType *>	allRTPResType;
-
-	std::vector<RDORSSResource *>	allRSSResource;
+	std::vector<RDORSSResource *>		allRSSResource;
 	
-	std::vector<RDOFUNConstant *>	allFUNConstant;
-	std::vector<RDOFUNFunction *>	allFUNFunctions;
-	std::vector<RDOFUNSequence *>	allFUNSequences;
+	std::vector<RDOFUNConstant *>		allFUNConstant;
+	std::vector<RDOFUNFunction *>		allFUNFunctions;
+	std::vector<RDOFUNSequence *>		allFUNSequences;
 
-	std::vector<RDOPATPattern *>	allPATPatterns;
+	std::vector<RDOPATPattern *>		allPATPatterns;
 
-	std::vector<RDODPTSearch *>	allDPTSearch;
-	std::vector<RDODPTSome *>		allDPTSome;
-	std::vector<RDODPTFreeActivity *>		allFreeActivity;
+	std::vector<RDODPTSearch *>			allDPTSearch;
+	std::vector<RDODPTSome *>			allDPTSome;
+	std::vector<RDODPTFreeActivity *>	allFreeActivity;
 
-	std::vector<RDODeletable *>	allDeletables;
+	std::vector<RDODeletable *>			allDeletables;
+
+	std::vector<RDOFUNGroup *>			fUNGroupStack;
 
 	RDORTPResType  *lastRTPResType;
 	RDORSSResource *lastRSSResource;
 	RDOFUNFunction *lastFUNFunction;
 	RDOPATPattern  *lastPATPattern;
 	RDODPTSearch   *lastDPTSearch;
-	
-	std::vector<RDOFUNGroup *> fUNGroupStack;
 
 	int resourceTypeCounter;
 	int resourceCounter;
@@ -89,9 +86,9 @@ public:
 	int pokazCounter;
 	int constCounter;
 
-	RDOSMR *smr;
+	RDOSMR* smr;
 
-	std::vector<RDOSimulatorNS::RDOSyntaxError> errors;
+	std::vector< rdosim::RDOSyntaxError > errors;
 
 	std::stringstream modelStructure;
 	std::stringstream& getModelStructure();
@@ -99,7 +96,7 @@ public:
 	RDOParser();
 	~RDOParser();
 
-	void setSMR(RDOSMR *_smr) { smr = _smr; }
+	void setSMR( RDOSMR* _smr)  { smr = _smr; }
 
 	const RDORTPResType *findRTPResType(const std::string *const type) const;
 	const RDORSSResource *findRSSResource(const std::string *const name) const;
@@ -107,12 +104,12 @@ public:
 	const RDOFUNSequence *findSequence(const std::string *const name) const;
 	const RDOPATPattern *findPattern(const std::string *const name) const;
 
-	RDOParserBase* parser;
 	void parse( int files = rdoModelObjects::obALL );
 	void parse( rdoModelObjects::RDOParseType file );
 	void parse( rdoModelObjects::RDOParseType file, std::istream& stream );
-	void error( const char* mes );
-	void error( const std::string& mes ) { error( mes.c_str() ); }
+	void error( int error_code, ... );
+	void error( const char* message, int error_code = -1 );
+	void error( const std::string& message ) { error( message.c_str() ); }
 	void addConstant(RDORTPParamDesc *const _cons);
 	const RDOFUNConstant *RDOParser::findFUNConst(const std::string *const _cons) const;
 
@@ -124,17 +121,23 @@ public:
 		return newName;
 	}
 
-	void setYylval( int val )         { parser->set_lexer_value( val ); }
-	void addName( std::string* name ) { allRTPNames.push_back( name );  }
+	void addName( std::string* name ) { allRTPNames.push_back( name );               }
 	double* addDouble( double* val ) {
 		allRTPDoubles.push_back( val );
 		return val;
 	}
 
+	rdoModelObjects::RDOFileType getFileToParse() const { return parser ? parser->type : rdoModelObjects::PAT; }
+	void lexer_setvalue( int val )                      { if ( parser ) parser->lexer_setvalue( val );         }
+	void lexer_loc_init() const                         { if ( parser ) parser->lexer_loc_init();              }
+	void lexer_loc_action() const                       { if ( parser ) parser->lexer_loc_action();            }
+	void lexer_loc_push( bool erase = false ) const     { if ( parser ) parser->lexer_loc_push( erase );       }
+	void lexer_loc_pop() const                          { if ( parser ) parser->lexer_loc_pop();               }
+	int  lexer_loc_lineno() const                       { return parser ? parser->lexer_loc_lineno() : -1;     }
 };
 
 extern RDOParser *currParser;
 
-}		// namespace rdoParse 
+} // namespace rdoParse 
 
 #endif //RDOPARSER_PARSER

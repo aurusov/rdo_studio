@@ -9,7 +9,9 @@
 namespace rdo {
 
 std::string format( const char* str, ... );
+std::string format( const char* str, va_list& params );
 std::string format( unsigned int resource, ... );
+std::string format( unsigned int resource, va_list& params );
 void trim( std::string& str );
 void trimLeft( std::string& str );
 void trimRight( std::string& str );
@@ -59,7 +61,7 @@ enum RDOExitCode { EC_OK = 0, EC_ParserError, EC_RunTimeError, EC_UserBreak, EC_
 
 };
 
-namespace RDOSimulatorNS
+namespace rdosim
 {
 
 enum ShowMode
@@ -72,10 +74,18 @@ enum ShowMode
 struct RDOSyntaxError
 {
 	std::string message;
-	int lineNo;
+	int error_code;
+	int error_line;
+	int error_pos;
 	rdoModelObjects::RDOFileType file;
-	RDOSyntaxError(std::string _message, int _lineNo, rdoModelObjects::RDOFileType _file)
-		: message(_message), lineNo(_lineNo), file(_file)	{}
+	RDOSyntaxError( const std::string& _message, int _error_code, int _error_line, int _error_pos, rdoModelObjects::RDOFileType _file ):
+		message( _message ),
+		error_code( _error_code ),
+		error_line( _error_line ),
+		error_pos( _error_pos ),
+		file( _file )
+	{
+	}
 };
 
 struct RDOFrameElement
@@ -195,6 +205,6 @@ struct RDOFrame
 	~RDOFrame();
 };
 
-} //namespace RDOSimulatorNS
+} // namespace rdosim
 
 #endif // RDOCOMMON_H

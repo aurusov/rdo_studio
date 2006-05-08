@@ -1,6 +1,7 @@
 #ifndef RDOPARSER_BASE_H
 #define RDOPARSER_BASE_H
 
+#include "rdogramma.h"
 #include <rdocommon.h>
 
 namespace rdoParse
@@ -8,7 +9,7 @@ namespace rdoParse
 
 typedef int  (*t_bison_parse_fun)( void* lexer );
 typedef void (*t_bison_error_fun)( char* mes );
-typedef int  (*t_flex_lexer_fun)( int* lpval, void* lexer );
+typedef int  (*t_flex_lexer_fun)( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer );
 
 // ----------------------------------------------------------------------------
 // ---------- RDOParserBase
@@ -28,8 +29,13 @@ public:
 
 	virtual void parse()                          = 0;
 	virtual void parse( std::istream& in_stream ) = 0;
-	virtual void set_lexer_value( int value )     = 0;
-	virtual int lineno()                          = 0;
+
+	virtual void lexer_setvalue( int value )          {};
+	virtual void lexer_loc_init()                     {};
+	virtual void lexer_loc_action()                   {};
+	virtual void lexer_loc_push( bool erase = false ) {};
+	virtual void lexer_loc_pop()                      {};
+	virtual int  lexer_loc_lineno()                   { return -1; };
 };
 
 // ----------------------------------------------------------------------------

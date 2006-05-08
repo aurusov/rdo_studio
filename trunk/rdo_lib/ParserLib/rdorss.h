@@ -1,13 +1,14 @@
 #ifndef RDORSS_RSS
 #define RDORSS_RSS
 
+#include "rdogramma.h"
 #include "rdoStdFuncs.h"
 
 namespace rdoParse 
 {
 
 int rssparse( void* lexer );
-int rsslex( int* lpval, void* lexer );
+int rsslex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer );
 void rsserror( char* mes );
 
 class RDORTPResType;

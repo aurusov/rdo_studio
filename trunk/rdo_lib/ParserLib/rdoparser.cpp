@@ -20,20 +20,18 @@ namespace rdoParse
 RDOParser* currParser = NULL;
 
 RDOParser::RDOParser():
-	out(&std::cout),
-	parser( NULL )
+	parser( NULL ),
+	lastDPTSearch( NULL ),
+	lastRTPResType( NULL ),
+	lastRSSResource( NULL ),
+	lastFUNFunction( NULL ),
+	lastPATPattern( NULL ),
+	patternCounter( 1 ),
+	pokazCounter( 1 ),
+	constCounter( 0 ),
+	smr( NULL )
 {
 	runTime = new RDORuntime();
-	patternCounter = 1;
-	pokazCounter = 1;
-	constCounter = 0;
-	smr = NULL;
-	lastDPTSearch = NULL;
-	lastRTPResType = NULL;
-	lastRSSResource = NULL;
-	lastFUNFunction = NULL;
-	lastPATPattern = NULL;
-
 	parsers.reset();
 }
 
@@ -98,7 +96,6 @@ void RDOParser::parse( int files )
 	while ( it != parsers.end() ) {
 		if ( it->first > max1 && it->first < min2 && std::find( file_list.begin(), file_list.end(), it->second->type ) != file_list.end() ) {
 			parser      = it->second;
-			fileToParse = it->second->type;
 			currParser  = this;
 			it->second->parse();
 			parser     = NULL;
@@ -121,7 +118,6 @@ void RDOParser::parse( rdoModelObjects::RDOParseType file )
 	while ( it != parsers.end() ) {
 		if ( it->first <= max ) {
 			parser      = it->second;
-			fileToParse = it->second->type;
 			currParser  = this;
 			it->second->parse();
 			parser     = NULL;
@@ -142,7 +138,6 @@ void RDOParser::parse( rdoModelObjects::RDOParseType file, std::istream& stream 
 	while ( it != parsers.end() ) {
 		if ( it->first <= max ) {
 			parser      = it->second;
-			fileToParse = it->second->type;
 			currParser  = this;
 			it->second->parse( stream );
 			parser     = NULL;
@@ -154,9 +149,21 @@ void RDOParser::parse( rdoModelObjects::RDOParseType file, std::istream& stream 
 	}
 }
 
-void RDOParser::error( const char* mes ) 
+void RDOParser::error( int error_code, ... )
 {
-	errors.push_back( RDOSimulatorNS::RDOSyntaxError( mes, parser->lineno(), fileToParse ) );
+	va_list params;
+	va_start( params, error_code );
+	std::string str = "";
+	switch ( error_code ) {
+		case 1: str = rdo::format( 10, params ); break;
+	}
+	va_end( params );
+	error( str.c_str() );
+}
+
+void RDOParser::error( const char* message, int error_code ) 
+{
+	errors.push_back( rdosim::RDOSyntaxError( message, error_code, parser ? parser->lexer_loc_lineno() : -1, -1, getFileToParse() ) );
 	throw rdoParse::RDOSyntaxException( "" );
 }
 

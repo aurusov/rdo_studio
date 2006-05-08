@@ -1,6 +1,7 @@
 #ifndef RDOPAT_PAT
 #define RDOPAT_PAT
 
+#include "rdogramma.h"
 #include "rdoStdFuncs.h"
 
 namespace rdoRuntime
@@ -16,7 +17,7 @@ namespace rdoParse
 {
 
 int patparse( void* lexer );
-int patlex( int* lpval, void* lexer );
+int patlex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer );
 void paterror( char* mes );
 
 class RDORTPResType;

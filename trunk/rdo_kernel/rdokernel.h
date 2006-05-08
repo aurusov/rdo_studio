@@ -17,7 +17,7 @@ namespace rdoRepository {
 class RDORepository;
 }
 
-namespace RDOSimulatorNS {
+namespace rdosim {
 class RdoSimulator;
 }
 
@@ -130,7 +130,7 @@ public:
 
 private:
 	rdoRepository::RDORepository* repository;
-	RDOSimulatorNS::RdoSimulator* simulator;
+	rdosim::RdoSimulator* simulator;
 
 //	typedef std::multimap< NotifyType, RDOKernelSync::RDONotifyFun >         onNotifyListType;
 //	typedef std::multimap< NotifyType, OnNotify >             onNotifyListType;
@@ -214,7 +214,7 @@ public:
 	virtual ~RDOKernel();
 
 	rdoRepository::RDORepository* getRepository();
-	RDOSimulatorNS::RdoSimulator* getSimulator();
+	rdosim::RdoSimulator* getSimulator();
 
 	void insertSyncClient( RDOKernelSync* syncUI );
 	void removeSyncClient( RDOKernelSync* syncUI );

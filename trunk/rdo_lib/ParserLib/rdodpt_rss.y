@@ -144,7 +144,6 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 #include "rdoparser.h"
-#include "rdoparselex.h"
 #include "rdofun.h"
 #include "rdodpt.h"
 #include "rdortp.h"
@@ -291,7 +290,13 @@ dpt_process_input:
 					| dpt_process_input dpt_process_line;
 
 dpt_process_line:	IDENTIF	{ TRACE( "%s\n", ((std::string *)$1)->c_str() ); }
-					| SIEZE { currParser->error( std::string(_T("Ожидается имя ресурса")).c_str() ); }
+					| SIEZE {
+	@$.first_column = @1.first_column;
+	@$.first_line   = @1.first_line;
+	@$.last_column  = @1.last_column;
+	@$.last_line    = @1.first_column;
+	currParser->error( std::string(_T("Ожидается имя ресурса")).c_str() );
+}
 					| SIEZE IDENTIF {
 
 	std::string* res_name      = (std::string*)$2;

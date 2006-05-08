@@ -138,151 +138,6 @@ SOURCE=.\rdofun.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\rdogramdpt.cpp
-
-!IF  "$(CFG)" == "ParserLib - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "ParserLib - Win32 Debug"
-
-# SUBTRACT CPP /YX /Yc /Yu
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdogramdpt_rss.cpp
-
-!IF  "$(CFG)" == "ParserLib - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "ParserLib - Win32 Debug"
-
-# SUBTRACT CPP /YX
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdogramfrm.cpp
-
-!IF  "$(CFG)" == "ParserLib - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "ParserLib - Win32 Debug"
-
-# SUBTRACT CPP /YX
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdogramfun.cpp
-
-!IF  "$(CFG)" == "ParserLib - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "ParserLib - Win32 Debug"
-
-# SUBTRACT CPP /YX /Yc /Yu
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdogramopr.cpp
-
-!IF  "$(CFG)" == "ParserLib - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "ParserLib - Win32 Debug"
-
-# SUBTRACT CPP /YX /Yc /Yu
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdogrampat.cpp
-
-!IF  "$(CFG)" == "ParserLib - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "ParserLib - Win32 Debug"
-
-# SUBTRACT CPP /YX /Yc /Yu
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdogrampmd.cpp
-
-!IF  "$(CFG)" == "ParserLib - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "ParserLib - Win32 Debug"
-
-# SUBTRACT CPP /YX /Yc /Yu
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdogramrss.cpp
-
-!IF  "$(CFG)" == "ParserLib - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "ParserLib - Win32 Debug"
-
-# SUBTRACT CPP /YX /Yc /Yu
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdogramrtp.cpp
-
-!IF  "$(CFG)" == "ParserLib - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "ParserLib - Win32 Debug"
-
-# SUBTRACT CPP /YX /Yc /Yu
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdogramsmr1.cpp
-
-!IF  "$(CFG)" == "ParserLib - Win32 Release"
-
-# ADD CPP /Od
-
-!ELSEIF  "$(CFG)" == "ParserLib - Win32 Debug"
-
-# SUBTRACT CPP /YX /Yc /Yu
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdogramsmr2.cpp
-
-!IF  "$(CFG)" == "ParserLib - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "ParserLib - Win32 Debug"
-
-# SUBTRACT CPP /YX /Yc /Yu
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
 SOURCE=.\rdohotkey.cpp
 
 !IF  "$(CFG)" == "ParserLib - Win32 Release"
@@ -290,19 +145,6 @@ SOURCE=.\rdohotkey.cpp
 !ELSEIF  "$(CFG)" == "ParserLib - Win32 Debug"
 
 # ADD CPP /Yu"pch.h"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdolex.cpp
-
-!IF  "$(CFG)" == "ParserLib - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "ParserLib - Win32 Debug"
-
-# SUBTRACT CPP /YX /Yc /Yu
 
 !ENDIF 
 
@@ -471,14 +313,6 @@ SOURCE=.\rdosmr.cpp
 # PROP Default_Filter "h;hpp;hxx;hm;inl"
 # Begin Source File
 
-SOURCE=..\System\bison.simple
-# End Source File
-# Begin Source File
-
-SOURCE=..\System\FlexLexer.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\pch.h
 # End Source File
 # Begin Source File
@@ -512,10 +346,6 @@ SOURCE=.\rdohotkey.h
 # Begin Source File
 
 SOURCE=.\rdoopr.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdoparselex.h
 # End Source File
 # Begin Source File
 
@@ -565,11 +395,184 @@ SOURCE=.\rdosmr.h
 
 SOURCE=.\rdoStdFuncs.h
 # End Source File
+# End Group
+# Begin Group "bison"
+
+# PROP Default_Filter ""
+# Begin Group "generate"
+
+# PROP Default_Filter ""
 # Begin Source File
 
-SOURCE=..\System\unistd.h
+SOURCE=.\rdogramdpt.cpp
+
+!IF  "$(CFG)" == "ParserLib - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "ParserLib - Win32 Debug"
+
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdogramdpt_rss.cpp
+
+!IF  "$(CFG)" == "ParserLib - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "ParserLib - Win32 Debug"
+
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdogramfrm.cpp
+
+!IF  "$(CFG)" == "ParserLib - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "ParserLib - Win32 Debug"
+
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdogramfun.cpp
+
+!IF  "$(CFG)" == "ParserLib - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "ParserLib - Win32 Debug"
+
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdogramma.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdogramopr.cpp
+
+!IF  "$(CFG)" == "ParserLib - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "ParserLib - Win32 Debug"
+
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdogrampat.cpp
+
+!IF  "$(CFG)" == "ParserLib - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "ParserLib - Win32 Debug"
+
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdogrampmd.cpp
+
+!IF  "$(CFG)" == "ParserLib - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "ParserLib - Win32 Debug"
+
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdogramrss.cpp
+
+!IF  "$(CFG)" == "ParserLib - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "ParserLib - Win32 Debug"
+
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdogramrtp.cpp
+
+!IF  "$(CFG)" == "ParserLib - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "ParserLib - Win32 Debug"
+
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdogramsmr1.cpp
+
+!IF  "$(CFG)" == "ParserLib - Win32 Release"
+
+# ADD CPP /Od
+
+!ELSEIF  "$(CFG)" == "ParserLib - Win32 Debug"
+
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdogramsmr2.cpp
+
+!IF  "$(CFG)" == "ParserLib - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "ParserLib - Win32 Debug"
+
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdolex.cpp
+
+!IF  "$(CFG)" == "ParserLib - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "ParserLib - Win32 Debug"
+
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ENDIF 
+
 # End Source File
 # End Group
+# Begin Source File
+
+SOURCE=..\System\bison.simple
+# End Source File
+# Begin Source File
+
+SOURCE=..\System\FlexLexer.h
+# End Source File
 # Begin Source File
 
 SOURCE=.\parser.l
@@ -629,6 +632,14 @@ InputPath=.\rdodpt.y
 SOURCE=.\rdodpt_rss.y
 
 !IF  "$(CFG)" == "ParserLib - Win32 Release"
+
+# Begin Custom Build
+InputPath=.\rdodpt_rss.y
+
+"rdogramdpt_rss.cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	..\System\bison.exe -pdpt_rss_ --skeleton=..\System\bison.simple -ordogramdpt_rss.cpp $(InputPath)
+
+# End Custom Build
 
 !ELSEIF  "$(CFG)" == "ParserLib - Win32 Debug"
 
@@ -815,12 +826,12 @@ SOURCE=.\rdortp.y
 InputPath=.\rdortp.y
 
 BuildCmds= \
-	..\System\bison.exe -d -prtp --skeleton=..\System\bison.simple -ordogramrtp.cpp $(InputPath)
+	..\System\bison.exe --defines=rdogramma.h -prtp --skeleton=..\System\bison.simple -ordogramrtp.cpp $(InputPath)
 
 "rdogramrtp.cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
    $(BuildCmds)
 
-"rdogramrtp.hpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+"rdogramma.h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
    $(BuildCmds)
 # End Custom Build
 
@@ -830,12 +841,12 @@ BuildCmds= \
 InputPath=.\rdortp.y
 
 BuildCmds= \
-	..\System\bison.exe -d -prtp --skeleton=..\System\bison.simple -ordogramrtp.cpp $(InputPath)
+	..\System\bison.exe --defines=rdogramma.h -prtp --skeleton=..\System\bison.simple -ordogramrtp.cpp $(InputPath)
 
 "rdogramrtp.cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
    $(BuildCmds)
 
-"rdogramrtp.hpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+"rdogramma.h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
    $(BuildCmds)
 # End Custom Build
 
@@ -896,5 +907,10 @@ InputPath=.\rdosmr2.y
 !ENDIF 
 
 # End Source File
+# Begin Source File
+
+SOURCE=..\System\unistd.h
+# End Source File
+# End Group
 # End Target
 # End Project

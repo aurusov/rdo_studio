@@ -1,13 +1,14 @@
 #ifndef RDORTP_RTP
 #define RDORTP_RTP
 
+#include "rdogramma.h"
 #include "rdoStdFuncs.h"
 
 namespace rdoParse 
 {
 
 int rtpparse( void* lexer );
-int rtplex( int* lpval, void* lexer );
+int rtplex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer );
 void rtperror( char* mes );
 
 struct RDORTPIntDefVal;

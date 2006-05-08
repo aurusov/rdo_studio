@@ -143,10 +143,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-//#include <FlexLexer.h>
-
 #include "rdoparser.h"
-#include "rdoparselex.h"
 #include "rdofun.h"
 #include "rdodpt.h"
 #include "rdortp.h"
@@ -175,7 +172,7 @@ dpt_main:
 
 /* ///////////////////////  SEARCH POINT ///////////////////////////// */
 
-dpt_begin_search:	Decision_point IDENTIF_COLON search_keyword					{ $$ = (int)(new RDODPTSearch((std::string *)$2)); }
+dpt_begin_search:	Decision_point IDENTIF_COLON search_keyword					{ $$ = (int)(new RDODPTSearch((std::string *)$2)); @$; }
 					|	Decision_point IDENTIF_COLON search_keyword no_trace		{ $$ = (int)(new RDODPTSearch((std::string *)$2, DPTnotrace)); }
 					|	Decision_point IDENTIF_COLON search_keyword trace_stat	{ $$ = (int)(new RDODPTSearch((std::string *)$2, DPTtracestat)); }
 					|	Decision_point IDENTIF_COLON search_keyword trace_tops	{ $$ = (int)(new RDODPTSearch((std::string *)$2, DPTtracetops)); }

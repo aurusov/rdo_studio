@@ -13,20 +13,22 @@ static char THIS_FILE[] = __FILE__;
 namespace rdoParse 
 {
 
-int dptlex( int* lpval, void* lexer )
+int dptlex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer )
 {
-	((RDOFlexLexer*)lexer)->m_lpval = lpval;
-	return ((RDOFlexLexer*)lexer)->yylex();
+	reinterpret_cast<RDOFlexLexer*>(lexer)->m_lpval = lpval;
+	reinterpret_cast<RDOFlexLexer*>(lexer)->m_lploc = llocp;
+	return reinterpret_cast<RDOFlexLexer*>(lexer)->yylex();
 }
 void dpterror( char* mes )
 {
 	rdoParse::currParser->error( mes );
 }
 
-int dpt_rss_lex( int* lpval, void* lexer )
+int dpt_rss_lex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer )
 {
-	((RDOFlexLexer*)lexer)->m_lpval = lpval;
-	return ((RDOFlexLexer*)lexer)->yylex();
+	reinterpret_cast<RDOFlexLexer*>(lexer)->m_lpval = lpval;
+	reinterpret_cast<RDOFlexLexer*>(lexer)->m_lploc = llocp;
+	return reinterpret_cast<RDOFlexLexer*>(lexer)->yylex();
 }
 void dpt_rss_error( char* mes )
 {

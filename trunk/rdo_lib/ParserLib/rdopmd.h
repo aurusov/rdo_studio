@@ -1,6 +1,7 @@
 #ifndef RDOPMD_PMD
 #define RDOPMD_PMD
 
+#include "rdogramma.h"
 #include "rdoStdFuncs.h"
 #include "rdotrace.h"
 
@@ -16,7 +17,7 @@ namespace rdoParse
 {
 
 int pmdparse( void* lexer );
-int pmdlex( int* lpval, void* lexer );
+int pmdlex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer );
 void pmderror( char* mes );
 
 struct RDOFUNLogic;

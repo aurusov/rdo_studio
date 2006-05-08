@@ -21,7 +21,7 @@ namespace rdoParse
 {
 
 int funparse( void* lexer );
-int funlex( int* lpval, void* lexer );
+int funlex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer );
 void funerror( char* mes );
 
 struct RDORTPResParam;

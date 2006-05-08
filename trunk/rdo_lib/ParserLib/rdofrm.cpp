@@ -14,10 +14,11 @@ static char THIS_FILE[] = __FILE__;
 namespace rdoParse 
 {
 
-int frmlex( int* lpval, void* lexer )
+int frmlex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer )
 {
-	((RDOFlexLexer*)lexer)->m_lpval = lpval;
-	return ((RDOFlexLexer*)lexer)->yylex();
+	reinterpret_cast<RDOFlexLexer*>(lexer)->m_lpval = lpval;
+	reinterpret_cast<RDOFlexLexer*>(lexer)->m_lploc = llocp;
+	return reinterpret_cast<RDOFlexLexer*>(lexer)->yylex();
 }
 void frmerror( char* mes )
 {
@@ -177,9 +178,9 @@ bool RDOFRMShow::checkCondition(RDORuntime *sim)
 	return conditionCalc->calcValueBase(sim) != 0;
 }
 
-RDOSimulatorNS::RDOFrame* RDOFRMFrame::createFrame(RDORuntime *sim)
+rdosim::RDOFrame* RDOFRMFrame::createFrame(RDORuntime *sim)
 {
-	RDOSimulatorNS::RDOFrame *frame = new RDOSimulatorNS::RDOFrame();
+	rdosim::RDOFrame *frame = new rdosim::RDOFrame();
 
 	frame->r = r;
 	frame->g = g;
@@ -209,14 +210,14 @@ RDOSimulatorNS::RDOFrame* RDOFRMFrame::createFrame(RDORuntime *sim)
 	return frame;
 }
 
-RDOSimulatorNS::RDOFrameElement *RDOFRMItem::createElement(RDORuntime *sim)
+rdosim::RDOFrameElement *RDOFRMItem::createElement(RDORuntime *sim)
 {
-	return new RDOSimulatorNS::RDONullElement();
+	return new rdosim::RDONullElement();
 }
 
-RDOSimulatorNS::RDOColor RDOFRMColoredItem::getBg()
+rdosim::RDOColor RDOFRMColoredItem::getBg()
 {
-	RDOSimulatorNS::RDOColor bg;
+	rdosim::RDOColor bg;
 	bg.isTransparent = bgColor.isTransparent;
 	bg.r = bgColor.red;
 	bg.g = bgColor.green;
@@ -224,9 +225,9 @@ RDOSimulatorNS::RDOColor RDOFRMColoredItem::getBg()
 	return bg;
 }
 
-RDOSimulatorNS::RDOColor RDOFRMColoredItem::getFg()
+rdosim::RDOColor RDOFRMColoredItem::getFg()
 {
-	RDOSimulatorNS::RDOColor fg;
+	rdosim::RDOColor fg;
 	fg.isTransparent = color.isTransparent;
 	fg.r = color.red;
 	fg.g = color.green;
@@ -234,10 +235,10 @@ RDOSimulatorNS::RDOColor RDOFRMColoredItem::getFg()
 	return fg;
 }
 
-RDOSimulatorNS::RDOFrameElement* RDOFRMText::createElement(RDORuntime *sim)
+rdosim::RDOFrameElement* RDOFRMText::createElement(RDORuntime *sim)
 {
-	RDOSimulatorNS::RDOColor bg = getBg();
-	RDOSimulatorNS::RDOColor fg = getFg();
+	rdosim::RDOColor bg = getBg();
+	rdosim::RDOColor fg = getFg();
 
 	std::string t;
 	if(isTextString)
@@ -253,21 +254,21 @@ RDOSimulatorNS::RDOFrameElement* RDOFRMText::createElement(RDORuntime *sim)
 	}
 
 
-	return new RDOSimulatorNS::RDOTextElement(
+	return new rdosim::RDOTextElement(
 		x->calcValueBase(sim), 
 		y->calcValueBase(sim),
 		width->calcValueBase(sim),
 		height->calcValueBase(sim), 
 		bg, fg,
-		t, (align == 1) ? RDOSimulatorNS::RDOTextElement::left : ((align == 3) ? RDOSimulatorNS::RDOTextElement::right : RDOSimulatorNS::RDOTextElement::center)
+		t, (align == 1) ? rdosim::RDOTextElement::left : ((align == 3) ? rdosim::RDOTextElement::right : rdosim::RDOTextElement::center)
 		);
 }
 
-RDOSimulatorNS::RDOFrameElement* RDOFRMRect::createElement(RDORuntime *sim)
+rdosim::RDOFrameElement* RDOFRMRect::createElement(RDORuntime *sim)
 {
-	RDOSimulatorNS::RDOColor bg = getBg();
-	RDOSimulatorNS::RDOColor fg = getFg();
-	return new RDOSimulatorNS::RDORectElement(
+	rdosim::RDOColor bg = getBg();
+	rdosim::RDOColor fg = getFg();
+	return new rdosim::RDORectElement(
 		x->calcValueBase(sim), 
 		y->calcValueBase(sim),
 		width->calcValueBase(sim),
@@ -275,11 +276,11 @@ RDOSimulatorNS::RDOFrameElement* RDOFRMRect::createElement(RDORuntime *sim)
 		bg, fg);
 }
 
-RDOSimulatorNS::RDOFrameElement* RDOFRMR_rect::createElement(RDORuntime *sim)
+rdosim::RDOFrameElement* RDOFRMR_rect::createElement(RDORuntime *sim)
 {
-	RDOSimulatorNS::RDOColor bg = getBg();
-	RDOSimulatorNS::RDOColor fg = getFg();
-	return new RDOSimulatorNS::RDORRectElement(
+	rdosim::RDOColor bg = getBg();
+	rdosim::RDOColor fg = getFg();
+	return new rdosim::RDORRectElement(
 		x->calcValueBase(sim), 
 		y->calcValueBase(sim),
 		width->calcValueBase(sim),
@@ -287,11 +288,11 @@ RDOSimulatorNS::RDOFrameElement* RDOFRMR_rect::createElement(RDORuntime *sim)
 		bg, fg);
 }
 
-RDOSimulatorNS::RDOFrameElement* RDOFRMEllipse::createElement(RDORuntime *sim)
+rdosim::RDOFrameElement* RDOFRMEllipse::createElement(RDORuntime *sim)
 {
-	RDOSimulatorNS::RDOColor bg = getBg();
-	RDOSimulatorNS::RDOColor fg = getFg();
-	return new RDOSimulatorNS::RDOEllipseElement(
+	rdosim::RDOColor bg = getBg();
+	rdosim::RDOColor fg = getFg();
+	return new rdosim::RDOEllipseElement(
 		x->calcValueBase(sim), 
 		y->calcValueBase(sim),
 		width->calcValueBase(sim),
@@ -299,11 +300,11 @@ RDOSimulatorNS::RDOFrameElement* RDOFRMEllipse::createElement(RDORuntime *sim)
 		bg, fg);
 }
 
-RDOSimulatorNS::RDOFrameElement* RDOFRMTriang::createElement(RDORuntime *sim)
+rdosim::RDOFrameElement* RDOFRMTriang::createElement(RDORuntime *sim)
 {
-	RDOSimulatorNS::RDOColor bg = getBg();
-	RDOSimulatorNS::RDOColor fg = getFg();
-	return new RDOSimulatorNS::RDOTriangElement(
+	rdosim::RDOColor bg = getBg();
+	rdosim::RDOColor fg = getFg();
+	return new rdosim::RDOTriangElement(
 		x1->calcValueBase(sim), 
 		y1->calcValueBase(sim),
 		x2->calcValueBase(sim), 
@@ -313,15 +314,15 @@ RDOSimulatorNS::RDOFrameElement* RDOFRMTriang::createElement(RDORuntime *sim)
 		bg, fg);
 }
 
-RDOSimulatorNS::RDOFrameElement* RDOFRMLine::createElement(RDORuntime *sim)
+rdosim::RDOFrameElement* RDOFRMLine::createElement(RDORuntime *sim)
 {
-	RDOSimulatorNS::RDOColor fg;
+	rdosim::RDOColor fg;
 	fg.isTransparent = color.isTransparent;
 	fg.r = color.red;
 	fg.g = color.green;
 	fg.b = color.blue;
 
-	return new RDOSimulatorNS::RDOLineElement(
+	return new rdosim::RDOLineElement(
 		x->calcValueBase(sim), 
 		y->calcValueBase(sim),
 		width->calcValueBase(sim),
@@ -329,17 +330,17 @@ RDOSimulatorNS::RDOFrameElement* RDOFRMLine::createElement(RDORuntime *sim)
 		fg);
 }
 
-RDOSimulatorNS::RDOFrameElement* RDOFRMS_bmp::createElement(RDORuntime *sim)
+rdosim::RDOFrameElement* RDOFRMS_bmp::createElement(RDORuntime *sim)
 {
 	if(mask != NULL)
-		return new RDOSimulatorNS::RDOSBmpElement(
+		return new rdosim::RDOSBmpElement(
 			x->calcValueBase(sim), 
 			y->calcValueBase(sim),
 			width->calcValueBase(sim),
 			height->calcValueBase(sim), 
 			*picFileName, *mask);
 	else
-		return new RDOSimulatorNS::RDOSBmpElement(
+		return new rdosim::RDOSBmpElement(
 			x->calcValueBase(sim), 
 			y->calcValueBase(sim),
 			width->calcValueBase(sim),
@@ -347,23 +348,23 @@ RDOSimulatorNS::RDOFrameElement* RDOFRMS_bmp::createElement(RDORuntime *sim)
 			*picFileName);
 }
 
-RDOSimulatorNS::RDOFrameElement* RDOFRMBitmap::createElement(RDORuntime *sim)
+rdosim::RDOFrameElement* RDOFRMBitmap::createElement(RDORuntime *sim)
 {
 	if(mask != NULL)
-		return new RDOSimulatorNS::RDOBitmapElement(
+		return new rdosim::RDOBitmapElement(
 			x->calcValueBase(sim), 
 			y->calcValueBase(sim),
 			*picFileName, *mask);
 	else
-		return new RDOSimulatorNS::RDOBitmapElement(
+		return new rdosim::RDOBitmapElement(
 			x->calcValueBase(sim), 
 			y->calcValueBase(sim),
 			*picFileName);
 }
 
-RDOSimulatorNS::RDOFrameElement* RDOFRMActive::createElement(RDORuntime *sim)
+rdosim::RDOFrameElement* RDOFRMActive::createElement(RDORuntime *sim)
 {
-	return new RDOSimulatorNS::RDOActiveElement(
+	return new rdosim::RDOActiveElement(
 		x->calcValueBase(sim), 
 		y->calcValueBase(sim),
 		width->calcValueBase(sim),

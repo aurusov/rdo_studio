@@ -1,6 +1,7 @@
 #ifndef RDOSMR_SMR
 #define RDOSMR_SMR
 
+#include "rdogramma.h"
 #include "rdoStdFuncs.h"
 #include "rdotrace.h"
 #include <rdocommon.h>
@@ -17,11 +18,11 @@ namespace rdoParse
 {
 
 int smr1parse( void* lexer );
-int smr1lex( int* lpval, void* lexer );
+int smr1lex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer );
 void smr1error( char* mes );
 
 int smr2parse( void* lexer );
-int smr2lex( int* lpval, void* lexer );
+int smr2lex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer );
 void smr2error( char* mes );
 
 struct RDOFUNLogic;
@@ -44,7 +45,7 @@ public:
 	std::string *resultsFileName;
 	std::string *traceFileName;
 
-	RDOSimulatorNS::ShowMode showMode;
+	rdosim::ShowMode showMode;
 
 	bool showModeSet;
 	bool frameNumberSet;
@@ -64,7 +65,7 @@ public:
 	void setValue(const char* descrName, std::string* RDOSMR::*pMem, std::string* newValue);
 	void setValue(const char* descrName, double* RDOSMR::*pMem, double* newValue);
 
-	void setShowMode(RDOSimulatorNS::ShowMode sm);
+	void setShowMode(rdosim::ShowMode sm);
 	void setFrameNumber(int fn);
 	void setTerminateIf(RDOFUNLogic *logic);
 	void setConstValue(std::string *constName, RDOFUNArithm *arithm);

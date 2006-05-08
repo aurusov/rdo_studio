@@ -12,7 +12,7 @@ namespace rdoRuntime
 struct RDOConfig
 {
 //////// Interactive /////////////////
-	RDOSimulatorNS::ShowMode showAnimation;
+	rdosim::ShowMode showAnimation;
 	std::vector<std::string> allFrameNames;
 	int currFrameToShow;
 	std::vector<int> keysPressed;
@@ -20,7 +20,7 @@ struct RDOConfig
 	std::vector<std::string> activeAreasMouseClicked;
 	
 //////// Frame /////////////////////
-	std::vector<RDOSimulatorNS::RDOFrame *> frames;
+	std::vector<rdosim::RDOFrame *> frames;
 
 //////// Timing ///////////////////
 	double currTime;			// model time
@@ -168,8 +168,8 @@ friend RDOPMDWatchState;
 	bool operator == (RDOSimulator &other);
 
 public:
-	std::vector<RDOSimulatorNS::RDOSyntaxError> errors;
-	void error( const char *mes, const rdoRuntime::RDOCalc *calc );
+	std::vector< rdosim::RDOSyntaxError > errors;
+	void error( const char* message, const rdoRuntime::RDOCalc* calc );
 	bool checkKeyPressed(int scanCode);
 	void eraseKeyPressed(int scanCode);
 	bool checkAreaActivated(std::string *oprName);

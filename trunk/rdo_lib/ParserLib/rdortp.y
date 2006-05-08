@@ -157,6 +157,7 @@ rtp_list:
          | rtp_list rtp_res_type;
 
 rtp_res_type_hdr:	Resource_type IDENTIF_COLON rtp_vid_res {
+	@$;
 	std::string *name = (std::string *)$2;
 	if(currParser->findRTPResType(name))
 		currParser->error(("Second appearance of the same resource type : " + *(name)).c_str());
@@ -167,7 +168,10 @@ rtp_res_type_hdr:	Resource_type IDENTIF_COLON rtp_vid_res {
 	$$ = (int)res;
 };
 
-rtp_res_type:  rtp_res_type_hdr Parameters rtp_body End;
+rtp_res_type:	rtp_res_type_hdr Parameters rtp_body End
+				| rtp_res_type_hdr {
+	currParser->error( _T("Ожидается ключевое слово $Parameters") );
+};
 
 rtp_vid_res: permanent	{ $$ = 1; }
          | temporary		{ $$ = 0; };
@@ -176,6 +180,7 @@ rtp_body:
          |  rtp_body rtp_param_desc		{
 							RDORTPParamDesc *param = (RDORTPParamDesc*)$2;
 							currParser->lastRTPResType->add(param);
+	@$.first_column = @1.first_column;
 						};
 
 

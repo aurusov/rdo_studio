@@ -144,7 +144,6 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 #include "rdoparser.h"
-#include "rdoparselex.h"
 #include "rdortp.h"
 #include "rdofun.h"
 
@@ -168,6 +167,7 @@ fun_const_body:
          |  fun_const_body fun_const_param_desc		{
 							RDORTPParamDesc *cons = (RDORTPParamDesc*)$2;
 							currParser->addConstant(cons);
+							@$;
 						};
 
 

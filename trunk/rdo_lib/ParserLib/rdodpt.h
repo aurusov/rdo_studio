@@ -1,11 +1,10 @@
 #ifndef RDODPT_DPT
 #define RDODPT_DPT
 
+#include "rdogramma.h"
 #include "rdoStdFuncs.h"
-
 #include "rdofun.h"
 #include "rdopat.h"
-
 #include "rdodptrtime.h"
 
 namespace rdoRuntime
@@ -20,11 +19,11 @@ namespace rdoParse
 {
 
 int dptparse( void* lexer );
-int dptlex( int* lpval, void* lexer );
+int dptlex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer );
 void dpterror( char* mes );
 
 int dpt_rss_parse( void* lexer );
-int dpt_rss_lex( int* lpval, void* lexer );
+int dpt_rss_lex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer );
 void dpt_rss_error( char* mes );
 
 /////////////////////////  "SEARCH" DECISION POINT /////////////////////////

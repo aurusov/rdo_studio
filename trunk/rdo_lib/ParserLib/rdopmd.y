@@ -143,7 +143,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-#include "rdoparselex.h"
 #include "rdopmd.h"
 #include "rdofun.h"
 
@@ -165,7 +164,7 @@ pmd_header:	Results;
 pmd_body:	pmd_header
 			|	pmd_body pmd_pokaz;
 
-pmd_trace:						{ $$ = 0; }
+pmd_trace:						{ $$ = 0; @$; }
 			| trace_keyword	{ $$ = 1; }
 			| no_trace			{ $$ = 0; };
 

@@ -143,7 +143,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-#include "rdoparselex.h"
 #include "rdoparser.h"
 #include "rdosmr.h"
 
@@ -155,7 +154,7 @@ namespace rdoParse
 
 %%
 
-smr_model: Model_name '=' IDENTIF		{ $$ = (int)(new RDOSMR((std::string *)$3)); };
+smr_model: Model_name '=' IDENTIF		{ $$ = (int)(new RDOSMR((std::string *)$3)); @$; };
 
 smr_descr: smr_model
 		|	smr_descr Resource_file		'=' IDENTIF			{ ((RDOSMR *)$1)->setValue("Resource_file",	&RDOSMR::resourceFileName,	(std::string *)$4); $$ = $1; }
@@ -164,16 +163,16 @@ smr_descr: smr_model
 		|	smr_descr Statistic_file	'=' IDENTIF			{ ((RDOSMR *)$1)->setValue("Statistic_file",	&RDOSMR::statisticFileName,(std::string *)$4); $$ = $1; }
 		|	smr_descr Results_file		'=' IDENTIF			{ ((RDOSMR *)$1)->setValue("Results_file",	&RDOSMR::resultsFileName,	(std::string *)$4); $$ = $1; }
 		|	smr_descr Trace_file			'=' IDENTIF			{ ((RDOSMR *)$1)->setValue("Trace_file",		&RDOSMR::traceFileName,		(std::string *)$4); $$ = $1; }
-		|	smr_descr Show_mode			'=' smr_show_mode	{ ((RDOSMR *)$1)->setShowMode((RDOSimulatorNS::ShowMode)$4); $$ = $1; }
+		|	smr_descr Show_mode			'=' smr_show_mode	{ ((RDOSMR *)$1)->setShowMode((rdosim::ShowMode)$4); $$ = $1; }
 		|	smr_descr Frame_number		'=' INT_CONST		{ ((RDOSMR *)$1)->setFrameNumber($4); $$ = $1; }
 		|	smr_descr Show_rate			'=' REAL_CONST		{ ((RDOSMR *)$1)->setValue("Show_rate",		&RDOSMR::showRate,			(double *)$4); $$ = $1; }
 		|	smr_descr Run_StartTime		'=' REAL_CONST		{ ((RDOSMR *)$1)->setValue("Run_StartTime",	&RDOSMR::runStartTime,		(double *)$4); $$ = $1; }
 		|	smr_descr Trace_StartTime	'=' REAL_CONST		{ ((RDOSMR *)$1)->setValue("Trace_StartTime",&RDOSMR::traceStartTime,	(double *)$4); $$ = $1; }
 		|	smr_descr Trace_EndTime		'=' REAL_CONST		{ ((RDOSMR *)$1)->setValue("Trace_EndTime",	&RDOSMR::traceEndTime,		(double *)$4); $$ = $1; };
 
-smr_show_mode:		NoShow		{ $$ = RDOSimulatorNS::SM_NoShow;		}
-					|	Monitor 		{ $$ = RDOSimulatorNS::SM_Monitor;	}
-					|	Animation	{ $$ = RDOSimulatorNS::SM_Animation; };
+smr_show_mode:		NoShow		{ $$ = rdosim::SM_NoShow;		}
+					|	Monitor 		{ $$ = rdosim::SM_Monitor;	}
+					|	Animation	{ $$ = rdosim::SM_Animation; };
 
 %%
 

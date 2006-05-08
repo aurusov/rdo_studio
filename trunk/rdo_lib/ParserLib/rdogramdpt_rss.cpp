@@ -10,6 +10,8 @@
 #define yychar dpt_rss_char
 #define yydebug dpt_rss_debug
 #define yynerrs dpt_rss_nerrs
+#define YYLSP_NEEDED 1
+
 # define	Resource_type	257
 # define	permanent	258
 # define	Parameters	259
@@ -148,7 +150,6 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 #include "rdoparser.h"
-#include "rdoparselex.h"
 #include "rdofun.h"
 #include "rdodpt.h"
 #include "rdortp.h"
@@ -159,6 +160,20 @@ namespace rdoParse
 #ifndef YYSTYPE
 #define YYSTYPE int
 #endif
+
+#ifndef YYLTYPE
+typedef struct yyltype
+{
+  int first_line;
+  int first_column;
+
+  int last_line;
+  int last_column;
+} yyltype;
+
+# define YYLTYPE yyltype
+#endif
+
 #ifndef YYDEBUG
 # define YYDEBUG 0
 #endif
@@ -272,15 +287,15 @@ static const short yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined. */
 static const short yyrline[] =
 {
-       0,   168,   169,   170,   171,   172,   176,   177,   178,   179,
-     180,   182,   183,   185,   187,   189,   190,   192,   193,   195,
-     197,   198,   199,   200,   201,   203,   204,   206,   210,   211,
-     213,   214,   216,   217,   219,   221,   222,   223,   224,   225,
-     227,   231,   232,   234,   236,   237,   238,   240,   241,   242,
-     243,   244,   246,   250,   251,   252,   253,   254,   255,   256,
-     257,   258,   259,   261,   262,   263,   264,   265,   266,   267,
-     268,   269,   270,   272,   273,   274,   276,   277,   278,   279,
-     281,   283,   284,   288,   290,   291,   293,   294,   295,   366
+       0,   167,   168,   169,   170,   171,   175,   176,   177,   178,
+     179,   181,   182,   184,   186,   188,   189,   191,   192,   194,
+     196,   197,   198,   199,   200,   202,   203,   205,   209,   210,
+     212,   213,   215,   216,   218,   220,   221,   222,   223,   224,
+     226,   230,   231,   233,   235,   236,   237,   239,   240,   241,
+     242,   243,   245,   249,   250,   251,   252,   253,   254,   255,
+     256,   257,   258,   260,   261,   262,   263,   264,   265,   266,
+     267,   268,   269,   271,   272,   273,   275,   276,   277,   278,
+     280,   282,   283,   287,   289,   290,   292,   293,   300,   371
 };
 #endif
 
@@ -1183,295 +1198,301 @@ yyreduce:
   switch (yyn) {
 
 case 6:
-#line 176 ".\\rdodpt_rss.y"
+#line 175 ".\\rdodpt_rss.y"
 {;
     break;}
 case 7:
-#line 177 ".\\rdodpt_rss.y"
+#line 176 ".\\rdodpt_rss.y"
 {;
     break;}
 case 8:
-#line 178 ".\\rdodpt_rss.y"
+#line 177 ".\\rdodpt_rss.y"
 {;
     break;}
 case 9:
-#line 179 ".\\rdodpt_rss.y"
+#line 178 ".\\rdodpt_rss.y"
 {;
     break;}
 case 10:
-#line 180 ".\\rdodpt_rss.y"
+#line 179 ".\\rdodpt_rss.y"
 {;
     break;}
 case 11:
-#line 182 ".\\rdodpt_rss.y"
+#line 181 ".\\rdodpt_rss.y"
 {;
     break;}
 case 12:
-#line 183 ".\\rdodpt_rss.y"
+#line 182 ".\\rdodpt_rss.y"
 {;
     break;}
 case 13:
-#line 185 ".\\rdodpt_rss.y"
+#line 184 ".\\rdodpt_rss.y"
 {;
     break;}
 case 14:
-#line 187 ".\\rdodpt_rss.y"
+#line 186 ".\\rdodpt_rss.y"
 {;
     break;}
 case 15:
-#line 189 ".\\rdodpt_rss.y"
+#line 188 ".\\rdodpt_rss.y"
 {;
     break;}
 case 16:
-#line 190 ".\\rdodpt_rss.y"
+#line 189 ".\\rdodpt_rss.y"
 {;
     break;}
 case 19:
-#line 195 ".\\rdodpt_rss.y"
+#line 194 ".\\rdodpt_rss.y"
 {;
     break;}
 case 21:
-#line 198 ".\\rdodpt_rss.y"
+#line 197 ".\\rdodpt_rss.y"
 {;
     break;}
 case 22:
-#line 199 ".\\rdodpt_rss.y"
+#line 198 ".\\rdodpt_rss.y"
 {;
     break;}
 case 23:
-#line 200 ".\\rdodpt_rss.y"
+#line 199 ".\\rdodpt_rss.y"
 {;
     break;}
 case 24:
-#line 201 ".\\rdodpt_rss.y"
+#line 200 ".\\rdodpt_rss.y"
 {;
     break;}
 case 25:
-#line 203 ".\\rdodpt_rss.y"
+#line 202 ".\\rdodpt_rss.y"
 {;
     break;}
 case 26:
-#line 204 ".\\rdodpt_rss.y"
+#line 203 ".\\rdodpt_rss.y"
 {;
     break;}
 case 27:
-#line 206 ".\\rdodpt_rss.y"
+#line 205 ".\\rdodpt_rss.y"
 {;
     break;}
 case 28:
-#line 210 ".\\rdodpt_rss.y"
+#line 209 ".\\rdodpt_rss.y"
 {;
     break;}
 case 29:
-#line 211 ".\\rdodpt_rss.y"
+#line 210 ".\\rdodpt_rss.y"
 {;
     break;}
 case 30:
-#line 213 ".\\rdodpt_rss.y"
+#line 212 ".\\rdodpt_rss.y"
 {;
     break;}
 case 31:
-#line 214 ".\\rdodpt_rss.y"
+#line 213 ".\\rdodpt_rss.y"
 {;
     break;}
 case 34:
-#line 219 ".\\rdodpt_rss.y"
+#line 218 ".\\rdodpt_rss.y"
 {;
     break;}
 case 36:
-#line 222 ".\\rdodpt_rss.y"
+#line 221 ".\\rdodpt_rss.y"
 {;
     break;}
 case 37:
-#line 223 ".\\rdodpt_rss.y"
+#line 222 ".\\rdodpt_rss.y"
 {;
     break;}
 case 38:
-#line 224 ".\\rdodpt_rss.y"
+#line 223 ".\\rdodpt_rss.y"
 {;
     break;}
 case 39:
-#line 225 ".\\rdodpt_rss.y"
+#line 224 ".\\rdodpt_rss.y"
 {;
     break;}
 case 40:
-#line 227 ".\\rdodpt_rss.y"
+#line 226 ".\\rdodpt_rss.y"
 {;
     break;}
 case 41:
-#line 231 ".\\rdodpt_rss.y"
+#line 230 ".\\rdodpt_rss.y"
 {;
     break;}
 case 42:
-#line 232 ".\\rdodpt_rss.y"
+#line 231 ".\\rdodpt_rss.y"
 {;
     break;}
 case 43:
-#line 234 ".\\rdodpt_rss.y"
+#line 233 ".\\rdodpt_rss.y"
 {;
     break;}
 case 45:
-#line 237 ".\\rdodpt_rss.y"
+#line 236 ".\\rdodpt_rss.y"
 {;
     break;}
 case 46:
-#line 238 ".\\rdodpt_rss.y"
+#line 237 ".\\rdodpt_rss.y"
 {;
     break;}
 case 47:
-#line 240 ".\\rdodpt_rss.y"
+#line 239 ".\\rdodpt_rss.y"
 {;
     break;}
 case 48:
-#line 241 ".\\rdodpt_rss.y"
+#line 240 ".\\rdodpt_rss.y"
 {;
     break;}
 case 49:
-#line 242 ".\\rdodpt_rss.y"
+#line 241 ".\\rdodpt_rss.y"
 {;
     break;}
 case 50:
-#line 243 ".\\rdodpt_rss.y"
+#line 242 ".\\rdodpt_rss.y"
 {;
     break;}
 case 52:
-#line 246 ".\\rdodpt_rss.y"
+#line 245 ".\\rdodpt_rss.y"
 {;
     break;}
 case 53:
-#line 250 ".\\rdodpt_rss.y"
+#line 249 ".\\rdodpt_rss.y"
 {;
     break;}
 case 54:
-#line 251 ".\\rdodpt_rss.y"
+#line 250 ".\\rdodpt_rss.y"
 {;
     break;}
 case 55:
-#line 252 ".\\rdodpt_rss.y"
+#line 251 ".\\rdodpt_rss.y"
 {;
     break;}
 case 56:
-#line 253 ".\\rdodpt_rss.y"
+#line 252 ".\\rdodpt_rss.y"
 {;
     break;}
 case 57:
-#line 254 ".\\rdodpt_rss.y"
+#line 253 ".\\rdodpt_rss.y"
 {;
     break;}
 case 58:
-#line 255 ".\\rdodpt_rss.y"
+#line 254 ".\\rdodpt_rss.y"
 {;
     break;}
 case 59:
-#line 256 ".\\rdodpt_rss.y"
+#line 255 ".\\rdodpt_rss.y"
 {;
     break;}
 case 60:
-#line 257 ".\\rdodpt_rss.y"
+#line 256 ".\\rdodpt_rss.y"
 {;
     break;}
 case 61:
-#line 258 ".\\rdodpt_rss.y"
+#line 257 ".\\rdodpt_rss.y"
 {;
     break;}
 case 62:
-#line 259 ".\\rdodpt_rss.y"
+#line 258 ".\\rdodpt_rss.y"
 {;
     break;}
 case 63:
-#line 261 ".\\rdodpt_rss.y"
+#line 260 ".\\rdodpt_rss.y"
 {;
     break;}
 case 64:
-#line 262 ".\\rdodpt_rss.y"
+#line 261 ".\\rdodpt_rss.y"
 {;
     break;}
 case 65:
-#line 263 ".\\rdodpt_rss.y"
+#line 262 ".\\rdodpt_rss.y"
 {;
     break;}
 case 66:
-#line 264 ".\\rdodpt_rss.y"
+#line 263 ".\\rdodpt_rss.y"
 {;
     break;}
 case 67:
-#line 265 ".\\rdodpt_rss.y"
+#line 264 ".\\rdodpt_rss.y"
 {;
     break;}
 case 68:
-#line 266 ".\\rdodpt_rss.y"
+#line 265 ".\\rdodpt_rss.y"
 {;
     break;}
 case 69:
-#line 267 ".\\rdodpt_rss.y"
+#line 266 ".\\rdodpt_rss.y"
 {;
     break;}
 case 70:
-#line 268 ".\\rdodpt_rss.y"
+#line 267 ".\\rdodpt_rss.y"
 {;
     break;}
 case 71:
-#line 269 ".\\rdodpt_rss.y"
+#line 268 ".\\rdodpt_rss.y"
 {;
     break;}
 case 72:
-#line 270 ".\\rdodpt_rss.y"
+#line 269 ".\\rdodpt_rss.y"
 {;
     break;}
 case 73:
-#line 272 ".\\rdodpt_rss.y"
+#line 271 ".\\rdodpt_rss.y"
 {;
     break;}
 case 74:
-#line 273 ".\\rdodpt_rss.y"
+#line 272 ".\\rdodpt_rss.y"
 {;
     break;}
 case 75:
-#line 274 ".\\rdodpt_rss.y"
+#line 273 ".\\rdodpt_rss.y"
 {;
     break;}
 case 76:
-#line 276 ".\\rdodpt_rss.y"
+#line 275 ".\\rdodpt_rss.y"
 {;
     break;}
 case 77:
-#line 277 ".\\rdodpt_rss.y"
+#line 276 ".\\rdodpt_rss.y"
 {;
     break;}
 case 78:
-#line 278 ".\\rdodpt_rss.y"
+#line 277 ".\\rdodpt_rss.y"
 {;
     break;}
 case 79:
-#line 279 ".\\rdodpt_rss.y"
+#line 278 ".\\rdodpt_rss.y"
 {;
     break;}
 case 80:
-#line 281 ".\\rdodpt_rss.y"
+#line 280 ".\\rdodpt_rss.y"
 {;
     break;}
 case 81:
-#line 283 ".\\rdodpt_rss.y"
+#line 282 ".\\rdodpt_rss.y"
 {;
     break;}
 case 82:
-#line 284 ".\\rdodpt_rss.y"
+#line 283 ".\\rdodpt_rss.y"
 {;
     break;}
 case 83:
-#line 288 ".\\rdodpt_rss.y"
+#line 287 ".\\rdodpt_rss.y"
 {;
     break;}
 case 86:
-#line 293 ".\\rdodpt_rss.y"
+#line 292 ".\\rdodpt_rss.y"
 { TRACE( "%s\n", ((std::string *)yyvsp[0])->c_str() ); ;
     break;}
 case 87:
-#line 294 ".\\rdodpt_rss.y"
-{ currParser->error( std::string(_T("Ожидается имя ресурса")).c_str() ); ;
+#line 293 ".\\rdodpt_rss.y"
+{
+	yyloc.first_column = yylsp[0].first_column;
+	yyloc.first_line   = yylsp[0].first_line;
+	yyloc.last_column  = yylsp[0].last_column;
+	yyloc.last_line    = yylsp[0].first_column;
+	currParser->error( std::string(_T("Ожидается имя ресурса")).c_str() );
+;
     break;}
 case 88:
-#line 295 ".\\rdodpt_rss.y"
+#line 300 ".\\rdodpt_rss.y"
 {
 
 	std::string* res_name      = (std::string*)yyvsp[0];
@@ -1544,7 +1565,7 @@ case 88:
 ;
     break;}
 case 89:
-#line 366 ".\\rdodpt_rss.y"
+#line 371 ".\\rdodpt_rss.y"
 {;
     break;}
 }
@@ -1780,7 +1801,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 368 ".\\rdodpt_rss.y"
+#line 373 ".\\rdodpt_rss.y"
 
 
 }

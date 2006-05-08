@@ -37,10 +37,11 @@ int RDOFlexLexer::LexerInput( char* buf, int max_size )
 #else
 	(void) yyin->read( buf, max_size );
 
-	if ( yyin->bad() )
+	if ( yyin->bad() ) {
 		return -1;
-	else
+	} else {
 		return yyin->gcount();
+	}
 #endif
 }
 

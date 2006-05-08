@@ -1,8 +1,8 @@
 #ifndef RDOOPR_OPR
 #define RDOOPR_OPR
 
+#include "rdogramma.h"
 #include "rdoStdFuncs.h"
-
 
 namespace rdoRuntime
 {
@@ -15,7 +15,7 @@ namespace rdoParse
 {
 
 int oprparse( void* lexer );
-int oprlex( int* lpval, void* lexer );
+int oprlex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer );
 void oprerror( char* mes );
 
 class RDOPATPattern;

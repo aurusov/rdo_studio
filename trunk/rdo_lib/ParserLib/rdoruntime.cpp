@@ -662,8 +662,8 @@ RDOValue RDOCalcSeqNextByHist::calcValue(RDORuntime *sim) const
 
 RDOCalc::RDOCalc() 
 {	
-	fileToParse = currParser->fileToParse;
-	lineno = currParser->parser->lineno();
+	fileToParse = currParser->getFileToParse();
+	lineno = currParser->lexer_loc_lineno();
 	rdoParse::addCalcToRuntime(this); 
 }
 
@@ -755,7 +755,7 @@ void RDORuntime::rdoDelay(double fromTime, double toTime)
 //	config.frame = NULL;
 	config.frames.clear();
 
-	if(config.showAnimation == RDOSimulatorNS::SM_Animation)
+	if(config.showAnimation == rdosim::SM_Animation)
 	{
 		/*
 		RDOFRMFrame *frame = allFrames.at(config.currFrameToShow);
@@ -870,25 +870,9 @@ RDOValue RDOCalcCheckDiap::calcValue(RDORuntime *sim) const
 }
 
 
-void RDORuntime::error( const char *mes, const RDOCalc *calc )
+void RDORuntime::error( const char* message, const RDOCalc* calc )
 {
-/*
-	rdoModelObjects::RDOFileType ft = rdoModelObjects::PAT;
-	switch(calc->fileToParse)
-	{
-	case RTP_FILE: ft = rdoModelObjects::RTP; break;
-	case RSS_FILE: ft = rdoModelObjects::RSS; break;
-	case FUN_FILE: ft = rdoModelObjects::FUN; break;
-	case PAT_FILE: ft = rdoModelObjects::PAT; break;
-	case OPR_FILE: ft = rdoModelObjects::OPR; break;
-	case DPT_FILE: ft = rdoModelObjects::DPT; break;
-	case PMD_FILE: ft = rdoModelObjects::PMD; break;
-	case SMR1_FILE:
-	case SMR2_FILE: ft = rdoModelObjects::SMR; break;
-	case FRM_FILE: ft = rdoModelObjects::FRM; break;
-	}
-*/
-	errors.push_back(RDOSimulatorNS::RDOSyntaxError(mes, calc->lineno, calc->fileToParse));
+	errors.push_back( rdosim::RDOSyntaxError( message, -1, calc->lineno, -1, calc->fileToParse ) );
 	throw rdoParse::RDOSyntaxException("");
 }
 

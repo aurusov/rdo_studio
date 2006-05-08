@@ -13,10 +13,11 @@ static char THIS_FILE[] = __FILE__;
 namespace rdoParse 
 {
 
-int rsslex( int* lpval, void* lexer )
+int rsslex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer )
 {
-	((RDOFlexLexer*)lexer)->m_lpval = lpval;
-	return ((RDOFlexLexer*)lexer)->yylex();
+	reinterpret_cast<RDOFlexLexer*>(lexer)->m_lpval = lpval;
+	reinterpret_cast<RDOFlexLexer*>(lexer)->m_lploc = llocp;
+	return reinterpret_cast<RDOFlexLexer*>(lexer)->yylex();
 }
 void rsserror( char* mes )
 {

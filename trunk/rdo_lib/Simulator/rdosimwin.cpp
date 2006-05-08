@@ -28,7 +28,7 @@ static char THIS_FILE[] = __FILE__;
 #include "rdosmr.h"
 #include "rdofrm.h"
 
-namespace RDOSimulatorNS
+namespace rdosim
 {
 
 class RDORuntimeTracer: public RDOTrace, public RDOEndL
@@ -641,4 +641,4 @@ std::stringstream &RdoSimulator::getResults()
 }
 
 
-}// namespace RDOSimulatorNS
+} // namespace rdosim

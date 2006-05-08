@@ -144,7 +144,6 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 #include "rdoparser.h"
-#include "rdoparselex.h"
 #include "rdopat.h"
 #include "rdortp.h"
 #include "rdofun.h"
@@ -164,7 +163,7 @@ pat_list:
 			| pat_list pat_pattern;
 
 
-pat_header:	Pattern IDENTIF_COLON operation			pat_trace	{ $$ = (int)(new RDOPATPatternOperation(	(std::string *)$2, $4 != 0, currParser->patternCounter++)); }
+pat_header:	Pattern IDENTIF_COLON operation			pat_trace	{ $$ = (int)(new RDOPATPatternOperation(	(std::string *)$2, $4 != 0, currParser->patternCounter++)); @$; }
 			|	Pattern IDENTIF_COLON irregular_event	pat_trace	{ $$ = (int)(new RDOPATPatternEvent(		(std::string *)$2, $4 != 0, currParser->patternCounter++)); }
 			|	Pattern IDENTIF_COLON rule_keyword		pat_trace	{ $$ = (int)(new RDOPATPatternRule(			(std::string *)$2, $4 != 0, currParser->patternCounter++)); }
 			|	Pattern IDENTIF_COLON keyboard			pat_trace	{ $$ = (int)(new RDOPATPatternKeyboard(	(std::string *)$2, $4 != 0, currParser->patternCounter++)); };

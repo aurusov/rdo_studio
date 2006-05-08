@@ -24,7 +24,7 @@ namespace rdoParse {
 	class RDOParser ;
 }
 
-namespace RDOSimulatorNS
+namespace rdosim
 {
 
 class RdoSimulator
@@ -100,6 +100,6 @@ public:
 	friend void tracerCallBack(std::string *newString, void *param);
 };
 
-} // namespace RDOSimulatorNS
+} // namespace rdosim
 
-#endif //RDO_SIMULATOR_INTERFACE__
+#endif // RDO_SIMULATOR_INTERFACE__

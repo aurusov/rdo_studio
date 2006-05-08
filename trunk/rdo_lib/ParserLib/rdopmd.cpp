@@ -17,10 +17,11 @@ static char THIS_FILE[] = __FILE__;
 namespace rdoParse 
 {
 
-int pmdlex( int* lpval, void* lexer )
+int pmdlex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer )
 {
-	((RDOFlexLexer*)lexer)->m_lpval = lpval;
-	return ((RDOFlexLexer*)lexer)->yylex();
+	reinterpret_cast<RDOFlexLexer*>(lexer)->m_lpval = lpval;
+	reinterpret_cast<RDOFlexLexer*>(lexer)->m_lploc = llocp;
+	return reinterpret_cast<RDOFlexLexer*>(lexer)->yylex();
 }
 void pmderror( char* mes )
 {

@@ -16,10 +16,11 @@ static char THIS_FILE[] = __FILE__;
 namespace rdoParse 
 {
 
-int smr1lex( int* lpval, void* lexer )
+int smr1lex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer )
 {
-	((RDOFlexLexer*)lexer)->m_lpval = lpval;
-	return ((RDOFlexLexer*)lexer)->yylex();
+	reinterpret_cast<RDOFlexLexer*>(lexer)->m_lpval = lpval;
+	reinterpret_cast<RDOFlexLexer*>(lexer)->m_lploc = llocp;
+	return reinterpret_cast<RDOFlexLexer*>(lexer)->yylex();
 }
 void smr1error( char* mes )
 {
@@ -27,10 +28,11 @@ void smr1error( char* mes )
 //	rdoParse::currParser->error( mes );
 }
 
-int smr2lex( int* lpval, void* lexer )
+int smr2lex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer )
 {
-	((RDOFlexLexer*)lexer)->m_lpval = lpval;
-	return ((RDOFlexLexer*)lexer)->yylex();
+	reinterpret_cast<RDOFlexLexer*>(lexer)->m_lpval = lpval;
+	reinterpret_cast<RDOFlexLexer*>(lexer)->m_lploc = llocp;
+	return reinterpret_cast<RDOFlexLexer*>(lexer)->yylex();
 }
 void smr2error( char* mes )
 {
@@ -46,7 +48,7 @@ RDOSMR::RDOSMR(std::string *_modelName)
 	statisticFileName(NULL),
 	resultsFileName(NULL),
 	traceFileName(NULL),
-	showMode(RDOSimulatorNS::SM_NoShow),
+	showMode(rdosim::SM_NoShow),
 	frameNumber(1),
 	showRate(NULL),
 	runStartTime(NULL),
@@ -75,7 +77,7 @@ void RDOSMR::setValue(const char *descrName, double* RDOSMR::*pMem, double* newV
 	this->*pMem = newValue;
 }
 
-void RDOSMR::setShowMode(RDOSimulatorNS::ShowMode sm)
+void RDOSMR::setShowMode(rdosim::ShowMode sm)
 {
 	if(showModeSet)
 		currParser->error("Second appearence of Show_mode descriptor");
