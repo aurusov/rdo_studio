@@ -30,6 +30,7 @@ public:
 	virtual void lexer_loc_init();
 	virtual void lexer_loc_action();
 	virtual void lexer_loc_push( bool erase = false );
+	virtual void lexer_loc_push( void* data, bool erase = false );
 	virtual void lexer_loc_pop();
 	virtual int  lexer_loc_lineno();
 };

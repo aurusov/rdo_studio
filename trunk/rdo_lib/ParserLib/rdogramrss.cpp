@@ -1111,7 +1111,7 @@ case 6:
 	yyloc;
 	if ( currParser->lastRSSResource && currParser->lastRSSResource->currParam != currParser->lastRSSResource->getType()->getParams().end() ) {
 		currParser->lexer_loc_pop();
-		currParser->error( 1, 20, 30 );
+//		currParser->error( rdosim::RDOSyntaxError::UNKNOWN, 20, 30 );
 		currParser->error( _T("Заданы не все параметры ресурса: " + *currParser->lastRSSResource->getName()) );
 	}
 // Перенес в отдельный парсер RSS_POST, т.к. есть еще парсер DPT_RSS
@@ -1137,7 +1137,7 @@ case 9:
 case 12:
 #line 215 ".\\rdorss.y"
 {
-							currParser->lexer_loc_push( true );
+							currParser->lexer_loc_backup();
 							if(currParser->lastRSSResource->currParam == currParser->lastRSSResource->getType()->getParams().end())
 								currParser->error("Too many parameters");
 							try
@@ -1155,7 +1155,7 @@ case 12:
 case 13:
 #line 231 ".\\rdorss.y"
 {
-								currParser->lexer_loc_push( true );
+								currParser->lexer_loc_backup();
 								if(currParser->lastRSSResource->currParam == currParser->lastRSSResource->getType()->getParams().end())
 									currParser->error("Too many parameters");
 								try
@@ -1173,7 +1173,7 @@ case 13:
 case 14:
 #line 246 ".\\rdorss.y"
 {
-								currParser->lexer_loc_push( true );
+								currParser->lexer_loc_backup();
 								if(currParser->lastRSSResource->currParam == currParser->lastRSSResource->getType()->getParams().end())
 									currParser->error("Too many parameters");
 								try
@@ -1191,7 +1191,7 @@ case 14:
 case 15:
 #line 262 ".\\rdorss.y"
 {
-								currParser->lexer_loc_push( true );
+								currParser->lexer_loc_backup();
 								if(currParser->lastRSSResource->currParam == currParser->lastRSSResource->getType()->getParams().end())
 									currParser->error("Too many parameters");
 								try

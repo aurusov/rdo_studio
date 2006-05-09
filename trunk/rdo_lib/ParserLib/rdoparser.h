@@ -107,8 +107,8 @@ public:
 	void parse( int files = rdoModelObjects::obALL );
 	void parse( rdoModelObjects::RDOParseType file );
 	void parse( rdoModelObjects::RDOParseType file, std::istream& stream );
-	void error( int error_code, ... );
-	void error( const char* message, int error_code = -1 );
+	void error( rdosim::RDOSyntaxError::ErrorCode error_code, ... );
+	void error( const char* message, rdosim::RDOSyntaxError::ErrorCode error_code = rdosim::RDOSyntaxError::UNKNOWN );
 	void error( const std::string& message ) { error( message.c_str() ); }
 	void addConstant(RDORTPParamDesc *const _cons);
 	const RDOFUNConstant *RDOParser::findFUNConst(const std::string *const _cons) const;
@@ -127,13 +127,16 @@ public:
 		return val;
 	}
 
-	rdoModelObjects::RDOFileType getFileToParse() const { return parser ? parser->type : rdoModelObjects::PAT; }
-	void lexer_setvalue( int val )                      { if ( parser ) parser->lexer_setvalue( val );         }
-	void lexer_loc_init() const                         { if ( parser ) parser->lexer_loc_init();              }
-	void lexer_loc_action() const                       { if ( parser ) parser->lexer_loc_action();            }
-	void lexer_loc_push( bool erase = false ) const     { if ( parser ) parser->lexer_loc_push( erase );       }
-	void lexer_loc_pop() const                          { if ( parser ) parser->lexer_loc_pop();               }
-	int  lexer_loc_lineno() const                       { return parser ? parser->lexer_loc_lineno() : -1;     }
+	rdoModelObjects::RDOFileType getFileToParse() const         { return parser ? parser->type : rdoModelObjects::PAT; }
+	void lexer_setvalue( int val ) const                        { if ( parser ) parser->lexer_setvalue( val );         }
+	void lexer_loc_init() const                                 { if ( parser ) parser->lexer_loc_init();              }
+	void lexer_loc_action() const                               { if ( parser ) parser->lexer_loc_action();            }
+	void lexer_loc_push( bool erase = false ) const             { if ( parser ) parser->lexer_loc_push( erase );       }
+	void lexer_loc_push( void* data, bool erase = false ) const { if ( parser ) parser->lexer_loc_push( data, erase ); }
+	void lexer_loc_backup() const                               { if ( parser ) parser->lexer_loc_backup();            }
+	void lexer_loc_backup( void* data ) const                   { if ( parser ) parser->lexer_loc_backup( data );      }
+	void lexer_loc_pop() const                                  { if ( parser ) parser->lexer_loc_pop();               }
+	int  lexer_loc_lineno() const                               { return parser ? parser->lexer_loc_lineno() : -1;     }
 };
 
 extern RDOParser *currParser;

@@ -295,7 +295,7 @@ static const short yyrline[] =
      242,   243,   245,   249,   250,   251,   252,   253,   254,   255,
      256,   257,   258,   260,   261,   262,   263,   264,   265,   266,
      267,   268,   269,   271,   272,   273,   275,   276,   277,   278,
-     280,   282,   283,   287,   289,   290,   292,   293,   300,   371
+     280,   282,   283,   287,   289,   290,   292,   293,   300,   373
 };
 #endif
 
@@ -1561,11 +1561,13 @@ case 88:
 		RDOValue state_val = rtp_param->getType()->getRSSDefaultValue();
 		res->addValue( state_val );
 		res->currParam++;
+	} else {
+		TRACE( "q" );
 	}
 ;
     break;}
 case 89:
-#line 371 ".\\rdodpt_rss.y"
+#line 373 ".\\rdodpt_rss.y"
 {;
     break;}
 }
@@ -1801,7 +1803,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 373 ".\\rdodpt_rss.y"
+#line 375 ".\\rdodpt_rss.y"
 
 
 }

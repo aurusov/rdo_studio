@@ -841,7 +841,7 @@ BuildCmds= \
 InputPath=.\rdortp.y
 
 BuildCmds= \
-	..\System\bison.exe --defines=rdogramma.h -prtp --skeleton=..\System\bison.simple -ordogramrtp.cpp $(InputPath)
+	..\System\bison.exe -v --defines=rdogramma.h -prtp --skeleton=..\System\bison.simple -ordogramrtp.cpp $(InputPath)
 
 "rdogramrtp.cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
    $(BuildCmds)

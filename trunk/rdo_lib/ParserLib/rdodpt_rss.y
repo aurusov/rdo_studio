@@ -365,6 +365,8 @@ dpt_process_line:	IDENTIF	{ TRACE( "%s\n", ((std::string *)$1)->c_str() ); }
 		RDOValue state_val = rtp_param->getType()->getRSSDefaultValue();
 		res->addValue( state_val );
 		res->currParam++;
+	} else {
+		TRACE( "q" );
 	}
 };
 

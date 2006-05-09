@@ -21,13 +21,13 @@ int rtplex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer )
 }
 void rtperror( char* mes )
 {
-	rdoParse::currParser->error( mes );
+	return;
 }
 
 void RDORTPEnum::add(const std::string *const next) 
 { 
-	if(std::find_if(enumVals.begin(), enumVals.end(), comparePointers<std::string>(next)) != enumVals.end())
-		currParser->error(("Second appearance of the same value name: " + *next).c_str());
+	if ( std::find_if(enumVals.begin(), enumVals.end(), comparePointers<std::string>(next)) != enumVals.end() )
+		currParser->error( rdosim::RDOSyntaxError::RTP_SECOND_ENUM_VALUE, next->c_str() );
 
 	enumVals.push_back(next); 
 }
@@ -37,21 +37,21 @@ int RDORTPEnum::findValue(const std::string *const val) const
 	std::vector<const std::string *>::const_iterator it = 
 		std::find_if(enumVals.begin(), enumVals.end(), comparePointers<std::string>(val));
 
-	if(it == enumVals.end())
-		currParser->error("Wrong parameter value: " + *val);
+	if ( it == enumVals.end() ) currParser->error( rdosim::RDOSyntaxError::RTP_WRONG_ENUM_PARAM_VALUE, val->c_str() );
 
 //	return (it - enumVals.begin()) + 1;
 	return it - enumVals.begin();
 }
 
-void RDORTPResType::add(const RDORTPParamDesc *const _param)
+void RDORTPResType::add( const RDORTPParamDesc* const _param )
 {
-	if(findRTPParam(_param->getName()))
-		currParser->error("Second appearance of the same parameter name: " + *(_param->getName()));
-
-	params.push_back(_param); 
-
+	if ( findRTPParam( _param->getName() ) ) {
+		currParser->lexer_loc_pop();
+		currParser->error( rdosim::RDOSyntaxError::RTP_SECOND_PARAM_NAME, _param->getName()->c_str() );
+	}
+	params.push_back( _param );
 }
+
 const RDORTPParamDesc *RDORTPResType::findRTPParam(const std::string *const param) const
 {
 	std::vector<const RDORTPParamDesc *>::const_iterator it = std::find_if(params.begin(), 
@@ -120,23 +120,26 @@ const RDORTPResParam *RDORTPResParam::constructSuchAs() const
 { 
 	return this; 
 }
-const RDORTPResParam *RDORTPResParam::constructSuchAs(const int defVal) const
+const RDORTPResParam* RDORTPResParam::constructSuchAs( const int defVal ) const
 {
-	std::ostringstream str;
-	str << "Invalid default value: " << defVal;
-	currParser->error(str.str().c_str());
+//	std::ostringstream str;
+//	str << "Invalid default value: " << defVal;
+//	currParser->error(str.str().c_str());
+	currParser->error( rdosim::RDOSyntaxError::RTP_INVALID_DEFVAULT_INT_SUCHAS, defVal );
 	return NULL;	// unreachable code...
 }
-const RDORTPResParam *RDORTPResParam::constructSuchAs(const double *const defVal) const
+const RDORTPResParam* RDORTPResParam::constructSuchAs( const double* const defVal ) const
 {
-	std::ostringstream str;
-	str << "Invalid default value: " << *defVal;
-	currParser->error(str.str().c_str());
+//	std::ostringstream str;
+//	str << "Invalid default value: " << *defVal;
+//	currParser->error(str.str().c_str());
+	currParser->error( rdosim::RDOSyntaxError::RTP_INVALID_DEFVAULT_REAL_SUCHAS, *defVal );
 	return NULL;	// unreachable code...
 }
-const RDORTPResParam *RDORTPResParam::constructSuchAs(const std::string *const defVal) const 
+const RDORTPResParam* RDORTPResParam::constructSuchAs( const std::string* const defVal ) const
 {
-	currParser->error(("Invalid default value: " + *defVal).c_str());
+//	currParser->error(("Invalid default value: " + *defVal).c_str());
+	currParser->error( rdosim::RDOSyntaxError::RTP_INVALID_DEFVAULT_ENUM_SUCHAS, defVal->c_str() );
 	return NULL;	// unreachable code...
 }
 

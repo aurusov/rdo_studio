@@ -144,7 +144,6 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 #include "rdoparser.h"
-//#include "rdoparselex.h"
 #include "rdortp.h"
 
 namespace rdoParse
@@ -154,13 +153,14 @@ namespace rdoParse
 %%
 
 rtp_list:
-         | rtp_list rtp_res_type;
+         | rtp_list rtp_res_type
+		 | error {
+			currParser->error( rdosim::RDOSyntaxError::UNKNOWN );
+		 };
 
 rtp_res_type_hdr:	Resource_type IDENTIF_COLON rtp_vid_res {
-	@$;
 	std::string *name = (std::string *)$2;
-	if(currParser->findRTPResType(name))
-		currParser->error(("Second appearance of the same resource type : " + *(name)).c_str());
+	if( currParser->findRTPResType(name) ) currParser->error( rdosim::RDOSyntaxError::RTP_SECOND_RES_TYPE, name->c_str() );
 
 	RDORTPResType *res = new RDORTPResType(name, $3 != 0, currParser->resourceTypeCounter++);
 	currParser->allRTPResType.push_back(res);
@@ -170,7 +170,7 @@ rtp_res_type_hdr:	Resource_type IDENTIF_COLON rtp_vid_res {
 
 rtp_res_type:	rtp_res_type_hdr Parameters rtp_body End
 				| rtp_res_type_hdr {
-	currParser->error( _T("Ожидается ключевое слово $Parameters") );
+	currParser->error( rdosim::RDOSyntaxError::RTP_WAITING_FOR_PARAMS_KW );
 };
 
 rtp_vid_res: permanent	{ $$ = 1; }
@@ -179,90 +179,112 @@ rtp_vid_res: permanent	{ $$ = 1; }
 rtp_body:			
          |  rtp_body rtp_param_desc		{
 							RDORTPParamDesc *param = (RDORTPParamDesc*)$2;
-							currParser->lastRTPResType->add(param);
-	@$.first_column = @1.first_column;
+							currParser->lastRTPResType->add( param );
 						};
 
+rtp_param_desc: IDENTIF_COLON rtp_param_type {
+					currParser->lexer_loc_backup( &(@1) );
+					std::string *name = (std::string *)$1;
+					RDORTPResParam *parType = (RDORTPResParam *)$2;
+					RDORTPParamDesc *param = new RDORTPParamDesc(name, parType);
+					currParser->allRTPParamDesc.push_back(param);
+					$$ = (int)param;
+				};
 
-rtp_param_desc: IDENTIF_COLON rtp_param_type	{
-						std::string *name = (std::string *)$1;
-						RDORTPResParam *parType = (RDORTPResParam *)$2;
-						RDORTPParamDesc *param = new RDORTPParamDesc(name, parType);
-						currParser->allRTPParamDesc.push_back(param);
-						$$ = (int)param;
-					};
-         
 rtp_enum_default_val:	{	$$ = (int)(new RDORTPEnumDefVal()); }
          | '=' IDENTIF	{	$$ = (int)(new RDORTPEnumDefVal((std::string *)$2)); };
 
 rtp_real_default_val:	{	$$ = (int)(new RDORTPRealDefVal());	}
          | '=' REAL_CONST {$$ = (int)(new RDORTPRealDefVal(*((double *)$2)));	};
 
-rtp_int_default_val:	{	$$ = (int)(new RDORTPIntDefVal());	}
-         | '=' INT_CONST	{	$$ = (int)(new RDORTPIntDefVal($2)); };
+rtp_int_default_val:	/* empty */ {
+							$$ = (int)(new RDORTPIntDefVal());
+						}
+						| '=' INT_CONST {
+							$$ = (int)(new RDORTPIntDefVal($2));
+						}
+						| '=' REAL_CONST {
+							currParser->error( rdosim::RDOSyntaxError::RTP_INVALID_DEFVAULT_INT_AS_REAL );
+						}
+						| error {
+							currParser->error( rdosim::RDOSyntaxError::RTP_INVALID_DEFVAULT_INT );
+						};
 
-rtp_param_type: integer rtp_int_diap rtp_int_default_val  { 
-                                                RDORTPIntDiap *diap = (RDORTPIntDiap *)$2;
-                                                RDORTPIntDefVal *dv = (RDORTPIntDefVal *)$3;
-                                                RDORTPIntResParam *rp = new RDORTPIntResParam(diap, dv);
-                                                $$ = (int)rp;
-															}
-                   | real rtp_real_diap  rtp_real_default_val		{ 
-                                                RDORTPRealDiap *diap = (RDORTPRealDiap *)$2;
-                                                RDORTPRealDefVal *dv = (RDORTPRealDefVal *)$3;
-                                                RDORTPRealResParam *rp = new RDORTPRealResParam(diap, dv);
-                                                $$ = (int)rp;
-															}
+rtp_param_type:	integer rtp_int_diap rtp_int_default_val {
+					RDORTPIntDiap *diap = (RDORTPIntDiap *)$2;
+					RDORTPIntDefVal *dv = (RDORTPIntDefVal *)$3;
+					RDORTPIntResParam *rp = new RDORTPIntResParam(diap, dv);
+					$$ = (int)rp;
+				}
+				| integer '[' REAL_CONST dblpoint REAL_CONST ']' {
+					currParser->error( rdosim::RDOSyntaxError::RTP_INVALID_INT_RANGE_REAL );
+				}
+				| integer error {
+					currParser->error( rdosim::RDOSyntaxError::RTP_WAITING_FOR_EQ_AFTER, "integer" );
+				}
+				| real rtp_real_diap  rtp_real_default_val {
+					RDORTPRealDiap *diap = (RDORTPRealDiap *)$2;
+					RDORTPRealDefVal *dv = (RDORTPRealDefVal *)$3;
+					RDORTPRealResParam *rp = new RDORTPRealResParam(diap, dv);
+					$$ = (int)rp;
+				}
+				| rtp_enum rtp_enum_default_val {
+					RDORTPEnum *enu = (RDORTPEnum *)$1;
+					RDORTPEnumDefVal *dv = (RDORTPEnumDefVal *)$2;
+					if(dv->exist)
+						enu->findValue(dv->value);	 // if no value - Syntax exception will be thrown
+					RDORTPEnumResParam *rp = new RDORTPEnumResParam(enu, dv);
+					$$ = (int)rp;
+				}
+				| rtp_such_as {
+					RDORTPParamDesc *desc = (RDORTPParamDesc *)$1;
+					$$ = (int)desc->getType()->constructSuchAs();
+				}
+				| rtp_such_as	'=' INT_CONST {
+					RDORTPParamDesc *desc = (RDORTPParamDesc *)$1;
+					$$ = (int)desc->getType()->constructSuchAs((int)$3);
+				}
+				| rtp_such_as	'=' REAL_CONST {
+					RDORTPParamDesc *desc = (RDORTPParamDesc *)$1;
+					$$ = (int)desc->getType()->constructSuchAs((double *)$3);
+				}
+				| rtp_such_as	'=' IDENTIF {
+					RDORTPParamDesc *desc = (RDORTPParamDesc *)$1;
+					$$ = (int)desc->getType()->constructSuchAs((std::string *)$3);
+				};
 
-                   | rtp_enum rtp_enum_default_val		{ 
-                                                RDORTPEnum *enu = (RDORTPEnum *)$1;
-                                                RDORTPEnumDefVal *dv = (RDORTPEnumDefVal *)$2;
-																if(dv->exist)
-																	enu->findValue(dv->value);	 // if no value - Syntax exception will be thrown
-                                                RDORTPEnumResParam *rp = new RDORTPEnumResParam(enu, dv);
-                                                $$ = (int)rp;
-															}
 
-                   | rtp_such_as		{
-											RDORTPParamDesc *desc = (RDORTPParamDesc *)$1;
-											$$ = (int)desc->getType()->constructSuchAs();
-										}
-                   | rtp_such_as	'=' INT_CONST	{
-											RDORTPParamDesc *desc = (RDORTPParamDesc *)$1;
-											$$ = (int)desc->getType()->constructSuchAs((int)$3);
-										}
-                   | rtp_such_as	'=' REAL_CONST	{
-											RDORTPParamDesc *desc = (RDORTPParamDesc *)$1;
-											$$ = (int)desc->getType()->constructSuchAs((double *)$3);
-										}
-                   | rtp_such_as	'=' IDENTIF	{
-											RDORTPParamDesc *desc = (RDORTPParamDesc *)$1;
-											$$ = (int)desc->getType()->constructSuchAs((std::string *)$3);
-										};
+rtp_int_diap:	/* empty */ {
+					RDORTPIntDiap *diap = new RDORTPIntDiap();
+					$$ = (int)diap;
+				}
+				| '[' INT_CONST dblpoint INT_CONST ']' {
+					RDORTPIntDiap *diap = new RDORTPIntDiap($2, $4);
+					$$ = (int)diap;
+				}
+				| '[' error {
+					currParser->error( rdosim::RDOSyntaxError::RTP_INVALID_RANGE );
+				};
 
-
-rtp_int_diap:	{
-						RDORTPIntDiap *diap = new RDORTPIntDiap();
-						$$ = (int)diap;
-					}
-         | '[' INT_CONST dblpoint INT_CONST ']' {
-						RDORTPIntDiap *diap = new RDORTPIntDiap($2, $4);
-						$$ = (int)diap;
-					}
-					;
-
-rtp_real_diap: {
-						RDORTPRealDiap *diap = new RDORTPRealDiap();
-						$$ = (int)diap;
-					}
-         | '[' REAL_CONST dblpoint REAL_CONST ']'	{
-						double min = *((double *)$2);
-						double max = *((double *)$4);
-						RDORTPRealDiap *diap = new RDORTPRealDiap(min, max);
-						$$ = (int)diap;
-					}
-					;
-
+rtp_real_diap:	/* empty */ {
+					RDORTPRealDiap *diap = new RDORTPRealDiap();
+					$$ = (int)diap;
+				}
+				| '[' REAL_CONST dblpoint REAL_CONST ']' {
+					double min = *((double *)$2);
+					double max = *((double *)$4);
+					RDORTPRealDiap *diap = new RDORTPRealDiap(min, max);
+					$$ = (int)diap;
+				}
+				| '[' INT_CONST dblpoint INT_CONST ']' {
+					double min = $2;
+					double max = $4;
+					RDORTPRealDiap *diap = new RDORTPRealDiap(min, max);
+					$$ = (int)diap;
+				}
+				| '[' error {
+					currParser->error( rdosim::RDOSyntaxError::RTP_INVALID_RANGE );
+				};
 
 rtp_enum:   '(' rtp_enum_list ')'	{ $$ = $2; };
          
@@ -281,12 +303,10 @@ rtp_such_as:   such_as IDENTIF '.' IDENTIF {
 							std::string *type = (std::string *)$2;
 							std::string *param = (std::string *)$4;
 							const RDORTPResType *const rt = currParser->findRTPResType(type);
-							if(!rt)
-								currParser->error(("Invalid resource type in such_as: " + *type).c_str());
+							if( !rt ) currParser->error( rdosim::RDOSyntaxError::RTP_INVALID_SUCHAS_RES_TYPE, type->c_str() );
 
 							const RDORTPParamDesc *const rp = rt->findRTPParam(param);
-							if(!rp)
-								currParser->error(("Invalid resource parameter in such_as: " + *param).c_str());
+							if( !rp ) currParser->error( rdosim::RDOSyntaxError::RTP_INVALID_SUCHAS_PARAM, type->c_str(), param->c_str() );
 								
 							$$ = (int)rp;
 						};

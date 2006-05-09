@@ -13,6 +13,7 @@ static char THIS_FILE[] = __FILE__;
 #include "rdofun.h"
 #include "rdorss.h"
 #include "rdodpt.h"
+#include "rdocommon.h"
 
 namespace rdoParse 
 {
@@ -149,21 +150,18 @@ void RDOParser::parse( rdoModelObjects::RDOParseType file, std::istream& stream 
 	}
 }
 
-void RDOParser::error( int error_code, ... )
+void RDOParser::error( rdosim::RDOSyntaxError::ErrorCode error_code, ... )
 {
 	va_list params;
 	va_start( params, error_code );
-	std::string str = "";
-	switch ( error_code ) {
-		case 1: str = rdo::format( 10, params ); break;
-	}
+	std::string str = rdosim::RDOSyntaxError::getMessage( error_code, params );
 	va_end( params );
 	error( str.c_str() );
 }
 
-void RDOParser::error( const char* message, int error_code ) 
+void RDOParser::error( const char* message, rdosim::RDOSyntaxError::ErrorCode error_code ) 
 {
-	errors.push_back( rdosim::RDOSyntaxError( message, error_code, parser ? parser->lexer_loc_lineno() : -1, -1, getFileToParse() ) );
+	errors.push_back( rdosim::RDOSyntaxError( error_code, message, parser ? parser->lexer_loc_lineno() : -1, -1, getFileToParse() ) );
 	throw rdoParse::RDOSyntaxException( "" );
 }
 

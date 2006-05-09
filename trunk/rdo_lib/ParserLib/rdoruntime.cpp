@@ -872,7 +872,7 @@ RDOValue RDOCalcCheckDiap::calcValue(RDORuntime *sim) const
 
 void RDORuntime::error( const char* message, const RDOCalc* calc )
 {
-	errors.push_back( rdosim::RDOSyntaxError( message, -1, calc->lineno, -1, calc->fileToParse ) );
+	errors.push_back( rdosim::RDOSyntaxError( rdosim::RDOSyntaxError::UNKNOWN, message, calc->lineno, -1, calc->fileToParse ) );
 	throw rdoParse::RDOSyntaxException("");
 }
 

@@ -73,19 +73,41 @@ enum ShowMode
 
 struct RDOSyntaxError
 {
+	enum ErrorCode {
+		UNKNOWN                          = 1,
+		RTP_SECOND_RES_TYPE              = 1001, // Second appearance of the same resource type: %s-type_name
+		RTP_WAITING_FOR_PARAMS_KW        = 1002, // Waiting for $Parameters keyword
+		RTP_INVALID_SUCHAS_RES_TYPE      = 1003, // Invalid resource type in such_as: %s-type_name
+		RTP_INVALID_SUCHAS_PARAM         = 1004, // Invalid resource parameter in such_as: %s-type_name.%s-param_name
+		RTP_SECOND_ENUM_VALUE            = 1005, // Second appearance of the same value name: %s-enum_value
+		RTP_WRONG_ENUM_PARAM_VALUE       = 1006, // Wrong enumerate parameter value: %s-param_value
+		RTP_SECOND_PARAM_NAME            = 1007, // Second appearance of the same parameter name: %s-param_name
+		RTP_INVALID_DEFVAULT_INT         = 1008, // Invalid default value
+		RTP_INVALID_DEFVAULT_INT_AS_REAL = 1009, // Invalid default value
+		RTP_INVALID_DEFVAULT_REAL        = 1010, // Invalid default value
+		RTP_INVALID_DEFVAULT_ENUM        = 1011, // Invalid default value
+		RTP_INVALID_DEFVAULT_INT_SUCHAS  = 1012, // Invalid default value: %d-value
+		RTP_INVALID_DEFVAULT_REAL_SUCHAS = 1013, // Invalid default value: %f-value
+		RTP_INVALID_DEFVAULT_ENUM_SUCHAS = 1014, // Invalid default value: %s-value
+		RTP_INVALID_RANGE                = 1015, // Invalid range
+		RTP_INVALID_INT_RANGE_REAL       = 1016, // Invalid integer range: using real values
+		RTP_WAITING_FOR_EQ_AFTER         = 1017, // Waiting for '=' after %s-after_value
+		qq
+	};
+	ErrorCode   error_code;
 	std::string message;
-	int error_code;
-	int error_line;
-	int error_pos;
+	int         error_line;
+	int         error_pos;
 	rdoModelObjects::RDOFileType file;
-	RDOSyntaxError( const std::string& _message, int _error_code, int _error_line, int _error_pos, rdoModelObjects::RDOFileType _file ):
-		message( _message ),
+	RDOSyntaxError( ErrorCode _error_code, const std::string& _message, int _error_line, int _error_pos, rdoModelObjects::RDOFileType _file ):
 		error_code( _error_code ),
+		message( _message ),
 		error_line( _error_line ),
 		error_pos( _error_pos ),
 		file( _file )
 	{
 	}
+	static std::string getMessage( ErrorCode _error_code, va_list& params );
 };
 
 struct RDOFrameElement
