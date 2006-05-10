@@ -1117,7 +1117,7 @@ BEGIN
         MENUITEM "&Поиск на графике",           ID_CHART_FINDINCHARTS
         MENUITEM "&Добавить на новый график",   ID_CHART_ADDTONEWCHART
         MENUITEM SEPARATOR
-        MENUITEM "&Схлопнуть 'время'",          ID_CHART_TIMEWRAP
+        MENUITEM "'&Схлопнуть' время",          ID_CHART_TIMEWRAP
         MENUITEM SEPARATOR
         MENUITEM "&Настройки",                  ID_CHART_OPTIONS
     END
@@ -1285,8 +1285,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,8,0,277
- PRODUCTVERSION 0,8,0,277
+ FILEVERSION 0,8,0,278
+ PRODUCTVERSION 0,8,0,278
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -1304,14 +1304,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "RAO studio\0"
-            VALUE "FileVersion", "0, 8, 0, 277\0"
+            VALUE "FileVersion", "0, 8, 0, 278\0"
             VALUE "InternalName", "RAO-Studio\0"
             VALUE "LegalCopyright", "Copyright (C) 2003-2006\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "RAO-Studio.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "RAO-Studio\0"
-            VALUE "ProductVersion", "0, 8, 0, 277\0"
+            VALUE "ProductVersion", "0, 8, 0, 278\0"
             VALUE "SpecialBuild", "\0"
         END
     END
@@ -1627,7 +1627,7 @@ BEGIN
                             "{ comments }\n$Pattern pattern_name : operation trace\n$Relevant_resources\n  rel_res2  : res_type2     Keep    Keep\n  rel_res1  : res_type1     Create  NoChange\n$Time = Abs(rel_res2.par1 - rel_res2.par3)\n{...}\n$End\n\ntext [ 10, 20, ... = 'text' ]\n\n$Re levant_resources"
     IDS_COLORSTYLE_BUILD_SAMPLE1 "Компиляция модели..."
     IDS_COLORSTYLE_BUILD_SAMPLE2 "Неправильное значение параметра: 4"
-    IDS_COLORSTYLE_BUILD_SAMPLE3 "найдено ошибок: 1."
+    IDS_COLORSTYLE_BUILD_SAMPLE3 "найдено ошибок: 1"
     IDS_COLORSTYLE_DEBUG_SAMPLE 
                             "Получение структуры модели...ok\nМодель запущена"
 END
@@ -1703,7 +1703,7 @@ BEGIN
     IDS_MODEL_PMDS          "описание показателей"
     IDS_MODEL_RUNTIMEERROR  "Ошибка прогона..."
     IDS_MODEL_BUILDING_BEGIN "Компиляция..."
-    IDS_MODEL_BUILDING_RESULTS "найдено ошибок: %d."
+    IDS_MODEL_BUILDING_RESULTS "найдено ошибок: %d"
     IDS_MODEL_RUNNING_BEGIN "Запуск..."
     IDS_MODEL_RESOURCE_LOADING_BEGIN "Загрузка ресурсов для анимации...\n"
     IDS_MODEL_RESOURCE_LOADING_NAME "Загрузка %s..."
@@ -1753,11 +1753,10 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_ER_UNKNOWN          "Неизвестная ошибка, извините. Если у Вас есть желание, то пример с ошибкой и её логическое объяснение высылайте на http://rdo.rk9.bmstu.ru/bugs в категорию rdo-parser."
-    IDS_ER_RTP_SECOND_RES_TYPE "Тип уже существует: %s"
+    IDS_ER_UNKNOWN          "Неизвестная синтаксическая ошибка. Извинте. Если у Вас есть желание, то пример с ошибкой и её возможное объяснение высылайте на http://rdo.rk9.bmstu.ru/bugs в категорию rdo-parser."
+    IDS_ER_RTP_SECOND_RES_TYPE "Тип ресурса уже существует: %s"
     IDS_ER_RTP_WAITING_FOR_PARAMS_KW "Ожидается ключевое слово $Parameters"
-    IDS_ER_RTP_INVALID_SUCHAS_RES_TYPE 
-                            "Ссылка на неизвестный типа ресурса: %s"
+    IDS_ER_RTP_INVALID_SUCHAS_RES_TYPE "Ссылка на неизвестный тип ресурса: %s"
     IDS_ER_RTP_INVALID_SUCHAS_PARAM 
                             "Ссылка на неизвестный параметр ресурса: %s.%s"
     IDS_ER_RTP_SECOND_ENUM_VALUE 
@@ -1783,8 +1782,15 @@ BEGIN
     IDS_ER_RTP_INVALID_RANGE "Диапазон задан неверно"
     IDS_ER_RTP_INVALID_INT_RANGE_REAL 
                             "Требуется целочисленный диапазон, указан вещественный"
-    IDS_ER_RTP_WAITING_FOR_EQ_AFTER 
-                            "После %s ожидается '=', если требуется указать значение по-умолчанию"
+    IDS_ER_RTP_WAITING_FOR_INT_PARAM_END 
+                            "Ожидается окончание описания целочисленного параметра, например, зачение по-умолчанию"
+    IDS_ER_RTP_WAITING_FOR_REAL_PARAM_END 
+                            "Ожидается окончание описания вещественного параметра, например, зачение по-умолчанию"
+    IDS_ER_RTP_WAITING_FOR_ENUM_PARAM_END 
+                            "Ожидается окончание описания перечислимого параметра, например, зачение по-умолчанию"
+    IDS_ER_RTP_INVALID_PARAM_TYPE "Неправильное описание типа параметра"
+    IDS_ER_RTP_WAITING_FOR_PARAM_DEFINITION 
+                            "Ожидается описание параметра ресурса"
 END
 
 #endif    // Russian resources
@@ -3188,7 +3194,7 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_ER_UNKNOWN          "Unknown"
+    IDS_ER_UNKNOWN          "Parser error. Sorry. Tell us about it using http://rdo.rk9.bmstu.ru/bugs"
     IDS_ER_RTP_SECOND_RES_TYPE 
                             "Second appearance of the same resource type: %s"
     IDS_ER_RTP_WAITING_FOR_PARAMS_KW "Waiting for $Parameters keyword"
@@ -3214,8 +3220,14 @@ BEGIN
     IDS_ER_RTP_INVALID_RANGE "Invalid range"
     IDS_ER_RTP_INVALID_INT_RANGE_REAL 
                             "Invalid integer range: using real values"
-    IDS_ER_RTP_WAITING_FOR_EQ_AFTER 
-                            "Waiting for '=' after %s, if need to define default value"
+    IDS_ER_RTP_WAITING_FOR_INT_PARAM_END 
+                            "Ending of description of integer parameter is expected"
+    IDS_ER_RTP_WAITING_FOR_REAL_PARAM_END 
+                            "Ending of description of real parameter is expected"
+    IDS_ER_RTP_WAITING_FOR_ENUM_PARAM_END 
+                            "Ending of description of enumerate parameter is expected"
+    IDS_ER_RTP_INVALID_PARAM_TYPE "Invalid param type definition"
+    IDS_ER_RTP_WAITING_FOR_PARAM_DEFINITION "Waiting for param definition"
 END
 
 #endif    // English (U.S.) resources

@@ -131,7 +131,11 @@ std::string RDOSyntaxError::getMessage( ErrorCode _error_code, va_list& params )
 		case rdosim::RDOSyntaxError::RTP_INVALID_DEFVAULT_ENUM_SUCHAS: res_id = IDS_ER_RTP_INVALID_DEFVAULT_ENUM_SUCHAS; break;
 		case rdosim::RDOSyntaxError::RTP_INVALID_RANGE               : res_id = IDS_ER_RTP_INVALID_RANGE; break;
 		case rdosim::RDOSyntaxError::RTP_INVALID_INT_RANGE_REAL      : res_id = IDS_ER_RTP_INVALID_INT_RANGE_REAL; break;
-		case rdosim::RDOSyntaxError::RTP_WAITING_FOR_EQ_AFTER        : res_id = IDS_ER_RTP_WAITING_FOR_EQ_AFTER; break;
+		case rdosim::RDOSyntaxError::RTP_WAITING_FOR_INT_PARAM_END   : res_id = IDS_ER_RTP_WAITING_FOR_INT_PARAM_END; break;
+		case rdosim::RDOSyntaxError::RTP_WAITING_FOR_REAL_PARAM_END  : res_id = IDS_ER_RTP_WAITING_FOR_REAL_PARAM_END; break;
+		case rdosim::RDOSyntaxError::RTP_WAITING_FOR_ENUM_PARAM_END  : res_id = IDS_ER_RTP_WAITING_FOR_ENUM_PARAM_END; break;
+		case rdosim::RDOSyntaxError::RTP_INVALID_PARAM_TYPE          : res_id = IDS_ER_RTP_INVALID_PARAM_TYPE; break;
+		case rdosim::RDOSyntaxError::RTP_WAITING_FOR_PARAM_DEFINITION: res_id = IDS_ER_RTP_WAITING_FOR_PARAM_DEFINITION; break;
 	}
 	return rdo::format( res_id, params );
 }

@@ -91,7 +91,11 @@ struct RDOSyntaxError
 		RTP_INVALID_DEFVAULT_ENUM_SUCHAS = 1014, // Invalid default value: %s-value
 		RTP_INVALID_RANGE                = 1015, // Invalid range
 		RTP_INVALID_INT_RANGE_REAL       = 1016, // Invalid integer range: using real values
-		RTP_WAITING_FOR_EQ_AFTER         = 1017, // Waiting for '=' after %s-after_value
+		RTP_WAITING_FOR_INT_PARAM_END    = 1017, // Ending of description of integer parameter is expected
+		RTP_WAITING_FOR_REAL_PARAM_END   = 1018, // Ending of description of integer parameter is expected
+		RTP_WAITING_FOR_ENUM_PARAM_END   = 1019, // Ending of description of integer parameter is expected
+		RTP_INVALID_PARAM_TYPE           = 1020, // Invalid param type definition
+		RTP_WAITING_FOR_PARAM_DEFINITION = 1021, // Waiting for param definition
 		qq
 	};
 	ErrorCode   error_code;

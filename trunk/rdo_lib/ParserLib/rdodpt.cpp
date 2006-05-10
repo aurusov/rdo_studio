@@ -15,9 +15,9 @@ namespace rdoParse
 
 int dptlex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer )
 {
-	reinterpret_cast<RDOFlexLexer*>(lexer)->m_lpval = lpval;
-	reinterpret_cast<RDOFlexLexer*>(lexer)->m_lploc = llocp;
-	return reinterpret_cast<RDOFlexLexer*>(lexer)->yylex();
+	reinterpret_cast<RDOLexer*>(lexer)->m_lpval = lpval;
+	reinterpret_cast<RDOLexer*>(lexer)->m_lploc = llocp;
+	return reinterpret_cast<RDOLexer*>(lexer)->yylex();
 }
 void dpterror( char* mes )
 {
@@ -26,9 +26,9 @@ void dpterror( char* mes )
 
 int dpt_rss_lex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer )
 {
-	reinterpret_cast<RDOFlexLexer*>(lexer)->m_lpval = lpval;
-	reinterpret_cast<RDOFlexLexer*>(lexer)->m_lploc = llocp;
-	return reinterpret_cast<RDOFlexLexer*>(lexer)->yylex();
+	reinterpret_cast<RDOLexer*>(lexer)->m_lpval = lpval;
+	reinterpret_cast<RDOLexer*>(lexer)->m_lploc = llocp;
+	return reinterpret_cast<RDOLexer*>(lexer)->yylex();
 }
 void dpt_rss_error( char* mes )
 {

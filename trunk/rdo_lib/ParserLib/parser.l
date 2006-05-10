@@ -162,6 +162,13 @@ active				return(active);
 						return QUOTED_IDENTIF;
 					}
 
+(\'[^\']*\n)		{
+						std::string *name = new std::string(YYText());
+						rdoParse::currParser->addName(name);
+						rdoParse::currParser->lexer_setvalue((int)name);
+						return QUOTED_IDENTIF_BAD;
+					}
+
 "{"         BEGIN(comment);
 
 <comment>[^}\n]*        /* eat anything that's not a '*' */
@@ -169,9 +176,9 @@ active				return(active);
 <comment>"}"        BEGIN(INITIAL);
 
 
-("{".*"}")					;	
-[\n\t ]+          ;
-[(),=\[\]\.\*\>\<\+\-\/]        return(YYText()[YYLeng()-1]);
+("{".*"}")						;
+[\n\t ]+						;
+[(),=\[\]\.\*\>\<\+\-\/]		return(YYText()[YYLeng()-1]);
 
 ([+-]?[0-9]+"..")		{
 							std::string n1(YYText(), YYLeng()-2);
