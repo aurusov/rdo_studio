@@ -12,12 +12,12 @@ namespace rdoParse
 {
 
 // ----------------------------------------------------------------------------
-// ---------- RDOFlexLexer
+// ---------- RDOLexer
 // ----------------------------------------------------------------------------
 #ifdef YY_INTERACTIVE
-int RDOFlexLexer::LexerInput( char* buf, int /* max_size */ )
+int RDOLexer::LexerInput( char* buf, int /* max_size */ )
 #else
-int RDOFlexLexer::LexerInput( char* buf, int max_size )
+int RDOLexer::LexerInput( char* buf, int max_size )
 #endif
 {
 	if ( yyin->eof() || yyin->fail() )
@@ -45,7 +45,7 @@ int RDOFlexLexer::LexerInput( char* buf, int max_size )
 #endif
 }
 
-void RDOFlexLexer::LexerOutput( const char* buf, int size )
+void RDOLexer::LexerOutput( const char* buf, int size )
 {
 	(void) yyout->write( buf, size );
 }
@@ -54,7 +54,7 @@ void RDOFlexLexer::LexerOutput( const char* buf, int size )
 #define YY_EXIT_FAILURE 2
 #endif
 
-void RDOFlexLexer::LexerError( const char msg[] )
+void RDOLexer::LexerError( const char msg[] )
 {
 	std::cerr << msg << '\n';
 	exit( YY_EXIT_FAILURE );

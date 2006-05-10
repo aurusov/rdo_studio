@@ -45,8 +45,13 @@ void RDOParserRDO::parse( std::istream& in_stream )
 {
 	if ( m_lexer ) delete m_lexer;
 	std::ostringstream out_stream;
-	m_lexer = new RDOFlexLexer( this, &in_stream, &out_stream );
-	parser_fun( m_lexer );
+	m_lexer = getLexer( in_stream, out_stream );
+	if ( m_lexer ) parser_fun( m_lexer );
+}
+
+RDOLexer* RDOParserRDO::getLexer( std::istream& in_stream, std::ostream& out_stream )
+{
+	return new RDOLexer( this, &in_stream, &out_stream );
 }
 
 void RDOParserRDO::lexer_setvalue( int value )
@@ -125,6 +130,14 @@ int RDOParserRDO::lexer_loc_lineno()
 		}
 //		return m_lexer->m_lploc ? m_lexer->m_lploc->first_line : m_lexer->lineno();
 	} else return -1;
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOParserRTP
+// ----------------------------------------------------------------------------
+RDOLexer* RDOParserRTP::getLexer( std::istream& in_stream, std::ostream& out_stream )
+{
+	return new RDOLexerRTP( this, &in_stream, &out_stream );
 }
 
 // ----------------------------------------------------------------------------

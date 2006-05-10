@@ -15,9 +15,9 @@ namespace rdoParse
 
 int rsslex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer )
 {
-	reinterpret_cast<RDOFlexLexer*>(lexer)->m_lpval = lpval;
-	reinterpret_cast<RDOFlexLexer*>(lexer)->m_lploc = llocp;
-	return reinterpret_cast<RDOFlexLexer*>(lexer)->yylex();
+	reinterpret_cast<RDOLexer*>(lexer)->m_lpval = lpval;
+	reinterpret_cast<RDOLexer*>(lexer)->m_lploc = llocp;
+	return reinterpret_cast<RDOLexer*>(lexer)->yylex();
 }
 void rsserror( char* mes )
 {

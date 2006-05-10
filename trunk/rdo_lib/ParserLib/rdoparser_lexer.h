@@ -8,18 +8,18 @@ namespace rdoParse
 {
 
 // ----------------------------------------------------------------------------
-// ---------- RDOFlexLexer
+// ---------- RDOLexer
 // ----------------------------------------------------------------------------
 class RDOParserBase;
 
-class RDOFlexLexer: public yyFlexLexer
+class RDOLexer: public yyFlexLexer
 {
 private:
 	std::istream* yyin;
 	std::ostream* yyout;
 
 public:
-	RDOFlexLexer( RDOParserBase* parser, std::istream* _yyin, std::ostream* _yyout ):
+	RDOLexer( RDOParserBase* parser, std::istream* _yyin, std::ostream* _yyout ):
 		m_parser( parser ),
 		yyin( _yyin ),
 		yyout( _yyout ),

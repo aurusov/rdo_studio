@@ -2,13 +2,12 @@
 #define RDOPARSER_RDO_H
 
 #include "rdoparser_base.h"
+#include "rdoparser_lexer.h"
 #include "rdoStdFuncs.h"
 #include <iostream.h>
 
 namespace rdoParse
 {
-
-class RDOFlexLexer;
 
 // ----------------------------------------------------------------------------
 // ---------- RDOParserRDO
@@ -16,7 +15,7 @@ class RDOFlexLexer;
 class RDOParserRDO: public RDOParserBase
 {
 protected:
-	RDOFlexLexer*        m_lexer;
+	RDOLexer*            m_lexer;
 	std::list< YYLTYPE > m_loc_list;
 
 public:
@@ -25,6 +24,7 @@ public:
 
 	virtual void parse();
 	virtual void parse( std::istream& in_stream );
+	virtual RDOLexer* getLexer( std::istream& in_stream, std::ostream& out_stream );
 
 	virtual void lexer_setvalue( int value );
 	virtual void lexer_loc_init();
@@ -33,6 +33,32 @@ public:
 	virtual void lexer_loc_push( void* data, bool erase = false );
 	virtual void lexer_loc_pop();
 	virtual int  lexer_loc_lineno();
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOParserRTP
+// ----------------------------------------------------------------------------
+class RDOParserRTP: public RDOParserRDO
+{
+public:
+	RDOParserRTP( t_bison_parse_fun _parser_fun, t_bison_error_fun _error_fun, t_flex_lexer_fun _lexer_fun ): RDOParserRDO( rdoModelObjects::RTP, _parser_fun, _error_fun, _lexer_fun ) {};
+
+	virtual RDOLexer* getLexer( std::istream& in_stream, std::ostream& out_stream );
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOLexerRTP
+// ----------------------------------------------------------------------------
+class RDOLexerRTP: public RDOLexer
+{
+public:
+	RDOLexerRTP( RDOParserBase* parser, std::istream* _yyin, std::ostream* _yyout ):
+		RDOLexer( parser, _yyin, _yyout ),
+		enum_param_cnt( 0 )
+	{
+	};
+
+	int enum_param_cnt;
 };
 
 // ----------------------------------------------------------------------------
