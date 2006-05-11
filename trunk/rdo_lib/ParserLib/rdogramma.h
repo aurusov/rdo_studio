@@ -124,7 +124,7 @@ typedef struct yyltype
 # define	value_after	361
 # define	some	362
 # define	Process	363
-# define	SIEZE	364
+# define	SEIZE	364
 # define	Frame	400
 # define	Show_if	401
 # define	Back_picture	402

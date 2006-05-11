@@ -118,7 +118,7 @@
 # define	value_after	361
 # define	some	362
 # define	Process	363
-# define	SIEZE	364
+# define	SEIZE	364
 # define	Frame	400
 # define	Show_if	401
 # define	Back_picture	402
@@ -295,7 +295,7 @@ static const short yyrline[] =
      242,   243,   245,   249,   250,   251,   252,   253,   254,   255,
      256,   257,   258,   260,   261,   262,   263,   264,   265,   266,
      267,   268,   269,   271,   272,   273,   275,   276,   277,   278,
-     280,   282,   283,   287,   289,   290,   292,   293,   300,   373
+     280,   282,   283,   287,   289,   290,   292,   293,   300,   480
 };
 #endif
 
@@ -327,7 +327,7 @@ static const char *const yytname[] =
   "search_keyword", "trace_stat", "trace_tops", "trace_all", 
   "Condition_keyword", "Term_condition", "Evaluate_by", "Compare_tops", 
   "NO", "YES", "Activities", "value_before", "value_after", "some", 
-  "Process", "SIEZE", "Frame", "Show_if", "Back_picture", "Show", 
+  "Process", "SEIZE", "Frame", "Show_if", "Back_picture", "Show", 
   "frm_cell", "text", "transparent", "bitmap", "s_bmp", "rect_keyword", 
   "r_rect", "line", "ellipse", "triang", "active", "QUOTED_IDENTIF", 
   "'+'", "'-'", "'*'", "'/'", "'='", "'<'", "'>'", "'['", "']'", "'('", 
@@ -1495,7 +1495,112 @@ case 88:
 #line 300 ".\\rdodpt_rss.y"
 {
 
-	std::string* res_name      = (std::string*)yyvsp[0];
+	std::string* res_name       = (std::string*)yyvsp[0];
+	std::string* rtp_param_name = currParser->registerName( "Состояние" );
+	std::string* rtp_state_free = currParser->registerName( "Свободен" );
+	std::string* rtp_state_buzy = currParser->registerName( "Занят" );
+
+	// Найти ресурс, если его нет, то создать
+	RDORSSResource* res = const_cast<RDORSSResource*>(currParser->findRSSResource( res_name ));
+	if ( !res ) {
+
+		// Сформировать имя типа по имени ресурса
+		std::string* res_type_name = currParser->registerName( std::string( RDODPTProcess::name_prefix + *res_name + RDODPTProcess::name_sufix ).c_str() );
+
+		// Найти тип ресурса, если его нет, то создать тип и положить в него параметр
+		RDORTPParamDesc* rtp_param = NULL;
+		RDORTPResType* res_type = const_cast<RDORTPResType*>(currParser->findRTPResType( res_type_name ));
+		if ( !res_type ) {
+			// Создадим тип ресурса
+			res_type = new RDORTPResType( res_type_name, true, currParser->resourceTypeCounter++ );
+			currParser->allRTPResType.push_back( res_type );
+			currParser->lastRTPResType = res_type;
+
+			// Создадим параметр перечислимого типа
+			RDORTPEnum* state_enum = new RDORTPEnum( rtp_state_free );
+			state_enum->add( rtp_state_buzy );
+
+			RDORTPEnumDefVal* state_default = new RDORTPEnumDefVal( rtp_state_free );
+
+			RDORTPEnumResParam* rtp_param_enum = new RDORTPEnumResParam( state_enum, state_default );
+
+			rtp_param = new RDORTPParamDesc( rtp_param_name, rtp_param_enum );
+			currParser->allRTPParamDesc.push_back( rtp_param );
+			res_type->add( rtp_param );
+		} else {
+			// Тип найден, проверить на наличие перечислимого параметра
+			rtp_param = const_cast<RDORTPParamDesc*>(res_type->findRTPParam( rtp_param_name ));
+			if ( rtp_param ) {
+				// Параметр Состояние есть, надо проверить, чтобы в нем были значения Свободен и Занят
+				// Для начала проверим тип параметра
+				if ( rtp_param->getType()->getType() == RDORTPResParam::pt_enum ) {
+					// Теперь проверим сами значения
+					try {
+						rtp_param->getType()->getRSSEnumValue( rtp_state_free );
+						rtp_param->getType()->getRSSEnumValue( rtp_state_buzy );
+					} catch ( RDOSyntaxException& ) {
+						currParser->error( rdo::format( "У типа ресурса '%s' перечислимый параметр '%s' должен иметь как минимум два обязательных значения: %s и %s", res_type->getName()->c_str(), rtp_param_name->c_str(), rtp_state_free->c_str(), rtp_state_buzy->c_str() ) );
+					}
+				} else {
+					// Параметр Состояние есть, но он не перечислимого типа
+					currParser->error( rdo::format( "У типа ресурса '%s' параметр '%s' не является перечислимым типом", res_type->getName()->c_str(), rtp_param_name->c_str() ) );
+				}
+			} else {
+				currParser->error( rdo::format( "У типа ресурса '%s' нет параметра перечислимого типа '%s'", res_type->getName()->c_str(), rtp_param_name->c_str() ) );
+			}
+		}
+
+		// Создать ресурс
+		RDORSSResource* res = new RDORSSResource( res_name, res_type, currParser->resourceCounter++ );
+		res->setTrace( true );
+		currParser->lastRSSResource = res;
+		currParser->allRSSResource.push_back( res );
+
+		// Пропишем значения параметров перечислимого типа по-умолчанию
+		RDOValue state_val = rtp_param->getType()->getRSSDefaultValue();
+		res->addValue( state_val );
+		res->currParam++;
+
+
+		// Пропишем значения параметров (всех) для созданного ресурса. Берутся как значения по-умолчанию
+//		const std::vector<const RDORTPParamDesc *>& res_params = res->getType()->getParams();
+//		res->currParam = res_params.begin();
+//		while ( res->currParam != res_params.end() ) {
+//			RDOValue res_param_val = (*res->currParam)->getType()->getRSSDefaultValue();
+//			res->addValue( res_param_val );
+//			res->currParam++;
+//		}
+
+	} else {
+		// Ресурс найден, найдем для него тип
+		RDORTPResType* res_type = const_cast<RDORTPResType*>(currParser->findRTPResType( res->getType()->getName() ));
+		if ( !res_type ) {
+			// Тип не найден, выдай сообщение об ошибке
+			currParser->error( rdo::format( "Для ресурса %s не наден тип %s", res_name->c_str(), res_type->getName()->c_str() ) );
+		}
+		RDORTPParamDesc* rtp_param = const_cast<RDORTPParamDesc*>(res_type->findRTPParam( rtp_param_name ));
+		if ( !rtp_param ) {
+			// Не найден перечислимый параметр Состояние, выдай сообщение об ошибке
+			currParser->error( rdo::format( "Для типа ресурса %s не наден параметр перечислимого типа %s", res_type->getName()->c_str(), rtp_param_name->c_str() ) );
+		}
+		// Параметр Состояние есть, надо проверить, чтобы в нем были значения Свободен и Занят
+		// Для начала проверим тип параметра
+		if ( rtp_param->getType()->getType() == RDORTPResParam::pt_enum ) {
+			// Теперь проверим сами значения
+			try {
+				rtp_param->getType()->getRSSEnumValue( rtp_state_free );
+				rtp_param->getType()->getRSSEnumValue( rtp_state_buzy );
+			} catch ( RDOSyntaxException& ) {
+				currParser->error( rdo::format( "У типа ресурса '%s' перечислимый параметр '%s' должен иметь как минимум два обязательных значения: %s и %s", res_type->getName()->c_str(), rtp_param_name->c_str(), rtp_state_free->c_str(), rtp_state_buzy->c_str() ) );
+			}
+		} else {
+			// Параметр Состояние есть, но он не перечислимого типа
+			currParser->error( rdo::format( "У типа ресурса '%s' параметр '%s' не является перечислимым типом", res_type->getName()->c_str(), rtp_param_name->c_str() ) );
+		}
+	}
+
+/*
+	std::string* res_name      = (std::string*)$2;
 	std::string* res_type_name = currParser->registerName( std::string( RDODPTProcess::name_prefix + *res_name + RDODPTProcess::name_sufix ).c_str() );
 
 	// Найти тип ресурса, если его нет, то создать
@@ -1564,10 +1669,12 @@ case 88:
 	} else {
 		TRACE( "q" );
 	}
+*/
+
 ;
     break;}
 case 89:
-#line 373 ".\\rdodpt_rss.y"
+#line 480 ".\\rdodpt_rss.y"
 {;
     break;}
 }
@@ -1803,7 +1910,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 375 ".\\rdodpt_rss.y"
+#line 482 ".\\rdodpt_rss.y"
 
 
 }

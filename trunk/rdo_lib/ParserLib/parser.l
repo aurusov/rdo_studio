@@ -130,7 +130,7 @@ NO					return(NO);
 YES					return(YES);
 $Activities			return(Activities);
 $Process			return(Process);
-SIEZE				return(SIEZE);
+SEIZE				return(SEIZE);
 value[\n\t ]+before	return(value_before);
 value[\n\t ]+after	return(value_after);
 value_before		return(value_before);
