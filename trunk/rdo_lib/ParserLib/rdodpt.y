@@ -116,7 +116,7 @@
 %token value_after			361
 %token some					362
 %token Process				363
-%token SIEZE				364
+%token SEIZE				364
 
 %token Frame				400
 %token Show_if				401
@@ -255,7 +255,7 @@ dpt_process_input:
 					| dpt_process_input dpt_process_line;
 
 dpt_process_line:	IDENTIF			{}
-					| SIEZE IDENTIF	{};
+					| SEIZE IDENTIF	{};
 
 dpt_process_end:	dpt_process End	{};
 

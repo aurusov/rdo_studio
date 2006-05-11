@@ -118,7 +118,7 @@
 # define	value_after	361
 # define	some	362
 # define	Process	363
-# define	SIEZE	364
+# define	SEIZE	364
 # define	Frame	400
 # define	Show_if	401
 # define	Back_picture	402
@@ -302,7 +302,7 @@ static const char *const yytname[] =
   "search_keyword", "trace_stat", "trace_tops", "trace_all", 
   "Condition_keyword", "Term_condition", "Evaluate_by", "Compare_tops", 
   "NO", "YES", "Activities", "value_before", "value_after", "some", 
-  "Process", "SIEZE", "Frame", "Show_if", "Back_picture", "Show", 
+  "Process", "SEIZE", "Frame", "Show_if", "Back_picture", "Show", 
   "frm_cell", "text", "transparent", "bitmap", "s_bmp", "rect_keyword", 
   "r_rect", "line", "ellipse", "triang", "active", "QUOTED_IDENTIF", 
   "'+'", "'-'", "'*'", "'/'", "'.'", "'='", "'<'", "'>'", "'['", "']'", 
