@@ -30,15 +30,15 @@ public:
 	virtual void parse()                          = 0;
 	virtual void parse( std::istream& in_stream ) = 0;
 
-	virtual void lexer_setvalue( int value )          {};
-	virtual void lexer_loc_init()                     {};
-	virtual void lexer_loc_action()                   {};
-	virtual void lexer_loc_push( bool erase = false ) {};
-	virtual void lexer_loc_push( void* data, bool erase = false ) {};
-	virtual void lexer_loc_backup()                               { lexer_loc_push( true );       };
-	virtual void lexer_loc_backup( void* data )                   { lexer_loc_push( data, true ); };
-	virtual void lexer_loc_pop()                      {};
-	virtual int  lexer_loc_lineno()                   { return -1; };
+	virtual void lexer_setvalue( int value )        {};
+	virtual void lexer_loc_init()                   {};
+	virtual void lexer_loc_action()                 {};
+	virtual void lexer_loc_set( int error_line, int error_pos ) {};
+	virtual void lexer_loc_set( void* data )        {};
+	virtual void lexer_loc_backup( void* data )     {};
+	virtual void lexer_loc_restore()                {};
+	virtual int  lexer_loc_line()                   { return -1; };
+	virtual int  lexer_loc_pos()                    { return 0;  };
 };
 
 // ----------------------------------------------------------------------------

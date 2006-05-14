@@ -16,9 +16,17 @@ using namespace rdoEditCtrl;
 // ----------------------------------------------------------------------------
 // ---------- RDOBuildEditLineInfo
 // ----------------------------------------------------------------------------
-RDOBuildEditLineInfo::RDOBuildEditLineInfo( const std::string& _message, const rdoModelObjects::RDOFileType _fileType, const int _lineNumber, bool _error ):
-	RDOLogEditLineInfo( _message, _fileType, _lineNumber ),
-	error( _error )
+RDOBuildEditLineInfo::RDOBuildEditLineInfo( rdosim::RDOSyntaxError::ErrorCode _error_code, const std::string& _message, const rdoModelObjects::RDOFileType _fileType, const int _lineNumber, const int _posInLine, bool _warning ):
+	RDOLogEditLineInfo( _message, _fileType, _lineNumber, _posInLine ),
+	error_code( _error_code ),
+	warning( _warning )
+{
+}
+
+RDOBuildEditLineInfo::RDOBuildEditLineInfo( const std::string& _message ):
+	RDOLogEditLineInfo( _message ),
+	error_code( rdosim::RDOSyntaxError::UNKNOWN ),
+	warning( false )
 {
 }
 
@@ -44,8 +52,8 @@ std::string RDOBuildEditLineInfo::getMessage() const
 	if ( lineNumber < 0 || file.empty() ) {
 		return message;
 	} else {
-		std::string s = error ? "error" : "warning";
-		return rdo::format( "%s (%d): %s: %s", file.c_str(), lineNumber + 1, s.c_str(), message.c_str() );
+		std::string s_error = warning ? rdo::format( IDS_WARNING, error_code ) : rdo::format( IDS_ERROR, error_code );
+		return rdo::format( "%s (%d): %s: %s", file.c_str(), lineNumber + 1, s_error.c_str(), message.c_str() );
 	}
 }
 
@@ -66,6 +74,40 @@ RDOBuildEdit::RDOBuildEdit(): RDOLogEdit()
 
 RDOBuildEdit::~RDOBuildEdit()
 {
+}
+
+void RDOBuildEdit::showFirstError()
+{
+	current_line++;
+	std::list< RDOLogEditLineInfo* >::iterator it = lines.begin();
+	int i;
+	for ( i = 0; i < current_line; i++ ) {
+		if ( it != lines.end() ) {
+			it++;
+		} else {
+			current_line = 0;
+			break;
+		}
+	}
+	it = lines.begin();
+	for ( i = 0; i < current_line; i++ ) {
+		it++;
+	}
+	while ( it != lines.end() && ((*it)->lineNumber == -1 || static_cast<RDOBuildEditLineInfo*>(*it)->warning ) ) {
+		it++;
+		current_line++;
+	}
+	if ( it == lines.end() ) {
+		it = lines.begin();
+		current_line = 0;
+		while ( it != lines.end() && (*it)->lineNumber == -1 ) {
+			it++;
+			current_line++;
+		}
+	}
+	if ( it != lines.end() && (*it)->lineNumber != -1 ) {
+		setSelectLine( current_line, *it, true );
+	}
 }
 
 void RDOBuildEdit::updateEdit( rdoEditor::RDOEditorEdit* edit, const RDOLogEditLineInfo* lineInfo )

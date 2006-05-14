@@ -1110,7 +1110,7 @@ case 6:
 {
 	yyloc;
 	if ( currParser->lastRSSResource && currParser->lastRSSResource->currParam != currParser->lastRSSResource->getType()->getParams().end() ) {
-		currParser->lexer_loc_pop();
+		currParser->lexer_loc_restore();
 //		currParser->error( rdosim::RDOSyntaxError::UNKNOWN, 20, 30 );
 		currParser->error( _T("Заданы не все параметры ресурса: " + *currParser->lastRSSResource->getName()) );
 	}

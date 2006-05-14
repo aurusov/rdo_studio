@@ -16,7 +16,7 @@ class RDOParserRDO: public RDOParserBase
 {
 protected:
 	RDOLexer*            m_lexer;
-	std::list< YYLTYPE > m_loc_list;
+	YYLTYPE              m_loc;
 
 public:
 	RDOParserRDO( rdoModelObjects::RDOFileType _type, t_bison_parse_fun _parser_fun, t_bison_error_fun _error_fun, t_flex_lexer_fun _lexer_fun ): RDOParserBase( _type, _parser_fun, _error_fun, _lexer_fun ), m_lexer( NULL ) {};
@@ -29,10 +29,12 @@ public:
 	virtual void lexer_setvalue( int value );
 	virtual void lexer_loc_init();
 	virtual void lexer_loc_action();
-	virtual void lexer_loc_push( bool erase = false );
-	virtual void lexer_loc_push( void* data, bool erase = false );
-	virtual void lexer_loc_pop();
-	virtual int  lexer_loc_lineno();
+	virtual void lexer_loc_set( int error_line, int error_pos );
+	virtual void lexer_loc_set( void* data );
+	virtual void lexer_loc_backup( void* data = NULL );
+	virtual void lexer_loc_restore();
+	virtual int  lexer_loc_line();
+	virtual int  lexer_loc_pos();
 };
 
 // ----------------------------------------------------------------------------

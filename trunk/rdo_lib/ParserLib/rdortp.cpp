@@ -46,7 +46,7 @@ int RDORTPEnum::findValue(const std::string *const val) const
 void RDORTPResType::add( const RDORTPParamDesc* const _param )
 {
 	if ( findRTPParam( _param->getName() ) ) {
-		currParser->lexer_loc_pop();
+		currParser->lexer_loc_restore();
 		currParser->error( rdosim::RDOSyntaxError::RTP_SECOND_PARAM_NAME, _param->getName()->c_str() );
 	}
 	params.push_back( _param );

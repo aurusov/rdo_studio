@@ -169,9 +169,15 @@ void RDOStudioOutput::clearFind()
 	if ( find ) find->clearAll();
 }
 
-void RDOStudioOutput::appendStringToBuild( const std::string& str, const rdoModelObjects::RDOFileType fileType, const int lineNumber, const bool error ) const
+void RDOStudioOutput::appendStringToBuild( const std::string& str ) const
 {
-	RDOBuildEditLineInfo* line = new RDOBuildEditLineInfo( str, fileType, lineNumber, error );
+	RDOBuildEditLineInfo* line = new RDOBuildEditLineInfo( str );
+	build->appendLine( line );
+}
+
+void RDOStudioOutput::appendStringToBuild( rdosim::RDOSyntaxError::ErrorCode error_code, const std::string& str, const rdoModelObjects::RDOFileType fileType, const int lineNumber, const int posInLine, const bool error ) const
+{
+	RDOBuildEditLineInfo* line = new RDOBuildEditLineInfo( error_code, str, fileType, lineNumber, posInLine, error );
 	build->appendLine( line );
 }
 

@@ -164,7 +164,7 @@ void RDOStudioModel::runModel() const
 		output->clearDebug();
 		output->clearResults();
 		output->showBuild();
-		output->appendStringToBuild( rdo::format( IDS_MODEL_RUNNING_BEGIN ) );
+		output->appendStringToBuild( rdo::format( IDS_MODEL_BUILDING_BEGIN ) );
 		const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->UpdateWindow();
 		kernel.getSimulator()->runModel();
 	}
@@ -281,15 +281,19 @@ void RDOStudioModel::parseSuccessNotify()
 {
 	RDOStudioOutput* output = &studioApp.mainFrame->output;
 	std::vector<RDOSyntaxError>* errors = kernel.getSimulator()->getErrors();
-	int i = 0;
+	int errors_cnt   = 0;
+	int warnings_cnt = 0;
 	for ( std::vector<RDOSyntaxError>::iterator it = errors->begin(); it != errors->end(); it++ ) {
-		output->appendStringToBuild( it->message, it->file, it->error_line );
-//		output->appendStringToBuild( it->message, it->file, it->lineNo - 1 );
-		i++;
+		output->appendStringToBuild( it->error_code, it->message, it->file, it->error_line, it->error_pos, it->warning );
+		if ( it->warning ) {
+			warnings_cnt++;
+		} else {
+			errors_cnt++;
+		}
 	}
-	output->appendStringToBuild( rdo::format( IDS_MODEL_BUILDING_RESULTS, i ) );
-	if ( i ) {
-		const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->gotoNext();
+	output->appendStringToBuild( rdo::format( IDS_MODEL_BUILDING_RESULTS, errors_cnt, warnings_cnt ) );
+	if ( errors_cnt || warnings_cnt ) {
+		const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->showFirstError();
 	}
 	plugins->pluginProc( rdoPlugin::PM_MODEL_BUILD_OK );
 }
@@ -298,15 +302,19 @@ void RDOStudioModel::parseErrorNotify()
 {
 	RDOStudioOutput* output = &studioApp.mainFrame->output;
 	std::vector<RDOSyntaxError>* errors = kernel.getSimulator()->getErrors();
-	int i = 0;
+	int errors_cnt   = 0;
+	int warnings_cnt = 0;
 	for ( std::vector<RDOSyntaxError>::iterator it = errors->begin(); it != errors->end(); it++ ) {
-		output->appendStringToBuild( it->message, it->file, it->error_line );
-//		output->appendStringToBuild( it->message, it->file, it->lineNo - 1 );
-		i++;
+		output->appendStringToBuild( it->error_code, it->message, it->file, it->error_line, it->error_pos, it->warning );
+		if ( it->warning ) {
+			warnings_cnt++;
+		} else {
+			errors_cnt++;
+		}
 	}
-	if ( i ) {
-		output->appendStringToBuild( rdo::format( IDS_MODEL_BUILDING_RESULTS, i ) );
-		const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->gotoNext();
+	output->appendStringToBuild( rdo::format( IDS_MODEL_BUILDING_RESULTS, errors_cnt, warnings_cnt ) );
+	if ( errors_cnt || warnings_cnt ) {
+		const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->showFirstError();
 	}
 
 	plugins->pluginProc( rdoPlugin::PM_MODEL_BUILD_FAILD );
@@ -319,14 +327,19 @@ void RDOStudioModel::executeErrorNotify()
 	output->showBuild();
 	output->appendStringToBuild( rdo::format( IDS_MODEL_RUNTIMEERROR ) );
 	std::vector<RDOSyntaxError>* errors = kernel.getSimulator()->getErrors();
-	int i = 0;
-	for ( std::vector<RDOSyntaxError>::iterator it = errors->begin(); it != errors->end(); it++, i++ ) {
-		output->appendStringToBuild( it->message, it->file, it->error_line );
-//		output->appendStringToBuild( it->message, it->file, it->lineNo - 1 );
+	int errors_cnt   = 0;
+	int warnings_cnt = 0;
+	for ( std::vector<RDOSyntaxError>::iterator it = errors->begin(); it != errors->end(); it++ ) {
+		output->appendStringToBuild( it->error_code, it->message, it->file, it->error_line, it->error_pos, it->warning );
+		if ( it->warning ) {
+			warnings_cnt++;
+		} else {
+			errors_cnt++;
+		}
 	}
 	model->stopModelFromSimulator();
-	if ( i ) {
-		const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->gotoNext();
+	if ( errors_cnt || warnings_cnt ) {
+		const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->showFirstError();
 	}
 
 	plugins->pluginProc( rdoPlugin::PM_MODEL_STOP_RUNTIME_ERROR );

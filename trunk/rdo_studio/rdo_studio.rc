@@ -1460,6 +1460,8 @@ END
 STRINGTABLE DISCARDABLE 
 BEGIN
     ID_INSERT_PMD_PMD       "$Results\r\n\t: watch_par\r\n\t: watch_state\r\n\t: watch_quant\r\n\t: watch_value\r\n\t: get_value\r\n$End\r\n"
+    IDS_ERROR               "ошибка C%04d"
+    IDS_WARNING             "предупреждение C%04d"
 END
 
 STRINGTABLE DISCARDABLE 
@@ -1625,9 +1627,9 @@ BEGIN
     IDS_COLORSTYLE_FIND_SEARCHTEXT "строка для поиска"
     IDS_COLORSTYLE_EDITOR_SAMPLE 
                             "{ comments }\n$Pattern pattern_name : operation trace\n$Relevant_resources\n  rel_res2  : res_type2     Keep    Keep\n  rel_res1  : res_type1     Create  NoChange\n$Time = Abs(rel_res2.par1 - rel_res2.par3)\n{...}\n$End\n\ntext [ 10, 20, ... = 'text' ]\n\n$Re levant_resources"
-    IDS_COLORSTYLE_BUILD_SAMPLE1 "Компиляция модели..."
+    IDS_COLORSTYLE_BUILD_SAMPLE1 "Компиляция..."
     IDS_COLORSTYLE_BUILD_SAMPLE2 "Неправильное значение параметра: 4"
-    IDS_COLORSTYLE_BUILD_SAMPLE3 "найдено ошибок: 1"
+    IDS_COLORSTYLE_BUILD_SAMPLE3 "найдено ошибок: 1, предупреждений: 0"
     IDS_COLORSTYLE_DEBUG_SAMPLE 
                             "Получение структуры модели...ok\nМодель запущена"
 END
@@ -1703,8 +1705,7 @@ BEGIN
     IDS_MODEL_PMDS          "описание показателей"
     IDS_MODEL_RUNTIMEERROR  "Ошибка прогона..."
     IDS_MODEL_BUILDING_BEGIN "Компиляция..."
-    IDS_MODEL_BUILDING_RESULTS "найдено ошибок: %d"
-    IDS_MODEL_RUNNING_BEGIN "Запуск..."
+    IDS_MODEL_BUILDING_RESULTS "найдено ошибок: %d, предупреждений: %d"
     IDS_MODEL_RESOURCE_LOADING_BEGIN "Загрузка ресурсов для анимации...\n"
     IDS_MODEL_RESOURCE_LOADING_NAME "Загрузка %s..."
     IDS_MODEL_RESOURCE_LOADING_NAME_OK "ok\n"
@@ -2901,6 +2902,8 @@ END
 STRINGTABLE DISCARDABLE 
 BEGIN
     ID_INSERT_PMD_PMD       "$Results\r\n\t: watch_par\r\n\t: watch_state\r\n\t: watch_quant\r\n\t: watch_value\r\n\t: get_value\r\n$End\r\n"
+    IDS_ERROR               "error С%04d"
+    IDS_WARNING             "warning С%04d"
 END
 
 STRINGTABLE DISCARDABLE 
@@ -3068,7 +3071,7 @@ BEGIN
                             "{ comments }\n$Pattern pattern_name : operation trace\n$Relevant_resources\n  rel_res2  : res_type2     Keep    Keep\n  rel_res1  : res_type1     Create  NoChange\n$Time = Abs(rel_res2.par1 - rel_res2.par3)\n{...}\n$End\n\ntext [ 10, 20, ... = 'text' ]\n\n$Re levant_resources"
     IDS_COLORSTYLE_BUILD_SAMPLE1 "Building Model..."
     IDS_COLORSTYLE_BUILD_SAMPLE2 "Wrong parameter value: L"
-    IDS_COLORSTYLE_BUILD_SAMPLE3 "1 error(s) found."
+    IDS_COLORSTYLE_BUILD_SAMPLE3 "1 error(s), 0 warning(s) found"
     IDS_COLORSTYLE_DEBUG_SAMPLE "Start executing\nEI 0 1 1 0\nES 0 1\n"
 END
 
@@ -3144,8 +3147,7 @@ BEGIN
     IDS_MODEL_PMDS          "performance measures description"
     IDS_MODEL_RUNTIMEERROR  "Run time error detected..."
     IDS_MODEL_BUILDING_BEGIN "Building..."
-    IDS_MODEL_BUILDING_RESULTS "%d error(s) found."
-    IDS_MODEL_RUNNING_BEGIN "Running..."
+    IDS_MODEL_BUILDING_RESULTS "%d error(s), %d warning(s) found"
     IDS_MODEL_RESOURCE_LOADING_BEGIN "Loading animation resources...\n"
     IDS_MODEL_RESOURCE_LOADING_NAME "Loading %s..."
     IDS_MODEL_RESOURCE_LOADING_NAME_OK "ok\n"

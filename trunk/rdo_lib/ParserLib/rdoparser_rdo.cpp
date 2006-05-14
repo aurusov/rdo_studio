@@ -80,6 +80,8 @@ void RDOParserRDO::lexer_loc_action()
 			if ( m_lexer->YYText()[i] == '\n' ) {
 				m_lexer->m_lploc->last_line++;
 				m_lexer->m_lploc->last_column = 0;
+			} else if ( m_lexer->YYText()[i] == '\r' ) {
+				m_lexer->m_lploc->last_column = 0;
 			} else {
 				m_lexer->m_lploc->last_column++;
 			}
@@ -87,49 +89,48 @@ void RDOParserRDO::lexer_loc_action()
 	}
 }
 
-void RDOParserRDO::lexer_loc_push( bool erase )
+void RDOParserRDO::lexer_loc_set( int error_line, int error_pos )
 {
-	if ( m_lexer && m_lexer->m_lploc ) {
-		if ( erase ) m_loc_list.clear();
-		m_loc_list.push_back( *m_lexer->m_lploc );
+	m_loc.first_line   = error_line;
+	m_loc.first_column = error_pos;
+	lexer_loc_restore();
+}
+
+void RDOParserRDO::lexer_loc_set( void* data )
+{
+	lexer_loc_backup( data );
+	lexer_loc_restore();
+}
+
+void RDOParserRDO::lexer_loc_backup( void* data )
+{
+	if ( data ) {
+		m_loc.first_line   = reinterpret_cast<YYLTYPE*>(data)->first_line;
+		m_loc.first_column = reinterpret_cast<YYLTYPE*>(data)->first_column;
+		m_loc.last_line    = reinterpret_cast<YYLTYPE*>(data)->last_line;
+		m_loc.last_column  = reinterpret_cast<YYLTYPE*>(data)->last_column;
+	} else if ( m_lexer && m_lexer->m_lploc ) {
+		m_loc = *m_lexer->m_lploc;
 	}
 }
 
-void RDOParserRDO::lexer_loc_push( void* data, bool erase )
+void RDOParserRDO::lexer_loc_restore()
 {
 	if ( m_lexer && m_lexer->m_lploc ) {
-		if ( erase ) m_loc_list.clear();
-		YYLTYPE loc;
-		loc.first_line   = reinterpret_cast<YYLTYPE*>(data)->first_line;
-		loc.first_column = reinterpret_cast<YYLTYPE*>(data)->first_column;
-		loc.last_line    = reinterpret_cast<YYLTYPE*>(data)->last_line;
-		loc.last_column  = reinterpret_cast<YYLTYPE*>(data)->last_column;
-		m_loc_list.push_back( loc );
+		*m_lexer->m_lploc = m_loc;
 	}
 }
 
-void RDOParserRDO::lexer_loc_pop()
-{
-	if ( m_lexer && m_lexer->m_lploc ) {
-		std::list< YYLTYPE >::iterator it = m_loc_list.end();
-		it--;
-		if ( it != m_loc_list.end() ) {
-			*m_lexer->m_lploc = *it;
-			m_loc_list.erase( it );
-		}
-	}
-}
-
-int RDOParserRDO::lexer_loc_lineno()
+int RDOParserRDO::lexer_loc_line()
 {
 	if ( m_lexer ) {
-		if ( m_lexer->m_lploc ) {
-			return m_lexer->m_lploc->first_line;
-		} else {
-			return m_lexer->lineno();
-		}
-//		return m_lexer->m_lploc ? m_lexer->m_lploc->first_line : m_lexer->lineno();
+		return m_lexer->m_lploc ? m_lexer->m_lploc->first_line : m_lexer->lineno();
 	} else return -1;
+}
+
+int RDOParserRDO::lexer_loc_pos()
+{
+	return m_lexer && m_lexer->m_lploc ? m_lexer->m_lploc->first_column : 0;
 }
 
 // ----------------------------------------------------------------------------

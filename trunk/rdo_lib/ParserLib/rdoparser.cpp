@@ -156,13 +156,27 @@ void RDOParser::error( rdosim::RDOSyntaxError::ErrorCode error_code, ... )
 	va_start( params, error_code );
 	std::string str = rdosim::RDOSyntaxError::getMessage( error_code, params );
 	va_end( params );
-	error( str.c_str() );
+	error( str, error_code );
 }
 
-void RDOParser::error( const char* message, rdosim::RDOSyntaxError::ErrorCode error_code ) 
+void RDOParser::error( const std::string& message, rdosim::RDOSyntaxError::ErrorCode error_code ) 
 {
-	errors.push_back( rdosim::RDOSyntaxError( error_code, message, parser ? parser->lexer_loc_lineno() : -1, -1, getFileToParse() ) );
+	errors.push_back( rdosim::RDOSyntaxError( error_code, message, lexer_loc_line(), lexer_loc_pos(), getFileToParse() ) );
 	throw rdoParse::RDOSyntaxException( "" );
+}
+
+void RDOParser::warning( rdosim::RDOSyntaxError::ErrorCode error_code, ... )
+{
+	va_list params;
+	va_start( params, error_code );
+	std::string str = rdosim::RDOSyntaxError::getMessage( error_code, params );
+	va_end( params );
+	warning( str, error_code );
+}
+
+void RDOParser::warning( const std::string& message, rdosim::RDOSyntaxError::ErrorCode error_code ) 
+{
+	errors.push_back( rdosim::RDOSyntaxError( error_code, message, lexer_loc_line(), lexer_loc_pos(), getFileToParse(), true ) );
 }
 
 const RDORTPResType *RDOParser::findRTPResType(const std::string *const type) const

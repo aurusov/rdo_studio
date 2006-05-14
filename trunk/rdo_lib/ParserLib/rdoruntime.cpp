@@ -663,7 +663,7 @@ RDOValue RDOCalcSeqNextByHist::calcValue(RDORuntime *sim) const
 RDOCalc::RDOCalc() 
 {	
 	fileToParse = currParser->getFileToParse();
-	lineno = currParser->lexer_loc_lineno();
+	lineno = currParser->lexer_loc_line();
 	rdoParse::addCalcToRuntime(this); 
 }
 

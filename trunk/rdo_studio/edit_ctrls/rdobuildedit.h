@@ -3,6 +3,7 @@
 #pragma once
 
 #include "rdologedit.h"
+#include <rdocommon.h>
 
 namespace rdoEditCtrl {
 
@@ -11,11 +12,15 @@ namespace rdoEditCtrl {
 // ----------------------------------------------------------------------------
 class RDOBuildEditLineInfo: public RDOLogEditLineInfo
 {
+friend class RDOBuildEdit;
+
 protected:
-	bool error;
+	rdosim::RDOSyntaxError::ErrorCode error_code;
+	bool warning;
 
 public:
-	RDOBuildEditLineInfo( const std::string& _message, const rdoModelObjects::RDOFileType _fileType = rdoModelObjects::PAT, const int _lineNumber = -1, bool _error = true );
+	RDOBuildEditLineInfo( rdosim::RDOSyntaxError::ErrorCode _error_code, const std::string& _message, const rdoModelObjects::RDOFileType _fileType = rdoModelObjects::PAT, const int _lineNumber = -1, const int _posInLine = 0, bool _warning = false );
+	RDOBuildEditLineInfo( const std::string& _message );
 	~RDOBuildEditLineInfo();
 
 	virtual std::string getMessage() const;
@@ -43,6 +48,8 @@ protected:
 public:
 	RDOBuildEdit();
 	virtual ~RDOBuildEdit();
+
+	void showFirstError();
 };
 
 }; // namespace rdoEditCtrl

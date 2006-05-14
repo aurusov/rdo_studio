@@ -5,6 +5,7 @@
 #include "rdostudioplugins.h"
 #include "rdostudiomodel.h"
 #include "htmlhelp.h"
+#include <rdocommon.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -567,7 +568,7 @@ BOOL RDOStudioOptionsColorsStyles::OnInitDialog()
 	sheet->preview_build.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, 0 );
 	sheet->preview_build.setEditorStyle( &sheet->style_build );
 	sheet->preview_build.appendLine( new RDOBuildEditLineInfo( rdo::format( IDS_COLORSTYLE_BUILD_SAMPLE1 ) ) );
-	sheet->preview_build.appendLine( new RDOBuildEditLineInfo( rdo::format( IDS_COLORSTYLE_BUILD_SAMPLE2 ), rdoModelObjects::PAT, 40, true ) );
+	sheet->preview_build.appendLine( new RDOBuildEditLineInfo( rdosim::RDOSyntaxError::UNKNOWN, rdo::format( IDS_COLORSTYLE_BUILD_SAMPLE2 ), rdoModelObjects::PAT, 40, true ) );
 	sheet->preview_build.appendLine( new RDOBuildEditLineInfo( rdo::format( IDS_COLORSTYLE_BUILD_SAMPLE3 ) ) );
 	sheet->preview_build.gotoNext();
 

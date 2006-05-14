@@ -102,13 +102,15 @@ struct RDOSyntaxError
 	std::string message;
 	int         error_line;
 	int         error_pos;
+	bool        warning;
 	rdoModelObjects::RDOFileType file;
-	RDOSyntaxError( ErrorCode _error_code, const std::string& _message, int _error_line, int _error_pos, rdoModelObjects::RDOFileType _file ):
+	RDOSyntaxError( ErrorCode _error_code, const std::string& _message, int _error_line, int _error_pos, rdoModelObjects::RDOFileType _file, bool _warning = false ):
 		error_code( _error_code ),
 		message( _message ),
 		error_line( _error_line ),
 		error_pos( _error_pos ),
-		file( _file )
+		file( _file ),
+		warning( _warning )
 	{
 	}
 	static std::string getMessage( ErrorCode _error_code, va_list& params );
