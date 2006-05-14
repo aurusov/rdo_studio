@@ -270,12 +270,12 @@ static const short yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined. */
 static const short yyrline[] =
 {
-       0,   159,   160,   161,   165,   176,   179,   183,   190,   193,
-     201,   202,   204,   207,   213,   216,   219,   222,   237,   240,
-     243,   246,   261,   264,   267,   282,   288,   294,   303,   307,
-     311,   315,   319,   322,   325,   328,   331,   339,   347,   361,
-     365,   369,   373,   377,   381,   387,   393,   397,   401,   406,
-     415,   422,   425,   429
+       0,   159,   160,   161,   165,   176,   180,   184,   191,   194,
+     202,   203,   205,   208,   214,   217,   220,   223,   238,   241,
+     244,   247,   262,   265,   268,   283,   289,   295,   304,   308,
+     312,   316,   320,   323,   326,   329,   332,   340,   348,   362,
+     366,   370,   374,   378,   382,   388,   394,   398,   402,   407,
+     416,   423,   426,   430
 };
 #endif
 
@@ -1159,33 +1159,34 @@ case 4:
 case 5:
 #line 176 ".\\rdortp.y"
 {
-						currParser->error( "Не указано имя типа ресурса" );
+						std::string str( reinterpret_cast<RDOLexer*>(lexer)->YYText() );
+						currParser->error( rdo::format("Ошибка в описании имени типа ресурса: %s", str.c_str()) );
 					;
     break;}
 case 6:
-#line 179 ".\\rdortp.y"
+#line 180 ".\\rdortp.y"
 {
 						currParser->error( "Не указан вид ресурса" );
 					;
     break;}
 case 7:
-#line 183 ".\\rdortp.y"
+#line 184 ".\\rdortp.y"
 {
 					if ( yyvsp[-1] == 0 ) {
 						currParser->lexer_loc_backup( &(yylsp[-3]) );
 						currParser->lexer_loc_pop();
-						currParser->error( rdo::format( "Тип ресурса не содежит параметров: %s", ((RDORTPResType*)yyvsp[-3])->getName()->c_str() ) );
+						currParser->error( rdo::format( "Тип ресурса '%s' не содежит параметров", ((RDORTPResType*)yyvsp[-3])->getName()->c_str() ) );
 					}
 				;
     break;}
 case 8:
-#line 190 ".\\rdortp.y"
+#line 191 ".\\rdortp.y"
 {
 					currParser->error( "Не найдено ключевое слово $Parameters" );
 				;
     break;}
 case 9:
-#line 193 ".\\rdortp.y"
+#line 194 ".\\rdortp.y"
 {
 					YYLTYPE loc = yylsp[0];
 					loc.first_line = yylsp[0].last_line;
@@ -1195,21 +1196,21 @@ case 9:
 				;
     break;}
 case 10:
-#line 201 ".\\rdortp.y"
+#line 202 ".\\rdortp.y"
 { yyval = 1; ;
     break;}
 case 11:
-#line 202 ".\\rdortp.y"
+#line 203 ".\\rdortp.y"
 { yyval = 0; ;
     break;}
 case 12:
-#line 204 ".\\rdortp.y"
+#line 205 ".\\rdortp.y"
 {
 				yyval = 0; // error
 			;
     break;}
 case 13:
-#line 207 ".\\rdortp.y"
+#line 208 ".\\rdortp.y"
 {
 				RDORTPParamDesc *param = (RDORTPParamDesc*)yyvsp[0];
 				currParser->lastRTPResType->add( param );
@@ -1217,25 +1218,25 @@ case 13:
 			;
     break;}
 case 14:
-#line 213 ".\\rdortp.y"
+#line 214 ".\\rdortp.y"
 {
 							yyval = (int)(new RDORTPIntDefVal());
 						;
     break;}
 case 15:
-#line 216 ".\\rdortp.y"
+#line 217 ".\\rdortp.y"
 {
 							yyval = (int)(new RDORTPIntDefVal(yyvsp[0]));
 						;
     break;}
 case 16:
-#line 219 ".\\rdortp.y"
+#line 220 ".\\rdortp.y"
 {
 							currParser->error( rdosim::RDOSyntaxError::RTP_INVALID_DEFVAULT_INT_AS_REAL );
 						;
     break;}
 case 17:
-#line 222 ".\\rdortp.y"
+#line 223 ".\\rdortp.y"
 {
 							if ( currParser->lexer_loc_lineno() == yylsp[-1].first_line ) {
 								std::string str( reinterpret_cast<RDOLexer*>(lexer)->YYText() );
@@ -1252,25 +1253,25 @@ case 17:
 						;
     break;}
 case 18:
-#line 237 ".\\rdortp.y"
+#line 238 ".\\rdortp.y"
 {
 							yyval = (int)(new RDORTPRealDefVal());
 						;
     break;}
 case 19:
-#line 240 ".\\rdortp.y"
+#line 241 ".\\rdortp.y"
 {
 							yyval = (int)(new RDORTPRealDefVal(*((double *)yyvsp[0])));
 						;
     break;}
 case 20:
-#line 243 ".\\rdortp.y"
+#line 244 ".\\rdortp.y"
 {
 							yyval = (int)(new RDORTPRealDefVal(yyvsp[0]));
 						;
     break;}
 case 21:
-#line 246 ".\\rdortp.y"
+#line 247 ".\\rdortp.y"
 {
 							if ( currParser->lexer_loc_lineno() == yylsp[-1].first_line ) {
 								std::string str( reinterpret_cast<RDOLexer*>(lexer)->YYText() );
@@ -1287,19 +1288,19 @@ case 21:
 						;
     break;}
 case 22:
-#line 261 ".\\rdortp.y"
+#line 262 ".\\rdortp.y"
 {
 							yyval = (int)(new RDORTPEnumDefVal());
 						;
     break;}
 case 23:
-#line 264 ".\\rdortp.y"
+#line 265 ".\\rdortp.y"
 {
 							yyval = (int)(new RDORTPEnumDefVal((std::string *)yyvsp[0]));
 						;
     break;}
 case 24:
-#line 267 ".\\rdortp.y"
+#line 268 ".\\rdortp.y"
 {
 							if ( currParser->lexer_loc_lineno() == yylsp[-1].first_line ) {
 								std::string str( reinterpret_cast<RDOLexer*>(lexer)->YYText() );
@@ -1316,7 +1317,7 @@ case 24:
 						;
     break;}
 case 25:
-#line 282 ".\\rdortp.y"
+#line 283 ".\\rdortp.y"
 {
 					RDORTPIntDiap *diap = (RDORTPIntDiap *)yyvsp[-1];
 					RDORTPIntDefVal *dv = (RDORTPIntDefVal *)yyvsp[0];
@@ -1325,7 +1326,7 @@ case 25:
 				;
     break;}
 case 26:
-#line 288 ".\\rdortp.y"
+#line 289 ".\\rdortp.y"
 {
 					RDORTPRealDiap *diap = (RDORTPRealDiap *)yyvsp[-1];
 					RDORTPRealDefVal *dv = (RDORTPRealDefVal *)yyvsp[0];
@@ -1334,7 +1335,7 @@ case 26:
 				;
     break;}
 case 27:
-#line 294 ".\\rdortp.y"
+#line 295 ".\\rdortp.y"
 {
 					reinterpret_cast<RDOLexerRTP*>(lexer)->enum_param_cnt = 0;
 					RDORTPEnum *enu = (RDORTPEnum *)yyvsp[-1];
@@ -1346,59 +1347,59 @@ case 27:
 				;
     break;}
 case 28:
-#line 303 ".\\rdortp.y"
+#line 304 ".\\rdortp.y"
 {
 					RDORTPParamDesc *desc = (RDORTPParamDesc *)yyvsp[0];
 					yyval = (int)desc->getType()->constructSuchAs();
 				;
     break;}
 case 29:
-#line 307 ".\\rdortp.y"
+#line 308 ".\\rdortp.y"
 {
 					RDORTPParamDesc *desc = (RDORTPParamDesc *)yyvsp[-2];
 					yyval = (int)desc->getType()->constructSuchAs((int)yyvsp[0]);
 				;
     break;}
 case 30:
-#line 311 ".\\rdortp.y"
+#line 312 ".\\rdortp.y"
 {
 					RDORTPParamDesc *desc = (RDORTPParamDesc *)yyvsp[-2];
 					yyval = (int)desc->getType()->constructSuchAs((double *)yyvsp[0]);
 				;
     break;}
 case 31:
-#line 315 ".\\rdortp.y"
+#line 316 ".\\rdortp.y"
 {
 					RDORTPParamDesc *desc = (RDORTPParamDesc *)yyvsp[-2];
 					yyval = (int)desc->getType()->constructSuchAs((std::string *)yyvsp[0]);
 				;
     break;}
 case 32:
-#line 319 ".\\rdortp.y"
+#line 320 ".\\rdortp.y"
 {
 					currParser->error( rdosim::RDOSyntaxError::RTP_INVALID_INT_RANGE_REAL );
 				;
     break;}
 case 33:
-#line 322 ".\\rdortp.y"
+#line 323 ".\\rdortp.y"
 {
 					currParser->error( rdosim::RDOSyntaxError::RTP_WAITING_FOR_INT_PARAM_END );
 				;
     break;}
 case 34:
-#line 325 ".\\rdortp.y"
+#line 326 ".\\rdortp.y"
 {
 					currParser->error( rdosim::RDOSyntaxError::RTP_WAITING_FOR_REAL_PARAM_END );
 				;
     break;}
 case 35:
-#line 328 ".\\rdortp.y"
+#line 329 ".\\rdortp.y"
 {
 					currParser->error( rdosim::RDOSyntaxError::RTP_WAITING_FOR_ENUM_PARAM_END );
 				;
     break;}
 case 36:
-#line 331 ".\\rdortp.y"
+#line 332 ".\\rdortp.y"
 {
 					currParser->error( "Ожидается окончание описания параметра-ссылки, например, зачение по-умолчанию" );
 //				}
@@ -1408,7 +1409,7 @@ case 36:
 				;
     break;}
 case 37:
-#line 339 ".\\rdortp.y"
+#line 340 ".\\rdortp.y"
 {
 					currParser->lexer_loc_backup( &(yylsp[-1]) );
 					std::string *name = (std::string *)yyvsp[-1];
@@ -1419,7 +1420,7 @@ case 37:
 				;
     break;}
 case 38:
-#line 347 ".\\rdortp.y"
+#line 348 ".\\rdortp.y"
 {
 					if ( currParser->lexer_loc_lineno() == yylsp[-1].first_line ) {
 						std::string str( reinterpret_cast<RDOLexer*>(lexer)->YYText() );
@@ -1436,40 +1437,40 @@ case 38:
 				;
     break;}
 case 39:
-#line 361 ".\\rdortp.y"
+#line 362 ".\\rdortp.y"
 {
 					currParser->error( "Неправильное описание параметра" );
 				;
     break;}
 case 40:
-#line 365 ".\\rdortp.y"
+#line 366 ".\\rdortp.y"
 {
 					RDORTPIntDiap *diap = new RDORTPIntDiap();
 					yyval = (int)diap;
 				;
     break;}
 case 41:
-#line 369 ".\\rdortp.y"
+#line 370 ".\\rdortp.y"
 {
 					RDORTPIntDiap *diap = new RDORTPIntDiap(yyvsp[-3], yyvsp[-1]);
 					yyval = (int)diap;
 				;
     break;}
 case 42:
-#line 373 ".\\rdortp.y"
+#line 374 ".\\rdortp.y"
 {
 					currParser->error( rdosim::RDOSyntaxError::RTP_INVALID_RANGE );
 				;
     break;}
 case 43:
-#line 377 ".\\rdortp.y"
+#line 378 ".\\rdortp.y"
 {
 					RDORTPRealDiap *diap = new RDORTPRealDiap();
 					yyval = (int)diap;
 				;
     break;}
 case 44:
-#line 381 ".\\rdortp.y"
+#line 382 ".\\rdortp.y"
 {
 					double min = *((double *)yyvsp[-3]);
 					double max = *((double *)yyvsp[-1]);
@@ -1478,7 +1479,7 @@ case 44:
 				;
     break;}
 case 45:
-#line 387 ".\\rdortp.y"
+#line 388 ".\\rdortp.y"
 {
 					double min = yyvsp[-3];
 					double max = yyvsp[-1];
@@ -1487,19 +1488,19 @@ case 45:
 				;
     break;}
 case 46:
-#line 393 ".\\rdortp.y"
+#line 394 ".\\rdortp.y"
 {
 					currParser->error( rdosim::RDOSyntaxError::RTP_INVALID_RANGE );
 				;
     break;}
 case 47:
-#line 397 ".\\rdortp.y"
+#line 398 ".\\rdortp.y"
 {
 				yyval = yyvsp[-1];
 			;
     break;}
 case 48:
-#line 401 ".\\rdortp.y"
+#line 402 ".\\rdortp.y"
 {
 					RDORTPEnum *enu = new RDORTPEnum((std::string *)yyvsp[0]);
 					yyval = (int)enu;
@@ -1507,7 +1508,7 @@ case 48:
 				;
     break;}
 case 49:
-#line 406 ".\\rdortp.y"
+#line 407 ".\\rdortp.y"
 {
 					if ( reinterpret_cast<RDOLexerRTP*>(lexer)->enum_param_cnt >= 1 ) {
 						RDORTPEnum *enu = (RDORTPEnum *)yyvsp[-2];
@@ -1519,7 +1520,7 @@ case 49:
 				;
     break;}
 case 50:
-#line 415 ".\\rdortp.y"
+#line 416 ".\\rdortp.y"
 {
 					if ( reinterpret_cast<RDOLexerRTP*>(lexer)->enum_param_cnt >= 1 ) {
 						currParser->error( rdo::format("Пропущена запятая перед: %s", ((std::string*)yyvsp[0])->c_str()) );
@@ -1529,19 +1530,19 @@ case 50:
 				;
     break;}
 case 51:
-#line 422 ".\\rdortp.y"
+#line 423 ".\\rdortp.y"
 {
 					currParser->error( "Ошибка в описании значений перечислимого типа 5" );
 				;
     break;}
 case 52:
-#line 425 ".\\rdortp.y"
+#line 426 ".\\rdortp.y"
 {
 					currParser->error( "Ошибка в описании значений перечислимого типа 6" );
 				;
     break;}
 case 53:
-#line 429 ".\\rdortp.y"
+#line 430 ".\\rdortp.y"
 {
 					std::string *type = (std::string *)yyvsp[-2];
 					std::string *param = (std::string *)yyvsp[0];
@@ -1787,7 +1788,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 441 ".\\rdortp.y"
+#line 442 ".\\rdortp.y"
 
 
 }

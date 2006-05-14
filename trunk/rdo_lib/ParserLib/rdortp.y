@@ -174,7 +174,8 @@ rtp_res_type_hdr:	Resource_type IDENTIF_COLON rtp_vid_res {
 						$$ = (int)res;
 					}
 					| Resource_type error {
-						currParser->error( "Не указано имя типа ресурса" );
+						std::string str( reinterpret_cast<RDOLexer*>(lexer)->YYText() );
+						currParser->error( rdo::format("Ошибка в описании имени типа ресурса: %s", str.c_str()) );
 					}
 					| Resource_type IDENTIF_COLON error {
 						currParser->error( "Не указан вид ресурса" );
@@ -184,7 +185,7 @@ rtp_res_type:	rtp_res_type_hdr Parameters rtp_body End {
 					if ( $3 == 0 ) {
 						currParser->lexer_loc_backup( &(@1) );
 						currParser->lexer_loc_pop();
-						currParser->error( rdo::format( "Тип ресурса не содежит параметров: %s", ((RDORTPResType*)$1)->getName()->c_str() ) );
+						currParser->error( rdo::format( "Тип ресурса '%s' не содежит параметров", ((RDORTPResType*)$1)->getName()->c_str() ) );
 					}
 				}
 				| rtp_res_type_hdr error {

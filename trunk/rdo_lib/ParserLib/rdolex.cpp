@@ -2489,7 +2489,7 @@ YY_RULE_SETUP
 #line 202 ".\\parser.l"
 {
 					std::string n1(YYText());
-					int pos = n1.find_first_of("\n\t :");
+					std::string::size_type pos = n1.find_first_of("\n\t :");
 					std::string *name = new std::string(n1, 0, pos);
 					rdoParse::currParser->addName(name);
 					rdoParse::currParser->lexer_setvalue((int)name);
@@ -2501,7 +2501,7 @@ YY_RULE_SETUP
 #line 211 ".\\parser.l"
 {
 					std::string n1(YYText());
-					int pos = n1.find_first_of("\n\t :");
+					std::string::size_type pos = n1.find_first_of("\n\t :");
 					std::string *name = new std::string(n1, 0, pos);
 					rdoParse::currParser->addName(name);
 					rdoParse::currParser->lexer_setvalue((int)name);
@@ -2513,7 +2513,7 @@ YY_RULE_SETUP
 #line 220 ".\\parser.l"
 {
 					std::string n1(YYText());
-					int pos = n1.find_first_of("\n\t :");
+					std::string::size_type pos = n1.find_first_of("\n\t :");
 					std::string *name = new std::string(n1, 0, pos);
 					rdoParse::currParser->addName(name);
 					rdoParse::currParser->lexer_setvalue((int)name);
@@ -2525,7 +2525,7 @@ YY_RULE_SETUP
 #line 229 ".\\parser.l"
 {
 					std::string n1(YYText());
-					int pos = n1.find_first_of("\n\t :");
+					std::string::size_type pos = n1.find_first_of("\n\t :");
 					std::string *name = new std::string(n1, 0, pos);
 					rdoParse::currParser->addName(name);
 					rdoParse::currParser->lexer_setvalue((int)name);

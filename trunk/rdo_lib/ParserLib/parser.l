@@ -201,7 +201,7 @@ active				return(active);
 
 [A-Za-zР-пр-џ\xB8_$][A-Za-zР-пр-џ\xB80-9_$]*[\n\t ]+set  {
 					std::string n1(YYText());
-					int pos = n1.find_first_of("\n\t :");
+					std::string::size_type pos = n1.find_first_of("\n\t :");
 					std::string *name = new std::string(n1, 0, pos);
 					rdoParse::currParser->addName(name);
 					rdoParse::currParser->lexer_setvalue((int)name);
@@ -210,7 +210,7 @@ active				return(active);
 
 [A-Za-zР-пр-џ\xB8_$][A-Za-zР-пр-џ\xB80-9_$]*[\n\t ]+NoChange[\n\t ]+NoChange  {
 					std::string n1(YYText());
-					int pos = n1.find_first_of("\n\t :");
+					std::string::size_type pos = n1.find_first_of("\n\t :");
 					std::string *name = new std::string(n1, 0, pos);
 					rdoParse::currParser->addName(name);
 					rdoParse::currParser->lexer_setvalue((int)name);
@@ -219,7 +219,7 @@ active				return(active);
 
 [A-Za-zР-пр-џ\xB8_$][A-Za-zР-пр-џ\xB80-9_$]*[\n\t ]+NoChange  {
 					std::string n1(YYText());
-					int pos = n1.find_first_of("\n\t :");
+					std::string::size_type pos = n1.find_first_of("\n\t :");
 					std::string *name = new std::string(n1, 0, pos);
 					rdoParse::currParser->addName(name);
 					rdoParse::currParser->lexer_setvalue((int)name);
@@ -228,7 +228,7 @@ active				return(active);
 
 [A-Za-zР-пр-џ\xB8_$][A-Za-zР-пр-џ\xB80-9_$]*[\n\t ]*\:  {
 					std::string n1(YYText());
-					int pos = n1.find_first_of("\n\t :");
+					std::string::size_type pos = n1.find_first_of("\n\t :");
 					std::string *name = new std::string(n1, 0, pos);
 					rdoParse::currParser->addName(name);
 					rdoParse::currParser->lexer_setvalue((int)name);
