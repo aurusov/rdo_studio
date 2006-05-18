@@ -142,6 +142,7 @@ typedef struct yyltype
 # define	active	414
 # define	QUOTED_IDENTIF	415
 # define	QUOTED_IDENTIF_BAD	416
+# define	IDENTIF_BAD	417
 
 
 #endif /* not BISON_RDOGRAMMA_H */

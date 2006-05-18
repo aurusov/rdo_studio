@@ -1285,8 +1285,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,8,0,281
- PRODUCTVERSION 0,8,0,281
+ FILEVERSION 0,8,0,283
+ PRODUCTVERSION 0,8,0,283
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -1304,14 +1304,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "RAO studio\0"
-            VALUE "FileVersion", "0, 8, 0, 281\0"
+            VALUE "FileVersion", "0, 8, 0, 283\0"
             VALUE "InternalName", "RAO-Studio\0"
             VALUE "LegalCopyright", "Copyright (C) 2003-2006\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "RAO-Studio.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "RAO-Studio\0"
-            VALUE "ProductVersion", "0, 8, 0, 281\0"
+            VALUE "ProductVersion", "0, 8, 0, 283\0"
             VALUE "SpecialBuild", "\0"
         END
     END
@@ -1771,7 +1771,7 @@ STRINGTABLE DISCARDABLE
 BEGIN
     IDS_ER_RTP_INVALID_DEFVALUE_INT "Ќеверное значение по-умолчанию"
     IDS_ER_RTP_INVALID_DEFVALUE_INT_AS_REAL 
-                            "¬ещественное число не может инициализировать целое"
+                            "÷елое число инициализируетс€ вещественным: %f"
     IDS_ER_RTP_INVALID_DEFVALUE_REAL "Ќеверное значение по-умолчанию"
     IDS_ER_RTP_INVALID_DEFVALUE_ENUM "Ќеверное значение по-умолчанию"
     IDS_ER_RTP_INVALID_DEFVAULT_INT_SUCHAS 

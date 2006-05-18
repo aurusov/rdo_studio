@@ -134,6 +134,7 @@ public:
 	void lexer_loc_action() const                             { if ( parser ) parser->lexer_loc_action();                     }
 	void lexer_loc_set( int error_line, int error_pos ) const { if ( parser ) parser->lexer_loc_set( error_line, error_pos ); }
 	void lexer_loc_set( void* data ) const                    { if ( parser ) parser->lexer_loc_set( data );                  }
+	void lexer_loc_delta_pos( int value ) const               { if ( parser ) parser->lexer_loc_delta_pos( value );           }
 	void lexer_loc_backup( void* data = NULL ) const          { if ( parser ) parser->lexer_loc_backup( data );               }
 	void lexer_loc_restore() const                            { if ( parser ) parser->lexer_loc_restore();                    }
 	int  lexer_loc_line() const                               { return parser ? parser->lexer_loc_line() : -1;                }

@@ -135,6 +135,7 @@
 %token active				414
 %token QUOTED_IDENTIF		415
 %token QUOTED_IDENTIF_BAD	416
+%token IDENTIF_BAD			417
 
 %{
 #include "pch.h"
@@ -143,6 +144,8 @@
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
+
+// %token INT_CONST_SPACE		417
 
 #include "rdoparser.h"
 #include "rdoparser_rdo.h"
@@ -161,6 +164,20 @@ rtp_list:	/* empty */
 			| error {
 				currParser->error( rdosim::RDOSyntaxError::UNKNOWN );
 			};
+
+rtp_res_type:	rtp_res_type_hdr Parameters rtp_body End {
+					if ( $3 == 0 ) {
+						currParser->lexer_loc_set( &(@4) );
+						currParser->warning( rdo::format( "Тип ресурса '%s' не содежит параметров", ((RDORTPResType*)$1)->getName()->c_str() ) );
+					}
+				}
+				| rtp_res_type_hdr error {
+					currParser->error( "Не найдено ключевое слово $Parameters" );
+				}
+				| rtp_res_type_hdr Parameters rtp_body {
+					currParser->lexer_loc_set( @3.last_line, @3.last_column );
+					currParser->error( "Не найдено ключевое слово $End" );
+				};
 
 rtp_res_type_hdr:	Resource_type IDENTIF_COLON rtp_vid_res {
 						reinterpret_cast<RDOLexerRTP*>(lexer)->enum_param_cnt = 0;
@@ -184,97 +201,39 @@ rtp_res_type_hdr:	Resource_type IDENTIF_COLON rtp_vid_res {
 						currParser->error( "Не указан вид ресурса" );
 					};
 
-rtp_res_type:	rtp_res_type_hdr Parameters rtp_body End {
-					if ( $3 == 0 ) {
-						currParser->lexer_loc_set( &(@4) );
-						currParser->warning( rdo::format( "Тип ресурса '%s' не содежит параметров", ((RDORTPResType*)$1)->getName()->c_str() ) );
-					}
-				}
-				| rtp_res_type_hdr error {
-					currParser->error( "Не найдено ключевое слово $Parameters" );
-				}
-				| rtp_res_type_hdr Parameters rtp_body {
-					currParser->lexer_loc_set( @3.last_line, @3.last_column );
-					currParser->error( "Не найдено ключевое слово $End" );
-				};
-
 rtp_vid_res:	permanent	{ $$ = 1; }
 				| temporary	{ $$ = 0; };
 
 rtp_body:	/* empty */ {
-				$$ = 0; // error
+				$$ = 0; // warning
 			}
 			|  rtp_body rtp_param_desc {
 				RDORTPParamDesc *param = (RDORTPParamDesc*)$2;
 				currParser->lastRTPResType->add( param );
-				$$ = 1; // no error
+				$$ = 1; // no warning
 			};
 
-rtp_int_default_val:	/* empty */ {
-							$$ = (int)(new RDORTPIntDefVal());
-						}
-						| '=' INT_CONST {
-							$$ = (int)(new RDORTPIntDefVal($2));
-						}
-						| '=' REAL_CONST {
-							currParser->error( rdosim::RDOSyntaxError::RTP_INVALID_DEFVAULT_INT_AS_REAL );
-						}
-						| '=' error {
-							if ( currParser->lexer_loc_line() == @1.first_line ) {
-								std::string str( reinterpret_cast<RDOLexer*>(lexer)->YYText() );
-								if ( str.empty() ) {
-									currParser->error( "Ожидается значение по-ум. для integer" );
-								} else {
-									currParser->error( rdo::format( "Неверное значение по-ум. для integer: %s", str.c_str() ) );
-								}
-							} else {
-								currParser->lexer_loc_set( &(@1) );
-								currParser->error( "Ожидается значение по-ум. для integer" );
-							}
-						};
-
-rtp_real_default_val:	/* empty */ {
-							$$ = (int)(new RDORTPRealDefVal());
-						}
-						| '=' REAL_CONST {
-							$$ = (int)(new RDORTPRealDefVal(*((double *)$2)));
-						}
-						| '=' INT_CONST {
-							$$ = (int)(new RDORTPRealDefVal($2));
-						}
-						| '=' error {
-							if ( currParser->lexer_loc_line() == @1.first_line ) {
-								std::string str( reinterpret_cast<RDOLexer*>(lexer)->YYText() );
-								if ( str.empty() ) {
-									currParser->error( "Ожидается значение по-ум. для real" );
-								} else {
-									currParser->error( rdo::format( "Неверное значение по-ум. для real: %s", str.c_str() ) );
-								}
-							} else {
-								currParser->lexer_loc_set( &(@1) );
-								currParser->error( "Ожидается значение по-ум. для real" );
-							}
-						};
-
-rtp_enum_default_val:	/* empty */ {
-							$$ = (int)(new RDORTPEnumDefVal());
-						}
-						| '=' IDENTIF {
-							$$ = (int)(new RDORTPEnumDefVal((std::string *)$2));
-						}
-						| '=' error {
-							if ( currParser->lexer_loc_line() == @1.first_line ) {
-								std::string str( reinterpret_cast<RDOLexer*>(lexer)->YYText() );
-								if ( str.empty() ) {
-									currParser->error( "Ожидается значение по-ум. для enum" );
-								} else {
-									currParser->error( rdo::format( "Неверное значение по-ум. для enum: %s", str.c_str() ) );
-								}
-							} else {
-								currParser->lexer_loc_set( &(@1) );
-								currParser->error( "Ожидается значение по-ум. для enum" );
-							}
-						};
+rtp_param_desc: IDENTIF_COLON rtp_param_type {
+					currParser->lexer_loc_backup( &(@1) );
+					std::string *name = (std::string *)$1;
+					RDORTPResParam *parType = (RDORTPResParam *)$2;
+					RDORTPParamDesc *param = new RDORTPParamDesc(name, parType);
+					currParser->allRTPParamDesc.push_back(param);
+					$$ = (int)param;
+				}
+				| IDENTIF_COLON error {
+					if ( currParser->lexer_loc_line() == @1.last_line ) {
+						std::string str( reinterpret_cast<RDOLexer*>(lexer)->YYText() );
+						currParser->error( rdo::format( "Неверный тип параметра: %s", str.c_str() ) );
+					} else {
+						currParser->lexer_loc_set( @1.last_line, @1.last_column );
+						currParser->error( "Ожидается тип параметра" );
+					}
+				}
+				| error {
+					currParser->lexer_loc_set( @1.last_line, @1.last_column );
+					currParser->error( "Неправильное описание параметра" );
+				};
 
 rtp_param_type:	integer rtp_int_diap rtp_int_default_val {
 					RDORTPIntDiap *diap = (RDORTPIntDiap *)$2;
@@ -313,9 +272,6 @@ rtp_param_type:	integer rtp_int_diap rtp_int_default_val {
 					RDORTPParamDesc *desc = (RDORTPParamDesc *)$1;
 					$$ = (int)desc->getType()->constructSuchAs((std::string *)$3);
 				}
-				| integer '[' REAL_CONST dblpoint REAL_CONST ']' {
-					currParser->error( rdosim::RDOSyntaxError::RTP_INVALID_INT_RANGE_REAL );
-				}
 				| integer error {
 					currParser->error( rdosim::RDOSyntaxError::RTP_WAITING_FOR_INT_PARAM_END );
 				}
@@ -333,31 +289,6 @@ rtp_param_type:	integer rtp_int_diap rtp_int_default_val {
 //					currParser->error( rdosim::RDOSyntaxError::RTP_INVALID_PARAM_TYPE );
 				};
 
-rtp_param_desc: IDENTIF_COLON rtp_param_type {
-					currParser->lexer_loc_backup( &(@1) );
-					std::string *name = (std::string *)$1;
-					RDORTPResParam *parType = (RDORTPResParam *)$2;
-					RDORTPParamDesc *param = new RDORTPParamDesc(name, parType);
-					currParser->allRTPParamDesc.push_back(param);
-					$$ = (int)param;
-				}
-				| IDENTIF_COLON error {
-					if ( currParser->lexer_loc_line() == @1.first_line ) {
-						std::string str( reinterpret_cast<RDOLexer*>(lexer)->YYText() );
-						if ( str.empty() ) {
-							currParser->error( "Ожидается тип параметра" );
-						} else {
-							currParser->error( rdo::format( "Неверный тип параметра: %s", str.c_str() ) );
-						}
-					} else {
-						currParser->lexer_loc_set( &(@1) );
-						currParser->error( "Ожидается тип параметра 2" );
-					}
-				}
-				| error {
-					currParser->error( "Неправильное описание параметра" );
-				};
-
 rtp_int_diap:	/* empty */ {
 					RDORTPIntDiap *diap = new RDORTPIntDiap();
 					$$ = (int)diap;
@@ -366,8 +297,30 @@ rtp_int_diap:	/* empty */ {
 					RDORTPIntDiap *diap = new RDORTPIntDiap($2, $4);
 					$$ = (int)diap;
 				}
+				| '[' REAL_CONST dblpoint REAL_CONST {
+					currParser->lexer_loc_set( @2.last_line, @2.last_column );
+					currParser->error( rdosim::RDOSyntaxError::RTP_INVALID_INT_RANGE_REAL );
+				}
+				| '[' REAL_CONST dblpoint INT_CONST {
+					currParser->lexer_loc_set( @2.last_line, @2.last_column );
+					currParser->error( rdosim::RDOSyntaxError::RTP_INVALID_INT_RANGE_REAL );
+				}
+				| '[' INT_CONST dblpoint REAL_CONST {
+					currParser->lexer_loc_set( @4.last_line, @4.last_column );
+					currParser->error( rdosim::RDOSyntaxError::RTP_INVALID_INT_RANGE_REAL );
+				}
+				| '[' INT_CONST dblpoint INT_CONST error {
+					currParser->lexer_loc_set( @4.last_line, @4.last_column );
+					currParser->error( "Диапазон задан неверно 3" );
+				}
+				| '[' INT_CONST dblpoint error {
+					currParser->lexer_loc_set( @3.last_line, @3.last_column );
+					currParser->error( "Диапазон задан неверно 2" );
+				}
 				| '[' error {
-					currParser->error( rdosim::RDOSyntaxError::RTP_INVALID_RANGE );
+					currParser->lexer_loc_set( &(@2) );
+					currParser->error( "Диапазон задан неверно" );
+//					currParser->error( rdosim::RDOSyntaxError::RTP_INVALID_RANGE );
 				};
 
 rtp_real_diap:	/* empty */ {
@@ -380,18 +333,112 @@ rtp_real_diap:	/* empty */ {
 					RDORTPRealDiap *diap = new RDORTPRealDiap(min, max);
 					$$ = (int)diap;
 				}
+				| '[' REAL_CONST dblpoint INT_CONST ']' {
+					double min = *((double *)$2);
+					double max = $4;
+					RDORTPRealDiap *diap = new RDORTPRealDiap(min, max);
+					$$ = (int)diap;
+				}
+				| '[' INT_CONST dblpoint REAL_CONST ']' {
+					double min = $2;
+					double max = *((double *)$4);
+					RDORTPRealDiap *diap = new RDORTPRealDiap(min, max);
+					$$ = (int)diap;
+				}
 				| '[' INT_CONST dblpoint INT_CONST ']' {
 					double min = $2;
 					double max = $4;
 					RDORTPRealDiap *diap = new RDORTPRealDiap(min, max);
 					$$ = (int)diap;
 				}
+				| '[' REAL_CONST dblpoint REAL_CONST error {
+					currParser->lexer_loc_set( @4.last_line, @4.last_column );
+					currParser->error( "Диапазон задан неверно 4" );
+				}
+				| '[' REAL_CONST dblpoint INT_CONST error {
+					currParser->lexer_loc_set( @4.last_line, @4.last_column );
+					currParser->error( "Диапазон задан неверно 4" );
+				}
+				| '[' INT_CONST dblpoint REAL_CONST error {
+					currParser->lexer_loc_set( @4.last_line, @4.last_column );
+					currParser->error( "Диапазон задан неверно 4" );
+				}
+				| '[' INT_CONST dblpoint INT_CONST error {
+					currParser->lexer_loc_set( @4.last_line, @4.last_column );
+					currParser->error( "Диапазон задан неверно 4" );
+				}
+				| '[' REAL_CONST dblpoint error {
+					currParser->lexer_loc_set( @3.last_line, @3.last_column );
+					currParser->error( "Диапазон задан неверно 2" );
+				}
+				| '[' INT_CONST dblpoint error {
+					currParser->lexer_loc_set( @3.last_line, @3.last_column );
+					currParser->error( "Диапазон задан неверно 3" );
+				}
 				| '[' error {
-					currParser->error( rdosim::RDOSyntaxError::RTP_INVALID_RANGE );
+					currParser->lexer_loc_set( &(@2) );
+					currParser->error( "Диапазон задан неверно" );
+//					currParser->error( rdosim::RDOSyntaxError::RTP_INVALID_RANGE );
 				};
+
+rtp_int_default_val:	/* empty */ {
+							$$ = (int)(new RDORTPIntDefVal());
+						}
+						| '=' INT_CONST {
+							$$ = (int)(new RDORTPIntDefVal($2));
+						}
+						| '=' REAL_CONST {
+							// Целое число инициализируется вещественным: %f
+							currParser->lexer_loc_set( @2.last_line, @2.last_column );
+							currParser->error( rdosim::RDOSyntaxError::RTP_INVALID_DEFVAULT_INT_AS_REAL, *(double*)$2 );
+						}
+						| '=' error {
+							if ( currParser->lexer_loc_line() == @1.first_line ) {
+								std::string str( reinterpret_cast<RDOLexer*>(lexer)->YYText() );
+								if ( str.empty() ) {
+									currParser->lexer_loc_set( @1.last_line, @1.last_column );
+									currParser->error( "Ожидается значение по-ум. для integer" );
+								} else {
+									currParser->lexer_loc_set( @2.last_line, @2.last_column );
+									currParser->error( rdo::format( "Неверное значение по-ум. для integer: %s", str.c_str() ) );
+								}
+							} else {
+								currParser->lexer_loc_set( @1.last_line, @1.last_column );
+								currParser->error( "Ожидается значение по-ум. для integer 2" );
+							}
+						};
+
+rtp_real_default_val:	/* empty */ {
+							$$ = (int)(new RDORTPRealDefVal());
+						}
+						| '=' REAL_CONST {
+							$$ = (int)(new RDORTPRealDefVal(*((double *)$2)));
+						}
+						| '=' INT_CONST {
+							$$ = (int)(new RDORTPRealDefVal($2));
+						}
+						| '=' error {
+							if ( currParser->lexer_loc_line() == @1.first_line ) {
+								std::string str( reinterpret_cast<RDOLexer*>(lexer)->YYText() );
+								if ( str.empty() ) {
+									currParser->lexer_loc_set( @1.last_line, @1.last_column );
+									currParser->error( "Ожидается значение по-ум. для real" );
+								} else {
+									currParser->lexer_loc_set( @2.last_line, @2.last_column );
+									currParser->error( rdo::format( "Неверное значение по-ум. для real: %s", str.c_str() ) );
+								}
+							} else {
+								currParser->lexer_loc_set( @1.last_line, @1.last_column );
+								currParser->error( "Ожидается значение по-ум. для real 2" );
+							}
+						};
 
 rtp_enum:	'(' rtp_enum_list ')' {
 				$$ = $2;
+			}
+			| '(' rtp_enum_list {
+				currParser->lexer_loc_set( @2.last_line, @2.last_column );
+				currParser->error( "Перечисление должно заканчиваться скобкой" );
 			};
 
 rtp_enum_list:	IDENTIF {
@@ -401,8 +448,11 @@ rtp_enum_list:	IDENTIF {
 				}
 				| rtp_enum_list ',' IDENTIF {
 					if ( reinterpret_cast<RDOLexerRTP*>(lexer)->enum_param_cnt >= 1 ) {
+						currParser->lexer_loc_backup();
+						currParser->lexer_loc_set( @3.last_line, @3.last_column );
 						RDORTPEnum *enu = (RDORTPEnum *)$1;
 						enu->add((std::string *)$3);
+						currParser->lexer_loc_restore();
 						$$ = (int)enu;
 					} else {
 						currParser->error( "Ошибка в описании значений перечислимого типа 1" );
@@ -416,11 +466,43 @@ rtp_enum_list:	IDENTIF {
 					}
 				}
 				| rtp_enum_list error {
-					currParser->error( "Ошибка в описании значений перечислимого типа 5" );
+					if ( currParser->lexer_loc_line() == @1.first_line ) {
+						std::string str( reinterpret_cast<RDOLexer*>(lexer)->YYText() );
+						if ( str.empty() ) {
+							currParser->lexer_loc_set( @1.last_line, @1.last_column );
+							currParser->error( "Ошибка в описании значений перечислимого типа 7" );
+						} else {
+							currParser->lexer_loc_set( @2.last_line, @2.last_column );
+							currParser->error( rdo::format( "Неверное значение перечислимого типа: %s", str.c_str() ) );
+						}
+					} else {
+						currParser->lexer_loc_set( @1.last_line, @1.last_column );
+						currParser->error( "Ошибка в описании значений перечислимого типа 5" );
+					}
 				}
 				| error {
 					currParser->error( "Ошибка в описании значений перечислимого типа 6" );
 				};
+
+rtp_enum_default_val:	/* empty */ {
+							$$ = (int)(new RDORTPEnumDefVal());
+						}
+						| '=' IDENTIF {
+							$$ = (int)(new RDORTPEnumDefVal((std::string *)$2));
+						}
+						| '=' error {
+							if ( currParser->lexer_loc_line() == @1.first_line ) {
+								std::string str( reinterpret_cast<RDOLexer*>(lexer)->YYText() );
+								if ( str.empty() ) {
+									currParser->error( "Ожидается значение по-ум. для enum" );
+								} else {
+									currParser->error( rdo::format( "Неверное значение по-ум. для enum: %s", str.c_str() ) );
+								}
+							} else {
+								currParser->lexer_loc_set( &(@1) );
+								currParser->error( "Ожидается значение по-ум. для enum" );
+							}
+						};
 
 rtp_such_as:	such_as IDENTIF '.' IDENTIF {
 					std::string *type = (std::string *)$2;
