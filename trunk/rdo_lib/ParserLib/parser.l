@@ -19,26 +19,6 @@ static char THIS_FILE[] = __FILE__;
 	rdoParse::currParser->lexer_loc_action(); \
 }
 
-/*
-([+-]?[0-9]+[\r\n\t ]+)		{
-							std::string n1( YYText() );
-							std::string n2 = "";
-							std::string::size_type pos = n1.find_first_of("\r\n\t ");
-							int len = 0;
-							if ( pos != std::string::npos ) {
-								len = n1.length() - pos;
-								n2.assign( n1, pos, len );
-								n1.erase( pos, len );
-							}
-							for ( int i = 0; i < n2.length(); i++ ) {
-								unput( n2[i] );
-							}
-							rdoParse::currParser->lexer_loc_delta_pos( -len );
-							return INT_CONST_SPACE;
-						}
-
-*/
-
 %}
 %option yylineno
 %option c++
@@ -221,7 +201,7 @@ active				return(active);
 						return REAL_CONST;
 					}
 
-[+-]?[0-9]+[A-Za-zР-пр-џ\xB8_$][A-Za-zР-пр-џ\xB80-9_$]*	{
+[+-]?[0-9]+"."?[0-9]?[Ee]?[+-]?[0-9]?[A-Za-zР-пр-џ\xB8_$][A-Za-zР-пр-џ\xB80-9_$]*	{
 						std::string *name = new std::string(YYText());
 						rdoParse::currParser->addName(name);
 						rdoParse::currParser->lexer_setvalue((int)name);
