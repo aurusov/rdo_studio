@@ -117,6 +117,7 @@
 %token some					362
 %token Process				363
 %token SEIZE				364
+%token GENERATE				365
 
 %token Frame				400
 %token Show_if				401

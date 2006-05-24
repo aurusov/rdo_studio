@@ -131,6 +131,7 @@ YES					return(YES);
 $Activities			return(Activities);
 $Process			return(Process);
 SEIZE				return(SEIZE);
+GENERATE			return(GENERATE);
 value[\r\n\t ]+before	return(value_before);
 value[\r\n\t ]+after	return(value_after);
 value_before		return(value_before);

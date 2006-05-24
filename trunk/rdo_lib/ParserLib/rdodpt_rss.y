@@ -117,6 +117,7 @@
 %token some					362
 %token Process				363
 %token SEIZE				364
+%token GENERATE				365
 
 %token Frame				400
 %token Show_if				401
@@ -289,7 +290,10 @@ dpt_process:		Process	dpt_process_input {};
 dpt_process_input:
 					| dpt_process_input dpt_process_line;
 
-dpt_process_line:	IDENTIF	{ TRACE( "%s\n", ((std::string *)$1)->c_str() ); }
+dpt_process_line:	IDENTIF	{ TRACE( "IDENTIF %s\n", ((std::string *)$1)->c_str() ); }
+					| GENERATE {
+						TRACE( "__GENERATE\n" );
+					}
 					| SEIZE {
 	@$.first_column = @1.first_column;
 	@$.first_line   = @1.first_line;

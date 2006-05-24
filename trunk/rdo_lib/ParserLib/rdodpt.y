@@ -117,6 +117,7 @@
 %token some					362
 %token Process				363
 %token SEIZE				364
+%token GENERATE				365
 
 %token Frame				400
 %token Show_if				401
@@ -230,7 +231,7 @@ dpt_activ_some_end:	dpt_activ_some End												{ ((RDODPTSome *)$$)->end();};
 /* ///////////////////////  FREE ACTIVITIES ///////////////////////////// */
 
 dpt_activ_free:	Activities																{ $$ = NULL; };
-					|	dpt_activ_free_descr_param { ((RDODPTFreeActivity *)$1)->end();};										
+					|	dpt_activ_free_descr_param { ((RDODPTFreeActivity *)$1)->end(); };
 																									
 dpt_activ_free_descr:	dpt_activ_free IDENTIF_COLON IDENTIF					{ $$ = (int)(new RDODPTFreeActivity((std::string *)$2, (std::string *)$3)); };
 																									                                                                    
@@ -244,7 +245,7 @@ dpt_activ_free_descr_param:	dpt_activ_free_descr_param INT_CONST			{ ((RDODPTFre
 								|		dpt_activ_free_descr_param '*'					{ ((RDODPTFreeActivity *)$1)->addParam(); }
 								|		dpt_activ_free_descr_keyb;
 																									                                                                    
-dpt_activ_free_end:	dpt_activ_free End												{ if($1 != NULL) ((RDODPTFreeActivity *)$1)->end(); };
+dpt_activ_free_end:	dpt_activ_free End												{ /* if ($1 != NULL) ((RDODPTFreeActivity *)$1)->end(); */ };
 
 
 /* ///////////////////////  PROCESS ///////////////////////////// */
@@ -255,6 +256,7 @@ dpt_process_input:
 					| dpt_process_input dpt_process_line;
 
 dpt_process_line:	IDENTIF			{}
+					| GENERATE		{}
 					| SEIZE IDENTIF	{};
 
 dpt_process_end:	dpt_process End	{};
