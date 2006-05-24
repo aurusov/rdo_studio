@@ -297,8 +297,8 @@ static const short yyrline[] =
      243,   244,   246,   250,   251,   252,   253,   254,   255,   256,
      257,   258,   259,   261,   262,   263,   264,   265,   266,   267,
      268,   269,   270,   272,   273,   274,   276,   277,   278,   279,
-     281,   283,   284,   288,   290,   291,   293,   294,   297,   304,
-     484
+     281,   283,   284,   288,   290,   291,   293,   294,   304,   311,
+     491
 };
 #endif
 
@@ -1479,16 +1479,23 @@ case 83:
     break;}
 case 86:
 #line 293 ".\\rdodpt_rss.y"
-{ TRACE( "%s\n", ((std::string *)yyvsp[0])->c_str() ); ;
+{ TRACE( "IDENTIF %s\n", ((std::string *)yyvsp[0])->c_str() ); ;
     break;}
 case 87:
 #line 294 ".\\rdodpt_rss.y"
 {
-						TRACE( "__GENERATE\n" );
+
+	std::string* ie_name      = currParser->registerName( "PAT_GENERATE" );
+	std::string* rel_res_name = currParser->registerName( "Транзакт" );
+	std::string* rtp_name     = currParser->registerName( "Транзакты" );
+	RDOPATPatternEvent* ie = new RDOPATPatternEvent( ie_name, true, currParser->patternCounter++ );
+	ie->addRelRes( rel_res_name, rtp_name, CS_Create );
+	ie->end();
+
 					;
     break;}
 case 88:
-#line 297 ".\\rdodpt_rss.y"
+#line 304 ".\\rdodpt_rss.y"
 {
 	yyloc.first_column = yylsp[0].first_column;
 	yyloc.first_line   = yylsp[0].first_line;
@@ -1498,7 +1505,7 @@ case 88:
 ;
     break;}
 case 89:
-#line 304 ".\\rdodpt_rss.y"
+#line 311 ".\\rdodpt_rss.y"
 {
 
 	std::string* res_name       = (std::string*)yyvsp[0];
@@ -1680,7 +1687,7 @@ case 89:
 ;
     break;}
 case 90:
-#line 484 ".\\rdodpt_rss.y"
+#line 491 ".\\rdodpt_rss.y"
 {;
     break;}
 }
@@ -1916,7 +1923,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 486 ".\\rdodpt_rss.y"
+#line 493 ".\\rdodpt_rss.y"
 
 
 }

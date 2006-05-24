@@ -1182,7 +1182,7 @@ case 4:
 case 5:
 #line 174 ".\\rdortp.y"
 {
-					currParser->lexer_loc_set( &(yylsp[0]) );
+					currParser->lexer_loc_set( yylsp[0].last_line, yylsp[0].last_column );
 					currParser->error( "Не найдено ключевое слово $End" );
 				;
     break;}

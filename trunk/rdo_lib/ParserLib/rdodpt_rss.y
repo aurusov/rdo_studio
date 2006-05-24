@@ -292,7 +292,14 @@ dpt_process_input:
 
 dpt_process_line:	IDENTIF	{ TRACE( "IDENTIF %s\n", ((std::string *)$1)->c_str() ); }
 					| GENERATE {
-						TRACE( "__GENERATE\n" );
+
+	std::string* ie_name      = currParser->registerName( "PAT_GENERATE" );
+	std::string* rel_res_name = currParser->registerName( "Транзакт" );
+	std::string* rtp_name     = currParser->registerName( "Транзакты" );
+	RDOPATPatternEvent* ie = new RDOPATPatternEvent( ie_name, true, currParser->patternCounter++ );
+	ie->addRelRes( rel_res_name, rtp_name, CS_Create );
+	ie->end();
+
 					}
 					| SEIZE {
 	@$.first_column = @1.first_column;

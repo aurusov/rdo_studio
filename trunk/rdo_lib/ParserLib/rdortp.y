@@ -172,7 +172,7 @@ rtp_res_type:	rtp_res_type_hdr Parameters rtp_body End {
 					}
 				}
 				| rtp_res_type_hdr Parameters rtp_body {
-					currParser->lexer_loc_set( &(@3) );
+					currParser->lexer_loc_set( @3.last_line, @3.last_column );
 					currParser->error( "Не найдено ключевое слово $End" );
 				}
 				| rtp_res_type_hdr error {
