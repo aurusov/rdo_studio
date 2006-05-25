@@ -1223,19 +1223,19 @@ yyreduce:
 
 case 3:
 #line 166 ".\\rdopat.y"
-{ yyval = (int)(new RDOPATPatternOperation(	(std::string *)yyvsp[-2], yyvsp[0] != 0, currParser->patternCounter++)); yyloc; ;
+{ yyval = (int)(new RDOPATPatternOperation( (std::string *)yyvsp[-2], yyvsp[0] != 0 )); yyloc; ;
     break;}
 case 4:
 #line 167 ".\\rdopat.y"
-{ yyval = (int)(new RDOPATPatternEvent(		(std::string *)yyvsp[-2], yyvsp[0] != 0, currParser->patternCounter++)); ;
+{ yyval = (int)(new RDOPATPatternEvent( (std::string *)yyvsp[-2], yyvsp[0] != 0 )); ;
     break;}
 case 5:
 #line 168 ".\\rdopat.y"
-{ yyval = (int)(new RDOPATPatternRule(			(std::string *)yyvsp[-2], yyvsp[0] != 0, currParser->patternCounter++)); ;
+{ yyval = (int)(new RDOPATPatternRule( (std::string *)yyvsp[-2], yyvsp[0] != 0 )); ;
     break;}
 case 6:
 #line 169 ".\\rdopat.y"
-{ yyval = (int)(new RDOPATPatternKeyboard(	(std::string *)yyvsp[-2], yyvsp[0] != 0, currParser->patternCounter++)); ;
+{ yyval = (int)(new RDOPATPatternKeyboard( (std::string *)yyvsp[-2], yyvsp[0] != 0 )); ;
     break;}
 case 7:
 #line 171 ".\\rdopat.y"

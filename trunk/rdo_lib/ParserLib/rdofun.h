@@ -142,9 +142,7 @@ friend RDOParser;
 	RDOFunCalc *functionCalc;
 
 public:
-	RDOFUNFunction(const std::string *const _name, const RDORTPResParam *const _retType):
-		name(_name), retType(_retType) {}
-
+	RDOFUNFunction( const std::string* const _name, const RDORTPResParam* const _retType);
 	void add(const RDOFUNFunctionParam *const _param);
 	void add(const RDOFUNFunctionListElement *const _listElement);
 	void add(const RDOFUNCalculateIf *const _calculateIf);
@@ -338,8 +336,7 @@ struct RDOFUNConstant: public RDODeletable
 {
 	RDORTPParamDesc *descr;
 	int number;
-	RDOFUNConstant(RDORTPParamDesc *_descr, int _number)
-		: descr(_descr), number(_number) {}
+	RDOFUNConstant( RDORTPParamDesc* _descr );
 	const std::string *const getName() const { return descr->getName(); };
 };
 

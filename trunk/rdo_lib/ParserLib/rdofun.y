@@ -175,7 +175,6 @@ fun_const_param_desc: IDENTIF_COLON fun_const_param_type	{
 						std::string *name = (std::string *)$1;
 						RDORTPResParam *parType = (RDORTPResParam *)$2;
 						RDORTPParamDesc *param = new RDORTPParamDesc(name, parType);
-						currParser->allRTPParamDesc.push_back(param);
 						if(!parType->dv->exist)
 							currParser->error("Constant must have value");
 							
@@ -339,22 +338,20 @@ fun_func_header:	Function_keyword IDENTIF_COLON fun_const_param_type	{
 
 	RDORTPResParam *retType = (RDORTPResParam *)$3;
 	RDOFUNFunction *fun = new RDOFUNFunction(name, retType);
-	currParser->allFUNFunctions.push_back(fun);
-	currParser->lastFUNFunction = fun;
 	$$ = (int)fun;
 };
 
 
 fun_func_footer:	Type_keyword '=' algorithmic Parameters fun_func_params Body fun_func_algorithmic_body End {
-	RDOFUNFunction *currFunc = currParser->lastFUNFunction;
+	RDOFUNFunction *currFunc = currParser->getLastFUNFunction();
 	currFunc->createAlgorithmicCalc();
 }
 			| Type_keyword '=' list_keyword Parameters fun_func_params Body fun_func_list_body End {
-	RDOFUNFunction *currFunc = currParser->lastFUNFunction;
+	RDOFUNFunction *currFunc = currParser->getLastFUNFunction();
 	currFunc->createListCalc();
 }
 			| Type_keyword '=' table_keyword Parameters fun_func_params Body fun_func_list_body End {
-	RDOFUNFunction *currFunc = currParser->lastFUNFunction;
+	RDOFUNFunction *currFunc = currParser->getLastFUNFunction();
 	currFunc->createTableCalc();
 };
 
@@ -363,7 +360,7 @@ fun_func_params:
 	std::string *name = (std::string *)$2;
 	RDORTPResParam *type = (RDORTPResParam *)$3;
 	RDOFUNFunctionParam *param = new RDOFUNFunctionParam(name, type);
-	currParser->lastFUNFunction->add(param);	// the function must check uniquness of parameters names
+	currParser->getLastFUNFunction()->add(param);	// the function must check uniquness of parameters names
 	$$ = (int)param;
 };
 
@@ -372,29 +369,29 @@ fun_func_list_body:
 
 fun_func_list_value:	'='	{
 	RDOFUNFunctionListElementEq *value = new RDOFUNFunctionListElementEq();
-	currParser->lastFUNFunction->add(value);
+	currParser->getLastFUNFunction()->add(value);
 	$$ = (int)value;
 }
 			| fun_std_value	{ $$ = $1; };
 
 fun_std_value: IDENTIF	{
 	RDOFUNFunctionListElementItentif *value = new RDOFUNFunctionListElementItentif((std::string *)$1);
-	currParser->lastFUNFunction->add(value);
+	currParser->getLastFUNFunction()->add(value);
 	$$ = (int)value;
 }
 			| REAL_CONST	{
 	RDOFUNFunctionListElementReal *value = new RDOFUNFunctionListElementReal((double *)$1);
-	currParser->lastFUNFunction->add(value);
+	currParser->getLastFUNFunction()->add(value);
 	$$ = (int)value;
 }
 			| INT_CONST		{
 	RDOFUNFunctionListElementInt *value = new RDOFUNFunctionListElementInt((int)$1);
-	currParser->lastFUNFunction->add(value);
+	currParser->getLastFUNFunction()->add(value);
 	$$ = (int)value;
 };
 
 fun_func_algorithmic_body: 
-			| fun_func_algorithmic_body fun_func_algorithmic_calc_if { currParser->lastFUNFunction->add((RDOFUNCalculateIf*)$2); };
+			| fun_func_algorithmic_body fun_func_algorithmic_calc_if { currParser->getLastFUNFunction()->add((RDOFUNCalculateIf*)$2); };
 
 fun_func_algorithmic_calc_if:	Calculate_if fun_logic 	IDENTIF '=' fun_arithm { $$ = (int)(new RDOFUNCalculateIf((RDOFUNLogic *)$2, (std::string *)$3, (RDOFUNArithm *)$5)); };
 

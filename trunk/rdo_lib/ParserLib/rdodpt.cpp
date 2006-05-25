@@ -40,13 +40,13 @@ void dpt_rss_error( char* mes )
 RDODPTSearch::RDODPTSearch(std::string *_name, DPTSearchTrace _trace)
 	: name(_name), trace(_trace) 
 {
-	if(std::find_if(currParser->allDPTSome.begin(), currParser->allDPTSome.end(), compareName<RDODPTSome>(_name)) != currParser->allDPTSome.end())
+	if(std::find_if(currParser->getDPTSome().begin(), currParser->getDPTSome().end(), compareName<RDODPTSome>(_name)) != currParser->getDPTSome().end())
 		currParser->error("DPT name: " + *_name + " already defined");
 
-	if(std::find_if(currParser->allDPTSearch.begin(), currParser->allDPTSearch.end(), compareName<RDODPTSearch>(_name)) != currParser->allDPTSearch.end())
+	if(std::find_if(currParser->getDPTSearch().begin(), currParser->getDPTSearch().end(), compareName<RDODPTSearch>(_name)) != currParser->getDPTSearch().end())
 		currParser->error("DPT name: " + *_name + " already defined");
 
-	currParser->allDPTSearch.push_back(currParser->lastDPTSearch = this);
+	currParser->insertDPTSearch( this );
 }
 
 void RDODPTSearch::addNewActivity(std::string *_name, std::string *_ruleName)
@@ -182,14 +182,13 @@ RDOSearchActivityRuntime *RDODPTSearchActivity::createActivityRuntime(RDORuntime
 RDODPTSome::RDODPTSome(std::string *_name)
 	: name(_name)
 {
-	if(std::find_if(currParser->allDPTSome.begin(), currParser->allDPTSome.end(), compareName<RDODPTSome>(_name)) != currParser->allDPTSome.end())
+	if(std::find_if(currParser->getDPTSome().begin(), currParser->getDPTSome().end(), compareName<RDODPTSome>(_name)) != currParser->getDPTSome().end())
 		currParser->error("DPT name: " + *_name + " already defined");
 
-	if(std::find_if(currParser->allDPTSearch.begin(), currParser->allDPTSearch.end(), compareName<RDODPTSearch>(_name)) != currParser->allDPTSearch.end())
+	if(std::find_if(currParser->getDPTSearch().begin(), currParser->getDPTSearch().end(), compareName<RDODPTSearch>(_name)) != currParser->getDPTSearch().end())
 		currParser->error("DPT name: " + *_name + " already defined");
 
-	currParser->allDPTSome.push_back(this);
-	currParser->lastDPTSearch = NULL;
+	currParser->insertDPTSome( this );
 }
 
 void RDODPTSome::addNewActivity(std::string *_name, std::string *_patternName)
@@ -275,11 +274,10 @@ void RDODPTSomeActivity::createActivityRuntime(RDOFUNLogic *conditon)
 RDODPTFreeActivity::RDODPTFreeActivity(std::string *_name, std::string *_patternName)
 	: name(_name) 
 {
-	if(std::find_if(currParser->allFreeActivity.begin(), currParser->allFreeActivity.end(), compareName<RDODPTFreeActivity>(_name)) != currParser->allFreeActivity.end())
+	if(std::find_if(currParser->getDPTFreeActivity().begin(), currParser->getDPTFreeActivity().end(), compareName<RDODPTFreeActivity>(_name)) != currParser->getDPTFreeActivity().end())
 		currParser->error("Free activity name: " + *_name + " already defined");
 
-	currParser->allFreeActivity.push_back(this);
-	currParser->lastDPTSearch = NULL;
+	currParser->insertDPTFreeActivity( this );
 
 	pattern = currParser->findPattern(_patternName);
 	pattern->testGoodForFreeActivity();

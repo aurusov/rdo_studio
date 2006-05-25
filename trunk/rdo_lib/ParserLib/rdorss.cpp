@@ -24,16 +24,19 @@ void rsserror( char* mes )
 	rdoParse::currParser->error( mes );
 }
 
-RDORSSResource::RDORSSResource(const std::string *const _name, const RDORTPResType *const _resType, const int _number):
-	name(_name), resType(_resType), number(_number),
+RDORSSResource::RDORSSResource( const std::string* const _name, const RDORTPResType* const _resType ):
+	name( _name ),
+	resType( _resType ),
+	number( currParser->getRSS_id() ),
 	trace( false )
 {
+	currParser->insertRSSResource( this );
 	currParam = resType->getParams().begin();
 }
 
 int RDORSSResource::writeModelStructure()
 {
-	currParser->modelStructure << (number + 1) << " " << *getName() << " " << getType()->getType() << std::endl;
+	currParser->modelStructure << (number + 1) << " " << *getName() << " " << getType()->getNumber() << std::endl;
 	return 0;
 }
 

@@ -263,8 +263,8 @@ static const short yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined. */
 static const short yyrline[] =
 {
-       0,   170,   171,   173,   174,   176,   193,   208,   209,   210,
-     212,   213,   215,   231,   246,   262
+       0,   170,   171,   173,   174,   176,   191,   206,   207,   208,
+     210,   211,   213,   229,   244,   260
 };
 #endif
 
@@ -1099,20 +1099,18 @@ case 5:
 						if(currParser->findRSSResource(name))
 							currParser->error(("Double resource name: " + *name).c_str());
 
-						RDORSSResource *res = new RDORSSResource(name, resType, currParser->resourceCounter++);
-						currParser->lastRSSResource = res;
-						currParser->allRSSResource.push_back(res);
+						RDORSSResource *res = new RDORSSResource( name, resType );
 						yyval = (int)res;	  
 					;
     break;}
 case 6:
-#line 193 ".\\rdorss.y"
+#line 191 ".\\rdorss.y"
 {
 	yyloc;
-	if ( currParser->lastRSSResource && currParser->lastRSSResource->currParam != currParser->lastRSSResource->getType()->getParams().end() ) {
+	if ( currParser->getLastRSSResource() && currParser->getLastRSSResource()->currParam != currParser->getLastRSSResource()->getType()->getParams().end() ) {
 		currParser->lexer_loc_restore();
 //		currParser->error( rdosim::RDOSyntaxError::UNKNOWN, 20, 30 );
-		currParser->error( _T("Заданы не все параметры ресурса: " + *currParser->lastRSSResource->getName()) );
+		currParser->error( _T("Заданы не все параметры ресурса: " + *currParser->getLastRSSResource()->getName()) );
 	}
 // Перенес в отдельный парсер RSS_POST, т.к. есть еще парсер DPT_RSS
 //	RDORSSResource *res = (RDORSSResource *)$1;
@@ -1123,86 +1121,86 @@ case 6:
 					;
     break;}
 case 7:
-#line 208 ".\\rdorss.y"
+#line 206 ".\\rdorss.y"
 { yyval = 0; ;
     break;}
 case 8:
-#line 209 ".\\rdorss.y"
+#line 207 ".\\rdorss.y"
 { yyval = 1; ;
     break;}
 case 9:
-#line 210 ".\\rdorss.y"
+#line 208 ".\\rdorss.y"
 { yyval = 0; ;
     break;}
 case 12:
-#line 215 ".\\rdorss.y"
+#line 213 ".\\rdorss.y"
 {
 							currParser->lexer_loc_backup();
-							if(currParser->lastRSSResource->currParam == currParser->lastRSSResource->getType()->getParams().end())
+							if( currParser->getLastRSSResource()->currParam == currParser->getLastRSSResource()->getType()->getParams().end())
 								currParser->error("Too many parameters");
 							try
 							{
-								RDOValue val = (*(currParser->lastRSSResource->currParam))->getType()->getRSSDefaultValue();
-								currParser->lastRSSResource->addValue(val);
-								currParser->lastRSSResource->currParam++;
+								RDOValue val = (*(currParser->getLastRSSResource()->currParam))->getType()->getRSSDefaultValue();
+								currParser->getLastRSSResource()->addValue(val);
+								currParser->getLastRSSResource()->currParam++;
 							}
 							catch(RDOSyntaxException err)
 							{
-								throw RDOSyntaxException((err.mess + " for parameter " + *((*(currParser->lastRSSResource->currParam))->getName())).c_str());
+								throw RDOSyntaxException((err.mess + " for parameter " + *((*(currParser->getLastRSSResource()->currParam))->getName())).c_str());
 							}
 						;
     break;}
 case 13:
-#line 231 ".\\rdorss.y"
+#line 229 ".\\rdorss.y"
 {
 								currParser->lexer_loc_backup();
-								if(currParser->lastRSSResource->currParam == currParser->lastRSSResource->getType()->getParams().end())
+								if(currParser->getLastRSSResource()->currParam == currParser->getLastRSSResource()->getType()->getParams().end())
 									currParser->error("Too many parameters");
 								try
 								{
-									RDOValue val = (*(currParser->lastRSSResource->currParam))->getType()->getRSSEnumValue((std::string *)yyvsp[0]);
-									currParser->lastRSSResource->addValue(val);
-									currParser->lastRSSResource->currParam++;
+									RDOValue val = (*(currParser->getLastRSSResource()->currParam))->getType()->getRSSEnumValue((std::string *)yyvsp[0]);
+									currParser->getLastRSSResource()->addValue(val);
+									currParser->getLastRSSResource()->currParam++;
 								}
 								catch(RDOSyntaxException err)
 								{
-									throw RDOSyntaxException((err.mess + " for parameter " + *((*(currParser->lastRSSResource->currParam))->getName())).c_str());
+									throw RDOSyntaxException((err.mess + " for parameter " + *((*(currParser->getLastRSSResource()->currParam))->getName())).c_str());
 								}
 							;
     break;}
 case 14:
-#line 246 ".\\rdorss.y"
+#line 244 ".\\rdorss.y"
 {
 								currParser->lexer_loc_backup();
-								if(currParser->lastRSSResource->currParam == currParser->lastRSSResource->getType()->getParams().end())
+								if(currParser->getLastRSSResource()->currParam == currParser->getLastRSSResource()->getType()->getParams().end())
 									currParser->error("Too many parameters");
 								try
 								{
-									RDOValue val = (*(currParser->lastRSSResource->currParam))->getType()->getRSSIntValue(yyvsp[0]);
-									currParser->lastRSSResource->addValue(val);
-									currParser->lastRSSResource->currParam++;
+									RDOValue val = (*(currParser->getLastRSSResource()->currParam))->getType()->getRSSIntValue(yyvsp[0]);
+									currParser->getLastRSSResource()->addValue(val);
+									currParser->getLastRSSResource()->currParam++;
 								}
 								catch(RDOSyntaxException err)
 								{
-									throw RDOSyntaxException((err.mess + " for parameter " + *((*(currParser->lastRSSResource->currParam))->getName())).c_str());
+									throw RDOSyntaxException((err.mess + " for parameter " + *((*(currParser->getLastRSSResource()->currParam))->getName())).c_str());
 								}
 							;
     break;}
 case 15:
-#line 262 ".\\rdorss.y"
+#line 260 ".\\rdorss.y"
 {
 								currParser->lexer_loc_backup();
-								if(currParser->lastRSSResource->currParam == currParser->lastRSSResource->getType()->getParams().end())
+								if(currParser->getLastRSSResource()->currParam == currParser->getLastRSSResource()->getType()->getParams().end())
 									currParser->error("Too many parameters");
 								try
 								{
-									RDOValue val = (*(currParser->lastRSSResource->currParam))->getType()->getRSSRealValue((double *)yyvsp[0]);
-									currParser->lastRSSResource->addValue(val);
-									currParser->lastRSSResource->currParam++;
+									RDOValue val = (*(currParser->getLastRSSResource()->currParam))->getType()->getRSSRealValue((double *)yyvsp[0]);
+									currParser->getLastRSSResource()->addValue(val);
+									currParser->getLastRSSResource()->currParam++;
 								}
 								catch(RDOSyntaxException err)
 								{
-									throw RDOSyntaxException((err.mess + " for parameter " + *((*(currParser->lastRSSResource->currParam))->getName())).c_str());
+									throw RDOSyntaxException((err.mess + " for parameter " + *((*(currParser->getLastRSSResource()->currParam))->getName())).c_str());
 								}
 							;
     break;}
@@ -1439,7 +1437,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 278 ".\\rdorss.y"
+#line 276 ".\\rdorss.y"
 
 
 }

@@ -296,7 +296,7 @@ dpt_process_line:	IDENTIF	{ TRACE( "IDENTIF %s\n", ((std::string *)$1)->c_str() 
 	std::string* ie_name      = currParser->registerName( "PAT_GENERATE" );
 	std::string* rel_res_name = currParser->registerName( "Транзакт" );
 	std::string* rtp_name     = currParser->registerName( "Транзакты" );
-	RDOPATPatternEvent* ie = new RDOPATPatternEvent( ie_name, true, currParser->patternCounter++ );
+	RDOPATPatternEvent* ie = new RDOPATPatternEvent( ie_name, true );
 	ie->addRelRes( rel_res_name, rtp_name, CS_Create );
 	ie->end();
 
@@ -327,9 +327,7 @@ dpt_process_line:	IDENTIF	{ TRACE( "IDENTIF %s\n", ((std::string *)$1)->c_str() 
 		RDORTPResType* res_type = const_cast<RDORTPResType*>(currParser->findRTPResType( res_type_name ));
 		if ( !res_type ) {
 			// Создадим тип ресурса
-			res_type = new RDORTPResType( res_type_name, true, currParser->resourceTypeCounter++ );
-			currParser->allRTPResType.push_back( res_type );
-			currParser->lastRTPResType = res_type;
+			res_type = new RDORTPResType( res_type_name, true );
 
 			// Создадим параметр перечислимого типа
 			RDORTPEnum* state_enum = new RDORTPEnum( rtp_state_free );
@@ -340,7 +338,6 @@ dpt_process_line:	IDENTIF	{ TRACE( "IDENTIF %s\n", ((std::string *)$1)->c_str() 
 			RDORTPEnumResParam* rtp_param_enum = new RDORTPEnumResParam( state_enum, state_default );
 
 			rtp_param = new RDORTPParamDesc( rtp_param_name, rtp_param_enum );
-			currParser->allRTPParamDesc.push_back( rtp_param );
 			res_type->add( rtp_param );
 		} else {
 			// Тип найден, проверить на наличие перечислимого параметра
@@ -366,16 +363,13 @@ dpt_process_line:	IDENTIF	{ TRACE( "IDENTIF %s\n", ((std::string *)$1)->c_str() 
 		}
 
 		// Создать ресурс
-		RDORSSResource* res = new RDORSSResource( res_name, res_type, currParser->resourceCounter++ );
+		RDORSSResource* res = new RDORSSResource( res_name, res_type );
 		res->setTrace( true );
-		currParser->lastRSSResource = res;
-		currParser->allRSSResource.push_back( res );
 
 		// Пропишем значения параметров перечислимого типа по-умолчанию
 		RDOValue state_val = rtp_param->getType()->getRSSDefaultValue();
 		res->addValue( state_val );
 		res->currParam++;
-
 
 		// Пропишем значения параметров (всех) для созданного ресурса. Берутся как значения по-умолчанию
 //		const std::vector<const RDORTPParamDesc *>& res_params = res->getType()->getParams();
@@ -441,7 +435,6 @@ dpt_process_line:	IDENTIF	{ TRACE( "IDENTIF %s\n", ((std::string *)$1)->c_str() 
 		RDORTPEnumResParam* rtp_param_enum = new RDORTPEnumResParam( state_enum, state_default );
 
 		rtp_param = new RDORTPParamDesc( rtp_param_name, rtp_param_enum );
-		currParser->allRTPParamDesc.push_back( rtp_param );
 		currParser->lastRTPResType->add( rtp_param );
 		param_added = true;
 	} else {

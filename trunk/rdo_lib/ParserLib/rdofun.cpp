@@ -34,9 +34,15 @@ void RDOParser::addConstant(RDORTPParamDesc *const _cons)
 	if(findFUNConst(_cons->getName()))
 		currParser->error("Second appearance of the same constant name: " + *(_cons->getName()));
 
-	RDOFUNConstant *newConst = new RDOFUNConstant(_cons, constCounter++);
-	allFUNConstant.push_back(newConst); 
+	RDOFUNConstant *newConst = new RDOFUNConstant( _cons );
 	runTime->setConstValue(newConst->number, newConst->descr->getType()->getRSSDefaultValue());
+}
+
+RDOFUNConstant::RDOFUNConstant( RDORTPParamDesc* _descr ):
+	descr( _descr ),
+	number( currParser->getFUNCONST_id() )
+{
+	currParser->insertFUNConstant( this );
 }
 
 const RDOFUNConstant *RDOParser::findFUNConst(const std::string *const _cons) const
@@ -59,6 +65,13 @@ const RDOFUNFunctionParam *const RDOFUNFunction::findFUNFunctionParam(const std:
 		return NULL;
 
 	return (*it);
+}
+
+RDOFUNFunction::RDOFUNFunction( const std::string* const _name, const RDORTPResParam* const _retType):
+	name( _name ),
+	retType( _retType )
+{
+	currParser->insertFUNFunction( this );
 }
 
 int RDOFUNFunction::findFUNFunctionParamNum(const std::string *const paramName) const
@@ -214,18 +227,18 @@ RDOFUNArithm::RDOFUNArithm(std::string *resName, std::string *parName)
 	const RDORSSResource *const res = currParser->findRSSResource(resName); 
 	if(!res)
 	{
-		if(currParser->fUNGroupStack.empty() || 
-			*currParser->fUNGroupStack.back()->resType->getName() != *resName)
+		if(currParser->getFUNGroupStack().empty() || 
+			*currParser->getFUNGroupStack().back()->resType->getName() != *resName)
 		{
 			if((currParser->getFileToParse() != rdoModelObjects::PAT) ||
-				!currParser->lastPATPattern->findRelevantResource(resName))
+				!currParser->getLastPATPattern()->findRelevantResource(resName))
 			{
 				if((currParser->getFileToParse() == rdoModelObjects::DPT) && 
-					(currParser->lastDPTSearch != NULL) && 
-					(currParser->lastDPTSearch->lastActivity->getRule()->findRelevantResource(resName) != NULL))
+					(currParser->getLastDPTSearch() != NULL) && 
+					(currParser->getLastDPTSearch()->lastActivity->getRule()->findRelevantResource(resName) != NULL))
 				{
-					const RDORelevantResource *const rel = currParser->lastDPTSearch->lastActivity->getRule()->findRelevantResource(resName);
-					int relResNumb = currParser->lastDPTSearch->lastActivity->getRule()->findRelevantResourceNum(resName);
+					const RDORelevantResource *const rel = currParser->getLastDPTSearch()->lastActivity->getRule()->findRelevantResource(resName);
+					int relResNumb = currParser->getLastDPTSearch()->lastActivity->getRule()->findRelevantResourceNum(resName);
 					int parNumb = rel->getType()->getRTPParamNumber(parName);
 					if(parNumb == -1)
 						currParser->error("Unknown resource parameter: " + *parName);
@@ -242,8 +255,8 @@ RDOFUNArithm::RDOFUNArithm(std::string *resName, std::string *parName)
 			}
 			else
 			{
-				const RDORelevantResource *const rel = currParser->lastPATPattern->findRelevantResource(resName);
-				int relResNumb = currParser->lastPATPattern->findRelevantResourceNum(resName);
+				const RDORelevantResource *const rel = currParser->getLastPATPattern()->findRelevantResource(resName);
+				int relResNumb = currParser->getLastPATPattern()->findRelevantResourceNum(resName);
 				int parNumb = rel->getType()->getRTPParamNumber(parName);
 				if(parNumb == -1)
 					currParser->error("Unknown resource parameter: " + *parName);
@@ -257,7 +270,7 @@ RDOFUNArithm::RDOFUNArithm(std::string *resName, std::string *parName)
 			}
 		}
 
-		RDOFUNGroup *currGroup = currParser->fUNGroupStack.back();
+		RDOFUNGroup *currGroup = currParser->getFUNGroupStack().back();
 //		if(*currGroup->resType->name != *resName)
 //			currParser->error(("Unknown resource name: " + *resName).c_str());
 
@@ -287,12 +300,12 @@ RDOFUNArithm::RDOFUNArithm(std::string *resName, std::string *parName)
 
 RDODeletable::RDODeletable() 
 { 
-	currParser->allDeletables.push_back(this); 
+	currParser->insertDeletables( this );
 }
 
 RDODeletable::~RDODeletable() 
 { 
-	currParser->allDeletables.erase(std::find(currParser->allDeletables.begin(), currParser->allDeletables.end(), this));
+	currParser->removeDeletables( this );
 }
 
 RDOFUNArithm *RDOFUNArithm::operator +(RDOFUNArithm &second)
@@ -484,9 +497,9 @@ RDOFUNArithm::RDOFUNArithm(std::string *s)
 
 	const RDOFUNFunctionParam *param = NULL;
 	if(currParser->getFileToParse() == rdoModelObjects::FUN)
-		param = currParser->lastFUNFunction->findFUNFunctionParam(s);
+		param = currParser->getLastFUNFunction()->findFUNFunctionParam(s);
 	else if(currParser->getFileToParse() == rdoModelObjects::PAT)
-		param = currParser->lastPATPattern->findPATPatternParam(s);
+		param = currParser->getLastPATPattern()->findPATPatternParam(s);
 
 	const RDOFUNConstant *cons = currParser->findFUNConst(s);
 	if(cons != NULL && param != NULL)
@@ -530,9 +543,9 @@ RDOFUNArithm::RDOFUNArithm(std::string *s)
 		enu = ((RDORTPEnumResParam *)param->getType())->enu;
 
 	if(currParser->getFileToParse() == rdoModelObjects::FUN)
-		calc = new RDOCalcFuncParam(currParser->lastFUNFunction->findFUNFunctionParamNum(s));
+		calc = new RDOCalcFuncParam(currParser->getLastFUNFunction()->findFUNFunctionParamNum(s));
 	else if(currParser->getFileToParse() == rdoModelObjects::PAT)
-		calc = new RDOCalcPatParam(currParser->lastPATPattern->findPATPatternParamNum(s));
+		calc = new RDOCalcPatParam(currParser->getLastPATPattern()->findPATPatternParamNum(s));
 }
 
 const RDOFUNArithm *RDOFUNParams::createSeqCall(const std::string *const seqName) const
@@ -714,7 +727,7 @@ RDOFUNCalculateIf::RDOFUNCalculateIf(RDOFUNLogic *_condition, std::string *_funN
 	funName	 (_funName),
 	action	 (_action)
 {
-	if(*funName != *(currParser->lastFUNFunction->getName()))
+	if(*funName != *(currParser->getLastFUNFunction()->getName()))
 		currParser->error("function name expected");
 }
 
@@ -728,7 +741,7 @@ RDOFUNGroup::RDOFUNGroup(int _funType, const std::string *const _resType):
 //	if(resType->isPerm())
 //		currParser->error(("Temporary resource type expected: " + *_resType).c_str());
 
-	currParser->fUNGroupStack.push_back(this);
+	currParser->insertFUNGroup( this );
 }
 
 RDOFUNLogic *RDOFUNGroup::createFunLogin()
@@ -742,15 +755,15 @@ RDOFUNLogic *RDOFUNGroup::createFunLogin(RDOFUNLogic *cond)
 	RDOFunCalcGroup *calc;
 	switch(funType)
 	{
-	case 1:	calc = new RDOFunCalcExist(resType->getType(), cond->calc);		break;
-	case 2:	calc = new RDOFunCalcNotExist(resType->getType(), cond->calc);	break;
-	case 3:	calc = new RDOFunCalcForAll(resType->getType(), cond->calc);		break;
-	case 4:	calc = new RDOFunCalcNotForAll(resType->getType(), cond->calc);	break;
+	case 1:	calc = new RDOFunCalcExist(resType->getNumber(), cond->calc);		break;
+	case 2:	calc = new RDOFunCalcNotExist(resType->getNumber(), cond->calc);	break;
+	case 3:	calc = new RDOFunCalcForAll(resType->getNumber(), cond->calc);		break;
+	case 4:	calc = new RDOFunCalcNotForAll(resType->getNumber(), cond->calc);	break;
 	default:
 		currParser->error("Internal compiler error");
 	}
 
-	currParser->fUNGroupStack.pop_back();
+	currParser->getFUNGroupStack().pop_back();
 	return new RDOFUNLogic(calc);
 }
 
@@ -919,7 +932,7 @@ void RDOFUNSequenceEnumerativeEnum::createCalcs()
 RDOFUNSequence::RDOFUNSequence(RDOFUNSequenceHeader *_header, int _base): 
 	header(_header), base(_base)
 {
-	currParser->allFUNSequences.push_back(this);
+	currParser->insertFUNSequences( this );
 }
 
 RDOCalc *RDOFUNArithm::createCalc(const RDORTPResParam *const forType)

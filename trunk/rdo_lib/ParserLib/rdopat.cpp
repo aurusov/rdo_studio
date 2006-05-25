@@ -29,13 +29,12 @@ void paterror( char* mes )
 }
 
 RDOPATPattern::RDOPATPattern(const std::string *const _name, const bool _trace):
-	name(_name), trace(_trace), useCommonChoice(false)
+	name(_name), trace(_trace), useCommonChoice(false), patRuntime( NULL )
 {
 	if(currParser->findPattern(name))
 		currParser->error("Pattern with name: " + *name + " already exist");
 
-	currParser->allPATPatterns.push_back(this);
-	currParser->lastPATPattern = this;
+	currParser->insertPATPattern( this );
 }
 
 void RDOPATPattern::testGoodForSearchActivity() const
@@ -62,7 +61,7 @@ int RDOPATPattern::writeModelStructure() const
 {
 	currParser->modelStructure << getPatternId() << " " << *getName() << " " << getModelStructureLetter() << " " << relRes.size();
 	for(int i = 0; i < relRes.size(); i++)
-		currParser->modelStructure << " " << relRes.at(i)->getType()->getType();
+		currParser->modelStructure << " " << relRes.at(i)->getType()->getNumber();
 
 	currParser->modelStructure << std::endl;
 	return 0;
@@ -394,39 +393,40 @@ void RDOPATPattern::addRelResConvert()
 		patRuntime->addEndCalc(new RDOCalcEraseRes(currRelRes->numberOfResource));
 }
 
-RDOPATPatternOperation::RDOPATPatternOperation(std::string *_name, bool _trace, int patternCounter):
-	RDOPATPattern(_name, _trace) 
+RDOPATPatternOperation::RDOPATPatternOperation( std::string* _name, bool _trace ):
+	RDOPATPattern( _name, _trace )
 { 
-//	currParser->runTime->addRuntimeOperation((RDOOperationRuntime *)(patRuntime = new RDOOperationRuntime(currParser->runTime, _trace))); 
-	patRuntime = new RDOOperationRuntime(currParser->runTime, _trace); 
-	patRuntime->setPatternId(patternCounter);
+//	currParser->runTime->addRuntimeOperation((RDOOperationRuntime *)(patRuntime = new RDOOperationRuntime(currParser->runTime, _trace)));
+	patRuntime = new RDOOperationRuntime( currParser->runTime, _trace );
+	patRuntime->setPatternId( currParser->getPAT_id() );
 }
 
-RDOPATPatternOperation::RDOPATPatternOperation(std::string *_name, bool _trace):
-	RDOPATPattern(_name, _trace) 
-{}
+RDOPATPatternOperation::RDOPATPatternOperation( bool _trace, std::string* _name ):
+	RDOPATPattern( _name, _trace )
+{
+}
 
-RDOPATPatternKeyboard::RDOPATPatternKeyboard(std::string *_name, bool _trace, int patternCounter)
-	: RDOPATPatternOperation(_name, _trace)
+RDOPATPatternKeyboard::RDOPATPatternKeyboard( std::string* _name, bool _trace ):
+	RDOPATPatternOperation( _trace, _name )
 {
 	patRuntime = new RDOKeyboardRuntime(currParser->runTime, _trace); 
-	patRuntime->setPatternId(patternCounter);
+	patRuntime->setPatternId( currParser->getPAT_id() );
 }
  
-RDOPATPatternEvent::RDOPATPatternEvent(std::string *_name, bool _trace, int patternCounter):
-	RDOPATPattern(_name, _trace) 
+RDOPATPatternEvent::RDOPATPatternEvent( std::string* _name, bool _trace ):
+	RDOPATPattern( _name, _trace )
 { 
 //	currParser->runTime->addRuntimeIE((RDOIERuntime *)(patRuntime = new RDOIERuntime(currParser->runTime, _trace))); 
-	patRuntime = new RDOIERuntime(currParser->runTime, _trace); 
-	patRuntime->setPatternId(patternCounter);
+	patRuntime = new RDOIERuntime( currParser->runTime, _trace ); 
+	patRuntime->setPatternId( currParser->getPAT_id() );
 }
 
-RDOPATPatternRule::RDOPATPatternRule(std::string *_name, bool _trace, int patternCounter):
-	RDOPATPattern(_name, _trace) 
+RDOPATPatternRule::RDOPATPatternRule( std::string* _name, bool _trace ):
+	RDOPATPattern( _name, _trace )
 { 
 //	currParser->runTime->addRuntimeRule((RDORuleRuntime *)(patRuntime = new RDORuleRuntime(currParser->runTime, _trace))); 
-	patRuntime = new RDORuleRuntime(currParser->runTime, _trace); 
-	patRuntime->setPatternId(patternCounter);
+	patRuntime = new RDORuleRuntime( currParser->runTime, _trace );
+	patRuntime->setPatternId( currParser->getPAT_id() );
 }
 
 RDOCalc *RDORelevantResourceDirect::createSelectFirstResourceCalc()
@@ -452,7 +452,7 @@ RDOSelectResourceCommon *RDORelevantResourceDirect::createSelectResourceCommonCh
 RDOCalc *RDORelevantResourceByType::createSelectFirstResourceCalc()
 {
 	if((begin != CS_Create) && (end != CS_Create))
-		return new RDOSelectResourceByTypeCalc(numberOfResource, type->getType(), NULL, NULL);
+		return new RDOSelectResourceByTypeCalc(numberOfResource, type->getNumber(), NULL, NULL);
 	else
 		return new RDOCalcConst(1);
 }
@@ -460,7 +460,7 @@ RDOCalc *RDORelevantResourceByType::createSelectFirstResourceCalc()
 RDOCalc *RDORelevantResourceByType::createSelectFirstResourceChoiceCalc()
 {
 	if((begin != CS_Create) && (end != CS_Create))
-		return new RDOSelectResourceByTypeCalc(numberOfResource, type->getType(), NULL, choice);
+		return new RDOSelectResourceByTypeCalc(numberOfResource, type->getNumber(), NULL, choice);
 	else
 		return new RDOCalcConst(1);
 }
@@ -468,14 +468,14 @@ RDOCalc *RDORelevantResourceByType::createSelectFirstResourceChoiceCalc()
 RDOCalc *RDORelevantResourceByType::createSelectResourceChoiceCalc()
 {
 	if((begin != CS_Create) && (end != CS_Create))
-		return new RDOSelectResourceByTypeCalc(numberOfResource, type->getType(), first, choice);
+		return new RDOSelectResourceByTypeCalc(numberOfResource, type->getNumber(), first, choice);
 	else
 		return new RDOCalcConst(1);
 }
 
 RDOSelectResourceCommon *RDORelevantResourceByType::createSelectResourceCommonChoiceCalc()
 {
-	return new RDOSelectResourceByTypeCommonCalc(numberOfResource, type->getType(), NULL, choice);
+	return new RDOSelectResourceByTypeCommonCalc(numberOfResource, type->getNumber(), NULL, choice);
 }
 
 void RDOPATParamsSet::checkParamsNumbers(RDORelevantResource *currRelRes)
@@ -523,7 +523,7 @@ void RDOPATPatternOperation::addRelResConvertBegin(bool trace, RDOPATParamsSet *
 		if(currRelRes->getType()->getParams().size() != parSet->paramNumbs.size())
 			currParser->error("Must define all parameters when create new resource: \"" + *currRelRes->getName() + "\" in pattern \"" + *getName() + "\" in convert begin");
 
-		RDOCalc *calc = new RDOCalcCreateEmptyResource(currRelRes->getType()->getType(), trace, currRelRes->numberOfResource, currRelRes->getType()->getParams().size());
+		RDOCalc *calc = new RDOCalcCreateEmptyResource(currRelRes->getType()->getNumber(), trace, currRelRes->numberOfResource, currRelRes->getType()->getParams().size());
 		patRuntime->addBeginCalc(calc);
 	}
 
@@ -555,7 +555,7 @@ void RDOPATPatternOperation::addRelResConvertEnd(bool trace, RDOPATParamsSet *pa
 		if(currRelRes->getType()->getParams().size() != parSet->paramNumbs.size())
 			currParser->error("Must define all parameters when create new resource: \"" + *currRelRes->getName() + "\" in pattern \"" + *getName() + "\" in convert end");
 
-		RDOCalc *calc = new RDOCalcCreateEmptyResource(currRelRes->getType()->getType(), trace, currRelRes->numberOfResource, currRelRes->getType()->getParams().size());
+		RDOCalc *calc = new RDOCalcCreateEmptyResource(currRelRes->getType()->getNumber(), trace, currRelRes->numberOfResource, currRelRes->getType()->getParams().size());
 		patRuntime->addEndCalc(calc);
 	}
 
@@ -588,7 +588,7 @@ void RDOPATPatternOperation::addRelResConvertBeginEnd(bool trace, RDOPATParamsSe
 		if(currRelRes->getType()->getParams().size() != parSet->paramNumbs.size())
 			currParser->error("Must define all parameters when create new resource: \"" + *currRelRes->getName() + "\" in pattern \"" + *getName() + "\" in convert begin");
 
-		RDOCalc *calc = new RDOCalcCreateEmptyResource(currRelRes->getType()->getType(), trace, currRelRes->numberOfResource, currRelRes->getType()->getParams().size());
+		RDOCalc *calc = new RDOCalcCreateEmptyResource(currRelRes->getType()->getNumber(), trace, currRelRes->numberOfResource, currRelRes->getType()->getParams().size());
 		patRuntime->addBeginCalc(calc);
 	}
 
@@ -610,7 +610,7 @@ void RDOPATPatternOperation::addRelResConvertBeginEnd(bool trace, RDOPATParamsSe
 		if(currRelRes->getType()->getParams().size() != parSet2->paramNumbs.size())
 			currParser->error("Must define all parameters when create new resource: \"" + *currRelRes->getName() + "\" in pattern \"" + *getName() + "\" in convert end");
 
-		RDOCalc *calc = new RDOCalcCreateEmptyResource(currRelRes->getType()->getType(), trace2, currRelRes->numberOfResource, currRelRes->getType()->getParams().size());
+		RDOCalc *calc = new RDOCalcCreateEmptyResource(currRelRes->getType()->getNumber(), trace2, currRelRes->numberOfResource, currRelRes->getType()->getParams().size());
 		patRuntime->addEndCalc(calc);
 	}
 
@@ -639,7 +639,7 @@ void RDOPATPatternRule::addRelResConvertRule(bool trace, RDOPATParamsSet *parSet
 		if(currRelRes->getType()->getParams().size() != parSet->paramNumbs.size())
 			currParser->error("Must define all parameters when create new resource: \"" + *currRelRes->getName() + "\" in pattern \"" + *getName() + "\" in converter");
 
-		RDOCalc *calc = new RDOCalcCreateEmptyResource(currRelRes->getType()->getType(), trace, currRelRes->numberOfResource, currRelRes->getType()->getParams().size());
+		RDOCalc *calc = new RDOCalcCreateEmptyResource(currRelRes->getType()->getNumber(), trace, currRelRes->numberOfResource, currRelRes->getType()->getParams().size());
 		patRuntime->addBeginCalc(calc);
 	}
 
@@ -668,7 +668,7 @@ void RDOPATPatternEvent::addRelResConvertEvent(bool trace, RDOPATParamsSet *parS
 		if(currRelRes->getType()->getParams().size() != parSet->paramNumbs.size())
 			currParser->error("Must define all parameters when create new resource: \"" + *currRelRes->getName() + "\" in pattern \"" + *getName() + "\" in converter");
 
-		RDOCalc *calc = new RDOCalcCreateEmptyResource(currRelRes->getType()->getType(), trace, currRelRes->numberOfResource, currRelRes->getType()->getParams().size());
+		RDOCalc *calc = new RDOCalcCreateEmptyResource(currRelRes->getType()->getNumber(), trace, currRelRes->numberOfResource, currRelRes->getType()->getParams().size());
 		patRuntime->addBeginCalc(calc);
 	}
 

@@ -152,9 +152,9 @@ public:
 class RDOPATPatternOperation: public RDOPATPattern
 {
 protected:
-	RDOPATPatternOperation(std::string *_name, bool _trace);
+	RDOPATPatternOperation( bool _trace, std::string* _name );
 public:
-	RDOPATPatternOperation(std::string *_name, bool _trace, int patternCounter);
+	RDOPATPatternOperation( std::string* _name, bool _trace );
 	void addRelRes(std::string *relName, std::string *resName, ConvertStatus beg, ConvertStatus end);
 	void addRelRes(std::string *relName, std::string *resName, std::string *convBeg);
 	void addRelResConvertBegin(	bool trace, RDOPATParamsSet *parSet);
@@ -167,7 +167,7 @@ public:
 class RDOPATPatternEvent: public RDOPATPattern
 {
 public:
-	RDOPATPatternEvent(std::string *_name, bool _trace, int patternCounter);
+	RDOPATPatternEvent( std::string* _name, bool _trace );
 	void addRelRes(std::string *relName, std::string *resName, ConvertStatus beg);
 	void addRelResUsage(RDOPATChoice *choice, RDOPATFirst *first);
 	void addRelResConvertEvent(bool trace, RDOPATParamsSet *parSet);
@@ -178,7 +178,7 @@ public:
 class RDOPATPatternRule: public RDOPATPattern
 {
 public:
-	RDOPATPatternRule(std::string *_name, bool _trace, int patternCounter);
+	RDOPATPatternRule( std::string* _name, bool _trace );
 	void addRelRes(std::string *relName, std::string *resName, ConvertStatus beg);
 	void setTime(RDOFUNArithm *arithm);
 	void addRelResConvertRule(bool trace, RDOPATParamsSet *parSet);
@@ -190,7 +190,7 @@ public:
 class RDOPATPatternKeyboard: public RDOPATPatternOperation
 {
 public:
-	RDOPATPatternKeyboard(std::string *_name, bool _trace, int patternCounter);
+	RDOPATPatternKeyboard( std::string *_name, bool _trace );
 	char getModelStructureLetter() const { return 'K'; };
 	void testGoodForFreeActivity() const {}
 };

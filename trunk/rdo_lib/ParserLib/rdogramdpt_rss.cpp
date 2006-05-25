@@ -298,7 +298,7 @@ static const short yyrline[] =
      257,   258,   259,   261,   262,   263,   264,   265,   266,   267,
      268,   269,   270,   272,   273,   274,   276,   277,   278,   279,
      281,   283,   284,   288,   290,   291,   293,   294,   304,   311,
-     491
+     484
 };
 #endif
 
@@ -1488,7 +1488,7 @@ case 87:
 	std::string* ie_name      = currParser->registerName( "PAT_GENERATE" );
 	std::string* rel_res_name = currParser->registerName( "Транзакт" );
 	std::string* rtp_name     = currParser->registerName( "Транзакты" );
-	RDOPATPatternEvent* ie = new RDOPATPatternEvent( ie_name, true, currParser->patternCounter++ );
+	RDOPATPatternEvent* ie = new RDOPATPatternEvent( ie_name, true );
 	ie->addRelRes( rel_res_name, rtp_name, CS_Create );
 	ie->end();
 
@@ -1525,9 +1525,7 @@ case 89:
 		RDORTPResType* res_type = const_cast<RDORTPResType*>(currParser->findRTPResType( res_type_name ));
 		if ( !res_type ) {
 			// Создадим тип ресурса
-			res_type = new RDORTPResType( res_type_name, true, currParser->resourceTypeCounter++ );
-			currParser->allRTPResType.push_back( res_type );
-			currParser->lastRTPResType = res_type;
+			res_type = new RDORTPResType( res_type_name, true );
 
 			// Создадим параметр перечислимого типа
 			RDORTPEnum* state_enum = new RDORTPEnum( rtp_state_free );
@@ -1538,7 +1536,6 @@ case 89:
 			RDORTPEnumResParam* rtp_param_enum = new RDORTPEnumResParam( state_enum, state_default );
 
 			rtp_param = new RDORTPParamDesc( rtp_param_name, rtp_param_enum );
-			currParser->allRTPParamDesc.push_back( rtp_param );
 			res_type->add( rtp_param );
 		} else {
 			// Тип найден, проверить на наличие перечислимого параметра
@@ -1564,16 +1561,13 @@ case 89:
 		}
 
 		// Создать ресурс
-		RDORSSResource* res = new RDORSSResource( res_name, res_type, currParser->resourceCounter++ );
+		RDORSSResource* res = new RDORSSResource( res_name, res_type );
 		res->setTrace( true );
-		currParser->lastRSSResource = res;
-		currParser->allRSSResource.push_back( res );
 
 		// Пропишем значения параметров перечислимого типа по-умолчанию
 		RDOValue state_val = rtp_param->getType()->getRSSDefaultValue();
 		res->addValue( state_val );
 		res->currParam++;
-
 
 		// Пропишем значения параметров (всех) для созданного ресурса. Берутся как значения по-умолчанию
 //		const std::vector<const RDORTPParamDesc *>& res_params = res->getType()->getParams();
@@ -1639,7 +1633,6 @@ case 89:
 		RDORTPEnumResParam* rtp_param_enum = new RDORTPEnumResParam( state_enum, state_default );
 
 		rtp_param = new RDORTPParamDesc( rtp_param_name, rtp_param_enum );
-		currParser->allRTPParamDesc.push_back( rtp_param );
 		currParser->lastRTPResType->add( rtp_param );
 		param_added = true;
 	} else {
@@ -1687,7 +1680,7 @@ case 89:
 ;
     break;}
 case 90:
-#line 491 ".\\rdodpt_rss.y"
+#line 484 ".\\rdodpt_rss.y"
 {;
     break;}
 }
@@ -1923,7 +1916,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 493 ".\\rdodpt_rss.y"
+#line 486 ".\\rdodpt_rss.y"
 
 
 }

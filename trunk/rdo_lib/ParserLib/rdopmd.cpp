@@ -37,8 +37,9 @@ RDOPMDPokaz::RDOPMDPokaz(const std::string *const _name, bool _trace)
 
 void RDOPMDPokaz::endOfCreation()
 {
+	id = currParser->getPMD_id();
+	currParser->insertPMDPokaz( this );
 	currParser->runTime->addRuntimePokaz(this);
-	id = currParser->pokazCounter++;
 }
 
 //////////////////////////// RDOPMDWatchPar::RDOPMDWatchPar /////////////////////////////////
@@ -249,13 +250,13 @@ RDOPMDWatchQuant::RDOPMDWatchQuant(std::string *_name, bool _trace, std::string 
 void RDOPMDWatchQuant::setLogic(RDOFUNLogic *_logic)
 {
 	logicCalc = _logic->calc;
-	currParser->fUNGroupStack.pop_back();
+	currParser->getFUNGroupStack().pop_back();
 }
 
 void RDOPMDWatchQuant::setLogicNoCheck()
 {
 	logicCalc = new RDOCalcConst(1);
-	currParser->fUNGroupStack.pop_back();
+	currParser->getFUNGroupStack().pop_back();
 }
 
 std::string RDOPMDWatchQuant::traceValue()
@@ -289,7 +290,7 @@ bool RDOPMDWatchQuant::checkPokaz(RDOSimulator *sim)
 		if(*it == NULL)
 			continue;
 
-		if((*it)->type != funGroup->resType->getType())
+		if((*it)->type != funGroup->resType->getNumber())
 			continue;
 
 		runtime->pushGroupFunc(*it);
@@ -357,14 +358,14 @@ void RDOPMDWatchValue::setLogic(RDOFUNLogic *_logic, RDOFUNArithm *_arithm)
 {
 	logicCalc = _logic->calc;
 	arithmCalc = _arithm->createCalc();
-	currParser->fUNGroupStack.pop_back();
+	currParser->getFUNGroupStack().pop_back();
 }
 
 void RDOPMDWatchValue::setLogicNoCheck(RDOFUNArithm *_arithm)
 {
 	logicCalc = new RDOCalcConst(1);
 	arithmCalc = _arithm->createCalc();
-	currParser->fUNGroupStack.pop_back();
+	currParser->getFUNGroupStack().pop_back();
 }
 
 std::string RDOPMDWatchValue::traceValue()
@@ -420,7 +421,7 @@ bool RDOPMDWatchValue::checkResourceErased(RDOResource *res)
 {
 	RDORuntime *runtime = dynamic_cast<RDORuntime *>(sim);
 
-	if(res->type != funGroup->resType->getType())
+	if(res->type != funGroup->resType->getNumber())
 		return false;
 
 	runtime->pushGroupFunc(res);

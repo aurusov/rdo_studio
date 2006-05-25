@@ -186,9 +186,7 @@ rtp_res_type_hdr:	Resource_type IDENTIF_COLON rtp_vid_res {
 							currParser->lexer_loc_set( @2.first_line, @2.first_column + name->length() );
 							currParser->error( rdosim::RDOSyntaxError::RTP_SECOND_RES_TYPE, name->c_str() );
 						}
-						RDORTPResType *res = new RDORTPResType( name, $3 != 0, currParser->resourceTypeCounter++ );
-						currParser->allRTPResType.push_back(res);
-						currParser->lastRTPResType = res;
+						RDORTPResType *res = new RDORTPResType( name, $3 != 0 );
 						$$ = (int)res;
 					}
 					| Resource_type error {
@@ -209,7 +207,7 @@ rtp_body:	/* empty */ {
 			}
 			| rtp_body rtp_param_desc {
 				RDORTPParamDesc *param = (RDORTPParamDesc*)$2;
-				currParser->lastRTPResType->add( param );
+				currParser->getLastRTPResType()->add( param );
 				$$ = 1; // no warning
 			};
 
@@ -218,7 +216,6 @@ rtp_param_desc: IDENTIF_COLON rtp_param_type {
 					std::string *name = (std::string *)$1;
 					RDORTPResParam *parType = (RDORTPResParam *)$2;
 					RDORTPParamDesc *param = new RDORTPParamDesc(name, parType);
-					currParser->allRTPParamDesc.push_back(param);
 					$$ = (int)param;
 				}
 				| IDENTIF_COLON error {

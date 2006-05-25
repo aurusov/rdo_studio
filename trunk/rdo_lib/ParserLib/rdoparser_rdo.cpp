@@ -168,9 +168,9 @@ RDOLexer* RDOParserRTP::getLexer( std::istream& in_stream, std::ostream& out_str
 // ----------------------------------------------------------------------------
 void RDOParserRSSPost::parse()
 {
-	std::vector< RDORSSResource* >::const_iterator it = currParser->allRSSResource.begin();
-	while ( it != currParser->allRSSResource.end() ) {
-		RDOCalcCreateNumberedResource* createResource = new RDOCalcCreateNumberedResource( (*it)->getType()->getType(), (*it)->getTrace(), (*it)->getValues(), (*it)->getNumber(), (*it)->getType()->isPerm() );
+	std::vector< RDORSSResource* >::const_iterator it = currParser->getRSSResources().begin();
+	while ( it != currParser->getRSSResources().end() ) {
+		RDOCalcCreateNumberedResource* createResource = new RDOCalcCreateNumberedResource( (*it)->getType()->getNumber(), (*it)->getTrace(), (*it)->getValues(), (*it)->getNumber(), (*it)->getType()->isPerm() );
 		currParser->runTime->addInitCalc( createResource );
 		it++;
 	}

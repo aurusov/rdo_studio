@@ -43,6 +43,14 @@ int RDORTPEnum::findValue(const std::string *const val) const
 	return it - enumVals.begin();
 }
 
+RDORTPResType::RDORTPResType( const std::string* const _name, const bool _isPermanent ):
+	name( _name ),
+	isPermanent( _isPermanent ),
+	number( currParser->getRTP_id() )
+{
+	currParser->insertRTPResType( this );
+}
+
 void RDORTPResType::add( const RDORTPParamDesc* const _param )
 {
 	if ( findRTPParam( _param->getName() ) ) {
@@ -76,10 +84,7 @@ int RDORTPResType::getRTPParamNumber(const std::string *const param) const
 
 int RDORTPResType::writeModelStructure() const
 {
-	int s1 = getType();
-	std::string s2 = *getName();
-	int s3 = getParams().size();
-	currParser->modelStructure << getType() << " " << *getName() << " " << getParams().size() << std::endl;
+	currParser->modelStructure << getNumber() << " " << *getName() << " " << getParams().size() << std::endl;
 	for(int i = 0; i < getParams().size(); i++)
 	{
 		currParser->modelStructure << "  " << (i+1) << " ";
@@ -315,9 +320,11 @@ int RDORTPEnumResParam::getDiapTableFunc() const
 	return enu->enumVals.size();
 }
 
-RDORTPParamDesc::RDORTPParamDesc(const std::string *const _name, const RDORTPResParam *const _parType)
-	: name(_name), parType(_parType) 
+RDORTPParamDesc::RDORTPParamDesc( const std::string* const _name, const RDORTPResParam* const _parType ):
+	name( _name ),
+	parType( _parType )
 {
+	currParser->insertRTPParam( this );
 }
 
 }		// namespace rdoParse 

@@ -134,7 +134,7 @@ class RDORTPParamDesc: public RDODeletable
 	const std::string *const name;
 	const RDORTPResParam *const parType;
 public:
-	RDORTPParamDesc(const std::string *const _name, const RDORTPResParam *const _parType);
+	RDORTPParamDesc( const std::string* const _name, const RDORTPResParam* const _parType);
 	const std::string *const getName() const { return name; };
 	const RDORTPResParam *const getType() const { return parType; };
 	int writeModelStructure() const;
@@ -145,16 +145,15 @@ class RDORTPResType: public RDODeletable
 	const std::string *const name;
 	std::vector<const RDORTPParamDesc *>	params;
 	const bool isPermanent;		
-	const int type;		
+	const int number;		
 public:
-	RDORTPResType(const std::string *const _name, const bool _isPermanent, const int _type):
-		name(_name), isPermanent(_isPermanent), type(_type) {}
+	RDORTPResType( const std::string* const _name, const bool _isPermanent );
 	void add(const RDORTPParamDesc *const _param);
 	const RDORTPParamDesc *findRTPParam(const std::string *const param) const;
 	int getRTPParamNumber(const std::string *const param) const;
 	const std::string *const getName() const { return name; };
 	bool isPerm() const { return isPermanent; };
-	int getType() const { return type; };
+	int getNumber() const { return number; };
 	const std::vector<const RDORTPParamDesc *>& getParams() const { return params; }
 	int writeModelStructure() const;
 };

@@ -27,7 +27,7 @@ public:
 	std::vector<const RDORTPParamDesc *>::const_iterator currParam;
 
 public:
-	RDORSSResource(const std::string *const _name, const RDORTPResType *const _resType, const int _number);
+	RDORSSResource( const std::string* const _name, const RDORTPResType* const _resType );
 	const RDORTPResType *const getType() const { return resType; }
 	int getNumber() const { return number; }
 	const std::string *const getName() const { return name; }

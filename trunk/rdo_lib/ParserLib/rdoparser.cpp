@@ -23,13 +23,9 @@ RDOParser* currParser = NULL;
 RDOParser::RDOParser():
 	parser( NULL ),
 	lastDPTSearch( NULL ),
-	lastRTPResType( NULL ),
-	lastRSSResource( NULL ),
-	lastFUNFunction( NULL ),
-	lastPATPattern( NULL ),
-	patternCounter( 1 ),
-	pokazCounter( 1 ),
-	constCounter( 0 ),
+//	patternCounter( 1 ),
+//	pokazCounter( 1 ),
+//	constCounter( 0 ),
 	smr( NULL )
 {
 	runTime = new RDORuntime();
@@ -80,8 +76,8 @@ std::stringstream& RDOParser::getModelStructure()
 
 void RDOParser::parse( int files )
 {
-	resourceTypeCounter = 1;
-	resourceCounter = 0;
+//	resourceTypeCounter = 1;
+//	resourceCounter = 0;
 
 	int min1, max1, min2, max2;
 	RDOParserList::getParserMinMax( rdoModelObjects::obPRE , min1, max1 );
@@ -237,9 +233,9 @@ const RDOPATPattern *RDOParser::findPattern(const std::string *const name) const
 RDOParser::~RDOParser()
 {
 	currParser = this;
-	DeleteAllObjects(allRTPNames);
-	DeleteAllObjects(allRTPDoubles);
-	DeleteAllObjects(allDeletables);
+	DeleteAllObjects( allNames );
+	DeleteAllObjects( allDoubles );
+	DeleteAllObjects( allDeletables );
 	currParser = NULL;
 }
 
