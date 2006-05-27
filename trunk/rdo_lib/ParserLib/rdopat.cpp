@@ -348,6 +348,8 @@ void RDOPATPattern::end()
 
 	if(useCommonChoice)
 	{
+		// first
+		// –аботает неправильно, а как обыкновенный first
 		if(commonChoice == NULL)	// first
 		{
 //			int size = relRes.size();
@@ -359,9 +361,13 @@ void RDOPATPattern::end()
 			return;
 		}
 
+		// with_min / with_max
 		std::vector<RDOSelectResourceCommon *> resSelectors;
-		for(int i = 0; i < size; i++)
-			resSelectors.push_back(relRes.at(i)->createSelectResourceCommonChoiceCalc());
+		for ( int i = 0; i < size; i++ ) {
+			if ( relRes.at(i)->begin == CS_Keep || relRes.at(i)->begin == CS_Erase || relRes.at(i)->begin == CS_NoChange ) {
+				resSelectors.push_back( relRes.at(i)->createSelectResourceCommonChoiceCalc() );
+			}
+		}
 
 		patRuntime->addChoiceFromCalc(new rdoRuntime::RDOSelectResourceCommonCalc(resSelectors, useCommonWithMax, commonChoice->createCalc()));
 //		currParser->error("RDOPATPattern::end not implemented yet for not \"first\" conditions in common choice");

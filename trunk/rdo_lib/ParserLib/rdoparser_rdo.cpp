@@ -46,7 +46,7 @@ void RDOParserRDO::parse( std::istream& in_stream )
 	if ( m_lexer ) delete m_lexer;
 	std::ostringstream out_stream;
 	m_lexer = getLexer( in_stream, out_stream );
-	if ( m_lexer ) parser_fun( m_lexer );
+	if ( m_lexer && parser_fun ) parser_fun( m_lexer );
 }
 
 RDOLexer* RDOParserRDO::getLexer( std::istream& in_stream, std::ostream& out_stream )
@@ -177,12 +177,11 @@ void RDOParserRSSPost::parse()
 }
 
 // ----------------------------------------------------------------------------
-// ---------- RDOParserFUN
+// ---------- RDOParserSTDFUN
 // ----------------------------------------------------------------------------
-void RDOParserFUN::parse( std::istream& in_stream )
+void RDOParserSTDFUN::parse()
 {
 	if ( rdoParse::currParser ) rdoParse::currParser->LoadStdFunctions();
-	RDOParserRDO::parse( in_stream );
 }
 
 // ----------------------------------------------------------------------------

@@ -77,14 +77,14 @@ public:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOParserFUN
+// ---------- RDOParserSTDFUN
 // ----------------------------------------------------------------------------
-class RDOParserFUN: public RDOParserRDO
+class RDOParserSTDFUN: public RDOParserRDO
 {
 public:
-	RDOParserFUN( t_bison_parse_fun _parser_fun, t_bison_error_fun _error_fun, t_flex_lexer_fun _lexer_fun ): RDOParserRDO( rdoModelObjects::FUN, _parser_fun, _error_fun, _lexer_fun ) {};
+	RDOParserSTDFUN(): RDOParserRDO( rdoModelObjects::FUN, NULL, NULL, NULL ) {};
 
-	virtual void parse( std::istream& in_stream );
+	virtual void parse();
 };
 
 // ----------------------------------------------------------------------------

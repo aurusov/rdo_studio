@@ -201,7 +201,11 @@ pat_conv:	Keep				{ $$ = CS_Keep;		}
 			|  NonExist			{ $$ = CS_NonExist;	};
 
 pat_common_choice: pat_rel_res
-			| pat_rel_res first_keyword			{	((RDOPATPattern *)$1)->setCommonChoiceFirst(); $$ = $1; }
+			| pat_rel_res first_keyword			{
+				currParser->lexer_loc_set( &(@2) );
+				currParser->error( "Перед $Body необходимо использовать 'with_max(1)' вместо 'first'" );
+//				((RDOPATPattern *)$1)->setCommonChoiceFirst(); $$ = $1;
+			}
 			| pat_rel_res with_min pat_arithm	{	((RDOPATPattern *)$1)->setCommonChoiceWithMin((RDOFUNArithm *)$3); $$ = $1; }
 			| pat_rel_res with_max pat_arithm	{	((RDOPATPattern *)$1)->setCommonChoiceWithMax((RDOFUNArithm *)$3); $$ = $1; };
 

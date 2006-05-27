@@ -44,17 +44,28 @@ enum ConvertStatus
 
 class RDORelevantResource: public RDODeletable
 {
-	const std::string *const name;
+private:
+	const std::string* const name;
+
 public:
+	int numberOfResource;
 	const ConvertStatus begin;
 	const ConvertStatus end;
-	int numberOfResource;
-	RDOPATChoice *choice;
-	RDOPATFirst *first;
-
 	bool alreadyHaveConverter;
-	RDORelevantResource(const std::string *const _name, const int _numberOfResource, const ConvertStatus _begin, const ConvertStatus _end):
-		name(_name), numberOfResource(_numberOfResource), begin(_begin), end(_end), alreadyHaveConverter(false) {}
+	RDOPATChoice* choice;
+	RDOPATFirst* first;
+
+	RDORelevantResource( const std::string* const _name, const int _numberOfResource, const ConvertStatus _begin, const ConvertStatus _end ):
+		name( _name ),
+		numberOfResource( _numberOfResource ),
+		begin( _begin ),
+		end( _end ),
+		alreadyHaveConverter( false ),
+		choice( NULL ),
+		first( NULL )
+	{
+	}
+
 	virtual const RDORTPResType *const getType() const = 0 ;
 	const std::string *const getName() const { return name; };
 	virtual RDOCalc *createSelectFirstResourceCalc() = 0;			// first without choice
