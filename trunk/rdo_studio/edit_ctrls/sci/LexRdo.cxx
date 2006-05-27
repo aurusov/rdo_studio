@@ -66,6 +66,10 @@ static void ColouriseRdoDoc( unsigned int startPos, int length, int initStyle, W
 			if ( sc.ch == '}' ) {
 				sc.ForwardSetState( SCE_RDO_DEFAULT );
 			}
+		} else if ( sc.state == SCE_RDO_COMMENT_LINE ) {
+			if ( sc.ch == '\r' || sc.ch == '\n' ) {
+				sc.ForwardSetState( SCE_RDO_DEFAULT );
+			}
 		}
 
 		if ( sc.state == SCE_RDO_DEFAULT ) {
@@ -73,6 +77,8 @@ static void ColouriseRdoDoc( unsigned int startPos, int length, int initStyle, W
 				sc.SetState( SCE_RDO_STRING );
 			} else if ( sc.ch == '{' ) {
 				sc.SetState( SCE_RDO_COMMENT );
+			} else if ( sc.Match('/', '/') ) {
+				sc.SetState( SCE_RDO_COMMENT_LINE );
 			} else if ( isdigit(sc.ch) || ((sc.ch == '-' || sc.ch == '+') && isdigit(sc.chNext)) ) {
 				sc.SetState( SCE_RDO_NUMBER );
 			} else if ( isRDOLexerOperator(sc.ch) ) {

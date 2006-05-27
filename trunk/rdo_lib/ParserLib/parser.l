@@ -170,17 +170,17 @@ active				return(active);
 						return QUOTED_IDENTIF_BAD;
 					}
 
-"{"         BEGIN(comment);
+"{"					BEGIN(comment);
+<comment>[^}\n\r]*	;
+<comment>\n			;
+<comment>\r			;
+<comment>"}"		BEGIN(INITIAL);
 
-<comment>[^}\n\r]*        /* eat anything that's not a '*' */
-<comment>\n             ;
-<comment>\r             ;
-<comment>"}"        BEGIN(INITIAL);
+"//"				BEGIN(comment);
+<comment>[\n\r]+	BEGIN(INITIAL);
 
-
-("{".*"}")						;
 [\r\n\t ]+						;
-[(),=\[\]\.\*\>\<\+\-\/]		return(YYText()[YYLeng()-1]);
+[()},=\[\]\.\*\>\<\+\-\/]		return(YYText()[YYLeng()-1]);
 
 ([+-]?[0-9]+"..")	{
 						std::string n1(YYText(), YYLeng()-2);

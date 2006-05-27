@@ -341,7 +341,10 @@ void RDOPATPattern::end()
 	int size = relRes.size();
 	for(int i = 0; i < size; i++)
 	{
-		RDORelevantResource *currRelRes = relRes.at(i);
+		RDORelevantResource* currRelRes = relRes.at(i);
+		if ( !currRelRes->choice ) {
+			currParser->error( rdo::format("Релевантный ресурс '%s' не используется внутри $Body", currRelRes->getName()->c_str()) );
+		}
 		RDOCalc *calc = currRelRes->createSelectFirstResourceCalc();
 		patRuntime->addChoiceFromCalc(calc);
 	}

@@ -158,6 +158,8 @@ public:
 	int writeModelStructure() const;
 	virtual char getModelStructureLetter() const = 0;
 	std::string getPatternId() const;
+
+	virtual bool needTime() const { return false; }
 };
 
 class RDOPATPatternOperation: public RDOPATPattern
@@ -173,6 +175,7 @@ public:
 	void addRelResConvertBeginEnd(bool trace, RDOPATParamsSet *parSet, bool trace2, RDOPATParamsSet *parSet2);
 	void testGoodForSomeActivity() const {}
 	virtual char getModelStructureLetter() const { return 'A'; };
+	virtual bool needTime() const { return true; }
 };
 
 class RDOPATPatternEvent: public RDOPATPattern
@@ -184,6 +187,7 @@ public:
 	void addRelResConvertEvent(bool trace, RDOPATParamsSet *parSet);
 	void testGoodForFreeActivity() const {}
 	char getModelStructureLetter() const { return 'I'; };
+	virtual bool needTime() const { return true; }
 };
 
 class RDOPATPatternRule: public RDOPATPattern

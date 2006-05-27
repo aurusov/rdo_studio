@@ -209,7 +209,13 @@ pat_common_choice: pat_rel_res
 			| pat_rel_res with_min pat_arithm	{	((RDOPATPattern *)$1)->setCommonChoiceWithMin((RDOFUNArithm *)$3); $$ = $1; }
 			| pat_rel_res with_max pat_arithm	{	((RDOPATPattern *)$1)->setCommonChoiceWithMax((RDOFUNArithm *)$3); $$ = $1; };
 
-pat_time:	pat_common_choice	Body							{	$$ = $1; }
+pat_time:	pat_common_choice Body {
+				$$ = $1;
+				if ( ((RDOPATPattern *)$1)->needTime() ) {
+					currParser->lexer_loc_set( @2.first_line, @2.first_column );
+					currParser->error( "Перед $Body пропущено ключевое слова $Time" );
+				}
+			}
 			| pat_common_choice Time '=' pat_arithm Body {	((RDOPATPattern *)$1)->setTime((RDOFUNArithm *)$4); $$ = $1; };
 
 
