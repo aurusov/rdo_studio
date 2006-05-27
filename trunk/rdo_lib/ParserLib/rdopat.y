@@ -134,6 +134,9 @@
 %token triang				413
 %token active				414
 %token QUOTED_IDENTIF		415
+%token QUOTED_IDENTIF_BAD	416
+%token IDENTIF_BAD			417
+
 
 %{
 #include "pch.h"
@@ -213,14 +216,30 @@ pat_time:	pat_common_choice Body {
 				$$ = $1;
 				if ( ((RDOPATPattern *)$1)->needTime() ) {
 					currParser->lexer_loc_set( @2.first_line, @2.first_column );
-					currParser->error( "Перед $Body пропущено ключевое слова $Time" );
+					currParser->error( "Перед $Body пропущено ключевое слово $Time" );
 				}
 			}
-			| pat_common_choice Time '=' pat_arithm Body {	((RDOPATPattern *)$1)->setTime((RDOFUNArithm *)$4); $$ = $1; };
+			| pat_common_choice Time '=' pat_arithm Body {
+				((RDOPATPattern *)$1)->setTime((RDOFUNArithm *)$4);
+				$$ = $1;
+			}
+			| pat_common_choice Time '=' pat_arithm IDENTIF {
+				currParser->lexer_loc_set( @5.first_line, @5.first_column );
+				currParser->error( "Пропущено ключевое слово $Body" );
+			}
+			| pat_common_choice Time '=' error {
+				currParser->lexer_loc_set( &(@4) );
+				currParser->error( "Ошибка в выражении времени" );
+			};
 
-
-pat_body:	pat_time	IDENTIF		{	((RDOPATPattern *)$1)->addRelResBody((std::string *)$2); $$ = $1; }
-			|	pat_convert IDENTIF	{	((RDOPATPattern *)$1)->addRelResBody((std::string *)$2); $$ = $1; };
+pat_body:	pat_time IDENTIF {
+				((RDOPATPattern *)$1)->addRelResBody((std::string *)$2);
+				$$ = $1;
+			}
+			| pat_convert IDENTIF {
+				((RDOPATPattern *)$1)->addRelResBody((std::string *)$2);
+				$$ = $1;
+			};
 
 pat_res_usage: pat_body	pat_choice pat_first	{	((RDOPATPattern *)$1)->addRelResUsage((RDOPATChoice *)$2, (RDOPATFirst *)$3); $$ = $1; };
 

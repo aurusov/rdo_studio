@@ -171,9 +171,8 @@ active				return(active);
 					}
 
 "{"					BEGIN(comment);
+<comment>[^}.]*		;
 <comment>[^}\n\r]*	;
-<comment>\n			;
-<comment>\r			;
 <comment>"}"		BEGIN(INITIAL);
 
 "//"				BEGIN(comment);
