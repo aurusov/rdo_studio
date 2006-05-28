@@ -38,6 +38,7 @@ public:
 	COLORREF errorBgColor;
 
 	RDOFoldStyle foldStyle;
+	bool         commentFold;
 
 	static RDOEditorEditTheme getDefaultTheme();
 	static RDOEditorEditTheme getCppTheme();

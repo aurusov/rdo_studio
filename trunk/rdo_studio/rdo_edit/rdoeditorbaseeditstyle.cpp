@@ -150,7 +150,7 @@ bool RDOEditorBaseEditTheme::styleUsing( const int styleType ) const
 {
 	return styleType == SCE_RDO_DEFAULT || styleType == SCE_RDO_IDENTIFIER ||
 	       styleType == SCE_RDO_KEYWORD || styleType == SCE_RDO_FUNCTION ||
-	       styleType == SCE_RDO_TRACE   || styleType == SCE_RDO_COMMENT ||
+	       styleType == SCE_RDO_TRACE   || styleType == SCE_RDO_COMMENT_RDO ||
 	       styleType == SCE_RDO_NUMBER  || styleType == SCE_RDO_STRING ||
 	       styleType == SCE_RDO_OPERATOR;
 }
@@ -158,15 +158,15 @@ bool RDOEditorBaseEditTheme::styleUsing( const int styleType ) const
 bool RDOEditorBaseEditTheme::styleBold( const int styleType ) const
 {
 	switch ( styleType ) {
-		case SCE_RDO_DEFAULT   : return defaultStyle    & RDOStyleFont::BOLD ? true : false;
-		case SCE_RDO_IDENTIFIER: return identifierStyle & RDOStyleFont::BOLD ? true : false;
-		case SCE_RDO_KEYWORD   : return keywordStyle    & RDOStyleFont::BOLD ? true : false;
-		case SCE_RDO_FUNCTION  : return functionsStyle  & RDOStyleFont::BOLD ? true : false;
-		case SCE_RDO_TRACE     : return traceStyle      & RDOStyleFont::BOLD ? true : false;
-		case SCE_RDO_COMMENT   : return commentStyle    & RDOStyleFont::BOLD ? true : false;
-		case SCE_RDO_NUMBER    : return numberStyle     & RDOStyleFont::BOLD ? true : false;
-		case SCE_RDO_STRING    : return stringStyle     & RDOStyleFont::BOLD ? true : false;
-		case SCE_RDO_OPERATOR  : return operatorStyle   & RDOStyleFont::BOLD ? true : false;
+		case SCE_RDO_DEFAULT    : return defaultStyle    & RDOStyleFont::BOLD ? true : false;
+		case SCE_RDO_IDENTIFIER : return identifierStyle & RDOStyleFont::BOLD ? true : false;
+		case SCE_RDO_KEYWORD    : return keywordStyle    & RDOStyleFont::BOLD ? true : false;
+		case SCE_RDO_FUNCTION   : return functionsStyle  & RDOStyleFont::BOLD ? true : false;
+		case SCE_RDO_TRACE      : return traceStyle      & RDOStyleFont::BOLD ? true : false;
+		case SCE_RDO_COMMENT_RDO: return commentStyle    & RDOStyleFont::BOLD ? true : false;
+		case SCE_RDO_NUMBER     : return numberStyle     & RDOStyleFont::BOLD ? true : false;
+		case SCE_RDO_STRING     : return stringStyle     & RDOStyleFont::BOLD ? true : false;
+		case SCE_RDO_OPERATOR   : return operatorStyle   & RDOStyleFont::BOLD ? true : false;
 	}
 	return false;
 }
@@ -174,15 +174,15 @@ bool RDOEditorBaseEditTheme::styleBold( const int styleType ) const
 bool RDOEditorBaseEditTheme::styleItalic( const int styleType ) const
 {
 	switch ( styleType ) {
-		case SCE_RDO_DEFAULT   : return defaultStyle    & RDOStyleFont::ITALIC ? true : false;
-		case SCE_RDO_IDENTIFIER: return identifierStyle & RDOStyleFont::ITALIC ? true : false;
-		case SCE_RDO_KEYWORD   : return keywordStyle    & RDOStyleFont::ITALIC ? true : false;
-		case SCE_RDO_FUNCTION  : return functionsStyle  & RDOStyleFont::ITALIC ? true : false;
-		case SCE_RDO_TRACE     : return traceStyle      & RDOStyleFont::ITALIC ? true : false;
-		case SCE_RDO_COMMENT   : return commentStyle    & RDOStyleFont::ITALIC ? true : false;
-		case SCE_RDO_NUMBER    : return numberStyle     & RDOStyleFont::ITALIC ? true : false;
-		case SCE_RDO_STRING    : return stringStyle     & RDOStyleFont::ITALIC ? true : false;
-		case SCE_RDO_OPERATOR  : return operatorStyle   & RDOStyleFont::ITALIC ? true : false;
+		case SCE_RDO_DEFAULT    : return defaultStyle    & RDOStyleFont::ITALIC ? true : false;
+		case SCE_RDO_IDENTIFIER : return identifierStyle & RDOStyleFont::ITALIC ? true : false;
+		case SCE_RDO_KEYWORD    : return keywordStyle    & RDOStyleFont::ITALIC ? true : false;
+		case SCE_RDO_FUNCTION   : return functionsStyle  & RDOStyleFont::ITALIC ? true : false;
+		case SCE_RDO_TRACE      : return traceStyle      & RDOStyleFont::ITALIC ? true : false;
+		case SCE_RDO_COMMENT_RDO: return commentStyle    & RDOStyleFont::ITALIC ? true : false;
+		case SCE_RDO_NUMBER     : return numberStyle     & RDOStyleFont::ITALIC ? true : false;
+		case SCE_RDO_STRING     : return stringStyle     & RDOStyleFont::ITALIC ? true : false;
+		case SCE_RDO_OPERATOR   : return operatorStyle   & RDOStyleFont::ITALIC ? true : false;
 	}
 	return false;
 }
@@ -190,15 +190,15 @@ bool RDOEditorBaseEditTheme::styleItalic( const int styleType ) const
 std::string RDOEditorBaseEditTheme::styleFGColorToHEX( const int styleType ) const
 {
 	switch ( styleType ) {
-		case SCE_RDO_DEFAULT   : return colorToHEX( defaultColor );
-		case SCE_RDO_IDENTIFIER: return colorToHEX( identifierColor );
-		case SCE_RDO_KEYWORD   : return colorToHEX( keywordColor );
-		case SCE_RDO_FUNCTION  : return colorToHEX( functionsColor );
-		case SCE_RDO_TRACE     : return colorToHEX( traceColor );
-		case SCE_RDO_COMMENT   : return colorToHEX( commentColor );
-		case SCE_RDO_NUMBER    : return colorToHEX( numberColor );
-		case SCE_RDO_STRING    : return colorToHEX( stringColor );
-		case SCE_RDO_OPERATOR  : return colorToHEX( operatorColor );
+		case SCE_RDO_DEFAULT    : return colorToHEX( defaultColor );
+		case SCE_RDO_IDENTIFIER : return colorToHEX( identifierColor );
+		case SCE_RDO_KEYWORD    : return colorToHEX( keywordColor );
+		case SCE_RDO_FUNCTION   : return colorToHEX( functionsColor );
+		case SCE_RDO_TRACE      : return colorToHEX( traceColor );
+		case SCE_RDO_COMMENT_RDO: return colorToHEX( commentColor );
+		case SCE_RDO_NUMBER     : return colorToHEX( numberColor );
+		case SCE_RDO_STRING     : return colorToHEX( stringColor );
+		case SCE_RDO_OPERATOR   : return colorToHEX( operatorColor );
 	}
 	return RDOBaseEditTheme::styleFGColorToHEX( styleType );
 }

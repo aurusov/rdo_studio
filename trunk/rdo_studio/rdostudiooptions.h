@@ -178,11 +178,23 @@ private:
 		bool&                          horzscrollbar;
 		rdoEditCtrl::RDOBookmarkStyle& bookmarkstyle;
 		rdoEditor::RDOFoldStyle&       foldstyle;
+		bool&                          commentfold;
 
 		std::list< std::string > themes;
 		std::list< STYLEProperty* > properties;
 
-		STYLEObject( const Type _type, std::string& _font_name, int& _font_size, const bool _font_fixed = true, bool& _wordwrap = null_wordwrap, bool& _horzscrollbar = null_horzscrollbar, rdoEditCtrl::RDOBookmarkStyle& _bookmarkstyle = null_bookmarkstyle, rdoEditor::RDOFoldStyle& _foldstyle = null_foldstyle ): type( _type ), font_name( _font_name ), font_size( _font_size ), font_fixed( _font_fixed ), wordwrap( _wordwrap ), horzscrollbar( _horzscrollbar ), bookmarkstyle( _bookmarkstyle ), foldstyle( _foldstyle ) {};
+		STYLEObject( const Type _type, std::string& _font_name, int& _font_size, const bool _font_fixed = true, bool& _wordwrap = null_wordwrap, bool& _horzscrollbar = null_horzscrollbar, rdoEditCtrl::RDOBookmarkStyle& _bookmarkstyle = null_bookmarkstyle, rdoEditor::RDOFoldStyle& _foldstyle = null_foldstyle, bool& _commentfold = null_commentfold ):
+			type( _type ),
+			font_name( _font_name ),
+			font_size( _font_size ),
+			font_fixed( _font_fixed ),
+			wordwrap( _wordwrap ),
+			horzscrollbar( _horzscrollbar ),
+			bookmarkstyle( _bookmarkstyle ),
+			foldstyle( _foldstyle ),
+			commentfold( _commentfold )
+		{
+		};
 		~STYLEObject() {
 			std::list< STYLEProperty* >::iterator it = properties.begin();
 			while ( it != properties.end() ) {
@@ -231,6 +243,7 @@ private:
 	static COLORREF                      null_bg_color;
 	static bool                          null_wordwrap;
 	static bool                          null_horzscrollbar;
+	static bool                          null_commentfold;
 	static rdoEditCtrl::RDOBookmarkStyle null_bookmarkstyle;
 	static rdoEditor::RDOFoldStyle       null_foldstyle;
 
@@ -240,6 +253,7 @@ private:
 protected:
 	//{{AFX_DATA(RDOStudioOptionsColorsStyles)
 	enum { IDD = IDD_OPTIONS_STYLESANDCOLORS };
+	CButton	m_commentGroupButton;
 	CStatic	m_title_fontSizeStatic;
 	CStatic	m_leg_fontSizeStatic;
 	CComboBox	m_leg_fontSizeCombo;
@@ -298,6 +312,7 @@ protected:
 	afx_msg void OnFoldChanged();
 	afx_msg void OnThemeChanged();
 	afx_msg void OnUpdateModify();
+	afx_msg void OnCommentGroupCheck();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 

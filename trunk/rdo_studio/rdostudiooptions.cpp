@@ -314,6 +314,7 @@ COLORREF RDOStudioOptionsColorsStyles::null_fg_color = RGB( 0x00, 0x00, 0x00 );
 COLORREF RDOStudioOptionsColorsStyles::null_bg_color = RGB( 0xFF, 0xFF, 0xFF );
 bool RDOStudioOptionsColorsStyles::null_wordwrap      = false;
 bool RDOStudioOptionsColorsStyles::null_horzscrollbar = true;
+bool RDOStudioOptionsColorsStyles::null_commentfold   = false;
 RDOBookmarkStyle RDOStudioOptionsColorsStyles::null_bookmarkstyle = RDOBOOKMARKS_NONE;
 RDOFoldStyle     RDOStudioOptionsColorsStyles::null_foldstyle     = RDOFOLDS_NONE;
 
@@ -340,6 +341,7 @@ BEGIN_MESSAGE_MAP(RDOStudioOptionsColorsStyles, CPropertyPage)
 	ON_CBN_SELCHANGE(IDC_TITLE_FONTSIZE_COMBO, OnUpdateModify)
 	ON_CBN_SELCHANGE(IDC_LEGEND_FONTSIZE_COMBO, OnUpdateModify)
 	ON_EN_CHANGE(IDC_TICKWIDTH_EDIT, OnUpdateModify)
+	ON_BN_CLICKED(IDC_COMMENTGROUP_CHECK, OnCommentGroupCheck)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -365,7 +367,7 @@ RDOStudioOptionsColorsStyles::RDOStudioOptionsColorsStyles( RDOStudioOptions& _s
 	objects.push_back( object );
 
 	RDOEditorEditTheme* editor_theme = static_cast<RDOEditorEditTheme*>(sheet->style_editor.theme);
-	object = new STYLEObject( STYLEObject::source, sheet->style_editor.font->name, sheet->style_editor.font->size, true, sheet->style_editor.window->wordWrap, sheet->style_editor.window->showHorzScrollBar, editor_theme->bookmarkStyle, editor_theme->foldStyle );
+	object = new STYLEObject( STYLEObject::source, sheet->style_editor.font->name, sheet->style_editor.font->size, true, sheet->style_editor.window->wordWrap, sheet->style_editor.window->showHorzScrollBar, editor_theme->bookmarkStyle, editor_theme->foldStyle, editor_theme->commentFold );
 	object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_EDITOR ), editor_theme->identifierStyle, editor_theme->identifierColor, editor_theme->backgroundColor ) );
 	object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_EDITOR_PLAINTEXT ), editor_theme->defaultStyle, editor_theme->defaultColor, null_bg_color, null_fg_color, editor_theme->backgroundColor ) );
 	object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_EDITOR_IDENTIFICATOR ), editor_theme->identifierStyle, editor_theme->identifierColor, null_bg_color, null_fg_color, editor_theme->backgroundColor ) );
@@ -493,6 +495,7 @@ void RDOStudioOptionsColorsStyles::DoDataExchange(CDataExchange* pDX)
 	CPropertyPage::DoDataExchange(pDX);
 
 	//{{AFX_DATA_MAP(RDOStudioOptionsColorsStyles)
+	DDX_Control(pDX, IDC_COMMENTGROUP_CHECK, m_commentGroupButton);
 	DDX_Control(pDX, IDC_TITLE_FONTSIZE_STATIC, m_title_fontSizeStatic);
 	DDX_Control(pDX, IDC_LEGEND_FONTSIZE_STATIC, m_leg_fontSizeStatic);
 	DDX_Control(pDX, IDC_LEGEND_FONTSIZE_COMBO, m_leg_fontSizeCombo);
@@ -838,7 +841,10 @@ void RDOStudioOptionsColorsStyles::updateStyleItem()
 		bool flag_fold = type == STYLEObject::source;
 		m_fold.ShowWindow( flag_fold ? SW_SHOW : SW_HIDE );
 		m_foldStatic.ShowWindow( flag_fold ? SW_SHOW : SW_HIDE );
+		m_commentGroupButton.ShowWindow( flag_fold ? SW_SHOW : SW_HIDE );
 		m_fold.SetCurSel( prop->object->foldstyle );
+		m_commentGroupButton.SetCheck( prop->object->commentfold );
+		OnFoldChanged();
 
 		// Update preview
 		bool flag_preview = type == STYLEObject::all;
@@ -1400,6 +1406,7 @@ void RDOStudioOptionsColorsStyles::OnFoldChanged()
 		int index = m_fold.GetCurSel();
 		if ( index != CB_ERR ) {
 			obj->foldstyle = static_cast<RDOFoldStyle>(index);
+			m_commentGroupButton.EnableWindow( index != 0 );
 			OnUpdateModify();
 		}
 	}
@@ -2195,4 +2202,13 @@ BOOL RDOStudioOptions::OnHelpInfo(HELPINFO* pHelpInfo)
 	if ( pHelpInfo->iContextType == HELPINFO_WINDOW )
 		return ::HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_HELP_CONTEXT, pHelpInfo->dwContextId) != NULL;
 	return TRUE;
+}
+
+void RDOStudioOptionsColorsStyles::OnCommentGroupCheck()
+{
+	STYLEObject* obj = getCurrentObject();
+	if ( obj && &obj->commentfold != &null_commentfold ) {
+		obj->commentfold = m_commentGroupButton.GetCheck() ? true : false;
+		OnUpdateModify();
+	}
 }

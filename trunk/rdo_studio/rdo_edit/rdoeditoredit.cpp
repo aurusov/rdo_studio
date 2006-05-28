@@ -262,6 +262,11 @@ void RDOEditorEdit::setEditorStyle( RDOEditorEditStyle* _style )
 			defineMarker( SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_LCORNER    , foldFgColor, foldBgColor );
 			break;
 	}
+	std::string cf_prop( "CommentFold" );
+	std::string cf_val_1( "1" );
+	std::string cf_val_0( "0" );
+	sendEditorString( SCI_SETPROPERTY, reinterpret_cast<unsigned long>(cf_prop.c_str()), theme->commentFold ? cf_val_1.c_str() : cf_val_0.c_str() );
+	sendEditor( SCI_COLOURISE, 0, -1 );
 
 	// ----------
 	// Margin

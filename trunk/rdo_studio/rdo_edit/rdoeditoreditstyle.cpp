@@ -20,7 +20,8 @@ RDOEditorEditTheme::RDOEditorEditTheme(): RDOEditorBaseEditTheme()
 
 	errorBgColor = RGB( 0xFF, 0x80, 0x80 );
 
-	foldStyle = RDOFOLDS_PLUS;
+	foldStyle   = RDOFOLDS_PLUS;
+	commentFold = false;
 }
 
 RDOEditorEditTheme::~RDOEditorEditTheme()
@@ -36,7 +37,8 @@ RDOEditorEditTheme& RDOEditorEditTheme::operator =( const RDOEditorEditTheme& th
 
 	errorBgColor = theme.errorBgColor;
 
-	foldStyle = theme.foldStyle;
+	foldStyle   = theme.foldStyle;
+	commentFold = theme.commentFold;
 
 	return *this;
 }
@@ -50,7 +52,8 @@ bool RDOEditorEditTheme::operator ==( const RDOEditorEditTheme& theme ) const
 
 	                    errorBgColor == theme.errorBgColor &&
 
-	                    foldStyle == theme.foldStyle;
+	                    foldStyle   == theme.foldStyle &&
+	                    commentFold == theme.commentFold;
 	return flag;
 }
 
@@ -68,6 +71,7 @@ void RDOEditorEditTheme::load( std::string regPath )
 	foldBgColor  = AfxGetApp()->GetProfileInt( regPath.c_str(), "foldBgColor", foldBgColor );
 	errorBgColor = AfxGetApp()->GetProfileInt( regPath.c_str(), "errorBgColor", errorBgColor );
 	foldStyle    = (RDOFoldStyle)AfxGetApp()->GetProfileInt( regPath.c_str(), "foldStyle", foldStyle );
+	commentFold  = AfxGetApp()->GetProfileInt( regPath.c_str(), "commentFold", commentFold ) ? true : false;
 }
 
 void RDOEditorEditTheme::save( std::string regPath ) const
@@ -79,6 +83,7 @@ void RDOEditorEditTheme::save( std::string regPath ) const
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "foldBgColor", foldBgColor );
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "errorBgColor", errorBgColor );
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "foldStyle", foldStyle );
+	AfxGetApp()->WriteProfileInt( regPath.c_str(), "commentFold", commentFold );
 }
 
 RDOEditorEditTheme RDOEditorEditTheme::getDefaultTheme()
@@ -96,7 +101,8 @@ RDOEditorEditTheme RDOEditorEditTheme::getCppTheme()
 	theme.foldBgColor  = RGB( 0x00, 0x00, 0x00 );
 	theme.errorBgColor = RGB( 0xFF, 0x80, 0x80 );
 
-	theme.foldStyle = RDOFOLDS_PLUS;
+	theme.foldStyle   = RDOFOLDS_PLUS;
+	theme.commentFold = false;
 
 	return theme;
 }
@@ -110,7 +116,8 @@ RDOEditorEditTheme RDOEditorEditTheme::getPascalTheme()
 	theme.foldBgColor  = RGB( 0x00, 0x00, 0x00 );
 	theme.errorBgColor = RGB( 0xFF, 0x80, 0x80 );
 
-	theme.foldStyle = RDOFOLDS_PLUS;
+	theme.foldStyle   = RDOFOLDS_PLUS;
+	theme.commentFold = false;
 
 	return theme;
 }
@@ -124,7 +131,8 @@ RDOEditorEditTheme RDOEditorEditTheme::getHtmlTheme()
 	theme.foldBgColor  = RGB( 0x00, 0x00, 0x00 );
 	theme.errorBgColor = RGB( 0xFF, 0x80, 0x80 );
 
-	theme.foldStyle = RDOFOLDS_PLUS;
+	theme.foldStyle   = RDOFOLDS_PLUS;
+	theme.commentFold = false;
 
 	return theme;
 }
@@ -138,7 +146,8 @@ RDOEditorEditTheme RDOEditorEditTheme::getClassicTheme()
 	theme.foldBgColor  = RGB( 0x00, 0x00, 0x00 );
 	theme.errorBgColor = RGB( 0xE6, 0x05, 0xF8 );
 
-	theme.foldStyle = RDOFOLDS_PLUS;
+	theme.foldStyle   = RDOFOLDS_PLUS;
+	theme.commentFold = false;
 
 	return theme;
 }
@@ -152,7 +161,8 @@ RDOEditorEditTheme RDOEditorEditTheme::getTwilightTheme()
 	theme.foldBgColor  = RGB( 0x00, 0x00, 0x00 );
 	theme.errorBgColor = RGB( 0xFF, 0x80, 0x80 );
 
-	theme.foldStyle = RDOFOLDS_PLUS;
+	theme.foldStyle   = RDOFOLDS_PLUS;
+	theme.commentFold = false;
 
 	return theme;
 }
@@ -166,7 +176,8 @@ RDOEditorEditTheme RDOEditorEditTheme::getOceanTheme()
 	theme.foldBgColor  = RGB( 0x00, 0x00, 0x00 );
 	theme.errorBgColor = RGB( 0xFF, 0xFF, 0x00 );
 
-	theme.foldStyle = RDOFOLDS_PLUS;
+	theme.foldStyle   = RDOFOLDS_PLUS;
+	theme.commentFold = false;
 
 	return theme;
 }
