@@ -78,15 +78,14 @@ void RDOIERuntime::convertEvent(RDOSimulator *sim)
 		beginCalcs.at(i)->calcValueBase(runtime);
 }
 
-bool RDOPatternRuntime::choiceFrom(RDOSimulator *sim)
+bool RDOPatternRuntime::choiceFrom( RDOSimulator* sim )
 {
-	RDORuntime *runtime = (RDORuntime *)sim;
+	RDORuntime* runtime = (RDORuntime*)sim;
 	int size = choiceFromCalcs.size();
-	for(int i = 0; i < size; i++)
-		if(!choiceFromCalcs[i]->calcValueBase(runtime))
-			return 0;
-
-	return 1;
+	for ( int i = 0; i < size; i++ ) {
+		if ( !choiceFromCalcs[i]->calcValueBase(runtime) ) return false;
+	}
+	return true;
 }
 
 bool RDOOperationRuntime::choiceFrom(RDOSimulator *sim)

@@ -335,52 +335,46 @@ public:
 	RDOCalcDiv(RDOCalc *_left, RDOCalc *_right): RDOCalcBinary(_left, _right) {}
 };
 
-
 // --------------------  Binary Logic calcs ---------------------------------
-
 
 class RDOCalcAnd: public RDOCalcBinary
 {
 public:
-   RDOValue calcValue(RDORuntime *sim) const 
-	{
-		if(!left->calcValueBase(sim))
-			return false;
-		if(!right->calcValueBase(sim))
-			return false;
-
+	RDOValue calcValue( RDORuntime* sim ) const {
+		if ( !left->calcValueBase( sim )  ) return false;
+		if ( !right->calcValueBase( sim ) ) return false;
 		return true;
 	}
-	RDOCalcAnd(RDOCalc *_left, RDOCalc *_right): RDOCalcBinary(_left, _right) {}
+	RDOCalcAnd( RDOCalc* _left, RDOCalc* _right): RDOCalcBinary( _left, _right ) {};
 };
 
 class RDOCalcOr: public RDOCalcBinary
 {
 public:
-   RDOValue calcValue(RDORuntime *sim) const 
-	{
-		if(left->calcValueBase(sim))
-			return true;
-		if(right->calcValueBase(sim))
-			return true;
-
+	RDOValue calcValue( RDORuntime* sim ) const {
+		if ( left->calcValueBase( sim )  ) return true;
+		if ( right->calcValueBase( sim ) ) return true;
 		return false;
 	}
-	RDOCalcOr(RDOCalc *_left, RDOCalc *_right): RDOCalcBinary(_left, _right) {}
+	RDOCalcOr( RDOCalc* _left, RDOCalc* _right): RDOCalcBinary( _left, _right ) {};
 };
 
 class RDOCalcIsEqual: public RDOCalcBinary
 {
 public:
-   RDOValue calcValue(RDORuntime *sim) const { return (left->calcValueBase(sim) == right->calcValueBase(sim)); }
-	RDOCalcIsEqual(const RDOCalc *const _left, const RDOCalc *const _right): RDOCalcBinary(_left, _right) {}
+	RDOValue calcValue( RDORuntime* sim ) const {
+		return ( left->calcValueBase(sim) == right->calcValueBase(sim) );
+	}
+	RDOCalcIsEqual( const RDOCalc* const _left, const RDOCalc* const _right): RDOCalcBinary( _left, _right ) {}
 };
 
 class RDOCalcIsNotEqual: public RDOCalcBinary
 {
 public:
-   RDOValue calcValue(RDORuntime *sim) const {	return (left->calcValueBase(sim) != right->calcValueBase(sim));	}
-	RDOCalcIsNotEqual(RDOCalc *_left, RDOCalc *_right): RDOCalcBinary(_left, _right) {}
+	RDOValue calcValue( RDORuntime* sim ) const {
+		return ( left->calcValueBase(sim) != right->calcValueBase(sim) );
+	}
+	RDOCalcIsNotEqual( RDOCalc* _left, RDOCalc* _right ): RDOCalcBinary( _left, _right ) {}
 };
 
 class RDOCalcIsLess: public RDOCalcBinary

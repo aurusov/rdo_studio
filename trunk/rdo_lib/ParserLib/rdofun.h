@@ -78,12 +78,11 @@ struct RDOFUNFunctionListElementEq: public RDOFUNFunctionListElement
 
 struct RDOFUNLogic: public RDODeletable
 {
-	RDOCalc *calc;
+	RDOCalc* calc;
 
-	RDOFUNLogic(RDOCalc *_calc):
-		calc(_calc) {}
-	RDOFUNLogic *operator &&(RDOFUNLogic &second);
-	RDOFUNLogic *operator ||(RDOFUNLogic &second);
+	RDOFUNLogic( RDOCalc *_calc ): calc(_calc) {}
+	RDOFUNLogic* operator &&( const RDOFUNLogic& second );
+	RDOFUNLogic* operator ||( const RDOFUNLogic& second );
 };
 
 struct RDOFUNArithm: public RDODeletable

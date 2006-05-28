@@ -667,17 +667,13 @@ RDOCalc::RDOCalc()
 	rdoParse::addCalcToRuntime(this); 
 }
 
-RDOValue RDOCalc::calcValueBase(RDORuntime *sim) const
+RDOValue RDOCalc::calcValueBase( RDORuntime* sim ) const
 {
-	try
-	{
-		return calcValue(sim);
+	try {
+		return calcValue( sim );
+	} catch( RDOException& ) {
+		sim->error( "in", this );
 	}
-	catch(RDOException &)
-	{
-		sim->error("in", this);
-	}
-
 	return 0; // unreachable code
 }
 

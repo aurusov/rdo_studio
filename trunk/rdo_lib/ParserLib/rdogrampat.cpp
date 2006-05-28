@@ -308,10 +308,10 @@ static const short yyrline[] =
      256,   258,   260,   262,   264,   267,   268,   269,   271,   272,
      278,   284,   290,   296,   302,   309,   316,   320,   325,   333,
      343,   350,   356,   362,   366,   372,   376,   385,   387,   391,
-     398,   411,   422,   423,   424,   425,   426,   427,   428,   429,
-     430,   431,   434,   435,   436,   437,   438,   439,   440,   441,
-     442,   443,   445,   447,   448,   449,   452,   453,   454,   455,
-     457,   459,   460
+     398,   411,   422,   423,   424,   425,   426,   427,   428,   431,
+     432,   433,   436,   437,   438,   439,   440,   441,   442,   443,
+     444,   445,   447,   449,   450,   451,   454,   455,   456,   457,
+     459,   461,   462
 };
 #endif
 
@@ -1692,98 +1692,100 @@ case 87:
     break;}
 case 88:
 #line 428 ".\\rdopat.y"
-{ yyval = (int)(*(RDOFUNLogic *)yyvsp[-2] && *(RDOFUNLogic *)yyvsp[0]); ;
+{
+				yyval = (int)(*(RDOFUNLogic *)yyvsp[-2] && *(RDOFUNLogic *)yyvsp[0]);
+			;
     break;}
 case 89:
-#line 429 ".\\rdopat.y"
+#line 431 ".\\rdopat.y"
 { yyval = (int)(*(RDOFUNLogic *)yyvsp[-2] || *(RDOFUNLogic *)yyvsp[0]); ;
     break;}
 case 90:
-#line 430 ".\\rdopat.y"
+#line 432 ".\\rdopat.y"
 { yyval = yyvsp[-1]; ;
     break;}
 case 91:
-#line 431 ".\\rdopat.y"
+#line 433 ".\\rdopat.y"
 { yyval = yyvsp[0]; ;
     break;}
 case 92:
-#line 434 ".\\rdopat.y"
+#line 436 ".\\rdopat.y"
 { yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] + *(RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 93:
-#line 435 ".\\rdopat.y"
+#line 437 ".\\rdopat.y"
 { yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] - *(RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 94:
-#line 436 ".\\rdopat.y"
+#line 438 ".\\rdopat.y"
 { yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] * *(RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 95:
-#line 437 ".\\rdopat.y"
+#line 439 ".\\rdopat.y"
 { yyval = (int)(*(RDOFUNArithm *)yyvsp[-2] / *(RDOFUNArithm *)yyvsp[0]); ;
     break;}
 case 96:
-#line 438 ".\\rdopat.y"
+#line 440 ".\\rdopat.y"
 { yyval = yyvsp[-1]; ;
     break;}
 case 98:
-#line 440 ".\\rdopat.y"
+#line 442 ".\\rdopat.y"
 { yyval = (int)(new RDOFUNArithm((std::string *)yyvsp[-2], (std::string *)yyvsp[0])); ;
     break;}
 case 99:
-#line 441 ".\\rdopat.y"
+#line 443 ".\\rdopat.y"
 { yyval = (int)(new RDOFUNArithm((int)yyvsp[0])); ;
     break;}
 case 100:
-#line 442 ".\\rdopat.y"
+#line 444 ".\\rdopat.y"
 { yyval = (int)(new RDOFUNArithm((double*)yyvsp[0])); ;
     break;}
 case 101:
-#line 443 ".\\rdopat.y"
+#line 445 ".\\rdopat.y"
 { yyval = (int)(new RDOFUNArithm((std::string *)yyvsp[0])); ;
     break;}
 case 102:
-#line 445 ".\\rdopat.y"
+#line 447 ".\\rdopat.y"
 { yyval = (int)((RDOFUNParams *)yyvsp[-1])->createCall((std::string *)yyvsp[-3]) ;
     break;}
 case 103:
-#line 447 ".\\rdopat.y"
+#line 449 ".\\rdopat.y"
 { yyval = (int)(new RDOFUNParams()); ;
     break;}
 case 104:
-#line 448 ".\\rdopat.y"
+#line 450 ".\\rdopat.y"
 { yyval = (int)(((RDOFUNParams *)yyvsp[-1])->addParameter((RDOFUNArithm *)yyvsp[0])); ;
     break;}
 case 105:
-#line 449 ".\\rdopat.y"
+#line 451 ".\\rdopat.y"
 { yyval = (int)(((RDOFUNParams *)yyvsp[-2])->addParameter((RDOFUNArithm *)yyvsp[0])); ;
     break;}
 case 106:
-#line 452 ".\\rdopat.y"
+#line 454 ".\\rdopat.y"
 { yyval = 1; ;
     break;}
 case 107:
-#line 453 ".\\rdopat.y"
+#line 455 ".\\rdopat.y"
 { yyval = 2; ;
     break;}
 case 108:
-#line 454 ".\\rdopat.y"
+#line 456 ".\\rdopat.y"
 { yyval = 3; ;
     break;}
 case 109:
-#line 455 ".\\rdopat.y"
+#line 457 ".\\rdopat.y"
 { yyval = 4; ;
     break;}
 case 110:
-#line 457 ".\\rdopat.y"
+#line 459 ".\\rdopat.y"
 { yyval = (int)(new RDOFUNGroup(yyvsp[-2], (std::string *)yyvsp[0])); ;
     break;}
 case 111:
-#line 459 ".\\rdopat.y"
+#line 461 ".\\rdopat.y"
 { yyval = (int)(((RDOFUNGroup *)yyvsp[-2])->createFunLogin((RDOFUNLogic *)yyvsp[-1])); ;
     break;}
 case 112:
-#line 460 ".\\rdopat.y"
+#line 462 ".\\rdopat.y"
 { yyval = (int)(((RDOFUNGroup *)yyvsp[-2])->createFunLogin()); ;
     break;}
 }
@@ -2019,7 +2021,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 467 ".\\rdopat.y"
+#line 469 ".\\rdopat.y"
 
 
 }

@@ -453,18 +453,16 @@ RDOFUNLogic *RDOFUNArithm::operator !=(RDOFUNArithm &second)
 	return new RDOFUNLogic(newCalc);
 }
 
-RDOFUNLogic *RDOFUNLogic::operator &&(RDOFUNLogic &second)
+RDOFUNLogic* RDOFUNLogic::operator &&( const RDOFUNLogic& second )
 {
-	RDOCalc *newCalc;
-	newCalc = new RDOCalcAnd(calc, second.calc);
-	return new RDOFUNLogic(newCalc);
+	RDOCalc* newCalc = new RDOCalcAnd( calc, second.calc );
+	return new RDOFUNLogic( newCalc );
 }
 
-RDOFUNLogic *RDOFUNLogic::operator ||(RDOFUNLogic &second)
+RDOFUNLogic* RDOFUNLogic::operator ||( const RDOFUNLogic& second )
 {
-	RDOCalc *newCalc;
-	newCalc = new RDOCalcOr(calc, second.calc);
-	return new RDOFUNLogic(newCalc);
+	RDOCalc* newCalc = new RDOCalcOr( calc, second.calc );
+	return new RDOFUNLogic( newCalc );
 }
 
 RDOFUNArithm::RDOFUNArithm(int n)

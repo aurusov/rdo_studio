@@ -11,23 +11,27 @@ class RDORuntime;
 
 class RDOCalc
 {
-	virtual RDOValue calcValue(RDORuntime *sim) const = 0;
+private:
+	virtual RDOValue calcValue( RDORuntime* sim ) const = 0;
+
 public:
+	RDOCalc();
+	virtual ~RDOCalc() {};
+
 	rdoModelObjects::RDOFileType fileToParse;
 	int lineno;
-	RDOValue calcValueBase(RDORuntime *sim) const;
-	virtual ~RDOCalc() {}
-	RDOCalc();
+	RDOValue calcValueBase( RDORuntime* sim ) const;
 };
 
 class RDOCalcConst: public RDOCalc
 {
-   RDOValue constanta;
-public:
-	RDOCalcConst(RDOValue val) : constanta(val) {}
-   RDOValue calcValue(RDORuntime *sim) const { return constanta; }
-};
+private:
+	RDOValue constanta;
 
+public:
+	RDOCalcConst( const RDOValue& val ): constanta( val ) {};
+	RDOValue calcValue( RDORuntime* sim ) const { return constanta; }
+};
 
 }  // namespace rdoRuntime
 

@@ -425,7 +425,9 @@ pat_logic: pat_arithm '=' pat_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 == *(RDOFU
 			| pat_arithm '>' pat_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 >  *(RDOFUNArithm *)$3); }
 			| pat_arithm leq pat_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 <= *(RDOFUNArithm *)$3); }
 			| pat_arithm geq pat_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 >= *(RDOFUNArithm *)$3); }
-			| pat_logic and_keyword pat_logic  { $$ = (int)(*(RDOFUNLogic *)$1 && *(RDOFUNLogic *)$3); }
+			| pat_logic and_keyword pat_logic {
+				$$ = (int)(*(RDOFUNLogic *)$1 && *(RDOFUNLogic *)$3);
+			}
 			| pat_logic or_keyword pat_logic	  { $$ = (int)(*(RDOFUNLogic *)$1 || *(RDOFUNLogic *)$3); }
 			| '[' pat_logic ']'				{ $$ = $2; }
 			| fun_group							{ $$ = $1; };

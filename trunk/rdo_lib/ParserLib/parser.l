@@ -22,7 +22,9 @@ static char THIS_FILE[] = __FILE__;
 %}
 %option yylineno
 %option c++
-%x comment
+%x comment_rdo
+%x comment_cpp
+%x comment_line
 %%
 
 $Resource_type		return(Resource_type);
@@ -170,13 +172,19 @@ active				return(active);
 						return QUOTED_IDENTIF_BAD;
 					}
 
-"{"					BEGIN(comment);
-<comment>[^}.]*		;
-<comment>[^}\n\r]*	;
-<comment>"}"		BEGIN(INITIAL);
+"{"						BEGIN(comment_rdo);
+<comment_rdo>[^}.]*		;
+<comment_rdo>[^}\n\r]*	;
+<comment_rdo>"}"		BEGIN(INITIAL);
 
-"//"				BEGIN(comment);
-<comment>[\n\r]+	BEGIN(INITIAL);
+"/*"					BEGIN(comment_cpp);
+<comment_cpp>[^*.]*		;
+<comment_cpp>[^*\n\r]*	;
+<comment_cpp>"*"+"/"	BEGIN(INITIAL);
+
+"//"					BEGIN(comment_line);
+<comment_line>[\n\r]+	BEGIN(INITIAL);
+
 
 [\r\n\t ]+						;
 [()},=\[\]\.\*\>\<\+\-\/]		return(YYText()[YYLeng()-1]);
