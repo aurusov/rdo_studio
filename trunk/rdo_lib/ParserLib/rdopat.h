@@ -57,7 +57,6 @@ protected:
 	RDOPATPattern( const std::string* const _name, const bool _trace );
 	virtual ~RDOPATPattern() {}
 
-	RDORelevantResource* currRelRes;
 	RDOPatternRuntime*   patRuntime;
 
 public:
@@ -75,6 +74,8 @@ public:
 	std::vector< RDORelevantResource* >::const_iterator res_end()   const { return relRes.end();   }
 	int                                                 res_count() const { return relRes.size();  }
 	void RDOPATPattern::res_insert( RDORelevantResource* res );
+
+	RDORelevantResource* currRelRes;
 
 	void add(RDOFUNFunctionParam *const _param);
 	const RDOFUNFunctionParam *findPATPatternParam(const std::string *const paramName) const;
