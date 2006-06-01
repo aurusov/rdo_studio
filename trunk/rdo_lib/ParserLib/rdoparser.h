@@ -75,6 +75,8 @@ public:
 	RDOParser();
 	~RDOParser();
 
+	std::vector< const RDORSSResource* > tmp_rss;
+
 	const std::vector< RDORSSResource* >&     getRSSResources() const    { return allRSSResource;     }
 	      std::vector< RDOFUNGroup* >&        getFUNGroupStack()         { return allFUNGroupStack;   }
 	const std::vector< RDODPTSearch* >&       getDPTSearch() const       { return allDPTSearch;       }

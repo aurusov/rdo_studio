@@ -297,7 +297,7 @@ dpt_process_line:	IDENTIF	{ TRACE( "IDENTIF %s\n", ((std::string *)$1)->c_str() 
 	std::string* rel_res_name = currParser->registerName( "Òğàíçàêò" );
 	std::string* rtp_name     = currParser->registerName( "Òğàíçàêòû" );
 	RDOPATPatternEvent* ie = new RDOPATPatternEvent( ie_name, true );
-	ie->addRelRes( rel_res_name, rtp_name, CS_Create );
+	ie->addRelRes( rel_res_name, rtp_name, RDOPATPattern::CS_Create );
 	ie->end();
 
 					}

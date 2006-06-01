@@ -424,84 +424,99 @@ RDOValue RDOFunCalcNotForAll::calcValue(RDORuntime *sim) const
 	return res;
 }
 
-RDOSelectResourceCalc::RDOSelectResourceCalc(int _relNumb, RDOPATFirst *_first, RDOPATChoice *_choice): 
-	relNumb(_relNumb)
+RDOSelectResourceCalc::RDOSelectResourceCalc( int _relNumb, RDOPATChoice* _choice, RDOPATSelectType* _selection_type ):
+	relNumb( _relNumb ),
+	choice( NULL ),
+	selection_calc( NULL ),
+	selection_type( RDOPATSelectType::st_empty )
 {
-	if(_first == NULL || _first->isEmpty || _first->isFirst)
-		isFirst = true;
-	else
-	{
-		isFirst = false;
-		isWithMin = _first->isWithMin;
-		first = _first->arithm->createCalc(NULL);
-	}
-
-	if(_choice == NULL || _choice->isEmpty || _choice->isNoCheck)
-		hasChoice = false;
-	else
-	{
-		hasChoice = true;
+	if ( _choice != NULL && _choice->type == RDOPATChoice::ch_from ) {
 		choice = _choice->logic->calc;
+	}
+	if ( _selection_type ) {
+		selection_type = _selection_type->type;
+		if ( _selection_type->arithm ) {
+			selection_calc = _selection_type->arithm->createCalc( NULL );
+		}
 	}
 }
 
-RDOValue RDOSelectResourceDirectCalc::calcValue(RDORuntime *sim) const
+RDOValue RDOSelectResourceDirectCalc::calcValue( RDORuntime* sim ) const
 {
-	sim->selectRelResource(relNumb, resNumb);
-	if(hasChoice)
-		if(!choice->calcValueBase(sim))
-			return 0;
-
+	sim->selectRelResource( relNumb, resNumb );
+	if ( choice && !choice->calcValueBase( sim ) ) return 0;
 	return 1;
 }
 
-RDOValue RDOSelectResourceByTypeCalc::calcValue(RDORuntime *sim) const
+RDOValue RDOSelectResourceByTypeCalc::calcValue( RDORuntime* sim ) const
 {
 	RDOValue maxVal = -DBL_MAX;
 	RDOValue minVal = DBL_MAX;
-	int nResMin = -1;
-	int nResMax = -1;
-	std::vector<RDOResource *>::iterator end = sim->allResources.end();
-	for(std::vector<RDOResource *>::iterator it = sim->allResources.begin(); 
-													it != end; it++)
-	{
-		if(*it == NULL)
-			continue;
+	int nResMinMax  = -1;
+	std::vector< RDOResource* >::iterator end = sim->allResources.end();
+	for ( std::vector< RDOResource* >::iterator it = sim->allResources.begin(); it != end; it++ ) {
 
-		if((*it)->type != resType)
-			continue;
+		if ( *it && (*it)->type == resType ) {
 
-		sim->selectRelResource(relNumb, (*it)->number);
-		if(hasChoice)
-			if(!choice->calcValueBase(sim))
-				continue;
+			int res_number = (*it)->number;
 
-		if(isFirst)
-			return 1;
-
-		RDOValue tmp = first->calcValueBase(sim);
-		if(tmp > maxVal)
-		{
-			maxVal = tmp;
-			nResMax = (*it)->number;
-		}
-
-		if(tmp < minVal)
-		{
-			minVal = tmp;
-			nResMin = (*it)->number;
+			switch ( selection_type ) {
+				case RDOPATSelectType::st_empty: {
+					if ( std::find( sim->allResourcesEmptyChoiced.begin(), sim->allResourcesEmptyChoiced.end(), res_number ) != sim->allResourcesEmptyChoiced.end() ) {
+						continue;
+					}
+					sim->selectRelResource( relNumb, res_number );
+					sim->allResourcesEmptyChoiced.push_back( res_number );
+					return 1;
+				}
+				case RDOPATSelectType::st_first: {
+					if ( std::find( sim->allResourcesSelectChoiced.begin(), sim->allResourcesSelectChoiced.end(), res_number ) != sim->allResourcesSelectChoiced.end() ) {
+						continue;
+					}
+					sim->selectRelResource( relNumb, res_number );
+					if ( choice && !choice->calcValueBase( sim ) ) {
+						continue;
+					}
+					sim->allResourcesSelectChoiced.push_back( res_number );
+					return 1;
+				}
+				case RDOPATSelectType::st_with_min: {
+					if ( std::find( sim->allResourcesSelectChoiced.begin(), sim->allResourcesSelectChoiced.end(), res_number ) != sim->allResourcesSelectChoiced.end() ) {
+						continue;
+					}
+					sim->selectRelResource( relNumb, res_number );
+					if ( choice && !choice->calcValueBase( sim ) ) {
+						continue;
+					}
+					RDOValue tmp = selection_calc->calcValueBase( sim );
+					if ( tmp < minVal ) {
+						minVal     = tmp;
+						nResMinMax = res_number;
+					}
+					break;
+				}
+				case RDOPATSelectType::st_with_max: {
+					if ( std::find( sim->allResourcesSelectChoiced.begin(), sim->allResourcesSelectChoiced.end(), res_number ) != sim->allResourcesSelectChoiced.end() ) {
+						continue;
+					}
+					sim->selectRelResource( relNumb, res_number );
+					if ( choice && !choice->calcValueBase( sim ) ) {
+						continue;
+					}
+					RDOValue tmp = selection_calc->calcValueBase( sim );
+					if ( tmp > maxVal ) {
+						minVal     = tmp;
+						nResMinMax = res_number;
+					}
+					break;
+				}
+			}
 		}
 	}
 
-	if(isWithMin && nResMin != -1)
-	{
-		sim->selectRelResource(relNumb, nResMin);
-		return 1;
-	}
-
-	if(!isWithMin && nResMax != -1)
-	{
-		sim->selectRelResource(relNumb, nResMax);
+	if ( nResMinMax != -1 ) {
+		sim->allResourcesSelectChoiced.push_back( nResMinMax );
+		sim->selectRelResource( relNumb, nResMinMax );
 		return 1;
 	}
 
@@ -590,19 +605,13 @@ void RDOSelectResourceCommonCalc::getBest(std::vector<std::vector<int> > &allNum
 
 bool RDOSelectResourceDirectCommonCalc::callChoice(RDORuntime *sim) const
 {
-	if(hasChoice)
-		if(!choice->calcValueBase(sim))
-			return 0;
-
+	if ( choice && !choice->calcValueBase(sim) ) return 0;
 	return 1;
 }
 
 bool RDOSelectResourceByTypeCommonCalc::callChoice(RDORuntime *sim) const
 {
-	if(hasChoice)
-		if(!choice->calcValueBase(sim))
-			return 0;
-
+	if ( choice && !choice->calcValueBase(sim) ) return 0;
 	return 1;
 }
 

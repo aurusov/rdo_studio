@@ -1,8 +1,8 @@
 #ifndef RDO_RUNTIME
 #define RDO_RUNTIME
 
-
 #include "rdocalcconst.h"
+#include "rdopat.h"
 
 #include "rdotrace.h"
 #include <rdocommon.h>
@@ -46,7 +46,7 @@ class RDOCalc;
 
 namespace rdoParse {
 class RDOPATChoice;
-class RDOPATFirst;
+class RDOPATSelectType;
 void addCalcToRuntime(rdoRuntime::RDOCalc *calc);
 class RDOPMDWatchQuant;
 class RDOPMDWatchValue;
@@ -168,6 +168,9 @@ friend RDOPMDWatchState;
 	bool operator == (RDOSimulator &other);
 
 public:
+	std::list< int > allResourcesEmptyChoiced;
+	std::list< int > allResourcesSelectChoiced;
+
 	std::vector< rdosim::RDOSyntaxError > errors;
 	void error( const char* message, const rdoRuntime::RDOCalc* calc );
 	bool checkKeyPressed(int scanCode);
@@ -917,13 +920,14 @@ public:
 
 class RDOCalcGetRelevantResParam: public RDOCalc
 {
+private:
 	int relNumb;
 	int parNumb;
+
 public:
-	RDOCalcGetRelevantResParam(int _relNumb, int _parNumb): relNumb(_relNumb), parNumb(_parNumb) {}
-   virtual RDOValue calcValue(RDORuntime *sim) const
-	{
-		return sim->getResParamVal(sim->getRelResNumber(relNumb), parNumb);
+	RDOCalcGetRelevantResParam( int _relNumb, int _parNumb ): relNumb( _relNumb ), parNumb( _parNumb ) {}
+	virtual RDOValue calcValue(RDORuntime *sim) const {
+		return sim->getResParamVal( sim->getRelResNumber(relNumb), parNumb );
 	}
 };
 
@@ -944,12 +948,10 @@ class RDOSelectResourceCalc: public RDOCalc
 {
 protected:
 	int relNumb;
-	RDOCalc *choice;
-	RDOCalc *first;
-	bool hasChoice;
-	bool isFirst;
-	bool isWithMin;
-	RDOSelectResourceCalc(int _relNumb, RDOPATFirst *_first, RDOPATChoice *_choice);
+	RDOCalc*               choice;
+	RDOCalc*               selection_calc;
+	RDOPATSelectType::Type selection_type;
+	RDOSelectResourceCalc( int _relNumb, RDOPATChoice* _choice, RDOPATSelectType* _selection_type );
 };
 
 class RDOSelectResourceDirectCalc: public RDOSelectResourceCalc
@@ -957,8 +959,8 @@ class RDOSelectResourceDirectCalc: public RDOSelectResourceCalc
 protected:
 	int resNumb;
 public:
-	RDOSelectResourceDirectCalc(int _relNumb, int _resNumb, RDOPATFirst *_first, RDOPATChoice *_choice):
-		RDOSelectResourceCalc(_relNumb, _first, _choice), resNumb(_resNumb) {}
+	RDOSelectResourceDirectCalc( int _relNumb, int _resNumb, RDOPATChoice* _choice, RDOPATSelectType* _selection_type ):
+		RDOSelectResourceCalc( _relNumb, _choice, _selection_type ), resNumb( _resNumb ) {}
    virtual RDOValue calcValue(RDORuntime *sim) const;
 };
 
@@ -967,8 +969,8 @@ class RDOSelectResourceByTypeCalc: public RDOSelectResourceCalc
 protected:
 	int resType;
 public:
-	RDOSelectResourceByTypeCalc(int _relNumb, int _resType, RDOPATFirst *_first, RDOPATChoice *_choice):
-		RDOSelectResourceCalc(_relNumb, _first, _choice), resType(_resType) {}
+	RDOSelectResourceByTypeCalc( int _relNumb, int _resType, RDOPATChoice* _choice, RDOPATSelectType* _selection_type ):
+		RDOSelectResourceCalc( _relNumb, _choice, _selection_type ), resType( _resType ) {}
    virtual RDOValue calcValue(RDORuntime *sim) const;
 };
 
@@ -982,8 +984,8 @@ public:
 class RDOSelectResourceDirectCommonCalc: public RDOSelectResourceDirectCalc, public RDOSelectResourceCommon
 {
 public:
-	RDOSelectResourceDirectCommonCalc(int _relNumb, int _resNumb, RDOPATFirst *_first, RDOPATChoice *_choice):
-		RDOSelectResourceDirectCalc(_relNumb, _resNumb, _first, _choice) {}
+	RDOSelectResourceDirectCommonCalc( int _relNumb, int _resNumb, RDOPATChoice *_choice, RDOPATSelectType* _selection_type ):
+		RDOSelectResourceDirectCalc( _relNumb, _resNumb, _choice, _selection_type ) {}
 	std::vector<int> getPossibleNumbers(RDORuntime *sim) const;
 	virtual bool callChoice(RDORuntime *sim) const;
 };
@@ -991,8 +993,8 @@ public:
 class RDOSelectResourceByTypeCommonCalc: public RDOSelectResourceByTypeCalc, public RDOSelectResourceCommon
 {
 public:
-	RDOSelectResourceByTypeCommonCalc(int _relNumb, int _resType, RDOPATFirst *_first, RDOPATChoice *_choice):
-		RDOSelectResourceByTypeCalc(_relNumb, _resType, _first, _choice) {}
+	RDOSelectResourceByTypeCommonCalc( int _relNumb, int _resType, RDOPATChoice *_choice, RDOPATSelectType* _selection_type ):
+		RDOSelectResourceByTypeCalc( _relNumb, _resType, _choice, _selection_type ) {}
 	std::vector<int> getPossibleNumbers(RDORuntime *sim) const;
 	virtual bool callChoice(RDORuntime *sim) const;
 };

@@ -256,6 +256,9 @@ RDOFUNArithm::RDOFUNArithm(std::string *resName, std::string *parName)
 			else
 			{
 				const RDORelevantResource *const rel = currParser->getLastPATPattern()->findRelevantResource(resName);
+				if ( !rel->alreadyHaveConverter ) {
+					currParser->error( rdo::format("Релевантный ресурс неопределен: %s. Он используется до вызова его собственного Choice from", rel->getName()->c_str()) );
+				}
 				int relResNumb = currParser->getLastPATPattern()->findRelevantResourceNum(resName);
 				int parNumb = rel->getType()->getRTPParamNumber(parName);
 				if(parNumb == -1)

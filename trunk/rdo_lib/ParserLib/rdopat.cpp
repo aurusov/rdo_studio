@@ -28,13 +28,78 @@ void paterror( char* mes )
 	rdoParse::currParser->error( mes );
 }
 
-RDOPATPattern::RDOPATPattern(const std::string *const _name, const bool _trace):
-	name(_name), trace(_trace), useCommonChoice(false), patRuntime( NULL )
+RDOPATPattern::RDOPATPattern( const std::string* const _name, const bool _trace ):
+	name( _name ),
+	trace( _trace ),
+	useCommonChoice( false ),
+	patRuntime( NULL )
 {
-	if(currParser->findPattern(name))
-		currParser->error("Pattern with name: " + *name + " already exist");
-
+	currParser->tmp_rss.clear();
+	if ( currParser->findPattern( name ) ) {
+		currParser->error( "Pattern with name: " + *name + " already exist" );
+	}
 	currParser->insertPATPattern( this );
+}
+
+std::string RDOPATPattern::StatusToStr( ConvertStatus value )
+{
+	switch ( value ) {
+		case CS_Keep    : return "Keep";
+		case CS_Create  : return "Create";
+		case CS_Erase   : return "Erase";
+		case CS_NonExist: return "NonExist";
+		case CS_NoChange: return "NoChange";
+	}
+	return ""; // unreachable code
+}
+
+RDOPATPattern::ConvertStatus RDOPATPattern::StrToStatus( const std::string& value )
+{
+	if ( value == "Keep" ) {
+		return CS_Keep;
+	} else if ( value == "Create" ) {
+		return CS_Create;
+	} else if ( value == "Erase" ) {
+		return CS_Erase;
+	} else if ( value == "NonExist" ) {
+		return CS_NonExist;
+	} else if ( value == "NoChange" ) {
+		return CS_NoChange;
+	} else {
+		currParser->error( "Wrong converter status: " + value );
+	}
+	return CS_Keep; // unreachable code
+}
+
+void RDOPATPattern::res_insert( RDORelevantResource* res )
+{
+	if ( res->isDirect() ) {
+		const RDORSSResource* rss = static_cast<RDORelevantResourceDirect*>(res)->getResource();
+		if ( std::find( currParser->tmp_rss.begin(), currParser->tmp_rss.end(), rss ) != currParser->tmp_rss.end() ) {
+			currParser->error( rdo::format( "–есурс не может дважды использовать в качестве релевантного: %s", rss->getName()->c_str() ) );
+		}
+		currParser->tmp_rss.push_back( rss );
+	} else {
+		const RDORTPResType* rtp = res->getType();
+		if ( rtp->isPerm() ) {
+			int rss_cnt = 0;
+			std::vector< RDORSSResource* >::const_iterator it = currParser->getRSSResources().begin();
+			while ( it != currParser->getRSSResources().end() ) {
+				if ( (*it)->getType() == rtp ) rss_cnt++;
+				it++;
+			}
+			int rel_cnt = 0;
+			std::vector< RDORelevantResource* >::const_iterator it_rel = relRes.begin();
+			while ( it_rel != relRes.end() ) {
+				if ( (*it_rel)->getType() == rtp ) rel_cnt++;
+				it_rel++;
+			}
+			if ( rel_cnt >= rss_cnt ) {
+				currParser->error( rdo::format( "Ќе хватает свободных ресурсов типа: %s", rtp->getName()->c_str() ) );
+			}
+		}
+	}
+	relRes.push_back( res );
 }
 
 void RDOPATPattern::testGoodForSearchActivity() const
@@ -69,13 +134,9 @@ int RDOPATPattern::writeModelStructure() const
 
 void RDOPATPatternRule::testGoodForSearchActivity() const
 {
-	for(std::vector<RDORelevantResource *>::const_iterator i = relRes.begin();
-			i != relRes.end(); i++)
-	{
-		if(((*i)->begin == CS_Create) ||
-			((*i)->begin == CS_Erase))
-		{
-			currParser->error("Rule: " + *getName() + " Cannot be used in search activity because of bad converter status");
+	for ( std::vector< RDORelevantResource* >::const_iterator i = res_begin(); i != res_end(); i++ ) {
+		if ( ((*i)->begin == CS_Create) || ((*i)->begin == CS_Erase) ) {
+			currParser->error( "Rule: " + *getName() + " Cannot be used in search activity because of bad converter status" );
 		}
 	}
 }
@@ -132,89 +193,89 @@ void RDOPATPattern::add(RDOFUNFunctionParam *const _param)
 	params.push_back(_param); 
 }
 
-void RDOPATPattern::addRelRes(std::string *relName, std::string *res, ConvertStatus beg, ConvertStatus end)
+void RDOPATPattern::addRelRes( std::string* relName, std::string* res, ConvertStatus beg, ConvertStatus end )
 {
-	currParser->error("Needed 1 converter status for this pattern type");
-}
-void RDOPATPattern::addRelRes(std::string *relName, std::string *res, ConvertStatus beg)
-{
-	currParser->error("Needed 2 converter statuses for this pattern type");
-}
-void RDOPATPattern::addRelRes(std::string *relName, std::string *resName, std::string *convBeg)
-{
-	currParser->error("Needed 1 converter status for this pattern type");
+	currParser->error( "Needed 1 converter status for this pattern type" );
 }
 
-void RDOPATPatternOperation::addRelRes(std::string *relName, std::string *resName, std::string *convBeg)
+void RDOPATPattern::addRelRes( std::string* relName, std::string* res, ConvertStatus beg)
 {
-	ConvertStatus beg;
-	if(!convBeg->compare("Keep"))
-		beg = CS_Keep;
-	else if(!convBeg->compare("Create"))
-		beg = CS_Create;
-	else if(!convBeg->compare("Erase"))
-		beg = CS_Erase;
-	else if(!convBeg->compare("NonExist"))
-		beg = CS_NonExist;
-	else if(!convBeg->compare("NoChange"))
-		beg = CS_NoChange;
-	else
-		currParser->error("Wrong converter status: " + *convBeg);
-
-	addRelRes(relName, resName, beg, CS_NoChange);
+	currParser->error( "Needed 2 converter statuses for this pattern type" );
 }
 
-void RDOPATPatternOperation::addRelRes(std::string *relName, std::string *resName, ConvertStatus beg, ConvertStatus end)
+void RDOPATPattern::addRelRes( std::string* relName, std::string* resName, std::string* convBeg )
 {
-	switch(beg)
-	{
+	currParser->error( "Needed 1 converter status for this pattern type" );
+}
+
+void RDOPATPatternOperation::addRelRes( std::string* relName, std::string* resName, std::string* convBeg )
+{
+	addRelRes( relName, resName, RDOPATPattern::StrToStatus( *convBeg ), CS_NoChange );
+}
+
+void RDOPATPatternOperation::addRelRes( std::string* relName, std::string* resName, ConvertStatus beg, ConvertStatus end )
+{
+	switch ( beg ) {
 	case CS_Keep:
-		if(end != CS_Keep && end != CS_Erase && end != CS_NoChange)
-			currParser->error("Wrong second converter status");
+		if ( end != CS_Keep && end != CS_Erase && end != CS_NoChange )
+			currParser->error( "Wrong second converter status" );
 		break;
 	case CS_Create:
-		if(end != CS_Keep && end != CS_Erase && end != CS_NoChange)
-			currParser->error("Wrong second converter status");
+		if ( end != CS_Keep && end != CS_Erase && end != CS_NoChange )
+			currParser->error( "Wrong second converter status" );
 		break;
 	case CS_Erase:
-		if(end != CS_NonExist)
-			currParser->error("Wrong second converter status");
+		if ( end != CS_NonExist )
+			currParser->error( "Wrong second converter status" );
 		break;
 	case CS_NonExist:
-		if(end != CS_Create)
-			currParser->error("Wrong second converter status");
+		if ( end != CS_Create )
+			currParser->error( "Wrong second converter status" );
 		break;
 	case CS_NoChange:
-		if(end != CS_Keep && end != CS_Erase && end != CS_NoChange)
-			currParser->error("Wrong second converter status");
+		if ( end != CS_Keep && end != CS_Erase && end != CS_NoChange )
+			currParser->error( "Wrong second converter status" );
 		break;
 	};
 
-	const RDORSSResource *const res = currParser->findRSSResource(resName);
-	if(res)
-	{
-		if(beg == CS_Create)
-			currParser->error("Cannot use Create status for resource, only for resource type");
-		if(end == CS_Create)
-			currParser->error("Cannot use Create status for resource, only for resource type");
+	const RDORSSResource* const res = currParser->findRSSResource( resName );
 
-		if(res->getType()->isPerm())
-		{
-			if(beg == CS_Create || beg == CS_Erase || beg == CS_NonExist)
-				currParser->error("Wrong first converter status for resource of permanent type");
-			if(end == CS_Create || end == CS_Erase || end == CS_NonExist)
-				currParser->error("Wrong second converter status for resource of permanent type");
+	if ( res ) {
+		if ( beg == CS_Create ) {
+			currParser->error("Cannot use Create status for resource, only for resource type");
 		}
+		if ( end == CS_Create ) {
+			currParser->error("Cannot use Create status for resource, only for resource type");
+		}
+		if ( res->getType()->isPerm() ) {
+//			if ( beg == CS_Create || beg == CS_Erase || beg == CS_NonExist )
+//				currParser->error("Wrong first converter status for resource of permanent type");
+//			if ( end == CS_Create || end == CS_Erase || end == CS_NonExist )
+//				currParser->error("Wrong second converter status for resource of permanent type");
+			if ( beg == CS_Create || beg == CS_Erase || beg == CS_NonExist ) {
+				currParser->error( rdo::format("Ќедопустимый статус конвертора начала дл€ посто€нного ресурса: %s", RDOPATPattern::StatusToStr(beg).c_str()) );
+			}
+			if ( end == CS_Create || end == CS_Erase || end == CS_NonExist ) {
+				currParser->error( rdo::format("Ќедопустимый статус конвертора конца дл€ посто€нного ресурса: %s", RDOPATPattern::StatusToStr(end).c_str()) );
+			}
+		}
+		res_insert( new RDORelevantResourceDirect(relName, res_count(), res, beg, end) );
 
-		relRes.push_back(new RDORelevantResourceDirect(relName, relRes.size(), res, beg, end));
-		return;
+	} else {
+		const RDORTPResType* const type = currParser->findRTPResType( resName );
+		if ( !type ) {
+			currParser->error( "Unknown resource name or type: " + *resName );
+		}
+		if ( type->isPerm() ) {
+			if ( beg == CS_Create || beg == CS_Erase || beg == CS_NonExist ) {
+				currParser->error( rdo::format("Ќедопустимый статус конвертора начала дл€ посто€нного ресурса: %s", RDOPATPattern::StatusToStr(beg).c_str()) );
+			}
+			if ( end == CS_Create || end == CS_Erase || end == CS_NonExist ) {
+				currParser->error( rdo::format("Ќедопустимый статус конвертора конца дл€ посто€нного ресурса: %s", RDOPATPattern::StatusToStr(end).c_str()) );
+			}
+		}
+		res_insert( new RDORelevantResourceByType( relName, res_count(), type, beg, end ) );
 	}
-
-	const RDORTPResType *const type = currParser->findRTPResType(resName);
-	if(!type)
-		currParser->error("Unknown resource name or type: " + *resName);
-
-	relRes.push_back(new RDORelevantResourceByType(relName, relRes.size(), type, beg, end));
 }
 
 void RDOPATPatternRule::addRelRes(std::string *relName, std::string *resName, ConvertStatus beg)
@@ -234,7 +295,7 @@ void RDOPATPatternRule::addRelRes(std::string *relName, std::string *resName, Co
 				currParser->error("Wrong converter status for resource of permanent type");
 		}
 
-		relRes.push_back(new RDORelevantResourceDirect(relName, relRes.size(), res, beg));
+		res_insert(new RDORelevantResourceDirect(relName, res_count(), res, beg));
 		return;
 	}
 
@@ -242,7 +303,7 @@ void RDOPATPatternRule::addRelRes(std::string *relName, std::string *resName, Co
 	if(!type)
 		currParser->error("Unknown resource name or type: " + *resName);
 
-	relRes.push_back(new RDORelevantResourceByType(relName, relRes.size(), type, beg));
+	res_insert(new RDORelevantResourceByType(relName, res_count(), type, beg));
 }
 
 void RDOPATPatternEvent::addRelRes(std::string *relName, std::string *resName, ConvertStatus beg)
@@ -259,9 +320,9 @@ void RDOPATPatternEvent::addRelRes(std::string *relName, std::string *resName, C
 				currParser->error("Wrong converter status for resource of permanent type");
 		}
 
-		RDORelevantResourceDirect *rd = new RDORelevantResourceDirect(relName, relRes.size(), res, beg);
-		relRes.push_back(rd);
-		patRuntime->addChoiceFromCalc(rd->createSelectFirstResourceCalc());
+		RDORelevantResourceDirect *rd = new RDORelevantResourceDirect(relName, res_count(), res, beg);
+		res_insert( rd );
+		patRuntime->addChoiceFromCalc( rd->createSelectEmptyResourceCalc() );
 
 		return;
 	}
@@ -273,8 +334,8 @@ void RDOPATPatternEvent::addRelRes(std::string *relName, std::string *resName, C
 	if(beg == CS_Keep || beg == CS_Erase)
 		currParser->error("Can use Keep and Erase status with resource name only (not with resource type) in irregular event");
 
-	RDORelevantResourceByType *rt = new RDORelevantResourceByType(relName, relRes.size(), type, beg);
-	relRes.push_back(rt);
+	RDORelevantResourceByType *rt = new RDORelevantResourceByType(relName, res_count(), type, beg);
+	res_insert( rt );
 }
 
 void RDOPATPattern::setCommonChoiceFirst() {	useCommonChoice = true; commonChoice = NULL; }
@@ -306,47 +367,45 @@ void RDOPATPattern::addRelResBody(std::string *resName)
 	currRelRes->alreadyHaveConverter = true;
 }
 
-void RDOPATPattern::addRelResUsage(RDOPATChoice *choice, RDOPATFirst *first)
+void RDOPATPattern::addRelResUsage( RDOPATChoice* choice, RDOPATSelectType* first )
 {
-	if(useCommonChoice && !first->isEmpty)
+	if ( useCommonChoice && first->type != RDOPATSelectType::st_empty )
 		currParser->error("Cannot use both common choice and choice for \"" + *currRelRes->getName() + "\" relevant resource in pattern \"" + *getName() + "\"");
 
-	if(!useCommonChoice && first->isEmpty)
-	{
-		if((currRelRes->begin != CS_Create) && (currRelRes->end != CS_Create))
+	if ( !useCommonChoice && first->type == RDOPATSelectType::st_empty ) {
+		if ( (currRelRes->begin != CS_Create) && (currRelRes->end != CS_Create) ) {
 			currParser->error("Must use either common choice either choice for \"" + *currRelRes->getName() + "\" relevant resource in pattern \"" + *getName() + "\"");
+		}
 	}
 
-	if(!first->isEmpty || !choice->isEmpty)
-	{
-		if((currRelRes->begin == CS_Create) || (currRelRes->end == CS_Create))
+	if ( first->type != RDOPATSelectType::st_empty || choice->type != RDOPATChoice::ch_empty ) {
+		if ( (currRelRes->begin == CS_Create) || (currRelRes->end == CS_Create) ) {
 			currParser->error("Cannot use choice when create \"" + *currRelRes->getName() + "\" relevant resource in pattern \"" + *getName() + "\"");
+		}
 	}
 
 	currRelRes->choice = choice;
-	currRelRes->first = first;
+	currRelRes->first  = first;
 }
 
-void RDOPATPatternEvent::addRelResUsage(RDOPATChoice *choice, RDOPATFirst *first)
+void RDOPATPatternEvent::addRelResUsage( RDOPATChoice* choice, RDOPATSelectType* first )
 {
-	if(!first->isEmpty || !choice->isEmpty)
+	if ( first->type != RDOPATSelectType::st_empty || choice->type != RDOPATChoice::ch_empty ) {
 		currParser->error("Unexpected choice for \"" + *currRelRes->getName() + "\" relevant resource in pattern \"" + *getName() + "\"");
-
+	}
 	currRelRes->choice = choice;
-	currRelRes->first = first;
+	currRelRes->first  = first;
 }
 
 void RDOPATPattern::end()
 {
 	int size = relRes.size();
-	for(int i = 0; i < size; i++)
-	{
-		RDORelevantResource* currRelRes = relRes.at(i);
+	for(int i = 0; i < size; i++) {
+		RDORelevantResource* currRelRes = relRes.at( i );
 		if ( !currRelRes->choice ) {
 			currParser->error( rdo::format("–елевантный ресурс '%s' не используетс€ внутри $Body", currRelRes->getName()->c_str()) );
 		}
-		RDOCalc *calc = currRelRes->createSelectFirstResourceCalc();
-		patRuntime->addChoiceFromCalc(calc);
+		patRuntime->addChoiceFromCalc( currRelRes->createSelectEmptyResourceCalc() );
 	}
 
 	if(useCommonChoice)
@@ -438,53 +497,56 @@ RDOPATPatternRule::RDOPATPatternRule( std::string* _name, bool _trace ):
 	patRuntime->setPatternId( currParser->getPAT_id() );
 }
 
-RDOCalc *RDORelevantResourceDirect::createSelectFirstResourceCalc()
+RDOCalc *RDORelevantResourceDirect::createSelectEmptyResourceCalc()
 {
-	return new RDOSelectResourceDirectCalc(numberOfResource, res->getNumber(), NULL, NULL);
+	return new RDOSelectResourceDirectCalc( numberOfResource, res->getNumber(), NULL, NULL );
 }
 
 RDOCalc *RDORelevantResourceDirect::createSelectFirstResourceChoiceCalc()
 {
-	return new RDOSelectResourceDirectCalc(numberOfResource, res->getNumber(), NULL, choice);
+	return new RDOSelectResourceDirectCalc( numberOfResource, res->getNumber(), choice, NULL );
 }
 
 RDOCalc *RDORelevantResourceDirect::createSelectResourceChoiceCalc()
 {
-	return new RDOSelectResourceDirectCalc(numberOfResource, res->getNumber(), first, choice);
+	return new RDOSelectResourceDirectCalc( numberOfResource, res->getNumber(), choice, first );
 }
 
 RDOSelectResourceCommon *RDORelevantResourceDirect::createSelectResourceCommonChoiceCalc()
 {
-	return new RDOSelectResourceDirectCommonCalc(numberOfResource, res->getNumber(), NULL, choice);
+	return new RDOSelectResourceDirectCommonCalc( numberOfResource, res->getNumber(), choice, NULL );
 }
 
-RDOCalc *RDORelevantResourceByType::createSelectFirstResourceCalc()
+RDOCalc *RDORelevantResourceByType::createSelectEmptyResourceCalc()
 {
-	if((begin != CS_Create) && (end != CS_Create))
-		return new RDOSelectResourceByTypeCalc(numberOfResource, type->getNumber(), NULL, NULL);
-	else
+	if ( (begin != RDOPATPattern::CS_Create) && (end != RDOPATPattern::CS_Create) ) {
+		return new RDOSelectResourceByTypeCalc( numberOfResource, type->getNumber(), NULL, NULL );
+	} else {
 		return new RDOCalcConst(1);
+	}
 }
 
 RDOCalc *RDORelevantResourceByType::createSelectFirstResourceChoiceCalc()
 {
-	if((begin != CS_Create) && (end != CS_Create))
-		return new RDOSelectResourceByTypeCalc(numberOfResource, type->getNumber(), NULL, choice);
-	else
+	if ( (begin != RDOPATPattern::CS_Create) && (end != RDOPATPattern::CS_Create) ) {
+		return new RDOSelectResourceByTypeCalc( numberOfResource, type->getNumber(), choice, NULL );
+	} else {
 		return new RDOCalcConst(1);
+	}
 }
 
 RDOCalc *RDORelevantResourceByType::createSelectResourceChoiceCalc()
 {
-	if((begin != CS_Create) && (end != CS_Create))
-		return new RDOSelectResourceByTypeCalc(numberOfResource, type->getNumber(), first, choice);
-	else
+	if ( (begin != RDOPATPattern::CS_Create) && (end != RDOPATPattern::CS_Create) ) {
+		return new RDOSelectResourceByTypeCalc( numberOfResource, type->getNumber(), choice, first );
+	} else {
 		return new RDOCalcConst(1);
+	}
 }
 
 RDOSelectResourceCommon *RDORelevantResourceByType::createSelectResourceCommonChoiceCalc()
 {
-	return new RDOSelectResourceByTypeCommonCalc(numberOfResource, type->getNumber(), NULL, choice);
+	return new RDOSelectResourceByTypeCommonCalc( numberOfResource, type->getNumber(), choice, NULL );
 }
 
 void RDOPATParamsSet::checkParamsNumbers(RDORelevantResource *currRelRes)

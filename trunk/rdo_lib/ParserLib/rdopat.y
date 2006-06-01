@@ -181,27 +181,26 @@ pat_params_begin:	pat_header Parameters	{ $$ = $1; };
 pat_params:	pat_params_begin IDENTIF_COLON pat_type	{ ((RDOPATPattern *)$1)->add(new RDOFUNFunctionParam((std::string *)$2, (RDORTPResParam *)$3)); $$ = $1; }
 			| pat_params IDENTIF_COLON pat_type				{ ((RDOPATPattern *)$1)->add(new RDOFUNFunctionParam((std::string *)$2, (RDORTPResParam *)$3)); $$ = $1; };	
 
-pat_params_end: pat_params Relevant_resources	{ $$ = $1; }
-			| 		 pat_header Relevant_resources	{ $$ = $1; };
+pat_params_end:	pat_params Relevant_resources   { $$ = $1; }
+				| pat_header Relevant_resources { $$ = $1; };
 
+pat_rel_res:	pat_params_end   IDENTIF_COLON IDENTIF pat_conv pat_conv { ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, (RDOPATPattern::ConvertStatus)$4, (RDOPATPattern::ConvertStatus)$5); $$ = $1; }
+				| pat_rel_res    IDENTIF_COLON IDENTIF pat_conv pat_conv { ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, (RDOPATPattern::ConvertStatus)$4, (RDOPATPattern::ConvertStatus)$5); $$ = $1; }
+				| pat_params_end IDENTIF_COLON IDENTIF pat_conv          { ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, (RDOPATPattern::ConvertStatus)$4);                                   $$ = $1; }
+				| pat_rel_res    IDENTIF_COLON IDENTIF pat_conv          { ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, (RDOPATPattern::ConvertStatus)$4);                                   $$ = $1; }
+				| pat_params_end IDENTIF_COLON IDENTIF_NoChange pat_conv { ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, RDOPATPattern::CS_NoChange,       (RDOPATPattern::ConvertStatus)$4); $$ = $1; }
+				| pat_rel_res    IDENTIF_COLON IDENTIF_NoChange pat_conv { ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, RDOPATPattern::CS_NoChange,       (RDOPATPattern::ConvertStatus)$4); $$ = $1; }
+				| pat_params_end IDENTIF_COLON IDENTIF_NoChange_NoChange { ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, RDOPATPattern::CS_NoChange,       RDOPATPattern::CS_NoChange);       $$ = $1; }
+				| pat_rel_res    IDENTIF_COLON IDENTIF_NoChange_NoChange { ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, RDOPATPattern::CS_NoChange,       RDOPATPattern::CS_NoChange);       $$ = $1; }
+				| pat_params_end IDENTIF_COLON IDENTIF_NoChange          { ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, RDOPATPattern::CS_NoChange);                                         $$ = $1; }
+				| pat_rel_res    IDENTIF_COLON IDENTIF_NoChange          { ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, RDOPATPattern::CS_NoChange);                                         $$ = $1; }
+				| pat_params_end IDENTIF_COLON IDENTIF IDENTIF_NoChange  { ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, (std::string *)$4);                                                  $$ = $1; }
+				| pat_rel_res    IDENTIF_COLON IDENTIF IDENTIF_NoChange  { ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, (std::string *)$4);                                                  $$ = $1; };
 
-pat_rel_res:	pat_params_end IDENTIF_COLON IDENTIF pat_conv pat_conv	{ ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, (ConvertStatus)$4,	(ConvertStatus)$5);	$$ = $1; }
-			|		pat_rel_res		IDENTIF_COLON IDENTIF pat_conv pat_conv	{ ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, (ConvertStatus)$4,	(ConvertStatus)$5);	$$ = $1; }
-			|		pat_params_end IDENTIF_COLON IDENTIF pat_conv 				{ ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, (ConvertStatus)$4);								$$ = $1; }
-			|		pat_rel_res		IDENTIF_COLON IDENTIF pat_conv				{ ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, (ConvertStatus)$4);								$$ = $1; }
-			|		pat_params_end IDENTIF_COLON IDENTIF_NoChange pat_conv	{ ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, CS_NoChange,			(ConvertStatus)$4);	$$ = $1; }
-			|		pat_rel_res		IDENTIF_COLON IDENTIF_NoChange pat_conv	{ ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, CS_NoChange,			(ConvertStatus)$4);	$$ = $1; }
-			|		pat_params_end IDENTIF_COLON IDENTIF_NoChange_NoChange	{ ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, CS_NoChange,			CS_NoChange);			$$ = $1; }
-			|		pat_rel_res		IDENTIF_COLON IDENTIF_NoChange_NoChange	{ ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, CS_NoChange,			CS_NoChange);			$$ = $1; }
-			|		pat_params_end IDENTIF_COLON IDENTIF_NoChange 				{ ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, CS_NoChange);										$$ = $1; }
-			|		pat_rel_res		IDENTIF_COLON IDENTIF_NoChange				{ ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, CS_NoChange);										$$ = $1; }
-			|		pat_params_end IDENTIF_COLON IDENTIF IDENTIF_NoChange 	{ ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, (std::string *)$4);										$$ = $1; }
-			|		pat_rel_res		IDENTIF_COLON IDENTIF IDENTIF_NoChange 	{ ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, (std::string *)$4);										$$ = $1; };
-
-pat_conv:	Keep				{ $$ = CS_Keep;		}
-			|	Create_keyword	{ $$ = CS_Create;		}
-			|  Erase				{ $$ = CS_Erase;		}
-			|  NonExist			{ $$ = CS_NonExist;	};
+pat_conv:	Keep				{ $$ = RDOPATPattern::CS_Keep;     }
+			| Create_keyword	{ $$ = RDOPATPattern::CS_Create;   }
+			| Erase				{ $$ = RDOPATPattern::CS_Erase;    }
+			| NonExist			{ $$ = RDOPATPattern::CS_NonExist; };
 
 pat_common_choice: pat_rel_res
 			| pat_rel_res first_keyword			{
@@ -241,16 +240,16 @@ pat_body:	pat_time IDENTIF {
 				$$ = $1;
 			};
 
-pat_res_usage: pat_body	pat_choice pat_first	{	((RDOPATPattern *)$1)->addRelResUsage((RDOPATChoice *)$2, (RDOPATFirst *)$3); $$ = $1; };
+pat_res_usage: pat_body	pat_choice pat_first	{ ((RDOPATPattern *)$1)->addRelResUsage((RDOPATChoice *)$2, (RDOPATSelectType *)$3); $$ = $1; };
 
-pat_choice: 										{	$$ = (int) new RDOPATChoice(); }
-			|	Choice NoCheck						{	$$ = (int) new RDOPATChoice(1); }
-			|	Choice from_keyword pat_logic {	$$ = (int) new RDOPATChoice((RDOFUNLogic *)$3); };
+pat_choice: 									{ $$ = (int) new RDOPATChoice( RDOPATChoice::ch_empty );                  }
+			|	Choice NoCheck					{ $$ = (int) new RDOPATChoice( RDOPATChoice::ch_nocheck );                }
+			|	Choice from_keyword pat_logic	{ $$ = (int) new RDOPATChoice( RDOPATChoice::ch_from, (RDOFUNLogic*)$3 ); };
 
-pat_first:									{	$$ = (int) new RDOPATFirst(); }                  
-			|	first_keyword				{	$$ = (int) new RDOPATFirst(1); }                 
-			|	with_min pat_arithm		{	$$ = (int) new RDOPATFirst(true, (RDOFUNArithm *)$2); }
-			|	with_max pat_arithm		{	$$ = (int) new RDOPATFirst(false, (RDOFUNArithm *)$2); };
+pat_first:								{ $$ = (int) new RDOPATSelectType( RDOPATSelectType::st_empty );                        }
+			|	first_keyword			{ $$ = (int) new RDOPATSelectType( RDOPATSelectType::st_first );                        }
+			|	with_min pat_arithm		{ $$ = (int) new RDOPATSelectType( RDOPATSelectType::st_with_min, (RDOFUNArithm *)$2 ); }
+			|	with_max pat_arithm		{ $$ = (int) new RDOPATSelectType( RDOPATSelectType::st_with_max, (RDOFUNArithm *)$2 ); };
 
 pat_convert:  pat_res_usage	{	((RDOPATPattern *)$1)->addRelResConvert(); $$ = $1; }
 			|	pat_res_usage Convert_begin pat_trace pat_params_set	
@@ -270,10 +269,6 @@ pat_params_set:												{  $$ = (int) new RDOPATParamsSet(); }
 
 pat_pattern:	pat_convert		End {	((RDOPATPattern *)$1)->end(); $$ = $1;}
 			|		pat_time			End {	((RDOPATPattern *)$1)->end(); $$ = $1;};
-
-
-							 
-
 
 pat_type: integer fun_const_int_diap fun_const_int_default_val  { 
 						RDORTPIntDiap *diap = (RDORTPIntDiap *)$2;
@@ -356,8 +351,7 @@ fun_const_real_default_val:	'=' REAL_CONST	{
 fun_const_int_default_val:	'=' INT_CONST	{
 						RDORTPIntDefVal *dv = new RDORTPIntDefVal($2);
 						$$ = (int)dv;
-					}
-					;
+					};
 
 fun_const_int_diap:	{
 						RDORTPIntDiap *diap = new RDORTPIntDiap();
@@ -366,8 +360,7 @@ fun_const_int_diap:	{
          | '[' INT_CONST dblpoint INT_CONST ']' {
 						RDORTPIntDiap *diap = new RDORTPIntDiap($2, $4);
 						$$ = (int)diap;
-					}
-					;
+					};
 
 fun_const_real_diap: {
 						RDORTPRealDiap *diap = new RDORTPRealDiap();
@@ -378,9 +371,7 @@ fun_const_real_diap: {
 						double max = *((double *)$4);
 						RDORTPRealDiap *diap = new RDORTPRealDiap(min, max);
 						$$ = (int)diap;
-					}
-					;
-
+					};
 
 fun_const_enum:   '(' fun_const_enum_list ')'	{ $$ = $2; };
          
@@ -417,8 +408,6 @@ fun_const_such_as:   such_as IDENTIF '.' IDENTIF {
 							$$ = (int)(cons->descr);
 						}; 
 
-
-
 pat_logic: pat_arithm '=' pat_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 == *(RDOFUNArithm *)$3); }
 			| pat_arithm neq pat_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 != *(RDOFUNArithm *)$3); }
 			| pat_arithm '<' pat_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 <  *(RDOFUNArithm *)$3); }
@@ -431,7 +420,6 @@ pat_logic: pat_arithm '=' pat_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 == *(RDOFU
 			| pat_logic or_keyword pat_logic	  { $$ = (int)(*(RDOFUNLogic *)$1 || *(RDOFUNLogic *)$3); }
 			| '[' pat_logic ']'				{ $$ = $2; }
 			| fun_group							{ $$ = $1; };
-
 			
 pat_arithm: pat_arithm '+' pat_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOFUNArithm *)$3); }
 			|	pat_arithm '-' pat_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 - *(RDOFUNArithm *)$3); }
@@ -460,11 +448,6 @@ fun_group_header:	fun_group_keyword '(' IDENTIF_COLON { $$ = (int)(new RDOFUNGro
 
 fun_group:	fun_group_header pat_logic ')'		{ $$ = (int)(((RDOFUNGroup *)$1)->createFunLogin((RDOFUNLogic *)$2)); }
 					|	fun_group_header NoCheck ')'	{ $$ = (int)(((RDOFUNGroup *)$1)->createFunLogin()); };
-
-
-
-
-
 
 %%
 

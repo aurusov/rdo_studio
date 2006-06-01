@@ -81,6 +81,8 @@ void RDOIERuntime::convertEvent(RDOSimulator *sim)
 bool RDOPatternRuntime::choiceFrom( RDOSimulator* sim )
 {
 	RDORuntime* runtime = (RDORuntime*)sim;
+	runtime->allResourcesEmptyChoiced.clear();
+	runtime->allResourcesSelectChoiced.clear();
 	int size = choiceFromCalcs.size();
 	for ( int i = 0; i < size; i++ ) {
 		if ( !choiceFromCalcs[i]->calcValueBase(runtime) ) return false;
