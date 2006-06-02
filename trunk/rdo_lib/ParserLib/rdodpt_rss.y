@@ -293,13 +293,41 @@ dpt_process_input:
 dpt_process_line:	IDENTIF	{ TRACE( "IDENTIF %s\n", ((std::string *)$1)->c_str() ); }
 					| GENERATE {
 
+	std::string* rtp_transact_name	    = currParser->registerName("Транзакты");
+	std::string* rtp_trans_param_name   = currParser->registerName( "Время_создания" );
+	std::string* rel_res_name = currParser->registerName( "Транзакт" );
+	std::string* ie_name      = currParser->registerName( "PAT_GENERATE" );
+	std::string* uniform_name = currParser->registerName( "Равномерный" );
+	std::string* time_now     = currParser->registerName( "Time_now" );
+
+	// Создадим тип транзакта
+	RDORTPResType* transact_type   = new RDORTPResType( rtp_transact_name, false );
+	// Создадим параметр вещественного типа
+	RDORTPRealResParam* real_param = new RDORTPRealResParam( new RDORTPRealDiap(), new RDORTPRealDefVal(0) );
+	RDORTPParamDesc* transact_type_desc = new RDORTPParamDesc( rtp_trans_param_name, real_param );
+	transact_type->add( transact_type_desc );
+
+	RDOFUNArithm* generate_uniform = new RDOFUNArithm(5);
+
+	RDOPATPatternEvent* ie = new RDOPATPatternEvent( ie_name, true );
+//	ie->add( new RDOFUNFunctionParam(rtp_trans_param_name, 0) );
+	ie->addRelRes(rel_res_name, rtp_transact_name, RDOPATPattern::CS_Create );
+	ie->setTime(generate_uniform);
+	RDOPATParamsSet* generate_pat_params = new RDOPATParamsSet();
+	generate_pat_params->addIdentif( rtp_trans_param_name, new RDOFUNArithm( time_now ) );
+	ie->addRelResBody(rel_res_name);
+	ie->addRelResConvertEvent(true,generate_pat_params);
+//	generate_pat_params->addIdentif(rtp_trans_param_name,new RDOFUNArithm(5));
+	ie->end();
+
+/*
 	std::string* ie_name      = currParser->registerName( "PAT_GENERATE" );
 	std::string* rel_res_name = currParser->registerName( "Транзакт" );
 	std::string* rtp_name     = currParser->registerName( "Транзакты" );
 	RDOPATPatternEvent* ie = new RDOPATPatternEvent( ie_name, true );
 	ie->addRelRes( rel_res_name, rtp_name, RDOPATPattern::CS_Create );
 	ie->end();
-
+*/
 					}
 					| SEIZE {
 	@$.first_column = @1.first_column;

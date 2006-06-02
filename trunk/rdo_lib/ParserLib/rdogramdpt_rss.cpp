@@ -297,8 +297,8 @@ static const short yyrline[] =
      243,   244,   246,   250,   251,   252,   253,   254,   255,   256,
      257,   258,   259,   261,   262,   263,   264,   265,   266,   267,
      268,   269,   270,   272,   273,   274,   276,   277,   278,   279,
-     281,   283,   284,   288,   290,   291,   293,   294,   304,   311,
-     484
+     281,   283,   284,   288,   290,   291,   293,   294,   332,   339,
+     512
 };
 #endif
 
@@ -1485,17 +1485,45 @@ case 87:
 #line 294 ".\\rdodpt_rss.y"
 {
 
+	std::string* rtp_transact_name	    = currParser->registerName("Транзакты");
+	std::string* rtp_trans_param_name   = currParser->registerName( "Время_создания" );
+	std::string* rel_res_name = currParser->registerName( "Транзакт" );
+	std::string* ie_name      = currParser->registerName( "PAT_GENERATE" );
+	std::string* uniform_name = currParser->registerName( "Равномерный" );
+	std::string* time_now     = currParser->registerName( "Time_now" );
+
+	// Создадим тип транзакта
+	RDORTPResType* transact_type   = new RDORTPResType( rtp_transact_name, false );
+	// Создадим параметр вещественного типа
+	RDORTPRealResParam* real_param = new RDORTPRealResParam( new RDORTPRealDiap(), new RDORTPRealDefVal(0) );
+	RDORTPParamDesc* transact_type_desc = new RDORTPParamDesc( rtp_trans_param_name, real_param );
+	transact_type->add( transact_type_desc );
+
+	RDOFUNArithm* generate_uniform = new RDOFUNArithm(5);
+
+	RDOPATPatternEvent* ie = new RDOPATPatternEvent( ie_name, true );
+//	ie->add( new RDOFUNFunctionParam(rtp_trans_param_name, 0) );
+	ie->addRelRes(rel_res_name, rtp_transact_name, RDOPATPattern::CS_Create );
+	ie->setTime(generate_uniform);
+	RDOPATParamsSet* generate_pat_params = new RDOPATParamsSet();
+	generate_pat_params->addIdentif( rtp_trans_param_name, new RDOFUNArithm( time_now ) );
+	ie->addRelResBody(rel_res_name);
+	ie->addRelResConvertEvent(true,generate_pat_params);
+//	generate_pat_params->addIdentif(rtp_trans_param_name,new RDOFUNArithm(5));
+	ie->end();
+
+/*
 	std::string* ie_name      = currParser->registerName( "PAT_GENERATE" );
 	std::string* rel_res_name = currParser->registerName( "Транзакт" );
 	std::string* rtp_name     = currParser->registerName( "Транзакты" );
 	RDOPATPatternEvent* ie = new RDOPATPatternEvent( ie_name, true );
 	ie->addRelRes( rel_res_name, rtp_name, RDOPATPattern::CS_Create );
 	ie->end();
-
+*/
 					;
     break;}
 case 88:
-#line 304 ".\\rdodpt_rss.y"
+#line 332 ".\\rdodpt_rss.y"
 {
 	yyloc.first_column = yylsp[0].first_column;
 	yyloc.first_line   = yylsp[0].first_line;
@@ -1505,7 +1533,7 @@ case 88:
 ;
     break;}
 case 89:
-#line 311 ".\\rdodpt_rss.y"
+#line 339 ".\\rdodpt_rss.y"
 {
 
 	std::string* res_name       = (std::string*)yyvsp[0];
@@ -1680,7 +1708,7 @@ case 89:
 ;
     break;}
 case 90:
-#line 484 ".\\rdodpt_rss.y"
+#line 512 ".\\rdodpt_rss.y"
 {;
     break;}
 }
@@ -1916,7 +1944,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 486 ".\\rdodpt_rss.y"
+#line 514 ".\\rdodpt_rss.y"
 
 
 }
