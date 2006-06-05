@@ -309,21 +309,24 @@ dpt_process_line:	IDENTIF	{ TRACE( "IDENTIF %s\n", ((std::string *)$1)->c_str() 
 	RDORTPParamDesc* transact_type_desc = new RDORTPParamDesc( rtp_trans_param_name, real_param );
 	transact_type->add( transact_type_desc );
 
-	//Создадим последовательность
-	RDOFUNSequenceHeader* uniform_seq_h = new RDOFUNSequenceHeader(uniform_name,real_param);
-	RDOFUNSequenceUniform* uniform_seq =new RDOFUNSequenceUniform(uniform_seq_h,123456789);
-
+	// Создадим последовательность
+	RDORTPRealResParam*    uniform_real_param = new RDORTPRealResParam( new RDORTPRealDiap(), new RDORTPRealDefVal(0) );
+	RDOFUNSequenceHeader*  uniform_seq_h      = new RDOFUNSequenceHeader( uniform_name, uniform_real_param );
+	RDOFUNSequenceUniform* uniform_seq        = new RDOFUNSequenceUniform( uniform_seq_h, 123456789 );
 
 	RDOPATPatternEvent* ie = new RDOPATPatternEvent( ie_name, true );
-	ie->addRelRes(rel_res_name, rtp_transact_name, RDOPATPattern::CS_Create );
+	ie->addRelRes( rel_res_name, rtp_transact_name, RDOPATPattern::CS_Create );
+
 /*
 	RDOFUNParams* uniform_params = new RDOFUNParams();
 	uniform_params->addParameter(new RDOFUNArithm(0.25));
 	uniform_params->addParameter(new RDOFUNArithm(0.75));
 	uniform_params->createCall(uniform_name);
 */
-	ie->setTime(new RDOFUNArithm(10));
-
+	RDOFUNParams* uniform_params = new RDOFUNParams();
+	uniform_params->addParameter( new RDOFUNArithm( currParser->addDouble(new double( 0.25 )) ) );
+	uniform_params->addParameter( new RDOFUNArithm( currParser->addDouble(new double( 0.75 )) ) );
+	ie->setTime( const_cast<RDOFUNArithm*>(uniform_params->createCall( uniform_name )) );
 
 	RDOPATParamsSet* generate_pat_params = new RDOPATParamsSet();
 	generate_pat_params->addIdentif( rtp_trans_param_name, new RDOFUNArithm( time_now ) );
