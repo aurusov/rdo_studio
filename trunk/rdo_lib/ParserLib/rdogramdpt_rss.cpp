@@ -297,8 +297,8 @@ static const short yyrline[] =
      243,   244,   246,   250,   251,   252,   253,   254,   255,   256,
      257,   258,   259,   261,   262,   263,   264,   265,   266,   267,
      268,   269,   270,   272,   273,   274,   276,   277,   278,   279,
-     281,   283,   284,   288,   290,   291,   293,   294,   343,   350,
-     523
+     281,   283,   284,   288,   290,   291,   293,   294,   341,   348,
+     521
 };
 #endif
 
@@ -1515,11 +1515,9 @@ case 87:
 	uniform_params->addParameter(new RDOFUNArithm(0.75));
 	uniform_params->createCall(uniform_name);
 */
-	double* d1 = currParser->addDouble( new double( 0.25 ) );
-	double* d2 = currParser->addDouble( new double( 0.75 ) );
 	RDOFUNParams* uniform_params = new RDOFUNParams();
-	uniform_params->addParameter( new RDOFUNArithm( d1 ) );
-	uniform_params->addParameter( new RDOFUNArithm( d2 ) );
+	uniform_params->addParameter( new RDOFUNArithm( currParser->addDouble(new double( 0.25 )) ) );
+	uniform_params->addParameter( new RDOFUNArithm( currParser->addDouble(new double( 0.75 )) ) );
 	ie->setTime( const_cast<RDOFUNArithm*>(uniform_params->createCall( uniform_name )) );
 
 	RDOPATParamsSet* generate_pat_params = new RDOPATParamsSet();
@@ -1534,7 +1532,7 @@ case 87:
 					;
     break;}
 case 88:
-#line 343 ".\\rdodpt_rss.y"
+#line 341 ".\\rdodpt_rss.y"
 {
 	yyloc.first_column = yylsp[0].first_column;
 	yyloc.first_line   = yylsp[0].first_line;
@@ -1544,7 +1542,7 @@ case 88:
 ;
     break;}
 case 89:
-#line 350 ".\\rdodpt_rss.y"
+#line 348 ".\\rdodpt_rss.y"
 {
 
 	std::string* res_name       = (std::string*)yyvsp[0];
@@ -1719,7 +1717,7 @@ case 89:
 ;
     break;}
 case 90:
-#line 523 ".\\rdodpt_rss.y"
+#line 521 ".\\rdodpt_rss.y"
 {;
     break;}
 }
@@ -1955,7 +1953,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 525 ".\\rdodpt_rss.y"
+#line 523 ".\\rdodpt_rss.y"
 
 
 }
