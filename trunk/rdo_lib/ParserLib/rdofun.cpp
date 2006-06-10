@@ -222,7 +222,7 @@ RDOCalcConst *RDOFUNFunctionListElementEq::createResultCalc(const RDORTPResParam
 	return NULL;	// unreachable code
 }
 
-RDOFUNArithm::RDOFUNArithm(std::string *resName, std::string *parName)
+RDOFUNArithm::RDOFUNArithm( std::string* resName, std::string* parName )
 {
 	const RDORSSResource *const res = currParser->findRSSResource(resName); 
 	if(!res)
@@ -249,26 +249,34 @@ RDOFUNArithm::RDOFUNArithm(std::string *resName, std::string *parName)
 						enu = ((RDORTPEnumResParam *)rel->getType()->findRTPParam(parName)->getType())->enu;
 
 					return;
-				}
-				else
+				} else {
 					currParser->error(("Unknown resource name: " + *resName).c_str());
-			}
-			else
-			{
-				const RDORelevantResource *const rel = currParser->getLastPATPattern()->findRelevantResource(resName);
-				if ( !rel->alreadyHaveConverter && !currParser->getLastPATPattern()->currRelRes->choice ) {
-					currParser->error( rdo::format("Релевантный ресурс неопределен: %s. Его нельзя использовать в условиях выбора других ресурсов до его собственного Choice from", rel->getName()->c_str()) );
 				}
-				int relResNumb = currParser->getLastPATPattern()->findRelevantResourceNum(resName);
-				int parNumb = rel->getType()->getRTPParamNumber(parName);
-				if(parNumb == -1)
-					currParser->error("Unknown resource parameter: " + *parName);
-
-				calc = new RDOCalcGetRelevantResParam(relResNumb, parNumb);
-				type = rel->getType()->findRTPParam(parName)->getType()->getType();
-				if(type == 2)
-					enu = ((RDORTPEnumResParam *)rel->getType()->findRTPParam(parName)->getType())->enu;
-
+			} else {
+				// Релевантные ресурсы в паттерне (with_min-common-choice, $Time, $Body)
+				RDOPATPattern* pat = currParser->getLastPATPattern();
+				const RDORelevantResource* const rel = pat->findRelevantResource( resName );
+				if ( !pat->currRelRes ) {
+					// with_min-common-choice или $Time
+					if ( rel->begin == RDOPATPattern::CS_NonExist ) {
+						currParser->error( rdo::format("Релевантный ресурс не может быть использован, т.к. его статус NonExist: %s", rel->getName()->c_str()) );
+					}
+				} else {
+					// $Body
+					if ( !rel->alreadyHaveConverter && !pat->currRelRes->choice ) {
+						currParser->error( rdo::format("Релевантный ресурс неопределен: %s. Его нельзя использовать в условиях выбора других ресурсов до его собственного Choice from", rel->getName()->c_str()) );
+					}
+				}
+				int relResNumb = pat->findRelevantResourceNum( resName );
+				int parNumb = rel->getType()->getRTPParamNumber( parName );
+				if ( parNumb == -1 ) {
+					currParser->error( "Unknown resource parameter: " + *parName );
+				}
+				calc = new RDOCalcGetRelevantResParam( relResNumb, parNumb );
+				type = rel->getType()->findRTPParam( parName )->getType()->getType();
+				if ( type == 2 ) {
+					enu = ((RDORTPEnumResParam*)rel->getType()->findRTPParam(parName)->getType())->enu;
+				}
 				return;
 			}
 		}
@@ -288,7 +296,7 @@ RDOFUNArithm::RDOFUNArithm(std::string *resName, std::string *parName)
 
 		return;
 	}
-	if(!res->getType()->isPerm())
+	if(!res->getType()->isPermanent())
 		currParser->error(("Cannot use temporary resource in function: " + *resName).c_str());
 	int resNumb = res->getNumber();
 	int parNumb = res->getType()->getRTPParamNumber(parName);
@@ -468,19 +476,25 @@ RDOFUNLogic* RDOFUNLogic::operator ||( const RDOFUNLogic& second )
 	return new RDOFUNLogic( newCalc );
 }
 
-RDOFUNArithm::RDOFUNArithm(int n)
+RDOFUNArithm::RDOFUNArithm( int n )
 {
 	type = 0;
-	calc = new RDOCalcConst(n);
+	calc = new RDOCalcConst( n );
 }
 
-RDOFUNArithm::RDOFUNArithm(double *d)
+RDOFUNArithm::RDOFUNArithm( double d )
 {
 	type = 1;
-	calc = new RDOCalcConst(*d);
+	calc = new RDOCalcConst( d );
 }
 
-RDOFUNArithm::RDOFUNArithm(std::string *s)
+RDOFUNArithm::RDOFUNArithm( double* d )
+{
+	type = 1;
+	calc = new RDOCalcConst( *d );
+}
+
+RDOFUNArithm::RDOFUNArithm( std::string* s )
 {
 	if((*s == "Time_now") || (*s == "Системное_время"))
 	{

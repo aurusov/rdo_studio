@@ -24,6 +24,13 @@ void rtperror( char* mes )
 	return;
 }
 
+RDORTPTransact::RDORTPTransact():
+	RDORTPResType( currParser->registerName( "Транзакты" ), false )
+{
+	// Создадим параметр вещественного типа 'Время_создания'
+	addParam( new RDORTPParamDesc( currParser->registerName( "Время_создания" ), new RDORTPRealResParam() ) );
+}
+
 void RDORTPEnum::add(const std::string *const next) 
 { 
 	if ( std::find_if(enumVals.begin(), enumVals.end(), comparePointers<std::string>(next)) != enumVals.end() )
@@ -43,35 +50,30 @@ int RDORTPEnum::findValue(const std::string *const val) const
 	return it - enumVals.begin();
 }
 
-RDORTPResType::RDORTPResType( const std::string* const _name, const bool _isPermanent ):
+RDORTPResType::RDORTPResType( const std::string* const _name, const bool _permanent ):
 	name( _name ),
-	isPermanent( _isPermanent ),
-	number( currParser->getRTP_id() )
+	number( currParser->getRTP_id() ),
+	permanent( _permanent )
 {
 	currParser->insertRTPResType( this );
 }
 
-void RDORTPResType::add( const RDORTPParamDesc* const _param )
+void RDORTPResType::addParam( const RDORTPParamDesc* const param )
 {
-	if ( findRTPParam( _param->getName() ) ) {
+	if ( findRTPParam( param->getName() ) ) {
 		currParser->lexer_loc_restore();
-		currParser->error( rdosim::RDOSyntaxError::RTP_SECOND_PARAM_NAME, _param->getName()->c_str() );
+		currParser->error( rdosim::RDOSyntaxError::RTP_SECOND_PARAM_NAME, param->getName()->c_str() );
 	}
-	params.push_back( _param );
+	params.push_back( param );
 }
 
-const RDORTPParamDesc *RDORTPResType::findRTPParam(const std::string *const param) const
+const RDORTPParamDesc* RDORTPResType::findRTPParam( const std::string* const param ) const
 {
-	std::vector<const RDORTPParamDesc *>::const_iterator it = std::find_if(params.begin(), 
-		params.end(), 
-		compareName<RDORTPParamDesc>(param));
-	if(it != params.end())
-		return (*it);
-
-	return NULL;
+	std::vector<const RDORTPParamDesc *>::const_iterator it = std::find_if( params.begin(), params.end(), compareName<RDORTPParamDesc>(param) );
+	return it != params.end() ? *it : NULL;
 }
 
-int RDORTPResType::getRTPParamNumber(const std::string *const param) const
+int RDORTPResType::getRTPParamNumber( const std::string* const param ) const
 {
 	std::vector<const RDORTPParamDesc *>::const_iterator it = std::find_if(params.begin(), 
 		params.end(), 
@@ -125,6 +127,7 @@ const RDORTPResParam *RDORTPResParam::constructSuchAs() const
 { 
 	return this; 
 }
+
 const RDORTPResParam* RDORTPResParam::constructSuchAs( const int defVal ) const
 {
 //	std::ostringstream str;
@@ -243,11 +246,18 @@ void RDORTPIntDiap::check(const RDORTPIntDefVal *dv) const
 					" out of range[" + toString(minVal) + ", " + toString(maxVal) + "]").c_str());
 }
 
-RDORTPRealResParam::RDORTPRealResParam(RDORTPRealDiap *_diap, RDORTPRealDefVal *_dv): 
-	diap(_diap), 
-	RDORTPResParam(_dv) 
+RDORTPRealResParam::RDORTPRealResParam():
+	RDORTPResParam( new RDORTPRealDefVal(0) ),
+	diap( new RDORTPRealDiap() )
 {
-	diap->check(_dv);
+	diap->check( static_cast<RDORTPRealDefVal*>(dv) );
+}
+
+RDORTPRealResParam::RDORTPRealResParam( RDORTPRealDiap* _diap, RDORTPRealDefVal* _dv ):
+	RDORTPResParam( _dv ),
+	diap( _diap )
+{
+	diap->check( _dv );
 }
 
 void RDORTPRealDiap::check(const RDORTPRealDefVal *dv) const

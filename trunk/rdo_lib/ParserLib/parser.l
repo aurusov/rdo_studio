@@ -28,7 +28,7 @@ static char THIS_FILE[] = __FILE__;
 %%
 
 $Resource_type		return(Resource_type);
-permanent			return(permanent);
+permanent			return(permanent_kw);
 $Parameters			return(Parameters);
 integer				return(integer);
 real				return(real);

@@ -2202,7 +2202,7 @@ return(Resource_type);
 case 2:
 YY_RULE_SETUP
 #line 31 ".\\parser.l"
-return(permanent);
+return(permanent_kw);
 	YY_BREAK
 case 3:
 YY_RULE_SETUP

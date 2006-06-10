@@ -11,10 +11,11 @@ int rtpparse( void* lexer );
 int rtplex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer );
 void rtperror( char* mes );
 
-struct RDORTPIntDefVal;
+class RDORTPIntDefVal;
 
-struct RDORTPIntDiap: public RDODeletable
+class RDORTPIntDiap: public RDODeletable
 {
+public:
 	bool exist;
 	int minVal, maxVal;
 	RDORTPIntDiap(int _minVal, int _maxVal): minVal(_minVal), maxVal(_maxVal), exist(true) {}
@@ -22,8 +23,9 @@ struct RDORTPIntDiap: public RDODeletable
 	void check(const RDORTPIntDefVal *dv) const;
 };
 
-struct RDORTPDefVal: public RDODeletable
+class RDORTPDefVal: public RDODeletable
 {
+public:
 	bool exist;
 	RDORTPDefVal(bool _exist): exist(_exist) {}
 	virtual int GetIntValue() const;
@@ -31,16 +33,18 @@ struct RDORTPDefVal: public RDODeletable
 	virtual const std::string *GetEnumValue() const;
 };
 
-struct RDORTPIntDefVal: public RDORTPDefVal
+class RDORTPIntDefVal: public RDORTPDefVal
 {
+public:
 	int val;
 	RDORTPIntDefVal(): RDORTPDefVal(false) {}
 	RDORTPIntDefVal(int _val): val(_val), RDORTPDefVal(true) {}
 	int GetIntValue() const { return val; }
 };
 
-struct RDORTPResParam: public RDODeletable
+class RDORTPResParam: public RDODeletable
 {
+public:
 	enum ParamType { pt_int = 0, pt_real = 1, pt_enum = 2 };
 	RDORTPDefVal *dv;
 	RDORTPResParam(RDORTPDefVal *_dv): dv(_dv) {}
@@ -57,8 +61,9 @@ struct RDORTPResParam: public RDODeletable
 	virtual int writeModelStructure() const = 0;
 };
 
-struct RDORTPIntResParam: public RDORTPResParam
+class RDORTPIntResParam: public RDORTPResParam
 {
+public:
 	RDORTPIntDiap *diap;
 	RDORTPIntResParam(RDORTPIntDiap *_diap, RDORTPIntDefVal *_dv);
 	const RDORTPResParam *constructSuchAs(const int defVal) const;
@@ -69,9 +74,10 @@ struct RDORTPIntResParam: public RDORTPResParam
 	int writeModelStructure() const;
 };
 
-struct RDORTPRealDefVal;
-struct RDORTPRealDiap: public RDODeletable
+class RDORTPRealDefVal;
+class RDORTPRealDiap: public RDODeletable
 {
+public:
 	bool exist;
 	double minVal, maxVal;
 	RDORTPRealDiap(double _minVal, double _maxVal): minVal(_minVal), maxVal(_maxVal), exist(true) {}
@@ -79,18 +85,21 @@ struct RDORTPRealDiap: public RDODeletable
 	void check(const RDORTPRealDefVal *dv) const;
 };
 
-struct RDORTPRealDefVal: public RDORTPDefVal
+class RDORTPRealDefVal: public RDORTPDefVal
 {
+public:
 	double val;
 	RDORTPRealDefVal(): RDORTPDefVal(false) {}
 	RDORTPRealDefVal(double _val): val(_val), RDORTPDefVal(true) {}
 	double GetRealValue() const { return val; }
 };
 
-struct RDORTPRealResParam: public RDORTPResParam
+class RDORTPRealResParam: public RDORTPResParam
 {
-	RDORTPRealDiap *diap;
-	RDORTPRealResParam(RDORTPRealDiap *_diap, RDORTPRealDefVal *_dv);
+public:
+	RDORTPRealResParam();
+	RDORTPRealResParam( RDORTPRealDiap* _diap, RDORTPRealDefVal* _dv );
+	RDORTPRealDiap* diap;
 	const RDORTPResParam *constructSuchAs(const double *const defVal) const;
 	RDOValue getRSSDefaultValue()const ;
 	RDOValue getRSSRealValue(const double *const val)const ; 	// the function also check range if exist
@@ -100,24 +109,27 @@ struct RDORTPRealResParam: public RDORTPResParam
 	int writeModelStructure() const;
 };
 
-struct RDORTPEnum: public RDODeletable
+class RDORTPEnum: public RDODeletable
 {
+public:
 	std::vector<const std::string *> enumVals;
 	RDORTPEnum(const std::string *const first) { enumVals.push_back(first); }
 	void add(const std::string *const next);
 	int findValue(const std::string *const val) const;
 };
 
-struct RDORTPEnumDefVal: public RDORTPDefVal
+class RDORTPEnumDefVal: public RDORTPDefVal
 {
+public:
 	const std::string *const value;
 	RDORTPEnumDefVal(const std::string *const _value): value(_value), RDORTPDefVal(true) {}
 	RDORTPEnumDefVal(): value(NULL), RDORTPDefVal(false) {}
 	const std::string *GetEnumValue() const { return value; }
 };
 
-struct RDORTPEnumResParam: public RDORTPResParam
+class RDORTPEnumResParam: public RDORTPResParam
 {
+public:
 	RDORTPEnum *enu;
 	RDORTPEnumResParam(RDORTPEnum *_enu, RDORTPEnumDefVal *_dv): enu(_enu), RDORTPResParam(_dv) {}
 	const RDORTPResParam *constructSuchAs(const std::string *const defVal) const ;
@@ -127,7 +139,6 @@ struct RDORTPEnumResParam: public RDORTPResParam
 	ParamType getType() const { return pt_enum; }
 	int writeModelStructure() const;
 };
-
 
 class RDORTPParamDesc: public RDODeletable
 {
@@ -142,23 +153,31 @@ public:
 
 class RDORTPResType: public RDODeletable
 {
-	const std::string *const name;
-	std::vector<const RDORTPParamDesc *>	params;
-	const bool isPermanent;		
-	const int number;		
+protected:
+	const std::string* const               name;
+	const int                              number;
+	const bool                             permanent;
+	std::vector< const RDORTPParamDesc * > params;
+
 public:
-	RDORTPResType( const std::string* const _name, const bool _isPermanent );
-	void add(const RDORTPParamDesc *const _param);
-	const RDORTPParamDesc *findRTPParam(const std::string *const param) const;
-	int getRTPParamNumber(const std::string *const param) const;
-	const std::string *const getName() const { return name; };
-	bool isPerm() const { return isPermanent; };
-	int getNumber() const { return number; };
-	const std::vector<const RDORTPParamDesc *>& getParams() const { return params; }
+	RDORTPResType( const std::string* const _name, const bool _permanent );
+	const std::string* const getName() const { return name;      };
+	int getNumber() const                    { return number;    };
+	bool isPermanent() const                 { return permanent; };
+
+	void addParam( const RDORTPParamDesc* const param );
+	const RDORTPParamDesc* findRTPParam( const std::string* const param ) const;
+	int getRTPParamNumber( const std::string* const param ) const;
+	const std::vector< const RDORTPParamDesc* >& getParams() const { return params; }
+
 	int writeModelStructure() const;
 };
 
-
+class RDORTPTransact: public RDORTPResType
+{
+public:
+	RDORTPTransact();
+};
 
 }		// namespace rdoParse 
 

@@ -25,8 +25,8 @@ int smr2parse( void* lexer );
 int smr2lex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer );
 void smr2error( char* mes );
 
-struct RDOFUNLogic;
-struct RDOFUNArithm;
+class RDOFUNLogic;
+class RDOFUNArithm;
 
 class BreakPoint: public RDODeletable
 {

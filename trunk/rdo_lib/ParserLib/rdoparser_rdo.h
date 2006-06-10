@@ -90,8 +90,9 @@ public:
 // ----------------------------------------------------------------------------
 // ---------- RDOParserSMR1
 // ----------------------------------------------------------------------------
-struct RDOSMR1OkException: public RDOException
+class RDOSMR1OkException: public RDOException
 {
+public:
 	virtual std::string getType() const { return ""; }
 	RDOSMR1OkException( const char* str ): RDOException( str ) {};
 };

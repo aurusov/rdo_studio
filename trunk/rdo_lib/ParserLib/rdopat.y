@@ -6,7 +6,7 @@
 %pure-parser
 
 %token Resource_type		257
-%token permanent			258
+%token permanent_kw			258
 %token Parameters			259
 %token integer				260
 %token real					261

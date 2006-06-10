@@ -30,8 +30,8 @@ class RDODPTSearchActivity;
 class RDODPTSomeActivity;
 class RDODPTFreeActivity;
 class RDOFUNFunctionParam;
-struct RDOFUNArithm;
-struct RDOFUNLogic;
+class RDOFUNArithm;
+class RDOFUNLogic;
 
 class RDORelevantResource;
 
@@ -45,19 +45,19 @@ private:
 	const bool trace;
 	std::vector< RDOFUNFunctionParam* >	params;
 	std::vector< RDORelevantResource* > relRes;
-	const std::string *const name;
+	const std::string* const name;
 
 	bool useCommonChoice;
 	bool useCommonWithMax;
-	RDOFUNArithm *commonChoice;
+	RDOFUNArithm* commonChoice;
 
-//	RDOFUNArithm *time;
+//	RDOFUNArithm* time;
 
 protected:
 	RDOPATPattern( const std::string* const _name, const bool _trace );
 	virtual ~RDOPATPattern() {}
 
-	RDOPatternRuntime*   patRuntime;
+	RDOPatternRuntime* patRuntime;
 
 public:
 	enum ConvertStatus {
@@ -85,13 +85,13 @@ public:
 	virtual void addRelRes( std::string* relName, std::string* resName, ConvertStatus beg, ConvertStatus end );
 	virtual void addRelRes( std::string* relName, std::string* resName, ConvertStatus beg );
 	virtual void addRelRes( std::string* relName, std::string* resName, std::string* convBeg );
-	const std::string *const getName() const { return name; }
+	const std::string* const getName() const { return name; }
 
 	void setCommonChoiceFirst();
-	void setCommonChoiceWithMin(RDOFUNArithm *arithm);
-	void setCommonChoiceWithMax(RDOFUNArithm *arithm);
-	virtual void setTime(RDOFUNArithm *arithm);
-	void addRelResBody(std::string *resName);
+	void setCommonChoiceWithMin( RDOFUNArithm* arithm );
+	void setCommonChoiceWithMax( RDOFUNArithm* arithm );
+	virtual void setTime( RDOFUNArithm* arithm );
+	void addRelResBody( std::string* resName );
 	virtual void addRelResUsage( RDOPATChoice* choice, RDOPATSelectType* first );
 	virtual void addRelResConvert();
 	virtual void addRelResConvertBegin(		bool trace, RDOPATParamsSet *parSet);

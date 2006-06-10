@@ -24,8 +24,8 @@ int funparse( void* lexer );
 int funlex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer );
 void funerror( char* mes );
 
-struct RDORTPResParam;
-struct RDORTPEnum;
+class RDORTPResParam;
+class RDORTPEnum;
 class RDORTPResType;
 class RDORTPParamDesc;
 
@@ -41,43 +41,49 @@ public:
 	const RDORTPResParam *const getType() const { return type; };
 };
 
-struct RDOFUNFunctionListElement: public RDODeletable
+class RDOFUNFunctionListElement: public RDODeletable
 {
+public:
 	virtual ~RDOFUNFunctionListElement() {}
 	virtual RDOCalcConst *createResultCalc(const RDORTPResParam *const retType) const = 0;
 	virtual RDOCalcIsEqual *createIsEqualCalc(const RDOFUNFunctionParam *const param, const RDOCalcFuncParam *const funcParam) const;
 	virtual bool isEquivalence() const { return false; }
 };
 
-struct RDOFUNFunctionListElementItentif: public RDOFUNFunctionListElement
+class RDOFUNFunctionListElementItentif: public RDOFUNFunctionListElement
 {
+public:
 	std::string *value;
 	RDOFUNFunctionListElementItentif(std::string *_value) : value(_value) {}
 	RDOCalcConst *createResultCalc(const RDORTPResParam *const retType) const;
 };
 
-struct RDOFUNFunctionListElementReal: public RDOFUNFunctionListElement
+class RDOFUNFunctionListElementReal: public RDOFUNFunctionListElement
 {
+public:
 	double *value;
 	RDOFUNFunctionListElementReal(double *_value) : value(_value) {}
 	RDOCalcConst *createResultCalc(const RDORTPResParam *const retType) const;
 };
 
-struct RDOFUNFunctionListElementInt: public RDOFUNFunctionListElement
+class RDOFUNFunctionListElementInt: public RDOFUNFunctionListElement
 {
+public:
 	int value;
 	RDOFUNFunctionListElementInt(int _value) : value(_value) {}
 	RDOCalcConst *createResultCalc(const RDORTPResParam *const retType) const;
 };
 
-struct RDOFUNFunctionListElementEq: public RDOFUNFunctionListElement
+class RDOFUNFunctionListElementEq: public RDOFUNFunctionListElement
 {
+public:
 	bool isEquivalence() const { return true; }
 	RDOCalcConst *createResultCalc(const RDORTPResParam *const retType) const;
 };
 
-struct RDOFUNLogic: public RDODeletable
+class RDOFUNLogic: public RDODeletable
 {
+public:
 	RDOCalc* calc;
 
 	RDOFUNLogic( RDOCalc *_calc ): calc(_calc) {}
@@ -85,26 +91,33 @@ struct RDOFUNLogic: public RDODeletable
 	RDOFUNLogic* operator ||( const RDOFUNLogic& second );
 };
 
-struct RDOFUNArithm: public RDODeletable
+class RDOFUNArithm: public RDODeletable
 {
-	int type;	// 0 - int, 1 - real, 2 - enum, 3 - string
-	RDORTPEnum *enu;		// for type == 2
-	std::string *str;		// for type == 3
+public:
+	int type;         // 0 - int, 1 - real, 2 - enum, 3 - string
+	RDORTPEnum*  enu; // for type == 2
+	std::string* str; // for type == 3
 
 private:
-	RDOCalc *calc;
+	RDOCalc* calc;
 
 public:
-	RDOCalc *createCalc(const RDORTPResParam *const forType = NULL);
+	RDOCalc* createCalc( const RDORTPResParam* const forType = NULL );
 	int getType() const { return type; }
 
-	RDOFUNArithm(int _type, RDOCalc *_calc):
-		type(_type), calc(_calc) {}
+	RDOFUNArithm( int _type, RDOCalc* _calc ):
+		type( _type ),
+		enu( NULL ),
+		str( NULL ),
+		calc( _calc )
+	{
+	}
 
-	RDOFUNArithm(std::string *resName, std::string *parName);
-	RDOFUNArithm(int n);
-	RDOFUNArithm(double *d);
-	RDOFUNArithm(std::string *s);
+	RDOFUNArithm( std::string* resName, std::string* parName );
+	RDOFUNArithm( int n );
+	RDOFUNArithm( double d );
+	RDOFUNArithm( double* d );
+	RDOFUNArithm( std::string* s );
 
 	RDOFUNArithm *operator +(RDOFUNArithm &second);
 	RDOFUNArithm *operator -(RDOFUNArithm &second);
@@ -119,8 +132,9 @@ public:
 	RDOFUNLogic *operator >=(RDOFUNArithm &second);
 };
 
-struct RDOFUNCalculateIf: public RDODeletable
+class RDOFUNCalculateIf: public RDODeletable
 {
+public:
 	RDOFUNLogic *condition;
 	std::string *funName;
 	RDOFUNArithm *action;
@@ -132,7 +146,7 @@ class RDOParser;
 class RDOFUNFunction: public RDODeletable
 {
 friend RDOParser;
-
+private:
 	const std::string *const name;
 	const RDORTPResParam *const retType;
 	std::vector<const RDOFUNFunctionParam *>	params;
@@ -156,8 +170,9 @@ public:
 	const RDORTPResParam *const getType() const { return retType; }
 };
 
-struct RDOFUNParams: public RDODeletable
+class RDOFUNParams: public RDODeletable
 {
+public:
 	std::vector<RDOFUNArithm *> params;
 	RDOFUNParams *addParameter(RDOFUNArithm *param){
 		params.push_back(param);
@@ -167,8 +182,9 @@ struct RDOFUNParams: public RDODeletable
 	const RDOFUNArithm *createSeqCall(const std::string *const seqName) const;
 };
 
-struct RDOFUNGroup: public RDODeletable
+class RDOFUNGroup: public RDODeletable
 {
+public:
 	const int funType;
 	const RDORTPResType *resType;
 
@@ -179,16 +195,18 @@ struct RDOFUNGroup: public RDODeletable
 
 //////////////////////////// Sequences	///////////////////////////////
 
-struct RDOFUNSequenceHeader: public RDODeletable
+class RDOFUNSequenceHeader: public RDODeletable
 {
+public:
 	std::string *name;
 	RDORTPResParam *type;
 	RDOFUNSequenceHeader(std::string *_name, RDORTPResParam *_type): 
 		name(_name), type(_type) {}
 };
 
-struct RDOFUNSequence: public RDODeletable
+class RDOFUNSequence: public RDODeletable
 {
+public:
 	RDOFUNSequenceHeader *header;
 	int base;
 	RDOCalcSeqInit *initSeq;
@@ -201,45 +219,50 @@ public:
 	const std::string *getName() const { return header->name; }
 };
 
-struct RDOFUNSequenceUniform: public RDOFUNSequence
+class RDOFUNSequenceUniform: public RDOFUNSequence
 {
+public:
 	RDOFUNSequenceUniform(RDOFUNSequenceHeader *_header, int _base = 123456789);
 	void createCalcs();
 	const RDOFUNArithm *createCallCalc(const RDOFUNParams *const params) const;
 };
 
-struct RDOFUNSequenceExponential: public RDOFUNSequence
+class RDOFUNSequenceExponential: public RDOFUNSequence
 {
+public:
 	RDOFUNSequenceExponential(RDOFUNSequenceHeader *_header, int _base =123456789);
 	void createCalcs();
 	const RDOFUNArithm *createCallCalc(const RDOFUNParams *const params) const;
 };
 
-struct RDOFUNSequenceNormal: public RDOFUNSequence
+class RDOFUNSequenceNormal: public RDOFUNSequence
 {
+public:
 	RDOFUNSequenceNormal(RDOFUNSequenceHeader *_header, int _base = 123456789);
 	void createCalcs();
 	const RDOFUNArithm *createCallCalc(const RDOFUNParams *const params) const;
 };
 
-
-struct RDOFUNSequenceByHistHeader: public RDODeletable
+class RDOFUNSequenceByHistHeader: public RDODeletable
 {
+public:
 	RDOFUNSequenceHeader *header;
 	int base;
 	RDOFUNSequenceByHistHeader(RDOFUNSequenceHeader *_header, int _base = 123456789):
 		header(_header), base(_base) {}
 };
 
-struct RDOFUNSequenceByHist: public RDOFUNSequence
+class RDOFUNSequenceByHist: public RDOFUNSequence
 {
+public:
 	RDOFUNSequenceByHist(RDOFUNSequenceByHistHeader *_header):
 		RDOFUNSequence(_header->header, _header->base) {}
 	const RDOFUNArithm *createCallCalc(const RDOFUNParams *const params) const;
 };
 
-struct RDOFUNSequenceByHistInt: public RDOFUNSequenceByHist
+class RDOFUNSequenceByHistInt: public RDOFUNSequenceByHist
 {
+public:
 	std::vector<int> from;
 	std::vector<int> to;
 	std::vector<double> freq;
@@ -252,8 +275,9 @@ struct RDOFUNSequenceByHistInt: public RDOFUNSequenceByHist
 	void createCalcs();
 };
 
-struct RDOFUNSequenceByHistReal: public RDOFUNSequenceByHist
+class RDOFUNSequenceByHistReal: public RDOFUNSequenceByHist
 {
+public:
 	std::vector<double> from;
 	std::vector<double> to;
 	std::vector<double> freq;
@@ -266,8 +290,9 @@ struct RDOFUNSequenceByHistReal: public RDOFUNSequenceByHist
 	void createCalcs();
 };
 
-struct RDOFUNSequenceByHistEnum: public RDOFUNSequenceByHist
+class RDOFUNSequenceByHistEnum: public RDOFUNSequenceByHist
 {
+public:
 	std::vector<RDOValue> val;
 	std::vector<double> freq;
 
@@ -280,23 +305,26 @@ struct RDOFUNSequenceByHistEnum: public RDOFUNSequenceByHist
 };
 
 
-struct RDOFUNSequenceEnumerativeHeader: public RDODeletable
+class RDOFUNSequenceEnumerativeHeader: public RDODeletable
 {
+public:
 	RDOFUNSequenceHeader *header;
 	int base;
 	RDOFUNSequenceEnumerativeHeader(RDOFUNSequenceHeader *_header, int _base = 123456789):
 		header(_header), base(_base) {}
 };
 
-struct RDOFUNSequenceEnumerative: public RDOFUNSequence
+class RDOFUNSequenceEnumerative: public RDOFUNSequence
 {
+public:
 	RDOFUNSequenceEnumerative(RDOFUNSequenceEnumerativeHeader *_header):
 		RDOFUNSequence(_header->header, _header->base) {}
 	const RDOFUNArithm *createCallCalc(const RDOFUNParams *const params) const;
 };
 
-struct RDOFUNSequenceEnumerativeInt: public RDOFUNSequenceEnumerative
+class RDOFUNSequenceEnumerativeInt: public RDOFUNSequenceEnumerative
 {
+public:
 	std::vector<int> val;
 
 	RDOFUNSequenceEnumerativeInt(RDOFUNSequenceEnumerativeHeader *_header, int _val):
@@ -307,8 +335,9 @@ struct RDOFUNSequenceEnumerativeInt: public RDOFUNSequenceEnumerative
 	void createCalcs();
 };
 
-struct RDOFUNSequenceEnumerativeReal: public RDOFUNSequenceEnumerative
+class RDOFUNSequenceEnumerativeReal: public RDOFUNSequenceEnumerative
 {
+public:
 	std::vector<double> val;
 
 	RDOFUNSequenceEnumerativeReal(RDOFUNSequenceEnumerativeHeader *_header, double * _val):
@@ -319,8 +348,9 @@ struct RDOFUNSequenceEnumerativeReal: public RDOFUNSequenceEnumerative
 	void createCalcs();
 };
 
-struct RDOFUNSequenceEnumerativeEnum: public RDOFUNSequenceEnumerative
+class RDOFUNSequenceEnumerativeEnum: public RDOFUNSequenceEnumerative
 {
+public:
 	std::vector<RDOValue> val;
 
 	RDOFUNSequenceEnumerativeEnum(RDOFUNSequenceEnumerativeHeader *_header, std::string *_val):
@@ -331,8 +361,9 @@ struct RDOFUNSequenceEnumerativeEnum: public RDOFUNSequenceEnumerative
 	void createCalcs();
 };
 
-struct RDOFUNConstant: public RDODeletable
+class RDOFUNConstant: public RDODeletable
 {
+public:
 	RDORTPParamDesc *descr;
 	int number;
 	RDOFUNConstant( RDORTPParamDesc* _descr );

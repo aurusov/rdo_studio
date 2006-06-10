@@ -170,7 +170,7 @@ void RDOParserRSSPost::parse()
 {
 	std::vector< RDORSSResource* >::const_iterator it = currParser->getRSSResources().begin();
 	while ( it != currParser->getRSSResources().end() ) {
-		RDOCalcCreateNumberedResource* createResource = new RDOCalcCreateNumberedResource( (*it)->getType()->getNumber(), (*it)->getTrace(), (*it)->getValues(), (*it)->getNumber(), (*it)->getType()->isPerm() );
+		RDOCalcCreateNumberedResource* createResource = new RDOCalcCreateNumberedResource( (*it)->getType()->getNumber(), (*it)->getTrace(), (*it)->getValues(), (*it)->getNumber(), (*it)->getType()->isPermanent() );
 		currParser->runTime->addInitCalc( createResource );
 		it++;
 	}

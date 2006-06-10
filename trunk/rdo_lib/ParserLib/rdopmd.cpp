@@ -50,7 +50,7 @@ RDOPMDWatchPar::RDOPMDWatchPar(std::string *_name, bool _trace, std::string *_re
 	if(!res)
 		currParser->error("Undefined resource name: " + *_resName);
 
-	if(!res->getType()->isPerm())
+	if(!res->getType()->isPermanent())
 		currParser->error("Resource must be of permanent type: " + *_resName);
 
 	const RDORTPParamDesc *const par = res->getType()->findRTPParam(_parName);

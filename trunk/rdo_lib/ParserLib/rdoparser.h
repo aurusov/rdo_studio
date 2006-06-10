@@ -24,9 +24,9 @@ class RDORTPParamDesc;
 class RDORTPResType;
 class RDORSSResource;
 class RDOFUNFunction;
-struct RDOFUNSequence;
-struct RDOFUNConstant;
-struct RDOFUNGroup;
+class RDOFUNSequence;
+class RDOFUNConstant;
+class RDOFUNGroup;
 class RDOPATPattern;
 class RDOSMR;
 class RDODPTSearch;
@@ -34,14 +34,16 @@ class RDODPTSome;
 class RDODPTFreeActivity;
 class RDOPMDPokaz;
 
-struct RDOSyntaxException: public RDOException
+class RDOSyntaxException: public RDOException
 {
+public:
    std::string getType() const { return "RDO Syntax Error"; }
    RDOSyntaxException(const char *str): RDOException(str) {}
 };
 
-struct RDOInternalException: public RDOException
+class RDOInternalException: public RDOException
 {
+public:
    std::string getType() const { return "RDO Syntax Error"; }
    RDOInternalException(const char *str): RDOException(str) {}
 };

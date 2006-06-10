@@ -30,9 +30,11 @@ void paterror( char* mes )
 
 RDOPATPattern::RDOPATPattern( const std::string* const _name, const bool _trace ):
 	name( _name ),
+	commonChoice( NULL ),
+	patRuntime( NULL ),
+	currRelRes( NULL ),
 	trace( _trace ),
-	useCommonChoice( false ),
-	patRuntime( NULL )
+	useCommonChoice( false )
 {
 	currParser->tmp_rss.clear();
 	if ( currParser->findPattern( name ) ) {
@@ -81,7 +83,7 @@ void RDOPATPattern::res_insert( RDORelevantResource* res )
 		currParser->tmp_rss.push_back( rss );
 	} else {
 		const RDORTPResType* rtp = res->getType();
-		if ( rtp->isPerm() ) {
+		if ( rtp->isPermanent() ) {
 			int rss_cnt = 0;
 			std::vector< RDORSSResource* >::const_iterator it = currParser->getRSSResources().begin();
 			while ( it != currParser->getRSSResources().end() ) {
@@ -247,7 +249,7 @@ void RDOPATPatternOperation::addRelRes( std::string* relName, std::string* resNa
 		if ( end == CS_Create ) {
 			currParser->error("Cannot use Create status for resource, only for resource type");
 		}
-		if ( res->getType()->isPerm() ) {
+		if ( res->getType()->isPermanent() ) {
 //			if ( beg == CS_Create || beg == CS_Erase || beg == CS_NonExist )
 //				currParser->error("Wrong first converter status for resource of permanent type");
 //			if ( end == CS_Create || end == CS_Erase || end == CS_NonExist )
@@ -266,7 +268,7 @@ void RDOPATPatternOperation::addRelRes( std::string* relName, std::string* resNa
 		if ( !type ) {
 			currParser->error( "Unknown resource name or type: " + *resName );
 		}
-		if ( type->isPerm() ) {
+		if ( type->isPermanent() ) {
 			if ( beg == CS_Create || beg == CS_Erase || beg == CS_NonExist ) {
 				currParser->error( rdo::format("Недопустимый статус конвертора начала для постоянного ресурса: %s", RDOPATPattern::StatusToStr(beg).c_str()) );
 			}
@@ -289,7 +291,7 @@ void RDOPATPatternRule::addRelRes(std::string *relName, std::string *resName, Co
 		if(beg == CS_Create)
 			currParser->error("Cannot use Create status for resource, only for resource type");
 
-		if(res->getType()->isPerm())
+		if(res->getType()->isPermanent())
 		{
 			if(beg == CS_Create || beg == CS_Erase || beg == CS_NonExist)
 				currParser->error("Wrong converter status for resource of permanent type");
@@ -314,7 +316,7 @@ void RDOPATPatternEvent::addRelRes(std::string *relName, std::string *resName, C
 		if(beg == CS_Create)
 			currParser->error("Cannot use Create status for resource, only for resource type");
 
-		if(res->getType()->isPerm())
+		if(res->getType()->isPermanent())
 		{
 			if(beg == CS_Create || beg == CS_Erase || beg == CS_NonExist)
 				currParser->error("Wrong converter status for resource of permanent type");
@@ -400,11 +402,12 @@ void RDOPATPatternEvent::addRelResUsage( RDOPATChoice* choice, RDOPATSelectType*
 void RDOPATPattern::end()
 {
 	int size = relRes.size();
-	for(int i = 0; i < size; i++) {
+	for ( int i = 0; i < size; i++ ) {
 		RDORelevantResource* currRelRes = relRes.at( i );
 //		if ( !currRelRes->choice ) {
-//			currParser->error( rdo::format("Релевантный ресурс '%s' не используется внутри $Body", currRelRes->getName()->c_str()) );
-//		}
+		if ( !currRelRes->alreadyHaveConverter ) {
+			currParser->error( rdo::format("Релевантный ресурс '%s' не используется внутри $Body паттерна '%s'", currRelRes->getName()->c_str(), getName()->c_str()) );
+		}
 		patRuntime->addChoiceFromCalc( currRelRes->createSelectEmptyResourceCalc() );
 	}
 

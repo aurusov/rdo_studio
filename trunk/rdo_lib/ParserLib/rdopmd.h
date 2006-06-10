@@ -20,9 +20,9 @@ int pmdparse( void* lexer );
 int pmdlex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer );
 void pmderror( char* mes );
 
-struct RDOFUNLogic;
-struct RDOFUNGroup;
-struct RDOFUNArithm;
+class RDOFUNLogic;
+class RDOFUNGroup;
+class RDOFUNArithm;
 
 //////////////////////////// class RDOPMDPokaz /////////////////////////////////
 class RDOPMDPokaz: public RDOPokazTrace

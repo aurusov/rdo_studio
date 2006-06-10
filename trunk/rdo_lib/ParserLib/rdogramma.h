@@ -19,7 +19,7 @@ typedef struct yyltype
 #endif
 
 # define	Resource_type	257
-# define	permanent	258
+# define	permanent_kw	258
 # define	Parameters	259
 # define	integer	260
 # define	real	261

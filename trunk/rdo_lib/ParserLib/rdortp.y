@@ -6,7 +6,7 @@
 %pure-parser
 
 %token Resource_type		257
-%token permanent			258
+%token permanent_kw			258
 %token Parameters			259
 %token integer				260
 %token real					261
@@ -199,15 +199,15 @@ rtp_res_type_hdr:	Resource_type IDENTIF_COLON rtp_vid_res {
 						currParser->error( "Не указан вид ресурса" );
 					};
 
-rtp_vid_res:	permanent	{ $$ = 1; }
-				| temporary	{ $$ = 0; };
+rtp_vid_res:	permanent_kw	{ $$ = 1; }
+				| temporary		{ $$ = 0; };
 
 rtp_body:	/* empty */ {
 				$$ = 0; // warning
 			}
 			| rtp_body rtp_param_desc {
 				RDORTPParamDesc *param = (RDORTPParamDesc*)$2;
-				currParser->getLastRTPResType()->add( param );
+				currParser->getLastRTPResType()->addParam( param );
 				$$ = 1; // no warning
 			};
 

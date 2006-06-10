@@ -1,8 +1,9 @@
 #ifndef RDO_STD_FUNCS_
 #define RDO_STD_FUNCS_
 
-struct RDOException
+class RDOException
 {
+public:
    std::string mess;
    virtual std::string getType() const = 0;
    RDOException(const char *str): mess(str) {}
@@ -18,26 +19,29 @@ using namespace rdoRuntime;
 namespace rdoParse 
 {
 
-struct RDODeletable
+class RDODeletable
 {
+public:
 	RDODeletable();
 	virtual ~RDODeletable();
 };
-template <class T> 
-struct comparePointers
+
+template <class T> class comparePointers
 {
+public:
 	const T * const val;
 	comparePointers(const T * const _val): val(_val) {}
 	bool operator() (const T * const other) { return ((*other) == (*val)); }
 };
 
-template <class T> 
-struct compareName
+template <class T> class compareName
 {
+public:
 	const std::string * const name;
 	compareName(const std::string * const _name): name(_name) {}
 	bool operator() (const T * other) { return ((*(other->getName())) == (*name)); }
 };
+
 /*
 enum FileToParse
 {

@@ -55,7 +55,7 @@ class RDOPMDPokaz;
 class RDOPMDWatchState;
 class RDOFRMFrame;
 class RDORelevantResource;
-struct RDOFUNArithm;
+class RDOFUNArithm;
 }
 
 using namespace rdoParse;
@@ -89,9 +89,9 @@ class RDOPatternRuntime;
 class RDOActivityRuntime;
 class RDOSearchRuntime;
 
-template <class T> 
-struct compareNumber
+template <class T> class compareNumber
 {
+public:
 	const int num;
 	compareNumber(const int _num): num(_num) {}
 	bool operator() (const T * const other) { return (other->number == num); }
@@ -248,15 +248,17 @@ public:
 	void postProcess();
 };
 /*
-struct RDORuntimeException: public RDOException
+class RDORuntimeException: public RDOException
 {
+public:
    string getType() const { return "RDO Runtime Exception"; };
    RDORuntimeException(const char *str): RDOException(str) {}
 };
 */
 /*
-struct RDOValue
+class RDOValue
 {
+public:
    union 
 	{
       int      intVal;

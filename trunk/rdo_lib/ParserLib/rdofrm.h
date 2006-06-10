@@ -69,7 +69,7 @@ public:
 	rdosim::RDOColor getFg();
 };
 
-struct RDORTPEnum;
+class RDORTPEnum;
 class RDOFRMText: public RDOFRMBoundingItem, public RDOFRMColoredItem
 {
 	int align;

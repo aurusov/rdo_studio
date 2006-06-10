@@ -13,7 +13,7 @@
 #define YYLSP_NEEDED 1
 
 # define	Resource_type	257
-# define	permanent	258
+# define	permanent_kw	258
 # define	Parameters	259
 # define	integer	260
 # define	real	261
@@ -302,37 +302,38 @@ static const short yyrline[] =
 /* YYTNAME[TOKEN_NUM] -- String name of the token TOKEN_NUM. */
 static const char *const yytname[] =
 {
-  "$", "error", "$undefined.", "Resource_type", "permanent", "Parameters", 
-  "integer", "real", "End", "temporary", "IDENTIF", "INT_CONST", 
-  "REAL_CONST", "such_as", "dblpoint", "Resources", "trace_keyword", 
-  "no_trace", "IDENTIF_COLON", "Constant", "Body", "Function_keyword", 
-  "Type_keyword", "algorithmic", "table_keyword", "list_keyword", 
-  "Calculate_if", "Exist", "Not_Exist", "For_All", "Not_For_All", "neq", 
-  "leq", "geq", "NoCheck", "or_keyword", "and_keyword", "Sequence", 
-  "uniform", "exponential", "normal_keyword", "by_hist", "enumerative", 
-  "Pattern", "operation", "irregular_event", "rule_keyword", "keyboard", 
-  "Relevant_resources", "Keep", "Create_keyword", "Erase", "NonExist", 
-  "IDENTIF_NoChange", "Time", "Choice", "from_keyword", "first_keyword", 
-  "Convert_begin", "Convert_end", "Convert_rule", "Convert_event", 
-  "with_max", "with_min", "IDENTIF_set", "IDENTIF_NoChange_NoChange", 
-  "Operations", "Results", "watch_par", "watch_state", "watch_quant", 
-  "watch_value", "get_value", "Model_name", "Resource_file", 
-  "OprIev_file", "Frame_file", "Statistic_file", "Results_file", 
-  "Trace_file", "Show_mode", "Frame_number", "Show_rate", "Run_StartTime", 
-  "Trace_StartTime", "Trace_EndTime", "Terminate_if", "Break_point", 
-  "Seed", "NoShow", "Monitor", "Animation", "NoChange", "Decision_point", 
-  "search_keyword", "trace_stat", "trace_tops", "trace_all", 
-  "Condition_keyword", "Term_condition", "Evaluate_by", "Compare_tops", 
-  "NO", "YES", "Activities", "value_before", "value_after", "some", 
-  "Process", "SEIZE", "GENERATE", "Frame", "Show_if", "Back_picture", 
-  "Show", "frm_cell", "text", "transparent", "bitmap", "s_bmp", 
-  "rect_keyword", "r_rect", "line", "ellipse", "triang", "active", 
-  "QUOTED_IDENTIF", "QUOTED_IDENTIF_BAD", "IDENTIF_BAD", "'='", "'['", 
-  "']'", "'('", "')'", "','", "'.'", "rtp_list", "rtp_res_type", 
-  "rtp_res_type_hdr", "rtp_vid_res", "rtp_body", "rtp_param_desc", 
-  "rtp_param_type", "rtp_int_diap", "rtp_real_diap", 
-  "rtp_int_default_val", "rtp_real_default_val", "rtp_enum", 
-  "rtp_enum_list", "rtp_enum_default_val", "rtp_such_as", 0
+  "$", "error", "$undefined.", "Resource_type", "permanent_kw", 
+  "Parameters", "integer", "real", "End", "temporary", "IDENTIF", 
+  "INT_CONST", "REAL_CONST", "such_as", "dblpoint", "Resources", 
+  "trace_keyword", "no_trace", "IDENTIF_COLON", "Constant", "Body", 
+  "Function_keyword", "Type_keyword", "algorithmic", "table_keyword", 
+  "list_keyword", "Calculate_if", "Exist", "Not_Exist", "For_All", 
+  "Not_For_All", "neq", "leq", "geq", "NoCheck", "or_keyword", 
+  "and_keyword", "Sequence", "uniform", "exponential", "normal_keyword", 
+  "by_hist", "enumerative", "Pattern", "operation", "irregular_event", 
+  "rule_keyword", "keyboard", "Relevant_resources", "Keep", 
+  "Create_keyword", "Erase", "NonExist", "IDENTIF_NoChange", "Time", 
+  "Choice", "from_keyword", "first_keyword", "Convert_begin", 
+  "Convert_end", "Convert_rule", "Convert_event", "with_max", "with_min", 
+  "IDENTIF_set", "IDENTIF_NoChange_NoChange", "Operations", "Results", 
+  "watch_par", "watch_state", "watch_quant", "watch_value", "get_value", 
+  "Model_name", "Resource_file", "OprIev_file", "Frame_file", 
+  "Statistic_file", "Results_file", "Trace_file", "Show_mode", 
+  "Frame_number", "Show_rate", "Run_StartTime", "Trace_StartTime", 
+  "Trace_EndTime", "Terminate_if", "Break_point", "Seed", "NoShow", 
+  "Monitor", "Animation", "NoChange", "Decision_point", "search_keyword", 
+  "trace_stat", "trace_tops", "trace_all", "Condition_keyword", 
+  "Term_condition", "Evaluate_by", "Compare_tops", "NO", "YES", 
+  "Activities", "value_before", "value_after", "some", "Process", "SEIZE", 
+  "GENERATE", "Frame", "Show_if", "Back_picture", "Show", "frm_cell", 
+  "text", "transparent", "bitmap", "s_bmp", "rect_keyword", "r_rect", 
+  "line", "ellipse", "triang", "active", "QUOTED_IDENTIF", 
+  "QUOTED_IDENTIF_BAD", "IDENTIF_BAD", "'='", "'['", "']'", "'('", "')'", 
+  "','", "'.'", "rtp_list", "rtp_res_type", "rtp_res_type_hdr", 
+  "rtp_vid_res", "rtp_body", "rtp_param_desc", "rtp_param_type", 
+  "rtp_int_diap", "rtp_real_diap", "rtp_int_default_val", 
+  "rtp_real_default_val", "rtp_enum", "rtp_enum_list", 
+  "rtp_enum_default_val", "rtp_such_as", 0
 };
 #endif
 
@@ -1238,7 +1239,7 @@ case 13:
 #line 208 ".\\rdortp.y"
 {
 				RDORTPParamDesc *param = (RDORTPParamDesc*)yyvsp[0];
-				currParser->getLastRTPResType()->add( param );
+				currParser->getLastRTPResType()->addParam( param );
 				yyval = 1; // no warning
 			;
     break;}

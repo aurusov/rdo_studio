@@ -40,4 +40,9 @@ int RDORSSResource::writeModelStructure()
 	return 0;
 }
 
-}		// namespace rdoParse 
+RDORSSTransact::RDORSSTransact( const std::string* const _name, const RDORTPResType* const _resType ):
+	RDORSSResource( _name, _resType )
+{
+}
+
+} // namespace rdoParse 
