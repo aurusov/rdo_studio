@@ -82,7 +82,7 @@ WARN_LOGFILE           =
 #---------------------------------------------------------------------------
 # configuration options related to the input files
 #---------------------------------------------------------------------------
-INPUT                  = C:/Shared/cvs/_rdo_studio
+INPUT                  = D:/rdo/rdo_studio
 FILE_PATTERNS          = *.c \
                          *.cc \
                          *.cxx \
