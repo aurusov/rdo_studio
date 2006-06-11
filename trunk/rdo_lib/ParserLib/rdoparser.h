@@ -33,6 +33,7 @@ class RDODPTSearch;
 class RDODPTSome;
 class RDODPTFreeActivity;
 class RDOPMDPokaz;
+class RDODPTProcess;
 
 class RDOSyntaxException: public RDOException
 {
@@ -52,7 +53,7 @@ class RDOParser
 {
 protected:
 	RDOParserList  parsers;
-	RDOParserBase* parser;
+	RDOParserBase* parser_base;
 
 	std::vector< std::string* >        allNames;
 	std::vector< double* >             allDoubles;
@@ -70,6 +71,7 @@ protected:
 	std::vector< RDODPTSome* >         allDPTSome;
 	std::vector< RDODPTFreeActivity* > allDPTFreeActivity;
 	std::vector< RDOPMDPokaz* >        allPMDPokaz;
+	std::vector< RDODPTProcess* >      allDPTProcess;
 
 	RDODPTSearch* lastDPTSearch;
 
@@ -100,10 +102,12 @@ public:
 	void insertDPTSome( RDODPTSome* value )                 { if ( value ) allDPTSome.push_back( value );         lastDPTSearch = NULL;  }
 	void insertDPTFreeActivity( RDODPTFreeActivity* value ) { if ( value ) allDPTFreeActivity.push_back( value ); lastDPTSearch = NULL;  }
 	void insertPMDPokaz( RDOPMDPokaz* value )               { if ( value ) allPMDPokaz.push_back( value );      }
-	RDORTPResType*  getLastRTPResType()                     { return !allRTPResType.empty()  ? allRTPResType.back()    : NULL; }
+	void insertDPTProcess( RDODPTProcess* value )           { if ( value ) allDPTProcess.push_back( value );    }
+	RDORTPResType*  getLastRTPResType()                     { return !allRTPResType.empty()   ? allRTPResType.back()   : NULL; }
 	RDORSSResource* getLastRSSResource()                    { return !allRSSResource.empty()  ? allRSSResource.back()  : NULL; }
 	RDOPATPattern*  getLastPATPattern()                     { return !allPATPatterns.empty()  ? allPATPatterns.back()  : NULL; }
 	RDOFUNFunction* getLastFUNFunction()                    { return !allFUNFunctions.empty() ? allFUNFunctions.back() : NULL; }
+	RDODPTProcess*  getLastDPTProcess()                     { return !allDPTProcess.empty()   ? allDPTProcess.back()   : NULL; }
 	RDODPTSearch*   getLastDPTSearch()                      { return lastDPTSearch;                                            }
 
 	int getRTP_id() const      { return allRTPResType.size()  + 1; }
@@ -157,20 +161,20 @@ public:
 		return val;
 	}
 
-	rdoModelObjects::RDOFileType getFileToParse() const       { return parser ? parser->type : rdoModelObjects::PAT;          }
-	void lexer_setvalue( int val ) const                      { if ( parser ) parser->lexer_setvalue( val );                  }
-	void lexer_loc_init() const                               { if ( parser ) parser->lexer_loc_init();                       }
-	void lexer_loc_action() const                             { if ( parser ) parser->lexer_loc_action();                     }
-	void lexer_loc_set( int error_line, int error_pos ) const { if ( parser ) parser->lexer_loc_set( error_line, error_pos ); }
-	void lexer_loc_set( void* data ) const                    { if ( parser ) parser->lexer_loc_set( data );                  }
-	void lexer_loc_delta_pos( int value ) const               { if ( parser ) parser->lexer_loc_delta_pos( value );           }
-	void lexer_loc_backup( void* data = NULL ) const          { if ( parser ) parser->lexer_loc_backup( data );               }
-	void lexer_loc_restore() const                            { if ( parser ) parser->lexer_loc_restore();                    }
-	int  lexer_loc_line() const                               { return parser ? parser->lexer_loc_line() : -1;                }
-	int  lexer_loc_pos() const                                { return parser ? parser->lexer_loc_pos() : 0;                  }
+	rdoModelObjects::RDOFileType getFileToParse() const       { return parser_base ? parser_base->type : rdoModelObjects::PAT;          }
+	void lexer_setvalue( int val ) const                      { if ( parser_base ) parser_base->lexer_setvalue( val );                  }
+	void lexer_loc_init() const                               { if ( parser_base ) parser_base->lexer_loc_init();                       }
+	void lexer_loc_action() const                             { if ( parser_base ) parser_base->lexer_loc_action();                     }
+	void lexer_loc_set( int error_line, int error_pos ) const { if ( parser_base ) parser_base->lexer_loc_set( error_line, error_pos ); }
+	void lexer_loc_set( void* data ) const                    { if ( parser_base ) parser_base->lexer_loc_set( data );                  }
+	void lexer_loc_delta_pos( int value ) const               { if ( parser_base ) parser_base->lexer_loc_delta_pos( value );           }
+	void lexer_loc_backup( void* data = NULL ) const          { if ( parser_base ) parser_base->lexer_loc_backup( data );               }
+	void lexer_loc_restore() const                            { if ( parser_base ) parser_base->lexer_loc_restore();                    }
+	int  lexer_loc_line() const                               { return parser_base ? parser_base->lexer_loc_line() : -1;                }
+	int  lexer_loc_pos() const                                { return parser_base ? parser_base->lexer_loc_pos() : 0;                  }
 };
 
-extern RDOParser *currParser;
+extern RDOParser* parser;
 
 } // namespace rdoParse 
 

@@ -75,7 +75,7 @@ int RDOHotKeyToolkit::codeFromString(std::string *key)
 {
 	std::map<std::string, int>::iterator it = keys.find(*key);
 	if(it == keys.end())
-		currParser->error("Unknown key name: " + *key);
+		parser->error("Unknown key name: " + *key);
 
 	return (*it).second;
 }

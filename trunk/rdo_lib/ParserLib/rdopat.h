@@ -270,6 +270,6 @@ public:
 	void checkParamsNumbers(RDORelevantResource *currRelRes);
 };
 
-}		// namespace rdoParse 
+} // namespace rdoParse
 
 #endif //RDOPAT_PAT

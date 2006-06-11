@@ -25,16 +25,16 @@ void rtperror( char* mes )
 }
 
 RDORTPTransact::RDORTPTransact():
-	RDORTPResType( currParser->registerName( "Транзакты" ), false )
+	RDORTPResType( parser->registerName( "Транзакты" ), false )
 {
 	// Создадим параметр вещественного типа 'Время_создания'
-	addParam( new RDORTPParamDesc( currParser->registerName( "Время_создания" ), new RDORTPRealResParam() ) );
+	addParam( new RDORTPParamDesc( parser->registerName( "Время_создания" ), new RDORTPRealResParam() ) );
 }
 
 void RDORTPEnum::add(const std::string *const next) 
 { 
 	if ( std::find_if(enumVals.begin(), enumVals.end(), comparePointers<std::string>(next)) != enumVals.end() )
-		currParser->error( rdosim::RDOSyntaxError::RTP_SECOND_ENUM_VALUE, next->c_str() );
+		parser->error( rdosim::RDOSyntaxError::RTP_SECOND_ENUM_VALUE, next->c_str() );
 
 	enumVals.push_back(next); 
 }
@@ -44,7 +44,7 @@ int RDORTPEnum::findValue(const std::string *const val) const
 	std::vector<const std::string *>::const_iterator it = 
 		std::find_if(enumVals.begin(), enumVals.end(), comparePointers<std::string>(val));
 
-	if ( it == enumVals.end() ) currParser->error( rdosim::RDOSyntaxError::RTP_WRONG_ENUM_PARAM_VALUE, val->c_str() );
+	if ( it == enumVals.end() ) parser->error( rdosim::RDOSyntaxError::RTP_WRONG_ENUM_PARAM_VALUE, val->c_str() );
 
 //	return (it - enumVals.begin()) + 1;
 	return it - enumVals.begin();
@@ -52,17 +52,17 @@ int RDORTPEnum::findValue(const std::string *const val) const
 
 RDORTPResType::RDORTPResType( const std::string* const _name, const bool _permanent ):
 	name( _name ),
-	number( currParser->getRTP_id() ),
+	number( parser->getRTP_id() ),
 	permanent( _permanent )
 {
-	currParser->insertRTPResType( this );
+	parser->insertRTPResType( this );
 }
 
 void RDORTPResType::addParam( const RDORTPParamDesc* const param )
 {
 	if ( findRTPParam( param->getName() ) ) {
-		currParser->lexer_loc_restore();
-		currParser->error( rdosim::RDOSyntaxError::RTP_SECOND_PARAM_NAME, param->getName()->c_str() );
+		parser->lexer_loc_restore();
+		parser->error( rdosim::RDOSyntaxError::RTP_SECOND_PARAM_NAME, param->getName()->c_str() );
 	}
 	params.push_back( param );
 }
@@ -86,10 +86,10 @@ int RDORTPResType::getRTPParamNumber( const std::string* const param ) const
 
 int RDORTPResType::writeModelStructure() const
 {
-	currParser->modelStructure << getNumber() << " " << *getName() << " " << getParams().size() << std::endl;
+	parser->modelStructure << getNumber() << " " << *getName() << " " << getParams().size() << std::endl;
 	for(int i = 0; i < getParams().size(); i++)
 	{
-		currParser->modelStructure << "  " << (i+1) << " ";
+		parser->modelStructure << "  " << (i+1) << " ";
 		getParams().at(i)->writeModelStructure();
 	}
 	return 0;
@@ -97,29 +97,29 @@ int RDORTPResType::writeModelStructure() const
 
 int RDORTPParamDesc::writeModelStructure() const
 {
-	currParser->modelStructure << *getName() << " ";
+	parser->modelStructure << *getName() << " ";
 	getType()->writeModelStructure();
-//	currParser->modelStructure << " ";
+//	parser->modelStructure << " ";
 	return 0;
 }
 
 int RDORTPIntResParam::writeModelStructure() const
 {
-	currParser->modelStructure << "I" << std::endl;
+	parser->modelStructure << "I" << std::endl;
 	return 0;
 }
 
 int RDORTPRealResParam::writeModelStructure() const
 {
-	currParser->modelStructure << "R" << std::endl;
+	parser->modelStructure << "R" << std::endl;
 	return 0;
 }
 
 int RDORTPEnumResParam::writeModelStructure() const
 {
-	currParser->modelStructure << "E " << enu->enumVals.size() << std::endl;
+	parser->modelStructure << "E " << enu->enumVals.size() << std::endl;
 	for(int i = 0; i < enu->enumVals.size(); i++)
-		currParser->modelStructure << "    " << i << " " << *enu->enumVals.at(i) << std::endl;
+		parser->modelStructure << "    " << i << " " << *enu->enumVals.at(i) << std::endl;
 	return 0;
 }
 
@@ -132,22 +132,22 @@ const RDORTPResParam* RDORTPResParam::constructSuchAs( const int defVal ) const
 {
 //	std::ostringstream str;
 //	str << "Invalid default value: " << defVal;
-//	currParser->error(str.str().c_str());
-	currParser->error( rdosim::RDOSyntaxError::RTP_INVALID_DEFVAULT_INT_SUCHAS, defVal );
+//	parser->error(str.str().c_str());
+	parser->error( rdosim::RDOSyntaxError::RTP_INVALID_DEFVAULT_INT_SUCHAS, defVal );
 	return NULL;	// unreachable code...
 }
 const RDORTPResParam* RDORTPResParam::constructSuchAs( const double* const defVal ) const
 {
 //	std::ostringstream str;
 //	str << "Invalid default value: " << *defVal;
-//	currParser->error(str.str().c_str());
-	currParser->error( rdosim::RDOSyntaxError::RTP_INVALID_DEFVAULT_REAL_SUCHAS, *defVal );
+//	parser->error(str.str().c_str());
+	parser->error( rdosim::RDOSyntaxError::RTP_INVALID_DEFVAULT_REAL_SUCHAS, *defVal );
 	return NULL;	// unreachable code...
 }
 const RDORTPResParam* RDORTPResParam::constructSuchAs( const std::string* const defVal ) const
 {
-//	currParser->error(("Invalid default value: " + *defVal).c_str());
-	currParser->error( rdosim::RDOSyntaxError::RTP_INVALID_DEFVAULT_ENUM_SUCHAS, defVal->c_str() );
+//	parser->error(("Invalid default value: " + *defVal).c_str());
+	parser->error( rdosim::RDOSyntaxError::RTP_INVALID_DEFVAULT_ENUM_SUCHAS, defVal->c_str() );
 	return NULL;	// unreachable code...
 }
 
@@ -155,28 +155,28 @@ RDOValue RDORTPResParam::getRSSEnumValue(const std::string *const val) const
 {
 	std::ostringstream str;
 	str << "Unexpected parameter value: " << *val;
-	currParser->error(str.str().c_str());
+	parser->error(str.str().c_str());
 	return NULL;	// unreachable code...
 }
 RDOValue RDORTPResParam::getRSSIntValue(const int val) const 
 {
 	std::ostringstream str;
 	str << "Unexpected parameter value: " << val;
-	currParser->error(str.str().c_str());
+	parser->error(str.str().c_str());
 	return NULL;	// unreachable code...
 }
 RDOValue RDORTPResParam::getRSSRealValue(const double *const val) const
 {
 	std::ostringstream str;
 	str << "Unexpected parameter value: " << *val;
-	currParser->error(str.str().c_str());
+	parser->error(str.str().c_str());
 	return NULL;	// unreachable code...
 }
 
 RDOValue RDORTPIntResParam::getRSSDefaultValue()const 
 {
 	if(!dv->exist)
-		currParser->error("No default value");
+		parser->error("No default value");
 
 	return RDOValue(dv->GetIntValue());
 }
@@ -186,7 +186,7 @@ RDOValue RDORTPIntResParam::getRSSIntValue(const int val) const
 	if(diap->exist)
 	{
 		if((val < diap->minVal) || (val > diap->maxVal))
-			currParser->error(("integer value " + toString(val) + " out of range[" + toString(diap->minVal) + ", " + toString(diap->maxVal) + "]").c_str());
+			parser->error(("integer value " + toString(val) + " out of range[" + toString(diap->minVal) + ", " + toString(diap->maxVal) + "]").c_str());
 	}
 	return RDOValue(val);
 }
@@ -194,7 +194,7 @@ RDOValue RDORTPIntResParam::getRSSIntValue(const int val) const
 RDOValue RDORTPRealResParam::getRSSDefaultValue() const 
 {
 	if(!dv->exist)
-		currParser->error("No default value");
+		parser->error("No default value");
 
 	return RDOValue(dv->GetRealValue());
 }
@@ -204,7 +204,7 @@ RDOValue RDORTPRealResParam::getRSSRealValue(const double *const val) const
 	if(diap->exist)
 	{
 		if((*val < diap->minVal) || (*val > diap->maxVal))
-			currParser->error(("real value " + toString(*val) + " out of range[" + toString(diap->minVal) + ", " + toString(diap->maxVal) + "]").c_str());
+			parser->error(("real value " + toString(*val) + " out of range[" + toString(diap->minVal) + ", " + toString(diap->maxVal) + "]").c_str());
 	}
 	return RDOValue(*val);
 }
@@ -214,7 +214,7 @@ RDOValue RDORTPRealResParam::getRSSIntValue(const int val) const
 	if(diap->exist)
 	{
 		if((val < diap->minVal) || (val > diap->maxVal))
-			currParser->error(("real value " + toString(val) + " out of range[" + toString(diap->minVal) + ", " + toString(diap->maxVal) + "]").c_str());
+			parser->error(("real value " + toString(val) + " out of range[" + toString(diap->minVal) + ", " + toString(diap->maxVal) + "]").c_str());
 	}
 	return RDOValue(val);
 }
@@ -222,7 +222,7 @@ RDOValue RDORTPRealResParam::getRSSIntValue(const int val) const
 RDOValue RDORTPEnumResParam::getRSSDefaultValue() const 
 {
 	if(!dv->exist)
-		currParser->error("No default value");
+		parser->error("No default value");
 
 	return RDOValue(enu->findValue(dv->GetEnumValue()));
 }
@@ -242,7 +242,7 @@ void RDORTPIntDiap::check(const RDORTPIntDefVal *dv) const
 {
 	if(exist && dv->exist)
 		if((minVal > dv->GetIntValue()) || (maxVal < dv->GetIntValue()))
-			currParser->error(("Integer value " + toString(dv->GetIntValue()) + 
+			parser->error(("Integer value " + toString(dv->GetIntValue()) + 
 					" out of range[" + toString(minVal) + ", " + toString(maxVal) + "]").c_str());
 }
 
@@ -264,7 +264,7 @@ void RDORTPRealDiap::check(const RDORTPRealDefVal *dv) const
 {
 	if(exist && dv->exist)
 		if((minVal > dv->GetRealValue()) || (maxVal < dv->GetRealValue()))
-			currParser->error(("Integer value " + toString(dv->GetRealValue()) + 
+			parser->error(("Integer value " + toString(dv->GetRealValue()) + 
 					" out of range[" + toString(minVal) + ", " + toString(maxVal) + "]").c_str());
 }
 
@@ -292,36 +292,36 @@ const RDORTPResParam *RDORTPEnumResParam::constructSuchAs(const std::string *con
 
 int RDORTPDefVal::GetIntValue() const
 {
-	currParser->error("Invalid default value");
+	parser->error("Invalid default value");
 	return 0;	// unreachable code...
 }
 
 double RDORTPDefVal::GetRealValue() const
 {
-	currParser->error("Invalid default value");
+	parser->error("Invalid default value");
 	return 0.;	// unreachable code...
 }
 
 const std::string *RDORTPDefVal::GetEnumValue() const
 {
-	currParser->error("Invalid default value");
+	parser->error("Invalid default value");
 	return NULL;	// unreachable code...
 }
 
 int RDORTPIntResParam::getDiapTableFunc() const 
 {
 	if(!diap->exist)
-		currParser->error("integer table function parameter must have range");
+		parser->error("integer table function parameter must have range");
 
 	if(diap->minVal != 1)
-		currParser->error("integer table function parameter must have minimum value = 1");
+		parser->error("integer table function parameter must have minimum value = 1");
 
 	return diap->maxVal - diap->minVal + 1;
 }
 
 int RDORTPRealResParam::getDiapTableFunc() const
 {
-	currParser->error("unexpected real table function parameter");
+	parser->error("unexpected real table function parameter");
 	return 0;		// unreachable code...
 }
 
@@ -334,7 +334,7 @@ RDORTPParamDesc::RDORTPParamDesc( const std::string* const _name, const RDORTPRe
 	name( _name ),
 	parType( _parType )
 {
-	currParser->insertRTPParam( this );
+	parser->insertRTPParam( this );
 }
 
 }		// namespace rdoParse 

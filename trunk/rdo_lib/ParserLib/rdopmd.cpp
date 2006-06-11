@@ -25,41 +25,41 @@ int pmdlex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer )
 }
 void pmderror( char* mes )
 {
-	rdoParse::currParser->error( mes );
+	rdoParse::parser->error( mes );
 }
 
 //////////////////////////// RDOPMDPokaz::RDOPMDPokaz /////////////////////////////////
 RDOPMDPokaz::RDOPMDPokaz(const std::string *const _name, bool _trace)
-	: name(*_name), RDOPokazTrace(currParser->runTime) 
+	: name(*_name), RDOPokazTrace(parser->runTime) 
 {
 	trace = _trace; 
 }
 
 void RDOPMDPokaz::endOfCreation()
 {
-	id = currParser->getPMD_id();
-	currParser->insertPMDPokaz( this );
-	currParser->runTime->addRuntimePokaz(this);
+	id = parser->getPMD_id();
+	parser->insertPMDPokaz( this );
+	parser->runTime->addRuntimePokaz(this);
 }
 
 //////////////////////////// RDOPMDWatchPar::RDOPMDWatchPar /////////////////////////////////
 RDOPMDWatchPar::RDOPMDWatchPar(std::string *_name, bool _trace, std::string *_resName, std::string *_parName)
 	: RDOPMDPokaz(_name, _trace) 
 {
-	const RDORSSResource *const res = currParser->findRSSResource(_resName);
+	const RDORSSResource *const res = parser->findRSSResource(_resName);
 	if(!res)
-		currParser->error("Undefined resource name: " + *_resName);
+		parser->error("Undefined resource name: " + *_resName);
 
 	if(!res->getType()->isPermanent())
-		currParser->error("Resource must be of permanent type: " + *_resName);
+		parser->error("Resource must be of permanent type: " + *_resName);
 
 	const RDORTPParamDesc *const par = res->getType()->findRTPParam(_parName);
 	if(!par)
-		currParser->error("Undefined parameter name: " + *_parName + " for resource " + *_resName);
+		parser->error("Undefined parameter name: " + *_parName + " for resource " + *_resName);
 
 	int type = par->getType()->getType();
 	if((type != 0) && (type != 1))
-		currParser->error("Enumerative parameter: " + *_resName + "." + *_parName + " not allowed in watch_par statement");
+		parser->error("Enumerative parameter: " + *_resName + "." + *_parName + " not allowed in watch_par statement");
 
 	resNumber = res->getNumber();
 	parNumber = res->getType()->getRTPParamNumber(_parName);
@@ -250,13 +250,13 @@ RDOPMDWatchQuant::RDOPMDWatchQuant(std::string *_name, bool _trace, std::string 
 void RDOPMDWatchQuant::setLogic(RDOFUNLogic *_logic)
 {
 	logicCalc = _logic->calc;
-	currParser->getFUNGroupStack().pop_back();
+	parser->getFUNGroupStack().pop_back();
 }
 
 void RDOPMDWatchQuant::setLogicNoCheck()
 {
 	logicCalc = new RDOCalcConst(1);
-	currParser->getFUNGroupStack().pop_back();
+	parser->getFUNGroupStack().pop_back();
 }
 
 std::string RDOPMDWatchQuant::traceValue()
@@ -356,16 +356,16 @@ RDOPMDWatchValue::RDOPMDWatchValue(std::string *_name, bool _trace, std::string 
 
 void RDOPMDWatchValue::setLogic(RDOFUNLogic *_logic, RDOFUNArithm *_arithm)
 {
-	logicCalc = _logic->calc;
+	logicCalc  = _logic->calc;
 	arithmCalc = _arithm->createCalc();
-	currParser->getFUNGroupStack().pop_back();
+	parser->getFUNGroupStack().pop_back();
 }
 
 void RDOPMDWatchValue::setLogicNoCheck(RDOFUNArithm *_arithm)
 {
 	logicCalc = new RDOCalcConst(1);
 	arithmCalc = _arithm->createCalc();
-	currParser->getFUNGroupStack().pop_back();
+	parser->getFUNGroupStack().pop_back();
 }
 
 std::string RDOPMDWatchValue::traceValue()

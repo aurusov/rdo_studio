@@ -181,11 +181,11 @@ smr_show_mode:		NoShow
 					|	Animation;
 
 smr_cond:	smr_descr
-		|	smr_cond Terminate_if smr_logic						{ currParser->smr->setTerminateIf((RDOFUNLogic *)$3); @$; }
+		|	smr_cond Terminate_if smr_logic						{ parser->smr->setTerminateIf((RDOFUNLogic *)$3); @$; }
 		|	smr_cond Break_point IDENTIF	smr_logic
-		|	smr_cond IDENTIF					'=' smr_arithm		{ currParser->smr->setConstValue((std::string *)$2, (RDOFUNArithm *)$4); }
-		|	smr_cond IDENTIF '.' IDENTIF	'=' smr_arithm		{ currParser->smr->setResParValue((std::string *)$2, (std::string *)$4, (RDOFUNArithm *)$6); }
-		|	smr_cond IDENTIF '.' Seed		'=' INT_CONST		{ currParser->smr->setSeed((std::string *)$2, $6); };
+		|	smr_cond IDENTIF					'=' smr_arithm		{ parser->smr->setConstValue((std::string *)$2, (RDOFUNArithm *)$4); }
+		|	smr_cond IDENTIF '.' IDENTIF	'=' smr_arithm		{ parser->smr->setResParValue((std::string *)$2, (std::string *)$4, (RDOFUNArithm *)$6); }
+		|	smr_cond IDENTIF '.' Seed		'=' INT_CONST		{ parser->smr->setSeed((std::string *)$2, $6); };
 
 smr_logic: smr_arithm '=' smr_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 == *(RDOFUNArithm *)$3); }
 			| smr_arithm neq smr_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 != *(RDOFUNArithm *)$3); }

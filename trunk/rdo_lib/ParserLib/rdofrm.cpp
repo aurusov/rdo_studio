@@ -22,7 +22,7 @@ int frmlex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer )
 }
 void frmerror( char* mes )
 {
-	rdoParse::currParser->error( mes );
+	rdoParse::parser->error( mes );
 }
 
 RDOFRMColor::RDOFRMColor()
@@ -127,7 +127,7 @@ RDOFRMFrame::RDOFRMFrame(std::string *_name, RDOFUNLogic *logic)
 	: name(_name)
 {
 	conditionCalc = logic?logic->calc:NULL;
-	currParser->runTime->addRuntimeFrame(this);
+	parser->runTime->addRuntimeFrame(this);
 }
 
 void RDOFRMFrame::setBackground(int _r, int _g, int _b)

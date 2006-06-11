@@ -21,22 +21,22 @@ int rsslex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer )
 }
 void rsserror( char* mes )
 {
-	rdoParse::currParser->error( mes );
+	rdoParse::parser->error( mes );
 }
 
 RDORSSResource::RDORSSResource( const std::string* const _name, const RDORTPResType* const _resType ):
 	name( _name ),
 	resType( _resType ),
-	number( currParser->getRSS_id() ),
+	number( parser->getRSS_id() ),
 	trace( false )
 {
-	currParser->insertRSSResource( this );
+	parser->insertRSSResource( this );
 	currParam = resType->getParams().begin();
 }
 
 int RDORSSResource::writeModelStructure()
 {
-	currParser->modelStructure << (number + 1) << " " << *getName() << " " << getType()->getNumber() << std::endl;
+	parser->modelStructure << (number + 1) << " " << *getName() << " " << getType()->getNumber() << std::endl;
 	return 0;
 }
 

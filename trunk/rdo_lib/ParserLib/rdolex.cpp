@@ -1960,11 +1960,11 @@ static char THIS_FILE[] = __FILE__;
 #define YY_INTERACTIVE
 
 #define YY_USER_INIT {                      \
-	rdoParse::currParser->lexer_loc_init(); \
+	rdoParse::parser->lexer_loc_init(); \
 }
 
 #define YY_USER_ACTION {                      \
-	rdoParse::currParser->lexer_loc_action(); \
+	rdoParse::parser->lexer_loc_action(); \
 }
 
 #define comment_rdo 1
@@ -2796,8 +2796,8 @@ YY_RULE_SETUP
 						std::string n1(YYText());
 						int len = n1.length();
 						std::string *name = new std::string(n1, 1, len-2);
-						rdoParse::currParser->addName(name);
-						rdoParse::currParser->lexer_setvalue((int)name);
+						rdoParse::parser->addName(name);
+						rdoParse::parser->lexer_setvalue((int)name);
 						return QUOTED_IDENTIF;
 					}
 	YY_BREAK
@@ -2806,8 +2806,8 @@ YY_RULE_SETUP
 #line 168 ".\\parser.l"
 {
 						std::string *name = new std::string(YYText());
-						rdoParse::currParser->addName(name);
-						rdoParse::currParser->lexer_setvalue((int)name);
+						rdoParse::parser->addName(name);
+						rdoParse::parser->lexer_setvalue((int)name);
 						return QUOTED_IDENTIF_BAD;
 					}
 	YY_BREAK
@@ -2876,10 +2876,10 @@ YY_RULE_SETUP
 #line 192 ".\\parser.l"
 {
 						std::string n1(YYText(), YYLeng()-2);
-						rdoParse::currParser->lexer_setvalue(atoi(n1.c_str()));
+						rdoParse::parser->lexer_setvalue(atoi(n1.c_str()));
 						unput('.');
 						unput('.');
-						rdoParse::currParser->lexer_loc_delta_pos( -2 );
+						rdoParse::parser->lexer_loc_delta_pos( -2 );
 						return INT_CONST;
 					}
 	YY_BREAK
@@ -2887,7 +2887,7 @@ case 135:
 YY_RULE_SETUP
 #line 201 ".\\parser.l"
 {
-						rdoParse::currParser->lexer_setvalue(atoi(YYText()));
+						rdoParse::parser->lexer_setvalue(atoi(YYText()));
 						return INT_CONST;
 					}
 	YY_BREAK
@@ -2895,8 +2895,8 @@ case 136:
 YY_RULE_SETUP
 #line 206 ".\\parser.l"
 {
-						double *val = rdoParse::currParser->addDouble(new double(atof(YYText())));
-						rdoParse::currParser->lexer_setvalue((int)val);
+						double *val = rdoParse::parser->addDouble(new double(atof(YYText())));
+						rdoParse::parser->lexer_setvalue((int)val);
 						return REAL_CONST;
 					}
 	YY_BREAK
@@ -2905,8 +2905,8 @@ YY_RULE_SETUP
 #line 212 ".\\parser.l"
 {
 						std::string *name = new std::string(YYText());
-						rdoParse::currParser->addName(name);
-						rdoParse::currParser->lexer_setvalue((int)name);
+						rdoParse::parser->addName(name);
+						rdoParse::parser->lexer_setvalue((int)name);
 						return IDENTIF_BAD;
 					}
 	YY_BREAK
@@ -2917,8 +2917,8 @@ YY_RULE_SETUP
 					std::string n1(YYText());
 					std::string::size_type pos = n1.find_first_of("\r\n\t :");
 					std::string *name = new std::string(n1, 0, pos);
-					rdoParse::currParser->addName(name);
-					rdoParse::currParser->lexer_setvalue((int)name);
+					rdoParse::parser->addName(name);
+					rdoParse::parser->lexer_setvalue((int)name);
 					return IDENTIF_set;
 				}
 	YY_BREAK
@@ -2929,8 +2929,8 @@ YY_RULE_SETUP
 					std::string n1(YYText());
 					std::string::size_type pos = n1.find_first_of("\r\n\t :");
 					std::string *name = new std::string(n1, 0, pos);
-					rdoParse::currParser->addName(name);
-					rdoParse::currParser->lexer_setvalue((int)name);
+					rdoParse::parser->addName(name);
+					rdoParse::parser->lexer_setvalue((int)name);
 					return IDENTIF_NoChange_NoChange;
 				}
 	YY_BREAK
@@ -2941,8 +2941,8 @@ YY_RULE_SETUP
 					std::string n1(YYText());
 					std::string::size_type pos = n1.find_first_of("\r\n\t :");
 					std::string *name = new std::string(n1, 0, pos);
-					rdoParse::currParser->addName(name);
-					rdoParse::currParser->lexer_setvalue((int)name);
+					rdoParse::parser->addName(name);
+					rdoParse::parser->lexer_setvalue((int)name);
 					return IDENTIF_NoChange;
 				}
 	YY_BREAK
@@ -2953,8 +2953,8 @@ YY_RULE_SETUP
 					std::string n1(YYText());
 					std::string::size_type pos = n1.find_first_of("\r\n\t :");
 					std::string *name = new std::string(n1, 0, pos);
-					rdoParse::currParser->addName(name);
-					rdoParse::currParser->lexer_setvalue((int)name);
+					rdoParse::parser->addName(name);
+					rdoParse::parser->lexer_setvalue((int)name);
 					return IDENTIF_COLON;
 				}
 	YY_BREAK
@@ -2963,8 +2963,8 @@ YY_RULE_SETUP
 #line 255 ".\\parser.l"
 {
 					std::string *name = new std::string(YYText());
-					rdoParse::currParser->addName(name);
-					rdoParse::currParser->lexer_setvalue((int)name);
+					rdoParse::parser->addName(name);
+					rdoParse::parser->lexer_setvalue((int)name);
 					return IDENTIF;
 				}
 	YY_BREAK

@@ -168,10 +168,10 @@ RDOLexer* RDOParserRTP::getLexer( std::istream& in_stream, std::ostream& out_str
 // ----------------------------------------------------------------------------
 void RDOParserRSSPost::parse()
 {
-	std::vector< RDORSSResource* >::const_iterator it = currParser->getRSSResources().begin();
-	while ( it != currParser->getRSSResources().end() ) {
+	std::vector< RDORSSResource* >::const_iterator it = parser->getRSSResources().begin();
+	while ( it != parser->getRSSResources().end() ) {
 		RDOCalcCreateNumberedResource* createResource = new RDOCalcCreateNumberedResource( (*it)->getType()->getNumber(), (*it)->getTrace(), (*it)->getValues(), (*it)->getNumber(), (*it)->getType()->isPermanent() );
-		currParser->runTime->addInitCalc( createResource );
+		parser->runTime->addInitCalc( createResource );
 		it++;
 	}
 }
@@ -181,7 +181,7 @@ void RDOParserRSSPost::parse()
 // ----------------------------------------------------------------------------
 void RDOParserSTDFUN::parse()
 {
-	if ( rdoParse::currParser ) rdoParse::currParser->LoadStdFunctions();
+	if ( rdoParse::parser ) rdoParse::parser->LoadStdFunctions();
 }
 
 // ----------------------------------------------------------------------------
@@ -194,8 +194,8 @@ void RDOParserSMR1::parse( std::istream& in_stream )
 	} catch ( RDOSMR1OkException& ) {
 		// Everithing ok, just end of first part parsing
 	}
-	if ( rdoParse::currParser && rdoParse::currParser->smr && !rdoParse::currParser->smr->showRate ) {
-		rdoParse::currParser->smr->showRate = rdoParse::currParser->addDouble(new double(60.0));
+	if ( rdoParse::parser && rdoParse::parser->smr && !rdoParse::parser->smr->showRate ) {
+		rdoParse::parser->smr->showRate = rdoParse::parser->addDouble(new double(60.0));
 	}
 }
 

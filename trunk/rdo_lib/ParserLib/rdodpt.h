@@ -171,13 +171,19 @@ public:
 	void addHotKey(std::string *hotKey) { hotKeys.push_back(hotKey); }
 };
 
-///////////////////////// PROCESS /////////////////////////
-
-class RDODPTProcess
+// ----------------------------------------------------------------------------
+// ---------- RDODPTProcess
+// ----------------------------------------------------------------------------
+class RDODPTProcess: public RDODeletable
 {
+protected:
+	std::string name;
+
 public:
 	static std::string name_prefix;
 	static std::string name_sufix;
+
+	RDODPTProcess( const std::string& _name = "" );
 };
 
 }		// namespace rdoParse 

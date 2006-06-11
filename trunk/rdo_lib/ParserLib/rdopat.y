@@ -204,8 +204,8 @@ pat_conv:	Keep				{ $$ = RDOPATPattern::CS_Keep;     }
 
 pat_common_choice: pat_rel_res
 			| pat_rel_res first_keyword			{
-				currParser->lexer_loc_set( &(@2) );
-				currParser->error( "Перед $Body необходимо использовать 'with_max(1)' вместо 'first'" );
+				parser->lexer_loc_set( &(@2) );
+				parser->error( "Перед $Body необходимо использовать 'with_max(1)' вместо 'first'" );
 //				((RDOPATPattern *)$1)->setCommonChoiceFirst(); $$ = $1;
 			}
 			| pat_rel_res with_min pat_arithm	{	((RDOPATPattern *)$1)->setCommonChoiceWithMin((RDOFUNArithm *)$3); $$ = $1; }
@@ -214,8 +214,8 @@ pat_common_choice: pat_rel_res
 pat_time:	pat_common_choice Body {
 				$$ = $1;
 				if ( ((RDOPATPattern *)$1)->needTime() ) {
-					currParser->lexer_loc_set( @2.first_line, @2.first_column );
-					currParser->error( "Перед $Body пропущено ключевое слово $Time" );
+					parser->lexer_loc_set( @2.first_line, @2.first_column );
+					parser->error( "Перед $Body пропущено ключевое слово $Time" );
 				}
 			}
 			| pat_common_choice Time '=' pat_arithm Body {
@@ -223,12 +223,12 @@ pat_time:	pat_common_choice Body {
 				$$ = $1;
 			}
 			| pat_common_choice Time '=' pat_arithm IDENTIF {
-				currParser->lexer_loc_set( @5.first_line, @5.first_column );
-				currParser->error( "Пропущено ключевое слово $Body" );
+				parser->lexer_loc_set( @5.first_line, @5.first_column );
+				parser->error( "Пропущено ключевое слово $Body" );
 			}
 			| pat_common_choice Time '=' error {
-				currParser->lexer_loc_set( &(@4) );
-				currParser->error( "Ошибка в выражении времени" );
+				parser->lexer_loc_set( &(@4) );
+				parser->error( "Ошибка в выражении времени" );
 			};
 
 pat_body:	pat_time IDENTIF {
@@ -389,21 +389,21 @@ fun_const_enum_list:  IDENTIF		{
 fun_const_such_as:   such_as IDENTIF '.' IDENTIF {
 							std::string *type = (std::string *)$2;
 							std::string *param = (std::string *)$4;
-							const RDORTPResType *const rt = currParser->findRTPResType(type);
+							const RDORTPResType *const rt = parser->findRTPResType(type);
 							if(!rt)
-								currParser->error(("Invalid resource type in such_as: " + *type).c_str());
+								parser->error(("Invalid resource type in such_as: " + *type).c_str());
 
 							const RDORTPParamDesc *const rp = rt->findRTPParam(param);
 							if(!rp)
-								currParser->error(("Invalid resource parameter in such_as: " + *param).c_str());
+								parser->error(("Invalid resource parameter in such_as: " + *param).c_str());
 								
 							$$ = (int)rp;
 						} 
 					| such_as IDENTIF {
 							std::string *constName = (std::string *)$2;
-							const RDOFUNConstant *const cons = currParser->findFUNConst(constName);
+							const RDOFUNConstant *const cons = parser->findFUNConst(constName);
 							if(!cons)
-								currParser->error(("Invalid constant reference: " + *constName).c_str());
+								parser->error(("Invalid constant reference: " + *constName).c_str());
 								
 							$$ = (int)(cons->descr);
 						}; 

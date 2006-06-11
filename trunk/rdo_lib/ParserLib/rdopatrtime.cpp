@@ -135,49 +135,49 @@ RDOOperationTrace *RDOActivityOperationRuntime::clone2(RDOSimulator *sim)
 RDOActivityRuntime *RDORuleRuntime::createActivity(std::string *_oprName)
 {
 	RDOActivityRuleRuntime *rule = new RDOActivityRuleRuntime(runtime, this, trace, _oprName);
-	currParser->runTime->addRuntimeRule(rule); 
+	parser->runTime->addRuntimeRule(rule); 
 	return rule;
 }
 
 RDOActivityRuntime *RDORuleRuntime::createActivity(RDOCalc *condition, std::string *_oprName)
 {
 	RDOActivityRuleRuntime *rule = new RDOActivityRuleRuntime(runtime, this, trace, condition, _oprName);
-	currParser->runTime->addRuntimeRule(rule); 
+	parser->runTime->addRuntimeRule(rule); 
 	return rule;
 }
 
 RDOActivityRuntime *RDOIERuntime::createActivity(std::string *_oprName)
 {
 	RDOActivityIERuntime *ie = new RDOActivityIERuntime(runtime, this, trace, _oprName);
-	currParser->runTime->addRuntimeIE(ie); 
+	parser->runTime->addRuntimeIE(ie); 
 	return ie;
 }
 
 RDOActivityRuntime *RDOOperationRuntime::createActivity(std::string *_oprName)
 {
 	RDOActivityOperationRuntime *oper = new RDOActivityOperationRuntime(runtime, this, trace, _oprName);
-	currParser->runTime->addRuntimeOperation(oper); 
+	parser->runTime->addRuntimeOperation(oper); 
 	return oper;
 }
 
 RDOActivityRuntime *RDOOperationRuntime::createActivity(RDOCalc *condition, std::string *_oprName)
 {
 	RDOActivityOperationRuntime *oper = new RDOActivityOperationRuntime(runtime, this, trace, condition, _oprName);
-	currParser->runTime->addRuntimeOperation(oper); 
+	parser->runTime->addRuntimeOperation(oper); 
 	return oper;
 }
 
 RDOActivityRuntime *RDOKeyboardRuntime::createActivity(std::string *_oprName)
 {
 	RDOActivityKeyboardRuntime *oper = new RDOActivityKeyboardRuntime(runtime, this, trace, _oprName);
-	currParser->runTime->addRuntimeOperation(oper); 
+	parser->runTime->addRuntimeOperation(oper); 
 	return oper;
 }
 
 RDOActivityRuntime *RDOKeyboardRuntime::createActivity(RDOCalc *condition, std::string *_oprName)
 {
 	RDOActivityKeyboardRuntime *oper = new RDOActivityKeyboardRuntime(runtime, this, trace, condition, _oprName);
-	currParser->runTime->addRuntimeOperation(oper); 
+	parser->runTime->addRuntimeOperation(oper); 
 	return oper;
 }
 
@@ -191,7 +191,7 @@ void RDOActivityRuntime::setPatternParameters(RDOSimulator *sim)
 
 void RDOActivityRuntime::addHotKey(std::string *hotKey)
 {
-	currParser->error("This pattern is not of keyboard type");
+	parser->error("This pattern is not of keyboard type");
 }
 
 RDOActivityRuleRuntime::RDOActivityRuleRuntime(RDORuntime *rTime, RDOPatternRuntime *_pattern, bool _trace, std::string *_oprName)

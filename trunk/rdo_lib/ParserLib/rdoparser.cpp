@@ -18,16 +18,17 @@ static char THIS_FILE[] = __FILE__;
 namespace rdoParse 
 {
 
-RDOParser* currParser = NULL;
+RDOParser* parser = NULL;
 
 RDOParser::RDOParser():
-	parser( NULL ),
+	parser_base( NULL ),
 	lastDPTSearch( NULL ),
 //	patternCounter( 1 ),
 //	pokazCounter( 1 ),
 //	constCounter( 0 ),
 	smr( NULL )
 {
+	parser  = this;
 	runTime = new RDORuntime();
 	parsers.reset();
 }
@@ -36,21 +37,21 @@ std::stringstream& RDOParser::getModelStructure()
 {
 	modelStructure.str("");
 	modelStructure.clear();
-	currParser = this;
+	parser = this;
 
 	if ( modelStructure.str().empty() ) {
 
 		// RTP
 		modelStructure << std::endl << "$Resource_type" << std::endl;
-		std::for_each(allRTPResType.begin(), allRTPResType.end(), std::mem_fun(&RDORTPResType::writeModelStructure));
+		std::for_each( allRTPResType.begin(), allRTPResType.end(), std::mem_fun(&RDORTPResType::writeModelStructure) );
 
 		// RSS
 		modelStructure << std::endl << "$Resources" << std::endl;
-		std::for_each(allRSSResource.begin(), allRSSResource.end(), std::mem_fun(&RDORSSResource::writeModelStructure));
+		std::for_each( allRSSResource.begin(), allRSSResource.end(), std::mem_fun(&RDORSSResource::writeModelStructure) );
 
 		// PAT
 		modelStructure << std::endl << "$Pattern" << std::endl;
-		std::for_each(allPATPatterns.begin(), allPATPatterns.end(), std::mem_fun(&RDOPATPattern::writeModelStructure));
+		std::for_each( allPATPatterns.begin(), allPATPatterns.end(), std::mem_fun(&RDOPATPattern::writeModelStructure) );
 
 		// OPR/DPT
 		modelStructure << std::endl << "$Activities" << std::endl;
@@ -70,7 +71,7 @@ std::stringstream& RDOParser::getModelStructure()
 		modelStructure << runTime->writePokazStructure();
 	}
 
-	currParser = NULL;
+	parser = NULL;
 	return modelStructure;
 }
 
@@ -92,11 +93,11 @@ void RDOParser::parse( int files )
 	std::map< int, RDOParserBase* >::const_iterator it = parsers.begin();
 	while ( it != parsers.end() ) {
 		if ( it->first > max1 && it->first < min2 && std::find( file_list.begin(), file_list.end(), it->second->type ) != file_list.end() ) {
-			parser      = it->second;
-			currParser  = this;
+			parser_base = it->second;
+			parser  = this;
 			it->second->parse();
-			parser     = NULL;
-			currParser = NULL;
+			parser_base = NULL;
+			parser  = NULL;
 		}
 		it++;
 	}
@@ -114,11 +115,11 @@ void RDOParser::parse( rdoModelObjects::RDOParseType file )
 	std::map< int, RDOParserBase* >::const_iterator it = parsers.find( min );
 	while ( it != parsers.end() ) {
 		if ( it->first <= max ) {
-			parser      = it->second;
-			currParser  = this;
+			parser_base = it->second;
+			parser  = this;
 			it->second->parse();
-			parser     = NULL;
-			currParser = NULL;
+			parser_base = NULL;
+			parser  = NULL;
 		} else {
 			break;
 		}
@@ -134,11 +135,11 @@ void RDOParser::parse( rdoModelObjects::RDOParseType file, std::istream& stream 
 	std::map< int, RDOParserBase* >::const_iterator it = parsers.find( min );
 	while ( it != parsers.end() ) {
 		if ( it->first <= max ) {
-			parser      = it->second;
-			currParser  = this;
+			parser_base = it->second;
+			parser  = this;
 			it->second->parse( stream );
-			parser     = NULL;
-			currParser = NULL;
+			parser_base = NULL;
+			parser  = NULL;
 		} else {
 			break;
 		}
@@ -232,16 +233,16 @@ const RDOPATPattern *RDOParser::findPattern(const std::string *const name) const
 
 RDOParser::~RDOParser()
 {
-	currParser = this;
+	parser = this;
 	DeleteAllObjects( allNames );
 	DeleteAllObjects( allDoubles );
 	DeleteAllObjects( allDeletables );
-	currParser = NULL;
+	parser = NULL;
 }
 
 void addCalcToRuntime(RDOCalc *calc) 
 {	
-	currParser->runTime->allCalcs.push_back(calc); 
+	parser->runTime->allCalcs.push_back(calc); 
 }
 
 void RDOParser::LoadStdFunctions()
