@@ -1,0 +1,71 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: rdo_common - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\DOCUME~1\drobus\LOCALS~1\Temp\RSP802.tmp" with contents
+[
+/nologo /MDd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /D "_AFXDLL" /Fp"Debug/rdo_common.pch" /YX /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"D:\rdo\rdo_studio\rdo_common\rdocommon.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\drobus\LOCALS~1\Temp\RSP802.tmp" 
+Creating command line "link.exe -lib /nologo /out:"Debug\rdo_common.lib"  .\Debug\rdocommon.obj "
+<h3>Output Window</h3>
+Compiling...
+rdocommon.cpp
+Creating library...
+<h3>
+--------------------Configuration: rdo_runtime - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\DOCUME~1\drobus\LOCALS~1\Temp\RSP803.tmp" with contents
+[
+/nologo /MDd /W3 /Gm /Gi /GR /GX /ZI /Od /D "_LIB" /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_AFXDLL" /FR"Debug/" /Fp"Debug/rdo_runtime.pch" /Yu"pch.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"D:\rdo\rdo_studio\rdo_lib\rdo_runtime\ietrace.cpp"
+"D:\rdo\rdo_studio\rdo_lib\rdo_runtime\operationtrace.cpp"
+"D:\rdo\rdo_studio\rdo_lib\rdo_runtime\rdo.cpp"
+"D:\rdo\rdo_studio\rdo_lib\rdo_runtime\rdobase.cpp"
+"D:\rdo\rdo_studio\rdo_lib\rdo_runtime\rdoprocess.cpp"
+"D:\rdo\rdo_studio\rdo_lib\rdo_runtime\rdotrace.cpp"
+"D:\rdo\rdo_studio\rdo_lib\rdo_runtime\ruletrace.cpp"
+"D:\rdo\rdo_studio\rdo_lib\rdo_runtime\searchtrace.cpp"
+"D:\rdo\rdo_studio\rdo_lib\rdo_runtime\searchtree.cpp"
+"D:\rdo\rdo_studio\rdo_lib\rdo_runtime\simtrace.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\drobus\LOCALS~1\Temp\RSP803.tmp" 
+Creating temporary file "C:\DOCUME~1\drobus\LOCALS~1\Temp\RSP804.tmp" with contents
+[
+/nologo /MDd /W3 /Gm /Gi /GR /GX /ZI /Od /D "_LIB" /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_AFXDLL" /FR"Debug/" /Fp"Debug/rdo_runtime.pch" /Yc"pch.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"D:\rdo\rdo_studio\rdo_lib\rdo_runtime\pch.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\drobus\LOCALS~1\Temp\RSP804.tmp" 
+Creating temporary file "C:\DOCUME~1\drobus\LOCALS~1\Temp\RSP805.tmp" with contents
+[
+/nologo /out:"Debug\rdo_runtime.lib" 
+.\Debug\ietrace.obj
+.\Debug\operationtrace.obj
+.\Debug\pch.obj
+.\Debug\rdo.obj
+.\Debug\rdobase.obj
+.\Debug\rdoprocess.obj
+.\Debug\rdotrace.obj
+.\Debug\ruletrace.obj
+.\Debug\searchtrace.obj
+.\Debug\searchtree.obj
+.\Debug\simtrace.obj
+\rdo\rdo_studio\rdo_common\Debug\rdo_common.lib
+]
+Creating command line "link.exe -lib @C:\DOCUME~1\drobus\LOCALS~1\Temp\RSP805.tmp"
+<h3>Output Window</h3>
+Compiling...
+pch.cpp
+Compiling...
+ietrace.cpp
+cl.exe terminated at user request.
+
+</pre>
+</body>
+</html>

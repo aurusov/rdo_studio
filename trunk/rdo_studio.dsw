@@ -3,48 +3,6 @@ Microsoft Developer Studio Workspace File, Format Version 6.00
 
 ###############################################################################
 
-Project: "ParserLib"=.\rdo_lib\ParserLib\ParserLib.dsp - Package Owner=<4>
-
-Package=<5>
-{{{
-}}}
-
-Package=<4>
-{{{
-    Begin Project Dependency
-    Project_Dep_Name RdoLib
-    End Project Dependency
-}}}
-
-###############################################################################
-
-Project: "RdoLib"=.\rdo_lib\RdoLib.dsp - Package Owner=<4>
-
-Package=<5>
-{{{
-}}}
-
-Package=<4>
-{{{
-}}}
-
-###############################################################################
-
-Project: "Simulator"=.\rdo_lib\Simulator\Simulator.dsp - Package Owner=<4>
-
-Package=<5>
-{{{
-}}}
-
-Package=<4>
-{{{
-    Begin Project Dependency
-    Project_Dep_Name ParserLib
-    End Project Dependency
-}}}
-
-###############################################################################
-
 Project: "rdo_common"=.\rdo_common\rdo_common.dsp - Package Owner=<4>
 
 Package=<5>
@@ -69,6 +27,42 @@ Package=<4>
 
 ###############################################################################
 
+Project: "rdo_help_lang_eng"=.\rdo_help\rdo_lang_eng\rdo_lang_eng.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "rdo_help_lang_rus"=.\rdo_help\rdo_lang_rus\rdo_lang_rus.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "rdo_help_studio_rus"=.\rdo_help\rdo_studio_rus\rdo_studio_rus.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
 Project: "rdo_kernel"=.\rdo_kernel\rdo_kernel.dsp - Package Owner=<4>
 
 Package=<5>
@@ -81,13 +75,13 @@ Package=<4>
     Project_Dep_Name rdo_repository
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name Simulator
+    Project_Dep_Name rdo_simulator
     End Project Dependency
 }}}
 
 ###############################################################################
 
-Project: "rdo_lang_eng"=.\helps\rdo_lang_eng\rdo_lang_eng.dsp - Package Owner=<4>
+Project: "rdo_parser"=.\rdo_lib\rdo_parser\rdo_parser.dsp - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -95,18 +89,9 @@ Package=<5>
 
 Package=<4>
 {{{
-}}}
-
-###############################################################################
-
-Project: "rdo_lang_rus"=.\helps\rdo_lang_rus\rdo_lang_rus.dsp - Package Owner=<4>
-
-Package=<5>
-{{{
-}}}
-
-Package=<4>
-{{{
+    Begin Project Dependency
+    Project_Dep_Name rdo_runtime
+    End Project Dependency
 }}}
 
 ###############################################################################
@@ -168,6 +153,36 @@ Package=<4>
 
 ###############################################################################
 
+Project: "rdo_runtime"=.\rdo_lib\rdo_runtime\rdo_runtime.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name rdo_common
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "rdo_simulator"=.\rdo_lib\rdo_simulator\rdo_simulator.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name rdo_parser
+    End Project Dependency
+}}}
+
+###############################################################################
+
 Project: "rdo_stream"=.\rdo_stream\rdo_stream.dsp - Package Owner=<4>
 
 Package=<5>
@@ -202,36 +217,6 @@ Package=<4>
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name rdo_plugin_mfc
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name rdo_common
-    End Project Dependency
-}}}
-
-###############################################################################
-
-Project: "rdo_studio_rus"=.\helps\rdo_studio_rus\rdo_studio_rus.dsp - Package Owner=<4>
-
-Package=<5>
-{{{
-}}}
-
-Package=<4>
-{{{
-}}}
-
-###############################################################################
-
-Project: "rdogui"=.\rdo_lib\rdogui\rdogui.dsp - Package Owner=<4>
-
-Package=<5>
-{{{
-}}}
-
-Package=<4>
-{{{
-    Begin Project Dependency
-    Project_Dep_Name Simulator
     End Project Dependency
 }}}
 

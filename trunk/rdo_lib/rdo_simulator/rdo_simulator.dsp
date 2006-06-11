@@ -1,24 +1,24 @@
-# Microsoft Developer Studio Project File - Name="rdo_kernel" - Package Owner=<4>
+# Microsoft Developer Studio Project File - Name="rdo_simulator" - Package Owner=<4>
 # Microsoft Developer Studio Generated Build File, Format Version 6.00
 # ** DO NOT EDIT **
 
 # TARGTYPE "Win32 (x86) Static Library" 0x0104
 
-CFG=rdo_kernel - Win32 Debug
+CFG=rdo_simulator - Win32 Debug
 !MESSAGE This is not a valid makefile. To build this project using NMAKE,
 !MESSAGE use the Export Makefile command and run
 !MESSAGE 
-!MESSAGE NMAKE /f "rdo_kernel.mak".
+!MESSAGE NMAKE /f "rdo_simulator.mak".
 !MESSAGE 
 !MESSAGE You can specify a configuration when running NMAKE
 !MESSAGE by defining the macro CFG on the command line. For example:
 !MESSAGE 
-!MESSAGE NMAKE /f "rdo_kernel.mak" CFG="rdo_kernel - Win32 Debug"
+!MESSAGE NMAKE /f "rdo_simulator.mak" CFG="rdo_simulator - Win32 Debug"
 !MESSAGE 
 !MESSAGE Possible choices for configuration are:
 !MESSAGE 
-!MESSAGE "rdo_kernel - Win32 Release" (based on "Win32 (x86) Static Library")
-!MESSAGE "rdo_kernel - Win32 Debug" (based on "Win32 (x86) Static Library")
+!MESSAGE "rdo_simulator - Win32 Release" (based on "Win32 (x86) Static Library")
+!MESSAGE "rdo_simulator - Win32 Debug" (based on "Win32 (x86) Static Library")
 !MESSAGE 
 
 # Begin Project
@@ -28,9 +28,9 @@ CFG=rdo_kernel - Win32 Debug
 CPP=cl.exe
 RSC=rc.exe
 
-!IF  "$(CFG)" == "rdo_kernel - Win32 Release"
+!IF  "$(CFG)" == "rdo_simulator - Win32 Release"
 
-# PROP BASE Use_MFC 0
+# PROP BASE Use_MFC 2
 # PROP BASE Use_Debug_Libraries 0
 # PROP BASE Output_Dir "Release"
 # PROP BASE Intermediate_Dir "Release"
@@ -40,9 +40,9 @@ RSC=rc.exe
 # PROP Output_Dir "Release"
 # PROP Intermediate_Dir "Release"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GX /O2 /I "." /I "../rdo_repository" /I "../rdo_lib/rdo_simulator" /I "../rdo_stream" /I "../rdo_common" /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /YX /FD /c
-# ADD BASE RSC /l 0x419 /d "NDEBUG"
+# ADD BASE CPP /nologo /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_AFXDLL" /YX /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /I "." /I "../rdo_runtime" /I "../rdo_parser" /I ".." /I "../../rdo_kernel" /I "../../rdo_repository" /I "../../rdo_stream" /I "../../rdo_common" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /YX /FD /c
+# ADD BASE RSC /l 0x419 /d "NDEBUG" /d "_AFXDLL"
 # ADD RSC /l 0x419 /d "NDEBUG"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
@@ -51,9 +51,9 @@ LIB32=link.exe -lib
 # ADD BASE LIB32 /nologo
 # ADD LIB32 /nologo
 
-!ELSEIF  "$(CFG)" == "rdo_kernel - Win32 Debug"
+!ELSEIF  "$(CFG)" == "rdo_simulator - Win32 Debug"
 
-# PROP BASE Use_MFC 0
+# PROP BASE Use_MFC 2
 # PROP BASE Use_Debug_Libraries 1
 # PROP BASE Output_Dir "Debug"
 # PROP BASE Intermediate_Dir "Debug"
@@ -63,9 +63,9 @@ LIB32=link.exe -lib
 # PROP Output_Dir "Debug"
 # PROP Intermediate_Dir "Debug"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /YX /FD /GZ /c
-# ADD CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /I "." /I "../rdo_repository" /I "../rdo_lib/rdo_simulator" /I "../rdo_stream" /I "../rdo_common" /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /D "_AFXDLL" /FR /YX /FD /GZ /c
-# ADD BASE RSC /l 0x419 /d "_DEBUG"
+# ADD BASE CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_AFXDLL" /YX /FD /GZ /c
+# ADD CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /I "." /I "../rdo_runtime" /I "../rdo_parser" /I ".." /I "../../rdo_kernel" /I "../../rdo_repository" /I "../../rdo_stream" /I "../../rdo_common" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /FR /YX /FD /GZ /c
+# ADD BASE RSC /l 0x419 /d "_DEBUG" /d "_AFXDLL"
 # ADD RSC /l 0x419 /d "_DEBUG" /d "_AFXDLL"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
@@ -78,14 +78,14 @@ LIB32=link.exe -lib
 
 # Begin Target
 
-# Name "rdo_kernel - Win32 Release"
-# Name "rdo_kernel - Win32 Debug"
+# Name "rdo_simulator - Win32 Release"
+# Name "rdo_simulator - Win32 Debug"
 # Begin Group "Source Files"
 
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 # Begin Source File
 
-SOURCE=.\rdokernel.cpp
+SOURCE=.\rdosimwin.cpp
 # End Source File
 # End Group
 # Begin Group "Header Files"
@@ -93,7 +93,7 @@ SOURCE=.\rdokernel.cpp
 # PROP Default_Filter "h;hpp;hxx;hm;inl"
 # Begin Source File
 
-SOURCE=.\rdokernel.h
+SOURCE=.\rdosimwin.h
 # End Source File
 # End Group
 # End Target
