@@ -1,0 +1,99 @@
+<HTML>
+<HEAD>
+<TITLE>Закладка Styles and Color</TITLE>
+<LINK rel = "stylesheet" type = "text/css" href = "../styles.css">
+</HEAD>
+<SCRIPT language="JavaScript" src="../sections.js"></SCRIPT>
+<BODY>
+	<DIV>
+		<H1>ЗАКЛАДКА STYLES AND COLOR</H1>
+		<P>На данной закладке пользователь может настроить режим цветового выделения синтаксических конструкций языка, цвета окон вывода процесса компиляции и отладочной информации, цвета объектов трассировки, графиков и анимации.</P>
+		<DIV id="edl" style="padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px" onclick="swapSections(edf, edl)">
+			<P style="text-align: center; margin-bottom: 0px"><IMG style="cursor: hand" src="../images/options_styles_and_color.gif" width="300"></P>
+			<P style="cursor: hand; text-align: center; margin-top: 0px"><A onclick="swapSections(edf, edl)" href="#nowhere">Увеличить рисунок</A></P>
+		</DIV>
+		<DIV id="edf" style="display: none; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px" onclick="swapSections(edl, edf)">
+			<P style="text-align: center; margin-bottom: 0px"><IMG style="cursor: hand" src="../images/options_styles_and_color.gif"></P>
+			<P  style="cursor: hand; text-align: center; margin-top: 0px"><A onclick="swapSections(edl, edf)" href="#nowhere">Уменьшить рисунок</A></P>
+		</DIV>
+		<P>Параметры закладки стилей:</P>
+		<TABLE class="visible" style="width: 95.5%">
+			<TR valign="top">
+				<TH align=left width=20%>Наименование настройки</TH>
+				<TH align=left width="80%">Назначение</TH>
+			</TR>
+			<TR valign="top"><A name="groups"></A>
+				<TD class="visible" width=20%><FONT class="syntax">Группы элементов</FONT></TD>
+				<TD class="visible" width="80%">Существует несколько типов окон отображения информации. Различные окна могут состоять из различных элементов. Элементы окон одного типа объеденены в одну группу. Каждый элемент группы может быть изменен для более наглядного отображения</TD>
+			</TR>
+			<TR valign="top"><A name="theme"></A>
+				<TD class="visible" width=20%><FONT class="syntax">Theme</FONT></TD>
+				<TD class="visible" width="80%">Понятие темы включает в себя все настойки цветового выделения для выбранной группы элементов. Из выпадающего списка можно выбрать одну из подготовленных заранее тем. В нижней части закладки расположено окно предварительного просмотра темы для группы. На базе любой из подготовленных заранее тем пользователь может разработать свою тему</TD>
+			</TR>
+			<TR valign="top"><A name="font"></A>
+				<TD class="visible" width=20%><FONT class="syntax">Наименование&nbsp;и&nbsp;размер&nbsp;шрифта</FONT></TD>
+				<TD class="visible" width="80%">Являются единымы для всех элементов группы. Для изменения шрифта необходимо выбрать его наименование или размер из соотвествующего выпадающего списка. Для некоторых групп доступны только шрифты с фиксированной шириной символа</TD>
+			</TR>
+			<TR valign="top"><A name="fore_back"></A>
+				<TD class="visible" width=20%><FONT class="syntax">Foreground,&nbsp;Background</FONT></TD>
+				<TD class="visible" width="80%">Настройка цвета элемента и его фона. Существует возможность выбрать цвет из выпадающего списка, а также задать собственный цвет, нажав на кнопку <FONT class="syntax">...</FONT>. При этом откроется стандартный диалог WINDOWS для выбора цвета. Выбранный цвет добавляется в список и, если не присутствовал в списке изначально, отображается в виде тройки [R, G, B]</TD>
+			</TR>
+			<TR valign="top"><A name="b_i_u"></A>
+				<TD class="visible" width=20%><FONT class="syntax">Bold,&nbsp;Italic,&nbsp;Underline</FONT></TD>
+				<TD class="visible" width="80%">С помощью этих флажков задаются параметры шрифта темы для выбранного элемента группы</TD>
+			</TR>
+			<TR valign="top"><A name="word_wrap"></A>
+				<TD class="visible" width=20%><FONT class="syntax">Word&nbsp;wrap</FONT></TD>
+				<TD class="visible" width="80%">Если данный флажок установлен, то включается режим переноса текста по словам</TD>
+			</TR>
+			<TR valign="top"><A name="horz_scroll"></A>
+				<TD class="visible" width=20%><FONT class="syntax">Horizontal&nbsp;scroll&nbsp;bar</FONT></TD>
+				<TD class="visible" width="80%">Если данный флажок не установлен, то горизонтальная полоса прокрутки не будет отображаться</TD>
+			</TR>
+			<TR valign="top"><A name="bookmark"></A>
+				<TD class="visible" width=20%><FONT class="syntax">Bookmark</FONT></TD>
+				<TD class="visible" width="80%">Пользователь может выбрать форму маркера <A href="../html/work_model_bookmarks.htm">закладки</A></TD>
+			</TR>
+			<TR valign="top"><A name="fold"></A>
+				<TD class="visible" width=20%><FONT class="syntax">Fold</FONT></TD>
+				<TD class="visible" width="80%">Пользователь может выбрать форму маркера <A href="../html/work_model_folds.htm">сворачиваемых фрагментов текста</A>, в том числе возможно отображение границ сворачиваемых фрагментов</TD>
+			</TR>
+			<TR valign="top"><A name="vert_border"></A>
+				<TD class="visible" width=20%><FONT class="syntax">Vertical&nbsp;border</FONT></TD>
+				<TD class="visible" width="80%">Величина промежутка между строчками объекта трассировки</TD>
+			</TR>
+			<TR valign="top"><A name="horz_border"></A>
+				<TD class="visible" width=20%><FONT class="syntax">Horizontal&nbsp;border</FONT></TD>
+				<TD class="visible" width="80%">Величина левого отступа объекта трассировки</TD>
+			</TR>
+			<TR valign="top"><A name="chart_title_font_size"></A>
+				<TD class="visible" width=20%><FONT class="syntax">Title&nbsp;font&nbsp;size</FONT></TD>
+				<TD class="visible" width="80%">Размер шрифта заголовка графика</TD>
+			</TR>
+			<TR valign="top"><A name="chart_legend_font_size"></A>
+				<TD class="visible" width=20%><FONT class="syntax">Legend&nbsp;font&nbsp;size</FONT></TD>
+				<TD class="visible" width="80%">Размер шрифта &quot;легенды&quot; графика</TD>
+			</TR>
+			<TR valign="top"><A name="chart_minimal_interval"></A>
+				<TD class="visible" width=20%><FONT class="syntax">Minimal&nbsp;interval&nbsp;between&nbsp;points&nbsp;of&nbsp;time</FONT></TD>
+				<TD class="visible" width="80%">Величина миннимального интервала между событиями</TD>
+			</TR>
+			<TR valign="top"><A name="preview_as"></A>
+				<TD class="visible" width=20%><FONT class="syntax">Preview as</FONT></TD>
+				<TD class="visible" width="80%">Задает тип окна предварительного просмотра темы</TD>
+			</TR>
+		</TABLE>
+		<H4>См. также</H4>
+		<P><A href="work_options_general.htm">Закладка General</A></P>
+		<P><A href="work_options_editor.htm">Закладка Editor</A></P>
+		<P><A href="work_options_tabs.htm">Закладка Tabs</A></P>
+	</DIV>
+	<A name="prev_section;../html/work_model_intro.htm;Работа с моделью">
+	<A name="next_section;../html/rdo_lang_help.htm;Справка по языку РДО">
+	<A name="section_top;../html/work_options.htm;Настройки">
+	<A name="section;Настройки;">
+	<A name="prev_topic;../html/work_options_tabs.htm;Закладка Tabs">
+	<A name="next_topic;../html/work_help.htm;Получение справочной информации">
+	<A name="title;Справка по RAO-studio"><BR><SCRIPT src="../navbar.js"></SCRIPT>
+</BODY>
+</HTML>
