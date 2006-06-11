@@ -12,11 +12,11 @@ static char THIS_FILE[] = __FILE__;
 #define YY_INTERACTIVE
 
 #define YY_USER_INIT {                      \
-	rdoParse::currParser->lexer_loc_init(); \
+	rdoParse::parser->lexer_loc_init(); \
 }
 
 #define YY_USER_ACTION {                      \
-	rdoParse::currParser->lexer_loc_action(); \
+	rdoParse::parser->lexer_loc_action(); \
 }
 
 %}
@@ -160,15 +160,15 @@ active				return(active);
 						std::string n1(YYText());
 						int len = n1.length();
 						std::string *name = new std::string(n1, 1, len-2);
-						rdoParse::currParser->addName(name);
-						rdoParse::currParser->lexer_setvalue((int)name);
+						rdoParse::parser->addName(name);
+						rdoParse::parser->lexer_setvalue((int)name);
 						return QUOTED_IDENTIF;
 					}
 
 (\'[^\']*\n\r)		{
 						std::string *name = new std::string(YYText());
-						rdoParse::currParser->addName(name);
-						rdoParse::currParser->lexer_setvalue((int)name);
+						rdoParse::parser->addName(name);
+						rdoParse::parser->lexer_setvalue((int)name);
 						return QUOTED_IDENTIF_BAD;
 					}
 
@@ -191,28 +191,28 @@ active				return(active);
 
 ([+-]?[0-9]+"..")	{
 						std::string n1(YYText(), YYLeng()-2);
-						rdoParse::currParser->lexer_setvalue(atoi(n1.c_str()));
+						rdoParse::parser->lexer_setvalue(atoi(n1.c_str()));
 						unput('.');
 						unput('.');
-						rdoParse::currParser->lexer_loc_delta_pos( -2 );
+						rdoParse::parser->lexer_loc_delta_pos( -2 );
 						return INT_CONST;
 					}
 
 [+-]?[0-9]+			{
-						rdoParse::currParser->lexer_setvalue(atoi(YYText()));
+						rdoParse::parser->lexer_setvalue(atoi(YYText()));
 						return INT_CONST;
 					}
 
 ([+-]?[0-9]+"."?[0-9]*([Ee][+-]?[0-9]+)?)	{
-						double *val = rdoParse::currParser->addDouble(new double(atof(YYText())));
-						rdoParse::currParser->lexer_setvalue((int)val);
+						double *val = rdoParse::parser->addDouble(new double(atof(YYText())));
+						rdoParse::parser->lexer_setvalue((int)val);
 						return REAL_CONST;
 					}
 
 [+-]?[0-9]+"."?[0-9]?[Ee]?[+-]?[0-9]?[A-Za-zР-пр-џ\xB8_$][A-Za-zР-пр-џ\xB80-9_$]*	{
 						std::string *name = new std::string(YYText());
-						rdoParse::currParser->addName(name);
-						rdoParse::currParser->lexer_setvalue((int)name);
+						rdoParse::parser->addName(name);
+						rdoParse::parser->lexer_setvalue((int)name);
 						return IDENTIF_BAD;
 					}
 
@@ -220,8 +220,8 @@ active				return(active);
 					std::string n1(YYText());
 					std::string::size_type pos = n1.find_first_of("\r\n\t :");
 					std::string *name = new std::string(n1, 0, pos);
-					rdoParse::currParser->addName(name);
-					rdoParse::currParser->lexer_setvalue((int)name);
+					rdoParse::parser->addName(name);
+					rdoParse::parser->lexer_setvalue((int)name);
 					return IDENTIF_set;
 				}
 
@@ -229,8 +229,8 @@ active				return(active);
 					std::string n1(YYText());
 					std::string::size_type pos = n1.find_first_of("\r\n\t :");
 					std::string *name = new std::string(n1, 0, pos);
-					rdoParse::currParser->addName(name);
-					rdoParse::currParser->lexer_setvalue((int)name);
+					rdoParse::parser->addName(name);
+					rdoParse::parser->lexer_setvalue((int)name);
 					return IDENTIF_NoChange_NoChange;
 				}
 
@@ -238,8 +238,8 @@ active				return(active);
 					std::string n1(YYText());
 					std::string::size_type pos = n1.find_first_of("\r\n\t :");
 					std::string *name = new std::string(n1, 0, pos);
-					rdoParse::currParser->addName(name);
-					rdoParse::currParser->lexer_setvalue((int)name);
+					rdoParse::parser->addName(name);
+					rdoParse::parser->lexer_setvalue((int)name);
 					return IDENTIF_NoChange;
 				}
 
@@ -247,15 +247,15 @@ active				return(active);
 					std::string n1(YYText());
 					std::string::size_type pos = n1.find_first_of("\r\n\t :");
 					std::string *name = new std::string(n1, 0, pos);
-					rdoParse::currParser->addName(name);
-					rdoParse::currParser->lexer_setvalue((int)name);
+					rdoParse::parser->addName(name);
+					rdoParse::parser->lexer_setvalue((int)name);
 					return IDENTIF_COLON;
 				}
 
 [A-Za-zР-пр-џ\xB8_$][A-Za-zР-пр-џ\xB80-9_$]*  {
 					std::string *name = new std::string(YYText());
-					rdoParse::currParser->addName(name);
-					rdoParse::currParser->lexer_setvalue((int)name);
+					rdoParse::parser->addName(name);
+					rdoParse::parser->lexer_setvalue((int)name);
 					return IDENTIF;
 				}
 
