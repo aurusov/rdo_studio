@@ -44,12 +44,14 @@ enum DPTSearchValue
 
 class RDODPTSearchActivity: public RDODeletable
 {
+private:
 	std::string *name;
 	RDOPATPatternRule *rule;
 	DPTSearchValue value;
 	RDOFUNArithm *ruleCost;
 	int currParamNum;
 	std::vector<RDOValue> params;
+
 public:
 	RDODPTSearchActivity(std::string *_name, std::string *_ruleName);
 	void setValue(DPTSearchValue _value, RDOFUNArithm *_ruleCost);
@@ -65,6 +67,7 @@ public:
 
 class RDODPTSearch: public RDODeletable
 {
+private:
 	const std::string *const name;
 	DPTSearchTrace trace;
 	RDOFUNLogic *conditon;
@@ -72,8 +75,10 @@ class RDODPTSearch: public RDODeletable
 	RDOFUNArithm *evalBy;
 	bool compTops;
 	std::vector<RDODPTSearchActivity *> activities;
+
 public:
 	RDODPTSearchActivity *lastActivity;
+
 public:
 	RDODPTSearch(std::string *_name, DPTSearchTrace _trace = DPTnotrace);
 	void setCondition(RDOFUNLogic *_conditon = NULL) { conditon = _conditon; }
@@ -101,10 +106,12 @@ public:
 
 class RDODPTSomeActivity: public RDODeletable
 {
+private:
 	std::string *name;
 	const RDOPATPattern *pattern;
 	int currParamNum;
 	std::vector<RDOValue> params;
+
 public:
 	RDODPTSomeActivity(std::string *_name, std::string *_ruleName);
 	const std::string *getName() const { return name; }
@@ -118,10 +125,12 @@ public:
 
 class RDODPTSome: public RDODeletable
 {
+private:
 	const std::string *const name;
 	RDOFUNLogic *conditon;
 	std::vector<RDODPTSomeActivity *> activities;
 	RDODPTSomeActivity *lastActivity;
+
 public:
 	RDODPTSome(std::string *_name);
 	void setCondition(RDOFUNLogic *_conditon = NULL) { conditon = _conditon; }
@@ -144,11 +153,13 @@ public:
 
 class RDODPTFreeActivity: public RDODeletable
 {
+private:
 	std::string *name;
 	const RDOPATPattern *pattern;
 	int currParamNum;
 	std::vector<RDOValue> params;
 	std::vector<std::string *> hotKeys;
+
 public:
 	RDODPTFreeActivity(std::string *_name, std::string *_ruleName);
 	const std::string *getName() const { return name; }

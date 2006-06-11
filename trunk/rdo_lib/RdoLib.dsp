@@ -90,6 +90,8 @@ SOURCE=.\IETrace.cpp
 
 !IF  "$(CFG)" == "RdoLib - Win32 Release"
 
+# ADD CPP /Yu"pch.h"
+
 !ELSEIF  "$(CFG)" == "RdoLib - Win32 Debug"
 
 # ADD CPP /Yu"pch.h"
@@ -102,6 +104,8 @@ SOURCE=.\IETrace.cpp
 SOURCE=.\OperationTrace.cpp
 
 !IF  "$(CFG)" == "RdoLib - Win32 Release"
+
+# ADD CPP /Yu"pch.h"
 
 !ELSEIF  "$(CFG)" == "RdoLib - Win32 Debug"
 
@@ -116,9 +120,11 @@ SOURCE=.\pch.cpp
 
 !IF  "$(CFG)" == "RdoLib - Win32 Release"
 
+# ADD CPP /Yc"pch.h"
+
 !ELSEIF  "$(CFG)" == "RdoLib - Win32 Debug"
 
-# ADD CPP /Yc
+# ADD CPP /Yc"pch.h"
 
 !ENDIF 
 
@@ -128,6 +134,8 @@ SOURCE=.\pch.cpp
 SOURCE=.\Rdo.cpp
 
 !IF  "$(CFG)" == "RdoLib - Win32 Release"
+
+# ADD CPP /Yu"pch.h"
 
 !ELSEIF  "$(CFG)" == "RdoLib - Win32 Debug"
 
@@ -142,6 +150,23 @@ SOURCE=.\RdoBase.cpp
 
 !IF  "$(CFG)" == "RdoLib - Win32 Release"
 
+# ADD CPP /Yu"pch.h"
+
+!ELSEIF  "$(CFG)" == "RdoLib - Win32 Debug"
+
+# ADD CPP /Yu"pch.h"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdoprocess.cpp
+
+!IF  "$(CFG)" == "RdoLib - Win32 Release"
+
+# ADD CPP /Yu"pch.h"
+
 !ELSEIF  "$(CFG)" == "RdoLib - Win32 Debug"
 
 # ADD CPP /Yu"pch.h"
@@ -154,6 +179,8 @@ SOURCE=.\RdoBase.cpp
 SOURCE=.\RdoTrace.cpp
 
 !IF  "$(CFG)" == "RdoLib - Win32 Release"
+
+# ADD CPP /Yu"pch.h"
 
 !ELSEIF  "$(CFG)" == "RdoLib - Win32 Debug"
 
@@ -168,6 +195,8 @@ SOURCE=.\RuleTrace.cpp
 
 !IF  "$(CFG)" == "RdoLib - Win32 Release"
 
+# ADD CPP /Yu"pch.h"
+
 !ELSEIF  "$(CFG)" == "RdoLib - Win32 Debug"
 
 # ADD CPP /Yu"pch.h"
@@ -180,6 +209,8 @@ SOURCE=.\RuleTrace.cpp
 SOURCE=.\SearchTrace.cpp
 
 !IF  "$(CFG)" == "RdoLib - Win32 Release"
+
+# ADD CPP /Yu"pch.h"
 
 !ELSEIF  "$(CFG)" == "RdoLib - Win32 Debug"
 
@@ -194,6 +225,8 @@ SOURCE=.\SearchTree.cpp
 
 !IF  "$(CFG)" == "RdoLib - Win32 Release"
 
+# ADD CPP /Yu"pch.h"
+
 !ELSEIF  "$(CFG)" == "RdoLib - Win32 Debug"
 
 # ADD CPP /Yu"pch.h"
@@ -206,6 +239,8 @@ SOURCE=.\SearchTree.cpp
 SOURCE=.\SimTrace.cpp
 
 !IF  "$(CFG)" == "RdoLib - Win32 Release"
+
+# ADD CPP /Yu"pch.h"
 
 !ELSEIF  "$(CFG)" == "RdoLib - Win32 Debug"
 
@@ -249,6 +284,10 @@ SOURCE=.\RdoDefines.h
 # Begin Source File
 
 SOURCE=.\RdoFunc.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdoprocess.h
 # End Source File
 # Begin Source File
 

@@ -1,4 +1,3 @@
-
 #ifndef RDO_SIMULATOR
 #define RDO_SIMULATOR
 
@@ -26,6 +25,8 @@ friend RDOSimulator;
 friend CheckOperations;
 friend RDODecisionPoint;
 friend TreeNode;
+
+private:
 	bool checkOperation(RDOSimulator *sim);
 protected:
    virtual void onBeforeChoiceFrom(RDOSimulator *sim) {}
@@ -42,6 +43,7 @@ class RDOActivity
 friend TreeNode;
 friend RDODecisionPoint;
 
+private:
    bool valueAfter;  // false = valueBefore
 
 protected:
@@ -55,7 +57,8 @@ public:
 
 class CheckOperations
 {
-   RDOSimulator *sim;
+private:
+	RDOSimulator *sim;
 public:
    CheckOperations(RDOSimulator *i_sim): sim(i_sim) {}
    bool operator()(RDOBaseOperation *op);
@@ -70,7 +73,8 @@ class RDODecisionPoint: public RDOBaseOperation
 friend RDOSimulator;
 friend TreeNode;
 friend CheckOperations;
-   bool RunSearchInTree(RDOSimulator *sim);
+private:
+	bool RunSearchInTree(RDOSimulator *sim);
 	bool checkOperation(RDOSimulator *sim);
 
 protected:
@@ -95,7 +99,9 @@ class RDOIE: public RDOBaseOperation    // Irregular Event
 {
 friend RDOSimulator;
 friend CheckOperations;
-   double time;
+
+private:
+	double time;
 	bool checkOperation(RDOSimulator *sim);
 
 protected:
@@ -112,7 +118,9 @@ class RDOOperation: public RDOBaseOperation
 {
 friend RDOSimulator;
 friend CheckOperations;
-   double time;
+
+private:
+	double time;
 	bool checkOperation(RDOSimulator *sim);
 public:
    virtual void convertEnd(RDOSimulator *sim) = 0;
@@ -150,11 +158,12 @@ friend RDOIE;
 friend RDODecisionPoint;
 friend RDOOperation;
 
-   std::list<RDOOperation *> operations;                 // currently processing
+private:
+	std::list<RDOOperation *> operations;                 // currently processing
 
-   bool doOperation(bool onlyEndOfOperations);
-   void addOperation(RDOOperation *op);
-   bool checkEndOfOperation();
+	bool doOperation(bool onlyEndOfOperations);
+	void addOperation(RDOOperation *op);
+	bool checkEndOfOperation();
 
 protected:
 	std::list<RDOBaseOperation *> haveBaseOperations;		// all DP, IE, Rules, Operations

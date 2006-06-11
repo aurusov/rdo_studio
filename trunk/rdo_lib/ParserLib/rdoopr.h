@@ -22,10 +22,12 @@ class RDOPATPattern;
 
 class RDOOPROperation: public RDODeletable
 {
+private:
 	const std::string *const name;
 	const RDOPATPattern *pattern;
 	int currParam;
 	RDOActivityRuntime *activity;
+
 public:
 	RDOOPROperation(std::string *_oprName, std::string *patName);
 	void endOfDefinition();
