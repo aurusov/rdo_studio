@@ -25,13 +25,6 @@ void rtperror( char* mes )
 	return;
 }
 
-RDORTPTransact::RDORTPTransact():
-	RDORTPResType( parser->registerName( "Транзакты" ), false )
-{
-	// Создадим параметр вещественного типа 'Время_создания'
-	addParam( new RDORTPParamDesc( parser->registerName( "Время_создания" ), new RDORTPRealResParam() ) );
-}
-
 void RDORTPEnum::add(const std::string *const next) 
 { 
 	if ( std::find_if(enumVals.begin(), enumVals.end(), comparePointers<std::string>(next)) != enumVals.end() )

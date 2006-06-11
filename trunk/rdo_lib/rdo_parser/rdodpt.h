@@ -26,6 +26,10 @@ int dpt_rss_parse( void* lexer );
 int dpt_rss_lex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer );
 void dpt_rss_error( char* mes );
 
+int dpt_opr_parse( void* lexer );
+int dpt_opr_lex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer );
+void dpt_opr_error( char* mes );
+
 /////////////////////////  "SEARCH" DECISION POINT /////////////////////////
 
 enum DPTSearchTrace
@@ -177,13 +181,52 @@ public:
 class RDODPTProcess: public RDODeletable
 {
 protected:
-	std::string name;
+	std::string                 name;
+	bool                        m_end;
+	RDODPTProcess*              parent;
+	std::list< RDODPTProcess* > child;
 
 public:
 	static std::string name_prefix;
 	static std::string name_sufix;
 
-	RDODPTProcess( const std::string& _name = "" );
+	RDODPTProcess( const std::string& _name );
+
+	void end();
+	bool isend() const { return m_end; }
+
+	void insertChild( RDODPTProcess* value );
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOPROCOperator
+// ----------------------------------------------------------------------------
+class RDOPROCOperator: public RDODeletable
+{
+protected:
+	std::string    name;
+	RDODPTProcess* process;
+
+public:
+	RDOPROCOperator( const std::string& _name, RDODPTProcess* _process = NULL );
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDORTPTransact
+// ----------------------------------------------------------------------------
+class RDORTPTransact: public RDORTPResType
+{
+public:
+	RDORTPTransact();
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOPROCGenerate
+// ----------------------------------------------------------------------------
+class RDOPROCGenerate: public RDOPROCOperator
+{
+public:
+	RDOPROCGenerate( const std::string& _name, RDODPTProcess* _process = NULL );
 };
 
 }		// namespace rdoParse 

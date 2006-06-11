@@ -563,13 +563,12 @@ RDOFUNArithm::RDOFUNArithm( std::string* s )
 		calc = new RDOCalcPatParam(parser->getLastPATPattern()->findPATPatternParamNum(s));
 }
 
-const RDOFUNArithm *RDOFUNParams::createSeqCall(const std::string *const seqName) const
+const RDOFUNArithm* RDOFUNParams::createSeqCall( const std::string* const seqName ) const
 {
-	const RDOFUNSequence *const seq = parser->findSequence(seqName);
-	if(!seq)
-		parser->error("Undefined function or sequence: " + *seqName);
-
-	return seq->createCallCalc(this);
+	const RDOFUNSequence* const seq = parser->findSequence( seqName );
+//	if ( !seq ) parser->error( "Undefined function or sequence: " + *seqName );
+	if ( !seq ) parser->error( rdo::format("Неопределенная функция или последовательность: %s", seqName->c_str()) );
+	return seq->createCallCalc( this );
 }
 
 const RDOFUNArithm *RDOFUNSequenceUniform::createCallCalc(const RDOFUNParams *const param) const

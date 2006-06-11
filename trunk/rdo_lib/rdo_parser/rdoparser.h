@@ -178,4 +178,4 @@ extern RDOParser* parser;
 
 } // namespace rdoParse 
 
-#endif //RDOPARSER_PARSER
+#endif // RDOPARSER_PARSER

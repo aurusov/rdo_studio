@@ -94,10 +94,10 @@ void RDOParser::parse( int files )
 	while ( it != parsers.end() ) {
 		if ( it->first > max1 && it->first < min2 && std::find( file_list.begin(), file_list.end(), it->second->type ) != file_list.end() ) {
 			parser_base = it->second;
-			parser  = this;
+			parser      = this;
 			it->second->parse();
 			parser_base = NULL;
-			parser  = NULL;
+			parser      = NULL;
 		}
 		it++;
 	}
@@ -116,10 +116,10 @@ void RDOParser::parse( rdoModelObjects::RDOParseType file )
 	while ( it != parsers.end() ) {
 		if ( it->first <= max ) {
 			parser_base = it->second;
-			parser  = this;
+			parser      = this;
 			it->second->parse();
 			parser_base = NULL;
-			parser  = NULL;
+			parser      = NULL;
 		} else {
 			break;
 		}
@@ -136,10 +136,10 @@ void RDOParser::parse( rdoModelObjects::RDOParseType file, std::istream& stream 
 	while ( it != parsers.end() ) {
 		if ( it->first <= max ) {
 			parser_base = it->second;
-			parser  = this;
+			parser      = this;
 			it->second->parse( stream );
 			parser_base = NULL;
-			parser  = NULL;
+			parser      = NULL;
 		} else {
 			break;
 		}

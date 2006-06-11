@@ -35,6 +35,17 @@ void dpt_rss_error( char* mes )
 	rdoParse::parser->error( mes );
 }
 
+int dpt_opr_lex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer )
+{
+	reinterpret_cast<RDOLexer*>(lexer)->m_lpval = lpval;
+	reinterpret_cast<RDOLexer*>(lexer)->m_lploc = llocp;
+	return reinterpret_cast<RDOLexer*>(lexer)->yylex();
+}
+void dpt_opr_error( char* mes )
+{
+	rdoParse::parser->error( mes );
+}
+
 /////////////////////////  "SEARCH" DECISION POINT /////////////////////////
 
 RDODPTSearch::RDODPTSearch(std::string *_name, DPTSearchTrace _trace)
@@ -344,7 +355,51 @@ std::string RDODPTProcess::name_sufix  = "s";
 
 RDODPTProcess::RDODPTProcess( const std::string& _name ):
 	RDODeletable(),
-	name( _name )
+	name( _name ),
+	m_end( false ),
+	parent( NULL )
+{
+}
+
+void RDODPTProcess::end()
+{
+	m_end = true;
+}
+
+void RDODPTProcess::insertChild( RDODPTProcess* value )
+{
+	if ( value ) {
+		child.push_back( value );
+		value->parent = this;
+	}
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDORTPTransact
+// ----------------------------------------------------------------------------
+RDORTPTransact::RDORTPTransact():
+	RDORTPResType( parser->registerName( "Транзакты" ), false )
+{
+	// Создадим параметр вещественного типа 'Время_создания'
+	addParam( new RDORTPParamDesc( parser->registerName( "Время_создания" ), new RDORTPRealResParam() ) );
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOPROCOperator
+// ----------------------------------------------------------------------------
+RDOPROCOperator::RDOPROCOperator( const std::string& _name, RDODPTProcess* _process ):
+	RDODeletable(),
+	name( _name ),
+	process( _process )
+{
+	if ( !process ) process = parser->getLastDPTProcess();
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOPROCGenerate
+// ----------------------------------------------------------------------------
+RDOPROCGenerate::RDOPROCGenerate( const std::string& _name, RDODPTProcess* _process ):
+	RDOPROCOperator( _name, _process )
 {
 }
 

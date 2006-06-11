@@ -173,12 +173,6 @@ public:
 	int writeModelStructure() const;
 };
 
-class RDORTPTransact: public RDORTPResType
-{
-public:
-	RDORTPTransact();
-};
-
 }		// namespace rdoParse 
 
 #endif //RDORTP_RTP

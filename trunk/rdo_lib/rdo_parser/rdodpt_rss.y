@@ -258,20 +258,33 @@ dpt_logic: dpt_arithm '=' dpt_arithm	{}
 			| '[' dpt_logic ']'					{}
 			| fun_group							{};
 			
-dpt_arithm: dpt_arithm '+' dpt_arithm		{}
-			|	dpt_arithm '-' dpt_arithm	{}
-			|	dpt_arithm '*' dpt_arithm	{}
-			|	dpt_arithm '/' dpt_arithm	{}
-			|	'(' dpt_arithm ')'			{}
-			|	IDENTIF '(' dpt_arithm_func_call_pars ')'	{};
-			|	IDENTIF '.' IDENTIF				{}
-			|	INT_CONST						{}
-			|	REAL_CONST						{}
-			|	IDENTIF							{};
+dpt_arithm: dpt_arithm '+' dpt_arithm {
+			}
+			| dpt_arithm '-' dpt_arithm {
+			}
+			| dpt_arithm '*' dpt_arithm {
+			}
+			| dpt_arithm '/' dpt_arithm {
+			}
+			| '(' dpt_arithm ')' {
+			}
+			| IDENTIF '(' dpt_arithm_func_call_pars ')' {
+			};
+			| IDENTIF '.' IDENTIF {
+			}
+			| INT_CONST {
+			}
+			| REAL_CONST {
+			}
+			| IDENTIF {
+			};
 
-dpt_arithm_func_call_pars:								{};
-			| dpt_arithm_func_call_pars dpt_arithm		{};
-			| dpt_arithm_func_call_pars ',' dpt_arithm	{};
+dpt_arithm_func_call_pars:	/* empty */	{
+			}
+			| dpt_arithm_func_call_pars dpt_arithm		{
+			}
+			| dpt_arithm_func_call_pars ',' dpt_arithm	{
+			};
 
 fun_group_keyword:	Exist			{}
 					|	Not_Exist	{}
@@ -289,16 +302,18 @@ dpt_process:		dpt_process_begin dpt_process_input {
 					};
 
 dpt_process_begin:	Process {
-
 					};
-dpt_process_input:
+
+dpt_process_input:	/* empty */
 					| dpt_process_input dpt_process_line;
 
-dpt_process_line:	IDENTIF	{ TRACE( "IDENTIF %s\n", ((std::string *)$1)->c_str() ); }
-					| GENERATE  {
-						TRACE( "GENERATE\n" );
+dpt_process_line:	IDENTIF	{
+						parser->error( rdo::format("Неизвестный оператор '%s'", ((std::string *)$1)->c_str()) );
+					}
+					| GENERATE dpt_arithm {
 
-//	std::string* rtp_transact_name	    = parser->registerName( "Транзакты" );
+	new RDORTPTransact();
+/*
 	std::string* rtp_trans_param_name   = parser->registerName( "Время_создания" );
 	std::string* rel_res_name = parser->registerName( "Транзакт" );
 	std::string* ie_name      = parser->registerName( "PAT_GENERATE" );
@@ -306,29 +321,14 @@ dpt_process_line:	IDENTIF	{ TRACE( "IDENTIF %s\n", ((std::string *)$1)->c_str() 
 	std::string* time_now     = parser->registerName( "Time_now" );
 	std::string* opr_name     = parser->registerName( "OPR_GENERATE" );
 
-	// Создадим тип транзакта
-//	RDORTPResType* transact_type = new RDORTPResType( rtp_transact_name, false );
-	RDORTPResType* transact_type = new RDORTPTransact();
-
-	// Создадим параметр вещественного типа
-//	RDORTPRealResParam* real_param = new RDORTPRealResParam( new RDORTPRealDiap(), new RDORTPRealDefVal(0) );
-//	RDORTPParamDesc* transact_type_desc = new RDORTPParamDesc( rtp_trans_param_name, real_param );
-//	transact_type->addParam( transact_type_desc );
-
 	// Создадим последовательность
 	RDORTPRealResParam*    uniform_real_param = new RDORTPRealResParam( new RDORTPRealDiap(), new RDORTPRealDefVal(0) );
 	RDOFUNSequenceHeader*  uniform_seq_h      = new RDOFUNSequenceHeader( uniform_name, uniform_real_param );
 	RDOFUNSequenceUniform* uniform_seq        = new RDOFUNSequenceUniform( uniform_seq_h, 123456789 );
 
 	RDOPATPatternEvent* ie = new RDOPATPatternEvent( ie_name, true );
-	ie->addRelRes( rel_res_name, const_cast<std::string*>(transact_type->getName()), RDOPATPattern::CS_Create );
+//	ie->addRelRes( rel_res_name, const_cast<std::string*>(transact_type->getName()), RDOPATPattern::CS_Create );
 
-/*
-	RDOFUNParams* uniform_params = new RDOFUNParams();
-	uniform_params->addParameter(new RDOFUNArithm(0.25));
-	uniform_params->addParameter(new RDOFUNArithm(0.75));
-	uniform_params->createCall(uniform_name);
-*/
 	RDOFUNParams* uniform_params = new RDOFUNParams();
 	uniform_params->addParameter( new RDOFUNArithm( 0.25 ) );
 	uniform_params->addParameter( new RDOFUNArithm( 0.75 ) );
@@ -340,9 +340,10 @@ dpt_process_line:	IDENTIF	{ TRACE( "IDENTIF %s\n", ((std::string *)$1)->c_str() 
 	ie->addRelResConvertEvent(true,generate_pat_params);
 	ie->end();
 
-	//Создадим активность
+	// Создадим активность
 	RDODPTFreeActivity* ie_opr = new RDODPTFreeActivity(opr_name, ie_name);
 	ie_opr->end();
+*/
 					}
 					| SEIZE {
 	@$.first_column = @1.first_column;
@@ -525,7 +526,6 @@ dpt_process_line:	IDENTIF	{ TRACE( "IDENTIF %s\n", ((std::string *)$1)->c_str() 
 };
 
 dpt_process_end:	dpt_process End	{
-						TRACE( "end\n" );
 					};
 
 %%

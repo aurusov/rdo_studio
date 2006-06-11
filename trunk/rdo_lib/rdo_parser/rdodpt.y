@@ -250,16 +250,28 @@ dpt_activ_free_end:	dpt_activ_free End												{ /* if ($1 != NULL) ((RDODPTF
 
 /* ///////////////////////  PROCESS ///////////////////////////// */
 
-dpt_process:		Process	dpt_process_input {};
+dpt_process:		dpt_process_begin dpt_process_input {
+					};
 
-dpt_process_input:
+dpt_process_begin:	Process {
+					};
+
+dpt_process_input:	/* empty */
 					| dpt_process_input dpt_process_line;
 
-dpt_process_line:	IDENTIF			{}
-					| GENERATE		{}
-					| SEIZE IDENTIF	{};
+dpt_process_line:	IDENTIF	{
+						parser->error( rdo::format("Неизвестный оператор '%s'", ((std::string *)$1)->c_str()) );
+					}
+					| GENERATE dpt_arithm {
+					}
+					| SEIZE {
+					}
+					| SEIZE IDENTIF {
+					};
 
-dpt_process_end:	dpt_process End	{};
+dpt_process_end:	dpt_process End	{
+						parser->getLastDPTProcess()->end();
+					};
 
 /* ///////////////////////  ARITHMETIC/LOGIC ///////////////////////////// */
 
@@ -274,22 +286,46 @@ dpt_logic: dpt_arithm '=' dpt_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 == *(RDOFU
 			| '[' dpt_logic ']'				{ $$ = $2; }
 			| fun_group							{ $$ = $1; };
 
-			
-dpt_arithm: dpt_arithm '+' dpt_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOFUNArithm *)$3); }
-			|	dpt_arithm '-' dpt_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 - *(RDOFUNArithm *)$3); }
-			|	dpt_arithm '*' dpt_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 * *(RDOFUNArithm *)$3); }
-			|	dpt_arithm '/' dpt_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 / *(RDOFUNArithm *)$3); }
-			|	'(' dpt_arithm ')'			{ $$ = $2; }
-			|	IDENTIF '(' dpt_arithm_func_call_pars ')' { $$ = (int)((RDOFUNParams *)$3)->createCall((std::string *)$1) };
-			|	IDENTIF '.' IDENTIF			{ $$ = (int)(new RDOFUNArithm((std::string *)$1, (std::string *)$3)); }
-			|	INT_CONST						{ $$ = (int)(new RDOFUNArithm((int)$1)); }
-			|	REAL_CONST						{ $$ = (int)(new RDOFUNArithm((double*)$1)); }
-			|	IDENTIF							{ $$ = (int)(new RDOFUNArithm((std::string *)$1)); };
+dpt_arithm: dpt_arithm '+' dpt_arithm {
+				$$ = (int)(*(RDOFUNArithm *)$1 + *(RDOFUNArithm *)$3);
+			}
+			| dpt_arithm '-' dpt_arithm {
+				$$ = (int)(*(RDOFUNArithm *)$1 - *(RDOFUNArithm *)$3);
+			}
+			| dpt_arithm '*' dpt_arithm {
+				$$ = (int)(*(RDOFUNArithm *)$1 * *(RDOFUNArithm *)$3);
+			}
+			| dpt_arithm '/' dpt_arithm {
+				$$ = (int)(*(RDOFUNArithm *)$1 / *(RDOFUNArithm *)$3);
+			}
+			| '(' dpt_arithm ')' {
+				$$ = $2;
+			}
+			| IDENTIF '(' dpt_arithm_func_call_pars ')' {
+				$$ = (int)((RDOFUNParams *)$3)->createCall((std::string *)$1)
+			};
+			| IDENTIF '.' IDENTIF {
+				$$ = (int)(new RDOFUNArithm((std::string *)$1, (std::string *)$3));
+			}
+			| INT_CONST {
+				$$ = (int)(new RDOFUNArithm((int)$1));
+			}
+			| REAL_CONST {
+				$$ = (int)(new RDOFUNArithm((double*)$1));
+			}
+			| IDENTIF {
+				$$ = (int)(new RDOFUNArithm((std::string *)$1));
+			};
 
-dpt_arithm_func_call_pars:								{ $$ = (int)(new RDOFUNParams()); };
-			| dpt_arithm_func_call_pars dpt_arithm	{ $$ = (int)(((RDOFUNParams *)$1)->addParameter((RDOFUNArithm *)$2)); };
-			| dpt_arithm_func_call_pars ',' dpt_arithm	{ $$ = (int)(((RDOFUNParams *)$1)->addParameter((RDOFUNArithm *)$3)); };
-
+dpt_arithm_func_call_pars:	/* empty */	{
+				$$ = (int)(new RDOFUNParams()); 
+			}
+			| dpt_arithm_func_call_pars dpt_arithm		{
+				$$ = (int)(((RDOFUNParams *)$1)->addParameter((RDOFUNArithm *)$2));
+			}
+			| dpt_arithm_func_call_pars ',' dpt_arithm	{
+				$$ = (int)(((RDOFUNParams *)$1)->addParameter((RDOFUNArithm *)$3));
+			};
 
 fun_group_keyword:	Exist			{ $$ = 1; }
 						|	Not_Exist	{ $$ = 2; }

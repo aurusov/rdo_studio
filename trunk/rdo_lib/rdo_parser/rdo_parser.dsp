@@ -427,6 +427,11 @@ SOURCE=.\rdogramdpt.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\rdogramdpt_opr.cpp
+# SUBTRACT CPP /YX /Yc /Yu
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdogramdpt_rss.cpp
 # SUBTRACT CPP /YX /Yc /Yu
 # End Source File
@@ -541,6 +546,25 @@ InputPath=.\rdodpt.y
 
 "rdogramdpt.cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
 	..\rdo_system\bison.exe -pdpt --skeleton=..\rdo_system\bison.simple -ordogramdpt.cpp $(InputPath)
+
+# End Custom Build
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdodpt_opr.y
+
+!IF  "$(CFG)" == "rdo_parser - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "rdo_parser - Win32 Debug"
+
+# Begin Custom Build
+InputPath=.\rdodpt_opr.y
+
+"rdogramdpt_opr.cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	..\rdo_system\bison.exe -pdpt_opr_ --skeleton=..\rdo_system\bison.simple -ordogramdpt_opr.cpp $(InputPath)
 
 # End Custom Build
 
