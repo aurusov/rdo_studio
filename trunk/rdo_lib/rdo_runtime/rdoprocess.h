@@ -2,28 +2,96 @@
 #define RDOPROCESS_H
 
 #include "rdo.h"
+#include "rdoruntime.h"
+
+namespace rdoRuntime {
+
+class RDORuntime;
+class RDOCalc;
 
 // ----------------------------------------------------------------------------
-// ---------- RDOPROCOperation
+// ---------- RDOPROCProcess
 // ----------------------------------------------------------------------------
-class RDOSimulator;
+class RDOPROCTransact;
 
-class RDOPROCOperation: public RDOBaseOperation
+class RDOPROCProcess: public RDOBaseOperation
 {
+friend class RDOPROCBlock;
+
+protected:
+	std::string                  name;
+	RDOPROCProcess*              parent;
+	std::list< RDOPROCProcess* > child;
+	std::list< RDOPROCBlock* >   blocks;
+
 public:
-	RDOPROCOperation(): RDOBaseOperation() {}
-	virtual ~RDOPROCOperation()            {}
+	RDOPROCProcess( const std::string& _name, RDORuntime* sim );
+	void insertChild( RDOPROCProcess* value );
+	virtual bool checkOperation( RDOSimulator* sim );
+
+	void preProcess( RDOSimulator* sim );
+	void next( RDOPROCTransact* transact );
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOPROCTransact
+// ----------------------------------------------------------------------------
+class RDOPROCTransact: public RDOResource
+{
+friend class RDOPROCProcess;
+
+protected:
+	RDOPROCBlock* block;
+
+public:
+	RDOPROCTransact( RDORuntime* sim, RDOPROCBlock* _block );
+	void next();
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOPROCBlock
+// ----------------------------------------------------------------------------
+class RDOPROCBlock
+{
+friend class RDOPROCTransact;
+friend class RDOPROCProcess;
+
+protected:
+	RDOPROCProcess* process;
+	std::list< RDOPROCTransact* > transacts;
+
+	RDOPROCBlock( RDOPROCProcess* _process );
+	virtual ~RDOPROCBlock() {}
+
+public:
+	virtual bool checkOperation( RDORuntime* sim ) = 0;
 };
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCGenerate
 // ----------------------------------------------------------------------------
-class RDOPROCGenerate: public RDOPROCOperation
+class RDOPROCGenerate: public RDOPROCBlock
+{
+protected:
+	double   timeNext;
+	RDOCalc* timeCalc;
+
+public:
+	RDOPROCGenerate( RDOPROCProcess* _process, RDOCalc* time ): RDOPROCBlock( _process ), timeNext( 0 ), timeCalc( time ) {}
+	virtual bool checkOperation( RDORuntime* sim );
+	void calcNextTimeInterval( RDORuntime* sim );
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOPROCTerminate
+// ----------------------------------------------------------------------------
+class RDOPROCTerminate: public RDOPROCBlock
 {
 public:
-	RDOPROCGenerate(): RDOPROCOperation() {}
-	virtual ~RDOPROCGenerate()            {}
-	virtual bool checkOperation( RDOSimulator* sim );
+	RDOPROCTerminate( RDOPROCProcess* _process ): RDOPROCBlock( _process ) {}
+	virtual bool checkOperation( RDORuntime* sim );
 };
+
+} // rdoRuntime
 
 #endif // RDOPROCESS_H

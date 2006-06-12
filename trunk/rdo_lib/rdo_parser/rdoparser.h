@@ -15,8 +15,6 @@ namespace rdoRuntime
 class RDORuntime;
 }
 
-using namespace rdoRuntime;
-
 namespace rdoParse
 {
 
@@ -33,7 +31,7 @@ class RDODPTSearch;
 class RDODPTSome;
 class RDODPTFreeActivity;
 class RDOPMDPokaz;
-class RDODPTProcess;
+class RDOPROCProcess;
 
 class RDOSyntaxException: public RDOException
 {
@@ -71,7 +69,7 @@ protected:
 	std::vector< RDODPTSome* >         allDPTSome;
 	std::vector< RDODPTFreeActivity* > allDPTFreeActivity;
 	std::vector< RDOPMDPokaz* >        allPMDPokaz;
-	std::vector< RDODPTProcess* >      allDPTProcess;
+	std::vector< RDOPROCProcess* >     allDPTProcess;
 
 	RDODPTSearch* lastDPTSearch;
 
@@ -102,12 +100,12 @@ public:
 	void insertDPTSome( RDODPTSome* value )                 { if ( value ) allDPTSome.push_back( value );         lastDPTSearch = NULL;  }
 	void insertDPTFreeActivity( RDODPTFreeActivity* value ) { if ( value ) allDPTFreeActivity.push_back( value ); lastDPTSearch = NULL;  }
 	void insertPMDPokaz( RDOPMDPokaz* value )               { if ( value ) allPMDPokaz.push_back( value );      }
-	void insertDPTProcess( RDODPTProcess* value )           { if ( value ) allDPTProcess.push_back( value );    }
+	void insertDPTProcess( RDOPROCProcess* value )          { if ( value ) allDPTProcess.push_back( value );    }
 	RDORTPResType*  getLastRTPResType()                     { return !allRTPResType.empty()   ? allRTPResType.back()   : NULL; }
 	RDORSSResource* getLastRSSResource()                    { return !allRSSResource.empty()  ? allRSSResource.back()  : NULL; }
 	RDOPATPattern*  getLastPATPattern()                     { return !allPATPatterns.empty()  ? allPATPatterns.back()  : NULL; }
 	RDOFUNFunction* getLastFUNFunction()                    { return !allFUNFunctions.empty() ? allFUNFunctions.back() : NULL; }
-	RDODPTProcess*  getLastDPTProcess()                     { return !allDPTProcess.empty()   ? allDPTProcess.back()   : NULL; }
+	RDOPROCProcess*  getLastDPTProcess()                    { return !allDPTProcess.empty()   ? allDPTProcess.back()   : NULL; }
 	RDODPTSearch*   getLastDPTSearch()                      { return lastDPTSearch;                                            }
 
 	int getRTP_id() const      { return allRTPResType.size()  + 1; }
@@ -131,11 +129,12 @@ public:
 
 	void setSMR( RDOSMR* _smr)  { smr = _smr; }
 
-	const RDORTPResType *findRTPResType(const std::string *const type) const;
-	const RDORSSResource *findRSSResource(const std::string *const name) const;
-	const RDOFUNFunction *findFunction(const std::string *const name) const;
-	const RDOFUNSequence *findSequence(const std::string *const name) const;
-	const RDOPATPattern *findPattern(const std::string *const name) const;
+	const RDORTPResType*  findRTPResType( const std::string* const type ) const;
+	const RDORTPResType*  findRTPResType( const std::string& name ) const;
+	const RDORSSResource* findRSSResource( const std::string* const name ) const;
+	const RDOFUNFunction* findFunction( const std::string* const name ) const;
+	const RDOFUNSequence* findSequence( const std::string* const name ) const;
+	const RDOPATPattern*  findPattern( const std::string* const name ) const;
 
 	void parse( int files = rdoModelObjects::obALL );
 	void parse( rdoModelObjects::RDOParseType file );
@@ -148,10 +147,20 @@ public:
 	const RDOFUNConstant *RDOParser::findFUNConst(const std::string *const _cons) const;
 
 	void LoadStdFunctions();
+
 	std::string* registerName( const char* name ) {
-		std::string* newName = new std::string( name );
-		allNames.push_back( newName );
-		return newName;
+		std::vector< std::string* >::iterator it = allNames.begin();
+		while ( it != allNames.end() ) {
+			if ( (*(*it)) == name ) break;
+			it++;
+		}
+		if ( it == allNames.end() ) {
+			std::string* newName = new std::string( name );
+			allNames.push_back( newName );
+			return newName;
+		} else {
+			return *it;
+		}
 	}
 	void addName( std::string* name ) {
 		allNames.push_back( name );

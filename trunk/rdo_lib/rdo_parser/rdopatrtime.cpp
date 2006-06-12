@@ -24,8 +24,10 @@ RDOActivityRuntime *RDOPatternRuntime::createActivity(RDOCalc *condition, std::s
 	throw RDOInternalException("parser internal error 0501");
 }
 
-RDOPatternRuntime::RDOPatternRuntime(RDORuntime *_runtime, bool _trace)
-	: runtime(_runtime), trace(_trace) 
+RDOPatternRuntime::RDOPatternRuntime( RDORuntime* _runtime, bool _trace ):
+	timeField( NULL ),
+	runtime( _runtime ),
+	trace( _trace )
 { 
 	runtime->addPattern(this); 
 }

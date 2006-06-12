@@ -70,7 +70,7 @@ and					return(and_keyword);
 
 
 $Pattern			return(Pattern);
-operation			return(operation);
+operation			return(operation_kw);
 irregular_event		return(irregular_event);
 rule				return(rule_keyword);
 keyboard			return(keyboard);
@@ -134,6 +134,7 @@ $Activities			return(Activities);
 $Process			return(Process);
 SEIZE				return(SEIZE);
 GENERATE			return(GENERATE);
+TERMINATE			return(TERMINATE);
 value[\r\n\t ]+before	return(value_before);
 value[\r\n\t ]+after	return(value_after);
 value_before		return(value_before);

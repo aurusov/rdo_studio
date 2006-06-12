@@ -225,6 +225,14 @@ RDOValue RDORTPEnumResParam::getRSSEnumValue(const std::string *const val) const
 	return enu->findValue(val);
 }
 
+RDORTPIntResParam::RDORTPIntResParam():
+	RDORTPResParam( new RDORTPIntDefVal(0) ),
+	diap( new RDORTPIntDiap() )
+{
+	diap->check( static_cast<RDORTPIntDefVal*>(dv) );
+}
+
+
 RDORTPIntResParam::RDORTPIntResParam(RDORTPIntDiap *_diap, RDORTPIntDefVal *_dv): 
 	diap(_diap), 
 	RDORTPResParam(_dv) 

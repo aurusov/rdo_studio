@@ -49,6 +49,7 @@ void RDOSimulatorTrace::addTemplateBaseOperation(RDOBaseOperation *bop)
 	else if(ie) addTemplateIrregularEvent(ie);
 	else if(op) addTemplateOperation(op);
 	else if(dp) addTemplateDecisionPoint(dp);
+	else RDOSimulator::addTemplateBaseOperation( bop );
 }
 
 void RDOSimulatorTrace::rdoDestroy()

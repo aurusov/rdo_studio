@@ -11,9 +11,10 @@ namespace rdoRuntime
 {
 class RDOCalc;
 class RDOPatternRuntime;
+class RDOPROCProcess;
+class RDOPROCGenerate;
+class RDOPROCTerminate;
 }
-
-using namespace rdoRuntime;
 
 namespace rdoParse 
 {
@@ -176,26 +177,45 @@ public:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDODPTProcess
+// ---------- RDOPROCProcess
 // ----------------------------------------------------------------------------
-class RDODPTProcess: public RDODeletable
+class RDOPROCProcess: public RDODeletable
 {
+friend class RDOPROCOperator;
+
 protected:
-	std::string                 name;
-	bool                        m_end;
-	RDODPTProcess*              parent;
-	std::list< RDODPTProcess* > child;
+	std::string                   name;
+	bool                          m_end;
+	RDOPROCProcess*               parent;
+	std::list< RDOPROCProcess* >  child;
+	std::list< RDOPROCOperator* > operations;
+	rdoRuntime::RDOPROCProcess*   runtime;
 
 public:
 	static std::string name_prefix;
 	static std::string name_sufix;
 
-	RDODPTProcess( const std::string& _name );
+	RDOPROCProcess( const std::string& _name );
 
 	void end();
 	bool isend() const { return m_end; }
 
-	void insertChild( RDODPTProcess* value );
+	void insertChild( RDOPROCProcess* value );
+
+	rdoRuntime::RDOPROCProcess* getRunTime() const { return runtime; }
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOPROCTransact
+// ----------------------------------------------------------------------------
+class RDOPROCTransact: public RDORTPResType
+{
+protected:
+	static bool created;
+	RDOPROCTransact();
+
+public:
+	static RDOPROCTransact* makeRTP();
 };
 
 // ----------------------------------------------------------------------------
@@ -204,20 +224,10 @@ public:
 class RDOPROCOperator: public RDODeletable
 {
 protected:
-	std::string    name;
-	RDODPTProcess* process;
+	std::string     name;
+	RDOPROCProcess* process;
 
-public:
-	RDOPROCOperator( const std::string& _name, RDODPTProcess* _process = NULL );
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDORTPTransact
-// ----------------------------------------------------------------------------
-class RDORTPTransact: public RDORTPResType
-{
-public:
-	RDORTPTransact();
+	RDOPROCOperator( const std::string& _name, RDOPROCProcess* _process = NULL );
 };
 
 // ----------------------------------------------------------------------------
@@ -225,10 +235,25 @@ public:
 // ----------------------------------------------------------------------------
 class RDOPROCGenerate: public RDOPROCOperator
 {
+protected:
+	rdoRuntime::RDOPROCGenerate* runtime;
+
 public:
-	RDOPROCGenerate( const std::string& _name, RDODPTProcess* _process = NULL );
+	RDOPROCGenerate( const std::string& _name, RDOCalc* time, RDOPROCProcess* _process = NULL );
 };
 
-}		// namespace rdoParse 
+// ----------------------------------------------------------------------------
+// ---------- RDOPROCTerminate
+// ----------------------------------------------------------------------------
+class RDOPROCTerminate: public RDOPROCOperator
+{
+protected:
+	rdoRuntime::RDOPROCTerminate* runtime;
 
-#endif //RDODPT_DPT
+public:
+	RDOPROCTerminate( const std::string& _name, RDOPROCProcess* _process = NULL );
+};
+
+} // namespace rdoParse 
+
+#endif // RDODPT_DPT

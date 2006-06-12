@@ -48,7 +48,7 @@
 %token enumerative			297
 
 %token Pattern				298
-%token operation			299
+%token operation_kw			299
 %token irregular_event		300
 %token rule_keyword			301
 %token keyboard				302
@@ -118,6 +118,7 @@
 %token Process				363
 %token SEIZE				364
 %token GENERATE				365
+%token TERMINATE			366
 
 %token Frame				400
 %token Show_if				401
@@ -263,6 +264,8 @@ dpt_process_line:	IDENTIF	{
 						parser->error( rdo::format("Неизвестный оператор '%s'", ((std::string *)$1)->c_str()) );
 					}
 					| GENERATE dpt_arithm {
+					}
+					| TERMINATE {
 					}
 					| SEIZE {
 					}

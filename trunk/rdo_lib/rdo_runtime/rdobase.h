@@ -14,7 +14,6 @@ protected:
 
 // These functions for use in derived classes:
    inline double getCurrentTime() { return currentTime; }
-   void addTimePoint(double timePoint);
 
 // Overridables:
 
@@ -49,6 +48,8 @@ public:
    void rdoInit();
    void rdoRun();
    void rdoDestroy();
+
+   void addTimePoint( double timePoint );
 
    virtual ~RDOSimulatorBase() {}
 };

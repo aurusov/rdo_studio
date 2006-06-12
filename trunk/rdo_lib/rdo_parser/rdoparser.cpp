@@ -37,7 +37,7 @@ std::stringstream& RDOParser::getModelStructure()
 {
 	modelStructure.str("");
 	modelStructure.clear();
-	parser = this;
+//	parser = this;
 
 	if ( modelStructure.str().empty() ) {
 
@@ -71,7 +71,7 @@ std::stringstream& RDOParser::getModelStructure()
 		modelStructure << runTime->writePokazStructure();
 	}
 
-	parser = NULL;
+//	parser = NULL;
 	return modelStructure;
 }
 
@@ -94,10 +94,10 @@ void RDOParser::parse( int files )
 	while ( it != parsers.end() ) {
 		if ( it->first > max1 && it->first < min2 && std::find( file_list.begin(), file_list.end(), it->second->type ) != file_list.end() ) {
 			parser_base = it->second;
-			parser      = this;
+//			parser      = this;
 			it->second->parse();
 			parser_base = NULL;
-			parser      = NULL;
+//			parser      = NULL;
 		}
 		it++;
 	}
@@ -116,10 +116,10 @@ void RDOParser::parse( rdoModelObjects::RDOParseType file )
 	while ( it != parsers.end() ) {
 		if ( it->first <= max ) {
 			parser_base = it->second;
-			parser      = this;
+//			parser      = this;
 			it->second->parse();
 			parser_base = NULL;
-			parser      = NULL;
+//			parser      = NULL;
 		} else {
 			break;
 		}
@@ -136,10 +136,10 @@ void RDOParser::parse( rdoModelObjects::RDOParseType file, std::istream& stream 
 	while ( it != parsers.end() ) {
 		if ( it->first <= max ) {
 			parser_base = it->second;
-			parser      = this;
+//			parser      = this;
 			it->second->parse( stream );
 			parser_base = NULL;
-			parser      = NULL;
+//			parser      = NULL;
 		} else {
 			break;
 		}
@@ -176,18 +176,19 @@ void RDOParser::warning( const std::string& message, rdosim::RDOSyntaxError::Err
 	errors.push_back( rdosim::RDOSyntaxError( error_code, message, lexer_loc_line(), lexer_loc_pos(), getFileToParse(), true ) );
 }
 
-const RDORTPResType *RDOParser::findRTPResType(const std::string *const type) const
+const RDORTPResType* RDOParser::findRTPResType( const std::string* const type ) const
 {
-	std::vector<RDORTPResType *>::const_iterator it = std::find_if(allRTPResType.begin(), 
-		allRTPResType.end(), 
-		compareName<RDORTPResType>(type));
-	if(it != allRTPResType.end())
-		return (*it);
-
-	return NULL;
+	std::vector< RDORTPResType* >::const_iterator it = std::find_if( allRTPResType.begin(), allRTPResType.end(), compareName<RDORTPResType>(type) );
+	return it != allRTPResType.end() ? *it : NULL;
 }
 
-const RDORSSResource *RDOParser::findRSSResource(const std::string *const name) const
+const RDORTPResType* RDOParser::findRTPResType( const std::string& name ) const
+{
+	std::vector< RDORTPResType* >::const_iterator it = std::find_if( allRTPResType.begin(), allRTPResType.end(), compareName<RDORTPResType>(&name) );
+	return it != allRTPResType.end() ? *it : NULL;
+}
+
+const RDORSSResource* RDOParser::findRSSResource(const std::string *const name) const
 {
 	std::vector<RDORSSResource *>::const_iterator it = std::find_if(allRSSResource.begin(), 
 		allRSSResource.end(), 
@@ -233,7 +234,7 @@ const RDOPATPattern *RDOParser::findPattern(const std::string *const name) const
 
 RDOParser::~RDOParser()
 {
-	parser = this;
+//	parser = this;
 	DeleteAllObjects( allNames );
 	DeleteAllObjects( allDoubles );
 	DeleteAllObjects( allDeletables );

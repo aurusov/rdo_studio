@@ -20,8 +20,6 @@ class RDOCalcSeqNext;
 */
 }
 
-using namespace rdoRuntime;
-
 namespace rdoParse 
 {
 

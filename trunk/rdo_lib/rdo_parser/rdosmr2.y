@@ -48,7 +48,7 @@
 %token enumerative			297
 
 %token Pattern				298
-%token operation			299
+%token operation_kw			299
 %token irregular_event		300
 %token rule_keyword			301
 %token keyboard				302

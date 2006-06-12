@@ -48,7 +48,7 @@
 %token enumerative			297
 
 %token Pattern				298
-%token operation			299
+%token operation_kw			299
 %token irregular_event		300
 %token rule_keyword			301
 %token keyboard				302
@@ -166,7 +166,7 @@ pat_list:
 			| pat_list pat_pattern;
 
 
-pat_header:	Pattern IDENTIF_COLON operation			pat_trace	{ $$ = (int)(new RDOPATPatternOperation( (std::string *)$2, $4 != 0 )); @$; }
+pat_header:	Pattern IDENTIF_COLON operation_kw			pat_trace	{ $$ = (int)(new RDOPATPatternOperation( (std::string *)$2, $4 != 0 )); @$; }
 			|	Pattern IDENTIF_COLON irregular_event	pat_trace	{ $$ = (int)(new RDOPATPatternEvent( (std::string *)$2, $4 != 0 )); }
 			|	Pattern IDENTIF_COLON rule_keyword		pat_trace	{ $$ = (int)(new RDOPATPatternRule( (std::string *)$2, $4 != 0 )); }
 			|	Pattern IDENTIF_COLON keyboard			pat_trace	{ $$ = (int)(new RDOPATPatternKeyboard( (std::string *)$2, $4 != 0 )); };

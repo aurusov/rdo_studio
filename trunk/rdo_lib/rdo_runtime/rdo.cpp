@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "rdoprocess.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -189,17 +190,18 @@ void RDOSimulator::preProcess()
       (*i)->onAfterIrregularEvent(this);
    }
 */
-   for(std::list<RDOBaseOperation *>::iterator i = haveBaseOperations.begin(); 
-         i != haveBaseOperations.end(); i++)
-   {
-		RDOIE *currIE = dynamic_cast<RDOIE *>(*i);
-		if(currIE) // definitely IE
-		{
-			currIE->onBeforeIrregularEvent(this);
-			addTimePoint(currIE->time = (currIE->getNextTimeInterval(this) + getCurrentTime()));
-			currIE->onAfterIrregularEvent(this);
+	for ( std::list< RDOBaseOperation* >::iterator i = haveBaseOperations.begin(); i != haveBaseOperations.end(); i++ ) {
+		RDOIE* currIE = dynamic_cast<RDOIE*>(*i);
+		if ( currIE ) {
+			currIE->onBeforeIrregularEvent( this );
+			addTimePoint( currIE->time = (currIE->getNextTimeInterval(this) + getCurrentTime()) );
+			currIE->onAfterIrregularEvent( this );
+		}
+		rdoRuntime::RDOPROCProcess* process = dynamic_cast<rdoRuntime::RDOPROCProcess*>(*i);
+		if ( process ) {
+			process->preProcess( this );
 		}	
-   }
+	}
 
 	std::for_each(havePokaz.begin(), havePokaz.end(), std::bind2nd(std::mem_fun1(&RDOPokaz::resetPokaz), this));
 }

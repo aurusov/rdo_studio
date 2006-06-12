@@ -48,7 +48,7 @@
 %token enumerative			297
 
 %token Pattern				298
-%token operation			299
+%token operation_kw			299
 %token irregular_event		300
 %token rule_keyword			301
 %token keyboard				302
@@ -118,6 +118,7 @@
 %token Process				363
 %token SEIZE				364
 %token GENERATE				365
+%token TERMINATE			366
 
 %token Frame				400
 %token Show_if				401
@@ -312,7 +313,9 @@ dpt_process_line:	IDENTIF	{
 					}
 					| GENERATE dpt_arithm {
 
-	new RDORTPTransact();
+	RDOPROCTransact::makeRTP();
+
+//	new RDOPROCTransact();
 /*
 	std::string* rtp_trans_param_name   = parser->registerName( "Время_создания" );
 	std::string* rel_res_name = parser->registerName( "Транзакт" );
@@ -345,6 +348,8 @@ dpt_process_line:	IDENTIF	{
 	ie_opr->end();
 */
 					}
+					| TERMINATE {
+					}
 					| SEIZE {
 	@$.first_column = @1.first_column;
 	@$.first_line   = @1.first_line;
@@ -364,7 +369,7 @@ dpt_process_line:	IDENTIF	{
 	if ( !res ) {
 
 		// Сформировать имя типа по имени ресурса
-		std::string* res_type_name = parser->registerName( std::string( RDODPTProcess::name_prefix + *res_name + RDODPTProcess::name_sufix ).c_str() );
+		std::string* res_type_name = parser->registerName( std::string( RDOPROCProcess::name_prefix + *res_name + RDOPROCProcess::name_sufix ).c_str() );
 
 		// Найти тип ресурса, если его нет, то создать тип и положить в него параметр
 		RDORTPParamDesc* rtp_param = NULL;
@@ -454,7 +459,7 @@ dpt_process_line:	IDENTIF	{
 
 /*
 	std::string* res_name      = (std::string*)$2;
-	std::string* res_type_name = parser->registerName( std::string( RDODPTProcess::name_prefix + *res_name + RDODPTProcess::name_sufix ).c_str() );
+	std::string* res_type_name = parser->registerName( std::string( RDOPROCProcess::name_prefix + *res_name + RDOPROCProcess::name_sufix ).c_str() );
 
 	// Найти тип ресурса, если его нет, то создать
 	RDORTPResType* res_type = const_cast<RDORTPResType*>(parser->findRTPResType( res_type_name ));

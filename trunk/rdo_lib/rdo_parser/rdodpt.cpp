@@ -10,6 +10,8 @@ static char THIS_FILE[] = __FILE__;
 #include "rdopatrtime.h"
 #include "rdoparser_lexer.h"
 
+#include <rdoprocess.h>
+
 namespace rdoParse 
 {
 
@@ -348,25 +350,28 @@ void RDODPTFreeActivity::end()
 }
 
 // ----------------------------------------------------------------------------
-// ---------- RDODPTProcess
+// ---------- RDOPROCProcess
 // ----------------------------------------------------------------------------
-std::string RDODPTProcess::name_prefix = "";
-std::string RDODPTProcess::name_sufix  = "s";
+std::string RDOPROCProcess::name_prefix = "";
+std::string RDOPROCProcess::name_sufix  = "s";
 
-RDODPTProcess::RDODPTProcess( const std::string& _name ):
+RDOPROCProcess::RDOPROCProcess( const std::string& _name ):
 	RDODeletable(),
 	name( _name ),
 	m_end( false ),
-	parent( NULL )
+	parent( NULL ),
+	runtime( NULL )
 {
+	parser->insertDPTProcess( this );
+	runtime = new rdoRuntime::RDOPROCProcess( name, parser->runTime );
 }
 
-void RDODPTProcess::end()
+void RDOPROCProcess::end()
 {
 	m_end = true;
 }
 
-void RDODPTProcess::insertChild( RDODPTProcess* value )
+void RDOPROCProcess::insertChild( RDOPROCProcess* value )
 {
 	if ( value ) {
 		child.push_back( value );
@@ -375,32 +380,60 @@ void RDODPTProcess::insertChild( RDODPTProcess* value )
 }
 
 // ----------------------------------------------------------------------------
-// ---------- RDORTPTransact
+// ---------- RDOPROCTransact
 // ----------------------------------------------------------------------------
-RDORTPTransact::RDORTPTransact():
+bool RDOPROCTransact::created = false;
+
+RDOPROCTransact::RDOPROCTransact():
 	RDORTPResType( parser->registerName( "Транзакты" ), false )
 {
 	// Создадим параметр вещественного типа 'Время_создания'
 	addParam( new RDORTPParamDesc( parser->registerName( "Время_создания" ), new RDORTPRealResParam() ) );
+	// Создадим параметр целого типа 'Просто_так'
+	addParam( new RDORTPParamDesc( parser->registerName( "Просто_так" ), new RDORTPIntResParam() ) );
+}
+
+RDOPROCTransact* RDOPROCTransact::makeRTP()
+{
+	if ( RDOPROCTransact::created ) {
+		RDOPROCTransact* rtp = static_cast<RDOPROCTransact*>(const_cast<RDORTPResType*>(parser->findRTPResType( "Транзакты" )));
+		return rtp;
+	} else {
+		RDOPROCTransact* rtp = new RDOPROCTransact();
+		RDOPROCTransact::created = true;
+		return rtp;
+	}
 }
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCOperator
 // ----------------------------------------------------------------------------
-RDOPROCOperator::RDOPROCOperator( const std::string& _name, RDODPTProcess* _process ):
+RDOPROCOperator::RDOPROCOperator( const std::string& _name, RDOPROCProcess* _process ):
 	RDODeletable(),
 	name( _name ),
 	process( _process )
 {
 	if ( !process ) process = parser->getLastDPTProcess();
+	process->operations.push_back( this );
 }
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCGenerate
 // ----------------------------------------------------------------------------
-RDOPROCGenerate::RDOPROCGenerate( const std::string& _name, RDODPTProcess* _process ):
+RDOPROCGenerate::RDOPROCGenerate( const std::string& _name, RDOCalc* time, RDOPROCProcess* _process ):
+	RDOPROCOperator( _name, _process ),
+	runtime( NULL )
+{
+	runtime = new rdoRuntime::RDOPROCGenerate( parser->getLastDPTProcess()->getRunTime(), time );
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOPROCTerminate
+// ----------------------------------------------------------------------------
+RDOPROCTerminate::RDOPROCTerminate( const std::string& _name, RDOPROCProcess* _process ):
 	RDOPROCOperator( _name, _process )
 {
+	runtime = new rdoRuntime::RDOPROCTerminate( parser->getLastDPTProcess()->getRunTime() );
 }
 
 } // namespace rdoParse

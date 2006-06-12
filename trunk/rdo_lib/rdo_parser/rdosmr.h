@@ -11,9 +11,6 @@ namespace rdoRuntime
 class RDOCalc;
 }
 
-using namespace rdoRuntime;
-
-
 namespace rdoParse 
 {
 

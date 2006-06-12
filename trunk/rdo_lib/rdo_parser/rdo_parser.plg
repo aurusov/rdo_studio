@@ -6,20 +6,20 @@
 --------------------Configuration: rdo_parser - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\DOCUME~1\drobus\LOCALS~1\Temp\RSPB99.bat" with contents
+Creating temporary file "C:\DOCUME~1\drobus\LOCALS~1\Temp\RSP600.bat" with contents
 [
 @echo off
-..\rdo_system\bison.exe -pdpt_opr_ --skeleton=..\rdo_system\bison.simple -ordogramdpt_opr.cpp .\rdodpt_opr.y
+..\rdo_system\bison.exe -v --defines=rdogramma.h -prtp --skeleton=..\rdo_system\bison.simple -ordogramrtp.cpp .\rdortp.y
 ]
-Creating command line "C:\DOCUME~1\drobus\LOCALS~1\Temp\RSPB99.bat"
+Creating command line "C:\DOCUME~1\drobus\LOCALS~1\Temp\RSP600.bat"
 <h3>Output Window</h3>
-Performing Custom Build Step on .\rdodpt_opr.y
-.\rdodpt_opr.y contains 2 shift/reduce conflicts.
+Performing Custom Build Step on .\rdortp.y
+.\rdortp.y contains 6 shift/reduce conflicts.
 
 
 
 <h3>Results</h3>
-rdogramdpt_opr.cpp - 0 error(s), 0 warning(s)
+rdogramrtp.cpp - 0 error(s), 0 warning(s)
 </pre>
 </body>
 </html>

@@ -88,6 +88,7 @@ class RDOActivityOperationRuntime;
 class RDOPatternRuntime;
 class RDOActivityRuntime;
 class RDOSearchRuntime;
+class RDOPROCProcess;
 
 template <class T> class compareNumber
 {
@@ -118,8 +119,9 @@ friend RDOPMDWatchValue;
 friend RDOPMDWatchPar;	  
 friend RDOPMDWatchState;
 
-	friend void rdoParse::addCalcToRuntime(RDOCalc *calc);
+friend void rdoParse::addCalcToRuntime(RDOCalc *calc);
 
+private:
 	std::vector<RDOResource *> allResources;
 	std::vector<RDOResourceTrace *> permanentResources;
 	RDOTrace *tracer;
@@ -139,10 +141,11 @@ friend RDOPMDWatchState;
 	std::vector<RDOBaseOperation *> allBaseOperations; // including rules, ies, operations, allDPTs
 																		 // to preserve order
 
-	std::vector<RDOActivityRuleRuntime *> rules;
-	std::vector<RDOActivityIERuntime *> ies;
-	std::vector<RDOActivityOperationRuntime *> operations;
-	std::vector<RDOPMDPokaz *> allPokaz;
+	std::vector< RDOActivityRuleRuntime* >      rules;
+	std::vector< RDOActivityIERuntime* >        ies;
+	std::vector< RDOActivityOperationRuntime* > operations;
+	std::vector< rdoRuntime::RDOPROCProcess* >  process;
+	std::vector< RDOPMDPokaz* >                 allPokaz;
 
 	std::vector<RDOPatternRuntime *> allPatterns;
 
@@ -188,6 +191,7 @@ public:
 	void addRuntimeOperation(RDOActivityOperationRuntime *oper);
 	void addRuntimeRule(RDOActivityRuleRuntime *rule);
 	void addRuntimeIE(RDOActivityIERuntime *ie);
+	void addRuntimeProcess( rdoRuntime::RDOPROCProcess* _process );
 	void addRuntimePokaz(RDOPMDPokaz *pok);
 	void addRuntimeFrame(RDOFRMFrame *frm);
 
@@ -198,8 +202,9 @@ public:
 	void setResParamVal(const int nRes, const int nParam, RDOValue val);
 	int getRelResNumber(const int nRelRes) const;
 	RDOValue eraseRes(const int resNumb, const RDOCalc *fromCalc);
-	RDOResource *createNewResource();
-	RDOResource *createNewResource(int number, bool isPermanent);
+	RDOResource* createNewResource();
+	RDOResource* createNewResource( int number, bool isPermanent );
+	void insertNewResource( RDOResource* res );
 	RDORuntime();
 	~RDORuntime();
 

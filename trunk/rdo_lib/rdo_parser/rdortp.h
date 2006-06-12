@@ -65,6 +65,7 @@ class RDORTPIntResParam: public RDORTPResParam
 {
 public:
 	RDORTPIntDiap *diap;
+	RDORTPIntResParam();
 	RDORTPIntResParam(RDORTPIntDiap *_diap, RDORTPIntDefVal *_dv);
 	const RDORTPResParam *constructSuchAs(const int defVal) const;
 	RDOValue getRSSDefaultValue()const ;

@@ -16,6 +16,7 @@ static char THIS_FILE[] = __FILE__;
 #include "rdodptrtime.h"
 #include "rdofrm.h"
 #include "rdoparser.h"
+#include <rdoprocess.h>
 
 namespace rdoRuntime
 {
@@ -75,7 +76,7 @@ RDOResource *RDORuntime::findResource(const int num) const
 	return allResources.at(num);
 }
 
-RDOResource *RDORuntime::createNewResource()
+RDOResource* RDORuntime::createNewResource()
 {
 	std::vector<RDOResource *>::iterator it = std::find(allResources.begin(), allResources.end(), (RDOResource *)NULL);
 	if(it != allResources.end())
@@ -92,7 +93,7 @@ RDOResource *RDORuntime::createNewResource()
 	return newRes;
 }
 
-RDOResource *RDORuntime::createNewResource(int number, bool isPermanent)
+RDOResource* RDORuntime::createNewResource( int number, bool isPermanent )
 {
 	allResources.resize(number + 1, NULL);
 	if(allResources.at(number) != NULL)
@@ -106,6 +107,12 @@ RDOResource *RDORuntime::createNewResource(int number, bool isPermanent)
 	if(!isPermanent)
 		newRes->makeTemporary(true);
 	return newRes;
+}
+
+void RDORuntime::insertNewResource( RDOResource* res )
+{
+	res->number = allResources.size();
+	allResources.push_back( res );
 }
 
 void RDORuntime::addRuntimePokaz(RDOPMDPokaz *pok)
@@ -278,6 +285,12 @@ void RDORuntime::addRuntimeIE(RDOActivityIERuntime *ie)
 { 
 	ies.push_back(ie); 
 	allBaseOperations.push_back(ie); 
+}
+
+void RDORuntime::addRuntimeProcess( rdoRuntime::RDOPROCProcess* _process )
+{
+	process.push_back( _process );
+	allBaseOperations.push_back( _process ); 
 }
 
 void RDORuntime::addDPT(RDOSearchRuntime *dpt) 
