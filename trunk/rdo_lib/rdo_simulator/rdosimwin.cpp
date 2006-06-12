@@ -33,11 +33,13 @@ namespace rdosim
 
 class RDORuntimeTracer: public RDOTrace, public RDOEndL
 {
+private:
 	LPVOID pParam;
   	TracerCallBack tracerCallBack;
 	std::stringstream stream;
+
 public:
-	std::ostream &getOStream() { return stream; }
+	std::ostream& getOStream() { return stream; }
 	RDOEndL& getEOL() { return *this; }
 	void onEndl()
 	{
@@ -182,7 +184,9 @@ RdoSimulator::~RdoSimulator()
 
 class RDOSimResulter: public RDOResult
 {
-	std::ostream &stream;
+private:
+	std::ostream& stream;
+
 public:
 	RDOSimResulter(std::ostream &_stream): stream(_stream) {isNullResult = false;}
 	virtual std::ostream &getOStream() { return stream; }

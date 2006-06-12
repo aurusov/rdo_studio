@@ -912,7 +912,7 @@ void RDORuntime::onPutToTreeNode()
 void RDORuntime::postProcess()
 {
 	getTracer()->startWriting();
-   RDOSimulatorTrace::postProcess();
+	RDOSimulatorTrace::postProcess();
 	switch(whyStop)
 	{
 	case rdoModel::EC_NoMoreEvents:

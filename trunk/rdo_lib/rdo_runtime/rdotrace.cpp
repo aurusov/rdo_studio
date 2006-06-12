@@ -137,7 +137,7 @@ std::string RDOTrace::traceResourcesList(char prefix, RDOSimulatorTrace *sim, st
    return res;
 }
 
-std::string RDOResourceTrace::traceResourceState(char prefix, RDOSimulatorTrace *sim)
+std::string RDOResourceTrace::traceResourceState( char prefix, RDOSimulatorTrace* sim )
 {
    std::ostringstream res;
    if((trace) || (prefix != '\0'))

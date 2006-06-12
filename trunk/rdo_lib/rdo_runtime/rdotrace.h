@@ -31,66 +31,71 @@ class RDOTrace
 {
 friend RDOSimulatorTrace;
 friend RDOResourceTrace;
-   std::string fileName;
-   std::ofstream out;
+
+private:
+	std::string fileName;
+	std::ofstream out;
 	bool canWriteToStream;
-   virtual std::ostream &getOStream() { return out; }
-	RDOEndL rdoEndL;
 
 protected:
-   virtual RDOEndL& getEOL() { return rdoEndL; }
 	bool isNullTracer;
+	RDOEndL rdoEndL;
 
 public:
-   RDOTrace(): isNullTracer(true), canWriteToStream(false) {}
-   RDOTrace(std::string fn): fileName(fn), out(fileName.begin(), std::ios_base::out), isNullTracer(false) {}
+	RDOTrace(): isNullTracer( true ), canWriteToStream( false ) {}
+	RDOTrace( std::string fn ): fileName( fn ), out( fileName.begin(), std::ios_base::out ), isNullTracer( false ) {}
 	virtual ~RDOTrace() {}
 
 	void startWriting() { canWriteToStream = true; }
 	void stopWriting() { canWriteToStream = false; }
-	bool canWrite() { return canWriteToStream; }
+	bool canWrite() const { return canWriteToStream; }
+	bool isNull() const   { return isNullTracer; }
 
-// Search in tree
-   virtual void writeSearchBegin(double currentTime, std::string decisionPointId);
-   virtual void writeSearchDecisionHeader();
-   virtual void writeSearchDecision(RDOSimulator *sim, TreeNode *node);
-   virtual void writeString(std::string);
-   virtual void writeSearchOpenNode(int nodeCount, int parentCount,
-      double pathCost, double restCost);
-   virtual void writeSearchNodeInfo(char sign, TreeNodeTrace *node);
-   virtual void writeSearchResult(char letter, RDOSimulatorTrace *simTr, TreeRoot *treeRoot);
+	// Search in tree
+	virtual void writeSearchBegin(double currentTime, std::string decisionPointId);
+	virtual void writeSearchDecisionHeader();
+	virtual void writeSearchDecision(RDOSimulator *sim, TreeNode *node);
+	virtual void writeString(std::string);
+	virtual void writeSearchOpenNode(int nodeCount, int parentCount, double pathCost, double restCost);
+	virtual void writeSearchNodeInfo(char sign, TreeNodeTrace *node);
+	virtual void writeSearchResult(char letter, RDOSimulatorTrace *simTr, TreeRoot *treeRoot);
 
-   virtual void writeIrregularEvent(RDOIETrace *ie, RDOSimulatorTrace *sim);
-   virtual void writeRule(RDORuleTrace *rule, RDOSimulatorTrace *sim);
-   virtual void writeBeforeOperationBegin(RDOOperationTrace *op, RDOSimulatorTrace *sim);
-   virtual void writeAfterOperationBegin(RDOOperationTrace *op, RDOSimulatorTrace *sim);
-   virtual void writeBeforeOperationEnd(RDOOperationTrace *op, RDOSimulatorTrace *sim);
-   virtual void writeAfterOperationEnd(RDOOperationTrace *op, RDOSimulatorTrace *sim);
+	virtual void writeIrregularEvent(RDOIETrace *ie, RDOSimulatorTrace *sim);
+	virtual void writeRule(RDORuleTrace *rule, RDOSimulatorTrace *sim);
+	virtual void writeBeforeOperationBegin(RDOOperationTrace *op, RDOSimulatorTrace *sim);
+	virtual void writeAfterOperationBegin(RDOOperationTrace *op, RDOSimulatorTrace *sim);
+	virtual void writeBeforeOperationEnd(RDOOperationTrace *op, RDOSimulatorTrace *sim);
+	virtual void writeAfterOperationEnd(RDOOperationTrace *op, RDOSimulatorTrace *sim);
 
-   virtual void writeTraceBegin(RDOSimulatorTrace *sim);
-   virtual void writeModelBegin(RDOSimulatorTrace *sim);
-   virtual void writeTraceEnd(RDOSimulatorTrace *sim);
-   virtual void writeStatus(RDOSimulatorTrace *sim, char *status);
+	virtual void writeTraceBegin(RDOSimulatorTrace *sim);
+	virtual void writeModelBegin(RDOSimulatorTrace *sim);
+	virtual void writeTraceEnd(RDOSimulatorTrace *sim);
+	virtual void writeStatus(RDOSimulatorTrace *sim, char *status);
 
-   virtual void writePermanentResources(RDOSimulatorTrace *sim, std::vector<RDOResourceTrace *> perm);
+	virtual void writePermanentResources(RDOSimulatorTrace *sim, std::vector<RDOResourceTrace *> perm);
 
-   virtual std::string traceResourcesListNumbers(RDOSimulatorTrace *sim, std::vector<RDOResourceTrace *> resArray);
-   virtual std::string traceResourcesList(char prefix, RDOSimulatorTrace *sim, std::vector<RDOResourceTrace *> resArray);
+	virtual std::string traceResourcesListNumbers(RDOSimulatorTrace *sim, std::vector<RDOResourceTrace *> resArray);
+	virtual std::string traceResourcesList(char prefix, RDOSimulatorTrace *sim, std::vector<RDOResourceTrace *> resArray);
 
-   virtual void writePokaz(RDOSimulatorTrace *sim, RDOPokazTrace *pok);
+	virtual void writePokaz(RDOSimulatorTrace *sim, RDOPokazTrace *pok);
+
+	virtual std::ostream& getOStream() { return out; }
+	virtual RDOEndL& getEOL() { return rdoEndL; }
 };
 
 class RDOTraceableObject
 {
 friend RDOSimulatorTrace;
 friend RDOTrace;
+
 protected:
-   int id;
-   RDOSimulatorTrace *sim;
-   virtual std::string traceId() const { return toString(id); }
-   RDOTraceableObject(RDOSimulatorTrace *i_sim): sim(i_sim) {trace = false;}
+	int id;
+	RDOSimulatorTrace* sim;
+	virtual std::string traceId() const { return toString(id); }
+	RDOTraceableObject( RDOSimulatorTrace* _sim ): sim( _sim ) { trace = false; }
+
 public:
-   bool trace;
+	bool trace;
 };
 
 class CheckRelevantResource
@@ -122,21 +127,24 @@ class RDOResourceTrace: public RDOTraceableObject
 friend RDOTrace;
 friend RDOSimulatorTrace;
 friend CheckRelevantResource;
-   
-   virtual std::string traceResourceState(char prefix, RDOSimulatorTrace *sim);
-   bool justCreated;
-   std::string typeId;
-   std::string traceTypeId() { return typeId.empty()?(typeId=getTypeId()):typeId; }
-   bool tempotary;
+
+private:
+	std::string typeId;
+	std::string traceTypeId() { return typeId.empty()?(typeId=getTypeId()):typeId; }
+
 protected:
-   virtual std::string getTypeId() = 0;
-   virtual std::string traceParametersValue() = 0;
-   RDOResourceTrace(RDOSimulatorTrace *sim);
-   RDOResourceTrace(const RDOResourceTrace &orig);
-   virtual ~RDOResourceTrace();
+	virtual std::string getTypeId() = 0;
+	virtual std::string traceParametersValue() = 0;
+	bool justCreated;
+	bool tempotary;
+	RDOResourceTrace(RDOSimulatorTrace *sim);
+	RDOResourceTrace(const RDOResourceTrace &orig);
+	virtual ~RDOResourceTrace();
+
 public:
-	void makeTemporary(bool temp) { tempotary = temp; }
-   static void clearJCFlag(RDOResourceTrace *res) { res->justCreated = false; }
+	void makeTemporary( bool temp ) { tempotary = temp; }
+	static void clearJCFlag(RDOResourceTrace *res) { res->justCreated = false; }
+	virtual std::string traceResourceState( char prefix, RDOSimulatorTrace* sim );
 };
 
 class RDOPokazTrace: public RDOPokaz, public RDOTraceableObject

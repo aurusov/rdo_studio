@@ -41,7 +41,7 @@ RSC=rc.exe
 # PROP Intermediate_Dir "Release"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /Yu"stdafx.h" /FD /c
-# ADD CPP /nologo /MT /W3 /GX /O2 /I "." /I "../rdo_parser" /I "../../rdo_common" /D "_LIB" /D "WIN32" /D "NDEBUG" /D "_MBCS" /Yu"pch.h" /FD /c
+# ADD CPP /nologo /MT /W3 /GR /GX /O2 /I "." /I "../rdo_parser" /I "../../rdo_common" /D "_LIB" /D "WIN32" /D "NDEBUG" /D "_MBCS" /Yu"pch.h" /FD /c
 # SUBTRACT CPP /Fr
 # ADD BASE RSC /l 0x419 /d "NDEBUG"
 # ADD RSC /l 0x419 /d "NDEBUG"
@@ -87,57 +87,167 @@ LIB32=link.exe -lib
 # Begin Source File
 
 SOURCE=.\ietrace.cpp
+
+!IF  "$(CFG)" == "rdo_runtime - Win32 Release"
+
+# ADD CPP /GR /Yu"pch.h"
+
+!ELSEIF  "$(CFG)" == "rdo_runtime - Win32 Debug"
+
 # ADD CPP /Yu"pch.h"
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
 SOURCE=.\operationtrace.cpp
+
+!IF  "$(CFG)" == "rdo_runtime - Win32 Release"
+
+# ADD CPP /GR /Yu"pch.h"
+
+!ELSEIF  "$(CFG)" == "rdo_runtime - Win32 Debug"
+
 # ADD CPP /Yu"pch.h"
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
 SOURCE=.\pch.cpp
+
+!IF  "$(CFG)" == "rdo_runtime - Win32 Release"
+
+# ADD CPP /GR /Yc"pch.h"
+
+!ELSEIF  "$(CFG)" == "rdo_runtime - Win32 Debug"
+
 # ADD CPP /Yc"pch.h"
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
 SOURCE=.\rdo.cpp
+
+!IF  "$(CFG)" == "rdo_runtime - Win32 Release"
+
+# ADD CPP /GR /Yu"pch.h"
+
+!ELSEIF  "$(CFG)" == "rdo_runtime - Win32 Debug"
+
 # ADD CPP /Yu"pch.h"
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
 SOURCE=.\rdobase.cpp
+
+!IF  "$(CFG)" == "rdo_runtime - Win32 Release"
+
+# ADD CPP /GR /Yu"pch.h"
+
+!ELSEIF  "$(CFG)" == "rdo_runtime - Win32 Debug"
+
 # ADD CPP /Yu"pch.h"
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
 SOURCE=.\rdoprocess.cpp
+
+!IF  "$(CFG)" == "rdo_runtime - Win32 Release"
+
+# ADD CPP /GR /Yu"pch.h"
+
+!ELSEIF  "$(CFG)" == "rdo_runtime - Win32 Debug"
+
 # ADD CPP /Yu"pch.h"
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
 SOURCE=.\rdotrace.cpp
+
+!IF  "$(CFG)" == "rdo_runtime - Win32 Release"
+
+# ADD CPP /GR /Yu"pch.h"
+
+!ELSEIF  "$(CFG)" == "rdo_runtime - Win32 Debug"
+
 # ADD CPP /Yu"pch.h"
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
 SOURCE=.\ruletrace.cpp
+
+!IF  "$(CFG)" == "rdo_runtime - Win32 Release"
+
+# ADD CPP /GR /Yu"pch.h"
+
+!ELSEIF  "$(CFG)" == "rdo_runtime - Win32 Debug"
+
 # ADD CPP /Yu"pch.h"
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
 SOURCE=.\searchtrace.cpp
+
+!IF  "$(CFG)" == "rdo_runtime - Win32 Release"
+
+# ADD CPP /GR /Yu"pch.h"
+
+!ELSEIF  "$(CFG)" == "rdo_runtime - Win32 Debug"
+
 # ADD CPP /Yu"pch.h"
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
 SOURCE=.\searchtree.cpp
+
+!IF  "$(CFG)" == "rdo_runtime - Win32 Release"
+
+# ADD CPP /GR /Yu"pch.h"
+
+!ELSEIF  "$(CFG)" == "rdo_runtime - Win32 Debug"
+
 # ADD CPP /Yu"pch.h"
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
 SOURCE=.\simtrace.cpp
+
+!IF  "$(CFG)" == "rdo_runtime - Win32 Release"
+
+# ADD CPP /GR /Yu"pch.h"
+
+!ELSEIF  "$(CFG)" == "rdo_runtime - Win32 Debug"
+
 # ADD CPP /Yu"pch.h"
+
+!ENDIF 
+
 # End Source File
 # End Group
 # Begin Group "Header Files"

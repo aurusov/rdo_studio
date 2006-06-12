@@ -391,6 +391,13 @@ RDOPROCTransact::RDOPROCTransact():
 	addParam( new RDORTPParamDesc( parser->registerName( "Время_создания" ), new RDORTPRealResParam() ) );
 	// Создадим параметр целого типа 'Просто_так'
 	addParam( new RDORTPParamDesc( parser->registerName( "Просто_так" ), new RDORTPIntResParam() ) );
+	// Больше это ресурс создавать не надо
+	RDOPROCTransact::created = true;
+}
+
+RDOPROCTransact::~RDOPROCTransact()
+{
+	RDOPROCTransact::created = false;
 }
 
 RDOPROCTransact* RDOPROCTransact::makeRTP()
@@ -400,7 +407,6 @@ RDOPROCTransact* RDOPROCTransact::makeRTP()
 		return rtp;
 	} else {
 		RDOPROCTransact* rtp = new RDOPROCTransact();
-		RDOPROCTransact::created = true;
 		return rtp;
 	}
 }

@@ -92,9 +92,10 @@ RDOPROCTransact::RDOPROCTransact( RDORuntime* sim, RDOPROCBlock* _block ):
 	block( _block )
 {
 	sim->insertNewResource( this );
-	type  = rdoParse::RDOPROCTransact::makeRTP()->getNumber();
-	trace = true;
-	makeTemporary( true );
+	type        = rdoParse::RDOPROCTransact::makeRTP()->getNumber();
+	trace       = true;
+	tempotary   = true;
+	justCreated = true;
 	params.push_back( sim->getTimeNow() );
 	params.push_back( 0 );
 }
@@ -121,6 +122,12 @@ bool RDOPROCGenerate::checkOperation( RDORuntime* sim )
 	if ( sim->getTimeNow() >= timeNext ) {
 		calcNextTimeInterval( sim );
 		RDOPROCTransact* res = new RDOPROCTransact( sim, this );
+
+		RDOTrace* tracer = sim->getTracer();
+		if ( !tracer->isNull() ) {
+			tracer->getOStream() << res->traceResourceState('\0', sim) << tracer->getEOL();
+		}
+
 		res->next();
 		return true;
 	}
@@ -138,7 +145,9 @@ void RDOPROCGenerate::calcNextTimeInterval( RDORuntime* sim )
 bool RDOPROCTerminate::checkOperation( RDORuntime* sim )
 {
 	if ( !transacts.empty() ) {
-		transacts.remove( transacts.front() );
+		RDOPROCTransact* res = transacts.front();
+		sim->eraseRes( res->number, NULL );
+		transacts.erase( transacts.begin() );
 		return true;
 	}
 	return false;

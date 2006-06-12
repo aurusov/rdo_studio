@@ -143,12 +143,12 @@ void RDOSimulatorTrace::checkPermanentResources()
 
 void RDOSimulatorTrace::preProcess()
 {
-   RDOSimulator::preProcess();
+	RDOSimulator::preProcess();
 	getTracer()->startWriting();
-   getTracer()->writeTraceBegin(this);
-   checkPermanentResources();
-   getTracer()->writePermanentResources(this, perm);
-   getTracer()->writeModelBegin(this);
+	getTracer()->writeTraceBegin(this);
+	checkPermanentResources();
+	getTracer()->writePermanentResources(this, perm);
+	getTracer()->writeModelBegin(this);
 }
 
 void RDOSimulatorTrace::postProcess()

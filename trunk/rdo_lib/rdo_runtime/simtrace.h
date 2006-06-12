@@ -54,8 +54,9 @@ protected:
 
    void onResourceErase(RDOResourceTrace *res);
    virtual std::vector<RDOResourceTrace *> getPermanentResources() = 0;
+
 public:
-   virtual RDOTrace *getTracer() = 0;
-   void rdoDestroy();
-   void rdoInit();
+	virtual RDOTrace* getTracer() = 0;
+	void rdoDestroy();
+	void rdoInit();
 };

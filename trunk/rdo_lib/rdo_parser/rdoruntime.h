@@ -65,10 +65,13 @@ namespace rdoRuntime
 
 class RDOResult
 {
-   std::ofstream out;
-   virtual std::ostream &getOStream() { return out; }
+private:
+	std::ofstream out;
+	virtual std::ostream& getOStream() { return out; }
+
 protected:
 	bool isNullResult;
+
 public:
 	RDOResult(const char *const fileName): out(fileName, std::ios::out), isNullResult(false) {}
 	RDOResult(): isNullResult(true) {}
@@ -133,7 +136,6 @@ private:
 	int currFuncTop;
 	int savedFuncTop;
 
-	RDOTrace *getTracer();
 	void onInit();
 	void onDestroy();
 	std::vector<RDOResourceTrace *> getPermanentResources();
@@ -251,6 +253,8 @@ public:
 	void onEndCondition() {whyStop = rdoModel::EC_OK;}
 	
 	void postProcess();
+
+	RDOTrace* getTracer();
 };
 /*
 class RDORuntimeException: public RDOException
@@ -278,13 +282,14 @@ public:
 class RDOResource: public RDOResourceTrace
 {
 public:
-   int number; // unique for all resources alive in system
+	int number; // unique for all resources alive in system
 	int type;
-   std::vector<RDOValue> params;
-   std::string getTypeId();
-   std::string traceParametersValue();
-	RDOResource(RDORuntime *rt): RDOResourceTrace(rt), referenceCount(0) {}
-   bool operator != (RDOResource &other);
+	std::vector<RDOValue> params;
+	std::string getTypeId();
+	std::string traceParametersValue();
+	RDOResource( RDORuntime* rt ): RDOResourceTrace(rt), referenceCount(0) {}
+	virtual ~RDOResource() {}
+	bool operator != ( RDOResource& other );
 	int referenceCount;
 };
 /*
@@ -937,16 +942,15 @@ public:
 	}
 };
 
-
-
 class RDOCalcEraseRes: public RDOCalc
 {
+private:
 	int relNumb;
+
 public:
 	RDOCalcEraseRes(int _relNumb): relNumb(_relNumb) {}
-   virtual RDOValue calcValue(RDORuntime *sim) const
-	{
-		return sim->eraseRes(sim->getRelResNumber(relNumb), this);
+	virtual RDOValue calcValue(RDORuntime *sim) const {
+		return sim->eraseRes( sim->getRelResNumber(relNumb), this );
 	}
 };
 

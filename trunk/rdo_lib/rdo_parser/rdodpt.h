@@ -216,6 +216,7 @@ protected:
 
 public:
 	static RDOPROCTransact* makeRTP();
+	virtual ~RDOPROCTransact();
 };
 
 // ----------------------------------------------------------------------------

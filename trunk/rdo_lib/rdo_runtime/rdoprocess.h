@@ -76,9 +76,11 @@ protected:
 	double   timeNext;
 	RDOCalc* timeCalc;
 
+protected:
+	virtual bool checkOperation( RDORuntime* sim );
+
 public:
 	RDOPROCGenerate( RDOPROCProcess* _process, RDOCalc* time ): RDOPROCBlock( _process ), timeNext( 0 ), timeCalc( time ) {}
-	virtual bool checkOperation( RDORuntime* sim );
 	void calcNextTimeInterval( RDORuntime* sim );
 };
 

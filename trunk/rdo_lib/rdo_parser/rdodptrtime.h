@@ -11,27 +11,29 @@ namespace rdoRuntime
 
 class RDOSearchActivityRuntime: public RDOActivityTrace
 {
+private:
 	RDOCalc *cost;
-   double costOfRule(RDOSimulator *sim) { return cost->calcValueBase(dynamic_cast<RDORuntime *>(sim)); }
+	double costOfRule(RDOSimulator *sim) { return cost->calcValueBase(dynamic_cast<RDORuntime *>(sim)); }
 public:
-   RDOSearchActivityRuntime(RDORuntime *sim, RDORule *r, bool vA, RDOCalc *_cost)
-		: RDOActivityTrace(sim, r, vA), cost(_cost) {}
+	RDOSearchActivityRuntime(RDORuntime *sim, RDORule *r, bool vA, RDOCalc *_cost): RDOActivityTrace(sim, r, vA), cost(_cost) {}
 };
 
 
 class RDOSearchRuntime: public RDODecisionPointTrace
 {
+private:
 	RDOCalc *condition;
 	RDOCalc *termCondition;
 	RDOCalc *evaluateBy;
 	bool compTops;
 
-   bool Condition(RDOSimulator *sim) { return (condition->calcValueBase(dynamic_cast<RDORuntime *>(sim)) != 0);}
-   bool TermCondition(RDOSimulator *sim) { return (termCondition->calcValueBase(dynamic_cast<RDORuntime *>(sim)) != 0);}
-   double EvaluateBy(RDOSimulator *sim) { return evaluateBy->calcValueBase(dynamic_cast<RDORuntime *>(sim)); }
-   bool NeedCompareTops() { return compTops; }
+	bool Condition(RDOSimulator *sim) { return (condition->calcValueBase(dynamic_cast<RDORuntime *>(sim)) != 0);}
+	bool TermCondition(RDOSimulator *sim) { return (termCondition->calcValueBase(dynamic_cast<RDORuntime *>(sim)) != 0);}
+	double EvaluateBy(RDOSimulator *sim) { return evaluateBy->calcValueBase(dynamic_cast<RDORuntime *>(sim)); }
+	bool NeedCompareTops() { return compTops; }
+
 public:
-   RDOSearchRuntime(RDORuntime *sim, 
+	RDOSearchRuntime(RDORuntime *sim, 
 		RDOCalc *_condition, 
 		RDOCalc *_termCondition, 
 		RDOCalc *_evaluateBy, 

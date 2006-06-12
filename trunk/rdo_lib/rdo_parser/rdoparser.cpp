@@ -33,6 +33,15 @@ RDOParser::RDOParser():
 	parsers.reset();
 }
 
+RDOParser::~RDOParser()
+{
+//	parser = this;
+	DeleteAllObjects( allNames );
+	DeleteAllObjects( allDoubles );
+	DeleteAllObjects( allDeletables );
+	parser = NULL;
+}
+
 std::stringstream& RDOParser::getModelStructure()
 {
 	modelStructure.str("");
@@ -230,15 +239,6 @@ const RDOPATPattern *RDOParser::findPattern(const std::string *const name) const
 		return (*it);
 
 	return NULL;
-}
-
-RDOParser::~RDOParser()
-{
-//	parser = this;
-	DeleteAllObjects( allNames );
-	DeleteAllObjects( allDoubles );
-	DeleteAllObjects( allDeletables );
-	parser = NULL;
 }
 
 void addCalcToRuntime(RDOCalc *calc) 
