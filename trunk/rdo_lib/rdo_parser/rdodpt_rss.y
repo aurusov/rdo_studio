@@ -455,6 +455,7 @@ dpt_process_line:	IDENTIF	{
 			// Параметр Состояние есть, но он не перечислимого типа
 			parser->error( rdo::format( "У типа ресурса '%s' параметр '%s' не является перечислимым типом", res_type->getName()->c_str(), rtp_param_name->c_str() ) );
 		}
+
 	}
 
 /*

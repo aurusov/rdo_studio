@@ -3,6 +3,7 @@
 #include <rdoruntime.h>
 #include <rdodpt.h>
 
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -122,7 +123,6 @@ bool RDOPROCGenerate::checkOperation( RDORuntime* sim )
 	if ( sim->getTimeNow() >= timeNext ) {
 		calcNextTimeInterval( sim );
 		RDOPROCTransact* res = new RDOPROCTransact( sim, this );
-
 		RDOTrace* tracer = sim->getTracer();
 		if ( !tracer->isNull() ) {
 			tracer->getOStream() << res->traceResourceState('\0', sim) << tracer->getEOL();
@@ -137,6 +137,20 @@ bool RDOPROCGenerate::checkOperation( RDORuntime* sim )
 void RDOPROCGenerate::calcNextTimeInterval( RDORuntime* sim )
 {
 	sim->addTimePoint( timeNext = timeCalc->calcValueBase( sim ) + sim->getTimeNow() );
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOPROCSeize
+// ----------------------------------------------------------------------------
+bool RDOPROCSeize::checkOperation( RDORuntime* sim )
+{
+	if ( !transacts.empty() ) {
+		RDOPROCTransact* res = transacts.front();
+		TRACE("SEIZE\n");
+		res->next();
+		return true;
+	}
+	return false;
 }
 
 // ----------------------------------------------------------------------------

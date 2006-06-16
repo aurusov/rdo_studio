@@ -85,6 +85,16 @@ public:
 };
 
 // ----------------------------------------------------------------------------
+// ---------- RDOPROCSeize
+// ----------------------------------------------------------------------------
+class RDOPROCSeize: public RDOPROCBlock
+{
+public:
+	RDOPROCSeize( RDOPROCProcess* _process ): RDOPROCBlock( _process ) {}
+	virtual bool checkOperation( RDORuntime* sim );
+};
+
+// ----------------------------------------------------------------------------
 // ---------- RDOPROCTerminate
 // ----------------------------------------------------------------------------
 class RDOPROCTerminate: public RDOPROCBlock

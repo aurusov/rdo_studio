@@ -342,6 +342,8 @@ dpt_process_line:	IDENTIF	{
 						parser->error( std::string(_T("Ожидается имя ресурса")).c_str() );
 					}
 					| SEIZE IDENTIF {
+						RDOPROCSeize* seize = new RDOPROCSeize( "SEIZE" );
+						$$ = int(seize);
 					};
 
 dpt_process_end:	dpt_process End	{

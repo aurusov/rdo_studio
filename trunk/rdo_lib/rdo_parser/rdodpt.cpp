@@ -391,7 +391,7 @@ RDOPROCTransact::RDOPROCTransact():
 	addParam( new RDORTPParamDesc( parser->registerName( "Время_создания" ), new RDORTPRealResParam() ) );
 	// Создадим параметр целого типа 'Просто_так'
 	addParam( new RDORTPParamDesc( parser->registerName( "Просто_так" ), new RDORTPIntResParam() ) );
-	// Больше это ресурс создавать не надо
+	// Больше этот ресурс создавать не надо
 	RDOPROCTransact::created = true;
 }
 
@@ -431,6 +431,15 @@ RDOPROCGenerate::RDOPROCGenerate( const std::string& _name, RDOCalc* time, RDOPR
 	runtime( NULL )
 {
 	runtime = new rdoRuntime::RDOPROCGenerate( parser->getLastDPTProcess()->getRunTime(), time );
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOPROCSeize
+// ----------------------------------------------------------------------------
+RDOPROCSeize::RDOPROCSeize( const std::string& _name, RDOPROCProcess* _process ):
+	RDOPROCOperator( _name, _process )
+{
+	runtime = new rdoRuntime::RDOPROCSeize( parser->getLastDPTProcess()->getRunTime() );
 }
 
 // ----------------------------------------------------------------------------

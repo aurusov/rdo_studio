@@ -13,6 +13,7 @@ class RDOCalc;
 class RDOPatternRuntime;
 class RDOPROCProcess;
 class RDOPROCGenerate;
+class RDOPROCSeize;
 class RDOPROCTerminate;
 }
 
@@ -241,6 +242,18 @@ protected:
 
 public:
 	RDOPROCGenerate( const std::string& _name, RDOCalc* time, RDOPROCProcess* _process = NULL );
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOPROCSeize
+// ----------------------------------------------------------------------------
+class RDOPROCSeize: public RDOPROCOperator
+{
+protected:
+	rdoRuntime::RDOPROCSeize* runtime;
+
+public:
+	RDOPROCSeize( const std::string& _name, RDOPROCProcess* _process = NULL );
 };
 
 // ----------------------------------------------------------------------------
