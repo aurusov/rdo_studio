@@ -15,6 +15,7 @@ class RDOPROCProcess;
 class RDOPROCGenerate;
 class RDOPROCSeize;
 class RDOPROCTerminate;
+class RDOPROCAdvance;
 }
 
 namespace rdoParse 
@@ -254,6 +255,18 @@ protected:
 
 public:
 	RDOPROCSeize( const std::string& _name, RDOPROCProcess* _process = NULL );
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOPROCAdvance
+// ----------------------------------------------------------------------------
+class RDOPROCAdvance: public RDOPROCOperator
+{
+protected:
+	rdoRuntime::RDOPROCAdvance* runtime;
+
+public:
+	RDOPROCAdvance( const std::string& _name, RDOPROCProcess* _process = NULL );
 };
 
 // ----------------------------------------------------------------------------

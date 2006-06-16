@@ -119,6 +119,7 @@
 %token SEIZE				364
 %token GENERATE				365
 %token TERMINATE			366
+%token ADVANCE				367
 
 %token Frame				400
 %token Show_if				401
@@ -266,6 +267,8 @@ dpt_process_line:	IDENTIF	{
 					| GENERATE dpt_arithm {
 					}
 					| TERMINATE {
+					}
+					| ADVANCE dpt_arithm {
 					}
 					| SEIZE {
 					}

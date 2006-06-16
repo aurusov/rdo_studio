@@ -154,6 +154,29 @@ bool RDOPROCSeize::checkOperation( RDORuntime* sim )
 }
 
 // ----------------------------------------------------------------------------
+// ---------- RDOPROCAdvance
+// ----------------------------------------------------------------------------
+bool RDOPROCAdvance::checkOperation( RDORuntime* sim )
+{
+	if ( !transacts.empty() ) {
+		if ( sim->getTimeNow() >= timeLeave ) {
+			calcTimeLeave( sim );
+			RDOPROCTransact* res = transacts.front();
+			TRACE("ADVANCE\n");
+			res->next();
+			return true;
+		}
+	}
+	return false;
+}
+
+void RDOPROCAdvance::calcTimeLeave( RDORuntime* sim )
+{
+	sim->addTimePoint( timeLeave = 12 + sim->getTimeNow() );
+}
+
+
+// ----------------------------------------------------------------------------
 // ---------- RDOPROCTerminate
 // ----------------------------------------------------------------------------
 bool RDOPROCTerminate::checkOperation( RDORuntime* sim )

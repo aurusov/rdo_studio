@@ -119,6 +119,7 @@
 %token SEIZE				364
 %token GENERATE				365
 %token TERMINATE			366
+%token ADVANCE				367
 
 %token Frame				400
 %token Show_if				401
@@ -337,6 +338,10 @@ dpt_process_line:	IDENTIF	{
 					| TERMINATE {
 						RDOPROCTerminate* terminate = new RDOPROCTerminate( "TERMINATE" );
 						$$ = int(terminate);
+					}
+					| ADVANCE dpt_arithm{
+						RDOPROCAdvance* advance = new RDOPROCAdvance( "ADVANCE" );
+						$$ = int(advance);
 					}
 					| SEIZE {
 						parser->error( std::string(_T("Ожидается имя ресурса")).c_str() );

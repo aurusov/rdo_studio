@@ -95,6 +95,23 @@ public:
 };
 
 // ----------------------------------------------------------------------------
+// ---------- RDOPROCAdvance
+// ----------------------------------------------------------------------------
+class RDOPROCAdvance: public RDOPROCBlock
+{
+
+protected:
+	double   timeLeave;
+	RDOCalc* timeCalc;
+
+public:
+	RDOPROCAdvance( RDOPROCProcess* _process ): RDOPROCBlock( _process ) {}
+	virtual bool checkOperation( RDORuntime* sim );
+	void calcTimeLeave( RDORuntime* sim );
+};
+
+
+// ----------------------------------------------------------------------------
 // ---------- RDOPROCTerminate
 // ----------------------------------------------------------------------------
 class RDOPROCTerminate: public RDOPROCBlock

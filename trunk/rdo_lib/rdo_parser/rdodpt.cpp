@@ -443,6 +443,15 @@ RDOPROCSeize::RDOPROCSeize( const std::string& _name, RDOPROCProcess* _process )
 }
 
 // ----------------------------------------------------------------------------
+// ---------- RDOPROCAdvance
+// ----------------------------------------------------------------------------
+RDOPROCAdvance::RDOPROCAdvance( const std::string& _name, RDOPROCProcess* _process ):
+	RDOPROCOperator( _name, _process )
+{
+	runtime = new rdoRuntime::RDOPROCAdvance( parser->getLastDPTProcess()->getRunTime() );
+}
+
+// ----------------------------------------------------------------------------
 // ---------- RDOPROCTerminate
 // ----------------------------------------------------------------------------
 RDOPROCTerminate::RDOPROCTerminate( const std::string& _name, RDOPROCProcess* _process ):
