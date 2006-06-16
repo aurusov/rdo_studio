@@ -9,6 +9,7 @@ static char THIS_FILE[] = __FILE__;
 #include "rdoparser.h"
 #include "rdopatrtime.h"
 #include "rdoparser_lexer.h"
+#include "rdorss.h"
 
 #include <rdoprocess.h>
 
@@ -436,19 +437,24 @@ RDOPROCGenerate::RDOPROCGenerate( const std::string& _name, RDOCalc* time, RDOPR
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCSeize
 // ----------------------------------------------------------------------------
-RDOPROCSeize::RDOPROCSeize( const std::string& _name, RDOPROCProcess* _process ):
+RDOPROCSeize::RDOPROCSeize( const std::string& _name, const std::string* res_name, RDOPROCProcess* _process ):
 	RDOPROCOperator( _name, _process )
 {
-	runtime = new rdoRuntime::RDOPROCSeize( parser->getLastDPTProcess()->getRunTime() );
+	const RDORSSResource* rss = parser->findRSSResource( res_name );
+	if ( rss ) {
+		runtime = new rdoRuntime::RDOPROCSeize( parser->getLastDPTProcess()->getRunTime(), rss->getNumber() );
+	} else {
+		// error: не нашли parser-ресурс
+	}
 }
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCAdvance
 // ----------------------------------------------------------------------------
-RDOPROCAdvance::RDOPROCAdvance( const std::string& _name, RDOPROCProcess* _process ):
+RDOPROCAdvance::RDOPROCAdvance( const std::string& _name, RDOCalc* time, RDOPROCProcess* _process ):
 	RDOPROCOperator( _name, _process )
 {
-	runtime = new rdoRuntime::RDOPROCAdvance( parser->getLastDPTProcess()->getRunTime() );
+	runtime = new rdoRuntime::RDOPROCAdvance( parser->getLastDPTProcess()->getRunTime(), time );
 }
 
 // ----------------------------------------------------------------------------

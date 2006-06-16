@@ -254,7 +254,7 @@ protected:
 	rdoRuntime::RDOPROCSeize* runtime;
 
 public:
-	RDOPROCSeize( const std::string& _name, RDOPROCProcess* _process = NULL );
+	RDOPROCSeize( const std::string& _name, const std::string* res_name, RDOPROCProcess* _process = NULL );
 };
 
 // ----------------------------------------------------------------------------
@@ -266,7 +266,7 @@ protected:
 	rdoRuntime::RDOPROCAdvance* runtime;
 
 public:
-	RDOPROCAdvance( const std::string& _name, RDOPROCProcess* _process = NULL );
+	RDOPROCAdvance( const std::string& _name, RDOCalc* time, RDOPROCProcess* _process = NULL );
 };
 
 // ----------------------------------------------------------------------------

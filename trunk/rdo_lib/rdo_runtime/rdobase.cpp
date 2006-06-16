@@ -63,8 +63,10 @@ void RDOSimulatorBase::rdoRun()
    postProcess();
 }
 
-void RDOSimulatorBase::addTimePoint(double timePoint)
+void RDOSimulatorBase::addTimePoint( double timePoint )
 {
-   timePointList.push_back(timePoint);
-   timePointList.sort();
+	if ( std::find( timePointList.begin(), timePointList.end(), timePoint ) == timePointList.end() ) {
+		timePointList.push_back( timePoint );
+		timePointList.sort();
+	}
 }

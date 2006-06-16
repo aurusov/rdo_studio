@@ -122,13 +122,13 @@ bool RDOPROCGenerate::checkOperation( RDORuntime* sim )
 {
 	if ( sim->getTimeNow() >= timeNext ) {
 		calcNextTimeInterval( sim );
-		RDOPROCTransact* res = new RDOPROCTransact( sim, this );
+		RDOPROCTransact* transact = new RDOPROCTransact( sim, this );
 		RDOTrace* tracer = sim->getTracer();
 		if ( !tracer->isNull() ) {
-			tracer->getOStream() << res->traceResourceState('\0', sim) << tracer->getEOL();
+			tracer->getOStream() << transact->traceResourceState('\0', sim) << tracer->getEOL();
 		}
-
-		res->next();
+		TRACE( "%7.1f GENERATE\n", sim->getTimeNow() );
+		transact->next();
 		return true;
 	}
 	return false;
@@ -145,10 +145,16 @@ void RDOPROCGenerate::calcNextTimeInterval( RDORuntime* sim )
 bool RDOPROCSeize::checkOperation( RDORuntime* sim )
 {
 	if ( !transacts.empty() ) {
-		RDOPROCTransact* res = transacts.front();
-		TRACE("SEIZE\n");
-		res->next();
-		return true;
+		RDOResource* rss = sim->findResource( rss_id );
+		// Свободен
+		if ( rss->params[0] == 0.0 ) {
+			rss->params[0] = 1.0;
+			transacts.front()->next();
+			TRACE( "%7.1f SEIZE\n", sim->getTimeNow() );
+			return true;
+		} else {
+			TRACE( "%7.1f SEIZE CANNOT\n", sim->getTimeNow() );
+		}
 	}
 	return false;
 }
@@ -159,22 +165,35 @@ bool RDOPROCSeize::checkOperation( RDORuntime* sim )
 bool RDOPROCAdvance::checkOperation( RDORuntime* sim )
 {
 	if ( !transacts.empty() ) {
-		if ( sim->getTimeNow() >= timeLeave ) {
-			calcTimeLeave( sim );
-			RDOPROCTransact* res = transacts.front();
-			TRACE("ADVANCE\n");
-			res->next();
-			return true;
+		double timeLeave = delayCalc->calcValueBase( sim ) + sim->getTimeNow();
+		leave_list.push_back( LeaveTr(transacts.front(), timeLeave) );
+		transacts.erase( transacts.begin() );
+		sim->addTimePoint( timeLeave );
+		TRACE( "%7.1f ADVANCE BEGIN\n", sim->getTimeNow() );
+//		RDOTrace* tracer = sim->getTracer();
+//		if ( !tracer->isNull() ) {
+//			tracer->getOStream() << res->traceResourceState('\0', sim) << tracer->getEOL();
+//		}
+		return true;
+	} else if ( !leave_list.empty() ) {
+		double tnow = sim->getTimeNow();
+		std::list< LeaveTr >::iterator it = leave_list.begin();
+		while ( it != leave_list.end() ) {
+			if ( tnow >= it->timeLeave ) {
+//				RDOTrace* tracer = sim->getTracer();
+//				if ( !tracer->isNull() ) {
+//					tracer->getOStream() << res->traceResourceState('\0', sim) << tracer->getEOL();
+//				}
+				it->transact->next();
+				TRACE( "%7.1f ADVANCE END\n", it->timeLeave );
+				leave_list.erase( it );
+				return true;
+			}
+			it++;
 		}
 	}
 	return false;
 }
-
-void RDOPROCAdvance::calcTimeLeave( RDORuntime* sim )
-{
-	sim->addTimePoint( timeLeave = 12 + sim->getTimeNow() );
-}
-
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCTerminate
@@ -185,6 +204,7 @@ bool RDOPROCTerminate::checkOperation( RDORuntime* sim )
 		RDOPROCTransact* res = transacts.front();
 		sim->eraseRes( res->number, NULL );
 		transacts.erase( transacts.begin() );
+		TRACE( "%7.1f TERMINATE\n", sim->getTimeNow() );
 		return true;
 	}
 	return false;

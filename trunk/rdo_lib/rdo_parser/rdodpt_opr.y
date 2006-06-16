@@ -339,15 +339,15 @@ dpt_process_line:	IDENTIF	{
 						RDOPROCTerminate* terminate = new RDOPROCTerminate( "TERMINATE" );
 						$$ = int(terminate);
 					}
-					| ADVANCE dpt_arithm{
-						RDOPROCAdvance* advance = new RDOPROCAdvance( "ADVANCE" );
+					| ADVANCE dpt_arithm {
+						RDOPROCAdvance* advance = new RDOPROCAdvance( "ADVANCE", ((RDOFUNArithm*)$2)->createCalc() );
 						$$ = int(advance);
 					}
 					| SEIZE {
 						parser->error( std::string(_T("Ожидается имя ресурса")).c_str() );
 					}
 					| SEIZE IDENTIF {
-						RDOPROCSeize* seize = new RDOPROCSeize( "SEIZE" );
+						RDOPROCSeize* seize = new RDOPROCSeize( "SEIZE", (std::string*)$2 );
 						$$ = int(seize);
 					};
 

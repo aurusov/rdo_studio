@@ -89,8 +89,11 @@ public:
 // ----------------------------------------------------------------------------
 class RDOPROCSeize: public RDOPROCBlock
 {
+protected:
+	int rss_id;
+
 public:
-	RDOPROCSeize( RDOPROCProcess* _process ): RDOPROCBlock( _process ) {}
+	RDOPROCSeize( RDOPROCProcess* _process, int _rss_id ): RDOPROCBlock( _process ), rss_id( _rss_id ) {}
 	virtual bool checkOperation( RDORuntime* sim );
 };
 
@@ -99,17 +102,24 @@ public:
 // ----------------------------------------------------------------------------
 class RDOPROCAdvance: public RDOPROCBlock
 {
-
 protected:
-	double   timeLeave;
-	RDOCalc* timeCalc;
+	RDOCalc* delayCalc;
+
+	struct LeaveTr {
+		RDOPROCTransact* transact;
+		double           timeLeave;
+		LeaveTr( RDOPROCTransact* _transact, double _timeLeave ):
+			transact( _transact ),
+			timeLeave( _timeLeave )
+		{
+		}
+	};
+	std::list< LeaveTr > leave_list;
 
 public:
-	RDOPROCAdvance( RDOPROCProcess* _process ): RDOPROCBlock( _process ) {}
+	RDOPROCAdvance( RDOPROCProcess* _process, RDOCalc* _delayCalc ): RDOPROCBlock( _process ), delayCalc( _delayCalc ) {}
 	virtual bool checkOperation( RDORuntime* sim );
-	void calcTimeLeave( RDORuntime* sim );
 };
-
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCTerminate
