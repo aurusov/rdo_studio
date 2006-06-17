@@ -449,6 +449,20 @@ RDOPROCSeize::RDOPROCSeize( const std::string& _name, const std::string* res_nam
 }
 
 // ----------------------------------------------------------------------------
+// ---------- RDOPROCRelease
+// ----------------------------------------------------------------------------
+RDOPROCRelease::RDOPROCRelease( const std::string& _name, const std::string* res_name, RDOPROCProcess* _process ):
+	RDOPROCOperator( _name, _process )
+{
+	const RDORSSResource* rss = parser->findRSSResource( res_name );
+	if ( rss ) {
+		runtime = new rdoRuntime::RDOPROCRelease( parser->getLastDPTProcess()->getRunTime(), rss->getNumber() );
+	} else {
+		// error: не нашли parser-ресурс
+	}
+}
+
+// ----------------------------------------------------------------------------
 // ---------- RDOPROCAdvance
 // ----------------------------------------------------------------------------
 RDOPROCAdvance::RDOPROCAdvance( const std::string& _name, RDOCalc* time, RDOPROCProcess* _process ):

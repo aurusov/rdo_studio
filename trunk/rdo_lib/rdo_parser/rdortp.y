@@ -120,6 +120,7 @@
 %token GENERATE				365
 %token TERMINATE			366
 %token ADVANCE				367
+%token RELEASE				368
 
 %token Frame				400
 %token Show_if				401

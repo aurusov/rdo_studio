@@ -120,6 +120,7 @@
 %token GENERATE				365
 %token TERMINATE			366
 %token ADVANCE				367
+%token RELEASE				368
 
 %token Frame				400
 %token Show_if				401
@@ -353,6 +354,8 @@ dpt_process_line:	IDENTIF	{
 					}
 					| ADVANCE dpt_arithm {
 					}
+					| RELEASE IDENTIF {
+					}
 					| SEIZE {
 	@$.first_column = @1.first_column;
 	@$.first_line   = @1.first_line;
@@ -360,6 +363,7 @@ dpt_process_line:	IDENTIF	{
 	@$.last_line    = @1.first_column;
 	parser->error( std::string(_T("Ожидается имя ресурса")).c_str() );
 }
+
 					| SEIZE IDENTIF {
 
 	std::string* res_name       = (std::string*)$2;

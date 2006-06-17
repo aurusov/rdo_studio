@@ -120,6 +120,7 @@
 %token GENERATE				365
 %token TERMINATE			366
 %token ADVANCE				367
+%token RELEASE				368
 
 %token Frame				400
 %token Show_if				401
@@ -349,7 +350,12 @@ dpt_process_line:	IDENTIF	{
 					| SEIZE IDENTIF {
 						RDOPROCSeize* seize = new RDOPROCSeize( "SEIZE", (std::string*)$2 );
 						$$ = int(seize);
+					}
+					| RELEASE IDENTIF {
+						RDOPROCRelease* release = new RDOPROCRelease( "RELEASE", (std::string*)$2 );
+						$$ = int(release);
 					};
+
 
 dpt_process_end:	dpt_process End	{
 						parser->getLastDPTProcess()->end();

@@ -98,6 +98,19 @@ public:
 };
 
 // ----------------------------------------------------------------------------
+// ---------- RDOPROCRelease
+// ----------------------------------------------------------------------------
+class RDOPROCRelease: public RDOPROCBlock
+{
+protected:
+	int rss_id;
+
+public:
+	RDOPROCRelease( RDOPROCProcess* _process, int _rss_id ): RDOPROCBlock( _process ), rss_id( _rss_id ) {}
+	virtual bool checkOperation( RDORuntime* sim );
+};
+
+// ----------------------------------------------------------------------------
 // ---------- RDOPROCAdvance
 // ----------------------------------------------------------------------------
 class RDOPROCAdvance: public RDOPROCBlock

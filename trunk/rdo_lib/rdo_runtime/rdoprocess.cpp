@@ -160,6 +160,26 @@ bool RDOPROCSeize::checkOperation( RDORuntime* sim )
 }
 
 // ----------------------------------------------------------------------------
+// ---------- RDOPROCRelease
+// ----------------------------------------------------------------------------
+bool RDOPROCRelease::checkOperation( RDORuntime* sim )
+{
+	if ( !transacts.empty() ) {
+		RDOResource* rss = sim->findResource( rss_id );
+		// Свободен
+		if ( rss->params[0] == 1.0 ) {
+			rss->params[0] = 0.0;
+			transacts.front()->next();
+			TRACE( "%7.1f RELEASE\n", sim->getTimeNow() );
+			return true;
+		} else {
+			TRACE( "%7.1f RELEASE CANNOT\n", sim->getTimeNow() );
+		}
+	}
+	return false;
+}
+
+// ----------------------------------------------------------------------------
 // ---------- RDOPROCAdvance
 // ----------------------------------------------------------------------------
 bool RDOPROCAdvance::checkOperation( RDORuntime* sim )

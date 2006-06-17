@@ -135,6 +135,7 @@ $Process			return(Process);
 SEIZE				return(SEIZE);
 GENERATE			return(GENERATE);
 ADVANCE				return(ADVANCE);
+RELEASE				return(RELEASE);
 TERMINATE			return(TERMINATE);
 value[\r\n\t ]+before	return(value_before);
 value[\r\n\t ]+after	return(value_after);
