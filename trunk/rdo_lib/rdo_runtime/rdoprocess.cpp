@@ -146,6 +146,12 @@ bool RDOPROCSeize::checkOperation( RDORuntime* sim )
 {
 	if ( !transacts.empty() ) {
 		RDOResource* rss = sim->findResource( rss_id );
+
+		RDOTrace* tracer = sim->getTracer();
+		if ( !tracer->isNull() ) {
+			tracer->getOStream() << rss->traceResourceState('\0', sim) << tracer->getEOL();
+		}
+
 		// Свободен
 		if ( rss->params[0] == 0.0 ) {
 			rss->params[0] = 1.0;
@@ -166,7 +172,13 @@ bool RDOPROCRelease::checkOperation( RDORuntime* sim )
 {
 	if ( !transacts.empty() ) {
 		RDOResource* rss = sim->findResource( rss_id );
-		// Свободен
+
+		RDOTrace* tracer = sim->getTracer();
+		if ( !tracer->isNull() ) {
+			tracer->getOStream() << rss->traceResourceState('\0', sim) << tracer->getEOL();
+		}
+
+		// Занят
 		if ( rss->params[0] == 1.0 ) {
 			rss->params[0] = 0.0;
 			transacts.front()->next();
