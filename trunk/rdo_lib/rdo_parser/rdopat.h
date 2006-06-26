@@ -124,6 +124,7 @@ public:
 	bool alreadyHaveConverter;
 	RDOPATChoice* choice;
 	RDOPATSelectType* first;
+	enum { convertNone = 0, convertBegin, convertEnd } currentConvert;
 
 	RDORelevantResource( const std::string* const _name, const int _numberOfResource, const RDOPATPattern::ConvertStatus _begin, const RDOPATPattern::ConvertStatus _end ):
 		name( _name ),
@@ -132,7 +133,8 @@ public:
 		end( _end ),
 		alreadyHaveConverter( false ),
 		choice( NULL ),
-		first( NULL )
+		first( NULL ),
+		currentConvert( convertNone )
 	{
 	}
 

@@ -561,13 +561,14 @@ public:
 
 class RDOCalcGetResParam: public RDOCalc
 {
+private:
 	int resNumb;
 	int parNumb;
+
 public:
-	RDOCalcGetResParam(int _resNumb, int _parNumb): resNumb(_resNumb), parNumb(_parNumb) {}
-   virtual RDOValue calcValue(RDORuntime *sim) const
-	{
-		return sim->getResParamVal(resNumb, parNumb);
+	RDOCalcGetResParam( int _resNumb, int _parNumb ): resNumb( _resNumb ), parNumb( _parNumb ) {}
+	virtual RDOValue calcValue( RDORuntime* sim ) const {
+		return sim->getResParamVal( resNumb, parNumb );
 	}
 };
 

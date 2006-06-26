@@ -12,6 +12,7 @@ static char THIS_FILE[] = __FILE__;
 #include "rdosmr.h"
 #include "rdorss.h"
 #include "rdortp.h"
+#include "rdosmr.h"
 #include "rdoruntime.h"
 
 #include <rdobinarystream.h>
@@ -158,9 +159,27 @@ int RDOParserRDO::lexer_loc_pos()
 // ----------------------------------------------------------------------------
 // ---------- RDOParserRTP
 // ----------------------------------------------------------------------------
+RDOParserRTP::RDOParserRTP(): RDOParserRDO( rdoModelObjects::RTP, rtpparse, rtperror, rtplex )
+{
+}
+
 RDOLexer* RDOParserRTP::getLexer( std::istream& in_stream, std::ostream& out_stream )
 {
 	return new RDOLexerRTP( this, &in_stream, &out_stream );
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOParserRSS
+// ----------------------------------------------------------------------------
+RDOParserRSS::RDOParserRSS(): RDOParserRDO( rdoModelObjects::RSS, rssparse, rsserror, rsslex )
+{
+}
+
+void RDOParserRSS::parse( std::istream& in_stream )
+{
+	parser->setHaveKWResources( false );
+	parser->setHaveKWResourcesEnd( false );
+	RDOParserRDO::parse( in_stream );
 }
 
 // ----------------------------------------------------------------------------
@@ -187,6 +206,10 @@ void RDOParserSTDFUN::parse()
 // ----------------------------------------------------------------------------
 // ---------- RDOParserSMR1
 // ----------------------------------------------------------------------------
+RDOParserSMR1::RDOParserSMR1(): RDOParserRDO( rdoModelObjects::SMR, smr1parse, smr1error, smr1lex )
+{
+}
+
 void RDOParserSMR1::parse( std::istream& in_stream )
 {
 	try {
@@ -195,7 +218,7 @@ void RDOParserSMR1::parse( std::istream& in_stream )
 		// Everithing ok, just end of first part parsing
 	}
 	if ( rdoParse::parser && rdoParse::parser->smr && !rdoParse::parser->smr->showRate ) {
-		rdoParse::parser->smr->showRate = rdoParse::parser->addDouble(new double(60.0));
+		rdoParse::parser->smr->showRate = rdoParse::parser->addDouble( new double(60.0) );
 	}
 }
 

@@ -168,11 +168,15 @@ namespace rdoParse
 
 /* ///////////////////////  GENERAL PART ///////////////////////////// */
 
-dpt_main:	
-	| dpt_main dpt_activ_search_end
-	| dpt_main dpt_activ_some_end
-	| dpt_main dpt_activ_free_end
-	| dpt_main dpt_process_end;
+dpt_main:
+		| dpt_main dpt_activ_search_end
+		| dpt_main dpt_activ_some_end
+		| dpt_main dpt_activ_free_end
+		| dpt_main dpt_process_end
+		| error {
+			parser->lexer_loc_set( &(@1) );
+			parser->error( rdosim::RDOSyntaxError::UNKNOWN );
+		};
 
 /* ///////////////////////  SEARCH POINT ///////////////////////////// */
 
@@ -252,35 +256,7 @@ dpt_activ_free_end:	dpt_activ_free End												{ /* if ($1 != NULL) ((RDODPTF
 
 
 /* ///////////////////////  PROCESS ///////////////////////////// */
-
-dpt_process:		dpt_process_begin dpt_process_input {
-					};
-
-dpt_process_begin:	Process {
-					};
-
-dpt_process_input:	/* empty */
-					| dpt_process_input dpt_process_line;
-
-dpt_process_line:	IDENTIF	{
-						parser->error( rdo::format("Неизвестный оператор '%s'", ((std::string *)$1)->c_str()) );
-					}
-					| GENERATE dpt_arithm {
-					}
-					| TERMINATE {
-					}
-					| ADVANCE dpt_arithm {
-					}
-					| SEIZE {
-					}
-					| SEIZE IDENTIF {
-					}
-					| RELEASE IDENTIF {
-					};
-
-dpt_process_end:	dpt_process End	{
-						parser->getLastDPTProcess()->end();
-					};
+dpt_process_end:	Process error End; /* заглушка для $Process */
 
 /* ///////////////////////  ARITHMETIC/LOGIC ///////////////////////////// */
 

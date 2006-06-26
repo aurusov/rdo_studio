@@ -8,9 +8,7 @@ static char THIS_FILE[] = __FILE__;
 
 #include "rdoparser_base.h"
 #include "rdoparser_rdo.h"
-#include "rdortp.h"
 #include "rdofun.h"
-#include "rdorss.h"
 #include "rdopat.h"
 #include "rdoopr.h"
 #include "rdodpt.h"
@@ -20,10 +18,6 @@ static char THIS_FILE[] = __FILE__;
 
 namespace rdoParse
 {
-
-// ----------------------------------------------------------------------------
-// ---------- RDOParserBase
-// ----------------------------------------------------------------------------
 
 // ----------------------------------------------------------------------------
 // ---------- RDOParserList
@@ -50,10 +44,10 @@ void RDOParserList::clear()
 void RDOParserList::reset()
 {
 	clear();
-	insertParser( rdoModelObjects::obPRE, new RDOParserSMR1( smr1parse, smr1error, smr1lex ) );
+	insertParser( rdoModelObjects::obPRE, new RDOParserSMR1() );
 	insertParser( rdoModelObjects::obPRE, new RDOParserSTDFUN() );
-	insertParser( rdoModelObjects::obRTP, new RDOParserRTP( rtpparse, rtperror, rtplex ) );
-	insertParser( rdoModelObjects::obRSS, new RDOParserRDO( rdoModelObjects::RSS, rssparse, rsserror, rsslex ) );
+	insertParser( rdoModelObjects::obRTP, new RDOParserRTP() );
+	insertParser( rdoModelObjects::obRSS, new RDOParserRSS() );
 	insertParser( rdoModelObjects::obRSS, new RDOParserRDO( rdoModelObjects::DPT, dpt_rss_parse, dpt_rss_error, dpt_rss_lex ) );
 	insertParser( rdoModelObjects::obFUN, new RDOParserRDO( rdoModelObjects::FUN, funparse, funerror, funlex ) );
 	insertParser( rdoModelObjects::obPAT, new RDOParserRDO( rdoModelObjects::PAT, patparse, paterror, patlex ) );

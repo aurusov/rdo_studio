@@ -22,7 +22,6 @@ int rtplex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer )
 }
 void rtperror( char* mes )
 {
-	return;
 }
 
 void RDORTPEnum::add(const std::string *const next) 
@@ -33,7 +32,7 @@ void RDORTPEnum::add(const std::string *const next)
 	enumVals.push_back(next); 
 }
 
-int RDORTPEnum::findValue(const std::string *const val) const
+int RDORTPEnum::findValue( const std::string* const val ) const
 {
 	std::vector<const std::string *>::const_iterator it = 
 		std::find_if(enumVals.begin(), enumVals.end(), comparePointers<std::string>(val));
@@ -145,81 +144,96 @@ const RDORTPResParam* RDORTPResParam::constructSuchAs( const std::string* const 
 	return NULL;	// unreachable code...
 }
 
-RDOValue RDORTPResParam::getRSSEnumValue(const std::string *const val) const 
+RDOValue RDORTPIntResParam::getRSSEnumValue( const std::string* const val ) const
 {
-	std::ostringstream str;
-	str << "Unexpected parameter value: " << *val;
-	parser->error(str.str().c_str());
-	return NULL;	// unreachable code...
-}
-RDOValue RDORTPResParam::getRSSIntValue(const int val) const 
-{
-	std::ostringstream str;
-	str << "Unexpected parameter value: " << val;
-	parser->error(str.str().c_str());
-	return NULL;	// unreachable code...
-}
-RDOValue RDORTPResParam::getRSSRealValue(const double *const val) const
-{
-	std::ostringstream str;
-	str << "Unexpected parameter value: " << *val;
-	parser->error(str.str().c_str());
+	parser->error( rdo::format("Ќеверное значение параметра целого типа: %s", val->c_str()) );
 	return NULL;	// unreachable code...
 }
 
-RDOValue RDORTPIntResParam::getRSSDefaultValue()const 
+RDOValue RDORTPRealResParam::getRSSEnumValue( const std::string* const val ) const
 {
-	if(!dv->exist)
-		parser->error("No default value");
-
-	return RDOValue(dv->GetIntValue());
+	parser->error( rdo::format("Ќеверное значение параметра вещественного типа: %s", val->c_str()) );
+	return NULL;	// unreachable code...
 }
 
-RDOValue RDORTPIntResParam::getRSSIntValue(const int val) const 
+RDOValue RDORTPEnumResParam::getRSSIntValue( const int val ) const 
 {
-	if(diap->exist)
-	{
-		if((val < diap->minVal) || (val > diap->maxVal))
-			parser->error(("integer value " + toString(val) + " out of range[" + toString(diap->minVal) + ", " + toString(diap->maxVal) + "]").c_str());
+	parser->error( rdo::format("Ќеверное значение параметра перечислимого типа: %d", val) );
+	return NULL;	// unreachable code...
+}
+
+RDOValue RDORTPEnumResParam::getRSSRealValue( const double* const val ) const
+{
+	parser->error( rdo::format("Ќеверное значение параметра перечислимого типа: %f", *val) );
+	return NULL;	// unreachable code...
+}
+
+RDOValue RDORTPIntResParam::getRSSRealValue( const double* const val ) const
+{
+	parser->error( rdo::format("Ќеверное значение параметра целого типа: %f", *val) );
+	return NULL;	// unreachable code...
+}
+
+RDOValue RDORTPIntResParam::getRSSDefaultValue() const 
+{
+	if ( !dv->exist ) {
+//		parser->error( "No default value" );
+		parser->error( "Ќет значени€ по-умолчанию" );
 	}
-	return RDOValue(val);
+	return RDOValue( dv->GetIntValue() );
+}
+
+RDOValue RDORTPIntResParam::getRSSIntValue( const int val ) const 
+{
+	if ( diap->exist ) {
+		if ((val < diap->minVal) || (val > diap->maxVal)) {
+//			parser->error( ("integer value " + toString(val) + " out of range[" + toString(diap->minVal) + ", " + toString(diap->maxVal) + "]").c_str() );
+			parser->error( rdo::format("÷елочисленное значение выходит за допустимый диапазон [%d..%d]: %d", diap->minVal, diap->maxVal, val) );
+		}
+	}
+	return RDOValue( val );
 }
 
 RDOValue RDORTPRealResParam::getRSSDefaultValue() const 
 {
-	if(!dv->exist)
-		parser->error("No default value");
-
-	return RDOValue(dv->GetRealValue());
+	if ( !dv->exist ) {
+//		parser->error( "No default value" );
+		parser->error( "Ќет значени€ по-умолчанию" );
+	}
+	return RDOValue( dv->GetRealValue() );
 }
 
-RDOValue RDORTPRealResParam::getRSSRealValue(const double *const val) const 
+RDOValue RDORTPRealResParam::getRSSRealValue( const double* const val ) const 
 {
-	if(diap->exist)
-	{
-		if((*val < diap->minVal) || (*val > diap->maxVal))
-			parser->error(("real value " + toString(*val) + " out of range[" + toString(diap->minVal) + ", " + toString(diap->maxVal) + "]").c_str());
+	if ( diap->exist ) {
+		if ((*val < diap->minVal) || (*val > diap->maxVal)) {
+//			parser->error(("real value " + toString(*val) + " out of range[" + toString(diap->minVal) + ", " + toString(diap->maxVal) + "]").c_str());
+			parser->error( rdo::format("¬ещественное значение выходит за допустимый диапазон [%f..%f]: %f", diap->minVal, diap->maxVal, *val) );
+		}
 	}
-	return RDOValue(*val);
+	return RDOValue( *val );
 }
 
-RDOValue RDORTPRealResParam::getRSSIntValue(const int val) const
+RDOValue RDORTPRealResParam::getRSSIntValue( const int val ) const
 {
-	if(diap->exist)
-	{
-		if((val < diap->minVal) || (val > diap->maxVal))
-			parser->error(("real value " + toString(val) + " out of range[" + toString(diap->minVal) + ", " + toString(diap->maxVal) + "]").c_str());
+	if ( diap->exist ) {
+		if ((val < diap->minVal) || (val > diap->maxVal)) {
+//			parser->error(("real value " + toString(val) + " out of range[" + toString(diap->minVal) + ", " + toString(diap->maxVal) + "]").c_str());
+			parser->error( rdo::format("¬ещественное значение выходит за допустимый диапазон [%f..%f]: %d", diap->minVal, diap->maxVal, val) );
+		}
 	}
-	return RDOValue(val);
+	return RDOValue( val );
 }
 
 RDOValue RDORTPEnumResParam::getRSSDefaultValue() const 
 {
-	if(!dv->exist)
-		parser->error("No default value");
-
-	return RDOValue(enu->findValue(dv->GetEnumValue()));
+	if ( !dv->exist ) {
+//		parser->error( "No default value" );
+		parser->error( "Ќет значени€ по-умолчанию" );
+	}
+	return RDOValue( enu->findValue( dv->GetEnumValue() ) );
 }
+
 RDOValue RDORTPEnumResParam::getRSSEnumValue(const std::string *const val) const
 {
 	return enu->findValue(val);
@@ -232,7 +246,6 @@ RDORTPIntResParam::RDORTPIntResParam():
 	diap->check( static_cast<RDORTPIntDefVal*>(dv) );
 }
 
-
 RDORTPIntResParam::RDORTPIntResParam(RDORTPIntDiap *_diap, RDORTPIntDefVal *_dv): 
 	diap(_diap), 
 	RDORTPResParam(_dv) 
@@ -240,12 +253,14 @@ RDORTPIntResParam::RDORTPIntResParam(RDORTPIntDiap *_diap, RDORTPIntDefVal *_dv)
 	diap->check(_dv);
 }
 
-void RDORTPIntDiap::check(const RDORTPIntDefVal *dv) const
+void RDORTPIntDiap::check( const RDORTPIntDefVal* dv ) const
 {
-	if(exist && dv->exist)
-		if((minVal > dv->GetIntValue()) || (maxVal < dv->GetIntValue()))
-			parser->error(("Integer value " + toString(dv->GetIntValue()) + 
-					" out of range[" + toString(minVal) + ", " + toString(maxVal) + "]").c_str());
+	if ( exist && dv->exist ) {
+		if ((minVal > dv->GetIntValue()) || (maxVal < dv->GetIntValue())) {
+//			parser->error(("Integer value " + toString(dv->GetIntValue()) + " out of range[" + toString(minVal) + ", " + toString(maxVal) + "]").c_str());
+			parser->error( rdo::format("÷елочисленное значение выходит за допустимый диапазон [%d..%d]: %d", minVal, maxVal, dv->GetIntValue()) );
+		}
+	}
 }
 
 RDORTPRealResParam::RDORTPRealResParam():
@@ -262,12 +277,14 @@ RDORTPRealResParam::RDORTPRealResParam( RDORTPRealDiap* _diap, RDORTPRealDefVal*
 	diap->check( _dv );
 }
 
-void RDORTPRealDiap::check(const RDORTPRealDefVal *dv) const
+void RDORTPRealDiap::check( const RDORTPRealDefVal* dv ) const
 {
-	if(exist && dv->exist)
-		if((minVal > dv->GetRealValue()) || (maxVal < dv->GetRealValue()))
-			parser->error(("Integer value " + toString(dv->GetRealValue()) + 
-					" out of range[" + toString(minVal) + ", " + toString(maxVal) + "]").c_str());
+	if ( exist && dv->exist ) {
+		if ((minVal > dv->GetRealValue()) || (maxVal < dv->GetRealValue())) {
+//			parser->error(("Integer value " + toString(dv->GetRealValue()) + " out of range[" + toString(minVal) + ", " + toString(maxVal) + "]").c_str());
+			parser->error( rdo::format("¬ещественное значение выходит за допустимый диапазон [%f..%f]: %f", minVal, maxVal, dv->GetRealValue()) );
+		}
+	}
 }
 
 const RDORTPResParam *RDORTPIntResParam::constructSuchAs(const int defVal) const 
@@ -294,36 +311,44 @@ const RDORTPResParam *RDORTPEnumResParam::constructSuchAs(const std::string *con
 
 int RDORTPDefVal::GetIntValue() const
 {
-	parser->error("Invalid default value");
+//	parser->error( "Invalid default value" );
+	parser->error( "Ќеверное значение по-умолчанию" );
 	return 0;	// unreachable code...
 }
 
 double RDORTPDefVal::GetRealValue() const
 {
-	parser->error("Invalid default value");
+//	parser->error( "Invalid default value" );
+	parser->error( "Ќеверное значение по-умолчанию" );
 	return 0.;	// unreachable code...
 }
 
 const std::string *RDORTPDefVal::GetEnumValue() const
 {
-	parser->error("Invalid default value");
+//	parser->error( "Invalid default value" );
+	parser->error( "Ќеверное значение по-умолчанию" );
 	return NULL;	// unreachable code...
 }
 
 int RDORTPIntResParam::getDiapTableFunc() const 
 {
-	if(!diap->exist)
-		parser->error("integer table function parameter must have range");
+	if ( !diap->exist ) {
+//		parser->error("integer table function parameter must have range");
+		parser->error( "ƒл€ параметра табличной функции должен быть задан допустимый диапазон" );
+	}
 
-	if(diap->minVal != 1)
-		parser->error("integer table function parameter must have minimum value = 1");
+	if ( diap->minVal != 1 ) {
+//		parser->error("integer table function parameter must have minimum value = 1");
+		parser->error( "ћинимальное значение диапазона должно быть 1" );
+	}
 
 	return diap->maxVal - diap->minVal + 1;
 }
 
 int RDORTPRealResParam::getDiapTableFunc() const
 {
-	parser->error("unexpected real table function parameter");
+//	parser->error( "unexpected real table function parameter" );
+	parser->error( "ѕараметр табличной функции может быть только целого типа" );
 	return 0;		// unreachable code...
 }
 
@@ -339,4 +364,4 @@ RDORTPParamDesc::RDORTPParamDesc( const std::string* const _name, const RDORTPRe
 	parser->insertRTPParam( this );
 }
 
-}		// namespace rdoParse 
+} // namespace rdoParse

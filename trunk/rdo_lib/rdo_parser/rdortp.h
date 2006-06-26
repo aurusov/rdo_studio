@@ -53,9 +53,9 @@ public:
 	virtual const RDORTPResParam *constructSuchAs(const double *const defVal) const;
 	virtual const RDORTPResParam *constructSuchAs(const std::string *const defVal) const;
 	virtual RDOValue getRSSDefaultValue() const = 0;
-	virtual RDOValue getRSSEnumValue(const std::string *const val) const;
-	virtual RDOValue getRSSIntValue(const int val) const;
-	virtual RDOValue getRSSRealValue(const double *const val) const;
+	virtual RDOValue getRSSEnumValue( const std::string* const val ) const = 0;
+	virtual RDOValue getRSSIntValue( const int val ) const = 0;
+	virtual RDOValue getRSSRealValue( const double* const val ) const = 0;
 	virtual int getDiapTableFunc() const = 0;
 	virtual ParamType getType() const = 0;
 	virtual int writeModelStructure() const = 0;
@@ -68,8 +68,10 @@ public:
 	RDORTPIntResParam();
 	RDORTPIntResParam(RDORTPIntDiap *_diap, RDORTPIntDefVal *_dv);
 	const RDORTPResParam *constructSuchAs(const int defVal) const;
-	RDOValue getRSSDefaultValue()const ;
-	RDOValue getRSSIntValue(const int val)const ;	// the function also check range if exist
+	virtual RDOValue getRSSDefaultValue()const ;
+	virtual RDOValue getRSSEnumValue( const std::string* const val ) const;
+	virtual RDOValue getRSSIntValue(const int val)const ;					// the function also check range if exist
+	virtual RDOValue getRSSRealValue( const double* const val ) const;
 	int getDiapTableFunc() const;
 	ParamType getType() const { return pt_int; }
 	int writeModelStructure() const;
@@ -102,9 +104,10 @@ public:
 	RDORTPRealResParam( RDORTPRealDiap* _diap, RDORTPRealDefVal* _dv );
 	RDORTPRealDiap* diap;
 	const RDORTPResParam *constructSuchAs(const double *const defVal) const;
-	RDOValue getRSSDefaultValue()const ;
-	RDOValue getRSSRealValue(const double *const val)const ; 	// the function also check range if exist
-	RDOValue getRSSIntValue(const int val) const;					// this function too
+	virtual RDOValue getRSSDefaultValue()const ;
+	virtual RDOValue getRSSEnumValue( const std::string* const val ) const;
+	virtual RDOValue getRSSRealValue(const double *const val)const ; 	// the function also check range if exist
+	virtual RDOValue getRSSIntValue(const int val) const;				// this function too
 	int getDiapTableFunc() const;
 	ParamType getType() const { return pt_real; }
 	int writeModelStructure() const;
@@ -134,8 +137,10 @@ public:
 	RDORTPEnum *enu;
 	RDORTPEnumResParam(RDORTPEnum *_enu, RDORTPEnumDefVal *_dv): enu(_enu), RDORTPResParam(_dv) {}
 	const RDORTPResParam *constructSuchAs(const std::string *const defVal) const ;
-	RDOValue getRSSDefaultValue()const ;
-	RDOValue getRSSEnumValue(const std::string *const val)const ;
+	virtual RDOValue getRSSDefaultValue()const ;
+	virtual RDOValue getRSSEnumValue(const std::string* const val) const;
+	virtual RDOValue getRSSIntValue( const int val ) const;
+	virtual RDOValue getRSSRealValue( const double* const val ) const;
 	int getDiapTableFunc() const;
 	ParamType getType() const { return pt_enum; }
 	int writeModelStructure() const;
@@ -162,9 +167,10 @@ protected:
 
 public:
 	RDORTPResType( const std::string* const _name, const bool _permanent );
-	const std::string* const getName() const { return name;      };
-	int getNumber() const                    { return number;    };
-	bool isPermanent() const                 { return permanent; };
+	const std::string* const getName() const { return name;       };
+	int getNumber() const                    { return number;     };
+	bool isPermanent() const                 { return permanent;  };
+	bool isTemporary() const                 { return !permanent; };
 
 	void addParam( const RDORTPParamDesc* const param );
 	const RDORTPParamDesc* findRTPParam( const std::string* const param ) const;

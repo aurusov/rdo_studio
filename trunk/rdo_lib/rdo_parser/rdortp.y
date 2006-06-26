@@ -165,7 +165,8 @@ rtp_list:	/* empty */
 			| rtp_list rtp_res_type
 			| error {
 				parser->lexer_loc_set( &(@1) );
-				parser->error( rdosim::RDOSyntaxError::UNKNOWN );
+//				parser->error( rdosim::RDOSyntaxError::UNKNOWN );
+				parser->error( "Ожидается ключевое слово $Resource_type" );
 			};
 
 rtp_res_type:	rtp_res_type_hdr Parameters rtp_body End {
@@ -397,14 +398,14 @@ rtp_int_default_val:	/* empty */ {
 								std::string str( reinterpret_cast<RDOLexer*>(lexer)->YYText() );
 								if ( str.empty() ) {
 									parser->lexer_loc_set( &(@1) );
-									parser->error( "Ожидается значение по-ум. для integer" );
+									parser->error( "Ожидается целочисленное значение по-умолчанию" );
 								} else {
 									parser->lexer_loc_set( &(@2) );
-									parser->error( rdo::format( "Неверное значение по-ум. для integer: %s", str.c_str() ) );
+									parser->error( rdo::format( "Неверное значение по-умолчанию: %s", str.c_str() ) );
 								}
 							} else {
 								parser->lexer_loc_set( &(@1) );
-								parser->error( "Ожидается значение по-ум. для integer" );
+								parser->error( "Ожидается целочисленное значение по-умолчанию" );
 							}
 						};
 
@@ -422,14 +423,14 @@ rtp_real_default_val:	/* empty */ {
 								std::string str( reinterpret_cast<RDOLexer*>(lexer)->YYText() );
 								if ( str.empty() ) {
 									parser->lexer_loc_set( &(@1) );
-									parser->error( "Ожидается значение по-ум. для real" );
+									parser->error( "Ожидается вещественное значение по-умолчанию" );
 								} else {
 									parser->lexer_loc_set( &(@2) );
-									parser->error( rdo::format( "Неверное значение по-ум. для real: %s", str.c_str() ) );
+									parser->error( rdo::format( "Неверное значение по-умолчанию: %s", str.c_str() ) );
 								}
 							} else {
 								parser->lexer_loc_set( &(@1) );
-								parser->error( "Ожидается значение по-ум. для real" );
+								parser->error( "Ожидается вещественное значение по-умолчанию" );
 							}
 						};
 
@@ -483,19 +484,11 @@ rtp_enum_list:	IDENTIF {
 					parser->lexer_loc_set( &(@3) );
 					parser->error( "Значение перечислимого типа не может начинаться с цифры" );
 				}
-				| rtp_enum_list ',' IDENTIF_BAD {
-					parser->lexer_loc_set( &(@3) );
-					parser->error( "Значение перечислимого типа не может начинаться с цифры" );
-				}
 				| INT_CONST {
 					parser->lexer_loc_set( &(@1) );
 					parser->error( "Значение перечислимого типа не может начинаться с цифры" );
 				}
 				| REAL_CONST {
-					parser->lexer_loc_set( &(@1) );
-					parser->error( "Значение перечислимого типа не может начинаться с цифры" );
-				}
-				| IDENTIF_BAD {
 					parser->lexer_loc_set( &(@1) );
 					parser->error( "Значение перечислимого типа не может начинаться с цифры" );
 				}
@@ -516,14 +509,14 @@ rtp_enum_default_val:	/* empty */ {
 								std::string str( reinterpret_cast<RDOLexer*>(lexer)->YYText() );
 								if ( str.empty() ) {
 									parser->lexer_loc_set( &(@1) );
-									parser->error( "Ожидается значение по-ум. для enum" );
+									parser->error( "Ожидается перечеслимое значение по-умолчанию" );
 								} else {
 									parser->lexer_loc_set( &(@2) );
-									parser->error( rdo::format( "Неверное значение по-ум. для enum: %s", str.c_str() ) );
+									parser->error( rdo::format( "Неверное значение по-умолчанию: %s", str.c_str() ) );
 								}
 							} else {
 								parser->lexer_loc_set( &(@1) );
-								parser->error( "Ожидается значение по-ум. для enum" );
+								parser->error( "Ожидается перечеслимое значение по-умолчанию" );
 							}
 						};
 

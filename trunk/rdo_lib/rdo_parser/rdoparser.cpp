@@ -22,6 +22,8 @@ RDOParser* parser = NULL;
 
 RDOParser::RDOParser():
 	parser_base( NULL ),
+	have_kw_Resources( false ),
+	have_kw_ResourcesEnd( false ),
 	lastDPTSearch( NULL ),
 //	patternCounter( 1 ),
 //	pokazCounter( 1 ),
@@ -35,7 +37,6 @@ RDOParser::RDOParser():
 
 RDOParser::~RDOParser()
 {
-//	parser = this;
 	DeleteAllObjects( allNames );
 	DeleteAllObjects( allDoubles );
 	DeleteAllObjects( allDeletables );
@@ -46,7 +47,6 @@ std::stringstream& RDOParser::getModelStructure()
 {
 	modelStructure.str("");
 	modelStructure.clear();
-//	parser = this;
 
 	if ( modelStructure.str().empty() ) {
 
@@ -80,7 +80,6 @@ std::stringstream& RDOParser::getModelStructure()
 		modelStructure << runTime->writePokazStructure();
 	}
 
-//	parser = NULL;
 	return modelStructure;
 }
 
@@ -103,10 +102,8 @@ void RDOParser::parse( int files )
 	while ( it != parsers.end() ) {
 		if ( it->first > max1 && it->first < min2 && std::find( file_list.begin(), file_list.end(), it->second->type ) != file_list.end() ) {
 			parser_base = it->second;
-//			parser      = this;
 			it->second->parse();
 			parser_base = NULL;
-//			parser      = NULL;
 		}
 		it++;
 	}
@@ -125,10 +122,8 @@ void RDOParser::parse( rdoModelObjects::RDOParseType file )
 	while ( it != parsers.end() ) {
 		if ( it->first <= max ) {
 			parser_base = it->second;
-//			parser      = this;
 			it->second->parse();
 			parser_base = NULL;
-//			parser      = NULL;
 		} else {
 			break;
 		}
@@ -145,10 +140,8 @@ void RDOParser::parse( rdoModelObjects::RDOParseType file, std::istream& stream 
 	while ( it != parsers.end() ) {
 		if ( it->first <= max ) {
 			parser_base = it->second;
-//			parser      = this;
 			it->second->parse( stream );
 			parser_base = NULL;
-//			parser      = NULL;
 		} else {
 			break;
 		}

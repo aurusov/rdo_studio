@@ -22,7 +22,6 @@ int rsslex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer )
 }
 void rsserror( char* mes )
 {
-	rdoParse::parser->error( mes );
 }
 
 RDORSSResource::RDORSSResource( const std::string* const _name, const RDORTPResType* const _resType ):

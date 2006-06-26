@@ -44,7 +44,7 @@ public:
 class RDOParserRTP: public RDOParserRDO
 {
 public:
-	RDOParserRTP( t_bison_parse_fun _parser_fun, t_bison_error_fun _error_fun, t_flex_lexer_fun _lexer_fun ): RDOParserRDO( rdoModelObjects::RTP, _parser_fun, _error_fun, _lexer_fun ) {};
+	RDOParserRTP();
 
 	virtual RDOLexer* getLexer( std::istream& in_stream, std::ostream& out_stream );
 };
@@ -62,6 +62,17 @@ public:
 	};
 
 	int enum_param_cnt;
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOParserRSS
+// ----------------------------------------------------------------------------
+class RDOParserRSS: public RDOParserRDO
+{
+public:
+	RDOParserRSS();
+
+	virtual void parse( std::istream& in_stream );
 };
 
 // ----------------------------------------------------------------------------
@@ -100,7 +111,7 @@ public:
 class RDOParserSMR1: public RDOParserRDO
 {
 public:
-	RDOParserSMR1( t_bison_parse_fun _parser_fun, t_bison_error_fun _error_fun, t_flex_lexer_fun _lexer_fun ): RDOParserRDO( rdoModelObjects::SMR, _parser_fun, _error_fun, _lexer_fun ) {};
+	RDOParserSMR1();
 
 	virtual void parse( std::istream& in_stream );
 };

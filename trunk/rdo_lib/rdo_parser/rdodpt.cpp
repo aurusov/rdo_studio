@@ -24,7 +24,6 @@ int dptlex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer )
 }
 void dpterror( char* mes )
 {
-	rdoParse::parser->error( mes );
 }
 
 int dpt_rss_lex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer )
@@ -35,7 +34,6 @@ int dpt_rss_lex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer )
 }
 void dpt_rss_error( char* mes )
 {
-	rdoParse::parser->error( mes );
 }
 
 int dpt_opr_lex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer )
@@ -46,7 +44,6 @@ int dpt_opr_lex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer )
 }
 void dpt_opr_error( char* mes )
 {
-	rdoParse::parser->error( mes );
 }
 
 /////////////////////////  "SEARCH" DECISION POINT /////////////////////////
@@ -294,6 +291,9 @@ RDODPTFreeActivity::RDODPTFreeActivity(std::string *_name, std::string *_pattern
 	parser->insertDPTFreeActivity( this );
 
 	pattern = parser->findPattern(_patternName);
+	if ( !pattern ) {
+		parser->error( rdo::format("Не найден образец: %s", _patternName->c_str()) );
+	}
 	pattern->testGoodForFreeActivity();
 	currParamNum = 0;
 }

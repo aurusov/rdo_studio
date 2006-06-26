@@ -167,100 +167,12 @@ namespace rdoParse
 %%
 
 /* ///////////////////////  GENERAL PART ///////////////////////////// */
-
 dptrtp_main:
-	| dptrtp_main dpt_activ_search_end
-	| dptrtp_main dpt_activ_some_end
-	| dptrtp_main dpt_activ_free_end;
+	| dptrtp_main Decision_point error End /* заглушка для $Decision_point */
+	| dptrtp_main Activities error End     /* заглушка для $Activities     */
 	| dptrtp_main dpt_process_end;
 
-/* ///////////////////////  SEARCH POINT ///////////////////////////// */
-
-dpt_begin_search:	Decision_point IDENTIF_COLON search_keyword					{}
-					|	Decision_point IDENTIF_COLON search_keyword no_trace	{}
-					|	Decision_point IDENTIF_COLON search_keyword trace_stat	{}
-					|	Decision_point IDENTIF_COLON search_keyword trace_tops	{}
-					|	Decision_point IDENTIF_COLON search_keyword trace_all	{};
-
-dpt_condition_search:	dpt_begin_search Condition_keyword dpt_logic			{}
-						|	dpt_begin_search Condition_keyword NoCheck			{};
-
-dpt_term_search: dpt_condition_search Term_condition dpt_logic					{};
-
-dpt_evaluate_search:	dpt_term_search Evaluate_by dpt_arithm					{};
-
-dpt_compare_search:	dpt_evaluate_search Compare_tops '=' NO						{}
-					|	dpt_evaluate_search Compare_tops '=' YES				{};
-
-dpt_activ_search:	dpt_compare_search Activities
-					|	dpt_activ_search_descr_value;
-
-dpt_activ_search_descr:	dpt_activ_search IDENTIF_COLON IDENTIF					{};
-
-dpt_activ_search_descr_param:	dpt_activ_search_descr
-								|	dpt_activ_search_descr_param INT_CONST		{}
-								|	dpt_activ_search_descr_param REAL_CONST		{}
-								|	dpt_activ_search_descr_param IDENTIF		{}
-								|	dpt_activ_search_descr_param '*'			{};
-
-dpt_activ_search_descr_value:	dpt_activ_search_descr_param value_before	dpt_arithm		{}
-								|	dpt_activ_search_descr_param value_after  dpt_arithm	{};
-
-dpt_activ_search_end:	dpt_activ_search End									{};
-
-/* ///////////////////////  SOME POINT ///////////////////////////// */
-
-dpt_begin_some:	Decision_point IDENTIF_COLON some				{}
-				|	Decision_point IDENTIF_COLON some no_trace	{};
-
-dpt_condition_some:	dpt_begin_some Condition_keyword dpt_logic		{}
-					|	dpt_begin_some Condition_keyword NoCheck	{};
-
-dpt_activ_some:	dpt_condition_some Activities
-				|	dpt_activ_some_descr_param;
-
-dpt_activ_some_descr:	dpt_activ_some IDENTIF_COLON IDENTIF		{};
-
-dpt_activ_some_descr_param:	dpt_activ_some_descr
-							|	dpt_activ_some_descr_param INT_CONST	{}
-							|	dpt_activ_some_descr_param REAL_CONST	{}
-							|	dpt_activ_some_descr_param IDENTIF		{}
-							|	dpt_activ_some_descr_param '*'			{};
-
-dpt_activ_some_end:	dpt_activ_some End	{};
-
-/* ///////////////////////  FREE ACTIVITIES ///////////////////////////// */
-
-dpt_activ_free:	Activities						{};
-				|	dpt_activ_free_descr_param	{};										
-																									
-dpt_activ_free_descr:	dpt_activ_free IDENTIF_COLON IDENTIF	{};
-																									                                                                    
-dpt_activ_free_descr_keyb:	dpt_activ_free_descr
-							|	dpt_activ_free_descr_keyb QUOTED_IDENTIF		{}
-							|	dpt_activ_free_descr_keyb '+' QUOTED_IDENTIF	{};
-
-dpt_activ_free_descr_param:	dpt_activ_free_descr_param INT_CONST			{}
-							|	dpt_activ_free_descr_param REAL_CONST		{}             
-							|	dpt_activ_free_descr_param IDENTIF			{}
-							|	dpt_activ_free_descr_param '*'				{}
-							|	dpt_activ_free_descr_keyb;
-																									                                                                    
-dpt_activ_free_end:	dpt_activ_free End	{};
-
 /* ///////////////////////  ARITHMETIC/LOGIC ///////////////////////////// */
-
-dpt_logic: dpt_arithm '=' dpt_arithm	{}
-			| dpt_arithm neq dpt_arithm	{}
-			| dpt_arithm '<' dpt_arithm	{}
-			| dpt_arithm '>' dpt_arithm	{}
-			| dpt_arithm leq dpt_arithm	{}
-			| dpt_arithm geq dpt_arithm	{}
-			| dpt_logic and_keyword dpt_logic	{}
-			| dpt_logic or_keyword dpt_logic	{}
-			| '[' dpt_logic ']'					{}
-			| fun_group							{};
-			
 dpt_arithm: dpt_arithm '+' dpt_arithm {
 			}
 			| dpt_arithm '-' dpt_arithm {
@@ -289,23 +201,11 @@ dpt_arithm_func_call_pars:	/* empty */	{
 			| dpt_arithm_func_call_pars ',' dpt_arithm	{
 			};
 
-fun_group_keyword:	Exist			{}
-					|	Not_Exist	{}
-					|	For_All		{}
-					|	Not_For_All	{};
-
-fun_group_header:	fun_group_keyword '(' IDENTIF_COLON {};
-
-fun_group:	fun_group_header dpt_logic ')'		{}
-			|	fun_group_header NoCheck ')'	{};
-
 /* ///////////////////////  PROCESS ///////////////////////////// */
 
-dpt_process:		dpt_process_begin dpt_process_input {
-					};
+dpt_process:		dpt_process_begin dpt_process_input;
 
-dpt_process_begin:	Process {
-					};
+dpt_process_begin:	Process;
 
 dpt_process_input:	/* empty */
 					| dpt_process_input dpt_process_line;

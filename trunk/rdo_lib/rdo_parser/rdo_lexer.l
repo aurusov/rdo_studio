@@ -11,11 +11,11 @@ static char THIS_FILE[] = __FILE__;
 
 #define YY_INTERACTIVE
 
-#define YY_USER_INIT {                      \
+#define YY_USER_INIT {                  \
 	rdoParse::parser->lexer_loc_init(); \
 }
 
-#define YY_USER_ACTION {                      \
+#define YY_USER_ACTION {                  \
 	rdoParse::parser->lexer_loc_action(); \
 }
 
@@ -188,9 +188,13 @@ active				return(active);
 "//"					BEGIN(comment_line);
 <comment_line>[\n\r]+	BEGIN(INITIAL);
 
+"}"|"*/"			{
+						rdoParse::parser->lexer_loc_delta_pos( YYLeng() );
+						rdoParse::parser->error( "Íå íàéäåíî íà÷àëî êîììåíòàðèÿ" );
+					}
 
 [\r\n\t ]+						;
-[()},=\[\]\.\*\>\<\+\-\/]		return(YYText()[YYLeng()-1]);
+[:(),=\[\]\.\*\>\<\+\-\/\\]		return(YYText()[YYLeng()-1]);
 
 ([+-]?[0-9]+"..")	{
 						std::string n1(YYText(), YYLeng()-2);
@@ -212,14 +216,14 @@ active				return(active);
 						return REAL_CONST;
 					}
 
-[+-]?[0-9]+"."?[0-9]?[Ee]?[+-]?[0-9]?[A-Za-zÀ-ßà-ÿ\xB8_$][A-Za-zÀ-ßà-ÿ\xB80-9_$]*	{
+([+-]?[0-9]+"."?[0-9]*([Ee][+-]?[0-9]+)?)[A-Za-zÀ-ßà-ÿ\xB8_][A-Za-zÀ-ßà-ÿ\xB80-9_$]*	{
 						std::string *name = new std::string(YYText());
 						rdoParse::parser->addName(name);
 						rdoParse::parser->lexer_setvalue((int)name);
 						return IDENTIF_BAD;
 					}
 
-[A-Za-zÀ-ßà-ÿ\xB8_$][A-Za-zÀ-ßà-ÿ\xB80-9_$]*[\r\n\t ]+set  {
+[A-Za-zÀ-ßà-ÿ\xB8_][A-Za-zÀ-ßà-ÿ\xB80-9_$]*[\r\n\t ]+set  {
 					std::string n1(YYText());
 					std::string::size_type pos = n1.find_first_of("\r\n\t :");
 					std::string *name = new std::string(n1, 0, pos);
@@ -228,7 +232,7 @@ active				return(active);
 					return IDENTIF_set;
 				}
 
-[A-Za-zÀ-ßà-ÿ\xB8_$][A-Za-zÀ-ßà-ÿ\xB80-9_$]*[\r\n\t ]+NoChange[\r\n\t ]+NoChange  {
+[A-Za-zÀ-ßà-ÿ\xB8_][A-Za-zÀ-ßà-ÿ\xB80-9_$]*[\r\n\t ]+NoChange[\r\n\t ]+NoChange  {
 					std::string n1(YYText());
 					std::string::size_type pos = n1.find_first_of("\r\n\t :");
 					std::string *name = new std::string(n1, 0, pos);
@@ -237,7 +241,7 @@ active				return(active);
 					return IDENTIF_NoChange_NoChange;
 				}
 
-[A-Za-zÀ-ßà-ÿ\xB8_$][A-Za-zÀ-ßà-ÿ\xB80-9_$]*[\r\n\t ]+NoChange  {
+[A-Za-zÀ-ßà-ÿ\xB8_][A-Za-zÀ-ßà-ÿ\xB80-9_$]*[\r\n\t ]+NoChange  {
 					std::string n1(YYText());
 					std::string::size_type pos = n1.find_first_of("\r\n\t :");
 					std::string *name = new std::string(n1, 0, pos);
@@ -246,7 +250,7 @@ active				return(active);
 					return IDENTIF_NoChange;
 				}
 
-[A-Za-zÀ-ßà-ÿ\xB8_$][A-Za-zÀ-ßà-ÿ\xB80-9_$]*[\r\n\t ]*\:  {
+[A-Za-zÀ-ßà-ÿ\xB8_][A-Za-zÀ-ßà-ÿ\xB80-9_$]*[\r\n\t ]*\:  {
 					std::string n1(YYText());
 					std::string::size_type pos = n1.find_first_of("\r\n\t :");
 					std::string *name = new std::string(n1, 0, pos);
@@ -255,7 +259,7 @@ active				return(active);
 					return IDENTIF_COLON;
 				}
 
-[A-Za-zÀ-ßà-ÿ\xB8_$][A-Za-zÀ-ßà-ÿ\xB80-9_$]*  {
+[A-Za-zÀ-ßà-ÿ\xB8_][A-Za-zÀ-ßà-ÿ\xB80-9_$]*  {
 					std::string *name = new std::string(YYText());
 					rdoParse::parser->addName(name);
 					rdoParse::parser->lexer_setvalue((int)name);

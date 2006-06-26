@@ -53,24 +53,30 @@ RDOFRMColoredItem::RDOFRMColoredItem(RDOFRMColor *_bgColor, RDOFRMColor *_color)
 	delete _color;
 }
 
-RDOFRMText::RDOFRMText(RDOFUNArithm *x, RDOFUNArithm *y, RDOFUNArithm *width, RDOFUNArithm *height, RDOFRMColor *bgColor, RDOFRMColor *color)
-	: RDOFRMBoundingItem(x, y, width, height), RDOFRMColoredItem(bgColor, color)
-{}
+RDOFRMText::RDOFRMText( RDOFUNArithm* x, RDOFUNArithm* y, RDOFUNArithm* width, RDOFUNArithm* height, RDOFRMColor* bgColor, RDOFRMColor* color ):
+	RDOFRMBoundingItem( x, y, width, height ),
+	RDOFRMColoredItem( bgColor, color ),
+	value( NULL ),
+	txt( NULL ),
+	isTextString( true ),
+	enu( NULL )
+{
+}
 
-void RDOFRMText::setText(int _align, RDOFUNArithm *_value)
+void RDOFRMText::setText( int _align, RDOFUNArithm* _value )
 {
 	align = _align;
-	value = _value?_value->createCalc():NULL;
-	type = _value->type;
-	enu = _value->enu;
+	value = _value ? _value->createCalc() : NULL;
+	type  = _value->type;
+	enu   = _value->enu;
 
 	isTextString = false;
 }
 
-void RDOFRMText::setText(int _align, std::string *_txt)
+void RDOFRMText::setText( int _align, std::string* _txt )
 {
 	align = _align;
-	txt = _txt;
+	txt   = _txt;
 	isTextString = true;
 }
 
@@ -235,24 +241,22 @@ rdosim::RDOColor RDOFRMColoredItem::getFg()
 	return fg;
 }
 
-rdosim::RDOFrameElement* RDOFRMText::createElement(RDORuntime *sim)
+rdosim::RDOFrameElement* RDOFRMText::createElement( RDORuntime* sim )
 {
 	rdosim::RDOColor bg = getBg();
 	rdosim::RDOColor fg = getFg();
 
 	std::string t;
-	if(isTextString)
+	if ( isTextString ) {
 		t = *txt;
-	else
-	{
-		double val = value->calcValueBase(sim);
-
-		if(type == 2)	// enumeration
-			t = *enu->enumVals.at(val);
-		else
+	} else {
+		double val = value->calcValueBase( sim );
+		if ( type == 2 ) { // enumeration
+			t = *enu->enumVals.at( val );
+		} else {
 			t = toString(val);
+		}
 	}
-
 
 	return new rdosim::RDOTextElement(
 		x->calcValueBase(sim), 

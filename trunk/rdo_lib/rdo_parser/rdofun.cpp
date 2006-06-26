@@ -224,9 +224,8 @@ RDOCalcConst *RDOFUNFunctionListElementEq::createResultCalc(const RDORTPResParam
 
 RDOFUNArithm::RDOFUNArithm( std::string* resName, std::string* parName )
 {
-	const RDORSSResource *const res = parser->findRSSResource(resName); 
-	if(!res)
-	{
+	const RDORSSResource* const res = parser->findRSSResource( resName ); 
+	if ( !res ) {
 		if(parser->getFUNGroupStack().empty() || 
 			*parser->getFUNGroupStack().back()->resType->getName() != *resName)
 		{
@@ -257,14 +256,50 @@ RDOFUNArithm::RDOFUNArithm( std::string* resName, std::string* parName )
 				RDOPATPattern* pat = parser->getLastPATPattern();
 				const RDORelevantResource* const rel = pat->findRelevantResource( resName );
 				if ( !pat->currRelRes ) {
-					// with_min-common-choice или $Time
+					// ¬нутри with_min-common-choice или $Time
 					if ( rel->begin == RDOPATPattern::CS_NonExist ) {
 						parser->error( rdo::format("–елевантный ресурс не может быть использован, т.к. его статус NonExist: %s", rel->getName()->c_str()) );
 					}
 				} else {
-					// $Body
-					if ( !rel->alreadyHaveConverter && !pat->currRelRes->choice ) {
-						parser->error( rdo::format("–елевантный ресурс неопределен: %s. ≈го нельз€ использовать в услови€х выбора других ресурсов до его собственного Choice from", rel->getName()->c_str()) );
+					// ¬нутри $Body
+					// ѕровер€ем использование неинициализированного рел.ресурса в Choice from другом рел.ресурсе
+					if ( !pat->currRelRes->choice ) {
+						if ( !rel->alreadyHaveConverter ) {
+							parser->error( rdo::format("–елевантный ресурс неопределен: %s. ≈го нельз€ использовать в услови€х выбора других ресурсов до его собственного Choice from", rel->getName()->c_str()) );
+						}
+						if ( rel->begin == RDOPATPattern::CS_NonExist ) {
+							parser->error( rdo::format("–елевантный ресурс не существует в начале операции (NonExist): %s", rel->getName()->c_str()) );
+						}
+						if ( rel->begin == RDOPATPattern::CS_Create ) {
+							parser->error( rdo::format("—разу после создани€ (Create) релевантный ресурс можно использовать только в конверторах: %s", rel->getName()->c_str()) );
+						}
+					}
+					// ѕровер€ем использование временного рел.ресурса внутри конвертора другого рел.ресурса
+					if ( rel->getType()->isTemporary() ) {
+						// ¬ конверторе начала
+						if ( pat->currRelRes->currentConvert == RDORelevantResource::convertBegin ) {
+							if ( rel->begin == RDOPATPattern::CS_Create && !rel->alreadyHaveConverter ) {
+								parser->error( rdo::format("–елевантный ресурс нельз€ использовать до его инициализации (Create): %s", rel->getName()->c_str()) );
+							}
+							if ( rel->begin == RDOPATPattern::CS_Erase && rel->alreadyHaveConverter ) {
+								parser->error( rdo::format("–елевантный ресурс нельз€ использовать полсле удалени€ (Erase): %s", rel->getName()->c_str()) );
+							}
+							if ( rel->begin == RDOPATPattern::CS_NonExist ) {
+								parser->error( rdo::format("–елевантный ресурс не существует в этом конверторе (NonExist): %s", rel->getName()->c_str()) );
+							}
+						}
+						// ¬ конверторе конца
+						if ( pat->currRelRes->currentConvert == RDORelevantResource::convertEnd ) {
+							if ( rel->end == RDOPATPattern::CS_Create && !rel->alreadyHaveConverter ) {
+								parser->error( rdo::format("–елевантный ресурс нельз€ использовать до его инициализации (Create): %s", rel->getName()->c_str()) );
+							}
+							if ( rel->end == RDOPATPattern::CS_Erase && rel->alreadyHaveConverter ) {
+								parser->error( rdo::format("–елевантный ресурс нельз€ использовать полсле удалени€ (Erase): %s", rel->getName()->c_str()) );
+							}
+							if ( rel->end == RDOPATPattern::CS_NonExist ) {
+								parser->error( rdo::format("–елевантный ресурс не существует в этом конверторе (NonExist): %s", rel->getName()->c_str()) );
+							}
+						}
 					}
 				}
 				int relResNumb = pat->findRelevantResourceNum( resName );
@@ -296,8 +331,9 @@ RDOFUNArithm::RDOFUNArithm( std::string* resName, std::string* parName )
 
 		return;
 	}
-	if(!res->getType()->isPermanent())
+	if ( res->getType()->isTemporary() ) {
 		parser->error(("Cannot use temporary resource in function: " + *resName).c_str());
+	}
 	int resNumb = res->getNumber();
 	int parNumb = res->getType()->getRTPParamNumber(parName);
 	if(parNumb == -1)

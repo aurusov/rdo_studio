@@ -135,7 +135,6 @@
 %token active				414
 %token QUOTED_IDENTIF		415
 %token QUOTED_IDENTIF_BAD	416
-%token IDENTIF_BAD			417
 
 
 %{
@@ -252,16 +251,32 @@ pat_first:								{ $$ = (int) new RDOPATSelectType( RDOPATSelectType::st_empty 
 			|	with_max pat_arithm		{ $$ = (int) new RDOPATSelectType( RDOPATSelectType::st_with_max, (RDOFUNArithm *)$2 ); };
 
 pat_convert:  pat_res_usage	{	((RDOPATPattern *)$1)->addRelResConvert(); $$ = $1; }
-			|	pat_res_usage Convert_begin pat_trace pat_params_set	
+			|	pat_res_usage convert_begin pat_trace pat_params_set	
 					{	((RDOPATPattern *)$1)->addRelResConvertBegin($3 != 0, (RDOPATParamsSet *)$4); $$ = $1; }
-			|	pat_res_usage Convert_end		pat_trace pat_params_set
+			|	pat_res_usage convert_end		pat_trace pat_params_set
 					{	((RDOPATPattern *)$1)->addRelResConvertEnd($3 != 0, (RDOPATParamsSet *)$4); $$ = $1; }
-			|	pat_res_usage Convert_begin	pat_trace pat_params_set Convert_end pat_trace pat_params_set
+			|	pat_res_usage convert_begin	pat_trace pat_params_set convert_end pat_trace pat_params_set
 					{	((RDOPATPattern *)$1)->addRelResConvertBeginEnd($3 != 0, (RDOPATParamsSet *)$4, $6 != 0, (RDOPATParamsSet *)$7); $$ = $1; }
-			|	pat_res_usage Convert_rule	pat_trace pat_params_set
+			|	pat_res_usage convert_rule	pat_trace pat_params_set
 					{	((RDOPATPattern *)$1)->addRelResConvertRule($3 != 0, (RDOPATParamsSet *)$4); $$ = $1; }
-			|	pat_res_usage Convert_event	pat_trace pat_params_set
+			|	pat_res_usage convert_event	pat_trace pat_params_set
 					{	((RDOPATPattern *)$1)->addRelResConvertEvent($3 != 0, (RDOPATParamsSet *)$4); $$ = $1; };
+
+convert_rule:	Convert_rule {
+				parser->getLastPATPattern()->currRelRes->currentConvert = RDORelevantResource::convertBegin;
+			};
+
+convert_event:	Convert_event {
+				parser->getLastPATPattern()->currRelRes->currentConvert = RDORelevantResource::convertBegin;
+			};
+
+convert_begin:	Convert_begin {
+				parser->getLastPATPattern()->currRelRes->currentConvert = RDORelevantResource::convertBegin;
+			};
+
+convert_end:	Convert_end {
+				parser->getLastPATPattern()->currRelRes->currentConvert = RDORelevantResource::convertEnd;
+			};
 
 pat_params_set:												{  $$ = (int) new RDOPATParamsSet(); }
 			|	pat_params_set IDENTIF_set pat_arithm	{	((RDOPATParamsSet *)$1)->addIdentif((std::string *)$2, (RDOFUNArithm *)$3); $$ = $1;}

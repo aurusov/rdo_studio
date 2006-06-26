@@ -202,13 +202,13 @@ frm_end: frm_item End	{ ((RDOFRMFrame *)$1)->end(); };
 
 frm_text_common: text '[' frm_arithm ',' frm_arithm ',' frm_arithm ',' frm_arithm ',' frm_color ',' frm_color ','  { $$ = (int)(new RDOFRMText((RDOFUNArithm *)$3, (RDOFUNArithm *)$5, (RDOFUNArithm *)$7, (RDOFUNArithm *)$9, (RDOFRMColor *)$11, (RDOFRMColor *)$13)); };
 
-frm_text: frm_text_common frm_align frm_arithm ']'		{ ((RDOFRMText *)$1)->setText($2, (RDOFUNArithm *)$3); }
-		  | frm_text_common frm_align QUOTED_IDENTIF ']'	{ ((RDOFRMText *)$1)->setText($2, (std::string *)$3); };
+frm_text: frm_text_common frm_align frm_arithm ']'			{ ((RDOFRMText *)$1)->setText($2, (RDOFUNArithm *)$3); }
+		  | frm_text_common frm_align QUOTED_IDENTIF ']'	{ ((RDOFRMText *)$1)->setText($2, (std::string *)$3);  };
 
-frm_align:		{ $$ = 1; }
-		| '<'		{ $$ = 1; }
-		| '='		{ $$ = 2; }
-		| '>'		{ $$ = 3; };
+frm_align: /* empty */	{ $$ = 1; }
+		| '<'			{ $$ = 1; }
+		| '='			{ $$ = 2; }
+		| '>'			{ $$ = 3; };
 
 frm_color: transparent										{ $$ = (int)(new RDOFRMColor()); }
 		| '<' INT_CONST INT_CONST INT_CONST '>'		{ $$ = (int)(new RDOFRMColor($2, $3, $4)); };		  
@@ -253,9 +253,9 @@ frm_arithm: frm_arithm '+' frm_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOFU
 			|	'(' frm_arithm ')'			{ $$ = $2; }
 			|	IDENTIF '(' frm_arithm_func_call_pars ')' { $$ = (int)((RDOFUNParams *)$3)->createCall((std::string *)$1) };
 			|	IDENTIF '.' IDENTIF			{ $$ = (int)(new RDOFUNArithm((std::string *)$1, (std::string *)$3)); }
-			|	INT_CONST						{ $$ = (int)(new RDOFUNArithm((int)$1)); }
-			|	REAL_CONST						{ $$ = (int)(new RDOFUNArithm((double*)$1)); }
-			|	IDENTIF							{ $$ = (int)(new RDOFUNArithm((std::string *)$1)); };
+			|	INT_CONST					{ $$ = (int)(new RDOFUNArithm((int)$1)); }
+			|	REAL_CONST					{ $$ = (int)(new RDOFUNArithm((double*)$1)); }
+			|	IDENTIF						{ $$ = (int)(new RDOFUNArithm((std::string *)$1)); };
 
 frm_arithm_func_call_pars:								{ $$ = (int)(new RDOFUNParams()); };
 			| frm_arithm_func_call_pars frm_arithm	{ $$ = (int)(((RDOFUNParams *)$1)->addParameter((RDOFUNArithm *)$2)); };

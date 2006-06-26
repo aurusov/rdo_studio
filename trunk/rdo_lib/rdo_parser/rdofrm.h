@@ -70,17 +70,19 @@ public:
 class RDORTPEnum;
 class RDOFRMText: public RDOFRMBoundingItem, public RDOFRMColoredItem
 {
-	int align;
-	RDOCalc *value;
-	std::string *txt;
+private:
+	int          align;
+	RDOCalc*     value;
+	std::string* txt;
 	bool isTextString;
 	int type;
-	RDORTPEnum *enu;
+	RDORTPEnum* enu;
+
 public:
-	RDOFRMText(RDOFUNArithm *x, RDOFUNArithm *y, RDOFUNArithm *width, RDOFUNArithm *height, RDOFRMColor *bgColor, RDOFRMColor *color);
-	void setText(int _align, RDOFUNArithm *_value);
-	void setText(int _align, std::string *_txt);
-	rdosim::RDOFrameElement* createElement(RDORuntime *sim);
+	RDOFRMText( RDOFUNArithm* x, RDOFUNArithm* y, RDOFUNArithm* width, RDOFUNArithm* height, RDOFRMColor* bgColor, RDOFRMColor* color );
+	void setText( int _align, RDOFUNArithm* _value );
+	void setText( int _align, std::string* _txt );
+	virtual rdosim::RDOFrameElement* createElement( RDORuntime* sim );
 };
 
 class RDOFRMBitmap: public RDOFRMItem

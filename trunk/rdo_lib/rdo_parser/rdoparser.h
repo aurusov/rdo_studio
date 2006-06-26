@@ -53,6 +53,9 @@ protected:
 	RDOParserList  parsers;
 	RDOParserBase* parser_base;
 
+	bool have_kw_Resources;
+	bool have_kw_ResourcesEnd;
+
 	std::vector< std::string* >        allNames;
 	std::vector< double* >             allDoubles;
 	std::vector< RDODeletable* >       allDeletables;
@@ -105,8 +108,13 @@ public:
 	RDORSSResource* getLastRSSResource()                    { return !allRSSResource.empty()  ? allRSSResource.back()  : NULL; }
 	RDOPATPattern*  getLastPATPattern()                     { return !allPATPatterns.empty()  ? allPATPatterns.back()  : NULL; }
 	RDOFUNFunction* getLastFUNFunction()                    { return !allFUNFunctions.empty() ? allFUNFunctions.back() : NULL; }
-	RDOPROCProcess*  getLastDPTProcess()                    { return !allDPTProcess.empty()   ? allDPTProcess.back()   : NULL; }
+	RDOPROCProcess* getLastDPTProcess()                     { return !allDPTProcess.empty()   ? allDPTProcess.back()   : NULL; }
 	RDODPTSearch*   getLastDPTSearch()                      { return lastDPTSearch;                                            }
+
+	bool isHaveKWResources() const           { return have_kw_Resources;     }
+	void setHaveKWResources( bool value )    { have_kw_Resources = value;    }
+	bool isHaveKWResourcesEnd() const        { return have_kw_ResourcesEnd;  }
+	void setHaveKWResourcesEnd( bool value ) { have_kw_ResourcesEnd = value; }
 
 	int getRTP_id() const      { return allRTPResType.size()  + 1; }
 	int getRSS_id() const      { return allRSSResource.size() + 0; }
