@@ -101,8 +101,8 @@ bool RDOStudioModel::openModel( const std::string& modelName ) const
 	output->showBuild();
 	output->appendStringToBuild( rdo::format( IDS_MODEL_LOADING_BEGIN ) );
 	const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->UpdateWindow();
-	static_cast<bool>(openError)   = false;
-	static_cast<bool>(modelClosed) = false;
+	openError   = false;
+	modelClosed = false;
 	bool flag = kernel.getRepository()->openModel( modelName );
 	if ( flag && !openError ) {
 		rdo::binarystream stream;
@@ -112,7 +112,9 @@ bool RDOStudioModel::openModel( const std::string& modelName ) const
 		output->appendStringToBuild( rdo::format( IDS_MODEL_LOADING_OK ) );
 		studioApp.setLastProjectName( kernel.getRepository()->getFullName() );
 	} else {
+		output->updateLogConnection();
 		output->appendStringToBuild( rdo::format( IDS_MODEL_LOADING_FAILD ) );
+		studioApp.setLastProjectName( kernel.getRepository()->getFullName() );
 	}
 	return flag;
 }
@@ -124,9 +126,9 @@ bool RDOStudioModel::saveModel() const
 
 void RDOStudioModel::saveAsModel() const
 {
-	static_cast<bool>(saveAsFlag) = true;
+	saveAsFlag = true;
 	kernel.getRepository()->saveAsModel();
-	static_cast<bool>(saveAsFlag) = false;;
+	saveAsFlag = false;;
 }
 
 void RDOStudioModel::closeModel() const

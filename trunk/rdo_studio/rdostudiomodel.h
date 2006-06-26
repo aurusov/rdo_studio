@@ -30,9 +30,9 @@ private:
 	bool closeWithDocDelete;
 	bool showCanNotCloseModelMessage;
 
-	bool openError;
-	bool modelClosed;
-	bool saveAsFlag;
+	mutable bool openError;
+	mutable bool modelClosed;
+	mutable bool saveAsFlag;
 
 	bool frmDescribed;
 	double modelTime;
