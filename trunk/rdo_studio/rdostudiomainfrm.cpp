@@ -83,9 +83,7 @@ static UINT indicators[] = {
 	ID_PROGRESSSTATUSBAR
 };
 
-RDOStudioMainFrame::RDOStudioMainFrame():
-	CMDIFrameWnd(),
-	syncObject( NULL )
+RDOStudioMainFrame::RDOStudioMainFrame(): CMDIFrameWnd()
 {
 }
 
@@ -97,10 +95,8 @@ int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if ( CMDIFrameWnd::OnCreate(lpCreateStruct) == -1 ) return -1;
 
-	syncObject = new RDOMainFrmSyncClient( *this, ::GetCurrentThreadId() );
-	kernel.insertSyncClient( syncObject );
-
-	model = new RDOStudioModel;
+	// Кто-то должен поднять кернел и треды
+	new RDOStudioModel();
 
 	style_editor.init( "editor" );
 	style_editor.load();
@@ -220,13 +216,13 @@ void RDOStudioMainFrame::OnDestroy()
 	::OleUninitialize();
 	// close model before delete plugins (for PM_MODEL_CLOSE message)
 	model->closeModel();
-	// delete plugins before delete model
-	if ( plugins ) { delete plugins; plugins = NULL; }
-	if ( model   ) { delete model; model = NULL; }
 
-	kernel.removeSyncClient( syncObject );
-	delete syncObject;
-	syncObject = NULL;
+	// delete plugins before delete model
+	if ( plugins )  { delete plugins; plugins = NULL; }
+	if ( model   )  { delete model  ; model   = NULL; }
+
+	// Роняем кернел и закрываем все треды
+	RDOKernel::close();
 
 	CMDIFrameWnd::OnDestroy();
 }
@@ -574,26 +570,6 @@ LRESULT RDOStudioMainFrame::WindowProc( UINT message, WPARAM wParam, LPARAM lPar
 		OnWorkspaceShow();
 	} else if ( message == OUTPUT_SHOW_MESSAGE ) {
 		OnOutputShow();
-	} else if ( message == FM_KERNEL_NOTIFY ) {
-//		TRACE( "\n%d FM_KERNEL_NOTIFY", k );
-//		k++;
-		syncObject->notify( static_cast<RDOKernel::NotifyType>(wParam) );
-//		k--;
-	} else if ( message == FM_KERNEL_NOTIFYSTRING ) {
-//		TRACE( "\n%d FM_KERNEL_NOTIFYSTRING", k );
-//		k++;
-		syncObject->notifyString( static_cast<RDOKernel::NotifyStringType>(wParam), *((const std::string*)lParam) );
-//		k--;
-	} else if ( message == FM_KERNEL_NOTIFYBOOLAND ) {
-//		TRACE( "\n%d FM_KERNEL_NOTIFYBOOLAND", k );
-//		k++;
-		syncObject->notifyBoolAnd( static_cast<RDOKernel::NotifyBoolType>(wParam) );
-//		k--;
-	} else if ( message == FM_KERNEL_NOTIFYBOOLOR ) {
-//		TRACE( "\n%d FM_KERNEL_NOTIFYBOOLOR", k );
-//		k++;
-		syncObject->notifyBoolOr( static_cast<RDOKernel::NotifyBoolType>(wParam) );
-//		k--;
 	}
 	return CMDIFrameWnd::WindowProc(message, wParam, lParam);
 }

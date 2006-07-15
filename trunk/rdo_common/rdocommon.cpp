@@ -6,6 +6,12 @@
 #include <stdio.h>
 #include <stdarg.h>
 
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
 #include "../rdo_studio/resource.h"
 
 namespace rdo {

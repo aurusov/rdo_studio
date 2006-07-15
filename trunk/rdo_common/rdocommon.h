@@ -57,7 +57,14 @@ enum RDOParseType {
 
 namespace rdoModel {
 
-enum RDOExitCode { EC_OK = 0, EC_ParserError, EC_RunTimeError, EC_UserBreak, EC_ModelNotFound, EC_NoMoreEvents };
+enum RDOExitCode {
+	EC_OK = 0,
+	EC_ParserError,
+	EC_RunTimeError,
+	EC_UserBreak,
+	EC_ModelNotFound,
+	EC_NoMoreEvents
+};
 
 };
 

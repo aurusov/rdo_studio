@@ -3,8 +3,6 @@
 #include "rdostudioapp.h"
 #include "rdostudiomodel.h"
 
-#include <rdokernel.h>
-
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -220,11 +218,11 @@ RDOStudioPlugins::RDOStudioPlugins():
 	studio.frame.show        = RDOStudioPlugins::showFrame;
 	studio.frame.closeAll    = RDOStudioPlugins::closeAllFrame;
 
-	kernel.setNotifyReflect( RDOKernel::beforeModelStart, modelStartNotify );
-	kernel.setNotifyReflect( RDOKernel::endExecuteModel, endExecuteModelNotify );
-	kernel.setNotifyReflect( RDOKernel::modelStopped, modelStopNotify );
-	kernel.setNotifyReflect( RDOKernel::executeError, modelStopNotify );
-	kernel.setNotifyReflect( RDOKernel::traceString, traceNotify );
+//	kernel.setNotifyReflect( RDOKernel::beforeModelStart, modelStartNotify );
+//	kernel.setNotifyReflect( RDOKernel::endExecuteModel, endExecuteModelNotify );
+//	kernel.setNotifyReflect( RDOKernel::modelStopped, modelStopNotify );
+//	kernel.setNotifyReflect( RDOKernel::executeError, modelStopNotify );
+//	kernel.setNotifyReflect( RDOKernel::traceString, traceNotify );
 
 	init();
 }
@@ -538,7 +536,7 @@ void RDOStudioPlugins::setModelShowMode( rdoPlugin::ModelShowMode showMode )
 const char* RDOStudioPlugins::getModelStructure()
 {
 	if ( model->hasModel() ) {
-		plugins->modelStructure = kernel.getSimulator()->getModelStructure().str();
+		plugins->modelStructure = kernel->simulator()->getModelStructure().str();
 	} else {
 		plugins->modelStructure = "";
 	}
@@ -600,29 +598,32 @@ void RDOStudioPlugins::closeAllFrame()
 	model->closeAllFrame();
 }
 
-void RDOStudioPlugins::modelStartNotify()
+int RDOStudioPlugins::modelStartNotify( void* )
 {
 	AfxGetApp()->PostThreadMessage( PLUGIN_STARTMODEL_MESSAGE, 0, 0 );
+	return 1;
 }
 
-void RDOStudioPlugins::endExecuteModelNotify()
+int RDOStudioPlugins::endExecuteModelNotify( void* )
 {
 	plugins->mutex.Lock();
-	std::string str = kernel.getSimulator()->getResults().str();
+	std::string str = kernel->simulator()->getResults().str();
 	std::vector< rdoPlugin::PFunResults>::const_iterator it = plugins->results.begin();
 	while ( it != plugins->results.end() ) {
 		(*it++)( str.c_str() );
 	}
 	plugins->mutex.Unlock();
 	AfxGetApp()->PostThreadMessage( PLUGIN_STOPMODEL_MESSAGE, 0, 0 );
+	return 1;
 }
 
-void RDOStudioPlugins::modelStopNotify()
+int RDOStudioPlugins::modelStopNotify( void* )
 {
 	AfxGetApp()->PostThreadMessage( PLUGIN_STOPMODEL_MESSAGE, 0, 0 );
+	return 1;
 }
 
-void RDOStudioPlugins::traceNotify( const std::string& str )
+int RDOStudioPlugins::traceNotify( void* str )
 {
 	plugins->mutex.Lock();
 	std::vector< RDOStudioPlugin* >::const_iterator it = plugins->trace.begin();
@@ -630,12 +631,13 @@ void RDOStudioPlugins::traceNotify( const std::string& str )
 		RDOStudioPlugin* plugin = *it;
 		plugin->internalMutex.Lock();
 		if ( !plugin->closed ) {
-			plugin->trace( str.c_str() );
+			plugin->trace( ((std::string*)str)->c_str() );
 		}
 		plugin->internalMutex.Unlock();
 		it++;
 	}
 	plugins->mutex.Unlock();
+	return 1;
 }
 
 void RDOStudioPlugins::modelStart()

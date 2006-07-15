@@ -78,9 +78,6 @@ void RDOPATPattern::res_insert( RDORelevantResource* res )
 {
 	if ( res->isDirect() ) {
 		const RDORSSResource* rss = static_cast<RDORelevantResourceDirect*>(res)->getResource();
-		if ( std::find( parser->tmp_rss.begin(), parser->tmp_rss.end(), rss ) != parser->tmp_rss.end() ) {
-			parser->error( rdo::format( "Ресурс не может дважды использовать в качестве релевантного: %s", rss->getName()->c_str() ) );
-		}
 		parser->tmp_rss.push_back( rss );
 	} else {
 		const RDORTPResType* rtp = res->getType();
@@ -94,7 +91,7 @@ void RDOPATPattern::res_insert( RDORelevantResource* res )
 			int rel_cnt = 0;
 			std::vector< RDORelevantResource* >::const_iterator it_rel = relRes.begin();
 			while ( it_rel != relRes.end() ) {
-				if ( (*it_rel)->getType() == rtp ) rel_cnt++;
+				if ( (*it_rel)->getType() == rtp && !(*it_rel)->isDirect() ) rel_cnt++;
 				it_rel++;
 			}
 			if ( rel_cnt >= rss_cnt ) {

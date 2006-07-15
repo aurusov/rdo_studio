@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "rdorepositoryfile.h"
 #include "../rdo_studio/resource.h"
+#include "../rdo_studio/rdostudiothread.h"
 
 #include <rdokernel.h>
 #include <rdosimwin.h>
@@ -10,23 +11,28 @@
 using namespace rdoRepository;
 
 // ----------------------------------------------------------------------------
-// ---------- RDORepositoryFile
+// ---------- RDOThreadRepository
 // ----------------------------------------------------------------------------
-RDORepositoryFile* repository = NULL;
-
-RDORepositoryFile::RDORepositoryFile():
+RDOThreadRepository::RDOThreadRepository():
+	RDOThread( "RDOThreadRepository" ),
 	modelName( "" ),
 	modelPath( "" ),
 	lastModelPath( "" ),
 	realOnlyInDlg( false )
 {
-	repository = this;
+//	kernel.setNotifyReflect( RDOKernel::beforeModelStart, beforeModelStartNotify );
+//	kernel.setNotifyReflect( RDOKernel::endExecuteModel, stopModelNotify );
+//	kernel.setNotifyReflect( RDOKernel::executeError, stopModelNotify );
+//	kernel.setNotifyReflect( RDOKernel::modelStopped, stopModelNotify );
+//	kernel.setNotifyReflect( RDOKernel::traceString, traceNotify );
 
-	kernel.setNotifyReflect( RDOKernel::beforeModelStart, beforeModelStartNotify );
-	kernel.setNotifyReflect( RDOKernel::endExecuteModel, stopModelNotify );
-	kernel.setNotifyReflect( RDOKernel::executeError, stopModelNotify );
-	kernel.setNotifyReflect( RDOKernel::modelStopped, stopModelNotify );
-	kernel.setNotifyReflect( RDOKernel::traceString, traceNotify );
+	notifies.push_back( RT_STUDIO_MODEL_NEW );
+	notifies.push_back( RT_STUDIO_MODEL_OPEN );
+	notifies.push_back( RT_STUDIO_MODEL_CLOSE );
+	notifies.push_back( RT_STUDIO_MODEL_SAVE );
+	notifies.push_back( RT_STUDIO_MODEL_SAVE_AS );
+	notifies.push_back( RT_REPOSITORY_LOAD );
+	notifies.push_back( RT_REPOSITORY_SAVE );
 
 	lastModelPath = AfxGetApp()->GetProfileString( "repository", "lastModelPath", "" );
 
@@ -47,15 +53,77 @@ RDORepositoryFile::RDORepositoryFile():
 	files[ rdoModelObjects::DPT ].deleteifempty = true;
 
 	resetModelNames();
+
+	after_constructor();
 }
 
-RDORepositoryFile::~RDORepositoryFile()
+RDOThreadRepository::~RDOThreadRepository()
 {
 	trace_file.close();
-	repository = NULL;
 }
 
-void RDORepositoryFile::resetModelNames()
+void RDOThreadRepository::proc( RDOMessageInfo& msg )
+{
+	switch ( msg.message ) {
+		case RT_STUDIO_MODEL_NEW: {
+			newModel();
+			break;
+		}
+		case RT_STUDIO_MODEL_OPEN: {
+			msg.lock();
+			std::string name = *static_cast<std::string*>(msg.param);
+			msg.unlock();
+			openModel( name );
+			break;
+		}
+		case RT_STUDIO_MODEL_CLOSE: {
+			closeModel();
+			break;
+		}
+		case RT_STUDIO_MODEL_SAVE: {
+			bool res = saveModel();
+			msg.lock();
+			if ( msg.param ) *static_cast<bool*>(msg.param) = res;
+			msg.unlock();
+			break;
+		}
+		case RT_STUDIO_MODEL_SAVE_AS: {
+			saveAsModel();
+			break;
+		}
+		case RT_SIMULATOR_MODEL_START_BEFORE: {
+			beforeModelStart();
+			break;
+		}
+		case RT_SIMULATOR_MODEL_STOP_OK           :
+		case RT_SIMULATOR_MODEL_STOP_BY_USER      :
+		case RT_SIMULATOR_MODEL_STOP_RUNTIME_ERROR: {
+			stopModel();
+			break;
+		}
+		case RT_SIMULATOR_TRACE_STRING: {
+			msg.lock();
+			trace( *static_cast<std::string*>(msg.param) );
+			msg.unlock();
+			break;
+		}
+		case RT_REPOSITORY_LOAD: {
+			msg.lock();
+			FileData* fdata = static_cast<FileData*>(msg.param);
+			load( fdata->type, fdata->stream );
+			msg.unlock();
+		}
+		case RT_REPOSITORY_SAVE: {
+			msg.lock();
+			FileData* fdata = static_cast<FileData*>(msg.param);
+			save( fdata->type, fdata->stream );
+			msg.unlock();
+		}
+		default: break;
+	}
+}
+
+void RDOThreadRepository::resetModelNames()
 {
 	std::vector< fileInfo >::iterator it = files.begin();
 	while ( it != files.end() ) {
@@ -64,12 +132,12 @@ void RDORepositoryFile::resetModelNames()
 	}
 }
 
-bool RDORepositoryFile::updateModelNames()
+bool RDOThreadRepository::updateModelNames()
 {
 	rdo::binarystream smrStream( std::ios::in | std::ios::out );
 	loadFile( getFullFileName( rdoModelObjects::SMR ), smrStream, true, true, files[ rdoModelObjects::SMR ].readonly );
 	rdoModelObjects::RDOSMRFileInfo fileInfo;
-	kernel.getSimulator()->parseSMRFileInfo( smrStream, fileInfo );
+	kernel->simulator()->parseSMRFileInfo( smrStream, fileInfo );
 	if ( !fileInfo.error ) {
 		files[ rdoModelObjects::PAT ].filename = fileInfo.model_name.empty()     ? files[ rdoModelObjects::SMR ].filename : fileInfo.model_name;
  		files[ rdoModelObjects::RTP ].filename = fileInfo.model_name.empty()     ? files[ rdoModelObjects::SMR ].filename : fileInfo.model_name;
@@ -111,7 +179,7 @@ bool RDORepositoryFile::updateModelNames()
 		files[ rdoModelObjects::TRC ].mustexist = false;
 		return true;
 	} else {
-		std::vector< RDORepositoryFile::fileInfo >::iterator it = files.begin();
+		std::vector< RDOThreadRepository::fileInfo >::iterator it = files.begin();
 		while ( it != files.end() ) {
 			it->filename = files[ rdoModelObjects::SMR ].filename;
 			it->described = true;
@@ -122,7 +190,7 @@ bool RDORepositoryFile::updateModelNames()
 	}
 }
 
-void RDORepositoryFile::newModel()
+void RDOThreadRepository::newModel()
 {
 	if ( canCloseModel() ) {
 		realCloseModel();
@@ -133,13 +201,13 @@ void RDORepositoryFile::newModel()
 			it->filename = modelName;
 			it++;
 		}
-		kernel.notify( RDOKernel::newModel );
+		kernel->sendMessageFrom( this, RT_REPOSITORY_MODEL_NEW );
 	} else {
-		kernel.notify( RDOKernel::canNotCloseModel );
+		kernel->sendMessageFrom( this, RT_REPOSITORY_MODEL_CLOSE_ERROR );
 	}
 }
 
-bool RDORepositoryFile::openModel( const std::string& modelFileName )
+bool RDOThreadRepository::openModel( const std::string& modelFileName )
 {
 	if ( canCloseModel() ) {
 
@@ -181,10 +249,10 @@ bool RDORepositoryFile::openModel( const std::string& modelFileName )
 				files[ rdoModelObjects::SMR ].filename = modelName;
 
 				if ( updateModelNames() ) {
-					kernel.notify( RDOKernel::openModel );
+					kernel->sendMessageFrom( this, RT_REPOSITORY_MODEL_OPEN );
 					return true;
 				} else {
-					kernel.notify( RDOKernel::openModel );
+					kernel->sendMessageFrom( this, RT_REPOSITORY_MODEL_OPEN );
 					return false;
 				}
 
@@ -195,32 +263,32 @@ bool RDORepositoryFile::openModel( const std::string& modelFileName )
 		}
 
 	} else {
-		kernel.notify( RDOKernel::canNotCloseModel );
+		kernel->sendMessageFrom( this, RT_REPOSITORY_MODEL_CLOSE_ERROR );
 	}
 
 	return false;
 }
 
-bool RDORepositoryFile::saveModel()
+bool RDOThreadRepository::saveModel()
 {
 	bool flag = true;
 	if ( modelPath.empty() ) {
 		flag = saveAsDlg();
 	}
 	if ( flag ) {
-		kernel.notify( RDOKernel::saveModel );
+		kernel->sendMessageFrom( this, RT_REPOSITORY_MODEL_SAVE );
 	}
 	return flag;
 }
 
-void RDORepositoryFile::saveAsModel()
+void RDOThreadRepository::saveAsModel()
 {
 	if ( saveAsDlg() ) {
-		kernel.notify( RDOKernel::saveModel );
+		kernel->sendMessageFrom( this, RT_REPOSITORY_MODEL_SAVE );
 	}
 }
 
-bool RDORepositoryFile::saveAsDlg()
+bool RDOThreadRepository::saveAsDlg()
 {
 	CString s;
 	s.LoadString( ID_MODEL_FILETYPE );
@@ -248,31 +316,33 @@ bool RDORepositoryFile::saveAsDlg()
 	return false;
 }
 
-bool RDORepositoryFile::canCloseModel() const
+bool RDOThreadRepository::canCloseModel()
 {
-	return kernel.notifyBoolAnd( RDOKernel::canCloseModel );
+	bool res = true;
+	kernel->sendMessageFrom( this, RT_REPOSITORY_MODEL_CLOSE_CAN_CLOSE, &res );
+	return res;
 }
 
-void RDORepositoryFile::realCloseModel()
+void RDOThreadRepository::realCloseModel()
 {
 	if ( !modelName.empty() ) {
-		kernel.notify( RDOKernel::closeModel );
+		kernel->sendMessageFrom( this, RT_REPOSITORY_MODEL_CLOSE );
 		modelName   = "";
 		modelPath   = "";
 		resetModelNames();
 	}
 }
 
-void RDORepositoryFile::closeModel()
+void RDOThreadRepository::closeModel()
 {
 	if ( canCloseModel() ) {
 		realCloseModel();
 	} else {
-		kernel.notify( RDOKernel::canNotCloseModel );
+		kernel->sendMessageFrom( this, RT_REPOSITORY_MODEL_CLOSE_ERROR );
 	}
 }
 
-void RDORepositoryFile::extractName( const CFileDialog* const dlg )
+void RDOThreadRepository::extractName( const CFileDialog* const dlg )
 {
 	if ( !dlg ) return;
 
@@ -290,7 +360,7 @@ void RDORepositoryFile::extractName( const CFileDialog* const dlg )
 	}
 }
 
-void RDORepositoryFile::extractName( const std::string& fullname )
+void RDOThreadRepository::extractName( const std::string& fullname )
 {
 	modelPath = rdo::extractFilePath( fullname );
 
@@ -316,7 +386,7 @@ void RDORepositoryFile::extractName( const std::string& fullname )
 	}
 }
 
-bool RDORepositoryFile::isFileReadOnly( const std::string& fileName )
+bool RDOThreadRepository::isFileReadOnly( const std::string& fileName )
 {
 	CFileFind finder;
 	if ( finder.FindFile( fileName.c_str() ) ) {
@@ -326,7 +396,7 @@ bool RDORepositoryFile::isFileReadOnly( const std::string& fileName )
 	return false;
 }
 
-void RDORepositoryFile::changeLastModelPath()
+void RDOThreadRepository::changeLastModelPath()
 {
 	std::string name = !modelName.empty() ? modelName + files[ rdoModelObjects::SMR ].extention : "*" + files[ rdoModelObjects::SMR ].extention;
 	if ( !modelPath.empty() ) {
@@ -345,7 +415,7 @@ void RDORepositoryFile::changeLastModelPath()
 	AfxGetApp()->WriteProfileString( "repository", "lastModelPath", lastModelPath.c_str() );
 }
 
-void RDORepositoryFile::setName( const std::string& str )
+void RDOThreadRepository::setName( const std::string& str )
 {
 	modelName = str;
 	static char szDelims[] = " \t\n\r";
@@ -358,7 +428,7 @@ void RDORepositoryFile::setName( const std::string& str )
 	changeLastModelPath();
 }
 
-void RDORepositoryFile::loadFile( const std::string& filename, rdo::binarystream& stream, const bool described, const bool mustExist, bool& reanOnly ) const
+void RDOThreadRepository::loadFile( const std::string& filename, rdo::binarystream& stream, const bool described, const bool mustExist, bool& reanOnly ) const
 {
 	if ( described ) {
 		if ( rdo::isFileExists( filename ) ) {
@@ -389,7 +459,7 @@ void RDORepositoryFile::loadFile( const std::string& filename, rdo::binarystream
 	}
 }
 
-void RDORepositoryFile::saveFile( const std::string& filename, rdo::binarystream& stream, const bool deleteIfEmpty ) const
+void RDOThreadRepository::saveFile( const std::string& filename, rdo::binarystream& stream, const bool deleteIfEmpty ) const
 {
 	if ( !filename.empty() ) {
 		bool file_exist = rdo::isFileExists( filename );
@@ -411,20 +481,20 @@ void RDORepositoryFile::saveFile( const std::string& filename, rdo::binarystream
 	}
 }
 
-void RDORepositoryFile::load( rdoModelObjects::RDOFileType type, rdo::binarystream& stream )
+void RDOThreadRepository::load( rdoModelObjects::RDOFileType type, rdo::binarystream& stream )
 {
 	loadFile( getFullFileName( type ), stream, files[ type ].described, files[ type ].mustexist, files[ type ].readonly );
 }
 
-void RDORepositoryFile::save( rdoModelObjects::RDOFileType type, rdo::binarystream& stream ) const
+void RDOThreadRepository::save( rdoModelObjects::RDOFileType type, rdo::binarystream& stream ) const
 {
 	saveFile( getFullFileName( type ), stream, files[ type ].deleteifempty );
 	if ( type == rdoModelObjects::SMR ) {
-		const_cast<RDORepositoryFile*>(this)->updateModelNames();
+		const_cast<RDOThreadRepository*>(this)->updateModelNames();
 	}
 }
 
-void RDORepositoryFile::loadBMP( const std::string& name, rdo::binarystream& stream ) const
+void RDOThreadRepository::loadBMP( const std::string& name, rdo::binarystream& stream ) const
 {
 	std::string file_name = modelPath + name + ".bmp";
 	if ( rdo::isFileExists( file_name ) ) {
@@ -440,22 +510,7 @@ void RDORepositoryFile::loadBMP( const std::string& name, rdo::binarystream& str
 	}
 }
 
-void RDORepositoryFile::beforeModelStartNotify()
-{
-	repository->beforeModelStart();
-}
-
-void RDORepositoryFile::stopModelNotify()
-{
-	repository->stopModel();
-}
-
-void RDORepositoryFile::traceNotify( const std::string& str )
-{
-	repository->trace( str );
-}
-
-void RDORepositoryFile::beforeModelStart()
+void RDOThreadRepository::beforeModelStart()
 {
 	if ( trace_file.is_open() ) {
 		trace_file.close();
@@ -468,20 +523,20 @@ void RDORepositoryFile::beforeModelStart()
 			trace_file << "Model_name     = " << files[ rdoModelObjects::SMR ].filename << std::endl;
 			trace_file << "Resource_file  = " << files[ rdoModelObjects::RSS ].filename << files[ rdoModelObjects::RSS ].extention << std::endl;
 			trace_file << "OprIev_file    = " << files[ rdoModelObjects::OPR ].filename << files[ rdoModelObjects::OPR ].extention << std::endl;
-			trace_file << kernel.getSimulator()->getModelStructure().str() << std::endl;
+//!			trace_file << kernel.getSimulator()->getModelStructure().str() << std::endl;
 			trace_file << "$Tracing" << std::endl;
 		}
 	}
 }
 
-void RDORepositoryFile::stopModel()
+void RDOThreadRepository::stopModel()
 {
 	if ( trace_file.is_open() ) {
 		trace_file.close();
 	}
 }
 
-void RDORepositoryFile::trace( const std::string& str )
+void RDOThreadRepository::trace( const std::string& str )
 {
 	if ( trace_file.is_open() ) {
 		trace_file.write( str.c_str(), str.length() );

@@ -6,10 +6,12 @@
 #include "rdostudioeditdoc.h"
 #include "rdostudioeditview.h"
 #include "rdostudioplugins.h"
+#include "rdostudiothread.h"
 #include "resource.h"
 #include "rdo_tracer/rdotracer.h"
 #include "htmlhelp.h"
-
+#include <rdorepository.h>
+#include <rdosimwin.h>
 #include <rdoplugin.h>
 
 #ifdef _DEBUG
@@ -116,6 +118,7 @@ END_MESSAGE_MAP()
 
 RDOStudioApp::RDOStudioApp():
 	CWinApp(),
+	studioGUI( NULL ),
 	initInstance( false ),
 	editDocTemplate( NULL ),
 	fileAssociationSetup( false ),
@@ -133,7 +136,7 @@ RDOStudioApp::RDOStudioApp():
 BOOL RDOStudioApp::InitInstance()
 {
 	CWinApp::InitInstance();
-	
+
 	if ( ::OleInitialize( NULL ) != S_OK )
 		return FALSE;
 
@@ -157,14 +160,21 @@ BOOL RDOStudioApp::InitInstance()
 	editDocTemplate = new CMultiDocTemplate( IDR_EDIT_TYPE, RUNTIME_CLASS(RDOStudioEditDoc), RUNTIME_CLASS(RDOStudioChildFrame), RUNTIME_CLASS(RDOStudioEditView) );
 	AddDocTemplate( editDocTemplate );
 
-	tracer = new rdoTracer::RDOTracer();
+	// Кто-то должен поднять кернел и треды
+	RDOKernel::init();
+	new rdosim::RDOThreadSimulator();
+	new rdoRepository::RDOThreadRepository();
+	new RDOThreadStudio();
 
+	tracer = new rdoTracer::RDOTracer();
 	AddDocTemplate( tracer->createDocTemplate() );
 
+	// Внутри создается объект модели
 	mainFrame = new RDOStudioMainFrame;
 	m_pMainWnd = mainFrame;
 	if ( !mainFrame->LoadFrame( IDR_MAINFRAME ) ) return FALSE;
-	tracer->initNotify();
+
+	studioGUI = new RDOThreadStudioGUI();
 
 	loadReopen();
 	updateReopenSubMenu();
@@ -178,6 +188,8 @@ BOOL RDOStudioApp::InitInstance()
 
 	// create plugins after mainFrame was show
 	plugins = new RDOStudioPlugins;
+
+//	return TRUE;
 
 	RDOStudioCommandLineInfo cmdInfo;
 	ParseCommandLine( cmdInfo );
@@ -267,12 +279,16 @@ bool RDOStudioApp::shortToLongPath( const std::string& shortPath, std::string& l
 
 int RDOStudioApp::ExitInstance()
 {
+	if ( model ) {
+		delete model;
+	}
 	if ( autoExit ) {
 		CWinApp::ExitInstance();
 		return exitCode;
 	} else {
 		::HtmlHelp( NULL, NULL, HH_CLOSE_ALL, 0 );
-		if ( tracer ) delete tracer;
+		if ( studioGUI ) { delete studioGUI; studioGUI = NULL; }
+		if ( tracer    ) { delete tracer   ; tracer    = NULL; }
 		WriteProfileString( "general", "lastProject", getOpenLastProject() ? lastProjectName.c_str() : "" );
 		return CWinApp::ExitInstance();
 	}
@@ -787,4 +803,20 @@ void RDOAboutDlg::OnAboutWeb()
 	CString s;
 	m_web.GetWindowText( s );
 	::ShellExecute( m_hWnd, "open", s, 0, 0, SW_SHOWNORMAL );
+}
+
+void RDOStudioApp::waitManualMessage( CEvent* event )
+{
+	while ( ::WaitForSingleObject( event->m_hObject, 0 ) == WAIT_TIMEOUT ) {
+		studioGUI->processMessages();
+		mainFrame->UpdateWindow();
+	}
+	delete event;
+}
+
+BOOL RDOStudioApp::OnIdle( LONG lCount )
+{
+	studioGUI->processMessages();
+	CWinApp::OnIdle( lCount );
+	return true;
 }

@@ -15,6 +15,7 @@ static char THIS_FILE[] = __FILE__;
 #include "rdosmr.h"
 #include "rdoruntime.h"
 
+#include "../rdo_simulator/rdosimwin.h"
 #include <rdobinarystream.h>
 #include <rdokernel.h>
 #include <rdorepository.h>
@@ -36,7 +37,8 @@ RDOParserRDO::~RDOParserRDO()
 void RDOParserRDO::parse()
 {
 	rdo::binarystream in_stream;
-	kernel.getRepository()->load( type, in_stream );
+	kernel->simulator()->sendMessage( kernel->repository(), RDOThread::RT_REPOSITORY_LOAD, &rdoRepository::RDOThreadRepository::FileData( type, in_stream ) );
+//	kernel->repository()->load( type, in_stream );
 	if ( in_stream.good() ) {
 		parse( in_stream );
 	}

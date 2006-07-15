@@ -6,6 +6,8 @@
 #endif
 
 #include "rdostudioframedoc.h"
+#include <vector>
+#include <map>
 
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioFrameManager

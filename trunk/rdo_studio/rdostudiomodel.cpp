@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "rdostudiomodel.h"
 #include "rdostudioapp.h"
+#include "rdostudiothread.h"
 #include "rdostudiomainfrm.h"
 #include "rdostudiochildfrm.h"
 #include "rdostudiomodeldoc.h"
@@ -46,37 +47,202 @@ RDOStudioModel::RDOStudioModel():
 	showMode( SM_NoShow ),
 	prevModify( false )
 {
-	model = this;
-
 	modelDocTemplate = new CMultiDocTemplate( IDR_MODEL_TYPE, RUNTIME_CLASS(RDOStudioModelDoc), RUNTIME_CLASS(RDOStudioChildFrame), RUNTIME_CLASS(RDOStudioModelView) );
 	AfxGetApp()->AddDocTemplate( modelDocTemplate );
 
-	kernel.setNotifyReflect( RDOKernel::newModel, newModelNotify );
-	kernel.setNotifyReflect( RDOKernel::openModel, openModelNotify );
-	kernel.setNotifyReflect( RDOKernel::saveModel, saveModelNotify );
-	kernel.setNotifyReflect( RDOKernel::canCloseModel, canCloseModelNotify );
-	kernel.setNotifyReflect( RDOKernel::closeModel, closeModelNotify );
-	kernel.setNotifyReflect( RDOKernel::canNotCloseModel, canNotCloseModelNotify );
+	model = this;
 
-	kernel.setNotifyReflect( RDOKernel::beforeModelStart, beforeModelStartNotify );
-	kernel.setNotifyReflect( RDOKernel::afterModelStart, afterModelStartNotify );
-	kernel.setNotifyReflect( RDOKernel::endExecuteModel, endExecuteModelNotify );
-	kernel.setNotifyReflect( RDOKernel::modelStopped, stopModelNotify );
-	kernel.setNotifyReflect( RDOKernel::parseSuccess, parseSuccessNotify );
-	kernel.setNotifyReflect( RDOKernel::parseError, parseErrorNotify );
-	kernel.setNotifyReflect( RDOKernel::executeError, executeErrorNotify );
-	kernel.setNotifyReflect( RDOKernel::showFrame, showFrameNotify );
-
-	kernel.setNotifyReflect( RDOKernel::buildString, buildNotify );
-	kernel.setNotifyReflect( RDOKernel::debugString, debugNotify );
-
-	kernel.setCallbackReflect( RDOKernel::modelExit, modelExitCallback );
+//	kernel.setCallbackReflect( RDOKernel::modelExit, modelExitCallback );
 }
 
 RDOStudioModel::~RDOStudioModel()
 {
-	closeModel();
 	model = NULL;
+//	closeModel();
+}
+
+void RDOStudioModel::procGUI( RDOThread::RDOMessageInfo& msg )
+{
+	switch ( msg.message ) {
+		case RDOThread::RT_REPOSITORY_MODEL_NEW: {
+			newModelFromRepository();
+			plugins->pluginProc( rdoPlugin::PM_MODEL_NEW );
+			break;
+		}
+		case RDOThread::RT_REPOSITORY_MODEL_OPEN: {
+			openModelFromRepository();
+			plugins->pluginProc( rdoPlugin::PM_MODEL_OPEN );
+			break;
+		}
+		case RDOThread::RT_REPOSITORY_MODEL_SAVE: {
+			saveModelToRepository();
+			break;
+		}
+		case RDOThread::RT_REPOSITORY_MODEL_CLOSE: {
+			closeModelFromRepository();
+			if ( plugins ) {
+				plugins->pluginProc( rdoPlugin::PM_MODEL_CLOSE );
+			}
+			break;
+		}
+		case RDOThread::RT_REPOSITORY_MODEL_CLOSE_CAN_CLOSE: {
+			msg.lock();
+			if ( *static_cast<bool*>(msg.param) == false ) {
+				msg.unlock();
+				break;
+			}
+			msg.unlock();
+			bool res = canCloseModel();
+			msg.lock();
+			if ( *static_cast<bool*>(msg.param) == true ) {
+				*static_cast<bool*>(msg.param) = res;
+			}
+			msg.unlock();
+			break;
+		}
+		case RDOThread::RT_REPOSITORY_MODEL_CLOSE_ERROR: {
+			if ( showCanNotCloseModelMessage ) {
+				AfxMessageBox( rdo::format( ID_MSG_MODELCLOSE_ERROR ).c_str(), MB_ICONSTOP | MB_OK );
+			}
+			break;
+		}
+		case RDOThread::RT_SIMULATOR_MODEL_START_BEFORE: {
+			beforeModelStart();
+			plugins->pluginProc( rdoPlugin::PM_MODEL_BEFORE_START );
+			break;
+		}
+		case RDOThread::RT_SIMULATOR_MODEL_START_AFTER: {
+			RDOStudioModelDoc* doc = getModelDoc();
+			if ( doc ) {
+				doc->running = true;
+			}
+			RDOStudioOutput* output = &studioApp.mainFrame->output;
+			output->showDebug();
+			output->appendStringToDebug( rdo::format( IDS_MODEL_STARTED ) );
+			const_cast<rdoEditCtrl::RDODebugEdit*>(output->getDebug())->UpdateWindow();
+			int index = frameManager.getLastShowedFrame();
+			if ( index != -1 ) {
+				RDOStudioFrameView* view = frameManager.getFrameView( index );
+				if ( view ) view->SetFocus();
+			}
+			plugins->pluginProc( rdoPlugin::PM_MODEL_AFTER_START );
+			break;
+		}
+		case RDOThread::RT_SIMULATOR_MODEL_STOP_OK: {
+			stopModelFromSimulator();
+
+			RDOStudioOutput* output = &studioApp.mainFrame->output;
+			output->appendStringToDebug( rdo::format( IDS_MODEL_FINISHED ) );
+			const_cast<rdoEditCtrl::RDODebugEdit*>(output->getDebug())->UpdateWindow();
+
+			std::string str = kernel->simulator()->getResults().str();
+			if ( str.length() ) {
+				rdo::binarystream stream;
+				stream.write( str.c_str(), str.length() );
+				studioApp.studioGUI->sendMessage( kernel->repository(), RDOThread::RT_REPOSITORY_SAVE, &rdoRepository::RDOThreadRepository::FileData( rdoModelObjects::PMV, stream ) );
+//				kernel->repository()->save( rdoModelObjects::PMV, stream );
+				output->showResults();
+				output->appendStringToResults( str );
+			}
+
+			plugins->pluginProc( rdoPlugin::PM_MODEL_FINISHED );
+			break;
+		}
+		case RDOThread::RT_SIMULATOR_MODEL_STOP_BY_USER: {
+			stopModelFromSimulator();
+
+			RDOStudioOutput* output = &studioApp.mainFrame->output;
+			output->appendStringToDebug( rdo::format( IDS_MODEL_STOPED ) );
+			const_cast<rdoEditCtrl::RDODebugEdit*>(output->getDebug())->UpdateWindow();
+
+			plugins->pluginProc( rdoPlugin::PM_MODEL_STOP_CANCEL );
+			break;
+		}
+		case RDOThread::RT_SIMULATOR_MODEL_STOP_RUNTIME_ERROR: {
+			RDOStudioOutput* output = &studioApp.mainFrame->output;
+			output->clearBuild();
+			output->showBuild();
+			output->appendStringToBuild( rdo::format( IDS_MODEL_RUNTIMEERROR ) );
+			std::vector< RDOSyntaxError > errors;
+			studioApp.studioGUI->sendMessage( kernel->simulator(), RDOThread::RT_SIMULATOR_GET_ERRORS, &errors );
+			int errors_cnt   = 0;
+			int warnings_cnt = 0;
+			for ( std::vector< RDOSyntaxError >::iterator it = errors.begin(); it != errors.end(); it++ ) {
+				output->appendStringToBuild( it->error_code, it->message, it->file, it->error_line, it->error_pos, it->warning );
+				if ( it->warning ) {
+					warnings_cnt++;
+				} else {
+					errors_cnt++;
+				}
+			}
+			stopModelFromSimulator();
+			if ( errors_cnt || warnings_cnt ) {
+				const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->showFirstError();
+			}
+
+			plugins->pluginProc( rdoPlugin::PM_MODEL_STOP_RUNTIME_ERROR );
+			break;
+		}
+		case RDOThread::RT_SIMULATOR_PARSE_OK: {
+			RDOStudioOutput* output = &studioApp.mainFrame->output;
+			std::vector< RDOSyntaxError > errors;
+			studioApp.studioGUI->sendMessage( kernel->simulator(), RDOThread::RT_SIMULATOR_GET_ERRORS, &errors );
+			int errors_cnt   = 0;
+			int warnings_cnt = 0;
+			for ( std::vector< RDOSyntaxError >::iterator it = errors.begin(); it != errors.end(); it++ ) {
+				output->appendStringToBuild( it->error_code, it->message, it->file, it->error_line, it->error_pos, it->warning );
+				if ( it->warning ) {
+					warnings_cnt++;
+				} else {
+					errors_cnt++;
+				}
+			}
+			output->appendStringToBuild( rdo::format( IDS_MODEL_BUILDING_RESULTS, errors_cnt, warnings_cnt ) );
+			if ( errors_cnt || warnings_cnt ) {
+				const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->showFirstError();
+			}
+			plugins->pluginProc( rdoPlugin::PM_MODEL_BUILD_OK );
+			break;
+		}
+		case RDOThread::RT_SIMULATOR_PARSE_ERROR: {
+			RDOStudioOutput* output = &studioApp.mainFrame->output;
+			std::vector< RDOSyntaxError > errors;
+			studioApp.studioGUI->sendMessage( kernel->simulator(), RDOThread::RT_SIMULATOR_GET_ERRORS, &errors );
+			int errors_cnt   = 0;
+			int warnings_cnt = 0;
+			for ( std::vector< RDOSyntaxError >::iterator it = errors.begin(); it != errors.end(); it++ ) {
+				output->appendStringToBuild( it->error_code, it->message, it->file, it->error_line, it->error_pos, it->warning );
+				if ( it->warning ) {
+					warnings_cnt++;
+				} else {
+					errors_cnt++;
+				}
+			}
+			output->appendStringToBuild( rdo::format( IDS_MODEL_BUILDING_RESULTS, errors_cnt, warnings_cnt ) );
+			if ( errors_cnt || warnings_cnt ) {
+				const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->showFirstError();
+			}
+
+			plugins->pluginProc( rdoPlugin::PM_MODEL_BUILD_FAILD );
+			break;
+		}
+		case RDOThread::RT_SIMULATOR_FRAME_SHOW: {
+			showFrame();
+			break;
+		}
+		case RDOThread::RT_SIMULATOR_PARSE_STRING: {
+			msg.lock();
+			studioApp.mainFrame->output.appendStringToBuild( *static_cast<std::string*>(msg.param) );
+			msg.unlock();
+			break;
+		}
+		case RDOThread::RT_DEBUG_STRING: {
+			msg.lock();
+			studioApp.mainFrame->output.appendStringToDebug( *static_cast<std::string*>(msg.param) );
+			msg.unlock();
+			break;
+		}
+	}
 }
 
 void RDOStudioModel::newModel( const bool _useTemplate )
@@ -87,7 +253,7 @@ void RDOStudioModel::newModel( const bool _useTemplate )
 	output->clearDebug();
 	output->clearResults();
 	output->clearFind();
-	kernel.getRepository()->newModel();
+	studioApp.waitManualMessage( kernel->studio()->manualMessageFrom( RDOThread::RT_STUDIO_MODEL_NEW ) );
 	output->updateLogConnection();
 }
 
@@ -103,31 +269,34 @@ bool RDOStudioModel::openModel( const std::string& modelName ) const
 	const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->UpdateWindow();
 	openError   = false;
 	modelClosed = false;
-	bool flag = kernel.getRepository()->openModel( modelName );
+	studioApp.waitManualMessage( kernel->studio()->manualMessageFrom( RDOThread::RT_STUDIO_MODEL_OPEN, const_cast<std::string*>(&modelName) ) );
+	bool flag = true;//kernel->repository()->openModel( modelName );
 	if ( flag && !openError ) {
 		rdo::binarystream stream;
-		kernel.getRepository()->load( rdoModelObjects::PMV, stream );
+		studioApp.studioGUI->sendMessage( kernel->repository(), RDOThread::RT_REPOSITORY_LOAD, &rdoRepository::RDOThreadRepository::FileData( rdoModelObjects::PMV, stream ) );
 		output->appendStringToResults( stream.str() );
 		output->updateLogConnection();
 		output->appendStringToBuild( rdo::format( IDS_MODEL_LOADING_OK ) );
-		studioApp.setLastProjectName( kernel.getRepository()->getFullName() );
+		studioApp.setLastProjectName( kernel->repository()->getFullName() );
 	} else {
 		output->updateLogConnection();
 		output->appendStringToBuild( rdo::format( IDS_MODEL_LOADING_FAILD ) );
-		studioApp.setLastProjectName( kernel.getRepository()->getFullName() );
+		studioApp.setLastProjectName( kernel->repository()->getFullName() );
 	}
 	return flag;
 }
 
 bool RDOStudioModel::saveModel() const
 {
-	return kernel.getRepository()->saveModel();
+	bool res;
+	studioApp.waitManualMessage( kernel->studio()->manualMessageFrom( RDOThread::RT_STUDIO_MODEL_SAVE, &res ) );
+	return res;
 }
 
 void RDOStudioModel::saveAsModel() const
 {
 	saveAsFlag = true;
-	kernel.getRepository()->saveAsModel();
+	studioApp.waitManualMessage( kernel->studio()->manualMessageFrom( RDOThread::RT_STUDIO_MODEL_SAVE_AS ) );
 	saveAsFlag = false;;
 }
 
@@ -141,7 +310,7 @@ void RDOStudioModel::closeModel() const
 		output->clearResults();
 		output->clearFind();
 	}
-	kernel.getRepository()->closeModel();
+	studioApp.waitManualMessage( kernel->studio()->manualMessageFrom( RDOThread::RT_STUDIO_MODEL_CLOSE ) );
 }
 
 void RDOStudioModel::buildModel() const
@@ -154,7 +323,7 @@ void RDOStudioModel::buildModel() const
 		output->showBuild();
 		output->appendStringToBuild( rdo::format( IDS_MODEL_BUILDING_BEGIN ) );
 		const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->UpdateWindow();
-		kernel.getSimulator()->parseModel();
+		studioApp.waitManualMessage( kernel->studio()->manualMessageFrom( RDOThread::RT_STUDIO_MODEL_BUILD ) );
 	}
 }
 
@@ -168,105 +337,15 @@ void RDOStudioModel::runModel() const
 		output->showBuild();
 		output->appendStringToBuild( rdo::format( IDS_MODEL_BUILDING_BEGIN ) );
 		const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->UpdateWindow();
-		kernel.getSimulator()->runModel();
+		studioApp.waitManualMessage( kernel->studio()->manualMessageFrom( RDOThread::RT_STUDIO_MODEL_RUN ) );
 	}
 }
 
 void RDOStudioModel::stopModel() const
 {
 	if ( hasModel() && isRunning() ) {
-		kernel.getSimulator()->stopModel();
+		studioApp.waitManualMessage( kernel->studio()->manualMessageFrom( RDOThread::RT_STUDIO_MODEL_STOP ) );
 	}
-}
-
-void RDOStudioModel::newModelNotify()
-{
-	model->newModelFromRepository();
-	plugins->pluginProc( rdoPlugin::PM_MODEL_NEW );
-}
-
-void RDOStudioModel::openModelNotify()
-{
-	model->openModelFromRepository();
-	plugins->pluginProc( rdoPlugin::PM_MODEL_OPEN );
-}
-
-void RDOStudioModel::saveModelNotify()
-{
-	model->saveModelToRepository();
-}
-
-bool RDOStudioModel::canCloseModelNotify()
-{
-	return model->canCloseModel();
-}
-
-void RDOStudioModel::closeModelNotify()
-{
-	model->closeModelFromRepository();
-	if ( plugins ) {
-		plugins->pluginProc( rdoPlugin::PM_MODEL_CLOSE );
-	}
-}
-
-void RDOStudioModel::canNotCloseModelNotify()
-{
-	model->canNotCloseModelFromRepository();
-}
-
-void RDOStudioModel::beforeModelStartNotify()
-{
-	model->beforeModelStart();
-	plugins->pluginProc( rdoPlugin::PM_MODEL_BEFORE_START );
-}
-
-void RDOStudioModel::afterModelStartNotify()
-{
-	RDOStudioModelDoc* doc = model->getModelDoc();
-	if ( doc ) {
-		doc->running = true;
-	}
-	RDOStudioOutput* output = &studioApp.mainFrame->output;
-	output->showDebug();
-	output->appendStringToDebug( rdo::format( IDS_MODEL_STARTED ) );
-	const_cast<rdoEditCtrl::RDODebugEdit*>(output->getDebug())->UpdateWindow();
-	int index = model->frameManager.getLastShowedFrame();
-	if ( index != -1 ) {
-		RDOStudioFrameView* view = model->frameManager.getFrameView( index );
-		if ( view ) view->SetFocus();
-	}
-	plugins->pluginProc( rdoPlugin::PM_MODEL_AFTER_START );
-}
-
-void RDOStudioModel::endExecuteModelNotify()
-{
-	model->stopModelFromSimulator();
-
-	RDOStudioOutput* output = &studioApp.mainFrame->output;
-	output->appendStringToDebug( rdo::format( IDS_MODEL_FINISHED ) );
-	const_cast<rdoEditCtrl::RDODebugEdit*>(output->getDebug())->UpdateWindow();
-
-	std::string str = kernel.getSimulator()->getResults().str();
-	if ( str.length() ) {
-		rdo::binarystream stream;
-		stream.write( str.c_str(), str.length() );
-		kernel.getRepository()->save( rdoModelObjects::PMV, stream );
-		output->showResults();
-		output->appendStringToResults( str );
-	}
-
-	plugins->pluginProc( rdoPlugin::PM_MODEL_FINISHED );
-}
-
-void RDOStudioModel::stopModelNotify()
-{
-	model->stopModelFromSimulator();
-
-	RDOStudioOutput* output = &studioApp.mainFrame->output;
-	output->appendStringToDebug( rdo::format( IDS_MODEL_STOPED ) );
-	const_cast<rdoEditCtrl::RDODebugEdit*>(output->getDebug())->UpdateWindow();
-
-	plugins->pluginProc( rdoPlugin::PM_MODEL_STOP_CANCEL );
 }
 
 void RDOStudioModel::stopModelFromSimulator()
@@ -279,92 +358,9 @@ void RDOStudioModel::stopModelFromSimulator()
 	frameManager.bmp_clear();
 }
 
-void RDOStudioModel::parseSuccessNotify()
-{
-	RDOStudioOutput* output = &studioApp.mainFrame->output;
-	std::vector<RDOSyntaxError>* errors = kernel.getSimulator()->getErrors();
-	int errors_cnt   = 0;
-	int warnings_cnt = 0;
-	for ( std::vector<RDOSyntaxError>::iterator it = errors->begin(); it != errors->end(); it++ ) {
-		output->appendStringToBuild( it->error_code, it->message, it->file, it->error_line, it->error_pos, it->warning );
-		if ( it->warning ) {
-			warnings_cnt++;
-		} else {
-			errors_cnt++;
-		}
-	}
-	output->appendStringToBuild( rdo::format( IDS_MODEL_BUILDING_RESULTS, errors_cnt, warnings_cnt ) );
-	if ( errors_cnt || warnings_cnt ) {
-		const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->showFirstError();
-	}
-	plugins->pluginProc( rdoPlugin::PM_MODEL_BUILD_OK );
-}
-
-void RDOStudioModel::parseErrorNotify()
-{
-	RDOStudioOutput* output = &studioApp.mainFrame->output;
-	std::vector<RDOSyntaxError>* errors = kernel.getSimulator()->getErrors();
-	int errors_cnt   = 0;
-	int warnings_cnt = 0;
-	for ( std::vector<RDOSyntaxError>::iterator it = errors->begin(); it != errors->end(); it++ ) {
-		output->appendStringToBuild( it->error_code, it->message, it->file, it->error_line, it->error_pos, it->warning );
-		if ( it->warning ) {
-			warnings_cnt++;
-		} else {
-			errors_cnt++;
-		}
-	}
-	output->appendStringToBuild( rdo::format( IDS_MODEL_BUILDING_RESULTS, errors_cnt, warnings_cnt ) );
-	if ( errors_cnt || warnings_cnt ) {
-		const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->showFirstError();
-	}
-
-	plugins->pluginProc( rdoPlugin::PM_MODEL_BUILD_FAILD );
-}
-
-void RDOStudioModel::executeErrorNotify()
-{
-	RDOStudioOutput* output = &studioApp.mainFrame->output;
-	output->clearBuild();
-	output->showBuild();
-	output->appendStringToBuild( rdo::format( IDS_MODEL_RUNTIMEERROR ) );
-	std::vector<RDOSyntaxError>* errors = kernel.getSimulator()->getErrors();
-	int errors_cnt   = 0;
-	int warnings_cnt = 0;
-	for ( std::vector<RDOSyntaxError>::iterator it = errors->begin(); it != errors->end(); it++ ) {
-		output->appendStringToBuild( it->error_code, it->message, it->file, it->error_line, it->error_pos, it->warning );
-		if ( it->warning ) {
-			warnings_cnt++;
-		} else {
-			errors_cnt++;
-		}
-	}
-	model->stopModelFromSimulator();
-	if ( errors_cnt || warnings_cnt ) {
-		const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->showFirstError();
-	}
-
-	plugins->pluginProc( rdoPlugin::PM_MODEL_STOP_RUNTIME_ERROR );
-}
-
-void RDOStudioModel::showFrameNotify()
-{
-	model->showFrame();
-}
-
-void RDOStudioModel::buildNotify( const std::string& str )
-{
-	studioApp.mainFrame->output.appendStringToBuild( str );
-}
-
-void RDOStudioModel::debugNotify( const std::string& str )
-{
-	studioApp.mainFrame->output.appendStringToDebug( str );
-}
-
 void RDOStudioModel::modelExitCallback( int exitCode )
 {
-	kernel.callbackNext( RDOKernel::modelExit, RDOStudioModel::modelExitCallback, exitCode );
+//	kernel.callbackNext( RDOKernel::modelExit, RDOStudioModel::modelExitCallback, exitCode );
 	studioApp.autoClose( exitCode );
 }
 
@@ -411,7 +407,7 @@ void RDOStudioModel::newModelFromRepository()
 		}
 
 		modelDocTemplate->OpenDocumentFile( NULL );
-		setName( kernel.getRepository()->getName() );
+		setName( kernel->repository()->getName() );
 
 		RDOEditorTabCtrl* tab = getTab();
 		if ( tab ) {
@@ -469,7 +465,7 @@ void RDOStudioModel::openModelFromRepository()
 		}
 
 		modelDocTemplate->OpenDocumentFile( NULL );
-		setName( kernel.getRepository()->getName() );
+		setName( kernel->repository()->getName() );
 
 		RDOStudioOutput* output = &studioApp.mainFrame->output;
 		RDOEditorTabCtrl* tab = getTab();
@@ -485,7 +481,7 @@ void RDOStudioModel::openModelFromRepository()
 				bool canLoad = true;
 				rdoModelObjects::RDOFileType type = tab->indexToType( i );
 				if ( tab->typeSupported( type ) ) {
-					kernel.getRepository()->load( type, stream );
+					studioApp.studioGUI->sendMessage( kernel->repository(), RDOThread::RT_REPOSITORY_LOAD, &rdoRepository::RDOThreadRepository::FileData( type, stream ) );
 				} else {
 					canLoad = false;
 				}
@@ -493,11 +489,11 @@ void RDOStudioModel::openModelFromRepository()
 				if ( canLoad ) {
 					bool stream_error = stream.rdstate() & std::ios_base::failbit ? true : false;
 					if ( !stream_error ) {
-						bool readonly = kernel.getRepository()->isReadOnly( type );
+						bool readonly = kernel->repository()->isReadOnly( type );
 						edit->load( stream );
 						edit->setReadOnly( readonly );
 						if ( readonly ) {
-							output->appendStringToBuild( rdo::format( IDS_MODEL_FILE_READONLY, kernel.getRepository()->getFileExtName( type ).c_str() ) );
+							output->appendStringToBuild( rdo::format( IDS_MODEL_FILE_READONLY, kernel->repository()->getFileExtName( type ).c_str() ) );
 						}
 					} else {
 						int obj = 0;
@@ -512,7 +508,7 @@ void RDOStudioModel::openModelFromRepository()
 							case rdoModelObjects::PMD: obj = IDS_MODEL_PMDS;          break;
 						}
 						if ( obj ) {
-							output->appendStringToBuild( rdo::format( IDS_MODEL_CANNOT_LOAD, rdo::format( obj ).c_str(), kernel.getRepository()->getFullFileName( type ).c_str() ) );
+							output->appendStringToBuild( rdo::format( IDS_MODEL_CANNOT_LOAD, rdo::format( obj ).c_str(), kernel->repository()->getFullFileName( type ).c_str() ) );
 							const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->UpdateWindow();
 						}
 						openError = true;
@@ -545,7 +541,7 @@ void RDOStudioModel::saveModelToRepository()
 		if ( smr_edit->isModify() || saveAsFlag ) {
 			rdo::binarystream stream;
 			smr_edit->save( stream );
-			kernel.getRepository()->save( rdoModelObjects::SMR, stream );
+			studioApp.studioGUI->sendMessage( kernel->repository(), RDOThread::RT_REPOSITORY_SAVE, &rdoRepository::RDOThreadRepository::FileData( rdoModelObjects::SMR, stream ) );
 			smr_modified = true;
 		}
 		int cnt = tab->getItemCount();
@@ -571,7 +567,7 @@ void RDOStudioModel::saveModelToRepository()
 						case rdoModelObjects::FRM:
 						case rdoModelObjects::FUN:
 						case rdoModelObjects::DPT:
-						case rdoModelObjects::PMD: kernel.getRepository()->save( type, stream ); break;
+						case rdoModelObjects::PMD: studioApp.studioGUI->sendMessage( kernel->repository(), RDOThread::RT_REPOSITORY_SAVE, &rdoRepository::RDOThreadRepository::FileData( type, stream ) ); break;
 						default: break;
 					}
 					edit->setModifyFalse();
@@ -582,8 +578,8 @@ void RDOStudioModel::saveModelToRepository()
 			wasSaved = true;
 		}
 	}
-	setName( kernel.getRepository()->getName() );
-	studioApp.insertReopenItem( kernel.getRepository()->getFullName() );
+	setName( kernel->repository()->getName() );
+	studioApp.insertReopenItem( kernel->repository()->getFullName() );
 
 	if ( smr_modified ) updateFrmDescribed();
 
@@ -594,7 +590,7 @@ void RDOStudioModel::saveModelToRepository()
 
 void RDOStudioModel::updateFrmDescribed()
 {
-//	frmDescribed = kernel.getRepository()->isDescribed( rdoModelObjects::FRM );
+//	frmDescribed = kernel->repository()->isDescribed( rdoModelObjects::FRM );
 	frmDescribed = true;
 }
 
@@ -627,13 +623,6 @@ void RDOStudioModel::closeModelFromRepository()
 		showCanNotCloseModelMessage = true;
 	}
 	modelClosed = true;
-}
-
-void RDOStudioModel::canNotCloseModelFromRepository() const
-{
-	if ( showCanNotCloseModelMessage ) {
-		AfxMessageBox( rdo::format( ID_MSG_MODELCLOSE_ERROR ).c_str(), MB_ICONSTOP | MB_OK );
-	}
 }
 
 std::string RDOStudioModel::getName() const
@@ -687,23 +676,23 @@ void RDOStudioModel::beforeModelStart()
 		output->appendStringToDebug( rdo::format( IDS_MODEL_RESOURCE_LOADING_BEGIN ) );
 		const_cast<rdoEditCtrl::RDODebugEdit*>(output->getDebug())->UpdateWindow();
 
-		std::vector< const std::string* > bitmaps = kernel.getSimulator()->getAllBitmaps();
+		std::vector< const std::string* > bitmaps = kernel->simulator()->getAllBitmaps();
 		std::vector< const std::string* >::iterator bmp = bitmaps.begin();
 		while ( bmp != bitmaps.end() ) {
 			frameManager.bmp_insert( *(*bmp) );
 			bmp++;
 		}
 
-		std::vector< const std::string* > frames = kernel.getSimulator()->getAllFrames();
+		std::vector< const std::string* > frames = kernel->simulator()->getAllFrames();
 		std::vector< const std::string* >::iterator it = frames.begin();
 		while ( it != frames.end() ) {
 			frameManager.insertItem( *(*it) );
 			it++;
 		}
 		frameManager.expand();
-		int initFrameNumber = kernel.getSimulator()->getInitialFrameNumber() - 1;
+		int initFrameNumber = kernel->simulator()->getInitialFrameNumber() - 1;
 		modelTime = 0;
-		showMode  = kernel.getSimulator()->getInitialShowMode();
+		showMode  = kernel->simulator()->getInitialShowMode();
 		frameManager.setLastShowedFrame( initFrameNumber );
 		if ( showMode == SM_Animation && initFrameNumber >= 0 && initFrameNumber < frameManager.count() ) {
 			RDOStudioFrameDoc* doc = frameManager.connectFrameDoc( initFrameNumber );
@@ -722,12 +711,12 @@ void RDOStudioModel::beforeModelStart()
 
 void RDOStudioModel::showFrame()
 {
-	modelTime = kernel.getSimulator()->getModelTime();
+	modelTime = kernel->simulator()->getModelTime();
 	studioApp.mainFrame->showNewModelTime( modelTime );
 //	while ( getShowMode() == SM_Monitor ) {
 //		::Sleep( 500 );
 //	}
-	const std::vector<RDOFrame *>& frames = kernel.getSimulator()->getFrames();
+	const std::vector<RDOFrame *>& frames = kernel->simulator()->getFrames();
 	std::vector<RDOFrame *>::const_iterator it = frames.begin();
 	int index = 0;
 	while ( it != frames.end() ) {
@@ -765,7 +754,7 @@ void RDOStudioModel::setShowMode( const ShowMode value )
 		if ( showMode == SM_NoShow ) {
 			frameManager.closeAll();
 		}
-		kernel.getSimulator()->setShowMode( showMode );
+		kernel->simulator()->setShowMode( showMode );
 		tracer->setShowMode( showMode );
 		plugins->pluginProc( rdoPlugin::PM_MODEL_SHOWMODE );
 	}
@@ -773,10 +762,10 @@ void RDOStudioModel::setShowMode( const ShowMode value )
 
 double RDOStudioModel::getShowRate() const
 {
-	return kernel.getSimulator()->getShowRate();
+	return kernel->simulator()->getShowRate();
 }
 
 void RDOStudioModel::setShowRate( const double value ) const
 {
-	kernel.getSimulator()->setShowRate( value );
+	kernel->simulator()->setShowRate( value );
 }

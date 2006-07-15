@@ -16,13 +16,21 @@
 // ---------- RDOStudioApp
 // ----------------------------------------------------------------------------
 class RDOStudioMainFrame;
+class RDOThreadStudioGUI;
+namespace rdoTracer {
+class RDOTracer;
+}
 
 class RDOStudioApp: public CWinApp
 {
 friend class RDOStudioModel;
+friend class rdoTracer::RDOTracer;
 friend class RDOStudioCommandLineInfo;
 
 private:
+	RDOThreadStudioGUI* studioGUI;
+	void waitManualMessage( CEvent* event );
+
 	bool initInstance;
 
 	CMultiDocTemplate* editDocTemplate;
@@ -79,6 +87,7 @@ public:
 	virtual BOOL InitInstance();
 	virtual int ExitInstance();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	virtual BOOL OnIdle(LONG lCount);
 	//}}AFX_VIRTUAL
 
 	//{{AFX_MSG(RDOStudioApp)

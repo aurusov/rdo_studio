@@ -239,7 +239,7 @@ void RDOStudioFrameManager::bmp_insert( const std::string& name )
 		bitmaps[name] = NULL;
 
 		rdo::binarystream stream;
-		kernel.getRepository()->loadBMP( name, stream );
+		kernel->repository()->loadBMP( name, stream );
 
 		char* bmInfo   = NULL;
 		char* pBits    = NULL;
@@ -413,7 +413,7 @@ void RDOStudioFrameManager::showFrame( const RDOFrame* const frame, const int in
 			std::vector< std::string >* areas_clicked = &frames[index]->areas_clicked;
 			std::vector< std::string >::iterator it = areas_clicked->begin();
 			while ( it != areas_clicked->end() ) {
-				kernel.getSimulator()->addAreaPressed( *it++ );
+				kernel->simulator()->addAreaPressed( *it++ );
 			};
 			areas_clicked->clear();
 			frames[index]->areas_sim_clear();

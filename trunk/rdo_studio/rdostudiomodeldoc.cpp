@@ -119,7 +119,7 @@ void RDOStudioModelDoc::setName( const std::string& str )
 	name = str;
 	rdo::trim( name );
 	if ( studioApp.getShowCaptionFullName() ) {
-		SetTitle( rdo::format( IDS_MODEL_NAME, kernel.getRepository()->getFullName().c_str() ).c_str()  );
+		SetTitle( rdo::format( IDS_MODEL_NAME, kernel->repository()->getFullName().c_str() ).c_str()  );
 	} else {
 		SetTitle( rdo::format( IDS_MODEL_NAME, name.c_str() ).c_str() );
 	}

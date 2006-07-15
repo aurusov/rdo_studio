@@ -7,6 +7,7 @@
 
 #include "rdostudioframemanager.h"
 #include <rdosimwin.h>
+#include <rdothread.h>
 
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioModel
@@ -21,6 +22,8 @@ class RDOStudioModel
 friend class RDOStudioModelDoc;
 friend class RDOStudioFrameView;
 friend class RDOStudioFrameTreeCtrl;
+friend class RDOStudioApp;
+friend class RDOThreadStudioGUI;
 
 private:
 	CMultiDocTemplate* modelDocTemplate;
@@ -41,32 +44,12 @@ private:
 
 	bool prevModify;
 
-	static void newModelNotify();
-	static void openModelNotify();
-	static void saveModelNotify();
-	static bool canCloseModelNotify();
-	static void closeModelNotify();
-	static void canNotCloseModelNotify();
-
-	static void beforeModelStartNotify();
-	static void afterModelStartNotify();
-	static void endExecuteModelNotify();
-	static void stopModelNotify();
-	static void parseSuccessNotify();
-	static void parseErrorNotify();
-	static void executeErrorNotify();
-	static void showFrameNotify();
-
-	static void buildNotify( const std::string& str );
-	static void debugNotify( const std::string& str );
-
 	static void modelExitCallback( int exitCode );
 
 	void newModelFromRepository();
 	void openModelFromRepository();
 	void saveModelToRepository();
 	void closeModelFromRepository();
-	void canNotCloseModelFromRepository() const;
 
 	bool canCloseModel();
 
@@ -76,9 +59,12 @@ private:
 
 	RDOStudioModelDoc* getModelDoc() const;
 
+protected:
+	virtual void procGUI( RDOThread::RDOMessageInfo& msg );
+
 public:
 	RDOStudioModel();
-	~RDOStudioModel();
+	virtual ~RDOStudioModel();
 
 	void newModel( const bool useTemplate = false );
 	bool openModel( const std::string& modelName = "" ) const;

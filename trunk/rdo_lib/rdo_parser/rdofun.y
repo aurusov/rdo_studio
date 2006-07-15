@@ -156,35 +156,36 @@ namespace rdoParse
 %left '+' '-'
 %left '*' '/'
 
+%start fun_list
+
 %%
 
 fun_list:	fun_consts fun_func_seq;
 
-fun_consts:	
+fun_consts:	/* empty */
 			| Constant fun_const_body End;
 
-fun_const_body:			
-         |  fun_const_body fun_const_param_desc		{
-							RDORTPParamDesc *cons = (RDORTPParamDesc*)$2;
-							parser->addConstant(cons);
-							@$;
+fun_const_body:	/* empty */
+				|  fun_const_body fun_const_param_desc {
+					RDORTPParamDesc *cons = (RDORTPParamDesc*)$2;
+					parser->addConstant(cons);
+					@$;
+				};
+
+fun_const_param_desc:	IDENTIF_COLON fun_const_param_type {
+							std::string *name = (std::string *)$1;
+							RDORTPResParam *parType = (RDORTPResParam *)$2;
+							RDORTPParamDesc *param = new RDORTPParamDesc(name, parType);
+							if ( !parType->dv->exist ) {
+								parser->error("Constant must have value");
+							}
+							$$ = (int)param;
 						};
 
-
-fun_const_param_desc: IDENTIF_COLON fun_const_param_type	{
-						std::string *name = (std::string *)$1;
-						RDORTPResParam *parType = (RDORTPResParam *)$2;
-						RDORTPParamDesc *param = new RDORTPParamDesc(name, parType);
-						if(!parType->dv->exist)
-							parser->error("Constant must have value");
-							
-						$$ = (int)param;
-					};
-         
-fun_const_enum_default_val:	'=' IDENTIF	{
+fun_const_enum_default_val:	'=' IDENTIF {
 						std::string *val = (std::string *)$2;
 						RDORTPEnumDefVal *dv = new RDORTPEnumDefVal(val);
-						$$ = (int)dv;	  
+						$$ = (int)dv;
 					};
 
 

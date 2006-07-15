@@ -263,8 +263,8 @@ RDOFUNArithm::RDOFUNArithm( std::string* resName, std::string* parName )
 				} else {
 					// ¬нутри $Body
 					// ѕровер€ем использование неинициализированного рел.ресурса в Choice from другом рел.ресурсе
-					if ( !pat->currRelRes->choice ) {
-						if ( !rel->alreadyHaveConverter ) {
+					if ( pat->currRelRes->isChoiceFromState() ) {
+						if ( !rel->alreadyHaveConverter && !rel->isDirect() ) {
 							parser->error( rdo::format("–елевантный ресурс неопределен: %s. ≈го нельз€ использовать в услови€х выбора других ресурсов до его собственного Choice from", rel->getName()->c_str()) );
 						}
 						if ( rel->begin == RDOPATPattern::CS_NonExist ) {
@@ -277,7 +277,7 @@ RDOFUNArithm::RDOFUNArithm( std::string* resName, std::string* parName )
 					// ѕровер€ем использование временного рел.ресурса внутри конвертора другого рел.ресурса
 					if ( rel->getType()->isTemporary() ) {
 						// ¬ конверторе начала
-						if ( pat->currRelRes->currentConvert == RDORelevantResource::convertBegin ) {
+						if ( pat->currRelRes->currentState == RDORelevantResource::convertBegin ) {
 							if ( rel->begin == RDOPATPattern::CS_Create && !rel->alreadyHaveConverter ) {
 								parser->error( rdo::format("–елевантный ресурс нельз€ использовать до его инициализации (Create): %s", rel->getName()->c_str()) );
 							}
@@ -289,7 +289,7 @@ RDOFUNArithm::RDOFUNArithm( std::string* resName, std::string* parName )
 							}
 						}
 						// ¬ конверторе конца
-						if ( pat->currRelRes->currentConvert == RDORelevantResource::convertEnd ) {
+						if ( pat->currRelRes->currentState == RDORelevantResource::convertEnd ) {
 							if ( rel->end == RDOPATPattern::CS_Create && !rel->alreadyHaveConverter ) {
 								parser->error( rdo::format("–елевантный ресурс нельз€ использовать до его инициализации (Create): %s", rel->getName()->c_str()) );
 							}

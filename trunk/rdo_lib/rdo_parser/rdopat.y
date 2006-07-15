@@ -241,14 +241,50 @@ pat_body:	pat_time IDENTIF {
 
 pat_res_usage: pat_body	pat_choice pat_first	{ ((RDOPATPattern *)$1)->addRelResUsage((RDOPATChoice *)$2, (RDOPATSelectType *)$3); $$ = $1; };
 
-pat_choice: 									{ $$ = (int) new RDOPATChoice( RDOPATChoice::ch_empty );                  }
-			|	Choice NoCheck					{ $$ = (int) new RDOPATChoice( RDOPATChoice::ch_nocheck );                }
-			|	Choice from_keyword pat_logic	{ $$ = (int) new RDOPATChoice( RDOPATChoice::ch_from, (RDOFUNLogic*)$3 ); };
+pat_choice: /* empty */ {
+				parser->getLastPATPattern()->currRelRes->currentState = RDORelevantResource::choiceEmpty;
+				$$= (int) new RDOPATChoice( RDOPATChoice::ch_empty );
+			}
+			| pat_choice_nocheck {
+				$$ = (int) new RDOPATChoice( RDOPATChoice::ch_nocheck );
+			}
+			| pat_choice_from pat_logic {
+				$$ = (int) new RDOPATChoice( RDOPATChoice::ch_from, (RDOFUNLogic*)$2 );
+			};
 
-pat_first:								{ $$ = (int) new RDOPATSelectType( RDOPATSelectType::st_empty );                        }
-			|	first_keyword			{ $$ = (int) new RDOPATSelectType( RDOPATSelectType::st_first );                        }
-			|	with_min pat_arithm		{ $$ = (int) new RDOPATSelectType( RDOPATSelectType::st_with_min, (RDOFUNArithm *)$2 ); }
-			|	with_max pat_arithm		{ $$ = (int) new RDOPATSelectType( RDOPATSelectType::st_with_max, (RDOFUNArithm *)$2 ); };
+pat_choice_nocheck: Choice NoCheck {
+				parser->getLastPATPattern()->currRelRes->currentState = RDORelevantResource::choiceNoCheck;
+			};
+
+pat_choice_from: Choice from_keyword {
+				parser->getLastPATPattern()->currRelRes->currentState = RDORelevantResource::choiceFrom;
+			};
+
+pat_first:	/* empty */ {
+				parser->getLastPATPattern()->currRelRes->currentState = RDORelevantResource::choiceOrderEmpty;
+				$$ = (int) new RDOPATSelectType( RDOPATSelectType::st_empty );
+			}
+			| pat_choice_first {
+				$$ = (int) new RDOPATSelectType( RDOPATSelectType::st_first );
+			}
+			| pat_choice_with_min pat_arithm {
+				$$ = (int) new RDOPATSelectType( RDOPATSelectType::st_with_min, (RDOFUNArithm *)$2 );
+			}
+			| pat_choice_with_max pat_arithm {
+				$$ = (int) new RDOPATSelectType( RDOPATSelectType::st_with_max, (RDOFUNArithm *)$2 );
+			};
+
+pat_choice_first: first_keyword {
+				parser->getLastPATPattern()->currRelRes->currentState = RDORelevantResource::choiceOrderFirst;
+			};
+
+pat_choice_with_min: with_min {
+				parser->getLastPATPattern()->currRelRes->currentState = RDORelevantResource::choiceOrderWithMin;
+			};
+
+pat_choice_with_max: with_max {
+				parser->getLastPATPattern()->currRelRes->currentState = RDORelevantResource::choiceOrderWithMax;
+			};
 
 pat_convert:  pat_res_usage	{	((RDOPATPattern *)$1)->addRelResConvert(); $$ = $1; }
 			|	pat_res_usage convert_begin pat_trace pat_params_set	
@@ -263,19 +299,19 @@ pat_convert:  pat_res_usage	{	((RDOPATPattern *)$1)->addRelResConvert(); $$ = $1
 					{	((RDOPATPattern *)$1)->addRelResConvertEvent($3 != 0, (RDOPATParamsSet *)$4); $$ = $1; };
 
 convert_rule:	Convert_rule {
-				parser->getLastPATPattern()->currRelRes->currentConvert = RDORelevantResource::convertBegin;
+				parser->getLastPATPattern()->currRelRes->currentState = RDORelevantResource::convertBegin;
 			};
 
 convert_event:	Convert_event {
-				parser->getLastPATPattern()->currRelRes->currentConvert = RDORelevantResource::convertBegin;
+				parser->getLastPATPattern()->currRelRes->currentState = RDORelevantResource::convertBegin;
 			};
 
 convert_begin:	Convert_begin {
-				parser->getLastPATPattern()->currRelRes->currentConvert = RDORelevantResource::convertBegin;
+				parser->getLastPATPattern()->currRelRes->currentState = RDORelevantResource::convertBegin;
 			};
 
 convert_end:	Convert_end {
-				parser->getLastPATPattern()->currRelRes->currentConvert = RDORelevantResource::convertEnd;
+				parser->getLastPATPattern()->currRelRes->currentState = RDORelevantResource::convertEnd;
 			};
 
 pat_params_set:												{  $$ = (int) new RDOPATParamsSet(); }

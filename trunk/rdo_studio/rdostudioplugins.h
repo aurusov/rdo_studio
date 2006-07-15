@@ -132,10 +132,10 @@ private:
 	static void showFrame( int index );
 	static void closeAllFrame();
 
-	static void modelStartNotify();
-	static void endExecuteModelNotify();
-	static void modelStopNotify();
-	static void traceNotify( const std::string& str );
+	static int modelStartNotify( void* );
+	static int endExecuteModelNotify( void* );
+	static int modelStopNotify( void* );
+	static int traceNotify( void* );
 
 public:
 	RDOStudioPlugins();

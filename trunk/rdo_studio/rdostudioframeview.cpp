@@ -341,14 +341,14 @@ void RDOStudioFrameView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 */
 
 	if(!(nFlags & (1 << 14)))
-		kernel.getSimulator()->keyDown( nChar );
+		kernel->simulator()->keyDown( nChar );
 
 	RDOStudioView::OnKeyDown(nChar, nRepCnt, nFlags);
 }
 
 void RDOStudioFrameView::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
-	kernel.getSimulator()->keyUp( nChar );
+	kernel->simulator()->keyUp( nChar );
 
 	RDOStudioView::OnKeyUp(nChar, nRepCnt, nFlags);
 }

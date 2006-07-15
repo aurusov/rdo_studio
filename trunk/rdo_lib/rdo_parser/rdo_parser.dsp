@@ -41,7 +41,7 @@ RSC=rc.exe
 # PROP Intermediate_Dir "Release"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GR /GX /O2 /I "." /I ".." /I "../rdo_system" /I "../rdo_runtime" /I "../../rdo_common" /I "../../rdo_stream" /I "../../rdo_kernel" /I "../../rdo_repository" /D "_LIB" /D "_UNISTD_H_" /D "WIN32" /D "NDEBUG" /D "_MBCS" /Yu"pch.h" /FD /c
+# ADD CPP /nologo /MT /W3 /GR /GX /O2 /I "." /I ".." /I "../rdo_system" /I "../rdo_runtime" /I "../../rdo_common" /I "../../rdo_kernel" /I "../../rdo_repository" /D "_LIB" /D "_UNISTD_H_" /D "WIN32" /D "NDEBUG" /D "_MBCS" /Yu"pch.h" /FD /c
 # SUBTRACT CPP /Fr
 # ADD BASE RSC /l 0x419 /d "NDEBUG"
 # ADD RSC /l 0x419 /d "NDEBUG"
@@ -65,7 +65,7 @@ LIB32=link.exe -lib
 # PROP Intermediate_Dir "Debug"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /YX /FD /GZ /c
-# ADD CPP /nologo /MDd /W3 /Gm /Gi /GR /GX /ZI /Od /I "." /I ".." /I "../rdo_system" /I "../rdo_runtime" /I "../../rdo_common" /I "../../rdo_stream" /I "../../rdo_kernel" /I "../../rdo_repository" /D "_LIB" /D "_UNISTD_H_" /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_AFXDLL" /FR /Yu"pch.h" /FD /GZ /c
+# ADD CPP /nologo /MDd /W3 /Gm /Gi /GR /GX /ZI /Od /I "." /I ".." /I "../rdo_system" /I "../rdo_runtime" /I "../../rdo_common" /I "../../rdo_kernel" /I "../../rdo_repository" /D "_LIB" /D "_UNISTD_H_" /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_AFXDLL" /FR /Yu"pch.h" /FD /GZ /c
 # ADD BASE RSC /l 0x419 /d "_DEBUG"
 # ADD RSC /l 0x419 /d "_DEBUG" /d "_AFXDLL"
 BSC32=bscmake.exe
@@ -558,6 +558,14 @@ SOURCE=.\rdodpt_opr.y
 
 !IF  "$(CFG)" == "rdo_parser - Win32 Release"
 
+# Begin Custom Build
+InputPath=.\rdodpt_opr.y
+
+"rdogramdpt_opr.cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	..\rdo_system\bison.exe -pdpt_opr_ --skeleton=..\rdo_system\bison.simple -ordogramdpt_opr.cpp $(InputPath)
+
+# End Custom Build
+
 !ELSEIF  "$(CFG)" == "rdo_parser - Win32 Debug"
 
 # Begin Custom Build
@@ -770,7 +778,7 @@ SOURCE=.\rdortp.y
 InputPath=.\rdortp.y
 
 BuildCmds= \
-	..\rdo_system\bison.exe --defines=rdogramma.h -prtp --skeleton=..\rdo_system\bison.simple -ordogramrtp.cpp $(InputPath)
+	..\rdo_system\bison.exe -v --defines=rdogramma.h -prtp --skeleton=..\rdo_system\bison.simple -ordogramrtp.cpp $(InputPath)
 
 "rdogramrtp.cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
    $(BuildCmds)

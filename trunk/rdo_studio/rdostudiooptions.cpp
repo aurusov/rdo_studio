@@ -5,7 +5,6 @@
 #include "rdostudioplugins.h"
 #include "rdostudiomodel.h"
 #include "htmlhelp.h"
-#include <rdocommon.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

@@ -10,6 +10,7 @@
 
 #include <rdocommon.h>
 #include <rdokernel.h>
+#include <rdothread.h>
 
 #include <rdobinarystream.h>
 #include <rdocommon.h>
@@ -27,29 +28,37 @@ namespace rdoParse {
 namespace rdosim
 {
 
-class RdoSimulator
+// --------------------------------------------------------------------
+// ---------- RDOThreadRunTime
+// --------------------------------------------------------------------
+class RDOThreadRunTime: public RDOThread
 {
-	rdoParse::RDOParser *parser;
-	rdoRuntime::RDORuntime *runtime;
+friend class RDOThreadSimulator;
+protected:
+	RDOThreadSimulator* simulator;
+	bool                runtime_error;
+
+	RDOThreadRunTime();
+	virtual ~RDOThreadRunTime() {}; // Чтобы нельзя было удалить через delete
+	virtual void proc( RDOMessageInfo& msg );
+	virtual void idle();
+	virtual void start();
+	virtual void stop();
+};
+
+// --------------------------------------------------------------------
+// ---------- RDOThreadSimulator
+// --------------------------------------------------------------------
+class RDOThreadSimulator: public RDOThread
+{
+friend class RDOThreadRunTime;
+private:
+	rdoParse::RDOParser*    parser;
+	rdoRuntime::RDORuntime* runtime;
 	bool canTrace;
 
-	// UA 03.12.05 // изменил работу с уведомлениями
-	// Теперь каждая треда должна регистироваться в кернеле.
-	RDOKernel::RDOKernelSync* syncObject;
-	void createSync() {
-		deleteSync();
-		syncObject = new RDOKernel::RDOKernelSync( ::GetCurrentThreadId() );
-		kernel.insertSyncClient( syncObject );
-	}
-	void deleteSync() {
-		if ( syncObject ) {
-			kernel.removeSyncClient( syncObject );
-			delete syncObject;
-			syncObject = NULL;
-		}
-	}
-
-	CWinThread* th;
+	RDOThreadRunTime* thread_runtime;
+	rdoModel::RDOExitCode exitCode;
 
 	std::vector<RDOFrame *> frames;
 	std::vector<int> scanCodes;
@@ -64,13 +73,20 @@ class RdoSimulator
 	double showRate; // current show mode
 
 	std::stringstream resultString;
-public:
-	RdoSimulator();
-	~RdoSimulator();
+
+protected:
+	virtual ~RDOThreadSimulator(); // Чтобы нельзя было удалить через delete помещаем его в protected
+
+	virtual void proc( RDOMessageInfo& msg );
+
 	bool parseModel();
 	void runModel();
 	void stopModel();
-	std::vector<RDOSyntaxError>* getErrors();
+	std::vector< RDOSyntaxError >* getErrors();
+
+public:
+	RDOThreadSimulator();
+
 	double getModelTime();
 	void parseSMRFileInfo( rdo::binarystream& smr, rdoModelObjects::RDOSMRFileInfo& info );
 
@@ -80,24 +96,23 @@ public:
 	void keyUp(int scanCode);
 	void addAreaPressed(std::string& areaName);
 
-	std::vector<const std::string *> getAllFrames();
-	std::vector<const std::string *> getAllBitmaps();
+	std::vector< const std::string* > getAllFrames();
+	std::vector< const std::string* > getAllBitmaps();
 
 	ShowMode getInitialShowMode();
 	int getInitialFrameNumber();
 	double getInitialShowRate();
 
-	std::stringstream &getModelStructure();
-	std::stringstream &getResults();
+	std::stringstream& getModelStructure();
+	std::stringstream& getResults();
 
-	ShowMode getShowMode() { return showMode; }
-	void setShowMode(ShowMode _showMode) { showMode = _showMode; }
-	double getShowRate() { return showRate; }
-	void setShowRate(double _showRate) { showRate = _showRate; }
+	ShowMode getShowMode()                 { return showMode;      }
+	void setShowMode( ShowMode _showMode ) { showMode = _showMode; }
+	double getShowRate()                   { return showRate;      }
+	void setShowRate( double _showRate )   { showRate = _showRate; }
 
-	friend UINT RunningThreadControllingFunction( LPVOID pParam );
-	friend void frameCallBack(rdoRuntime::RDOConfig *config, void *param);
-	friend void tracerCallBack(std::string *newString, void *param);
+	friend void frameCallBack( rdoRuntime::RDOConfig* config, void* param );
+	friend void tracerCallBack( std::string* newString, void* param );
 };
 
 } // namespace rdosim

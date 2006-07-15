@@ -5,19 +5,20 @@
 #pragma once
 #endif
 
-#include <string>
-#include <fstream>
+#include <rdothread.h>
 #include <rdobinarystream.h>
 #include <rdocommon.h>
+#include <string>
+#include <fstream>
 
 class CFileDialog;
 
 namespace rdoRepository {
 
 // ----------------------------------------------------------------------------
-// ---------- RDORepositoryFile
+// ---------- RDOThreadRepository
 // ----------------------------------------------------------------------------
-class RDORepositoryFile
+class RDOThreadRepository: public RDOThread
 {
 private:
 	std::string modelName;
@@ -51,7 +52,7 @@ private:
 	bool realOnlyInDlg;
 
 	bool saveAsDlg();
-	bool canCloseModel() const;
+	bool canCloseModel();
 	void realCloseModel();
 
 	void extractName( const CFileDialog* const dlg );
@@ -66,25 +67,28 @@ private:
 	void changeLastModelPath();
 
 	std::ofstream trace_file;
-	static void beforeModelStartNotify();
-	static void stopModelNotify();
-	static void traceNotify( const std::string& str );
 	void beforeModelStart();
 	void stopModel();
 	void trace( const std::string& str );
 
-public:
-	RDORepositoryFile();
-	virtual ~RDORepositoryFile();
-
-	std::string getName() const      { return modelName;                                          }
-	std::string getFullName() const  { return modelPath + getFileExtName( rdoModelObjects::SMR ); }
+protected:
+	virtual ~RDOThreadRepository(); // Чтобы нельзя было удалить через delete
+	virtual void proc( RDOMessageInfo& msg );
 
 	void newModel();
 	bool openModel( const std::string& modelFileName = "" );
+	void closeModel();
 	bool saveModel();
 	void saveAsModel();
-	void closeModel();
+
+	void load( rdoModelObjects::RDOFileType type, rdo::binarystream& stream );
+	void save( rdoModelObjects::RDOFileType type, rdo::binarystream& stream ) const;
+
+public:
+	RDOThreadRepository();
+
+	std::string getName() const      { return modelName;                                          }
+	std::string getFullName() const  { return modelPath + getFileExtName( rdoModelObjects::SMR ); }
 
 	std::string getFileName( rdoModelObjects::RDOFileType type ) const     { return files[ type ].filename;  }
 	std::string getExtention( rdoModelObjects::RDOFileType type ) const    { return files[ type ].extention; }
@@ -94,8 +98,12 @@ public:
 	bool isDescribed( rdoModelObjects::RDOFileType type ) const            { return files[ type ].described; }
 	bool isMustExist( rdoModelObjects::RDOFileType type ) const            { return files[ type ].mustexist; }
 
-	void load( rdoModelObjects::RDOFileType type, rdo::binarystream& stream );
-	void save( rdoModelObjects::RDOFileType type, rdo::binarystream& stream ) const;
+	class FileData {
+	public:
+		rdoModelObjects::RDOFileType type;
+		rdo::binarystream&           stream;
+		FileData( rdoModelObjects::RDOFileType _type, rdo::binarystream& _stream ): type( _type ), stream( _stream ) {};
+	};
 
 	void loadBMP( const std::string& name, rdo::binarystream& stream ) const;
 };

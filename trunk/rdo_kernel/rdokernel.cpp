@@ -1,374 +1,196 @@
 #include "rdokernel.h"
-
-#include <rdorepository.h>
+#include <rdostudiothread.h>
+#include <rdorepositoryfile.h>
 #include <rdosimwin.h>
-#include <stdio.h>
-#include <stdarg.h>
+
 #include <algorithm>
+#include <vector>
 
-// ----------------------------------------------------------------------------
-// ---------- RDOStudioKernel
-// ----------------------------------------------------------------------------
-RDOKernel kernel;
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
 
+RDOKernel* kernel = NULL;
+
+// --------------------------------------------------------------------
+// ---------- RDOKernel
+// --------------------------------------------------------------------
 RDOKernel::RDOKernel():
-	repository( NULL ),
-	simulator( NULL ),
-	notify_count( 0 )
+	RDOThread( "RDOKernel" ),
+	thread_studio( NULL ),
+	thread_simulator( NULL ),
+	thread_repository( NULL )
 {
+	notifies.push_back( RT_THREAD_CONNECTION );
+	notifies.push_back( RT_THREAD_DISCONNECTION );
+	after_constructor();
+	kernel = this;
 }
 
 RDOKernel::~RDOKernel()
 {
-	if ( repository ) { delete repository; repository = NULL; }
-	if ( simulator )  { delete simulator; simulator = NULL; }
+	kernel = NULL;
 }
 
-rdoRepository::RDORepository* RDOKernel::getRepository()
+void RDOKernel::init()
 {
-	if ( !repository ) {
-		repository = new rdoRepository::RDORepository;
-	}
-	return repository;
+	new RDOKernel();
 }
 
-rdosim::RdoSimulator* RDOKernel::getSimulator()
+void RDOKernel::close()
 {
-	if ( !simulator ) {
-		simulator = new rdosim::RdoSimulator;
-	}
-	return simulator;
+	CEvent* thread_destroy = kernel->thread_destroy;
+	kernel->sendMessage( kernel, RDOThread::RT_THREAD_CLOSE );
+	thread_destroy->Lock();
+	delete thread_destroy;
 }
 
-// -------------------------------------
-// notify
-// -------------------------------------
-void RDOKernel::setNotifyReflect( NotifyType notifyType, OnNotify fun )
+void RDOKernel::start()
 {
-	unsigned long int th_id_current = ::GetCurrentThreadId();
-	bool found = false;
-	std::list< RDOKernelSync* >::iterator sync_it = sync.begin();
-	while ( sync_it != sync.end() ) {
-		if ( (*sync_it)->th_id == th_id_current ) {
-			found = true;
-			bool flag = true;
-			RDOKernelSync::onNotifyListType::iterator it = (*sync_it)->onNotify_list.find( notifyType );
-			while ( it != (*sync_it)->onNotify_list.end() ) {
-				if ( (*it).second.fun == fun ) {
-					flag = false;
-					break;
-				}
-				it++;
-			}
-			if ( flag ) {
-				RDOKernelSync::RDONotifyFun nf;
-				nf.fun   = fun;
-				nf.th_id = th_id_current;
-				(*sync_it)->onNotify_list.insert( RDOKernelSync::onNotifyListType::value_type( notifyType, nf ) );
-			}
-			break;
-		}
-		sync_it++;
-	}
-	if ( !found ) {
- 		TRACE( "\nnotify: sync not found\n" );
-	}
+	RDOThread::start();
+#ifdef TR_TRACE
+	trace( "kernel ready !!!" );
+#endif
 }
 
-void RDOKernel::notify( NotifyType notifyType )
+void RDOKernel::proc( RDOMessageInfo& msg )
 {
-	unsigned long int th_id_current = ::GetCurrentThreadId();
-	std::list< RDOKernelSync* >::iterator sync_it = sync.begin();
-	while ( sync_it != sync.end() ) {
-		if ( (*sync_it)->th_id == th_id_current ) {
-			RDOKernelSync::onNotifyListType::const_iterator fun_it = (*sync_it)->onNotify_list.lower_bound( notifyType );
-			while ( fun_it != (*sync_it)->onNotify_list.upper_bound( notifyType ) ) {
-				(*fun_it).second.fun();
-				fun_it++;
-			}
-		} else {
-//			TRACE( "\nSync = %d\n", *sync_it );
-			int lock_level = notify_lock();
-			(*sync_it)->notify_fromkernel( notifyType );
-			notify_wait( lock_level );
-		}
-		sync_it++;
-	}
-}
-
-void RDOKernel::notify_fromclient( RDOKernelSync* sync, NotifyType notifyType )
-{
-	RDOKernelSync::onNotifyListType::const_iterator it = sync->onNotify_list.lower_bound( notifyType );
-	while ( it != sync->onNotify_list.upper_bound( notifyType ) ) {
-		(*it).second.fun();
-		it++;
-	}
-	notify_unlock();
-}
-
-// -------------------------------------
-// notify string
-// -------------------------------------
-void RDOKernel::setNotifyReflect( NotifyStringType notifyType, OnNotifyString fun )
-{
-	unsigned long int th_id_current = ::GetCurrentThreadId();
-	bool found = false;
-	std::list< RDOKernelSync* >::iterator sync_it = sync.begin();
-	while ( sync_it != sync.end() ) {
-		if ( (*sync_it)->th_id == th_id_current ) {
-			found = true;
-			bool flag = true;
-			RDOKernelSync::onNotifyStringListType::iterator it = (*sync_it)->onNotifyString_list.find( notifyType );
-			while ( it != (*sync_it)->onNotifyString_list.end() ) {
-				if ( (*it).second.fun == fun ) {
-					flag = false;
-					break;
-				}
-				it++;
-			}
-			if ( flag ) {
-				RDOKernelSync::RDONotifyStringFun nf;
-				nf.fun   = fun;
-				nf.th_id = th_id_current;
-				(*sync_it)->onNotifyString_list.insert( RDOKernelSync::onNotifyStringListType::value_type( notifyType, nf ) );
-			}
-			break;
-		}
-		sync_it++;
-	}
-	if ( !found ) {
-		TRACE( "\nnotify string: sync not found\n" );
-	}
-}
-
-void RDOKernel::notifyString( NotifyStringType notifyType, const std::string& str )
-{
-	unsigned long int th_id_current = ::GetCurrentThreadId();
-	std::list< RDOKernelSync* >::iterator sync_it = sync.begin();
-	while ( sync_it != sync.end() ) {
-		if ( (*sync_it)->th_id == th_id_current ) {
-			RDOKernelSync::onNotifyStringListType::const_iterator fun_it = (*sync_it)->onNotifyString_list.lower_bound( notifyType );
-			while ( fun_it != (*sync_it)->onNotifyString_list.upper_bound( notifyType ) ) {
-				(*fun_it).second.fun( str );
-				fun_it++;
-			}
-		} else {
-//			TRACE( "\nSync = %d\n", *sync_it );
-			int lock_level = notify_lock();
-			(*sync_it)->notifyString_fromkernel( notifyType, str );
-			notify_wait( lock_level );
-		}
-		sync_it++;
-	}
-}
-
-void RDOKernel::notifyString_fromclient( RDOKernelSync* sync, NotifyStringType notifyType, const std::string& str )
-{
-	RDOKernelSync::onNotifyStringListType::const_iterator it = sync->onNotifyString_list.lower_bound( notifyType );
-	while ( it != sync->onNotifyString_list.upper_bound( notifyType ) ) {
-		(*it).second.fun( str );
-		it++;
-	}
-	notify_unlock();
-}
-
-
-// -------------------------------------
-// notify bool
-// -------------------------------------
-void RDOKernel::setNotifyReflect( NotifyBoolType notifyType, OnNotifyBool fun )
-{
-	unsigned long int th_id_current = ::GetCurrentThreadId();
-	bool found = false;
-	std::list< RDOKernelSync* >::iterator sync_it = sync.begin();
-	while ( sync_it != sync.end() ) {
-		if ( (*sync_it)->th_id == th_id_current ) {
-			found = true;
-			bool flag = true;
-			RDOKernelSync::onNotifyBoolListType::iterator it = (*sync_it)->onNotifyBool_list.find( notifyType );
-			while ( it != (*sync_it)->onNotifyBool_list.end() ) {
-				if ( (*it).second.fun == fun ) {
-					flag = false;
-					break;
-				}
-				it++;
-			}
-			if ( flag ) {
-				RDOKernelSync::RDONotifyBoolFun nf;
-				nf.fun   = fun;
-				nf.th_id = th_id_current;
-				(*sync_it)->onNotifyBool_list.insert( RDOKernelSync::onNotifyBoolListType::value_type( notifyType, nf ) );
-			}
-			break;
-		}
-		sync_it++;
-	}
-	if ( !found ) {
-		TRACE( "\nnotify bool: sync not found\n" );
-	}
-}
-
-bool RDOKernel::notifyBoolAnd( NotifyBoolType notifyType )
-{
-	unsigned long int th_id_current = ::GetCurrentThreadId();
-	std::list< RDOKernelSync* >::iterator sync_it = sync.begin();
-	while ( sync_it != sync.end() ) {
-		if ( (*sync_it)->th_id == th_id_current ) {
-			RDOKernelSync::onNotifyBoolListType::const_iterator fun_it = (*sync_it)->onNotifyBool_list.lower_bound( notifyType );
-			while ( fun_it != (*sync_it)->onNotifyBool_list.upper_bound( notifyType ) ) {
-				if ( !(*fun_it).second.fun() ) {
-					return false;
-				}
-				fun_it++;
-			}
-		} else {
-			int lock_level = notify_lock();
-			(*sync_it)->notifyBoolAnd_fromkernel( notifyType );
-			notify_wait( lock_level );
-			if ( !(*sync_it)->bool_and_value ) {
-				return false;
-			}
-		}
-		sync_it++;
-	}
-	return true;
-}
-
-bool RDOKernel::notifyBoolOr( NotifyBoolType notifyType )
-{
-	bool flag = true;
-	unsigned long int th_id_current = ::GetCurrentThreadId();
-	std::list< RDOKernelSync* >::iterator sync_it = sync.begin();
-	while ( sync_it != sync.end() ) {
-		if ( (*sync_it)->th_id == th_id_current ) {
-			RDOKernelSync::onNotifyBoolListType::const_iterator fun_it = (*sync_it)->onNotifyBool_list.lower_bound( notifyType );
-			while ( fun_it != (*sync_it)->onNotifyBool_list.upper_bound( notifyType ) ) {
-				if ( (*fun_it).second.fun() ) {
-					return true;
+	switch ( msg.message ) {
+		// Закрыть все треды
+		case RT_THREAD_CLOSE: {
+#ifdef TR_TRACE
+			trace( thread_name + " stop begin" );
+#endif
+			threads_mutex.Lock();
+			std::list< RDOThread* >::iterator it = threads.begin();
+			while ( it != threads.end() ) {
+				RDOThread* thread = *it;
+				// Если thread_fun == NULL, то треда для GUI
+				if ( thread->thread_fun ) {
+					CEvent* thread_destroy = thread->thread_destroy;
+					threads_mutex.Unlock();
+					sendMessage( thread, RDOThread::RT_THREAD_CLOSE );
+					thread_destroy->Lock();
+					threads_mutex.Lock();
+					delete thread_destroy;
+					it = threads.begin();
 				} else {
-					flag = false;
+					it++;
 				}
-				fun_it++;
 			}
-		} else {
-			int lock_level = notify_lock();
-			(*sync_it)->notifyBoolOr_fromkernel( notifyType );
-			notify_wait( lock_level );
-			if ( (*sync_it)->bool_or_value ) {
-				return true;
-			} else {
-				flag = false;
-			}
-		}
-		sync_it++;
-	}
-	return flag;
-}
-
-void RDOKernel::notifyBoolAnd_fromclient( RDOKernelSync* sync, NotifyBoolType notifyType )
-{
-	RDOKernelSync::onNotifyBoolListType::const_iterator it = sync->onNotifyBool_list.lower_bound( notifyType );
-	while ( it != sync->onNotifyBool_list.upper_bound( notifyType ) ) {
-		if ( !(*it).second.fun() ) {
-			sync->bool_and_value = false;
-			notify_unlock();
-			return;
-		}
-		it++;
-	}
-	notify_unlock();
-	sync->bool_and_value = true;
-	return;
-}
-
-void RDOKernel::notifyBoolOr_fromclient( RDOKernelSync* sync, NotifyBoolType notifyType )
-{
-	bool flag = true;
-	RDOKernelSync::onNotifyBoolListType::const_iterator it = sync->onNotifyBool_list.lower_bound( notifyType );
-	while ( it != sync->onNotifyBool_list.upper_bound( notifyType ) ) {
-		if ( (*it).second.fun() ) {
-			sync->bool_and_value = true;
-			notify_unlock();
-			return;
-		} else {
-			flag = false;
-		}
-		it++;
-	}
-	sync->bool_and_value = flag;
-	notify_unlock();
-	return;
-}
-
-// -------------------------------------
-// callback
-// -------------------------------------
-void RDOKernel::setCallbackReflect( CallbackType callbackType, OnCallback fun )
-{
-	bool flag = true;
-	onCallbackListType::iterator it = onCallback_list.find( callbackType );
-	while ( it != onCallback_list.end() ) {
-		if ( (*it).second == fun ) {
-			flag = false;
+			threads_mutex.Unlock();
+#ifdef TR_TRACE
+			trace ( thread_name + " stop end" );
+#endif
 			break;
 		}
-		it++;
-	}
-	if ( flag ) {
-		onCallback_list.insert( onCallbackListType::value_type( callbackType, fun ) );
-	}
-}
-
-void RDOKernel::callback( CallbackType callbackType, int parament ) const
-{
-	return;
-	onCallbackListType::const_iterator it = onCallback_list.lower_bound( callbackType );
-	if ( it != onCallback_list.upper_bound( callbackType ) ) {
-		(*it).second( parament );
-	}
-}
-
-void RDOKernel::callbackNext( CallbackType callbackType, OnCallback fun, int parament ) const
-{
-	return;
-	onCallbackListType::const_iterator it = onCallback_list.lower_bound( callbackType );
-	while ( it != onCallback_list.upper_bound( callbackType ) ) {
-		if ( (*it).second == fun ) {
-			it++;
-			if ( it != onCallback_list.upper_bound( callbackType ) ) {
-				(*it).second( parament );
+		case RT_THREAD_CONNECTION: {
+			if ( static_cast<RDOThread*>(msg.param) != this ) {
+				registration( static_cast<RDOThread*>(msg.param) );
 			}
 			break;
 		}
+		case RT_THREAD_DISCONNECTION: {
+			if ( static_cast<RDOThread*>(msg.param) != this ) {
+				unregistered( static_cast<RDOThread*>(msg.param) );
+			}
+			break;
+		}
+		default: break;
+	}
+}
+/*
+RDOThread* RDOKernel::find( const std::string& thread_name ) const
+{
+	threads_mutex.Unlock();
+	std::list< RDOThread* >::const_iterator it = threads.begin();
+	while ( it != threads.end() ) {
+		if ( (*it)->thread_name.compare( thread_name ) == 0 ) {
+			RDOThread* thread = *it;
+			threads_mutex.Unlock();
+			return thread;
+		}
 		it++;
 	}
+	threads_mutex.Unlock();
+	return NULL;
 }
 
-void RDOKernel::debug( const char* str, ... )
+void RDOKernel::sendMessageToThreadByName( const std::string& thread_name, RDOTreadMessage message, void* param )
 {
-	std::vector< char > s;
-	s.resize( 256 );
-	va_list paramList;
-	int size = -1;
-	while ( size == -1 ) {
-		va_start( paramList, str );
-		size = _vsnprintf( s.begin(), s.size(), str, paramList );
-		va_end( paramList );
-		if ( size == -1 ) {
-			s.resize( s.size() + 256 );
-		}
+	threads_mutex.Lock();
+	RDOThread* thread = find( thread_name );
+	if ( thread ) {
+		thread->sendMessageFrom( this, message, param );
 	}
-	s.resize( size );
-	notifyString( debugString, std::string( s.begin(), s.end() ) );
+	threads_mutex.Unlock();
 }
 
-void RDOKernel::insertSyncClient( RDOKernelSync* syncUI )
+void RDOKernel::sendMessageToThreadByNameFrom( RDOThread* from, const std::string& thread_name, RDOTreadMessage message, void* param )
 {
-	syncUI->kernel = this;
-	sync.push_back( syncUI );
+	threads_mutex.Lock();
+	RDOThread* thread = find( thread_name );
+	if ( thread ) {
+		thread->sendMessageFrom( from, message, param );
+	}
+	threads_mutex.Unlock();
+}
+*/
+void RDOKernel::registration( RDOThread* thread )
+{
+	threads_mutex.Lock();
+	if ( thread && std::find( threads.begin(), threads.end(), thread ) == threads.end() ) {
+		threads.push_back( thread );
+	}
+	if ( !thread_studio     && thread->thread_name.compare( "RDOThreadStudio" )     == 0 ) thread_studio     = static_cast<RDOThreadStudio*>(thread);
+	if ( !thread_simulator  && thread->thread_name.compare( "RDOThreadSimulator" )  == 0 ) thread_simulator  = static_cast<rdosim::RDOThreadSimulator*>(thread);
+	if ( !thread_repository && thread->thread_name.compare( "RDOThreadRepository" ) == 0 ) thread_repository = static_cast<rdoRepository::RDOThreadRepository*>(thread);
+	threads_mutex.Unlock();
+#ifdef TR_TRACE
+	trace( "Kernel INFO: " + thread->thread_name + " REGISTERED" );
+#endif
+	broadcastMessage( RT_THREAD_REGISTERED, thread );
 }
 
-void RDOKernel::removeSyncClient( RDOKernelSync* syncUI )
+void RDOKernel::unregistered( RDOThread* thread )
 {
-	sync.remove( syncUI );
+	threads_mutex.Lock();
+	if ( thread && std::find( threads.begin(), threads.end(), thread ) != threads.end() ) {
+		threads.remove( thread );
+	}
+	if ( thread_studio     && thread->thread_name.compare( "RDOThreadStudio" )     == 0 ) thread_studio     = NULL;
+	if ( thread_simulator  && thread->thread_name.compare( "RDOThreadSimulator" )  == 0 ) thread_simulator  = NULL;
+	if ( thread_repository && thread->thread_name.compare( "RDOThreadRepository" ) == 0 ) thread_repository = NULL;
+	threads_mutex.Unlock();
+#ifdef TR_TRACE
+	trace( "Kernel INFO: " + thread->thread_name + " UNREGISTERED" );
+#endif
+	broadcastMessage( RT_THREAD_UNREGISTERED, thread );
 }
+
+/*
+void RDOKernel::method_registration( RDOTreadMethod& msg )
+{
+	methods_mutex.Lock();
+	msg.index = 0;
+	bool insert = true;
+	std::list< RDOTreadMethod >::iterator it = methods.begin();
+	while ( it != methods.end() ) {
+		if ( it->thread == msg.thread && it->name == msg.name ) {
+			msg.index = it->index;
+			insert = false;
+			break;
+		} else if ( it->index >= msg.index ) {
+			msg.index = it->index + 1;
+		}
+		it++;
+	}
+	if ( insert ) methods.push_back( msg );
+	methods_mutex.Unlock();
+#ifdef TR_TRACE
+	trace( rdo::format("Kernel INFO: methods: %s = %d", msg.name.c_str(), msg.index) );
+#endif
+}
+*/

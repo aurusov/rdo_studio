@@ -151,16 +151,6 @@ static char THIS_FILE[] = __FILE__;
 
 namespace rdoParse 
 {
-/*
-#define YYLLOC_DEFAULT( Current, Rhs, N )                    \
-	Current.last_line   = Rhs[N].last_line;       \
-	Current.last_column = Rhs[N].last_column;
-
-	parser->location.first_line   = Rhs[1].first_line;   \
-	parser->location.first_column = Rhs[1].first_column; \
-	parser->location.last_line    = Rhs[N].last_line;    \
-	parser->location.last_column  = Rhs[N].last_column;
-*/
 %}
 
 %left IDENTIF

@@ -241,8 +241,8 @@ public:
 
 	void rdoDelay(double fromTime, double toTime);
   	TracerCallBack tracerCallBack;
-	FrameCallBack frameCallBack;
-	void *param;		// this param send back to tracerCallBack and frameCallBack
+	FrameCallBack  frameCallBack;
+	void* param;		// this param send back to tracerCallBack and frameCallBack
 	RDOConfig config;
 	std::vector<RDOFRMFrame *> allFrames;
 
@@ -251,7 +251,7 @@ public:
 	rdoModel::RDOExitCode whyStop;
 	void onNothingMoreToDo() {whyStop = rdoModel::EC_NoMoreEvents;}
 	void onEndCondition() {whyStop = rdoModel::EC_OK;}
-	
+
 	void postProcess();
 
 	RDOTrace* getTracer();

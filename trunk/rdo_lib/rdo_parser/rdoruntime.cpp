@@ -768,8 +768,11 @@ bool RDOResource::operator != (RDOResource &other)
 
 void RDORuntime::rdoDelay(double fromTime, double toTime)
 {
-	config.currTime = fromTime;
-	config.newTime = toTime;
+	if ( fromTime > toTime ) {
+		toTime = fromTime;
+	}
+	config.currTime      = fromTime;
+	config.newTime       = toTime;
 	config.realTimeDelay = (toTime - fromTime)/config.showRate * 3600 * 1000;
 
 //	config.frame = NULL;

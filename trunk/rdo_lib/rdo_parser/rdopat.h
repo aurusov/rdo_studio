@@ -124,7 +124,8 @@ public:
 	bool alreadyHaveConverter;
 	RDOPATChoice* choice;
 	RDOPATSelectType* first;
-	enum { convertNone = 0, convertBegin, convertEnd } currentConvert;
+	enum { stateNone = 0, choiceEmpty, choiceNoCheck, choiceFrom, choiceOrderEmpty, choiceOrderFirst, choiceOrderWithMin, choiceOrderWithMax, convertBegin, convertEnd } currentState;
+	bool isChoiceFromState() const { return currentState == choiceEmpty || currentState == choiceNoCheck || currentState == choiceFrom; }
 
 	RDORelevantResource( const std::string* const _name, const int _numberOfResource, const RDOPATPattern::ConvertStatus _begin, const RDOPATPattern::ConvertStatus _end ):
 		name( _name ),
@@ -134,7 +135,7 @@ public:
 		alreadyHaveConverter( false ),
 		choice( NULL ),
 		first( NULL ),
-		currentConvert( convertNone )
+		currentState( stateNone )
 	{
 	}
 

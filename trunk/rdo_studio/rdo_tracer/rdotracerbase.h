@@ -82,12 +82,12 @@ private:
 
 public:
 	RDOTracerBase();
-	virtual ~RDOTracerBase();	
-	
+	virtual ~RDOTracerBase();
+
 	CMultiDocTemplate* createDocTemplate();
 	rdoTracerLog::RDOTracerLogCtrl* createLog();
 	RDOTracerTreeCtrl* createTree();
-	
+
 	void startTrace();
 	void getModelStructure( std::stringstream& stream );
 	void getTraceString( std::string trace_string );

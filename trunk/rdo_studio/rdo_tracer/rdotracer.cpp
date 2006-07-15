@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "rdotracer.h"
 #include "../rdostudiomodel.h"
+#include "../rdostudiothread.h"
 #include <rdokernel.h>
 #include <rdorepository.h>
 #include <rdosimwin.h>
@@ -27,8 +28,7 @@ static bool clear_after_stop = false;
 // ---------- RDOTracer
 // ----------------------------------------------------------------------------
 
-RDOTracer::RDOTracer() :
-	RDOTracerBase()
+RDOTracer::RDOTracer(): RDOTracerBase()
 {
 	clear_after_stop = false;
 	
@@ -40,58 +40,53 @@ RDOTracer::~RDOTracer()
 	tracer = NULL;
 }
 
-void RDOTracer::initNotify()
+void RDOTracer::procGUI( RDOThread::RDOMessageInfo& msg )
 {
-	kernel.setNotifyReflect( RDOKernel::closeModel, closeModelNotify );
-
-	kernel.setNotifyReflect( RDOKernel::beforeModelStart, beforeModelStartNotify );
-	kernel.setNotifyReflect( RDOKernel::endExecuteModel, modelStoppedNotify );
-	kernel.setNotifyReflect( RDOKernel::modelStopped, modelStoppedNotify );
-	kernel.setNotifyReflect( RDOKernel::executeError, modelStoppedNotify );
-
-	kernel.setNotifyReflect( RDOKernel::traceString, traceStringNotify );
-}
-
-void RDOTracer::closeModelNotify()
-{
-	clear_after_stop = model->isRunning();
-	if ( !clear_after_stop )
-		tracer->clear();
-}
-
-void RDOTracer::beforeModelStartNotify()
-{
-	tracer->clear();
-	tracer->setShowMode( kernel.getSimulator()->getShowMode() );
-	tracer->setModelName( kernel.getRepository()->getName() );
-	try {
-		kernel.debug( rdo::format( IDS_TRACER_GETTING_MODEL_STRUCTURE ).c_str() );
-		tracer->getModelStructure( kernel.getSimulator()->getModelStructure() );
-		kernel.debug( rdo::format( IDS_MODEL_RESOURCE_LOADING_NAME_OK ).c_str() );
-	} catch ( ... ) {
-		kernel.debug( rdo::format( IDS_MODEL_RESOURCE_LOADING_NAME_FAILED ).c_str() );
+	switch ( msg.message ) {
+		case RDOThread::RT_REPOSITORY_MODEL_CLOSE: {
+			clear_after_stop = model->isRunning();
+			if ( !clear_after_stop ) {
+				clear();
+			}
+			break;
+		}
+		case RDOThread::RT_SIMULATOR_MODEL_START_BEFORE: {
+			clear();
+			setShowMode( kernel->simulator()->getShowMode() );
+			setModelName( kernel->repository()->getName() );
+			try {
+				studioApp.mainFrame->output.appendStringToDebug( rdo::format( IDS_TRACER_GETTING_MODEL_STRUCTURE ) );
+				getModelStructure( kernel->simulator()->getModelStructure() );
+				studioApp.mainFrame->output.appendStringToDebug( rdo::format( IDS_MODEL_RESOURCE_LOADING_NAME_OK ) );
+			} catch ( ... ) {
+				studioApp.mainFrame->output.appendStringToDebug( rdo::format( IDS_MODEL_RESOURCE_LOADING_NAME_FAILED ) );
+			}
+			break;
+		}
+		case RDOThread::RT_SIMULATOR_MODEL_STOP_OK           :
+		case RDOThread::RT_SIMULATOR_MODEL_STOP_BY_USER      :
+		case RDOThread::RT_SIMULATOR_MODEL_STOP_RUNTIME_ERROR: {
+			if ( clear_after_stop ) {
+				clear();
+				clear_after_stop = false;
+			}
+			setDrawTrace( true );
+			break;
+		}
+		case RDOThread::RT_SIMULATOR_TRACE_STRING: {
+			msg.lock();
+			getTraceString( *static_cast<std::string*>(msg.param) );
+			msg.unlock();
+			break;
+		}
 	}
-}
-
-void RDOTracer::modelStoppedNotify()
-{
-	if ( clear_after_stop ) {
-		tracer->clear();
-		clear_after_stop = false;
-	}
-	tracer->setDrawTrace( true );
-}
-
-void RDOTracer::traceStringNotify( const std::string& trace_string )
-{
-	tracer->getTraceString( trace_string );
 }
 
 void RDOTracer::setShowMode( const rdosim::ShowMode value )
 {
 	if ( value == SM_NoShow ) {
-		tracer->setDrawTrace( false );
+		setDrawTrace( false );
 	} else {
-		tracer->setDrawTrace( true );
+		setDrawTrace( true );
 	}
 }
