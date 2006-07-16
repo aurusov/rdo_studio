@@ -1,6 +1,6 @@
 #include "rdokernel.h"
 #include <rdostudiothread.h>
-#include <rdorepositoryfile.h>
+#include <rdorepository.h>
 #include <rdosimwin.h>
 
 #include <algorithm>
@@ -41,10 +41,16 @@ void RDOKernel::init()
 
 void RDOKernel::close()
 {
+#ifdef RDO_MT
 	CEvent* thread_destroy = kernel->thread_destroy;
+#endif
+
 	kernel->sendMessage( kernel, RDOThread::RT_THREAD_CLOSE );
+
+#ifdef RDO_MT
 	thread_destroy->Lock();
 	delete thread_destroy;
+#endif
 }
 
 void RDOKernel::start()
@@ -67,6 +73,7 @@ void RDOKernel::proc( RDOMessageInfo& msg )
 			std::list< RDOThread* >::iterator it = threads.begin();
 			while ( it != threads.end() ) {
 				RDOThread* thread = *it;
+#ifdef RDO_MT
 				// Если thread_fun == NULL, то треда для GUI
 				if ( thread->thread_fun ) {
 					CEvent* thread_destroy = thread->thread_destroy;
@@ -79,6 +86,10 @@ void RDOKernel::proc( RDOMessageInfo& msg )
 				} else {
 					it++;
 				}
+#else
+				sendMessage( thread, RDOThread::RT_THREAD_CLOSE );
+				it = threads.begin();
+#endif
 			}
 			threads_mutex.Unlock();
 #ifdef TR_TRACE
@@ -101,6 +112,30 @@ void RDOKernel::proc( RDOMessageInfo& msg )
 		default: break;
 	}
 }
+
+#ifdef RDO_ST
+void RDOKernel::idle()
+{
+{
+	TRACE( "size = %d\n", threads.size() );
+	std::list< RDOThread* >::iterator it = threads.begin();
+	while ( it != threads.end() ) {
+		TRACE( "%s\n", (*it)->thread_name.c_str() );
+		it++;
+	}
+}
+	std::list< RDOThread* >::iterator it = threads.begin();
+	while ( it != threads.end() ) {
+		// it_next используется из-за того, что в RDOThreadRunTime->idle() м.б. удален RDOThreadRunTime и убран из threads
+		std::list< RDOThread* >::iterator it_next = it;
+		it_next++;
+		(*it)->idle();
+		it = it_next;
+	}
+}
+#endif
+// -autorun -autoexit "C:\rdo\rdo_cdrom_1\RAO-cd-rom-1\bin\RAO-explorer\Data\Russian\Models\Barber\Source\Barber.smr"
+
 /*
 RDOThread* RDOKernel::find( const std::string& thread_name ) const
 {
@@ -144,7 +179,11 @@ void RDOKernel::registration( RDOThread* thread )
 	if ( thread && std::find( threads.begin(), threads.end(), thread ) == threads.end() ) {
 		threads.push_back( thread );
 	}
+#ifdef RDO_MT
 	if ( !thread_studio     && thread->thread_name.compare( "RDOThreadStudio" )     == 0 ) thread_studio     = static_cast<RDOThreadStudio*>(thread);
+#else
+	if ( !thread_studio     && thread->thread_name.compare( "RDOThreadStudioGUI" )  == 0 ) thread_studio     = static_cast<RDOThreadStudioGUI*>(thread);
+#endif
 	if ( !thread_simulator  && thread->thread_name.compare( "RDOThreadSimulator" )  == 0 ) thread_simulator  = static_cast<rdosim::RDOThreadSimulator*>(thread);
 	if ( !thread_repository && thread->thread_name.compare( "RDOThreadRepository" ) == 0 ) thread_repository = static_cast<rdoRepository::RDOThreadRepository*>(thread);
 	threads_mutex.Unlock();
@@ -160,7 +199,11 @@ void RDOKernel::unregistered( RDOThread* thread )
 	if ( thread && std::find( threads.begin(), threads.end(), thread ) != threads.end() ) {
 		threads.remove( thread );
 	}
+#ifdef RDO_MT
 	if ( thread_studio     && thread->thread_name.compare( "RDOThreadStudio" )     == 0 ) thread_studio     = NULL;
+#else
+	if ( thread_studio     && thread->thread_name.compare( "RDOThreadStudioGUI" )  == 0 ) thread_studio     = NULL;
+#endif
 	if ( thread_simulator  && thread->thread_name.compare( "RDOThreadSimulator" )  == 0 ) thread_simulator  = NULL;
 	if ( thread_repository && thread->thread_name.compare( "RDOThreadRepository" ) == 0 ) thread_repository = NULL;
 	threads_mutex.Unlock();

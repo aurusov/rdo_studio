@@ -7,7 +7,6 @@
 
 #include "rdostudioframemanager.h"
 #include <rdosimwin.h>
-#include <rdothread.h>
 
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioModel

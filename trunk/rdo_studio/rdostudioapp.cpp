@@ -164,7 +164,9 @@ BOOL RDOStudioApp::InitInstance()
 	RDOKernel::init();
 	new rdosim::RDOThreadSimulator();
 	new rdoRepository::RDOThreadRepository();
+#ifdef RDO_MT
 	new RDOThreadStudio();
+#endif
 
 	tracer = new rdoTracer::RDOTracer();
 	AddDocTemplate( tracer->createDocTemplate() );
@@ -174,6 +176,7 @@ BOOL RDOStudioApp::InitInstance()
 	m_pMainWnd = mainFrame;
 	if ( !mainFrame->LoadFrame( IDR_MAINFRAME ) ) return FALSE;
 
+	// —оздаетс€ после model и tracer'а, т.к. раздаем им сообщени€
 	studioGUI = new RDOThreadStudioGUI();
 
 	loadReopen();
@@ -279,16 +282,25 @@ bool RDOStudioApp::shortToLongPath( const std::string& shortPath, std::string& l
 
 int RDOStudioApp::ExitInstance()
 {
-	if ( model ) {
-		delete model;
-	}
+	// –он€ем кернел и закрываем все треды
+	RDOKernel::close();
+
+#ifdef RDO_MT
+	if ( studioGUI ) { delete studioGUI; studioGUI = NULL; }
+#endif
+	// close model before delete plugins (for PM_MODEL_CLOSE message)
+	// model->closeModel();
+
+	// delete plugins before delete model
+	if ( plugins ) { delete plugins; plugins = NULL; }
+	if ( model   ) { delete model  ; model   = NULL; }
+	if ( tracer  ) { delete tracer ; tracer  = NULL; }
+
 	if ( autoExit ) {
 		CWinApp::ExitInstance();
 		return exitCode;
 	} else {
 		::HtmlHelp( NULL, NULL, HH_CLOSE_ALL, 0 );
-		if ( studioGUI ) { delete studioGUI; studioGUI = NULL; }
-		if ( tracer    ) { delete tracer   ; tracer    = NULL; }
 		WriteProfileString( "general", "lastProject", getOpenLastProject() ? lastProjectName.c_str() : "" );
 		return CWinApp::ExitInstance();
 	}
@@ -805,18 +817,27 @@ void RDOAboutDlg::OnAboutWeb()
 	::ShellExecute( m_hWnd, "open", s, 0, 0, SW_SHOWNORMAL );
 }
 
-void RDOStudioApp::waitManualMessage( CEvent* event )
+void RDOStudioApp::broadcastMessage( RDOThread::RDOTreadMessage message, void* param )
 {
+#ifdef RDO_MT
+	CEvent* event = kernel->studio()->manualMessageFrom( message, param );
 	while ( ::WaitForSingleObject( event->m_hObject, 0 ) == WAIT_TIMEOUT ) {
 		studioGUI->processMessages();
 		mainFrame->UpdateWindow();
 	}
 	delete event;
+#else
+	studioGUI->broadcastMessage( message, param );
+#endif
 }
 
 BOOL RDOStudioApp::OnIdle( LONG lCount )
 {
+#ifdef RDO_MT
 	studioGUI->processMessages();
+#else
+	kernel->idle();
+#endif
 	CWinApp::OnIdle( lCount );
 	return true;
 }

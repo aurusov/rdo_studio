@@ -13,12 +13,26 @@
 #include <afxmt.h>
 
 // --------------------------------------------------------------------
+// Используется для компиляции многотредовой версии РДО
+#define RDO_MT
+#undef RDO_MT // Закомментировать для многотредовой версии РДО, раскомментироват для однотредовой версии
+
+// Используется для трассировки сообщений в файл C:\rdo_kernel_mt.log
+// Может быть использовано и в однотредовой версии
+#define TR_TRACE
+#undef TR_TRACE // Закомментировать для вывода трассировка
+
+// RDO_ST автоматически выставляется для однотредовой версии РДО
+#ifndef RDO_MT
+#define RDO_ST
+#endif
+
+// --------------------------------------------------------------------
 // ---------- RDOThread
 // --------------------------------------------------------------------
+#ifdef RDO_MT
 typedef unsigned int (*RDOThreadFun)( void* param );
-
-#define TR_TRACE
-#undef TR_TRACE
+#endif
 
 class RDOThread
 {
@@ -112,18 +126,27 @@ public:
 	class RDOMessageInfo {
 	friend class RDOThread;
 	friend class RDOKernel;
+#ifdef RDO_MT
 	private:
 		enum Type { post = 0, send, manual } type;
 		CEvent* send_event;
 		CMutex* param_lock;
+#endif
 	public:
 		RDOThread*      from;
 		RDOTreadMessage message;
 		void*           param;
+#ifdef RDO_MT
 		RDOMessageInfo( RDOThread* _from, RDOTreadMessage _message, void* _param, Type _type ): from( _from ), message( _message ), param( _param ), type( _type ), send_event( NULL ), param_lock( NULL ) {}
 		RDOMessageInfo( const RDOMessageInfo& copy ): type( copy.type ), send_event( copy.send_event ), from( copy.from ), message( copy.message ), param( copy.param ), param_lock( copy.param_lock ) {}
 		void lock()   { if ( param_lock ) param_lock->Lock();   }
 		void unlock() { if ( param_lock ) param_lock->Unlock(); }
+#else
+		RDOMessageInfo( RDOThread* _from, RDOTreadMessage _message, void* _param ): from( _from ), message( _message ), param( _param ) {}
+		RDOMessageInfo( const RDOMessageInfo& copy ): from( copy.from ), message( copy.message ), param( copy.param ) {}
+		void lock()   {}
+		void unlock() {}
+#endif
 	};
 
 /*
@@ -147,24 +170,28 @@ public:
 	// SEND: отправка сообщений с ожиданием выполнения
 	void sendMessage( RDOThread* to, RDOTreadMessage message, void* param = NULL );
 
+#ifdef RDO_MT
 	// MANUAL: отправка сообщений с 'ручным' ожиданием выполнения для this
 	CEvent* manualMessageFrom( RDOTreadMessage message, void* param = NULL );
+#endif
 
 	// Рассылка уведомлений всем тредам с учетом их notifies
 	// Важно: должна вызываться только для this (в собственной треде)
 	void broadcastMessage( RDOTreadMessage message, void* param = NULL );
 
 protected:
+#ifdef RDO_MT
 	static unsigned int threadFun( void* param );
 	const RDOThreadFun thread_fun;
-	const std::string  thread_name;
 	CWinThread*        thread_win;
 	CEvent             proc_create;    // Вызывается из процедуры треды, конструктор должен его дождаться
 	CEvent             thread_create;  // Вызывается из конструктора объекта, процедура должна его дождаться
 	CEvent*            thread_destroy; // Вызывается из деструктора объекта
+	bool               broadcast_waiting; // Без мутекса, т.к. меняется только в одной треде
+#endif
+	const std::string  thread_name;
 	bool               was_start;         // Без мутекса, т.к. меняется только в одной треде
 	bool               was_close;
-	bool               broadcast_waiting; // Без мутекса, т.к. меняется только в одной треде
 
 	std::vector< RDOTreadMessage > notifies; // Список сообщений, на которые реагирует треда
 	                                         // Если он пуст, то обрабатываются все сообщения.
@@ -177,25 +204,35 @@ protected:
 	std::list< RDOMessageInfo > messages;
 	CMutex                      messages_mutex;
 
-	// Есть два ограничения на использование тред (с thread-safety всё в порядке, imho):
+	// Есть два ограничения на использование тред в RDO_MT (с thread-safety всё в порядке, imho):
 	// 1. Каждая треда имеет доступ к стеку сообщений (messages) любой другой треды, чтобы положить туда новое сообщение.
 	// 2. Каждая треда имеет доступ к списку уведомлений (notifies), чтобы понять, а надо ли посылать сообщение треде.
 	// Второе еще можно сделать через дублирование: map< key = thread*, value = notifies > в каджой треде,
 	// а вот как добавить сообщение - не совсем понрятно.
 
 	// Создавать можно только через потомков
+#ifdef RDO_MT
 	RDOThread( const std::string& _thread_name, RDOThreadFun _thread_fun = RDOThread::threadFun );
+#else
+	RDOThread( const std::string& _thread_name );
+#endif
 	// Удаляет объкты функция треды. kernel удаляется через статический метод
 	virtual ~RDOThread();                                                                          
 
 	// Надо обязательно вызвать из конструктора объекта, чтобы настроить правильно this для виртуальных функций,
 	void after_constructor();
+//	// Надо обязательно вызвать из деструктора объекта, чтобы правильно остановить треду в режиме RDO_ST
+//	void before_destructor();
 
 	virtual void proc( RDOMessageInfo& msg ) = 0;
 	virtual void idle();
 	virtual void start();
 	virtual void stop();
-	virtual bool processMessages();
+#ifdef RDO_MT
+	bool processMessages();
+#else
+	void processMessages( RDOMessageInfo& msg );
+#endif
 
 #ifdef TR_TRACE
 	static void trace( const std::string& str );

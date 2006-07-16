@@ -776,6 +776,9 @@ void RDORuntime::rdoDelay(double fromTime, double toTime)
 	config.realTimeDelay = (toTime - fromTime)/config.showRate * 3600 * 1000;
 
 //	config.frame = NULL;
+	for ( int i = 0; i < config.frames.size(); i++ ) {
+		delete config.frames.at(i);
+	}
 	config.frames.clear();
 
 	if(config.showAnimation == rdosim::SM_Animation)

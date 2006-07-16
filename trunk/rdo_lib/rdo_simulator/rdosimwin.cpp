@@ -151,7 +151,11 @@ void RDOThreadRunTime::start()
 
 void RDOThreadRunTime::idle()
 {
+#ifdef RDO_MT
 	if ( broadcast_waiting || !was_start || was_close ) {
+#else
+	if ( !was_start || was_close ) {
+#endif
 		RDOThread::idle();
 		return;
 	}
@@ -263,8 +267,10 @@ void RDOThreadSimulator::proc( RDOMessageInfo& msg )
 				}
 				// Треда удаляется сама, надо удалить её событие
 				// Делается это без мутексов, т.к. thread_destroy не должна использоваться в thread_runtime пока обрабатывается RT_THREAD_STOP_AFTER
+#ifdef RDO_MT
 				delete thread_runtime->thread_destroy;
 				thread_runtime->thread_destroy = NULL;
+#endif
 				thread_runtime = NULL;
 			}
 			break;
@@ -470,10 +476,16 @@ void RDOThreadSimulator::terminateModel()
 		notifies.erase( std::find(notifies.begin(), notifies.end(), RT_THREAD_STOP_AFTER) );
 		notifies_mutex.Unlock();
 
+#ifdef RDO_MT
 		CEvent* thread_destroy = thread_runtime->thread_destroy;
+#endif
+
 		sendMessage( thread_runtime, RDOThread::RT_THREAD_CLOSE );
+
+#ifdef RDO_MT
 		thread_destroy->Lock();
 		delete thread_destroy;
+#endif
 		thread_runtime = NULL;
 
 		// Опять начали реагировать на остановку run-time-треды, чтобы обнаружить нормальное завершение модели (или по run-time-error)

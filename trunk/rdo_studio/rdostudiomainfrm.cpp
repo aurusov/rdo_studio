@@ -3,7 +3,6 @@
 #include "rdostudioapp.h"
 #include "rdostudiomodel.h"
 #include "rdostudiooptions.h"
-#include "rdostudioplugins.h"
 #include "rdo_tracer/rdotracer.h"
 #include "htmlhelp.h"
 #include "resource.h"
@@ -214,6 +213,7 @@ void RDOStudioMainFrame::OnDestroy()
 	style_chart.save();
 
 	::OleUninitialize();
+/*
 	// close model before delete plugins (for PM_MODEL_CLOSE message)
 	model->closeModel();
 
@@ -223,7 +223,7 @@ void RDOStudioMainFrame::OnDestroy()
 
 	// Роняем кернел и закрываем все треды
 	RDOKernel::close();
-
+*/
 	CMDIFrameWnd::OnDestroy();
 }
 

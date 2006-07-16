@@ -19,6 +19,7 @@
 #include <rdorepository.h>
 #include <rdobinarystream.h>
 #include <rdoplugin.h>
+#include <rdothread.h>
 
 using namespace rdoEditor;
 using namespace rdosim;
@@ -253,7 +254,7 @@ void RDOStudioModel::newModel( const bool _useTemplate )
 	output->clearDebug();
 	output->clearResults();
 	output->clearFind();
-	studioApp.waitManualMessage( kernel->studio()->manualMessageFrom( RDOThread::RT_STUDIO_MODEL_NEW ) );
+	studioApp.broadcastMessage( RDOThread::RT_STUDIO_MODEL_NEW );
 	output->updateLogConnection();
 }
 
@@ -269,7 +270,7 @@ bool RDOStudioModel::openModel( const std::string& modelName ) const
 	const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->UpdateWindow();
 	openError   = false;
 	modelClosed = false;
-	studioApp.waitManualMessage( kernel->studio()->manualMessageFrom( RDOThread::RT_STUDIO_MODEL_OPEN, const_cast<std::string*>(&modelName) ) );
+	studioApp.broadcastMessage( RDOThread::RT_STUDIO_MODEL_OPEN, const_cast<std::string*>(&modelName) );
 	bool flag = true;//kernel->repository()->openModel( modelName );
 	if ( flag && !openError ) {
 		rdo::binarystream stream;
@@ -289,14 +290,14 @@ bool RDOStudioModel::openModel( const std::string& modelName ) const
 bool RDOStudioModel::saveModel() const
 {
 	bool res;
-	studioApp.waitManualMessage( kernel->studio()->manualMessageFrom( RDOThread::RT_STUDIO_MODEL_SAVE, &res ) );
+	studioApp.broadcastMessage( RDOThread::RT_STUDIO_MODEL_SAVE, &res );
 	return res;
 }
 
 void RDOStudioModel::saveAsModel() const
 {
 	saveAsFlag = true;
-	studioApp.waitManualMessage( kernel->studio()->manualMessageFrom( RDOThread::RT_STUDIO_MODEL_SAVE_AS ) );
+	studioApp.broadcastMessage( RDOThread::RT_STUDIO_MODEL_SAVE_AS );
 	saveAsFlag = false;;
 }
 
@@ -310,7 +311,7 @@ void RDOStudioModel::closeModel() const
 		output->clearResults();
 		output->clearFind();
 	}
-	studioApp.waitManualMessage( kernel->studio()->manualMessageFrom( RDOThread::RT_STUDIO_MODEL_CLOSE ) );
+	studioApp.broadcastMessage( RDOThread::RT_STUDIO_MODEL_CLOSE );
 }
 
 void RDOStudioModel::buildModel() const
@@ -323,7 +324,7 @@ void RDOStudioModel::buildModel() const
 		output->showBuild();
 		output->appendStringToBuild( rdo::format( IDS_MODEL_BUILDING_BEGIN ) );
 		const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->UpdateWindow();
-		studioApp.waitManualMessage( kernel->studio()->manualMessageFrom( RDOThread::RT_STUDIO_MODEL_BUILD ) );
+		studioApp.broadcastMessage( RDOThread::RT_STUDIO_MODEL_BUILD );
 	}
 }
 
@@ -337,14 +338,14 @@ void RDOStudioModel::runModel() const
 		output->showBuild();
 		output->appendStringToBuild( rdo::format( IDS_MODEL_BUILDING_BEGIN ) );
 		const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->UpdateWindow();
-		studioApp.waitManualMessage( kernel->studio()->manualMessageFrom( RDOThread::RT_STUDIO_MODEL_RUN ) );
+		studioApp.broadcastMessage( RDOThread::RT_STUDIO_MODEL_RUN );
 	}
 }
 
 void RDOStudioModel::stopModel() const
 {
 	if ( hasModel() && isRunning() ) {
-		studioApp.waitManualMessage( kernel->studio()->manualMessageFrom( RDOThread::RT_STUDIO_MODEL_STOP ) );
+		studioApp.broadcastMessage( RDOThread::RT_STUDIO_MODEL_STOP );
 	}
 }
 

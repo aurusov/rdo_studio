@@ -7,6 +7,7 @@
 
 #include <rdothread.h>
 
+#ifdef RDO_MT
 // --------------------------------------------------------------------
 // ---------- RDOThreadStudio
 // --------------------------------------------------------------------
@@ -18,6 +19,7 @@ protected:
 	virtual ~RDOThreadStudio() {}; // Чтобы нельзя было удалить через delete
 	virtual void proc( RDOMessageInfo& msg );
 };
+#endif
 
 // --------------------------------------------------------------------
 // ---------- RDOThreadStudioGUI

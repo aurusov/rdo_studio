@@ -9,12 +9,12 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+#ifdef RDO_MT
 // --------------------------------------------------------------------
 // ---------- RDOThreadStudio
 // --------------------------------------------------------------------
 RDOThreadStudio::RDOThreadStudio(): RDOThread( "RDOThreadStudio" )
 {
-//	notifies.push_back( RT_TEST2 );
 	after_constructor();
 }
 
@@ -33,19 +33,18 @@ void RDOThreadStudio::proc( RDOMessageInfo& msg )
 			broadcastMessage( msg.message, msg.param );
 			break;
 		}
-		case RT_THREAD_REGISTERED: {
-			break;
-		}
-		case RT_TEST2: {
-			break;
-		}
 	}
 }
+#endif
 
 // --------------------------------------------------------------------
 // ---------- RDOThreadStudioGUI
 // --------------------------------------------------------------------
+#ifdef RDO_MT
 RDOThreadStudioGUI::RDOThreadStudioGUI(): RDOThread( "RDOThreadStudioGUI", NULL )
+#else
+RDOThreadStudioGUI::RDOThreadStudioGUI(): RDOThread( "RDOThreadStudioGUI" )
+#endif
 {
 	// Для модели
 	notifies.push_back( RT_REPOSITORY_MODEL_NEW );

@@ -10,6 +10,7 @@
 #endif
 
 #include <rdolink.h>
+#include <rdothread.h>
 #include "resource.h"
 
 // ----------------------------------------------------------------------------
@@ -29,7 +30,6 @@ friend class RDOStudioCommandLineInfo;
 
 private:
 	RDOThreadStudioGUI* studioGUI;
-	void waitManualMessage( CEvent* event );
 
 	bool initInstance;
 
@@ -58,6 +58,8 @@ public:
 	RDOStudioApp();
 
 	RDOStudioMainFrame* mainFrame;
+
+	void broadcastMessage( RDOThread::RDOTreadMessage message, void* param = NULL );
 
 	void insertReopenItem( const std::string& item );
 

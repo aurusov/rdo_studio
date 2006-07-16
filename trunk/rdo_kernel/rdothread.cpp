@@ -23,27 +23,34 @@ void RDOThread::trace( const std::string& str )
 // --------------------------------------------------------------------
 // ---------- RDOThread
 // --------------------------------------------------------------------
+#ifdef RDO_MT
 RDOThread::RDOThread( const std::string& _thread_name, RDOThreadFun _thread_fun ):
 	// Если thread_fun == NULL, то треда для GUI
 	thread_fun( _thread_fun ),
-	thread_name( _thread_name ),
 	thread_win( NULL ),
 	thread_destroy( new CEvent() ), // thread_destroy удаляется после деструктора объекта
+	broadcast_waiting( false ),
+#else
+RDOThread::RDOThread( const std::string& _thread_name ):
+#endif
+	thread_name( _thread_name ),
 	was_start( false ),
-	was_close( false ),
-	broadcast_waiting( false )
+	was_close( false )
 {
 #ifdef TR_TRACE
 	trace( thread_name + "::" + thread_name );
 #endif
 	// Чтобы треда не получала ниодного сообщения. RT_THREAD_CLOSE обрабатывается автоматически
 	notifies.push_back( RT_THREAD_CLOSE );
+#ifdef RDO_MT
 	// Если thread_fun == NULL, то треда для GUI
 	if ( thread_fun ) {
+		// THREAD_PRIORITY_NORMAL
 		// THREAD_PRIORITY_HIGHEST
 		// THREAD_PRIORITY_TIME_CRITICAL
-		thread_win = AfxBeginThread( thread_fun, this, 0 );
+		thread_win = AfxBeginThread( thread_fun, this, THREAD_PRIORITY_NORMAL );
 	}
+#endif
 }
 
 RDOThread::~RDOThread()
@@ -51,6 +58,8 @@ RDOThread::~RDOThread()
 #ifdef TR_TRACE
 	trace( thread_name + "::~" + thread_name );
 #endif
+
+#ifdef RDO_MT
 	// Если thread_fun == NULL, то треда для GUI
 	if ( thread_fun ) {
 		if ( thread_destroy ) {
@@ -62,18 +71,33 @@ RDOThread::~RDOThread()
 			thread_destroy = NULL;
 		}
 	}
+#endif
 }
 
 void RDOThread::after_constructor()
 {
 	notifies.push_back( RT_THREAD_REGISTERED );
+#ifdef RDO_MT
 	// Если thread_fun == NULL, то треда для GUI
 	if ( thread_fun ) {
 		proc_create.Lock();
 		thread_create.SetEvent();
 	}
+#else
+	if ( kernel && kernel != this ) sendMessage( kernel, RT_THREAD_CONNECTION, this );
+	start();
+	was_start = true;
+#endif
 }
-
+/*
+void RDOThread::before_destructor()
+{
+#ifdef RDO_ST
+	stop();
+#endif
+}
+*/
+#ifdef RDO_MT
 unsigned int RDOThread::threadFun( void* param )
 {
 	RDOThread* thread = static_cast<RDOThread*>(param);
@@ -92,7 +116,9 @@ unsigned int RDOThread::threadFun( void* param )
 
 	return 0;
 }
+#endif
 
+#ifdef RDO_MT
 bool RDOThread::processMessages()
 {
 	messages_mutex.Lock();
@@ -130,9 +156,26 @@ bool RDOThread::processMessages()
 	}
 	return true;
 }
+#else
+void RDOThread::processMessages( RDOMessageInfo& msg )
+{
+#ifdef TR_TRACE
+		RDOThread::trace( "---------------- " + messageToString(msg.message) + ": " + (msg.from ? msg.from->thread_name : "NULL") + " -> " + thread_name );
+#endif
+	proc( msg );
+	if ( msg.message == RT_THREAD_CLOSE ) {
+		was_close = true;
+		if ( this != kernel ) sendMessage( kernel, RT_THREAD_DISCONNECTION, this );
+		stop();
+		delete this;
+		return;
+	}
+}
+#endif
 
 void RDOThread::sendMessage( RDOThread* to, RDOTreadMessage message, void* param )
 {
+#ifdef RDO_MT
 	RDOMessageInfo msg( this, message, param, RDOThread::RDOMessageInfo::send );
 	CEvent event;
 	msg.send_event = &event;
@@ -144,8 +187,12 @@ void RDOThread::sendMessage( RDOThread* to, RDOTreadMessage message, void* param
 	while ( ::WaitForSingleObject( event.m_hObject, 0 ) == WAIT_TIMEOUT ) {
 		processMessages();
 	}
+#else
+	to->processMessages( RDOMessageInfo( this, message, param ) );
+#endif
 }
 
+#ifdef RDO_MT
 CEvent* RDOThread::manualMessageFrom( RDOTreadMessage message, void* param )
 {
 	RDOMessageInfo msg( this, message, param, RDOThread::RDOMessageInfo::manual );
@@ -157,9 +204,11 @@ CEvent* RDOThread::manualMessageFrom( RDOTreadMessage message, void* param )
 
 	return msg.send_event;
 }
+#endif
 
 void RDOThread::broadcastMessage( RDOTreadMessage message, void* param )
 {
+#ifdef RDO_MT
 	kernel->threads_mutex.Lock();
 	std::vector< CEvent* > events;
 	std::list< RDOThread* >::iterator it = kernel->threads.begin();
@@ -195,11 +244,24 @@ void RDOThread::broadcastMessage( RDOTreadMessage message, void* param )
 		}
 		delete[] threads_handles;
 	}
+#else
+	RDOMessageInfo msg( this, message, param );
+	std::list< RDOThread* >::iterator it = kernel->threads.begin();
+	while ( it != kernel->threads.end() ) {
+		RDOThread* thread = *it;
+		if ( thread != this && (thread->notifies.empty() || std::find( thread->notifies.begin(), thread->notifies.end(), message ) != thread->notifies.end()) ) {
+			thread->processMessages( msg );
+		}
+		it++;
+	}
+#endif
 }
 
 void RDOThread::idle()
 {
-	::Sleep( 1 );
+#ifdef RDO_MT
+//	::Sleep( 0 );
+#endif
 }
 
 void RDOThread::start()
