@@ -69,14 +69,15 @@ void RDOKernel::proc( RDOMessageInfo& msg )
 #ifdef TR_TRACE
 			trace( thread_name + " stop begin" );
 #endif
+#ifdef RDO_MT
 			threads_mutex.Lock();
+#endif
 			std::list< RDOThread* >::iterator it = threads.begin();
 			while ( it != threads.end() ) {
 				RDOThread* thread = *it;
 #ifdef RDO_MT
-				// Если thread_fun == NULL, то треда для GUI
-				if ( thread->thread_fun ) {
-					CEvent* thread_destroy = thread->thread_destroy;
+				if ( !thread->isGUI() ) {
+					CEvent* thread_destroy = thread->getDestroyEvent();
 					threads_mutex.Unlock();
 					sendMessage( thread, RDOThread::RT_THREAD_CLOSE );
 					thread_destroy->Lock();
@@ -91,7 +92,9 @@ void RDOKernel::proc( RDOMessageInfo& msg )
 				it = threads.begin();
 #endif
 			}
+#ifdef RDO_MT
 			threads_mutex.Unlock();
+#endif
 #ifdef TR_TRACE
 			trace ( thread_name + " stop end" );
 #endif
@@ -116,14 +119,6 @@ void RDOKernel::proc( RDOMessageInfo& msg )
 #ifdef RDO_ST
 void RDOKernel::idle()
 {
-{
-	TRACE( "size = %d\n", threads.size() );
-	std::list< RDOThread* >::iterator it = threads.begin();
-	while ( it != threads.end() ) {
-		TRACE( "%s\n", (*it)->thread_name.c_str() );
-		it++;
-	}
-}
 	std::list< RDOThread* >::iterator it = threads.begin();
 	while ( it != threads.end() ) {
 		// it_next используется из-за того, что в RDOThreadRunTime->idle() м.б. удален RDOThreadRunTime и убран из threads
@@ -175,40 +170,50 @@ void RDOKernel::sendMessageToThreadByNameFrom( RDOThread* from, const std::strin
 */
 void RDOKernel::registration( RDOThread* thread )
 {
+#ifdef RDO_MT
 	threads_mutex.Lock();
+#endif
 	if ( thread && std::find( threads.begin(), threads.end(), thread ) == threads.end() ) {
 		threads.push_back( thread );
 	}
 #ifdef RDO_MT
-	if ( !thread_studio     && thread->thread_name.compare( "RDOThreadStudio" )     == 0 ) thread_studio     = static_cast<RDOThreadStudio*>(thread);
+	if ( !thread_studio     && thread->getName() == "RDOThreadStudio"     ) thread_studio     = static_cast<RDOThreadStudio*>(thread);
 #else
-	if ( !thread_studio     && thread->thread_name.compare( "RDOThreadStudioGUI" )  == 0 ) thread_studio     = static_cast<RDOThreadStudioGUI*>(thread);
+	if ( !thread_studio     && thread->getName() == "RDOThreadStudioGUI"  ) thread_studio     = static_cast<RDOThreadStudioGUI*>(thread);
 #endif
-	if ( !thread_simulator  && thread->thread_name.compare( "RDOThreadSimulator" )  == 0 ) thread_simulator  = static_cast<rdosim::RDOThreadSimulator*>(thread);
-	if ( !thread_repository && thread->thread_name.compare( "RDOThreadRepository" ) == 0 ) thread_repository = static_cast<rdoRepository::RDOThreadRepository*>(thread);
+	if ( !thread_simulator  && thread->getName() == "RDOThreadSimulator"  ) thread_simulator  = static_cast<rdosim::RDOThreadSimulator*>(thread);
+	if ( !thread_repository && thread->getName() == "RDOThreadRepository" ) thread_repository = static_cast<rdoRepository::RDOThreadRepository*>(thread);
+#ifdef RDO_MT
 	threads_mutex.Unlock();
+#endif
+
 #ifdef TR_TRACE
-	trace( "Kernel INFO: " + thread->thread_name + " REGISTERED" );
+	trace( "Kernel INFO: " + thread->getName() + " REGISTERED" );
 #endif
 	broadcastMessage( RT_THREAD_REGISTERED, thread );
 }
 
 void RDOKernel::unregistered( RDOThread* thread )
 {
+#ifdef RDO_MT
 	threads_mutex.Lock();
+#endif
 	if ( thread && std::find( threads.begin(), threads.end(), thread ) != threads.end() ) {
 		threads.remove( thread );
 	}
 #ifdef RDO_MT
-	if ( thread_studio     && thread->thread_name.compare( "RDOThreadStudio" )     == 0 ) thread_studio     = NULL;
+	if ( thread_studio     && thread->getName() == "RDOThreadStudio"     ) thread_studio     = NULL;
 #else
-	if ( thread_studio     && thread->thread_name.compare( "RDOThreadStudioGUI" )  == 0 ) thread_studio     = NULL;
+	if ( thread_studio     && thread->getName() == "RDOThreadStudioGUI"  ) thread_studio     = NULL;
 #endif
-	if ( thread_simulator  && thread->thread_name.compare( "RDOThreadSimulator" )  == 0 ) thread_simulator  = NULL;
-	if ( thread_repository && thread->thread_name.compare( "RDOThreadRepository" ) == 0 ) thread_repository = NULL;
+	if ( thread_simulator  && thread->getName() == "RDOThreadSimulator"  ) thread_simulator  = NULL;
+	if ( thread_repository && thread->getName() == "RDOThreadRepository" ) thread_repository = NULL;
+#ifdef RDO_MT
 	threads_mutex.Unlock();
+#endif
+
 #ifdef TR_TRACE
-	trace( "Kernel INFO: " + thread->thread_name + " UNREGISTERED" );
+	trace( "Kernel INFO: " + thread->getName() + " UNREGISTERED" );
 #endif
 	broadcastMessage( RT_THREAD_UNREGISTERED, thread );
 }

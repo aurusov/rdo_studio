@@ -154,6 +154,7 @@ int RDOPluginMFCLogCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 
 void RDOPluginMFCLogCtrl::OnSize( UINT nType, int cx, int cy )
 {
+	TRACE( "S. %d, %d, %d, %d\n", ::GetCurrentProcess(), ::GetCurrentProcessId(), ::GetCurrentThread(), ::GetCurrentThreadId() );
 		//In our case OnSize() invalidates all needed rectangles.
 		//Default handler invalidates all client area.
 //		CWnd::OnSize(  nType, cx, cy );
@@ -280,6 +281,8 @@ void RDOPluginMFCLogCtrl::OnSize( UINT nType, int cx, int cy )
 
 void RDOPluginMFCLogCtrl::OnPaint()
 {
+	TRACE( "P. %d, %d, %d, %d\n", ::GetCurrentProcess(), ::GetCurrentProcessId(), ::GetCurrentThread(), ::GetCurrentThreadId() );
+
 	mutex.Lock();
 
 	PAINTSTRUCT ps;
@@ -288,7 +291,7 @@ void RDOPluginMFCLogCtrl::OnPaint()
 	if ( drawLog ) {
 
 		if ( !IsRectEmpty( &(ps.rcPaint) ) ) {
-		
+
 			int firstLine = max ( 0, yPos + ps.rcPaint.top / lineHeight );
 			int mul = ps.rcPaint.bottom / lineHeight;
 			if ( ps.rcPaint.bottom > mul * lineHeight ) mul++;
@@ -337,7 +340,7 @@ void RDOPluginMFCLogCtrl::OnPaint()
 		::SetBkColor( hdc, ::GetSysColor( COLOR_WINDOW ) );
 		::ExtTextOut( hdc, 0, 0, ETO_OPAQUE, newClientRect, NULL, 0, NULL );
 	}
-	
+
 	::EndPaint( hwnd, &ps );
 
 	mutex.Unlock();
@@ -757,6 +760,8 @@ bool RDOPluginMFCLogCtrl::makeLineVisible( const int index )
 void RDOPluginMFCLogCtrl::addStringToLog( std::string logStr )
 {
 	if ( hwnd ) {
+
+		TRACE( "8. %d, %d, %d, %d\n", ::GetCurrentProcess(), ::GetCurrentProcessId(), ::GetCurrentThread(), ::GetCurrentThreadId() );
 
 		mutex.Lock();
 

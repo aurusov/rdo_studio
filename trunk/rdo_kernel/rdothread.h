@@ -13,19 +13,28 @@
 #include <afxmt.h>
 
 // --------------------------------------------------------------------
-// Используется для компиляции многотредовой версии РДО
-#define RDO_MT
-#undef RDO_MT // Закомментировать для многотредовой версии РДО, раскомментироват для однотредовой версии
+// Используется для компиляции (одно/много)-тредовой версии РДО
+// Если определена в настройках
+#if defined(RDO_SP)
+	#undef RDO_MT
+// Если определена в настройках
+#elif defined(RDO_MT)
+	#undef RDO_SP
+// Если нет определения, создадим его сами, использую комментарий перед #undef RDO_MT
+#else
+	#define RDO_MT
+//	#undef RDO_MT // Скомпилить однотредувую версию РДО. Если закомментировать, то получится многотредовая
+#endif
+
+// RDO_ST автоматически выставляется для однотредовой версии РДО
+#ifndef RDO_MT
+	#define RDO_ST
+#endif
 
 // Используется для трассировки сообщений в файл C:\rdo_kernel_mt.log
 // Может быть использовано и в однотредовой версии
 #define TR_TRACE
 #undef TR_TRACE // Закомментировать для вывода трассировка
-
-// RDO_ST автоматически выставляется для однотредовой версии РДО
-#ifndef RDO_MT
-#define RDO_ST
-#endif
 
 // --------------------------------------------------------------------
 // ---------- RDOThread
@@ -36,8 +45,9 @@ typedef unsigned int (*RDOThreadFun)( void* param );
 
 class RDOThread
 {
+#ifdef RDO_ST
 friend class RDOKernel;
-
+#endif
 public:
 	enum RDOTreadMessage {
 		RT_THREAD_CLOSE = 1,
@@ -149,6 +159,12 @@ public:
 #endif
 	};
 
+	std::string getName() const         { return thread_name;               }
+#ifdef RDO_MT
+	bool        isGUI() const           { return thread_fun ? false : true; }
+	CEvent*     getDestroyEvent() const { return thread_destroy;            }
+#endif
+
 /*
 	class RDOTreadMethod {
 	public:
@@ -188,16 +204,17 @@ protected:
 	CEvent             thread_create;  // Вызывается из конструктора объекта, процедура должна его дождаться
 	CEvent*            thread_destroy; // Вызывается из деструктора объекта
 	bool               broadcast_waiting; // Без мутекса, т.к. меняется только в одной треде
-#endif
-	const std::string  thread_name;
 	bool               was_start;         // Без мутекса, т.к. меняется только в одной треде
 	bool               was_close;
+#endif
+	const std::string  thread_name;
 
 	std::vector< RDOTreadMessage > notifies; // Список сообщений, на которые реагирует треда
 	                                         // Если он пуст, то обрабатываются все сообщения.
 											 // RT_THREAD_CLOSE обрабатывается всегда в RDOThread::proc()
 	                                         // Если сообщение посылается не из kernel'а, а напрямую, то
 											 // то оно не будет проходить через этот фильтр, а сразу попадет в очередь.
+#ifdef RDO_MT
 	CMutex                         notifies_mutex;
 
 	// Очередь сообщений
@@ -209,6 +226,7 @@ protected:
 	// 2. Каждая треда имеет доступ к списку уведомлений (notifies), чтобы понять, а надо ли посылать сообщение треде.
 	// Второе еще можно сделать через дублирование: map< key = thread*, value = notifies > в каджой треде,
 	// а вот как добавить сообщение - не совсем понрятно.
+#endif
 
 	// Создавать можно только через потомков
 #ifdef RDO_MT

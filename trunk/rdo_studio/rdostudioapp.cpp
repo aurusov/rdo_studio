@@ -722,6 +722,7 @@ void RDOStudioApp::autoClose( const int _exitCode )
 
 BOOL RDOStudioApp::PreTranslateMessage( MSG* pMsg ) 
 {
+/*
 	if ( pMsg->message == PLUGIN_MUSTEXIT_MESSAGE ) {
 		plugins->stopPlugin( reinterpret_cast<HMODULE>(pMsg->wParam) );
 	} else if ( pMsg->message == PLUGIN_STARTMODEL_MESSAGE ) {
@@ -734,6 +735,7 @@ BOOL RDOStudioApp::PreTranslateMessage( MSG* pMsg )
 			mainFrame->SendMessage( WM_CLOSE );
 		}
 	}
+*/
 	return CWinApp::PreTranslateMessage(pMsg);
 }
 
@@ -835,9 +837,15 @@ BOOL RDOStudioApp::OnIdle( LONG lCount )
 {
 #ifdef RDO_MT
 	studioGUI->processMessages();
-#else
-	kernel->idle();
-#endif
 	CWinApp::OnIdle( lCount );
 	return true;
+#else
+	kernel->idle();
+	if ( lCount > 10000 ) {
+		return CWinApp::OnIdle( lCount );
+	} else {
+		CWinApp::OnIdle( lCount );
+		return true;
+	}
+#endif
 }

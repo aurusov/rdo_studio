@@ -485,20 +485,20 @@ RDOValue RDOSelectResourceByTypeCalc::calcValue( RDORuntime* sim ) const
 					return 1;
 				}
 				case RDOPATSelectType::st_first: {
-					if ( std::find( sim->allResourcesChoiced.begin(), sim->allResourcesChoiced.end(), res_number ) != sim->allResourcesChoiced.end() ) {
-						continue;
-					}
+//					if ( std::find( sim->allResourcesChoiced.begin(), sim->allResourcesChoiced.end(), res_number ) != sim->allResourcesChoiced.end() ) {
+//						continue;
+//					}
 					sim->selectRelResource( relNumb, res_number );
 					if ( choice && !choice->calcValueBase( sim ) ) {
 						continue;
 					}
-					sim->allResourcesChoiced.push_back( res_number );
+//					sim->allResourcesChoiced.push_back( res_number );
 					return 1;
 				}
 				case RDOPATSelectType::st_with_min: {
-					if ( std::find( sim->allResourcesChoiced.begin(), sim->allResourcesChoiced.end(), res_number ) != sim->allResourcesChoiced.end() ) {
-						continue;
-					}
+//					if ( std::find( sim->allResourcesChoiced.begin(), sim->allResourcesChoiced.end(), res_number ) != sim->allResourcesChoiced.end() ) {
+//						continue;
+//					}
 					sim->selectRelResource( relNumb, res_number );
 					if ( choice && !choice->calcValueBase( sim ) ) {
 						continue;
@@ -511,9 +511,9 @@ RDOValue RDOSelectResourceByTypeCalc::calcValue( RDORuntime* sim ) const
 					break;
 				}
 				case RDOPATSelectType::st_with_max: {
-					if ( std::find( sim->allResourcesChoiced.begin(), sim->allResourcesChoiced.end(), res_number ) != sim->allResourcesChoiced.end() ) {
-						continue;
-					}
+//					if ( std::find( sim->allResourcesChoiced.begin(), sim->allResourcesChoiced.end(), res_number ) != sim->allResourcesChoiced.end() ) {
+//						continue;
+//					}
 					sim->selectRelResource( relNumb, res_number );
 					if ( choice && !choice->calcValueBase( sim ) ) {
 						continue;
@@ -531,7 +531,7 @@ RDOValue RDOSelectResourceByTypeCalc::calcValue( RDORuntime* sim ) const
 
 	if ( nResMinMax != -1 ) {
 		sim->selectRelResource( relNumb, nResMinMax );
-		sim->allResourcesChoiced.push_back( nResMinMax );
+//		sim->allResourcesChoiced.push_back( nResMinMax );
 		return 1;
 	}
 

@@ -26,7 +26,7 @@ class RDOThreadRepository;
 
 class RDOKernel: public RDOThread
 {
-friend class RDOThread;
+friend void RDOThread::broadcastMessage( RDOTreadMessage message, void* param );
 #ifdef RDO_ST
 friend class RDOStudioApp;
 #endif
@@ -36,8 +36,11 @@ protected:
 
 	virtual void proc( RDOMessageInfo& msg );
 	virtual void start();
+
 	std::list< RDOThread* >     threads;
+#ifdef RDO_MT
 	mutable CMutex              threads_mutex;
+#endif
 //	std::list< RDOTreadMethod > methods;
 //	CMutex                      methods_mutex;
 #ifdef RDO_MT

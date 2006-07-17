@@ -37,7 +37,6 @@ RDOPATPattern::RDOPATPattern( const std::string* const _name, const bool _trace 
 	trace( _trace ),
 	useCommonChoice( false )
 {
-	parser->tmp_rss.clear();
 	if ( parser->findPattern( name ) ) {
 		parser->error( "Pattern with name: " + *name + " already exist" );
 	}
@@ -76,6 +75,7 @@ RDOPATPattern::ConvertStatus RDOPATPattern::StrToStatus( const std::string& valu
 
 void RDOPATPattern::res_insert( RDORelevantResource* res )
 {
+/*
 	if ( res->isDirect() ) {
 		const RDORSSResource* rss = static_cast<RDORelevantResourceDirect*>(res)->getResource();
 		parser->tmp_rss.push_back( rss );
@@ -99,6 +99,7 @@ void RDOPATPattern::res_insert( RDORelevantResource* res )
 			}
 		}
 	}
+*/
 	relRes.push_back( res );
 }
 

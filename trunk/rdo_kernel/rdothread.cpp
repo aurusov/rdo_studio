@@ -25,17 +25,17 @@ void RDOThread::trace( const std::string& str )
 // --------------------------------------------------------------------
 #ifdef RDO_MT
 RDOThread::RDOThread( const std::string& _thread_name, RDOThreadFun _thread_fun ):
-	// Если thread_fun == NULL, то треда для GUI
+	thread_name( _thread_name ),
 	thread_fun( _thread_fun ),
 	thread_win( NULL ),
 	thread_destroy( new CEvent() ), // thread_destroy удаляется после деструктора объекта
 	broadcast_waiting( false ),
-#else
-RDOThread::RDOThread( const std::string& _thread_name ):
-#endif
-	thread_name( _thread_name ),
 	was_start( false ),
 	was_close( false )
+#else
+RDOThread::RDOThread( const std::string& _thread_name ):
+	thread_name( _thread_name )
+#endif
 {
 #ifdef TR_TRACE
 	trace( thread_name + "::" + thread_name );
@@ -43,8 +43,7 @@ RDOThread::RDOThread( const std::string& _thread_name ):
 	// Чтобы треда не получала ниодного сообщения. RT_THREAD_CLOSE обрабатывается автоматически
 	notifies.push_back( RT_THREAD_CLOSE );
 #ifdef RDO_MT
-	// Если thread_fun == NULL, то треда для GUI
-	if ( thread_fun ) {
+	if ( !isGUI() ) {
 		// THREAD_PRIORITY_NORMAL
 		// THREAD_PRIORITY_HIGHEST
 		// THREAD_PRIORITY_TIME_CRITICAL
@@ -60,8 +59,7 @@ RDOThread::~RDOThread()
 #endif
 
 #ifdef RDO_MT
-	// Если thread_fun == NULL, то треда для GUI
-	if ( thread_fun ) {
+	if ( !isGUI() ) {
 		if ( thread_destroy ) {
 			thread_destroy->SetEvent();
 		}
@@ -78,15 +76,13 @@ void RDOThread::after_constructor()
 {
 	notifies.push_back( RT_THREAD_REGISTERED );
 #ifdef RDO_MT
-	// Если thread_fun == NULL, то треда для GUI
-	if ( thread_fun ) {
+	if ( !isGUI() ) {
 		proc_create.Lock();
 		thread_create.SetEvent();
 	}
 #else
 	if ( kernel && kernel != this ) sendMessage( kernel, RT_THREAD_CONNECTION, this );
 	start();
-	was_start = true;
 #endif
 }
 /*
@@ -104,7 +100,6 @@ unsigned int RDOThread::threadFun( void* param )
 	thread->proc_create.SetEvent();
 	thread->thread_create.Lock();
 	if ( kernel && kernel != thread ) thread->sendMessage( kernel, RT_THREAD_CONNECTION, thread );
-//	kernel->registration( this );
 	thread->start();
 	thread->was_start = true;
 
@@ -164,7 +159,6 @@ void RDOThread::processMessages( RDOMessageInfo& msg )
 #endif
 	proc( msg );
 	if ( msg.message == RT_THREAD_CLOSE ) {
-		was_close = true;
 		if ( this != kernel ) sendMessage( kernel, RT_THREAD_DISCONNECTION, this );
 		stop();
 		delete this;

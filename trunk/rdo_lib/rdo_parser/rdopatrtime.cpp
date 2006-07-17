@@ -28,7 +28,7 @@ RDOPatternRuntime::RDOPatternRuntime( RDORuntime* _runtime, bool _trace ):
 	timeField( NULL ),
 	runtime( _runtime ),
 	trace( _trace )
-{ 
+{
 	runtime->addPattern(this); 
 }
 
@@ -84,7 +84,7 @@ void RDOIERuntime::convertEvent(RDOSimulator *sim)
 bool RDOPatternRuntime::choiceFrom( RDOSimulator* sim )
 {
 	RDORuntime* runtime = (RDORuntime*)sim;
-	runtime->allResourcesChoiced.clear();
+//	runtime->allResourcesChoiced.clear();
 	int size = choiceFromCalcs.size();
 	for ( int i = 0; i < size; i++ ) {
 		if ( !choiceFromCalcs[i]->calcValueBase(runtime) ) return false;

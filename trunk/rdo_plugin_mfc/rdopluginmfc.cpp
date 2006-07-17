@@ -30,6 +30,7 @@ RDOPluginMFC::RDOPluginMFC():
 
 void getPluginInfo( rdoPlugin::PluginInfo* info )
 {
+	TRACE( "1. %d, %d, %d, %d\n", ::GetCurrentProcess(), ::GetCurrentProcessId(), ::GetCurrentThread(), ::GetCurrentThreadId() );
 	static char* name         = "MFC Plugin";
 	static char* version_info = "";
 	static char* description  = "MFC-Based Plugin";
@@ -44,6 +45,7 @@ void getPluginInfo( rdoPlugin::PluginInfo* info )
 
 bool startPlugin( const rdoPlugin::Studio* _studio )
 {
+	TRACE( "2. %d, %d, %d, %d\n", ::GetCurrentProcess(), ::GetCurrentProcessId(), ::GetCurrentThread(), ::GetCurrentThreadId() );
 	pluginMFCApp.studio = *_studio;
 	if ( !pluginMFCApp.m_pMainWnd ) {
 		pluginMFCApp.frame = new RDOPluginMFCMainFrame;
@@ -61,6 +63,7 @@ bool startPlugin( const rdoPlugin::Studio* _studio )
 
 void stopPlugin()
 {
+	TRACE( "3. %d, %d, %d, %d\n", ::GetCurrentProcess(), ::GetCurrentProcessId(), ::GetCurrentThread(), ::GetCurrentThreadId() );
 	if ( pluginMFCApp.m_pMainWnd && pluginMFCApp.m_pMainWnd->GetSafeHwnd() ) {
 		pluginMFCApp.m_pMainWnd->DestroyWindow();
 		delete pluginMFCApp.m_pMainWnd;
@@ -71,6 +74,7 @@ void stopPlugin()
 
 const int enumMessages()
 {
+	TRACE( "4. %d, %d, %d, %d\n", ::GetCurrentProcess(), ::GetCurrentProcessId(), ::GetCurrentThread(), ::GetCurrentThreadId() );
 	static int i = 0;
 	int messages[] = { rdoPlugin::PM_MODEL_NEW, rdoPlugin::PM_MODEL_OPEN, rdoPlugin::PM_MODEL_SAVE, rdoPlugin::PM_MODEL_CLOSE, rdoPlugin::PM_MODEL_NAME_CHANGED, rdoPlugin::PM_MODEL_MODIFY, rdoPlugin::PM_MODEL_BUILD_OK, rdoPlugin::PM_MODEL_BUILD_FAILD, rdoPlugin::PM_MODEL_BEFORE_START, rdoPlugin::PM_MODEL_AFTER_START, rdoPlugin::PM_MODEL_FINISHED, rdoPlugin::PM_MODEL_STOP_CANCEL, rdoPlugin::PM_MODEL_STOP_RUNTIME_ERROR, rdoPlugin::PM_MODEL_SHOWMODE };
 	static const int cnt = sizeof( messages )/sizeof( int );
@@ -82,6 +86,7 @@ const int enumMessages()
 
 void pluginProc( const int message )
 {
+	TRACE( "5. %d, %d, %d, %d\n", ::GetCurrentProcess(), ::GetCurrentProcessId(), ::GetCurrentThread(), ::GetCurrentThreadId() );
 	if ( message == rdoPlugin::PM_MODEL_NEW ) {
 		pluginMFCApp.frame->insertLine( "PM_MODEL_NEW" );
 	} else if ( message == rdoPlugin::PM_MODEL_OPEN ) {
@@ -131,11 +136,13 @@ void pluginProc( const int message )
 
 void trace( const char* line )
 {
+	TRACE( "6. %d, %d, %d, %d\n", ::GetCurrentProcess(), ::GetCurrentProcessId(), ::GetCurrentThread(), ::GetCurrentThreadId() );
 	pluginMFCApp.frame->insertLine( line );
 }
 
 void results( const char* lines )
 {
+	TRACE( "7. %d, %d, %d, %d\n", ::GetCurrentProcess(), ::GetCurrentProcessId(), ::GetCurrentThread(), ::GetCurrentThreadId() );
 	std::string str = lines;
 	std::string::size_type pos = str.find( '\n' );
 	if ( pos != std::string::npos ) {

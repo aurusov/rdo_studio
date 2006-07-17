@@ -114,6 +114,8 @@ RDOEditorEdit::~RDOEditorEdit()
 
 BOOL RDOEditorEdit::OnNotify( WPARAM wParam, LPARAM lParam, LRESULT* pResult )
 {
+	TRACE( "N. %d, %d, %d, %d\n", ::GetCurrentProcess(), ::GetCurrentProcessId(), ::GetCurrentThread(), ::GetCurrentThreadId() );
+
 	SCNotification* scn = reinterpret_cast<SCNotification*>(lParam);
 
 	if ( !RDOEditorBaseEdit::OnNotify( wParam, lParam, pResult ) || ( scn->nmhdr.hwndFrom == sciHWND && scn->nmhdr.code == SCN_CHARADDED ) ) {

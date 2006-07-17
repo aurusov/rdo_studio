@@ -173,7 +173,7 @@ private:
 	bool operator == (RDOSimulator &other);
 
 public:
-	std::list< int > allResourcesChoiced;
+//	std::list< int > allResourcesChoiced;
 
 	std::vector< rdosim::RDOSyntaxError > errors;
 	void error( const char* message, const rdoRuntime::RDOCalc* calc );

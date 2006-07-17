@@ -100,7 +100,7 @@ public:
 	virtual ~RDOPluginMFCLogCtrl();
 
 	virtual void addStringToLog( std::string logStr );
-	
+
 	bool getFocusOnly() const { return focusOnly; }
 	virtual void setFocusOnly( const bool value ) { focusOnly = value; }
 
@@ -110,7 +110,7 @@ public:
 	virtual bool makeLineVisible( const int index );
 	virtual void selectLine( const int index );
 	virtual void clear();
-	
+
 	int getStringsCount() const { return stringsCount; };
 };
 

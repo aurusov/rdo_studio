@@ -153,12 +153,11 @@ void RDOThreadRunTime::idle()
 {
 #ifdef RDO_MT
 	if ( broadcast_waiting || !was_start || was_close ) {
-#else
-	if ( !was_start || was_close ) {
-#endif
 		RDOThread::idle();
 		return;
 	}
+#endif
+	TRACE( "R. %d, %d, %d, %d\n", ::GetCurrentProcess(), ::GetCurrentProcessId(), ::GetCurrentThread(), ::GetCurrentThreadId() );
 	try {
 		if ( runtime_error || !simulator->runtime->rdoNext() ) {
 			sendMessage( this, RT_THREAD_CLOSE );
@@ -472,11 +471,12 @@ void RDOThreadSimulator::terminateModel()
 	if ( thread_runtime ) {
 		exitCode = rdoModel::EC_UserBreak;
 		// Перестали реагировать на остановку run-time-треды, т.к. закрываем её сами
-		notifies_mutex.Lock();
-		notifies.erase( std::find(notifies.begin(), notifies.end(), RT_THREAD_STOP_AFTER) );
-		notifies_mutex.Unlock();
-
 #ifdef RDO_MT
+		notifies_mutex.Lock();
+#endif
+		notifies.erase( std::find(notifies.begin(), notifies.end(), RT_THREAD_STOP_AFTER) );
+#ifdef RDO_MT
+		notifies_mutex.Unlock();
 		CEvent* thread_destroy = thread_runtime->thread_destroy;
 #endif
 
@@ -489,9 +489,13 @@ void RDOThreadSimulator::terminateModel()
 		thread_runtime = NULL;
 
 		// Опять начали реагировать на остановку run-time-треды, чтобы обнаружить нормальное завершение модели (или по run-time-error)
+#ifdef RDO_MT
 		notifies_mutex.Lock();
+#endif
 		notifies.push_back( RT_THREAD_STOP_AFTER );
+#ifdef RDO_MT
 		notifies_mutex.Unlock();
+#endif
 	}
 }
 

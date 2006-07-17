@@ -4,13 +4,21 @@
 class RandGenerator
 {
 protected:
-	long int seed;
+// Так было
+	unsigned int seed;
+// Так стало, хотя можно оставить и unsigned int imho
+//	long int seed;
 	RandGenerator( long int _seed = 123456789 ): seed( _seed ) {}
 
 public:
 	void setSeed( long int _seed = 123456789 ) { seed = _seed; }
 	virtual ~RandGenerator() {};
 	double u01() {
+// Так было
+		seed = seed * 69069 + 1;
+		return seed / ((long double)0xFFFFFFFF + 1);
+// Так стало
+/*
 		const long int MODLUS = 2147483647;
 		const long int MULT1  = 24112;
 		const long int MULT2  = 26143;
@@ -26,6 +34,7 @@ public:
 		seed = zi;
 //		return ((zi >> 7) + 1) / 16777216.0;       // Так в примере на FORTRAN imho
 		return (((zi >> 7) | 1) + 1) / 16777216.0; // Так в примере на C
+*/
 	}
 };
 
@@ -34,8 +43,6 @@ class RandGeneratorUniform: public RandGenerator
 public:
 	RandGeneratorUniform( long int _seed = 123456789 ): RandGenerator( _seed ) {}
 	double next( double from, double to ) {
-//		seed = seed * 69069 + 1;
-//		return seed / ((long double)0xFFFFFFFF + 1) * (to-from) + from;
 		return u01() * ( to - from ) + from;
 	}
 };
