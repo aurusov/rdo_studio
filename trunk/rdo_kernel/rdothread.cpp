@@ -254,7 +254,7 @@ void RDOThread::broadcastMessage( RDOTreadMessage message, void* param )
 void RDOThread::idle()
 {
 #ifdef RDO_MT
-//	::Sleep( 0 );
+	::Sleep( 0 );
 #endif
 }
 
