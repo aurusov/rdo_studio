@@ -20,7 +20,6 @@ DECLARE_DYNCREATE(RDOStudioModelDoc)
 
 private:
 	std::string name;
-	bool running;
 
 	RDOStudioModelDoc();
 
@@ -29,7 +28,6 @@ public:
 	public:
 	virtual BOOL OnNewDocument();
 	virtual void Serialize(CArchive& ar);
-	virtual void OnCloseDocument();
 	protected:
 	virtual BOOL SaveModified();
 	//}}AFX_VIRTUAL
@@ -46,11 +44,10 @@ public:
 
 	RDOStudioModelView* getView() const;
 
-	std::string getName() const;
+	std::string getName() const { return name; }
 	void setName( const std::string& str );
 
 	bool isModify();
-	bool isRunning() const { return running; };
 
 #ifdef _DEBUG
 	virtual void AssertValid() const;

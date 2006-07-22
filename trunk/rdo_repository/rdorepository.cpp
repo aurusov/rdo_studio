@@ -12,10 +12,11 @@ using namespace rdoRepository;
 // ---------- RDOThreadRepository
 // ----------------------------------------------------------------------------
 RDOThreadRepository::RDOThreadRepository():
-	RDOThread( "RDOThreadRepository" ),
+	RDOThreadMT( "RDOThreadRepository" ),
 	modelName( "" ),
 	modelPath( "" ),
 	lastModelPath( "" ),
+	hasModel( false ),
 	realOnlyInDlg( false )
 {
 	notifies.push_back( RT_STUDIO_MODEL_NEW );
@@ -69,9 +70,9 @@ void RDOThreadRepository::proc( RDOMessageInfo& msg )
 		}
 		case RT_STUDIO_MODEL_OPEN: {
 			msg.lock();
-			std::string name = *static_cast<std::string*>(msg.param);
+			OpenFile* data = static_cast<OpenFile*>(msg.param);
+			data->result = openModel( data->name );
 			msg.unlock();
-			openModel( name );
 //			broadcastMessage( RT_TEST1 );
 			break;
 		}
@@ -206,6 +207,7 @@ void RDOThreadRepository::newModel()
 			it->filename = modelName;
 			it++;
 		}
+		hasModel = true;
 		broadcastMessage( RT_REPOSITORY_MODEL_NEW );
 	} else {
 		broadcastMessage( RT_REPOSITORY_MODEL_CLOSE_ERROR );
@@ -252,6 +254,7 @@ bool RDOThreadRepository::openModel( const std::string& modelFileName )
 			if ( rdo::isFileExists( modelPath + modelName + files[ rdoModelObjects::SMR ].extention ) ) {
 
 				files[ rdoModelObjects::SMR ].filename = modelName;
+				hasModel = true;
 
 				if ( updateModelNames() ) {
 					broadcastMessage( RT_REPOSITORY_MODEL_OPEN );
@@ -323,14 +326,20 @@ bool RDOThreadRepository::saveAsDlg()
 
 bool RDOThreadRepository::canCloseModel()
 {
-	bool res = true;
-	broadcastMessage( RT_REPOSITORY_MODEL_CLOSE_CAN_CLOSE, &res );
-	return res;
+	if ( hasModel ) {
+		bool res = true;
+		broadcastMessage( RT_REPOSITORY_MODEL_CLOSE_CAN_CLOSE, &res, true );
+		return res;
+	} else {
+		return true;
+	}
 }
 
 void RDOThreadRepository::realCloseModel()
 {
-	if ( !modelName.empty() ) {
+	if ( hasModel ) {
+//	if ( !modelName.empty() ) {
+		hasModel = false;
 		broadcastMessage( RT_REPOSITORY_MODEL_CLOSE );
 		modelName   = "";
 		modelPath   = "";

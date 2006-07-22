@@ -60,6 +60,9 @@ std::string RDOBuildEditLineInfo::getMessage() const
 // ----------------------------------------------------------------------------
 // ---------- RDOBuildEdit
 // ---------------------------------------------------------------------------
+
+// ON_UPDATE_COMMAND_UI сделано
+
 BEGIN_MESSAGE_MAP( RDOBuildEdit, RDOLogEdit )
 	//{{AFX_MSG_MAP(RDOBuildEdit)
 	ON_COMMAND(ID_HELP_KEYWORD, OnHelpKeyword)

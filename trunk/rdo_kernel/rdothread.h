@@ -14,27 +14,30 @@
 
 // --------------------------------------------------------------------
 // Используется для компиляции (одно/много)-тредовой версии РДО
-// Если определена в настройках
+// Если определена в дефайнах проекта
 #if defined(RDO_SP)
 	#undef RDO_MT
-// Если определена в настройках
+// Если определена в дефайнах проекта
 #elif defined(RDO_MT)
 	#undef RDO_SP
-// Если нет определения, создадим его сами, использую комментарий перед #undef RDO_MT
+// Если НЕ определена в дефайнах проекта
 #else
 	#define RDO_MT
-//	#undef RDO_MT // Скомпилить однотредувую версию РДО. Если закомментировать, то получится многотредовая
-#endif
+	#undef RDO_MT // Скомпилить однотредувую версию РДО. Если закомментировать, то получится многотредовая
 
-// RDO_ST автоматически выставляется для однотредовой версии РДО
-#ifndef RDO_MT
-	#define RDO_ST
+	// RDO_ST автоматически выставляется для однотредовой версии РДО
+	#ifndef RDO_MT
+		#define RDO_ST
+	#endif
 #endif
 
 // Используется для трассировки сообщений в файл C:\rdo_kernel_mt.log
 // Может быть использовано и в однотредовой версии
-#define TR_TRACE
-#undef TR_TRACE // Закомментировать для вывода трассировка
+// Если НЕ определена в дефайнах проекта
+#ifndef TR_TRACE
+	#define TR_TRACE
+	#undef TR_TRACE // Закомментировать для вывода трассировка
+#endif
 
 // --------------------------------------------------------------------
 // ---------- RDOThread
@@ -45,7 +48,10 @@ typedef unsigned int (*RDOThreadFun)( void* param );
 
 class RDOThread
 {
-#ifdef RDO_ST
+#ifdef RDO_MT
+friend class RDOKernelGUI;
+friend class RDOThreadGUI;
+#else
 friend class RDOKernel;
 #endif
 public:
@@ -160,6 +166,7 @@ public:
 	};
 
 	std::string getName() const         { return thread_name;               }
+	int         getID() const           { return thread_id;                 }
 #ifdef RDO_MT
 	bool        isGUI() const           { return thread_fun ? false : true; }
 	CEvent*     getDestroyEvent() const { return thread_destroy;            }
@@ -184,7 +191,23 @@ public:
 	}
 */
 	// SEND: отправка сообщений с ожиданием выполнения
-	void sendMessage( RDOThread* to, RDOTreadMessage message, void* param = NULL );
+	void sendMessage( RDOThread* to, RDOTreadMessage message, void* param = NULL ) {
+#ifdef RDO_MT
+		RDOMessageInfo msg( this, message, param, RDOThread::RDOMessageInfo::send );
+		CEvent event;
+		msg.send_event = &event;
+
+		to->messages_mutex.Lock();
+		to->messages.push_back( msg );
+		to->messages_mutex.Unlock();
+
+		while ( ::WaitForSingleObject( event.m_hObject, 0 ) == WAIT_TIMEOUT ) {
+			processMessages();
+		}
+#else
+		to->processMessages( RDOMessageInfo( this, message, param ) );
+#endif
+	}
 
 #ifdef RDO_MT
 	// MANUAL: отправка сообщений с 'ручным' ожиданием выполнения для this
@@ -193,10 +216,15 @@ public:
 
 	// Рассылка уведомлений всем тредам с учетом их notifies
 	// Важно: должна вызываться только для this (в собственной треде)
-	void broadcastMessage( RDOTreadMessage message, void* param = NULL );
+	void broadcastMessage( RDOTreadMessage message, void* param = NULL, bool lock = false );
 
 protected:
 #ifdef RDO_MT
+	// Есть два ограничения на использование тред в RDO_MT (с thread-safety всё в порядке, imho):
+	// 1. Каждая треда имеет доступ к стеку сообщений (messages) любой другой треды, чтобы положить туда новое сообщение.
+	// 2. Каждая треда имеет доступ к списку уведомлений (notifies), чтобы понять, а надо ли посылать сообщение треде.
+	// Второе еще можно сделать через дублирование: map< key = thread*, value = notifies > в каджой треде,
+	// а вот как добавить сообщение - не совсем понрятно.
 	static unsigned int threadFun( void* param );
 	const RDOThreadFun thread_fun;
 	CWinThread*        thread_win;
@@ -208,10 +236,13 @@ protected:
 	bool               was_close;
 #endif
 	const std::string  thread_name;
+	int                thread_id;
+	int                idle_cnt;
+	int                broadcast_cnt;
 
 	std::vector< RDOTreadMessage > notifies; // Список сообщений, на которые реагирует треда
 	                                         // Если он пуст, то обрабатываются все сообщения.
-											 // RT_THREAD_CLOSE обрабатывается всегда в RDOThread::proc()
+											 // RT_THREAD_CLOSE обрабатывается в RDOThread::processMessages()
 	                                         // Если сообщение посылается не из kernel'а, а напрямую, то
 											 // то оно не будет проходить через этот фильтр, а сразу попадет в очередь.
 #ifdef RDO_MT
@@ -221,16 +252,63 @@ protected:
 	std::list< RDOMessageInfo > messages;
 	CMutex                      messages_mutex;
 
-	// Есть два ограничения на использование тред в RDO_MT (с thread-safety всё в порядке, imho):
-	// 1. Каждая треда имеет доступ к стеку сообщений (messages) любой другой треды, чтобы положить туда новое сообщение.
-	// 2. Каждая треда имеет доступ к списку уведомлений (notifies), чтобы понять, а надо ли посылать сообщение треде.
-	// Второе еще можно сделать через дублирование: map< key = thread*, value = notifies > в каджой треде,
-	// а вот как добавить сообщение - не совсем понрятно.
+	class BroadCastData {
+	public:
+		int cnt;
+		std::vector< CEvent* > events;
+		HANDLE*                handles;
+		BroadCastData(): cnt( 0 ), handles( NULL ) {
+		}
+		BroadCastData( int _cnt ): cnt( _cnt ) {
+			for ( int i = 0; i < cnt; i++ ) {
+				events.push_back( new CEvent() );
+			}
+			handles = new HANDLE[cnt];
+		}
+		BroadCastData( const BroadCastData& copy ): cnt( copy.cnt ), handles( copy.handles ) {
+			events.assign( copy.events.begin(), copy.events.end() );
+		}
+		~BroadCastData() {
+		}
+		void clear() {
+			for ( int i = 0; i < cnt; i++ ) {
+				delete events[i];
+			}
+			delete[] handles;
+		}
+		void resize() {
+			if ( cnt ) {
+				events.resize( cnt * 2 );
+				HANDLE* handles_backup = handles;
+				handles = new HANDLE[ cnt * 2 ];
+				for ( int i = 0; i < cnt; i++ ) {
+					events.push_back( new CEvent() );
+					handles[i] = handles_backup[i];
+					handles[cnt+i] = new HANDLE;
+				}
+				delete[] handles_backup;
+				cnt *= 2;
+			} else {
+				cnt = 10;
+				for ( int i = 0; i < cnt; i++ ) {
+					events.push_back( new CEvent() );
+				}
+				handles = new HANDLE[cnt];
+			}
+		}
+	};
+	std::vector< BroadCastData > broadcast_data;
+#endif
+
+#ifdef RDO_MT
+	virtual RDOThread* getKernel();
+#else
+	RDOThread* getKernel();
 #endif
 
 	// Создавать можно только через потомков
 #ifdef RDO_MT
-	RDOThread( const std::string& _thread_name, RDOThreadFun _thread_fun = RDOThread::threadFun );
+	RDOThread( const std::string& _thread_name, RDOThreadFun _thread_fun = NULL );
 #else
 	RDOThread( const std::string& _thread_name );
 #endif
@@ -247,14 +325,60 @@ protected:
 	virtual void start();
 	virtual void stop();
 #ifdef RDO_MT
-	bool processMessages();
+	virtual bool processMessages();
 #else
-	void processMessages( RDOMessageInfo& msg );
+	void processMessages( RDOMessageInfo& msg ) {
+#ifdef TR_TRACE
+		RDOThread::trace( "---------------- " + messageToString(msg.message) + ": " + (msg.from ? msg.from->thread_name : "NULL") + " -> " + thread_name );
+#endif
+		proc( msg );
+		if ( msg.message == RT_THREAD_CLOSE ) {
+			if ( this != getKernel() ) sendMessage( getKernel(), RT_THREAD_DISCONNECTION );
+			stop();
+			delete this;
+			return;
+		}
+	}
 #endif
 
 #ifdef TR_TRACE
 	static void trace( const std::string& str );
 #endif
 };
+
+// --------------------------------------------------------------------
+// ---------- RDOThreadMT
+// --------------------------------------------------------------------
+class RDOThreadMT: public RDOThread
+{
+protected:
+#ifdef RDO_MT
+	RDOThreadMT( const std::string& _thread_name, RDOThreadFun _thread_fun = RDOThread::threadFun ): RDOThread( _thread_name, _thread_fun ) {}
+#else
+	RDOThreadMT( const std::string& _thread_name ): RDOThread( _thread_name ) {}
+#endif
+};
+
+// --------------------------------------------------------------------
+// ---------- RDOThreadGUI
+// --------------------------------------------------------------------
+#ifdef RDO_MT
+class RDOThreadGUI: public RDOThread
+{
+private:
+	RDOThread* kernel_gui;
+
+protected:
+	RDOThreadGUI( const std::string& _thread_name, RDOThread* _kernel_gui ): RDOThread( _thread_name ), kernel_gui( _kernel_gui ) {}
+	virtual RDOThread* getKernel();
+	virtual bool processMessages();
+};
+#else
+class RDOThreadGUI: public RDOThread
+{
+protected:
+	RDOThreadGUI( const std::string& _thread_name, RDOThread* ): RDOThread( _thread_name ) {}
+};
+#endif
 
 #endif // RDO_THREAD_H

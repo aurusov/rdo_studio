@@ -18,12 +18,13 @@ namespace rdoRepository {
 // ----------------------------------------------------------------------------
 // ---------- RDOThreadRepository
 // ----------------------------------------------------------------------------
-class RDOThreadRepository: public RDOThread
+class RDOThreadRepository: public RDOThreadMT
 {
 private:
 	std::string modelName;
 	std::string modelPath;
 	std::string lastModelPath;
+	bool hasModel;
 
 	struct fileInfo {
 		std::string filename;
@@ -98,11 +99,15 @@ public:
 	bool isDescribed( rdoModelObjects::RDOFileType type ) const            { return files[ type ].described; }
 	bool isMustExist( rdoModelObjects::RDOFileType type ) const            { return files[ type ].mustexist; }
 
-	class FileData {
-	public:
+	struct FileData {
 		rdoModelObjects::RDOFileType type;
 		rdo::binarystream&           stream;
 		FileData( rdoModelObjects::RDOFileType _type, rdo::binarystream& _stream ): type( _type ), stream( _stream ) {};
+	};
+	struct OpenFile {
+		std::string name;
+		bool&       result;
+		OpenFile( const std::string& _name, bool& _result ): name( _name ), result( _result ) {}
 	};
 
 	void loadBMP( const std::string& name, rdo::binarystream& stream ) const;

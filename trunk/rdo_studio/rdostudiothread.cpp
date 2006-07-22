@@ -13,7 +13,7 @@ static char THIS_FILE[] = __FILE__;
 // --------------------------------------------------------------------
 // ---------- RDOThreadStudio
 // --------------------------------------------------------------------
-RDOThreadStudio::RDOThreadStudio(): RDOThread( "RDOThreadStudio" )
+RDOThreadStudio::RDOThreadStudio(): RDOThread( "RDOThreadStudio", RDOThread::threadFun )
 {
 	after_constructor();
 }
@@ -30,21 +30,16 @@ void RDOThreadStudio::proc( RDOMessageInfo& msg )
 		case RT_STUDIO_MODEL_RUN    :
 		case RT_STUDIO_MODEL_STOP   :
 		{
-			broadcastMessage( msg.message, msg.param );
+			broadcastMessage( msg.message, msg.param, true );
 			break;
 		}
 	}
 }
-#endif
 
 // --------------------------------------------------------------------
 // ---------- RDOThreadStudioGUI
 // --------------------------------------------------------------------
-#ifdef RDO_MT
-RDOThreadStudioGUI::RDOThreadStudioGUI(): RDOThread( "RDOThreadStudioGUI", NULL )
-#else
-RDOThreadStudioGUI::RDOThreadStudioGUI(): RDOThread( "RDOThreadStudioGUI" )
-#endif
+RDOThreadStudioGUI::RDOThreadStudioGUI(): RDOKernelGUI( "RDOThreadStudioGUI" )
 {
 	// Для модели
 	notifies.push_back( RT_REPOSITORY_MODEL_NEW );
@@ -73,11 +68,43 @@ RDOThreadStudioGUI::RDOThreadStudioGUI(): RDOThread( "RDOThreadStudioGUI" )
 	notifies.push_back( RT_SIMULATOR_TRACE_STRING );
 
 	after_constructor();
-	sendMessage( kernel, RT_THREAD_CONNECTION, this );
+}
+#endif
+
+// --------------------------------------------------------------------
+// ---------- RDOThreadStudio1
+// --------------------------------------------------------------------
+RDOThreadStudio1::RDOThreadStudio1(): RDOThreadMT( "RDOThreadStudio1" )
+{
+	notifies.push_back( RT_SIMULATOR_TRACE_STRING );
+	after_constructor();
 }
 
-void RDOThreadStudioGUI::proc( RDOMessageInfo& msg )
+void RDOThreadStudio1::proc( RDOMessageInfo& msg )
 {
-	model->procGUI( msg );
-	tracer->procGUI( msg );
+	switch ( msg.message ) {
+		case RT_SIMULATOR_TRACE_STRING: {
+//			::Sleep( 1000 );
+			break;
+		}
+	}
+}
+
+// --------------------------------------------------------------------
+// ---------- RDOThreadStudio2
+// --------------------------------------------------------------------
+RDOThreadStudio2::RDOThreadStudio2(): RDOThreadMT( "RDOThreadStudio2" )
+{
+	notifies.push_back( RT_SIMULATOR_TRACE_STRING );
+	after_constructor();
+}
+
+void RDOThreadStudio2::proc( RDOMessageInfo& msg )
+{
+	switch ( msg.message ) {
+		case RT_SIMULATOR_TRACE_STRING: {
+//			::Sleep( 1000 );
+			break;
+		}
+	}
 }

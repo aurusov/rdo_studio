@@ -41,7 +41,7 @@ RSC=rc.exe
 # PROP Intermediate_Dir "Release"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_AFXDLL" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /Yu"rdo_ctrls_pch.h" /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /Ob2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /Yu"rdo_ctrls_pch.h" /FD /c
 # SUBTRACT CPP /Fr
 # ADD BASE RSC /l 0x419 /d "NDEBUG" /d "_AFXDLL"
 # ADD RSC /l 0x419 /d "NDEBUG"

@@ -24,6 +24,17 @@ private:
 	int markerCount;
 
 protected:
+	bool GUI_ID_EDIT_UNDO;
+	bool GUI_ID_EDIT_REDO;
+	bool GUI_ID_EDIT_CUT;
+	bool GUI_IS_SELECTED;
+	bool GUI_IS_EMPTY;
+	bool GUI_IS_READONLY;
+	bool GUI_IS_MODIFY;
+	bool GUI_HAS_BOOKMARK;
+	bool GUI_ID_VIEW_WHITESPACE;
+	bool GUI_ID_VIEW_ENDOFLINE;
+
 	HWND       sciHWND;
 	long       sciEditor;
 	sciFunType sciFun;
@@ -59,6 +70,10 @@ protected:
 	int indentOfBlock( int line ) const;
 	void setLineIndentation( int line, int indent ) const;
 	void autoIndent() const;
+
+	void updateAllGUI();
+	void updateEditGUI();
+	void updateBookmarksGUI();
 
 	//{{AFX_MSG(RDOBaseEdit)
 	afx_msg int OnCreate( LPCREATESTRUCT lpCreateStruct );
@@ -122,6 +137,8 @@ public:
 	RDOBaseEdit();
 	virtual ~RDOBaseEdit();
 
+	HWND getSCIHWND() const { return sciHWND; }
+
 	const RDOBaseEditStyle* getEditorStyle() const         { return style; };
 	void setEditorStyle( RDOBaseEditStyle* _style );
 
@@ -132,20 +149,20 @@ public:
 	bool isSelected() const                                { return sendEditor( SCI_GETSELECTIONSTART ) != sendEditor( SCI_GETSELECTIONEND ); };
 	bool isOverwrite() const                               { return sendEditor( SCI_GETOVERTYPE ) ? true : false;                             };
 
-	bool isModify() const                                  { return sendEditor( SCI_GETMODIFY ) ? true : false; };
-	void setModifyFalse() const                            { sendEditor( SCI_SETSAVEPOINT );                    };
+	bool isModify() const                                  { return GUI_IS_MODIFY;                                  };
+	void setModifyFalse()                                  { GUI_IS_MODIFY = false; sendEditor( SCI_SETSAVEPOINT ); };
 
 	virtual void clearAll();
 	void clearUndoBuffer() const                           { sendEditor( SCI_EMPTYUNDOBUFFER ); };
 
-	bool isReadOnly() const                                { return sendEditor( SCI_GETREADONLY ) ? true : false;  };
-	void setReadOnly( const bool value ) const             { sendEditor( SCI_SETREADONLY, value );                 };
+	bool isReadOnly() const                                { return sendEditor( SCI_GETREADONLY ) ? true : false;           };
+	void setReadOnly( const bool value )                   { GUI_IS_READONLY = value; sendEditor( SCI_SETREADONLY, value ); };
 
-	bool isViewWhiteSpace() const                          { return sendEditor( SCI_GETVIEWWS ) != SCWS_INVISIBLE;                     };
-	void setViewWhiteSpace( const bool value ) const       { sendEditor( SCI_SETVIEWWS, value ? SCWS_VISIBLEALWAYS : SCWS_INVISIBLE ); };
+	bool isViewWhiteSpace() const                          { return sendEditor( SCI_GETVIEWWS ) != SCWS_INVISIBLE;                                                     };
+	void setViewWhiteSpace( const bool value )             { GUI_ID_VIEW_WHITESPACE = value; sendEditor( SCI_SETVIEWWS, value ? SCWS_VISIBLEALWAYS : SCWS_INVISIBLE ); };
 
-	bool isViewEndOfLine() const                           { return sendEditor( SCI_GETVIEWEOL ) ? true : false; };
-	void setEndOfLine( const bool value ) const            { sendEditor( SCI_SETVIEWEOL, value );                };
+	bool isViewEndOfLine() const                           { return sendEditor( SCI_GETVIEWEOL ) ? true : false;                 };
+	void setEndOfLine( const bool value )                  { GUI_ID_VIEW_ENDOFLINE = value; sendEditor( SCI_SETVIEWEOL, value ); };
 
 	void appendText( const std::string& str ) const;
 
@@ -181,7 +198,7 @@ public:
 	int findPos( std::string& findWhat, const int startFromLine = 0, const bool matchCase = false, const bool matchWholeWord = false ) const;
 	std::string getLine( const int line ) const;
 
-	void load( rdo::binarystream& stream ) const;
+	void load( rdo::binarystream& stream );
 	void save( rdo::binarystream& stream ) const;
 	void saveAsRTF( CFile& file, int start = 0, int end = -1 ) const;
 };

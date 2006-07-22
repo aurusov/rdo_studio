@@ -16,6 +16,20 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 // ----------------------------------------------------------------------------
+// ---------- RDOToolBar
+// ----------------------------------------------------------------------------
+void RDOStudioMainFrame::RDOToolBar::init( CWnd* parent, unsigned int tbResID, unsigned int tbDisabledImageResID )
+{
+	CreateEx( parent, 0, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
+	LoadToolBar( tbResID );
+	ModifyStyle( 0, TBSTYLE_FLAT );
+	SetWindowText( rdo::format( tbResID ).c_str() );
+
+	disabledImage.Create( tbDisabledImageResID, 16, 0, 0xFF00FF );
+	GetToolBarCtrl().SetDisabledImageList( &disabledImage );
+}
+
+// ----------------------------------------------------------------------------
 // ---------- RDOStudioMainFrame
 // ----------------------------------------------------------------------------
 const int WORKSPACE_SHOW_MESSAGE = ::RegisterWindowMessage( "WORKSPACE_SHOW_MESSAGE" );
@@ -59,10 +73,6 @@ BEGIN_MESSAGE_MAP(RDOStudioMainFrame, CMDIFrameWnd)
 	ON_COMMAND(ID_MODEL_FRAME_PREV, OnModelFramePrev)
 	ON_UPDATE_COMMAND_UI(ID_MODEL_FRAME_NEXT, OnUpdateModelFrameNext)
 	ON_UPDATE_COMMAND_UI(ID_MODEL_FRAME_PREV, OnUpdateModelFramePrev)
-	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOMIN, OnUpdateViewZoomIn)
-	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOMOUT, OnUpdateViewZoomOut)
-	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOMRESET, OnUpdateViewZoomReset)
-	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOMAUTO, OnUpdateViewZoomAuto)
 	//}}AFX_MSG_MAP
 	ON_UPDATE_COMMAND_UI( ID_COORD_STATUSBAR           , OnUpdateCoordStatusBar )
 	ON_UPDATE_COMMAND_UI( ID_MODIFY_STATUSBAR          , OnUpdateModifyStatusBar )
@@ -125,37 +135,10 @@ int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	style_chart.init( "chart" );
 	style_chart.load();
 
-	fileToolBar.CreateEx( this, 0, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
-	fileToolBar.LoadToolBar( IDR_FILE_TOOLBAR );
-	fileToolBar.ModifyStyle( 0, TBSTYLE_FLAT );
-	fileToolBar.SetWindowText( rdo::format( IDR_FILE_TOOLBAR ).c_str() );
-
-	fileToolBarImageList.Create( IDB_FILE_TOOLBAR_D, 16, 0, 0xFF00FF );
-	fileToolBar.GetToolBarCtrl().SetDisabledImageList( &fileToolBarImageList );
-
-	editToolBar.CreateEx( this, 0, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
-	editToolBar.LoadToolBar( IDR_EDIT_TOOLBAR );
-	editToolBar.ModifyStyle( 0, TBSTYLE_FLAT );
-	editToolBar.SetWindowText( rdo::format( IDR_EDIT_TOOLBAR ).c_str() );
-
-	editToolBarImageList.Create( IDB_EDIT_TOOLBAR_D, 16, 0, 0xFF00FF );
-	editToolBar.GetToolBarCtrl().SetDisabledImageList( &editToolBarImageList );
-
-	zoomToolBar.CreateEx( this, 0, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
-	zoomToolBar.LoadToolBar( IDR_ZOOM_TOOLBAR );
-	zoomToolBar.ModifyStyle( 0, TBSTYLE_FLAT );
-	zoomToolBar.SetWindowText( rdo::format( IDR_ZOOM_TOOLBAR ).c_str() );
-
-	zoomToolBarImageList.Create( IDB_ZOOM_TOOLBAR_D, 16, 0, 0xFF00FF );
-	zoomToolBar.GetToolBarCtrl().SetDisabledImageList( &zoomToolBarImageList );
-
-	modelToolBar.CreateEx( this, 0, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
-	modelToolBar.LoadToolBar( IDR_MODEL_TOOLBAR );
-	modelToolBar.ModifyStyle( 0, TBSTYLE_FLAT );
-	modelToolBar.SetWindowText( rdo::format( IDR_MODEL_TOOLBAR ).c_str() );
-
-	modelToolBarImageList.Create( IDB_MODEL_TOOLBAR_D, 16, 0, 0xFF00FF );
-	modelToolBar.GetToolBarCtrl().SetDisabledImageList( &modelToolBarImageList );
+	fileToolBar.init( this, IDR_FILE_TOOLBAR, IDB_FILE_TOOLBAR_D );
+	editToolBar.init( this, IDR_EDIT_TOOLBAR, IDB_EDIT_TOOLBAR_D );
+	zoomToolBar.init( this, IDR_ZOOM_TOOLBAR, IDB_ZOOM_TOOLBAR_D );
+	modelToolBar.init( this, IDR_MODEL_TOOLBAR, IDB_MODEL_TOOLBAR_D );
 
 	statusBar.Create( this );
 	statusBar.SetIndicators( indicators, sizeof(indicators)/sizeof(UINT) );
@@ -312,8 +295,16 @@ void RDOStudioMainFrame::OnUpdateViewModelToolbar(CCmdUI* pCmdUI)
 
 BOOL RDOStudioMainFrame::OnCmdMsgForDockOnly( UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo )
 {
-	if ( workspace.OnCmdMsg( nID, nCode, pExtra, pHandlerInfo ) ) return TRUE;
-	if ( output.OnCmdMsg( nID, nCode, pExtra, pHandlerInfo ) ) return TRUE;
+	CWnd* wnd = GetFocus();
+	if ( wnd ) {
+		std::map< HWND, CWnd* >::iterator it = cmd_wnd.begin();
+		while ( it != cmd_wnd.end() ) {
+			if ( it->first == wnd->m_hWnd ) {
+				return it->second->OnCmdMsg( nID, nCode, pExtra, pHandlerInfo );
+			}
+			it++;
+		}
+	}
 	return FALSE;
 }
 
@@ -383,7 +374,8 @@ void RDOStudioMainFrame::OnUpdateModelTimeStatusBar( CCmdUI *pCmdUI )
 
 void RDOStudioMainFrame::showNewModelTime( const double value )
 {
-	::SendMessage( statusBar.m_hWnd, SB_SETTEXT, 3, reinterpret_cast<LPARAM>(rdo::format( ID_STATUSBAR_MODEL_TIME, value ).c_str()) );
+	statusBar.SetPaneText( 3, rdo::format( ID_STATUSBAR_MODEL_TIME, value ).c_str() );
+//	::SendMessage( statusBar.m_hWnd, SB_SETTEXT, 3, reinterpret_cast<LPARAM>(rdo::format( ID_STATUSBAR_MODEL_TIME, value ).c_str()) );
 }
 
 void RDOStudioMainFrame::OnUpdateModelRunTypeStatusBar( CCmdUI *pCmdUI )
@@ -572,25 +564,4 @@ LRESULT RDOStudioMainFrame::WindowProc( UINT message, WPARAM wParam, LPARAM lPar
 		OnOutputShow();
 	}
 	return CMDIFrameWnd::WindowProc(message, wParam, lParam);
-}
-
-void RDOStudioMainFrame::OnUpdateViewZoomIn(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable( false );
-}
-
-void RDOStudioMainFrame::OnUpdateViewZoomOut(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable( false );
-}
-
-void RDOStudioMainFrame::OnUpdateViewZoomAuto(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable( false );
-	pCmdUI->SetCheck( false );
-}
-
-void RDOStudioMainFrame::OnUpdateViewZoomReset(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable( false );
 }

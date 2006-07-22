@@ -22,6 +22,8 @@ static const UINT FINDINMODEL_MSG = ::RegisterWindowMessage( FINDMSGSTRING );
 
 IMPLEMENT_DYNCREATE(RDOStudioModelView, RDOStudioEditBaseView)
 
+// ON_UPDATE_COMMAND_UI сделано
+
 BEGIN_MESSAGE_MAP(RDOStudioModelView, RDOStudioEditBaseView)
 	//{{AFX_MSG_MAP(RDOStudioModelView)
 	ON_WM_CREATE()
@@ -108,7 +110,7 @@ int RDOStudioModelView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 BOOL RDOStudioModelView::OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo) 
 {
-	if ( tab->OnCmdMsg( nID, nCode, pExtra, pHandlerInfo ) ) return TRUE;
+	if ( tab->getCurrentEdit()->OnCmdMsg( nID, nCode, pExtra, pHandlerInfo ) ) return TRUE;
 	return RDOStudioEditBaseView::OnCmdMsg(nID, nCode, pExtra, pHandlerInfo);
 }
 
@@ -180,38 +182,38 @@ LRESULT RDOStudioModelView::OnFindInModelMsg( WPARAM /*wParam*/, LPARAM lParam )
 void RDOStudioModelView::OnUpdateCoordStatusBar( CCmdUI *pCmdUI )
 {
 	pCmdUI->Enable();
-	std::string str = "";
 	RDOEditorEdit* edit = getEdit();
 	if ( edit ) {
-		int x = edit->getCurrentColumnNumber() + 1;
-		int y = edit->getCurrentLineNumber() + 1;
-		str = rdo::format( "%d: %d", x, y );
+		pCmdUI->SetText( rdo::format( "%d: %d", edit->getCurrentColumnNumber() + 1, edit->getCurrentLineNumber() + 1 ).c_str() );
+	} else {
+		pCmdUI->SetText( "" );
 	}
-	pCmdUI->SetText( str.c_str() );
 }
 
 void RDOStudioModelView::OnUpdateModifyStatusBar( CCmdUI *pCmdUI )
 {
 	pCmdUI->Enable();
-	std::string str = "";
 	RDOEditorEdit* edit = getEdit();
 	if ( edit ) {
 		if ( edit->isReadOnly() ) {
-			str = rdo::format( ID_STATUSBAR_READONLY );
+			pCmdUI->SetText( rdo::format( ID_STATUSBAR_READONLY ).c_str() );
 		} else if ( edit->isModify() ) {
-			str = rdo::format( ID_STATUSBAR_MODIFIED );
+			pCmdUI->SetText( rdo::format( ID_STATUSBAR_MODIFIED ).c_str() );
+		} else {
+			pCmdUI->SetText( "" );
 		}
+	} else {
+		pCmdUI->SetText( "" );
 	}
-	pCmdUI->SetText( str.c_str() );
 }
 
 void RDOStudioModelView::OnUpdateInsertOverwriteStatusBar( CCmdUI *pCmdUI )
 {
 	pCmdUI->Enable();
-	std::string str = "";
 	RDOEditorEdit* edit = getEdit();
 	if ( edit && edit->isOverwrite() ) {
-		str = rdo::format( ID_STATUSBAR_OVERWRITE );
+		pCmdUI->SetText( rdo::format( ID_STATUSBAR_OVERWRITE ).c_str() );
+	} else {
+		pCmdUI->SetText( "" );
 	}
-	pCmdUI->SetText( str.c_str() );
 }

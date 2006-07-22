@@ -92,6 +92,8 @@ static const int RDOSTUDIO_AUTOEXIT_MESSAGE = ::RegisterWindowMessage( "RDOSTUDI
 
 RDOStudioApp studioApp;
 
+// ON_UPDATE_COMMAND_UI сделано
+
 BEGIN_MESSAGE_MAP(RDOStudioApp, CWinApp)
 	//{{AFX_MSG_MAP(RDOStudioApp)
 	ON_COMMAND(ID_FILE_NEW, OnFileNew)
@@ -119,6 +121,9 @@ END_MESSAGE_MAP()
 RDOStudioApp::RDOStudioApp():
 	CWinApp(),
 	studioGUI( NULL ),
+#ifdef RDO_MT
+	studioMT( NULL ),
+#endif
 	initInstance( false ),
 	editDocTemplate( NULL ),
 	fileAssociationSetup( false ),
@@ -162,11 +167,18 @@ BOOL RDOStudioApp::InitInstance()
 
 	//  то-то должен подн€ть кернел и треды
 	RDOKernel::init();
+#ifdef RDO_MT
+	studioGUI = new RDOThreadStudioGUI();
+#else
+	studioGUI = kernel;
+#endif
 	new rdosim::RDOThreadSimulator();
 	new rdoRepository::RDOThreadRepository();
 #ifdef RDO_MT
-	new RDOThreadStudio();
+	studioMT = new RDOThreadStudio();
 #endif
+//	new RDOThreadStudio1();
+//	new RDOThreadStudio2();
 
 	tracer = new rdoTracer::RDOTracer();
 	AddDocTemplate( tracer->createDocTemplate() );
@@ -175,9 +187,6 @@ BOOL RDOStudioApp::InitInstance()
 	mainFrame = new RDOStudioMainFrame;
 	m_pMainWnd = mainFrame;
 	if ( !mainFrame->LoadFrame( IDR_MAINFRAME ) ) return FALSE;
-
-	// —оздаетс€ после model и tracer'а, т.к. раздаем им сообщени€
-	studioGUI = new RDOThreadStudioGUI();
 
 	loadReopen();
 	updateReopenSubMenu();
@@ -282,19 +291,18 @@ bool RDOStudioApp::shortToLongPath( const std::string& shortPath, std::string& l
 
 int RDOStudioApp::ExitInstance()
 {
+#ifdef RDO_MT
+	if ( studioGUI ) {
+		studioGUI->sendMessage( studioGUI, RDOThread::RT_THREAD_CLOSE );
+		delete static_cast<RDOThreadStudioGUI*>(studioGUI);
+		studioGUI = NULL;
+	}
+#endif
+
+	if ( plugins ) { delete plugins; plugins = NULL; }
+
 	// –он€ем кернел и закрываем все треды
 	RDOKernel::close();
-
-#ifdef RDO_MT
-	if ( studioGUI ) { delete studioGUI; studioGUI = NULL; }
-#endif
-	// close model before delete plugins (for PM_MODEL_CLOSE message)
-	// model->closeModel();
-
-	// delete plugins before delete model
-	if ( plugins ) { delete plugins; plugins = NULL; }
-	if ( model   ) { delete model  ; model   = NULL; }
-	if ( tracer  ) { delete tracer ; tracer  = NULL; }
 
 	if ( autoExit ) {
 		CWinApp::ExitInstance();
@@ -343,6 +351,8 @@ void RDOStudioApp::OnUpdateFileClose(CCmdUI* pCmdUI)
 
 void RDOStudioApp::OnUpdateFileSave(CCmdUI* pCmdUI) 
 {
+	pCmdUI->Enable( model->isModify() );
+/*
 	model->updateModify();
 
 	POSITION pos = editDocTemplate->GetFirstDocPosition();
@@ -361,6 +371,7 @@ void RDOStudioApp::OnUpdateFileSave(CCmdUI* pCmdUI)
 		}
 	}
 	pCmdUI->Enable( flag );
+*/
 }
 
 void RDOStudioApp::OnUpdateFileSaveAs(CCmdUI* pCmdUI) 
@@ -370,6 +381,8 @@ void RDOStudioApp::OnUpdateFileSaveAs(CCmdUI* pCmdUI)
 
 void RDOStudioApp::OnUpdateFileSaveAll(CCmdUI* pCmdUI) 
 {
+	pCmdUI->Enable( model->isModify() );
+/*
 	bool flag = model->isModify();
 	if ( !flag ) {
 		POSITION pos = editDocTemplate->GetFirstDocPosition();
@@ -383,6 +396,7 @@ void RDOStudioApp::OnUpdateFileSaveAll(CCmdUI* pCmdUI)
 		}
 	}
 	pCmdUI->Enable( flag );
+*/
 }
 
 void RDOStudioApp::OnProjectReopen( UINT nID )
@@ -822,9 +836,9 @@ void RDOAboutDlg::OnAboutWeb()
 void RDOStudioApp::broadcastMessage( RDOThread::RDOTreadMessage message, void* param )
 {
 #ifdef RDO_MT
-	CEvent* event = kernel->studio()->manualMessageFrom( message, param );
+	CEvent* event = studioMT->manualMessageFrom( message, param );
 	while ( ::WaitForSingleObject( event->m_hObject, 0 ) == WAIT_TIMEOUT ) {
-		studioGUI->processMessages();
+		static_cast<RDOThreadStudioGUI*>(studioGUI)->processMessages();
 		mainFrame->UpdateWindow();
 	}
 	delete event;
@@ -836,7 +850,7 @@ void RDOStudioApp::broadcastMessage( RDOThread::RDOTreadMessage message, void* p
 BOOL RDOStudioApp::OnIdle( LONG lCount )
 {
 #ifdef RDO_MT
-	studioGUI->processMessages();
+	static_cast<RDOThreadStudioGUI*>(studioGUI)->processMessages();
 	CWinApp::OnIdle( lCount );
 	return true;
 #else

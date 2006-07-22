@@ -26,6 +26,9 @@ void RDOThread::trace( const std::string& str )
 #ifdef RDO_MT
 RDOThread::RDOThread( const std::string& _thread_name, RDOThreadFun _thread_fun ):
 	thread_name( _thread_name ),
+	thread_id( 0 ),
+	broadcast_cnt( -1 ),
+	idle_cnt( 0 ),
 	thread_fun( _thread_fun ),
 	thread_win( NULL ),
 	thread_destroy( new CEvent() ), // thread_destroy удал€етс€ после деструктора объекта
@@ -34,7 +37,9 @@ RDOThread::RDOThread( const std::string& _thread_name, RDOThreadFun _thread_fun 
 	was_close( false )
 #else
 RDOThread::RDOThread( const std::string& _thread_name ):
-	thread_name( _thread_name )
+	thread_name( _thread_name ),
+	thread_id( ::GetCurrentThreadId() ),
+	idle_cnt( 0 )
 #endif
 {
 #ifdef TR_TRACE
@@ -43,6 +48,9 @@ RDOThread::RDOThread( const std::string& _thread_name ):
 	// „тобы треда не получала ниодного сообщени€. RT_THREAD_CLOSE обрабатываетс€ автоматически
 	notifies.push_back( RT_THREAD_CLOSE );
 #ifdef RDO_MT
+	for ( int i = 0; i < 10; i++ ) {
+		broadcast_data.push_back( BroadCastData(10) );
+	}
 	if ( !isGUI() ) {
 		// THREAD_PRIORITY_NORMAL
 		// THREAD_PRIORITY_HIGHEST
@@ -59,6 +67,11 @@ RDOThread::~RDOThread()
 #endif
 
 #ifdef RDO_MT
+	std::vector< BroadCastData >::iterator it = broadcast_data.begin();
+	while ( it != broadcast_data.end() ) {
+		it->clear();
+		it++;
+	}
 	if ( !isGUI() ) {
 		if ( thread_destroy ) {
 			thread_destroy->SetEvent();
@@ -72,6 +85,11 @@ RDOThread::~RDOThread()
 #endif
 }
 
+RDOThread* RDOThread::getKernel()
+{
+	return kernel;
+}
+
 void RDOThread::after_constructor()
 {
 	notifies.push_back( RT_THREAD_REGISTERED );
@@ -79,12 +97,16 @@ void RDOThread::after_constructor()
 	if ( !isGUI() ) {
 		proc_create.Lock();
 		thread_create.SetEvent();
+	} else {
+		if ( getKernel() && getKernel() != this ) sendMessage( getKernel(), RT_THREAD_CONNECTION );
+		start();
 	}
 #else
-	if ( kernel && kernel != this ) sendMessage( kernel, RT_THREAD_CONNECTION, this );
+	if ( getKernel() && getKernel() != this ) sendMessage( getKernel(), RT_THREAD_CONNECTION );
 	start();
 #endif
 }
+
 /*
 void RDOThread::before_destructor()
 {
@@ -93,13 +115,15 @@ void RDOThread::before_destructor()
 #endif
 }
 */
+
 #ifdef RDO_MT
 unsigned int RDOThread::threadFun( void* param )
 {
 	RDOThread* thread = static_cast<RDOThread*>(param);
+	thread->thread_id = ::GetCurrentThreadId();
 	thread->proc_create.SetEvent();
 	thread->thread_create.Lock();
-	if ( kernel && kernel != thread ) thread->sendMessage( kernel, RT_THREAD_CONNECTION, thread );
+	if ( kernel && kernel != thread ) thread->sendMessage( kernel, RT_THREAD_CONNECTION );
 	thread->start();
 	thread->was_start = true;
 
@@ -135,15 +159,18 @@ bool RDOThread::processMessages()
 //			RDOThread::trace( thread_name + ": registered this" );
 //		}
 		proc( msg );
-		if ( msg.type == RDOThread::RDOMessageInfo::send || msg.type == RDOThread::RDOMessageInfo::manual ) {
-			msg.send_event->SetEvent();
-		}
 		if ( msg.message == RT_THREAD_CLOSE ) {
 			messages_mutex.Lock();
 			was_close = true;
 			messages_mutex.Unlock();
-			if ( this != kernel ) sendMessage( kernel, RT_THREAD_DISCONNECTION, this );
+			if ( this != getKernel() ) sendMessage( getKernel(), RT_THREAD_DISCONNECTION );
+			if ( msg.type == RDOThread::RDOMessageInfo::send || msg.type == RDOThread::RDOMessageInfo::manual ) {
+				msg.send_event->SetEvent();
+			}
 			return false;
+		}
+		if ( msg.type == RDOThread::RDOMessageInfo::send || msg.type == RDOThread::RDOMessageInfo::manual ) {
+			msg.send_event->SetEvent();
 		}
 	} else {
 		messages_mutex.Unlock();
@@ -151,22 +178,8 @@ bool RDOThread::processMessages()
 	}
 	return true;
 }
-#else
-void RDOThread::processMessages( RDOMessageInfo& msg )
-{
-#ifdef TR_TRACE
-		RDOThread::trace( "---------------- " + messageToString(msg.message) + ": " + (msg.from ? msg.from->thread_name : "NULL") + " -> " + thread_name );
 #endif
-	proc( msg );
-	if ( msg.message == RT_THREAD_CLOSE ) {
-		if ( this != kernel ) sendMessage( kernel, RT_THREAD_DISCONNECTION, this );
-		stop();
-		delete this;
-		return;
-	}
-}
-#endif
-
+/*
 void RDOThread::sendMessage( RDOThread* to, RDOTreadMessage message, void* param )
 {
 #ifdef RDO_MT
@@ -185,7 +198,7 @@ void RDOThread::sendMessage( RDOThread* to, RDOTreadMessage message, void* param
 	to->processMessages( RDOMessageInfo( this, message, param ) );
 #endif
 }
-
+*/
 #ifdef RDO_MT
 CEvent* RDOThread::manualMessageFrom( RDOTreadMessage message, void* param )
 {
@@ -200,19 +213,24 @@ CEvent* RDOThread::manualMessageFrom( RDOTreadMessage message, void* param )
 }
 #endif
 
-void RDOThread::broadcastMessage( RDOTreadMessage message, void* param )
+void RDOThread::broadcastMessage( RDOTreadMessage message, void* param, bool lock )
 {
 #ifdef RDO_MT
+	broadcast_cnt++;
+	if ( broadcast_data.size() < broadcast_cnt + 1 ) {
+		broadcast_data.push_back( BroadCastData(10) );
+	}
 	kernel->threads_mutex.Lock();
-	std::vector< CEvent* > events;
+	RDOMessageInfo msg( this, message, param, RDOThread::RDOMessageInfo::send );
+	if ( lock ) msg.param_lock = new CMutex();
+	int cnt = 0;
 	std::list< RDOThread* >::iterator it = kernel->threads.begin();
 	while ( it != kernel->threads.end() ) {
 		RDOThread* thread = *it;
 		thread->notifies_mutex.Lock();
 		if ( thread != this && (thread->notifies.empty() || std::find( thread->notifies.begin(), thread->notifies.end(), message ) != thread->notifies.end()) ) {
-			RDOMessageInfo msg( this, message, param, RDOThread::RDOMessageInfo::send );
-			msg.send_event = new CEvent();
-			events.push_back( msg.send_event );
+			if ( broadcast_data[broadcast_cnt].cnt < cnt + 1 ) broadcast_data[broadcast_cnt].resize();
+			msg.send_event = broadcast_data[broadcast_cnt].events[cnt++];
 			thread->messages_mutex.Lock();
 			thread->messages.push_back( msg );
 			thread->messages_mutex.Unlock();
@@ -221,29 +239,25 @@ void RDOThread::broadcastMessage( RDOTreadMessage message, void* param )
 		it++;
 	}
 	kernel->threads_mutex.Unlock();
-	if ( !events.empty() ) {
-		int cnt = events.size();
-		HANDLE* threads_handles = new HANDLE[cnt];
-		int i;
-		for ( i = 0; i < cnt; i++ ) {
-			threads_handles[i] = events[i]->m_hObject;
+	if ( cnt ) {
+		for ( int i = 0; i < cnt; i++ ) {
+			broadcast_data[broadcast_cnt].handles[i] = broadcast_data[broadcast_cnt].events[i]->m_hObject;
 		}
 		broadcast_waiting = true;
-		while ( ::WaitForMultipleObjects( cnt, threads_handles, true, 0 ) == WAIT_TIMEOUT ) {
+		while ( ::WaitForMultipleObjects( cnt, broadcast_data[broadcast_cnt].handles, true, 0 ) == WAIT_TIMEOUT ) {
 			processMessages();
 		}
 		broadcast_waiting = false;
-		for ( i = 0; i < cnt; i++ ) {
-			delete events[i];
-		}
-		delete[] threads_handles;
 	}
+	broadcast_cnt--;
+	if ( lock ) delete msg.param_lock;
 #else
 	RDOMessageInfo msg( this, message, param );
 	std::list< RDOThread* >::iterator it = kernel->threads.begin();
 	while ( it != kernel->threads.end() ) {
 		RDOThread* thread = *it;
-		if ( thread != this && (thread->notifies.empty() || std::find( thread->notifies.begin(), thread->notifies.end(), message ) != thread->notifies.end()) ) {
+		if ( thread != this ) {
+//		if ( thread != this && (thread->notifies.empty() || std::find( thread->notifies.begin(), thread->notifies.end(), message ) != thread->notifies.end()) ) {
 			thread->processMessages( msg );
 		}
 		it++;
@@ -255,6 +269,10 @@ void RDOThread::idle()
 {
 #ifdef RDO_MT
 	::Sleep( 0 );
+//	if ( idle_cnt++ > 1000 ) {
+//		idle_cnt = 0;
+//		::Sleep( 1 );
+//	}
 #endif
 }
 
@@ -272,3 +290,18 @@ void RDOThread::stop()
 #endif
 	broadcastMessage( RT_THREAD_STOP_AFTER );
 }
+
+#ifdef RDO_MT
+// --------------------------------------------------------------------
+// ---------- RDOThreadGUI
+// --------------------------------------------------------------------
+RDOThread* RDOThreadGUI::getKernel()
+{
+	return kernel_gui;
+}
+
+bool RDOThreadGUI::processMessages()
+{
+	return kernel_gui->processMessages();
+}
+#endif

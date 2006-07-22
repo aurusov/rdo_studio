@@ -4,8 +4,6 @@
 #include "rdostudiothread.h"
 #include "rdostudiomainfrm.h"
 #include "rdostudiochildfrm.h"
-#include "rdostudiomodeldoc.h"
-#include "rdostudiomodelview.h"
 #include "rdostudioframedoc.h"
 #include "rdostudioframeview.h"
 #include "rdostudioplugins.h"
@@ -36,10 +34,13 @@ static char THIS_FILE[] = __FILE__;
 RDOStudioModel* model = NULL;
 
 RDOStudioModel::RDOStudioModel():
+	RDOThreadGUI( "RDOThreadModelGUI", static_cast<RDOKernelGUI*>(studioApp.studioGUI) ),
 	modelDocTemplate( NULL ),
 	useTemplate( false ),
-	closeWithDocDelete( true ),
+	autoDeleteDoc( true ),
 	showCanNotCloseModelMessage( true ),
+	GUI_HAS_MODEL( false ),
+	GUI_IS_RUNING( false ),
 	openError( false ),
 	modelClosed( true ),
 	saveAsFlag( false ),
@@ -53,6 +54,25 @@ RDOStudioModel::RDOStudioModel():
 
 	model = this;
 
+	notifies.push_back( RT_REPOSITORY_MODEL_NEW );
+	notifies.push_back( RT_REPOSITORY_MODEL_OPEN );
+	notifies.push_back( RT_REPOSITORY_MODEL_CLOSE );
+	notifies.push_back( RT_REPOSITORY_MODEL_CLOSE_CAN_CLOSE );
+	notifies.push_back( RT_REPOSITORY_MODEL_CLOSE_ERROR );
+	notifies.push_back( RT_REPOSITORY_MODEL_SAVE );
+	notifies.push_back( RT_SIMULATOR_PARSE_STRING );
+	notifies.push_back( RT_SIMULATOR_PARSE_OK );
+	notifies.push_back( RT_SIMULATOR_PARSE_ERROR );
+	notifies.push_back( RT_SIMULATOR_MODEL_START_BEFORE );
+	notifies.push_back( RT_SIMULATOR_MODEL_START_AFTER );
+	notifies.push_back( RT_SIMULATOR_MODEL_STOP_OK );
+	notifies.push_back( RT_SIMULATOR_MODEL_STOP_BY_USER );
+	notifies.push_back( RT_SIMULATOR_MODEL_STOP_RUNTIME_ERROR );
+	notifies.push_back( RT_SIMULATOR_FRAME_SHOW );
+	notifies.push_back( RT_DEBUG_STRING );
+
+	after_constructor();
+
 //	kernel.setCallbackReflect( RDOKernel::modelExit, modelExitCallback );
 }
 
@@ -62,7 +82,7 @@ RDOStudioModel::~RDOStudioModel()
 //	closeModel();
 }
 
-void RDOStudioModel::procGUI( RDOThread::RDOMessageInfo& msg )
+void RDOStudioModel::proc( RDOThread::RDOMessageInfo& msg )
 {
 	switch ( msg.message ) {
 		case RDOThread::RT_REPOSITORY_MODEL_NEW: {
@@ -113,10 +133,7 @@ void RDOStudioModel::procGUI( RDOThread::RDOMessageInfo& msg )
 			break;
 		}
 		case RDOThread::RT_SIMULATOR_MODEL_START_AFTER: {
-			RDOStudioModelDoc* doc = getModelDoc();
-			if ( doc ) {
-				doc->running = true;
-			}
+			GUI_IS_RUNING = true;
 			RDOStudioOutput* output = &studioApp.mainFrame->output;
 			output->showDebug();
 			output->appendStringToDebug( rdo::format( IDS_MODEL_STARTED ) );
@@ -270,8 +287,8 @@ bool RDOStudioModel::openModel( const std::string& modelName ) const
 	const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->UpdateWindow();
 	openError   = false;
 	modelClosed = false;
-	studioApp.broadcastMessage( RDOThread::RT_STUDIO_MODEL_OPEN, const_cast<std::string*>(&modelName) );
-	bool flag = true;//kernel->repository()->openModel( modelName );
+	bool flag = true;
+	studioApp.broadcastMessage( RDOThread::RT_STUDIO_MODEL_OPEN, &rdoRepository::RDOThreadRepository::OpenFile( modelName, flag ) );
 	if ( flag && !openError ) {
 		rdo::binarystream stream;
 		studioApp.studioGUI->sendMessage( kernel->repository(), RDOThread::RT_REPOSITORY_LOAD, &rdoRepository::RDOThreadRepository::FileData( rdoModelObjects::PMV, stream ) );
@@ -289,7 +306,7 @@ bool RDOStudioModel::openModel( const std::string& modelName ) const
 
 bool RDOStudioModel::saveModel() const
 {
-	bool res;
+	bool res = true;
 	studioApp.broadcastMessage( RDOThread::RT_STUDIO_MODEL_SAVE, &res );
 	return res;
 }
@@ -351,10 +368,7 @@ void RDOStudioModel::stopModel() const
 
 void RDOStudioModel::stopModelFromSimulator()
 {
-	RDOStudioModelDoc* doc = getModelDoc();
-	if ( doc ) {
-		doc->running = false;
-	}
+	GUI_IS_RUNING = false;
 	frameManager.clear();
 	frameManager.bmp_clear();
 }
@@ -365,42 +379,11 @@ void RDOStudioModel::modelExitCallback( int exitCode )
 	studioApp.autoClose( exitCode );
 }
 
-RDOStudioModelDoc* RDOStudioModel::getModelDoc() const
-{
-	POSITION pos = modelDocTemplate->GetFirstDocPosition();
-	if ( pos ) {
-		return static_cast<RDOStudioModelDoc*>(modelDocTemplate->GetNextDoc( pos ));
-	}
-	return NULL;
-}
-
-void RDOStudioModel::updateModify() const
-{
-	RDOStudioModelDoc* doc = getModelDoc();
-	if ( doc ) {
-		doc->updateModify();
-	}
-	if ( prevModify != isModify() ) {
-		static_cast<bool>(prevModify) = isModify();
-		plugins->pluginProc( rdoPlugin::PM_MODEL_MODIFY );
-	}
-}
-
-RDOEditorTabCtrl* RDOStudioModel::getTab() const
-{
-	RDOStudioModelDoc* doc = getModelDoc();
-	if ( doc ) {
-		RDOStudioModelView* view = doc->getView();
-		if ( view ) {
-			return view->tab;
-		}
-	}
-	return NULL;
-}
-
 void RDOStudioModel::newModelFromRepository()
 {
 	if ( modelDocTemplate ) {
+
+		GUI_HAS_MODEL = true;
 
 		BOOL maximize = false;
 		if ( !studioApp.mainFrame->MDIGetActive( &maximize ) ) {
@@ -459,6 +442,8 @@ void RDOStudioModel::newModelFromRepository()
 void RDOStudioModel::openModelFromRepository()
 {
 	if ( modelDocTemplate ) {
+
+		GUI_HAS_MODEL = true;
 
 		BOOL maximize = false;
 		if ( !studioApp.mainFrame->MDIGetActive( &maximize ) ) {
@@ -598,10 +583,10 @@ void RDOStudioModel::updateFrmDescribed()
 bool RDOStudioModel::canCloseModel()
 {
 	bool flag = true;
-	if ( isModify() && closeWithDocDelete ) {
+	if ( isModify() && autoDeleteDoc ) {
 		int res = AfxGetMainWnd()->MessageBox( rdo::format( ID_MSG_MODELSAVE_QUERY ).c_str(), NULL, MB_ICONQUESTION | MB_YESNOCANCEL );
 		switch ( res ) {
-			case IDYES   : flag = true; break;
+			case IDYES   : flag = saveModel(); break;
 			case IDNO    : flag = true; break;
 			case IDCANCEL: flag = false; break;
 		}
@@ -614,25 +599,17 @@ bool RDOStudioModel::canCloseModel()
 
 void RDOStudioModel::closeModelFromRepository()
 {
-	if ( closeWithDocDelete ) {
+	if ( autoDeleteDoc ) {
 		RDOStudioModelDoc* doc = getModelDoc();
 		if ( doc ) {
 			doc->OnCloseDocument();
 		}
 	}
+	GUI_HAS_MODEL = false;
 	if ( !showCanNotCloseModelMessage ) {
 		showCanNotCloseModelMessage = true;
 	}
 	modelClosed = true;
-}
-
-std::string RDOStudioModel::getName() const
-{
-	RDOStudioModelDoc* doc = getModelDoc();
-	if ( doc ) {
-		return doc->getName();
-	}
-	return "";
 }
 
 void RDOStudioModel::setName( const std::string& str )
@@ -646,24 +623,6 @@ void RDOStudioModel::setName( const std::string& str )
 	if ( flag ) {
 		plugins->pluginProc( rdoPlugin::PM_MODEL_NAME_CHANGED );
 	}
-}
-
-bool RDOStudioModel::isModify() const
-{
-	RDOStudioModelDoc* doc = getModelDoc();
-	if ( doc ) {
-		return doc->isModify();
-	}
-	return false;
-}
-
-bool RDOStudioModel::isRunning() const
-{
-	RDOStudioModelDoc* doc = getModelDoc();
-	if ( doc ) {
-		return doc->isRunning();
-	}
-	return false;
 }
 
 void RDOStudioModel::beforeModelStart()

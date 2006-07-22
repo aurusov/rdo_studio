@@ -20,6 +20,7 @@ private:
 	bool visible;
 
 	void repositionProgressCtrl( const bool redraw = true );
+
 public:
 	RDOStudioStatusBar();
 	virtual ~RDOStudioStatusBar();

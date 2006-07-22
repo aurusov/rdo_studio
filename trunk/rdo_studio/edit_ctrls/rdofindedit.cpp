@@ -20,6 +20,9 @@ static char* wordCharacters = "0123456789_$abcdefghijklmnopqrstuvwxyzABCDEFGHIJK
 // ----------------------------------------------------------------------------
 // ---------- RDOFindEdit
 // ---------------------------------------------------------------------------
+
+// ON_UPDATE_COMMAND_UI сделано
+
 BEGIN_MESSAGE_MAP( RDOFindEdit, RDOLogEdit )
 	//{{AFX_MSG_MAP(RDOFindEdit)
 	ON_WM_CREATE()

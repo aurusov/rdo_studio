@@ -33,17 +33,27 @@ class RDOStudioMainFrame: public CMDIFrameWnd
 DECLARE_DYNAMIC(RDOStudioMainFrame)
 
 private:
-	CToolBar   fileToolBar;
-	CImageList fileToolBarImageList;
-	CToolBar   editToolBar;
-	CImageList editToolBarImageList;
-	CToolBar   zoomToolBar;
-	CImageList zoomToolBarImageList;
-	CToolBar   modelToolBar;
-	CImageList modelToolBarImageList;
+	// ----------------------------------------------------------------------------
+	// ---------- RDOToolBar
+	// ----------------------------------------------------------------------------
+	class RDOToolBar: public CToolBar
+	{
+	protected:
+		CImageList disabledImage;
+
+	public:
+		void init( CWnd* parent, unsigned int tbResID, unsigned int tbDisabledImageResID );
+	};
+	friend class RDOToolBar;
+
+	RDOToolBar         fileToolBar;
+	RDOToolBar         editToolBar;
+	RDOToolBar         zoomToolBar;
+	RDOToolBar         modelToolBar;
 	RDOStudioStatusBar statusBar;
 
 	void dockControlBarBesideOf( CControlBar& bar, CControlBar& baseBar );
+	std::map< HWND, CWnd* > cmd_wnd;
 
 public:
 	RDOStudioMainFrame();
@@ -64,6 +74,13 @@ public:
 
 	void showWorkspace();
 	void showOutput();
+
+	void registerCmdWnd( CWnd* wnd, HWND hwnd = 0 ) {
+		if ( wnd ) {
+			if ( !hwnd ) hwnd = wnd->m_hWnd;
+			cmd_wnd[hwnd] = wnd;
+		}
+	}
 
 	void showNewModelTime( const double value );
 
@@ -127,10 +144,6 @@ protected:
 	afx_msg void OnModelFramePrev();
 	afx_msg void OnUpdateModelFrameNext(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateModelFramePrev(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateViewZoomIn(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateViewZoomOut(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateViewZoomReset(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateViewZoomAuto(CCmdUI* pCmdUI);
 	//}}AFX_MSG
 	afx_msg void OnUpdateCoordStatusBar( CCmdUI *pCmdUI );
 	afx_msg void OnUpdateModifyStatusBar( CCmdUI *pCmdUI );

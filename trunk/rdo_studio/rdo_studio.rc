@@ -1286,8 +1286,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,8,0,340
- PRODUCTVERSION 0,8,0,340
+ FILEVERSION 0,8,0,355
+ PRODUCTVERSION 0,8,0,355
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -1305,14 +1305,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "RAO studio\0"
-            VALUE "FileVersion", "0, 8, 0, 340\0"
+            VALUE "FileVersion", "0, 8, 0, 355\0"
             VALUE "InternalName", "RAO-Studio\0"
             VALUE "LegalCopyright", "Copyright (C) 2003-2006\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "RAO-Studio.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "RAO-Studio\0"
-            VALUE "ProductVersion", "0, 8, 0, 340\0"
+            VALUE "ProductVersion", "0, 8, 0, 355\0"
             VALUE "SpecialBuild", "\0"
         END
     END
@@ -1558,6 +1558,8 @@ BEGIN
     ID_MSG_MODELOPEN_ERROR  "Невозможно открыть модель '%s'."
     ID_MSG_MODELSAVE_QUERY  "Сохранить модель ?"
     ID_MSG_MODELCLOSE_ERROR "Невозможно закрыть модель."
+    ID_MSG_MODEL_NEED_STOPED 
+                            "У Вас работает модель. Перед закрытием её необходимо остановить."
 END
 
 STRINGTABLE DISCARDABLE 
@@ -3002,6 +3004,7 @@ BEGIN
     ID_MSG_MODELOPEN_ERROR  "Cannot open model '%s'."
     ID_MSG_MODELSAVE_QUERY  "Save changes in project ?"
     ID_MSG_MODELCLOSE_ERROR "Cannot close model."
+    ID_MSG_MODEL_NEED_STOPED "Model runing. Stop it before closing."
 END
 
 STRINGTABLE DISCARDABLE 

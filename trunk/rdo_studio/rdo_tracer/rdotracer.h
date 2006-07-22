@@ -10,11 +10,10 @@
 // ----------------------------------------------------------------------------
 namespace rdoTracer {
 
-class RDOTracer : public RDOTracerBase
+class RDOTracer: public RDOTracerBase
 {
-friend class RDOThreadStudioGUI;
 protected:
-	void procGUI( RDOThread::RDOMessageInfo& msg );
+	void proc( RDOThread::RDOMessageInfo& msg );
 
 public:
 	RDOTracer();

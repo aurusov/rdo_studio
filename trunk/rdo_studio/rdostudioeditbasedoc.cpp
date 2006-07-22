@@ -49,7 +49,3 @@ void RDOStudioEditBaseDoc::Dump(CDumpContext& dc) const
 	CDocument::Dump(dc);
 }
 #endif
-
-void RDOStudioEditBaseDoc::updateModify()
-{
-}

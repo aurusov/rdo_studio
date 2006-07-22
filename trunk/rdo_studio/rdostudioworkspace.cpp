@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "rdostudioworkspace.h"
+#include "rdostudioapp.h"
+#include "rdostudiomainfrm.h"
 #include "rdo_tracer/rdotracer.h"
 #include "rdo_tracer/tracer_ctrls/rdotracertreectrl.h"
 #include "resource.h"
@@ -47,11 +49,8 @@ int RDOStudioWorkspace::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	tab.insertItem( trace, rdo::format( IDS_TAB_TRACER ).c_str() );
 	tab.insertItem( frames, rdo::format( IDS_TAB_FRAMES ).c_str() );
 
-	return 0;
-}
+	studioApp.mainFrame->registerCmdWnd( trace );
+	studioApp.mainFrame->registerCmdWnd( frames );
 
-BOOL RDOStudioWorkspace::OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo) 
-{
-	if ( tab.OnCmdMsg( nID, nCode, pExtra, pHandlerInfo ) ) return TRUE;
-	return RDOStudioDockWnd::OnCmdMsg(nID, nCode, pExtra, pHandlerInfo);
+	return 0;
 }

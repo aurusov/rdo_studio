@@ -22,6 +22,8 @@ using namespace rdoStyle;
 // ----------------------------------------------------------------------------
 IMPLEMENT_DYNCREATE(RDOStudioChartView, RDOStudioView)
 
+// ON_UPDATE_COMMAND_UI сделано
+
 BEGIN_MESSAGE_MAP(RDOStudioChartView, RDOStudioView)
 	//{{AFX_MSG_MAP(RDOStudioChartView)
 	ON_WM_CREATE()

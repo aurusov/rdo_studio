@@ -609,6 +609,7 @@
 #define ID_MSG_MODELOPEN_ERROR          60002
 #define ID_MSG_MODELSAVE_QUERY          60003
 #define ID_MSG_MODELCLOSE_ERROR         60004
+#define ID_MSG_MODEL_NEED_STOPED        60005
 
 // Next default values for new objects
 // 

@@ -43,7 +43,7 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_AFXDLL" /Yu"stdafx.h" /FD /c
-# ADD CPP /nologo /MT /W3 /GX /O2 /I "../rdo_ctrls" /I "../rdo_kernel" /I "../rdo_repository" /I "../rdo_lib/rdo_simulator" /I "../rdo_plugin" /I "../rdo_common" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "SCI_LEXER" /Yu"stdafx.h" /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /Ob2 /I "../rdo_ctrls" /I "../rdo_kernel" /I "../rdo_repository" /I "../rdo_lib/rdo_simulator" /I "../rdo_plugin" /I "../rdo_common" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "SCI_LEXER" /Yu"stdafx.h" /FD /c
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x419 /d "NDEBUG" /d "_AFXDLL"
@@ -53,8 +53,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /machine:I386
-# ADD LINK32 Imm32.lib Version.lib Htmlhelp.lib /nologo /subsystem:windows /machine:I386 /out:"Release/RAO-studio.exe"
-# SUBTRACT LINK32 /profile
+# ADD LINK32 Imm32.lib Version.lib Htmlhelp.lib /nologo /subsystem:windows /profile /machine:I386 /out:"Release/RAO-studio.exe"
 
 !ELSEIF  "$(CFG)" == "rdo_studio - Win32 Debug"
 
@@ -80,8 +79,8 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 Imm32.lib Version.lib Htmlhelp.lib /nologo /subsystem:windows /debug /machine:I386 /out:"Debug/RAO-studio.exe"
-# SUBTRACT LINK32 /profile /nodefaultlib
+# ADD LINK32 Imm32.lib Version.lib Htmlhelp.lib /nologo /subsystem:windows /profile /debug /machine:I386 /out:"Debug/RAO-studio.exe"
+# SUBTRACT LINK32 /nodefaultlib
 
 !ENDIF 
 

@@ -6,17 +6,20 @@
 #endif
 
 #include "rdostudioframemanager.h"
+#include "rdostudiomodeldoc.h"
+#include "rdostudiomodelview.h"
+#include "rdostudioplugins.h"
 #include <rdosimwin.h>
+#include <rdothread.h>
 
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioModel
 // ----------------------------------------------------------------------------
-class RDOStudioModelDoc;
 namespace rdoEditor {
 	class RDOEditorTabCtrl;
 }
 
-class RDOStudioModel
+class RDOStudioModel: public RDOThreadGUI
 {
 friend class RDOStudioModelDoc;
 friend class RDOStudioFrameView;
@@ -29,8 +32,11 @@ private:
 	RDOStudioFrameManager frameManager;
 
 	bool useTemplate;
-	bool closeWithDocDelete;
+	bool autoDeleteDoc;
 	bool showCanNotCloseModelMessage;
+
+	bool GUI_HAS_MODEL;
+	bool GUI_IS_RUNING;
 
 	mutable bool openError;
 	mutable bool modelClosed;
@@ -56,10 +62,13 @@ private:
 	void showFrame();
 	void stopModelFromSimulator();
 
-	RDOStudioModelDoc* getModelDoc() const;
+	RDOStudioModelDoc* getModelDoc() const {
+		POSITION pos = modelDocTemplate->GetFirstDocPosition();
+		return pos ? static_cast<RDOStudioModelDoc*>(modelDocTemplate->GetNextDoc( pos )) : NULL;
+	}
 
 protected:
-	virtual void procGUI( RDOThread::RDOMessageInfo& msg );
+	virtual void proc( RDOThread::RDOMessageInfo& msg );
 
 public:
 	RDOStudioModel();
@@ -75,15 +84,26 @@ public:
 	void runModel() const;
 	void stopModel() const;
 
-	std::string getName() const;
+	std::string getName() const {
+		RDOStudioModelDoc* doc = getModelDoc();
+		return doc ? doc->getName() : "";
+	}
 	void setName( const std::string& str );
 
-	bool isModify() const;
-	bool isRunning() const;
-	double getModelTime() const { return modelTime; };
+	bool isModify() {
+		RDOStudioModelDoc* doc = getModelDoc();
+		bool result = doc ? doc->isModify() : false;
+		if ( prevModify != result ) {
+			prevModify = result;
+			plugins->pluginProc( rdoPlugin::PM_MODEL_MODIFY );
+		}
+		return result;
+	}
+	bool isRunning() const                            { return GUI_IS_RUNING; }
+	double getModelTime() const                       { return modelTime;     }
 
-	bool isFrmDescribed() const                  { return frmDescribed; };
-	rdosim::ShowMode getShowMode() const { return showMode;     };
+	bool isFrmDescribed() const                       { return frmDescribed;  }
+	rdosim::ShowMode getShowMode() const              { return showMode;      }
 	void setShowMode( const rdosim::ShowMode value );
 	double getShowRate() const;
 	void setShowRate( const double value ) const;
@@ -97,11 +117,18 @@ public:
 	void showFrame( int index )                 { frameManager.showFrame( index );                   }
 	void closeAllFrame()                        { frameManager.closeAll();                           }
 
-	bool hasModel() const { return getModelDoc() ? true : false; }
+	bool hasModel() const                       { return GUI_HAS_MODEL;                              }
 
-	void updateModify() const;
-
-	rdoEditor::RDOEditorTabCtrl* getTab() const;
+	rdoEditor::RDOEditorTabCtrl* getTab() const {
+		RDOStudioModelDoc* doc = getModelDoc();
+		if ( doc ) {
+			RDOStudioModelView* view = doc->getView();
+			if ( view ) {
+				return view->tab;
+			}
+		}
+		return NULL;
+	}
 
 	void updateStyleOfAllModel() const;
 

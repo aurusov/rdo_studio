@@ -53,7 +53,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /dll /machine:I386
-# ADD LINK32 /nologo /subsystem:windows /dll /machine:I386 /out:"../rdo_studio/Release/plugins/rdo_plugin_mfc.rsp"
+# ADD LINK32 /nologo /subsystem:windows /dll /profile /machine:I386 /out:"../rdo_studio/Release/plugins/rdo_plugin_mfc.rsp"
 
 !ELSEIF  "$(CFG)" == "rdo_plugin_mfc - Win32 Debug"
 
@@ -79,7 +79,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 /nologo /subsystem:windows /dll /debug /machine:I386 /out:"../rdo_studio/Debug/plugins/rdo_plugin_mfc.rsp" /pdbtype:sept
+# ADD LINK32 /nologo /subsystem:windows /dll /profile /debug /machine:I386 /out:"../rdo_studio/Debug/plugins/rdo_plugin_mfc.rsp"
 
 !ENDIF 
 

@@ -27,8 +27,8 @@ using namespace rdoTracerLog;
 // ----------------------------------------------------------------------------
 // ---------- RDOTracerBase
 // ----------------------------------------------------------------------------
-
-RDOTracerBase::RDOTracerBase():
+RDOTracerBase::RDOTracerBase( const std::string& _thread_name, RDOKernelGUI* _kernel_gui ):
+	RDOThreadGUI( _thread_name, _kernel_gui ),
 	log( NULL ),
 	tree( NULL ),
 	clipboardFormat( 0 ),

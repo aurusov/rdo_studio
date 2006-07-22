@@ -31,7 +31,7 @@ namespace rdosim
 // --------------------------------------------------------------------
 // ---------- RDOThreadRunTime
 // --------------------------------------------------------------------
-class RDOThreadRunTime: public RDOThread
+class RDOThreadRunTime: public RDOThreadMT
 {
 friend class RDOThreadSimulator;
 protected:
@@ -49,7 +49,7 @@ protected:
 // --------------------------------------------------------------------
 // ---------- RDOThreadSimulator
 // --------------------------------------------------------------------
-class RDOThreadSimulator: public RDOThread
+class RDOThreadSimulator: public RDOThreadMT
 {
 friend class RDOThreadRunTime;
 private:

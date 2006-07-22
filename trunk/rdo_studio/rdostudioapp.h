@@ -17,6 +17,7 @@
 // ---------- RDOStudioApp
 // ----------------------------------------------------------------------------
 class RDOStudioMainFrame;
+class RDOThreadStudio;
 class RDOThreadStudioGUI;
 namespace rdoTracer {
 class RDOTracer;
@@ -27,9 +28,11 @@ class RDOStudioApp: public CWinApp
 friend class RDOStudioModel;
 friend class rdoTracer::RDOTracer;
 friend class RDOStudioCommandLineInfo;
-
 private:
-	RDOThreadStudioGUI* studioGUI;
+	RDOThread* studioGUI;
+#ifdef RDO_MT
+	RDOThreadStudio* studioMT;
+#endif
 
 	bool initInstance;
 

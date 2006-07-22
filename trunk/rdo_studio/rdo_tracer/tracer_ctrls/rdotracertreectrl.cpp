@@ -28,6 +28,8 @@ SCODE RDODropSource::GiveFeedback( DROPEFFECT dropEffect )
 
 IMPLEMENT_DYNCREATE( RDOTracerTreeCtrl, RDOTreeCtrl )
 
+// ON_UPDATE_COMMAND_UI сделано
+
 BEGIN_MESSAGE_MAP( RDOTracerTreeCtrl, RDOTreeCtrl )
 	//{{AFX_MSG_MAP(RDOTracerTreeCtrl)
 	ON_WM_CREATE()

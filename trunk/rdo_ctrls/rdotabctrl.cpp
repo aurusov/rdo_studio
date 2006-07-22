@@ -7,46 +7,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-// ----------------------------------------------------------------------------
-// ---------- RDOTab
-// ----------------------------------------------------------------------------
-class RDOTab: public CTabCtrl
-{
-friend class RDOTabCtrl;
-
-protected:
-	RDOTabCtrl* tabCtrl;
-
-	RDOTab( RDOTabCtrl* _tabCtrl );
-	virtual ~RDOTab();
-
-	void showCurrentPage();
-	void changeCurrentItem();
-
-	int   getItemCount() const              { return GetItemCount();               };
-	CWnd* getItem( const int index ) const;
-	CWnd* getItemNext( const CWnd* const currentItem = NULL, const bool direction = true, const bool loop = true ) const;
-	CWnd* getItemCurrent() const            { return getItem( getCurrentIndex() ); };
-	int   getCurrentIndex() const           { return GetCurSel();                  };
-	int   findItem( const CWnd* const item ) const;
-	int   findItem( const HWND item ) const;
-	void  insertItem( CWnd* pWnd, LPCTSTR lpName );
-	void  setCurrentItem( const int index );
-
-	//{{AFX_MSG(RDOTab)
-	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
-	//}}AFX_MSG
-	afx_msg void OnSelChanged( NMHDR* pNMHDR, LRESULT* pResult );
-	DECLARE_MESSAGE_MAP()
-
-	//{{AFX_VIRTUAL(RDOTab)
-	public:
-	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-	protected:
-	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
-	//}}AFX_VIRTUAL
-};
-
 BEGIN_MESSAGE_MAP( RDOTab, CTabCtrl )
 	//{{AFX_MSG_MAP(RDOTab)
 	ON_WM_ERASEBKGND()
@@ -127,12 +87,6 @@ BOOL RDOTab::OnCommand(WPARAM wParam, LPARAM lParam)
 	return CTabCtrl::OnCommand( wParam, lParam );
 }
 
-void RDOTab::OnSelChanged( NMHDR* /*pNMHDR*/, LRESULT* /*pResult*/ )
-{
-	showCurrentPage();
-	changeCurrentItem();
-}
-
 void RDOTab::showCurrentPage()
 {
 	CWnd* pWnd = getItemCurrent();
@@ -193,22 +147,6 @@ CWnd* RDOTab::getItemNext( const CWnd* const currentItem, const bool direction, 
 	return NULL;
 }
 
-int RDOTab::findItem( const CWnd* const item ) const
-{
-	for ( int i = 0; i < getItemCount(); i++ ) {
-		if ( getItem( i ) == item ) return i;
-	}
-	return -1;
-}
-
-int RDOTab::findItem( const HWND item ) const
-{
-	for ( int i = 0; i < getItemCount(); i++ ) {
-		if ( getItem( i )->m_hWnd == item ) return i;
-	}
-	return -1;
-}
-
 void RDOTab::insertItem( CWnd* pWnd, LPCTSTR lpName )
 {
 	int item_id = getItemCount();
@@ -222,16 +160,6 @@ void RDOTab::insertItem( CWnd* pWnd, LPCTSTR lpName )
 		TabItem.mask   = TCIF_PARAM;
 		TabItem.lParam = (LPARAM)pWnd;
 		SetItem( item_id, &TabItem );
-	}
-}
-
-void RDOTab::setCurrentItem( const int index )
-{
-	if ( index < 0 && index > getItemCount() ) return;
-	if ( index != getCurrentIndex() ) {
-		SetCurSel( index );
-		showCurrentPage();
-		changeCurrentItem();
 	}
 }
 
@@ -308,39 +236,6 @@ void RDOTabCtrl::OnDestroy()
 	}
 }
 
-BOOL RDOTabCtrl::OnCmdMsg( UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo )
-{
-	CWnd* tabWnd   = getItemCurrent();
-	CWnd* focusWnd = GetFocus();
-	if ( tabWnd && focusWnd ) {
-		bool flag = false;
-		if ( tabWnd != focusWnd ) {
-			CWnd* wnd = focusWnd->GetParent();
-			while ( wnd ) {
-				if ( wnd == tabWnd ) {
-					flag = true;
-					break;
-				} else {
-					wnd = wnd->GetParent();
-				}
-			}
-		} else {
-			flag = true;
-		}
-		if ( flag ) {
-			if ( !focusWnd->OnCmdMsg( nID, nCode, pExtra, pHandlerInfo ) ) {
-				if ( tabWnd->OnCmdMsg( nID, nCode, pExtra, pHandlerInfo ) ) {
-					return TRUE;
-				}
-			} else {
-				return TRUE;
-			}
-		}
-	}
-	if ( tab->OnCmdMsg( nID, nCode, pExtra, pHandlerInfo ) ) return TRUE;
-	return CWnd::OnCmdMsg( nID, nCode, pExtra, pHandlerInfo );
-}
-
 void RDOTabCtrl::OnShowWindow( BOOL bShow, UINT nStatus )
 {
 	CWnd::OnShowWindow( bShow, nStatus );
@@ -371,53 +266,4 @@ void RDOTabCtrl::OnEnable( BOOL bEnable )
 	for ( int i = 0; i < getItemCount(); i++ ) {
 		getItem( i )->EnableWindow( bEnable );
 	}
-}
-
-int RDOTabCtrl::getItemCount() const
-{
-	return tab->getItemCount();
-}
-
-CWnd* RDOTabCtrl::getItem( const int index ) const
-{
-	return tab->getItem( index );
-}
-
-CWnd* RDOTabCtrl::getItemNext( const CWnd* const currentItem, const bool direction, const bool loop ) const
-{
-	return tab->getItemNext( currentItem, direction, loop );
-}
-
-CWnd* RDOTabCtrl::getItemCurrent() const
-{
-	return tab->getItemCurrent();
-}
-
-int RDOTabCtrl::getCurrentIndex() const
-{
-	return tab->getCurrentIndex();
-}
-
-int RDOTabCtrl::findItem( const CWnd* const item ) const
-{
-	return tab->findItem( item );
-}
-
-void RDOTabCtrl::insertItem( CWnd* pWnd, LPCTSTR lpName )
-{
-	tab->insertItem( pWnd, lpName );
-}
-
-void RDOTabCtrl::setCurrentItem( const int index )
-{
-	tab->setCurrentItem( index );
-}
-
-void RDOTabCtrl::changeCurrentItem()
-{
-}
-
-void RDOTabCtrl::modifyTabStyle( DWORD dwRemove, DWORD dwAdd, UINT nFlags )
-{
-	tab->ModifyStyle( dwRemove, dwAdd, nFlags );
 }

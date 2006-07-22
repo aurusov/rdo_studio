@@ -64,7 +64,7 @@ public:
 // ---------- RDOThreadRunTime
 // --------------------------------------------------------------------
 RDOThreadRunTime::RDOThreadRunTime():
-	RDOThread( "RDOThreadRunTime" ),
+	RDOThreadMT( "RDOThreadRunTime" ),
 	simulator( NULL ),
 	runtime_error( false )
 {
@@ -202,7 +202,7 @@ void RDOThreadRunTime::stop()
 // ---------- RDOThreadSimulator
 // --------------------------------------------------------------------
 RDOThreadSimulator::RDOThreadSimulator():
-	RDOThread( "RDOThreadSimulator" ),
+	RDOThreadMT( "RDOThreadSimulator" ),
 	runtime( NULL ), 
 	parser( NULL ),
 	thread_runtime( NULL ),

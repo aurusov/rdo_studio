@@ -100,13 +100,13 @@ int RDOStudioOutput::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	tab.insertItem( results, rdo::format( IDS_TAB_RESULT ).c_str() );
 	tab.insertItem( find, rdo::format( IDS_TAB_FIND ).c_str() );
 
-	return 0;
-}
+	studioApp.mainFrame->registerCmdWnd( build, build->getSCIHWND() );
+	studioApp.mainFrame->registerCmdWnd( debug, debug->getSCIHWND() );
+	studioApp.mainFrame->registerCmdWnd( trace );
+	studioApp.mainFrame->registerCmdWnd( results, results->getSCIHWND() );
+	studioApp.mainFrame->registerCmdWnd( find, find->getSCIHWND() );
 
-BOOL RDOStudioOutput::OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo) 
-{
-	if ( tab.OnCmdMsg( nID, nCode, pExtra, pHandlerInfo ) ) return TRUE;
-	return RDOStudioDockWnd::OnCmdMsg(nID, nCode, pExtra, pHandlerInfo);
+	return 0;
 }
 
 void RDOStudioOutput::showBuild()

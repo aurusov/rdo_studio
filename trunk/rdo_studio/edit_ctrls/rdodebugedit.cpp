@@ -16,6 +16,9 @@ using namespace rdoEditCtrl;
 // ----------------------------------------------------------------------------
 // ---------- RDODebugEdit
 // ---------------------------------------------------------------------------
+
+// ON_UPDATE_COMMAND_UI сделано
+
 BEGIN_MESSAGE_MAP( RDODebugEdit, RDOBaseEdit )
 	//{{AFX_MSG_MAP(RDODebugEdit)
 	ON_WM_CREATE()

@@ -14,6 +14,8 @@ class RDOStudioEditDoc: public RDOStudioEditBaseDoc
 {
 protected:
 	RDOStudioEditDoc();
+	virtual void updateModify();
+
 	DECLARE_DYNCREATE(RDOStudioEditDoc)
 
 public:
@@ -30,8 +32,6 @@ protected:
 
 public:
 	virtual ~RDOStudioEditDoc();
-
-	virtual void updateModify();
 
 #ifdef _DEBUG
 	virtual void AssertValid() const;

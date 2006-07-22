@@ -3,6 +3,8 @@
 #pragma once
 
 #include "../resource.h"
+#include <rdothread.h>
+#include <rdokernel.h>
 
 // ----------------------------------------------------------------------------
 // ---------- RDOTracerBase
@@ -25,7 +27,7 @@ class RDOTracerLogCtrl;
 
 namespace rdoTracer {
 
-class RDOTracerBase
+class RDOTracerBase: public RDOThreadGUI
 {
 private:
 	CMutex mutex;
@@ -80,10 +82,11 @@ private:
 
 	bool drawTrace;
 
-public:
-	RDOTracerBase();
+protected:
+	RDOTracerBase( const std::string& _thread_name, RDOKernelGUI* _kernel_gui );
 	virtual ~RDOTracerBase();
 
+public:
 	CMultiDocTemplate* createDocTemplate();
 	rdoTracerLog::RDOTracerLogCtrl* createLog();
 	RDOTracerTreeCtrl* createTree();

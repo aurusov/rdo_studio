@@ -10,12 +10,6 @@
 // --------------------------------------------------------------------
 // ---------- RDOKernel
 // --------------------------------------------------------------------
-#ifdef RDO_MT
-class RDOThreadStudio;
-#else
-class RDOThreadStudioGUI;
-#endif
-
 namespace rdosim {
 class RDOThreadSimulator;
 }
@@ -24,9 +18,9 @@ namespace rdoRepository {
 class RDOThreadRepository;
 }
 
-class RDOKernel: public RDOThread
+class RDOKernel: public RDOThreadMT
 {
-friend void RDOThread::broadcastMessage( RDOTreadMessage message, void* param );
+friend void RDOThread::broadcastMessage( RDOTreadMessage message, void* param, bool lock );
 #ifdef RDO_ST
 friend class RDOStudioApp;
 #endif
@@ -43,11 +37,6 @@ protected:
 #endif
 //	std::list< RDOTreadMethod > methods;
 //	CMutex                      methods_mutex;
-#ifdef RDO_MT
-	RDOThreadStudio*                    thread_studio;
-#else
-	RDOThreadStudioGUI*                 thread_studio;
-#endif
 	rdosim::RDOThreadSimulator*         thread_simulator;
 	rdoRepository::RDOThreadRepository* thread_repository;
 
@@ -68,14 +57,34 @@ public:
 
 //	void method_registration( RDOTreadMethod& msg ); // thread-safety
 
-#ifdef RDO_MT
-	RDOThreadStudio*                    studio() const     { return thread_studio;     }
-#else
-	RDOThreadStudioGUI*                 studio() const     { return thread_studio;     }
-#endif
 	rdosim::RDOThreadSimulator*         simulator() const  { return thread_simulator;  }
 	rdoRepository::RDOThreadRepository* repository() const { return thread_repository; }
 };
+
+#ifdef RDO_MT
+// --------------------------------------------------------------------
+// ---------- RDOKernelGUI
+// --------------------------------------------------------------------
+class RDOKernelGUI: public RDOThread
+{
+//#ifdef RDO_MT
+	friend virtual bool RDOThreadGUI::processMessages();
+//#endif
+protected:
+	RDOKernelGUI( const std::string& _thread_name );           // Создание и удаление через потомков
+	virtual ~RDOKernelGUI();
+
+	virtual void proc( RDOMessageInfo& msg );
+	virtual void idle();
+
+	std::list< RDOThread* > threads;
+
+	void registration( RDOThread* thread );
+	void unregistered( RDOThread* thread );
+};
+#else
+typedef RDOKernel RDOKernelGUI;
+#endif
 
 // ----------------------------------------------------------------------------
 extern RDOKernel* kernel;

@@ -27,12 +27,20 @@ static bool clear_after_stop = false;
 // ----------------------------------------------------------------------------
 // ---------- RDOTracer
 // ----------------------------------------------------------------------------
-
-RDOTracer::RDOTracer(): RDOTracerBase()
+RDOTracer::RDOTracer(): RDOTracerBase( "RDOStudioTracerGUI", static_cast<RDOKernelGUI*>(studioApp.studioGUI) )
 {
 	clear_after_stop = false;
 	
 	tracer = this;
+
+	notifies.push_back( RT_REPOSITORY_MODEL_CLOSE );
+	notifies.push_back( RT_SIMULATOR_MODEL_START_BEFORE );
+	notifies.push_back( RT_SIMULATOR_MODEL_STOP_OK );
+	notifies.push_back( RT_SIMULATOR_MODEL_STOP_BY_USER );
+	notifies.push_back( RT_SIMULATOR_MODEL_STOP_RUNTIME_ERROR );
+	notifies.push_back( RT_SIMULATOR_TRACE_STRING );
+
+	after_constructor();
 }
 
 RDOTracer::~RDOTracer()
@@ -40,7 +48,7 @@ RDOTracer::~RDOTracer()
 	tracer = NULL;
 }
 
-void RDOTracer::procGUI( RDOThread::RDOMessageInfo& msg )
+void RDOTracer::proc( RDOThread::RDOMessageInfo& msg )
 {
 	switch ( msg.message ) {
 		case RDOThread::RT_REPOSITORY_MODEL_CLOSE: {

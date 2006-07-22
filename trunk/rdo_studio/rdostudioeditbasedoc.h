@@ -15,7 +15,7 @@ protected:
 	DECLARE_DYNCREATE(RDOStudioEditBaseDoc)
 
 public:
-	virtual void updateModify();
+	virtual void updateModify() {};
 
 	//{{AFX_VIRTUAL(RDOStudioEditBaseDoc)
 	public:

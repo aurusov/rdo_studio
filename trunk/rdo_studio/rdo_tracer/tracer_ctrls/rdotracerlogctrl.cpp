@@ -18,6 +18,8 @@ using namespace rdoTracerLog;
 // ----------------------------------------------------------------------------
 static const UINT FIND_REPLASE_MSG = ::RegisterWindowMessage( FINDMSGSTRING );
 
+// ON_UPDATE_COMMAND_UI сделано
+
 BEGIN_MESSAGE_MAP( RDOTracerLogCtrl, RDOLogCtrl )
 	//{{AFX_MSG_MAP(RDOTracerLogCtrl)
 	ON_WM_CREATE()
@@ -272,13 +274,11 @@ void RDOTracerLogCtrl::OnHelpKeyword()
 void RDOTracerLogCtrl::OnUpdateCoordStatusBar( CCmdUI *pCmdUI )
 {
 	pCmdUI->Enable();
-	std::string str = "";
 	if ( selectedLine != -1 ) {
-		int x = 1;
-		int y = selectedLine + 1;
-		str = rdo::format( "%d: %d", x, y );
+		pCmdUI->SetText( rdo::format( "%d: %d", 1, selectedLine + 1 ).c_str() );
+	} else {
+		pCmdUI->SetText( "" );
 	}
-	pCmdUI->SetText( str.c_str() );
 }
 
 void RDOTracerLogCtrl::OnUpdateModifyStatusBar( CCmdUI *pCmdUI )

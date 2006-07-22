@@ -44,6 +44,9 @@ void RDOEditorEditBufferDlg::DoDataExchange( CDataExchange* pDX )
 // ----------------------------------------------------------------------------
 // ---------- RDOEditorEdit
 // ---------------------------------------------------------------------------
+
+// ON_UPDATE_COMMAND_UI сделано
+
 BEGIN_MESSAGE_MAP( RDOEditorEdit, RDOEditorBaseEdit )
 	//{{AFX_MSG_MAP(RDOEditorEdit)
 	ON_WM_CREATE()
@@ -417,12 +420,12 @@ void RDOEditorEdit::OnToggleAllFolds()
 
 void RDOEditorEdit::OnUpdateFold(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable( !isEmpty() );
+	pCmdUI->Enable( !GUI_IS_EMPTY );
 }
 
 void RDOEditorEdit::commentSelection() const
 {
-	if ( isSelected() ) {
+	if ( GUI_IS_SELECTED ) {
 		std::string startComment( "{ " );
 		std::string endComment( " }" );
 		int startCommentLength = startComment.length();
@@ -739,7 +742,7 @@ void RDOEditorEdit::onBufferAppend( const int bufIndex )
 
 void RDOEditorEdit::OnUndateBufferAppend( CCmdUI* pCmdUI )
 {
-	pCmdUI->Enable( view && isSelected() || getCurrentPos() != getLength() );
+	pCmdUI->Enable( view && GUI_IS_SELECTED || getCurrentPos() != getLength() );
 }
 
 void RDOEditorEdit::OnInsertBuffer1Edit() 

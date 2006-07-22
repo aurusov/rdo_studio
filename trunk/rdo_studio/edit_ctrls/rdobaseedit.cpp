@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "rdobaseedit.h"
+#include "../rdostudioapp.h"
+#include "../rdostudiomainfrm.h"
 #include "sci/SciLexer.h"
 #include "sci/PropSet.h"
 #include "sci/Scintilla.h"
@@ -55,6 +57,8 @@ using namespace rdoStyle;
 // ---------------
 static const UINT FIND_REPLASE_MSG = ::RegisterWindowMessage( FINDMSGSTRING );
 
+// ON_UPDATE_COMMAND_UI сделано
+
 BEGIN_MESSAGE_MAP( RDOBaseEdit, CWnd )
 	//{{AFX_MSG_MAP(RDOBaseEdit)
 	ON_WM_CREATE()
@@ -77,7 +81,7 @@ BEGIN_MESSAGE_MAP( RDOBaseEdit, CWnd )
 	ON_UPDATE_COMMAND_UI(ID_EDIT_CUT, OnUpdateEditCut)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_PASTE, OnUpdateEditPaste)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_CLEAR, OnUpdateEditClear)
-	ON_UPDATE_COMMAND_UI( ID_EDIT_SELECT_ALL      , OnSelectAll )
+	ON_UPDATE_COMMAND_UI( ID_EDIT_SELECT_ALL, OnSelectAll )
 	ON_COMMAND(ID_SEARCH_FIND, OnSearchFind)
 	ON_COMMAND(ID_SEARCH_REPLACE, OnSearchReplace)
 	ON_COMMAND(ID_SEARCH_FIND_NEXT, OnSearchFindNext)
@@ -91,7 +95,7 @@ BEGIN_MESSAGE_MAP( RDOBaseEdit, CWnd )
 	ON_COMMAND( ID_SEARCH_BOOKMARK_NEXT    , OnBookmarkNext )
 	ON_COMMAND( ID_SEARCH_BOOKMARK_PREVIOUS, OnBookmarkPrev )
 	ON_COMMAND( ID_SEARCH_BOOKMARKS_CLEAR  , OnBookmarkClearAll )
-	ON_UPDATE_COMMAND_UI( ID_SEARCH_BOOKMARK_NEXT    , OnHasBookmarks )
+	ON_UPDATE_COMMAND_UI( ID_SEARCH_BOOKMARK_NEXT, OnHasBookmarks )
 	ON_COMMAND(ID_VIEW_WHITESPACE, OnViewWhiteSpace)
 	ON_COMMAND(ID_VIEW_ENDOFLINE, OnViewEndOfLine)
 	ON_COMMAND(ID_VIEW_ZOOMIN, OnViewZoomIn)
@@ -102,13 +106,13 @@ BEGIN_MESSAGE_MAP( RDOBaseEdit, CWnd )
 	ON_UPDATE_COMMAND_UI( ID_VIEW_ZOOMIN          , OnUpdateZoomIn )
 	ON_UPDATE_COMMAND_UI( ID_VIEW_ZOOMOUT         , OnUpdateZoomOut )
 	ON_UPDATE_COMMAND_UI( ID_VIEW_ZOOMRESET       , OnUpdateZoomReset )
-	ON_UPDATE_COMMAND_UI( ID_EDIT_COPY            , OnIsSelected )
 	ON_UPDATE_COMMAND_UI( ID_EDIT_COPYASRTF       , OnIsSelected )
 	ON_UPDATE_COMMAND_UI( ID_EDIT_UPPERCASE       , OnIsSelected )
 	ON_UPDATE_COMMAND_UI( ID_EDIT_LOWERCASE       , OnIsSelected )
 	ON_UPDATE_COMMAND_UI( ID_SEARCH_BOOKMARK_PREVIOUS, OnHasBookmarks )
 	ON_UPDATE_COMMAND_UI( ID_SEARCH_BOOKMARKS_CLEAR  , OnHasBookmarks )
-	ON_UPDATE_COMMAND_UI(ID_SEARCH_FIND_PREVIOUS, OnUpdateSearchFindNextPrev)
+	ON_UPDATE_COMMAND_UI( ID_SEARCH_FIND_PREVIOUS, OnUpdateSearchFindNextPrev )
+	ON_UPDATE_COMMAND_UI( ID_EDIT_COPY, OnIsSelected )
 	//}}AFX_MSG_MAP
 
 	ON_REGISTERED_MESSAGE( FIND_REPLASE_MSG, OnFindReplaceMsg )
@@ -119,6 +123,16 @@ int RDOBaseEdit::objectCount = 0;
 
 RDOBaseEdit::RDOBaseEdit():
 	CWnd(),
+	GUI_ID_EDIT_UNDO( false ),
+	GUI_ID_EDIT_REDO( false ),
+	GUI_ID_EDIT_CUT( false ),
+	GUI_IS_SELECTED( false ),
+	GUI_IS_EMPTY( false ),
+	GUI_IS_READONLY( false ),
+	GUI_IS_MODIFY( false ),
+	GUI_HAS_BOOKMARK( false ),
+	GUI_ID_VIEW_WHITESPACE( false ),
+	GUI_ID_VIEW_ENDOFLINE( false ),
 	sciHWND( 0 ),
 	sciEditor( 0 ),
 	sciFun( NULL ),
@@ -174,6 +188,10 @@ BOOL RDOBaseEdit::OnNotify( WPARAM /*wParam*/, LPARAM lParam, LRESULT* /*pResult
 				if ( style && style->tab->autoIndent && ( scn->ch == '\r' || scn->ch == '\n' ) ) autoIndent();
 				return TRUE;
 			}
+			case SCN_UPDATEUI: {
+				updateEditGUI();
+				return TRUE;
+			}
 		}
 	}
 	return FALSE;
@@ -213,6 +231,7 @@ void RDOBaseEdit::OnSetFocus( CWnd* pOldWnd )
 	if ( sciHWND ) {
 		::SetFocus( sciHWND );
 	}
+	updateAllGUI();
 }
 
 void RDOBaseEdit::OnSize( UINT nType, int cx, int cy )
@@ -373,37 +392,37 @@ void RDOBaseEdit::OnEditLowerCase()
 
 void RDOBaseEdit::OnUpdateEditUndo(CCmdUI* pCmdUI) 
 {
-	pCmdUI->Enable( sendEditor(SCI_CANUNDO) );
+	pCmdUI->Enable( GUI_ID_EDIT_UNDO );
 }
 
 void RDOBaseEdit::OnUpdateEditRedo(CCmdUI* pCmdUI) 
 {
-	pCmdUI->Enable( sendEditor(SCI_CANREDO) );
+	pCmdUI->Enable( GUI_ID_EDIT_REDO );
 }
 
 void RDOBaseEdit::OnIsSelected( CCmdUI* pCmdUI )
 {
-	pCmdUI->Enable( isSelected() );
+	pCmdUI->Enable( GUI_IS_SELECTED );
 }
 
-void RDOBaseEdit::OnUpdateEditCut(CCmdUI* pCmdUI) 
+void RDOBaseEdit::OnUpdateEditCut( CCmdUI* pCmdUI )
 {
-	pCmdUI->Enable( !isReadOnly() && isSelected() );
+	pCmdUI->Enable( GUI_ID_EDIT_CUT );
 }
 
 void RDOBaseEdit::OnUpdateEditPaste(CCmdUI* pCmdUI) 
 {
-	pCmdUI->Enable( sendEditor(SCI_CANPASTE) );
+	pCmdUI->Enable( sendEditor( SCI_CANPASTE ) ? true : false );
 }
 
 void RDOBaseEdit::OnUpdateEditClear(CCmdUI* pCmdUI) 
 {
-	pCmdUI->Enable( getCurrentPos() != getLength() || isSelected() );
+	pCmdUI->Enable( getCurrentPos() != getLength() || GUI_IS_SELECTED );
 }
 
 void RDOBaseEdit::OnSelectAll( CCmdUI* pCmdUI )
 {
-	pCmdUI->Enable( !isEmpty() );
+	pCmdUI->Enable( !GUI_IS_EMPTY );
 }
 
 std::string RDOBaseEdit::getCurrentWord() const
@@ -555,12 +574,12 @@ void RDOBaseEdit::OnUpdateSearchFindNextPrev(CCmdUI* pCmdUI)
 
 void RDOBaseEdit::OnUpdateSearchFind(CCmdUI* pCmdUI) 
 {
-	pCmdUI->Enable( !isEmpty() );
+	pCmdUI->Enable( !GUI_IS_EMPTY );
 }
 
 void RDOBaseEdit::OnUpdateSearchReplace(CCmdUI* pCmdUI) 
 {
-	pCmdUI->Enable( !isReadOnly() && !isEmpty() );
+	pCmdUI->Enable( !GUI_IS_READONLY && !GUI_IS_EMPTY );
 }
 
 void RDOBaseEdit::findNext( std::string& findWhat, const bool searchDown, const bool matchCase, const bool matchWholeWord )
@@ -1060,7 +1079,7 @@ void RDOBaseEdit::horzScrollToCurrentPos() const
 	sendEditor( SCI_REPLACESEL, 0, 0 );
 }
 
-void RDOBaseEdit::load( rdo::binarystream& stream ) const
+void RDOBaseEdit::load( rdo::binarystream& stream )
 {
 	bool readOnly = isReadOnly();
 	setReadOnly( false );
@@ -1134,6 +1153,7 @@ void RDOBaseEdit::autoIndent() const
 void RDOBaseEdit::OnBookmarkToggle()
 {
 	bookmarkToggle();
+	updateBookmarksGUI();
 }
 
 void RDOBaseEdit::OnBookmarkNext()
@@ -1221,42 +1241,63 @@ void RDOBaseEdit::OnBookmarkClearAll()
 			(*it)->bookmarkClearAll();
 		}
 	}
+	updateBookmarksGUI();
+}
+
+void RDOBaseEdit::updateBookmarksGUI()
+{
+	GUI_HAS_BOOKMARK = false;
+	if ( !group ) {
+		GUI_HAS_BOOKMARK = hasBookmarks();
+	} else {
+		for ( RDOBaseEditListIterator it = group->begin(); it != group->end(); it++ ) {
+			GUI_HAS_BOOKMARK = (*it)->hasBookmarks();
+			if ( GUI_HAS_BOOKMARK ) break;
+		}
+	}
+}
+
+void RDOBaseEdit::updateEditGUI()
+{
+	GUI_IS_SELECTED  = isSelected();
+	GUI_IS_EMPTY     = isEmpty();
+	GUI_ID_EDIT_UNDO = sendEditor( SCI_CANUNDO  ) ? true : false;
+	GUI_ID_EDIT_REDO = sendEditor( SCI_CANREDO  ) ? true : false;
+	GUI_ID_EDIT_CUT  = !GUI_IS_READONLY && GUI_IS_SELECTED;
+	GUI_IS_MODIFY    = sendEditor( SCI_GETMODIFY ) ? true : false;
+}
+
+void RDOBaseEdit::updateAllGUI()
+{
+	updateEditGUI();
+	updateBookmarksGUI();
 }
 
 void RDOBaseEdit::OnHasBookmarks( CCmdUI* pCmdUI )
 {
-	bool flag = false;
-	if ( !group ) {
-		flag = hasBookmarks();
-	} else {
-		for ( RDOBaseEditListIterator it = group->begin(); it != group->end(); it++ ) {
-			flag = (*it)->hasBookmarks();
-			if ( flag ) break;
-		}
-	}
-	pCmdUI->Enable( flag );
+	pCmdUI->Enable( GUI_HAS_BOOKMARK );
 }
 
 void RDOBaseEdit::OnViewWhiteSpace() 
 {
+	GUI_ID_VIEW_WHITESPACE = !GUI_ID_VIEW_WHITESPACE;
 	if ( !group ) {
-		setViewWhiteSpace( !isViewWhiteSpace() );
+		setViewWhiteSpace( GUI_ID_VIEW_WHITESPACE );
 	} else {
-		bool flag = !isViewWhiteSpace();
 		for ( RDOBaseEditListIterator it = group->begin(); it != group->end(); it++ ) {
-			(*it)->setViewWhiteSpace( flag );
+			(*it)->setViewWhiteSpace( GUI_ID_VIEW_WHITESPACE );
 		}
 	}
 }
 
 void RDOBaseEdit::OnViewEndOfLine() 
 {
+	GUI_ID_VIEW_ENDOFLINE = !GUI_ID_VIEW_ENDOFLINE;
 	if ( !group ) {
-		setEndOfLine( !isViewEndOfLine() );
+		setEndOfLine( GUI_ID_VIEW_ENDOFLINE );
 	} else {
-		bool flag = !isViewEndOfLine();
 		for ( RDOBaseEditListIterator it = group->begin(); it != group->end(); it++ ) {
-			(*it)->setEndOfLine( flag );
+			(*it)->setEndOfLine( GUI_ID_VIEW_ENDOFLINE );
 		}
 	}
 }
@@ -1296,12 +1337,12 @@ void RDOBaseEdit::OnViewZoomReset()
 
 void RDOBaseEdit::OnUpdateWhiteSpace( CCmdUI* pCmdUI )
 {
-	pCmdUI->SetCheck( isViewWhiteSpace() );
+	pCmdUI->SetCheck( GUI_ID_VIEW_WHITESPACE );
 }
 
 void RDOBaseEdit::OnUpdateEndOfLine( CCmdUI* pCmdUI )
 {
-	pCmdUI->SetCheck( isViewEndOfLine() );
+	pCmdUI->SetCheck( GUI_ID_VIEW_ENDOFLINE );
 }
 
 void RDOBaseEdit::OnUpdateZoomIn( CCmdUI *pCmdUI )

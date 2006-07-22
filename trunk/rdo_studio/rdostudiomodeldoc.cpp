@@ -3,6 +3,7 @@
 #include "rdostudiomodelview.h"
 #include "rdostudiomodel.h"
 #include "rdostudioapp.h"
+#include "rdostudiomainfrm.h"
 #include "rdo_edit/rdoeditortabctrl.h"
 #include "resource.h"
 
@@ -27,8 +28,7 @@ END_MESSAGE_MAP()
 
 RDOStudioModelDoc::RDOStudioModelDoc():
 	RDOStudioEditBaseDoc(),
-	name( "" ),
-	running( false )
+	name( "" )
 {
 }
 
@@ -86,6 +86,10 @@ RDOStudioModelView* RDOStudioModelDoc::getView() const
 
 BOOL RDOStudioModelDoc::SaveModified()
 {
+	if ( model->isRunning() ) {
+		AfxGetMainWnd()->MessageBox( rdo::format( ID_MSG_MODEL_NEED_STOPED ).c_str(), NULL, MB_ICONWARNING | MB_OK );
+		return false;
+	}
 	bool flag = true;
 	if ( isModify() ) {
 		int res = AfxGetMainWnd()->MessageBox( rdo::format( ID_MSG_MODELSAVE_QUERY ).c_str(), NULL, MB_ICONQUESTION | MB_YESNOCANCEL );
@@ -96,22 +100,11 @@ BOOL RDOStudioModelDoc::SaveModified()
 		}
 	}
 	if ( flag ) {
-		model->closeWithDocDelete = false;
+		model->autoDeleteDoc = false;
 		model->closeModel();
-		model->closeWithDocDelete = true;
+		model->autoDeleteDoc = true;
 	}
 	return flag;
-}
-
-void RDOStudioModelDoc::OnCloseDocument() 
-{
-	model->stopModel();
-	RDOStudioEditBaseDoc::OnCloseDocument();
-}
-
-std::string RDOStudioModelDoc::getName() const
-{
-	return name;
 }
 
 void RDOStudioModelDoc::setName( const std::string& str )

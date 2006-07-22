@@ -24,8 +24,6 @@ public:
 
 public:
 	//{{AFX_VIRTUAL(RDOStudioView)
-	public:
-	virtual BOOL OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo);
 	//}}AFX_VIRTUAL
 
 protected:

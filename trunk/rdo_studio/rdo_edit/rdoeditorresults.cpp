@@ -15,6 +15,9 @@ using namespace rdoEditor;
 // ----------------------------------------------------------------------------
 // ---------- RDOEditorResults
 // ---------------------------------------------------------------------------
+
+// ON_UPDATE_COMMAND_UI сделано
+
 BEGIN_MESSAGE_MAP( RDOEditorResults, RDOEditorBaseEdit )
 	//{{AFX_MSG_MAP(RDOEditorResults)
 	ON_WM_CREATE()

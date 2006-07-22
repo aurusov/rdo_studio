@@ -19,7 +19,7 @@ BEGIN_MESSAGE_MAP(RDOStudioChildFrame, CMDIChildWnd)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-RDOStudioChildFrame::RDOStudioChildFrame()
+RDOStudioChildFrame::RDOStudioChildFrame(): CMDIChildWnd()
 {
 }
 
@@ -29,7 +29,7 @@ RDOStudioChildFrame::~RDOStudioChildFrame()
 
 BOOL RDOStudioChildFrame::PreCreateWindow(CREATESTRUCT& cs)
 {
-	if( !CMDIChildWnd::PreCreateWindow(cs) ) return FALSE;
+	if ( !CMDIChildWnd::PreCreateWindow(cs) ) return FALSE;
 	cs.dwExStyle &= ~WS_EX_CLIENTEDGE;
 	return TRUE;
 }
@@ -49,5 +49,6 @@ void RDOStudioChildFrame::Dump(CDumpContext& dc) const
 BOOL RDOStudioChildFrame::OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo) 
 {
 	if ( studioApp.mainFrame->OnCmdMsgForDockOnly( nID, nCode, pExtra, pHandlerInfo ) ) return TRUE;
-	return CMDIChildWnd::OnCmdMsg(nID, nCode, pExtra, pHandlerInfo);
+	if ( CMDIChildWnd::OnCmdMsg(nID, nCode, pExtra, pHandlerInfo) ) return TRUE;
+	return FALSE;
 }
