@@ -15,8 +15,6 @@ class RDOCalcSeqInit;
 class RDOCalcSeqNext;
 }
 
-using namespace rdoRuntime;
-
 namespace rdoParse 
 {
 
@@ -45,8 +43,8 @@ class RDOFUNFunctionListElement: public RDODeletable
 {
 public:
 	virtual ~RDOFUNFunctionListElement() {}
-	virtual RDOCalcConst *createResultCalc(const RDORTPResParam *const retType) const = 0;
-	virtual RDOCalcIsEqual *createIsEqualCalc(const RDOFUNFunctionParam *const param, const RDOCalcFuncParam *const funcParam) const;
+	virtual rdoRuntime::RDOCalcConst *createResultCalc(const RDORTPResParam *const retType) const = 0;
+	virtual rdoRuntime::RDOCalcIsEqual *createIsEqualCalc(const RDOFUNFunctionParam *const param, const rdoRuntime::RDOCalcFuncParam *const funcParam) const;
 	virtual bool isEquivalence() const { return false; }
 };
 
@@ -55,7 +53,7 @@ class RDOFUNFunctionListElementItentif: public RDOFUNFunctionListElement
 public:
 	std::string *value;
 	RDOFUNFunctionListElementItentif(std::string *_value) : value(_value) {}
-	RDOCalcConst *createResultCalc(const RDORTPResParam *const retType) const;
+	rdoRuntime::RDOCalcConst *createResultCalc(const RDORTPResParam *const retType) const;
 };
 
 class RDOFUNFunctionListElementReal: public RDOFUNFunctionListElement
@@ -63,7 +61,7 @@ class RDOFUNFunctionListElementReal: public RDOFUNFunctionListElement
 public:
 	double *value;
 	RDOFUNFunctionListElementReal(double *_value) : value(_value) {}
-	RDOCalcConst *createResultCalc(const RDORTPResParam *const retType) const;
+	rdoRuntime::RDOCalcConst *createResultCalc(const RDORTPResParam *const retType) const;
 };
 
 class RDOFUNFunctionListElementInt: public RDOFUNFunctionListElement
@@ -71,22 +69,22 @@ class RDOFUNFunctionListElementInt: public RDOFUNFunctionListElement
 public:
 	int value;
 	RDOFUNFunctionListElementInt(int _value) : value(_value) {}
-	RDOCalcConst *createResultCalc(const RDORTPResParam *const retType) const;
+	rdoRuntime::RDOCalcConst *createResultCalc(const RDORTPResParam *const retType) const;
 };
 
 class RDOFUNFunctionListElementEq: public RDOFUNFunctionListElement
 {
 public:
 	bool isEquivalence() const { return true; }
-	RDOCalcConst *createResultCalc(const RDORTPResParam *const retType) const;
+	rdoRuntime::RDOCalcConst *createResultCalc(const RDORTPResParam *const retType) const;
 };
 
 class RDOFUNLogic: public RDODeletable
 {
 public:
-	RDOCalc* calc;
+	rdoRuntime::RDOCalc* calc;
 
-	RDOFUNLogic( RDOCalc *_calc ): calc(_calc) {}
+	RDOFUNLogic( rdoRuntime::RDOCalc *_calc ): calc(_calc) {}
 	RDOFUNLogic* operator &&( const RDOFUNLogic& second );
 	RDOFUNLogic* operator ||( const RDOFUNLogic& second );
 };
@@ -99,13 +97,13 @@ public:
 	std::string* str; // for type == 3
 
 private:
-	RDOCalc* calc;
+	rdoRuntime::RDOCalc* calc;
 
 public:
-	RDOCalc* createCalc( const RDORTPResParam* const forType = NULL );
+	rdoRuntime::RDOCalc* createCalc( const RDORTPResParam* const forType = NULL );
 	int getType() const { return type; }
 
-	RDOFUNArithm( int _type, RDOCalc* _calc ):
+	RDOFUNArithm( int _type, rdoRuntime::RDOCalc* _calc ):
 		type( _type ),
 		enu( NULL ),
 		str( NULL ),
@@ -152,7 +150,7 @@ private:
 	std::vector<const RDOFUNFunctionParam *>	params;
 	std::vector<const RDOFUNFunctionListElement *>	listElems;	// for list and table
 	std::vector<const RDOFUNCalculateIf *>	calculateIf;	// for algorithmic
-	RDOFunCalc *functionCalc;
+	rdoRuntime::RDOFunCalc *functionCalc;
 
 public:
 	RDOFUNFunction( const std::string* const _name, const RDORTPResParam* const _retType);
@@ -166,7 +164,7 @@ public:
 	void createAlgorithmicCalc();
 	const std::string *const getName() const { return name; }
 	const std::vector<const RDOFUNFunctionParam *> getParams() const { return params; }
-	const RDOFunCalc *getFunctionCalc() const { return functionCalc; }
+	const rdoRuntime::RDOFunCalc *getFunctionCalc() const { return functionCalc; }
 	const RDORTPResParam *const getType() const { return retType; }
 };
 
@@ -209,8 +207,8 @@ class RDOFUNSequence: public RDODeletable
 public:
 	RDOFUNSequenceHeader *header;
 	int base;
-	RDOCalcSeqInit *initSeq;
-	RDOCalcSeqNext *next;
+	rdoRuntime::RDOCalcSeqInit *initSeq;
+	rdoRuntime::RDOCalcSeqNext *next;
 protected:
 	RDOFUNSequence(RDOFUNSequenceHeader *_header, int _base);
 public:
@@ -293,8 +291,8 @@ public:
 class RDOFUNSequenceByHistEnum: public RDOFUNSequenceByHist
 {
 public:
-	std::vector<RDOValue> val;
-	std::vector<double> freq;
+	std::vector< rdoRuntime::RDOValue> val;
+	std::vector< double >              freq;
 
 	RDOFUNSequenceByHistEnum(RDOFUNSequenceByHistHeader *_header, std::string *_val, double *_freq):
 		RDOFUNSequenceByHist(_header) {
@@ -351,7 +349,7 @@ public:
 class RDOFUNSequenceEnumerativeEnum: public RDOFUNSequenceEnumerative
 {
 public:
-	std::vector<RDOValue> val;
+	std::vector< rdoRuntime::RDOValue > val;
 
 	RDOFUNSequenceEnumerativeEnum(RDOFUNSequenceEnumerativeHeader *_header, std::string *_val):
 		RDOFUNSequenceEnumerative(_header) {

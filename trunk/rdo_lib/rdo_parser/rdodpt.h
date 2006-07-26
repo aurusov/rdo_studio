@@ -58,7 +58,7 @@ private:
 	DPTSearchValue value;
 	RDOFUNArithm *ruleCost;
 	int currParamNum;
-	std::vector<RDOValue> params;
+	std::vector< rdoRuntime::RDOValue > params;
 
 public:
 	RDODPTSearchActivity(std::string *_name, std::string *_ruleName);
@@ -70,7 +70,7 @@ public:
 	void addParam();
 	RDOPATPatternRule *getRule() { return rule; }
 
-	RDOSearchActivityRuntime *createActivityRuntime(RDORuntime *sim);
+	rdoRuntime::RDOSearchActivityRuntime* createActivityRuntime( rdoRuntime::RDORuntime* sim );
 };
 
 class RDODPTSearch: public RDODeletable
@@ -118,7 +118,7 @@ private:
 	std::string *name;
 	const RDOPATPattern *pattern;
 	int currParamNum;
-	std::vector<RDOValue> params;
+	std::vector< rdoRuntime::RDOValue > params;
 
 public:
 	RDODPTSomeActivity(std::string *_name, std::string *_ruleName);
@@ -162,11 +162,11 @@ public:
 class RDODPTFreeActivity: public RDODeletable
 {
 private:
-	std::string *name;
-	const RDOPATPattern *pattern;
+	std::string*         name;
+	const RDOPATPattern* pattern;
 	int currParamNum;
-	std::vector<RDOValue> params;
-	std::vector<std::string *> hotKeys;
+	std::vector< rdoRuntime::RDOValue > params;
+	std::vector< std::string* >         hotKeys;
 
 public:
 	RDODPTFreeActivity(std::string *_name, std::string *_ruleName);
@@ -243,7 +243,7 @@ protected:
 	rdoRuntime::RDOPROCGenerate* runtime;
 
 public:
-	RDOPROCGenerate( const std::string& _name, RDOCalc* time, RDOPROCProcess* _process = NULL );
+	RDOPROCGenerate( const std::string& _name, rdoRuntime::RDOCalc* time, RDOPROCProcess* _process = NULL );
 };
 
 // ----------------------------------------------------------------------------
@@ -280,7 +280,7 @@ protected:
 	rdoRuntime::RDOPROCAdvance* runtime;
 
 public:
-	RDOPROCAdvance( const std::string& _name, RDOCalc* time, RDOPROCProcess* _process = NULL );
+	RDOPROCAdvance( const std::string& _name, rdoRuntime::RDOCalc* time, RDOPROCProcess* _process = NULL );
 };
 
 // ----------------------------------------------------------------------------

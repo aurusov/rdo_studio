@@ -323,7 +323,7 @@ dpt_process_line:	IDENTIF	{
 		res->setTrace( true );
 
 		// Пропишем значения параметров перечислимого типа по-умолчанию
-		RDOValue state_val = rtp_param->getType()->getRSSDefaultValue();
+		rdoRuntime::RDOValue state_val = rtp_param->getType()->getRSSDefaultValue();
 		res->addValue( state_val );
 		res->currParam++;
 

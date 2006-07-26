@@ -175,7 +175,7 @@ dpt_main:
 		| dpt_main dpt_process_end
 		| error {
 			parser->lexer_loc_set( &(@1) );
-			parser->error( rdosim::RDOSyntaxError::UNKNOWN );
+			parser->error( rdoSimulator::RDOSyntaxError::UNKNOWN );
 		};
 
 /* ///////////////////////  SEARCH POINT ///////////////////////////// */
