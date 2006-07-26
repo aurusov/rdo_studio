@@ -59,11 +59,11 @@ public:
 		RT_THREAD_CLOSE = 1,
 		RT_THREAD_CONNECTION,
 		RT_THREAD_DISCONNECTION,
-		RT_THREAD_REGISTERED,
-		RT_THREAD_UNREGISTERED,
+		RT_THREAD_REGISTERED,                 // param = RDOThread
+		RT_THREAD_UNREGISTERED,               // param = RDOThread
 		RT_THREAD_STOP_AFTER,
 		RT_STUDIO_MODEL_NEW,
-		RT_STUDIO_MODEL_OPEN,
+		RT_STUDIO_MODEL_OPEN,                 // param = rdoRepository::RDOThreadRepository::OpenFile = { model_name:std::string*, result:bool }
 		RT_STUDIO_MODEL_SAVE,
 		RT_STUDIO_MODEL_SAVE_AS,
 		RT_STUDIO_MODEL_CLOSE,
@@ -74,26 +74,27 @@ public:
 		RT_REPOSITORY_MODEL_OPEN,
 		RT_REPOSITORY_MODEL_SAVE,
 		RT_REPOSITORY_MODEL_CLOSE,
-		RT_REPOSITORY_MODEL_CLOSE_CAN_CLOSE, // Работает как И
+		RT_REPOSITORY_MODEL_CLOSE_CAN_CLOSE,   // param = result:bool, работает как И
 		RT_REPOSITORY_MODEL_CLOSE_ERROR,
-		RT_REPOSITORY_LOAD,
-		RT_REPOSITORY_SAVE,
+		RT_REPOSITORY_LOAD,                    // param = rdoRepository::RDOThreadRepository::FileData = { file_type:rdoModelObjects::RDOFileType, result:rdo::binarystream }
+		RT_REPOSITORY_SAVE,                    // param = rdoRepository::RDOThreadRepository::FileData = { file_type:rdoModelObjects::RDOFileType, stream:rdo::binarystream }
 		RT_SIMULATOR_PARSE_OK,
 		RT_SIMULATOR_PARSE_ERROR,
 		RT_SIMULATOR_PARSE_ERROR_SMR,
-		RT_SIMULATOR_PARSE_STRING,
-		RT_SIMULATOR_MODEL_START_BEFORE,
-		RT_SIMULATOR_MODEL_START_AFTER,
+		RT_SIMULATOR_PARSE_STRING,             // param = std::string
 		RT_SIMULATOR_MODEL_STOP_OK,
 		RT_SIMULATOR_MODEL_STOP_BY_USER,
 		RT_SIMULATOR_MODEL_STOP_RUNTIME_ERROR,
-		RT_SIMULATOR_TRACE_STRING,
-		RT_SIMULATOR_FRAME_SHOW,
-		RT_SIMULATOR_GET_ERRORS,
-		RT_DEBUG_STRING,
-		RT_TEST1,
-		RT_TEST2,
-		RT_TEST3
+		RT_SIMULATOR_GET_LIST,                 // param = rdoSimulator::RDOThreadSimulator::GetList = { type:GetList::Type, result:std::list< std::string > }
+		RT_SIMULATOR_GET_ERRORS,               // param = result:std::vector< RDOSyntaxError >
+		RT_RUNTIME_MODEL_START_BEFORE,
+		RT_RUNTIME_MODEL_START_AFTER,
+		RT_RUNTIME_MODEL_STOP_BEFORE,
+		RT_RUNTIME_MODEL_STOP_AFTER,
+		RT_RUNTIME_TRACE_STRING,               // param = std::string
+		RT_RUNTIME_GET_TIMENOW,                // param = result:double
+		RT_RUNTIME_GET_FRAME,                  // param = { frame number:int, result:rdoSimulator::RDOFrame }
+		RT_DEBUG_STRING                        // param = std::string
 	};
 	std::string messageToString( RDOTreadMessage message ) {
 		switch ( message ) {
@@ -123,18 +124,19 @@ public:
 			case RT_SIMULATOR_PARSE_ERROR             : return "RT_SIMULATOR_PARSE_ERROR";
 			case RT_SIMULATOR_PARSE_ERROR_SMR         : return "RT_SIMULATOR_PARSE_ERROR_SMR";
 			case RT_SIMULATOR_PARSE_STRING            : return "RT_SIMULATOR_PARSE_STRING";
-			case RT_SIMULATOR_MODEL_START_BEFORE      : return "RT_SIMULATOR_MODEL_START_BEFORE";
-			case RT_SIMULATOR_MODEL_START_AFTER       : return "RT_SIMULATOR_MODEL_START_AFTER";
 			case RT_SIMULATOR_MODEL_STOP_OK           : return "RT_SIMULATOR_MODEL_STOP_OK";
 			case RT_SIMULATOR_MODEL_STOP_BY_USER      : return "RT_SIMULATOR_MODEL_STOP_BY_USER";
 			case RT_SIMULATOR_MODEL_STOP_RUNTIME_ERROR: return "RT_SIMULATOR_MODEL_STOP_RUNTIME_ERROR";
-			case RT_SIMULATOR_TRACE_STRING            : return "RT_SIMULATOR_TRACE_STRING";
-			case RT_SIMULATOR_FRAME_SHOW              : return "RT_SIMULATOR_FRAME_SHOW";
+			case RT_SIMULATOR_GET_LIST                : return "RT_SIMULATOR_GET_LIST";
 			case RT_SIMULATOR_GET_ERRORS              : return "RT_SIMULATOR_GET_ERRORS";
+			case RT_RUNTIME_MODEL_START_BEFORE        : return "RT_RUNTIME_MODEL_START_BEFORE";
+			case RT_RUNTIME_MODEL_START_AFTER         : return "RT_RUNTIME_MODEL_START_AFTER";
+			case RT_RUNTIME_MODEL_STOP_BEFORE         : return "RT_RUNTIME_MODEL_STOP_BEFORE";
+			case RT_RUNTIME_MODEL_STOP_AFTER          : return "RT_RUNTIME_MODEL_STOP_AFTER";
+			case RT_RUNTIME_TRACE_STRING              : return "RT_RUNTIME_TRACE_STRING";
+			case RT_RUNTIME_GET_TIMENOW               : return "RT_RUNTIME_GET_TIMENOW";
+			case RT_RUNTIME_GET_FRAME                 : return "RT_RUNTIME_GET_FRAME";
 			case RT_DEBUG_STRING                      : return "RT_DEBUG_STRING";
-			case RT_TEST1                             : return "RT_TEST1";
-			case RT_TEST2                             : return "RT_TEST2";
-			case RT_TEST3                             : return "RT_TEST3";
 			default                                   : return "RT_UNKNOWN";
 		}
 	}
@@ -238,7 +240,6 @@ protected:
 	const std::string  thread_name;
 	int                thread_id;
 	int                idle_cnt;
-	int                broadcast_cnt;
 
 	std::vector< RDOTreadMessage > notifies; // Список сообщений, на которые реагирует треда
 	                                         // Если он пуст, то обрабатываются все сообщения.
@@ -252,23 +253,23 @@ protected:
 	std::list< RDOMessageInfo > messages;
 	CMutex                      messages_mutex;
 
-	class BroadCastData {
+	class BroadcastData {
 	public:
 		int cnt;
 		std::vector< CEvent* > events;
 		HANDLE*                handles;
-		BroadCastData(): cnt( 0 ), handles( NULL ) {
+		BroadcastData(): cnt( 0 ), handles( NULL ) {
 		}
-		BroadCastData( int _cnt ): cnt( _cnt ) {
+		BroadcastData( int _cnt ): cnt( _cnt ) {
 			for ( int i = 0; i < cnt; i++ ) {
 				events.push_back( new CEvent() );
 			}
 			handles = new HANDLE[cnt];
 		}
-		BroadCastData( const BroadCastData& copy ): cnt( copy.cnt ), handles( copy.handles ) {
+		BroadcastData( const BroadcastData& copy ): cnt( copy.cnt ), handles( copy.handles ) {
 			events.assign( copy.events.begin(), copy.events.end() );
 		}
-		~BroadCastData() {
+		~BroadcastData() {
 		}
 		void clear() {
 			for ( int i = 0; i < cnt; i++ ) {
@@ -297,7 +298,9 @@ protected:
 			}
 		}
 	};
-	std::vector< BroadCastData > broadcast_data;
+	std::vector< BroadcastData > broadcast_data;
+	int                          broadcast_cnt;
+
 #endif
 
 #ifdef RDO_MT
@@ -317,8 +320,6 @@ protected:
 
 	// Надо обязательно вызвать из конструктора объекта, чтобы настроить правильно this для виртуальных функций,
 	void after_constructor();
-//	// Надо обязательно вызвать из деструктора объекта, чтобы правильно остановить треду в режиме RDO_ST
-//	void before_destructor();
 
 	virtual void proc( RDOMessageInfo& msg ) = 0;
 	virtual void idle();

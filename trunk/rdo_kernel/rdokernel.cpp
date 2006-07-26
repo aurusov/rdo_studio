@@ -18,6 +18,7 @@ RDOKernel* kernel = NULL;
 // --------------------------------------------------------------------
 RDOKernel::RDOKernel():
 	RDOThreadMT( "RDOKernel" ),
+	thread_runtime( NULL ),
 	thread_simulator( NULL ),
 	thread_repository( NULL )
 {
@@ -141,44 +142,6 @@ void RDOKernel::idle()
 // -autorun -autoexit "C:\rdo\rdo_cdrom_1\RAO-cd-rom-1\bin\RAO-explorer\Data\Russian\Models\Barber\Source\Barber.smr"
 // -autorun -autoexit "C:\rdo\rdo_cdrom_1\RAO-cd-rom-1\bin\RAO-explorer\Data\Russian\Models\Heidel\Source\Heidel.smr
 
-/*
-RDOThread* RDOKernel::find( const std::string& thread_name ) const
-{
-	threads_mutex.Unlock();
-	std::list< RDOThread* >::const_iterator it = threads.begin();
-	while ( it != threads.end() ) {
-		if ( (*it)->thread_name.compare( thread_name ) == 0 ) {
-			RDOThread* thread = *it;
-			threads_mutex.Unlock();
-			return thread;
-		}
-		it++;
-	}
-	threads_mutex.Unlock();
-	return NULL;
-}
-
-void RDOKernel::sendMessageToThreadByName( const std::string& thread_name, RDOTreadMessage message, void* param )
-{
-	threads_mutex.Lock();
-	RDOThread* thread = find( thread_name );
-	if ( thread ) {
-		thread->sendMessageFrom( this, message, param );
-	}
-	threads_mutex.Unlock();
-}
-
-void RDOKernel::sendMessageToThreadByNameFrom( RDOThread* from, const std::string& thread_name, RDOTreadMessage message, void* param )
-{
-	threads_mutex.Lock();
-	RDOThread* thread = find( thread_name );
-	if ( thread ) {
-		thread->sendMessageFrom( from, message, param );
-	}
-	threads_mutex.Unlock();
-}
-*/
-
 class CheckThreadID
 {
 protected:
@@ -211,7 +174,8 @@ void RDOKernel::registration( RDOThread* thread )
 			threads.push_back( thread );
 		}
 	}
-	if ( !thread_simulator  && thread->getName() == "RDOThreadSimulator"  ) thread_simulator  = static_cast<rdosim::RDOThreadSimulator*>(thread);
+	if ( !thread_runtime    && thread->getName() == "RDOThreadRunTime"    ) thread_runtime    = static_cast<rdoRuntime::RDOThreadRunTime*>(thread);
+	if ( !thread_simulator  && thread->getName() == "RDOThreadSimulator"  ) thread_simulator  = static_cast<rdoSimulator::RDOThreadSimulator*>(thread);
 	if ( !thread_repository && thread->getName() == "RDOThreadRepository" ) thread_repository = static_cast<rdoRepository::RDOThreadRepository*>(thread);
 #ifdef RDO_MT
 	threads_mutex.Unlock();
@@ -236,6 +200,7 @@ void RDOKernel::unregistered( RDOThread* thread )
 #endif
 		return;
 	}
+	if ( thread_runtime    && thread->getName() == "RDOThreadRunTime"    ) thread_runtime    = NULL;
 	if ( thread_simulator  && thread->getName() == "RDOThreadSimulator"  ) thread_simulator  = NULL;
 	if ( thread_repository && thread->getName() == "RDOThreadRepository" ) thread_repository = NULL;
 #ifdef RDO_MT
@@ -353,6 +318,7 @@ void RDOKernelGUI::registration( RDOThread* thread )
 {
 	if ( thread && thread->thread_id == thread_id && std::find( threads.begin(), threads.end(), thread ) == threads.end() ) {
 		threads.push_back( thread );
+		update_notifies();
 #ifdef TR_TRACE
 		trace( getName() + " INFO: " + thread->getName() + " REGISTERED" );
 #endif
@@ -364,10 +330,27 @@ void RDOKernelGUI::unregistered( RDOThread* thread )
 {
 	if ( thread && std::find( threads.begin(), threads.end(), thread ) != threads.end() ) {
 		threads.remove( thread );
+		update_notifies();
 #ifdef TR_TRACE
 		trace( getName() + " INFO: " + thread->getName() + " UNREGISTERED" );
 #endif
 		broadcastMessage( RT_THREAD_UNREGISTERED, thread );
+	}
+}
+
+void RDOKernelGUI::update_notifies()
+{
+	notifies.clear();
+	std::list< RDOThread* >::const_iterator thread_it = threads.begin();
+	while ( thread_it != threads.end() ) {
+		std::vector< RDOTreadMessage >::const_iterator notify_it = (*thread_it)->notifies.begin();
+		while ( notify_it != (*thread_it)->notifies.end() ) {
+			if ( std::find( notifies.begin(), notifies.end(), *notify_it ) == notifies.end() ) {
+				notifies.push_back( *notify_it );
+			}
+			notify_it++;
+		}
+		thread_it++;
 	}
 }
 #endif

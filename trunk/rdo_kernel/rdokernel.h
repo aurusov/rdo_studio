@@ -10,8 +10,12 @@
 // --------------------------------------------------------------------
 // ---------- RDOKernel
 // --------------------------------------------------------------------
-namespace rdosim {
+namespace rdoSimulator {
 class RDOThreadSimulator;
+}
+
+namespace rdoRuntime {
+class RDOThreadRunTime;
 }
 
 namespace rdoRepository {
@@ -37,7 +41,10 @@ protected:
 #endif
 //	std::list< RDOTreadMethod > methods;
 //	CMutex                      methods_mutex;
-	rdosim::RDOThreadSimulator*         thread_simulator;
+//	void method_registration( RDOTreadMethod& msg ); // thread-safety
+
+	rdoRuntime::RDOThreadRunTime*       thread_runtime;
+	rdoSimulator::RDOThreadSimulator*   thread_simulator;
 	rdoRepository::RDOThreadRepository* thread_repository;
 
 	void registration( RDOThread* thread );
@@ -48,16 +55,11 @@ protected:
 #endif
 
 public:
-//	RDOThread* find( const std::string& thread_name ) const; // thread-safety
-//	void sendMessageToThreadByName( const std::string& thread_name, RDOTreadMessage message, void* param = NULL );                      // thread-safety
-//	void sendMessageToThreadByNameFrom( RDOThread* from, const std::string& thread_name, RDOTreadMessage message, void* param = NULL ); // thread-safety
-
 	static void init();
 	static void close();
 
-//	void method_registration( RDOTreadMethod& msg ); // thread-safety
-
-	rdosim::RDOThreadSimulator*         simulator() const  { return thread_simulator;  }
+	rdoRuntime::RDOThreadRunTime*       runtime() const    { return thread_runtime;    }
+	rdoSimulator::RDOThreadSimulator*   simulator() const  { return thread_simulator;  }
 	rdoRepository::RDOThreadRepository* repository() const { return thread_repository; }
 };
 
@@ -81,6 +83,7 @@ protected:
 
 	void registration( RDOThread* thread );
 	void unregistered( RDOThread* thread );
+	void update_notifies();
 };
 #else
 typedef RDOKernel RDOKernelGUI;
