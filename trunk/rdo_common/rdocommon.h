@@ -12,6 +12,7 @@ std::string format( const char* str, ... );
 std::string format( const char* str, va_list& params );
 std::string format( unsigned int resource, ... );
 std::string format( unsigned int resource, va_list& params );
+void toLower( std::string& str );
 void trim( std::string& str );
 void trimLeft( std::string& str );
 void trimRight( std::string& str );
@@ -68,7 +69,7 @@ enum RDOExitCode {
 
 };
 
-namespace rdosim
+namespace rdoSimulator
 {
 
 enum ShowMode
@@ -232,14 +233,14 @@ struct RDONullElement: public RDOFrameElement
 
 struct RDOFrame
 {
-	int r, g, b;	// background
+	int r, g, b;	            // background
 	bool hasBackPicture;
 	std::string* picFileName;	// back picture
-	int width, height;	// frame size
-	std::vector<RDOFrameElement *> elements;
+	int width, height;	        // frame size
+	std::vector< RDOFrameElement* > elements;
 	~RDOFrame();
 };
 
-} // namespace rdosim
+} // namespace rdoSimulator
 
 #endif // RDOCOMMON_H
