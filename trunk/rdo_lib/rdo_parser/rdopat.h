@@ -11,8 +11,6 @@ class RDOPatternRuntime;
 class RDOSelectResourceCommon;
 }
 
-using namespace rdoRuntime;
-
 namespace rdoParse 
 {
 
@@ -57,7 +55,7 @@ protected:
 	RDOPATPattern( const std::string* const _name, const bool _trace );
 	virtual ~RDOPATPattern() {}
 
-	RDOPatternRuntime* patRuntime;
+	rdoRuntime::RDOPatternRuntime* patRuntime;
 
 public:
 	enum ConvertStatus {
@@ -141,10 +139,10 @@ public:
 
 	const std::string* const getName() const  { return name; };
 	virtual const RDORTPResType* const getType() const     = 0;
-	virtual RDOCalc* createSelectEmptyResourceCalc()       = 0; // first without choice
-	virtual RDOCalc* createSelectFirstResourceChoiceCalc() = 0; // first with choice
-	virtual RDOCalc* createSelectResourceChoiceCalc()      = 0; // first/withmax/withmin with choice
-	virtual RDOSelectResourceCommon* createSelectResourceCommonChoiceCalc() = 0; // for common choice
+	virtual rdoRuntime::RDOCalc* createSelectEmptyResourceCalc()       = 0; // first without choice
+	virtual rdoRuntime::RDOCalc* createSelectFirstResourceChoiceCalc() = 0; // first with choice
+	virtual rdoRuntime::RDOCalc* createSelectResourceChoiceCalc()      = 0; // first/withmax/withmin with choice
+	virtual rdoRuntime::RDOSelectResourceCommon* createSelectResourceCommonChoiceCalc() = 0; // for common choice
 	virtual bool isDirect() const  = 0;
 };
 
@@ -157,10 +155,10 @@ public:
 	RDORelevantResourceDirect( const std::string* const _name, const int _numberOfResource, const RDORSSResource* const _res, const RDOPATPattern::ConvertStatus _begin, const RDOPATPattern::ConvertStatus _end = RDOPATPattern::CS_NoChange ): RDORelevantResource( _name, _numberOfResource, _begin, _end ), res( _res ) {}
 	const RDORSSResource* const getResource() const { return res; }
 	virtual const RDORTPResType* const getType() const;
-	virtual RDOCalc* createSelectEmptyResourceCalc();
-	virtual RDOCalc* createSelectFirstResourceChoiceCalc();
-	virtual RDOCalc* createSelectResourceChoiceCalc();
-	virtual RDOSelectResourceCommon* createSelectResourceCommonChoiceCalc();
+	virtual rdoRuntime::RDOCalc* createSelectEmptyResourceCalc();
+	virtual rdoRuntime::RDOCalc* createSelectFirstResourceChoiceCalc();
+	virtual rdoRuntime::RDOCalc* createSelectResourceChoiceCalc();
+	virtual rdoRuntime::RDOSelectResourceCommon* createSelectResourceCommonChoiceCalc();
 	virtual bool isDirect() const  { return true; }
 };
 
@@ -172,10 +170,10 @@ private:
 public:
 	RDORelevantResourceByType( const std::string* const _name, const int _numberOfResource, const RDORTPResType* const _type, const RDOPATPattern::ConvertStatus _begin, const RDOPATPattern::ConvertStatus _end = RDOPATPattern::CS_NoChange ): RDORelevantResource( _name, _numberOfResource, _begin, _end ), type( _type ) {}
 	virtual const RDORTPResType* const getType() const { return type; };
-	virtual RDOCalc* createSelectEmptyResourceCalc();
-	virtual RDOCalc* createSelectFirstResourceChoiceCalc();
-	virtual RDOCalc* createSelectResourceChoiceCalc();
-	virtual RDOSelectResourceCommon* createSelectResourceCommonChoiceCalc();
+	virtual rdoRuntime::RDOCalc* createSelectEmptyResourceCalc();
+	virtual rdoRuntime::RDOCalc* createSelectFirstResourceChoiceCalc();
+	virtual rdoRuntime::RDOCalc* createSelectResourceChoiceCalc();
+	virtual rdoRuntime::RDOSelectResourceCommon* createSelectResourceCommonChoiceCalc();
 	virtual bool isDirect() const  { return false; }
 };
 
@@ -183,6 +181,7 @@ class RDOPATPatternOperation: public RDOPATPattern
 {
 protected:
 	RDOPATPatternOperation( bool _trace, std::string* _name );
+
 public:
 	RDOPATPatternOperation( std::string* _name, bool _trace );
 	virtual void addRelRes( std::string* relName, std::string* resName, ConvertStatus beg, ConvertStatus end );
@@ -264,7 +263,9 @@ public:
 
 class RDOPATParamsSet: public RDODeletable
 {
+private:
 	std::vector<std::string *> paramNames;	
+
 public:
 	std::vector<RDOFUNArithm *> paramArithms;	
 	std::vector<int> paramNumbs;	
@@ -275,4 +276,4 @@ public:
 
 } // namespace rdoParse
 
-#endif //RDOPAT_PAT
+#endif // RDOPAT_PAT

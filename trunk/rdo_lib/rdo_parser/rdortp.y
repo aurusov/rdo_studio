@@ -165,7 +165,7 @@ rtp_list:	/* empty */
 			| rtp_list rtp_res_type
 			| error {
 				parser->lexer_loc_set( &(@1) );
-//				parser->error( rdosim::RDOSyntaxError::UNKNOWN );
+//				parser->error( rdoSimulator::RDOSyntaxError::UNKNOWN );
 				parser->error( "Ожидается ключевое слово $Resource_type" );
 			};
 
@@ -188,7 +188,7 @@ rtp_res_type_hdr:	Resource_type IDENTIF_COLON rtp_vid_res {
 						std::string *name = (std::string *)$2;
 						if( parser->findRTPResType(name) ) {
 							parser->lexer_loc_set( @2.first_line, @2.first_column + name->length() );
-							parser->error( rdosim::RDOSyntaxError::RTP_SECOND_RES_TYPE, name->c_str() );
+							parser->error( rdoSimulator::RDOSyntaxError::RTP_SECOND_RES_TYPE, name->c_str() );
 						}
 						RDORTPResType *res = new RDORTPResType( name, $3 != 0 );
 						$$ = (int)res;
@@ -281,13 +281,13 @@ rtp_param_type:	integer rtp_int_diap rtp_int_default_val {
 					parser->error( "Ожидается окончание описания параметра-ссылки, например, зачение по-умолчанию" );
 				}
 				| integer error {
-					parser->error( rdosim::RDOSyntaxError::RTP_WAITING_FOR_INT_PARAM_END );
+					parser->error( rdoSimulator::RDOSyntaxError::RTP_WAITING_FOR_INT_PARAM_END );
 				}
 				| real error {
-					parser->error( rdosim::RDOSyntaxError::RTP_WAITING_FOR_REAL_PARAM_END );
+					parser->error( rdoSimulator::RDOSyntaxError::RTP_WAITING_FOR_REAL_PARAM_END );
 				}
 				| rtp_enum error {
-					parser->error( rdosim::RDOSyntaxError::RTP_WAITING_FOR_ENUM_PARAM_END );
+					parser->error( rdoSimulator::RDOSyntaxError::RTP_WAITING_FOR_ENUM_PARAM_END );
 				};
 
 rtp_int_diap:	/* empty */ {
@@ -300,15 +300,15 @@ rtp_int_diap:	/* empty */ {
 				}
 				| '[' REAL_CONST dblpoint REAL_CONST {
 					parser->lexer_loc_set( &(@2) );
-					parser->error( rdosim::RDOSyntaxError::RTP_INVALID_INT_RANGE_REAL );
+					parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_INT_RANGE_REAL );
 				}
 				| '[' REAL_CONST dblpoint INT_CONST {
 					parser->lexer_loc_set( &(@2) );
-					parser->error( rdosim::RDOSyntaxError::RTP_INVALID_INT_RANGE_REAL );
+					parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_INT_RANGE_REAL );
 				}
 				| '[' INT_CONST dblpoint REAL_CONST {
 					parser->lexer_loc_set( &(@4) );
-					parser->error( rdosim::RDOSyntaxError::RTP_INVALID_INT_RANGE_REAL );
+					parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_INT_RANGE_REAL );
 				}
 				| '[' INT_CONST dblpoint INT_CONST error {
 					parser->lexer_loc_set( &(@4) );
@@ -321,7 +321,7 @@ rtp_int_diap:	/* empty */ {
 				| '[' error {
 					parser->lexer_loc_set( &(@2) );
 					parser->error( "Диапазон задан неверно" );
-//					parser->error( rdosim::RDOSyntaxError::RTP_INVALID_RANGE );
+//					parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_RANGE );
 				};
 
 rtp_real_diap:	/* empty */ {
@@ -379,7 +379,7 @@ rtp_real_diap:	/* empty */ {
 				| '[' error {
 					parser->lexer_loc_set( &(@2) );
 					parser->error( "Диапазон задан неверно" );
-//					parser->error( rdosim::RDOSyntaxError::RTP_INVALID_RANGE );
+//					parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_RANGE );
 				};
 
 rtp_int_default_val:	/* empty */ {
@@ -391,7 +391,7 @@ rtp_int_default_val:	/* empty */ {
 						| '=' REAL_CONST {
 							// Целое число инициализируется вещественным: %f
 							parser->lexer_loc_set( &(@2) );
-							parser->error( rdosim::RDOSyntaxError::RTP_INVALID_DEFVAULT_INT_AS_REAL, *(double*)$2 );
+							parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_DEFVAULT_INT_AS_REAL, *(double*)$2 );
 						}
 						| '=' error {
 							if ( parser->lexer_loc_line() == @1.first_line ) {
@@ -526,12 +526,12 @@ rtp_such_as:	such_as IDENTIF '.' IDENTIF {
 					const RDORTPResType *const rt = parser->findRTPResType( type );
 					if ( !rt ) {
 						parser->lexer_loc_set( &(@2) );
-						parser->error( rdosim::RDOSyntaxError::RTP_INVALID_SUCHAS_RES_TYPE, type->c_str() );
+						parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_SUCHAS_RES_TYPE, type->c_str() );
 					}
 					const RDORTPParamDesc *const rp = rt->findRTPParam( param );
 					if ( !rp ) {
 						parser->lexer_loc_set( &(@4) );
-						parser->error( rdosim::RDOSyntaxError::RTP_INVALID_SUCHAS_PARAM, type->c_str(), param->c_str() );
+						parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_SUCHAS_PARAM, type->c_str(), param->c_str() );
 					}
 					$$ = (int)rp;
 				}
@@ -540,7 +540,7 @@ rtp_such_as:	such_as IDENTIF '.' IDENTIF {
 					const RDORTPResType *const rt = parser->findRTPResType( type );
 					if ( !rt ) {
 						parser->lexer_loc_set( &(@2) );
-						parser->error( rdosim::RDOSyntaxError::RTP_INVALID_SUCHAS_RES_TYPE, type->c_str() );
+						parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_SUCHAS_RES_TYPE, type->c_str() );
 					} else {
 						parser->lexer_loc_set( &(@3) );
 						parser->error( "Не указан параметр" );
@@ -551,7 +551,7 @@ rtp_such_as:	such_as IDENTIF '.' IDENTIF {
 					const RDORTPResType *const rt = parser->findRTPResType( type );
 					if ( !rt ) {
 						parser->lexer_loc_set( &(@2) );
-						parser->error( rdosim::RDOSyntaxError::RTP_INVALID_SUCHAS_RES_TYPE, type->c_str() );
+						parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_SUCHAS_RES_TYPE, type->c_str() );
 					} else {
 						parser->lexer_loc_set( &(@4) );
 						parser->error( "Ошибка при указании параметра" );
@@ -562,7 +562,7 @@ rtp_such_as:	such_as IDENTIF '.' IDENTIF {
 					const RDORTPResType *const rt = parser->findRTPResType( type );
 					if ( !rt ) {
 						parser->lexer_loc_set( &(@2) );
-						parser->error( rdosim::RDOSyntaxError::RTP_INVALID_SUCHAS_RES_TYPE, type->c_str() );
+						parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_SUCHAS_RES_TYPE, type->c_str() );
 					} else {
 						parser->lexer_loc_set( &(@2) );
 						parser->error( "После имени типа должен быть указан параметр через точку" );

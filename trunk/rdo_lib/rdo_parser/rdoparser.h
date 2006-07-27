@@ -125,10 +125,10 @@ public:
 //	int pokazCounter;
 //	int constCounter;
 
-	RDORuntime* runTime;
+	rdoRuntime::RDORuntime* runTime;
 	RDOSMR*     smr;
 
-	std::vector< rdosim::RDOSyntaxError > errors;
+	std::vector< rdoSimulator::RDOSyntaxError > errors;
 
 	std::stringstream modelStructure;
 	std::stringstream& getModelStructure();
@@ -145,10 +145,10 @@ public:
 	void parse( int files = rdoModelObjects::obALL );
 	void parse( rdoModelObjects::RDOParseType file );
 	void parse( rdoModelObjects::RDOParseType file, std::istream& stream );
-	void error( rdosim::RDOSyntaxError::ErrorCode error_code, ... );
-	void error( const std::string& message, rdosim::RDOSyntaxError::ErrorCode error_code = rdosim::RDOSyntaxError::UNKNOWN );
-	void warning( rdosim::RDOSyntaxError::ErrorCode error_code, ... );
-	void warning( const std::string& message, rdosim::RDOSyntaxError::ErrorCode error_code = rdosim::RDOSyntaxError::UNKNOWN );
+	void error( rdoSimulator::RDOSyntaxError::ErrorCode error_code, ... );
+	void error( const std::string& message, rdoSimulator::RDOSyntaxError::ErrorCode error_code = rdoSimulator::RDOSyntaxError::UNKNOWN );
+	void warning( rdoSimulator::RDOSyntaxError::ErrorCode error_code, ... );
+	void warning( const std::string& message, rdoSimulator::RDOSyntaxError::ErrorCode error_code = rdoSimulator::RDOSyntaxError::UNKNOWN );
 	void addConstant(RDORTPParamDesc *const _cons);
 	const RDOFUNConstant *RDOParser::findFUNConst(const std::string *const _cons) const;
 

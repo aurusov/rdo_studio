@@ -9,8 +9,6 @@ namespace rdoRuntime
 class RDOActivityRuntime;
 }
 
-using namespace rdoRuntime;
-
 namespace rdoParse 
 {
 
@@ -26,7 +24,7 @@ private:
 	const std::string *const name;
 	const RDOPATPattern *pattern;
 	int currParam;
-	RDOActivityRuntime *activity;
+	rdoRuntime::RDOActivityRuntime *activity;
 
 public:
 	RDOOPROperation(std::string *_oprName, std::string *patName);
@@ -39,7 +37,6 @@ public:
 	void addHotKey(std::string *hotKey);
 };
 
+} // namespace rdoParse 
 
-}		// namespace rdoParse 
-
-#endif //RDOOPR_OPR
+#endif // RDOOPR_OPR

@@ -20,7 +20,7 @@ protected:
 	const std::string* const   name;
 	const RDORTPResType* const resType;
 	const int                  number;  // in system
-	std::vector< RDOValue >    values;
+	std::vector< rdoRuntime::RDOValue > values;
 	bool trace;
 
 public:
@@ -34,8 +34,8 @@ public:
 	
 	int getNumber() const                            { return number;  }
 
-	const std::vector< RDOValue >& getValues() const { return values;  }
-	void addValue( const RDOValue& val )             { values.push_back( val ); }
+	const std::vector< rdoRuntime::RDOValue >& getValues() const { return values;  }
+	void addValue( const rdoRuntime::RDOValue& val )             { values.push_back( val ); }
 	
 	int writeModelStructure();
 

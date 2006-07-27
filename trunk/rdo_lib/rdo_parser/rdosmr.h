@@ -42,7 +42,7 @@ public:
 	std::string *resultsFileName;
 	std::string *traceFileName;
 
-	rdosim::ShowMode showMode;
+	rdoSimulator::ShowMode showMode;
 
 	bool showModeSet;
 	bool frameNumberSet;
@@ -55,14 +55,14 @@ public:
 
 	RDOFUNLogic *terminateIf;
 	std::vector<BreakPoint *> breakPoints;
-	RDOCalc *startCalcs;
+	rdoRuntime::RDOCalc *startCalcs;
 
 public:
 	RDOSMR(std::string *_modelName);
 	void setValue(const char* descrName, std::string* RDOSMR::*pMem, std::string* newValue);
 	void setValue(const char* descrName, double* RDOSMR::*pMem, double* newValue);
 
-	void setShowMode(rdosim::ShowMode sm);
+	void setShowMode(rdoSimulator::ShowMode sm);
 	void setFrameNumber(int fn);
 	void setTerminateIf(RDOFUNLogic *logic);
 	void setConstValue(std::string *constName, RDOFUNArithm *arithm);

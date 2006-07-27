@@ -173,7 +173,7 @@ rss_main:	/* empty */
 			} else if ( parser->isHaveKWResourcesEnd() ) {
 				parser->error( "Ресурсы уже определены" );
 			} else {
-				parser->error( rdosim::RDOSyntaxError::UNKNOWN );
+				parser->error( rdoSimulator::RDOSyntaxError::UNKNOWN );
 			}
 		};
 
@@ -248,7 +248,7 @@ rss_value:	'*' {
 					parser->error( "Слишком много параметров" );
 				}
 				try {
-					RDOValue val = (*(parser->getLastRSSResource()->currParam))->getType()->getRSSDefaultValue();
+					rdoRuntime::RDOValue val = (*(parser->getLastRSSResource()->currParam))->getType()->getRSSDefaultValue();
 					parser->getLastRSSResource()->addValue(val);
 					parser->getLastRSSResource()->currParam++;
 				} catch ( RDOSyntaxException err ) {
@@ -263,7 +263,7 @@ rss_value:	'*' {
 					parser->error( rdo::format("Слишком много параметров. Лишний параметр: %s", ((std::string*)$1)->c_str()) );
 				}
 				try {
-					RDOValue val = (*(parser->getLastRSSResource()->currParam))->getType()->getRSSEnumValue((std::string *)$1);
+					rdoRuntime::RDOValue val = (*(parser->getLastRSSResource()->currParam))->getType()->getRSSEnumValue((std::string *)$1);
 					parser->getLastRSSResource()->addValue(val);
 					parser->getLastRSSResource()->currParam++;
 				} catch( RDOSyntaxException err ) {
@@ -277,7 +277,7 @@ rss_value:	'*' {
 					parser->error( rdo::format("Слишком много параметров. Лишний параметр: %d", $1) );
 				}
 				try {
-					RDOValue val = (*(parser->getLastRSSResource()->currParam))->getType()->getRSSIntValue($1);
+					rdoRuntime::RDOValue val = (*(parser->getLastRSSResource()->currParam))->getType()->getRSSIntValue($1);
 					parser->getLastRSSResource()->addValue(val);
 					parser->getLastRSSResource()->currParam++;
 				} catch( RDOSyntaxException err ) {
@@ -291,7 +291,7 @@ rss_value:	'*' {
 					parser->error( rdo::format("Слишком много параметров. Лишний параметр: %f", *((double*)$1)) );
 				}
 				try {
-					RDOValue val = (*(parser->getLastRSSResource()->currParam))->getType()->getRSSRealValue((double *)$1);
+					rdoRuntime::RDOValue val = (*(parser->getLastRSSResource()->currParam))->getType()->getRSSRealValue((double *)$1);
 					parser->getLastRSSResource()->addValue(val);
 					parser->getLastRSSResource()->currParam++;
 				} catch ( RDOSyntaxException err ) {

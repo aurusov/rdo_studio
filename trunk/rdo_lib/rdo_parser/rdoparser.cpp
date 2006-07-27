@@ -31,7 +31,7 @@ RDOParser::RDOParser():
 	smr( NULL )
 {
 	parser  = this;
-	runTime = new RDORuntime();
+	runTime = new rdoRuntime::RDORuntime();
 	parsers.reset();
 }
 
@@ -149,33 +149,33 @@ void RDOParser::parse( rdoModelObjects::RDOParseType file, std::istream& stream 
 	}
 }
 
-void RDOParser::error( rdosim::RDOSyntaxError::ErrorCode error_code, ... )
+void RDOParser::error( rdoSimulator::RDOSyntaxError::ErrorCode error_code, ... )
 {
 	va_list params;
 	va_start( params, error_code );
-	std::string str = rdosim::RDOSyntaxError::getMessage( error_code, params );
+	std::string str = rdoSimulator::RDOSyntaxError::getMessage( error_code, params );
 	va_end( params );
 	error( str, error_code );
 }
 
-void RDOParser::error( const std::string& message, rdosim::RDOSyntaxError::ErrorCode error_code ) 
+void RDOParser::error( const std::string& message, rdoSimulator::RDOSyntaxError::ErrorCode error_code ) 
 {
-	errors.push_back( rdosim::RDOSyntaxError( error_code, message, lexer_loc_line(), lexer_loc_pos(), getFileToParse() ) );
+	errors.push_back( rdoSimulator::RDOSyntaxError( error_code, message, lexer_loc_line(), lexer_loc_pos(), getFileToParse() ) );
 	throw rdoParse::RDOSyntaxException( "" );
 }
 
-void RDOParser::warning( rdosim::RDOSyntaxError::ErrorCode error_code, ... )
+void RDOParser::warning( rdoSimulator::RDOSyntaxError::ErrorCode error_code, ... )
 {
 	va_list params;
 	va_start( params, error_code );
-	std::string str = rdosim::RDOSyntaxError::getMessage( error_code, params );
+	std::string str = rdoSimulator::RDOSyntaxError::getMessage( error_code, params );
 	va_end( params );
 	warning( str, error_code );
 }
 
-void RDOParser::warning( const std::string& message, rdosim::RDOSyntaxError::ErrorCode error_code ) 
+void RDOParser::warning( const std::string& message, rdoSimulator::RDOSyntaxError::ErrorCode error_code ) 
 {
-	errors.push_back( rdosim::RDOSyntaxError( error_code, message, lexer_loc_line(), lexer_loc_pos(), getFileToParse(), true ) );
+	errors.push_back( rdoSimulator::RDOSyntaxError( error_code, message, lexer_loc_line(), lexer_loc_pos(), getFileToParse(), true ) );
 }
 
 const RDORTPResType* RDOParser::findRTPResType( const std::string* const type ) const
@@ -234,7 +234,7 @@ const RDOPATPattern *RDOParser::findPattern(const std::string *const name) const
 	return NULL;
 }
 
-void addCalcToRuntime(RDOCalc *calc) 
+void addCalcToRuntime( rdoRuntime::RDOCalc* calc )
 {	
 	parser->runTime->allCalcs.push_back(calc); 
 }
@@ -248,61 +248,61 @@ void RDOParser::LoadStdFunctions()
 	allFUNFunctions.push_back(fun);
 	RDOFUNFunctionParam *param = new RDOFUNFunctionParam(registerName("p1"), realType);
 	fun->add(param);
-	fun->functionCalc = new RDOFunCalcAbs();
+	fun->functionCalc = new rdoRuntime::RDOFunCalcAbs();
 
 	fun = new RDOFUNFunction(registerName("ArcCos"), realType);
 	allFUNFunctions.push_back(fun);
 	param = new RDOFUNFunctionParam(registerName("p1"), realType);
 	fun->add(param);
-	fun->functionCalc = new RDOFunCalcArcCos();
+	fun->functionCalc = new rdoRuntime::RDOFunCalcArcCos();
 
 	fun = new RDOFUNFunction(registerName("ArcSin"), realType);
 	allFUNFunctions.push_back(fun);
 	param = new RDOFUNFunctionParam(registerName("p1"), realType);
 	fun->add(param);
-	fun->functionCalc = new RDOFunCalcArcSin();
+	fun->functionCalc = new rdoRuntime::RDOFunCalcArcSin();
 
 	fun = new RDOFUNFunction(registerName("ArcTan"), realType);
 	allFUNFunctions.push_back(fun);
 	param = new RDOFUNFunctionParam(registerName("p1"), realType);
 	fun->add(param);
-	fun->functionCalc = new RDOFunCalcArcTan();
+	fun->functionCalc = new rdoRuntime::RDOFunCalcArcTan();
 
 	fun = new RDOFUNFunction(registerName("Cos"), realType);
 	allFUNFunctions.push_back(fun);
 	param = new RDOFUNFunctionParam(registerName("p1"), realType);
 	fun->add(param);
-	fun->functionCalc = new RDOFunCalcCos();
+	fun->functionCalc = new rdoRuntime::RDOFunCalcCos();
 
 	fun = new RDOFUNFunction(registerName("Cotan"), realType);
 	allFUNFunctions.push_back(fun);
 	param = new RDOFUNFunctionParam(registerName("p1"), realType);
 	fun->add(param);
-	fun->functionCalc = new RDOFunCalcCotan();
+	fun->functionCalc = new rdoRuntime::RDOFunCalcCotan();
 
 	fun = new RDOFUNFunction(registerName("Exp"), realType);
 	allFUNFunctions.push_back(fun);
 	param = new RDOFUNFunctionParam(registerName("p1"), realType);
 	fun->add(param);
-	fun->functionCalc = new RDOFunCalcExp();
+	fun->functionCalc = new rdoRuntime::RDOFunCalcExp();
 
 	fun = new RDOFUNFunction(registerName("Floor"), intType);
 	allFUNFunctions.push_back(fun);
 	param = new RDOFUNFunctionParam(registerName("p1"), realType);
 	fun->add(param);
-	fun->functionCalc = new RDOFunCalcFloor();
+	fun->functionCalc = new rdoRuntime::RDOFunCalcFloor();
 
 	fun = new RDOFUNFunction(registerName("Frac"), realType);
 	allFUNFunctions.push_back(fun);
 	param = new RDOFUNFunctionParam(registerName("p1"), realType);
 	fun->add(param);
-	fun->functionCalc = new RDOFunCalcFrac();
+	fun->functionCalc = new rdoRuntime::RDOFunCalcFrac();
 
 	fun = new RDOFUNFunction(registerName("IAbs"), intType);
 	allFUNFunctions.push_back(fun);
 	param = new RDOFUNFunctionParam(registerName("p1"), intType);
 	fun->add(param);
-	fun->functionCalc = new RDOFunCalcIAbs();
+	fun->functionCalc = new rdoRuntime::RDOFunCalcIAbs();
 
 	fun = new RDOFUNFunction(registerName("IMax"), intType);
 	allFUNFunctions.push_back(fun);
@@ -310,7 +310,7 @@ void RDOParser::LoadStdFunctions()
 	fun->add(param);
 	param = new RDOFUNFunctionParam(registerName("p2"), intType);
 	fun->add(param);
-	fun->functionCalc = new RDOFunCalcIMax();
+	fun->functionCalc = new rdoRuntime::RDOFunCalcIMax();
 
 	fun = new RDOFUNFunction(registerName("IMin"), intType);
 	allFUNFunctions.push_back(fun);
@@ -318,13 +318,13 @@ void RDOParser::LoadStdFunctions()
 	fun->add(param);
 	param = new RDOFUNFunctionParam(registerName("p2"), intType);
 	fun->add(param);
-	fun->functionCalc = new RDOFunCalcIMin();
+	fun->functionCalc = new rdoRuntime::RDOFunCalcIMin();
 
 	fun = new RDOFUNFunction(registerName("Int"), intType);
 	allFUNFunctions.push_back(fun);
 	param = new RDOFUNFunctionParam(registerName("p1"), realType);
 	fun->add(param);
-	fun->functionCalc = new RDOFunCalcInt();
+	fun->functionCalc = new rdoRuntime::RDOFunCalcInt();
 
 	fun = new RDOFUNFunction(registerName("IntPower"), realType);
 	allFUNFunctions.push_back(fun);
@@ -332,25 +332,25 @@ void RDOParser::LoadStdFunctions()
 	fun->add(param);
 	param = new RDOFUNFunctionParam(registerName("p2"), intType);
 	fun->add(param);
-	fun->functionCalc = new RDOFunCalcIntPower();
+	fun->functionCalc = new rdoRuntime::RDOFunCalcIntPower();
 
 	fun = new RDOFUNFunction(registerName("Ln"), realType);
 	allFUNFunctions.push_back(fun);
 	param = new RDOFUNFunctionParam(registerName("p1"), realType);
 	fun->add(param);
-	fun->functionCalc = new RDOFunCalcLn();
+	fun->functionCalc = new rdoRuntime::RDOFunCalcLn();
 
 	fun = new RDOFUNFunction(registerName("Log10"), realType);
 	allFUNFunctions.push_back(fun);
 	param = new RDOFUNFunctionParam(registerName("p1"), realType);
 	fun->add(param);
-	fun->functionCalc = new RDOFunCalcLog10();
+	fun->functionCalc = new rdoRuntime::RDOFunCalcLog10();
 
 	fun = new RDOFUNFunction(registerName("Log2"), realType);
 	allFUNFunctions.push_back(fun);
 	param = new RDOFUNFunctionParam(registerName("p1"), realType);
 	fun->add(param);
-	fun->functionCalc = new RDOFunCalcLog2();
+	fun->functionCalc = new rdoRuntime::RDOFunCalcLog2();
 
 	fun = new RDOFUNFunction(registerName("LogN"), realType);
 	allFUNFunctions.push_back(fun);
@@ -358,7 +358,7 @@ void RDOParser::LoadStdFunctions()
 	fun->add(param);
 	param = new RDOFUNFunctionParam(registerName("p2"), realType);
 	fun->add(param);
-	fun->functionCalc = new RDOFunCalcLogN();
+	fun->functionCalc = new rdoRuntime::RDOFunCalcLogN();
 
 	fun = new RDOFUNFunction(registerName("Max"), realType);
 	allFUNFunctions.push_back(fun);
@@ -366,7 +366,7 @@ void RDOParser::LoadStdFunctions()
 	fun->add(param);
 	param = new RDOFUNFunctionParam(registerName("p2"), realType);
 	fun->add(param);
-	fun->functionCalc = new RDOFunCalcMax();
+	fun->functionCalc = new rdoRuntime::RDOFunCalcMax();
 
 	fun = new RDOFUNFunction(registerName("Min"), realType);
 	allFUNFunctions.push_back(fun);
@@ -374,7 +374,7 @@ void RDOParser::LoadStdFunctions()
 	fun->add(param);
 	param = new RDOFUNFunctionParam(registerName("p2"), realType);
 	fun->add(param);
-	fun->functionCalc = new RDOFunCalcMin();
+	fun->functionCalc = new rdoRuntime::RDOFunCalcMin();
 
 	fun = new RDOFUNFunction(registerName("Power"), realType);
 	allFUNFunctions.push_back(fun);
@@ -382,31 +382,198 @@ void RDOParser::LoadStdFunctions()
 	fun->add(param);
 	param = new RDOFUNFunctionParam(registerName("p2"), realType);
 	fun->add(param);
-	fun->functionCalc = new RDOFunCalcPower();
+	fun->functionCalc = new rdoRuntime::RDOFunCalcPower();
 
 	fun = new RDOFUNFunction(registerName("Round"), intType);
 	allFUNFunctions.push_back(fun);
 	param = new RDOFUNFunctionParam(registerName("p1"), realType);
 	fun->add(param);
-	fun->functionCalc = new RDOFunCalcRound();
+	fun->functionCalc = new rdoRuntime::RDOFunCalcRound();
 
 	fun = new RDOFUNFunction(registerName("Sin"), realType);
 	allFUNFunctions.push_back(fun);
 	param = new RDOFUNFunctionParam(registerName("p1"), realType);
 	fun->add(param);
-	fun->functionCalc = new RDOFunCalcSin();
+	fun->functionCalc = new rdoRuntime::RDOFunCalcSin();
 
 	fun = new RDOFUNFunction(registerName("Sqrt"), realType);
 	allFUNFunctions.push_back(fun);
 	param = new RDOFUNFunctionParam(registerName("p1"), realType);
 	fun->add(param);
-	fun->functionCalc = new RDOFunCalcSqrt();
+	fun->functionCalc = new rdoRuntime::RDOFunCalcSqrt();
 
 	fun = new RDOFUNFunction(registerName("Tan"), realType);
 	allFUNFunctions.push_back(fun);
 	param = new RDOFUNFunctionParam(registerName("p1"), realType);
 	fun->add(param);
-	fun->functionCalc = new RDOFunCalcTan();
+	fun->functionCalc = new rdoRuntime::RDOFunCalcTan();
+
+	// -----------------------------------------
+	// И для маленьких букв
+	// -----------------------------------------
+	fun = new RDOFUNFunction(registerName("abs"), realType);
+	allFUNFunctions.push_back(fun);
+	param = new RDOFUNFunctionParam(registerName("p1"), realType);
+	fun->add(param);
+	fun->functionCalc = new rdoRuntime::RDOFunCalcAbs();
+
+	fun = new RDOFUNFunction(registerName("arccos"), realType);
+	allFUNFunctions.push_back(fun);
+	param = new RDOFUNFunctionParam(registerName("p1"), realType);
+	fun->add(param);
+	fun->functionCalc = new rdoRuntime::RDOFunCalcArcCos();
+
+	fun = new RDOFUNFunction(registerName("arcsin"), realType);
+	allFUNFunctions.push_back(fun);
+	param = new RDOFUNFunctionParam(registerName("p1"), realType);
+	fun->add(param);
+	fun->functionCalc = new rdoRuntime::RDOFunCalcArcSin();
+
+	fun = new RDOFUNFunction(registerName("arctan"), realType);
+	allFUNFunctions.push_back(fun);
+	param = new RDOFUNFunctionParam(registerName("p1"), realType);
+	fun->add(param);
+	fun->functionCalc = new rdoRuntime::RDOFunCalcArcTan();
+
+	fun = new RDOFUNFunction(registerName("cos"), realType);
+	allFUNFunctions.push_back(fun);
+	param = new RDOFUNFunctionParam(registerName("p1"), realType);
+	fun->add(param);
+	fun->functionCalc = new rdoRuntime::RDOFunCalcCos();
+
+	fun = new RDOFUNFunction(registerName("cotan"), realType);
+	allFUNFunctions.push_back(fun);
+	param = new RDOFUNFunctionParam(registerName("p1"), realType);
+	fun->add(param);
+	fun->functionCalc = new rdoRuntime::RDOFunCalcCotan();
+
+	fun = new RDOFUNFunction(registerName("exp"), realType);
+	allFUNFunctions.push_back(fun);
+	param = new RDOFUNFunctionParam(registerName("p1"), realType);
+	fun->add(param);
+	fun->functionCalc = new rdoRuntime::RDOFunCalcExp();
+
+	fun = new RDOFUNFunction(registerName("floor"), intType);
+	allFUNFunctions.push_back(fun);
+	param = new RDOFUNFunctionParam(registerName("p1"), realType);
+	fun->add(param);
+	fun->functionCalc = new rdoRuntime::RDOFunCalcFloor();
+
+	fun = new RDOFUNFunction(registerName("frac"), realType);
+	allFUNFunctions.push_back(fun);
+	param = new RDOFUNFunctionParam(registerName("p1"), realType);
+	fun->add(param);
+	fun->functionCalc = new rdoRuntime::RDOFunCalcFrac();
+
+	fun = new RDOFUNFunction(registerName("iabs"), intType);
+	allFUNFunctions.push_back(fun);
+	param = new RDOFUNFunctionParam(registerName("p1"), intType);
+	fun->add(param);
+	fun->functionCalc = new rdoRuntime::RDOFunCalcIAbs();
+
+	fun = new RDOFUNFunction(registerName("imax"), intType);
+	allFUNFunctions.push_back(fun);
+	param = new RDOFUNFunctionParam(registerName("p1"), intType);
+	fun->add(param);
+	param = new RDOFUNFunctionParam(registerName("p2"), intType);
+	fun->add(param);
+	fun->functionCalc = new rdoRuntime::RDOFunCalcIMax();
+
+	fun = new RDOFUNFunction(registerName("imin"), intType);
+	allFUNFunctions.push_back(fun);
+	param = new RDOFUNFunctionParam(registerName("p1"), intType);
+	fun->add(param);
+	param = new RDOFUNFunctionParam(registerName("p2"), intType);
+	fun->add(param);
+	fun->functionCalc = new rdoRuntime::RDOFunCalcIMin();
+
+	fun = new RDOFUNFunction(registerName("int"), intType);
+	allFUNFunctions.push_back(fun);
+	param = new RDOFUNFunctionParam(registerName("p1"), realType);
+	fun->add(param);
+	fun->functionCalc = new rdoRuntime::RDOFunCalcInt();
+
+	fun = new RDOFUNFunction(registerName("intpower"), realType);
+	allFUNFunctions.push_back(fun);
+	param = new RDOFUNFunctionParam(registerName("p1"), realType);
+	fun->add(param);
+	param = new RDOFUNFunctionParam(registerName("p2"), intType);
+	fun->add(param);
+	fun->functionCalc = new rdoRuntime::RDOFunCalcIntPower();
+
+	fun = new RDOFUNFunction(registerName("ln"), realType);
+	allFUNFunctions.push_back(fun);
+	param = new RDOFUNFunctionParam(registerName("p1"), realType);
+	fun->add(param);
+	fun->functionCalc = new rdoRuntime::RDOFunCalcLn();
+
+	fun = new RDOFUNFunction(registerName("log10"), realType);
+	allFUNFunctions.push_back(fun);
+	param = new RDOFUNFunctionParam(registerName("p1"), realType);
+	fun->add(param);
+	fun->functionCalc = new rdoRuntime::RDOFunCalcLog10();
+
+	fun = new RDOFUNFunction(registerName("log2"), realType);
+	allFUNFunctions.push_back(fun);
+	param = new RDOFUNFunctionParam(registerName("p1"), realType);
+	fun->add(param);
+	fun->functionCalc = new rdoRuntime::RDOFunCalcLog2();
+
+	fun = new RDOFUNFunction(registerName("logn"), realType);
+	allFUNFunctions.push_back(fun);
+	param = new RDOFUNFunctionParam(registerName("p1"), realType);
+	fun->add(param);
+	param = new RDOFUNFunctionParam(registerName("p2"), realType);
+	fun->add(param);
+	fun->functionCalc = new rdoRuntime::RDOFunCalcLogN();
+
+	fun = new RDOFUNFunction(registerName("max"), realType);
+	allFUNFunctions.push_back(fun);
+	param = new RDOFUNFunctionParam(registerName("p1"), realType);
+	fun->add(param);
+	param = new RDOFUNFunctionParam(registerName("p2"), realType);
+	fun->add(param);
+	fun->functionCalc = new rdoRuntime::RDOFunCalcMax();
+
+	fun = new RDOFUNFunction(registerName("min"), realType);
+	allFUNFunctions.push_back(fun);
+	param = new RDOFUNFunctionParam(registerName("p1"), realType);
+	fun->add(param);
+	param = new RDOFUNFunctionParam(registerName("p2"), realType);
+	fun->add(param);
+	fun->functionCalc = new rdoRuntime::RDOFunCalcMin();
+
+	fun = new RDOFUNFunction(registerName("power"), realType);
+	allFUNFunctions.push_back(fun);
+	param = new RDOFUNFunctionParam(registerName("p1"), realType);
+	fun->add(param);
+	param = new RDOFUNFunctionParam(registerName("p2"), realType);
+	fun->add(param);
+	fun->functionCalc = new rdoRuntime::RDOFunCalcPower();
+
+	fun = new RDOFUNFunction(registerName("round"), intType);
+	allFUNFunctions.push_back(fun);
+	param = new RDOFUNFunctionParam(registerName("p1"), realType);
+	fun->add(param);
+	fun->functionCalc = new rdoRuntime::RDOFunCalcRound();
+
+	fun = new RDOFUNFunction(registerName("sin"), realType);
+	allFUNFunctions.push_back(fun);
+	param = new RDOFUNFunctionParam(registerName("p1"), realType);
+	fun->add(param);
+	fun->functionCalc = new rdoRuntime::RDOFunCalcSin();
+
+	fun = new RDOFUNFunction(registerName("sqrt"), realType);
+	allFUNFunctions.push_back(fun);
+	param = new RDOFUNFunctionParam(registerName("p1"), realType);
+	fun->add(param);
+	fun->functionCalc = new rdoRuntime::RDOFunCalcSqrt();
+
+	fun = new RDOFUNFunction(registerName("tan"), realType);
+	allFUNFunctions.push_back(fun);
+	param = new RDOFUNFunctionParam(registerName("p1"), realType);
+	fun->add(param);
+	fun->functionCalc = new rdoRuntime::RDOFunCalcTan();
 }
 
-}		// namespace rdoParse 
+} // namespace rdoParse 

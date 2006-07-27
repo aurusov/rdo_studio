@@ -14,8 +14,6 @@ namespace rdoRuntime
 typedef double RDOValue;
 }
 
-using namespace rdoRuntime;
-
 namespace rdoParse 
 {
 
@@ -107,4 +105,4 @@ inline std::string operator +(std::string &str1, char *str2)
 	return std::string(str1).append(str2);
 }
 
-#endif //RDO_STD_FUNCS_
+#endif // RDO_STD_FUNCS_

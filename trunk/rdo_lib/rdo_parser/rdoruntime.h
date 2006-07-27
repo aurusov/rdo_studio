@@ -12,27 +12,27 @@ namespace rdoRuntime
 struct RDOConfig
 {
 //////// Interactive /////////////////
-	rdosim::ShowMode showAnimation;
-	std::vector<std::string> allFrameNames;
-	int currFrameToShow;
-	std::vector<int> keysPressed;
-	bool mouseClicked;
-	std::vector<std::string> activeAreasMouseClicked;
+	rdoSimulator::ShowMode     showAnimation;
+//	int                        currFrameToShow;
+	std::vector< std::string > allFrameNames;
+	std::vector< std::string > activeAreasMouseClicked;
+	std::vector< int >         keysPressed;
+	bool                       mouseClicked;
 	
 //////// Frame /////////////////////
-	std::vector<rdosim::RDOFrame *> frames;
+	std::vector< rdoSimulator::RDOFrame* > frames;
 
 //////// Timing ///////////////////
-	double currTime;			// model time
+	double currTime;		// model time
 	double newTime;			// model time
 	double showRate;
 	double realTimeDelay;	// msec
 };
 
-typedef void (*TracerCallBack) (std::string *newString, void *param);
-typedef void (*FrameCallBack) (RDOConfig *config, void *param);
+typedef void (*TracerCallBack)( std::string* newString, void* param );
+typedef void (*FrameCallBack)( RDOConfig* config, void* param );
 
-} //namespace rdoRuntime
+} // namespace rdoRuntime
 
 class RandGenerator;
 class RandGeneratorUniform;
@@ -47,7 +47,6 @@ class RDOCalc;
 namespace rdoParse {
 class RDOPATChoice;
 class RDOPATSelectType;
-void addCalcToRuntime(rdoRuntime::RDOCalc *calc);
 class RDOPMDWatchQuant;
 class RDOPMDWatchValue;
 class RDOPMDWatchPar;
@@ -56,9 +55,12 @@ class RDOPMDWatchState;
 class RDOFRMFrame;
 class RDORelevantResource;
 class RDOFUNArithm;
+class RDOPMDWatchQuant;
+class RDOPMDWatchValue;
+class RDOPMDWatchPar;	  
+class RDOPMDWatchState;
+void addCalcToRuntime(rdoRuntime::RDOCalc *calc);
 }
-
-using namespace rdoParse;
 
 namespace rdoRuntime
 {
@@ -111,16 +113,16 @@ class RDOSelectResourceByTypeCommonCalc;
 
 class RDORuntime: public RDOSimulatorTrace
 {
-friend RDOFunCalcExist;
-friend RDOFunCalcNotExist;
-friend RDOFunCalcForAll;
-friend RDOFunCalcNotForAll;
-friend RDOSelectResourceByTypeCalc;
-friend RDOSelectResourceByTypeCommonCalc;
-friend RDOPMDWatchQuant;
-friend RDOPMDWatchValue;
-friend RDOPMDWatchPar;	  
-friend RDOPMDWatchState;
+friend class RDOFunCalcExist;
+friend class RDOFunCalcNotExist;
+friend class RDOFunCalcForAll;
+friend class RDOFunCalcNotForAll;
+friend class RDOSelectResourceByTypeCalc;
+friend class RDOSelectResourceByTypeCommonCalc;
+friend class rdoParse::RDOPMDWatchQuant;
+friend class rdoParse::RDOPMDWatchValue;
+friend class rdoParse::RDOPMDWatchPar;	  
+friend class rdoParse::RDOPMDWatchState;
 
 friend void rdoParse::addCalcToRuntime(RDOCalc *calc);
 
@@ -147,7 +149,7 @@ private:
 	std::vector< RDOActivityIERuntime* >        ies;
 	std::vector< RDOActivityOperationRuntime* > operations;
 	std::vector< rdoRuntime::RDOPROCProcess* >  process;
-	std::vector< RDOPMDPokaz* >                 allPokaz;
+	std::vector< rdoParse::RDOPMDPokaz* >       allPokaz;
 
 	std::vector<RDOPatternRuntime *> allPatterns;
 
@@ -175,7 +177,7 @@ private:
 public:
 //	std::list< int > allResourcesChoiced;
 
-	std::vector< rdosim::RDOSyntaxError > errors;
+	std::vector< rdoSimulator::RDOSyntaxError > errors;
 	void error( const char* message, const rdoRuntime::RDOCalc* calc );
 	bool checkKeyPressed(int scanCode);
 	void eraseKeyPressed(int scanCode);
@@ -194,8 +196,8 @@ public:
 	void addRuntimeRule(RDOActivityRuleRuntime *rule);
 	void addRuntimeIE(RDOActivityIERuntime *ie);
 	void addRuntimeProcess( rdoRuntime::RDOPROCProcess* _process );
-	void addRuntimePokaz(RDOPMDPokaz *pok);
-	void addRuntimeFrame(RDOFRMFrame *frm);
+	void addRuntimePokaz( rdoParse::RDOPMDPokaz* pok );
+	void addRuntimeFrame( rdoParse::RDOFRMFrame* frm );
 
 	void addDPT(RDOSearchRuntime *dpt);
 
@@ -244,7 +246,7 @@ public:
 	FrameCallBack  frameCallBack;
 	void* param;		// this param send back to tracerCallBack and frameCallBack
 	RDOConfig config;
-	std::vector<RDOFRMFrame *> allFrames;
+	std::vector< rdoParse::RDOFRMFrame* > allFrames;
 
 	void onPutToTreeNode();
 
@@ -961,8 +963,8 @@ protected:
 	int relNumb;
 	RDOCalc*               choice;
 	RDOCalc*               selection_calc;
-	RDOPATSelectType::Type selection_type;
-	RDOSelectResourceCalc( int _relNumb, RDOPATChoice* _choice, RDOPATSelectType* _selection_type );
+	rdoParse::RDOPATSelectType::Type selection_type;
+	RDOSelectResourceCalc( int _relNumb, rdoParse::RDOPATChoice* _choice, rdoParse::RDOPATSelectType* _selection_type );
 };
 
 class RDOSelectResourceDirectCalc: public RDOSelectResourceCalc
@@ -970,7 +972,7 @@ class RDOSelectResourceDirectCalc: public RDOSelectResourceCalc
 protected:
 	int resNumb;
 public:
-	RDOSelectResourceDirectCalc( int _relNumb, int _resNumb, RDOPATChoice* _choice, RDOPATSelectType* _selection_type ):
+	RDOSelectResourceDirectCalc( int _relNumb, int _resNumb, rdoParse::RDOPATChoice* _choice, rdoParse::RDOPATSelectType* _selection_type ):
 		RDOSelectResourceCalc( _relNumb, _choice, _selection_type ), resNumb( _resNumb ) {}
    virtual RDOValue calcValue(RDORuntime *sim) const;
 };
@@ -980,7 +982,7 @@ class RDOSelectResourceByTypeCalc: public RDOSelectResourceCalc
 protected:
 	int resType;
 public:
-	RDOSelectResourceByTypeCalc( int _relNumb, int _resType, RDOPATChoice* _choice, RDOPATSelectType* _selection_type ):
+	RDOSelectResourceByTypeCalc( int _relNumb, int _resType, rdoParse::RDOPATChoice* _choice, rdoParse::RDOPATSelectType* _selection_type ):
 		RDOSelectResourceCalc( _relNumb, _choice, _selection_type ), resType( _resType ) {}
    virtual RDOValue calcValue(RDORuntime *sim) const;
 };
@@ -995,7 +997,7 @@ public:
 class RDOSelectResourceDirectCommonCalc: public RDOSelectResourceDirectCalc, public RDOSelectResourceCommon
 {
 public:
-	RDOSelectResourceDirectCommonCalc( int _relNumb, int _resNumb, RDOPATChoice *_choice, RDOPATSelectType* _selection_type ):
+	RDOSelectResourceDirectCommonCalc( int _relNumb, int _resNumb, rdoParse::RDOPATChoice *_choice, rdoParse::RDOPATSelectType* _selection_type ):
 		RDOSelectResourceDirectCalc( _relNumb, _resNumb, _choice, _selection_type ) {}
 	std::vector<int> getPossibleNumbers(RDORuntime *sim) const;
 	virtual bool callChoice(RDORuntime *sim) const;
@@ -1004,7 +1006,7 @@ public:
 class RDOSelectResourceByTypeCommonCalc: public RDOSelectResourceByTypeCalc, public RDOSelectResourceCommon
 {
 public:
-	RDOSelectResourceByTypeCommonCalc( int _relNumb, int _resType, RDOPATChoice *_choice, RDOPATSelectType* _selection_type ):
+	RDOSelectResourceByTypeCommonCalc( int _relNumb, int _resType, rdoParse::RDOPATChoice *_choice, rdoParse::RDOPATSelectType* _selection_type ):
 		RDOSelectResourceByTypeCalc( _relNumb, _resType, _choice, _selection_type ) {}
 	std::vector<int> getPossibleNumbers(RDORuntime *sim) const;
 	virtual bool callChoice(RDORuntime *sim) const;

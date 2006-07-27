@@ -45,8 +45,8 @@ void RDOOPROperation::addParam(int intParam)
 		parser->error("Too much parameters for pattern : " + *pattern->getName() + " in operation: " + *getName());
 
 	RDOFUNFunctionParam *param = pattern->params.at(currParam);
-	RDOValue val = param->getType()->getRSSIntValue(intParam);
-	activity->addParamCalc(new RDOSetPatternParamCalc(currParam, val));
+	rdoRuntime::RDOValue val = param->getType()->getRSSIntValue(intParam);
+	activity->addParamCalc(new rdoRuntime::RDOSetPatternParamCalc(currParam, val));
 	currParam++;
 }
 
@@ -56,8 +56,8 @@ void RDOOPROperation::addParam(double *realParam)
 		parser->error("Too much parameters for pattern : " + *pattern->getName() + " in operation: " + *getName());
 
 	RDOFUNFunctionParam *param = pattern->params.at(currParam);
-	RDOValue val = param->getType()->getRSSRealValue(realParam);
-	activity->addParamCalc(new RDOSetPatternParamCalc(currParam, val));
+	rdoRuntime::RDOValue val = param->getType()->getRSSRealValue(realParam);
+	activity->addParamCalc(new rdoRuntime::RDOSetPatternParamCalc(currParam, val));
 	currParam++;
 }
 
@@ -67,8 +67,8 @@ void RDOOPROperation::addParam(std::string *stringParam)
 		parser->error("Too much parameters for pattern : " + *pattern->getName() + " in operation: " + *getName());
 
 	RDOFUNFunctionParam *param = pattern->params.at(currParam);
-	RDOValue val = param->getType()->getRSSEnumValue(stringParam);
-	activity->addParamCalc(new RDOSetPatternParamCalc(currParam, val));
+	rdoRuntime::RDOValue val = param->getType()->getRSSEnumValue(stringParam);
+	activity->addParamCalc(new rdoRuntime::RDOSetPatternParamCalc(currParam, val));
 	currParam++;
 }
 
@@ -83,8 +83,8 @@ void RDOOPROperation::addParam()
 		parser->error("Too much parameters for pattern : " + *pattern->getName() + " in operation: " + *getName());
 
 	RDOFUNFunctionParam *param = pattern->params.at(currParam);
-	RDOValue val = param->getType()->getRSSDefaultValue();
-	activity->addParamCalc(new RDOSetPatternParamCalc(currParam, val));
+	rdoRuntime::RDOValue val = param->getType()->getRSSDefaultValue();
+	activity->addParamCalc(new rdoRuntime::RDOSetPatternParamCalc(currParam, val));
 	currParam++;
 }
 
@@ -94,4 +94,4 @@ void RDOOPROperation::endOfDefinition()
 		parser->error("Too few parameters for pattern : " + *pattern->getName() + " in operation: " + *getName());
 }
 
-}		// namespace rdoParse 
+} // namespace rdoParse 

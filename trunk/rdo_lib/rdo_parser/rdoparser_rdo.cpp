@@ -38,7 +38,6 @@ void RDOParserRDO::parse()
 {
 	rdo::binarystream in_stream;
 	kernel->simulator()->sendMessage( kernel->repository(), RDOThread::RT_REPOSITORY_LOAD, &rdoRepository::RDOThreadRepository::FileData( type, in_stream ) );
-//	kernel->repository()->load( type, in_stream );
 	if ( in_stream.good() ) {
 		parse( in_stream );
 	}
@@ -191,7 +190,7 @@ void RDOParserRSSPost::parse()
 {
 	std::vector< RDORSSResource* >::const_iterator it = parser->getRSSResources().begin();
 	while ( it != parser->getRSSResources().end() ) {
-		RDOCalcCreateNumberedResource* createResource = new RDOCalcCreateNumberedResource( (*it)->getType()->getNumber(), (*it)->getTrace(), (*it)->getValues(), (*it)->getNumber(), (*it)->getType()->isPermanent() );
+		rdoRuntime::RDOCalcCreateNumberedResource* createResource = new rdoRuntime::RDOCalcCreateNumberedResource( (*it)->getType()->getNumber(), (*it)->getTrace(), (*it)->getValues(), (*it)->getNumber(), (*it)->getType()->isPermanent() );
 		parser->runTime->addInitCalc( createResource );
 		it++;
 	}

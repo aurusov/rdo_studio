@@ -49,7 +49,7 @@ RDOSMR::RDOSMR(std::string *_modelName)
 	statisticFileName(NULL),
 	resultsFileName(NULL),
 	traceFileName(NULL),
-	showMode(rdosim::SM_NoShow),
+	showMode(rdoSimulator::SM_NoShow),
 	frameNumber(1),
 	showRate(NULL),
 	runStartTime(NULL),
@@ -78,7 +78,7 @@ void RDOSMR::setValue(const char *descrName, double* RDOSMR::*pMem, double* newV
 	this->*pMem = newValue;
 }
 
-void RDOSMR::setShowMode(rdosim::ShowMode sm)
+void RDOSMR::setShowMode(rdoSimulator::ShowMode sm)
 {
 	if(showModeSet)
 		parser->error("Second appearence of Show_mode descriptor");
@@ -108,8 +108,8 @@ void RDOSMR::setConstValue(std::string *constName, RDOFUNArithm *arithm)
 	if(!cons)
 		parser->error("Undefined constant: " + *constName);
 
-	RDOCalc *calc = arithm->createCalc(cons->descr->getType());
-	parser->runTime->addInitCalc(new RDOCalcSetConst(cons->number, calc));
+	rdoRuntime::RDOCalc *calc = arithm->createCalc(cons->descr->getType());
+	parser->runTime->addInitCalc(new rdoRuntime::RDOCalcSetConst(cons->number, calc));
 }
 
 void RDOSMR::setResParValue(std::string *resName, std::string *parName, RDOFUNArithm *arithm)
@@ -123,8 +123,8 @@ void RDOSMR::setResParValue(std::string *resName, std::string *parName, RDOFUNAr
 		parser->error("Undefined resource parameter name: " + *parName);
 
 	int parNumb = res->getType()->getRTPParamNumber(parName);
-	RDOCalc *calc = arithm->createCalc(descr->getType());
-	parser->runTime->addInitCalc(new RDOSetResourceParamCalc(res->getNumber(), parNumb, calc));
+	rdoRuntime::RDOCalc *calc = arithm->createCalc(descr->getType());
+	parser->runTime->addInitCalc(new rdoRuntime::RDOSetResourceParamCalc(res->getNumber(), parNumb, calc));
 }
 
 void RDOSMR::setSeed(std::string *seqName, int _base)
@@ -136,6 +136,4 @@ void RDOSMR::setSeed(std::string *seqName, int _base)
 	seq->initSeq->setBase(_base);
 }
 
-
-}		// namespace rdoParse 
-
+} // namespace rdoParse 

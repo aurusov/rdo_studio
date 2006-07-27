@@ -28,16 +28,18 @@ class RDOPMDPokaz: public RDOPokazTrace
 protected:
 	const std::string const name;
 	void endOfCreation();
+
 public:
 	RDOPMDPokaz(const std::string *const _name, bool _trace);
 	virtual ~RDOPMDPokaz() {}
-	virtual bool checkResourceErased(RDOResource *res) { return false; }
+	virtual bool checkResourceErased(rdoRuntime::RDOResource *res) { return false; }
 	virtual void writePokazStructure(std::ostream &stream) const = 0;
 };
 
 //////////////////////////// class RDOPMDWatchPar /////////////////////////////////
 class RDOPMDWatchPar: public RDOPMDPokaz
 {
+private:
 	int resNumber;
 	int parNumber;
 
@@ -50,6 +52,7 @@ class RDOPMDWatchPar: public RDOPMDPokaz
 
 	double timeBegin;
 	double timePrev;
+
 public:
 	RDOPMDWatchPar(std::string *_name, bool _trace, std::string *_resName, std::string *_parName);
 	std::string traceValue();
@@ -62,7 +65,8 @@ public:
 //////////////////////////// class RDOPMDWatchState /////////////////////////////////
 class RDOPMDWatchState: public RDOPMDPokaz
 {
-	RDOCalc *logicCalc;
+private:
+	rdoRuntime::RDOCalc *logicCalc;
 
 	int watchNumber;
 	bool currValue;
@@ -73,6 +77,7 @@ class RDOPMDWatchState: public RDOPMDPokaz
 
 	double timeBegin;
 	double timePrev;
+
 public:
 	RDOPMDWatchState(std::string *_name, bool _trace, RDOFUNLogic *_logic);
 	std::string traceValue();
@@ -85,8 +90,9 @@ public:
 //////////////////////////// class RDOPMDWatchQuant /////////////////////////////////
 class RDOPMDWatchQuant: public RDOPMDPokaz
 {
+private:
 	RDOFUNGroup *funGroup;
-	RDOCalc *logicCalc;
+	rdoRuntime::RDOCalc *logicCalc;
 
 	int watchNumber;
 	int currValue;
@@ -97,6 +103,7 @@ class RDOPMDWatchQuant: public RDOPMDPokaz
 
 	double timeBegin;
 	double timePrev;
+
 public:
 	RDOPMDWatchQuant(std::string *_name, bool _trace, std::string *_resTypeName);
 	void setLogic(RDOFUNLogic *_logic);
@@ -111,9 +118,10 @@ public:
 //////////////////////////// class RDOPMDWatchValue /////////////////////////////////
 class RDOPMDWatchValue: public RDOPMDPokaz
 {
+private:
 	RDOFUNGroup *funGroup;
-	RDOCalc *logicCalc;
-	RDOCalc *arithmCalc;
+	rdoRuntime::RDOCalc *logicCalc;
+	rdoRuntime::RDOCalc *arithmCalc;
 
 	int watchNumber;
 	double currValue;
@@ -121,6 +129,7 @@ class RDOPMDWatchValue: public RDOPMDPokaz
 	double sumSqr;
 	double minValue;
 	double maxValue;
+
 public:
 	RDOPMDWatchValue(std::string *_name, bool _trace, std::string *_resTypeName);
 	void setLogic(RDOFUNLogic *_logic, RDOFUNArithm *_arithm);
@@ -129,14 +138,16 @@ public:
 	bool resetPokaz(RDOSimulator *sim);
 	bool checkPokaz(RDOSimulator *sim);
 	bool calcStat(RDOSimulator *sim);
-	bool checkResourceErased(RDOResource *res);
+	bool checkResourceErased(rdoRuntime::RDOResource *res);
 	void writePokazStructure(std::ostream &stream) const;
 };
 
 //////////////////////////// class RDOPMDGetValue /////////////////////////////////
 class RDOPMDGetValue: public RDOPMDPokaz
 {
-	RDOCalc *arithmCalc;
+private:
+	rdoRuntime::RDOCalc *arithmCalc;
+
 public:
 	RDOPMDGetValue(std::string *_name, RDOFUNArithm *_arithm);
 	std::string traceValue();

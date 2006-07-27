@@ -52,7 +52,7 @@ void RDORuntime::setResParamVal(const int nRes, const int nParam, RDOValue val)
 RDOValue RDORuntime::eraseRes(const int resNumb, const RDOCalc *fromCalc)
 {
 	RDOResource *res = allResources.at(resNumb);
-	std::for_each(allPokaz.begin(), allPokaz.end(), std::bind2nd(std::mem_fun1(RDOPMDPokaz::checkResourceErased), res));
+	std::for_each(allPokaz.begin(), allPokaz.end(), std::bind2nd(std::mem_fun1(rdoParse::RDOPMDPokaz::checkResourceErased), res));
 
 	if(res->referenceCount > 0)
 	{
@@ -97,7 +97,7 @@ RDOResource* RDORuntime::createNewResource( int number, bool isPermanent )
 {
 	allResources.resize(number + 1, NULL);
 	if(allResources.at(number) != NULL)
-		throw RDOInternalException("internal error N 0010");
+		throw rdoParse::RDOInternalException("internal error N 0010");
 
 	RDOResource *newRes = new RDOResource(this);
 	newRes->number = number;
@@ -115,13 +115,13 @@ void RDORuntime::insertNewResource( RDOResource* res )
 	allResources.push_back( res );
 }
 
-void RDORuntime::addRuntimePokaz(RDOPMDPokaz *pok)
+void RDORuntime::addRuntimePokaz( rdoParse::RDOPMDPokaz* pok )
 { 
 	allPokaz.push_back(pok); 
 	addPokaz(pok); 
 }
 
-void RDORuntime::addRuntimeFrame(RDOFRMFrame *frm)
+void RDORuntime::addRuntimeFrame( rdoParse::RDOFRMFrame* frm )
 { 
 	allFrames.push_back(frm); 
 }
@@ -438,13 +438,13 @@ RDOValue RDOFunCalcNotForAll::calcValue(RDORuntime *sim) const
 	return res;
 }
 
-RDOSelectResourceCalc::RDOSelectResourceCalc( int _relNumb, RDOPATChoice* _choice, RDOPATSelectType* _selection_type ):
+RDOSelectResourceCalc::RDOSelectResourceCalc( int _relNumb, rdoParse::RDOPATChoice* _choice, rdoParse::RDOPATSelectType* _selection_type ):
 	relNumb( _relNumb ),
 	choice( NULL ),
 	selection_calc( NULL ),
-	selection_type( RDOPATSelectType::st_empty )
+	selection_type( rdoParse::RDOPATSelectType::st_empty )
 {
-	if ( _choice != NULL && _choice->type == RDOPATChoice::ch_from ) {
+	if ( _choice != NULL && _choice->type == rdoParse::RDOPATChoice::ch_from ) {
 		choice = _choice->logic->calc;
 	}
 	if ( _selection_type ) {
@@ -475,7 +475,7 @@ RDOValue RDOSelectResourceByTypeCalc::calcValue( RDORuntime* sim ) const
 			int res_number = (*it)->number;
 
 			switch ( selection_type ) {
-				case RDOPATSelectType::st_empty: {
+				case rdoParse::RDOPATSelectType::st_empty: {
 //					sim->selectRelResource( relNumb, 0 );
 //					if ( std::find( sim->allResourcesEmptyChoiced.begin(), sim->allResourcesEmptyChoiced.end(), res_number ) != sim->allResourcesEmptyChoiced.end() ) {
 //						continue;
@@ -484,7 +484,7 @@ RDOValue RDOSelectResourceByTypeCalc::calcValue( RDORuntime* sim ) const
 //					sim->allResourcesEmptyChoiced.push_back( res_number );
 					return 1;
 				}
-				case RDOPATSelectType::st_first: {
+				case rdoParse::RDOPATSelectType::st_first: {
 //					if ( std::find( sim->allResourcesChoiced.begin(), sim->allResourcesChoiced.end(), res_number ) != sim->allResourcesChoiced.end() ) {
 //						continue;
 //					}
@@ -495,7 +495,7 @@ RDOValue RDOSelectResourceByTypeCalc::calcValue( RDORuntime* sim ) const
 //					sim->allResourcesChoiced.push_back( res_number );
 					return 1;
 				}
-				case RDOPATSelectType::st_with_min: {
+				case rdoParse::RDOPATSelectType::st_with_min: {
 //					if ( std::find( sim->allResourcesChoiced.begin(), sim->allResourcesChoiced.end(), res_number ) != sim->allResourcesChoiced.end() ) {
 //						continue;
 //					}
@@ -510,7 +510,7 @@ RDOValue RDOSelectResourceByTypeCalc::calcValue( RDORuntime* sim ) const
 					}
 					break;
 				}
-				case RDOPATSelectType::st_with_max: {
+				case rdoParse::RDOPATSelectType::st_with_max: {
 //					if ( std::find( sim->allResourcesChoiced.begin(), sim->allResourcesChoiced.end(), res_number ) != sim->allResourcesChoiced.end() ) {
 //						continue;
 //					}
@@ -686,9 +686,9 @@ RDOValue RDOCalcSeqNextByHist::calcValue(RDORuntime *sim) const
 
 RDOCalc::RDOCalc() 
 {	
-	fileToParse = parser->getFileToParse();
-	lineno      = parser->lexer_loc_line();
-	rdoParse::addCalcToRuntime(this); 
+	fileToParse = rdoParse::parser->getFileToParse();
+	lineno      = rdoParse::parser->lexer_loc_line();
+	rdoParse::addCalcToRuntime( this ); 
 }
 
 RDOValue RDOCalc::calcValueBase( RDORuntime* sim ) const
@@ -773,55 +773,34 @@ void RDORuntime::rdoDelay(double fromTime, double toTime)
 	}
 	config.currTime      = fromTime;
 	config.newTime       = toTime;
-	config.realTimeDelay = (toTime - fromTime)/config.showRate * 3600 * 1000;
-
-//	config.frame = NULL;
+	config.realTimeDelay = (toTime - fromTime) * 3600 * 1000 / config.showRate;
+/*
 	for ( int i = 0; i < config.frames.size(); i++ ) {
 		delete config.frames.at(i);
 	}
 	config.frames.clear();
 
-	if(config.showAnimation == rdosim::SM_Animation)
-	{
-		/*
-		RDOFRMFrame *frame = allFrames.at(config.currFrameToShow);
-		if(frame->checkCondition(this))
-			config.frame = frame->createFrame(this);
-		else
-		{
-			int size = allFrames.size();
-			for(int i = 0; i < size; i++)
-			{
-				frame = allFrames.at(i);
-				if(frame->checkCondition(this))
-				{
-					config.frame = frame->createFrame(this);
-					config.currFrameToShow = i;
-					break;
-				}
+	if ( config.showAnimation == rdoSimulator::SM_Animation ) {
+		int size = allFrames.size();
+		for ( int i = 0; i < size; i++ ) {
+			rdoParse::RDOFRMFrame* frame = allFrames.at(i);
+			if ( frame->checkCondition(this) ) {
+				config.frames.push_back( frame->createFrame(this) );
+			} else {
+				config.frames.push_back( NULL );
 			}
 		}
-		*/
-
-		int size = allFrames.size();
-		for(int i = 0; i < size; i++)
-		{
-			RDOFRMFrame *frame = allFrames.at(i);
-			if(frame->checkCondition(this))
-				config.frames.push_back(frame->createFrame(this));
-			else
-				config.frames.push_back(NULL);
-		}
 	}
 
-	if(frameCallBack)
-		(*frameCallBack)(&config, param);
-	else
-	{								// normally  frameCallBack deletes config.frame
-		for(int i = 0; i < config.frames.size(); i++)
+	if ( frameCallBack ) {
+		(*frameCallBack)( &config, param );
+	} else {								// normally  frameCallBack deletes config.frame
+		for ( int i = 0; i < config.frames.size(); i++ ) {
 			delete config.frames.at(i);
+		}
 		config.frames.clear();
 	}
+*/
 }
 
 std::string RDORuntime::writePokazStructure()
@@ -829,7 +808,7 @@ std::string RDORuntime::writePokazStructure()
 	std::stringstream stream;
 	for(int i = 0; i < allPokaz.size(); i++)
 	{
-		RDOPMDPokaz *curr = allPokaz.at(i);
+		rdoParse::RDOPMDPokaz *curr = allPokaz.at(i);
 		if(curr->trace)
 			curr->writePokazStructure(stream);
 	}
@@ -898,7 +877,7 @@ RDOValue RDOCalcCheckDiap::calcValue(RDORuntime *sim) const
 
 void RDORuntime::error( const char* message, const RDOCalc* calc )
 {
-	errors.push_back( rdosim::RDOSyntaxError( rdosim::RDOSyntaxError::UNKNOWN, message, calc->lineno, -1, calc->fileToParse ) );
+	errors.push_back( rdoSimulator::RDOSyntaxError( rdoSimulator::RDOSyntaxError::UNKNOWN, message, calc->lineno, -1, calc->fileToParse ) );
 	throw rdoParse::RDOSyntaxException("");
 }
 
