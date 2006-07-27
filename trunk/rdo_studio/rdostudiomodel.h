@@ -38,13 +38,15 @@ private:
 	bool GUI_HAS_MODEL;
 	bool GUI_IS_RUNING;
 
+	SYSTEMTIME time_start;
+
 	mutable bool openError;
 	mutable bool modelClosed;
 	mutable bool saveAsFlag;
 
 	bool frmDescribed;
-	double modelTime;
-	rdosim::ShowMode showMode;
+	double timeNow;
+	rdoSimulator::ShowMode showMode;
 	void updateFrmDescribed();
 
 	bool prevModify;
@@ -59,8 +61,6 @@ private:
 	bool canCloseModel();
 
 	void beforeModelStart();
-	void showFrame();
-	void stopModelFromSimulator();
 
 	RDOStudioModelDoc* getModelDoc() const {
 		POSITION pos = modelDocTemplate->GetFirstDocPosition();
@@ -84,6 +84,8 @@ public:
 	void runModel() const;
 	void stopModel() const;
 
+	void update();
+
 	std::string getName() const {
 		RDOStudioModelDoc* doc = getModelDoc();
 		return doc ? doc->getName() : "";
@@ -100,11 +102,11 @@ public:
 		return result;
 	}
 	bool isRunning() const                            { return GUI_IS_RUNING; }
-	double getModelTime() const                       { return modelTime;     }
+	double getTimeNow() const                         { return timeNow;       }
 
 	bool isFrmDescribed() const                       { return frmDescribed;  }
-	rdosim::ShowMode getShowMode() const              { return showMode;      }
-	void setShowMode( const rdosim::ShowMode value );
+	rdoSimulator::ShowMode getShowMode() const        { return showMode;      }
+	void setShowMode( const rdoSimulator::ShowMode value );
 	double getShowRate() const;
 	void setShowRate( const double value ) const;
 

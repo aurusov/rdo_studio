@@ -17,7 +17,7 @@ static char THIS_FILE[] = __FILE__;
 
 
 using namespace rdoRepository;
-using namespace rdosim;
+using namespace rdoSimulator;
 using namespace rdoTracer;
 
 RDOTracer* tracer = NULL;
@@ -34,11 +34,11 @@ RDOTracer::RDOTracer(): RDOTracerBase( "RDOStudioTracerGUI", static_cast<RDOKern
 	tracer = this;
 
 	notifies.push_back( RT_REPOSITORY_MODEL_CLOSE );
-	notifies.push_back( RT_SIMULATOR_MODEL_START_BEFORE );
 	notifies.push_back( RT_SIMULATOR_MODEL_STOP_OK );
 	notifies.push_back( RT_SIMULATOR_MODEL_STOP_BY_USER );
 	notifies.push_back( RT_SIMULATOR_MODEL_STOP_RUNTIME_ERROR );
-	notifies.push_back( RT_SIMULATOR_TRACE_STRING );
+	notifies.push_back( RT_RUNTIME_MODEL_START_BEFORE );
+	notifies.push_back( RT_RUNTIME_TRACE_STRING );
 
 	after_constructor();
 }
@@ -58,7 +58,7 @@ void RDOTracer::proc( RDOThread::RDOMessageInfo& msg )
 			}
 			break;
 		}
-		case RDOThread::RT_SIMULATOR_MODEL_START_BEFORE: {
+		case RDOThread::RT_RUNTIME_MODEL_START_BEFORE: {
 			clear();
 			setShowMode( kernel->simulator()->getShowMode() );
 			setModelName( kernel->repository()->getName() );
@@ -81,7 +81,7 @@ void RDOTracer::proc( RDOThread::RDOMessageInfo& msg )
 			setDrawTrace( true );
 			break;
 		}
-		case RDOThread::RT_SIMULATOR_TRACE_STRING: {
+		case RDOThread::RT_RUNTIME_TRACE_STRING: {
 			msg.lock();
 			getTraceString( *static_cast<std::string*>(msg.param) );
 			msg.unlock();
@@ -90,7 +90,7 @@ void RDOTracer::proc( RDOThread::RDOMessageInfo& msg )
 	}
 }
 
-void RDOTracer::setShowMode( const rdosim::ShowMode value )
+void RDOTracer::setShowMode( const rdoSimulator::ShowMode value )
 {
 	if ( value == SM_NoShow ) {
 		setDrawTrace( false );

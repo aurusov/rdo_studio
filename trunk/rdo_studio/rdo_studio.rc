@@ -26,121 +26,6 @@ LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
 #pragma code_page(1251)
 #endif //_WIN32
 
-#ifdef APSTUDIO_INVOKED
-/////////////////////////////////////////////////////////////////////////////
-//
-// TEXTINCLUDE
-//
-
-1 TEXTINCLUDE DISCARDABLE 
-BEGIN
-    "resource.h\0"
-END
-
-2 TEXTINCLUDE DISCARDABLE 
-BEGIN
-    "#include ""afxres.h""\r\n"
-    "\0"
-END
-
-3 TEXTINCLUDE DISCARDABLE 
-BEGIN
-    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
-    "#define _AFX_NO_OLE_RESOURCES\r\n"
-    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
-    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
-    "\r\n"
-    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
-    "#ifdef _WIN32\r\n"
-    "LANGUAGE 9, 1\r\n"
-    "#pragma code_page(1252)\r\n"
-    "#endif //_WIN32\r\n"
-    "#include ""res\\rdo_studio.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
-    "#include ""afxres.rc""         // Standard components\r\n"
-    "#include ""afxprint.rc""       // printing/print preview resources\r\n"
-    "#endif\r\n"
-    "\0"
-END
-
-#endif    // APSTUDIO_INVOKED
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Bitmap
-//
-
-IDB_FILE_TOOLBAR_D      BITMAP  DISCARDABLE     "res\\fileToolbar_d.bmp"
-IDB_EDIT_TOOLBAR_D      BITMAP  DISCARDABLE     "res\\editToolbar_d.bmp"
-IDR_FILE_TOOLBAR        BITMAP  DISCARDABLE     "res\\fileToolbar.bmp"
-IDB_TREECTRL            BITMAP  DISCARDABLE     "res\\tracertreectrl.bmp"
-IDR_EDIT_TOOLBAR        BITMAP  MOVEABLE PURE   "res\\editToolbar.bmp"
-IDR_MODEL_TOOLBAR       BITMAP  DISCARDABLE     "res\\modeToolbar.bmp"
-IDB_MODEL_TOOLBAR_D     BITMAP  DISCARDABLE     "res\\modelToolbar_d.bmp"
-IDB_FRAMES_TREECTRL     BITMAP  DISCARDABLE     "res\\framestreectrl.bmp"
-IDR_ZOOM_TOOLBAR        BITMAP  DISCARDABLE     "res\\zoomToolbar.bmp"
-IDB_ZOOM_TOOLBAR_D      BITMAP  DISCARDABLE     "res\\zoomToolbar_d.bmp"
-IDB_FRAME_OPTIONS_CTRL  BITMAP  DISCARDABLE     "res\\frameoptionsctrl.bmp"
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Toolbar
-//
-
-IDR_FILE_TOOLBAR TOOLBAR DISCARDABLE  16, 15
-BEGIN
-    BUTTON      ID_FILE_NEW
-    BUTTON      ID_FILE_OPEN
-    BUTTON      ID_FILE_MODEL_SAVE
-    BUTTON      ID_FILE_SAVE_ALL
-END
-
-IDR_EDIT_TOOLBAR TOOLBAR DISCARDABLE  16, 15
-BEGIN
-    BUTTON      ID_EDIT_CUT
-    BUTTON      ID_EDIT_COPY
-    BUTTON      ID_EDIT_PASTE
-    SEPARATOR
-    BUTTON      ID_EDIT_UNDO
-    BUTTON      ID_EDIT_REDO
-    SEPARATOR
-    BUTTON      ID_SEARCH_FIND
-    BUTTON      ID_SEARCH_REPLACE
-    SEPARATOR
-    BUTTON      ID_SEARCH_BOOKMARK_PREVIOUS
-    BUTTON      ID_SEARCH_BOOKMARK_NEXT
-    SEPARATOR
-    BUTTON      ID_VIEW_WORKSPACE
-    BUTTON      ID_VIEW_OUTPUT
-END
-
-IDR_MODEL_TOOLBAR TOOLBAR DISCARDABLE  16, 15
-BEGIN
-    BUTTON      ID_MODEL_RUN
-    BUTTON      ID_MODEL_STOP
-    SEPARATOR
-    BUTTON      ID_MODEL_RUN_NOSHOW
-    BUTTON      ID_MODEL_RUN_ANIMATION
-    BUTTON      ID_MODEL_RUN_MONITOR
-    SEPARATOR
-    BUTTON      ID_MODEL_SHOWRATE_INC
-    BUTTON      ID_MODEL_SHOWRATE_INCFOUR
-    BUTTON      ID_MODEL_SHOWRATE_DECFOUR
-    BUTTON      ID_MODEL_SHOWRATE_DEC
-    SEPARATOR
-    BUTTON      ID_MODEL_FRAME_NEXT
-    BUTTON      ID_MODEL_FRAME_PREV
-END
-
-IDR_ZOOM_TOOLBAR TOOLBAR DISCARDABLE  16, 15
-BEGIN
-    BUTTON      ID_VIEW_ZOOMIN
-    BUTTON      ID_VIEW_ZOOMOUT
-    BUTTON      ID_VIEW_ZOOMAUTO
-    BUTTON      ID_VIEW_ZOOMRESET
-END
-
-
 /////////////////////////////////////////////////////////////////////////////
 //
 // DESIGNINFO
@@ -189,14 +74,6 @@ BEGIN
         BOTTOMMARGIN, 114
     END
 
-    IDD_ABOUT, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 261
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 218
-    END
-
     IDD_OPTIONS_GENERAL, DIALOG
     BEGIN
         LEFTMARGIN, 7
@@ -228,16 +105,17 @@ BEGIN
         TOPMARGIN, 7
         BOTTOMMARGIN, 77
     END
+
+    IDD_ABOUT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 261
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 242
+    END
 END
 #endif    // APSTUDIO_INVOKED
 
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Cursor
-//
-
-IDC_CURMARGIN           CURSOR  DISCARDABLE     "res\\Margin.cur"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -419,28 +297,6 @@ BEGIN
     CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDFRAME,0,8,292,88
 END
 
-IDD_ABOUT DIALOG DISCARDABLE  0, 0, 268, 225
-STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "О программе"
-FONT 8, "MS Sans Serif"
-BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,212,204,50,14
-    ICON            IDR_MAINFRAME,IDC_ABOUT_PICTURE,12,8,20,20
-    CTEXT           "caption",IDC_ABOUT_CAPTION,52,4,192,8
-    CTEXT           "МГТУ им. Н.Э.Баумана, кафедра ""Комьютерные системы автоматизации производства"" (РК-9), Москва, Россия",
-                    IDC_ABOUT_ADDRESS,48,20,200,20
-    RTEXT           "тел. (095) 263-6388, (095) 263-6954, (095) 263-6049\r\nфакс (095) 263-6170",
-                    IDC_ABOUT_TEL,44,44,204,16
-    RTEXT           "почта:",IDC_ABOUR_EMAIL_STATIC,132,68,32,8
-    LTEXT           "rdo@rk9.bmstu.ru",IDC_ABOUT_EMAIL,168,68,80,8,SS_NOTIFY
-    RTEXT           "сайт:",IDC_ABOUR_WEB_STATIC,132,76,32,8
-    LTEXT           "http://rdo.rk9.bmstu.ru",IDC_ABOUT_WEB,168,76,80,8,
-                    SS_NOTIFY
-    EDITTEXT        IDC_DEVELOPERS,4,104,256,92,ES_MULTILINE | 
-                    ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_READONLY
-    LTEXT           "Разработчики:",IDC_STATIC,5,93,50,8
-END
-
 IDD_OPTIONS_GENERAL DIALOGEX 0, 0, 292, 138
 STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "Основные"
@@ -529,6 +385,152 @@ BEGIN
                     BS_AUTOCHECKBOX | WS_TABSTOP,144,72,85,10
 END
 
+IDD_ABOUT DIALOG DISCARDABLE  0, 0, 268, 249
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "О программе"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,212,228,50,14
+    ICON            IDR_MAINFRAME,IDC_ABOUT_PICTURE,12,8,20,20
+    CTEXT           "caption",IDC_ABOUT_CAPTION,40,8,220,8
+    LTEXT           "Московский Государственный Университет им.Н.Э.Баумана,\nФакультет Робототехники и комплексной автоматизации,\nКафедра Компьютерные системы автоматизации производства",
+                    IDC_ABOUT_INFO,40,20,220,24
+    RTEXT           "Телефон: +7 (495) 263 63 88\n+7 (495) 263 69 54\n+7 (495) 263 60 49\nФакс: +7 (495) 263 61 70",
+                    IDC_ABOUT_TEL,116,76,144,32
+    EDITTEXT        IDC_DEVELOPERS,4,131,260,92,ES_MULTILINE | 
+                    ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_READONLY
+    LTEXT           "Разработчики",IDC_STATIC,4,120,50,8
+    RTEXT           "E-mail:",IDC_ABOUR_EMAIL_STATIC,168,112,32,8
+    RTEXT           "rdo@rk9.bmstu.ru",IDC_ABOUT_EMAIL,204,112,56,8,
+                    SS_NOTIFY
+    RTEXT           "http://rdo.rk9.bmstu.ru",IDC_ABOUT_WEB,180,120,80,8,
+                    SS_NOTIFY
+    RTEXT           "Россия, Москва, 105005,\nул. 2-ая Бауманская, д.5.\nКафедра РК-9",
+                    IDC_ABOUT_ADDRESS,116,48,144,24
+END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\rdo_studio.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#include ""afxprint.rc""       // printing/print preview resources\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_FILE_TOOLBAR_D      BITMAP  DISCARDABLE     "res\\fileToolbar_d.bmp"
+IDB_EDIT_TOOLBAR_D      BITMAP  DISCARDABLE     "res\\editToolbar_d.bmp"
+IDR_FILE_TOOLBAR        BITMAP  DISCARDABLE     "res\\fileToolbar.bmp"
+IDB_TREECTRL            BITMAP  DISCARDABLE     "res\\tracertreectrl.bmp"
+IDR_EDIT_TOOLBAR        BITMAP  MOVEABLE PURE   "res\\editToolbar.bmp"
+IDR_MODEL_TOOLBAR       BITMAP  DISCARDABLE     "res\\modeToolbar.bmp"
+IDB_MODEL_TOOLBAR_D     BITMAP  DISCARDABLE     "res\\modelToolbar_d.bmp"
+IDB_FRAMES_TREECTRL     BITMAP  DISCARDABLE     "res\\framestreectrl.bmp"
+IDR_ZOOM_TOOLBAR        BITMAP  DISCARDABLE     "res\\zoomToolbar.bmp"
+IDB_ZOOM_TOOLBAR_D      BITMAP  DISCARDABLE     "res\\zoomToolbar_d.bmp"
+IDB_FRAME_OPTIONS_CTRL  BITMAP  DISCARDABLE     "res\\frameoptionsctrl.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_FILE_TOOLBAR TOOLBAR DISCARDABLE  16, 15
+BEGIN
+    BUTTON      ID_FILE_NEW
+    BUTTON      ID_FILE_OPEN
+    BUTTON      ID_FILE_MODEL_SAVE
+    BUTTON      ID_FILE_SAVE_ALL
+END
+
+IDR_EDIT_TOOLBAR TOOLBAR DISCARDABLE  16, 15
+BEGIN
+    BUTTON      ID_EDIT_CUT
+    BUTTON      ID_EDIT_COPY
+    BUTTON      ID_EDIT_PASTE
+    SEPARATOR
+    BUTTON      ID_EDIT_UNDO
+    BUTTON      ID_EDIT_REDO
+    SEPARATOR
+    BUTTON      ID_SEARCH_FIND
+    BUTTON      ID_SEARCH_REPLACE
+    SEPARATOR
+    BUTTON      ID_SEARCH_BOOKMARK_PREVIOUS
+    BUTTON      ID_SEARCH_BOOKMARK_NEXT
+    SEPARATOR
+    BUTTON      ID_VIEW_WORKSPACE
+    BUTTON      ID_VIEW_OUTPUT
+END
+
+IDR_MODEL_TOOLBAR TOOLBAR DISCARDABLE  16, 15
+BEGIN
+    BUTTON      ID_MODEL_RUN
+    BUTTON      ID_MODEL_STOP
+    SEPARATOR
+    BUTTON      ID_MODEL_RUN_NOSHOW
+    BUTTON      ID_MODEL_RUN_ANIMATION
+    BUTTON      ID_MODEL_RUN_MONITOR
+    SEPARATOR
+    BUTTON      ID_MODEL_SHOWRATE_INC
+    BUTTON      ID_MODEL_SHOWRATE_INCFOUR
+    BUTTON      ID_MODEL_SHOWRATE_DECFOUR
+    BUTTON      ID_MODEL_SHOWRATE_DEC
+    SEPARATOR
+    BUTTON      ID_MODEL_FRAME_NEXT
+    BUTTON      ID_MODEL_FRAME_PREV
+END
+
+IDR_ZOOM_TOOLBAR TOOLBAR DISCARDABLE  16, 15
+BEGIN
+    BUTTON      ID_VIEW_ZOOMIN
+    BUTTON      ID_VIEW_ZOOMOUT
+    BUTTON      ID_VIEW_ZOOMAUTO
+    BUTTON      ID_VIEW_ZOOMRESET
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Cursor
+//
+
+IDC_CURMARGIN           CURSOR  DISCARDABLE     "res\\Margin.cur"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -1286,8 +1288,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,8,0,355
- PRODUCTVERSION 0,8,0,355
+ FILEVERSION 0,8,0,390
+ PRODUCTVERSION 0,8,0,390
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -1305,14 +1307,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "RAO studio\0"
-            VALUE "FileVersion", "0, 8, 0, 355\0"
+            VALUE "FileVersion", "0, 8, 0, 390\0"
             VALUE "InternalName", "RAO-Studio\0"
             VALUE "LegalCopyright", "Copyright (C) 2003-2006\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "RAO-Studio.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "RAO-Studio\0"
-            VALUE "ProductVersion", "0, 8, 0, 355\0"
+            VALUE "ProductVersion", "0, 8, 0, 390\0"
             VALUE "SpecialBuild", "\0"
         END
     END
@@ -1527,6 +1529,7 @@ BEGIN
     ID_RESULTS              "Результаты"
     ID_MODEL                "Модель : %s"
     ID_RAO_CLIPBRD          "RAO Studio Serie"
+    IDS_MODEL_RUNTIMEERROR_STOPED "Модель остановлена из-за ошибки прогона"
 END
 
 STRINGTABLE DISCARDABLE 
@@ -1821,9 +1824,9 @@ BEGIN
     IDD_ABOUT, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 261
+        RIGHTMARGIN, 217
         TOPMARGIN, 7
-        BOTTOMMARGIN, 218
+        BOTTOMMARGIN, 242
     END
 
     IDD_BUFFER, DIALOG
@@ -1906,26 +1909,28 @@ END
 // Dialog
 //
 
-IDD_ABOUT DIALOG DISCARDABLE  0, 0, 268, 225
+IDD_ABOUT DIALOG DISCARDABLE  0, 0, 224, 249
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "About RAO Studio"
 FONT 8, "MS Sans Serif"
 BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,212,204,50,14
+    DEFPUSHBUTTON   "OK",IDOK,168,228,50,14
     ICON            IDR_MAINFRAME,IDC_ABOUT_PICTURE,12,8,20,20
-    CTEXT           "caption",IDC_ABOUT_CAPTION,52,4,192,8
-    CTEXT           "Moscow State Bauman University of Technology, ""Computer-aided systems for manufacturing automatization"" Department (RK-9), Moscow, Russia",
-                    IDC_ABOUT_ADDRESS,48,20,200,24
-    RTEXT           "Tel (095) 263-6388, (095) 263-6954, (095) 263-6049\r\nFax (095) 263-6170",
-                    IDC_ABOUT_TEL,40,52,204,16
-    EDITTEXT        IDC_DEVELOPERS,4,104,256,92,ES_MULTILINE | 
+    CTEXT           "caption",IDC_ABOUT_CAPTION,48,8,144,8
+    LTEXT           "Bauman Moscow State Technical University,\nRobotics and Complex Automation Faculty,\nComputer-Aided Systems for Manufacturing Automatization Departmen",
+                    IDC_ABOUT_INFO,52,20,144,24
+    RTEXT           "Tel. +7 (495) 263 63 88\n+7 (495) 263 69 54\n+7 (495) 263 60 49\nFax +7 (495) 263 61 70",
+                    IDC_ABOUT_TEL,52,76,144,32
+    EDITTEXT        IDC_DEVELOPERS,4,131,216,92,ES_MULTILINE | 
                     ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_READONLY
-    LTEXT           "Developers",IDC_STATIC,5,93,50,8
-    RTEXT           "e-mail:",IDC_ABOUR_EMAIL_STATIC,128,72,32,8
-    LTEXT           "rdo@rk9.bmstu.ru",IDC_ABOUT_EMAIL,164,72,80,8,SS_NOTIFY
-    RTEXT           "web site:",IDC_ABOUR_WEB_STATIC,128,80,32,8
-    LTEXT           "http://rdo.rk9.bmstu.ru",IDC_ABOUT_WEB,164,80,80,8,
+    LTEXT           "Developers",IDC_STATIC,4,120,50,8
+    RTEXT           "E-mail:",IDC_ABOUR_EMAIL_STATIC,104,112,32,8
+    RTEXT           "rdo@rk9.bmstu.ru",IDC_ABOUT_EMAIL,140,112,56,8,
                     SS_NOTIFY
+    RTEXT           "http://rdo.rk9.bmstu.ru",IDC_ABOUT_WEB,116,120,80,8,
+                    SS_NOTIFY
+    RTEXT           "RK9 Department,\n5, 2nd Baumanskaya Ul.,\nMoscow, Russia 105005",
+                    IDC_ABOUT_ADDRESS,52,48,144,24
 END
 
 IDD_BUFFER DIALOG DISCARDABLE  0, 0, 205, 60
@@ -2973,6 +2978,7 @@ BEGIN
     ID_RESULTS              "Results"
     ID_MODEL                "Model : %s"
     ID_RAO_CLIPBRD          "RAO Studio Serie"
+    IDS_MODEL_RUNTIMEERROR_STOPED "Run-time error"
 END
 
 STRINGTABLE DISCARDABLE 

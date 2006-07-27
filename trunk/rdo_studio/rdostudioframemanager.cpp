@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include "rdostudioframemanager.h"
 #include "rdostudiomodel.h"
-#include "rdostudioframedoc.h"
-#include "rdostudioframeview.h"
 #include "rdostudioapp.h"
 #include "rdostudiomainfrm.h"
 #include "rdostudiochildfrm.h"
@@ -16,8 +14,6 @@
 #include <rdorepository.h>
 #include <rdobinarystream.h>
 
-using namespace rdosim;
-
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -27,7 +23,7 @@ static char THIS_FILE[] = __FILE__;
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioFrameManager
 // ----------------------------------------------------------------------------
-std::vector< RDOStudioFrameManager::Frame* > RDOStudioFrameManager::frames;
+//std::vector< RDOStudioFrameManager::Frame* > RDOStudioFrameManager::frames;
 
 RDOStudioFrameManager::RDOStudioFrameManager():
 	frameDocTemplate( NULL ),
@@ -60,48 +56,6 @@ void RDOStudioFrameManager::insertItem( const std::string& name )
 	frames.push_back( item );
 }
 
-int RDOStudioFrameManager::findFrameIndex( const HTREEITEM hitem ) const
-{
-	std::vector< Frame* >::iterator it = frames.begin();
-	int index = 0;
-	while ( it != frames.end() ) {
-		if ( (*it)->hitem == hitem ) {
-			return index;
-		}
-		it++;
-		index++;
-	};
-	return -1;
-}
-
-int RDOStudioFrameManager::findFrameIndex( const RDOStudioFrameDoc* doc ) const
-{
-	std::vector< Frame* >::iterator it = frames.begin();
-	int index = 0;
-	while ( it != frames.end() ) {
-		if ( (*it)->doc == doc ) {
-			return index;
-		}
-		it++;
-		index++;
-	};
-	return -1;
-}
-
-int RDOStudioFrameManager::findFrameIndex( const RDOStudioFrameView* view ) const
-{
-	std::vector< Frame* >::iterator it = frames.begin();
-	int index = 0;
-	while ( it != frames.end() ) {
-		if ( (*it)->view == view ) {
-			return index;
-		}
-		it++;
-		index++;
-	};
-	return -1;
-}
-
 RDOStudioFrameDoc* RDOStudioFrameManager::connectFrameDoc( const int index )
 {
 	RDOStudioFrameDoc* doc = NULL;
@@ -123,7 +77,7 @@ RDOStudioFrameDoc* RDOStudioFrameManager::connectFrameDoc( const int index )
 	return doc;
 }
 
-void RDOStudioFrameManager::disconnectFrameDoc( const RDOStudioFrameDoc* doc ) const
+void RDOStudioFrameManager::disconnectFrameDoc( const RDOStudioFrameDoc* doc )
 {
 	int index = findFrameIndex( doc );
 	if ( index != -1 ) {
@@ -136,6 +90,7 @@ void RDOStudioFrameManager::disconnectFrameDoc( const RDOStudioFrameDoc* doc ) c
 
 		lock.Unlock();
 	}
+	changed = true;
 }
 
 void RDOStudioFrameManager::closeAll()
@@ -333,7 +288,7 @@ void RDOStudioFrameManager::bmp_clear()
 	bitmaps.clear();
 }
 
-void RDOStudioFrameManager::showFrame( const RDOFrame* const frame, const int index )
+void RDOStudioFrameManager::showFrame( const rdoSimulator::RDOFrame* const frame, const int index )
 {
 	if ( index < count() ) {
 
@@ -426,10 +381,10 @@ void RDOStudioFrameManager::showFrame( const RDOFrame* const frame, const int in
 
 			int size = frame->elements.size();
 			for ( int i = 0; i < size; i++ ) {
-				RDOFrameElement* currElement = frame->elements.at(i);
+				rdoSimulator::RDOFrameElement* currElement = frame->elements.at(i);
 				switch( currElement->type ) {
-					case RDOFrameElement::text_type: {
-						RDOTextElement* element = static_cast<RDOTextElement*>(currElement);
+					case rdoSimulator::RDOFrameElement::text_type: {
+						rdoSimulator::RDOTextElement* element = static_cast<rdoSimulator::RDOTextElement*>(currElement);
 						if( !element->background.isTransparent ) {
 							::SetBkMode( hdc, OPAQUE );
 							::SetBkColor( hdc, RGB(element->background.r, element->background.g, element->background.b) );
@@ -443,17 +398,17 @@ void RDOStudioFrameManager::showFrame( const RDOFrame* const frame, const int in
 
 						UINT nFormat = DT_SINGLELINE | DT_VCENTER;
 						switch( element->align ) {
-							case RDOTextElement::left  : nFormat |= DT_LEFT; break;
-							case RDOTextElement::right : nFormat |= DT_RIGHT; break;
-							case RDOTextElement::center: nFormat |= DT_CENTER; break;
+							case rdoSimulator::RDOTextElement::left  : nFormat |= DT_LEFT; break;
+							case rdoSimulator::RDOTextElement::right : nFormat |= DT_RIGHT; break;
+							case rdoSimulator::RDOTextElement::center: nFormat |= DT_CENTER; break;
 						}
 
 						::DrawText( hdc, element->strText.c_str(), element->strText.length(), CRect( element->x, element->y, element->x + element->w, element->y + element->h ), nFormat );
 
 						break;
 					}
-					case RDOFrameElement::rect_type: {
-						RDORectElement* element = static_cast<RDORectElement*>(currElement);
+					case rdoSimulator::RDOFrameElement::rect_type: {
+						rdoSimulator::RDORectElement* element = static_cast<rdoSimulator::RDORectElement*>(currElement);
 						HBRUSH brush = ::CreateSolidBrush( RGB(element->background.r, element->background.g, element->background.b) );
 						HBRUSH pOldBrush;
 						if( !element->background.isTransparent ) {
@@ -480,8 +435,8 @@ void RDOStudioFrameManager::showFrame( const RDOFrame* const frame, const int in
 
 						break;
 					}
-					case RDOFrameElement::r_rect_type: {
-						RDORRectElement* element = static_cast<RDORRectElement*>(currElement);
+					case rdoSimulator::RDOFrameElement::r_rect_type: {
+						rdoSimulator::RDORRectElement* element = static_cast<rdoSimulator::RDORRectElement*>(currElement);
 						HBRUSH brush = ::CreateSolidBrush( RGB(element->background.r, element->background.g, element->background.b) );
 						HBRUSH pOldBrush;
 						if( !element->background.isTransparent ) {
@@ -509,8 +464,8 @@ void RDOStudioFrameManager::showFrame( const RDOFrame* const frame, const int in
 
 						break;
 					}
-					case RDOFrameElement::line_type: {
-						RDOLineElement* element = static_cast<RDOLineElement*>(currElement);
+					case rdoSimulator::RDOFrameElement::line_type: {
+						rdoSimulator::RDOLineElement* element = static_cast<rdoSimulator::RDOLineElement*>(currElement);
 						if( !element->foreground.isTransparent ) {
 							HPEN pen     = ::CreatePen( PS_SOLID, 0, RGB(element->foreground.r, element->foreground.g, element->foreground.b) );
 							HPEN pOldPen = static_cast<HPEN>(::SelectObject( hdc, pen ));
@@ -524,8 +479,8 @@ void RDOStudioFrameManager::showFrame( const RDOFrame* const frame, const int in
 
 						break;
 					}
-					case RDOFrameElement::triang_type: {
-						RDOTriangElement* element = static_cast<RDOTriangElement*>(currElement);
+					case rdoSimulator::RDOFrameElement::triang_type: {
+						rdoSimulator::RDOTriangElement* element = static_cast<rdoSimulator::RDOTriangElement*>(currElement);
 						HBRUSH brush = ::CreateSolidBrush( RGB(element->background.r, element->background.g, element->background.b) );
 						HBRUSH pOldBrush;
 						if( !element->background.isTransparent ) {
@@ -559,8 +514,8 @@ void RDOStudioFrameManager::showFrame( const RDOFrame* const frame, const int in
 
 						break;
 					}
-					case RDOFrameElement::ellipse_type: {
-						RDOEllipseElement* element = static_cast<RDOEllipseElement*>(currElement);
+					case rdoSimulator::RDOFrameElement::ellipse_type: {
+						rdoSimulator::RDOEllipseElement* element = static_cast<rdoSimulator::RDOEllipseElement*>(currElement);
 						HBRUSH brush = ::CreateSolidBrush( RGB(element->background.r, element->background.g, element->background.b) );
 						HBRUSH pOldBrush;
 						if( !element->background.isTransparent ) {
@@ -587,8 +542,8 @@ void RDOStudioFrameManager::showFrame( const RDOFrame* const frame, const int in
 
 						break;
 					}
-					case RDOFrameElement::bitmap_type: {
-						RDOBitmapElement* element = static_cast<RDOBitmapElement*>(currElement);
+					case rdoSimulator::RDOFrameElement::bitmap_type: {
+						rdoSimulator::RDOBitmapElement* element = static_cast<rdoSimulator::RDOBitmapElement*>(currElement);
 						BMP* bmp = bitmaps[element->bmp];
 						if ( bmp ) {
 							BMP* mask = element->hasMask ? bitmaps[element->mask] : NULL;
@@ -605,8 +560,8 @@ void RDOStudioFrameManager::showFrame( const RDOFrame* const frame, const int in
 						}
 						break;
 					}
-					case RDOFrameElement::s_bmp_type: {
-						RDOSBmpElement* element = static_cast<RDOSBmpElement*>(currElement);
+					case rdoSimulator::RDOFrameElement::s_bmp_type: {
+						rdoSimulator::RDOSBmpElement* element = static_cast<rdoSimulator::RDOSBmpElement*>(currElement);
 						BMP* bmp = bitmaps[element->bmp];
 						if ( bmp ) {
 							BMP* mask = element->hasMask ? bitmaps[element->mask] : NULL;
@@ -623,8 +578,8 @@ void RDOStudioFrameManager::showFrame( const RDOFrame* const frame, const int in
 						}
 						break;
 					}
-					case RDOFrameElement::active_type: {
-						RDOActiveElement* element = static_cast<RDOActiveElement*>(currElement);
+					case rdoSimulator::RDOFrameElement::active_type: {
+						rdoSimulator::RDOActiveElement* element = static_cast<rdoSimulator::RDOActiveElement*>(currElement);
 						Area* area = new Area;
 						area->name = element->operName;
 						area->x    = element->x;
@@ -660,7 +615,7 @@ void RDOStudioFrameManager::showFrame( const RDOFrame* const frame, const int in
 void RDOStudioFrameManager::showNextFrame()
 {
 	int cnt = count();
-	if ( model->isRunning() && model->getShowMode() != rdosim::SM_NoShow && cnt > 1 && currentShowingFrame < cnt-1 ) {
+	if ( model->isRunning() && model->getShowMode() != rdoSimulator::SM_NoShow && cnt > 1 && currentShowingFrame < cnt-1 ) {
 		int index = currentShowingFrame + 1;
 		RDOStudioFrameDoc* doc = getFrameDoc( index );
 		if ( !doc ) {
@@ -676,7 +631,7 @@ void RDOStudioFrameManager::showNextFrame()
 void RDOStudioFrameManager::showPrevFrame()
 {
 	int cnt = count();
-	if ( model->isRunning() && model->getShowMode() != rdosim::SM_NoShow && cnt > 1 && currentShowingFrame > 0 ) {
+	if ( model->isRunning() && model->getShowMode() != rdoSimulator::SM_NoShow && cnt > 1 && currentShowingFrame > 0 ) {
 		int index = currentShowingFrame - 1;
 		RDOStudioFrameDoc* doc = getFrameDoc( index );
 		if ( !doc ) {
@@ -692,7 +647,7 @@ void RDOStudioFrameManager::showPrevFrame()
 void RDOStudioFrameManager::showFrame( const int index )
 {
 	int cnt = count();
-	if ( model->isRunning() && model->getShowMode() != rdosim::SM_NoShow && cnt > 1 && index >= 0 && index < cnt ) {
+	if ( model->isRunning() && model->getShowMode() != rdoSimulator::SM_NoShow && cnt > 1 && index >= 0 && index < cnt ) {
 		RDOStudioFrameDoc* doc = getFrameDoc( index );
 		if ( !doc ) {
 			doc = connectFrameDoc( index );
@@ -707,18 +662,18 @@ void RDOStudioFrameManager::showFrame( const int index )
 bool RDOStudioFrameManager::canShowNextFrame() const
 {
 	int cnt = count();
-	return model->isRunning() && model->getShowMode() != rdosim::SM_NoShow && cnt > 1 && ( currentShowingFrame == -1 || currentShowingFrame < cnt-1 );
+	return model->isRunning() && model->getShowMode() != rdoSimulator::SM_NoShow && cnt > 1 && ( currentShowingFrame == -1 || currentShowingFrame < cnt-1 );
 }
 
 bool RDOStudioFrameManager::canShowPrevFrame() const
 {
 	int cnt = count();
-	return model->isRunning() && model->getShowMode() != rdosim::SM_NoShow && cnt > 1 && currentShowingFrame > 0;
+	return model->isRunning() && model->getShowMode() != rdoSimulator::SM_NoShow && cnt > 1 && currentShowingFrame > 0;
 }
 
 void RDOStudioFrameManager::updateStyles() const
 {
-	std::vector< Frame* >::iterator it = frames.begin();
+	std::vector< Frame* >::const_iterator it = frames.begin();
 	while ( it != frames.end() ) {
 		RDOStudioFrameView* view = (*it++)->view;
 		if ( view ) {

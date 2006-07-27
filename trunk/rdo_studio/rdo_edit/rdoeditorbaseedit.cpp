@@ -80,10 +80,10 @@ set?0 Show?0 Show_if?0 Show_mode?0 Show_rate?0 some?0 Statistic_file?0 such_as?0
 Terminate_if?0 text?0 Time_now?0 Trace_EndTime?2 Trace_file?2 Trace_StartTime?2 triang?0 TRUE?0 \
 uniform?0 until?0 USER_BREAK?0 value?0 watch_par?0 watch_quant?0 watch_state?0 watch_value?0 with_max?0 \
 with_min?0 YES?0 transparent?0 Seed?0 Системное_время?0" ),
-	kw1 ( "Abs?1 ArcCos?1 ArcSin?1 ArcTan?1 Cos?1 Cotan?1 Exist?1 Exp?1 Floor?1 For_All?1 Frac?1 \
+	kw1( "Abs?1 ArcCos?1 ArcSin?1 ArcTan?1 Cos?1 Cotan?1 Exist?1 Exp?1 Floor?1 For_All?1 Frac?1 \
 GetRelResNumber?1 GetResNumber?1 IAbs?1 IMax?1 IMin?1 Int?1 IntPower?1 Ln?1 Log10?1 Log2?1 LogN?1 Max?1 Min?1 \
 Not_Exist?1 Not_For_All?1 Power?1 Round?1 Sin?1 Sqrt?1 Tan?1" ),
-	kw2 ( "no_trace?2 trace?2 trace_all?2 trace_stat?2 trace_tops?2" )
+	kw2( "no_trace?2 trace?2 trace_all?2 trace_stat?2 trace_tops?2" )
 {
 }
 
@@ -104,7 +104,9 @@ std::string RDOEditorBaseEdit::convertToLexer( const std::string& kw )
 		std::string::size_type pos2 = s.find( ' ', pos1 );
 		s.erase( pos1, pos2 - pos1 );
 	}
-	return s;
+	std::string str_big = s;
+	rdo::toLower(s);
+	return str_big + " " + s;
 }
 
 int RDOEditorBaseEdit::OnCreate( LPCREATESTRUCT lpCreateStruct )

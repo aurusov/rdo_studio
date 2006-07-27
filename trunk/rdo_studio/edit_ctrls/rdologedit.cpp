@@ -293,6 +293,7 @@ void RDOLogEdit::appendLine( RDOLogEditLineInfo* line )
 	std::string str = line->getMessage();
 	rdo::trimRight( str );
 	str += "\r\n";
+	setCurrentPos( getLength() );
 	appendText( str );
 	if ( scroll ) {
 		int line = getLineCount();
@@ -303,4 +304,5 @@ void RDOLogEdit::appendLine( RDOLogEditLineInfo* line )
 	if ( readOnly ) {
 		setReadOnly( true );
 	}
+	updateEditGUI();
 }

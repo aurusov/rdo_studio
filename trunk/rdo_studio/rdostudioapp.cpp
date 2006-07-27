@@ -172,7 +172,7 @@ BOOL RDOStudioApp::InitInstance()
 #else
 	studioGUI = kernel;
 #endif
-	new rdosim::RDOThreadSimulator();
+	new rdoSimulator::RDOThreadSimulator();
 	new rdoRepository::RDOThreadRepository();
 #ifdef RDO_MT
 	studioMT = new RDOThreadStudio();

@@ -15,28 +15,24 @@
 #include <rdobinarystream.h>
 #include <rdocommon.h>
 
+namespace rdoSimulator {
+class RDOThreadSimulator;
+}
+
 namespace rdoRuntime {
 	class RDORuntime;
 	class RDOResult;
 	struct RDOConfig;
-}
-class RDOTrace;
-namespace rdoParse {
-	class RDOParser ;
-}
-
-namespace rdosim
-{
 
 // --------------------------------------------------------------------
 // ---------- RDOThreadRunTime
 // --------------------------------------------------------------------
 class RDOThreadRunTime: public RDOThreadMT
 {
-friend class RDOThreadSimulator;
+friend class rdoSimulator::RDOThreadSimulator;
 protected:
-	RDOThreadSimulator* simulator;
-	bool                runtime_error;
+	rdoSimulator::RDOThreadSimulator* simulator;
+	bool                              runtime_error;
 
 	RDOThreadRunTime();
 	virtual ~RDOThreadRunTime() {}; // Чтобы нельзя было удалить через delete
@@ -44,20 +40,40 @@ protected:
 	virtual void idle();
 	virtual void start();
 	virtual void stop();
+
+public:
+	struct GetFrame {
+		rdoSimulator::RDOFrame* frame;
+		int                     frame_number;
+		GetFrame( rdoSimulator::RDOFrame* _frame, int _frame_number ): frame( _frame ), frame_number( _frame_number ) {}
+	};
 };
+
+} // namespace rdoRuntime
+
+class RDOTrace;
+namespace rdoParse {
+	class RDOParser;
+}
+
+namespace rdoSimulator
+{
 
 // --------------------------------------------------------------------
 // ---------- RDOThreadSimulator
 // --------------------------------------------------------------------
 class RDOThreadSimulator: public RDOThreadMT
 {
-friend class RDOThreadRunTime;
+friend class rdoRuntime::RDOThreadRunTime;
+friend void frameCallBack( rdoRuntime::RDOConfig* config, void* param );
+friend void tracerCallBack( std::string* newString, void* param );
+
 private:
 	rdoParse::RDOParser*    parser;
 	rdoRuntime::RDORuntime* runtime;
 	bool canTrace;
 
-	RDOThreadRunTime* thread_runtime;
+	rdoRuntime::RDOThreadRunTime* thread_runtime;
 	rdoModel::RDOExitCode exitCode;
 
 	std::vector<RDOFrame *> frames;
@@ -87,7 +103,6 @@ protected:
 public:
 	RDOThreadSimulator();
 
-	double getModelTime();
 	void parseSMRFileInfo( rdo::binarystream& smr, rdoModelObjects::RDOSMRFileInfo& info );
 
 	const std::vector<RDOFrame *>& getFrames();
@@ -95,9 +110,6 @@ public:
 	void keyDown(int scanCode);
 	void keyUp(int scanCode);
 	void addAreaPressed(std::string& areaName);
-
-	std::vector< const std::string* > getAllFrames();
-	std::vector< const std::string* > getAllBitmaps();
 
 	ShowMode getInitialShowMode();
 	int getInitialFrameNumber();
@@ -111,10 +123,16 @@ public:
 	double getShowRate()                   { return showRate;      }
 	void setShowRate( double _showRate )   { showRate = _showRate; }
 
-	friend void frameCallBack( rdoRuntime::RDOConfig* config, void* param );
-	friend void tracerCallBack( std::string* newString, void* param );
+	struct GetList {
+		enum Type {
+			frames,
+			bitmaps 
+		} type;
+		std::list< std::string >* list;
+		GetList( Type _type, std::list< std::string >* _list ): type( _type ), list( _list ) {}
+	};
 };
 
-} // namespace rdosim
+} // namespace rdoSimulator
 
 #endif // RDO_SIMULATOR_INTERFACE__

@@ -15,11 +15,11 @@ class RDOBuildEditLineInfo: public RDOLogEditLineInfo
 friend class RDOBuildEdit;
 
 protected:
-	rdosim::RDOSyntaxError::ErrorCode error_code;
+	rdoSimulator::RDOSyntaxError::ErrorCode error_code;
 	bool warning;
 
 public:
-	RDOBuildEditLineInfo( rdosim::RDOSyntaxError::ErrorCode _error_code, const std::string& _message, const rdoModelObjects::RDOFileType _fileType = rdoModelObjects::PAT, const int _lineNumber = -1, const int _posInLine = 0, bool _warning = false );
+	RDOBuildEditLineInfo( rdoSimulator::RDOSyntaxError::ErrorCode _error_code, const std::string& _message, const rdoModelObjects::RDOFileType _fileType = rdoModelObjects::PAT, const int _lineNumber = -1, const int _posInLine = 0, bool _warning = false );
 	RDOBuildEditLineInfo( const std::string& _message );
 	~RDOBuildEditLineInfo();
 

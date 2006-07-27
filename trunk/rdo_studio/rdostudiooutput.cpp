@@ -175,7 +175,7 @@ void RDOStudioOutput::appendStringToBuild( const std::string& str ) const
 	build->appendLine( line );
 }
 
-void RDOStudioOutput::appendStringToBuild( rdosim::RDOSyntaxError::ErrorCode error_code, const std::string& str, const rdoModelObjects::RDOFileType fileType, const int lineNumber, const int posInLine, const bool error ) const
+void RDOStudioOutput::appendStringToBuild( rdoSimulator::RDOSyntaxError::ErrorCode error_code, const std::string& str, const rdoModelObjects::RDOFileType fileType, const int lineNumber, const int posInLine, const bool error ) const
 {
 	RDOBuildEditLineInfo* line = new RDOBuildEditLineInfo( error_code, str, fileType, lineNumber, posInLine, error );
 	build->appendLine( line );

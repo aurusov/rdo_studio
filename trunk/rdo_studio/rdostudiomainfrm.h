@@ -55,6 +55,8 @@ private:
 	void dockControlBarBesideOf( CControlBar& bar, CControlBar& baseBar );
 	std::map< HWND, CWnd* > cmd_wnd;
 
+	UINT update_timer;
+
 public:
 	RDOStudioMainFrame();
 	virtual ~RDOStudioMainFrame();
@@ -82,17 +84,18 @@ public:
 		}
 	}
 
-	void showNewModelTime( const double value );
-
 	void beginProgress( const int lower = 0, const int upper = 100, const int step = 1 );
-	void getProgressRange( int& lower, int& upper ) const { statusBar.getRange( lower, upper ); };
-	void setProgress( const int pos ) { statusBar.setPos( pos ); };
-	int  getProgress() const { return statusBar.getPos(); };
-	void offsetProgress( const int offset ) { statusBar.offsetPos( offset ); };
-	void stepProgress() { statusBar.stepIt(); };
+	void getProgressRange( int& lower, int& upper ) const  { statusBar.getRange( lower, upper ); };
+	void setProgress( const int pos )                      { statusBar.setPos( pos );            };
+	int  getProgress() const                               { return statusBar.getPos();          };
+	void offsetProgress( const int offset )                { statusBar.offsetPos( offset );      };
+	void stepProgress()                                    { statusBar.stepIt();                 };
 	void endProgress();
 
 	BOOL OnCmdMsgForDockOnly( UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo );
+
+	void update_start();
+	void update_stop();
 
 #ifdef _DEBUG
 	virtual void AssertValid() const;
@@ -100,7 +103,6 @@ public:
 #endif
 
 protected:
-
 	//{{AFX_VIRTUAL(RDOStudioMainFrame)
 	public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
@@ -144,6 +146,7 @@ protected:
 	afx_msg void OnModelFramePrev();
 	afx_msg void OnUpdateModelFrameNext(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateModelFramePrev(CCmdUI* pCmdUI);
+	afx_msg void OnTimer(UINT nIDEvent);
 	//}}AFX_MSG
 	afx_msg void OnUpdateCoordStatusBar( CCmdUI *pCmdUI );
 	afx_msg void OnUpdateModifyStatusBar( CCmdUI *pCmdUI );

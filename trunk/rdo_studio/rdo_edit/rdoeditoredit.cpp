@@ -117,7 +117,7 @@ RDOEditorEdit::~RDOEditorEdit()
 
 BOOL RDOEditorEdit::OnNotify( WPARAM wParam, LPARAM lParam, LRESULT* pResult )
 {
-	TRACE( "N. %d, %d, %d, %d\n", ::GetCurrentProcess(), ::GetCurrentProcessId(), ::GetCurrentThread(), ::GetCurrentThreadId() );
+//	TRACE( "N. %d, %d, %d, %d\n", ::GetCurrentProcess(), ::GetCurrentProcessId(), ::GetCurrentThread(), ::GetCurrentThreadId() );
 
 	SCNotification* scn = reinterpret_cast<SCNotification*>(lParam);
 

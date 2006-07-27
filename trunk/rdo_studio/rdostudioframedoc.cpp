@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "rdostudioframedoc.h"
-#include "rdostudioframeview.h"
 #include "rdostudiomodel.h"
 #include "rdostudioframemanager.h"
 
@@ -54,12 +53,3 @@ void RDOStudioFrameDoc::Dump(CDumpContext& dc) const
 	CDocument::Dump(dc);
 }
 #endif
-
-RDOStudioFrameView* RDOStudioFrameDoc::getView() const
-{
-	POSITION pos = GetFirstViewPosition();
-	if ( pos ) {
-		return static_cast<RDOStudioFrameView*>(GetNextView( pos ));
-	}
-	return NULL;
-}

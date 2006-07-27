@@ -50,6 +50,7 @@ void RDODebugEdit::appendLine( const std::string& str )
 	bool readOnly = isReadOnly();
 	setReadOnly( false );
 	bool scroll = isLineVisible( getLineCount() - 1 );
+	setCurrentPos( getLength() );
 	appendText( str );
 	if ( scroll ) {
 		int line = getLineCount();
@@ -58,6 +59,7 @@ void RDODebugEdit::appendLine( const std::string& str )
 		setCurrentPos( getLength() );
 	}
 	setReadOnly( readOnly );
+	updateEditGUI();
 }
 
 void RDODebugEdit::OnUpdateCoordStatusBar( CCmdUI *pCmdUI )

@@ -20,7 +20,7 @@
 #include <rdothread.h>
 
 using namespace rdoEditor;
-using namespace rdosim;
+using namespace rdoSimulator;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -45,7 +45,7 @@ RDOStudioModel::RDOStudioModel():
 	modelClosed( true ),
 	saveAsFlag( false ),
 	frmDescribed( false ),
-	modelTime( 0 ),
+	timeNow( 0 ),
 	showMode( SM_NoShow ),
 	prevModify( false )
 {
@@ -63,12 +63,12 @@ RDOStudioModel::RDOStudioModel():
 	notifies.push_back( RT_SIMULATOR_PARSE_STRING );
 	notifies.push_back( RT_SIMULATOR_PARSE_OK );
 	notifies.push_back( RT_SIMULATOR_PARSE_ERROR );
-	notifies.push_back( RT_SIMULATOR_MODEL_START_BEFORE );
-	notifies.push_back( RT_SIMULATOR_MODEL_START_AFTER );
 	notifies.push_back( RT_SIMULATOR_MODEL_STOP_OK );
 	notifies.push_back( RT_SIMULATOR_MODEL_STOP_BY_USER );
 	notifies.push_back( RT_SIMULATOR_MODEL_STOP_RUNTIME_ERROR );
-	notifies.push_back( RT_SIMULATOR_FRAME_SHOW );
+	notifies.push_back( RT_RUNTIME_MODEL_START_BEFORE );
+	notifies.push_back( RT_RUNTIME_MODEL_START_AFTER );
+	notifies.push_back( RT_RUNTIME_MODEL_STOP_BEFORE );
 	notifies.push_back( RT_DEBUG_STRING );
 
 	after_constructor();
@@ -127,12 +127,12 @@ void RDOStudioModel::proc( RDOThread::RDOMessageInfo& msg )
 			}
 			break;
 		}
-		case RDOThread::RT_SIMULATOR_MODEL_START_BEFORE: {
+		case RDOThread::RT_RUNTIME_MODEL_START_BEFORE: {
 			beforeModelStart();
 			plugins->pluginProc( rdoPlugin::PM_MODEL_BEFORE_START );
 			break;
 		}
-		case RDOThread::RT_SIMULATOR_MODEL_START_AFTER: {
+		case RDOThread::RT_RUNTIME_MODEL_START_AFTER: {
 			GUI_IS_RUNING = true;
 			RDOStudioOutput* output = &studioApp.mainFrame->output;
 			output->showDebug();
@@ -143,12 +143,22 @@ void RDOStudioModel::proc( RDOThread::RDOMessageInfo& msg )
 				RDOStudioFrameView* view = frameManager.getFrameView( index );
 				if ( view ) view->SetFocus();
 			}
+			studioApp.mainFrame->update_start();
 			plugins->pluginProc( rdoPlugin::PM_MODEL_AFTER_START );
 			break;
 		}
+		case RDOThread::RT_RUNTIME_MODEL_STOP_BEFORE: {
+			studioApp.mainFrame->update_stop();
+			sendMessage( kernel->runtime(), RT_RUNTIME_GET_TIMENOW, &timeNow );
+			GUI_IS_RUNING = false;
+			frameManager.clear();
+			frameManager.bmp_clear();
+			SYSTEMTIME time_stop;
+			::GetSystemTime( &time_stop );
+			studioApp.mainFrame->output.appendStringToDebug( rdo::format("Длительность прогона: %d мсек.\n", time_stop.wMinute * 60000 + time_stop.wSecond * 1000 + time_stop.wMilliseconds - (time_start.wMinute * 60000 + time_start.wSecond * 1000 + time_start.wMilliseconds) ) );
+			break;
+		}
 		case RDOThread::RT_SIMULATOR_MODEL_STOP_OK: {
-			stopModelFromSimulator();
-
 			RDOStudioOutput* output = &studioApp.mainFrame->output;
 			output->appendStringToDebug( rdo::format( IDS_MODEL_FINISHED ) );
 			const_cast<rdoEditCtrl::RDODebugEdit*>(output->getDebug())->UpdateWindow();
@@ -167,8 +177,6 @@ void RDOStudioModel::proc( RDOThread::RDOMessageInfo& msg )
 			break;
 		}
 		case RDOThread::RT_SIMULATOR_MODEL_STOP_BY_USER: {
-			stopModelFromSimulator();
-
 			RDOStudioOutput* output = &studioApp.mainFrame->output;
 			output->appendStringToDebug( rdo::format( IDS_MODEL_STOPED ) );
 			const_cast<rdoEditCtrl::RDODebugEdit*>(output->getDebug())->UpdateWindow();
@@ -181,6 +189,7 @@ void RDOStudioModel::proc( RDOThread::RDOMessageInfo& msg )
 			output->clearBuild();
 			output->showBuild();
 			output->appendStringToBuild( rdo::format( IDS_MODEL_RUNTIMEERROR ) );
+			output->appendStringToDebug( rdo::format( IDS_MODEL_RUNTIMEERROR_STOPED ) );
 			std::vector< RDOSyntaxError > errors;
 			studioApp.studioGUI->sendMessage( kernel->simulator(), RDOThread::RT_SIMULATOR_GET_ERRORS, &errors );
 			int errors_cnt   = 0;
@@ -193,7 +202,6 @@ void RDOStudioModel::proc( RDOThread::RDOMessageInfo& msg )
 					errors_cnt++;
 				}
 			}
-			stopModelFromSimulator();
 			if ( errors_cnt || warnings_cnt ) {
 				const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->showFirstError();
 			}
@@ -202,6 +210,7 @@ void RDOStudioModel::proc( RDOThread::RDOMessageInfo& msg )
 			break;
 		}
 		case RDOThread::RT_SIMULATOR_PARSE_OK: {
+			::GetSystemTime( &time_start );
 			RDOStudioOutput* output = &studioApp.mainFrame->output;
 			std::vector< RDOSyntaxError > errors;
 			studioApp.studioGUI->sendMessage( kernel->simulator(), RDOThread::RT_SIMULATOR_GET_ERRORS, &errors );
@@ -242,10 +251,6 @@ void RDOStudioModel::proc( RDOThread::RDOMessageInfo& msg )
 			}
 
 			plugins->pluginProc( rdoPlugin::PM_MODEL_BUILD_FAILD );
-			break;
-		}
-		case RDOThread::RT_SIMULATOR_FRAME_SHOW: {
-			showFrame();
 			break;
 		}
 		case RDOThread::RT_SIMULATOR_PARSE_STRING: {
@@ -299,7 +304,6 @@ bool RDOStudioModel::openModel( const std::string& modelName ) const
 	} else {
 		output->updateLogConnection();
 		output->appendStringToBuild( rdo::format( IDS_MODEL_LOADING_FAILD ) );
-		studioApp.setLastProjectName( kernel->repository()->getFullName() );
 	}
 	return flag;
 }
@@ -364,13 +368,6 @@ void RDOStudioModel::stopModel() const
 	if ( hasModel() && isRunning() ) {
 		studioApp.broadcastMessage( RDOThread::RT_STUDIO_MODEL_STOP );
 	}
-}
-
-void RDOStudioModel::stopModelFromSimulator()
-{
-	GUI_IS_RUNING = false;
-	frameManager.clear();
-	frameManager.bmp_clear();
 }
 
 void RDOStudioModel::modelExitCallback( int exitCode )
@@ -627,8 +624,8 @@ void RDOStudioModel::setName( const std::string& str )
 
 void RDOStudioModel::beforeModelStart()
 {
-	frameManager.bmp_clear();
 	frameManager.clear();
+	frameManager.bmp_clear();
 
 	if ( isFrmDescribed() ) {
 		RDOStudioOutput* output = &studioApp.mainFrame->output;
@@ -636,22 +633,23 @@ void RDOStudioModel::beforeModelStart()
 		output->appendStringToDebug( rdo::format( IDS_MODEL_RESOURCE_LOADING_BEGIN ) );
 		const_cast<rdoEditCtrl::RDODebugEdit*>(output->getDebug())->UpdateWindow();
 
-		std::vector< const std::string* > bitmaps = kernel->simulator()->getAllBitmaps();
-		std::vector< const std::string* >::iterator bmp = bitmaps.begin();
-		while ( bmp != bitmaps.end() ) {
-			frameManager.bmp_insert( *(*bmp) );
-			bmp++;
+		std::list< std::string > frames;
+		std::list< std::string > bitmaps;
+		sendMessage( kernel->simulator(), RT_SIMULATOR_GET_LIST, &rdoSimulator::RDOThreadSimulator::GetList(rdoSimulator::RDOThreadSimulator::GetList::frames, &frames) );
+		sendMessage( kernel->simulator(), RT_SIMULATOR_GET_LIST, &rdoSimulator::RDOThreadSimulator::GetList(rdoSimulator::RDOThreadSimulator::GetList::bitmaps, &bitmaps) );
+		std::list< std::string >::iterator bmp_it = bitmaps.begin();
+		while ( bmp_it != bitmaps.end() ) {
+			frameManager.bmp_insert( *bmp_it );
+			bmp_it++;
 		}
-
-		std::vector< const std::string* > frames = kernel->simulator()->getAllFrames();
-		std::vector< const std::string* >::iterator it = frames.begin();
-		while ( it != frames.end() ) {
-			frameManager.insertItem( *(*it) );
-			it++;
+		std::list< std::string >::iterator frame_it = frames.begin();
+		while ( frame_it != frames.end() ) {
+			frameManager.insertItem( *frame_it );
+			frame_it++;
 		}
 		frameManager.expand();
 		int initFrameNumber = kernel->simulator()->getInitialFrameNumber() - 1;
-		modelTime = 0;
+		timeNow = 0;
 		showMode  = kernel->simulator()->getInitialShowMode();
 		frameManager.setLastShowedFrame( initFrameNumber );
 		if ( showMode == SM_Animation && initFrameNumber >= 0 && initFrameNumber < frameManager.count() ) {
@@ -663,28 +661,9 @@ void RDOStudioModel::beforeModelStart()
 		output->appendStringToDebug( rdo::format( IDS_MODEL_RESOURCE_LOADING_OK ) );
 		const_cast<rdoEditCtrl::RDODebugEdit*>(output->getDebug())->UpdateWindow();
 	} else {
-		modelTime = 0;
-		showMode  = rdosim::SM_NoShow;
+		timeNow = 0;
+		showMode  = rdoSimulator::SM_NoShow;
 		frameManager.setLastShowedFrame( -1 );
-	}
-}
-
-void RDOStudioModel::showFrame()
-{
-	modelTime = kernel->simulator()->getModelTime();
-	studioApp.mainFrame->showNewModelTime( modelTime );
-//	while ( getShowMode() == SM_Monitor ) {
-//		::Sleep( 500 );
-//	}
-	const std::vector<RDOFrame *>& frames = kernel->simulator()->getFrames();
-	std::vector<RDOFrame *>::const_iterator it = frames.begin();
-	int index = 0;
-	while ( it != frames.end() ) {
-		if ( *it ) {
-			frameManager.showFrame( *it, index );
-		}
-		it++;
-		index++;
 	}
 }
 
@@ -712,7 +691,7 @@ void RDOStudioModel::setShowMode( const ShowMode value )
 			}
 		}
 		if ( showMode == SM_NoShow ) {
-			frameManager.closeAll();
+			closeAllFrame();
 		}
 		kernel->simulator()->setShowMode( showMode );
 		tracer->setShowMode( showMode );
@@ -728,4 +707,25 @@ double RDOStudioModel::getShowRate() const
 void RDOStudioModel::setShowRate( const double value ) const
 {
 	kernel->simulator()->setShowRate( value );
+}
+
+void RDOStudioModel::update()
+{
+	sendMessage( kernel->runtime(), RT_RUNTIME_GET_TIMENOW, &timeNow );
+	int frames = getFrameCount();
+	for ( int i = 0; i < frames; i++ ) {
+		if ( frameManager.isChanged() ) break;
+		RDOStudioFrameView* view = frameManager.getFrameView( i );
+		if ( view ) {
+			CDC* dc = view->GetDC();
+			if ( dc->RectVisible( view->getClientRect() ) ) {
+				view->ReleaseDC( dc );
+				RDOFrame frame;
+				sendMessage( kernel->runtime(), RT_RUNTIME_GET_FRAME, &rdoRuntime::RDOThreadRunTime::GetFrame(&frame, i) );
+				frameManager.showFrame( &frame, i );
+			} else {
+				view->ReleaseDC( dc );
+			}
+		}
+	}
 }

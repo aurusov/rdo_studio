@@ -47,6 +47,8 @@ public:
 
 	RDOStudioFrameDoc* GetDocument();
 
+	const CRect& getClientRect() const { return newClientRect; }
+
 #ifdef _DEBUG
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;

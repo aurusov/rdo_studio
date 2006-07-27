@@ -67,7 +67,7 @@ public:
 	const rdoEditCtrl::RDOFindEdit*       getFind() const    { return find;    };
 
 	void appendStringToBuild( const std::string& str ) const;
-	void appendStringToBuild( rdosim::RDOSyntaxError::ErrorCode error_code, const std::string& str, const rdoModelObjects::RDOFileType fileType = rdoModelObjects::PAT, const int lineNumber = -1, const int posInLine = 0, const bool error = true ) const;
+	void appendStringToBuild( rdoSimulator::RDOSyntaxError::ErrorCode error_code, const std::string& str, const rdoModelObjects::RDOFileType fileType = rdoModelObjects::PAT, const int lineNumber = -1, const int posInLine = 0, const bool error = true ) const;
 	void appendStringToDebug( const std::string& str ) const;
 	void appendStringToResults( const std::string& str ) const;
 	void appendStringToFind( const std::string& str, const rdoModelObjects::RDOFileType fileType = rdoModelObjects::PAT, const int lineNumber = -1, const int posInLine = 0 ) const;

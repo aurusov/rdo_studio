@@ -6,15 +6,14 @@
 #endif
 
 #include "rdostudioframedoc.h"
+#include "rdostudioframeview.h"
 #include <vector>
 #include <map>
 
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioFrameManager
 // ----------------------------------------------------------------------------
-class RDOStudioFrameDoc;
-class RDOStudioFrameView;
-namespace rdosim {
+namespace rdoSimulator {
 	struct RDOFrame;
 }
 
@@ -75,7 +74,7 @@ private:
 			areas_sim.clear();
 		}
 	};
-	static std::vector< Frame* > frames;
+	std::vector< Frame* > frames;
 
 	class BMP {
 	friend class RDOStudioFrameManager;
@@ -91,17 +90,51 @@ private:
 
 	int lastShowedFrame;
 	int currentShowingFrame;
+	bool changed;
 
 public:
 	RDOStudioFrameManager();
 	virtual ~RDOStudioFrameManager();
 
 	void insertItem( const std::string& name );
-	int findFrameIndex( const HTREEITEM hitem ) const;
-	int findFrameIndex( const RDOStudioFrameDoc* doc ) const;
-	int findFrameIndex( const RDOStudioFrameView* view ) const;
+	int findFrameIndex( const HTREEITEM hitem ) const {
+		std::vector< Frame* >::const_iterator it = frames.begin();
+		int index = 0;
+		while ( it != frames.end() ) {
+			if ( (*it)->hitem == hitem ) {
+				return index;
+			}
+			it++;
+			index++;
+		};
+		return -1;
+	}
+	int findFrameIndex( const RDOStudioFrameDoc* doc ) const {
+		std::vector< Frame* >::const_iterator it = frames.begin();
+		int index = 0;
+		while ( it != frames.end() ) {
+			if ( (*it)->doc == doc ) {
+				return index;
+			}
+			it++;
+			index++;
+		};
+		return -1;
+	}
+	int findFrameIndex( const RDOStudioFrameView* view ) const {
+		std::vector< Frame* >::const_iterator it = frames.begin();
+		int index = 0;
+		while ( it != frames.end() ) {
+			if ( (*it)->view == view ) {
+				return index;
+			}
+			it++;
+			index++;
+		};
+		return -1;
+	}
 	RDOStudioFrameDoc* connectFrameDoc( const int index );
-	void disconnectFrameDoc( const RDOStudioFrameDoc* doc ) const;
+	void disconnectFrameDoc( const RDOStudioFrameDoc* doc );
 	const std::string&  getFrameName( const int index ) const       { return frames[index]->name;   };
 	RDOStudioFrameDoc*  getFrameDoc( const int index ) const        { return frames[index]->doc;    };
 	RDOStudioFrameView* getFrameView( const int index ) const       { return frames[index]->view;   };
@@ -110,6 +143,7 @@ public:
 	CEvent*             getFrameEventTimer( const int index ) const { return &frames[index]->timer; };
 	CEvent*             getFrameEventClose( const int index ) const { return &frames[index]->close; };
 	int count() const                                               { return frames.size();         };
+	bool isChanged()                                                { bool res = changed; changed = false; return res; }
 	RDOStudioFrameDoc* getFirstExistDoc() const;
 	void closeAll();
 	void clear();
@@ -125,7 +159,7 @@ public:
 	void setLastShowedFrame( const int value );
 	void setCurrentShowingFrame( const int value );
 	void resetCurrentShowingFrame( const int value );
-	void showFrame( const rdosim::RDOFrame* const frame, const int index );
+	void showFrame( const rdoSimulator::RDOFrame* const frame, const int index );
 	void showNextFrame();
 	void showPrevFrame();
 	void showFrame( const int index );

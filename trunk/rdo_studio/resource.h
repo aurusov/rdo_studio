@@ -132,6 +132,7 @@
 #define IDC_PLUGIN_RESTORESTATE_CHECKBOX 1109
 #define IDC_DEVELOPERS                  1118
 #define IDC_COMMENTGROUP_CHECK          1119
+#define IDC_ABOUT_INFO                  1120
 #define ID_CHART_ADDTONEWCHART          32771
 #define ID_VIEW_WORKSPACE               32774
 #define ID_VIEW_OUTPUT                  32775
@@ -598,6 +599,7 @@
 #define ID_RESULTS                      40916
 #define ID_MODEL                        40917
 #define ID_RAO_CLIPBRD                  40918
+#define IDS_MODEL_RUNTIMEERROR_STOPED   40919
 #define ID_COORD_STATUSBAR              59394
 #define ID_MODIFY_STATUSBAR             59395
 #define ID_INSERTOVERWRITE_STATUSBAR    59396
@@ -618,7 +620,7 @@
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        178
 #define _APS_NEXT_COMMAND_VALUE         33183
-#define _APS_NEXT_CONTROL_VALUE         1120
+#define _APS_NEXT_CONTROL_VALUE         1121
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

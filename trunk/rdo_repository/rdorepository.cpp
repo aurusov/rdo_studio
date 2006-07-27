@@ -26,11 +26,11 @@ RDOThreadRepository::RDOThreadRepository():
 	notifies.push_back( RT_STUDIO_MODEL_SAVE_AS );
 	notifies.push_back( RT_REPOSITORY_LOAD );
 	notifies.push_back( RT_REPOSITORY_SAVE );
-	notifies.push_back( RT_SIMULATOR_MODEL_START_BEFORE );
 	notifies.push_back( RT_SIMULATOR_MODEL_STOP_OK );
 	notifies.push_back( RT_SIMULATOR_MODEL_STOP_BY_USER );
 	notifies.push_back( RT_SIMULATOR_MODEL_STOP_RUNTIME_ERROR );
-	notifies.push_back( RT_SIMULATOR_TRACE_STRING );
+	notifies.push_back( RT_RUNTIME_MODEL_START_BEFORE );
+	notifies.push_back( RT_RUNTIME_TRACE_STRING );
 //	notifies.push_back( RT_TEST1 );
 
 	lastModelPath = AfxGetApp()->GetProfileString( "repository", "lastModelPath", "" );
@@ -73,11 +73,6 @@ void RDOThreadRepository::proc( RDOMessageInfo& msg )
 			OpenFile* data = static_cast<OpenFile*>(msg.param);
 			data->result = openModel( data->name );
 			msg.unlock();
-//			broadcastMessage( RT_TEST1 );
-			break;
-		}
-		case RT_TEST1: {
-//			broadcastMessage( RT_TEST2 );
 			break;
 		}
 		case RT_STUDIO_MODEL_CLOSE: {
@@ -95,7 +90,7 @@ void RDOThreadRepository::proc( RDOMessageInfo& msg )
 			saveAsModel();
 			break;
 		}
-		case RT_SIMULATOR_MODEL_START_BEFORE: {
+		case RT_RUNTIME_MODEL_START_BEFORE: {
 			beforeModelStart();
 			break;
 		}
@@ -105,7 +100,7 @@ void RDOThreadRepository::proc( RDOMessageInfo& msg )
 			stopModel();
 			break;
 		}
-		case RT_SIMULATOR_TRACE_STRING: {
+		case RT_RUNTIME_TRACE_STRING: {
 			msg.lock();
 			trace( *static_cast<std::string*>(msg.param) );
 			msg.unlock();

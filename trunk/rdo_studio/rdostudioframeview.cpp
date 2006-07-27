@@ -404,7 +404,7 @@ void RDOStudioFrameView::onDraw()
 //	RDOStudioFrameDoc* pDoc = GetDocument();
 //	ASSERT_VALID(pDoc);
 
-	GetClientRect( &newClientRect );
+//	GetClientRect( &newClientRect );
 
 	if ( !mustBeInit ) {
 		::BitBlt( hdc, 0, 0, newClientRect.right, newClientRect.bottom, hmemdc, xPos, yPos, SRCCOPY );

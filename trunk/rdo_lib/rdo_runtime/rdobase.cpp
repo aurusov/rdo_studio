@@ -34,6 +34,7 @@ bool RDOSimulatorBase::rdoNext()
 {
 	double newTime = timePointList.front();
 	timePointList.pop_front();
+
 	rdoDelay( currentTime, newTime );
 	currentTime = newTime;
 
@@ -46,7 +47,7 @@ bool RDOSimulatorBase::rdoNext()
 
 		if( !(res = doOperation(onlyEndOfOperations)) ) break;
 
-		rdoDelay( currentTime, currentTime );
+//		rdoDelay( currentTime, currentTime );
 	}
 
 	if ( timePointList.empty() ) {

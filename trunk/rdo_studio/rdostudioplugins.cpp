@@ -517,9 +517,9 @@ bool RDOStudioPlugins::isModelRunning()
 rdoPlugin::ModelShowMode RDOStudioPlugins::getModelShowMode()
 {
 	switch ( model->getShowMode() ) {
-		case rdosim::SM_NoShow   : return rdoPlugin::NoShow;
-		case rdosim::SM_Animation: return rdoPlugin::Animation;
-		case rdosim::SM_Monitor  : return rdoPlugin::Monitor;
+		case rdoSimulator::SM_NoShow   : return rdoPlugin::NoShow;
+		case rdoSimulator::SM_Animation: return rdoPlugin::Animation;
+		case rdoSimulator::SM_Monitor  : return rdoPlugin::Monitor;
 	}
 	return rdoPlugin::NoShow;
 }
@@ -527,9 +527,9 @@ rdoPlugin::ModelShowMode RDOStudioPlugins::getModelShowMode()
 void RDOStudioPlugins::setModelShowMode( rdoPlugin::ModelShowMode showMode )
 {
 	switch ( showMode ) {
-		case rdoPlugin::NoShow   : model->setShowMode( rdosim::SM_NoShow ); break;
-		case rdoPlugin::Animation: model->setShowMode( rdosim::SM_Animation ); break;
-		case rdoPlugin::Monitor  : model->setShowMode( rdosim::SM_Monitor ); break;
+		case rdoPlugin::NoShow   : model->setShowMode( rdoSimulator::SM_NoShow ); break;
+		case rdoPlugin::Animation: model->setShowMode( rdoSimulator::SM_Animation ); break;
+		case rdoPlugin::Monitor  : model->setShowMode( rdoSimulator::SM_Monitor ); break;
 	}
 }
 

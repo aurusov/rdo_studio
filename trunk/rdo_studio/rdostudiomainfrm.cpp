@@ -34,6 +34,7 @@ void RDOStudioMainFrame::RDOToolBar::init( CWnd* parent, unsigned int tbResID, u
 // ----------------------------------------------------------------------------
 const int WORKSPACE_SHOW_MESSAGE = ::RegisterWindowMessage( "WORKSPACE_SHOW_MESSAGE" );
 const int OUTPUT_SHOW_MESSAGE    = ::RegisterWindowMessage( "OUTPUT_SHOW_MESSAGE" );
+const int update_timer_ID = 1;
 
 IMPLEMENT_DYNAMIC(RDOStudioMainFrame, CMDIFrameWnd)
 
@@ -73,6 +74,7 @@ BEGIN_MESSAGE_MAP(RDOStudioMainFrame, CMDIFrameWnd)
 	ON_COMMAND(ID_MODEL_FRAME_PREV, OnModelFramePrev)
 	ON_UPDATE_COMMAND_UI(ID_MODEL_FRAME_NEXT, OnUpdateModelFrameNext)
 	ON_UPDATE_COMMAND_UI(ID_MODEL_FRAME_PREV, OnUpdateModelFramePrev)
+	ON_WM_TIMER()
 	//}}AFX_MSG_MAP
 	ON_UPDATE_COMMAND_UI( ID_COORD_STATUSBAR           , OnUpdateCoordStatusBar )
 	ON_UPDATE_COMMAND_UI( ID_MODIFY_STATUSBAR          , OnUpdateModifyStatusBar )
@@ -92,7 +94,9 @@ static UINT indicators[] = {
 	ID_PROGRESSSTATUSBAR
 };
 
-RDOStudioMainFrame::RDOStudioMainFrame(): CMDIFrameWnd()
+RDOStudioMainFrame::RDOStudioMainFrame():
+	CMDIFrameWnd(),
+	update_timer( 0 )
 {
 }
 
@@ -186,6 +190,7 @@ int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 void RDOStudioMainFrame::OnDestroy()
 {
+	update_stop();
 	style_editor.save();
 	style_build.save();
 	style_debug.save();
@@ -369,13 +374,7 @@ void RDOStudioMainFrame::OnUpdateInsertOverwriteStatusBar( CCmdUI *pCmdUI )
 void RDOStudioMainFrame::OnUpdateModelTimeStatusBar( CCmdUI *pCmdUI )
 {
 	pCmdUI->Enable();
-	pCmdUI->SetText( rdo::format( ID_STATUSBAR_MODEL_TIME, model->getModelTime() ).c_str() );
-}
-
-void RDOStudioMainFrame::showNewModelTime( const double value )
-{
-	statusBar.SetPaneText( 3, rdo::format( ID_STATUSBAR_MODEL_TIME, value ).c_str() );
-//	::SendMessage( statusBar.m_hWnd, SB_SETTEXT, 3, reinterpret_cast<LPARAM>(rdo::format( ID_STATUSBAR_MODEL_TIME, value ).c_str()) );
+	pCmdUI->SetText( rdo::format( ID_STATUSBAR_MODEL_TIME, model->getTimeNow() ).c_str() );
 }
 
 void RDOStudioMainFrame::OnUpdateModelRunTypeStatusBar( CCmdUI *pCmdUI )
@@ -384,9 +383,9 @@ void RDOStudioMainFrame::OnUpdateModelRunTypeStatusBar( CCmdUI *pCmdUI )
 	std::string s = "";
 	if ( model->isRunning() ) {
 		switch ( model->getShowMode() ) {
-			case rdosim::SM_NoShow   : s = rdo::format( ID_STATUSBAR_MODEL_RUNNOSHOW ); break;
-			case rdosim::SM_Animation: s = rdo::format( ID_STATUSBAR_MODEL_RUNANIMATION ); break;
-			case rdosim::SM_Monitor  : s = rdo::format( ID_STATUSBAR_MODEL_RUNMONITOR ); break;
+			case rdoSimulator::SM_NoShow   : s = rdo::format( ID_STATUSBAR_MODEL_RUNNOSHOW ); break;
+			case rdoSimulator::SM_Animation: s = rdo::format( ID_STATUSBAR_MODEL_RUNANIMATION ); break;
+			case rdoSimulator::SM_Monitor  : s = rdo::format( ID_STATUSBAR_MODEL_RUNMONITOR ); break;
 		}
 	}
 	pCmdUI->SetText( s.c_str() );
@@ -445,38 +444,38 @@ void RDOStudioMainFrame::OnHelpContents()
 
 void RDOStudioMainFrame::OnModelRunNoShow()
 {
-	model->setShowMode( rdosim::SM_NoShow );
+	model->setShowMode( rdoSimulator::SM_NoShow );
 }
 
 void RDOStudioMainFrame::OnModelRunAnimation()
 {
-	model->setShowMode( rdosim::SM_Animation );
+	model->setShowMode( rdoSimulator::SM_Animation );
 }
 
 void RDOStudioMainFrame::OnModelRunMonitor()
 {
-	model->setShowMode( rdosim::SM_Monitor );
+	model->setShowMode( rdoSimulator::SM_Monitor );
 }
 
 void RDOStudioMainFrame::OnUpdateModelRunNoShow(CCmdUI* pCmdUI)
 {
 	bool flag = model->isRunning() && model->isFrmDescribed();
 	pCmdUI->Enable( flag );
-	pCmdUI->SetCheck( flag ? model->getShowMode() == rdosim::SM_NoShow : 0 );
+	pCmdUI->SetCheck( flag ? model->getShowMode() == rdoSimulator::SM_NoShow : 0 );
 }
 
 void RDOStudioMainFrame::OnUpdateModelRunAnimation(CCmdUI* pCmdUI)
 {
 	bool flag = model->isRunning() && model->isFrmDescribed();
 	pCmdUI->Enable( flag );
-	pCmdUI->SetCheck( flag ? model->getShowMode() == rdosim::SM_Animation : 0 );
+	pCmdUI->SetCheck( flag ? model->getShowMode() == rdoSimulator::SM_Animation : 0 );
 }
 
 void RDOStudioMainFrame::OnUpdateModelRunMonitor(CCmdUI* pCmdUI)
 {
 	bool flag = model->isRunning() && model->isFrmDescribed();
 	pCmdUI->Enable( flag );
-	pCmdUI->SetCheck( flag ? model->getShowMode() == rdosim::SM_Monitor : 0 );
+	pCmdUI->SetCheck( flag ? model->getShowMode() == rdoSimulator::SM_Monitor : 0 );
 }
 
 void RDOStudioMainFrame::OnModelShowRateInc()
@@ -517,22 +516,22 @@ void RDOStudioMainFrame::OnModelShowRateDec()
 
 void RDOStudioMainFrame::OnUpdateModelShowRateInc(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable( model->isRunning() && model->getShowMode() != rdosim::SM_NoShow && model->getShowRate() * 1.5 <= DBL_MAX );
+	pCmdUI->Enable( model->isRunning() && model->getShowMode() != rdoSimulator::SM_NoShow && model->getShowRate() * 1.5 <= DBL_MAX );
 }
 
 void RDOStudioMainFrame::OnUpdateModelShowRateIncFour(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable( model->isRunning() && model->getShowMode() != rdosim::SM_NoShow && model->getShowRate() * 4 <= DBL_MAX );
+	pCmdUI->Enable( model->isRunning() && model->getShowMode() != rdoSimulator::SM_NoShow && model->getShowRate() * 4 <= DBL_MAX );
 }
 
 void RDOStudioMainFrame::OnUpdateModelShowRateDecFour(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable( model->isRunning() && model->getShowMode() != rdosim::SM_NoShow && model->getShowRate() / 4 >= DBL_MIN );
+	pCmdUI->Enable( model->isRunning() && model->getShowMode() != rdoSimulator::SM_NoShow && model->getShowRate() / 4 >= DBL_MIN );
 }
 
 void RDOStudioMainFrame::OnUpdateModelShowRateDec(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable( model->isRunning() && model->getShowMode() != rdosim::SM_NoShow && model->getShowRate() / 1.5 >= DBL_MIN );
+	pCmdUI->Enable( model->isRunning() && model->getShowMode() != rdoSimulator::SM_NoShow && model->getShowRate() / 1.5 >= DBL_MIN );
 }
 
 void RDOStudioMainFrame::OnModelFrameNext()
@@ -564,4 +563,25 @@ LRESULT RDOStudioMainFrame::WindowProc( UINT message, WPARAM wParam, LPARAM lPar
 		OnOutputShow();
 	}
 	return CMDIFrameWnd::WindowProc(message, wParam, lParam);
+}
+
+void RDOStudioMainFrame::update_start()
+{
+	update_timer = SetTimer( update_timer_ID, 1000 / 30, NULL );
+}
+
+void RDOStudioMainFrame::update_stop()
+{
+	if ( update_timer ) {
+		KillTimer( update_timer );
+		update_timer = 0;
+	}
+}
+
+void RDOStudioMainFrame::OnTimer( UINT nIDEvent )
+{
+	if ( nIDEvent == update_timer ) {
+		model->update();
+	}
+	CMDIFrameWnd::OnTimer( nIDEvent );
 }

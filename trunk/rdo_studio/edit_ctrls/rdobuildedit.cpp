@@ -16,7 +16,7 @@ using namespace rdoEditCtrl;
 // ----------------------------------------------------------------------------
 // ---------- RDOBuildEditLineInfo
 // ----------------------------------------------------------------------------
-RDOBuildEditLineInfo::RDOBuildEditLineInfo( rdosim::RDOSyntaxError::ErrorCode _error_code, const std::string& _message, const rdoModelObjects::RDOFileType _fileType, const int _lineNumber, const int _posInLine, bool _warning ):
+RDOBuildEditLineInfo::RDOBuildEditLineInfo( rdoSimulator::RDOSyntaxError::ErrorCode _error_code, const std::string& _message, const rdoModelObjects::RDOFileType _fileType, const int _lineNumber, const int _posInLine, bool _warning ):
 	RDOLogEditLineInfo( _message, _fileType, _lineNumber, _posInLine ),
 	error_code( _error_code ),
 	warning( _warning )
@@ -25,7 +25,7 @@ RDOBuildEditLineInfo::RDOBuildEditLineInfo( rdosim::RDOSyntaxError::ErrorCode _e
 
 RDOBuildEditLineInfo::RDOBuildEditLineInfo( const std::string& _message ):
 	RDOLogEditLineInfo( _message ),
-	error_code( rdosim::RDOSyntaxError::UNKNOWN ),
+	error_code( rdoSimulator::RDOSyntaxError::UNKNOWN ),
 	warning( false )
 {
 }

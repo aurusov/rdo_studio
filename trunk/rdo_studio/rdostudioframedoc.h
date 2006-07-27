@@ -5,13 +5,12 @@
 #pragma once
 #endif
 
+#include "rdostudioframeview.h"
 #include <afxwin.h>
 
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioFrameDoc
 // ----------------------------------------------------------------------------
-class RDOStudioFrameView;
-
 class RDOStudioFrameDoc: public CDocument
 {
 friend class RDOStudioModel;
@@ -26,7 +25,14 @@ public:
 	virtual ~RDOStudioFrameDoc();
 
 	CFrameWnd* frame;
-	RDOStudioFrameView* getView() const;
+
+	RDOStudioFrameView* getView() const {
+		POSITION pos = GetFirstViewPosition();
+		if ( pos ) {
+			return static_cast<RDOStudioFrameView*>(GetNextView( pos ));
+		}
+		return NULL;
+	}
 
 #ifdef _DEBUG
 	virtual void AssertValid() const;
