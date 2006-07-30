@@ -18,15 +18,46 @@ static char THIS_FILE[] = __FILE__;
 // ----------------------------------------------------------------------------
 // ---------- RDOToolBar
 // ----------------------------------------------------------------------------
-void RDOStudioMainFrame::RDOToolBar::init( CWnd* parent, unsigned int tbResID, unsigned int tbDisabledImageResID )
+void RDOToolBar::init( CWnd* parent, unsigned int tbResID, unsigned int tbDisabledImageResID )
 {
 	CreateEx( parent, 0, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
 	LoadToolBar( tbResID );
-	ModifyStyle( 0, TBSTYLE_FLAT );
+	ModifyStyle( 0, TBSTYLE_FLAT | TBSTYLE_TRANSPARENT );
 	SetWindowText( rdo::format( tbResID ).c_str() );
 
 	disabledImage.Create( tbDisabledImageResID, 16, 0, 0xFF00FF );
 	GetToolBarCtrl().SetDisabledImageList( &disabledImage );
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOToolBarModel
+// ----------------------------------------------------------------------------
+BEGIN_MESSAGE_MAP(RDOToolBarModel, RDOToolBar)
+	ON_WM_HSCROLL()
+END_MESSAGE_MAP()
+
+void RDOToolBarModel::init( CWnd* parent, unsigned int tbResID, unsigned int tbDisabledImageResID )
+{
+	RDOToolBar::init( parent, tbResID, tbDisabledImageResID );
+	const int slider_index = 12;
+	SetButtonInfo( slider_index, ID_MODEL_SPEED_SLIDER, TBBS_SEPARATOR, 100 );
+	CRect rc;
+	GetItemRect( slider_index, rc );
+	rc.top    += 1;
+	rc.bottom -= 1;
+	slider.Create( WS_CHILD | WS_VISIBLE | WS_TABSTOP | TBS_HORZ, rc, this, ID_MODEL_SPEED_SLIDER );
+	slider.SetRange( 0, 100 );
+	for ( int i = 1; i <= 101; i += 10 ) {
+		slider.SetTic( log( i ) / log101 * 100 );
+	}
+	slider.SetPos( 100 );
+}
+
+void RDOToolBarModel::OnHScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBar )
+{
+	if ( nSBCode = SB_THUMBTRACK ) {
+		model->setSpeed( getSpeed() );
+	}
 }
 
 // ----------------------------------------------------------------------------
@@ -81,6 +112,7 @@ BEGIN_MESSAGE_MAP(RDOStudioMainFrame, CMDIFrameWnd)
 	ON_UPDATE_COMMAND_UI( ID_INSERTOVERWRITE_STATUSBAR , OnUpdateInsertOverwriteStatusBar )
 	ON_UPDATE_COMMAND_UI( ID_MODEL_TIME_STATUSBAR      , OnUpdateModelTimeStatusBar )
 	ON_UPDATE_COMMAND_UI( ID_MODEL_RUNTYPE_STATUSBAR   , OnUpdateModelRunTypeStatusBar )
+	ON_UPDATE_COMMAND_UI( ID_MODEL_SPEED_STATUSBAR     , OnUpdateModelSpeedStatusBar )
 	ON_UPDATE_COMMAND_UI( ID_MODEL_SHOWRATE_STATUSBAR  , OnUpdateModelShowRateStatusBar )
 END_MESSAGE_MAP()
 
@@ -90,6 +122,7 @@ static UINT indicators[] = {
 	ID_INSERTOVERWRITE_STATUSBAR,
 	ID_MODEL_TIME_STATUSBAR,
 	ID_MODEL_RUNTYPE_STATUSBAR,
+	ID_MODEL_SPEED_STATUSBAR,
 	ID_MODEL_SHOWRATE_STATUSBAR,
 	ID_PROGRESSSTATUSBAR
 };
@@ -151,8 +184,9 @@ int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	statusBar.SetPaneInfo( 2, ID_INSERTOVERWRITE_STATUSBAR , SBPS_NORMAL , 70 );
 	statusBar.SetPaneInfo( 3, ID_MODEL_TIME_STATUSBAR      , SBPS_NORMAL , 100 );
 	statusBar.SetPaneInfo( 4, ID_MODEL_RUNTYPE_STATUSBAR   , SBPS_NORMAL , 70 );
-	statusBar.SetPaneInfo( 5, ID_MODEL_SHOWRATE_STATUSBAR  , SBPS_NORMAL , 120 );
-	statusBar.SetPaneInfo( 6, ID_PROGRESSSTATUSBAR         , SBPS_STRETCH, 70 );
+	statusBar.SetPaneInfo( 5, ID_MODEL_SPEED_STATUSBAR     , SBPS_NORMAL , 90 );
+	statusBar.SetPaneInfo( 6, ID_MODEL_SHOWRATE_STATUSBAR  , SBPS_NORMAL , 120 );
+	statusBar.SetPaneInfo( 7, ID_PROGRESSSTATUSBAR         , SBPS_STRETCH, 70 );
 	statusBar.setProgressIndicator( ID_PROGRESSSTATUSBAR );
 
 	workspace.Create( rdo::format( ID_DOCK_WORKSPACE ).c_str(), this, 0 );
@@ -201,17 +235,6 @@ void RDOStudioMainFrame::OnDestroy()
 	style_chart.save();
 
 	::OleUninitialize();
-/*
-	// close model before delete plugins (for PM_MODEL_CLOSE message)
-	model->closeModel();
-
-	// delete plugins before delete model
-	if ( plugins )  { delete plugins; plugins = NULL; }
-	if ( model   )  { delete model  ; model   = NULL; }
-
-	// Роняем кернел и закрываем все треды
-	RDOKernel::close();
-*/
 	CMDIFrameWnd::OnDestroy();
 }
 
@@ -391,11 +414,17 @@ void RDOStudioMainFrame::OnUpdateModelRunTypeStatusBar( CCmdUI *pCmdUI )
 	pCmdUI->SetText( s.c_str() );
 }
 
+void RDOStudioMainFrame::OnUpdateModelSpeedStatusBar( CCmdUI *pCmdUI )
+{
+	pCmdUI->Enable();
+	pCmdUI->SetText( rdo::format( IDS_MODEL_SPEED, static_cast<int>(model->getSpeed() * 100) ).c_str() );
+}
+
 void RDOStudioMainFrame::OnUpdateModelShowRateStatusBar( CCmdUI *pCmdUI )
 {
 	pCmdUI->Enable();
-	std::string s = "";
 	if ( model->isRunning() ) {
+		std::string s;
 		double showRate = model->getShowRate();
 		if ( showRate < 1e-10 || showRate > 1e10 ) {
 			s = rdo::format( IDS_MODEL_SHOWRATE_E, showRate );
@@ -404,8 +433,10 @@ void RDOStudioMainFrame::OnUpdateModelShowRateStatusBar( CCmdUI *pCmdUI )
 		} else {
 			s = rdo::format( IDS_MODEL_SHOWRATE_FLESSONE, showRate );
 		}
+		pCmdUI->SetText( s.c_str() );
+	} else {
+		pCmdUI->SetText( "" );
 	}
-	pCmdUI->SetText( s.c_str() );
 }
 
 void RDOStudioMainFrame::OnViewOptions() 
@@ -480,38 +511,22 @@ void RDOStudioMainFrame::OnUpdateModelRunMonitor(CCmdUI* pCmdUI)
 
 void RDOStudioMainFrame::OnModelShowRateInc()
 {
-	double showRate = model->getShowRate();
-	showRate *= 1.5;
-	if ( showRate <= DBL_MAX ) {
-		model->setShowRate( showRate );
-	}
+	model->setShowRate( model->getShowRate() * 1.5 );
 }
 
 void RDOStudioMainFrame::OnModelShowRateIncFour()
 {
-	double showRate = model->getShowRate();
-	showRate *= 4;
-	if ( showRate <= DBL_MAX ) {
-		model->setShowRate( showRate );
-	}
+	model->setShowRate( model->getShowRate() * 4 );
 }
 
 void RDOStudioMainFrame::OnModelShowRateDecFour()
 {
-	double showRate = model->getShowRate();
-	showRate /= 4;
-	if ( showRate >= DBL_MIN ) {
-		model->setShowRate( showRate );
-	}
+	model->setShowRate( model->getShowRate() / 4 );
 }
 
 void RDOStudioMainFrame::OnModelShowRateDec()
 {
-	double showRate = model->getShowRate();
-	showRate /= 1.5;
-	if ( showRate >= DBL_MIN ) {
-		model->setShowRate( showRate );
-	}
+	model->setShowRate( model->getShowRate() / 1.5 );
 }
 
 void RDOStudioMainFrame::OnUpdateModelShowRateInc(CCmdUI* pCmdUI)

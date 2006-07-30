@@ -113,6 +113,8 @@ BEGIN_MESSAGE_MAP(RDOStudioApp, CWinApp)
 	ON_UPDATE_COMMAND_UI(ID_MODEL_RUN, OnUpdateModelRun)
 	ON_UPDATE_COMMAND_UI(ID_MODEL_STOP, OnUpdateModelStop)
 	ON_COMMAND(ID_APP_ABOUT, OnAppAbout)
+	ON_UPDATE_COMMAND_UI(ID_FILE_NEW, OnUpdateFileNew)
+	ON_UPDATE_COMMAND_UI(ID_FILE_OPEN, OnUpdateFileOpen)
 	//}}AFX_MSG_MAP
 	ON_COMMAND_RANGE( ID_FILE_REOPEN_1, ID_FILE_REOPEN_10, OnProjectReopen )
 	ON_COMMAND(ID_FILE_PRINT_SETUP, CWinApp::OnFilePrintSetup)
@@ -344,9 +346,19 @@ void RDOStudioApp::OnFileSaveAll()
 	model->saveModel();
 }
 
+void RDOStudioApp::OnUpdateFileNew( CCmdUI* pCmdUI )
+{
+	pCmdUI->Enable( model->canNew() );
+}
+
+void RDOStudioApp::OnUpdateFileOpen( CCmdUI* pCmdUI )
+{
+	pCmdUI->Enable( model->canOpen() );
+}
+
 void RDOStudioApp::OnUpdateFileClose(CCmdUI* pCmdUI) 
 {
-	pCmdUI->Enable( model->hasModel() );
+	pCmdUI->Enable( model->hasModel() && !model->isRunning() );
 }
 
 void RDOStudioApp::OnUpdateFileSave(CCmdUI* pCmdUI) 
@@ -376,7 +388,7 @@ void RDOStudioApp::OnUpdateFileSave(CCmdUI* pCmdUI)
 
 void RDOStudioApp::OnUpdateFileSaveAs(CCmdUI* pCmdUI) 
 {
-	pCmdUI->Enable( model->hasModel() );
+	pCmdUI->Enable( model->hasModel() && !model->isRunning() );
 }
 
 void RDOStudioApp::OnUpdateFileSaveAll(CCmdUI* pCmdUI) 
@@ -548,12 +560,12 @@ void RDOStudioApp::OnModelStop()
 
 void RDOStudioApp::OnUpdateModelBuild(CCmdUI* pCmdUI) 
 {
-	pCmdUI->Enable( model->hasModel() && !model->isRunning() );
+	pCmdUI->Enable( model->hasModel() && model->canRun() );
 }
 
 void RDOStudioApp::OnUpdateModelRun(CCmdUI* pCmdUI) 
 {
-	pCmdUI->Enable( model->hasModel() && !model->isRunning() );
+	pCmdUI->Enable( model->hasModel() && model->canRun() );
 }
 
 void RDOStudioApp::OnUpdateModelStop(CCmdUI* pCmdUI) 

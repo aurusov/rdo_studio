@@ -87,7 +87,7 @@ RDOStudioModelView* RDOStudioModelDoc::getView() const
 BOOL RDOStudioModelDoc::SaveModified()
 {
 	if ( model->isRunning() ) {
-		AfxGetMainWnd()->MessageBox( rdo::format( ID_MSG_MODEL_NEED_STOPED ).c_str(), NULL, MB_ICONWARNING | MB_OK );
+		AfxGetMainWnd()->MessageBox( rdo::format( ID_MSG_MODEL_NEED_STOPED_FOR_CLOSE ).c_str(), NULL, MB_ICONWARNING | MB_OK );
 		return false;
 	}
 	bool flag = true;

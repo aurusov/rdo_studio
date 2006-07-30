@@ -114,6 +114,8 @@ public:
 	afx_msg void OnUpdateModelRun(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateModelStop(CCmdUI* pCmdUI);
 	afx_msg void OnAppAbout();
+	afx_msg void OnUpdateFileNew(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateFileOpen(CCmdUI* pCmdUI);
 	//}}AFX_MSG
 	afx_msg void OnProjectReopen( UINT nID );
 	DECLARE_MESSAGE_MAP()

@@ -19,6 +19,39 @@
 #include "rdostudioframestyle.h"
 
 #include <rdokernel.h>
+#include <math.h>
+
+// ----------------------------------------------------------------------------
+// ---------- RDOToolBar
+// ----------------------------------------------------------------------------
+class RDOToolBar: public CToolBar
+{
+protected:
+	CImageList disabledImage;
+
+public:
+	virtual void init( CWnd* parent, unsigned int tbResID, unsigned int tbDisabledImageResID );
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOToolBarModel
+// ----------------------------------------------------------------------------
+class RDOToolBarModel: public RDOToolBar
+{
+protected:
+	double log101;
+	CSliderCtrl slider;
+
+	afx_msg void OnHScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBar );
+	DECLARE_MESSAGE_MAP()
+
+public:
+	RDOToolBarModel(): RDOToolBar(), log101( log(101) ) {}
+
+	virtual void init( CWnd* parent, unsigned int tbResID, unsigned int tbDisabledImageResID );
+
+	double getSpeed() const { return log( slider.GetPos() + 1 ) / log101; }
+};
 
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioMainFrame
@@ -31,25 +64,12 @@ static const int FM_KERNEL_NOTIFYBOOLOR  = ::RegisterWindowMessage( "FM_KERNEL_N
 class RDOStudioMainFrame: public CMDIFrameWnd
 {
 DECLARE_DYNAMIC(RDOStudioMainFrame)
-
+friend class RDOToolBar;
 private:
-	// ----------------------------------------------------------------------------
-	// ---------- RDOToolBar
-	// ----------------------------------------------------------------------------
-	class RDOToolBar: public CToolBar
-	{
-	protected:
-		CImageList disabledImage;
-
-	public:
-		void init( CWnd* parent, unsigned int tbResID, unsigned int tbDisabledImageResID );
-	};
-	friend class RDOToolBar;
-
 	RDOToolBar         fileToolBar;
 	RDOToolBar         editToolBar;
 	RDOToolBar         zoomToolBar;
-	RDOToolBar         modelToolBar;
+	RDOToolBarModel    modelToolBar;
 	RDOStudioStatusBar statusBar;
 
 	void dockControlBarBesideOf( CControlBar& bar, CControlBar& baseBar );
@@ -76,6 +96,8 @@ public:
 
 	void showWorkspace();
 	void showOutput();
+
+	double getSpeed() const { return modelToolBar.getSpeed(); }
 
 	void registerCmdWnd( CWnd* wnd, HWND hwnd = 0 ) {
 		if ( wnd ) {
@@ -153,6 +175,7 @@ protected:
 	afx_msg void OnUpdateInsertOverwriteStatusBar( CCmdUI *pCmdUI );
 	afx_msg void OnUpdateModelTimeStatusBar( CCmdUI *pCmdUI );
 	afx_msg void OnUpdateModelRunTypeStatusBar( CCmdUI *pCmdUI );
+	afx_msg void OnUpdateModelSpeedStatusBar( CCmdUI *pCmdUI );
 	afx_msg void OnUpdateModelShowRateStatusBar( CCmdUI *pCmdUI );
 	afx_msg void OnWorkspaceShow();
 	afx_msg void OnOutputShow();

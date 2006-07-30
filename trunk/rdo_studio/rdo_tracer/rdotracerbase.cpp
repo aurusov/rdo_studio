@@ -516,7 +516,7 @@ void RDOTracerBase::getModelStructure( std::stringstream& stream )
 	mutex.Lock();
 
 	std::string s;
-	
+
 	while( !stream.eof() ) {
 		stream >> s;
 		if ( !s.empty() ) {

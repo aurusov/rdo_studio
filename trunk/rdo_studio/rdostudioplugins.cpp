@@ -536,7 +536,7 @@ void RDOStudioPlugins::setModelShowMode( rdoPlugin::ModelShowMode showMode )
 const char* RDOStudioPlugins::getModelStructure()
 {
 	if ( model->hasModel() ) {
-		plugins->modelStructure = kernel->simulator()->getModelStructure().str();
+//!		plugins->modelStructure = kernel->simulator()->getModelStructure().str();
 	} else {
 		plugins->modelStructure = "";
 	}
@@ -607,7 +607,8 @@ int RDOStudioPlugins::modelStartNotify( void* )
 int RDOStudioPlugins::endExecuteModelNotify( void* )
 {
 	plugins->mutex.Lock();
-	std::string str = kernel->simulator()->getResults().str();
+//	std::string str = kernel->simulator()->getResults().str();
+	std::string str;
 	std::vector< rdoPlugin::PFunResults>::const_iterator it = plugins->results.begin();
 	while ( it != plugins->results.end() ) {
 		(*it++)( str.c_str() );

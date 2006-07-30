@@ -64,7 +64,9 @@ void RDOTracer::proc( RDOThread::RDOMessageInfo& msg )
 			setModelName( kernel->repository()->getName() );
 			try {
 				studioApp.mainFrame->output.appendStringToDebug( rdo::format( IDS_TRACER_GETTING_MODEL_STRUCTURE ) );
-				getModelStructure( kernel->simulator()->getModelStructure() );
+				std::stringstream model_structure;
+				sendMessage( kernel->simulator(), RT_SIMULATOR_GET_MODEL_STRUCTURE, &model_structure );
+				getModelStructure( model_structure );
 				studioApp.mainFrame->output.appendStringToDebug( rdo::format( IDS_MODEL_RESOURCE_LOADING_NAME_OK ) );
 			} catch ( ... ) {
 				studioApp.mainFrame->output.appendStringToDebug( rdo::format( IDS_MODEL_RESOURCE_LOADING_NAME_FAILED ) );

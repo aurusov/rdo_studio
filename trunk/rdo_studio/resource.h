@@ -117,7 +117,6 @@
 #define IDC_ABOUT_TEL                   1085
 #define IDC_ABOUR_EMAIL_STATIC          1086
 #define IDC_ABOUT_EMAIL                 1087
-#define IDC_ABOUR_WEB_STATIC            1088
 #define IDC_ABOUT_WEB                   1089
 #define IDC_FILEASSOCIATION_SETUP_CHECK 1091
 #define IDC_OPENLASTPROJECT_CHECK       1092
@@ -422,6 +421,7 @@
 #define ID_SEARCH_FIND_NEXT             33171
 #define ID_SEARCH_FIND_PREVIOUS         33172
 #define ID_VIEW_TOOLBAR_ZOOM_TOOLBAR    33181
+#define ID_MODEL_SPEED_SLIDER           33183
 #define IDS_DEVELOPERS                  34000
 #define IDS_ER_UNKNOWN                  35000
 #define IDS_ER_RTP_SECOND_RES_TYPE      35001
@@ -551,6 +551,7 @@
 #define IDS_MODEL_SHOWRATE_FMOREONE     40176
 #define IDS_MODEL_SHOWRATE_FLESSONE     40177
 #define IDS_MODEL_SHOWRATE_E            40178
+#define IDS_MODEL_SPEED                 40179
 #define IDS_FRAMES                      40200
 #define IDS_FRAME_NAME                  40201
 #define IDS_MODEL_NAME                  40202
@@ -606,12 +607,16 @@
 #define ID_MODEL_TIME_STATUSBAR         59397
 #define ID_MODEL_RUNTYPE_STATUSBAR      59398
 #define ID_MODEL_SHOWRATE_STATUSBAR     59399
+#define ID_MODEL_SPEED_STATUSBAR        59400
 #define ID_MSG_NO_HELP_FILE             60000
 #define ID_MSG_CANTFIND                 60001
 #define ID_MSG_MODELOPEN_ERROR          60002
 #define ID_MSG_MODELSAVE_QUERY          60003
 #define ID_MSG_MODELCLOSE_ERROR         60004
-#define ID_MSG_MODEL_NEED_STOPED        60005
+#define ID_MSG_MODEL_NEED_STOPED_FOR_CLOSE 60005
+#define ID_MSG_MODEL_NEED_STOPED_FOR_OPEN 60006
+#define ID_MSG_MODEL_NEED_STOPED_FOR_CLOSE2 60006
+#define ID_MSG_MODEL_NEED_STOPED_FOR_OPEN2 60007
 
 // Next default values for new objects
 // 
@@ -619,7 +624,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        178
-#define _APS_NEXT_COMMAND_VALUE         33183
+#define _APS_NEXT_COMMAND_VALUE         33184
 #define _APS_NEXT_CONTROL_VALUE         1121
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

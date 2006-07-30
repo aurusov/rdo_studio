@@ -36,6 +36,7 @@ private:
 	bool showCanNotCloseModelMessage;
 
 	bool GUI_HAS_MODEL;
+	bool GUI_CAN_RUN;
 	bool GUI_IS_RUNING;
 
 	SYSTEMTIME time_start;
@@ -46,6 +47,8 @@ private:
 
 	bool frmDescribed;
 	double timeNow;
+	double speed;
+	double showRate;
 	rdoSimulator::ShowMode showMode;
 	void updateFrmDescribed();
 
@@ -78,10 +81,10 @@ public:
 	bool openModel( const std::string& modelName = "" ) const;
 	bool saveModel() const;
 	void saveAsModel() const;
-	void closeModel() const;
+	bool closeModel() const;
 
 	void buildModel() const;
-	void runModel() const;
+	void runModel();
 	void stopModel() const;
 
 	void update();
@@ -101,14 +104,19 @@ public:
 		}
 		return result;
 	}
-	bool isRunning() const                            { return GUI_IS_RUNING; }
-	double getTimeNow() const                         { return timeNow;       }
+	bool canRun() const                               { return hasModel() && GUI_CAN_RUN; }
+	bool canNew() const                               { return canRun() || !hasModel();   }
+	bool canOpen() const                              { return canRun() || !hasModel();   }
+	bool isRunning() const                            { return GUI_IS_RUNING;             }
+	double getTimeNow() const                         { return timeNow;                   }
 
-	bool isFrmDescribed() const                       { return frmDescribed;  }
-	rdoSimulator::ShowMode getShowMode() const        { return showMode;      }
+	bool isFrmDescribed() const                       { return frmDescribed;              }
+	rdoSimulator::ShowMode getShowMode() const        { return showMode;                  }
 	void setShowMode( const rdoSimulator::ShowMode value );
-	double getShowRate() const;
-	void setShowRate( const double value ) const;
+	double getSpeed() const                           { return speed;                     }
+	void setSpeed( double persent );
+	double getShowRate()                              { return showRate;                  }
+	void setShowRate( double value );
 
 	void showNextFrame()                        { frameManager.showNextFrame();                      }
 	void showPrevFrame()                        { frameManager.showPrevFrame();                      }

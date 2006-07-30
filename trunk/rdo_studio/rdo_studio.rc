@@ -512,6 +512,8 @@ BEGIN
     BUTTON      ID_MODEL_SHOWRATE_DECFOUR
     BUTTON      ID_MODEL_SHOWRATE_DEC
     SEPARATOR
+    BUTTON      ID_MODEL_SPEED_SLIDER
+    SEPARATOR
     BUTTON      ID_MODEL_FRAME_NEXT
     BUTTON      ID_MODEL_FRAME_PREV
 END
@@ -1288,8 +1290,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,8,0,390
- PRODUCTVERSION 0,8,0,390
+ FILEVERSION 0,8,0,408
+ PRODUCTVERSION 0,8,0,408
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -1307,14 +1309,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "RAO studio\0"
-            VALUE "FileVersion", "0, 8, 0, 390\0"
+            VALUE "FileVersion", "0, 8, 0, 408\0"
             VALUE "InternalName", "RAO-Studio\0"
             VALUE "LegalCopyright", "Copyright (C) 2003-2006\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "RAO-Studio.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "RAO-Studio\0"
-            VALUE "ProductVersion", "0, 8, 0, 390\0"
+            VALUE "ProductVersion", "0, 8, 0, 408\0"
             VALUE "SpecialBuild", "\0"
         END
     END
@@ -1552,6 +1554,7 @@ BEGIN
     ID_MODEL_TIME_STATUSBAR " "
     ID_MODEL_RUNTYPE_STATUSBAR " "
     ID_MODEL_SHOWRATE_STATUSBAR " "
+    ID_MODEL_SPEED_STATUSBAR " "
 END
 
 STRINGTABLE DISCARDABLE 
@@ -1561,8 +1564,10 @@ BEGIN
     ID_MSG_MODELOPEN_ERROR  "Невозможно открыть модель '%s'."
     ID_MSG_MODELSAVE_QUERY  "Сохранить модель ?"
     ID_MSG_MODELCLOSE_ERROR "Невозможно закрыть модель."
-    ID_MSG_MODEL_NEED_STOPED 
-                            "У Вас работает модель. Перед закрытием её необходимо остановить."
+    ID_MSG_MODEL_NEED_STOPED_FOR_CLOSE 
+                            "Работает модель. Перед закрытием её необходимо остановить."
+    ID_MSG_MODEL_NEED_STOPED_FOR_OPEN 
+                            "Работает модель. Перед открытием её необходимо остановить."
 END
 
 STRINGTABLE DISCARDABLE 
@@ -1685,19 +1690,20 @@ END
 STRINGTABLE DISCARDABLE 
 BEGIN
     ID_VIEW_ZOOMAUTO        "\nАвтоматический масштаб (Ctrl+Num*)"
-    ID_MODEL_SHOWRATE_INC   "\nУвеличить скорость (Alt+Num+)"
-    ID_MODEL_SHOWRATE_INCFOUR "\nУвеличить скорость в 4-ре раза"
-    ID_MODEL_SHOWRATE_DECFOUR "\nУменьшить скорость в 4-ре раза"
-    ID_MODEL_SHOWRATE_DEC   "\nУменьшить скорость (Alt+Num-)"
+    ID_MODEL_SHOWRATE_INC   "\nУвеличить масштаб (Alt+Num+)"
+    ID_MODEL_SHOWRATE_INCFOUR "\nУвеличить масштаб в 4-ре раза"
+    ID_MODEL_SHOWRATE_DECFOUR "\nУменьшить масштаб в 4-ре раза"
+    ID_MODEL_SHOWRATE_DEC   "\nУменьшить масштаб (Alt+Num-)"
     ID_MODEL_FRAME_PREV     "\nПерд. кадр анимации"
     ID_MODEL_FRAME_NEXT     "\nСлед. кадр анимации"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_MODEL_SHOWRATE_FMOREONE "Скорость: %1.1f"
-    IDS_MODEL_SHOWRATE_FLESSONE "Скорость: %1.10f"
-    IDS_MODEL_SHOWRATE_E    "Скорость: %e"
+    IDS_MODEL_SHOWRATE_FMOREONE "Масштаб: %1.1f"
+    IDS_MODEL_SHOWRATE_FLESSONE "Масштаб: %1.10f"
+    IDS_MODEL_SHOWRATE_E    "Масштаб: %e"
+    IDS_MODEL_SPEED         "Скорость: %d%%"
 END
 
 STRINGTABLE DISCARDABLE 
@@ -3001,6 +3007,7 @@ BEGIN
     ID_MODEL_TIME_STATUSBAR " "
     ID_MODEL_RUNTYPE_STATUSBAR " "
     ID_MODEL_SHOWRATE_STATUSBAR " "
+    ID_MODEL_SPEED_STATUSBAR " "
 END
 
 STRINGTABLE DISCARDABLE 
@@ -3010,7 +3017,9 @@ BEGIN
     ID_MSG_MODELOPEN_ERROR  "Cannot open model '%s'."
     ID_MSG_MODELSAVE_QUERY  "Save changes in project ?"
     ID_MSG_MODELCLOSE_ERROR "Cannot close model."
-    ID_MSG_MODEL_NEED_STOPED "Model runing. Stop it before closing."
+    ID_MSG_MODEL_NEED_STOPED_FOR_CLOSE2 
+                            "Model runing. Stop it before closing."
+    ID_MSG_MODEL_NEED_STOPED_FOR_OPEN2 "Model runing. Stop it before open."
 END
 
 STRINGTABLE DISCARDABLE 
@@ -3146,6 +3155,7 @@ BEGIN
     IDS_MODEL_SHOWRATE_FMOREONE "Tempo: %1.1f"
     IDS_MODEL_SHOWRATE_FLESSONE "Tempo: %1.10f"
     IDS_MODEL_SHOWRATE_E    "Tempo: %e"
+    IDS_MODEL_SPEED         "Speed: %d%%"
 END
 
 STRINGTABLE DISCARDABLE 
