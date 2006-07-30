@@ -29,6 +29,7 @@
 
 #include "ctrl/sizecbar/sizecbar.h"
 #include "ctrl/sizecbar/scbarg.h"
+#include "misc/rdoprocess_string.h"
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.

@@ -68,7 +68,7 @@ LINK32=link.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_AFXDLL" /Yu"stdafx.h" /FD /GZ /c
-# ADD CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /Yu"stdafx.h" /FD /GZ /c
+# ADD CPP /nologo /MDd /W3 /Gm /GR /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /Yu"stdafx.h" /FD /GZ /c
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x419 /d "_DEBUG" /d "_AFXDLL"
@@ -86,13 +86,284 @@ LINK32=link.exe
 
 # Name "rdo_process - Win32 Release"
 # Name "rdo_process - Win32 Debug"
-# Begin Group "Source Files"
+# Begin Group "Ctrl"
+
+# PROP Default_Filter ""
+# Begin Group "Ctrl Source Files"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\ctrl\rdolink.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ctrl\rdolink.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\ctrl\rdoprocess_dockwnd.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ctrl\rdoprocess_dockwnd.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\ctrl\rdoprocess_pagectrl.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ctrl\rdoprocess_pagectrl.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\ctrl\rdoprocess_projectbar.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ctrl\rdoprocess_projectbar.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\ctrl\rdoprocess_toolbar.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ctrl\rdoprocess_toolbar.h
+# End Source File
+# End Group
+# Begin Group "SizeCBar"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\ctrl\sizecbar\scbarg.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ctrl\sizecbar\scbarg.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\ctrl\sizecbar\sizecbar.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ctrl\sizecbar\sizecbar.h
+# End Source File
+# End Group
+# Begin Group "mctranspblt"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\ctrl\mctranspblt\McTransparentBlit.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ctrl\mctranspblt\McTransparentBlit.h
+# End Source File
+# End Group
+# Begin Group "ColourPicker"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\ctrl\colourpicker\ColourPicker.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ctrl\colourpicker\ColourPicker.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\ctrl\colourpicker\ColourPopup.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ctrl\colourpicker\ColourPopup.h
+# End Source File
+# End Group
+# End Group
+# Begin Group "Method"
+
+# PROP Default_Filter ""
+# Begin Group "IDEF0"
+
+# PROP Default_Filter ""
+# End Group
+# Begin Group "IDEF3"
+
+# PROP Default_Filter ""
+# End Group
+# Begin Group "Algorithm"
+
+# PROP Default_Filter ""
+# Begin Group "Algorithm Source Files"
 
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 # Begin Source File
 
-SOURCE=.\rdo_process_project_RDO_proc_MJ.cpp
+SOURCE=.\method\algorithm\rdoprocess_shape_action.cpp
 # End Source File
+# Begin Source File
+
+SOURCE=.\method\algorithm\rdoprocess_shape_if.cpp
+# End Source File
+# End Group
+# Begin Group "Algorithm Header Files"
+
+# PROP Default_Filter "h;hpp;hxx;hm;inl"
+# Begin Source File
+
+SOURCE=.\method\algorithm\rdoprocess_shape_action.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\method\algorithm\rdoprocess_shape_if.h
+# End Source File
+# End Group
+# End Group
+# Begin Group "Process2RDO"
+
+# PROP Default_Filter ""
+# Begin Group "Process2RDO Source Files"
+
+# PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
+# Begin Source File
+
+SOURCE=.\method\process2rdo\rdo_process_project_RDO_proc_MJ.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\method\process2rdo\rdoprocess_creation_RDO_files_MJ.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\method\process2rdo\rdoprocess_generation_type_MJ.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\method\process2rdo\rdoprocess_shape_create_dlg1_MJ.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\method\process2rdo\rdoprocess_shape_create_dlg2_MJ.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\method\process2rdo\rdoprocess_shape_create_MJ.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\method\process2rdo\rdoprocess_shape_MJ.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\method\process2rdo\rdoprocess_shape_process_dlg1_MJ.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\method\process2rdo\rdoprocess_shape_process_dlg2_MJ.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\method\process2rdo\rdoprocess_shape_process_MJ.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\method\process2rdo\rdoprocess_shape_resource.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\method\process2rdo\rdoprocess_shape_resource_DLG1_MJ.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\method\process2rdo\rdoprocess_shape_terminate_dlg1_MJ.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\method\process2rdo\rdoprocess_shape_terminate_MJ.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\method\process2rdo\rdoprocess_tool_bar_blockMJ.cpp
+# End Source File
+# End Group
+# Begin Group "Process2RDO Header Files"
+
+# PROP Default_Filter "h;hpp;hxx;hm;inl"
+# Begin Source File
+
+SOURCE=.\method\process2rdo\rdo_process_project_RDO_proc_MJ.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\method\process2rdo\rdoprocess_creation_RDO_files_MJ.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\method\process2rdo\rdoprocess_generation_type_MJ.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\method\process2rdo\rdoprocess_shape_create_dlg1_MJ.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\method\process2rdo\rdoprocess_shape_create_dlg2_MJ.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\method\process2rdo\rdoprocess_shape_create_MJ.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\method\process2rdo\rdoprocess_shape_MJ.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\method\process2rdo\rdoprocess_shape_process_dlg1_MJ.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\method\process2rdo\rdoprocess_shape_process_dlg2_MJ.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\method\process2rdo\rdoprocess_shape_process_MJ.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\method\process2rdo\rdoprocess_shape_resource.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\method\process2rdo\rdoprocess_shape_resource_DLG1_MJ.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\method\process2rdo\rdoprocess_shape_terminate_dlg1_MJ.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\method\process2rdo\rdoprocess_shape_terminate_MJ.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\method\process2rdo\rdoprocess_tool_bar_blockMJ.h
+# End Source File
+# End Group
+# End Group
+# End Group
+# Begin Group "RDOProcess"
+
+# PROP Default_Filter ""
+# Begin Group "Source Files"
+
+# PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 # Begin Source File
 
 SOURCE=.\rdoprocess_app.cpp
@@ -107,27 +378,11 @@ SOURCE=.\rdoprocess_connector.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\rdoprocess_creation_RDO_files_MJ.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\rdoprocess_flowchart.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\rdoprocess_generation_type_MJ.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\rdoprocess_mainfrm.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdoprocess_math.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdoprocess_matrix.cpp
 # End Source File
 # Begin Source File
 
@@ -151,75 +406,11 @@ SOURCE=.\rdoprocess_object_matrix.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\rdoprocess_point.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdoprocess_polyline.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\rdoprocess_project.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\rdoprocess_rect.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\rdoprocess_shape.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdoprocess_shape_action.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdoprocess_shape_create_dlg1_MJ.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdoprocess_shape_create_dlg2_MJ.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdoprocess_shape_create_MJ.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdoprocess_shape_if.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdoprocess_shape_process_dlg1_MJ.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdoprocess_shape_process_dlg2_MJ.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdoprocess_shape_process_MJ.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdoprocess_shape_resource.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdoprocess_shape_resource_DLG1_MJ.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdoprocess_shape_terminate_dlg1_MJ.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdoprocess_shape_terminate_MJ.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdoprocess_string.cpp
 # End Source File
 # Begin Source File
 
@@ -230,10 +421,6 @@ SOURCE=.\StdAfx.cpp
 # Begin Group "Header Files"
 
 # PROP Default_Filter "h;hpp;hxx;hm;inl"
-# Begin Source File
-
-SOURCE=.\rdo_process_project_RDO_proc_MJ.h
-# End Source File
 # Begin Source File
 
 SOURCE=.\rdoprocess_app.h
@@ -248,27 +435,11 @@ SOURCE=.\rdoprocess_connector.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\rdoprocess_creation_RDO_files_MJ.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\rdoprocess_flowchart.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\rdoprocess_generation_type_MJ.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\rdoprocess_mainfrm.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdoprocess_math.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdoprocess_matrix.h
 # End Source File
 # Begin Source File
 
@@ -292,75 +463,11 @@ SOURCE=.\rdoprocess_object_matrix.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\rdoprocess_point.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdoprocess_polyline.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\rdoprocess_project.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\rdoprocess_rect.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\rdoprocess_shape.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdoprocess_shape_action.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdoprocess_shape_create_dlg1_MJ.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdoprocess_shape_create_dlg2_MJ.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdoprocess_shape_create_MJ.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdoprocess_shape_if.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdoprocess_shape_process_dlg1_MJ.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdoprocess_shape_process_dlg2_MJ.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdoprocess_shape_process_MJ.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdoprocess_shape_resource.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdoprocess_shape_resource_DLG1_MJ.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdoprocess_shape_terminate_dlg1_MJ.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdoprocess_shape_terminate_MJ.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdoprocess_string.h
 # End Source File
 # Begin Source File
 
@@ -475,103 +582,64 @@ SOURCE=.\res\toolbar1.bmp
 SOURCE=.\res\toolbar_styleandcolor.bmp
 # End Source File
 # End Group
-# Begin Group "Ctrl"
+# End Group
+# Begin Group "Misc"
 
 # PROP Default_Filter ""
-# Begin Group "Ctrl Source Files"
+# Begin Group "Misc Source Files"
 
-# PROP Default_Filter ""
+# PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 # Begin Source File
 
-SOURCE=.\ctrl\rdolink.cpp
+SOURCE=.\misc\rdoprocess_math.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ctrl\rdolink.h
+SOURCE=.\misc\rdoprocess_matrix.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ctrl\rdoprocess_dockwnd.cpp
+SOURCE=.\misc\rdoprocess_point.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ctrl\rdoprocess_dockwnd.h
+SOURCE=.\misc\rdoprocess_polyline.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ctrl\rdoprocess_pagectrl.cpp
+SOURCE=.\misc\rdoprocess_rect.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ctrl\rdoprocess_pagectrl.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\ctrl\rdoprocess_projectbar.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\ctrl\rdoprocess_projectbar.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\ctrl\rdoprocess_toolbar.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\ctrl\rdoprocess_toolbar.h
+SOURCE=.\misc\rdoprocess_string.cpp
 # End Source File
 # End Group
-# Begin Group "SizeCBar"
+# Begin Group "Misc Header Files"
 
-# PROP Default_Filter ""
+# PROP Default_Filter "h;hpp;hxx;hm;inl"
 # Begin Source File
 
-SOURCE=.\ctrl\sizecbar\scbarg.cpp
+SOURCE=.\misc\rdoprocess_math.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\ctrl\sizecbar\scbarg.h
+SOURCE=.\misc\rdoprocess_matrix.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\ctrl\sizecbar\sizecbar.cpp
+SOURCE=.\misc\rdoprocess_point.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\ctrl\sizecbar\sizecbar.h
-# End Source File
-# End Group
-# Begin Group "mctranspblt"
-
-# PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=.\ctrl\mctranspblt\McTransparentBlit.cpp
+SOURCE=.\misc\rdoprocess_polyline.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\ctrl\mctranspblt\McTransparentBlit.h
-# End Source File
-# End Group
-# Begin Group "ColourPicker"
-
-# PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=.\ctrl\colourpicker\ColourPicker.cpp
+SOURCE=.\misc\rdoprocess_rect.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\ctrl\colourpicker\ColourPicker.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\ctrl\colourpicker\ColourPopup.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\ctrl\colourpicker\ColourPopup.h
+SOURCE=.\misc\rdoprocess_string.h
 # End Source File
 # End Group
 # End Group

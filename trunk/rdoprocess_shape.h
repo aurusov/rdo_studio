@@ -125,7 +125,9 @@ public:
 	RPShape( RPObject* parent, const rp::string& name = "object" );
 	virtual ~RPShape();
 
-	virtual void find_next_block_MJ();		 // MJ ф-ия перекрытая RPObject для нахождения следующего блока
+	virtual rp::string getType() { return "RPShape"; }
+
+	std::list< RPShape* > getNextBlock();
 	
 	virtual void setPosition( int x, int y );
 

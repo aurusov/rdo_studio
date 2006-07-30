@@ -16,7 +16,6 @@
 #include "ctrl/rdolink.h"
 #include "resource.h"
 
-#include "rdoprocess_creation_RDO_files_MJ.h" // MJ 30.03.06
 /*! Класс приложения. При старте программы автоматически создается один экземпляр.
 К нему можно обратится по имени rpapp. Базовый класс CWinApp используется библиотекой MFC для инициализации
 программы. Производит инициализацию реестра и создает класс главного окна.
@@ -43,18 +42,11 @@ protected:
 public:
 	RPApp();
 
-	rp::msg& msg()       { return *_msg;     }
-	RPProject& project() { return *_project; }
+	rp::msg& msg()       { return *_msg;    }
+	RPProject* project() { return _project; }
 	std::map< UINT, HCURSOR > cursors;
 	std::ofstream             log;
 
-	//MJ start Для создания класса файлов РДО и ссылки на него
-	RPCreationRDOFilesMJ* RDOfiles;
-
-	// MJ stop
-	
-	
-	
 	void sendMessage( RPObject* from, UINT message, WPARAM wParam = 0, LPARAM lParam = 0 ) {
 		if ( _msg ) _msg->sendMessage( from, message, wParam, lParam );
 	}

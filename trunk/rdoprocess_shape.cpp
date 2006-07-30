@@ -2,7 +2,7 @@
 #include "rdoprocess_shape.h"
 #include "rdoprocess_object_flowchart.h"
 #include "rdoprocess_app.h"
-#include "rdoprocess_math.h"
+#include "misc/rdoprocess_math.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -60,7 +60,7 @@ rp::rect RPShape::getMaxRect()
 
 RPProject::Cursor RPShape::getCursor( const rp::point& global_chart_pos )
 {
-	if ( rpapp.project().getFlowState() == RPProject::flow_rotate && isSelected() && isRotateCenter( global_chart_pos ) ) return RPProject::cursor_flow_rotate_center;
+	if ( rpapp.project()->getFlowState() == RPProject::flow_rotate && isSelected() && isRotateCenter( global_chart_pos ) ) return RPProject::cursor_flow_rotate_center;
 
 	RPProject::Cursor cursor = RPObjectMatrix::getCursor( global_chart_pos );
 	if ( cursor != RPProject::cursor_flow_select ) return cursor;
@@ -117,7 +117,7 @@ RPProject::Cursor RPShape::getCursor( const rp::point& global_chart_pos )
 bool RPShape::pointInNCArea( const rp::point& global_chart_pos )
 {
 	// Проверяем на попадание в док
-	if ( rpapp.project().getFlowState() == RPProject::flow_connector ) {
+	if ( rpapp.project()->getFlowState() == RPProject::flow_connector ) {
 		if ( find_dock(global_chart_pos) ) return true;
 	}
 	// Проверяем на попадание в обрамляющий прямоугольник на растяжение/поворот
@@ -202,7 +202,7 @@ void RPShape::drawPolyline( CDC& dc )
 
 void RPShape::drawDocks( CDC& dc )
 {
-	if ( rpapp.project().getFlowState() != RPProject::flow_connector ) return;
+	if ( rpapp.project()->getFlowState() != RPProject::flow_connector ) return;
 	CPen pen( PS_SOLID, 1, RGB(0x00, 0x00, 0x00) );
 	CPen* old_pen = dc.SelectObject( &pen );
 	int radius = RPObjectFlowChart::getSensitivity();
@@ -340,7 +340,7 @@ void RPShape::draw_selected( CDC& dc )
 	dc.SelectObject( flowchart->getBrushSelectedBox() );
 	int box_size   = flowchart->getSelectBoxSize2() * 2 -1;
 	int box_size_2 = flowchart->getSelectBoxSize2();
-	if ( rpapp.project().getFlowState() == RPProject::flow_rotate ) {
+	if ( rpapp.project()->getFlowState() == RPProject::flow_rotate ) {
 		int radius = RPObjectFlowChart::getSensitivity();
 		dc.Ellipse( x0 - radius, y0 - radius, x0 + radius, y0 + radius );
 		dc.Ellipse( x1 - radius, y1 - radius, x1 + radius, y1 + radius );
@@ -356,7 +356,7 @@ void RPShape::draw_selected( CDC& dc )
 	dc.Rectangle( (x1 + x2)/2 - box_size_2, (y1 + y2)/2 - box_size_2, (x1 + x2)/2 + box_size_2, (y1 + y2)/2 + box_size_2 );
 	dc.Rectangle( (x2 + x3)/2 - box_size_2, (y2 + y3)/2 - box_size_2, (x2 + x3)/2 + box_size_2, (y2 + y3)/2 + box_size_2 );
 	dc.Rectangle( (x3 + x0)/2 - box_size_2, (y3 + y0)/2 - box_size_2, (x3 + x0)/2 + box_size_2, (y3 + y0)/2 + box_size_2 );
-	if ( rpapp.project().getFlowState() == RPProject::flow_rotate ) {
+	if ( rpapp.project()->getFlowState() == RPProject::flow_rotate ) {
 		// Центр вращения
 		rp::point center = getRotateCenter();
 		CPen pen_red( PS_SOLID, 1, RGB(0,0,0) );
@@ -371,7 +371,7 @@ void RPShape::draw_selected( CDC& dc )
 void RPShape::command_before( const rp::point& global_chart_pos, bool first_click )
 {
 	RPObjectMatrix::command_before( global_chart_pos, first_click );
-	pcmd = ((rpapp.project().getFlowState() == RPProject::flow_select || rpapp.project().getFlowState() == RPProject::flow_rotate) && first_click) ? RPShape::pcmd_move : getPossibleCommand( global_chart_pos );
+	pcmd = ((rpapp.project()->getFlowState() == RPProject::flow_select || rpapp.project()->getFlowState() == RPProject::flow_rotate) && first_click) ? RPShape::pcmd_move : getPossibleCommand( global_chart_pos );
 	if ( pcmd == pcmd_dock_in || pcmd == pcmd_dock_out || pcmd == pcmd_dock_inout ) {
 		RPObjectFlowChart* flowchart = flowChart();
 		RPConnectorDock* dock = find_dock( global_chart_pos );
@@ -461,14 +461,14 @@ RPConnectorDock* RPShape::find_dock( const rp::point& global_chart_pos )
 RPShape::PossibleCommand RPShape::getPossibleCommand( const rp::point& global_chart_pos, bool for_cursor )
 {
 	// Отдельно проверим на перемещение центра вращения. Он отрисовывается поверх выделения, значит и проверяться должен первым.
-	if ( rpapp.project().getFlowState() == RPProject::flow_rotate && isSelected() && isRotateCenter( global_chart_pos ) ) return RPShape::pcmd_rotate_center;
+	if ( rpapp.project()->getFlowState() == RPProject::flow_rotate && isSelected() && isRotateCenter( global_chart_pos ) ) return RPShape::pcmd_rotate_center;
 
 	int sensitivity = RPObjectFlowChart::getSensitivity();
 	angle90 a90 = getAngle90();
 	angle45 a45 = getAngle45();
 
 	// Проверим на попадание в dock для коннекторов
-	if ( rpapp.project().getFlowState() == RPProject::flow_connector ) {
+	if ( rpapp.project()->getFlowState() == RPProject::flow_connector ) {
 		RPConnectorDock* dock = find_dock( global_chart_pos );
 		if ( dock ) {
 			if ( !dock->can_connect() ) return PossibleCommand::pcmd_dock_not;
@@ -486,7 +486,7 @@ RPShape::PossibleCommand RPShape::getPossibleCommand( const rp::point& global_ch
 
 	// Отдельно проверим на растяжение за правый нижний угол, т.к. фигуру, сжатую в ноль, лучше растягивать из него
 	rp::rect rect = getBoundingRect();
-	if ( rpapp.project().getFlowState() == RPProject::flow_select ) {
+	if ( rpapp.project()->getFlowState() == RPProject::flow_select ) {
 		if ( rp::math::getLength( rect.p_tl(), global_chart_pos ) <= sensitivity ) {
 			if ( for_cursor ) {
 				switch ( a45 ) {
@@ -577,7 +577,7 @@ RPShape::PossibleCommand RPShape::getPossibleCommand( const rp::point& global_ch
 			}
 		}
 	}
-	bool select_or_rotate = rpapp.project().getFlowState() == RPProject::flow_select || rpapp.project().getFlowState() == RPProject::flow_rotate;
+	bool select_or_rotate = rpapp.project()->getFlowState() == RPProject::flow_select || rpapp.project()->getFlowState() == RPProject::flow_rotate;
 	// Общая часть и для перемещения и для вращения
 	if ( select_or_rotate ) {
 		// Отдельно проверим на растяжение за нижний центр, т.к. фигуру, сжатую в горизонтальную линию, лучше растягивать вниз за него, а не вверх
@@ -756,7 +756,7 @@ RPShape::PossibleCommand RPShape::getPossibleCommand( const rp::point& global_ch
 			}
 		}
 	}
-	if ( rpapp.project().getFlowState() == RPProject::flow_select ) {
+	if ( rpapp.project()->getFlowState() == RPProject::flow_select ) {
 		// Только при перемещении
 		if ( rp::math::getLength( rect.p_tl(), global_chart_pos ) <= sensitivity ) {
 			if ( for_cursor ) {
@@ -842,7 +842,7 @@ RPShape::PossibleCommand RPShape::getPossibleCommand( const rp::point& global_ch
 				}
 			}
 		}
-	} else if ( rpapp.project().getFlowState() == RPProject::flow_rotate ) {
+	} else if ( rpapp.project()->getFlowState() == RPProject::flow_rotate ) {
 		// Только при вращении
 		if ( rp::math::getLength( rect.p_tl(), global_chart_pos ) <= sensitivity ) {
 			switch ( a90 ) {
@@ -878,7 +878,7 @@ RPShape::PossibleCommand RPShape::getPossibleCommand( const rp::point& global_ch
 		}
 	}
 	// Общая часть для перемещения, вращения и коннектора
-	if ( select_or_rotate || rpapp.project().getFlowState() == RPProject::flow_connector ) {
+	if ( select_or_rotate || rpapp.project()->getFlowState() == RPProject::flow_connector ) {
 		if ( pointInPolygon( global_chart_pos ) ) {
 			return RPShape::pcmd_move;
 		}
@@ -1165,27 +1165,25 @@ void RPShape::onRButtonDown( UINT nFlags, CPoint global_chart_pos )
 	}
 }
 
-void RPShape::find_next_block_MJ()
+std::list< RPShape* > RPShape::getNextBlock()
 {
+	std::list< RPShape* > result;
 	std::vector< RPConnectorDock* >::const_iterator it = docks.begin();
 	while ( it != docks.end() ) {
 		std::list< RPConnector* >::const_iterator conn_it = (*it)->connectors.begin();
 		while ( conn_it != (*it)->connectors.end() ) {
 			RPConnectorDock* dock = (*conn_it)->getConnectedDock( **it );
 			if ( dock ) {
-				TRACE( "%s", getName().c_str() );
 				const RPObjectChart& obj = dock->object();
-			
-				if ( dock->isType( RPConnectorDock::in ) ) 
-				{
-				RPObject::id_next = obj.getName();
+				if ( dock->isType( RPConnectorDock::in ) && obj.isShape() ) {
+					result.push_back( static_cast<RPShape*>(const_cast<RPObjectChart*>(&obj)) );
 				} 
-				
 			}
 			conn_it++;
 		}
 		it++;
 	}
+	return result;
 }
 
 void RPShape::setBgBrush( const CBrush& brush )

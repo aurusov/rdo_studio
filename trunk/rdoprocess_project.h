@@ -49,6 +49,8 @@ public:
 	RPProject();
 	virtual ~RPProject();
 
+	virtual rp::string getType() { return "RPProject"; }
+
 	double generate_time_MJ;
 
 	FlowState getFlowState() const                { return flow_state;      }

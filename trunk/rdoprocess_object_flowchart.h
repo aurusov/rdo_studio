@@ -87,6 +87,8 @@ public:
 	RPObjectFlowChart( RPObject* parent, RPFlowChart* flowchart );
 	virtual ~RPObjectFlowChart();
 
+	virtual rp::string getType() { return "RPObjectFlowChart"; }
+
 	virtual void setActive( bool value );
 
 	void snapToGrid( RPObjectMatrix* shape );

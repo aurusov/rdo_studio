@@ -2,14 +2,14 @@
 #include "rdoprocess_flowchart.h"
 #include "rdoprocess_object_flowchart.h"
 #include "rdoprocess_object.h"
-#include "rdoprocess_shape_action.h"
-#include "rdoprocess_shape_if.h"
+#include "method/algorithm/rdoprocess_shape_action.h"
+#include "method/algorithm/rdoprocess_shape_if.h"
 
 // MJ start
-#include "rdoprocess_shape_process_MJ.h" 
-#include "rdoprocess_shape_create_MJ.h"
-#include "rdoprocess_shape_terminate_MJ.h"
-#include "rdoprocess_shape_resource.h"
+#include "method/process2rdo/rdoprocess_shape_process_MJ.h" 
+#include "method/process2rdo/rdoprocess_shape_create_MJ.h"
+#include "method/process2rdo/rdoprocess_shape_terminate_MJ.h"
+#include "method/process2rdo/rdoprocess_shape_resource.h"
 // MJ end
 
 #include "rdoprocess_app.h"
@@ -98,7 +98,7 @@ BOOL RPFlowChart::Create( LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD d
 	CDC* dc  = GetDC();
 	saved_dc = dc->SaveDC();
 
-	flowobj  = new RPObjectFlowChart( &rpapp.project(), this );
+	flowobj  = new RPObjectFlowChart_MJ( rpapp.project(), this );
 
 //	updateFont();
 	updateScrollBars();
@@ -109,23 +109,48 @@ BOOL RPFlowChart::Create( LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD d
 	action->setPosition( 250, 145 );
 */
 
-	shape_action = new RPShapeAction( flowobj );
-	shape_action->setPosition( 100, 45 );
-	shape_if = new RPShapeIf( flowobj );
-	shape_if->setPosition( 300, 100 );
+//	shape_action = new RPShapeAction( flowobj );
+//	shape_action->setPosition( 100, 45 );
+//	shape_if = new RPShapeIf( flowobj );
+//	shape_if->setPosition( 300, 100 );
 
 	// MJ start
 	shape_create = new RPShapeCreateMJ( flowobj );
 	shape_create->setPosition( 100,100 );
+	
+	shape_create->gamount = 1000;
+	shape_create->gname = "Входной_склад";
+	shape_create->setName(std::string("Входной_склад"));
+	shape_create->gtype=2;
+	shape_create->gmin = 10;
+	shape_create->gmax = 30;
+
+
 
 	shape_process = new RPShapeProcessMJ( flowobj );
 	shape_process->setPosition( 100,150 );
-	
+    
+	shape_process->setName(std::string("Перевозка_станок"));
+	shape_process->gtype=3;
+	shape_process->gexp = 7;
+
 	shape_process = new RPShapeProcessMJ( flowobj );
-	shape_process->setPosition( 100,150 );
+	shape_process->setPosition( 100,200 );
+	shape_process->gtype=1;
+	shape_process->gdisp = 2;
+	shape_process->gexp = 15;
+
+
+	shape_process = new RPShapeProcessMJ( flowobj );
+	shape_process->setPosition( 100,250 );
+	shape_process->setName(std::string("Перевозка_склад"));
+	shape_process->gtype=3;
+	shape_process->gexp = 5;
+
 
 	shape_terminate = new RPShapeTerminateMJ( flowobj );
 	shape_terminate->setPosition( 100,200 );
+	shape_terminate->setName(std::string("Склад"));
 
 	shape_resource = new RPShapeResource_MJ( flowobj );
 	shape_resource->setPosition( 100,250 );

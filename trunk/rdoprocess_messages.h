@@ -30,6 +30,8 @@ protected:
 	void sendMessage( RPObject* from, UINT message, WPARAM wParam = 0, LPARAM lParam = 0 );
 
 public:
+	virtual rp::string getType() { return "msg"; }
+
 	void connect( RPObject* to, UINT message );
 	void disconnect( RPObject* to );
 	void disconnect( RPObject* to, UINT message );

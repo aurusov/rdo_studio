@@ -4,7 +4,8 @@
 #include "rdoprocess_childfrm.h"
 #include "ctrl/rdoprocess_pagectrl.h"
 #include "resource.h"
-#include "rdo_process_project_RDO_proc_MJ.h"
+#include "method/process2rdo/rdo_process_project_RDO_proc_MJ.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -30,11 +31,6 @@ RPApp::RPApp():
 	_project( NULL )
 {
 	log.open( "log.txt" );
-
-	//MJ start Для создания класса файлов РДО и ссылки на него
-		RDOfiles  = NULL;
-		RDOfiles  = new RPCreationRDOFilesMJ();
-	// MJ stop
 }
 
 BOOL RPApp::InitInstance()
@@ -44,7 +40,7 @@ BOOL RPApp::InitInstance()
 	_msg = new rp::msg();
 
 	_project = new RPProject_RDO_Proc_MJ();
-	project().setName( "project" );
+	project()->setName( "project" );
 
 	// Standard initialization
 	// If you are not using these features and wish to reduce the size

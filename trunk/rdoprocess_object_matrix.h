@@ -6,7 +6,7 @@
 #endif // _MSC_VER > 1000
 
 #include "rdoprocess_object_chart.h"
-#include "rdoprocess_math.h"
+#include "misc/rdoprocess_math.h"
 
 #include <vector>
 
@@ -164,6 +164,8 @@ protected:
 public:
 	RPObjectMatrix( RPObject* parent, const rp::string& name = "object" );
 	virtual ~RPObjectMatrix();
+
+	virtual rp::string getType() { return "RPObjectMatrix"; }
 
 	rp::matrix globalMatrix( int mask_parent = m_all & ~m_sc, int mask_self = m_all ) const {
 		RPObjectMatrix* matrix_parent = matrixParent();

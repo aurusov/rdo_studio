@@ -116,7 +116,7 @@ void RPObjectFlowChart::update()
 void RPObjectFlowChart::setActive( bool value )
 {
 	if ( value ) setSelected( true );
-	rpapp.project().setActiveFlowChart( value ? this : NULL );
+	rpapp.project()->setActiveFlowChart( value ? this : NULL );
 }
 
 RPProject::Cursor RPObjectFlowChart::getCursor( const rp::point& global_chart_pos )
@@ -135,7 +135,7 @@ RPProject::Cursor RPObjectFlowChart::getCursor( const rp::point& global_chart_po
 	if ( cursor != RPProject::cursor_flow_select ) return cursor;
 
 	// Объектов не нашли, выставляем курсор для листа
-	switch ( rpapp.project().getFlowState() ) {
+	switch ( rpapp.project()->getFlowState() ) {
 		case RPProject::flow_select   : return RPProject::cursor_flow_select;
 		case RPProject::flow_connector: return RPProject::cursor_flow_connector;
 		case RPProject::flow_rotate   : return RPProject::cursor_flow_rotate;
@@ -551,7 +551,7 @@ void RPObjectFlowChart::onLButtonDown( UINT nFlags, CPoint local_win_pos )
 	if ( one_object ) {
 		// Нашли фигуру
 		bool selected = one_object->isSelected();
-		if ( rpapp.project().getFlowState() == RPProject::flow_select || rpapp.project().getFlowState() == RPProject::flow_rotate ) {
+		if ( rpapp.project()->getFlowState() == RPProject::flow_select || rpapp.project()->getFlowState() == RPProject::flow_rotate ) {
 			one_object->onLButtonDown( nFlags, CPoint( global_chart_pos.x, global_chart_pos.y ) );
 		}
 		one_object->command_before( global_chart_pos, !selected );

@@ -6,9 +6,9 @@
 #endif // _MSC_VER > 1000
 
 #include "rdoprocess_object.h"
-#include "rdoprocess_rect.h"
-#include "rdoprocess_point.h"
 #include "rdoprocess_project.h"
+#include "misc/rdoprocess_rect.h"
+#include "misc/rdoprocess_point.h"
 
 // ----------------------------------------------------------------------------
 // ---------- RPObjectChart
@@ -46,6 +46,8 @@ protected:
 public:
 	RPObjectChart( RPObject* parent, const rp::string& name = "object" );
 	virtual ~RPObjectChart();
+
+	virtual rp::string getType() { return "RPObjectChart"; }
 
 	RPObjectFlowChart* flowChart() const;
 

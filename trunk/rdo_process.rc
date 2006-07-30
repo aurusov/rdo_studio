@@ -517,8 +517,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,1,0,64
- PRODUCTVERSION 0,1,0,64
+ FILEVERSION 0,1,0,66
+ PRODUCTVERSION 0,1,0,66
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -536,14 +536,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "Simulation Sistem\0"
-            VALUE "FileVersion", "0, 1, 0, 64\0"
+            VALUE "FileVersion", "0, 1, 0, 66\0"
             VALUE "InternalName", "RAO-Process\0"
             VALUE "LegalCopyright", "Copyright (C) 2006\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "rao-process.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "RAO-Process\0"
-            VALUE "ProductVersion", "0, 1, 0, 64\0"
+            VALUE "ProductVersion", "0, 1, 0, 66\0"
             VALUE "SpecialBuild", "\0"
         END
     END

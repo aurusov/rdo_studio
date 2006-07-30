@@ -68,6 +68,8 @@ public:
 	RPConnector( RPObject* parent, const rp::string& name = "connector" );
 	virtual ~RPConnector();
 
+	virtual rp::string getType() { return "RPConnector"; }
+
 	RPConnectorDock* getConnectedDock( const RPConnectorDock& dock ) const;
 };
 

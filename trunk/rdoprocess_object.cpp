@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "rdoprocess_object.h"
 #include "rdoprocess_app.h"
+#include "method/process2rdo/rdo_process_project_RDO_proc_MJ.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -20,8 +21,6 @@ RPObject::RPObject( RPObject* parent, const rp::string& _name ):
 		parent->child.push_back( this );
 		parent->setCorrectChildName( this );
 	}
-	
-	type ="block"; // MJ инициализация типа блоков, по умолчанию
 }
 
 RPObject::~RPObject()
@@ -113,59 +112,14 @@ void RPObject::selectChildOff( RPObject* withoutObj )
 	}
 }
 
-// MJ start 30.03.06  бегает по list объектов и вызывает генерирование
-void RPObject::list_name()
+bool RPObject::isParent( const rp::string& type )
 {
-//	TRACE( "%s\n", getName().c_str() );
-	std::list< RPObject* >::const_iterator it = child.begin();
-	while( it != child.end() ) {
-//		TRACE( "%s\n", (*it)->getName().c_str() );
-	    (*it)->find_next_block_MJ();
-		(*it)->list_name();
-		(*it)->generate_MJ();
-		it++;
+	if ( getType() == type ) return true;
+	return false;
+	RPObject* _parent = parent;
+	while ( _parent ) {
+		if ( _parent->getType() == type ) return true;
+		_parent = _parent->parent;
 	}
+	return false;
 }
-
-void RPObject::list_name_for_type_res()
-{
-//	TRACE( "%s\n", getName().c_str() );
-	std::list< RPObject* >::const_iterator it = child.begin();
-	while( it != child.end() ) 
-	{
-	
-
-		rpapp.RDOfiles->typeres<<(*it)->getName().c_str()<<", ";
-		(*it)->list_name_for_type_res();	
-
-	it++;
-	
-	}
-}
-
-
-	
-
-
-
-// MJ stop
-
-void RPObject::list_name_for_resource_MJ(std::list< RPObject* >* list_resource)
-{
-
-	std::list< RPObject* >::const_iterator it = child.begin();
-	while( it != child.end() ) {
-	
-		
-	    if((*it)->type == "resource")
-		{
-		TRACE( "%s\n", (*it)->getName().c_str() );
-         list_resource->push_back(*it);
-		}
-			
-		(*it)->list_name_for_resource_MJ(list_resource);
-		it++;
-	}
-}
-
- 

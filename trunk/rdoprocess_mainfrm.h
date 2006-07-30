@@ -17,6 +17,7 @@ class RPMainFrameMsg: public RPObject
 friend class RPMainFrame;
 protected:
 	RPMainFrameMsg();
+	virtual rp::string getType() { return "RPMainFrameMsg"; }
 	virtual void notify( RPObject* from, UINT message, WPARAM wParam, LPARAM lParam );
 };
 
@@ -40,7 +41,6 @@ protected:
 	void dockControlBarBesideOf( CControlBar& bar, CControlBar& baseBar );
 
 public:
-	void blank_rdo_MJ();
 	RPMainFrame();
 	virtual ~RPMainFrame();
 
