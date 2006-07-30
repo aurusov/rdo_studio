@@ -88,6 +88,7 @@ private:
 	ShowMode showMode; // current show mode
 	double showRate; // current show mode
 
+	std::stringstream& getModelStructure();
 	std::stringstream resultString;
 
 protected:
@@ -105,7 +106,6 @@ public:
 
 	void parseSMRFileInfo( rdo::binarystream& smr, rdoModelObjects::RDOSMRFileInfo& info );
 
-	const std::vector<RDOFrame *>& getFrames();
 //	void addKeyPressed(int scanCode);
 	void keyDown(int scanCode);
 	void keyUp(int scanCode);
@@ -115,13 +115,8 @@ public:
 	int getInitialFrameNumber();
 	double getInitialShowRate();
 
-	std::stringstream& getModelStructure();
-	std::stringstream& getResults();
-
 	ShowMode getShowMode()                 { return showMode;      }
 	void setShowMode( ShowMode _showMode ) { showMode = _showMode; }
-	double getShowRate()                   { return showRate;      }
-	void setShowRate( double _showRate )   { showRate = _showRate; }
 
 	struct GetList {
 		enum Type {

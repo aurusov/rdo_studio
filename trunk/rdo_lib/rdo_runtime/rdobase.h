@@ -7,7 +7,21 @@ class RDOSimulatorBase
 {
 private:
 	ListDouble timePointList;
-	double currentTime;
+
+	double       currentTime;
+
+	double       speed;
+	unsigned int speed_range_max;
+	unsigned int next_delay_count;
+	unsigned int next_delay_current;
+
+	double       showRate;
+	double       msec_wait;
+	unsigned int msec_prev;
+
+	unsigned int getMSec( const SYSTEMTIME& systime ) {
+		return systime.wMilliseconds + systime.wSecond * 1000 + systime.wMinute * 1000 * 60 + systime.wHour * 1000 * 60 * 60;
+	}
 
 protected:
 	inline void setCurrentTime(double time) { currentTime = time; }
@@ -19,11 +33,11 @@ protected:
 
 	// Override if you need more or less real time processing.
 	// By default process as fast as possible.
-	virtual void rdoDelay(double fromTime, double toTime) {} 
+	virtual void rdoDelay( double fromTime, double toTime ) = 0;
 
 	// This function is called by engine for every moment of model time
 	// until it returns true, which means "something chanded" in model.
-	virtual bool doOperation(bool onlyEndOfOperations) = 0;
+	virtual bool doOperation() = 0;
 
 	// Override if need model time limit.
 	// Default - no time limit.
@@ -42,16 +56,19 @@ protected:
 	virtual void preProcess() {}
 	virtual void postProcess() {}
 
-	bool onlyEndOfOperations;
-
 public:
-
 	// These function for external use:
 	void rdoInit();
 //	void rdoRun();
 	void rdoDestroy();
 	bool rdoNext();
 	void rdoPostProcess();
+
+	double getSpeed() const             { return speed;    }
+	void setSpeed( double persent );
+
+	double getShowRate() const          { return showRate; }
+	void setShowRate( double value );
 
 	void addTimePoint( double timePoint );
 

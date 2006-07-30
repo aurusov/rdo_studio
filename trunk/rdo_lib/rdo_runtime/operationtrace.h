@@ -2,7 +2,7 @@ class RDOOperationTrace: public RDOOperation, public RDOTraceableObject, RDOPatt
 {
 friend RDOTrace;
 friend RDOSimulatorTrace;
-
+private:
    virtual std::string traceOperId() { return toString(operId); }
    virtual std::string tracePatternId() = 0;
    int operId;

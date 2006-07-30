@@ -241,7 +241,7 @@ public:
 	std::string writeActivitiesStructure();
 	std::string writePokazStructure();
 
-	void rdoDelay(double fromTime, double toTime);
+	void rdoDelay( double fromTime, double toTime );
   	TracerCallBack tracerCallBack;
 	FrameCallBack  frameCallBack;
 	void* param;		// this param send back to tracerCallBack and frameCallBack

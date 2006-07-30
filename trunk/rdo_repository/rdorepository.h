@@ -11,8 +11,6 @@
 #include <string>
 #include <fstream>
 
-class CFileDialog;
-
 namespace rdoRepository {
 
 // ----------------------------------------------------------------------------
@@ -23,7 +21,7 @@ class RDOThreadRepository: public RDOThreadMT
 private:
 	std::string modelName;
 	std::string modelPath;
-	std::string lastModelPath;
+//	std::string lastModelPath;
 	bool hasModel;
 
 	struct fileInfo {
@@ -56,7 +54,6 @@ private:
 	bool canCloseModel();
 	void realCloseModel();
 
-	void extractName( const CFileDialog* const dlg );
 	void extractName( const std::string& fullname );
 	static bool isFileReadOnly( const std::string& fileName );
 
@@ -65,7 +62,7 @@ private:
 	void loadFile( const std::string& filename, rdo::binarystream& stream, const bool described, const bool mustExist, bool& reanOnly ) const;
 	void saveFile( const std::string& filename, rdo::binarystream& stream, const bool deleteIfEmpty = false ) const;
 
-	void changeLastModelPath();
+//	void changeLastModelPath();
 
 	std::ofstream trace_file;
 	void beforeModelStart();
@@ -106,8 +103,9 @@ public:
 	};
 	struct OpenFile {
 		std::string name;
-		bool&       result;
-		OpenFile( const std::string& _name, bool& _result ): name( _name ), result( _result ) {}
+		bool        readonly;
+		bool        result;
+		OpenFile( const std::string& _name = "", bool _readonly = false ): name( _name ), readonly( _readonly ), result( false ) {}
 	};
 
 	void loadBMP( const std::string& name, rdo::binarystream& stream ) const;

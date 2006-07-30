@@ -76,6 +76,12 @@ RDOThreadRunTime::RDOThreadRunTime():
 	simulator( NULL ),
 	runtime_error( false )
 {
+	simulator = kernel->simulator();
+
+	notifies.push_back( RT_RUNTIME_GET_SPEED );
+	notifies.push_back( RT_RUNTIME_SET_SPEED );
+	notifies.push_back( RT_RUNTIME_GET_SHOWRATE );
+	notifies.push_back( RT_RUNTIME_SET_SHOWRATE );
 	notifies.push_back( RT_RUNTIME_GET_TIMENOW );
 	notifies.push_back( RT_RUNTIME_GET_FRAME );
 	after_constructor();
@@ -84,12 +90,32 @@ RDOThreadRunTime::RDOThreadRunTime():
 void RDOThreadRunTime::proc( RDOMessageInfo& msg )
 {
 	switch ( msg.message ) {
-		case RT_RUNTIME_GET_TIMENOW: {
-			*static_cast<double*>(msg.param) = simulator->runtime->getTimeNow();
-			break;
-		}
 		case RT_THREAD_CLOSE: {
 			broadcastMessage( RT_RUNTIME_MODEL_STOP_BEFORE );
+			break;
+		}
+		case RT_RUNTIME_GET_SPEED: {
+			*static_cast<double*>(msg.param) = simulator->runtime->getSpeed();
+			break;
+		}
+		case RT_RUNTIME_SET_SPEED: {
+			msg.lock();
+			simulator->runtime->setSpeed( *static_cast<double*>(msg.param) );
+			msg.unlock();
+			break;
+		}
+		case RT_RUNTIME_GET_SHOWRATE: {
+			*static_cast<double*>(msg.param) = simulator->runtime->getShowRate();
+			break;
+		}
+		case RT_RUNTIME_SET_SHOWRATE: {
+			msg.lock();
+			simulator->runtime->setShowRate( *static_cast<double*>(msg.param) );
+			msg.unlock();
+			break;
+		}
+		case RT_RUNTIME_GET_TIMENOW: {
+			*static_cast<double*>(msg.param) = simulator->runtime->getTimeNow();
 			break;
 		}
 		case RT_RUNTIME_GET_FRAME: {
@@ -109,8 +135,6 @@ void RDOThreadRunTime::start()
 #endif
 
 	broadcastMessage( RT_RUNTIME_MODEL_START_BEFORE );
-
-	simulator = kernel->simulator();
 
 	RDOTrace* tracer;
 	rdoRuntime::RDOResult* resulter;
@@ -159,6 +183,7 @@ void RDOThreadRunTime::start()
 	try {
 		simulator->exitCode = rdoModel::EC_OK;
 		simulator->runtime->rdoInit( tracer, resulter );
+		simulator->runtime->setShowRate( simulator->runtime->config.showRate );
 	}
 	catch( rdoParse::RDOSyntaxException& ) {
 		runtime_error = true;
@@ -169,7 +194,9 @@ void RDOThreadRunTime::start()
 		sendMessage( kernel, RDOThread::RT_DEBUG_STRING, &mess );
 	}
 
-	broadcastMessage( RT_RUNTIME_MODEL_START_AFTER );
+	if ( !runtime_error ) {
+		broadcastMessage( RT_RUNTIME_MODEL_START_AFTER );
+	}
 
 #ifdef TR_TRACE
 	trace( thread_name + " start end, runing simulation" );
@@ -246,6 +273,8 @@ RDOThreadSimulator::RDOThreadSimulator():
 	notifies.push_back( RT_STUDIO_MODEL_BUILD );
 	notifies.push_back( RT_STUDIO_MODEL_RUN );
 	notifies.push_back( RT_STUDIO_MODEL_STOP );
+	notifies.push_back( RT_SIMULATOR_GET_MODEL_STRUCTURE );
+	notifies.push_back( RT_SIMULATOR_GET_MODEL_RESULTS );
 	notifies.push_back( RT_SIMULATOR_GET_LIST );
 	notifies.push_back( RT_SIMULATOR_GET_ERRORS );
 	notifies.push_back( RT_THREAD_STOP_AFTER );
@@ -271,6 +300,18 @@ void RDOThreadSimulator::proc( RDOMessageInfo& msg )
 		}
 		case RT_STUDIO_MODEL_STOP: {
 			stopModel();
+			break;
+		}
+		case RT_SIMULATOR_GET_MODEL_STRUCTURE: {
+			msg.lock();
+			*static_cast<std::stringstream*>(msg.param) << parser->getModelStructure().str();
+			msg.unlock();
+			break;
+		}
+		case RT_SIMULATOR_GET_MODEL_RESULTS: {
+			msg.lock();
+			*static_cast<std::stringstream*>(msg.param) << resultString.str();
+			msg.unlock();
 			break;
 		}
 		case RT_SIMULATOR_GET_LIST: {
@@ -335,11 +376,6 @@ void RDOThreadSimulator::proc( RDOMessageInfo& msg )
 			break;
 		}
 	}
-}
-
-const std::vector< RDOFrame* >& RDOThreadSimulator::getFrames()
-{
-	return frames;
 }
 
 /*
@@ -424,33 +460,25 @@ void frameCallBack( rdoRuntime::RDOConfig* config, void* param )
 //		simulator->thread_runtime->broadcastMessage( RDOThread::RT_RUNTIME_FRAME_SHOW );
 	}
 
-	config->showRate = simulator->getShowRate();
+//	config->showRate = simulator->getShowRate();
 	config->showAnimation = simulator->getShowMode();
 }
 
 void tracerCallBack( std::string* newString, void* param )
 {
+	if ( newString->empty() ) return;
+
 	RDOThreadSimulator* simulator = static_cast<RDOThreadSimulator*>(param);
-//	kernel.notifyString(RDOKernel.traceString, newString->c_str());
+	if ( !simulator->canTrace ) return;
+
 	int pos = 0;
-	if(newString->empty())
-		return;
-
-	if(!simulator->canTrace)
-		return;
-
-	for(;;)
-	{
-		int next = newString->find('\n', pos);
-		std::string str = newString->substr(pos, next-pos);
+	for (;;) {
+		int next = newString->find( '\n', pos );
+		std::string str = newString->substr( pos, next-pos );
 		simulator->thread_runtime->broadcastMessage( RDOThread::RT_RUNTIME_TRACE_STRING, &str );
-		if(next == std::string::npos)
-			break;
+		if ( next == std::string::npos ) break;
 		pos = next + 1;
-		if(pos >= newString->length())
-			break;
-
-		int aa = 0;
+		if ( pos >= newString->length() ) break;
 	}
 }
 
@@ -488,21 +516,7 @@ bool RDOThreadSimulator::parseModel()
 	showMode = getInitialShowMode();
 	showRate = getInitialShowRate();
 
-/*
-	if(parser->errors.size() > 0)
-	{
-		for(int i = 0; i < parser->errors.size(); i++)
-		{
-			kernel.notifyString(RDOKernel::buildString, parser->errors.at(i).message);
-		}
-
-		return false;
-	}
-*/
-
 	broadcastMessage( RT_SIMULATOR_PARSE_OK );
-
-//	kernel.notifyString(RDOKernel::buildString, getModelStructure().str().c_str());
 
 	return true;
 }
@@ -659,16 +673,6 @@ int RDOThreadSimulator::getInitialFrameNumber()
 double RDOThreadSimulator::getInitialShowRate()
 {
 	return *parser->smr->showRate;
-}
-
-std::stringstream &RDOThreadSimulator::getModelStructure()
-{
-	return parser->getModelStructure();
-}
-
-std::stringstream &RDOThreadSimulator::getResults()
-{
-	return resultString;
 }
 
 } // namespace rdoSimulator

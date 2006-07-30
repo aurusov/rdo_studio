@@ -121,7 +121,10 @@ friend CheckOperations;
 
 private:
 	double time;
-	bool checkOperation(RDOSimulator *sim);
+	bool convert_end;
+	std::list< RDOOperation* > operation_clone;
+	bool checkOperation( RDOSimulator* sim );
+
 public:
    virtual void convertEnd(RDOSimulator *sim) = 0;
    virtual void convertBegin(RDOSimulator *sim) = 0;
@@ -137,7 +140,10 @@ public:
    virtual void onAfterOperationBegin(RDOSimulator *sim) {}
    virtual void onBeforeOperationEnd(RDOSimulator *sim) {}
    virtual void onAfterOperationEnd(RDOSimulator *sim) {}
-   virtual ~RDOOperation() {}
+   RDOOperation(): RDOBaseOperation(), time( 0 ), convert_end( false ) {}
+	virtual ~RDOOperation() {
+		DeleteAllObjects( operation_clone );
+	}
 };
 
 class RDOPokaz
@@ -159,11 +165,7 @@ friend RDODecisionPoint;
 friend RDOOperation;
 
 private:
-	std::list<RDOOperation *> operations;                 // currently processing
-
-	bool doOperation(bool onlyEndOfOperations);
-	void addOperation(RDOOperation *op);
-	bool checkEndOfOperation();
+	virtual bool doOperation();
 
 protected:
 	std::list<RDOBaseOperation *> haveBaseOperations;		// all DP, IE, Rules, Operations

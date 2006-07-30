@@ -203,10 +203,10 @@ RDORuntime::RDORuntime(): tracer(NULL), result(NULL)
 
 bool RDORuntime::endCondition()
 {
-	if(!terminateIfCalc)
+	if ( !terminateIfCalc ) {
 		return false;	// forever
-
-	return fabs(terminateIfCalc->calcValueBase(this)) > DBL_EPSILON; 
+	}
+	return fabs( terminateIfCalc->calcValueBase(this) ) > DBL_EPSILON;
 }
 
 bool RDORuntime::setTerminateIf(RDOCalc *_terminateIfCalc)
@@ -766,15 +766,13 @@ bool RDOResource::operator != (RDOResource &other)
 	return false;
 }
 
-void RDORuntime::rdoDelay(double fromTime, double toTime)
+void RDORuntime::rdoDelay( double fromTime, double toTime )
 {
-	if ( fromTime > toTime ) {
-		toTime = fromTime;
-	}
+/*
 	config.currTime      = fromTime;
 	config.newTime       = toTime;
 	config.realTimeDelay = (toTime - fromTime) * 3600 * 1000 / config.showRate;
-/*
+
 	for ( int i = 0; i < config.frames.size(); i++ ) {
 		delete config.frames.at(i);
 	}

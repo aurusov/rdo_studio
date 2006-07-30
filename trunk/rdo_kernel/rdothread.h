@@ -23,7 +23,7 @@
 // Если НЕ определена в дефайнах проекта
 #else
 	#define RDO_MT
-	#undef RDO_MT // Скомпилить однотредувую версию РДО. Если закомментировать, то получится многотредовая
+	//#undef RDO_MT // Скомпилить однотредувую версию РДО. Если закомментировать, то получится многотредовая
 
 	// RDO_ST автоматически выставляется для однотредовой версии РДО
 	#ifndef RDO_MT
@@ -59,11 +59,11 @@ public:
 		RT_THREAD_CLOSE = 1,
 		RT_THREAD_CONNECTION,
 		RT_THREAD_DISCONNECTION,
-		RT_THREAD_REGISTERED,                 // param = RDOThread
-		RT_THREAD_UNREGISTERED,               // param = RDOThread
+		RT_THREAD_REGISTERED,                 // param = thread:RDOThread*
+		RT_THREAD_UNREGISTERED,               // param = thread:RDOThread*
 		RT_THREAD_STOP_AFTER,
 		RT_STUDIO_MODEL_NEW,
-		RT_STUDIO_MODEL_OPEN,                 // param = rdoRepository::RDOThreadRepository::OpenFile = { model_name:std::string*, result:bool }
+		RT_STUDIO_MODEL_OPEN,                 // param = rdoRepository::RDOThreadRepository::OpenFile* = { model_name:std::string&, result:bool&, readonly:bool& }
 		RT_STUDIO_MODEL_SAVE,
 		RT_STUDIO_MODEL_SAVE_AS,
 		RT_STUDIO_MODEL_CLOSE,
@@ -72,29 +72,38 @@ public:
 		RT_STUDIO_MODEL_STOP,
 		RT_REPOSITORY_MODEL_NEW,
 		RT_REPOSITORY_MODEL_OPEN,
+		RT_REPOSITORY_MODEL_OPEN_GET_NAME,     // param = rdoRepository::RDOThreadRepository::OpenFile* = { model_name:std::string, readonly:bool, result:bool }
+		RT_REPOSITORY_MODEL_OPEN_ERROR,        // param = model_name:std::string*
 		RT_REPOSITORY_MODEL_SAVE,
+		RT_REPOSITORY_MODEL_SAVE_GET_NAME,     // param = rdoRepository::RDOThreadRepository::OpenFile* = { model_name:std::string, readonly:bool, result:bool }
 		RT_REPOSITORY_MODEL_CLOSE,
-		RT_REPOSITORY_MODEL_CLOSE_CAN_CLOSE,   // param = result:bool, работает как И
+		RT_REPOSITORY_MODEL_CLOSE_CAN_CLOSE,   // param = result:bool*, работает как И
 		RT_REPOSITORY_MODEL_CLOSE_ERROR,
-		RT_REPOSITORY_LOAD,                    // param = rdoRepository::RDOThreadRepository::FileData = { file_type:rdoModelObjects::RDOFileType, result:rdo::binarystream }
-		RT_REPOSITORY_SAVE,                    // param = rdoRepository::RDOThreadRepository::FileData = { file_type:rdoModelObjects::RDOFileType, stream:rdo::binarystream }
+		RT_REPOSITORY_LOAD,                    // param = rdoRepository::RDOThreadRepository::FileData* = { file_type:rdoModelObjects::RDOFileType, result:rdo::binarystream& }
+		RT_REPOSITORY_SAVE,                    // param = rdoRepository::RDOThreadRepository::FileData* = { file_type:rdoModelObjects::RDOFileType, stream:rdo::binarystream& }
 		RT_SIMULATOR_PARSE_OK,
 		RT_SIMULATOR_PARSE_ERROR,
 		RT_SIMULATOR_PARSE_ERROR_SMR,
-		RT_SIMULATOR_PARSE_STRING,             // param = std::string
+		RT_SIMULATOR_PARSE_STRING,             // param = std::string*
 		RT_SIMULATOR_MODEL_STOP_OK,
 		RT_SIMULATOR_MODEL_STOP_BY_USER,
 		RT_SIMULATOR_MODEL_STOP_RUNTIME_ERROR,
-		RT_SIMULATOR_GET_LIST,                 // param = rdoSimulator::RDOThreadSimulator::GetList = { type:GetList::Type, result:std::list< std::string > }
-		RT_SIMULATOR_GET_ERRORS,               // param = result:std::vector< RDOSyntaxError >
+		RT_SIMULATOR_GET_MODEL_STRUCTURE,      // param = result:std::stringstream*
+		RT_SIMULATOR_GET_MODEL_RESULTS,        // param = result:std::stringstream*
+		RT_SIMULATOR_GET_LIST,                 // param = rdoSimulator::RDOThreadSimulator::GetList* = { type:GetList::Type, result:std::list< std::string >* }
+		RT_SIMULATOR_GET_ERRORS,               // param = result:std::vector< RDOSyntaxError >*
 		RT_RUNTIME_MODEL_START_BEFORE,
 		RT_RUNTIME_MODEL_START_AFTER,
 		RT_RUNTIME_MODEL_STOP_BEFORE,
 		RT_RUNTIME_MODEL_STOP_AFTER,
-		RT_RUNTIME_TRACE_STRING,               // param = std::string
-		RT_RUNTIME_GET_TIMENOW,                // param = result:double
-		RT_RUNTIME_GET_FRAME,                  // param = { frame number:int, result:rdoSimulator::RDOFrame }
-		RT_DEBUG_STRING                        // param = std::string
+		RT_RUNTIME_TRACE_STRING,               // param = std::string*
+		RT_RUNTIME_GET_SPEED,                  // param = result:double[0..1]%*
+		RT_RUNTIME_SET_SPEED,                  // param = speed:double[0..1]%*
+		RT_RUNTIME_GET_SHOWRATE,               // param = result:double[0..+max_double]*
+		RT_RUNTIME_SET_SHOWRATE,               // param = show_rate:double[0..+max_double]*
+		RT_RUNTIME_GET_TIMENOW,                // param = result:double*
+		RT_RUNTIME_GET_FRAME,                  // param = { result:rdoSimulator::RDOFrame*, frame number:int }*
+		RT_DEBUG_STRING                        // param = std::string*
 	};
 	std::string messageToString( RDOTreadMessage message ) {
 		switch ( message ) {
@@ -114,7 +123,10 @@ public:
 			case RT_STUDIO_MODEL_STOP                 : return "RT_STUDIO_MODEL_STOP";
 			case RT_REPOSITORY_MODEL_NEW              : return "RT_REPOSITORY_MODEL_NEW";
 			case RT_REPOSITORY_MODEL_OPEN             : return "RT_REPOSITORY_MODEL_OPEN";
+			case RT_REPOSITORY_MODEL_OPEN_GET_NAME    : return "RT_REPOSITORY_MODEL_OPEN_GET_NAME";
+			case RT_REPOSITORY_MODEL_OPEN_ERROR       : return "RT_REPOSITORY_MODEL_OPEN_ERROR";
 			case RT_REPOSITORY_MODEL_SAVE             : return "RT_REPOSITORY_MODEL_SAVE";
+			case RT_REPOSITORY_MODEL_SAVE_GET_NAME    : return "RT_REPOSITORY_MODEL_SAVE_GET_NAME";
 			case RT_REPOSITORY_MODEL_CLOSE            : return "RT_REPOSITORY_MODEL_CLOSE";
 			case RT_REPOSITORY_MODEL_CLOSE_CAN_CLOSE  : return "RT_REPOSITORY_MODEL_CLOSE_CAN_CLOSE";
 			case RT_REPOSITORY_MODEL_CLOSE_ERROR      : return "RT_REPOSITORY_MODEL_CLOSE_ERROR";
@@ -127,6 +139,8 @@ public:
 			case RT_SIMULATOR_MODEL_STOP_OK           : return "RT_SIMULATOR_MODEL_STOP_OK";
 			case RT_SIMULATOR_MODEL_STOP_BY_USER      : return "RT_SIMULATOR_MODEL_STOP_BY_USER";
 			case RT_SIMULATOR_MODEL_STOP_RUNTIME_ERROR: return "RT_SIMULATOR_MODEL_STOP_RUNTIME_ERROR";
+			case RT_SIMULATOR_GET_MODEL_STRUCTURE     : return "RT_SIMULATOR_GET_MODEL_STRUCTURE";
+			case RT_SIMULATOR_GET_MODEL_RESULTS       : return "RT_SIMULATOR_GET_MODEL_RESULTS";
 			case RT_SIMULATOR_GET_LIST                : return "RT_SIMULATOR_GET_LIST";
 			case RT_SIMULATOR_GET_ERRORS              : return "RT_SIMULATOR_GET_ERRORS";
 			case RT_RUNTIME_MODEL_START_BEFORE        : return "RT_RUNTIME_MODEL_START_BEFORE";
@@ -134,6 +148,10 @@ public:
 			case RT_RUNTIME_MODEL_STOP_BEFORE         : return "RT_RUNTIME_MODEL_STOP_BEFORE";
 			case RT_RUNTIME_MODEL_STOP_AFTER          : return "RT_RUNTIME_MODEL_STOP_AFTER";
 			case RT_RUNTIME_TRACE_STRING              : return "RT_RUNTIME_TRACE_STRING";
+			case RT_RUNTIME_GET_SPEED                 : return "RT_RUNTIME_GET_SPEED";
+			case RT_RUNTIME_SET_SPEED                 : return "RT_RUNTIME_SET_SPEED";
+			case RT_RUNTIME_GET_SHOWRATE              : return "RT_RUNTIME_GET_SHOWRATE";
+			case RT_RUNTIME_SET_SHOWRATE              : return "RT_RUNTIME_SET_SHOWRATE";
 			case RT_RUNTIME_GET_TIMENOW               : return "RT_RUNTIME_GET_TIMENOW";
 			case RT_RUNTIME_GET_FRAME                 : return "RT_RUNTIME_GET_FRAME";
 			case RT_DEBUG_STRING                      : return "RT_DEBUG_STRING";

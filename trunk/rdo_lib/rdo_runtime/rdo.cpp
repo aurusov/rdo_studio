@@ -26,19 +26,37 @@ bool RDODecisionPoint::checkOperation(RDOSimulator *sim)
    return false;
 }
 
-bool RDOOperation::checkOperation(RDOSimulator *sim)
+bool RDOOperation::checkOperation( RDOSimulator* sim )
 {
-   onBeforeChoiceFrom(sim);
-   if(!choiceFrom(sim))
-      return false;
-
-   RDOOperation *newOp = clone(sim);
-   newOp->onBeforeOperationBegin(sim);
-   newOp->convertBegin(sim);
-   sim->addOperation(newOp);
-   sim->addTimePoint(newOp->time = (newOp->getNextTimeInterval(sim) + sim->getCurrentTime()));
-   newOp->onAfterOperationBegin(sim);
-   return true;
+	// Если операция может начаться, то создать её клон и поместить его в список
+	onBeforeChoiceFrom( sim );
+	if ( choiceFrom(sim) ) {
+		RDOOperation* newOp = clone( sim );
+		newOp->onBeforeOperationBegin( sim );
+		newOp->convertBegin( sim );
+		sim->addTimePoint( newOp->time = (newOp->getNextTimeInterval(sim) + sim->getCurrentTime()) );
+		newOp->onAfterOperationBegin( sim );
+		newOp->convert_end = true;
+		operation_clone.push_back( newOp );
+		return true;
+	} else {
+		// Операция начаться не может, проверим события конца всех её клонов
+		double time_now = sim->getCurrentTime();
+		std::list<RDOOperation *>::iterator it = operation_clone.begin();
+		while ( it != operation_clone.end() ) {
+			// Выполняем событие конца
+			if ( time_now >= (*it)->time ) {
+				(*it)->onBeforeOperationEnd( sim );
+				(*it)->convertEnd( sim );
+				(*it)->onAfterOperationEnd( sim );
+				delete *it;
+				operation_clone.erase( it );
+				return true;
+			}
+			it++;
+		}
+	}
+	return false;
 }
 
 bool RDOIE::checkOperation(RDOSimulator *sim)
@@ -121,58 +139,25 @@ bool CheckOperations::operator()(RDORule *ru)
    return false;
 }
 */
-bool RDOSimulator::doOperation(bool onlyEndOfOperations)
+bool RDOSimulator::doOperation()
 {
 	std::for_each(havePokaz.begin(), havePokaz.end(), std::bind2nd(std::mem_fun1(&RDOPokaz::checkPokaz), this));
 	onAfterCheckPokaz();
 
-   if(!onlyEndOfOperations)
-   {
-      // Check all operations
-      if(std::find_if(haveBaseOperations.begin(), 
-         haveBaseOperations.end(), CheckOperations(this)) != haveBaseOperations.end())
-         return true;
-		
-/*
-      // Check all decision points
-      if(std::find_if(haveDecisionPoints.begin(), 
-         haveDecisionPoints.end(), CheckOperations(this)) != haveDecisionPoints.end())
-         return true;
-
-      // Check all rules
-      if(std::find_if(haveRules.begin(), 
-         haveRules.end(), CheckOperations(this)) != haveRules.end())
-         return true;
-
-      // Check all operations
-      if(std::find_if(haveOperations.begin(), 
-         haveOperations.end(), CheckOperations(this)) != haveOperations.end())
-         return true;
-
-      // Check irregular events
-      if(std::find_if(haveIrregularEvents.begin(), 
-         haveIrregularEvents.end(), CheckOperations(this)) != haveIrregularEvents.end())
-         return true;
-*/
-   }
-
-   if(checkEndOfOperation())
-      return true;
-
-   return false;
+	// Проверить все возможные действия и вызвать первое, которое может буть вызвано
+	return std::find_if( haveBaseOperations.begin(), haveBaseOperations.end(), CheckOperations(this) ) != haveBaseOperations.end();
 }
 
 void RDOSimulator::rdoDestroy()
 {
-   RDOSimulatorBase::rdoDestroy();
+	RDOSimulatorBase::rdoDestroy();
 
-//   DeleteAllObjects(haveOperations);
-//   DeleteAllObjects(haveIrregularEvents);
-   DeleteAllObjects(operations);
-//   DeleteAllObjects(haveDecisionPoints);
-//   DeleteAllObjects(haveRules);
+//	DeleteAllObjects(haveOperations);
+//	DeleteAllObjects(haveIrregularEvents);
+//	DeleteAllObjects(haveDecisionPoints);
+//	DeleteAllObjects(haveRules);
 }
-                      
+
 void RDOSimulator::rdoInit()
 {
    RDOSimulatorBase::rdoInit();
@@ -209,32 +194,6 @@ void RDOSimulator::preProcess()
 void RDOSimulator::postProcess()
 {
 	std::for_each(havePokaz.begin(), havePokaz.end(), std::bind2nd(std::mem_fun1(&RDOPokaz::calcStat), this));
-}
-
-void RDOSimulator::addOperation(RDOOperation *op) 
-{
-   operations.push_back(op); 
-}
-
-bool RDOSimulator::checkEndOfOperation()
-{
-   for(std::list<RDOOperation *>::iterator i = operations.begin(); 
-         i != operations.end(); i++)
-   {
-      RDOOperation *op = (*i);
-      if(getCurrentTime() >= op->time)
-      {
-         op->onBeforeOperationEnd(this);
-         op->convertEnd(this);
-         op->onAfterOperationEnd(this);
-         i = operations.erase(i);
-			i--;
-         delete op;
-         return true;
-      }
-   }
-   
-   return false;
 }
 
 RDODecisionPoint::~RDODecisionPoint()
