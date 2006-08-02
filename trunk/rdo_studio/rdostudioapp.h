@@ -54,7 +54,7 @@ private:
 
 	bool autoRun;
 	bool autoExit;
-	rdoModel::RDOExitCode exitCode;
+	rdoSimulator::RDOExitCode exitCode;
 	std::string openModelName;
 
 public:
@@ -81,7 +81,7 @@ public:
 	bool getShowCaptionFullName() const               { return showCaptionFullName;          }
 	void setShowCaptionFullName( const bool value );
 
-	void autoClose( const int exitCode );
+	void autoClose();
 
 	static std::string getFullFileName();
 	static std::string getFullHelpFileName( std::string str = "RAO-studio.chm" );

@@ -116,7 +116,7 @@ public:
 
 		relResNumbers[relNumb] = resNumb; 
 	}
-	virtual void addHotKey(std::string *hotKey);
+	virtual void addHotKey( std::string* hotKey );
 	void writeModelStructure(std::stringstream &stream);
 };
 
@@ -168,18 +168,30 @@ public:
 
 class RDOActivityKeyboardRuntime: public RDOActivityOperationRuntime
 {
-	std::vector<int> keyScanCodes;
+private:
+	bool shift;
+	bool control;
+	unsigned int scan_code;
+
 public:
-	RDOActivityKeyboardRuntime(RDORuntime *rTime, RDOPatternRuntime *_pattern, bool _trace, std::string *_oprName)
-		: RDOActivityOperationRuntime(rTime, _pattern, _trace, _oprName)
-	{}
-	RDOActivityKeyboardRuntime(RDORuntime *rTime, RDOPatternRuntime *_pattern, bool _trace, RDOCalc *condition, std::string *_oprName)
-		: RDOActivityOperationRuntime(rTime, _pattern, _trace, condition, _oprName)
-	{}
-	void addHotKey(std::string *hotKey);
-	bool choiceFrom(RDOSimulator *sim);
+	RDOActivityKeyboardRuntime( RDORuntime* rTime, RDOPatternRuntime* _pattern, bool _trace, std::string* _oprName ):
+		RDOActivityOperationRuntime( rTime, _pattern, _trace, _oprName ),
+		shift( false ),
+		control( false ),
+		scan_code( 0 )
+	{
+	}
+	RDOActivityKeyboardRuntime( RDORuntime* rTime, RDOPatternRuntime* _pattern, bool _trace, RDOCalc* condition, std::string* _oprName ):
+		RDOActivityOperationRuntime( rTime, _pattern, _trace, condition, _oprName ),
+		shift( false ),
+		control( false ),
+		scan_code( 0 )
+	{
+	}
+	void addHotKey( std::string* hotKey );
+	bool choiceFrom( RDOSimulator* sim );
 };
 
 }
 
-#endif //RDO_PAT_RUNTIME
+#endif // RDO_PAT_RUNTIME

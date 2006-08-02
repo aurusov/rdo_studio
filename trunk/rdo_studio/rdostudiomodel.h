@@ -49,12 +49,12 @@ private:
 	double timeNow;
 	double speed;
 	double showRate;
-	rdoSimulator::ShowMode showMode;
+//	rdoSimulator::ShowMode  showMode;
+	rdoRuntime::RunTimeMode runtimeMode;
+	rdoSimulator::RDOExitCode exitCode;
 	void updateFrmDescribed();
 
 	bool prevModify;
-
-	static void modelExitCallback( int exitCode );
 
 	void newModelFromRepository();
 	void openModelFromRepository();
@@ -104,19 +104,22 @@ public:
 		}
 		return result;
 	}
-	bool canRun() const                               { return hasModel() && GUI_CAN_RUN; }
-	bool canNew() const                               { return canRun() || !hasModel();   }
-	bool canOpen() const                              { return canRun() || !hasModel();   }
-	bool isRunning() const                            { return GUI_IS_RUNING;             }
-	double getTimeNow() const                         { return timeNow;                   }
+	bool canRun() const                                         { return hasModel() && GUI_CAN_RUN; }
+	bool canNew() const                                         { return canRun() || !hasModel();   }
+	bool canOpen() const                                        { return canRun() || !hasModel();   }
+	bool isRunning() const                                      { return GUI_IS_RUNING;             }
+	bool isFrmDescribed() const                                 { return frmDescribed;              }
+	double getTimeNow() const                                   { return timeNow;                   }
 
-	bool isFrmDescribed() const                       { return frmDescribed;              }
-	rdoSimulator::ShowMode getShowMode() const        { return showMode;                  }
-	void setShowMode( const rdoSimulator::ShowMode value );
-	double getSpeed() const                           { return speed;                     }
+	rdoRuntime::RunTimeMode getRuntimeMode() const              { return runtimeMode;               }
+	void setRuntimeMode( const rdoRuntime::RunTimeMode value );
+//	rdoSimulator::ShowMode getShowMode() const                  { return showMode;                  }
+//	void setShowMode( const rdoSimulator::ShowMode value );
+	double getSpeed() const                                     { return speed;                     }
 	void setSpeed( double persent );
-	double getShowRate()                              { return showRate;                  }
+	double getShowRate()                                        { return showRate;                  }
 	void setShowRate( double value );
+	rdoSimulator::RDOExitCode getExitCode() const               { return exitCode;                  }
 
 	void showNextFrame()                        { frameManager.showNextFrame();                      }
 	void showPrevFrame()                        { frameManager.showPrevFrame();                      }

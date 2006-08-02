@@ -16,9 +16,9 @@ struct RDOConfig
 //	int                        currFrameToShow;
 	std::vector< std::string > allFrameNames;
 	std::vector< std::string > activeAreasMouseClicked;
-	std::vector< int >         keysPressed;
+	std::list< unsigned int >  keyDown;
 	bool                       mouseClicked;
-	
+
 //////// Frame /////////////////////
 	std::vector< rdoSimulator::RDOFrame* > frames;
 
@@ -174,13 +174,16 @@ private:
 	RDOSimulator *clone();
 	bool operator == (RDOSimulator &other);
 
+	void writeExitCode();
+
 public:
 //	std::list< int > allResourcesChoiced;
 
 	std::vector< rdoSimulator::RDOSyntaxError > errors;
 	void error( const char* message, const rdoRuntime::RDOCalc* calc );
-	bool checkKeyPressed(int scanCode);
-	void eraseKeyPressed(int scanCode);
+	void keyDown( unsigned int scan_code );
+	void keyUp( unsigned int scan_code );
+	bool checkKeyPressed( unsigned int scan_code, bool shift, bool control );
 	bool checkAreaActivated(std::string *oprName);
 	void setConstValue(int numberOfConst, RDOValue value);
 	RDOValue getConstValue(int numberOfConst);
@@ -250,9 +253,11 @@ public:
 
 	void onPutToTreeNode();
 
-	rdoModel::RDOExitCode whyStop;
-	void onNothingMoreToDo() {whyStop = rdoModel::EC_NoMoreEvents;}
-	void onEndCondition() {whyStop = rdoModel::EC_OK;}
+	rdoSimulator::RDOExitCode whyStop;
+	virtual void onNothingMoreToDo() { whyStop = rdoSimulator::EC_NoMoreEvents; }
+	virtual void onEndCondition()    { whyStop = rdoSimulator::EC_OK;           }
+	void onRuntimeError()            { whyStop = rdoSimulator::EC_RunTimeError; }
+	void onUserBreak()               { whyStop = rdoSimulator::EC_UserBreak;    }
 
 	void postProcess();
 

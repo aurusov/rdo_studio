@@ -516,21 +516,25 @@ bool RDOStudioPlugins::isModelRunning()
 
 rdoPlugin::ModelShowMode RDOStudioPlugins::getModelShowMode()
 {
+/*
 	switch ( model->getShowMode() ) {
 		case rdoSimulator::SM_NoShow   : return rdoPlugin::NoShow;
 		case rdoSimulator::SM_Animation: return rdoPlugin::Animation;
 		case rdoSimulator::SM_Monitor  : return rdoPlugin::Monitor;
 	}
+*/
 	return rdoPlugin::NoShow;
 }
 
 void RDOStudioPlugins::setModelShowMode( rdoPlugin::ModelShowMode showMode )
 {
+/*
 	switch ( showMode ) {
 		case rdoPlugin::NoShow   : model->setShowMode( rdoSimulator::SM_NoShow ); break;
 		case rdoPlugin::Animation: model->setShowMode( rdoSimulator::SM_Animation ); break;
 		case rdoPlugin::Monitor  : model->setShowMode( rdoSimulator::SM_Monitor ); break;
 	}
+*/
 }
 
 const char* RDOStudioPlugins::getModelStructure()

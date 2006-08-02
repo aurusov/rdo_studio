@@ -11,6 +11,7 @@ static char THIS_FILE[] = __FILE__;
 
 RDOSimulatorBase::RDOSimulatorBase():
 	currentTime( 0 ),
+	mode( rdoRuntime::RTM_MaxSpeed ),
 	speed( 1 ),
 	speed_range_max( 500000 ),
 	next_delay_count( 0 ),
@@ -44,13 +45,20 @@ void RDOSimulatorBase::rdoDestroy()
 
 bool RDOSimulatorBase::rdoNext()
 {
+	if ( mode == rdoRuntime::RTM_Pause ) {
+		::Sleep( 1 );
+		return true;
+	}
 	// Задержка общей скорости моделирования
-	if ( next_delay_count ) {
+	// Это mode == rdoRuntime::RTM_Jump || mode == rdoRuntime::RTM_Sync
+	if ( mode != rdoRuntime::RTM_MaxSpeed && next_delay_count ) {
 		next_delay_current++;
 		if ( next_delay_current < next_delay_count ) return true;
 		next_delay_current = 0;
 	}
 	// Задержка синхронной скорости моделирования (длительность операций)
+	// Тут не надо проверять mode == rdoRuntime::RTM_Sync, т.к. это уже заложено в msec_wait,
+	// который сбрасывается в setMode и не изменяется далее.
 	if ( msec_wait > 1 ) {
 		SYSTEMTIME systime_current;
 		::GetSystemTime( &systime_current );
@@ -74,7 +82,10 @@ bool RDOSimulatorBase::rdoNext()
 		msec_wait -= msec_delta;
 	}
 	// Окончание моделирования - сработало событие конца
-	if ( endCondition() ) return false;
+	if ( endCondition() ) {
+		onEndCondition();
+		return false;
+	}
 	// Выполнение операции
 	if ( doOperation() ) {
 		return true;
@@ -86,19 +97,21 @@ bool RDOSimulatorBase::rdoNext()
 			if ( currentTime > newTime ) {
 				newTime = currentTime;
 			}
-			msec_wait += (newTime - currentTime) * 3600.0 * 1000.0 / showRate;
-			if ( msec_wait > 0 ) {
-				if ( currentTime != 0 ) {
-					if ( speed > DBL_MIN ) {
-						msec_wait = msec_wait / speed;
+			if ( mode == rdoRuntime::RTM_Sync ) {
+				msec_wait += (newTime - currentTime) * 3600.0 * 1000.0 / showRate;
+				if ( msec_wait > 0 ) {
+					if ( currentTime != 0 ) {
+						if ( speed > DBL_MIN ) {
+							msec_wait = msec_wait / speed;
+						} else {
+							msec_wait = msec_wait / DBL_MIN;
+						}
+						SYSTEMTIME systime_current;
+						::GetSystemTime( &systime_current );
+						msec_prev = getMSec( systime_current );
 					} else {
-						msec_wait = msec_wait / DBL_MIN;
+						msec_wait = 0;
 					}
-					SYSTEMTIME systime_current;
-					::GetSystemTime( &systime_current );
-					msec_prev = getMSec( systime_current );
-				} else {
-					msec_wait = 0;
 				}
 			}
 			currentTime = newTime;
@@ -110,6 +123,16 @@ bool RDOSimulatorBase::rdoNext()
 		}
 	}
 	return true;
+}
+
+void RDOSimulatorBase::setMode( rdoRuntime::RunTimeMode _mode )
+{
+	mode = _mode;
+	if ( mode == rdoRuntime::RTM_MaxSpeed || mode == rdoRuntime::RTM_Jump ) {
+		// Чтобы сразу перейти к следующей операции
+		next_delay_current = next_delay_count;
+		msec_wait          = 0;
+	}
 }
 
 void RDOSimulatorBase::setSpeed( double value )

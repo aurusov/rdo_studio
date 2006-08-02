@@ -38,6 +38,7 @@ RDOTracer::RDOTracer(): RDOTracerBase( "RDOStudioTracerGUI", static_cast<RDOKern
 	notifies.push_back( RT_SIMULATOR_MODEL_STOP_BY_USER );
 	notifies.push_back( RT_SIMULATOR_MODEL_STOP_RUNTIME_ERROR );
 	notifies.push_back( RT_RUNTIME_MODEL_START_BEFORE );
+	notifies.push_back( RT_RUNTIME_MODEL_START_AFTER );
 	notifies.push_back( RT_RUNTIME_TRACE_STRING );
 
 	after_constructor();
@@ -60,7 +61,6 @@ void RDOTracer::proc( RDOThread::RDOMessageInfo& msg )
 		}
 		case RDOThread::RT_RUNTIME_MODEL_START_BEFORE: {
 			clear();
-			setShowMode( kernel->simulator()->getShowMode() );
 			setModelName( kernel->repository()->getName() );
 			try {
 				studioApp.mainFrame->output.appendStringToDebug( rdo::format( IDS_TRACER_GETTING_MODEL_STRUCTURE ) );
@@ -71,6 +71,12 @@ void RDOTracer::proc( RDOThread::RDOMessageInfo& msg )
 			} catch ( ... ) {
 				studioApp.mainFrame->output.appendStringToDebug( rdo::format( IDS_MODEL_RESOURCE_LOADING_NAME_FAILED ) );
 			}
+			break;
+		}
+		case RDOThread::RT_RUNTIME_MODEL_START_AFTER: {
+			rdoRuntime::RunTimeMode runtimeMode;
+			sendMessage( kernel->runtime(), RT_RUNTIME_GET_MODE, &runtimeMode );
+			setRuntimeMode( runtimeMode );
 			break;
 		}
 		case RDOThread::RT_SIMULATOR_MODEL_STOP_OK           :
@@ -92,9 +98,9 @@ void RDOTracer::proc( RDOThread::RDOMessageInfo& msg )
 	}
 }
 
-void RDOTracer::setShowMode( const rdoSimulator::ShowMode value )
+void RDOTracer::setRuntimeMode( const rdoRuntime::RunTimeMode value )
 {
-	if ( value == SM_NoShow ) {
+	if ( value == rdoRuntime::RTM_MaxSpeed ) {
 		setDrawTrace( false );
 	} else {
 		setDrawTrace( true );

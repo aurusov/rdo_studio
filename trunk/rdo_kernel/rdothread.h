@@ -23,7 +23,7 @@
 // Если НЕ определена в дефайнах проекта
 #else
 	#define RDO_MT
-	//#undef RDO_MT // Скомпилить однотредувую версию РДО. Если закомментировать, то получится многотредовая
+	#undef RDO_MT // Скомпилить однотредувую версию РДО. Если закомментировать, то получится многотредовая
 
 	// RDO_ST автоматически выставляется для однотредовой версии РДО
 	#ifndef RDO_MT
@@ -90,6 +90,7 @@ public:
 		RT_SIMULATOR_MODEL_STOP_RUNTIME_ERROR,
 		RT_SIMULATOR_GET_MODEL_STRUCTURE,      // param = result:std::stringstream*
 		RT_SIMULATOR_GET_MODEL_RESULTS,        // param = result:std::stringstream*
+		RT_SIMULATOR_GET_MODEL_EXITCODE,       // param = result:rdoSimulator::RDOExitCode*
 		RT_SIMULATOR_GET_LIST,                 // param = rdoSimulator::RDOThreadSimulator::GetList* = { type:GetList::Type, result:std::list< std::string >* }
 		RT_SIMULATOR_GET_ERRORS,               // param = result:std::vector< RDOSyntaxError >*
 		RT_RUNTIME_MODEL_START_BEFORE,
@@ -97,12 +98,17 @@ public:
 		RT_RUNTIME_MODEL_STOP_BEFORE,
 		RT_RUNTIME_MODEL_STOP_AFTER,
 		RT_RUNTIME_TRACE_STRING,               // param = std::string*
+		RT_RUNTIME_GET_MODE,                   // param = result:rdoRuntime::RunTimeMode*
+		RT_RUNTIME_SET_MODE,                   // param = mode:rdoRuntime::RunTimeMode*
 		RT_RUNTIME_GET_SPEED,                  // param = result:double[0..1]%*
 		RT_RUNTIME_SET_SPEED,                  // param = speed:double[0..1]%*
 		RT_RUNTIME_GET_SHOWRATE,               // param = result:double[0..+max_double]*
 		RT_RUNTIME_SET_SHOWRATE,               // param = show_rate:double[0..+max_double]*
 		RT_RUNTIME_GET_TIMENOW,                // param = result:double*
-		RT_RUNTIME_GET_FRAME,                  // param = { result:rdoSimulator::RDOFrame*, frame number:int }*
+		RT_RUNTIME_GET_FRAME,                  // param = { result:rdoSimulator::RDOFrame*, frame_number:int }*
+		RT_RUNTIME_KEY_DOWN,                   // param = scan_code:uint*
+		RT_RUNTIME_KEY_UP,                     // param = scan_code:uint*
+		RT_RUNTIME_FRAME_AREA_DOWN,            // param = area_name:std::string*
 		RT_DEBUG_STRING                        // param = std::string*
 	};
 	std::string messageToString( RDOTreadMessage message ) {
@@ -141,6 +147,7 @@ public:
 			case RT_SIMULATOR_MODEL_STOP_RUNTIME_ERROR: return "RT_SIMULATOR_MODEL_STOP_RUNTIME_ERROR";
 			case RT_SIMULATOR_GET_MODEL_STRUCTURE     : return "RT_SIMULATOR_GET_MODEL_STRUCTURE";
 			case RT_SIMULATOR_GET_MODEL_RESULTS       : return "RT_SIMULATOR_GET_MODEL_RESULTS";
+			case RT_SIMULATOR_GET_MODEL_EXITCODE      : return "RT_SIMULATOR_GET_MODEL_EXITCODE";
 			case RT_SIMULATOR_GET_LIST                : return "RT_SIMULATOR_GET_LIST";
 			case RT_SIMULATOR_GET_ERRORS              : return "RT_SIMULATOR_GET_ERRORS";
 			case RT_RUNTIME_MODEL_START_BEFORE        : return "RT_RUNTIME_MODEL_START_BEFORE";
@@ -148,12 +155,17 @@ public:
 			case RT_RUNTIME_MODEL_STOP_BEFORE         : return "RT_RUNTIME_MODEL_STOP_BEFORE";
 			case RT_RUNTIME_MODEL_STOP_AFTER          : return "RT_RUNTIME_MODEL_STOP_AFTER";
 			case RT_RUNTIME_TRACE_STRING              : return "RT_RUNTIME_TRACE_STRING";
+			case RT_RUNTIME_GET_MODE                  : return "RT_RUNTIME_GET_MODE";
+			case RT_RUNTIME_SET_MODE                  : return "RT_RUNTIME_SET_MODE";
 			case RT_RUNTIME_GET_SPEED                 : return "RT_RUNTIME_GET_SPEED";
 			case RT_RUNTIME_SET_SPEED                 : return "RT_RUNTIME_SET_SPEED";
 			case RT_RUNTIME_GET_SHOWRATE              : return "RT_RUNTIME_GET_SHOWRATE";
 			case RT_RUNTIME_SET_SHOWRATE              : return "RT_RUNTIME_SET_SHOWRATE";
 			case RT_RUNTIME_GET_TIMENOW               : return "RT_RUNTIME_GET_TIMENOW";
 			case RT_RUNTIME_GET_FRAME                 : return "RT_RUNTIME_GET_FRAME";
+			case RT_RUNTIME_KEY_DOWN                  : return "RT_RUNTIME_KEY_DOWN";
+			case RT_RUNTIME_KEY_UP                    : return "RT_RUNTIME_KEY_UP";
+			case RT_RUNTIME_FRAME_AREA_DOWN           : return "RT_RUNTIME_FRAME_AREA_DOWN";
 			case RT_DEBUG_STRING                      : return "RT_DEBUG_STRING";
 			default                                   : return "RT_UNKNOWN";
 		}

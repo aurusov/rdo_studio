@@ -2,13 +2,15 @@
 #define RDO_SIMULATOR_BASE
 
 #include "rdodefines.h"
+#include <rdocommon.h>
 
 class RDOSimulatorBase
 {
 private:
-	ListDouble timePointList;
-
+	ListDouble   timePointList;
 	double       currentTime;
+
+	rdoRuntime::RunTimeMode mode;
 
 	double       speed;
 	unsigned int speed_range_max;
@@ -64,10 +66,13 @@ public:
 	bool rdoNext();
 	void rdoPostProcess();
 
-	double getSpeed() const             { return speed;    }
+	rdoRuntime::RunTimeMode getMode() const        { return mode;     }
+	void setMode( rdoRuntime::RunTimeMode _mode );
+
+	double getSpeed() const                        { return speed;    }
 	void setSpeed( double persent );
 
-	double getShowRate() const          { return showRate; }
+	double getShowRate() const                     { return showRate; }
 	void setShowRate( double value );
 
 	void addTimePoint( double timePoint );

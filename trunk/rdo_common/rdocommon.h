@@ -19,7 +19,7 @@ void trimRight( std::string& str );
 std::string extractFilePath( const std::string& fileName );
 bool isFileExists( const std::string& fileName );
 
-};
+} // namespace rdo
 
 namespace rdoModelObjects {
 
@@ -54,9 +54,30 @@ enum RDOParseType {
 	obALL  = 0x07FF
 };
 
+} // namespace rdoModelObjects
+
+namespace rdoRuntime
+{
+
+enum RunTimeMode
+{
+	RTM_MaxSpeed,
+	RTM_Jump,
+	RTM_Sync,
+	RTM_Pause
 };
 
-namespace rdoModel {
+} // namespace rdoRuntime
+
+namespace rdoSimulator
+{
+
+enum ShowMode
+{
+	SM_NoShow,
+	SM_Animation,
+	SM_Monitor
+};
 
 enum RDOExitCode {
 	EC_OK = 0,
@@ -65,18 +86,6 @@ enum RDOExitCode {
 	EC_UserBreak,
 	EC_ModelNotFound,
 	EC_NoMoreEvents
-};
-
-};
-
-namespace rdoSimulator
-{
-
-enum ShowMode
-{
-	SM_NoShow,
-	SM_Monitor,
-	SM_Animation
 };
 
 struct RDOSyntaxError

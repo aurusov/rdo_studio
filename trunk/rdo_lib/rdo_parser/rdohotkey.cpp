@@ -15,7 +15,6 @@ RDOHotKeyToolkit rdoHotKeyToolkit;
 
 RDOHotKeyToolkit::RDOHotKeyToolkit()
 {														   
-
 	keys.insert(std::map<std::string, int>::value_type("ESCAPE", VK_ESCAPE));
 	keys.insert(std::map<std::string, int>::value_type("TAB", VK_TAB));
 	keys.insert(std::map<std::string, int>::value_type("SHIFT", VK_SHIFT));
@@ -62,23 +61,20 @@ RDOHotKeyToolkit::RDOHotKeyToolkit()
 	keys.insert(std::map<std::string, int>::value_type("NUMPAD9", VK_NUMPAD9));
 	keys.insert(std::map<std::string, int>::value_type("NOKEY", -1));
 
-
 	for(char i = '0'; i <= '9'; i++)
 		keys.insert(std::map<std::string, int>::value_type(std::string(1, i), (int)i));
 
 	for(i = 'A'; i <= 'Z'; i++)
 		keys.insert(std::map<std::string, int>::value_type(std::string(1, i), (int)i));
-
 }
 
-int RDOHotKeyToolkit::codeFromString(std::string *key)
+int RDOHotKeyToolkit::codeFromString( std::string* key )
 {
-	std::map<std::string, int>::iterator it = keys.find(*key);
-	if(it == keys.end())
-		parser->error("Unknown key name: " + *key);
-
+	std::map< std::string, int >::iterator it = keys.find( *key );
+	if ( it == keys.end() ) {
+		parser->error( "Unknown key name: " + *key );
+	}
 	return (*it).second;
 }
 
-
-}		// namespace rdoParse 
+} // namespace rdoParse

@@ -13,6 +13,7 @@
 #include <rdorepository.h>
 #include <rdosimwin.h>
 #include <rdoplugin.h>
+#include <rdothread.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -135,7 +136,7 @@ RDOStudioApp::RDOStudioApp():
 	showCaptionFullName( false ),
 	autoRun( false ),
 	autoExit( false ),
-	exitCode( rdoModel::EC_OK ),
+	exitCode( rdoSimulator::EC_OK ),
 	openModelName( "" )
 {
 }
@@ -203,8 +204,6 @@ BOOL RDOStudioApp::InitInstance()
 	// create plugins after mainFrame was show
 	plugins = new RDOStudioPlugins;
 
-//	return TRUE;
-
 	RDOStudioCommandLineInfo cmdInfo;
 	ParseCommandLine( cmdInfo );
 
@@ -226,7 +225,7 @@ BOOL RDOStudioApp::InitInstance()
 				autoExit  = true;
 				autoModel = true;
 			} else {
-				exitCode = rdoModel::EC_ModelNotFound;
+				exitCode = rdoSimulator::EC_ModelNotFound;
 				return false;
 			}
 		}
@@ -293,6 +292,9 @@ bool RDOStudioApp::shortToLongPath( const std::string& shortPath, std::string& l
 
 int RDOStudioApp::ExitInstance()
 {
+	if ( exitCode != rdoSimulator::EC_ModelNotFound ) {
+		exitCode = model->getExitCode();
+	}
 #ifdef RDO_MT
 	if ( studioGUI ) {
 		studioGUI->sendMessage( studioGUI, RDOThread::RT_THREAD_CLOSE );
@@ -739,10 +741,10 @@ void RDOStudioApp::OnAppAbout()
 	dlg.DoModal();
 }
 
-void RDOStudioApp::autoClose( const int _exitCode )
+void RDOStudioApp::autoClose()
 {
 	if ( autoExit ) {
-		AfxGetApp()->PostThreadMessage( RDOSTUDIO_AUTOEXIT_MESSAGE, _exitCode, 0 );
+		mainFrame->SendMessage( WM_CLOSE );
 	}
 }
 
@@ -756,7 +758,7 @@ BOOL RDOStudioApp::PreTranslateMessage( MSG* pMsg )
 	} else if ( pMsg->message == PLUGIN_STOPMODEL_MESSAGE ) {
 		plugins->modelStop();
 	} else if ( pMsg->message == RDOSTUDIO_AUTOEXIT_MESSAGE ) {
-		exitCode = static_cast<rdoModel::RDOExitCode>(pMsg->wParam);
+		exitCode = static_cast<rdoSimulator::RDOExitCode>(pMsg->wParam);
 		if ( mainFrame && ::IsWindow( mainFrame->m_hWnd ) ) {
 			mainFrame->SendMessage( WM_CLOSE );
 		}
@@ -804,7 +806,12 @@ RDOAboutDlg::RDOAboutDlg():
 						if ( ::VerQueryValue( pBuffer, key, (void**)&productName, &length ) ) {
 							VS_FIXEDFILEINFO* fixedInfo;
 							if ( ::VerQueryValue( pBuffer, _T("\\"), (void**)&fixedInfo, &length ) ) {
-								s.Format( "%s     version %u.%u (build %u)", productName, HIWORD( fixedInfo->dwProductVersionMS ), LOWORD( fixedInfo->dwProductVersionMS ), LOWORD( fixedInfo->dwProductVersionLS ) );
+#ifdef RDO_MT
+								char* thread_ver = "mt";
+#else
+								char* thread_ver = "st";
+#endif
+								s.Format( "%s   %s-version %u.%u (build %u)", productName, thread_ver, HIWORD( fixedInfo->dwProductVersionMS ), LOWORD( fixedInfo->dwProductVersionMS ), LOWORD( fixedInfo->dwProductVersionLS ) );
 								m_caption = s;
 							}
 						}
@@ -851,7 +858,11 @@ void RDOStudioApp::broadcastMessage( RDOThread::RDOTreadMessage message, void* p
 	CEvent* event = studioMT->manualMessageFrom( message, param );
 	while ( ::WaitForSingleObject( event->m_hObject, 0 ) == WAIT_TIMEOUT ) {
 		static_cast<RDOThreadStudioGUI*>(studioGUI)->processMessages();
-		mainFrame->UpdateWindow();
+		if ( mainFrame ) {
+			mainFrame->UpdateWindow();
+		} else {
+			break;
+		}
 	}
 	delete event;
 #else

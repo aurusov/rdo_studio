@@ -192,9 +192,9 @@ void RDOActivityRuntime::setPatternParameters(RDOSimulator *sim)
 		setParamsCalcs.at(i)->calcValueBase(runtime);
 }
 
-void RDOActivityRuntime::addHotKey(std::string *hotKey)
+void RDOActivityRuntime::addHotKey( std::string* hotKey )
 {
-	rdoParse::parser->error("This pattern is not of keyboard type");
+	rdoParse::parser->error( "This pattern is not of keyboard type" );
 }
 
 RDOActivityRuleRuntime::RDOActivityRuleRuntime(RDORuntime *rTime, RDOPatternRuntime *_pattern, bool _trace, std::string *_oprName)
@@ -271,28 +271,26 @@ bool RDOActivityOperationRuntime::choiceFrom(RDOSimulator *sim)
 	return ((RDOOperationRuntime*)pattern)->choiceFrom(sim); 
 }
 
-void RDOActivityKeyboardRuntime::addHotKey(std::string *hotKey)
+void RDOActivityKeyboardRuntime::addHotKey( std::string* hotKey )
 {
-	keyScanCodes.push_back(rdoParse::rdoHotKeyToolkit.codeFromString(hotKey));
+	unsigned int _scan_code = rdoParse::rdoHotKeyToolkit.codeFromString( hotKey );
+	switch ( _scan_code ) {
+		case VK_SHIFT  : shift     = true;       break;
+		case VK_CONTROL: control   = true;       break;
+		default        : scan_code = _scan_code; break;
+	}
 }
 
-bool RDOActivityKeyboardRuntime::choiceFrom(RDOSimulator *sim)
+bool RDOActivityKeyboardRuntime::choiceFrom( RDOSimulator *sim )
 {
-	RDORuntime *runtime = (RDORuntime *)sim;
-	runtime->setCurrentActivity(this);
+	RDORuntime* runtime = static_cast<RDORuntime*>(sim);
+	runtime->setCurrentActivity( this );
 
-	if(!runtime->checkAreaActivated(oprName))
-	{
-		int size = keyScanCodes.size();
-		for(int i = 0; i < size; i++)
-			if(!runtime->checkKeyPressed(keyScanCodes.at(i)))
-				return false;
-
-		for(i = 0; i < size; i++)
-			runtime->eraseKeyPressed(keyScanCodes.at(i));
+	if ( !runtime->checkAreaActivated( oprName ) ) {
+		if ( !runtime->checkKeyPressed( scan_code, shift, control ) ) return false;
 	}
 
-	return RDOActivityOperationRuntime::choiceFrom(sim); 
+	return RDOActivityOperationRuntime::choiceFrom( sim ); 
 }
 
 void RDOActivityRuntime::writeModelStructure(std::stringstream &stream)

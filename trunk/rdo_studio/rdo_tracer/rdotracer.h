@@ -19,7 +19,7 @@ public:
 	RDOTracer();
 	virtual ~RDOTracer();
 
-	void setShowMode( const rdoSimulator::ShowMode value );
+	void setRuntimeMode( const rdoRuntime::RunTimeMode value );
 };
 
 }; // namespace rdoTracer

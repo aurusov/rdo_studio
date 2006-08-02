@@ -365,20 +365,6 @@ void RDOStudioFrameManager::showFrame( const rdoSimulator::RDOFrame* const frame
 				view->bgColor = RGB( frame->r, frame->g, frame->b );
 			}
 
-			std::vector< std::string >* areas_clicked = &frames[index]->areas_clicked;
-			std::vector< std::string >::iterator it = areas_clicked->begin();
-			while ( it != areas_clicked->end() ) {
-				kernel->simulator()->addAreaPressed( *it++ );
-			};
-			areas_clicked->clear();
-			frames[index]->areas_sim_clear();
-
-//			vector< int >::iterator key = frames[index]->keys_pressed.begin();
-//			while ( key != frames[index]->keys_pressed.end() ) {
-//				kernel.getSimulator()->addKeyPressed( *key++ );
-//			};
-//			frames[index]->keys_pressed.clear();
-
 			int size = frame->elements.size();
 			for ( int i = 0; i < size; i++ ) {
 				rdoSimulator::RDOFrameElement* currElement = frame->elements.at(i);
@@ -615,7 +601,7 @@ void RDOStudioFrameManager::showFrame( const rdoSimulator::RDOFrame* const frame
 void RDOStudioFrameManager::showNextFrame()
 {
 	int cnt = count();
-	if ( model->isRunning() && model->getShowMode() != rdoSimulator::SM_NoShow && cnt > 1 && currentShowingFrame < cnt-1 ) {
+	if ( model->isRunning() && model->getRuntimeMode() != rdoRuntime::RTM_MaxSpeed && cnt > 1 && currentShowingFrame < cnt-1 ) {
 		int index = currentShowingFrame + 1;
 		RDOStudioFrameDoc* doc = getFrameDoc( index );
 		if ( !doc ) {
@@ -631,7 +617,7 @@ void RDOStudioFrameManager::showNextFrame()
 void RDOStudioFrameManager::showPrevFrame()
 {
 	int cnt = count();
-	if ( model->isRunning() && model->getShowMode() != rdoSimulator::SM_NoShow && cnt > 1 && currentShowingFrame > 0 ) {
+	if ( model->isRunning() && model->getRuntimeMode() != rdoRuntime::RTM_MaxSpeed && cnt > 1 && currentShowingFrame > 0 ) {
 		int index = currentShowingFrame - 1;
 		RDOStudioFrameDoc* doc = getFrameDoc( index );
 		if ( !doc ) {
@@ -647,7 +633,7 @@ void RDOStudioFrameManager::showPrevFrame()
 void RDOStudioFrameManager::showFrame( const int index )
 {
 	int cnt = count();
-	if ( model->isRunning() && model->getShowMode() != rdoSimulator::SM_NoShow && cnt > 1 && index >= 0 && index < cnt ) {
+	if ( model->isRunning() && model->getRuntimeMode() != rdoRuntime::RTM_MaxSpeed && cnt > 1 && index >= 0 && index < cnt ) {
 		RDOStudioFrameDoc* doc = getFrameDoc( index );
 		if ( !doc ) {
 			doc = connectFrameDoc( index );
@@ -662,13 +648,13 @@ void RDOStudioFrameManager::showFrame( const int index )
 bool RDOStudioFrameManager::canShowNextFrame() const
 {
 	int cnt = count();
-	return model->isRunning() && model->getShowMode() != rdoSimulator::SM_NoShow && cnt > 1 && ( currentShowingFrame == -1 || currentShowingFrame < cnt-1 );
+	return model->isRunning() && model->getRuntimeMode() != rdoRuntime::RTM_MaxSpeed && cnt > 1 && ( currentShowingFrame == -1 || currentShowingFrame < cnt-1 );
 }
 
 bool RDOStudioFrameManager::canShowPrevFrame() const
 {
 	int cnt = count();
-	return model->isRunning() && model->getShowMode() != rdoSimulator::SM_NoShow && cnt > 1 && currentShowingFrame > 0;
+	return model->isRunning() && model->getRuntimeMode() != rdoRuntime::RTM_MaxSpeed && cnt > 1 && currentShowingFrame > 0;
 }
 
 void RDOStudioFrameManager::updateStyles() const

@@ -503,17 +503,16 @@ BEGIN
     BUTTON      ID_MODEL_RUN
     BUTTON      ID_MODEL_STOP
     SEPARATOR
-    BUTTON      ID_MODEL_RUN_NOSHOW
-    BUTTON      ID_MODEL_RUN_ANIMATION
-    BUTTON      ID_MODEL_RUN_MONITOR
+    BUTTON      ID_MODEL_RUNTIME_MAXSPEED
+    BUTTON      ID_MODEL_RUNTIME_JUMP
+    BUTTON      ID_MODEL_RUNTIME_SYNC
+    BUTTON      ID_MODEL_RUNTIME_PAUSE
     SEPARATOR
     BUTTON      ID_MODEL_SHOWRATE_INC
     BUTTON      ID_MODEL_SHOWRATE_INCFOUR
     BUTTON      ID_MODEL_SHOWRATE_DECFOUR
     BUTTON      ID_MODEL_SHOWRATE_DEC
-    SEPARATOR
     BUTTON      ID_MODEL_SPEED_SLIDER
-    SEPARATOR
     BUTTON      ID_MODEL_FRAME_NEXT
     BUTTON      ID_MODEL_FRAME_PREV
 END
@@ -1105,14 +1104,15 @@ BEGIN
         MENUITEM "Запустить\tF5",               ID_MODEL_RUN
         MENUITEM "Остановить\tShift+F5",        ID_MODEL_STOP
         MENUITEM SEPARATOR
-        MENUITEM "Без анимации",                ID_MODEL_RUN_NOSHOW
-        MENUITEM "Показать анимацию",           ID_MODEL_RUN_ANIMATION
-        MENUITEM "Пауза",                       ID_MODEL_RUN_MONITOR
+        MENUITEM "Максимальная скорость",       ID_MODEL_RUNTIME_MAXSPEED
+        MENUITEM "Дискретная имитация",         ID_MODEL_RUNTIME_JUMP
+        MENUITEM "Синхронная имитация",         ID_MODEL_RUNTIME_SYNC
+        MENUITEM "Пауза",                       ID_MODEL_RUNTIME_PAUSE
         MENUITEM SEPARATOR
-        MENUITEM "Увеличить скорость\tAlt+Num+", ID_MODEL_SHOWRATE_INC
-        MENUITEM "Увеличить скорость в 4-ре раза", ID_MODEL_SHOWRATE_INCFOUR
-        MENUITEM "Уменьшить скорость в 4-ре раза", ID_MODEL_SHOWRATE_DECFOUR
-        MENUITEM "Уменьшить скорость\tAlt+Num-", ID_MODEL_SHOWRATE_DEC
+        MENUITEM "Увеличить масштаб\tAlt+Num+", ID_MODEL_SHOWRATE_INC
+        MENUITEM "Увеличить масштаб в 4-ре раза", ID_MODEL_SHOWRATE_INCFOUR
+        MENUITEM "Уменьшить масштаб в 4-ре раза", ID_MODEL_SHOWRATE_DECFOUR
+        MENUITEM "Уменьшить масштаб\tAlt+Num-", ID_MODEL_SHOWRATE_DEC
         MENUITEM SEPARATOR
         MENUITEM "След. кадр анимации",         ID_MODEL_FRAME_NEXT
         MENUITEM "Перд. кадр анимации",         ID_MODEL_FRAME_PREV
@@ -1290,8 +1290,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,8,0,408
- PRODUCTVERSION 0,8,0,408
+ FILEVERSION 0,8,0,418
+ PRODUCTVERSION 0,8,0,418
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -1309,14 +1309,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "RAO studio\0"
-            VALUE "FileVersion", "0, 8, 0, 408\0"
+            VALUE "FileVersion", "0, 8, 0, 418\0"
             VALUE "InternalName", "RAO-Studio\0"
             VALUE "LegalCopyright", "Copyright (C) 2003-2006\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "RAO-Studio.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "RAO-Studio\0"
-            VALUE "ProductVersion", "0, 8, 0, 408\0"
+            VALUE "ProductVersion", "0, 8, 0, 418\0"
             VALUE "SpecialBuild", "\0"
         END
     END
@@ -1475,9 +1475,10 @@ BEGIN
     ID_STATUSBAR_MODIFIED   "Изменён"
     ID_STATUSBAR_OVERWRITE  "Замена"
     ID_STATUSBAR_MODEL_TIME "Время: %f"
-    ID_STATUSBAR_MODEL_RUNNOSHOW "Без анимации"
-    ID_STATUSBAR_MODEL_RUNANIMATION "Анимация"
-    ID_STATUSBAR_MODEL_RUNMONITOR "Пауза"
+    ID_STATUSBAR_MODEL_RUNTIME_MAXSPEED "Без анимации"
+    ID_STATUSBAR_MODEL_RUNTIME_JUMP "Дискретная имитация"
+    ID_STATUSBAR_MODEL_RUNTIME_SYNC "Синхронная имитация"
+    ID_STATUSBAR_MODEL_RUNTIME_PAUSE "Пауза"
     ID_BUFFER_NAME          "Буфер"
     ID_PROGRESSSTATUSBAR    " "
     ID_MODEL_FILETYPE       "РДО-файлы (*.smr)|*.smr|Все файлы (*.*)|*.*||"
@@ -1594,9 +1595,6 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    ID_MODEL_RUN_NOSHOW     "\nБез анимации"
-    ID_MODEL_RUN_ANIMATION  "\nПоказать анимацию"
-    ID_MODEL_RUN_MONITOR    "\nПауза"
     ID_FILE_MODEL_SAVE      "\nЗаписать (Ctrl+S)"
     ID_VIEW_ZOOMIN          "\nУвеличить масштаб (Ctrl+Num+)"
     ID_VIEW_ZOOMOUT         "\nУменьшить масштаб (Ctrl+Num-)"
@@ -1703,6 +1701,8 @@ BEGIN
     IDS_MODEL_SHOWRATE_FMOREONE "Масштаб: %1.1f"
     IDS_MODEL_SHOWRATE_FLESSONE "Масштаб: %1.10f"
     IDS_MODEL_SHOWRATE_E    "Масштаб: %e"
+    IDS_MODEL_SHOWRATE_S    "Масштаб: %s"
+    IDS_INFINITI            "Бесконечность"
     IDS_MODEL_SPEED         "Скорость: %d%%"
 END
 
@@ -1804,6 +1804,19 @@ BEGIN
     IDS_ER_RTP_INVALID_PARAM_TYPE "____Неправильное описание типа параметра"
     IDS_ER_RTP_WAITING_FOR_PARAM_DEFINITION 
                             "Ожидается описание параметра ресурса"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_MODEL_RUNTIME_MAXSPEED "\nБез анимации, максимальная скорость"
+    ID_MODEL_RUNTIME_JUMP   "\nДискретная имитация"
+    ID_MODEL_RUNTIME_SYNC   "\nСинхронная имитация"
+    ID_MODEL_RUNTIME_PAUSE  "\nПауза"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_MODEL_SPEED_SLIDER   "\nСкорость имитатора"
 END
 
 #endif    // Russian resources
@@ -2753,9 +2766,10 @@ BEGIN
         MENUITEM "&Execute\tF5",                ID_MODEL_RUN
         MENUITEM "&Stop\tShift+F5",             ID_MODEL_STOP
         MENUITEM SEPARATOR
-        MENUITEM "&No Show",                    ID_MODEL_RUN_NOSHOW
-        MENUITEM "&Animation",                  ID_MODEL_RUN_ANIMATION
-        MENUITEM "&Monitor",                    ID_MODEL_RUN_MONITOR
+        MENUITEM "&Maximum speed",              ID_MODEL_RUNTIME_MAXSPEED
+        MENUITEM "&Discrete simulation",        ID_MODEL_RUNTIME_JUMP
+        MENUITEM "Synchronic simulation",       ID_MODEL_RUNTIME_SYNC
+        MENUITEM "&Pause",                      ID_MODEL_RUNTIME_PAUSE
         MENUITEM SEPARATOR
         MENUITEM "&Increase Tempo\tAlt+Num+",   ID_MODEL_SHOWRATE_INC
         MENUITEM "In&crease Tempo by 4 Times",  ID_MODEL_SHOWRATE_INCFOUR
@@ -2928,9 +2942,10 @@ BEGIN
     ID_STATUSBAR_MODIFIED   "Modified"
     ID_STATUSBAR_OVERWRITE  "Overwrite"
     ID_STATUSBAR_MODEL_TIME "Time: %f"
-    ID_STATUSBAR_MODEL_RUNNOSHOW "No Show"
-    ID_STATUSBAR_MODEL_RUNANIMATION "Animation"
-    ID_STATUSBAR_MODEL_RUNMONITOR "Monitor"
+    ID_STATUSBAR_MODEL_RUNTIME_MAXSPEED "Maximum speed"
+    ID_STATUSBAR_MODEL_RUNTIME_JUMP "Discrete simulation"
+    ID_STATUSBAR_MODEL_RUNTIME_SYNC "Synchronic simulation"
+    ID_STATUSBAR_MODEL_RUNTIME_PAUSE "Pause"
     ID_BUFFER_NAME          "Buffer"
     ID_PROGRESSSTATUSBAR    " "
     ID_MODEL_FILETYPE       "RAO Files (*.smr)|*.smr|All Files (*.*)|*.*||"
@@ -3046,9 +3061,6 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    ID_MODEL_RUN_NOSHOW     "\nNo Show"
-    ID_MODEL_RUN_ANIMATION  "\nAnimation"
-    ID_MODEL_RUN_MONITOR    "\nMonitor"
     ID_FILE_MODEL_SAVE      "\nSave (Ctrl+S)"
     ID_VIEW_ZOOMIN          "\nZoom &In (Ctrl+Num+)"
     ID_VIEW_ZOOMOUT         "\nZoom Out (Ctrl+Num-)"
@@ -3155,6 +3167,8 @@ BEGIN
     IDS_MODEL_SHOWRATE_FMOREONE "Tempo: %1.1f"
     IDS_MODEL_SHOWRATE_FLESSONE "Tempo: %1.10f"
     IDS_MODEL_SHOWRATE_E    "Tempo: %e"
+    IDS_MODEL_SHOWRATE_S    "Tempo: %s"
+    IDS_INFINITI            "INFINITI"
     IDS_MODEL_SPEED         "Speed: %d%%"
 END
 
@@ -3252,6 +3266,14 @@ BEGIN
                             "Ending of description of enumerate parameter is expected"
     IDS_ER_RTP_INVALID_PARAM_TYPE "Invalid param type definition"
     IDS_ER_RTP_WAITING_FOR_PARAM_DEFINITION "Waiting for param definition"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_MODEL_RUNTIME_MAXSPEED "\nMaximum speed"
+    ID_MODEL_RUNTIME_JUMP   "\nDiscrete simulation"
+    ID_MODEL_RUNTIME_SYNC   "\nSynchronic simulation"
+    ID_MODEL_RUNTIME_PAUSE  "\nPause"
 END
 
 #endif    // English (U.S.) resources

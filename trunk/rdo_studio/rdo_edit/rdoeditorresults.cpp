@@ -29,6 +29,9 @@ END_MESSAGE_MAP()
 
 RDOEditorResults::RDOEditorResults(): RDOEditorBaseEdit()
 {
+	kw0 = "TRUE FALSE";
+	kw1 = "";
+	kw2 = "";
 }
 
 RDOEditorResults::~RDOEditorResults()

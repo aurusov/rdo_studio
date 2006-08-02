@@ -47,6 +47,11 @@ public:
 		int                     frame_number;
 		GetFrame( rdoSimulator::RDOFrame* _frame, int _frame_number ): frame( _frame ), frame_number( _frame_number ) {}
 	};
+	struct FrameAreaDown {
+		int         frame_number;
+		std::string area_name;
+		FrameAreaDown( int _frame_number, const std::string& _area_name ): frame_number( _frame_number ), area_name( _area_name ) {}
+	};
 };
 
 } // namespace rdoRuntime
@@ -74,13 +79,7 @@ private:
 	bool canTrace;
 
 	rdoRuntime::RDOThreadRunTime* thread_runtime;
-	rdoModel::RDOExitCode exitCode;
-
-	std::vector<RDOFrame *> frames;
-	std::vector<int> scanCodes;
-//	bool shiftPressed;
-//	bool ctrlPressed;
-	std::vector<std::string> areasActivated;
+	rdoSimulator::RDOExitCode exitCode;
 
 	void terminateModel();
 	void closeModel(); 
@@ -106,17 +105,9 @@ public:
 
 	void parseSMRFileInfo( rdo::binarystream& smr, rdoModelObjects::RDOSMRFileInfo& info );
 
-//	void addKeyPressed(int scanCode);
-	void keyDown(int scanCode);
-	void keyUp(int scanCode);
-	void addAreaPressed(std::string& areaName);
-
 	ShowMode getInitialShowMode();
 	int getInitialFrameNumber();
 	double getInitialShowRate();
-
-	ShowMode getShowMode()                 { return showMode;      }
-	void setShowMode( ShowMode _showMode ) { showMode = _showMode; }
 
 	struct GetList {
 		enum Type {

@@ -30,9 +30,9 @@ BEGIN_MESSAGE_MAP(RDOStudioFrameView, RDOStudioView)
 	ON_WM_VSCROLL()
 	ON_WM_LBUTTONDOWN()
 	ON_WM_KEYDOWN()
+	ON_WM_KEYUP()
 	ON_WM_MOUSEWHEEL()
 	ON_WM_PAINT()
-	ON_WM_KEYUP()
 	ON_COMMAND(ID_HELP_KEYWORD, OnHelpKeyword)
 	//}}AFX_MSG_MAP
 	ON_COMMAND(ID_FILE_PRINT, RDOStudioView::OnFilePrint)
@@ -310,14 +310,12 @@ void RDOStudioFrameView::OnLButtonDown(UINT nFlags, CPoint point)
 	lock_draw.Lock();
 
 	point.Offset( xPos, yPos );
-	RDOStudioFrameManager::Frame* frame = frameManager->frames[index];
-	std::vector< RDOStudioFrameManager::Area* >* areas_sim = &frame->areas_sim;
+	std::vector< RDOStudioFrameManager::Area* >* areas_sim = &frameManager->frames[index]->areas_sim;
 	std::vector< RDOStudioFrameManager::Area* >::iterator it = areas_sim->begin();
 	while ( it != areas_sim->end() ) {
 		RDOStudioFrameManager::Area* area = *it++;
-		CRect rect( area->x, area->y, area->x + area->w, area->y + area->h );
-		if ( rect.PtInRect( point ) ) {
-			frame->areas_clicked.push_back( area->name );
+		if ( CRect( area->x, area->y, area->x + area->w, area->y + area->h ).PtInRect( point ) ) {
+			model->sendMessage( kernel->runtime(), RDOThread::RT_RUNTIME_FRAME_AREA_DOWN, &area->name );
 		}
 	};
 
@@ -326,31 +324,16 @@ void RDOStudioFrameView::OnLButtonDown(UINT nFlags, CPoint point)
 	RDOStudioView::OnLButtonDown( nFlags, point );
 }
 
-void RDOStudioFrameView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
+void RDOStudioFrameView::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
 {
-/*
-	RDOStudioFrameManager* frameManager = &model->frameManager;
-	int index = frameManager->findFrameIndex( this );
-	CSingleLock lock_draw( frameManager->getFrameMutexDraw( index ) );
-	lock_draw.Lock();
-
-	RDOStudioFrameManager::Frame* frame = frameManager->frames[index];
-	frame->keys_pressed.push_back( nChar );
-
-	lock_draw.Unlock();
-*/
-
-	if(!(nFlags & (1 << 14)))
-		kernel->simulator()->keyDown( nChar );
-
+	model->sendMessage( kernel->runtime(), RDOThread::RT_RUNTIME_KEY_DOWN, &nChar );
 	RDOStudioView::OnKeyDown(nChar, nRepCnt, nFlags);
 }
 
-void RDOStudioFrameView::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
+void RDOStudioFrameView::OnKeyUp( UINT nChar, UINT nRepCnt, UINT nFlags )
 {
-	kernel->simulator()->keyUp( nChar );
-
-	RDOStudioView::OnKeyUp(nChar, nRepCnt, nFlags);
+	model->sendMessage( kernel->runtime(), RDOThread::RT_RUNTIME_KEY_UP, &nChar );
+	RDOStudioView::OnKeyUp( nChar, nRepCnt, nFlags );
 }
 
 void RDOStudioFrameView::OnActivateView(BOOL bActivate, CView* pActivateView, CView* pDeactiveView)

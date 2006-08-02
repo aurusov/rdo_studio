@@ -1,5 +1,5 @@
 #include "rdothread.h"
-#include <rdokernel.h>
+#include "rdokernel.h"
 #include <afxwin.h>
 #include <fstream>
 #include <algorithm>

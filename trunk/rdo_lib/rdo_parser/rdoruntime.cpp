@@ -126,19 +126,81 @@ void RDORuntime::addRuntimeFrame( rdoParse::RDOFRMFrame* frm )
 	allFrames.push_back(frm); 
 }
 
-bool RDORuntime::checkKeyPressed(int scanCode)
+void RDORuntime::keyDown( unsigned int scan_code )
 {
-	std::vector<int>::iterator it = std::find(config.keysPressed.begin(), config.keysPressed.end(), scanCode);
-	if(it == config.keysPressed.end())
-		return false;	
-
-//	config.keysPressed.erase(it);
-	return true;
+	// Если нажаты VK_SHIFT или VK_CONTROL, то сбросим буфер клавиатуры
+	if ( scan_code == VK_SHIFT || scan_code == VK_CONTROL ) {
+		std::list< unsigned int >::iterator it = config.keyDown.begin();
+		while ( it != config.keyDown.end() ) {
+			if ( *it != VK_SHIFT && *it != VK_CONTROL ) {
+				it = config.keyDown.erase( it );
+			} else {
+				it++;
+			}
+		}
+	}
+	// Подсчитаем сколько раз клавиша уже в буфере
+	int cnt = 0;
+	std::list< unsigned int >::iterator it = config.keyDown.begin();
+	while ( it != config.keyDown.end() ) {
+		if ( *it == scan_code ) {
+			cnt++;
+		}
+		it++;
+	}
+	// Добавим клавишу в буфер
+	if ( cnt < 4 ) {
+		config.keyDown.push_back( scan_code );
+	}
 }
 
-void RDORuntime::eraseKeyPressed(int scanCode)
+void RDORuntime::keyUp( unsigned int scan_code )
 {
-	config.keysPressed.erase(std::remove(config.keysPressed.begin(), config.keysPressed.end(), scanCode), config.keysPressed.end());
+	// Если отжаты VK_SHIFT или VK_CONTROL, то сбросим удалим их из буфера
+	if ( scan_code == VK_SHIFT || scan_code == VK_CONTROL ) {
+		std::list< unsigned int >::iterator it = config.keyDown.begin();
+		while ( it != config.keyDown.end() ) {
+			if ( *it == scan_code ) {
+				it = config.keyDown.erase( it );
+			} else {
+				it++;
+			}
+		}
+	}
+}
+
+bool RDORuntime::checkKeyPressed( unsigned int scan_code, bool shift, bool control )
+{
+	bool shift_found   = shift   ? false : true;
+	bool control_found = control ? false : true;
+	// Если надо, то найдем VK_SHIFT и/или VK_CONTROL в буфере
+	if ( shift || control ) {
+		std::list< unsigned int >::iterator it = config.keyDown.begin();
+		while ( it != config.keyDown.end() ) {
+			if ( *it == VK_SHIFT ) {
+				shift_found = true;
+				if ( shift_found && control_found ) break;
+			}
+			if ( *it == VK_CONTROL ) {
+				control_found = true;
+				if ( shift_found && control_found ) break;
+			}
+			it++;
+		}
+	}
+	// Теперь найдем саму клавишу в буфере
+	// Удалим её из буфера перед выходом
+	if ( shift_found && control_found ) {
+		std::list< unsigned int >::iterator it = config.keyDown.begin();
+		while ( it != config.keyDown.end() ) {
+			if ( *it == scan_code ) {
+				config.keyDown.erase( it );
+				return true;
+			}
+			it++;
+		}
+	}
+	return false;
 }
 
 bool RDORuntime::checkAreaActivated(std::string *oprName)
@@ -196,7 +258,10 @@ RDOCalcCreateEmptyResource::RDOCalcCreateEmptyResource(int _type, bool _traceFla
 {
 }
 
-RDORuntime::RDORuntime(): tracer(NULL), result(NULL)
+RDORuntime::RDORuntime():
+	tracer( NULL ),
+	result( NULL ),
+	whyStop( rdoSimulator::EC_OK )
 {
 	terminateIfCalc = NULL;
 }
@@ -872,7 +937,6 @@ RDOValue RDOCalcCheckDiap::calcValue(RDORuntime *sim) const
    return val; 
 }
 
-
 void RDORuntime::error( const char* message, const RDOCalc* calc )
 {
 	errors.push_back( rdoSimulator::RDOSyntaxError( rdoSimulator::RDOSyntaxError::UNKNOWN, message, calc->lineno, -1, calc->fileToParse ) );
@@ -892,22 +956,35 @@ void RDORuntime::onPutToTreeNode()
 
 }
 
-void RDORuntime::postProcess()
+void RDORuntime::writeExitCode()
 {
-	getTracer()->startWriting();
-	RDOSimulatorTrace::postProcess();
-	switch(whyStop)
-	{
-	case rdoModel::EC_NoMoreEvents:
-		getTracer()->writeStatus(this, "NO_MORE_EVENTS");
-		break;
-	case rdoModel::EC_OK:
-		getTracer()->writeStatus(this, "NORMAL_TERMINATION");
-		break;
+	switch ( whyStop ) {
+		case rdoSimulator::EC_OK:
+			getTracer()->writeStatus( this, "NORMAL_TERMINATION" );
+			break;
+		case rdoSimulator::EC_NoMoreEvents:
+			getTracer()->writeStatus( this, "NO_MORE_EVENTS" );
+			break;
+		case rdoSimulator::EC_RunTimeError:
+			getTracer()->writeStatus( this, "RUN_TIME_ERROR" );
+			break;
+		case rdoSimulator::EC_UserBreak:
+			getTracer()->writeStatus( this, "USER_BREAK" );
+			break;
 	}
 	getTracer()->stopWriting();
 }
 
+void RDORuntime::postProcess()
+{
+	getTracer()->startWriting();
+	try {
+		RDOSimulatorTrace::postProcess();
+		writeExitCode();
+	} catch ( rdoParse::RDOSyntaxException& e ) {
+		writeExitCode();
+		throw e;
+	}
+}
 
-
-}	// namespace rdoRuntime
+} // namespace rdoRuntime

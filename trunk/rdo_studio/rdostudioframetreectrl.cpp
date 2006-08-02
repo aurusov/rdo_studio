@@ -65,7 +65,7 @@ void RDOStudioFrameTreeCtrl::OnLButtonDblClk(UINT nFlags, CPoint point)
 {
 	RDOTreeCtrl::OnLButtonDblClk(nFlags, point);
 
-	if ( model->getShowMode() != rdoSimulator::SM_NoShow ) {
+	if ( model->getRuntimeMode() != rdoRuntime::RTM_MaxSpeed ) {
 
 		UINT uFlags;
 		HTREEITEM hitem = HitTest( point, &uFlags );

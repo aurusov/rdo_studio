@@ -395,9 +395,6 @@
 #define ID_MODEL_BUILD                  33133
 #define ID_MODEL_RUN                    33134
 #define ID_MODEL_STOP                   33135
-#define ID_MODEL_RUN_NOSHOW             33136
-#define ID_MODEL_RUN_ANIMATION          33137
-#define ID_MODEL_RUN_MONITOR            33138
 #define ID_FILE_MODEL_SAVE              33139
 #define ID_BUILDFINDLOG_GOTO_NEXT       33141
 #define ID_BUILDFINDLOG_GOTO_PREV       33142
@@ -422,6 +419,10 @@
 #define ID_SEARCH_FIND_PREVIOUS         33172
 #define ID_VIEW_TOOLBAR_ZOOM_TOOLBAR    33181
 #define ID_MODEL_SPEED_SLIDER           33183
+#define ID_MODEL_RUNTIME_MAXSPEED       33184
+#define ID_MODEL_RUNTIME_JUMP           33185
+#define ID_MODEL_RUNTIME_SYNC           33186
+#define ID_MODEL_RUNTIME_PAUSE          33187
 #define IDS_DEVELOPERS                  34000
 #define IDS_ER_UNKNOWN                  35000
 #define IDS_ER_RTP_SECOND_RES_TYPE      35001
@@ -450,11 +451,12 @@
 #define ID_STATUSBAR_MODIFIED           40001
 #define ID_STATUSBAR_OVERWRITE          40002
 #define ID_STATUSBAR_MODEL_TIME         40003
-#define ID_STATUSBAR_MODEL_RUNNOSHOW    40004
-#define ID_STATUSBAR_MODEL_RUNANIMATION 40005
-#define ID_STATUSBAR_MODEL_RUNMONITOR   40006
-#define ID_BUFFER_NAME                  40007
-#define ID_PROGRESSSTATUSBAR            40008
+#define ID_STATUSBAR_MODEL_RUNTIME_MAXSPEED 40004
+#define ID_STATUSBAR_MODEL_RUNTIME_JUMP 40005
+#define ID_STATUSBAR_MODEL_RUNTIME_SYNC 40006
+#define ID_STATUSBAR_MODEL_RUNTIME_PAUSE 40007
+#define ID_BUFFER_NAME                  40008
+#define ID_PROGRESSSTATUSBAR            40009
 #define ID_MODEL_FILETYPE               40011
 #define ID_OPTIONS                      40012
 #define ID_DOCK_WORKSPACE               40013
@@ -551,7 +553,9 @@
 #define IDS_MODEL_SHOWRATE_FMOREONE     40176
 #define IDS_MODEL_SHOWRATE_FLESSONE     40177
 #define IDS_MODEL_SHOWRATE_E            40178
-#define IDS_MODEL_SPEED                 40179
+#define IDS_MODEL_SHOWRATE_S            40179
+#define IDS_INFINITI                    40180
+#define IDS_MODEL_SPEED                 40181
 #define IDS_FRAMES                      40200
 #define IDS_FRAME_NAME                  40201
 #define IDS_MODEL_NAME                  40202
@@ -624,7 +628,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        178
-#define _APS_NEXT_COMMAND_VALUE         33184
+#define _APS_NEXT_COMMAND_VALUE         33190
 #define _APS_NEXT_CONTROL_VALUE         1121
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
