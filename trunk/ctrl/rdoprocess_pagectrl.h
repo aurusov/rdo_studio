@@ -1,7 +1,7 @@
 #ifndef RDO_PROCESS_PAGECTRL_H
 #define RDO_PROCESS_PAGECTRL_H
 
-#include "../misc/rdoprocess_string.h"
+#include <rdoprocess_string.h>
 
 #if _MSC_VER > 1000
 #pragma once

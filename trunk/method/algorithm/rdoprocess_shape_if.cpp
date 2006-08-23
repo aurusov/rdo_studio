@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "rdoprocess_shape_if.h"
-#include "../../rdoprocess_flowchart.h"
+#include <rdoprocess_flowchart.h>
+#include <rdoprocess_connector.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -14,7 +15,7 @@ static char THIS_FILE[] = __FILE__;
 class RPConnectorDockGreen: public RPConnectorDockOne
 {
 public:
-	RPConnectorDockGreen( RPObjectMatrix* __object_matrix, Type _type, const rp::point& _point, double _norm ): RPConnectorDockOne( __object_matrix, _type, _point, _norm ) {};
+	RPConnectorDockGreen( RPShape* _obj, Type _type, const rp::point& _point, double _norm ): RPConnectorDockOne( _obj, _type, _point, _norm ) {};
 	virtual ~RPConnectorDockGreen() {};
 
 	virtual COLORREF color() const { return RGB(0x80, 0xFF, 0x00); }
@@ -26,7 +27,7 @@ public:
 class RPConnectorDockRed: public RPConnectorDockOne
 {
 public:
-	RPConnectorDockRed( RPObjectMatrix* __object_matrix, Type _type, const rp::point& _point, double _norm ): RPConnectorDockOne( __object_matrix, _type, _point, _norm ) {};
+	RPConnectorDockRed( RPShape* _obj, Type _type, const rp::point& _point, double _norm ): RPConnectorDockOne( _obj, _type, _point, _norm ) {};
 	virtual ~RPConnectorDockRed() {};
 
 	virtual COLORREF color() const { return RGB(0xFF, 0x80, 0x00); }
@@ -36,7 +37,7 @@ public:
 // ---------- RPShapeIf
 // ----------------------------------------------------------------------------
 RPShapeIf::RPShapeIf( RPObject* _parent ):
-	RPShape( _parent, _T("If") )
+	RPShape( _parent, "If" )
 {
 	pa_src.push_back( rp::point(0, -35) );
 	pa_src.push_back( rp::point(35, 0) );
@@ -51,4 +52,9 @@ RPShapeIf::RPShapeIf( RPObject* _parent ):
 
 RPShapeIf::~RPShapeIf()
 {
+}
+
+RPObject* RPShapeIf::newObject( RPObject* parent )
+{
+	return new RPShapeIf( parent );
 }

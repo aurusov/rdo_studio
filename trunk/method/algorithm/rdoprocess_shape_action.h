@@ -5,17 +5,19 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#include "../../rdoprocess_shape.h"
+#include <rdoprocess_shape.h>
 
 // ----------------------------------------------------------------------------
 // ---------- RPShapeAction
 // ----------------------------------------------------------------------------
 class RPShapeAction: public RPShape
 {
+friend class RPMethodAlgorithm;
+private:
+	static RPObject* newObject( RPObject* parent );
 public:
 	RPShapeAction( RPObject* parent );
 	virtual ~RPShapeAction();
 };
 
 #endif // RDO_PROCESS_SHAPE_ACTION_H
-

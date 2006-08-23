@@ -1,16 +1,15 @@
 #include "stdafx.h"
 #include "rdoprocess_mainfrm.h"
+#include "rdoprocess_project.h"
 #include "rdoprocess_app.h"
-#include "misc/rdoprocess_string.h"
 #include "ctrl/rdoprocess_pagectrl.h"
 #include "ctrl/ColourPicker/ColourPopup.h"
 #include "resource.h"
-#include "rdoprocess_object.h"
-#include "rdoprocess_object_chart.h"
-#include "rdoprocess_object_flowchart.h"
-#include "rdoprocess_shape.h"
-
-#include "method/process2rdo/rdoprocess_generation_type_MJ.h" // MJ диалоговое окно кнопки типа генерирования на тулбаре
+#include <rdoprocess_object.h>
+#include <rdoprocess_object_chart.h>
+#include <rdoprocess_object_flowchart.h>
+#include <rdoprocess_shape.h>
+#include <rdoprocess_method.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -23,21 +22,21 @@ static char THIS_FILE[] = __FILE__;
 // ----------------------------------------------------------------------------
 RPMainFrameMsg::RPMainFrameMsg(): RPObject( NULL )
 {
-	rpapp.msg().connect( this, rp::msg::RP_FLOWSTATE_CHANGED );
-	rpapp.msg().connect( this, rp::msg::RP_OBJ_SELCHANGED );
-	rpapp.msg().connect( this, rp::msg::RP_OBJ_BEFOREDELETE );
+	rpMethod::project->msg().connect( this, rp::msg::RP_FLOWSTATE_CHANGED );
+	rpMethod::project->msg().connect( this, rp::msg::RP_OBJ_SELCHANGED );
+	rpMethod::project->msg().connect( this, rp::msg::RP_OBJ_BEFOREDELETE );
 }
 
-void RPMainFrameMsg::notify( RPObject* from, UINT message, WPARAM wParam, LPARAM lParam )
+void RPMainFrameMsg::notify( RPObject* from, UINT message, void* param )
 {
 	RPMainFrame* frame = static_cast<RPMainFrame*>(AfxGetMainWnd());
 	if ( message == rp::msg::RP_FLOWSTATE_CHANGED ) {
-		bool enable = wParam != RPProject::flow_none;
+		bool enable = *static_cast<RPProject::FlowState*>(param) != RPProject::flow_none;
 		bool check_select    = false;
 		bool check_connector = false;
 		bool check_rotate    = false;
 		if ( enable ) {
-			switch ( wParam ) {
+			switch ( *static_cast<RPProject::FlowState*>(param) ) {
 				case RPProject::flow_select   : {
 					check_select    = true;
 					check_connector = false;
@@ -95,8 +94,6 @@ BEGIN_MESSAGE_MAP(RPMainFrame, CMDIFrameWnd)
 	ON_COMMAND(ID_FLOW_SELECT, OnFlowSelect)
 	ON_COMMAND(ID_FLOW_ROTATE, OnFlowRotate)
 	ON_COMMAND(ID_FLOW_CONNECTOR, OnFlowConnector)
-	ON_COMMAND(ID_GENERATE, OnGenerate)
-	ON_COMMAND(ID_GEN_TYPE, OnGenType)
 	ON_UPDATE_COMMAND_UI(ID_BTN_FILL_BRUSH, OnUpdateBtnFillBrush)
 	ON_COMMAND(ID_BTN_FILL_BRUSH, OnBtnFillBrush)
 	ON_COMMAND(ID_BTN_FILL_PEN, OnBtnFillPen)
@@ -108,6 +105,10 @@ BEGIN_MESSAGE_MAP(RPMainFrame, CMDIFrameWnd)
 	//}}AFX_MSG_MAP
 	ON_MESSAGE(CPN_SELENDOK,     OnSelEndOK)
 	ON_MESSAGE(CPN_SELENDDEFAULT,OnSelEndDefault)
+	ON_WM_SYSCOLORCHANGE()
+	// Контролы методов получают значения от 40000. Верхная граница не контролируется. Пересечение с ресурсами не контроилируется.
+	ON_COMMAND_RANGE( 40000, 50000, OnMethodCommandRange )
+	ON_UPDATE_COMMAND_UI_RANGE( 40000, 50000, OnMethodUpdateRange )
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -120,6 +121,7 @@ static UINT indicators[] =
 
 RPMainFrame::RPMainFrame():
 	CMDIFrameWnd(),
+	last_docked( NULL ),
 	m_msg( NULL )
 {
 }
@@ -128,24 +130,17 @@ RPMainFrame::~RPMainFrame()
 {
 }
 
-int RPMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
+int RPMainFrame::OnCreate( LPCREATESTRUCT lpCreateStruct )
 {
-	if (CMDIFrameWnd::OnCreate(lpCreateStruct) == -1)
-		return -1;
+	if ( CMDIFrameWnd::OnCreate( lpCreateStruct ) == -1 ) return -1;
 
-	m_wndToolBar.CreateEx( this, 0, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
-	m_wndToolBar.LoadToolBar( IDR_MAINFRAME );
-	m_wndToolBar.ModifyStyle( 0, TBSTYLE_FLAT );
-	m_wndToolBar.SetWindowText( rp::format( IDS_TOOLBAR_MAIN ).c_str() );
+	m_wndToolBar.init( this, IDR_TOOLBAR_MAINFRAME, IDR_TOOLBAR_MAINFRAME_D );
 	m_wndToolBar.GetToolBarCtrl().EnableButton( ID_FLOW_SELECT, false );
 	m_wndToolBar.GetToolBarCtrl().EnableButton( ID_FLOW_CONNECTOR, false );
 	m_wndToolBar.GetToolBarCtrl().EnableButton( ID_FLOW_ROTATE, false );
 
-	m_wndStyleAndColorToolBar.CreateEx( this, 0, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_FLYBY );
-	m_wndStyleAndColorToolBar.LoadToolBar( IDR_STYLEANDCOLOR );
-	m_wndStyleAndColorToolBar.ModifyStyle( 0, TBSTYLE_FLAT );
+	m_wndStyleAndColorToolBar.init( this, IDR_TOOLBAR_STYLEANDCOLOR );
 	m_wndStyleAndColorToolBar.SendMessage( TB_SETEXTENDEDSTYLE, 0, TBSTYLE_EX_DRAWDDARROWS );
-	m_wndStyleAndColorToolBar.SetWindowText( rp::format( IDS_TOOLBAR_STYLEANDCOLOR ).c_str() );
 
 	int index = m_wndStyleAndColorToolBar.SendMessage( TB_COMMANDTOINDEX, ID_BTN_FILL_BRUSH );
 	m_wndStyleAndColorToolBar.SetButtonStyle( index, m_wndStyleAndColorToolBar.GetButtonStyle( index ) | TBSTYLE_DROPDOWN );
@@ -158,16 +153,7 @@ int RPMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_wndStyleAndColorToolBar.GetToolBarCtrl().EnableButton( ID_BTN_FILL_PEN  , false );
 	m_wndStyleAndColorToolBar.GetToolBarCtrl().EnableButton( ID_BTN_FILL_TEXT , false );
 
-	//MJ start 02.04.06
-	m_wndToolBlockBarMJ.CreateEx( this, 0, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_SIZE_DYNAMIC );
-	m_wndToolBlockBarMJ.LoadToolBar( TOOLBARBLOCKMJ );
-	m_wndToolBlockBarMJ.ModifyStyle( 0, TBSTYLE_FLAT );
-	//MJstop
-
-	if (!m_wndStatusBar.Create(this) ||
-		!m_wndStatusBar.SetIndicators(indicators,
-		  sizeof(indicators)/sizeof(UINT)))
-	{
+	if ( !m_wndStatusBar.Create(this) || !m_wndStatusBar.SetIndicators( indicators, sizeof(indicators)/sizeof(UINT) ) ) {
 		TRACE0("Failed to create status bar\n");
 		return -1;      // fail to create
 	}
@@ -175,96 +161,14 @@ int RPMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	projectBar.Create( rp::format( ID_DOCK_PROJECT_BAR ).c_str(), this, 0 );
 	projectBar.EnableDocking( CBRS_ALIGN_ANY );
 
-	CListCtrl* listctrl = new CListCtrl();
-	listctrl->Create( LVS_LIST | LVS_SINGLESEL, CRect(0,0,1,1), projectBar.prepareNewPage(), -1 );
-	::SetWindowLong( listctrl->m_hWnd, GWL_EXSTYLE, ::GetWindowLong( listctrl->m_hWnd, GWL_EXSTYLE ) | WS_EX_CLIENTEDGE );
-	listctrl->InsertItem( 0, "test 1" );
-	listctrl->InsertItem( 1, "test 2" );
-	listctrl->InsertItem( 2, "test 3" );
-	listctrl->InsertItem( 3, "test 4" );
-	projectBar.insertPage( listctrl, "Первая страница" );
-
-	CListCtrl* listctrl2 = new CListCtrl();
-	listctrl2->Create( LVS_LIST | LVS_SINGLESEL, CRect(0,0,1,1), projectBar.prepareNewPage(), -1 );
-	::SetWindowLong( listctrl2->m_hWnd, GWL_EXSTYLE, ::GetWindowLong( listctrl2->m_hWnd, GWL_EXSTYLE ) | WS_EX_CLIENTEDGE );
-	listctrl2->InsertItem( 0, "q 1" );
-	listctrl2->InsertItem( 1, "qqqqqqqqqqq 2" );
-	listctrl2->InsertItem( 2, "q 3" );
-	listctrl2->InsertItem( 3, "q 4" );
-	listctrl2->InsertItem( 3, "q 4" );
-	listctrl2->InsertItem( 3, "q 4" );
-	listctrl2->InsertItem( 3, "q 4" );
-	listctrl2->InsertItem( 3, "q 4" );
-	listctrl2->InsertItem( 3, "q 4" );
-	listctrl2->InsertItem( 3, "q 4" );
-	listctrl2->InsertItem( 3, "q 4" );
-	listctrl2->InsertItem( 3, "q 4" );
-	listctrl2->InsertItem( 3, "q 4" );
-	listctrl2->InsertItem( 3, "q 4" );
-	listctrl2->InsertItem( 3, "q 4" );
-	listctrl2->InsertItem( 3, "q 4" );
-	listctrl2->InsertItem( 3, "q 4" );
-	listctrl2->InsertItem( 3, "q 4" );
-	listctrl2->InsertItem( 3, "q 4" );
-	listctrl2->InsertItem( 3, "q 4" );
-	listctrl2->InsertItem( 3, "q 4" );
-	listctrl2->InsertItem( 3, "q 4" );
-	listctrl2->InsertItem( 3, "q 4" );
-	listctrl2->InsertItem( 3, "q 4" );
-	listctrl2->InsertItem( 3, "q 4" );
-	listctrl2->InsertItem( 3, "q 4" );
-	listctrl2->InsertItem( 3, "q 4" );
-	listctrl2->InsertItem( 3, "q 4" );
-	listctrl2->InsertItem( 3, "q 4" );
-	listctrl2->InsertItem( 3, "q 4" );
-	projectBar.insertPage( listctrl2, "Вторая страница" );
-
-	CListCtrl* listctrl3 = new CListCtrl();
-	listctrl3->Create( LVS_LIST | LVS_SINGLESEL, CRect(0,0,1,1), projectBar.prepareNewPage(), -1 );
-	::SetWindowLong( listctrl3->m_hWnd, GWL_EXSTYLE, ::GetWindowLong( listctrl3->m_hWnd, GWL_EXSTYLE ) | WS_EX_CLIENTEDGE );
-	listctrl3->InsertItem( 0, "объект 1" );
-	listctrl3->InsertItem( 1, "объект 2" );
-	listctrl3->InsertItem( 1, "объект 2" );
-	listctrl3->InsertItem( 1, "объект 2" );
-	listctrl3->InsertItem( 1, "объект 2" );
-	listctrl3->InsertItem( 1, "объект 2" );
-	listctrl3->InsertItem( 1, "объект 2" );
-	listctrl3->InsertItem( 1, "объект 2" );
-	listctrl3->InsertItem( 1, "объект 2" );
-	listctrl3->InsertItem( 1, "объект 2" );
-	listctrl3->InsertItem( 1, "объект 2" );
-	listctrl3->InsertItem( 1, "объект 2" );
-	listctrl3->InsertItem( 1, "объект 2" );
-	listctrl3->InsertItem( 1, "объект 2" );
-	listctrl3->InsertItem( 1, "объект 2" );
-	listctrl3->InsertItem( 1, "объект 2" );
-	listctrl3->InsertItem( 1, "объект 2" );
-	listctrl3->InsertItem( 1, "объект 2" );
-	listctrl3->InsertItem( 1, "объект 2" );
-	listctrl3->InsertItem( 1, "объект 2" );
-	listctrl3->InsertItem( 1, "объект 2" );
-	listctrl3->InsertItem( 1, "объект 2" );
-	listctrl3->InsertItem( 1, "объект 2" );
-	listctrl3->InsertItem( 1, "объект 2" );
-	listctrl3->InsertItem( 1, "объект 2" );
-	listctrl3->InsertItem( 1, "объект 2" );
-	listctrl3->InsertItem( 1, "объект 2" );
-	listctrl3->InsertItem( 1, "объект 2" );
-	projectBar.insertPage( listctrl3, "Третья страница" );
-
-	projectBar.selectFirst();
-
-	m_wndToolBar.EnableDocking( CBRS_ALIGN_ANY );
-	m_wndStyleAndColorToolBar.EnableDocking( CBRS_ALIGN_ANY );
-	m_wndToolBlockBarMJ.EnableDocking( CBRS_ALIGN_ANY );
 	EnableDocking( CBRS_ALIGN_ANY );
 
-	DockControlBar( &m_wndToolBar );
-	dockControlBarBesideOf( m_wndStyleAndColorToolBar, m_wndToolBar );
-	dockControlBarBesideOf( m_wndToolBlockBarMJ, m_wndStyleAndColorToolBar );
+	insertToolBar( &m_wndToolBar );
+	insertToolBar( &m_wndStyleAndColorToolBar );
 	DockControlBar( &projectBar, AFX_IDW_DOCKBAR_LEFT );
 
 	m_msg = new RPMainFrameMsg();
+	m_msg->setName( "__mainform_msg" );
 
 	return 0;
 }
@@ -272,11 +176,21 @@ int RPMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 BOOL RPMainFrame::DestroyWindow()
 {
 	if ( m_msg ) {
-		rpapp.msg().disconnect( m_msg );
+		rpMethod::project->msg().disconnect( m_msg );
 		delete m_msg;
 		m_msg = NULL;
 	}
 	return CMDIFrameWnd::DestroyWindow();
+}
+
+void RPMainFrame::insertToolBar( CToolBar* toolbar )
+{
+	if ( !last_docked ) {
+		DockControlBar( toolbar );
+	} else {
+		dockControlBarBesideOf( *toolbar, *last_docked );
+	}
+	last_docked = toolbar;
 }
 
 void RPMainFrame::dockControlBarBesideOf( CControlBar& bar, CControlBar& baseBar )
@@ -302,14 +216,17 @@ void RPMainFrame::dockControlBarBesideOf( CControlBar& bar, CControlBar& baseBar
 	rect.OffsetRect( dx, dy );
 
 	DockControlBar( &bar, n, rect );
+	
+	last_docked = &bar;
 }
 
 BOOL RPMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 {
-	if( !CMDIFrameWnd::PreCreateWindow(cs) )
-		return FALSE;
-	// TODO: Modify the Window class or styles here by modifying
-	//  the CREATESTRUCT cs
+	if ( !CMDIFrameWnd::PreCreateWindow(cs) ) return FALSE;
+
+	cs.style &= ~WS_BORDER;
+	cs.style |= WS_HSCROLL | WS_VSCROLL;
+	cs.lpszClass = AfxRegisterWndClass( CS_DBLCLKS, ::LoadCursor(NULL, IDC_ARROW) );
 
 	return TRUE;
 }
@@ -335,30 +252,18 @@ void RPMainFrame::OnUpdateFlowSelect( CCmdUI* pCmdUI )
 
 void RPMainFrame::OnFlowSelect()
 {
-	rpapp.project()->setFlowState( RPProject::flow_select );
+	rpMethod::project->setFlowState( RPProject::flow_select );
 }
 
 void RPMainFrame::OnFlowConnector()
 {
-	rpapp.project()->setFlowState( RPProject::flow_connector );
+	rpMethod::project->setFlowState( RPProject::flow_connector );
 }
 
 void RPMainFrame::OnFlowRotate()
 {
-	rpapp.project()->setFlowState( RPProject::flow_rotate );
-}
-
-	// MJ start 29.03.06 обработчик кнопки генерирования
-void RPMainFrame::OnGenerate() 
-{
-	rpapp.project()->generate();
-}
-	// MJ stop
-
-void RPMainFrame::OnGenType() 
-{
-	RP_GENERATION_TYPE_MJ dlg;
-	dlg.DoModal();	
+	OnSysColorChange();
+	rpMethod::project->setFlowState( RPProject::flow_rotate );
 }
 
 void RPMainFrame::OnUpdateBtnFillBrush( CCmdUI* pCmdUI )
@@ -443,7 +348,7 @@ LONG RPMainFrame::OnSelEndDefault(UINT lParam, LONG wParam)
 
 void RPMainFrame::OnBtnFillBrush()
 {
-	RPObject* obj = rpapp.project()->getActiveObject();
+	RPObject* obj = rpMethod::project->getActiveObject();
 	if ( obj ) {
 		if ( obj->isChartObject() ) {
 			CBrush brush;
@@ -467,7 +372,7 @@ void RPMainFrame::OnBtnFillBrush()
 
 void RPMainFrame::OnBtnFillPen()
 {
-	RPObject* obj = rpapp.project()->getActiveObject();
+	RPObject* obj = rpMethod::project->getActiveObject();
 	if ( obj && obj->isChartObject() ) {
 		const CPen& old_pen = static_cast<RPObjectChart*>(obj)->getDefaultPen();
 		CPen pen;
@@ -508,7 +413,7 @@ void RPMainFrame::OnBtnFillPen()
 
 void RPMainFrame::OnBtnFillText()
 {
-	RPObject* obj = rpapp.project()->getActiveObject();
+	RPObject* obj = rpMethod::project->getActiveObject();
 	if ( obj && obj->isChartObject() && static_cast<RPObjectChart*>(obj)->isShape() ) {
 		LOGFONT lf;
 		COLORREF color;
@@ -518,5 +423,27 @@ void RPMainFrame::OnBtnFillText()
 				static_cast<RPShape*>(obj)->setTextFont( font, m_wndStyleAndColorToolBar.color_text, !m_wndStyleAndColorToolBar.empty_text );
 			}
 		}
+	}
+}
+
+void RPMainFrame::OnSysColorChange()
+{
+}
+
+void RPMainFrame::OnMethodCommandRange( UINT id )
+{
+	rpMethod::RPMethod* method = rpMethod::project->getMethodByButton( id );
+	if ( method ) {
+		method->buttonCommand( id );
+	}
+}
+
+void RPMainFrame::OnMethodUpdateRange( CCmdUI* pCmdUI )
+{
+	rpMethod::RPMethod* method = rpMethod::project->getMethodByButton( pCmdUI->m_nID );
+	if ( method ) {
+		RPCtrlToolbar::ButtonUpdate button_update( pCmdUI->m_nID );
+		method->buttonUpdate( button_update );
+		pCmdUI->Enable( button_update.enable );
 	}
 }

@@ -163,11 +163,12 @@ void RPPageCtrl::removePage( RPPageCtrlItem* page )
 {
 	std::list< RPPageCtrlItem* >::iterator it = std::find( items.begin(), items.end(), page );
 	if ( it != items.end() ) {
+		bool current_flag = it_current == it;
 		std::list< RPPageCtrlItem* >::iterator it_next = items.erase( it );
-		if ( it_current == it ) {
+		if ( current_flag ) {
 			it_current = it_next;
-			if ( it_current == items.end() ) it_current--;
-			if ( it_current == items.end() ) it_current = items.begin();
+			if ( it_current == items.end() && it_current != items.begin() ) it_current--;
+			if ( it_current == items.end()                                ) it_current = items.begin();
 		}
 		page->DestroyWindow();
 		delete page;

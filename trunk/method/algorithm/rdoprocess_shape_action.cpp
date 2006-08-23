@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "rdoprocess_shape_action.h"
+#include <rdoprocess_connector.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -11,7 +12,7 @@ static char THIS_FILE[] = __FILE__;
 // ---------- RPShapeAction
 // ----------------------------------------------------------------------------
 RPShapeAction::RPShapeAction( RPObject* _parent ):
-	RPShape( _parent, _T("Action") )
+	RPShape( _parent, "Action" )
 {
 	bg_brush.DeleteObject();
 	LOGBRUSH lb;
@@ -35,4 +36,9 @@ RPShapeAction::RPShapeAction( RPObject* _parent ):
 
 RPShapeAction::~RPShapeAction()
 {
+}
+
+RPObject* RPShapeAction::newObject( RPObject* parent )
+{
+	return new RPShapeAction( parent );
 }

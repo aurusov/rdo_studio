@@ -1,10 +1,9 @@
 #include "stdafx.h"
 #include "rdoprocess_app.h"
-#include "rdoprocess_mainfrm.h"
+#include "rdoprocess_project.h"
 #include "rdoprocess_childfrm.h"
 #include "ctrl/rdoprocess_pagectrl.h"
-#include "resource.h"
-#include "method/process2rdo/rdo_process_project_RDO_proc_MJ.h"
+#include <rdoprocess_factory.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -21,79 +20,74 @@ BEGIN_MESSAGE_MAP(RPApp, CWinApp)
 	//{{AFX_MSG_MAP(RPApp)
 	ON_COMMAND(ID_APP_ABOUT, OnAppAbout)
 	ON_COMMAND(ID_FILE_NEW, OnFileNew)
+	ON_COMMAND(ID_FILE_OPEN, OnFileOpen)
+	ON_COMMAND(ID_FILE_SAVE, OnFileSave)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RPApp::RPApp():
 	CWinApp(),
-	mainFrame( NULL ),
-	_msg( NULL ),
-	_project( NULL )
+	mainFrame( NULL )
 {
 	log.open( "log.txt" );
+
+	new RPProjectMFC();
+
+	log << "new factory.." << std::endl;
+	new RPObjectFactory();
+	rpMethod::factory->registerDefaultObject();
+	log << "new factory..ok" << std::endl;
 }
 
 BOOL RPApp::InitInstance()
 {
 	log << "RPApp::InitInstance().." << std::endl;
+	
+	if ( ::CoInitializeEx( NULL, COINIT_APARTMENTTHREADED ) != S_OK ) {
+		::CoUninitialize();
+		return false;
+	}
 
-	_msg = new rp::msg();
-
-	_project = new RPProject_RDO_Proc_MJ();
-	project()->setName( "project" );
-
-	// Standard initialization
-	// If you are not using these features and wish to reduce the size
-	//  of your final executable, you should remove from the following
-	//  the specific initialization routines you do not need.
-
-#ifdef _AFXDLL
-	Enable3dControls();			// Call this when using MFC in a shared DLL
-#else
-	Enable3dControlsStatic();	// Call this when linking to MFC statically
-#endif
-
-	// Change the registry key under which our settings are stored.
-	// TODO: You should modify this string to be something appropriate
-	// such as the name of your company or organization.
 	SetRegistryKey(_T("Local AppWizard-Generated Applications"));
 
-	cursors[ IDC_FLOW_SELECT ]        = AfxGetApp()->LoadCursor(IDC_FLOW_SELECT);
-	cursors[ IDC_FLOW_MOVE ]          = AfxGetApp()->LoadCursor(IDC_FLOW_MOVE);
-	cursors[ IDC_FLOW_CONNECTOR ]     = AfxGetApp()->LoadCursor(IDC_FLOW_CONNECTOR);
-	cursors[ IDC_FLOW_ROTATE ]        = AfxGetApp()->LoadCursor(IDC_FLOW_ROTATE);
-	cursors[ IDC_FLOW_ROTATE_CENTER ] = AfxGetApp()->LoadCursor(IDC_FLOW_ROTATE_CENTER);
-	cursors[ IDC_FLOW_ROTATE_TL ]     = AfxGetApp()->LoadCursor(IDC_FLOW_ROTATE_TL);
-//	cursors[ IDC_FLOW_ROTATE_TR ]     = AfxGetApp()->LoadCursor(IDC_FLOW_ROTATE_TL);
-//	cursors[ IDC_FLOW_ROTATE_BL ]     = AfxGetApp()->LoadCursor(IDC_FLOW_ROTATE_TL);
-//	cursors[ IDC_FLOW_ROTATE_BR ]     = AfxGetApp()->LoadCursor(IDC_FLOW_ROTATE_TL);
-	cursors[ IDC_FLOW_SCALE_LR ]      = AfxGetApp()->LoadCursor(IDC_FLOW_SCALE_LR);
-	cursors[ IDC_FLOW_SCALE_TB ]      = AfxGetApp()->LoadCursor(IDC_FLOW_SCALE_TB);
-	cursors[ IDC_FLOW_SCALE_TLBR ]    = AfxGetApp()->LoadCursor(IDC_FLOW_SCALE_TLBR);
-	cursors[ IDC_FLOW_SCALE_TRBL ]    = AfxGetApp()->LoadCursor(IDC_FLOW_SCALE_TRBL);
-	cursors[ IDC_FLOW_DOCK_IN ]       = AfxGetApp()->LoadCursor(IDC_FLOW_DOCK_IN);
-	cursors[ IDC_FLOW_DOCK_NOT ]      = AfxGetApp()->LoadCursor(IDC_FLOW_DOCK_NOT);
-
-	// To create the main window, this code creates a new frame window
-	// object and then sets it as the application's main window object.
+	rpMethod::project->cursors[ RPProject::cursor_flow_select ]        = AfxGetApp()->LoadCursor(IDC_FLOW_SELECT);
+	rpMethod::project->cursors[ RPProject::cursor_flow_move ]          = AfxGetApp()->LoadCursor(IDC_FLOW_MOVE);
+	rpMethod::project->cursors[ RPProject::cursor_flow_connector ]     = AfxGetApp()->LoadCursor(IDC_FLOW_CONNECTOR);
+	rpMethod::project->cursors[ RPProject::cursor_flow_rotate ]        = AfxGetApp()->LoadCursor(IDC_FLOW_ROTATE);
+	rpMethod::project->cursors[ RPProject::cursor_flow_rotate_center ] = AfxGetApp()->LoadCursor(IDC_FLOW_ROTATE_CENTER);
+	rpMethod::project->cursors[ RPProject::cursor_flow_rotate_tl ]     = AfxGetApp()->LoadCursor(IDC_FLOW_ROTATE_TL);
+	rpMethod::project->cursors[ RPProject::cursor_flow_rotate_tr ]     = AfxGetApp()->LoadCursor(IDC_FLOW_ROTATE_TL);
+	rpMethod::project->cursors[ RPProject::cursor_flow_rotate_bl ]     = AfxGetApp()->LoadCursor(IDC_FLOW_ROTATE_TL);
+	rpMethod::project->cursors[ RPProject::cursor_flow_rotate_br ]     = AfxGetApp()->LoadCursor(IDC_FLOW_ROTATE_TL);
+	rpMethod::project->cursors[ RPProject::cursor_flow_scale_lr ]      = AfxGetApp()->LoadCursor(IDC_FLOW_SCALE_LR);
+	rpMethod::project->cursors[ RPProject::cursor_flow_scale_tb ]      = AfxGetApp()->LoadCursor(IDC_FLOW_SCALE_TB);
+	rpMethod::project->cursors[ RPProject::cursor_flow_scale_tlbr ]    = AfxGetApp()->LoadCursor(IDC_FLOW_SCALE_TLBR);
+	rpMethod::project->cursors[ RPProject::cursor_flow_scale_trbl ]    = AfxGetApp()->LoadCursor(IDC_FLOW_SCALE_TRBL);
+	rpMethod::project->cursors[ RPProject::cursor_flow_dock_in ]       = AfxGetApp()->LoadCursor(IDC_FLOW_DOCK_IN);
+	rpMethod::project->cursors[ RPProject::cursor_flow_dock_out ]      = AfxGetApp()->LoadCursor(IDC_FLOW_DOCK_IN);
+	rpMethod::project->cursors[ RPProject::cursor_flow_dock_inout ]    = AfxGetApp()->LoadCursor(IDC_FLOW_DOCK_IN);
+	rpMethod::project->cursors[ RPProject::cursor_flow_dock_fly ]      = AfxGetApp()->LoadCursor(IDC_FLOW_DOCK_IN);
+	rpMethod::project->cursors[ RPProject::cursor_flow_dock_not ]      = AfxGetApp()->LoadCursor(IDC_FLOW_DOCK_NOT);
 
 	mainFrame  = new RPMainFrame;
 	m_pMainWnd = mainFrame;
 
-	// create main MDI frame window
 	if ( !mainFrame->LoadFrame(IDR_MAINFRAME) ) return FALSE;
+	mainFrame->SetIcon( LoadIcon(IDR_MAINFRAME), true );
 
 	// try to load shared MDI menus and accelerator table
 	//TODO: add additional member variables and load calls for
 	//	additional menu types your application may need. 
 
 	HINSTANCE hInst = AfxGetResourceHandle();
-	m_hMDIMenu  = ::LoadMenu( hInst, MAKEINTRESOURCE(IDR_RDO_PRTYPE) );
-	m_hMDIAccel = ::LoadAccelerators( hInst, MAKEINTRESOURCE(IDR_RDO_PRTYPE) );
+	m_hMDIMenu  = ::LoadMenu( hInst, MAKEINTRESOURCE(IDR_MAINFRAME) );
+	m_hMDIAccel = ::LoadAccelerators( hInst, MAKEINTRESOURCE(IDR_MAINFRAME) );
 
-	// The main window has been initialized, so show and update it.
 	mainFrame->ShowWindow( m_nCmdShow );
 	mainFrame->UpdateWindow();
+
+	methods.init();
+	mainFrame->projectBar.selectFirst();
 
 	log << "RPApp::InitInstance().. ok" << std::endl;
 	return TRUE;
@@ -101,19 +95,30 @@ BOOL RPApp::InitInstance()
 
 int RPApp::ExitInstance() 
 {
-	if ( _project ) {
-		delete _project;
-		_project = NULL;
+	log << "methods.close().." << std::endl;
+	methods.close();
+	log << "methods.close().. ok" << std::endl;
+
+	log << "delete factory.. " << std::endl;
+	if ( rpMethod::factory ) {
+		delete rpMethod::factory;
+		rpMethod::factory = NULL;
 	}
-	if ( _msg ) {
-		delete _msg;
-		_msg = NULL;
+	log << "delete factory.. ok" << std::endl;
+
+	log << "delete project.." << std::endl;
+	if ( rpMethod::project ) {
+		delete rpMethod::project;
+		rpMethod::project = NULL;
 	}
+	log << "delete project.. ok" << std::endl;
 
 	if (m_hMDIMenu != NULL)
 		FreeResource(m_hMDIMenu);
 	if (m_hMDIAccel != NULL)
 		FreeResource(m_hMDIAccel);
+
+	::CoUninitialize();
 
 	return CWinApp::ExitInstance();
 }
@@ -128,22 +133,50 @@ BOOL RPApp::PreTranslateMessage( MSG* pMsg )
 
 void RPApp::OnFileNew() 
 {
-	RPMainFrame* pFrame = STATIC_DOWNCAST(RPMainFrame, m_pMainWnd);
-
-	// create a new MDI child window
-	pFrame->CreateNewChild(
-		RUNTIME_CLASS(RPChildFrame), IDR_RDO_PRTYPE, m_hMDIMenu, m_hMDIAccel);
+	CWnd* child = mainFrame->CreateNewChild( RUNTIME_CLASS(RPChildFrame), IDR_RDO_PRTYPE, m_hMDIMenu, m_hMDIAccel );
+	child->SetIcon( LoadIcon(IDR_RDO_PRTYPE), true );
 }
 
-void RPApp::OnAppAbout()
+void RPApp::OnFileOpen()
 {
-	RPAboutDlg aboutDlg;
-	aboutDlg.DoModal();
+	static_cast<RPProjectMFC*>(rpMethod::project)->open();
+}
+
+void RPApp::OnFileSave()
+{
+	static_cast<RPProjectMFC*>(rpMethod::project)->save();
 }
 
 // ----------------------------------------------------------------------------
 // ---------- RPAboutDlg
 // ----------------------------------------------------------------------------
+class RPAboutDlg: public CDialog
+{
+public:
+	RPAboutDlg();
+	virtual ~RPAboutDlg();
+
+protected:
+	//{{AFX_DATA(RPAboutDlg)
+	enum { IDD = IDD_ABOUT };
+	RDOLink	m_web;
+	RDOLink	m_email;
+	CString	m_caption;
+	//}}AFX_DATA
+
+	//{{AFX_VIRTUAL(RPAboutDlg)
+	protected:
+	virtual void DoDataExchange( CDataExchange* pDX );
+	//}}AFX_VIRTUAL
+
+protected:
+	//{{AFX_MSG(RPAboutDlg)
+	afx_msg void OnAboutEmail();
+	afx_msg void OnAboutWeb();
+	//}}AFX_MSG
+	DECLARE_MESSAGE_MAP()
+};
+
 BEGIN_MESSAGE_MAP( RPAboutDlg, CDialog )
 	//{{AFX_MSG_MAP(RPAboutDlg)
 	ON_BN_CLICKED(IDC_ABOUT_EMAIL, OnAboutEmail)
@@ -214,4 +247,13 @@ void RPAboutDlg::OnAboutWeb()
 	CString s;
 	m_web.GetWindowText( s );
 	::ShellExecute( m_hWnd, "open", s, 0, 0, SW_SHOWNORMAL );
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RPApp
+// ----------------------------------------------------------------------------
+void RPApp::OnAppAbout()
+{
+	RPAboutDlg aboutDlg;
+	aboutDlg.DoModal();
 }

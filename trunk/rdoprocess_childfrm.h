@@ -5,20 +5,25 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#include "rdoprocess_flowchart.h"
+#include <rdoprocess_flowchart.h>
 
 // ----------------------------------------------------------------------------
 // ---------- RPChildFrame
 // ----------------------------------------------------------------------------
+class RPObjectFlowChart;
+
 class RPChildFrame: public CMDIChildWnd
 {
 DECLARE_DYNCREATE(RPChildFrame)
 
-public:
-	RPFlowChart m_wndView;
+private:
+	RPFlowChart* flowchart;
 
+public:
 	RPChildFrame();
 	virtual ~RPChildFrame();
+
+	void makeFlowChart( RPObjectFlowChart* flowobj );
 
 #ifdef _DEBUG
 	virtual void AssertValid() const;
@@ -36,6 +41,7 @@ protected:
 	afx_msg void OnFileClose();
 	afx_msg void OnSetFocus(CWnd* pOldWnd);
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+	afx_msg void OnDestroy();
 	afx_msg void OnMDIActivate(BOOL bActivate, CWnd* pActivateWnd, CWnd* pDeactivateWnd);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()

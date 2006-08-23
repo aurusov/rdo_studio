@@ -5,10 +5,64 @@
 #pragma once
 #endif
 
+#include <rdoprocess_toolbar.h>
+
+// ----------------------------------------------------------------------------
+// ---------- RPCtrlToolbarMFC
+// ----------------------------------------------------------------------------
+class RPToolbarToolTip: public CToolBar
+{
+friend class RPCtrlToolbarMFC;
+private:
+	CToolTipCtrl toolTip;
+	std::map< unsigned int, rp::string > button_text;
+	void updateToolTips();
+	virtual BOOL PreTranslateMessage( MSG* pMsg ) {
+		if ( pMsg->message >= WM_MOUSEFIRST && pMsg->message <= WM_MOUSELAST ) {
+			toolTip.RelayEvent( pMsg );
+		}
+		return CToolBar::PreTranslateMessage( pMsg );
+	}
+	//{{AFX_MSG(RPToolBar)
+	afx_msg void OnSize( UINT nType, int cx, int cy );
+	//}}AFX_MSG
+	DECLARE_MESSAGE_MAP()
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RPCtrlToolbarMFC
+// ----------------------------------------------------------------------------
+class RPBitmap;
+
+class RPCtrlToolbarMFC: public RPCtrlToolbar
+{
+private:
+	std::list< RPBitmap* > bitmaps;
+
+public:
+	RPToolbarToolTip toolbar;
+	RPCtrlToolbarMFC( CWnd* parent );
+	~RPCtrlToolbarMFC();
+	virtual int insertButton( rpMethod::RPMethod* method, char* xpm[], const rp::string& tool_tip = "" );
+	virtual void setCaption( const rp::string& caption );
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOToolBar
+// ----------------------------------------------------------------------------
+class RDOToolBar: public CToolBar
+{
+protected:
+	CImageList disabledImage;
+
+public:
+	virtual void init( CWnd* parent, unsigned int tbResID, unsigned int tbDisabledImageResID = -1 );
+};
+
 // ----------------------------------------------------------------------------
 // ---------- RPToolBar
 // ----------------------------------------------------------------------------
-class RPToolBar: public CToolBar
+class RPToolBar: public RDOToolBar
 {
 public:
 	RPToolBar();

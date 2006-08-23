@@ -1,9 +1,8 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Developer Studio generated include file.
+// Microsoft Visual C++ generated include file.
 // Used by rdo_process.rc
 //
 #define IDR_RT_MANIFEST1                1
-#define IDD_ABOUTBOX                    100
 #define IDC_FLOW_SELECT                 104
 #define IDR_MAINFRAME                   128
 #define IDR_RDO_PRTYPE                  129
@@ -19,33 +18,13 @@
 #define IDB_PAGECTRL_CLOSE              147
 #define IDB_PAGECTRL_CLOSE_OVER         148
 #define IDB_PAGECTRL_PAGE               149
-#define IDD_DIALOG_CREATE_1_MJ          150
-#define IDD_DIALOG_CREATE_2_MJ          152
-#define IDD_DIALOG_PROCESS_1_MJ         153
-#define IDD_DIALOG_PROCESS_2_MJ         155
-#define IDD_DIALOG_TERMINATE_1_MJ       156
 #define IDC_FLOW_DOCK_IN                157
 #define IDC_FLOW_DOCK_NOT               158
-#define IDD_DIALOG_RESOURCE_DLG1        159
-#define TOOLBARBLOCKMJ                  160
-#define IDD_DIALOG_GEN_TYPE             162
-#define IDR_STYLEANDCOLOR               164
+#define IDR_TOOLBAR_STYLEANDCOLOR       164
 #define IDD_ABOUT                       165
-#define IDC_EDIT1                       1000
-#define IDC_EDIT2                       1001
-#define IDC_EDIT3                       1002
-#define IDC_COMBO1                      1003
-#define IDC_EDIT4                       1004
-#define IDC_EDIT5                       1005
-#define IDC_EDIT6                       1006
-#define IDC_EDIT7                       1007
-#define IDC_EDIT8                       1008
-#define IDC_BUTTON1                     1010
-#define IDC_COMBO2                      1011
-#define IDC_BUTTON2                     1012
-#define IDC_LIST1                       1013
-#define IDC_COMBO3                      1014
-#define IDC_COMBO4                      1015
+#define IDR_TOOLBAR_MAINFRAME           168
+#define IDR_TOOLBAR_EMPTY               175
+#define IDR_TOOLBAR_MAINFRAME_D         182
 #define IDC_ABOUT_CAPTION               1082
 #define IDC_ABOUT_PICTURE               1083
 #define IDC_ABOUT_ADDRESS               1084
@@ -57,20 +36,13 @@
 #define ID_FLOW_SELECT                  32771
 #define ID_FLOW_CONNECTOR               32772
 #define ID_FLOW_ROTATE                  32773
-#define ID_GENERATE                     32775
-#define ID_BUTTON32779                  32779
-#define ID_BUTTON32781                  32781
-#define ID_BUTTON32782                  32782
-#define ID_BUTTON32783                  32783
-#define ID_GEN_TYPE                     32785
 #define ID_BTN_FILL_BRUSH               32788
 #define ID_BTN_FILL_PEN                 32789
 #define ID_BTN_FILL_FONT                32790
 #define ID_BTN_FILL_TEXT                32790
+#define ID_BTN_EMPTY                    32806
 #define AFX_IDS_IDLEMESSAGE2            57346
 #define ID_DOCK_PROJECT_BAR             61216
-#define IDS_TOOLBAR_MAIN                61217
-#define IDS_TOOLBAR_STYLEANDCOLOR       61218
 #define IDS_COLORPICKER_NONE_BRUSH      61219
 #define IDS_COLORPICKER_NONE_PEN        61220
 #define IDS_COLORPICKER_DEFAULT         61221
@@ -82,8 +54,8 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        166
-#define _APS_NEXT_COMMAND_VALUE         32794
+#define _APS_NEXT_RESOURCE_VALUE        183
+#define _APS_NEXT_COMMAND_VALUE         32812
 #define _APS_NEXT_CONTROL_VALUE         1016
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

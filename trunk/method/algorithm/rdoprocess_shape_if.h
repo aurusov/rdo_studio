@@ -5,13 +5,16 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#include "../../rdoprocess_shape.h"
+#include <rdoprocess_shape.h>
 
 // ----------------------------------------------------------------------------
 // ---------- RPShapeIf
 // ----------------------------------------------------------------------------
 class RPShapeIf: public RPShape
 {
+friend class RPMethodAlgorithm;
+private:
+	static RPObject* newObject( RPObject* parent );
 public:
 	RPShapeIf( RPObject* parent );
 	virtual ~RPShapeIf();

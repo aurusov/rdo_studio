@@ -11,15 +11,15 @@
 	#error include 'stdafx.h' before including this file for PCH
 #endif
 
-#include "rdoprocess_project.h"
-#include "rdoprocess_messages.h"
+#include <rdoprocess_project.h>
+#include "rdoprocess_method_manager.h"
+#include "rdoprocess_mainfrm.h"
 #include "ctrl/rdolink.h"
 #include "resource.h"
 
 /*! Класс приложения. При старте программы автоматически создается один экземпляр.
 К нему можно обратится по имени rpapp. Базовый класс CWinApp используется библиотекой MFC для инициализации
 программы. Производит инициализацию реестра и создает класс главного окна.
-RPApp содержит объект project.
 */
 
 // ----------------------------------------------------------------------------
@@ -29,27 +29,19 @@ class RPMainFrame;
 
 class RPApp: public CWinApp
 {
-friend rp::msg::~msg();
-
+friend class RPProjectMFC;
 protected:
-	RPMainFrame* mainFrame;
-	HMENU m_hMDIMenu;
-	HACCEL m_hMDIAccel;
-
-	rp::msg*   _msg;
-	RPProject* _project;
+	RPMainFrame*    mainFrame;
+	HMENU           m_hMDIMenu;
+	HACCEL          m_hMDIAccel;
+	RPMethodManager methods;
+	std::ofstream   log;
 
 public:
 	RPApp();
 
-	rp::msg& msg()       { return *_msg;    }
-	RPProject* project() { return _project; }
-	std::map< UINT, HCURSOR > cursors;
-	std::ofstream             log;
-
-	void sendMessage( RPObject* from, UINT message, WPARAM wParam = 0, LPARAM lParam = 0 ) {
-		if ( _msg ) _msg->sendMessage( from, message, wParam, lParam );
-	}
+	RPProjectBar& getProjectBar() const             { return mainFrame->projectBar; }
+	const RPMethodManager& getMethodManager() const { return methods;               }
 
 	//{{AFX_VIRTUAL(RPApp)
 	public:
@@ -61,36 +53,8 @@ public:
 	//{{AFX_MSG(RPApp)
 	afx_msg void OnAppAbout();
 	afx_msg void OnFileNew();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RPAboutDlg
-// ----------------------------------------------------------------------------
-class RPAboutDlg: public CDialog
-{
-public:
-	RPAboutDlg();
-	virtual ~RPAboutDlg();
-
-protected:
-	//{{AFX_DATA(RPAboutDlg)
-	enum { IDD = IDD_ABOUT };
-	RDOLink	m_web;
-	RDOLink	m_email;
-	CString	m_caption;
-	//}}AFX_DATA
-
-	//{{AFX_VIRTUAL(RPAboutDlg)
-	protected:
-	virtual void DoDataExchange( CDataExchange* pDX );
-	//}}AFX_VIRTUAL
-
-protected:
-	//{{AFX_MSG(RPAboutDlg)
-	afx_msg void OnAboutEmail();
-	afx_msg void OnAboutWeb();
+	afx_msg void OnFileOpen();
+	afx_msg void OnFileSave();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

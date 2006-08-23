@@ -115,7 +115,7 @@ protected:
     afx_msg BOOL OnQueryNewPalette();
     afx_msg void OnPaletteChanged(CWnd* pFocusWnd);
 	afx_msg void OnKillFocus(CWnd* pNewWnd);
-	afx_msg void OnActivateApp(BOOL bActive, HTASK hTask);
+	afx_msg void OnActivateApp(BOOL bActive, DWORD hTask);
 	//}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 };
