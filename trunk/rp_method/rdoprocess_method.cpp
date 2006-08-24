@@ -14,10 +14,14 @@ using namespace rpMethod;
 // ---------- RPMethod
 // ----------------------------------------------------------------------------
 RPMethod::RPMethod( RPObject* _parent ):
-	RPObject( _parent, "method" )
+	RPObject( _parent, "method" ),
+	pixmap_big( NULL ),
+	pixmap_small( NULL )
 {
 }
 
 RPMethod::~RPMethod()
 {
+	if ( pixmap_big ) delete pixmap_big;
+	if ( pixmap_small ) delete pixmap_small;
 }

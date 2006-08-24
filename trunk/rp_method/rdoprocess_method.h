@@ -10,6 +10,7 @@
 
 class RPObjectFactory;
 class RPProject;
+class RPBitmap;
 
 namespace rpMethod {
 
@@ -28,6 +29,14 @@ public:
 		rp::string description;
 		Info(): name( "" ), version_major( 0 ), version_minor( 0 ), version_build( 0 ), version_info( "" ), description( "" ) {}
 	};
+	enum PMSize {
+		pm_big,
+		pm_small
+	};
+
+protected:
+	RPBitmap* pixmap_big;
+	RPBitmap* pixmap_small;
 
 public:
 	RPMethod( RPObject* parent );
@@ -35,6 +44,13 @@ public:
 	virtual Info getInfo() const = 0;
 	virtual void buttonCommand( int button_id ) {};
 	virtual void buttonUpdate( RPCtrlToolbar::ButtonUpdate& button_update ) {};
+
+	RPBitmap* getPixmap( PMSize size ) const {
+		switch ( size ) {
+			case pm_big  : return pixmap_big;
+			case pm_small: return pixmap_small;
+		}
+	}
 };
 
 typedef RPMethod* (*PFunRegisterMethod)( RPObjectFactory* _factory, RPProject* _project );

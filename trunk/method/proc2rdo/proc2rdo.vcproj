@@ -620,6 +620,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\method_big.xpm"
+				>
+			</File>
+			<File
+				RelativePath=".\res\method_small.xpm"
+				>
+			</File>
+			<File
 				RelativePath=".\proc2rdo.rc"
 				>
 			</File>

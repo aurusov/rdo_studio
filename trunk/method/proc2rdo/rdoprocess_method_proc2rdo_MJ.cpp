@@ -9,6 +9,8 @@
 #include "rdoprocess_shape_terminate_MJ.h"
 #include "rdoprocess_generation_type_MJ.h"
 #include "resource.h"
+#include "res/method_big.xpm"
+#include "res/method_small.xpm"
 #include "res/generate.xpm"
 #include "res/generate_setup.xpm"
 
@@ -37,6 +39,8 @@ RPMethodProc2RDO_MJ::RPMethodProc2RDO_MJ( RPObject* _parent ):
 	proc2rdo = this;
 	generate_time_MJ = 100;
 	RDOfiles = new RPCreationRDOFilesMJ();
+	pixmap_big   = rpMethod::project->createBitmap( method_big_xpm );
+	pixmap_small = rpMethod::project->createBitmap( method_small_xpm );
 }
 
 RPMethodProc2RDO_MJ::~RPMethodProc2RDO_MJ()
@@ -108,11 +112,11 @@ void RPMethodProc2RDO_MJ::buttonUpdate( RPCtrlToolbar::ButtonUpdate& button_upda
 rpMethod::RPMethod::Info RPMethodProc2RDO_MJ::getInfo() const
 {
 	rpMethod::RPMethod::Info info;
-	info.name = "Процесс";
+	info.name = "РДО-Процесс";
 	info.version_major = 0;
 	info.version_minor = 1;
 	info.version_build = 1;
-	info.version_info  = "Глубокая альфа";
+	info.version_info  = "альфа";
 	info.description   = "Переводит квадратики в паттерны";
 	return info;
 }

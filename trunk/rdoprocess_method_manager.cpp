@@ -131,3 +131,69 @@ void RPMethodManager::close()
 		it = methods.erase( it );
 	}
 }
+
+// ----------------------------------------------------------------------------
+// ---------- RPMethodNewDlg
+// ----------------------------------------------------------------------------
+BEGIN_MESSAGE_MAP( RPMethodNewDlg, CDialog )
+	//{{AFX_MSG_MAP(RPMethodNewDlg)
+	//}}AFX_MSG_MAP
+	ON_NOTIFY(LVN_ITEMCHANGED, IDC_METHOD_LIST, &RPMethodNewDlg::OnMethodListItemÑhanged)
+END_MESSAGE_MAP()
+
+RPMethodNewDlg::RPMethodNewDlg():
+	CDialog( IDD_METHOD_NEW )
+{
+	//{{AFX_DATA_INIT(RPMethodNewDlg)
+	//}}AFX_DATA_INIT
+
+}
+
+RPMethodNewDlg::~RPMethodNewDlg()
+{
+}
+
+void RPMethodNewDlg::DoDataExchange( CDataExchange* pDX )
+{
+	CDialog::DoDataExchange(pDX);
+	//{{AFX_DATA_MAP(RPMethodNewDlg)
+	DDX_Control(pDX, IDC_METHOD_LIST, methods);
+	DDX_Control(pDX, IDC_METHOD_DESC, desc);
+	//}}AFX_DATA_MAP
+}
+
+BOOL RPMethodNewDlg::OnInitDialog()
+{
+	BOOL res = CDialog::OnInitDialog();
+	CRect rect;
+	methods.GetClientRect( rect );
+	methods.InsertColumn( 0, "Íàçâàíèå", LVCFMT_LEFT, 120 );
+	methods.InsertColumn( 1, "Âåðñèÿ", LVCFMT_LEFT, rect.Width() - methods.GetColumnWidth(0), 1 );
+	methods.SetExtendedStyle( methods.GetExtendedStyle() | LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES );
+	std::vector< RPMethodPlugin* >::const_iterator it = rpapp.getMethodManager().getList().begin();
+	int index_prev = 0;
+	while ( it != rpapp.getMethodManager().getList().end() ) {
+		int index = methods.InsertItem( index_prev, (*it)->getMethod()->getInfo().name.c_str() );
+		if ( index != LB_ERR ) {
+			rpMethod::RPMethod::Info info = (*it)->getMethod()->getInfo();
+			methods.SetItemText( index, 1, rp::format( "ver %d.%d (build %d) %s", info.version_major, info.version_minor, info.version_build, info.version_info.c_str() ).c_str() );
+			methods.SetItemData( index, reinterpret_cast<DWORD_PTR>((*it)->getMethod()) );
+		}
+		index_prev = index;
+		it++;
+	}
+	if ( methods.GetItemCount() ) {
+		methods.SetItemState( 0, LVIS_SELECTED, LVIS_SELECTED );
+	} else {
+		GetDlgItem( IDOK )->EnableWindow( false );
+	}
+	return res;
+}
+
+void RPMethodNewDlg::OnMethodListItemÑhanged( NMHDR *pNMHDR, LRESULT *pResult )
+{
+	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
+	rpMethod::RPMethod* method = reinterpret_cast<rpMethod::RPMethod*>(pNMLV->lParam);
+	desc.SetWindowText( method->getInfo().description.c_str() );
+	*pResult = 0;
+}

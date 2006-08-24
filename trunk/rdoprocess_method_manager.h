@@ -50,9 +50,41 @@ public:
 		}
 		return NULL;
 	}
+	const std::vector< RPMethodPlugin* >& getList() const { return methods; }
 
 	void init();
 	void close();
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RPMethodNewDlg
+// ----------------------------------------------------------------------------
+class RPMethodNewDlg: public CDialog
+{
+public:
+	RPMethodNewDlg();
+	virtual ~RPMethodNewDlg();
+
+protected:
+	//{{AFX_DATA(RPMethodNewDlg)
+	CListCtrl methods;
+	CStatic   desc;
+	//}}AFX_DATA
+
+	//{{AFX_VIRTUAL(RPMethodNewDlg)
+	protected:
+	virtual void DoDataExchange( CDataExchange* pDX );
+	virtual BOOL OnInitDialog();
+	//}}AFX_VIRTUAL
+
+protected:
+	//{{AFX_MSG(RPMethodNewDlg)
+	afx_msg void OnAboutEmail();
+	afx_msg void OnAboutWeb();
+	//}}AFX_MSG
+	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnMethodListItem—hanged(NMHDR *pNMHDR, LRESULT *pResult);
 };
 
 #endif // RDO_PROCESS_METHOD_MANAGER_H

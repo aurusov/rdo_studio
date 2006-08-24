@@ -133,8 +133,10 @@ BOOL RPApp::PreTranslateMessage( MSG* pMsg )
 
 void RPApp::OnFileNew() 
 {
-	CWnd* child = mainFrame->CreateNewChild( RUNTIME_CLASS(RPChildFrame), IDR_RDO_PRTYPE, m_hMDIMenu, m_hMDIAccel );
-	child->SetIcon( LoadIcon(IDR_RDO_PRTYPE), true );
+	RPMethodNewDlg dlg;
+	dlg.DoModal();
+//	CWnd* child = mainFrame->CreateNewChild( RUNTIME_CLASS(RPChildFrame), IDR_RDO_PRTYPE, m_hMDIMenu, m_hMDIAccel );
+//	child->SetIcon( LoadIcon(IDR_RDO_PRTYPE), true );
 }
 
 void RPApp::OnFileOpen()

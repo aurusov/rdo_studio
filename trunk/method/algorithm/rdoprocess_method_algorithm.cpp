@@ -32,8 +32,8 @@ rpMethod::RPMethod::Info RPMethodAlgorithm::getInfo() const
 	info.version_major = 0;
 	info.version_minor = 1;
 	info.version_build = 1;
-	info.version_info  = "Глубокая альфа";
-	info.description   = "Тестовый метод";
+	info.version_info  = "альфа";
+	info.description   = "Тестовый метод, используется исключительно для отладки проги";
 	return info;
 }
 
