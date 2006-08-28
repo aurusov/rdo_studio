@@ -64,6 +64,7 @@ protected:
 	ConnectorTypeWanted ct_wanted;
 
 	RPFlowChart* flowchart;
+	void after_constructor();
 
 	virtual void notify( RPObject* from, UINT message, void* param = NULL );
 	virtual void modify();
@@ -91,6 +92,7 @@ public:
 	virtual rp::string getClassName() const { return "RPObjectFlowChart"; }
 	virtual void load( rp::RPXMLNode* node );
 	virtual rp::RPXMLNode* save( rp::RPXMLNode* parent_node );
+	virtual rpMethod::RPMethod* getMethod() = 0;
 
 	virtual void setActive( bool value );
 

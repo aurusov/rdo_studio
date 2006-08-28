@@ -2,6 +2,8 @@
 #include "rdoprocess_mainfrm.h"
 #include "rdoprocess_project.h"
 #include "rdoprocess_app.h"
+#include "rdoprocess_childfrm.h"
+#include "rdoprocess_docview.h"
 #include "ctrl/rdoprocess_pagectrl.h"
 #include "ctrl/ColourPicker/ColourPopup.h"
 #include "resource.h"
@@ -122,12 +124,15 @@ static UINT indicators[] =
 RPMainFrame::RPMainFrame():
 	CMDIFrameWnd(),
 	last_docked( NULL ),
-	m_msg( NULL )
+	m_msg( NULL ),
+	flowchartDocTemplate( NULL )
 {
+	flowchartDocTemplate = new CMultiDocTemplate( IDR_FLOWCHART_TYPE, RUNTIME_CLASS(RPDoc), RUNTIME_CLASS(RPChildFrame), RUNTIME_CLASS(RPView) );
 }
 
 RPMainFrame::~RPMainFrame()
 {
+	if ( flowchartDocTemplate ) delete flowchartDocTemplate;
 }
 
 int RPMainFrame::OnCreate( LPCREATESTRUCT lpCreateStruct )

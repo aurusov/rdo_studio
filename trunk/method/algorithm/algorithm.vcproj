@@ -274,6 +274,14 @@
 				RelativePath=".\res\algorithm.rc2"
 				>
 			</File>
+			<File
+				RelativePath=".\res\block_action.xpm"
+				>
+			</File>
+			<File
+				RelativePath=".\res\block_if.xpm"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

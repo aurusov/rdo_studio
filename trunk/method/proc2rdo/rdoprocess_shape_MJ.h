@@ -48,6 +48,7 @@ private:
 public:
 	RPObjectFlowChart_MJ( RPObject* parent );
 	virtual rp::string getClassName() const { return "RPObjectFlowChart_MJ"; }
+	virtual rpMethod::RPMethod* getMethod();
 };
 
 #endif // RDO_PROCESS_SHAPE_MJ_H

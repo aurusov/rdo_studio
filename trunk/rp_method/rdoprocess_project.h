@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------------
 class RPObject;
 class RPObjectFlowChart;
-class RPBitmap;
+class RPPixmap;
 class RPCtrlToolbar;
 
 class RPProject: public RPObject
@@ -60,11 +60,11 @@ public:
 
 	virtual std::ofstream& log() const = 0;
 	virtual RPCtrlToolbar* createToolBar( const rp::string& caption ) = 0;
-	virtual RPBitmap*      createBitmap( char* xpm[] ) = 0;
+	virtual RPPixmap*      createBitmap( char* xpm[] ) = 0;
 	virtual bool lockResource( rpMethod::RPMethod* method ) = 0;
 	virtual void unlockResource() = 0;
 	virtual HWND getMainWnd() = 0;
-	virtual void makeFlowChart( RPObjectFlowChart* flowobj ) = 0;
+	virtual void makeFlowChartWnd( RPObjectFlowChart* flowobj ) = 0;
 
 	rp::msg& msg() const { return *message; }
 	void sendMessage( RPObject* from, UINT message_id, void* param = NULL ) {

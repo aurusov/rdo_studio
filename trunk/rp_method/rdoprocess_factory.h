@@ -13,6 +13,8 @@
 // ---------- RPObjectClassInfo
 // ----------------------------------------------------------------------------
 class RPObject;
+class RPPixmap;
+
 namespace rpMethod {
 class RPMethod;
 }
@@ -26,10 +28,12 @@ protected:
 	MakeObject                      makeObject;
 	rpMethod::RPMethod*             method;
 	rp::string                      label;
+	RPPixmap*                       preview;
+	int                             order;
 
 public:
 	RPObjectClassInfo( const rp::string& _class_name, RPObjectClassInfo* _parent = NULL, MakeObject _makeObject = NULL );
-	RPObjectClassInfo( const rp::string& _class_name, const rp::string& _parent, MakeObject _makeObject = NULL, rpMethod::RPMethod* _method = NULL, const rp::string& _label = "" );
+	RPObjectClassInfo( const rp::string& _class_name, const rp::string& _parent, MakeObject _makeObject = NULL, rpMethod::RPMethod* _method = NULL, const rp::string& _label = "", char* _xpm[] = NULL, int _order = -1 );
 	RPObjectClassInfo( const RPObjectClassInfo& copy );
 	~RPObjectClassInfo();
 
@@ -52,6 +56,8 @@ public:
 	RPObject* getNewObject( RPObject* parent ) const {
 		return !isAbstract() ? makeObject( parent ) : NULL;
 	}
+	RPPixmap* getPreview();
+	int getOrder() const { return order; }
 };
 
 // ----------------------------------------------------------------------------

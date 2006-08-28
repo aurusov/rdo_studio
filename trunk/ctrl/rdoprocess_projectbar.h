@@ -20,10 +20,10 @@ public:
 	RPProjectBar();
 	virtual ~RPProjectBar();
 
-	RPPageCtrlItem* prepareNewPage()                      { return pagectrl.prepareNewPage();  }
-	void insertPage( CWnd* wnd, const rp::string& label ) { pagectrl.insertPage( wnd, label ); }
-	void removePage( RPPageCtrlItem* page )               { pagectrl.removePage( page );       }
-	void selectFirst()                                    { pagectrl.selectFirst();            }
+	RPPageCtrlItem* prepareNewPage()                                 { return pagectrl.prepareNewPage();         }
+	RPPageCtrlItem* insertPage( CWnd* wnd, const rp::string& label ) { return pagectrl.insertPage( wnd, label ); }
+	void removePage( RPPageCtrlItem* page )                          { pagectrl.removePage( page );              }
+	void selectFirst()                                               { pagectrl.selectFirst();                   }
 
 protected:
 	//{{AFX_VIRTUAL(RPProjectBar)

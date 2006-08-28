@@ -32,12 +32,12 @@ private:
 // ----------------------------------------------------------------------------
 // ---------- RPCtrlToolbarMFC
 // ----------------------------------------------------------------------------
-class RPBitmap;
+class RPPixmap;
 
 class RPCtrlToolbarMFC: public RPCtrlToolbar
 {
 private:
-	std::list< RPBitmap* > bitmaps;
+	std::list< RPPixmap* > bitmaps;
 
 public:
 	RPToolbarToolTip toolbar;

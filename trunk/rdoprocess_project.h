@@ -23,11 +23,11 @@ public:
 	virtual rp::string getClassName() const { return "RPProjectMFC"; }
 	virtual std::ofstream& log() const;
 	virtual RPCtrlToolbar* createToolBar( const rp::string& caption );
-	virtual RPBitmap*      createBitmap( char* xpm[] );
+	virtual RPPixmap*      createBitmap( char* xpm[] );
 	virtual bool lockResource( rpMethod::RPMethod* method );
 	virtual void unlockResource();
 	virtual HWND getMainWnd();
-	virtual void makeFlowChart( RPObjectFlowChart* flowobj );
+	virtual void makeFlowChartWnd( RPObjectFlowChart* flowobj );
 
 	void open();
 	void save();

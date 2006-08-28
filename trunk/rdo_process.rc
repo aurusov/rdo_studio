@@ -96,6 +96,7 @@ IDR_TOOLBAR_STYLEANDCOLOR BITMAP                  "res\\toolbar_styleandcolor.bm
 IDR_TOOLBAR_MAINFRAME   BITMAP                  "res\\toolbar_mainframe.bmp"
 IDR_TOOLBAR_EMPTY       BITMAP                  "res\\toolbar_empty.bmp"
 IDR_TOOLBAR_MAINFRAME_D BITMAP                  "res\\toolbar_mainframe_d.bmp"
+IDB_FLOWCHART_DEFAULT   BITMAP                  "res\\flowchart_default.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -123,9 +124,9 @@ STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSM
 CAPTION "Выбор метода"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    CONTROL         "",IDC_METHOD_LIST,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_SORTASCENDING | LVS_ALIGNLEFT | WS_TABSTOP,4,4,172,140,WS_EX_CLIENTEDGE
-    LTEXT           "Описание:",IDC_STATIC,180,16,120,8
-    LTEXT           "",IDC_METHOD_DESC,180,28,120,116
+    CONTROL         "",IDC_METHOD_LIST,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_SORTASCENDING | LVS_NOLABELWRAP | LVS_OWNERDRAWFIXED | LVS_ALIGNLEFT | LVS_NOSORTHEADER | WS_TABSTOP,4,4,172,140,WS_EX_CLIENTEDGE
+    LTEXT           "Описание:",IDC_STATIC,180,20,120,8
+    LTEXT           "",IDC_METHOD_DESC,180,36,120,108
     DEFPUSHBUTTON   "OK",IDOK,192,152,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,248,152,50,14
 END
@@ -199,7 +200,7 @@ END
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
 IDR_MAINFRAME           ICON                    "res\\rdo_process.ico"
-IDR_RDO_PRTYPE          ICON                    "res\\flowchart_icon.ico"
+IDR_FLOWCHART_TYPE      ICON                    "res\\flowchart_icon.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -293,7 +294,7 @@ END
 STRINGTABLE 
 BEGIN
     IDR_MAINFRAME           "rdo_process"
-    IDR_RDO_PRTYPE          "\nrpr\nrpr"
+    IDR_FLOWCHART_TYPE      "\nfchart\nfchart"
 END
 
 STRINGTABLE 

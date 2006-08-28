@@ -3,9 +3,11 @@
 #include "rdoprocess_app.h"
 #include "rdoprocess_xml.h"
 #include "rdoprocess_childfrm.h"
-#include "ctrl/rdoprocess_bitmap.h"
+#include "rdoprocess_docview.h"
+#include "ctrl/rdoprocess_pixmap.h"
 #include "ctrl/rdoprocess_toolbar.h"
 #include <rdoprocess_object_flowchart.h>
+#include <rdoprocess_method.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -45,9 +47,9 @@ RPCtrlToolbar* RPProjectMFC::createToolBar( const rp::string& caption )
 	return toolbar;
 }
 
-RPBitmap* RPProjectMFC::createBitmap( char* xpm[] )
+RPPixmap* RPProjectMFC::createBitmap( char* xpm[] )
 {
-	return new RPBitmapMFC( xpm );
+	return new RPPixmapMFC( xpm );
 }
 
 bool RPProjectMFC::lockResource( rpMethod::RPMethod* method )
@@ -98,15 +100,38 @@ void RPProjectMFC::load( rp::RPXMLNode* node )
 	while ( flowchart_node = static_cast<RPXMLNodeMFC*>(node->nextChild(flowchart_node)) ) {
 		if ( flowchart_node->getName() == "flowchart" ) {
 			RPObjectFlowChart* flowobj = static_cast<RPObjectFlowChart*>(rpMethod::factory->getNewObject( flowchart_node->getAttribute("class"), rpMethod::project ));
-			rpMethod::project->makeFlowChart( flowobj );
 			flowobj->load( flowchart_node );
 		}
 	}
 }
 
-void RPProjectMFC::makeFlowChart( RPObjectFlowChart* flowobj )
+void RPProjectMFC::makeFlowChartWnd( RPObjectFlowChart* flowobj )
 {
-	RPChildFrame* child = static_cast<RPChildFrame*>(rpapp.mainFrame->CreateNewChild( RUNTIME_CLASS(RPChildFrame), IDR_RDO_PRTYPE, rpapp.m_hMDIMenu, rpapp.m_hMDIAccel ));
-	child->SetIcon( rpapp.LoadIcon(IDR_RDO_PRTYPE), true );
-	child->makeFlowChart( flowobj );
+	BOOL maximized = false;
+	rpapp.mainFrame->MDIGetActive( &maximized );
+
+	RPDoc* doc = static_cast<RPDoc*>(rpapp.mainFrame->flowchartDocTemplate->OpenDocumentFile( NULL ));
+	flowobj->setCorrectName( flowobj->getMethod()->getName() );
+	doc->SetTitle( flowobj->getName().c_str() );
+	RPChildFrame* mdi = static_cast<RPChildFrame*>(doc->getView()->GetParent());
+	mdi->SetIcon( flowobj->getMethod()->getPixmap()->getIcon(), true );
+	if ( maximized ) {
+		mdi->ShowWindow( SW_HIDE );
+		mdi->MDIRestore();
+		mdi->ShowWindow( SW_HIDE );
+	}
+	doc->getView()->makeFlowChartWnd( flowobj );
+	if ( maximized ) {
+		mdi->MDIMaximize();
+	}
+/*
+CDocument::SetTitle Ч установить заголовок дл€ документа
+
+CChildFrame::OnUpdateFrameTitle Ч переопределить дл€ своих нужд Ч mdiчилды
+
+CFrameWnd::OnUpdateFrameTitle Ч переопределить дл€ своих нужд Ч главное окно
+
+AfxSetWindowText Ч нужно вызывать дл€ правильного(чилд или главное окно) окна, иначе ничего видно не будет.
+CViewXXX €вл€етюс€ чилдома у CMDIChildWnd
+*/
 }

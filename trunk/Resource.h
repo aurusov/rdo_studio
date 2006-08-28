@@ -5,7 +5,7 @@
 #define IDR_RT_MANIFEST1                1
 #define IDC_FLOW_SELECT                 104
 #define IDR_MAINFRAME                   128
-#define IDR_RDO_PRTYPE                  129
+#define IDR_FLOWCHART_TYPE              129
 #define IDC_FLOW_ROTATE                 138
 #define IDC_FLOW_CONNECTOR              139
 #define IDC_FLOW_SCALE_TB               140
@@ -26,9 +26,9 @@
 #define IDR_TOOLBAR_EMPTY               175
 #define IDR_TOOLBAR_MAINFRAME_D         182
 #define IDD_METHOD_NEW                  183
+#define IDB_FLOWCHART_DEFAULT           185
 #define IDC_METHOD_LIST                 1016
 #define IDC_METHOD_DESC                 1017
-#define IDC_LIST1                       1018
 #define IDC_ABOUT_CAPTION               1082
 #define IDC_ABOUT_PICTURE               1083
 #define IDC_ABOUT_ADDRESS               1084
@@ -58,7 +58,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        184
+#define _APS_NEXT_RESOURCE_VALUE        186
 #define _APS_NEXT_COMMAND_VALUE         32812
 #define _APS_NEXT_CONTROL_VALUE         1019
 #define _APS_NEXT_SYMED_VALUE           101

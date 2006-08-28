@@ -2,7 +2,8 @@
 #include "rdoprocess_object_flowchart.h"
 #include "rdoprocess_flowchart.h"
 #include "rdoprocess_messages.h"
-#include <rdoprocess_bitmap.h>
+#include "rdoprocess_method.h"
+#include <rdoprocess_pixmap.h>
 #include <rdoprocess_xml.h>
 
 #ifdef _DEBUG
@@ -97,6 +98,11 @@ void RPObjectFlowChart::init()
 
 	makeNewPixmap();
 	update();
+}
+
+void RPObjectFlowChart::after_constructor()
+{
+	rpMethod::project->makeFlowChartWnd( this );
 }
 
 void RPObjectFlowChart::load( rp::RPXMLNode* node )
@@ -238,7 +244,7 @@ rp::rect RPObjectFlowChart::getMaxRect()
 	return rp::rect( rect.getMinX() - matrix_transform.dx_const() - 100, rect.getMinY() - matrix_transform.dy_const() - 100, rect.getMaxX() - matrix_transform.dx_const() + 100, rect.getMaxY() - matrix_transform.dy_const() + 100 );
 }
 
-RPBitmap* bmp = NULL;
+RPPixmap* bmp = NULL;
 //#include "red.xpm"
 
 void RPObjectFlowChart::draw( CDC& dc )

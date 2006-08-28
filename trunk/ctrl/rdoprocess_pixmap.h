@@ -5,16 +5,17 @@
 #pragma once
 #endif
 
-#include <rdoprocess_bitmap.h>
+#include <rdoprocess_pixmap.h>
 
 // ----------------------------------------------------------------------------
-// ---------- RPBitmap
+// ---------- RPPixmap
 // ----------------------------------------------------------------------------
-class RPBitmapMFC: public RPBitmap
+class RPPixmapMFC: public RPPixmap
 {
 private:
-	CBitmap bmp;
-	BITMAP  bmp_info;
+	CBitmap  bmp;
+	BITMAP   bmp_info;
+	COLORREF transparent;
 	struct Pixel {
 		unsigned int r;
 		unsigned int g;
@@ -47,11 +48,16 @@ private:
 	Pixel      getNextPixel( rp::string& line );
 
 public:
-	RPBitmapMFC( char* xpm[] );
+	RPPixmapMFC( char* xpm[] );
+	RPPixmapMFC( HICON icon );
+	RPPixmapMFC( unsigned int resource, COLORREF _transparent );
 	virtual HBITMAP getBitmap()   { return reinterpret_cast<HBITMAP>(bmp.m_hObject); }
 	virtual CBitmap& getCBitmap() { return bmp;                                      }
 	virtual int getWidth();
 	virtual int getHeight();
+	virtual HICON getIcon();
+	virtual void Draw( HDC hdc, int x, int y, int cx );
+	COLORREF getTransparent() const { return transparent; }
 };
 
 #endif // RDO_PROCESS_BITMAP_H

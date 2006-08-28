@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "rdoprocess_bitmap.h"
+#include "rdoprocess_pixmap.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

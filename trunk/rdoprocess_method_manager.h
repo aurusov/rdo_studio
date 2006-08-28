@@ -14,6 +14,7 @@ class RPMethod;
 
 class RPMethodPlugin
 {
+friend class RPMethodManager;
 private:
 	rp::string          file_name;
 	HMODULE             lib;
@@ -37,11 +38,12 @@ class RPMethodManager
 protected:
 	std::vector< RPMethodPlugin* > methods;
 	void enumPlugins( const std::string& mask );
+	std::list< CImageList* > im_lists;
 
 public:
 	RPMethodManager();
 	virtual ~RPMethodManager();
-	
+
 	RPMethodPlugin* find( rpMethod::RPMethod* method ) const {
 		std::vector< RPMethodPlugin* >::const_iterator it = methods.begin();
 		while ( it != methods.end() ) {
@@ -59,15 +61,26 @@ public:
 // ----------------------------------------------------------------------------
 // ---------- RPMethodNewDlg
 // ----------------------------------------------------------------------------
+class CListCtrlDraw: public CListCtrl
+{
+public:
+	virtual void DrawItem( LPDRAWITEMSTRUCT lpDrawItemStruct );
+};
+
 class RPMethodNewDlg: public CDialog
 {
 public:
 	RPMethodNewDlg();
 	virtual ~RPMethodNewDlg();
 
+	rpMethod::RPMethod* getMethod() const { return method; }
+
 protected:
+	rpMethod::RPMethod* method;
+	CImageList im_list;
+
 	//{{AFX_DATA(RPMethodNewDlg)
-	CListCtrl methods;
+	CListCtrlDraw methods;
 	CStatic   desc;
 	//}}AFX_DATA
 
@@ -75,6 +88,7 @@ protected:
 	protected:
 	virtual void DoDataExchange( CDataExchange* pDX );
 	virtual BOOL OnInitDialog();
+	virtual void OnOK();
 	//}}AFX_VIRTUAL
 
 protected:
@@ -85,6 +99,9 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnMethodListItem—hanged(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnMethodListDblClick(NMHDR *pNMHDR, LRESULT *pResult);
+public:
+	afx_msg void OnMethodListClick(NMHDR *pNMHDR, LRESULT *pResult);
 };
 
 #endif // RDO_PROCESS_METHOD_MANAGER_H

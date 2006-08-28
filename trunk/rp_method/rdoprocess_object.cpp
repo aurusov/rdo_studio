@@ -131,6 +131,16 @@ void RPObject::setCorrectChildName( RPObject* obj )
 	}
 }
 
+void RPObject::setCorrectName( const rp::string& value )
+{
+	name = value;
+	if ( parent ) {
+		parent->setCorrectChildName( this );
+	}
+	modify();
+	if ( rpMethod::project ) rpMethod::project->sendMessage( this, rp::msg::RP_OBJ_NAMECHANGED );
+}
+
 void RPObject::setSelected( bool value )
 {
 	if ( selected != value ) {

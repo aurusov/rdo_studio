@@ -8,9 +8,10 @@
 #include "rdoprocess_object.h"
 #include <rdoprocess_toolbar.h>
 
+class RPObjectFlowChart;
 class RPObjectFactory;
 class RPProject;
-class RPBitmap;
+class RPPixmap;
 
 namespace rpMethod {
 
@@ -20,36 +21,48 @@ namespace rpMethod {
 class RPMethod: public RPObject
 {
 public:
-	struct Info {
-		rp::string name;
-		int version_major;
-		int version_minor;
-		int version_build;
-		rp::string version_info;
-		rp::string description;
-		Info(): name( "" ), version_major( 0 ), version_minor( 0 ), version_build( 0 ), version_info( "" ), description( "" ) {}
-	};
 	enum PMSize {
 		pm_big,
 		pm_small
 	};
 
 protected:
-	RPBitmap* pixmap_big;
-	RPBitmap* pixmap_small;
+	RPPixmap* pixmap_big;
+	RPPixmap* pixmap_small;
 
 public:
-	RPMethod( RPObject* parent );
+	RPMethod( RPObject* parent, const rp::string name );
 	virtual ~RPMethod();
-	virtual Info getInfo() const = 0;
+
+	virtual int getVersionMajor() const       { return 0;  }
+	virtual int getVersionMinor() const       { return 1;  }
+	virtual int getVersionBuild() const       { return 1;  }
+	virtual rp::string getVersionDesc() const { return ""; }
+	virtual rp::string getDescription() const { return ""; }
+
 	virtual void buttonCommand( int button_id ) {};
 	virtual void buttonUpdate( RPCtrlToolbar::ButtonUpdate& button_update ) {};
+	virtual RPObjectFlowChart* makeFlowChart( RPObject* parent ) = 0;
 
-	RPBitmap* getPixmap( PMSize size ) const {
+	RPPixmap* getPixmap( PMSize size = pm_small ) const {
 		switch ( size ) {
 			case pm_big  : return pixmap_big;
 			case pm_small: return pixmap_small;
 		}
+		return pixmap_big;
+	}
+	void setPixmap( RPPixmap* pixmap, PMSize size = pm_small ) {
+		switch ( size ) {
+			case pm_big  : pixmap_big   = pixmap; break;
+			case pm_small: pixmap_small = pixmap; break;
+		}
+	}
+	bool hasPixmap( PMSize size = pm_small ) const {
+		switch ( size ) {
+			case pm_big  : return pixmap_big   ? true : false;
+			case pm_small: return pixmap_small ? true : false;
+		}
+		return false;
 	}
 };
 

@@ -13,6 +13,10 @@
 #include "res/method_small.xpm"
 #include "res/generate.xpm"
 #include "res/generate_setup.xpm"
+#include "res/block_create.xpm"
+#include "res/block_terminate.xpm"
+#include "res/block_process.xpm"
+#include "res/block_resource.xpm"
 
 #include <rdoprocess_object_chart.h>
 #include <rdoprocess_shape.h>
@@ -30,7 +34,7 @@ static char THIS_FILE[]=__FILE__;
 RPMethodProc2RDO_MJ* proc2rdo = NULL;
 
 RPMethodProc2RDO_MJ::RPMethodProc2RDO_MJ( RPObject* _parent ):
-	rpMethod::RPMethod( _parent ),
+	rpMethod::RPMethod( _parent, "РДО-Процесс" ),
 	RPObject_MJ( get_this() ),
 	btn_generate( -1 ),
 	btn_generate_setup( -1 ),
@@ -70,10 +74,10 @@ void RPMethodProc2RDO_MJ::registerObject()
 	rpMethod::factory->insertFactory( class_info );
 
 	// Потомки RPShape_MJ
-	rpMethod::factory->insertFactory( new RPObjectClassInfo( "RPShapeCreateMJ", "RPShape_MJ", RPShapeCreateMJ::newObject, this, _T("Генератор") ) );
-	rpMethod::factory->insertFactory( new RPObjectClassInfo( "RPShapeProcessMJ", "RPShape_MJ", RPShapeProcessMJ::newObject, this, _T("Процесс") ) );
-	rpMethod::factory->insertFactory( new RPObjectClassInfo( "RPShapeResource_MJ", "RPShape_MJ", RPShapeResource_MJ::newObject, this, _T("Ресурс") ) );
-	rpMethod::factory->insertFactory( new RPObjectClassInfo( "RPShapeTerminateMJ", "RPShape_MJ", RPShapeTerminateMJ::newObject, this, _T("Терминатор") ) );
+	rpMethod::factory->insertFactory( new RPObjectClassInfo( "RPShapeCreateMJ", "RPShape_MJ", RPShapeCreateMJ::newObject, this, _T("Генератор"), block_create_xpm, 0 ) );
+	rpMethod::factory->insertFactory( new RPObjectClassInfo( "RPShapeTerminateMJ", "RPShape_MJ", RPShapeTerminateMJ::newObject, this, _T("Терминатор"), block_terminate_xpm, 1 ) );
+	rpMethod::factory->insertFactory( new RPObjectClassInfo( "RPShapeProcessMJ", "RPShape_MJ", RPShapeProcessMJ::newObject, this, _T("Процесс"), block_process_xpm, 2 ) );
+	rpMethod::factory->insertFactory( new RPObjectClassInfo( "RPShapeResource_MJ", "RPShape_MJ", RPShapeResource_MJ::newObject, this, _T("Ресурс"), block_resource_xpm, 3 ) );
 
 	RPCtrlToolbar* toolbar = rpMethod::project->createToolBar( _T("РДО-Процесс") );
 	btn_generate       = toolbar->insertButton( this, generate_xpm, _T("Создать модель") );
@@ -89,6 +93,11 @@ RP_METHOD_DLL rpMethod::RPMethod* registerMethod( RPObjectFactory* _factory, RPP
 	proc2rdo->registerObject();
 
 	return proc2rdo;
+}
+
+RPObjectFlowChart* RPMethodProc2RDO_MJ::makeFlowChart( RPObject* parent )
+{
+	return new RPObjectFlowChart_MJ( parent );
 }
 
 void RPMethodProc2RDO_MJ::buttonCommand( int button_id )
@@ -107,18 +116,6 @@ void RPMethodProc2RDO_MJ::buttonCommand( int button_id )
 void RPMethodProc2RDO_MJ::buttonUpdate( RPCtrlToolbar::ButtonUpdate& button_update )
 {
 	button_update.enable = true;
-}
-
-rpMethod::RPMethod::Info RPMethodProc2RDO_MJ::getInfo() const
-{
-	rpMethod::RPMethod::Info info;
-	info.name = "РДО-Процесс";
-	info.version_major = 0;
-	info.version_minor = 1;
-	info.version_build = 1;
-	info.version_info  = "альфа";
-	info.description   = "Переводит квадратики в паттерны";
-	return info;
 }
 
 void RPMethodProc2RDO_MJ::generate()

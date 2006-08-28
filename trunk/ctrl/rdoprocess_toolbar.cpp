@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "rdoprocess_toolbar.h"
-#include "rdoprocess_bitmap.h"
+#include "rdoprocess_pixmap.h"
 #include "../rdoprocess_project.h"
 #include "../resource.h"
 
@@ -58,7 +58,7 @@ RPCtrlToolbarMFC::RPCtrlToolbarMFC( CWnd* parent ):
 
 RPCtrlToolbarMFC::~RPCtrlToolbarMFC()
 {
-	std::list< RPBitmap* >::iterator it = bitmaps.begin();
+	std::list< RPPixmap* >::iterator it = bitmaps.begin();
 	while ( it != bitmaps.end() ) {
 		delete *it;
 		it++;
@@ -76,7 +76,7 @@ int RPCtrlToolbarMFC::insertButton( rpMethod::RPMethod* method, char* xpm[], con
 		}
 	}
 
-	RPBitmapMFC* bmp_xpm = new RPBitmapMFC( xpm );
+	RPPixmapMFC* bmp_xpm = new RPPixmapMFC( xpm );
 	bitmaps.push_back( bmp_xpm );
 	tb_ctrl.AddBitmap( 1, &bmp_xpm->getCBitmap() );
 

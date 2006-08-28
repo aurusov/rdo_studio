@@ -13,6 +13,7 @@ RPObjectFlowChart_MJ::RPObjectFlowChart_MJ( RPObject* parent ):
 	RPObjectFlowChart( parent ),
 	RPObject_MJ( get_this() )
 {
+	after_constructor();
 /*
 	RPShapeCreateMJ* shape_create = new RPShapeCreateMJ( this );
 	shape_create->setPosition( 100, 100 );
@@ -56,4 +57,9 @@ RPObjectFlowChart_MJ::RPObjectFlowChart_MJ( RPObject* parent ):
 RPObject* RPObjectFlowChart_MJ::newObject( RPObject* _parent )
 {
 	return new RPObjectFlowChart_MJ( _parent );
+}
+
+rpMethod::RPMethod* RPObjectFlowChart_MJ::getMethod()
+{
+	return proc2rdo;
 }

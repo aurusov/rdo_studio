@@ -2,6 +2,7 @@
 #define RDO_PROCESS_PAGECTRL_H
 
 #include <rdoprocess_string.h>
+#include "rdoprocess_pixmap.h"
 
 #if _MSC_VER > 1000
 #pragma once
@@ -36,7 +37,7 @@ public:
 	virtual ~RPPageCtrl();
 
 	RPPageCtrlItem* prepareNewPage();
-	void insertPage( CWnd* wnd, const rp::string& label );
+	RPPageCtrlItem* insertPage( CWnd* wnd, const rp::string& label );
 	void removePage( RPPageCtrlItem* page );
 
 	void selectFirst();
@@ -110,6 +111,9 @@ protected:
 
 	void hide();
 	void show();
+
+public:
+	void setPixmap( RPPixmapMFC& bmp );
 
 protected:
 	//{{AFX_VIRTUAL(RPPageCtrlItem)

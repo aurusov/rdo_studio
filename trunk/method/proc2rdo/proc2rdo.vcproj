@@ -612,6 +612,22 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 			<File
+				RelativePath=".\res\block_create.xpm"
+				>
+			</File>
+			<File
+				RelativePath=".\res\block_process.xpm"
+				>
+			</File>
+			<File
+				RelativePath=".\res\block_resource.xpm"
+				>
+			</File>
+			<File
+				RelativePath=".\res\block_terminate.xpm"
+				>
+			</File>
+			<File
 				RelativePath=".\res\generate.xpm"
 				>
 			</File>

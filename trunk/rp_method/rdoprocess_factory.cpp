@@ -2,6 +2,8 @@
 #include "rdoprocess_factory.h"
 #include "rdoprocess_connector.h"
 #include "rdoprocess_method.h"
+#include "block_default.xpm"
+#include <rdoprocess_pixmap.h>
 #include <fstream>
 
 #ifdef _DEBUG
@@ -21,25 +23,32 @@ RPObjectClassInfo::RPObjectClassInfo( const rp::string& _class_name, RPObjectCla
 	class_name( _class_name ),
 	makeObject( _makeObject ),
 	method( NULL ),
-	label( "" )
+	label( "" ),
+	preview( NULL ),
+	order( -1 )
 {
 	multiParent( _parent );
 }
 
-RPObjectClassInfo::RPObjectClassInfo( const rp::string& _class_name, const rp::string& _parent, MakeObject _makeObject, rpMethod::RPMethod* _method, const rp::string& _label ):
+RPObjectClassInfo::RPObjectClassInfo( const rp::string& _class_name, const rp::string& _parent, MakeObject _makeObject, rpMethod::RPMethod* _method, const rp::string& _label, char* _xpm[], int _order ):
 	class_name( _class_name ),
 	makeObject( _makeObject ),
 	method( _method ),
-	label( _label )
+	label( _label ),
+	preview( NULL ),
+	order( _order )
 {
 	multiParent( _parent );
+	if ( _xpm ) preview = rpMethod::project->createBitmap( _xpm );
 }
 
 RPObjectClassInfo::RPObjectClassInfo( const RPObjectClassInfo& copy ):
 	class_name( copy.class_name ),
 	makeObject( copy.makeObject ),
 	method( copy.method ),
-	label( copy.label )
+	label( copy.label ),
+	preview( copy.preview ),
+	order( copy.order )
 {
 	parent.clear();
 	parent.assign( copy.parent.begin(), copy.parent.end() );
@@ -78,6 +87,7 @@ RPObjectClassInfo::~RPObjectClassInfo()
 		}
 		child_it++;
 	}
+	if ( preview ) delete preview;
 	rpMethod::project->log() << "delete factory " << class_name << " .. ok" << std::endl;
 }
 
@@ -92,6 +102,14 @@ void RPObjectClassInfo::multiParent( RPObjectClassInfo* _parent )
 void RPObjectClassInfo::multiParent( const rp::string& _parent )
 {
 	multiParent( rpMethod::factory->getClassInfo( _parent ) );
+}
+
+RPPixmap* RPObjectClassInfo::getPreview()
+{
+	if ( !preview ) {
+		preview = rpMethod::project->createBitmap( block_default_xpm );
+	}
+	return preview;
 }
 
 // ----------------------------------------------------------------------------

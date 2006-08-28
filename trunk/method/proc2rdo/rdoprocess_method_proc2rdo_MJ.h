@@ -26,8 +26,11 @@ protected:
 public:
 	RPMethodProc2RDO_MJ( RPObject* _parent );
 	virtual rp::string getClassName() const { return "RPMethodProc2RDO_MJ"; }
-	virtual Info getInfo() const;
 	void registerObject();
+	virtual rp::string getVersionDesc() const { return "альфа"; }
+	virtual rp::string getDescription() const { return "Переводит квадратики в паттерны"; }
+
+	virtual RPObjectFlowChart* makeFlowChart( RPObject* parent );
 
 	double generate_time_MJ;
 	RPCreationRDOFilesMJ* RDOfiles;

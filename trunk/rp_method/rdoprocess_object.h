@@ -68,6 +68,7 @@ public:
 	rp::string getName() const { return name; }
 	rp::string getFullName() const;
 	virtual bool setName( const rp::string& value );
+	void setCorrectName( const rp::string& value );
 
 	bool isSelected() const { return selected; }
 	virtual void setSelected( bool value );

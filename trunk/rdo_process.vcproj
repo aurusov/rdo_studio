@@ -219,7 +219,7 @@
 			Name="Ctrl"
 			>
 			<Filter
-				Name="Ctrl Source Files"
+				Name="controls"
 				>
 				<File
 					RelativePath="ctrl\rdolink.cpp"
@@ -243,14 +243,6 @@
 				</File>
 				<File
 					RelativePath="ctrl\rdolink.h"
-					>
-				</File>
-				<File
-					RelativePath=".\ctrl\rdoprocess_bitmap.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\ctrl\rdoprocess_bitmap.h"
 					>
 				</File>
 				<File
@@ -299,6 +291,14 @@
 				</File>
 				<File
 					RelativePath="ctrl\rdoprocess_pagectrl.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ctrl\rdoprocess_pixmap.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ctrl\rdoprocess_pixmap.h"
 					>
 				</File>
 				<File
@@ -482,6 +482,18 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="clonebitmap"
+				>
+				<File
+					RelativePath=".\ctrl\clonebitmap\CloneBitmap.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ctrl\clonebitmap\CloneBitmap.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="RDOProcess"
@@ -529,6 +541,10 @@
 							PreprocessorDefinitions=""
 						/>
 					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\rdoprocess_docview.cpp"
+					>
 				</File>
 				<File
 					RelativePath="rdoprocess_mainfrm.cpp"
@@ -593,6 +609,10 @@
 				</File>
 				<File
 					RelativePath="rdoprocess_childfrm.h"
+					>
+				</File>
+				<File
+					RelativePath=".\rdoprocess_docview.h"
 					>
 				</File>
 				<File
@@ -686,6 +706,10 @@
 				</File>
 				<File
 					RelativePath="res\flow_select.cur"
+					>
+				</File>
+				<File
+					RelativePath=".\res\flowchart_default.bmp"
 					>
 				</File>
 				<File

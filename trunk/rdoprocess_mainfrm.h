@@ -35,6 +35,8 @@ private:
 
 	void insertToolBar( CToolBar* toolbar );
 
+	CMultiDocTemplate* flowchartDocTemplate;
+
 protected:
 	CStatusBar  m_wndStatusBar;
 	RDOToolBar  m_wndToolBar;

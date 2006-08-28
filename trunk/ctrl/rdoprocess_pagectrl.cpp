@@ -149,7 +149,7 @@ RPPageCtrlItem* RPPageCtrl::prepareNewPage()
 	return page;
 }
 
-void RPPageCtrl::insertPage( CWnd* wnd, const rp::string& label )
+RPPageCtrlItem* RPPageCtrl::insertPage( CWnd* wnd, const rp::string& label )
 {
 	RPPageCtrlItem* page = prepareNewPage();
 	it_current = items.end();
@@ -157,6 +157,7 @@ void RPPageCtrl::insertPage( CWnd* wnd, const rp::string& label )
 	page->wnd = wnd;
 	page->label.SetWindowText( label.c_str() );
 	page->show();
+	return page;
 }
 
 void RPPageCtrl::removePage( RPPageCtrlItem* page )
@@ -356,11 +357,11 @@ void RPPageCtrlItemLabel::OnPaint()
 	text_rect.left  = label_bmp_rect.right + 2;
 	text_rect.right = close_bmp_rect.left - 2;
 	CRect text_rect_calc = client_rect;
-	dc.DrawText( str, text_rect_calc, DT_SINGLELINE | DT_CENTER | DT_CALCRECT );
+	dc.DrawText( str, text_rect_calc, DT_SINGLELINE | DT_CENTER | DT_CALCRECT | DT_VCENTER );
 	if ( text_rect_calc.Width() > text_rect.Width() ) {
-		dc.DrawText( str, text_rect, DT_SINGLELINE | DT_LEFT );
+		dc.DrawText( str, text_rect, DT_SINGLELINE | DT_LEFT | DT_VCENTER );
 	} else {
-		dc.DrawText( str, text_rect, DT_SINGLELINE | DT_CENTER );
+		dc.DrawText( str, text_rect, DT_SINGLELINE | DT_CENTER | DT_VCENTER );
 	}
 	CDC mem_dc;
 	mem_dc.CreateCompatibleDC( &dc );
@@ -383,9 +384,11 @@ CRect RPPageCtrlItemLabel::getLabelBMPRect()
 	label_bmp.GetBitmap( &bmp );
 	CRect rect;
 	rect.left   = 2;
-	rect.top    = 2;
+	rect.top    = 0;
 	rect.right  = rect.left + bmp.bmWidth;
 	rect.bottom = rect.top + bmp.bmHeight;
+	rect.right  = rect.left + 16;
+	rect.bottom = rect.top + 16;
 	return rect;
 }
 
@@ -492,6 +495,7 @@ int RPPageCtrlItem::OnCreate( LPCREATESTRUCT lpCreateStruct )
 		dc->RestoreDC( -1 );
 		ReleaseDC( dc );
 		pagectrl->label_height = label_window_rect.Width() - label_client_rect.Width() + size.cy;
+		if ( pagectrl->label_height < 16 + label_window_rect.Height() - label_client_rect.Height() ) pagectrl->label_height = 16 + label_window_rect.Height() - label_client_rect.Height();
 	}
 	label.SetWindowPos( NULL, 0, 0, 0, pagectrl->label_height, 0 );
 
@@ -506,6 +510,25 @@ BOOL RPPageCtrlItem::DestroyWindow()
 		wnd = NULL;
 	}
 	return CWnd::DestroyWindow();
+}
+
+void RPPageCtrlItem::setPixmap( RPPixmapMFC& bmp )
+{
+	label.label_bmp.DeleteObject();
+	BITMAP bmp_info;
+	bmp.getCBitmap().GetBitmap( &bmp_info );
+	label.label_bmp.CreateBitmapIndirect( &bmp_info );
+
+	CDC* desktopDC = CWnd::GetDesktopWindow()->GetDC();
+	CDC mem_dc;
+	if ( mem_dc.CreateCompatibleDC( desktopDC ) ) {
+		HGDIOBJ bmp_old = mem_dc.SelectObject( label.label_bmp );
+		mem_dc.PatBlt( 0, 0, bmp.getWidth(), bmp.getHeight(), WHITENESS );
+		bmp.Draw( mem_dc.m_hDC, 0, 0, bmp.getWidth() );
+		mem_dc.SelectObject( bmp_old );
+	}
+
+	CWnd::GetDesktopWindow()->ReleaseDC( desktopDC );
 }
 
 void RPPageCtrlItem::OnSize( UINT nType, int cx, int cy )

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "rdoprocess_method.h"
 #include "rdoprocess_factory.h"
+#include <rdoprocess_pixmap.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -13,8 +14,8 @@ using namespace rpMethod;
 // ----------------------------------------------------------------------------
 // ---------- RPMethod
 // ----------------------------------------------------------------------------
-RPMethod::RPMethod( RPObject* _parent ):
-	RPObject( _parent, "method" ),
+RPMethod::RPMethod( RPObject* _parent, const rp::string _name ):
+	RPObject( _parent, _name ),
 	pixmap_big( NULL ),
 	pixmap_small( NULL )
 {

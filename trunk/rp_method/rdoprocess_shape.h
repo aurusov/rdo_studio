@@ -6,7 +6,6 @@
 #endif // _MSC_VER > 1000
 
 #include "rdoprocess_object_matrix.h"
-//#include "rdoprocess_connector.h"
 
 #include <vector>
 

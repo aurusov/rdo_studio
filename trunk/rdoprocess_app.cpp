@@ -4,6 +4,7 @@
 #include "rdoprocess_childfrm.h"
 #include "ctrl/rdoprocess_pagectrl.h"
 #include <rdoprocess_factory.h>
+#include <rdoprocess_method.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -134,7 +135,11 @@ BOOL RPApp::PreTranslateMessage( MSG* pMsg )
 void RPApp::OnFileNew() 
 {
 	RPMethodNewDlg dlg;
-	dlg.DoModal();
+	if ( dlg.DoModal() == IDOK ) {
+		if ( dlg.getMethod() ) {
+			dlg.getMethod()->makeFlowChart( rpMethod::project );
+		}
+	}
 //	CWnd* child = mainFrame->CreateNewChild( RUNTIME_CLASS(RPChildFrame), IDR_RDO_PRTYPE, m_hMDIMenu, m_hMDIAccel );
 //	child->SetIcon( LoadIcon(IDR_RDO_PRTYPE), true );
 }
