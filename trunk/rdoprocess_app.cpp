@@ -48,6 +48,7 @@ BOOL RPApp::InitInstance()
 		::CoUninitialize();
 		return false;
 	}
+	AfxOleInit();
 
 	SetRegistryKey(_T("Local AppWizard-Generated Applications"));
 

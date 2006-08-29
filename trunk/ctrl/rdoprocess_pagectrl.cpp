@@ -2,6 +2,7 @@
 #include "rdoprocess_pagectrl.h"
 #include "mctranspblt/McTransparentBlit.h"
 #include "../resource.h"
+#include <rdoprocess_factory.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -448,6 +449,7 @@ BEGIN_MESSAGE_MAP(RPPageCtrlItem, CWnd)
 	//{{AFX_MSG_MAP(RPPageCtrlItem)
 	ON_WM_CREATE()
 	ON_WM_SIZE()
+	ON_NOTIFY(LVN_BEGINDRAG, 1, &RPPageCtrlItem::OnListCtrlBeginDrag)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -469,7 +471,6 @@ BOOL RPPageCtrlItem::PreCreateWindow( CREATESTRUCT& cs )
 	cs.dwExStyle &= ~WS_EX_CLIENTEDGE;
 	cs.style &= ~WS_BORDER;
 	cs.lpszClass = AfxRegisterWndClass( CS_HREDRAW | CS_VREDRAW | CS_DBLCLKS, ::LoadCursor(NULL, IDC_ARROW), NULL, NULL );
-//	cs.lpszClass = AfxRegisterWndClass( CS_HREDRAW | CS_VREDRAW | CS_DBLCLKS, ::LoadCursor(NULL, IDC_ARROW), HBRUSH(COLOR_WINDOW+1), NULL );
 
 	return TRUE;
 }
@@ -559,3 +560,37 @@ void RPPageCtrlItem::show()
 	wnd->ShowWindow( SW_SHOW );
 	ShowWindow( SW_SHOW );
 }
+
+void RPPageCtrlItem::OnListCtrlBeginDrag( NMHDR* pNMHDR, LRESULT* pResult )
+{
+	// Это уведомление приходит только от CListCtrl, поэтому смело можем приводить тип
+	CListCtrl* list_ctrl = static_cast<CListCtrl*>(wnd);
+	list_ctrl->SetFocus();
+	RPObjectClassInfo* class_info = NULL;
+	if ( list_ctrl->GetItemCount() ) {
+		int index = list_ctrl->GetNextItem( -1, LVNI_SELECTED );
+		if ( index != -1 ) {
+			class_info = reinterpret_cast<RPObjectClassInfo*>(list_ctrl->GetItemData( index ));
+		}
+	}
+	if ( class_info ) {
+		TRACE( "drag&drop %s\n", class_info->getClassName().c_str() );
+		CSharedFile	sf( GMEM_MOVEABLE | GMEM_DDESHARE | GMEM_ZEROINIT );
+		CString		text( class_info->getClassName().c_str() );
+		sf.Write( text, text.GetLength() );
+		HGLOBAL hglobal = sf.Detach();
+		if ( hglobal ) {
+			COleDataSource source;
+			source.CacheGlobalData( CF_TEXT, hglobal );
+			DROPEFFECT result = source.DoDragDrop();
+			if ( result != DROPEFFECT_NONE ) {
+				TRACE( "drag&drop OK\n" );
+			} else {
+				TRACE( "drag&drop FAILD\n" );
+			}
+			::GlobalFree( hglobal );
+		}
+	}
+	*pResult = 0;
+}
+

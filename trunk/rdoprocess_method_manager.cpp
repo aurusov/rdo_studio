@@ -88,11 +88,13 @@ void RPMethodManager::init()
 
 static int CALLBACK BlocksCompareProc( LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort )
 {
-	if ( lParam1 != -1 && lParam2 != -1 ) {
-		return lParam1 > lParam2;
-	} else if ( lParam1 == -1 && lParam2 == -1 ) {
+	int order1 = reinterpret_cast<RPObjectClassInfo*>(lParam1)->getOrder();
+	int order2 = reinterpret_cast<RPObjectClassInfo*>(lParam2)->getOrder();
+	if ( order1 != -1 && order2 != -1 ) {
+		return order1 >= order2;
+	} else if ( order1 == -1 && order2 == -1 ) {
 		return 0;
-	} else if ( lParam1 == -1 ) {
+	} else if ( order1 == -1 ) {
 		return 1;
 	} else {
 		return -1;
@@ -121,7 +123,7 @@ void RPMethodManager::enumPlugins( const std::string& mask )
 							plugin->method->setPixmap( new RPPixmapMFC( IDB_FLOWCHART_DEFAULT, RGB(0xFF,0xFF,0xFF) ) );
 						}
 						CListCtrl* listctrl = new CListCtrl();
-						listctrl->Create( LVS_SORTASCENDING | LVS_AUTOARRANGE | LVS_ICON | LVS_SINGLESEL | LVS_NOLABELWRAP, CRect(0,0,1,1), rpapp.getProjectBar().prepareNewPage(), -1 );
+						listctrl->Create( WS_CHILD | LVS_SORTASCENDING | LVS_AUTOARRANGE | LVS_ICON | LVS_SINGLESEL | LVS_NOLABELWRAP, CRect(0,0,1,1), rpapp.getProjectBar().prepareNewPage(), 1 );
 						CImageList* im_list = new CImageList();
 						im_lists.push_back( im_list );
 						im_list->Create( 32, 32, ILC_MASK | ILC_COLOR32, 0, 1 );
@@ -134,7 +136,8 @@ void RPMethodManager::enumPlugins( const std::string& mask )
 							if ( (*it)->isKindOf( "RPShape" ) ) {
 								im_list->Add( &static_cast<RPPixmapMFC*>((*it)->getPreview())->getCBitmap(), static_cast<RPPixmapMFC*>((*it)->getPreview())->getTransparent() );
 								int id = listctrl->InsertItem( index, (*it)->getLabel().c_str(), index );
-								listctrl->SetItemData( id, (*it)->getOrder() );
+								RPObjectClassInfo* class_info = *it;
+								listctrl->SetItemData( id, reinterpret_cast<DWORD_PTR>(*it) );
 								index++;
 							}
 							it++;

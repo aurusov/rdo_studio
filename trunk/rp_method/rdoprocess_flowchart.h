@@ -63,6 +63,7 @@ public:
 	virtual ~RPFlowChart();
 	
 	void init();
+	RPObjectFlowChart& getObjectFlowChart() const { return *flowobj; }
 
 	//{{AFX_VIRTUAL(RPFlowChart)
 	public:

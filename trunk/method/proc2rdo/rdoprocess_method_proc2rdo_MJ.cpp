@@ -64,7 +64,7 @@ void RPMethodProc2RDO_MJ::registerObject()
 	rpMethod::factory->insertFactory( class_info );
 
 	// Потомки RPObjectFlowChart
-	class_info = new RPObjectClassInfo( "RPObjectFlowChart_MJ", "RPObjectFlowChart", RPObjectFlowChart_MJ::newObject );
+	class_info = new RPObjectClassInfo( "RPObjectFlowChart_MJ", "RPObjectFlowChart", RPObjectFlowChart_MJ::newObject, this, _T("РДО-Процесс") );
 	class_info->multiParent( "RPObject_MJ" );
 	rpMethod::factory->insertFactory( class_info );
 
