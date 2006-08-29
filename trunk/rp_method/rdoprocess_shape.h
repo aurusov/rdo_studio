@@ -135,7 +135,7 @@ public:
 	int getDockIndex( const RPConnectorDock* dock ) const;
 	RPConnectorDock* getDock( unsigned int index ) const { return index < docks.size() ? docks[index] : NULL; }
 
-	virtual void setPosition( int x, int y );
+	virtual void setPosition( double posx, double posy );
 
 	void setBgBrush( const CBrush& brush );
 

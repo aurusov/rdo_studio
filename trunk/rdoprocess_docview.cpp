@@ -142,16 +142,10 @@ void RPView::OnDraw(CDC* /*pDC*/)
 	if ( !pDoc ) return;
 }
 
-DROPEFFECT RPView::OnDragEnter( COleDataObject* pDataObject, DWORD dwKeyState, CPoint point )
-{
-	CView::OnDragEnter( pDataObject, dwKeyState, point );
-	return DROPEFFECT_MOVE;
-}
-
-DROPEFFECT RPView::OnDragOver( COleDataObject* pDataObject, DWORD dwKeyState, CPoint point )
+const RPObjectClassInfo* RPView::getSrcClassInfo( COleDataObject* pDataObject ) const
 {
 	if ( !pDataObject->IsDataAvailable( CF_TEXT ) ) {
-		return DROPEFFECT_NONE;
+		return NULL;
 	}
 	HGLOBAL hglobal = pDataObject->GetGlobalData( CF_TEXT );
 	if ( hglobal ) {
@@ -164,12 +158,48 @@ DROPEFFECT RPView::OnDragOver( COleDataObject* pDataObject, DWORD dwKeyState, CP
 		const RPObjectClassInfo* src_class_info = rpMethod::factory->getClassInfo( src_class_name );
 		const RPObjectClassInfo* trg_class_info = flowchart->getObjectFlowChart().getClassInfo();
 		if ( src_class_info && trg_class_info && src_class_info->getMethod() && src_class_info->getMethod() == trg_class_info->getMethod() ) {
-			return DROPEFFECT_MOVE;
+			return src_class_info;
 		} else {
-			return DROPEFFECT_NONE;
+			return NULL;
 		}
 	}
-	return DROPEFFECT_NONE;
+	return NULL;
+}
+
+DROPEFFECT RPView::OnDragEnter( COleDataObject* pDataObject, DWORD dwKeyState, CPoint point )
+{
+	const RPObjectClassInfo* class_info = getSrcClassInfo( pDataObject );
+	if ( class_info ) {
+		flowchart->getObjectFlowChart().onDragEnter( class_info, rp::point( point.x - 16, point.y - 16 ) );
+		return DROPEFFECT_MOVE;
+	} else {
+		return DROPEFFECT_NONE;
+	}
+}
+
+DROPEFFECT RPView::OnDragOver( COleDataObject* pDataObject, DWORD dwKeyState, CPoint point )
+{
+	if ( getSrcClassInfo( pDataObject ) ) {
+		flowchart->getObjectFlowChart().onDragOver( rp::point( point.x - 16, point.y - 16 ) );
+		return DROPEFFECT_MOVE;
+	} else {
+		return DROPEFFECT_NONE;
+	}
+}
+
+void RPView::OnDragLeave()
+{
+	flowchart->getObjectFlowChart().onDragLeave();
+}
+
+BOOL RPView::OnDrop( COleDataObject* pDataObject, DROPEFFECT dropEffect, CPoint point )
+{
+	if ( getSrcClassInfo( pDataObject ) ) {
+		flowchart->getObjectFlowChart().onDrop( rp::point( point.x - 16, point.y - 16 ) );
+		return true;
+	} else {
+		return false;
+	}
 }
 
 BOOL RPView::OnPreparePrinting( CPrintInfo* pInfo )

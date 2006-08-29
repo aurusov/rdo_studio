@@ -191,9 +191,9 @@ bool RPShape::pointInNCArea( const rp::point& global_chart_pos )
 	return false;
 }
 
-void RPShape::setPosition( int x, int y )
+void RPShape::setPosition( double posx, double posy )
 {
-	RPObjectMatrix::setPosition( x, y );
+	RPObjectMatrix::setPosition( posx, posy );
 	if (flowChart()) flowChart()->snapToGrid( this );
 }
 

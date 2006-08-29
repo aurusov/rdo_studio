@@ -3,6 +3,7 @@
 #include "rdoprocess_flowchart.h"
 #include "rdoprocess_messages.h"
 #include "rdoprocess_method.h"
+#include "rdoprocess_factory.h"
 #include <rdoprocess_pixmap.h>
 #include <rdoprocess_xml.h>
 
@@ -51,7 +52,8 @@ RPObjectFlowChart::RPObjectFlowChart( RPObject* _parent ):
 	one_selected( NULL ),
 	one_connector( NULL ),
 	ct_wanted( ctw_non ),
-	flowchart( NULL )
+	flowchart( NULL ),
+	drag_and_drop( NULL )
 #ifdef TEST_SPEED
 	,
 	makepixmap_cnt( 0 )
@@ -63,6 +65,10 @@ RPObjectFlowChart::RPObjectFlowChart( RPObject* _parent ):
 
 RPObjectFlowChart::~RPObjectFlowChart()
 {
+	if ( drag_and_drop ) {
+		delete drag_and_drop;
+		drag_and_drop = NULL;
+	}
 	if ( mem_dc.m_hDC ) {
 		mem_dc.SelectObject( font_first );
 		mem_dc.SelectObject( bmp_first );
@@ -165,6 +171,39 @@ void RPObjectFlowChart::notify( RPObject* from, UINT message, void* param )
 	}
 	if ( message == rp::msg::RP_OBJ_SELCHANGED && from && from->isChartObject() && static_cast<RPObjectFlowChart*>(from)->flowChart() == this && from->isSelected() ) {
 		one_selected = static_cast<RPObjectFlowChart*>(from);
+	}
+}
+
+void RPObjectFlowChart::onDragEnter( const RPObjectClassInfo* classInfo, const rp::point& point )
+{
+	drag_and_drop = static_cast<RPShape*>(rpMethod::factory->getNewObject( classInfo->getClassName(), this ));
+	drag_and_drop->setPosition( point.x, point.y );
+	update();
+}
+
+void RPObjectFlowChart::onDragOver( const rp::point& point )
+{
+	if ( drag_and_drop ) {
+		drag_and_drop->setPosition( point.x, point.y );
+		update();
+	}
+}
+
+void RPObjectFlowChart::onDragLeave()
+{
+	if ( drag_and_drop ) {
+		delete drag_and_drop;
+		drag_and_drop = NULL;
+		update();
+	}
+}
+
+void RPObjectFlowChart::onDrop( const rp::point& point )
+{
+	if ( drag_and_drop ) {
+		drag_and_drop->setSelected( true );
+		drag_and_drop = NULL;
+		update();
 	}
 }
 

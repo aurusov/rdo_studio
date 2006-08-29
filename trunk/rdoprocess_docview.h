@@ -36,6 +36,7 @@ public:
 // ----------------------------------------------------------------------------
 class RPFlowChart;
 class RPObjectFlowChart;
+class RPObjectClassInfo;
 
 class RPView: public CView
 {
@@ -49,6 +50,7 @@ protected:
 	virtual ~RPView();
 
 	COleDropTarget target;
+	const RPObjectClassInfo* getSrcClassInfo( COleDataObject* pDataObject ) const;
 
 	virtual BOOL OnPreparePrinting(CPrintInfo* pInfo);
 	virtual void OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo);
@@ -56,6 +58,8 @@ protected:
 	virtual void OnInitialUpdate();
 	virtual DROPEFFECT OnDragEnter( COleDataObject* pDataObject, DWORD dwKeyState, CPoint point );
 	virtual DROPEFFECT OnDragOver( COleDataObject* pDataObject, DWORD dwKeyState, CPoint point );
+	virtual void OnDragLeave();
+	virtual BOOL OnDrop( COleDataObject* pDataObject, DROPEFFECT dropEffect, CPoint point );
 
 #ifdef _DEBUG
 	virtual void AssertValid() const;

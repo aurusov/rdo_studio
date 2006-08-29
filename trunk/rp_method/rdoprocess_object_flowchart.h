@@ -85,6 +85,8 @@ protected:
 	virtual void onRButtonUp( UINT nFlags, CPoint local_win_pos );
 	virtual void onMouseMove( UINT nFlags, CPoint local_win_pos );
 
+	RPShape* drag_and_drop;
+
 public:
 	RPObjectFlowChart( RPObject* parent );
 	virtual ~RPObjectFlowChart();
@@ -93,6 +95,11 @@ public:
 	virtual void load( rp::RPXMLNode* node );
 	virtual rp::RPXMLNode* save( rp::RPXMLNode* parent_node );
 	virtual rpMethod::RPMethod* getMethod() = 0;
+
+	virtual void onDragEnter( const RPObjectClassInfo* classInfo, const rp::point& point );
+	virtual void onDragOver( const rp::point& point );
+	virtual void onDragLeave();
+	virtual void onDrop( const rp::point& point );
 
 	virtual void setActive( bool value );
 

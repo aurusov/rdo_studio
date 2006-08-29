@@ -574,7 +574,6 @@ void RPPageCtrlItem::OnListCtrlBeginDrag( NMHDR* pNMHDR, LRESULT* pResult )
 		}
 	}
 	if ( class_info ) {
-		TRACE( "drag&drop %s\n", class_info->getClassName().c_str() );
 		CSharedFile	sf( GMEM_MOVEABLE | GMEM_DDESHARE | GMEM_ZEROINIT );
 		CString		text( class_info->getClassName().c_str() );
 		sf.Write( text, text.GetLength() );
@@ -583,7 +582,7 @@ void RPPageCtrlItem::OnListCtrlBeginDrag( NMHDR* pNMHDR, LRESULT* pResult )
 			COleDataSource source;
 			source.CacheGlobalData( CF_TEXT, hglobal );
 			DROPEFFECT result = source.DoDragDrop();
-			if ( result != DROPEFFECT_NONE ) {
+			if ( result == DROPEFFECT_MOVE ) {
 				TRACE( "drag&drop OK\n" );
 			} else {
 				TRACE( "drag&drop FAILD\n" );
