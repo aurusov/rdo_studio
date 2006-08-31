@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "rdoprocess_point.h"
 
 #ifdef _DEBUG

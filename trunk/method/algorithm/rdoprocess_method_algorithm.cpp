@@ -1,8 +1,5 @@
 #include "stdafx.h"
-
-#define RP_METHOD_EXPORTS
 #include "rdoprocess_method_algorithm.h"
-
 #include "rdoprocess_shape_action.h"
 #include "rdoprocess_shape_if.h"
 #include "res/block_action.xpm"
@@ -31,16 +28,6 @@ RPMethodAlgorithm::~RPMethodAlgorithm()
 	algorithm = NULL;
 }
 
-void RPMethodAlgorithm::getInfo( rpMethod::RPMethod::Info& info ) const
-{
-	info.name = "Алгоритм";
-	info.version_major = 0;
-	info.version_minor = 1;
-	info.version_build = 1;
-	info.version_info  = "альфа";
-	info.description   = "Тестовый метод, используется исключительно для отладки проги";
-}
-
 void RPMethodAlgorithm::registerObject()
 {
 	rpMethod::factory->insertFactory( new RPObjectClassInfo( getClassName(), "RPMethod" ) );
@@ -49,15 +36,11 @@ void RPMethodAlgorithm::registerObject()
 	rpMethod::factory->insertFactory( new RPObjectClassInfo( "RPShapeIf", "RPShape", RPShapeIf::newObject, this, _T("Условие"), block_if_xpm, 1 ) );
 }
 
-RP_METHOD_DLL rpMethod::RPMethod* registerMethod( RPObjectFactory* _factory, RPProject* _project )
+rpMethod::RPMethod* RPMethodAlgorithm::registerMethod()
 {
-	rpMethod::factory = _factory;
-	rpMethod::project = _project;
-
-	RPMethodAlgorithm* method = new RPMethodAlgorithm( NULL );
-	method->registerObject();
-
-	return method;
+	new RPMethodAlgorithm( NULL );
+	algorithm->registerObject();
+	return algorithm;
 }
 
 RPObjectFlowChart* RPMethodAlgorithm::makeFlowChart( RPObject* parent )
@@ -71,13 +54,14 @@ RPObjectFlowChart* RPMethodAlgorithm::makeFlowChart( RPObject* parent )
 RPAlgorithmFlowChart::RPAlgorithmFlowChart( RPObject* _parent ):
 	RPObjectFlowChart( _parent )
 {
+/*
 	RPShape* shape_action = static_cast<RPShape*>(rpMethod::factory->getNewObject( "RPShapeAction", this ));
 	shape_action->setPosition( 100, 45 );
 	shape_action = static_cast<RPShape*>(rpMethod::factory->getNewObject( "RPShapeAction", this ));
 	shape_action->setPosition( 250, 145 );
 	RPShape* shape_if = static_cast<RPShape*>(rpMethod::factory->getNewObject( "RPShapeIf", this ));
 	shape_if->setPosition( 300, 100 );
-
+*/
 	after_constructor();
 }
 

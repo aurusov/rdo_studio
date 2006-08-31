@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "rdoprocess_math.h"
 
 #ifdef _DEBUG

@@ -18,6 +18,7 @@ private:
 public:
 	RPShapeAction( RPObject* parent );
 	virtual ~RPShapeAction();
+	virtual rp::string getClassName() const { return "RPShapeAction"; }
 };
 
 #endif // RDO_PROCESS_SHAPE_ACTION_H

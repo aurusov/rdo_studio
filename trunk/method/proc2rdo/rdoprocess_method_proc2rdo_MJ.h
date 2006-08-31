@@ -15,6 +15,8 @@ private:
 	virtual ~RPMethodProc2RDO_MJ();
 
 protected:
+	void registerObject();
+
 	CToolBar toolbar;
 	void blank_rdo_MJ();
 	
@@ -25,9 +27,10 @@ protected:
 
 public:
 	RPMethodProc2RDO_MJ( RPObject* _parent );
+	static rpMethod::RPMethod* registerMethod();
+	virtual rp::string getVersionDesc() const { return "альфа"; }
+	virtual rp::string getDescription() const { return "Переводит квадратики в паттерны"; }
 	virtual rp::string getClassName() const { return "RPMethodProc2RDO_MJ"; }
-	void registerObject();
-	virtual void getInfo( rpMethod::RPMethod::Info& info ) const;
 
 	virtual RPObjectFlowChart* makeFlowChart( RPObject* parent );
 
@@ -39,9 +42,5 @@ public:
 };
 
 extern RPMethodProc2RDO_MJ* proc2rdo;
-
-extern "C" {
-	RP_METHOD_DLL rpMethod::RPMethod* registerMethod( RPObjectFactory* _factory, RPProject* _project );
-}
 
 #endif // RDO_PROCESS_METHOD_PROC2RDO_H

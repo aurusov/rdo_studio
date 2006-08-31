@@ -513,7 +513,7 @@ BOOL RPPageCtrlItem::DestroyWindow()
 	return CWnd::DestroyWindow();
 }
 
-void RPPageCtrlItem::setPixmap( RPPixmapMFC& bmp )
+void RPPageCtrlItem::setPixmap( RPPixmap& bmp )
 {
 	label.label_bmp.DeleteObject();
 	BITMAP bmp_info;

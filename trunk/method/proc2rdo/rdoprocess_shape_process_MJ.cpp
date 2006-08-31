@@ -63,11 +63,8 @@ RPObject* RPShapeProcessMJ::newObject( RPObject* parent )
 
 void RPShapeProcessMJ::onLButtonDblClk( UINT nFlags, CPoint global_chart_pos )
 {
-	if ( rpMethod::project->lockResource( proc2rdo ) ) {
-		RPShapeProcessDlg1_MJ dlg( CWnd::FromHandle(rpMethod::project->getMainWnd()), this );
-		dlg.DoModal();
-		rpMethod::project->unlockResource();
-	}
+	RPShapeProcessDlg1_MJ dlg( AfxGetMainWnd(), this );
+	dlg.DoModal();
 //	project->list_name();
 }
 

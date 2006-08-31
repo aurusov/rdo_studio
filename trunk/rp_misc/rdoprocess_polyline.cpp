@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "rdoprocess_polyline.h"
 #include "rdoprocess_rect.h"
 #include "rdoprocess_math.h"

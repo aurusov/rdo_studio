@@ -1,14 +1,11 @@
 #include "stdafx.h"
-
-#define RP_METHOD_EXPORTS
 #include "rdoprocess_method_proc2rdo_MJ.h"
-
 #include "rdoprocess_shape_create_MJ.h"
 #include "rdoprocess_shape_resource.h"
 #include "rdoprocess_shape_process_MJ.h"
 #include "rdoprocess_shape_terminate_MJ.h"
 #include "rdoprocess_generation_type_MJ.h"
-#include "resource.h"
+#include "../../resource.h"
 #include "res/method_big.xpm"
 #include "res/method_small.xpm"
 #include "res/generate.xpm"
@@ -53,16 +50,6 @@ RPMethodProc2RDO_MJ::~RPMethodProc2RDO_MJ()
 	proc2rdo = NULL;
 }
 
-void RPMethodProc2RDO_MJ::getInfo( rpMethod::RPMethod::Info& info ) const
-{
-	info.name = "РДО-Процесс";
-	info.version_major = 0;
-	info.version_minor = 1;
-	info.version_build = 1;
-	info.version_info  = "альфа";
-	info.description   = "Переводит квадратики в паттерны";
-}
-
 void RPMethodProc2RDO_MJ::registerObject()
 {
 	// Базовый класс
@@ -94,11 +81,8 @@ void RPMethodProc2RDO_MJ::registerObject()
 	btn_generate_setup = toolbar->insertButton( this, generate_setup_xpm, _T("Настройки") );
 }
 
-RP_METHOD_DLL rpMethod::RPMethod* registerMethod( RPObjectFactory* _factory, RPProject* _project )
+rpMethod::RPMethod* RPMethodProc2RDO_MJ::registerMethod()
 {
-	rpMethod::factory = _factory;
-	rpMethod::project = _project;
-
 	new RPMethodProc2RDO_MJ( NULL );
 	proc2rdo->registerObject();
 
@@ -115,11 +99,8 @@ void RPMethodProc2RDO_MJ::buttonCommand( int button_id )
 	if ( button_id == btn_generate ) {
 		generate();
 	} else if ( button_id == btn_generate_setup ) {
-		if ( rpMethod::project->lockResource( this ) ) {
-			RP_GENERATION_TYPE_MJ dlg( CWnd::FromHandle(rpMethod::project->getMainWnd()) );
-			dlg.DoModal();	
-			rpMethod::project->unlockResource();
-		}
+		RP_GENERATION_TYPE_MJ dlg( AfxGetMainWnd() );
+		dlg.DoModal();	
 	}
 }
 

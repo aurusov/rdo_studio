@@ -6,6 +6,7 @@
 #endif // _MSC_VER > 1000
 
 #include "rdoprocess_string.h"
+#import <msxml3.dll> raw_interfaces_only
 
 namespace rp {
 
@@ -14,21 +15,39 @@ namespace rp {
 // ----------------------------------------------------------------------------
 class RPXMLNode
 {
+friend class RPXML;
+
 protected:
-	RPXMLNode() {}
-	virtual ~RPXMLNode() {}
+	MSXML2::IXMLDOMNode*                   inode;
+	std::list< MSXML2::IXMLDOMAttribute* > iattrs;
+	std::list< RPXMLNode* >                childs;
+	rp::string                             node_name;
+
+	void insertChild( RPXMLNode* child );
+	RPXMLNode* find( const rp::string& _node_name ) const;
+	RPXMLNode* find( MSXML2::IXMLDOMNode* _inode ) const;
+
+	MSXML2::IXMLDOMNode* getFirstINode() const;
+	static rp::string getNameByINode( MSXML2::IXMLDOMNode* inode );
+
 public:
-	virtual rp::string getName() const = 0;
-	virtual RPXMLNode* makeChild( const rp::string& name ) = 0;
-	virtual RPXMLNode* findFirstChild( const rp::string& name ) = 0;
-	virtual RPXMLNode* nextChild( RPXMLNode* after = NULL ) = 0;
-	virtual void insertAttribute( const rp::string& name, const rp::string& value ) = 0;
-	virtual void insertAttribute( const rp::string& name, int value ) = 0;
-	virtual void insertAttribute( const rp::string& name, double value ) = 0;
+	RPXMLNode( MSXML2::IXMLDOMNode* _inode = NULL ): inode( _inode ), node_name("") {}
+	virtual ~RPXMLNode();
+
+	virtual rp::string getName() const;
+	virtual rp::RPXMLNode* makeChild( const rp::string& name );
+	virtual rp::RPXMLNode* findFirstChild( const rp::string& name );
+	virtual RPXMLNode* nextChild( RPXMLNode* after = NULL );
+
+	// INSERT
+	virtual void insertAttribute( const rp::string& name, const rp::string& value );
+	virtual void insertAttribute( const rp::string& name, int value );
+	virtual void insertAttribute( const rp::string& name, double value );
 	void insertAttributeInt( const rp::string& name, int value ) {
 		insertAttribute( name, value );
 	}
-	virtual rp::string getAttribute( const rp::string& attribute ) = 0;
+	// GET
+	virtual rp::string getAttribute( const rp::string& attribute );
 	int getAttributeInt( const rp::string& attribute ) {
 		return getAttribute( attribute ).toint();
 	}
@@ -42,9 +61,21 @@ public:
 // ----------------------------------------------------------------------------
 class RPXML
 {
+friend class RPXMLNode;
+
+private:
+	MSXML2::IXMLDOMDocument* idocument;
+	RPXMLNode                document;
+	virtual void insertHeader( const rp::string& attribute, const rp::string& value );
+
 public:
-	RPXML()          {}
-	virtual ~RPXML() {}
+	RPXML();
+	virtual ~RPXML();
+
+	RPXMLNode* open( const rp::string& fname );
+	void save( const rp::string& fname );
+
+	RPXMLNode& getDocument() { return document; }
 };
 
 // ----------------------------------------------------------------------------
@@ -59,6 +90,8 @@ public:
 	RPXMLException( const rp::string& _message ): message( _message ) {}
 	rp::string getError() const { return message; }
 };
+
+extern RPXML* xml;
 
 } // namespace rp
 

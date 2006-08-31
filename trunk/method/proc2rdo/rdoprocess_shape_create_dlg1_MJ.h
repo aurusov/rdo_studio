@@ -9,7 +9,7 @@
 #include "rdoprocess_shape_create_MJ.h"
 
 
-#include "resource.h"
+#include "../../resource.h"
 /////////////////////////////////////////////////////////////////////////////
 // RPShapeCreateDlg1_MJ dialog
 

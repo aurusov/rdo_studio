@@ -76,7 +76,7 @@ int RPCtrlToolbarMFC::insertButton( rpMethod::RPMethod* method, char* xpm[], con
 		}
 	}
 
-	RPPixmapMFC* bmp_xpm = new RPPixmapMFC( xpm );
+	RPPixmap* bmp_xpm = new RPPixmap( xpm );
 	bitmaps.push_back( bmp_xpm );
 	tb_ctrl.AddBitmap( 1, &bmp_xpm->getCBitmap() );
 

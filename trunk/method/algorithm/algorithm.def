@@ -1,6 +1,0 @@
-; algorithm.def : Declares the module parameters for the DLL.
-
-LIBRARY      "method_algorithm"
-
-EXPORTS
-    ; Explicit exports can go here

@@ -18,6 +18,7 @@ private:
 public:
 	RPShapeIf( RPObject* parent );
 	virtual ~RPShapeIf();
+	virtual rp::string getClassName() const { return "RPShapeIf"; }
 };
 
 #endif // RDO_PROCESS_SHAPE_IF_H

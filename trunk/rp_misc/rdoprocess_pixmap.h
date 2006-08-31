@@ -1,18 +1,19 @@
-#ifndef RDO_PROCESS_BITMAP_H
-#define RDO_PROCESS_BITMAP_H
+#ifndef RDO_PROCESS_CTRL_PIXMAP_H
+#define RDO_PROCESS_CTRL_PIXMAP_H
 
 #if _MSC_VER > 1000
 #pragma once
 #endif
 
-#include <rdoprocess_pixmap.h>
+#include "rdoprocess_string.h"
 
 // ----------------------------------------------------------------------------
 // ---------- RPPixmap
 // ----------------------------------------------------------------------------
-class RPPixmapMFC: public RPPixmap
+class RPPixmap
 {
-private:
+protected:
+	char**   xpm;
 	CBitmap  bmp;
 	BITMAP   bmp_info;
 	COLORREF transparent;
@@ -48,9 +49,9 @@ private:
 	Pixel      getNextPixel( rp::string& line );
 
 public:
-	RPPixmapMFC( char* xpm[] );
-	RPPixmapMFC( HICON icon );
-	RPPixmapMFC( unsigned int resource, COLORREF _transparent );
+	RPPixmap( char* _xpm[] );
+	RPPixmap( HICON icon );
+	RPPixmap( unsigned int resource, COLORREF _transparent );
 	virtual HBITMAP getBitmap()   { return reinterpret_cast<HBITMAP>(bmp.m_hObject); }
 	virtual CBitmap& getCBitmap() { return bmp;                                      }
 	virtual int getWidth();
@@ -60,4 +61,4 @@ public:
 	COLORREF getTransparent() const { return transparent; }
 };
 
-#endif // RDO_PROCESS_BITMAP_H
+#endif // RDO_PROCESS_CTRL_PIXMAP_H

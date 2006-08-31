@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "rdoprocess_tool_bar_blockMJ.h"
 #include "rdoprocess_shape_create_MJ.h"
-#include "resource.h"
+#include "../../resource.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

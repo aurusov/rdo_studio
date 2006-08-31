@@ -16,9 +16,12 @@ class RPMethodAlgorithm: public rpMethod::RPMethod
 public:
 	RPMethodAlgorithm( RPObject* parent );
 	virtual ~RPMethodAlgorithm();
+	static rpMethod::RPMethod* registerMethod();
+
+	virtual rp::string getVersionDesc() const { return "альфа"; }
+	virtual rp::string getDescription() const { return "Тестовый метод, используется исключительно для отладки проги"; }
 	virtual rp::string getClassName() const { return "RPMethodAlgorithm"; }
 	void registerObject();
-	virtual void getInfo( rpMethod::RPMethod::Info& info ) const;
 
 	virtual RPObjectFlowChart* makeFlowChart( RPObject* parent );
 };
@@ -39,9 +42,5 @@ public:
 };
 
 extern RPMethodAlgorithm* algorithm;
-
-extern "C" {
-	RP_METHOD_DLL rpMethod::RPMethod* registerMethod( RPObjectFactory* _factory, RPProject* _project );
-}
 
 #endif // RDO_PROCESS_METHOD_ALGORITHM_H

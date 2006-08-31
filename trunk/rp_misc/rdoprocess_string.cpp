@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "rdoprocess_string.h"
 #include <vector>
 #include <stdarg.h>

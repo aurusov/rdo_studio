@@ -113,7 +113,7 @@ protected:
 	void show();
 
 public:
-	void setPixmap( RPPixmapMFC& bmp );
+	void setPixmap( RPPixmap& bmp );
 
 protected:
 	//{{AFX_VIRTUAL(RPPageCtrlItem)

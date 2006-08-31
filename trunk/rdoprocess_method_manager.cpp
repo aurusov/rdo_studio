@@ -1,10 +1,12 @@
 #include "stdafx.h"
 #include "rdoprocess_method_manager.h"
 #include "rdoprocess_app.h"
-#include "ctrl/rdoprocess_pixmap.h"
+#include <rdoprocess_pixmap.h>
 #include <rdoprocess_method.h>
 #include <rdoprocess_factory.h>
 #include <rdoprocess_shape.h>
+#include "method/algorithm/rdoprocess_method_algorithm.h"
+#include "method/proc2rdo/rdoprocess_method_proc2rdo_MJ.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -12,6 +14,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+#ifdef RDO_METHOD_DLL
 // ----------------------------------------------------------------------------
 // ---------- RPMethodPlugin
 // ----------------------------------------------------------------------------
@@ -57,6 +60,7 @@ bool RPMethodPlugin::isMethod( const std::string& file_name )
 	}
 	return res;
 }
+#endif
 
 // ----------------------------------------------------------------------------
 // ---------- RPMethodManager
@@ -76,6 +80,7 @@ RPMethodManager::~RPMethodManager()
 
 void RPMethodManager::init()
 {
+#ifdef RDO_METHOD_DLL
 	std::string path = "";
 	TCHAR szExeName[ MAX_PATH + 1 ];
 	if ( ::GetModuleFileName( NULL, szExeName, MAX_PATH ) ) {
@@ -84,6 +89,10 @@ void RPMethodManager::init()
 	if ( !path.empty() ) {
 		enumPlugins( path + "\\method\\*.*" );
 	}
+#else
+	insertMethod( RPMethodAlgorithm::registerMethod() );
+	insertMethod( RPMethodProc2RDO_MJ::registerMethod() );
+#endif
 }
 
 static int CALLBACK BlocksCompareProc( LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort )
@@ -101,6 +110,7 @@ static int CALLBACK BlocksCompareProc( LPARAM lParam1, LPARAM lParam2, LPARAM lP
 	}
 }
 
+#ifdef RDO_METHOD_DLL
 void RPMethodManager::enumPlugins( const std::string& mask )
 {
 	CFileFind finder;
@@ -152,10 +162,46 @@ void RPMethodManager::enumPlugins( const std::string& mask )
 	}
 	finder.Close();
 }
+#else
+void RPMethodManager::insertMethod( rpMethod::RPMethod* method )
+{
+	methods.push_back( method );
+	if ( !method->hasPixmap() ) {
+		method->setPixmap( new RPPixmap( IDB_FLOWCHART_DEFAULT, RGB(0xFF,0xFF,0xFF) ) );
+	}
+	CListCtrl* listctrl = new CListCtrl();
+	listctrl->Create( WS_CHILD | LVS_SORTASCENDING | LVS_AUTOARRANGE | LVS_ICON | LVS_SINGLESEL | LVS_NOLABELWRAP, CRect(0,0,1,1), rpapp.getProjectBar().prepareNewPage(), 1 );
+	CImageList* im_list = new CImageList();
+	im_lists.push_back( im_list );
+	im_list->Create( 32, 32, ILC_MASK | ILC_COLOR32, 0, 1 );
+	listctrl->SetImageList( im_list, LVSIL_NORMAL );
+	::SetWindowLong( listctrl->m_hWnd, GWL_EXSTYLE, ::GetWindowLong( listctrl->m_hWnd, GWL_EXSTYLE ) | WS_EX_CLIENTEDGE );
+	std::list< RPObjectClassInfo* > classes = rpMethod::factory->getMethodClasses( method );
+	int index = 0;
+	std::list< RPObjectClassInfo* >::const_iterator it = classes.begin();
+	while ( it != classes.end() ) {
+		if ( (*it)->isKindOf( "RPShape" ) ) {
+			RPObjectClassInfo* class_info = *it;
+			im_list->Add( &class_info->getPreview()->getCBitmap(), class_info->getPreview()->getTransparent() );
+			int id = listctrl->InsertItem( index, class_info->getLabel().c_str(), index );
+			listctrl->SetItemData( id, reinterpret_cast<DWORD_PTR>(class_info) );
+			index++;
+		}
+		it++;
+	}
+	RPPageCtrlItem* page = rpapp.getProjectBar().insertPage( listctrl, method->getName() );
+	page->setPixmap( *method->getPixmap() );
+	listctrl->SortItems( BlocksCompareProc, NULL );
+}
+#endif
 
 void RPMethodManager::close()
 {
+#ifdef RDO_METHOD_DLL
 	std::vector< RPMethodPlugin* >::iterator it = methods.begin();
+#else
+	std::vector< rpMethod::RPMethod* >::iterator it = methods.begin();
+#endif
 	while ( it != methods.end() ) {
 		delete *it;
 		it = methods.erase( it );
@@ -216,24 +262,30 @@ BOOL RPMethodNewDlg::OnInitDialog()
 	methods.InsertColumn( 2, "Версия", LVCFMT_LEFT, rect.Width() - methods.GetColumnWidth(0) );
 	rpMethod::project->log() << "methods.InsertColumns" << std::endl;
 	methods.SetExtendedStyle( methods.GetExtendedStyle() | LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES );
+#ifdef RDO_METHOD_DLL
 	std::vector< RPMethodPlugin* >::const_iterator it = rpapp.getMethodManager().getList().begin();
+#else
+	std::vector< rpMethod::RPMethod* >::const_iterator it = rpapp.getMethodManager().getList().begin();
+#endif
 	int index = 0;
 	rpMethod::project->log() << "перед вставкой методов" << std::endl;
 	while ( it != rpapp.getMethodManager().getList().end() ) {
+#ifdef RDO_METHOD_DLL
 		rpMethod::RPMethod* method = (*it)->getMethod();
-		rpMethod::RPMethod::Info info;
-		method->getInfo( info );
-		rpMethod::project->log() << "  добавление метода " << (*it)->getMethod()->getName() << std::endl;
-		index = methods.InsertItem( index, info.name );
+#else
+		rpMethod::RPMethod* method = *it;
+#endif
+		rpMethod::project->log() << "  добавление метода " << method->getName() << std::endl;
+		index = methods.InsertItem( index, method->getName().c_str() );
 		if ( index != LB_ERR ) {
-			methods.SetItemText( index, 1, rp::format( "ver %d.%d (build %d) %s", info.version_major, info.version_minor, info.version_build, info.version_info ).c_str() );
+			methods.SetItemText( index, 1, rp::format( "ver %d.%d (build %d) %s", method->getVersionMajor(), method->getVersionMinor(), method->getVersionBuild(),  method->getVersionDesc().c_str() ).c_str() );
 			rpMethod::project->log() << "    index = " << index << std::endl;
 			methods.SetItemData( index, reinterpret_cast<DWORD_PTR>(method) );
 		} else {
 			rpMethod::project->log() << "  ошибка добавления" << std::endl;
 			return FALSE;
 		}
-		rpMethod::project->log() << "  метод добавлен " << (*it)->getMethod()->getName() << std::endl;
+		rpMethod::project->log() << "  метод добавлен " << method->getName() << std::endl;
 		index++;
 		it++;
 	}
@@ -253,8 +305,7 @@ void RPMethodNewDlg::OnMethodListItemСhanged( NMHDR *pNMHDR, LRESULT *pResult )
 {
 	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
 	rpMethod::RPMethod* method = reinterpret_cast<rpMethod::RPMethod*>(pNMLV->lParam); // method_map[pNMLV->iItem];
-	desc.SetWindowText( "desc" );
-//	desc.SetWindowText( method->getDescription().c_str() );
+	desc.SetWindowText( method->getDescription().c_str() );
 	*pResult = 0;
 }
 
@@ -263,8 +314,6 @@ void RPMethodNewDlg::OnOK()
 	if ( methods.GetItemCount() ) {
 		int index = methods.GetNextItem( -1, LVNI_SELECTED );
 		if ( index != -1 ) {
-//			rpMethod::RPMethod* method = method_map[pNMLV->iItem];
-//			method_last = method_map[index];
 			method_last = reinterpret_cast<rpMethod::RPMethod*>(methods.GetItemData(index));
 			rpMethod::project->log() << "method_last = " << method_last->getName() << std::endl;
 		}
@@ -278,7 +327,6 @@ void RPMethodNewDlg::OnMethodListDblClick(NMHDR *pNMHDR, LRESULT *pResult)
 		int index = methods.GetNextItem( -1, LVNI_SELECTED );
 		if ( index != -1 ) {
 			method_last = reinterpret_cast<rpMethod::RPMethod*>(methods.GetItemData(index));
-//			method_last = method_map[index];
 			CDialog::OnOK();
 		}
 	}
@@ -292,12 +340,10 @@ void RPMethodNewDlg::OnMethodListClick(NMHDR *pNMHDR, LRESULT *pResult)
 		int index = methods.GetNextItem( -1, LVNI_SELECTED );
 		if ( index != -1 ) {
 			method_last = reinterpret_cast<rpMethod::RPMethod*>(methods.GetItemData(index));
-//			method_last = method_map[index];
 		}
 	}
 	if ( method_last ) {
-		desc.SetWindowText( "desc" );
-//		desc.SetWindowText( method_last->getDescription().c_str() );
+		desc.SetWindowText( method_last->getDescription().c_str() );
 		GetDlgItem( IDOK )->EnableWindow( true );
 	} else {
 		desc.SetWindowText( "" );
@@ -305,10 +351,12 @@ void RPMethodNewDlg::OnMethodListClick(NMHDR *pNMHDR, LRESULT *pResult)
 	}
 	*pResult = 0;
 }
-/*
+
+// ----------------------------------------------------------------------------
+// ---------- CListCtrlDraw
+// ----------------------------------------------------------------------------
 void CListCtrlDraw::DrawItem( LPDRAWITEMSTRUCT lpDrawItemStruct )
 {
-	return;
 	CDC* pDC = CDC::FromHandle( lpDrawItemStruct->hDC );
 
 	CRect  rect( lpDrawItemStruct->rcItem );
@@ -334,7 +382,7 @@ void CListCtrlDraw::DrawItem( LPDRAWITEMSTRUCT lpDrawItemStruct )
 		pDC->FillRect( &rect, &br );
 	}
 
-	rpMethod::RPMethod* method = static_cast<RPMethodNewDlg*>(GetParent())->method_map[lpDrawItemStruct->itemID];
+	rpMethod::RPMethod* method = reinterpret_cast<rpMethod::RPMethod*>(lpDrawItemStruct->itemData);
 	method->getPixmap()->Draw( pDC->m_hDC, imagePoint.x, imagePoint.y, GetColumnWidth(0) - imagePoint.x - 1 );
 
 	int prev_bkMode = pDC->SetBkMode( TRANSPARENT );
@@ -355,4 +403,3 @@ void CListCtrlDraw::DrawItem( LPDRAWITEMSTRUCT lpDrawItemStruct )
 	pDC->SetTextColor( prev_textColor );
 	pDC->SetBkMode( prev_bkMode );
 }
-*/

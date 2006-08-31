@@ -1,13 +1,13 @@
 #include "stdafx.h"
 #include "rdoprocess_project.h"
 #include "rdoprocess_app.h"
-#include "rdoprocess_xml.h"
 #include "rdoprocess_childfrm.h"
 #include "rdoprocess_docview.h"
-#include "ctrl/rdoprocess_pixmap.h"
 #include "ctrl/rdoprocess_toolbar.h"
+#include <rdoprocess_pixmap.h>
 #include <rdoprocess_object_flowchart.h>
 #include <rdoprocess_method.h>
+#include <rdoprocess_xml.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -49,9 +49,9 @@ RPCtrlToolbar* RPProjectMFC::createToolBar( const rp::string& caption )
 
 RPPixmap* RPProjectMFC::createBitmap( char* xpm[] )
 {
-	return new RPPixmapMFC( xpm );
+	return new RPPixmap( xpm );
 }
-
+/*
 bool RPProjectMFC::lockResource( rpMethod::RPMethod* method )
 {
 	RPMethodPlugin* plugin = rpapp.getMethodManager().find( method );
@@ -71,12 +71,15 @@ HWND RPProjectMFC::getMainWnd()
 {
 	return AfxGetMainWnd()->m_hWnd;
 }
-
+*/
 void RPProjectMFC::open()
 {
 	try {
-		RPXMLMFC xml_doc;
-		xml_doc.open( "c:\\sample.xml" );
+		rp::RPXML xml_doc;
+		rp::RPXMLNode* project_node = xml_doc.open( "c:\\sample.xml" );
+		if ( project_node ) {
+			load( project_node );
+		}
 	} catch ( rp::RPXMLException& ex ) {
 		rpapp.mainFrame->MessageBox( ex.getError().c_str(), NULL, MB_ICONERROR );
 	}
@@ -85,7 +88,7 @@ void RPProjectMFC::open()
 void RPProjectMFC::save()
 {
 	try {
-		RPXMLMFC xml_doc;
+		rp::RPXML xml_doc;
 		rp::RPXMLNode* project_node = xml_doc.getDocument().makeChild( "project" );
 		save_child( project_node );
 		xml_doc.save( "c:\\sample.xml" );
@@ -96,8 +99,8 @@ void RPProjectMFC::save()
 
 void RPProjectMFC::load( rp::RPXMLNode* node )
 {
-	RPXMLNodeMFC* flowchart_node = NULL;
-	while ( flowchart_node = static_cast<RPXMLNodeMFC*>(node->nextChild(flowchart_node)) ) {
+	rp::RPXMLNode* flowchart_node = NULL;
+	while ( flowchart_node = node->nextChild(flowchart_node) ) {
 		if ( flowchart_node->getName() == "flowchart" ) {
 			RPObjectFlowChart* flowobj = static_cast<RPObjectFlowChart*>(rpMethod::factory->getNewObject( flowchart_node->getAttribute("class"), rpMethod::project ));
 			flowobj->load( flowchart_node );

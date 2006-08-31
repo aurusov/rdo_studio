@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "rdoprocess_matrix.h"
 
 #ifdef _DEBUG

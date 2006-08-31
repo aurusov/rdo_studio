@@ -147,7 +147,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="./rp_misc;./rp_method;./rp_ctrl"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_NO_DEPRECATE;NO_ANSIUNI_ONLY"
+				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;_CRT_SECURE_NO_DEPRECATE;NO_ANSIUNI_ONLY"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -295,14 +295,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\ctrl\rdoprocess_pixmap.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\ctrl\rdoprocess_pixmap.h"
-					>
-				</File>
-				<File
 					RelativePath="ctrl\rdoprocess_projectbar.cpp"
 					>
 					<FileConfiguration
@@ -404,34 +396,6 @@
 				</File>
 			</Filter>
 			<Filter
-				Name="mctranspblt"
-				>
-				<File
-					RelativePath="ctrl\mctranspblt\McTransparentBlit.cpp"
-					>
-					<FileConfiguration
-						Name="Release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="ctrl\mctranspblt\McTransparentBlit.h"
-					>
-				</File>
-			</Filter>
-			<Filter
 				Name="ColourPicker"
 				>
 				<File
@@ -480,18 +444,6 @@
 				</File>
 				<File
 					RelativePath="ctrl\colourpicker\ColourPopup.h"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="clonebitmap"
-				>
-				<File
-					RelativePath=".\ctrl\clonebitmap\CloneBitmap.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\ctrl\clonebitmap\CloneBitmap.h"
 					>
 				</File>
 			</Filter>
@@ -576,10 +528,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\rdoprocess_xml.cpp"
-					>
-				</File>
-				<File
 					RelativePath=".\stdafx.cpp"
 					>
 					<FileConfiguration
@@ -626,10 +574,6 @@
 				</File>
 				<File
 					RelativePath=".\rdoprocess_project.h"
-					>
-				</File>
-				<File
-					RelativePath=".\rdoprocess_xml.h"
 					>
 				</File>
 				<File

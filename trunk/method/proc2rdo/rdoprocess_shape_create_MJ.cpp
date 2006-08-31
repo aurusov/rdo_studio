@@ -68,11 +68,8 @@ RPObject* RPShapeCreateMJ::newObject( RPObject* parent )
 
 void RPShapeCreateMJ::onLButtonDblClk( UINT nFlags, CPoint global_chart_pos )
 {
-	if ( rpMethod::project->lockResource( proc2rdo ) ) {
-		RPShapeCreateDlg1_MJ dlg( CWnd::FromHandle(rpMethod::project->getMainWnd()), this );
-		dlg.DoModal();
-		rpMethod::project->unlockResource();
-	}
+	RPShapeCreateDlg1_MJ dlg( AfxGetMainWnd(), this );
+	dlg.DoModal();
 }
 
 /*void RPShapeCreateMJ::list_name()
