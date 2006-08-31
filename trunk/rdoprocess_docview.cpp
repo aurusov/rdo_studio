@@ -128,7 +128,7 @@ void RPView::OnInitialUpdate()
 
 void RPView::makeFlowChartWnd( RPObjectFlowChart* flowobj )
 {
-	flowchart = new RPFlowChart( flowobj );
+	flowchart = new RPFlowChart( flowobj, GetDocument() );
 	CRect rect;
 	GetClientRect( &rect );
 	flowchart->Create( NULL, NULL, AFX_WS_DEFAULT_VIEW, rect, this, AFX_IDW_PANE_FIRST, NULL );

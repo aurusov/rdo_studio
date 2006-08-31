@@ -111,8 +111,6 @@ void RPProjectMFC::makeFlowChartWnd( RPObjectFlowChart* flowobj )
 	rpapp.mainFrame->MDIGetActive( &maximized );
 
 	RPDoc* doc = static_cast<RPDoc*>(rpapp.mainFrame->flowchartDocTemplate->OpenDocumentFile( NULL ));
-	flowobj->setCorrectName( flowobj->getMethod()->getName() );
-	doc->SetTitle( flowobj->getName().c_str() );
 	RPChildFrame* mdi = static_cast<RPChildFrame*>(doc->getView()->GetParent());
 	mdi->SetIcon( flowobj->getMethod()->getPixmap()->getIcon(), true );
 	if ( maximized ) {
@@ -121,6 +119,7 @@ void RPProjectMFC::makeFlowChartWnd( RPObjectFlowChart* flowobj )
 		mdi->ShowWindow( SW_HIDE );
 	}
 	doc->getView()->makeFlowChartWnd( flowobj );
+	flowobj->setCorrectName( flowobj->getClassInfo()->getLabel() );
 	if ( maximized ) {
 		mdi->MDIMaximize();
 	}

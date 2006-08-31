@@ -113,6 +113,7 @@ void RPObjectFlowChart::after_constructor()
 
 void RPObjectFlowChart::load( rp::RPXMLNode* node )
 {
+	setCorrectName( node->getAttribute("name") );
 	can_update = false;
 	rp::RPXMLNode* shape_node = NULL;
 	while ( shape_node = node->nextChild( shape_node ) ) {
@@ -174,6 +175,15 @@ void RPObjectFlowChart::notify( RPObject* from, UINT message, void* param )
 	}
 }
 
+bool RPObjectFlowChart::setName( const rp::string& value )
+{
+	bool result = RPObjectMatrix::setName( value );
+	if ( result ) {
+		flowchart->setName( value );
+	}
+	return result;
+}
+
 void RPObjectFlowChart::onDragEnter( const RPObjectClassInfo* classInfo, const rp::point& point )
 {
 	drag_and_drop = static_cast<RPShape*>(rpMethod::factory->getNewObject( classInfo->getClassName(), this ));
@@ -201,7 +211,9 @@ void RPObjectFlowChart::onDragLeave()
 void RPObjectFlowChart::onDrop( const rp::point& point )
 {
 	if ( drag_and_drop ) {
-		drag_and_drop->setSelected( true );
+		if ( rpMethod::project->getFlowState() == RPProject::flow_select || rpMethod::project->getFlowState() == RPProject::flow_rotate ) {
+			drag_and_drop->setSelected( true );
+		}
 		drag_and_drop = NULL;
 		update();
 	}

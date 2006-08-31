@@ -53,6 +53,16 @@ RPMethodProc2RDO_MJ::~RPMethodProc2RDO_MJ()
 	proc2rdo = NULL;
 }
 
+void RPMethodProc2RDO_MJ::getInfo( rpMethod::RPMethod::Info& info ) const
+{
+	info.name = "РДО-Процесс";
+	info.version_major = 0;
+	info.version_minor = 1;
+	info.version_build = 1;
+	info.version_info  = "альфа";
+	info.description   = "Переводит квадратики в паттерны";
+}
+
 void RPMethodProc2RDO_MJ::registerObject()
 {
 	// Базовый класс

@@ -136,6 +136,7 @@ void RPObject::setCorrectName( const rp::string& value )
 	name = value;
 	if ( parent ) {
 		parent->setCorrectChildName( this );
+		setName( name );
 	}
 	modify();
 	if ( rpMethod::project ) rpMethod::project->sendMessage( this, rp::msg::RP_OBJ_NAMECHANGED );

@@ -31,6 +31,16 @@ RPMethodAlgorithm::~RPMethodAlgorithm()
 	algorithm = NULL;
 }
 
+void RPMethodAlgorithm::getInfo( rpMethod::RPMethod::Info& info ) const
+{
+	info.name = "Алгоритм";
+	info.version_major = 0;
+	info.version_minor = 1;
+	info.version_build = 1;
+	info.version_info  = "альфа";
+	info.description   = "Тестовый метод, используется исключительно для отладки проги";
+}
+
 void RPMethodAlgorithm::registerObject()
 {
 	rpMethod::factory->insertFactory( new RPObjectClassInfo( getClassName(), "RPMethod" ) );

@@ -22,7 +22,7 @@ BEGIN_MESSAGE_MAP(RPApp, CWinApp)
 	ON_COMMAND(ID_APP_ABOUT, OnAppAbout)
 	ON_COMMAND(ID_FILE_NEW, OnFileNew)
 	ON_COMMAND(ID_FILE_OPEN, OnFileOpen)
-	ON_COMMAND(ID_FILE_SAVE, OnFileSave)
+	ON_COMMAND(ID_FLOWCHART_SAVE, &RPApp::OnFileSave)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -138,7 +138,9 @@ void RPApp::OnFileNew()
 	RPMethodNewDlg dlg;
 	if ( dlg.DoModal() == IDOK ) {
 		if ( dlg.getMethod() ) {
+			rpMethod::project->log() << "начали делать flowchart" << std::endl;
 			dlg.getMethod()->makeFlowChart( rpMethod::project );
+			rpMethod::project->log() << "закончили делать flowchart" << std::endl;
 		}
 	}
 //	CWnd* child = mainFrame->CreateNewChild( RUNTIME_CLASS(RPChildFrame), IDR_RDO_PRTYPE, m_hMDIMenu, m_hMDIAccel );

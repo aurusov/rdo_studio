@@ -21,6 +21,15 @@ namespace rpMethod {
 class RPMethod: public RPObject
 {
 public:
+	struct Info {
+		char* name;
+		char* description;
+		int version_major;
+		int version_minor;
+		int version_build;
+		char* version_info;
+		Info(): name( NULL ), description( NULL ), version_major( 0 ), version_minor( 0 ), version_build( 0 ), version_info( NULL ) {}
+	};
 	enum PMSize {
 		pm_big,
 		pm_small
@@ -34,11 +43,7 @@ public:
 	RPMethod( RPObject* parent, const rp::string name );
 	virtual ~RPMethod();
 
-	virtual int getVersionMajor() const       { return 0;  }
-	virtual int getVersionMinor() const       { return 1;  }
-	virtual int getVersionBuild() const       { return 1;  }
-	virtual rp::string getVersionDesc() const { return ""; }
-	virtual rp::string getDescription() const { return ""; }
+	virtual void getInfo( rpMethod::RPMethod::Info& info ) const = 0;
 
 	virtual void buttonCommand( int button_id ) {};
 	virtual void buttonUpdate( RPCtrlToolbar::ButtonUpdate& button_update ) {};

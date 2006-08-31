@@ -45,6 +45,7 @@
 #define ID_BTN_FILL_FONT                32790
 #define ID_BTN_FILL_TEXT                32790
 #define ID_BTN_EMPTY                    32806
+#define ID_FLOWCHART_SAVE               32812
 #define AFX_IDS_IDLEMESSAGE2            57346
 #define ID_DOCK_PROJECT_BAR             61216
 #define IDS_COLORPICKER_NONE_BRUSH      61219
@@ -59,7 +60,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        186
-#define _APS_NEXT_COMMAND_VALUE         32812
+#define _APS_NEXT_COMMAND_VALUE         32813
 #define _APS_NEXT_CONTROL_VALUE         1019
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

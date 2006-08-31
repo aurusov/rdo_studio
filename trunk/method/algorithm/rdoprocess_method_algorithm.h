@@ -18,8 +18,7 @@ public:
 	virtual ~RPMethodAlgorithm();
 	virtual rp::string getClassName() const { return "RPMethodAlgorithm"; }
 	void registerObject();
-	virtual rp::string getVersionDesc() const { return "альфа"; }
-	virtual rp::string getDescription() const { return "Тестовый метод, используется исключительно для отладки проги"; }
+	virtual void getInfo( rpMethod::RPMethod::Info& info ) const;
 
 	virtual RPObjectFlowChart* makeFlowChart( RPObject* parent );
 };

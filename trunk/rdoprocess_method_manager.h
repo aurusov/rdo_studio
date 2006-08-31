@@ -24,8 +24,8 @@ public:
 	RPMethodPlugin( const rp::string& _file_name );
 	~RPMethodPlugin();
 
-	const rpMethod::RPMethod* getMethod() const { return method; }
-	HMODULE getLib() const                      { return lib;    }
+	rpMethod::RPMethod* getMethod() const { return method; }
+	HMODULE getLib() const                { return lib;    }
 
 	static bool isMethod( const std::string& file_name );
 };
@@ -61,26 +61,30 @@ public:
 // ----------------------------------------------------------------------------
 // ---------- RPMethodNewDlg
 // ----------------------------------------------------------------------------
-class CListCtrlDraw: public CListCtrl
-{
-public:
-	virtual void DrawItem( LPDRAWITEMSTRUCT lpDrawItemStruct );
-};
+//class CListCtrlDraw: public CListCtrl
+//{
+//public:
+//	virtual void DrawItem( LPDRAWITEMSTRUCT lpDrawItemStruct );
+//};
 
 class RPMethodNewDlg: public CDialog
 {
+friend static int CALLBACK MethodsCompareProc( LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort );
+friend class CListCtrlDraw;
+
 public:
 	RPMethodNewDlg();
 	virtual ~RPMethodNewDlg();
 
-	rpMethod::RPMethod* getMethod() const { return method; }
+	rpMethod::RPMethod* getMethod() const { return method_last; }
 
 protected:
-	rpMethod::RPMethod* method;
+//	std::map< int, rpMethod::RPMethod* > method_map;
+	rpMethod::RPMethod* method_last;
 	CImageList im_list;
 
 	//{{AFX_DATA(RPMethodNewDlg)
-	CListCtrlDraw methods;
+	CListCtrl methods;
 	CStatic   desc;
 	//}}AFX_DATA
 

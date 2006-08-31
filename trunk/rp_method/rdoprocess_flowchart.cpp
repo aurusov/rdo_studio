@@ -40,13 +40,14 @@ BEGIN_MESSAGE_MAP( RPFlowChart, CWnd )
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-RPFlowChart::RPFlowChart( RPObjectFlowChart* _flowobj ):
+RPFlowChart::RPFlowChart( RPObjectFlowChart* _flowobj, CDocument* _doc ):
 	CWnd(),
 	saved_dc( 0 ),
 	scroll_inited( false ),
 	scroll_delta( 0, 0 ),
 	scroll_size( 0, 0 ),
-	flowobj( _flowobj )
+	flowobj( _flowobj ),
+	doc( _doc )
 #ifdef TEST_SPEED // =====================================
 	,
 	sec_cnt( 0 ),
@@ -128,6 +129,11 @@ void RPFlowChart::OnDestroy()
 //		grid_bmp.DeleteObject();
 //	}
 	CWnd::OnDestroy();
+}
+
+void RPFlowChart::setName( const rp::string& value )
+{
+	doc->SetTitle( flowobj->getName().c_str() );
 }
 
 void RPFlowChart::updateScrollBars()

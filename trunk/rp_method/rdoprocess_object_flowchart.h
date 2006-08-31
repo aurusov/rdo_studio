@@ -95,6 +95,7 @@ public:
 	virtual void load( rp::RPXMLNode* node );
 	virtual rp::RPXMLNode* save( rp::RPXMLNode* parent_node );
 	virtual rpMethod::RPMethod* getMethod() = 0;
+	virtual bool setName( const rp::string& value );
 
 	virtual void onDragEnter( const RPObjectClassInfo* classInfo, const rp::point& point );
 	virtual void onDragOver( const rp::point& point );

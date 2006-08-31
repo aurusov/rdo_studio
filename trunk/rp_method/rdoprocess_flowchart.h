@@ -50,6 +50,7 @@ private:
 //	bool showConnectorPoint;
 
 	RPObjectFlowChart* flowobj;
+	CDocument*         doc;
 
 #ifdef TEST_SPEED
 	int sec_cnt;
@@ -59,11 +60,12 @@ private:
 #endif
 
 public:
-	RPFlowChart( RPObjectFlowChart* _flowobj );
+	RPFlowChart( RPObjectFlowChart* _flowobj, CDocument* _doc );
 	virtual ~RPFlowChart();
 	
 	void init();
 	RPObjectFlowChart& getObjectFlowChart() const { return *flowobj; }
+	void setName( const rp::string& value );
 
 	//{{AFX_VIRTUAL(RPFlowChart)
 	public:

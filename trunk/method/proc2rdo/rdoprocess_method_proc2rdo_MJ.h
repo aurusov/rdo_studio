@@ -27,8 +27,7 @@ public:
 	RPMethodProc2RDO_MJ( RPObject* _parent );
 	virtual rp::string getClassName() const { return "RPMethodProc2RDO_MJ"; }
 	void registerObject();
-	virtual rp::string getVersionDesc() const { return "альфа"; }
-	virtual rp::string getDescription() const { return "Переводит квадратики в паттерны"; }
+	virtual void getInfo( rpMethod::RPMethod::Info& info ) const;
 
 	virtual RPObjectFlowChart* makeFlowChart( RPObject* parent );
 
