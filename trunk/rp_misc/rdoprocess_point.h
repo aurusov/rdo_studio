@@ -1,17 +1,6 @@
 #ifndef RDO_PROCESS_POINT_H
 #define RDO_PROCESS_POINT_H
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-
-#ifndef WINVER
-#define WINVER 0x0501
-#endif
-
-#include <afxwin.h>
-#include <math.h>
-
 namespace rp {
 
 // ----------------------------------------------------------------------------

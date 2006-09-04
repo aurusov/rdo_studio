@@ -4,9 +4,11 @@
 
 #pragma once
 
-//#ifndef WINVER				// Allow use of features specific to Windows XP or later.
-//#define WINVER 0x0501		// Change this to the appropriate value to target other versions of Windows.
-//#endif
+#if _MSC_VER > 1200
+#ifndef WINVER				// Allow use of features specific to Windows XP or later.
+#define WINVER 0x0501		// Change this to the appropriate value to target other versions of Windows.
+#endif
+#endif
 
 /*
 #ifndef VC_EXTRALEAN
@@ -55,14 +57,14 @@
 #endif
 */
 
-#pragma warning( disable : 4786 )
-
 #include <afxwin.h>         // MFC core and standard components
 #include <afxext.h>         // MFC extensions
 
 #ifndef _AFX_NO_AFXCMN_SUPPORT
 #include <afxcmn.h>			// MFC support for Windows Common Controls
 #endif // _AFX_NO_AFXCMN_SUPPORT
+
+#pragma warning( disable : 4786 )
 
 #include <math.h>
 #include <map>

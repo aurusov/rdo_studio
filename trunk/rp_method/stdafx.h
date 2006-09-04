@@ -7,9 +7,11 @@
 
 #define VC_EXTRALEAN		// Exclude rarely-used stuff from Windows headers
 
-//#ifndef WINVER				// Allow use of features specific to Windows XP or later.
-//#define WINVER 0x0501		// Change this to the appropriate value to target other versions of Windows.
-//#endif
+#if _MSC_VER > 1200
+#ifndef WINVER				// Allow use of features specific to Windows XP or later.
+#define WINVER 0x0501		// Change this to the appropriate value to target other versions of Windows.
+#endif
+#endif
 
 #include <afxwin.h>         // MFC core and standard components
 #include <afxext.h>         // MFC extensions

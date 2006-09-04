@@ -5,7 +5,6 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#include "rdoprocess_string.h"
 #include "rdoprocess_point.h"
 
 namespace rp {

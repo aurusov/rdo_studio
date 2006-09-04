@@ -2,7 +2,6 @@
 #include "rdoprocess_string.h"
 #include <vector>
 #include <stdarg.h>
-//#include <atlstr.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
