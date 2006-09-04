@@ -85,7 +85,11 @@ int RPCtrlToolbarMFC::insertButton( rpMethod::RPMethod* method, char* xpm[], con
 	btn.idCommand = rpMethod::project->getNewButtonID( method );
 	btn.fsState   = TBSTATE_ENABLED;
 	btn.fsStyle   = TBSTYLE_BUTTON;
+#if _MSC_VER > 1200
 	btn.dwData    = reinterpret_cast<DWORD_PTR>(method);
+#else
+	btn.dwData    = reinterpret_cast<DWORD>(method);
+#endif
 	btn.iString   = -1;
 	tb_ctrl.AddButtons( 1, &btn );
 

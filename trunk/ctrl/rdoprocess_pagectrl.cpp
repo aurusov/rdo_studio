@@ -449,7 +449,7 @@ BEGIN_MESSAGE_MAP(RPPageCtrlItem, CWnd)
 	//{{AFX_MSG_MAP(RPPageCtrlItem)
 	ON_WM_CREATE()
 	ON_WM_SIZE()
-	ON_NOTIFY(LVN_BEGINDRAG, 1, &RPPageCtrlItem::OnListCtrlBeginDrag)
+	ON_NOTIFY(LVN_BEGINDRAG, 1, RPPageCtrlItem::OnListCtrlBeginDrag)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 

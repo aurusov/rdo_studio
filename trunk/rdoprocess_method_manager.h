@@ -118,7 +118,7 @@ protected:
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 public:
-	afx_msg void OnMethodListItem—hanged(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnMethodListItemChanged(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnMethodListDblClick(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnMethodListClick(NMHDR *pNMHDR, LRESULT *pResult);
 };

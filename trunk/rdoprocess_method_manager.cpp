@@ -184,7 +184,11 @@ void RPMethodManager::insertMethod( rpMethod::RPMethod* method )
 			RPObjectClassInfo* class_info = *it;
 			im_list->Add( &class_info->getPreview()->getCBitmap(), class_info->getPreview()->getTransparent() );
 			int id = listctrl->InsertItem( index, class_info->getLabel().c_str(), index );
+#if _MSC_VER > 1200
 			listctrl->SetItemData( id, reinterpret_cast<DWORD_PTR>(class_info) );
+#else
+			listctrl->SetItemData( id, reinterpret_cast<DWORD>(class_info) );
+#endif
 			index++;
 		}
 		it++;
@@ -214,9 +218,9 @@ void RPMethodManager::close()
 BEGIN_MESSAGE_MAP( RPMethodNewDlg, CDialog )
 	//{{AFX_MSG_MAP(RPMethodNewDlg)
 	//}}AFX_MSG_MAP
-	ON_NOTIFY(LVN_ITEMCHANGED, IDC_METHOD_LIST, &RPMethodNewDlg::OnMethodListItemÑhanged)
-	ON_NOTIFY(NM_DBLCLK, IDC_METHOD_LIST, &RPMethodNewDlg::OnMethodListDblClick)
-	ON_NOTIFY(NM_CLICK, IDC_METHOD_LIST, &RPMethodNewDlg::OnMethodListClick)
+	ON_NOTIFY(LVN_ITEMCHANGED, IDC_METHOD_LIST, RPMethodNewDlg::OnMethodListItemChanged)
+	ON_NOTIFY(NM_DBLCLK, IDC_METHOD_LIST, RPMethodNewDlg::OnMethodListDblClick)
+	ON_NOTIFY(NM_CLICK, IDC_METHOD_LIST, RPMethodNewDlg::OnMethodListClick)
 END_MESSAGE_MAP()
 
 RPMethodNewDlg::RPMethodNewDlg():
@@ -280,7 +284,11 @@ BOOL RPMethodNewDlg::OnInitDialog()
 		if ( index != LB_ERR ) {
 			methods.SetItemText( index, 1, rp::format( "ver %d.%d (build %d) %s", method->getVersionMajor(), method->getVersionMinor(), method->getVersionBuild(),  method->getVersionDesc().c_str() ).c_str() );
 			rpMethod::project->log() << "    index = " << index << std::endl;
+#if _MSC_VER > 1200
 			methods.SetItemData( index, reinterpret_cast<DWORD_PTR>(method) );
+#else
+			methods.SetItemData( index, reinterpret_cast<DWORD>(method) );
+#endif
 		} else {
 			rpMethod::project->log() << "  îøèáêà äîáàâëåíèÿ" << std::endl;
 			return FALSE;
@@ -301,7 +309,7 @@ BOOL RPMethodNewDlg::OnInitDialog()
 	return res;
 }
 
-void RPMethodNewDlg::OnMethodListItemÑhanged( NMHDR *pNMHDR, LRESULT *pResult )
+void RPMethodNewDlg::OnMethodListItemChanged( NMHDR *pNMHDR, LRESULT *pResult )
 {
 	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
 	rpMethod::RPMethod* method = reinterpret_cast<rpMethod::RPMethod*>(pNMLV->lParam); // method_map[pNMLV->iItem];

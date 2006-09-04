@@ -22,7 +22,7 @@ BEGIN_MESSAGE_MAP(RPApp, CWinApp)
 	ON_COMMAND(ID_APP_ABOUT, OnAppAbout)
 	ON_COMMAND(ID_FILE_NEW, OnFileNew)
 	ON_COMMAND(ID_FILE_OPEN, OnFileOpen)
-	ON_COMMAND(ID_FLOWCHART_SAVE, &RPApp::OnFileSave)
+	ON_COMMAND(ID_FLOWCHART_SAVE, RPApp::OnFileSave)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -44,7 +44,11 @@ BOOL RPApp::InitInstance()
 {
 	log << "RPApp::InitInstance().." << std::endl;
 	
+#if _MSC_VER > 1200
 	if ( ::CoInitializeEx( NULL, COINIT_APARTMENTTHREADED ) != S_OK ) {
+#else
+	if ( ::CoInitialize( NULL ) != S_OK ) {
+#endif
 		::CoUninitialize();
 		return false;
 	}

@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "rdoprocess_xml.h"
+#include <comdef.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -70,7 +71,7 @@ rp::string RPXMLNode::getNameByINode( MSXML2::IXMLDOMNode* inode )
 		if ( bstr ) ::SysFreeString( bstr );
 		throw rp::RPXMLException( rp::format("Ошибка получения имени") );
 	}
-	rp::string name( static_cast<const char*>(_bstr_t(bstr)) );
+	rp::string name = static_cast<const char*>(_bstr_t(bstr));
 	if ( bstr ) ::SysFreeString( bstr );
 	return name;
 }
@@ -130,7 +131,8 @@ rp::string RPXMLNode::getAttribute( const rp::string& attribute )
 	}
 	MSXML2::IXMLDOMNode* iattr = NULL;
 	_bstr_t bstr( attribute.c_str() );
-	if ( imap->getNamedItem( bstr.GetBSTR(), &iattr ) != S_OK ) {
+	if ( imap->getNamedItem( bstr.copy(), &iattr ) != S_OK ) {
+//	if ( imap->getNamedItem( bstr.GetBSTR(), &iattr ) != S_OK ) {
 		if ( imap ) imap->Release();
 		if ( iattr ) iattr->Release();
 		throw rp::RPXMLException( rp::format("Не найден атрибут %s объекта %s", attribute.c_str(), node_name.c_str()) );
