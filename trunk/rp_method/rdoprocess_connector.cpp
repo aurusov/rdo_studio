@@ -273,8 +273,8 @@ void RPConnector::draw( CDC& dc )
 		dc.Polyline( &pa.getWinPolyline()[0], pa.size() );
 		dc.SelectObject( old_pen );
 	} else if ( dock_begin && dock_end ) {
-		rp::point p1 = dock_begin->getPosition();
-		rp::point p2 = dock_begin->getOutpoint();
+		rp::point p1 = dock_begin->getPosition(); // центр дока
+		rp::point p2 = dock_begin->getOutpoint(); // ближайшая к доку точка
 		rp::point p3 = dock_end->getOutpoint();
 		rp::point p4 = dock_end->getPosition();
 		rp::polyline pa, pa_post;
