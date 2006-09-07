@@ -33,7 +33,6 @@ RPObjectFlowChart::RPObjectFlowChart( RPObject* _parent ):
 	pixmap_h_show( 0 ),
 	client_width( 0 ),
 	client_height( 0 ),
-	can_update( true ),
 	pen_black( PS_SOLID, 1, RGB(0x00, 0x00, 0x00) ),
 	pen_shape_color( PS_SOLID, 1, RGB(0x00, 0x00, 0x00) ),
 	pen_selected_line( PS_DOT, 1, RGB(0x00, 0xFF, 0x00) ),
@@ -53,7 +52,8 @@ RPObjectFlowChart::RPObjectFlowChart( RPObject* _parent ):
 	one_connector( NULL ),
 	ct_wanted( ctw_non ),
 	flowchart( NULL ),
-	drag_and_drop( NULL )
+	drag_and_drop_shape( NULL ),
+	drag_and_drop_connector( NULL )
 #ifdef TEST_SPEED
 	,
 	makepixmap_cnt( 0 )
@@ -65,10 +65,14 @@ RPObjectFlowChart::RPObjectFlowChart( RPObject* _parent ):
 
 RPObjectFlowChart::~RPObjectFlowChart()
 {
-	if ( drag_and_drop ) {
-		delete drag_and_drop;
-		drag_and_drop = NULL;
+	if ( drag_and_drop_shape ) {
+		delete drag_and_drop_shape;
+		drag_and_drop_shape = NULL;
 	}
+//	if ( drag_and_drop_connector ) {
+//		delete drag_and_drop_connector;
+//		drag_and_drop_connector = NULL;
+//	}
 	if ( mem_dc.m_hDC ) {
 		mem_dc.SelectObject( font_first );
 		mem_dc.SelectObject( bmp_first );
@@ -184,37 +188,91 @@ bool RPObjectFlowChart::setName( const rp::string& value )
 	return result;
 }
 
+void RPObjectFlowChart::findAutoConnector()
+{
+	if ( drag_and_drop_shape ) {
+		double           min_length = 300;
+		RPConnectorDock* min_dock_begin = NULL;
+		RPConnectorDock* min_dock_end   = NULL;
+		std::list< RPObject* > shapes;
+		getAllChildByClass( shapes, "RPShape", true );
+		std::list< RPObject* >::const_iterator shape_it = shapes.begin();
+		while ( shape_it != shapes.end() ) {
+			RPShape* shape = static_cast<RPShape*>(*shape_it);
+			if ( shape != drag_and_drop_shape ) {
+				std::vector< RPConnectorDock* >::const_iterator drag_dock_it = drag_and_drop_shape->getDocks().begin();
+				while ( drag_dock_it != drag_and_drop_shape->getDocks().end() ) {
+					if ( (*drag_dock_it)->can_connect() && (*drag_dock_it)->isIn() ) {
+						std::vector< RPConnectorDock* >::const_iterator dock_it = shape->getDocks().begin();
+						while ( dock_it != shape->getDocks().end() ) {
+							if ( (*dock_it)->can_connect() && (*dock_it)->isOut() ) {
+								double length = rp::math::getLength( (*drag_dock_it)->getPosition(), (*dock_it)->getPosition() );
+								if ( length < min_length ) {
+									min_length     = length;
+									min_dock_begin = *dock_it;
+									min_dock_end   = *drag_dock_it;
+								}
+							}
+							dock_it++;
+						}
+					}
+					drag_dock_it++;
+				}
+			}
+			shape_it++;
+		}
+		if ( drag_and_drop_connector ) {
+			delete drag_and_drop_connector;
+			drag_and_drop_connector = NULL;
+		}
+		if ( min_dock_begin ) {
+			drag_and_drop_connector = min_dock_begin->make_connector( this );
+			drag_and_drop_connector->dock_begin = min_dock_begin;
+			drag_and_drop_connector->dock_end   = min_dock_end;
+			min_dock_begin->connectors.push_back( drag_and_drop_connector );
+			min_dock_end->connectors.push_back( drag_and_drop_connector );
+		}
+	}
+}
+
 void RPObjectFlowChart::onDragEnter( const RPObjectClassInfo* classInfo, const rp::point& point )
 {
-	drag_and_drop = static_cast<RPShape*>(rpMethod::factory->getNewObject( classInfo->getClassName(), this ));
-	drag_and_drop->setPosition( point.x, point.y );
+	drag_and_drop_shape = static_cast<RPShape*>(rpMethod::factory->getNewObject( classInfo->getClassName(), this ));
+	drag_and_drop_shape->setPosition( point.x, point.y );
+	findAutoConnector();
 	update();
 }
 
 void RPObjectFlowChart::onDragOver( const rp::point& point )
 {
-	if ( drag_and_drop ) {
-		drag_and_drop->setPosition( point.x, point.y );
+	if ( drag_and_drop_shape ) {
+		drag_and_drop_shape->setPosition( point.x, point.y );
+		findAutoConnector();
 		update();
 	}
 }
 
 void RPObjectFlowChart::onDragLeave()
 {
-	if ( drag_and_drop ) {
-		delete drag_and_drop;
-		drag_and_drop = NULL;
+	if ( drag_and_drop_shape ) {
+		delete drag_and_drop_shape;
+		drag_and_drop_shape = NULL;
+		if ( drag_and_drop_connector ) {
+			delete drag_and_drop_connector;
+			drag_and_drop_connector = NULL;
+		}
 		update();
 	}
 }
 
 void RPObjectFlowChart::onDrop( const rp::point& point )
 {
-	if ( drag_and_drop ) {
+	if ( drag_and_drop_shape ) {
 		if ( rpMethod::project->getFlowState() == RPProject::flow_select || rpMethod::project->getFlowState() == RPProject::flow_rotate ) {
-			drag_and_drop->setSelected( true );
+			drag_and_drop_shape->setSelected( true );
 		}
-		drag_and_drop = NULL;
+		drag_and_drop_shape     = NULL;
+		drag_and_drop_connector = NULL;
 		update();
 	}
 }

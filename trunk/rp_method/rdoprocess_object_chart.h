@@ -21,6 +21,7 @@ private:
 	CPen main_pen;
 
 protected:
+	bool can_update;
 	RPObjectChart* chartParent() const { return !isFlowChart() && parent && parent->isChartObject() ? static_cast<RPObjectChart*>(parent) : NULL; }
 
 	int  main_pen_width;

@@ -29,7 +29,6 @@ private:
 	int pixmap_h_show;
 	int client_width;
 	int client_height;
-	bool can_update;
 	static const int select_box_size2;
 
 	CPen     pen_black;
@@ -85,7 +84,9 @@ protected:
 	virtual void onRButtonUp( UINT nFlags, CPoint local_win_pos );
 	virtual void onMouseMove( UINT nFlags, CPoint local_win_pos );
 
-	RPShape* drag_and_drop;
+	RPShape*     drag_and_drop_shape;
+	RPConnector* drag_and_drop_connector;
+	void findAutoConnector();
 
 public:
 	RPObjectFlowChart( RPObject* parent );

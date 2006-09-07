@@ -15,7 +15,8 @@ static char THIS_FILE[] = __FILE__;
 RPObject::RPObject( RPObject* _parent, const rp::string& _name ):
 	parent( _parent ),
 	name( _name ),
-	selected( false )
+	selected( false ),
+	can_modify( true )
 {
 	if ( parent ) {
 		parent->child.push_back( this );

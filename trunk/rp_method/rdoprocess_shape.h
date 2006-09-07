@@ -132,6 +132,7 @@ public:
 
 	std::list< RPShape* > getNextBlock();
 
+	const std::vector< RPConnectorDock* >& getDocks() const { return docks; }
 	int getDockIndex( const RPConnectorDock* dock ) const;
 	RPConnectorDock* getDock( unsigned int index ) const { return index < docks.size() ? docks[index] : NULL; }
 

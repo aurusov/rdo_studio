@@ -14,7 +14,8 @@ static char THIS_FILE[] = __FILE__;
 // ----------------------------------------------------------------------------
 RPObjectChart::RPObjectChart( RPObject* _parent, const rp::string& _name ):
 	RPObject( _parent, _name ),
-	main_pen_width( 2 )
+	main_pen_width( 2 ),
+	can_update( false )
 {
 	LOGBRUSH lb;
 	lb.lbStyle = BS_SOLID;
@@ -22,6 +23,7 @@ RPObjectChart::RPObjectChart( RPObject* _parent, const rp::string& _name ):
 	lb.lbHatch = 0;
 	main_pen_default.CreatePen( PS_GEOMETRIC | PS_SOLID | PS_ENDCAP_SQUARE | PS_JOIN_MITER, main_pen_width, &lb );
 	setPen( main_pen_default );
+	can_update = true;
 }
 
 RPObjectChart::~RPObjectChart()
@@ -122,6 +124,7 @@ void RPObjectChart::modify()
 
 void RPObjectChart::update()
 {
+	if ( !can_update ) return;
 	RPObjectChart* flowchart = flowChart();
 	if ( flowchart ) {
 		flowchart->update();

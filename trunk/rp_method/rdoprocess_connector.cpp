@@ -11,22 +11,6 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 // ----------------------------------------------------------------------------
-// ---------- RPConnectorDock
-// ----------------------------------------------------------------------------
-const int RPConnectorDock::delta = 10;
-
-rp::RPXMLNode* RPConnectorDock::save( rp::RPXMLNode* parent_node )
-{
-	rp::RPXMLNode* obj_node = parent_node->makeChild( "dock" );
-	obj_node->insertAttributeInt( "type", type );
-	obj_node->insertAttribute( "x", point.x );
-	obj_node->insertAttribute( "y", point.y );
-	obj_node->insertAttribute( "norm", norm );
-	obj_node->insertAttribute( "color", RPObjectChart::colorToStr(color()) );
-	return obj_node;
-}
-
-// ----------------------------------------------------------------------------
 // ---------- RPConnector
 // ----------------------------------------------------------------------------
 RPConnector::RPConnector( RPObject* _parent, const rp::string& _name ):
@@ -38,11 +22,15 @@ RPConnector::RPConnector( RPObject* _parent, const rp::string& _name ):
 	main_pen_width = 1;
 	main_pen_default.DeleteObject();
 	main_pen_default.CreatePen( PS_SOLID, 1, RGB(0x00, 0x00, 0x00) );
+	can_update = false;
 	setPen( main_pen_default );
+	can_update = true;
 }
 
 RPConnector::~RPConnector()
 {
+	if ( dock_begin ) dock_begin->connectors.remove( this );
+	if ( dock_end )   dock_end->connectors.remove( this );
 }
 
 void RPConnector::load( rp::RPXMLNode* node )
@@ -713,4 +701,30 @@ RPConnectorDock* RPConnector::getConnectedDock( const RPConnectorDock& dock ) co
 	if ( &dock == dock_begin ) return dock_end;
 	if ( &dock == dock_end ) return dock_begin;
 	return NULL;
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RPConnectorDock
+// ----------------------------------------------------------------------------
+const int RPConnectorDock::delta = 10;
+
+RPConnectorDock::~RPConnectorDock()
+{
+	std::list< RPConnector* >::const_iterator it = connectors.begin();
+	while ( it != connectors.end() ) {
+		if ( (*it)->dock_begin == this ) (*it)->dock_begin = NULL;
+		if ( (*it)->dock_end   == this ) (*it)->dock_end   = NULL;
+		it++;
+	}
+}
+
+rp::RPXMLNode* RPConnectorDock::save( rp::RPXMLNode* parent_node )
+{
+	rp::RPXMLNode* obj_node = parent_node->makeChild( "dock" );
+	obj_node->insertAttributeInt( "type", type );
+	obj_node->insertAttribute( "x", point.x );
+	obj_node->insertAttribute( "y", point.y );
+	obj_node->insertAttribute( "norm", norm );
+	obj_node->insertAttribute( "color", RPObjectChart::colorToStr(color()) );
+	return obj_node;
 }

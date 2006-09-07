@@ -15,14 +15,12 @@
 // ----------------------------------------------------------------------------
 // ---------- RPConnector
 // ----------------------------------------------------------------------------
-class RPConnectorDock;
-//class RPShape;
-
 #define CON_DEBUG 1
 #undef CON_DEBUG
 
 class RPConnector: public RPObjectChart
 {
+friend class RPConnectorDock;
 friend class RPObjectFlowChart;
 
 private:
@@ -107,7 +105,7 @@ protected:
 
 public:
 	RPConnectorDock( RPShape* _obj, Type _type, const rp::point& _point, double _norm ): obj( _obj ), type( _type ), point( _point ), norm( _norm ) {};
-	virtual ~RPConnectorDock() {};
+	virtual ~RPConnectorDock();
 
 	virtual rp::RPXMLNode* save( rp::RPXMLNode* parent_node );
 
@@ -127,6 +125,8 @@ public:
 		}
 		return false;
 	}
+	bool isIn() const  { return type & in  ? true : false; }
+	bool isOut() const { return type & out ? true : false; }
 	const RPShape& object() const {
 		return *obj;
 	}

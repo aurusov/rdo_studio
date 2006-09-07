@@ -38,6 +38,7 @@ protected:
 
 	rp::string name;
 	bool       selected;
+	bool       can_modify;
 
 	virtual void notify( RPObject* from, UINT message, void* param = NULL ) {};
 	virtual void modify()                                                   {};
