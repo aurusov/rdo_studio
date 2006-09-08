@@ -50,6 +50,7 @@ RPObjectFlowChart::RPObjectFlowChart( RPObject* _parent ):
 	one_object( NULL ),
 	one_selected( NULL ),
 	one_connector( NULL ),
+	dock_begin( NULL ),
 	ct_wanted( ctw_non ),
 	flowchart( NULL ),
 	drag_and_drop_shape( NULL ),
@@ -69,10 +70,6 @@ RPObjectFlowChart::~RPObjectFlowChart()
 		delete drag_and_drop_shape;
 		drag_and_drop_shape = NULL;
 	}
-//	if ( drag_and_drop_connector ) {
-//		delete drag_and_drop_connector;
-//		drag_and_drop_connector = NULL;
-//	}
 	if ( mem_dc.m_hDC ) {
 		mem_dc.SelectObject( font_first );
 		mem_dc.SelectObject( bmp_first );
@@ -191,22 +188,57 @@ bool RPObjectFlowChart::setName( const rp::string& value )
 void RPObjectFlowChart::findAutoConnector()
 {
 	if ( drag_and_drop_shape ) {
+		RPConnectorDock* backup_dock_begin = NULL;
+		RPConnectorDock* backup_dock_end   = NULL;
+		if ( drag_and_drop_connector ) {
+			backup_dock_begin = drag_and_drop_connector->dock_begin;
+			backup_dock_end   = drag_and_drop_connector->dock_end;
+			if ( backup_dock_begin ) backup_dock_begin->connectors.remove( drag_and_drop_connector );
+			if ( backup_dock_end )   backup_dock_end->connectors.remove( drag_and_drop_connector );
+		}
 		double           min_length = 300;
 		RPConnectorDock* min_dock_begin = NULL;
 		RPConnectorDock* min_dock_end   = NULL;
 		std::list< RPObject* > shapes;
 		getAllChildByClass( shapes, "RPShape", true );
+		// От перетаскиваемой к остальным фигурам
+		std::vector< RPConnectorDock* >::const_iterator drag_dock_it = drag_and_drop_shape->getDocks().begin();
+		while ( drag_dock_it != drag_and_drop_shape->getDocks().end() ) {
+			if ( (*drag_dock_it)->isOut() && (*drag_dock_it)->can_connect() ) {
+				std::list< RPObject* >::const_iterator shape_it = shapes.begin();
+				while ( shape_it != shapes.end() ) {
+					RPShape* shape = static_cast<RPShape*>(*shape_it);
+					if ( shape != drag_and_drop_shape ) {
+						std::vector< RPConnectorDock* >::const_iterator dock_it = shape->getDocks().begin();
+						while ( dock_it != shape->getDocks().end() ) {
+							if ( (*dock_it)->isIn() && (*dock_it)->can_connect( *drag_dock_it ) ) {
+								double length = rp::math::getLength( (*drag_dock_it)->getPosition(), (*dock_it)->getPosition() );
+								if ( length < min_length ) {
+									min_length     = length;
+									min_dock_begin = *drag_dock_it;
+									min_dock_end   = *dock_it;
+								}
+							}
+							dock_it++;
+						}
+					}
+					shape_it++;
+				}
+			}
+			drag_dock_it++;
+		}
+		// От всех фигур к перетаскиваемой
 		std::list< RPObject* >::const_iterator shape_it = shapes.begin();
 		while ( shape_it != shapes.end() ) {
 			RPShape* shape = static_cast<RPShape*>(*shape_it);
 			if ( shape != drag_and_drop_shape ) {
 				std::vector< RPConnectorDock* >::const_iterator drag_dock_it = drag_and_drop_shape->getDocks().begin();
 				while ( drag_dock_it != drag_and_drop_shape->getDocks().end() ) {
-					if ( (*drag_dock_it)->can_connect() && (*drag_dock_it)->isIn() ) {
+					if ( (*drag_dock_it)->isIn() ) {
 						std::vector< RPConnectorDock* >::const_iterator dock_it = shape->getDocks().begin();
 						while ( dock_it != shape->getDocks().end() ) {
-							if ( (*dock_it)->can_connect() && (*dock_it)->isOut() ) {
-								double length = rp::math::getLength( (*drag_dock_it)->getPosition(), (*dock_it)->getPosition() );
+							if ( (*dock_it)->isOut() && (*dock_it)->can_connect() && (*drag_dock_it)->can_connect( *dock_it ) ) {
+								double length = rp::math::getLength( (*dock_it)->getPosition(), (*drag_dock_it)->getPosition() );
 								if ( length < min_length ) {
 									min_length     = length;
 									min_dock_begin = *dock_it;
@@ -221,16 +253,23 @@ void RPObjectFlowChart::findAutoConnector()
 			}
 			shape_it++;
 		}
-		if ( drag_and_drop_connector ) {
+		if ( min_dock_begin ) {
+			if ( drag_and_drop_connector && backup_dock_begin == min_dock_begin && backup_dock_end == min_dock_end ) {
+				drag_and_drop_connector->dock_begin = backup_dock_begin;
+				drag_and_drop_connector->dock_end   = backup_dock_end;
+				backup_dock_begin->connectors.push_back( drag_and_drop_connector );
+				backup_dock_end->connectors.push_back( drag_and_drop_connector );
+			} else {
+				if ( drag_and_drop_connector ) delete drag_and_drop_connector;
+				drag_and_drop_connector = min_dock_begin->make_connector( this );
+				drag_and_drop_connector->dock_begin = min_dock_begin;
+				drag_and_drop_connector->dock_end   = min_dock_end;
+				min_dock_begin->connectors.push_back( drag_and_drop_connector );
+				min_dock_end->connectors.push_back( drag_and_drop_connector );
+			}
+		} else if ( drag_and_drop_connector ) {
 			delete drag_and_drop_connector;
 			drag_and_drop_connector = NULL;
-		}
-		if ( min_dock_begin ) {
-			drag_and_drop_connector = min_dock_begin->make_connector( this );
-			drag_and_drop_connector->dock_begin = min_dock_begin;
-			drag_and_drop_connector->dock_end   = min_dock_end;
-			min_dock_begin->connectors.push_back( drag_and_drop_connector );
-			min_dock_end->connectors.push_back( drag_and_drop_connector );
 		}
 	}
 }
@@ -242,7 +281,15 @@ void RPObjectFlowChart::onDragEnter( const RPObjectClassInfo* classInfo, const r
 	findAutoConnector();
 	update();
 }
-
+/*
+int timeDelta( const SYSTEMTIME& time1, const SYSTEMTIME& time2 )
+{
+	if ( time1.wYear != time2.wYear || time1.wMonth != time2.wMonth || time1.wDay != time2.wDay ) return 1000;
+	int _time1 = time1.wMilliseconds + time1.wSecond * 1000 + time1.wMinute * 1000 * 60 + time1.wHour * 1000 * 60 * 60;
+	int _time2 = time2.wMilliseconds + time2.wSecond * 1000 + time2.wMinute * 1000 * 60 + time2.wHour * 1000 * 60 * 60;
+	return _time1 - _time2;
+}
+*/
 void RPObjectFlowChart::onDragOver( const rp::point& point )
 {
 	if ( drag_and_drop_shape ) {
@@ -716,6 +763,7 @@ RPObjectChart* RPObjectFlowChart::find( const rp::point& global_chart_pos )
 void RPObjectFlowChart::insert_connector( RPConnectorDock* dock )
 {
 	if ( !one_connector && dock ) {
+		dock_begin    = dock;
 		one_connector = dock->make_connector( this );
 		one_connector->dock_begin = dock;
 		dock->connectors.push_back( one_connector );
@@ -727,6 +775,7 @@ void RPObjectFlowChart::insert_connector( RPConnectorDock* dock )
 		one_connector->dock_end = dock;
 		dock->connectors.push_back( one_connector );
 		one_connector = NULL;
+		dock_begin    = NULL;
 		ct_wanted = ctw_begin;
 		update();
 		return;

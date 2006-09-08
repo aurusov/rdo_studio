@@ -534,7 +534,7 @@ RPShape::PossibleCommand RPShape::getPossibleCommand( const rp::point& global_ch
 	if ( rpMethod::project->getFlowState() == RPProject::flow_connector ) {
 		RPConnectorDock* dock = find_dock( global_chart_pos );
 		if ( dock ) {
-			if ( !dock->can_connect() ) return pcmd_dock_not;
+			if ( !dock->can_connect( flowChart()->getDockBegin() ) ) return pcmd_dock_not;
 			if ( dock->isType( RPConnectorDock::fly ) ) return pcmd_dock_fly;
 			if ( dock->isType( RPConnectorDock::inout )  ) return pcmd_dock_inout;
 			if ( dock->isType( RPConnectorDock::in ) ) {

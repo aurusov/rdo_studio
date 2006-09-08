@@ -17,13 +17,13 @@ static char THIS_FILE[]=__FILE__;
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 // ----------------------------------------------------------------------------
-// ---------- RPConnectorResource
+// ---------- RPConnectorDockResourceOut
 // ----------------------------------------------------------------------------
-class RPConnectorDockResource: public RPConnectorDock
+class RPConnectorDockResourceOut: public RPConnectorDock
 {
 public:
-	RPConnectorDockResource( RPShape* _parent, Type _type, const rp::point& _point, double _norm ): RPConnectorDock( _parent, _type, _point, _norm ) {};
-	virtual ~RPConnectorDockResource() {};
+	RPConnectorDockResourceOut( RPShape* _parent, Type _type, const rp::point& _point, double _norm, const rp::string& type = "" ): RPConnectorDock( _parent, _type, _point, _norm, type ) {};
+	virtual ~RPConnectorDockResourceOut() {};
 
 	virtual RPConnector* make_connector( RPObject* _parent ) {
 		RPConnector* conn = RPConnectorDock::make_connector( _parent );
@@ -81,7 +81,7 @@ RPShapeResource_MJ::RPShapeResource_MJ( RPObject* _parent ):
 	pa_src.push_back( rp::point(50, 10) );
 	pa_src.push_back( rp::point(-50, 10) );
 */
-	docks.push_back( new RPConnectorDockResource( this, RPConnectorDock::out,  rp::point( 0, -25 ), 90 ) );
+	docks.push_back( new RPConnectorDockResourceOut( this, RPConnectorDock::out,  rp::point( 0, -25 ), 90, "resource" ) );
 }
 
 RPShapeResource_MJ::~RPShapeResource_MJ()

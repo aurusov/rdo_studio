@@ -46,11 +46,12 @@ private:
 	CFont*   font_first;
 	int      saved_mem_dc;
 
-	CPoint         global_win_pos_current;
-	CPoint         global_win_pos_prev;
-	RPObjectChart* one_object;
-	RPObjectChart* one_selected;
-	RPConnector*   one_connector;
+	CPoint           global_win_pos_current;
+	CPoint           global_win_pos_prev;
+	RPObjectChart*   one_object;
+	RPObjectChart*   one_selected;
+	RPConnector*     one_connector;
+	RPConnectorDock* dock_begin;
 
 #ifdef TEST_SPEED
 	int makepixmap_cnt;
@@ -109,6 +110,8 @@ public:
 
 	ConnectorTypeWanted getConnectorTypeWanted() const { return ct_wanted;     }
 	void insert_connector( RPConnectorDock* dock );
+	RPConnector*     getOneConnector() const           { return one_connector; }
+	RPConnectorDock* getDockBegin() const              { return dock_begin;    }
 
 	static int getSensitivity()               { return select_box_size2 + 1; }
 	int getSelectBoxSize2() const             { return select_box_size2;     }

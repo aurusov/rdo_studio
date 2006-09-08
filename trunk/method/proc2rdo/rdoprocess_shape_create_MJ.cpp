@@ -28,7 +28,7 @@ RPShapeCreateMJ::RPShapeCreateMJ( RPObject* _parent ):
 	pa_src.push_back( rp::point(-50, 25) );
 	pa_src.push_back( rp::point(-50, -25) );
 
-	docks.push_back( new RPConnectorDockOne( this, RPConnectorDock::out, rp::point(  50, 0 ), 0 ) );
+	docks.push_back( new RPConnectorDockOne( this, RPConnectorDock::out, rp::point(  50, 0 ), 0, "transact" ) );
 
 	// инициализация параметров для генерирования
 	gname; // имя

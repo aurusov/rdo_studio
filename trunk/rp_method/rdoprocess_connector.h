@@ -74,7 +74,7 @@ public:
 	virtual ~RPConnector();
 
 	static void registerObject();
-	
+
 	virtual rp::string getClassName() const { return "RPConnector"; }
 	virtual void load( rp::RPXMLNode* node );
 	virtual rp::RPXMLNode* save( rp::RPXMLNode* parent_node );
@@ -102,19 +102,27 @@ protected:
 	rp::point  point;
 	Type       type;
 	double     norm;
+	std::vector< rp::string > types;
 
 public:
-	RPConnectorDock( RPShape* _obj, Type _type, const rp::point& _point, double _norm ): obj( _obj ), type( _type ), point( _point ), norm( _norm ) {};
+	RPConnectorDock( RPShape* _obj, Type _type, const rp::point& _point, double _norm, const rp::string& type = "" ): obj( _obj ), type( _type ), point( _point ), norm( _norm ) {
+		if ( !type.empty() ) insertType( type );
+	};
 	virtual ~RPConnectorDock();
 
 	virtual rp::RPXMLNode* save( rp::RPXMLNode* parent_node );
 
 	std::list< RPConnector* > connectors;
 
-	int getIndex() const             { return obj->getDockIndex( this ); }
-	virtual bool can_connect() const { return true;                      }
-	virtual COLORREF color() const   { return RGB(0xF0, 0xFF, 0x00);     }
-	Type getType() const             { return type;                      }
+	int getIndex() const                                            { return obj->getDockIndex( this ); }
+	virtual bool can_connect( RPConnectorDock* dock = NULL ) const  {
+		if ( !dock ) return true;
+		if ( alreadyConnected( dock ) ) return false;
+		if ( &dock->object() == &object() ) return false;
+		return hasType( dock->getTypes() );
+	}
+	virtual COLORREF color() const                                  { return RGB(0xF0, 0xFF, 0x00);     }
+	Type getType() const                                            { return type;                      }
 	bool isType( Type _type ) const {
 		switch ( _type ) {
 			case fly  : return type & fly ? true : false;
@@ -190,6 +198,32 @@ public:
 	virtual RPConnector* make_connector( RPObject* _parent ) {
 		return static_cast<RPConnector*>(rpMethod::factory->getNewObject( "RPConnector", _parent ));
 	}
+	bool alreadyConnected( RPConnectorDock* dock ) const {
+		if ( !dock ) return false;
+		std::list< RPConnector* >::const_iterator it = connectors.begin();
+		while ( it != connectors.end() ) {
+			if ( (*it)->dock_begin == dock || (*it)->dock_end == dock ) return true;
+			it++;
+		}
+		return false;
+	}
+
+	const std::vector< rp::string >& getTypes() const { return types;            }
+	void insertType( const rp::string& type )         { types.push_back( type ); }
+	bool hasType( const rp::string& type ) const      {
+		if ( types.empty() ) return true;
+		return std::find( types.begin(), types.end(), type ) != types.end();
+	}
+	bool hasType( const std::vector< rp::string >& type ) const      {
+		if ( types.empty() && type.empty() ) return true;
+		if ( (!types.empty() && type.empty()) || (types.empty() && !type.empty()) ) return false;
+		std::vector< rp::string >::const_iterator it = type.begin();
+		while ( it != type.end() ) {
+			if ( std::find( types.begin(), types.end(), *it ) == types.end() ) return false;
+			it++;
+		}
+		return true;
+	}
 };
 
 // ----------------------------------------------------------------------------
@@ -198,10 +232,13 @@ public:
 class RPConnectorDockOne: public RPConnectorDock
 {
 public:
-	RPConnectorDockOne( RPShape* _parent, Type _type, const rp::point& _point, double _norm ): RPConnectorDock( _parent, _type, _point, _norm ) {};
+	RPConnectorDockOne( RPShape* _parent, Type _type, const rp::point& _point, double _norm, const rp::string& type = "" ): RPConnectorDock( _parent, _type, _point, _norm, type ) {};
 	virtual ~RPConnectorDockOne() {};
 
-	virtual bool can_connect() const { return connectors.empty(); }
+	virtual bool can_connect( RPConnectorDock* dock = NULL ) const {
+		if ( !RPConnectorDock::can_connect( dock ) ) return false;
+		return connectors.empty();
+	}
 };
 
 #endif // RDO_PROCESS_CONNECTOR_H
