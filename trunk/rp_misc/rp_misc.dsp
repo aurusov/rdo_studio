@@ -115,7 +115,6 @@ SOURCE=.\rdoprocess_matrix.cpp
 DEP_CPP_RDOPRO=\
 	".\rdoprocess_matrix.h"\
 	".\rdoprocess_point.h"\
-	".\rdoprocess_string.h"\
 	".\stdafx.h"\
 	
 
@@ -180,7 +179,6 @@ DEP_CPP_RDOPROCES=\
 	".\rdoprocess_point.h"\
 	".\rdoprocess_polyline.h"\
 	".\rdoprocess_rect.h"\
-	".\rdoprocess_string.h"\
 	".\stdafx.h"\
 	
 
@@ -204,7 +202,6 @@ DEP_CPP_RDOPROCESS=\
 	".\rdoprocess_point.h"\
 	".\rdoprocess_polyline.h"\
 	".\rdoprocess_rect.h"\
-	".\rdoprocess_string.h"\
 	".\stdafx.h"\
 	
 
@@ -325,18 +322,16 @@ SOURCE=.\stdafx.h
 SOURCE=.\clonebitmap\CloneBitmap.cpp
 DEP_CPP_CLONE=\
 	".\clonebitmap\CloneBitmap.h"\
-	
-NODEP_CPP_CLONE=\
-	".\clonebitmap\stdafx.h"\
+	".\stdafx.h"\
 	
 
 !IF  "$(CFG)" == "rp_misc - Win32 Debug"
 
-# ADD CPP /nologo /GX /GZ
+# ADD CPP /nologo /GX /Yu"../stdafx.h" /GZ
 
 !ELSEIF  "$(CFG)" == "rp_misc - Win32 Release"
 
-# ADD CPP /nologo /GX /Yu"stdafx.h"
+# ADD CPP /nologo /GX /Yu"../stdafx.h"
 
 !ENDIF 
 
@@ -354,16 +349,16 @@ SOURCE=.\clonebitmap\CloneBitmap.h
 SOURCE=.\mctranspblt\McTransparentBlit.cpp
 DEP_CPP_MCTRA=\
 	".\mctranspblt\McTransparentBlit.h"\
-	
-NODEP_CPP_MCTRA=\
-	".\mctranspblt\stdafx.h"\
+	".\stdafx.h"\
 	
 
 !IF  "$(CFG)" == "rp_misc - Win32 Debug"
 
+# ADD CPP /Yu"../stdafx.h"
+
 !ELSEIF  "$(CFG)" == "rp_misc - Win32 Release"
 
-# ADD CPP /Yu"stdafx.h"
+# ADD CPP /Yu"../stdafx.h"
 
 !ENDIF 
 
