@@ -4,6 +4,7 @@
 #include "rdoprocess_messages.h"
 #include "rdoprocess_method.h"
 #include "rdoprocess_factory.h"
+#include "../resource.h"
 #include <rdoprocess_pixmap.h>
 #include <rdoprocess_xml.h>
 
@@ -54,7 +55,9 @@ RPObjectFlowChart::RPObjectFlowChart( RPObject* _parent ):
 	ct_wanted( ctw_non ),
 	flowchart( NULL ),
 	drag_and_drop_shape( NULL ),
-	drag_and_drop_connector( NULL )
+	drag_and_drop_connector( NULL ),
+	trash_show( false ),
+	trash_bmp( NULL )
 #ifdef TEST_SPEED
 	,
 	makepixmap_cnt( 0 )
@@ -62,6 +65,11 @@ RPObjectFlowChart::RPObjectFlowChart( RPObject* _parent ):
 {
 	rpMethod::project->msg().connect( this, rp::msg::RP_FLOWSTATE_CHANGED );
 	rpMethod::project->msg().connect( this, rp::msg::RP_OBJ_SELCHANGED );
+	trash_rect.left   = 0;
+	trash_rect.top    = 0;
+	trash_rect.right  = 32;
+	trash_rect.bottom = 32;
+	trash_bmp = new RPPixmap( IDB_TRASH, RGB(0xFF,0x00,0xFF) );
 }
 
 RPObjectFlowChart::~RPObjectFlowChart()
@@ -69,6 +77,10 @@ RPObjectFlowChart::~RPObjectFlowChart()
 	if ( drag_and_drop_shape ) {
 		delete drag_and_drop_shape;
 		drag_and_drop_shape = NULL;
+	}
+	if ( trash_bmp ) {
+		delete trash_bmp;
+		trash_bmp = NULL;
 	}
 	if ( mem_dc.m_hDC ) {
 		mem_dc.SelectObject( font_first );
@@ -365,8 +377,13 @@ RPProject::Cursor RPObjectFlowChart::getCursor( const rp::point& global_chart_po
 
 	// Если есть выделенный объект, то проверим сначала его
 	if ( one_selected && one_selected->pointInShape(global_chart_pos) ) {
+		TRACE( "0\n" );
 		RPProject::Cursor cursor = one_selected->getCursor( global_chart_pos );
 		if ( cursor != RPProject::cursor_flow_select ) return cursor;
+		if ( one_selected->can_delete() ) {
+			TRACE( "qqqq\n" );
+			return RPProject::cursor_flow_rotate;
+		}
 	}
 
 	// Проверили все объекты на листе
@@ -573,6 +590,9 @@ void RPObjectFlowChart::draw( CDC& dc )
 				}
 */
 			}
+			if ( trash_show ) {
+				trash_bmp->Draw( mem_dc.m_hDC, trash_rect.left, trash_rect.top, trash_rect.Width() );
+			}
 
 #ifdef TEST_SPEED // =====================================
 			for ( int cnt7 = 0; cnt7 <= base_speed * 5; cnt7++ ) {
@@ -661,6 +681,9 @@ void RPObjectFlowChart::makeNewPixmap()
 	if ( pixmap_w_show_old != pixmap_w_show || pixmap_h_show_old != pixmap_h_show ) {
 		flowchart->makeGrid();
 	}
+	trash_rect.top    = client_height - border_w * 2 - paper_border_w * 2 - trash_rect.Height();
+	trash_rect.bottom = trash_rect.top + 32;
+	trash_show        = trash_rect.top >= 0;
 }
 
 void RPObjectFlowChart::snapToGrid( RPObjectMatrix* shape )
@@ -826,7 +849,12 @@ void RPObjectFlowChart::onMouseMove( UINT nFlags, CPoint local_win_pos )
 	// Движение мышки над найденным объектом
 	if ( obj ) obj->onMouseMove( nFlags, CPoint( static_cast<int>(global_chart_pos.x), static_cast<int>(global_chart_pos.y) ) );
 	// Выполнение команды над выделенным объектом
-	if ( one_object ) one_object->command_make( global_chart_pos );
+	if ( one_object ) {
+		one_object->command_make( global_chart_pos );
+		if ( one_object->can_delete() && trash_rect.PtInRect( CPoint(global_chart_pos.x, global_chart_pos.y) ) ) {
+			TRACE( "trash\n" );
+		}
+	}
 
 	if ( one_connector ) one_connector->update();
 

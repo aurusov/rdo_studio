@@ -1,5 +1,5 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Visual C++ generated include file.
+// Microsoft Developer Studio generated include file.
 // Used by rdo_process.rc
 //
 #define IDR_RT_MANIFEST1                1
@@ -35,6 +35,8 @@
 #define IDR_TOOLBAR_MAINFRAME_D         182
 #define IDD_METHOD_NEW                  183
 #define IDB_FLOWCHART_DEFAULT           185
+#define IDB_TRASH                       186
+#define IDC_FLOW_TRASH                  187
 #define IDC_EDIT1                       1000
 #define IDC_EDIT2                       1001
 #define IDC_EDIT3                       1002
@@ -88,7 +90,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        186
+#define _APS_NEXT_RESOURCE_VALUE        188
 #define _APS_NEXT_COMMAND_VALUE         32813
 #define _APS_NEXT_CONTROL_VALUE         1019
 #define _APS_NEXT_SYMED_VALUE           101

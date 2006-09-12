@@ -178,6 +178,8 @@ public:
 	virtual void command_before( const rp::point& global_chart_pos, bool first_click );
 	// Выполнить команду над объектом
 	virtual void command_make( const rp::point& global_chart_pos );
+
+	virtual bool can_delete() const { return pcmd == pcmd_move; }
 };
 
 #endif // RDO_PROCESS_SHAPE_H

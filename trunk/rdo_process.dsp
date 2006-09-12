@@ -719,6 +719,10 @@ SOURCE=res\flow_select.cur
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\flow_trash.cur
+# End Source File
+# Begin Source File
+
 SOURCE=.\res\flowchart_default.bmp
 # End Source File
 # Begin Source File
@@ -782,6 +786,10 @@ SOURCE=.\res\toolbar_mainframe_d.bmp
 # Begin Source File
 
 SOURCE=res\toolbar_styleandcolor.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\trash.bmp
 # End Source File
 # End Group
 # End Group

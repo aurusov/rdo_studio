@@ -89,6 +89,10 @@ protected:
 	RPConnector* drag_and_drop_connector;
 	void findAutoConnector();
 
+	bool      trash_show;
+	CRect     trash_rect;
+	RPPixmap* trash_bmp;
+
 public:
 	RPObjectFlowChart( RPObject* parent );
 	virtual ~RPObjectFlowChart();

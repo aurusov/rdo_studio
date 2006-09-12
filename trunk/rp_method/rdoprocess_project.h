@@ -38,7 +38,8 @@ public:
 		cursor_flow_dock_out,
 		cursor_flow_dock_inout,
 		cursor_flow_dock_fly,
-		cursor_flow_dock_not
+		cursor_flow_dock_not,
+		cursor_flow_trash
 	};
 	std::map< Cursor, HCURSOR > cursors;
 

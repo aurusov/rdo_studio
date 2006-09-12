@@ -1,4 +1,4 @@
-// Microsoft Visual C++ generated resource script.
+//Microsoft Developer Studio generated resource script.
 //
 #include "resource.h"
 
@@ -27,18 +27,18 @@ LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
 // TEXTINCLUDE
 //
 
-1 TEXTINCLUDE 
+1 TEXTINCLUDE MOVEABLE PURE 
 BEGIN
     "resource.h\0"
 END
 
-2 TEXTINCLUDE 
+2 TEXTINCLUDE MOVEABLE PURE 
 BEGIN
     "#include ""afxres.h""\r\n"
     "\0"
 END
 
-3 TEXTINCLUDE 
+3 TEXTINCLUDE MOVEABLE PURE 
 BEGIN
     "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
     "#define _AFX_NO_OLE_RESOURCES\r\n"
@@ -64,76 +64,85 @@ END
 // RT_MANIFEST
 //
 
-IDR_RT_MANIFEST1        RT_MANIFEST             "res\\rdo_process.manifest"
+IDR_RT_MANIFEST1        RT_MANIFEST MOVEABLE PURE "res\\rdo_process.manifest"
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // Cursor
 //
 
-IDC_FLOW_SELECT         CURSOR                  "res\\flow_select.cur"
-IDC_FLOW_ROTATE         CURSOR                  "res\\flow_rotate.cur"
-IDC_FLOW_CONNECTOR      CURSOR                  "res\\flow_connector.cur"
-IDC_FLOW_SCALE_TB       CURSOR                  "res\\flow_scale_tb.cur"
-IDC_FLOW_SCALE_LR       CURSOR                  "res\\flow_scale_lr.cur"
-IDC_FLOW_SCALE_TRBL     CURSOR                  "res\\flow_scale_trbl.cur"
-IDC_FLOW_SCALE_TLBR     CURSOR                  "res\\flow_scale_tlbr.cur"
-IDC_FLOW_ROTATE_TL      CURSOR                  "res\\flow_rotate_tl.cur"
-IDC_FLOW_ROTATE_CENTER  CURSOR                  "res\\flow_rotate_center.cur"
-IDC_FLOW_MOVE           CURSOR                  "res\\flow_move.cur"
-IDC_FLOW_DOCK_IN        CURSOR                  "res\\flow_dock_in.cur"
-IDC_FLOW_DOCK_NOT       CURSOR                  "res\\flow_dock_not.cur"
+IDC_FLOW_SELECT         CURSOR  DISCARDABLE     "res\\flow_select.cur"
+IDC_FLOW_ROTATE         CURSOR  DISCARDABLE     "res\\flow_rotate.cur"
+IDC_FLOW_CONNECTOR      CURSOR  DISCARDABLE     "res\\flow_connector.cur"
+IDC_FLOW_SCALE_TB       CURSOR  DISCARDABLE     "res\\flow_scale_tb.cur"
+IDC_FLOW_SCALE_LR       CURSOR  DISCARDABLE     "res\\flow_scale_lr.cur"
+IDC_FLOW_SCALE_TRBL     CURSOR  DISCARDABLE     "res\\flow_scale_trbl.cur"
+IDC_FLOW_SCALE_TLBR     CURSOR  DISCARDABLE     "res\\flow_scale_tlbr.cur"
+IDC_FLOW_ROTATE_TL      CURSOR  DISCARDABLE     "res\\flow_rotate_tl.cur"
+IDC_FLOW_ROTATE_CENTER  CURSOR  DISCARDABLE     "res\\flow_rotate_center.cur"
+IDC_FLOW_MOVE           CURSOR  DISCARDABLE     "res\\flow_move.cur"
+IDC_FLOW_DOCK_IN        CURSOR  DISCARDABLE     "res\\flow_dock_in.cur"
+IDC_FLOW_DOCK_NOT       CURSOR  DISCARDABLE     "res\\flow_dock_not.cur"
+IDC_FLOW_TRASH          CURSOR  DISCARDABLE     "res\\flow_trash.cur"
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // Bitmap
 //
 
-IDB_PAGECTRL_CLOSE      BITMAP                  "res\\pagectrl_close.bmp"
-IDB_PAGECTRL_CLOSE_OVER BITMAP                  "res\\pagectrl_close_over.bmp"
-IDB_PAGECTRL_PAGE       BITMAP                  "res\\pagectrl_page.bmp"
-IDR_TOOLBAR_STYLEANDCOLOR BITMAP                  "res\\toolbar_styleandcolor.bmp"
-IDR_TOOLBAR_MAINFRAME   BITMAP                  "res\\toolbar_mainframe.bmp"
-IDR_TOOLBAR_EMPTY       BITMAP                  "res\\toolbar_empty.bmp"
-IDR_TOOLBAR_MAINFRAME_D BITMAP                  "res\\toolbar_mainframe_d.bmp"
-IDB_FLOWCHART_DEFAULT   BITMAP                  "res\\flowchart_default.bmp"
-TOOLBARBLOCKMJ          BITMAP                  "res\\toolbar1.bmp"
+IDB_PAGECTRL_CLOSE      BITMAP  MOVEABLE PURE   "res\\pagectrl_close.bmp"
+IDB_PAGECTRL_CLOSE_OVER BITMAP  MOVEABLE PURE   "res\\pagectrl_close_over.bmp"
+IDB_PAGECTRL_PAGE       BITMAP  MOVEABLE PURE   "res\\pagectrl_page.bmp"
+IDR_TOOLBAR_STYLEANDCOLOR BITMAP  MOVEABLE PURE   "res\\toolbar_styleandcolor.bmp"
+IDR_TOOLBAR_MAINFRAME   BITMAP  MOVEABLE PURE   "res\\toolbar_mainframe.bmp"
+IDR_TOOLBAR_EMPTY       BITMAP  MOVEABLE PURE   "res\\toolbar_empty.bmp"
+IDR_TOOLBAR_MAINFRAME_D BITMAP  MOVEABLE PURE   "res\\toolbar_mainframe_d.bmp"
+IDB_FLOWCHART_DEFAULT   BITMAP  MOVEABLE PURE   "res\\flowchart_default.bmp"
+TOOLBARBLOCKMJ          BITMAP  MOVEABLE PURE   "res\\toolbar1.bmp"
+IDB_TRASH               BITMAP  DISCARDABLE     "res\\trash.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // Dialog
 //
 
-IDD_ABOUT DIALOG  0, 0, 268, 132
-STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+IDD_ABOUT DIALOG DISCARDABLE  0, 0, 268, 132
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "О програме РДО-Процесс"
 FONT 8, "MS Sans Serif"
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,208,112,50,14
     ICON            IDR_MAINFRAME,IDC_ABOUT_PICTURE,16,16,20,20
     CTEXT           "caption",IDC_ABOUT_CAPTION,52,12,192,8
-    CTEXT           "МГТУ им. Н.Э.Баумана, кафедра ""Комьютерные системы автоматизации производства"" (РК-9), Москва, Россия",IDC_ABOUT_ADDRESS,52,28,192,24
-    RTEXT           "тел. (095) 263-6388, (095) 263-6954, (095) 263-6049\r\nфакс (095) 263-6170",IDC_ABOUT_TEL,52,60,192,16
+    CTEXT           "МГТУ им. Н.Э.Баумана, кафедра ""Комьютерные системы автоматизации производства"" (РК-9), Москва, Россия",
+                    IDC_ABOUT_ADDRESS,52,28,192,24
+    RTEXT           "тел. (095) 263-6388, (095) 263-6954, (095) 263-6049\r\nфакс (095) 263-6170",
+                    IDC_ABOUT_TEL,52,60,192,16
     RTEXT           "почта:",IDC_ABOUR_EMAIL_STATIC,128,84,32,8
     LTEXT           "rdo@rk9.bmstu.ru",IDC_ABOUT_EMAIL,164,84,80,8,SS_NOTIFY
     RTEXT           "сайт:",IDC_ABOUR_WEB_STATIC,128,92,32,8
-    LTEXT           "http://rdo.rk9.bmstu.ru",IDC_ABOUT_WEB,164,92,80,8,SS_NOTIFY
+    LTEXT           "http://rdo.rk9.bmstu.ru",IDC_ABOUT_WEB,164,92,80,8,
+                    SS_NOTIFY
 END
 
 IDD_METHOD_NEW DIALOGEX 0, 0, 304, 169
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+STYLE DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Выбор метода"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    CONTROL         "",IDC_METHOD_LIST,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_SORTASCENDING | LVS_NOLABELWRAP | LVS_OWNERDRAWFIXED | LVS_ALIGNLEFT | LVS_NOSORTHEADER | WS_TABSTOP,4,4,172,140,WS_EX_CLIENTEDGE
+    CONTROL         "",IDC_METHOD_LIST,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_SORTASCENDING | 
+                    LVS_NOLABELWRAP | LVS_OWNERDRAWFIXED | LVS_ALIGNLEFT | 
+                    LVS_NOSORTHEADER | WS_TABSTOP,4,4,172,140,
+                    WS_EX_CLIENTEDGE
     LTEXT           "Описание:",IDC_STATIC,180,20,120,8
     LTEXT           "",IDC_METHOD_DESC,180,36,120,108
     DEFPUSHBUTTON   "OK",IDOK,192,152,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,248,152,50,14
 END
 
-IDD_DIALOG_TERMINATE_1_MJ DIALOG  0, 0, 228, 57
-STYLE DS_SETFONT | WS_CAPTION | WS_SYSMENU
+IDD_DIALOG_TERMINATE_1_MJ DIALOG DISCARDABLE  0, 0, 228, 57
+STYLE WS_CAPTION | WS_SYSMENU
 CAPTION "TERMINATE"
 FONT 8, "MS Sans Serif"
 BEGIN
@@ -143,8 +152,8 @@ BEGIN
     EDITTEXT        IDC_EDIT1,79,15,116,14,ES_AUTOHSCROLL
 END
 
-IDD_DIALOG_RESOURCE_DLG1 DIALOG  0, 0, 238, 73
-STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+IDD_DIALOG_RESOURCE_DLG1 DIALOG DISCARDABLE  0, 0, 238, 73
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Resource"
 FONT 8, "MS Sans Serif"
 BEGIN
@@ -152,36 +161,43 @@ BEGIN
     PUSHBUTTON      "Cancel",IDCANCEL,181,52,50,14
     EDITTEXT        IDC_EDIT1,54,13,111,14,ES_AUTOHSCROLL
     LTEXT           "Имя блока",IDC_STATIC,13,15,38,8
-    LTEXT           "Одновременно может обсдуживаться ",IDC_STATIC,13,34,132,8
+    LTEXT           "Одновременно может обсдуживаться ",IDC_STATIC,13,34,132,
+                    8
     EDITTEXT        IDC_EDIT2,145,31,21,14,ES_AUTOHSCROLL
     LTEXT           "транзактов",IDC_STATIC,170,34,40,8
 END
 
-IDD_DIALOG_PROCESS_2_MJ DIALOG  0, 0, 159, 73
-STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+IDD_DIALOG_PROCESS_2_MJ DIALOG DISCARDABLE  0, 0, 159, 73
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Добавление ресурса"
 FONT 8, "MS Sans Serif"
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,45,52,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,102,52,50,14
     LTEXT           "Ресурс",IDC_STATIC,7,17,25,8
-    COMBOBOX        IDC_COMBO1,37,15,108,78,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO1,37,15,108,78,CBS_DROPDOWN | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
 END
 
 IDD_DIALOG_PROCESS_1_MJ DIALOGEX 0, 0, 341, 238
-STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Process"
 FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,221,217,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,275,217,50,14
-    GROUPBOX        "Интервал между поступлениями транзактов",IDC_STATIC,20,139,300,74
+    GROUPBOX        "Интервал между поступлениями транзактов",IDC_STATIC,20,
+                    139,300,74
     LTEXT           "Закон ",IDC_STATIC,23,151,24,8
-    COMBOBOX        IDC_COMBO1,55,148,105,16,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO1,55,148,105,16,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
     EDITTEXT        IDC_EDIT4,85,170,40,14,ES_AUTOHSCROLL,WS_EX_STATICEDGE
-    EDITTEXT        IDC_EDIT5,213,170,40,14,ES_AUTOHSCROLL | WS_DISABLED,WS_EX_STATICEDGE
-    EDITTEXT        IDC_EDIT6,85,188,40,14,ES_AUTOHSCROLL | WS_DISABLED | NOT WS_BORDER,WS_EX_CLIENTEDGE | WS_EX_STATICEDGE
-    EDITTEXT        IDC_EDIT7,213,188,40,14,ES_AUTOHSCROLL | WS_DISABLED | NOT WS_BORDER,WS_EX_CLIENTEDGE | WS_EX_STATICEDGE
+    EDITTEXT        IDC_EDIT5,213,170,40,14,ES_AUTOHSCROLL | WS_DISABLED,
+                    WS_EX_STATICEDGE
+    EDITTEXT        IDC_EDIT6,85,188,40,14,ES_AUTOHSCROLL | WS_DISABLED | 
+                    NOT WS_BORDER,WS_EX_CLIENTEDGE | WS_EX_STATICEDGE
+    EDITTEXT        IDC_EDIT7,213,188,40,14,ES_AUTOHSCROLL | WS_DISABLED | 
+                    NOT WS_BORDER,WS_EX_CLIENTEDGE | WS_EX_STATICEDGE
     EDITTEXT        IDC_EDIT8,237,148,76,14,ES_AUTOHSCROLL,WS_EX_STATICEDGE
     LTEXT           "База генератора",IDC_STATIC,173,151,58,8
     LTEXT           "Мат. ожидание",IDC_STATIC,29,170,52,8
@@ -191,34 +207,39 @@ BEGIN
     LTEXT           "Имя блока",IDC_STATIC,15,10,38,8
     EDITTEXT        IDC_EDIT1,54,7,125,14,ES_AUTOHSCROLL
     LTEXT           "Действие",IDC_STATIC,17,30,34,8
-    COMBOBOX        IDC_COMBO2,53,27,126,61,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO2,53,27,126,61,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
     LTEXT           "Приоритет",IDC_STATIC,200,30,37,8
     EDITTEXT        IDC_EDIT2,240,26,40,14,ES_AUTOHSCROLL
     GROUPBOX        "Ресурсы",IDC_STATIC,20,84,300,53
     PUSHBUTTON      "Добавить",IDC_BUTTON1,246,95,50,14
     PUSHBUTTON      "Удалить",IDC_BUTTON2,246,115,50,14
-    LISTBOX         IDC_LIST1,29,95,197,36,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    LISTBOX         IDC_LIST1,29,95,197,36,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | 
+                    WS_TABSTOP
     LTEXT           "Закон",IDC_STATIC,30,65,22,8
-    COMBOBOX        IDC_COMBO3,54,62,141,44,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO3,54,62,141,44,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
     GROUPBOX        "Очередь",IDC_STATIC,20,50,300,30
     LTEXT           "Параметр",IDC_STATIC,207,62,35,8
-    COMBOBOX        IDC_COMBO4,246,60,48,30,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO4,246,60,48,30,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
 END
 
-IDD_DIALOG_GEN_TYPE DIALOG  0, 0, 207, 98
-STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+IDD_DIALOG_GEN_TYPE DIALOG DISCARDABLE  0, 0, 207, 98
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "GENERATION PARAMETERS "
 FONT 8, "MS Sans Serif"
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,39,77,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,98,77,50,14
-    COMBOBOX        IDC_COMBO1,15,14,168,30,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO1,15,14,168,30,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
     EDITTEXT        IDC_EDIT1,99,34,80,15,ES_AUTOHSCROLL
     LTEXT           "Время останова",IDC_STATIC,19,39,64,8
 END
 
 IDD_DIALOG_CREATE_2_MJ DIALOGEX 0, 0, 182, 142
-STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Дополнительные настройки"
 FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
@@ -238,7 +259,7 @@ BEGIN
 END
 
 IDD_DIALOG_CREATE_1_MJ DIALOGEX 0, 0, 317, 170
-STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Create"
 FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
@@ -246,17 +267,23 @@ BEGIN
     PUSHBUTTON      "Cancel",IDCANCEL,260,149,50,14
     EDITTEXT        IDC_EDIT1,117,14,106,14,ES_AUTOHSCROLL,WS_EX_STATICEDGE
     LTEXT           "Имя блока",IDC_STATIC,76,17,38,8
-    LTEXT           "Время прибытия первого транзакта",IDC_STATIC,33,36,124,8
+    LTEXT           "Время прибытия первого транзакта",IDC_STATIC,33,36,124,
+                    8
     EDITTEXT        IDC_EDIT2,159,34,39,13,ES_AUTOHSCROLL,WS_EX_STATICEDGE
     EDITTEXT        IDC_EDIT3,159,51,40,14,ES_AUTOHSCROLL,WS_EX_STATICEDGE
     LTEXT           "Кол-во создаваемых транзактов",IDC_STATIC,42,54,112,8
-    GROUPBOX        "Интервал между поступлениями транзактов",IDC_STATIC,7,72,300,72
+    GROUPBOX        "Интервал между поступлениями транзактов",IDC_STATIC,7,
+                    72,300,72
     LTEXT           "Закон ",IDC_STATIC,11,88,24,8
-    COMBOBOX        IDC_COMBO1,42,86,105,56,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO1,42,86,105,56,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
     EDITTEXT        IDC_EDIT4,73,105,40,14,ES_AUTOHSCROLL,WS_EX_STATICEDGE
-    EDITTEXT        IDC_EDIT5,201,105,40,14,ES_AUTOHSCROLL | WS_DISABLED,WS_EX_STATICEDGE
-    EDITTEXT        IDC_EDIT6,73,124,40,14,ES_AUTOHSCROLL | WS_DISABLED | NOT WS_BORDER,WS_EX_CLIENTEDGE | WS_EX_STATICEDGE
-    EDITTEXT        IDC_EDIT7,201,124,40,14,ES_AUTOHSCROLL | WS_DISABLED | NOT WS_BORDER,WS_EX_CLIENTEDGE | WS_EX_STATICEDGE
+    EDITTEXT        IDC_EDIT5,201,105,40,14,ES_AUTOHSCROLL | WS_DISABLED,
+                    WS_EX_STATICEDGE
+    EDITTEXT        IDC_EDIT6,73,124,40,14,ES_AUTOHSCROLL | WS_DISABLED | 
+                    NOT WS_BORDER,WS_EX_CLIENTEDGE | WS_EX_STATICEDGE
+    EDITTEXT        IDC_EDIT7,201,124,40,14,ES_AUTOHSCROLL | WS_DISABLED | 
+                    NOT WS_BORDER,WS_EX_CLIENTEDGE | WS_EX_STATICEDGE
     EDITTEXT        IDC_EDIT8,225,84,76,14,ES_AUTOHSCROLL,WS_EX_STATICEDGE
     LTEXT           "База генератора",IDC_STATIC,160,87,58,8
     LTEXT           "Мат. ожидание",IDC_STATIC,17,106,52,8
@@ -273,7 +300,7 @@ END
 //
 
 #ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO 
+GUIDELINES DESIGNINFO MOVEABLE PURE 
 BEGIN
     IDD_ABOUT, DIALOG
     BEGIN
@@ -355,14 +382,14 @@ END
 // Toolbar
 //
 
-IDR_TOOLBAR_STYLEANDCOLOR TOOLBAR  16, 15
+IDR_TOOLBAR_STYLEANDCOLOR TOOLBAR MOVEABLE PURE  16, 15
 BEGIN
     BUTTON      ID_BTN_FILL_BRUSH
     BUTTON      ID_BTN_FILL_PEN
     BUTTON      ID_BTN_FILL_TEXT
 END
 
-IDR_TOOLBAR_MAINFRAME TOOLBAR  16, 15
+IDR_TOOLBAR_MAINFRAME TOOLBAR MOVEABLE PURE  16, 15
 BEGIN
     BUTTON      ID_FILE_NEW
     BUTTON      ID_FILE_OPEN
@@ -377,12 +404,12 @@ BEGIN
     BUTTON      ID_FLOW_ROTATE
 END
 
-IDR_TOOLBAR_EMPTY TOOLBAR  16, 15
+IDR_TOOLBAR_EMPTY TOOLBAR MOVEABLE PURE  16, 15
 BEGIN
     BUTTON      ID_BTN_EMPTY
 END
 
-TOOLBARBLOCKMJ TOOLBAR  16, 15
+TOOLBARBLOCKMJ TOOLBAR MOVEABLE PURE  16, 15
 BEGIN
     BUTTON      ID_GENERATE
     BUTTON      ID_GEN_TYPE
@@ -402,15 +429,15 @@ END
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDR_MAINFRAME           ICON                    "res\\rdo_process.ico"
-IDR_FLOWCHART_TYPE      ICON                    "res\\flowchart_icon.ico"
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\rdo_process.ico"
+IDR_FLOWCHART_TYPE      ICON    DISCARDABLE     "res\\flowchart_icon.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // Menu
 //
 
-IDR_MAINFRAME MENU 
+IDR_MAINFRAME MENU DISCARDABLE 
 BEGIN
     POPUP "&File"
     BEGIN
@@ -435,7 +462,7 @@ END
 // Accelerator
 //
 
-IDR_MAINFRAME ACCELERATORS 
+IDR_MAINFRAME ACCELERATORS MOVEABLE PURE 
 BEGIN
     "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
     "N",            ID_FILE_NEW,            VIRTKEY, CONTROL, NOINVERT
@@ -451,6 +478,7 @@ BEGIN
 END
 
 
+#ifndef _MAC
 /////////////////////////////////////////////////////////////////////////////
 //
 // Version
@@ -473,13 +501,13 @@ BEGIN
     BEGIN
         BLOCK "040904b0"
         BEGIN
-            VALUE "FileDescription", "Simulation Sistem"
-            VALUE "FileVersion", "0, 1, 0, 86"
-            VALUE "InternalName", "RAO-Process"
-            VALUE "LegalCopyright", "Copyright (C) 2006"
-            VALUE "OriginalFilename", "rao-process.exe"
-            VALUE "ProductName", "RAO-Process"
-            VALUE "ProductVersion", "0, 1, 0, 86"
+            VALUE "FileDescription", "Simulation Sistem\0"
+            VALUE "FileVersion", "0, 1, 0, 86\0"
+            VALUE "InternalName", "RAO-Process\0"
+            VALUE "LegalCopyright", "Copyright (C) 2006\0"
+            VALUE "OriginalFilename", "rao-process.exe\0"
+            VALUE "ProductName", "RAO-Process\0"
+            VALUE "ProductVersion", "0, 1, 0, 86\0"
         END
     END
     BLOCK "VarFileInfo"
@@ -487,6 +515,8 @@ BEGIN
         VALUE "Translation", 0x409, 1200
     END
 END
+
+#endif    // !_MAC
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -557,19 +587,19 @@ END
 // String Table
 //
 
-STRINGTABLE 
+STRINGTABLE DISCARDABLE 
 BEGIN
     IDR_MAINFRAME           "rdo_process"
     IDR_FLOWCHART_TYPE      "\nfchart\nfchart"
 END
 
-STRINGTABLE 
+STRINGTABLE DISCARDABLE 
 BEGIN
     AFX_IDS_APP_TITLE       "rdo_process"
     AFX_IDS_IDLEMESSAGE2    "Ready"
 END
 
-STRINGTABLE 
+STRINGTABLE DISCARDABLE 
 BEGIN
     ID_DOCK_PROJECT_BAR     "Проект"
     IDS_COLORPICKER_NONE_BRUSH "Нет заливки"
@@ -579,13 +609,13 @@ BEGIN
     IDS_COLORPICKER_NONE_TEXT "Нет текста"
 END
 
-STRINGTABLE 
+STRINGTABLE DISCARDABLE 
 BEGIN
     ID_FILE_NEW             "\nНовая диаграмма"
     ID_FILE_CLOSE           "Close the active document\nClose"
 END
 
-STRINGTABLE 
+STRINGTABLE DISCARDABLE 
 BEGIN
     ID_EDIT_CLEAR           "Erase the selection\nErase"
     ID_EDIT_CLEAR_ALL       "Erase everything\nErase All"
@@ -600,7 +630,7 @@ BEGIN
     ID_EDIT_REDO            "Redo the previously undone action\nRedo"
 END
 
-STRINGTABLE 
+STRINGTABLE DISCARDABLE 
 BEGIN
     ID_WINDOW_ARRANGE       "Arrange icons at the bottom of the window\nArrange Icons"
     ID_WINDOW_CASCADE       "Arrange windows so they overlap\nCascade Windows"
@@ -609,19 +639,19 @@ BEGIN
     ID_WINDOW_SPLIT         "Split the active window into panes\nSplit"
 END
 
-STRINGTABLE 
+STRINGTABLE DISCARDABLE 
 BEGIN
     ID_APP_ABOUT            "Display program information, version number and copyright\nAbout"
     ID_APP_EXIT             "Quit the application; prompts to save documents\nExit"
 END
 
-STRINGTABLE 
+STRINGTABLE DISCARDABLE 
 BEGIN
     ID_NEXT_PANE            "Switch to the next window pane\nNext Pane"
     ID_PREV_PANE            "Switch back to the previous window pane\nPrevious Pane"
 END
 
-STRINGTABLE 
+STRINGTABLE DISCARDABLE 
 BEGIN
     ID_INDICATOR_EXT        "EXT"
     ID_INDICATOR_CAPS       "CAP"
@@ -631,13 +661,13 @@ BEGIN
     ID_INDICATOR_REC        "REC"
 END
 
-STRINGTABLE 
+STRINGTABLE DISCARDABLE 
 BEGIN
     ID_VIEW_TOOLBAR         "Show or hide the toolbar\nToggle ToolBar"
     ID_VIEW_STATUS_BAR      "Show or hide the status bar\nToggle StatusBar"
 END
 
-STRINGTABLE 
+STRINGTABLE DISCARDABLE 
 BEGIN
     AFX_IDS_SCSIZE          "Change the window size"
     AFX_IDS_SCMOVE          "Change the window position"
@@ -648,14 +678,14 @@ BEGIN
     AFX_IDS_SCCLOSE         "Close the active window and prompts to save the documents"
 END
 
-STRINGTABLE 
+STRINGTABLE DISCARDABLE 
 BEGIN
     AFX_IDS_SCRESTORE       "Restore the window to normal size"
     AFX_IDS_SCTASKLIST      "Activate Task List"
     AFX_IDS_MDICHILD        "Activate this window"
 END
 
-STRINGTABLE 
+STRINGTABLE DISCARDABLE 
 BEGIN
     IDR_TOOLBAR_STYLEANDCOLOR "Стиль и цвет"
     TOOLBARBLOCKMJ          "РДО-Процесс"
@@ -663,7 +693,7 @@ BEGIN
     IDR_TOOLBAR_EMPTY       "Команды"
 END
 
-STRINGTABLE 
+STRINGTABLE DISCARDABLE 
 BEGIN
     ID_FLOW_SELECT          "\nПеремещение"
     ID_FLOW_CONNECTOR       "\nДобавить связь"
@@ -671,7 +701,7 @@ BEGIN
     ID_GENERATE             "\nСгенерировать модель"
 END
 
-STRINGTABLE 
+STRINGTABLE DISCARDABLE 
 BEGIN
     ID_BTN_FILL_BRUSH       "\nФон"
     ID_BTN_FILL_PEN         "\nЛиния"

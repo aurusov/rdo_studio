@@ -114,6 +114,8 @@ public:
 	// Выполнить команду над объектом
 	virtual void command_make( const rp::point& global_chart_pos ) {};
 
+	virtual bool can_delete() const { return true; }
+
 	static rp::string colorToStr( COLORREF color );
 	static COLORREF strToColor( const rp::string& color );
 };
