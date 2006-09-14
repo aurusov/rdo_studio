@@ -95,7 +95,7 @@ protected:
 	bool            trash_over;
 	CRect           trash_rect;
 	RPObjectPixmap* trash_bmp;
-	bool            is_trash_over( const rp::point& global_chart_pos ) const { return trash_rect.PtInRect( CPoint(global_chart_pos.x, global_chart_pos.y) ) ? true : false; }
+	bool            is_trash_over( const rp::point& global_chart_pos ) const { return trash_rect.PtInRect( CPoint(static_cast<int>(global_chart_pos.x), static_cast<int>(global_chart_pos.y)) ) ? true : false; }
 
 public:
 	RPObjectFlowChart( RPObject* parent );

@@ -345,6 +345,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\rdoprocess_object_pixmap.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\rdoprocess_project.cpp"
 				>
 				<FileConfiguration
@@ -450,6 +454,10 @@
 			</File>
 			<File
 				RelativePath=".\rdoprocess_object_matrix.h"
+				>
+			</File>
+			<File
+				RelativePath=".\rdoprocess_object_pixmap.h"
 				>
 			</File>
 			<File

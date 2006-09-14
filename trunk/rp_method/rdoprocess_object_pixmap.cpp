@@ -48,6 +48,9 @@ void RPObjectPixmap::setPosition( double posx, double posy )
 	RPShape::setPosition( posx, posy );
 }
 
+// Исходники поворота картинки взяты с
+// http://www.codeguru.com/cpp/g-m/gdi/article.php/c3693/
+//
 // Helper function for getting the minimum of 4 floats
 float min4(float a, float b, float c, float d)
 {
