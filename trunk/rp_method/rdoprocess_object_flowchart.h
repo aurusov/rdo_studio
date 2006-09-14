@@ -11,6 +11,8 @@
 // ----------------------------------------------------------------------------
 // ---------- RPObjectFlowChart
 // ----------------------------------------------------------------------------
+class RPObjectPixmap;
+
 class RPObjectFlowChart: public RPObjectMatrix
 {
 friend class RPFlowChart;
@@ -89,9 +91,11 @@ protected:
 	RPConnector* drag_and_drop_connector;
 	void findAutoConnector();
 
-	bool      trash_show;
-	CRect     trash_rect;
-	RPPixmap* trash_bmp;
+	bool            trash_show;
+	bool            trash_over;
+	CRect           trash_rect;
+	RPObjectPixmap* trash_bmp;
+	bool            is_trash_over( const rp::point& global_chart_pos ) const { return trash_rect.PtInRect( CPoint(global_chart_pos.x, global_chart_pos.y) ) ? true : false; }
 
 public:
 	RPObjectFlowChart( RPObject* parent );

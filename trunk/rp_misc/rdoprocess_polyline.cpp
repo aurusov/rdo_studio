@@ -164,21 +164,17 @@ polyline& polyline::extendByPerimetr( double delta )
 rp::rect polyline::getBoundingRect() const
 {
 	if ( empty() ) return rp::rect();
-	double max_x = 0;
-	double max_y = 0;
-	double min_x = 0;
-	double min_y = 0;
 	std::vector< rp::point >::const_iterator it = begin();
-	max_x = it->x;
-	max_y = it->y;
-	min_x = it->x;
-	min_y = it->y;
+	double max_x = it->x;
+	double max_y = it->y;
+	double min_x = it->x;
+	double min_y = it->y;
 	it++;
 	while ( it != end() ) {
-		if ( it->x > max_x ) max_x = it->x;
-		if ( it->y > max_y ) max_y = it->y;
 		if ( it->x < min_x ) min_x = it->x;
 		if ( it->y < min_y ) min_y = it->y;
+		if ( it->x > max_x ) max_x = it->x;
+		if ( it->y > max_y ) max_y = it->y;
 		it++;
 	}
 	return rp::rect( min_x, min_y, max_x, max_y );

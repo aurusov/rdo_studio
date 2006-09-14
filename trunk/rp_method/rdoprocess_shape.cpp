@@ -210,19 +210,7 @@ rp::rect RPShape::getBoundingRect( bool global ) const
 {
 	rp::rect bound_rect;
 	if ( !pa_src.empty() ) {
-		int x_min = static_cast<int>(pa_src[0].x);
-		int y_min = static_cast<int>(pa_src[0].y);
-		int x_max = static_cast<int>(pa_src[0].x);
-		int y_max = static_cast<int>(pa_src[0].y);
-		std::vector< rp::point >::const_iterator it = pa_src.begin() + 1;
-		while ( it != pa_src.end() ) {
-			if ( x_min > it->x ) x_min = static_cast<int>(it->x);
-			if ( y_min > it->y ) y_min = static_cast<int>(it->y);
-			if ( x_max < it->x ) x_max = static_cast<int>(it->x);
-			if ( y_max < it->y ) y_max = static_cast<int>(it->y);
-			it++;
-		}
-		rp::rect rect( x_min, y_min, x_max, y_max );
+		rp::rect rect = pa_src.getBoundingRect();
 		if ( global ) {
 			rect.transform( globalMatrix() );
 		} else {

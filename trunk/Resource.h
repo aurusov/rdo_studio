@@ -3,6 +3,7 @@
 // Used by rdo_process.rc
 //
 #define IDR_RT_MANIFEST1                1
+#define ID_DELETE                       2
 #define IDC_FLOW_SELECT                 104
 #define IDR_MAINFRAME                   128
 #define IDR_FLOWCHART_TYPE              129
@@ -37,6 +38,7 @@
 #define IDB_FLOWCHART_DEFAULT           185
 #define IDB_TRASH                       186
 #define IDC_FLOW_TRASH                  187
+#define IDD_TRASH                       188
 #define IDC_EDIT1                       1000
 #define IDC_EDIT2                       1001
 #define IDC_EDIT3                       1002
@@ -54,6 +56,8 @@
 #define IDC_COMBO4                      1015
 #define IDC_METHOD_LIST                 1016
 #define IDC_METHOD_DESC                 1017
+#define ID_TRASH_RESTORE                1019
+#define IDC_OBJECTS                     1020
 #define IDC_ABOUT_CAPTION               1082
 #define IDC_ABOUT_PICTURE               1083
 #define IDC_ABOUT_ADDRESS               1084
@@ -90,9 +94,9 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        188
+#define _APS_NEXT_RESOURCE_VALUE        189
 #define _APS_NEXT_COMMAND_VALUE         32813
-#define _APS_NEXT_CONTROL_VALUE         1019
+#define _APS_NEXT_CONTROL_VALUE         1021
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

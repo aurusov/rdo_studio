@@ -57,7 +57,7 @@ public:
 	virtual int getWidth();
 	virtual int getHeight();
 	virtual HICON getIcon();
-	virtual void Draw( HDC hdc, int x, int y, int cx );
+	virtual void Draw( HDC hdc, int x, int y, int cx = 0 );
 	COLORREF getTransparent() const { return transparent; }
 };
 

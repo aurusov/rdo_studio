@@ -4,6 +4,7 @@
 #include "rdoprocess_messages.h"
 #include "rdoprocess_method.h"
 #include "rdoprocess_factory.h"
+#include "rdoprocess_object_pixmap.h"
 #include "../resource.h"
 #include <rdoprocess_pixmap.h>
 #include <rdoprocess_xml.h>
@@ -57,6 +58,7 @@ RPObjectFlowChart::RPObjectFlowChart( RPObject* _parent ):
 	drag_and_drop_shape( NULL ),
 	drag_and_drop_connector( NULL ),
 	trash_show( false ),
+	trash_over( false ),
 	trash_bmp( NULL )
 #ifdef TEST_SPEED
 	,
@@ -69,7 +71,7 @@ RPObjectFlowChart::RPObjectFlowChart( RPObject* _parent ):
 	trash_rect.top    = 0;
 	trash_rect.right  = 32;
 	trash_rect.bottom = 32;
-	trash_bmp = new RPPixmap( IDB_TRASH, RGB(0xFF,0x00,0xFF) );
+	trash_bmp = new RPObjectPixmap( this, new RPPixmap( IDB_TRASH, RGB(0xFF,0x00,0xFF) ) );
 }
 
 RPObjectFlowChart::~RPObjectFlowChart()
@@ -377,13 +379,8 @@ RPProject::Cursor RPObjectFlowChart::getCursor( const rp::point& global_chart_po
 
 	// Если есть выделенный объект, то проверим сначала его
 	if ( one_selected && one_selected->pointInShape(global_chart_pos) ) {
-		TRACE( "0\n" );
 		RPProject::Cursor cursor = one_selected->getCursor( global_chart_pos );
 		if ( cursor != RPProject::cursor_flow_select ) return cursor;
-		if ( one_selected->can_delete() ) {
-			TRACE( "qqqq\n" );
-			return RPProject::cursor_flow_rotate;
-		}
 	}
 
 	// Проверили все объекты на листе
@@ -591,7 +588,7 @@ void RPObjectFlowChart::draw( CDC& dc )
 */
 			}
 			if ( trash_show ) {
-				trash_bmp->Draw( mem_dc.m_hDC, trash_rect.left, trash_rect.top, trash_rect.Width() );
+//				trash_bmp->Draw( mem_dc.m_hDC, trash_rect.left, trash_rect.top, trash_rect.Width() );
 			}
 
 #ifdef TEST_SPEED // =====================================
@@ -851,8 +848,14 @@ void RPObjectFlowChart::onMouseMove( UINT nFlags, CPoint local_win_pos )
 	// Выполнение команды над выделенным объектом
 	if ( one_object ) {
 		one_object->command_make( global_chart_pos );
-		if ( one_object->can_delete() && trash_rect.PtInRect( CPoint(global_chart_pos.x, global_chart_pos.y) ) ) {
-			TRACE( "trash\n" );
+		// А не над корзиной ли ?
+		if ( one_object->can_delete() ) {
+			trash_over = is_trash_over( global_chart_pos );
+			// Приходится выставлять курсор прямо тут, т.к. getCursor не вызывается, если мышка зажата
+			HCURSOR cur = rpMethod::project->cursors[ trash_over ? RPProject::cursor_flow_trash : RPProject::cursor_flow_move ];
+			if ( cur ) {
+				::SetCursor( cur );
+			}
 		}
 	}
 
@@ -867,10 +870,18 @@ void RPObjectFlowChart::onLButtonUp( UINT nFlags, CPoint local_win_pos )
 	::ReleaseCapture();
 
 	if ( one_object ) {
-		CPoint global_chart_pos = local_win_pos;
-		clientToZero( global_chart_pos );
-		one_object->onLButtonUp( nFlags, global_chart_pos );
-		one_object = NULL;
+		if ( trash_over ) {
+			// Будем удалять объект
+			if ( one_selected == one_object ) one_selected = NULL;
+			delete one_object;
+			one_object = NULL;
+			update();
+		} else {
+			CPoint global_chart_pos = local_win_pos;
+			clientToZero( global_chart_pos );
+			one_object->onLButtonUp( nFlags, global_chart_pos );
+			one_object = NULL;
+		}
 	}
 
 	// Обновить скролл
@@ -881,8 +892,12 @@ void RPObjectFlowChart::onLButtonDblClk( UINT nFlags, CPoint local_win_pos )
 {
 	CPoint global_chart_pos = local_win_pos;
 	clientToZero( global_chart_pos );
-	RPObjectChart* obj = find( global_chart_pos );
-	if ( obj ) obj->onLButtonDblClk( nFlags, global_chart_pos );
+	// Проверим корзину
+	if ( is_trash_over(global_chart_pos) ) {
+	} else {
+		RPObjectChart* obj = find( global_chart_pos );
+		if ( obj ) obj->onLButtonDblClk( nFlags, global_chart_pos );
+	}
 }
 
 void RPObjectFlowChart::onRButtonDown( UINT nFlags, CPoint local_win_pos )

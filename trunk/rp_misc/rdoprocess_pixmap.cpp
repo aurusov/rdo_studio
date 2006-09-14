@@ -238,8 +238,10 @@ void RPPixmap::Draw( HDC hdc, int x, int y, int cx )
 	HDC dc = ::CreateCompatibleDC( hdc );
 	if ( dc ) {
 		HGDIOBJ bmp_old = ::SelectObject( dc, getBitmap() );
-		if ( cx > getWidth() ) cx = getWidth();
-		McTransparentBlt( hdc, x, y, cx, getHeight(), dc, 0, 0, cx, getHeight(), transparent );
+		int w = getWidth();
+		int h = getWidth();
+		if ( cx > w || !cx ) cx = w;
+		McTransparentBlt( hdc, x, y, cx, h, dc, 0, 0, cx, h, transparent );
 		::SelectObject( dc, bmp_old );
 		::DeleteDC( dc );
 	}

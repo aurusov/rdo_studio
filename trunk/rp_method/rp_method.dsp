@@ -371,6 +371,10 @@ DEP_CPP_RDOPROCESS_OB=\
 # End Source File
 # Begin Source File
 
+SOURCE=.\rdoprocess_object_pixmap.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdoprocess_project.cpp
 DEP_CPP_RDOPROCESS_P=\
 	"..\rp_misc\rdoprocess_string.h"\
@@ -484,6 +488,10 @@ SOURCE=.\rdoprocess_object_flowchart.h
 # Begin Source File
 
 SOURCE=.\rdoprocess_object_matrix.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdoprocess_object_pixmap.h
 # End Source File
 # Begin Source File
 
