@@ -87,6 +87,14 @@ public:
 		std::transform( begin(), end(), pa.begin(), tr );
 		return pa;
 	}
+
+	void draw( CDC& dc ) const {
+		if ( isPolygon() ) {
+			dc.Polygon( &getWinPolyline()[0], size() );
+		} else {
+			dc.Polyline( &getWinPolyline()[0], size() );
+		}
+	}
 };
 
 } // namespace rp

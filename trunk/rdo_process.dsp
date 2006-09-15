@@ -546,10 +546,6 @@ DEP_CPP_RDOPROCESS_ME=\
 # End Source File
 # Begin Source File
 
-SOURCE=.\rp_method\rdoprocess_object_pixmap.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\rdoprocess_project.cpp
 DEP_CPP_RDOPROCESS_P=\
 	".\ctrl\rdolink.h"\

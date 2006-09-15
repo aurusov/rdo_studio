@@ -229,11 +229,12 @@ void RPShape::drawPolyline( CDC& dc )
 //	return;
 	CBrush* old_brush = dc.SelectObject( &bg_brush );
 //	dc.BeginPath();
-	if ( pa_global.isPolygon() ) {
-		dc.Polygon( &pa_global.getWinPolyline()[0], pa_global.size() );
-	} else {
-		dc.Polyline( &pa_global.getWinPolyline()[0], pa_global.size() );
-	}
+	pa_global.draw( dc );
+//	if ( pa_global.isPolygon() ) {
+//		dc.Polygon( &pa_global.getWinPolyline()[0], pa_global.size() );
+//	} else {
+//		dc.Polyline( &pa_global.getWinPolyline()[0], pa_global.size() );
+//	}
 //	dc.EndPath();
 //	dc.StrokePath();
 	dc.SelectObject( old_brush );

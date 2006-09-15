@@ -158,6 +158,9 @@ void RPObjectFactory::registerDefaultObject()
 	RPObjectClassInfo* class_info_RPShape           = new RPObjectClassInfo( "RPShape", class_info_RPObjectMatrix );
 	insertFactory( class_info_RPObjectFlowChart );
 	insertFactory( class_info_RPShape );
+	// Потомки RPShape
+	RPObjectClassInfo* class_info_RPObjectPixmap    = new RPObjectClassInfo( "RPObjectPixmap", class_info_RPShape );
+	insertFactory( class_info_RPObjectPixmap );
 }
 
 void RPObjectFactory::insertFactory( RPObjectClassInfo* _factory )

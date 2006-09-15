@@ -108,6 +108,14 @@ public:
 	rect& extendByPerimetr( double delta );
 	bool isIntersection( const rp::point& p1, const rp::point& p2, std::list< rp::point >& inter );
 
+	void draw( CDC& dc ) const {
+		dc.MoveTo( pa[0].x, pa[0].y );
+		dc.LineTo( pa[1].x, pa[1].y );
+		dc.LineTo( pa[2].x, pa[2].y );
+		dc.LineTo( pa[3].x, pa[3].y );
+		dc.LineTo( pa[0].x, pa[0].y );
+	}
+
 #ifdef _DEBUG
 	void trace() const {
 		TRACE( "p0.x = %f, p0.y = %f\n", pa[0].x, pa[0].y );

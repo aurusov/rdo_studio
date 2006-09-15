@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "rdoprocess_object_pixmap.h"
+#include "mctranspblt/McTransparentBlit.h"
 #include <rdoprocess_pixmap.h>
 #include <rdoprocess_xml.h>
 
@@ -16,13 +17,15 @@ RPObjectPixmap::RPObjectPixmap( RPObject* _parent, RPPixmap* _pixmap ):
 	RPShape( _parent, _T("pixmap") ),
 	pixmap( _pixmap )
 {
-	int w = pixmap->getWidth();
-	int h = pixmap->getHeight();
-	pa_src.push_back( rp::point( -w/2, -h/2 ) );
-	pa_src.push_back( rp::point( w/2, -h/2 ) );
-	pa_src.push_back( rp::point( w/2, h/2 ) );
-	pa_src.push_back( rp::point( -w/2, h/2 ) );
-	pa_src.push_back( rp::point( -w/2, -h/2 ) );
+	if ( pixmap ) {
+		int w = pixmap->getWidth();
+		int h = pixmap->getHeight();
+		pa_src.push_back( rp::point( -w/2, -h/2 ) );
+		pa_src.push_back( rp::point( w/2, -h/2 ) );
+		pa_src.push_back( rp::point( w/2, h/2 ) );
+		pa_src.push_back( rp::point( -w/2, h/2 ) );
+		pa_src.push_back( rp::point( -w/2, -h/2 ) );
+	}
 }
 
 RPObjectPixmap::~RPObjectPixmap()
@@ -35,11 +38,12 @@ RPObjectPixmap::~RPObjectPixmap()
 
 void RPObjectPixmap::load( rp::RPXMLNode* node )
 {
+	RPShape::load( node );
 }
 
 rp::RPXMLNode* RPObjectPixmap::save( rp::RPXMLNode* parent_node )
 {
-	rp::RPXMLNode* obj_node = parent_node->makeChild( "pixmap" );
+	rp::RPXMLNode* obj_node = RPShape::save( parent_node );
 	return obj_node;
 }
 
@@ -154,7 +158,7 @@ pBGR MyGetDibBits(HDC hdcSrc, HBITMAP hBmpSrc, int nx, int ny)
 }
 
 // RotateMemoryDC rotates a memory DC and returns the rotated DC as well as its dimensions
-void RotateMemoryDC(HBITMAP hBmpSrc, HDC hdcSrc, int SrcX, int SrcY, float angle, HDC &hdcDst, int &dstX, int &dstY)
+HGDIOBJ RotateMemoryDC(HBITMAP hBmpSrc, CDC& hdcSrc, int SrcW, int SrcH, float angle, CDC& hdcDst, int &dstX, int &dstY, COLORREF transparent )
 {
 	HBITMAP hBmpDst;
 	float x1, x2, x3, x4, y1, y2, y3, y4, cA, sA;
@@ -167,22 +171,22 @@ void RotateMemoryDC(HBITMAP hBmpSrc, HDC hdcSrc, int SrcX, int SrcY, float angle
 	BITMAPINFO bi;
 
 	// Rotate the bitmap around the center
-	CtX = ((float) SrcX) / 2;
-	CtY = ((float) SrcY) / 2;
+	CtX = ((float) SrcW) / 2;
+	CtY = ((float) SrcH) / 2;
 
 	// First, calculate the destination positions for the four courners to get dstX and dstY
 	cA = (float) cos(angle);
-	sA = (float) sin(angle);
+	sA = (float) -sin(angle);
 
 	x1 = CtX + (-CtX) * cA - (-CtY) * sA;
-	x2 = CtX + (SrcX - CtX) * cA - (-CtY) * sA;
-	x3 = CtX + (SrcX - CtX) * cA - (SrcY - CtY) * sA;
-	x4 = CtX + (-CtX) * cA - (SrcY - CtY) * sA;
+	x2 = CtX + (SrcW - CtX) * cA - (-CtY) * sA;
+	x3 = CtX + (SrcW - CtX) * cA - (SrcH - CtY) * sA;
+	x4 = CtX + (-CtX) * cA - (SrcH - CtY) * sA;
 
 	y1 = CtY + (-CtY) * cA + (-CtX) * sA;
-	y2 = CtY + (SrcY - CtY) * cA + (-CtX) * sA;
-	y3 = CtY + (SrcY - CtY) * cA + (SrcX - CtX) * sA;
-	y4 = CtY + (-CtY) * cA + (SrcX - CtX) * sA;
+	y2 = CtY + (SrcH - CtY) * cA + (-CtX) * sA;
+	y3 = CtY + (SrcH - CtY) * cA + (SrcW - CtX) * sA;
+	y4 = CtY + (-CtY) * cA + (SrcW - CtX) * sA;
 
 	OfX = ((int) floor(min4(x1, x2, x3, x4)));
 	OfY = ((int) floor(min4(y1, y2, y3, y4)));
@@ -191,20 +195,19 @@ void RotateMemoryDC(HBITMAP hBmpSrc, HDC hdcSrc, int SrcX, int SrcY, float angle
 	dstY = ((int) ceil(max4(y1, y2, y3, y4))) - OfY;
 
 	// Create the new memory DC
-	hdcDst = CreateCompatibleDC(hdcSrc);
-	hBmpDst = CreateCompatibleBitmap(hdcSrc, dstX, dstY);
-	SelectObject(hdcDst, hBmpDst);
+	hBmpDst = CreateCompatibleBitmap(hdcSrc.m_hDC, dstX, dstY);
+	HGDIOBJ old_pixmap = ::SelectObject( hdcDst.m_hDC, hBmpDst );
 
 	// Fill the new memory DC with the current Window color
 	rt.left = 0;
 	rt.top = 0;
 	rt.right = dstX;
 	rt.bottom = dstY;
-	FillRect(hdcDst, &rt, GetSysColorBrush(COLOR_WINDOW));
+	hdcDst.FillSolidRect( &rt, transparent );
 
 	// Get the bitmap bits for the source and destination
-	src = MyGetDibBits(hdcSrc, hBmpSrc, SrcX, SrcY);
-	dst = MyGetDibBits(hdcDst, hBmpDst, dstX, dstY);
+	src = MyGetDibBits(hdcSrc.m_hDC, hBmpSrc, SrcW, SrcH);
+	dst = MyGetDibBits(hdcDst.m_hDC, hBmpDst, dstX, dstY);
 
 	dstLine = dst;
 	divisor = cA*cA + sA*sA;
@@ -216,28 +219,28 @@ void RotateMemoryDC(HBITMAP hBmpSrc, HDC hdcSrc, int SrcX, int SrcY, float angle
 			orgY = CtY + (CtX - ((float) stepX + OfX)) * sA + cA *(((float) stepY + OfY) - CtY + (CtY - CtX) * sA);
 			iorgX = (int) orgX;
 			iorgY = (int) orgY;
-			if ((iorgX >= 0) && (iorgY >= 0) && (iorgX < SrcX) && (iorgY < SrcY)) {
+			if ((iorgX >= 0) && (iorgY >= 0) && (iorgX < SrcW) && (iorgY < SrcH)) {
 				// Inside the source bitmap -> copy the bits
-				dstLine[dstX - stepX - 1] = src[iorgX + iorgY * SrcX];
+				dstLine[stepX] = src[iorgX + iorgY * SrcW];
 			} else {
 				// Outside the source -> set the color to light grey
-				dstLine[dstX - stepX - 1].b = 240;
-				dstLine[dstX - stepX - 1].g = 240;
-				dstLine[dstX - stepX - 1].r = 240;
+				dstLine[stepX].b = GetBValue(transparent);
+				dstLine[stepX].g = GetGValue(transparent);
+				dstLine[stepX].r = GetRValue(transparent);
 			}
 		}
 		dstLine = dstLine + dstX;
 	}
 
 	// Set the new Bitmap
-	bi.bmiHeader.biSize = sizeof(bi.bmiHeader);
-	bi.bmiHeader.biWidth = dstX;
-	bi.bmiHeader.biHeight = dstY;
-	bi.bmiHeader.biPlanes = 1;
-	bi.bmiHeader.biBitCount = 32;
-	bi.bmiHeader.biCompression = BI_RGB;
-	bi.bmiHeader.biSizeImage = dstX * 4 * dstY;
-	bi.bmiHeader.biClrUsed = 0;
+	bi.bmiHeader.biSize         = sizeof(bi.bmiHeader);
+	bi.bmiHeader.biWidth        = dstX;
+	bi.bmiHeader.biHeight       = -dstY;
+	bi.bmiHeader.biPlanes       = 1;
+	bi.bmiHeader.biBitCount     = 32;
+	bi.bmiHeader.biCompression  = BI_RGB;
+	bi.bmiHeader.biSizeImage    = dstX * 4 * dstY;
+	bi.bmiHeader.biClrUsed      = 0;
 	bi.bmiHeader.biClrImportant = 0;
 	SetDIBits(hdcDst, hBmpDst, 0, dstY, dst, &bi, DIB_RGB_COLORS);
 	DeleteObject(hBmpDst);
@@ -245,25 +248,58 @@ void RotateMemoryDC(HBITMAP hBmpSrc, HDC hdcSrc, int SrcX, int SrcY, float angle
 	// Free the color arrays
 	free(src);
 	free(dst);
+
+	return old_pixmap;
 }
 
 void RPObjectPixmap::draw( CDC& dc )
 {
-	RPShape::draw( dc );
+	RPObjectMatrix::draw( dc );
 
 	// Перевод фигуры в глобальные координаты
 	transformToGlobal();
+	rp::rect rect = pa_global.getBoundingRect();
 
+	CDC original_dc;
+	original_dc.CreateCompatibleDC( &dc );
+	CBitmap* original_old_bitmap = original_dc.SelectObject( &pixmap->getCBitmap() );
+	int w = pixmap->getWidth();
+	int h = pixmap->getHeight();
+	int scaled_w = w * getScaleX();
+	int scaled_h = h * getScaleY();
+	int rotated_w;
+	int rotated_h;
+	CDC rotated_dc;
+	rotated_dc.CreateCompatibleDC( &dc );
+	HGDIOBJ rotated_old_pixmap = RotateMemoryDC( pixmap->getBitmap(), original_dc, w, h, getRotation() *  rp::math::pi / 180, rotated_dc, rotated_w, rotated_h, RGB(0,-1,0)/*pixmap->getTransparent()*/ );
+	McTransparentBlt( dc.m_hDC, rect.p0().x, rect.p0().y, rotated_w * getScaleX(), rotated_h * getScaleY(), rotated_dc.m_hDC, 0, 0, rotated_w, rotated_h, pixmap->getTransparent() );
+	::SelectObject( rotated_dc.m_hDC, rotated_old_pixmap );
+	original_dc.SelectObject( original_old_bitmap );
+	rect.draw( dc );
+
+
+/*
 	// Вывод картинки
+	int w = pixmap->getWidth();
+	int h = pixmap->getHeight();
+	int new_w = w * getScaleX();
+	int new_h = h * getScaleY();
 	CDC dc_rotate_src;
 	dc_rotate_src.CreateCompatibleDC( &dc );
-	CBitmap* old_bitmap = dc_rotate_src.SelectObject( &pixmap->getCBitmap() );
-	HDC dc_rotate_dest;
-	int x = 32;
-	int y = 32;
-	RotateMemoryDC( pixmap->getBitmap(), dc_rotate_src.m_hDC, 32, 32, (getRotation() + 180) *  rp::math::pi / 180, dc_rotate_dest, x, y );
-	::BitBlt( dc.m_hDC, pa_global[0].x, pa_global[0].y, 32, 32, dc_rotate_dest, 0, 0, SRCCOPY );
-	dc_rotate_src.SelectObject( old_bitmap );
+	CBitmap pixmap_scale;
+	pixmap_scale.CreateCompatibleBitmap( &dc, new_w, new_h );
+	CBitmap* old_bitmap_src = dc_rotate_src.SelectObject( &pixmap_scale );
+	pixmap->CloneScale( dc_rotate_src.m_hDC, new_w, new_h );
 
-//	pixmap->Draw( dc.m_hDC, pa_global[0].x, pa_global[0].y );
+	CDC dc_rotate_dest;
+	dc_rotate_dest.CreateCompatibleDC( &dc );
+
+	int rotated_w;
+	int rotated_h;
+	HGDIOBJ old_pixmap_dst = RotateMemoryDC( pixmap_scale, dc_rotate_src, new_w, new_h, getRotation() *  rp::math::pi / 180, dc_rotate_dest, rotated_w, rotated_h, pixmap->getTransparent() );
+	McTransparentBlt( dc.m_hDC, rect.p0().x, rect.p0().y, rotated_w, rotated_h, dc_rotate_dest.m_hDC, 0, 0, rotated_w, rotated_h, pixmap->getTransparent() );
+//	::BitBlt( dc.m_hDC, rect.p0().x, rect.p0().y, new_w, new_h, dc_rotate_src.m_hDC, 0, 0, SRCCOPY );
+	dc_rotate_src.SelectObject( old_bitmap_src );
+	::SelectObject( dc_rotate_dest.m_hDC, old_pixmap_dst );
+*/
 }

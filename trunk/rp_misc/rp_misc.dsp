@@ -327,11 +327,11 @@ DEP_CPP_CLONE=\
 
 !IF  "$(CFG)" == "rp_misc - Win32 Debug"
 
-# ADD CPP /nologo /GX /Yu"../stdafx.h" /GZ
+# ADD CPP /nologo /GX /Yu"stdafx.h" /GZ
 
 !ELSEIF  "$(CFG)" == "rp_misc - Win32 Release"
 
-# ADD CPP /nologo /GX /Yu"../stdafx.h"
+# ADD CPP /nologo /GX /Yu"stdafx.h"
 
 !ENDIF 
 
@@ -349,19 +349,11 @@ SOURCE=.\clonebitmap\CloneBitmap.h
 SOURCE=.\mctranspblt\McTransparentBlit.cpp
 DEP_CPP_MCTRA=\
 	".\mctranspblt\McTransparentBlit.h"\
-	".\stdafx.h"\
 	
-
-!IF  "$(CFG)" == "rp_misc - Win32 Debug"
-
-# ADD CPP /Yu"../stdafx.h"
-
-!ELSEIF  "$(CFG)" == "rp_misc - Win32 Release"
-
-# ADD CPP /Yu"../stdafx.h"
-
-!ENDIF 
-
+NODEP_CPP_MCTRA=\
+	".\mctranspblt\stdafx.h"\
+	
+# ADD CPP /Yu"stdafx.h"
 # End Source File
 # Begin Source File
 

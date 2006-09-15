@@ -52,12 +52,14 @@ public:
 	RPPixmap( char* _xpm[] );
 	RPPixmap( HICON icon );
 	RPPixmap( unsigned int resource, COLORREF _transparent );
-	virtual HBITMAP getBitmap()   { return reinterpret_cast<HBITMAP>(bmp.m_hObject); }
-	virtual CBitmap& getCBitmap() { return bmp;                                      }
-	virtual int getWidth();
-	virtual int getHeight();
-	virtual HICON getIcon();
-	virtual void Draw( HDC hdc, int x, int y, int cx = 0 );
+	HBITMAP getBitmap()   { return reinterpret_cast<HBITMAP>(bmp.m_hObject); }
+	CBitmap& getCBitmap() { return bmp;                                      }
+	int getWidth();
+	int getHeight();
+	HICON getIcon();
+	void Draw( HDC hdc, int x, int y, int cx = 0 );
+	void Clone( HDC hdc );
+	void CloneScale( HDC hdc, int new_w, int new_h );
 	COLORREF getTransparent() const { return transparent; }
 };
 

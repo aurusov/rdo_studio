@@ -246,3 +246,29 @@ void RPPixmap::Draw( HDC hdc, int x, int y, int cx )
 		::DeleteDC( dc );
 	}
 }
+
+void RPPixmap::Clone( HDC hdc )
+{
+	HDC dc = ::CreateCompatibleDC( hdc );
+	if ( dc ) {
+		HGDIOBJ bmp_old = ::SelectObject( dc, getBitmap() );
+		int w = getWidth();
+		int h = getHeight();
+		::BitBlt( hdc, 0, 0, w, h, dc, 0, 0, SRCCOPY );
+		::SelectObject( dc, bmp_old );
+		::DeleteDC( dc );
+	}
+}
+
+void RPPixmap::CloneScale( HDC hdc, int new_w, int new_h )
+{
+	HDC dc = ::CreateCompatibleDC( hdc );
+	if ( dc ) {
+		HGDIOBJ bmp_old = ::SelectObject( dc, getBitmap() );
+		int w = getWidth();
+		int h = getHeight();
+		::StretchBlt( hdc, 0, 0, new_w, new_h, dc, 0, 0, w, h, SRCCOPY );
+		::SelectObject( dc, bmp_old );
+		::DeleteDC( dc );
+	}
+}
