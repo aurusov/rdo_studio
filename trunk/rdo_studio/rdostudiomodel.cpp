@@ -193,7 +193,7 @@ void RDOStudioModel::proc( RDOThread::RDOMessageInfo& msg )
 			frameManager.bmp_clear();
 			SYSTEMTIME time_stop;
 			::GetSystemTime( &time_stop );
-			studioApp.mainFrame->output.appendStringToDebug( rdo::format("Длительность прогона: %d мсек.\n", time_stop.wMinute * 60000 + time_stop.wSecond * 1000 + time_stop.wMilliseconds - (time_start.wMinute * 60000 + time_start.wSecond * 1000 + time_start.wMilliseconds) ) );
+			studioApp.mainFrame->output.appendStringToDebug( rdo::format(IDS_MODEL_DURATION, time_stop.wMinute * 60000 + time_stop.wSecond * 1000 + time_stop.wMilliseconds - (time_start.wMinute * 60000 + time_start.wSecond * 1000 + time_start.wMilliseconds) ) );
 			GUI_CAN_RUN   = true;
 			GUI_IS_RUNING = false;
 			break;

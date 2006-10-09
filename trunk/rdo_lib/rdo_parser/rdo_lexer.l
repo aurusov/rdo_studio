@@ -297,7 +297,7 @@ active				return(active);
 					return IDENTIF_set;
 				}
 
-[A-Za-zР-пр-џ\xB8_][A-Za-zР-пр-џ\xB80-9_$]*[\r\n\t ]+NoChange[\r\n\t ]+NoChange  {
+[A-Za-zР-пр-џ\xB8_][A-Za-zР-пр-џ\xB80-9_$]*[\r\n\t ]+(NoChange|nochange)[\r\n\t ]+(NoChange|nochange)  {
 					std::string n1(YYText());
 					std::string::size_type pos = n1.find_first_of("\r\n\t :");
 					std::string *name = new std::string(n1, 0, pos);
@@ -306,7 +306,7 @@ active				return(active);
 					return IDENTIF_NoChange_NoChange;
 				}
 
-[A-Za-zР-пр-џ\xB8_][A-Za-zР-пр-џ\xB80-9_$]*[\r\n\t ]+NoChange  {
+[A-Za-zР-пр-џ\xB8_][A-Za-zР-пр-џ\xB80-9_$]*[\r\n\t ]+(NoChange|nochange)  {
 					std::string n1(YYText());
 					std::string::size_type pos = n1.find_first_of("\r\n\t :");
 					std::string *name = new std::string(n1, 0, pos);
