@@ -37,7 +37,9 @@ int RDORTPEnum::findValue( const std::string* const val ) const
 	std::vector<const std::string *>::const_iterator it = 
 		std::find_if(enumVals.begin(), enumVals.end(), comparePointers<std::string>(val));
 
-	if ( it == enumVals.end() ) parser->error( rdoSimulator::RDOSyntaxError::RTP_WRONG_ENUM_PARAM_VALUE, val->c_str() );
+	if ( it == enumVals.end() ) {
+		parser->error( rdoSimulator::RDOSyntaxError::RTP_WRONG_ENUM_PARAM_VALUE, val->c_str() );
+	}
 
 //	return (it - enumVals.begin()) + 1;
 	return it - enumVals.begin();
@@ -129,6 +131,7 @@ const RDORTPResParam* RDORTPResParam::constructSuchAs( const int defVal ) const
 	parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_DEFVAULT_INT_SUCHAS, defVal );
 	return NULL;	// unreachable code...
 }
+
 const RDORTPResParam* RDORTPResParam::constructSuchAs( const double* const defVal ) const
 {
 //	std::ostringstream str;
@@ -137,6 +140,7 @@ const RDORTPResParam* RDORTPResParam::constructSuchAs( const double* const defVa
 	parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_DEFVAULT_REAL_SUCHAS, *defVal );
 	return NULL;	// unreachable code...
 }
+
 const RDORTPResParam* RDORTPResParam::constructSuchAs( const std::string* const defVal ) const
 {
 //	parser->error(("Invalid default value: " + *defVal).c_str());

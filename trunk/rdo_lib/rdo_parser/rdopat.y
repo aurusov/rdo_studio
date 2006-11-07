@@ -28,7 +28,6 @@
 %token algorithmic			277
 %token table_keyword		278
 %token list_keyword			279
-%token Calculate_if			280
 %token Exist				281
 %token Not_Exist			282
 %token For_All				283

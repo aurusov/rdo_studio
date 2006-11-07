@@ -12,6 +12,7 @@ static char THIS_FILE[] = __FILE__;
 #include "rdosmr.h"
 #include "rdorss.h"
 #include "rdortp.h"
+#include "rdofun.h"
 #include "rdosmr.h"
 #include "rdoruntime.h"
 
@@ -194,6 +195,18 @@ void RDOParserRSSPost::parse()
 		parser->runTime->addInitCalc( createResource );
 		it++;
 	}
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOParserFUN
+// ----------------------------------------------------------------------------
+RDOParserFUN::RDOParserFUN(): RDOParserRDO( rdoModelObjects::FUN, funparse, funerror, funlex )
+{
+}
+
+RDOLexer* RDOParserFUN::getLexer( std::istream& in_stream, std::ostream& out_stream )
+{
+	return new RDOLexerFUN( this, &in_stream, &out_stream );
 }
 
 // ----------------------------------------------------------------------------

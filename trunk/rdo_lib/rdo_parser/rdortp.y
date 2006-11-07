@@ -28,7 +28,6 @@
 %token algorithmic			277
 %token table_keyword		278
 %token list_keyword			279
-%token Calculate_if			280
 %token Exist				281
 %token Not_Exist			282
 %token For_All				283
@@ -240,21 +239,31 @@ rtp_param_desc: IDENTIF_COLON rtp_param_type {
 rtp_param_type:	integer rtp_int_diap rtp_int_default_val {
 					RDORTPIntDiap *diap = (RDORTPIntDiap *)$2;
 					RDORTPIntDefVal *dv = (RDORTPIntDefVal *)$3;
+					parser->lexer_loc_backup();
+					parser->lexer_loc_set( &(@3) );
 					RDORTPIntResParam *rp = new RDORTPIntResParam(diap, dv);
+					parser->lexer_loc_restore();
 					$$ = (int)rp;
 				}
 				| real rtp_real_diap rtp_real_default_val {
 					RDORTPRealDiap *diap = (RDORTPRealDiap *)$2;
 					RDORTPRealDefVal *dv = (RDORTPRealDefVal *)$3;
+					parser->lexer_loc_backup();
+					parser->lexer_loc_set( &(@3) );
 					RDORTPRealResParam *rp = new RDORTPRealResParam(diap, dv);
+					parser->lexer_loc_restore();
 					$$ = (int)rp;
 				}
 				| rtp_enum rtp_enum_default_val {
 					reinterpret_cast<RDOLexerRTP*>(lexer)->enum_param_cnt = 0;
 					RDORTPEnum *enu = (RDORTPEnum *)$1;
 					RDORTPEnumDefVal *dv = (RDORTPEnumDefVal *)$2;
-					if(dv->exist)
+					parser->lexer_loc_backup();
+					parser->lexer_loc_set( &(@2) );
+					if ( dv->exist ) {
 						enu->findValue(dv->value);	 // if no value - Syntax exception will be thrown
+					}
+					parser->lexer_loc_restore();
 					RDORTPEnumResParam *rp = new RDORTPEnumResParam(enu, dv);
 					$$ = (int)rp;
 				}
@@ -315,7 +324,7 @@ rtp_int_diap:	/* empty */ {
 					parser->error( "ƒиапазон задан неверно" );
 				}
 				| '[' INT_CONST dblpoint error {
-					parser->lexer_loc_set( &(@3) );
+					parser->lexer_loc_set( &(@4) );
 					parser->error( "ƒиапазон задан неверно" );
 				}
 				| '[' error {
@@ -369,11 +378,11 @@ rtp_real_diap:	/* empty */ {
 					parser->error( "ƒиапазон задан неверно" );
 				}
 				| '[' REAL_CONST dblpoint error {
-					parser->lexer_loc_set( &(@3) );
+					parser->lexer_loc_set( &(@4) );
 					parser->error( "ƒиапазон задан неверно" );
 				}
 				| '[' INT_CONST dblpoint error {
-					parser->lexer_loc_set( &(@3) );
+					parser->lexer_loc_set( &(@4) );
 					parser->error( "ƒиапазон задан неверно" );
 				}
 				| '[' error {
@@ -383,56 +392,72 @@ rtp_real_diap:	/* empty */ {
 				};
 
 rtp_int_default_val:	/* empty */ {
-							$$ = (int)(new RDORTPIntDefVal());
-						}
-						| '=' INT_CONST {
-							$$ = (int)(new RDORTPIntDefVal($2));
-						}
-						| '=' REAL_CONST {
-							// ÷елое число инициализируетс€ вещественным: %f
-							parser->lexer_loc_set( &(@2) );
-							parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_DEFVAULT_INT_AS_REAL, *(double*)$2 );
-						}
-						| '=' error {
-							if ( parser->lexer_loc_line() == @1.first_line ) {
-								std::string str( reinterpret_cast<RDOLexer*>(lexer)->YYText() );
-								if ( str.empty() ) {
-									parser->lexer_loc_set( &(@1) );
-									parser->error( "ќжидаетс€ целочисленное значение по-умолчанию" );
-								} else {
-									parser->lexer_loc_set( &(@2) );
-									parser->error( rdo::format( "Ќеверное значение по-умолчанию: %s", str.c_str() ) );
-								}
-							} else {
-								parser->lexer_loc_set( &(@1) );
-								parser->error( "ќжидаетс€ целочисленное значение по-умолчанию" );
-							}
-						};
+						$$ = (int)(new RDORTPIntDefVal());
+					}
+					| '=' INT_CONST {
+						$$ = (int)(new RDORTPIntDefVal($2));
+					}
+					| '=' REAL_CONST {
+						// ÷елое число инициализируетс€ вещественным: %f
+						parser->lexer_loc_set( &(@2) );
+						parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_DEFVAULT_INT_AS_REAL, *(double*)$2 );
+					}
+					| '=' {
+						parser->lexer_loc_set( @1.last_line, @1.last_column );
+						parser->error( "Ќе указано значение по-умолчанию целого типа" );
+					}
+					| '=' error {
+						parser->lexer_loc_set( @2.last_line, @2.last_column );
+						parser->error( "Ќеверное значение по-умолчанию целого типа" );
+					};
+//					| '=' error {
+//						if ( parser->lexer_loc_line() == @1.first_line ) {
+//							std::string str( reinterpret_cast<RDOLexer*>(lexer)->YYText() );
+//							if ( str.empty() ) {
+//								parser->lexer_loc_set( &(@1) );
+//								parser->error( "ќжидаетс€ целочисленное значение по-умолчанию" );
+//							} else {
+//								parser->lexer_loc_set( &(@2) );
+//								parser->error( rdo::format( "Ќеверное значение по-умолчанию: %s", str.c_str() ) );
+//							}
+//						} else {
+//							parser->lexer_loc_set( &(@1) );
+//							parser->error( "ќжидаетс€ целочисленное значение по-умолчанию" );
+//						}
+//					};
 
 rtp_real_default_val:	/* empty */ {
-							$$ = (int)(new RDORTPRealDefVal());
-						}
-						| '=' REAL_CONST {
-							$$ = (int)(new RDORTPRealDefVal(*((double *)$2)));
-						}
-						| '=' INT_CONST {
-							$$ = (int)(new RDORTPRealDefVal($2));
-						}
-						| '=' error {
-							if ( parser->lexer_loc_line() == @1.first_line ) {
-								std::string str( reinterpret_cast<RDOLexer*>(lexer)->YYText() );
-								if ( str.empty() ) {
-									parser->lexer_loc_set( &(@1) );
-									parser->error( "ќжидаетс€ вещественное значение по-умолчанию" );
-								} else {
-									parser->lexer_loc_set( &(@2) );
-									parser->error( rdo::format( "Ќеверное значение по-умолчанию: %s", str.c_str() ) );
-								}
-							} else {
-								parser->lexer_loc_set( &(@1) );
-								parser->error( "ќжидаетс€ вещественное значение по-умолчанию" );
-							}
-						};
+						$$ = (int)(new RDORTPRealDefVal());
+					}
+					| '=' REAL_CONST {
+						$$ = (int)(new RDORTPRealDefVal(*((double *)$2)));
+					}
+					| '=' INT_CONST {
+						$$ = (int)(new RDORTPRealDefVal($2));
+					}
+					| '=' {
+						parser->lexer_loc_set( &(@1) );
+						parser->error( "Ќе указано значение по-умолчанию вещественного типа" );
+					}
+					| '=' error {
+						parser->lexer_loc_set( &(@2) );
+						parser->error( "Ќеверное значение по-умолчанию вещественного типа" );
+					};
+//					| '=' error {
+//						if ( parser->lexer_loc_line() == @1.first_line ) {
+//							std::string str( reinterpret_cast<RDOLexer*>(lexer)->YYText() );
+//							if ( str.empty() ) {
+//								parser->lexer_loc_set( &(@1) );
+//								parser->error( "ќжидаетс€ вещественное значение по-умолчанию" );
+//							} else {
+//								parser->lexer_loc_set( &(@2) );
+//								parser->error( rdo::format( "Ќеверное значение по-умолчанию: %s", str.c_str() ) );
+//							}
+//						} else {
+//							parser->lexer_loc_set( &(@1) );
+//							parser->error( "ќжидаетс€ вещественное значение по-умолчанию" );
+//						}
+//					};
 
 rtp_enum:	'(' rtp_enum_list ')' {
 				$$ = $2;
@@ -498,27 +523,34 @@ rtp_enum_list:	IDENTIF {
 				};
 
 rtp_enum_default_val:	/* empty */ {
-							$$ = (int)(new RDORTPEnumDefVal());
-						}
-						| '=' IDENTIF {
-							parser->lexer_loc_set( &(@2) );
-							$$ = (int)(new RDORTPEnumDefVal((std::string *)$2));
-						}
-						| '=' error {
-							if ( parser->lexer_loc_line() == @1.first_line ) {
-								std::string str( reinterpret_cast<RDOLexer*>(lexer)->YYText() );
-								if ( str.empty() ) {
-									parser->lexer_loc_set( &(@1) );
-									parser->error( "ќжидаетс€ перечеслимое значение по-умолчанию" );
-								} else {
-									parser->lexer_loc_set( &(@2) );
-									parser->error( rdo::format( "Ќеверное значение по-умолчанию: %s", str.c_str() ) );
-								}
-							} else {
-								parser->lexer_loc_set( &(@1) );
-								parser->error( "ќжидаетс€ перечеслимое значение по-умолчанию" );
-							}
-						};
+						$$ = (int)(new RDORTPEnumDefVal());
+					}
+					| '=' IDENTIF {
+						$$ = (int)(new RDORTPEnumDefVal((std::string *)$2));
+					}
+					| '=' {
+						parser->lexer_loc_set( &(@1) );
+						parser->error( "Ќе указано значение по-умолчанию перечислимого типа" );
+					}
+					| '=' error {
+						parser->lexer_loc_set( &(@2) );
+						parser->error( "Ќеверное значение по-умолчанию перечислимого типа" );
+					};
+//					| '=' error {
+//						if ( parser->lexer_loc_line() == @1.first_line ) {
+//							std::string str( reinterpret_cast<RDOLexer*>(lexer)->YYText() );
+//							if ( str.empty() ) {
+//								parser->lexer_loc_set( &(@1) );
+//								parser->error( "ќжидаетс€ перечеслимое значение по-умолчанию" );
+//							} else {
+//								parser->lexer_loc_set( &(@2) );
+//								parser->error( rdo::format( "Ќеверное значение по-умолчанию: %s", str.c_str() ) );
+//							}
+//						} else {
+//							parser->lexer_loc_set( &(@1) );
+//							parser->error( "ќжидаетс€ перечеслимое значение по-умолчанию" );
+//						}
+//					};
 
 rtp_such_as:	such_as IDENTIF '.' IDENTIF {
 					std::string* type = (std::string *)$2;

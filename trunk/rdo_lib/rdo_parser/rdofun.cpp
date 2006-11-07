@@ -26,7 +26,6 @@ int funlex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer )
 }
 void funerror( char* mes )
 {
-	rdoParse::parser->error( mes );
 }
 
 void RDOParser::addConstant(RDORTPParamDesc *const _cons)
@@ -87,10 +86,11 @@ int RDOFUNFunction::findFUNFunctionParamNum(const std::string *const paramName) 
 
 void RDOFUNFunction::add(const RDOFUNFunctionParam *const _param) 
 { 
-	if(findFUNFunctionParam(_param->getName()))
-		parser->error("Second appearance of the same parameter name: " + *(_param->getName()));
-
-	params.push_back(_param); 
+	if ( findFUNFunctionParam(_param->getName()) ) {
+		parser->error( rdo::format("Параметр уже существует: %s", _param->getName()->c_str()) );
+//		parser->error("Second appearance of the same parameter name: " + *(_param->getName()));
+	}
+	params.push_back( _param ); 
 }
 
 void RDOFUNFunction::add(const RDOFUNFunctionListElement *const _param)
@@ -109,8 +109,10 @@ void RDOFUNFunction::createListCalc()
 	int elements = listElems.size();
 	int currElement = 0;
 
-	if(!retType->dv->exist)
-		parser->error(("list function " + *name + " must have default result value").c_str());
+	if ( !retType->dv->exist ) {
+		parser->error( rdo::format("Функция '%s' должна иметь значение по-умолчанию", name->c_str()) );
+//		parser->error(("list function " + *name + " must have default result value").c_str());
+	}
 
 	rdoRuntime::RDOCalcConst *defaultValue = new rdoRuntime::RDOCalcConst(retType->getRSSDefaultValue()); 
 	rdoRuntime::RDOFunListCalc *funCalc = new rdoRuntime::RDOFunListCalc(defaultValue);
@@ -239,8 +241,10 @@ RDOFUNArithm::RDOFUNArithm( std::string* resName, std::string* parName )
 					const RDORelevantResource *const rel = parser->getLastDPTSearch()->lastActivity->getRule()->findRelevantResource(resName);
 					int relResNumb = parser->getLastDPTSearch()->lastActivity->getRule()->findRelevantResourceNum(resName);
 					int parNumb = rel->getType()->getRTPParamNumber(parName);
-					if(parNumb == -1)
-						parser->error("Unknown resource parameter: " + *parName);
+					if ( parNumb == -1 ) {
+						parser->error( rdo::format("Неизвестный параметр ресурса: %s", parName->c_str()) );
+//						parser->error( "Unknown resource parameter: " + *parName );
+					}
 
 					calc = new rdoRuntime::RDOCalcGetRelevantResParam(relResNumb, parNumb);
 					type = rel->getType()->findRTPParam(parName)->getType()->getType();
@@ -249,7 +253,8 @@ RDOFUNArithm::RDOFUNArithm( std::string* resName, std::string* parName )
 
 					return;
 				} else {
-					parser->error(("Unknown resource name: " + *resName).c_str());
+					parser->error( rdo::format("Неизвестный параметр ресурса: %s", parName->c_str()) );
+//					parser->error(("Unknown resource name: " + *resName).c_str());
 				}
 			} else {
 				// Релевантные ресурсы в паттерне (with_min-common-choice, $Time, $Body)
@@ -305,7 +310,8 @@ RDOFUNArithm::RDOFUNArithm( std::string* resName, std::string* parName )
 				int relResNumb = pat->findRelevantResourceNum( resName );
 				int parNumb = rel->getType()->getRTPParamNumber( parName );
 				if ( parNumb == -1 ) {
-					parser->error( "Unknown resource parameter: " + *parName );
+					parser->error( rdo::format("Неизвестный параметр ресурса: %s", parName->c_str()) );
+//					parser->error( "Unknown resource parameter: " + *parName );
 				}
 				calc = new rdoRuntime::RDOCalcGetRelevantResParam( relResNumb, parNumb );
 				type = rel->getType()->findRTPParam( parName )->getType()->getType();
@@ -321,8 +327,10 @@ RDOFUNArithm::RDOFUNArithm( std::string* resName, std::string* parName )
 //			parser->error(("Unknown resource name: " + *resName).c_str());
 
 		int parNumb = currGroup->resType->getRTPParamNumber(parName);
-		if(parNumb == -1)
-			parser->error(("Unknown resource parameter: " + *parName).c_str());
+		if ( parNumb == -1 ) {
+			parser->error( rdo::format("Неизвестный параметр ресурса: %s", parName->c_str()) );
+//			parser->error(("Unknown resource parameter: " + *parName).c_str());
+		}
 
 		calc = new rdoRuntime::RDOCalcGetGroupResParam(parNumb);
 		type = currGroup->resType->findRTPParam(parName)->getType()->getType();
@@ -336,8 +344,10 @@ RDOFUNArithm::RDOFUNArithm( std::string* resName, std::string* parName )
 	}
 	int resNumb = res->getNumber();
 	int parNumb = res->getType()->getRTPParamNumber(parName);
-	if(parNumb == -1)
-		parser->error(("Unknown resource parameter: " + *parName).c_str());
+	if ( parNumb == -1 ) {
+		parser->error( rdo::format("Неизвестный параметр ресурса: %s", parName->c_str()) );
+//		parser->error(("Unknown resource parameter: " + *parName).c_str());
+	}
 
 	calc = new rdoRuntime::RDOCalcGetResParam(resNumb, parNumb);
 	type = res->getType()->findRTPParam(parName)->getType()->getType();

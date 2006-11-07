@@ -8,7 +8,6 @@ static char THIS_FILE[] = __FILE__;
 
 #include "rdoparser_base.h"
 #include "rdoparser_rdo.h"
-#include "rdofun.h"
 #include "rdopat.h"
 #include "rdoopr.h"
 #include "rdodpt.h"
@@ -49,7 +48,7 @@ void RDOParserList::reset()
 	insertParser( rdoModelObjects::obRTP, new RDOParserRTP() );
 	insertParser( rdoModelObjects::obRSS, new RDOParserRSS() );
 	insertParser( rdoModelObjects::obRSS, new RDOParserRDO( rdoModelObjects::DPT, dpt_rss_parse, dpt_rss_error, dpt_rss_lex ) );
-	insertParser( rdoModelObjects::obFUN, new RDOParserRDO( rdoModelObjects::FUN, funparse, funerror, funlex ) );
+	insertParser( rdoModelObjects::obFUN, new RDOParserFUN() );
 	insertParser( rdoModelObjects::obPAT, new RDOParserRDO( rdoModelObjects::PAT, patparse, paterror, patlex ) );
 	insertParser( rdoModelObjects::obOPR, new RDOParserRDO( rdoModelObjects::OPR, oprparse, oprerror, oprlex ) );
 	insertParser( rdoModelObjects::obOPR, new RDOParserRDO( rdoModelObjects::DPT, dpt_opr_parse, dpt_opr_error, dpt_opr_lex ) );

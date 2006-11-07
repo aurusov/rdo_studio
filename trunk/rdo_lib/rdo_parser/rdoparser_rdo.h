@@ -88,6 +88,32 @@ public:
 };
 
 // ----------------------------------------------------------------------------
+// ---------- RDOParserFUN
+// ----------------------------------------------------------------------------
+class RDOParserFUN: public RDOParserRDO
+{
+public:
+	RDOParserFUN();
+
+	virtual RDOLexer* getLexer( std::istream& in_stream, std::ostream& out_stream );
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOLexerFUN
+// ----------------------------------------------------------------------------
+class RDOLexerFUN: public RDOLexer
+{
+public:
+	RDOLexerFUN( RDOParserBase* parser, std::istream* _yyin, std::ostream* _yyout ):
+		RDOLexer( parser, _yyin, _yyout ),
+		enum_param_cnt( 0 )
+	{
+	};
+
+	int enum_param_cnt;
+};
+
+// ----------------------------------------------------------------------------
 // ---------- RDOParserSTDFUN
 // ----------------------------------------------------------------------------
 class RDOParserSTDFUN: public RDOParserRDO
