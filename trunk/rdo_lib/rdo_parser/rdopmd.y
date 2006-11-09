@@ -142,6 +142,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+#include "rdoparser.h"
 #include "rdopmd.h"
 #include "rdofun.h"
 
@@ -172,61 +173,90 @@ pmd_watch_quant_begin:	IDENTIF_COLON pmd_trace watch_quant	IDENTIF		{ $$ = (int)
 pmd_watch_value_begin:	IDENTIF_COLON pmd_trace watch_value	IDENTIF		{ $$ = (int)(new RDOPMDWatchValue((std::string *)$1, $2 != 0, (std::string *)$4)); };
 
 pmd_pokaz:	IDENTIF_COLON pmd_trace watch_par    IDENTIF '.' IDENTIF		{ $$ = (int)(new RDOPMDWatchPar(  (std::string *)$1, $2 != 0, (std::string *)$4, (std::string *)$6)); }
-			|	IDENTIF_COLON pmd_trace watch_state	 pmd_logic					{ $$ = (int)(new RDOPMDWatchState((std::string *)$1, $2 != 0, (RDOFUNLogic *)$4)); }
-			|	pmd_watch_quant_begin					 pmd_logic					{ ((RDOPMDWatchQuant *)$1)->setLogic((RDOFUNLogic *)$2); $$ = $1; };
-			|	pmd_watch_quant_begin					 NoCheck						{ ((RDOPMDWatchQuant *)$1)->setLogicNoCheck();				$$ = $1; };
-			|	pmd_watch_value_begin					 pmd_logic	pmd_arithm	{ ((RDOPMDWatchValue *)$1)->setLogic((RDOFUNLogic *)$2,	(RDOFUNArithm *)$3); $$ = $1; };
-			|	pmd_watch_value_begin					 NoCheck		pmd_arithm	{ ((RDOPMDWatchValue *)$1)->setLogicNoCheck(					(RDOFUNArithm *)$3);	$$ = $1; };
-			|	IDENTIF_COLON get_value					 pmd_arithm					{ $$ = (int)(new RDOPMDGetValue((std::string *)$1, (RDOFUNArithm *)$3)); };
+			|	IDENTIF_COLON pmd_trace watch_state		fun_logic					{ $$ = (int)(new RDOPMDWatchState((std::string *)$1, $2 != 0, (RDOFUNLogic *)$4)); }
+			|	pmd_watch_quant_begin					fun_logic					{ ((RDOPMDWatchQuant *)$1)->setLogic((RDOFUNLogic *)$2); $$ = $1; };
+			|	pmd_watch_quant_begin					NoCheck						{ ((RDOPMDWatchQuant *)$1)->setLogicNoCheck();				$$ = $1; };
+			|	pmd_watch_value_begin					fun_logic	fun_arithm	{ ((RDOPMDWatchValue *)$1)->setLogic((RDOFUNLogic *)$2,	(RDOFUNArithm *)$3); $$ = $1; };
+			|	pmd_watch_value_begin					NoCheck		fun_arithm	{ ((RDOPMDWatchValue *)$1)->setLogicNoCheck(					(RDOFUNArithm *)$3);	$$ = $1; };
+			|	IDENTIF_COLON get_value					fun_arithm					{ $$ = (int)(new RDOPMDGetValue((std::string *)$1, (RDOFUNArithm *)$3)); };
 
 pmd_end:	 pmd_body End;
 
+fun_logic: fun_arithm '=' fun_arithm			{ $$ = (int)(*(RDOFUNArithm *)$1 == *(RDOFUNArithm *)$3); }
+			| fun_arithm neq fun_arithm			{ $$ = (int)(*(RDOFUNArithm *)$1 != *(RDOFUNArithm *)$3); }
+			| fun_arithm '<' fun_arithm			{ $$ = (int)(*(RDOFUNArithm *)$1 <  *(RDOFUNArithm *)$3); }
+			| fun_arithm '>' fun_arithm			{ $$ = (int)(*(RDOFUNArithm *)$1 >  *(RDOFUNArithm *)$3); }
+			| fun_arithm leq fun_arithm			{ $$ = (int)(*(RDOFUNArithm *)$1 <= *(RDOFUNArithm *)$3); }
+			| fun_arithm geq fun_arithm			{ $$ = (int)(*(RDOFUNArithm *)$1 >= *(RDOFUNArithm *)$3); }
+			| fun_logic and_keyword fun_logic	{ $$ = (int)(*(RDOFUNLogic *)$1 && *(RDOFUNLogic *)$3);   }
+			| fun_logic or_keyword fun_logic	{ $$ = (int)(*(RDOFUNLogic *)$1 || *(RDOFUNLogic *)$3);   }
+			| '[' fun_logic ']'					{ $$ = $2; }
+			| fun_group							{ $$ = $1; }
+			| error								{
+				parser->lexer_loc_set( &(@1) );
+				parser->error( "Ошибка в логическом выражении" );
+			};
 
+fun_arithm: fun_arithm '+' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOFUNArithm *)$3); }
+			| fun_arithm '-' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 - *(RDOFUNArithm *)$3); }
+			| fun_arithm '*' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 * *(RDOFUNArithm *)$3); }
+			| fun_arithm '/' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 / *(RDOFUNArithm *)$3); }
+			| '(' fun_arithm ')'			{ $$ = $2; }
+			| fun_arithm_func_call
+			| IDENTIF '.' IDENTIF			{
+				parser->lexer_loc_backup();
+				parser->lexer_loc_set( &(@3) );
+				$$ = (int)(new RDOFUNArithm((std::string *)$1, (std::string *)$3));
+				parser->lexer_loc_restore();
+			}
+			| INT_CONST						{ $$ = (int)(new RDOFUNArithm((int)$1));                              }
+			| REAL_CONST					{ $$ = (int)(new RDOFUNArithm((double*)$1));                          }
+			| IDENTIF						{ $$ = (int)(new RDOFUNArithm((std::string *)$1));                    }
+			| error							{
+				parser->lexer_loc_set( &(@1) );
+				parser->error( "Ошибка в арифметическом выражении" );
+			};
 
-pmd_logic: pmd_arithm '=' pmd_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 == *(RDOFUNArithm *)$3); }
-			| pmd_arithm neq pmd_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 != *(RDOFUNArithm *)$3); }
-			| pmd_arithm '<' pmd_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 <  *(RDOFUNArithm *)$3); }
-			| pmd_arithm '>' pmd_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 >  *(RDOFUNArithm *)$3); }
-			| pmd_arithm leq pmd_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 <= *(RDOFUNArithm *)$3); }
-			| pmd_arithm geq pmd_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 >= *(RDOFUNArithm *)$3); }
-			| pmd_logic and_keyword pmd_logic  { $$ = (int)(*(RDOFUNLogic *)$1 && *(RDOFUNLogic *)$3); }
-			| pmd_logic or_keyword pmd_logic	  { $$ = (int)(*(RDOFUNLogic *)$1 || *(RDOFUNLogic *)$3); }
-			| '[' pmd_logic ']'				{ $$ = $2; }
-			| fun_group							{ $$ = $1; };
+fun_arithm_func_call:	IDENTIF '(' fun_arithm_func_call_pars ')' {
+							parser->lexer_loc_backup();
+							parser->lexer_loc_set( &(@1) );
+							$$ = (int)((RDOFUNParams *)$3)->createCall((std::string *)$1);
+							parser->lexer_loc_restore();
+						}
+						| IDENTIF '(' error {
+							parser->lexer_loc_set( &(@3) );
+							parser->error( "Ошибка в параметрах функции" );
+						};
 
-			
-pmd_arithm: pmd_arithm '+' pmd_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOFUNArithm *)$3); }
-			|	pmd_arithm '-' pmd_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 - *(RDOFUNArithm *)$3); }
-			|	pmd_arithm '*' pmd_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 * *(RDOFUNArithm *)$3); }
-			|	pmd_arithm '/' pmd_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 / *(RDOFUNArithm *)$3); }
-			|	'(' pmd_arithm ')'			{ $$ = $2; }
-			|	pmd_arithm_func_call
-			|	IDENTIF '.' IDENTIF			{ $$ = (int)(new RDOFUNArithm((std::string *)$1, (std::string *)$3)); }
-			|	INT_CONST						{ $$ = (int)(new RDOFUNArithm((int)$1)); }
-			|	REAL_CONST						{ $$ = (int)(new RDOFUNArithm((double*)$1)); }
-			|	IDENTIF							{ $$ = (int)(new RDOFUNArithm((std::string *)$1)); };
-
-pmd_arithm_func_call:	IDENTIF '(' pmd_arithm_func_call_pars ')' { $$ = (int)((RDOFUNParams *)$3)->createCall((std::string *)$1) };
-
-pmd_arithm_func_call_pars:								{ $$ = (int)(new RDOFUNParams()); };
-			| pmd_arithm_func_call_pars pmd_arithm	{ $$ = (int)(((RDOFUNParams *)$1)->addParameter((RDOFUNArithm *)$2)); };
-			| pmd_arithm_func_call_pars ',' pmd_arithm	{ $$ = (int)(((RDOFUNParams *)$1)->addParameter((RDOFUNArithm *)$3)); };
-
+fun_arithm_func_call_pars:	/* empty */ {
+								$$ = (int)(new RDOFUNParams());
+							}
+							| fun_arithm_func_call_pars fun_arithm {
+								$$ = (int)(((RDOFUNParams *)$1)->addParameter((RDOFUNArithm *)$2));
+							}
+							| fun_arithm_func_call_pars ',' fun_arithm {
+								$$ = (int)(((RDOFUNParams *)$1)->addParameter((RDOFUNArithm *)$3));
+							};
 
 fun_group_keyword:	Exist			{ $$ = 1; }
-						|	Not_Exist	{ $$ = 2; }
-						|	For_All		{ $$ = 3; }
-						|	Not_For_All	{ $$ = 4; };
+					| Not_Exist		{ $$ = 2; }
+					| For_All		{ $$ = 3; }
+					| Not_For_All	{ $$ = 4; };
 
-fun_group_header:	fun_group_keyword '(' IDENTIF_COLON { $$ = (int)(new RDOFUNGroup($1, (std::string *)$3)); };
+fun_group_header:	fun_group_keyword '(' IDENTIF_COLON {
+						$$ = (int)(new RDOFUNGroup($1, (std::string *)$3));
+					}
+					| fun_group_keyword '(' error {
+						parser->lexer_loc_set( &(@3) );
+						parser->error( "Ожидается имя типа" );
+					};
 
-fun_group:	fun_group_header pmd_logic ')'		{ $$ = (int)(((RDOFUNGroup *)$1)->createFunLogin((RDOFUNLogic *)$2)); }
-					|	fun_group_header NoCheck ')'	{ $$ = (int)(((RDOFUNGroup *)$1)->createFunLogin()); };
-
-
-
-
-
+fun_group:	fun_group_header fun_logic ')' {
+				$$ = (int)(((RDOFUNGroup *)$1)->createFunLogin((RDOFUNLogic *)$2));
+			}
+			| fun_group_header NoCheck ')' {
+				$$ = (int)(((RDOFUNGroup *)$1)->createFunLogin());
+			};
 
 %%
 

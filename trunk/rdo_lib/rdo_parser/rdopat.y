@@ -206,8 +206,8 @@ pat_common_choice: pat_rel_res
 				parser->error( "Перед $Body необходимо использовать 'with_max(1)' вместо 'first'" );
 //				((RDOPATPattern *)$1)->setCommonChoiceFirst(); $$ = $1;
 			}
-			| pat_rel_res with_min pat_arithm	{	((RDOPATPattern *)$1)->setCommonChoiceWithMin((RDOFUNArithm *)$3); $$ = $1; }
-			| pat_rel_res with_max pat_arithm	{	((RDOPATPattern *)$1)->setCommonChoiceWithMax((RDOFUNArithm *)$3); $$ = $1; };
+			| pat_rel_res with_min fun_arithm	{	((RDOPATPattern *)$1)->setCommonChoiceWithMin((RDOFUNArithm *)$3); $$ = $1; }
+			| pat_rel_res with_max fun_arithm	{	((RDOPATPattern *)$1)->setCommonChoiceWithMax((RDOFUNArithm *)$3); $$ = $1; };
 
 pat_time:	pat_common_choice Body {
 				$$ = $1;
@@ -216,11 +216,11 @@ pat_time:	pat_common_choice Body {
 					parser->error( "Перед $Body пропущено ключевое слово $Time" );
 				}
 			}
-			| pat_common_choice Time '=' pat_arithm Body {
+			| pat_common_choice Time '=' fun_arithm Body {
 				((RDOPATPattern *)$1)->setTime((RDOFUNArithm *)$4);
 				$$ = $1;
 			}
-			| pat_common_choice Time '=' pat_arithm IDENTIF {
+			| pat_common_choice Time '=' fun_arithm IDENTIF {
 				parser->lexer_loc_set( @5.first_line, @5.first_column );
 				parser->error( "Пропущено ключевое слово $Body" );
 			}
@@ -247,7 +247,7 @@ pat_choice: /* empty */ {
 			| pat_choice_nocheck {
 				$$ = (int) new RDOPATChoice( RDOPATChoice::ch_nocheck );
 			}
-			| pat_choice_from pat_logic {
+			| pat_choice_from fun_logic {
 				$$ = (int) new RDOPATChoice( RDOPATChoice::ch_from, (RDOFUNLogic*)$2 );
 			};
 
@@ -266,10 +266,10 @@ pat_first:	/* empty */ {
 			| pat_choice_first {
 				$$ = (int) new RDOPATSelectType( RDOPATSelectType::st_first );
 			}
-			| pat_choice_with_min pat_arithm {
+			| pat_choice_with_min fun_arithm {
 				$$ = (int) new RDOPATSelectType( RDOPATSelectType::st_with_min, (RDOFUNArithm *)$2 );
 			}
-			| pat_choice_with_max pat_arithm {
+			| pat_choice_with_max fun_arithm {
 				$$ = (int) new RDOPATSelectType( RDOPATSelectType::st_with_max, (RDOFUNArithm *)$2 );
 			};
 
@@ -314,7 +314,7 @@ convert_end:	Convert_end {
 			};
 
 pat_params_set:												{  $$ = (int) new RDOPATParamsSet(); }
-			|	pat_params_set IDENTIF_set pat_arithm	{	((RDOPATParamsSet *)$1)->addIdentif((std::string *)$2, (RDOFUNArithm *)$3); $$ = $1;}
+			|	pat_params_set IDENTIF_set fun_arithm	{	((RDOPATParamsSet *)$1)->addIdentif((std::string *)$2, (RDOFUNArithm *)$3); $$ = $1;}
 			|	pat_params_set IDENTIF_NoChange			{	((RDOPATParamsSet *)$1)->addIdentif((std::string *)$2); $$ = $1;};
 
 pat_pattern:	pat_convert		End {	((RDOPATPattern *)$1)->end(); $$ = $1;}
@@ -458,46 +458,81 @@ fun_const_such_as:   such_as IDENTIF '.' IDENTIF {
 							$$ = (int)(cons->descr);
 						}; 
 
-pat_logic: pat_arithm '=' pat_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 == *(RDOFUNArithm *)$3); }
-			| pat_arithm neq pat_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 != *(RDOFUNArithm *)$3); }
-			| pat_arithm '<' pat_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 <  *(RDOFUNArithm *)$3); }
-			| pat_arithm '>' pat_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 >  *(RDOFUNArithm *)$3); }
-			| pat_arithm leq pat_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 <= *(RDOFUNArithm *)$3); }
-			| pat_arithm geq pat_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 >= *(RDOFUNArithm *)$3); }
-			| pat_logic and_keyword pat_logic {
-				$$ = (int)(*(RDOFUNLogic *)$1 && *(RDOFUNLogic *)$3);
+fun_logic: fun_arithm '=' fun_arithm			{ $$ = (int)(*(RDOFUNArithm *)$1 == *(RDOFUNArithm *)$3); }
+			| fun_arithm neq fun_arithm			{ $$ = (int)(*(RDOFUNArithm *)$1 != *(RDOFUNArithm *)$3); }
+			| fun_arithm '<' fun_arithm			{ $$ = (int)(*(RDOFUNArithm *)$1 <  *(RDOFUNArithm *)$3); }
+			| fun_arithm '>' fun_arithm			{ $$ = (int)(*(RDOFUNArithm *)$1 >  *(RDOFUNArithm *)$3); }
+			| fun_arithm leq fun_arithm			{ $$ = (int)(*(RDOFUNArithm *)$1 <= *(RDOFUNArithm *)$3); }
+			| fun_arithm geq fun_arithm			{ $$ = (int)(*(RDOFUNArithm *)$1 >= *(RDOFUNArithm *)$3); }
+			| fun_logic and_keyword fun_logic	{ $$ = (int)(*(RDOFUNLogic *)$1 && *(RDOFUNLogic *)$3);   }
+			| fun_logic or_keyword fun_logic	{ $$ = (int)(*(RDOFUNLogic *)$1 || *(RDOFUNLogic *)$3);   }
+			| '[' fun_logic ']'					{ $$ = $2; }
+			| fun_group							{ $$ = $1; }
+			| error								{
+				parser->lexer_loc_set( &(@1) );
+				parser->error( "Ошибка в логическом выражении" );
+			};
+
+fun_arithm: fun_arithm '+' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOFUNArithm *)$3); }
+			| fun_arithm '-' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 - *(RDOFUNArithm *)$3); }
+			| fun_arithm '*' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 * *(RDOFUNArithm *)$3); }
+			| fun_arithm '/' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 / *(RDOFUNArithm *)$3); }
+			| '(' fun_arithm ')'			{ $$ = $2; }
+			| fun_arithm_func_call
+			| IDENTIF '.' IDENTIF			{
+				parser->lexer_loc_backup();
+				parser->lexer_loc_set( &(@3) );
+				$$ = (int)(new RDOFUNArithm((std::string *)$1, (std::string *)$3));
+				parser->lexer_loc_restore();
 			}
-			| pat_logic or_keyword pat_logic	  { $$ = (int)(*(RDOFUNLogic *)$1 || *(RDOFUNLogic *)$3); }
-			| '[' pat_logic ']'				{ $$ = $2; }
-			| fun_group							{ $$ = $1; };
-			
-pat_arithm: pat_arithm '+' pat_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOFUNArithm *)$3); }
-			|	pat_arithm '-' pat_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 - *(RDOFUNArithm *)$3); }
-			|	pat_arithm '*' pat_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 * *(RDOFUNArithm *)$3); }
-			|	pat_arithm '/' pat_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 / *(RDOFUNArithm *)$3); }
-			|	'(' pat_arithm ')'			{ $$ = $2; }
-			|	pat_arithm_func_call
-			|	IDENTIF '.' IDENTIF			{ $$ = (int)(new RDOFUNArithm((std::string *)$1, (std::string *)$3)); }
-			|	INT_CONST						{ $$ = (int)(new RDOFUNArithm((int)$1)); }
-			|	REAL_CONST						{ $$ = (int)(new RDOFUNArithm((double*)$1)); }
-			|	IDENTIF							{ $$ = (int)(new RDOFUNArithm((std::string *)$1)); };
+			| INT_CONST						{ $$ = (int)(new RDOFUNArithm((int)$1));                              }
+			| REAL_CONST					{ $$ = (int)(new RDOFUNArithm((double*)$1));                          }
+			| IDENTIF						{ $$ = (int)(new RDOFUNArithm((std::string *)$1));                    }
+			| error							{
+				parser->lexer_loc_set( &(@1) );
+				parser->error( "Ошибка в арифметическом выражении" );
+			};
 
-pat_arithm_func_call:	IDENTIF '(' pat_arithm_func_call_pars ')' { $$ = (int)((RDOFUNParams *)$3)->createCall((std::string *)$1) };
+fun_arithm_func_call:	IDENTIF '(' fun_arithm_func_call_pars ')' {
+							parser->lexer_loc_backup();
+							parser->lexer_loc_set( &(@1) );
+							$$ = (int)((RDOFUNParams *)$3)->createCall((std::string *)$1);
+							parser->lexer_loc_restore();
+						}
+						| IDENTIF '(' error {
+							parser->lexer_loc_set( &(@3) );
+							parser->error( "Ошибка в параметрах функции" );
+						};
 
-pat_arithm_func_call_pars:								{ $$ = (int)(new RDOFUNParams()); };
-			| pat_arithm_func_call_pars pat_arithm	{ $$ = (int)(((RDOFUNParams *)$1)->addParameter((RDOFUNArithm *)$2)); };
-			| pat_arithm_func_call_pars ',' pat_arithm	{ $$ = (int)(((RDOFUNParams *)$1)->addParameter((RDOFUNArithm *)$3)); };
-
+fun_arithm_func_call_pars:	/* empty */ {
+								$$ = (int)(new RDOFUNParams());
+							}
+							| fun_arithm_func_call_pars fun_arithm {
+								$$ = (int)(((RDOFUNParams *)$1)->addParameter((RDOFUNArithm *)$2));
+							}
+							| fun_arithm_func_call_pars ',' fun_arithm {
+								$$ = (int)(((RDOFUNParams *)$1)->addParameter((RDOFUNArithm *)$3));
+							};
 
 fun_group_keyword:	Exist			{ $$ = 1; }
-						|	Not_Exist	{ $$ = 2; }
-						|	For_All		{ $$ = 3; }
-						|	Not_For_All	{ $$ = 4; };
+					| Not_Exist		{ $$ = 2; }
+					| For_All		{ $$ = 3; }
+					| Not_For_All	{ $$ = 4; };
 
-fun_group_header:	fun_group_keyword '(' IDENTIF_COLON { $$ = (int)(new RDOFUNGroup($1, (std::string *)$3)); };
+fun_group_header:	fun_group_keyword '(' IDENTIF_COLON {
+						$$ = (int)(new RDOFUNGroup($1, (std::string *)$3));
+					}
+					| fun_group_keyword '(' error {
+						parser->lexer_loc_set( &(@3) );
+						parser->error( "Ожидается имя типа" );
+					};
 
-fun_group:	fun_group_header pat_logic ')'		{ $$ = (int)(((RDOFUNGroup *)$1)->createFunLogin((RDOFUNLogic *)$2)); }
-					|	fun_group_header NoCheck ')'	{ $$ = (int)(((RDOFUNGroup *)$1)->createFunLogin()); };
+fun_group:	fun_group_header fun_logic ')' {
+				$$ = (int)(((RDOFUNGroup *)$1)->createFunLogin((RDOFUNLogic *)$2));
+			}
+			| fun_group_header NoCheck ')' {
+				$$ = (int)(((RDOFUNGroup *)$1)->createFunLogin());
+			};
 
 %%
 

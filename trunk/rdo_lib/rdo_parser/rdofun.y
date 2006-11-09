@@ -594,10 +594,18 @@ fun_func_footer:	Type_keyword '=' algorithmic Parameters fun_func_params Body fu
 						RDOFUNFunction *currFunc = parser->getLastFUNFunction();
 						currFunc->createTableCalc();
 					}
-//					| Type_keyword '=' algorithmic Parameters fun_func_params Body fun_func_algorithmic_body {
-//						parser->lexer_loc_set( &(@7) );
-//						parser->error( "Ошибка в теле функции" );
-//					}
+					| Type_keyword '=' algorithmic Parameters fun_func_params Body fun_func_algorithmic_body error {
+						parser->lexer_loc_set( @8.first_line, @8.first_column );
+						parser->error( "Ожидается ключевое слово $End" );
+					}
+					| Type_keyword '=' list_keyword Parameters fun_func_params Body fun_func_list_body error {
+						parser->lexer_loc_set( @8.first_line, @8.first_column );
+						parser->error( "Ожидается ключевое слово $End" );
+					}
+					| Type_keyword '=' table_keyword Parameters fun_func_params Body fun_func_list_body error {
+						parser->lexer_loc_set( @8.first_line, @8.first_column );
+						parser->error( "Ожидается ключевое слово $End" );
+					}
 					| Type_keyword '=' algorithmic Parameters error {
 						parser->lexer_loc_set( @5.first_line, @5.first_column );
 						parser->error( "Ожидается список параметров" );
@@ -633,41 +641,56 @@ fun_func_footer:	Type_keyword '=' algorithmic Parameters fun_func_params Body fu
 
 fun_func_params:	/* empty */
 			|	fun_func_params IDENTIF_COLON fun_const_param_type	{
-				std::string *name = (std::string *)$2;
-				RDORTPResParam *type = (RDORTPResParam *)$3;
-				RDOFUNFunctionParam *param = new RDOFUNFunctionParam(name, type);
-				parser->lexer_loc_backup();
-				parser->lexer_loc_set( &(@2) );
+				std::string*         name  = (std::string *)$2;
+				RDORTPResParam*      type  = (RDORTPResParam *)$3;
+				RDOFUNFunctionParam* param = new RDOFUNFunctionParam(name, type);
+				param->error_first_line = @2.first_line;
+				param->error_first_pos  = @2.first_column;
+				param->error_last_line  = @2.last_line;
+				param->error_last_pos   = @2.last_column;
 				parser->getLastFUNFunction()->add(param);	// the function must check uniquness of parameters names
-				parser->lexer_loc_restore();
 				$$ = (int)param;
 			};
 
 fun_func_list_body:	/* empty */
-			| fun_func_list_body fun_func_list_value;
+			| fun_func_list_body fun_std_value;
 
-fun_func_list_value:	'='	{
-	RDOFUNFunctionListElementEq *value = new RDOFUNFunctionListElementEq();
-	parser->getLastFUNFunction()->add(value);
-	$$ = (int)value;
-}
-			| fun_std_value	{ $$ = $1; };
-
-fun_std_value: IDENTIF	{
-	RDOFUNFunctionListElementItentif *value = new RDOFUNFunctionListElementItentif((std::string *)$1);
-	parser->getLastFUNFunction()->add(value);
-	$$ = (int)value;
-}
-			| REAL_CONST	{
-	RDOFUNFunctionListElementReal *value = new RDOFUNFunctionListElementReal((double *)$1);
-	parser->getLastFUNFunction()->add(value);
-	$$ = (int)value;
-}
-			| INT_CONST		{
-	RDOFUNFunctionListElementInt *value = new RDOFUNFunctionListElementInt((int)$1);
-	parser->getLastFUNFunction()->add(value);
-	$$ = (int)value;
-};
+fun_std_value:	IDENTIF {
+					RDOFUNFunctionListElementIdentif *value = new RDOFUNFunctionListElementIdentif((std::string *)$1);
+					parser->getLastFUNFunction()->add(value);
+					value->error_first_line = @1.first_line;
+					value->error_first_pos  = @1.first_column;
+					value->error_last_line  = @1.last_line;
+					value->error_last_pos   = @1.last_column;
+					$$ = (int)value;
+				}
+				| REAL_CONST {
+					RDOFUNFunctionListElementReal *value = new RDOFUNFunctionListElementReal((double *)$1);
+					parser->getLastFUNFunction()->add(value);
+					value->error_first_line = @1.first_line;
+					value->error_first_pos  = @1.first_column;
+					value->error_last_line  = @1.last_line;
+					value->error_last_pos   = @1.last_column;
+					$$ = (int)value;
+				}
+				| INT_CONST {
+					RDOFUNFunctionListElementInt *value = new RDOFUNFunctionListElementInt((int)$1);
+					parser->getLastFUNFunction()->add(value);
+					value->error_first_line = @1.first_line;
+					value->error_first_pos  = @1.first_column;
+					value->error_last_line  = @1.last_line;
+					value->error_last_pos   = @1.last_column;
+					$$ = (int)value;
+				}
+				| '=' {
+					RDOFUNFunctionListElementEq *value = new RDOFUNFunctionListElementEq();
+					parser->getLastFUNFunction()->add(value);
+					value->error_first_line = @1.first_line;
+					value->error_first_pos  = @1.first_column;
+					value->error_last_line  = @1.last_line;
+					value->error_last_pos   = @1.last_column;
+					$$ = (int)value;
+				};
 
 fun_func_algorithmic_body:	/* empty */
 			| fun_func_algorithmic_body fun_func_algorithmic_calc_if {
@@ -678,8 +701,8 @@ fun_func_algorithmic_calc_if:	Calculate_if fun_logic IDENTIF '=' fun_arithm {
 									$$ = (int)(new RDOFUNCalculateIf((RDOFUNLogic *)$2, (std::string *)$3, (RDOFUNArithm *)$5));
 								}
 								| Calculate_if fun_logic error {
-									parser->lexer_loc_set( &(@3) );
-									parser->error( "Ожидается результат функции" );
+									parser->lexer_loc_set( &(@2) );
+									parser->error( "Ожидается <имя_функции> = <результат_функции>" );
 								}
 								| error {
 									parser->lexer_loc_set( &(@1) );
@@ -701,14 +724,18 @@ fun_logic: fun_arithm '=' fun_arithm			{ $$ = (int)(*(RDOFUNArithm *)$1 == *(RDO
 				parser->error( "Ошибка в логическом выражении" );
 			};
 
-			
 fun_arithm: fun_arithm '+' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOFUNArithm *)$3); }
 			| fun_arithm '-' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 - *(RDOFUNArithm *)$3); }
 			| fun_arithm '*' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 * *(RDOFUNArithm *)$3); }
 			| fun_arithm '/' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 / *(RDOFUNArithm *)$3); }
 			| '(' fun_arithm ')'			{ $$ = $2; }
 			| fun_arithm_func_call
-			| IDENTIF '.' IDENTIF			{ $$ = (int)(new RDOFUNArithm((std::string *)$1, (std::string *)$3)); }
+			| IDENTIF '.' IDENTIF			{
+				parser->lexer_loc_backup();
+				parser->lexer_loc_set( &(@3) );
+				$$ = (int)(new RDOFUNArithm((std::string *)$1, (std::string *)$3));
+				parser->lexer_loc_restore();
+			}
 			| INT_CONST						{ $$ = (int)(new RDOFUNArithm((int)$1));                              }
 			| REAL_CONST					{ $$ = (int)(new RDOFUNArithm((double*)$1));                          }
 			| IDENTIF						{ $$ = (int)(new RDOFUNArithm((std::string *)$1));                    }
@@ -717,77 +744,197 @@ fun_arithm: fun_arithm '+' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOF
 				parser->error( "Ошибка в арифметическом выражении" );
 			};
 
-fun_arithm_func_call:	IDENTIF '(' fun_arithm_func_call_pars ')' { $$ = (int)((RDOFUNParams *)$3)->createCall((std::string *)$1) };
+fun_arithm_func_call:	IDENTIF '(' fun_arithm_func_call_pars ')' {
+							parser->lexer_loc_backup();
+							parser->lexer_loc_set( &(@1) );
+							$$ = (int)((RDOFUNParams *)$3)->createCall((std::string *)$1);
+							parser->lexer_loc_restore();
+						}
+						| IDENTIF '(' error {
+							parser->lexer_loc_set( &(@3) );
+							parser->error( "Ошибка в параметрах функции" );
+						};
 
-fun_arithm_func_call_pars:	/* empty */ { $$ = (int)(new RDOFUNParams()); };
-			| fun_arithm_func_call_pars fun_arithm	{ $$ = (int)(((RDOFUNParams *)$1)->addParameter((RDOFUNArithm *)$2)); };
-			| fun_arithm_func_call_pars ',' fun_arithm	{ $$ = (int)(((RDOFUNParams *)$1)->addParameter((RDOFUNArithm *)$3)); };
-
+fun_arithm_func_call_pars:	/* empty */ {
+								$$ = (int)(new RDOFUNParams());
+							}
+							| fun_arithm_func_call_pars fun_arithm {
+								$$ = (int)(((RDOFUNParams *)$1)->addParameter((RDOFUNArithm *)$2));
+							}
+							| fun_arithm_func_call_pars ',' fun_arithm {
+								$$ = (int)(((RDOFUNParams *)$1)->addParameter((RDOFUNArithm *)$3));
+							};
 
 fun_group_keyword:	Exist			{ $$ = 1; }
-						|	Not_Exist	{ $$ = 2; }
-						|	For_All		{ $$ = 3; }
-						|	Not_For_All	{ $$ = 4; };
+					| Not_Exist		{ $$ = 2; }
+					| For_All		{ $$ = 3; }
+					| Not_For_All	{ $$ = 4; };
 
-fun_group_header:	fun_group_keyword '(' IDENTIF_COLON { $$ = (int)(new RDOFUNGroup($1, (std::string *)$3)); };
+fun_group_header:	fun_group_keyword '(' IDENTIF_COLON {
+						$$ = (int)(new RDOFUNGroup($1, (std::string *)$3));
+					}
+					| fun_group_keyword '(' error {
+						parser->lexer_loc_set( &(@3) );
+						parser->error( "Ожидается имя типа" );
+					};
 
-fun_group:	fun_group_header fun_logic ')'		{ $$ = (int)(((RDOFUNGroup *)$1)->createFunLogin((RDOFUNLogic *)$2)); }
-					|	fun_group_header NoCheck ')'	{ $$ = (int)(((RDOFUNGroup *)$1)->createFunLogin()); };
-
-
-
-
+fun_group:	fun_group_header fun_logic ')' {
+				$$ = (int)(((RDOFUNGroup *)$1)->createFunLogin((RDOFUNLogic *)$2));
+			}
+			| fun_group_header NoCheck ')' {
+				$$ = (int)(((RDOFUNGroup *)$1)->createFunLogin());
+			};
 
 fun_seq_descr:	fun_seq_uniform
-			| fun_seq_exponential
-			| fun_seq_normal
-			| fun_seq_by_hist
-			| fun_seq_enumerative;
+				| fun_seq_exponential
+				| fun_seq_normal
+				| fun_seq_by_hist
+				| fun_seq_enumerative;
 
-fun_seq_header:	Sequence IDENTIF_COLON fun_const_param_type Type_keyword '=' { $$ = (int)(new RDOFUNSequenceHeader((std::string *)$2, (RDORTPResParam *)$3)); };
+fun_seq_header:	Sequence IDENTIF_COLON fun_const_param_type Type_keyword '=' {
+					$$ = (int)(new RDOFUNSequenceHeader((std::string *)$2, (RDORTPResParam *)$3));
+				}
+				| Sequence IDENTIF_COLON fun_const_param_type Type_keyword '=' error {
+					parser->lexer_loc_set( &(@5), &(@6) );
+					parser->error( "Ожидается тип последовательности" );
+				}
+				| Sequence IDENTIF_COLON fun_const_param_type Type_keyword error {
+					parser->lexer_loc_set( &(@4), &(@5) );
+					parser->error( "Ожидается тип последовательности в формате '=' <тип>" );
+				}
+				| Sequence IDENTIF_COLON fun_const_param_type error {
+					parser->lexer_loc_set( @4.first_line, @4.first_column );
+					parser->error( "Ожидается ключевое слово $Type" );
+				}
+				| Sequence IDENTIF_COLON error {
+					parser->lexer_loc_set( &(@2), &(@3) );
+					parser->error( "Ожидается тип возвращаемого значения" );
+				}
+				| Sequence error {
+					parser->lexer_loc_set( &(@1) );
+					parser->error( "Ожидается имя последовательности" );
+				};
 
-fun_seq_uniform:	fun_seq_header uniform End	{ $$ = (int)(new RDOFUNSequenceUniform((RDOFUNSequenceHeader *)$1)); }
-			| fun_seq_header uniform INT_CONST End { $$ = (int)(new RDOFUNSequenceUniform((RDOFUNSequenceHeader *)$1, $3)); };
+fun_seq_uniform:	fun_seq_header uniform End {
+						$$ = (int)(new RDOFUNSequenceUniform((RDOFUNSequenceHeader *)$1));
+					}
+					| fun_seq_header uniform INT_CONST End {
+						$$ = (int)(new RDOFUNSequenceUniform((RDOFUNSequenceHeader *)$1, $3));
+					}
+					| fun_seq_header uniform INT_CONST error {
+						parser->lexer_loc_set( @4.first_line, @4.first_column );
+						parser->error( "Ожидается ключевое слово $End" );
+					}
+					| fun_seq_header uniform error {
+						parser->lexer_loc_set( &(@2), &(@3) );
+						parser->error( "Ожидается база генератора" );
+					};
 
-fun_seq_exponential:	fun_seq_header exponential End { $$ = (int)(new RDOFUNSequenceExponential((RDOFUNSequenceHeader *)$1)); }
-			| fun_seq_header exponential INT_CONST End { $$ = (int)(new RDOFUNSequenceExponential((RDOFUNSequenceHeader *)$1, $3)); };
+fun_seq_exponential:	fun_seq_header exponential End {
+							$$ = (int)(new RDOFUNSequenceExponential((RDOFUNSequenceHeader *)$1));
+						}
+						| fun_seq_header exponential INT_CONST End {
+							$$ = (int)(new RDOFUNSequenceExponential((RDOFUNSequenceHeader *)$1, $3));
+						}
+						| fun_seq_header exponential INT_CONST error {
+							parser->lexer_loc_set( @4.first_line, @4.first_column );
+							parser->error( "Ожидается ключевое слово $End" );
+						}
+						| fun_seq_header exponential error {
+							parser->lexer_loc_set( &(@2), &(@3) );
+							parser->error( "Ожидается база генератора" );
+						};
 
-fun_seq_normal:	fun_seq_header normal_keyword End { $$ = (int)(new RDOFUNSequenceNormal((RDOFUNSequenceHeader *)$1)); }
-			| fun_seq_header normal_keyword INT_CONST End { $$ = (int)(new RDOFUNSequenceNormal((RDOFUNSequenceHeader *)$1, $3)); };
+fun_seq_normal:	fun_seq_header normal_keyword End {
+					$$ = (int)(new RDOFUNSequenceNormal((RDOFUNSequenceHeader *)$1));
+				}
+				| fun_seq_header normal_keyword INT_CONST End {
+					$$ = (int)(new RDOFUNSequenceNormal((RDOFUNSequenceHeader *)$1, $3));
+				}
+				| fun_seq_header normal_keyword INT_CONST error {
+					parser->lexer_loc_set( @4.first_line, @4.first_column );
+					parser->error( "Ожидается ключевое слово $End" );
+				}
+				| fun_seq_header normal_keyword error {
+					parser->lexer_loc_set( &(@2), &(@3) );
+					parser->error( "Ожидается база генератора" );
+				};
 
+fun_seq_by_hist_header:	fun_seq_header by_hist Body {
+							$$ = (int)(new RDOFUNSequenceByHistHeader((RDOFUNSequenceHeader *)$1));
+						}
+						| fun_seq_header by_hist INT_CONST Body {
+							$$ = (int)(new RDOFUNSequenceByHistHeader((RDOFUNSequenceHeader *)$1, $3));
+						};
 
-fun_seq_by_hist_header:	fun_seq_header by_hist Body { $$ = (int)(new RDOFUNSequenceByHistHeader((RDOFUNSequenceHeader *)$1)); }
-			| fun_seq_header by_hist INT_CONST Body	 { $$ = (int)(new RDOFUNSequenceByHistHeader((RDOFUNSequenceHeader *)$1, $3)); };
+fun_seq_by_hist_body_int:	fun_seq_by_hist_header INT_CONST INT_CONST REAL_CONST {
+								$$ = (int)(new RDOFUNSequenceByHistInt((RDOFUNSequenceByHistHeader *)$1, $2, $3, (double*)$4));
+							}
+							| fun_seq_by_hist_body_int INT_CONST INT_CONST REAL_CONST {
+								((RDOFUNSequenceByHistInt *)$1)->addInt($2, $3, (double*)$4); $$ = $1;
+							};
 
-fun_seq_by_hist_body_int:	fun_seq_by_hist_header INT_CONST INT_CONST REAL_CONST		{ $$ = (int)(new RDOFUNSequenceByHistInt((RDOFUNSequenceByHistHeader *)$1, $2, $3, (double*)$4)); } 
-			| fun_seq_by_hist_body_int INT_CONST INT_CONST REAL_CONST						{ ((RDOFUNSequenceByHistInt *)$1)->addInt($2, $3, (double*)$4); $$ = $1; } ;
+fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CONST {
+								$$ = (int)(new RDOFUNSequenceByHistReal((RDOFUNSequenceByHistHeader *)$1, (double*)$2, (double*)$3, (double*)$4));
+							}
+							| fun_seq_by_hist_body_real REAL_CONST REAL_CONST REAL_CONST {
+								((RDOFUNSequenceByHistReal *)$1)->addReal((double*)$2, (double*)$3, (double*)$4); $$ = $1;
+							};
 
-fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CONST	{ $$ = (int)(new RDOFUNSequenceByHistReal((RDOFUNSequenceByHistHeader *)$1, (double*)$2, (double*)$3, (double*)$4)); } 
-			| fun_seq_by_hist_body_real REAL_CONST REAL_CONST REAL_CONST					{ ((RDOFUNSequenceByHistReal *)$1)->addReal((double*)$2, (double*)$3, (double*)$4); $$ = $1; };
+fun_seq_by_hist_body_enum:	fun_seq_by_hist_header IDENTIF REAL_CONST {
+								$$ = (int)(new RDOFUNSequenceByHistEnum((RDOFUNSequenceByHistHeader *)$1, (std::string*)$2, (double*)$3));
+							}
+							| fun_seq_by_hist_body_enum IDENTIF REAL_CONST {
+								((RDOFUNSequenceByHistEnum *)$1)->addEnum((std::string*)$2, (double*)$3); $$ = $1;
+							};
 
-fun_seq_by_hist_body_enum:	fun_seq_by_hist_header IDENTIF REAL_CONST						{ $$ = (int)(new RDOFUNSequenceByHistEnum((RDOFUNSequenceByHistHeader *)$1, (std::string*)$2, (double*)$3)); } 
-			| fun_seq_by_hist_body_enum IDENTIF REAL_CONST										{ ((RDOFUNSequenceByHistEnum *)$1)->addEnum((std::string*)$2, (double*)$3); $$ = $1; };
+fun_seq_by_hist:	fun_seq_by_hist_body_int End {
+						((RDOFUNSequenceByHist *)$1)->createCalcs();
+					}
+					| fun_seq_by_hist_body_real End {
+						((RDOFUNSequenceByHist *)$1)->createCalcs();
+					}
+					| fun_seq_by_hist_body_enum End {
+						((RDOFUNSequenceByHist *)$1)->createCalcs();
+					};
 
-fun_seq_by_hist:	fun_seq_by_hist_body_int End	{ ((RDOFUNSequenceByHist *)$1)->createCalcs(); }
-			| fun_seq_by_hist_body_real End			{ ((RDOFUNSequenceByHist *)$1)->createCalcs(); }
-			| fun_seq_by_hist_body_enum End			{ ((RDOFUNSequenceByHist *)$1)->createCalcs(); };
+fun_seq_enumerative_header:	fun_seq_header enumerative Body {
+								$$ = (int)(new RDOFUNSequenceEnumerativeHeader((RDOFUNSequenceHeader *)$1));
+							}
+							| fun_seq_header enumerative INT_CONST Body {
+								$$ = (int)(new RDOFUNSequenceEnumerativeHeader((RDOFUNSequenceHeader *)$1, $3));
+							};
 
+fun_seq_enumerative_body_int:	fun_seq_enumerative_header INT_CONST {
+									$$ = (int)(new RDOFUNSequenceEnumerativeInt((RDOFUNSequenceEnumerativeHeader *)$1, $2));
+								}
+								| fun_seq_enumerative_body_int INT_CONST {
+									((RDOFUNSequenceEnumerativeInt *)$1)->addInt($2); $$ = $1;
+								};
 
-fun_seq_enumerative_header:	fun_seq_header enumerative Body { $$ = (int)(new RDOFUNSequenceEnumerativeHeader((RDOFUNSequenceHeader *)$1)); }     
-			| fun_seq_header enumerative INT_CONST Body			  { $$ = (int)(new RDOFUNSequenceEnumerativeHeader((RDOFUNSequenceHeader *)$1, $3)); };
+fun_seq_enumerative_body_real:	fun_seq_enumerative_header REAL_CONST {
+									$$ = (int)(new RDOFUNSequenceEnumerativeReal((RDOFUNSequenceEnumerativeHeader *)$1, (double*)$2));
+								}
+								| fun_seq_enumerative_body_real REAL_CONST {
+									((RDOFUNSequenceEnumerativeReal *)$1)->addReal((double*)$2); $$ = $1;
+								};
 
-fun_seq_enumerative_body_int:	fun_seq_enumerative_header INT_CONST		{ $$ = (int)(new RDOFUNSequenceEnumerativeInt((RDOFUNSequenceEnumerativeHeader *)$1, $2)); }                    
-			| fun_seq_enumerative_body_int INT_CONST 								{ ((RDOFUNSequenceEnumerativeInt *)$1)->addInt($2); $$ = $1; } ;                                           
-																								                                                                                                                       
-fun_seq_enumerative_body_real:	fun_seq_enumerative_header REAL_CONST 	{ $$ = (int)(new RDOFUNSequenceEnumerativeReal((RDOFUNSequenceEnumerativeHeader *)$1, (double*)$2)); } 
-			| fun_seq_enumerative_body_real REAL_CONST 							{ ((RDOFUNSequenceEnumerativeReal *)$1)->addReal((double*)$2); $$ = $1; };                        
-																								                                                                                                                       
-fun_seq_enumerative_body_enum:	fun_seq_enumerative_header IDENTIF 		{ $$ = (int)(new RDOFUNSequenceEnumerativeEnum((RDOFUNSequenceEnumerativeHeader *)$1, (std::string*)$2)); }         
-			| fun_seq_enumerative_body_enum IDENTIF 								{ ((RDOFUNSequenceEnumerativeEnum *)$1)->addEnum((std::string*)$2); $$ = $1; };                                
+fun_seq_enumerative_body_enum:	fun_seq_enumerative_header IDENTIF {
+									$$ = (int)(new RDOFUNSequenceEnumerativeEnum((RDOFUNSequenceEnumerativeHeader *)$1, (std::string*)$2));
+								}
+								| fun_seq_enumerative_body_enum IDENTIF {
+									((RDOFUNSequenceEnumerativeEnum *)$1)->addEnum((std::string*)$2); $$ = $1;
+								};
 
-fun_seq_enumerative:	fun_seq_enumerative_body_int End		{ ((RDOFUNSequenceEnumerative *)$1)->createCalcs(); }  
-			| fun_seq_enumerative_body_real End					{ ((RDOFUNSequenceEnumerative *)$1)->createCalcs(); }  
-			| fun_seq_enumerative_body_enum End 				{ ((RDOFUNSequenceEnumerative *)$1)->createCalcs(); }; 
+fun_seq_enumerative:	fun_seq_enumerative_body_int End {
+							((RDOFUNSequenceEnumerative *)$1)->createCalcs();
+						}
+						| fun_seq_enumerative_body_real End {
+							((RDOFUNSequenceEnumerative *)$1)->createCalcs();
+						}
+						| fun_seq_enumerative_body_enum End {
+							((RDOFUNSequenceEnumerative *)$1)->createCalcs();
+						};
 
 %%
 

@@ -119,6 +119,23 @@ void RDOParserRDO::lexer_loc_set( void* data )
 	}
 }
 
+void RDOParserRDO::lexer_loc_set( void* data1, void* data2 )
+{
+	if ( m_lexer && m_lexer->m_lploc ) {
+		if ( reinterpret_cast<YYLTYPE*>(data1)->last_line == reinterpret_cast<YYLTYPE*>(data2)->last_line ) {
+			m_lexer->m_lploc->first_line   = reinterpret_cast<YYLTYPE*>(data2)->last_line;
+			m_lexer->m_lploc->first_column = reinterpret_cast<YYLTYPE*>(data2)->last_column;
+			m_lexer->m_lploc->last_line    = reinterpret_cast<YYLTYPE*>(data2)->last_line;
+			m_lexer->m_lploc->last_column  = reinterpret_cast<YYLTYPE*>(data2)->last_column;
+		} else {
+			m_lexer->m_lploc->first_line   = reinterpret_cast<YYLTYPE*>(data1)->last_line;
+			m_lexer->m_lploc->first_column = reinterpret_cast<YYLTYPE*>(data1)->last_column;
+			m_lexer->m_lploc->last_line    = reinterpret_cast<YYLTYPE*>(data1)->last_line;
+			m_lexer->m_lploc->last_column  = reinterpret_cast<YYLTYPE*>(data1)->last_column;
+		}
+	}
+}
+
 void RDOParserRDO::lexer_loc_delta_pos( int value )
 {
 	if ( m_lexer && m_lexer->m_lploc ) {

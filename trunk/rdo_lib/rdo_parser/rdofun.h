@@ -29,30 +29,54 @@ class RDORTPParamDesc;
 
 class RDOFUNFunctionParam: public RDODeletable
 {
-	std::string *name;
-	RDORTPResParam *type;
+private:
+	std::string*    name;
+	RDORTPResParam* type;
 
 public:
-	RDOFUNFunctionParam(std::string *_name, RDORTPResParam *_type):
-		name(_name), type(_type) {}
-	const std::string *const getName() const { return name; };
-	const RDORTPResParam *const getType() const { return type; };
+	int error_first_line;
+	int error_first_pos;
+	int error_last_line;
+	int error_last_pos;
+	RDOFUNFunctionParam( std::string* _name, RDORTPResParam* _type ):
+		name( _name ),
+		type( _type ),
+		error_first_line( -1 ),
+		error_first_pos( -1 ),
+		error_last_line( -1 ),
+		error_last_pos( -1 )
+	{
+	}
+	const std::string* const getName() const { return name; };
+	const RDORTPResParam* const getType() const { return type; };
 };
 
 class RDOFUNFunctionListElement: public RDODeletable
 {
 public:
+	int error_first_line;
+	int error_first_pos;
+	int error_last_line;
+	int error_last_pos;
+	RDOFUNFunctionListElement():
+		RDODeletable(),
+		error_first_line( -1 ),
+		error_first_pos( -1 ),
+		error_last_line( -1 ),
+		error_last_pos( -1 )
+	{
+	}
 	virtual ~RDOFUNFunctionListElement() {}
-	virtual rdoRuntime::RDOCalcConst *createResultCalc(const RDORTPResParam *const retType) const = 0;
-	virtual rdoRuntime::RDOCalcIsEqual *createIsEqualCalc(const RDOFUNFunctionParam *const param, const rdoRuntime::RDOCalcFuncParam *const funcParam) const;
+	virtual rdoRuntime::RDOCalcConst*   createResultCalc( const RDORTPResParam* const retType ) const = 0;
+	virtual rdoRuntime::RDOCalcIsEqual* createIsEqualCalc( const RDOFUNFunctionParam* const param, const rdoRuntime::RDOCalcFuncParam* const funcParam ) const;
 	virtual bool isEquivalence() const { return false; }
 };
 
-class RDOFUNFunctionListElementItentif: public RDOFUNFunctionListElement
+class RDOFUNFunctionListElementIdentif: public RDOFUNFunctionListElement
 {
 public:
 	std::string *value;
-	RDOFUNFunctionListElementItentif(std::string *_value) : value(_value) {}
+	RDOFUNFunctionListElementIdentif(std::string *_value) : value(_value) {}
 	rdoRuntime::RDOCalcConst *createResultCalc(const RDORTPResParam *const retType) const;
 };
 
@@ -196,21 +220,26 @@ public:
 class RDOFUNSequenceHeader: public RDODeletable
 {
 public:
-	std::string *name;
-	RDORTPResParam *type;
-	RDOFUNSequenceHeader(std::string *_name, RDORTPResParam *_type): 
-		name(_name), type(_type) {}
+	std::string*    name;
+	RDORTPResParam* type;
+	RDOFUNSequenceHeader( std::string* _name, RDORTPResParam* _type ):
+		name(_name),
+		type(_type)
+	{
+	}
 };
 
 class RDOFUNSequence: public RDODeletable
 {
 public:
-	RDOFUNSequenceHeader *header;
+	RDOFUNSequenceHeader* header;
 	int base;
-	rdoRuntime::RDOCalcSeqInit *initSeq;
-	rdoRuntime::RDOCalcSeqNext *next;
+	rdoRuntime::RDOCalcSeqInit* initSeq;
+	rdoRuntime::RDOCalcSeqNext* next;
+
 protected:
 	RDOFUNSequence(RDOFUNSequenceHeader *_header, int _base);
+
 public:
 	virtual void createCalcs() = 0;
 	virtual const RDOFUNArithm *createCallCalc(const RDOFUNParams *const params) const = 0;
@@ -236,9 +265,9 @@ public:
 class RDOFUNSequenceNormal: public RDOFUNSequence
 {
 public:
-	RDOFUNSequenceNormal(RDOFUNSequenceHeader *_header, int _base = 123456789);
+	RDOFUNSequenceNormal( RDOFUNSequenceHeader* _header, int _base = 123456789 );
 	void createCalcs();
-	const RDOFUNArithm *createCallCalc(const RDOFUNParams *const params) const;
+	const RDOFUNArithm* createCallCalc( const RDOFUNParams* const params ) const;
 };
 
 class RDOFUNSequenceByHistHeader: public RDODeletable

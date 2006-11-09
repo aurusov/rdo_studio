@@ -190,8 +190,11 @@ dpt_arithm: dpt_arithm '+' dpt_arithm {
 			| IDENTIF '(' dpt_arithm_func_call_pars ')' {
 				$$ = (int)((RDOFUNParams *)$3)->createCall((std::string *)$1)
 			}
-			| IDENTIF '.' IDENTIF {
+			| IDENTIF '.' IDENTIF			{
+				parser->lexer_loc_backup();
+				parser->lexer_loc_set( &(@3) );
 				$$ = (int)(new RDOFUNArithm((std::string *)$1, (std::string *)$3));
+				parser->lexer_loc_restore();
 			}
 			| INT_CONST {
 				$$ = (int)(new RDOFUNArithm((int)$1));

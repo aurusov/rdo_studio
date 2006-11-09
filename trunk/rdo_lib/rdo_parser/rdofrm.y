@@ -144,6 +144,7 @@ static char THIS_FILE[] = __FILE__;
 
 #include <FlexLexer.h>
 
+#include "rdoparser.h"
 #include "rdofun.h"
 #include "rdofrm.h"
 
@@ -169,7 +170,7 @@ frm_main:
 /* ///////////////////////  FRAME ///////////////////////////// */
 
 frm_begin: Frame IDENTIF							{ $$ = (int)(new RDOFRMFrame((std::string *)$2)); @$; }
-			| Frame IDENTIF Show_if frm_logic	{ $$ = (int)(new RDOFRMFrame((std::string *)$2, (RDOFUNLogic *)$4)); };
+			| Frame IDENTIF Show_if fun_logic	{ $$ = (int)(new RDOFRMFrame((std::string *)$2, (RDOFUNLogic *)$4)); };
 
 frm_background: frm_begin Back_picture '='													{ ((RDOFRMFrame *)$1)->setBackground(); }
 				  | frm_begin Back_picture '=' '<' INT_CONST INT_CONST INT_CONST '>' { ((RDOFRMFrame *)$1)->setBackground($5, $6, $7); } ;
@@ -182,7 +183,7 @@ frm_pre_show: frm_backpicture
 
 frm_show: frm_pre_show							{ ((RDOFRMFrame *)$1)->startShow(); }
 		  | frm_pre_show Show					{ ((RDOFRMFrame *)$1)->startShow(); }
-		  | frm_pre_show Show_if frm_logic	{ ((RDOFRMFrame *)$1)->startShow((RDOFUNLogic *)$3); };
+		  | frm_pre_show Show_if fun_logic	{ ((RDOFRMFrame *)$1)->startShow((RDOFUNLogic *)$3); };
 
 frm_item: frm_show								
 		  | frm_item frm_text					{ ((RDOFRMFrame *)$1)->addItem((RDOFRMText *)$2); }
@@ -199,9 +200,9 @@ frm_end: frm_item End	{ ((RDOFRMFrame *)$1)->end(); };
 
 /* ///////////////////////  ITEMS ///////////////////////////// */
 
-frm_text_common: text '[' frm_arithm ',' frm_arithm ',' frm_arithm ',' frm_arithm ',' frm_color ',' frm_color ','  { $$ = (int)(new RDOFRMText((RDOFUNArithm *)$3, (RDOFUNArithm *)$5, (RDOFUNArithm *)$7, (RDOFUNArithm *)$9, (RDOFRMColor *)$11, (RDOFRMColor *)$13)); };
+frm_text_common: text '[' fun_arithm ',' fun_arithm ',' fun_arithm ',' fun_arithm ',' frm_color ',' frm_color ','  { $$ = (int)(new RDOFRMText((RDOFUNArithm *)$3, (RDOFUNArithm *)$5, (RDOFUNArithm *)$7, (RDOFUNArithm *)$9, (RDOFRMColor *)$11, (RDOFRMColor *)$13)); };
 
-frm_text: frm_text_common frm_align frm_arithm ']'			{ ((RDOFRMText *)$1)->setText($2, (RDOFUNArithm *)$3); }
+frm_text: frm_text_common frm_align fun_arithm ']'			{ ((RDOFRMText *)$1)->setText($2, (RDOFUNArithm *)$3); }
 		  | frm_text_common frm_align QUOTED_IDENTIF ']'	{ ((RDOFRMText *)$1)->setText($2, (std::string *)$3);  };
 
 frm_align: /* empty */	{ $$ = 1; }
@@ -212,69 +213,102 @@ frm_align: /* empty */	{ $$ = 1; }
 frm_color: transparent										{ $$ = (int)(new RDOFRMColor()); }
 		| '<' INT_CONST INT_CONST INT_CONST '>'		{ $$ = (int)(new RDOFRMColor($2, $3, $4)); };		  
 
-frm_bitmap: bitmap '[' frm_arithm ',' frm_arithm ',' IDENTIF ']'				{ $$ = (int)(new RDOFRMBitmap((RDOFUNArithm *)$3, (RDOFUNArithm *)$5, (std::string *)$7)); }
-		| bitmap '[' frm_arithm ',' frm_arithm ',' IDENTIF ',' IDENTIF ']'	{ $$ = (int)(new RDOFRMBitmap((RDOFUNArithm *)$3, (RDOFUNArithm *)$5, (std::string *)$7, (std::string *)$9)); };
+frm_bitmap: bitmap '[' fun_arithm ',' fun_arithm ',' IDENTIF ']'				{ $$ = (int)(new RDOFRMBitmap((RDOFUNArithm *)$3, (RDOFUNArithm *)$5, (std::string *)$7)); }
+		| bitmap '[' fun_arithm ',' fun_arithm ',' IDENTIF ',' IDENTIF ']'	{ $$ = (int)(new RDOFRMBitmap((RDOFUNArithm *)$3, (RDOFUNArithm *)$5, (std::string *)$7, (std::string *)$9)); };
 
-frm_s_bmp: s_bmp '[' frm_arithm ',' frm_arithm ',' frm_arithm ',' frm_arithm ',' IDENTIF ']' 				 { $$ = (int)(new RDOFRMS_bmp((RDOFUNArithm *)$3, (RDOFUNArithm *)$5, (RDOFUNArithm *)$7, (RDOFUNArithm *)$9, (std::string *)$11)); }
-		  |  s_bmp '[' frm_arithm ',' frm_arithm ',' frm_arithm ',' frm_arithm ',' IDENTIF ',' IDENTIF ']'  { $$ = (int)(new RDOFRMS_bmp((RDOFUNArithm *)$3, (RDOFUNArithm *)$5, (RDOFUNArithm *)$7, (RDOFUNArithm *)$9, (std::string *)$11, (std::string *)$13)); };
+frm_s_bmp: s_bmp '[' fun_arithm ',' fun_arithm ',' fun_arithm ',' fun_arithm ',' IDENTIF ']' 				 { $$ = (int)(new RDOFRMS_bmp((RDOFUNArithm *)$3, (RDOFUNArithm *)$5, (RDOFUNArithm *)$7, (RDOFUNArithm *)$9, (std::string *)$11)); }
+		  |  s_bmp '[' fun_arithm ',' fun_arithm ',' fun_arithm ',' fun_arithm ',' IDENTIF ',' IDENTIF ']'  { $$ = (int)(new RDOFRMS_bmp((RDOFUNArithm *)$3, (RDOFUNArithm *)$5, (RDOFUNArithm *)$7, (RDOFUNArithm *)$9, (std::string *)$11, (std::string *)$13)); };
 
-frm_rect: rect_keyword '[' frm_arithm ',' frm_arithm ',' frm_arithm ',' frm_arithm ',' frm_color ',' frm_color ']'	{ $$ = (int)(new RDOFRMRect((RDOFUNArithm *)$3, (RDOFUNArithm *)$5, (RDOFUNArithm *)$7, (RDOFUNArithm *)$9, (RDOFRMColor *)$11, (RDOFRMColor *)$13)); };
+frm_rect: rect_keyword '[' fun_arithm ',' fun_arithm ',' fun_arithm ',' fun_arithm ',' frm_color ',' frm_color ']'	{ $$ = (int)(new RDOFRMRect((RDOFUNArithm *)$3, (RDOFUNArithm *)$5, (RDOFUNArithm *)$7, (RDOFUNArithm *)$9, (RDOFRMColor *)$11, (RDOFRMColor *)$13)); };
 
-frm_r_rect: r_rect '[' frm_arithm ',' frm_arithm ',' frm_arithm ',' frm_arithm ',' frm_color ',' frm_color ']'			{ $$ = (int)(new RDOFRMR_rect((RDOFUNArithm *)$3, (RDOFUNArithm *)$5, (RDOFUNArithm *)$7, (RDOFUNArithm *)$9, (RDOFRMColor *)$11, (RDOFRMColor *)$13)); };
+frm_r_rect: r_rect '[' fun_arithm ',' fun_arithm ',' fun_arithm ',' fun_arithm ',' frm_color ',' frm_color ']'			{ $$ = (int)(new RDOFRMR_rect((RDOFUNArithm *)$3, (RDOFUNArithm *)$5, (RDOFUNArithm *)$7, (RDOFUNArithm *)$9, (RDOFRMColor *)$11, (RDOFRMColor *)$13)); };
 
-frm_line: line '[' frm_arithm ',' frm_arithm ',' frm_arithm ',' frm_arithm ',' frm_color ']'		{ $$ = (int)(new RDOFRMLine((RDOFUNArithm *)$3, (RDOFUNArithm *)$5, (RDOFUNArithm *)$7, (RDOFUNArithm *)$9, (RDOFRMColor *)$11)); };
+frm_line: line '[' fun_arithm ',' fun_arithm ',' fun_arithm ',' fun_arithm ',' frm_color ']'		{ $$ = (int)(new RDOFRMLine((RDOFUNArithm *)$3, (RDOFUNArithm *)$5, (RDOFUNArithm *)$7, (RDOFUNArithm *)$9, (RDOFRMColor *)$11)); };
 
-frm_ellipse: ellipse '[' frm_arithm ',' frm_arithm ',' frm_arithm ',' frm_arithm ',' frm_color ',' frm_color ']'   { $$ = (int)(new RDOFRMEllipse((RDOFUNArithm *)$3, (RDOFUNArithm *)$5, (RDOFUNArithm *)$7, (RDOFUNArithm *)$9, (RDOFRMColor *)$11, (RDOFRMColor *)$13)); };
+frm_ellipse: ellipse '[' fun_arithm ',' fun_arithm ',' fun_arithm ',' fun_arithm ',' frm_color ',' frm_color ']'   { $$ = (int)(new RDOFRMEllipse((RDOFUNArithm *)$3, (RDOFUNArithm *)$5, (RDOFUNArithm *)$7, (RDOFUNArithm *)$9, (RDOFRMColor *)$11, (RDOFRMColor *)$13)); };
 
-frm_triang: triang '[' frm_arithm ',' frm_arithm ',' frm_arithm ',' frm_arithm ',' frm_arithm ',' frm_arithm ',' frm_color ',' frm_color ']'		{ $$ = (int)(new RDOFRMTriang((RDOFUNArithm *)$3, (RDOFUNArithm *)$5, (RDOFUNArithm *)$7, (RDOFUNArithm *)$9, (RDOFUNArithm *)$11, (RDOFUNArithm *)$13, (RDOFRMColor *)$15, (RDOFRMColor *)$17)); };
+frm_triang: triang '[' fun_arithm ',' fun_arithm ',' fun_arithm ',' fun_arithm ',' fun_arithm ',' fun_arithm ',' frm_color ',' frm_color ']'		{ $$ = (int)(new RDOFRMTriang((RDOFUNArithm *)$3, (RDOFUNArithm *)$5, (RDOFUNArithm *)$7, (RDOFUNArithm *)$9, (RDOFUNArithm *)$11, (RDOFUNArithm *)$13, (RDOFRMColor *)$15, (RDOFRMColor *)$17)); };
 
-frm_active: active IDENTIF '[' frm_arithm ',' frm_arithm ',' frm_arithm ',' frm_arithm ']'	{ $$ = (int)(new RDOFRMActive((RDOFUNArithm *)$4, (RDOFUNArithm *)$6, (RDOFUNArithm *)$8, (RDOFUNArithm *)$10, (std::string *)$2)); };
+frm_active: active IDENTIF '[' fun_arithm ',' fun_arithm ',' fun_arithm ',' fun_arithm ']'	{ $$ = (int)(new RDOFRMActive((RDOFUNArithm *)$4, (RDOFUNArithm *)$6, (RDOFUNArithm *)$8, (RDOFUNArithm *)$10, (std::string *)$2)); };
 
 
 /* ///////////////////////  ARITHMETIC/LOGIC ///////////////////////////// */
 
-frm_logic: frm_arithm '=' frm_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 == *(RDOFUNArithm *)$3); }
-			| frm_arithm neq frm_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 != *(RDOFUNArithm *)$3); }
-			| frm_arithm '<' frm_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 <  *(RDOFUNArithm *)$3); }
-			| frm_arithm '>' frm_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 >  *(RDOFUNArithm *)$3); }
-			| frm_arithm leq frm_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 <= *(RDOFUNArithm *)$3); }
-			| frm_arithm geq frm_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 >= *(RDOFUNArithm *)$3); }
-			| frm_logic and_keyword frm_logic  { $$ = (int)(*(RDOFUNLogic *)$1 && *(RDOFUNLogic *)$3); }
-			| frm_logic or_keyword frm_logic	  { $$ = (int)(*(RDOFUNLogic *)$1 || *(RDOFUNLogic *)$3); }
-			| '[' frm_logic ']'				{ $$ = $2; }
-			| fun_group							{ $$ = $1; };
+fun_logic: fun_arithm '=' fun_arithm			{ $$ = (int)(*(RDOFUNArithm *)$1 == *(RDOFUNArithm *)$3); }
+			| fun_arithm neq fun_arithm			{ $$ = (int)(*(RDOFUNArithm *)$1 != *(RDOFUNArithm *)$3); }
+			| fun_arithm '<' fun_arithm			{ $$ = (int)(*(RDOFUNArithm *)$1 <  *(RDOFUNArithm *)$3); }
+			| fun_arithm '>' fun_arithm			{ $$ = (int)(*(RDOFUNArithm *)$1 >  *(RDOFUNArithm *)$3); }
+			| fun_arithm leq fun_arithm			{ $$ = (int)(*(RDOFUNArithm *)$1 <= *(RDOFUNArithm *)$3); }
+			| fun_arithm geq fun_arithm			{ $$ = (int)(*(RDOFUNArithm *)$1 >= *(RDOFUNArithm *)$3); }
+			| fun_logic and_keyword fun_logic	{ $$ = (int)(*(RDOFUNLogic *)$1 && *(RDOFUNLogic *)$3);   }
+			| fun_logic or_keyword fun_logic	{ $$ = (int)(*(RDOFUNLogic *)$1 || *(RDOFUNLogic *)$3);   }
+			| '[' fun_logic ']'					{ $$ = $2; }
+			| fun_group							{ $$ = $1; }
+			| error								{
+				parser->lexer_loc_set( &(@1) );
+				parser->error( "Ошибка в логическом выражении" );
+			};
 
-			
-frm_arithm: frm_arithm '+' frm_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOFUNArithm *)$3); }
-			|	frm_arithm '-' frm_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 - *(RDOFUNArithm *)$3); }
-			|	frm_arithm '*' frm_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 * *(RDOFUNArithm *)$3); }
-			|	frm_arithm '/' frm_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 / *(RDOFUNArithm *)$3); }
-			|	'(' frm_arithm ')'			{ $$ = $2; }
-			|	IDENTIF '(' frm_arithm_func_call_pars ')' { $$ = (int)((RDOFUNParams *)$3)->createCall((std::string *)$1) };
-			|	IDENTIF '.' IDENTIF			{ $$ = (int)(new RDOFUNArithm((std::string *)$1, (std::string *)$3)); }
-			|	INT_CONST					{ $$ = (int)(new RDOFUNArithm((int)$1)); }
-			|	REAL_CONST					{ $$ = (int)(new RDOFUNArithm((double*)$1)); }
-			|	IDENTIF						{ $$ = (int)(new RDOFUNArithm((std::string *)$1)); };
+fun_arithm: fun_arithm '+' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOFUNArithm *)$3); }
+			| fun_arithm '-' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 - *(RDOFUNArithm *)$3); }
+			| fun_arithm '*' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 * *(RDOFUNArithm *)$3); }
+			| fun_arithm '/' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 / *(RDOFUNArithm *)$3); }
+			| '(' fun_arithm ')'			{ $$ = $2; }
+			| fun_arithm_func_call
+			| IDENTIF '.' IDENTIF			{
+				parser->lexer_loc_backup();
+				parser->lexer_loc_set( &(@3) );
+				$$ = (int)(new RDOFUNArithm((std::string *)$1, (std::string *)$3));
+				parser->lexer_loc_restore();
+			}
+			| INT_CONST						{ $$ = (int)(new RDOFUNArithm((int)$1));                              }
+			| REAL_CONST					{ $$ = (int)(new RDOFUNArithm((double*)$1));                          }
+			| IDENTIF						{ $$ = (int)(new RDOFUNArithm((std::string *)$1));                    }
+			| error							{
+				parser->lexer_loc_set( &(@1) );
+				parser->error( "Ошибка в арифметическом выражении" );
+			};
 
-frm_arithm_func_call_pars:								{ $$ = (int)(new RDOFUNParams()); };
-			| frm_arithm_func_call_pars frm_arithm	{ $$ = (int)(((RDOFUNParams *)$1)->addParameter((RDOFUNArithm *)$2)); };
-			| frm_arithm_func_call_pars ',' frm_arithm	{ $$ = (int)(((RDOFUNParams *)$1)->addParameter((RDOFUNArithm *)$3)); };
+fun_arithm_func_call:	IDENTIF '(' fun_arithm_func_call_pars ')' {
+							parser->lexer_loc_backup();
+							parser->lexer_loc_set( &(@1) );
+							$$ = (int)((RDOFUNParams *)$3)->createCall((std::string *)$1);
+							parser->lexer_loc_restore();
+						}
+						| IDENTIF '(' error {
+							parser->lexer_loc_set( &(@3) );
+							parser->error( "Ошибка в параметрах функции" );
+						};
 
+fun_arithm_func_call_pars:	/* empty */ {
+								$$ = (int)(new RDOFUNParams());
+							}
+							| fun_arithm_func_call_pars fun_arithm {
+								$$ = (int)(((RDOFUNParams *)$1)->addParameter((RDOFUNArithm *)$2));
+							}
+							| fun_arithm_func_call_pars ',' fun_arithm {
+								$$ = (int)(((RDOFUNParams *)$1)->addParameter((RDOFUNArithm *)$3));
+							};
 
 fun_group_keyword:	Exist			{ $$ = 1; }
-						|	Not_Exist	{ $$ = 2; }
-						|	For_All		{ $$ = 3; }
-						|	Not_For_All	{ $$ = 4; };
+					| Not_Exist		{ $$ = 2; }
+					| For_All		{ $$ = 3; }
+					| Not_For_All	{ $$ = 4; };
 
-fun_group_header:	fun_group_keyword '(' IDENTIF_COLON { $$ = (int)(new RDOFUNGroup($1, (std::string *)$3)); };
+fun_group_header:	fun_group_keyword '(' IDENTIF_COLON {
+						$$ = (int)(new RDOFUNGroup($1, (std::string *)$3));
+					}
+					| fun_group_keyword '(' error {
+						parser->lexer_loc_set( &(@3) );
+						parser->error( "Ожидается имя типа" );
+					};
 
-fun_group:	fun_group_header frm_logic ')'		{ $$ = (int)(((RDOFUNGroup *)$1)->createFunLogin((RDOFUNLogic *)$2)); }
-					|	fun_group_header NoCheck ')'	{ $$ = (int)(((RDOFUNGroup *)$1)->createFunLogin()); };
-
-
-
-
-
+fun_group:	fun_group_header fun_logic ')' {
+				$$ = (int)(((RDOFUNGroup *)$1)->createFunLogin((RDOFUNLogic *)$2));
+			}
+			| fun_group_header NoCheck ')' {
+				$$ = (int)(((RDOFUNGroup *)$1)->createFunLogin());
+			};
 
 %%
 

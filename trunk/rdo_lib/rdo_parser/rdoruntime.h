@@ -431,8 +431,8 @@ public:
 class RDOCalcUnary: public RDOCalc
 {
 protected:
-   RDOCalc *oper;
-	RDOCalcUnary(RDOCalc *_oper): oper(_oper) {}
+	RDOCalc* oper;
+	RDOCalcUnary( RDOCalc* _oper ): oper( _oper ) {}
 };
 
 class RDOCalcUMinus: public RDOCalcUnary
@@ -889,52 +889,90 @@ public:
 	}
 };
 
-
 class RDOCalcSeqInit: public RDOCalc
 {
-	int base;
-	RandGenerator *gen;
+private:
+	int            base;
+	RandGenerator* gen;
+
 public:
-	RDOCalcSeqInit(int _base, RandGenerator *_gen): base(_base), gen(_gen) {}
-   virtual RDOValue calcValue(RDORuntime *sim) const;
+	RDOCalcSeqInit( int _base, RandGenerator* _gen ):
+		base( _base ),
+		gen( _gen )
+	{
+	}
 	~RDOCalcSeqInit();
-	void setBase(int _base) { base = _base; }
+	virtual RDOValue calcValue( RDORuntime* sim ) const;
+	void setBase( int _base ) { base = _base; }
 };
 
 class RDOCalcSeqNext: public RDOFunCalc
 {
+public:
+	bool     res_real;
+	bool     diap;
+	RDOValue diap_min;
+	RDOValue diap_max;
+
+	RDOCalcSeqNext():
+		RDOFunCalc(),
+		res_real( true ),
+		diap( false ),
+		diap_min( 0 ),
+		diap_max( 0 )
+	{
+	}
 };
 
 class RDOCalcSeqNextUniform: public RDOCalcSeqNext
 {
-	RandGeneratorUniform *gen;
+private:
+	RandGeneratorUniform* gen;
+
 public:
-	RDOCalcSeqNextUniform(RandGeneratorUniform *_gen): gen(_gen) {}
-   virtual RDOValue calcValue(RDORuntime *sim) const;
+	RDOCalcSeqNextUniform( RandGeneratorUniform* _gen ):
+		RDOCalcSeqNext(),
+		gen( _gen )
+	{
+	}
+	virtual RDOValue calcValue( RDORuntime* sim ) const;
 };
 
 class RDOCalcSeqNextExponential: public RDOCalcSeqNext
 {
-	RandGeneratorExponential *gen;
+private:
+	RandGeneratorExponential* gen;
+
 public:
-	RDOCalcSeqNextExponential(RandGeneratorExponential *_gen): gen(_gen) {}
-   virtual RDOValue calcValue(RDORuntime *sim) const;
+	RDOCalcSeqNextExponential( RandGeneratorExponential* _gen ):
+		RDOCalcSeqNext(),
+		gen( _gen )
+	{
+	}
+	virtual RDOValue calcValue( RDORuntime* sim ) const;
 };
 
 class RDOCalcSeqNextNormal: public RDOCalcSeqNext
 {
-	RandGeneratorNormal *gen;
+private:
+	RandGeneratorNormal* gen;
+
 public:
-	RDOCalcSeqNextNormal(RandGeneratorNormal *_gen): gen(_gen) {}
-   virtual RDOValue calcValue(RDORuntime *sim) const;
+	RDOCalcSeqNextNormal( RandGeneratorNormal* _gen ):
+		RDOCalcSeqNext(),
+		gen( _gen )
+	{
+	}
+	virtual RDOValue calcValue( RDORuntime* sim ) const;
 };
 
 class RDOCalcSeqNextByHist: public RDOCalcSeqNext
 {
+private:
 	RandGeneratorByHistCommon *gen;
 public:
 	RDOCalcSeqNextByHist(RandGeneratorByHistCommon *_gen): gen(_gen) {}
-   virtual RDOValue calcValue(RDORuntime *sim) const;
+	virtual RDOValue calcValue(RDORuntime *sim) const;
 };
 
 class RDOCalcGetRelevantResParam: public RDOCalc
@@ -1103,10 +1141,9 @@ public:
 class RDOCalcInt: public RDOCalcUnary
 {
 public:
-	RDOValue calcValue(RDORuntime *sim) const {	return (int)(oper->calcValueBase(sim));	}
-	RDOCalcInt(RDOCalc *oper): RDOCalcUnary(oper) {}
+	RDOValue calcValue( RDORuntime* sim ) const { return static_cast<int>(oper->calcValueBase(sim) + 0.5); }
+	RDOCalcInt( RDOCalc* oper ): RDOCalcUnary( oper ) {}
 };
-
 
 }  // namespace rdoRuntime
 

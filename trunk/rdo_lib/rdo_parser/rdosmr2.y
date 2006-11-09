@@ -180,60 +180,87 @@ smr_show_mode:		NoShow
 					|	Animation;
 
 smr_cond:	smr_descr
-		|	smr_cond Terminate_if smr_logic						{ parser->smr->setTerminateIf((RDOFUNLogic *)$3); @$; }
-		|	smr_cond Break_point IDENTIF	smr_logic
-		|	smr_cond IDENTIF				'=' smr_arithm		{ parser->smr->setConstValue((std::string *)$2, (RDOFUNArithm *)$4); }
-		|	smr_cond IDENTIF '.' IDENTIF	'=' smr_arithm		{ parser->smr->setResParValue((std::string *)$2, (std::string *)$4, (RDOFUNArithm *)$6); }
+		|	smr_cond Terminate_if fun_logic						{ parser->smr->setTerminateIf((RDOFUNLogic *)$3); @$; }
+		|	smr_cond Break_point IDENTIF	fun_logic
+		|	smr_cond IDENTIF				'=' fun_arithm		{ parser->smr->setConstValue((std::string *)$2, (RDOFUNArithm *)$4); }
+		|	smr_cond IDENTIF '.' IDENTIF	'=' fun_arithm		{ parser->smr->setResParValue((std::string *)$2, (std::string *)$4, (RDOFUNArithm *)$6); }
 		|	smr_cond IDENTIF '.' Seed		'=' INT_CONST		{ parser->smr->setSeed((std::string *)$2, $6); };
 
-smr_logic: smr_arithm '=' smr_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 == *(RDOFUNArithm *)$3); }
-			| smr_arithm neq smr_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 != *(RDOFUNArithm *)$3); }
-			| smr_arithm '<' smr_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 <  *(RDOFUNArithm *)$3); }
-			| smr_arithm '>' smr_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 >  *(RDOFUNArithm *)$3); }
-			| smr_arithm leq smr_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 <= *(RDOFUNArithm *)$3); }
-			| smr_arithm geq smr_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 >= *(RDOFUNArithm *)$3); }
-			| smr_logic and_keyword smr_logic  { $$ = (int)(*(RDOFUNLogic *)$1 && *(RDOFUNLogic *)$3); }
-			| smr_logic or_keyword smr_logic	  { $$ = (int)(*(RDOFUNLogic *)$1 || *(RDOFUNLogic *)$3); }
-			| '[' smr_logic ']'				{ $$ = $2; }
-			| fun_group							{ $$ = $1; };
+fun_logic: fun_arithm '=' fun_arithm			{ $$ = (int)(*(RDOFUNArithm *)$1 == *(RDOFUNArithm *)$3); }
+			| fun_arithm neq fun_arithm			{ $$ = (int)(*(RDOFUNArithm *)$1 != *(RDOFUNArithm *)$3); }
+			| fun_arithm '<' fun_arithm			{ $$ = (int)(*(RDOFUNArithm *)$1 <  *(RDOFUNArithm *)$3); }
+			| fun_arithm '>' fun_arithm			{ $$ = (int)(*(RDOFUNArithm *)$1 >  *(RDOFUNArithm *)$3); }
+			| fun_arithm leq fun_arithm			{ $$ = (int)(*(RDOFUNArithm *)$1 <= *(RDOFUNArithm *)$3); }
+			| fun_arithm geq fun_arithm			{ $$ = (int)(*(RDOFUNArithm *)$1 >= *(RDOFUNArithm *)$3); }
+			| fun_logic and_keyword fun_logic	{ $$ = (int)(*(RDOFUNLogic *)$1 && *(RDOFUNLogic *)$3);   }
+			| fun_logic or_keyword fun_logic	{ $$ = (int)(*(RDOFUNLogic *)$1 || *(RDOFUNLogic *)$3);   }
+			| '[' fun_logic ']'					{ $$ = $2; }
+			| fun_group							{ $$ = $1; }
+			| error								{
+				parser->lexer_loc_set( &(@1) );
+				parser->error( "Ошибка в логическом выражении" );
+			};
 
-			
-smr_arithm: smr_arithm '+' smr_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOFUNArithm *)$3); }
-			|	smr_arithm '-' smr_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 - *(RDOFUNArithm *)$3); }
-			|	smr_arithm '*' smr_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 * *(RDOFUNArithm *)$3); }
-			|	smr_arithm '/' smr_arithm	{ $$ = (int)(*(RDOFUNArithm *)$1 / *(RDOFUNArithm *)$3); }
-			|	'(' smr_arithm ')'			{ $$ = $2; }
-			|	smr_arithm_func_call
-			|	IDENTIF '.' IDENTIF			{ $$ = (int)(new RDOFUNArithm((std::string *)$1, (std::string *)$3)); }
-			|	INT_CONST						{ $$ = (int)(new RDOFUNArithm((int)$1)); }
-			|	REAL_CONST						{ $$ = (int)(new RDOFUNArithm((double*)$1)); }
-			|	IDENTIF							{ $$ = (int)(new RDOFUNArithm((std::string *)$1)); };
+fun_arithm: fun_arithm '+' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOFUNArithm *)$3); }
+			| fun_arithm '-' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 - *(RDOFUNArithm *)$3); }
+			| fun_arithm '*' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 * *(RDOFUNArithm *)$3); }
+			| fun_arithm '/' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 / *(RDOFUNArithm *)$3); }
+			| '(' fun_arithm ')'			{ $$ = $2; }
+			| fun_arithm_func_call
+			| IDENTIF '.' IDENTIF			{
+				parser->lexer_loc_backup();
+				parser->lexer_loc_set( &(@3) );
+				$$ = (int)(new RDOFUNArithm((std::string *)$1, (std::string *)$3));
+				parser->lexer_loc_restore();
+			}
+			| INT_CONST						{ $$ = (int)(new RDOFUNArithm((int)$1));                              }
+			| REAL_CONST					{ $$ = (int)(new RDOFUNArithm((double*)$1));                          }
+			| IDENTIF						{ $$ = (int)(new RDOFUNArithm((std::string *)$1));                    }
+			| error							{
+				parser->lexer_loc_set( &(@1) );
+				parser->error( "Ошибка в арифметическом выражении" );
+			};
 
-smr_arithm_func_call:	IDENTIF '(' smr_arithm_func_call_pars ')' { $$ = (int)((RDOFUNParams *)$3)->createCall((std::string *)$1) };
+fun_arithm_func_call:	IDENTIF '(' fun_arithm_func_call_pars ')' {
+							parser->lexer_loc_backup();
+							parser->lexer_loc_set( &(@1) );
+							$$ = (int)((RDOFUNParams *)$3)->createCall((std::string *)$1);
+							parser->lexer_loc_restore();
+						}
+						| IDENTIF '(' error {
+							parser->lexer_loc_set( &(@3) );
+							parser->error( "Ошибка в параметрах функции" );
+						};
 
-smr_arithm_func_call_pars:								{ $$ = (int)(new RDOFUNParams()); };
-			| smr_arithm_func_call_pars smr_arithm	{ $$ = (int)(((RDOFUNParams *)$1)->addParameter((RDOFUNArithm *)$2)); };
-			| smr_arithm_func_call_pars ',' smr_arithm	{ $$ = (int)(((RDOFUNParams *)$1)->addParameter((RDOFUNArithm *)$3)); };
-
+fun_arithm_func_call_pars:	/* empty */ {
+								$$ = (int)(new RDOFUNParams());
+							}
+							| fun_arithm_func_call_pars fun_arithm {
+								$$ = (int)(((RDOFUNParams *)$1)->addParameter((RDOFUNArithm *)$2));
+							}
+							| fun_arithm_func_call_pars ',' fun_arithm {
+								$$ = (int)(((RDOFUNParams *)$1)->addParameter((RDOFUNArithm *)$3));
+							};
 
 fun_group_keyword:	Exist			{ $$ = 1; }
-						|	Not_Exist	{ $$ = 2; }
-						|	For_All		{ $$ = 3; }
-						|	Not_For_All	{ $$ = 4; };
+					| Not_Exist		{ $$ = 2; }
+					| For_All		{ $$ = 3; }
+					| Not_For_All	{ $$ = 4; };
 
-fun_group_header:	fun_group_keyword '(' IDENTIF_COLON { $$ = (int)(new RDOFUNGroup($1, (std::string *)$3)); };
+fun_group_header:	fun_group_keyword '(' IDENTIF_COLON {
+						$$ = (int)(new RDOFUNGroup($1, (std::string *)$3));
+					}
+					| fun_group_keyword '(' error {
+						parser->lexer_loc_set( &(@3) );
+						parser->error( "Ожидается имя типа" );
+					};
 
-fun_group:	fun_group_header smr_logic ')'		{ $$ = (int)(((RDOFUNGroup *)$1)->createFunLogin((RDOFUNLogic *)$2)); }
-					|	fun_group_header NoCheck ')'	{ $$ = (int)(((RDOFUNGroup *)$1)->createFunLogin()); };
-
-
-
-
-
-
-
-
-
+fun_group:	fun_group_header fun_logic ')' {
+				$$ = (int)(((RDOFUNGroup *)$1)->createFunLogin((RDOFUNLogic *)$2));
+			}
+			| fun_group_header NoCheck ')' {
+				$$ = (int)(((RDOFUNGroup *)$1)->createFunLogin());
+			};
 
 %%
 

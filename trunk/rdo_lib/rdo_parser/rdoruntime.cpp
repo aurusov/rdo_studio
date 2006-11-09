@@ -726,22 +726,52 @@ RDOValue RDOCalcSeqInit::calcValue(RDORuntime *sim) const
 
 RDOCalcSeqInit::~RDOCalcSeqInit() 
 { 
-	delete gen; 
+	delete gen;
 }
 
 RDOValue RDOCalcSeqNextUniform::calcValue(RDORuntime *sim) const	
 {
-	return RDOValue(gen->next(sim->getFuncArgument(0), sim->getFuncArgument(1)));
+	RDOValue res = gen->next( sim->getFuncArgument(0), sim->getFuncArgument(1) );
+	if ( diap ) {
+		for ( int i = 0; i < 1000; i++ ) {
+			if ( res >= diap_min && res <= diap_max ) return res_real ? res : static_cast<int>(res + 0.5);
+			res = gen->next( sim->getFuncArgument(0), sim->getFuncArgument(1) );
+		}
+		sim->error( "Не удается получить значение, попадающее в назначенный диапазон", this );
+		return res_real ? diap_min : static_cast<int>(diap_min);
+	} else {
+		return res_real ? res : static_cast<int>(res + 0.5);
+	}
 }
 
 RDOValue RDOCalcSeqNextExponential::calcValue(RDORuntime *sim) const	
 {
-	return RDOValue(gen->next(sim->getFuncArgument(0)));
+	RDOValue res = gen->next( sim->getFuncArgument(0) );
+	if ( diap ) {
+		for ( int i = 0; i < 1000; i++ ) {
+			if ( res >= diap_min && res <= diap_max ) return res_real ? res : static_cast<int>(res + 0.5);
+			res = gen->next( sim->getFuncArgument(0) );
+		}
+		sim->error( "Не удается получить значение, попадающее в назначенный диапазон", this );
+		return res_real ? diap_min : static_cast<int>(diap_min);
+	} else {
+		return res_real ? res : static_cast<int>(res + 0.5);
+	}
 }
 
-RDOValue RDOCalcSeqNextNormal::calcValue(RDORuntime *sim) const	
+RDOValue RDOCalcSeqNextNormal::calcValue( RDORuntime* sim ) const
 {
-	return RDOValue(gen->next(sim->getFuncArgument(0), sim->getFuncArgument(1)));
+	RDOValue res = gen->next( sim->getFuncArgument(0), sim->getFuncArgument(1) );
+	if ( diap ) {
+		for ( int i = 0; i < 1000; i++ ) {
+			if ( res >= diap_min && res <= diap_max ) return res_real ? res : static_cast<int>(res + 0.5);
+			res = gen->next( sim->getFuncArgument(0), sim->getFuncArgument(1) );
+		}
+		sim->error( "Не удается получить значение, попадающее в назначенный диапазон", this );
+		return res_real ? diap_min : static_cast<int>(diap_min);
+	} else {
+		return res_real ? res : static_cast<int>(res + 0.5);
+	}
 }
 
 RDOValue RDOCalcSeqNextByHist::calcValue(RDORuntime *sim) const	
