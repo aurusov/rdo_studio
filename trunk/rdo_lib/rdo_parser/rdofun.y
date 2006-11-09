@@ -571,16 +571,16 @@ fun_func_seq:	/* empty */
 fun_func_descr:	fun_func_header fun_func_footer;
 
 fun_func_header:	Function_keyword IDENTIF_COLON fun_const_param_type	{
-	std::string *name = (std::string *)$2;
-	if ( parser->findFunction(name) ) {
-		parser->lexer_loc_set( &(@2) );
-		parser->error( rdo::format( "Функция уже существует: %s", name->c_str() ) );
-//		parser->error(("Second appearance of the same function: " + *(name)).c_str());
-	}
-	RDORTPResParam *retType = (RDORTPResParam *)$3;
-	RDOFUNFunction *fun = new RDOFUNFunction(name, retType);
-	$$ = (int)fun;
-};
+						std::string *name = (std::string *)$2;
+						if ( parser->findFunction(name) ) {
+							parser->lexer_loc_set( &(@2) );
+							parser->error( rdo::format( "Функция уже существует: %s", name->c_str() ) );
+//							parser->error(("Second appearance of the same function: " + *(name)).c_str());
+						}
+						RDORTPResParam *retType = (RDORTPResParam *)$3;
+						RDOFUNFunction *fun = new RDOFUNFunction(name, retType);
+						$$ = (int)fun;
+					};
 
 fun_func_footer:	Type_keyword '=' algorithmic Parameters fun_func_params Body fun_func_algorithmic_body End {
 						RDOFUNFunction *currFunc = parser->getLastFUNFunction();

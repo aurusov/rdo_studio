@@ -775,9 +775,12 @@ void RDOFUNFunction::createAlgorithmicCalc()
 {
 	rdoRuntime::RDOFunAlgorithmicCalc *funcCalc = new rdoRuntime::RDOFunAlgorithmicCalc();
 	int size = calculateIf.size();
-	for(int i = 0; i < size; i++)
+	if ( !size ) {
+		parser->warning( "Отсутствует тело функции" );
+	}
+	for ( int i = 0; i < size; i++ ) {
 		funcCalc->addCalcIf(calculateIf[i]->condition->calc, calculateIf[i]->action->createCalc(getType()));
-
+	}
 	functionCalc = funcCalc;
 }
 

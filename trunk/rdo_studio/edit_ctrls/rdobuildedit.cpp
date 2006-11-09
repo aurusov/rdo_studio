@@ -96,19 +96,19 @@ void RDOBuildEdit::showFirstError()
 	for ( i = 0; i < current_line; i++ ) {
 		it++;
 	}
-	while ( it != lines.end() && ((*it)->lineNumber == -1 || static_cast<RDOBuildEditLineInfo*>(*it)->warning ) ) {
+	while ( it != lines.end() && ((*it)->lineNumber == -1 || static_cast<RDOBuildEditLineInfo*>(*it)->warning) ) {
 		it++;
 		current_line++;
 	}
 	if ( it == lines.end() ) {
 		it = lines.begin();
 		current_line = 0;
-		while ( it != lines.end() && (*it)->lineNumber == -1 ) {
+		while ( it != lines.end() && ((*it)->lineNumber == -1 || static_cast<RDOBuildEditLineInfo*>(*it)->warning) ) {
 			it++;
 			current_line++;
 		}
 	}
-	if ( it != lines.end() && (*it)->lineNumber != -1 ) {
+	if ( it != lines.end() && ((*it)->lineNumber == -1 || static_cast<RDOBuildEditLineInfo*>(*it)->warning) ) {
 		setSelectLine( current_line, *it, true );
 	}
 }
