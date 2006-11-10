@@ -929,11 +929,11 @@ void RDOFUNSequenceNormal::createCalcs()
 	}
 }
 
-void RDOFUNSequenceByHistInt::addInt(int _from, int _to, double *_freq)
+void RDOFUNSequenceByHistInt::addInt( int _from, int _to, double _freq )
 {
-	from.push_back(_from);
-	to.push_back(_to);
-	freq.push_back(*_freq);
+	from.push_back( _from );
+	to.push_back( _to );
+	freq.push_back( _freq );
 }
 
 void RDOFUNSequenceByHistInt::createCalcs()
@@ -948,11 +948,11 @@ void RDOFUNSequenceByHistInt::createCalcs()
 	next = new rdoRuntime::RDOCalcSeqNextByHist(gen);
 }
 
-void RDOFUNSequenceByHistReal::addReal(double * _from, double * _to, double *_freq)
+void RDOFUNSequenceByHistReal::addReal( double _from, double _to, double _freq )
 {
-	from.push_back(*_from);
-	to.push_back(*_to);
-	freq.push_back(*_freq);
+	from.push_back( _from );
+	to.push_back( _to );
+	freq.push_back( _freq );
 }
 
 void RDOFUNSequenceByHistReal::createCalcs()

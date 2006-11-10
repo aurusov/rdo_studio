@@ -969,10 +969,15 @@ public:
 class RDOCalcSeqNextByHist: public RDOCalcSeqNext
 {
 private:
-	RandGeneratorByHistCommon *gen;
+	RandGeneratorByHistCommon* gen;
+
 public:
-	RDOCalcSeqNextByHist(RandGeneratorByHistCommon *_gen): gen(_gen) {}
-	virtual RDOValue calcValue(RDORuntime *sim) const;
+	RDOCalcSeqNextByHist( RandGeneratorByHistCommon* _gen ):
+		RDOCalcSeqNext(),
+		gen( _gen )
+	{
+	}
+	virtual RDOValue calcValue( RDORuntime* sim ) const;
 };
 
 class RDOCalcGetRelevantResParam: public RDOCalc

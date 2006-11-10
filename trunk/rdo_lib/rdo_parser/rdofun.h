@@ -294,11 +294,12 @@ public:
 	std::vector<int> to;
 	std::vector<double> freq;
 
-	RDOFUNSequenceByHistInt(RDOFUNSequenceByHistHeader *_header, int _from, int _to, double *_freq):
-		RDOFUNSequenceByHist(_header) {
-		addInt(_from, _to, _freq);
+	RDOFUNSequenceByHistInt( RDOFUNSequenceByHistHeader* _header, int _from, int _to, double _freq ):
+		RDOFUNSequenceByHist( _header )
+	{
+		addInt( _from, _to, _freq );
 	}
-	void addInt(int _from, int _to, double *_freq);
+	void addInt( int _from, int _to, double _freq );
 	void createCalcs();
 };
 
@@ -309,11 +310,12 @@ public:
 	std::vector<double> to;
 	std::vector<double> freq;
 
-	RDOFUNSequenceByHistReal(RDOFUNSequenceByHistHeader *_header, double * _from, double * _to, double *_freq):
-		RDOFUNSequenceByHist(_header) {
-		addReal(_from, _to, _freq);
+	RDOFUNSequenceByHistReal( RDOFUNSequenceByHistHeader* _header, double _from, double _to, double _freq ):
+		RDOFUNSequenceByHist(_header)
+	{
+		addReal( _from, _to, _freq );
 	}
-	void addReal(double * _from, double * _to, double *_freq);
+	void addReal( double _from, double _to, double _freq );
 	void createCalcs();
 };
 
@@ -330,7 +332,6 @@ public:
 	void addEnum(std::string *_val, double *_freq);
 	void createCalcs();
 };
-
 
 class RDOFUNSequenceEnumerativeHeader: public RDODeletable
 {

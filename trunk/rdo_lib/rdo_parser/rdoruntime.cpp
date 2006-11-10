@@ -774,9 +774,9 @@ RDOValue RDOCalcSeqNextNormal::calcValue( RDORuntime* sim ) const
 	}
 }
 
-RDOValue RDOCalcSeqNextByHist::calcValue(RDORuntime *sim) const	
+RDOValue RDOCalcSeqNextByHist::calcValue( RDORuntime* sim ) const
 {
-	return RDOValue(gen->next());
+	return RDOValue( gen->next() );
 }
 
 RDOCalc::RDOCalc() 

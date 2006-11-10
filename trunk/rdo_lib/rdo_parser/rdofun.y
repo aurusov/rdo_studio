@@ -865,20 +865,100 @@ fun_seq_by_hist_header:	fun_seq_header by_hist Body {
 						}
 						| fun_seq_header by_hist INT_CONST Body {
 							$$ = (int)(new RDOFUNSequenceByHistHeader((RDOFUNSequenceHeader *)$1, $3));
+						}
+						| fun_seq_header by_hist error Body {
+							parser->lexer_loc_set( &(@2), &(@3) );
+							parser->error( "ќжидаетс€ база генератора" );
+						}
+						| fun_seq_header by_hist error {
+							parser->lexer_loc_set( &(@2), &(@3) );
+							parser->error( "ќжидаетс€ ключевое слово $Body" );
 						};
 
 fun_seq_by_hist_body_int:	fun_seq_by_hist_header INT_CONST INT_CONST REAL_CONST {
-								$$ = (int)(new RDOFUNSequenceByHistInt((RDOFUNSequenceByHistHeader *)$1, $2, $3, (double*)$4));
+								$$ = (int)(new RDOFUNSequenceByHistInt((RDOFUNSequenceByHistHeader *)$1, $2, $3, *((double*)$4)));
+							}
+							| fun_seq_by_hist_header INT_CONST INT_CONST INT_CONST {
+								$$ = (int)(new RDOFUNSequenceByHistInt((RDOFUNSequenceByHistHeader *)$1, $2, $3, $4));
 							}
 							| fun_seq_by_hist_body_int INT_CONST INT_CONST REAL_CONST {
-								((RDOFUNSequenceByHistInt *)$1)->addInt($2, $3, (double*)$4); $$ = $1;
+								((RDOFUNSequenceByHistInt *)$1)->addInt($2, $3, *((double*)$4)); $$ = $1;
+							}
+							| fun_seq_by_hist_body_int INT_CONST INT_CONST INT_CONST {
+								((RDOFUNSequenceByHistInt *)$1)->addInt($2, $3, $4); $$ = $1;
+							}
+							| fun_seq_by_hist_header error {
+								parser->lexer_loc_set( @2.first_line, @1.first_column );
+								parser->error( "ќжидаетс€ лева€ граница диапазона" );
+							}
+							| fun_seq_by_hist_header INT_CONST error {
+								parser->lexer_loc_set( &(@2), &(@3) );
+								parser->error( "ќжидаетс€ права€ граница диапазона" );
+							}
+							| fun_seq_by_hist_header INT_CONST INT_CONST error {
+								parser->lexer_loc_set( &(@3), &(@4) );
+								parser->error( "ќжидаетс€ относительна€ частота диапазона" );
+							}
+							| fun_seq_by_hist_body_int error {
+								parser->lexer_loc_set( @2.first_line, @1.first_column );
+								parser->error( "ќжидаетс€ лева€ граница диапазона" );
+							}
+							| fun_seq_by_hist_body_int INT_CONST error {
+								parser->lexer_loc_set( &(@2), &(@3) );
+								parser->error( "ќжидаетс€ права€ граница диапазона" );
+							}
+							| fun_seq_by_hist_body_int INT_CONST INT_CONST error {
+								parser->lexer_loc_set( &(@3), &(@4) );
+								parser->error( "ќжидаетс€ относительна€ частота диапазона" );
 							};
 
 fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CONST {
-								$$ = (int)(new RDOFUNSequenceByHistReal((RDOFUNSequenceByHistHeader *)$1, (double*)$2, (double*)$3, (double*)$4));
+								$$ = (int)(new RDOFUNSequenceByHistReal((RDOFUNSequenceByHistHeader *)$1, *((double*)$2), *((double*)$3), *((double*)$4)));
+							}
+							| fun_seq_by_hist_header INT_CONST REAL_CONST REAL_CONST {
+								$$ = (int)(new RDOFUNSequenceByHistReal((RDOFUNSequenceByHistHeader *)$1, $2, *((double*)$3), *((double*)$4)));
+							}
+							| fun_seq_by_hist_header REAL_CONST INT_CONST REAL_CONST {
+								$$ = (int)(new RDOFUNSequenceByHistReal((RDOFUNSequenceByHistHeader *)$1, *((double*)$2), $3, *((double*)$4)));
+							}
+							| fun_seq_by_hist_header REAL_CONST REAL_CONST INT_CONST {
+								$$ = (int)(new RDOFUNSequenceByHistReal((RDOFUNSequenceByHistHeader *)$1, *((double*)$2), *((double*)$3), $4));
+							}
+							| fun_seq_by_hist_header INT_CONST INT_CONST REAL_CONST {
+								$$ = (int)(new RDOFUNSequenceByHistReal((RDOFUNSequenceByHistHeader *)$1, $2, $3, *((double*)$4)));
+							}
+							| fun_seq_by_hist_header REAL_CONST INT_CONST INT_CONST {
+								$$ = (int)(new RDOFUNSequenceByHistReal((RDOFUNSequenceByHistHeader *)$1, *((double*)$2), $3, $4));
+							}
+							| fun_seq_by_hist_header INT_CONST REAL_CONST INT_CONST {
+								$$ = (int)(new RDOFUNSequenceByHistReal((RDOFUNSequenceByHistHeader *)$1, $2, *((double*)$3), $4));
+							}
+							| fun_seq_by_hist_header INT_CONST INT_CONST INT_CONST {
+								$$ = (int)(new RDOFUNSequenceByHistReal((RDOFUNSequenceByHistHeader *)$1, $2, $3, $4));
 							}
 							| fun_seq_by_hist_body_real REAL_CONST REAL_CONST REAL_CONST {
-								((RDOFUNSequenceByHistReal *)$1)->addReal((double*)$2, (double*)$3, (double*)$4); $$ = $1;
+								((RDOFUNSequenceByHistReal *)$1)->addReal(*((double*)$2), *((double*)$3), *((double*)$4)); $$ = $1;
+							}
+							| fun_seq_by_hist_body_real INT_CONST REAL_CONST REAL_CONST {
+								((RDOFUNSequenceByHistReal *)$1)->addReal($2, *((double*)$3), *((double*)$4)); $$ = $1;
+							}
+							| fun_seq_by_hist_body_real REAL_CONST INT_CONST REAL_CONST {
+								((RDOFUNSequenceByHistReal *)$1)->addReal(*((double*)$2), $3, *((double*)$4)); $$ = $1;
+							}
+							| fun_seq_by_hist_body_real REAL_CONST REAL_CONST INT_CONST {
+								((RDOFUNSequenceByHistReal *)$1)->addReal(*((double*)$2), *((double*)$3), $4); $$ = $1;
+							}
+							| fun_seq_by_hist_body_real INT_CONST INT_CONST REAL_CONST {
+								((RDOFUNSequenceByHistReal *)$1)->addReal($2, $3, *((double*)$4)); $$ = $1;
+							}
+							| fun_seq_by_hist_body_real REAL_CONST INT_CONST INT_CONST {
+								((RDOFUNSequenceByHistReal *)$1)->addReal(*((double*)$2), $3, $4); $$ = $1;
+							}
+							| fun_seq_by_hist_body_real INT_CONST REAL_CONST INT_CONST {
+								((RDOFUNSequenceByHistReal *)$1)->addReal($2, *((double*)$3), $4); $$ = $1;
+							}
+							| fun_seq_by_hist_body_real INT_CONST INT_CONST INT_CONST {
+								((RDOFUNSequenceByHistReal *)$1)->addReal($2, $3, $4); $$ = $1;
 							};
 
 fun_seq_by_hist_body_enum:	fun_seq_by_hist_header IDENTIF REAL_CONST {
