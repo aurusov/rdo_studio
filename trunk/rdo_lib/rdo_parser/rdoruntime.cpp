@@ -733,14 +733,11 @@ RDOValue RDOCalcSeqNextUniform::calcValue(RDORuntime *sim) const
 {
 	RDOValue res = gen->next( sim->getFuncArgument(0), sim->getFuncArgument(1) );
 	if ( diap ) {
-		for ( int i = 0; i < 1000; i++ ) {
-			if ( res >= diap_min && res <= diap_max ) return res_real ? res : static_cast<int>(res + 0.5);
-			res = gen->next( sim->getFuncArgument(0), sim->getFuncArgument(1) );
-		}
-		sim->error( "Не удается получить значение, попадающее в назначенный диапазон", this );
-		return res_real ? diap_min : static_cast<int>(diap_min);
+		if ( res < diap_min ) return res_real ? diap_min : static_cast<int>(diap_min > 0 ? diap_min + 0.5 : diap_min - 0.5);
+		if ( res > diap_max ) return res_real ? diap_max : static_cast<int>(diap_max > 0 ? diap_max + 0.5 : diap_max - 0.5);
+		return res_real ? res : static_cast<int>(res > 0 ? res + 0.5 : res - 0.5);
 	} else {
-		return res_real ? res : static_cast<int>(res + 0.5);
+		return res_real ? res : static_cast<int>(res > 0 ? res + 0.5 : res - 0.5);
 	}
 }
 
@@ -748,14 +745,11 @@ RDOValue RDOCalcSeqNextExponential::calcValue(RDORuntime *sim) const
 {
 	RDOValue res = gen->next( sim->getFuncArgument(0) );
 	if ( diap ) {
-		for ( int i = 0; i < 1000; i++ ) {
-			if ( res >= diap_min && res <= diap_max ) return res_real ? res : static_cast<int>(res + 0.5);
-			res = gen->next( sim->getFuncArgument(0) );
-		}
-		sim->error( "Не удается получить значение, попадающее в назначенный диапазон", this );
-		return res_real ? diap_min : static_cast<int>(diap_min);
+		if ( res < diap_min ) return res_real ? diap_min : static_cast<int>(diap_min > 0 ? diap_min + 0.5 : diap_min - 0.5);
+		if ( res > diap_max ) return res_real ? diap_max : static_cast<int>(diap_max > 0 ? diap_max + 0.5 : diap_max - 0.5);
+		return res_real ? res : static_cast<int>(res > 0 ? res + 0.5 : res - 0.5);
 	} else {
-		return res_real ? res : static_cast<int>(res + 0.5);
+		return res_real ? res : static_cast<int>(res > 0 ? res + 0.5 : res - 0.5);
 	}
 }
 
@@ -763,20 +757,26 @@ RDOValue RDOCalcSeqNextNormal::calcValue( RDORuntime* sim ) const
 {
 	RDOValue res = gen->next( sim->getFuncArgument(0), sim->getFuncArgument(1) );
 	if ( diap ) {
-		for ( int i = 0; i < 1000; i++ ) {
-			if ( res >= diap_min && res <= diap_max ) return res_real ? res : static_cast<int>(res + 0.5);
-			res = gen->next( sim->getFuncArgument(0), sim->getFuncArgument(1) );
-		}
-		sim->error( "Не удается получить значение, попадающее в назначенный диапазон", this );
-		return res_real ? diap_min : static_cast<int>(diap_min);
+		// В старом РДО при выходе за допустимый диапазон просто присваиваются значения диапазона, без выбора нового случайного числа. Вот этот алгоритм.
+		if ( res < diap_min ) return res_real ? diap_min : static_cast<int>(diap_min > 0 ? diap_min + 0.5 : diap_min - 0.5);
+		if ( res > diap_max ) return res_real ? diap_max : static_cast<int>(diap_max > 0 ? diap_max + 0.5 : diap_max - 0.5);
+		return res_real ? res : static_cast<int>(res > 0 ? res + 0.5 : res - 0.5);
+		// В новом РДО была сделана попытка выбирать новое случайное число, если ткущее вышло за диапазон. Но при этом смешается среднее (оно и в другом случае может смещаться imho). Для совместимости оставим первый вариант.
+//		for ( int i = 0; i < 1000; i++ ) {
+//			if ( res >= diap_min && res <= diap_max ) return res_real ? res : static_cast<int>(res > 0 ? res + 0.5 : res - 0.5);
+//			res = gen->next( sim->getFuncArgument(0), sim->getFuncArgument(1) );
+//		}
+//		sim->error( "Не удается получить значение, попадающее в назначенный диапазон", this );
+//		return res_real ? diap_min : static_cast<int>(diap_min);
 	} else {
-		return res_real ? res : static_cast<int>(res + 0.5);
+		return res_real ? res : static_cast<int>(res > 0 ? res + 0.5 : res - 0.5);
 	}
 }
 
 RDOValue RDOCalcSeqNextByHist::calcValue( RDORuntime* sim ) const
 {
-	return RDOValue( gen->next() );
+	RDOValue res = gen->next();
+	return res_real ? res : static_cast<int>(res > 0 ? res + 0.5 : res - 0.5);
 }
 
 RDOCalc::RDOCalc() 

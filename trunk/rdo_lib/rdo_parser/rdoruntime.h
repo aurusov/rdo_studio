@@ -1146,7 +1146,10 @@ public:
 class RDOCalcInt: public RDOCalcUnary
 {
 public:
-	RDOValue calcValue( RDORuntime* sim ) const { return static_cast<int>(oper->calcValueBase(sim) + 0.5); }
+	RDOValue calcValue( RDORuntime* sim ) const {
+		RDOValue res = oper->calcValueBase(sim);
+		return static_cast<int>(res > 0 ? res + 0.5 : res - 0.5);
+	}
 	RDOCalcInt( RDOCalc* oper ): RDOCalcUnary( oper ) {}
 };
 

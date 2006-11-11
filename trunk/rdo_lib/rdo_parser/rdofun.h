@@ -238,7 +238,8 @@ public:
 	rdoRuntime::RDOCalcSeqNext* next;
 
 protected:
-	RDOFUNSequence(RDOFUNSequenceHeader *_header, int _base);
+	RDOFUNSequence( RDOFUNSequenceHeader* _header, int _base );
+	void initResult();
 
 public:
 	virtual void createCalcs() = 0;
@@ -273,49 +274,40 @@ public:
 class RDOFUNSequenceByHistHeader: public RDODeletable
 {
 public:
-	RDOFUNSequenceHeader *header;
-	int base;
-	RDOFUNSequenceByHistHeader(RDOFUNSequenceHeader *_header, int _base = 123456789):
-		header(_header), base(_base) {}
+	RDOFUNSequenceHeader* header;
+	int                   base;
+
+	RDOFUNSequenceByHistHeader( RDOFUNSequenceHeader* _header, int _base = 123456789 ):
+		header( _header ),
+		base( _base )
+	{
+	}
 };
 
 class RDOFUNSequenceByHist: public RDOFUNSequence
 {
 public:
-	RDOFUNSequenceByHist(RDOFUNSequenceByHistHeader *_header):
-		RDOFUNSequence(_header->header, _header->base) {}
-	const RDOFUNArithm *createCallCalc(const RDOFUNParams *const params) const;
-};
-
-class RDOFUNSequenceByHistInt: public RDOFUNSequenceByHist
-{
-public:
-	std::vector<int> from;
-	std::vector<int> to;
-	std::vector<double> freq;
-
-	RDOFUNSequenceByHistInt( RDOFUNSequenceByHistHeader* _header, int _from, int _to, double _freq ):
-		RDOFUNSequenceByHist( _header )
+	RDOFUNSequenceByHist( RDOFUNSequenceByHistHeader* _header ):
+		RDOFUNSequence( _header->header, _header->base )
 	{
-		addInt( _from, _to, _freq );
 	}
-	void addInt( int _from, int _to, double _freq );
-	void createCalcs();
+	const RDOFUNArithm* createCallCalc(const RDOFUNParams* const params) const;
 };
 
 class RDOFUNSequenceByHistReal: public RDOFUNSequenceByHist
 {
 public:
-	std::vector<double> from;
-	std::vector<double> to;
-	std::vector<double> freq;
+	std::vector< double > from;
+	std::vector< double > to;
+	std::vector< double > freq;
 
 	RDOFUNSequenceByHistReal( RDOFUNSequenceByHistHeader* _header, double _from, double _to, double _freq ):
-		RDOFUNSequenceByHist(_header)
+		RDOFUNSequenceByHist( _header )
 	{
 		addReal( _from, _to, _freq );
 	}
 	void addReal( double _from, double _to, double _freq );
+	double lastTo() const { return !to.empty() ? to.back() : 0; }
 	void createCalcs();
 };
 
@@ -325,11 +317,12 @@ public:
 	std::vector< rdoRuntime::RDOValue> val;
 	std::vector< double >              freq;
 
-	RDOFUNSequenceByHistEnum(RDOFUNSequenceByHistHeader *_header, std::string *_val, double *_freq):
-		RDOFUNSequenceByHist(_header) {
-		addEnum(_val, _freq);
+	RDOFUNSequenceByHistEnum( RDOFUNSequenceByHistHeader* _header, std::string* _val, double _freq ):
+		RDOFUNSequenceByHist( _header )
+	{
+		addEnum( _val, _freq );
 	}
-	void addEnum(std::string *_val, double *_freq);
+	void addEnum( std::string* _val, double _freq );
 	void createCalcs();
 };
 

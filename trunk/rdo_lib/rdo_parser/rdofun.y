@@ -571,11 +571,15 @@ fun_func_seq:	/* empty */
 fun_func_descr:	fun_func_header fun_func_footer;
 
 fun_func_header:	Function_keyword IDENTIF_COLON fun_const_param_type	{
-						std::string *name = (std::string *)$2;
+						std::string* name = (std::string*)$2;
 						if ( parser->findFunction(name) ) {
 							parser->lexer_loc_set( &(@2) );
 							parser->error( rdo::format( "Функция уже существует: %s", name->c_str() ) );
 //							parser->error(("Second appearance of the same function: " + *(name)).c_str());
+						}
+						if ( parser->findSequence(name) ) {
+							parser->lexer_loc_set( &(@2) );
+							parser->error( rdo::format( "Существует последовательность с таким же именем: %s", name->c_str() ) );
 						}
 						RDORTPResParam *retType = (RDORTPResParam *)$3;
 						RDOFUNFunction *fun = new RDOFUNFunction(name, retType);
@@ -698,7 +702,10 @@ fun_func_algorithmic_body:	/* empty */
 			};
 
 fun_func_algorithmic_calc_if:	Calculate_if fun_logic IDENTIF '=' fun_arithm {
+									parser->lexer_loc_backup();
+									parser->lexer_loc_set( &(@3) );
 									$$ = (int)(new RDOFUNCalculateIf((RDOFUNLogic *)$2, (std::string *)$3, (RDOFUNArithm *)$5));
+									parser->lexer_loc_restore();
 								}
 								| Calculate_if fun_logic error {
 									parser->lexer_loc_set( &(@2) );
@@ -792,7 +799,16 @@ fun_seq_descr:	fun_seq_uniform
 				| fun_seq_enumerative;
 
 fun_seq_header:	Sequence IDENTIF_COLON fun_const_param_type Type_keyword '=' {
-					$$ = (int)(new RDOFUNSequenceHeader((std::string *)$2, (RDORTPResParam *)$3));
+					std::string* name = (std::string*)$2;
+					if ( parser->findSequence(name) ) {
+						parser->lexer_loc_set( &(@2) );
+						parser->error( rdo::format( "Последовательность уже существует: %s", name->c_str() ) );
+					}
+					if ( parser->findFunction(name) ) {
+						parser->lexer_loc_set( &(@2) );
+						parser->error( rdo::format( "Существует функция с таким же именем: %s", name->c_str() ) );
+					}
+					$$ = (int)(new RDOFUNSequenceHeader( name, (RDORTPResParam *)$3) );
 				}
 				| Sequence IDENTIF_COLON fun_const_param_type Type_keyword '=' error {
 					parser->lexer_loc_set( &(@5), &(@6) );
@@ -875,107 +891,383 @@ fun_seq_by_hist_header:	fun_seq_header by_hist Body {
 							parser->error( "Ожидается ключевое слово $Body" );
 						};
 
-fun_seq_by_hist_body_int:	fun_seq_by_hist_header INT_CONST INT_CONST REAL_CONST {
-								$$ = (int)(new RDOFUNSequenceByHistInt((RDOFUNSequenceByHistHeader *)$1, $2, $3, *((double*)$4)));
-							}
-							| fun_seq_by_hist_header INT_CONST INT_CONST INT_CONST {
-								$$ = (int)(new RDOFUNSequenceByHistInt((RDOFUNSequenceByHistHeader *)$1, $2, $3, $4));
-							}
-							| fun_seq_by_hist_body_int INT_CONST INT_CONST REAL_CONST {
-								((RDOFUNSequenceByHistInt *)$1)->addInt($2, $3, *((double*)$4)); $$ = $1;
-							}
-							| fun_seq_by_hist_body_int INT_CONST INT_CONST INT_CONST {
-								((RDOFUNSequenceByHistInt *)$1)->addInt($2, $3, $4); $$ = $1;
-							}
-							| fun_seq_by_hist_header error {
-								parser->lexer_loc_set( @2.first_line, @1.first_column );
-								parser->error( "Ожидается левая граница диапазона" );
-							}
-							| fun_seq_by_hist_header INT_CONST error {
-								parser->lexer_loc_set( &(@2), &(@3) );
-								parser->error( "Ожидается правая граница диапазона" );
-							}
-							| fun_seq_by_hist_header INT_CONST INT_CONST error {
-								parser->lexer_loc_set( &(@3), &(@4) );
-								parser->error( "Ожидается относительная частота диапазона" );
-							}
-							| fun_seq_by_hist_body_int error {
-								parser->lexer_loc_set( @2.first_line, @1.first_column );
-								parser->error( "Ожидается левая граница диапазона" );
-							}
-							| fun_seq_by_hist_body_int INT_CONST error {
-								parser->lexer_loc_set( &(@2), &(@3) );
-								parser->error( "Ожидается правая граница диапазона" );
-							}
-							| fun_seq_by_hist_body_int INT_CONST INT_CONST error {
-								parser->lexer_loc_set( &(@3), &(@4) );
-								parser->error( "Ожидается относительная частота диапазона" );
-							};
-
 fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CONST {
-								$$ = (int)(new RDOFUNSequenceByHistReal((RDOFUNSequenceByHistHeader *)$1, *((double*)$2), *((double*)$3), *((double*)$4)));
+								RDOFUNSequenceByHistHeader* header = reinterpret_cast<RDOFUNSequenceByHistHeader*>($1);
+								if ( header->header->type->getType() == RDORTPResParam::pt_int ) {
+									parser->lexer_loc_set( &(@2) );
+									parser->error( rdo::format("Последовательность '%s' определена как целочисленная, её даипазоны тоже должны быть челочисленными", header->header->name->c_str()) );
+								}
+								if ( *((double*)$2) >= *((double*)$3) ) {
+									parser->lexer_loc_set( &(@3) );
+									parser->error( "Начало интервала должно быть строго меньше его конца" );
+								}
+								if ( *((double*)$4) <= 0 ) {
+									parser->lexer_loc_set( &(@4) );
+									parser->error( "Относительная вероятность должна быть больше нуля" );
+								}
+								$$ = (int)(new RDOFUNSequenceByHistReal( header, *((double*)$2), *((double*)$3), *((double*)$4)) );
 							}
 							| fun_seq_by_hist_header INT_CONST REAL_CONST REAL_CONST {
-								$$ = (int)(new RDOFUNSequenceByHistReal((RDOFUNSequenceByHistHeader *)$1, $2, *((double*)$3), *((double*)$4)));
+								RDOFUNSequenceByHistHeader* header = reinterpret_cast<RDOFUNSequenceByHistHeader*>($1);
+								if ( header->header->type->getType() == RDORTPResParam::pt_int ) {
+									parser->lexer_loc_set( &(@3) );
+									parser->error( rdo::format("Последовательность '%s' определена как целочисленная, её даипазоны тоже должны быть челочисленными", header->header->name->c_str()) );
+								}
+								if ( $2 >= *((double*)$3) ) {
+									parser->lexer_loc_set( &(@3) );
+									parser->error( "Начало интервала должно быть строго меньше его конца" );
+								}
+								if ( *((double*)$4) <= 0 ) {
+									parser->lexer_loc_set( &(@4) );
+									parser->error( "Относительная вероятность должна быть больше нуля" );
+								}
+								$$ = (int)(new RDOFUNSequenceByHistReal( header, $2, *((double*)$3), *((double*)$4)) );
 							}
 							| fun_seq_by_hist_header REAL_CONST INT_CONST REAL_CONST {
-								$$ = (int)(new RDOFUNSequenceByHistReal((RDOFUNSequenceByHistHeader *)$1, *((double*)$2), $3, *((double*)$4)));
+								RDOFUNSequenceByHistHeader* header = reinterpret_cast<RDOFUNSequenceByHistHeader*>($1);
+								if ( header->header->type->getType() == RDORTPResParam::pt_int ) {
+									parser->lexer_loc_set( &(@2) );
+									parser->error( rdo::format("Последовательность '%s' определена как целочисленная, её даипазоны тоже должны быть челочисленными", header->header->name->c_str()) );
+								}
+								if ( *((double*)$2) >= $3 ) {
+									parser->lexer_loc_set( &(@3) );
+									parser->error( "Начало интервала должно быть строго меньше его конца" );
+								}
+								if ( *((double*)$4) <= 0 ) {
+									parser->lexer_loc_set( &(@4) );
+									parser->error( "Относительная вероятность должна быть больше нуля" );
+								}
+								$$ = (int)(new RDOFUNSequenceByHistReal( header, *((double*)$2), $3, *((double*)$4)) );
 							}
 							| fun_seq_by_hist_header REAL_CONST REAL_CONST INT_CONST {
-								$$ = (int)(new RDOFUNSequenceByHistReal((RDOFUNSequenceByHistHeader *)$1, *((double*)$2), *((double*)$3), $4));
+								RDOFUNSequenceByHistHeader* header = reinterpret_cast<RDOFUNSequenceByHistHeader*>($1);
+								if ( header->header->type->getType() == RDORTPResParam::pt_int ) {
+									parser->lexer_loc_set( &(@2) );
+									parser->error( rdo::format("Последовательность '%s' определена как целочисленная, её даипазоны тоже должны быть челочисленными", header->header->name->c_str()) );
+								}
+								if ( *((double*)$2) >= *((double*)$3) ) {
+									parser->lexer_loc_set( &(@3) );
+									parser->error( "Начало интервала должно быть строго меньше его конца" );
+								}
+								if ( $4 <= 0 ) {
+									parser->lexer_loc_set( &(@4) );
+									parser->error( "Относительная вероятность должна быть больше нуля" );
+								}
+								$$ = (int)(new RDOFUNSequenceByHistReal( header, *((double*)$2), *((double*)$3), $4) );
 							}
 							| fun_seq_by_hist_header INT_CONST INT_CONST REAL_CONST {
-								$$ = (int)(new RDOFUNSequenceByHistReal((RDOFUNSequenceByHistHeader *)$1, $2, $3, *((double*)$4)));
+								if ( $2 >= $3 ) {
+									parser->lexer_loc_set( &(@3) );
+									parser->error( "Начало интервала должно быть строго меньше его конца" );
+								}
+								if ( *((double*)$4) <= 0 ) {
+									parser->lexer_loc_set( &(@4) );
+									parser->error( "Относительная вероятность должна быть больше нуля" );
+								}
+								$$ = (int)(new RDOFUNSequenceByHistReal( (RDOFUNSequenceByHistHeader *)$1, $2, $3, *((double*)$4)) );
 							}
 							| fun_seq_by_hist_header REAL_CONST INT_CONST INT_CONST {
-								$$ = (int)(new RDOFUNSequenceByHistReal((RDOFUNSequenceByHistHeader *)$1, *((double*)$2), $3, $4));
+								RDOFUNSequenceByHistHeader* header = reinterpret_cast<RDOFUNSequenceByHistHeader*>($1);
+								if ( header->header->type->getType() == RDORTPResParam::pt_int ) {
+									parser->lexer_loc_set( &(@2) );
+									parser->error( rdo::format("Последовательность '%s' определена как целочисленная, её даипазоны тоже должны быть челочисленными", header->header->name->c_str()) );
+								}
+								if ( *((double*)$2) >= $3 ) {
+									parser->lexer_loc_set( &(@3) );
+									parser->error( "Начало интервала должно быть строго меньше его конца" );
+								}
+								if ( $4 <= 0 ) {
+									parser->lexer_loc_set( &(@4) );
+									parser->error( "Относительная вероятность должна быть больше нуля" );
+								}
+								$$ = (int)(new RDOFUNSequenceByHistReal( header, *((double*)$2), $3, $4) );
 							}
 							| fun_seq_by_hist_header INT_CONST REAL_CONST INT_CONST {
-								$$ = (int)(new RDOFUNSequenceByHistReal((RDOFUNSequenceByHistHeader *)$1, $2, *((double*)$3), $4));
+								RDOFUNSequenceByHistHeader* header = reinterpret_cast<RDOFUNSequenceByHistHeader*>($1);
+								if ( header->header->type->getType() == RDORTPResParam::pt_int ) {
+									parser->lexer_loc_set( &(@3) );
+									parser->error( rdo::format("Последовательность '%s' определена как целочисленная, её даипазоны тоже должны быть челочисленными", header->header->name->c_str()) );
+								}
+								if ( $2 >= *((double*)$3) ) {
+									parser->lexer_loc_set( &(@3) );
+									parser->error( "Начало интервала должно быть строго меньше его конца" );
+								}
+								if ( $4 <= 0 ) {
+									parser->lexer_loc_set( &(@4) );
+									parser->error( "Относительная вероятность должна быть больше нуля" );
+								}
+								$$ = (int)(new RDOFUNSequenceByHistReal( header, $2, *((double*)$3), $4) );
 							}
 							| fun_seq_by_hist_header INT_CONST INT_CONST INT_CONST {
+								if ( $2 >= $3 ) {
+									parser->lexer_loc_set( &(@3) );
+									parser->error( "Начало интервала должно быть строго меньше его конца" );
+								}
+								if ( $4 <= 0 ) {
+									parser->lexer_loc_set( &(@4) );
+									parser->error( "Относительная вероятность должна быть больше нуля" );
+								}
 								$$ = (int)(new RDOFUNSequenceByHistReal((RDOFUNSequenceByHistHeader *)$1, $2, $3, $4));
 							}
 							| fun_seq_by_hist_body_real REAL_CONST REAL_CONST REAL_CONST {
+								RDOFUNSequenceHeader* header = reinterpret_cast<RDOFUNSequenceByHistReal*>($1)->header;
+								if ( header->type->getType() == RDORTPResParam::pt_int ) {
+									parser->lexer_loc_set( &(@2) );
+									parser->error( rdo::format("Последовательность '%s' определена как целочисленная, её даипазоны тоже должны быть челочисленными", header->name->c_str()) );
+								}
+								if ( *((double*)$2) != ((RDOFUNSequenceByHistReal *)$1)->lastTo() ) {
+									parser->lexer_loc_set( &(@2) );
+									parser->error( "Начало интервала должно совпадать с окончанием предыдущего" );
+								}
+								if ( *((double*)$2) >= *((double*)$3) ) {
+									parser->lexer_loc_set( &(@3) );
+									parser->error( "Начало интервала должно быть строго меньше его конца" );
+								}
+								if ( *((double*)$4) <= 0 ) {
+									parser->lexer_loc_set( &(@4) );
+									parser->error( "Относительная вероятность должна быть больше нуля" );
+								}
 								((RDOFUNSequenceByHistReal *)$1)->addReal(*((double*)$2), *((double*)$3), *((double*)$4)); $$ = $1;
 							}
 							| fun_seq_by_hist_body_real INT_CONST REAL_CONST REAL_CONST {
+								RDOFUNSequenceHeader* header = reinterpret_cast<RDOFUNSequenceByHistReal*>($1)->header;
+								if ( header->type->getType() == RDORTPResParam::pt_int ) {
+									parser->lexer_loc_set( &(@3) );
+									parser->error( rdo::format("Последовательность '%s' определена как целочисленная, её даипазоны тоже должны быть челочисленными", header->name->c_str()) );
+								}
+								if ( $2 != ((RDOFUNSequenceByHistReal *)$1)->lastTo() ) {
+									parser->lexer_loc_set( &(@2) );
+									parser->error( "Начало интервала должно совпадать с окончанием предыдущего" );
+								}
+								if ( $2 >= *((double*)$3) ) {
+									parser->lexer_loc_set( &(@3) );
+									parser->error( "Начало интервала должно быть строго меньше его конца" );
+								}
+								if ( *((double*)$4) <= 0 ) {
+									parser->lexer_loc_set( &(@4) );
+									parser->error( "Относительная вероятность должна быть больше нуля" );
+								}
 								((RDOFUNSequenceByHistReal *)$1)->addReal($2, *((double*)$3), *((double*)$4)); $$ = $1;
 							}
 							| fun_seq_by_hist_body_real REAL_CONST INT_CONST REAL_CONST {
+								RDOFUNSequenceHeader* header = reinterpret_cast<RDOFUNSequenceByHistReal*>($1)->header;
+								if ( header->type->getType() == RDORTPResParam::pt_int ) {
+									parser->lexer_loc_set( &(@2) );
+									parser->error( rdo::format("Последовательность '%s' определена как целочисленная, её даипазоны тоже должны быть челочисленными", header->name->c_str()) );
+								}
+								if ( *((double*)$2) != ((RDOFUNSequenceByHistReal *)$1)->lastTo() ) {
+									parser->lexer_loc_set( &(@2) );
+									parser->error( "Начало интервала должно совпадать с окончанием предыдущего" );
+								}
+								if ( *((double*)$2) >= $3 ) {
+									parser->lexer_loc_set( &(@3) );
+									parser->error( "Начало интервала должно быть строго меньше его конца" );
+								}
+								if ( *((double*)$4) <= 0 ) {
+									parser->lexer_loc_set( &(@4) );
+									parser->error( "Относительная вероятность должна быть больше нуля" );
+								}
 								((RDOFUNSequenceByHistReal *)$1)->addReal(*((double*)$2), $3, *((double*)$4)); $$ = $1;
 							}
 							| fun_seq_by_hist_body_real REAL_CONST REAL_CONST INT_CONST {
+								RDOFUNSequenceHeader* header = reinterpret_cast<RDOFUNSequenceByHistReal*>($1)->header;
+								if ( header->type->getType() == RDORTPResParam::pt_int ) {
+									parser->lexer_loc_set( &(@2) );
+									parser->error( rdo::format("Последовательность '%s' определена как целочисленная, её даипазоны тоже должны быть челочисленными", header->name->c_str()) );
+								}
+								if ( *((double*)$2) != ((RDOFUNSequenceByHistReal *)$1)->lastTo() ) {
+									parser->lexer_loc_set( &(@2) );
+									parser->error( "Начало интервала должно совпадать с окончанием предыдущего" );
+								}
+								if ( *((double*)$2) >= *((double*)$3) ) {
+									parser->lexer_loc_set( &(@3) );
+									parser->error( "Начало интервала должно быть строго меньше его конца" );
+								}
+								if ( $4 <= 0 ) {
+									parser->lexer_loc_set( &(@4) );
+									parser->error( "Относительная вероятность должна быть больше нуля" );
+								}
 								((RDOFUNSequenceByHistReal *)$1)->addReal(*((double*)$2), *((double*)$3), $4); $$ = $1;
 							}
 							| fun_seq_by_hist_body_real INT_CONST INT_CONST REAL_CONST {
+								if ( $2 != ((RDOFUNSequenceByHistReal *)$1)->lastTo() ) {
+									parser->lexer_loc_set( &(@2) );
+									parser->error( "Начало интервала должно совпадать с окончанием предыдущего" );
+								}
+								if ( $2 >= $3 ) {
+									parser->lexer_loc_set( &(@3) );
+									parser->error( "Начало интервала должно быть строго меньше его конца" );
+								}
+								if ( *((double*)$4) <= 0 ) {
+									parser->lexer_loc_set( &(@4) );
+									parser->error( "Относительная вероятность должна быть больше нуля" );
+								}
 								((RDOFUNSequenceByHistReal *)$1)->addReal($2, $3, *((double*)$4)); $$ = $1;
 							}
 							| fun_seq_by_hist_body_real REAL_CONST INT_CONST INT_CONST {
+								RDOFUNSequenceHeader* header = reinterpret_cast<RDOFUNSequenceByHistReal*>($1)->header;
+								if ( header->type->getType() == RDORTPResParam::pt_int ) {
+									parser->lexer_loc_set( &(@2) );
+									parser->error( rdo::format("Последовательность '%s' определена как целочисленная, её даипазоны тоже должны быть челочисленными", header->name->c_str()) );
+								}
+								if ( *((double*)$2) != ((RDOFUNSequenceByHistReal *)$1)->lastTo() ) {
+									parser->lexer_loc_set( &(@2) );
+									parser->error( "Начало интервала должно совпадать с окончанием предыдущего" );
+								}
+								if ( *((double*)$2) >= $3 ) {
+									parser->lexer_loc_set( &(@3) );
+									parser->error( "Начало интервала должно быть строго меньше его конца" );
+								}
+								if ( $4 <= 0 ) {
+									parser->lexer_loc_set( &(@4) );
+									parser->error( "Относительная вероятность должна быть больше нуля" );
+								}
 								((RDOFUNSequenceByHistReal *)$1)->addReal(*((double*)$2), $3, $4); $$ = $1;
 							}
 							| fun_seq_by_hist_body_real INT_CONST REAL_CONST INT_CONST {
+								RDOFUNSequenceHeader* header = reinterpret_cast<RDOFUNSequenceByHistReal*>($1)->header;
+								if ( header->type->getType() == RDORTPResParam::pt_int ) {
+									parser->lexer_loc_set( &(@3) );
+									parser->error( rdo::format("Последовательность '%s' определена как целочисленная, её даипазоны тоже должны быть челочисленными", header->name->c_str()) );
+								}
+								if ( $2 != ((RDOFUNSequenceByHistReal *)$1)->lastTo() ) {
+									parser->lexer_loc_set( &(@2) );
+									parser->error( "Начало интервала должно совпадать с окончанием предыдущего" );
+								}
+								if ( $2 >= *((double*)$3) ) {
+									parser->lexer_loc_set( &(@3) );
+									parser->error( "Начало интервала должно быть строго меньше его конца" );
+								}
+								if ( $4 <= 0 ) {
+									parser->lexer_loc_set( &(@4) );
+									parser->error( "Относительная вероятность должна быть больше нуля" );
+								}
 								((RDOFUNSequenceByHistReal *)$1)->addReal($2, *((double*)$3), $4); $$ = $1;
 							}
 							| fun_seq_by_hist_body_real INT_CONST INT_CONST INT_CONST {
+								if ( $2 != ((RDOFUNSequenceByHistReal *)$1)->lastTo() ) {
+									parser->lexer_loc_set( &(@2) );
+									parser->error( "Начало интервала должно совпадать с окончанием предыдущего" );
+								}
+								if ( $2 >= $3 ) {
+									parser->lexer_loc_set( &(@3) );
+									parser->error( "Начало интервала должно быть строго меньше его конца" );
+								}
+								if ( $4 <= 0 ) {
+									parser->lexer_loc_set( &(@4) );
+									parser->error( "Относительная вероятность должна быть больше нуля" );
+								}
 								((RDOFUNSequenceByHistReal *)$1)->addReal($2, $3, $4); $$ = $1;
+							}
+							| fun_seq_by_hist_header REAL_CONST error {
+								parser->lexer_loc_set( &(@2), &(@3) );
+								parser->error( "Ожидается конец диапазона" );
+							}
+							| fun_seq_by_hist_header INT_CONST error {
+								parser->lexer_loc_set( &(@2), &(@3) );
+								parser->error( "Ожидается конец диапазона" );
+							}
+							| fun_seq_by_hist_header REAL_CONST REAL_CONST error {
+								parser->lexer_loc_set( &(@3), &(@4) );
+								parser->error( "Ожидается относительная вероятность" );
+							}
+							| fun_seq_by_hist_header INT_CONST REAL_CONST error {
+								parser->lexer_loc_set( &(@3), &(@4) );
+								parser->error( "Ожидается относительная вероятность" );
+							}
+							| fun_seq_by_hist_header REAL_CONST INT_CONST error {
+								parser->lexer_loc_set( &(@3), &(@4) );
+								parser->error( "Ожидается относительная вероятность" );
+							}
+							| fun_seq_by_hist_header INT_CONST INT_CONST error {
+								parser->lexer_loc_set( &(@3), &(@4) );
+								parser->error( "Ожидается относительная вероятность" );
+							}
+							| fun_seq_by_hist_body_real REAL_CONST error {
+								parser->lexer_loc_set( &(@2), &(@3) );
+								parser->error( "Ожидается конец диапазона" );
+							}
+							| fun_seq_by_hist_body_real INT_CONST error {
+								parser->lexer_loc_set( &(@2), &(@3) );
+								parser->error( "Ожидается конец диапазона" );
+							}
+							| fun_seq_by_hist_body_real REAL_CONST REAL_CONST error {
+								parser->lexer_loc_set( &(@3), &(@4) );
+								parser->error( "Ожидается относительная вероятность" );
+							}
+							| fun_seq_by_hist_body_real INT_CONST REAL_CONST error {
+								parser->lexer_loc_set( &(@3), &(@4) );
+								parser->error( "Ожидается относительная вероятность" );
+							}
+							| fun_seq_by_hist_body_real REAL_CONST INT_CONST error {
+								parser->lexer_loc_set( &(@3), &(@4) );
+								parser->error( "Ожидается относительная вероятность" );
+							}
+							| fun_seq_by_hist_body_real INT_CONST INT_CONST error {
+								parser->lexer_loc_set( &(@3), &(@4) );
+								parser->error( "Ожидается относительная вероятность" );
 							};
 
 fun_seq_by_hist_body_enum:	fun_seq_by_hist_header IDENTIF REAL_CONST {
-								$$ = (int)(new RDOFUNSequenceByHistEnum((RDOFUNSequenceByHistHeader *)$1, (std::string*)$2, (double*)$3));
+								if ( *((double*)$3) <= 0 ) {
+									parser->lexer_loc_set( &(@3) );
+									parser->error( "Относительная вероятность должна быть больше нуля" );
+								}
+								$$ = (int)(new RDOFUNSequenceByHistEnum((RDOFUNSequenceByHistHeader *)$1, (std::string*)$2, *((double*)$3)));
+							}
+							| fun_seq_by_hist_header IDENTIF INT_CONST {
+								if ( $3 <= 0 ) {
+									parser->lexer_loc_set( &(@3) );
+									parser->error( "Относительная вероятность должна быть больше нуля" );
+								}
+								$$ = (int)(new RDOFUNSequenceByHistEnum((RDOFUNSequenceByHistHeader *)$1, (std::string*)$2, $3));
 							}
 							| fun_seq_by_hist_body_enum IDENTIF REAL_CONST {
-								((RDOFUNSequenceByHistEnum *)$1)->addEnum((std::string*)$2, (double*)$3); $$ = $1;
+								if ( *((double*)$3) <= 0 ) {
+									parser->lexer_loc_set( &(@3) );
+									parser->error( "Относительная вероятность должна быть больше нуля" );
+								}
+								((RDOFUNSequenceByHistEnum *)$1)->addEnum((std::string*)$2, *((double*)$3));
+								$$ = $1;
+							}
+							| fun_seq_by_hist_body_enum IDENTIF INT_CONST {
+								if ( $3 <= 0 ) {
+									parser->lexer_loc_set( &(@3) );
+									parser->error( "Относительная вероятность должна быть больше нуля" );
+								}
+								((RDOFUNSequenceByHistEnum *)$1)->addEnum((std::string*)$2, $3);
+								$$ = $1;
+							}
+							| fun_seq_by_hist_header IDENTIF error {
+								parser->lexer_loc_set( &(@2), &(@3) );
+								parser->error( rdo::format("Ожидается относительная вероятность для значения: %s", ((std::string*)$2)->c_str()) );
+							}
+							| fun_seq_by_hist_body_enum IDENTIF error {
+								parser->lexer_loc_set( &(@2), &(@3) );
+								parser->error( rdo::format("Ожидается относительная вероятность для значения: %s", ((std::string*)$2)->c_str()) );
 							};
 
-fun_seq_by_hist:	fun_seq_by_hist_body_int End {
-						((RDOFUNSequenceByHist *)$1)->createCalcs();
-					}
-					| fun_seq_by_hist_body_real End {
+fun_seq_by_hist:	fun_seq_by_hist_body_real End {
 						((RDOFUNSequenceByHist *)$1)->createCalcs();
 					}
 					| fun_seq_by_hist_body_enum End {
 						((RDOFUNSequenceByHist *)$1)->createCalcs();
+					}
+					| fun_seq_by_hist_body_real error {
+						parser->lexer_loc_set( &(@1), &(@2) );
+						parser->error( "Ошибка в описании последовательности" );
+					}
+					| fun_seq_by_hist_body_enum error {
+						parser->lexer_loc_set( &(@1), &(@2) );
+						parser->error( "Ошибка в описании последовательности" );
+					}
+					| fun_seq_by_hist_body_real {
+						parser->lexer_loc_set( @1.last_line, @1.last_column );
+						parser->error( "Ожидается ключевое слово $End" );
+					}
+					| fun_seq_by_hist_body_enum {
+						parser->lexer_loc_set( @1.last_line, @1.last_column );
+						parser->error( "Ожидается ключевое слово $End" );
 					};
 
 fun_seq_enumerative_header:	fun_seq_header enumerative Body {
@@ -983,27 +1275,100 @@ fun_seq_enumerative_header:	fun_seq_header enumerative Body {
 							}
 							| fun_seq_header enumerative INT_CONST Body {
 								$$ = (int)(new RDOFUNSequenceEnumerativeHeader((RDOFUNSequenceHeader *)$1, $3));
+							}
+							| fun_seq_header enumerative Parameters {
+								parser->lexer_loc_set( &(@3) );
+								parser->error( "Последовательности типа enumerative не имеет параметров" );
+							}
+							| fun_seq_header enumerative INT_CONST Parameters {
+								parser->lexer_loc_set( &(@4) );
+								parser->error( "Последовательности типа enumerative не имеет параметров" );
+							}
+							| fun_seq_header enumerative error {
+								parser->lexer_loc_set( &(@2), &(@3) );
+								parser->error( "Ожидается база генератора" );
 							};
 
+
 fun_seq_enumerative_body_int:	fun_seq_enumerative_header INT_CONST {
-									$$ = (int)(new RDOFUNSequenceEnumerativeInt((RDOFUNSequenceEnumerativeHeader *)$1, $2));
+									RDOFUNSequenceEnumerativeHeader* header = reinterpret_cast<RDOFUNSequenceEnumerativeHeader*>($1);
+									if ( header->header->type->getType() != RDORTPResParam::pt_int ) {
+										parser->lexer_loc_set( &(@2) );
+										switch ( header->header->type->getType() ) {
+											case RDORTPResParam::pt_real: {
+												parser->error( rdo::format("Последовательность '%s' определена как вещественная, её значения тоже должны быть вещественными", header->header->name->c_str()) );
+												break;
+											}
+											case RDORTPResParam::pt_enum: {
+												parser->error( rdo::format("Последовательность '%s' определена как перечислимая, её значения тоже должны быть перечислимого типа", header->header->name->c_str()) );
+												break;
+											}
+										}
+									}
+									$$ = (int)(new RDOFUNSequenceEnumerativeInt( header, $2 ));
 								}
 								| fun_seq_enumerative_body_int INT_CONST {
 									((RDOFUNSequenceEnumerativeInt *)$1)->addInt($2); $$ = $1;
+								}
+								| fun_seq_enumerative_body_int error {
+									parser->lexer_loc_set( &(@1), &(@2) );
+									parser->error( "Ожидается целое число или ключевое слово $End" );
 								};
 
 fun_seq_enumerative_body_real:	fun_seq_enumerative_header REAL_CONST {
-									$$ = (int)(new RDOFUNSequenceEnumerativeReal((RDOFUNSequenceEnumerativeHeader *)$1, (double*)$2));
+									RDOFUNSequenceEnumerativeHeader* header = reinterpret_cast<RDOFUNSequenceEnumerativeHeader*>($1);
+									if ( header->header->type->getType() != RDORTPResParam::pt_real ) {
+										parser->lexer_loc_set( &(@2) );
+										switch ( header->header->type->getType() ) {
+											case RDORTPResParam::pt_int: {
+												parser->error( rdo::format("Последовательность '%s' определена как целочисленная, её значения тоже должны быть челочисленными", header->header->name->c_str()) );
+												break;
+											}
+											case RDORTPResParam::pt_enum: {
+												parser->error( rdo::format("Последовательность '%s' определена как перечислимая, её значения тоже должны быть перечислимого типа", header->header->name->c_str()) );
+												break;
+											}
+										}
+									}
+									$$ = (int)(new RDOFUNSequenceEnumerativeReal( header, (double*)$2) );
 								}
 								| fun_seq_enumerative_body_real REAL_CONST {
 									((RDOFUNSequenceEnumerativeReal *)$1)->addReal((double*)$2); $$ = $1;
+								}
+								| fun_seq_enumerative_body_real error {
+									parser->lexer_loc_set( &(@1), &(@2) );
+									parser->error( "Ожидается вещественное число или ключевое слово $End" );
 								};
 
 fun_seq_enumerative_body_enum:	fun_seq_enumerative_header IDENTIF {
+									RDOFUNSequenceEnumerativeHeader* header = reinterpret_cast<RDOFUNSequenceEnumerativeHeader*>($1);
+									if ( header->header->type->getType() != RDORTPResParam::pt_enum ) {
+										parser->lexer_loc_set( &(@2) );
+										switch ( header->header->type->getType() ) {
+											case RDORTPResParam::pt_int: {
+												parser->error( rdo::format("Последовательность '%s' определена как целочисленная, её значения тоже должны быть челочисленными", header->header->name->c_str()) );
+												break;
+											}
+											case RDORTPResParam::pt_real: {
+												parser->error( rdo::format("Последовательность '%s' определена как вещественная, её значения тоже должны быть вещественными", header->header->name->c_str()) );
+												break;
+											}
+										}
+									}
+									parser->lexer_loc_backup();
+									parser->lexer_loc_set( &(@2) );
 									$$ = (int)(new RDOFUNSequenceEnumerativeEnum((RDOFUNSequenceEnumerativeHeader *)$1, (std::string*)$2));
+									parser->lexer_loc_restore();
 								}
 								| fun_seq_enumerative_body_enum IDENTIF {
+									parser->lexer_loc_backup();
+									parser->lexer_loc_set( &(@2) );
 									((RDOFUNSequenceEnumerativeEnum *)$1)->addEnum((std::string*)$2); $$ = $1;
+									parser->lexer_loc_restore();
+								}
+								| fun_seq_enumerative_body_enum error {
+									parser->lexer_loc_set( &(@1), &(@2) );
+									parser->error( "Ожидается элемент перечислимого типа или ключевое слово $End" );
 								};
 
 fun_seq_enumerative:	fun_seq_enumerative_body_int End {

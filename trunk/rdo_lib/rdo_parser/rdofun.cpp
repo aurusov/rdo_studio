@@ -812,8 +812,10 @@ RDOFUNCalculateIf::RDOFUNCalculateIf(RDOFUNLogic *_condition, std::string *_funN
 	funName	 (_funName),
 	action	 (_action)
 {
-	if(*funName != *(parser->getLastFUNFunction()->getName()))
-		parser->error("function name expected");
+	if( *funName != *(parser->getLastFUNFunction()->getName()) ) {
+		parser->error( rdo::format("Ожидается имя функции: %s", parser->getLastFUNFunction()->getName()->c_str()) );
+//		parser->error( "function name expected" );
+	}
 }
 
 RDOFUNGroup::RDOFUNGroup(int _funType, const std::string *const _resType):
@@ -867,10 +869,11 @@ RDOFUNSequenceUniform::RDOFUNSequenceUniform( RDOFUNSequenceHeader* _header, int
 
 void RDOFUNSequenceUniform::createCalcs()
 {
-	RandGeneratorUniform *gen = new RandGeneratorUniform();
-	initSeq = new rdoRuntime::RDOCalcSeqInit(base, gen);
-	parser->runTime->addInitCalc(initSeq);
-	next = new rdoRuntime::RDOCalcSeqNextUniform(gen);
+	RandGeneratorUniform* gen = new RandGeneratorUniform();
+	initSeq = new rdoRuntime::RDOCalcSeqInit( base, gen );
+	parser->runTime->addInitCalc( initSeq );
+	next = new rdoRuntime::RDOCalcSeqNextUniform( gen );
+	initResult();
 }
 
 RDOFUNSequenceExponential::RDOFUNSequenceExponential(RDOFUNSequenceHeader *_header, int _base): 
@@ -886,10 +889,11 @@ RDOFUNSequenceExponential::RDOFUNSequenceExponential(RDOFUNSequenceHeader *_head
 
 void RDOFUNSequenceExponential::createCalcs()
 {
-	RandGeneratorExponential *gen = new RandGeneratorExponential();
-	initSeq = new rdoRuntime::RDOCalcSeqInit(base, gen);
-	parser->runTime->addInitCalc(initSeq);
-	next = new rdoRuntime::RDOCalcSeqNextExponential(gen);
+	RandGeneratorExponential* gen = new RandGeneratorExponential();
+	initSeq = new rdoRuntime::RDOCalcSeqInit( base, gen );
+	parser->runTime->addInitCalc( initSeq );
+	next = new rdoRuntime::RDOCalcSeqNextExponential( gen );
+	initResult();
 }
 
 RDOFUNSequenceNormal::RDOFUNSequenceNormal( RDOFUNSequenceHeader* _header, int _base ):
@@ -908,44 +912,7 @@ void RDOFUNSequenceNormal::createCalcs()
 	initSeq = new rdoRuntime::RDOCalcSeqInit( base, gen );
 	parser->runTime->addInitCalc( initSeq );
 	next = new rdoRuntime::RDOCalcSeqNextNormal( gen );
-	switch ( header->type->getType() ) {
-		case RDORTPResParam::pt_int: {
-			next->res_real = false;
-			if ( static_cast<RDORTPIntResParam*>(header->type)->diap->exist ) {
-				next->diap     = true;
-				next->diap_min = static_cast<RDORTPIntResParam*>(header->type)->diap->minVal;
-				next->diap_max = static_cast<RDORTPIntResParam*>(header->type)->diap->maxVal;
-			}
-			break;
-		}
-		case RDORTPResParam::pt_real: {
-			if ( static_cast<RDORTPRealResParam*>(header->type)->diap->exist ) {
-				next->diap     = true;
-				next->diap_min = static_cast<RDORTPRealResParam*>(header->type)->diap->minVal;
-				next->diap_max = static_cast<RDORTPRealResParam*>(header->type)->diap->maxVal;
-			}
-			break;
-		}
-	}
-}
-
-void RDOFUNSequenceByHistInt::addInt( int _from, int _to, double _freq )
-{
-	from.push_back( _from );
-	to.push_back( _to );
-	freq.push_back( _freq );
-}
-
-void RDOFUNSequenceByHistInt::createCalcs()
-{
-	RandGeneratorByHist *gen = new RandGeneratorByHist();
-	int size = from.size();
-	for(int i = 0; i < size; i++)
-		gen->addValues(from[i], to[i], freq[i]);
-
-	initSeq = new rdoRuntime::RDOCalcSeqInit(base, gen);
-	parser->runTime->addInitCalc(initSeq);
-	next = new rdoRuntime::RDOCalcSeqNextByHist(gen);
+	initResult();
 }
 
 void RDOFUNSequenceByHistReal::addReal( double _from, double _to, double _freq )
@@ -965,12 +932,13 @@ void RDOFUNSequenceByHistReal::createCalcs()
 	initSeq = new rdoRuntime::RDOCalcSeqInit(base, gen);
 	parser->runTime->addInitCalc(initSeq);
 	next = new rdoRuntime::RDOCalcSeqNextByHist(gen);
+	initResult();
 }
 
-void RDOFUNSequenceByHistEnum::addEnum(std::string *_val, double *_freq)
+void RDOFUNSequenceByHistEnum::addEnum( std::string* _val, double _freq )
 {
-	val.push_back(header->type->getRSSEnumValue(_val));
-	freq.push_back(*_freq);
+	val.push_back( header->type->getRSSEnumValue(_val) );
+	freq.push_back( _freq );
 }
 
 void RDOFUNSequenceByHistEnum::createCalcs()
@@ -1037,10 +1005,34 @@ void RDOFUNSequenceEnumerativeEnum::createCalcs()
 	next = new rdoRuntime::RDOCalcSeqNextByHist(gen);
 }
 
-RDOFUNSequence::RDOFUNSequence(RDOFUNSequenceHeader *_header, int _base): 
-	header(_header), base(_base)
+RDOFUNSequence::RDOFUNSequence( RDOFUNSequenceHeader* _header, int _base ):
+	header( _header ),
+	base( _base )
 {
 	parser->insertFUNSequences( this );
+}
+
+void RDOFUNSequence::initResult()
+{
+	switch ( header->type->getType() ) {
+		case RDORTPResParam::pt_int: {
+			next->res_real = false;
+			if ( static_cast<RDORTPIntResParam*>(header->type)->diap->exist ) {
+				next->diap     = true;
+				next->diap_min = static_cast<RDORTPIntResParam*>(header->type)->diap->minVal;
+				next->diap_max = static_cast<RDORTPIntResParam*>(header->type)->diap->maxVal;
+			}
+			break;
+		}
+		case RDORTPResParam::pt_real: {
+			if ( static_cast<RDORTPRealResParam*>(header->type)->diap->exist ) {
+				next->diap     = true;
+				next->diap_min = static_cast<RDORTPRealResParam*>(header->type)->diap->minVal;
+				next->diap_max = static_cast<RDORTPRealResParam*>(header->type)->diap->maxVal;
+			}
+			break;
+		}
+	}
 }
 
 rdoRuntime::RDOCalc *RDOFUNArithm::createCalc(const RDORTPResParam *const forType)
