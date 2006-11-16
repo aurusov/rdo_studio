@@ -761,7 +761,7 @@ InputPath=.\rdorss.y
 InputPath=.\rdorss.y
 
 "rdogramrss.cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	..\rdo_system\bison.exe -prss --skeleton=..\rdo_system\bison.simple -ordogramrss.cpp $(InputPath)
+	..\rdo_system\bison.exe -v -prss --skeleton=..\rdo_system\bison.simple -ordogramrss.cpp $(InputPath)
 
 # End Custom Build
 

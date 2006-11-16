@@ -183,7 +183,7 @@ fun_const_body:	/* empty */
 					parser->error( "Ожидается описание константы" );
 				};
 
-fun_const_param_desc:	IDENTIF_COLON fun_const_param_type {
+fun_const_param_desc:	IDENTIF_COLON fun_param_type {
 							std::string *name = (std::string *)$1;
 							RDORTPResParam *parType = (RDORTPResParam *)$2;
 							RDORTPParamDesc *param = new RDORTPParamDesc(name, parType);
@@ -203,147 +203,100 @@ fun_const_param_desc:	IDENTIF_COLON fun_const_param_type {
 							parser->error( "Неверный тип константы" );
 						};
 
-fun_const_enum_default_val:	'=' IDENTIF {
-						std::string *val = (std::string *)$2;
-						RDORTPEnumDefVal* dv = new RDORTPEnumDefVal(val);
-						$$ = (int)dv;
-					}
-					| '=' {
-						parser->lexer_loc_set( &(@1) );
-						parser->error( "Не указано значение по-умолчанию перечислимого типа" );
-					}
-					| '=' error {
-						parser->lexer_loc_set( &(@2) );
-						parser->error( "Неверное значение по-умолчанию перечислимого типа" );
-					};
-
-fun_const_int_default_val:	'=' INT_CONST	{
-						RDORTPIntDefVal *dv = new RDORTPIntDefVal($2);
-						$$ = (int)dv;
-					}
-					| '=' REAL_CONST {
-						// Целое число инициализируется вещественным: %f
-						parser->lexer_loc_set( &(@2) );
-						parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_DEFVAULT_INT_AS_REAL, *(double*)$2 );
-					}
-					| '=' {
-						parser->lexer_loc_set( &(@1) );
-						parser->error( "Не указано значение по-умолчанию целого типа" );
-					}
-					| '=' error {
-						parser->lexer_loc_set( &(@2) );
-						parser->error( "Неверное значение по-умолчанию целого типа" );
-					};
-
-fun_const_real_default_val:	'=' REAL_CONST {
-						$$ = (int)(new RDORTPRealDefVal(*((double *)$2)));
-					}
-					| '=' INT_CONST {
-						$$ = (int)(new RDORTPRealDefVal($2));
-					}
-					| '=' {
-						parser->lexer_loc_set( &(@1) );
-						parser->error( "Не указано значение по-умолчанию вещественного типа" );
-					}
-					| '=' error {
-						parser->lexer_loc_set( &(@2) );
-						parser->error( "Неверное значение по-умолчанию вещественного типа" );
-					};
-
-fun_const_param_type: integer fun_const_int_diap fun_const_int_default_val {
-						RDORTPIntDiap *diap = (RDORTPIntDiap *)$2;
-						RDORTPIntDefVal *dv = (RDORTPIntDefVal *)$3;
-						parser->lexer_loc_backup();
-						parser->lexer_loc_set( &(@3) );
-						RDORTPIntResParam *rp = new RDORTPIntResParam(diap, dv);
-						parser->lexer_loc_restore();
-						$$ = (int)rp;
-					}
-					| integer fun_const_int_diap {
-						RDORTPIntDiap *diap = (RDORTPIntDiap *)$2;
-						RDORTPIntDefVal *dv = new RDORTPIntDefVal();
-						RDORTPIntResParam *rp = new RDORTPIntResParam(diap, dv);
-						$$ = (int)rp;
-					}
-					| real fun_const_real_diap fun_const_real_default_val {
-						RDORTPRealDiap *diap = (RDORTPRealDiap *)$2;
-						RDORTPRealDefVal *dv = (RDORTPRealDefVal *)$3;
-						parser->lexer_loc_backup();
-						parser->lexer_loc_set( &(@3) );
-						RDORTPRealResParam *rp = new RDORTPRealResParam(diap, dv);
-						parser->lexer_loc_restore();
-						$$ = (int)rp;
-					}
-					| real fun_const_real_diap {
-						RDORTPRealDiap *diap = (RDORTPRealDiap *)$2;
-						RDORTPRealDefVal *dv = new RDORTPRealDefVal();
-						RDORTPRealResParam *rp = new RDORTPRealResParam(diap, dv);
-						$$ = (int)rp;
-					}
-					| fun_const_enum fun_const_enum_default_val {
-						reinterpret_cast<RDOLexerFUN*>(lexer)->enum_param_cnt = 0;
-						RDORTPEnum *enu = (RDORTPEnum *)$1;
-						RDORTPEnumDefVal *dv = (RDORTPEnumDefVal *)$2;
-						enu->findValue(dv->value);	 // if no value - Syntax exception will be thrown
-						RDORTPEnumResParam *rp = new RDORTPEnumResParam(enu, dv);
-						$$ = (int)rp;
-					}
-					| fun_const_enum {
-						reinterpret_cast<RDOLexerFUN*>(lexer)->enum_param_cnt = 0;
-						RDORTPEnum *enu = (RDORTPEnum *)$1;
-						RDORTPEnumDefVal *dv = new RDORTPEnumDefVal();
-						RDORTPEnumResParam *rp = new RDORTPEnumResParam(enu, dv);
-						$$ = (int)rp;
-					}
-					| fun_const_such_as {
-						RDORTPParamDesc *desc = (RDORTPParamDesc *)$1;
+fun_param_type: integer fun_int_diap fun_int_default_val {
+					RDORTPIntDiap *diap = (RDORTPIntDiap *)$2;
+					RDORTPIntDefVal *dv = (RDORTPIntDefVal *)$3;
+					parser->lexer_loc_backup();
+					parser->lexer_loc_set( &(@3) );
+					RDORTPIntResParam *rp = new RDORTPIntResParam(diap, dv);
+					parser->lexer_loc_restore();
+					$$ = (int)rp;
+				}
+				| integer fun_int_diap {
+					RDORTPIntDiap *diap = (RDORTPIntDiap *)$2;
+					RDORTPIntDefVal *dv = new RDORTPIntDefVal();
+					RDORTPIntResParam *rp = new RDORTPIntResParam(diap, dv);
+					$$ = (int)rp;
+				}
+				| real fun_real_diap fun_real_default_val {
+					RDORTPRealDiap *diap = (RDORTPRealDiap *)$2;
+					RDORTPRealDefVal *dv = (RDORTPRealDefVal *)$3;
+					parser->lexer_loc_backup();
+					parser->lexer_loc_set( &(@3) );
+					RDORTPRealResParam *rp = new RDORTPRealResParam(diap, dv);
+					parser->lexer_loc_restore();
+					$$ = (int)rp;
+				}
+				| real fun_real_diap {
+					RDORTPRealDiap *diap = (RDORTPRealDiap *)$2;
+					RDORTPRealDefVal *dv = new RDORTPRealDefVal();
+					RDORTPRealResParam *rp = new RDORTPRealResParam(diap, dv);
+					$$ = (int)rp;
+				}
+				| fun_enum fun_enum_default_val {
+					reinterpret_cast<RDOLexerFUN*>(lexer)->enum_param_cnt = 0;
+					RDORTPEnum *enu = (RDORTPEnum *)$1;
+					RDORTPEnumDefVal *dv = (RDORTPEnumDefVal *)$2;
+					enu->findValue(dv->value);	 // if no value - Syntax exception will be thrown
+					RDORTPEnumResParam *rp = new RDORTPEnumResParam(enu, dv);
+					$$ = (int)rp;
+				}
+				| fun_enum {
+					reinterpret_cast<RDOLexerFUN*>(lexer)->enum_param_cnt = 0;
+					RDORTPEnum *enu = (RDORTPEnum *)$1;
+					RDORTPEnumDefVal *dv = new RDORTPEnumDefVal();
+					RDORTPEnumResParam *rp = new RDORTPEnumResParam(enu, dv);
+					$$ = (int)rp;
+				}
+				| fun_such_as {
+					RDORTPParamDesc *desc = (RDORTPParamDesc *)$1;
+					$$ = (int)desc->getType()->constructSuchAs();
+				}
+				| fun_such_as fun_int_default_val {
+					RDORTPParamDesc *desc = (RDORTPParamDesc *)$1;
+					RDORTPIntDefVal *dv = (RDORTPIntDefVal *)$2;
+					$$ = (int)desc->getType()->constructSuchAs((int)dv->val);
+				}
+				| fun_such_as	fun_real_default_val {
+					RDORTPParamDesc *desc = (RDORTPParamDesc *)$1;
+					RDORTPRealDefVal *dv = (RDORTPRealDefVal *)$2;
+					if(!dv->exist)
 						$$ = (int)desc->getType()->constructSuchAs();
-					}
-					| fun_const_such_as fun_const_int_default_val {
-						RDORTPParamDesc *desc = (RDORTPParamDesc *)$1;
-						RDORTPIntDefVal *dv = (RDORTPIntDefVal *)$2;
-						$$ = (int)desc->getType()->constructSuchAs((int)dv->val);
-					}
-					| fun_const_such_as	fun_const_real_default_val {
-						RDORTPParamDesc *desc = (RDORTPParamDesc *)$1;
-						RDORTPRealDefVal *dv = (RDORTPRealDefVal *)$2;
-						if(!dv->exist)
-							$$ = (int)desc->getType()->constructSuchAs();
-						else
-							$$ = (int)desc->getType()->constructSuchAs((double *)&(dv->val));
-					}
-					| fun_const_such_as fun_const_enum_default_val {
-						RDORTPParamDesc *desc = (RDORTPParamDesc *)$1;
-						RDORTPEnumDefVal *dv = (RDORTPEnumDefVal *)$2;
-						if ( !dv->exist ) {
-							$$ = (int)desc->getType()->constructSuchAs();
-						} else {
-							parser->lexer_loc_backup();
-							parser->lexer_loc_set( &(@2) );
-							$$ = (int)desc->getType()->constructSuchAs((std::string *)dv->value);
-							parser->lexer_loc_restore();
-						}
-					}
-					| fun_const_such_as '=' error {
-						parser->error( "Ожидается зачение по-умолчанию" );
-					}
-					| fun_const_such_as error {
-						parser->error( "Ожидается окончание описания ссылки, например, зачение по-умолчанию" );
-					}
-					| integer error {
+					else
+						$$ = (int)desc->getType()->constructSuchAs((double *)&(dv->val));
+				}
+				| fun_such_as fun_enum_default_val {
+					RDORTPParamDesc *desc = (RDORTPParamDesc *)$1;
+					RDORTPEnumDefVal *dv = (RDORTPEnumDefVal *)$2;
+					if ( !dv->exist ) {
+						$$ = (int)desc->getType()->constructSuchAs();
+					} else {
+						parser->lexer_loc_backup();
 						parser->lexer_loc_set( &(@2) );
-						parser->error( "Ошибка после ключевого слова integer. Возможно, не хватает значения по-умолчанию." );
+						$$ = (int)desc->getType()->constructSuchAs((std::string *)dv->value);
+						parser->lexer_loc_restore();
 					}
-					| real error {
-						parser->lexer_loc_set( &(@2) );
-						parser->error( "Ошибка после ключевого слова real. Возможно, не хватает значения по-умолчанию." );
-					}
-					| fun_const_enum error {
-						parser->lexer_loc_set( &(@2) );
-						parser->error( "Ошибка после перечислимого типа. Возможно, не хватает значения по-умолчанию." );
-					};
+				}
+				| fun_such_as '=' error {
+					parser->error( "Ожидается зачение по-умолчанию" );
+				}
+				| fun_such_as error {
+					parser->error( "Ожидается окончание описания ссылки, например, зачение по-умолчанию" );
+				}
+				| integer error {
+					parser->lexer_loc_set( &(@2) );
+					parser->error( "Ошибка после ключевого слова integer. Возможно, не хватает значения по-умолчанию." );
+				}
+				| real error {
+					parser->lexer_loc_set( &(@2) );
+					parser->error( "Ошибка после ключевого слова real. Возможно, не хватает значения по-умолчанию." );
+				}
+				| fun_enum error {
+					parser->lexer_loc_set( &(@2) );
+					parser->error( "Ошибка после перечислимого типа. Возможно, не хватает значения по-умолчанию." );
+				};
 
-fun_const_int_diap:	/* empty */ {
+fun_int_diap:	/* empty */ {
 					RDORTPIntDiap *diap = new RDORTPIntDiap();
 					$$ = (int)diap;
 				}
@@ -377,7 +330,7 @@ fun_const_int_diap:	/* empty */ {
 //					parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_RANGE );
 				};
 
-fun_const_real_diap: /* empty */ {
+fun_real_diap: /* empty */ {
 					RDORTPRealDiap *diap = new RDORTPRealDiap();
 					$$ = (int)diap;
 				}
@@ -435,286 +388,181 @@ fun_const_real_diap: /* empty */ {
 //					parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_RANGE );
 				};
 
-fun_const_enum:	'(' fun_const_enum_list ')' {
-					$$ = $2;
-				}
-				| '(' fun_const_enum_list {
-					parser->lexer_loc_set( &(@2) );
-					parser->error( "Перечисление должно заканчиваться скобкой" );
-				};
-
-fun_const_enum_list:	IDENTIF {
-							RDORTPEnum *enu = new RDORTPEnum((std::string *)$1);
-							$$ = (int)enu;
-							reinterpret_cast<RDOLexerFUN*>(lexer)->enum_param_cnt = 1;
-						}
-						| fun_const_enum_list ',' IDENTIF {
-							if ( reinterpret_cast<RDOLexerFUN*>(lexer)->enum_param_cnt >= 1 ) {
-								parser->lexer_loc_backup();
-								parser->lexer_loc_set( &(@3) );
-								RDORTPEnum *enu = (RDORTPEnum *)$1;
-								enu->add((std::string *)$3);
-								parser->lexer_loc_restore();
-								$$ = (int)enu;
-							} else {
-								parser->error( "Ошибка в описании значений перечислимого типа" );
-							}
-						}
-						| fun_const_enum_list IDENTIF {
-							if ( reinterpret_cast<RDOLexerFUN*>(lexer)->enum_param_cnt >= 1 ) {
-								parser->error( rdo::format("Пропущена запятая перед: %s", ((std::string*)$2)->c_str()) );
-							} else {
-								parser->error( "Ошибка в описании значений перечислимого типа" );
-							}
-						}
-						| fun_const_enum_list error {
-							std::string str( reinterpret_cast<RDOLexer*>(lexer)->YYText() );
-							if ( str.empty() ) {
-								parser->lexer_loc_set( &(@1) );
-								parser->error( "Ошибка в описании значений перечислимого типа" );
-							} else {
-								parser->lexer_loc_set( &(@2) );
-								parser->error( rdo::format( "Неверное значение перечислимого типа: %s", str.c_str() ) );
-							}
-						}
-						| fun_const_enum_list ',' INT_CONST {
-							parser->lexer_loc_set( &(@3) );
-							parser->error( "Значение перечислимого типа не может начинаться с цифры" );
-						}
-						| fun_const_enum_list ',' REAL_CONST {
-							parser->lexer_loc_set( &(@3) );
-							parser->error( "Значение перечислимого типа не может начинаться с цифры" );
-						}
-						| INT_CONST {
-							parser->lexer_loc_set( &(@1) );
-							parser->error( "Значение перечислимого типа не может начинаться с цифры" );
-						}
-						| REAL_CONST {
-							parser->lexer_loc_set( &(@1) );
-							parser->error( "Значение перечислимого типа не может начинаться с цифры" );
-						}
-						| error {
-							parser->lexer_loc_set( &(@1) );
-							parser->error( "Ошибка в описании значений перечислимого типа" );
-						};
-
-fun_const_such_as:	such_as IDENTIF '.' IDENTIF {
-						std::string* type = (std::string *)$2;
-						std::string* param = (std::string *)$4;
-						const RDORTPResType *const rt = parser->findRTPResType( type );
-						if ( !rt ) {
-							parser->lexer_loc_set( &(@2) );
-							parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_SUCHAS_RES_TYPE, type->c_str() );
-						}
-						const RDORTPParamDesc *const rp = rt->findRTPParam( param );
-						if ( !rp ) {
-							parser->lexer_loc_set( &(@4) );
-							parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_SUCHAS_PARAM, type->c_str(), param->c_str() );
-						}
-						$$ = (int)rp;
-					}
-					| such_as IDENTIF {
-						std::string *constName = (std::string *)$2;
-						const RDOFUNConstant *const cons = parser->findFUNConst(constName);
-						if ( !cons ) {
-							parser->lexer_loc_set( &(@2) );
-							parser->error( rdo::format("Ссылка на несужествующую константу: %s", constName->c_str()) );
-						}
-						$$ = (int)(cons->descr);
-					}
-					| such_as IDENTIF '.' {
-						std::string* type = (std::string *)$2;
-						const RDORTPResType *const rt = parser->findRTPResType( type );
-						if ( !rt ) {
-							parser->lexer_loc_set( &(@2) );
-							parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_SUCHAS_RES_TYPE, type->c_str() );
-						} else {
-							parser->lexer_loc_set( &(@3) );
-							parser->error( "Не указан параметр" );
-						}
-					}
-					| such_as IDENTIF '.' error {
-						std::string* type = (std::string *)$2;
-						const RDORTPResType *const rt = parser->findRTPResType( type );
-						if ( !rt ) {
-							parser->lexer_loc_set( &(@2) );
-							parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_SUCHAS_RES_TYPE, type->c_str() );
-						} else {
-							parser->lexer_loc_set( &(@4) );
-							parser->error( "Ошибка при указании параметра" );
-						}
-					}
-					| such_as IDENTIF error {
-						std::string* type = (std::string *)$2;
-						const RDORTPResType *const rt = parser->findRTPResType( type );
-						if ( !rt ) {
-							parser->lexer_loc_set( &(@2) );
-							parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_SUCHAS_RES_TYPE, type->c_str() );
-						} else {
-							parser->lexer_loc_set( &(@2) );
-							parser->error( "После имени типа должен быть указан параметр через точку" );
-						}
-					}
-					| such_as error {
-						if ( @1.last_line == @2.first_line ) {
-							parser->lexer_loc_set( @2.first_line, @2.first_column );
-						} else {
-							parser->lexer_loc_set( &(@1) );
-						}
-						parser->error( "После ключевого слова such_as необходимо указать тип и парамтер ресурса для ссылки" );
-					};
-
-fun_func_seq:	/* empty */
-			| fun_func_seq fun_func_descr
-			| fun_func_seq fun_seq_descr;
-
-fun_func_descr:	fun_func_header fun_func_footer;
-
-fun_func_header:	Function_keyword IDENTIF_COLON fun_const_param_type	{
-						std::string* name = (std::string*)$2;
-						if ( parser->findFunction(name) ) {
-							parser->lexer_loc_set( &(@2) );
-							parser->error( rdo::format( "Функция уже существует: %s", name->c_str() ) );
-//							parser->error(("Second appearance of the same function: " + *(name)).c_str());
-						}
-						if ( parser->findSequence(name) ) {
-							parser->lexer_loc_set( &(@2) );
-							parser->error( rdo::format( "Существует последовательность с таким же именем: %s", name->c_str() ) );
-						}
-						RDORTPResParam *retType = (RDORTPResParam *)$3;
-						RDOFUNFunction *fun = new RDOFUNFunction(name, retType);
-						$$ = (int)fun;
-					};
-
-fun_func_footer:	Type_keyword '=' algorithmic Parameters fun_func_params Body fun_func_algorithmic_body End {
-						RDOFUNFunction *currFunc = parser->getLastFUNFunction();
-						currFunc->createAlgorithmicCalc();
-					}
-					| Type_keyword '=' list_keyword Parameters fun_func_params Body fun_func_list_body End {
-						RDOFUNFunction *currFunc = parser->getLastFUNFunction();
-						currFunc->createListCalc();
-					}
-					| Type_keyword '=' table_keyword Parameters fun_func_params Body fun_func_list_body End {
-						RDOFUNFunction *currFunc = parser->getLastFUNFunction();
-						currFunc->createTableCalc();
-					}
-					| Type_keyword '=' algorithmic Parameters fun_func_params Body fun_func_algorithmic_body error {
-						parser->lexer_loc_set( @8.first_line, @8.first_column );
-						parser->error( "Ожидается ключевое слово $End" );
-					}
-					| Type_keyword '=' list_keyword Parameters fun_func_params Body fun_func_list_body error {
-						parser->lexer_loc_set( @8.first_line, @8.first_column );
-						parser->error( "Ожидается ключевое слово $End" );
-					}
-					| Type_keyword '=' table_keyword Parameters fun_func_params Body fun_func_list_body error {
-						parser->lexer_loc_set( @8.first_line, @8.first_column );
-						parser->error( "Ожидается ключевое слово $End" );
-					}
-					| Type_keyword '=' algorithmic Parameters error {
-						parser->lexer_loc_set( @5.first_line, @5.first_column );
-						parser->error( "Ожидается список параметров" );
-					}
-					| Type_keyword '=' list_keyword Parameters error {
-						parser->lexer_loc_set( @5.first_line, @5.first_column );
-						parser->error( "Ожидается список параметров" );
-					}
-					| Type_keyword '=' table_keyword Parameters error {
-						parser->lexer_loc_set( @5.first_line, @5.first_column );
-						parser->error( "Ожидается список параметров" );
-					}
-					| Type_keyword '=' algorithmic error {
-						parser->lexer_loc_set( @4.first_line, @4.first_column );
-						parser->error( "Ожидается ключевое слово $Parameters" );
-					}
-					| Type_keyword '=' list_keyword error {
-						parser->lexer_loc_set( @4.first_line, @4.first_column );
-						parser->error( "Ожидается ключевое слово $Parameters" );
-					}
-					| Type_keyword '=' table_keyword error {
-						parser->lexer_loc_set( @4.first_line, @4.first_column );
-						parser->error( "Ожидается ключевое слово $Parameters" );
-					}
-					| Type_keyword '=' error {
-						parser->lexer_loc_set( &(@3) );
-						parser->error( "Неизвестный тип функции" );
-					}
-					| Type_keyword error {
-						parser->lexer_loc_set( &(@1) );
-						parser->error( "Ожидается тип функции" );
-					};
-
-fun_func_params:	/* empty */
-			|	fun_func_params IDENTIF_COLON fun_const_param_type	{
-				std::string*         name  = (std::string *)$2;
-				RDORTPResParam*      type  = (RDORTPResParam *)$3;
-				RDOFUNFunctionParam* param = new RDOFUNFunctionParam(name, type);
-				param->error_first_line = @2.first_line;
-				param->error_first_pos  = @2.first_column;
-				param->error_last_line  = @2.last_line;
-				param->error_last_pos   = @2.last_column;
-				parser->getLastFUNFunction()->add(param);	// the function must check uniquness of parameters names
-				$$ = (int)param;
+fun_enum:	'(' fun_enum_item ')' {
+				$$ = $2;
+			}
+			| '(' fun_enum_item {
+				parser->lexer_loc_set( &(@2) );
+				parser->error( "Перечисление должно заканчиваться скобкой" );
 			};
 
-fun_func_list_body:	/* empty */
-			| fun_func_list_body fun_std_value;
-
-fun_std_value:	IDENTIF {
-					RDOFUNFunctionListElementIdentif *value = new RDOFUNFunctionListElementIdentif((std::string *)$1);
-					parser->getLastFUNFunction()->add(value);
-					value->error_first_line = @1.first_line;
-					value->error_first_pos  = @1.first_column;
-					value->error_last_line  = @1.last_line;
-					value->error_last_pos   = @1.last_column;
-					$$ = (int)value;
+fun_enum_item:	IDENTIF {
+					RDORTPEnum *enu = new RDORTPEnum((std::string *)$1);
+					$$ = (int)enu;
+					reinterpret_cast<RDOLexerFUN*>(lexer)->enum_param_cnt = 1;
 				}
-				| REAL_CONST {
-					RDOFUNFunctionListElementReal *value = new RDOFUNFunctionListElementReal((double *)$1);
-					parser->getLastFUNFunction()->add(value);
-					value->error_first_line = @1.first_line;
-					value->error_first_pos  = @1.first_column;
-					value->error_last_line  = @1.last_line;
-					value->error_last_pos   = @1.last_column;
-					$$ = (int)value;
+				| fun_enum_item ',' IDENTIF {
+					if ( reinterpret_cast<RDOLexerFUN*>(lexer)->enum_param_cnt >= 1 ) {
+						parser->lexer_loc_backup();
+						parser->lexer_loc_set( &(@3) );
+						RDORTPEnum *enu = (RDORTPEnum *)$1;
+						enu->add((std::string *)$3);
+						parser->lexer_loc_restore();
+						$$ = (int)enu;
+					} else {
+						parser->error( "Ошибка в описании значений перечислимого типа" );
+					}
+				}
+				| fun_enum_item IDENTIF {
+					if ( reinterpret_cast<RDOLexerFUN*>(lexer)->enum_param_cnt >= 1 ) {
+						parser->error( rdo::format("Пропущена запятая перед: %s", ((std::string*)$2)->c_str()) );
+					} else {
+						parser->error( "Ошибка в описании значений перечислимого типа" );
+					}
+				}
+				| fun_enum_item error {
+					std::string str( reinterpret_cast<RDOLexer*>(lexer)->YYText() );
+					if ( str.empty() ) {
+						parser->lexer_loc_set( &(@1) );
+						parser->error( "Ошибка в описании значений перечислимого типа" );
+					} else {
+						parser->lexer_loc_set( &(@2) );
+						parser->error( rdo::format( "Неверное значение перечислимого типа: %s", str.c_str() ) );
+					}
+				}
+				| fun_enum_item ',' INT_CONST {
+					parser->lexer_loc_set( &(@3) );
+					parser->error( "Значение перечислимого типа не может начинаться с цифры" );
+				}
+				| fun_enum_item ',' REAL_CONST {
+					parser->lexer_loc_set( &(@3) );
+					parser->error( "Значение перечислимого типа не может начинаться с цифры" );
 				}
 				| INT_CONST {
-					RDOFUNFunctionListElementInt *value = new RDOFUNFunctionListElementInt((int)$1);
-					parser->getLastFUNFunction()->add(value);
-					value->error_first_line = @1.first_line;
-					value->error_first_pos  = @1.first_column;
-					value->error_last_line  = @1.last_line;
-					value->error_last_pos   = @1.last_column;
-					$$ = (int)value;
+					parser->lexer_loc_set( &(@1) );
+					parser->error( "Значение перечислимого типа не может начинаться с цифры" );
 				}
-				| '=' {
-					RDOFUNFunctionListElementEq *value = new RDOFUNFunctionListElementEq();
-					parser->getLastFUNFunction()->add(value);
-					value->error_first_line = @1.first_line;
-					value->error_first_pos  = @1.first_column;
-					value->error_last_line  = @1.last_line;
-					value->error_last_pos   = @1.last_column;
-					$$ = (int)value;
+				| REAL_CONST {
+					parser->lexer_loc_set( &(@1) );
+					parser->error( "Значение перечислимого типа не может начинаться с цифры" );
+				}
+				| error {
+					parser->lexer_loc_set( &(@1) );
+					parser->error( "Ошибка в описании значений перечислимого типа" );
 				};
 
-fun_func_algorithmic_body:	/* empty */
-			| fun_func_algorithmic_body fun_func_algorithmic_calc_if {
-				parser->getLastFUNFunction()->add((RDOFUNCalculateIf*)$2);
-			};
+fun_such_as:	such_as IDENTIF '.' IDENTIF {
+					std::string* type = (std::string *)$2;
+					std::string* param = (std::string *)$4;
+					const RDORTPResType *const rt = parser->findRTPResType( type );
+					if ( !rt ) {
+						parser->lexer_loc_set( &(@2) );
+						parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_SUCHAS_RES_TYPE, type->c_str() );
+					}
+					const RDORTPParamDesc *const rp = rt->findRTPParam( param );
+					if ( !rp ) {
+						parser->lexer_loc_set( &(@4) );
+						parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_SUCHAS_PARAM, type->c_str(), param->c_str() );
+					}
+					$$ = (int)rp;
+				}
+				| such_as IDENTIF {
+					std::string *constName = (std::string *)$2;
+					const RDOFUNConstant *const cons = parser->findFUNConst(constName);
+					if ( !cons ) {
+						parser->lexer_loc_set( &(@2) );
+						parser->error( rdo::format("Ссылка на несужествующую константу: %s", constName->c_str()) );
+					}
+					$$ = (int)(cons->descr);
+				}
+				| such_as IDENTIF '.' {
+					std::string* type = (std::string *)$2;
+					const RDORTPResType *const rt = parser->findRTPResType( type );
+					if ( !rt ) {
+						parser->lexer_loc_set( &(@2) );
+						parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_SUCHAS_RES_TYPE, type->c_str() );
+					} else {
+						parser->lexer_loc_set( &(@3) );
+						parser->error( "Не указан параметр" );
+					}
+				}
+				| such_as IDENTIF '.' error {
+					std::string* type = (std::string *)$2;
+					const RDORTPResType *const rt = parser->findRTPResType( type );
+					if ( !rt ) {
+						parser->lexer_loc_set( &(@2) );
+						parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_SUCHAS_RES_TYPE, type->c_str() );
+					} else {
+						parser->lexer_loc_set( &(@4) );
+						parser->error( "Ошибка при указании параметра" );
+					}
+				}
+				| such_as IDENTIF error {
+					std::string* type = (std::string *)$2;
+					const RDORTPResType *const rt = parser->findRTPResType( type );
+					if ( !rt ) {
+						parser->lexer_loc_set( &(@2) );
+						parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_SUCHAS_RES_TYPE, type->c_str() );
+					} else {
+						parser->lexer_loc_set( &(@2) );
+						parser->error( "После имени типа должен быть указан параметр через точку" );
+					}
+				}
+				| such_as error {
+					if ( @1.last_line == @2.first_line ) {
+						parser->lexer_loc_set( @2.first_line, @2.first_column );
+					} else {
+						parser->lexer_loc_set( &(@1) );
+					}
+					parser->error( "После ключевого слова such_as необходимо указать тип и парамтер ресурса для ссылки" );
+				};
 
-fun_func_algorithmic_calc_if:	Calculate_if fun_logic IDENTIF '=' fun_arithm {
-									parser->lexer_loc_backup();
-									parser->lexer_loc_set( &(@3) );
-									$$ = (int)(new RDOFUNCalculateIf((RDOFUNLogic *)$2, (std::string *)$3, (RDOFUNArithm *)$5));
-									parser->lexer_loc_restore();
-								}
-								| Calculate_if fun_logic error {
-									parser->lexer_loc_set( &(@2) );
-									parser->error( "Ожидается <имя_функции> = <результат_функции>" );
-								}
-								| error {
-									parser->lexer_loc_set( &(@1) );
-									parser->error( "Ожидается ключевое слово Calculate_if" );
-								};
+fun_int_default_val:	'=' INT_CONST {
+						RDORTPIntDefVal *dv = new RDORTPIntDefVal($2);
+						$$ = (int)dv;
+					}
+					| '=' REAL_CONST {
+						// Целое число инициализируется вещественным: %f
+						parser->lexer_loc_set( &(@2) );
+						parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_DEFVAULT_INT_AS_REAL, *(double*)$2 );
+					}
+					| '=' {
+						parser->lexer_loc_set( &(@1) );
+						parser->error( "Не указано значение по-умолчанию целого типа" );
+					}
+					| '=' error {
+						parser->lexer_loc_set( &(@2) );
+						parser->error( "Неверное значение по-умолчанию целого типа" );
+					};
+
+fun_real_default_val:	'=' REAL_CONST {
+						$$ = (int)(new RDORTPRealDefVal(*((double *)$2)));
+					}
+					| '=' INT_CONST {
+						$$ = (int)(new RDORTPRealDefVal($2));
+					}
+					| '=' {
+						parser->lexer_loc_set( &(@1) );
+						parser->error( "Не указано значение по-умолчанию вещественного типа" );
+					}
+					| '=' error {
+						parser->lexer_loc_set( &(@2) );
+						parser->error( "Неверное значение по-умолчанию вещественного типа" );
+					};
+
+fun_enum_default_val:	'=' IDENTIF {
+						std::string *val = (std::string *)$2;
+						RDORTPEnumDefVal* dv = new RDORTPEnumDefVal(val);
+						$$ = (int)dv;
+					}
+					| '=' {
+						parser->lexer_loc_set( &(@1) );
+						parser->error( "Не указано значение по-умолчанию перечислимого типа" );
+					}
+					| '=' error {
+						parser->lexer_loc_set( &(@2) );
+						parser->error( "Неверное значение по-умолчанию перечислимого типа" );
+					};
 
 fun_logic: fun_arithm '=' fun_arithm			{ $$ = (int)(*(RDOFUNArithm *)$1 == *(RDOFUNArithm *)$3); }
 			| fun_arithm neq fun_arithm			{ $$ = (int)(*(RDOFUNArithm *)$1 != *(RDOFUNArithm *)$3); }
@@ -792,13 +640,165 @@ fun_group:	fun_group_header fun_logic ')' {
 				$$ = (int)(((RDOFUNGroup *)$1)->createFunLogin());
 			};
 
+fun_func_seq:	/* empty */
+			| fun_func_seq fun_func_descr
+			| fun_func_seq fun_seq_descr;
+
+fun_func_descr:	fun_func_header fun_func_footer;
+
+fun_func_header:	Function_keyword IDENTIF_COLON fun_param_type	{
+						std::string* name = (std::string*)$2;
+						if ( parser->findFunction(name) ) {
+							parser->lexer_loc_set( &(@2) );
+							parser->error( rdo::format( "Функция уже существует: %s", name->c_str() ) );
+//							parser->error(("Second appearance of the same function: " + *(name)).c_str());
+						}
+						if ( parser->findSequence(name) ) {
+							parser->lexer_loc_set( &(@2) );
+							parser->error( rdo::format( "Существует последовательность с таким же именем: %s", name->c_str() ) );
+						}
+						RDORTPResParam *retType = (RDORTPResParam *)$3;
+						RDOFUNFunction *fun = new RDOFUNFunction(name, retType);
+						$$ = (int)fun;
+					};
+
+fun_func_footer:	Type_keyword '=' algorithmic Parameters fun_func_params Body fun_func_algorithmic_body End {
+						RDOFUNFunction *currFunc = parser->getLastFUNFunction();
+						currFunc->createAlgorithmicCalc();
+					}
+					| Type_keyword '=' list_keyword Parameters fun_func_params Body fun_func_list_body End {
+						RDOFUNFunction *currFunc = parser->getLastFUNFunction();
+						currFunc->createListCalc();
+					}
+					| Type_keyword '=' table_keyword Parameters fun_func_params Body fun_func_list_body End {
+						RDOFUNFunction *currFunc = parser->getLastFUNFunction();
+						currFunc->createTableCalc();
+					}
+					| Type_keyword '=' algorithmic Parameters fun_func_params Body fun_func_algorithmic_body error {
+						parser->lexer_loc_set( @8.first_line, @8.first_column );
+						parser->error( "Ожидается ключевое слово $End" );
+					}
+					| Type_keyword '=' list_keyword Parameters fun_func_params Body fun_func_list_body error {
+						parser->lexer_loc_set( @8.first_line, @8.first_column );
+						parser->error( "Ожидается ключевое слово $End" );
+					}
+					| Type_keyword '=' table_keyword Parameters fun_func_params Body fun_func_list_body error {
+						parser->lexer_loc_set( @8.first_line, @8.first_column );
+						parser->error( "Ожидается ключевое слово $End" );
+					}
+					| Type_keyword '=' algorithmic Parameters error {
+						parser->lexer_loc_set( @5.first_line, @5.first_column );
+						parser->error( "Ожидается список параметров" );
+					}
+					| Type_keyword '=' list_keyword Parameters error {
+						parser->lexer_loc_set( @5.first_line, @5.first_column );
+						parser->error( "Ожидается список параметров" );
+					}
+					| Type_keyword '=' table_keyword Parameters error {
+						parser->lexer_loc_set( @5.first_line, @5.first_column );
+						parser->error( "Ожидается список параметров" );
+					}
+					| Type_keyword '=' algorithmic error {
+						parser->lexer_loc_set( @4.first_line, @4.first_column );
+						parser->error( "Ожидается ключевое слово $Parameters" );
+					}
+					| Type_keyword '=' list_keyword error {
+						parser->lexer_loc_set( @4.first_line, @4.first_column );
+						parser->error( "Ожидается ключевое слово $Parameters" );
+					}
+					| Type_keyword '=' table_keyword error {
+						parser->lexer_loc_set( @4.first_line, @4.first_column );
+						parser->error( "Ожидается ключевое слово $Parameters" );
+					}
+					| Type_keyword '=' error {
+						parser->lexer_loc_set( &(@3) );
+						parser->error( "Неизвестный тип функции" );
+					}
+					| Type_keyword error {
+						parser->lexer_loc_set( &(@1) );
+						parser->error( "Ожидается тип функции" );
+					};
+
+fun_func_params:	/* empty */
+			|	fun_func_params IDENTIF_COLON fun_param_type	{
+				std::string*         name  = (std::string *)$2;
+				RDORTPResParam*      type  = (RDORTPResParam *)$3;
+				RDOFUNFunctionParam* param = new RDOFUNFunctionParam(name, type);
+				param->error_first_line = @2.first_line;
+				param->error_first_pos  = @2.first_column;
+				param->error_last_line  = @2.last_line;
+				param->error_last_pos   = @2.last_column;
+				parser->getLastFUNFunction()->add(param);	// the function must check uniquness of parameters names
+				$$ = (int)param;
+			};
+
+fun_func_list_body:	/* empty */
+			| fun_func_list_body fun_std_value;
+
+fun_std_value:	IDENTIF {
+					RDOFUNFunctionListElementIdentif *value = new RDOFUNFunctionListElementIdentif((std::string *)$1);
+					parser->getLastFUNFunction()->add(value);
+					value->error_first_line = @1.first_line;
+					value->error_first_pos  = @1.first_column;
+					value->error_last_line  = @1.last_line;
+					value->error_last_pos   = @1.last_column;
+					$$ = (int)value;
+				}
+				| REAL_CONST {
+					RDOFUNFunctionListElementReal *value = new RDOFUNFunctionListElementReal((double *)$1);
+					parser->getLastFUNFunction()->add(value);
+					value->error_first_line = @1.first_line;
+					value->error_first_pos  = @1.first_column;
+					value->error_last_line  = @1.last_line;
+					value->error_last_pos   = @1.last_column;
+					$$ = (int)value;
+				}
+				| INT_CONST {
+					RDOFUNFunctionListElementInt *value = new RDOFUNFunctionListElementInt((int)$1);
+					parser->getLastFUNFunction()->add(value);
+					value->error_first_line = @1.first_line;
+					value->error_first_pos  = @1.first_column;
+					value->error_last_line  = @1.last_line;
+					value->error_last_pos   = @1.last_column;
+					$$ = (int)value;
+				}
+				| '=' {
+					RDOFUNFunctionListElementEq *value = new RDOFUNFunctionListElementEq();
+					parser->getLastFUNFunction()->add(value);
+					value->error_first_line = @1.first_line;
+					value->error_first_pos  = @1.first_column;
+					value->error_last_line  = @1.last_line;
+					value->error_last_pos   = @1.last_column;
+					$$ = (int)value;
+				};
+
+fun_func_algorithmic_body:	/* empty */
+			| fun_func_algorithmic_body fun_func_algorithmic_calc_if {
+				parser->getLastFUNFunction()->add((RDOFUNCalculateIf*)$2);
+			};
+
+fun_func_algorithmic_calc_if:	Calculate_if fun_logic IDENTIF '=' fun_arithm {
+									parser->lexer_loc_backup();
+									parser->lexer_loc_set( &(@3) );
+									$$ = (int)(new RDOFUNCalculateIf((RDOFUNLogic *)$2, (std::string *)$3, (RDOFUNArithm *)$5));
+									parser->lexer_loc_restore();
+								}
+								| Calculate_if fun_logic error {
+									parser->lexer_loc_set( &(@2) );
+									parser->error( "Ожидается <имя_функции> = <результат_функции>" );
+								}
+								| error {
+									parser->lexer_loc_set( &(@1) );
+									parser->error( "Ожидается ключевое слово Calculate_if" );
+								};
+
 fun_seq_descr:	fun_seq_uniform
 				| fun_seq_exponential
 				| fun_seq_normal
 				| fun_seq_by_hist
 				| fun_seq_enumerative;
 
-fun_seq_header:	Sequence IDENTIF_COLON fun_const_param_type Type_keyword '=' {
+fun_seq_header:	Sequence IDENTIF_COLON fun_param_type Type_keyword '=' {
 					std::string* name = (std::string*)$2;
 					if ( parser->findSequence(name) ) {
 						parser->lexer_loc_set( &(@2) );
@@ -810,15 +810,15 @@ fun_seq_header:	Sequence IDENTIF_COLON fun_const_param_type Type_keyword '=' {
 					}
 					$$ = (int)(new RDOFUNSequenceHeader( name, (RDORTPResParam *)$3) );
 				}
-				| Sequence IDENTIF_COLON fun_const_param_type Type_keyword '=' error {
+				| Sequence IDENTIF_COLON fun_param_type Type_keyword '=' error {
 					parser->lexer_loc_set( &(@5), &(@6) );
 					parser->error( "Ожидается тип последовательности" );
 				}
-				| Sequence IDENTIF_COLON fun_const_param_type Type_keyword error {
+				| Sequence IDENTIF_COLON fun_param_type Type_keyword error {
 					parser->lexer_loc_set( &(@4), &(@5) );
 					parser->error( "Ожидается тип последовательности в формате '=' <тип>" );
 				}
-				| Sequence IDENTIF_COLON fun_const_param_type error {
+				| Sequence IDENTIF_COLON fun_param_type error {
 					parser->lexer_loc_set( @4.first_line, @4.first_column );
 					parser->error( "Ожидается ключевое слово $Type" );
 				}

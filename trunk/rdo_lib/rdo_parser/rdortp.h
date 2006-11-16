@@ -17,10 +17,10 @@ class RDORTPIntDiap: public RDODeletable
 {
 public:
 	bool exist;
-	int minVal, maxVal;
-	RDORTPIntDiap(int _minVal, int _maxVal): minVal(_minVal), maxVal(_maxVal), exist(true) {}
-	RDORTPIntDiap(): exist(false) {}
-	void check(const RDORTPIntDefVal *dv) const;
+	int  minVal, maxVal;
+	RDORTPIntDiap( int _minVal, int _maxVal );
+	RDORTPIntDiap(): exist( false ) {};
+	void check( const RDORTPIntDefVal* dv ) const;
 };
 
 class RDORTPDefVal: public RDODeletable
@@ -81,11 +81,11 @@ class RDORTPRealDefVal;
 class RDORTPRealDiap: public RDODeletable
 {
 public:
-	bool exist;
+	bool   exist;
 	double minVal, maxVal;
-	RDORTPRealDiap(double _minVal, double _maxVal): minVal(_minVal), maxVal(_maxVal), exist(true) {}
-	RDORTPRealDiap(): exist(false) {}
-	void check(const RDORTPRealDefVal *dv) const;
+	RDORTPRealDiap( double _minVal, double _maxVal );
+	RDORTPRealDiap(): exist( false ) {}
+	void check( const RDORTPRealDefVal* dv ) const;
 };
 
 class RDORTPRealDefVal: public RDORTPDefVal

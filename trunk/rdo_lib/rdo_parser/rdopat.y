@@ -145,6 +145,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 #include "rdoparser.h"
+#include "rdoparser_rdo.h"
 #include "rdopat.h"
 #include "rdortp.h"
 #include "rdofun.h"
@@ -162,22 +163,59 @@ namespace rdoParse
 
 pat_list:	
 			| pat_list pat_pattern;
+			| error {
+				parser->lexer_loc_set( &(@1) );
+				parser->error( "Ожидается ключевое слово $Pattern" );
+			};
 
+pat_header:	  Pattern IDENTIF_COLON operation_kw    pat_trace { $$ = (int)(new RDOPATPatternOperation( (std::string *)$2, $4 != 0 )); }
+			| Pattern IDENTIF_COLON irregular_event pat_trace { $$ = (int)(new RDOPATPatternEvent(     (std::string *)$2, $4 != 0 )); }
+			| Pattern IDENTIF_COLON rule_keyword    pat_trace { $$ = (int)(new RDOPATPatternRule(      (std::string *)$2, $4 != 0 )); }
+			| Pattern IDENTIF_COLON keyboard        pat_trace { $$ = (int)(new RDOPATPatternKeyboard(  (std::string *)$2, $4 != 0 )); };
+			| Pattern error {
+				parser->lexer_loc_set( &(@2) );
+				parser->error( "Ожидается имя образца" );
+			}
+			| Pattern IDENTIF_COLON error {
+				parser->lexer_loc_set( &(@2), &(@3) );
+				parser->error( "Ожидается тип образца" );
+			}
+			| Pattern IDENTIF_COLON irregular_event error {
+				parser->lexer_loc_set( &(@3), &(@4) );
+				parser->error( "Ожидается признак трассировки" );
+//				parser->error( "Ожидается признак трассировки, описание параметров или релевантных ресурсов образца" );
+			};
 
-pat_header:	Pattern IDENTIF_COLON operation_kw			pat_trace	{ $$ = (int)(new RDOPATPatternOperation( (std::string *)$2, $4 != 0 )); @$; }
-			|	Pattern IDENTIF_COLON irregular_event	pat_trace	{ $$ = (int)(new RDOPATPatternEvent( (std::string *)$2, $4 != 0 )); }
-			|	Pattern IDENTIF_COLON rule_keyword		pat_trace	{ $$ = (int)(new RDOPATPatternRule( (std::string *)$2, $4 != 0 )); }
-			|	Pattern IDENTIF_COLON keyboard			pat_trace	{ $$ = (int)(new RDOPATPatternKeyboard( (std::string *)$2, $4 != 0 )); };
-
-pat_trace:						{ $$ = 0; }
+pat_trace:	/* empty */		{ $$ = 0; }
 			| trace_keyword	{ $$ = 1; }
-			| no_trace			{ $$ = 0; };
+			| no_trace		{ $$ = 0; };
 
+pat_params_begin: pat_header Parameters { $$ = $1; };
 
-pat_params_begin:	pat_header Parameters	{ $$ = $1; };
-
-pat_params:	pat_params_begin IDENTIF_COLON pat_type	{ ((RDOPATPattern *)$1)->add(new RDOFUNFunctionParam((std::string *)$2, (RDORTPResParam *)$3)); $$ = $1; }
-			| pat_params IDENTIF_COLON pat_type				{ ((RDOPATPattern *)$1)->add(new RDOFUNFunctionParam((std::string *)$2, (RDORTPResParam *)$3)); $$ = $1; };	
+pat_params:	pat_params_begin IDENTIF_COLON fun_param_type {
+				((RDOPATPattern *)$1)->add(new RDOFUNFunctionParam((std::string *)$2, (RDORTPResParam *)$3));
+				$$ = $1;
+			}
+			| pat_params IDENTIF_COLON fun_param_type {
+				((RDOPATPattern *)$1)->add(new RDOFUNFunctionParam((std::string *)$2, (RDORTPResParam *)$3));
+				$$ = $1;
+			}
+			| pat_params_begin error {
+				parser->lexer_loc_set( &(@2) );
+				parser->error( "Ожидается имя параметра образца" );
+			}
+			| pat_params_begin IDENTIF_COLON error {
+				parser->lexer_loc_set( &(@2), &(@3) );
+				parser->error( "Ожидается тип параметра образца" );
+			}
+			| pat_params error {
+				parser->lexer_loc_set( &(@2) );
+				parser->error( "Ожидается имя параметра образца" );
+			}
+			| pat_params IDENTIF_COLON error {
+				parser->lexer_loc_set( &(@2), &(@3) );
+				parser->error( "Ожидается тип параметра образца" );
+			};
 
 pat_params_end:	pat_params Relevant_resources   { $$ = $1; }
 				| pat_header Relevant_resources { $$ = $1; };
@@ -200,14 +238,20 @@ pat_conv:	Keep				{ $$ = RDOPATPattern::CS_Keep;     }
 			| Erase				{ $$ = RDOPATPattern::CS_Erase;    }
 			| NonExist			{ $$ = RDOPATPattern::CS_NonExist; };
 
-pat_common_choice: pat_rel_res
-			| pat_rel_res first_keyword			{
-				parser->lexer_loc_set( &(@2) );
-				parser->error( "Перед $Body необходимо использовать 'with_max(1)' вместо 'first'" );
-//				((RDOPATPattern *)$1)->setCommonChoiceFirst(); $$ = $1;
-			}
-			| pat_rel_res with_min fun_arithm	{	((RDOPATPattern *)$1)->setCommonChoiceWithMin((RDOFUNArithm *)$3); $$ = $1; }
-			| pat_rel_res with_max fun_arithm	{	((RDOPATPattern *)$1)->setCommonChoiceWithMax((RDOFUNArithm *)$3); $$ = $1; };
+pat_common_choice:	pat_rel_res
+					| pat_rel_res first_keyword {
+						parser->lexer_loc_set( &(@2) );
+						parser->error( "Перед $Body необходимо использовать 'with_max(1)' вместо 'first'" );
+//						((RDOPATPattern *)$1)->setCommonChoiceFirst(); $$ = $1;
+					}
+					| pat_rel_res with_min fun_arithm {
+						((RDOPATPattern *)$1)->setCommonChoiceWithMin((RDOFUNArithm *)$3);
+						$$ = $1;
+					}
+					| pat_rel_res with_max fun_arithm {
+						((RDOPATPattern *)$1)->setCommonChoiceWithMax((RDOFUNArithm *)$3);
+						$$ = $1;
+					};
 
 pat_time:	pat_common_choice Body {
 				$$ = $1;
@@ -238,7 +282,10 @@ pat_body:	pat_time IDENTIF {
 				$$ = $1;
 			};
 
-pat_res_usage: pat_body	pat_choice pat_first	{ ((RDOPATPattern *)$1)->addRelResUsage((RDOPATChoice *)$2, (RDOPATSelectType *)$3); $$ = $1; };
+pat_res_usage:	pat_body pat_choice pat_first {
+					((RDOPATPattern *)$1)->addRelResUsage((RDOPATChoice *)$2, (RDOPATSelectType *)$3);
+					$$ = $1;
+				};
 
 pat_choice: /* empty */ {
 				parser->getLastPATPattern()->currRelRes->currentState = RDORelevantResource::choiceEmpty;
@@ -285,17 +332,30 @@ pat_choice_with_max: with_max {
 				parser->getLastPATPattern()->currRelRes->currentState = RDORelevantResource::choiceOrderWithMax;
 			};
 
-pat_convert:  pat_res_usage	{	((RDOPATPattern *)$1)->addRelResConvert(); $$ = $1; }
-			|	pat_res_usage convert_begin pat_trace pat_params_set	
-					{	((RDOPATPattern *)$1)->addRelResConvertBegin($3 != 0, (RDOPATParamsSet *)$4); $$ = $1; }
-			|	pat_res_usage convert_end		pat_trace pat_params_set
-					{	((RDOPATPattern *)$1)->addRelResConvertEnd($3 != 0, (RDOPATParamsSet *)$4); $$ = $1; }
-			|	pat_res_usage convert_begin	pat_trace pat_params_set convert_end pat_trace pat_params_set
-					{	((RDOPATPattern *)$1)->addRelResConvertBeginEnd($3 != 0, (RDOPATParamsSet *)$4, $6 != 0, (RDOPATParamsSet *)$7); $$ = $1; }
-			|	pat_res_usage convert_rule	pat_trace pat_params_set
-					{	((RDOPATPattern *)$1)->addRelResConvertRule($3 != 0, (RDOPATParamsSet *)$4); $$ = $1; }
-			|	pat_res_usage convert_event	pat_trace pat_params_set
-					{	((RDOPATPattern *)$1)->addRelResConvertEvent($3 != 0, (RDOPATParamsSet *)$4); $$ = $1; };
+pat_convert:	pat_res_usage {
+					((RDOPATPattern *)$1)->addRelResConvert();
+					$$ = $1;
+				}
+				| pat_res_usage convert_begin pat_trace pat_params_set {
+					((RDOPATPattern *)$1)->addRelResConvertBegin($3 != 0, (RDOPATParamsSet *)$4);
+					$$ = $1;
+				}
+				| pat_res_usage convert_end pat_trace pat_params_set {
+					((RDOPATPattern *)$1)->addRelResConvertEnd($3 != 0, (RDOPATParamsSet *)$4);
+					$$ = $1;
+				}
+				| pat_res_usage convert_begin pat_trace pat_params_set convert_end pat_trace pat_params_set {
+					((RDOPATPattern *)$1)->addRelResConvertBeginEnd($3 != 0, (RDOPATParamsSet *)$4, $6 != 0, (RDOPATParamsSet *)$7);
+					$$ = $1;
+				}
+				| pat_res_usage convert_rule pat_trace pat_params_set {
+					((RDOPATPattern *)$1)->addRelResConvertRule($3 != 0, (RDOPATParamsSet *)$4);
+					$$ = $1;
+				}
+				| pat_res_usage convert_event pat_trace pat_params_set {
+					((RDOPATPattern *)$1)->addRelResConvertEvent($3 != 0, (RDOPATParamsSet *)$4);
+					$$ = $1;
+				};
 
 convert_rule:	Convert_rule {
 				parser->getLastPATPattern()->currRelRes->currentState = RDORelevantResource::convertBegin;
@@ -317,146 +377,384 @@ pat_params_set:												{  $$ = (int) new RDOPATParamsSet(); }
 			|	pat_params_set IDENTIF_set fun_arithm	{	((RDOPATParamsSet *)$1)->addIdentif((std::string *)$2, (RDOFUNArithm *)$3); $$ = $1;}
 			|	pat_params_set IDENTIF_NoChange			{	((RDOPATParamsSet *)$1)->addIdentif((std::string *)$2); $$ = $1;};
 
-pat_pattern:	pat_convert		End {	((RDOPATPattern *)$1)->end(); $$ = $1;}
-			|		pat_time			End {	((RDOPATPattern *)$1)->end(); $$ = $1;};
+pat_pattern:	pat_convert	End { ((RDOPATPattern *)$1)->end(); $$ = $1; }
+				| pat_time	End { ((RDOPATPattern *)$1)->end(); $$ = $1; };
 
-pat_type: integer fun_const_int_diap fun_const_int_default_val  { 
-						RDORTPIntDiap *diap = (RDORTPIntDiap *)$2;
-						RDORTPIntDefVal *dv = (RDORTPIntDefVal *)$3;
-						RDORTPIntResParam *rp = new RDORTPIntResParam(diap, dv);
-						$$ = (int)rp;
-					}
-    | integer fun_const_int_diap   { 
-                  RDORTPIntDiap *diap = (RDORTPIntDiap *)$2;
-                  RDORTPIntDefVal *dv = new RDORTPIntDefVal();
-                  RDORTPIntResParam *rp = new RDORTPIntResParam(diap, dv);
-                  $$ = (int)rp;
-					}
-    | real fun_const_real_diap  fun_const_real_default_val		{ 
-                  RDORTPRealDiap *diap = (RDORTPRealDiap *)$2;
-                  RDORTPRealDefVal *dv = (RDORTPRealDefVal *)$3;
-                  RDORTPRealResParam *rp = new RDORTPRealResParam(diap, dv);
-                  $$ = (int)rp;
-					}
-    | real fun_const_real_diap  { 
-                  RDORTPRealDiap *diap = (RDORTPRealDiap *)$2;
-                  RDORTPRealDefVal *dv = new RDORTPRealDefVal();
-                  RDORTPRealResParam *rp = new RDORTPRealResParam(diap, dv);
-                  $$ = (int)rp;
-					}
-    | fun_const_enum fun_const_enum_default_val		{ 
-                  RDORTPEnum *enu = (RDORTPEnum *)$1;
-                  RDORTPEnumDefVal *dv = (RDORTPEnumDefVal *)$2;
-						enu->findValue(dv->value);	 // if no value - Syntax exception will be thrown
-                  RDORTPEnumResParam *rp = new RDORTPEnumResParam(enu, dv);
-                  $$ = (int)rp;
-					}
-    | fun_const_enum				{ 
-                  RDORTPEnum *enu = (RDORTPEnum *)$1;
-                  RDORTPEnumDefVal *dv = new RDORTPEnumDefVal();
-                  RDORTPEnumResParam *rp = new RDORTPEnumResParam(enu, dv);
-                  $$ = (int)rp;
-					}
-
-    | fun_const_such_as		{
-						RDORTPParamDesc *desc = (RDORTPParamDesc *)$1;
+fun_param_type: integer fun_int_diap fun_int_default_val {
+					RDORTPIntDiap *diap = (RDORTPIntDiap *)$2;
+					RDORTPIntDefVal *dv = (RDORTPIntDefVal *)$3;
+					parser->lexer_loc_backup();
+					parser->lexer_loc_set( &(@3) );
+					RDORTPIntResParam *rp = new RDORTPIntResParam(diap, dv);
+					parser->lexer_loc_restore();
+					$$ = (int)rp;
+				}
+				| integer fun_int_diap {
+					RDORTPIntDiap *diap = (RDORTPIntDiap *)$2;
+					RDORTPIntDefVal *dv = new RDORTPIntDefVal();
+					RDORTPIntResParam *rp = new RDORTPIntResParam(diap, dv);
+					$$ = (int)rp;
+				}
+				| real fun_real_diap fun_real_default_val {
+					RDORTPRealDiap *diap = (RDORTPRealDiap *)$2;
+					RDORTPRealDefVal *dv = (RDORTPRealDefVal *)$3;
+					parser->lexer_loc_backup();
+					parser->lexer_loc_set( &(@3) );
+					RDORTPRealResParam *rp = new RDORTPRealResParam(diap, dv);
+					parser->lexer_loc_restore();
+					$$ = (int)rp;
+				}
+				| real fun_real_diap {
+					RDORTPRealDiap *diap = (RDORTPRealDiap *)$2;
+					RDORTPRealDefVal *dv = new RDORTPRealDefVal();
+					RDORTPRealResParam *rp = new RDORTPRealResParam(diap, dv);
+					$$ = (int)rp;
+				}
+				| fun_enum fun_enum_default_val {
+					reinterpret_cast<RDOLexerFUN*>(lexer)->enum_param_cnt = 0;
+					RDORTPEnum *enu = (RDORTPEnum *)$1;
+					RDORTPEnumDefVal *dv = (RDORTPEnumDefVal *)$2;
+					enu->findValue(dv->value);	 // if no value - Syntax exception will be thrown
+					RDORTPEnumResParam *rp = new RDORTPEnumResParam(enu, dv);
+					$$ = (int)rp;
+				}
+				| fun_enum {
+					reinterpret_cast<RDOLexerFUN*>(lexer)->enum_param_cnt = 0;
+					RDORTPEnum *enu = (RDORTPEnum *)$1;
+					RDORTPEnumDefVal *dv = new RDORTPEnumDefVal();
+					RDORTPEnumResParam *rp = new RDORTPEnumResParam(enu, dv);
+					$$ = (int)rp;
+				}
+				| fun_such_as {
+					RDORTPParamDesc *desc = (RDORTPParamDesc *)$1;
+					$$ = (int)desc->getType()->constructSuchAs();
+				}
+				| fun_such_as fun_int_default_val {
+					RDORTPParamDesc *desc = (RDORTPParamDesc *)$1;
+					RDORTPIntDefVal *dv = (RDORTPIntDefVal *)$2;
+					$$ = (int)desc->getType()->constructSuchAs((int)dv->val);
+				}
+				| fun_such_as	fun_real_default_val {
+					RDORTPParamDesc *desc = (RDORTPParamDesc *)$1;
+					RDORTPRealDefVal *dv = (RDORTPRealDefVal *)$2;
+					if(!dv->exist)
 						$$ = (int)desc->getType()->constructSuchAs();
+					else
+						$$ = (int)desc->getType()->constructSuchAs((double *)&(dv->val));
+				}
+				| fun_such_as fun_enum_default_val {
+					RDORTPParamDesc *desc = (RDORTPParamDesc *)$1;
+					RDORTPEnumDefVal *dv = (RDORTPEnumDefVal *)$2;
+					if ( !dv->exist ) {
+						$$ = (int)desc->getType()->constructSuchAs();
+					} else {
+						parser->lexer_loc_backup();
+						parser->lexer_loc_set( &(@2) );
+						$$ = (int)desc->getType()->constructSuchAs((std::string *)dv->value);
+						parser->lexer_loc_restore();
 					}
-    | fun_const_such_as	fun_const_int_default_val	{
-						RDORTPParamDesc *desc = (RDORTPParamDesc *)$1;
-						RDORTPIntDefVal *dv = (RDORTPIntDefVal *)$2;
-						$$ = (int)desc->getType()->constructSuchAs((int)dv->val);
+				}
+				| fun_such_as '=' error {
+					parser->error( "Ожидается зачение по-умолчанию" );
+				}
+				| fun_such_as error {
+					parser->error( "Ожидается окончание описания ссылки, например, зачение по-умолчанию" );
+				}
+				| integer error {
+					parser->lexer_loc_set( &(@2) );
+					parser->error( "Ошибка после ключевого слова integer. Возможно, не хватает значения по-умолчанию." );
+				}
+				| real error {
+					parser->lexer_loc_set( &(@2) );
+					parser->error( "Ошибка после ключевого слова real. Возможно, не хватает значения по-умолчанию." );
+				}
+				| fun_enum error {
+					parser->lexer_loc_set( &(@2) );
+					parser->error( "Ошибка после перечислимого типа. Возможно, не хватает значения по-умолчанию." );
+				};
+
+fun_int_diap:	/* empty */ {
+					RDORTPIntDiap *diap = new RDORTPIntDiap();
+					$$ = (int)diap;
+				}
+				| '[' INT_CONST dblpoint INT_CONST ']' {
+					parser->lexer_loc_backup();
+					parser->lexer_loc_set( &(@2) );
+					RDORTPIntDiap *diap = new RDORTPIntDiap($2, $4);
+					parser->lexer_loc_restore();
+					$$ = (int)diap;
+				}
+				| '[' REAL_CONST dblpoint REAL_CONST {
+					parser->lexer_loc_set( &(@2) );
+					parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_INT_RANGE_REAL );
+				}
+				| '[' REAL_CONST dblpoint INT_CONST {
+					parser->lexer_loc_set( &(@2) );
+					parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_INT_RANGE_REAL );
+				}
+				| '[' INT_CONST dblpoint REAL_CONST {
+					parser->lexer_loc_set( &(@4) );
+					parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_INT_RANGE_REAL );
+				}
+				| '[' INT_CONST dblpoint INT_CONST error {
+					parser->lexer_loc_set( &(@4) );
+					parser->error( "Диапазон задан неверно" );
+				}
+				| '[' INT_CONST dblpoint error {
+					parser->lexer_loc_set( &(@4) );
+					parser->error( "Диапазон задан неверно" );
+				}
+				| '[' error {
+					parser->lexer_loc_set( &(@2) );
+					parser->error( "Диапазон задан неверно" );
+//					parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_RANGE );
+				};
+
+fun_real_diap: /* empty */ {
+					RDORTPRealDiap *diap = new RDORTPRealDiap();
+					$$ = (int)diap;
+				}
+				| '[' REAL_CONST dblpoint REAL_CONST ']' {
+					parser->lexer_loc_backup();
+					parser->lexer_loc_set( &(@2) );
+					double min = *((double *)$2);
+					double max = *((double *)$4);
+					RDORTPRealDiap *diap = new RDORTPRealDiap(min, max);
+					parser->lexer_loc_restore();
+					$$ = (int)diap;
+				}
+				| '[' REAL_CONST dblpoint INT_CONST ']' {
+					parser->lexer_loc_backup();
+					parser->lexer_loc_set( &(@2) );
+					double min = *((double *)$2);
+					double max = $4;
+					RDORTPRealDiap *diap = new RDORTPRealDiap(min, max);
+					parser->lexer_loc_restore();
+					$$ = (int)diap;
+				}
+				| '[' INT_CONST dblpoint REAL_CONST ']' {
+					parser->lexer_loc_backup();
+					parser->lexer_loc_set( &(@2) );
+					double min = $2;
+					double max = *((double *)$4);
+					RDORTPRealDiap *diap = new RDORTPRealDiap(min, max);
+					parser->lexer_loc_restore();
+					$$ = (int)diap;
+				}
+				| '[' INT_CONST dblpoint INT_CONST ']' {
+					parser->lexer_loc_backup();
+					parser->lexer_loc_set( &(@2) );
+					double min = $2;
+					double max = $4;
+					RDORTPRealDiap *diap = new RDORTPRealDiap(min, max);
+					parser->lexer_loc_restore();
+					$$ = (int)diap;
+				}
+				| '[' REAL_CONST dblpoint REAL_CONST error {
+					parser->lexer_loc_set( &(@4) );
+					parser->error( "Диапазон задан неверно" );
+				}
+				| '[' REAL_CONST dblpoint INT_CONST error {
+					parser->lexer_loc_set( &(@4) );
+					parser->error( "Диапазон задан неверно" );
+				}
+				| '[' INT_CONST dblpoint REAL_CONST error {
+					parser->lexer_loc_set( &(@4) );
+					parser->error( "Диапазон задан неверно" );
+				}
+				| '[' INT_CONST dblpoint INT_CONST error {
+					parser->lexer_loc_set( &(@4) );
+					parser->error( "Диапазон задан неверно" );
+				}
+				| '[' REAL_CONST dblpoint error {
+					parser->lexer_loc_set( &(@4) );
+					parser->error( "Диапазон задан неверно" );
+				}
+				| '[' INT_CONST dblpoint error {
+					parser->lexer_loc_set( &(@4) );
+					parser->error( "Диапазон задан неверно" );
+				}
+				| '[' error {
+					parser->lexer_loc_set( &(@2) );
+					parser->error( "Диапазон задан неверно" );
+//					parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_RANGE );
+				};
+
+fun_enum:	'(' fun_enum_item ')' {
+				$$ = $2;
+			}
+			| '(' fun_enum_item {
+				parser->lexer_loc_set( &(@2) );
+				parser->error( "Перечисление должно заканчиваться скобкой" );
+			};
+
+fun_enum_item:	IDENTIF {
+					RDORTPEnum *enu = new RDORTPEnum((std::string *)$1);
+					$$ = (int)enu;
+					reinterpret_cast<RDOLexerFUN*>(lexer)->enum_param_cnt = 1;
+				}
+				| fun_enum_item ',' IDENTIF {
+					if ( reinterpret_cast<RDOLexerFUN*>(lexer)->enum_param_cnt >= 1 ) {
+						parser->lexer_loc_backup();
+						parser->lexer_loc_set( &(@3) );
+						RDORTPEnum *enu = (RDORTPEnum *)$1;
+						enu->add((std::string *)$3);
+						parser->lexer_loc_restore();
+						$$ = (int)enu;
+					} else {
+						parser->error( "Ошибка в описании значений перечислимого типа" );
 					}
-    | fun_const_such_as	fun_const_real_default_val	{
-						RDORTPParamDesc *desc = (RDORTPParamDesc *)$1;
-						RDORTPRealDefVal *dv = (RDORTPRealDefVal *)$2;
-						if(!dv->exist)
-							$$ = (int)desc->getType()->constructSuchAs();
-						else
-							$$ = (int)desc->getType()->constructSuchAs((double *)&(dv->val));
+				}
+				| fun_enum_item IDENTIF {
+					if ( reinterpret_cast<RDOLexerFUN*>(lexer)->enum_param_cnt >= 1 ) {
+						parser->error( rdo::format("Пропущена запятая перед: %s", ((std::string*)$2)->c_str()) );
+					} else {
+						parser->error( "Ошибка в описании значений перечислимого типа" );
 					}
-    | fun_const_such_as	fun_const_enum_default_val	{
-						RDORTPParamDesc *desc = (RDORTPParamDesc *)$1;
-						RDORTPEnumDefVal *dv = (RDORTPEnumDefVal *)$2;
-						if(!dv->exist)
-							$$ = (int)desc->getType()->constructSuchAs();
-						else
-							$$ = (int)desc->getType()->constructSuchAs((std::string *)dv->value);
-					};
+				}
+				| fun_enum_item error {
+					std::string str( reinterpret_cast<RDOLexer*>(lexer)->YYText() );
+					if ( str.empty() ) {
+						parser->lexer_loc_set( &(@1) );
+						parser->error( "Ошибка в описании значений перечислимого типа" );
+					} else {
+						parser->lexer_loc_set( &(@2) );
+						parser->error( rdo::format( "Неверное значение перечислимого типа: %s", str.c_str() ) );
+					}
+				}
+				| fun_enum_item ',' INT_CONST {
+					parser->lexer_loc_set( &(@3) );
+					parser->error( "Значение перечислимого типа не может начинаться с цифры" );
+				}
+				| fun_enum_item ',' REAL_CONST {
+					parser->lexer_loc_set( &(@3) );
+					parser->error( "Значение перечислимого типа не может начинаться с цифры" );
+				}
+				| INT_CONST {
+					parser->lexer_loc_set( &(@1) );
+					parser->error( "Значение перечислимого типа не может начинаться с цифры" );
+				}
+				| REAL_CONST {
+					parser->lexer_loc_set( &(@1) );
+					parser->error( "Значение перечислимого типа не может начинаться с цифры" );
+				}
+				| error {
+					parser->lexer_loc_set( &(@1) );
+					parser->error( "Ошибка в описании значений перечислимого типа" );
+				};
 
+fun_such_as:	such_as IDENTIF '.' IDENTIF {
+					std::string* type = (std::string *)$2;
+					std::string* param = (std::string *)$4;
+					const RDORTPResType *const rt = parser->findRTPResType( type );
+					if ( !rt ) {
+						parser->lexer_loc_set( &(@2) );
+						parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_SUCHAS_RES_TYPE, type->c_str() );
+					}
+					const RDORTPParamDesc *const rp = rt->findRTPParam( param );
+					if ( !rp ) {
+						parser->lexer_loc_set( &(@4) );
+						parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_SUCHAS_PARAM, type->c_str(), param->c_str() );
+					}
+					$$ = (int)rp;
+				}
+				| such_as IDENTIF {
+					std::string *constName = (std::string *)$2;
+					const RDOFUNConstant *const cons = parser->findFUNConst(constName);
+					if ( !cons ) {
+						parser->lexer_loc_set( &(@2) );
+						parser->error( rdo::format("Ссылка на несужествующую константу: %s", constName->c_str()) );
+					}
+					$$ = (int)(cons->descr);
+				}
+				| such_as IDENTIF '.' {
+					std::string* type = (std::string *)$2;
+					const RDORTPResType *const rt = parser->findRTPResType( type );
+					if ( !rt ) {
+						parser->lexer_loc_set( &(@2) );
+						parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_SUCHAS_RES_TYPE, type->c_str() );
+					} else {
+						parser->lexer_loc_set( &(@3) );
+						parser->error( "Не указан параметр" );
+					}
+				}
+				| such_as IDENTIF '.' error {
+					std::string* type = (std::string *)$2;
+					const RDORTPResType *const rt = parser->findRTPResType( type );
+					if ( !rt ) {
+						parser->lexer_loc_set( &(@2) );
+						parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_SUCHAS_RES_TYPE, type->c_str() );
+					} else {
+						parser->lexer_loc_set( &(@4) );
+						parser->error( "Ошибка при указании параметра" );
+					}
+				}
+				| such_as IDENTIF error {
+					std::string* type = (std::string *)$2;
+					const RDORTPResType *const rt = parser->findRTPResType( type );
+					if ( !rt ) {
+						parser->lexer_loc_set( &(@2) );
+						parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_SUCHAS_RES_TYPE, type->c_str() );
+					} else {
+						parser->lexer_loc_set( &(@2) );
+						parser->error( "После имени типа должен быть указан параметр через точку" );
+					}
+				}
+				| such_as error {
+					if ( @1.last_line == @2.first_line ) {
+						parser->lexer_loc_set( @2.first_line, @2.first_column );
+					} else {
+						parser->lexer_loc_set( &(@1) );
+					}
+					parser->error( "После ключевого слова such_as необходимо указать тип и парамтер ресурса для ссылки" );
+				};
 
-fun_const_enum_default_val:	'=' IDENTIF	{
-						std::string *val = (std::string *)$2;
-						RDORTPEnumDefVal *dv = new RDORTPEnumDefVal(val);
-						$$ = (int)dv;	  
-					};
-
-
-fun_const_real_default_val:	'=' REAL_CONST	{
-						double val = *((double *)$2);
-						RDORTPRealDefVal *dv = new RDORTPRealDefVal(val);
-						$$ = (int)dv;
-					};
-
-fun_const_int_default_val:	'=' INT_CONST	{
+fun_int_default_val:	'=' INT_CONST {
 						RDORTPIntDefVal *dv = new RDORTPIntDefVal($2);
 						$$ = (int)dv;
-					};
-
-fun_const_int_diap:	{
-						RDORTPIntDiap *diap = new RDORTPIntDiap();
-						$$ = (int)diap;
 					}
-         | '[' INT_CONST dblpoint INT_CONST ']' {
-						RDORTPIntDiap *diap = new RDORTPIntDiap($2, $4);
-						$$ = (int)diap;
-					};
-
-fun_const_real_diap: {
-						RDORTPRealDiap *diap = new RDORTPRealDiap();
-						$$ = (int)diap;
+					| '=' REAL_CONST {
+						// Целое число инициализируется вещественным: %f
+						parser->lexer_loc_set( &(@2) );
+						parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_DEFVAULT_INT_AS_REAL, *(double*)$2 );
 					}
-         | '[' REAL_CONST dblpoint REAL_CONST ']'	{
-						double min = *((double *)$2);
-						double max = *((double *)$4);
-						RDORTPRealDiap *diap = new RDORTPRealDiap(min, max);
-						$$ = (int)diap;
+					| '=' {
+						parser->lexer_loc_set( &(@1) );
+						parser->error( "Не указано значение по-умолчанию целого типа" );
+					}
+					| '=' error {
+						parser->lexer_loc_set( &(@2) );
+						parser->error( "Неверное значение по-умолчанию целого типа" );
 					};
 
-fun_const_enum:   '(' fun_const_enum_list ')'	{ $$ = $2; };
-         
-fun_const_enum_list:  IDENTIF		{
-							RDORTPEnum *enu = new RDORTPEnum((std::string *)$1);
-							$$ = (int)enu;
-						}
-         | fun_const_enum_list ',' IDENTIF	{
-							RDORTPEnum *enu = (RDORTPEnum *)$1;
-							enu->add((std::string *)$3);
-							$$ = (int)enu;
-						};
+fun_real_default_val:	'=' REAL_CONST {
+						$$ = (int)(new RDORTPRealDefVal(*((double *)$2)));
+					}
+					| '=' INT_CONST {
+						$$ = (int)(new RDORTPRealDefVal($2));
+					}
+					| '=' {
+						parser->lexer_loc_set( &(@1) );
+						parser->error( "Не указано значение по-умолчанию вещественного типа" );
+					}
+					| '=' error {
+						parser->lexer_loc_set( &(@2) );
+						parser->error( "Неверное значение по-умолчанию вещественного типа" );
+					};
 
-
-fun_const_such_as:   such_as IDENTIF '.' IDENTIF {
-							std::string *type = (std::string *)$2;
-							std::string *param = (std::string *)$4;
-							const RDORTPResType *const rt = parser->findRTPResType(type);
-							if(!rt)
-								parser->error(("Invalid resource type in such_as: " + *type).c_str());
-
-							const RDORTPParamDesc *const rp = rt->findRTPParam(param);
-							if(!rp)
-								parser->error(("Invalid resource parameter in such_as: " + *param).c_str());
-								
-							$$ = (int)rp;
-						} 
-					| such_as IDENTIF {
-							std::string *constName = (std::string *)$2;
-							const RDOFUNConstant *const cons = parser->findFUNConst(constName);
-							if(!cons)
-								parser->error(("Invalid constant reference: " + *constName).c_str());
-								
-							$$ = (int)(cons->descr);
-						}; 
+fun_enum_default_val:	'=' IDENTIF {
+						std::string *val = (std::string *)$2;
+						RDORTPEnumDefVal* dv = new RDORTPEnumDefVal(val);
+						$$ = (int)dv;
+					}
+					| '=' {
+						parser->lexer_loc_set( &(@1) );
+						parser->error( "Не указано значение по-умолчанию перечислимого типа" );
+					}
+					| '=' error {
+						parser->lexer_loc_set( &(@2) );
+						parser->error( "Неверное значение по-умолчанию перечислимого типа" );
+					};
 
 fun_logic: fun_arithm '=' fun_arithm			{ $$ = (int)(*(RDOFUNArithm *)$1 == *(RDOFUNArithm *)$3); }
 			| fun_arithm neq fun_arithm			{ $$ = (int)(*(RDOFUNArithm *)$1 != *(RDOFUNArithm *)$3); }

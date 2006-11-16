@@ -257,6 +257,17 @@ RDORTPIntResParam::RDORTPIntResParam(RDORTPIntDiap *_diap, RDORTPIntDefVal *_dv)
 	diap->check(_dv);
 }
 
+RDORTPIntDiap::RDORTPIntDiap( int _minVal, int _maxVal ):
+	RDODeletable(),
+	minVal( _minVal ),
+	maxVal( _maxVal ),
+	exist( true )
+{
+	if ( minVal > maxVal ) {
+		parser->error( "Ћева€ граница диапазона должна быть меньше правой" );
+	}
+}
+
 void RDORTPIntDiap::check( const RDORTPIntDefVal* dv ) const
 {
 	if ( exist && dv->exist ) {
@@ -279,6 +290,16 @@ RDORTPRealResParam::RDORTPRealResParam( RDORTPRealDiap* _diap, RDORTPRealDefVal*
 	diap( _diap )
 {
 	diap->check( _dv );
+}
+
+RDORTPRealDiap::RDORTPRealDiap( double _minVal, double _maxVal ):
+	minVal( _minVal ),
+	maxVal( _maxVal ),
+	exist( true )
+{
+	if ( minVal > maxVal ) {
+		parser->error( "Ћева€ граница диапазона должна быть меньше правой" );
+	}
 }
 
 void RDORTPRealDiap::check( const RDORTPRealDefVal* dv ) const

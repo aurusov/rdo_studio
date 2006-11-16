@@ -26,7 +26,6 @@ int patlex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer )
 }
 void paterror( char* mes )
 {
-	rdoParse::parser->error( mes );
 }
 
 RDOPATPattern::RDOPATPattern( const std::string* const _name, const bool _trace ):
