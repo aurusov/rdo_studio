@@ -134,7 +134,8 @@
 %token active				414
 %token QUOTED_IDENTIF		415
 %token QUOTED_IDENTIF_BAD	416
-
+%token IDENTIF_BAD			417
+%token Select				418
 
 %{
 #include "pch.h"
@@ -220,18 +221,130 @@ pat_params:	pat_params_begin IDENTIF_COLON fun_param_type {
 pat_params_end:	pat_params Relevant_resources   { $$ = $1; }
 				| pat_header Relevant_resources { $$ = $1; };
 
-pat_rel_res:	pat_params_end   IDENTIF_COLON IDENTIF pat_conv pat_conv { ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, (RDOPATPattern::ConvertStatus)$4, (RDOPATPattern::ConvertStatus)$5); $$ = $1; }
-				| pat_rel_res    IDENTIF_COLON IDENTIF pat_conv pat_conv { ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, (RDOPATPattern::ConvertStatus)$4, (RDOPATPattern::ConvertStatus)$5); $$ = $1; }
-				| pat_params_end IDENTIF_COLON IDENTIF pat_conv          { ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, (RDOPATPattern::ConvertStatus)$4);                                   $$ = $1; }
-				| pat_rel_res    IDENTIF_COLON IDENTIF pat_conv          { ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, (RDOPATPattern::ConvertStatus)$4);                                   $$ = $1; }
-				| pat_params_end IDENTIF_COLON IDENTIF_NoChange pat_conv { ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, RDOPATPattern::CS_NoChange,       (RDOPATPattern::ConvertStatus)$4); $$ = $1; }
-				| pat_rel_res    IDENTIF_COLON IDENTIF_NoChange pat_conv { ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, RDOPATPattern::CS_NoChange,       (RDOPATPattern::ConvertStatus)$4); $$ = $1; }
-				| pat_params_end IDENTIF_COLON IDENTIF_NoChange_NoChange { ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, RDOPATPattern::CS_NoChange,       RDOPATPattern::CS_NoChange);       $$ = $1; }
-				| pat_rel_res    IDENTIF_COLON IDENTIF_NoChange_NoChange { ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, RDOPATPattern::CS_NoChange,       RDOPATPattern::CS_NoChange);       $$ = $1; }
-				| pat_params_end IDENTIF_COLON IDENTIF_NoChange          { ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, RDOPATPattern::CS_NoChange);                                         $$ = $1; }
-				| pat_rel_res    IDENTIF_COLON IDENTIF_NoChange          { ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, RDOPATPattern::CS_NoChange);                                         $$ = $1; }
-				| pat_params_end IDENTIF_COLON IDENTIF IDENTIF_NoChange  { ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, (std::string *)$4);                                                  $$ = $1; }
-				| pat_rel_res    IDENTIF_COLON IDENTIF IDENTIF_NoChange  { ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, (std::string *)$4);                                                  $$ = $1; };
+pat_rel_res:	pat_params_end   IDENTIF_COLON IDENTIF pat_conv pat_conv { parser->lexer_loc_backup(); parser->lexer_loc_set( &(@5) ); ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, (RDOPATPattern::ConvertStatus)$4, (RDOPATPattern::ConvertStatus)$5); parser->lexer_loc_restore(); $$ = $1; }
+				| pat_rel_res    IDENTIF_COLON IDENTIF pat_conv pat_conv { parser->lexer_loc_backup(); parser->lexer_loc_set( &(@5) ); ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, (RDOPATPattern::ConvertStatus)$4, (RDOPATPattern::ConvertStatus)$5); parser->lexer_loc_restore(); $$ = $1; }
+				| pat_params_end IDENTIF_COLON IDENTIF pat_conv          { parser->lexer_loc_backup(); parser->lexer_loc_set( &(@4) ); ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, (RDOPATPattern::ConvertStatus)$4);                                   parser->lexer_loc_restore(); $$ = $1; }
+				| pat_rel_res    IDENTIF_COLON IDENTIF pat_conv          { parser->lexer_loc_backup(); parser->lexer_loc_set( &(@4) ); ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, (RDOPATPattern::ConvertStatus)$4);                                   parser->lexer_loc_restore(); $$ = $1; }
+				| pat_params_end IDENTIF_COLON IDENTIF_NoChange pat_conv { parser->lexer_loc_backup(); parser->lexer_loc_set( &(@4) ); ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, RDOPATPattern::CS_NoChange,       (RDOPATPattern::ConvertStatus)$4); parser->lexer_loc_restore(); $$ = $1; }
+				| pat_rel_res    IDENTIF_COLON IDENTIF_NoChange pat_conv { parser->lexer_loc_backup(); parser->lexer_loc_set( &(@4) ); ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, RDOPATPattern::CS_NoChange,       (RDOPATPattern::ConvertStatus)$4); parser->lexer_loc_restore(); $$ = $1; }
+				| pat_params_end IDENTIF_COLON IDENTIF_NoChange_NoChange { parser->lexer_loc_backup(); parser->lexer_loc_set( &(@3) ); ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, RDOPATPattern::CS_NoChange,       RDOPATPattern::CS_NoChange);       parser->lexer_loc_restore(); $$ = $1; }
+				| pat_rel_res    IDENTIF_COLON IDENTIF_NoChange_NoChange { parser->lexer_loc_backup(); parser->lexer_loc_set( &(@3) ); ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, RDOPATPattern::CS_NoChange,       RDOPATPattern::CS_NoChange);       parser->lexer_loc_restore(); $$ = $1; }
+				| pat_params_end IDENTIF_COLON IDENTIF_NoChange          { parser->lexer_loc_backup(); parser->lexer_loc_set( &(@3) ); ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, RDOPATPattern::CS_NoChange);                                         parser->lexer_loc_restore(); $$ = $1; }
+				| pat_rel_res    IDENTIF_COLON IDENTIF_NoChange          { parser->lexer_loc_backup(); parser->lexer_loc_set( &(@3) ); ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, RDOPATPattern::CS_NoChange);                                         parser->lexer_loc_restore(); $$ = $1; }
+				| pat_params_end IDENTIF_COLON IDENTIF IDENTIF_NoChange  { parser->lexer_loc_backup(); parser->lexer_loc_set( &(@4) ); ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, (std::string *)$4);                                                  parser->lexer_loc_restore(); $$ = $1; }
+				| pat_rel_res    IDENTIF_COLON IDENTIF IDENTIF_NoChange  { parser->lexer_loc_backup(); parser->lexer_loc_set( &(@4) ); ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, (std::string *)$4);                                                  parser->lexer_loc_restore(); $$ = $1; }
+				| pat_params_end error {
+					parser->lexer_loc_set( &(@2) );
+					parser->error( "ќшибка в описании релевантных ресурсов" );
+				}
+				| pat_rel_res error {
+					parser->lexer_loc_set( &(@2) );
+					parser->error( "ќшибка в описании релевантных ресурсов" );
+				}
+				| pat_params_end IDENTIF_COLON error {
+					parser->lexer_loc_set( &(@2), &(@3) );
+					parser->error( "ќжидатес€ описатель (им€ типа или ресурса)" );
+				}
+				| pat_rel_res IDENTIF_COLON error {
+					parser->lexer_loc_set( &(@2), &(@3) );
+					parser->error( "ќжидатес€ описатель (им€ типа или ресурса)" );
+				}
+				| pat_params_end IDENTIF_COLON IDENTIF error {
+					parser->lexer_loc_set( &(@3), &(@4) );
+					if ( parser->getLastPATPattern()->isHaveConvertEnd() ) {
+						parser->error( "ќжидатес€ статус конвертора начала" );
+					} else {
+						parser->error( "ќжидатес€ статус конвертора" );
+					}
+				}
+				| pat_rel_res IDENTIF_COLON IDENTIF error {
+					parser->lexer_loc_set( &(@3), &(@4) );
+					if ( parser->getLastPATPattern()->isHaveConvertEnd() ) {
+						parser->error( "ќжидатес€ статус конвертора начала" );
+					} else {
+						parser->error( "ќжидатес€ статус конвертора" );
+					}
+				}
+				| pat_params_end IDENTIF_COLON IDENTIF pat_conv error {
+					switch ( parser->getLastPATPattern()->getPatType() ) {
+						case RDOPATPattern::PT_Rule: {
+							parser->lexer_loc_set( &(@5) );
+							parser->error( "ќжидатес€ способ выбора или ключевое слово $Body" );
+							break;
+						}
+						case RDOPATPattern::PT_IE: {
+							parser->lexer_loc_set( &(@5) );
+							parser->error( "ќжидатес€ способ выбора или ключевое слово $Time" );
+							break;
+						}
+						case RDOPATPattern::PT_Operation:
+						case RDOPATPattern::PT_Keyboard : {
+							parser->lexer_loc_set( &(@4), &(@5) );
+							parser->error( "ќжидатес€ статус конвертора конца" );
+							break;
+						}
+					}
+				}
+				| pat_rel_res IDENTIF_COLON IDENTIF pat_conv error {
+					switch ( parser->getLastPATPattern()->getPatType() ) {
+						case RDOPATPattern::PT_Rule: {
+							parser->lexer_loc_set( &(@5) );
+							parser->error( "ќжидатес€ способ выбора или ключевое слово $Body" );
+							break;
+						}
+						case RDOPATPattern::PT_IE: {
+							parser->lexer_loc_set( &(@5) );
+							parser->error( "ќжидатес€ способ выбора или ключевое слово $Time" );
+							break;
+						}
+						case RDOPATPattern::PT_Operation:
+						case RDOPATPattern::PT_Keyboard : {
+							parser->lexer_loc_set( &(@4), &(@5) );
+							parser->error( "ќжидатес€ статус конвертора конца" );
+							break;
+						}
+					}
+				}
+				| pat_params_end IDENTIF_COLON IDENTIF_NoChange error {
+					switch ( parser->getLastPATPattern()->getPatType() ) {
+						case RDOPATPattern::PT_Rule: {
+							parser->lexer_loc_set( &(@4) );
+							parser->error( "ќжидатес€ способ выбора или ключевое слово $Body" );
+							break;
+						}
+						case RDOPATPattern::PT_IE: {
+							parser->lexer_loc_set( &(@4) );
+							parser->error( "ќжидатес€ способ выбора или ключевое слово $Time" );
+							break;
+						}
+						case RDOPATPattern::PT_Operation:
+						case RDOPATPattern::PT_Keyboard : {
+							parser->lexer_loc_set( &(@3), &(@4) );
+							parser->error( "ќжидатес€ статус конвертора конца" );
+							break;
+						}
+					}
+				}
+				| pat_rel_res IDENTIF_COLON IDENTIF_NoChange error {
+					switch ( parser->getLastPATPattern()->getPatType() ) {
+						case RDOPATPattern::PT_Rule: {
+							parser->lexer_loc_set( &(@4) );
+							parser->error( "ќжидатес€ способ выбора или ключевое слово $Body" );
+							break;
+						}
+						case RDOPATPattern::PT_IE: {
+							parser->lexer_loc_set( &(@4) );
+							parser->error( "ќжидатес€ способ выбора или ключевое слово $Time" );
+							break;
+						}
+						case RDOPATPattern::PT_Operation:
+						case RDOPATPattern::PT_Keyboard : {
+							parser->lexer_loc_set( &(@3), &(@4) );
+							parser->error( "ќжидатес€ статус конвертора конца" );
+							break;
+						}
+					}
+				};
 
 pat_conv:	Keep				{ $$ = RDOPATPattern::CS_Keep;     }
 			| Create_keyword	{ $$ = RDOPATPattern::CS_Create;   }

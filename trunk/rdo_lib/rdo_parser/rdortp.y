@@ -139,6 +139,7 @@
 %token QUOTED_IDENTIF		415
 %token QUOTED_IDENTIF_BAD	416
 %token IDENTIF_BAD			417
+%token Select				418
 
 %{
 #include "pch.h"

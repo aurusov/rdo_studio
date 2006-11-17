@@ -195,17 +195,20 @@ void RDOPATPattern::add(RDOFUNFunctionParam *const _param)
 
 void RDOPATPattern::addRelRes( std::string* relName, std::string* res, ConvertStatus beg, ConvertStatus end )
 {
-	parser->error( "Needed 1 converter status for this pattern type" );
+	parser->error( "Необходим только один конвертор" );
+//	parser->error( "Needed 1 converter status for this pattern type" );
 }
 
 void RDOPATPattern::addRelRes( std::string* relName, std::string* res, ConvertStatus beg)
 {
-	parser->error( "Needed 2 converter statuses for this pattern type" );
+	parser->error( "Ожидатеся статус конвертора конца" );
+//	parser->error( "Needed 2 converter statuses for this pattern type" );
 }
 
 void RDOPATPattern::addRelRes( std::string* relName, std::string* resName, std::string* convBeg )
 {
-	parser->error( "Needed 1 converter status for this pattern type" );
+	parser->error( "Необходим только один конвертор" );
+//	parser->error( "Needed 1 converter status for this pattern type" );
 }
 
 void RDOPATPatternOperation::addRelRes( std::string* relName, std::string* resName, std::string* convBeg )

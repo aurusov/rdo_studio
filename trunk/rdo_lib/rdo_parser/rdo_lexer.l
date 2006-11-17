@@ -223,6 +223,8 @@ line				return(line);
 ellipse				return(ellipse);
 triang				return(triang);
 active				return(active);
+Select				return(Select);
+select				return(Select);
 
 (\'[^\']*\')		{
 						std::string n1(YYText());

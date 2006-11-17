@@ -65,6 +65,15 @@ public:
 		CS_NonExist,
 		CS_NoChange
 	};
+	enum PatType {
+		PT_Rule,
+		PT_Operation,
+		PT_IE,
+		PT_Keyboard
+	};
+	virtual PatType getPatType() const = 0;
+	bool    isHaveConvertEnd() const { return getPatType() == PT_Operation || getPatType() == PT_Keyboard; }
+
 	static std::string StatusToStr( ConvertStatus value );
 	static ConvertStatus StrToStatus( const std::string& value );
 
@@ -192,6 +201,7 @@ public:
 	virtual void testGoodForSomeActivity() const {}
 	virtual char getModelStructureLetter() const { return 'A'; };
 	virtual bool needTime() const { return true; }
+	virtual PatType getPatType() const { return PT_Operation; }
 };
 
 class RDOPATPatternEvent: public RDOPATPattern
@@ -204,6 +214,7 @@ public:
 	virtual void testGoodForFreeActivity() const {}
 	virtual char getModelStructureLetter() const { return 'I'; };
 	virtual bool needTime() const { return true; }
+	virtual PatType getPatType() const { return PT_IE; }
 };
 
 class RDOPATPatternRule: public RDOPATPattern
@@ -216,6 +227,7 @@ public:
 	virtual void testGoodForSearchActivity() const;
 	virtual void testGoodForSomeActivity() const {}
 	virtual char getModelStructureLetter() const { return 'R'; };
+	virtual PatType getPatType() const { return PT_Rule; }
 };
 
 class RDOPATPatternKeyboard: public RDOPATPatternOperation
@@ -224,6 +236,7 @@ public:
 	RDOPATPatternKeyboard( std::string *_name, bool _trace );
 	virtual char getModelStructureLetter() const { return 'K'; };
 	virtual void testGoodForFreeActivity() const {}
+	virtual PatType getPatType() const { return PT_Keyboard; }
 };
 
 class RDOPATChoice: public RDODeletable
