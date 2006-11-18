@@ -480,7 +480,7 @@
 		<param name="Local" value="html\rdo_obj_pat.htm#conv_stats">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="dpt">
+		<param name="Name" value="DPT">
 		<param name="Name" value="Описание точек принятия решений">
 		<param name="Local" value="html\rdo_obj_dpt.htm">
 		</OBJECT>
@@ -555,7 +555,7 @@
 		<param name="Local" value="html\rdo_obj_smr.htm#frame_number">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="frm">
+		<param name="Name" value="FRM">
 		<param name="Name" value="Описание кадров">
 		<param name="Local" value="html\rdo_obj_frm.htm">
 		</OBJECT>
@@ -565,7 +565,7 @@
 		<param name="Local" value="html\rdo_obj_pat.htm#init_cond">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="fun">
+		<param name="Name" value="FUN">
 		<param name="Name" value="Описание символьных констант, функций и последовательностей">
 		<param name="Local" value="html\rdo_obj_const_fun_sec.htm">
 		<param name="Name" value="Синтаксис функции">
@@ -755,6 +755,11 @@
 		<param name="Local" value="html\rdo_obj_smr.htm#show_mode">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="not">
+		<param name="Name" value="Арифметические и логические выражения">
+		<param name="Local" value="html\rdo_base_equations.htm#log_oper">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Not_Exist">
 		<param name="Name" value="Глобальные переменные и стандартные функции">
 		<param name="Local" value="html\rdo_base_std_var_func.htm#not_exist">
@@ -775,7 +780,7 @@
 		<param name="Local" value="html\rdo_res_pmv.htm#service_info">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="opr">
+		<param name="Name" value="OPR">
 		<param name="Name" value="Описание операций">
 		<param name="Local" value="html\rdo_obj_opr.htm">
 		</OBJECT>
@@ -794,7 +799,7 @@
 		<param name="Local" value="html\rdo_base_equations.htm#log_oper">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="pat">
+		<param name="Name" value="PAT">
 		<param name="Name" value="Описание образцов">
 		<param name="Local" value="html\rdo_obj_pat.htm">
 		</OBJECT>
@@ -804,12 +809,12 @@
 		<param name="Local" value="html\rdo_base_res_types.htm#res_kind">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="pmd">
+		<param name="Name" value="PMD">
 		<param name="Name" value="Объект описания показателей">
 		<param name="Local" value="html\rdo_obj_pmd.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="pmv">
+		<param name="Name" value="PMV">
 		<param name="Name" value="Объект результатов">
 		<param name="Local" value="html\rdo_res_pmv.htm">
 		</OBJECT>
@@ -857,12 +862,12 @@
 		<param name="Local" value="html\rdo_base_std_var_func.htm#round">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="rss">
+		<param name="Name" value="RSS">
 		<param name="Name" value="Описание ресурсов">
 		<param name="Local" value="html\rdo_base_resources.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="rtp">
+		<param name="Name" value="RTP">
 		<param name="Name" value="Типы ресурсов">
 		<param name="Local" value="html\rdo_base_res_types.htm">
 		</OBJECT>
@@ -948,7 +953,7 @@
 		<param name="Local" value="html\rdo_base_std_var_func.htm#sin">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="smr">
+		<param name="Name" value="SMR">
 		<param name="Name" value="Объект прогона">
 		<param name="Local" value="html\rdo_obj_smr.htm">
 		</OBJECT>
