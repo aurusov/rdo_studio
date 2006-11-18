@@ -238,11 +238,55 @@
 			</TR>
 		</TABLE>
 		<P>Если вместо логического выражения указано зарезервированное слово <A name="nocheck"></A><FONT class="syntax">NoCheck</FONT>, то рассматриваются все ресурсы указанного типа. В этом случае функция <FONT class="syntax">Exist</FONT> определяет, существует ли хотя бы один ресурс указанного типа, функция <FONT class="syntax">For_All</FONT> всегда выдает значение ИСТИНА (даже если нет ни одного ресурса указанного типа), а функция <FONT class="syntax">Not_For_All</FONT> всегда выдает значение ЛОЖЬ.</P>
+		<A name="select"></A>
+		<P>В языке определена еще одна стандартная функция, позволяющая работать со <B>списком ресурсов</B>. Она позволяет отобрать только часть ресурсов указанного типа и проверить их состояния. Синтаксис:</P>
+		<PRE class="syntax">Select( &lt;имя_типа_ресурсов&gt;:
+(&lt;логическое_выражение&gt; | NoCheck) ).&lt;метод_списка&gt;</PRE>
+		<P>Список методов приведен в таблице:</P>
+		<TABLE class="visible">
+			<TR valign="top">
+				<TH align="left" width="20%">Имя метода</TH>
+				<TH align="left" width="70%">Описание</TH>
+				<TH align="left" width="10%">Значение</TH>
+			</TR>
+			<TR valign="top"><A name="select_exist"></A>
+				<TD class="visible" width="20%"><FONT class="syntax">Exist</FONT></TD>
+				<TD class="visible" width="70%">Описание аналогично <A href="../html/rdo_base_std_var_func.htm#exist">приведённому</A>, но проверяются не все, ресурсы, а только отобранные в список. Формат использования: <PRE class="syntax">Exist( &lt;логическое_выражение&gt; | NoCheck )</PRE></TD>
+				<TD class="visible" width="10%">Логическое</TD>
+			</TR>
+			<TR valign="top"><A name="select_not_exist"></A>
+				<TD class="visible" width="20%"><FONT class="syntax">Not_Exist</FONT></TD>
+				<TD class="visible" width="70%">Описание аналогично <A href="../html/rdo_base_std_var_func.htm#not_exist">приведённому</A>, но проверяются не все, ресурсы, а только отобранные в список. Формат использования: <PRE class="syntax">Not_Exist( &lt;логическое_выражение&gt; | NoCheck )</PRE></TD>
+				<TD class="visible" width="10%">Логическое</TD>
+			</TR>
+			<TR valign="top"><A name="select_for_all"></A>
+				<TD class="visible" width="20%"><FONT class="syntax">For_All</FONT></TD>
+				<TD class="visible" width="70%">Описание аналогично <A href="../html/rdo_base_std_var_func.htm#for_all">приведённому</A>, но проверяются не все, ресурсы, а только отобранные в список. Формат использования: <PRE class="syntax">For_All( &lt;логическое_выражение&gt; | NoCheck )</PRE></TD>
+				<TD class="visible" width="10%">Логическое</TD>
+			</TR>
+			<TR valign="top"><A name="select_not_for_all"></A>
+				<TD class="visible" width="20%"><FONT class="syntax">Not_For_All</FONT></TD>
+				<TD class="visible" width="70%">Описание аналогично <A href="../html/rdo_base_std_var_func.htm#not_for_all">приведённому</A>, но проверяются не все, ресурсы, а только отобранные в список. Формат использования: <PRE class="syntax">Not_For_All( &lt;логическое_выражение&gt; | NoCheck )</PRE></TD>
+				<TD class="visible" width="10%">Логическое</TD>
+			</TR>
+			<TR valign="top"><A name="select_empty"></A>
+				<TD class="visible" width="20%"><FONT class="syntax">Empty</FONT></TD>
+				<TD class="visible" width="70%">Возвращает значение ИСТИНА, если список отобранных ресурсов пуст, в противном случае - ЛОЖЬ. Формат использования: <PRE class="syntax">Empty()</PRE></TD>
+				<TD class="visible" width="10%">Логическое</TD>
+			</TR>
+			<TR valign="top"><A name="select_size"></A>
+				<TD class="visible" width="20%"><FONT class="syntax">Size</FONT></TD>
+				<TD class="visible" width="70%">Возвращает размер списка ресурсов, целое число. Если список пусто, то вовращается ноль. Формат использования: <PRE class="syntax">Size()</PRE></TD>
+				<TD class="visible" width="10%">Арифметическое</TD>
+			</TR>
+		</TABLE>
 		<H4>Примеры</H4>
 		<PRE class="samples">Exist(Заявки : Заявки.Состояние = ожидает)</PRE>
 		<PRE class="samples">Not_Exist(Тип_1 : NoCheck)</PRE>
 		<PRE class="samples">Not_For_All(Станок : Станок.Количество &gt; 3 and
             Станок.Состояние = свободен)</PRE>
+		<PRE class="samples">Select(Заявка: Заявка.Время_прихода &gt;= 480 and
+       Заявка.Состояние = в_очереди).For_All(Заявка.Время_в_очереди &gt; 20)</PRE>
 		<H4>См. также</H4>
 		<P><A href="../html/rdo_base_types.htm">Типы данных. Соответствие типов</A></P>
 	</DIV>

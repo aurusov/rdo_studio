@@ -251,13 +251,13 @@ RDOFUNArithm::RDOFUNArithm( std::string* resName, std::string* parName )
 {
 	const RDORSSResource* const res = parser->findRSSResource( resName ); 
 	if ( !res ) {
-		if(parser->getFUNGroupStack().empty() || 
-			*parser->getFUNGroupStack().back()->resType->getName() != *resName)
+		if ( parser->getFUNGroupStack().empty() || 
+			*parser->getFUNGroupStack().back()->resType->getName() != *resName )
 		{
-			if((parser->getFileToParse() != rdoModelObjects::PAT) ||
-				!parser->getLastPATPattern()->findRelevantResource(resName))
+			if( (parser->getFileToParse() != rdoModelObjects::PAT) ||
+				!parser->getLastPATPattern()->findRelevantResource(resName) )
 			{
-				if((parser->getFileToParse() == rdoModelObjects::DPT) && 
+				if( (parser->getFileToParse() == rdoModelObjects::DPT) && 
 					(parser->getLastDPTSearch() != NULL) && 
 					(parser->getLastDPTSearch()->lastActivity->getRule()->findRelevantResource(resName) != NULL))
 				{
@@ -393,14 +393,16 @@ RDOFUNArithm *RDOFUNArithm::operator +(RDOFUNArithm &second)
 	int newType;
 	rdoRuntime::RDOCalc *newCalc;
 
-	if((type == 0) && (second.type == 0))
+	if( type == 0 && second.type == 0 ) {
 		newType = 0;
-	else if((type >= 2) || (second.type >= 2))
-		parser->error("cannot add enumerative types");
-	else
+	} else if ( type >= 2 || second.type >= 2 ) {
+		parser->error( "Нельзя складывать перечислимые данные" );
+//		parser->error("cannot add enumerative types");
+	} else {
 		newType = 1;
+	}
 
-	newCalc = new rdoRuntime::RDOCalcPlus(calc, second.calc);
+	newCalc = new rdoRuntime::RDOCalcPlus( calc, second.calc );
 	return new RDOFUNArithm(newType, newCalc);
 }
 
@@ -542,6 +544,12 @@ RDOFUNLogic* RDOFUNLogic::operator &&( const RDOFUNLogic& second )
 RDOFUNLogic* RDOFUNLogic::operator ||( const RDOFUNLogic& second )
 {
 	rdoRuntime::RDOCalc* newCalc = new rdoRuntime::RDOCalcOr( calc, second.calc );
+	return new RDOFUNLogic( newCalc );
+}
+
+RDOFUNLogic* RDOFUNLogic::operator_not()
+{
+	rdoRuntime::RDOCalc* newCalc = new rdoRuntime::RDOCalcNot( calc );
 	return new RDOFUNLogic( newCalc );
 }
 
@@ -818,45 +826,79 @@ RDOFUNCalculateIf::RDOFUNCalculateIf(RDOFUNLogic *_condition, std::string *_funN
 	}
 }
 
-RDOFUNGroup::RDOFUNGroup(int _funType, const std::string *const _resType):
-	funType(_funType)
+// ----------------------------------------------------------------------------
+// ---------- RDOFUNGroup
+// ----------------------------------------------------------------------------
+RDOFUNGroup::RDOFUNGroup( const std::string* const _resType )
 {
-	resType = parser->findRTPResType(_resType);
-	if(!resType)
-		parser->error(("Unknown resource type: " + *_resType).c_str());
-
-//	if(resType->isPerm())
-//		parser->error(("Temporary resource type expected: " + *_resType).c_str());
-
+	resType = parser->findRTPResType( _resType );
+	if ( !resType ) {
+		parser->error( rdo::format("Неизвестный тип ресурса: %s", _resType->c_str()) );
+	}
 	parser->insertFUNGroup( this );
 }
 
-RDOFUNLogic *RDOFUNGroup::createFunLogin()
+// ----------------------------------------------------------------------------
+// ---------- RDOFUNGroupLogic
+// ----------------------------------------------------------------------------
+RDOFUNLogic* RDOFUNGroupLogic::createFunLogic()
 {
-	RDOFUNLogic *trueLogic = new RDOFUNLogic(new rdoRuntime::RDOCalcConst(1));
-	return createFunLogin(trueLogic);
+	RDOFUNLogic* trueLogic = new RDOFUNLogic( new rdoRuntime::RDOCalcConst(1) );
+	return createFunLogic( trueLogic );
 }
 
-RDOFUNLogic *RDOFUNGroup::createFunLogin(RDOFUNLogic *cond)
+RDOFUNLogic* RDOFUNGroupLogic::createFunLogic( RDOFUNLogic* cond )
 {
-	rdoRuntime::RDOFunCalcGroup *calc;
-	switch(funType)
-	{
-	case 1:	calc = new rdoRuntime::RDOFunCalcExist(resType->getNumber(), cond->calc);		break;
-	case 2:	calc = new rdoRuntime::RDOFunCalcNotExist(resType->getNumber(), cond->calc);	break;
-	case 3:	calc = new rdoRuntime::RDOFunCalcForAll(resType->getNumber(), cond->calc);		break;
-	case 4:	calc = new rdoRuntime::RDOFunCalcNotForAll(resType->getNumber(), cond->calc);	break;
-	default:
-		parser->error("Internal compiler error");
+	rdoRuntime::RDOFunCalcGroup* calc;
+	switch ( funType ) {
+		case 1 : calc = new rdoRuntime::RDOFunCalcExist    ( resType->getNumber(), cond->calc ); break;
+		case 2 : calc = new rdoRuntime::RDOFunCalcNotExist ( resType->getNumber(), cond->calc ); break;
+		case 3 : calc = new rdoRuntime::RDOFunCalcForAll   ( resType->getNumber(), cond->calc ); break;
+		case 4 : calc = new rdoRuntime::RDOFunCalcNotForAll( resType->getNumber(), cond->calc ); break;
+		default: parser->error( "Несуществующий тип функции" );
 	}
-
 	parser->getFUNGroupStack().pop_back();
-	return new RDOFUNLogic(calc);
+	return new RDOFUNLogic( calc );
 }
 
+// ----------------------------------------------------------------------------
+// ---------- RDOFUNSelect
+// ----------------------------------------------------------------------------
+RDOFUNLogic* RDOFUNSelect::createFunSelect( RDOFUNLogic* cond )
+{
+	select = new rdoRuntime::RDOFunCalcSelect( resType->getNumber(), cond ? cond->calc : new rdoRuntime::RDOCalcConst(1) );
+	return new RDOFUNLogic( select );
+}
 
-//////////////////////////// Sequences	///////////////////////////////
+RDOFUNLogic* RDOFUNSelect::createFunSelect( int funType, RDOFUNLogic* cond )
+{
+	rdoRuntime::RDOFunCalcSelectBase* calc;
+	switch ( funType ) {
+		case 1 : calc = new rdoRuntime::RDOFunCalcSelectExist    ( select, cond->calc ); break;
+		case 2 : calc = new rdoRuntime::RDOFunCalcSelectNotExist ( select, cond->calc ); break;
+		case 3 : calc = new rdoRuntime::RDOFunCalcSelectForAll   ( select, cond->calc ); break;
+		case 4 : calc = new rdoRuntime::RDOFunCalcSelectNotForAll( select, cond->calc ); break;
+		default: parser->error( "Неизвестный метод для списка ресурсов" );
+	}
+	parser->getFUNGroupStack().pop_back();
+	return new RDOFUNLogic( calc );
+}
 
+RDOFUNLogic* RDOFUNSelect::createFunSelectEmpty()
+{
+	parser->getFUNGroupStack().pop_back();
+	return new RDOFUNLogic( select );
+}
+
+RDOFUNArithm* RDOFUNSelect::createFunSelectSize()
+{
+	parser->getFUNGroupStack().pop_back();
+	return new RDOFUNArithm( 1, new rdoRuntime::RDOFunCalcSelectSize( select ) );
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOFUNSelect
+// ----------------------------------------------------------------------------
 RDOFUNSequenceUniform::RDOFUNSequenceUniform( RDOFUNSequenceHeader* _header, int _base ):
 	RDOFUNSequence( _header, _base )
 {

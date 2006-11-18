@@ -13,6 +13,7 @@ class RDOCalcFuncParam;
 class RDOFunCalc;
 class RDOCalcSeqInit;
 class RDOCalcSeqNext;
+class RDOFunCalcSelect;
 }
 
 namespace rdoParse 
@@ -111,6 +112,7 @@ public:
 	RDOFUNLogic( rdoRuntime::RDOCalc *_calc ): calc(_calc) {}
 	RDOFUNLogic* operator &&( const RDOFUNLogic& second );
 	RDOFUNLogic* operator ||( const RDOFUNLogic& second );
+	RDOFUNLogic* operator_not();
 };
 
 class RDOFUNArithm: public RDODeletable
@@ -204,19 +206,53 @@ public:
 	const RDOFUNArithm *createSeqCall(const std::string *const seqName) const;
 };
 
+// ----------------------------------------------------------------------------
+// ---------- RDOFUNGroup
+// ----------------------------------------------------------------------------
 class RDOFUNGroup: public RDODeletable
 {
 public:
-	const int funType;
-	const RDORTPResType *resType;
+	const RDORTPResType* resType;
 
-	RDOFUNGroup(int _funType, const std::string *const _resType);
-	RDOFUNLogic *createFunLogin();
-	RDOFUNLogic *createFunLogin(RDOFUNLogic *cond);
+	RDOFUNGroup( const std::string* const _resTypeName );
 };
 
-//////////////////////////// Sequences	///////////////////////////////
+// ----------------------------------------------------------------------------
+// ---------- RDOFUNGroupLogic
+// ----------------------------------------------------------------------------
+class RDOFUNGroupLogic: public RDOFUNGroup
+{
+public:
+	const int funType;
 
+	RDOFUNGroupLogic( int _funType, const std::string* const _resTypeName ):
+		RDOFUNGroup( _resTypeName ),
+		funType( _funType )
+	{
+	}
+	RDOFUNLogic* createFunLogic();
+	RDOFUNLogic* createFunLogic( RDOFUNLogic* cond );
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOFUNSelect
+// ----------------------------------------------------------------------------
+class RDOFUNSelect: public RDOFUNGroup
+{
+private:
+	rdoRuntime::RDOFunCalcSelect* select;
+
+public:
+	RDOFUNSelect( const std::string* const _resTypeName ): RDOFUNGroup( _resTypeName ), select( NULL ) {}
+	RDOFUNLogic* createFunSelect( RDOFUNLogic* cond = NULL );
+	RDOFUNLogic* createFunSelect( int funType, RDOFUNLogic* cond );
+	RDOFUNLogic* createFunSelectEmpty();
+	RDOFUNArithm* createFunSelectSize();
+};
+
+// ----------------------------------------------------------------------------
+// ---------- Sequences
+// ----------------------------------------------------------------------------
 class RDOFUNSequenceHeader: public RDODeletable
 {
 public:

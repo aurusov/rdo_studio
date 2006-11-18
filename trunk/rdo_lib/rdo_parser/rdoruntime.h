@@ -113,6 +113,7 @@ class RDOSelectResourceByTypeCommonCalc;
 
 class RDORuntime: public RDOSimulatorTrace
 {
+friend class RDOFunCalcSelect;
 friend class RDOFunCalcExist;
 friend class RDOFunCalcNotExist;
 friend class RDOFunCalcForAll;
@@ -299,23 +300,6 @@ public:
 	bool operator != ( RDOResource& other );
 	int referenceCount;
 };
-/*
-class RDOCalc
-{
-public:
-   virtual RDOValue calcValue(RDORuntime *sim) const = 0;
-   virtual ~RDOCalc() {}
-   RDOCalc();
-};
-
-class RDOCalcConst: public RDOCalc
-{
-   RDOValue constanta;
-public:
-	RDOCalcConst(RDOValue val) : constanta(val) {}
-   RDOValue calcValue(RDORuntime *sim) const { return constanta; }
-};
-*/
 
 // --------------------  Binary Ariphmetic calcs ---------------------------------
 class RDOCalcBinary: public RDOCalc
@@ -366,7 +350,7 @@ public:
 		if ( !right->calcValueBase( sim ) ) return false;
 		return true;
 	}
-	RDOCalcAnd( RDOCalc* _left, RDOCalc* _right): RDOCalcBinary( _left, _right ) {};
+	RDOCalcAnd( RDOCalc* _left, RDOCalc* _right ): RDOCalcBinary( _left, _right ) {};
 };
 
 class RDOCalcOr: public RDOCalcBinary
@@ -377,7 +361,19 @@ public:
 		if ( right->calcValueBase( sim ) ) return true;
 		return false;
 	}
-	RDOCalcOr( RDOCalc* _left, RDOCalc* _right): RDOCalcBinary( _left, _right ) {};
+	RDOCalcOr( RDOCalc* _left, RDOCalc* _right ): RDOCalcBinary( _left, _right ) {};
+};
+
+class RDOCalcNot: public RDOCalc
+{
+private:
+	RDOCalc* calc;
+
+public:
+	RDOValue calcValue( RDORuntime* sim ) const {
+		return !calc->calcValueBase( sim );
+	}
+	RDOCalcNot( RDOCalc* _calc ): calc( _calc ) {};
 };
 
 class RDOCalcIsEqual: public RDOCalcBinary
@@ -641,53 +637,117 @@ public:
 	}
 };
 
-// -------------------- Native functions --------------------------------
-
+// ----------------------------------------------------------------------------
+// ---------- RDOFunCalcGroup
+// ----------------------------------------------------------------------------
 class RDOFunCalcGroup: public RDOFunCalc
 {
 protected:
-	int nTempResType;
-	RDOCalc *condition;
-	RDOFunCalcGroup(int _nTempResType, RDOCalc *_condition):
-		nTempResType(_nTempResType), condition(_condition)	{}
+	int      nResType;
+	RDOCalc* condition;
+
+	RDOFunCalcGroup( int _nResType, RDOCalc* _condition ):
+		RDOFunCalc(),
+		nResType( _nResType ),
+		condition( _condition )
+	{
+	}
 };
 
 class RDOFunCalcExist: public RDOFunCalcGroup
 {
 public:
-	RDOFunCalcExist(int _nTempResType, RDOCalc *_condition):
-		RDOFunCalcGroup(_nTempResType, _condition)	{}
-	
-   virtual RDOValue calcValue(RDORuntime *sim) const;
+	RDOFunCalcExist( int _nResType, RDOCalc* _condition): RDOFunCalcGroup( _nResType, _condition ) {}
+	virtual RDOValue calcValue( RDORuntime* sim ) const;
 };
 
 class RDOFunCalcNotExist: public RDOFunCalcGroup
 {
 public:
-	RDOFunCalcNotExist(int _nTempResType, RDOCalc *_condition):
-		RDOFunCalcGroup(_nTempResType, _condition)	{}
-	
-   virtual RDOValue calcValue(RDORuntime *sim) const;
+	RDOFunCalcNotExist( int _nResType, RDOCalc* _condition ): RDOFunCalcGroup( _nResType, _condition ) {}
+	virtual RDOValue calcValue( RDORuntime* sim ) const;
 };
 
 class RDOFunCalcForAll: public RDOFunCalcGroup
 {
 public:
-	RDOFunCalcForAll(int _nTempResType, RDOCalc *_condition):
-		RDOFunCalcGroup(_nTempResType, _condition)	{}
-	
-   virtual RDOValue calcValue(RDORuntime *sim) const;
+	RDOFunCalcForAll( int _nResType, RDOCalc* _condition ): RDOFunCalcGroup( _nResType, _condition ) {}
+	virtual RDOValue calcValue( RDORuntime* sim ) const;
 };
 
 class RDOFunCalcNotForAll: public RDOFunCalcGroup
 {
 public:
-	RDOFunCalcNotForAll(int _nTempResType, RDOCalc *_condition):
-		RDOFunCalcGroup(_nTempResType, _condition)	{}
-	
-   virtual RDOValue calcValue(RDORuntime *sim) const;
+	RDOFunCalcNotForAll( int _nResType, RDOCalc* _condition ): RDOFunCalcGroup( _nResType, _condition ) {}
+	virtual RDOValue calcValue( RDORuntime* sim ) const;
 };
 
+// ----------------------------------------------------------------------------
+// ---------- RDOFunCalcSelect
+// ----------------------------------------------------------------------------
+class RDOFunCalcSelect: public RDOFunCalcGroup
+{
+public:
+	mutable std::list< RDOResource* > res_list;
+	void prepare( RDORuntime* sim ) const;
+
+	RDOFunCalcSelect( int _nResType, RDOCalc* _condition ): RDOFunCalcGroup( _nResType, _condition ) {}
+	virtual RDOValue calcValue( RDORuntime* sim ) const;
+};
+
+class RDOFunCalcSelectBase: public RDOFunCalc
+{
+protected:
+	RDOFunCalcSelect* select;
+	RDOCalc*          condition;
+
+public:
+	RDOFunCalcSelectBase( RDOFunCalcSelect* _select, RDOCalc* _condition ):
+		RDOFunCalc(),
+		select( _select ),
+		condition( _condition )
+	{
+	}
+};
+
+class RDOFunCalcSelectSize: public RDOFunCalcSelectBase
+{
+public:
+	RDOFunCalcSelectSize( RDOFunCalcSelect* _select ): RDOFunCalcSelectBase( _select, NULL ) {}
+	virtual RDOValue calcValue( RDORuntime* sim ) const;
+};
+
+class RDOFunCalcSelectExist: public RDOFunCalcSelectBase
+{
+public:
+	RDOFunCalcSelectExist( RDOFunCalcSelect* _select, RDOCalc* _condition ): RDOFunCalcSelectBase( _select, _condition ) {}
+	virtual RDOValue calcValue( RDORuntime* sim ) const;
+};
+
+class RDOFunCalcSelectNotExist: public RDOFunCalcSelectBase
+{
+public:
+	RDOFunCalcSelectNotExist( RDOFunCalcSelect* _select, RDOCalc* _condition ): RDOFunCalcSelectBase( _select, _condition ) {}
+	virtual RDOValue calcValue( RDORuntime* sim ) const;
+};
+
+class RDOFunCalcSelectForAll: public RDOFunCalcSelectBase
+{
+public:
+	RDOFunCalcSelectForAll( RDOFunCalcSelect* _select, RDOCalc* _condition ): RDOFunCalcSelectBase( _select, _condition ) {}
+	virtual RDOValue calcValue( RDORuntime* sim ) const;
+};
+
+class RDOFunCalcSelectNotForAll: public RDOFunCalcSelectBase
+{
+public:
+	RDOFunCalcSelectNotForAll( RDOFunCalcSelect* _select, RDOCalc* _condition ): RDOFunCalcSelectBase( _select, _condition ) {}
+	virtual RDOValue calcValue( RDORuntime* sim ) const;
+};
+
+// ----------------------------------------------------------------------------
+// ---------- Native functions
+// ----------------------------------------------------------------------------
 class RDOFunCalcAbs: public RDOFunCalc
 {
 public:

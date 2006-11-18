@@ -30,7 +30,7 @@ private:
 
 public:
 	RDOCalcConst( const RDOValue& val ): constanta( val ) {};
-	RDOValue calcValue( RDORuntime* sim ) const { return constanta; }
+	virtual RDOValue calcValue( RDORuntime* sim ) const { return constanta; }
 };
 
 }  // namespace rdoRuntime

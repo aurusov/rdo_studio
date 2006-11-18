@@ -136,6 +136,9 @@
 %token QUOTED_IDENTIF_BAD	416
 %token IDENTIF_BAD			417
 %token Select				418
+%token Size_kw				419
+%token Empty_kw				420
+%token not_keyword			421
 
 %{
 #include "pch.h"

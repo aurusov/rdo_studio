@@ -11,7 +11,7 @@ static inline bool isRDOLexerOperator( char ch )
 {
 	if ( ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == ':' ||
 	     ch == '[' || ch == ']' || ch == '(' || ch == ')' || ch == ',' ||
-	     ch == '<' || ch == '>' || ch == '=' || ch == '.' ) return true;
+	     ch == '<' || ch == '>' || ch == '=' || ch == '.' || ch == '!' ) return true;
 	return false;
 }
 

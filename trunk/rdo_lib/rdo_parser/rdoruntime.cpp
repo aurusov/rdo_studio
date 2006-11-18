@@ -418,87 +418,151 @@ RDOValue RDORuntime::getFuncArgument(int numberOfParam)
 	return funcStack.at(currFuncTop + numberOfParam);
 }
 
-
-RDOValue RDOFunCalcExist::calcValue(RDORuntime *sim) const
+// ----------------------------------------------------------------------------
+// ---------- RDOFunCalcGroup
+// ----------------------------------------------------------------------------
+RDOValue RDOFunCalcExist::calcValue( RDORuntime* sim ) const
 {
 	bool res = false;
-	std::vector<RDOResource *>::iterator end = sim->allResources.end();
-	for(std::vector<RDOResource *>::iterator it = sim->allResources.begin(); 
-								it != end && !res; it++)
-	{
-		if(*it == NULL)
-			continue;
-
-		if((*it)->type != nTempResType)
-			continue;
-
-		sim->pushGroupFunc(*it);
-		if(condition->calcValueBase(sim))
-			res = true;
+	std::vector< RDOResource* >::iterator end = sim->allResources.end();
+	for ( std::vector< RDOResource* >::iterator it = sim->allResources.begin(); it != end && !res; it++ ) {
+		if ( *it == NULL ) continue;
+		if ( (*it)->type != nResType ) continue;
+		sim->pushGroupFunc( *it );
+		if ( condition->calcValueBase(sim) ) res = true;
 		sim->popGroupFunc();
 	}
 	return res;
 }
 
-RDOValue RDOFunCalcNotExist::calcValue(RDORuntime *sim) const
+RDOValue RDOFunCalcNotExist::calcValue( RDORuntime* sim ) const
 {
 	bool res = true;
-	std::vector<RDOResource *>::iterator end = sim->allResources.end();
-	for(std::vector<RDOResource *>::iterator it = sim->allResources.begin(); 
-							it != end && res; it++)
-	{
-		if(*it == NULL)
-			continue;
-
-		if((*it)->type != nTempResType)
-			continue;
-
-		sim->pushGroupFunc(*it);
-		if(condition->calcValueBase(sim))
-			res = false;
+	std::vector< RDOResource* >::iterator end = sim->allResources.end();
+	for ( std::vector< RDOResource* >::iterator it = sim->allResources.begin(); it != end && res; it++ ) {
+		if ( *it == NULL ) continue;
+		if ( (*it)->type != nResType ) continue;
+		sim->pushGroupFunc( *it );
+		if ( condition->calcValueBase(sim) ) res = false;
 		sim->popGroupFunc();
 	}
 	return res;
 }
 
-RDOValue RDOFunCalcForAll::calcValue(RDORuntime *sim) const
+RDOValue RDOFunCalcForAll::calcValue( RDORuntime* sim ) const
 {
 	bool res = true;
-	std::vector<RDOResource *>::iterator end = sim->allResources.end();
-	for(std::vector<RDOResource *>::iterator it = sim->allResources.begin(); 
-							it != end && res; it++)
-	{
-		if(*it == NULL)
-			continue;
-
-		if((*it)->type != nTempResType)
-			continue;
-
-		sim->pushGroupFunc(*it);
-		if(!condition->calcValueBase(sim))
-			res = false;
+	std::vector< RDOResource* >::iterator end = sim->allResources.end();
+	for ( std::vector< RDOResource* >::iterator it = sim->allResources.begin(); it != end && res; it++ ) {
+		if ( *it == NULL ) continue;
+		if ( (*it)->type != nResType ) continue;
+		sim->pushGroupFunc( *it );
+		if ( !condition->calcValueBase(sim) ) res = false;
 		sim->popGroupFunc();
 	}
 	return res;
 }
 
-RDOValue RDOFunCalcNotForAll::calcValue(RDORuntime *sim) const
+RDOValue RDOFunCalcNotForAll::calcValue( RDORuntime* sim ) const
 {
 	bool res = false;
-	std::vector<RDOResource *>::iterator end = sim->allResources.end();
-	for(std::vector<RDOResource *>::iterator it = sim->allResources.begin(); 
-							it != end && !res; it++)
-	{
-		if(*it == NULL)
-			continue;
-
-		if((*it)->type != nTempResType)
-			continue;
-
-		sim->pushGroupFunc(*it);
-		if(!condition->calcValueBase(sim))
-			res = true;
+	std::vector< RDOResource* >::iterator end = sim->allResources.end();
+	for ( std::vector< RDOResource* >::iterator it = sim->allResources.begin(); it != end && !res; it++ ) {
+		if ( *it == NULL ) continue;
+		if ( (*it)->type != nResType ) continue;
+		sim->pushGroupFunc( *it );
+		if( !condition->calcValueBase(sim) ) res = true;
 		sim->popGroupFunc();
+	}
+	return res;
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOFunCalcSelect
+// ----------------------------------------------------------------------------
+void RDOFunCalcSelect::prepare( RDORuntime* sim ) const
+{
+	res_list.clear();
+	std::vector< RDOResource* >::iterator end = sim->allResources.end();
+	for ( std::vector< RDOResource* >::iterator it = sim->allResources.begin(); it != end; it++ ) {
+		if ( *it == NULL ) continue;
+		if ( (*it)->type != nResType ) continue;
+		sim->pushGroupFunc( *it );
+		if ( condition->calcValueBase(sim) ) {
+			res_list.push_back( *it );
+		}
+		sim->popGroupFunc();
+	}
+}
+
+RDOValue RDOFunCalcSelect::calcValue( RDORuntime* sim ) const
+{
+	prepare( sim );
+	return res_list.empty();
+}
+
+RDOValue RDOFunCalcSelectSize::calcValue( RDORuntime* sim ) const
+{
+	select->prepare( sim );
+	return select->res_list.size();
+}
+
+RDOValue RDOFunCalcSelectExist::calcValue( RDORuntime* sim ) const
+{
+	select->prepare( sim );
+	bool res = false;
+	std::list< RDOResource* >::iterator it  = select->res_list.begin();
+	std::list< RDOResource* >::iterator end = select->res_list.end();
+	while ( it != end && !res ) {
+		sim->pushGroupFunc( *it );
+		if ( condition->calcValueBase(sim) ) res = true;
+		sim->popGroupFunc();
+		it++;
+	}
+	return res;
+}
+
+RDOValue RDOFunCalcSelectNotExist::calcValue( RDORuntime* sim ) const
+{
+	select->prepare( sim );
+	bool res = true;
+	std::list< RDOResource* >::iterator it  = select->res_list.begin();
+	std::list< RDOResource* >::iterator end = select->res_list.end();
+	while ( it != end && res ) {
+		sim->pushGroupFunc( *it );
+		if ( condition->calcValueBase(sim) ) res = false;
+		sim->popGroupFunc();
+		it++;
+	}
+	return res;
+}
+
+RDOValue RDOFunCalcSelectForAll::calcValue( RDORuntime* sim ) const
+{
+	select->prepare( sim );
+	bool res = true;
+	std::list< RDOResource* >::iterator it  = select->res_list.begin();
+	std::list< RDOResource* >::iterator end = select->res_list.end();
+	while ( it != end && res ) {
+		sim->pushGroupFunc( *it );
+		if ( !condition->calcValueBase(sim) ) res = false;
+		sim->popGroupFunc();
+		it++;
+	}
+	return res;
+}
+
+RDOValue RDOFunCalcSelectNotForAll::calcValue( RDORuntime* sim ) const
+{
+	select->prepare( sim );
+	bool res = false;
+	std::list< RDOResource* >::iterator it  = select->res_list.begin();
+	std::list< RDOResource* >::iterator end = select->res_list.end();
+	while ( it != end && !res ) {
+		sim->pushGroupFunc( *it );
+		if ( !condition->calcValueBase(sim) ) res = true;
+		sim->popGroupFunc();
+		it++;
 	}
 	return res;
 }

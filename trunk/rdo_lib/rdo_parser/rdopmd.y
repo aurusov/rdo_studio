@@ -136,6 +136,9 @@
 %token QUOTED_IDENTIF_BAD	416
 %token IDENTIF_BAD			417
 %token Select				418
+%token Size_kw				419
+%token Empty_kw				420
+%token not_keyword			421
 
 %{
 #include "pch.h"
@@ -157,6 +160,7 @@ namespace rdoParse
 %left and_keyword
 %left '+' '-'
 %left '*' '/'
+%left not_keyword
 
 %%
 
@@ -185,6 +189,9 @@ pmd_pokaz:	IDENTIF_COLON pmd_trace watch_par    IDENTIF '.' IDENTIF		{ $$ = (int
 
 pmd_end:	 pmd_body End;
 
+// ----------------------------------------------------------------------------
+// ---------- Логические выражения
+// ----------------------------------------------------------------------------
 fun_logic: fun_arithm '=' fun_arithm			{ $$ = (int)(*(RDOFUNArithm *)$1 == *(RDOFUNArithm *)$3); }
 			| fun_arithm neq fun_arithm			{ $$ = (int)(*(RDOFUNArithm *)$1 != *(RDOFUNArithm *)$3); }
 			| fun_arithm '<' fun_arithm			{ $$ = (int)(*(RDOFUNArithm *)$1 <  *(RDOFUNArithm *)$3); }
@@ -194,18 +201,33 @@ fun_logic: fun_arithm '=' fun_arithm			{ $$ = (int)(*(RDOFUNArithm *)$1 == *(RDO
 			| fun_logic and_keyword fun_logic	{ $$ = (int)(*(RDOFUNLogic *)$1 && *(RDOFUNLogic *)$3);   }
 			| fun_logic or_keyword fun_logic	{ $$ = (int)(*(RDOFUNLogic *)$1 || *(RDOFUNLogic *)$3);   }
 			| '[' fun_logic ']'					{ $$ = $2; }
+			| '(' fun_logic ')'					{ $$ = $2; }
+			| '[' fun_logic error {
+				parser->lexer_loc_set( @2.last_line, @2.last_column );
+				parser->error( "Ожидается закрывающаяся скобка" );
+			}
+			| '(' fun_logic error {
+				parser->lexer_loc_set( @2.last_line, @2.last_column );
+				parser->error( "Ожидается закрывающаяся скобка" );
+			}
+			| not_keyword fun_logic				{ $$ = (int)((RDOFUNLogic *)$2)->operator_not();          }
 			| fun_group							{ $$ = $1; }
+			| fun_select_logic
 			| error								{
 				parser->lexer_loc_set( &(@1) );
 				parser->error( "Ошибка в логическом выражении" );
 			};
 
+// ----------------------------------------------------------------------------
+// ---------- Арифметические выражения
+// ----------------------------------------------------------------------------
 fun_arithm: fun_arithm '+' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOFUNArithm *)$3); }
 			| fun_arithm '-' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 - *(RDOFUNArithm *)$3); }
 			| fun_arithm '*' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 * *(RDOFUNArithm *)$3); }
 			| fun_arithm '/' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 / *(RDOFUNArithm *)$3); }
 			| '(' fun_arithm ')'			{ $$ = $2; }
 			| fun_arithm_func_call
+			| fun_select_arithm
 			| IDENTIF '.' IDENTIF			{
 				parser->lexer_loc_backup();
 				parser->lexer_loc_set( &(@3) );
@@ -241,25 +263,132 @@ fun_arithm_func_call_pars:	/* empty */ {
 								$$ = (int)(((RDOFUNParams *)$1)->addParameter((RDOFUNArithm *)$3));
 							};
 
+// ----------------------------------------------------------------------------
+// ---------- Групповые выражения
+// ----------------------------------------------------------------------------
 fun_group_keyword:	Exist			{ $$ = 1; }
 					| Not_Exist		{ $$ = 2; }
 					| For_All		{ $$ = 3; }
 					| Not_For_All	{ $$ = 4; };
 
 fun_group_header:	fun_group_keyword '(' IDENTIF_COLON {
-						$$ = (int)(new RDOFUNGroup($1, (std::string *)$3));
+						parser->lexer_loc_backup();
+						parser->lexer_loc_set( @3.first_line, @3.first_column + ((std::string*)$3)->length() );
+						$$ = (int)(new RDOFUNGroupLogic($1, (std::string *)$3));
+						parser->lexer_loc_restore();
 					}
 					| fun_group_keyword '(' error {
 						parser->lexer_loc_set( &(@3) );
 						parser->error( "Ожидается имя типа" );
+					}
+					| fun_group_keyword error {
+						parser->lexer_loc_set( &(@1) );
+						parser->error( "Ожидается октрывающаяся скобка" );
 					};
 
-fun_group:	fun_group_header fun_logic ')' {
-				$$ = (int)(((RDOFUNGroup *)$1)->createFunLogin((RDOFUNLogic *)$2));
-			}
-			| fun_group_header NoCheck ')' {
-				$$ = (int)(((RDOFUNGroup *)$1)->createFunLogin());
-			};
+fun_group:			fun_group_header fun_logic ')' {
+						$$ = (int)(((RDOFUNGroupLogic *)$1)->createFunLogic((RDOFUNLogic *)$2));
+					}
+					| fun_group_header NoCheck ')' {
+						$$ = (int)(((RDOFUNGroupLogic *)$1)->createFunLogic());
+					}
+					| fun_group_header fun_logic error {
+						parser->lexer_loc_set( @2.last_line, @2.last_column );
+						parser->error( "Ожидается закрывающаяся скобка" );
+					}
+					| fun_group_header NoCheck error {
+						parser->lexer_loc_set( @2.last_line, @2.last_column );
+						parser->error( "Ожидается закрывающаяся скобка" );
+					};
+
+fun_select_header:	Select '(' IDENTIF_COLON {
+						parser->lexer_loc_backup();
+						parser->lexer_loc_set( @3.first_line, @3.first_column + ((std::string*)$3)->length() );
+						RDOFUNSelect* select = new RDOFUNSelect((std::string*)$3);
+						parser->lexer_loc_restore();
+						$$ = (int)select;
+					}
+					| Select '(' error {
+						parser->lexer_loc_set( &(@3) );
+						parser->error( "Ожидается имя типа" );
+					}
+					| Select error {
+						parser->lexer_loc_set( &(@1) );
+						parser->error( "Ожидается октрывающаяся скобка" );
+					};
+
+fun_select_body:	fun_select_header fun_logic ')' {
+						((RDOFUNSelect*)$1)->createFunSelect((RDOFUNLogic *)$2);
+						$$ = $1;
+					}
+					| fun_select_header NoCheck ')' {
+						((RDOFUNSelect*)$1)->createFunSelect();
+						$$ = $1;
+					}
+					| fun_select_header fun_logic error {
+						parser->lexer_loc_set( @2.last_line, @2.last_column );
+						parser->error( "Ожидается закрывающаяся скобка" );
+					}
+					| fun_select_header NoCheck error {
+						parser->lexer_loc_set( @2.last_line, @2.last_column );
+						parser->error( "Ожидается закрывающаяся скобка" );
+					};
+
+fun_select_keyword:	Exist			{ $$ = 1; }
+					| Not_Exist		{ $$ = 2; }
+					| For_All		{ $$ = 3; }
+					| Not_For_All	{ $$ = 4; };
+
+fun_select_logic:	fun_select_body '.' fun_select_keyword '(' fun_logic ')' {
+						$$ = (int)(((RDOFUNSelect *)$1)->createFunSelect($3, (RDOFUNLogic *)$5));
+					}
+					| fun_select_body '.' Empty_kw '(' ')' {
+						$$ = (int)(((RDOFUNSelect *)$1)->createFunSelectEmpty());
+					}
+					| fun_select_body error {
+						parser->lexer_loc_set( &(@1) );
+						parser->error( "Ожидается '.' (точка) для вызова метода списка ресурсов" );
+					}
+					| fun_select_body '.' error {
+						parser->lexer_loc_set( &(@2), &(@3) );
+						parser->error( "Ожидается метод списка ресурсов" );
+					}
+					| fun_select_body '.' fun_select_keyword error {
+						parser->lexer_loc_set( &(@3) );
+						parser->error( "Ожидается октрывающаяся скобка" );
+					}
+					| fun_select_body '.' Empty_kw error {
+						parser->lexer_loc_set( &(@3) );
+						parser->error( "Ожидается октрывающаяся скобка" );
+					}
+					| fun_select_body '.' fun_select_keyword '(' error ')' {
+						parser->lexer_loc_set( @5.first_line, @5.first_column );
+						parser->error( "Ошибка в логическом выражении" );
+					}
+					| fun_select_body '.' Empty_kw '(' error {
+						parser->lexer_loc_set( &(@4) );
+						parser->error( "Ожидается закрывающаяся скобка" );
+					};
+
+fun_select_arithm:	fun_select_body '.' Size_kw '(' ')' {
+						$$ = (int)(((RDOFUNSelect *)$1)->createFunSelectSize());
+					}
+					| fun_select_body error {
+						parser->lexer_loc_set( &(@1) );
+						parser->error( "Ожидается '.' (точка) для вызова метода списка ресурсов" );
+					}
+					| fun_select_body '.' error {
+						parser->lexer_loc_set( &(@2), &(@3) );
+						parser->error( "Ожидается метод списка ресурсов: Size()" );
+					}
+					| fun_select_body '.' Size_kw error {
+						parser->lexer_loc_set( &(@3) );
+						parser->error( "Ожидается октрывающаяся скобка" );
+					}
+					| fun_select_body '.' Size_kw '(' error {
+						parser->lexer_loc_set( &(@4) );
+						parser->error( "Ожидается закрывающаяся скобка" );
+					};
 
 %%
 

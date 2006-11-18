@@ -81,7 +81,8 @@ NoCheck				return(NoCheck);
 nocheck				return(NoCheck);
 or					return(or_keyword);
 and					return(and_keyword);
-
+!					return(not_keyword);
+not					return(not_keyword);
 
 $Pattern			return(Pattern);
 $pattern			return(Pattern);
@@ -225,6 +226,10 @@ triang				return(triang);
 active				return(active);
 Select				return(Select);
 select				return(Select);
+size				return(Size_kw);
+Size				return(Size_kw);
+empty				return(Empty_kw);
+Empty				return(Empty_kw);
 
 (\'[^\']*\')		{
 						std::string n1(YYText());
