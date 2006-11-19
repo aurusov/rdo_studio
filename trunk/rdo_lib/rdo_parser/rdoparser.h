@@ -86,8 +86,21 @@ public:
 	const std::vector< RDODPTSome* >&         getDPTSome() const         { return allDPTSome;         }
 	const std::vector< RDODPTFreeActivity* >& getDPTFreeActivity() const { return allDPTFreeActivity; }
 
-	void insertDeletables( RDODeletable* value )            { if ( value ) allDeletables.push_back( value );                                         }
-	void removeDeletables( RDODeletable* value )            { allDeletables.erase( std::find( allDeletables.begin(), allDeletables.end(), value ) ); }
+	void insertDeletables( RDODeletable* value )            {
+		if ( value ) {
+			allDeletables.push_back( value );
+			TRACE( "add %d\n", value );
+		}
+	}
+	void removeDeletables( RDODeletable* value )            {
+		std::vector< RDODeletable* >::iterator it = std::find( allDeletables.begin(), allDeletables.end(), value );
+		if ( it != allDeletables.end() ) {
+			allDeletables.erase( it );
+			TRACE( "del %d\n", value );
+		}
+	}
+//	void insertDeletables( RDODeletable* value )            { if ( value ) allDeletables.push_back( value );                                         }
+//	void removeDeletables( RDODeletable* value )            { allDeletables.erase( std::find( allDeletables.begin(), allDeletables.end(), value ) ); }
 
 	void insertRTPResType( RDORTPResType* value )           { if ( value ) allRTPResType.push_back( value );    }
 	void insertRTPParam( RDORTPParamDesc* value )           { if ( value ) allRTPParams.push_back( value );     }

@@ -57,6 +57,8 @@ protected:
 
 	rdoRuntime::RDOPatternRuntime* patRuntime;
 
+	std::map< std::string, YYLTYPE > rel_res_pos;
+
 public:
 	enum ConvertStatus {
 		CS_Keep,
@@ -93,6 +95,7 @@ public:
 	virtual void addRelRes( std::string* relName, std::string* resName, ConvertStatus beg );
 	virtual void addRelRes( std::string* relName, std::string* resName, std::string* convBeg );
 	const std::string* const getName() const { return name; }
+	void setRelResPos( std::string* relRes, YYLTYPE* pos );
 
 	void setCommonChoiceFirst();
 	void setCommonChoiceWithMin( RDOFUNArithm* arithm );

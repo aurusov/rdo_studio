@@ -548,6 +548,28 @@ void RDOThreadSimulator::closeModel()
 		delete parser;
 		parser = NULL;
 	}
+/*
+	try {
+		if ( runtime ) {
+			delete runtime;
+			runtime = NULL;
+		}
+	} catch (...) {
+		runtime = NULL;
+//		std::string mess = "Внутреннее исключение: ошибка удаления объекта runtime";
+//		sendMessage( kernel, RDOThread::RT_DEBUG_STRING, &mess );
+	}
+	try {
+		if ( parser ) {
+			delete parser;
+			parser = NULL;
+		}
+	} catch (...) {
+		parser = NULL;
+//		std::string mess = "Внутреннее исключение: ошибка удаления объекта parser";
+//		sendMessage( kernel, RDOThread::RT_DEBUG_STRING, &mess );
+	}
+*/
 }
 
 void RDOThreadSimulator::parseSMRFileInfo( rdo::binarystream& smr, rdoModelObjects::RDOSMRFileInfo& info )

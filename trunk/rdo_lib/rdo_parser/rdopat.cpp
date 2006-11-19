@@ -211,6 +211,14 @@ void RDOPATPattern::addRelRes( std::string* relName, std::string* resName, std::
 //	parser->error( "Needed 1 converter status for this pattern type" );
 }
 
+void RDOPATPattern::setRelResPos( std::string* relRes, YYLTYPE* pos )
+{
+	rel_res_pos[ *relRes ] = *pos;
+	if ( pos->first_line == pos->last_line ) {
+		rel_res_pos[ *relRes ].last_column = rel_res_pos[ *relRes ].first_column + relRes->length();
+	}
+}
+
 void RDOPATPatternOperation::addRelRes( std::string* relName, std::string* resName, std::string* convBeg )
 {
 	addRelRes( relName, resName, RDOPATPattern::StrToStatus( *convBeg ), CS_NoChange );
@@ -355,35 +363,39 @@ void RDOPATPattern::setTime(RDOFUNArithm *arithm)
 //	time = arithm; 
 }
 
-void RDOPATPattern::addRelResBody(std::string *resName) 
+void RDOPATPattern::addRelResBody( std::string* resName )
 { 
-	std::vector<RDORelevantResource *>::const_iterator it = 
-		std::find_if(relRes.begin(), relRes.end(), compareName<RDORelevantResource>(resName));
-
-	if(it == relRes.end())
-		parser->error("Name of relevant resource expected instead of: " + *resName);
-
+	std::vector< RDORelevantResource* >::const_iterator it = std::find_if( relRes.begin(), relRes.end(), compareName<RDORelevantResource>(resName) );
+	if ( it == relRes.end() ) {
+		parser->error( rdo::format("Неизвестный релевантный ресурс: %s", resName->c_str()) );
+//		parser->error( "Name of relevant resource expected instead of: " + *resName );
+	}
 	currRelRes = (*it);
-	if(currRelRes->alreadyHaveConverter)
-		parser->error("\"" + *resName + "\" relevant resource has converter block already");
-
+	if ( currRelRes->alreadyHaveConverter ) {
+		parser->error( rdo::format("Релевантный ресурс уже используется: %s", resName->c_str()) );
+//		parser->error( "\"" + *resName + "\" relevant resource has converter block already" );
+	}
 	currRelRes->alreadyHaveConverter = true;
 }
 
 void RDOPATPattern::addRelResUsage( RDOPATChoice* choice, RDOPATSelectType* first )
 {
-	if ( useCommonChoice && first->type != RDOPATSelectType::st_empty )
-		parser->error("Cannot use both common choice and choice for \"" + *currRelRes->getName() + "\" relevant resource in pattern \"" + *getName() + "\"");
+	if ( useCommonChoice && first->type != RDOPATSelectType::st_empty ) {
+		parser->error( "Нельзя указать способ выбора релевантного ресурса, т.к. используется единый для всех релевантных ресурсов способ, указанный до ключевого слова $Body" );
+//		parser->error( "Cannot use both common choice and choice for \"" + *currRelRes->getName() + "\" relevant resource in pattern \"" + *getName() + "\"" );
+	}
 
 	if ( !useCommonChoice && first->type == RDOPATSelectType::st_empty ) {
 		if ( (currRelRes->begin != CS_Create) && (currRelRes->end != CS_Create) ) {
-			parser->error("Must use either common choice either choice for \"" + *currRelRes->getName() + "\" relevant resource in pattern \"" + *getName() + "\"");
+			parser->error( "Ожидается способ выбора релевантного ресурса" );
+//			parser->error( "Must use either common choice either choice for \"" + *currRelRes->getName() + "\" relevant resource in pattern \"" + *getName() + "\"" );
 		}
 	}
 
 	if ( first->type != RDOPATSelectType::st_empty || choice->type != RDOPATChoice::ch_empty ) {
 		if ( (currRelRes->begin == CS_Create) || (currRelRes->end == CS_Create) ) {
-			parser->error("Cannot use choice when create \"" + *currRelRes->getName() + "\" relevant resource in pattern \"" + *getName() + "\"");
+			parser->error( "Релевантный ресурс создается, для него нельзя использовать 'Choice' и способ выбора. Ожидается конвертор" );
+//			parser->error( "Cannot use choice when create \"" + *currRelRes->getName() + "\" relevant resource in pattern \"" + *getName() + "\"" );
 		}
 	}
 
@@ -407,7 +419,10 @@ void RDOPATPattern::end()
 		RDORelevantResource* currRelRes = relRes.at( i );
 //		if ( !currRelRes->choice ) {
 		if ( !currRelRes->alreadyHaveConverter ) {
-			parser->error( rdo::format("Релевантный ресурс '%s' не используется внутри $Body паттерна '%s'", currRelRes->getName()->c_str(), getName()->c_str()) );
+			parser->lexer_loc_backup();
+			parser->lexer_loc_set( &rel_res_pos[ *currRelRes->getName() ] );
+			parser->warning( rdo::format("Релевантный ресурс '%s' не используется в образце '%s'", currRelRes->getName()->c_str(), getName()->c_str()) );
+			parser->lexer_loc_restore();
 		}
 		patRuntime->addChoiceFromCalc( currRelRes->createSelectEmptyResourceCalc() );
 	}
@@ -452,11 +467,14 @@ void RDOPATPattern::end()
 
 void RDOPATPattern::addRelResConvert()
 {
-	if(currRelRes->begin != CS_NoChange && currRelRes->begin != CS_Erase && currRelRes->begin != CS_NonExist)
-		parser->error("Converter needed for \"" + *currRelRes->getName() + "\" relevant resource in pattern \"" + *getName() + "\"");
+	if ( currRelRes->begin != CS_NoChange && currRelRes->begin != CS_Erase && currRelRes->begin != CS_NonExist ) {
+		parser->error( "Ожидается конвертор релевантного ресурса" );
+//		parser->error( "Converter needed for \"" + *currRelRes->getName() + "\" relevant resource in pattern \"" + *getName() + "\"" );
+	}
 
-	if(currRelRes->end != CS_NoChange && currRelRes->end != CS_Erase && currRelRes->end != CS_NonExist)
-		parser->error("Converter end needed for \"" + *currRelRes->getName() + "\" relevant resource in pattern \"" + *getName() + "\"");
+	if ( currRelRes->end != CS_NoChange && currRelRes->end != CS_Erase && currRelRes->end != CS_NonExist ) {
+		parser->error( "Converter end needed for \"" + *currRelRes->getName() + "\" relevant resource in pattern \"" + *getName() + "\"" );
+	}
 
 	if(currRelRes->begin == CS_Erase)
 		patRuntime->addBeginCalc(new rdoRuntime::RDOCalcEraseRes(currRelRes->numberOfResource));

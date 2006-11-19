@@ -210,6 +210,9 @@ fun_const_param_desc:	IDENTIF_COLON fun_param_type {
 							parser->error( "Неверный тип константы" );
 						};
 
+// ----------------------------------------------------------------------------
+// ---------- Описание параметров
+// ----------------------------------------------------------------------------
 fun_param_type: integer fun_int_diap fun_int_default_val {
 					RDORTPIntDiap *diap = (RDORTPIntDiap *)$2;
 					RDORTPIntDefVal *dv = (RDORTPIntDefVal *)$3;
@@ -308,7 +311,10 @@ fun_int_diap:	/* empty */ {
 					$$ = (int)diap;
 				}
 				| '[' INT_CONST dblpoint INT_CONST ']' {
+					parser->lexer_loc_backup();
+					parser->lexer_loc_set( &(@2) );
 					RDORTPIntDiap *diap = new RDORTPIntDiap($2, $4);
+					parser->lexer_loc_restore();
 					$$ = (int)diap;
 				}
 				| '[' REAL_CONST dblpoint REAL_CONST {
@@ -334,7 +340,6 @@ fun_int_diap:	/* empty */ {
 				| '[' error {
 					parser->lexer_loc_set( &(@2) );
 					parser->error( "Диапазон задан неверно" );
-//					parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_RANGE );
 				};
 
 fun_real_diap: /* empty */ {
@@ -342,27 +347,39 @@ fun_real_diap: /* empty */ {
 					$$ = (int)diap;
 				}
 				| '[' REAL_CONST dblpoint REAL_CONST ']' {
+					parser->lexer_loc_backup();
+					parser->lexer_loc_set( &(@2) );
 					double min = *((double *)$2);
 					double max = *((double *)$4);
 					RDORTPRealDiap *diap = new RDORTPRealDiap(min, max);
+					parser->lexer_loc_restore();
 					$$ = (int)diap;
 				}
 				| '[' REAL_CONST dblpoint INT_CONST ']' {
+					parser->lexer_loc_backup();
+					parser->lexer_loc_set( &(@2) );
 					double min = *((double *)$2);
 					double max = $4;
 					RDORTPRealDiap *diap = new RDORTPRealDiap(min, max);
+					parser->lexer_loc_restore();
 					$$ = (int)diap;
 				}
 				| '[' INT_CONST dblpoint REAL_CONST ']' {
+					parser->lexer_loc_backup();
+					parser->lexer_loc_set( &(@2) );
 					double min = $2;
 					double max = *((double *)$4);
 					RDORTPRealDiap *diap = new RDORTPRealDiap(min, max);
+					parser->lexer_loc_restore();
 					$$ = (int)diap;
 				}
 				| '[' INT_CONST dblpoint INT_CONST ']' {
+					parser->lexer_loc_backup();
+					parser->lexer_loc_set( &(@2) );
 					double min = $2;
 					double max = $4;
 					RDORTPRealDiap *diap = new RDORTPRealDiap(min, max);
+					parser->lexer_loc_restore();
 					$$ = (int)diap;
 				}
 				| '[' REAL_CONST dblpoint REAL_CONST error {
@@ -392,7 +409,6 @@ fun_real_diap: /* empty */ {
 				| '[' error {
 					parser->lexer_loc_set( &(@2) );
 					parser->error( "Диапазон задан неверно" );
-//					parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_RANGE );
 				};
 
 fun_enum:	'(' fun_enum_item ')' {

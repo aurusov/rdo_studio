@@ -225,18 +225,18 @@ pat_params:	pat_params_begin IDENTIF_COLON fun_param_type {
 pat_params_end:	pat_params Relevant_resources   { $$ = $1; }
 				| pat_header Relevant_resources { $$ = $1; };
 
-pat_rel_res:	pat_params_end   IDENTIF_COLON IDENTIF pat_conv pat_conv { parser->lexer_loc_backup(); parser->lexer_loc_set( &(@5) ); ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, (RDOPATPattern::ConvertStatus)$4, (RDOPATPattern::ConvertStatus)$5); parser->lexer_loc_restore(); $$ = $1; }
-				| pat_rel_res    IDENTIF_COLON IDENTIF pat_conv pat_conv { parser->lexer_loc_backup(); parser->lexer_loc_set( &(@5) ); ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, (RDOPATPattern::ConvertStatus)$4, (RDOPATPattern::ConvertStatus)$5); parser->lexer_loc_restore(); $$ = $1; }
-				| pat_params_end IDENTIF_COLON IDENTIF pat_conv          { parser->lexer_loc_backup(); parser->lexer_loc_set( &(@4) ); ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, (RDOPATPattern::ConvertStatus)$4);                                   parser->lexer_loc_restore(); $$ = $1; }
-				| pat_rel_res    IDENTIF_COLON IDENTIF pat_conv          { parser->lexer_loc_backup(); parser->lexer_loc_set( &(@4) ); ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, (RDOPATPattern::ConvertStatus)$4);                                   parser->lexer_loc_restore(); $$ = $1; }
-				| pat_params_end IDENTIF_COLON IDENTIF_NoChange pat_conv { parser->lexer_loc_backup(); parser->lexer_loc_set( &(@4) ); ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, RDOPATPattern::CS_NoChange,       (RDOPATPattern::ConvertStatus)$4); parser->lexer_loc_restore(); $$ = $1; }
-				| pat_rel_res    IDENTIF_COLON IDENTIF_NoChange pat_conv { parser->lexer_loc_backup(); parser->lexer_loc_set( &(@4) ); ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, RDOPATPattern::CS_NoChange,       (RDOPATPattern::ConvertStatus)$4); parser->lexer_loc_restore(); $$ = $1; }
-				| pat_params_end IDENTIF_COLON IDENTIF_NoChange_NoChange { parser->lexer_loc_backup(); parser->lexer_loc_set( &(@3) ); ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, RDOPATPattern::CS_NoChange,       RDOPATPattern::CS_NoChange);       parser->lexer_loc_restore(); $$ = $1; }
-				| pat_rel_res    IDENTIF_COLON IDENTIF_NoChange_NoChange { parser->lexer_loc_backup(); parser->lexer_loc_set( &(@3) ); ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, RDOPATPattern::CS_NoChange,       RDOPATPattern::CS_NoChange);       parser->lexer_loc_restore(); $$ = $1; }
-				| pat_params_end IDENTIF_COLON IDENTIF_NoChange          { parser->lexer_loc_backup(); parser->lexer_loc_set( &(@3) ); ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, RDOPATPattern::CS_NoChange);                                         parser->lexer_loc_restore(); $$ = $1; }
-				| pat_rel_res    IDENTIF_COLON IDENTIF_NoChange          { parser->lexer_loc_backup(); parser->lexer_loc_set( &(@3) ); ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, RDOPATPattern::CS_NoChange);                                         parser->lexer_loc_restore(); $$ = $1; }
-				| pat_params_end IDENTIF_COLON IDENTIF IDENTIF_NoChange  { parser->lexer_loc_backup(); parser->lexer_loc_set( &(@4) ); ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, (std::string *)$4);                                                  parser->lexer_loc_restore(); $$ = $1; }
-				| pat_rel_res    IDENTIF_COLON IDENTIF IDENTIF_NoChange  { parser->lexer_loc_backup(); parser->lexer_loc_set( &(@4) ); ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, (std::string *)$4);                                                  parser->lexer_loc_restore(); $$ = $1; }
+pat_rel_res:	pat_params_end   IDENTIF_COLON IDENTIF pat_conv pat_conv { parser->lexer_loc_backup(); parser->lexer_loc_set( &(@5) ); ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, (RDOPATPattern::ConvertStatus)$4, (RDOPATPattern::ConvertStatus)$5); parser->lexer_loc_restore(); ((RDOPATPattern *)$1)->setRelResPos((std::string *)$2, &(@2)); $$ = $1; }
+				| pat_rel_res    IDENTIF_COLON IDENTIF pat_conv pat_conv { parser->lexer_loc_backup(); parser->lexer_loc_set( &(@5) ); ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, (RDOPATPattern::ConvertStatus)$4, (RDOPATPattern::ConvertStatus)$5); parser->lexer_loc_restore(); ((RDOPATPattern *)$1)->setRelResPos((std::string *)$2, &(@2)); $$ = $1; }
+				| pat_params_end IDENTIF_COLON IDENTIF pat_conv          { parser->lexer_loc_backup(); parser->lexer_loc_set( &(@4) ); ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, (RDOPATPattern::ConvertStatus)$4);                                   parser->lexer_loc_restore(); ((RDOPATPattern *)$1)->setRelResPos((std::string *)$2, &(@2)); $$ = $1; }
+				| pat_rel_res    IDENTIF_COLON IDENTIF pat_conv          { parser->lexer_loc_backup(); parser->lexer_loc_set( &(@4) ); ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, (RDOPATPattern::ConvertStatus)$4);                                   parser->lexer_loc_restore(); ((RDOPATPattern *)$1)->setRelResPos((std::string *)$2, &(@2)); $$ = $1; }
+				| pat_params_end IDENTIF_COLON IDENTIF_NoChange pat_conv { parser->lexer_loc_backup(); parser->lexer_loc_set( &(@4) ); ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, RDOPATPattern::CS_NoChange,       (RDOPATPattern::ConvertStatus)$4); parser->lexer_loc_restore(); ((RDOPATPattern *)$1)->setRelResPos((std::string *)$2, &(@2)); $$ = $1; }
+				| pat_rel_res    IDENTIF_COLON IDENTIF_NoChange pat_conv { parser->lexer_loc_backup(); parser->lexer_loc_set( &(@4) ); ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, RDOPATPattern::CS_NoChange,       (RDOPATPattern::ConvertStatus)$4); parser->lexer_loc_restore(); ((RDOPATPattern *)$1)->setRelResPos((std::string *)$2, &(@2)); $$ = $1; }
+				| pat_params_end IDENTIF_COLON IDENTIF_NoChange_NoChange { parser->lexer_loc_backup(); parser->lexer_loc_set( &(@3) ); ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, RDOPATPattern::CS_NoChange,       RDOPATPattern::CS_NoChange);       parser->lexer_loc_restore(); ((RDOPATPattern *)$1)->setRelResPos((std::string *)$2, &(@2)); $$ = $1; }
+				| pat_rel_res    IDENTIF_COLON IDENTIF_NoChange_NoChange { parser->lexer_loc_backup(); parser->lexer_loc_set( &(@3) ); ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, RDOPATPattern::CS_NoChange,       RDOPATPattern::CS_NoChange);       parser->lexer_loc_restore(); ((RDOPATPattern *)$1)->setRelResPos((std::string *)$2, &(@2)); $$ = $1; }
+				| pat_params_end IDENTIF_COLON IDENTIF_NoChange          { parser->lexer_loc_backup(); parser->lexer_loc_set( &(@3) ); ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, RDOPATPattern::CS_NoChange);                                         parser->lexer_loc_restore(); ((RDOPATPattern *)$1)->setRelResPos((std::string *)$2, &(@2)); $$ = $1; }
+				| pat_rel_res    IDENTIF_COLON IDENTIF_NoChange          { parser->lexer_loc_backup(); parser->lexer_loc_set( &(@3) ); ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, RDOPATPattern::CS_NoChange);                                         parser->lexer_loc_restore(); ((RDOPATPattern *)$1)->setRelResPos((std::string *)$2, &(@2)); $$ = $1; }
+				| pat_params_end IDENTIF_COLON IDENTIF IDENTIF_NoChange  { parser->lexer_loc_backup(); parser->lexer_loc_set( &(@4) ); ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, (std::string *)$4);                                                  parser->lexer_loc_restore(); ((RDOPATPattern *)$1)->setRelResPos((std::string *)$2, &(@2)); $$ = $1; }
+				| pat_rel_res    IDENTIF_COLON IDENTIF IDENTIF_NoChange  { parser->lexer_loc_backup(); parser->lexer_loc_set( &(@4) ); ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, (std::string *)$4);                                                  parser->lexer_loc_restore(); ((RDOPATPattern *)$1)->setRelResPos((std::string *)$2, &(@2)); $$ = $1; }
 				| pat_params_end error {
 					parser->lexer_loc_set( &(@2) );
 					parser->error( "Ошибка в описании релевантных ресурсов" );
@@ -361,13 +361,17 @@ pat_common_choice:	pat_rel_res
 						parser->error( "Перед $Body необходимо использовать 'with_max(1)' вместо 'first'" );
 //						((RDOPATPattern *)$1)->setCommonChoiceFirst(); $$ = $1;
 					}
-					| pat_rel_res with_min fun_arithm {
-						((RDOPATPattern *)$1)->setCommonChoiceWithMin((RDOFUNArithm *)$3);
+					| pat_rel_res with_min '(' fun_arithm ')' {
+						((RDOPATPattern *)$1)->setCommonChoiceWithMin((RDOFUNArithm *)$4);
 						$$ = $1;
 					}
-					| pat_rel_res with_max fun_arithm {
-						((RDOPATPattern *)$1)->setCommonChoiceWithMax((RDOFUNArithm *)$3);
+					| pat_rel_res with_max '(' fun_arithm ')' {
+						((RDOPATPattern *)$1)->setCommonChoiceWithMax((RDOFUNArithm *)$4);
 						$$ = $1;
+					}
+					| pat_rel_res with_min error {
+						parser->lexer_loc_set( &(@2), &(@3) );
+						parser->error( "Ожидается арифметическое выражение" );
 					};
 
 pat_time:	pat_common_choice Body {
@@ -391,16 +395,33 @@ pat_time:	pat_common_choice Body {
 			};
 
 pat_body:	pat_time IDENTIF {
+				parser->lexer_loc_backup();
+				parser->lexer_loc_set( &(@2) );
 				((RDOPATPattern *)$1)->addRelResBody((std::string *)$2);
+				parser->lexer_loc_restore();
 				$$ = $1;
 			}
 			| pat_convert IDENTIF {
+				parser->lexer_loc_backup();
+				parser->lexer_loc_set( &(@2) );
 				((RDOPATPattern *)$1)->addRelResBody((std::string *)$2);
+				parser->lexer_loc_restore();
 				$$ = $1;
+			}
+			| pat_time error {
+				parser->lexer_loc_set( &(@2) );
+				parser->error( "qqq1" );
+			}
+			| pat_convert error {
+				parser->lexer_loc_set( &(@2) );
+				parser->error( "qqq2" );
 			};
 
 pat_res_usage:	pat_body pat_choice pat_first {
+					parser->lexer_loc_backup();
+					parser->lexer_loc_set( &(@3) );
 					((RDOPATPattern *)$1)->addRelResUsage((RDOPATChoice *)$2, (RDOPATSelectType *)$3);
+					parser->lexer_loc_restore();
 					$$ = $1;
 				};
 
@@ -430,11 +451,27 @@ pat_first:	/* empty */ {
 			| pat_choice_first {
 				$$ = (int) new RDOPATSelectType( RDOPATSelectType::st_first );
 			}
-			| pat_choice_with_min fun_arithm {
-				$$ = (int) new RDOPATSelectType( RDOPATSelectType::st_with_min, (RDOFUNArithm *)$2 );
+			| pat_choice_with_min '(' fun_arithm ')' {
+				$$ = (int) new RDOPATSelectType( RDOPATSelectType::st_with_min, (RDOFUNArithm *)$3 );
 			}
-			| pat_choice_with_max fun_arithm {
-				$$ = (int) new RDOPATSelectType( RDOPATSelectType::st_with_max, (RDOFUNArithm *)$2 );
+			| pat_choice_with_max '(' fun_arithm ')' {
+				$$ = (int) new RDOPATSelectType( RDOPATSelectType::st_with_max, (RDOFUNArithm *)$3 );
+			}
+			| pat_choice_with_min error {
+				parser->lexer_loc_set( &(@1) );
+				parser->error( "Ожидается октрывающаяся скобка" );
+			}
+			| pat_choice_with_min '(' fun_arithm error {
+				parser->lexer_loc_set( @3.last_line, @3.last_column );
+				parser->error( "Ожидается закрывающаяся скобка" );
+			}
+			| pat_choice_with_max error {
+				parser->lexer_loc_set( &(@1) );
+				parser->error( "Ожидается октрывающаяся скобка" );
+			}
+			| pat_choice_with_max '(' fun_arithm error {
+				parser->lexer_loc_set( @3.last_line, @3.last_column );
+				parser->error( "Ожидается закрывающаяся скобка" );
 			};
 
 pat_choice_first: first_keyword {
@@ -494,9 +531,12 @@ pat_params_set:												{  $$ = (int) new RDOPATParamsSet(); }
 			|	pat_params_set IDENTIF_set fun_arithm	{	((RDOPATParamsSet *)$1)->addIdentif((std::string *)$2, (RDOFUNArithm *)$3); $$ = $1;}
 			|	pat_params_set IDENTIF_NoChange			{	((RDOPATParamsSet *)$1)->addIdentif((std::string *)$2); $$ = $1;};
 
-pat_pattern:	pat_convert	End { ((RDOPATPattern *)$1)->end(); $$ = $1; }
-				| pat_time	End { ((RDOPATPattern *)$1)->end(); $$ = $1; };
+pat_pattern:	pat_convert End { ((RDOPATPattern *)$1)->end(); $$ = $1; }
+				| pat_time  End { ((RDOPATPattern *)$1)->end(); $$ = $1; };
 
+// ----------------------------------------------------------------------------
+// ---------- Описание параметров
+// ----------------------------------------------------------------------------
 fun_param_type: integer fun_int_diap fun_int_default_val {
 					RDORTPIntDiap *diap = (RDORTPIntDiap *)$2;
 					RDORTPIntDefVal *dv = (RDORTPIntDefVal *)$3;
@@ -624,7 +664,6 @@ fun_int_diap:	/* empty */ {
 				| '[' error {
 					parser->lexer_loc_set( &(@2) );
 					parser->error( "Диапазон задан неверно" );
-//					parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_RANGE );
 				};
 
 fun_real_diap: /* empty */ {
@@ -694,7 +733,6 @@ fun_real_diap: /* empty */ {
 				| '[' error {
 					parser->lexer_loc_set( &(@2) );
 					parser->error( "Диапазон задан неверно" );
-//					parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_RANGE );
 				};
 
 fun_enum:	'(' fun_enum_item ')' {
