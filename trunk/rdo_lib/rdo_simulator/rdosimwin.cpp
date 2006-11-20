@@ -265,6 +265,11 @@ void RDOThreadRunTime::idle()
 		std::string mess = "Internal exception: " + ex.mess;
 		sendMessage( kernel, RDOThread::RT_DEBUG_STRING, &mess );
 	}
+	catch (...) {
+		runtime_error = true;
+		TRACE( "******************************** Ошибка rdoNext()\n" );
+		simulator->runtime->onRuntimeError();
+	}
 }
 
 void RDOThreadRunTime::stop()
@@ -540,15 +545,6 @@ void RDOThreadSimulator::terminateModel()
 
 void RDOThreadSimulator::closeModel()
 {
-	if ( runtime ) {
-		delete runtime;
-		runtime = NULL;
-	}
-	if ( parser ) {
-		delete parser;
-		parser = NULL;
-	}
-/*
 	try {
 		if ( runtime ) {
 			delete runtime;
@@ -556,8 +552,7 @@ void RDOThreadSimulator::closeModel()
 		}
 	} catch (...) {
 		runtime = NULL;
-//		std::string mess = "Внутреннее исключение: ошибка удаления объекта runtime";
-//		sendMessage( kernel, RDOThread::RT_DEBUG_STRING, &mess );
+		TRACE( "******************************** Ошибка удаления runtime\n" );
 	}
 	try {
 		if ( parser ) {
@@ -566,10 +561,8 @@ void RDOThreadSimulator::closeModel()
 		}
 	} catch (...) {
 		parser = NULL;
-//		std::string mess = "Внутреннее исключение: ошибка удаления объекта parser";
-//		sendMessage( kernel, RDOThread::RT_DEBUG_STRING, &mess );
+		TRACE( "******************************** Ошибка удаления parser\n" );
 	}
-*/
 }
 
 void RDOThreadSimulator::parseSMRFileInfo( rdo::binarystream& smr, rdoModelObjects::RDOSMRFileInfo& info )

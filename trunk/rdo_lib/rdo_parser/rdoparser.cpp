@@ -235,8 +235,16 @@ const RDOPATPattern *RDOParser::findPattern(const std::string *const name) const
 }
 
 void addCalcToRuntime( rdoRuntime::RDOCalc* calc )
-{	
-	parser->runTime->allCalcs.push_back(calc); 
+{
+	parser->runTime->allCalcs.push_back( calc ); 
+}
+
+void removeCalcToRuntime( rdoRuntime::RDOCalc* calc )
+{
+	std::list< rdoRuntime::RDOCalc* >& list = parser->runTime->allCalcs;
+	if ( std::find( list.begin(), list.end(), calc ) != list.end() ) {
+		list.remove( calc );
+	}
 }
 
 void RDOParser::LoadStdFunctions()

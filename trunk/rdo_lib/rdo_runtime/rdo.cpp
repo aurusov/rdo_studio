@@ -198,7 +198,7 @@ void RDOSimulator::postProcess()
 
 RDODecisionPoint::~RDODecisionPoint()
 {                                      
-   DeleteAllObjects(activities);
+	DeleteAllObjects( activities );
 }
 
 RDOActivity::~RDOActivity()

@@ -59,7 +59,8 @@ class RDOPMDWatchQuant;
 class RDOPMDWatchValue;
 class RDOPMDWatchPar;	  
 class RDOPMDWatchState;
-void addCalcToRuntime(rdoRuntime::RDOCalc *calc);
+void addCalcToRuntime( rdoRuntime::RDOCalc* calc );
+void removeCalcToRuntime( rdoRuntime::RDOCalc* calc );
 }
 
 namespace rdoRuntime
@@ -125,7 +126,8 @@ friend class rdoParse::RDOPMDWatchValue;
 friend class rdoParse::RDOPMDWatchPar;	  
 friend class rdoParse::RDOPMDWatchState;
 
-friend void rdoParse::addCalcToRuntime(RDOCalc *calc);
+friend void rdoParse::addCalcToRuntime( RDOCalc* calc );
+friend void rdoParse::removeCalcToRuntime( RDOCalc* calc );
 
 private:
 	std::vector<RDOResource *> allResources;

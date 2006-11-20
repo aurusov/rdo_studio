@@ -25,21 +25,32 @@ template <class Res, class Sim> Res *ChoiceFirstFrom(std::list<Res *> &storage,
    return NULL;
 }
 
-template <class Stor> void DeleteAllObjects(Stor &storage)
+template<class Stor> void DeleteAllObjects( Stor& storage, bool auto_delete = false )
 {
 //   for(Stor::iterator i = storage.begin(); 
 //         i != storage.end(); i++)
 
 //	std::for_each<Stor::reverse_iterator, void (*)(Stor::value_type)>(storage.rbegin(), storage.rend(), ::operator delete<Stor::value_type>);
 
-   for(Stor::reverse_iterator i = storage.rbegin(); 
-         i != storage.rend(); i++)
-   {
-		if(*i != NULL)
-	      delete(*i);
-   }
+	Stor::reverse_iterator it = storage.rbegin();
+	while ( it != storage.rend() ) {
+		delete *it;
+		if ( auto_delete ) {
+			it = storage.rbegin();
+		} else {
+			it++;
+		}
+	}
+	storage.clear();
 
-   storage.clear();
+/*
+	for ( Stor::reverse_iterator i = storage.rbegin(); i != storage.rend(); i++ ) {
+		if ( *i != NULL ) {
+			delete(*i);
+		}
+	}
+	storage.clear();
+*/
 }
 
 #endif //RDO_DEFINES_H_

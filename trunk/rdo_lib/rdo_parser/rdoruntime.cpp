@@ -286,15 +286,15 @@ bool RDORuntime::setTerminateIf(RDOCalc *_terminateIfCalc)
 RDORuntime::~RDORuntime()
 {
 	rdoDestroy();
-	DeleteAllObjects(allCalcs);
-	DeleteAllObjects(allPatterns);
-	DeleteAllObjects(rules);
-	DeleteAllObjects(ies);
-	DeleteAllObjects(operations);
-	DeleteAllObjects(allPokaz);
-	DeleteAllObjects(allDPTs);
-	DeleteAllObjects(allResources);
-	DeleteAllObjects(allFrames);
+	DeleteAllObjects( allCalcs, true );
+	DeleteAllObjects( allPatterns );
+	DeleteAllObjects( rules );
+	DeleteAllObjects( ies );
+	DeleteAllObjects( operations );
+	DeleteAllObjects( allPokaz );
+	DeleteAllObjects( allDPTs );
+	DeleteAllObjects( allResources );
+	DeleteAllObjects( allFrames );
 }
 
 std::string RDOResource::getTypeId()
@@ -398,14 +398,17 @@ RDOTrace *RDORuntime::getTracer()
 
 void RDORuntime::onDestroy()
 {                    
-	DeleteAllObjects(allResources);
-   if(tracer) 
-      delete tracer;
-	tracer = NULL;
+	DeleteAllObjects( allResources );
 
-	if(result)
-      delete result;
-	result = NULL;
+	if ( tracer ) {
+		delete tracer;
+		tracer = NULL;
+	}
+
+	if ( result ) {
+		delete result;
+		result = NULL;
+	}
 }
 
 RDOValue RDOCalcFuncParam::calcValue(RDORuntime *sim) const
@@ -848,6 +851,11 @@ RDOCalc::RDOCalc()
 	fileToParse = rdoParse::parser->getFileToParse();
 	lineno      = rdoParse::parser->lexer_loc_line();
 	rdoParse::addCalcToRuntime( this ); 
+}
+
+RDOCalc::~RDOCalc()
+{
+	rdoParse::removeCalcToRuntime( this ); 
 }
 
 RDOValue RDOCalc::calcValueBase( RDORuntime* sim ) const

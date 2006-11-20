@@ -16,7 +16,7 @@ private:
 
 public:
 	RDOCalc();
-	virtual ~RDOCalc() {};
+	virtual ~RDOCalc();
 
 	rdoModelObjects::RDOFileType fileToParse;
 	int lineno;

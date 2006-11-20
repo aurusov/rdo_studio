@@ -89,14 +89,14 @@ public:
 	void insertDeletables( RDODeletable* value )            {
 		if ( value ) {
 			allDeletables.push_back( value );
-			TRACE( "add %d\n", value );
+//			TRACE( "add %d\n", value );
 		}
 	}
 	void removeDeletables( RDODeletable* value )            {
 		std::vector< RDODeletable* >::iterator it = std::find( allDeletables.begin(), allDeletables.end(), value );
 		if ( it != allDeletables.end() ) {
 			allDeletables.erase( it );
-			TRACE( "del %d\n", value );
+//			TRACE( "del %d\n", value );
 		}
 	}
 //	void insertDeletables( RDODeletable* value )            { if ( value ) allDeletables.push_back( value );                                         }
