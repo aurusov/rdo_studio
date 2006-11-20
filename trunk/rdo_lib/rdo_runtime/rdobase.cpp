@@ -7,6 +7,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 #include "rdobase.h"
+#include "rdoparser.h"
 #include <limits>
 
 RDOSimulatorBase::RDOSimulatorBase():

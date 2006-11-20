@@ -68,8 +68,11 @@ void RDORuleRuntime::convertRule(RDOSimulator *sim)
 
 double RDOIERuntime::getNextTimeInterval(RDOSimulator *sim)
 {
-	RDORuntime *runtime = (RDORuntime *)sim;
-	return timeField->calcValueBase(runtime);
+	RDORuntime* runtime = (RDORuntime *)sim;
+	double time_next = timeField->calcValueBase(runtime);
+	if ( time_next >= 0 ) return time_next;
+	runtime->error( rdo::format("ѕопытка запланировать событие в прошлом. ¬ыражение времени дл€ $Time имеет отрицательное значение: %f", time_next).c_str(), timeField );
+	return 0;
 }
 
 void RDOIERuntime::convertEvent(RDOSimulator *sim)

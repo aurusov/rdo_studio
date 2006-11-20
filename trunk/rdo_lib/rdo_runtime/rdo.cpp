@@ -179,7 +179,7 @@ void RDOSimulator::preProcess()
 		RDOIE* currIE = dynamic_cast<RDOIE*>(*i);
 		if ( currIE ) {
 			currIE->onBeforeIrregularEvent( this );
-			addTimePoint( currIE->time = (currIE->getNextTimeInterval(this) + getCurrentTime()) );
+			addTimePoint( currIE->time = (currIE->getNextTimeInterval( this ) + getCurrentTime()) );
 			currIE->onAfterIrregularEvent( this );
 		}
 		rdoRuntime::RDOPROCProcess* process = dynamic_cast<rdoRuntime::RDOPROCProcess*>(*i);

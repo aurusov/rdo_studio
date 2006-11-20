@@ -862,7 +862,7 @@ RDOValue RDOCalc::calcValueBase( RDORuntime* sim ) const
 {
 	try {
 		return calcValue( sim );
-	} catch( RDOException& ) {
+	} catch ( RDOException& ) {
 		sim->error( "in", this );
 	}
 	return 0; // unreachable code

@@ -225,9 +225,11 @@ void RDOThreadRunTime::start()
 	}
 	catch( rdoParse::RDOSyntaxException& ) {
 		runtime_error = true;
+		simulator->runtime->onRuntimeError();
 	}
 	catch( rdoParse::RDOInternalException& ex ) {
 		runtime_error = true;
+		simulator->runtime->onRuntimeError();
 		std::string mess = "Internal exception: " + ex.mess;
 		sendMessage( kernel, RDOThread::RT_DEBUG_STRING, &mess );
 	}

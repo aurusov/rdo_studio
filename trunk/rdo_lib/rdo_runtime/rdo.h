@@ -12,6 +12,10 @@ class RDOOperation;
 class RDOIE;
 class CheckOperations;
 
+namespace rdoRuntime {
+class RDOCalc;
+}
+
 class RDOBaseOperation
 {
 public:
@@ -105,13 +109,13 @@ private:
 	bool checkOperation(RDOSimulator *sim);
 
 protected:
-   virtual void onBeforeIrregularEvent(RDOSimulator *sim) {}
-   virtual void onAfterIrregularEvent(RDOSimulator *sim) {}
-   virtual double getNextTimeInterval(RDOSimulator *sim) = 0;
-   virtual void convertEvent(RDOSimulator *sim) = 0;
+	virtual void onBeforeIrregularEvent(RDOSimulator *sim) {}
+	virtual void onAfterIrregularEvent(RDOSimulator *sim) {}
+	virtual double getNextTimeInterval(RDOSimulator *sim) = 0;
+	virtual void convertEvent(RDOSimulator *sim) = 0;
 
 public:
-   virtual ~RDOIE() {}
+	virtual ~RDOIE() {}
 };
 
 class RDOOperation: public RDOBaseOperation
@@ -204,9 +208,9 @@ protected:
    virtual RDOSimulator *createCopy();
 
 public:
-   virtual ~RDOSimulator() {}
-   void rdoInit();
-   void rdoDestroy();
+	virtual ~RDOSimulator() {}
+	void rdoInit();
+	void rdoDestroy();
 
 	virtual void onPutToTreeNode() {}
 };
