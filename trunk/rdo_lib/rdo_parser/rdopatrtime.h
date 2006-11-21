@@ -102,18 +102,18 @@ protected:
 public:
 	void addParamCalc(RDOCalc *calc) { setParamsCalcs.push_back(calc); }
 	virtual ~RDOActivityRuntime() {}
-	int getRelResNumber(const int nRelRes) const 
+	int getRelResNumber( const int nRelRes ) const
 	{
-		if(relResNumbers.size() <= nRelRes)
+		if ( relResNumbers.size() <= nRelRes ) {
 			return 0;
-
+		}
 		return relResNumbers.at(nRelRes); 
 	} 
-	void selectRelResource(int relNumb, int resNumb) 
-	{ 
-		if(relResNumbers.size() <= relNumb)
-			relResNumbers.resize(relNumb + 1); 
-
+	void selectRelResource( int relNumb, int resNumb )
+	{
+		if ( relResNumbers.size() <= relNumb ) {
+			relResNumbers.resize( relNumb + 1 );
+		}
 		relResNumbers[relNumb] = resNumb; 
 	}
 	virtual void addHotKey( std::string* hotKey );

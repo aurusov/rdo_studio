@@ -476,11 +476,11 @@ void RDOPATPattern::addRelResConvert()
 		parser->error( "Converter end needed for \"" + *currRelRes->getName() + "\" relevant resource in pattern \"" + *getName() + "\"" );
 	}
 
-	if(currRelRes->begin == CS_Erase)
-		patRuntime->addBeginCalc(new rdoRuntime::RDOCalcEraseRes(currRelRes->numberOfResource));
+	if ( currRelRes->begin == CS_Erase )
+		patRuntime->addBeginCalc( new rdoRuntime::RDOCalcEraseRes( currRelRes->numberOfResource, *currRelRes->getName() ) );
 
-	if(currRelRes->end == CS_Erase)
-		patRuntime->addEndCalc(new rdoRuntime::RDOCalcEraseRes(currRelRes->numberOfResource));
+	if ( currRelRes->end == CS_Erase )
+		patRuntime->addEndCalc( new rdoRuntime::RDOCalcEraseRes( currRelRes->numberOfResource, *currRelRes->getName() ) );
 }
 
 RDOPATPatternOperation::RDOPATPatternOperation( std::string* _name, bool _trace ):
@@ -608,8 +608,8 @@ void RDOPATPatternOperation::addRelResConvertBegin(bool trace, RDOPATParamsSet *
 	if(currRelRes->end != CS_NoChange && currRelRes->end != CS_Erase && currRelRes->end != CS_NonExist)
 		parser->error("Converter end needed for \"" + *currRelRes->getName() + "\" relevant resource in pattern \"" + *getName() + "\"");
 
-	if(currRelRes->end == CS_Erase)
-		patRuntime->addEndCalc(new rdoRuntime::RDOCalcEraseRes(currRelRes->numberOfResource));
+	if ( currRelRes->end == CS_Erase )
+		patRuntime->addEndCalc( new rdoRuntime::RDOCalcEraseRes( currRelRes->numberOfResource, *currRelRes->getName() ) );
 
 	if(currRelRes->begin == CS_Create)
 	{

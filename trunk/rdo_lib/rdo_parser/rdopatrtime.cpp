@@ -66,9 +66,9 @@ void RDORuleRuntime::convertRule(RDOSimulator *sim)
 		beginCalcs.at(i)->calcValueBase(runtime);
 }
 
-double RDOIERuntime::getNextTimeInterval(RDOSimulator *sim)
+double RDOIERuntime::getNextTimeInterval( RDOSimulator* sim )
 {
-	RDORuntime* runtime = (RDORuntime *)sim;
+	RDORuntime* runtime = static_cast<RDORuntime*>(sim);
 	double time_next = timeField->calcValueBase(runtime);
 	if ( time_next >= 0 ) return time_next;
 	runtime->error( rdo::format("ѕопытка запланировать событие в прошлом. ¬ыражение времени дл€ $Time имеет отрицательное значение: %f", time_next).c_str(), timeField );
@@ -105,10 +105,13 @@ bool RDOIERuntime::choiceFrom(RDOSimulator *sim)
 	return RDOPatternRuntime::choiceFrom(sim);
 }
 
-double RDOOperationRuntime::getNextTimeInterval(RDOSimulator *sim)
+double RDOOperationRuntime::getNextTimeInterval( RDOSimulator* sim )
 {
-	RDORuntime *runtime = (RDORuntime *)sim;
-	return timeField->calcValueBase(runtime);
+	RDORuntime* runtime = static_cast<RDORuntime*>(sim);
+	double time_next = timeField->calcValueBase(runtime);
+	if ( time_next >= 0 ) return time_next;
+	runtime->error( rdo::format("ѕопытка запланировать окончание операции в прошлом. ¬ыражение времени дл€ $Time имеет отрицательное значение: %f", time_next).c_str(), timeField );
+	return 0;
 }
 
 void RDOOperationRuntime::convertBegin(RDOSimulator *sim)

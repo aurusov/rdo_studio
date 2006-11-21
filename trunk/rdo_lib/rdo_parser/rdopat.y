@@ -487,7 +487,10 @@ pat_choice_with_max: with_max {
 			};
 
 pat_convert:	pat_res_usage {
+					parser->lexer_loc_backup();
+					parser->lexer_loc_set( @1.last_line, @1.last_column );
 					((RDOPATPattern *)$1)->addRelResConvert();
+					parser->lexer_loc_restore();
 					$$ = $1;
 				}
 				| pat_res_usage convert_begin pat_trace pat_params_set {

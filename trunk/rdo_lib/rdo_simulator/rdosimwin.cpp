@@ -267,11 +267,11 @@ void RDOThreadRunTime::idle()
 		std::string mess = "Internal exception: " + ex.mess;
 		sendMessage( kernel, RDOThread::RT_DEBUG_STRING, &mess );
 	}
-	catch (...) {
-		runtime_error = true;
-		TRACE( "******************************** Îøèáêà rdoNext()\n" );
-		simulator->runtime->onRuntimeError();
-	}
+//	catch (...) {
+//		runtime_error = true;
+//		TRACE( "******************************** Îøèáêà rdoNext()\n" );
+//		simulator->runtime->onRuntimeError();
+//	}
 }
 
 void RDOThreadRunTime::stop()

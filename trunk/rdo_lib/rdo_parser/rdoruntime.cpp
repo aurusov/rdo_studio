@@ -49,31 +49,31 @@ void RDORuntime::setResParamVal(const int nRes, const int nParam, RDOValue val)
    res->params.at(nParam) = val;
 }
 
-RDOValue RDORuntime::eraseRes(const int resNumb, const RDOCalc *fromCalc)
+RDOValue RDORuntime::eraseRes( const int resNumb, const RDOCalcEraseRes* fromCalc )
 {
-	RDOResource *res = allResources.at(resNumb);
-	std::for_each(allPokaz.begin(), allPokaz.end(), std::bind2nd(std::mem_fun1(rdoParse::RDOPMDPokaz::checkResourceErased), res));
-
-	if(res->referenceCount > 0)
-	{
-		error("Try to erase used resource", fromCalc);
+	RDOResource* res = allResources.at(resNumb);
+	if ( !res ) {
+		error( rdo::format("Временный ресурс уже удален. Возможно, он удален ранее в этом же образце. Имя релевантного ему ресурса: %s", fromCalc ? fromCalc->getName().c_str() : "неизвестное имя").c_str(), fromCalc );
 	}
-	else
-	{
+	std::for_each( allPokaz.begin(), allPokaz.end(), std::bind2nd(std::mem_fun1(rdoParse::RDOPMDPokaz::checkResourceErased), res) );
+
+	if ( res->referenceCount > 0 ) {
+		error( "Try to erase used resource", fromCalc );
+	} else {
 		delete res;
-		allResources.at(resNumb) = NULL;
+		allResources.at( resNumb ) = NULL;
 	}
 	return 1;
 }
 
-int RDORuntime::getRelResNumber(const int nRelRes) const
+int RDORuntime::getRelResNumber( const int nRelRes ) const
 {
-	return currActivity->getRelResNumber(nRelRes);
+	return currActivity->getRelResNumber( nRelRes );
 }
 
-RDOResource *RDORuntime::findResource(const int num) const
+RDOResource *RDORuntime::findResource( const int num ) const
 {
-	return allResources.at(num);
+	return allResources.at( num );
 }
 
 RDOResource* RDORuntime::createNewResource()

@@ -7,7 +7,6 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 #include "rdobase.h"
-#include "rdoparser.h"
 #include <limits>
 
 RDOSimulatorBase::RDOSimulatorBase():
@@ -210,6 +209,9 @@ void RDOSimulatorBase::rdoRun()
 
 void RDOSimulatorBase::addTimePoint( double timePoint )
 {
+	if ( timePoint < getCurrentTime() ) {
+		TRACE( "q\n" );
+	}
 	if ( std::find( timePointList.begin(), timePointList.end(), timePoint ) == timePointList.end() ) {
 		timePointList.push_back( timePoint );
 		timePointList.sort();

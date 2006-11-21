@@ -132,7 +132,7 @@ private:
 public:
    virtual void convertEnd(RDOSimulator *sim) = 0;
    virtual void convertBegin(RDOSimulator *sim) = 0;
-   virtual double getNextTimeInterval(RDOSimulator *sim) = 0;
+   virtual double getNextTimeInterval( RDOSimulator* sim ) = 0;
    virtual bool choiceFrom(RDOSimulator *sim) = 0;
 
    // The clone function should create and return copy of operation object.

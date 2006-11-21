@@ -42,6 +42,7 @@ class RandGeneratorByHistCommon;
 
 namespace rdoRuntime {
 class RDOCalc;
+class RDOCalcEraseRes;
 }
 
 namespace rdoParse {
@@ -210,8 +211,8 @@ public:
 	void addInitCalc(RDOCalc *initCalc) { initCalcs.push_back(initCalc); }
 	RDOValue getResParamVal(const int nRes, const int nParam) const;
 	void setResParamVal(const int nRes, const int nParam, RDOValue val);
-	int getRelResNumber(const int nRelRes) const;
-	RDOValue eraseRes(const int resNumb, const RDOCalc *fromCalc);
+	int getRelResNumber( const int nRelRes ) const;
+	RDOValue eraseRes( const int resNumb, const RDOCalcEraseRes* fromCalc );
 	RDOResource* createNewResource();
 	RDOResource* createNewResource( int number, bool isPermanent );
 	void insertNewResource( RDOResource* res );
@@ -1058,13 +1059,19 @@ public:
 class RDOCalcEraseRes: public RDOCalc
 {
 private:
-	int relNumb;
+	int         relNumb;
+	std::string relName;
 
 public:
-	RDOCalcEraseRes(int _relNumb): relNumb(_relNumb) {}
-	virtual RDOValue calcValue(RDORuntime *sim) const {
+	RDOCalcEraseRes( int _relNumb, const std::string& _relName ):
+		relNumb( _relNumb ),
+		relName( _relName )
+	{
+	}
+	virtual RDOValue calcValue( RDORuntime* sim ) const {
 		return sim->eraseRes( sim->getRelResNumber(relNumb), this );
 	}
+	std::string getName() const { return relName; }
 };
 
 class RDOSelectResourceCalc: public RDOCalc
