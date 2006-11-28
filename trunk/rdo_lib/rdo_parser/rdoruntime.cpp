@@ -454,16 +454,21 @@ RDOValue RDOFunCalcNotExist::calcValue( RDORuntime* sim ) const
 
 RDOValue RDOFunCalcForAll::calcValue( RDORuntime* sim ) const
 {
+	bool first_found = false;
 	bool res = true;
 	std::vector< RDOResource* >::iterator end = sim->allResources.end();
 	for ( std::vector< RDOResource* >::iterator it = sim->allResources.begin(); it != end && res; it++ ) {
 		if ( *it == NULL ) continue;
 		if ( (*it)->type != nResType ) continue;
 		sim->pushGroupFunc( *it );
-		if ( !condition->calcValueBase(sim) ) res = false;
+		if ( !condition->calcValueBase(sim) ) {
+			res = false;
+		} else if ( !first_found ) {
+			first_found = true;
+		}
 		sim->popGroupFunc();
 	}
-	return res;
+	return first_found ? res : false;
 }
 
 RDOValue RDOFunCalcNotForAll::calcValue( RDORuntime* sim ) const
@@ -543,6 +548,7 @@ RDOValue RDOFunCalcSelectNotExist::calcValue( RDORuntime* sim ) const
 RDOValue RDOFunCalcSelectForAll::calcValue( RDORuntime* sim ) const
 {
 	select->prepare( sim );
+	if ( select->res_list.empty() ) return false;
 	bool res = true;
 	std::list< RDOResource* >::iterator it  = select->res_list.begin();
 	std::list< RDOResource* >::iterator end = select->res_list.end();
