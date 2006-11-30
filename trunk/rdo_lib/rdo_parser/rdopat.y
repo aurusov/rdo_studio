@@ -361,15 +361,19 @@ pat_common_choice:	pat_rel_res
 						parser->error( "Перед $Body необходимо использовать 'with_max(1)' вместо 'first'" );
 //						((RDOPATPattern *)$1)->setCommonChoiceFirst(); $$ = $1;
 					}
-					| pat_rel_res with_min '(' fun_arithm ')' {
-						((RDOPATPattern *)$1)->setCommonChoiceWithMin((RDOFUNArithm *)$4);
+					| pat_rel_res with_min fun_arithm {
+						((RDOPATPattern *)$1)->setCommonChoiceWithMin((RDOFUNArithm *)$3);
 						$$ = $1;
 					}
-					| pat_rel_res with_max '(' fun_arithm ')' {
-						((RDOPATPattern *)$1)->setCommonChoiceWithMax((RDOFUNArithm *)$4);
+					| pat_rel_res with_max fun_arithm {
+						((RDOPATPattern *)$1)->setCommonChoiceWithMax((RDOFUNArithm *)$3);
 						$$ = $1;
 					}
 					| pat_rel_res with_min error {
+						parser->lexer_loc_set( &(@2), &(@3) );
+						parser->error( "Ожидается арифметическое выражение" );
+					}
+					| pat_rel_res with_max error {
 						parser->lexer_loc_set( &(@2), &(@3) );
 						parser->error( "Ожидается арифметическое выражение" );
 					};
@@ -451,27 +455,19 @@ pat_first:	/* empty */ {
 			| pat_choice_first {
 				$$ = (int) new RDOPATSelectType( RDOPATSelectType::st_first );
 			}
-			| pat_choice_with_min '(' fun_arithm ')' {
-				$$ = (int) new RDOPATSelectType( RDOPATSelectType::st_with_min, (RDOFUNArithm *)$3 );
+			| pat_choice_with_min fun_arithm {
+				$$ = (int) new RDOPATSelectType( RDOPATSelectType::st_with_min, (RDOFUNArithm *)$2 );
 			}
-			| pat_choice_with_max '(' fun_arithm ')' {
-				$$ = (int) new RDOPATSelectType( RDOPATSelectType::st_with_max, (RDOFUNArithm *)$3 );
+			| pat_choice_with_max fun_arithm {
+				$$ = (int) new RDOPATSelectType( RDOPATSelectType::st_with_max, (RDOFUNArithm *)$2 );
 			}
 			| pat_choice_with_min error {
-				parser->lexer_loc_set( &(@1) );
-				parser->error( "Ожидается октрывающаяся скобка" );
-			}
-			| pat_choice_with_min '(' fun_arithm error {
-				parser->lexer_loc_set( @3.last_line, @3.last_column );
-				parser->error( "Ожидается закрывающаяся скобка" );
+				parser->lexer_loc_set( &(@1), &(@2) );
+				parser->error( "Ожидается арифметическое выражение" );
 			}
 			| pat_choice_with_max error {
-				parser->lexer_loc_set( &(@1) );
-				parser->error( "Ожидается октрывающаяся скобка" );
-			}
-			| pat_choice_with_max '(' fun_arithm error {
-				parser->lexer_loc_set( @3.last_line, @3.last_column );
-				parser->error( "Ожидается закрывающаяся скобка" );
+				parser->lexer_loc_set( &(@1), &(@2) );
+				parser->error( "Ожидается арифметическое выражение" );
 			};
 
 pat_choice_first: first_keyword {
