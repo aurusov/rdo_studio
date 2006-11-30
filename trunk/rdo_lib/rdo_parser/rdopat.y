@@ -357,8 +357,10 @@ pat_conv:	Keep				{ $$ = RDOPATPattern::CS_Keep;     }
 
 pat_common_choice:	pat_rel_res
 					| pat_rel_res first_keyword {
-						parser->lexer_loc_set( &(@2) );
-						parser->error( "Перед $Body необходимо использовать 'with_max(1)' вместо 'first'" );
+						((RDOPATPattern *)$1)->setCommonChoiceWithMax( new RDOFUNArithm(1) );
+						$$ = $1;
+//						parser->lexer_loc_set( &(@2) );
+//						parser->error( "Перед $Body необходимо использовать 'with_max(1)' вместо 'first'" );
 //						((RDOPATPattern *)$1)->setCommonChoiceFirst(); $$ = $1;
 					}
 					| pat_rel_res with_min fun_arithm {
