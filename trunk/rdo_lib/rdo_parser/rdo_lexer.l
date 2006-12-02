@@ -226,8 +226,8 @@ triang				return(triang);
 active				return(active);
 Select				return(Select);
 select				return(Select);
-size				return(Size_kw);
 Size				return(Size_kw);
+size				return(Size_kw);
 empty				return(Empty_kw);
 Empty				return(Empty_kw);
 
@@ -238,13 +238,6 @@ Empty				return(Empty_kw);
 						rdoParse::parser->addName(name);
 						rdoParse::parser->lexer_setvalue((int)name);
 						return QUOTED_IDENTIF;
-					}
-
-(\'[^\']*\n\r)		{
-						std::string *name = new std::string(YYText());
-						rdoParse::parser->addName(name);
-						rdoParse::parser->lexer_setvalue((int)name);
-						return QUOTED_IDENTIF_BAD;
 					}
 
 "{"						BEGIN(comment_rdo);
@@ -268,7 +261,7 @@ Empty				return(Empty_kw);
 [\r\n\t ]+						;
 [:(),=\[\]\.\*\>\<\+\-\/\\]		return(YYText()[YYLeng()-1]);
 
-([+-]?[0-9]+"..")	{
+([+-]?[0-9]+"..")		{
 						std::string n1(YYText(), YYLeng()-2);
 						rdoParse::parser->lexer_setvalue(atoi(n1.c_str()));
 						unput('.');
@@ -277,25 +270,18 @@ Empty				return(Empty_kw);
 						return INT_CONST;
 					}
 
-[+-]?[0-9]+			{
-						rdoParse::parser->lexer_setvalue(atoi(YYText()));
-						return INT_CONST;
-					}
-
-([+-]?[0-9]+"."?[0-9]*([Ee][+-]?[0-9]+)?)	{
+([+-]?[0-9]+"."[0-9]*([Ee][+-]?[0-9]+)?) {
 						double *val = rdoParse::parser->addDouble(new double(atof(YYText())));
 						rdoParse::parser->lexer_setvalue((int)val);
 						return REAL_CONST;
 					}
 
-([+-]?[0-9]+"."?[0-9]*([Ee][+-]?[0-9]+)?)[A-Za-zР-пр-џ\xB8_][A-Za-zР-пр-џ\xB80-9_$]*	{
-						std::string *name = new std::string(YYText());
-						rdoParse::parser->addName(name);
-						rdoParse::parser->lexer_setvalue((int)name);
-						return IDENTIF_BAD;
+[+-]?[0-9]+    {
+						rdoParse::parser->lexer_setvalue(atoi(YYText()));
+						return INT_CONST;
 					}
 
-[A-Za-zР-пр-џ\xB8_][A-Za-zР-пр-џ\xB80-9_$]*[\r\n\t ]+set  {
+[A-Za-zР-пр-џ\xB8_$][A-Za-zР-пр-џ\xB80-9_$]*[\n\t ]+set  {       
 					std::string n1(YYText());
 					std::string::size_type pos = n1.find_first_of("\r\n\t :");
 					std::string *name = new std::string(n1, 0, pos);
@@ -304,7 +290,7 @@ Empty				return(Empty_kw);
 					return IDENTIF_set;
 				}
 
-[A-Za-zР-пр-џ\xB8_][A-Za-zР-пр-џ\xB80-9_$]*[\r\n\t ]+(NoChange|nochange)[\r\n\t ]+(NoChange|nochange)  {
+[A-Za-zР-пр-џ\xB8_$][A-Za-zР-пр-џ\xB80-9_$]*[\n\t ]+NoChange[\n\t ]+NoChange  {       
 					std::string n1(YYText());
 					std::string::size_type pos = n1.find_first_of("\r\n\t :");
 					std::string *name = new std::string(n1, 0, pos);
@@ -313,7 +299,7 @@ Empty				return(Empty_kw);
 					return IDENTIF_NoChange_NoChange;
 				}
 
-[A-Za-zР-пр-џ\xB8_][A-Za-zР-пр-џ\xB80-9_$]*[\r\n\t ]+(NoChange|nochange)  {
+[A-Za-zР-пр-џ\xB8_$][A-Za-zР-пр-џ\xB80-9_$]*[\n\t ]+NoChange  {       
 					std::string n1(YYText());
 					std::string::size_type pos = n1.find_first_of("\r\n\t :");
 					std::string *name = new std::string(n1, 0, pos);
@@ -322,7 +308,7 @@ Empty				return(Empty_kw);
 					return IDENTIF_NoChange;
 				}
 
-[A-Za-zР-пр-џ\xB8_][A-Za-zР-пр-џ\xB80-9_$]*[\r\n\t ]*\:  {
+[A-Za-zР-пр-џ\xB8_$][A-Za-zР-пр-џ\xB80-9_$]*[\n\t ]*\:  {       
 					std::string n1(YYText());
 					std::string::size_type pos = n1.find_first_of("\r\n\t :");
 					std::string *name = new std::string(n1, 0, pos);
@@ -331,7 +317,7 @@ Empty				return(Empty_kw);
 					return IDENTIF_COLON;
 				}
 
-[A-Za-zР-пр-џ\xB8_][A-Za-zР-пр-џ\xB80-9_$]*  {
+[A-Za-zР-пр-џ\xB8_][A-Za-zР-пр-џ\xB80-9_$]*  {       
 					std::string *name = new std::string(YYText());
 					rdoParse::parser->addName(name);
 					rdoParse::parser->lexer_setvalue((int)name);
