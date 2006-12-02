@@ -5,6 +5,7 @@
 //#include "rdortp.h"
 
 #include <rdocommon.h>
+#include <rdortp.h>
 
 namespace rdoRuntime
 {
@@ -71,12 +72,12 @@ class RDORTPEnum;
 class RDOFRMText: public RDOFRMBoundingItem, public RDOFRMColoredItem
 {
 private:
-	int                  align;
-	rdoRuntime::RDOCalc* value;
-	std::string*         txt;
-	bool                 isTextString;
-	int                  type;
-	RDORTPEnum*          enu;
+	int                       align;
+	rdoRuntime::RDOCalc*      value;
+	std::string*              txt;
+	bool                      isTextString;
+	RDORTPResParam::ParamType type;
+	RDORTPEnum*               enu;
 
 public:
 	RDOFRMText( RDOFUNArithm* x, RDOFUNArithm* y, RDOFUNArithm* width, RDOFUNArithm* height, RDOFRMColor* bgColor, RDOFRMColor* color );

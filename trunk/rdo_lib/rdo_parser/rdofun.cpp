@@ -182,7 +182,7 @@ void RDOFUNFunction::createTableCalc()
 			parser->lexer_loc_set( param->error_last_line, param->error_last_pos );
 			rdoRuntime::RDOCalcFuncParam *funcParam = new rdoRuntime::RDOCalcFuncParam(currParam);
 			rdoRuntime::RDOCalc *val2 = funcParam;
-			if ( param->getType()->getType() != 2 ) {
+			if ( param->getType()->getType() != RDORTPResParam::pt_enum ) {
 				rdoRuntime::RDOCalcConst *const1 = new rdoRuntime::RDOCalcConst(1);
 				val2 = new rdoRuntime::RDOCalcMinus(val2, const1);
 			}
@@ -271,8 +271,9 @@ RDOFUNArithm::RDOFUNArithm( std::string* resName, std::string* parName )
 
 					calc = new rdoRuntime::RDOCalcGetRelevantResParam(relResNumb, parNumb);
 					type = rel->getType()->findRTPParam(parName)->getType()->getType();
-					if(type == 2)
+					if ( type == RDORTPResParam::pt_enum ) {
 						enu = ((RDORTPEnumResParam *)rel->getType()->findRTPParam(parName)->getType())->enu;
+					}
 
 					return;
 				} else {
@@ -338,7 +339,7 @@ RDOFUNArithm::RDOFUNArithm( std::string* resName, std::string* parName )
 				}
 				calc = new rdoRuntime::RDOCalcGetRelevantResParam( relResNumb, parNumb );
 				type = rel->getType()->findRTPParam( parName )->getType()->getType();
-				if ( type == 2 ) {
+				if ( type == RDORTPResParam::pt_enum ) {
 					enu = ((RDORTPEnumResParam*)rel->getType()->findRTPParam(parName)->getType())->enu;
 				}
 				return;
@@ -357,8 +358,9 @@ RDOFUNArithm::RDOFUNArithm( std::string* resName, std::string* parName )
 
 		calc = new rdoRuntime::RDOCalcGetGroupResParam(parNumb);
 		type = currGroup->resType->findRTPParam(parName)->getType()->getType();
-		if(type == 2)
+		if ( type == RDORTPResParam::pt_enum ) {
 			enu = ((RDORTPEnumResParam *)currGroup->resType->findRTPParam(parName)->getType())->enu;
+		}
 
 		return;
 	}
@@ -374,8 +376,9 @@ RDOFUNArithm::RDOFUNArithm( std::string* resName, std::string* parName )
 
 	calc = new rdoRuntime::RDOCalcGetResParam(resNumb, parNumb);
 	type = res->getType()->findRTPParam(parName)->getType()->getType();
-	if(type == 2)
+	if ( type == RDORTPResParam::pt_enum ) {
 		enu = ((RDORTPEnumResParam *)res->getType()->findRTPParam(parName)->getType())->enu;
+	}
 }
 
 RDODeletable::RDODeletable() 
@@ -388,151 +391,163 @@ RDODeletable::~RDODeletable()
 	parser->removeDeletables( this );
 }
 
-RDOFUNArithm *RDOFUNArithm::operator +(RDOFUNArithm &second)
+RDOFUNArithm* RDOFUNArithm::operator +( RDOFUNArithm& second )
 {
-	int newType;
-	rdoRuntime::RDOCalc *newCalc;
+	RDORTPResParam::ParamType newType;
 
-	if( type == 0 && second.type == 0 ) {
-		newType = 0;
-	} else if ( type >= 2 || second.type >= 2 ) {
+	if ( type == RDORTPResParam::pt_int && second.type == RDORTPResParam::pt_int ) {
+		newType = RDORTPResParam::pt_int;
+	} else if ( type == RDORTPResParam::pt_enum || second.type == RDORTPResParam::pt_enum ) {
 		parser->error( "Нельзя складывать перечислимые данные" );
 //		parser->error("cannot add enumerative types");
+	} else if ( type == RDORTPResParam::pt_str || second.type == RDORTPResParam::pt_str ) {
+		parser->error( "Нельзя складывать перечислимые данные" );
 	} else {
-		newType = 1;
+		newType = RDORTPResParam::pt_real;
 	}
 
-	newCalc = new rdoRuntime::RDOCalcPlus( calc, second.calc );
-	return new RDOFUNArithm(newType, newCalc);
+	rdoRuntime::RDOCalc* newCalc = new rdoRuntime::RDOCalcPlus( calc, second.calc );
+	return new RDOFUNArithm( newType, newCalc );
 }
 
-RDOFUNArithm *RDOFUNArithm::operator -(RDOFUNArithm &second)
+RDOFUNArithm* RDOFUNArithm::operator -( RDOFUNArithm& second )
 {
-	int newType;
-	rdoRuntime::RDOCalc *newCalc;
+	RDORTPResParam::ParamType newType;
 
-	if((type == 0) && (second.type == 0))
-		newType = 0;
-	else if((type >= 2) || (second.type >= 2))
-		parser->error("cannot subtract enumerative types");
-	else
-		newType = 1;
+	if ( type == RDORTPResParam::pt_int && second.type == RDORTPResParam::pt_int ) {
+		newType = RDORTPResParam::pt_int;
+	} else if ( type == RDORTPResParam::pt_enum || second.type == RDORTPResParam::pt_enum ) {
+		parser->error( "Нельзя вычитать перечислимые данные" );
+//		parser->error("cannot subtract enumerative types");
+	} else if ( type == RDORTPResParam::pt_str || second.type == RDORTPResParam::pt_str ) {
+		parser->error( "Нельзя вычитать перечислимые данные" );
+	} else {
+		newType = RDORTPResParam::pt_real;
+	}
 
-	newCalc = new rdoRuntime::RDOCalcMinus(calc, second.calc);
-	return new RDOFUNArithm(newType, newCalc);
+	rdoRuntime::RDOCalc* newCalc = new rdoRuntime::RDOCalcMinus( calc, second.calc );
+	return new RDOFUNArithm( newType, newCalc );
 }
 
-RDOFUNArithm *RDOFUNArithm::operator *(RDOFUNArithm &second)
+RDOFUNArithm* RDOFUNArithm::operator *( RDOFUNArithm& second )
 {
-	int newType;
-	rdoRuntime::RDOCalc *newCalc;
+	RDORTPResParam::ParamType newType;
 
-	if((type == 0) && (second.type == 0))
-		newType = 0;
-	else if((type >= 2) || (second.type >= 2))
-		parser->error("cannot multiply enumerative types");
-	else
-		newType = 1;
+	if ( type == RDORTPResParam::pt_int && second.type == RDORTPResParam::pt_int ) {
+		newType = RDORTPResParam::pt_int;
+	} else if ( type == RDORTPResParam::pt_enum || second.type == RDORTPResParam::pt_enum ) {
+		parser->error( "Нельзя перемножать перечислимые данные" );
+//		parser->error("cannot multiply enumerative types");
+	} else if ( type == RDORTPResParam::pt_str || second.type == RDORTPResParam::pt_str ) {
+		parser->error( "Нельзя перемножать перечислимые данные" );
+	} else {
+		newType = RDORTPResParam::pt_real;
+	}
 
-	newCalc = new rdoRuntime::RDOCalcMult(calc, second.calc);
-	return new RDOFUNArithm(newType, newCalc);
+	rdoRuntime::RDOCalc* newCalc = new rdoRuntime::RDOCalcMult( calc, second.calc );
+	return new RDOFUNArithm( newType, newCalc );
 }
 
-RDOFUNArithm *RDOFUNArithm::operator /(RDOFUNArithm &second)
+RDOFUNArithm* RDOFUNArithm::operator /( RDOFUNArithm& second )
 {
-	int newType;
-	rdoRuntime::RDOCalc *newCalc;
+	RDORTPResParam::ParamType newType;
 
-	if((type == 0) && (second.type == 0))
-		newType = 0;
-	else if((type >= 2) || (second.type >= 2))
-		parser->error("cannot divide enumerative types");
-	else
-		newType = 1;
+	if ( type == RDORTPResParam::pt_int && second.type == RDORTPResParam::pt_int ) {
+		newType = RDORTPResParam::pt_int;
+	} else if ( type == RDORTPResParam::pt_enum || second.type == RDORTPResParam::pt_enum ) {
+		parser->error( "Нельзя разделить перечислимые данные" );
+//		parser->error("cannot divide enumerative types");
+	} else if ( type == RDORTPResParam::pt_str || second.type == RDORTPResParam::pt_str ) {
+		parser->error( "Нельзя разделить перечислимые данные" );
+	} else {
+		newType = RDORTPResParam::pt_real;
+	}
 
-	newCalc = new rdoRuntime::RDOCalcDiv(calc, second.calc);
-	if(newType == 0)
-		newCalc = new rdoRuntime::RDOCalcDoubleToInt(newCalc);
-
-	return new RDOFUNArithm(newType, newCalc);
+	rdoRuntime::RDOCalc* newCalc = new rdoRuntime::RDOCalcDiv( calc, second.calc );
+	if ( newType == RDORTPResParam::pt_int ) {
+		newCalc = new rdoRuntime::RDOCalcDoubleToInt( newCalc );
+	}
+	return new RDOFUNArithm( newType, newCalc );
 }
 
-RDOFUNLogic *RDOFUNArithm::operator <(RDOFUNArithm &second)
+RDOFUNLogic* RDOFUNArithm::operator <( RDOFUNArithm& second )
 {
-	rdoRuntime::RDOCalc *newCalc;
-	if((type >= 2) || (second.type >= 2))
-		parser->error("cannot compare enumerative types");
-
-	newCalc = new rdoRuntime::RDOCalcIsLess(calc, second.calc);
-	return new RDOFUNLogic(newCalc);
+	if ( type == RDORTPResParam::pt_enum || second.type == RDORTPResParam::pt_enum ) {
+		parser->error( "Нельзя сравнивать перечислимые данные" );
+//		parser->error("cannot compare enumerative types");
+	} else if ( type == RDORTPResParam::pt_str || second.type == RDORTPResParam::pt_str ) {
+		parser->error( "Нельзя сравнивать перечислимые данные" );
+	}
+	rdoRuntime::RDOCalc* newCalc = new rdoRuntime::RDOCalcIsLess( calc, second.calc );
+	return new RDOFUNLogic( newCalc );
 }
 
-RDOFUNLogic *RDOFUNArithm::operator >(RDOFUNArithm &second)
+RDOFUNLogic* RDOFUNArithm::operator >( RDOFUNArithm& second )
 {
-	rdoRuntime::RDOCalc *newCalc;
-	if((type >= 2) || (second.type >= 2))
-		parser->error("cannot compare enumerative types");
-
-	newCalc = new rdoRuntime::RDOCalcIsGreater(calc, second.calc);
-	return new RDOFUNLogic(newCalc);
+	if ( type == RDORTPResParam::pt_enum || second.type == RDORTPResParam::pt_enum ) {
+		parser->error( "Нельзя сравнивать перечислимые данные" );
+	} else if ( type == RDORTPResParam::pt_str || second.type == RDORTPResParam::pt_str ) {
+		parser->error( "Нельзя сравнивать перечислимые данные" );
+	}
+	rdoRuntime::RDOCalc* newCalc = new rdoRuntime::RDOCalcIsGreater( calc, second.calc );
+	return new RDOFUNLogic( newCalc );
 }
 
-RDOFUNLogic *RDOFUNArithm::operator <=(RDOFUNArithm &second)
+RDOFUNLogic* RDOFUNArithm::operator <=( RDOFUNArithm& second )
 {
-	rdoRuntime::RDOCalc *newCalc;
-	if((type >= 2) || (second.type >= 2))
-		parser->error("cannot compare enumerative types");
-
-	newCalc = new rdoRuntime::RDOCalcIsLEQ(calc, second.calc);
-	return new RDOFUNLogic(newCalc);
+	if ( type == RDORTPResParam::pt_enum || second.type == RDORTPResParam::pt_enum ) {
+		parser->error( "Нельзя сравнивать перечислимые данные" );
+	} else if ( type == RDORTPResParam::pt_str || second.type == RDORTPResParam::pt_str ) {
+		parser->error( "Нельзя сравнивать перечислимые данные" );
+	}
+	rdoRuntime::RDOCalc* newCalc = new rdoRuntime::RDOCalcIsLEQ( calc, second.calc );
+	return new RDOFUNLogic( newCalc );
 }
 
-RDOFUNLogic *RDOFUNArithm::operator >=(RDOFUNArithm &second)
+RDOFUNLogic* RDOFUNArithm::operator >=( RDOFUNArithm& second )
 {
-	rdoRuntime::RDOCalc *newCalc;
-	if((type >= 2) || (second.type >= 2))
-		parser->error("cannot compare enumerative types");
-
-	newCalc = new rdoRuntime::RDOCalcIsGEQ(calc, second.calc);
-	return new RDOFUNLogic(newCalc);
+	if ( type == RDORTPResParam::pt_enum || second.type == RDORTPResParam::pt_enum ) {
+		parser->error( "Нельзя сравнивать перечислимые данные" );
+	} else if ( type == RDORTPResParam::pt_str || second.type == RDORTPResParam::pt_str ) {
+		parser->error( "Нельзя сравнивать перечислимые данные" );
+	}
+	rdoRuntime::RDOCalc* newCalc = new rdoRuntime::RDOCalcIsGEQ( calc, second.calc );
+	return new RDOFUNLogic( newCalc );
 }
 
-RDOFUNLogic *RDOFUNArithm::operator ==(RDOFUNArithm &second)
+RDOFUNLogic* RDOFUNArithm::operator ==( RDOFUNArithm& second )
 {
-	rdoRuntime::RDOCalc *newCalc;
-	if ( (type == 2) && (second.type == 2) ) {
+	if ( type == RDORTPResParam::pt_enum && second.type == RDORTPResParam::pt_enum ) {
 		if ( enu != second.enu ) {
 			parser->error( "Нельзя сравнивать разные перечислимые типы" );
 //			parser->error("cannot compare different enumerative types");
 		}
-	} else if ( (type == 2) && (second.type == 3) ) {
-		second.calc = new rdoRuntime::RDOCalcConst(enu->findValue(second.str));
-	} else if ( (type >= 2) || (second.type >= 2) ) {
+	} else if ( type == RDORTPResParam::pt_enum && second.type == RDORTPResParam::pt_str ) {
+		second.calc = new rdoRuntime::RDOCalcConst( enu->findValue(second.str) );
+//	} else if ( (type >= 2) || (second.type >= 2) ) {
+	} else if ( (type == RDORTPResParam::pt_str && second.type == RDORTPResParam::pt_enum) || (type == RDORTPResParam::pt_str && second.type == RDORTPResParam::pt_str) ) {
 		parser->error( "Нельзя сравнивать перечислимый тип с неперечислимым" );
 //		parser->error("cannot compare enumerative type with nonenumerative type");
 	}
 
-	newCalc = new rdoRuntime::RDOCalcIsEqual(calc, second.calc);
-	return new RDOFUNLogic(newCalc);
+	rdoRuntime::RDOCalc* newCalc = new rdoRuntime::RDOCalcIsEqual( calc, second.calc );
+	return new RDOFUNLogic( newCalc );
 }
 
-RDOFUNLogic *RDOFUNArithm::operator !=(RDOFUNArithm &second)
+RDOFUNLogic* RDOFUNArithm::operator !=( RDOFUNArithm& second )
 {
-	rdoRuntime::RDOCalc *newCalc;
-	if ( (type == 2) && (second.type == 2) ) {
+	if ( type == RDORTPResParam::pt_enum && second.type == RDORTPResParam::pt_enum ) {
 		if ( enu != second.enu ) {
 			parser->error( "Нельзя сравнивать разные перечислимые типы" );
-//			parser->error("cannot compare different enumerative types");
 		}
-	} else if ( (type == 2) && (second.type == 3) ) {
-		second.calc = new rdoRuntime::RDOCalcConst(enu->findValue(second.str));
-	} else if ( (type >= 2) || (second.type >= 2) ) {
+	} else if ( type == RDORTPResParam::pt_enum && second.type == RDORTPResParam::pt_str ) {
+		second.calc = new rdoRuntime::RDOCalcConst( enu->findValue(second.str) );
+	} else if ( (type == RDORTPResParam::pt_str && second.type == RDORTPResParam::pt_enum) || (type == RDORTPResParam::pt_str && second.type == RDORTPResParam::pt_str) ) {
 		parser->error( "Нельзя сравнивать перечислимый тип с неперечислимым" );
-//		parser->error("cannot compare enumerative type with nonenumerative type");
 	}
 
-	newCalc = new rdoRuntime::RDOCalcIsNotEqual(calc, second.calc);
-	return new RDOFUNLogic(newCalc);
+	rdoRuntime::RDOCalc* newCalc = new rdoRuntime::RDOCalcIsNotEqual( calc, second.calc );
+	return new RDOFUNLogic( newCalc );
 }
 
 RDOFUNLogic* RDOFUNLogic::operator &&( const RDOFUNLogic& second )
@@ -555,33 +570,32 @@ RDOFUNLogic* RDOFUNLogic::operator_not()
 
 RDOFUNArithm::RDOFUNArithm( int n )
 {
-	type = 0;
+	type = RDORTPResParam::pt_int;
 	calc = new rdoRuntime::RDOCalcConst( n );
 }
 
 RDOFUNArithm::RDOFUNArithm( double d )
 {
-	type = 1;
+	type = RDORTPResParam::pt_real;
 	calc = new rdoRuntime::RDOCalcConst( d );
 }
 
 RDOFUNArithm::RDOFUNArithm( double* d )
 {
-	type = 1;
+	type = RDORTPResParam::pt_real;
 	calc = new rdoRuntime::RDOCalcConst( *d );
 }
 
 RDOFUNArithm::RDOFUNArithm( std::string* s )
 {
 	if ( (*s == "Time_now") || (*s == "time_now") || (*s == "Системное_время") || (*s == "системное_время") ) {
-		type = 1;
+		type = RDORTPResParam::pt_real;
 		calc = new rdoRuntime::RDOCalcGetTimeNow();
 		return;
 	}
 
-	if(*s == "Seconds")
-	{
-		type = 1;
+	if ( *s == "Seconds" ) {
+		type = RDORTPResParam::pt_real;
 		calc = new rdoRuntime::RDOCalcGetSeconds();
 		return;
 	}
@@ -599,7 +613,7 @@ RDOFUNArithm::RDOFUNArithm( std::string* s )
 	if(cons != NULL)
 	{
 		type = cons->descr->getType()->getType();
-		if(type == 2)
+		if(type == RDORTPResParam::pt_enum)
 			enu = ((RDORTPEnumResParam *)cons->descr->getType())->enu;
 
 		calc = new rdoRuntime::RDOCalcGetConst(cons->number);
@@ -615,7 +629,7 @@ RDOFUNArithm::RDOFUNArithm( std::string* s )
 		RDOFUNParams tmp;
 		const RDOFUNArithm *ar = tmp.createSeqCall(s);
 		type = ar->getType();
-		if(type == 2)
+		if(type == RDORTPResParam::pt_enum)
 			enu = ar->enu;
 
 		calc = ar->calc;
@@ -624,13 +638,13 @@ RDOFUNArithm::RDOFUNArithm( std::string* s )
 
 	if(!param)
 	{
-		type = 3;
+		type = RDORTPResParam::pt_str;
 		str = s;
 		return;
 	}
 
 	type = param->getType()->getType();
-	if(type == 2)
+	if(type == RDORTPResParam::pt_enum)
 		enu = ((RDORTPEnumResParam *)param->getType())->enu;
 
 	if(parser->getFileToParse() == rdoModelObjects::FUN)
@@ -661,9 +675,9 @@ const RDOFUNArithm *RDOFUNSequenceUniform::createCallCalc(const RDOFUNParams *co
 	funcCall->addParameter(arg1);
 	funcCall->addParameter(arg2);
 
-	RDOFUNArithm *res = new RDOFUNArithm(0, funcCall);
+	RDOFUNArithm *res = new RDOFUNArithm(RDORTPResParam::pt_int, funcCall);
 	res->type = header->type->getType();
-	if(res->type == 2)
+	if(res->type == RDORTPResParam::pt_enum)
 		parser->error("Internal parser error");
 	return res;
 }
@@ -679,9 +693,9 @@ const RDOFUNArithm *RDOFUNSequenceExponential::createCallCalc(const RDOFUNParams
 
 	funcCall->addParameter(arg1);
 
-	RDOFUNArithm *res = new RDOFUNArithm(0, funcCall);
+	RDOFUNArithm *res = new RDOFUNArithm(RDORTPResParam::pt_int, funcCall);
 	res->type = header->type->getType();
-	if(res->type == 2)
+	if(res->type == RDORTPResParam::pt_enum)
 		parser->error("Internal parser error");
 	return res;
 }
@@ -700,9 +714,9 @@ const RDOFUNArithm *RDOFUNSequenceNormal::createCallCalc(const RDOFUNParams *con
 	funcCall->addParameter(arg1);
 	funcCall->addParameter(arg2);
 
-	RDOFUNArithm *res = new RDOFUNArithm(0, funcCall);
+	RDOFUNArithm *res = new RDOFUNArithm(RDORTPResParam::pt_int, funcCall);
 	res->type = header->type->getType();
-	if(res->type == 2)
+	if(res->type == RDORTPResParam::pt_enum)
 		parser->error("Internal parser error");
 	return res;
 }
@@ -714,9 +728,9 @@ const RDOFUNArithm *RDOFUNSequenceByHist::createCallCalc(const RDOFUNParams *con
 
 	rdoRuntime::RDOCalcFunctionCall *funcCall = new rdoRuntime::RDOCalcFunctionCall(next);
 
-	RDOFUNArithm *res = new RDOFUNArithm(0, funcCall);
+	RDOFUNArithm *res = new RDOFUNArithm(RDORTPResParam::pt_int, funcCall);
 	res->type = header->type->getType();
-	if(res->type == 2)
+	if(res->type == RDORTPResParam::pt_enum)
 		res->enu = ((RDORTPEnumResParam *)header->type)->enu;
 
 	return res;
@@ -729,9 +743,9 @@ const RDOFUNArithm *RDOFUNSequenceEnumerative::createCallCalc(const RDOFUNParams
 
 	rdoRuntime::RDOCalcFunctionCall *funcCall = new rdoRuntime::RDOCalcFunctionCall(next);
 
-	RDOFUNArithm *res = new RDOFUNArithm(0, funcCall);
+	RDOFUNArithm *res = new RDOFUNArithm(RDORTPResParam::pt_int, funcCall);
 	res->type = header->type->getType();
-	if(res->type == 2)
+	if(res->type == RDORTPResParam::pt_enum)
 		res->enu = ((RDORTPEnumResParam *)header->type)->enu;
 
 	return res;
@@ -752,10 +766,10 @@ const RDOFUNArithm *RDOFUNParams::createCall(const std::string *const funName) c
 	{
 		const RDORTPResParam *const funcParam = func->getParams()[i]->getType();
 		RDOFUNArithm *arithm = params[i];
-		if(funcParam->getType() == 0)
+		if(funcParam->getType() == RDORTPResParam::pt_int)
 		{
 			rdoRuntime::RDOCalc *arg = arithm->createCalc(NULL);
-			if(arithm->type == 1)
+			if(arithm->type == RDORTPResParam::pt_real)
 				arg = new rdoRuntime::RDOCalcDoubleToInt(arg);
 
 			if(((RDORTPIntResParam *)funcParam)->diap->exist)
@@ -764,7 +778,7 @@ const RDOFUNArithm *RDOFUNParams::createCall(const std::string *const funName) c
 
 			funcCall->addParameter(arg);
 		}
-		else if(funcParam->getType() == 1)
+		else if(funcParam->getType() == RDORTPResParam::pt_real)
 		{
 			rdoRuntime::RDOCalc *arg = arithm->createCalc(NULL);
 
@@ -777,10 +791,11 @@ const RDOFUNArithm *RDOFUNParams::createCall(const std::string *const funName) c
 		else
 		{
 			rdoRuntime::RDOCalc *arg;
-			if(arithm->type < 2)
+			if ( arithm->type == RDORTPResParam::pt_int || arithm->type == RDORTPResParam::pt_real ) {
 				parser->error("wrong parameter type");
+			}
 
-			if(arithm->type == 2)
+			if(arithm->type == RDORTPResParam::pt_enum)
 			{
 				if(arithm->enu != ((RDORTPEnumResParam *)funcParam)->enu)
 					parser->error("wrong enumerative parameter type");
@@ -794,9 +809,9 @@ const RDOFUNArithm *RDOFUNParams::createCall(const std::string *const funName) c
 		}
 	}
 
-	RDOFUNArithm *res = new RDOFUNArithm(0, funcCall);
+	RDOFUNArithm *res = new RDOFUNArithm(RDORTPResParam::pt_int, funcCall);
 	res->type = func->getType()->getType();
-	if(func->getType()->getType() == 2)
+	if(func->getType()->getType() == RDORTPResParam::pt_enum)
 		res->enu = ((RDORTPEnumResParam *)func->getType())->enu;
 
 	return res;
@@ -893,7 +908,7 @@ RDOFUNLogic* RDOFUNSelect::createFunSelectEmpty()
 RDOFUNArithm* RDOFUNSelect::createFunSelectSize()
 {
 	parser->getFUNGroupStack().pop_back();
-	return new RDOFUNArithm( 1, new rdoRuntime::RDOFunCalcSelectSize( select ) );
+	return new RDOFUNArithm( RDORTPResParam::pt_int, new rdoRuntime::RDOFunCalcSelectSize( select ) );
 }
 
 // ----------------------------------------------------------------------------
@@ -1077,22 +1092,27 @@ void RDOFUNSequence::initResult()
 	}
 }
 
-rdoRuntime::RDOCalc *RDOFUNArithm::createCalc(const RDORTPResParam *const forType)
+rdoRuntime::RDOCalc* RDOFUNArithm::createCalc( const RDORTPResParam* const forType )
 {
-	if(type != 3)
-	{
-		if(forType == NULL)
+	if ( type != RDORTPResParam::pt_str ) {
+		if ( forType == NULL ) {
 			return calc;
-		if(forType->getType() != 0)	// not for integer
+		}
+		if ( forType->getType() != RDORTPResParam::pt_int ) {
 			return calc;
-
-		return new rdoRuntime::RDOCalcInt(calc);
+		}
+		return new rdoRuntime::RDOCalcInt( calc );
+	} else if ( type == RDORTPResParam::pt_str && !forType && str ) {
+		parser->lexer_loc_set( error_last_line, error_last_pos );
+		parser->error( rdo::format( "Неизвестный идентификатор: %s", str->c_str()) );
 	}
 
-	if(forType == NULL)
-		parser->error("Wrong parameter type");
+	if ( !forType ) {
+		parser->lexer_loc_set( error_last_line, error_last_pos );
+		parser->error( "Неизвестный тип параметра" );
+	}
 
-	return new rdoRuntime::RDOCalcConst(forType->getRSSEnumValue(str));
+	return new rdoRuntime::RDOCalcConst( forType->getRSSEnumValue(str) );
 }
 
 } // namespace rdoParse

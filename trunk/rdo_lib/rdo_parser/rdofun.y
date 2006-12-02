@@ -669,10 +669,7 @@ fun_func_params:	/* empty */
 				std::string*         name  = (std::string *)$2;
 				RDORTPResParam*      type  = (RDORTPResParam *)$3;
 				RDOFUNFunctionParam* param = new RDOFUNFunctionParam(name, type);
-				param->error_first_line = @2.first_line;
-				param->error_first_pos  = @2.first_column;
-				param->error_last_line  = @2.last_line;
-				param->error_last_pos   = @2.last_column;
+				param->setErrorPos( @2 );
 				parser->getLastFUNFunction()->add(param);	// the function must check uniquness of parameters names
 				$$ = (int)param;
 			};
@@ -683,37 +680,25 @@ fun_func_list_body:	/* empty */
 fun_std_value:	IDENTIF {
 					RDOFUNFunctionListElementIdentif *value = new RDOFUNFunctionListElementIdentif((std::string *)$1);
 					parser->getLastFUNFunction()->add(value);
-					value->error_first_line = @1.first_line;
-					value->error_first_pos  = @1.first_column;
-					value->error_last_line  = @1.last_line;
-					value->error_last_pos   = @1.last_column;
+					value->setErrorPos( @1 );
 					$$ = (int)value;
 				}
 				| REAL_CONST {
 					RDOFUNFunctionListElementReal *value = new RDOFUNFunctionListElementReal((double *)$1);
 					parser->getLastFUNFunction()->add(value);
-					value->error_first_line = @1.first_line;
-					value->error_first_pos  = @1.first_column;
-					value->error_last_line  = @1.last_line;
-					value->error_last_pos   = @1.last_column;
+					value->setErrorPos( @1 );
 					$$ = (int)value;
 				}
 				| INT_CONST {
 					RDOFUNFunctionListElementInt *value = new RDOFUNFunctionListElementInt((int)$1);
 					parser->getLastFUNFunction()->add(value);
-					value->error_first_line = @1.first_line;
-					value->error_first_pos  = @1.first_column;
-					value->error_last_line  = @1.last_line;
-					value->error_last_pos   = @1.last_column;
+					value->setErrorPos( @1 );
 					$$ = (int)value;
 				}
 				| '=' {
 					RDOFUNFunctionListElementEq *value = new RDOFUNFunctionListElementEq();
 					parser->getLastFUNFunction()->add(value);
-					value->error_first_line = @1.first_line;
-					value->error_first_pos  = @1.first_column;
-					value->error_last_line  = @1.last_line;
-					value->error_last_pos   = @1.last_column;
+					value->setErrorPos( @1 );
 					$$ = (int)value;
 				};
 

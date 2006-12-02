@@ -28,45 +28,26 @@ class RDORTPEnum;
 class RDORTPResType;
 class RDORTPParamDesc;
 
-class RDOFUNFunctionParam: public RDODeletable
+class RDOFUNFunctionParam: public RDODeletable, public RDOErrorPos
 {
 private:
 	std::string*    name;
 	RDORTPResParam* type;
 
 public:
-	int error_first_line;
-	int error_first_pos;
-	int error_last_line;
-	int error_last_pos;
 	RDOFUNFunctionParam( std::string* _name, RDORTPResParam* _type ):
 		name( _name ),
-		type( _type ),
-		error_first_line( -1 ),
-		error_first_pos( -1 ),
-		error_last_line( -1 ),
-		error_last_pos( -1 )
+		type( _type )
 	{
 	}
 	const std::string* const getName() const { return name; };
 	const RDORTPResParam* const getType() const { return type; };
 };
 
-class RDOFUNFunctionListElement: public RDODeletable
+class RDOFUNFunctionListElement: public RDODeletable, public RDOErrorPos
 {
 public:
-	int error_first_line;
-	int error_first_pos;
-	int error_last_line;
-	int error_last_pos;
-	RDOFUNFunctionListElement():
-		RDODeletable(),
-		error_first_line( -1 ),
-		error_first_pos( -1 ),
-		error_last_line( -1 ),
-		error_last_pos( -1 )
-	{
-	}
+	RDOFUNFunctionListElement(): RDODeletable() {}
 	virtual ~RDOFUNFunctionListElement() {}
 	virtual rdoRuntime::RDOCalcConst*   createResultCalc( const RDORTPResParam* const retType ) const = 0;
 	virtual rdoRuntime::RDOCalcIsEqual* createIsEqualCalc( const RDOFUNFunctionParam* const param, const rdoRuntime::RDOCalcFuncParam* const funcParam ) const;
@@ -115,10 +96,10 @@ public:
 	RDOFUNLogic* operator_not();
 };
 
-class RDOFUNArithm: public RDODeletable
+class RDOFUNArithm: public RDODeletable, public RDOErrorPos
 {
 public:
-	int type;         // 0 - int, 1 - real, 2 - enum, 3 - string
+	RDORTPResParam::ParamType type; // 0 - int, 1 - real, 2 - enum, 3 - string
 	RDORTPEnum*  enu; // for type == 2
 	std::string* str; // for type == 3
 
@@ -126,10 +107,7 @@ private:
 	rdoRuntime::RDOCalc* calc;
 
 public:
-	rdoRuntime::RDOCalc* createCalc( const RDORTPResParam* const forType = NULL );
-	int getType() const { return type; }
-
-	RDOFUNArithm( int _type, rdoRuntime::RDOCalc* _calc ):
+	RDOFUNArithm( RDORTPResParam::ParamType _type, rdoRuntime::RDOCalc* _calc ):
 		type( _type ),
 		enu( NULL ),
 		str( NULL ),
@@ -137,23 +115,26 @@ public:
 	{
 	}
 
+	rdoRuntime::RDOCalc* createCalc( const RDORTPResParam* const forType = NULL );
+	RDORTPResParam::ParamType getType() const { return type; }
+
 	RDOFUNArithm( std::string* resName, std::string* parName );
 	RDOFUNArithm( int n );
 	RDOFUNArithm( double d );
 	RDOFUNArithm( double* d );
 	RDOFUNArithm( std::string* s );
 
-	RDOFUNArithm *operator +(RDOFUNArithm &second);
-	RDOFUNArithm *operator -(RDOFUNArithm &second);
-	RDOFUNArithm *operator *(RDOFUNArithm &second);
-	RDOFUNArithm *operator /(RDOFUNArithm &second);
+	RDOFUNArithm* operator +( RDOFUNArithm& second );
+	RDOFUNArithm* operator -( RDOFUNArithm& second );
+	RDOFUNArithm* operator *( RDOFUNArithm& second );
+	RDOFUNArithm* operator /( RDOFUNArithm& second );
 
-	RDOFUNLogic *operator ==(RDOFUNArithm &second);
-	RDOFUNLogic *operator !=(RDOFUNArithm &second);
-	RDOFUNLogic *operator < (RDOFUNArithm &second);
-	RDOFUNLogic *operator > (RDOFUNArithm &second);
-	RDOFUNLogic *operator <=(RDOFUNArithm &second);
-	RDOFUNLogic *operator >=(RDOFUNArithm &second);
+	RDOFUNLogic* operator ==( RDOFUNArithm& second );
+	RDOFUNLogic* operator !=( RDOFUNArithm& second );
+	RDOFUNLogic* operator < ( RDOFUNArithm& second );
+	RDOFUNLogic* operator > ( RDOFUNArithm& second );
+	RDOFUNLogic* operator <=( RDOFUNArithm& second );
+	RDOFUNLogic* operator >=( RDOFUNArithm& second );
 };
 
 class RDOFUNCalculateIf: public RDODeletable

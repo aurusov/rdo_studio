@@ -94,7 +94,7 @@ void RDOParserRDO::lexer_loc_action()
 
 void RDOParserRDO::lexer_loc_set( int error_line, int error_pos )
 {
-	if ( m_lexer && m_lexer->m_lploc ) {
+	if ( m_lexer && m_lexer->m_lploc && error_line != -1 ) {
 		m_lexer->m_lploc->first_line   = error_line;
 		m_lexer->m_lploc->first_column = error_pos;
 		m_lexer->m_lploc->last_line    = error_line;

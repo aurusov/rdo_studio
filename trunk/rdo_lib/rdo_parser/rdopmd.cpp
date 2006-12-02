@@ -59,8 +59,9 @@ RDOPMDWatchPar::RDOPMDWatchPar(std::string *_name, bool _trace, std::string *_re
 		parser->error("Undefined parameter name: " + *_parName + " for resource " + *_resName);
 
 	int type = par->getType()->getType();
-	if((type != 0) && (type != 1))
+	if ( type != RDORTPResParam::pt_int && type != RDORTPResParam::pt_real ) {
 		parser->error("Enumerative parameter: " + *_resName + "." + *_parName + " not allowed in watch_par statement");
+	}
 
 	resNumber = res->getNumber();
 	parNumber = res->getType()->getRTPParamNumber(_parName);

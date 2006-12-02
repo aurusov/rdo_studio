@@ -228,18 +228,34 @@ pat_params:	pat_params_begin IDENTIF_COLON fun_param_type {
 				}
 			}
 			| pat_params error {
-				parser->lexer_loc_set( &(@2) );
-				parser->error( "Ожидается имя параметра образца" );
+				parser->lexer_loc_set( &(@1), &(@2) );
+				if ( @1.last_line != @2.last_line ) {
+					parser->error( "Ожидается имя параметра образца" );
+				} else {
+					parser->error( rdo::format("Ожидается имя параметра образца, найдено: %s", reinterpret_cast<RDOLexer*>(lexer)->YYText()) );
+				}
+			}
+			| pat_params IDENTIF error {
+				parser->lexer_loc_set( &(@2), &(@3) );
+				if ( @2.last_line != @3.last_line ) {
+					parser->error( "Ожидается двоеточие" );
+				} else {
+					parser->error( rdo::format("Ожидается двоеточие, найдено: %s", reinterpret_cast<RDOLexer*>(lexer)->YYText()) );
+				}
 			}
 			| pat_params IDENTIF_COLON error {
 				parser->lexer_loc_set( &(@2), &(@3) );
-				parser->error( "Ожидается тип параметра образца" );
+				if ( @2.last_line != @3.last_line ) {
+					parser->error( "Ожидается тип параметра образца" );
+				} else {
+					parser->error( rdo::format("Ожидается тип параметра образца, найдено: %s", reinterpret_cast<RDOLexer*>(lexer)->YYText()) );
+				}
 			};
 
 pat_params_end:	pat_params Relevant_resources   { $$ = $1; }
 				| pat_header Relevant_resources { $$ = $1; }
 				| pat_header error {
-					parser->lexer_loc_set( @2.first_line, @2.first_column );
+					parser->lexer_loc_set( &(@2) );
 					parser->error( "Ожидается ключевое слово $Relevant_resources" );
 				};
 
@@ -375,19 +391,41 @@ pat_conv:	Keep				{ $$ = RDOPATPattern::CS_Keep;     }
 
 pat_common_choice:	pat_rel_res
 					| pat_rel_res first_keyword {
-						((RDOPATPattern *)$1)->setCommonChoiceWithMax( new RDOFUNArithm(1) );
-						$$ = $1;
-//						parser->lexer_loc_set( &(@2) );
-//						parser->error( "Перед $Body необходимо использовать 'with_max(1)' вместо 'first'" );
-//						((RDOPATPattern *)$1)->setCommonChoiceFirst(); $$ = $1;
+						RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
+						if ( pattern->getPatType() == RDOPATPattern::PT_IE ) {
+							parser->lexer_loc_set( &(@2) );
+							parser->error( "В нерегулярном событии не используется способ выбора релевантных ресурсов" );
+						} else {
+//							((RDOPATPattern *)$1)->setCommonChoiceFirst(); $$ = $1;
+							RDOFUNArithm* arithm = new RDOFUNArithm(1);
+							arithm->setErrorPos( @2 );
+							pattern->setCommonChoiceWithMax( arithm );
+							$$ = $1;
+						}
 					}
 					| pat_rel_res with_min fun_arithm {
-						((RDOPATPattern *)$1)->setCommonChoiceWithMin((RDOFUNArithm *)$3);
-						$$ = $1;
+						RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
+						if ( pattern->getPatType() == RDOPATPattern::PT_IE ) {
+							parser->lexer_loc_set( &(@2) );
+							parser->error( "В нерегулярном событии не используется способ выбора релевантных ресурсов" );
+						} else {
+							RDOFUNArithm* arithm = reinterpret_cast<RDOFUNArithm*>($3);
+							arithm->setErrorPos( @3 );
+							pattern->setCommonChoiceWithMin( arithm );
+							$$ = $1;
+						}
 					}
 					| pat_rel_res with_max fun_arithm {
-						((RDOPATPattern *)$1)->setCommonChoiceWithMax((RDOFUNArithm *)$3);
-						$$ = $1;
+						RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
+						if ( pattern->getPatType() == RDOPATPattern::PT_IE ) {
+							parser->lexer_loc_set( &(@2) );
+							parser->error( "В нерегулярном событии не используется способ выбора релевантных ресурсов" );
+						} else {
+							RDOFUNArithm* arithm = reinterpret_cast<RDOFUNArithm*>($3);
+							arithm->setErrorPos( @3 );
+							pattern->setCommonChoiceWithMax( arithm );
+							$$ = $1;
+						}
 					}
 					| pat_rel_res with_min error {
 						parser->lexer_loc_set( &(@2), &(@3) );
@@ -406,7 +444,10 @@ pat_time:	pat_common_choice Body {
 				}
 			}
 			| pat_common_choice Time '=' fun_arithm Body {
+				parser->lexer_loc_backup();
+				parser->lexer_loc_set( &(@4) );
 				((RDOPATPattern *)$1)->setTime((RDOFUNArithm *)$4);
+				parser->lexer_loc_restore();
 				$$ = $1;
 			}
 			| pat_common_choice Time '=' fun_arithm error {

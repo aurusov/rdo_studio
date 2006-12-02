@@ -245,7 +245,7 @@ rdoSimulator::RDOFrameElement* RDOFRMText::createElement( rdoRuntime::RDORuntime
 		t = *txt;
 	} else {
 		double val = value->calcValueBase( sim );
-		if ( type == 2 ) { // enumeration
+		if ( type == RDORTPResParam::pt_enum ) {
 			t = *enu->enumVals.at( val );
 		} else {
 			t = toString(val);

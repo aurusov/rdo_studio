@@ -11,6 +11,28 @@ int rtpparse( void* lexer );
 int rtplex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer );
 void rtperror( char* mes );
 
+class RDOErrorPos
+{
+public:
+	int error_first_line;
+	int error_first_pos;
+	int error_last_line;
+	int error_last_pos;
+	RDOErrorPos(): 
+		error_first_line( -1 ),
+		error_first_pos( -1 ),
+		error_last_line( -1 ),
+		error_last_pos( -1 )
+	{
+	}
+	void setErrorPos( const YYLTYPE& error_pos ) {
+		error_first_line = error_pos.first_line;
+		error_first_pos  = error_pos.first_column;
+		error_last_line  = error_pos.last_line;
+		error_last_pos   = error_pos.last_column;
+	}
+};
+
 class RDORTPIntDefVal;
 
 class RDORTPIntDiap: public RDODeletable
@@ -45,7 +67,7 @@ public:
 class RDORTPResParam: public RDODeletable
 {
 public:
-	enum ParamType { pt_int = 0, pt_real = 1, pt_enum = 2 };
+	enum ParamType { pt_int = 0, pt_real = 1, pt_enum = 2, pt_str = 3 };
 	RDORTPDefVal *dv;
 	RDORTPResParam(RDORTPDefVal *_dv): dv(_dv) {}
 	virtual const RDORTPResParam *constructSuchAs() const;
