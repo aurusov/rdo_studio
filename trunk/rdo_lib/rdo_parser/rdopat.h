@@ -250,6 +250,7 @@ public:
 		ch_nocheck,
 		ch_from
 	} type;
+
 	RDOFUNLogic* logic;
 
 	RDOPATChoice( Type _type, RDOFUNLogic* _logic = NULL ):
@@ -268,6 +269,7 @@ public:
 		st_with_min, 
 		st_with_max
 	} type;
+
 	RDOFUNArithm* arithm;
 
 	RDOPATSelectType( Type _type, RDOFUNArithm* _arithm = NULL ):
@@ -275,6 +277,15 @@ public:
 		arithm( _arithm )
 	{
 	};
+	std::string asString() const {
+		switch ( type ) {
+			case st_empty   : return "<не_указано>";
+			case st_first   : return "first";
+			case st_with_min: return "with_min";
+			case st_with_max: return "with_max";
+		}
+		return "";
+	}
 };
 
 class RDOPATParamsSet: public RDODeletable

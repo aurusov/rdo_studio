@@ -184,10 +184,10 @@ pat_header:	  Pattern IDENTIF_COLON operation_kw    pat_trace { $$ = (int)(new R
 			| Pattern IDENTIF_COLON error {
 				parser->lexer_loc_set( &(@2), &(@3) );
 				parser->error( "Ожидается тип образца" );
-			}
-			| Pattern IDENTIF_COLON irregular_event error {
-				parser->lexer_loc_set( &(@3), &(@4) );
-				parser->error( "Ожидается признак трассировки" );
+//			}
+//			| Pattern IDENTIF_COLON irregular_event error {
+//				parser->lexer_loc_set( &(@3), &(@4) );
+//				parser->error( "Ожидается признак трассировки" );
 //				parser->error( "Ожидается признак трассировки, описание параметров или релевантных ресурсов образца" );
 			};
 
@@ -206,12 +206,28 @@ pat_params:	pat_params_begin IDENTIF_COLON fun_param_type {
 				$$ = $1;
 			}
 			| pat_params_begin error {
-				parser->lexer_loc_set( &(@2) );
-				parser->error( "Ожидается имя параметра образца" );
+				parser->lexer_loc_set( &(@1), &(@2) );
+				if ( @1.last_line != @2.last_line ) {
+					parser->error( "Ожидается имя параметра образца" );
+				} else {
+					parser->error( rdo::format("Ожидается имя параметра образца, найдено: %s", reinterpret_cast<RDOLexer*>(lexer)->YYText()) );
+				}
+			}
+			| pat_params_begin IDENTIF error {
+				parser->lexer_loc_set( &(@2), &(@3) );
+				if ( @2.last_line != @3.last_line ) {
+					parser->error( "Ожидается двоеточие" );
+				} else {
+					parser->error( rdo::format("Ожидается двоеточие, найдено: %s", reinterpret_cast<RDOLexer*>(lexer)->YYText()) );
+				}
 			}
 			| pat_params_begin IDENTIF_COLON error {
 				parser->lexer_loc_set( &(@2), &(@3) );
-				parser->error( "Ожидается тип параметра образца" );
+				if ( @2.last_line != @3.last_line ) {
+					parser->error( "Ожидается тип параметра образца" );
+				} else {
+					parser->error( rdo::format("Ожидается тип параметра образца, найдено: %s", reinterpret_cast<RDOLexer*>(lexer)->YYText()) );
+				}
 			}
 			| pat_params error {
 				parser->lexer_loc_set( &(@2) );
@@ -223,7 +239,11 @@ pat_params:	pat_params_begin IDENTIF_COLON fun_param_type {
 			};
 
 pat_params_end:	pat_params Relevant_resources   { $$ = $1; }
-				| pat_header Relevant_resources { $$ = $1; };
+				| pat_header Relevant_resources { $$ = $1; }
+				| pat_header error {
+					parser->lexer_loc_set( @2.first_line, @2.first_column );
+					parser->error( "Ожидается ключевое слово $Relevant_resources" );
+				};
 
 pat_rel_res:	pat_params_end   IDENTIF_COLON IDENTIF pat_conv pat_conv { parser->lexer_loc_backup(); parser->lexer_loc_set( &(@5) ); ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, (RDOPATPattern::ConvertStatus)$4, (RDOPATPattern::ConvertStatus)$5); parser->lexer_loc_restore(); ((RDOPATPattern *)$1)->setRelResPos((std::string *)$2, &(@2)); $$ = $1; }
 				| pat_rel_res    IDENTIF_COLON IDENTIF pat_conv pat_conv { parser->lexer_loc_backup(); parser->lexer_loc_set( &(@5) ); ((RDOPATPattern *)$1)->addRelRes((std::string *)$2, (std::string *)$3, (RDOPATPattern::ConvertStatus)$4, (RDOPATPattern::ConvertStatus)$5); parser->lexer_loc_restore(); ((RDOPATPattern *)$1)->setRelResPos((std::string *)$2, &(@2)); $$ = $1; }
@@ -391,13 +411,9 @@ pat_time:	pat_common_choice Body {
 				((RDOPATPattern *)$1)->setTime((RDOFUNArithm *)$4);
 				$$ = $1;
 			}
-			| pat_common_choice Time '=' fun_arithm IDENTIF {
+			| pat_common_choice Time '=' fun_arithm error {
 				parser->lexer_loc_set( @5.first_line, @5.first_column );
-				parser->error( "Пропущено ключевое слово $Body" );
-			}
-			| pat_common_choice Time '=' error {
-				parser->lexer_loc_set( &(@4) );
-				parser->error( "Ошибка в выражении времени" );
+				parser->error( "Ожидается ключевое слово $Body" );
 			};
 
 pat_body:	pat_time IDENTIF {
@@ -416,16 +432,18 @@ pat_body:	pat_time IDENTIF {
 			}
 			| pat_time error {
 				parser->lexer_loc_set( &(@2) );
-				parser->error( "qqq1" );
+				std::string str( reinterpret_cast<RDOLexer*>(lexer)->YYText() );
+				parser->error( rdo::format("Неизвестный релевантный ресурс: %s", str.c_str()) );
 			}
 			| pat_convert error {
 				parser->lexer_loc_set( &(@2) );
-				parser->error( "qqq2" );
+				std::string str( reinterpret_cast<RDOLexer*>(lexer)->YYText() );
+				parser->error( rdo::format("Неизвестный релевантный ресурс: %s", str.c_str()) );
 			};
 
 pat_res_usage:	pat_body pat_choice pat_first {
 					parser->lexer_loc_backup();
-					parser->lexer_loc_set( &(@3) );
+					parser->lexer_loc_set( @3.last_line, @3.last_column );
 					((RDOPATPattern *)$1)->addRelResUsage((RDOPATChoice *)$2, (RDOPATSelectType *)$3);
 					parser->lexer_loc_restore();
 					$$ = $1;
@@ -532,8 +550,8 @@ pat_params_set:												{  $$ = (int) new RDOPATParamsSet(); }
 			|	pat_params_set IDENTIF_set fun_arithm	{	((RDOPATParamsSet *)$1)->addIdentif((std::string *)$2, (RDOFUNArithm *)$3); $$ = $1;}
 			|	pat_params_set IDENTIF_NoChange			{	((RDOPATParamsSet *)$1)->addIdentif((std::string *)$2); $$ = $1;};
 
-pat_pattern:	pat_convert End { ((RDOPATPattern *)$1)->end(); $$ = $1; }
-				| pat_time  End { ((RDOPATPattern *)$1)->end(); $$ = $1; };
+pat_pattern:	pat_convert End { ((RDOPATPattern *)$1)->end(); $$ = $1; };
+//				| pat_time  End { ((RDOPATPattern *)$1)->end(); $$ = $1; };
 
 // ----------------------------------------------------------------------------
 // ---------- Описание параметров

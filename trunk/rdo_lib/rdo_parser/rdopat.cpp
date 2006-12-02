@@ -387,15 +387,17 @@ void RDOPATPattern::addRelResUsage( RDOPATChoice* choice, RDOPATSelectType* firs
 
 	if ( !useCommonChoice && first->type == RDOPATSelectType::st_empty ) {
 		if ( (currRelRes->begin != CS_Create) && (currRelRes->end != CS_Create) ) {
-			parser->error( "ќжидаетс€ способ выбора релевантного ресурса" );
-//			parser->error( "Must use either common choice either choice for \"" + *currRelRes->getName() + "\" relevant resource in pattern \"" + *getName() + "\"" );
+			first->type = RDOPATSelectType::st_first;
 		}
 	}
 
-	if ( first->type != RDOPATSelectType::st_empty || choice->type != RDOPATChoice::ch_empty ) {
-		if ( (currRelRes->begin == CS_Create) || (currRelRes->end == CS_Create) ) {
-			parser->error( "–елевантный ресурс создаетс€, дл€ него нельз€ использовать 'Choice' и способ выбора. ќжидаетс€ конвертор" );
+	if ( (currRelRes->begin == CS_Create) || (currRelRes->end == CS_Create) ) {
+		if ( choice->type != RDOPATChoice::ch_empty ) {
+			parser->error( "–елевантный ресурс создаетс€, дл€ него нельз€ использовать 'Choice'. ќжидаетс€ конвертор" );
 //			parser->error( "Cannot use choice when create \"" + *currRelRes->getName() + "\" relevant resource in pattern \"" + *getName() + "\"" );
+		}
+		if ( first->type != RDOPATSelectType::st_empty ) {
+			parser->error( rdo::format("–елевантный ресурс создаетс€, дл€ него нельз€ использовать способ выбора '%s'. ќжидаетс€ конвертор", first->asString().c_str()) );
 		}
 	}
 
@@ -405,7 +407,10 @@ void RDOPATPattern::addRelResUsage( RDOPATChoice* choice, RDOPATSelectType* firs
 
 void RDOPATPatternEvent::addRelResUsage( RDOPATChoice* choice, RDOPATSelectType* first )
 {
-	if ( first->type != RDOPATSelectType::st_empty || choice->type != RDOPATChoice::ch_empty ) {
+	if ( first->type != RDOPATSelectType::st_empty ) {
+		parser->error( rdo::format("ƒл€ релевантных ресурсов нерегул€рного событи€ нельз€ использовать правило выбора '%s'", first->asString().c_str()) );
+	}
+	if ( choice->type != RDOPATChoice::ch_empty ) {
 		parser->error("Unexpected choice for \"" + *currRelRes->getName() + "\" relevant resource in pattern \"" + *getName() + "\"");
 	}
 	currRelRes->choice = choice;
