@@ -137,6 +137,8 @@
 %token triang				413
 %token active				414
 %token QUOTED_IDENTIF		415
+%token QUOTED_IDENTIF_BAD	416
+%token IDENTIF_BAD			417
 %token Select				418
 %token Size_kw				419
 %token Empty_kw				420

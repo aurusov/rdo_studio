@@ -240,6 +240,13 @@ Empty				return(Empty_kw);
 						return QUOTED_IDENTIF;
 					}
 
+(\'[^\']*\n\r)		{
+						std::string *name = new std::string(YYText());
+						rdoParse::parser->addName(name);
+						rdoParse::parser->lexer_setvalue((int)name);
+						return QUOTED_IDENTIF_BAD;
+					}
+
 "{"						BEGIN(comment_rdo);
 <comment_rdo>[^}.]*		;
 <comment_rdo>[^}\n\r]*	;
@@ -279,6 +286,13 @@ Empty				return(Empty_kw);
 [+-]?[0-9]+    {
 						rdoParse::parser->lexer_setvalue(atoi(YYText()));
 						return INT_CONST;
+					}
+
+([+-]?[0-9]+"."?[0-9]*([Ee][+-]?[0-9]+)?)[A-Za-zР-пр-џ\xB8_][A-Za-zР-пр-џ\xB80-9_$]*	{
+						std::string *name = new std::string(YYText());
+						rdoParse::parser->addName(name);
+						rdoParse::parser->lexer_setvalue((int)name);
+						return IDENTIF_BAD;
 					}
 
 [A-Za-zР-пр-џ\xB8_$][A-Za-zР-пр-џ\xB80-9_$]*[\r\n\t ]+set  {       
