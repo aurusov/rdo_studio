@@ -14,22 +14,18 @@ void rtperror( char* mes );
 class RDOErrorPos
 {
 public:
-	int error_first_line;
-	int error_first_pos;
-	int error_last_line;
-	int error_last_pos;
-	RDOErrorPos(): 
-		error_first_line( -1 ),
-		error_first_pos( -1 ),
-		error_last_line( -1 ),
-		error_last_pos( -1 )
-	{
+	YYLTYPE error;
+	RDOErrorPos() {
+		error.first_line   = -1;
+		error.first_column = -1;
+		error.last_line    = -1;
+		error.last_column  = -1;
 	}
 	void setErrorPos( const YYLTYPE& error_pos ) {
-		error_first_line = error_pos.first_line;
-		error_first_pos  = error_pos.first_column;
-		error_last_line  = error_pos.last_line;
-		error_last_pos   = error_pos.last_column;
+		error.first_line   = error_pos.first_line;
+		error.first_column = error_pos.first_column;
+		error.last_line    = error_pos.last_line;
+		error.last_column  = error_pos.last_column;
 	}
 };
 

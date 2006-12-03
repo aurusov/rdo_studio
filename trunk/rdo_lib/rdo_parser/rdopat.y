@@ -451,10 +451,6 @@ pat_time:	pat_common_choice Body {
 				((RDOPATPattern *)$1)->setTime((RDOFUNArithm *)$4);
 				parser->lexer_loc_restore();
 				$$ = $1;
-			}
-			| pat_common_choice Time '=' fun_arithm error {
-				parser->lexer_loc_set( @5.first_line, @5.first_column );
-				parser->error( "Ожидается ключевое слово $Body" );
 			};
 
 pat_body:	pat_time IDENTIF {
@@ -974,6 +970,7 @@ fun_enum_default_val:	'=' IDENTIF {
 // ----------------------------------------------------------------------------
 // ---------- Логические выражения
 // ----------------------------------------------------------------------------
+// Пока не использьзуется RDOErrorPos, но в ариф. выражениях уже назначается
 fun_logic: fun_arithm '=' fun_arithm			{ $$ = (int)(*(RDOFUNArithm *)$1 == *(RDOFUNArithm *)$3); }
 			| fun_arithm neq fun_arithm			{ $$ = (int)(*(RDOFUNArithm *)$1 != *(RDOFUNArithm *)$3); }
 			| fun_arithm '<' fun_arithm			{ $$ = (int)(*(RDOFUNArithm *)$1 <  *(RDOFUNArithm *)$3); }
@@ -1007,27 +1004,53 @@ fun_arithm: fun_arithm '+' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOF
 			| fun_arithm '-' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 - *(RDOFUNArithm *)$3); }
 			| fun_arithm '*' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 * *(RDOFUNArithm *)$3); }
 			| fun_arithm '/' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 / *(RDOFUNArithm *)$3); }
-			| '(' fun_arithm ')'			{ $$ = $2; }
-			| fun_arithm_func_call
+			| '(' fun_arithm ')'			{
+				RDOFUNArithm* arithm = (RDOFUNArithm*)$2;
+				arithm->error.first_line   = @1.first_line;
+				arithm->error.first_column = @1.first_column;
+				arithm->error.last_line    = @3.last_line;
+				arithm->error.last_column  = @3.last_column;
+				$$ = $2;
+			}
+			| fun_arithm_func_call			{
+				RDOFUNArithm* arithm = (RDOFUNArithm*)$1;
+				arithm->setErrorPos( @1 );
+				$$ = $1;
+			}
+// В fun_select_arithm не использьзуется RDOErrorPos
 			| fun_select_arithm
 			| IDENTIF '.' IDENTIF			{
 				parser->lexer_loc_backup();
 				parser->lexer_loc_set( &(@3) );
-				$$ = (int)(new RDOFUNArithm((std::string *)$1, (std::string *)$3));
+				RDOFUNArithm* arithm = new RDOFUNArithm((std::string *)$1, (std::string *)$3);
+				arithm->error.first_line   = @1.first_line;
+				arithm->error.first_column = @1.first_column;
+				arithm->error.last_line    = @3.last_line;
+				arithm->error.last_column  = @3.last_column;
+				$$ = (int)arithm;
 				parser->lexer_loc_restore();
 			}
-			| INT_CONST						{ $$ = (int)(new RDOFUNArithm((int)$1));                              }
-			| REAL_CONST					{ $$ = (int)(new RDOFUNArithm((double*)$1));                          }
-			| IDENTIF						{ $$ = (int)(new RDOFUNArithm((std::string *)$1));                    }
+			| INT_CONST						{ RDOFUNArithm* arithm = new RDOFUNArithm((int)$1);          arithm->setErrorPos( @1 ); $$ = (int)arithm; }
+			| REAL_CONST					{ RDOFUNArithm* arithm = new RDOFUNArithm((double*)$1);      arithm->setErrorPos( @1 ); $$ = (int)arithm; }
+			| IDENTIF						{ RDOFUNArithm* arithm = new RDOFUNArithm((std::string*)$1); arithm->setErrorPos( @1 ); $$ = (int)arithm; }
 			| error							{
 				parser->lexer_loc_set( &(@1) );
-				parser->error( "Ошибка в арифметическом выражении" );
+				if ( @1.first_line = @1.last_line ) {
+					parser->error( rdo::format("Неизвестный идентификатор: %s", reinterpret_cast<RDOLexer*>(lexer)->YYText()) );
+				} else {
+					parser->error( "Ошибка в арифметическом выражении" );
+				}
 			};
 
 fun_arithm_func_call:	IDENTIF '(' fun_arithm_func_call_pars ')' {
 							parser->lexer_loc_backup();
 							parser->lexer_loc_set( &(@1) );
-							$$ = (int)((RDOFUNParams *)$3)->createCall((std::string *)$1);
+							RDOFUNParams* fun = ((RDOFUNParams*)$3);
+							fun->error.first_line   = @1.first_line;
+							fun->error.first_column = @1.first_column;
+							fun->error.last_line    = @4.last_line;
+							fun->error.last_column  = @4.last_column;
+							$$ = (int)fun->createCall((std::string *)$1);
 							parser->lexer_loc_restore();
 						}
 						| IDENTIF '(' error {

@@ -85,7 +85,7 @@ public:
 	rdoRuntime::RDOCalcConst *createResultCalc(const RDORTPResParam *const retType) const;
 };
 
-class RDOFUNLogic: public RDODeletable
+class RDOFUNLogic: public RDODeletable, public RDOErrorPos
 {
 public:
 	rdoRuntime::RDOCalc* calc;
@@ -175,7 +175,7 @@ public:
 	const RDORTPResParam *const getType() const { return retType; }
 };
 
-class RDOFUNParams: public RDODeletable
+class RDOFUNParams: public RDODeletable, public RDOErrorPos
 {
 public:
 	std::vector<RDOFUNArithm *> params;

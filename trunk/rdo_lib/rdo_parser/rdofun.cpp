@@ -87,7 +87,7 @@ int RDOFUNFunction::findFUNFunctionParamNum(const std::string *const paramName) 
 void RDOFUNFunction::add( const RDOFUNFunctionParam* const _param )
 { 
 	if ( findFUNFunctionParam(_param->getName()) ) {
-		parser->lexer_loc_set( _param->error_last_line, _param->error_last_pos );
+		parser->lexer_loc_set( _param->error.last_line, _param->error.last_column );
 		parser->error( rdo::format("Параметр уже существует: %s", _param->getName()->c_str()) );
 //		parser->error("Second appearance of the same parameter name: " + *(_param->getName()));
 	}
@@ -131,10 +131,10 @@ void RDOFUNFunction::createListCalc()
 				}
 				const RDOFUNFunctionListElement* const arg = listElems.at( currElement++ );
 				if ( arg->isEquivalence() ) {
-					parser->lexer_loc_set( arg->error_first_line, arg->error_first_pos );
+					parser->lexer_loc_set( arg->error.first_line, arg->error.first_column );
 					parser->error( "Указаны значения не всех параметров" );
 				}
-				parser->lexer_loc_set( arg->error_last_line, arg->error_last_pos );
+				parser->lexer_loc_set( arg->error.last_line, arg->error.last_column );
 				const RDOFUNFunctionParam *const param = params.at(currParam);
 				rdoRuntime::RDOCalcFuncParam *funcParam = new rdoRuntime::RDOCalcFuncParam(currParam);
 				rdoRuntime::RDOCalcIsEqual *compareCalc = arg->createIsEqualCalc(param, funcParam);
@@ -147,16 +147,16 @@ void RDOFUNFunction::createListCalc()
 			}
 			const RDOFUNFunctionListElement* const eq = listElems.at( currElement++ );
 			if ( !eq->isEquivalence() ) {
-				parser->lexer_loc_set( eq->error_first_line, eq->error_first_pos );
+				parser->lexer_loc_set( eq->error.first_line, eq->error.first_column );
 				parser->error( "Ожидается '= <значение_функции>'" );
 			}
 
 			if ( currElement >= elements ) {
-				parser->lexer_loc_set( eq->error_last_line, eq->error_last_pos );
+				parser->lexer_loc_set( eq->error.last_line, eq->error.last_column );
 				parser->error( "Ожидается '<значение_функции>'" );
 			}
 			const RDOFUNFunctionListElement* const res = listElems.at(currElement++);
-			parser->lexer_loc_set( res->error_last_line, res->error_last_pos );
+			parser->lexer_loc_set( res->error.last_line, res->error.last_column );
 			rdoRuntime::RDOCalcConst* resultCalc = res->createResultCalc(retType);
 
 			funCalc->addCase(caseCalc, resultCalc);
@@ -179,7 +179,7 @@ void RDOFUNFunction::createTableCalc()
 		int d = 1;
 		for ( int currParam = 0; currParam < numParams; currParam++ ) {
 			const RDOFUNFunctionParam* const param  = params.at(currParam);
-			parser->lexer_loc_set( param->error_last_line, param->error_last_pos );
+			parser->lexer_loc_set( param->error.last_line, param->error.last_column );
 			rdoRuntime::RDOCalcFuncParam *funcParam = new rdoRuntime::RDOCalcFuncParam(currParam);
 			rdoRuntime::RDOCalc *val2 = funcParam;
 			if ( param->getType()->getType() != RDORTPResParam::pt_enum ) {
@@ -202,7 +202,7 @@ void RDOFUNFunction::createTableCalc()
 		rdoRuntime::RDOFuncTableCalc *funCalc = new rdoRuntime::RDOFuncTableCalc(calc);
 		for ( int currElem = 0; currElem < d; currElem++ ) {
 			const RDOFUNFunctionListElement* const el = listElems.at(currElem);
-			parser->lexer_loc_set( el->error_last_line, el->error_last_pos );
+			parser->lexer_loc_set( el->error.last_line, el->error.last_column );
 			if ( el->isEquivalence() ) {
 				parser->error( "Символ '=' недопустим в табличной функции" );
 //				parser->error("\"=\" unexpected in table function");
@@ -398,16 +398,32 @@ RDOFUNArithm* RDOFUNArithm::operator +( RDOFUNArithm& second )
 	if ( type == RDORTPResParam::pt_int && second.type == RDORTPResParam::pt_int ) {
 		newType = RDORTPResParam::pt_int;
 	} else if ( type == RDORTPResParam::pt_enum || second.type == RDORTPResParam::pt_enum ) {
+		if ( type == RDORTPResParam::pt_enum ) {
+			parser->lexer_loc_set( &error );
+		} else {
+			parser->lexer_loc_set( &second.error );
+		}
 		parser->error( "Нельзя складывать перечислимые данные" );
 //		parser->error("cannot add enumerative types");
 	} else if ( type == RDORTPResParam::pt_str || second.type == RDORTPResParam::pt_str ) {
-		parser->error( "Нельзя складывать перечислимые данные" );
+		if ( type == RDORTPResParam::pt_str ) {
+			parser->lexer_loc_set( &error );
+			parser->error( rdo::format("Неизвестный идентификатор: %s", str->c_str()) );
+		} else {
+			parser->lexer_loc_set( &second.error );
+			parser->error( rdo::format("Неизвестный идентификатор: %s", second.str->c_str()) );
+		}
 	} else {
 		newType = RDORTPResParam::pt_real;
 	}
 
 	rdoRuntime::RDOCalc* newCalc = new rdoRuntime::RDOCalcPlus( calc, second.calc );
-	return new RDOFUNArithm( newType, newCalc );
+	RDOFUNArithm* arithm = new RDOFUNArithm( newType, newCalc );
+	arithm->error.first_line   = error.first_line;
+	arithm->error.first_column = error.first_column;
+	arithm->error.last_line    = second.error.last_line;
+	arithm->error.last_column  = second.error.last_column;
+	return arithm;
 }
 
 RDOFUNArithm* RDOFUNArithm::operator -( RDOFUNArithm& second )
@@ -417,16 +433,32 @@ RDOFUNArithm* RDOFUNArithm::operator -( RDOFUNArithm& second )
 	if ( type == RDORTPResParam::pt_int && second.type == RDORTPResParam::pt_int ) {
 		newType = RDORTPResParam::pt_int;
 	} else if ( type == RDORTPResParam::pt_enum || second.type == RDORTPResParam::pt_enum ) {
+		if ( type == RDORTPResParam::pt_enum ) {
+			parser->lexer_loc_set( &error );
+		} else {
+			parser->lexer_loc_set( &second.error );
+		}
 		parser->error( "Нельзя вычитать перечислимые данные" );
 //		parser->error("cannot subtract enumerative types");
 	} else if ( type == RDORTPResParam::pt_str || second.type == RDORTPResParam::pt_str ) {
-		parser->error( "Нельзя вычитать перечислимые данные" );
+		if ( type == RDORTPResParam::pt_str ) {
+			parser->lexer_loc_set( &error );
+			parser->error( rdo::format("Неизвестный идентификатор: %s", str->c_str()) );
+		} else {
+			parser->lexer_loc_set( &second.error );
+			parser->error( rdo::format("Неизвестный идентификатор: %s", second.str->c_str()) );
+		}
 	} else {
 		newType = RDORTPResParam::pt_real;
 	}
 
 	rdoRuntime::RDOCalc* newCalc = new rdoRuntime::RDOCalcMinus( calc, second.calc );
-	return new RDOFUNArithm( newType, newCalc );
+	RDOFUNArithm* arithm = new RDOFUNArithm( newType, newCalc );
+	arithm->error.first_line   = error.first_line;
+	arithm->error.first_column = error.first_column;
+	arithm->error.last_line    = second.error.last_line;
+	arithm->error.last_column  = second.error.last_column;
+	return arithm;
 }
 
 RDOFUNArithm* RDOFUNArithm::operator *( RDOFUNArithm& second )
@@ -436,16 +468,32 @@ RDOFUNArithm* RDOFUNArithm::operator *( RDOFUNArithm& second )
 	if ( type == RDORTPResParam::pt_int && second.type == RDORTPResParam::pt_int ) {
 		newType = RDORTPResParam::pt_int;
 	} else if ( type == RDORTPResParam::pt_enum || second.type == RDORTPResParam::pt_enum ) {
+		if ( type == RDORTPResParam::pt_enum ) {
+			parser->lexer_loc_set( &error );
+		} else {
+			parser->lexer_loc_set( &second.error );
+		}
 		parser->error( "Нельзя перемножать перечислимые данные" );
 //		parser->error("cannot multiply enumerative types");
 	} else if ( type == RDORTPResParam::pt_str || second.type == RDORTPResParam::pt_str ) {
-		parser->error( "Нельзя перемножать перечислимые данные" );
+		if ( type == RDORTPResParam::pt_str ) {
+			parser->lexer_loc_set( &error );
+			parser->error( rdo::format("Неизвестный идентификатор: %s", str->c_str()) );
+		} else {
+			parser->lexer_loc_set( &second.error );
+			parser->error( rdo::format("Неизвестный идентификатор: %s", second.str->c_str()) );
+		}
 	} else {
 		newType = RDORTPResParam::pt_real;
 	}
 
 	rdoRuntime::RDOCalc* newCalc = new rdoRuntime::RDOCalcMult( calc, second.calc );
-	return new RDOFUNArithm( newType, newCalc );
+	RDOFUNArithm* arithm = new RDOFUNArithm( newType, newCalc );
+	arithm->error.first_line   = error.first_line;
+	arithm->error.first_column = error.first_column;
+	arithm->error.last_line    = second.error.last_line;
+	arithm->error.last_column  = second.error.last_column;
+	return arithm;
 }
 
 RDOFUNArithm* RDOFUNArithm::operator /( RDOFUNArithm& second )
@@ -455,10 +503,21 @@ RDOFUNArithm* RDOFUNArithm::operator /( RDOFUNArithm& second )
 	if ( type == RDORTPResParam::pt_int && second.type == RDORTPResParam::pt_int ) {
 		newType = RDORTPResParam::pt_int;
 	} else if ( type == RDORTPResParam::pt_enum || second.type == RDORTPResParam::pt_enum ) {
+		if ( type == RDORTPResParam::pt_enum ) {
+			parser->lexer_loc_set( &error );
+		} else {
+			parser->lexer_loc_set( &second.error );
+		}
 		parser->error( "Нельзя разделить перечислимые данные" );
 //		parser->error("cannot divide enumerative types");
 	} else if ( type == RDORTPResParam::pt_str || second.type == RDORTPResParam::pt_str ) {
-		parser->error( "Нельзя разделить перечислимые данные" );
+		if ( type == RDORTPResParam::pt_str ) {
+			parser->lexer_loc_set( &error );
+			parser->error( rdo::format("Неизвестный идентификатор: %s", str->c_str()) );
+		} else {
+			parser->lexer_loc_set( &second.error );
+			parser->error( rdo::format("Неизвестный идентификатор: %s", second.str->c_str()) );
+		}
 	} else {
 		newType = RDORTPResParam::pt_real;
 	}
@@ -467,58 +526,128 @@ RDOFUNArithm* RDOFUNArithm::operator /( RDOFUNArithm& second )
 	if ( newType == RDORTPResParam::pt_int ) {
 		newCalc = new rdoRuntime::RDOCalcDoubleToInt( newCalc );
 	}
-	return new RDOFUNArithm( newType, newCalc );
+	RDOFUNArithm* arithm = new RDOFUNArithm( newType, newCalc );
+	arithm->error.first_line   = error.first_line;
+	arithm->error.first_column = error.first_column;
+	arithm->error.last_line    = second.error.last_line;
+	arithm->error.last_column  = second.error.last_column;
+	return arithm;
 }
 
 RDOFUNLogic* RDOFUNArithm::operator <( RDOFUNArithm& second )
 {
 	if ( type == RDORTPResParam::pt_enum || second.type == RDORTPResParam::pt_enum ) {
+		if ( type == RDORTPResParam::pt_enum ) {
+			parser->lexer_loc_set( &error );
+		} else {
+			parser->lexer_loc_set( &second.error );
+		}
 		parser->error( "Нельзя сравнивать перечислимые данные" );
 //		parser->error("cannot compare enumerative types");
 	} else if ( type == RDORTPResParam::pt_str || second.type == RDORTPResParam::pt_str ) {
-		parser->error( "Нельзя сравнивать перечислимые данные" );
+		if ( type == RDORTPResParam::pt_str ) {
+			parser->lexer_loc_set( &error );
+			parser->error( rdo::format("Неизвестный идентификатор: %s", str->c_str()) );
+		} else {
+			parser->lexer_loc_set( &second.error );
+			parser->error( rdo::format("Неизвестный идентификатор: %s", second.str->c_str()) );
+		}
 	}
 	rdoRuntime::RDOCalc* newCalc = new rdoRuntime::RDOCalcIsLess( calc, second.calc );
-	return new RDOFUNLogic( newCalc );
+	RDOFUNLogic* logic = new RDOFUNLogic( newCalc );
+	logic->error.first_line   = error.first_line;
+	logic->error.first_column = error.first_column;
+	logic->error.last_line    = second.error.last_line;
+	logic->error.last_column  = second.error.last_column;
+	return logic;
 }
 
 RDOFUNLogic* RDOFUNArithm::operator >( RDOFUNArithm& second )
 {
 	if ( type == RDORTPResParam::pt_enum || second.type == RDORTPResParam::pt_enum ) {
+		if ( type == RDORTPResParam::pt_enum ) {
+			parser->lexer_loc_set( &error );
+		} else {
+			parser->lexer_loc_set( &second.error );
+		}
 		parser->error( "Нельзя сравнивать перечислимые данные" );
 	} else if ( type == RDORTPResParam::pt_str || second.type == RDORTPResParam::pt_str ) {
-		parser->error( "Нельзя сравнивать перечислимые данные" );
+		if ( type == RDORTPResParam::pt_str ) {
+			parser->lexer_loc_set( &error );
+			parser->error( rdo::format("Неизвестный идентификатор: %s", str->c_str()) );
+		} else {
+			parser->lexer_loc_set( &second.error );
+			parser->error( rdo::format("Неизвестный идентификатор: %s", second.str->c_str()) );
+		}
 	}
 	rdoRuntime::RDOCalc* newCalc = new rdoRuntime::RDOCalcIsGreater( calc, second.calc );
-	return new RDOFUNLogic( newCalc );
+	RDOFUNLogic* logic = new RDOFUNLogic( newCalc );
+	logic->error.first_line   = error.first_line;
+	logic->error.first_column = error.first_column;
+	logic->error.last_line    = second.error.last_line;
+	logic->error.last_column  = second.error.last_column;
+	return logic;
 }
 
 RDOFUNLogic* RDOFUNArithm::operator <=( RDOFUNArithm& second )
 {
 	if ( type == RDORTPResParam::pt_enum || second.type == RDORTPResParam::pt_enum ) {
+		if ( type == RDORTPResParam::pt_enum ) {
+			parser->lexer_loc_set( &error );
+		} else {
+			parser->lexer_loc_set( &second.error );
+		}
 		parser->error( "Нельзя сравнивать перечислимые данные" );
 	} else if ( type == RDORTPResParam::pt_str || second.type == RDORTPResParam::pt_str ) {
-		parser->error( "Нельзя сравнивать перечислимые данные" );
+		if ( type == RDORTPResParam::pt_str ) {
+			parser->lexer_loc_set( &error );
+			parser->error( rdo::format("Неизвестный идентификатор: %s", str->c_str()) );
+		} else {
+			parser->lexer_loc_set( &second.error );
+			parser->error( rdo::format("Неизвестный идентификатор: %s", second.str->c_str()) );
+		}
 	}
 	rdoRuntime::RDOCalc* newCalc = new rdoRuntime::RDOCalcIsLEQ( calc, second.calc );
-	return new RDOFUNLogic( newCalc );
+	RDOFUNLogic* logic = new RDOFUNLogic( newCalc );
+	logic->error.first_line   = error.first_line;
+	logic->error.first_column = error.first_column;
+	logic->error.last_line    = second.error.last_line;
+	logic->error.last_column  = second.error.last_column;
+	return logic;
 }
 
 RDOFUNLogic* RDOFUNArithm::operator >=( RDOFUNArithm& second )
 {
 	if ( type == RDORTPResParam::pt_enum || second.type == RDORTPResParam::pt_enum ) {
+		if ( type == RDORTPResParam::pt_enum ) {
+			parser->lexer_loc_set( &error );
+		} else {
+			parser->lexer_loc_set( &second.error );
+		}
 		parser->error( "Нельзя сравнивать перечислимые данные" );
 	} else if ( type == RDORTPResParam::pt_str || second.type == RDORTPResParam::pt_str ) {
-		parser->error( "Нельзя сравнивать перечислимые данные" );
+		if ( type == RDORTPResParam::pt_str ) {
+			parser->lexer_loc_set( &error );
+			parser->error( rdo::format("Неизвестный идентификатор: %s", str->c_str()) );
+		} else {
+			parser->lexer_loc_set( &second.error );
+			parser->error( rdo::format("Неизвестный идентификатор: %s", second.str->c_str()) );
+		}
 	}
 	rdoRuntime::RDOCalc* newCalc = new rdoRuntime::RDOCalcIsGEQ( calc, second.calc );
-	return new RDOFUNLogic( newCalc );
+	RDOFUNLogic* logic = new RDOFUNLogic( newCalc );
+	logic->error.first_line   = error.first_line;
+	logic->error.first_column = error.first_column;
+	logic->error.last_line    = second.error.last_line;
+	logic->error.last_column  = second.error.last_column;
+	return logic;
 }
 
 RDOFUNLogic* RDOFUNArithm::operator ==( RDOFUNArithm& second )
 {
 	if ( type == RDORTPResParam::pt_enum && second.type == RDORTPResParam::pt_enum ) {
 		if ( enu != second.enu ) {
+			parser->lexer_loc_set( &second.error );
 			parser->error( "Нельзя сравнивать разные перечислимые типы" );
 //			parser->error("cannot compare different enumerative types");
 		}
@@ -526,46 +655,74 @@ RDOFUNLogic* RDOFUNArithm::operator ==( RDOFUNArithm& second )
 		second.calc = new rdoRuntime::RDOCalcConst( enu->findValue(second.str) );
 //	} else if ( (type >= 2) || (second.type >= 2) ) {
 	} else if ( (type == RDORTPResParam::pt_str && second.type == RDORTPResParam::pt_enum) || (type == RDORTPResParam::pt_str && second.type == RDORTPResParam::pt_str) ) {
-		parser->error( "Нельзя сравнивать перечислимый тип с неперечислимым" );
+		parser->lexer_loc_set( &error );
+		parser->error( rdo::format("Неизвестный идентификатор: %s", str->c_str()) );
 //		parser->error("cannot compare enumerative type with nonenumerative type");
 	}
 
 	rdoRuntime::RDOCalc* newCalc = new rdoRuntime::RDOCalcIsEqual( calc, second.calc );
-	return new RDOFUNLogic( newCalc );
+	RDOFUNLogic* logic = new RDOFUNLogic( newCalc );
+	logic->error.first_line   = error.first_line;
+	logic->error.first_column = error.first_column;
+	logic->error.last_line    = second.error.last_line;
+	logic->error.last_column  = second.error.last_column;
+	return logic;
 }
 
 RDOFUNLogic* RDOFUNArithm::operator !=( RDOFUNArithm& second )
 {
 	if ( type == RDORTPResParam::pt_enum && second.type == RDORTPResParam::pt_enum ) {
 		if ( enu != second.enu ) {
+			parser->lexer_loc_set( &second.error );
 			parser->error( "Нельзя сравнивать разные перечислимые типы" );
 		}
 	} else if ( type == RDORTPResParam::pt_enum && second.type == RDORTPResParam::pt_str ) {
 		second.calc = new rdoRuntime::RDOCalcConst( enu->findValue(second.str) );
 	} else if ( (type == RDORTPResParam::pt_str && second.type == RDORTPResParam::pt_enum) || (type == RDORTPResParam::pt_str && second.type == RDORTPResParam::pt_str) ) {
-		parser->error( "Нельзя сравнивать перечислимый тип с неперечислимым" );
+		parser->lexer_loc_set( &error );
+		parser->error( rdo::format("Неизвестный идентификатор: %s", str->c_str()) );
 	}
 
 	rdoRuntime::RDOCalc* newCalc = new rdoRuntime::RDOCalcIsNotEqual( calc, second.calc );
-	return new RDOFUNLogic( newCalc );
+	RDOFUNLogic* logic = new RDOFUNLogic( newCalc );
+	logic->error.first_line   = error.first_line;
+	logic->error.first_column = error.first_column;
+	logic->error.last_line    = second.error.last_line;
+	logic->error.last_column  = second.error.last_column;
+	return logic;
 }
 
 RDOFUNLogic* RDOFUNLogic::operator &&( const RDOFUNLogic& second )
 {
 	rdoRuntime::RDOCalc* newCalc = new rdoRuntime::RDOCalcAnd( calc, second.calc );
-	return new RDOFUNLogic( newCalc );
+	RDOFUNLogic* logic = new RDOFUNLogic( newCalc );
+	logic->error.first_line   = error.first_line;
+	logic->error.first_column = error.first_column;
+	logic->error.last_line    = second.error.last_line;
+	logic->error.last_column  = second.error.last_column;
+	return logic;
 }
 
 RDOFUNLogic* RDOFUNLogic::operator ||( const RDOFUNLogic& second )
 {
 	rdoRuntime::RDOCalc* newCalc = new rdoRuntime::RDOCalcOr( calc, second.calc );
-	return new RDOFUNLogic( newCalc );
+	RDOFUNLogic* logic = new RDOFUNLogic( newCalc );
+	logic->error.first_line   = error.first_line;
+	logic->error.first_column = error.first_column;
+	logic->error.last_line    = second.error.last_line;
+	logic->error.last_column  = second.error.last_column;
+	return logic;
 }
 
 RDOFUNLogic* RDOFUNLogic::operator_not()
 {
 	rdoRuntime::RDOCalc* newCalc = new rdoRuntime::RDOCalcNot( calc );
-	return new RDOFUNLogic( newCalc );
+	RDOFUNLogic* logic = new RDOFUNLogic( newCalc );
+	logic->error.first_line   = error.first_line;
+	logic->error.first_column = error.first_column;
+	logic->error.last_line    = error.last_line;
+	logic->error.last_column  = error.last_column;
+	return logic;
 }
 
 RDOFUNArithm::RDOFUNArithm( int n )
@@ -656,15 +813,21 @@ RDOFUNArithm::RDOFUNArithm( std::string* s )
 const RDOFUNArithm* RDOFUNParams::createSeqCall( const std::string* const seqName ) const
 {
 	const RDOFUNSequence* const seq = parser->findSequence( seqName );
-//	if ( !seq ) parser->error( "Undefined function or sequence: " + *seqName );
 	if ( !seq ) parser->error( rdo::format("Неопределенная функция или последовательность: %s", seqName->c_str()) );
-	return seq->createCallCalc( this );
+//	if ( !seq ) parser->error( "Undefined function or sequence: " + *seqName );
+	parser->lexer_loc_backup();
+	parser->lexer_loc_set( error.last_line, error.last_column );
+	const RDOFUNArithm* arithm = seq->createCallCalc( this );
+	parser->lexer_loc_restore();
+	return arithm;
 }
 
-const RDOFUNArithm *RDOFUNSequenceUniform::createCallCalc(const RDOFUNParams *const param) const
+const RDOFUNArithm *RDOFUNSequenceUniform::createCallCalc( const RDOFUNParams* const param ) const
 {
-	if(param->params.size() != 2)
-		parser->error("Wrong parameters number in uniform sequence call: " + *header->name);
+	if ( param->params.size() != 2 ) {
+		parser->error( rdo::format("Для равномерного закона распределения '%s' нужно указать два параметра: минимальную и максимальную границы диапазона", header->name->c_str()) );
+//		parser->error("Wrong parameters number in uniform sequence call: " + *header->name);
+	}
 
 	rdoRuntime::RDOCalcFunctionCall *funcCall = new rdoRuntime::RDOCalcFunctionCall(next);
 	RDOFUNArithm *arithm1 = param->params[0];
@@ -682,10 +845,12 @@ const RDOFUNArithm *RDOFUNSequenceUniform::createCallCalc(const RDOFUNParams *co
 	return res;
 }
 
-const RDOFUNArithm *RDOFUNSequenceExponential::createCallCalc(const RDOFUNParams *const param) const
+const RDOFUNArithm *RDOFUNSequenceExponential::createCallCalc( const RDOFUNParams* const param ) const
 {
-	if(param->params.size() != 1)
-		parser->error("Wrong parameters number in exponential sequence call: " + *header->name);
+	if ( param->params.size() != 1 ) {
+		parser->error( rdo::format("Для экспоненциального закона распределения '%s' нужно указать один параметр: математическое ожидание", header->name->c_str()) );
+//		parser->error("Wrong parameters number in exponential sequence call: " + *header->name);
+	}
 
 	rdoRuntime::RDOCalcFunctionCall *funcCall = new rdoRuntime::RDOCalcFunctionCall(next);
 	RDOFUNArithm *arithm1 = param->params[0];
@@ -700,10 +865,12 @@ const RDOFUNArithm *RDOFUNSequenceExponential::createCallCalc(const RDOFUNParams
 	return res;
 }
 
-const RDOFUNArithm *RDOFUNSequenceNormal::createCallCalc(const RDOFUNParams *const param) const
+const RDOFUNArithm* RDOFUNSequenceNormal::createCallCalc( const RDOFUNParams* const param ) const
 {
-	if(param->params.size() != 2)
-		parser->error("Wrong parameters number in normal sequence call: " + *header->name);
+	if ( param->params.size() != 2 ) {
+		parser->error( rdo::format("Для нормального закона распределения '%s' нужно указать два параметра: математическое ожидание и среднее квадратическое отклонение", header->name->c_str()) );
+//		parser->error("Wrong parameters number in normal sequence call: " + *header->name);
+	}
 
 	rdoRuntime::RDOCalcFunctionCall *funcCall = new rdoRuntime::RDOCalcFunctionCall(next);
 	RDOFUNArithm *arithm1 = param->params[0];
@@ -912,7 +1079,7 @@ RDOFUNArithm* RDOFUNSelect::createFunSelectSize()
 }
 
 // ----------------------------------------------------------------------------
-// ---------- RDOFUNSelect
+// ---------- Sequences
 // ----------------------------------------------------------------------------
 RDOFUNSequenceUniform::RDOFUNSequenceUniform( RDOFUNSequenceHeader* _header, int _base ):
 	RDOFUNSequence( _header, _base )
@@ -1103,12 +1270,12 @@ rdoRuntime::RDOCalc* RDOFUNArithm::createCalc( const RDORTPResParam* const forTy
 		}
 		return new rdoRuntime::RDOCalcInt( calc );
 	} else if ( type == RDORTPResParam::pt_str && !forType && str ) {
-		parser->lexer_loc_set( error_last_line, error_last_pos );
+		parser->lexer_loc_set( error.last_line, error.last_column );
 		parser->error( rdo::format( "Неизвестный идентификатор: %s", str->c_str()) );
 	}
 
 	if ( !forType ) {
-		parser->lexer_loc_set( error_last_line, error_last_pos );
+		parser->lexer_loc_set( error.last_line, error.last_column );
 		parser->error( "Неизвестный тип параметра" );
 	}
 
