@@ -85,17 +85,27 @@ public:
 	rdoRuntime::RDOCalcConst *createResultCalc(const RDORTPResParam *const retType) const;
 };
 
+// ----------------------------------------------------------------------------
+// ---------- RDOFUNLogic
+// ----------------------------------------------------------------------------
 class RDOFUNLogic: public RDODeletable, public RDOErrorPos
 {
 public:
 	rdoRuntime::RDOCalc* calc;
 
-	RDOFUNLogic( rdoRuntime::RDOCalc *_calc ): calc(_calc) {}
+	RDOFUNLogic( rdoRuntime::RDOCalc *_calc );
+
 	RDOFUNLogic* operator &&( const RDOFUNLogic& second );
 	RDOFUNLogic* operator ||( const RDOFUNLogic& second );
 	RDOFUNLogic* operator_not();
+
+	void setErrorPos( const YYLTYPE& error_pos );
+	void setErrorPos( int first_line, int first_column, int last_line, int last_column );
 };
 
+// ----------------------------------------------------------------------------
+// ---------- RDOFUNArithm
+// ----------------------------------------------------------------------------
 class RDOFUNArithm: public RDODeletable, public RDOErrorPos
 {
 public:
@@ -107,22 +117,11 @@ private:
 	rdoRuntime::RDOCalc* calc;
 
 public:
-	RDOFUNArithm( RDORTPResParam::ParamType _type, rdoRuntime::RDOCalc* _calc ):
-		type( _type ),
-		enu( NULL ),
-		str( NULL ),
-		calc( _calc )
-	{
-	}
-
-	rdoRuntime::RDOCalc* createCalc( const RDORTPResParam* const forType = NULL );
-	RDORTPResParam::ParamType getType() const { return type; }
-
-	RDOFUNArithm( std::string* resName, std::string* parName );
-	RDOFUNArithm( int n );
-	RDOFUNArithm( double d );
-	RDOFUNArithm( double* d );
-	RDOFUNArithm( std::string* s );
+	RDOFUNArithm( RDORTPResParam::ParamType _type, rdoRuntime::RDOCalc* _calc, const YYLTYPE& error_pos );
+	RDOFUNArithm( std::string* resName, std::string* parName, const YYLTYPE& res_name_error_pos, const YYLTYPE& par_name_error_pos );
+	RDOFUNArithm( int n, const YYLTYPE& error_pos );
+	RDOFUNArithm( double* d, const YYLTYPE& error_pos );
+	RDOFUNArithm( std::string* s, const YYLTYPE& error_pos );
 
 	RDOFUNArithm* operator +( RDOFUNArithm& second );
 	RDOFUNArithm* operator -( RDOFUNArithm& second );
@@ -135,6 +134,12 @@ public:
 	RDOFUNLogic* operator > ( RDOFUNArithm& second );
 	RDOFUNLogic* operator <=( RDOFUNArithm& second );
 	RDOFUNLogic* operator >=( RDOFUNArithm& second );
+
+	rdoRuntime::RDOCalc* createCalc( const RDORTPResParam* const forType = NULL );
+	RDORTPResParam::ParamType getType() const { return type; }
+
+	void setErrorPos( const YYLTYPE& error_pos );
+	void setErrorPos( int first_line, int first_column, int last_line, int last_column );
 };
 
 class RDOFUNCalculateIf: public RDODeletable
@@ -175,9 +180,13 @@ public:
 	const RDORTPResParam *const getType() const { return retType; }
 };
 
+// ----------------------------------------------------------------------------
+// ---------- RDOFUNParams
+// ----------------------------------------------------------------------------
 class RDOFUNParams: public RDODeletable, public RDOErrorPos
 {
 public:
+	RDOErrorPos name_error_pos;
 	std::vector<RDOFUNArithm *> params;
 	RDOFUNParams *addParameter(RDOFUNArithm *param){
 		params.push_back(param);
@@ -190,7 +199,7 @@ public:
 // ----------------------------------------------------------------------------
 // ---------- RDOFUNGroup
 // ----------------------------------------------------------------------------
-class RDOFUNGroup: public RDODeletable
+class RDOFUNGroup: public RDODeletable, public RDOErrorPos
 {
 public:
 	const RDORTPResType* resType;
@@ -226,9 +235,12 @@ private:
 public:
 	RDOFUNSelect( const std::string* const _resTypeName ): RDOFUNGroup( _resTypeName ), select( NULL ) {}
 	RDOFUNLogic* createFunSelect( RDOFUNLogic* cond = NULL );
-	RDOFUNLogic* createFunSelect( int funType, RDOFUNLogic* cond );
+	RDOFUNLogic* createFunSelectGroup( int funType, RDOFUNLogic* cond );
 	RDOFUNLogic* createFunSelectEmpty();
 	RDOFUNArithm* createFunSelectSize();
+
+	void setErrorPos( const YYLTYPE& error_pos );
+	void setErrorPos( int first_line, int first_column, int last_line, int last_column );
 };
 
 // ----------------------------------------------------------------------------
@@ -260,8 +272,8 @@ protected:
 
 public:
 	virtual void createCalcs() = 0;
-	virtual const RDOFUNArithm *createCallCalc(const RDOFUNParams *const params) const = 0;
-	const std::string *getName() const { return header->name; }
+	virtual const RDOFUNArithm* createCallCalc( const RDOFUNParams* const params ) const = 0;
+	const std::string* getName() const { return header->name; }
 };
 
 class RDOFUNSequenceUniform: public RDOFUNSequence

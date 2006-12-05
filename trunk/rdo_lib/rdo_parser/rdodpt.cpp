@@ -48,8 +48,10 @@ void dpt_opr_error( char* mes )
 
 /////////////////////////  "SEARCH" DECISION POINT /////////////////////////
 
-RDODPTSearch::RDODPTSearch(std::string *_name, DPTSearchTrace _trace)
-	: name(_name), trace(_trace) 
+RDODPTSearch::RDODPTSearch( std::string* _name, DPTSearchTrace _trace ):
+	name( _name ),
+	trace( _trace ),
+	lastActivity( NULL )
 {
 	if(std::find_if(parser->getDPTSome().begin(), parser->getDPTSome().end(), compareName<RDODPTSome>(_name)) != parser->getDPTSome().end())
 		parser->error("DPT name: " + *_name + " already defined");
@@ -190,8 +192,9 @@ rdoRuntime::RDOSearchActivityRuntime *RDODPTSearchActivity::createActivityRuntim
 
 /////////////////////////  "SOME" DECISION POINT //////////////////////
 
-RDODPTSome::RDODPTSome(std::string *_name)
-	: name(_name)
+RDODPTSome::RDODPTSome( std::string* _name ):
+	name( _name ),
+	lastActivity( NULL )
 {
 	if(std::find_if(parser->getDPTSome().begin(), parser->getDPTSome().end(), compareName<RDODPTSome>(_name)) != parser->getDPTSome().end())
 		parser->error("DPT name: " + *_name + " already defined");

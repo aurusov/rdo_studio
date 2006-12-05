@@ -852,10 +852,12 @@ RDOValue RDOCalcSeqNextByHist::calcValue( RDORuntime* sim ) const
 	return res_real ? res : static_cast<int>(res > 0 ? res + 0.5 : res - 0.5);
 }
 
-RDOCalc::RDOCalc() 
-{	
-	fileToParse = rdoParse::parser->getFileToParse();
-	lineno      = rdoParse::parser->lexer_loc_line();
+RDOCalc::RDOCalc()
+{
+	fileToParse         = rdoParse::parser->getFileToParse();
+	YYLTYPE error_pos   = error();
+	error_pos.last_line = rdoParse::parser->lexer_loc_line();
+	setErrorPos( error_pos );
 	rdoParse::addCalcToRuntime( this ); 
 }
 
@@ -869,7 +871,12 @@ RDOValue RDOCalc::calcValueBase( RDORuntime* sim ) const
 	try {
 		return calcValue( sim );
 	} catch ( RDOException& ) {
-		sim->error( "in", this );
+		if ( sim->errors.empty() ) {
+			sim->error( "ошибка в", this );
+//			sim->error( "in", this );
+		} else {
+			sim->error( NULL, this );
+		}
 	}
 	return 0; // unreachable code
 }
@@ -1025,14 +1032,14 @@ std::string RDORuntime::writeActivitiesStructure()
 	return stream.str();
 }
 
-RDOValue RDOCalcDiv::calcValue(RDORuntime *sim) const 
-{ 
-   RDOValue rVal = right->calcValueBase(sim);
-   if(rVal == 0)
-		sim->error("Division by zero", this);
-//			throw RDORuntimeException("Division by zero");
-
-   return RDOValue(left->calcValueBase(sim) / rVal);
+RDOValue RDOCalcDiv::calcValue(RDORuntime *sim) const
+{
+	RDOValue rVal = right->calcValueBase(sim);
+	if ( rVal == 0 ) {
+		sim->error( "Деление на ноль", this );
+//		sim->error("Division by zero", this);
+	}
+	return RDOValue( left->calcValueBase(sim) / rVal );
 }
 
 RDOValue RDOCalcCheckDiap::calcValue(RDORuntime *sim) const 
@@ -1047,7 +1054,9 @@ RDOValue RDOCalcCheckDiap::calcValue(RDORuntime *sim) const
 
 void RDORuntime::error( const char* message, const RDOCalc* calc )
 {
-	errors.push_back( rdoSimulator::RDOSyntaxError( rdoSimulator::RDOSyntaxError::UNKNOWN, message, calc->lineno, -1, calc->fileToParse ) );
+	if ( message ) {
+		errors.push_back( rdoSimulator::RDOSyntaxError( rdoSimulator::RDOSyntaxError::UNKNOWN, message, calc->error().last_line, calc->error().last_column, calc->getFileType() ) );
+	}
 	throw rdoParse::RDOSyntaxException("");
 }
 

@@ -137,6 +137,7 @@
 %token Size_kw				419
 %token Empty_kw				420
 %token not_keyword			421
+%token UMINUS				422
 
 %{
 #include "pch.h"
@@ -147,8 +148,10 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 #include "rdoparser.h"
+#include "rdoparser_rdo.h"
 #include "rdosmr.h"
 #include "rdofun.h"
+#include "rdoruntime.h"
 
 namespace rdoParse 
 {
@@ -159,6 +162,7 @@ namespace rdoParse
 %left '+' '-'
 %left '*' '/'
 %left not_keyword
+%left UMINUS
 
 %start smr_cond
 
@@ -194,6 +198,7 @@ smr_cond:	smr_descr
 // ----------------------------------------------------------------------------
 // ---------- Логические выражения
 // ----------------------------------------------------------------------------
+// Пока не использьзуется RDOErrorPos, но в ариф. выражениях уже назначается
 fun_logic: fun_arithm '=' fun_arithm			{ $$ = (int)(*(RDOFUNArithm *)$1 == *(RDOFUNArithm *)$3); }
 			| fun_arithm neq fun_arithm			{ $$ = (int)(*(RDOFUNArithm *)$1 != *(RDOFUNArithm *)$3); }
 			| fun_arithm '<' fun_arithm			{ $$ = (int)(*(RDOFUNArithm *)$1 <  *(RDOFUNArithm *)$3); }
@@ -202,8 +207,31 @@ fun_logic: fun_arithm '=' fun_arithm			{ $$ = (int)(*(RDOFUNArithm *)$1 == *(RDO
 			| fun_arithm geq fun_arithm			{ $$ = (int)(*(RDOFUNArithm *)$1 >= *(RDOFUNArithm *)$3); }
 			| fun_logic and_keyword fun_logic	{ $$ = (int)(*(RDOFUNLogic *)$1 && *(RDOFUNLogic *)$3);   }
 			| fun_logic or_keyword fun_logic	{ $$ = (int)(*(RDOFUNLogic *)$1 || *(RDOFUNLogic *)$3);   }
-			| '[' fun_logic ']'					{ $$ = $2; }
-			| '(' fun_logic ')'					{ $$ = $2; }
+			| '[' fun_logic ']'					{
+				RDOFUNLogic* logic = reinterpret_cast<RDOFUNLogic*>($2);
+				logic->setErrorPos( @1.first_line, @1.first_column, @3.last_line, @3.last_column );
+				$$ = $2;
+			}
+			| '(' fun_logic ')'					{
+				RDOFUNLogic* logic = reinterpret_cast<RDOFUNLogic*>($2);
+				logic->setErrorPos( @1.first_line, @1.first_column, @3.last_line, @3.last_column );
+				$$ = $2;
+			}
+			| not_keyword fun_logic				{
+				RDOFUNLogic* logic = reinterpret_cast<RDOFUNLogic*>($2);
+				logic->setErrorPos( @1.first_line, @1.first_column, @2.last_line, @2.last_column );
+				$$ = (int)logic->operator_not();
+			}
+			| fun_group							{
+				RDOFUNLogic* logic = reinterpret_cast<RDOFUNLogic*>($1);
+				logic->setErrorPos( @1 );
+				$$ = $1;
+			}
+			| fun_select_logic					{
+				RDOFUNLogic* logic = reinterpret_cast<RDOFUNLogic*>($1);
+				logic->setErrorPos( @1 );
+				$$ = $1;
+			}
 			| '[' fun_logic error {
 				parser->lexer_loc_set( @2.last_line, @2.last_column );
 				parser->error( "Ожидается закрывающаяся скобка" );
@@ -212,9 +240,6 @@ fun_logic: fun_arithm '=' fun_arithm			{ $$ = (int)(*(RDOFUNArithm *)$1 == *(RDO
 				parser->lexer_loc_set( @2.last_line, @2.last_column );
 				parser->error( "Ожидается закрывающаяся скобка" );
 			}
-			| not_keyword fun_logic				{ $$ = (int)((RDOFUNLogic *)$2)->operator_not();          }
-			| fun_group							{ $$ = $1; }
-			| fun_select_logic
 			| error								{
 				parser->lexer_loc_set( &(@1) );
 				parser->error( "Ошибка в логическом выражении" );
@@ -227,28 +252,49 @@ fun_arithm: fun_arithm '+' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOF
 			| fun_arithm '-' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 - *(RDOFUNArithm *)$3); }
 			| fun_arithm '*' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 * *(RDOFUNArithm *)$3); }
 			| fun_arithm '/' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 / *(RDOFUNArithm *)$3); }
-			| '(' fun_arithm ')'			{ $$ = $2; }
-			| fun_arithm_func_call
-			| fun_select_arithm
-			| IDENTIF '.' IDENTIF			{
-				parser->lexer_loc_backup();
-				parser->lexer_loc_set( &(@3) );
-				$$ = (int)(new RDOFUNArithm((std::string *)$1, (std::string *)$3));
-				parser->lexer_loc_restore();
+			| '(' fun_arithm ')'			{
+				RDOFUNArithm* arithm = reinterpret_cast<RDOFUNArithm*>($2);
+				arithm->setErrorPos( @1.first_line, @1.first_column, @3.last_line, @3.last_column );
+				$$ = $2;
 			}
-			| INT_CONST						{ $$ = (int)(new RDOFUNArithm((int)$1));                              }
-			| REAL_CONST					{ $$ = (int)(new RDOFUNArithm((double*)$1));                          }
-			| IDENTIF						{ $$ = (int)(new RDOFUNArithm((std::string *)$1));                    }
+			| fun_arithm_func_call			{
+				RDOFUNArithm* arithm = reinterpret_cast<RDOFUNArithm*>($1);
+				arithm->setErrorPos( @1 );
+				$$ = $1;
+			}
+			| fun_select_arithm				{
+				RDOFUNArithm* arithm = reinterpret_cast<RDOFUNArithm*>($1);
+				arithm->setErrorPos( @1 );
+				$$ = $1;
+			}
+			| IDENTIF '.' IDENTIF			{
+				$$ = (int)new RDOFUNArithm( reinterpret_cast<std::string*>($1), reinterpret_cast<std::string*>($3), @1, @3 );
+			}
+			| INT_CONST						{ $$ = (int)new RDOFUNArithm( (int)$1, @1 );          }
+			| REAL_CONST					{ $$ = (int)new RDOFUNArithm( (double*)$1, @1 );      }
+			| IDENTIF						{ $$ = (int)new RDOFUNArithm( (std::string*)$1, @1 ); }
+			| '-' fun_arithm %prec UMINUS	{
+				YYLTYPE error_pos;
+				error_pos.first_line   = @1.first_line;
+				error_pos.first_column = @1.first_column;
+				error_pos.last_line    = @2.last_line;
+				error_pos.last_column  = @2.last_column;
+				$$ = (int)new RDOFUNArithm( reinterpret_cast<RDOFUNArithm*>($2)->getType(), new rdoRuntime::RDOCalcUMinus( reinterpret_cast<RDOFUNArithm*>($2)->createCalc() ), error_pos );
+			}
 			| error							{
 				parser->lexer_loc_set( &(@1) );
-				parser->error( "Ошибка в арифметическом выражении" );
+				if ( @1.first_line = @1.last_line ) {
+					parser->error( rdo::format("Неизвестный идентификатор: %s", reinterpret_cast<RDOLexer*>(lexer)->YYText()) );
+				} else {
+					parser->error( "Ошибка в арифметическом выражении" );
+				}
 			};
 
 fun_arithm_func_call:	IDENTIF '(' fun_arithm_func_call_pars ')' {
-							parser->lexer_loc_backup();
-							parser->lexer_loc_set( &(@1) );
-							$$ = (int)((RDOFUNParams *)$3)->createCall((std::string *)$1);
-							parser->lexer_loc_restore();
+							RDOFUNParams* fun = ((RDOFUNParams*)$3);
+							fun->name_error_pos.setErrorPos( @1 );
+							fun->setErrorPos( @1.first_line, @1.first_column, @4.last_line, @4.last_column );
+							$$ = (int)fun->createCall((std::string *)$1);
 						}
 						| IDENTIF '(' error {
 							parser->lexer_loc_set( &(@3) );
@@ -256,13 +302,20 @@ fun_arithm_func_call:	IDENTIF '(' fun_arithm_func_call_pars ')' {
 						};
 
 fun_arithm_func_call_pars:	/* empty */ {
-								$$ = (int)(new RDOFUNParams());
+								RDOFUNParams* fun = new RDOFUNParams();
+								$$ = (int)fun;
 							}
 							| fun_arithm_func_call_pars fun_arithm {
-								$$ = (int)(((RDOFUNParams *)$1)->addParameter((RDOFUNArithm *)$2));
+								RDOFUNParams* fun = reinterpret_cast<RDOFUNParams*>($1);
+								fun->setErrorPos( @2 );
+								fun = fun->addParameter((RDOFUNArithm *)$2);
+								$$ = (int)fun;
 							}
 							| fun_arithm_func_call_pars ',' fun_arithm {
-								$$ = (int)(((RDOFUNParams *)$1)->addParameter((RDOFUNArithm *)$3));
+								RDOFUNParams* fun = reinterpret_cast<RDOFUNParams*>($1);
+								fun->setErrorPos( @3 );
+								fun = fun->addParameter((RDOFUNArithm *)$3);
+								$$ = (int)fun;
 							};
 
 // ----------------------------------------------------------------------------
@@ -292,7 +345,9 @@ fun_group:			fun_group_header fun_logic ')' {
 						$$ = (int)(((RDOFUNGroupLogic *)$1)->createFunLogic((RDOFUNLogic *)$2));
 					}
 					| fun_group_header NoCheck ')' {
-						$$ = (int)(((RDOFUNGroupLogic *)$1)->createFunLogic());
+						RDOFUNLogic* trueLogic = new RDOFUNLogic( new rdoRuntime::RDOCalcConst(1) );
+						trueLogic->setErrorPos( @2 );
+						$$ = (int)(((RDOFUNGroupLogic *)$1)->createFunLogic( trueLogic ));
 					}
 					| fun_group_header fun_logic error {
 						parser->lexer_loc_set( @2.last_line, @2.last_column );
@@ -304,11 +359,7 @@ fun_group:			fun_group_header fun_logic ')' {
 					};
 
 fun_select_header:	Select '(' IDENTIF_COLON {
-						parser->lexer_loc_backup();
-						parser->lexer_loc_set( @3.first_line, @3.first_column + ((std::string*)$3)->length() );
-						RDOFUNSelect* select = new RDOFUNSelect((std::string*)$3);
-						parser->lexer_loc_restore();
-						$$ = (int)select;
+						$$ = (int)new RDOFUNSelect((std::string*)$3);
 					}
 					| Select '(' error {
 						parser->lexer_loc_set( &(@3) );
@@ -320,11 +371,13 @@ fun_select_header:	Select '(' IDENTIF_COLON {
 					};
 
 fun_select_body:	fun_select_header fun_logic ')' {
-						((RDOFUNSelect*)$1)->createFunSelect((RDOFUNLogic *)$2);
+						RDOFUNLogic* logic = ((RDOFUNSelect*)$1)->createFunSelect((RDOFUNLogic*)$2);
+						logic->setErrorPos( @2 );
 						$$ = $1;
 					}
 					| fun_select_header NoCheck ')' {
-						((RDOFUNSelect*)$1)->createFunSelect();
+						RDOFUNLogic* logic = ((RDOFUNSelect*)$1)->createFunSelect();
+						logic->setErrorPos( @2 );
 						$$ = $1;
 					}
 					| fun_select_header fun_logic error {
@@ -342,10 +395,18 @@ fun_select_keyword:	Exist			{ $$ = 1; }
 					| Not_For_All	{ $$ = 4; };
 
 fun_select_logic:	fun_select_body '.' fun_select_keyword '(' fun_logic ')' {
-						$$ = (int)(((RDOFUNSelect *)$1)->createFunSelect($3, (RDOFUNLogic *)$5));
+						RDOFUNSelect* select = reinterpret_cast<RDOFUNSelect*>($1);
+						RDOFUNLogic* logic = select->createFunSelectGroup( $3, (RDOFUNLogic*)$5 );
+						select->setErrorPos( @1.first_line, @1.first_column, @6.last_line, @6.last_column );
+						logic->setErrorPos( select->error() );
+						$$ = (int)logic;
 					}
 					| fun_select_body '.' Empty_kw '(' ')' {
-						$$ = (int)(((RDOFUNSelect *)$1)->createFunSelectEmpty());
+						RDOFUNSelect* select = reinterpret_cast<RDOFUNSelect*>($1);
+						RDOFUNLogic* logic = select->createFunSelectEmpty();
+						select->setErrorPos( @1.first_line, @1.first_column, @5.last_line, @5.last_column );
+						logic->setErrorPos( select->error() );
+						$$ = (int)logic;
 					}
 					| fun_select_body error {
 						parser->lexer_loc_set( &(@1) );
@@ -373,7 +434,11 @@ fun_select_logic:	fun_select_body '.' fun_select_keyword '(' fun_logic ')' {
 					};
 
 fun_select_arithm:	fun_select_body '.' Size_kw '(' ')' {
-						$$ = (int)(((RDOFUNSelect *)$1)->createFunSelectSize());
+						RDOFUNSelect* select = reinterpret_cast<RDOFUNSelect*>($1);
+						RDOFUNArithm* arithm = select->createFunSelectSize();
+						select->setErrorPos( @1.first_line, @1.first_column, @5.last_line, @5.last_column );
+						arithm->setErrorPos( select->error() );
+						$$ = (int)arithm;
 					}
 					| fun_select_body error {
 						parser->lexer_loc_set( &(@1) );

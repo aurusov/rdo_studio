@@ -137,6 +137,7 @@
 %token Size_kw				419
 %token Empty_kw				420
 %token not_keyword			421
+%token UMINUS				422
 
 %{
 #include "pch.h"

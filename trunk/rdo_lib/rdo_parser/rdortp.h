@@ -13,20 +13,29 @@ void rtperror( char* mes );
 
 class RDOErrorPos
 {
+private:
+	YYLTYPE error_pos;
+
 public:
-	YYLTYPE error;
 	RDOErrorPos() {
-		error.first_line   = -1;
-		error.first_column = -1;
-		error.last_line    = -1;
-		error.last_column  = -1;
+		error_pos.first_line   = -1;
+		error_pos.first_column = -1;
+		error_pos.last_line    = -1;
+		error_pos.last_column  = -1;
 	}
-	void setErrorPos( const YYLTYPE& error_pos ) {
-		error.first_line   = error_pos.first_line;
-		error.first_column = error_pos.first_column;
-		error.last_line    = error_pos.last_line;
-		error.last_column  = error_pos.last_column;
+	void setErrorPos( const YYLTYPE& _error_pos ) {
+		error_pos.first_line   = _error_pos.first_line;
+		error_pos.first_column = _error_pos.first_column;
+		error_pos.last_line    = _error_pos.last_line;
+		error_pos.last_column  = _error_pos.last_column;
 	}
+	void setErrorPos( int first_line, int first_column, int last_line, int last_column ) {
+		error_pos.first_line   = first_line;
+		error_pos.first_column = first_column;
+		error_pos.last_line    = last_line;
+		error_pos.last_column  = last_column;
+	}
+	const YYLTYPE& error() const { return error_pos; }
 };
 
 class RDORTPIntDefVal;

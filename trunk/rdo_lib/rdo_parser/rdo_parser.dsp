@@ -443,7 +443,18 @@ SOURCE=.\rdogramfrm.cpp
 # Begin Source File
 
 SOURCE=.\rdogramfun.cpp
+
+!IF  "$(CFG)" == "rdo_parser - Win32 Release"
+
+# ADD CPP /GB /Zp8 /Ze /vmb /O1
+# SUBTRACT CPP /Fr /YX /Yc /Yu
+
+!ELSEIF  "$(CFG)" == "rdo_parser - Win32 Debug"
+
 # SUBTRACT CPP /YX /Yc /Yu
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 

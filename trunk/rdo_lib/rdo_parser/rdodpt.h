@@ -85,7 +85,7 @@ private:
 	std::vector<RDODPTSearchActivity *> activities;
 
 public:
-	RDODPTSearchActivity *lastActivity;
+	RDODPTSearchActivity* lastActivity;
 
 public:
 	RDODPTSearch(std::string *_name, DPTSearchTrace _trace = DPTnotrace);
@@ -137,7 +137,7 @@ private:
 	const std::string *const name;
 	RDOFUNLogic *conditon;
 	std::vector<RDODPTSomeActivity *> activities;
-	RDODPTSomeActivity *lastActivity;
+	RDODPTSomeActivity* lastActivity;
 
 public:
 	RDODPTSome(std::string *_name);

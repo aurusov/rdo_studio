@@ -304,47 +304,55 @@ public:
 	int referenceCount;
 };
 
-// --------------------  Binary Ariphmetic calcs ---------------------------------
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcBinary (Binary Ariphmetic calcs)
+// ----------------------------------------------------------------------------
 class RDOCalcBinary: public RDOCalc
 {
 protected:
-   const RDOCalc *const left;
-   const RDOCalc *const right;
+	const RDOCalc* const left;
+	const RDOCalc* const right;
 
 public:
-	RDOCalcBinary(const RDOCalc *const _left, const RDOCalc *const _right): left(_left), right(_right) {}
+	RDOCalcBinary( const RDOCalc* const _left, const RDOCalc* const _right ):
+		left( _left ),
+		right( _right )
+	{
+		if ( left && right ) {
+			setErrorPos( left->error().first_line, left->error().first_column, right->error().last_line, right->error().last_column );
+		}
+	}
 };
 
 class RDOCalcPlus: public RDOCalcBinary
 {
 public:
-   RDOValue calcValue(RDORuntime *sim) const { return RDOValue(left->calcValueBase(sim) + right->calcValueBase(sim)); }
+	RDOValue calcValue( RDORuntime* sim ) const { return RDOValue(left->calcValueBase(sim) + right->calcValueBase(sim)); }
 	RDOCalcPlus(RDOCalc *_left, RDOCalc *_right): RDOCalcBinary(_left, _right) {}
 };
 
 class RDOCalcMinus: public RDOCalcBinary
 {
 public:
-   RDOValue calcValue(RDORuntime *sim) const { return RDOValue(left->calcValueBase(sim) - right->calcValueBase(sim)); }
+	RDOValue calcValue( RDORuntime* sim ) const { return RDOValue(left->calcValueBase(sim) - right->calcValueBase(sim)); }
 	RDOCalcMinus(RDOCalc *_left, RDOCalc *_right): RDOCalcBinary(_left, _right) {}
 };
 
 class RDOCalcMult: public RDOCalcBinary
 {
 public:
-   RDOValue calcValue(RDORuntime *sim) const { return RDOValue(left->calcValueBase(sim) * right->calcValueBase(sim)); }
+	RDOValue calcValue( RDORuntime* sim ) const { return RDOValue(left->calcValueBase(sim) * right->calcValueBase(sim)); }
 	RDOCalcMult(RDOCalc *_left, RDOCalc *_right): RDOCalcBinary(_left, _right) {}
 };
 
 class RDOCalcDiv: public RDOCalcBinary
 {
 public:
-   RDOValue calcValue(RDORuntime *sim) const;
+	RDOValue calcValue( RDORuntime* sim ) const;
 	RDOCalcDiv(RDOCalc *_left, RDOCalc *_right): RDOCalcBinary(_left, _right) {}
 };
 
 // --------------------  Binary Logic calcs ---------------------------------
-
 class RDOCalcAnd: public RDOCalcBinary
 {
 public:
@@ -376,7 +384,11 @@ public:
 	RDOValue calcValue( RDORuntime* sim ) const {
 		return !calc->calcValueBase( sim );
 	}
-	RDOCalcNot( RDOCalc* _calc ): calc( _calc ) {};
+	RDOCalcNot( RDOCalc* _calc ):
+		calc( _calc )
+	{
+		if ( calc ) setErrorPos( calc->error() );
+	}
 };
 
 class RDOCalcIsEqual: public RDOCalcBinary
@@ -400,119 +412,137 @@ public:
 class RDOCalcIsLess: public RDOCalcBinary
 {
 public:
-   RDOValue calcValue(RDORuntime *sim) const {	return (left->calcValueBase(sim) < right->calcValueBase(sim));	}
+	RDOValue calcValue( RDORuntime* sim ) const { return (left->calcValueBase(sim) < right->calcValueBase(sim));	}
 	RDOCalcIsLess(RDOCalc *_left, RDOCalc *_right): RDOCalcBinary(_left, _right) {}
 };
 
 class RDOCalcIsGreater: public RDOCalcBinary
 {
 public:
-   RDOValue calcValue(RDORuntime *sim) const {	return (left->calcValueBase(sim) > right->calcValueBase(sim));	}
+	RDOValue calcValue( RDORuntime* sim ) const { return (left->calcValueBase(sim) > right->calcValueBase(sim));	}
 	RDOCalcIsGreater(RDOCalc *_left, RDOCalc *_right): RDOCalcBinary(_left, _right) {}
 };
 
 class RDOCalcIsLEQ: public RDOCalcBinary
 {
 public:
-   RDOValue calcValue(RDORuntime *sim) const {	return (left->calcValueBase(sim) <= right->calcValueBase(sim));	}
+	RDOValue calcValue( RDORuntime* sim ) const { return (left->calcValueBase(sim) <= right->calcValueBase(sim));	}
 	RDOCalcIsLEQ(RDOCalc *_left, RDOCalc *_right): RDOCalcBinary(_left, _right) {}
 };
 
 class RDOCalcIsGEQ: public RDOCalcBinary
 {
 public:
-   RDOValue calcValue(RDORuntime *sim) const {	return (left->calcValueBase(sim) >= right->calcValueBase(sim));	}
+	RDOValue calcValue( RDORuntime* sim ) const { return (left->calcValueBase(sim) >= right->calcValueBase(sim));	}
 	RDOCalcIsGEQ(RDOCalc *_left, RDOCalc *_right): RDOCalcBinary(_left, _right) {}
 };
-
 
 // --------------------  Unary Ariphmetic calcs ---------------------------------
 class RDOCalcUnary: public RDOCalc
 {
 protected:
 	RDOCalc* oper;
-	RDOCalcUnary( RDOCalc* _oper ): oper( _oper ) {}
+	RDOCalcUnary( RDOCalc* _oper ):
+		oper( _oper )
+	{
+		if ( oper ) setErrorPos( oper->error() );
+	}
 };
 
 class RDOCalcUMinus: public RDOCalcUnary
 {
 public:
-   RDOValue calcValue(RDORuntime *sim) const { return RDOValue(-oper->calcValueBase(sim)); }
+	RDOValue calcValue( RDORuntime* sim ) const { return RDOValue(-oper->calcValueBase(sim)); }
+	RDOCalcUMinus( RDOCalc* _oper ): RDOCalcUnary(_oper) {}
 };
 
 class RDOCalcDoubleToInt: public RDOCalcUnary
 {
 public:
-   RDOValue calcValue(RDORuntime *sim) const { return RDOValue((int)oper->calcValueBase(sim)); }
-	RDOCalcDoubleToInt(RDOCalc *_oper): RDOCalcUnary(_oper) {}
+	RDOValue calcValue( RDORuntime* sim ) const { return RDOValue((int)oper->calcValueBase(sim)); }
+	RDOCalcDoubleToInt( RDOCalc* _oper ): RDOCalcUnary(_oper) {}
 };
 
 class RDOCalcCheckDiap: public RDOCalcUnary
 {
-   RDOValue minVal, maxVal;
+private:
+	RDOValue minVal, maxVal;
+
 public:
-	RDOCalcCheckDiap(RDOValue _minVal, RDOValue _maxVal, RDOCalc *_oper): minVal(_minVal), maxVal(_maxVal), RDOCalcUnary(_oper) {}
-   RDOValue calcValue(RDORuntime *sim) const;
+	RDOCalcCheckDiap( RDOValue _minVal, RDOValue _maxVal, RDOCalc* _oper ):
+		minVal( _minVal ),
+		maxVal( _maxVal ),
+		RDOCalcUnary( _oper )
+	{
+	}
+	RDOValue calcValue( RDORuntime* sim ) const;
 };
 
 
 // --------------------  Resource Param Ariphmetic calcs ---------------------------------
+/*
 class RDOCalcResParamAccess: public RDOCalc
 {
 public:
-   int nRes;
-   int nParam;
+	int nRes;
+	int nParam;
 };
 
 class RDOCalcResourceParam: public RDOCalcResParamAccess
 {
 public:
-   RDOValue calcValue(RDORuntime *sim) const { return RDOValue(sim->getResParamVal(nRes, nParam)); }
+	RDOValue calcValue( RDORuntime* sim ) const { return RDOValue(sim->getResParamVal(nRes, nParam)); }
 };
-
+*/
 
 // -------------------- System calcs --------------------------------
-
 class RDOCalcCreateResource: public RDOCalc
 {
+private:
 	int type;
 	bool traceFlag;
 	std::vector<RDOValue> paramsCalcs;
+
 public:
 	RDOCalcCreateResource(int _type, bool _traceFlag, const std::vector<RDOValue> &_paramsCalcs);
-	virtual RDOValue calcValue(RDORuntime *sim) const;
+	virtual RDOValue calcValue( RDORuntime* sim ) const;
 };
 
 class RDOCalcCreateNumberedResource: public RDOCalc
 {
+private:
 	int type;
 	bool traceFlag;
 	std::vector<RDOValue> paramsCalcs;
 	int number;
 	bool isPermanent;
+
 public:
 	RDOCalcCreateNumberedResource(int _type, bool _traceFlag, const std::vector<RDOValue> &_paramsCalcs, int _number, bool _isPermanent);
-	virtual RDOValue calcValue(RDORuntime *sim) const;
+	virtual RDOValue calcValue( RDORuntime* sim ) const;
 };
 
 class RDOCalcCreateEmptyResource: public RDOCalc
 {
+private:
 	int type;
 	bool traceFlag;
 	int relResNumber;
 	int numParameters;
+
 public:
 	RDOCalcCreateEmptyResource(int _type, bool _traceFlag, int _relResNumber, int _numParameters);
-	virtual RDOValue calcValue(RDORuntime *sim) const;
+	virtual RDOValue calcValue( RDORuntime* sim ) const;
 };
-
 
 class RDOCalcFuncParam: public RDOCalc
 {
+private:
 	int numberOfParam;
+
 public:
 	RDOCalcFuncParam(int _numberOfParam): numberOfParam(_numberOfParam)	{}
-   virtual RDOValue calcValue(RDORuntime *sim) const;
+	virtual RDOValue calcValue( RDORuntime* sim ) const;
 };
 
 class RDOFunCalc: public RDOCalc
@@ -521,14 +551,14 @@ class RDOFunCalc: public RDOCalc
 
 class RDOFuncTableCalc: public RDOFunCalc
 {
-	std::vector<RDOCalcConst *> results;
-	RDOCalc *argCalc;
+private:
+	std::vector< RDOCalcConst* > results;
+	RDOCalc* argCalc;
+
 public:
-	RDOFuncTableCalc(RDOCalc *_argCalc):
-		argCalc(_argCalc) {}
-	void addResultCalc(RDOCalcConst *res)
-		{	results.push_back(res); }
-   virtual RDOValue calcValue(RDORuntime *sim) const
+	RDOFuncTableCalc( RDOCalc* _argCalc ): argCalc( _argCalc ) {}
+	void addResultCalc( RDOCalcConst* res ) { results.push_back(res); }
+	virtual RDOValue calcValue( RDORuntime* sim ) const
 	{
 		int index = argCalc->calcValueBase(sim);
 		return results.at(index)->calcValueBase(sim);
@@ -537,30 +567,27 @@ public:
 
 class RDOFunListCalc: public RDOFunCalc
 {
-	std::vector<RDOCalc *> cases;
-	std::vector<RDOCalcConst *> results;
-	RDOCalcConst *defaultValue;
+private:
+	std::vector< RDOCalc* > cases;
+	std::vector< RDOCalcConst* > results;
+	RDOCalcConst* defaultValue;
 
 public:
-	RDOFunListCalc(RDOCalcConst *_defaultValue):
-		defaultValue(_defaultValue) {}
+	RDOFunListCalc( RDOCalcConst* _defaultValue ): defaultValue( _defaultValue ) {}
 
-	void addCase(RDOCalc *_caseCalc, RDOCalcConst *_resultCalc)
+	void addCase( RDOCalc* _caseCalc, RDOCalcConst* _resultCalc )
 	{
 		cases.push_back(_caseCalc); 
 		results.push_back(_resultCalc);
 	}
 
-   virtual RDOValue calcValue(RDORuntime *sim) const
+	virtual RDOValue calcValue( RDORuntime* sim ) const
 	{
 		int size = cases.size();
-		for(int i = 0; i < size; i++)
-		{
-			RDOCalc *cas = cases[i];
-			if(cas->calcValueBase(sim))
-				return results[i]->calcValueBase(sim);
+		for(int i = 0; i < size; i++) {
+			RDOCalc* cas = cases[i];
+			if ( cas->calcValueBase(sim) ) return results[i]->calcValueBase(sim);
 		}
-
 		return defaultValue->calcValueBase(sim);
 	}
 };
@@ -580,12 +607,15 @@ public:
 
 class RDOCalcFunctionCall: public RDOCalc
 {
-	std::vector<const RDOCalc *> parameters;
-	const RDOFunCalc *const function;
+private:
+	std::vector< const RDOCalc* > parameters;
+	const RDOFunCalc* const function;
+
 public:
-	RDOCalcFunctionCall(const RDOFunCalc *const _function): function(_function) {}
+	RDOCalcFunctionCall( const RDOFunCalc* const _function ): function( _function ) {}
+
 	void addParameter(const RDOCalc *calc) { parameters.push_back(calc); }
-	virtual RDOValue calcValue(RDORuntime *sim) const
+	virtual RDOValue calcValue( RDORuntime* sim ) const
 	{
 		sim->pushFuncTop();
 		int size = parameters.size();
@@ -616,7 +646,7 @@ public:
 		actions.push_back(act);
 	}
 
-   virtual RDOValue calcValue(RDORuntime *sim) const
+   virtual RDOValue calcValue( RDORuntime* sim ) const
 	{
 		int size = conditions.size();
 		for(int i = 0; i < size; i++)
@@ -633,7 +663,7 @@ class RDOCalcGetGroupResParam: public RDOCalc
 	int parNumb;
 public:
 	RDOCalcGetGroupResParam(int _parNumb): parNumb(_parNumb) {}
-   virtual RDOValue calcValue(RDORuntime *sim) const
+   virtual RDOValue calcValue( RDORuntime* sim ) const
 	{
 		RDOResource *currRes = (RDOResource *)sim->getGroupFuncRes();
 	   return currRes->params[parNumb];
@@ -754,7 +784,7 @@ public:
 class RDOFunCalcAbs: public RDOFunCalc
 {
 public:
-   virtual RDOValue calcValue(RDORuntime *sim) const	{
+	virtual RDOValue calcValue( RDORuntime* sim ) const {
 		return RDOValue(fabs(sim->getFuncArgument(0)));
 	}
 };
@@ -762,7 +792,7 @@ public:
 class RDOFunCalcArcCos: public RDOFunCalc
 {
 public:
-   virtual RDOValue calcValue(RDORuntime *sim) const	{
+	virtual RDOValue calcValue( RDORuntime* sim ) const {
 		return RDOValue(acos(sim->getFuncArgument(0)));
 	}
 };
@@ -770,7 +800,7 @@ public:
 class RDOFunCalcArcSin: public RDOFunCalc
 {
 public:
-   virtual RDOValue calcValue(RDORuntime *sim) const	{
+	virtual RDOValue calcValue( RDORuntime* sim ) const {
 		return RDOValue(asin(sim->getFuncArgument(0)));
 	}
 };
@@ -778,7 +808,7 @@ public:
 class RDOFunCalcArcTan: public RDOFunCalc
 {
 public:
-   virtual RDOValue calcValue(RDORuntime *sim) const	{
+	virtual RDOValue calcValue( RDORuntime* sim ) const {
 		return RDOValue(atan(sim->getFuncArgument(0)));
 	}
 };
@@ -786,7 +816,7 @@ public:
 class RDOFunCalcCos: public RDOFunCalc
 {
 public:
-   virtual RDOValue calcValue(RDORuntime *sim) const	{
+	virtual RDOValue calcValue( RDORuntime* sim ) const {
 		return RDOValue(cos(sim->getFuncArgument(0)));
 	}
 };
@@ -794,7 +824,7 @@ public:
 class RDOFunCalcCotan: public RDOFunCalc
 {
 public:
-   virtual RDOValue calcValue(RDORuntime *sim) const	{
+	virtual RDOValue calcValue( RDORuntime* sim ) const {
 		return RDOValue(1./tan(sim->getFuncArgument(0)));
 	}
 };
@@ -802,7 +832,7 @@ public:
 class RDOFunCalcExp: public RDOFunCalc
 {
 public:
-   virtual RDOValue calcValue(RDORuntime *sim) const	{
+	virtual RDOValue calcValue( RDORuntime* sim ) const {
 		return RDOValue(exp(sim->getFuncArgument(0)));
 	}
 };
@@ -810,7 +840,7 @@ public:
 class RDOFunCalcFloor: public RDOFunCalc
 {
 public:
-   virtual RDOValue calcValue(RDORuntime *sim) const	{
+	virtual RDOValue calcValue( RDORuntime* sim ) const {
 		return RDOValue(floor(sim->getFuncArgument(0)));
 	}
 };
@@ -818,7 +848,7 @@ public:
 class RDOFunCalcFrac: public RDOFunCalc
 {
 public:
-   virtual RDOValue calcValue(RDORuntime *sim) const	{
+	virtual RDOValue calcValue( RDORuntime* sim ) const {
 		double tmp;
 		return RDOValue(modf(sim->getFuncArgument(0), &tmp));
 	}
@@ -827,7 +857,7 @@ public:
 class RDOFunCalcIAbs: public RDOFunCalc
 {
 public:
-   virtual RDOValue calcValue(RDORuntime *sim) const	{
+	virtual RDOValue calcValue( RDORuntime* sim ) const {
 		return RDOValue(abs(sim->getFuncArgument(0)));
 	}
 };
@@ -835,7 +865,7 @@ public:
 class RDOFunCalcIMax: public RDOFunCalc
 {
 public:
-   virtual RDOValue calcValue(RDORuntime *sim) const	{
+	virtual RDOValue calcValue( RDORuntime* sim ) const {
 		return RDOValue((int)std::_MAX(sim->getFuncArgument(0), sim->getFuncArgument(1)));
 	}
 };
@@ -843,7 +873,7 @@ public:
 class RDOFunCalcIMin: public RDOFunCalc
 {
 public:
-   virtual RDOValue calcValue(RDORuntime *sim) const	{
+	virtual RDOValue calcValue( RDORuntime* sim ) const {
 		return RDOValue((int)std::_MIN(sim->getFuncArgument(0), sim->getFuncArgument(1)));
 	}
 };
@@ -851,7 +881,7 @@ public:
 class RDOFunCalcInt: public RDOFunCalc
 {
 public:
-   virtual RDOValue calcValue(RDORuntime *sim) const	{
+	virtual RDOValue calcValue( RDORuntime* sim ) const {
 		return RDOValue(int(sim->getFuncArgument(0)));
 	}
 };
@@ -859,7 +889,7 @@ public:
 class RDOFunCalcIntPower: public RDOFunCalc
 {
 public:
-   virtual RDOValue calcValue(RDORuntime *sim) const	{
+	virtual RDOValue calcValue( RDORuntime* sim ) const {
 		return RDOValue(pow(sim->getFuncArgument(0), sim->getFuncArgument(1)));
 	}
 };
@@ -867,7 +897,7 @@ public:
 class RDOFunCalcLn: public RDOFunCalc
 {
 public:
-   virtual RDOValue calcValue(RDORuntime *sim) const	{
+	virtual RDOValue calcValue( RDORuntime* sim ) const {
 		return RDOValue(log(sim->getFuncArgument(0)));
 	}
 };
@@ -875,7 +905,7 @@ public:
 class RDOFunCalcLog10: public RDOFunCalc
 {
 public:
-   virtual RDOValue calcValue(RDORuntime *sim) const	{
+	virtual RDOValue calcValue( RDORuntime* sim ) const {
 		return RDOValue(log10(sim->getFuncArgument(0)));
 	}
 };
@@ -883,7 +913,7 @@ public:
 class RDOFunCalcLog2: public RDOFunCalc
 {
 public:
-   virtual RDOValue calcValue(RDORuntime *sim) const	{
+	virtual RDOValue calcValue( RDORuntime* sim ) const {
 		return RDOValue(log(sim->getFuncArgument(0)) / log(2) );
 	}
 };
@@ -891,7 +921,7 @@ public:
 class RDOFunCalcLogN: public RDOFunCalc
 {
 public:
-   virtual RDOValue calcValue(RDORuntime *sim) const	{
+	virtual RDOValue calcValue( RDORuntime* sim ) const {
 		return RDOValue(log(sim->getFuncArgument(0)) / log(sim->getFuncArgument(1)));
 	}
 };
@@ -899,7 +929,7 @@ public:
 class RDOFunCalcMax: public RDOFunCalc
 {
 public:
-   virtual RDOValue calcValue(RDORuntime *sim) const	{
+	virtual RDOValue calcValue( RDORuntime* sim ) const {
 		return RDOValue(std::_MAX(sim->getFuncArgument(0), sim->getFuncArgument(1)));
 	}
 };
@@ -907,7 +937,7 @@ public:
 class RDOFunCalcMin: public RDOFunCalc
 {
 public:
-   virtual RDOValue calcValue(RDORuntime *sim) const	{
+	virtual RDOValue calcValue( RDORuntime* sim ) const {
 		return RDOValue(std::_MIN(sim->getFuncArgument(0), sim->getFuncArgument(1)));
 	}
 };
@@ -915,7 +945,7 @@ public:
 class RDOFunCalcPower: public RDOFunCalc
 {
 public:
-   virtual RDOValue calcValue(RDORuntime *sim) const	{
+	virtual RDOValue calcValue( RDORuntime* sim ) const {
 		return RDOValue(pow(sim->getFuncArgument(0), sim->getFuncArgument(1)));
 	}
 };
@@ -923,7 +953,7 @@ public:
 class RDOFunCalcRound: public RDOFunCalc
 {
 public:
-   virtual RDOValue calcValue(RDORuntime *sim) const	{
+	virtual RDOValue calcValue( RDORuntime* sim ) const {
 		return RDOValue(floor(sim->getFuncArgument(0) + 0.5));
 	}
 };
@@ -931,7 +961,7 @@ public:
 class RDOFunCalcSin: public RDOFunCalc
 {
 public:
-   virtual RDOValue calcValue(RDORuntime *sim) const	{
+	virtual RDOValue calcValue( RDORuntime* sim ) const {
 		return RDOValue(sin(sim->getFuncArgument(0)));
 	}
 };
@@ -939,7 +969,7 @@ public:
 class RDOFunCalcSqrt: public RDOFunCalc
 {
 public:
-   virtual RDOValue calcValue(RDORuntime *sim) const	{
+	virtual RDOValue calcValue( RDORuntime* sim ) const {
 		return RDOValue(sqrt(sim->getFuncArgument(0)));
 	}
 };
@@ -947,7 +977,7 @@ public:
 class RDOFunCalcTan: public RDOFunCalc
 {
 public:
-   virtual RDOValue calcValue(RDORuntime *sim) const	{
+	virtual RDOValue calcValue( RDORuntime* sim ) const {
 		return RDOValue(tan(sim->getFuncArgument(0)));
 	}
 };
@@ -1051,7 +1081,7 @@ private:
 
 public:
 	RDOCalcGetRelevantResParam( int _relNumb, int _parNumb ): relNumb( _relNumb ), parNumb( _parNumb ) {}
-	virtual RDOValue calcValue(RDORuntime *sim) const {
+	virtual RDOValue calcValue( RDORuntime* sim ) const {
 		return sim->getResParamVal( sim->getRelResNumber(relNumb), parNumb );
 	}
 };
@@ -1091,7 +1121,7 @@ protected:
 public:
 	RDOSelectResourceDirectCalc( int _relNumb, int _resNumb, rdoParse::RDOPATChoice* _choice, rdoParse::RDOPATSelectType* _selection_type ):
 		RDOSelectResourceCalc( _relNumb, _choice, _selection_type ), resNumb( _resNumb ) {}
-   virtual RDOValue calcValue(RDORuntime *sim) const;
+	virtual RDOValue calcValue( RDORuntime* sim ) const;
 };
 
 class RDOSelectResourceByTypeCalc: public RDOSelectResourceCalc
@@ -1101,14 +1131,14 @@ protected:
 public:
 	RDOSelectResourceByTypeCalc( int _relNumb, int _resType, rdoParse::RDOPATChoice* _choice, rdoParse::RDOPATSelectType* _selection_type ):
 		RDOSelectResourceCalc( _relNumb, _choice, _selection_type ), resType( _resType ) {}
-   virtual RDOValue calcValue(RDORuntime *sim) const;
+	virtual RDOValue calcValue( RDORuntime* sim ) const;
 };
 
 class RDOSelectResourceCommon
 {
 public:
-	virtual std::vector<int> getPossibleNumbers(RDORuntime *sim) const = 0;
-	virtual bool callChoice(RDORuntime *sim) const = 0;
+	virtual std::vector<int> getPossibleNumbers( RDORuntime* sim ) const = 0;
+	virtual bool callChoice( RDORuntime* sim ) const = 0;
 };
 
 class RDOSelectResourceDirectCommonCalc: public RDOSelectResourceDirectCalc, public RDOSelectResourceCommon
@@ -1116,8 +1146,8 @@ class RDOSelectResourceDirectCommonCalc: public RDOSelectResourceDirectCalc, pub
 public:
 	RDOSelectResourceDirectCommonCalc( int _relNumb, int _resNumb, rdoParse::RDOPATChoice *_choice, rdoParse::RDOPATSelectType* _selection_type ):
 		RDOSelectResourceDirectCalc( _relNumb, _resNumb, _choice, _selection_type ) {}
-	std::vector<int> getPossibleNumbers(RDORuntime *sim) const;
-	virtual bool callChoice(RDORuntime *sim) const;
+	std::vector<int> getPossibleNumbers( RDORuntime* sim ) const;
+	virtual bool callChoice( RDORuntime* sim ) const;
 };
 
 class RDOSelectResourceByTypeCommonCalc: public RDOSelectResourceByTypeCalc, public RDOSelectResourceCommon
@@ -1125,91 +1155,124 @@ class RDOSelectResourceByTypeCommonCalc: public RDOSelectResourceByTypeCalc, pub
 public:
 	RDOSelectResourceByTypeCommonCalc( int _relNumb, int _resType, rdoParse::RDOPATChoice *_choice, rdoParse::RDOPATSelectType* _selection_type ):
 		RDOSelectResourceByTypeCalc( _relNumb, _resType, _choice, _selection_type ) {}
-	std::vector<int> getPossibleNumbers(RDORuntime *sim) const;
-	virtual bool callChoice(RDORuntime *sim) const;
+	std::vector<int> getPossibleNumbers( RDORuntime* sim ) const;
+	virtual bool callChoice( RDORuntime* sim ) const;
 };
 
 class RDOSelectResourceCommonCalc: public RDOCalc
 {
-	RDOCalc *choice;
+private:
+	RDOCalc* choice;
 	std::vector<RDOSelectResourceCommon *> resSelectors;
 	bool useCommonWithMax;
-public:
-	RDOSelectResourceCommonCalc(const std::vector<RDOSelectResourceCommon *> &_resSelectors, bool _useCommonWithMax, RDOCalc *_choice):
-		resSelectors(_resSelectors), useCommonWithMax(_useCommonWithMax), choice(_choice) {}
-	virtual RDOValue calcValue(RDORuntime *sim) const;
-private:
 	void getBest(std::vector<std::vector<int> > &allNumbs, int level, std::vector<int> &res, RDOValue &bestVal, RDORuntime *sim, bool &hasBest) const;
+
+public:
+	RDOSelectResourceCommonCalc( const std::vector< RDOSelectResourceCommon* >& _resSelectors, bool _useCommonWithMax, RDOCalc* _choice ):
+		resSelectors( _resSelectors ),
+		useCommonWithMax( _useCommonWithMax ),
+		choice( _choice )
+	{
+		if ( choice ) setErrorPos( choice->error() );
+	}
+	virtual RDOValue calcValue( RDORuntime* sim ) const;
 };
 
 
 class RDOSetRelParamCalc: public RDOCalc
 {
+private:
 	int relNumb;
 	int parNumb;
-	RDOCalc *calc;
+	RDOCalc* calc;
+
 public:
-	RDOSetRelParamCalc(int _relNumb, int _parNumb, RDOCalc *_calc):
-		relNumb(_relNumb), parNumb(_parNumb), calc(_calc) {}
-	virtual RDOValue calcValue(RDORuntime *sim) const;
+	RDOSetRelParamCalc( int _relNumb, int _parNumb, RDOCalc* _calc ):
+		relNumb( _relNumb ),
+		parNumb( _parNumb ),
+		calc( _calc )
+	{
+		if ( calc ) setErrorPos( calc->error() );
+	}
+	virtual RDOValue calcValue( RDORuntime* sim ) const;
 };
 
 class RDOSetResourceParamCalc: public RDOCalc
 {
+private:
 	int resNumb;
 	int parNumb;
-	RDOCalc *calc;
+	RDOCalc* calc;
+
 public:
-	RDOSetResourceParamCalc(int _resNumb, int _parNumb, RDOCalc *_calc):
-		resNumb(_resNumb), parNumb(_parNumb), calc(_calc) {}
-   virtual RDOValue calcValue(RDORuntime *sim) const;
+	RDOSetResourceParamCalc( int _resNumb, int _parNumb, RDOCalc* _calc ):
+		resNumb( _resNumb ),
+		parNumb( _parNumb ),
+		calc( _calc )
+	{
+		if ( calc ) setErrorPos( calc->error() );
+	}
+	virtual RDOValue calcValue( RDORuntime* sim ) const;
 };
 
 class RDOSetPatternParamCalc: public RDOCalc
 {
+private:
 	int parNumb;
 	RDOValue val;
+
 public:
 	RDOSetPatternParamCalc(int _parNumb, RDOValue _val):
 		parNumb(_parNumb), val(_val) {}
-	virtual RDOValue calcValue(RDORuntime *sim) const { sim->setPatternParameter(parNumb, val); return 0; }
+	virtual RDOValue calcValue( RDORuntime* sim ) const { sim->setPatternParameter(parNumb, val); return 0; }
 };
 
 class RDOCalcPatParam: public RDOCalc
 {
+private:
 	int numberOfParam;
+
 public:
 	RDOCalcPatParam(int _numberOfParam): numberOfParam(_numberOfParam)	{}
-	virtual RDOValue calcValue(RDORuntime *sim) const;
+	virtual RDOValue calcValue( RDORuntime* sim ) const;
 };
 
 class RDOCalcGetTimeNow: public RDOCalc
 {
 public:
-   virtual RDOValue calcValue(RDORuntime *sim) const { return sim->getTimeNow(); } 
+	virtual RDOValue calcValue( RDORuntime* sim ) const { return sim->getTimeNow(); } 
 };
 
 class RDOCalcGetSeconds: public RDOCalc
 {
 public:
-   virtual RDOValue calcValue(RDORuntime *sim) const { return sim->getSeconds(); } 
+	virtual RDOValue calcValue( RDORuntime* sim ) const { return sim->getSeconds(); } 
 };
 
 class RDOCalcGetConst: public RDOCalc
 {
+private:
 	int number;
+
 public:
-	RDOCalcGetConst(int _number): number(_number) {}
-	virtual RDOValue calcValue(RDORuntime *sim) const { return sim->getConstValue(number); } 
+	RDOCalcGetConst( int _number ): number(_number) {}
+	virtual RDOValue calcValue( RDORuntime* sim ) const { return sim->getConstValue(number); } 
 };
 
 class RDOCalcSetConst: public RDOCalc
 {
+private:
 	int number;
-	RDOCalc *value;
+	RDOCalc* value;
+
 public:
-	RDOCalcSetConst(int _number, RDOCalc *_value): number(_number), value(_value) {}
-	virtual RDOValue calcValue(RDORuntime *sim) const { sim->setConstValue(number, value->calcValueBase(sim)); return 0; } 
+	RDOCalcSetConst(int _number, RDOCalc *_value):
+		number( _number ),
+		value( _value )
+	{
+		if ( value ) setErrorPos( value->error() );
+	}
+	virtual RDOValue calcValue( RDORuntime* sim ) const { sim->setConstValue(number, value->calcValueBase(sim)); return 0; } 
 };
 
 class RDOCalcInt: public RDOCalcUnary
@@ -1222,6 +1285,6 @@ public:
 	RDOCalcInt( RDOCalc* oper ): RDOCalcUnary( oper ) {}
 };
 
-}  // namespace rdoRuntime
+} // namespace rdoRuntime
 
-#endif //RDO_RUNTIME
+#endif // RDO_RUNTIME
