@@ -585,9 +585,9 @@ convert_end:	Convert_end {
 				parser->getLastPATPattern()->currRelRes->currentState = RDORelevantResource::convertEnd;
 			};
 
-pat_params_set:												{  $$ = (int) new RDOPATParamsSet(); }
-			|	pat_params_set IDENTIF_set fun_arithm	{	((RDOPATParamsSet *)$1)->addIdentif((std::string *)$2, (RDOFUNArithm *)$3); $$ = $1;}
-			|	pat_params_set IDENTIF_NoChange			{	((RDOPATParamsSet *)$1)->addIdentif((std::string *)$2); $$ = $1;};
+pat_params_set:	/* empty */									{ $$ = (int) new RDOPATParamsSet(); }
+				|	pat_params_set IDENTIF_set fun_arithm	{ ((RDOPATParamsSet *)$1)->addIdentif((std::string *)$2, (RDOFUNArithm *)$3); $$ = $1; }
+				|	pat_params_set IDENTIF_NoChange			{ ((RDOPATParamsSet *)$1)->addIdentif((std::string *)$2); $$ = $1;                     };
 
 pat_pattern:	pat_convert End { ((RDOPATPattern *)$1)->end(); $$ = $1; };
 //				| pat_time  End { ((RDOPATPattern *)$1)->end(); $$ = $1; };

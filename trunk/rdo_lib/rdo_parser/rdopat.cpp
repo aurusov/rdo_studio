@@ -576,7 +576,7 @@ rdoRuntime::RDOSelectResourceCommon *RDORelevantResourceByType::createSelectReso
 	return new rdoRuntime::RDOSelectResourceByTypeCommonCalc( numberOfResource, type->getNumber(), choice, NULL );
 }
 
-void RDOPATParamsSet::checkParamsNumbers(RDORelevantResource *currRelRes)
+void RDOPATParamsSet::checkParamsNumbers( RDORelevantResource* currRelRes )
 {
 	int size = paramArithms.size();
 	for(int i = 0; i < size; i++)
@@ -592,16 +592,58 @@ void RDOPATParamsSet::checkParamsNumbers(RDORelevantResource *currRelRes)
 	}
 }
 
-void RDOPATParamsSet::addIdentif(std::string *paramName, RDOFUNArithm *paramArithm)
+void RDOPATParamsSet::addIdentif( std::string* paramName, RDOFUNArithm* paramArithm )
 {
-	paramNames.push_back(paramName);
-	paramArithms.push_back(paramArithm);
+	if ( parser->getLastPATPattern() && parser->getLastPATPattern()->currRelRes ) {
+		const RDORTPResType* res_type = parser->getLastPATPattern()->currRelRes->getType();
+		const RDORTPParamDesc* param = res_type->findRTPParam( paramName );
+		switch ( param->getType()->getType() ) {
+			case RDORTPResParam::pt_int: {
+				if ( paramArithm->getType() == RDORTPResParam::pt_real ) {
+					parser->lexer_loc_backup();
+					parser->lexer_loc_set( paramArithm->error().last_line, paramArithm->error().last_column );
+					parser->warning( "Перевод вещественного числа в целое, возможна потеря данных" );
+					parser->lexer_loc_restore();
+				} else if ( paramArithm->getType() != RDORTPResParam::pt_int ) {
+					parser->lexer_loc_set( paramArithm->error().last_line, paramArithm->error().last_column );
+					parser->error( "Несоответствие типов. Ожидается целое число" );
+				}
+				break;
+			}
+			case RDORTPResParam::pt_real: {
+				if ( paramArithm->getType() != RDORTPResParam::pt_real && paramArithm->getType() != RDORTPResParam::pt_int ) {
+					parser->lexer_loc_set( paramArithm->error().last_line, paramArithm->error().last_column );
+					parser->error( "Несоответствие типов. Ожидается вещественное число" );
+				}
+				break;
+			}
+			case RDORTPResParam::pt_enum: {
+				if ( paramArithm->getType() == RDORTPResParam::pt_str ) {
+					if ( static_cast<const RDORTPEnumResParam*>(param->getType())->enu->findValue( paramArithm->str, false ) == -1 ) {
+						parser->lexer_loc_set( paramArithm->error().last_line, paramArithm->error().last_column );
+						parser->error( rdo::format("Значение '%s' не является элементом перечислимого типа параметра '%s'", paramArithm->str->c_str(), paramName->c_str()) );
+					}
+				} else if ( paramArithm->getType() != RDORTPResParam::pt_enum ) {
+					parser->lexer_loc_set( paramArithm->error().last_line, paramArithm->error().last_column );
+					parser->error( "Несоответствие типов. Ожидается перечислимый тип" );
+				} else if ( paramArithm->enu != static_cast<const RDORTPEnumResParam*>(param->getType())->enu ) {
+					parser->lexer_loc_set( paramArithm->error().last_line, paramArithm->error().last_column );
+					parser->error( "Несоответствие перечислимых типов" );
+				}
+				break;
+			}
+		}
+		paramNames.push_back( paramName );
+		paramArithms.push_back( paramArithm );
+	} else {
+		parser->error( "Внутренняя ошибка: не найден текущий реленвантный ресурс" );
+	}
 }
 
-void RDOPATParamsSet::addIdentif(std::string *paramName)
+void RDOPATParamsSet::addIdentif( std::string* paramName )
 {
-	paramNames.push_back(paramName);
-	paramArithms.push_back(NULL);
+	paramNames.push_back( paramName );
+	paramArithms.push_back( NULL );
 }
 
 void RDOPATPatternOperation::addRelResConvertBegin(bool trace, RDOPATParamsSet *parSet)
@@ -786,27 +828,27 @@ void RDOPATPatternEvent::addRelResConvertEvent(bool trace, RDOPATParamsSet *parS
 
 void RDOPATPattern::addRelResConvertBegin(bool trace, RDOPATParamsSet *parSet)
 {
-	parser->error("Unexoected lexem ConvertBegin in pattern \"" + *getName() + "\"");
+	parser->error("Unexpected lexem ConvertBegin in pattern \"" + *getName() + "\"");
 }
 
 void RDOPATPattern::addRelResConvertEnd(bool trace, RDOPATParamsSet *parSet)
 {
-	parser->error("Unexoected lexem ConvertEnd in pattern \"" + *getName() + "\"");
+	parser->error("Unexpected lexem ConvertEnd in pattern \"" + *getName() + "\"");
 }
 
 void RDOPATPattern::addRelResConvertBeginEnd(bool trace, RDOPATParamsSet *parSet,bool trace2, RDOPATParamsSet *parSet2)
 {
-	parser->error("Unexoected lexem ConvertBegin in pattern \"" + *getName() + "\"");
+	parser->error("Unexpected lexem ConvertBegin in pattern \"" + *getName() + "\"");
 }
 
 void RDOPATPattern::addRelResConvertRule(bool trace, RDOPATParamsSet *parSet)
 {
-	parser->error("Unexoected lexem ConvertRule in pattern \"" + *getName() + "\"");
+	parser->error("Unexpected lexem ConvertRule in pattern \"" + *getName() + "\"");
 }
 
 void RDOPATPattern::addRelResConvertEvent(bool trace, RDOPATParamsSet *parSet)
 {
-	parser->error("Unexoected lexem ConvertEvent in pattern \"" + *getName() + "\"");
+	parser->error("Unexpected lexem ConvertEvent in pattern \"" + *getName() + "\"");
 }
 
 const RDORTPResType *const RDORelevantResourceDirect::getType() const 

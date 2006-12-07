@@ -73,8 +73,8 @@ class RDORTPResParam: public RDODeletable
 {
 public:
 	enum ParamType { pt_int = 0, pt_real = 1, pt_enum = 2, pt_str = 3 };
-	RDORTPDefVal *dv;
-	RDORTPResParam(RDORTPDefVal *_dv): dv(_dv) {}
+	RDORTPDefVal* dv;
+	RDORTPResParam( RDORTPDefVal* _dv ): dv(_dv) {}
 	virtual const RDORTPResParam *constructSuchAs() const;
 	virtual const RDORTPResParam *constructSuchAs(const int defVal) const;
 	virtual const RDORTPResParam *constructSuchAs(const double *const defVal) const;
@@ -146,7 +146,7 @@ public:
 	std::vector<const std::string *> enumVals;
 	RDORTPEnum(const std::string *const first) { enumVals.push_back(first); }
 	void add(const std::string *const next);
-	int findValue(const std::string *const val) const;
+	int findValue( const std::string* const val, bool auto_error = true ) const;
 };
 
 class RDORTPEnumDefVal: public RDORTPDefVal
@@ -161,7 +161,7 @@ public:
 class RDORTPEnumResParam: public RDORTPResParam
 {
 public:
-	RDORTPEnum *enu;
+	RDORTPEnum* enu;
 	RDORTPEnumResParam(RDORTPEnum *_enu, RDORTPEnumDefVal *_dv): enu(_enu), RDORTPResParam(_dv) {}
 	const RDORTPResParam *constructSuchAs(const std::string *const defVal) const ;
 	virtual rdoRuntime::RDOValue getRSSDefaultValue()const ;
@@ -175,12 +175,14 @@ public:
 
 class RDORTPParamDesc: public RDODeletable
 {
-	const std::string *const name;
-	const RDORTPResParam *const parType;
+private:
+	const std::string* const name;
+	const RDORTPResParam* const parType;
+
 public:
 	RDORTPParamDesc( const std::string* const _name, const RDORTPResParam* const _parType);
-	const std::string *const getName() const { return name; };
-	const RDORTPResParam *const getType() const { return parType; };
+	const std::string* const getName() const { return name; };
+	const RDORTPResParam* const getType() const { return parType; };
 	int writeModelStructure() const;
 };
 

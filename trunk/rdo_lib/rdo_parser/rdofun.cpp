@@ -28,13 +28,12 @@ void funerror( char* mes )
 {
 }
 
-void RDOParser::addConstant(RDORTPParamDesc *const _cons)
+void RDOParser::addConstant( RDORTPParamDesc* const _cons )
 {
-	if(findFUNConst(_cons->getName()))
-		parser->error("Second appearance of the same constant name: " + *(_cons->getName()));
-
-	RDOFUNConstant *newConst = new RDOFUNConstant( _cons );
-	runTime->setConstValue(newConst->number, newConst->descr->getType()->getRSSDefaultValue());
+	if ( !findFUNConst(_cons->getName()) ) {
+		RDOFUNConstant* newConst = new RDOFUNConstant( _cons );
+		runTime->setConstValue( newConst->number, newConst->descr->getType()->getRSSDefaultValue() );
+	}
 }
 
 RDOFUNConstant::RDOFUNConstant( RDORTPParamDesc* _descr ):
@@ -241,9 +240,10 @@ rdoRuntime::RDOCalcConst *RDOFUNFunctionListElementInt::createResultCalc(const R
 	return new rdoRuntime::RDOCalcConst(retType->getRSSIntValue(value));
 }
 
-rdoRuntime::RDOCalcConst *RDOFUNFunctionListElementEq::createResultCalc(const RDORTPResParam *const retType) const
+rdoRuntime::RDOCalcConst* RDOFUNFunctionListElementEq::createResultCalc( const RDORTPResParam* const retType ) const
 {
-	parser->error("Internal parser error, incorrect state");
+	parser->error( "Внутренная ошибка парсера: неверное состояние" );
+//	parser->error( "Internal parser error, incorrect state" );
 	return NULL;	// unreachable code
 }
 
@@ -263,7 +263,7 @@ RDODeletable::~RDODeletable()
 RDOFUNLogic::RDOFUNLogic( rdoRuntime::RDOCalc *_calc ):
 	calc( _calc )
 {
-	if ( calc ) calc->setErrorPos( _calc->error() );
+	if ( calc ) setErrorPos( _calc->error() );
 }
 
 RDOFUNLogic* RDOFUNLogic::operator &&( const RDOFUNLogic& second )
@@ -271,7 +271,6 @@ RDOFUNLogic* RDOFUNLogic::operator &&( const RDOFUNLogic& second )
 	rdoRuntime::RDOCalc* newCalc = new rdoRuntime::RDOCalcAnd( calc, second.calc );
 	RDOFUNLogic* logic = new RDOFUNLogic( newCalc );
 	logic->setErrorPos( error().first_line, error().first_column, second.error().last_line, second.error().last_column );
-	newCalc->setErrorPos( logic->error() );
 	return logic;
 }
 
@@ -280,7 +279,6 @@ RDOFUNLogic* RDOFUNLogic::operator ||( const RDOFUNLogic& second )
 	rdoRuntime::RDOCalc* newCalc = new rdoRuntime::RDOCalcOr( calc, second.calc );
 	RDOFUNLogic* logic = new RDOFUNLogic( newCalc );
 	logic->setErrorPos( error().first_line, error().first_column, second.error().last_line, second.error().last_column );
-	newCalc->setErrorPos( logic->error() );
 	return logic;
 }
 
@@ -289,7 +287,6 @@ RDOFUNLogic* RDOFUNLogic::operator_not()
 	rdoRuntime::RDOCalc* newCalc = new rdoRuntime::RDOCalcNot( calc );
 	RDOFUNLogic* logic = new RDOFUNLogic( newCalc );
 	logic->setErrorPos( error() );
-	newCalc->setErrorPos( error() );
 	return logic;
 }
 
@@ -473,6 +470,7 @@ RDOFUNArithm::RDOFUNArithm( int n, const YYLTYPE& error_pos ):
 {
 	type = RDORTPResParam::pt_int;
 	calc = new rdoRuntime::RDOCalcConst( n );
+	setErrorPos( error_pos );
 }
 
 RDOFUNArithm::RDOFUNArithm( double* d, const YYLTYPE& error_pos ):
@@ -483,6 +481,7 @@ RDOFUNArithm::RDOFUNArithm( double* d, const YYLTYPE& error_pos ):
 {
 	type = RDORTPResParam::pt_real;
 	calc = new rdoRuntime::RDOCalcConst( *d );
+	setErrorPos( error_pos );
 }
 
 RDOFUNArithm::RDOFUNArithm( std::string* s, const YYLTYPE& error_pos ):
@@ -491,71 +490,86 @@ RDOFUNArithm::RDOFUNArithm( std::string* s, const YYLTYPE& error_pos ):
 	str( NULL ),
 	calc( NULL )
 {
+	setErrorPos( error_pos );
+
 	if ( (*s == "Time_now") || (*s == "time_now") || (*s == "Системное_время") || (*s == "системное_время") ) {
 		type = RDORTPResParam::pt_real;
 		calc = new rdoRuntime::RDOCalcGetTimeNow();
+		calc->setErrorPos( error_pos );
 		return;
 	}
 
 	if ( *s == "Seconds" || *s == "seconds" ) {
 		type = RDORTPResParam::pt_real;
 		calc = new rdoRuntime::RDOCalcGetSeconds();
+		calc->setErrorPos( error_pos );
 		return;
 	}
 
+	// Ищем параметры паттерна или функции по имени
 	const RDOFUNFunctionParam* param = NULL;
-	if ( parser->getFileToParse() == rdoModelObjects::FUN ) {
-		param = parser->getLastFUNFunction()->findFUNFunctionParam(s);
-	} else if ( parser->getFileToParse() == rdoModelObjects::PAT ) {
-		param = parser->getLastPATPattern()->findPATPatternParam(s);
+	switch ( parser->getFileToParse() ) {
+		case rdoModelObjects::PAT: param = parser->getLastPATPattern()->findPATPatternParam( s ); break;
+		case rdoModelObjects::FUN: param = parser->getLastFUNFunction()->findFUNFunctionParam( s ); break;
 	}
 
-	const RDOFUNConstant* cons = parser->findFUNConst(s);
-	if ( cons != NULL && param != NULL ) {
-		parser->error( "Ambiguity: constant or parameter usage: " + *s + " ?" );
+	// Ищем константы по имени
+	const RDOFUNConstant* cons = parser->findFUNConst( s );
+
+	if ( cons && param ) {
+		parser->lexer_loc_set( error_pos.last_line, error_pos.last_column );
+		parser->error( rdo::format("Имя параметра образца совпадает с именем константы: %s", s->c_str()) );
+//		parser->error( "Ambiguity: constant or parameter usage: " + *s + " ?" );
 	}
 
-	if(cons != NULL)
-	{
+	if ( cons ) {
 		type = cons->descr->getType()->getType();
-		if(type == RDORTPResParam::pt_enum)
+		if ( type == RDORTPResParam::pt_enum ) {
 			enu = ((RDORTPEnumResParam *)cons->descr->getType())->enu;
-
-		calc = new rdoRuntime::RDOCalcGetConst(cons->number);
+		}
+		calc = new rdoRuntime::RDOCalcGetConst( cons->number );
+		calc->setErrorPos( error_pos );
 		return;
 	}
 
-	const RDOFUNSequence *seq = parser->findSequence(s);
-	if(seq != NULL && param != NULL)
-		parser->error("Ambiguity: sequence or parameter usage: " + *s + " ?");
+	// Ищем последовательность по имени
+	const RDOFUNSequence* seq = parser->findSequence( s );
+	if ( seq && param ) {
+		parser->lexer_loc_set( error_pos.last_line, error_pos.last_column );
+		parser->error( rdo::format("Имя параметра образца совпадает с именем последовательности: %s", s->c_str()) );
+//		parser->error("Ambiguity: sequence or parameter usage: " + *s + " ?");
+	}
 
-	if(seq != NULL)
-	{
+	if ( seq ) {
 		RDOFUNParams tmp;
-		const RDOFUNArithm *ar = tmp.createSeqCall(s);
+		const RDOFUNArithm* ar = tmp.createSeqCall( s );
 		type = ar->getType();
-		if(type == RDORTPResParam::pt_enum)
+		if ( type == RDORTPResParam::pt_enum ) {
 			enu = ar->enu;
-
+		}
 		calc = ar->calc;
+		calc->setErrorPos( error_pos );
 		return;
 	}
 
-	if(!param)
-	{
+	if ( param ) {
+		// Это параметр
+		type = param->getType()->getType();
+		if ( type == RDORTPResParam::pt_enum ) {
+			enu = ((RDORTPEnumResParam *)param->getType())->enu;
+		}
+		switch ( parser->getFileToParse() ) {
+			case rdoModelObjects::PAT: calc = new rdoRuntime::RDOCalcPatParam( parser->getLastPATPattern()->findPATPatternParamNum( s ) ); break;
+			case rdoModelObjects::FUN: calc = new rdoRuntime::RDOCalcFuncParam( parser->getLastFUNFunction()->findFUNFunctionParamNum( s ) ); break;
+		}
+		if ( calc ) calc->setErrorPos( error_pos );
+		return;
+	} else {
+		// Это НЕ параметр
 		type = RDORTPResParam::pt_str;
-		str = s;
+		str  = s;
 		return;
 	}
-
-	type = param->getType()->getType();
-	if(type == RDORTPResParam::pt_enum)
-		enu = ((RDORTPEnumResParam *)param->getType())->enu;
-
-	if(parser->getFileToParse() == rdoModelObjects::FUN)
-		calc = new rdoRuntime::RDOCalcFuncParam(parser->getLastFUNFunction()->findFUNFunctionParamNum(s));
-	else if(parser->getFileToParse() == rdoModelObjects::PAT)
-		calc = new rdoRuntime::RDOCalcPatParam(parser->getLastPATPattern()->findPATPatternParamNum(s));
 }
 
 RDOFUNArithm* RDOFUNArithm::operator +( RDOFUNArithm& second )
@@ -859,7 +873,10 @@ rdoRuntime::RDOCalc* RDOFUNArithm::createCalc( const RDORTPResParam* const forTy
 		parser->error( "Неизвестный тип параметра" );
 	}
 
+	parser->lexer_loc_backup();
+	parser->lexer_loc_set( error().last_line, error().last_column );
 	rdoRuntime::RDOCalc* newCalc = new rdoRuntime::RDOCalcConst( forType->getRSSEnumValue(str) );
+	parser->lexer_loc_restore();
 	newCalc->setErrorPos( error() );
 	return newCalc;
 }
@@ -917,8 +934,10 @@ const RDOFUNArithm *RDOFUNSequenceUniform::createCallCalc( const RDOFUNParams* c
 
 	RDOFUNArithm *res = new RDOFUNArithm( RDORTPResParam::pt_int, funcCall, param->error() );
 	res->type = header->type->getType();
-	if(res->type == RDORTPResParam::pt_enum)
-		parser->error("Internal parser error");
+	if ( res->type == RDORTPResParam::pt_enum ) {
+		parser->error( "Внутренняя ошибка парсера" );
+//		parser->error("Internal parser error");
+	}
 	return res;
 }
 
@@ -937,8 +956,10 @@ const RDOFUNArithm *RDOFUNSequenceExponential::createCallCalc( const RDOFUNParam
 
 	RDOFUNArithm* res = new RDOFUNArithm( RDORTPResParam::pt_int, funcCall, param->error() );
 	res->type = header->type->getType();
-	if(res->type == RDORTPResParam::pt_enum)
-		parser->error("Internal parser error");
+	if ( res->type == RDORTPResParam::pt_enum ) {
+		parser->error( "Внутренняя ошибка парсера" );
+//		parser->error("Internal parser error");
+	}
 	return res;
 }
 
@@ -960,15 +981,19 @@ const RDOFUNArithm* RDOFUNSequenceNormal::createCallCalc( const RDOFUNParams* co
 
 	RDOFUNArithm* res = new RDOFUNArithm(RDORTPResParam::pt_int, funcCall, param->error() );
 	res->type = header->type->getType();
-	if(res->type == RDORTPResParam::pt_enum)
-		parser->error("Internal parser error");
+	if ( res->type == RDORTPResParam::pt_enum ) {
+		parser->error( "Внутренняя ошибка парсера" );
+//		parser->error("Internal parser error");
+	}
 	return res;
 }
 
 const RDOFUNArithm *RDOFUNSequenceByHist::createCallCalc(const RDOFUNParams *const param) const
 {
-	if(param->params.size() != 0)
-		parser->error("Wrong parameters number in by_hist sequence call: " + *header->name);
+	if ( param->params.size() != 0 ) {
+		parser->error( rdo::format("Гистограмма '%s' должна вызываться без параметров", header->name->c_str()) );
+//		parser->error("Wrong parameters number in by_hist sequence call: " + *header->name);
+	}
 
 	rdoRuntime::RDOCalcFunctionCall *funcCall = new rdoRuntime::RDOCalcFunctionCall(next);
 
@@ -982,8 +1007,10 @@ const RDOFUNArithm *RDOFUNSequenceByHist::createCallCalc(const RDOFUNParams *con
 
 const RDOFUNArithm *RDOFUNSequenceEnumerative::createCallCalc(const RDOFUNParams *const param) const
 {
-	if(param->params.size() != 0)
-		parser->error("Wrong parameters number in enumerative sequence call: " + *header->name);
+	if ( param->params.size() != 0 ) {
+		parser->error( rdo::format("Перечисление '%s' должно вызываться без параметров", header->name->c_str()) );
+//		parser->error("Wrong parameters number in enumerative sequence call: " + *header->name);
+	}
 
 	rdoRuntime::RDOCalcFunctionCall *funcCall = new rdoRuntime::RDOCalcFunctionCall(next);
 
@@ -1260,22 +1287,25 @@ void RDOFUNSequenceByHistReal::createCalcs()
 
 void RDOFUNSequenceByHistEnum::addEnum( std::string* _val, double _freq )
 {
-	val.push_back( header->type->getRSSEnumValue(_val) );
+	rdoRuntime::RDOValue enum_id = header->type->getRSSEnumValue( _val );
+	if ( std::find( val.begin(), val.end(), enum_id ) != val.end() ) {
+		parser->error( rdo::format("Перечислимое значение определено дважды: %s", _val->c_str()) );
+	}
+	val.push_back( enum_id );
 	freq.push_back( _freq );
 }
 
 void RDOFUNSequenceByHistEnum::createCalcs()
 {
-	RandGeneratorByHistEnum *gen = new RandGeneratorByHistEnum();
+	RandGeneratorByHistEnum* gen = new RandGeneratorByHistEnum();
 	int size = val.size();
-	for(int i = 0; i < size; i++)
-		gen->addValues(val[i], freq[i]);
-
-	initSeq = new rdoRuntime::RDOCalcSeqInit(base, gen);
-	parser->runTime->addInitCalc(initSeq);
-	next = new rdoRuntime::RDOCalcSeqNextByHist(gen);
+	for ( int i = 0; i < size; i++ ) {
+		gen->addValues( val[i], freq[i] );
+	}
+	initSeq = new rdoRuntime::RDOCalcSeqInit( base, gen );
+	parser->runTime->addInitCalc( initSeq );
+	next = new rdoRuntime::RDOCalcSeqNextByHist( gen );
 }
-
 
 void RDOFUNSequenceEnumerativeInt::addInt(int _val)
 {
@@ -1311,9 +1341,9 @@ void RDOFUNSequenceEnumerativeReal::createCalcs()
 	next = new rdoRuntime::RDOCalcSeqNextByHist(gen);
 }
 
-void RDOFUNSequenceEnumerativeEnum::addEnum(std::string *_val)
+void RDOFUNSequenceEnumerativeEnum::addEnum( std::string* _val )
 {
-	val.push_back(header->type->getRSSEnumValue(_val));
+	val.push_back( header->type->getRSSEnumValue(_val) );
 }
 
 void RDOFUNSequenceEnumerativeEnum::createCalcs()

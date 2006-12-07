@@ -175,8 +175,10 @@ rtp_list:	/* empty */
 
 rtp_res_type:	rtp_res_type_hdr Parameters rtp_body End {
 					if ( $3 == 0 ) {
+						parser->lexer_loc_backup();			
 						parser->lexer_loc_set( &(@2) );
 						parser->warning( rdo::format( "Тип ресурса '%s' не содежит параметров", ((RDORTPResType*)$1)->getName()->c_str() ) );
+						parser->lexer_loc_restore();
 					}
 				}
 				| rtp_res_type_hdr Parameters rtp_body {

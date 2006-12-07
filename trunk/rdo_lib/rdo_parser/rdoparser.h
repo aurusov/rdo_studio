@@ -162,8 +162,9 @@ public:
 	void error( const std::string& message, rdoSimulator::RDOSyntaxError::ErrorCode error_code = rdoSimulator::RDOSyntaxError::UNKNOWN );
 	void warning( rdoSimulator::RDOSyntaxError::ErrorCode error_code, ... );
 	void warning( const std::string& message, rdoSimulator::RDOSyntaxError::ErrorCode error_code = rdoSimulator::RDOSyntaxError::UNKNOWN );
-	void addConstant(RDORTPParamDesc *const _cons);
-	const RDOFUNConstant *RDOParser::findFUNConst(const std::string *const _cons) const;
+	void addConstant( RDORTPParamDesc* const _cons );
+	const RDOFUNConstant* findFUNConst( const std::string* const _cons) const;
+	bool hasConstant() const { return !allFUNConstant.empty(); }
 
 	void LoadStdFunctions();
 

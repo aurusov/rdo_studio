@@ -343,8 +343,8 @@ public:
 class RDOFUNSequenceByHistEnum: public RDOFUNSequenceByHist
 {
 public:
-	std::vector< rdoRuntime::RDOValue> val;
-	std::vector< double >              freq;
+	std::vector< rdoRuntime::RDOValue > val;
+	std::vector< double >               freq;
 
 	RDOFUNSequenceByHistEnum( RDOFUNSequenceByHistHeader* _header, std::string* _val, double _freq ):
 		RDOFUNSequenceByHist( _header )

@@ -150,7 +150,7 @@ public:
 	}
 
 	const std::string* const getName() const  { return name; };
-	virtual const RDORTPResType* const getType() const     = 0;
+	virtual const RDORTPResType* const getType() const                 = 0;
 	virtual rdoRuntime::RDOCalc* createSelectEmptyResourceCalc()       = 0; // first without choice
 	virtual rdoRuntime::RDOCalc* createSelectFirstResourceChoiceCalc() = 0; // first with choice
 	virtual rdoRuntime::RDOCalc* createSelectResourceChoiceCalc()      = 0; // first/withmax/withmin with choice
@@ -291,14 +291,14 @@ public:
 class RDOPATParamsSet: public RDODeletable
 {
 private:
-	std::vector<std::string *> paramNames;	
+	std::vector< std::string* > paramNames;
 
 public:
-	std::vector<RDOFUNArithm *> paramArithms;	
-	std::vector<int> paramNumbs;	
-	void addIdentif(std::string *paramName, RDOFUNArithm *paramArithm);
-	void addIdentif(std::string *paramName);
-	void checkParamsNumbers(RDORelevantResource *currRelRes);
+	std::vector< RDOFUNArithm* > paramArithms;
+	std::vector< int >           paramNumbs;
+	void addIdentif( std::string* paramName, RDOFUNArithm* paramArithm );
+	void addIdentif( std::string* paramName );
+	void checkParamsNumbers( RDORelevantResource* currRelRes );
 };
 
 } // namespace rdoParse
