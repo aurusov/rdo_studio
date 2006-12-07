@@ -851,9 +851,9 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 									parser->lexer_loc_set( &(@2) );
 									parser->error( rdo::format("Последовательность '%s' определена как целочисленная, её даипазоны тоже должны быть челочисленными", header->header->name->c_str()) );
 								}
-								if ( *((double*)$2) >= *((double*)$3) ) {
+								if ( *((double*)$2) > *((double*)$3) ) {
 									parser->lexer_loc_set( &(@3) );
-									parser->error( "Начало интервала должно быть строго меньше его конца" );
+									parser->error( "Начало интервала должно быть меньше его конца" );
 								}
 								if ( *((double*)$4) <= 0 ) {
 									parser->lexer_loc_set( &(@4) );
@@ -871,9 +871,9 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 									parser->lexer_loc_set( &(@3) );
 									parser->error( rdo::format("Последовательность '%s' определена как целочисленная, её даипазоны тоже должны быть челочисленными", header->header->name->c_str()) );
 								}
-								if ( $2 >= *((double*)$3) ) {
+								if ( $2 > *((double*)$3) ) {
 									parser->lexer_loc_set( &(@3) );
-									parser->error( "Начало интервала должно быть строго меньше его конца" );
+									parser->error( "Начало интервала должно быть меньше его конца" );
 								}
 								if ( *((double*)$4) <= 0 ) {
 									parser->lexer_loc_set( &(@4) );
@@ -891,9 +891,9 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 									parser->lexer_loc_set( &(@2) );
 									parser->error( rdo::format("Последовательность '%s' определена как целочисленная, её даипазоны тоже должны быть челочисленными", header->header->name->c_str()) );
 								}
-								if ( *((double*)$2) >= $3 ) {
+								if ( *((double*)$2) > $3 ) {
 									parser->lexer_loc_set( &(@3) );
-									parser->error( "Начало интервала должно быть строго меньше его конца" );
+									parser->error( "Начало интервала должно быть меньше его конца" );
 								}
 								if ( *((double*)$4) <= 0 ) {
 									parser->lexer_loc_set( &(@4) );
@@ -911,9 +911,9 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 									parser->lexer_loc_set( &(@2) );
 									parser->error( rdo::format("Последовательность '%s' определена как целочисленная, её даипазоны тоже должны быть челочисленными", header->header->name->c_str()) );
 								}
-								if ( *((double*)$2) >= *((double*)$3) ) {
+								if ( *((double*)$2) > *((double*)$3) ) {
 									parser->lexer_loc_set( &(@3) );
-									parser->error( "Начало интервала должно быть строго меньше его конца" );
+									parser->error( "Начало интервала должно быть меньше его конца" );
 								}
 								if ( $4 <= 0 ) {
 									parser->lexer_loc_set( &(@4) );
@@ -947,9 +947,9 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 									parser->lexer_loc_set( &(@2) );
 									parser->error( rdo::format("Последовательность '%s' определена как целочисленная, её даипазоны тоже должны быть челочисленными", header->header->name->c_str()) );
 								}
-								if ( *((double*)$2) >= $3 ) {
+								if ( *((double*)$2) > $3 ) {
 									parser->lexer_loc_set( &(@3) );
-									parser->error( "Начало интервала должно быть строго меньше его конца" );
+									parser->error( "Начало интервала должно быть меньше его конца" );
 								}
 								if ( $4 <= 0 ) {
 									parser->lexer_loc_set( &(@4) );
@@ -967,9 +967,9 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 									parser->lexer_loc_set( &(@3) );
 									parser->error( rdo::format("Последовательность '%s' определена как целочисленная, её даипазоны тоже должны быть челочисленными", header->header->name->c_str()) );
 								}
-								if ( $2 >= *((double*)$3) ) {
+								if ( $2 > *((double*)$3) ) {
 									parser->lexer_loc_set( &(@3) );
-									parser->error( "Начало интервала должно быть строго меньше его конца" );
+									parser->error( "Начало интервала должно быть меньше его конца" );
 								}
 								if ( $4 <= 0 ) {
 									parser->lexer_loc_set( &(@4) );
@@ -983,9 +983,9 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 									parser->lexer_loc_set( &(@2) );
 									parser->error( "Значение не соответствует типу последовательности" );
 								}
-								if ( $2 >= $3 ) {
+								if ( $2 > $3 ) {
 									parser->lexer_loc_set( &(@3) );
-									parser->error( "Начало интервала должно быть строго меньше его конца" );
+									parser->error( "Начало интервала должно быть меньше его конца" );
 								}
 								if ( $4 <= 0 ) {
 									parser->lexer_loc_set( &(@4) );
@@ -1003,9 +1003,9 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 									parser->lexer_loc_set( &(@2) );
 									parser->error( "Начало интервала должно совпадать с окончанием предыдущего" );
 								}
-								if ( *((double*)$2) >= *((double*)$3) ) {
+								if ( *((double*)$2) > *((double*)$3) ) {
 									parser->lexer_loc_set( &(@3) );
-									parser->error( "Начало интервала должно быть строго меньше его конца" );
+									parser->error( "Начало интервала должно быть меньше его конца" );
 								}
 								if ( *((double*)$4) <= 0 ) {
 									parser->lexer_loc_set( &(@4) );
@@ -1023,9 +1023,9 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 									parser->lexer_loc_set( &(@2) );
 									parser->error( "Начало интервала должно совпадать с окончанием предыдущего" );
 								}
-								if ( $2 >= *((double*)$3) ) {
+								if ( $2 > *((double*)$3) ) {
 									parser->lexer_loc_set( &(@3) );
-									parser->error( "Начало интервала должно быть строго меньше его конца" );
+									parser->error( "Начало интервала должно быть меньше его конца" );
 								}
 								if ( *((double*)$4) <= 0 ) {
 									parser->lexer_loc_set( &(@4) );
@@ -1043,9 +1043,9 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 									parser->lexer_loc_set( &(@2) );
 									parser->error( "Начало интервала должно совпадать с окончанием предыдущего" );
 								}
-								if ( *((double*)$2) >= $3 ) {
+								if ( *((double*)$2) > $3 ) {
 									parser->lexer_loc_set( &(@3) );
-									parser->error( "Начало интервала должно быть строго меньше его конца" );
+									parser->error( "Начало интервала должно быть меньше его конца" );
 								}
 								if ( *((double*)$4) <= 0 ) {
 									parser->lexer_loc_set( &(@4) );
@@ -1063,9 +1063,9 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 									parser->lexer_loc_set( &(@2) );
 									parser->error( "Начало интервала должно совпадать с окончанием предыдущего" );
 								}
-								if ( *((double*)$2) >= *((double*)$3) ) {
+								if ( *((double*)$2) > *((double*)$3) ) {
 									parser->lexer_loc_set( &(@3) );
-									parser->error( "Начало интервала должно быть строго меньше его конца" );
+									parser->error( "Начало интервала должно быть меньше его конца" );
 								}
 								if ( $4 <= 0 ) {
 									parser->lexer_loc_set( &(@4) );
@@ -1078,9 +1078,9 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 									parser->lexer_loc_set( &(@2) );
 									parser->error( "Начало интервала должно совпадать с окончанием предыдущего" );
 								}
-								if ( $2 >= $3 ) {
+								if ( $2 > $3 ) {
 									parser->lexer_loc_set( &(@3) );
-									parser->error( "Начало интервала должно быть строго меньше его конца" );
+									parser->error( "Начало интервала должно быть меньше его конца" );
 								}
 								if ( *((double*)$4) <= 0 ) {
 									parser->lexer_loc_set( &(@4) );
@@ -1098,9 +1098,9 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 									parser->lexer_loc_set( &(@2) );
 									parser->error( "Начало интервала должно совпадать с окончанием предыдущего" );
 								}
-								if ( *((double*)$2) >= $3 ) {
+								if ( *((double*)$2) > $3 ) {
 									parser->lexer_loc_set( &(@3) );
-									parser->error( "Начало интервала должно быть строго меньше его конца" );
+									parser->error( "Начало интервала должно быть меньше его конца" );
 								}
 								if ( $4 <= 0 ) {
 									parser->lexer_loc_set( &(@4) );
@@ -1118,9 +1118,9 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 									parser->lexer_loc_set( &(@2) );
 									parser->error( "Начало интервала должно совпадать с окончанием предыдущего" );
 								}
-								if ( $2 >= *((double*)$3) ) {
+								if ( $2 > *((double*)$3) ) {
 									parser->lexer_loc_set( &(@3) );
-									parser->error( "Начало интервала должно быть строго меньше его конца" );
+									parser->error( "Начало интервала должно быть меньше его конца" );
 								}
 								if ( $4 <= 0 ) {
 									parser->lexer_loc_set( &(@4) );
@@ -1133,9 +1133,9 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 									parser->lexer_loc_set( &(@2) );
 									parser->error( "Начало интервала должно совпадать с окончанием предыдущего" );
 								}
-								if ( $2 >= $3 ) {
+								if ( $2 > $3 ) {
 									parser->lexer_loc_set( &(@3) );
-									parser->error( "Начало интервала должно быть строго меньше его конца" );
+									parser->error( "Начало интервала должно быть меньше его конца" );
 								}
 								if ( $4 <= 0 ) {
 									parser->lexer_loc_set( &(@4) );
