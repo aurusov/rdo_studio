@@ -566,13 +566,20 @@ void RDOStudioFrameManager::showFrame( const rdoSimulator::RDOFrame* const frame
 					}
 					case rdoSimulator::RDOFrameElement::active_type: {
 						rdoSimulator::RDOActiveElement* element = static_cast<rdoSimulator::RDOActiveElement*>(currElement);
-						Area* area = new Area;
-						area->name = element->operName;
-						area->x    = element->x;
-						area->y    = element->y;
-						area->w    = element->w;
-						area->h    = element->h;
-						frames[index]->areas_sim.push_back( area );
+						std::vector< Area* >::const_iterator it = frames[index]->areas_sim.begin();
+						while ( it != frames[index]->areas_sim.end() ) {
+							if ( (*it)->name == element->operName ) break;
+							it++;
+						}
+						if ( it == frames[index]->areas_sim.end() ) {
+							Area* area = new Area;
+							area->name = element->operName;
+							area->x    = element->x;
+							area->y    = element->y;
+							area->w    = element->w;
+							area->h    = element->h;
+							frames[index]->areas_sim.push_back( area );
+						}
 						break;
 					}
 				}

@@ -34,6 +34,7 @@ BEGIN_MESSAGE_MAP(RDOStudioFrameView, RDOStudioView)
 	ON_WM_MOUSEWHEEL()
 	ON_WM_PAINT()
 	ON_COMMAND(ID_HELP_KEYWORD, OnHelpKeyword)
+	ON_WM_LBUTTONUP()
 	//}}AFX_MSG_MAP
 	ON_COMMAND(ID_FILE_PRINT, RDOStudioView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, RDOStudioView::OnFilePrint)
@@ -313,15 +314,21 @@ void RDOStudioFrameView::OnLButtonDown(UINT nFlags, CPoint point)
 	std::vector< RDOStudioFrameManager::Area* >* areas_sim = &frameManager->frames[index]->areas_sim;
 	std::vector< RDOStudioFrameManager::Area* >::iterator it = areas_sim->begin();
 	while ( it != areas_sim->end() ) {
-		RDOStudioFrameManager::Area* area = *it++;
+		RDOStudioFrameManager::Area* area = *it;
 		if ( CRect( area->x, area->y, area->x + area->w, area->y + area->h ).PtInRect( point ) ) {
 			model->sendMessage( kernel->runtime(), RDOThread::RT_RUNTIME_FRAME_AREA_DOWN, &area->name );
 		}
+		it++;
 	};
 
 	lock_draw.Unlock();
 
 	RDOStudioView::OnLButtonDown( nFlags, point );
+}
+
+void RDOStudioFrameView::OnLButtonUp( UINT nFlags, CPoint point )
+{
+	RDOStudioView::OnLButtonUp( nFlags, point );
 }
 
 void RDOStudioFrameView::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )

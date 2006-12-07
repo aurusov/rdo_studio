@@ -281,9 +281,9 @@ void RDOActivityKeyboardRuntime::addHotKey( std::string* hotKey )
 {
 	unsigned int _scan_code = rdoParse::rdoHotKeyToolkit.codeFromString( hotKey );
 	switch ( _scan_code ) {
-		case VK_SHIFT  : shift     = true;       break;
-		case VK_CONTROL: control   = true;       break;
-		default        : scan_code = _scan_code; break;
+		case VK_SHIFT  : shift     = true;       rdoParse::parser->runTime->using_scan_codes.push_back( VK_SHIFT   ); break;
+		case VK_CONTROL: control   = true;       rdoParse::parser->runTime->using_scan_codes.push_back( VK_CONTROL ); break;
+		default        : scan_code = _scan_code; rdoParse::parser->runTime->using_scan_codes.push_back( _scan_code ); break;
 	}
 }
 

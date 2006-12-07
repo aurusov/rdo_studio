@@ -49,37 +49,41 @@ bool RDOSimulatorBase::rdoNext()
 		::Sleep( 1 );
 		return true;
 	}
-	// Задержка общей скорости моделирования
-	// Это mode == rdoRuntime::RTM_Jump || mode == rdoRuntime::RTM_Sync
-	if ( mode != rdoRuntime::RTM_MaxSpeed && next_delay_count ) {
-		next_delay_current++;
-		if ( next_delay_current < next_delay_count ) return true;
-		next_delay_current = 0;
-	}
-	// Задержка синхронной скорости моделирования (длительность операций)
-	// Тут не надо проверять mode == rdoRuntime::RTM_Sync, т.к. это уже заложено в msec_wait,
-	// который сбрасывается в setMode и не изменяется далее.
-	if ( msec_wait > 1 ) {
-		SYSTEMTIME systime_current;
-		::GetSystemTime( &systime_current );
-		unsigned int msec_curr = getMSec( systime_current );
-		unsigned int msec_delta;
-		// Милисекунды считаются с учетом часов, но при смене суток часы сбрасываются на ноль,
-		// и текущее время в милисекундах становится меньше предыдущего. Учитываем этот момент
-		// через ветку ELSE. Теперь система сможет учесть переход на один день вперед между
-		// двумя соседники моментами времени, но не сможет учесть на два и более дня. Это
-		// является маразматической ситуаций (ждать слудующего события два дня), но запросто
-		// может потребоваться в системе мониторинга реального времени, которая работает в
-		// автоматическом режиме, обрабатывая информацию с контроллеров. РДО это делать не умеет.
-		// Как решение - отказ от синхронной работы в таких системах, и учет только скорости, или
-		// переход на работу с календарем дней, месяцев и лет. SYSTEMTIME содержит такую информацию.
-		if ( msec_curr >= msec_prev ) {
-			msec_delta = msec_curr - msec_prev;
-		} else {
-			msec_delta = UINT_MAX - msec_prev + msec_curr;
+	// Если нажата клавиша или активная область, то задержки надо проскачить
+	bool keyboard = isKeyDown();
+	if ( !keyboard ) {
+		// Задержка общей скорости моделирования
+		// Это mode == rdoRuntime::RTM_Jump || mode == rdoRuntime::RTM_Sync
+		if ( mode != rdoRuntime::RTM_MaxSpeed && next_delay_count ) {
+			next_delay_current++;
+			if ( next_delay_current < next_delay_count ) return true;
+			next_delay_current = 0;
 		}
-		if ( msec_delta <= msec_wait ) return true;
-		msec_wait -= msec_delta;
+		// Задержка синхронной скорости моделирования (длительность операций)
+		// Тут не надо проверять mode == rdoRuntime::RTM_Sync, т.к. это уже заложено в msec_wait,
+		// который сбрасывается в setMode и не изменяется далее.
+		if ( msec_wait > 1 ) {
+			SYSTEMTIME systime_current;
+			::GetSystemTime( &systime_current );
+			unsigned int msec_curr = getMSec( systime_current );
+			unsigned int msec_delta;
+			// Милисекунды считаются с учетом часов, но при смене суток часы сбрасываются на ноль,
+			// и текущее время в милисекундах становится меньше предыдущего. Учитываем этот момент
+			// через ветку ELSE. Теперь система сможет учесть переход на один день вперед между
+			// двумя соседники моментами времени, но не сможет учесть на два и более дня. Это
+			// является маразматической ситуаций (ждать слудующего события два дня), но запросто
+			// может потребоваться в системе мониторинга реального времени, которая работает в
+			// автоматическом режиме, обрабатывая информацию с контроллеров. РДО это делать не умеет.
+			// Как решение - отказ от синхронной работы в таких системах, и учет только скорости, или
+			// переход на работу с календарем дней, месяцев и лет. SYSTEMTIME содержит такую информацию.
+			if ( msec_curr >= msec_prev ) {
+				msec_delta = msec_curr - msec_prev;
+			} else {
+				msec_delta = UINT_MAX - msec_prev + msec_curr;
+			}
+			if ( msec_delta <= msec_wait ) return true;
+			msec_wait -= msec_delta;
+		}
 	}
 	// Окончание моделирования - сработало событие конца
 	if ( endCondition() ) {
@@ -209,9 +213,6 @@ void RDOSimulatorBase::rdoRun()
 
 void RDOSimulatorBase::addTimePoint( double timePoint )
 {
-	if ( timePoint < getCurrentTime() ) {
-		TRACE( "q\n" );
-	}
 	if ( std::find( timePointList.begin(), timePointList.end(), timePoint ) == timePointList.end() ) {
 		timePointList.push_back( timePoint );
 		timePointList.sort();

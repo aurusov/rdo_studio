@@ -180,15 +180,21 @@ private:
 
 	void writeExitCode();
 
+	bool key_found;
+	virtual bool isKeyDown();
+
 public:
 //	std::list< int > allResourcesChoiced;
 
 	std::vector< rdoSimulator::RDOSyntaxError > errors;
 	void error( const char* message, const rdoRuntime::RDOCalc* calc );
-	void keyDown( unsigned int scan_code );
+
+	std::vector< unsigned int > using_scan_codes;
+	bool keyDown( unsigned int scan_code );
 	void keyUp( unsigned int scan_code );
 	bool checkKeyPressed( unsigned int scan_code, bool shift, bool control );
 	bool checkAreaActivated(std::string *oprName);
+
 	void setConstValue(int numberOfConst, RDOValue value);
 	RDOValue getConstValue(int numberOfConst);
 	RDOResult& getResult() { return *result; }

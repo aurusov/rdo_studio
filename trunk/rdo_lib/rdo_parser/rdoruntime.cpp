@@ -126,7 +126,7 @@ void RDORuntime::addRuntimeFrame( rdoParse::RDOFRMFrame* frm )
 	allFrames.push_back(frm); 
 }
 
-void RDORuntime::keyDown( unsigned int scan_code )
+bool RDORuntime::keyDown( unsigned int scan_code )
 {
 	// Если нажаты VK_SHIFT или VK_CONTROL, то сбросим буфер клавиатуры
 	if ( scan_code == VK_SHIFT || scan_code == VK_CONTROL ) {
@@ -152,12 +152,14 @@ void RDORuntime::keyDown( unsigned int scan_code )
 	if ( cnt < 4 ) {
 		config.keyDown.push_back( scan_code );
 	}
+	if ( cnt == 0 ) key_found = true;
+	return cnt > 0;
 }
 
 void RDORuntime::keyUp( unsigned int scan_code )
 {
 	// Если отжаты VK_SHIFT или VK_CONTROL, то сбросим удалим их из буфера
-	if ( scan_code == VK_SHIFT || scan_code == VK_CONTROL ) {
+//	if ( scan_code == VK_SHIFT || scan_code == VK_CONTROL ) {
 		std::list< unsigned int >::iterator it = config.keyDown.begin();
 		while ( it != config.keyDown.end() ) {
 			if ( *it == scan_code ) {
@@ -166,7 +168,7 @@ void RDORuntime::keyUp( unsigned int scan_code )
 				it++;
 			}
 		}
-	}
+//	}
 }
 
 bool RDORuntime::checkKeyPressed( unsigned int scan_code, bool shift, bool control )
@@ -195,22 +197,29 @@ bool RDORuntime::checkKeyPressed( unsigned int scan_code, bool shift, bool contr
 		while ( it != config.keyDown.end() ) {
 			if ( *it == scan_code ) {
 				config.keyDown.erase( it );
+				key_found = true;
 				return true;
 			}
 			it++;
 		}
 	}
+	key_found = false;
 	return false;
 }
 
-bool RDORuntime::checkAreaActivated(std::string *oprName)
+bool RDORuntime::checkAreaActivated( std::string* oprName )
 {
-	std::vector<std::string>::iterator it = std::find(config.activeAreasMouseClicked.begin(), config.activeAreasMouseClicked.end(), *oprName);
-	if(it == config.activeAreasMouseClicked.end())
-		return false;	
-
-	config.activeAreasMouseClicked.erase(it);
+	std::vector<std::string>::iterator it = std::find( config.activeAreasMouseClicked.begin(), config.activeAreasMouseClicked.end(), *oprName );
+	if ( it == config.activeAreasMouseClicked.end() ) {
+		return false;
+	}
+	config.activeAreasMouseClicked.erase( it );
 	return true;
+}
+
+bool RDORuntime::isKeyDown()
+{
+	return key_found || !config.activeAreasMouseClicked.empty();
 }
 
 RDOValue RDOCalcCreateResource::calcValue(RDORuntime *sim) const
@@ -261,7 +270,8 @@ RDOCalcCreateEmptyResource::RDOCalcCreateEmptyResource(int _type, bool _traceFla
 RDORuntime::RDORuntime():
 	tracer( NULL ),
 	result( NULL ),
-	whyStop( rdoSimulator::EC_OK )
+	whyStop( rdoSimulator::EC_OK ),
+	key_found( false )
 {
 	terminateIfCalc = NULL;
 }

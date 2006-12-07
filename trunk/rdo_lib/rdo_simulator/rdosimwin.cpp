@@ -142,7 +142,11 @@ void RDOThreadRunTime::proc( RDOMessageInfo& msg )
 		}
 		case RT_RUNTIME_KEY_DOWN: {
 			msg.lock();
-			simulator->runtime->keyDown( *static_cast<unsigned int*>(msg.param) );
+			if ( std::find( simulator->runtime->using_scan_codes.begin(), simulator->runtime->using_scan_codes.end(), *static_cast<unsigned int*>(msg.param) ) != simulator->runtime->using_scan_codes.end() ) {
+				if ( !simulator->runtime->keyDown( *static_cast<unsigned int*>(msg.param) ) ) {
+					simulator->runtime->setShowRate( simulator->runtime->getShowRate() );
+				}
+			}
 			msg.unlock();
 			break;
 		}
@@ -155,6 +159,7 @@ void RDOThreadRunTime::proc( RDOMessageInfo& msg )
 		case RT_RUNTIME_FRAME_AREA_DOWN: {
 			msg.lock();
 			simulator->runtime->config.activeAreasMouseClicked.push_back( *static_cast<std::string*>(msg.param) );
+			simulator->runtime->setShowRate( simulator->runtime->getShowRate() );
 			msg.unlock();
 			break;
 		}

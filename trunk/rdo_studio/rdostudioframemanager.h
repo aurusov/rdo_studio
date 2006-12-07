@@ -55,17 +55,15 @@ private:
 	private:
 		Frame(): hitem( 0 ), doc( NULL ), view( NULL ), timer( false, true ) {};
 		~Frame() { areas_sim_clear(); };
-		HTREEITEM           hitem;
-		std::string         name;
-		RDOStudioFrameDoc*  doc;
-		RDOStudioFrameView* view;
-		CMutex              used;
-		CMutex              draw;
-		CEvent              timer;
-		CEvent              close;
-		std::vector< Area* >       areas_sim;
-		std::vector< std::string > areas_clicked;
-//		std::vector< int >         keys_pressed;
+		HTREEITEM            hitem;
+		std::string          name;
+		RDOStudioFrameDoc*   doc;
+		RDOStudioFrameView*  view;
+		CMutex               used;
+		CMutex               draw;
+		CEvent               timer;
+		CEvent               close;
+		std::vector< Area* > areas_sim;
 		void areas_sim_clear() {
 			std::vector< Area* >::iterator it = areas_sim.begin();
 			while ( it != areas_sim.end() ) {

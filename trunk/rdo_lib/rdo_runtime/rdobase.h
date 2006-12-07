@@ -58,6 +58,8 @@ protected:
 	virtual void preProcess() {}
 	virtual void postProcess() {}
 
+	virtual bool isKeyDown() { return false; }
+
 public:
 	// These function for external use:
 	void rdoInit();
