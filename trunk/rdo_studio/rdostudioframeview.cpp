@@ -34,7 +34,6 @@ BEGIN_MESSAGE_MAP(RDOStudioFrameView, RDOStudioView)
 	ON_WM_MOUSEWHEEL()
 	ON_WM_PAINT()
 	ON_COMMAND(ID_HELP_KEYWORD, OnHelpKeyword)
-	ON_WM_LBUTTONUP()
 	//}}AFX_MSG_MAP
 	ON_COMMAND(ID_FILE_PRINT, RDOStudioView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, RDOStudioView::OnFilePrint)
@@ -324,11 +323,6 @@ void RDOStudioFrameView::OnLButtonDown(UINT nFlags, CPoint point)
 	lock_draw.Unlock();
 
 	RDOStudioView::OnLButtonDown( nFlags, point );
-}
-
-void RDOStudioFrameView::OnLButtonUp( UINT nFlags, CPoint point )
-{
-	RDOStudioView::OnLButtonUp( nFlags, point );
 }
 
 void RDOStudioFrameView::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
