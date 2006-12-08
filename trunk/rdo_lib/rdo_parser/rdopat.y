@@ -586,8 +586,24 @@ convert_end:	Convert_end {
 			};
 
 pat_params_set:	/* empty */									{ $$ = (int) new RDOPATParamsSet(); }
-				|	pat_params_set IDENTIF_set fun_arithm	{ ((RDOPATParamsSet *)$1)->addIdentif((std::string *)$2, (RDOFUNArithm *)$3); $$ = $1; }
-				|	pat_params_set IDENTIF_NoChange			{ ((RDOPATParamsSet *)$1)->addIdentif((std::string *)$2); $$ = $1;                     };
+				|	pat_params_set IDENTIF_set fun_arithm	{
+					YYLTYPE error_pos;
+					error_pos.first_line   = @2.first_line;
+					error_pos.first_column = @2.first_column;
+					error_pos.last_line    = @2.last_line;
+					error_pos.last_column  = error_pos.first_column + ((std::string*)$2)->length();
+					((RDOPATParamsSet *)$1)->addIdentif( (std::string*)$2, (RDOFUNArithm*)$3, error_pos );
+					$$ = $1;
+				}
+				|	pat_params_set IDENTIF_NoChange			{
+					YYLTYPE error_pos;
+					error_pos.first_line   = @2.first_line;
+					error_pos.first_column = @2.first_column;
+					error_pos.last_line    = @2.last_line;
+					error_pos.last_column  = error_pos.first_column + ((std::string*)$2)->length();
+					((RDOPATParamsSet *)$1)->addIdentif( (std::string*)$2, error_pos );
+					$$ = $1;
+				};
 
 pat_pattern:	pat_convert End { ((RDOPATPattern *)$1)->end(); $$ = $1; };
 //				| pat_time  End { ((RDOPATPattern *)$1)->end(); $$ = $1; };

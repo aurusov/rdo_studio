@@ -296,8 +296,9 @@ private:
 public:
 	std::vector< RDOFUNArithm* > paramArithms;
 	std::vector< int >           paramNumbs;
-	void addIdentif( std::string* paramName, RDOFUNArithm* paramArithm );
-	void addIdentif( std::string* paramName );
+	void addIdentif( std::string* paramName, RDOFUNArithm* paramArithm, const YYLTYPE& param_name_pos );
+	void addIdentif( std::string* paramName, const YYLTYPE& param_name_pos );
+	void checkParamsNumbers( std::string* paramName, const YYLTYPE& param_name_pos );
 	void checkParamsNumbers( RDORelevantResource* currRelRes );
 };
 
