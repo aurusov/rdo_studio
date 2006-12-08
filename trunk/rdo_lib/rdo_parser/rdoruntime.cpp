@@ -173,26 +173,24 @@ void RDORuntime::keyUp( unsigned int scan_code )
 
 bool RDORuntime::checkKeyPressed( unsigned int scan_code, bool shift, bool control )
 {
-	bool shift_found   = shift   ? false : true;
-	bool control_found = control ? false : true;
-	// Если надо, то найдем VK_SHIFT и/или VK_CONTROL в буфере
-	if ( shift || control ) {
-		std::list< unsigned int >::iterator it = config.keyDown.begin();
-		while ( it != config.keyDown.end() ) {
-			if ( *it == VK_SHIFT ) {
-				shift_found = true;
-				if ( shift_found && control_found ) break;
-			}
-			if ( *it == VK_CONTROL ) {
-				control_found = true;
-				if ( shift_found && control_found ) break;
-			}
-			it++;
+	bool shift_found   = false;
+	bool control_found = false;
+	// Найдем VK_SHIFT и/или VK_CONTROL в буфере
+	std::list< unsigned int >::iterator it = config.keyDown.begin();
+	while ( it != config.keyDown.end() ) {
+		if ( *it == VK_SHIFT ) {
+			shift_found = true;
+			if ( shift_found && control_found ) break;
 		}
+		if ( *it == VK_CONTROL ) {
+			control_found = true;
+			if ( shift_found && control_found ) break;
+		}
+		it++;
 	}
 	// Теперь найдем саму клавишу в буфере
 	// Удалим её из буфера перед выходом
-	if ( shift_found && control_found ) {
+	if ( shift_found == shift && control_found == control ) {
 		std::list< unsigned int >::iterator it = config.keyDown.begin();
 		while ( it != config.keyDown.end() ) {
 			if ( *it == scan_code ) {

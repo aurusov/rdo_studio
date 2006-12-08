@@ -855,7 +855,12 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 									parser->lexer_loc_set( &(@3) );
 									parser->error( "Начало интервала должно быть меньше его конца" );
 								}
-								if ( *((double*)$4) <= 0 ) {
+								if ( *((double*)$4) == 0 ) {
+									parser->lexer_loc_backup();
+									parser->lexer_loc_set( &(@4) );
+									parser->warning( "Относительная вероятность должна быть больше нуля" );
+									parser->lexer_loc_restore();
+								} else if ( *((double*)$4) < 0 ) {
 									parser->lexer_loc_set( &(@4) );
 									parser->error( "Относительная вероятность должна быть больше нуля" );
 								}
@@ -875,7 +880,12 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 									parser->lexer_loc_set( &(@3) );
 									parser->error( "Начало интервала должно быть меньше его конца" );
 								}
-								if ( *((double*)$4) <= 0 ) {
+								if ( *((double*)$4) == 0 ) {
+									parser->lexer_loc_backup();
+									parser->lexer_loc_set( &(@4) );
+									parser->warning( "Относительная вероятность должна быть больше нуля" );
+									parser->lexer_loc_restore();
+								} else if ( *((double*)$4) < 0 ) {
 									parser->lexer_loc_set( &(@4) );
 									parser->error( "Относительная вероятность должна быть больше нуля" );
 								}
@@ -895,7 +905,12 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 									parser->lexer_loc_set( &(@3) );
 									parser->error( "Начало интервала должно быть меньше его конца" );
 								}
-								if ( *((double*)$4) <= 0 ) {
+								if ( *((double*)$4) == 0 ) {
+									parser->lexer_loc_backup();
+									parser->lexer_loc_set( &(@4) );
+									parser->warning( "Относительная вероятность должна быть больше нуля" );
+									parser->lexer_loc_restore();
+								} else if ( *((double*)$4) < 0 ) {
 									parser->lexer_loc_set( &(@4) );
 									parser->error( "Относительная вероятность должна быть больше нуля" );
 								}
@@ -915,7 +930,12 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 									parser->lexer_loc_set( &(@3) );
 									parser->error( "Начало интервала должно быть меньше его конца" );
 								}
-								if ( $4 <= 0 ) {
+								if ( $4 == 0 ) {
+									parser->lexer_loc_backup();
+									parser->lexer_loc_set( &(@4) );
+									parser->warning( "Относительная вероятность должна быть больше нуля" );
+									parser->lexer_loc_restore();
+								} else if ( $4 < 0 ) {
 									parser->lexer_loc_set( &(@4) );
 									parser->error( "Относительная вероятность должна быть больше нуля" );
 								}
@@ -931,7 +951,12 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 									parser->lexer_loc_set( &(@3) );
 									parser->error( "Начало интервала должно быть меньше его конца" );
 								}
-								if ( *((double*)$4) <= 0 ) {
+								if ( *((double*)$4) == 0 ) {
+									parser->lexer_loc_backup();
+									parser->lexer_loc_set( &(@4) );
+									parser->warning( "Относительная вероятность должна быть больше нуля" );
+									parser->lexer_loc_restore();
+								} else if ( *((double*)$4) < 0 ) {
 									parser->lexer_loc_set( &(@4) );
 									parser->error( "Относительная вероятность должна быть больше нуля" );
 								}
@@ -951,7 +976,12 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 									parser->lexer_loc_set( &(@3) );
 									parser->error( "Начало интервала должно быть меньше его конца" );
 								}
-								if ( $4 <= 0 ) {
+								if ( $4 == 0 ) {
+									parser->lexer_loc_backup();
+									parser->lexer_loc_set( &(@4) );
+									parser->warning( "Относительная вероятность должна быть больше нуля" );
+									parser->lexer_loc_restore();
+								} else if ( $4 < 0 ) {
 									parser->lexer_loc_set( &(@4) );
 									parser->error( "Относительная вероятность должна быть больше нуля" );
 								}
@@ -971,7 +1001,12 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 									parser->lexer_loc_set( &(@3) );
 									parser->error( "Начало интервала должно быть меньше его конца" );
 								}
-								if ( $4 <= 0 ) {
+								if ( $4 == 0 ) {
+									parser->lexer_loc_backup();
+									parser->lexer_loc_set( &(@4) );
+									parser->warning( "Относительная вероятность должна быть больше нуля" );
+									parser->lexer_loc_restore();
+								} else if ( $4 < 0 ) {
 									parser->lexer_loc_set( &(@4) );
 									parser->error( "Относительная вероятность должна быть больше нуля" );
 								}
@@ -987,7 +1022,12 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 									parser->lexer_loc_set( &(@3) );
 									parser->error( "Начало интервала должно быть меньше его конца" );
 								}
-								if ( $4 <= 0 ) {
+								if ( $4 == 0 ) {
+									parser->lexer_loc_backup();
+									parser->lexer_loc_set( &(@4) );
+									parser->warning( "Относительная вероятность должна быть больше нуля" );
+									parser->lexer_loc_restore();
+								} else if ( $4 < 0 ) {
 									parser->lexer_loc_set( &(@4) );
 									parser->error( "Относительная вероятность должна быть больше нуля" );
 								}
@@ -1007,7 +1047,12 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 									parser->lexer_loc_set( &(@3) );
 									parser->error( "Начало интервала должно быть меньше его конца" );
 								}
-								if ( *((double*)$4) <= 0 ) {
+								if ( *((double*)$4) == 0 ) {
+									parser->lexer_loc_backup();
+									parser->lexer_loc_set( &(@4) );
+									parser->warning( "Относительная вероятность должна быть больше нуля" );
+									parser->lexer_loc_restore();
+								} else if ( *((double*)$4) < 0 ) {
 									parser->lexer_loc_set( &(@4) );
 									parser->error( "Относительная вероятность должна быть больше нуля" );
 								}
@@ -1027,7 +1072,12 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 									parser->lexer_loc_set( &(@3) );
 									parser->error( "Начало интервала должно быть меньше его конца" );
 								}
-								if ( *((double*)$4) <= 0 ) {
+								if ( *((double*)$4) == 0 ) {
+									parser->lexer_loc_backup();
+									parser->lexer_loc_set( &(@4) );
+									parser->warning( "Относительная вероятность должна быть больше нуля" );
+									parser->lexer_loc_restore();
+								} else if ( *((double*)$4) < 0 ) {
 									parser->lexer_loc_set( &(@4) );
 									parser->error( "Относительная вероятность должна быть больше нуля" );
 								}
@@ -1047,7 +1097,12 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 									parser->lexer_loc_set( &(@3) );
 									parser->error( "Начало интервала должно быть меньше его конца" );
 								}
-								if ( *((double*)$4) <= 0 ) {
+								if ( *((double*)$4) == 0 ) {
+									parser->lexer_loc_backup();
+									parser->lexer_loc_set( &(@4) );
+									parser->warning( "Относительная вероятность должна быть больше нуля" );
+									parser->lexer_loc_restore();
+								} else if ( *((double*)$4) < 0 ) {
 									parser->lexer_loc_set( &(@4) );
 									parser->error( "Относительная вероятность должна быть больше нуля" );
 								}
@@ -1067,7 +1122,12 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 									parser->lexer_loc_set( &(@3) );
 									parser->error( "Начало интервала должно быть меньше его конца" );
 								}
-								if ( $4 <= 0 ) {
+								if ( $4 == 0 ) {
+									parser->lexer_loc_backup();
+									parser->lexer_loc_set( &(@4) );
+									parser->warning( "Относительная вероятность должна быть больше нуля" );
+									parser->lexer_loc_restore();
+								} else if ( $4 < 0 ) {
 									parser->lexer_loc_set( &(@4) );
 									parser->error( "Относительная вероятность должна быть больше нуля" );
 								}
@@ -1082,7 +1142,12 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 									parser->lexer_loc_set( &(@3) );
 									parser->error( "Начало интервала должно быть меньше его конца" );
 								}
-								if ( *((double*)$4) <= 0 ) {
+								if ( *((double*)$4) == 0 ) {
+									parser->lexer_loc_backup();
+									parser->lexer_loc_set( &(@4) );
+									parser->warning( "Относительная вероятность должна быть больше нуля" );
+									parser->lexer_loc_restore();
+								} else if ( *((double*)$4) < 0 ) {
 									parser->lexer_loc_set( &(@4) );
 									parser->error( "Относительная вероятность должна быть больше нуля" );
 								}
@@ -1102,7 +1167,12 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 									parser->lexer_loc_set( &(@3) );
 									parser->error( "Начало интервала должно быть меньше его конца" );
 								}
-								if ( $4 <= 0 ) {
+								if ( $4 == 0 ) {
+									parser->lexer_loc_backup();
+									parser->lexer_loc_set( &(@4) );
+									parser->warning( "Относительная вероятность должна быть больше нуля" );
+									parser->lexer_loc_restore();
+								} else if ( $4 < 0 ) {
 									parser->lexer_loc_set( &(@4) );
 									parser->error( "Относительная вероятность должна быть больше нуля" );
 								}
@@ -1122,7 +1192,12 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 									parser->lexer_loc_set( &(@3) );
 									parser->error( "Начало интервала должно быть меньше его конца" );
 								}
-								if ( $4 <= 0 ) {
+								if ( $4 == 0 ) {
+									parser->lexer_loc_backup();
+									parser->lexer_loc_set( &(@4) );
+									parser->warning( "Относительная вероятность должна быть больше нуля" );
+									parser->lexer_loc_restore();
+								} else if ( $4 < 0 ) {
 									parser->lexer_loc_set( &(@4) );
 									parser->error( "Относительная вероятность должна быть больше нуля" );
 								}
@@ -1137,7 +1212,12 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 									parser->lexer_loc_set( &(@3) );
 									parser->error( "Начало интервала должно быть меньше его конца" );
 								}
-								if ( $4 <= 0 ) {
+								if ( $4 == 0 ) {
+									parser->lexer_loc_backup();
+									parser->lexer_loc_set( &(@4) );
+									parser->warning( "Относительная вероятность должна быть больше нуля" );
+									parser->lexer_loc_restore();
+								} else if ( $4 < 0 ) {
 									parser->lexer_loc_set( &(@4) );
 									parser->error( "Относительная вероятность должна быть больше нуля" );
 								}
@@ -1202,7 +1282,12 @@ fun_seq_by_hist_body_enum:	fun_seq_by_hist_header IDENTIF REAL_CONST {
 									parser->lexer_loc_set( &(@2) );
 									parser->error( "Значение не соответствует типу последовательности" );
 								}
-								if ( *((double*)$3) <= 0 ) {
+								if ( *((double*)$3) == 0 ) {
+									parser->lexer_loc_backup();
+									parser->lexer_loc_set( &(@3) );
+									parser->warning( "Относительная вероятность должна быть больше нуля" );
+									parser->lexer_loc_restore();
+								} else if ( *((double*)$3) < 0 ) {
 									parser->lexer_loc_set( &(@3) );
 									parser->error( "Относительная вероятность должна быть больше нуля" );
 								}
@@ -1217,7 +1302,12 @@ fun_seq_by_hist_body_enum:	fun_seq_by_hist_header IDENTIF REAL_CONST {
 									parser->lexer_loc_set( &(@2) );
 									parser->error( "Значение не соответствует типу последовательности" );
 								}
-								if ( $3 <= 0 ) {
+								if ( $3 == 0 ) {
+									parser->lexer_loc_backup();
+									parser->lexer_loc_set( &(@3) );
+									parser->warning( "Относительная вероятность должна быть больше нуля" );
+									parser->lexer_loc_restore();
+								} else if ( $3 < 0 ) {
 									parser->lexer_loc_set( &(@3) );
 									parser->error( "Относительная вероятность должна быть больше нуля" );
 								}
@@ -1227,7 +1317,12 @@ fun_seq_by_hist_body_enum:	fun_seq_by_hist_header IDENTIF REAL_CONST {
 								parser->lexer_loc_restore();
 							}
 							| fun_seq_by_hist_body_enum IDENTIF REAL_CONST {
-								if ( *((double*)$3) <= 0 ) {
+								if ( *((double*)$3) == 0 ) {
+									parser->lexer_loc_backup();
+									parser->lexer_loc_set( &(@3) );
+									parser->warning( "Относительная вероятность должна быть больше нуля" );
+									parser->lexer_loc_restore();
+								} else if ( *((double*)$3) < 0 ) {
 									parser->lexer_loc_set( &(@3) );
 									parser->error( "Относительная вероятность должна быть больше нуля" );
 								}
@@ -1238,7 +1333,12 @@ fun_seq_by_hist_body_enum:	fun_seq_by_hist_header IDENTIF REAL_CONST {
 								$$ = $1;
 							}
 							| fun_seq_by_hist_body_enum IDENTIF INT_CONST {
-								if ( $3 <= 0 ) {
+								if ( $3 == 0 ) {
+									parser->lexer_loc_backup();
+									parser->lexer_loc_set( &(@3) );
+									parser->warning( "Относительная вероятность должна быть больше нуля" );
+									parser->lexer_loc_restore();
+								} else if ( $3 < 0 ) {
 									parser->lexer_loc_set( &(@3) );
 									parser->error( "Относительная вероятность должна быть больше нуля" );
 								}
