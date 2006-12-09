@@ -223,9 +223,12 @@ rtp_body:	/* empty */ {
 
 rtp_param_desc: IDENTIF_COLON rtp_param_type {
 					parser->lexer_loc_backup( &(@1) );
-					std::string *name = (std::string *)$1;
-					RDORTPResParam *parType = (RDORTPResParam *)$2;
-					RDORTPParamDesc *param = new RDORTPParamDesc(name, parType);
+					std::string*     name    = (std::string*)$1;
+					RDORTPResParam*  parType = (RDORTPResParam*)$2;
+					RDORTPParamDesc* param   = new RDORTPParamDesc( name, parType );
+					if ( parType->getType() == RDORTPResParam::pt_enum ) {
+						static_cast<RDORTPEnumResParam*>(parType)->enum_name = rdo::format( "%s.%s", parser->getLastRTPResType()->getName()->c_str(), name->c_str() );
+					}
 					$$ = (int)param;
 				}
 				| IDENTIF_COLON error {

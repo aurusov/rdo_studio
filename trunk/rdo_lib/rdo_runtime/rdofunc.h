@@ -42,24 +42,24 @@ class RandGeneratorUniform: public RandGenerator
 {
 public:
 	RandGeneratorUniform( long int _seed = 123456789 ): RandGenerator( _seed ) {}
-	double next( double from, double to ) {
+	double next( int from, int to ) {
 		return u01() * ( to - from ) + from;
 	}
 };
 
-class RandGeneratorExponential: public RandGeneratorUniform
+class RandGeneratorExponential: public RandGenerator
 {
 public:
-	RandGeneratorExponential( long int _seed = 123456789 ): RandGeneratorUniform( _seed ) {}
+	RandGeneratorExponential( long int _seed = 123456789 ): RandGenerator( _seed ) {}
 	double next( double math ) {
 		return -log( u01() ) * math;
 	}
 };
 
-class RandGeneratorNormal: public RandGeneratorUniform
+class RandGeneratorNormal: public RandGenerator
 {
 public:
-	RandGeneratorNormal( long int _seed = 123456789 ): RandGeneratorUniform( _seed ) {}
+	RandGeneratorNormal( long int _seed = 123456789 ): RandGenerator( _seed ) {}
 	double next( double av, double var ) {
 		double ran = 0;
 		for ( int i = 0; i < 12; i++ ) {

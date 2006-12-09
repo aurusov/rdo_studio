@@ -348,10 +348,10 @@ void RDORuntime::addRuntimeOperation(RDOActivityOperationRuntime *oper)
 	allBaseOperations.push_back(oper); 
 }
 
-void RDORuntime::addRuntimeRule(RDOActivityRuleRuntime *rule) 
+void RDORuntime::addRuntimeRule( RDOActivityRuleRuntime* rule )
 { 
-	rules.push_back(rule); 
-	allBaseOperations.push_back(rule); 
+	rules.push_back( rule );
+	allBaseOperations.push_back( rule );
 }
 
 void RDORuntime::addRuntimeIE(RDOActivityIERuntime *ie) 
@@ -1006,25 +1006,26 @@ std::string RDORuntime::writeActivitiesStructure()
 {
 	std::stringstream stream;
 	int counter = 1;
-	int size = rules.size();
-	for(int i = 0; i < size; i++)
-	{
-		stream << counter++ << " ";
-		rules.at(i)->writeModelStructure(stream);
+	std::vector< RDOBaseOperation* >::const_iterator it = allBaseOperations.begin();
+	while ( it != allBaseOperations.end() ) {
+		RDOActivityRuleRuntime* rule = dynamic_cast<RDOActivityRuleRuntime*>(*it);
+		if ( rule ) {
+			stream << counter++ << " ";
+			rule->writeModelStructure( stream );
+		} else {
+			RDOActivityOperationRuntime* opr = dynamic_cast<RDOActivityOperationRuntime*>(*it);
+			if ( opr ) {
+				stream << counter++ << " ";
+				opr->writeModelStructure( stream );
+			}
+		}
+		it++;
 	}
-
-	size = operations.size();
-	for(i = 0; i < size; i++)
-	{
-		stream << counter++ << " ";
-		operations.at(i)->writeModelStructure(stream);
-	}
-
 	stream << std::endl;
 
 	counter = 1;
-	size = ies.size();
-	for(i = 0; i < size; i++)
+	int size = ies.size();
+	for(int i = 0; i < size; i++)
 	{
 		stream << counter++ << " ";
 		ies.at(i)->writeModelStructure(stream);

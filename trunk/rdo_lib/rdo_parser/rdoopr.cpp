@@ -25,7 +25,6 @@ int oprlex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer )
 }
 void oprerror( char* mes )
 {
-	rdoParse::parser->error( mes );
 }
 
 RDOOPROperation::RDOOPROperation(std::string *_oprName, std::string *patName)

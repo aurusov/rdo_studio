@@ -7,6 +7,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 #include "rdortp.h"
+#include "rdofun.h"
 #include "rdoparser.h"
 #include "rdoDefines.h"
 #include "rdoparser_lexer.h"
@@ -143,6 +144,50 @@ const RDORTPResParam* RDORTPResParam::constructSuchAs( const std::string* const 
 {
 	parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_DEFVAULT_ENUM_SUCHAS, defVal->c_str() );
 	return NULL;	// unreachable code...
+}
+
+void RDORTPResParam::checkParamType( const RDOFUNArithm* const action ) const
+{
+	switch ( getType() ) {
+		case RDORTPResParam::pt_int: {
+			if ( action->getType() == RDORTPResParam::pt_real ) {
+				parser->lexer_loc_backup();
+				parser->lexer_loc_set( action->error().last_line, action->error().last_column );
+				parser->warning( "Перевод вещественного числа в целое, возможна потеря данных" );
+				parser->lexer_loc_restore();
+			} else if ( action->getType() != RDORTPResParam::pt_int ) {
+				parser->lexer_loc_set( action->error().last_line, action->error().last_column );
+				parser->error( "Несоответствие типов. Ожидается целое число" );
+			}
+			break;
+		}
+		case RDORTPResParam::pt_real: {
+			if ( action->getType() != RDORTPResParam::pt_real && action->getType() != RDORTPResParam::pt_int ) {
+				parser->lexer_loc_set( action->error().last_line, action->error().last_column );
+				parser->error( "Несоответствие типов. Ожидается вещественное число" );
+			}
+			break;
+		}
+		case RDORTPResParam::pt_enum: {
+			if ( action->getType() == RDORTPResParam::pt_str ) {
+				if ( static_cast<const RDORTPEnumResParam*>(this)->enu->findValue( action->str, false ) == -1 ) {
+					parser->lexer_loc_set( action->error().last_line, action->error().last_column );
+					if ( static_cast<const RDORTPEnumResParam*>(this)->enum_fun ) {
+						parser->error( rdo::format("Значение '%s' не может являться результатом функции: %s", action->str->c_str(), static_cast<const RDORTPEnumResParam*>(this)->enum_name.c_str()) );
+					} else {
+						parser->error( rdo::format("Значение '%s' не является элементом перечислимого параметра: %s", action->str->c_str(), static_cast<const RDORTPEnumResParam*>(this)->enum_name.c_str()) );
+					}
+				}
+			} else if ( action->getType() != RDORTPResParam::pt_enum ) {
+				parser->lexer_loc_set( action->error().last_line, action->error().last_column );
+				parser->error( "Несоответствие типов. Ожидается перечислимый тип" );
+			} else if ( action->enu != static_cast<const RDORTPEnumResParam*>(this)->enu ) {
+				parser->lexer_loc_set( action->error().last_line, action->error().last_column );
+				parser->error( "Несоответствие перечислимых типов" );
+			}
+			break;
+		}
+	}
 }
 
 rdoRuntime::RDOValue RDORTPIntResParam::getRSSEnumValue( const std::string* const val ) const

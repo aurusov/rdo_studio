@@ -596,7 +596,6 @@ void RDOPATParamsSet::checkParamsNumbers( RDORelevantResource* currRelRes )
 void RDOPATParamsSet::checkParamsNumbers( std::string* paramName, const YYLTYPE& param_name_pos )
 {
 	if ( parser->getLastPATPattern() && parser->getLastPATPattern()->currRelRes ) {
-		checkParamsNumbers( parser->getLastPATPattern()->currRelRes );
 		const RDORTPResType* res_type = parser->getLastPATPattern()->currRelRes->getType();
 		const RDORTPParamDesc* param = res_type->findRTPParam( paramName );
 		if ( !param ) {
@@ -621,42 +620,7 @@ void RDOPATParamsSet::addIdentif( std::string* paramName, RDOFUNArithm* paramAri
 	checkParamsNumbers( paramName, param_name_pos );
 	const RDORTPResType* res_type = parser->getLastPATPattern()->currRelRes->getType();
 	const RDORTPParamDesc* param = res_type->findRTPParam( paramName );
-	switch ( param->getType()->getType() ) {
-		case RDORTPResParam::pt_int: {
-			if ( paramArithm->getType() == RDORTPResParam::pt_real ) {
-				parser->lexer_loc_backup();
-				parser->lexer_loc_set( paramArithm->error().last_line, paramArithm->error().last_column );
-				parser->warning( "Перевод вещественного числа в целое, возможна потеря данных" );
-				parser->lexer_loc_restore();
-			} else if ( paramArithm->getType() != RDORTPResParam::pt_int ) {
-				parser->lexer_loc_set( paramArithm->error().last_line, paramArithm->error().last_column );
-				parser->error( "Несоответствие типов. Ожидается целое число" );
-			}
-			break;
-		}
-		case RDORTPResParam::pt_real: {
-			if ( paramArithm->getType() != RDORTPResParam::pt_real && paramArithm->getType() != RDORTPResParam::pt_int ) {
-				parser->lexer_loc_set( paramArithm->error().last_line, paramArithm->error().last_column );
-				parser->error( "Несоответствие типов. Ожидается вещественное число" );
-			}
-			break;
-		}
-		case RDORTPResParam::pt_enum: {
-			if ( paramArithm->getType() == RDORTPResParam::pt_str ) {
-				if ( static_cast<const RDORTPEnumResParam*>(param->getType())->enu->findValue( paramArithm->str, false ) == -1 ) {
-					parser->lexer_loc_set( paramArithm->error().last_line, paramArithm->error().last_column );
-					parser->error( rdo::format("Значение '%s' не является элементом перечислимого типа параметра '%s'", paramArithm->str->c_str(), paramName->c_str()) );
-				}
-			} else if ( paramArithm->getType() != RDORTPResParam::pt_enum ) {
-				parser->lexer_loc_set( paramArithm->error().last_line, paramArithm->error().last_column );
-				parser->error( "Несоответствие типов. Ожидается перечислимый тип" );
-			} else if ( paramArithm->enu != static_cast<const RDORTPEnumResParam*>(param->getType())->enu ) {
-				parser->lexer_loc_set( paramArithm->error().last_line, paramArithm->error().last_column );
-				parser->error( "Несоответствие перечислимых типов" );
-			}
-			break;
-		}
-	}
+	param->getType()->checkParamType( paramArithm );
 	paramNames.push_back( paramName );
 	paramArithms.push_back( paramArithm );
 }

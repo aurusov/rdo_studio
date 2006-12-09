@@ -98,11 +98,11 @@ void RDOFUNFunction::add(const RDOFUNFunctionListElement *const _param)
 	listElems.push_back(_param); 
 }
 
-void RDOFUNFunction::add(const RDOFUNCalculateIf *const _calculateIf)
+void RDOFUNFunction::add( const RDOFUNCalculateIf* const _calculateIf )
 {
-	calculateIf.push_back(_calculateIf); 
+	calculateIf.push_back( _calculateIf );
 }
- 
+
 void RDOFUNFunction::createListCalc()
 {
 	int numParams = params.size();
@@ -1116,6 +1116,7 @@ RDOFUNCalculateIf::RDOFUNCalculateIf(RDOFUNLogic *_condition, std::string *_funN
 		parser->error( rdo::format("Ожидается имя функции: %s", parser->getLastFUNFunction()->getName()->c_str()) );
 //		parser->error( "function name expected" );
 	}
+	parser->getLastFUNFunction()->getType()->checkParamType( action );
 }
 
 // ----------------------------------------------------------------------------

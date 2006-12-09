@@ -609,17 +609,25 @@ fun_func_descr:	fun_func_header fun_func_footer;
 
 fun_func_header:	Function_keyword IDENTIF_COLON fun_param_type	{
 						std::string* name = (std::string*)$2;
-						if ( parser->findFunction(name) ) {
+						if ( parser->findFUNConst(name) ) {
 							parser->lexer_loc_set( &(@2) );
-							parser->error( rdo::format( "Функция уже существует: %s", name->c_str() ) );
-//							parser->error(("Second appearance of the same function: " + *(name)).c_str());
+							parser->error( rdo::format( "Существует константа с таким же именем: %s", name->c_str() ) );
 						}
 						if ( parser->findSequence(name) ) {
 							parser->lexer_loc_set( &(@2) );
 							parser->error( rdo::format( "Существует последовательность с таким же именем: %s", name->c_str() ) );
 						}
-						RDORTPResParam *retType = (RDORTPResParam *)$3;
-						RDOFUNFunction *fun = new RDOFUNFunction(name, retType);
+						if ( parser->findFunction(name) ) {
+							parser->lexer_loc_set( &(@2) );
+							parser->error( rdo::format( "Функция уже существует: %s", name->c_str() ) );
+//							parser->error(("Second appearance of the same function: " + *(name)).c_str());
+						}
+						RDORTPResParam* retType = (RDORTPResParam*)$3;
+						RDOFUNFunction* fun = new RDOFUNFunction( name, retType );
+						if ( retType->getType() == RDORTPResParam::pt_enum && static_cast<RDORTPEnumResParam*>(retType)->enum_name.empty() ) {
+							static_cast<RDORTPEnumResParam*>(retType)->enum_name = *name;
+							static_cast<RDORTPEnumResParam*>(retType)->enum_fun  = true;
+						}
 						$$ = (int)fun;
 					};
 
@@ -682,9 +690,9 @@ fun_func_footer:	Type_keyword '=' algorithmic Parameters fun_func_params Body fu
 
 fun_func_params:	/* empty */
 			|	fun_func_params IDENTIF_COLON fun_param_type	{
-				std::string*         name  = (std::string *)$2;
-				RDORTPResParam*      type  = (RDORTPResParam *)$3;
-				RDOFUNFunctionParam* param = new RDOFUNFunctionParam(name, type);
+				std::string*         name  = (std::string*)$2;
+				RDORTPResParam*      type  = (RDORTPResParam*)$3;
+				RDOFUNFunctionParam* param = new RDOFUNFunctionParam( name, type );
 				param->setErrorPos( @2 );
 				parser->getLastFUNFunction()->add(param);	// the function must check uniquness of parameters names
 				$$ = (int)param;
@@ -746,6 +754,10 @@ fun_seq_descr:	fun_seq_uniform
 
 fun_seq_header:	Sequence IDENTIF_COLON fun_param_type Type_keyword '=' {
 					std::string* name = (std::string*)$2;
+					if ( parser->findFUNConst(name) ) {
+						parser->lexer_loc_set( &(@2) );
+						parser->error( rdo::format( "Существует константа с таким же именем: %s", name->c_str() ) );
+					}
 					if ( parser->findSequence(name) ) {
 						parser->lexer_loc_set( &(@2) );
 						parser->error( rdo::format( "Последовательность уже существует: %s", name->c_str() ) );

@@ -69,6 +69,8 @@ public:
 	int GetIntValue() const { return val; }
 };
 
+class RDOFUNArithm;
+
 class RDORTPResParam: public RDODeletable
 {
 public:
@@ -86,6 +88,8 @@ public:
 	virtual int getDiapTableFunc() const = 0;
 	virtual ParamType getType() const = 0;
 	virtual int writeModelStructure() const = 0;
+
+	void checkParamType( const RDOFUNArithm* const action ) const;
 };
 
 class RDORTPIntResParam: public RDORTPResParam
@@ -162,7 +166,15 @@ class RDORTPEnumResParam: public RDORTPResParam
 {
 public:
 	RDORTPEnum* enu;
-	RDORTPEnumResParam(RDORTPEnum *_enu, RDORTPEnumDefVal *_dv): enu(_enu), RDORTPResParam(_dv) {}
+	std::string enum_name;
+	bool        enum_fun;
+	RDORTPEnumResParam( RDORTPEnum* _enu, RDORTPEnumDefVal* _dv ):
+		enu( _enu ),
+		RDORTPResParam( _dv ),
+		enum_name( "" ),
+		enum_fun( false )
+	{
+	}
 	const RDORTPResParam *constructSuchAs(const std::string *const defVal) const ;
 	virtual rdoRuntime::RDOValue getRSSDefaultValue()const ;
 	virtual rdoRuntime::RDOValue getRSSEnumValue(const std::string* const val) const;

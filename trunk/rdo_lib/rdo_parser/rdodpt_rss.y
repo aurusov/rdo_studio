@@ -271,6 +271,7 @@ dpt_process_line:	IDENTIF	{
 			RDORTPEnumDefVal* state_default = new RDORTPEnumDefVal( rtp_state_free );
 
 			RDORTPEnumResParam* rtp_param_enum = new RDORTPEnumResParam( state_enum, state_default );
+			rtp_param_enum->enum_name = rdo::format( "%s.%s", res_type_name->c_str(), rtp_param_name->c_str() );
 
 			rtp_param = new RDORTPParamDesc( rtp_param_name, rtp_param_enum );
 			res_type->addParam( rtp_param );

@@ -160,20 +160,19 @@ opr_main:	opr_end;
 opr_header:	Operations;
 
 opr_body:	opr_header IDENTIF_COLON IDENTIF	{ $$ = (int)(new RDOOPROperation((std::string *)$2, (std::string *)$3)); @$; }
-			|	opr_param  IDENTIF_COLON IDENTIF { ((RDOOPROperation *)$1)->endOfDefinition(); $$ = (int)(new RDOOPROperation((std::string *)$2, (std::string *)$3)); };
+			| opr_param IDENTIF_COLON IDENTIF	{ ((RDOOPROperation *)$1)->endOfDefinition(); $$ = (int)(new RDOOPROperation((std::string *)$2, (std::string *)$3)); };
 
 opr_keyb:	opr_body
-			|	opr_keyb QUOTED_IDENTIF			{ ((RDOOPROperation *)$1)->addHotKey((std::string *)$2); }
-			|	opr_keyb '+' QUOTED_IDENTIF	{ ((RDOOPROperation *)$1)->addHotKey((std::string *)$3); };
+			| opr_keyb QUOTED_IDENTIF		{ ((RDOOPROperation *)$1)->addHotKey((std::string *)$2); }
+			| opr_keyb '+' QUOTED_IDENTIF	{ ((RDOOPROperation *)$1)->addHotKey((std::string *)$3); };
 
 opr_param:	opr_param IDENTIF		{ ((RDOOPROperation *)$1)->addParam((std::string *)$2); }
-			|	opr_param INT_CONST	{ ((RDOOPROperation *)$1)->addParam((int)$2); }
-			|	opr_param REAL_CONST	{ ((RDOOPROperation *)$1)->addParam((double *)$2); }
-			|	opr_param '*'			{ ((RDOOPROperation *)$1)->addParam(); }
-			|	opr_keyb;
-	
-opr_end:	 opr_param End { ((RDOOPROperation *)$1)->endOfDefinition(); };
+			| opr_param INT_CONST	{ ((RDOOPROperation *)$1)->addParam((int)$2);           }
+			| opr_param REAL_CONST	{ ((RDOOPROperation *)$1)->addParam((double *)$2);      }
+			| opr_param '*'			{ ((RDOOPROperation *)$1)->addParam();                  }
+			| opr_keyb;
 
+opr_end:	opr_param End { ((RDOOPROperation *)$1)->endOfDefinition(); };
 
 %%
 

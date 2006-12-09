@@ -202,10 +202,16 @@ pat_params_begin: pat_header Parameters { $$ = $1; };
 
 pat_params:	pat_params_begin IDENTIF_COLON fun_param_type {
 				((RDOPATPattern *)$1)->add(new RDOFUNFunctionParam((std::string *)$2, (RDORTPResParam *)$3));
+				if ( reinterpret_cast<RDORTPResParam*>($3)->getType() == RDORTPResParam::pt_enum ) {
+					reinterpret_cast<RDORTPEnumResParam*>($3)->enum_name = rdo::format( "%s.%s", ((RDOPATPattern*)$1)->getName()->c_str(), ((std::string*)$2)->c_str() );
+				}
 				$$ = $1;
 			}
 			| pat_params IDENTIF_COLON fun_param_type {
 				((RDOPATPattern *)$1)->add(new RDOFUNFunctionParam((std::string *)$2, (RDORTPResParam *)$3));
+				if ( reinterpret_cast<RDORTPResParam*>($3)->getType() == RDORTPResParam::pt_enum ) {
+					reinterpret_cast<RDORTPEnumResParam*>($3)->enum_name = rdo::format( "%s.%s", ((RDOPATPattern*)$1)->getName()->c_str(), ((std::string*)$2)->c_str() );
+				}
 				$$ = $1;
 			}
 			| pat_params_begin error {
