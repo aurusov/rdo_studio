@@ -62,13 +62,11 @@ RDODPTSearch::RDODPTSearch( std::string* _name, DPTSearchTrace _trace ):
 	parser->insertDPTSearch( this );
 }
 
-void RDODPTSearch::addNewActivity(std::string *_name, std::string *_ruleName)
+void RDODPTSearch::addNewActivity( std::string* _name, std::string* _ruleName )
 {
-	if(std::find_if(activities.begin(), activities.end(), compareName<RDODPTSearchActivity>(_name)) != activities.end())
-		parser->error("Activity name: " + *_name + " already defined");
-
-	lastActivity = new RDODPTSearchActivity(_name, _ruleName);
-	activities.push_back(lastActivity);
+	parser->checkActivityName( _name );
+	lastActivity = new RDODPTSearchActivity( _name, _ruleName );
+	activities.push_back( lastActivity );
 }
 
 void RDODPTSearch::setActivityValue(DPTSearchValue _value, RDOFUNArithm *_ruleCost)
@@ -205,17 +203,16 @@ RDODPTSome::RDODPTSome( std::string* _name ):
 	parser->insertDPTSome( this );
 }
 
-void RDODPTSome::addNewActivity(std::string *_name, std::string *_patternName)
+void RDODPTSome::addNewActivity( std::string* _name, std::string* _patternName )
 {
-	if(std::find_if(activities.begin(), activities.end(), compareName<RDODPTSomeActivity>(_name)) != activities.end())
-		parser->error("Activity name: " + *_name + " already defined");
-
-	lastActivity = new RDODPTSomeActivity(_name, _patternName);
-	activities.push_back(lastActivity);
+	parser->checkActivityName( _name );
+	lastActivity = new RDODPTSomeActivity( _name, _patternName );
+	activities.push_back( lastActivity );
 }
 
 void RDODPTSome::end()
 {
+	parser->runTime->dptCounter++;
 	int size = activities.size();
 	for(int i = 0; i < size; i++)
 		activities.at(i)->createActivityRuntime(conditon);
@@ -285,12 +282,10 @@ void RDODPTSomeActivity::createActivityRuntime(RDOFUNLogic *conditon)
 
 /////////////////////////  FREE ACTIVITIES /////////////////////////
 
-RDODPTFreeActivity::RDODPTFreeActivity(std::string *_name, std::string *_patternName)
-	: name(_name) 
+RDODPTFreeActivity::RDODPTFreeActivity( std::string* _name, std::string* _patternName ):
+	name( _name )
 {
-	if(std::find_if(parser->getDPTFreeActivity().begin(), parser->getDPTFreeActivity().end(), compareName<RDODPTFreeActivity>(_name)) != parser->getDPTFreeActivity().end())
-		parser->error("Free activity name: " + *_name + " already defined");
-
+	parser->checkActivityName( _name );
 	parser->insertDPTFreeActivity( this );
 
 	pattern = parser->findPattern(_patternName);

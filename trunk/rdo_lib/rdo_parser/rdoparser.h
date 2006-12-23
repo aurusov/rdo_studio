@@ -86,6 +86,8 @@ public:
 	const std::vector< RDODPTSome* >&         getDPTSome() const         { return allDPTSome;         }
 	const std::vector< RDODPTFreeActivity* >& getDPTFreeActivity() const { return allDPTFreeActivity; }
 
+	void checkActivityName( const std::string* _name );
+
 	void insertDeletables( RDODeletable* value )            {
 		if ( value ) {
 			allDeletables.push_back( value );

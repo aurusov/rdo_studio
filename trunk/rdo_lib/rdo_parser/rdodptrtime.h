@@ -18,7 +18,6 @@ public:
 	RDOSearchActivityRuntime(RDORuntime *sim, RDORule *r, bool vA, RDOCalc *_cost): RDOActivityTrace(sim, r, vA), cost(_cost) {}
 };
 
-
 class RDOSearchRuntime: public RDODecisionPointTrace
 {
 private:

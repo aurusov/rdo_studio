@@ -85,9 +85,6 @@ private:
 	std::vector<RDODPTSearchActivity *> activities;
 
 public:
-	RDODPTSearchActivity* lastActivity;
-
-public:
 	RDODPTSearch(std::string *_name, DPTSearchTrace _trace = DPTnotrace);
 	void setCondition(RDOFUNLogic *_conditon = NULL) { conditon = _conditon; }
 	void setTermCondition(RDOFUNLogic *_termConditon) { termConditon = _termConditon; }
@@ -99,6 +96,7 @@ public:
 	{
 		lastActivity->addParam(_param);
 	}
+	RDODPTSearchActivity* lastActivity;
 
 	void addActivityParam() { lastActivity->addParam(); }
 
@@ -106,7 +104,7 @@ public:
 	void end();
 
 	const std::string *getName() const { return name; }
-	std::vector<RDODPTSearchActivity *> & getActivities() { return activities; }
+	const std::vector<RDODPTSearchActivity *>& getActivities() const { return activities; }
 };
 
 
@@ -136,7 +134,7 @@ class RDODPTSome: public RDODeletable
 private:
 	const std::string *const name;
 	RDOFUNLogic *conditon;
-	std::vector<RDODPTSomeActivity *> activities;
+	std::vector< RDODPTSomeActivity* > activities;
 	RDODPTSomeActivity* lastActivity;
 
 public:
@@ -154,6 +152,8 @@ public:
 	void end();
 
 	const std::string *getName() const { return name; }
+
+	const std::vector< RDODPTSomeActivity* >& getActivities() const { return activities; }
 };
 
 

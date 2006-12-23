@@ -1,4 +1,11 @@
+#ifndef SIMTRACE_H
+#define SIMTRACE_H
+
 #include "rdotrace.h"
+
+namespace rdoParse {
+class RDODPTSome;
+}
 
 class RDOSimulatorTrace: public RDOSimulator
 {
@@ -11,52 +18,57 @@ friend RDOResourceTrace;
 friend RDOIETrace;
 friend CheckRelevantResource;
 friend RDORuleTrace;
+friend class RDOActivityTrace;
+friend class rdoParse::RDODPTSome;
 
-   int maxResourcesId;
+private:
+	int maxResourcesId;
 
-   std::list<int> freeResourcesIds;
-   typedef std::map<int, int> MAPII;
-   MAPII resourcesIdsRefs;
-   std::list<int> freeOperationsIds;
-   std::list<RDOResourceTrace *> allResourcesInSim;
-   std::vector<RDOResourceTrace *> perm;
+	std::list<int> freeResourcesIds;
+	typedef std::map<int, int> MAPII;
+	MAPII resourcesIdsRefs;
+	std::list<int> freeOperationsIds;
+	std::list<RDOResourceTrace *> allResourcesInSim;
+	std::vector<RDOResourceTrace *> perm;
 
-   int getFreeResourceId();
-   void freeResourceId(int id);
-   int getFreeOperationId(); 
-   void freeOperationId(int id);
-   void clearJustCreatedFlags();
+	int getFreeResourceId();
+	void freeResourceId(int id);
+	int getFreeOperationId(); 
+	void freeOperationId(int id);
+	void clearJustCreatedFlags();
 
-   RDOSimulator *createCopy();
+	RDOSimulator *createCopy();
 
-	int operationCounter;
-	int dpCounter;
 	int ieCounter;
+	int activityCounter;
+	int dptCounter;
 
 	void onAfterCheckPokaz();
 
-   void addTemplateDecisionPoint(RDODecisionPointTrace *dp);
-   void addTemplateOperation(RDOOperationTrace *op);
-   void addTemplateIrregularEvent(RDOIETrace *ev);
-   void addTemplateRule(RDORuleTrace *rule);
+	void addTemplateDecisionPoint(RDODecisionPointTrace *dp);
+	void addTemplateOperation(RDOOperationTrace *op);
+	void addTemplateIrregularEvent(RDOIETrace *ev);
+	void addTemplateRule(RDORuleTrace *rule);
 
 protected:
-	RDOSimulatorTrace(): operationCounter(1), dpCounter(1), ieCounter(1) {}
-   int maxOperationId;
-   void addTemplateBaseOperation(RDOBaseOperation *op);
-	
-   void incrementResourceIdReference(int id);
+	RDOSimulatorTrace(): dptCounter(1), activityCounter(1), ieCounter(1) {}
+	int maxOperationId;
+	void addTemplateBaseOperation(RDOBaseOperation *op);
 
-   virtual void preProcess();
-   virtual void postProcess();
-   void checkPermanentResources();
-   void checkRSSDefinedResources();
+	void incrementResourceIdReference(int id);
 
-   void onResourceErase(RDOResourceTrace *res);
-   virtual std::vector<RDOResourceTrace *> getPermanentResources() = 0;
+	virtual void preProcess();
+	virtual void postProcess();
+	void checkPermanentResources();
+	void checkRSSDefinedResources();
+
+	void onResourceErase(RDOResourceTrace *res);
+	virtual std::vector<RDOResourceTrace *> getPermanentResources() = 0;
 
 public:
 	virtual RDOTrace* getTracer() = 0;
 	void rdoDestroy();
 	void rdoInit();
 };
+
+#endif // SIMTRACE_H

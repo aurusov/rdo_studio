@@ -366,10 +366,10 @@ void RDORuntime::addRuntimeProcess( rdoRuntime::RDOPROCProcess* _process )
 	allBaseOperations.push_back( _process ); 
 }
 
-void RDORuntime::addDPT(RDOSearchRuntime *dpt) 
+void RDORuntime::addDPT( RDOSearchRuntime* dpt )
 { 
-	allDPTs.push_back(dpt); 
-	allBaseOperations.push_back(dpt); 
+	allDPTs.push_back( dpt );
+	allBaseOperations.push_back( dpt );
 }
 
 void RDORuntime::onInit()
@@ -379,24 +379,6 @@ void RDORuntime::onInit()
 	int size = allBaseOperations.size();
 	for(int i = 0; i < size; i++)
 		addTemplateBaseOperation(allBaseOperations.at(i));
-
-/*	
-	int size = rules.size();
-	for(int i = 0; i < size; i++)
-		addTemplateRule(rules.at(i));
-
-	size = ies.size();
-	for(i = 0; i < size; i++)
-		addTemplateIrregularEvent(ies.at(i));
-
-	size = operations.size();
-	for(i = 0; i < size; i++)
-		addTemplateOperation(operations.at(i));
-
-	size = allDPTs.size();
-	for(i = 0; i < size; i++)
-		addTemplateDecisionPoint(allDPTs.at(i));
-*/
 }
 
 RDOTrace *RDORuntime::getTracer()
@@ -891,7 +873,8 @@ RDOValue RDOCalc::calcValueBase( RDORuntime* sim ) const
 
 RDOSimulator *RDORuntime::clone()
 {
-	RDORuntime *other = new RDORuntime();
+	RDORuntime* other = new RDORuntime();
+	other->sizeof_sim = sizeof( RDORuntime );
 	int size = allResources.size();
 	for(int i = 0; i < size; i++)
 	{
@@ -900,6 +883,7 @@ RDOSimulator *RDORuntime::clone()
 		else
 		{
 			RDOResource *newRes = new RDOResource(*allResources.at(i));
+			other->sizeof_sim += sizeof( RDOResource ) + sizeof( void* ) * 2;
 			other->allResources.push_back(newRes);
 			other->permanentResources.push_back(newRes);
 		}
@@ -1002,10 +986,9 @@ std::string RDORuntime::writePokazStructure()
 	return stream.str();
 }
 
-std::string RDORuntime::writeActivitiesStructure()
+std::string RDORuntime::writeActivitiesStructure( int& counter )
 {
 	std::stringstream stream;
-	int counter = 1;
 	std::vector< RDOBaseOperation* >::const_iterator it = allBaseOperations.begin();
 	while ( it != allBaseOperations.end() ) {
 		RDOActivityRuleRuntime* rule = dynamic_cast<RDOActivityRuleRuntime*>(*it);
@@ -1023,21 +1006,14 @@ std::string RDORuntime::writeActivitiesStructure()
 	}
 	stream << std::endl;
 
-	counter = 1;
+	int _counter = 1;
 	int size = ies.size();
-	for(int i = 0; i < size; i++)
-	{
-		stream << counter++ << " ";
+	for ( int i = 0; i < size; i++ ) {
+		stream << _counter++ << " ";
+		counter++;
 		ies.at(i)->writeModelStructure(stream);
 	}
-/*
-	counter = 1;
-	size = allDPTs.size();
-	for(i = 0; i < size; i++)
-	{
-		allDPTs.at(i)->writeModelStructure(stream);
-	}
-  */
+
 	return stream.str();
 }
 

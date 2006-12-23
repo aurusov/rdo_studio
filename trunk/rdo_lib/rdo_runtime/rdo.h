@@ -167,6 +167,7 @@ friend RDORule;
 friend RDOIE;
 friend RDODecisionPoint;
 friend RDOOperation;
+friend class RDODecisionPointTrace;
 
 private:
 	virtual bool doOperation();
@@ -186,7 +187,6 @@ protected:
 //   virtual void addTemplateOperation(RDOOperation *op) { haveOperations.push_back(op); }
 //   virtual void addTemplateIrregularEvent(RDOIE *ev) { haveIrregularEvents.push_back(ev); }
 //   virtual void addTemplateRule(RDORule *rule) { haveRules.push_back(rule); }
-//   virtual void addTemplateDecisionPoint(RDODecisionPoint *dp) { haveDecisionPoints.push_back(dp); }
    virtual void addPokaz(RDOPokaz *pok) { havePokaz.push_back(pok); }
 
    // These functions called by engine before and after process (see RDOSimulatorBase class)
@@ -198,16 +198,18 @@ protected:
 
 
 // If you have decision points you should override following two functions:
-   // The clone() function must create new instance of object derived from RDOSimulator 
-   // with copy of all resources.
-   // Nothing else needed such as operations, rules, IEs and DecisionPoints
-   virtual RDOSimulator *clone() { return NULL; } 
-   // The operator==() operator must compare only resources
-   virtual bool operator == (RDOSimulator &other) { return false; }
+	// The clone() function must create new instance of object derived from RDOSimulator 
+	// with copy of all resources.
+	// Nothing else needed such as operations, rules, IEs and DecisionPoints
+	virtual RDOSimulator *clone() { return NULL; }
+	// The operator==() operator must compare only resources
+	virtual bool operator == (RDOSimulator &other) { return false; }
+	unsigned int sizeof_sim;
 
-   virtual RDOSimulator *createCopy();
+	virtual RDOSimulator* createCopy();
 
 public:
+	RDOSimulator(): RDOSimulatorBase(), sizeof_sim( 0 ) {}
 	virtual ~RDOSimulator() {}
 	void rdoInit();
 	void rdoDestroy();

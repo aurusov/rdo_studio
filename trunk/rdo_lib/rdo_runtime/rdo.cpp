@@ -208,7 +208,7 @@ RDOActivity::~RDOActivity()
 
 TreeRoot *RDODecisionPoint::createTreeRoot(RDOSimulator *sim)
 {
-   return new TreeRoot(sim, this);
+	return new TreeRoot( sim, this );
 }
 
 void RDODecisionPoint::addActivity(RDOActivity *act) 
@@ -218,7 +218,7 @@ void RDODecisionPoint::addActivity(RDOActivity *act)
 
 RDOSimulator *RDOSimulator::createCopy()
 {
-   RDOSimulator *res = clone();
-   res->setCurrentTime(getCurrentTime());
-   return res;
+	RDOSimulator* res = clone();
+	res->setCurrentTime(getCurrentTime());
+	return res;
 }

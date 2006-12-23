@@ -251,7 +251,7 @@ public:
 	{ 
 		return patternParameters.at(parNumb);
 	}
-	std::string writeActivitiesStructure();
+	std::string writeActivitiesStructure( int& counter );
 	std::string writePokazStructure();
 
 	void rdoDelay( double fromTime, double toTime );

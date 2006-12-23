@@ -37,9 +37,11 @@ void RDOOperationTrace::onAfterOperationEnd(RDOSimulator *sim)
    ((RDOSimulatorTrace *)sim)->freeOperationId(operId);
 }
 
-RDOOperationTrace::RDOOperationTrace(RDOSimulatorTrace *i_sim):
-   RDOTraceableObject(i_sim), RDOPattern(i_sim)
+RDOOperationTrace::RDOOperationTrace( RDOSimulatorTrace* i_sim ):
+	RDOTraceableObject( i_sim ),
+	RDOPattern( i_sim )
 {
+	id = i_sim->activityCounter++;
 //	operId = RDOTraceableObject::sim->getFreeOperationId();
 }
 

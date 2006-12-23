@@ -63,14 +63,14 @@ std::stringstream& RDOParser::getModelStructure()
 		std::for_each( allPATPatterns.begin(), allPATPatterns.end(), std::mem_fun(&RDOPATPattern::writeModelStructure) );
 
 		// OPR/DPT
+		int counter = 1;
 		modelStructure << std::endl << "$Activities" << std::endl;
-		modelStructure << runTime->writeActivitiesStructure();
+		modelStructure << runTime->writeActivitiesStructure( counter );
 
 		// DPT only
 		for( int i = 0; i < allDPTSearch.size(); i++ ) {
-			int counter = 1;
 			for( int j = 0; j < allDPTSearch.at(i)->getActivities().size(); j++ ) {
-				RDODPTSearchActivity *curr = allDPTSearch.at(i)->getActivities().at(j);
+				RDODPTSearchActivity* curr = allDPTSearch.at(i)->getActivities().at(j);
 				modelStructure << counter++ << " " << *curr->getName() << " " << curr->getRule()->getPatternId() << std::endl;
 			}
 		}
@@ -176,6 +176,29 @@ void RDOParser::warning( rdoSimulator::RDOSyntaxError::ErrorCode error_code, ...
 void RDOParser::warning( const std::string& message, rdoSimulator::RDOSyntaxError::ErrorCode error_code ) 
 {
 	errors.push_back( rdoSimulator::RDOSyntaxError( error_code, message, lexer_loc_line(), lexer_loc_pos(), getFileToParse(), true ) );
+}
+
+void RDOParser::checkActivityName( const std::string* _name )
+{
+	std::vector< RDODPTSearch* >::const_iterator it_search = getDPTSearch().begin();
+	while ( it_search != getDPTSearch().end() ) {
+		if ( std::find_if( (*it_search)->getActivities().begin(), (*it_search)->getActivities().end(), compareName<RDODPTSearchActivity>(_name) ) != (*it_search)->getActivities().end() ) {
+			error( rdo::format("јктивность с таким именем уже существует в точке типа search: %s", (*it_search)->getName()->c_str()) );
+//			parser->error("Activity name: " + *_name + " already defined");
+		}
+		it_search++;
+	}
+	std::vector< RDODPTSome* >::const_iterator it_some = getDPTSome().begin();
+	while ( it_some != getDPTSome().end() ) {
+		if ( std::find_if( (*it_some)->getActivities().begin(), (*it_some)->getActivities().end(), compareName<RDODPTSomeActivity>(_name) ) != (*it_some)->getActivities().end() ) {
+			error( rdo::format("јктивность с таким именем уже существует в точке типа some: %s", (*it_some)->getName()->c_str()) );
+		}
+		it_some++;
+	}
+	if ( std::find_if( getDPTFreeActivity().begin(), getDPTFreeActivity().end(), compareName<RDODPTFreeActivity>(_name) ) != getDPTFreeActivity().end() ) {
+		error( rdo::format("јктивность с таким именем уже существует: %s", _name->c_str()) );
+//		parser->error("Free activity name: " + *_name + " already defined");
+	}
 }
 
 const RDORTPResType* RDOParser::findRTPResType( const std::string* const type ) const

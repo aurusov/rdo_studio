@@ -7,19 +7,23 @@ static char THIS_FILE[] = __FILE__;
 
 #include "rdotrace.h"
 
-RDORuleTrace::RDORuleTrace(RDOSimulatorTrace *i_sim):
-   RDOTraceableObject(i_sim), RDOPattern(i_sim), trace(false)
-{}
+RDORuleTrace::RDORuleTrace( RDOSimulatorTrace* i_sim ):
+	RDOTraceableObject( i_sim ),
+	RDOPattern( i_sim ),
+	trace( false )
+{
+	id = i_sim->activityCounter++;
+}
 
 void RDORuleTrace::onBeforeRule(RDOSimulator *sim)
 {
 }
 
-void RDORuleTrace::onAfterRule(RDOSimulator *sim, bool inSearch)
+void RDORuleTrace::onAfterRule( RDOSimulator* sim, bool inSearch )
 {
-   onAfter(sim);
-   if(!inSearch)
-      RDOTraceableObject::sim->getTracer()->writeRule(this, RDOTraceableObject::sim);
-
-   RDOTraceableObject::sim->clearJustCreatedFlags();
+	onAfter( sim );
+	if ( !inSearch ) {
+		RDOTraceableObject::sim->getTracer()->writeRule( this, RDOTraceableObject::sim );
+	}
+	RDOTraceableObject::sim->clearJustCreatedFlags();
 }

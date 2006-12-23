@@ -11,57 +11,57 @@ class RDODecisionPoint;
 class TreeRoot
 {
 public:
-   virtual void createRootTreeNode(RDOSimulator *sim);
-   TreeRoot(RDOSimulator *sim, RDODecisionPoint *_dp);
-   virtual ~TreeRoot() {}
+	virtual void createRootTreeNode( RDOSimulator* sim );
+	TreeRoot( RDOSimulator* sim, RDODecisionPoint* _dp);
+	virtual ~TreeRoot() {}
 
-   RDODecisionPoint *dp;
-   TreeNode *rootNode;
-   std::vector<TreeNode *> allLeafs;
-   TreeNode *targetNode;
-   RDOSimulator *theRealSimulator;       // all others are copy
-   int nodeCount;
-   int expandedNodesCount;
-   int fullNodesCount;
-   int nodesInGraphCount;
+	RDODecisionPoint* dp;
+	TreeNode* rootNode;
+	std::vector<TreeNode*> allLeafs;
+	TreeNode* targetNode;
+	RDOSimulator* theRealSimulator;       // all others are copy
+	int nodeCount;
+	int expandedNodesCount;
+	int fullNodesCount;
+	int nodesInGraphCount;
+	SYSTEMTIME systime_begin;
+	unsigned int sizeof_dpt;
 };
 
 class TreeNode
 {
 protected:
+	RDOActivity *currAct;
+	RDOSimulator *childSim;
 
-   RDOActivity *currAct;
-   RDOSimulator *childSim;
-	
 	double newCostPath; 
 	double newCostRest;
 	double newCostRule;
 
-   virtual void onSearchOpenNode(RDOSimulator *sim) {}
-   virtual void onSearchNodeInfoDeleted(RDOSimulator *sim) {}
-   virtual void onSearchNodeInfoReplaced(RDOSimulator *sim) {}
-   virtual void onSearchNodeInfoNew(RDOSimulator *sim) {}
-   virtual TreeNode *createChildTreeNode();
+	virtual void onSearchOpenNode(RDOSimulator *sim) {}
+	virtual void onSearchNodeInfoDeleted(RDOSimulator *sim) {}
+	virtual void onSearchNodeInfoReplaced(RDOSimulator *sim) {}
+	virtual void onSearchNodeInfoNew(RDOSimulator *sim) {}
+	virtual TreeNode *createChildTreeNode();
 
 public:
-   RDOSimulator *sim;
-   std::vector<TreeNode *> children;
-   TreeNode *parent;
-   TreeRoot *root;
-   RDOActivity *activity;
-   double costRule;
-   double costPath;
-   double costRest;
-   int count;
+	RDOSimulator *sim;
+	std::vector<TreeNode *> children;
+	TreeNode *parent;
+	TreeRoot *root;
+	RDOActivity *activity;
+	double costRule;
+	double costPath;
+	double costRest;
+	int count;
 
 public:
-   TreeNode(RDOSimulator *i_sim, TreeNode *i_parent, TreeRoot *i_root, RDOActivity *i_activity, double cost, int cnt);
-   virtual ~TreeNode();
-   void ExpandChildren();
-   int CheckIfExistBetter(RDOSimulator *childSim, double useCost, TreeNode **better); // return 0 - no such simulator, 1 - exist better, 2 - exist not better
-   void ReCostSubTree(double cost);
+	TreeNode(RDOSimulator *i_sim, TreeNode *i_parent, TreeRoot *i_root, RDOActivity *i_activity, double cost, int cnt);
+	virtual ~TreeNode();
+	void ExpandChildren();
+	int CheckIfExistBetter(RDOSimulator *childSim, double useCost, TreeNode **better); // return 0 - no such simulator, 1 - exist better, 2 - exist not better
+	void ReCostSubTree(double cost);
 };
-
 
 inline bool compareNodes(const TreeNode *tn1, const TreeNode *tn2) 
 {

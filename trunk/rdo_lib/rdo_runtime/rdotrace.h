@@ -92,7 +92,7 @@ protected:
 	int id;
 	RDOSimulatorTrace* sim;
 	virtual std::string traceId() const { return toString(id); }
-	RDOTraceableObject( RDOSimulatorTrace* _sim ): sim( _sim ) { trace = false; }
+	RDOTraceableObject( RDOSimulatorTrace* _sim ): id( -1 ), sim( _sim ) { trace = false; }
 
 public:
 	bool trace;

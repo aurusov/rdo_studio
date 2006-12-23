@@ -222,26 +222,43 @@ dpt_activ_search_end:	dpt_activ_search End											{ ((RDODPTSearch *)$$)->end
 
 
 /* ///////////////////////  SOME POINT ///////////////////////////// */
+dpt_activ_some_trace:		/* empty */ {
+								$$ = 1;
+							}	
+							| no_trace {
+								$$ = 1;
+							}
+							| trace_keyword {
+								$$ = 2;
+							};
 
-dpt_begin_some:	Decision_point IDENTIF_COLON some								{ $$ = (int)(new RDODPTSome((std::string *)$2)); }
-					|	Decision_point IDENTIF_COLON some no_trace					{ $$ = (int)(new RDODPTSome((std::string *)$2)); };
+dpt_activ_some_begin:		Decision_point IDENTIF_COLON some dpt_activ_some_trace {
+								$$ = (int)(new RDODPTSome((std::string *)$2));
+							};
 
-dpt_condition_some:	dpt_begin_some Condition_keyword fun_logic				{ ((RDODPTSome *)$$)->setCondition((RDOFUNLogic *)$3); }
-						|	dpt_begin_some Condition_keyword NoCheck					{ ((RDODPTSome *)$$)->setCondition(); };
+dpt_activ_some_condition:	dpt_activ_some_begin Condition_keyword fun_logic {
+								((RDODPTSome *)$$)->setCondition((RDOFUNLogic *)$3);
+							}
+							| dpt_activ_some_begin Condition_keyword NoCheck {
+								((RDODPTSome *)$$)->setCondition();
+							};
 
-dpt_activ_some:	dpt_condition_some Activities
-					|	dpt_activ_some_descr_param;
+dpt_activ_some_activity:	dpt_activ_some_condition Activities
+							| dpt_activ_some_descr_param;
 
-dpt_activ_some_descr:	dpt_activ_some IDENTIF_COLON IDENTIF					{ ((RDODPTSome *)$$)->addNewActivity((std::string *)$2, (std::string *)$3); };	
+dpt_activ_some_descr:		dpt_activ_some_activity IDENTIF_COLON IDENTIF {
+								((RDODPTSome *)$$)->addNewActivity((std::string *)$2, (std::string *)$3);
+							};
 
 dpt_activ_some_descr_param:	dpt_activ_some_descr
-								|		dpt_activ_some_descr_param INT_CONST			{ ((RDODPTSome *)$$)->addActivityParam((int)$2); }      
-								|		dpt_activ_some_descr_param REAL_CONST			{ ((RDODPTSome *)$$)->addActivityParam((double *)$2); } 
-								|		dpt_activ_some_descr_param IDENTIF				{ ((RDODPTSome *)$$)->addActivityParam((std::string *)$2); }
-								|		dpt_activ_some_descr_param '*'					{ ((RDODPTSome *)$$)->addActivityParam(); };
+							|	dpt_activ_some_descr_param INT_CONST  { ((RDODPTSome *)$$)->addActivityParam((int)$2);           }
+							|	dpt_activ_some_descr_param REAL_CONST { ((RDODPTSome *)$$)->addActivityParam((double *)$2);      }
+							|	dpt_activ_some_descr_param IDENTIF    { ((RDODPTSome *)$$)->addActivityParam((std::string *)$2); }
+							|	dpt_activ_some_descr_param '*'        { ((RDODPTSome *)$$)->addActivityParam();                  };
 
-dpt_activ_some_end:	dpt_activ_some End												{ ((RDODPTSome *)$$)->end();};
-
+dpt_activ_some_end:			dpt_activ_some_activity End {
+								((RDODPTSome *)$$)->end();
+							};
 
 /* ///////////////////////  FREE ACTIVITIES ///////////////////////////// */
 

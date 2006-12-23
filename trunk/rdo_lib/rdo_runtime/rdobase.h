@@ -21,10 +21,6 @@ private:
 	double       msec_wait;
 	unsigned int msec_prev;
 
-	unsigned int getMSec( const SYSTEMTIME& systime ) {
-		return systime.wMilliseconds + systime.wSecond * 1000 + systime.wMinute * 1000 * 60 + systime.wHour * 1000 * 60 * 60;
-	}
-
 protected:
 	inline void setCurrentTime(double time) { currentTime = time; }
 
@@ -81,6 +77,10 @@ public:
 
 	RDOSimulatorBase();
 	virtual ~RDOSimulatorBase() {}
+
+	static unsigned int getMSec( const SYSTEMTIME& systime ) {
+		return systime.wMilliseconds + systime.wSecond * 1000 + systime.wMinute * 1000 * 60 + systime.wHour * 1000 * 60 * 60;
+	}
 };
 
 #endif // RDO_SIMULATOR_BASE

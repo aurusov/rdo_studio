@@ -85,21 +85,41 @@ void RDOTrace::writeSearchNodeInfo(char sign, TreeNodeTrace *node)
    }
 }
 
-void RDOTrace::writeSearchResult(char letter, RDOSimulatorTrace *simTr, TreeRoot *treeRoot)
+void RDOTrace::writeSearchResult( char letter, RDOSimulatorTrace* simTr, TreeRoot* treeRoot )
 {
-	if(isNullTracer)
-		return;
+	if ( isNullTracer ) return;
 
-	getOStream() << "SE" << letter 
-		<< " " << simTr->getCurrentTime()
-		<< " " << 0          // realTime
-		<< " " << 0          // memUsed
-		<< " " << ((letter == 'S')?treeRoot->targetNode->costPath:0)
-		<< " " << treeRoot->expandedNodesCount
-		<< " " << treeRoot->nodesInGraphCount
-		<< " " << treeRoot->nodeCount - 1
-		<< " " << treeRoot->fullNodesCount 
-		<< std::endl << getEOL();
+	SYSTEMTIME systime_current;
+	::GetSystemTime( &systime_current );
+	unsigned int msec_current = RDOSimulatorBase::getMSec( systime_current );
+	unsigned int msec_begin   = RDOSimulatorBase::getMSec( treeRoot->systime_begin );
+	double sec_delay = 0;
+	if ( systime_current.wYear == treeRoot->systime_begin.wYear && systime_current.wMonth == treeRoot->systime_begin.wMonth ) {
+		sec_delay = static_cast<double>(msec_current - msec_begin) / 1000 + (systime_current.wDay - treeRoot->systime_begin.wDay) * 24 * 60 * 60;
+	}
+	static_cast<RDODecisionPointTrace*>(treeRoot->dp)->calc_times.push_back( sec_delay );
+
+	getOStream() << "SE" << letter
+	             << " " << simTr->getCurrentTime()
+	             << " " << sec_delay            // realTime
+	             << " " << treeRoot->sizeof_dpt // memUsed
+	             << " " << (letter == 'S' ? treeRoot->targetNode->costPath : 0)
+	             << " " << treeRoot->expandedNodesCount
+	             << " " << treeRoot->nodesInGraphCount
+	             << " " << treeRoot->nodeCount - 1
+	             << " " << treeRoot->fullNodesCount 
+	             << std::endl << getEOL();
+	if ( letter == 'S' ) {
+		getOStream() << "ES"
+		             << " " << simTr->getCurrentTime()
+		             << " 4"
+		             << std::endl << getEOL();
+		static_cast<RDODecisionPointTrace*>(treeRoot->dp)->calc_cost.push_back( treeRoot->targetNode->costPath );
+		static_cast<RDODecisionPointTrace*>(treeRoot->dp)->calc_nodes.push_back( treeRoot->nodeCount - 1 );
+		static_cast<RDODecisionPointTrace*>(treeRoot->dp)->calc_nodes_expended.push_back( treeRoot->expandedNodesCount );
+		static_cast<RDODecisionPointTrace*>(treeRoot->dp)->calc_nodes_full.push_back( treeRoot->fullNodesCount );
+		static_cast<RDODecisionPointTrace*>(treeRoot->dp)->calc_nodes_in_graph.push_back( treeRoot->nodesInGraphCount );
+	}
 }
 
 std::string RDOTrace::traceResourcesListNumbers(RDOSimulatorTrace *sim, std::vector<RDOResourceTrace *> resArray)
@@ -176,22 +196,19 @@ void RDOTrace::writeIrregularEvent(RDOIETrace *ie, RDOSimulatorTrace *sim)
 
 void RDOTrace::writeRule(RDORuleTrace *rule, RDOSimulatorTrace *sim)
 {
-	if(isNullTracer)
-		return;
+	if ( isNullTracer ) return;
 
-   if(rule->trace)
-   {
+	if ( rule->trace ) {
 		int operId = sim->getFreeOperationId();
-      getOStream() << "ER " << sim->getCurrentTime()
-         << " " << operId
-         << " " << rule->traceId() 
-         << " " << rule->tracePatternId()
-         << " " << traceResourcesListNumbers(sim, rule->relevantResources)
-         << std::endl << getEOL();
-	   sim->freeOperationId(operId);
-   }
-
-   getOStream() << traceResourcesList('\0', sim, rule->relevantResources) << getEOL();
+		getOStream() << "ER " << sim->getCurrentTime()
+		             << " "   << operId
+		             << " "   << rule->traceId() 
+		             << " "   << rule->tracePatternId()
+		             << " "   << traceResourcesListNumbers(sim, rule->relevantResources)
+		             << std::endl << getEOL();
+		sim->freeOperationId(operId);
+	}
+	getOStream() << traceResourcesList( '\0', sim, rule->relevantResources ) << getEOL();
 }
 
 void RDOTrace::writeBeforeOperationBegin(RDOOperationTrace *op, RDOSimulatorTrace *sim)
@@ -252,34 +269,34 @@ void RDOTrace::writeAfterOperationEnd(RDOOperationTrace *op, RDOSimulatorTrace *
 }
 
 RDOResourceTrace::RDOResourceTrace(RDOSimulatorTrace *i_sim):
-   RDOTraceableObject(i_sim)
+	RDOTraceableObject(i_sim)
 {
-   id = sim->getFreeResourceId();
-   justCreated = false;
-   tempotary = false;
-   trace = false;
+	id = sim->getFreeResourceId();
+	justCreated = false;
+	tempotary = false;
+	trace = false;
 }
 
 RDOResourceTrace::RDOResourceTrace(const RDOResourceTrace &orig):
-   RDOTraceableObject(orig.sim)
+	RDOTraceableObject(orig.sim)
 {
-   id = orig.id;
-   justCreated = orig.justCreated;
-   typeId = orig.typeId;
-   tempotary = orig.tempotary;
-   trace = orig.trace;
-   sim->incrementResourceIdReference(id);
+	id = orig.id;
+	justCreated = orig.justCreated;
+	typeId = orig.typeId;
+	tempotary = orig.tempotary;
+	trace = orig.trace;
+	sim->incrementResourceIdReference(id);
 }
 
 RDOResourceTrace::~RDOResourceTrace()
 {
-   sim->onResourceErase(this);
+	sim->onResourceErase(this);
 }
 
 void RDOPattern::onAfter(RDOSimulator *child_sim)
 {
-   relevantResources = getRelevantResources(child_sim);
-   std::for_each(relevantResources.begin(), relevantResources.end(), CheckRelevantResource((RDOSimulatorTrace *)child_sim));
+	relevantResources = getRelevantResources(child_sim);
+	std::for_each(relevantResources.begin(), relevantResources.end(), CheckRelevantResource((RDOSimulatorTrace *)child_sim));
 }
 
 void CheckRelevantResource::operator ()(RDOResourceTrace *res)
@@ -323,12 +340,58 @@ void RDOTrace::writeTraceEnd(RDOSimulatorTrace *sim)
       << " 2" << std::endl << getEOL();
 }
 
-void RDOTrace::writeStatus(RDOSimulatorTrace *sim, char *status)
+void RDOTrace::writeStatus( RDOSimulatorTrace* sim, char* status )
 {
-	if(isNullTracer)
-		return;
+	if ( isNullTracer ) return;
+	getOStream() << "$Status = " << status << " " << sim->getCurrentTime() << std::endl << getEOL();
+	std::list< RDOBaseOperation* >::const_iterator it = sim->haveBaseOperations.begin();
+	while ( it != sim->haveBaseOperations.end() ) {
+		RDODecisionPointTrace* dp = dynamic_cast<RDODecisionPointTrace*>(*it);
+		if ( dp ) {
+			getOStream() << std::endl << getEOL();
+			getOStream() << "DPS_C"
+			             << "  " << dp->id
+			             << "  " << dp->calc_cnt
+			             << "  " << dp->calc_res_found_cnt
+			             << std::endl << getEOL();
+			if ( dp->calc_cnt ) {
+				double d_min = 0;
+				double d_max = 0;
+				double d_med = 0;
+				dp->getStats( dp->calc_times, d_min, d_max, d_med );
+				getOStream() << rdo::format( "DPS_TM %0.3f  %0.3f  %0.3f", d_med, d_min, d_max ) << std::endl << getEOL();
 
-   getOStream() << "$Status = " << status << " " << sim->getCurrentTime() << std::endl << getEOL();
+				unsigned int ui_min = 0;
+				unsigned int ui_max = 0;
+				dp->getStats( dp->calc_mems, ui_min, ui_max, d_med );
+				getOStream() << rdo::format( "DPS_ME %0.0f  %u  %u", d_med, ui_min, ui_max ) << std::endl << getEOL();
+
+				dp->getStats( dp->calc_cost, d_min, d_max, d_med );
+				getOStream() << "DPS_CO"
+							 << " "  << d_med
+							 << "  " << d_min
+							 << "  " << d_max
+							 << std::endl << getEOL();
+
+				// Количество раскрытых вершин
+				dp->getStats( dp->calc_nodes_expended, ui_min, ui_max, d_med );
+				getOStream() << rdo::format( "DPS_TO %0.0f  %u  %u", d_med, ui_min, ui_max ) << std::endl << getEOL();
+
+				// Количество вершин в графе
+				dp->getStats( dp->calc_nodes_in_graph, ui_min, ui_max, d_med );
+				getOStream() << rdo::format( "DPS_TT %0.0f  %u  %u", d_med, ui_min, ui_max ) << std::endl << getEOL();
+
+				// Количество включавшихся в граф вершин (вершины, соответствующие одному и тому же состоянию системы, могут включаться в граф неоднократно, если порождается вершина с меньшей стоимостью пути)
+				dp->getStats( dp->calc_nodes, ui_min, ui_max, d_med );
+				getOStream() << rdo::format( "DPS_TI %0.0f  %u  %u", d_med, ui_min, ui_max ) << std::endl << getEOL();
+
+				// Общее количество порожденных вершин-преемников
+				dp->getStats( dp->calc_nodes_full, ui_min, ui_max, d_med );
+				getOStream() << rdo::format( "DPS_TG %0.0f  %u  %u", d_med, ui_min, ui_max ) << std::endl << getEOL();
+			}
+		}
+		it++;
+	}
 }
 
 bool RDOPokazTrace::tracePokaz()
