@@ -33,6 +33,8 @@ RDOParser::RDOParser():
 	parser  = this;
 	runTime = new rdoRuntime::RDORuntime();
 	parsers.reset();
+	runTime->memory_insert( sizeof(RDOParser) );
+	runTime->memory_insert( sizeof(rdoRuntime::RDORuntime) );
 }
 
 RDOParser::~RDOParser()

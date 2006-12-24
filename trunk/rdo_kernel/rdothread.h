@@ -250,6 +250,10 @@ public:
 	// Важно: должна вызываться только для this (в собственной треде)
 	void broadcastMessage( RDOTreadMessage message, void* param = NULL, bool lock = false );
 
+#ifdef TR_TRACE
+	static void trace( const std::string& str );
+#endif
+
 protected:
 #ifdef RDO_MT
 	// Есть два ограничения на использование тред в RDO_MT (с thread-safety всё в порядке, imho):
@@ -370,10 +374,6 @@ protected:
 			return;
 		}
 	}
-#endif
-
-#ifdef TR_TRACE
-	static void trace( const std::string& str );
 #endif
 };
 

@@ -10,7 +10,7 @@ namespace rdoRuntime
 
 class RDORuntime;
 
-class RDOCalc: public rdoParse::RDOErrorPos
+class RDOCalc: public rdoParse::RDODeletable, public rdoParse::RDOErrorPos
 {
 private:
 	rdoModelObjects::RDOFileType fileToParse;

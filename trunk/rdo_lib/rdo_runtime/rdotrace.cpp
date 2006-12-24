@@ -343,11 +343,16 @@ void RDOTrace::writeTraceEnd(RDOSimulatorTrace *sim)
 void RDOTrace::writeStatus( RDOSimulatorTrace* sim, char* status )
 {
 	if ( isNullTracer ) return;
+
+	// Статус
 	getOStream() << "$Status = " << status << " " << sim->getCurrentTime() << std::endl << getEOL();
+
+	// Статистика по поиску на графе
 	std::list< RDOBaseOperation* >::const_iterator it = sim->haveBaseOperations.begin();
 	while ( it != sim->haveBaseOperations.end() ) {
 		RDODecisionPointTrace* dp = dynamic_cast<RDODecisionPointTrace*>(*it);
 		if ( dp ) {
+			// Информация и точке
 			getOStream() << std::endl << getEOL();
 			getOStream() << "DPS_C"
 			             << "  " << dp->id
@@ -355,17 +360,20 @@ void RDOTrace::writeStatus( RDOSimulatorTrace* sim, char* status )
 			             << "  " << dp->calc_res_found_cnt
 			             << std::endl << getEOL();
 			if ( dp->calc_cnt ) {
+				// Время поиска
 				double d_min = 0;
 				double d_max = 0;
 				double d_med = 0;
 				dp->getStats( dp->calc_times, d_min, d_max, d_med );
 				getOStream() << rdo::format( "DPS_TM %0.3f  %0.3f  %0.3f", d_med, d_min, d_max ) << std::endl << getEOL();
 
+				// Используемая память
 				unsigned int ui_min = 0;
 				unsigned int ui_max = 0;
 				dp->getStats( dp->calc_mems, ui_min, ui_max, d_med );
 				getOStream() << rdo::format( "DPS_ME %0.0f  %u  %u", d_med, ui_min, ui_max ) << std::endl << getEOL();
 
+				// Стоимость решения
 				dp->getStats( dp->calc_cost, d_min, d_max, d_med );
 				getOStream() << "DPS_CO"
 							 << " "  << d_med
@@ -392,6 +400,10 @@ void RDOTrace::writeStatus( RDOSimulatorTrace* sim, char* status )
 		}
 		it++;
 	}
+
+	// Используемая память
+	getOStream() << std::endl << getEOL();
+	getOStream() << "DPS_MM " << sim->memory_get() << std::endl << getEOL();
 }
 
 bool RDOPokazTrace::tracePokaz()

@@ -28,7 +28,7 @@ int frmparse( void* lexer );
 int frmlex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer );
 void frmerror( char* mes );
 
-class RDOFRMColor
+class RDOFRMColor: public RDODeletable
 {
 public:
 	bool isTransparent;
@@ -37,7 +37,7 @@ public:
 	RDOFRMColor(int r, int g, int b);
 };
 
-class RDOFRMItem
+class RDOFRMItem: public RDODeletable
 {
 protected:
 	RDOFRMItem() {}
@@ -165,7 +165,7 @@ public:
 
 class RDOFRMFrame;
 
-class RDOFRMShow
+class RDOFRMShow: public RDODeletable
 {
 private:
 	friend RDOFRMFrame;
@@ -179,7 +179,7 @@ public:
 	virtual void getAllBitmaps( std::list< std::string >& list );
 };
 
-class RDOFRMFrame
+class RDOFRMFrame: public RDODeletable
 {
 private:
 	std::string *name;

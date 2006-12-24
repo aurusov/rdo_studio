@@ -57,16 +57,16 @@ public:
 class RDOFUNFunctionListElementIdentif: public RDOFUNFunctionListElement
 {
 public:
-	std::string *value;
-	RDOFUNFunctionListElementIdentif(std::string *_value) : value(_value) {}
+	std::string* value;
+	RDOFUNFunctionListElementIdentif( std::string* _value ): value( _value ) {}
 	rdoRuntime::RDOCalcConst *createResultCalc(const RDORTPResParam *const retType) const;
 };
 
 class RDOFUNFunctionListElementReal: public RDOFUNFunctionListElement
 {
 public:
-	double *value;
-	RDOFUNFunctionListElementReal(double *_value) : value(_value) {}
+	double* value;
+	RDOFUNFunctionListElementReal( double* _value ): value( _value ) {}
 	rdoRuntime::RDOCalcConst *createResultCalc(const RDORTPResParam *const retType) const;
 };
 
@@ -74,7 +74,7 @@ class RDOFUNFunctionListElementInt: public RDOFUNFunctionListElement
 {
 public:
 	int value;
-	RDOFUNFunctionListElementInt(int _value) : value(_value) {}
+	RDOFUNFunctionListElementInt( int _value ): value( _value ) {}
 	rdoRuntime::RDOCalcConst *createResultCalc(const RDORTPResParam *const retType) const;
 };
 

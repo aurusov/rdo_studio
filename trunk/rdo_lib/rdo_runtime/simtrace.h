@@ -50,8 +50,19 @@ private:
 	void addTemplateIrregularEvent(RDOIETrace *ev);
 	void addTemplateRule(RDORuleTrace *rule);
 
+	unsigned int memory_current;
+	unsigned int memory_max;
+
 protected:
-	RDOSimulatorTrace(): dptCounter(1), activityCounter(1), ieCounter(1) {}
+	RDOSimulatorTrace():
+		RDOSimulator(),
+		dptCounter( 1 ),
+		activityCounter( 1 ),
+		ieCounter( 1 ),
+		memory_current( 0 ),
+		memory_max( 0 )
+	{
+	}
 	int maxOperationId;
 	void addTemplateBaseOperation(RDOBaseOperation *op);
 
@@ -69,6 +80,17 @@ public:
 	virtual RDOTrace* getTracer() = 0;
 	void rdoDestroy();
 	void rdoInit();
+
+	void memory_insert( unsigned int mem ) {
+		memory_current += mem;
+		if ( memory_current > memory_max ) memory_max = memory_current;
+	}
+	void memory_remove( unsigned int mem ) {
+		memory_current -= mem;
+	}
+	unsigned int memory_get() const {
+		return memory_max;
+	}
 };
 
 #endif // SIMTRACE_H

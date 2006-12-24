@@ -38,12 +38,13 @@ void RDODecisionPointTrace::onSearchDecision( RDOSimulator* sim, TreeNode* node 
 
 void RDODecisionPointTrace::onSearchResultSuccess( RDOSimulator* sim, TreeRoot* treeRoot )
 {
+	RDOSimulatorTrace* simTr = (RDOSimulatorTrace*)sim;
 	if ( traceFlag != DPT_no_trace ) {
-		RDOSimulatorTrace* simTr = (RDOSimulatorTrace*)sim;
 		simTr->getTracer()->writeSearchResult( 'S', simTr, treeRoot );
 	}
 	calc_res_found_cnt++;
 	calc_mems.push_back( treeRoot->sizeof_dpt );
+	simTr->memory_insert( treeRoot->sizeof_dpt );
 }
 
 void RDODecisionPointTrace::onSearchResultNotFound(RDOSimulator *sim, TreeRoot *treeRoot)

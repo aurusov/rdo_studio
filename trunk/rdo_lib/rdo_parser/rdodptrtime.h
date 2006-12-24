@@ -45,7 +45,6 @@ public:
 		{}
 };
 
-
 }
 
 #endif //RDO_DTP_RUNTIME

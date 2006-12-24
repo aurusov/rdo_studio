@@ -30,12 +30,12 @@ RDOFRMColor::RDOFRMColor()
 	isTransparent = true;
 }
 
-RDOFRMColor::RDOFRMColor(int r, int g, int b)
+RDOFRMColor::RDOFRMColor( int r, int g, int b )
 {
 	isTransparent = false;
-	red = r;
+	red   = r;
 	green = g;
-	blue = b;
+	blue  = b;
 }
 
 RDOFRMBoundingItem::RDOFRMBoundingItem(RDOFUNArithm *_x, RDOFUNArithm *_y, RDOFUNArithm *_width, RDOFUNArithm *_height)
@@ -89,15 +89,18 @@ RDOFRMBitmap::RDOFRMBitmap(RDOFUNArithm *_x, RDOFUNArithm *_y, std::string *_pic
 
 RDOFRMS_bmp::RDOFRMS_bmp(RDOFUNArithm *x, RDOFUNArithm *y, RDOFUNArithm *width, RDOFUNArithm *height, std::string *_picFileName, std::string *_mask)
 	: RDOFRMBoundingItem(x, y, width, height), picFileName(_picFileName), mask(_mask)
-{}
+{
+}
 
 RDOFRMRect::RDOFRMRect(RDOFUNArithm *x, RDOFUNArithm *y, RDOFUNArithm *width, RDOFUNArithm *height, RDOFRMColor *bgColor, RDOFRMColor *color)
 	: RDOFRMBoundingItem(x, y, width, height), RDOFRMColoredItem(bgColor, color)
-{}
+{
+}
 					  
 RDOFRMR_rect::RDOFRMR_rect(RDOFUNArithm *x, RDOFUNArithm *y, RDOFUNArithm *width, RDOFUNArithm *height, RDOFRMColor *bgColor, RDOFRMColor *color)
 	: RDOFRMBoundingItem(x, y, width, height), RDOFRMColoredItem(bgColor, color)
-{}
+{
+}
 
 RDOFRMLine::RDOFRMLine(RDOFUNArithm *x, RDOFUNArithm *y, RDOFUNArithm *width, RDOFUNArithm *height, RDOFRMColor *_color)
 	: RDOFRMBoundingItem(x, y, width, height), color(*_color)
@@ -107,7 +110,8 @@ RDOFRMLine::RDOFRMLine(RDOFUNArithm *x, RDOFUNArithm *y, RDOFUNArithm *width, RD
 
 RDOFRMEllipse::RDOFRMEllipse(RDOFUNArithm *x, RDOFUNArithm *y, RDOFUNArithm *width, RDOFUNArithm *height, RDOFRMColor *bgColor, RDOFRMColor *color)
 	: RDOFRMBoundingItem(x, y, width, height), RDOFRMColoredItem(bgColor, color)
-{}
+{
+}
 
 RDOFRMTriang::RDOFRMTriang(RDOFUNArithm *_x1, RDOFUNArithm *_y1, RDOFUNArithm *_x2, RDOFUNArithm *_y2, RDOFUNArithm *_x3, RDOFUNArithm *_y3, RDOFRMColor *bgColor, RDOFRMColor *color)
 	: RDOFRMColoredItem(bgColor, color)
@@ -122,7 +126,8 @@ RDOFRMTriang::RDOFRMTriang(RDOFUNArithm *_x1, RDOFUNArithm *_y1, RDOFUNArithm *_
 
 RDOFRMActive::RDOFRMActive(RDOFUNArithm *x, RDOFUNArithm *y, RDOFUNArithm *width, RDOFUNArithm *height, std::string *_operName)
 	: RDOFRMBoundingItem(x, y, width, height), operName(_operName)
-{}
+{
+}
 
 RDOFRMShow::RDOFRMShow(RDOFUNLogic* logic)
 {
@@ -212,6 +217,7 @@ rdoSimulator::RDOFrame* RDOFRMFrame::prepareFrame( rdoSimulator::RDOFrame* frame
 
 rdoSimulator::RDOFrameElement *RDOFRMItem::createElement( rdoRuntime::RDORuntime* sim )
 {
+	parser->runTime->memory_insert( sizeof(rdoSimulator::RDONullElement) );
 	return new rdoSimulator::RDONullElement();
 }
 
@@ -252,6 +258,7 @@ rdoSimulator::RDOFrameElement* RDOFRMText::createElement( rdoRuntime::RDORuntime
 		}
 	}
 
+	parser->runTime->memory_insert( sizeof(rdoSimulator::RDOTextElement) );
 	return new rdoSimulator::RDOTextElement(
 		x->calcValueBase(sim), 
 		y->calcValueBase(sim),
@@ -266,6 +273,7 @@ rdoSimulator::RDOFrameElement* RDOFRMRect::createElement( rdoRuntime::RDORuntime
 {
 	rdoSimulator::RDOColor bg = getBg();
 	rdoSimulator::RDOColor fg = getFg();
+	parser->runTime->memory_insert( sizeof(rdoSimulator::RDORectElement) );
 	return new rdoSimulator::RDORectElement(
 		x->calcValueBase(sim), 
 		y->calcValueBase(sim),
@@ -278,6 +286,7 @@ rdoSimulator::RDOFrameElement* RDOFRMR_rect::createElement( rdoRuntime::RDORunti
 {
 	rdoSimulator::RDOColor bg = getBg();
 	rdoSimulator::RDOColor fg = getFg();
+	parser->runTime->memory_insert( sizeof(rdoSimulator::RDORRectElement) );
 	return new rdoSimulator::RDORRectElement(
 		x->calcValueBase(sim), 
 		y->calcValueBase(sim),
@@ -290,6 +299,7 @@ rdoSimulator::RDOFrameElement* RDOFRMEllipse::createElement( rdoRuntime::RDORunt
 {
 	rdoSimulator::RDOColor bg = getBg();
 	rdoSimulator::RDOColor fg = getFg();
+	parser->runTime->memory_insert( sizeof(rdoSimulator::RDOEllipseElement) );
 	return new rdoSimulator::RDOEllipseElement(
 		x->calcValueBase(sim), 
 		y->calcValueBase(sim),
@@ -302,6 +312,7 @@ rdoSimulator::RDOFrameElement* RDOFRMTriang::createElement( rdoRuntime::RDORunti
 {
 	rdoSimulator::RDOColor bg = getBg();
 	rdoSimulator::RDOColor fg = getFg();
+	parser->runTime->memory_insert( sizeof(rdoSimulator::RDOTriangElement) );
 	return new rdoSimulator::RDOTriangElement(
 		x1->calcValueBase(sim), 
 		y1->calcValueBase(sim),
@@ -320,6 +331,7 @@ rdoSimulator::RDOFrameElement* RDOFRMLine::createElement( rdoRuntime::RDORuntime
 	fg.g = color.green;
 	fg.b = color.blue;
 
+	parser->runTime->memory_insert( sizeof(rdoSimulator::RDOLineElement) );
 	return new rdoSimulator::RDOLineElement(
 		x->calcValueBase(sim), 
 		y->calcValueBase(sim),
@@ -330,24 +342,27 @@ rdoSimulator::RDOFrameElement* RDOFRMLine::createElement( rdoRuntime::RDORuntime
 
 rdoSimulator::RDOFrameElement* RDOFRMS_bmp::createElement( rdoRuntime::RDORuntime* sim )
 {
-	if(mask != NULL)
+	parser->runTime->memory_insert( sizeof(rdoSimulator::RDOSBmpElement) );
+	if ( mask != NULL ) {
 		return new rdoSimulator::RDOSBmpElement(
 			x->calcValueBase(sim), 
 			y->calcValueBase(sim),
 			width->calcValueBase(sim),
 			height->calcValueBase(sim), 
 			*picFileName, *mask);
-	else
+	} else {
 		return new rdoSimulator::RDOSBmpElement(
 			x->calcValueBase(sim), 
 			y->calcValueBase(sim),
 			width->calcValueBase(sim),
 			height->calcValueBase(sim), 
 			*picFileName);
+	}
 }
 
 rdoSimulator::RDOFrameElement* RDOFRMBitmap::createElement( rdoRuntime::RDORuntime* sim )
 {
+	parser->runTime->memory_insert( sizeof(rdoSimulator::RDOBitmapElement) );
 	if(mask != NULL)
 		return new rdoSimulator::RDOBitmapElement(
 			x->calcValueBase(sim), 
@@ -362,6 +377,7 @@ rdoSimulator::RDOFrameElement* RDOFRMBitmap::createElement( rdoRuntime::RDORunti
 
 rdoSimulator::RDOFrameElement* RDOFRMActive::createElement( rdoRuntime::RDORuntime* sim )
 {
+	parser->runTime->memory_insert( sizeof(rdoSimulator::RDOActiveElement) );
 	return new rdoSimulator::RDOActiveElement(
 		x->calcValueBase(sim), 
 		y->calcValueBase(sim),
@@ -372,9 +388,9 @@ rdoSimulator::RDOFrameElement* RDOFRMActive::createElement( rdoRuntime::RDORunti
 
 RDOFRMShow::~RDOFRMShow()
 {
-	for(std::vector<RDOFRMItem *>::iterator it = items.begin(); it != items.end(); it++)
+	for ( std::vector<RDOFRMItem *>::iterator it = items.begin(); it != items.end(); it++ ) {
 		delete (*it);
-
+	}
 	items.clear();
 }
 

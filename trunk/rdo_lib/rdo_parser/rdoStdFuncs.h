@@ -19,9 +19,16 @@ namespace rdoParse
 
 class RDODeletable
 {
+private:
+	size_t object_size;
+
 public:
 	RDODeletable();
 	virtual ~RDODeletable();
+#ifndef _DEBUG
+	void* operator new( size_t sz );
+	void operator delete( void* v );
+#endif
 };
 
 template <class T> class comparePointers

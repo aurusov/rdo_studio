@@ -257,6 +257,22 @@ RDODeletable::~RDODeletable()
 	parser->removeDeletables( this );
 }
 
+#ifndef _DEBUG
+void* RDODeletable::operator new( size_t sz )
+{
+	RDODeletable* obj = static_cast<RDODeletable*>(::operator new( sz ));
+	obj->object_size = sz;
+	parser->runTime->memory_insert( sz );
+	return obj;
+}
+
+void RDODeletable::operator delete( void* v )
+{
+	parser->runTime->memory_remove( static_cast<RDODeletable*>(v)->object_size );
+	::operator delete( v );
+}
+#endif
+
 // ----------------------------------------------------------------------------
 // ---------- RDOFUNLogic
 // ----------------------------------------------------------------------------

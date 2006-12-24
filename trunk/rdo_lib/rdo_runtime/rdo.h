@@ -3,6 +3,7 @@
 
 #include "rdobase.h"
 #include "searchtree.h"
+#include "rdoStdFuncs.h"
 
 class RDOSimulator;
 class TreeNode;
@@ -16,7 +17,7 @@ namespace rdoRuntime {
 class RDOCalc;
 }
 
-class RDOBaseOperation
+class RDOBaseOperation: public rdoParse::RDODeletable
 {
 public:
 	virtual ~RDOBaseOperation() {}
@@ -42,7 +43,7 @@ public:
    virtual ~RDORule() {}
 };
 
-class RDOActivity
+class RDOActivity: public rdoParse::RDODeletable
 {
 friend TreeNode;
 friend RDODecisionPoint;
@@ -59,7 +60,7 @@ public:
    virtual ~RDOActivity();
 };
 
-class CheckOperations
+class CheckOperations: public rdoParse::RDODeletable
 {
 private:
 	RDOSimulator *sim;
@@ -150,7 +151,7 @@ public:
 	}
 };
 
-class RDOPokaz
+class RDOPokaz: public rdoParse::RDODeletable
 {
 public:
 	virtual bool resetPokaz(RDOSimulator *sim) = 0;
