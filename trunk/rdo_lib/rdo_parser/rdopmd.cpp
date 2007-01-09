@@ -286,8 +286,8 @@ bool RDOPMDWatchQuant::checkPokaz(RDOSimulator *sim)
 	rdoRuntime::RDORuntime* runtime = dynamic_cast< rdoRuntime::RDORuntime* >(sim);
 
 	int newValue = 0;
-	for(std::vector< rdoRuntime::RDOResource* >::iterator it = runtime->allResources.begin(); 
-													it != runtime->allResources.end(); it++)
+	for(std::vector< rdoRuntime::RDOResource* >::iterator it = runtime->allResourcesByID.begin(); 
+													it != runtime->allResourcesByID.end(); it++)
 	{
 		if(*it == NULL)
 			continue;

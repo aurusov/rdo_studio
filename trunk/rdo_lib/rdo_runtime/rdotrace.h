@@ -62,9 +62,7 @@ public:
 
 	virtual void writeIrregularEvent(RDOIETrace *ie, RDOSimulatorTrace *sim);
 	virtual void writeRule(RDORuleTrace *rule, RDOSimulatorTrace *sim);
-	virtual void writeBeforeOperationBegin(RDOOperationTrace *op, RDOSimulatorTrace *sim);
 	virtual void writeAfterOperationBegin(RDOOperationTrace *op, RDOSimulatorTrace *sim);
-	virtual void writeBeforeOperationEnd(RDOOperationTrace *op, RDOSimulatorTrace *sim);
 	virtual void writeAfterOperationEnd(RDOOperationTrace *op, RDOSimulatorTrace *sim);
 
 	virtual void writeTraceBegin(RDOSimulatorTrace *sim);
@@ -72,10 +70,9 @@ public:
 	virtual void writeTraceEnd(RDOSimulatorTrace *sim);
 	virtual void writeStatus(RDOSimulatorTrace *sim, char *status);
 
-	virtual void writePermanentResources(RDOSimulatorTrace *sim, std::vector<RDOResourceTrace *> perm);
+	virtual void writePermanentResources( RDOSimulatorTrace* sim, const std::list< RDOResourceTrace* >& res_perm );
 
-	virtual std::string traceResourcesListNumbers(RDOSimulatorTrace *sim, std::vector<RDOResourceTrace *> resArray);
-	virtual std::string traceResourcesList(char prefix, RDOSimulatorTrace *sim, std::vector<RDOResourceTrace *> resArray);
+	virtual std::string traceResourcesList( char prefix, RDOSimulatorTrace* sim, const std::list< RDOResourceTrace* >& rel_res_list );
 
 	virtual void writePokaz(RDOSimulatorTrace *sim, RDOPokazTrace *pok);
 
@@ -91,70 +88,77 @@ friend RDOTrace;
 protected:
 	int id;
 	RDOSimulatorTrace* sim;
-	virtual std::string traceId() const { return toString(id); }
 	RDOTraceableObject( RDOSimulatorTrace* _sim ): id( -1 ), sim( _sim ) { trace = false; }
 
 public:
 	bool trace;
+	virtual std::string traceId() const { return toString( id ); }
 };
 
-class CheckRelevantResource
-{
-   RDOSimulatorTrace *sim;
-public:
-   CheckRelevantResource(RDOSimulatorTrace *i_sim): sim(i_sim) {}
-   void operator ()(RDOResourceTrace *res);
-};
-
-class RDOPattern
+class RDOPatternTrace
 {
 friend RDOSimulatorTrace;
-
-   std::list<RDOResourceTrace *> temp;
-
 protected:
-   std::vector<RDOResourceTrace *> relevantResources;
-   virtual std::vector<RDOResourceTrace *> getRelevantResources(RDOSimulator *sim) = 0;
-   RDOSimulatorTrace *sim;
-   RDOPattern(RDOSimulatorTrace *i_sim): sim(i_sim) {}
-   void onAfter(RDOSimulator *sim);
+	virtual std::string traceResourcesList( char prefix, RDOSimulatorTrace* sim ) = 0;
+	virtual std::string traceResourcesListNumbers( RDOSimulatorTrace* sim ) = 0;
 };
 
+namespace rdoRuntime {
+class RDORuntime;
+}
 
 // Base class for all resources
 class RDOResourceTrace: public RDOTraceableObject
 {
-friend RDOTrace;
-friend RDOSimulatorTrace;
-friend CheckRelevantResource;
+//friend RDOTrace;
+//friend RDOSimulatorTrace;
+//friend class rdoRuntime::RDORuntime;
+
+public:
+	enum ConvertStatus {
+		CS_None = 0,
+		CS_Keep,
+		CS_Create,
+		CS_Erase,
+		CS_NonExist,
+		CS_NoChange
+	};
 
 private:
 	std::string typeId;
 	std::string traceTypeId() { return typeId.empty()?(typeId=getTypeId()):typeId; }
 
 protected:
-	virtual std::string getTypeId() = 0;
-	virtual std::string traceParametersValue() = 0;
-	bool justCreated;
-	bool tempotary;
-	RDOResourceTrace(RDOSimulatorTrace *sim);
-	RDOResourceTrace(const RDOResourceTrace &orig);
+	RDOResourceTrace( RDOSimulatorTrace *sim );
+	RDOResourceTrace( const RDOResourceTrace& orig );
 	virtual ~RDOResourceTrace();
 
+	virtual std::string getTypeId()            = 0;
+	virtual std::string traceParametersValue() = 0;
+
+	ConvertStatus state;
+	bool temporary;
+
 public:
-	void makeTemporary( bool temp ) { tempotary = temp; }
-	static void clearJCFlag(RDOResourceTrace *res) { res->justCreated = false; }
-	virtual std::string traceResourceState( char prefix, RDOSimulatorTrace* sim );
+	void makeTemporary( bool value )     { temporary = value; }
+	ConvertStatus getState() const       { return state;      }
+	void setState( ConvertStatus value ) { state = value;     }
+	std::string traceResourceState( char prefix, RDOSimulatorTrace* sim );
 };
 
 class RDOPokazTrace: public RDOPokaz, public RDOTraceableObject
 {
 protected:
 	bool wasChanged;
+
 public:
-   RDOPokazTrace(RDOSimulatorTrace *i_sim): RDOTraceableObject(i_sim), wasChanged(true) {}
+	RDOPokazTrace( RDOSimulatorTrace* _sim ):
+		RDOTraceableObject( _sim ),
+		wasChanged( true )
+	{
+	}
 	bool tracePokaz();
-   virtual std::string traceValue() = 0;
+	virtual std::string traceValue() = 0;
 };
 
 #include "simtrace.h"

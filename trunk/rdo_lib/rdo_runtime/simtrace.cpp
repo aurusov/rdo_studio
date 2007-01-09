@@ -116,27 +116,24 @@ void RDOSimulatorTrace::freeOperationId(int id)
 
 void RDOSimulatorTrace::onResourceErase(RDOResourceTrace *res)
 {
-	if( res->tempotary && res->trace && getTracer()->canWrite() ) {
+/*
+	if( res->temporary && res->trace && getTracer()->canWrite() ) {
 		getTracer()->getOStream() << "RE "
 	                              << getCurrentTime() << " "
 	                              << res->typeId.c_str() << " "
 	                              << res->traceId().c_str() << std::endl
 	                              << getTracer()->getEOL();
 	}
+*/
 	allResourcesInSim.remove(res);
 	freeResourceId(res->id);
-}
-
-void RDOSimulatorTrace::clearJustCreatedFlags()
-{
-	std::for_each(allResourcesInSim.begin(), allResourcesInSim.end(), RDOResourceTrace::clearJCFlag);
 }
 
 void RDOSimulatorTrace::checkPermanentResources()
 {
 	perm = getPermanentResources();
 	allResourcesInSim.clear();
-	allResourcesInSim.insert(allResourcesInSim.begin(), perm.begin(), perm.end());
+	allResourcesInSim.insert( allResourcesInSim.begin(), perm.begin(), perm.end() );
 }
 
 void RDOSimulatorTrace::preProcess()
@@ -151,8 +148,7 @@ void RDOSimulatorTrace::preProcess()
 
 void RDOSimulatorTrace::postProcess()
 {
-	RDOSimulator::postProcess();
-	getTracer()->writeTraceEnd(this);
+	getTracer()->writeTraceEnd( this );
 	getTracer()->stopWriting();
 }
 
@@ -162,7 +158,7 @@ RDOSimulator *RDOSimulatorTrace::createCopy()
 	((RDOSimulatorTrace*)res)->checkPermanentResources();
 	return res;
 }
-
+/*
 // TEMPLATE CLASS caster
 template<class FromType, class _Ufn>
 class caster
@@ -185,5 +181,6 @@ caster<FromType, _Ufn> cast(const _Ufn& _X)
 
 void RDOSimulatorTrace::onAfterCheckPokaz()
 {
-	std::for_each(havePokaz.rbegin(), havePokaz.rend(), cast<RDOPokaz *>(std::mem_fun(&RDOPokazTrace::tracePokaz)));
+	std::for_each(havePokaz.rbegin(), havePokaz.rend(), cast<RDOPokaz*>(std::mem_fun(&RDOPokazTrace::tracePokaz)));
 }
+*/

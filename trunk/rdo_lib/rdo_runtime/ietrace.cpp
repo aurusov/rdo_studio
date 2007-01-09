@@ -12,11 +12,9 @@ static char THIS_FILE[] = __FILE__;
 void RDOIETrace::onAfterIrregularEvent( RDOSimulator* sim )
 { 
 	RDOSimulatorTrace* simTr = (RDOSimulatorTrace*)sim;
-	onAfter( simTr );
 	simTr->getTracer()->writeIrregularEvent( this, simTr );
-	simTr->clearJustCreatedFlags();
 }
 
-RDOIETrace::RDOIETrace( RDOSimulatorTrace* _sim ): RDOTraceableObject( _sim ), RDOPattern( _sim )
+RDOIETrace::RDOIETrace( RDOSimulatorTrace* _sim ): RDOTraceableObject( _sim ), RDOPatternTrace()
 {
 }

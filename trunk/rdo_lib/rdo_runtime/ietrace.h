@@ -1,16 +1,17 @@
 #ifndef RDO_IETRACE
 #define RDO_IETRACE
 
-class RDOIETrace: public RDOIE, public RDOTraceableObject, RDOPattern
+class RDOIETrace: public RDOIE, public RDOTraceableObject, protected RDOPatternTrace
 {
 friend RDOTrace;
 friend RDOSimulatorTrace;
 
-   virtual std::string tracePatternId() = 0;
-   virtual void onAfterIrregularEvent(RDOSimulator *sim);
+private:
+	virtual const std::string& tracePatternId() const = 0;
 
 protected:
-   RDOIETrace(RDOSimulatorTrace *sim);
+	RDOIETrace( RDOSimulatorTrace* sim );
+	virtual void onAfterIrregularEvent( RDOSimulator* sim );
 };
 
 #endif // RDO_IETRACE

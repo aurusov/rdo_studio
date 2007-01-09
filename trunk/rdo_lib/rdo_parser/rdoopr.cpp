@@ -34,7 +34,7 @@ RDOOPROperation::RDOOPROperation(std::string *_oprName, std::string *patName)
 	if(!pattern)
 		parser->error("Undefined pattern name: " + *getName());
 
-	activity = pattern->patRuntime->createActivity(_oprName);
+	activity = pattern->patRuntime->createActivity(*_oprName);
 	currParam = 0;
 }
 

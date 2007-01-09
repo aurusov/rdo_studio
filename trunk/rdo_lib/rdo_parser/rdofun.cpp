@@ -385,7 +385,7 @@ RDOFUNArithm::RDOFUNArithm( std::string* resName, std::string* parName, const YY
 			const RDORelevantResource* const rel = pat->findRelevantResource( resName );
 			if ( !pat->currRelRes ) {
 				// Внутри with_min-common-choice или $Time
-				if ( rel->begin == RDOPATPattern::CS_NonExist || rel->begin == RDOPATPattern::CS_Create ) {
+				if ( rel->begin == RDOResourceTrace::CS_NonExist || rel->begin == RDOResourceTrace::CS_Create ) {
 					parser->lexer_loc_set( res_name_error_pos.last_line, res_name_error_pos.last_column );
 					parser->error( rdo::format("Релевантный ресурс не может быть использован, т.к. он еще не существует: %s", rel->getName()->c_str()) );
 				}
@@ -397,11 +397,11 @@ RDOFUNArithm::RDOFUNArithm( std::string* resName, std::string* parName, const YY
 						parser->lexer_loc_set( res_name_error_pos.last_line, res_name_error_pos.last_column );
 						parser->error( rdo::format("Релевантный ресурс неопределен: %s. Его нельзя использовать в условиях выбора других ресурсов до его собственного Choice from", rel->getName()->c_str()) );
 					}
-					if ( rel->begin == RDOPATPattern::CS_NonExist ) {
+					if ( rel->begin == RDOResourceTrace::CS_NonExist ) {
 						parser->lexer_loc_set( res_name_error_pos.last_line, res_name_error_pos.last_column );
 						parser->error( rdo::format("Релевантный ресурс в начале операции не существует (NonExist): %s", rel->getName()->c_str()) );
 					}
-					if ( rel->begin == RDOPATPattern::CS_Create ) {
+					if ( rel->begin == RDOResourceTrace::CS_Create ) {
 						parser->lexer_loc_set( res_name_error_pos.last_line, res_name_error_pos.last_column );
 						parser->error( rdo::format("Сразу после создания (Create) релевантный ресурс можно использовать только в конверторах: %s", rel->getName()->c_str()) );
 					}
@@ -410,30 +410,30 @@ RDOFUNArithm::RDOFUNArithm( std::string* resName, std::string* parName, const YY
 				if ( rel->getType()->isTemporary() ) {
 					// В конверторе начала
 					if ( pat->currRelRes->currentState == RDORelevantResource::convertBegin ) {
-						if ( rel->begin == RDOPATPattern::CS_Create && !rel->alreadyHaveConverter ) {
+						if ( rel->begin == RDOResourceTrace::CS_Create && !rel->alreadyHaveConverter ) {
 							parser->lexer_loc_set( res_name_error_pos.last_line, res_name_error_pos.last_column );
 							parser->error( rdo::format("Релевантный ресурс нельзя использовать до его создания (Create): %s", rel->getName()->c_str()) );
 						}
-						if ( rel->begin == RDOPATPattern::CS_Erase && rel->alreadyHaveConverter ) {
+						if ( rel->begin == RDOResourceTrace::CS_Erase && rel->alreadyHaveConverter ) {
 							parser->lexer_loc_set( res_name_error_pos.last_line, res_name_error_pos.last_column );
 							parser->error( rdo::format("Релевантный ресурс нельзя использовать полсле удаления (Erase): %s", rel->getName()->c_str()) );
 						}
-						if ( rel->begin == RDOPATPattern::CS_NonExist ) {
+						if ( rel->begin == RDOResourceTrace::CS_NonExist ) {
 							parser->lexer_loc_set( res_name_error_pos.last_line, res_name_error_pos.last_column );
 							parser->error( rdo::format("Релевантный ресурс не существует в этом конверторе (NonExist): %s", rel->getName()->c_str()) );
 						}
 					}
 					// В конверторе конца
 					if ( pat->currRelRes->currentState == RDORelevantResource::convertEnd ) {
-						if ( rel->end == RDOPATPattern::CS_Create && !rel->alreadyHaveConverter ) {
+						if ( rel->end == RDOResourceTrace::CS_Create && !rel->alreadyHaveConverter ) {
 							parser->lexer_loc_set( res_name_error_pos.last_line, res_name_error_pos.last_column );
 							parser->error( rdo::format("Релевантный ресурс нельзя использовать до его создания (Create): %s", rel->getName()->c_str()) );
 						}
-						if ( rel->end == RDOPATPattern::CS_Erase && rel->alreadyHaveConverter ) {
+						if ( rel->end == RDOResourceTrace::CS_Erase && rel->alreadyHaveConverter ) {
 							parser->lexer_loc_set( res_name_error_pos.last_line, res_name_error_pos.last_column );
 							parser->error( rdo::format("Релевантный ресурс нельзя использовать полсле удаления (Erase): %s", rel->getName()->c_str()) );
 						}
-						if ( rel->end == RDOPATPattern::CS_NonExist ) {
+						if ( rel->end == RDOResourceTrace::CS_NonExist ) {
 							parser->lexer_loc_set( res_name_error_pos.last_line, res_name_error_pos.last_column );
 							parser->error( rdo::format("Релевантный ресурс не существует в этом конверторе (NonExist): %s", rel->getName()->c_str()) );
 						}

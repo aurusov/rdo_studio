@@ -11,7 +11,7 @@
 %token integer				260
 %token real					261
 %token End					262
-%token temporary			263
+%token temporary_kw			263
 %token IDENTIF				264
 %token INT_CONST			265
 %token REAL_CONST			266
@@ -212,7 +212,7 @@ rss_res_type:	IDENTIF_COLON IDENTIF {
 					if ( !resType ) {
 						parser->lexer_loc_set( &(@2) );
 //						parser->error(("Invalid resource type: " + *type).c_str());
-						parser->error( rdo::format("Неизвестный тип ресурса: %s",  type->c_str()) );
+						parser->error( rdo::format("Неизвестный тип ресурса: %s", type->c_str()) );
 					}
 
 					if ( parser->findRSSResource(name) ) {

@@ -11,7 +11,7 @@
 %token integer				260
 %token real					261
 %token End					262
-%token temporary			263
+%token temporary_kw			263
 %token IDENTIF				264
 %token INT_CONST			265
 %token REAL_CONST			266

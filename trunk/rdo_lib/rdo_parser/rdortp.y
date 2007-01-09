@@ -11,7 +11,7 @@
 %token integer				260
 %token real					261
 %token End					262
-%token temporary			263
+%token temporary_kw			263
 %token IDENTIF				264
 %token INT_CONST			265
 %token REAL_CONST			266
@@ -210,7 +210,7 @@ rtp_res_type_hdr:	Resource_type IDENTIF_COLON rtp_vid_res {
 					};
 
 rtp_vid_res:	permanent_kw	{ $$ = 1; }
-				| temporary		{ $$ = 0; };
+				| temporary_kw	{ $$ = 0; };
 
 rtp_body:	/* empty */ {
 				$$ = 0; // warning

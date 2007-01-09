@@ -1,9 +1,6 @@
 #ifndef RDO_DEFINES_H_
 #define RDO_DEFINES_H_
 
-typedef std::list<double> ListDouble;
-typedef std::list<double>::iterator ListDoubleIt;
-
 template <class Arg>
 inline std::string toString(Arg i)
 {

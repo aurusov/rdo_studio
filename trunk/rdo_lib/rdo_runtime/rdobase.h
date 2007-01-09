@@ -7,8 +7,8 @@
 class RDOSimulatorBase
 {
 private:
-	ListDouble   timePointList;
-	double       currentTime;
+	std::list< double > timePointList;
+	double              currentTime;
 
 	rdoRuntime::RunTimeMode mode;
 
@@ -50,9 +50,10 @@ protected:
 	virtual void onNothingMoreToDo() {}
 	virtual void onEndCondition() {}
 
-	// These functions called by engine before and after process
-	virtual void preProcess() {}
-	virtual void postProcess() {}
+	// Вызывается в самом начале прогона
+	virtual void preProcess()  = 0;
+	// Вызывается непосредвтсенно перед окончанием прогона
+	virtual void postProcess() = 0;
 
 	virtual bool isKeyDown() { return false; }
 

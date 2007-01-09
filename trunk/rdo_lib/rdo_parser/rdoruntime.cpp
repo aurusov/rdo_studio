@@ -7,7 +7,6 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 #include "rdoruntime.h"
-#include "rdopatrtime.h"
 #include "rdopat.h"
 #include "rdortp.h"
 #include "rdofun.h"
@@ -21,6 +20,24 @@ static char THIS_FILE[] = __FILE__;
 namespace rdoRuntime
 {
 
+// ----------------------------------------------------------------------------
+// ---------- RDOResource
+// ----------------------------------------------------------------------------
+RDOResource::RDOResource( RDORuntime* rt ):
+	RDOResourceTrace( rt ),
+	number( 0 ),
+	type( 0 ),
+	referenceCount( 0 )
+{
+}
+
+RDOResource::~RDOResource()
+{
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDORuntime
+// ----------------------------------------------------------------------------
 void RDORuntime::setConstValue(int numberOfConst, RDOValue value)
 {
 	if(allConstants.size() <= numberOfConst)
@@ -34,91 +51,70 @@ RDOValue RDORuntime::getConstValue(int numberOfConst)
 	return allConstants.at(numberOfConst);
 }
 
-RDOValue RDORuntime::getResParamVal(const int nRes, const int nParam) const
+void RDORuntime::onEraseRes( const int res_id, const RDOCalcEraseRes* calc )
 {
-   RDOResource *res = findResource(nRes);
-   return res->params.at(nParam);
-}
-
-void RDORuntime::setResParamVal(const int nRes, const int nParam, RDOValue val)
-{
-   RDOResource *res = findResource(nRes);
-	if(res->params.size() <= nParam)
-		res->params.resize(nParam + 1);
-
-   res->params.at(nParam) = val;
-}
-
-RDOValue RDORuntime::eraseRes( const int resNumb, const RDOCalcEraseRes* fromCalc )
-{
-	RDOResource* res = allResources.at(resNumb);
+	RDOResource* res = allResourcesByID.at( res_id );
 	if ( !res ) {
-		error( rdo::format("Временный ресурс уже удален. Возможно, он удален ранее в этом же образце. Имя релевантного ему ресурса: %s", fromCalc ? fromCalc->getName().c_str() : "неизвестное имя").c_str(), fromCalc );
+		error( rdo::format("Временный ресурс уже удален. Возможно, он удален ранее в этом же образце. Имя релевантного ему ресурса: %s", calc ? calc->getName().c_str() : "неизвестное имя").c_str(), calc );
 	}
-	std::for_each( allPokaz.begin(), allPokaz.end(), std::bind2nd(std::mem_fun1(rdoParse::RDOPMDPokaz::checkResourceErased), res) );
-
 	if ( res->referenceCount > 0 ) {
-		error( "Try to erase used resource", fromCalc );
+		error( "Невозможно удалить ресурс, т.к. он еще используется", calc );
+//		error( "Try to erase used resource", fromCalc );
 	} else {
+		std::for_each( allPokaz.begin(), allPokaz.end(), std::bind2nd(std::mem_fun1(rdoParse::RDOPMDPokaz::checkResourceErased), res) );
+		allResourcesByID.at( res_id ) = NULL;
+		// Диструктор ресурса вызывается в std::list::erase, который вызывается из std::list::remove
+		allResourcesByTime.remove( res );
 		delete res;
-		allResources.at( resNumb ) = NULL;
 	}
-	return 1;
-}
-
-int RDORuntime::getRelResNumber( const int nRelRes ) const
-{
-	return currActivity->getRelResNumber( nRelRes );
-}
-
-RDOResource *RDORuntime::findResource( const int num ) const
-{
-	return allResources.at( num );
 }
 
 RDOResource* RDORuntime::createNewResource()
 {
-	std::vector<RDOResource *>::iterator it = std::find(allResources.begin(), allResources.end(), (RDOResource *)NULL);
-	if(it != allResources.end())
-	{
-		RDOResource *newRes = new RDOResource(this);
-		newRes->number = (it - allResources.begin());
-		(*it) = newRes;
-		return newRes;
-	}
+	RDOResource* res = new RDOResource( this );
 
-	RDOResource *newRes = new RDOResource(this);
-	newRes->number = allResources.size();
-	allResources.push_back(newRes);
-	return newRes;
+	std::vector< RDOResource* >::iterator it = std::find( allResourcesByID.begin(), allResourcesByID.end(), static_cast<RDOResource*>(NULL) );
+	// Найшли дырку в последовательности ресурсов
+	if ( it != allResourcesByID.end() ) {
+		res->number = (it - allResourcesByID.begin());
+		(*it) = res;
+	} else {
+		res->number = allResourcesByID.size();
+		allResourcesByID.push_back( res );
+	}
+	allResourcesByTime.push_back( res );
+	return res;
 }
 
 RDOResource* RDORuntime::createNewResource( int number, bool isPermanent )
 {
-	allResources.resize(number + 1, NULL);
-	if(allResources.at(number) != NULL)
+	allResourcesByID.resize( number + 1, NULL );
+	if ( allResourcesByID.at(number) != NULL ) {
 		throw rdoParse::RDOInternalException("internal error N 0010");
-
-	RDOResource *newRes = new RDOResource(this);
-	newRes->number = number;
-	allResources.at(number) = newRes;
-//	if(isPermanent)
-		permanentResources.push_back(newRes);
-	if(!isPermanent)
-		newRes->makeTemporary(true);
-	return newRes;
+	}
+	RDOResource* res = new RDOResource( this );
+	res->number = number;
+	allResourcesByID.at(number) = res;
+	allResourcesByTime.push_back( res );
+//	if ( isPermanent )
+		permanentResources.push_back( res );
+	if( !isPermanent ) {
+		res->makeTemporary( true );
+	}
+	return res;
 }
 
 void RDORuntime::insertNewResource( RDOResource* res )
 {
-	res->number = allResources.size();
-	allResources.push_back( res );
+	res->number = allResourcesByID.size();
+	allResourcesByID.push_back( res );
+	allResourcesByTime.push_back( res );
 }
 
 void RDORuntime::addRuntimePokaz( rdoParse::RDOPMDPokaz* pok )
 { 
 	allPokaz.push_back(pok); 
-	addPokaz(pok); 
+//	addPokaz(pok); 
 }
 
 void RDORuntime::addRuntimeFrame( rdoParse::RDOFRMFrame* frm )
@@ -205,9 +201,9 @@ bool RDORuntime::checkKeyPressed( unsigned int scan_code, bool shift, bool contr
 	return false;
 }
 
-bool RDORuntime::checkAreaActivated( std::string* oprName )
+bool RDORuntime::checkAreaActivated( const std::string& oprName )
 {
-	std::vector<std::string>::iterator it = std::find( config.activeAreasMouseClicked.begin(), config.activeAreasMouseClicked.end(), *oprName );
+	std::vector<std::string>::iterator it = std::find( config.activeAreasMouseClicked.begin(), config.activeAreasMouseClicked.end(), oprName );
 	if ( it == config.activeAreasMouseClicked.end() ) {
 		return false;
 	}
@@ -220,49 +216,46 @@ bool RDORuntime::isKeyDown()
 	return key_found || !config.activeAreasMouseClicked.empty();
 }
 
-RDOValue RDOCalcCreateResource::calcValue(RDORuntime *sim) const
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcCreateNumberedResource
+// ----------------------------------------------------------------------------
+RDOCalcCreateNumberedResource::RDOCalcCreateNumberedResource( int _type, bool _traceFlag, const std::vector< RDOValue >& _paramsCalcs, int _number, bool _isPermanent ):
+	type( _type ),
+	traceFlag( _traceFlag ),
+	number( _number ),
+	isPermanent( _isPermanent )
 {
-	RDOResource *res = sim->createNewResource();
-	res->type = type;
+	paramsCalcs.insert( paramsCalcs.begin(), _paramsCalcs.begin(), _paramsCalcs.end() );
+}
+
+RDOValue RDOCalcCreateNumberedResource::calcValue( RDORuntime* sim ) const
+{
+	RDOResource* res = sim->createNewResource( number, isPermanent );
+	res->type  = type;
 	res->trace = traceFlag;
-	res->params.insert(res->params.begin(), paramsCalcs.begin(), paramsCalcs.end());
+	res->params.insert( res->params.begin(), paramsCalcs.begin(), paramsCalcs.end() );
 	return RDOValue(1);		// just to return something
 }
 
-RDOCalcCreateResource::RDOCalcCreateResource(int _type, bool _traceFlag, const std::vector<RDOValue> &_paramsCalcs):
-	type(_type), traceFlag(_traceFlag)
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcCreateEmptyResource
+// ----------------------------------------------------------------------------
+RDOCalcCreateEmptyResource::RDOCalcCreateEmptyResource( int _type, bool _traceFlag, int _rel_res_id, int _numParameters ):
+	type( _type ),
+	traceFlag( _traceFlag ),
+	rel_res_id( _rel_res_id ),
+	numParameters( _numParameters )
 {
-	paramsCalcs.insert(paramsCalcs.begin(), _paramsCalcs.begin(), _paramsCalcs.end());
 }
 
-RDOValue RDOCalcCreateNumberedResource::calcValue(RDORuntime *sim) const
+RDOValue RDOCalcCreateEmptyResource::calcValue( RDORuntime* sim ) const
 {
-	RDOResource *res = sim->createNewResource(number, isPermanent);
-	res->type = type;
+	RDOResource* res = sim->createNewResource();
+	sim->setRelRes( rel_res_id, res->number );
+	res->type  = type;
 	res->trace = traceFlag;
-	res->params.insert(res->params.begin(), paramsCalcs.begin(), paramsCalcs.end());
+	res->params.insert( res->params.begin(), numParameters, 0 );
 	return RDOValue(1);		// just to return something
-}
-
-RDOCalcCreateNumberedResource::RDOCalcCreateNumberedResource(int _type, bool _traceFlag, const std::vector<RDOValue> &_paramsCalcs, int _number, bool _isPermanent):
-	type(_type), traceFlag(_traceFlag), number(_number), isPermanent(_isPermanent)
-{
-	paramsCalcs.insert(paramsCalcs.begin(), _paramsCalcs.begin(), _paramsCalcs.end());
-}
-
-RDOValue RDOCalcCreateEmptyResource::calcValue(RDORuntime *sim) const
-{
-	RDOResource *res = sim->createNewResource();
-	sim->selectRelResource(relResNumber, res->number);
-	res->type = type;
-	res->trace = traceFlag;
-	res->params.insert(res->params.begin(), numParameters, 0);
-	return RDOValue(1);		// just to return something
-}
-
-RDOCalcCreateEmptyResource::RDOCalcCreateEmptyResource(int _type, bool _traceFlag, int _relResNumber, int _numParameters):
-	type(_type), traceFlag(_traceFlag), relResNumber(_relResNumber), numParameters(_numParameters)
-{
 }
 
 RDORuntime::RDORuntime():
@@ -301,7 +294,7 @@ RDORuntime::~RDORuntime()
 	DeleteAllObjects( operations );
 	DeleteAllObjects( allPokaz );
 	DeleteAllObjects( allDPTs );
-	DeleteAllObjects( allResources );
+	DeleteAllObjects( allResourcesByID );
 	DeleteAllObjects( allFrames );
 }
 
@@ -329,7 +322,7 @@ std::string RDOResource::traceParametersValue()
 	return str.str();
 }
 
-std::vector<RDOResourceTrace *> RDORuntime::getPermanentResources()
+std::list< RDOResourceTrace* > RDORuntime::getPermanentResources()
 {
 	return permanentResources;
 }
@@ -342,43 +335,39 @@ void RDORuntime::rdoInit(RDOTrace *customTracer, RDOResult *customResult)
 	RDOSimulatorTrace::rdoInit();
 }
 
-void RDORuntime::addRuntimeOperation(RDOActivityOperationRuntime *oper) 
+void RDORuntime::addRuntimeOperation( RDOActivityOperationRuntime* oper )
 { 
-	operations.push_back(oper); 
-	allBaseOperations.push_back(oper); 
+	operations.push_back( oper ); 
+	addTemplateBaseOperation( oper ); 
 }
 
 void RDORuntime::addRuntimeRule( RDOActivityRuleRuntime* rule )
 { 
 	rules.push_back( rule );
-	allBaseOperations.push_back( rule );
+	addTemplateBaseOperation( rule );
 }
 
-void RDORuntime::addRuntimeIE(RDOActivityIERuntime *ie) 
+void RDORuntime::addRuntimeIE( RDOActivityIERuntime* ie )
 { 
-	ies.push_back(ie); 
-	allBaseOperations.push_back(ie); 
+	ies.push_back( ie ); 
+	addTemplateBaseOperation( ie ); 
 }
 
 void RDORuntime::addRuntimeProcess( rdoRuntime::RDOPROCProcess* _process )
 {
 	process.push_back( _process );
-	allBaseOperations.push_back( _process ); 
+	addTemplateBaseOperation( _process ); 
 }
 
 void RDORuntime::addDPT( RDOSearchRuntime* dpt )
 { 
 	allDPTs.push_back( dpt );
-	allBaseOperations.push_back( dpt );
+	addTemplateBaseOperation( dpt );
 }
 
 void RDORuntime::onInit()
 {
-	std::for_each(initCalcs.begin(), initCalcs.end(), std::bind2nd(std::mem_fun1(&RDOCalc::calcValueBase), this));
-
-	int size = allBaseOperations.size();
-	for(int i = 0; i < size; i++)
-		addTemplateBaseOperation(allBaseOperations.at(i));
+	std::for_each( initCalcs.begin(), initCalcs.end(), std::bind2nd(std::mem_fun1(&RDOCalc::calcValueBase), this) );
 }
 
 RDOTrace *RDORuntime::getTracer()
@@ -388,7 +377,7 @@ RDOTrace *RDORuntime::getTracer()
 
 void RDORuntime::onDestroy()
 {                    
-	DeleteAllObjects( allResources );
+	DeleteAllObjects( allResourcesByID );
 
 	if ( tracer ) {
 		delete tracer;
@@ -417,8 +406,8 @@ RDOValue RDORuntime::getFuncArgument(int numberOfParam)
 RDOValue RDOFunCalcExist::calcValue( RDORuntime* sim ) const
 {
 	bool res = false;
-	std::vector< RDOResource* >::iterator end = sim->allResources.end();
-	for ( std::vector< RDOResource* >::iterator it = sim->allResources.begin(); it != end && !res; it++ ) {
+	std::list< RDOResource* >::iterator end = sim->allResourcesByTime.end();
+	for ( std::list< RDOResource* >::iterator it = sim->allResourcesByTime.begin(); it != end && !res; it++ ) {
 		if ( *it == NULL ) continue;
 		if ( (*it)->type != nResType ) continue;
 		sim->pushGroupFunc( *it );
@@ -431,8 +420,8 @@ RDOValue RDOFunCalcExist::calcValue( RDORuntime* sim ) const
 RDOValue RDOFunCalcNotExist::calcValue( RDORuntime* sim ) const
 {
 	bool res = true;
-	std::vector< RDOResource* >::iterator end = sim->allResources.end();
-	for ( std::vector< RDOResource* >::iterator it = sim->allResources.begin(); it != end && res; it++ ) {
+	std::list< RDOResource* >::iterator end = sim->allResourcesByTime.end();
+	for ( std::list< RDOResource* >::iterator it = sim->allResourcesByTime.begin(); it != end && res; it++ ) {
 		if ( *it == NULL ) continue;
 		if ( (*it)->type != nResType ) continue;
 		sim->pushGroupFunc( *it );
@@ -446,8 +435,8 @@ RDOValue RDOFunCalcForAll::calcValue( RDORuntime* sim ) const
 {
 	bool first_found = false;
 	bool res = true;
-	std::vector< RDOResource* >::iterator end = sim->allResources.end();
-	for ( std::vector< RDOResource* >::iterator it = sim->allResources.begin(); it != end && res; it++ ) {
+	std::list< RDOResource* >::iterator end = sim->allResourcesByTime.end();
+	for ( std::list< RDOResource* >::iterator it = sim->allResourcesByTime.begin(); it != end && res; it++ ) {
 		if ( *it == NULL ) continue;
 		if ( (*it)->type != nResType ) continue;
 		sim->pushGroupFunc( *it );
@@ -464,8 +453,8 @@ RDOValue RDOFunCalcForAll::calcValue( RDORuntime* sim ) const
 RDOValue RDOFunCalcNotForAll::calcValue( RDORuntime* sim ) const
 {
 	bool res = false;
-	std::vector< RDOResource* >::iterator end = sim->allResources.end();
-	for ( std::vector< RDOResource* >::iterator it = sim->allResources.begin(); it != end && !res; it++ ) {
+	std::list< RDOResource* >::iterator end = sim->allResourcesByTime.end();
+	for ( std::list< RDOResource* >::iterator it = sim->allResourcesByTime.begin(); it != end && !res; it++ ) {
 		if ( *it == NULL ) continue;
 		if ( (*it)->type != nResType ) continue;
 		sim->pushGroupFunc( *it );
@@ -481,8 +470,8 @@ RDOValue RDOFunCalcNotForAll::calcValue( RDORuntime* sim ) const
 void RDOFunCalcSelect::prepare( RDORuntime* sim ) const
 {
 	res_list.clear();
-	std::vector< RDOResource* >::iterator end = sim->allResources.end();
-	for ( std::vector< RDOResource* >::iterator it = sim->allResources.begin(); it != end; it++ ) {
+	std::list< RDOResource* >::iterator end = sim->allResourcesByTime.end();
+	for ( std::list< RDOResource* >::iterator it = sim->allResourcesByTime.begin(); it != end; it++ ) {
 		if ( *it == NULL ) continue;
 		if ( (*it)->type != nResType ) continue;
 		sim->pushGroupFunc( *it );
@@ -566,8 +555,8 @@ RDOValue RDOFunCalcSelectNotForAll::calcValue( RDORuntime* sim ) const
 	return res;
 }
 
-RDOSelectResourceCalc::RDOSelectResourceCalc( int _relNumb, rdoParse::RDOPATChoice* _choice, rdoParse::RDOPATSelectType* _selection_type ):
-	relNumb( _relNumb ),
+RDOSelectResourceCalc::RDOSelectResourceCalc( int _rel_res_id, rdoParse::RDOPATChoice* _choice, rdoParse::RDOPATSelectType* _selection_type ):
+	rel_res_id( _rel_res_id ),
 	choice( NULL ),
 	selection_calc( NULL ),
 	selection_type( rdoParse::RDOPATSelectType::st_empty )
@@ -585,71 +574,61 @@ RDOSelectResourceCalc::RDOSelectResourceCalc( int _relNumb, rdoParse::RDOPATChoi
 
 RDOValue RDOSelectResourceDirectCalc::calcValue( RDORuntime* sim ) const
 {
-	sim->selectRelResource( relNumb, resNumb );
-	if ( choice && !choice->calcValueBase( sim ) ) return 0;
+	sim->setRelRes( rel_res_id, res_id );
+	if ( choice && !choice->calcValueBase( sim ) ) {
+		sim->setRelRes( rel_res_id, -1 );
+		return 0;
+	}
 	return 1;
 }
 
 RDOValue RDOSelectResourceByTypeCalc::calcValue( RDORuntime* sim ) const
 {
-	RDOValue maxVal = -DBL_MAX;
-	RDOValue minVal = DBL_MAX;
-	int nResMinMax  = -1;
-	std::vector< RDOResource* >::iterator end = sim->allResources.end();
-	for ( std::vector< RDOResource* >::iterator it = sim->allResources.begin(); it != end; it++ ) {
+	RDOValue maxVal   = -DBL_MAX;
+	RDOValue minVal   = DBL_MAX;
+	int res_minmax_id = -1;
+	std::list< RDOResource* >::iterator end = sim->allResourcesByTime.end();
+	for ( std::list< RDOResource* >::iterator it = sim->allResourcesByTime.begin(); it != end; it++ ) {
 
 		if ( *it && (*it)->type == resType ) {
 
-			int res_number = (*it)->number;
+			int res_id = (*it)->number;
 
 			switch ( selection_type ) {
 				case rdoParse::RDOPATSelectType::st_empty: {
-//					sim->selectRelResource( relNumb, 0 );
-//					if ( std::find( sim->allResourcesEmptyChoiced.begin(), sim->allResourcesEmptyChoiced.end(), res_number ) != sim->allResourcesEmptyChoiced.end() ) {
-//						continue;
-//					}
-//					sim->selectRelResource( relNumb, res_number );
-//					sim->allResourcesEmptyChoiced.push_back( res_number );
 					return 1;
 				}
 				case rdoParse::RDOPATSelectType::st_first: {
-//					if ( std::find( sim->allResourcesChoiced.begin(), sim->allResourcesChoiced.end(), res_number ) != sim->allResourcesChoiced.end() ) {
-//						continue;
-//					}
-					sim->selectRelResource( relNumb, res_number );
+					sim->setRelRes( rel_res_id, res_id );
 					if ( choice && !choice->calcValueBase( sim ) ) {
+						sim->setRelRes( rel_res_id, -1 );
 						continue;
 					}
-//					sim->allResourcesChoiced.push_back( res_number );
 					return 1;
 				}
 				case rdoParse::RDOPATSelectType::st_with_min: {
-//					if ( std::find( sim->allResourcesChoiced.begin(), sim->allResourcesChoiced.end(), res_number ) != sim->allResourcesChoiced.end() ) {
-//						continue;
-//					}
-					sim->selectRelResource( relNumb, res_number );
+					sim->setRelRes( rel_res_id, res_id );
 					if ( choice && !choice->calcValueBase( sim ) ) {
+						sim->setRelRes( rel_res_id, -1 );
 						continue;
 					}
 					RDOValue tmp = selection_calc->calcValueBase( sim );
 					if ( tmp < minVal ) {
-						minVal     = tmp;
-						nResMinMax = res_number;
+						minVal        = tmp;
+						res_minmax_id = res_id;
 					}
 					break;
 				}
 				case rdoParse::RDOPATSelectType::st_with_max: {
-//					if ( std::find( sim->allResourcesChoiced.begin(), sim->allResourcesChoiced.end(), res_number ) != sim->allResourcesChoiced.end() ) {
-//						continue;
-//					}
-					sim->selectRelResource( relNumb, res_number );
+					sim->setRelRes( rel_res_id, res_id );
 					if ( choice && !choice->calcValueBase( sim ) ) {
+						sim->setRelRes( rel_res_id, -1 );
 						continue;
 					}
 					RDOValue tmp = selection_calc->calcValueBase( sim );
 					if ( tmp > maxVal ) {
-						maxVal     = tmp;
-						nResMinMax = res_number;
+						maxVal        = tmp;
+						res_minmax_id = res_id;
 					}
 					break;
 				}
@@ -657,29 +636,26 @@ RDOValue RDOSelectResourceByTypeCalc::calcValue( RDORuntime* sim ) const
 		}
 	}
 
-	if ( nResMinMax != -1 ) {
-		sim->selectRelResource( relNumb, nResMinMax );
-//		sim->allResourcesChoiced.push_back( nResMinMax );
+	if ( res_minmax_id != -1 ) {
+		sim->setRelRes( rel_res_id, res_minmax_id );
 		return 1;
 	}
 
 	return 0;
 }
 
-std::vector<int> RDOSelectResourceDirectCommonCalc::getPossibleNumbers(RDORuntime *sim) const
+std::vector< int > RDOSelectResourceDirectCommonCalc::getPossibleNumbers( RDORuntime* sim ) const
 {
-	std::vector<int> res;	
-	res.push_back(resNumb);
+	std::vector< int > res;	
+	res.push_back( rel_res_id );
 	return res;
 }
 
-std::vector<int> RDOSelectResourceByTypeCommonCalc::getPossibleNumbers(RDORuntime *sim) const
+std::vector< int > RDOSelectResourceByTypeCommonCalc::getPossibleNumbers( RDORuntime* sim ) const
 {
-	std::vector<int> res;	
-	std::vector<RDOResource *>::iterator end = sim->allResources.end();
-	for(std::vector<RDOResource *>::iterator it = sim->allResources.begin(); 
-													it != end; it++)
-	{
+	std::vector< int > res;	
+	std::list< RDOResource* >::iterator end = sim->allResourcesByTime.end();
+	for ( std::list< RDOResource* >::iterator it = sim->allResourcesByTime.begin(); it != end; it++ ) {
 		if(*it == NULL)
 			continue;
 
@@ -699,7 +675,7 @@ RDOValue RDOSelectResourceCommonCalc::calcValue(RDORuntime *sim) const
 	for(int i = 0; i < resSelectors.size(); i++)
 	{
 		allNumbs.push_back(resSelectors.at(i)->getPossibleNumbers(sim));
-		res.push_back(sim->getRelResNumber(i));
+		res.push_back(sim->getResByRelRes(i));
 	}
 
 	RDOValue bestVal = 0;
@@ -710,7 +686,7 @@ RDOValue RDOSelectResourceCommonCalc::calcValue(RDORuntime *sim) const
 		return false;
 
 	for(i = 0; i < res.size(); i++)
-		sim->selectRelResource(i, res.at(i));
+		sim->setRelRes(i, res.at(i));
 
 	return true;
 }
@@ -730,7 +706,7 @@ void RDOSelectResourceCommonCalc::getBest(std::vector<std::vector<int> > &allNum
 			(!useCommonWithMax && (newVal < bestVal)))	// found better value
 		{
 			for(int i = 0; i < resSelectors.size(); i++)
-				res.at(i) = sim->getRelResNumber(i);
+				res.at(i) = sim->getResByRelRes(i);
 			bestVal = newVal;
 			hasBest = true;
 		}
@@ -741,7 +717,7 @@ void RDOSelectResourceCommonCalc::getBest(std::vector<std::vector<int> > &allNum
 	std::vector<int> &ourLevel = allNumbs.at(level);
 	for(int i = 0; i < ourLevel.size(); i++)
 	{
-		sim->selectRelResource(level, ourLevel.at(i));
+		sim->setRelRes(level, ourLevel.at(i));
 		getBest(allNumbs, level+1, res, bestVal, sim, hasBest);
 	}
 }
@@ -761,7 +737,7 @@ bool RDOSelectResourceByTypeCommonCalc::callChoice(RDORuntime *sim) const
 
 RDOValue RDOSetRelParamCalc::calcValue(RDORuntime *sim) const
 {
-	sim->setResParamVal(sim->getRelResNumber(relNumb), parNumb, calc->calcValueBase(sim));
+	sim->setResParamVal(sim->getResByRelRes(relNumb), parNumb, calc->calcValueBase(sim));
 	return 1;
 }						 
 
@@ -774,11 +750,6 @@ RDOValue RDOSetResourceParamCalc::calcValue(RDORuntime *sim) const
 RDOValue RDOCalcPatParam::calcValue(RDORuntime *sim) const
 { 
 	return sim->getPatternParameter(numberOfParam); 
-}
-
-void RDORuntime::selectRelResource(int relNumb, int resNumb) 
-{ 
-	currActivity->selectRelResource(relNumb, resNumb); 
 }
 
 RDOValue RDOCalcSeqInit::calcValue(RDORuntime *sim) const	
@@ -875,20 +846,19 @@ RDOSimulator *RDORuntime::clone()
 {
 	RDORuntime* other = new RDORuntime();
 	other->sizeof_sim = sizeof( RDORuntime );
-	int size = allResources.size();
-	for(int i = 0; i < size; i++)
-	{
-		if(allResources.at(i) == NULL)
-			other->allResources.push_back(NULL);
-		else
-		{
-			RDOResource *newRes = new RDOResource(*allResources.at(i));
+	int size = allResourcesByID.size();
+	for ( int i = 0; i < size; i++ ) {
+		if ( allResourcesByID.at(i) == NULL ) {
+			other->allResourcesByID.push_back( NULL );
+			other->allResourcesByTime.push_back( NULL );
+		} else {
+			RDOResource* res = new RDOResource( *allResourcesByID.at(i) );
 			other->sizeof_sim += sizeof( RDOResource ) + sizeof( void* ) * 2;
-			other->allResources.push_back(newRes);
-			other->permanentResources.push_back(newRes);
+			other->allResourcesByID.push_back( res );
+			other->allResourcesByID.push_back( res );
+			other->permanentResources.push_back( res );
 		}
 	}
-
 	other->allConstants = allConstants;
 
 	return other;
@@ -897,22 +867,22 @@ RDOSimulator *RDORuntime::clone()
 bool RDORuntime::operator == (RDOSimulator &other)
 {
 	RDORuntime *otherRuntime = dynamic_cast<RDORuntime *>(&other);
-	if(otherRuntime->allResources.size() != allResources.size())
+	if(otherRuntime->allResourcesByID.size() != allResourcesByID.size())
 		return false;
 
-	int size = allResources.size();
+	int size = allResourcesByID.size();
 	for(int i = 0; i < size; i++)
 	{
-		if(allResources.at(i) == NULL && otherRuntime->allResources.at(i) != NULL)
+		if(allResourcesByID.at(i) == NULL && otherRuntime->allResourcesByID.at(i) != NULL)
 			return false;
 
-		if(allResources.at(i) != NULL && otherRuntime->allResources.at(i) == NULL)
+		if(allResourcesByID.at(i) != NULL && otherRuntime->allResourcesByID.at(i) == NULL)
 			return false;
 
-		if(allResources.at(i) == NULL && otherRuntime->allResources.at(i) == NULL)
+		if(allResourcesByID.at(i) == NULL && otherRuntime->allResourcesByID.at(i) == NULL)
 			continue;
 
-		if(*otherRuntime->allResources.at(i) != *allResources.at(i))
+		if(*otherRuntime->allResourcesByID.at(i) != *allResourcesByID.at(i))
 			return false;
 	}
 
@@ -973,6 +943,21 @@ void RDORuntime::rdoDelay( double fromTime, double toTime )
 */
 }
 
+void RDORuntime::onResetPokaz()
+{
+	std::for_each( allPokaz.begin(), allPokaz.end(), std::bind2nd(std::mem_fun1(&RDOPokaz::resetPokaz), this) );
+}
+
+void RDORuntime::onCheckPokaz()
+{
+	std::for_each( allPokaz.begin(), allPokaz.end(), std::bind2nd(std::mem_fun1(&RDOPokaz::checkPokaz), this) );
+}
+
+void RDORuntime::onAfterCheckPokaz()
+{
+	std::for_each( allPokaz.rbegin(), allPokaz.rend(), std::mem_fun(&RDOPokazTrace::tracePokaz) );
+}
+
 std::string RDORuntime::writePokazStructure()
 {
 	std::stringstream stream;
@@ -989,8 +974,8 @@ std::string RDORuntime::writePokazStructure()
 std::string RDORuntime::writeActivitiesStructure( int& counter )
 {
 	std::stringstream stream;
-	std::vector< RDOBaseOperation* >::const_iterator it = allBaseOperations.begin();
-	while ( it != allBaseOperations.end() ) {
+	std::vector< RDOBaseOperation* >::const_iterator it = haveBaseOperations.begin();
+	while ( it != haveBaseOperations.end() ) {
 		RDOActivityRuleRuntime* rule = dynamic_cast<RDOActivityRuleRuntime*>(*it);
 		if ( rule ) {
 			stream << counter++ << " ";
@@ -1050,10 +1035,10 @@ void RDORuntime::onPutToTreeNode()
 	// when create TreeNode with new RDOSimulator,
 	// make all resources permanent, to avoid trace their
 	// erase when delete TreeNode
-	for(int i = 0; i < allResources.size(); i++)
+	for(int i = 0; i < allResourcesByID.size(); i++)
 	{
-		if(allResources.at(i))
-			allResources.at(i)->makeTemporary(false);
+		if(allResourcesByID.at(i))
+			allResourcesByID.at(i)->makeTemporary(false);
 	}
 
 }
@@ -1081,6 +1066,7 @@ void RDORuntime::postProcess()
 {
 	getTracer()->startWriting();
 	try {
+		std::for_each( allPokaz.begin(), allPokaz.end(), std::bind2nd(std::mem_fun1(&RDOPokaz::calcStat), this) );
 		RDOSimulatorTrace::postProcess();
 		writeExitCode();
 	} catch ( rdoParse::RDOSyntaxException& e ) {

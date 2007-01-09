@@ -42,37 +42,37 @@ RDOPATPattern::RDOPATPattern( const std::string* const _name, const bool _trace 
 	parser->insertPATPattern( this );
 }
 
-std::string RDOPATPattern::StatusToStr( ConvertStatus value )
+	std::string RDOPATPattern::StatusToStr( RDOResourceTrace::ConvertStatus value )
 {
 	switch ( value ) {
-		case CS_Keep    : return "Keep";
-		case CS_Create  : return "Create";
-		case CS_Erase   : return "Erase";
-		case CS_NonExist: return "NonExist";
-		case CS_NoChange: return "NoChange";
+		case RDOResourceTrace::CS_Keep    : return "Keep";
+		case RDOResourceTrace::CS_Create  : return "Create";
+		case RDOResourceTrace::CS_Erase   : return "Erase";
+		case RDOResourceTrace::CS_NonExist: return "NonExist";
+		case RDOResourceTrace::CS_NoChange: return "NoChange";
 	}
 	return ""; // unreachable code
 }
 
-RDOPATPattern::ConvertStatus RDOPATPattern::StrToStatus( const std::string& value )
+RDOResourceTrace::ConvertStatus RDOPATPattern::StrToStatus( const std::string& value )
 {
 	if ( value == "Keep" ) {
-		return CS_Keep;
+		return RDOResourceTrace::CS_Keep;
 	} else if ( value == "Create" ) {
-		return CS_Create;
+		return RDOResourceTrace::CS_Create;
 	} else if ( value == "Erase" ) {
-		return CS_Erase;
+		return RDOResourceTrace::CS_Erase;
 	} else if ( value == "NonExist" ) {
-		return CS_NonExist;
+		return RDOResourceTrace::CS_NonExist;
 	} else if ( value == "NoChange" ) {
-		return CS_NoChange;
+		return RDOResourceTrace::CS_NoChange;
 	} else {
 		parser->error( "Wrong converter status: " + value );
 	}
-	return CS_Keep; // unreachable code
+	return RDOResourceTrace::CS_Keep; // unreachable code
 }
 
-void RDOPATPattern::res_insert( RDORelevantResource* res )
+void RDOPATPattern::rel_res_insert( RDORelevantResource* rel_res )
 {
 /*
 	if ( res->isDirect() ) {
@@ -99,7 +99,14 @@ void RDOPATPattern::res_insert( RDORelevantResource* res )
 		}
 	}
 */
-	relRes.push_back( res );
+	patRuntime->addBeginConvertStatus( rel_res->begin );
+	relRes.push_back( rel_res );
+}
+
+void RDOPATPatternOperation::rel_res_insert( RDORelevantResource* rel_res )
+{
+	RDOPATPattern::rel_res_insert( rel_res );
+	static_cast<rdoRuntime::RDOOperationRuntime*>(patRuntime)->addEndConvertStatus( rel_res->end );
 }
 
 void RDOPATPattern::testGoodForSearchActivity() const
@@ -134,8 +141,8 @@ int RDOPATPattern::writeModelStructure() const
 
 void RDOPATPatternRule::testGoodForSearchActivity() const
 {
-	for ( std::vector< RDORelevantResource* >::const_iterator i = res_begin(); i != res_end(); i++ ) {
-		if ( ((*i)->begin == CS_Create) || ((*i)->begin == CS_Erase) ) {
+	for ( std::vector< RDORelevantResource* >::const_iterator i = rel_res_begin(); i != rel_res_end(); i++ ) {
+		if ( ((*i)->begin == RDOResourceTrace::CS_Create) || ((*i)->begin == RDOResourceTrace::CS_Erase) ) {
 			parser->error( "Rule: " + *getName() + " Cannot be used in search activity because of bad converter status" );
 		}
 	}
@@ -193,13 +200,13 @@ void RDOPATPattern::add(RDOFUNFunctionParam *const _param)
 	params.push_back(_param); 
 }
 
-void RDOPATPattern::addRelRes( std::string* relName, std::string* res, ConvertStatus beg, ConvertStatus end )
+void RDOPATPattern::addRelRes( std::string* relName, std::string* resName, RDOResourceTrace::ConvertStatus beg, RDOResourceTrace::ConvertStatus end )
 {
 	parser->error( "Необходим только один конвертор" );
 //	parser->error( "Needed 1 converter status for this pattern type" );
 }
 
-void RDOPATPattern::addRelRes( std::string* relName, std::string* res, ConvertStatus beg)
+void RDOPATPattern::addRelRes( std::string* relName, std::string* resName, RDOResourceTrace::ConvertStatus beg )
 {
 	parser->error( "Ожидатеся статус конвертора конца" );
 //	parser->error( "Needed 2 converter statuses for this pattern type" );
@@ -221,145 +228,203 @@ void RDOPATPattern::setRelResPos( std::string* relRes, YYLTYPE* pos )
 
 void RDOPATPatternOperation::addRelRes( std::string* relName, std::string* resName, std::string* convBeg )
 {
-	addRelRes( relName, resName, RDOPATPattern::StrToStatus( *convBeg ), CS_NoChange );
+	addRelRes( relName, resName, RDOPATPattern::StrToStatus( *convBeg ), RDOResourceTrace::CS_NoChange );
 }
 
-void RDOPATPatternOperation::addRelRes( std::string* relName, std::string* resName, ConvertStatus beg, ConvertStatus end )
+void RDOPATPatternOperation::addRelRes( std::string* relName, std::string* resName, RDOResourceTrace::ConvertStatus beg, RDOResourceTrace::ConvertStatus end )
 {
 	switch ( beg ) {
-	case CS_Keep:
-		if ( end != CS_Keep && end != CS_Erase && end != CS_NoChange )
-			parser->error( "Wrong second converter status" );
-		break;
-	case CS_Create:
-		if ( end != CS_Keep && end != CS_Erase && end != CS_NoChange )
-			parser->error( "Wrong second converter status" );
-		break;
-	case CS_Erase:
-		if ( end != CS_NonExist )
-			parser->error( "Wrong second converter status" );
-		break;
-	case CS_NonExist:
-		if ( end != CS_Create )
-			parser->error( "Wrong second converter status" );
-		break;
-	case CS_NoChange:
-		if ( end != CS_Keep && end != CS_Erase && end != CS_NoChange )
-			parser->error( "Wrong second converter status" );
-		break;
+		case RDOResourceTrace::CS_Keep:
+			if ( end != RDOResourceTrace::CS_Keep && end != RDOResourceTrace::CS_Erase && end != RDOResourceTrace::CS_NoChange ) {
+				parser->error( rdo::format("Статус конвертора конца несовместим со статусом конвертора начала: %s и %s", RDOPATPattern::StatusToStr(beg).c_str(), RDOPATPattern::StatusToStr(end).c_str()) );
+//				parser->error( "Wrong second converter status" );
+			}
+			break;
+		case RDOResourceTrace::CS_Create:
+			if ( end != RDOResourceTrace::CS_Keep && end != RDOResourceTrace::CS_Erase && end != RDOResourceTrace::CS_NoChange ) {
+				parser->error( rdo::format("Статус конвертора конца несовместим со статусом конвертора начала: %s и %s", RDOPATPattern::StatusToStr(beg).c_str(), RDOPATPattern::StatusToStr(end).c_str()) );
+//				parser->error( "Wrong second converter status" );
+			}
+			break;
+		case RDOResourceTrace::CS_Erase:
+			if ( end != RDOResourceTrace::CS_NonExist ) {
+				parser->error( rdo::format("Статус конвертора конца несовместим со статусом конвертора начала: %s и %s", RDOPATPattern::StatusToStr(beg).c_str(), RDOPATPattern::StatusToStr(end).c_str()) );
+//				parser->error( "Wrong second converter status" );
+			}
+			break;
+		case RDOResourceTrace::CS_NonExist:
+			if ( end != RDOResourceTrace::CS_Create ) {
+				parser->error( rdo::format("Статус конвертора конца несовместим со статусом конвертора начала: %s и %s", RDOPATPattern::StatusToStr(beg).c_str(), RDOPATPattern::StatusToStr(end).c_str()) );
+//				parser->error( "Wrong second converter status" );
+			}
+			break;
+		case RDOResourceTrace::CS_NoChange:
+			if ( end != RDOResourceTrace::CS_Keep && end != RDOResourceTrace::CS_Erase && end != RDOResourceTrace::CS_NoChange ) {
+				parser->error( rdo::format("Статус конвертора конца несовместим со статусом конвертора начала: %s и %s", RDOPATPattern::StatusToStr(beg).c_str(), RDOPATPattern::StatusToStr(end).c_str()) );
+//				parser->error( "Wrong second converter status" );
+			}
+			break;
 	};
 
+	RDORelevantResource* relRes     = NULL;
 	const RDORSSResource* const res = parser->findRSSResource( resName );
-
 	if ( res ) {
-		if ( beg == CS_Create ) {
-			parser->error("Cannot use Create status for resource, only for resource type");
+		if ( beg == RDOResourceTrace::CS_Create ) {
+			parser->error( rdo::format("Статус конвертора '%s' можно использовать, если описателем является тип ресурса, но не ресурс", RDOPATPattern::StatusToStr(beg).c_str()) );
+//			parser->error( "Cannot use Create status for resource, only for resource type" );
 		}
-		if ( end == CS_Create ) {
-			parser->error("Cannot use Create status for resource, only for resource type");
+		if ( end == RDOResourceTrace::CS_Create ) {
+			parser->error( rdo::format("Статус конвертора '%s' можно использовать, если описателем является тип ресурса, но не ресурс", RDOPATPattern::StatusToStr(end).c_str()) );
+//			parser->error( "Cannot use Create status for resource, only for resource type" );
 		}
 		if ( res->getType()->isPermanent() ) {
-//			if ( beg == CS_Create || beg == CS_Erase || beg == CS_NonExist )
-//				parser->error("Wrong first converter status for resource of permanent type");
-//			if ( end == CS_Create || end == CS_Erase || end == CS_NonExist )
-//				parser->error("Wrong second converter status for resource of permanent type");
-			if ( beg == CS_Create || beg == CS_Erase || beg == CS_NonExist ) {
+//			if ( beg == RDOResourceTrace::CS_Create || beg == RDOResourceTrace::CS_Erase || beg == RDOResourceTrace::CS_NonExist )
+//				parser->error( "Wrong first converter status for resource of permanent type" );
+//			if ( end == RDOResourceTrace::CS_Create || end == RDOResourceTrace::CS_Erase || end == RDOResourceTrace::CS_NonExist )
+//				parser->error( "Wrong second converter status for resource of permanent type" );
+			if ( beg == RDOResourceTrace::CS_Create || beg == RDOResourceTrace::CS_Erase || beg == RDOResourceTrace::CS_NonExist ) {
 				parser->error( rdo::format("Недопустимый статус конвертора начала для постоянного ресурса: %s", RDOPATPattern::StatusToStr(beg).c_str()) );
 			}
-			if ( end == CS_Create || end == CS_Erase || end == CS_NonExist ) {
+			if ( end == RDOResourceTrace::CS_Create || end == RDOResourceTrace::CS_Erase || end == RDOResourceTrace::CS_NonExist ) {
 				parser->error( rdo::format("Недопустимый статус конвертора конца для постоянного ресурса: %s", RDOPATPattern::StatusToStr(end).c_str()) );
 			}
 		}
-		res_insert( new RDORelevantResourceDirect(relName, res_count(), res, beg, end) );
+		relRes = new RDORelevantResourceDirect( relName, rel_res_count(), res, beg, end );
+		rel_res_insert( relRes );
 
 	} else {
 		const RDORTPResType* const type = parser->findRTPResType( resName );
 		if ( !type ) {
-			parser->error( "Unknown resource name or type: " + *resName );
+			parser->error( rdo::format("Неизвестный тип ресурса или ресурс: %s", resName->c_str()) );
+//			parser->error( "Unknown resource name or type: " + *resName );
 		}
 		if ( type->isPermanent() ) {
-			if ( beg == CS_Create || beg == CS_Erase || beg == CS_NonExist ) {
+			if ( beg == RDOResourceTrace::CS_Create || beg == RDOResourceTrace::CS_Erase || beg == RDOResourceTrace::CS_NonExist ) {
 				parser->error( rdo::format("Недопустимый статус конвертора начала для постоянного ресурса: %s", RDOPATPattern::StatusToStr(beg).c_str()) );
 			}
-			if ( end == CS_Create || end == CS_Erase || end == CS_NonExist ) {
+			if ( end == RDOResourceTrace::CS_Create || end == RDOResourceTrace::CS_Erase || end == RDOResourceTrace::CS_NonExist ) {
 				parser->error( rdo::format("Недопустимый статус конвертора конца для постоянного ресурса: %s", RDOPATPattern::StatusToStr(end).c_str()) );
 			}
 		}
-		res_insert( new RDORelevantResourceByType( relName, res_count(), type, beg, end ) );
+		relRes = new RDORelevantResourceByType( relName, rel_res_count(), type, beg, end );
+		rel_res_insert( relRes );
+	}
+	if ( relRes->begin == RDOResourceTrace::CS_Erase ) {
+		patRuntime->addBeginEraseCalc( new rdoRuntime::RDOCalcEraseRes( relRes->rel_res_id, *relRes->getName() ) );
+	}
+	if ( relRes->end == RDOResourceTrace::CS_Erase ) {
+		static_cast<rdoRuntime::RDOOperationRuntime*>(patRuntime)->addEndEraseCalc( new rdoRuntime::RDOCalcEraseRes( relRes->rel_res_id, *relRes->getName() ) );
 	}
 }
 
-void RDOPATPatternRule::addRelRes(std::string *relName, std::string *resName, ConvertStatus beg)
+void RDOPATPatternRule::addRelRes( std::string* relName, std::string* resName, RDOResourceTrace::ConvertStatus beg )
 {
-	if(beg == CS_NonExist)
-		parser->error("Cannot use NonExist status in rule");
-
-	const RDORSSResource *const res = parser->findRSSResource(resName);
-	if(res)
-	{
-		if(beg == CS_Create)
-			parser->error("Cannot use Create status for resource, only for resource type");
-
-		if(res->getType()->isPermanent())
-		{
-			if(beg == CS_Create || beg == CS_Erase || beg == CS_NonExist)
-				parser->error("Wrong converter status for resource of permanent type");
-		}
-
-		res_insert(new RDORelevantResourceDirect(relName, res_count(), res, beg));
-		return;
+	if ( beg == RDOResourceTrace::CS_NonExist ) {
+		parser->error( rdo::format("Нельзя использовать статус конвертора '%s' в образце типа %s", RDOPATPattern::StatusToStr(beg).c_str(), getPatTypeStr().c_str()) );
+//		parser->error( "Cannot use NonExist status in rule" );
 	}
 
-	const RDORTPResType *const type = parser->findRTPResType(resName);
-	if(!type)
-		parser->error("Unknown resource name or type: " + *resName);
+	RDORelevantResource* relRes     = NULL;
+	const RDORSSResource* const res = parser->findRSSResource( resName );
+	if ( res ) {
+		if ( beg == RDOResourceTrace::CS_Create ) {
+			parser->error( rdo::format("Статус конвертора '%s' можно использовать, если описателем является тип ресурса, но не ресурс", RDOPATPattern::StatusToStr(beg).c_str()) );
+//			parser->error( "Cannot use Create status for resource, only for resource type" );
+		}
+		if ( res->getType()->isPermanent() ) {
+			if ( beg == RDOResourceTrace::CS_Create || beg == RDOResourceTrace::CS_Erase || beg == RDOResourceTrace::CS_NonExist ) {
+				parser->error( rdo::format("Недопустимый статус конвертора начала для постоянного ресурса: %s", RDOPATPattern::StatusToStr(beg).c_str()) );
+//				parser->error( "Wrong converter status for resource of permanent type" );
+			}
+		}
+		relRes = new RDORelevantResourceDirect( relName, rel_res_count(), res, beg );
+		rel_res_insert( relRes );
 
-	res_insert(new RDORelevantResourceByType(relName, res_count(), type, beg));
+	} else {
+		const RDORTPResType* const type = parser->findRTPResType( resName );
+		if ( !type ) {
+			parser->error( rdo::format("Неизвестный тип ресурса или ресурс: %s", resName->c_str()) );
+//			parser->error( "Unknown resource name or type: " + *resName );
+		}
+		relRes = new RDORelevantResourceByType( relName, rel_res_count(), type, beg );
+		rel_res_insert( relRes );
+	}
+	if ( relRes->begin == RDOResourceTrace::CS_Erase ) {
+		patRuntime->addBeginEraseCalc( new rdoRuntime::RDOCalcEraseRes( relRes->rel_res_id, *relRes->getName() ) );
+	}
 }
 
-void RDOPATPatternEvent::addRelRes(std::string *relName, std::string *resName, ConvertStatus beg)
+void RDOPATPatternEvent::addRelRes( std::string* relName, std::string* resName, RDOResourceTrace::ConvertStatus beg )
 {
-	const RDORSSResource *const res = parser->findRSSResource(resName);
-	if(res)
-	{
-		if(beg == CS_Create)
-			parser->error("Cannot use Create status for resource, only for resource type");
+	if ( beg == RDOResourceTrace::CS_NonExist || beg == RDOResourceTrace::CS_NoChange ) {
+		parser->error( rdo::format("Статусы конверторов NonExist и NoChange не могут быть использованы в обраце типа %s", getPatTypeStr().c_str()) );
+	}
 
-		if(res->getType()->isPermanent())
-		{
-			if(beg == CS_Create || beg == CS_Erase || beg == CS_NonExist)
-				parser->error("Wrong converter status for resource of permanent type");
+	RDORelevantResource* relRes     = NULL;
+	const RDORSSResource* const res = parser->findRSSResource( resName );
+	if ( res ) {
+		if ( beg == RDOResourceTrace::CS_Create ) {
+			parser->error( rdo::format("Статус конвертора '%s' можно использовать, если описателем является тип ресурса, но не ресурс", RDOPATPattern::StatusToStr(beg).c_str()) );
+//			parser->error( "Cannot use Create status for resource, only for resource type" );
 		}
-
-		RDORelevantResourceDirect *rd = new RDORelevantResourceDirect(relName, res_count(), res, beg);
-		res_insert( rd );
+		if ( res->getType()->isPermanent() ) {
+			if ( beg == RDOResourceTrace::CS_Create || beg == RDOResourceTrace::CS_Erase || beg == RDOResourceTrace::CS_NonExist ) {
+				parser->error( rdo::format("Недопустимый статус конвертора начала для постоянного ресурса: %s", RDOPATPattern::StatusToStr(beg).c_str()) );
+//				parser->error( "Wrong converter status for resource of permanent type" );
+			}
+		}
+		RDORelevantResourceDirect* rd = new RDORelevantResourceDirect( relName, rel_res_count(), res, beg );
+		relRes                        = rd;
+		rel_res_insert( relRes );
 		patRuntime->addChoiceFromCalc( rd->createSelectEmptyResourceCalc() );
 
-		return;
+	} else {
+		const RDORTPResType* const type = parser->findRTPResType( resName );
+		if ( !type ) {
+			parser->error( rdo::format("Неизвестный тип ресурса или ресурс: %s", resName->c_str()) );
+//			parser->error( "Unknown resource name or type: " + *resName );
+		}
+		if ( beg == RDOResourceTrace::CS_Keep || beg == RDOResourceTrace::CS_Erase ) {
+			parser->error( rdo::format("Статусы конверторов Keep и Erase могут быть использованы в обраце типа %s с описателем в виде ресурса, но не типа ресурса", getPatTypeStr().c_str()) );
+//			parser->error( "Can use Keep and Erase status with resource name only (not with resource type) in irregular event" );
+		}
+		relRes = new RDORelevantResourceByType( relName, rel_res_count(), type, beg );
+		rel_res_insert( relRes );
 	}
-
-	const RDORTPResType *const type = parser->findRTPResType(resName);
-	if(!type)
-		parser->error("Unknown resource name or type: " + *resName);
-
-	if(beg == CS_Keep || beg == CS_Erase)
-		parser->error("Can use Keep and Erase status with resource name only (not with resource type) in irregular event");
-
-	RDORelevantResourceByType *rt = new RDORelevantResourceByType(relName, res_count(), type, beg);
-	res_insert( rt );
+	if ( relRes->begin == RDOResourceTrace::CS_Erase ) {
+		patRuntime->addBeginEraseCalc( new rdoRuntime::RDOCalcEraseRes( relRes->rel_res_id, *relRes->getName() ) );
+	}
 }
 
-void RDOPATPattern::setCommonChoiceFirst() {	useCommonChoice = true; commonChoice = NULL; }
-void RDOPATPattern::setCommonChoiceWithMin(RDOFUNArithm *arithm) { useCommonChoice = true; useCommonWithMax = false; commonChoice = arithm; }
-void RDOPATPattern::setCommonChoiceWithMax(RDOFUNArithm *arithm) { useCommonChoice = true; useCommonWithMax = true; commonChoice = arithm; }
-void RDOPATPatternRule::setTime(RDOFUNArithm *arithm) 
-{ 
-	parser->error("Rule must have no $Time field"); 
+void RDOPATPattern::setCommonChoiceFirst()
+{
+	useCommonChoice = true;
+	commonChoice    = NULL;
 }
 
-void RDOPATPattern::setTime(RDOFUNArithm *arithm) 
+void RDOPATPattern::setCommonChoiceWithMin( RDOFUNArithm* arithm )
+{
+	useCommonChoice  = true;
+	useCommonWithMax = false;
+	commonChoice     = arithm;
+}
+
+void RDOPATPattern::setCommonChoiceWithMax( RDOFUNArithm* arithm )
+{
+	useCommonChoice  = true;
+	useCommonWithMax = true;
+	commonChoice     = arithm;
+}
+
+void RDOPATPatternRule::setTime( RDOFUNArithm* arithm )
 { 
-	patRuntime->setTime(arithm->createCalc(NULL));
+	parser->error( rdo::format("Поле $Time не используется в образце типа %s", getPatTypeStr().c_str()) );
+//	parser->error( "Rule must have no $Time field" );
+}
+
+void RDOPATPattern::setTime( RDOFUNArithm* arithm )
+{ 
+	patRuntime->setTime( arithm->createCalc(NULL) );
 //	time = arithm; 
 }
 
@@ -378,43 +443,44 @@ void RDOPATPattern::addRelResBody( std::string* resName )
 	currRelRes->alreadyHaveConverter = true;
 }
 
-void RDOPATPattern::addRelResUsage( RDOPATChoice* choice, RDOPATSelectType* first )
+void RDOPATPattern::addRelResUsage( RDOPATChoice* choice, RDOPATSelectType* order_sort )
 {
-	if ( useCommonChoice && first->type != RDOPATSelectType::st_empty ) {
+	if ( useCommonChoice && order_sort->type != RDOPATSelectType::st_empty ) {
 		parser->error( "Нельзя указать способ выбора релевантного ресурса, т.к. используется единый для всех релевантных ресурсов способ, указанный до ключевого слова $Body" );
 //		parser->error( "Cannot use both common choice and choice for \"" + *currRelRes->getName() + "\" relevant resource in pattern \"" + *getName() + "\"" );
 	}
 
-	if ( !useCommonChoice && first->type == RDOPATSelectType::st_empty ) {
-		if ( (currRelRes->begin != CS_Create) && (currRelRes->end != CS_Create) ) {
-			first->type = RDOPATSelectType::st_first;
+	if ( !useCommonChoice && order_sort->type == RDOPATSelectType::st_empty ) {
+		if ( (currRelRes->begin != RDOResourceTrace::CS_Create) && (currRelRes->end != RDOResourceTrace::CS_Create) ) {
+			order_sort->type = RDOPATSelectType::st_first;
 		}
 	}
 
-	if ( (currRelRes->begin == CS_Create) || (currRelRes->end == CS_Create) ) {
+	if ( (currRelRes->begin == RDOResourceTrace::CS_Create) || (currRelRes->end == RDOResourceTrace::CS_Create) ) {
 		if ( choice->type != RDOPATChoice::ch_empty ) {
 			parser->error( "Релевантный ресурс создается, для него нельзя использовать 'Choice'. Ожидается конвертор" );
 //			parser->error( "Cannot use choice when create \"" + *currRelRes->getName() + "\" relevant resource in pattern \"" + *getName() + "\"" );
 		}
-		if ( first->type != RDOPATSelectType::st_empty ) {
-			parser->error( rdo::format("Релевантный ресурс создается, для него нельзя использовать способ выбора '%s'. Ожидается конвертор", first->asString().c_str()) );
+		if ( order_sort->type != RDOPATSelectType::st_empty ) {
+			parser->error( rdo::format("Релевантный ресурс создается, для него нельзя использовать способ выбора '%s'. Ожидается конвертор", order_sort->asString().c_str()) );
 		}
 	}
 
-	currRelRes->choice = choice;
-	currRelRes->first  = first;
+	currRelRes->choice     = choice;
+	currRelRes->order_sort = order_sort;
 }
 
-void RDOPATPatternEvent::addRelResUsage( RDOPATChoice* choice, RDOPATSelectType* first )
+void RDOPATPatternEvent::addRelResUsage( RDOPATChoice* choice, RDOPATSelectType* order_sort )
 {
-	if ( first->type != RDOPATSelectType::st_empty ) {
-		parser->error( rdo::format("Для релевантных ресурсов нерегулярного события нельзя использовать правило выбора '%s'", first->asString().c_str()) );
+	if ( order_sort->type != RDOPATSelectType::st_empty ) {
+		parser->error( rdo::format("Для релевантных ресурсов нерегулярного события нельзя использовать правило выбора '%s'", order_sort->asString().c_str()) );
 	}
 	if ( choice->type != RDOPATChoice::ch_empty ) {
-		parser->error("Unexpected choice for \"" + *currRelRes->getName() + "\" relevant resource in pattern \"" + *getName() + "\"");
+		parser->error( "Релевантные ресурсы нерегулярного события нельзя выбирать с помощью Choice from или Choice NoCheck" );
+//		parser->error( "Unexpected choice for \"" + *currRelRes->getName() + "\" relevant resource in pattern \"" + *getName() + "\"" );
 	}
-	currRelRes->choice = choice;
-	currRelRes->first  = first;
+	currRelRes->choice     = choice;
+	currRelRes->order_sort = order_sort;
 }
 
 void RDOPATPattern::end()
@@ -422,14 +488,13 @@ void RDOPATPattern::end()
 	int size = relRes.size();
 	for ( int i = 0; i < size; i++ ) {
 		RDORelevantResource* currRelRes = relRes.at( i );
-//		if ( !currRelRes->choice ) {
 		if ( !currRelRes->alreadyHaveConverter ) {
 			parser->lexer_loc_backup();
 			parser->lexer_loc_set( &rel_res_pos[ *currRelRes->getName() ] );
-			parser->warning( rdo::format("Релевантный ресурс '%s' не используется в образце '%s'", currRelRes->getName()->c_str(), getName()->c_str()) );
+			parser->error( rdo::format("Релевантный ресурс '%s' не используется в образце '%s'", currRelRes->getName()->c_str(), getName()->c_str()) );
 			parser->lexer_loc_restore();
 		}
-		patRuntime->addChoiceFromCalc( currRelRes->createSelectEmptyResourceCalc() );
+//		patRuntime->addChoiceFromCalc( currRelRes->createSelectEmptyResourceCalc() );
 	}
 
 	if(useCommonChoice)
@@ -450,42 +515,31 @@ void RDOPATPattern::end()
 		// with_min / with_max
 		std::vector< rdoRuntime::RDOSelectResourceCommon* > resSelectors;
 		for ( int i = 0; i < size; i++ ) {
-			if ( relRes.at(i)->begin == CS_Keep || relRes.at(i)->begin == CS_Erase || relRes.at(i)->begin == CS_NoChange ) {
+			if ( relRes.at(i)->begin == RDOResourceTrace::CS_Keep || relRes.at(i)->begin == RDOResourceTrace::CS_Erase || relRes.at(i)->begin == RDOResourceTrace::CS_NoChange ) {
 				resSelectors.push_back( relRes.at(i)->createSelectResourceCommonChoiceCalc() );
 			}
 		}
 
 		patRuntime->addChoiceFromCalc(new rdoRuntime::RDOSelectResourceCommonCalc(resSelectors, useCommonWithMax, commonChoice->createCalc()));
 //		parser->error("RDOPATPattern::end not implemented yet for not \"first\" conditions in common choice");
-	}
-	else
-	{
-//		int size = relRes.size();
-		for(int i = 0; i < size; i++)
-		{
+	} else {
+		for( int i = 0; i < size; i++ ) {
 			rdoRuntime::RDOCalc *calc = relRes.at(i)->createSelectResourceChoiceCalc();
 			patRuntime->addChoiceFromCalc(calc);
 		}
-		return;
 	}
 }
 
 void RDOPATPattern::addRelResConvert()
 {
-	if ( currRelRes->begin != CS_NoChange && currRelRes->begin != CS_Erase && currRelRes->begin != CS_NonExist ) {
+	if ( currRelRes->begin != RDOResourceTrace::CS_NoChange && currRelRes->begin != RDOResourceTrace::CS_Erase && currRelRes->begin != RDOResourceTrace::CS_NonExist ) {
 		parser->error( "Ожидается конвертор релевантного ресурса" );
 //		parser->error( "Converter needed for \"" + *currRelRes->getName() + "\" relevant resource in pattern \"" + *getName() + "\"" );
 	}
 
-	if ( currRelRes->end != CS_NoChange && currRelRes->end != CS_Erase && currRelRes->end != CS_NonExist ) {
+	if ( currRelRes->end != RDOResourceTrace::CS_NoChange && currRelRes->end != RDOResourceTrace::CS_Erase && currRelRes->end != RDOResourceTrace::CS_NonExist ) {
 		parser->error( "Converter end needed for \"" + *currRelRes->getName() + "\" relevant resource in pattern \"" + *getName() + "\"" );
 	}
-
-	if ( currRelRes->begin == CS_Erase )
-		patRuntime->addBeginCalc( new rdoRuntime::RDOCalcEraseRes( currRelRes->numberOfResource, *currRelRes->getName() ) );
-
-	if ( currRelRes->end == CS_Erase )
-		patRuntime->addEndCalc( new rdoRuntime::RDOCalcEraseRes( currRelRes->numberOfResource, *currRelRes->getName() ) );
 }
 
 RDOPATPatternOperation::RDOPATPatternOperation( std::string* _name, bool _trace ):
@@ -524,56 +578,68 @@ RDOPATPatternRule::RDOPATPatternRule( std::string* _name, bool _trace ):
 	patRuntime->setPatternId( parser->getPAT_id() );
 }
 
-rdoRuntime::RDOCalc *RDORelevantResourceDirect::createSelectEmptyResourceCalc()
+rdoRuntime::RDOCalc* RDORelevantResourceDirect::createSelectEmptyResourceCalc()
 {
-	return new rdoRuntime::RDOSelectResourceDirectCalc( numberOfResource, res->getNumber(), NULL, NULL );
+	return new rdoRuntime::RDOSelectResourceDirectCalc( rel_res_id, res->getNumber(), NULL, NULL );
 }
 
 rdoRuntime::RDOCalc *RDORelevantResourceDirect::createSelectFirstResourceChoiceCalc()
 {
-	return new rdoRuntime::RDOSelectResourceDirectCalc( numberOfResource, res->getNumber(), choice, NULL );
+	return new rdoRuntime::RDOSelectResourceDirectCalc( rel_res_id, res->getNumber(), choice, NULL );
 }
 
 rdoRuntime::RDOCalc *RDORelevantResourceDirect::createSelectResourceChoiceCalc()
 {
-	return new rdoRuntime::RDOSelectResourceDirectCalc( numberOfResource, res->getNumber(), choice, first );
+	return new rdoRuntime::RDOSelectResourceDirectCalc( rel_res_id, res->getNumber(), choice, order_sort );
 }
 
 rdoRuntime::RDOSelectResourceCommon *RDORelevantResourceDirect::createSelectResourceCommonChoiceCalc()
 {
-	return new rdoRuntime::RDOSelectResourceDirectCommonCalc( numberOfResource, res->getNumber(), choice, NULL );
+	return new rdoRuntime::RDOSelectResourceDirectCommonCalc( rel_res_id, res->getNumber(), choice, NULL );
 }
 
-rdoRuntime::RDOCalc *RDORelevantResourceByType::createSelectEmptyResourceCalc()
+rdoRuntime::RDOCalc* RDORelevantResourceByType::createSelectEmptyResourceCalc()
 {
-	if ( (begin != RDOPATPattern::CS_Create) && (end != RDOPATPattern::CS_Create) ) {
-		return new rdoRuntime::RDOSelectResourceByTypeCalc( numberOfResource, type->getNumber(), NULL, NULL );
+	if ( (begin != RDOResourceTrace::CS_Create) && (end != RDOResourceTrace::CS_Create) ) {
+		return new rdoRuntime::RDOSelectResourceByTypeCalc( rel_res_id, type->getNumber(), NULL, NULL );
 	} else {
-		return new rdoRuntime::RDOCalcConst(1);
+		if ( begin == RDOResourceTrace::CS_NonExist ) {
+			return new rdoRuntime::RDOSelectResourceNonExistCalc( rel_res_id );
+		} else {
+			return new rdoRuntime::RDOCalcConst(1);
+		}
 	}
 }
 
 rdoRuntime::RDOCalc *RDORelevantResourceByType::createSelectFirstResourceChoiceCalc()
 {
-	if ( (begin != RDOPATPattern::CS_Create) && (end != RDOPATPattern::CS_Create) ) {
-		return new rdoRuntime::RDOSelectResourceByTypeCalc( numberOfResource, type->getNumber(), choice, NULL );
+	if ( (begin != RDOResourceTrace::CS_Create) && (end != RDOResourceTrace::CS_Create) ) {
+		return new rdoRuntime::RDOSelectResourceByTypeCalc( rel_res_id, type->getNumber(), choice, NULL );
 	} else {
-		return new rdoRuntime::RDOCalcConst(1);
+		if ( begin == RDOResourceTrace::CS_NonExist ) {
+			return new rdoRuntime::RDOSelectResourceNonExistCalc( rel_res_id );
+		} else {
+			return new rdoRuntime::RDOCalcConst(1);
+		}
 	}
 }
 
 rdoRuntime::RDOCalc *RDORelevantResourceByType::createSelectResourceChoiceCalc()
 {
-	if ( (begin != RDOPATPattern::CS_Create) && (end != RDOPATPattern::CS_Create) ) {
-		return new rdoRuntime::RDOSelectResourceByTypeCalc( numberOfResource, type->getNumber(), choice, first );
+	if ( (begin != RDOResourceTrace::CS_Create) && (end != RDOResourceTrace::CS_Create) ) {
+		return new rdoRuntime::RDOSelectResourceByTypeCalc( rel_res_id, type->getNumber(), choice, order_sort );
 	} else {
-		return new rdoRuntime::RDOCalcConst(1);
+		if ( begin == RDOResourceTrace::CS_NonExist ) {
+			return new rdoRuntime::RDOSelectResourceNonExistCalc( rel_res_id );
+		} else {
+			return new rdoRuntime::RDOCalcConst(1);
+		}
 	}
 }
 
 rdoRuntime::RDOSelectResourceCommon *RDORelevantResourceByType::createSelectResourceCommonChoiceCalc()
 {
-	return new rdoRuntime::RDOSelectResourceByTypeCommonCalc( numberOfResource, type->getNumber(), choice, NULL );
+	return new rdoRuntime::RDOSelectResourceByTypeCommonCalc( rel_res_id, type->getNumber(), choice, NULL );
 }
 
 void RDOPATParamsSet::checkParamsNumbers( RDORelevantResource* currRelRes )
@@ -632,24 +698,24 @@ void RDOPATParamsSet::addIdentif( std::string* paramName, const YYLTYPE& param_n
 	paramArithms.push_back( NULL );
 }
 
-void RDOPATPatternOperation::addRelResConvertBegin(bool trace, RDOPATParamsSet *parSet)
+void RDOPATPatternOperation::addRelResConvertBegin( bool trace, RDOPATParamsSet* parSet )
 {
 	parSet->checkParamsNumbers(currRelRes);
-	if(currRelRes->begin == CS_NoChange || currRelRes->begin == CS_Erase || currRelRes->begin == CS_NonExist)
-		parser->error("Converter Begin not needed for \"" + *currRelRes->getName() + "\" relevant resource in pattern \"" + *getName() + "\"");
+	if ( currRelRes->begin == RDOResourceTrace::CS_NoChange || currRelRes->begin == RDOResourceTrace::CS_NonExist ) {
+		parser->error( rdo::format("Не требуется конвертор начала для релевантного ресурса '%s', т.к. его статус: %s", currRelRes->getName()->c_str(), RDOPATPattern::StatusToStr(currRelRes->begin).c_str()) );
+	}
+//	if ( currRelRes->begin == RDOResourceTrace::CS_NoChange || currRelRes->begin == RDOResourceTrace::CS_Erase || currRelRes->begin == RDOResourceTrace::CS_NonExist )
+//		parser->error("Converter begin not needed for \"" + *currRelRes->getName() + "\" relevant resource in pattern \"" + *getName() + "\"");
 
-	if(currRelRes->end != CS_NoChange && currRelRes->end != CS_Erase && currRelRes->end != CS_NonExist)
+	if(currRelRes->end != RDOResourceTrace::CS_NoChange && currRelRes->end != RDOResourceTrace::CS_Erase && currRelRes->end != RDOResourceTrace::CS_NonExist)
 		parser->error("Converter end needed for \"" + *currRelRes->getName() + "\" relevant resource in pattern \"" + *getName() + "\"");
 
-	if ( currRelRes->end == CS_Erase )
-		patRuntime->addEndCalc( new rdoRuntime::RDOCalcEraseRes( currRelRes->numberOfResource, *currRelRes->getName() ) );
-
-	if(currRelRes->begin == CS_Create)
+	if(currRelRes->begin == RDOResourceTrace::CS_Create)
 	{
 		if(currRelRes->getType()->getParams().size() != parSet->paramNumbs.size())
 			parser->error("Must define all parameters when create new resource: \"" + *currRelRes->getName() + "\" in pattern \"" + *getName() + "\" in convert begin");
 
-		rdoRuntime::RDOCalc *calc = new rdoRuntime::RDOCalcCreateEmptyResource(currRelRes->getType()->getNumber(), trace, currRelRes->numberOfResource, currRelRes->getType()->getParams().size());
+		rdoRuntime::RDOCalc *calc = new rdoRuntime::RDOCalcCreateEmptyResource(currRelRes->getType()->getNumber(), trace, currRelRes->rel_res_id, currRelRes->getType()->getParams().size());
 		patRuntime->addBeginCalc(calc);
 	}
 
@@ -661,28 +727,34 @@ void RDOPATPatternOperation::addRelResConvertBegin(bool trace, RDOPATParamsSet *
 		if(currArithm)	// if NULL - "NoChange" 
 		{
 			rdoRuntime::RDOCalc *rightValue = currArithm->createCalc(currRelRes->getType()->getParams().at(parNumb)->getType());
-			rdoRuntime::RDOCalc *calc = new rdoRuntime::RDOSetRelParamCalc(currRelRes->numberOfResource, parNumb, rightValue);
+			rdoRuntime::RDOCalc *calc = new rdoRuntime::RDOSetRelParamCalc(currRelRes->rel_res_id, parNumb, rightValue);
 			patRuntime->addBeginCalc(calc);
 		}
 	}
 }
 
-void RDOPATPatternOperation::addRelResConvertEnd(bool trace, RDOPATParamsSet *parSet)
+void RDOPATPatternOperation::addRelResConvertEnd( bool trace, RDOPATParamsSet* parSet )
 {
-	parSet->checkParamsNumbers(currRelRes);
-	if(currRelRes->end == CS_NoChange || currRelRes->end == CS_Erase || currRelRes->end == CS_NonExist || currRelRes->begin == CS_Erase)
-		parser->error("Converter end not needed for \"" + *currRelRes->getName() + "\" relevant resource in pattern \"" + *getName() + "\"");
+	parSet->checkParamsNumbers( currRelRes );
+	if ( currRelRes->end == RDOResourceTrace::CS_NoChange || currRelRes->end == RDOResourceTrace::CS_NonExist || currRelRes->begin == RDOResourceTrace::CS_Erase ) {
+		parser->error( rdo::format("Не требуется конвертор конца для релевантного ресурса '%s', т.к. его статус: %s", currRelRes->getName()->c_str(), RDOPATPattern::StatusToStr(currRelRes->end).c_str()) );
+	}
+//	if ( currRelRes->end == RDOResourceTrace::CS_NoChange || currRelRes->end == RDOResourceTrace::CS_Erase || currRelRes->end == RDOResourceTrace::CS_NonExist || currRelRes->begin == RDOResourceTrace::CS_Erase ) {
+//		parser->error( "Converter end not needed for \"" + *currRelRes->getName() + "\" relevant resource in pattern \"" + *getName() + "\"" );
 
-	if(currRelRes->begin != CS_NoChange && currRelRes->begin != CS_Erase && currRelRes->begin != CS_NonExist)
-		parser->error("Converter begin needed for \"" + *currRelRes->getName() + "\" relevant resource in pattern \"" + *getName() + "\"");
+	if ( currRelRes->begin != RDOResourceTrace::CS_NoChange && currRelRes->begin != RDOResourceTrace::CS_Erase && currRelRes->begin != RDOResourceTrace::CS_NonExist ) {
+		parser->error( rdo::format("Требуется конвертор начала для релевантного ресурса '%s', т.к. его статус: %s", currRelRes->getName()->c_str(), RDOPATPattern::StatusToStr(currRelRes->begin).c_str()) );
+	}
+//	if ( currRelRes->begin != RDOResourceTrace::CS_NoChange && currRelRes->begin != RDOResourceTrace::CS_Erase && currRelRes->begin != RDOResourceTrace::CS_NonExist )
+//		parser->error("Converter begin needed for \"" + *currRelRes->getName() + "\" relevant resource in pattern \"" + *getName() + "\"");
 
-	if(currRelRes->end == CS_Create)
+	if(currRelRes->end == RDOResourceTrace::CS_Create)
 	{
 		if(currRelRes->getType()->getParams().size() != parSet->paramNumbs.size())
 			parser->error("Must define all parameters when create new resource: \"" + *currRelRes->getName() + "\" in pattern \"" + *getName() + "\" in convert end");
 
-		rdoRuntime::RDOCalc *calc = new rdoRuntime::RDOCalcCreateEmptyResource(currRelRes->getType()->getNumber(), trace, currRelRes->numberOfResource, currRelRes->getType()->getParams().size());
-		patRuntime->addEndCalc(calc);
+		rdoRuntime::RDOCalc *calc = new rdoRuntime::RDOCalcCreateEmptyResource(currRelRes->getType()->getNumber(), trace, currRelRes->rel_res_id, currRelRes->getType()->getParams().size());
+		static_cast<rdoRuntime::RDOOperationRuntime*>(patRuntime)->addEndCalc( calc );
 	}
 
 	int size = parSet->paramArithms.size();
@@ -693,8 +765,8 @@ void RDOPATPatternOperation::addRelResConvertEnd(bool trace, RDOPATParamsSet *pa
 		if(currArithm)	// if NULL - "NoChange" 
 		{
 			rdoRuntime::RDOCalc *rightValue = currArithm->createCalc(currRelRes->getType()->getParams().at(parNumb)->getType());
-			rdoRuntime::RDOCalc *calc = new rdoRuntime::RDOSetRelParamCalc(currRelRes->numberOfResource, parNumb, rightValue);
-			patRuntime->addEndCalc(calc);
+			rdoRuntime::RDOCalc *calc = new rdoRuntime::RDOSetRelParamCalc(currRelRes->rel_res_id, parNumb, rightValue);
+			static_cast<rdoRuntime::RDOOperationRuntime*>(patRuntime)->addEndCalc(calc);
 		}
 	}
 }
@@ -703,18 +775,24 @@ void RDOPATPatternOperation::addRelResConvertBeginEnd(bool trace, RDOPATParamsSe
 {
 	parSet->checkParamsNumbers(currRelRes);
 	parSet2->checkParamsNumbers(currRelRes);
-	if(currRelRes->begin == CS_NoChange || currRelRes->begin == CS_Erase || currRelRes->begin == CS_NonExist)
-		parser->error("Converter begin not needed for \"" + *currRelRes->getName() + "\" relevant resource in pattern \"" + *getName() + "\"");
+	if ( currRelRes->begin == RDOResourceTrace::CS_NoChange || currRelRes->begin == RDOResourceTrace::CS_NonExist ) {
+		parser->error( rdo::format("Не требуется конвертор начала для релевантного ресурса '%s', т.к. его статус: %s", currRelRes->getName()->c_str(), RDOPATPattern::StatusToStr(currRelRes->begin).c_str()) );
+	}
+//	if ( currRelRes->begin == RDOResourceTrace::CS_NoChange || currRelRes->begin == RDOResourceTrace::CS_Erase || currRelRes->begin == RDOResourceTrace::CS_NonExist )
+//		parser->error("Converter begin not needed for \"" + *currRelRes->getName() + "\" relevant resource in pattern \"" + *getName() + "\"");
 
-	if(currRelRes->end == CS_NoChange || currRelRes->end == CS_Erase || currRelRes->end == CS_NonExist)
-		parser->error("Converter end not needed for \"" + *currRelRes->getName() + "\" relevant resource in pattern \"" + *getName() + "\"");
+	if ( currRelRes->end == RDOResourceTrace::CS_NoChange || currRelRes->end == RDOResourceTrace::CS_NonExist ) {
+		parser->error( rdo::format("Не требуется конвертор конца для релевантного ресурса '%s', т.к. его статус: %s", currRelRes->getName()->c_str(), RDOPATPattern::StatusToStr(currRelRes->end).c_str()) );
+	}
+//	if (currRelRes->end == RDOResourceTrace::CS_NoChange || currRelRes->end == RDOResourceTrace::CS_Erase || currRelRes->end == RDOResourceTrace::CS_NonExist )
+//		parser->error("Converter end not needed for \"" + *currRelRes->getName() + "\" relevant resource in pattern \"" + *getName() + "\"");
 
-	if(currRelRes->begin == CS_Create)
+	if(currRelRes->begin == RDOResourceTrace::CS_Create)
 	{
 		if(currRelRes->getType()->getParams().size() != parSet->paramNumbs.size())
 			parser->error("Must define all parameters when create new resource: \"" + *currRelRes->getName() + "\" in pattern \"" + *getName() + "\" in convert begin");
 
-		rdoRuntime::RDOCalc *calc = new rdoRuntime::RDOCalcCreateEmptyResource(currRelRes->getType()->getNumber(), trace, currRelRes->numberOfResource, currRelRes->getType()->getParams().size());
+		rdoRuntime::RDOCalc *calc = new rdoRuntime::RDOCalcCreateEmptyResource(currRelRes->getType()->getNumber(), trace, currRelRes->rel_res_id, currRelRes->getType()->getParams().size());
 		patRuntime->addBeginCalc(calc);
 	}
 
@@ -726,18 +804,18 @@ void RDOPATPatternOperation::addRelResConvertBeginEnd(bool trace, RDOPATParamsSe
 		if(currArithm)	// if NULL - "NoChange" 
 		{
 			rdoRuntime::RDOCalc *rightValue = currArithm->createCalc(currRelRes->getType()->getParams().at(parNumb)->getType());
-			rdoRuntime::RDOCalc *calc = new rdoRuntime::RDOSetRelParamCalc(currRelRes->numberOfResource, parNumb, rightValue);
+			rdoRuntime::RDOCalc *calc = new rdoRuntime::RDOSetRelParamCalc(currRelRes->rel_res_id, parNumb, rightValue);
 			patRuntime->addBeginCalc(calc);
 		}
 	}
 
-	if(currRelRes->end == CS_Create)
+	if(currRelRes->end == RDOResourceTrace::CS_Create)
 	{
 		if(currRelRes->getType()->getParams().size() != parSet2->paramNumbs.size())
 			parser->error("Must define all parameters when create new resource: \"" + *currRelRes->getName() + "\" in pattern \"" + *getName() + "\" in convert end");
 
-		rdoRuntime::RDOCalc *calc = new rdoRuntime::RDOCalcCreateEmptyResource(currRelRes->getType()->getNumber(), trace2, currRelRes->numberOfResource, currRelRes->getType()->getParams().size());
-		patRuntime->addEndCalc(calc);
+		rdoRuntime::RDOCalc *calc = new rdoRuntime::RDOCalcCreateEmptyResource(currRelRes->getType()->getNumber(), trace2, currRelRes->rel_res_id, currRelRes->getType()->getParams().size());
+		static_cast<rdoRuntime::RDOOperationRuntime*>(patRuntime)->addEndCalc(calc);
 	}
 
 	size = parSet2->paramArithms.size();
@@ -748,8 +826,8 @@ void RDOPATPatternOperation::addRelResConvertBeginEnd(bool trace, RDOPATParamsSe
 		if(currArithm)	// if NULL - "NoChange" 
 		{
 			rdoRuntime::RDOCalc *rightValue = currArithm->createCalc(currRelRes->getType()->getParams().at(parNumb)->getType());
-			rdoRuntime::RDOCalc *calc = new rdoRuntime::RDOSetRelParamCalc(currRelRes->numberOfResource, parNumb, rightValue);
-			patRuntime->addEndCalc(calc);
+			rdoRuntime::RDOCalc *calc = new rdoRuntime::RDOSetRelParamCalc(currRelRes->rel_res_id, parNumb, rightValue);
+			static_cast<rdoRuntime::RDOOperationRuntime*>(patRuntime)->addEndCalc(calc);
 		}
 	}
 }
@@ -757,15 +835,15 @@ void RDOPATPatternOperation::addRelResConvertBeginEnd(bool trace, RDOPATParamsSe
 void RDOPATPatternRule::addRelResConvertRule(bool trace, RDOPATParamsSet *parSet)
 {
 	parSet->checkParamsNumbers(currRelRes);
-	if(currRelRes->begin == CS_NoChange || currRelRes->begin == CS_Erase || currRelRes->begin == CS_NonExist)
+	if(currRelRes->begin == RDOResourceTrace::CS_NoChange || currRelRes->begin == RDOResourceTrace::CS_Erase || currRelRes->begin == RDOResourceTrace::CS_NonExist)
 		parser->error("Converter not needed for \"" + *currRelRes->getName() + "\" relevant resource in pattern \"" + *getName() + "\"");
 
-	if(currRelRes->begin == CS_Create)
+	if(currRelRes->begin == RDOResourceTrace::CS_Create)
 	{
 		if(currRelRes->getType()->getParams().size() != parSet->paramNumbs.size())
 			parser->error("Must define all parameters when create new resource: \"" + *currRelRes->getName() + "\" in pattern \"" + *getName() + "\" in converter");
 
-		rdoRuntime::RDOCalc *calc = new rdoRuntime::RDOCalcCreateEmptyResource(currRelRes->getType()->getNumber(), trace, currRelRes->numberOfResource, currRelRes->getType()->getParams().size());
+		rdoRuntime::RDOCalc *calc = new rdoRuntime::RDOCalcCreateEmptyResource(currRelRes->getType()->getNumber(), trace, currRelRes->rel_res_id, currRelRes->getType()->getParams().size());
 		patRuntime->addBeginCalc(calc);
 	}
 
@@ -777,7 +855,7 @@ void RDOPATPatternRule::addRelResConvertRule(bool trace, RDOPATParamsSet *parSet
 		if(currArithm)	// if NULL - "NoChange" 
 		{
 			rdoRuntime::RDOCalc *rightValue = currArithm->createCalc(currRelRes->getType()->getParams().at(parNumb)->getType());
-			rdoRuntime::RDOCalc *calc = new rdoRuntime::RDOSetRelParamCalc(currRelRes->numberOfResource, parNumb, rightValue);
+			rdoRuntime::RDOCalc *calc = new rdoRuntime::RDOSetRelParamCalc(currRelRes->rel_res_id, parNumb, rightValue);
 			patRuntime->addBeginCalc(calc);
 		}
 	}
@@ -786,15 +864,15 @@ void RDOPATPatternRule::addRelResConvertRule(bool trace, RDOPATParamsSet *parSet
 void RDOPATPatternEvent::addRelResConvertEvent(bool trace, RDOPATParamsSet *parSet)
 {
 	parSet->checkParamsNumbers(currRelRes);
-	if(currRelRes->begin == CS_NoChange || currRelRes->begin == CS_Erase || currRelRes->begin == CS_NonExist)
+	if(currRelRes->begin == RDOResourceTrace::CS_NoChange || currRelRes->begin == RDOResourceTrace::CS_Erase || currRelRes->begin == RDOResourceTrace::CS_NonExist)
 		parser->error("Converter not needed for \"" + *currRelRes->getName() + "\" relevant resource in pattern \"" + *getName() + "\"");
 
-	if(currRelRes->begin == CS_Create)
+	if(currRelRes->begin == RDOResourceTrace::CS_Create)
 	{
 		if(currRelRes->getType()->getParams().size() != parSet->paramNumbs.size())
 			parser->error("Must define all parameters when create new resource: \"" + *currRelRes->getName() + "\" in pattern \"" + *getName() + "\" in converter");
 
-		rdoRuntime::RDOCalc *calc = new rdoRuntime::RDOCalcCreateEmptyResource(currRelRes->getType()->getNumber(), trace, currRelRes->numberOfResource, currRelRes->getType()->getParams().size());
+		rdoRuntime::RDOCalc *calc = new rdoRuntime::RDOCalcCreateEmptyResource(currRelRes->getType()->getNumber(), trace, currRelRes->rel_res_id, currRelRes->getType()->getParams().size());
 		patRuntime->addBeginCalc(calc);
 	}
 
@@ -806,7 +884,7 @@ void RDOPATPatternEvent::addRelResConvertEvent(bool trace, RDOPATParamsSet *parS
 		if(currArithm)	// if NULL - "NoChange" 
 		{
 			rdoRuntime::RDOCalc *rightValue = currArithm->createCalc(currRelRes->getType()->getParams().at(parNumb)->getType());
-			rdoRuntime::RDOCalc *calc = new rdoRuntime::RDOSetRelParamCalc(currRelRes->numberOfResource, parNumb, rightValue);
+			rdoRuntime::RDOCalc *calc = new rdoRuntime::RDOSetRelParamCalc(currRelRes->rel_res_id, parNumb, rightValue);
 			patRuntime->addBeginCalc(calc);
 		}
 	}

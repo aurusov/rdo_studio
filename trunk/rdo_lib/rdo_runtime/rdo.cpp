@@ -65,7 +65,7 @@ bool RDOIE::checkOperation(RDOSimulator *sim)
    {
       onBeforeIrregularEvent(sim);
       convertEvent(sim);
-      sim->addTimePoint(time = (getNextTimeInterval(sim) + sim->getCurrentTime()));
+      sim->addTimePoint( time = (getNextTimeInterval(sim) + sim->getCurrentTime()) );
       onAfterIrregularEvent(sim);
       return true;
    }
@@ -73,75 +73,21 @@ bool RDOIE::checkOperation(RDOSimulator *sim)
    return false;
 }
 
-bool RDORule::checkOperation(RDOSimulator *sim)
+bool RDORule::checkOperation( RDOSimulator* sim )
 {
-   onBeforeChoiceFrom(sim);
-   if(choiceFrom(sim))
-   {
-      onBeforeRule(sim);
-      convertRule(sim);
-      onAfterRule(sim);
-      return true;
-   }
-   return false;
+	onBeforeChoiceFrom( sim );
+	if ( choiceFrom(sim) ) {
+		onBeforeRule( sim );
+		convertRule( sim );
+		onAfterRule( sim );
+		return true;
+	}
+	return false;
 }
 
-/*
-bool CheckOperations::operator()(RDODecisionPoint *dp)
-{
-   if(dp->Condition(sim))
-   {
-      if(dp->RunSearchInTree(sim))
-         return true;
-   }
-   return false;
-}
-
-bool CheckOperations::operator()(RDOOperation *op)
-{
-   op->onBeforeChoiceFrom(sim);
-   if(!op->choiceFrom(sim))
-      return false;
-
-   RDOOperation *newOp = op->clone(sim);
-   newOp->onBeforeOperationBegin(sim);
-   newOp->convertBegin(sim);
-   sim->addOperation(newOp);
-   sim->addTimePoint(newOp->time = (newOp->getNextTimeInterval(sim) + sim->getCurrentTime()));
-   newOp->onAfterOperationBegin(sim);
-   return true;
-}
-
-bool CheckOperations::operator()(RDOIE *ie)
-{
-   if(sim->getCurrentTime() >= ie->time)
-   {
-      ie->onBeforeIrregularEvent(sim);
-      ie->convertEvent(sim);
-      sim->addTimePoint(ie->time = (ie->getNextTimeInterval(sim) + sim->getCurrentTime()));
-      ie->onAfterIrregularEvent(sim);
-      return true;
-   }
-
-   return false;
-}
-
-bool CheckOperations::operator()(RDORule *ru)
-{
-   ru->onBeforeChoiceFrom(sim);
-   if(ru->choiceFrom(sim))
-   {
-      ru->onBeforeRule(sim);
-      ru->convertRule(sim);
-      ru->onAfterRule(sim);
-      return true;
-   }
-   return false;
-}
-*/
 bool RDOSimulator::doOperation()
 {
-	std::for_each(havePokaz.begin(), havePokaz.end(), std::bind2nd(std::mem_fun1(&RDOPokaz::checkPokaz), this));
+	onCheckPokaz();
 	onAfterCheckPokaz();
 
 	// Проверить все возможные действия и вызвать первое, которое может буть вызвано
@@ -151,11 +97,6 @@ bool RDOSimulator::doOperation()
 void RDOSimulator::rdoDestroy()
 {
 	RDOSimulatorBase::rdoDestroy();
-
-//	DeleteAllObjects(haveOperations);
-//	DeleteAllObjects(haveIrregularEvents);
-//	DeleteAllObjects(haveDecisionPoints);
-//	DeleteAllObjects(haveRules);
 }
 
 void RDOSimulator::rdoInit()
@@ -165,35 +106,18 @@ void RDOSimulator::rdoInit()
 
 void RDOSimulator::preProcess()
 {
-   // Initialise all irregular events
-/*
-   for(std::list<RDOIE *>::iterator i = haveIrregularEvents.begin(); 
-         i != haveIrregularEvents.end(); i++)
-	{
-      (*i)->onBeforeIrregularEvent(this);
-      addTimePoint((*i)->time = ((*i)->getNextTimeInterval(this) + getCurrentTime()));
-      (*i)->onAfterIrregularEvent(this);
-   }
-*/
-	for ( std::list< RDOBaseOperation* >::iterator i = haveBaseOperations.begin(); i != haveBaseOperations.end(); i++ ) {
+	for ( std::vector< RDOBaseOperation* >::const_iterator i = haveBaseOperations.begin(); i != haveBaseOperations.end(); i++ ) {
 		RDOIE* currIE = dynamic_cast<RDOIE*>(*i);
 		if ( currIE ) {
 			currIE->onBeforeIrregularEvent( this );
 			addTimePoint( currIE->time = (currIE->getNextTimeInterval( this ) + getCurrentTime()) );
-			currIE->onAfterIrregularEvent( this );
 		}
 		rdoRuntime::RDOPROCProcess* process = dynamic_cast<rdoRuntime::RDOPROCProcess*>(*i);
 		if ( process ) {
 			process->preProcess( this );
 		}	
 	}
-
-	std::for_each(havePokaz.begin(), havePokaz.end(), std::bind2nd(std::mem_fun1(&RDOPokaz::resetPokaz), this));
-}
-
-void RDOSimulator::postProcess()
-{
-	std::for_each(havePokaz.begin(), havePokaz.end(), std::bind2nd(std::mem_fun1(&RDOPokaz::calcStat), this));
+	onResetPokaz();
 }
 
 RDODecisionPoint::~RDODecisionPoint()

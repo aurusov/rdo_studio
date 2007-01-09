@@ -9,37 +9,22 @@ static char THIS_FILE[] = __FILE__;
 #include "rdotrace.h"
 #include "ietrace.h"
 
-void RDOOperationTrace::onBeforeOperationBegin(RDOSimulator *sim)
+void RDOOperationTrace::onAfterOperationBegin( RDOSimulator* sim )
 {
-   RDOSimulatorTrace *simTr = (RDOSimulatorTrace *)sim;
-   simTr->getTracer()->writeBeforeOperationBegin(this, simTr); 
+	RDOSimulatorTrace* simTr = static_cast<RDOSimulatorTrace*>(sim);
+	simTr->getTracer()->writeAfterOperationBegin( this, simTr );
 }
 
-void RDOOperationTrace::onAfterOperationBegin(RDOSimulator *sim)
+void RDOOperationTrace::onAfterOperationEnd( RDOSimulator* sim )
 {
-   RDOSimulatorTrace *simTr = (RDOSimulatorTrace *)sim;
-   onAfter(simTr);
-   simTr->getTracer()->writeAfterOperationBegin(this, simTr);
-   simTr->clearJustCreatedFlags();
-}
-
-void RDOOperationTrace::onBeforeOperationEnd(RDOSimulator *sim)
-{
-   RDOSimulatorTrace *simTr = (RDOSimulatorTrace *)sim;
-   simTr->getTracer()->writeBeforeOperationEnd(this, simTr); 
-}
-
-void RDOOperationTrace::onAfterOperationEnd(RDOSimulator *sim)
-{
-   RDOSimulatorTrace *simTr = (RDOSimulatorTrace *)sim;
-   simTr->getTracer()->writeAfterOperationEnd(this, simTr); 
-   simTr->clearJustCreatedFlags();
-   ((RDOSimulatorTrace *)sim)->freeOperationId(operId);
+	RDOSimulatorTrace* simTr = static_cast<RDOSimulatorTrace*>(sim);
+	simTr->getTracer()->writeAfterOperationEnd(this, simTr); 
+	((RDOSimulatorTrace *)sim)->freeOperationId(operId);
 }
 
 RDOOperationTrace::RDOOperationTrace( RDOSimulatorTrace* i_sim ):
 	RDOTraceableObject( i_sim ),
-	RDOPattern( i_sim )
+	RDOPatternTrace()
 {
 	id = i_sim->activityCounter++;
 //	operId = RDOTraceableObject::sim->getFreeOperationId();
@@ -47,7 +32,7 @@ RDOOperationTrace::RDOOperationTrace( RDOSimulatorTrace* i_sim ):
 
 RDOOperationTrace::~RDOOperationTrace()
 {
-//   RDOTraceableObject::sim->freeOperationId(operId);
+//	RDOTraceableObject::sim->freeOperationId(operId);
 }
 
  

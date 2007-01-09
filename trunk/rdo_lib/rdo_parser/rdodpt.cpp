@@ -174,9 +174,9 @@ void RDODPTSearchActivity::addParam()
 	params.push_back(val);
 }
 
-rdoRuntime::RDOSearchActivityRuntime *RDODPTSearchActivity::createActivityRuntime( rdoRuntime::RDORuntime* sim )
+rdoRuntime::RDOSearchActivityRuntime* RDODPTSearchActivity::createActivityRuntime( rdoRuntime::RDORuntime* sim )
 {
-	rdoRuntime::RDOActivityRuleRuntime *activity = new rdoRuntime::RDOActivityRuleRuntime(sim, rule->patRuntime, true, name);
+	rdoRuntime::RDOActivityRuleRuntime *activity = new rdoRuntime::RDOActivityRuleRuntime(sim, rule->patRuntime, true, *name);
 	rdoRuntime::RDOSearchActivityRuntime *act = new rdoRuntime::RDOSearchActivityRuntime(sim, 
 		dynamic_cast<RDORule *>(activity),
 		(value == DPT_value_after), 
@@ -271,9 +271,9 @@ void RDODPTSomeActivity::createActivityRuntime(RDOFUNLogic *conditon)
 {
 	rdoRuntime::RDOActivityRuntime *activity;
 	if(!conditon)
-		activity = pattern->patRuntime->createActivity(name);
+		activity = pattern->patRuntime->createActivity( *name );
 	else
-		activity = pattern->patRuntime->createActivity(conditon->calc, name);
+		activity = pattern->patRuntime->createActivity(conditon->calc, *name);
 
 	int size = params.size();
 	for(int i = 0; i < size; i++)
@@ -339,7 +339,7 @@ void RDODPTFreeActivity::addParam()
 
 void RDODPTFreeActivity::end()
 {
-	rdoRuntime::RDOActivityRuntime *activity = pattern->patRuntime->createActivity(name);
+	rdoRuntime::RDOActivityRuntime *activity = pattern->patRuntime->createActivity(*name);
 	int size = params.size();
 	for(int i = 0; i < size; i++)
 		activity->addParamCalc(new rdoRuntime::RDOSetPatternParamCalc(i, params.at(i)));

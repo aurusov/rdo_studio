@@ -12,160 +12,269 @@ class RDOCalc;
 class RDORuntime;
 class RDOActivityRuntime;
 
+// ----------------------------------------------------------------------------
+// ---------- RDOPatternRuntime
+// ----------------------------------------------------------------------------
 class RDOPatternRuntime
 {
-protected:
-	std::vector<RDOCalc *>	beginCalcs;
-	std::vector<RDOCalc *>	endCalcs;
-	std::string patternId;
-	RDOCalc *timeField;
-	std::vector<RDOCalc *>	choiceFromCalcs;
-	RDORuntime *runtime;
-	bool trace;
-	RDOPatternRuntime(RDORuntime *_runtime, bool _trace);
-public:
-	virtual bool choiceFrom(RDOSimulator *sim);
-	virtual void addBeginCalc(RDOCalc *calc) { beginCalcs.push_back(calc); }
-	virtual void addEndCalc(RDOCalc *calc);
-	void setPatternId(int _id) { patternId = toString(_id); }
-	std::string& getPatternId() { return patternId; }
+friend class RDOActivityRuleRuntime;
+friend class RDOActivityIERuntime;
+friend class RDOActivityOperationRuntime;
 
-	void setTime(RDOCalc *_time) { timeField = _time; }
-	void addChoiceFromCalc(RDOCalc *_calc) { choiceFromCalcs.push_back(_calc); }
-	virtual RDOActivityRuntime *createActivity(std::string *_oprName) = 0;
-	virtual RDOActivityRuntime *createActivity(RDOCalc *condition, std::string *_oprName);
+protected:
+	RDOPatternRuntime( RDORuntime* _runtime, bool _trace );
+
+	std::vector< RDOCalc* > choiceFromCalcs;
+	std::vector< RDOCalc* > beginCalcs;
+	std::vector< RDOCalc* > beginEraseCalcs;
+	std::string patternId;
+	RDORuntime* runtime;
+	bool        trace;
+	std::vector< RDOResourceTrace::ConvertStatus > beginConvertStatus;
+
+public:
 	virtual ~RDOPatternRuntime() {}
+
+	bool choiceFrom( RDOSimulator* sim );
+	void convertBegin( RDORuntime* _runtime );
+	void convertBeginErase( RDORuntime* _runtime );
+
+	void addChoiceFromCalc( RDOCalc* calc )         { choiceFromCalcs.push_back( calc ); }
+	void addBeginCalc     ( RDOCalc* calc  )        { beginCalcs.push_back( calc );      }
+	void addBeginEraseCalc( RDOCalc* calc  )        { beginEraseCalcs.push_back( calc ); }
+	void addBeginConvertStatus( RDOResourceTrace::ConvertStatus status ) {
+		beginConvertStatus.push_back( status );
+	}
+
+	const std::string& getPatternId() const         { return patternId;                  }
+	const std::string& tracePatternId() const       { return patternId;                  }
+	void setPatternId( int _id )                    { patternId = toString(_id);         }
+
+	virtual void setTime( RDOCalc* _timeCalc )      {};
+
+	virtual RDOActivityRuntime* createActivity( const std::string& _oprName ) = 0;
+	virtual RDOActivityRuntime* createActivity( RDOCalc* condition, const std::string& _oprName );
 };
 
+// ----------------------------------------------------------------------------
+// ---------- RDORuleRuntime
+// ----------------------------------------------------------------------------
 class RDORuleRuntime: public RDOPatternRuntime
 {
 public:
-	bool choiceFrom(RDOSimulator *sim);
-	void convertRule(RDOSimulator *sim);
-	std::string tracePatternId() { return patternId; }
+	RDORuleRuntime( RDORuntime* rTime, bool _trace );
 
-	RDORuleRuntime(RDORuntime *rTime, bool _trace);
-	RDOActivityRuntime *createActivity(std::string *_oprName); 
-	RDOActivityRuntime *createActivity(RDOCalc *condition, std::string *_oprName);
+	void convertRule( RDOSimulator* sim );
+
+	virtual RDOActivityRuntime* createActivity( const std::string& _oprName );
+	virtual RDOActivityRuntime* createActivity( RDOCalc* condition, const std::string& _oprName );
 };
 
+// ----------------------------------------------------------------------------
+// ---------- RDOIERuntime
+// ----------------------------------------------------------------------------
 class RDOIERuntime: public RDOPatternRuntime
 {
-public:
-	double getNextTimeInterval(RDOSimulator *sim);
-	void convertEvent(RDOSimulator *sim);
-	std::string tracePatternId() { return patternId; }
-	bool choiceFrom(RDOSimulator *sim);
+protected:
+	RDOCalc* timeCalc;
 
-	RDOIERuntime(RDORuntime *rTime, bool _trace);
-	RDOActivityRuntime *createActivity(std::string *_oprName); 
+public:
+	RDOIERuntime( RDORuntime* rTime, bool _trace );
+
+	void convertEvent( RDOSimulator* sim );
+
+	double getNextTimeInterval( RDOSimulator* sim );
+	virtual void setTime( RDOCalc* _timeCalc )        { timeCalc = _timeCalc; }
+
+	virtual RDOActivityRuntime* createActivity( const std::string& _oprName );
 };
 
+// ----------------------------------------------------------------------------
+// ---------- RDOOperationRuntime
+// ----------------------------------------------------------------------------
 class RDOOperationRuntime: public RDOPatternRuntime
 {
-	void addEndCalc(RDOCalc *calc)  { endCalcs.push_back(calc); }
+friend class RDOActivityOperationRuntime;
+
+private:
+	std::vector< RDOCalc* >	endCalcs;
+	std::vector< RDOCalc* >	endEraseCalcs;
+
+protected:
+	RDOCalc* timeCalc;
+	std::vector< RDOResourceTrace::ConvertStatus > endConvertStatus;
 
 public:
-	bool choiceFrom(RDOSimulator *sim);
-	double getNextTimeInterval(RDOSimulator *sim);
-	void convertBegin(RDOSimulator *sim);
-	void convertEnd(RDOSimulator *sim);
-	std::string tracePatternId() { return patternId; }
+	RDOOperationRuntime( RDORuntime* rTime, bool _trace );
 
-	RDOOperationRuntime(RDORuntime *rTime, bool _trace);
-	virtual RDOActivityRuntime *createActivity(std::string *_oprName); 
-	virtual RDOActivityRuntime *createActivity(RDOCalc *condition, std::string *_oprName);
+	void convertBegin( RDOSimulator* sim );
+	void convertEnd( RDOSimulator* sim );
+	void convertEndErase( RDORuntime* _runtime );
+
+	void addEndCalc     ( RDOCalc* calc )             { endCalcs.push_back( calc );      }
+	void addEndEraseCalc( RDOCalc* calc )             { endEraseCalcs.push_back( calc ); }
+	void addEndConvertStatus( RDOResourceTrace::ConvertStatus status ) {
+		endConvertStatus.push_back( status );
+	}
+
+	double getNextTimeInterval( RDOSimulator* sim );
+	virtual void setTime( RDOCalc* _timeCalc )        { timeCalc = _timeCalc;            }
+
+	virtual RDOActivityRuntime* createActivity( const std::string& _oprName );
+	virtual RDOActivityRuntime* createActivity( RDOCalc* condition, const std::string& _oprName );
 };
 
+// ----------------------------------------------------------------------------
+// ---------- RDOKeyboardRuntime
+// ----------------------------------------------------------------------------
 class RDOKeyboardRuntime: public RDOOperationRuntime
 {
 public:
-	RDOKeyboardRuntime(RDORuntime *rTime, bool _trace)
-		: RDOOperationRuntime(rTime, _trace)
-	{}
-	virtual RDOActivityRuntime *createActivity(std::string *_oprName); 
-	virtual RDOActivityRuntime *createActivity(RDOCalc *condition, std::string *_oprName);
+	RDOKeyboardRuntime( RDORuntime* rTime, bool _trace );
+
+	virtual RDOActivityRuntime* createActivity( const std::string& _oprName );
+	virtual RDOActivityRuntime* createActivity( RDOCalc* condition, const std::string& _oprName );
 };
 
+// ----------------------------------------------------------------------------
+// ---------- RDOActivityRuntime
+// ----------------------------------------------------------------------------
 class RDOActivityRuntime
 {
 protected:
-	std::string *oprName;
-	std::vector<int> relResNumbers;
-	std::vector<RDOCalc *>	setParamsCalcs;
-	RDOPatternRuntime *pattern;
-	RDOActivityRuntime(RDOPatternRuntime *_pattern, std::string *_oprName): pattern(_pattern), oprName(_oprName) {}
-	void setPatternParameters(RDOSimulator *sim);
-	virtual std::vector<RDOResourceTrace *> getRelevantResources(RDOSimulator *sim);
-	void incrementRelevantResourceReference(RDOSimulator *sim);
-	void decrementRelevantResourceReference(RDOSimulator *sim);
-public:
-	void addParamCalc(RDOCalc *calc) { setParamsCalcs.push_back(calc); }
-	virtual ~RDOActivityRuntime() {}
-	int getRelResNumber( const int nRelRes ) const
+	RDOActivityRuntime( RDOPatternRuntime* _pattern, const std::string& _oprName ):
+		pattern( _pattern ),
+		oprName( _oprName )
 	{
-		if ( relResNumbers.size() <= nRelRes ) {
+	}
+	virtual ~RDOActivityRuntime() {}
+	std::string                    oprName;
+	std::list< RDOResourceTrace* > relevantResources; // Список релевантных ресурсов
+	std::vector< int >             relResID;  // Содержит список id ресурсов, которые стали релевантными образцу
+	std::vector< RDOCalc* >        paramsCalcs;
+	RDOPatternRuntime*             pattern;
+	void setPatternParameters( RDOSimulator* sim );
+	void getRelevantResources( RDOSimulator* sim, std::list< RDOResourceTrace* >& rel_res_list );
+	void incrementRelevantResourceReference( RDOSimulator* sim );
+	void decrementRelevantResourceReference( RDOSimulator* sim );
+
+	void updateRelRes( RDOSimulator* sim ) {
+		getRelevantResources( sim, relevantResources );
+	}
+	void updateConvertStatus( RDOSimulator* sim, const std::vector< RDOResourceTrace::ConvertStatus >& status_list );
+
+	std::string traceResourcesList( char prefix, RDOSimulatorTrace* sim );
+	std::string traceResourcesListNumbers( RDOSimulatorTrace* sim );
+
+public:
+	void addParamCalc( RDOCalc* calc ) { paramsCalcs.push_back( calc ); }
+	int getResByRelRes( const int rel_res_id ) const
+	{
+		if ( relResID.size() <= rel_res_id ) {
 			return 0;
 		}
-		return relResNumbers.at(nRelRes); 
+		return relResID.at( rel_res_id ); 
 	} 
-	void selectRelResource( int relNumb, int resNumb )
+	void setRelRes( int rel_res_id, int res_id )
 	{
-		if ( relResNumbers.size() <= relNumb ) {
-			relResNumbers.resize( relNumb + 1 );
+		if ( relResID.size() <= rel_res_id ) {
+			relResID.resize( rel_res_id + 1 );
 		}
-		relResNumbers[relNumb] = resNumb; 
+		relResID[rel_res_id] = res_id; 
 	}
 	virtual void addHotKey( std::string* hotKey );
-	void writeModelStructure(std::stringstream &stream);
+	void writeModelStructure( std::stringstream& stream );
 };
 
+// ----------------------------------------------------------------------------
+// ---------- RDOActivityRuleRuntime
+// ----------------------------------------------------------------------------
 class RDOActivityRuleRuntime: public RDORuleTrace, public RDOActivityRuntime
 {
-	bool haveAdditionalCondition;
-	RDOCalc *additionalCondition;
-	bool choiceFrom(RDOSimulator *sim);
-	void convertRule(RDOSimulator *sim);
-	std::string tracePatternId() { return ((RDORuleRuntime*)pattern)->tracePatternId(); }
-	std::vector<RDOResourceTrace *> getRelevantResources(RDOSimulator *sim) { return RDOActivityRuntime::getRelevantResources(sim); }
-	void onBeforeChoiceFrom(RDOSimulator *sim) { setPatternParameters(sim); }
+private:
+	bool choiceFrom( RDOSimulator* sim );
+	void convertRule( RDOSimulator* sim );
+
+	bool     haveAdditionalCondition;
+	RDOCalc* additionalCondition;
+
+	virtual const std::string& tracePatternId() const                                  { return pattern->tracePatternId();                     }
+	virtual void onBeforeChoiceFrom( RDOSimulator* sim )                               { setPatternParameters(sim);                            }
+	virtual void onAfterRule( RDOSimulator* sim, bool inSearch = false );
+	virtual std::string traceResourcesList( char prefix, RDOSimulatorTrace* sim ) {
+		return RDOActivityRuntime::traceResourcesList( prefix, sim );
+	}
+	virtual std::string traceResourcesListNumbers( RDOSimulatorTrace* sim ) {
+		return RDOActivityRuntime::traceResourcesListNumbers( sim );
+	}
+
 public:
-	RDOActivityRuleRuntime(RDORuntime *rTime, RDOPatternRuntime *_pattern, bool _trace, std::string *_oprName);
-	RDOActivityRuleRuntime(RDORuntime *rTime, RDOPatternRuntime *_pattern, bool _trace, RDOCalc *condition, std::string *_oprName);
+	RDOActivityRuleRuntime( RDORuntime* rTime, RDOPatternRuntime* _pattern, bool _trace, const std::string& _oprName );
+	RDOActivityRuleRuntime( RDORuntime* rTime, RDOPatternRuntime* _pattern, bool _trace, RDOCalc* condition, const std::string& _oprName );
 };
 
+// ----------------------------------------------------------------------------
+// ---------- RDOActivityIERuntime
+// ----------------------------------------------------------------------------
 class RDOActivityIERuntime: public RDOIETrace, public RDOActivityRuntime
 {
-   double getNextTimeInterval(RDOSimulator *sim);
-   void convertEvent(RDOSimulator *sim);
-   std::string tracePatternId() { return ((RDOIERuntime*)pattern)->tracePatternId(); }
-   bool choiceFrom(RDOSimulator *sim);
-   std::vector<RDOResourceTrace *> getRelevantResources(RDOSimulator *sim) { return RDOActivityRuntime::getRelevantResources(sim); }
-   void onBeforeIrregularEvent(RDOSimulator *sim) { setPatternParameters(sim); RDOIETrace::onBeforeIrregularEvent(sim); }
+private:
+	bool choiceFrom( RDOSimulator* sim );
+	void convertEvent( RDOSimulator* sim );
+
+	double getNextTimeInterval(RDOSimulator *sim);
+	virtual const std::string& tracePatternId() const                                  { return pattern->tracePatternId();                                   }
+	virtual void onBeforeIrregularEvent( RDOSimulator* sim );
+	virtual void onAfterIrregularEvent( RDOSimulator* sim );
+	virtual std::string traceResourcesList( char prefix, RDOSimulatorTrace* sim ) {
+		return RDOActivityRuntime::traceResourcesList( prefix, sim );
+	}
+	virtual std::string traceResourcesListNumbers( RDOSimulatorTrace* sim ) {
+		return RDOActivityRuntime::traceResourcesListNumbers( sim );
+	}
+
 public:
-	RDOActivityIERuntime(RDORuntime *rTime, RDOPatternRuntime *_pattern, bool _trace, std::string *_oprName);
+	RDOActivityIERuntime( RDORuntime* rTime, RDOPatternRuntime* _pattern, bool _trace, const std::string& _oprName );
 };
 
+// ----------------------------------------------------------------------------
+// ---------- RDOActivityOperationRuntime
+// ----------------------------------------------------------------------------
 class RDOActivityOperationRuntime: public RDOOperationTrace, public RDOActivityRuntime
 {
-	bool haveAdditionalCondition;
-	RDOCalc *additionalCondition;
-	double getNextTimeInterval(RDOSimulator *sim);
+private:
 	void convertBegin(RDOSimulator *sim);
 	void convertEnd(RDOSimulator *sim);
-	std::string tracePatternId() { return ((RDOOperationRuntime*)pattern)->tracePatternId(); }
-	std::vector<RDOResourceTrace *> getRelevantResources(RDOSimulator *sim) { return RDOActivityRuntime::getRelevantResources(sim); }
-	RDOOperationTrace *clone2(RDOSimulator *sim);
-	void onBeforeChoiceFrom(RDOSimulator *sim) { setPatternParameters(sim); }
-	void onAfterOperationBegin(RDOSimulator *sim) { incrementRelevantResourceReference(sim); RDOOperationTrace::onAfterOperationBegin(sim); }
-	void onBeforeOperationEnd(RDOSimulator *sim) { decrementRelevantResourceReference(sim); setPatternParameters(sim); RDOOperationTrace::onBeforeOperationEnd(sim); }
+
+	bool     haveAdditionalCondition;
+	RDOCalc* additionalCondition;
+
+	double getNextTimeInterval(RDOSimulator *sim);
+	virtual const std::string& tracePatternId() const                               { return pattern->tracePatternId();                     }
+	RDOOperationTrace* clone2( RDOSimulator* sim );
+
+	virtual void onBeforeChoiceFrom( RDOSimulator* sim);
+	virtual void onBeforeOperationEnd( RDOSimulator* sim);
+	virtual void onAfterOperationBegin( RDOSimulator* sim );
+	virtual void onAfterOperationEnd( RDOSimulator* sim );
+	virtual std::string traceResourcesList( char prefix, RDOSimulatorTrace* sim ) {
+		return RDOActivityRuntime::traceResourcesList( prefix, sim );
+	}
+	virtual std::string traceResourcesListNumbers( RDOSimulatorTrace* sim ) {
+		return RDOActivityRuntime::traceResourcesListNumbers( sim );
+	}
+
 protected:
-	virtual bool choiceFrom(RDOSimulator *sim);
+	virtual bool choiceFrom( RDOSimulator* sim );
+
 public:
-	RDOActivityOperationRuntime(RDORuntime *rTime, RDOPatternRuntime *_pattern, bool _trace, std::string *_oprName);
-	RDOActivityOperationRuntime(RDORuntime *rTime, RDOPatternRuntime *_pattern, bool _trace, RDOCalc *condition, std::string *_oprName);
+	RDOActivityOperationRuntime( RDORuntime* rTime, RDOPatternRuntime* _pattern, bool _trace, const std::string& _oprName );
+	RDOActivityOperationRuntime( RDORuntime* rTime, RDOPatternRuntime* _pattern, bool _trace, RDOCalc* condition, const std::string& _oprName );
 };
 
+// ----------------------------------------------------------------------------
+// ---------- RDOActivityKeyboardRuntime
+// ----------------------------------------------------------------------------
 class RDOActivityKeyboardRuntime: public RDOActivityOperationRuntime
 {
 private:
@@ -174,20 +283,9 @@ private:
 	unsigned int scan_code;
 
 public:
-	RDOActivityKeyboardRuntime( RDORuntime* rTime, RDOPatternRuntime* _pattern, bool _trace, std::string* _oprName ):
-		RDOActivityOperationRuntime( rTime, _pattern, _trace, _oprName ),
-		shift( false ),
-		control( false ),
-		scan_code( 0 )
-	{
-	}
-	RDOActivityKeyboardRuntime( RDORuntime* rTime, RDOPatternRuntime* _pattern, bool _trace, RDOCalc* condition, std::string* _oprName ):
-		RDOActivityOperationRuntime( rTime, _pattern, _trace, condition, _oprName ),
-		shift( false ),
-		control( false ),
-		scan_code( 0 )
-	{
-	}
+	RDOActivityKeyboardRuntime( RDORuntime* rTime, RDOPatternRuntime* _pattern, bool _trace, const std::string& _oprName );
+	RDOActivityKeyboardRuntime( RDORuntime* rTime, RDOPatternRuntime* _pattern, bool _trace, RDOCalc* condition, const std::string& _oprName );
+
 	void addHotKey( std::string* hotKey );
 	bool choiceFrom( RDOSimulator* sim );
 };

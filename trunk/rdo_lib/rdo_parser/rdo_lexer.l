@@ -37,7 +37,7 @@ integer				return(integer);
 real				return(real);
 $End				return(End);
 $end				return(End);
-temporary			return(temporary);
+temporary			return(temporary_kw);
 such_as				return(such_as);
 ".."				return(dblpoint);
 

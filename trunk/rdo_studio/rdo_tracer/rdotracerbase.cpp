@@ -273,11 +273,18 @@ void RDOTracerBase::dispatchNextString( std::string& line )
 	} else if ( key == "RC" || key == "SRC" ) {
 		resource = resourceCreation( line, timeNow );
 		action = RUA_ADD;
-	} else if ( key == "RE" || key == "SRE" ) {
-		resource = resourceElimination( line, timeNow );
-		action = RUA_UPDATE;
-	} else if ( key == "RK" || key == "SRK" ) {
+//	} else if ( key == "RE" || key == "SRE" ) {
+//		resource = resourceElimination( line, timeNow );
+//		action = RUA_UPDATE;
+	} else if ( key == "RK" || key == "SRK" || key == "RE" || key == "SRE" ) {
+		bool re = key == "RE" || key == "SRE";
+		std::string copy;
+		if ( re ) copy = line;
 		resourceChanging( line, timeNow );
+		if ( re ) {
+			resource = resourceElimination( copy, timeNow );
+			action = RUA_UPDATE;
+		}
 	} else if ( key == "V" ) {
 		resultChanging( line, timeNow );
 	}/* else if ( key == "$Status" ) {

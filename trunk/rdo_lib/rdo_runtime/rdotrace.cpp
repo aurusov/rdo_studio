@@ -33,7 +33,7 @@ void RDOTrace::writeSearchDecision(RDOSimulator *sim, TreeNode *node)
    getOStream() << node->count
        << " " << actTr->traceId()
        << " " << ruleTr->tracePatternId()
-       << " " << traceResourcesListNumbers(simTr, ruleTr->relevantResources)
+       << " " << ruleTr->traceResourcesListNumbers( simTr )
        << std::endl << getEOL();
 }
 void RDOTrace::writeString(std::string str)
@@ -77,11 +77,11 @@ void RDOTrace::writeSearchNodeInfo(char sign, TreeNodeTrace *node)
          << " " << actTr->traceId()
          << " " << ruleTr->tracePatternId()
          << " " << ((sign != 'D')?node->costRule:node->newCostRule)
-         << " " << traceResourcesListNumbers(sim, ruleTr->relevantResources) << std::endl << getEOL();
+         << " " << ruleTr->traceResourcesListNumbers( sim ) << std::endl << getEOL();
    
       RDODecisionPointTrace *dpTrace = (RDODecisionPointTrace *)node->root->dp;
       if(dpTrace->traceFlag == DPT_trace_all)
-         getOStream() << traceResourcesList('S', sim, ruleTr->relevantResources) << getEOL();
+         getOStream() << ruleTr->traceResourcesList( 'S', sim ) << getEOL();
    }
 }
 
@@ -122,76 +122,53 @@ void RDOTrace::writeSearchResult( char letter, RDOSimulatorTrace* simTr, TreeRoo
 	}
 }
 
-std::string RDOTrace::traceResourcesListNumbers(RDOSimulatorTrace *sim, std::vector<RDOResourceTrace *> resArray)
-{
-   std::ostringstream res;
-   res << resArray.size() << " ";
-   for(std::vector<RDOResourceTrace *>::iterator i = resArray.begin(); i != resArray.end(); i++)
-	{
-		if(*i)
-	      res << " " << (*i)->traceId();
-		else
-	      res << " 0";
-	}
-
-   return res.str();
-}
-
-void RDOTrace::writePermanentResources(RDOSimulatorTrace *sim, std::vector<RDOResourceTrace *> perm)
+void RDOTrace::writePermanentResources( RDOSimulatorTrace* sim, const std::list< RDOResourceTrace* >& res_perm )
 {
 	if(isNullTracer)
 		return;
 
-   getOStream() << traceResourcesList('\0', sim, perm) << getEOL();
+   getOStream() << traceResourcesList('\0', sim, res_perm) << getEOL();
 }
 
-std::string RDOTrace::traceResourcesList(char prefix, RDOSimulatorTrace *sim, std::vector<RDOResourceTrace *> resArray)
+std::string RDOTrace::traceResourcesList( char prefix, RDOSimulatorTrace* sim, const std::list< RDOResourceTrace* >& rel_res_list )
 {
-   std::string res;
-   for(std::vector<RDOResourceTrace *>::iterator i = resArray.begin(); i != resArray.end(); i++)
-	{
-		if(*i)
-	      res += (*i)->traceResourceState(prefix, sim);
+	std::string res;
+	for ( std::list< RDOResourceTrace* >::const_iterator i = rel_res_list.begin(); i != rel_res_list.end(); i++ ) {
+		if ( *i ) {
+			res += (*i)->traceResourceState( prefix, sim );
+		}
 	}
-
-   return res;
+	return res;
 }
 
 std::string RDOResourceTrace::traceResourceState( char prefix, RDOSimulatorTrace* sim )
 {
-   std::ostringstream res;
-   if((trace) || (prefix != '\0'))
-   {
-      if(prefix != '\0')
-         res << prefix;
-
-      res << "R";
-      if(justCreated)
-         res << "C ";
-      else
-         res << "K ";
-
-      res << sim->getCurrentTime() << " " << traceTypeId() << " " << traceId()
-         << " " << traceParametersValue() << std::endl;
-   }
-   return res.str();
+	std::ostringstream res;
+	if ( (trace) || (prefix != '\0') ) {
+		if ( state == RDOResourceTrace::CS_NoChange || state == RDOResourceTrace::CS_NonExist || state == RDOResourceTrace::CS_None ) return "";
+		if ( prefix != '\0' ) res << prefix;
+		switch ( state ) {
+			case RDOResourceTrace::CS_Create: res << "RC "; break;
+			case RDOResourceTrace::CS_Erase : res << "RE " << sim->getCurrentTime() << " " << traceTypeId() << " " << traceId() << std::endl; return res.str(); break;
+			default                         : res << "RK "; break;
+		}
+		res << sim->getCurrentTime() << " " << traceTypeId() << " " << traceId() << " " << traceParametersValue() << std::endl;
+	}
+	return res.str();
 }
 
 void RDOTrace::writeIrregularEvent(RDOIETrace *ie, RDOSimulatorTrace *sim)
 {
-	if(isNullTracer)
-		return;
+	if ( isNullTracer ) return;
 
-   getOStream() << traceResourcesList('\0', sim, ie->relevantResources) << getEOL();
-
-   if(ie->trace && canWrite())
-   {
-      getOStream() << "EI " << sim->getCurrentTime() 
-         << " " << ie->traceId() 
-         << " " << ie->tracePatternId() 
-         << " " << traceResourcesListNumbers(sim, ie->relevantResources)
-         << std::endl << getEOL();
-   }
+	if ( ie->trace && canWrite() ) {
+		getOStream() << "EI " << sim->getCurrentTime()
+		             << " "   << ie->traceId() 
+		             << " "   << ie->tracePatternId() 
+		             << " "   << ie->traceResourcesListNumbers( sim )
+		             << std::endl << getEOL();
+	}
+	getOStream() << ie->traceResourcesList( '\0', sim ) << getEOL();
 }
 
 void RDOTrace::writeRule(RDORuleTrace *rule, RDOSimulatorTrace *sim)
@@ -204,113 +181,65 @@ void RDOTrace::writeRule(RDORuleTrace *rule, RDOSimulatorTrace *sim)
 		             << " "   << operId
 		             << " "   << rule->traceId() 
 		             << " "   << rule->tracePatternId()
-		             << " "   << traceResourcesListNumbers(sim, rule->relevantResources)
+		             << " "   << rule->traceResourcesListNumbers( sim )
 		             << std::endl << getEOL();
 		sim->freeOperationId(operId);
 	}
-	getOStream() << traceResourcesList( '\0', sim, rule->relevantResources ) << getEOL();
+	getOStream() << rule->traceResourcesList( '\0', sim ) << getEOL();
 }
 
-void RDOTrace::writeBeforeOperationBegin(RDOOperationTrace *op, RDOSimulatorTrace *sim)
+void RDOTrace::writeAfterOperationBegin( RDOOperationTrace* op, RDOSimulatorTrace* sim )
 {
-	if(isNullTracer)
-		return;
+	if ( isNullTracer ) return;
+
+	if ( op->trace ) {
+		getOStream() << "EB " << sim->getCurrentTime() 
+		             << " "   << op->traceOperId() 
+		             << " "   << op->traceId() 
+		             << " "   << op->tracePatternId() 
+		             << " "   << op->traceResourcesListNumbers( sim ) << std::endl << getEOL(); 
+	}
+	getOStream() << op->traceResourcesList( '\0', sim ) << getEOL();
 }
 
-void RDOTrace::writeAfterOperationBegin(RDOOperationTrace *op, RDOSimulatorTrace *sim)
+void RDOTrace::writeAfterOperationEnd( RDOOperationTrace* op, RDOSimulatorTrace* sim )
 {
-	if(isNullTracer)
-		return;
+	if ( isNullTracer ) return;
 
-   if(op->trace)
-   {
-      getOStream() << "EB " << sim->getCurrentTime() 
-         << " " << op->traceOperId() 
-         << " " << op->traceId() 
-         << " " << op->tracePatternId() 
-         << " " << traceResourcesListNumbers(sim, op->relevantResources) << std::endl << getEOL(); 
-   }
-
-   getOStream() << traceResourcesList('\0', sim, op->relevantResources) << getEOL();
-}
-
-void RDOTrace::writeBeforeOperationEnd(RDOOperationTrace *op, RDOSimulatorTrace *sim)
-{
-	if(isNullTracer)
-		return;
-
-   if(op->trace)
-   {
-      getOStream() << "EF " << sim->getCurrentTime() 
-         << " " << op->traceOperId() 
-         << " " << op->traceId() 
-         << " " << op->tracePatternId() 
-         << " " << traceResourcesListNumbers(sim, op->relevantResources)
-         << std::endl << getEOL();
-   }
-}
-
-void RDOTrace::writeAfterOperationEnd(RDOOperationTrace *op, RDOSimulatorTrace *sim)
-{
-	if(isNullTracer)
-		return;
-
-// check if we delete some of relevant resources:
-   for(std::vector<RDOResourceTrace *>::iterator i = op->relevantResources.begin(); i != op->relevantResources.end(); i++)
-   {
-      if(std::find(sim->allResourcesInSim.begin(), sim->allResourcesInSim.end(), (*i)) == sim->allResourcesInSim.end())
-      {
-         i = op->relevantResources.erase(i);
-         i--;
-      }
-   }
-
-   getOStream() << traceResourcesList('\0', sim, op->relevantResources) << getEOL();
+	if ( op->trace ) {
+		getOStream() << "EF " << sim->getCurrentTime() 
+		             << " "   << op->traceOperId() 
+		             << " "   << op->traceId() 
+		             << " "   << op->tracePatternId() 
+		             << " "   << op->traceResourcesListNumbers( sim )
+		             << std::endl << getEOL();
+	}
+	getOStream() << op->traceResourcesList( '\0', sim ) << getEOL();
 }
 
 RDOResourceTrace::RDOResourceTrace(RDOSimulatorTrace *i_sim):
-	RDOTraceableObject(i_sim)
+	RDOTraceableObject(i_sim),
+	state( RDOResourceTrace::CS_None ),
+	temporary( false )
 {
 	id = sim->getFreeResourceId();
-	justCreated = false;
-	tempotary = false;
 	trace = false;
 }
 
-RDOResourceTrace::RDOResourceTrace(const RDOResourceTrace &orig):
-	RDOTraceableObject(orig.sim)
+RDOResourceTrace::RDOResourceTrace( const RDOResourceTrace& orig ):
+	RDOTraceableObject( orig.sim )
 {
-	id = orig.id;
-	justCreated = orig.justCreated;
-	typeId = orig.typeId;
-	tempotary = orig.tempotary;
-	trace = orig.trace;
+	id        = orig.id;
+	state     = orig.state;
+	typeId    = orig.typeId;
+	temporary = orig.temporary;
+	trace     = orig.trace;
 	sim->incrementResourceIdReference(id);
 }
 
 RDOResourceTrace::~RDOResourceTrace()
 {
 	sim->onResourceErase(this);
-}
-
-void RDOPattern::onAfter(RDOSimulator *child_sim)
-{
-	relevantResources = getRelevantResources(child_sim);
-	std::for_each(relevantResources.begin(), relevantResources.end(), CheckRelevantResource((RDOSimulatorTrace *)child_sim));
-}
-
-void CheckRelevantResource::operator ()(RDOResourceTrace *res)
-{
-	if(res)
-	{
-		if(std::find(sim->allResourcesInSim.begin(), sim->allResourcesInSim.end(), res)
-			== sim->allResourcesInSim.end())
-		{
-			sim->allResourcesInSim.push_back(res);
-			res->tempotary = true;
-			res->justCreated = true;
-		}
-	}
 }
 
 void RDOTrace::writeTraceBegin(RDOSimulatorTrace *sim)
@@ -348,7 +277,7 @@ void RDOTrace::writeStatus( RDOSimulatorTrace* sim, char* status )
 	getOStream() << "$Status = " << status << " " << sim->getCurrentTime() << std::endl << getEOL();
 
 	// Статистика по поиску на графе
-	std::list< RDOBaseOperation* >::const_iterator it = sim->haveBaseOperations.begin();
+	std::vector< RDOBaseOperation* >::const_iterator it = sim->haveBaseOperations.begin();
 	while ( it != sim->haveBaseOperations.end() ) {
 		RDODecisionPointTrace* dp = dynamic_cast<RDODecisionPointTrace*>(*it);
 		if ( dp ) {

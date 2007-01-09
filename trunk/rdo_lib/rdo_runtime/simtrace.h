@@ -3,6 +3,10 @@
 
 #include "rdotrace.h"
 
+namespace rdoRuntime {
+class RDOActivityRuntime;
+}
+
 namespace rdoParse {
 class RDODPTSome;
 }
@@ -16,9 +20,9 @@ friend TreeNodeTrace;
 friend RDOTrace;
 friend RDOResourceTrace;
 friend RDOIETrace;
-friend CheckRelevantResource;
 friend RDORuleTrace;
 friend class RDOActivityTrace;
+friend class rdoRuntime::RDOActivityRuntime;
 friend class rdoParse::RDODPTSome;
 
 private:
@@ -27,15 +31,14 @@ private:
 	std::list<int> freeResourcesIds;
 	typedef std::map<int, int> MAPII;
 	MAPII resourcesIdsRefs;
-	std::list<int> freeOperationsIds;
-	std::list<RDOResourceTrace *> allResourcesInSim;
-	std::vector<RDOResourceTrace *> perm;
+	std::list< int > freeOperationsIds;
+	std::list< RDOResourceTrace* > allResourcesInSim;
+	std::list< RDOResourceTrace* > perm;
 
 	int getFreeResourceId();
 	void freeResourceId(int id);
 	int getFreeOperationId(); 
 	void freeOperationId(int id);
-	void clearJustCreatedFlags();
 
 	RDOSimulator *createCopy();
 
@@ -43,7 +46,7 @@ private:
 	int activityCounter;
 	int dptCounter;
 
-	void onAfterCheckPokaz();
+//	virtual void onAfterCheckPokaz();
 
 	void addTemplateDecisionPoint(RDODecisionPointTrace *dp);
 	void addTemplateOperation(RDOOperationTrace *op);
@@ -64,7 +67,7 @@ protected:
 	{
 	}
 	int maxOperationId;
-	void addTemplateBaseOperation(RDOBaseOperation *op);
+	void addTemplateBaseOperation( RDOBaseOperation* op );
 
 	void incrementResourceIdReference(int id);
 
@@ -74,7 +77,7 @@ protected:
 	void checkRSSDefinedResources();
 
 	void onResourceErase(RDOResourceTrace *res);
-	virtual std::vector<RDOResourceTrace *> getPermanentResources() = 0;
+	virtual std::list< RDOResourceTrace* > getPermanentResources() = 0;
 
 public:
 	virtual RDOTrace* getTracer() = 0;

@@ -95,8 +95,8 @@ RDOPROCTransact::RDOPROCTransact( RDORuntime* sim, RDOPROCBlock* _block ):
 	sim->insertNewResource( this );
 	type        = rdoParse::RDOPROCTransact::makeRTP()->getNumber();
 	trace       = true;
-	tempotary   = true;
-	justCreated = true;
+	temporary   = true;
+	state       = RDOResourceTrace::CS_Create;
 	params.push_back( sim->getTimeNow() );
 	params.push_back( 0 );
 }
@@ -145,7 +145,7 @@ void RDOPROCGenerate::calcNextTimeInterval( RDORuntime* sim )
 bool RDOPROCSeize::checkOperation( RDORuntime* sim )
 {
 	if ( !transacts.empty() ) {
-		RDOResource* rss = sim->findResource( rss_id );
+		RDOResource* rss = sim->getResourceByID( rss_id );
 
 		RDOTrace* tracer = sim->getTracer();
 		if ( !tracer->isNull() ) {
@@ -171,7 +171,7 @@ bool RDOPROCSeize::checkOperation( RDORuntime* sim )
 bool RDOPROCRelease::checkOperation( RDORuntime* sim )
 {
 	if ( !transacts.empty() ) {
-		RDOResource* rss = sim->findResource( rss_id );
+		RDOResource* rss = sim->getResourceByID( rss_id );
 
 		RDOTrace* tracer = sim->getTracer();
 		if ( !tracer->isNull() ) {
@@ -234,7 +234,7 @@ bool RDOPROCTerminate::checkOperation( RDORuntime* sim )
 {
 	if ( !transacts.empty() ) {
 		RDOPROCTransact* res = transacts.front();
-		sim->eraseRes( res->number, NULL );
+		sim->onEraseRes( res->number, NULL );
 		transacts.erase( transacts.begin() );
 		TRACE( "%7.1f TERMINATE\n", sim->getTimeNow() );
 		return true;
