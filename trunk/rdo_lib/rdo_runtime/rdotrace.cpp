@@ -149,7 +149,13 @@ std::string RDOResourceTrace::traceResourceState( char prefix, RDOSimulatorTrace
 		if ( prefix != '\0' ) res << prefix;
 		switch ( state ) {
 			case RDOResourceTrace::CS_Create: res << "RC "; break;
-			case RDOResourceTrace::CS_Erase : res << "RE " << sim->getCurrentTime() << " " << traceTypeId() << " " << traceId() << std::endl; return res.str(); break;
+			case RDOResourceTrace::CS_Erase : res << "RE "
+#ifdef RDOSIM_COMPATIBLE
+				<< sim->getCurrentTime() << " " << traceTypeId() << " " << traceId() << std::endl; return res.str();
+#else
+				;
+#endif
+				break;
 			default                         : res << "RK "; break;
 		}
 		res << sim->getCurrentTime() << " " << traceTypeId() << " " << traceId() << " " << traceParametersValue() << std::endl;

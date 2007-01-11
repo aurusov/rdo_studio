@@ -1122,7 +1122,7 @@ BEGIN
         MENUITEM "&Поиск на графике",           ID_CHART_FINDINCHARTS
         MENUITEM "&Добавить на новый график",   ID_CHART_ADDTONEWCHART
         MENUITEM SEPARATOR
-        MENUITEM "'&Схлопнуть' время",          ID_CHART_TIMEWRAP
+        MENUITEM "'&Схлопнуть' время\tCtrl+W",  ID_CHART_TIMEWRAP
         MENUITEM SEPARATOR
         MENUITEM "&Настройки",                  ID_CHART_OPTIONS
     END
@@ -1268,7 +1268,7 @@ BEGIN
     VK_SPACE,       ID_EDIT_COMPLETEWORD,   VIRTKEY, CONTROL, NOINVERT
     VK_SUBTRACT,    ID_VIEW_ZOOMOUT,        VIRTKEY, CONTROL, NOINVERT
     VK_SUBTRACT,    ID_MODEL_SHOWRATE_DEC,  VIRTKEY, ALT, NOINVERT
-    "W",            ID_EMPTYCOMMAND_2,      VIRTKEY, CONTROL, NOINVERT
+    "W",            ID_CHART_TIMEWRAP,      VIRTKEY, CONTROL, NOINVERT
     "W",            ID_EMPTYCOMMAND_3,      VIRTKEY, SHIFT, CONTROL, 
                                                     NOINVERT
     "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL, NOINVERT
@@ -1290,8 +1290,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,8,0,449
- PRODUCTVERSION 0,8,0,449
+ FILEVERSION 0,8,0,450
+ PRODUCTVERSION 0,8,0,450
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -1309,14 +1309,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "RAO studio\0"
-            VALUE "FileVersion", "0, 8, 0, 449\0"
+            VALUE "FileVersion", "0, 8, 0, 450\0"
             VALUE "InternalName", "RAO-Studio\0"
             VALUE "LegalCopyright", "Copyright (C) 2003-2006\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "RAO-Studio.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "RAO-Studio\0"
-            VALUE "ProductVersion", "0, 8, 0, 449\0"
+            VALUE "ProductVersion", "0, 8, 0, 450\0"
             VALUE "SpecialBuild", "\0"
         END
     END
@@ -2785,7 +2785,7 @@ BEGIN
         MENUITEM "&Find In Charts",             ID_CHART_FINDINCHARTS
         MENUITEM "&Add To New Chart",           ID_CHART_ADDTONEWCHART
         MENUITEM SEPARATOR
-        MENUITEM "Time &Wrap",                  ID_CHART_TIMEWRAP
+        MENUITEM "Time &Wrap\tCtrl+W",          ID_CHART_TIMEWRAP
         MENUITEM SEPARATOR
         MENUITEM "&Options",                    ID_CHART_OPTIONS
     END

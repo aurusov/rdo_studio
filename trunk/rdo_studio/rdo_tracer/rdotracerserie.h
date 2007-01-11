@@ -40,8 +40,8 @@ protected:
 	std::string title;
 
 	valuesList values;
-	double minValue;
-	double maxValue;
+	mutable double minValue;
+	mutable double maxValue;
 	int value_count;
 
 	bool isTemporaryResourceParam() const;

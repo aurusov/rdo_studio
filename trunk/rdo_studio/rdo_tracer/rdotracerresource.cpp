@@ -48,6 +48,8 @@ void RDOTracerResParam::getCaptions( std::vector<std::string> &captions, const i
 		case RDOPT_ENUMERATIVE: {
 			RDOTracerSerie::getCaptions( captions, val_count );
 			int delta = getParamInfo()->getEnumCount();
+			minValue = 0;
+			maxValue = delta - 1;
 			int real_val_count = val_count;
 			if ( delta > real_val_count ) {
 				while ( (int)(( delta - 1 ) / ( real_val_count - 1 )) != ( (double)(delta - 1) / ( real_val_count - 1 ) ) )

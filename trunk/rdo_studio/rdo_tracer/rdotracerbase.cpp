@@ -273,9 +273,13 @@ void RDOTracerBase::dispatchNextString( std::string& line )
 	} else if ( key == "RC" || key == "SRC" ) {
 		resource = resourceCreation( line, timeNow );
 		action = RUA_ADD;
-//	} else if ( key == "RE" || key == "SRE" ) {
-//		resource = resourceElimination( line, timeNow );
-//		action = RUA_UPDATE;
+#ifdef RDOSIM_COMPATIBLE
+	} else if ( key == "RE" || key == "SRE" ) {
+		resource = resourceElimination( line, timeNow );
+		action = RUA_UPDATE;
+	} else if ( key == "RK" || key == "SRK" || key == "RE" || key == "SRE" ) {
+		resourceChanging( line, timeNow );
+#else
 	} else if ( key == "RK" || key == "SRK" || key == "RE" || key == "SRE" ) {
 		bool re = key == "RE" || key == "SRE";
 		std::string copy;
@@ -285,6 +289,7 @@ void RDOTracerBase::dispatchNextString( std::string& line )
 			resource = resourceElimination( copy, timeNow );
 			action = RUA_UPDATE;
 		}
+#endif
 	} else if ( key == "V" ) {
 		resultChanging( line, timeNow );
 	}/* else if ( key == "$Status" ) {
@@ -400,7 +405,11 @@ RDOTracerResource* RDOTracerBase::resourceCreation( std::string& line, RDOTracer
 RDOTracerResource* RDOTracerBase::resourceElimination( std::string& line, RDOTracerTimeNow* const time  )
 {
 	RDOTracerResource* res = getResource( line );
+#ifdef RDOSIM_COMPATIBLE
 	res->setParams( line, time, eventIndex, true );
+#else
+	res->setParams( line, time, eventIndex, false );
+#endif
 	res->setErased( true );
 	//tree->updateResource( res );
 	return res;
