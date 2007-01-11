@@ -1290,8 +1290,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,8,0,448
- PRODUCTVERSION 0,8,0,448
+ FILEVERSION 0,8,0,449
+ PRODUCTVERSION 0,8,0,449
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -1309,14 +1309,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "RAO studio\0"
-            VALUE "FileVersion", "0, 8, 0, 448\0"
+            VALUE "FileVersion", "0, 8, 0, 449\0"
             VALUE "InternalName", "RAO-Studio\0"
             VALUE "LegalCopyright", "Copyright (C) 2003-2006\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "RAO-Studio.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "RAO-Studio\0"
-            VALUE "ProductVersion", "0, 8, 0, 448\0"
+            VALUE "ProductVersion", "0, 8, 0, 449\0"
             VALUE "SpecialBuild", "\0"
         END
     END
@@ -1751,7 +1751,7 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_DEVELOPERS          "RAO-Studio v0.8 (РДО v2.0, 2003-2006 годы)\r\n\tЕмельянов В.В.\r\n\tБарс А.В.\r\n\tЗахаров П.А.\r\n\tУрусов А.В.\r\n\r\nRAO-Simulator v3.0 (РДО v1.0, 1991-1999 годы)\r\n\tЕмельянов В.В.\r\n\tЯсиновский С.И.\r\n\tОвсянников М.В."
+    IDS_DEVELOPERS          "RAO-Studio v0.8 (РДО v2.0, 2003-2007 годы)\r\n\tЕмельянов В.В.\r\n\tБарс А.В.\r\n\tЗахаров П.А.\r\n\tУрусов А.В.\r\n\r\nRAO-Simulator v3.0 (РДО v1.0, 1991-1999 годы)\r\n\tЕмельянов В.В.\r\n\tЯсиновский С.И.\r\n\tОвсянников М.В."
 END
 
 STRINGTABLE DISCARDABLE 
@@ -3218,7 +3218,7 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_DEVELOPERS          "RAO-Studio v0.8 (RDO v2.0, 2003-2006)\r\n\tEmelyanov V.V.\r\n\tBars A.V.\r\n\tZakharov P.A.\r\n\tUrusov A.V.\r\n\r\nRAO-Simulator v3.0 (RDO v1.0, 1991-1999)\r\n\tEmelyanov V.V.\r\n\tYasinovsky S.I.\r\n\tOvsyannikov M.V."
+    IDS_DEVELOPERS          "RAO-Studio v0.8 (RDO v2.0, 2003-2007)\r\n\tEmelyanov V.V.\r\n\tBars A.V.\r\n\tZakharov P.A.\r\n\tUrusov A.V.\r\n\r\nRAO-Simulator v3.0 (RDO v1.0, 1991-1999)\r\n\tEmelyanov V.V.\r\n\tYasinovsky S.I.\r\n\tOvsyannikov M.V."
 END
 
 STRINGTABLE DISCARDABLE 

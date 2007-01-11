@@ -39,24 +39,6 @@ RDOBaseOperation::BOResult RDOOperation::checkOperation( RDOSimulator* sim )
 		newOp->convert_end = true;
 		operation_clone.push_back( newOp );
 		return RDOBaseOperation::BOR_planned_and_run;
-	} else {
-/*
-		// Операция начаться не может, проверим события конца всех её клонов
-		double time_now = sim->getCurrentTime();
-		std::list<RDOOperation *>::iterator it = operation_clone.begin();
-		while ( it != operation_clone.end() ) {
-			// Выполняем событие конца
-			if ( time_now >= (*it)->time ) {
-				(*it)->onBeforeOperationEnd( sim );
-				(*it)->convertEnd( sim );
-				(*it)->onAfterOperationEnd( sim );
-				delete *it;
-				operation_clone.erase( it );
-				return RDOBaseOperation::BOR_planned_done;
-			}
-			it++;
-		}
-*/
 	}
 	return RDOBaseOperation::BOR_cant_run;
 }
@@ -81,16 +63,6 @@ void RDOIE::init( RDOSimulator* sim )
 RDOBaseOperation::BOResult RDOIE::checkOperation(RDOSimulator *sim)
 {
 	return RDOBaseOperation::BOR_cant_run;
-/*
-	if ( sim->getCurrentTime() >= time ) {
-		onBeforeIrregularEvent(sim);
-		convertEvent(sim);
-		sim->addTimePoint( time = (getNextTimeInterval(sim) + sim->getCurrentTime()), this );
-		onAfterIrregularEvent(sim);
-		return RDOBaseOperation::BOR_planned_only;
-	}
-	return RDOBaseOperation::BOR_cant_run;
-*/
 }
 
 void RDOIE::makePlanned( RDOSimulator* sim, void* param )
