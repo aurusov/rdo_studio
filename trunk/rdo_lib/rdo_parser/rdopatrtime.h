@@ -145,9 +145,17 @@ protected:
 	RDOActivityRuntime( RDOPatternRuntime* _pattern, const std::string& _oprName ):
 		pattern( _pattern ),
 		oprName( _oprName )
+#ifdef RDOSIM_COMPATIBLE
+		,
+		show_create_index( true )
+#endif
 	{
 	}
 	virtual ~RDOActivityRuntime() {}
+
+#ifdef RDOSIM_COMPATIBLE
+	bool                           show_create_index;
+#endif
 	std::string                    oprName;
 	std::list< RDOResourceTrace* > relevantResources; // Список релевантных ресурсов
 	std::vector< int >             relResID;  // Содержит список id ресурсов, которые стали релевантными образцу
@@ -164,7 +172,7 @@ protected:
 	void updateConvertStatus( RDOSimulator* sim, const std::vector< RDOResourceTrace::ConvertStatus >& status_list );
 
 	std::string traceResourcesList( char prefix, RDOSimulatorTrace* sim );
-	std::string traceResourcesListNumbers( RDOSimulatorTrace* sim );
+	virtual std::string traceResourcesListNumbers( RDOSimulatorTrace* sim );
 
 public:
 	void addParamCalc( RDOCalc* calc ) { paramsCalcs.push_back( calc ); }

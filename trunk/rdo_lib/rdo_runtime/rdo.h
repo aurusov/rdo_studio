@@ -20,8 +20,25 @@ class RDOCalc;
 class RDOBaseOperation: public rdoParse::RDODeletable
 {
 public:
-	virtual ~RDOBaseOperation()                      {}
-	virtual bool checkOperation( RDOSimulator* sim ) = 0;
+	enum BOResult {
+		BOR_cant_run = 0,
+		BOR_can_run,
+		BOR_planned_done,
+		BOR_planned_only,
+		BOR_planned_and_run
+	};
+	RDOBaseOperation()          {}
+	virtual ~RDOBaseOperation() {}
+	// Вызывается перед стартом прогона для инициализации операции
+	// Используется для IE и GENERATE, чтобы задать время прихода первого клиента
+	virtual void init( RDOSimulator* sim ) {}
+	// Вызывается для проверки выполнимости операции и сразу выполняет
+	// такие образцы, как DPTSearch, rule, operation_begin, keyboard_begin
+	// Должна вернуть true, если операция выполнилась или запланировалась
+	virtual BOResult checkOperation( RDOSimulator* sim ) = 0;
+	// Вызывается для запланированных в будующем событий: IE, operation_end, keyboard_end
+	// Может не использоваться, например, для rule
+	virtual void makePlanned( RDOSimulator* sim, void* param = NULL )  {}
 };
 
 class RDORule: public RDOBaseOperation
@@ -32,7 +49,7 @@ friend RDODecisionPoint;
 friend TreeNode;
 
 private:
-	bool checkOperation( RDOSimulator* sim );
+	virtual RDOBaseOperation::BOResult checkOperation( RDOSimulator* sim );
 
 protected:
 	virtual void onBeforeChoiceFrom( RDOSimulator* sim )                 {}
@@ -84,7 +101,7 @@ friend CheckOperations;
 
 private:
 	bool RunSearchInTree( RDOSimulator* sim );
-	bool checkOperation( RDOSimulator* sim );
+	virtual RDOBaseOperation::BOResult checkOperation( RDOSimulator* sim );
 
 protected:
 	std::list< RDOActivity* > activities;
@@ -111,7 +128,9 @@ friend CheckOperations;
 
 private:
 	double time;
-	bool checkOperation( RDOSimulator* sim );
+	virtual void init( RDOSimulator* sim );
+	virtual RDOBaseOperation::BOResult checkOperation( RDOSimulator* sim );
+	virtual void makePlanned( RDOSimulator* sim, void* param = NULL );
 
 protected:
 	virtual void convertEvent( RDOSimulator* sim )            = 0;
@@ -133,7 +152,9 @@ private:
 	double time;
 	bool convert_end;
 	std::list< RDOOperation* > operation_clone;
-	bool checkOperation( RDOSimulator* sim );
+
+	virtual RDOBaseOperation::BOResult checkOperation( RDOSimulator* sim );
+	virtual void makePlanned( RDOSimulator* sim, void* param = NULL );
 
 public:
 	RDOOperation():

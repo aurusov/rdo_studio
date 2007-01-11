@@ -4,11 +4,12 @@
 #include "rdodefines.h"
 #include <rdocommon.h>
 
+class RDOBaseOperation;
+
 class RDOSimulatorBase
 {
 private:
-	std::list< double > timePointList;
-	double              currentTime;
+	double currentTime;
 
 	rdoRuntime::RunTimeMode mode;
 
@@ -22,10 +23,18 @@ private:
 	unsigned int msec_prev;
 
 protected:
-	inline void setCurrentTime(double time) { currentTime = time; }
+	struct BOPlanned {
+		RDOBaseOperation* opr;
+		void*             param;
+		BOPlanned()                                             : opr( NULL )    , param( NULL )       {}
+		BOPlanned( const BOPlanned& copy )                      : opr( copy.opr ), param( copy.param ) {}
+		BOPlanned( RDOBaseOperation* _opr, void* _param = NULL ): opr( _opr )    , param( _param )     {}
+	};
+	std::map< double, std::list< BOPlanned >* > timePointList;
 
-	// These functions for use in derived classes:
-	inline double getCurrentTime() { return currentTime; }
+	bool check_operation;
+
+	void setCurrentTime( double value ) { currentTime = value; }
 
 	// Overridables:
 
@@ -65,16 +74,18 @@ public:
 	bool rdoNext();
 	void rdoPostProcess();
 
-	rdoRuntime::RunTimeMode getMode() const        { return mode;     }
+	double getCurrentTime() const                  { return currentTime; }
+
+	rdoRuntime::RunTimeMode getMode() const        { return mode;        }
 	void setMode( rdoRuntime::RunTimeMode _mode );
 
-	double getSpeed() const                        { return speed;    }
+	double getSpeed() const                        { return speed;       }
 	void setSpeed( double persent );
 
-	double getShowRate() const                     { return showRate; }
+	double getShowRate() const                     { return showRate;    }
 	void setShowRate( double value );
 
-	void addTimePoint( double timePoint );
+	void addTimePoint( double timePoint, RDOBaseOperation* opr = NULL, void* param = NULL  );
 
 	RDOSimulatorBase();
 	virtual ~RDOSimulatorBase() {}

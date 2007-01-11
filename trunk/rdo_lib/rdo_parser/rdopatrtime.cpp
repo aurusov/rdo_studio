@@ -248,7 +248,11 @@ std::string RDOActivityRuntime::traceResourcesListNumbers( RDOSimulatorTrace* si
 	std::ostringstream res;
 	res << relevantResources.size();
 	for ( std::list< RDOResourceTrace* >::const_iterator i = relevantResources.begin(); i != relevantResources.end(); i++ ) {
-		if ( *i && (*i)->getState() != RDOResourceTrace::CS_Create ) {
+#ifdef RDOSIM_COMPATIBLE
+		if ( *i && (show_create_index || (!show_create_index && (*i)->getState() != RDOResourceTrace::CS_Create)) ) {
+#else
+		if ( *i ) {
+#endif
 			res << " " << (*i)->traceId();
 		} else {
 			res << " 0";
@@ -282,7 +286,7 @@ void RDOActivityRuntime::incrementRelevantResourceReference( RDOSimulator* sim )
 {
 	for ( int i = 0; i < relResID.size(); i++ ) {
 		RDOResource* res = static_cast<RDORuntime*>(sim)->getResourceByID( relResID.at(i) );
-		if ( res ) res->referenceCount++;
+		if ( res && (res->getState() == RDOResourceTrace::CS_Keep || res->getState() == RDOResourceTrace::CS_Create || res->getState() == RDOResourceTrace::CS_Erase ) ) res->referenceCount++;
 	}
 }
 
@@ -290,7 +294,7 @@ void RDOActivityRuntime::decrementRelevantResourceReference( RDOSimulator* sim )
 {
 	for ( int i = 0; i < relResID.size(); i++ ) {
 		RDOResource* res = static_cast<RDORuntime*>(sim)->getResourceByID( relResID.at(i) );
-		if ( res ) res->referenceCount--;
+		if ( res && (res->getState() == RDOResourceTrace::CS_Keep || res->getState() == RDOResourceTrace::CS_Create || res->getState() == RDOResourceTrace::CS_Erase ) ) res->referenceCount--;
 	}
 }
 
@@ -389,8 +393,11 @@ RDOActivityOperationRuntime::RDOActivityOperationRuntime( RDORuntime* rTime, RDO
 	RDOActivityRuntime( _pattern, _oprName ),
 	additionalCondition( NULL )
 {
-	trace = _trace;
+	trace                   = _trace;
 	haveAdditionalCondition = false;
+#ifdef RDOSIM_COMPATIBLE
+	show_create_index       = false;
+#endif
 }
 
 RDOActivityOperationRuntime::RDOActivityOperationRuntime( RDORuntime* rTime, RDOPatternRuntime* _pattern, bool _trace, RDOCalc* condition, const std::string& _oprName ):
@@ -398,9 +405,11 @@ RDOActivityOperationRuntime::RDOActivityOperationRuntime( RDORuntime* rTime, RDO
 	RDOActivityRuntime( _pattern, _oprName ),
 	additionalCondition( condition )
 {
-	trace = _trace;
+	trace                   = _trace;
 	haveAdditionalCondition = true;
-	
+#ifdef RDOSIM_COMPATIBLE
+	show_create_index       = false;
+#endif
 }
 
 bool RDOActivityOperationRuntime::choiceFrom( RDOSimulator* sim ) 
@@ -434,7 +443,6 @@ void RDOActivityOperationRuntime::onBeforeChoiceFrom( RDOSimulator* sim)
 
 void RDOActivityOperationRuntime::onBeforeOperationEnd( RDOSimulator* sim)
 {
-	decrementRelevantResourceReference( sim );
 	setPatternParameters( sim );
 	RDOOperationTrace::onBeforeOperationEnd( sim );
 }
@@ -445,12 +453,15 @@ void RDOActivityOperationRuntime::onAfterOperationBegin( RDOSimulator* sim )
 	RDOOperationTrace::onAfterOperationBegin( sim );
 	pattern->convertBeginErase( static_cast<RDORuntime*>(sim) );
 	updateRelRes( sim );
+	updateConvertStatus( sim, static_cast<RDOOperationRuntime*>(pattern)->endConvertStatus );
 	incrementRelevantResourceReference( sim );
+	updateConvertStatus( sim, pattern->beginConvertStatus );
 }
 
 void RDOActivityOperationRuntime::onAfterOperationEnd( RDOSimulator* sim )
 {
 	updateConvertStatus( sim, static_cast<RDOOperationRuntime*>(pattern)->endConvertStatus );
+	decrementRelevantResourceReference( sim );
 	RDOOperationTrace::onAfterOperationEnd( sim );
 	static_cast<RDOOperationRuntime*>(pattern)->convertEndErase( static_cast<RDORuntime*>(sim) );
 	updateRelRes( sim );

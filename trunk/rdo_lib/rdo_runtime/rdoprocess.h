@@ -6,7 +6,6 @@
 
 namespace rdoRuntime {
 
-class RDORuntime;
 class RDOCalc;
 
 // ----------------------------------------------------------------------------
@@ -24,12 +23,13 @@ protected:
 	std::list< RDOPROCProcess* > child;
 	std::list< RDOPROCBlock* >   blocks;
 
-public:
-	RDOPROCProcess( const std::string& _name, RDORuntime* sim );
-	void insertChild( RDOPROCProcess* value );
-	virtual bool checkOperation( RDOSimulator* sim );
+	virtual void init( RDOSimulator* sim );
+	virtual RDOBaseOperation::BOResult checkOperation( RDOSimulator* sim );
 
-	void preProcess( RDOSimulator* sim );
+public:
+	RDOPROCProcess( const std::string& _name, RDOSimulator* sim );
+	void insertChild( RDOPROCProcess* value );
+
 	void next( RDOPROCTransact* transact );
 };
 
@@ -44,14 +44,14 @@ protected:
 	RDOPROCBlock* block;
 
 public:
-	RDOPROCTransact( RDORuntime* sim, RDOPROCBlock* _block );
+	RDOPROCTransact( RDOSimulator* sim, RDOPROCBlock* _block );
 	void next();
 };
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCBlock
 // ----------------------------------------------------------------------------
-class RDOPROCBlock
+class RDOPROCBlock: public RDOBaseOperation
 {
 friend class RDOPROCTransact;
 friend class RDOPROCProcess;
@@ -62,9 +62,6 @@ protected:
 
 	RDOPROCBlock( RDOPROCProcess* _process );
 	virtual ~RDOPROCBlock() {}
-
-public:
-	virtual bool checkOperation( RDORuntime* sim ) = 0;
 };
 
 // ----------------------------------------------------------------------------
@@ -77,11 +74,12 @@ protected:
 	RDOCalc* timeCalc;
 
 protected:
-	virtual bool checkOperation( RDORuntime* sim );
+	virtual void init( RDOSimulator* sim );
+	virtual RDOBaseOperation::BOResult checkOperation( RDOSimulator* sim );
 
 public:
 	RDOPROCGenerate( RDOPROCProcess* _process, RDOCalc* time ): RDOPROCBlock( _process ), timeNext( 0 ), timeCalc( time ) {}
-	void calcNextTimeInterval( RDORuntime* sim );
+	void calcNextTimeInterval( RDOSimulator* sim );
 };
 
 // ----------------------------------------------------------------------------
@@ -92,9 +90,10 @@ class RDOPROCSeize: public RDOPROCBlock
 protected:
 	int rss_id;
 
+	virtual RDOBaseOperation::BOResult checkOperation( RDOSimulator* sim );
+
 public:
 	RDOPROCSeize( RDOPROCProcess* _process, int _rss_id ): RDOPROCBlock( _process ), rss_id( _rss_id ) {}
-	virtual bool checkOperation( RDORuntime* sim );
 };
 
 // ----------------------------------------------------------------------------
@@ -105,9 +104,10 @@ class RDOPROCRelease: public RDOPROCBlock
 protected:
 	int rss_id;
 
+	virtual RDOBaseOperation::BOResult checkOperation( RDOSimulator* sim );
+
 public:
 	RDOPROCRelease( RDOPROCProcess* _process, int _rss_id ): RDOPROCBlock( _process ), rss_id( _rss_id ) {}
-	virtual bool checkOperation( RDORuntime* sim );
 };
 
 // ----------------------------------------------------------------------------
@@ -129,9 +129,10 @@ protected:
 	};
 	std::list< LeaveTr > leave_list;
 
+	virtual RDOBaseOperation::BOResult checkOperation( RDOSimulator* sim );
+
 public:
 	RDOPROCAdvance( RDOPROCProcess* _process, RDOCalc* _delayCalc ): RDOPROCBlock( _process ), delayCalc( _delayCalc ) {}
-	virtual bool checkOperation( RDORuntime* sim );
 };
 
 // ----------------------------------------------------------------------------
@@ -139,9 +140,11 @@ public:
 // ----------------------------------------------------------------------------
 class RDOPROCTerminate: public RDOPROCBlock
 {
+protected:
+	virtual RDOBaseOperation::BOResult checkOperation( RDOSimulator* sim );
+
 public:
 	RDOPROCTerminate( RDOPROCProcess* _process ): RDOPROCBlock( _process ) {}
-	virtual bool checkOperation( RDORuntime* sim );
 };
 
 } // rdoRuntime

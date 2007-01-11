@@ -18,17 +18,20 @@ RDOSimulatorBase::RDOSimulatorBase():
 	next_delay_current( 0 ),
 	showRate( 60 ),
 	msec_wait( 0 ),
-	msec_prev( 0 )
+	msec_prev( 0 ),
+	check_operation( true )
 {
 }
 
 void RDOSimulatorBase::rdoInit()
 {
-	currentTime = 0;
+	currentTime     = 0;
+	check_operation = true;
 	onInit();
 
 	timePointList.clear();
-	timePointList.push_back(0);
+	timePointList[0] = NULL;
+//	timePointList.push_back(0);
 	preProcess();
 
 	speed              = 1;
@@ -96,8 +99,13 @@ bool RDOSimulatorBase::rdoNext()
 	} else {
 		// Переход к следующей операции
 		if ( !timePointList.empty() ) {
-			double newTime = timePointList.front();
-			timePointList.pop_front();
+			double newTime = timePointList.begin()->first;
+			std::list< BOPlanned >* list = timePointList.begin()->second;
+			if ( !list || list->empty() ) {
+				delete timePointList.begin()->second;
+				timePointList.erase( timePointList.begin() );
+			}
+//			timePointList.pop_front();
 			if ( currentTime > newTime ) {
 				newTime = currentTime;
 			}
@@ -163,58 +171,20 @@ void RDOSimulatorBase::setShowRate( double value )
 void RDOSimulatorBase::rdoPostProcess()
 {
 	postProcess();
+	while ( !timePointList.empty() ) {
+		delete timePointList.begin()->second;
+		timePointList.erase( timePointList.begin() );
+	}
 }
 
-/*
-void RDOSimulatorBase::rdoRun() 
+void RDOSimulatorBase::addTimePoint( double timePoint, RDOBaseOperation* opr, void* param )
 {
-   timePointList.clear();
-   timePointList.push_back(0);
-   preProcess();
-   bool onlyEndOfOperations = false;
-   for(;;)
-   {
-      double newTime = timePointList.front();
-      timePointList.pop_front();
-      rdoDelay(currentTime, newTime);
-      currentTime = newTime;
-
-
-      bool res = false;
-      for(;;)
-      {
-			if(!onlyEndOfOperations && endCondition())
-			{
-	//         onEndCondition();
-				onlyEndOfOperations = true;
-			}
-
-         if(!(res = doOperation(onlyEndOfOperations)))
-            break;
-
-	      rdoDelay(currentTime, currentTime);
-      }
-
-      if(timePointList.empty())
-      {
-         onNothingMoreToDo();
-         break;
-      }
-
-      if(onlyEndOfOperations && !res)
-      {
-         onEndCondition();
-         break;
-      }
-   }
-   postProcess();
-}
-*/
-
-void RDOSimulatorBase::addTimePoint( double timePoint )
-{
-	if ( std::find( timePointList.begin(), timePointList.end(), timePoint ) == timePointList.end() ) {
-		timePointList.push_back( timePoint );
-		timePointList.sort();
+	std::list< BOPlanned >* list = NULL;
+	if ( opr && (timePointList.find( timePoint ) == timePointList.end() || timePointList[timePoint] == NULL) ) {
+		list = new std::list< BOPlanned >();
+		timePointList[timePoint] = list;
+	}
+	if ( opr ) {
+		timePointList[timePoint]->push_back( BOPlanned(opr, param) );
 	}
 }
