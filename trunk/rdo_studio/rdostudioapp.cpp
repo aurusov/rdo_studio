@@ -7,6 +7,7 @@
 #include "rdostudioeditview.h"
 #include "rdostudioplugins.h"
 #include "rdostudiothread.h"
+#include "rdostudiomodelnew.h"
 #include "resource.h"
 #include "rdo_tracer/rdotracer.h"
 #include "htmlhelp.h"
@@ -320,7 +321,10 @@ int RDOStudioApp::ExitInstance()
 
 void RDOStudioApp::OnFileNew() 
 {
-	model->newModel( initInstance );
+//	RDOStudioModelNew dlg;
+//	if ( dlg.DoModal() == IDOK ) {
+		model->newModel( initInstance );
+//	}
 }
 
 void RDOStudioApp::OnFileOpen() 

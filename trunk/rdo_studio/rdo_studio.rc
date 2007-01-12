@@ -113,6 +113,14 @@ BEGIN
         TOPMARGIN, 7
         BOTTOMMARGIN, 242
     END
+
+    IDD_MODEL_NEW, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 246
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 163
+    END
 END
 #endif    // APSTUDIO_INVOKED
 
@@ -407,6 +415,30 @@ BEGIN
                     SS_NOTIFY
     RTEXT           "Россия, Москва, 105005,\nул. 2-ая Бауманская, д.5.\nКафедра РК-9",
                     IDC_ABOUT_ADDRESS,116,48,144,24
+END
+
+IDD_MODEL_NEW DIALOG DISCARDABLE  0, 0, 253, 170
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Создание модели"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,136,152,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,200,152,50,14
+    EDITTEXT        IDC_MODEL_NAME,70,6,170,12,ES_AUTOHSCROLL
+    RTEXT           "Путь",IDC_STATIC,10,22,54,8
+    EDITTEXT        IDC_MODEL_PATH,70,20,156,12,ES_AUTOHSCROLL | ES_READONLY
+    PUSHBUTTON      "...",IDC_MODEL_PATH_BUTTON,228,20,13,12,BS_FLAT
+    GROUPBOX        "Шаблон",IDC_STATIC,2,38,246,108
+    RTEXT           "Имя модели",IDC_STATIC,10,10,53,8
+    CONTROL         "Пустая модель",IDC_MODEL_EMPTY,"Button",
+                    BS_AUTORADIOBUTTON | BS_FLAT,6,50,67,10
+    CONTROL         "Только каркасы",IDC_MODEL_TEMPLATE,"Button",
+                    BS_AUTORADIOBUTTON | BS_FLAT,6,62,72,10
+    CONTROL         "Модель простейшей СМО",IDC_MODEL_BARBER1,"Button",
+                    BS_AUTORADIOBUTTON | BS_FLAT,6,74,103,10
+    CONTROL         "Модель простейшей СМО с временными ресурсами",
+                    IDC_MODEL_BARBER2,"Button",BS_AUTORADIOBUTTON | BS_FLAT,
+                    6,86,193,10
 END
 
 
@@ -1465,8 +1497,6 @@ END
 STRINGTABLE DISCARDABLE 
 BEGIN
     ID_INSERT_PMD_PMD       "$Results\r\n\t: watch_par\r\n\t: watch_state\r\n\t: watch_quant\r\n\t: watch_value\r\n\t: get_value\r\n$End\r\n"
-    IDS_ERROR               "ошибка C%04d"
-    IDS_WARNING             "предупреждение C%04d"
 END
 
 STRINGTABLE DISCARDABLE 
@@ -1694,6 +1724,8 @@ BEGIN
     ID_MODEL_SHOWRATE_DEC   "\nУменьшить масштаб (Alt+Num-)"
     ID_MODEL_FRAME_PREV     "\nПерд. кадр анимации"
     ID_MODEL_FRAME_NEXT     "\nСлед. кадр анимации"
+    IDS_ERROR               "ошибка C%04d"
+    IDS_WARNING             "предупреждение C%04d"
 END
 
 STRINGTABLE DISCARDABLE 
@@ -2933,8 +2965,6 @@ END
 STRINGTABLE DISCARDABLE 
 BEGIN
     ID_INSERT_PMD_PMD       "$Results\r\n\t: watch_par\r\n\t: watch_state\r\n\t: watch_quant\r\n\t: watch_value\r\n\t: get_value\r\n$End\r\n"
-    IDS_ERROR               "error С%04d"
-    IDS_WARNING             "warning С%04d"
 END
 
 STRINGTABLE DISCARDABLE 
@@ -3161,6 +3191,8 @@ BEGIN
     ID_MODEL_SHOWRATE_DEC   "\nDecrease Tempo (Alt+Num-)"
     ID_MODEL_FRAME_PREV     "\nPrevious Frame"
     ID_MODEL_FRAME_NEXT     "\nNext Frame"
+    IDS_ERROR               "error С%04d"
+    IDS_WARNING             "warning С%04d"
 END
 
 STRINGTABLE DISCARDABLE 

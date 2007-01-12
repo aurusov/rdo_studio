@@ -30,6 +30,7 @@
 #define IDD_ABOUT                       165
 #define IDD_OPTIONS_GENERAL             166
 #define IDD_OPTIONS_PLUGINS             167
+#define IDD_MODEL_NEW                   179
 #define IDC_CLEARAUTO_CHECK             1001
 #define IDC_STYLEITEM_TREE              1002
 #define IDC_BUFFERVALUESTATIC           1003
@@ -132,6 +133,13 @@
 #define IDC_DEVELOPERS                  1118
 #define IDC_COMMENTGROUP_CHECK          1119
 #define IDC_ABOUT_INFO                  1120
+#define IDC_MODEL_NAME                  1122
+#define IDC_MODEL_PATH                  1123
+#define IDC_MODEL_PATH_BUTTON           1124
+#define IDC_MODEL_EMPTY                 1125
+#define IDC_MODEL_TEMPLATE              1126
+#define IDC_MODEL_BARBER1               1127
+#define IDC_MODEL_BARBER2               1128
 #define ID_CHART_ADDTONEWCHART          32771
 #define ID_VIEW_WORKSPACE               32774
 #define ID_VIEW_OUTPUT                  32775
@@ -276,9 +284,9 @@
 #define ID_INSERT_PMD_RESULTS           32968
 #define ID_INSERT_PMD_PMD               32969
 #define ID_INSERT_PMD_WATCHPAR          32970
-#define IDS_ERROR                       32970
+#define IDS_ERROR                       33165
 #define ID_INSERT_PMD_WATCHSTATE        32971
-#define IDS_WARNING                     32971
+#define IDS_WARNING                     33166
 #define ID_INSERT_PMD_WATCHQUANT        32972
 #define ID_INSERT_PMD_WATCHVALUE        32973
 #define ID_INSERT_PMD_GETVALUE          32974
@@ -628,9 +636,9 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        179
+#define _APS_NEXT_RESOURCE_VALUE        180
 #define _APS_NEXT_COMMAND_VALUE         33190
-#define _APS_NEXT_CONTROL_VALUE         1121
+#define _APS_NEXT_CONTROL_VALUE         1126
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
