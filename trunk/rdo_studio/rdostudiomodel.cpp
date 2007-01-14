@@ -37,7 +37,7 @@ RDOStudioModel* model = NULL;
 RDOStudioModel::RDOStudioModel():
 	RDOThreadGUI( "RDOThreadModelGUI", static_cast<RDOKernelGUI*>(studioApp.studioGUI) ),
 	modelDocTemplate( NULL ),
-	useTemplate( false ),
+	useTemplate( -1 ),
 	autoDeleteDoc( true ),
 	showCanNotCloseModelMessage( true ),
 	GUI_HAS_MODEL( false ),
@@ -59,6 +59,24 @@ RDOStudioModel::RDOStudioModel():
 	AfxGetApp()->AddDocTemplate( modelDocTemplate );
 
 	model = this;
+
+	std::map< rdoModelObjects::RDOFileType, TemplateData > template_id;
+	template_id[ rdoModelObjects::SMR ] = TemplateData( ID_TEMP0_SMR, 17 );
+	model_templates[0] = template_id;
+
+	template_id.clear();
+	template_id[ rdoModelObjects::SMR ] = TemplateData( ID_TEMP1_SMR, 17 );
+	model_templates[1] = template_id;
+
+	template_id.clear();
+	template_id[ rdoModelObjects::PAT ] = TemplateData( ID_TEMP2_PAT, 9  );
+	template_id[ rdoModelObjects::RTP ] = TemplateData( ID_TEMP2_RTP, 15 );
+	template_id[ rdoModelObjects::RSS ] = TemplateData( ID_TEMP2_RSS, 13 );
+	template_id[ rdoModelObjects::OPR ] = TemplateData( ID_TEMP2_OPR, 14 );
+	template_id[ rdoModelObjects::FRM ] = TemplateData( ID_TEMP2_FRM, 7  );
+	template_id[ rdoModelObjects::FUN ] = TemplateData( ID_TEMP2_FUN, 10 );
+	template_id[ rdoModelObjects::SMR ] = TemplateData( ID_TEMP2_SMR, 17 );
+	model_templates[2] = template_id;
 
 	notifies.push_back( RT_REPOSITORY_MODEL_NEW );
 	notifies.push_back( RT_REPOSITORY_MODEL_OPEN );
@@ -320,7 +338,7 @@ void RDOStudioModel::proc( RDOThread::RDOMessageInfo& msg )
 	}
 }
 
-void RDOStudioModel::newModel( const bool _useTemplate )
+void RDOStudioModel::newModel( std::string _model_name, std::string _model_path, const int _useTemplate  )
 {
 	useTemplate = _useTemplate;
 	RDOStudioOutput* output = &studioApp.mainFrame->output;
@@ -328,7 +346,10 @@ void RDOStudioModel::newModel( const bool _useTemplate )
 	output->clearDebug();
 	output->clearResults();
 	output->clearFind();
-	studioApp.broadcastMessage( RDOThread::RT_STUDIO_MODEL_NEW );
+	rdoRepository::RDOThreadRepository::NewModel data;
+	data.name = _model_name;
+	data.path = _model_path;
+	studioApp.broadcastMessage( RDOThread::RT_STUDIO_MODEL_NEW, &data );
 	output->updateLogConnection();
 }
 
@@ -454,31 +475,21 @@ void RDOStudioModel::newModelFromRepository()
 				RDOEditorEdit* edit = tab->getItemEdit( i );
 				edit->setReadOnly( false );
 				edit->clearAll();
-				if ( useTemplate ) {
-					int resID = -1;
-					switch ( tab->indexToType( i ) ) {
-						case rdoModelObjects::PAT: resID = ID_INSERT_PAT_PATOPERATION; break;
-						case rdoModelObjects::RTP: resID = ID_INSERT_RTP_RTPPERMANENT; break;
-						case rdoModelObjects::RSS: resID = ID_INSERT_RSS_RSS; break;
-						case rdoModelObjects::OPR: resID = ID_INSERT_OPR_OPR; break;
-						case rdoModelObjects::FRM: resID = ID_INSERT_FRM_FRM; break;
-						case rdoModelObjects::FUN: resID = ID_INSERT_FUN_FUN; break;
-						case rdoModelObjects::SMR: resID = ID_INSERT_SMR_SMR; break;
-					}
-					if ( resID != - 1 ) {
-						std::string s = rdo::format( resID );
-						if ( !s.empty() ) {
-							int incPos = -1;
-							switch ( resID ) {
-								case ID_INSERT_PAT_PATOPERATION : incPos = 9; break;
-								case ID_INSERT_RTP_RTPPERMANENT : incPos = 15; break;
-								case ID_INSERT_RSS_RSS          : incPos = 13; break;
-								case ID_INSERT_OPR_OPR          : incPos = 14; break;
-								case ID_INSERT_FRM_FRM          : incPos = 7; break;
-								case ID_INSERT_FUN_FUN          : incPos = 10; break;
-								case ID_INSERT_SMR_SMR          : incPos = 17; break;
+				if ( useTemplate != -1 && model_templates.find( useTemplate ) != model_templates.end() ) {
+					std::map< rdoModelObjects::RDOFileType, TemplateData >::const_iterator it = model_templates[ useTemplate ].find( tab->indexToType( i ) );
+					if ( it != model_templates[ useTemplate ].end() ) {
+						int resID = it->second.res_id;
+						if ( resID != - 1 ) {
+							std::string s;
+							if ( tab->indexToType( i ) == rdoModelObjects::SMR ) {
+								std::string name = getName();
+								s = rdo::format( resID, name.c_str(), name.c_str(), name.c_str(), name.c_str(), name.c_str(), name.c_str(), name.c_str() );
+							} else {
+								s = rdo::format( resID );
 							}
-							edit->replaceCurrent( s, incPos );
+							if ( !s.empty() ) {
+								edit->replaceCurrent( s, it->second.position );
+							}
 						}
 					}
 				}
@@ -490,6 +501,9 @@ void RDOStudioModel::newModelFromRepository()
 		CWnd* wnd = studioApp.mainFrame->GetActiveFrame();
 		if ( maximize && wnd && wnd != studioApp.mainFrame ) {
 			studioApp.mainFrame->MDIMaximize( wnd );
+		}
+		if ( useTemplate ) {
+			saveModel();
 		}
 	}
 }

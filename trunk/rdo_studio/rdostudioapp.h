@@ -34,8 +34,6 @@ private:
 	RDOThreadStudio* studioMT;
 #endif
 
-	bool initInstance;
-
 	CMultiDocTemplate* editDocTemplate;
 
 	std::vector< std::string > reopenList;

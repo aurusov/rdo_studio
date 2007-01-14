@@ -117,7 +117,7 @@ BEGIN
     IDD_MODEL_NEW, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 246
+        RIGHTMARGIN, 231
         TOPMARGIN, 7
         BOTTOMMARGIN, 163
     END
@@ -417,28 +417,33 @@ BEGIN
                     IDC_ABOUT_ADDRESS,116,48,144,24
 END
 
-IDD_MODEL_NEW DIALOG DISCARDABLE  0, 0, 253, 170
+IDD_MODEL_NEW DIALOG DISCARDABLE  0, 0, 238, 170
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Создание модели"
 FONT 8, "MS Sans Serif"
 BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,136,152,50,14
-    PUSHBUTTON      "Cancel",IDCANCEL,200,152,50,14
-    EDITTEXT        IDC_MODEL_NAME,70,6,170,12,ES_AUTOHSCROLL
-    RTEXT           "Путь",IDC_STATIC,10,22,54,8
-    EDITTEXT        IDC_MODEL_PATH,70,20,156,12,ES_AUTOHSCROLL | ES_READONLY
-    PUSHBUTTON      "...",IDC_MODEL_PATH_BUTTON,228,20,13,12,BS_FLAT
-    GROUPBOX        "Шаблон",IDC_STATIC,2,38,246,108
-    RTEXT           "Имя модели",IDC_STATIC,10,10,53,8
+    DEFPUSHBUTTON   "OK",IDOK,120,152,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,184,152,50,14
+    EDITTEXT        IDC_MODEL_NAME,62,6,172,12,ES_AUTOHSCROLL
+    RTEXT           "Путь",IDC_STATIC,8,22,48,8
+    EDITTEXT        IDC_MODEL_PATH,62,20,156,12,ES_AUTOHSCROLL | ES_READONLY | 
+                    NOT WS_TABSTOP
+    PUSHBUTTON      "...",IDC_MODEL_PATH_BUTTON,220,20,14,12,BS_FLAT
+    GROUPBOX        "Шаблон",IDC_STATIC,4,64,230,82
+    RTEXT           "Имя модели",IDC_STATIC,8,10,47,8
     CONTROL         "Пустая модель",IDC_MODEL_EMPTY,"Button",
-                    BS_AUTORADIOBUTTON | BS_FLAT,6,50,67,10
+                    BS_AUTORADIOBUTTON | BS_FLAT | WS_GROUP,8,76,67,10
     CONTROL         "Только каркасы",IDC_MODEL_TEMPLATE,"Button",
-                    BS_AUTORADIOBUTTON | BS_FLAT,6,62,72,10
+                    BS_AUTORADIOBUTTON | BS_FLAT,8,88,72,10
     CONTROL         "Модель простейшей СМО",IDC_MODEL_BARBER1,"Button",
-                    BS_AUTORADIOBUTTON | BS_FLAT,6,74,103,10
+                    BS_AUTORADIOBUTTON | BS_FLAT,8,100,103,10
     CONTROL         "Модель простейшей СМО с временными ресурсами",
                     IDC_MODEL_BARBER2,"Button",BS_AUTORADIOBUTTON | BS_FLAT,
-                    6,86,193,10
+                    8,112,193,10
+    LTEXT           "Static",IDC_INFO,8,36,226,24
+    CONTROL         "Добавить комментарии",IDC_COMMENT,"Button",
+                    BS_AUTOCHECKBOX | BS_FLAT | WS_TABSTOP,8,132,194,10
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME,8,126,192,1
 END
 
 
@@ -1322,8 +1327,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,8,0,450
- PRODUCTVERSION 0,8,0,450
+ FILEVERSION 0,8,0,451
+ PRODUCTVERSION 0,8,0,451
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -1341,14 +1346,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "RAO studio\0"
-            VALUE "FileVersion", "0, 8, 0, 450\0"
+            VALUE "FileVersion", "0, 8, 0, 451\0"
             VALUE "InternalName", "RAO-Studio\0"
             VALUE "LegalCopyright", "Copyright (C) 2003-2006\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "RAO-Studio.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "RAO-Studio\0"
-            VALUE "ProductVersion", "0, 8, 0, 450\0"
+            VALUE "ProductVersion", "0, 8, 0, 451\0"
             VALUE "SpecialBuild", "\0"
         END
     END
@@ -1850,6 +1855,19 @@ END
 STRINGTABLE DISCARDABLE 
 BEGIN
     ID_MODEL_SPEED_SLIDER   "\nСкорость имитатора"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_TEMP0_SMR            "Model_name     = %s\n\nResource_file  = %s\nOprIev_file    = %s\nStatistic_file = %s\nResults_file   = %s\nTrace_file     = %s\nFrame_file     = %s\nFrame_number   = 1\nShow_mode      = Animation\nShow_rate      = 10000.0\n\nTerminate_if Time_now >= 10*60*60.0\n"
+    ID_TEMP1_SMR            "// Имя модели (*.pat, *.rtp, *.fun и *.dpt)\nModel_name     = %s\n\n// Ресурсы (*.rss)\nResource_file  = %s\n\n// Операции (*.opr)\n// Одновременно в модели может присутствовать или файл *.opr или файл *.dpt, но не оба сразу\nOprIev_file    = %s\n\n// Собираемые показатели (*.pmd)\nStatistic_file = %s\n\n// Результаты прогона (*.pmv), выводятся внизу экрана\nResults_file   = %s\n\n// Трассировка (*.trc)\n// Если файл трассировки закомментировать, то отключится вся трассировка в модели\nTrace_file     = %s\n\n// Анимация (*.trc)\nFrame_file     = %s\n// Отображение анимации начинается с кадра Frame_number\nFrame_number   = 1\n\n// Режим прогона, включить анимацию\nShow_mode      = Animation\n// Скорость анимации. Чем больше значение, тем быстрее прогон\nShow_rate      = 10000.0\n\n// Условие остановки модели. После Terminate_if можно указать любое логическое выражение\nTerminate_if Time_now >= 10*60*60.0\n"
+    ID_TEMP2_PAT            "$Pattern  : operation\r\n$Relevant_resources\r\n\r\n$Time =\r\n$Body\r\n\r\n\tChoice from\r\n\tfirst\r\n\tConvert_begin\r\n\r\n\tConvert_end\r\n\r\n$End\r\n"
+    ID_TEMP2_RTP            "$Resource_type  : permanent\r\n$Parameters\r\n\r\n$End\r\n"
+    ID_TEMP2_RSS            "$Resources\r\n\t\r\n$End\r\n"
+    ID_TEMP2_OPR            "$Operations\r\n\t\r\n$End\r\n"
+    ID_TEMP2_FRM            "$Frame \r\n$Back_picture = <255 255 255>\r\nShow\r\n\tbitmap [, , ]\r\n\ttext [, , , , <255 255 255>, <0 0 0>, = ]\r\nShow_if\r\n\r\n$End\r\n"
+    ID_TEMP2_FUN            "$Function  : integer\r\n$Type = algorithmic\r\n$Parameters\r\n  \r\n$Body\r\n\tCalculate_if\r\n$End\r\n"
+    ID_TEMP2_SMR            "Model_name     = noname\r\n\r\nResource_file  =\r\nOprIev_file    =\r\nStatistic_file =\r\nResults_file   =\r\nTrace_file     =\r\nFrame_file     =\r\nFrame_number   =\r\nShow_mode      = Animation\r\nShow_rate      = 10000.0\r\n\r\nTerminate_if Time_now >= 10*60*60.0\r\n"
 END
 
 #endif    // Russian resources

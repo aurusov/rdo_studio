@@ -31,7 +31,7 @@ private:
 	CMultiDocTemplate* modelDocTemplate;
 	RDOStudioFrameManager frameManager;
 
-	bool useTemplate;
+	int  useTemplate;
 	bool autoDeleteDoc;
 	bool showCanNotCloseModelMessage;
 
@@ -70,6 +70,15 @@ private:
 		return pos ? static_cast<RDOStudioModelDoc*>(modelDocTemplate->GetNextDoc( pos )) : NULL;
 	}
 
+	struct TemplateData {
+		unsigned int res_id;
+		int          position;
+		TemplateData()                                     : res_id( -1 )         , position( -1 )            {}
+		TemplateData( const TemplateData& copy )           : res_id( copy.res_id ), position( copy.position ) {}
+		TemplateData( unsigned int _res_id, int _position ): res_id( _res_id )    , position( _position )     {}
+	};
+	std::map< int, std::map< rdoModelObjects::RDOFileType, TemplateData > > model_templates;
+
 protected:
 	virtual void proc( RDOThread::RDOMessageInfo& msg );
 
@@ -77,7 +86,7 @@ public:
 	RDOStudioModel();
 	virtual ~RDOStudioModel();
 
-	void newModel( const bool useTemplate = false );
+	void newModel( std::string _model_name = "", std::string _model_path = "", const int _useTemplate = -1 );
 	bool openModel( const std::string& modelName = "" ) const;
 	bool saveModel() const;
 	void saveAsModel() const;

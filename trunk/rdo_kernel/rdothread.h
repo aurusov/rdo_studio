@@ -62,7 +62,7 @@ public:
 		RT_THREAD_REGISTERED,                 // param = thread:RDOThread*
 		RT_THREAD_UNREGISTERED,               // param = thread:RDOThread*
 		RT_THREAD_STOP_AFTER,
-		RT_STUDIO_MODEL_NEW,
+		RT_STUDIO_MODEL_NEW,                  // param = rdoRepository::RDOThreadRepository::NewModel* = { model_name:std::string&, model_path:std::string&      }
 		RT_STUDIO_MODEL_OPEN,                 // param = rdoRepository::RDOThreadRepository::OpenFile* = { model_name:std::string&, result:bool&, readonly:bool& }
 		RT_STUDIO_MODEL_SAVE,
 		RT_STUDIO_MODEL_SAVE_AS,

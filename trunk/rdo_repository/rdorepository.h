@@ -18,6 +18,24 @@ namespace rdoRepository {
 // ----------------------------------------------------------------------------
 class RDOThreadRepository: public RDOThreadMT
 {
+public:
+	struct FileData {
+		rdoModelObjects::RDOFileType type;
+		rdo::binarystream&           stream;
+		FileData( rdoModelObjects::RDOFileType _type, rdo::binarystream& _stream ): type( _type ), stream( _stream ) {};
+	};
+	struct OpenFile {
+		std::string name;
+		bool        readonly;
+		bool        result;
+		OpenFile( const std::string& _name = "", bool _readonly = false ): name( _name ), readonly( _readonly ), result( false ) {}
+	};
+	struct NewModel {
+		std::string name;
+		std::string path;
+		NewModel( const std::string& _name = "", const std::string& _path = "" ): name( _name ), path( _path ) {}
+	};
+
 private:
 	std::string modelName;
 	std::string modelPath;
@@ -73,7 +91,7 @@ protected:
 	virtual ~RDOThreadRepository(); // Чтобы нельзя было удалить через delete
 	virtual void proc( RDOMessageInfo& msg );
 
-	void newModel();
+	void newModel( const NewModel* const data );
 	bool openModel( const std::string& modelFileName = "" );
 	void closeModel();
 	bool saveModel();
@@ -95,18 +113,6 @@ public:
 	bool isReadOnly( rdoModelObjects::RDOFileType type ) const             { return files[ type ].readonly;  }
 	bool isDescribed( rdoModelObjects::RDOFileType type ) const            { return files[ type ].described; }
 	bool isMustExist( rdoModelObjects::RDOFileType type ) const            { return files[ type ].mustexist; }
-
-	struct FileData {
-		rdoModelObjects::RDOFileType type;
-		rdo::binarystream&           stream;
-		FileData( rdoModelObjects::RDOFileType _type, rdo::binarystream& _stream ): type( _type ), stream( _stream ) {};
-	};
-	struct OpenFile {
-		std::string name;
-		bool        readonly;
-		bool        result;
-		OpenFile( const std::string& _name = "", bool _readonly = false ): name( _name ), readonly( _readonly ), result( false ) {}
-	};
 
 	void loadBMP( const std::string& name, rdo::binarystream& stream ) const;
 };

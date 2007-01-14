@@ -61,7 +61,10 @@ void RDOThreadRepository::proc( RDOMessageInfo& msg )
 {
 	switch ( msg.message ) {
 		case RT_STUDIO_MODEL_NEW: {
-			newModel();
+			msg.lock();
+			NewModel* data = static_cast<NewModel*>(msg.param);
+			newModel( data );
+			msg.unlock();
 			break;
 		}
 		case RT_STUDIO_MODEL_OPEN: {
@@ -187,12 +190,27 @@ bool RDOThreadRepository::updateModelNames()
 	}
 }
 
-void RDOThreadRepository::newModel()
+void RDOThreadRepository::newModel( const NewModel* const data )
 {
 	if ( canCloseModel() ) {
 		realCloseModel();
-		modelName   = "noname";
-		modelPath   = "";
+		if ( data ) {
+			std::string path = data->path;
+			std::string::size_type pos = path.find_last_of( '\\' );
+			if ( pos == std::string::npos ) {
+				pos = path.find_last_of( '/' );
+			}
+			if ( pos != path.length() - 1 ) {
+				path += '\\';
+			}
+			extractName( path + data->name + ".smr" );
+			if ( !rdo::isFileExists( path ) ) {
+				::CreateDirectory( path.c_str(), NULL );
+			}
+		} else {
+			modelName = "noname";
+			modelPath = "";
+		}
 		std::vector< fileInfo >::iterator it = files.begin();
 		while ( it != files.end() ) {
 			it->filename = modelName;

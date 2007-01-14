@@ -140,6 +140,8 @@
 #define IDC_MODEL_TEMPLATE              1126
 #define IDC_MODEL_BARBER1               1127
 #define IDC_MODEL_BARBER2               1128
+#define IDC_INFO                        1129
+#define IDC_COMMENT                     1130
 #define ID_CHART_ADDTONEWCHART          32771
 #define ID_VIEW_WORKSPACE               32774
 #define ID_VIEW_OUTPUT                  32775
@@ -284,9 +286,7 @@
 #define ID_INSERT_PMD_RESULTS           32968
 #define ID_INSERT_PMD_PMD               32969
 #define ID_INSERT_PMD_WATCHPAR          32970
-#define IDS_ERROR                       33165
 #define ID_INSERT_PMD_WATCHSTATE        32971
-#define IDS_WARNING                     33166
 #define ID_INSERT_PMD_WATCHQUANT        32972
 #define ID_INSERT_PMD_WATCHVALUE        32973
 #define ID_INSERT_PMD_GETVALUE          32974
@@ -420,6 +420,8 @@
 #define ID_MODEL_SHOWRATE_DEC           33162
 #define ID_MODEL_FRAME_PREV             33163
 #define ID_MODEL_FRAME_NEXT             33164
+#define IDS_ERROR                       33165
+#define IDS_WARNING                     33166
 #define ID_VIEW_TOGGLE_ALLFOLDS         -32368
 #define ID_SEARCH_BOOKMARK_TOGGLE       33169
 #define ID_SEARCH_BOOKMARKS_CLEAR       33170
@@ -431,6 +433,15 @@
 #define ID_MODEL_RUNTIME_JUMP           33185
 #define ID_MODEL_RUNTIME_SYNC           33186
 #define ID_MODEL_RUNTIME_PAUSE          33187
+#define ID_TEMP0_SMR                    33200
+#define ID_TEMP1_SMR                    33201
+#define ID_TEMP2_PAT                    33202
+#define ID_TEMP2_RTP                    33203
+#define ID_TEMP2_RSS                    33204
+#define ID_TEMP2_OPR                    33205
+#define ID_TEMP2_FRM                    33206
+#define ID_TEMP2_FUN                    33207
+#define ID_TEMP2_SMR                    33208
 #define IDS_DEVELOPERS                  34000
 #define IDS_ER_UNKNOWN                  35000
 #define IDS_ER_RTP_SECOND_RES_TYPE      35001
@@ -638,7 +649,7 @@
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        180
 #define _APS_NEXT_COMMAND_VALUE         33190
-#define _APS_NEXT_CONTROL_VALUE         1126
+#define _APS_NEXT_CONTROL_VALUE         1131
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

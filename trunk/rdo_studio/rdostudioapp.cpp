@@ -128,7 +128,6 @@ RDOStudioApp::RDOStudioApp():
 #ifdef RDO_MT
 	studioMT( NULL ),
 #endif
-	initInstance( false ),
 	editDocTemplate( NULL ),
 	fileAssociationSetup( false ),
 	fileAssociationCheckInFuture( false ),
@@ -246,8 +245,6 @@ BOOL RDOStudioApp::InitInstance()
 		OnFileNew();
 	}
 
-	initInstance = true;
-
 	if ( autoRun ) {
 		OnModelRun();
 	}
@@ -321,10 +318,10 @@ int RDOStudioApp::ExitInstance()
 
 void RDOStudioApp::OnFileNew() 
 {
-//	RDOStudioModelNew dlg;
-//	if ( dlg.DoModal() == IDOK ) {
-		model->newModel( initInstance );
-//	}
+	RDOStudioModelNew dlg;
+	if ( dlg.DoModal() == IDOK ) {
+		model->newModel( std::string(dlg.m_modelName), std::string(dlg.m_modelPath + dlg.m_modelName), dlg.m_model_template * 2 + dlg.m_comment );
+	}
 }
 
 void RDOStudioApp::OnFileOpen() 
