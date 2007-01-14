@@ -37,6 +37,7 @@ protected:
 	afx_msg void OnModelPathButton();
 	afx_msg void OnChangeModelName();
 	virtual BOOL OnInitDialog();
+	afx_msg void OnModelEmpty();
 	//}}AFX_MSG
 
 	CString getMyDocFolder() const;

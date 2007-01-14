@@ -72,7 +72,6 @@ protected:
 	void autoIndent() const;
 
 	void updateAllGUI();
-	void updateEditGUI();
 	void updateBookmarksGUI();
 
 	//{{AFX_MSG(RDOBaseEdit)
@@ -149,6 +148,7 @@ public:
 	bool isSelected() const                                { return sendEditor( SCI_GETSELECTIONSTART ) != sendEditor( SCI_GETSELECTIONEND ); };
 	bool isOverwrite() const                               { return sendEditor( SCI_GETOVERTYPE ) ? true : false;                             };
 
+	void updateEditGUI();
 	bool isModify() const                                  { return GUI_IS_MODIFY;                                  };
 	void setModifyFalse()                                  { GUI_IS_MODIFY = false; sendEditor( SCI_SETSAVEPOINT ); };
 

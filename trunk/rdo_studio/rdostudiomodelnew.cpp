@@ -15,6 +15,11 @@ BEGIN_MESSAGE_MAP(RDOStudioModelNew, CDialog)
 	//{{AFX_MSG_MAP(RDOStudioModelNew)
 	ON_BN_CLICKED(IDC_MODEL_PATH_BUTTON, OnModelPathButton)
 	ON_EN_CHANGE(IDC_MODEL_NAME, OnChangeModelName)
+	ON_BN_CLICKED(IDC_MODEL_EMPTY, OnModelEmpty)
+	ON_BN_CLICKED(IDC_MODEL_TEMPLATE, OnModelEmpty)
+	ON_BN_CLICKED(IDC_MODEL_BARBER1, OnModelEmpty)
+	ON_BN_CLICKED(IDC_MODEL_BARBER2, OnModelEmpty)
+	ON_BN_CLICKED(IDC_COMMENT, OnModelEmpty)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -26,7 +31,7 @@ RDOStudioModelNew::RDOStudioModelNew():
 	m_modelPath = getMyDocFolder();
 	m_info = _T("");
 	m_comment = TRUE;
-	m_model_template = 0;
+	m_model_template = 1;
 	//}}AFX_DATA_INIT
 }
 
@@ -190,4 +195,9 @@ BOOL RDOStudioModelNew::OnInitDialog()
 	BOOL res = CDialog::OnInitDialog();
 	updateInfo();
 	return res;
+}
+
+void RDOStudioModelNew::OnModelEmpty()
+{
+	UpdateData();
 }

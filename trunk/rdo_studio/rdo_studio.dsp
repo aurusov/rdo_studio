@@ -1121,6 +1121,10 @@ SOURCE=.\res\Margin.cur
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\model_tm.bin
+# End Source File
+# Begin Source File
+
 SOURCE=.\res\modelToolbar_d.bmp
 # End Source File
 # Begin Source File

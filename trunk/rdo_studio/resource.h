@@ -31,6 +31,7 @@
 #define IDD_OPTIONS_GENERAL             166
 #define IDD_OPTIONS_PLUGINS             167
 #define IDD_MODEL_NEW                   179
+#define IDR_MODEL_TMP3_PAT              182
 #define IDC_CLEARAUTO_CHECK             1001
 #define IDC_STYLEITEM_TREE              1002
 #define IDC_BUFFERVALUESTATIC           1003
@@ -442,6 +443,8 @@
 #define ID_TEMP2_FRM                    33206
 #define ID_TEMP2_FUN                    33207
 #define ID_TEMP2_SMR                    33208
+#define ID_TEMP3_PAT                    33209
+#define ID_TEMP3_PAT2                   33210
 #define IDS_DEVELOPERS                  34000
 #define IDS_ER_UNKNOWN                  35000
 #define IDS_ER_RTP_SECOND_RES_TYPE      35001
@@ -647,7 +650,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        180
+#define _APS_NEXT_RESOURCE_VALUE        183
 #define _APS_NEXT_COMMAND_VALUE         33190
 #define _APS_NEXT_CONTROL_VALUE         1131
 #define _APS_NEXT_SYMED_VALUE           101

@@ -61,11 +61,11 @@ RDOStudioModel::RDOStudioModel():
 	model = this;
 
 	std::map< rdoModelObjects::RDOFileType, TemplateData > template_id;
-	template_id[ rdoModelObjects::SMR ] = TemplateData( ID_TEMP0_SMR, 17 );
+	template_id[ rdoModelObjects::SMR ] = TemplateData( ID_TEMP0_SMR, 0 );
 	model_templates[0] = template_id;
 
 	template_id.clear();
-	template_id[ rdoModelObjects::SMR ] = TemplateData( ID_TEMP1_SMR, 17 );
+	template_id[ rdoModelObjects::SMR ] = TemplateData( ID_TEMP1_SMR, 0 );
 	model_templates[1] = template_id;
 
 	template_id.clear();
@@ -75,8 +75,12 @@ RDOStudioModel::RDOStudioModel():
 	template_id[ rdoModelObjects::OPR ] = TemplateData( ID_TEMP2_OPR, 14 );
 	template_id[ rdoModelObjects::FRM ] = TemplateData( ID_TEMP2_FRM, 7  );
 	template_id[ rdoModelObjects::FUN ] = TemplateData( ID_TEMP2_FUN, 10 );
-	template_id[ rdoModelObjects::SMR ] = TemplateData( ID_TEMP2_SMR, 17 );
+	template_id[ rdoModelObjects::SMR ] = TemplateData( ID_TEMP2_SMR, 0 );
 	model_templates[2] = template_id;
+
+	template_id.clear();
+	template_id[ rdoModelObjects::PAT ] = TemplateData( IDR_MODEL_TMP3_PAT, 9  );
+	model_templates[3] = template_id;
 
 	notifies.push_back( RT_REPOSITORY_MODEL_NEW );
 	notifies.push_back( RT_REPOSITORY_MODEL_OPEN );
@@ -480,15 +484,38 @@ void RDOStudioModel::newModelFromRepository()
 					if ( it != model_templates[ useTemplate ].end() ) {
 						int resID = it->second.res_id;
 						if ( resID != - 1 ) {
-							std::string s;
+							std::string s = "";
 							if ( tab->indexToType( i ) == rdoModelObjects::SMR ) {
 								std::string name = getName();
 								s = rdo::format( resID, name.c_str(), name.c_str(), name.c_str(), name.c_str(), name.c_str(), name.c_str(), name.c_str() );
 							} else {
+								// Пытаемся загрузить из String Table
 								s = rdo::format( resID );
+								if ( s.empty() ) {
+									// Загрузка из String Table не удалась, пытаемся загрузить из MODEL_TMP (a-la RCDATA)
+									HRSRC res = ::FindResource( studioApp.m_hInstance, MAKEINTRESOURCE(resID), "MODEL_TMP" );
+									if ( res ) {
+										HGLOBAL res_global = ::LoadResource( studioApp.m_hInstance, res );
+										if ( res_global ) {
+											LPTSTR res_data = static_cast<LPTSTR>(::LockResource( res_global ));
+											if ( res_data ) {
+												DWORD dwSize = ::SizeofResource( studioApp.m_hInstance, res );
+												CString s_res;
+												LPTSTR s_res_data = s_res.GetBuffer( dwSize + 1 );
+												memcpy( s_res_data, res_data, dwSize );
+												s_res_data[dwSize] = NULL;
+												s_res.ReleaseBuffer();
+												s = s_res;
+											}
+										}
+									}
+								}
 							}
 							if ( !s.empty() ) {
-								edit->replaceCurrent( s, it->second.position );
+								edit->replaceCurrent( s );
+								edit->updateEditGUI();
+								edit->scrollToLine( 0 );
+								edit->setCurrentPos( it->second.position );
 							}
 						}
 					}
