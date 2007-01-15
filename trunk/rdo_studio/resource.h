@@ -32,6 +32,9 @@
 #define IDD_OPTIONS_PLUGINS             167
 #define IDD_MODEL_NEW                   179
 #define IDR_MODEL_TMP3_PAT              182
+#define IDR_MODEL_TMP3_RTP              183
+#define IDR_MODEL_TMP3_RSS              184
+#define IDR_MODEL_TMP3_OPR              185
 #define IDC_CLEARAUTO_CHECK             1001
 #define IDC_STYLEITEM_TREE              1002
 #define IDC_BUFFERVALUESTATIC           1003
@@ -650,7 +653,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        183
+#define _APS_NEXT_RESOURCE_VALUE        186
 #define _APS_NEXT_COMMAND_VALUE         33190
 #define _APS_NEXT_CONTROL_VALUE         1131
 #define _APS_NEXT_SYMED_VALUE           101

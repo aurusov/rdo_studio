@@ -79,7 +79,10 @@ RDOStudioModel::RDOStudioModel():
 	model_templates[2] = template_id;
 
 	template_id.clear();
-	template_id[ rdoModelObjects::PAT ] = TemplateData( IDR_MODEL_TMP3_PAT, 9  );
+	template_id[ rdoModelObjects::PAT ] = TemplateData( IDR_MODEL_TMP3_PAT, 131 );
+	template_id[ rdoModelObjects::RTP ] = TemplateData( IDR_MODEL_TMP3_RTP, 98  );
+	template_id[ rdoModelObjects::RSS ] = TemplateData( IDR_MODEL_TMP3_RSS, 0  );
+	template_id[ rdoModelObjects::OPR ] = TemplateData( IDR_MODEL_TMP3_OPR, 0  );
 	model_templates[3] = template_id;
 
 	notifies.push_back( RT_REPOSITORY_MODEL_NEW );
