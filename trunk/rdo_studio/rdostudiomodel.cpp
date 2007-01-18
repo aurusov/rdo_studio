@@ -83,6 +83,7 @@ RDOStudioModel::RDOStudioModel():
 	template_id[ rdoModelObjects::RTP ] = TemplateData( IDR_MODEL_TMP3_RTP, 98  );
 	template_id[ rdoModelObjects::RSS ] = TemplateData( IDR_MODEL_TMP3_RSS, 0  );
 	template_id[ rdoModelObjects::OPR ] = TemplateData( IDR_MODEL_TMP3_OPR, 0  );
+	template_id[ rdoModelObjects::SMR ] = TemplateData( IDR_MODEL_TMP3_SMR, 0  );
 	model_templates[3] = template_id;
 
 	notifies.push_back( RT_REPOSITORY_MODEL_NEW );
@@ -487,32 +488,30 @@ void RDOStudioModel::newModelFromRepository()
 					if ( it != model_templates[ useTemplate ].end() ) {
 						int resID = it->second.res_id;
 						if ( resID != - 1 ) {
-							std::string s = "";
-							if ( tab->indexToType( i ) == rdoModelObjects::SMR ) {
-								std::string name = getName();
-								s = rdo::format( resID, name.c_str(), name.c_str(), name.c_str(), name.c_str(), name.c_str(), name.c_str(), name.c_str() );
-							} else {
-								// Пытаемся загрузить из String Table
-								s = rdo::format( resID );
-								if ( s.empty() ) {
-									// Загрузка из String Table не удалась, пытаемся загрузить из MODEL_TMP (a-la RCDATA)
-									HRSRC res = ::FindResource( studioApp.m_hInstance, MAKEINTRESOURCE(resID), "MODEL_TMP" );
-									if ( res ) {
-										HGLOBAL res_global = ::LoadResource( studioApp.m_hInstance, res );
-										if ( res_global ) {
-											LPTSTR res_data = static_cast<LPTSTR>(::LockResource( res_global ));
-											if ( res_data ) {
-												DWORD dwSize = ::SizeofResource( studioApp.m_hInstance, res );
-												CString s_res;
-												LPTSTR s_res_data = s_res.GetBuffer( dwSize + 1 );
-												memcpy( s_res_data, res_data, dwSize );
-												s_res_data[dwSize] = NULL;
-												s_res.ReleaseBuffer();
-												s = s_res;
-											}
+							// Пытаемся загрузить из String Table
+							std::string s = rdo::format( resID );
+							if ( s.empty() ) {
+								// Загрузка из String Table не удалась, пытаемся загрузить из MODEL_TMP (a-la RCDATA)
+								HRSRC res = ::FindResource( studioApp.m_hInstance, MAKEINTRESOURCE(resID), "MODEL_TMP" );
+								if ( res ) {
+									HGLOBAL res_global = ::LoadResource( studioApp.m_hInstance, res );
+									if ( res_global ) {
+										LPTSTR res_data = static_cast<LPTSTR>(::LockResource( res_global ));
+										if ( res_data ) {
+											DWORD dwSize = ::SizeofResource( studioApp.m_hInstance, res );
+											CString s_res;
+											LPTSTR s_res_data = s_res.GetBuffer( dwSize + 1 );
+											memcpy( s_res_data, res_data, dwSize );
+											s_res_data[dwSize] = NULL;
+											s_res.ReleaseBuffer();
+											s = s_res;
 										}
 									}
 								}
+							}
+							if ( tab->indexToType( i ) == rdoModelObjects::SMR ) {
+								std::string name = getName();
+								s = rdo::format( s.c_str(), name.c_str(), name.c_str(), name.c_str(), name.c_str(), name.c_str(), name.c_str(), name.c_str() );
 							}
 							if ( !s.empty() ) {
 								edit->replaceCurrent( s );
