@@ -242,7 +242,7 @@ BOOL RDOStudioApp::InitInstance()
 		autoExit = false;
 	}
 	if ( newModel ) {
-		OnFileNew();
+//		OnFileNew();
 	}
 
 	if ( autoRun ) {

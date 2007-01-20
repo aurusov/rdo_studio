@@ -153,7 +153,7 @@ bool RDOThreadRepository::updateModelNames()
 		files[ rdoModelObjects::PAT ].described = !fileInfo.model_name.empty();
 		files[ rdoModelObjects::RTP ].described = !fileInfo.model_name.empty();
 		files[ rdoModelObjects::RSS ].described = !fileInfo.resource_file.empty();
-		files[ rdoModelObjects::OPR ].described = !fileInfo.oprIev_file.empty() && rdo::isFileExists( getFullFileName( rdoModelObjects::OPR ) );
+		files[ rdoModelObjects::OPR ].described = !fileInfo.oprIev_file.empty();// && rdo::isFileExists( getFullFileName( rdoModelObjects::OPR ) );
 		files[ rdoModelObjects::FRM ].described = !fileInfo.frame_file.empty();
 		files[ rdoModelObjects::FUN ].described = !fileInfo.model_name.empty();
 		files[ rdoModelObjects::DPT ].described = !files[ rdoModelObjects::OPR ].described;

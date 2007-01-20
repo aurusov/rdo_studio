@@ -222,8 +222,13 @@ RDOBaseOperation::BOResult RDOPROCAdvance::checkOperation( RDOSimulator* sim )
 RDOBaseOperation::BOResult RDOPROCTerminate::checkOperation( RDOSimulator* sim )
 {
 	if ( !transacts.empty() ) {
-		RDOPROCTransact* res = transacts.front();
-		static_cast<RDORuntime*>(sim)->onEraseRes( res->number, NULL );
+		RDOPROCTransact* transact = transacts.front();
+		transact->setState( RDOResourceTrace::CS_Erase );
+		RDOTrace* tracer = static_cast<RDORuntime*>(sim)->getTracer();
+		if ( !tracer->isNull() ) {
+			tracer->getOStream() << transact->traceResourceState('\0', static_cast<RDORuntime*>(sim)) << tracer->getEOL();
+		}
+		static_cast<RDORuntime*>(sim)->onEraseRes( transact->number, NULL );
 		transacts.erase( transacts.begin() );
 		TRACE( "%7.1f TERMINATE\n", sim->getCurrentTime() );
 		return RDOBaseOperation::BOR_can_run;

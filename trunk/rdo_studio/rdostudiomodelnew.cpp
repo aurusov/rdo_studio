@@ -20,11 +20,14 @@ BEGIN_MESSAGE_MAP(RDOStudioModelNew, CDialog)
 	ON_BN_CLICKED(IDC_MODEL_BARBER1, OnModelEmpty)
 	ON_BN_CLICKED(IDC_MODEL_BARBER2, OnModelEmpty)
 	ON_BN_CLICKED(IDC_COMMENT, OnModelEmpty)
+	ON_WM_CTLCOLOR()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RDOStudioModelNew::RDOStudioModelNew():
-	CDialog( IDD )
+	CDialog( IDD ),
+	color_red( RGB(0xFF, 0x00, 0x00) ),
+	need_red( false )
 {
 	//{{AFX_DATA_INIT(RDOStudioModelNew)
 	m_modelName = _T("mymodel");
@@ -78,8 +81,8 @@ void RDOStudioModelNew::updateInfo()
 		}
 	}
 	if ( m_modelName.IsEmpty() ) {
-		m_info = "Необходимо указать имя модели";
-		m_ok.EnableWindow( false );
+		m_info   = "Необходимо указать имя модели";
+		need_red = true;
 	} else {
 		CString fullpath = m_modelPath + m_modelName;
 		CFileFind finder;
@@ -91,13 +94,15 @@ void RDOStudioModelNew::updateInfo()
 			} else if ( finder.IsReadOnly() || finder.IsCompressed() || finder.IsSystem() || finder.IsHidden() || finder.IsTemporary() || finder.IsNormal() || finder.IsArchived() ) {
 				m_info = rdo::format("Такой файл уже существует: '%s'", (LPCTSTR)fullpath).c_str();
 			}
-			m_ok.EnableWindow( false );
+			need_red = true;
 		} else {
-			m_info = rdo::format("Будет создана директория: '%s\\'", (LPCTSTR)fullpath).c_str();
-			m_ok.EnableWindow( true );
+			m_info   = rdo::format("Будет создана директория: '%s\\'", (LPCTSTR)fullpath).c_str();
+			need_red = false;
 		}
 		finder.Close();
 	}
+	m_ok.EnableWindow( !need_red );
+	GetDlgItem( IDC_INFO )->SetFont( need_red ? &font_red : &font_normal );
 	UpdateData( false );
 }
 
@@ -193,6 +198,15 @@ void RDOStudioModelNew::OnChangeModelName()
 BOOL RDOStudioModelNew::OnInitDialog()
 {
 	BOOL res = CDialog::OnInitDialog();
+	CFont* font = GetFont();
+	if ( font ) {
+	   LOGFONT lf;
+	   font->GetLogFont( &lf );
+	   font_normal.CreateFontIndirect( &lf );
+	   lf.lfWeight = FW_BOLD;
+	   font_red.CreateFontIndirect( &lf );
+	}
+	color_normal = ::GetSysColor( COLOR_WINDOWTEXT );
 	updateInfo();
 	return res;
 }
@@ -200,4 +214,13 @@ BOOL RDOStudioModelNew::OnInitDialog()
 void RDOStudioModelNew::OnModelEmpty()
 {
 	UpdateData();
+}
+
+HBRUSH RDOStudioModelNew::OnCtlColor( CDC* pDC, CWnd* pWnd, UINT nCtlColor )
+{
+	HBRUSH hbr = CDialog::OnCtlColor( pDC, pWnd, nCtlColor );
+	if ( pWnd->GetDlgCtrlID() == IDC_INFO ) {
+		pDC->SetTextColor( need_red ? color_red : color_normal );
+	}
+	return hbr;
 }

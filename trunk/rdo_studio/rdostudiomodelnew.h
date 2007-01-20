@@ -38,10 +38,17 @@ protected:
 	afx_msg void OnChangeModelName();
 	virtual BOOL OnInitDialog();
 	afx_msg void OnModelEmpty();
+	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	//}}AFX_MSG
 
 	CString getMyDocFolder() const;
 	void updateInfo();
+
+	CFont    font_normal;
+	CFont    font_red;
+	COLORREF color_normal;
+	COLORREF color_red;
+	bool     need_red;
 
 	DECLARE_MESSAGE_MAP()
 

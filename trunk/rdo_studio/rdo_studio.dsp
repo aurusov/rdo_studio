@@ -1081,6 +1081,18 @@ SOURCE=.\res\ac_trace.xpm
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\bin00004.bin
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\bin00005.bin
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\bin00008.bin
+# End Source File
+# Begin Source File
+
 SOURCE=.\res\buildToolbar.bmp
 # End Source File
 # Begin Source File

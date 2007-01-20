@@ -61,30 +61,72 @@ RDOStudioModel::RDOStudioModel():
 	model = this;
 
 	std::map< rdoModelObjects::RDOFileType, TemplateData > template_id;
-	template_id[ rdoModelObjects::SMR ] = TemplateData( ID_TEMP0_SMR, 0 );
+	template_id[ rdoModelObjects::SMR ] = TemplateData( IDR_MODEL_TMP0_SMR, 0 );
 	model_templates[0] = template_id;
 
 	template_id.clear();
-	template_id[ rdoModelObjects::SMR ] = TemplateData( ID_TEMP1_SMR, 0 );
+	template_id[ rdoModelObjects::SMR ] = TemplateData( IDR_MODEL_TMP1_SMR, 0 );
 	model_templates[1] = template_id;
 
 	template_id.clear();
-	template_id[ rdoModelObjects::PAT ] = TemplateData( ID_TEMP2_PAT, 9  );
-	template_id[ rdoModelObjects::RTP ] = TemplateData( ID_TEMP2_RTP, 15 );
-	template_id[ rdoModelObjects::RSS ] = TemplateData( ID_TEMP2_RSS, 13 );
-	template_id[ rdoModelObjects::OPR ] = TemplateData( ID_TEMP2_OPR, 14 );
-	template_id[ rdoModelObjects::FRM ] = TemplateData( ID_TEMP2_FRM, 7  );
-	template_id[ rdoModelObjects::FUN ] = TemplateData( ID_TEMP2_FUN, 10 );
-	template_id[ rdoModelObjects::SMR ] = TemplateData( ID_TEMP2_SMR, 0 );
+	template_id[ rdoModelObjects::PAT ] = TemplateData( IDR_MODEL_TMP2_PAT, 9  );
+	template_id[ rdoModelObjects::RTP ] = TemplateData( IDR_MODEL_TMP2_RTP, 15 );
+	template_id[ rdoModelObjects::RSS ] = TemplateData( IDR_MODEL_TMP2_RSS, 12 );
+	template_id[ rdoModelObjects::OPR ] = TemplateData( IDR_MODEL_TMP2_OPR, 13 );
+	template_id[ rdoModelObjects::FRM ] = TemplateData( IDR_MODEL_TMP2_FRM, 7  );
+	template_id[ rdoModelObjects::FUN ] = TemplateData( IDR_MODEL_TMP2_FUN, 10 );
+	template_id[ rdoModelObjects::SMR ] = TemplateData( IDR_MODEL_TMP2_SMR, 0  );
 	model_templates[2] = template_id;
 
 	template_id.clear();
 	template_id[ rdoModelObjects::PAT ] = TemplateData( IDR_MODEL_TMP3_PAT, 131 );
 	template_id[ rdoModelObjects::RTP ] = TemplateData( IDR_MODEL_TMP3_RTP, 98  );
-	template_id[ rdoModelObjects::RSS ] = TemplateData( IDR_MODEL_TMP3_RSS, 0  );
-	template_id[ rdoModelObjects::OPR ] = TemplateData( IDR_MODEL_TMP3_OPR, 0  );
-	template_id[ rdoModelObjects::SMR ] = TemplateData( IDR_MODEL_TMP3_SMR, 0  );
+	template_id[ rdoModelObjects::RSS ] = TemplateData( IDR_MODEL_TMP3_RSS, 0   );
+	template_id[ rdoModelObjects::OPR ] = TemplateData( IDR_MODEL_TMP3_OPR, 0   );
+	template_id[ rdoModelObjects::FRM ] = TemplateData( IDR_MODEL_TMP3_FRM, 84  );
+	template_id[ rdoModelObjects::FUN ] = TemplateData( IDR_MODEL_TMP3_FUN, 44  );
+	template_id[ rdoModelObjects::SMR ] = TemplateData( IDR_MODEL_TMP3_SMR, 0   );
 	model_templates[3] = template_id;
+
+	template_id.clear();
+	template_id[ rdoModelObjects::PAT ] = TemplateData( IDR_MODEL_TMP4_PAT, 0 );
+	template_id[ rdoModelObjects::RTP ] = TemplateData( IDR_MODEL_TMP4_RTP, 0 );
+	template_id[ rdoModelObjects::RSS ] = TemplateData( IDR_MODEL_TMP4_RSS, 0 );
+	template_id[ rdoModelObjects::OPR ] = TemplateData( IDR_MODEL_TMP4_OPR, 0 );
+	template_id[ rdoModelObjects::FUN ] = TemplateData( IDR_MODEL_TMP4_FUN, 0 );
+	template_id[ rdoModelObjects::SMR ] = TemplateData( IDR_MODEL_TMP4_SMR, 0 );
+	template_id[ rdoModelObjects::PMD ] = TemplateData( IDR_MODEL_TMP4_PMD, 0 );
+	model_templates[4] = template_id;
+
+	template_id.clear();
+	template_id[ rdoModelObjects::PAT ] = TemplateData( IDR_MODEL_TMP5_PAT, 0 );
+	template_id[ rdoModelObjects::RTP ] = TemplateData( IDR_MODEL_TMP5_RTP, 0 );
+	template_id[ rdoModelObjects::RSS ] = TemplateData( IDR_MODEL_TMP5_RSS, 0 );
+	template_id[ rdoModelObjects::OPR ] = TemplateData( IDR_MODEL_TMP5_OPR, 0 );
+	template_id[ rdoModelObjects::FUN ] = TemplateData( IDR_MODEL_TMP5_FUN, 0 );
+	template_id[ rdoModelObjects::SMR ] = TemplateData( IDR_MODEL_TMP5_SMR, 0 );
+	template_id[ rdoModelObjects::PMD ] = TemplateData( IDR_MODEL_TMP5_PMD, 0 );
+	model_templates[5] = template_id;
+
+	template_id.clear();
+	template_id[ rdoModelObjects::PAT ] = TemplateData( IDR_MODEL_TMP6_PAT, 0 );
+	template_id[ rdoModelObjects::RTP ] = TemplateData( IDR_MODEL_TMP6_RTP, 0 );
+	template_id[ rdoModelObjects::RSS ] = TemplateData( IDR_MODEL_TMP6_RSS, 0 );
+	template_id[ rdoModelObjects::OPR ] = TemplateData( IDR_MODEL_TMP6_OPR, 0 );
+	template_id[ rdoModelObjects::FUN ] = TemplateData( IDR_MODEL_TMP6_FUN, 0 );
+	template_id[ rdoModelObjects::SMR ] = TemplateData( IDR_MODEL_TMP6_SMR, 0 );
+	template_id[ rdoModelObjects::PMD ] = TemplateData( IDR_MODEL_TMP6_PMD, 0 );
+	model_templates[6] = template_id;
+
+	template_id.clear();
+	template_id[ rdoModelObjects::PAT ] = TemplateData( IDR_MODEL_TMP7_PAT, 0 );
+	template_id[ rdoModelObjects::RTP ] = TemplateData( IDR_MODEL_TMP7_RTP, 0 );
+	template_id[ rdoModelObjects::RSS ] = TemplateData( IDR_MODEL_TMP7_RSS, 0 );
+	template_id[ rdoModelObjects::OPR ] = TemplateData( IDR_MODEL_TMP7_OPR, 0 );
+	template_id[ rdoModelObjects::FUN ] = TemplateData( IDR_MODEL_TMP7_FUN, 0 );
+	template_id[ rdoModelObjects::SMR ] = TemplateData( IDR_MODEL_TMP7_SMR, 0 );
+	template_id[ rdoModelObjects::PMD ] = TemplateData( IDR_MODEL_TMP7_PMD, 0 );
+	model_templates[7] = template_id;
 
 	notifies.push_back( RT_REPOSITORY_MODEL_NEW );
 	notifies.push_back( RT_REPOSITORY_MODEL_OPEN );
@@ -531,7 +573,7 @@ void RDOStudioModel::newModelFromRepository()
 		if ( maximize && wnd && wnd != studioApp.mainFrame ) {
 			studioApp.mainFrame->MDIMaximize( wnd );
 		}
-		if ( useTemplate ) {
+		if ( useTemplate != -1 ) {
 			saveModel();
 		}
 	}
