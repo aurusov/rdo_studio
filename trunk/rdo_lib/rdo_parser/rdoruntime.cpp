@@ -855,7 +855,7 @@ RDOSimulator *RDORuntime::clone()
 			RDOResource* res = new RDOResource( *allResourcesByID.at(i) );
 			other->sizeof_sim += sizeof( RDOResource ) + sizeof( void* ) * 2;
 			other->allResourcesByID.push_back( res );
-			other->allResourcesByID.push_back( res );
+			other->allResourcesByTime.push_back( res );
 			other->permanentResources.push_back( res );
 		}
 	}
