@@ -50,6 +50,8 @@ private:
 	bool useCommonWithMax;
 	RDOFUNArithm* commonChoice;
 
+	int current_rel_res_index;
+
 protected:
 	RDOPATPattern( const std::string* const _name, const bool _trace );
 	virtual ~RDOPATPattern() {}

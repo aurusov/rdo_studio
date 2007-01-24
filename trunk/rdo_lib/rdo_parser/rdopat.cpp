@@ -33,6 +33,7 @@ RDOPATPattern::RDOPATPattern( const std::string* const _name, const bool _trace 
 	commonChoice( NULL ),
 	patRuntime( NULL ),
 	currRelRes( NULL ),
+	current_rel_res_index( 0 ),
 	trace( _trace ),
 	useCommonChoice( false )
 {
@@ -132,9 +133,9 @@ std::string RDOPATPattern::getPatternId() const
 int RDOPATPattern::writeModelStructure() const
 {
 	parser->modelStructure << getPatternId() << " " << *getName() << " " << getModelStructureLetter() << " " << relRes.size();
-	for(int i = 0; i < relRes.size(); i++)
+	for ( int i = 0; i < relRes.size(); i++ ) {
 		parser->modelStructure << " " << relRes.at(i)->getType()->getNumber();
-
+	}
 	parser->modelStructure << std::endl;
 	return 0;
 }
@@ -159,44 +160,29 @@ const RDOFUNFunctionParam *RDOPATPattern::findPATPatternParam(const std::string 
 	return (*it);
 }
 
-const RDORelevantResource *RDOPATPattern::findRelevantResource(const std::string *const resName) const
+const RDORelevantResource* RDOPATPattern::findRelevantResource( const std::string* const resName ) const
 {
-	std::vector<RDORelevantResource *>::const_iterator it = 
-		std::find_if(relRes.begin(), relRes.end(), compareName<RDORelevantResource>(resName));
-
-	if(it == relRes.end())
-		return NULL;
-
-	return (*it);
+	std::vector< RDORelevantResource* >::const_iterator it = std::find_if( relRes.begin(), relRes.end(), compareName<RDORelevantResource>(resName) );
+	return it != relRes.end() ? (*it) : NULL;
 }
 
-int RDOPATPattern::findPATPatternParamNum(const std::string *const paramName)	const
+int RDOPATPattern::findPATPatternParamNum( const std::string* const paramName ) const
 {
-	std::vector<RDOFUNFunctionParam *>::const_iterator it = 
-		std::find_if(params.begin(), params.end(), compareName<RDOFUNFunctionParam>(paramName));
-
-	if(it == params.end())
-		return -1;
-
-	return it - params.begin();
+	std::vector< RDOFUNFunctionParam* >::const_iterator it = std::find_if( params.begin(), params.end(), compareName<RDOFUNFunctionParam>(paramName) );
+	return it != params.end() ? it - params.begin() : -1;
 }
 
-int RDOPATPattern::findRelevantResourceNum(const std::string *const resName) const
+int RDOPATPattern::findRelevantResourceNum( const std::string* const resName ) const
 {
-	std::vector<RDORelevantResource *>::const_iterator it = 
-		std::find_if(relRes.begin(), relRes.end(), compareName<RDORelevantResource>(resName));
-
-	if(it == relRes.end())
-		return -1;
-
-	return it - relRes.begin();
+	std::vector< RDORelevantResource* >::const_iterator it = std::find_if( relRes.begin(), relRes.end(), compareName<RDORelevantResource>(resName) );
+	return it != relRes.end() ? it - relRes.begin() : -1;
 }
 
-void RDOPATPattern::add(RDOFUNFunctionParam *const _param) 
+void RDOPATPattern::add( RDOFUNFunctionParam* const _param )
 { 
-	if(findPATPatternParam(_param->getName()))
+	if ( findPATPatternParam(_param->getName()) ) {
 		parser->error("Second appearance of the same parameter name: " + *(_param->getName()));
-
+	}
 	params.push_back(_param); 
 }
 
@@ -435,12 +421,17 @@ void RDOPATPattern::addRelResBody( std::string* resName )
 		parser->error( rdo::format("Неизвестный релевантный ресурс: %s", resName->c_str()) );
 //		parser->error( "Name of relevant resource expected instead of: " + *resName );
 	}
-	currRelRes = (*it);
-	if ( currRelRes->alreadyHaveConverter ) {
+	if ( findRelevantResourceNum( resName ) != current_rel_res_index ) {
+		std::string rel_res_waiting = current_rel_res_index < relRes.size() ? relRes[current_rel_res_index]->getName()->c_str() : "";
+		parser->error( rdo::format("Ожидается описание релевантного ресурса '%s', вместо него найдено описание '%s'", rel_res_waiting.c_str(), resName->c_str()) );
+	}
+	if ( (*it)->alreadyHaveConverter ) {
 		parser->error( rdo::format("Релевантный ресурс уже используется: %s", resName->c_str()) );
 //		parser->error( "\"" + *resName + "\" relevant resource has converter block already" );
 	}
+	currRelRes = (*it);
 	currRelRes->alreadyHaveConverter = true;
+	current_rel_res_index++;
 }
 
 void RDOPATPattern::addRelResUsage( RDOPATChoice* choice, RDOPATSelectType* order_sort )
@@ -523,8 +514,8 @@ void RDOPATPattern::end()
 		patRuntime->addChoiceFromCalc(new rdoRuntime::RDOSelectResourceCommonCalc(resSelectors, useCommonWithMax, commonChoice->createCalc()));
 //		parser->error("RDOPATPattern::end not implemented yet for not \"first\" conditions in common choice");
 	} else {
-		for( int i = 0; i < size; i++ ) {
-			rdoRuntime::RDOCalc *calc = relRes.at(i)->createSelectResourceChoiceCalc();
+		for ( int i = 0; i < size; i++ ) {
+			rdoRuntime::RDOCalc* calc = relRes.at(i)->createSelectResourceChoiceCalc();
 			patRuntime->addChoiceFromCalc(calc);
 		}
 	}
