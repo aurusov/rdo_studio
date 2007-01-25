@@ -107,6 +107,7 @@ BEGIN_MESSAGE_MAP(RDOStudioMainFrame, CMDIFrameWnd)
 	ON_UPDATE_COMMAND_UI(ID_MODEL_FRAME_NEXT, OnUpdateModelFrameNext)
 	ON_UPDATE_COMMAND_UI(ID_MODEL_FRAME_PREV, OnUpdateModelFramePrev)
 	ON_WM_TIMER()
+	ON_WM_CLOSE()
 	//}}AFX_MSG_MAP
 	ON_UPDATE_COMMAND_UI( ID_COORD_STATUSBAR           , OnUpdateCoordStatusBar )
 	ON_UPDATE_COMMAND_UI( ID_MODIFY_STATUSBAR          , OnUpdateModifyStatusBar )
@@ -127,6 +128,8 @@ static UINT indicators[] = {
 	ID_MODEL_SHOWRATE_STATUSBAR,
 	ID_PROGRESSSTATUSBAR
 };
+
+bool RDOStudioMainFrame::close_mode = false;
 
 RDOStudioMainFrame::RDOStudioMainFrame():
 	CMDIFrameWnd(),
@@ -614,13 +617,12 @@ void RDOStudioMainFrame::OnUpdateModelFramePrev(CCmdUI* pCmdUI)
 
 LRESULT RDOStudioMainFrame::WindowProc( UINT message, WPARAM wParam, LPARAM lParam )
 {
-	static int k = 0;
 	if ( message == WORKSPACE_SHOW_MESSAGE ) {
 		OnWorkspaceShow();
 	} else if ( message == OUTPUT_SHOW_MESSAGE ) {
 		OnOutputShow();
 	}
-	return CMDIFrameWnd::WindowProc(message, wParam, lParam);
+	return CMDIFrameWnd::WindowProc( message, wParam, lParam );
 }
 
 void RDOStudioMainFrame::update_start()
@@ -642,4 +644,13 @@ void RDOStudioMainFrame::OnTimer( UINT nIDEvent )
 		model->update();
 	}
 	CMDIFrameWnd::OnTimer( nIDEvent );
+}
+
+void RDOStudioMainFrame::OnClose()
+{
+	close_mode = true;
+	CMDIFrameWnd::OnClose();
+	// close_mode объявлена как static, т.к. после удачного закрытия всех документов
+	// происходит реальное удаление главного окна и this уже не определен
+	close_mode = false;
 }

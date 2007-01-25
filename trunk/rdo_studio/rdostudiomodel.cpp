@@ -128,6 +128,7 @@ RDOStudioModel::RDOStudioModel():
 	template_id[ rdoModelObjects::PMD ] = TemplateData( IDR_MODEL_TMP7_PMD, 0 );
 	model_templates[7] = template_id;
 
+	notifies.push_back( RT_STUDIO_MODEL_GET_TEXT );
 	notifies.push_back( RT_REPOSITORY_MODEL_NEW );
 	notifies.push_back( RT_REPOSITORY_MODEL_OPEN );
 	notifies.push_back( RT_REPOSITORY_MODEL_OPEN_GET_NAME );
@@ -160,6 +161,19 @@ RDOStudioModel::~RDOStudioModel()
 void RDOStudioModel::proc( RDOThread::RDOMessageInfo& msg )
 {
 	switch ( msg.message ) {
+		case RDOThread::RT_STUDIO_MODEL_GET_TEXT: {
+			msg.lock();
+			rdoRepository::RDOThreadRepository::FileData* fdata = static_cast<rdoRepository::RDOThreadRepository::FileData*>(msg.param);
+			RDOEditorTabCtrl* tab = getTab();
+			if ( tab ) {
+				RDOEditorEdit* edit = tab->getItemEdit( fdata->type );
+				if ( edit ) {
+					edit->save( fdata->stream );
+				}
+			}
+			msg.unlock();
+			break;
+		}
 		case RDOThread::RT_REPOSITORY_MODEL_NEW: {
 			newModelFromRepository();
 			plugins->pluginProc( rdoPlugin::PM_MODEL_NEW );

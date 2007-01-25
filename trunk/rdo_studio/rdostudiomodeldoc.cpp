@@ -92,11 +92,15 @@ BOOL RDOStudioModelDoc::SaveModified()
 	}
 	bool flag = true;
 	if ( isModify() ) {
-		int res = AfxGetMainWnd()->MessageBox( rdo::format( ID_MSG_MODELSAVE_QUERY ).c_str(), NULL, MB_ICONQUESTION | MB_YESNOCANCEL );
-		switch ( res ) {
+		switch ( AfxGetMainWnd()->MessageBox( rdo::format( ID_MSG_MODELSAVE_QUERY ).c_str(), NULL, MB_ICONQUESTION | MB_YESNOCANCEL ) ) {
 			case IDYES   : flag = model->saveModel(); break;
 			case IDNO    : flag = true; break;
 			case IDCANCEL: flag = false; break;
+		}
+	} else if ( !RDOStudioMainFrame::is_close_mode() ) {
+		switch ( AfxGetMainWnd()->MessageBox( rdo::format( ID_MSG_MODELCLOSE_QUERY ).c_str(), NULL, MB_ICONQUESTION | MB_YESNO ) ) {
+			case IDYES: flag = true; break;
+			case IDNO : flag = false; break;
 		}
 	}
 	if ( flag ) {

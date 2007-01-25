@@ -23,7 +23,7 @@
 // Если НЕ определена в дефайнах проекта
 #else
 	#define RDO_MT
-	#undef RDO_MT // Скомпилить однотредувую версию РДО. Если закомментировать, то получится многотредовая
+//	#undef RDO_MT // Скомпилить однотредувую версию РДО. Если закомментировать, то получится многотредовая
 
 	// RDO_ST автоматически выставляется для однотредовой версии РДО
 	#ifndef RDO_MT
@@ -70,6 +70,7 @@ public:
 		RT_STUDIO_MODEL_BUILD,
 		RT_STUDIO_MODEL_RUN,
 		RT_STUDIO_MODEL_STOP,
+		RT_STUDIO_MODEL_GET_TEXT,             // param = rdoRepository::RDOThreadRepository::FileData* = { file_type:rdoModelObjects::RDOFileType, result:rdo::binarystream& }
 		RT_REPOSITORY_MODEL_NEW,
 		RT_REPOSITORY_MODEL_OPEN,
 		RT_REPOSITORY_MODEL_OPEN_GET_NAME,     // param = rdoRepository::RDOThreadRepository::OpenFile* = { model_name:std::string, readonly:bool, result:bool }
@@ -127,6 +128,7 @@ public:
 			case RT_STUDIO_MODEL_BUILD                : return "RT_STUDIO_MODEL_BUILD";
 			case RT_STUDIO_MODEL_RUN                  : return "RT_STUDIO_MODEL_RUN";
 			case RT_STUDIO_MODEL_STOP                 : return "RT_STUDIO_MODEL_STOP";
+			case RT_STUDIO_MODEL_GET_TEXT             : return "RT_STUDIO_MODEL_GET_TEXT";
 			case RT_REPOSITORY_MODEL_NEW              : return "RT_REPOSITORY_MODEL_NEW";
 			case RT_REPOSITORY_MODEL_OPEN             : return "RT_REPOSITORY_MODEL_OPEN";
 			case RT_REPOSITORY_MODEL_OPEN_GET_NAME    : return "RT_REPOSITORY_MODEL_OPEN_GET_NAME";
@@ -380,6 +382,8 @@ protected:
 // --------------------------------------------------------------------
 // ---------- RDOThreadMT
 // --------------------------------------------------------------------
+// Основной базовый класс для треды, которая работает в своей ветке
+//
 class RDOThreadMT: public RDOThread
 {
 protected:
@@ -393,6 +397,9 @@ protected:
 // --------------------------------------------------------------------
 // ---------- RDOThreadGUI
 // --------------------------------------------------------------------
+// Базовый класс для треды, которая получает сообщения от kernel_gui, а не от kernel.
+// Используется как логическая вложенная треда в настоящую треду kernel_gui
+//
 #ifdef RDO_MT
 class RDOThreadGUI: public RDOThread
 {

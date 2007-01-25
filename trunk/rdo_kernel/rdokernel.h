@@ -25,9 +25,8 @@ class RDOThreadRepository;
 class RDOKernel: public RDOThreadMT
 {
 friend void RDOThread::broadcastMessage( RDOTreadMessage message, void* param, bool lock );
-#ifdef RDO_ST
 friend class RDOStudioApp;
-#endif
+
 protected:
 	RDOKernel();           // Создание и удаление через статические методы
 	virtual ~RDOKernel();
@@ -43,6 +42,7 @@ protected:
 //	CMutex                      methods_mutex;
 //	void method_registration( RDOTreadMethod& msg ); // thread-safety
 
+	RDOThread*                          thread_studio;
 	rdoRuntime::RDOThreadRunTime*       thread_runtime;
 	rdoSimulator::RDOThreadSimulator*   thread_simulator;
 	rdoRepository::RDOThreadRepository* thread_repository;
@@ -58,6 +58,7 @@ public:
 	static void init();
 	static void close();
 
+	RDOThread*                          studio() const     { return thread_studio;     }
 	rdoRuntime::RDOThreadRunTime*       runtime() const    { return thread_runtime;    }
 	rdoSimulator::RDOThreadSimulator*   simulator() const  { return thread_simulator;  }
 	rdoRepository::RDOThreadRepository* repository() const { return thread_repository; }
@@ -67,13 +68,20 @@ public:
 // --------------------------------------------------------------------
 // ---------- RDOKernelGUI
 // --------------------------------------------------------------------
+// Является фиктивной тредой без своей процедуры.
+// Раздает сообщения прикрепленным к ней тредам (RDOThreadGUI).
+// Можно представить её в виде корня дерева, к которому прикреплены RDOThreadGUI.
+// Обработчик сообщений RDOKernelGUI::processMessages() вызывается из цикла обработки
+// сообщений самого win32-gui приложения, точнее из OnIdle() приложения, т.е. процедуру
+// треды выполняет запущенный екзешник (логически). При этом, именно от имени RDOKernelGUI,
+// приложение посылает сообщения остальным настоящим тредам.
+//
 class RDOKernelGUI: public RDOThread
 {
-//#ifdef RDO_MT
-	friend virtual bool RDOThreadGUI::processMessages();
-//#endif
+friend virtual bool RDOThreadGUI::processMessages();
+
 protected:
-	RDOKernelGUI( const std::string& _thread_name );           // Создание и удаление через потомков
+	RDOKernelGUI( const std::string& _thread_name ); // Создание и удаление через потомков
 	virtual ~RDOKernelGUI();
 
 	virtual void proc( RDOMessageInfo& msg );

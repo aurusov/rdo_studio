@@ -191,6 +191,12 @@ BOOL RDOStudioApp::InitInstance()
 	m_pMainWnd = mainFrame;
 	if ( !mainFrame->LoadFrame( IDR_MAINFRAME ) ) return FALSE;
 
+#ifdef RDO_MT
+	kernel->thread_studio = studioGUI;
+#else
+	kernel->thread_studio = model;
+#endif
+
 	loadReopen();
 	updateReopenSubMenu();
 

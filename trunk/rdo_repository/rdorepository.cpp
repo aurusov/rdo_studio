@@ -286,6 +286,11 @@ bool RDOThreadRepository::saveModel()
 	if ( flag ) {
 		broadcastMessage( RT_REPOSITORY_MODEL_SAVE );
 	}
+
+//	rdo::binarystream stream;
+//	sendMessage( kernel->studio(), RDOThread::RT_STUDIO_MODEL_GET_TEXT, &rdoRepository::RDOThreadRepository::FileData( rdoModelObjects::PAT, stream ) );
+//	TRACE( "%d\n", stream.size() );
+
 	return flag;
 }
 

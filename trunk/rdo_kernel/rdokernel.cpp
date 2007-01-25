@@ -18,6 +18,7 @@ RDOKernel* kernel = NULL;
 // --------------------------------------------------------------------
 RDOKernel::RDOKernel():
 	RDOThreadMT( "RDOKernel" ),
+	thread_studio( NULL ),
 	thread_runtime( NULL ),
 	thread_simulator( NULL ),
 	thread_repository( NULL )
@@ -163,7 +164,7 @@ void RDOKernel::registration( RDOThread* thread )
 				threads.push_back( thread );
 			} else {
 				threads_mutex.Unlock();
-				// Ќе будем регистрировать треду, если она GUI, дл€ tread_id которой уже есть джруга€ треда.
+				// Ќе будем регистрировать треду, если она GUI, дл€ tread_id которой уже есть друга€ треда.
 				// Ёта 'друга€' треда должна быть RDOKernelGUI, чтобы самой поймать регистрицаию текущей
 				// и раздавать ей сообщени€.
 				return;
@@ -178,6 +179,7 @@ void RDOKernel::registration( RDOThread* thread )
 	if ( !thread_simulator  && thread->getName() == "RDOThreadSimulator"  ) thread_simulator  = static_cast<rdoSimulator::RDOThreadSimulator*>(thread);
 	if ( !thread_repository && thread->getName() == "RDOThreadRepository" ) thread_repository = static_cast<rdoRepository::RDOThreadRepository*>(thread);
 #ifdef RDO_MT
+	if ( !thread_studio     && thread->getName() == "RDOThreadStudio"     ) thread_studio     = thread;
 	threads_mutex.Unlock();
 #endif
 
@@ -204,6 +206,7 @@ void RDOKernel::unregistered( RDOThread* thread )
 	if ( thread_simulator  && thread->getName() == "RDOThreadSimulator"  ) thread_simulator  = NULL;
 	if ( thread_repository && thread->getName() == "RDOThreadRepository" ) thread_repository = NULL;
 #ifdef RDO_MT
+	if ( thread_studio     && thread->getName() == "RDOThreadStudio"     ) thread_studio     = NULL;
 	threads_mutex.Unlock();
 #endif
 

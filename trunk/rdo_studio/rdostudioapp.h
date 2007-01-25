@@ -29,8 +29,14 @@ friend class RDOStudioModel;
 friend class rdoTracer::RDOTracer;
 friend class RDOStudioCommandLineInfo;
 private:
+	// см. описание RDOKernelGUI.
+	// Главная треда самого приложения, т.е. кернет для win32-gui, но не кернел системы.
 	RDOThread* studioGUI;
+
 #ifdef RDO_MT
+	// Используется для рассылки широковещательных уведомлений из приложения.
+	// При этом, не происходит остановки работы самого приложения, и имеется возможность
+	// обрабатывать новые присылаемые приложению сообщения.
 	RDOThreadStudio* studioMT;
 #endif
 

@@ -21,14 +21,14 @@ RDOThreadStudio::RDOThreadStudio(): RDOThread( "RDOThreadStudio", RDOThread::thr
 void RDOThreadStudio::proc( RDOMessageInfo& msg )
 {
 	switch ( msg.message ) {
-		case RT_STUDIO_MODEL_NEW    :
-		case RT_STUDIO_MODEL_OPEN   :
-		case RT_STUDIO_MODEL_SAVE   :
-		case RT_STUDIO_MODEL_SAVE_AS:
-		case RT_STUDIO_MODEL_CLOSE  :
-		case RT_STUDIO_MODEL_BUILD  :
-		case RT_STUDIO_MODEL_RUN    :
-		case RT_STUDIO_MODEL_STOP   :
+		case RT_STUDIO_MODEL_NEW     :
+		case RT_STUDIO_MODEL_OPEN    :
+		case RT_STUDIO_MODEL_SAVE    :
+		case RT_STUDIO_MODEL_SAVE_AS :
+		case RT_STUDIO_MODEL_CLOSE   :
+		case RT_STUDIO_MODEL_BUILD   :
+		case RT_STUDIO_MODEL_RUN     :
+		case RT_STUDIO_MODEL_STOP    :
 		{
 			broadcastMessage( msg.message, msg.param, true );
 			break;
@@ -45,6 +45,7 @@ RDOThreadStudioGUI::RDOThreadStudioGUI(): RDOKernelGUI( "RDOThreadStudioGUI" )
 }
 #endif
 
+/*
 // --------------------------------------------------------------------
 // ---------- RDOThreadStudio1
 // --------------------------------------------------------------------
@@ -82,3 +83,4 @@ void RDOThreadStudio2::proc( RDOMessageInfo& msg )
 		}
 	}
 }
+*/

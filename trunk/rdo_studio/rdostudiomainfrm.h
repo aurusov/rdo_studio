@@ -65,6 +65,8 @@ class RDOStudioMainFrame: public CMDIFrameWnd
 {
 DECLARE_DYNAMIC(RDOStudioMainFrame)
 friend class RDOToolBar;
+friend class RDOStudioModelDoc;
+
 private:
 	RDOToolBar         fileToolBar;
 	RDOToolBar         editToolBar;
@@ -76,6 +78,9 @@ private:
 	std::map< HWND, CWnd* > cmd_wnd;
 
 	UINT update_timer;
+
+	// Используется при закрытии модели. Задается вопрос.
+	static bool close_mode;
 
 public:
 	RDOStudioMainFrame();
@@ -118,6 +123,8 @@ public:
 
 	void update_start();
 	void update_stop();
+
+	static bool is_close_mode() { return close_mode; }
 
 #ifdef _DEBUG
 	virtual void AssertValid() const;
@@ -171,6 +178,7 @@ protected:
 	afx_msg void OnUpdateModelFrameNext(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateModelFramePrev(CCmdUI* pCmdUI);
 	afx_msg void OnTimer(UINT nIDEvent);
+	afx_msg void OnClose();
 	//}}AFX_MSG
 	afx_msg void OnUpdateCoordStatusBar( CCmdUI *pCmdUI );
 	afx_msg void OnUpdateModifyStatusBar( CCmdUI *pCmdUI );

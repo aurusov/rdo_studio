@@ -33,6 +33,7 @@ protected:
 };
 #endif
 
+/*
 // --------------------------------------------------------------------
 // ---------- RDOThreadStudio1
 // --------------------------------------------------------------------
@@ -56,5 +57,6 @@ protected:
 	virtual ~RDOThreadStudio2() {}; // Чтобы нельзя было удалить через delete
 	virtual void proc( RDOMessageInfo& msg );
 };
+*/
 
 #endif // RDO_STUDIO_THREAD_H
