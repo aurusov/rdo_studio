@@ -119,6 +119,33 @@ public:
 	};
 };
 
+// --------------------------------------------------------------------
+// ---------- RDOThreadCodeComp
+// --------------------------------------------------------------------
+class RDOThreadCodeComp: public RDOThreadMT
+{
+protected:
+	virtual ~RDOThreadCodeComp(); // „тобы нельз€ было удалить через delete помещаем его в protected
+	virtual void proc( RDOMessageInfo& msg );
+
+public:
+	RDOThreadCodeComp();
+
+	struct GetCodeComp {
+		rdoModelObjects::RDOFileType file;
+		int pos_x;
+		int pos_y;
+		std::string& result;
+		GetCodeComp( rdoModelObjects::RDOFileType _file, int _pos_x, int _pos_y, std::string& data ):
+			file( _file ),
+			pos_x( _pos_x ),
+			pos_y( _pos_y ),
+			result( data )
+		{
+		}
+	};
+};
+
 } // namespace rdoSimulator
 
 #endif // RDO_SIMULATOR_INTERFACE__

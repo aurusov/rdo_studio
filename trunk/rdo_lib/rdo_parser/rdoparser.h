@@ -141,7 +141,7 @@ public:
 //	int constCounter;
 
 	rdoRuntime::RDORuntime* runTime;
-	RDOSMR*     smr;
+	RDOSMR*                 smr;
 
 	std::vector< rdoSimulator::RDOSyntaxError > errors;
 

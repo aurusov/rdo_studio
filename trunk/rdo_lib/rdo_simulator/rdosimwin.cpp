@@ -663,4 +663,34 @@ double RDOThreadSimulator::getInitialShowRate()
 	return *parser->smr->showRate;
 }
 
+// --------------------------------------------------------------------
+// ---------- RDOThreadCodeComp
+// --------------------------------------------------------------------
+RDOThreadCodeComp::RDOThreadCodeComp():
+	RDOThreadMT( "RDOThreadCodeComp" )
+{
+	notifies.push_back( RT_CODECOMP_GET_DATA );
+	after_constructor();
+}
+
+RDOThreadCodeComp::~RDOThreadCodeComp()
+{
+}
+
+void RDOThreadCodeComp::proc( RDOMessageInfo& msg )
+{
+	switch ( msg.message ) {
+		case RT_CODECOMP_GET_DATA: {
+			if ( rdoParse::parser ) break;
+			msg.lock();
+			GetCodeComp* data = static_cast<GetCodeComp*>(msg.param);
+			rdo::binarystream stream;
+			sendMessage( kernel->studio(), RDOThread::RT_STUDIO_MODEL_GET_TEXT, &rdoRepository::RDOThreadRepository::FileData( data->file, stream ) );
+			data->result = stream.data();
+			msg.unlock();
+			break;
+		}
+	}
+}
+
 } // namespace rdoSimulator

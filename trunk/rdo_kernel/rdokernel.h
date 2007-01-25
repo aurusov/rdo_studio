@@ -12,6 +12,7 @@
 // --------------------------------------------------------------------
 namespace rdoSimulator {
 class RDOThreadSimulator;
+class RDOThreadCodeComp;
 }
 
 namespace rdoRuntime {
@@ -45,6 +46,7 @@ protected:
 	RDOThread*                          thread_studio;
 	rdoRuntime::RDOThreadRunTime*       thread_runtime;
 	rdoSimulator::RDOThreadSimulator*   thread_simulator;
+	rdoSimulator::RDOThreadCodeComp*    thread_codecomp;
 	rdoRepository::RDOThreadRepository* thread_repository;
 
 	void registration( RDOThread* thread );
@@ -61,6 +63,7 @@ public:
 	RDOThread*                          studio() const     { return thread_studio;     }
 	rdoRuntime::RDOThreadRunTime*       runtime() const    { return thread_runtime;    }
 	rdoSimulator::RDOThreadSimulator*   simulator() const  { return thread_simulator;  }
+	rdoSimulator::RDOThreadCodeComp*    codecomp() const   { return thread_codecomp;  }
 	rdoRepository::RDOThreadRepository* repository() const { return thread_repository; }
 };
 

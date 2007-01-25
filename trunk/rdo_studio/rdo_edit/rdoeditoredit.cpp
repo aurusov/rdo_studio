@@ -452,13 +452,25 @@ void RDOEditorEdit::completeWord()
 	if ( !static_cast<RDOEditorEditStyle*>(style)->autoComplete->useAutoComplete ) return;
 
 	SetFocus();
-
+	std::string s;
+	RDOEditorTabCtrl* tab = model->getTab();
+	if ( tab ) {
+//		studioApp.studioGUI->sendMessage( kernel->codecomp(), RDOThread::RT_CODECOMP_GET_DATA, &rdoSimulator::RDOThreadCodeComp::GetCodeComp( tab->getCurrentRDOItem(), getCurrentPos(), getCurrentLineNumber(), s ) );
+	}
+	if ( s.empty() ) {
+		s  = kw0;
+		s += " ";
+		s += kw1;
+		s += " ";
+		s += kw2;
+	}
+/*
 	std::string s = kw0;
 	s += " ";
 	s += kw1;
 	s += " ";
 	s += kw2;
-
+*/
 	WordList wl;
 	wl.Set( s.c_str() );
 	wl.InList( "" );

@@ -25,14 +25,13 @@ class RDOTracer;
 
 class RDOStudioApp: public CWinApp
 {
-friend class RDOStudioModel;
-friend class rdoTracer::RDOTracer;
 friend class RDOStudioCommandLineInfo;
-private:
+public:
 	// см. описание RDOKernelGUI.
 	// Главная треда самого приложения, т.е. кернет для win32-gui, но не кернел системы.
 	RDOThread* studioGUI;
 
+private:
 #ifdef RDO_MT
 	// Используется для рассылки широковещательных уведомлений из приложения.
 	// При этом, не происходит остановки работы самого приложения, и имеется возможность
