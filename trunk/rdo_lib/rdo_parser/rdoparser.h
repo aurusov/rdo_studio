@@ -80,6 +80,7 @@ public:
 	RDOParser();
 	~RDOParser();
 
+	const std::vector< RDORTPResType* >&      getRTPResType() const      { return allRTPResType;      }
 	const std::vector< RDORSSResource* >&     getRSSResources() const    { return allRSSResource;     }
 	      std::vector< RDOFUNGroup* >&        getFUNGroupStack()         { return allFUNGroupStack;   }
 	const std::vector< RDODPTSearch* >&       getDPTSearch() const       { return allDPTSearch;       }

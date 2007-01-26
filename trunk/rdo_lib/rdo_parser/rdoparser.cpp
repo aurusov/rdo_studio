@@ -186,7 +186,7 @@ void RDOParser::checkActivityName( const std::string* _name )
 	while ( it_search != getDPTSearch().end() ) {
 		if ( std::find_if( (*it_search)->getActivities().begin(), (*it_search)->getActivities().end(), compareName<RDODPTSearchActivity>(_name) ) != (*it_search)->getActivities().end() ) {
 			error( rdo::format("јктивность с таким именем уже существует в точке типа search: %s", (*it_search)->getName()->c_str()) );
-//			parser->error("Activity name: " + *_name + " already defined");
+//			error("Activity name: " + *_name + " already defined");
 		}
 		it_search++;
 	}
@@ -199,7 +199,7 @@ void RDOParser::checkActivityName( const std::string* _name )
 	}
 	if ( std::find_if( getDPTFreeActivity().begin(), getDPTFreeActivity().end(), compareName<RDODPTFreeActivity>(_name) ) != getDPTFreeActivity().end() ) {
 		error( rdo::format("јктивность с таким именем уже существует: %s", _name->c_str()) );
-//		parser->error("Free activity name: " + *_name + " already defined");
+//		error("Free activity name: " + *_name + " already defined");
 	}
 }
 

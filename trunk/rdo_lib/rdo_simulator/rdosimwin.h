@@ -125,6 +125,8 @@ public:
 class RDOThreadCodeComp: public RDOThreadMT
 {
 protected:
+	rdoParse::RDOParser* parser;
+
 	virtual ~RDOThreadCodeComp(); // „тобы нельз€ было удалить через delete помещаем его в protected
 	virtual void proc( RDOMessageInfo& msg );
 

@@ -201,10 +201,10 @@ public:
 class RDORTPResType: public RDODeletable
 {
 protected:
-	const std::string* const               name;
-	const int                              number;
-	const bool                             permanent;
-	std::vector< const RDORTPParamDesc * > params;
+	const std::string* const              name;
+	const int                             number;
+	const bool                            permanent;
+	std::vector< const RDORTPParamDesc* > params;
 
 public:
 	RDORTPResType( const std::string* const _name, const bool _permanent );

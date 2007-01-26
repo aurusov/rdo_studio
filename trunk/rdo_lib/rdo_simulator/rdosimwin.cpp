@@ -667,7 +667,8 @@ double RDOThreadSimulator::getInitialShowRate()
 // ---------- RDOThreadCodeComp
 // --------------------------------------------------------------------
 RDOThreadCodeComp::RDOThreadCodeComp():
-	RDOThreadMT( "RDOThreadCodeComp" )
+	RDOThreadMT( "RDOThreadCodeComp" ),
+	parser( NULL )
 {
 	notifies.push_back( RT_CODECOMP_GET_DATA );
 	after_constructor();
@@ -681,13 +682,27 @@ void RDOThreadCodeComp::proc( RDOMessageInfo& msg )
 {
 	switch ( msg.message ) {
 		case RT_CODECOMP_GET_DATA: {
-			if ( rdoParse::parser ) break;
+			if ( rdoParse::parser ) parser = rdoParse::parser;
+			if ( !parser ) break;
 			msg.lock();
 			GetCodeComp* data = static_cast<GetCodeComp*>(msg.param);
-			rdo::binarystream stream;
-			sendMessage( kernel->studio(), RDOThread::RT_STUDIO_MODEL_GET_TEXT, &rdoRepository::RDOThreadRepository::FileData( data->file, stream ) );
-			data->result = stream.data();
+//			rdo::binarystream stream;
+//			sendMessage( kernel->studio(), RDOThread::RT_STUDIO_MODEL_GET_TEXT, &rdoRepository::RDOThreadRepository::FileData( data->file, stream ) );
+//			data->result = stream.data();
+			const std::vector< rdoParse::RDORTPResType* >& rtp_list = parser->getRTPResType(); 
+			std::vector< rdoParse::RDORTPResType* >::const_iterator rtp_it = rtp_list.begin();
+			while ( rtp_it != rtp_list.end() ) {
+				const std::vector< const rdoParse::RDORTPParamDesc* >& param_list = (*rtp_it)->getParams();
+				std::vector< const rdoParse::RDORTPParamDesc* >::const_iterator param_it = param_list.begin();
+				while ( param_it != param_list.end() ) {
+					data->result += *(*param_it)->getName() + ' ';
+					param_it++;
+				}
+				rtp_it++;
+			}
 			msg.unlock();
+			if ( parser != rdoParse::parser ) delete parser;
+			parser = NULL;
 			break;
 		}
 	}
