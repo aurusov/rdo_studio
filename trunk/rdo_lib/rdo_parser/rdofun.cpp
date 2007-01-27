@@ -31,14 +31,15 @@ void funerror( char* mes )
 void RDOParser::addConstant( RDORTPParamDesc* const _cons )
 {
 	if ( !findFUNConst(_cons->getName()) ) {
-		RDOFUNConstant* newConst = new RDOFUNConstant( _cons );
+		RDOFUNConstant* newConst = new RDOFUNConstant( this, _cons );
 		runTime->setConstValue( newConst->number, newConst->descr->getType()->getRSSDefaultValue() );
 	}
 }
 
-RDOFUNConstant::RDOFUNConstant( RDORTPParamDesc* _descr ):
+RDOFUNConstant::RDOFUNConstant( RDOParser* _parser, RDORTPParamDesc* _descr ):
+	RDOParserObject( _parser ),
 	descr( _descr ),
-	number( parser->getFUNCONST_id() )
+	number( _parser->getFUNCONST_id() )
 {
 	parser->insertFUNConstant( this );
 }
@@ -65,7 +66,8 @@ const RDOFUNFunctionParam *const RDOFUNFunction::findFUNFunctionParam(const std:
 	return (*it);
 }
 
-RDOFUNFunction::RDOFUNFunction( const std::string* const _name, const RDORTPResParam* const _retType):
+RDOFUNFunction::RDOFUNFunction( RDOParser* _parser, const std::string* const _name, const RDORTPResParam* const _retType ):
+	RDOParserObject( _parser ),
 	name( _name ),
 	retType( _retType )
 {
@@ -247,32 +249,6 @@ rdoRuntime::RDOCalcConst* RDOFUNFunctionListElementEq::createResultCalc( const R
 	return NULL;	// unreachable code
 }
 
-RDODeletable::RDODeletable()
-{ 
-	parser->insertDeletables( this );
-}
-
-RDODeletable::~RDODeletable() 
-{ 
-	parser->removeDeletables( this );
-}
-
-#ifndef _DEBUG
-void* RDODeletable::operator new( size_t sz )
-{
-	RDODeletable* obj = static_cast<RDODeletable*>(::operator new( sz ));
-	obj->object_size = sz;
-	parser->runTime->memory_insert( sz );
-	return obj;
-}
-
-void RDODeletable::operator delete( void* v )
-{
-	parser->runTime->memory_remove( static_cast<RDODeletable*>(v)->object_size );
-	::operator delete( v );
-}
-#endif
-
 // ----------------------------------------------------------------------------
 // ---------- RDOFUNLogic
 // ----------------------------------------------------------------------------
@@ -325,7 +301,8 @@ void RDOFUNLogic::setErrorPos( int first_line, int first_column, int last_line, 
 // ----------------------------------------------------------------------------
 // ---------- RDOFUNArithm
 // ----------------------------------------------------------------------------
-RDOFUNArithm::RDOFUNArithm( RDORTPResParam::ParamType _type, rdoRuntime::RDOCalc* _calc, const YYLTYPE& error_pos ):
+RDOFUNArithm::RDOFUNArithm( RDOParser* _parser, RDORTPResParam::ParamType _type, rdoRuntime::RDOCalc* _calc, const YYLTYPE& error_pos ):
+	RDOParserObject( _parser ),
 	type( _type ),
 	enu( NULL ),
 	str( NULL ),
@@ -334,11 +311,37 @@ RDOFUNArithm::RDOFUNArithm( RDORTPResParam::ParamType _type, rdoRuntime::RDOCalc
 	setErrorPos( error_pos );
 }
 
-RDOFUNArithm::RDOFUNArithm( std::string* resName, std::string* parName, const YYLTYPE& res_name_error_pos, const YYLTYPE& par_name_error_pos ):
+RDOFUNArithm::RDOFUNArithm( const RDOParserObject* _parent, RDORTPResParam::ParamType _type, rdoRuntime::RDOCalc* _calc, const YYLTYPE& error_pos ):
+	RDOParserObject( _parent ),
+	type( _type ),
+	enu( NULL ),
+	str( NULL ),
+	calc( _calc )
+{
+	setErrorPos( error_pos );
+}
+
+RDOFUNArithm::RDOFUNArithm( RDOParser* _parser, std::string* resName, std::string* parName, const YYLTYPE& res_name_error_pos, const YYLTYPE& par_name_error_pos ):
+	RDOParserObject( _parser ),
 	type( RDORTPResParam::pt_int ),
 	enu( NULL ),
 	str( NULL ),
 	calc( NULL )
+{
+	init( resName, parName, res_name_error_pos, par_name_error_pos );
+}
+
+RDOFUNArithm::RDOFUNArithm( const RDOParserObject* _parent, std::string* resName, std::string* parName, const YYLTYPE& res_name_error_pos, const YYLTYPE& par_name_error_pos ):
+	RDOParserObject( _parent ),
+	type( RDORTPResParam::pt_int ),
+	enu( NULL ),
+	str( NULL ),
+	calc( NULL )
+{
+	init( resName, parName, res_name_error_pos, par_name_error_pos );
+}
+
+void RDOFUNArithm::init( std::string* resName, std::string* parName, const YYLTYPE& res_name_error_pos, const YYLTYPE& par_name_error_pos )
 {
 	setErrorPos( res_name_error_pos.first_line, res_name_error_pos.first_column, par_name_error_pos.last_line, par_name_error_pos.last_column );
 	const RDORSSResource* const res = parser->findRSSResource( resName ); 
@@ -478,33 +481,71 @@ RDOFUNArithm::RDOFUNArithm( std::string* resName, std::string* parName, const YY
 //	parser->error(("Unknown resource name: " + *resName).c_str());
 }
 
-RDOFUNArithm::RDOFUNArithm( int n, const YYLTYPE& error_pos ):
+RDOFUNArithm::RDOFUNArithm( RDOParser* _parser, int n, const YYLTYPE& error_pos ):
+	RDOParserObject( _parser ),
 	type( RDORTPResParam::pt_int ),
 	enu( NULL ),
 	str( NULL ),
 	calc( NULL )
 {
-	type = RDORTPResParam::pt_int;
 	calc = new rdoRuntime::RDOCalcConst( n );
 	setErrorPos( error_pos );
 }
 
-RDOFUNArithm::RDOFUNArithm( double* d, const YYLTYPE& error_pos ):
+RDOFUNArithm::RDOFUNArithm( const RDOParserObject* _parent, int n, const YYLTYPE& error_pos ):
+	RDOParserObject( _parent ),
 	type( RDORTPResParam::pt_int ),
 	enu( NULL ),
 	str( NULL ),
 	calc( NULL )
 {
-	type = RDORTPResParam::pt_real;
+	calc = new rdoRuntime::RDOCalcConst( n );
+	setErrorPos( error_pos );
+}
+
+RDOFUNArithm::RDOFUNArithm( RDOParser* _parser, double* d, const YYLTYPE& error_pos ):
+	RDOParserObject( _parser ),
+	type( RDORTPResParam::pt_real ),
+	enu( NULL ),
+	str( NULL ),
+	calc( NULL )
+{
 	calc = new rdoRuntime::RDOCalcConst( *d );
 	setErrorPos( error_pos );
 }
 
-RDOFUNArithm::RDOFUNArithm( std::string* s, const YYLTYPE& error_pos ):
+RDOFUNArithm::RDOFUNArithm( const RDOParserObject* _parent, double* d, const YYLTYPE& error_pos ):
+	RDOParserObject( _parent ),
+	type( RDORTPResParam::pt_real ),
+	enu( NULL ),
+	str( NULL ),
+	calc( NULL )
+{
+	calc = new rdoRuntime::RDOCalcConst( *d );
+	setErrorPos( error_pos );
+}
+
+RDOFUNArithm::RDOFUNArithm( RDOParser* _parser, std::string* s, const YYLTYPE& error_pos ):
+	RDOParserObject( _parser ),
 	type( RDORTPResParam::pt_int ),
 	enu( NULL ),
 	str( NULL ),
 	calc( NULL )
+{
+	init( s, error_pos );
+}
+
+RDOFUNArithm::RDOFUNArithm( const RDOParserObject* _parent, std::string* s, const YYLTYPE& error_pos ):
+	RDOParserObject( _parent ),
+	type( RDORTPResParam::pt_int ),
+	enu( NULL ),
+	str( NULL ),
+	calc( NULL )
+{
+	init( s, error_pos );
+}
+
+void RDOFUNArithm::init( std::string* s, const YYLTYPE& error_pos )
 {
 	setErrorPos( error_pos );
 
@@ -557,7 +598,7 @@ RDOFUNArithm::RDOFUNArithm( std::string* s, const YYLTYPE& error_pos ):
 	}
 
 	if ( seq ) {
-		RDOFUNParams tmp;
+		RDOFUNParams tmp( seq );
 		const RDOFUNArithm* ar = tmp.createSeqCall( s );
 		type = ar->getType();
 		if ( type == RDORTPResParam::pt_enum ) {
@@ -614,7 +655,7 @@ RDOFUNArithm* RDOFUNArithm::operator +( RDOFUNArithm& second )
 		newType = RDORTPResParam::pt_real;
 	}
 
-	RDOFUNArithm* arithm = new RDOFUNArithm( newType, new rdoRuntime::RDOCalcPlus( calc, second.calc ), error() );
+	RDOFUNArithm* arithm = new RDOFUNArithm( this, newType, new rdoRuntime::RDOCalcPlus( calc, second.calc ), error() );
 	arithm->setErrorPos( error().first_line, error().first_column, second.error().last_line, second.error().last_column );
 	return arithm;
 }
@@ -645,7 +686,7 @@ RDOFUNArithm* RDOFUNArithm::operator -( RDOFUNArithm& second )
 		newType = RDORTPResParam::pt_real;
 	}
 
-	RDOFUNArithm* arithm = new RDOFUNArithm( newType, new rdoRuntime::RDOCalcMinus( calc, second.calc ), error() );
+	RDOFUNArithm* arithm = new RDOFUNArithm( this, newType, new rdoRuntime::RDOCalcMinus( calc, second.calc ), error() );
 	arithm->setErrorPos( error().first_line, error().first_column, second.error().last_line, second.error().last_column );
 	return arithm;
 }
@@ -677,7 +718,7 @@ RDOFUNArithm* RDOFUNArithm::operator *( RDOFUNArithm& second )
 	}
 
 	rdoRuntime::RDOCalc* newCalc = new rdoRuntime::RDOCalcMult( calc, second.calc );
-	RDOFUNArithm* arithm = new RDOFUNArithm( newType, newCalc, error() );
+	RDOFUNArithm* arithm = new RDOFUNArithm( this, newType, newCalc, error() );
 	arithm->setErrorPos( error().first_line, error().first_column, second.error().last_line, second.error().last_column );
 	newCalc->setErrorPos( arithm->error() );
 	return arithm;
@@ -714,7 +755,7 @@ RDOFUNArithm* RDOFUNArithm::operator /( RDOFUNArithm& second )
 	if ( newType == RDORTPResParam::pt_int ) {
 		newCalc = new rdoRuntime::RDOCalcDoubleToInt( newCalc );
 	}
-	RDOFUNArithm* arithm = new RDOFUNArithm( newType, newCalc, error() );
+	RDOFUNArithm* arithm = new RDOFUNArithm( this, newType, newCalc, error() );
 	arithm->setErrorPos( error().first_line, error().first_column, second.error().last_line, second.error().last_column );
 	newCalc->setErrorPos( arithm->error() );
 	newCalc_div->setErrorPos( arithm->error() );
@@ -948,7 +989,7 @@ const RDOFUNArithm *RDOFUNSequenceUniform::createCallCalc( const RDOFUNParams* c
 	funcCall->addParameter(arg1);
 	funcCall->addParameter(arg2);
 
-	RDOFUNArithm *res = new RDOFUNArithm( RDORTPResParam::pt_int, funcCall, param->error() );
+	RDOFUNArithm *res = new RDOFUNArithm( const_cast<RDOFUNSequenceUniform*>(this), RDORTPResParam::pt_int, funcCall, param->error() );
 	res->type = header->type->getType();
 	if ( res->type == RDORTPResParam::pt_enum ) {
 		parser->error( "Внутренняя ошибка парсера" );
@@ -970,7 +1011,7 @@ const RDOFUNArithm *RDOFUNSequenceExponential::createCallCalc( const RDOFUNParam
 
 	funcCall->addParameter(arg1);
 
-	RDOFUNArithm* res = new RDOFUNArithm( RDORTPResParam::pt_int, funcCall, param->error() );
+	RDOFUNArithm* res = new RDOFUNArithm( const_cast<RDOFUNSequenceExponential*>(this), RDORTPResParam::pt_int, funcCall, param->error() );
 	res->type = header->type->getType();
 	if ( res->type == RDORTPResParam::pt_enum ) {
 		parser->error( "Внутренняя ошибка парсера" );
@@ -995,7 +1036,7 @@ const RDOFUNArithm* RDOFUNSequenceNormal::createCallCalc( const RDOFUNParams* co
 	funcCall->addParameter(arg1);
 	funcCall->addParameter(arg2);
 
-	RDOFUNArithm* res = new RDOFUNArithm(RDORTPResParam::pt_int, funcCall, param->error() );
+	RDOFUNArithm* res = new RDOFUNArithm( const_cast<RDOFUNSequenceNormal*>(this), RDORTPResParam::pt_int, funcCall, param->error() );
 	res->type = header->type->getType();
 	if ( res->type == RDORTPResParam::pt_enum ) {
 		parser->error( "Внутренняя ошибка парсера" );
@@ -1013,7 +1054,7 @@ const RDOFUNArithm *RDOFUNSequenceByHist::createCallCalc(const RDOFUNParams *con
 
 	rdoRuntime::RDOCalcFunctionCall *funcCall = new rdoRuntime::RDOCalcFunctionCall(next);
 
-	RDOFUNArithm* res = new RDOFUNArithm( RDORTPResParam::pt_int, funcCall, param->error() );
+	RDOFUNArithm* res = new RDOFUNArithm( const_cast<RDOFUNSequenceByHist*>(this), RDORTPResParam::pt_int, funcCall, param->error() );
 	res->type = header->type->getType();
 	if(res->type == RDORTPResParam::pt_enum)
 		res->enu = ((RDORTPEnumResParam *)header->type)->enu;
@@ -1030,7 +1071,7 @@ const RDOFUNArithm *RDOFUNSequenceEnumerative::createCallCalc(const RDOFUNParams
 
 	rdoRuntime::RDOCalcFunctionCall *funcCall = new rdoRuntime::RDOCalcFunctionCall(next);
 
-	RDOFUNArithm* res = new RDOFUNArithm( RDORTPResParam::pt_int, funcCall, param->error() );
+	RDOFUNArithm* res = new RDOFUNArithm( const_cast<RDOFUNSequenceEnumerative*>(this), RDORTPResParam::pt_int, funcCall, param->error() );
 	res->type = header->type->getType();
 	if(res->type == RDORTPResParam::pt_enum)
 		res->enu = ((RDORTPEnumResParam *)header->type)->enu;
@@ -1101,7 +1142,7 @@ const RDOFUNArithm* RDOFUNParams::createCall( const std::string* const funName )
 		}
 	}
 
-	RDOFUNArithm* res = new RDOFUNArithm( RDORTPResParam::pt_int, funcCall, error() );
+	RDOFUNArithm* res = new RDOFUNArithm( this, RDORTPResParam::pt_int, funcCall, error() );
 	res->type = func->getType()->getType();
 	if ( func->getType()->getType() == RDORTPResParam::pt_enum ) {
 		res->enu = ((RDORTPEnumResParam *)func->getType())->enu;
@@ -1138,7 +1179,19 @@ RDOFUNCalculateIf::RDOFUNCalculateIf(RDOFUNLogic *_condition, std::string *_funN
 // ----------------------------------------------------------------------------
 // ---------- RDOFUNGroup
 // ----------------------------------------------------------------------------
-RDOFUNGroup::RDOFUNGroup( const std::string* const _resType )
+RDOFUNGroup::RDOFUNGroup( RDOParser* _parser, const std::string* const _resType ):
+	RDOParserObject( _parser )
+{
+	init( _resType );
+}
+
+RDOFUNGroup::RDOFUNGroup( const RDOParserObject* _parent, const std::string* const _resType ):
+	RDOParserObject( _parent )
+{
+	init( _resType );
+}
+
+void RDOFUNGroup::init( const std::string* const _resType )
 {
 	resType = parser->findRTPResType( _resType );
 	if ( !resType ) {
@@ -1202,7 +1255,7 @@ RDOFUNLogic* RDOFUNSelect::createFunSelectEmpty()
 RDOFUNArithm* RDOFUNSelect::createFunSelectSize()
 {
 	parser->getFUNGroupStack().pop_back();
-	return new RDOFUNArithm( RDORTPResParam::pt_int, new rdoRuntime::RDOFunCalcSelectSize( select ), error() );
+	return new RDOFUNArithm( this, RDORTPResParam::pt_int, new rdoRuntime::RDOFunCalcSelectSize( select ), error() );
 }
 
 void RDOFUNSelect::setErrorPos( const YYLTYPE& error_pos )
@@ -1224,8 +1277,8 @@ void RDOFUNSelect::setErrorPos( int first_line, int first_column, int last_line,
 // ----------------------------------------------------------------------------
 // ---------- Sequences
 // ----------------------------------------------------------------------------
-RDOFUNSequenceUniform::RDOFUNSequenceUniform( RDOFUNSequenceHeader* _header, int _base ):
-	RDOFUNSequence( _header, _base )
+RDOFUNSequenceUniform::RDOFUNSequenceUniform( RDOParser* _parser, RDOFUNSequenceHeader* _header, int _base ):
+	RDOFUNSequence( _parser, _header, _base )
 {
 	if ( header->type->getType() == RDORTPResParam::pt_enum ) {
 		parser->error( "Последовательность типа uniform не может иметь перечислимый тип" );
@@ -1243,8 +1296,8 @@ void RDOFUNSequenceUniform::createCalcs()
 	initResult();
 }
 
-RDOFUNSequenceExponential::RDOFUNSequenceExponential(RDOFUNSequenceHeader *_header, int _base): 
-	RDOFUNSequence(_header, _base)
+RDOFUNSequenceExponential::RDOFUNSequenceExponential( RDOParser* _parser, RDOFUNSequenceHeader *_header, int _base ):
+	RDOFUNSequence( _parser, _header, _base )
 {
 	if ( header->type->getType() == RDORTPResParam::pt_enum ) {
 		parser->error( "Последовательность типа exponential не может иметь перечислимый тип" );
@@ -1263,8 +1316,8 @@ void RDOFUNSequenceExponential::createCalcs()
 	initResult();
 }
 
-RDOFUNSequenceNormal::RDOFUNSequenceNormal( RDOFUNSequenceHeader* _header, int _base ):
-	RDOFUNSequence( _header, _base )
+RDOFUNSequenceNormal::RDOFUNSequenceNormal( RDOParser* _parser, RDOFUNSequenceHeader* _header, int _base ):
+	RDOFUNSequence( _parser, _header, _base )
 {
 	if ( header->type->getType() == RDORTPResParam::pt_enum ) {
 		parser->error( "Последовательность типа normal не может иметь перечислимый тип" );
@@ -1375,7 +1428,8 @@ void RDOFUNSequenceEnumerativeEnum::createCalcs()
 	next = new rdoRuntime::RDOCalcSeqNextByHist(gen);
 }
 
-RDOFUNSequence::RDOFUNSequence( RDOFUNSequenceHeader* _header, int _base ):
+RDOFUNSequence::RDOFUNSequence( RDOParser* _parser, RDOFUNSequenceHeader* _header, int _base ):
+	RDOParserObject( _parser ),
 	header( _header ),
 	base( _base )
 {

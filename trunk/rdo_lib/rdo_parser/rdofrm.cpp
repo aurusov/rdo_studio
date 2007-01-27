@@ -22,7 +22,7 @@ int frmlex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer )
 }
 void frmerror( char* mes )
 {
-	rdoParse::parser->error( mes );
+//	rdoParse::parser->error( mes );
 }
 
 RDOFRMColor::RDOFRMColor()
@@ -38,7 +38,8 @@ RDOFRMColor::RDOFRMColor( int r, int g, int b )
 	blue  = b;
 }
 
-RDOFRMBoundingItem::RDOFRMBoundingItem(RDOFUNArithm *_x, RDOFUNArithm *_y, RDOFUNArithm *_width, RDOFUNArithm *_height)
+RDOFRMBoundingItem::RDOFRMBoundingItem( const const RDOParserObject* _parent, RDOFUNArithm* _x, RDOFUNArithm* _y, RDOFUNArithm* _width, RDOFUNArithm* _height):
+	RDOFRMItem( _parent )
 {
 	x = _x?_x->createCalc():NULL;
 	y = _y?_y->createCalc():NULL;
@@ -46,16 +47,19 @@ RDOFRMBoundingItem::RDOFRMBoundingItem(RDOFUNArithm *_x, RDOFUNArithm *_y, RDOFU
 	height = _height?_height->createCalc():NULL;
 }
 
-RDOFRMColoredItem::RDOFRMColoredItem(RDOFRMColor *_bgColor, RDOFRMColor *_color)
-	: bgColor(*_bgColor), color(*_color)
+RDOFRMColoredItem::RDOFRMColoredItem( const RDOParserObject* _parent, RDOFRMColor* _bgColor, RDOFRMColor* _color ):
+	RDOFRMItem( _parent ),
+	bgColor( *_bgColor ),
+	color( *_color )
 {
 	delete _bgColor;
 	delete _color;
 }
 
-RDOFRMText::RDOFRMText( RDOFUNArithm* x, RDOFUNArithm* y, RDOFUNArithm* width, RDOFUNArithm* height, RDOFRMColor* bgColor, RDOFRMColor* color ):
-	RDOFRMBoundingItem( x, y, width, height ),
-	RDOFRMColoredItem( bgColor, color ),
+RDOFRMText::RDOFRMText( const RDOParserObject* _parent, RDOFUNArithm* x, RDOFUNArithm* y, RDOFUNArithm* width, RDOFUNArithm* height, RDOFRMColor* bgColor, RDOFRMColor* color ):
+	RDOFRMItem( _parent ),
+	RDOFRMBoundingItem( _parent, x, y, width, height ),
+	RDOFRMColoredItem( _parent, bgColor, color ),
 	value( NULL ),
 	txt( NULL ),
 	isTextString( true ),
@@ -80,41 +84,55 @@ void RDOFRMText::setText( int _align, std::string* _txt )
 	isTextString = true;
 }
 
-RDOFRMBitmap::RDOFRMBitmap(RDOFUNArithm *_x, RDOFUNArithm *_y, std::string *_picFileName, std::string *_mask)
-	: picFileName(_picFileName), mask(_mask)
+RDOFRMBitmap::RDOFRMBitmap( const RDOParserObject* _parent, RDOFUNArithm* _x, RDOFUNArithm* _y, std::string* _picFileName, std::string* _mask ):
+	RDOFRMItem( _parent ),
+	picFileName( _picFileName ),
+	mask( _mask )
 {
 	x = _x?_x->createCalc():NULL;
 	y = _y?_y->createCalc():NULL;
 }
 
-RDOFRMS_bmp::RDOFRMS_bmp(RDOFUNArithm *x, RDOFUNArithm *y, RDOFUNArithm *width, RDOFUNArithm *height, std::string *_picFileName, std::string *_mask)
-	: RDOFRMBoundingItem(x, y, width, height), picFileName(_picFileName), mask(_mask)
+RDOFRMS_bmp::RDOFRMS_bmp( const RDOParserObject* _parent, RDOFUNArithm* x, RDOFUNArithm* y, RDOFUNArithm* width, RDOFUNArithm* height, std::string* _picFileName, std::string* _mask ):
+	RDOFRMItem( _parent ),
+	RDOFRMBoundingItem( _parent, x, y, width, height ),
+	picFileName( _picFileName ),
+	mask( _mask )
 {
 }
 
-RDOFRMRect::RDOFRMRect(RDOFUNArithm *x, RDOFUNArithm *y, RDOFUNArithm *width, RDOFUNArithm *height, RDOFRMColor *bgColor, RDOFRMColor *color)
-	: RDOFRMBoundingItem(x, y, width, height), RDOFRMColoredItem(bgColor, color)
+RDOFRMRect::RDOFRMRect( const RDOParserObject* _parent, RDOFUNArithm* x, RDOFUNArithm* y, RDOFUNArithm* width, RDOFUNArithm* height, RDOFRMColor* bgColor, RDOFRMColor* color ):
+	RDOFRMItem( _parent ),
+	RDOFRMBoundingItem( _parent, x, y, width, height ),
+	RDOFRMColoredItem( _parent, bgColor, color )
 {
 }
 					  
-RDOFRMR_rect::RDOFRMR_rect(RDOFUNArithm *x, RDOFUNArithm *y, RDOFUNArithm *width, RDOFUNArithm *height, RDOFRMColor *bgColor, RDOFRMColor *color)
-	: RDOFRMBoundingItem(x, y, width, height), RDOFRMColoredItem(bgColor, color)
+RDOFRMR_rect::RDOFRMR_rect( const RDOParserObject* _parent, RDOFUNArithm* x, RDOFUNArithm* y, RDOFUNArithm* width, RDOFUNArithm* height, RDOFRMColor* bgColor, RDOFRMColor* color ):
+	RDOFRMItem( _parent ),
+	RDOFRMBoundingItem( _parent, x, y, width, height ),
+	RDOFRMColoredItem( _parent, bgColor, color )
 {
 }
 
-RDOFRMLine::RDOFRMLine(RDOFUNArithm *x, RDOFUNArithm *y, RDOFUNArithm *width, RDOFUNArithm *height, RDOFRMColor *_color)
-	: RDOFRMBoundingItem(x, y, width, height), color(*_color)
+RDOFRMLine::RDOFRMLine( const RDOParserObject* _parent, RDOFUNArithm* x, RDOFUNArithm* y, RDOFUNArithm* width, RDOFUNArithm* height, RDOFRMColor* _color ):
+	RDOFRMItem( _parent ),
+	RDOFRMBoundingItem( _parent, x, y, width, height ),
+	color( *_color )
 {
 	delete _color;
 }
 
-RDOFRMEllipse::RDOFRMEllipse(RDOFUNArithm *x, RDOFUNArithm *y, RDOFUNArithm *width, RDOFUNArithm *height, RDOFRMColor *bgColor, RDOFRMColor *color)
-	: RDOFRMBoundingItem(x, y, width, height), RDOFRMColoredItem(bgColor, color)
+RDOFRMEllipse::RDOFRMEllipse( const RDOParserObject* _parent, RDOFUNArithm* x, RDOFUNArithm* y, RDOFUNArithm* width, RDOFUNArithm* height, RDOFRMColor* bgColor, RDOFRMColor* color ):
+	RDOFRMItem( _parent ),
+	RDOFRMBoundingItem( _parent, x, y, width, height ),
+	RDOFRMColoredItem( _parent, bgColor, color )
 {
 }
 
-RDOFRMTriang::RDOFRMTriang(RDOFUNArithm *_x1, RDOFUNArithm *_y1, RDOFUNArithm *_x2, RDOFUNArithm *_y2, RDOFUNArithm *_x3, RDOFUNArithm *_y3, RDOFRMColor *bgColor, RDOFRMColor *color)
-	: RDOFRMColoredItem(bgColor, color)
+RDOFRMTriang::RDOFRMTriang( const RDOParserObject* _parent, RDOFUNArithm* _x1, RDOFUNArithm* _y1, RDOFUNArithm* _x2, RDOFUNArithm* _y2, RDOFUNArithm* _x3, RDOFUNArithm* _y3, RDOFRMColor* bgColor, RDOFRMColor* color ):
+	RDOFRMItem( _parent ),
+	RDOFRMColoredItem( _parent, bgColor, color )
 {
 	x1 = _x1?_x1->createCalc():NULL;
 	y1 = _y1?_y1->createCalc():NULL;
@@ -124,8 +142,10 @@ RDOFRMTriang::RDOFRMTriang(RDOFUNArithm *_x1, RDOFUNArithm *_y1, RDOFUNArithm *_
 	y3 = _y3?_y3->createCalc():NULL;
 }
 
-RDOFRMActive::RDOFRMActive(RDOFUNArithm *x, RDOFUNArithm *y, RDOFUNArithm *width, RDOFUNArithm *height, std::string *_operName)
-	: RDOFRMBoundingItem(x, y, width, height), operName(_operName)
+RDOFRMActive::RDOFRMActive( const RDOParserObject* _parent, RDOFUNArithm* x, RDOFUNArithm* y, RDOFUNArithm* width, RDOFUNArithm* height, std::string* _operName ):
+	RDOFRMItem( _parent ),
+	RDOFRMBoundingItem( _parent, x, y, width, height ),
+	operName( _operName )
 {
 }
 
@@ -134,8 +154,9 @@ RDOFRMShow::RDOFRMShow(RDOFUNLogic* logic)
 	conditionCalc = logic?logic->calc:NULL;
 }
 
-RDOFRMFrame::RDOFRMFrame(std::string *_name, RDOFUNLogic *logic)
-	: name(_name)
+RDOFRMFrame::RDOFRMFrame( RDOParser* _parser, std::string* _name, RDOFUNLogic* logic ):
+	RDOParserObject( _parser ),
+	name( _name )
 {
 	conditionCalc = logic?logic->calc:NULL;
 	parser->runTime->addRuntimeFrame(this);
@@ -215,7 +236,7 @@ rdoSimulator::RDOFrame* RDOFRMFrame::prepareFrame( rdoSimulator::RDOFrame* frame
 	return frame;
 }
 
-rdoSimulator::RDOFrameElement *RDOFRMItem::createElement( rdoRuntime::RDORuntime* sim )
+rdoSimulator::RDOFrameElement* RDOFRMItem::createElement( rdoRuntime::RDORuntime* sim )
 {
 	parser->runTime->memory_insert( sizeof(rdoSimulator::RDONullElement) );
 	return new rdoSimulator::RDONullElement();

@@ -42,7 +42,7 @@ class RandGeneratorUniform: public RandGenerator
 {
 public:
 	RandGeneratorUniform( long int _seed = 123456789 ): RandGenerator( _seed ) {}
-	double next( int from, int to ) {
+	double next( double from, double to ) {
 		return u01() * ( to - from ) + from;
 	}
 };

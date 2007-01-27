@@ -1,8 +1,7 @@
 #ifndef RDOPARSER_PARSER
 #define RDOPARSER_PARSER
 
-#include "rdogramma.h"
-#include "rdoStdFuncs.h"
+#include "rdoparsebase.h"
 #include "rdocalcconst.h"
 #include "rdoparser_base.h"
 
@@ -89,17 +88,17 @@ public:
 
 	void checkActivityName( const std::string* _name );
 
-	void insertDeletables( RDODeletable* value )            {
+	void insertDeletables( RDODeletable* value ) {
 		if ( value ) {
 			allDeletables.push_back( value );
-//			TRACE( "add %d\n", value );
+			TRACE( "add %d\n", value );
 		}
 	}
-	void removeDeletables( RDODeletable* value )            {
+	void removeDeletables( RDODeletable* value ) {
 		std::vector< RDODeletable* >::iterator it = std::find( allDeletables.begin(), allDeletables.end(), value );
 		if ( it != allDeletables.end() ) {
 			allDeletables.erase( it );
-//			TRACE( "del %d\n", value );
+			TRACE( "del %d\n", value );
 		}
 	}
 //	void insertDeletables( RDODeletable* value )            { if ( value ) allDeletables.push_back( value );                                         }

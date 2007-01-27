@@ -1,9 +1,7 @@
 #ifndef RDOFRM_FRM
 #define RDOFRM_FRM
 
-//#include "rdoStdFuncs.h"
-//#include "rdortp.h"
-
+#include "rdoparsebase.h"
 #include <rdocommon.h>
 #include <rdortp.h>
 
@@ -11,14 +9,6 @@ namespace rdoRuntime
 {
 class RDOCalc;
 class RDORuntime;
-/*
-class RDOCalcConst;
-class RDOCalcIsEqual;
-class RDOCalcFuncParam;
-class RDOFunCalc;
-class RDOCalcSeqInit;
-class RDOCalcSeqNext;
-*/
 }
 
 namespace rdoParse 
@@ -37,10 +27,11 @@ public:
 	RDOFRMColor(int r, int g, int b);
 };
 
-class RDOFRMItem: public RDODeletable
+class RDOFRMItem: public RDOParserObject
 {
 protected:
-	RDOFRMItem() {}
+	RDOFRMItem( const const RDOParserObject* _parent ): RDOParserObject( _parent ) {}
+
 public:
 	virtual ~RDOFRMItem() {}
 	virtual rdoSimulator::RDOFrameElement* createElement( rdoRuntime::RDORuntime* sim );
@@ -50,7 +41,8 @@ public:
 class RDOFRMBoundingItem: public virtual RDOFRMItem
 {
 protected:
-	RDOFRMBoundingItem(RDOFUNArithm *_x, RDOFUNArithm *_y, RDOFUNArithm *_width, RDOFUNArithm *_height);
+	RDOFRMBoundingItem( const RDOParserObject* _parent, RDOFUNArithm* _x, RDOFUNArithm* _y, RDOFUNArithm* _width, RDOFUNArithm* _height );
+
 public:
 	rdoRuntime::RDOCalc *x, *y, *width, *height;
 	virtual ~RDOFRMBoundingItem() {}
@@ -59,7 +51,8 @@ public:
 class RDOFRMColoredItem: public virtual RDOFRMItem
 {
 protected:
-	RDOFRMColoredItem(RDOFRMColor *_bgColor, RDOFRMColor *_color);
+	RDOFRMColoredItem( const RDOParserObject* _parent, RDOFRMColor* _bgColor, RDOFRMColor* _color );
+
 public:
 	RDOFRMColor bgColor;
 	RDOFRMColor color;
@@ -80,7 +73,7 @@ private:
 	RDORTPEnum*               enu;
 
 public:
-	RDOFRMText( RDOFUNArithm* x, RDOFUNArithm* y, RDOFUNArithm* width, RDOFUNArithm* height, RDOFRMColor* bgColor, RDOFRMColor* color );
+	RDOFRMText( const RDOParserObject* _parent, RDOFUNArithm* x, RDOFUNArithm* y, RDOFUNArithm* width, RDOFUNArithm* height, RDOFRMColor* bgColor, RDOFRMColor* color );
 	void setText( int _align, RDOFUNArithm* _value );
 	void setText( int _align, std::string* _txt );
 	virtual rdoSimulator::RDOFrameElement* createElement( rdoRuntime::RDORuntime* sim );
@@ -95,7 +88,7 @@ private:
 	std::string *mask;
 
 public:
-	RDOFRMBitmap(RDOFUNArithm *_x, RDOFUNArithm *_y, std::string *_picFileName, std::string *_mask = NULL);
+	RDOFRMBitmap( const RDOParserObject* _parent, RDOFUNArithm* _x, RDOFUNArithm* _y, std::string* _picFileName, std::string* _mask = NULL );
 	rdoSimulator::RDOFrameElement* createElement( rdoRuntime::RDORuntime* sim );
 	virtual void getAllBitmaps( std::list< std::string >& list );
 };
@@ -107,7 +100,7 @@ private:
 	std::string *mask;
 
 public:
-	RDOFRMS_bmp(RDOFUNArithm *x, RDOFUNArithm *y, RDOFUNArithm *width, RDOFUNArithm *height, std::string *_picFileName, std::string *_mask = NULL);
+	RDOFRMS_bmp( const RDOParserObject* _parent, RDOFUNArithm* x, RDOFUNArithm* y, RDOFUNArithm* width, RDOFUNArithm* height, std::string* _picFileName, std::string* _mask = NULL );
 	rdoSimulator::RDOFrameElement* createElement( rdoRuntime::RDORuntime* sim );
 	virtual void getAllBitmaps( std::list< std::string >& list );
 };
@@ -115,14 +108,14 @@ public:
 class RDOFRMRect: public RDOFRMBoundingItem, public RDOFRMColoredItem
 {
 public:
-	RDOFRMRect(RDOFUNArithm *x, RDOFUNArithm *y, RDOFUNArithm *width, RDOFUNArithm *height, RDOFRMColor *bgColor, RDOFRMColor *color);
+	RDOFRMRect( const RDOParserObject* _parent, RDOFUNArithm* x, RDOFUNArithm* y, RDOFUNArithm* width, RDOFUNArithm* height, RDOFRMColor* bgColor, RDOFRMColor* color );
 	rdoSimulator::RDOFrameElement* createElement( rdoRuntime::RDORuntime* sim );
 };
 
 class RDOFRMR_rect: public RDOFRMBoundingItem, public RDOFRMColoredItem
 {
 public:
-	RDOFRMR_rect(RDOFUNArithm *x, RDOFUNArithm *y, RDOFUNArithm *width, RDOFUNArithm *height, RDOFRMColor *bgColor, RDOFRMColor *color);
+	RDOFRMR_rect( const RDOParserObject* _parent, RDOFUNArithm* x, RDOFUNArithm* y, RDOFUNArithm* width, RDOFUNArithm* height, RDOFRMColor* bgColor, RDOFRMColor* color );
 	rdoSimulator::RDOFrameElement* createElement( rdoRuntime::RDORuntime* sim );
 };
 
@@ -132,14 +125,14 @@ private:
 	RDOFRMColor color;
 
 public:
-	RDOFRMLine(RDOFUNArithm *x, RDOFUNArithm *y, RDOFUNArithm *width, RDOFUNArithm *height, RDOFRMColor *_color);
+	RDOFRMLine( const RDOParserObject* _parent, RDOFUNArithm* x, RDOFUNArithm* y, RDOFUNArithm* width, RDOFUNArithm* height, RDOFRMColor* _color );
 	rdoSimulator::RDOFrameElement* createElement( rdoRuntime::RDORuntime* sim );
 };
 
 class RDOFRMEllipse: public RDOFRMBoundingItem, public RDOFRMColoredItem
 {
 public:
-	RDOFRMEllipse(RDOFUNArithm *x, RDOFUNArithm *y, RDOFUNArithm *width, RDOFUNArithm *height, RDOFRMColor *bgColor, RDOFRMColor *color);
+	RDOFRMEllipse( const RDOParserObject* _parent, RDOFUNArithm* x, RDOFUNArithm* y, RDOFUNArithm* width, RDOFUNArithm* height, RDOFRMColor* bgColor, RDOFRMColor* color );
 	rdoSimulator::RDOFrameElement* createElement( rdoRuntime::RDORuntime* sim );
 };
 
@@ -149,7 +142,7 @@ private:
 	rdoRuntime::RDOCalc *x1, *y1, *x2, *y2, *x3, *y3;
 
 public:
-	RDOFRMTriang(RDOFUNArithm *_x1, RDOFUNArithm *_y1, RDOFUNArithm *_x2, RDOFUNArithm *_y2, RDOFUNArithm *_x3, RDOFUNArithm *_y3, RDOFRMColor *bgColor, RDOFRMColor *color);
+	RDOFRMTriang( const RDOParserObject* _parent, RDOFUNArithm* _x1, RDOFUNArithm* _y1, RDOFUNArithm* _x2, RDOFUNArithm* _y2, RDOFUNArithm* _x3, RDOFUNArithm* _y3, RDOFRMColor* bgColor, RDOFRMColor* color );
 	rdoSimulator::RDOFrameElement* createElement( rdoRuntime::RDORuntime* sim );
 };
 
@@ -159,7 +152,7 @@ private:
 	std::string *operName;
 
 public:
-	RDOFRMActive(RDOFUNArithm *x, RDOFUNArithm *y, RDOFUNArithm *width, RDOFUNArithm *height, std::string *_operName);
+	RDOFRMActive( const RDOParserObject* _parent, RDOFUNArithm* x, RDOFUNArithm* y, RDOFUNArithm* width, RDOFUNArithm* height, std::string* _operName );
 	rdoSimulator::RDOFrameElement* createElement( rdoRuntime::RDORuntime* sim );
 };
 
@@ -179,7 +172,7 @@ public:
 	virtual void getAllBitmaps( std::list< std::string >& list );
 };
 
-class RDOFRMFrame: public RDODeletable
+class RDOFRMFrame: public RDOParserObject
 {
 private:
 	std::string *name;
@@ -191,7 +184,7 @@ private:
 	std::vector<RDOFRMShow *> shows;
 
 public:
-	RDOFRMFrame(std::string *_name, RDOFUNLogic *_logic = NULL);
+	RDOFRMFrame( RDOParser* _parser, std::string* _name, RDOFUNLogic* _logic = NULL );
 	void setBackground(int _r = 0, int _g = 100, int _b = 0);
 	void setBackPicture(std::string* _picFileName);
 	void setBackPicture(int _width, int _height);

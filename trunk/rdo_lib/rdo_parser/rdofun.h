@@ -1,7 +1,7 @@
 #ifndef RDOFUN_FUN
 #define RDOFUN_FUN
 
-#include "rdoStdFuncs.h"
+#include "rdoparsebase.h"
 #include "rdortp.h"
 
 namespace rdoRuntime
@@ -44,10 +44,10 @@ public:
 	const RDORTPResParam* const getType() const { return type; };
 };
 
-class RDOFUNFunctionListElement: public RDODeletable, public RDOErrorPos
+class RDOFUNFunctionListElement: public RDOParserObject, public RDOErrorPos
 {
 public:
-	RDOFUNFunctionListElement(): RDODeletable() {}
+	RDOFUNFunctionListElement( const RDOParserObject* _parent ): RDOParserObject( _parent ) {}
 	virtual ~RDOFUNFunctionListElement() {}
 	virtual rdoRuntime::RDOCalcConst*   createResultCalc( const RDORTPResParam* const retType ) const = 0;
 	virtual rdoRuntime::RDOCalcIsEqual* createIsEqualCalc( const RDOFUNFunctionParam* const param, const rdoRuntime::RDOCalcFuncParam* const funcParam ) const;
@@ -58,7 +58,11 @@ class RDOFUNFunctionListElementIdentif: public RDOFUNFunctionListElement
 {
 public:
 	std::string* value;
-	RDOFUNFunctionListElementIdentif( std::string* _value ): value( _value ) {}
+	RDOFUNFunctionListElementIdentif( const RDOParserObject* _parent, std::string* _value ):
+		RDOFUNFunctionListElement( _parent ),
+		value( _value )
+	{
+	}
 	rdoRuntime::RDOCalcConst *createResultCalc(const RDORTPResParam *const retType) const;
 };
 
@@ -66,7 +70,11 @@ class RDOFUNFunctionListElementReal: public RDOFUNFunctionListElement
 {
 public:
 	double* value;
-	RDOFUNFunctionListElementReal( double* _value ): value( _value ) {}
+	RDOFUNFunctionListElementReal( const RDOParserObject* _parent, double* _value ):
+		RDOFUNFunctionListElement( _parent ),
+		value( _value )
+	{
+	}
 	rdoRuntime::RDOCalcConst *createResultCalc(const RDORTPResParam *const retType) const;
 };
 
@@ -74,13 +82,18 @@ class RDOFUNFunctionListElementInt: public RDOFUNFunctionListElement
 {
 public:
 	int value;
-	RDOFUNFunctionListElementInt( int _value ): value( _value ) {}
+	RDOFUNFunctionListElementInt( const RDOParserObject* _parent, int _value ):
+		RDOFUNFunctionListElement( _parent ),
+		value( _value )
+	{
+	}
 	rdoRuntime::RDOCalcConst *createResultCalc(const RDORTPResParam *const retType) const;
 };
 
 class RDOFUNFunctionListElementEq: public RDOFUNFunctionListElement
 {
 public:
+	RDOFUNFunctionListElementEq( const RDOParserObject* _parent ): RDOFUNFunctionListElement( _parent ) {}
 	bool isEquivalence() const { return true; }
 	rdoRuntime::RDOCalcConst *createResultCalc(const RDORTPResParam *const retType) const;
 };
@@ -106,7 +119,7 @@ public:
 // ----------------------------------------------------------------------------
 // ---------- RDOFUNArithm
 // ----------------------------------------------------------------------------
-class RDOFUNArithm: public RDODeletable, public RDOErrorPos
+class RDOFUNArithm: public RDOParserObject, public RDOErrorPos
 {
 public:
 	RDORTPResParam::ParamType type; // 0 - int, 1 - real, 2 - enum, 3 - string
@@ -116,12 +129,21 @@ public:
 private:
 	rdoRuntime::RDOCalc* calc;
 
+	void init( std::string* resName, std::string* parName, const YYLTYPE& res_name_error_pos, const YYLTYPE& par_name_error_pos );
+	void init( std::string* s, const YYLTYPE& error_pos );
+
 public:
-	RDOFUNArithm( RDORTPResParam::ParamType _type, rdoRuntime::RDOCalc* _calc, const YYLTYPE& error_pos );
-	RDOFUNArithm( std::string* resName, std::string* parName, const YYLTYPE& res_name_error_pos, const YYLTYPE& par_name_error_pos );
-	RDOFUNArithm( int n, const YYLTYPE& error_pos );
-	RDOFUNArithm( double* d, const YYLTYPE& error_pos );
-	RDOFUNArithm( std::string* s, const YYLTYPE& error_pos );
+	RDOFUNArithm( RDOParser* _parser, RDORTPResParam::ParamType _type, rdoRuntime::RDOCalc* _calc, const YYLTYPE& error_pos );
+	RDOFUNArithm( RDOParser* _parser, std::string* resName, std::string* parName, const YYLTYPE& res_name_error_pos, const YYLTYPE& par_name_error_pos );
+	RDOFUNArithm( RDOParser* _parser, int n, const YYLTYPE& error_pos );
+	RDOFUNArithm( RDOParser* _parser, double* d, const YYLTYPE& error_pos );
+	RDOFUNArithm( RDOParser* _parser, std::string* s, const YYLTYPE& error_pos );
+
+	RDOFUNArithm( const RDOParserObject* _parent, RDORTPResParam::ParamType _type, rdoRuntime::RDOCalc* _calc, const YYLTYPE& error_pos );
+	RDOFUNArithm( const RDOParserObject* _parent, std::string* resName, std::string* parName, const YYLTYPE& res_name_error_pos, const YYLTYPE& par_name_error_pos );
+	RDOFUNArithm( const RDOParserObject* _parent, int n, const YYLTYPE& error_pos );
+	RDOFUNArithm( const RDOParserObject* _parent, double* d, const YYLTYPE& error_pos );
+	RDOFUNArithm( const RDOParserObject* _parent, std::string* s, const YYLTYPE& error_pos );
 
 	RDOFUNArithm* operator +( RDOFUNArithm& second );
 	RDOFUNArithm* operator -( RDOFUNArithm& second );
@@ -153,7 +175,7 @@ public:
 };
 
 class RDOParser;
-class RDOFUNFunction: public RDODeletable
+class RDOFUNFunction: public RDOParserObject
 {
 friend RDOParser;
 private:
@@ -165,7 +187,7 @@ private:
 	rdoRuntime::RDOFunCalc *functionCalc;
 
 public:
-	RDOFUNFunction( const std::string* const _name, const RDORTPResParam* const _retType);
+	RDOFUNFunction( RDOParser* _parser, const std::string* const _name, const RDORTPResParam* const _retType );
 	void add(const RDOFUNFunctionParam *const _param);
 	void add(const RDOFUNFunctionListElement *const _listElement);
 	void add(const RDOFUNCalculateIf *const _calculateIf);
@@ -183,28 +205,34 @@ public:
 // ----------------------------------------------------------------------------
 // ---------- RDOFUNParams
 // ----------------------------------------------------------------------------
-class RDOFUNParams: public RDODeletable, public RDOErrorPos
+class RDOFUNParams: public RDOParserObject, public RDOErrorPos
 {
 public:
+	RDOFUNParams( RDOParser* _parser )            : RDOParserObject( _parser ) {}
+	RDOFUNParams( const RDOParserObject* _parent ): RDOParserObject( _parent ) {}
 	RDOErrorPos name_error_pos;
-	std::vector<RDOFUNArithm *> params;
-	RDOFUNParams *addParameter(RDOFUNArithm *param){
-		params.push_back(param);
+	std::vector< RDOFUNArithm* > params;
+	RDOFUNParams* addParameter( RDOFUNArithm* param ) {
+		params.push_back( param );
 		return this;
 	}
-	const RDOFUNArithm *createCall(const std::string *const funName) const;
-	const RDOFUNArithm *createSeqCall(const std::string *const seqName) const;
+	const RDOFUNArithm* createCall( const std::string* const funName ) const;
+	const RDOFUNArithm* createSeqCall( const std::string* const seqName ) const;
 };
 
 // ----------------------------------------------------------------------------
 // ---------- RDOFUNGroup
 // ----------------------------------------------------------------------------
-class RDOFUNGroup: public RDODeletable, public RDOErrorPos
+class RDOFUNGroup: public RDOParserObject, public RDOErrorPos
 {
+protected:
+	void init( const std::string* const _resType );
+
 public:
 	const RDORTPResType* resType;
 
-	RDOFUNGroup( const std::string* const _resTypeName );
+	RDOFUNGroup( RDOParser* _parser, const std::string* const _resTypeName );
+	RDOFUNGroup( const RDOParserObject* _parent, const std::string* const _resTypeName );
 };
 
 // ----------------------------------------------------------------------------
@@ -215,8 +243,13 @@ class RDOFUNGroupLogic: public RDOFUNGroup
 public:
 	const int funType;
 
-	RDOFUNGroupLogic( int _funType, const std::string* const _resTypeName ):
-		RDOFUNGroup( _resTypeName ),
+	RDOFUNGroupLogic( RDOParser* _parser, int _funType, const std::string* const _resTypeName ):
+		RDOFUNGroup( _parser, _resTypeName ),
+		funType( _funType )
+	{
+	}
+	RDOFUNGroupLogic( const RDOParserObject* _parent, int _funType, const std::string* const _resTypeName ):
+		RDOFUNGroup( _parent, _resTypeName ),
 		funType( _funType )
 	{
 	}
@@ -233,7 +266,16 @@ private:
 	rdoRuntime::RDOFunCalcSelect* select;
 
 public:
-	RDOFUNSelect( const std::string* const _resTypeName ): RDOFUNGroup( _resTypeName ), select( NULL ) {}
+	RDOFUNSelect( RDOParser* _parser, const std::string* const _resTypeName ):
+		RDOFUNGroup( _parser, _resTypeName ),
+		select( NULL )
+	{
+	}
+	RDOFUNSelect( const RDOParserObject* _parent, const std::string* const _resTypeName ):
+		RDOFUNGroup( _parent, _resTypeName ),
+		select( NULL )
+	{
+	}
 	RDOFUNLogic* createFunSelect( RDOFUNLogic* cond = NULL );
 	RDOFUNLogic* createFunSelectGroup( int funType, RDOFUNLogic* cond );
 	RDOFUNLogic* createFunSelectEmpty();
@@ -258,7 +300,7 @@ public:
 	}
 };
 
-class RDOFUNSequence: public RDODeletable
+class RDOFUNSequence: public RDOParserObject
 {
 public:
 	RDOFUNSequenceHeader* header;
@@ -267,7 +309,7 @@ public:
 	rdoRuntime::RDOCalcSeqNext* next;
 
 protected:
-	RDOFUNSequence( RDOFUNSequenceHeader* _header, int _base );
+	RDOFUNSequence( RDOParser* _parser, RDOFUNSequenceHeader* _header, int _base );
 	void initResult();
 
 public:
@@ -279,7 +321,7 @@ public:
 class RDOFUNSequenceUniform: public RDOFUNSequence
 {
 public:
-	RDOFUNSequenceUniform(RDOFUNSequenceHeader *_header, int _base = 123456789);
+	RDOFUNSequenceUniform( RDOParser* _parser, RDOFUNSequenceHeader* _header, int _base = 123456789 );
 	void createCalcs();
 	const RDOFUNArithm *createCallCalc(const RDOFUNParams *const params) const;
 };
@@ -287,7 +329,7 @@ public:
 class RDOFUNSequenceExponential: public RDOFUNSequence
 {
 public:
-	RDOFUNSequenceExponential(RDOFUNSequenceHeader *_header, int _base =123456789);
+	RDOFUNSequenceExponential( RDOParser* _parser, RDOFUNSequenceHeader* _header, int _base =123456789 );
 	void createCalcs();
 	const RDOFUNArithm *createCallCalc(const RDOFUNParams *const params) const;
 };
@@ -295,7 +337,7 @@ public:
 class RDOFUNSequenceNormal: public RDOFUNSequence
 {
 public:
-	RDOFUNSequenceNormal( RDOFUNSequenceHeader* _header, int _base = 123456789 );
+	RDOFUNSequenceNormal( RDOParser* _parser, RDOFUNSequenceHeader* _header, int _base = 123456789 );
 	void createCalcs();
 	const RDOFUNArithm* createCallCalc( const RDOFUNParams* const params ) const;
 };
@@ -307,6 +349,7 @@ public:
 	int                   base;
 
 	RDOFUNSequenceByHistHeader( RDOFUNSequenceHeader* _header, int _base = 123456789 ):
+		RDODeletable(),
 		header( _header ),
 		base( _base )
 	{
@@ -316,8 +359,8 @@ public:
 class RDOFUNSequenceByHist: public RDOFUNSequence
 {
 public:
-	RDOFUNSequenceByHist( RDOFUNSequenceByHistHeader* _header ):
-		RDOFUNSequence( _header->header, _header->base )
+	RDOFUNSequenceByHist( RDOParser* _parser, RDOFUNSequenceByHistHeader* _header ):
+		RDOFUNSequence( _parser, _header->header, _header->base )
 	{
 	}
 	const RDOFUNArithm* createCallCalc(const RDOFUNParams* const params) const;
@@ -330,8 +373,8 @@ public:
 	std::vector< double > to;
 	std::vector< double > freq;
 
-	RDOFUNSequenceByHistReal( RDOFUNSequenceByHistHeader* _header, double _from, double _to, double _freq ):
-		RDOFUNSequenceByHist( _header )
+	RDOFUNSequenceByHistReal( RDOParser* _parser, RDOFUNSequenceByHistHeader* _header, double _from, double _to, double _freq ):
+		RDOFUNSequenceByHist( _parser, _header )
 	{
 		addReal( _from, _to, _freq );
 	}
@@ -346,8 +389,8 @@ public:
 	std::vector< rdoRuntime::RDOValue > val;
 	std::vector< double >               freq;
 
-	RDOFUNSequenceByHistEnum( RDOFUNSequenceByHistHeader* _header, std::string* _val, double _freq ):
-		RDOFUNSequenceByHist( _header )
+	RDOFUNSequenceByHistEnum( RDOParser* _parser, RDOFUNSequenceByHistHeader* _header, std::string* _val, double _freq ):
+		RDOFUNSequenceByHist( _parser, _header )
 	{
 		addEnum( _val, _freq );
 	}
@@ -360,15 +403,20 @@ class RDOFUNSequenceEnumerativeHeader: public RDODeletable
 public:
 	RDOFUNSequenceHeader *header;
 	int base;
-	RDOFUNSequenceEnumerativeHeader(RDOFUNSequenceHeader *_header, int _base = 123456789):
-		header(_header), base(_base) {}
+	RDOFUNSequenceEnumerativeHeader( RDOFUNSequenceHeader* _header, int _base = 123456789 ):
+		header( _header ),
+		base( _base )
+	{
+	}
 };
 
 class RDOFUNSequenceEnumerative: public RDOFUNSequence
 {
 public:
-	RDOFUNSequenceEnumerative(RDOFUNSequenceEnumerativeHeader *_header):
-		RDOFUNSequence(_header->header, _header->base) {}
+	RDOFUNSequenceEnumerative( RDOParser* _parser, RDOFUNSequenceEnumerativeHeader* _header ):
+		RDOFUNSequence( _parser, _header->header, _header->base )
+	{
+	}
 	const RDOFUNArithm *createCallCalc(const RDOFUNParams *const params) const;
 };
 
@@ -377,8 +425,9 @@ class RDOFUNSequenceEnumerativeInt: public RDOFUNSequenceEnumerative
 public:
 	std::vector<int> val;
 
-	RDOFUNSequenceEnumerativeInt(RDOFUNSequenceEnumerativeHeader *_header, int _val):
-		RDOFUNSequenceEnumerative(_header) {
+	RDOFUNSequenceEnumerativeInt( RDOParser* _parser, RDOFUNSequenceEnumerativeHeader* _header, int _val ):
+		RDOFUNSequenceEnumerative( _parser, _header )
+	{
 		addInt(_val);
 	}
 	void addInt(int val);
@@ -388,10 +437,11 @@ public:
 class RDOFUNSequenceEnumerativeReal: public RDOFUNSequenceEnumerative
 {
 public:
-	std::vector<double> val;
+	std::vector< double > val;
 
-	RDOFUNSequenceEnumerativeReal(RDOFUNSequenceEnumerativeHeader *_header, double * _val):
-		RDOFUNSequenceEnumerative(_header) {
+	RDOFUNSequenceEnumerativeReal( RDOParser* _parser, RDOFUNSequenceEnumerativeHeader* _header, double* _val ):
+		RDOFUNSequenceEnumerative( _parser, _header )
+	{
 		addReal(_val);
 	}
 	void addReal(double *_val);
@@ -403,23 +453,24 @@ class RDOFUNSequenceEnumerativeEnum: public RDOFUNSequenceEnumerative
 public:
 	std::vector< rdoRuntime::RDOValue > val;
 
-	RDOFUNSequenceEnumerativeEnum(RDOFUNSequenceEnumerativeHeader *_header, std::string *_val):
-		RDOFUNSequenceEnumerative(_header) {
+	RDOFUNSequenceEnumerativeEnum( RDOParser* _parser, RDOFUNSequenceEnumerativeHeader* _header, std::string* _val ):
+		RDOFUNSequenceEnumerative( _parser, _header )
+	{
 		addEnum(_val);
 	}
 	void addEnum(std::string *_val);
 	void createCalcs();
 };
 
-class RDOFUNConstant: public RDODeletable
+class RDOFUNConstant: public RDOParserObject
 {
 public:
-	RDORTPParamDesc *descr;
+	RDORTPParamDesc* descr;
 	int number;
-	RDOFUNConstant( RDORTPParamDesc* _descr );
-	const std::string *const getName() const { return descr->getName(); };
+	RDOFUNConstant( RDOParser* _parser, RDORTPParamDesc* _descr );
+	const std::string* const getName() const { return descr->getName(); }
 };
 
-}		// namespace rdoParse 
+} // namespace rdoParse 
 
 #endif //RDOFUN_FUN

@@ -10,6 +10,7 @@ class RDOSimulatorBase
 {
 private:
 	double currentTime;
+	double nextTime;
 
 	rdoRuntime::RunTimeMode mode;
 

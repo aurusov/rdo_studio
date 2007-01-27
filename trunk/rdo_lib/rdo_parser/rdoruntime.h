@@ -235,6 +235,7 @@ public:
 	void addRuntimeProcess( rdoRuntime::RDOPROCProcess* _process );
 	void addRuntimePokaz( rdoParse::RDOPMDPokaz* pok );
 	void addRuntimeFrame( rdoParse::RDOFRMFrame* frm );
+	rdoParse::RDOFRMFrame* lastFrame() const;
 
 	void addDPT(RDOSearchRuntime *dpt);
 

@@ -1,8 +1,7 @@
 #ifndef RDOOPR_OPR
 #define RDOOPR_OPR
 
-#include "rdogramma.h"
-#include "rdoStdFuncs.h"
+#include "rdoparsebase.h"
 
 namespace rdoRuntime
 {

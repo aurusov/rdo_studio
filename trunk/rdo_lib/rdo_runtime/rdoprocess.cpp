@@ -77,7 +77,7 @@ RDOPROCTransact::RDOPROCTransact( RDOSimulator* sim, RDOPROCBlock* _block ):
 	block( _block )
 {
 	static_cast<RDORuntime*>(sim)->insertNewResource( this );
-	type        = rdoParse::RDOPROCTransact::makeRTP()->getNumber();
+	type        = rdoParse::RDOPROCTransact::makeRTP( NULL )->getNumber();
 	trace       = true;
 	temporary   = true;
 	state       = RDOResourceTrace::CS_Create;

@@ -3,7 +3,7 @@
 
 #include "rdobase.h"
 #include "searchtree.h"
-#include "rdoStdFuncs.h"
+#include <rdoparsebase.h>
 
 class RDOSimulator;
 class TreeNode;

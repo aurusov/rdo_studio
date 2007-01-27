@@ -50,7 +50,8 @@ int RDORTPEnum::findValue( const std::string* const val, bool auto_error ) const
 	return it - enumVals.begin();
 }
 
-RDORTPResType::RDORTPResType( const std::string* const _name, const bool _permanent ):
+RDORTPResType::RDORTPResType( RDOParser* _parser, const std::string* const _name, const bool _permanent ):
+	RDOParserObject( _parser ),
 	name( _name ),
 	number( parser->getRTP_id() ),
 	permanent( _permanent )

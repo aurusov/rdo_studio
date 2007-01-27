@@ -245,7 +245,7 @@ bool RDOPMDWatchState::calcStat(RDOSimulator *sim)
 RDOPMDWatchQuant::RDOPMDWatchQuant(std::string *_name, bool _trace, std::string *_resTypeName)
 	: RDOPMDPokaz(_name, _trace)
 {
-	funGroup = new RDOFUNGroupLogic(5, _resTypeName);
+	funGroup = new RDOFUNGroupLogic( parser, 5, _resTypeName );
 	endOfCreation();
 }
 
@@ -351,7 +351,7 @@ bool RDOPMDWatchQuant::calcStat(RDOSimulator *sim)
 RDOPMDWatchValue::RDOPMDWatchValue(std::string *_name, bool _trace, std::string *_resTypeName)
 	: RDOPMDPokaz(_name, _trace)
 {
-	funGroup = new RDOFUNGroupLogic(5, _resTypeName);
+	funGroup = new RDOFUNGroupLogic( parser, 5, _resTypeName );
 	wasChanged = false;
 	endOfCreation();
 }

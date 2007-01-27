@@ -1,7 +1,7 @@
 #ifndef RDO_CALC_CONST
 #define RDO_CALC_CONST
 
-#include "rdoStdFuncs.h"
+#include "rdoparsebase.h"
 #include "rdortp.h"
 #include <rdocommon.h>
 

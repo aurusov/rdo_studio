@@ -1,8 +1,7 @@
 #ifndef RDODPT_DPT
 #define RDODPT_DPT
 
-#include "rdogramma.h"
-#include "rdoStdFuncs.h"
+#include "rdoparsebase.h"
 #include "rdofun.h"
 #include "rdopat.h"
 #include "rdodptrtime.h"
@@ -50,7 +49,7 @@ enum DPTSearchValue
 	DPT_value_after
 };
 
-class RDODPTSearchActivity: public RDODeletable
+class RDODPTSearchActivity: public RDOParserObject
 {
 private:
 	std::string *name;
@@ -61,7 +60,7 @@ private:
 	std::vector< rdoRuntime::RDOValue > params;
 
 public:
-	RDODPTSearchActivity(std::string *_name, std::string *_ruleName);
+	RDODPTSearchActivity( const RDOParserObject* _parent, std::string* _name, std::string* _ruleName );
 	void setValue(DPTSearchValue _value, RDOFUNArithm *_ruleCost);
 	const std::string *getName() const { return name; }
 	void addParam(int _param);
@@ -73,19 +72,19 @@ public:
 	rdoRuntime::RDOSearchActivityRuntime* createActivityRuntime( rdoRuntime::RDORuntime* sim );
 };
 
-class RDODPTSearch: public RDODeletable
+class RDODPTSearch: public RDOParserObject
 {
 private:
-	const std::string *const name;
+	const std::string* const name;
 	DPTSearchTrace trace;
-	RDOFUNLogic *conditon;
-	RDOFUNLogic *termConditon;
-	RDOFUNArithm *evalBy;
+	RDOFUNLogic*   conditon;
+	RDOFUNLogic*   termConditon;
+	RDOFUNArithm*  evalBy;
 	bool compTops;
-	std::vector<RDODPTSearchActivity *> activities;
+	std::vector< RDODPTSearchActivity* > activities;
 
 public:
-	RDODPTSearch(std::string *_name, DPTSearchTrace _trace = DPTnotrace);
+	RDODPTSearch( RDOParser* _parser, std::string* _name, DPTSearchTrace _trace = DPTnotrace );
 	void setCondition(RDOFUNLogic *_conditon = NULL) { conditon = _conditon; }
 	void setTermCondition(RDOFUNLogic *_termConditon) { termConditon = _termConditon; }
 	void setEvaluateBy(RDOFUNArithm *_evalBy) { evalBy = _evalBy; }
@@ -110,7 +109,7 @@ public:
 
 /////////////////////////  "SOME" DECISION POINT /////////////////////////
 
-class RDODPTSomeActivity: public RDODeletable
+class RDODPTSomeActivity: public RDOParserObject
 {
 private:
 	std::string *name;
@@ -119,7 +118,7 @@ private:
 	std::vector< rdoRuntime::RDOValue > params;
 
 public:
-	RDODPTSomeActivity(std::string *_name, std::string *_ruleName);
+	RDODPTSomeActivity( const RDOParserObject* _parent, std::string* _name, std::string* _ruleName );
 	const std::string *getName() const { return name; }
 	void addParam(int _param);
 	void addParam(double * _param);
@@ -129,7 +128,7 @@ public:
 	void createActivityRuntime(RDOFUNLogic *conditon);
 };
 
-class RDODPTSome: public RDODeletable
+class RDODPTSome: public RDOParserObject
 {
 private:
 	const std::string *const name;
@@ -138,7 +137,7 @@ private:
 	RDODPTSomeActivity* lastActivity;
 
 public:
-	RDODPTSome(std::string *_name);
+	RDODPTSome( RDOParser* _parser, std::string* _name );
 	void setCondition(RDOFUNLogic *_conditon = NULL) { conditon = _conditon; }
 	void addNewActivity(std::string *_name, std::string *_patternName);
 	template <typename T>
@@ -159,7 +158,7 @@ public:
 
 /////////////////////////  FREE ACTIVITIES /////////////////////////
 
-class RDODPTFreeActivity: public RDODeletable
+class RDODPTFreeActivity: public RDOParserObject
 {
 private:
 	std::string*         name;
@@ -169,7 +168,7 @@ private:
 	std::vector< std::string* >         hotKeys;
 
 public:
-	RDODPTFreeActivity(std::string *_name, std::string *_ruleName);
+	RDODPTFreeActivity( RDOParser* _parser, std::string* _name, std::string* _ruleName );
 	const std::string *getName() const { return name; }
 	void addParam(int _param);
 	void addParam(double * _param);
@@ -182,7 +181,7 @@ public:
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCProcess
 // ----------------------------------------------------------------------------
-class RDOPROCProcess: public RDODeletable
+class RDOPROCProcess: public RDOParserObject
 {
 friend class RDOPROCOperator;
 
@@ -198,7 +197,7 @@ public:
 	static std::string name_prefix;
 	static std::string name_sufix;
 
-	RDOPROCProcess( const std::string& _name );
+	RDOPROCProcess( RDOParser* _parser, const std::string& _name );
 
 	void end();
 	bool isend() const { return m_end; }
@@ -215,23 +214,23 @@ class RDOPROCTransact: public RDORTPResType
 {
 protected:
 	static bool created;
-	RDOPROCTransact();
+	RDOPROCTransact( RDOParser* _parser );
 
 public:
-	static RDOPROCTransact* makeRTP();
+	static RDOPROCTransact* makeRTP( RDOParser* _parser );
 	virtual ~RDOPROCTransact();
 };
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCOperator
 // ----------------------------------------------------------------------------
-class RDOPROCOperator: public RDODeletable
+class RDOPROCOperator: public RDOParserObject
 {
 protected:
 	std::string     name;
 	RDOPROCProcess* process;
 
-	RDOPROCOperator( const std::string& _name, RDOPROCProcess* _process = NULL );
+	RDOPROCOperator( RDOPROCProcess* _process, const std::string& _name );
 };
 
 // ----------------------------------------------------------------------------
@@ -243,7 +242,7 @@ protected:
 	rdoRuntime::RDOPROCGenerate* runtime;
 
 public:
-	RDOPROCGenerate( const std::string& _name, rdoRuntime::RDOCalc* time, RDOPROCProcess* _process = NULL );
+	RDOPROCGenerate( RDOPROCProcess* _process, const std::string& _name, rdoRuntime::RDOCalc* time );
 };
 
 // ----------------------------------------------------------------------------
@@ -255,7 +254,7 @@ protected:
 	rdoRuntime::RDOPROCSeize* runtime;
 
 public:
-	RDOPROCSeize( const std::string& _name, const std::string* res_name, RDOPROCProcess* _process = NULL );
+	RDOPROCSeize( RDOPROCProcess* _process, const std::string& _name, const std::string* res_name );
 };
 
 // ----------------------------------------------------------------------------
@@ -267,7 +266,7 @@ protected:
 	rdoRuntime::RDOPROCRelease* runtime;
 
 public:
-	RDOPROCRelease( const std::string& _name, const std::string* res_name, RDOPROCProcess* _process = NULL );
+	RDOPROCRelease( RDOPROCProcess* _process, const std::string& _name, const std::string* res_name );
 };
 
 
@@ -280,7 +279,7 @@ protected:
 	rdoRuntime::RDOPROCAdvance* runtime;
 
 public:
-	RDOPROCAdvance( const std::string& _name, rdoRuntime::RDOCalc* time, RDOPROCProcess* _process = NULL );
+	RDOPROCAdvance( RDOPROCProcess* _process, const std::string& _name, rdoRuntime::RDOCalc* time );
 };
 
 // ----------------------------------------------------------------------------
@@ -292,7 +291,7 @@ protected:
 	rdoRuntime::RDOPROCTerminate* runtime;
 
 public:
-	RDOPROCTerminate( const std::string& _name, RDOPROCProcess* _process = NULL );
+	RDOPROCTerminate( RDOPROCProcess* _process, const std::string& _name );
 };
 
 } // namespace rdoParse 

@@ -122,6 +122,11 @@ void RDORuntime::addRuntimeFrame( rdoParse::RDOFRMFrame* frm )
 	allFrames.push_back(frm); 
 }
 
+rdoParse::RDOFRMFrame* RDORuntime::lastFrame() const
+{
+	return !allFrames.empty() ? allFrames.front() : NULL;
+}
+
 bool RDORuntime::keyDown( unsigned int scan_code )
 {
 	// Если нажаты VK_SHIFT или VK_CONTROL, то сбросим буфер клавиатуры

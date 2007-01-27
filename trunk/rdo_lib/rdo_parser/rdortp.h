@@ -1,8 +1,8 @@
 #ifndef RDORTP_RTP
 #define RDORTP_RTP
 
-#include "rdogramma.h"
-#include "rdoStdFuncs.h"
+#include "rdoparsebase.h"
+#include "rdoparser.h"
 
 namespace rdoParse 
 {
@@ -10,33 +10,6 @@ namespace rdoParse
 int rtpparse( void* lexer );
 int rtplex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer );
 void rtperror( char* mes );
-
-class RDOErrorPos
-{
-private:
-	YYLTYPE error_pos;
-
-public:
-	RDOErrorPos() {
-		error_pos.first_line   = -1;
-		error_pos.first_column = -1;
-		error_pos.last_line    = -1;
-		error_pos.last_column  = -1;
-	}
-	void setErrorPos( const YYLTYPE& _error_pos ) {
-		error_pos.first_line   = _error_pos.first_line;
-		error_pos.first_column = _error_pos.first_column;
-		error_pos.last_line    = _error_pos.last_line;
-		error_pos.last_column  = _error_pos.last_column;
-	}
-	void setErrorPos( int first_line, int first_column, int last_line, int last_column ) {
-		error_pos.first_line   = first_line;
-		error_pos.first_column = first_column;
-		error_pos.last_line    = last_line;
-		error_pos.last_column  = last_column;
-	}
-	const YYLTYPE& error() const { return error_pos; }
-};
 
 class RDORTPIntDefVal;
 
@@ -198,7 +171,7 @@ public:
 	int writeModelStructure() const;
 };
 
-class RDORTPResType: public RDODeletable
+class RDORTPResType: public RDOParserObject
 {
 protected:
 	const std::string* const              name;
@@ -207,7 +180,7 @@ protected:
 	std::vector< const RDORTPParamDesc* > params;
 
 public:
-	RDORTPResType( const std::string* const _name, const bool _permanent );
+	RDORTPResType( RDOParser* _parser, const std::string* const _name, const bool _permanent );
 	const std::string* const getName() const { return name;       };
 	int getNumber() const                    { return number;     };
 	bool isPermanent() const                 { return permanent;  };

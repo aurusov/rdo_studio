@@ -3,7 +3,7 @@
 
 #include "rdoparser_base.h"
 #include "rdoparser_lexer.h"
-#include "rdoStdFuncs.h"
+#include "rdoparsebase.h"
 #include <iostream.h>
 
 namespace rdoParse

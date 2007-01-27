@@ -49,7 +49,8 @@ void dpt_opr_error( char* mes )
 
 /////////////////////////  "SEARCH" DECISION POINT /////////////////////////
 
-RDODPTSearch::RDODPTSearch( std::string* _name, DPTSearchTrace _trace ):
+RDODPTSearch::RDODPTSearch( RDOParser* _parser, std::string* _name, DPTSearchTrace _trace ):
+	RDOParserObject( _parser ),
 	name( _name ),
 	trace( _trace ),
 	lastActivity( NULL )
@@ -66,7 +67,7 @@ RDODPTSearch::RDODPTSearch( std::string* _name, DPTSearchTrace _trace ):
 void RDODPTSearch::addNewActivity( std::string* _name, std::string* _ruleName )
 {
 	parser->checkActivityName( _name );
-	lastActivity = new RDODPTSearchActivity( _name, _ruleName );
+	lastActivity = new RDODPTSearchActivity( this, _name, _ruleName );
 	activities.push_back( lastActivity );
 }
 
@@ -116,8 +117,9 @@ void RDODPTSearch::end()
 	}
 }
 
-RDODPTSearchActivity::RDODPTSearchActivity(std::string *_name, std::string *_ruleName)
-	: name(_name) 
+RDODPTSearchActivity::RDODPTSearchActivity( const RDOParserObject* _parent, std::string* _name, std::string* _ruleName ):
+	RDOParserObject( _parent ),
+	name( _name )
 {
 	const RDOPATPattern *pat = parser->findPattern(_ruleName);
 	pat->testGoodForSearchActivity();
@@ -191,7 +193,8 @@ rdoRuntime::RDOSearchActivityRuntime* RDODPTSearchActivity::createActivityRuntim
 
 /////////////////////////  "SOME" DECISION POINT //////////////////////
 
-RDODPTSome::RDODPTSome( std::string* _name ):
+RDODPTSome::RDODPTSome( RDOParser* _parser, std::string* _name ):
+	RDOParserObject( _parser ),
 	name( _name ),
 	lastActivity( NULL )
 {
@@ -207,7 +210,7 @@ RDODPTSome::RDODPTSome( std::string* _name ):
 void RDODPTSome::addNewActivity( std::string* _name, std::string* _patternName )
 {
 	parser->checkActivityName( _name );
-	lastActivity = new RDODPTSomeActivity( _name, _patternName );
+	lastActivity = new RDODPTSomeActivity( this, _name, _patternName );
 	activities.push_back( lastActivity );
 }
 
@@ -219,8 +222,9 @@ void RDODPTSome::end()
 		activities.at(i)->createActivityRuntime(conditon);
 }
 
-RDODPTSomeActivity::RDODPTSomeActivity(std::string *_name, std::string *_patternName)
-	: name(_name) 
+RDODPTSomeActivity::RDODPTSomeActivity( const RDOParserObject* _parent, std::string* _name, std::string* _patternName):
+	RDOParserObject( _parent ),
+	name( _name )
 {
 	pattern = parser->findPattern(_patternName);
 	pattern->testGoodForSomeActivity();
@@ -283,7 +287,8 @@ void RDODPTSomeActivity::createActivityRuntime(RDOFUNLogic *conditon)
 
 /////////////////////////  FREE ACTIVITIES /////////////////////////
 
-RDODPTFreeActivity::RDODPTFreeActivity( std::string* _name, std::string* _patternName ):
+RDODPTFreeActivity::RDODPTFreeActivity( RDOParser* _parser, std::string* _name, std::string* _patternName ):
+	RDOParserObject( _parser ),
 	name( _name )
 {
 	parser->checkActivityName( _name );
@@ -355,8 +360,8 @@ void RDODPTFreeActivity::end()
 std::string RDOPROCProcess::name_prefix = "";
 std::string RDOPROCProcess::name_sufix  = "s";
 
-RDOPROCProcess::RDOPROCProcess( const std::string& _name ):
-	RDODeletable(),
+RDOPROCProcess::RDOPROCProcess( RDOParser* _parser, const std::string& _name ):
+	RDOParserObject( _parser ),
 	name( _name ),
 	m_end( false ),
 	parent( NULL ),
@@ -384,8 +389,8 @@ void RDOPROCProcess::insertChild( RDOPROCProcess* value )
 // ----------------------------------------------------------------------------
 bool RDOPROCTransact::created = false;
 
-RDOPROCTransact::RDOPROCTransact():
-	RDORTPResType( parser->registerName( "Транзакты" ), false )
+RDOPROCTransact::RDOPROCTransact( RDOParser* _parser ):
+	RDORTPResType( _parser, _parser->registerName( "Транзакты" ), false )
 {
 	// Создадим параметр вещественного типа 'Время_создания'
 	addParam( new RDORTPParamDesc( parser->registerName( "Время_создания" ), new RDORTPRealResParam() ) );
@@ -400,13 +405,13 @@ RDOPROCTransact::~RDOPROCTransact()
 	RDOPROCTransact::created = false;
 }
 
-RDOPROCTransact* RDOPROCTransact::makeRTP()
+RDOPROCTransact* RDOPROCTransact::makeRTP( RDOParser* _parser )
 {
 	if ( RDOPROCTransact::created ) {
-		RDOPROCTransact* rtp = static_cast<RDOPROCTransact*>(const_cast<RDORTPResType*>(parser->findRTPResType( "Транзакты" )));
+		RDOPROCTransact* rtp = static_cast<RDOPROCTransact*>(const_cast<RDORTPResType*>(_parser->findRTPResType( "Транзакты" )));
 		return rtp;
 	} else {
-		RDOPROCTransact* rtp = new RDOPROCTransact();
+		RDOPROCTransact* rtp = new RDOPROCTransact( _parser );
 		return rtp;
 	}
 }
@@ -414,20 +419,19 @@ RDOPROCTransact* RDOPROCTransact::makeRTP()
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCOperator
 // ----------------------------------------------------------------------------
-RDOPROCOperator::RDOPROCOperator( const std::string& _name, RDOPROCProcess* _process ):
-	RDODeletable(),
+RDOPROCOperator::RDOPROCOperator( RDOPROCProcess* _process, const std::string& _name ):
+	RDOParserObject( _process ),
 	name( _name ),
 	process( _process )
 {
-	if ( !process ) process = parser->getLastDPTProcess();
 	process->operations.push_back( this );
 }
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCGenerate
 // ----------------------------------------------------------------------------
-RDOPROCGenerate::RDOPROCGenerate( const std::string& _name, rdoRuntime::RDOCalc* time, RDOPROCProcess* _process ):
-	RDOPROCOperator( _name, _process ),
+RDOPROCGenerate::RDOPROCGenerate( RDOPROCProcess* _process, const std::string& _name, rdoRuntime::RDOCalc* time ):
+	RDOPROCOperator( _process, _name ),
 	runtime( NULL )
 {
 	runtime = new rdoRuntime::RDOPROCGenerate( parser->getLastDPTProcess()->getRunTime(), time );
@@ -436,8 +440,8 @@ RDOPROCGenerate::RDOPROCGenerate( const std::string& _name, rdoRuntime::RDOCalc*
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCSeize
 // ----------------------------------------------------------------------------
-RDOPROCSeize::RDOPROCSeize( const std::string& _name, const std::string* res_name, RDOPROCProcess* _process ):
-	RDOPROCOperator( _name, _process )
+RDOPROCSeize::RDOPROCSeize( RDOPROCProcess* _process, const std::string& _name, const std::string* res_name ):
+	RDOPROCOperator( _process, _name )
 {
 	const RDORSSResource* rss = parser->findRSSResource( res_name );
 	if ( rss ) {
@@ -450,8 +454,8 @@ RDOPROCSeize::RDOPROCSeize( const std::string& _name, const std::string* res_nam
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCRelease
 // ----------------------------------------------------------------------------
-RDOPROCRelease::RDOPROCRelease( const std::string& _name, const std::string* res_name, RDOPROCProcess* _process ):
-	RDOPROCOperator( _name, _process )
+RDOPROCRelease::RDOPROCRelease( RDOPROCProcess* _process, const std::string& _name, const std::string* res_name ):
+	RDOPROCOperator( _process, _name )
 {
 	const RDORSSResource* rss = parser->findRSSResource( res_name );
 	if ( rss ) {
@@ -464,8 +468,8 @@ RDOPROCRelease::RDOPROCRelease( const std::string& _name, const std::string* res
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCAdvance
 // ----------------------------------------------------------------------------
-RDOPROCAdvance::RDOPROCAdvance( const std::string& _name, rdoRuntime::RDOCalc* time, RDOPROCProcess* _process ):
-	RDOPROCOperator( _name, _process )
+RDOPROCAdvance::RDOPROCAdvance( RDOPROCProcess* _process, const std::string& _name, rdoRuntime::RDOCalc* time ):
+	RDOPROCOperator( _process, _name )
 {
 	runtime = new rdoRuntime::RDOPROCAdvance( parser->getLastDPTProcess()->getRunTime(), time );
 }
@@ -473,8 +477,8 @@ RDOPROCAdvance::RDOPROCAdvance( const std::string& _name, rdoRuntime::RDOCalc* t
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCTerminate
 // ----------------------------------------------------------------------------
-RDOPROCTerminate::RDOPROCTerminate( const std::string& _name, RDOPROCProcess* _process ):
-	RDOPROCOperator( _name, _process )
+RDOPROCTerminate::RDOPROCTerminate( RDOPROCProcess* _process, const std::string& _name ):
+	RDOPROCOperator( _process, _name )
 {
 	runtime = new rdoRuntime::RDOPROCTerminate( parser->getLastDPTProcess()->getRunTime() );
 }

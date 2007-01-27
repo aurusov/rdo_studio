@@ -408,7 +408,7 @@ pat_common_choice:	pat_rel_res
 							parser->error( "В нерегулярном событии не используется способ выбора релевантных ресурсов" );
 						} else {
 //							((RDOPATPattern *)$1)->setCommonChoiceFirst(); $$ = $1;
-							RDOFUNArithm* arithm = new RDOFUNArithm( 1, @2 );
+							RDOFUNArithm* arithm = new RDOFUNArithm( parser, 1, @2 );
 							pattern->setCommonChoiceWithMax( arithm );
 							$$ = $1;
 						}
@@ -1064,18 +1064,18 @@ fun_arithm: fun_arithm '+' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOF
 				$$ = $1;
 			}
 			| IDENTIF '.' IDENTIF			{
-				$$ = (int)new RDOFUNArithm( reinterpret_cast<std::string*>($1), reinterpret_cast<std::string*>($3), @1, @3 );
+				$$ = (int)new RDOFUNArithm( parser, reinterpret_cast<std::string*>($1), reinterpret_cast<std::string*>($3), @1, @3 );
 			}
-			| INT_CONST						{ $$ = (int)new RDOFUNArithm( (int)$1, @1 );          }
-			| REAL_CONST					{ $$ = (int)new RDOFUNArithm( (double*)$1, @1 );      }
-			| IDENTIF						{ $$ = (int)new RDOFUNArithm( (std::string*)$1, @1 ); }
+			| INT_CONST						{ $$ = (int)new RDOFUNArithm( parser, (int)$1, @1 );          }
+			| REAL_CONST					{ $$ = (int)new RDOFUNArithm( parser, (double*)$1, @1 );      }
+			| IDENTIF						{ $$ = (int)new RDOFUNArithm( parser, (std::string*)$1, @1 ); }
 			| '-' fun_arithm %prec UMINUS	{
 				YYLTYPE error_pos;
 				error_pos.first_line   = @1.first_line;
 				error_pos.first_column = @1.first_column;
 				error_pos.last_line    = @2.last_line;
 				error_pos.last_column  = @2.last_column;
-				$$ = (int)new RDOFUNArithm( reinterpret_cast<RDOFUNArithm*>($2)->getType(), new rdoRuntime::RDOCalcUMinus( reinterpret_cast<RDOFUNArithm*>($2)->createCalc() ), error_pos );
+				$$ = (int)new RDOFUNArithm( parser, reinterpret_cast<RDOFUNArithm*>($2)->getType(), new rdoRuntime::RDOCalcUMinus( reinterpret_cast<RDOFUNArithm*>($2)->createCalc() ), error_pos );
 			}
 			| error							{
 				parser->lexer_loc_set( &(@1) );
@@ -1098,7 +1098,7 @@ fun_arithm_func_call:	IDENTIF '(' fun_arithm_func_call_pars ')' {
 						};
 
 fun_arithm_func_call_pars:	/* empty */ {
-								RDOFUNParams* fun = new RDOFUNParams();
+								RDOFUNParams* fun = new RDOFUNParams( parser );
 								$$ = (int)fun;
 							}
 							| fun_arithm_func_call_pars fun_arithm {
@@ -1125,7 +1125,7 @@ fun_group_keyword:	Exist			{ $$ = 1; }
 fun_group_header:	fun_group_keyword '(' IDENTIF_COLON {
 						parser->lexer_loc_backup();
 						parser->lexer_loc_set( @3.first_line, @3.first_column + ((std::string*)$3)->length() );
-						$$ = (int)(new RDOFUNGroupLogic($1, (std::string *)$3));
+						$$ = (int)(new RDOFUNGroupLogic(parser, $1, (std::string *)$3));
 						parser->lexer_loc_restore();
 					}
 					| fun_group_keyword '(' error {
@@ -1155,7 +1155,7 @@ fun_group:			fun_group_header fun_logic ')' {
 					};
 
 fun_select_header:	Select '(' IDENTIF_COLON {
-						$$ = (int)new RDOFUNSelect((std::string*)$3);
+						$$ = (int)new RDOFUNSelect(parser, (std::string*)$3);
 					}
 					| Select '(' error {
 						parser->lexer_loc_set( &(@3) );

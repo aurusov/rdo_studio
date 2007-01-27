@@ -196,7 +196,7 @@ rtp_res_type_hdr:	Resource_type IDENTIF_COLON rtp_vid_res {
 							parser->lexer_loc_set( @2.first_line, @2.first_column + name->length() );
 							parser->error( rdoSimulator::RDOSyntaxError::RTP_SECOND_RES_TYPE, name->c_str() );
 						}
-						RDORTPResType *res = new RDORTPResType( name, $3 != 0 );
+						RDORTPResType *res = new RDORTPResType( parser, name, $3 != 0 );
 						$$ = (int)res;
 					}
 					| Resource_type error {

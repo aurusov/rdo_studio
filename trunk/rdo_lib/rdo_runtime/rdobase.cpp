@@ -11,6 +11,7 @@ static char THIS_FILE[] = __FILE__;
 
 RDOSimulatorBase::RDOSimulatorBase():
 	currentTime( 0 ),
+	nextTime( 0 ),
 	mode( rdoRuntime::RTM_MaxSpeed ),
 	speed( 1 ),
 	speed_range_max( 500000 ),
@@ -26,6 +27,7 @@ RDOSimulatorBase::RDOSimulatorBase():
 void RDOSimulatorBase::rdoInit()
 {
 	currentTime     = 0;
+	nextTime        = 0;
 	check_operation = true;
 	onInit();
 
@@ -93,6 +95,7 @@ bool RDOSimulatorBase::rdoNext()
 		onEndCondition();
 		return false;
 	}
+	currentTime = nextTime;
 	// Выполнение операции
 	if ( doOperation() ) {
 		return true;
@@ -110,9 +113,9 @@ bool RDOSimulatorBase::rdoNext()
 				newTime = currentTime;
 			}
 			if ( mode == rdoRuntime::RTM_Sync ) {
-				msec_wait += (newTime - currentTime) * 3600.0 * 1000.0 / showRate;
+				msec_wait += (newTime - nextTime) * 3600.0 * 1000.0 / showRate;
 				if ( msec_wait > 0 ) {
-					if ( currentTime != 0 ) {
+					if ( nextTime != 0 ) {
 						if ( speed > DBL_MIN ) {
 							msec_wait = msec_wait / speed;
 						} else {
@@ -126,7 +129,7 @@ bool RDOSimulatorBase::rdoNext()
 					}
 				}
 			}
-			currentTime = newTime;
+			nextTime = newTime;
 			return true;
 		} else {
 			// Окончание моделирования - нет больше событий

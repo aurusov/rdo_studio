@@ -166,6 +166,10 @@ SOURCE=.\rdoopr.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\rdoparsebase.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdoparser.cpp
 
 !IF  "$(CFG)" == "rdo_parser - Win32 Release"
@@ -367,6 +371,10 @@ SOURCE=.\rdoopr.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\rdoparsebase.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdoparser.h
 # End Source File
 # Begin Source File
@@ -408,10 +416,6 @@ SOURCE=.\rdoruntime.h
 # Begin Source File
 
 SOURCE=.\rdosmr.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdoStdFuncs.h
 # End Source File
 # End Group
 # Begin Group "bison"

@@ -194,7 +194,7 @@ dpt_process_line:	IDENTIF	{
 					}
 					| GENERATE fun_arithm {
 
-	RDOPROCTransact::makeRTP();
+	RDOPROCTransact::makeRTP( parser );
 
 //	new RDOPROCTransact();
 /*
@@ -262,7 +262,7 @@ dpt_process_line:	IDENTIF	{
 		RDORTPResType* res_type = const_cast<RDORTPResType*>(parser->findRTPResType( res_type_name ));
 		if ( !res_type ) {
 			// Создадим тип ресурса
-			res_type = new RDORTPResType( res_type_name, true );
+			res_type = new RDORTPResType( parser, res_type_name, true );
 
 			// Создадим параметр перечислимого типа
 			RDORTPEnum* state_enum = new RDORTPEnum( rtp_state_free );

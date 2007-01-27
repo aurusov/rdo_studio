@@ -1,8 +1,7 @@
 #ifndef RDOPAT_PAT
 #define RDOPAT_PAT
 
-#include "rdogramma.h"
-#include "rdoStdFuncs.h"
+#include "rdoparsebase.h"
 #include <rdotrace.h>
 
 namespace rdoRuntime

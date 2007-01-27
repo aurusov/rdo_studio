@@ -1,8 +1,7 @@
 #ifndef RDOSMR_SMR
 #define RDOSMR_SMR
 
-#include "rdogramma.h"
-#include "rdoStdFuncs.h"
+#include "rdoparsebase.h"
 #include <rdotrace.h>
 #include <rdocommon.h>
 
