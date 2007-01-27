@@ -176,10 +176,10 @@ pat_list:
 				parser->error( "Ожидается ключевое слово $Pattern" );
 			};
 
-pat_header:	  Pattern IDENTIF_COLON operation_kw    pat_trace { $$ = (int)(new RDOPATPatternOperation( (std::string *)$2, $4 != 0 )); }
-			| Pattern IDENTIF_COLON irregular_event pat_trace { $$ = (int)(new RDOPATPatternEvent(     (std::string *)$2, $4 != 0 )); }
-			| Pattern IDENTIF_COLON rule_keyword    pat_trace { $$ = (int)(new RDOPATPatternRule(      (std::string *)$2, $4 != 0 )); }
-			| Pattern IDENTIF_COLON keyboard        pat_trace { $$ = (int)(new RDOPATPatternKeyboard(  (std::string *)$2, $4 != 0 )); };
+pat_header:	  Pattern IDENTIF_COLON operation_kw    pat_trace { $$ = (int)(new RDOPATPatternOperation( parser, (std::string *)$2, $4 != 0 )); }
+			| Pattern IDENTIF_COLON irregular_event pat_trace { $$ = (int)(new RDOPATPatternEvent(     parser, (std::string *)$2, $4 != 0 )); }
+			| Pattern IDENTIF_COLON rule_keyword    pat_trace { $$ = (int)(new RDOPATPatternRule(      parser, (std::string *)$2, $4 != 0 )); }
+			| Pattern IDENTIF_COLON keyboard        pat_trace { $$ = (int)(new RDOPATPatternKeyboard(  parser, (std::string *)$2, $4 != 0 )); };
 			| Pattern error {
 				parser->lexer_loc_set( &(@2) );
 				parser->error( "Ожидается имя образца" );
@@ -591,7 +591,9 @@ convert_end:	Convert_end {
 				parser->getLastPATPattern()->currRelRes->currentState = RDORelevantResource::convertEnd;
 			};
 
-pat_params_set:	/* empty */									{ $$ = (int) new RDOPATParamsSet(); }
+pat_params_set:	/* empty */	{
+					$$ = (int) new RDOPATParamsSet( parser->getLastPATPattern()->currRelRes ); 
+				}
 				|	pat_params_set IDENTIF_set fun_arithm	{
 					YYLTYPE error_pos;
 					error_pos.first_line   = @2.first_line;

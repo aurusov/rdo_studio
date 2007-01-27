@@ -14,8 +14,13 @@ typedef int  (*t_flex_lexer_fun)( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer );
 // ----------------------------------------------------------------------------
 // ---------- RDOParserBase
 // ----------------------------------------------------------------------------
+class RDOParser;
+
 class RDOParserBase
 {
+protected:
+	RDOParser* parser;
+
 public:
 	rdoModelObjects::RDOFileType type;
 
@@ -23,8 +28,22 @@ public:
 	t_bison_error_fun error_fun;
 	t_flex_lexer_fun  lexer_fun;
 
-	RDOParserBase(): type(rdoModelObjects::PAT), parser_fun(NULL), error_fun(NULL), lexer_fun(NULL) {};
-	RDOParserBase( rdoModelObjects::RDOFileType _type, t_bison_parse_fun _parser_fun, t_bison_error_fun _error_fun, t_flex_lexer_fun _lexer_fun ): type( _type ), parser_fun( _parser_fun ), error_fun( _error_fun ), lexer_fun( _lexer_fun ) {};
+	RDOParserBase( RDOParser* _parser ):
+		parser( _parser ),
+		type( rdoModelObjects::PAT ),
+		parser_fun( NULL ),
+		error_fun( NULL ),
+		lexer_fun( NULL )
+	{
+	};
+	RDOParserBase( RDOParser* _parser, rdoModelObjects::RDOFileType _type, t_bison_parse_fun _parser_fun, t_bison_error_fun _error_fun, t_flex_lexer_fun _lexer_fun ):
+		parser( _parser ),
+		type( _type ),
+		parser_fun( _parser_fun ),
+		error_fun( _error_fun ),
+		lexer_fun( _lexer_fun )
+	{
+	};
 	virtual ~RDOParserBase() {};
 
 	virtual void parse()                          = 0;
@@ -49,10 +68,11 @@ public:
 class RDOParserList
 {
 private:
+	RDOParser* parser;
 	std::map< int, RDOParserBase* > list;
 
 public:
-	RDOParserList();
+	RDOParserList( RDOParser* _parser );
 	~RDOParserList();
 
 	void clear();

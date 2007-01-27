@@ -49,17 +49,19 @@ const int RDONUMPAD7	= 0x147;
 const int RDONUMPAD8	= 0x148;
 const int RDONUMPAD9	= 0x149;
 */
+/*
 class RDOHotKeyToolkit
 {
-	std::map<std::string, int> keys;
+private:
+	std::map< std::string, int > keys;
+
 public:
 	RDOHotKeyToolkit();
-	int codeFromString(std::string *key);
+	int codeFromString( std::string* key );
 };
 
 extern RDOHotKeyToolkit rdoHotKeyToolkit;
+*/
+} // namespace rdoParse 
 
-}		// namespace rdoParse 
-
-#endif //RDOHOT_KEY
-				 
+#endif // RDOHOT_KEY

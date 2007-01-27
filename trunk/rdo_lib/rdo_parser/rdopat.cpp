@@ -28,7 +28,8 @@ void paterror( char* mes )
 {
 }
 
-RDOPATPattern::RDOPATPattern( const std::string* const _name, const bool _trace ):
+RDOPATPattern::RDOPATPattern( RDOParser* _parser, const std::string* const _name, const bool _trace ):
+	RDOParserObject( _parser ),
 	name( _name ),
 	commonChoice( NULL ),
 	patRuntime( NULL ),
@@ -43,7 +44,7 @@ RDOPATPattern::RDOPATPattern( const std::string* const _name, const bool _trace 
 	parser->insertPATPattern( this );
 }
 
-	std::string RDOPATPattern::StatusToStr( RDOResourceTrace::ConvertStatus value )
+std::string RDOPATPattern::StatusToStr( RDOResourceTrace::ConvertStatus value )
 {
 	switch ( value ) {
 		case RDOResourceTrace::CS_Keep    : return "Keep";
@@ -275,7 +276,7 @@ void RDOPATPatternOperation::addRelRes( std::string* relName, std::string* resNa
 				parser->error( rdo::format("Недопустимый статус конвертора конца для постоянного ресурса: %s", RDOPATPattern::StatusToStr(end).c_str()) );
 			}
 		}
-		relRes = new RDORelevantResourceDirect( relName, rel_res_count(), res, beg, end );
+		relRes = new RDORelevantResourceDirect( this, relName, rel_res_count(), res, beg, end );
 		rel_res_insert( relRes );
 
 	} else {
@@ -292,7 +293,7 @@ void RDOPATPatternOperation::addRelRes( std::string* relName, std::string* resNa
 				parser->error( rdo::format("Недопустимый статус конвертора конца для постоянного ресурса: %s", RDOPATPattern::StatusToStr(end).c_str()) );
 			}
 		}
-		relRes = new RDORelevantResourceByType( relName, rel_res_count(), type, beg, end );
+		relRes = new RDORelevantResourceByType( this, relName, rel_res_count(), type, beg, end );
 		rel_res_insert( relRes );
 	}
 	if ( relRes->begin == RDOResourceTrace::CS_Erase ) {
@@ -323,7 +324,7 @@ void RDOPATPatternRule::addRelRes( std::string* relName, std::string* resName, R
 //				parser->error( "Wrong converter status for resource of permanent type" );
 			}
 		}
-		relRes = new RDORelevantResourceDirect( relName, rel_res_count(), res, beg );
+		relRes = new RDORelevantResourceDirect( this, relName, rel_res_count(), res, beg );
 		rel_res_insert( relRes );
 
 	} else {
@@ -332,7 +333,7 @@ void RDOPATPatternRule::addRelRes( std::string* relName, std::string* resName, R
 			parser->error( rdo::format("Неизвестный тип ресурса или ресурс: %s", resName->c_str()) );
 //			parser->error( "Unknown resource name or type: " + *resName );
 		}
-		relRes = new RDORelevantResourceByType( relName, rel_res_count(), type, beg );
+		relRes = new RDORelevantResourceByType( this, relName, rel_res_count(), type, beg );
 		rel_res_insert( relRes );
 	}
 	if ( relRes->begin == RDOResourceTrace::CS_Erase ) {
@@ -359,7 +360,7 @@ void RDOPATPatternEvent::addRelRes( std::string* relName, std::string* resName, 
 //				parser->error( "Wrong converter status for resource of permanent type" );
 			}
 		}
-		RDORelevantResourceDirect* rd = new RDORelevantResourceDirect( relName, rel_res_count(), res, beg );
+		RDORelevantResourceDirect* rd = new RDORelevantResourceDirect( this, relName, rel_res_count(), res, beg );
 		relRes                        = rd;
 		rel_res_insert( relRes );
 		patRuntime->addChoiceFromCalc( rd->createSelectEmptyResourceCalc() );
@@ -374,7 +375,7 @@ void RDOPATPatternEvent::addRelRes( std::string* relName, std::string* resName, 
 			parser->error( rdo::format("Статусы конверторов Keep и Erase могут быть использованы в обраце типа %s с описателем в виде ресурса, но не типа ресурса", getPatTypeStr().c_str()) );
 //			parser->error( "Can use Keep and Erase status with resource name only (not with resource type) in irregular event" );
 		}
-		relRes = new RDORelevantResourceByType( relName, rel_res_count(), type, beg );
+		relRes = new RDORelevantResourceByType( this, relName, rel_res_count(), type, beg );
 		rel_res_insert( relRes );
 	}
 	if ( relRes->begin == RDOResourceTrace::CS_Erase ) {
@@ -533,36 +534,36 @@ void RDOPATPattern::addRelResConvert()
 	}
 }
 
-RDOPATPatternOperation::RDOPATPatternOperation( std::string* _name, bool _trace ):
-	RDOPATPattern( _name, _trace )
+RDOPATPatternOperation::RDOPATPatternOperation( RDOParser* _parser, std::string* _name, bool _trace ):
+	RDOPATPattern( _parser, _name, _trace )
 { 
 //	parser->runTime->addRuntimeOperation((RDOOperationRuntime *)(patRuntime = new RDOOperationRuntime(parser->runTime, _trace)));
 	patRuntime = new rdoRuntime::RDOOperationRuntime( parser->runTime, _trace );
 	patRuntime->setPatternId( parser->getPAT_id() );
 }
 
-RDOPATPatternOperation::RDOPATPatternOperation( bool _trace, std::string* _name ):
-	RDOPATPattern( _name, _trace )
+RDOPATPatternOperation::RDOPATPatternOperation( RDOParser* _parser, bool _trace, std::string* _name ):
+	RDOPATPattern( _parser, _name, _trace )
 {
 }
 
-RDOPATPatternKeyboard::RDOPATPatternKeyboard( std::string* _name, bool _trace ):
-	RDOPATPatternOperation( _trace, _name )
+RDOPATPatternKeyboard::RDOPATPatternKeyboard( RDOParser* _parser, std::string* _name, bool _trace ):
+	RDOPATPatternOperation( _parser, _trace, _name )
 {
 	patRuntime = new rdoRuntime::RDOKeyboardRuntime(parser->runTime, _trace); 
 	patRuntime->setPatternId( parser->getPAT_id() );
 }
  
-RDOPATPatternEvent::RDOPATPatternEvent( std::string* _name, bool _trace ):
-	RDOPATPattern( _name, _trace )
+RDOPATPatternEvent::RDOPATPatternEvent( RDOParser* _parser, std::string* _name, bool _trace ):
+	RDOPATPattern( _parser, _name, _trace )
 { 
 //	parser->runTime->addRuntimeIE((RDOIERuntime *)(patRuntime = new RDOIERuntime(parser->runTime, _trace))); 
 	patRuntime = new rdoRuntime::RDOIERuntime( parser->runTime, _trace ); 
 	patRuntime->setPatternId( parser->getPAT_id() );
 }
 
-RDOPATPatternRule::RDOPATPatternRule( std::string* _name, bool _trace ):
-	RDOPATPattern( _name, _trace )
+RDOPATPatternRule::RDOPATPatternRule( RDOParser* _parser, std::string* _name, bool _trace ):
+	RDOPATPattern( _parser, _name, _trace )
 { 
 //	parser->runTime->addRuntimeRule((RDORuleRuntime *)(patRuntime = new RDORuleRuntime(parser->runTime, _trace))); 
 	patRuntime = new rdoRuntime::RDORuleRuntime( parser->runTime, _trace );

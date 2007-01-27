@@ -21,6 +21,7 @@ namespace rdoParse
 RDOParser* parser = NULL;
 
 RDOParser::RDOParser():
+	parsers( NULL ),
 	parser_base( NULL ),
 	have_kw_Resources( false ),
 	have_kw_ResourcesEnd( false ),
@@ -32,7 +33,8 @@ RDOParser::RDOParser():
 {
 	parser  = this;
 	runTime = new rdoRuntime::RDORuntime();
-	parsers.reset();
+	parsers = new RDOParserList( this );
+	parsers->reset();
 	runTime->memory_insert( sizeof(RDOParser) );
 	runTime->memory_insert( sizeof(rdoRuntime::RDORuntime) );
 }
@@ -42,6 +44,10 @@ RDOParser::~RDOParser()
 	DeleteAllObjects( allNames );
 	DeleteAllObjects( allDoubles );
 	DeleteAllObjects( allDeletables );
+	if ( parsers ) {
+		delete parsers;
+		parsers = NULL;
+	}
 	parser = NULL;
 }
 
@@ -100,8 +106,8 @@ void RDOParser::parse( int files )
 
 	std::list< rdoModelObjects::RDOFileType > file_list = RDOParserList::getParserFiles( files );
 
-	std::map< int, RDOParserBase* >::const_iterator it = parsers.begin();
-	while ( it != parsers.end() ) {
+	std::map< int, RDOParserBase* >::const_iterator it = parsers->begin();
+	while ( it != parsers->end() ) {
 		if ( it->first > max1 && it->first < min2 && std::find( file_list.begin(), file_list.end(), it->second->type ) != file_list.end() ) {
 			parser_base = it->second;
 			it->second->parse();
@@ -120,8 +126,8 @@ void RDOParser::parse( rdoModelObjects::RDOParseType file )
 	int min, max;
 	RDOParserList::getParserMinMax( file, min, max );
 	if ( min == -1 || max == -1 ) return;
-	std::map< int, RDOParserBase* >::const_iterator it = parsers.find( min );
-	while ( it != parsers.end() ) {
+	std::map< int, RDOParserBase* >::const_iterator it = parsers->find( min );
+	while ( it != parsers->end() ) {
 		if ( it->first <= max ) {
 			parser_base = it->second;
 			it->second->parse();
@@ -138,8 +144,8 @@ void RDOParser::parse( rdoModelObjects::RDOParseType file, std::istream& stream 
 	int min, max;
 	RDOParserList::getParserMinMax( file, min, max );
 	if ( min == -1 || max == -1 ) return;
-	std::map< int, RDOParserBase* >::const_iterator it = parsers.find( min );
-	while ( it != parsers.end() ) {
+	std::map< int, RDOParserBase* >::const_iterator it = parsers->find( min );
+	while ( it != parsers->end() ) {
 		if ( it->first <= max ) {
 			parser_base = it->second;
 			it->second->parse( stream );
@@ -607,6 +613,116 @@ void RDOParser::LoadStdFunctions()
 	param = new RDOFUNFunctionParam( registerName("p1"), realType );
 	fun->add(param);
 	fun->functionCalc = new rdoRuntime::RDOFunCalcTan();
+}
+
+RDOParser::RDOHotKeyToolkit::RDOHotKeyToolkit()
+{														   
+/*
+const int RDOESCAPE	= 0x101;
+const int RDOTAB		= 0x10F;
+const int RDOSHIFT	= 0x12A;		// Left
+const int RDOCONTROL	= 0x11D;		// Left or Right
+const int RDOBACK		= 0x10E;
+const int RDORETURN	= 0x11C;
+const int RDOINSERT	= 0x152;
+const int RDOHOME		= 0x024;
+const int RDOPRIOR	= 0x149;
+const int RDODELETE	= 0x153;
+const int RDOEND		= 0x14F;
+const int RDONEXT		= 0x151;
+const int RDOUP		= 0x026;
+const int RDOLEFT		= 0x025;
+const int RDODOWN		= 0x028;
+const int RDORIGHT	= 0x027;
+const int RDODIVIDE	= 0x135;
+const int RDOMULTIPLY= 0x137;		// definetly Print Screen, if somebody know 'Gray*' scan code, tell me
+const int RDOSUBTRACT= 0x06D;
+const int RDOADD		= 0x06B;
+const int RDOCLEAR	= 0x14C;		// I think so
+const int RDOSPACE	= VK_SPACE;
+const int RDODECIMAL	= 0x134;		// I hope...
+const int RDOF2		= 0x13C;
+const int RDOF3		= 0x13D;
+const int RDOF4		= 0x13E;
+const int RDOF5		= 0x13F;
+const int RDOF6		= 0x140;
+const int RDOF7		= 0x141;
+const int RDOF8		= 0x142;
+const int RDOF9		= 0x143;
+const int RDOF10		= 0x144;
+const int RDOF11		= 0x157;
+const int RDOF12		= 0x158;
+const int RDONUMPAD0	= 0x152;
+const int RDONUMPAD1	= 0x14F;
+const int RDONUMPAD2	= 0x150;
+const int RDONUMPAD3	= 0x151;
+const int RDONUMPAD4	= 0x14B;
+const int RDONUMPAD5	= 0x14C;
+const int RDONUMPAD6	= 0x14D;
+const int RDONUMPAD7	= 0x147;
+const int RDONUMPAD8	= 0x148;
+const int RDONUMPAD9	= 0x149;
+*/
+	keys.insert(std::map<std::string, int>::value_type("ESCAPE", VK_ESCAPE));
+	keys.insert(std::map<std::string, int>::value_type("TAB", VK_TAB));
+	keys.insert(std::map<std::string, int>::value_type("SHIFT", VK_SHIFT));
+	keys.insert(std::map<std::string, int>::value_type("CONTROL", VK_CONTROL));
+	keys.insert(std::map<std::string, int>::value_type("BACK", VK_BACK));
+	keys.insert(std::map<std::string, int>::value_type("RETURN", VK_RETURN));
+	keys.insert(std::map<std::string, int>::value_type("INSERT", VK_INSERT));
+	keys.insert(std::map<std::string, int>::value_type("HOME", VK_HOME));
+	keys.insert(std::map<std::string, int>::value_type("PRIOR", VK_PRIOR));
+	keys.insert(std::map<std::string, int>::value_type("DELETE", VK_DELETE));
+	keys.insert(std::map<std::string, int>::value_type("END", VK_END));
+	keys.insert(std::map<std::string, int>::value_type("NEXT", VK_NEXT));
+	keys.insert(std::map<std::string, int>::value_type("UP", VK_UP));
+	keys.insert(std::map<std::string, int>::value_type("LEFT", VK_LEFT));
+	keys.insert(std::map<std::string, int>::value_type("DOWN", VK_DOWN));
+	keys.insert(std::map<std::string, int>::value_type("RIGHT", VK_RIGHT));
+	keys.insert(std::map<std::string, int>::value_type("DIVIDE", VK_DIVIDE));
+	keys.insert(std::map<std::string, int>::value_type("MULTIPLY", VK_MULTIPLY));
+	keys.insert(std::map<std::string, int>::value_type("SUBTRACT", VK_SUBTRACT));
+	keys.insert(std::map<std::string, int>::value_type("ADD", VK_ADD));
+	keys.insert(std::map<std::string, int>::value_type("CLEAR", VK_CLEAR));
+	keys.insert(std::map<std::string, int>::value_type("SPACE", VK_SPACE));
+	keys.insert(std::map<std::string, int>::value_type("DECIMAL", VK_DECIMAL));
+	keys.insert(std::map<std::string, int>::value_type("F2", VK_F2));
+	keys.insert(std::map<std::string, int>::value_type("F3", VK_F3));
+	keys.insert(std::map<std::string, int>::value_type("F4", VK_F4));
+	keys.insert(std::map<std::string, int>::value_type("F5", VK_F5));
+	keys.insert(std::map<std::string, int>::value_type("F6", VK_F6));
+	keys.insert(std::map<std::string, int>::value_type("F7", VK_F7));
+	keys.insert(std::map<std::string, int>::value_type("F8", VK_F8));
+	keys.insert(std::map<std::string, int>::value_type("F9", VK_F9));
+	keys.insert(std::map<std::string, int>::value_type("F10", VK_F10));
+	keys.insert(std::map<std::string, int>::value_type("F11", VK_F11));
+	keys.insert(std::map<std::string, int>::value_type("F12", VK_F12));
+	keys.insert(std::map<std::string, int>::value_type("NUMPAD0", VK_NUMPAD0));
+	keys.insert(std::map<std::string, int>::value_type("NUMPAD1", VK_NUMPAD1));
+	keys.insert(std::map<std::string, int>::value_type("NUMPAD2", VK_NUMPAD2));
+	keys.insert(std::map<std::string, int>::value_type("NUMPAD3", VK_NUMPAD3));
+	keys.insert(std::map<std::string, int>::value_type("NUMPAD4", VK_NUMPAD4));
+	keys.insert(std::map<std::string, int>::value_type("NUMPAD5", VK_NUMPAD5));
+	keys.insert(std::map<std::string, int>::value_type("NUMPAD6", VK_NUMPAD6));
+	keys.insert(std::map<std::string, int>::value_type("NUMPAD7", VK_NUMPAD7));
+	keys.insert(std::map<std::string, int>::value_type("NUMPAD8", VK_NUMPAD8));
+	keys.insert(std::map<std::string, int>::value_type("NUMPAD9", VK_NUMPAD9));
+	keys.insert(std::map<std::string, int>::value_type("NOKEY", -1));
+
+	for(char i = '0'; i <= '9'; i++)
+		keys.insert(std::map<std::string, int>::value_type(std::string(1, i), (int)i));
+
+	for(i = 'A'; i <= 'Z'; i++)
+		keys.insert(std::map<std::string, int>::value_type(std::string(1, i), (int)i));
+}
+
+int RDOParser::RDOHotKeyToolkit::codeFromString( std::string* key )
+{
+	std::map< std::string, int >::iterator it = keys.find( *key );
+	if ( it == keys.end() ) {
+		parser->error( "Unknown key name: " + *key );
+	}
+	return (*it).second;
 }
 
 } // namespace rdoParse 

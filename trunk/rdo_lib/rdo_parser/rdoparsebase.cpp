@@ -8,6 +8,7 @@ static char THIS_FILE[] = __FILE__;
 
 #include "rdoparsebase.h"
 #include "rdoparser.h"
+#include "rdoruntime.h"
 
 namespace rdoParse 
 {

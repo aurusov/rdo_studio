@@ -1164,10 +1164,11 @@ void RDOFUNFunction::createAlgorithmicCalc()
 	functionCalc = funcCalc;
 }
 
-RDOFUNCalculateIf::RDOFUNCalculateIf(RDOFUNLogic *_condition, std::string *_funName, RDOFUNArithm *_action):
-	condition (_condition),
-	funName	 (_funName),
-	action	 (_action)
+RDOFUNCalculateIf::RDOFUNCalculateIf( const RDOParserObject* _parent, RDOFUNLogic* _condition, std::string* _funName, RDOFUNArithm* _action ):
+	RDOParserObject( _parent ),
+	condition( _condition ),
+	funName( _funName ),
+	action( _action )
 {
 	if( *funName != *(parser->getLastFUNFunction()->getName()) ) {
 		parser->error( rdo::format("Îæèäàåòñÿ èìÿ ôóíêöèè: %s", parser->getLastFUNFunction()->getName()->c_str()) );

@@ -148,6 +148,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 #include "rdoopr.h"
+#include "rdoparser.h"
 
 namespace rdoParse 
 {
@@ -159,8 +160,8 @@ opr_main:	opr_end;
 
 opr_header:	Operations;
 
-opr_body:	opr_header IDENTIF_COLON IDENTIF	{ $$ = (int)(new RDOOPROperation((std::string *)$2, (std::string *)$3)); @$; }
-			| opr_param IDENTIF_COLON IDENTIF	{ ((RDOOPROperation *)$1)->endOfDefinition(); $$ = (int)(new RDOOPROperation((std::string *)$2, (std::string *)$3)); };
+opr_body:	opr_header IDENTIF_COLON IDENTIF	{ $$ = (int)(new RDOOPROperation( parser, (std::string *)$2, (std::string *)$3 )); @$; }
+			| opr_param IDENTIF_COLON IDENTIF	{ ((RDOOPROperation *)$1)->endOfDefinition(); $$ = (int)(new RDOOPROperation( parser, (std::string *)$2, (std::string *)$3 )); };
 
 opr_keyb:	opr_body
 			| opr_keyb QUOTED_IDENTIF		{ ((RDOOPROperation *)$1)->addHotKey((std::string *)$2); }

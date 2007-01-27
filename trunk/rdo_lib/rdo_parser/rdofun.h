@@ -164,14 +164,14 @@ public:
 	void setErrorPos( int first_line, int first_column, int last_line, int last_column );
 };
 
-class RDOFUNCalculateIf: public RDODeletable
+class RDOFUNCalculateIf: public RDOParserObject
 {
 public:
-	RDOFUNLogic *condition;
-	std::string *funName;
-	RDOFUNArithm *action;
+	RDOFUNLogic*  condition;
+	std::string*  funName;
+	RDOFUNArithm* action;
 
-	RDOFUNCalculateIf(RDOFUNLogic *_condition, std::string *_funName, RDOFUNArithm *_action);
+	RDOFUNCalculateIf( const RDOParserObject* _parent, RDOFUNLogic* _condition, std::string* _funName, RDOFUNArithm* _action );
 };
 
 class RDOParser;

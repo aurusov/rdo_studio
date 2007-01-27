@@ -19,7 +19,7 @@ protected:
 	YYLTYPE              m_loc;
 
 public:
-	RDOParserRDO( rdoModelObjects::RDOFileType _type, t_bison_parse_fun _parser_fun, t_bison_error_fun _error_fun, t_flex_lexer_fun _lexer_fun ): RDOParserBase( _type, _parser_fun, _error_fun, _lexer_fun ), m_lexer( NULL ) {};
+	RDOParserRDO( RDOParser* _parser, rdoModelObjects::RDOFileType _type, t_bison_parse_fun _parser_fun, t_bison_error_fun _error_fun, t_flex_lexer_fun _lexer_fun ): RDOParserBase( _parser, _type, _parser_fun, _error_fun, _lexer_fun ), m_lexer( NULL ) {};
 	virtual ~RDOParserRDO();
 
 	virtual void parse();
@@ -45,7 +45,7 @@ public:
 class RDOParserRTP: public RDOParserRDO
 {
 public:
-	RDOParserRTP();
+	RDOParserRTP( RDOParser* _parser );
 
 	virtual RDOLexer* getLexer( std::istream& in_stream, std::ostream& out_stream );
 };
@@ -71,7 +71,7 @@ public:
 class RDOParserRSS: public RDOParserRDO
 {
 public:
-	RDOParserRSS();
+	RDOParserRSS( RDOParser* _parser );
 
 	virtual void parse( std::istream& in_stream );
 };
@@ -82,7 +82,7 @@ public:
 class RDOParserRSSPost: public RDOParserBase
 {
 public:
-	RDOParserRSSPost(): RDOParserBase( rdoModelObjects::RSS, NULL, NULL, NULL ) {};
+	RDOParserRSSPost( RDOParser* _parser ): RDOParserBase( _parser, rdoModelObjects::RSS, NULL, NULL, NULL ) {};
 
 	virtual void parse();
 	virtual void parse( std::istream& in_stream ) { parse(); }
@@ -94,7 +94,7 @@ public:
 class RDOParserFUN: public RDOParserRDO
 {
 public:
-	RDOParserFUN();
+	RDOParserFUN( RDOParser* _parser );
 
 	virtual RDOLexer* getLexer( std::istream& in_stream, std::ostream& out_stream );
 };
@@ -120,7 +120,7 @@ public:
 class RDOParserSTDFUN: public RDOParserRDO
 {
 public:
-	RDOParserSTDFUN(): RDOParserRDO( rdoModelObjects::FUN, NULL, NULL, NULL ) {};
+	RDOParserSTDFUN( RDOParser* _parser ): RDOParserRDO( _parser, rdoModelObjects::FUN, NULL, NULL, NULL ) {};
 
 	virtual void parse();
 };
@@ -138,7 +138,7 @@ public:
 class RDOParserSMR1: public RDOParserRDO
 {
 public:
-	RDOParserSMR1();
+	RDOParserSMR1( RDOParser* _parser );
 
 	virtual void parse( std::istream& in_stream );
 };

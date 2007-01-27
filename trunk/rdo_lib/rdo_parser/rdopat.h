@@ -33,7 +33,7 @@ class RDOFUNLogic;
 
 class RDORelevantResource;
 
-class RDOPATPattern: public RDODeletable
+class RDOPATPattern: public RDOParserObject
 {
 friend RDOOPROperation;
 friend RDODPTSearchActivity;
@@ -52,7 +52,7 @@ private:
 	int current_rel_res_index;
 
 protected:
-	RDOPATPattern( const std::string* const _name, const bool _trace );
+	RDOPATPattern( RDOParser* _parser, const std::string* const _name, const bool _trace );
 	virtual ~RDOPATPattern() {}
 
 	rdoRuntime::RDOPatternRuntime* patRuntime;
@@ -72,7 +72,7 @@ public:
 	bool    isHaveConvertEnd() const { return getPatType() == PT_Operation || getPatType() == PT_Keyboard; }
 
 	static std::string StatusToStr( RDOResourceTrace::ConvertStatus value );
-	static RDOResourceTrace::ConvertStatus StrToStatus( const std::string& value );
+	RDOResourceTrace::ConvertStatus StrToStatus( const std::string& value );
 
 	std::vector< RDORelevantResource* >::const_iterator rel_res_begin() const { return relRes.begin(); }
 	std::vector< RDORelevantResource* >::const_iterator rel_res_end()   const { return relRes.end();   }
@@ -117,7 +117,7 @@ public:
 	virtual bool needTime() const { return false; }
 };
 
-class RDORelevantResource: public RDODeletable
+class RDORelevantResource: public RDOParserObject
 {
 private:
 	const std::string* const name;
@@ -143,7 +143,8 @@ public:
 	} currentState;
 	bool isChoiceFromState() const { return currentState == choiceEmpty || currentState == choiceNoCheck || currentState == choiceFrom; }
 
-	RDORelevantResource( const std::string* const _name, const int _rel_res_id, const RDOResourceTrace::ConvertStatus _begin, const RDOResourceTrace::ConvertStatus _end ):
+	RDORelevantResource( const RDOParserObject* _parent, const std::string* const _name, const int _rel_res_id, const RDOResourceTrace::ConvertStatus _begin, const RDOResourceTrace::ConvertStatus _end ):
+		RDOParserObject( _parent ),
 		name( _name ),
 		rel_res_id( _rel_res_id ),
 		begin( _begin ),
@@ -172,7 +173,7 @@ private:
 	const RDORSSResource* const res;
 
 public:
-	RDORelevantResourceDirect( const std::string* const _name, const int _rel_res_id, const RDORSSResource* const _res, const RDOResourceTrace::ConvertStatus _begin, const RDOResourceTrace::ConvertStatus _end = RDOResourceTrace::CS_NoChange ): RDORelevantResource( _name, _rel_res_id, _begin, _end ), res( _res ) {}
+	RDORelevantResourceDirect( const RDOParserObject* _parent, const std::string* const _name, const int _rel_res_id, const RDORSSResource* const _res, const RDOResourceTrace::ConvertStatus _begin, const RDOResourceTrace::ConvertStatus _end = RDOResourceTrace::CS_NoChange ): RDORelevantResource( _parent, _name, _rel_res_id, _begin, _end ), res( _res ) {}
 	const RDORSSResource* const getResource() const { return res; }
 	virtual const RDORTPResType* const getType() const;
 	virtual rdoRuntime::RDOCalc* createSelectEmptyResourceCalc();
@@ -188,7 +189,7 @@ private:
 	const RDORTPResType* const type;
 
 public:
-	RDORelevantResourceByType( const std::string* const _name, const int _rel_res_id, const RDORTPResType* const _type, const RDOResourceTrace::ConvertStatus _begin, const RDOResourceTrace::ConvertStatus _end = RDOResourceTrace::CS_NoChange ): RDORelevantResource( _name, _rel_res_id, _begin, _end ), type( _type ) {}
+	RDORelevantResourceByType( const RDOParserObject* _parent, const std::string* const _name, const int _rel_res_id, const RDORTPResType* const _type, const RDOResourceTrace::ConvertStatus _begin, const RDOResourceTrace::ConvertStatus _end = RDOResourceTrace::CS_NoChange ): RDORelevantResource( _parent, _name, _rel_res_id, _begin, _end ), type( _type ) {}
 	virtual const RDORTPResType* const getType() const { return type; };
 	virtual rdoRuntime::RDOCalc* createSelectEmptyResourceCalc();
 	virtual rdoRuntime::RDOCalc* createSelectFirstResourceChoiceCalc();
@@ -200,12 +201,12 @@ public:
 class RDOPATPatternOperation: public RDOPATPattern
 {
 protected:
-	RDOPATPatternOperation( bool _trace, std::string* _name );
+	RDOPATPatternOperation( RDOParser* _parser, bool _trace, std::string* _name );
 	virtual std::string getPatTypeStr() const { return "operation"; }
 	virtual void rel_res_insert( RDORelevantResource* rel_res );
 
 public:
-	RDOPATPatternOperation( std::string* _name, bool _trace );
+	RDOPATPatternOperation( RDOParser* _parser, std::string* _name, bool _trace );
 	virtual void addRelRes( std::string* relName, std::string* resName, RDOResourceTrace::ConvertStatus beg, RDOResourceTrace::ConvertStatus end );
 	virtual void addRelRes( std::string* relName, std::string* resName, std::string* convBeg );
 	virtual void addRelResConvertBegin(	bool trace, RDOPATParamsSet *parSet);
@@ -223,7 +224,7 @@ protected:
 	virtual std::string getPatTypeStr() const { return "irregular event"; }
 
 public:
-	RDOPATPatternEvent( std::string* _name, bool _trace );
+	RDOPATPatternEvent( RDOParser* _parser, std::string* _name, bool _trace );
 	virtual void addRelRes(std::string *relName, std::string *resName, RDOResourceTrace::ConvertStatus beg);
 	virtual void addRelResUsage( RDOPATChoice* choice, RDOPATSelectType* order_sort );
 	virtual void addRelResConvertEvent(bool trace, RDOPATParamsSet *parSet);
@@ -239,7 +240,7 @@ protected:
 	virtual std::string getPatTypeStr() const { return "rule"; }
 
 public:
-	RDOPATPatternRule( std::string* _name, bool _trace );
+	RDOPATPatternRule( RDOParser* _parser, std::string* _name, bool _trace );
 	virtual void addRelRes(std::string *relName, std::string *resName, RDOResourceTrace::ConvertStatus beg);
 	virtual void setTime(RDOFUNArithm *arithm);
 	virtual void addRelResConvertRule(bool trace, RDOPATParamsSet *parSet);
@@ -255,7 +256,7 @@ protected:
 	virtual std::string getPatTypeStr() const { return "keyboard"; }
 
 public:
-	RDOPATPatternKeyboard( std::string *_name, bool _trace );
+	RDOPATPatternKeyboard( RDOParser* _parser, std::string *_name, bool _trace );
 	virtual char getModelStructureLetter() const { return 'K'; };
 	virtual void testGoodForFreeActivity() const {}
 	virtual PatType getPatType() const { return PT_Keyboard; }
@@ -307,12 +308,13 @@ public:
 	}
 };
 
-class RDOPATParamsSet: public RDODeletable
+class RDOPATParamsSet: public RDOParserObject
 {
 private:
 	std::vector< std::string* > paramNames;
 
 public:
+	RDOPATParamsSet( const RDOParserObject* _parent ): RDOParserObject( _parent ) {}
 	std::vector< RDOFUNArithm* > paramArithms;
 	std::vector< int >           paramNumbs;
 	void addIdentif( std::string* paramName, RDOFUNArithm* paramArithm, const YYLTYPE& param_name_pos );

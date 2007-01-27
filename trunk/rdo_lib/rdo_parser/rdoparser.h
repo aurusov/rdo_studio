@@ -49,7 +49,7 @@ public:
 class RDOParser
 {
 protected:
-	RDOParserList  parsers;
+	RDOParserList* parsers;
 	RDOParserBase* parser_base;
 
 	bool have_kw_Resources;
@@ -91,14 +91,14 @@ public:
 	void insertDeletables( RDODeletable* value ) {
 		if ( value ) {
 			allDeletables.push_back( value );
-			TRACE( "add %d\n", value );
+//			TRACE( "add %d\n", value );
 		}
 	}
 	void removeDeletables( RDODeletable* value ) {
 		std::vector< RDODeletable* >::iterator it = std::find( allDeletables.begin(), allDeletables.end(), value );
 		if ( it != allDeletables.end() ) {
 			allDeletables.erase( it );
-			TRACE( "del %d\n", value );
+//			TRACE( "del %d\n", value );
 		}
 	}
 //	void insertDeletables( RDODeletable* value )            { if ( value ) allDeletables.push_back( value );                                         }
@@ -191,6 +191,15 @@ public:
 		allDoubles.push_back( val );
 		return val;
 	}
+
+	class RDOHotKeyToolkit {
+	private:
+		std::map< std::string, int > keys;
+	public:
+		RDOHotKeyToolkit();
+		int codeFromString( std::string* key );
+	};
+	RDOHotKeyToolkit rdoHotKeyToolkit;
 
 	rdoModelObjects::RDOFileType getFileToParse() const       { return parser_base ? parser_base->type : rdoModelObjects::PAT;          }
 	void lexer_setvalue( int val ) const                      { if ( parser_base ) parser_base->lexer_setvalue( val );                  }

@@ -88,22 +88,6 @@ public:
 	bool operator() (const T * other) { return ((*(other->getName())) == (*name)); }
 };
 
-/*
-enum FileToParse
-{
-	RTP_FILE,
-	RSS_FILE,
-	FUN_FILE,
-	PAT_FILE,
-	OPR_FILE,
-	DPT_FILE,
-	PMD_FILE,
-	FRM_FILE,
-	SMR1_FILE,
-	SMR2_FILE
-};
-*/
-
 }
 
 namespace std

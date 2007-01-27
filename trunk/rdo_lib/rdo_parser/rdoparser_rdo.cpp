@@ -178,7 +178,7 @@ int RDOParserRDO::lexer_loc_pos()
 // ----------------------------------------------------------------------------
 // ---------- RDOParserRTP
 // ----------------------------------------------------------------------------
-RDOParserRTP::RDOParserRTP(): RDOParserRDO( rdoModelObjects::RTP, rtpparse, rtperror, rtplex )
+RDOParserRTP::RDOParserRTP( RDOParser* _parser ): RDOParserRDO( _parser, rdoModelObjects::RTP, rtpparse, rtperror, rtplex )
 {
 }
 
@@ -190,7 +190,7 @@ RDOLexer* RDOParserRTP::getLexer( std::istream& in_stream, std::ostream& out_str
 // ----------------------------------------------------------------------------
 // ---------- RDOParserRSS
 // ----------------------------------------------------------------------------
-RDOParserRSS::RDOParserRSS(): RDOParserRDO( rdoModelObjects::RSS, rssparse, rsserror, rsslex )
+RDOParserRSS::RDOParserRSS( RDOParser* _parser ): RDOParserRDO( _parser, rdoModelObjects::RSS, rssparse, rsserror, rsslex )
 {
 }
 
@@ -217,7 +217,7 @@ void RDOParserRSSPost::parse()
 // ----------------------------------------------------------------------------
 // ---------- RDOParserFUN
 // ----------------------------------------------------------------------------
-RDOParserFUN::RDOParserFUN(): RDOParserRDO( rdoModelObjects::FUN, funparse, funerror, funlex )
+RDOParserFUN::RDOParserFUN( RDOParser* _parser ): RDOParserRDO( _parser, rdoModelObjects::FUN, funparse, funerror, funlex )
 {
 }
 
@@ -231,13 +231,13 @@ RDOLexer* RDOParserFUN::getLexer( std::istream& in_stream, std::ostream& out_str
 // ----------------------------------------------------------------------------
 void RDOParserSTDFUN::parse()
 {
-	if ( rdoParse::parser ) rdoParse::parser->LoadStdFunctions();
+	if ( parser ) parser->LoadStdFunctions();
 }
 
 // ----------------------------------------------------------------------------
 // ---------- RDOParserSMR1
 // ----------------------------------------------------------------------------
-RDOParserSMR1::RDOParserSMR1(): RDOParserRDO( rdoModelObjects::SMR, smr1parse, smr1error, smr1lex )
+RDOParserSMR1::RDOParserSMR1( RDOParser* _parser ): RDOParserRDO( _parser, rdoModelObjects::SMR, smr1parse, smr1error, smr1lex )
 {
 }
 
@@ -248,8 +248,8 @@ void RDOParserSMR1::parse( std::istream& in_stream )
 	} catch ( RDOSMR1OkException& ) {
 		// Everithing ok, just end of first part parsing
 	}
-	if ( rdoParse::parser && rdoParse::parser->smr && !rdoParse::parser->smr->showRate ) {
-		rdoParse::parser->smr->showRate = rdoParse::parser->addDouble( new double(60.0) );
+	if ( parser && parser->smr && !parser->smr->showRate ) {
+		parser->smr->showRate = parser->addDouble( new double(60.0) );
 	}
 }
 

@@ -734,7 +734,7 @@ fun_func_algorithmic_body:	/* empty */
 fun_func_algorithmic_calc_if:	Calculate_if fun_logic IDENTIF '=' fun_arithm {
 									parser->lexer_loc_backup();
 									parser->lexer_loc_set( &(@3) );
-									$$ = (int)(new RDOFUNCalculateIf((RDOFUNLogic *)$2, (std::string *)$3, (RDOFUNArithm *)$5));
+									$$ = (int)(new RDOFUNCalculateIf( parser->getLastFUNFunction(), (RDOFUNLogic *)$2, (std::string *)$3, (RDOFUNArithm *)$5 ));
 									parser->lexer_loc_restore();
 								}
 								| Calculate_if fun_logic error {

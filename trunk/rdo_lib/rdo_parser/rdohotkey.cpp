@@ -10,7 +10,7 @@ static char THIS_FILE[] = __FILE__;
 
 namespace rdoParse 
 {
-
+/*
 RDOHotKeyToolkit rdoHotKeyToolkit;
 
 RDOHotKeyToolkit::RDOHotKeyToolkit()
@@ -76,5 +76,5 @@ int RDOHotKeyToolkit::codeFromString( std::string* key )
 	}
 	return (*it).second;
 }
-
+*/
 } // namespace rdoParse

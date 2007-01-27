@@ -27,8 +27,9 @@ void oprerror( char* mes )
 {
 }
 
-RDOOPROperation::RDOOPROperation(std::string *_oprName, std::string *patName)
-:name(_oprName)
+RDOOPROperation::RDOOPROperation( RDOParser* _parser, std::string* _oprName, std::string* patName ):
+	RDOParserObject( _parser ),
+	name( _oprName )
 {
 	pattern = parser->findPattern(patName);
 	if(!pattern)

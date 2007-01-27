@@ -17,16 +17,16 @@ void oprerror( char* mes );
 
 class RDOPATPattern;
 
-class RDOOPROperation: public RDODeletable
+class RDOOPROperation: public RDOParserObject
 {
 private:
-	const std::string *const name;
-	const RDOPATPattern *pattern;
+	const std::string* const name;
+	const RDOPATPattern* pattern;
 	int currParam;
-	rdoRuntime::RDOActivityRuntime *activity;
+	rdoRuntime::RDOActivityRuntime* activity;
 
 public:
-	RDOOPROperation(std::string *_oprName, std::string *patName);
+	RDOOPROperation( RDOParser* _parser, std::string* _oprName, std::string* patName );
 	void endOfDefinition();
 	void addParam(std::string *stringParam);
 	void addParam(int intParam);
