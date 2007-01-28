@@ -486,7 +486,7 @@ void RDOPATPattern::end()
 			parser->error( rdo::format("Релевантный ресурс '%s' не используется в образце '%s'", currRelRes->getName()->c_str(), getName()->c_str()) );
 			parser->lexer_loc_restore();
 		}
-//		patRuntime->addChoiceFromCalc( currRelRes->createSelectEmptyResourceCalc() );
+		patRuntime->addChoiceFromCalc( currRelRes->createSelectEmptyResourceCalc() );
 	}
 
 	if(useCommonChoice)

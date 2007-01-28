@@ -111,3 +111,7 @@
 
 Отказ от extern RDOParser* parser:
 1. проблема с rdoParse::RDOPROCTransact::makeRTP( NULL )
+
+Странное:
+1. А для чего используется
+patRuntime->addChoiceFromCalc( currRelRes->createSelectEmptyResourceCalc() );
