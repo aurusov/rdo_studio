@@ -1,5 +1,5 @@
-#ifndef RDO_STD_FUNCS_
-#define RDO_STD_FUNCS_
+#ifndef RDOPARSER_OBJECT_H
+#define RDOPARSER_OBJECT_H
 
 #include "rdogramma.h"
 
@@ -140,4 +140,4 @@ inline std::string operator +(std::string &str1, char *str2)
 	return std::string(str1).append(str2);
 }
 
-#endif // RDO_STD_FUNCS_
+#endif // RDOPARSER_OBJECT_H

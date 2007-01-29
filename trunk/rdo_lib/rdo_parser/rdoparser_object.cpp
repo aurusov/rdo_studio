@@ -6,7 +6,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-#include "rdoparsebase.h"
+#include "rdoparser_object.h"
 #include "rdoparser.h"
 #include "rdoruntime.h"
 

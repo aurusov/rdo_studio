@@ -1,7 +1,7 @@
 #ifndef RDOFRM_FRM
 #define RDOFRM_FRM
 
-#include "rdoparsebase.h"
+#include "rdoparser_object.h"
 #include <rdocommon.h>
 #include <rdortp.h>
 

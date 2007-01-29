@@ -1,7 +1,7 @@
 #ifndef RDORSS_RSS
 #define RDORSS_RSS
 
-#include "rdoparsebase.h"
+#include "rdoparser_object.h"
 
 namespace rdoParse 
 {

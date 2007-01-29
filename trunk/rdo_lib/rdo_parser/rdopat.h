@@ -1,7 +1,7 @@
 #ifndef RDOPAT_PAT
 #define RDOPAT_PAT
 
-#include "rdoparsebase.h"
+#include "rdoparser_object.h"
 #include <rdotrace.h>
 
 namespace rdoRuntime

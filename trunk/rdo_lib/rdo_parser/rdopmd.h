@@ -1,7 +1,7 @@
 #ifndef RDOPMD_PMD
 #define RDOPMD_PMD
 
-#include "rdoparsebase.h"
+#include "rdoparser_object.h"
 #include <rdopokaz.h>
 
 namespace rdoRuntime

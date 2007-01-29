@@ -1,7 +1,7 @@
 #ifndef RDOSMR_SMR
 #define RDOSMR_SMR
 
-#include "rdoparsebase.h"
+#include "rdoparser_object.h"
 #include <rdotrace.h>
 #include <rdocommon.h>
 

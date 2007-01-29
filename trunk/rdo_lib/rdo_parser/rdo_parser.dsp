@@ -166,10 +166,6 @@ SOURCE=.\rdoopr.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\rdoparsebase.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\rdoparser.cpp
 
 !IF  "$(CFG)" == "rdo_parser - Win32 Release"
@@ -212,6 +208,10 @@ SOURCE=.\rdoparser_lexer.cpp
 
 !ENDIF 
 
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdoparser_object.cpp
 # End Source File
 # Begin Source File
 
@@ -371,10 +371,6 @@ SOURCE=.\rdoopr.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\rdoparsebase.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\rdoparser.h
 # End Source File
 # Begin Source File
@@ -384,6 +380,10 @@ SOURCE=.\rdoparser_base.h
 # Begin Source File
 
 SOURCE=.\rdoparser_lexer.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdoparser_object.h
 # End Source File
 # Begin Source File
 
