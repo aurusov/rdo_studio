@@ -180,6 +180,10 @@ SOURCE=.\rdoprocess.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\rdoruntime_object.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdotrace.cpp
 
 !IF  "$(CFG)" == "rdo_runtime - Win32 Release"
@@ -296,6 +300,10 @@ SOURCE=.\rdopokaz.h
 # Begin Source File
 
 SOURCE=.\rdoprocess.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdoruntime_object.h
 # End Source File
 # Begin Source File
 

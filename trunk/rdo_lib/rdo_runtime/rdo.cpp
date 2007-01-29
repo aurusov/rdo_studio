@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "rdoprocess.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -10,6 +9,7 @@ static char THIS_FILE[] = __FILE__;
 #pragma warning(disable : 4786)  
 
 #include "rdo.h"
+#include "rdoprocess.h"
 
 bool CheckOperations::operator()(RDOBaseOperation *op)
 {

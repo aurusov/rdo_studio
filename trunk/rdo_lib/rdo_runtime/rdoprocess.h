@@ -2,7 +2,7 @@
 #define RDOPROCESS_H
 
 #include "rdo.h"
-#include "rdoruntime.h"
+#include <rdoruntime.h>
 
 namespace rdoRuntime {
 

@@ -4,6 +4,7 @@
 #include "rdoparser_object.h"
 #include "rdortp.h"
 #include <rdocommon.h>
+#include <rdoruntime_object.h>
 
 namespace rdoRuntime
 {

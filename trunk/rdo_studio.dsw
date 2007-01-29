@@ -89,6 +89,9 @@ Package=<5>
 
 Package=<4>
 {{{
+    Begin Project Dependency
+    Project_Dep_Name rdo_runtime
+    End Project Dependency
 }}}
 
 ###############################################################################
@@ -143,9 +146,6 @@ Package=<5>
 
 Package=<4>
 {{{
-    Begin Project Dependency
-    Project_Dep_Name rdo_parser
-    End Project Dependency
 }}}
 
 ###############################################################################
@@ -159,7 +159,7 @@ Package=<5>
 Package=<4>
 {{{
     Begin Project Dependency
-    Project_Dep_Name rdo_runtime
+    Project_Dep_Name rdo_parser
     End Project Dependency
 }}}
 
@@ -184,6 +184,9 @@ Package=<4>
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name rdo_plugin_mfc
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name rdo_parser
     End Project Dependency
 }}}
 

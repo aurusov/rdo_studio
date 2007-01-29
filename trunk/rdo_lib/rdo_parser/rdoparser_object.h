@@ -11,11 +11,6 @@ public:
    RDOException(const char *str): mess(str) {}
 };
 
-namespace rdoRuntime
-{
-typedef double RDOValue;
-}
-
 namespace rdoParse 
 {
 

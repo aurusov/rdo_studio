@@ -2,6 +2,7 @@
 #define RDORSS_RSS
 
 #include "rdoparser_object.h"
+#include <rdoruntime_object.h>
 
 namespace rdoParse 
 {
