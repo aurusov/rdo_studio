@@ -61,7 +61,7 @@ void RDORuntime::onEraseRes( const int res_id, const RDOCalcEraseRes* calc )
 		error( "Невозможно удалить ресурс, т.к. он еще используется", calc );
 //		error( "Try to erase used resource", fromCalc );
 	} else {
-		std::for_each( allPokaz.begin(), allPokaz.end(), std::bind2nd(std::mem_fun1(rdoParse::RDOPMDPokaz::checkResourceErased), res) );
+		std::for_each( allPokaz.begin(), allPokaz.end(), std::bind2nd(std::mem_fun1(rdoRuntime::RDOPMDPokaz::checkResourceErased), res) );
 		allResourcesByID.at( res_id ) = NULL;
 		// Диструктор ресурса вызывается в std::list::erase, который вызывается из std::list::remove
 		allResourcesByTime.remove( res );
@@ -111,7 +111,7 @@ void RDORuntime::insertNewResource( RDOResource* res )
 	allResourcesByTime.push_back( res );
 }
 
-void RDORuntime::addRuntimePokaz( rdoParse::RDOPMDPokaz* pok )
+void RDORuntime::addRuntimePokaz( rdoRuntime::RDOPMDPokaz* pok )
 { 
 	allPokaz.push_back(pok); 
 //	addPokaz(pok); 
@@ -968,7 +968,7 @@ std::string RDORuntime::writePokazStructure()
 	std::stringstream stream;
 	for(int i = 0; i < allPokaz.size(); i++)
 	{
-		rdoParse::RDOPMDPokaz *curr = allPokaz.at(i);
+		rdoRuntime::RDOPMDPokaz *curr = allPokaz.at(i);
 		if(curr->trace)
 			curr->writePokazStructure(stream);
 	}

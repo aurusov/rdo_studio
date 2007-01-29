@@ -49,24 +49,20 @@ class RDOCalcEraseRes;
 namespace rdoParse {
 class RDOPATChoice;
 class RDOPATSelectType;
-class RDOPMDWatchQuant;
-class RDOPMDWatchValue;
-class RDOPMDWatchPar;
-class RDOPMDPokaz;
-class RDOPMDWatchState;
 class RDOFRMFrame;
 class RDORelevantResource;
 class RDOFUNArithm;
-class RDOPMDWatchQuant;
-class RDOPMDWatchValue;
-class RDOPMDWatchPar;	  
-class RDOPMDWatchState;
 void addCalcToRuntime( rdoRuntime::RDOCalc* calc );
 void removeCalcToRuntime( rdoRuntime::RDOCalc* calc );
 }
 
 namespace rdoRuntime
 {
+class RDOPMDPokaz;
+class RDOPMDWatchQuant;
+class RDOPMDWatchValue;
+class RDOPMDWatchPar;
+class RDOPMDWatchState;
 
 class RDOResult
 {
@@ -143,10 +139,10 @@ friend class RDOFunCalcForAll;
 friend class RDOFunCalcNotForAll;
 friend class RDOSelectResourceByTypeCalc;
 friend class RDOSelectResourceByTypeCommonCalc;
-friend class rdoParse::RDOPMDWatchQuant;
-friend class rdoParse::RDOPMDWatchValue;
-friend class rdoParse::RDOPMDWatchPar;	  
-friend class rdoParse::RDOPMDWatchState;
+friend class RDOPMDWatchQuant;
+friend class RDOPMDWatchValue;
+friend class RDOPMDWatchPar;	  
+friend class RDOPMDWatchState;
 
 friend void rdoParse::addCalcToRuntime( RDOCalc* calc );
 friend void rdoParse::removeCalcToRuntime( RDOCalc* calc );
@@ -172,7 +168,7 @@ private:
 	std::vector< RDOActivityIERuntime* >        ies;
 	std::vector< RDOActivityOperationRuntime* > operations;
 	std::vector< rdoRuntime::RDOPROCProcess* >  process;
-	std::vector< rdoParse::RDOPMDPokaz* >       allPokaz;
+	std::vector< rdoRuntime::RDOPMDPokaz* >     allPokaz;
 
 	std::vector<RDOPatternRuntime *> allPatterns;
 
@@ -233,7 +229,7 @@ public:
 	void addRuntimeRule(RDOActivityRuleRuntime *rule);
 	void addRuntimeIE(RDOActivityIERuntime *ie);
 	void addRuntimeProcess( rdoRuntime::RDOPROCProcess* _process );
-	void addRuntimePokaz( rdoParse::RDOPMDPokaz* pok );
+	void addRuntimePokaz( rdoRuntime::RDOPMDPokaz* pok );
 	void addRuntimeFrame( rdoParse::RDOFRMFrame* frm );
 	rdoParse::RDOFRMFrame* lastFrame() const;
 

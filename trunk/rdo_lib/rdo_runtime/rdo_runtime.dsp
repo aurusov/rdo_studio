@@ -161,6 +161,10 @@ SOURCE=.\rdobase.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\rdopokaz.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdoprocess.cpp
 
 !IF  "$(CFG)" == "rdo_runtime - Win32 Release"
@@ -284,6 +288,10 @@ SOURCE=.\rdodefines.h
 # Begin Source File
 
 SOURCE=.\rdofunc.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdopokaz.h
 # End Source File
 # Begin Source File
 

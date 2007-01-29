@@ -29,25 +29,28 @@ void pmderror( char* mes )
 //	rdoParse::parser->error( mes );
 }
 
-//////////////////////////// RDOPMDPokaz::RDOPMDPokaz /////////////////////////////////
-RDOPMDPokaz::RDOPMDPokaz( RDOParser* _parser, const std::string* const _name, bool _trace ):
-	RDOPokazTrace( _parser->runTime ),
+// ----------------------------------------------------------------------------
+// ---------- RDOPMDPokaz
+// ----------------------------------------------------------------------------
+RDOPMDPokaz::RDOPMDPokaz( RDOParser* _parser ):
 	RDOParserObject( _parser ),
-	name( *_name )
+	pokaz_runtime( NULL )
 {
-	trace = _trace; 
 }
 
-void RDOPMDPokaz::endOfCreation()
+void RDOPMDPokaz::endOfCreation( rdoRuntime::RDOPMDPokaz* _pokaz_runtime )
 {
-	id = parser->getPMD_id();
+	pokaz_runtime     = _pokaz_runtime;
+	pokaz_runtime->id = parser->getPMD_id();
 	parser->insertPMDPokaz( this );
-	parser->runTime->addRuntimePokaz(this);
+	parser->runTime->addRuntimePokaz( pokaz_runtime );
 }
 
-//////////////////////////// RDOPMDWatchPar::RDOPMDWatchPar /////////////////////////////////
+// ----------------------------------------------------------------------------
+// ---------- RDOPMDWatchPar
+// ----------------------------------------------------------------------------
 RDOPMDWatchPar::RDOPMDWatchPar( RDOParser* _parser, std::string* _name, bool _trace, std::string* _resName, std::string* _parName ):
-	RDOPMDPokaz( _parser, _name, _trace )
+	RDOPMDPokaz( _parser )
 {
 	const RDORSSResource *const res = parser->findRSSResource(_resName);
 	if(!res)
@@ -65,451 +68,78 @@ RDOPMDWatchPar::RDOPMDWatchPar( RDOParser* _parser, std::string* _name, bool _tr
 		parser->error("Enumerative parameter: " + *_resName + "." + *_parName + " not allowed in watch_par statement");
 	}
 
-	resNumber = res->getNumber();
-	parNumber = res->getType()->getRTPParamNumber(_parName);
-	endOfCreation();
+	rdoRuntime::RDOPMDWatchPar* pokaz = new rdoRuntime::RDOPMDWatchPar( _name, _trace, _parName, _parName );
+	pokaz->resNumber = res->getNumber();
+	pokaz->parNumber = res->getType()->getRTPParamNumber(_parName);
+	endOfCreation( pokaz );
 }
 
-std::string RDOPMDWatchPar::traceValue()
-{
-	return toString(currValue);
-}
-
-bool RDOPMDWatchPar::resetPokaz(RDOSimulator *sim)
-{
-	rdoRuntime::RDORuntime* runtime = dynamic_cast< rdoRuntime::RDORuntime* >(sim);
-
-	watchNumber = 0;
-	currValue = 0;
-	sum = 0;
-	sumSqr = 0;
-	minValue = DBL_MAX;
-	maxValue = DBL_MIN;
-
-	timePrev = timeBegin = runtime->getCurrentTime();
-	return true;
-}
-
-bool RDOPMDWatchPar::checkPokaz(RDOSimulator *sim)
-{
-	rdoRuntime::RDORuntime* runtime = dynamic_cast< rdoRuntime::RDORuntime* >(sim);
-	double newValue = runtime->getResParamVal(resNumber, parNumber);
-	if(newValue != currValue)
-	{
-		double currTime = runtime->getCurrentTime();
-		double val = currValue * (currTime - timePrev);
-		sum	+= val;
-		sumSqr += val * val;
-		timePrev = currTime;
-
-		currValue = newValue;
-		wasChanged = true;
-		watchNumber ++;
-		if(minValue > currValue)
-			minValue = currValue;
-
-		if(maxValue < currValue)
-			maxValue = currValue;
-
-		return true;
-	}
-	return false;
-}
-
-bool RDOPMDWatchPar::calcStat(RDOSimulator *sim)
-{
-	rdoRuntime::RDORuntime* runtime = dynamic_cast< rdoRuntime::RDORuntime* >(sim);
-
-	double currTime = runtime->getCurrentTime();
-	double val = currValue * (currTime - timePrev);
-	sum	+= val;
-	sumSqr += val * val;
-
-	double average = sum / (currTime - timeBegin);
-
-	runtime->getResult().width(30);
-	runtime->getResult() << std::left << name 
-		<< "\t" << traceValue()
-		<< "\t" << watchNumber
-		<< "\t" << average 
-		<< "\t" << sumSqr 
-		<< "\t" << minValue 
-		<< "\t" << maxValue << '\n'; 
-
-	return true;
-}
-
-//////////////////////////// RDOPMDWatchState::RDOPMDWatchState /////////////////////////////////
+// ----------------------------------------------------------------------------
+// ---------- RDOPMDWatchState
+// ----------------------------------------------------------------------------
 RDOPMDWatchState::RDOPMDWatchState( RDOParser* _parser, std::string* _name, bool _trace, RDOFUNLogic* _logic ):
-	RDOPMDPokaz( _parser, _name, _trace ),
-	logicCalc( _logic->calc )
+	RDOPMDPokaz( _parser )
 {
-	endOfCreation();
+	endOfCreation( new rdoRuntime::RDOPMDWatchState( _name, _trace, _logic ) );
 }
 
-std::string RDOPMDWatchState::traceValue()
-{
-	return currValue?"TRUE":"FALSE";
-}
-
-bool RDOPMDWatchState::resetPokaz(RDOSimulator *sim)
-{
-	rdoRuntime::RDORuntime* runtime = dynamic_cast< rdoRuntime::RDORuntime* >(sim);
-
-	watchNumber = 0;
-	currValue = fabs(logicCalc->calcValueBase(runtime)) > DBL_EPSILON;
-	sum = 0;
-	sumSqr = 0;
-	minValue = DBL_MAX;
-	maxValue = DBL_MIN;
-
-	timePrev = timeBegin = runtime->getCurrentTime();
-	return true;
-}
-
-bool RDOPMDWatchState::checkPokaz(RDOSimulator *sim)
-{
-	rdoRuntime::RDORuntime* runtime = dynamic_cast< rdoRuntime::RDORuntime* >(sim);
-	bool newValue = fabs(logicCalc->calcValueBase(runtime)) > DBL_EPSILON;
-	if(newValue && !currValue)	// from FALSE to TRUE
-	{
-		timePrev = runtime->getCurrentTime();
-	}
-	else if(!newValue && currValue)	// from TRUE to FALSE
-	{
-		double currTime = runtime->getCurrentTime();
-		double val = currTime - timePrev;
-		sum	+= val;
-		sumSqr += val * val;
-
-		wasChanged = true;
-		watchNumber ++;
-
-		if(minValue > val)
-			minValue = val;
-
-		if(maxValue < val)
-			maxValue = val;
-	}
-
-	currValue = newValue;
-	return true;
-
-/*
-	if(newValue != currValue)
-	{
-		double currTime = runtime->getCurrentTime();
-		double val = currValue * (currTime - timePrev);
-		sum	+= val;
-		sumSqr += val * val;
-		timePrev = currTime;
-
-		currValue = newValue;
-		wasChanged = true;
-		if(!newValue)
-			watchNumber ++;
-
-		if(minValue > val)
-			minValue = val;
-
-		if(maxValue < val)
-			maxValue = val;
-
-		return true;
-	}
-	return false;
-*/
-}
-
-bool RDOPMDWatchState::calcStat(RDOSimulator *sim)
-{
-	rdoRuntime::RDORuntime* runtime = dynamic_cast< rdoRuntime::RDORuntime* >(sim);
-
-	double currTime = runtime->getCurrentTime();
-	double val = currValue * (currTime - timePrev);
-	sum	+= val;
-	sumSqr += val * val;
-
-	double average = sum / (currTime - timeBegin);
-
-	runtime->getResult().width(30);
-	runtime->getResult() << std::left << name 
-		<< "\t" << traceValue() 
-		<< "\t" << watchNumber
-		<< "\t" << average 
-		<< "\t" << sumSqr 
-		<< "\t" << minValue 
-		<< "\t" << maxValue << '\n'; 
-
-	return true;
-}
-
-//////////////////////////// RDOPMDWatchQuant::RDOPMDWatchQuant /////////////////////////////////
+// ----------------------------------------------------------------------------
+// ---------- RDOPMDWatchQuant
+// ----------------------------------------------------------------------------
 RDOPMDWatchQuant::RDOPMDWatchQuant( RDOParser* _parser, std::string* _name, bool _trace, std::string* _resTypeName ):
-	RDOPMDPokaz( _parser, _name, _trace )
+	RDOPMDPokaz( _parser )
 {
-	funGroup = new RDOFUNGroupLogic( parser, 5, _resTypeName );
-	endOfCreation();
+	rdoRuntime::RDOPMDWatchQuant* pokaz = new rdoRuntime::RDOPMDWatchQuant( _name, _trace, _resTypeName );
+	pokaz->funGroup = new RDOFUNGroupLogic( this, 5, _resTypeName );
+	endOfCreation( pokaz );
 }
 
-void RDOPMDWatchQuant::setLogic(RDOFUNLogic *_logic)
+void RDOPMDWatchQuant::setLogic( RDOFUNLogic* _logic )
 {
-	logicCalc = _logic->calc;
+	static_cast<rdoRuntime::RDOPMDWatchQuant*>(pokaz_runtime)->logicCalc = _logic->calc;
 	parser->getFUNGroupStack().pop_back();
 }
 
 void RDOPMDWatchQuant::setLogicNoCheck()
 {
-	logicCalc = new rdoRuntime::RDOCalcConst(1);
+	static_cast<rdoRuntime::RDOPMDWatchQuant*>(pokaz_runtime)->logicCalc = new rdoRuntime::RDOCalcConst(1);
 	parser->getFUNGroupStack().pop_back();
 }
 
-std::string RDOPMDWatchQuant::traceValue()
-{
-	return toString(currValue);
-}
-
-bool RDOPMDWatchQuant::resetPokaz(RDOSimulator *sim)
-{
-	rdoRuntime::RDORuntime* runtime = dynamic_cast< rdoRuntime::RDORuntime* >(sim);
-
-	watchNumber = 0;
-	currValue = 0;
-	sum = 0;
-	sumSqr = 0;
-	minValue = DBL_MAX;
-	maxValue = DBL_MIN;
-
-	timePrev = timeBegin = runtime->getCurrentTime();
-	return true;
-}
-
-bool RDOPMDWatchQuant::checkPokaz(RDOSimulator *sim)
-{
-	rdoRuntime::RDORuntime* runtime = dynamic_cast< rdoRuntime::RDORuntime* >(sim);
-
-	int newValue = 0;
-	for(std::vector< rdoRuntime::RDOResource* >::iterator it = runtime->allResourcesByID.begin(); 
-													it != runtime->allResourcesByID.end(); it++)
-	{
-		if(*it == NULL)
-			continue;
-
-		if((*it)->type != funGroup->resType->getNumber())
-			continue;
-
-		runtime->pushGroupFunc(*it);
-		if(logicCalc->calcValueBase(runtime))
-			newValue++;
-
-		runtime->popGroupFunc();
-	}
-
-	if(newValue != currValue)
-	{
-		double currTime = runtime->getCurrentTime();
-		double val = currValue * (currTime - timePrev);
-		sum	+= val;
-		sumSqr += val * val;
-		timePrev = currTime;
-
-		currValue = newValue;
-		wasChanged = true;
-		watchNumber ++;
-		if(minValue > currValue)
-			minValue = currValue;
-
-		if(maxValue < currValue)
-			maxValue = currValue;
-
-		return true;
-	}
-	return false;
-}
-
-bool RDOPMDWatchQuant::calcStat(RDOSimulator *sim)
-{
-	rdoRuntime::RDORuntime* runtime = dynamic_cast< rdoRuntime::RDORuntime* >(sim);
-
-	double currTime = runtime->getCurrentTime();
-	double val = currValue * (currTime - timePrev);
-	sum	+= val;
-	sumSqr += val * val;
-
-	double average = sum / (currTime - timeBegin);
-
-	runtime->getResult().width(30);
-	runtime->getResult() << std::left << name 
-		<< "\t" << traceValue()
-		<< "\t" << watchNumber
-		<< "\t" << average 
-		<< "\t" << sumSqr 
-		<< "\t" << minValue 
-		<< "\t" << maxValue << '\n'; 
-
-	return true;
-}
-
-//////////////////////////// RDOPMDWatchValue::RDOPMDWatchValue /////////////////////////////////
+// ----------------------------------------------------------------------------
+// ---------- RDOPMDWatchValue
+// ----------------------------------------------------------------------------
 RDOPMDWatchValue::RDOPMDWatchValue( RDOParser* _parser, std::string* _name, bool _trace, std::string* _resTypeName ):
-	RDOPMDPokaz( _parser, _name, _trace )
+	RDOPMDPokaz( _parser )
 {
-	funGroup = new RDOFUNGroupLogic( parser, 5, _resTypeName );
-	wasChanged = false;
-	endOfCreation();
+	rdoRuntime::RDOPMDWatchValue* pokaz = new rdoRuntime::RDOPMDWatchValue( _name, _trace, _resTypeName );
+	pokaz->funGroup   = new RDOFUNGroupLogic( this, 5, _resTypeName );
+	pokaz->wasChanged = false;
+	endOfCreation( pokaz );
 }
 
-void RDOPMDWatchValue::setLogic(RDOFUNLogic *_logic, RDOFUNArithm *_arithm)
+void RDOPMDWatchValue::setLogic( RDOFUNLogic* _logic, RDOFUNArithm* _arithm )
 {
-	logicCalc  = _logic->calc;
-	arithmCalc = _arithm->createCalc();
+	static_cast<rdoRuntime::RDOPMDWatchValue*>(pokaz_runtime)->logicCalc  = _logic->calc;
+	static_cast<rdoRuntime::RDOPMDWatchValue*>(pokaz_runtime)->arithmCalc = _arithm->createCalc();
 	parser->getFUNGroupStack().pop_back();
 }
 
-void RDOPMDWatchValue::setLogicNoCheck(RDOFUNArithm *_arithm)
+void RDOPMDWatchValue::setLogicNoCheck( RDOFUNArithm* _arithm )
 {
-	logicCalc = new rdoRuntime::RDOCalcConst(1);
-	arithmCalc = _arithm->createCalc();
+	static_cast<rdoRuntime::RDOPMDWatchValue*>(pokaz_runtime)->logicCalc  = new rdoRuntime::RDOCalcConst(1);
+	static_cast<rdoRuntime::RDOPMDWatchValue*>(pokaz_runtime)->arithmCalc = _arithm->createCalc();
 	parser->getFUNGroupStack().pop_back();
 }
 
-std::string RDOPMDWatchValue::traceValue()
+// ----------------------------------------------------------------------------
+// ---------- RDOPMDGetValue
+// ----------------------------------------------------------------------------
+RDOPMDGetValue::RDOPMDGetValue( RDOParser* _parser, std::string* _name, RDOFUNArithm* _arithm ):
+	RDOPMDPokaz( _parser )
 {
-	return toString(currValue);
-}
-
-bool RDOPMDWatchValue::resetPokaz(RDOSimulator *sim)
-{
-	watchNumber = 0;
-	currValue = 0;
-	sum = 0;
-	sumSqr = 0;
-	minValue = DBL_MAX;
-	maxValue = DBL_MIN;
-
-	return true;
-}
-
-bool RDOPMDWatchValue::checkPokaz(RDOSimulator *sim)
-{
-	return false;
-}
-
-bool RDOPMDWatchValue::calcStat(RDOSimulator *sim)
-{
-	rdoRuntime::RDORuntime* runtime = dynamic_cast< rdoRuntime::RDORuntime* >(sim);
-
-	double average, averageSqr, deviation;
-	if(watchNumber < 2)
-		average = averageSqr = deviation = 0;
-	else
-	{
-		average = sum / watchNumber;
-		averageSqr = sumSqr - 2 * average * sum + watchNumber * average * average;
-		averageSqr = sqrt(averageSqr / (watchNumber - 1));
-		deviation = averageSqr / sqrt(watchNumber);
-	}
-
-	runtime->getResult().width(30);
-	runtime->getResult() << std::left << name 
-		<< "\t" << watchNumber
-		<< "\t" << average 
-		<< "\t" << averageSqr
-		<< "\t" << deviation
-		<< "\t" << minValue 
-		<< "\t" << maxValue << '\n'; 
-
-	return true;
-}
-
-bool RDOPMDWatchValue::checkResourceErased( rdoRuntime::RDOResource* res )
-{
-	rdoRuntime::RDORuntime* runtime = dynamic_cast< rdoRuntime::RDORuntime* >(sim);
-
-	if(res->type != funGroup->resType->getNumber())
-		return false;
-
-	runtime->pushGroupFunc(res);
-	if(logicCalc->calcValueBase(runtime))
-	{
-		currValue = arithmCalc->calcValueBase(runtime);
-		tracePokaz();
-//		runtime->getTracer()->writePokaz(runtime, this);
-
-		sum	+= currValue;
-		sumSqr += currValue * currValue;
-		watchNumber++;
-
-		if(minValue > currValue)
-			minValue = currValue;
-
-		if(maxValue < currValue)
-			maxValue = currValue;
-
-		return true;
-	}
-
-	runtime->popGroupFunc();
-	return true;
-}
-
-//////////////////////////// RDOPMDGetValue::RDOPMDGetValue /////////////////////////////////
-RDOPMDGetValue::RDOPMDGetValue( RDOParser* _parser, std::string* _name, RDOFUNArithm* _arithm):
-	RDOPMDPokaz( _parser, _name, false ),
-	arithmCalc( _arithm->createCalc() )
-{
-	endOfCreation();
-}
-
-std::string RDOPMDGetValue::traceValue()
-{
-	return "ERROR";
-}
-
-bool RDOPMDGetValue::resetPokaz(RDOSimulator *sim)
-{
-	return false;
-}
-
-bool RDOPMDGetValue::checkPokaz(RDOSimulator *sim)
-{
-	return false;
-}
-
-bool RDOPMDGetValue::calcStat(RDOSimulator *sim)
-{
-	rdoRuntime::RDORuntime* runtime = dynamic_cast< rdoRuntime::RDORuntime* >(sim);
-
-	runtime->getResult().width(30);
-	runtime->getResult() << std::left << name 
-		<< "\t" << arithmCalc->calcValueBase(runtime) << '\n';
-
-	return true;
-}
-
-void RDOPMDWatchPar::writePokazStructure(std::ostream &stream) const
-{
-	stream << "\t" << name << "\t" << traceId() << "\twatch_par" << std::endl;
-}
-
-void RDOPMDWatchState::writePokazStructure(std::ostream &stream) const
-{
-	stream << "\t" << name << "\t" << traceId() << "\twatch_state" << std::endl;
-}
-
-void RDOPMDWatchQuant::writePokazStructure(std::ostream &stream) const
-{
-	stream << "\t" << name << "\t" << traceId() << "\twatch_quant" << std::endl;
-}
-
-void RDOPMDWatchValue::writePokazStructure(std::ostream &stream) const
-{
-	stream << "\t" << name << "\t" << traceId() << "\twatch_value" << std::endl;
-}
-
-void RDOPMDGetValue::writePokazStructure(std::ostream &stream) const
-{
-	stream << "\t" << name << "\t" << traceId() << "\tget_value" << std::endl;
+	rdoRuntime::RDOPMDGetValue* pokaz = new rdoRuntime::RDOPMDGetValue( _name, _arithm );
+	endOfCreation( pokaz );
 }
 
 } // namespace rdoParse
