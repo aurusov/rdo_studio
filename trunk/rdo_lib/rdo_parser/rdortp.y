@@ -251,7 +251,7 @@ rtp_param_type:	integer rtp_int_diap rtp_int_default_val {
 					RDORTPIntDefVal *dv = (RDORTPIntDefVal *)$3;
 					parser->lexer_loc_backup();
 					parser->lexer_loc_set( &(@3) );
-					RDORTPIntResParam *rp = new RDORTPIntResParam(diap, dv);
+					RDORTPIntResParam *rp = new RDORTPIntResParam( parser->getLastRTPResType(), diap, dv );
 					parser->lexer_loc_restore();
 					$$ = (int)rp;
 				}
@@ -260,7 +260,7 @@ rtp_param_type:	integer rtp_int_diap rtp_int_default_val {
 					RDORTPRealDefVal *dv = (RDORTPRealDefVal *)$3;
 					parser->lexer_loc_backup();
 					parser->lexer_loc_set( &(@3) );
-					RDORTPRealResParam *rp = new RDORTPRealResParam(diap, dv);
+					RDORTPRealResParam *rp = new RDORTPRealResParam( parser->getLastRTPResType(), diap, dv );
 					parser->lexer_loc_restore();
 					$$ = (int)rp;
 				}
@@ -274,7 +274,7 @@ rtp_param_type:	integer rtp_int_diap rtp_int_default_val {
 						enu->findValue(dv->value);	 // if no value - Syntax exception will be thrown
 					}
 					parser->lexer_loc_restore();
-					RDORTPEnumResParam *rp = new RDORTPEnumResParam(enu, dv);
+					RDORTPEnumResParam *rp = new RDORTPEnumResParam( parser->getLastRTPResType(), enu, dv );
 					$$ = (int)rp;
 				}
 				| rtp_such_as {
@@ -478,7 +478,7 @@ rtp_enum:	'(' rtp_enum_list ')' {
 			};
 
 rtp_enum_list:	IDENTIF {
-					RDORTPEnum *enu = new RDORTPEnum((std::string *)$1);
+					RDORTPEnum *enu = new RDORTPEnum(parser->getLastRTPResType(), (std::string *)$1);
 					$$ = (int)enu;
 					reinterpret_cast<RDOLexerRTP*>(lexer)->enum_param_cnt = 1;
 				}

@@ -38,11 +38,14 @@ class RDOParser;
 class RDOParserObject: public RDODeletable
 {
 protected:
-	RDOParser*       parser;
+	RDOParser*             parser;
 	const RDOParserObject* parent;
 	RDOParserObject( RDOParser* _parser );
 	RDOParserObject( const RDOParserObject* _parent );
 	virtual ~RDOParserObject();
+
+public:
+	void reparent( const RDOParserObject* _parent );
 };
 
 class RDOErrorPos

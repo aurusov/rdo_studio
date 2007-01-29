@@ -221,7 +221,7 @@ rss_res_type:	IDENTIF_COLON IDENTIF {
 						parser->error( rdo::format( "Ресурс уже существует: %s", name->c_str()) );
 					}
 
-					RDORSSResource* res = new RDORSSResource( name, resType );
+					RDORSSResource* res = new RDORSSResource( parser, name, resType );
 					$$ = (int)res;	  
 				}
 				| IDENTIF_COLON error {

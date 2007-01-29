@@ -44,12 +44,23 @@ public:
 
 class RDOFUNArithm;
 
-class RDORTPResParam: public RDODeletable
+class RDORTPResParam: public RDOParserObject
 {
 public:
 	enum ParamType { pt_int = 0, pt_real = 1, pt_enum = 2, pt_str = 3 };
 	RDORTPDefVal* dv;
-	RDORTPResParam( RDORTPDefVal* _dv ): dv(_dv) {}
+	// Для глобальный типов, напрмиер, для параметров стандартных фыункций
+	RDORTPResParam( RDOParser* _parser, RDORTPDefVal* _dv ):
+		RDOParserObject( _parser ),
+		dv( _dv )
+	{
+	}
+	// Для нормальных параметров
+	RDORTPResParam( const RDOParserObject* _parent, RDORTPDefVal* _dv ):
+		RDOParserObject( _parent ),
+		dv( _dv )
+	{
+	}
 	virtual const RDORTPResParam *constructSuchAs() const;
 	virtual const RDORTPResParam *constructSuchAs(const int defVal) const;
 	virtual const RDORTPResParam *constructSuchAs(const double *const defVal) const;
@@ -69,8 +80,9 @@ class RDORTPIntResParam: public RDORTPResParam
 {
 public:
 	RDORTPIntDiap *diap;
-	RDORTPIntResParam();
-	RDORTPIntResParam(RDORTPIntDiap *_diap, RDORTPIntDefVal *_dv);
+	RDORTPIntResParam( RDOParser* _parser, RDORTPIntDiap* _diap, RDORTPIntDefVal* _dv );
+	RDORTPIntResParam( const RDOParserObject* _parent );
+	RDORTPIntResParam( const RDOParserObject* _parent, RDORTPIntDiap* _diap, RDORTPIntDefVal* _dv );
 	const RDORTPResParam *constructSuchAs(const int defVal) const;
 	virtual rdoRuntime::RDOValue getRSSDefaultValue()const ;
 	virtual rdoRuntime::RDOValue getRSSEnumValue( const std::string* const val ) const;
@@ -104,8 +116,9 @@ public:
 class RDORTPRealResParam: public RDORTPResParam
 {
 public:
-	RDORTPRealResParam();
-	RDORTPRealResParam( RDORTPRealDiap* _diap, RDORTPRealDefVal* _dv );
+	RDORTPRealResParam( RDOParser* _parser, RDORTPRealDiap* _diap, RDORTPRealDefVal* _dv );
+	RDORTPRealResParam( const RDOParserObject* _parent );
+	RDORTPRealResParam( const RDOParserObject* _parent, RDORTPRealDiap* _diap, RDORTPRealDefVal* _dv );
 	RDORTPRealDiap* diap;
 	const RDORTPResParam *constructSuchAs(const double *const defVal) const;
 	virtual rdoRuntime::RDOValue getRSSDefaultValue()const ;
@@ -117,11 +130,23 @@ public:
 	int writeModelStructure() const;
 };
 
-class RDORTPEnum: public RDODeletable
+class RDORTPEnum: public RDOParserObject
 {
 public:
 	std::vector<const std::string *> enumVals;
-	RDORTPEnum(const std::string *const first) { enumVals.push_back(first); }
+	// Для типа возвращаемого значения функции
+	// После создания самой функции, происходит reparent на функцию
+	RDORTPEnum( RDOParser* _parser, const std::string* const first ):
+		RDOParserObject( _parser )
+	{
+		enumVals.push_back( first );
+	}
+	// Для параметра ресурса, параметра функции, параметра образца
+	RDORTPEnum( const RDOParserObject* _parent, const std::string* const first ):
+		RDOParserObject( _parent )
+	{
+		enumVals.push_back( first );
+	}
 	void add(const std::string *const next);
 	int findValue( const std::string* const val, bool auto_error = true ) const;
 };
@@ -141,12 +166,21 @@ public:
 	RDORTPEnum* enu;
 	std::string enum_name;
 	bool        enum_fun;
-	RDORTPEnumResParam( RDORTPEnum* _enu, RDORTPEnumDefVal* _dv ):
+	RDORTPEnumResParam( RDOParser* _parser, RDORTPEnum* _enu, RDORTPEnumDefVal* _dv ):
+		RDORTPResParam( _parser, _dv ),
 		enu( _enu ),
-		RDORTPResParam( _dv ),
 		enum_name( "" ),
 		enum_fun( false )
 	{
+		enu->reparent( this );
+	}
+	RDORTPEnumResParam( const RDOParserObject* _parent, RDORTPEnum* _enu, RDORTPEnumDefVal* _dv ):
+		RDORTPResParam( _parent, _dv ),
+		enu( _enu ),
+		enum_name( "" ),
+		enum_fun( false )
+	{
+		enu->reparent( this );
 	}
 	const RDORTPResParam *constructSuchAs(const std::string *const defVal) const ;
 	virtual rdoRuntime::RDOValue getRSSDefaultValue()const ;
@@ -194,6 +228,6 @@ public:
 	int writeModelStructure() const;
 };
 
-}		// namespace rdoParse 
+} // namespace rdoParse
 
-#endif //RDORTP_RTP
+#endif // RDORTP_RTP

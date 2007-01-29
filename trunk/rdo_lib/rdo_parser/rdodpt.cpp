@@ -393,9 +393,9 @@ RDOPROCTransact::RDOPROCTransact( RDOParser* _parser ):
 	RDORTPResType( _parser, _parser->registerName( "Транзакты" ), false )
 {
 	// Создадим параметр вещественного типа 'Время_создания'
-	addParam( new RDORTPParamDesc( parser->registerName( "Время_создания" ), new RDORTPRealResParam() ) );
+	addParam( new RDORTPParamDesc( parser->registerName( "Время_создания" ), new RDORTPRealResParam( this ) ) );
 	// Создадим параметр целого типа 'Просто_так'
-	addParam( new RDORTPParamDesc( parser->registerName( "Просто_так" ), new RDORTPIntResParam() ) );
+	addParam( new RDORTPParamDesc( parser->registerName( "Просто_так" ), new RDORTPIntResParam( this ) ) );
 	// Больше этот ресурс создавать не надо
 	RDOPROCTransact::created = true;
 }

@@ -26,12 +26,14 @@ int pmdlex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer )
 }
 void pmderror( char* mes )
 {
-	rdoParse::parser->error( mes );
+//	rdoParse::parser->error( mes );
 }
 
 //////////////////////////// RDOPMDPokaz::RDOPMDPokaz /////////////////////////////////
-RDOPMDPokaz::RDOPMDPokaz(const std::string *const _name, bool _trace)
-	: name(*_name), RDOPokazTrace(parser->runTime) 
+RDOPMDPokaz::RDOPMDPokaz( RDOParser* _parser, const std::string* const _name, bool _trace ):
+	RDOPokazTrace( _parser->runTime ),
+	RDOParserObject( _parser ),
+	name( *_name )
 {
 	trace = _trace; 
 }
@@ -44,8 +46,8 @@ void RDOPMDPokaz::endOfCreation()
 }
 
 //////////////////////////// RDOPMDWatchPar::RDOPMDWatchPar /////////////////////////////////
-RDOPMDWatchPar::RDOPMDWatchPar(std::string *_name, bool _trace, std::string *_resName, std::string *_parName)
-	: RDOPMDPokaz(_name, _trace) 
+RDOPMDWatchPar::RDOPMDWatchPar( RDOParser* _parser, std::string* _name, bool _trace, std::string* _resName, std::string* _parName ):
+	RDOPMDPokaz( _parser, _name, _trace )
 {
 	const RDORSSResource *const res = parser->findRSSResource(_resName);
 	if(!res)
@@ -138,8 +140,9 @@ bool RDOPMDWatchPar::calcStat(RDOSimulator *sim)
 }
 
 //////////////////////////// RDOPMDWatchState::RDOPMDWatchState /////////////////////////////////
-RDOPMDWatchState::RDOPMDWatchState(std::string *_name, bool _trace, RDOFUNLogic *_logic)
-	: RDOPMDPokaz(_name, _trace), logicCalc(_logic->calc)
+RDOPMDWatchState::RDOPMDWatchState( RDOParser* _parser, std::string* _name, bool _trace, RDOFUNLogic* _logic ):
+	RDOPMDPokaz( _parser, _name, _trace ),
+	logicCalc( _logic->calc )
 {
 	endOfCreation();
 }
@@ -242,8 +245,8 @@ bool RDOPMDWatchState::calcStat(RDOSimulator *sim)
 }
 
 //////////////////////////// RDOPMDWatchQuant::RDOPMDWatchQuant /////////////////////////////////
-RDOPMDWatchQuant::RDOPMDWatchQuant(std::string *_name, bool _trace, std::string *_resTypeName)
-	: RDOPMDPokaz(_name, _trace)
+RDOPMDWatchQuant::RDOPMDWatchQuant( RDOParser* _parser, std::string* _name, bool _trace, std::string* _resTypeName ):
+	RDOPMDPokaz( _parser, _name, _trace )
 {
 	funGroup = new RDOFUNGroupLogic( parser, 5, _resTypeName );
 	endOfCreation();
@@ -348,8 +351,8 @@ bool RDOPMDWatchQuant::calcStat(RDOSimulator *sim)
 }
 
 //////////////////////////// RDOPMDWatchValue::RDOPMDWatchValue /////////////////////////////////
-RDOPMDWatchValue::RDOPMDWatchValue(std::string *_name, bool _trace, std::string *_resTypeName)
-	: RDOPMDPokaz(_name, _trace)
+RDOPMDWatchValue::RDOPMDWatchValue( RDOParser* _parser, std::string* _name, bool _trace, std::string* _resTypeName ):
+	RDOPMDPokaz( _parser, _name, _trace )
 {
 	funGroup = new RDOFUNGroupLogic( parser, 5, _resTypeName );
 	wasChanged = false;
@@ -451,8 +454,9 @@ bool RDOPMDWatchValue::checkResourceErased( rdoRuntime::RDOResource* res )
 }
 
 //////////////////////////// RDOPMDGetValue::RDOPMDGetValue /////////////////////////////////
-RDOPMDGetValue::RDOPMDGetValue(std::string *_name, RDOFUNArithm *_arithm)
-	: RDOPMDPokaz(_name, false), arithmCalc(_arithm->createCalc())
+RDOPMDGetValue::RDOPMDGetValue( RDOParser* _parser, std::string* _name, RDOFUNArithm* _arithm):
+	RDOPMDPokaz( _parser, _name, false ),
+	arithmCalc( _arithm->createCalc() )
 {
 	endOfCreation();
 }
@@ -508,4 +512,4 @@ void RDOPMDGetValue::writePokazStructure(std::ostream &stream) const
 	stream << "\t" << name << "\t" << traceId() << "\tget_value" << std::endl;
 }
 
-}		// namespace rdoParse 
+} // namespace rdoParse

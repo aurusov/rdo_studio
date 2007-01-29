@@ -283,16 +283,23 @@ rdoRuntime::RDOValue RDORTPEnumResParam::getRSSEnumValue(const std::string *cons
 	return enu->findValue(val);
 }
 
-RDORTPIntResParam::RDORTPIntResParam():
-	RDORTPResParam( new RDORTPIntDefVal(0) ),
+RDORTPIntResParam::RDORTPIntResParam( RDOParser* _parser, RDORTPIntDiap *_diap, RDORTPIntDefVal *_dv ):
+	RDORTPResParam( _parser, _dv ),
+	diap( _diap )
+{
+	diap->check(_dv);
+}
+
+RDORTPIntResParam::RDORTPIntResParam( const RDOParserObject* _parent ):
+	RDORTPResParam( _parent, new RDORTPIntDefVal(0) ),
 	diap( new RDORTPIntDiap() )
 {
 	diap->check( static_cast<RDORTPIntDefVal*>(dv) );
 }
 
-RDORTPIntResParam::RDORTPIntResParam(RDORTPIntDiap *_diap, RDORTPIntDefVal *_dv): 
-	diap(_diap), 
-	RDORTPResParam(_dv) 
+RDORTPIntResParam::RDORTPIntResParam( const RDOParserObject* _parent, RDORTPIntDiap *_diap, RDORTPIntDefVal *_dv ):
+	RDORTPResParam( _parent, _dv ),
+	diap( _diap )
 {
 	diap->check(_dv);
 }
@@ -317,15 +324,22 @@ void RDORTPIntDiap::check( const RDORTPIntDefVal* dv ) const
 	}
 }
 
-RDORTPRealResParam::RDORTPRealResParam():
-	RDORTPResParam( new RDORTPRealDefVal(0) ),
+RDORTPRealResParam::RDORTPRealResParam( RDOParser* _parser, RDORTPRealDiap* _diap, RDORTPRealDefVal* _dv ):
+	RDORTPResParam( _parser, _dv ),
+	diap( _diap )
+{
+	diap->check( _dv );
+}
+
+RDORTPRealResParam::RDORTPRealResParam( const RDOParserObject* _parent ):
+	RDORTPResParam( _parent, new RDORTPRealDefVal(0) ),
 	diap( new RDORTPRealDiap() )
 {
 	diap->check( static_cast<RDORTPRealDefVal*>(dv) );
 }
 
-RDORTPRealResParam::RDORTPRealResParam( RDORTPRealDiap* _diap, RDORTPRealDefVal* _dv ):
-	RDORTPResParam( _dv ),
+RDORTPRealResParam::RDORTPRealResParam( const RDOParserObject* _parent, RDORTPRealDiap* _diap, RDORTPRealDefVal* _dv ):
+	RDORTPResParam( _parent, _dv ),
 	diap( _diap )
 {
 	diap->check( _dv );
@@ -350,17 +364,17 @@ void RDORTPRealDiap::check( const RDORTPRealDefVal* dv ) const
 	}
 }
 
-const RDORTPResParam *RDORTPIntResParam::constructSuchAs(const int defVal) const 
+const RDORTPResParam* RDORTPIntResParam::constructSuchAs( const int defVal ) const
 {
-	RDORTPIntDefVal *newDV = new RDORTPIntDefVal(defVal);
-	RDORTPIntResParam *rp = new RDORTPIntResParam(diap, newDV);
+	RDORTPIntDefVal* newDV = new RDORTPIntDefVal( defVal );
+	RDORTPIntResParam*  rp = new RDORTPIntResParam( parent, diap, newDV );
 	return rp;
 }
 
 const RDORTPResParam *RDORTPRealResParam::constructSuchAs(const double *const defVal) const 
 {
-	RDORTPRealDefVal *newDV = new RDORTPRealDefVal(*defVal);
-	RDORTPRealResParam *rp = new RDORTPRealResParam(diap, newDV);
+	RDORTPRealDefVal *newDV = new RDORTPRealDefVal( *defVal );
+	RDORTPRealResParam *rp = new RDORTPRealResParam( parent, diap, newDV );
 	return rp;
 }
 
@@ -368,7 +382,7 @@ const RDORTPResParam *RDORTPEnumResParam::constructSuchAs(const std::string *con
 {
 	enu->findValue(defVal);	 // if no value - Syntax exception will be thrown
 	RDORTPEnumDefVal *newDV = new RDORTPEnumDefVal(defVal);
-	RDORTPEnumResParam *rp = new RDORTPEnumResParam(enu, newDV);
+	RDORTPEnumResParam *rp = new RDORTPEnumResParam( parent, enu, newDV );
 	return rp;
 }
 

@@ -280,8 +280,8 @@ void removeCalcToRuntime( rdoRuntime::RDOCalc* calc )
 
 void RDOParser::LoadStdFunctions()
 {
-	RDORTPIntResParam *intType = new RDORTPIntResParam(new RDORTPIntDiap(), new RDORTPIntDefVal(false));
-	RDORTPRealResParam *realType = new RDORTPRealResParam(new RDORTPRealDiap(), new RDORTPRealDefVal(false));
+	RDORTPIntResParam *intType = new RDORTPIntResParam( this, new RDORTPIntDiap(), new RDORTPIntDefVal(false) );
+	RDORTPRealResParam *realType = new RDORTPRealResParam( this, new RDORTPRealDiap(), new RDORTPRealDefVal(false) );
 
 	RDOFUNFunction *fun = new RDOFUNFunction( this, registerName("Abs"), realType );
 	allFUNFunctions.push_back(fun);

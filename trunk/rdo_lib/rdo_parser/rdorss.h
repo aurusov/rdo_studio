@@ -13,7 +13,7 @@ void rsserror( char* mes );
 class RDORTPResType;
 class RDORTPParamDesc;
 
-class RDORSSResource: public RDODeletable
+class RDORSSResource: public RDOParserObject
 {
 protected:
 	const std::string* const   name;
@@ -26,7 +26,7 @@ public:
 	std::vector< const RDORTPParamDesc* >::const_iterator currParam;
 
 public:
-	RDORSSResource( const std::string* const _name, const RDORTPResType* const _resType );
+	RDORSSResource( RDOParser* _parser, const std::string* const _name, const RDORTPResType* const _resType );
 	
 	const std::string*   const getName() const       { return name;    }
 	const RDORTPResType* const getType() const       { return resType; }
@@ -45,9 +45,9 @@ public:
 class RDORSSTransact: public RDORSSResource
 {
 public:
-	RDORSSTransact( const std::string* const _name, const RDORTPResType* const _resType );
+	RDORSSTransact( RDOParser* _parser, const std::string* const _name, const RDORTPResType* const _resType );
 };
 
-}		// namespace rdoParse 
+} // namespace rdoParse
 
 #endif // RDORSS_RSS

@@ -24,7 +24,8 @@ void rsserror( char* mes )
 {
 }
 
-RDORSSResource::RDORSSResource( const std::string* const _name, const RDORTPResType* const _resType ):
+RDORSSResource::RDORSSResource( RDOParser* _parser, const std::string* const _name, const RDORTPResType* const _resType ):
+	RDOParserObject( _parser ),
 	name( _name ),
 	resType( _resType ),
 	number( parser->getRSS_id() ),
@@ -40,8 +41,8 @@ int RDORSSResource::writeModelStructure()
 	return 0;
 }
 
-RDORSSTransact::RDORSSTransact( const std::string* const _name, const RDORTPResType* const _resType ):
-	RDORSSResource( _name, _resType )
+RDORSSTransact::RDORSSTransact( RDOParser* _parser, const std::string* const _name, const RDORTPResType* const _resType ):
+	RDORSSResource( _parser, _name, _resType )
 {
 }
 

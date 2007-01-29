@@ -228,14 +228,14 @@ fun_param_type: integer fun_int_diap fun_int_default_val {
 					RDORTPIntDefVal *dv = (RDORTPIntDefVal *)$3;
 					parser->lexer_loc_backup();
 					parser->lexer_loc_set( &(@3) );
-					RDORTPIntResParam *rp = new RDORTPIntResParam(diap, dv);
+					RDORTPIntResParam *rp = new RDORTPIntResParam( parser, diap, dv );
 					parser->lexer_loc_restore();
 					$$ = (int)rp;
 				}
 				| integer fun_int_diap {
 					RDORTPIntDiap *diap = (RDORTPIntDiap *)$2;
 					RDORTPIntDefVal *dv = new RDORTPIntDefVal();
-					RDORTPIntResParam *rp = new RDORTPIntResParam(diap, dv);
+					RDORTPIntResParam *rp = new RDORTPIntResParam( parser, diap, dv );
 					$$ = (int)rp;
 				}
 				| real fun_real_diap fun_real_default_val {
@@ -243,14 +243,14 @@ fun_param_type: integer fun_int_diap fun_int_default_val {
 					RDORTPRealDefVal *dv = (RDORTPRealDefVal *)$3;
 					parser->lexer_loc_backup();
 					parser->lexer_loc_set( &(@3) );
-					RDORTPRealResParam *rp = new RDORTPRealResParam(diap, dv);
+					RDORTPRealResParam *rp = new RDORTPRealResParam( parser, diap, dv );
 					parser->lexer_loc_restore();
 					$$ = (int)rp;
 				}
 				| real fun_real_diap {
 					RDORTPRealDiap *diap = (RDORTPRealDiap *)$2;
 					RDORTPRealDefVal *dv = new RDORTPRealDefVal();
-					RDORTPRealResParam *rp = new RDORTPRealResParam(diap, dv);
+					RDORTPRealResParam *rp = new RDORTPRealResParam( parser, diap, dv );
 					$$ = (int)rp;
 				}
 				| fun_enum fun_enum_default_val {
@@ -258,14 +258,14 @@ fun_param_type: integer fun_int_diap fun_int_default_val {
 					RDORTPEnum *enu = (RDORTPEnum *)$1;
 					RDORTPEnumDefVal *dv = (RDORTPEnumDefVal *)$2;
 					enu->findValue(dv->value);	 // if no value - Syntax exception will be thrown
-					RDORTPEnumResParam *rp = new RDORTPEnumResParam(enu, dv);
+					RDORTPEnumResParam *rp = new RDORTPEnumResParam( parser, enu, dv );
 					$$ = (int)rp;
 				}
 				| fun_enum {
 					reinterpret_cast<RDOLexerFUN*>(lexer)->enum_param_cnt = 0;
 					RDORTPEnum *enu = (RDORTPEnum *)$1;
 					RDORTPEnumDefVal *dv = new RDORTPEnumDefVal();
-					RDORTPEnumResParam *rp = new RDORTPEnumResParam(enu, dv);
+					RDORTPEnumResParam *rp = new RDORTPEnumResParam( parser, enu, dv );
 					$$ = (int)rp;
 				}
 				| fun_such_as {
@@ -430,7 +430,7 @@ fun_enum:	'(' fun_enum_item ')' {
 			};
 
 fun_enum_item:	IDENTIF {
-					RDORTPEnum *enu = new RDORTPEnum((std::string *)$1);
+					RDORTPEnum* enu = new RDORTPEnum( parser, (std::string *)$1 );
 					$$ = (int)enu;
 					reinterpret_cast<RDOLexerFUN*>(lexer)->enum_param_cnt = 1;
 				}
@@ -607,7 +607,7 @@ fun_func_seq:	/* empty */
 
 fun_func_descr:	fun_func_header fun_func_footer;
 
-fun_func_header:	Function_keyword IDENTIF_COLON fun_param_type	{
+fun_func_header:	Function_keyword IDENTIF_COLON fun_param_type {
 						std::string* name = (std::string*)$2;
 						if ( parser->findFUNConst(name) ) {
 							parser->lexer_loc_set( &(@2) );

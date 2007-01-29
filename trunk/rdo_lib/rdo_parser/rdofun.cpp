@@ -1128,7 +1128,7 @@ const RDOFUNArithm* RDOFUNParams::createCall( const std::string* const funName )
 				rdoRuntime::RDOCalc* arg;
 				if ( arithm->type == RDORTPResParam::pt_enum ) {
 					if ( arithm->enu != static_cast<const RDORTPEnumResParam*>(funcParam)->enu ) {
-						parser->error( "Неверные перечислимый тип" );
+						parser->error( "Перечислимые типы не совпадают" );
 //						parser->error("wrong enumerative parameter type");
 					}
 					arg = arithm->createCalc( NULL );

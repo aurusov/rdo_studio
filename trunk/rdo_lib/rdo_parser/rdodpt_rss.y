@@ -265,12 +265,12 @@ dpt_process_line:	IDENTIF	{
 			res_type = new RDORTPResType( parser, res_type_name, true );
 
 			// —оздадим параметр перечислимого типа
-			RDORTPEnum* state_enum = new RDORTPEnum( rtp_state_free );
+			RDORTPEnum* state_enum = new RDORTPEnum( res_type, rtp_state_free );
 			state_enum->add( rtp_state_buzy );
 
 			RDORTPEnumDefVal* state_default = new RDORTPEnumDefVal( rtp_state_free );
 
-			RDORTPEnumResParam* rtp_param_enum = new RDORTPEnumResParam( state_enum, state_default );
+			RDORTPEnumResParam* rtp_param_enum = new RDORTPEnumResParam( res_type, state_enum, state_default );
 			rtp_param_enum->enum_name = rdo::format( "%s.%s", res_type_name->c_str(), rtp_param_name->c_str() );
 
 			rtp_param = new RDORTPParamDesc( rtp_param_name, rtp_param_enum );
@@ -299,7 +299,7 @@ dpt_process_line:	IDENTIF	{
 		}
 
 		// —оздать ресурс
-		RDORSSResource* res = new RDORSSResource( res_name, res_type );
+		RDORSSResource* res = new RDORSSResource( parser, res_name, res_type );
 		res->setTrace( true );
 
 		// ѕропишем значени€ параметров перечислимого типа по-умолчанию

@@ -200,14 +200,14 @@ pat_trace:	/* empty */		{ $$ = 0; }
 
 pat_params_begin: pat_header Parameters { $$ = $1; };
 
-pat_params:	pat_params_begin IDENTIF_COLON fun_param_type {
+pat_params:	pat_params_begin IDENTIF_COLON pat_param_type {
 				((RDOPATPattern *)$1)->add(new RDOFUNFunctionParam((std::string *)$2, (RDORTPResParam *)$3));
 				if ( reinterpret_cast<RDORTPResParam*>($3)->getType() == RDORTPResParam::pt_enum ) {
 					reinterpret_cast<RDORTPEnumResParam*>($3)->enum_name = rdo::format( "%s.%s", ((RDOPATPattern*)$1)->getName()->c_str(), ((std::string*)$2)->c_str() );
 				}
 				$$ = $1;
 			}
-			| pat_params IDENTIF_COLON fun_param_type {
+			| pat_params IDENTIF_COLON pat_param_type {
 				((RDOPATPattern *)$1)->add(new RDOFUNFunctionParam((std::string *)$2, (RDORTPResParam *)$3));
 				if ( reinterpret_cast<RDORTPResParam*>($3)->getType() == RDORTPResParam::pt_enum ) {
 					reinterpret_cast<RDORTPEnumResParam*>($3)->enum_name = rdo::format( "%s.%s", ((RDOPATPattern*)$1)->getName()->c_str(), ((std::string*)$2)->c_str() );
@@ -619,61 +619,61 @@ pat_pattern:	pat_convert End { ((RDOPATPattern *)$1)->end(); $$ = $1; };
 // ----------------------------------------------------------------------------
 // ---------- Описание параметров
 // ----------------------------------------------------------------------------
-fun_param_type: integer fun_int_diap fun_int_default_val {
+pat_param_type: integer pat_int_diap pat_int_default_val {
 					RDORTPIntDiap *diap = (RDORTPIntDiap *)$2;
 					RDORTPIntDefVal *dv = (RDORTPIntDefVal *)$3;
 					parser->lexer_loc_backup();
 					parser->lexer_loc_set( &(@3) );
-					RDORTPIntResParam *rp = new RDORTPIntResParam(diap, dv);
+					RDORTPIntResParam *rp = new RDORTPIntResParam( parser->getLastPATPattern(), diap, dv );
 					parser->lexer_loc_restore();
 					$$ = (int)rp;
 				}
-				| integer fun_int_diap {
+				| integer pat_int_diap {
 					RDORTPIntDiap *diap = (RDORTPIntDiap *)$2;
 					RDORTPIntDefVal *dv = new RDORTPIntDefVal();
-					RDORTPIntResParam *rp = new RDORTPIntResParam(diap, dv);
+					RDORTPIntResParam *rp = new RDORTPIntResParam( parser->getLastPATPattern(), diap, dv );
 					$$ = (int)rp;
 				}
-				| real fun_real_diap fun_real_default_val {
+				| real pat_real_diap pat_real_default_val {
 					RDORTPRealDiap *diap = (RDORTPRealDiap *)$2;
 					RDORTPRealDefVal *dv = (RDORTPRealDefVal *)$3;
 					parser->lexer_loc_backup();
 					parser->lexer_loc_set( &(@3) );
-					RDORTPRealResParam *rp = new RDORTPRealResParam(diap, dv);
+					RDORTPRealResParam *rp = new RDORTPRealResParam( parser->getLastPATPattern(), diap, dv );
 					parser->lexer_loc_restore();
 					$$ = (int)rp;
 				}
-				| real fun_real_diap {
+				| real pat_real_diap {
 					RDORTPRealDiap *diap = (RDORTPRealDiap *)$2;
 					RDORTPRealDefVal *dv = new RDORTPRealDefVal();
-					RDORTPRealResParam *rp = new RDORTPRealResParam(diap, dv);
+					RDORTPRealResParam *rp = new RDORTPRealResParam( parser->getLastPATPattern(), diap, dv );
 					$$ = (int)rp;
 				}
-				| fun_enum fun_enum_default_val {
+				| pat_enum pat_enum_default_val {
 					reinterpret_cast<RDOLexerFUN*>(lexer)->enum_param_cnt = 0;
 					RDORTPEnum *enu = (RDORTPEnum *)$1;
 					RDORTPEnumDefVal *dv = (RDORTPEnumDefVal *)$2;
 					enu->findValue(dv->value);	 // if no value - Syntax exception will be thrown
-					RDORTPEnumResParam *rp = new RDORTPEnumResParam(enu, dv);
+					RDORTPEnumResParam *rp = new RDORTPEnumResParam( parser->getLastPATPattern(), enu, dv );
 					$$ = (int)rp;
 				}
-				| fun_enum {
+				| pat_enum {
 					reinterpret_cast<RDOLexerFUN*>(lexer)->enum_param_cnt = 0;
 					RDORTPEnum *enu = (RDORTPEnum *)$1;
 					RDORTPEnumDefVal *dv = new RDORTPEnumDefVal();
-					RDORTPEnumResParam *rp = new RDORTPEnumResParam(enu, dv);
+					RDORTPEnumResParam *rp = new RDORTPEnumResParam( parser->getLastPATPattern(), enu, dv );
 					$$ = (int)rp;
 				}
-				| fun_such_as {
+				| pat_such_as {
 					RDORTPParamDesc *desc = (RDORTPParamDesc *)$1;
 					$$ = (int)desc->getType()->constructSuchAs();
 				}
-				| fun_such_as fun_int_default_val {
+				| pat_such_as pat_int_default_val {
 					RDORTPParamDesc *desc = (RDORTPParamDesc *)$1;
 					RDORTPIntDefVal *dv = (RDORTPIntDefVal *)$2;
 					$$ = (int)desc->getType()->constructSuchAs((int)dv->val);
 				}
-				| fun_such_as	fun_real_default_val {
+				| pat_such_as	pat_real_default_val {
 					RDORTPParamDesc *desc = (RDORTPParamDesc *)$1;
 					RDORTPRealDefVal *dv = (RDORTPRealDefVal *)$2;
 					if(!dv->exist)
@@ -681,7 +681,7 @@ fun_param_type: integer fun_int_diap fun_int_default_val {
 					else
 						$$ = (int)desc->getType()->constructSuchAs((double *)&(dv->val));
 				}
-				| fun_such_as fun_enum_default_val {
+				| pat_such_as pat_enum_default_val {
 					RDORTPParamDesc *desc = (RDORTPParamDesc *)$1;
 					RDORTPEnumDefVal *dv = (RDORTPEnumDefVal *)$2;
 					if ( !dv->exist ) {
@@ -693,10 +693,10 @@ fun_param_type: integer fun_int_diap fun_int_default_val {
 						parser->lexer_loc_restore();
 					}
 				}
-				| fun_such_as '=' error {
+				| pat_such_as '=' error {
 					parser->error( "Ожидается зачение по-умолчанию" );
 				}
-				| fun_such_as error {
+				| pat_such_as error {
 					parser->error( "Ожидается окончание описания ссылки, например, зачение по-умолчанию" );
 				}
 				| integer error {
@@ -707,12 +707,12 @@ fun_param_type: integer fun_int_diap fun_int_default_val {
 					parser->lexer_loc_set( &(@2) );
 					parser->error( "Ошибка после ключевого слова real. Возможно, не хватает значения по-умолчанию." );
 				}
-				| fun_enum error {
+				| pat_enum error {
 					parser->lexer_loc_set( &(@2) );
 					parser->error( "Ошибка после перечислимого типа. Возможно, не хватает значения по-умолчанию." );
 				};
 
-fun_int_diap:	/* empty */ {
+pat_int_diap:	/* empty */ {
 					RDORTPIntDiap *diap = new RDORTPIntDiap();
 					$$ = (int)diap;
 				}
@@ -748,7 +748,7 @@ fun_int_diap:	/* empty */ {
 					parser->error( "Диапазон задан неверно" );
 				};
 
-fun_real_diap: /* empty */ {
+pat_real_diap: /* empty */ {
 					RDORTPRealDiap *diap = new RDORTPRealDiap();
 					$$ = (int)diap;
 				}
@@ -817,20 +817,20 @@ fun_real_diap: /* empty */ {
 					parser->error( "Диапазон задан неверно" );
 				};
 
-fun_enum:	'(' fun_enum_item ')' {
+pat_enum:	'(' pat_enum_item ')' {
 				$$ = $2;
 			}
-			| '(' fun_enum_item {
+			| '(' pat_enum_item {
 				parser->lexer_loc_set( &(@2) );
 				parser->error( "Перечисление должно заканчиваться скобкой" );
 			};
 
-fun_enum_item:	IDENTIF {
-					RDORTPEnum *enu = new RDORTPEnum((std::string *)$1);
+pat_enum_item:	IDENTIF {
+					RDORTPEnum *enu = new RDORTPEnum(parser->getLastPATPattern(), (std::string *)$1);
 					$$ = (int)enu;
 					reinterpret_cast<RDOLexerFUN*>(lexer)->enum_param_cnt = 1;
 				}
-				| fun_enum_item ',' IDENTIF {
+				| pat_enum_item ',' IDENTIF {
 					if ( reinterpret_cast<RDOLexerFUN*>(lexer)->enum_param_cnt >= 1 ) {
 						parser->lexer_loc_backup();
 						parser->lexer_loc_set( &(@3) );
@@ -842,14 +842,14 @@ fun_enum_item:	IDENTIF {
 						parser->error( "Ошибка в описании значений перечислимого типа" );
 					}
 				}
-				| fun_enum_item IDENTIF {
+				| pat_enum_item IDENTIF {
 					if ( reinterpret_cast<RDOLexerFUN*>(lexer)->enum_param_cnt >= 1 ) {
 						parser->error( rdo::format("Пропущена запятая перед: %s", ((std::string*)$2)->c_str()) );
 					} else {
 						parser->error( "Ошибка в описании значений перечислимого типа" );
 					}
 				}
-				| fun_enum_item error {
+				| pat_enum_item error {
 					std::string str( reinterpret_cast<RDOLexer*>(lexer)->YYText() );
 					if ( str.empty() ) {
 						parser->lexer_loc_set( &(@1) );
@@ -859,11 +859,11 @@ fun_enum_item:	IDENTIF {
 						parser->error( rdo::format( "Неверное значение перечислимого типа: %s", str.c_str() ) );
 					}
 				}
-				| fun_enum_item ',' INT_CONST {
+				| pat_enum_item ',' INT_CONST {
 					parser->lexer_loc_set( &(@3) );
 					parser->error( "Значение перечислимого типа не может начинаться с цифры" );
 				}
-				| fun_enum_item ',' REAL_CONST {
+				| pat_enum_item ',' REAL_CONST {
 					parser->lexer_loc_set( &(@3) );
 					parser->error( "Значение перечислимого типа не может начинаться с цифры" );
 				}
@@ -880,7 +880,7 @@ fun_enum_item:	IDENTIF {
 					parser->error( "Ошибка в описании значений перечислимого типа" );
 				};
 
-fun_such_as:	such_as IDENTIF '.' IDENTIF {
+pat_such_as:	such_as IDENTIF '.' IDENTIF {
 					std::string* type = (std::string *)$2;
 					std::string* param = (std::string *)$4;
 					const RDORTPResType *const rt = parser->findRTPResType( type );
@@ -946,7 +946,7 @@ fun_such_as:	such_as IDENTIF '.' IDENTIF {
 					parser->error( "После ключевого слова such_as необходимо указать тип и парамтер ресурса для ссылки" );
 				};
 
-fun_int_default_val:	'=' INT_CONST {
+pat_int_default_val:	'=' INT_CONST {
 						RDORTPIntDefVal *dv = new RDORTPIntDefVal($2);
 						$$ = (int)dv;
 					}
@@ -964,7 +964,7 @@ fun_int_default_val:	'=' INT_CONST {
 						parser->error( "Неверное значение по-умолчанию целого типа" );
 					};
 
-fun_real_default_val:	'=' REAL_CONST {
+pat_real_default_val:	'=' REAL_CONST {
 						$$ = (int)(new RDORTPRealDefVal(*((double *)$2)));
 					}
 					| '=' INT_CONST {
@@ -979,7 +979,7 @@ fun_real_default_val:	'=' REAL_CONST {
 						parser->error( "Неверное значение по-умолчанию вещественного типа" );
 					};
 
-fun_enum_default_val:	'=' IDENTIF {
+pat_enum_default_val:	'=' IDENTIF {
 						std::string *val = (std::string *)$2;
 						RDORTPEnumDefVal* dv = new RDORTPEnumDefVal(val);
 						$$ = (int)dv;

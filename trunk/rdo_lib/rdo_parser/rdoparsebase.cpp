@@ -60,4 +60,10 @@ RDOParserObject::~RDOParserObject()
 //	parser->removeDeletables( this );
 }
 
+void RDOParserObject::reparent( const RDOParserObject* _parent )
+{
+	parent = _parent;
+	parser = _parent->parser;
+}
+
 } // namespace rdoParse 
