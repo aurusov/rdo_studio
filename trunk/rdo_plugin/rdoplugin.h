@@ -11,7 +11,12 @@ namespace rdoPlugin {
 
 enum PluginState   { psStoped, psActive };
 enum PluginRunMode { prmNoAuto, prmStudioStartUp, prmModelStartUp };
-enum ModelShowMode { NoShow, Animation, Monitor };
+enum ModelRuntimeMode {
+	MRTM_MaxSpeed,
+	MRTM_Jump,
+	MRTM_Sync,
+	MRTM_Pause
+};
 
 struct PluginInfo {
 	const char* name;
@@ -33,13 +38,13 @@ typedef void (*PFunBuild)();
 typedef void (*PFunRun)();
 typedef void (*PFunStop)();
 typedef bool (*PFunIsRunning)();
-typedef ModelShowMode (*PFunGetShowMode)();
-typedef void (*PFunSetShowMode)( ModelShowMode showMode );
+typedef ModelRuntimeMode (*PFunGetRuntimeMode)();
+typedef void (*PFunSetRuntimeMode)( ModelRuntimeMode runtimeMode );
 typedef const char* (*PFunGetModelStructure)();
 
 class Model {
 public:
-	Model(): newModel( NULL ), openModel( NULL ), saveModel( NULL ), closeModel( NULL ), hasModel( NULL ), isModify( NULL ), build( NULL ), run( NULL ), stop( NULL ), isRunning( NULL ), getShowMode( NULL ), setShowMode( NULL ), getStructure( NULL ) {};
+	Model(): newModel( NULL ), openModel( NULL ), saveModel( NULL ), closeModel( NULL ), hasModel( NULL ), isModify( NULL ), build( NULL ), run( NULL ), stop( NULL ), isRunning( NULL ), getRuntimeMode( NULL ), setRuntimeMode( NULL ), getStructure( NULL ) {};
 	virtual ~Model() {};
 
 	PFunNewModel          newModel;
@@ -52,8 +57,8 @@ public:
 	PFunRun               run;
 	PFunStop              stop;
 	PFunIsRunning         isRunning;
-	PFunGetShowMode       getShowMode;
-	PFunSetShowMode       setShowMode;
+	PFunGetRuntimeMode    getRuntimeMode;
+	PFunSetRuntimeMode    setRuntimeMode;
 	PFunGetModelStructure getStructure;
 };
 
@@ -119,7 +124,7 @@ static const int PM_MODEL_AFTER_START        = ::RegisterWindowMessage( "PM_MODE
 static const int PM_MODEL_FINISHED           = ::RegisterWindowMessage( "PM_MODEL_FINISHED_MESSAGE" );
 static const int PM_MODEL_STOP_CANCEL        = ::RegisterWindowMessage( "PM_MODEL_STOP_CANCEL_MESSAGE" );
 static const int PM_MODEL_STOP_RUNTIME_ERROR = ::RegisterWindowMessage( "PM_MODEL_STOP_RUNTIME_ERROR_MESSAGE" );
-static const int PM_MODEL_SHOWMODE           = ::RegisterWindowMessage( "PM_MODEL_SHOWMODE_MESSAGE" );
+static const int PM_MODEL_RUNTIMEMODE        = ::RegisterWindowMessage( "PM_MODEL_RUNTIMEMODE" );
 
 typedef void (*PFunGetPluginInfo)( PluginInfo* );
 typedef bool (*PFunStartPlugin)( const Studio* studio );

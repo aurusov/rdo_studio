@@ -758,20 +758,9 @@ void RDOStudioApp::autoClose()
 
 BOOL RDOStudioApp::PreTranslateMessage( MSG* pMsg ) 
 {
-/*
 	if ( pMsg->message == PLUGIN_MUSTEXIT_MESSAGE ) {
 		plugins->stopPlugin( reinterpret_cast<HMODULE>(pMsg->wParam) );
-	} else if ( pMsg->message == PLUGIN_STARTMODEL_MESSAGE ) {
-		plugins->modelStart();
-	} else if ( pMsg->message == PLUGIN_STOPMODEL_MESSAGE ) {
-		plugins->modelStop();
-	} else if ( pMsg->message == RDOSTUDIO_AUTOEXIT_MESSAGE ) {
-		exitCode = static_cast<rdoSimulator::RDOExitCode>(pMsg->wParam);
-		if ( mainFrame && ::IsWindow( mainFrame->m_hWnd ) ) {
-			mainFrame->SendMessage( WM_CLOSE );
-		}
 	}
-*/
 	return CWinApp::PreTranslateMessage(pMsg);
 }
 

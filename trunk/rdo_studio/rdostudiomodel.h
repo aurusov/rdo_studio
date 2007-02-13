@@ -49,7 +49,6 @@ private:
 	double timeNow;
 	double speed;
 	double showRate;
-//	rdoSimulator::ShowMode  showMode;
 	rdoRuntime::RunTimeMode runtimeMode;
 	rdoSimulator::RDOExitCode exitCode;
 	void updateFrmDescribed();
@@ -63,7 +62,7 @@ private:
 
 	bool canCloseModel();
 
-	void beforeModelStart();
+	void afterModelStart();
 
 	RDOStudioModelDoc* getModelDoc() const {
 		POSITION pos = modelDocTemplate->GetFirstDocPosition();
@@ -122,8 +121,6 @@ public:
 
 	rdoRuntime::RunTimeMode getRuntimeMode() const              { return runtimeMode;               }
 	void setRuntimeMode( const rdoRuntime::RunTimeMode value );
-//	rdoSimulator::ShowMode getShowMode() const                  { return showMode;                  }
-//	void setShowMode( const rdoSimulator::ShowMode value );
 	double getSpeed() const                                     { return speed;                     }
 	void setSpeed( double persent );
 	double getShowRate()                                        { return showRate;                  }

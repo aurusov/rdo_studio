@@ -187,42 +187,36 @@ RDOStudioPlugins::RDOStudioPlugins():
 {
 	plugins = this;
 
-	studio.stopPlugin         = RDOStudioPlugins::stopStudioPlugin;
-	studio.lock               = RDOStudioPlugins::lockPlugin;
-	studio.unlock             = RDOStudioPlugins::unlockPlugin;
-	studio.isClosed           = RDOStudioPlugins::isPluginClosed;
+	studio.stopPlugin           = RDOStudioPlugins::stopStudioPlugin;
+	studio.lock                 = RDOStudioPlugins::lockPlugin;
+	studio.unlock               = RDOStudioPlugins::unlockPlugin;
+	studio.isClosed             = RDOStudioPlugins::isPluginClosed;
 
-	studio.model.newModel     = RDOStudioPlugins::newModel;
-	studio.model.openModel    = RDOStudioPlugins::openModel;
-	studio.model.saveModel    = RDOStudioPlugins::saveModel;
-	studio.model.closeModel   = RDOStudioPlugins::closeModel;
-	studio.model.hasModel     = RDOStudioPlugins::hasModel;
-	studio.model.isModify     = RDOStudioPlugins::isModelModify;
-	studio.model.build        = RDOStudioPlugins::buildModel;
-	studio.model.run          = RDOStudioPlugins::runModel;
-	studio.model.stop         = RDOStudioPlugins::stopModel;
-	studio.model.isRunning    = RDOStudioPlugins::isModelRunning;
-	studio.model.getShowMode  = RDOStudioPlugins::getModelShowMode;
-	studio.model.setShowMode  = RDOStudioPlugins::setModelShowMode;
-	studio.model.getStructure = RDOStudioPlugins::getModelStructure;
+	studio.model.newModel       = RDOStudioPlugins::newModel;
+	studio.model.openModel      = RDOStudioPlugins::openModel;
+	studio.model.saveModel      = RDOStudioPlugins::saveModel;
+	studio.model.closeModel     = RDOStudioPlugins::closeModel;
+	studio.model.hasModel       = RDOStudioPlugins::hasModel;
+	studio.model.isModify       = RDOStudioPlugins::isModelModify;
+	studio.model.build          = RDOStudioPlugins::buildModel;
+	studio.model.run            = RDOStudioPlugins::runModel;
+	studio.model.stop           = RDOStudioPlugins::stopModel;
+	studio.model.isRunning      = RDOStudioPlugins::isModelRunning;
+	studio.model.getRuntimeMode = RDOStudioPlugins::getModelRuntimeMode;
+	studio.model.setRuntimeMode = RDOStudioPlugins::setModelRuntimeMode;
+	studio.model.getStructure   = RDOStudioPlugins::getModelStructure;
 
-	studio.frame.isDescribed = RDOStudioPlugins::isFrameDescribed;
-	studio.frame.getShowRate = RDOStudioPlugins::getFrameShowRate;
-	studio.frame.setShowRate = RDOStudioPlugins::setFrameShowRate;
-	studio.frame.showNext    = RDOStudioPlugins::showNextFrame;
-	studio.frame.showPrev    = RDOStudioPlugins::showPrevFrame;
-	studio.frame.canShowNext = RDOStudioPlugins::canShowNextFrame;
-	studio.frame.canShowPrev = RDOStudioPlugins::canShowPrevFrame;
-	studio.frame.getCount    = RDOStudioPlugins::getFrameCount;
-	studio.frame.getName     = RDOStudioPlugins::getFrameName;
-	studio.frame.show        = RDOStudioPlugins::showFrame;
-	studio.frame.closeAll    = RDOStudioPlugins::closeAllFrame;
-
-//	kernel.setNotifyReflect( RDOKernel::beforeModelStart, modelStartNotify );
-//	kernel.setNotifyReflect( RDOKernel::endExecuteModel, endExecuteModelNotify );
-//	kernel.setNotifyReflect( RDOKernel::modelStopped, modelStopNotify );
-//	kernel.setNotifyReflect( RDOKernel::executeError, modelStopNotify );
-//	kernel.setNotifyReflect( RDOKernel::traceString, traceNotify );
+	studio.frame.isDescribed   = RDOStudioPlugins::isFrameDescribed;
+	studio.frame.getShowRate   = RDOStudioPlugins::getFrameShowRate;
+	studio.frame.setShowRate   = RDOStudioPlugins::setFrameShowRate;
+	studio.frame.showNext      = RDOStudioPlugins::showNextFrame;
+	studio.frame.showPrev      = RDOStudioPlugins::showPrevFrame;
+	studio.frame.canShowNext   = RDOStudioPlugins::canShowNextFrame;
+	studio.frame.canShowPrev   = RDOStudioPlugins::canShowPrevFrame;
+	studio.frame.getCount      = RDOStudioPlugins::getFrameCount;
+	studio.frame.getName       = RDOStudioPlugins::getFrameName;
+	studio.frame.show          = RDOStudioPlugins::showFrame;
+	studio.frame.closeAll      = RDOStudioPlugins::closeAllFrame;
 
 	init();
 }
@@ -403,6 +397,8 @@ void RDOStudioPlugins::stopStudioPlugin( const HMODULE lib )
 	if ( plugin ) {
 		plugin->internalMutex.Lock();
 		plugin->closed = true;
+//		if ( plugins ) plugins->stopPlugin( plugin->lib );
+//		plugin->internalMutex.Unlock();
 	}
 	AfxGetApp()->PostThreadMessage( PLUGIN_MUSTEXIT_MESSAGE, reinterpret_cast<WPARAM>(lib), 0 );
 	if ( plugin ) {
@@ -451,7 +447,7 @@ bool RDOStudioPlugins::isPluginClosed( const HMODULE lib )
 
 void RDOStudioPlugins::stopPlugin( const HMODULE lib )
 {
-	if ( plugins ) {
+	if ( plugins && lib ) {
 		std::vector< RDOStudioPlugin* >::const_iterator it = plugins->list.begin();
 		while ( it != plugins->list.end() ) {
 			RDOStudioPlugin* plugin = *it;
@@ -514,33 +510,33 @@ bool RDOStudioPlugins::isModelRunning()
 	return model->isRunning();
 }
 
-rdoPlugin::ModelShowMode RDOStudioPlugins::getModelShowMode()
+rdoPlugin::ModelRuntimeMode RDOStudioPlugins::getModelRuntimeMode()
 {
-/*
-	switch ( model->getShowMode() ) {
-		case rdoSimulator::SM_NoShow   : return rdoPlugin::NoShow;
-		case rdoSimulator::SM_Animation: return rdoPlugin::Animation;
-		case rdoSimulator::SM_Monitor  : return rdoPlugin::Monitor;
+	switch ( model->getRuntimeMode() ) {
+		case rdoRuntime::RTM_MaxSpeed: return rdoPlugin::MRTM_MaxSpeed;
+		case rdoRuntime::RTM_Jump    : return rdoPlugin::MRTM_Jump;
+		case rdoRuntime::RTM_Sync    : return rdoPlugin::MRTM_Sync;
+		case rdoRuntime::RTM_Pause   : return rdoPlugin::MRTM_Pause;
 	}
-*/
-	return rdoPlugin::NoShow;
+	return rdoPlugin::MRTM_MaxSpeed;
 }
 
-void RDOStudioPlugins::setModelShowMode( rdoPlugin::ModelShowMode showMode )
+void RDOStudioPlugins::setModelRuntimeMode( rdoPlugin::ModelRuntimeMode runtimeMode )
 {
-/*
-	switch ( showMode ) {
-		case rdoPlugin::NoShow   : model->setShowMode( rdoSimulator::SM_NoShow ); break;
-		case rdoPlugin::Animation: model->setShowMode( rdoSimulator::SM_Animation ); break;
-		case rdoPlugin::Monitor  : model->setShowMode( rdoSimulator::SM_Monitor ); break;
+	switch ( runtimeMode ) {
+		case rdoPlugin::MRTM_MaxSpeed: model->setRuntimeMode( rdoRuntime::RTM_MaxSpeed ); break;
+		case rdoPlugin::MRTM_Jump    : model->setRuntimeMode( rdoRuntime::RTM_Jump ); break;
+		case rdoPlugin::MRTM_Sync    : model->setRuntimeMode( rdoRuntime::RTM_Sync ); break;
+		case rdoPlugin::MRTM_Pause   : model->setRuntimeMode( rdoRuntime::RTM_Pause ); break;
 	}
-*/
 }
 
 const char* RDOStudioPlugins::getModelStructure()
 {
 	if ( model->hasModel() ) {
-//!		plugins->modelStructure = kernel->simulator()->getModelStructure().str();
+		std::stringstream model_structure;
+		model->sendMessage( kernel->simulator(), RDOThread::RT_SIMULATOR_GET_MODEL_STRUCTURE, &model_structure );
+		plugins->modelStructure = model_structure.str();
 	} else {
 		plugins->modelStructure = "";
 	}
@@ -602,33 +598,7 @@ void RDOStudioPlugins::closeAllFrame()
 	model->closeAllFrame();
 }
 
-int RDOStudioPlugins::modelStartNotify( void* )
-{
-	AfxGetApp()->PostThreadMessage( PLUGIN_STARTMODEL_MESSAGE, 0, 0 );
-	return 1;
-}
-
-int RDOStudioPlugins::endExecuteModelNotify( void* )
-{
-	plugins->mutex.Lock();
-//	std::string str = kernel->simulator()->getResults().str();
-	std::string str;
-	std::vector< rdoPlugin::PFunResults>::const_iterator it = plugins->results.begin();
-	while ( it != plugins->results.end() ) {
-		(*it++)( str.c_str() );
-	}
-	plugins->mutex.Unlock();
-	AfxGetApp()->PostThreadMessage( PLUGIN_STOPMODEL_MESSAGE, 0, 0 );
-	return 1;
-}
-
-int RDOStudioPlugins::modelStopNotify( void* )
-{
-	AfxGetApp()->PostThreadMessage( PLUGIN_STOPMODEL_MESSAGE, 0, 0 );
-	return 1;
-}
-
-int RDOStudioPlugins::traceNotify( void* str )
+void RDOStudioPlugins::traceProc( const std::string& str )
 {
 	plugins->mutex.Lock();
 	std::vector< RDOStudioPlugin* >::const_iterator it = plugins->trace.begin();
@@ -636,13 +606,12 @@ int RDOStudioPlugins::traceNotify( void* str )
 		RDOStudioPlugin* plugin = *it;
 		plugin->internalMutex.Lock();
 		if ( !plugin->closed ) {
-			plugin->trace( ((std::string*)str)->c_str() );
+			plugin->trace( str.c_str() );
 		}
 		plugin->internalMutex.Unlock();
 		it++;
 	}
 	plugins->mutex.Unlock();
-	return 1;
 }
 
 void RDOStudioPlugins::modelStart()
@@ -659,9 +628,20 @@ void RDOStudioPlugins::modelStart()
 	}
 }
 
-void RDOStudioPlugins::modelStop()
+void RDOStudioPlugins::modelStop( bool model_no_error )
 {
 	if ( plugins ) {
+		if ( model_no_error ) {
+			plugins->mutex.Lock();
+			std::stringstream model_results;
+			model->sendMessage( kernel->simulator(), RDOThread::RT_SIMULATOR_GET_MODEL_RESULTS, &model_results );
+			std::string str = model_results.str();
+			std::vector< rdoPlugin::PFunResults>::const_iterator it = plugins->results.begin();
+			while ( it != plugins->results.end() ) {
+				(*it++)( str.c_str() );
+			}
+			plugins->mutex.Unlock();
+		}
 		std::vector< RDOStudioPlugin* >::iterator it = list.begin();
 		while ( it != list.end() ) {
 			RDOStudioPlugin* plugin = *it;

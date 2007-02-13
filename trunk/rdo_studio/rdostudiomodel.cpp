@@ -52,7 +52,6 @@ RDOStudioModel::RDOStudioModel():
 	showRate( 60 ),
 	runtimeMode( rdoRuntime::RTM_MaxSpeed ),
 	exitCode( rdoSimulator::EC_ModelNotFound ),
-//	showMode( SM_NoShow ),
 	prevModify( false )
 {
 	modelDocTemplate = new CMultiDocTemplate( IDR_MODEL_TYPE, RUNTIME_CLASS(RDOStudioModelDoc), RUNTIME_CLASS(RDOStudioChildFrame), RUNTIME_CLASS(RDOStudioModelView) );
@@ -244,7 +243,7 @@ void RDOStudioModel::proc( RDOThread::RDOMessageInfo& msg )
 			break;
 		}
 		case RDOThread::RT_RUNTIME_MODEL_START_BEFORE: {
-//			beforeModelStart();
+			plugins->modelStart();
 			plugins->pluginProc( rdoPlugin::PM_MODEL_BEFORE_START );
 			break;
 		}
@@ -254,7 +253,7 @@ void RDOStudioModel::proc( RDOThread::RDOMessageInfo& msg )
 			sendMessage( kernel->runtime(), RT_RUNTIME_GET_SPEED, &speed );
 			setSpeed( studioApp.mainFrame->getSpeed() );
 			sendMessage( kernel->runtime(), RT_RUNTIME_GET_SHOWRATE, &showRate );
-			beforeModelStart();
+			afterModelStart();
 			RDOStudioOutput* output = &studioApp.mainFrame->output;
 			output->showDebug();
 			output->appendStringToDebug( rdo::format( IDS_MODEL_STARTED ) );
@@ -292,12 +291,11 @@ void RDOStudioModel::proc( RDOThread::RDOMessageInfo& msg )
 				rdo::binarystream stream;
 				stream.write( str.c_str(), str.length() );
 				studioApp.studioGUI->sendMessage( kernel->repository(), RDOThread::RT_REPOSITORY_SAVE, &rdoRepository::RDOThreadRepository::FileData( rdoModelObjects::PMV, stream ) );
-//				kernel->repository()->save( rdoModelObjects::PMV, stream );
 				output->showResults();
 				output->appendStringToResults( str );
 			}
-
 			plugins->pluginProc( rdoPlugin::PM_MODEL_FINISHED );
+			plugins->modelStop();
 			studioApp.autoClose();
 			break;
 		}
@@ -308,6 +306,7 @@ void RDOStudioModel::proc( RDOThread::RDOMessageInfo& msg )
 			const_cast<rdoEditCtrl::RDODebugEdit*>(output->getDebug())->UpdateWindow();
 
 			plugins->pluginProc( rdoPlugin::PM_MODEL_STOP_CANCEL );
+			plugins->modelStop( false );
 			break;
 		}
 		case RDOThread::RT_SIMULATOR_MODEL_STOP_RUNTIME_ERROR: {
@@ -334,6 +333,7 @@ void RDOStudioModel::proc( RDOThread::RDOMessageInfo& msg )
 			}
 
 			plugins->pluginProc( rdoPlugin::PM_MODEL_STOP_RUNTIME_ERROR );
+			plugins->modelStop( false );
 			studioApp.autoClose();
 			break;
 		}
@@ -779,7 +779,7 @@ void RDOStudioModel::setName( const std::string& str )
 	}
 }
 
-void RDOStudioModel::beforeModelStart()
+void RDOStudioModel::afterModelStart()
 {
 	frameManager.clear();
 	frameManager.bmp_clear();
@@ -807,7 +807,6 @@ void RDOStudioModel::beforeModelStart()
 		frameManager.expand();
 		int initFrameNumber = kernel->simulator()->getInitialFrameNumber() - 1;
 		timeNow = 0;
-//		showMode  = kernel->simulator()->getInitialShowMode();
 		frameManager.setLastShowedFrame( initFrameNumber );
 		if ( getRuntimeMode() != rdoRuntime::RTM_MaxSpeed && initFrameNumber >= 0 && initFrameNumber < frameManager.count() ) {
 			RDOStudioFrameDoc* doc = frameManager.connectFrameDoc( initFrameNumber );
@@ -819,7 +818,6 @@ void RDOStudioModel::beforeModelStart()
 		const_cast<rdoEditCtrl::RDODebugEdit*>(output->getDebug())->UpdateWindow();
 	} else {
 		timeNow = 0;
-//		showMode  = rdoSimulator::SM_NoShow;
 		frameManager.setLastShowedFrame( -1 );
 	}
 }
@@ -843,6 +841,7 @@ void RDOStudioModel::setRuntimeMode( const rdoRuntime::RunTimeMode value )
 		runtimeMode = value;
 		sendMessage( kernel->runtime(), RT_RUNTIME_SET_MODE, &runtimeMode );
 		tracer->setRuntimeMode( runtimeMode );
+		plugins->pluginProc( rdoPlugin::PM_MODEL_RUNTIMEMODE );
 		switch ( runtimeMode ) {
 			case rdoRuntime::RTM_MaxSpeed: closeAllFrame(); break;
 			default: {
@@ -855,25 +854,7 @@ void RDOStudioModel::setRuntimeMode( const rdoRuntime::RunTimeMode value )
 		}
 	}
 }
-/*
-void RDOStudioModel::setShowMode( const ShowMode value )
-{
-	if ( isRunning() ) {
-		showMode = value;
-		if ( showMode == SM_Animation ) {
-			RDOStudioFrameDoc* doc = frameManager.getFirstExistDoc();
-			if ( !doc ) {
-				frameManager.connectFrameDoc( frameManager.getLastShowedFrame() );
-			}
-		}
-		if ( showMode == SM_NoShow ) {
-			closeAllFrame();
-		}
-		kernel->simulator()->setShowMode( showMode );
-		plugins->pluginProc( rdoPlugin::PM_MODEL_SHOWMODE );
-	}
-}
-*/
+
 void RDOStudioModel::setSpeed( double persent )
 {
 	if ( persent >= 0 && persent <= 1 && speed != persent ) {

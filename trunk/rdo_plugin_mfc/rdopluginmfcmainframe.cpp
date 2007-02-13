@@ -985,12 +985,14 @@ BEGIN_MESSAGE_MAP(RDOPluginMFCMainFrame, CFrameWnd)
 	ON_UPDATE_COMMAND_UI(ID_MODEL_RUN, OnUpdateModelRun)
 	ON_UPDATE_COMMAND_UI(ID_MODEL_STOP, OnUpdateModelStop)
 	ON_WM_CREATE()
-	ON_COMMAND(ID_MODEL_RUN_NOSHOW, OnModelRunNoshow)
-	ON_COMMAND(ID_MODEL_RUN_ANIMATION, OnModelRunAnimation)
-	ON_COMMAND(ID_MODEL_RUN_MONITOR, OnModelRunMonitor)
-	ON_UPDATE_COMMAND_UI(ID_MODEL_RUN_NOSHOW, OnUpdateModelRunNoshow)
-	ON_UPDATE_COMMAND_UI(ID_MODEL_RUN_ANIMATION, OnUpdateModelRunAnimation)
-	ON_UPDATE_COMMAND_UI(ID_MODEL_RUN_MONITOR, OnUpdateModelRunMonitor)
+	ON_COMMAND(ID_MODEL_RUN_MAXSPEED, OnModelRunMaxSpeed)
+	ON_COMMAND(ID_MODEL_RUNTIME_JUMP, OnModelRunJump)
+	ON_COMMAND(ID_MODEL_RUN_SYNC, OnModelRunSync)
+	ON_COMMAND(ID_MODEL_RUN_PAUSE, OnModelRunPause)
+	ON_UPDATE_COMMAND_UI(ID_MODEL_RUN_MAXSPEED, OnUpdateModelRunMaxSpeed)
+	ON_UPDATE_COMMAND_UI(ID_MODEL_RUNTIME_JUMP, OnUpdateModelRunJump)
+	ON_UPDATE_COMMAND_UI(ID_MODEL_RUN_SYNC, OnUpdateModelRunSync)
+	ON_UPDATE_COMMAND_UI(ID_MODEL_RUN_PAUSE, OnUpdateModelRunPause)
 	ON_COMMAND(ID_MODEL_SHOWRATE_INC, OnModelShowRateInc)
 	ON_COMMAND(ID_MODEL_SHOWRATE_INCFOUR, OnModelShowRateIncFour)
 	ON_COMMAND(ID_MODEL_SHOWRATE_DECFOUR, OnModelShowRateDecFour)
@@ -1099,40 +1101,52 @@ void RDOPluginMFCMainFrame::OnUpdateModelStop( CCmdUI* pCmdUI )
 	pCmdUI->Enable( pluginMFCApp.studio.model.isRunning() );
 }
 
-void RDOPluginMFCMainFrame::OnModelRunNoshow() 
+void RDOPluginMFCMainFrame::OnModelRunMaxSpeed() 
 {
-	pluginMFCApp.studio.model.setShowMode( rdoPlugin::NoShow );
+	pluginMFCApp.studio.model.setRuntimeMode( rdoPlugin::MRTM_MaxSpeed );
 }
 
-void RDOPluginMFCMainFrame::OnModelRunAnimation() 
+void RDOPluginMFCMainFrame::OnModelRunJump() 
 {
-	pluginMFCApp.studio.model.setShowMode( rdoPlugin::Animation );
+	pluginMFCApp.studio.model.setRuntimeMode( rdoPlugin::MRTM_Jump );
 }
 
-void RDOPluginMFCMainFrame::OnModelRunMonitor() 
+void RDOPluginMFCMainFrame::OnModelRunSync() 
 {
-	pluginMFCApp.studio.model.setShowMode( rdoPlugin::Monitor );
+	pluginMFCApp.studio.model.setRuntimeMode( rdoPlugin::MRTM_Sync );
 }
 
-void RDOPluginMFCMainFrame::OnUpdateModelRunNoshow(CCmdUI* pCmdUI) 
+void RDOPluginMFCMainFrame::OnModelRunPause() 
+{
+	pluginMFCApp.studio.model.setRuntimeMode( rdoPlugin::MRTM_Pause );
+}
+
+void RDOPluginMFCMainFrame::OnUpdateModelRunMaxSpeed(CCmdUI* pCmdUI) 
 {
 	bool flag = pluginMFCApp.studio.model.isRunning() && pluginMFCApp.studio.frame.isDescribed();
 	pCmdUI->Enable( flag );
-	pCmdUI->SetCheck( flag ? pluginMFCApp.studio.model.getShowMode() == rdoPlugin::NoShow : 0 );
+	pCmdUI->SetCheck( flag ? pluginMFCApp.studio.model.getRuntimeMode() == rdoPlugin::MRTM_MaxSpeed : 0 );
 }
 
-void RDOPluginMFCMainFrame::OnUpdateModelRunAnimation(CCmdUI* pCmdUI) 
+void RDOPluginMFCMainFrame::OnUpdateModelRunJump(CCmdUI* pCmdUI) 
 {
 	bool flag = pluginMFCApp.studio.model.isRunning() && pluginMFCApp.studio.frame.isDescribed();
 	pCmdUI->Enable( flag );
-	pCmdUI->SetCheck( flag ? pluginMFCApp.studio.model.getShowMode() == rdoPlugin::Animation : 0 );
+	pCmdUI->SetCheck( flag ? pluginMFCApp.studio.model.getRuntimeMode() == rdoPlugin::MRTM_Jump : 0 );
 }
 
-void RDOPluginMFCMainFrame::OnUpdateModelRunMonitor(CCmdUI* pCmdUI) 
+void RDOPluginMFCMainFrame::OnUpdateModelRunSync(CCmdUI* pCmdUI) 
 {
 	bool flag = pluginMFCApp.studio.model.isRunning() && pluginMFCApp.studio.frame.isDescribed();
 	pCmdUI->Enable( flag );
-	pCmdUI->SetCheck( flag ? pluginMFCApp.studio.model.getShowMode() == rdoPlugin::Monitor : 0 );
+	pCmdUI->SetCheck( flag ? pluginMFCApp.studio.model.getRuntimeMode() == rdoPlugin::MRTM_Sync : 0 );
+}
+
+void RDOPluginMFCMainFrame::OnUpdateModelRunPause(CCmdUI* pCmdUI) 
+{
+	bool flag = pluginMFCApp.studio.model.isRunning() && pluginMFCApp.studio.frame.isDescribed();
+	pCmdUI->Enable( flag );
+	pCmdUI->SetCheck( flag ? pluginMFCApp.studio.model.getRuntimeMode() == rdoPlugin::MRTM_Pause : 0 );
 }
 
 void RDOPluginMFCMainFrame::OnModelShowRateInc() 
@@ -1173,22 +1187,22 @@ void RDOPluginMFCMainFrame::OnModelShowRateDec()
 
 void RDOPluginMFCMainFrame::OnUpdateModelShowRateInc(CCmdUI* pCmdUI) 
 {
-	pCmdUI->Enable( pluginMFCApp.studio.model.isRunning() && pluginMFCApp.studio.model.getShowMode() != rdoPlugin::NoShow && pluginMFCApp.studio.frame.getShowRate() * 1.5 <= DBL_MAX );
+	pCmdUI->Enable( pluginMFCApp.studio.model.isRunning() && pluginMFCApp.studio.model.getRuntimeMode() != rdoPlugin::MRTM_MaxSpeed && pluginMFCApp.studio.frame.getShowRate() * 1.5 <= DBL_MAX );
 }
 
 void RDOPluginMFCMainFrame::OnUpdateModelShowRateIncFour(CCmdUI* pCmdUI) 
 {
-	pCmdUI->Enable( pluginMFCApp.studio.model.isRunning() && pluginMFCApp.studio.model.getShowMode() != rdoPlugin::NoShow && pluginMFCApp.studio.frame.getShowRate() * 4 <= DBL_MAX );
+	pCmdUI->Enable( pluginMFCApp.studio.model.isRunning() && pluginMFCApp.studio.model.getRuntimeMode() != rdoPlugin::MRTM_MaxSpeed && pluginMFCApp.studio.frame.getShowRate() * 4 <= DBL_MAX );
 }
 
 void RDOPluginMFCMainFrame::OnUpdateModelShowRateDecFour(CCmdUI* pCmdUI) 
 {
-	pCmdUI->Enable( pluginMFCApp.studio.model.isRunning() && pluginMFCApp.studio.model.getShowMode() != rdoPlugin::NoShow && pluginMFCApp.studio.frame.getShowRate() / 4 >= DBL_MIN );
+	pCmdUI->Enable( pluginMFCApp.studio.model.isRunning() && pluginMFCApp.studio.model.getRuntimeMode() != rdoPlugin::MRTM_MaxSpeed && pluginMFCApp.studio.frame.getShowRate() / 4 >= DBL_MIN );
 }
 
 void RDOPluginMFCMainFrame::OnUpdateModelShowRateDec(CCmdUI* pCmdUI) 
 {
-	pCmdUI->Enable( pluginMFCApp.studio.model.isRunning() && pluginMFCApp.studio.model.getShowMode() != rdoPlugin::NoShow && pluginMFCApp.studio.frame.getShowRate() / 1.5 >= DBL_MIN );
+	pCmdUI->Enable( pluginMFCApp.studio.model.isRunning() && pluginMFCApp.studio.model.getRuntimeMode() != rdoPlugin::MRTM_MaxSpeed && pluginMFCApp.studio.frame.getShowRate() / 1.5 >= DBL_MIN );
 }
 
 void RDOPluginMFCMainFrame::OnModelFrameNext() 

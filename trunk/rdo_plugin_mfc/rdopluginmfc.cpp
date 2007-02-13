@@ -76,7 +76,7 @@ const int enumMessages()
 {
 	TRACE( "4. %d, %d, %d, %d\n", ::GetCurrentProcess(), ::GetCurrentProcessId(), ::GetCurrentThread(), ::GetCurrentThreadId() );
 	static int i = 0;
-	int messages[] = { rdoPlugin::PM_MODEL_NEW, rdoPlugin::PM_MODEL_OPEN, rdoPlugin::PM_MODEL_SAVE, rdoPlugin::PM_MODEL_CLOSE, rdoPlugin::PM_MODEL_NAME_CHANGED, rdoPlugin::PM_MODEL_MODIFY, rdoPlugin::PM_MODEL_BUILD_OK, rdoPlugin::PM_MODEL_BUILD_FAILD, rdoPlugin::PM_MODEL_BEFORE_START, rdoPlugin::PM_MODEL_AFTER_START, rdoPlugin::PM_MODEL_FINISHED, rdoPlugin::PM_MODEL_STOP_CANCEL, rdoPlugin::PM_MODEL_STOP_RUNTIME_ERROR, rdoPlugin::PM_MODEL_SHOWMODE };
+	int messages[] = { rdoPlugin::PM_MODEL_NEW, rdoPlugin::PM_MODEL_OPEN, rdoPlugin::PM_MODEL_SAVE, rdoPlugin::PM_MODEL_CLOSE, rdoPlugin::PM_MODEL_NAME_CHANGED, rdoPlugin::PM_MODEL_MODIFY, rdoPlugin::PM_MODEL_BUILD_OK, rdoPlugin::PM_MODEL_BUILD_FAILD, rdoPlugin::PM_MODEL_BEFORE_START, rdoPlugin::PM_MODEL_AFTER_START, rdoPlugin::PM_MODEL_FINISHED, rdoPlugin::PM_MODEL_STOP_CANCEL, rdoPlugin::PM_MODEL_STOP_RUNTIME_ERROR, rdoPlugin::PM_MODEL_RUNTIMEMODE };
 	static const int cnt = sizeof( messages )/sizeof( int );
 	if ( i < cnt ) {
 		return messages[i++];
@@ -129,8 +129,8 @@ void pluginProc( const int message )
 		pluginMFCApp.frame->insertLine( "PM_MODEL_STOP_CANCEL" );
 	} else if ( message == rdoPlugin::PM_MODEL_STOP_RUNTIME_ERROR ) {
 		pluginMFCApp.frame->insertLine( "PM_MODEL_STOP_RUNTIME_ERROR" );
-	} else if ( message == rdoPlugin::PM_MODEL_SHOWMODE ) {
-		pluginMFCApp.frame->insertLine( "PM_MODEL_SHOWMODE" );
+	} else if ( message == rdoPlugin::PM_MODEL_RUNTIMEMODE ) {
+		pluginMFCApp.frame->insertLine( "PM_MODEL_RUNTIMEMODE" );
 	}
 }
 

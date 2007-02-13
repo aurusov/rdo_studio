@@ -69,9 +69,9 @@ public:
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioPlugins
 // ----------------------------------------------------------------------------
-static const int PLUGIN_MUSTEXIT_MESSAGE   = ::RegisterWindowMessage( "PLUGIN_MUSTEXIT_MESSAGE" );
-static const int PLUGIN_STARTMODEL_MESSAGE = ::RegisterWindowMessage( "PLUGIN_START_MODEL_MESSAGE" );
-static const int PLUGIN_STOPMODEL_MESSAGE  = ::RegisterWindowMessage( "PLUGIN_STOP_MODEL_MESSAGE" );
+static const int PLUGIN_MUSTEXIT_MESSAGE = ::RegisterWindowMessage( "PLUGIN_MUSTEXIT_MESSAGE" );
+//static const int PLUGIN_STARTMODEL_MESSAGE = ::RegisterWindowMessage( "PLUGIN_START_MODEL_MESSAGE" );
+//static const int PLUGIN_STOPMODEL_MESSAGE  = ::RegisterWindowMessage( "PLUGIN_STOP_MODEL_MESSAGE" );
 
 class RDOStudioPlugins
 {
@@ -116,8 +116,8 @@ private:
 	static void runModel();
 	static void stopModel();
 	static bool isModelRunning();
-	static rdoPlugin::ModelShowMode getModelShowMode();
-	static void setModelShowMode( rdoPlugin::ModelShowMode showMode );
+	static rdoPlugin::ModelRuntimeMode getModelRuntimeMode();
+	static void setModelRuntimeMode( rdoPlugin::ModelRuntimeMode runtimeMode );
 	static const char* getModelStructure();
 
 	static bool isFrameDescribed();
@@ -132,11 +132,6 @@ private:
 	static void showFrame( int index );
 	static void closeAllFrame();
 
-	static int modelStartNotify( void* );
-	static int endExecuteModelNotify( void* );
-	static int modelStopNotify( void* );
-	static int traceNotify( void* );
-
 public:
 	RDOStudioPlugins();
 	virtual ~RDOStudioPlugins();
@@ -145,7 +140,8 @@ public:
 
 	void stopPlugin( const HMODULE lib );
 	void modelStart();
-	void modelStop();
+	void modelStop( bool model_no_error = true );
+	void traceProc( const std::string& str );
 
 	void pluginProc( const int message );
 

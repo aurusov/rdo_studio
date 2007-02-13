@@ -62,7 +62,7 @@ void stopPlugin()
 const int enumMessages()
 {
 	static int i = 0;
-	int messages[] = { rdoPlugin::PM_MODEL_NEW, rdoPlugin::PM_MODEL_OPEN, rdoPlugin::PM_MODEL_SAVE, rdoPlugin::PM_MODEL_CLOSE, rdoPlugin::PM_MODEL_NAME_CHANGED, rdoPlugin::PM_MODEL_MODIFY, rdoPlugin::PM_MODEL_BUILD_OK, rdoPlugin::PM_MODEL_BUILD_FAILD, rdoPlugin::PM_MODEL_BEFORE_START, rdoPlugin::PM_MODEL_AFTER_START, rdoPlugin::PM_MODEL_FINISHED, rdoPlugin::PM_MODEL_STOP_CANCEL, rdoPlugin::PM_MODEL_STOP_RUNTIME_ERROR, rdoPlugin::PM_MODEL_SHOWMODE };
+	int messages[] = { rdoPlugin::PM_MODEL_NEW, rdoPlugin::PM_MODEL_OPEN, rdoPlugin::PM_MODEL_SAVE, rdoPlugin::PM_MODEL_CLOSE, rdoPlugin::PM_MODEL_NAME_CHANGED, rdoPlugin::PM_MODEL_MODIFY, rdoPlugin::PM_MODEL_BUILD_OK, rdoPlugin::PM_MODEL_BUILD_FAILD, rdoPlugin::PM_MODEL_BEFORE_START, rdoPlugin::PM_MODEL_AFTER_START, rdoPlugin::PM_MODEL_FINISHED, rdoPlugin::PM_MODEL_STOP_CANCEL, rdoPlugin::PM_MODEL_STOP_RUNTIME_ERROR, rdoPlugin::PM_MODEL_RUNTIMEMODE };
 	static const int cnt = sizeof( messages )/sizeof( int );
 	if ( i < cnt ) {
 		return messages[i++];
@@ -126,8 +126,8 @@ void pluginProc( const int message )
 	} else if ( message == rdoPlugin::PM_MODEL_STOP_RUNTIME_ERROR ) {
 		CBuilderPluginForm->insertLine( "PM_MODEL_STOP_RUNTIME_ERROR" );
 		CBuilderPluginForm->updateControlsState();
-	} else if ( message == rdoPlugin::PM_MODEL_SHOWMODE ) {
-		CBuilderPluginForm->insertLine( "PM_MODEL_SHOWMODE" );
+	} else if ( message == rdoPlugin::PM_MODEL_RUNTIMEMODE ) {
+		CBuilderPluginForm->insertLine( "PM_MODEL_RUNTIMEMODE" );
 		CBuilderPluginForm->updateControlsState();
 	}
 }

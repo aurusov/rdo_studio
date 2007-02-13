@@ -81,9 +81,10 @@ BEGIN
         MENUITEM "&Execute\tF5",                ID_MODEL_RUN
         MENUITEM "&Stop\tShift+F5",             ID_MODEL_STOP
         MENUITEM SEPARATOR
-        MENUITEM "&No Show",                    ID_MODEL_RUN_NOSHOW
-        MENUITEM "&Animation",                  ID_MODEL_RUN_ANIMATION
-        MENUITEM "&Monitor",                    ID_MODEL_RUN_MONITOR
+        MENUITEM "&Max Speed",                  ID_MODEL_RUN_MAXSPEED
+        MENUITEM "Discrete Animation",          ID_MODEL_RUNTIME_JUMP
+        MENUITEM "&Sync Animation",             ID_MODEL_RUN_SYNC
+        MENUITEM "&Pause",                      ID_MODEL_RUN_PAUSE
         MENUITEM SEPARATOR
         MENUITEM "&Increase Tempo\tAlt+Num+",   ID_MODEL_SHOWRATE_INC
         MENUITEM "In&crease Tempo by 4 Times",  ID_MODEL_SHOWRATE_INCFOUR
@@ -118,13 +119,6 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    ID_MODEL_RUN_NOSHOW     "\nNo Show"
-    ID_MODEL_RUN_ANIMATION  "\nAnimation"
-    ID_MODEL_RUN_MONITOR    "\nMonitor"
-END
-
-STRINGTABLE DISCARDABLE 
-BEGIN
     ID_MODEL_SHOWRATE_INC   "\nIncrease Tempo (Alt+Num+)"
     ID_MODEL_SHOWRATE_INCFOUR "\nIncrease Tempo by 4 Times"
     ID_MODEL_SHOWRATE_DECFOUR "\nDecrease Tempo by 4 Times"
@@ -136,6 +130,11 @@ END
 STRINGTABLE DISCARDABLE 
 BEGIN
     IDR_MAINFRAME           "MFC-Based Plugin"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_MODEL_RUNTIME_JUMP   "\nDiscrete Animation"
 END
 
 #endif    // Russian resources
