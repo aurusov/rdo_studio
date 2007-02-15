@@ -183,7 +183,8 @@ void RDOStudioPlugin::setRunMode( const rdoPlugin::PluginRunMode value )
 RDOStudioPlugins* plugins;
 
 RDOStudioPlugins::RDOStudioPlugins():
-	modelStructure( "" )
+	modelStructure( "" ),
+	lastCmdShow( SW_NORMAL )
 {
 	plugins = this;
 
@@ -191,6 +192,9 @@ RDOStudioPlugins::RDOStudioPlugins():
 	studio.lock                 = RDOStudioPlugins::lockPlugin;
 	studio.unlock               = RDOStudioPlugins::unlockPlugin;
 	studio.isClosed             = RDOStudioPlugins::isPluginClosed;
+	studio.show                 = RDOStudioPlugins::studioShow;
+	studio.isShow               = RDOStudioPlugins::studioIsShow;
+	studio.mainFrame            = RDOStudioPlugins::studioGetMainFrame;
 
 	studio.model.newModel       = RDOStudioPlugins::newModel;
 	studio.model.openModel      = RDOStudioPlugins::openModel;
@@ -443,6 +447,27 @@ bool RDOStudioPlugins::isPluginClosed( const HMODULE lib )
 		it++;
 	}
 	return false;
+}
+
+void RDOStudioPlugins::studioShow( int cmdShow )
+{
+	AfxGetApp()->GetMainWnd()->ShowWindow( cmdShow );
+	plugins->lastCmdShow = cmdShow;
+}
+
+bool RDOStudioPlugins::studioIsShow()
+{
+	return plugins->lastCmdShow == SW_NORMAL || plugins->lastCmdShow == SW_SHOW || plugins->lastCmdShow == SW_RESTORE || plugins->lastCmdShow == SW_SHOWMAXIMIZED || plugins->lastCmdShow == SW_SHOWNA || plugins->lastCmdShow == SW_SHOWNOACTIVATE || plugins->lastCmdShow == SW_SHOWNORMAL;
+}
+
+void RDOStudioPlugins::saveMainFrameState( int cmdShow )
+{
+	lastCmdShow = cmdShow;
+}
+
+HWND RDOStudioPlugins::studioGetMainFrame()
+{
+	return AfxGetApp()->GetMainWnd()->m_hWnd;
 }
 
 void RDOStudioPlugins::stopPlugin( const HMODULE lib )

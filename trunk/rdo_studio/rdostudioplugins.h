@@ -106,6 +106,11 @@ private:
 	static void unlockPlugin( const HMODULE lib );
 	static bool isPluginClosed( const HMODULE lib );
 
+	int lastCmdShow;
+	static void studioShow( int cmdShow );
+	static bool studioIsShow();
+	static HWND studioGetMainFrame();
+
 	static void newModel();
 	static bool openModel( const char* modelName );
 	static void saveModel();
@@ -142,10 +147,10 @@ public:
 	void modelStart();
 	void modelStop( bool model_no_error = true );
 	void traceProc( const std::string& str );
-
 	void pluginProc( const int message );
 
 	rdoPlugin::Studio* getStudio() { return &studio; }
+	void saveMainFrameState( int cmdShow );
 
 	static int comparePluginsByName( const RDOStudioPlugin* plugin1, const RDOStudioPlugin* plugin2 );
 	static int comparePluginsByVersion( const RDOStudioPlugin* plugin1, const RDOStudioPlugin* plugin2 );

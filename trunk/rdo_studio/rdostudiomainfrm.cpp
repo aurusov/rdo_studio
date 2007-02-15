@@ -108,6 +108,7 @@ BEGIN_MESSAGE_MAP(RDOStudioMainFrame, CMDIFrameWnd)
 	ON_UPDATE_COMMAND_UI(ID_MODEL_FRAME_PREV, OnUpdateModelFramePrev)
 	ON_WM_TIMER()
 	ON_WM_CLOSE()
+	ON_WM_SHOWWINDOW()
 	//}}AFX_MSG_MAP
 	ON_UPDATE_COMMAND_UI( ID_COORD_STATUSBAR           , OnUpdateCoordStatusBar )
 	ON_UPDATE_COMMAND_UI( ID_MODIFY_STATUSBAR          , OnUpdateModifyStatusBar )
@@ -653,4 +654,10 @@ void RDOStudioMainFrame::OnClose()
 	// close_mode объявлена как static, т.к. после удачного закрытия всех документов
 	// происходит реальное удаление главного окна и this уже не определен
 	close_mode = false;
+}
+
+void RDOStudioMainFrame::OnShowWindow( BOOL bShow, UINT nStatus )
+{
+	CMDIFrameWnd::OnShowWindow( bShow, nStatus );
+	if ( plugins ) plugins->saveMainFrameState( bShow ? SW_SHOW : SW_HIDE );
 }

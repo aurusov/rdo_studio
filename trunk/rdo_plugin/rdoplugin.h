@@ -96,10 +96,13 @@ typedef void (*PFunStopStudioPlugin)( const HMODULE );
 typedef void (*PFunLockPlugin)( const HMODULE );
 typedef void (*PFunUnlockPlugin)( const HMODULE );
 typedef bool (*PFunIsPluginClosed)( const HMODULE );
+typedef void (*PFunShow)( int cmdShow );
+typedef bool (*PFunIsShow)();
+typedef HWND (*PFunGetMainFrame)();
 
 class Studio {
 public:
-	Studio(): stopPlugin( NULL ), lock( NULL ), unlock( NULL ), isClosed( NULL ) {};
+	Studio(): stopPlugin( NULL ), lock( NULL ), unlock( NULL ), isClosed( NULL ), show( NULL ), isShow( NULL ), mainFrame( NULL ) {};
 	virtual ~Studio() {};
 
 	Model model;
@@ -109,6 +112,9 @@ public:
 	PFunLockPlugin       lock;
 	PFunLockPlugin       unlock;
 	PFunIsPluginClosed   isClosed;
+	PFunShow             show;
+	PFunIsShow           isShow;
+	PFunGetMainFrame     mainFrame;
 };
 
 static const int PM_MODEL_NEW                = ::RegisterWindowMessage( "PM_MODEL_NEW_MESSAGE" );
