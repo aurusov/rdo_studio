@@ -67,23 +67,44 @@ void RDOFileAssociationDlg::OnCancel()
 class RDOStudioCommandLineInfo: public CCommandLineInfo
 {
 protected:
+	bool plugin_start_found;
+	bool plugin_exit_found;
 	virtual void ParseParam( LPCTSTR lpszParam, BOOL bFlag, BOOL bLast );
+
+public:
+	RDOStudioCommandLineInfo():
+		CCommandLineInfo(),
+		plugin_start_found( false ),
+		plugin_exit_found( false )
+	{
+	}
 };
 
 void RDOStudioCommandLineInfo::ParseParam( LPCTSTR lpszParam, BOOL bFlag, BOOL bLast )
 {
 	CCommandLineInfo::ParseParam( lpszParam, bFlag, bLast );
 	if ( bFlag ) {
+		plugin_start_found = false;
+		plugin_exit_found  = false;
 		if ( CString( lpszParam ).CompareNoCase( "autorun" ) == 0 ) {
 			studioApp.autoRun = true;
-		}
-		if ( CString( lpszParam ).CompareNoCase( "autoexit" ) == 0 ) {
+		} else if ( CString( lpszParam ).CompareNoCase( "autoexit" ) == 0 ) {
 			studioApp.autoExitByModel = true;
+		} else if ( CString( lpszParam ).CompareNoCase( "pluginstart" ) == 0 ) {
+			plugin_start_found = true;
+		} else if ( CString( lpszParam ).CompareNoCase( "pluginautoexit" ) == 0 ) {
+			plugin_exit_found = true;
 		}
 	} else {
-		if ( studioApp.openModelName.empty() ) {
+		if ( plugin_start_found ) {
+			studioApp.plugin_start_name.push_back( lpszParam );
+		} else if ( plugin_exit_found ) {
+			studioApp.plugin_exit_name.push_back( lpszParam );
+		} else if ( studioApp.openModelName.empty() ) {
 			studioApp.openModelName = lpszParam;
 		}
+		plugin_start_found = false;
+		plugin_exit_found  = false;
 	}
 }
 
@@ -136,7 +157,6 @@ RDOStudioApp::RDOStudioApp():
 	showCaptionFullName( false ),
 	autoRun( false ),
 	autoExitByModel( false ),
-	autoExitByPlugin( true ),
 	exitCode( rdoSimulator::EC_OK ),
 	openModelName( "" )
 {
@@ -209,11 +229,11 @@ BOOL RDOStudioApp::InitInstance()
 	mainFrame->ShowWindow( m_nCmdShow );
 	mainFrame->UpdateWindow();
 
-	// create plugins after mainFrame was show
-	plugins = new RDOStudioPlugins;
-
 	RDOStudioCommandLineInfo cmdInfo;
 	ParseCommandLine( cmdInfo );
+
+	// Создаем менеджер плагинов после создания главного окна и парсера командной строки
+	plugins = new RDOStudioPlugins;
 
 	bool newModel  = true;
 	bool autoModel = false;
@@ -316,7 +336,7 @@ int RDOStudioApp::ExitInstance()
 
 	::HtmlHelp( NULL, NULL, HH_CLOSE_ALL, 0 );
 
-	if ( autoExitByModel || autoExitByPlugin ) {
+	if ( autoExitByModel || !plugin_exit_name.empty() ) {
 		CWinApp::ExitInstance();
 		return exitCode;
 	} else {
@@ -758,11 +778,16 @@ void RDOStudioApp::autoCloseByModel()
 	}
 }
 
-void RDOStudioApp::autoCloseByPlugin()
+void RDOStudioApp::autoCloseByPlugin( RDOStudioPlugin* plugin )
 {
-	if ( autoExitByPlugin ) {
+	if ( std::find( plugin_exit_name.begin(), plugin_exit_name.end(), plugin->getFileName() ) != plugin_exit_name.end() ) {
 		mainFrame->SendMessage( WM_CLOSE );
 	}
+}
+
+bool RDOStudioApp::isPluginAutoStart( RDOStudioPlugin* plugin ) const
+{
+	return std::find( plugin_start_name.begin(), plugin_start_name.end(), plugin->getFileName() ) != plugin_start_name.end();
 }
 
 BOOL RDOStudioApp::PreTranslateMessage( MSG* pMsg ) 

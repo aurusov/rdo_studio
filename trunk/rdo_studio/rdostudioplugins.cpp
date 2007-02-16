@@ -48,14 +48,18 @@ RDOStudioPlugin::RDOStudioPlugin( const std::string& _modulName ):
 	}
 	runMode      = static_cast<rdoPlugin::PluginRunMode>(AfxGetApp()->GetProfileInt( getProfilePath().c_str(), "runMode", runMode ));
 	restoreState = AfxGetApp()->GetProfileInt( getProfilePath().c_str(), "restoreState", restoreState ) ? true : false;
-	if ( restoreState ) {
-		setState( static_cast<rdoPlugin::PluginState>(AfxGetApp()->GetProfileInt( getProfilePath().c_str(), "state", state )) );
-	}
-	if ( runMode == rdoPlugin::prmStudioStartUp ) {
+	if ( studioApp.isPluginAutoStart( this ) ) {
 		setState( rdoPlugin::psActive );
-	} else if ( getState() == rdoPlugin::psStoped && lib ) {
-		::FreeLibrary( lib );
-		lib = NULL;
+	} else {
+		if ( restoreState ) {
+			setState( static_cast<rdoPlugin::PluginState>(AfxGetApp()->GetProfileInt( getProfilePath().c_str(), "state", state )) );
+		}
+		if ( runMode == rdoPlugin::prmStudioStartUp ) {
+			setState( rdoPlugin::psActive );
+		} else if ( getState() == rdoPlugin::psStoped && lib ) {
+			::FreeLibrary( lib );
+			lib = NULL;
+		}
 	}
 }
 
@@ -175,6 +179,27 @@ void RDOStudioPlugin::setRunMode( const rdoPlugin::PluginRunMode value )
 		}
 		AfxGetApp()->WriteProfileInt( getProfilePath().c_str(), "runMode", runMode );
 	}
+}
+
+std::string RDOStudioPlugin::getFileName() const
+{
+	std::string name = modulName;
+	std::string::size_type pos = name.find_last_of( '.' );
+	if ( pos != std::string::npos ) {
+		std::string s;
+		s.assign( name.begin(), pos );
+		name = s;
+	}
+	static char szDelims[] = " \t\n\r";
+	pos = name.find_last_of( '\\' );
+	if ( pos == std::string::npos ) {
+		pos = name.find_last_of( '/' );
+	}
+	if ( pos != std::string::npos ) {
+		std::string s( name, pos + 1, name.length() - pos );
+		name = s;
+	}
+	return name;
 }
 
 // ----------------------------------------------------------------------------
@@ -441,23 +466,22 @@ HWND RDOStudioPlugins::studioGetMainFrame()
 
 void RDOStudioPlugins::stopPluginByStudio( const HMODULE lib )
 {
-	bool autoStop = false;
+	RDOStudioPlugin* plugin = NULL;
 	if ( plugins && lib ) {
 		mutex.Lock();
 		std::vector< RDOStudioPlugin* >::const_iterator it = list.begin();
 		while ( it != list.end() ) {
-			RDOStudioPlugin* plugin = *it;
-			if ( plugin->lib == lib ) {
+			if ( (*it)->lib == lib ) {
+				plugin = (*it);
 				plugin->setState( rdoPlugin::psStoped );
-				autoStop = true;
 				break;
 			}
 			it++;
 		}
 		mutex.Unlock();
 	}
-	if ( autoStop ) {
-		studioApp.autoCloseByPlugin();
+	if ( plugin ) {
+		studioApp.autoCloseByPlugin( plugin );
 	}
 }
 

@@ -19,6 +19,8 @@
 class RDOStudioMainFrame;
 class RDOThreadStudio;
 class RDOThreadStudioGUI;
+class RDOStudioPlugin;
+
 namespace rdoTracer {
 class RDOTracer;
 }
@@ -57,9 +59,11 @@ private:
 
 	bool autoRun;
 	bool autoExitByModel;
-	bool autoExitByPlugin;
 	rdoSimulator::RDOExitCode exitCode;
 	std::string openModelName;
+
+	std::list< std::string > plugin_start_name;
+	std::list< std::string > plugin_exit_name;
 
 public:
 	RDOStudioApp();
@@ -86,7 +90,8 @@ public:
 	void setShowCaptionFullName( const bool value );
 
 	void autoCloseByModel();
-	void autoCloseByPlugin();
+	void autoCloseByPlugin( RDOStudioPlugin* plugin );
+	bool isPluginAutoStart( RDOStudioPlugin* plugin ) const;
 
 	static std::string getFullFileName();
 	static std::string getFullHelpFileName( std::string str = "RAO-studio.chm" );

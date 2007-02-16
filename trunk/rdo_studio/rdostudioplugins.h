@@ -63,6 +63,8 @@ public:
 	rdoPlugin::PluginRunMode getRunMode() const { return runMode; }
 	void setRunMode( const rdoPlugin::PluginRunMode value );
 	rdoPlugin::PluginRunMode getDefaultRunMode() const { return defaultRunMode; }
+
+	std::string getFileName() const;
 };
 
 // ----------------------------------------------------------------------------
