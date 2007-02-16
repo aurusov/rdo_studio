@@ -102,7 +102,8 @@ void RDOStudioPlugin::setState( const rdoPlugin::PluginState value )
 			}
 			if ( state == rdoPlugin::psActive ) {
 				rdoPlugin::PFunStartPlugin startPlugin = reinterpret_cast<rdoPlugin::PFunStartPlugin>(::GetProcAddress( lib, "startPlugin" ));
-				if ( startPlugin && startPlugin( plugins->getStudio() ) ) {
+				plugins->studio.plugin.hInstance = lib;
+				if ( startPlugin && startPlugin( plugins->studio ) ) {
 					plugins->mutex.Lock();
 					// setup messages procedure
 					rdoPlugin::PFunEnumMessages enumMessages = reinterpret_cast<rdoPlugin::PFunEnumMessages>(::GetProcAddress( lib, "enumMessages" ));
@@ -335,7 +336,7 @@ void RDOStudioPlugins::clearMessageReflect( RDOStudioPlugin* plugin )
 	mutex.Unlock();
 }
 
-void RDOStudioPlugins::pluginProc( const int message )
+void RDOStudioPlugins::pluginProc( const int message, void* param1 )
 {
 	mutex.Lock();
 	messageList::iterator it = messages.lower_bound( message );
@@ -343,7 +344,7 @@ void RDOStudioPlugins::pluginProc( const int message )
 		RDOStudioPlugin* plugin = it->second;
 		plugin->mutex.Lock();
 		if ( !plugin->closed ) {
-			plugin->pluginProc( message );
+			plugin->pluginProc( message, param1 );
 		}
 		plugin->mutex.Unlock();
 		it++;
@@ -446,7 +447,7 @@ bool RDOStudioPlugins::pluginIsStoped( const HMODULE lib )
 void RDOStudioPlugins::studioShow( int cmdShow )
 {
 	AfxGetApp()->GetMainWnd()->ShowWindow( cmdShow );
-	plugins->lastCmdShow = cmdShow;
+	if ( plugins ) plugins->saveMainFrameState( cmdShow );
 }
 
 bool RDOStudioPlugins::studioIsShow()
@@ -456,7 +457,10 @@ bool RDOStudioPlugins::studioIsShow()
 
 void RDOStudioPlugins::saveMainFrameState( int cmdShow )
 {
-	lastCmdShow = cmdShow;
+	if ( lastCmdShow != cmdShow ) {
+		lastCmdShow = cmdShow;
+		pluginProc( rdoPlugin::PM_STUDIO_SHOWCHANGED, reinterpret_cast<void*>(lastCmdShow) );
+	}
 }
 
 HWND RDOStudioPlugins::studioGetMainFrame()

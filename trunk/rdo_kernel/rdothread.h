@@ -59,18 +59,18 @@ public:
 		RT_THREAD_CLOSE = 1,
 		RT_THREAD_CONNECTION,
 		RT_THREAD_DISCONNECTION,
-		RT_THREAD_REGISTERED,                 // param = thread:RDOThread*
-		RT_THREAD_UNREGISTERED,               // param = thread:RDOThread*
+		RT_THREAD_REGISTERED,                  // param = thread:RDOThread*
+		RT_THREAD_UNREGISTERED,                // param = thread:RDOThread*
 		RT_THREAD_STOP_AFTER,
-		RT_STUDIO_MODEL_NEW,                  // param = rdoRepository::RDOThreadRepository::NewModel* = { model_name:std::string&, model_path:std::string&      }
-		RT_STUDIO_MODEL_OPEN,                 // param = rdoRepository::RDOThreadRepository::OpenFile* = { model_name:std::string&, result:bool&, readonly:bool& }
+		RT_STUDIO_MODEL_NEW,                   // param = rdoRepository::RDOThreadRepository::NewModel* = { model_name:std::string&, model_path:std::string&      }
+		RT_STUDIO_MODEL_OPEN,                  // param = rdoRepository::RDOThreadRepository::OpenFile* = { model_name:std::string&, result:bool&, readonly:bool& }
 		RT_STUDIO_MODEL_SAVE,
 		RT_STUDIO_MODEL_SAVE_AS,
 		RT_STUDIO_MODEL_CLOSE,
 		RT_STUDIO_MODEL_BUILD,
 		RT_STUDIO_MODEL_RUN,
 		RT_STUDIO_MODEL_STOP,
-		RT_STUDIO_MODEL_GET_TEXT,             // param = rdoRepository::RDOThreadRepository::FileData* = { file_type:rdoModelObjects::RDOFileType, result:rdo::binarystream& }
+		RT_STUDIO_MODEL_GET_TEXT,              // param = rdoRepository::RDOThreadRepository::FileData* = { file_type:rdoModelObjects::RDOFileType, result:rdo::binarystream& }
 		RT_REPOSITORY_MODEL_NEW,
 		RT_REPOSITORY_MODEL_OPEN,
 		RT_REPOSITORY_MODEL_OPEN_GET_NAME,     // param = rdoRepository::RDOThreadRepository::OpenFile* = { model_name:std::string, readonly:bool, result:bool }

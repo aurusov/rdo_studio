@@ -109,6 +109,7 @@ BEGIN_MESSAGE_MAP(RDOStudioMainFrame, CMDIFrameWnd)
 	ON_WM_TIMER()
 	ON_WM_CLOSE()
 	ON_WM_SHOWWINDOW()
+	ON_WM_SIZE()
 	//}}AFX_MSG_MAP
 	ON_UPDATE_COMMAND_UI( ID_COORD_STATUSBAR           , OnUpdateCoordStatusBar )
 	ON_UPDATE_COMMAND_UI( ID_MODIFY_STATUSBAR          , OnUpdateModifyStatusBar )
@@ -660,4 +661,10 @@ void RDOStudioMainFrame::OnShowWindow( BOOL bShow, UINT nStatus )
 {
 	CMDIFrameWnd::OnShowWindow( bShow, nStatus );
 	if ( plugins ) plugins->saveMainFrameState( bShow ? SW_SHOW : SW_HIDE );
+}
+
+void RDOStudioMainFrame::OnSize( UINT nType, int cx, int cy )
+{
+	CMDIFrameWnd::OnSize( nType, cx, cy );
+	if ( plugins ) plugins->saveMainFrameState( nType == SIZE_MAXIMIZED || nType == SIZE_RESTORED ? SW_SHOW : SW_HIDE );
 }

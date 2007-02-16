@@ -20,7 +20,7 @@ class RDOPluginMFCLogCtrl: public CWnd
 {
 protected:
 	CMutex mutex;
-	
+
 	int lineHeight;
 	int charWidth;
 	int maxStrWidth;

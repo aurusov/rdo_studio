@@ -145,10 +145,9 @@ public:
 	void modelStart();
 	void modelStop( bool model_no_error = true );
 	void traceProc( const std::string& str );
-	void pluginProc( const int message );
+	void pluginProc( const int message, void* param1 = NULL );
 	static bool studioIsShow();
 
-	rdoPlugin::Studio* getStudio() { return &studio; }
 	void saveMainFrameState( int cmdShow );
 
 	static int comparePluginsByName( const RDOStudioPlugin* plugin1, const RDOStudioPlugin* plugin2 );

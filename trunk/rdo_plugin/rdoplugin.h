@@ -97,11 +97,13 @@ typedef bool (*PFunPluginIsStoped)( const HMODULE );
 
 class Plugin {
 public:
-	Plugin(): stop( NULL ), isStoped( NULL ) {};
+	Plugin(): stop( NULL ), isStoped( NULL ), hInstance( NULL )  {};
 	virtual ~Plugin() {};
 
 	PFunPluginStop     stop;
 	PFunPluginIsStoped isStoped;
+
+	HINSTANCE          hInstance;
 };
 
 typedef void (*PFunShow)( int cmdShow );
@@ -117,9 +119,9 @@ public:
 	Frame  frame;
 	Plugin plugin;
 
-	PFunShow             show;
-	PFunIsShow           isShow;
-	PFunGetMainFrame     mainFrame;
+	PFunShow         show;
+	PFunIsShow       isShow;
+	PFunGetMainFrame mainFrame;
 };
 
 enum RDOPluginMessage {
@@ -136,25 +138,26 @@ enum RDOPluginMessage {
 	PM_MODEL_FINISHED,
 	PM_MODEL_STOP_CANCEL,
 	PM_MODEL_STOP_RUNTIME_ERROR,
-	PM_MODEL_RUNTIMEMODE
+	PM_MODEL_RUNTIMEMODE,
+	PM_STUDIO_SHOWCHANGED              // param = int:Win32API::ShowWindow::nCmdShow
 };
 
 typedef void (*PFunGetPluginInfo)( PluginInfo* );
-typedef bool (*PFunStartPlugin)( const Studio* studio );
+typedef bool (*PFunStartPlugin)( const Studio& studio );
 typedef void (*PFunStopPlugin)();
 typedef const int (*PFunEnumMessages)();
-typedef void (*PFunPluginProc)( const int );
+typedef void (*PFunPluginProc)( const int, void* );
 typedef void (*PFunTrace)( const char* );
 typedef void (*PFunResults)( const char* );
 
-};
+} // namespace rdoPlugin
 
 extern "C" {
 	RDOPLUGIN_DLL void getPluginInfo( rdoPlugin::PluginInfo* info );
-	RDOPLUGIN_DLL bool startPlugin( const rdoPlugin::Studio* studio );
+	RDOPLUGIN_DLL bool startPlugin( const rdoPlugin::Studio& studio );
 	RDOPLUGIN_DLL void stopPlugin();
 	RDOPLUGIN_DLL const int enumMessages();
-	RDOPLUGIN_DLL void pluginProc( const int message );
+	RDOPLUGIN_DLL void pluginProc( const int message, void* param1 );
 	RDOPLUGIN_DLL void trace( const char* line );
 	RDOPLUGIN_DLL void results( const char* lines );
 }

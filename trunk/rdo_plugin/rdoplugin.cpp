@@ -42,7 +42,7 @@ const int enumMessages()
 	return 0;
 }
 
-void pluginProc( const int message )
+void pluginProc( const int message, const int param1 )
 {
 }
 

@@ -84,7 +84,7 @@ const int enumMessages()
 	return 0;
 }
 
-void pluginProc( const int message )
+void pluginProc( const int message, void* param1 )
 {
 	TRACE( "5. %d, %d, %d, %d\n", ::GetCurrentProcess(), ::GetCurrentProcessId(), ::GetCurrentThread(), ::GetCurrentThreadId() );
 	switch ( message ) {
