@@ -87,50 +87,79 @@ const int enumMessages()
 void pluginProc( const int message )
 {
 	TRACE( "5. %d, %d, %d, %d\n", ::GetCurrentProcess(), ::GetCurrentProcessId(), ::GetCurrentThread(), ::GetCurrentThreadId() );
-	if ( message == rdoPlugin::PM_MODEL_NEW ) {
-		pluginMFCApp.frame->insertLine( "PM_MODEL_NEW" );
-	} else if ( message == rdoPlugin::PM_MODEL_OPEN ) {
-		pluginMFCApp.frame->insertLine( "PM_MODEL_OPEN" );
-	} else if ( message == rdoPlugin::PM_MODEL_SAVE ) {
-		pluginMFCApp.frame->insertLine( "PM_MODEL_SAVE" );
-	} else if ( message == rdoPlugin::PM_MODEL_CLOSE ) {
-		pluginMFCApp.frame->insertLine( "PM_MODEL_CLOSE" );
-	} else if ( message == rdoPlugin::PM_MODEL_NAME_CHANGED ) {
-		pluginMFCApp.frame->insertLine( "PM_MODEL_NAME_CHANGED" );
-	} else if ( message == rdoPlugin::PM_MODEL_MODIFY ) {
-		pluginMFCApp.frame->insertLine( "PM_MODEL_MODIFY" );
-	} else if ( message == rdoPlugin::PM_MODEL_BUILD_OK ) {
-		pluginMFCApp.frame->insertLine( "PM_MODEL_BUILD_OK" );
-	} else if ( message == rdoPlugin::PM_MODEL_BUILD_FAILD ) {
-		pluginMFCApp.frame->insertLine( "PM_MODEL_BUILD_FAILD" );
-	} else if ( message == rdoPlugin::PM_MODEL_BEFORE_START ) {
-		pluginMFCApp.frame->insertLine( "PM_MODEL_BEFORE_START" );
-		std::string str = pluginMFCApp.studio.model.getStructure();
-		std::string::size_type pos = str.find( '\n' );
-		if ( pos != std::string::npos ) {
-			while ( pos != std::string::npos ) {
-				std::string str2( str.begin(), 0, pos );
-				pluginMFCApp.frame->insertLine( str2.c_str() );
-				str.erase( 0, pos + 1 );
-				pos = str.find( '\n' );
-			}
-			std::string str2( str.begin(), 0, pos );
-			if ( !str2.empty() ) {
-				pluginMFCApp.frame->insertLine( str2.c_str() );
-			}
-		} else {
-			pluginMFCApp.frame->insertLine( str.c_str() );
+	switch ( message ) {
+		case rdoPlugin::PM_MODEL_NEW: {
+			pluginMFCApp.frame->insertLine( "PM_MODEL_NEW" );
+			break;
 		}
-	} else if ( message == rdoPlugin::PM_MODEL_AFTER_START ) {
-		pluginMFCApp.frame->insertLine( "PM_MODEL_AFTER_START" );
-	} else if ( message == rdoPlugin::PM_MODEL_FINISHED ) {
-		pluginMFCApp.frame->insertLine( "PM_MODEL_FINISHED" );
-	} else if ( message == rdoPlugin::PM_MODEL_STOP_CANCEL ) {
-		pluginMFCApp.frame->insertLine( "PM_MODEL_STOP_CANCEL" );
-	} else if ( message == rdoPlugin::PM_MODEL_STOP_RUNTIME_ERROR ) {
-		pluginMFCApp.frame->insertLine( "PM_MODEL_STOP_RUNTIME_ERROR" );
-	} else if ( message == rdoPlugin::PM_MODEL_RUNTIMEMODE ) {
-		pluginMFCApp.frame->insertLine( "PM_MODEL_RUNTIMEMODE" );
+		case rdoPlugin::PM_MODEL_OPEN: {
+			pluginMFCApp.frame->insertLine( "PM_MODEL_OPEN" );
+			break;
+		}
+		case rdoPlugin::PM_MODEL_SAVE: {
+			pluginMFCApp.frame->insertLine( "PM_MODEL_SAVE" );
+			break;
+		}
+		case rdoPlugin::PM_MODEL_CLOSE: {
+			pluginMFCApp.frame->insertLine( "PM_MODEL_CLOSE" );
+			break;
+		}
+		case rdoPlugin::PM_MODEL_NAME_CHANGED: {
+			pluginMFCApp.frame->insertLine( "PM_MODEL_NAME_CHANGED" );
+			break;
+		}
+		case rdoPlugin::PM_MODEL_MODIFY: {
+			pluginMFCApp.frame->insertLine( "PM_MODEL_MODIFY" );
+			break;
+		}
+		case rdoPlugin::PM_MODEL_BUILD_OK: {
+			pluginMFCApp.frame->insertLine( "PM_MODEL_BUILD_OK" );
+			break;
+		}
+		case rdoPlugin::PM_MODEL_BUILD_FAILD: {
+			pluginMFCApp.frame->insertLine( "PM_MODEL_BUILD_FAILD" );
+			break;
+		}
+		case rdoPlugin::PM_MODEL_BEFORE_START: {
+			pluginMFCApp.frame->insertLine( "PM_MODEL_BEFORE_START" );
+			std::string str = pluginMFCApp.studio.model.getStructure();
+			std::string::size_type pos = str.find( '\n' );
+			if ( pos != std::string::npos ) {
+				while ( pos != std::string::npos ) {
+					std::string str2( str.begin(), 0, pos );
+					pluginMFCApp.frame->insertLine( str2.c_str() );
+					str.erase( 0, pos + 1 );
+					pos = str.find( '\n' );
+				}
+				std::string str2( str.begin(), 0, pos );
+				if ( !str2.empty() ) {
+					pluginMFCApp.frame->insertLine( str2.c_str() );
+				}
+			} else {
+				pluginMFCApp.frame->insertLine( str.c_str() );
+			}
+			break;
+		}
+		case rdoPlugin::PM_MODEL_AFTER_START: {
+			pluginMFCApp.frame->insertLine( "PM_MODEL_AFTER_START" );
+			break;
+		}
+		case rdoPlugin::PM_MODEL_FINISHED: {
+			pluginMFCApp.frame->insertLine( "PM_MODEL_FINISHED" );
+			break;
+		}
+		case rdoPlugin::PM_MODEL_STOP_CANCEL: {
+			pluginMFCApp.frame->insertLine( "PM_MODEL_STOP_CANCEL" );
+			break;
+		}
+		case rdoPlugin::PM_MODEL_STOP_RUNTIME_ERROR: {
+			pluginMFCApp.frame->insertLine( "PM_MODEL_STOP_RUNTIME_ERROR" );
+			break;
+		}
+		case rdoPlugin::PM_MODEL_RUNTIMEMODE: {
+			pluginMFCApp.frame->insertLine( "PM_MODEL_RUNTIMEMODE" );
+			break;
+		}
 	}
 }
 

@@ -122,20 +122,22 @@ public:
 	PFunGetMainFrame     mainFrame;
 };
 
-static const int PM_MODEL_NEW                = ::RegisterWindowMessage( "PM_MODEL_NEW_MESSAGE" );
-static const int PM_MODEL_OPEN               = ::RegisterWindowMessage( "PM_MODEL_OPEN_MESSAGE" );
-static const int PM_MODEL_SAVE               = ::RegisterWindowMessage( "PM_MODEL_SAVE_MESSAGE" );
-static const int PM_MODEL_CLOSE              = ::RegisterWindowMessage( "PM_MODEL_CLOSE_MESSAGE" );
-static const int PM_MODEL_NAME_CHANGED       = ::RegisterWindowMessage( "PM_MODEL_NAME_CHANGED_MESSAGE" );
-static const int PM_MODEL_MODIFY             = ::RegisterWindowMessage( "PM_MODEL_MODIFY_MESSAGE" );
-static const int PM_MODEL_BUILD_OK           = ::RegisterWindowMessage( "PM_MODEL_BUILD_OK_MESSAGE" );
-static const int PM_MODEL_BUILD_FAILD        = ::RegisterWindowMessage( "PM_MODEL_BUILD_FAILD_MESSAGE" );
-static const int PM_MODEL_BEFORE_START       = ::RegisterWindowMessage( "PM_MODEL_BEFORE_START" );
-static const int PM_MODEL_AFTER_START        = ::RegisterWindowMessage( "PM_MODEL_AFTER_START" );
-static const int PM_MODEL_FINISHED           = ::RegisterWindowMessage( "PM_MODEL_FINISHED_MESSAGE" );
-static const int PM_MODEL_STOP_CANCEL        = ::RegisterWindowMessage( "PM_MODEL_STOP_CANCEL_MESSAGE" );
-static const int PM_MODEL_STOP_RUNTIME_ERROR = ::RegisterWindowMessage( "PM_MODEL_STOP_RUNTIME_ERROR_MESSAGE" );
-static const int PM_MODEL_RUNTIMEMODE        = ::RegisterWindowMessage( "PM_MODEL_RUNTIMEMODE" );
+enum RDOPluginMessage {
+	PM_MODEL_NEW = 1,
+	PM_MODEL_OPEN,
+	PM_MODEL_SAVE,
+	PM_MODEL_CLOSE,
+	PM_MODEL_NAME_CHANGED,
+	PM_MODEL_MODIFY,
+	PM_MODEL_BUILD_OK,
+	PM_MODEL_BUILD_FAILD,
+	PM_MODEL_BEFORE_START,
+	PM_MODEL_AFTER_START,
+	PM_MODEL_FINISHED,
+	PM_MODEL_STOP_CANCEL,
+	PM_MODEL_STOP_RUNTIME_ERROR,
+	PM_MODEL_RUNTIMEMODE
+};
 
 typedef void (*PFunGetPluginInfo)( PluginInfo* );
 typedef bool (*PFunStartPlugin)( const Studio* studio );
