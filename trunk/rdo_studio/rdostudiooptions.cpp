@@ -2211,3 +2211,9 @@ void RDOStudioOptionsColorsStyles::OnCommentGroupCheck()
 		OnUpdateModify();
 	}
 }
+
+BOOL RDOStudioOptions::ContinueModal()
+{
+	if ( !::IsWindow(m_hWnd) ) return false;
+	return CPropertySheet::ContinueModal();
+}

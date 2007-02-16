@@ -113,40 +113,50 @@ void RDOStudioOutput::showBuild()
 {
 	studioApp.mainFrame->showOutput();
 	tab.setCurrentItem( 0 );
-	build->SetFocus();
-	UpdateWindow();
+	if ( plugins->studioIsShow() ) {
+		build->SetFocus();
+		UpdateWindow();
+	}
 }
 
 void RDOStudioOutput::showDebug()
 {
 	studioApp.mainFrame->showOutput();
 	tab.setCurrentItem( 1 );
-	debug->SetFocus();
-	UpdateWindow();
+	if ( plugins->studioIsShow() ) {
+		debug->SetFocus();
+		UpdateWindow();
+	}
 }
 
 void RDOStudioOutput::showTrace()
 {
 	studioApp.mainFrame->showOutput();
 	tab.setCurrentItem( 2 );
-	trace->SetFocus();
-	UpdateWindow();
+	if ( plugins->studioIsShow() ) {
+		trace->SetFocus();
+		UpdateWindow();
+	}
 }
 
 void RDOStudioOutput::showResults()
 {
 	studioApp.mainFrame->showOutput();
 	tab.setCurrentItem( 3 );
-	results->SetFocus();
-	UpdateWindow();
+	if ( plugins->studioIsShow() ) {
+		results->SetFocus();
+		UpdateWindow();
+	}
 }
 
 void RDOStudioOutput::showFind()
 {
 	studioApp.mainFrame->showOutput();
 	tab.setCurrentItem( 4 );
-	find->SetFocus();
-	UpdateWindow();
+	if ( plugins->studioIsShow() ) {
+		find->SetFocus();
+		UpdateWindow();
+	}
 }
 
 void RDOStudioOutput::clearBuild()

@@ -34,8 +34,7 @@ private:
 	rdoPlugin::PFunTrace      trace;
 	rdoPlugin::PFunResults    results;
 
-	CMutex internalMutex;
-	CMutex externalMutex;
+	CMutex mutex;
 	bool closed;
 
 	std::string getProfilePath() const;
@@ -85,30 +84,27 @@ private:
 
 	rdoPlugin::Studio studio;
 
-	typedef std::multimap< const int, rdoPlugin::PFunPluginProc > messageList;
+	typedef std::multimap< const int, RDOStudioPlugin* > messageList;
 	messageList messages;
-	void setMessageReflect( const int message, rdoPlugin::PFunPluginProc pluginProc );
-	void clearMessageReflect( rdoPlugin::PFunPluginProc pluginProc );
+	void setMessageReflect( const int message, RDOStudioPlugin* plugin );
+	void clearMessageReflect( RDOStudioPlugin* plugin );
 
 	std::vector< RDOStudioPlugin* > trace;
 	CMutex mutex;
 	void setTrace( RDOStudioPlugin* plugin );
 	void clearTrace( RDOStudioPlugin* plugin );
 
-	std::vector< rdoPlugin::PFunResults> results;
-	void setResults( rdoPlugin::PFunResults results );
-	void clearResults( rdoPlugin::PFunResults results );
+	std::vector< RDOStudioPlugin* > results;
+	void setResults( RDOStudioPlugin* plugin );
+	void clearResults( RDOStudioPlugin* plugin );
 
 	std::string modelStructure;
 
-	static void stopStudioPlugin( const HMODULE lib );
-	static void lockPlugin( const HMODULE lib );
-	static void unlockPlugin( const HMODULE lib );
-	static bool isPluginClosed( const HMODULE lib );
+	static void pluginStop( const HMODULE lib );
+	static bool pluginIsStoped( const HMODULE lib );
 
 	int lastCmdShow;
 	static void studioShow( int cmdShow );
-	static bool studioIsShow();
 	static HWND studioGetMainFrame();
 
 	static void newModel();
@@ -143,11 +139,12 @@ public:
 
 	const std::vector< RDOStudioPlugin* >& getList() { return list; }
 
-	void stopPlugin( const HMODULE lib );
+	void stopPluginByStudio( const HMODULE lib );
 	void modelStart();
 	void modelStop( bool model_no_error = true );
 	void traceProc( const std::string& str );
 	void pluginProc( const int message );
+	static bool studioIsShow();
 
 	rdoPlugin::Studio* getStudio() { return &studio; }
 	void saveMainFrameState( int cmdShow );

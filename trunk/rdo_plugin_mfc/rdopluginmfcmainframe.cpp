@@ -1257,6 +1257,6 @@ void RDOPluginMFCMainFrame::OnUpdateModelClose(CCmdUI* pCmdUI)
 
 void RDOPluginMFCMainFrame::OnClose() 
 {
-	pluginMFCApp.studio.stopPlugin( AfxGetInstanceHandle() );
+	pluginMFCApp.studio.plugin.stop( AfxGetInstanceHandle() );
 	CFrameWnd::OnClose();
 }

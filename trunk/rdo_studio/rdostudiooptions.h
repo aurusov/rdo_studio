@@ -431,6 +431,8 @@ private:
 
 protected:
 	//{{AFX_VIRTUAL(RDOStudioOptions)
+	public:
+	virtual BOOL ContinueModal();
 	//}}AFX_VIRTUAL
 
 	//{{AFX_MSG(RDOStudioOptions)

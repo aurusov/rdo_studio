@@ -175,12 +175,12 @@ void RDOStudioModel::proc( RDOThread::RDOMessageInfo& msg )
 		}
 		case RDOThread::RT_REPOSITORY_MODEL_NEW: {
 			newModelFromRepository();
-			plugins->pluginProc( rdoPlugin::PM_MODEL_NEW );
+			if ( plugins ) plugins->pluginProc( rdoPlugin::PM_MODEL_NEW );
 			break;
 		}
 		case RDOThread::RT_REPOSITORY_MODEL_OPEN: {
 			openModelFromRepository();
-			plugins->pluginProc( rdoPlugin::PM_MODEL_OPEN );
+			if ( plugins ) plugins->pluginProc( rdoPlugin::PM_MODEL_OPEN );
 			break;
 		}
 		case RDOThread::RT_REPOSITORY_MODEL_OPEN_ERROR: {
@@ -216,9 +216,7 @@ void RDOStudioModel::proc( RDOThread::RDOMessageInfo& msg )
 		}
 		case RDOThread::RT_REPOSITORY_MODEL_CLOSE: {
 			closeModelFromRepository();
-			if ( plugins ) {
-				plugins->pluginProc( rdoPlugin::PM_MODEL_CLOSE );
-			}
+			if ( plugins ) plugins->pluginProc( rdoPlugin::PM_MODEL_CLOSE );
 			break;
 		}
 		case RDOThread::RT_REPOSITORY_MODEL_CLOSE_CAN_CLOSE: {
@@ -243,8 +241,10 @@ void RDOStudioModel::proc( RDOThread::RDOMessageInfo& msg )
 			break;
 		}
 		case RDOThread::RT_RUNTIME_MODEL_START_BEFORE: {
-			plugins->modelStart();
-			plugins->pluginProc( rdoPlugin::PM_MODEL_BEFORE_START );
+			if ( plugins ) {
+				plugins->modelStart();
+				plugins->pluginProc( rdoPlugin::PM_MODEL_BEFORE_START );
+			}
 			break;
 		}
 		case RDOThread::RT_RUNTIME_MODEL_START_AFTER: {
@@ -264,7 +264,7 @@ void RDOStudioModel::proc( RDOThread::RDOMessageInfo& msg )
 				if ( view ) view->SetFocus();
 			}
 			studioApp.mainFrame->update_start();
-			plugins->pluginProc( rdoPlugin::PM_MODEL_AFTER_START );
+			if ( plugins ) plugins->pluginProc( rdoPlugin::PM_MODEL_AFTER_START );
 			break;
 		}
 		case RDOThread::RT_RUNTIME_MODEL_STOP_BEFORE: {
@@ -294,9 +294,11 @@ void RDOStudioModel::proc( RDOThread::RDOMessageInfo& msg )
 				output->showResults();
 				output->appendStringToResults( str );
 			}
-			plugins->pluginProc( rdoPlugin::PM_MODEL_FINISHED );
-			plugins->modelStop();
-			studioApp.autoClose();
+			if ( plugins ) {
+				plugins->pluginProc( rdoPlugin::PM_MODEL_FINISHED );
+				plugins->modelStop();
+			}
+			studioApp.autoCloseByModel();
 			break;
 		}
 		case RDOThread::RT_SIMULATOR_MODEL_STOP_BY_USER: {
@@ -305,8 +307,10 @@ void RDOStudioModel::proc( RDOThread::RDOMessageInfo& msg )
 			output->appendStringToDebug( rdo::format( IDS_MODEL_STOPED ) );
 			const_cast<rdoEditCtrl::RDODebugEdit*>(output->getDebug())->UpdateWindow();
 
-			plugins->pluginProc( rdoPlugin::PM_MODEL_STOP_CANCEL );
-			plugins->modelStop( false );
+			if ( plugins ) {
+				plugins->pluginProc( rdoPlugin::PM_MODEL_STOP_CANCEL );
+				plugins->modelStop( false );
+			}
 			break;
 		}
 		case RDOThread::RT_SIMULATOR_MODEL_STOP_RUNTIME_ERROR: {
@@ -332,9 +336,11 @@ void RDOStudioModel::proc( RDOThread::RDOMessageInfo& msg )
 				const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->showFirstError();
 			}
 
-			plugins->pluginProc( rdoPlugin::PM_MODEL_STOP_RUNTIME_ERROR );
-			plugins->modelStop( false );
-			studioApp.autoClose();
+			if ( plugins ) {
+				plugins->pluginProc( rdoPlugin::PM_MODEL_STOP_RUNTIME_ERROR );
+				plugins->modelStop( false );
+			}
+			studioApp.autoCloseByModel();
 			break;
 		}
 		case RDOThread::RT_SIMULATOR_PARSE_OK: {
@@ -357,7 +363,7 @@ void RDOStudioModel::proc( RDOThread::RDOMessageInfo& msg )
 			if ( errors_cnt || warnings_cnt ) {
 				const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->showFirstError();
 			}
-			plugins->pluginProc( rdoPlugin::PM_MODEL_BUILD_OK );
+			if ( plugins ) plugins->pluginProc( rdoPlugin::PM_MODEL_BUILD_OK );
 			break;
 		}
 		case RDOThread::RT_SIMULATOR_PARSE_ERROR: {
@@ -381,10 +387,10 @@ void RDOStudioModel::proc( RDOThread::RDOMessageInfo& msg )
 				const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->showFirstError();
 			}
 
-			plugins->pluginProc( rdoPlugin::PM_MODEL_BUILD_FAILD );
+			if ( plugins ) plugins->pluginProc( rdoPlugin::PM_MODEL_BUILD_FAILD );
 
 			GUI_CAN_RUN = true;
-			studioApp.autoClose();
+			studioApp.autoCloseByModel();
 			break;
 		}
 		case RDOThread::RT_SIMULATOR_PARSE_STRING: {
@@ -604,6 +610,7 @@ void RDOStudioModel::openModelFromRepository()
 			maximize = true;
 		}
 
+		CWnd* active = CWnd::GetActiveWindow();
 		modelDocTemplate->OpenDocumentFile( NULL );
 		setName( kernel->repository()->getName() );
 
@@ -668,6 +675,8 @@ void RDOStudioModel::openModelFromRepository()
 		}
 
 		updateFrmDescribed();
+
+		if ( active ) active->SetFocus();
 	}
 }
 
@@ -723,7 +732,7 @@ void RDOStudioModel::saveModelToRepository()
 
 	if ( smr_modified ) updateFrmDescribed();
 
-	if ( wasSaved ) {
+	if ( wasSaved && plugins ) {
 		plugins->pluginProc( rdoPlugin::PM_MODEL_SAVE );
 	}
 }
@@ -774,7 +783,7 @@ void RDOStudioModel::setName( const std::string& str )
 		flag = doc->getName() != str;
 		doc->setName( str );
 	}
-	if ( flag ) {
+	if ( flag && plugins ) {
 		plugins->pluginProc( rdoPlugin::PM_MODEL_NAME_CHANGED );
 	}
 }
@@ -841,7 +850,7 @@ void RDOStudioModel::setRuntimeMode( const rdoRuntime::RunTimeMode value )
 		runtimeMode = value;
 		sendMessage( kernel->runtime(), RT_RUNTIME_SET_MODE, &runtimeMode );
 		tracer->setRuntimeMode( runtimeMode );
-		plugins->pluginProc( rdoPlugin::PM_MODEL_RUNTIMEMODE );
+		if ( plugins ) plugins->pluginProc( rdoPlugin::PM_MODEL_RUNTIMEMODE );
 		switch ( runtimeMode ) {
 			case rdoRuntime::RTM_MaxSpeed: closeAllFrame(); break;
 			default: {

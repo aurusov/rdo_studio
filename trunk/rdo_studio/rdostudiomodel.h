@@ -108,7 +108,7 @@ public:
 		bool result = doc ? doc->isModify() : false;
 		if ( prevModify != result ) {
 			prevModify = result;
-			plugins->pluginProc( rdoPlugin::PM_MODEL_MODIFY );
+			if ( plugins ) plugins->pluginProc( rdoPlugin::PM_MODEL_MODIFY );
 		}
 		return result;
 	}

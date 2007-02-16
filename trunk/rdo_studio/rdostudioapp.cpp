@@ -78,7 +78,7 @@ void RDOStudioCommandLineInfo::ParseParam( LPCTSTR lpszParam, BOOL bFlag, BOOL b
 			studioApp.autoRun = true;
 		}
 		if ( CString( lpszParam ).CompareNoCase( "autoexit" ) == 0 ) {
-			studioApp.autoExit = true;
+			studioApp.autoExitByModel = true;
 		}
 	} else {
 		if ( studioApp.openModelName.empty() ) {
@@ -135,7 +135,8 @@ RDOStudioApp::RDOStudioApp():
 	lastProjectName( "" ),
 	showCaptionFullName( false ),
 	autoRun( false ),
-	autoExit( false ),
+	autoExitByModel( false ),
+	autoExitByPlugin( true ),
 	exitCode( rdoSimulator::EC_OK ),
 	openModelName( "" )
 {
@@ -228,9 +229,9 @@ BOOL RDOStudioApp::InitInstance()
 		} else {
 			openModelName = rdo::extractFilePath( RDOStudioApp::getFullFileName() ) + openModelName;
 			if ( rdo::isFileExists( openModelName ) && model->openModel( openModelName ) ) {
-				autoRun   = true;
-				autoExit  = true;
-				autoModel = true;
+				autoRun         = true;
+				autoExitByModel = true;
+				autoModel       = true;
 			} else {
 				exitCode = rdoSimulator::EC_ModelNotFound;
 				return false;
@@ -245,8 +246,8 @@ BOOL RDOStudioApp::InitInstance()
 	if ( autoModel ) {
 		newModel = false;
 	} else {
-		autoRun  = false;
-		autoExit = false;
+		autoRun         = false;
+		autoExitByModel = false;
 	}
 	if ( newModel ) {
 //		OnFileNew();
@@ -313,11 +314,12 @@ int RDOStudioApp::ExitInstance()
 	// Роняем кернел и закрываем все треды
 	RDOKernel::close();
 
-	if ( autoExit ) {
+	::HtmlHelp( NULL, NULL, HH_CLOSE_ALL, 0 );
+
+	if ( autoExitByModel || autoExitByPlugin ) {
 		CWinApp::ExitInstance();
 		return exitCode;
 	} else {
-		::HtmlHelp( NULL, NULL, HH_CLOSE_ALL, 0 );
 		WriteProfileString( "general", "lastProject", getOpenLastProject() ? lastProjectName.c_str() : "" );
 		return CWinApp::ExitInstance();
 	}
@@ -749,9 +751,16 @@ void RDOStudioApp::OnAppAbout()
 	dlg.DoModal();
 }
 
-void RDOStudioApp::autoClose()
+void RDOStudioApp::autoCloseByModel()
 {
-	if ( autoExit ) {
+	if ( autoExitByModel ) {
+		mainFrame->SendMessage( WM_CLOSE );
+	}
+}
+
+void RDOStudioApp::autoCloseByPlugin()
+{
+	if ( autoExitByPlugin ) {
 		mainFrame->SendMessage( WM_CLOSE );
 	}
 }
@@ -759,7 +768,7 @@ void RDOStudioApp::autoClose()
 BOOL RDOStudioApp::PreTranslateMessage( MSG* pMsg ) 
 {
 	if ( pMsg->message == PLUGIN_MUSTEXIT_MESSAGE ) {
-		plugins->stopPlugin( reinterpret_cast<HMODULE>(pMsg->wParam) );
+		plugins->stopPluginByStudio( reinterpret_cast<HMODULE>(pMsg->wParam) );
 	}
 	return CWinApp::PreTranslateMessage(pMsg);
 }

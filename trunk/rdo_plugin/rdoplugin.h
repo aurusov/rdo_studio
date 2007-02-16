@@ -92,26 +92,31 @@ public:
 	PFunCloseAllFrame    closeAll;
 };
 
-typedef void (*PFunStopStudioPlugin)( const HMODULE );
-typedef void (*PFunLockPlugin)( const HMODULE );
-typedef void (*PFunUnlockPlugin)( const HMODULE );
-typedef bool (*PFunIsPluginClosed)( const HMODULE );
+typedef void (*PFunPluginStop)( const HMODULE );
+typedef bool (*PFunPluginIsStoped)( const HMODULE );
+
+class Plugin {
+public:
+	Plugin(): stop( NULL ), isStoped( NULL ) {};
+	virtual ~Plugin() {};
+
+	PFunPluginStop     stop;
+	PFunPluginIsStoped isStoped;
+};
+
 typedef void (*PFunShow)( int cmdShow );
 typedef bool (*PFunIsShow)();
 typedef HWND (*PFunGetMainFrame)();
 
 class Studio {
 public:
-	Studio(): stopPlugin( NULL ), lock( NULL ), unlock( NULL ), isClosed( NULL ), show( NULL ), isShow( NULL ), mainFrame( NULL ) {};
+	Studio(): show( NULL ), isShow( NULL ), mainFrame( NULL ) {};
 	virtual ~Studio() {};
 
-	Model model;
-	Frame frame;
+	Model  model;
+	Frame  frame;
+	Plugin plugin;
 
-	PFunStopStudioPlugin stopPlugin;
-	PFunLockPlugin       lock;
-	PFunLockPlugin       unlock;
-	PFunIsPluginClosed   isClosed;
 	PFunShow             show;
 	PFunIsShow           isShow;
 	PFunGetMainFrame     mainFrame;
