@@ -43,6 +43,12 @@ RDOStudioModel::RDOStudioModel():
 	GUI_HAS_MODEL( false ),
 	GUI_CAN_RUN( true ),
 	GUI_IS_RUNING( false ),
+	GUI_ACTION_NEW( true ),
+	GUI_ACTION_OPEN( true ),
+	GUI_ACTION_SAVE( true ),
+	GUI_ACTION_CLOSE( true ),
+	GUI_ACTION_BUILD( true ),
+	GUI_ACTION_RUN( true ),
 	openError( false ),
 	modelClosed( true ),
 	saveAsFlag( false ),
@@ -408,8 +414,9 @@ void RDOStudioModel::proc( RDOThread::RDOMessageInfo& msg )
 	}
 }
 
-void RDOStudioModel::newModel( std::string _model_name, std::string _model_path, const int _useTemplate  )
+bool RDOStudioModel::newModel( std::string _model_name, std::string _model_path, const int _useTemplate  )
 {
+	if ( !plugins->canAction( rdoPlugin::maCreate ) ) return false;
 	useTemplate = _useTemplate;
 	RDOStudioOutput* output = &studioApp.mainFrame->output;
 	output->clearBuild();
@@ -421,10 +428,12 @@ void RDOStudioModel::newModel( std::string _model_name, std::string _model_path,
 	data.path = _model_path;
 	studioApp.broadcastMessage( RDOThread::RT_STUDIO_MODEL_NEW, &data );
 	output->updateLogConnection();
+	return true;
 }
 
 bool RDOStudioModel::openModel( const std::string& modelName ) const
 {
+	if ( !plugins->canAction( rdoPlugin::maOpen ) ) return false;
 	if ( isRunning() ) {
 		AfxGetMainWnd()->MessageBox( rdo::format( ID_MSG_MODEL_NEED_STOPED_FOR_OPEN ).c_str(), NULL, MB_ICONEXCLAMATION | MB_OK );
 		return false;
@@ -458,6 +467,7 @@ bool RDOStudioModel::openModel( const std::string& modelName ) const
 
 bool RDOStudioModel::saveModel() const
 {
+	if ( !plugins->canAction( rdoPlugin::maSave ) ) return false;
 	bool res = true;
 	studioApp.broadcastMessage( RDOThread::RT_STUDIO_MODEL_SAVE, &res );
 	return res;
@@ -472,6 +482,7 @@ void RDOStudioModel::saveAsModel() const
 
 bool RDOStudioModel::closeModel() const
 {
+	if ( !plugins->canAction( rdoPlugin::maClose ) ) return false;
 	if ( !isRunning() ) {
 		stopModel();
 		RDOStudioOutput* output = &studioApp.mainFrame->output;
@@ -489,8 +500,9 @@ bool RDOStudioModel::closeModel() const
 	}
 }
 
-void RDOStudioModel::buildModel() const
+bool RDOStudioModel::buildModel() const
 {
+	if ( !plugins->canAction( rdoPlugin::maBuild ) ) return false;
 	if ( hasModel() && !isRunning() && saveModel() ) {
 		RDOStudioOutput* output = &studioApp.mainFrame->output;
 		output->clearBuild();
@@ -500,11 +512,14 @@ void RDOStudioModel::buildModel() const
 		output->appendStringToBuild( rdo::format( IDS_MODEL_BUILDING_BEGIN ) );
 		const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->UpdateWindow();
 		studioApp.broadcastMessage( RDOThread::RT_STUDIO_MODEL_BUILD );
+		return true;
 	}
+	return false;
 }
 
-void RDOStudioModel::runModel()
+bool RDOStudioModel::runModel()
 {
+	if ( !plugins->canAction( rdoPlugin::maRun ) ) return false;
 	if ( hasModel() && !isRunning() && saveModel() ) {
 		GUI_CAN_RUN = false;
 		RDOStudioOutput* output = &studioApp.mainFrame->output;
@@ -515,14 +530,18 @@ void RDOStudioModel::runModel()
 		output->appendStringToBuild( rdo::format( IDS_MODEL_BUILDING_BEGIN ) );
 		const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->UpdateWindow();
 		studioApp.broadcastMessage( RDOThread::RT_STUDIO_MODEL_RUN );
+		return true;
 	}
+	return false;
 }
 
-void RDOStudioModel::stopModel() const
+bool RDOStudioModel::stopModel() const
 {
 	if ( hasModel() && isRunning() ) {
 		studioApp.broadcastMessage( RDOThread::RT_STUDIO_MODEL_STOP );
+		return true;
 	}
+	return false;
 }
 
 void RDOStudioModel::newModelFromRepository()

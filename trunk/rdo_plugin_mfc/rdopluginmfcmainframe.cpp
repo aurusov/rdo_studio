@@ -1227,22 +1227,22 @@ void RDOPluginMFCMainFrame::OnUpdateModelFramePrev(CCmdUI* pCmdUI)
 
 void RDOPluginMFCMainFrame::OnModelNew()
 {
-	pluginMFCApp.studio.model.newModel();
+	pluginMFCApp.studio.model.create( "", "" );
 }
 
 void RDOPluginMFCMainFrame::OnModelOpen()
 {
-	pluginMFCApp.studio.model.openModel( NULL );
+	pluginMFCApp.studio.model.open( NULL );
 }
 
 void RDOPluginMFCMainFrame::OnModelSave()
 {
-	pluginMFCApp.studio.model.saveModel();
+	pluginMFCApp.studio.model.save();
 }
 
 void RDOPluginMFCMainFrame::OnModelClose()
 {
-	pluginMFCApp.studio.model.closeModel();
+	pluginMFCApp.studio.model.close();
 }
 
 void RDOPluginMFCMainFrame::OnUpdateModelSave(CCmdUI* pCmdUI)

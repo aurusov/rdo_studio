@@ -71,8 +71,6 @@ public:
 // ---------- RDOStudioPlugins
 // ----------------------------------------------------------------------------
 static const int PLUGIN_MUSTEXIT_MESSAGE = ::RegisterWindowMessage( "PLUGIN_MUSTEXIT_MESSAGE" );
-//static const int PLUGIN_STARTMODEL_MESSAGE = ::RegisterWindowMessage( "PLUGIN_START_MODEL_MESSAGE" );
-//static const int PLUGIN_STOPMODEL_MESSAGE  = ::RegisterWindowMessage( "PLUGIN_STOP_MODEL_MESSAGE" );
 
 class RDOStudioPlugins
 {
@@ -102,6 +100,8 @@ private:
 
 	std::string modelStructure;
 
+	std::list< rdoPlugin::ModelActionType > actionDisabled;
+
 	static void pluginStop( const HMODULE lib );
 	static bool pluginIsStoped( const HMODULE lib );
 
@@ -109,19 +109,24 @@ private:
 	static void studioShow( int cmdShow );
 	static HWND studioGetMainFrame();
 
-	static void newModel();
+	static void actionEnable( rdoPlugin::ModelActionType action );
+	static void actionDisable( rdoPlugin::ModelActionType action );
+	static bool actionState( rdoPlugin::ModelActionType action );
+	static bool newModel( const char* modelName, const char* modelPath );
 	static bool openModel( const char* modelName );
-	static void saveModel();
-	static void closeModel();
+	static bool saveModel();
+	static bool closeModel();
 	static bool hasModel();
 	static bool isModelModify();
-	static void buildModel();
-	static void runModel();
-	static void stopModel();
+	static bool buildModel();
+	static bool runModel();
+	static bool stopModel();
 	static bool isModelRunning();
 	static rdoPlugin::ModelRuntimeMode getModelRuntimeMode();
 	static void setModelRuntimeMode( rdoPlugin::ModelRuntimeMode runtimeMode );
 	static const char* getModelStructure();
+	static bool readFile( rdoPlugin::ModelFileType file_type, char** data );
+	static bool writeFile( rdoPlugin::ModelFileType file_type, const char* data );
 
 	static bool isFrameDescribed();
 	static double getFrameShowRate();
@@ -147,6 +152,8 @@ public:
 	void traceProc( const std::string& str );
 	void pluginProc( const int message, void* param1 = NULL );
 	static bool studioIsShow();
+
+	bool canAction( rdoPlugin::ModelActionType action );
 
 	void saveMainFrameState( int cmdShow );
 

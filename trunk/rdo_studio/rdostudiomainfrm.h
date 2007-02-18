@@ -56,11 +56,6 @@ public:
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioMainFrame
 // ----------------------------------------------------------------------------
-static const int FM_KERNEL_NOTIFY        = ::RegisterWindowMessage( "FM_KERNEL_NOTIFY" );
-static const int FM_KERNEL_NOTIFYSTRING  = ::RegisterWindowMessage( "FM_KERNEL_NOTIFYSTRING" );
-static const int FM_KERNEL_NOTIFYBOOLAND = ::RegisterWindowMessage( "FM_KERNEL_NOTIFYBOOLAND" );
-static const int FM_KERNEL_NOTIFYBOOLOR  = ::RegisterWindowMessage( "FM_KERNEL_NOTIFYBOOLOR" );
-
 class RDOStudioMainFrame: public CMDIFrameWnd
 {
 DECLARE_DYNAMIC(RDOStudioMainFrame)

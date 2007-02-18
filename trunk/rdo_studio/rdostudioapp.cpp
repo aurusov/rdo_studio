@@ -111,8 +111,6 @@ void RDOStudioCommandLineInfo::ParseParam( LPCTSTR lpszParam, BOOL bFlag, BOOL b
 // ----------------------------------------------------------------------------
 // ---------- RDOStudioApp
 // ----------------------------------------------------------------------------
-static const int RDOSTUDIO_AUTOEXIT_MESSAGE = ::RegisterWindowMessage( "RDOSTUDIO_AUTOEXIT_MESSAGE" );
-
 RDOStudioApp studioApp;
 
 // ON_UPDATE_COMMAND_UI сделано
@@ -390,32 +388,12 @@ void RDOStudioApp::OnUpdateFileOpen( CCmdUI* pCmdUI )
 
 void RDOStudioApp::OnUpdateFileClose(CCmdUI* pCmdUI) 
 {
-	pCmdUI->Enable( model->hasModel() && !model->isRunning() );
+	pCmdUI->Enable( model->canClose() );
 }
 
 void RDOStudioApp::OnUpdateFileSave(CCmdUI* pCmdUI) 
 {
-	pCmdUI->Enable( model->isModify() );
-/*
-	model->updateModify();
-
-	POSITION pos = editDocTemplate->GetFirstDocPosition();
-	while ( pos ) {
-		RDOStudioEditDoc* doc = static_cast<RDOStudioEditDoc*>(editDocTemplate->GetNextDoc( pos ));
-		if ( doc ) {
-			doc->updateModify();
-		}
-	}
-	bool flag = false;
-	CMDIChildWnd* mdi = mainFrame->MDIGetActive();
-	if ( mdi ) {
-		CDocument* doc = mdi->GetActiveDocument();
-		if ( doc ) {
-			flag = doc->IsModified() ? true : false;
-		}
-	}
-	pCmdUI->Enable( flag );
-*/
+	pCmdUI->Enable( model->canSave() );
 }
 
 void RDOStudioApp::OnUpdateFileSaveAs(CCmdUI* pCmdUI) 
@@ -425,22 +403,7 @@ void RDOStudioApp::OnUpdateFileSaveAs(CCmdUI* pCmdUI)
 
 void RDOStudioApp::OnUpdateFileSaveAll(CCmdUI* pCmdUI) 
 {
-	pCmdUI->Enable( model->isModify() );
-/*
-	bool flag = model->isModify();
-	if ( !flag ) {
-		POSITION pos = editDocTemplate->GetFirstDocPosition();
-		while ( pos ) {
-			RDOStudioEditDoc* doc = static_cast<RDOStudioEditDoc*>(editDocTemplate->GetNextDoc( pos ));
-			if ( doc ) {
-				doc->updateModify();
-				flag = doc->IsModified() ? true : false;
-				if ( flag ) break;
-			}
-		}
-	}
-	pCmdUI->Enable( flag );
-*/
+	pCmdUI->Enable( model->canSave() );
 }
 
 void RDOStudioApp::OnProjectReopen( UINT nID )
@@ -592,12 +555,12 @@ void RDOStudioApp::OnModelStop()
 
 void RDOStudioApp::OnUpdateModelBuild(CCmdUI* pCmdUI) 
 {
-	pCmdUI->Enable( model->hasModel() && model->canRun() );
+	pCmdUI->Enable( model->canBuild() );
 }
 
 void RDOStudioApp::OnUpdateModelRun(CCmdUI* pCmdUI) 
 {
-	pCmdUI->Enable( model->hasModel() && model->canRun() );
+	pCmdUI->Enable( model->canRun() );
 }
 
 void RDOStudioApp::OnUpdateModelStop(CCmdUI* pCmdUI) 

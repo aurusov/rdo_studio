@@ -107,6 +107,7 @@ BOOL RDOStudioModelDoc::SaveModified()
 		model->autoDeleteDoc = false;
 		model->closeModel();
 		model->autoDeleteDoc = true;
+		model->GUI_HAS_MODEL = false;
 	}
 	return flag;
 }

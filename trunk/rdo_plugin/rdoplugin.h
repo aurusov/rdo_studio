@@ -9,13 +9,15 @@
 
 namespace rdoPlugin {
 
-enum PluginState   { psStoped, psActive };
-enum PluginRunMode { prmNoAuto, prmStudioStartUp, prmModelStartUp };
-enum ModelRuntimeMode {
-	MRTM_MaxSpeed,
-	MRTM_Jump,
-	MRTM_Sync,
-	MRTM_Pause
+enum PluginState   {
+	psStoped,
+	psActive
+};
+
+enum PluginRunMode {
+	prmNoAuto,
+	prmStudioStartUp,
+	prmModelStartUp
 };
 
 struct PluginInfo {
@@ -28,40 +30,94 @@ struct PluginInfo {
 	PluginRunMode defaultRunMode;
 };
 
-typedef void (*PFunNewModel)();
+// ----------------------------------------------------------------------------
+// ---------- ModelAction
+// ----------------------------------------------------------------------------
+// Класс для контроля действий над моделью: разрешает или запрещает дейсвтия.
+//
+enum ModelActionType {
+	maCreate,
+	maOpen,
+	maSave,
+	maClose,
+	maBuild,
+	maRun
+};
+
+typedef void (*PFunModelActionEnable)( ModelActionType action );
+typedef void (*PFunModelActionDisable)( ModelActionType action );
+typedef bool (*PFunModelActionState)( ModelActionType action );
+
+class ModelAction {
+public:
+	ModelAction(): enable( NULL ), disable( NULL ), state( NULL ) {};
+	virtual ~ModelAction() {};
+
+	PFunModelActionEnable  enable;
+	PFunModelActionDisable disable;
+	PFunModelActionState   state;
+};
+
+// ----------------------------------------------------------------------------
+// ---------- Model
+// ----------------------------------------------------------------------------
+// Класс модель: используется для создания, открытия, записи и запуска модели.
+// Позволяет изменять содержимое отдельных файлов.
+//
+enum ModelRuntimeMode {
+	MRTM_MaxSpeed,
+	MRTM_Jump,
+	MRTM_Sync,
+	MRTM_Pause
+};
+
+enum ModelFileType { PAT = 0, RTP, RSS, OPR, FRM, FUN, DPT, SMR, PMD, PMV, TRC };
+
+typedef bool (*PFunCreateModel)( const char* modelName, const char* modelPath );
 typedef bool (*PFunOpenModel)( const char* modelName );
-typedef void (*PFunSaveModel)();
-typedef void (*PFunCloseModel)();
+typedef bool (*PFunSaveModel)();
+typedef bool (*PFunCloseModel)();
 typedef bool (*PFunHasModel)();
 typedef bool (*PFunIsModelModify)();
-typedef void (*PFunBuild)();
-typedef void (*PFunRun)();
-typedef void (*PFunStop)();
+typedef bool (*PFunBuildModel)();
+typedef bool (*PFunRunModel)();
+typedef bool (*PFunStopModel)();
 typedef bool (*PFunIsRunning)();
 typedef ModelRuntimeMode (*PFunGetRuntimeMode)();
 typedef void (*PFunSetRuntimeMode)( ModelRuntimeMode runtimeMode );
 typedef const char* (*PFunGetModelStructure)();
+typedef bool (*PFunReadFile)( ModelFileType file_type, char** data );
+typedef bool (*PFunWriteFile)( ModelFileType file_type, const char* data );
 
 class Model {
 public:
-	Model(): newModel( NULL ), openModel( NULL ), saveModel( NULL ), closeModel( NULL ), hasModel( NULL ), isModify( NULL ), build( NULL ), run( NULL ), stop( NULL ), isRunning( NULL ), getRuntimeMode( NULL ), setRuntimeMode( NULL ), getStructure( NULL ) {};
+	Model(): create( NULL ), open( NULL ), save( NULL ), close( NULL ), hasModel( NULL ), isModify( NULL ), build( NULL ), run( NULL ), stop( NULL ), isRunning( NULL ), getRuntimeMode( NULL ), setRuntimeMode( NULL ), getStructure( NULL ), read( NULL ), write( NULL ) {};
 	virtual ~Model() {};
 
-	PFunNewModel          newModel;
-	PFunOpenModel         openModel;
-	PFunSaveModel         saveModel;
-	PFunCloseModel        closeModel;
+	PFunCreateModel       create;
+	PFunOpenModel         open;
+	PFunSaveModel         save;
+	PFunCloseModel        close;
 	PFunHasModel          hasModel;
 	PFunIsModelModify     isModify;
-	PFunBuild             build;
-	PFunRun               run;
-	PFunStop              stop;
+	PFunBuildModel        build;
+	PFunRunModel          run;
+	PFunStopModel         stop;
 	PFunIsRunning         isRunning;
 	PFunGetRuntimeMode    getRuntimeMode;
 	PFunSetRuntimeMode    setRuntimeMode;
 	PFunGetModelStructure getStructure;
+	PFunReadFile          read;
+	PFunWriteFile         write;
+
+	ModelAction           action;
 };
 
+// ----------------------------------------------------------------------------
+// ---------- Frame
+// ----------------------------------------------------------------------------
+// Класс анимации: позволяет переключаться между кадрами анимации.
+//
 typedef bool (*PFunIsFrameDescribed)();
 typedef double (*PFunGetShowRate)();
 typedef void (*PFunSetShowRate)( double value );
@@ -92,6 +148,11 @@ public:
 	PFunCloseAllFrame    closeAll;
 };
 
+// ----------------------------------------------------------------------------
+// ---------- Plugin
+// ----------------------------------------------------------------------------
+// Класс плагина: позволяет остановить плагин и проверить его состояние.
+//
 typedef void (*PFunPluginStop)( const HMODULE );
 typedef bool (*PFunPluginIsStoped)( const HMODULE );
 
@@ -106,6 +167,13 @@ public:
 	HINSTANCE          hInstance;
 };
 
+// ----------------------------------------------------------------------------
+// ---------- Studio
+// ----------------------------------------------------------------------------
+// Основной класс при работе с плагином. Объект данного класса передается плагину при его запуске.
+// Содержит в себе объекты для управления моделью и анимацией.
+// Позволяет скрыть главное окно студии и получить его указатель.
+//
 typedef void (*PFunShow)( int cmdShow );
 typedef bool (*PFunIsShow)();
 typedef HWND (*PFunGetMainFrame)();
@@ -119,9 +187,9 @@ public:
 	Frame  frame;
 	Plugin plugin;
 
-	PFunShow         show;
-	PFunIsShow       isShow;
-	PFunGetMainFrame mainFrame;
+	PFunShow          show;
+	PFunIsShow        isShow;
+	PFunGetMainFrame  mainFrame;
 };
 
 enum RDOPluginMessage {
@@ -144,6 +212,7 @@ enum RDOPluginMessage {
 
 typedef void (*PFunGetPluginInfo)( PluginInfo* );
 typedef bool (*PFunStartPlugin)( const Studio& studio );
+typedef void (*PFunAfterStartPlugin)();
 typedef void (*PFunStopPlugin)();
 typedef const int (*PFunEnumMessages)();
 typedef void (*PFunPluginProc)( const int, void* );
@@ -155,6 +224,7 @@ typedef void (*PFunResults)( const char* );
 extern "C" {
 	RDOPLUGIN_DLL void getPluginInfo( rdoPlugin::PluginInfo* info );
 	RDOPLUGIN_DLL bool startPlugin( const rdoPlugin::Studio& studio );
+	RDOPLUGIN_DLL void afterStartPlugin();
 	RDOPLUGIN_DLL void stopPlugin();
 	RDOPLUGIN_DLL const int enumMessages();
 	RDOPLUGIN_DLL void pluginProc( const int message, void* param1 );

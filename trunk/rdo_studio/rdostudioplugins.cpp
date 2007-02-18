@@ -2,6 +2,7 @@
 #include "rdostudioplugins.h"
 #include "rdostudioapp.h"
 #include "rdostudiomodel.h"
+#include "rdo_edit/rdoeditortabctrl.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -128,6 +129,10 @@ void RDOStudioPlugin::setState( const rdoPlugin::PluginState value )
 						plugins->setResults( this );
 					}
 					plugins->mutex.Unlock();
+					rdoPlugin::PFunAfterStartPlugin afterStartPlugin = reinterpret_cast<rdoPlugin::PFunAfterStartPlugin>(::GetProcAddress( lib, "afterStartPlugin" ));
+					if ( afterStartPlugin ) {
+						afterStartPlugin();
+					}
 				} else {
 					state = rdoPlugin::psStoped;
 				}
@@ -219,10 +224,10 @@ RDOStudioPlugins::RDOStudioPlugins():
 	studio.plugin.stop          = RDOStudioPlugins::pluginStop;
 	studio.plugin.isStoped      = RDOStudioPlugins::pluginIsStoped;
 
-	studio.model.newModel       = RDOStudioPlugins::newModel;
-	studio.model.openModel      = RDOStudioPlugins::openModel;
-	studio.model.saveModel      = RDOStudioPlugins::saveModel;
-	studio.model.closeModel     = RDOStudioPlugins::closeModel;
+	studio.model.create         = RDOStudioPlugins::newModel;
+	studio.model.open           = RDOStudioPlugins::openModel;
+	studio.model.save           = RDOStudioPlugins::saveModel;
+	studio.model.close          = RDOStudioPlugins::closeModel;
 	studio.model.hasModel       = RDOStudioPlugins::hasModel;
 	studio.model.isModify       = RDOStudioPlugins::isModelModify;
 	studio.model.build          = RDOStudioPlugins::buildModel;
@@ -232,6 +237,11 @@ RDOStudioPlugins::RDOStudioPlugins():
 	studio.model.getRuntimeMode = RDOStudioPlugins::getModelRuntimeMode;
 	studio.model.setRuntimeMode = RDOStudioPlugins::setModelRuntimeMode;
 	studio.model.getStructure   = RDOStudioPlugins::getModelStructure;
+	studio.model.read           = RDOStudioPlugins::readFile;
+	studio.model.write          = RDOStudioPlugins::writeFile;
+	studio.model.action.enable  = RDOStudioPlugins::actionEnable;
+	studio.model.action.disable = RDOStudioPlugins::actionDisable;
+	studio.model.action.state   = RDOStudioPlugins::actionState;
 
 	studio.frame.isDescribed   = RDOStudioPlugins::isFrameDescribed;
 	studio.frame.getShowRate   = RDOStudioPlugins::getFrameShowRate;
@@ -489,9 +499,58 @@ void RDOStudioPlugins::stopPluginByStudio( const HMODULE lib )
 	}
 }
 
-void RDOStudioPlugins::newModel()
+void RDOStudioPlugins::actionEnable( rdoPlugin::ModelActionType action )
 {
-	model->newModel();
+	if ( plugins ) {
+		std::list< rdoPlugin::ModelActionType >::iterator it = std::find( plugins->actionDisabled.begin(), plugins->actionDisabled.end(), action );
+		if ( it != plugins->actionDisabled.end() ) {
+			plugins->actionDisabled.erase( it );
+			switch ( action ) {
+				case rdoPlugin::maCreate: model->GUI_ACTION_NEW   = true; break;
+				case rdoPlugin::maOpen  : model->GUI_ACTION_OPEN  = true; break;
+				case rdoPlugin::maSave  : model->GUI_ACTION_SAVE  = true; break;
+				case rdoPlugin::maClose : model->GUI_ACTION_CLOSE = true; break;
+				case rdoPlugin::maBuild : model->GUI_ACTION_BUILD = true; break;
+				case rdoPlugin::maRun   : model->GUI_ACTION_RUN   = true; break;
+			}
+		}
+	}
+}
+
+void RDOStudioPlugins::actionDisable( rdoPlugin::ModelActionType action )
+{
+	if ( plugins && std::find( plugins->actionDisabled.begin(), plugins->actionDisabled.end(), action ) == plugins->actionDisabled.end() ) {
+		plugins->actionDisabled.push_back( action );
+		switch ( action ) {
+			case rdoPlugin::maCreate: model->GUI_ACTION_NEW   = false; break;
+			case rdoPlugin::maOpen  : model->GUI_ACTION_OPEN  = false; break;
+			case rdoPlugin::maSave  : model->GUI_ACTION_SAVE  = false; break;
+			case rdoPlugin::maClose : model->GUI_ACTION_CLOSE = false; break;
+			case rdoPlugin::maBuild : model->GUI_ACTION_BUILD = false; break;
+			case rdoPlugin::maRun   : model->GUI_ACTION_RUN   = false; break;
+		}
+	}
+}
+
+bool RDOStudioPlugins::actionState( rdoPlugin::ModelActionType action )
+{
+	if ( plugins ) {
+		return std::find( plugins->actionDisabled.begin(), plugins->actionDisabled.end(), action ) == plugins->actionDisabled.end();
+	}
+	return false;
+}
+
+bool RDOStudioPlugins::canAction( rdoPlugin::ModelActionType action )
+{
+	if ( plugins ) {
+		return std::find( actionDisabled.begin(), actionDisabled.end(), action ) == actionDisabled.end();
+	}
+	return false;
+}
+
+bool RDOStudioPlugins::newModel( const char* modelName, const char* modelPath )
+{
+	return model->newModel( modelName, modelPath );
 }
 
 bool RDOStudioPlugins::openModel( const char* modelName )
@@ -499,14 +558,14 @@ bool RDOStudioPlugins::openModel( const char* modelName )
 	return model->openModel( modelName ? modelName : "" );
 }
 
-void RDOStudioPlugins::saveModel()
+bool RDOStudioPlugins::saveModel()
 {
-	model->saveModel();
+	return model->saveModel();
 }
 
-void RDOStudioPlugins::closeModel()
+bool RDOStudioPlugins::closeModel()
 {
-	model->closeModel();
+	return model->closeModel();
 }
 
 bool RDOStudioPlugins::hasModel()
@@ -519,19 +578,19 @@ bool RDOStudioPlugins::isModelModify()
 	return model->isModify();
 }
 
-void RDOStudioPlugins::buildModel()
+bool RDOStudioPlugins::buildModel()
 {
-	model->buildModel();
+	return model->buildModel();
 }
 
-void RDOStudioPlugins::runModel()
+bool RDOStudioPlugins::runModel()
 {
-	model->runModel();
+	return model->runModel();
 }
 
-void RDOStudioPlugins::stopModel()
+bool RDOStudioPlugins::stopModel()
 {
-	model->stopModel();
+	return model->stopModel();
 }
 
 bool RDOStudioPlugins::isModelRunning()
@@ -570,6 +629,79 @@ const char* RDOStudioPlugins::getModelStructure()
 		plugins->modelStructure = "";
 	}
 	return plugins->modelStructure.c_str();
+}
+
+bool RDOStudioPlugins::readFile( rdoPlugin::ModelFileType file_type, char** data )
+{
+	if ( model->hasModel() ) {
+		rdoEditor::RDOEditorTabCtrl* tab = model->getTab();
+		if ( tab ) {
+			rdoModelObjects::RDOFileType edit_type;
+			switch ( file_type ) {
+				case rdoPlugin::PAT: edit_type = rdoModelObjects::PAT; break;
+				case rdoPlugin::RTP: edit_type = rdoModelObjects::RTP; break;
+				case rdoPlugin::RSS: edit_type = rdoModelObjects::RSS; break;
+				case rdoPlugin::OPR: edit_type = rdoModelObjects::OPR; break;
+				case rdoPlugin::FRM: edit_type = rdoModelObjects::FRM; break;
+				case rdoPlugin::FUN: edit_type = rdoModelObjects::FUN; break;
+				case rdoPlugin::DPT: edit_type = rdoModelObjects::DPT; break;
+				case rdoPlugin::SMR: edit_type = rdoModelObjects::SMR; break;
+				case rdoPlugin::PMD: edit_type = rdoModelObjects::PMD; break;
+				case rdoPlugin::PMV: edit_type = rdoModelObjects::PMV; break;
+				case rdoPlugin::TRC: edit_type = rdoModelObjects::TRC; break;
+			}
+			if ( tab->typeSupported( edit_type ) ) {
+				rdoEditor::RDOEditorEdit* edit = tab->getItemEdit( edit_type );
+				rdo::binarystream stream;
+				edit->save( stream );
+				std::string::size_type size = stream.str().size();
+				*data = new char[size + 1];
+				stream.str().copy( *data, size );
+				(*data)[size] = '\0';
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+bool RDOStudioPlugins::writeFile( rdoPlugin::ModelFileType file_type, const char* data )
+{
+	if ( model->hasModel() ) {
+		rdoEditor::RDOEditorTabCtrl* tab = model->getTab();
+		if ( tab ) {
+			rdoModelObjects::RDOFileType edit_type;
+			switch ( file_type ) {
+				case rdoPlugin::PAT: edit_type = rdoModelObjects::PAT; break;
+				case rdoPlugin::RTP: edit_type = rdoModelObjects::RTP; break;
+				case rdoPlugin::RSS: edit_type = rdoModelObjects::RSS; break;
+				case rdoPlugin::OPR: edit_type = rdoModelObjects::OPR; break;
+				case rdoPlugin::FRM: edit_type = rdoModelObjects::FRM; break;
+				case rdoPlugin::FUN: edit_type = rdoModelObjects::FUN; break;
+				case rdoPlugin::DPT: edit_type = rdoModelObjects::DPT; break;
+				case rdoPlugin::SMR: edit_type = rdoModelObjects::SMR; break;
+				case rdoPlugin::PMD: edit_type = rdoModelObjects::PMD; break;
+				case rdoPlugin::PMV: edit_type = rdoModelObjects::PMV; break;
+				case rdoPlugin::TRC: edit_type = rdoModelObjects::TRC; break;
+			}
+			if ( tab->typeSupported( edit_type ) ) {
+				rdoEditor::RDOEditorEdit* edit = tab->getItemEdit( edit_type );
+				rdo::binarystream stream;
+				size_t size = strlen(data);
+				stream.resize( size );
+				memcpy( stream.data(), data, strlen(data) );
+				bool readonly = edit->isReadOnly();
+				if ( readonly ) edit->setReadOnly( false );
+				edit->clearAll();
+				edit->load( stream );
+				edit->setCurrentPos( 0 );
+				if ( readonly ) edit->setReadOnly( true );
+				edit->updateEditGUI();
+				return true;
+			}
+		}
+	}
+	return false;
 }
 
 bool RDOStudioPlugins::isFrameDescribed()

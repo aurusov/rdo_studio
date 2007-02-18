@@ -26,6 +26,7 @@ friend class RDOStudioFrameView;
 friend class RDOStudioFrameTreeCtrl;
 friend class RDOStudioApp;
 friend class RDOThreadStudioGUI;
+friend class RDOStudioPlugins;
 
 private:
 	CMultiDocTemplate* modelDocTemplate;
@@ -38,6 +39,12 @@ private:
 	bool GUI_HAS_MODEL;
 	bool GUI_CAN_RUN;
 	bool GUI_IS_RUNING;
+	bool GUI_ACTION_NEW;
+	bool GUI_ACTION_OPEN;
+	bool GUI_ACTION_SAVE;
+	bool GUI_ACTION_CLOSE;
+	bool GUI_ACTION_BUILD;
+	bool GUI_ACTION_RUN;
 
 	SYSTEMTIME time_start;
 
@@ -53,7 +60,7 @@ private:
 	rdoSimulator::RDOExitCode exitCode;
 	void updateFrmDescribed();
 
-	bool prevModify;
+	mutable bool prevModify;
 
 	void newModelFromRepository();
 	void openModelFromRepository();
@@ -85,15 +92,15 @@ public:
 	RDOStudioModel();
 	virtual ~RDOStudioModel();
 
-	void newModel( std::string _model_name = "", std::string _model_path = "", const int _useTemplate = -1 );
+	bool newModel( std::string _model_name = "", std::string _model_path = "", const int _useTemplate = -1 );
 	bool openModel( const std::string& modelName = "" ) const;
 	bool saveModel() const;
 	void saveAsModel() const;
 	bool closeModel() const;
 
-	void buildModel() const;
-	void runModel();
-	void stopModel() const;
+	bool buildModel() const;
+	bool runModel();
+	bool stopModel() const;
 
 	void update();
 
@@ -103,7 +110,7 @@ public:
 	}
 	void setName( const std::string& str );
 
-	bool isModify() {
+	bool isModify() const {
 		RDOStudioModelDoc* doc = getModelDoc();
 		bool result = doc ? doc->isModify() : false;
 		if ( prevModify != result ) {
@@ -112,9 +119,12 @@ public:
 		}
 		return result;
 	}
-	bool canRun() const                                         { return hasModel() && GUI_CAN_RUN; }
-	bool canNew() const                                         { return canRun() || !hasModel();   }
-	bool canOpen() const                                        { return canRun() || !hasModel();   }
+	bool canNew() const                                         { return ((hasModel() && GUI_CAN_RUN) || !hasModel()) && GUI_ACTION_NEW;   }
+	bool canOpen() const                                        { return ((hasModel() && GUI_CAN_RUN) || !hasModel()) && GUI_ACTION_OPEN;  }
+	bool canSave() const                                        { return isModify()                                   && GUI_ACTION_SAVE;  }
+	bool canClose() const                                       { return hasModel() && !isRunning()                   && GUI_ACTION_CLOSE; }
+	bool canBuild() const                                       { return hasModel() && GUI_CAN_RUN                    && GUI_ACTION_BUILD; }
+	bool canRun() const                                         { return hasModel() && GUI_CAN_RUN                    && GUI_ACTION_RUN;   }
 	bool isRunning() const                                      { return GUI_IS_RUNING;             }
 	bool isFrmDescribed() const                                 { return frmDescribed;              }
 	double getTimeNow() const                                   { return timeNow;                   }
