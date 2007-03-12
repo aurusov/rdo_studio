@@ -25,7 +25,7 @@ int smr1lex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer )
 }
 void smr1error( char* mes )
 {
-	throw RDOSMR1OkException("");
+//	throw RDOSMR1OkException("");
 //	rdoParse::parser->error( mes );
 }
 

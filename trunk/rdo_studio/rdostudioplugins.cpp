@@ -72,6 +72,7 @@ RDOStudioPlugin::~RDOStudioPlugin()
 
 bool RDOStudioPlugin::isRDOStudioPlugin( const std::string& modulName )
 {
+	return true;
 	bool res = false;
 	HMODULE local_lib = ::LoadLibrary( modulName.c_str() );
 	if ( local_lib ) {

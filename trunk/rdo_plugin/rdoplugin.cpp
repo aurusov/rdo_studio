@@ -14,7 +14,7 @@ int WINAPI DllMain( HINSTANCE hinst, DWORD fdwReason, PVOID pvReserved )
 	return TRUE;
 }
 
-void getPluginInfo( rdoPlugin::PluginInfo* info )
+void __stdcall getPluginInfo( rdoPlugin::PluginInfo* info )
 {
 	static char* name         = "Test";
 	static char* version_info = "";
@@ -28,28 +28,28 @@ void getPluginInfo( rdoPlugin::PluginInfo* info )
 	info->defaultRunMode = rdoPlugin::prmNoAuto;
 }
 
-bool startPlugin( const rdoPlugin::Studio* studio )
+bool __stdcall startPlugin( const rdoPlugin::Studio* studio )
 {
 	return true;
 }
 
-void stopPlugin()
+void __stdcall stopPlugin()
 {
 }
 
-const int enumMessages()
+const int __stdcall enumMessages()
 {
 	return 0;
 }
 
-void pluginProc( const int message, const int param1 )
+void __stdcall pluginProc( const int message, const int param1 )
 {
 }
 
-void trace( const char* line )
+void __stdcall trace( const char* line )
 {
 }
 
-void results( const char* lines )
+void __stdcall results( const char* lines )
 {
 }

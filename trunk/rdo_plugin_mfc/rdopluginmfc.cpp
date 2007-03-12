@@ -28,7 +28,7 @@ RDOPluginMFC::RDOPluginMFC():
 {
 }
 
-void getPluginInfo( rdoPlugin::PluginInfo* info )
+void __stdcall getPluginInfo( rdoPlugin::PluginInfo* info )
 {
 	TRACE( "1. %d, %d, %d, %d\n", ::GetCurrentProcess(), ::GetCurrentProcessId(), ::GetCurrentThread(), ::GetCurrentThreadId() );
 	static char* name         = "MFC Plugin";
@@ -43,7 +43,7 @@ void getPluginInfo( rdoPlugin::PluginInfo* info )
 	info->defaultRunMode = rdoPlugin::prmNoAuto;
 }
 
-bool startPlugin( const rdoPlugin::Studio* _studio )
+bool __stdcall startPlugin( const rdoPlugin::Studio* _studio )
 {
 	TRACE( "2. %d, %d, %d, %d\n", ::GetCurrentProcess(), ::GetCurrentProcessId(), ::GetCurrentThread(), ::GetCurrentThreadId() );
 	pluginMFCApp.studio = *_studio;
@@ -61,7 +61,7 @@ bool startPlugin( const rdoPlugin::Studio* _studio )
 	return true;
 }
 
-void stopPlugin()
+void __stdcall stopPlugin()
 {
 	TRACE( "3. %d, %d, %d, %d\n", ::GetCurrentProcess(), ::GetCurrentProcessId(), ::GetCurrentThread(), ::GetCurrentThreadId() );
 	if ( pluginMFCApp.m_pMainWnd && pluginMFCApp.m_pMainWnd->GetSafeHwnd() ) {
@@ -72,7 +72,7 @@ void stopPlugin()
 	}
 }
 
-const int enumMessages()
+const int __stdcall enumMessages()
 {
 	TRACE( "4. %d, %d, %d, %d\n", ::GetCurrentProcess(), ::GetCurrentProcessId(), ::GetCurrentThread(), ::GetCurrentThreadId() );
 	static int i = 0;
@@ -84,7 +84,7 @@ const int enumMessages()
 	return 0;
 }
 
-void pluginProc( const int message, void* param1 )
+void __stdcall pluginProc( const int message, void* param1 )
 {
 	TRACE( "5. %d, %d, %d, %d\n", ::GetCurrentProcess(), ::GetCurrentProcessId(), ::GetCurrentThread(), ::GetCurrentThreadId() );
 	switch ( message ) {
@@ -163,13 +163,13 @@ void pluginProc( const int message, void* param1 )
 	}
 }
 
-void trace( const char* line )
+void __stdcall trace( const char* line )
 {
 	TRACE( "6. %d, %d, %d, %d\n", ::GetCurrentProcess(), ::GetCurrentProcessId(), ::GetCurrentThread(), ::GetCurrentThreadId() );
 	pluginMFCApp.frame->insertLine( line );
 }
 
-void results( const char* lines )
+void __stdcall results( const char* lines )
 {
 	TRACE( "7. %d, %d, %d, %d\n", ::GetCurrentProcess(), ::GetCurrentProcessId(), ::GetCurrentThread(), ::GetCurrentThreadId() );
 	std::string str = lines;
