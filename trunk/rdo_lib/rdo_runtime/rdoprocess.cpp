@@ -1,4 +1,6 @@
 #include "pch.h"
+#include "rdoprocess.h"
+#include "rdocalc.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -6,17 +8,13 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-#include "rdoprocess.h"
-#include <rdoruntime.h>
-#include <rdodpt.h>
-
 namespace rdoRuntime {
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCProcess
 // ----------------------------------------------------------------------------
 RDOPROCProcess::RDOPROCProcess( const std::string& _name, RDOSimulator* sim ):
-	RDOBaseOperation(),
+	RDOBaseOperation( static_cast<RDORuntime*>(sim) ),
 	name( _name ),
 	parent( NULL )
 {
@@ -72,12 +70,14 @@ void RDOPROCProcess::next( RDOPROCTransact* transact )
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCTransact
 // ----------------------------------------------------------------------------
+int RDOPROCTransact::typeID = -1;
+
 RDOPROCTransact::RDOPROCTransact( RDOSimulator* sim, RDOPROCBlock* _block ):
 	RDOResource( static_cast<RDORuntime*>(sim) ),
 	block( _block )
 {
 	static_cast<RDORuntime*>(sim)->insertNewResource( this );
-	type        = rdoParse::RDOPROCTransact::makeRTP( NULL )->getNumber();
+	type        = typeID;
 	trace       = true;
 	temporary   = true;
 	state       = RDOResourceTrace::CS_Create;
@@ -94,6 +94,7 @@ void RDOPROCTransact::next()
 // ---------- RDOPROCBlock
 // ----------------------------------------------------------------------------
 RDOPROCBlock::RDOPROCBlock( RDOPROCProcess* _process ):
+	RDOBaseOperation( _process ),
 	process( _process )
 {
 	process->blocks.push_back( this );

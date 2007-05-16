@@ -242,10 +242,10 @@ struct RDONullElement: public RDOFrameElement
 
 struct RDOFrame
 {
-	int r, g, b;	            // background
+	int r, g, b;                // background
 	bool hasBackPicture;
-	std::string* picFileName;	// back picture
-	int width, height;	        // frame size
+	std::string picFileName;    // back picture
+	int width, height;          // frame size
 	std::vector< RDOFrameElement* > elements;
 	~RDOFrame();
 };

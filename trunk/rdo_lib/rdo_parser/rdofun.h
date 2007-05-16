@@ -3,6 +3,7 @@
 
 #include "rdoparser_object.h"
 #include "rdortp.h"
+#include <rdoruntime_object.h>
 
 namespace rdoRuntime
 {
@@ -28,7 +29,7 @@ class RDORTPEnum;
 class RDORTPResType;
 class RDORTPParamDesc;
 
-class RDOFUNFunctionParam: public RDODeletable, public RDOErrorPos
+class RDOFUNFunctionParam: public RDODeletable, public RDOParseErrorPos
 {
 private:
 	std::string*    name;
@@ -44,7 +45,7 @@ public:
 	const RDORTPResParam* const getType() const { return type; };
 };
 
-class RDOFUNFunctionListElement: public RDOParserObject, public RDOErrorPos
+class RDOFUNFunctionListElement: public RDOParserObject, public RDOParseErrorPos
 {
 public:
 	RDOFUNFunctionListElement( const RDOParserObject* _parent ): RDOParserObject( _parent ) {}
@@ -101,7 +102,7 @@ public:
 // ----------------------------------------------------------------------------
 // ---------- RDOFUNLogic
 // ----------------------------------------------------------------------------
-class RDOFUNLogic: public RDODeletable, public RDOErrorPos
+class RDOFUNLogic: public RDODeletable, public RDOParseErrorPos
 {
 public:
 	rdoRuntime::RDOCalc* calc;
@@ -112,14 +113,14 @@ public:
 	RDOFUNLogic* operator ||( const RDOFUNLogic& second );
 	RDOFUNLogic* operator_not();
 
-	void setErrorPos( const YYLTYPE& error_pos );
+	void setErrorPos( const RDOParseErrorPos& error_pos );
 	void setErrorPos( int first_line, int first_column, int last_line, int last_column );
 };
 
 // ----------------------------------------------------------------------------
 // ---------- RDOFUNArithm
 // ----------------------------------------------------------------------------
-class RDOFUNArithm: public RDOParserObject, public RDOErrorPos
+class RDOFUNArithm: public RDOParserObject, public RDOParseErrorPos
 {
 public:
 	RDORTPResParam::ParamType type; // 0 - int, 1 - real, 2 - enum, 3 - string
@@ -129,21 +130,21 @@ public:
 private:
 	rdoRuntime::RDOCalc* calc;
 
-	void init( std::string* resName, std::string* parName, const YYLTYPE& res_name_error_pos, const YYLTYPE& par_name_error_pos );
-	void init( std::string* s, const YYLTYPE& error_pos );
+	void init( std::string* resName, std::string* parName, const RDOParseErrorPos& res_name_error_pos, const RDOParseErrorPos& par_name_error_pos );
+	void init( std::string* s, const RDOParseErrorPos& error_pos );
 
 public:
-	RDOFUNArithm( RDOParser* _parser, RDORTPResParam::ParamType _type, rdoRuntime::RDOCalc* _calc, const YYLTYPE& error_pos );
-	RDOFUNArithm( RDOParser* _parser, std::string* resName, std::string* parName, const YYLTYPE& res_name_error_pos, const YYLTYPE& par_name_error_pos );
-	RDOFUNArithm( RDOParser* _parser, int n, const YYLTYPE& error_pos );
-	RDOFUNArithm( RDOParser* _parser, double* d, const YYLTYPE& error_pos );
-	RDOFUNArithm( RDOParser* _parser, std::string* s, const YYLTYPE& error_pos );
+	RDOFUNArithm( RDOParser* _parser, RDORTPResParam::ParamType _type, rdoRuntime::RDOCalc* _calc, const RDOParseErrorPos& error_pos );
+	RDOFUNArithm( RDOParser* _parser, std::string* resName, std::string* parName, const RDOParseErrorPos& res_name_error_pos, const RDOParseErrorPos& par_name_error_pos );
+	RDOFUNArithm( RDOParser* _parser, int n, const RDOParseErrorPos& error_pos );
+	RDOFUNArithm( RDOParser* _parser, double* d, const RDOParseErrorPos& error_pos );
+	RDOFUNArithm( RDOParser* _parser, std::string* s, const RDOParseErrorPos& error_pos );
 
-	RDOFUNArithm( const RDOParserObject* _parent, RDORTPResParam::ParamType _type, rdoRuntime::RDOCalc* _calc, const YYLTYPE& error_pos );
-	RDOFUNArithm( const RDOParserObject* _parent, std::string* resName, std::string* parName, const YYLTYPE& res_name_error_pos, const YYLTYPE& par_name_error_pos );
-	RDOFUNArithm( const RDOParserObject* _parent, int n, const YYLTYPE& error_pos );
-	RDOFUNArithm( const RDOParserObject* _parent, double* d, const YYLTYPE& error_pos );
-	RDOFUNArithm( const RDOParserObject* _parent, std::string* s, const YYLTYPE& error_pos );
+	RDOFUNArithm( const RDOParserObject* _parent, RDORTPResParam::ParamType _type, rdoRuntime::RDOCalc* _calc, const RDOParseErrorPos& error_pos );
+	RDOFUNArithm( const RDOParserObject* _parent, std::string* resName, std::string* parName, const RDOParseErrorPos& res_name_error_pos, const RDOParseErrorPos& par_name_error_pos );
+	RDOFUNArithm( const RDOParserObject* _parent, int n, const RDOParseErrorPos& error_pos );
+	RDOFUNArithm( const RDOParserObject* _parent, double* d, const RDOParseErrorPos& error_pos );
+	RDOFUNArithm( const RDOParserObject* _parent, std::string* s, const RDOParseErrorPos& error_pos );
 
 	RDOFUNArithm* operator +( RDOFUNArithm& second );
 	RDOFUNArithm* operator -( RDOFUNArithm& second );
@@ -160,7 +161,7 @@ public:
 	rdoRuntime::RDOCalc* createCalc( const RDORTPResParam* const forType = NULL );
 	RDORTPResParam::ParamType getType() const { return type; }
 
-	void setErrorPos( const YYLTYPE& error_pos );
+	void setErrorPos( const RDOParseErrorPos& error_pos );
 	void setErrorPos( int first_line, int first_column, int last_line, int last_column );
 };
 
@@ -205,12 +206,12 @@ public:
 // ----------------------------------------------------------------------------
 // ---------- RDOFUNParams
 // ----------------------------------------------------------------------------
-class RDOFUNParams: public RDOParserObject, public RDOErrorPos
+class RDOFUNParams: public RDOParserObject, public RDOParseErrorPos
 {
 public:
 	RDOFUNParams( RDOParser* _parser )            : RDOParserObject( _parser ) {}
 	RDOFUNParams( const RDOParserObject* _parent ): RDOParserObject( _parent ) {}
-	RDOErrorPos name_error_pos;
+	RDOParseErrorPos name_error_pos;
 	std::vector< RDOFUNArithm* > params;
 	RDOFUNParams* addParameter( RDOFUNArithm* param ) {
 		params.push_back( param );
@@ -223,7 +224,7 @@ public:
 // ----------------------------------------------------------------------------
 // ---------- RDOFUNGroup
 // ----------------------------------------------------------------------------
-class RDOFUNGroup: public RDOParserObject, public RDOErrorPos
+class RDOFUNGroup: public RDOParserObject, public RDOParseErrorPos
 {
 protected:
 	void init( const std::string* const _resType );
@@ -281,7 +282,7 @@ public:
 	RDOFUNLogic* createFunSelectEmpty();
 	RDOFUNArithm* createFunSelectSize();
 
-	void setErrorPos( const YYLTYPE& error_pos );
+	void setErrorPos( const RDOParseErrorPos& error_pos );
 	void setErrorPos( int first_line, int first_column, int last_line, int last_column );
 };
 

@@ -136,21 +136,6 @@ SOURCE=.\rdofun.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\rdohotkey.cpp
-
-!IF  "$(CFG)" == "rdo_parser - Win32 Release"
-
-# ADD CPP /O2 /Yu"pch.h"
-
-!ELSEIF  "$(CFG)" == "rdo_parser - Win32 Debug"
-
-# ADD CPP /Yu"pch.h"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
 SOURCE=.\rdoopr.cpp
 
 !IF  "$(CFG)" == "rdo_parser - Win32 Release"
@@ -245,21 +230,6 @@ SOURCE=.\rdopat.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\rdopatrtime.cpp
-
-!IF  "$(CFG)" == "rdo_parser - Win32 Release"
-
-# ADD CPP /O2 /Yu"pch.h"
-
-!ELSEIF  "$(CFG)" == "rdo_parser - Win32 Debug"
-
-# ADD CPP /Yu"pch.h"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
 SOURCE=.\rdopmd.cpp
 
 !IF  "$(CFG)" == "rdo_parser - Win32 Release"
@@ -305,21 +275,6 @@ SOURCE=.\rdortp.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\rdoruntime.cpp
-
-!IF  "$(CFG)" == "rdo_parser - Win32 Release"
-
-# ADD CPP /O2 /Yu"pch.h"
-
-!ELSEIF  "$(CFG)" == "rdo_parser - Win32 Debug"
-
-# ADD CPP /Yu"pch.h"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
 SOURCE=.\rdosmr.cpp
 
 !IF  "$(CFG)" == "rdo_parser - Win32 Release"
@@ -343,15 +298,7 @@ SOURCE=.\pch.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\rdocalcconst.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\rdodpt.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdodptrtime.h
 # End Source File
 # Begin Source File
 
@@ -360,10 +307,6 @@ SOURCE=.\rdofrm.h
 # Begin Source File
 
 SOURCE=.\rdofun.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdohotkey.h
 # End Source File
 # Begin Source File
 
@@ -395,10 +338,6 @@ SOURCE=.\rdopat.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\rdopatrtime.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\rdopmd.h
 # End Source File
 # Begin Source File
@@ -408,10 +347,6 @@ SOURCE=.\rdorss.h
 # Begin Source File
 
 SOURCE=.\rdortp.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdoruntime.h
 # End Source File
 # Begin Source File
 

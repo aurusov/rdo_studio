@@ -1,5 +1,10 @@
 #include "pch.h"
 #include "rdotrace.h"
+#include "searchtrace.h"
+#include "ruletrace.h"
+#include "simtrace.h"
+#include "ietrace.h"
+#include "operationtrace.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -7,13 +12,16 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-void RDOTrace::writeSearchBegin(double currentTime, std::string decisionPointId)
+namespace rdoRuntime {
+
+void RDOTrace::writeSearchBegin( double currentTime, std::string decisionPointId )
 {
 	if(isNullTracer)
 		return;
 
    getOStream() << "SB " << currentTime << " " << decisionPointId.c_str() << std::endl << getEOL();
 }
+
 void RDOTrace::writeSearchDecisionHeader()
 {
 	if(isNullTracer)
@@ -43,19 +51,16 @@ void RDOTrace::writeString(std::string str)
 
    getOStream() << str << std::endl << getEOL();
 }
-void RDOTrace::writeSearchOpenNode(int nodeCount, 
-   int parentCount,
-   double pathCost, 
-   double restCost)
+void RDOTrace::writeSearchOpenNode( int nodeCount, int parentCount, double pathCost, double restCost )
 {
-	if(isNullTracer)
-		return;
+	if ( isNullTracer ) return;
 
-   getOStream() << "SO " << nodeCount
-       << " " << parentCount
-       << " " << pathCost
-       << " " << restCost << std::endl << getEOL();
+	getOStream() << "SO " << nodeCount
+	             << " " << parentCount
+	             << " " << pathCost
+	             << " " << restCost << std::endl << getEOL();
 }
+
 void RDOTrace::writeSearchNodeInfo(char sign, TreeNodeTrace *node)
 {
 	if ( isNullTracer ) return;
@@ -122,7 +127,7 @@ void RDOTrace::writeSearchResult( char letter, RDOSimulatorTrace* simTr, TreeRoo
 	}
 }
 
-void RDOTrace::writePermanentResources( RDOSimulatorTrace* sim, const std::list< RDOResourceTrace* >& res_perm )
+void RDOTrace::writePermanentResources( rdoRuntime::RDOSimulatorTrace* sim, const std::list< RDOResourceTrace* >& res_perm )
 {
 	if(isNullTracer)
 		return;
@@ -295,7 +300,7 @@ void RDOTrace::writeStatus( RDOSimulatorTrace* sim, char* status )
 	while ( it != sim->haveBaseOperations.end() ) {
 		RDODecisionPointTrace* dp = dynamic_cast<RDODecisionPointTrace*>(*it);
 		if ( dp ) {
-			// Информация и точке
+			// Информация о точке
 			getOStream() << std::endl << getEOL();
 			getOStream() << "DPS_C"
 			             << "  " << dp->id
@@ -369,3 +374,4 @@ void RDOTrace::writePokaz(RDOSimulatorTrace *sim, RDOPokazTrace *pok)
 		<< "  " << pok->traceValue() << std::endl << getEOL();
 }
 
+} // namespace rdoRuntime;

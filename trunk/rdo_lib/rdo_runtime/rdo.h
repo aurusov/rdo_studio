@@ -3,21 +3,22 @@
 
 #include "rdobase.h"
 #include "searchtree.h"
-#include <rdoparser_object.h>
-
-class RDOSimulator;
-class TreeNode;
-class TreeRoot;
-class RDODecisionPoint;
-class RDOOperation;
-class RDOIE;
-class CheckOperations;
+#include "rdoruntime_object.h"
 
 namespace rdoRuntime {
-class RDOCalc;
-}
 
-class RDOBaseOperation: public rdoParse::RDODeletable
+class RDOCalc;
+class RDOSimulator;
+class RDODecisionPoint;
+class TreeNode;
+class TreeRoot;
+
+// ----------------------------------------------------------------------------
+// ---------- RDOBaseOperation - базовый класс для паттернов, процессов и блоков процесса
+// ----------------------------------------------------------------------------
+// Надо бы сделать его базовым для всех возможных логик
+// ----------------------------------------------------------------------------
+class RDOBaseOperation: public RDORuntimeParent
 {
 public:
 	enum BOResult {
@@ -27,7 +28,7 @@ public:
 		BOR_planned_only,
 		BOR_planned_and_run
 	};
-	RDOBaseOperation()          {}
+	RDOBaseOperation( RDORuntimeParent* _parent  ): RDORuntimeParent( _parent  ) {}
 	virtual ~RDOBaseOperation() {}
 	// Вызывается перед стартом прогона для инициализации операции
 	// Используется для IE и GENERATE, чтобы задать время прихода первого клиента
@@ -38,93 +39,16 @@ public:
 	virtual BOResult checkOperation( RDOSimulator* sim ) = 0;
 	// Вызывается для запланированных в будующем событий: IE, operation_end, keyboard_end
 	// Может не использоваться, например, для rule
-	virtual void makePlanned( RDOSimulator* sim, void* param = NULL )  {}
+	virtual void makePlanned( RDOSimulator* sim, void* param = NULL ) {}
 };
 
-class RDORule: public RDOBaseOperation
+// ----------------------------------------------------------------------------
+// ---------- RDOIE - irregular_event
+// ----------------------------------------------------------------------------
+class RDOIE: public RDOBaseOperation
 {
-friend RDOSimulator;
-friend CheckOperations;
-friend RDODecisionPoint;
-friend TreeNode;
-
-private:
-	virtual RDOBaseOperation::BOResult checkOperation( RDOSimulator* sim );
-
-protected:
-	virtual void onBeforeChoiceFrom( RDOSimulator* sim )                 {}
-	virtual void onBeforeRule( RDOSimulator* sim )                       {}
-	virtual void onAfterRule( RDOSimulator* sim, bool inSearch = false ) {}
-
-public:
-	virtual ~RDORule() {}
-	virtual bool choiceFrom( RDOSimulator* sim )  = 0;
-	virtual void convertRule( RDOSimulator* sim ) = 0;
-};
-
-class RDOActivity: public rdoParse::RDODeletable
-{
-friend TreeNode;
-friend RDODecisionPoint;
-
-private:
-	bool valueAfter;  // false = valueBefore
-
-protected:
-	virtual double costOfRule( RDOSimulator* sim ) = 0;
-	RDORule* rule;
-
-public:
-	RDOActivity( RDORule* r, bool vA ):
-		rule( r ),
-		valueAfter( vA )
-	{
-	}
-	virtual ~RDOActivity();
-};
-
-class CheckOperations: public rdoParse::RDODeletable
-{
-private:
-	RDOSimulator* sim;
-
-public:
-	CheckOperations( RDOSimulator* _sim ): sim( _sim ) {}
-	bool operator()( RDOBaseOperation* op );
-};
-
-class RDODecisionPoint: public RDOBaseOperation
-{
-friend RDOSimulator;
-friend TreeNode;
-friend CheckOperations;
-
-private:
-	bool RunSearchInTree( RDOSimulator* sim );
-	virtual RDOBaseOperation::BOResult checkOperation( RDOSimulator* sim );
-
-protected:
-	std::list< RDOActivity* > activities;
-	virtual void onSearchBegin( RDOSimulator* sim )                              = 0;
-	virtual void onSearchDecisionHeader( RDOSimulator* sim )                     = 0;
-	virtual void onSearchDecision( RDOSimulator* sim, TreeNode* node )           = 0;
-	virtual void onSearchResultSuccess( RDOSimulator* sim, TreeRoot* treeRoot )  = 0;
-	virtual void onSearchResultNotFound( RDOSimulator* sim, TreeRoot* treeRoot ) = 0;
-	virtual TreeRoot* createTreeRoot( RDOSimulator* sim );
-
-public:
-	virtual ~RDODecisionPoint();
-	virtual bool Condition( RDOSimulator* sim )     = 0;
-	virtual bool TermCondition( RDOSimulator* sim ) = 0;
-	virtual double EvaluateBy( RDOSimulator* sim )  = 0;
-	virtual bool NeedCompareTops()                  = 0;
-	virtual void addActivity( RDOActivity* act );
-};
-
-class RDOIE: public RDOBaseOperation    // Irregular Event
-{
-friend RDOSimulator;
-friend CheckOperations;
+friend class RDOSimulator;
+friend class CheckOperations;
 
 private:
 	double time;
@@ -140,32 +64,63 @@ protected:
 	virtual void onAfterIrregularEvent( RDOSimulator* sim )   {}
 
 public:
+	RDOIE( RDORuntimeParent* _runtime ): RDOBaseOperation( _runtime ) {}
 	virtual ~RDOIE() {}
 };
 
+// ----------------------------------------------------------------------------
+// ---------- RDORule - rule
+// ----------------------------------------------------------------------------
+class RDORule: public RDOBaseOperation
+{
+friend class RDOSimulator;
+friend class CheckOperations;
+friend class RDODecisionPoint;
+friend class TreeNode;
+
+private:
+	virtual RDOBaseOperation::BOResult checkOperation( RDOSimulator* sim );
+
+protected:
+	virtual void onBeforeChoiceFrom( RDOSimulator* sim )                 {}
+	virtual void onBeforeRule( RDOSimulator* sim )                       {}
+	virtual void onAfterRule( RDOSimulator* sim, bool inSearch = false ) {}
+
+public:
+	RDORule( RDORuntimeParent* _runtime ): RDOBaseOperation( _runtime ) {}
+	virtual ~RDORule() {}
+	virtual bool choiceFrom( RDOSimulator* sim )  = 0;
+	virtual void convertRule( RDOSimulator* sim ) = 0;
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOOperation - operation
+// ----------------------------------------------------------------------------
 class RDOOperation: public RDOBaseOperation
 {
-friend RDOSimulator;
-friend CheckOperations;
+friend class RDOSimulator;
+friend class CheckOperations;
 
 private:
 	double time;
 	bool convert_end;
-	std::list< RDOOperation* > operation_clone;
+	RDORuntimeParent clones;
 
 	virtual RDOBaseOperation::BOResult checkOperation( RDOSimulator* sim );
 	virtual void makePlanned( RDOSimulator* sim, void* param = NULL );
 
 public:
-	RDOOperation():
-		RDOBaseOperation(),
+	RDOOperation( RDORuntimeParent* _runtime ):
+		RDOBaseOperation( _runtime ),
 		time( 0 ),
-		convert_end( false )
+		convert_end( false ),
+		clones( NULL )
 	{
+		clones.reparent( this );
 	}
 	virtual ~RDOOperation()
 	{
-		DeleteAllObjects( operation_clone );
+		clones.deleteObjects();
 	}
 	virtual bool   choiceFrom( RDOSimulator* sim )          = 0;
 	virtual void   convertEnd( RDOSimulator* sim )          = 0;
@@ -183,23 +138,88 @@ public:
 	virtual void onAfterOperationEnd( RDOSimulator* sim )    {}
 };
 
-class RDOPokaz: public rdoParse::RDODeletable
+// ----------------------------------------------------------------------------
+// ---------- RDOActivity - активность внутри DPT
+// ----------------------------------------------------------------------------
+class RDOActivity: public RDORuntimeObject
+{
+friend class TreeNode;
+friend class RDODecisionPoint;
+
+private:
+	bool valueAfter;  // false = valueBefore
+
+protected:
+	virtual double costOfRule( RDOSimulator* sim ) = 0;
+	RDORule* rule;
+
+public:
+	RDOActivity( RDORule* _rule, bool _valueAfter ):
+		RDORuntimeObject( _rule ),
+		rule( _rule ),
+		valueAfter( _valueAfter )
+	{
+	}
+	virtual ~RDOActivity()
+	{
+	}
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDODecisionPoint - DPT
+// ----------------------------------------------------------------------------
+class RDODecisionPoint: public RDOBaseOperation
+{
+friend class RDOSimulator;
+friend class TreeNode;
+friend class CheckOperations;
+
+private:
+	bool RunSearchInTree( RDOSimulator* sim );
+	virtual RDOBaseOperation::BOResult checkOperation( RDOSimulator* sim );
+
+protected:
+	std::list< RDOActivity* > activities;
+	virtual void onSearchBegin( RDOSimulator* sim )                              = 0;
+	virtual void onSearchDecisionHeader( RDOSimulator* sim )                     = 0;
+	virtual void onSearchDecision( RDOSimulator* sim, TreeNode* node )           = 0;
+	virtual void onSearchResultSuccess( RDOSimulator* sim, TreeRoot* treeRoot )  = 0;
+	virtual void onSearchResultNotFound( RDOSimulator* sim, TreeRoot* treeRoot ) = 0;
+	virtual TreeRoot* createTreeRoot( RDOSimulator* sim )                        = 0;
+
+public:
+	RDODecisionPoint( RDORuntimeParent* _runtime ): RDOBaseOperation( _runtime ) {}
+	virtual ~RDODecisionPoint();
+	virtual bool Condition( RDOSimulator* sim )     = 0;
+	virtual bool TermCondition( RDOSimulator* sim ) = 0;
+	virtual double EvaluateBy( RDOSimulator* sim )  = 0;
+	virtual bool NeedCompareTops()                  = 0;
+	virtual void addActivity( RDOActivity* act );
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOPokaz - базовый класс для собираемых показателей
+// ----------------------------------------------------------------------------
+class RDOPokaz: public RDORuntimeObject
 {
 public:
+	RDOPokaz( RDORuntimeParent* _runtime ): RDORuntimeObject( _runtime ) {}
 	virtual bool resetPokaz( RDOSimulator* sim ) = 0;
 	virtual bool checkPokaz( RDOSimulator* sim ) = 0;
 	virtual bool calcStat( RDOSimulator* sim )   = 0;
 };
 
+// ----------------------------------------------------------------------------
+// ---------- RDOSimulator - один из базовых классов для RDORuntime
+// ----------------------------------------------------------------------------
 class RDOSimulator: public RDOSimulatorBase
 {
-friend RDODecisionPoint;
-friend RDOOperation;
-friend TreeNode;
-friend RDORule;
-friend RDOIE;
-friend RDODecisionPoint;
-friend RDOOperation;
+friend class RDODecisionPoint;
+friend class RDOOperation;
+friend class TreeNode;
+friend class RDORule;
+friend class RDOIE;
+friend class RDOOperation;
 friend class RDODecisionPointTrace;
 
 private:
@@ -220,24 +240,45 @@ protected:
 	virtual void onCheckPokaz()      = 0;
 	virtual void onAfterCheckPokaz() = 0;
 
-	// If you have decision points you should override following two functions:
-	// The clone() function must create new instance of object derived from RDOSimulator 
-	// with copy of all resources.
-	// Nothing else needed such as operations, rules, IEs and DecisionPoints
-	virtual RDOSimulator* clone() { return NULL; }
-	// The operator==() operator must compare only resources
-	virtual bool operator == ( RDOSimulator& other ) { return false; }
+	RDOSimulator* createCopy();
+	// Для DPT необходимо перекрыть две нижеследующие функции:
+	// 1. Создает клон RDOSimulator с копиями всех ресурсов, но не более
+	virtual RDOSimulator* clone()                    = 0;
+	// 2. Сравнение двух симуляторов по ресурсам
+	virtual bool operator == ( RDOSimulator& other ) = 0;
+
 	unsigned int sizeof_sim;
 
-	virtual RDOSimulator* createCopy();
-
 public:
-	RDOSimulator(): RDOSimulatorBase(), sizeof_sim( 0 ) {}
-	virtual ~RDOSimulator() {}
-	void rdoInit();
-	void rdoDestroy();
+	RDOSimulator( RDORuntimeParent* _runtime ):
+		RDOSimulatorBase( _runtime ),
+		sizeof_sim( 0 )
+	{
+	}
+	virtual ~RDOSimulator()
+	{
+	}
 
 	virtual void onPutToTreeNode() = 0;
 };
+
+// ----------------------------------------------------------------------------
+// ---------- CheckOperations - фуктрорал проверки на запуск RDOBaseOperation
+// ----------------------------------------------------------------------------
+class CheckOperations: public RDORuntimeObject
+{
+private:
+	RDOSimulator* sim;
+
+public:
+	CheckOperations( RDOSimulator* _sim ):
+		RDORuntimeObject( _sim ), //qq
+		sim( _sim )
+	{
+	}
+	bool operator()( RDOBaseOperation* opr );
+};
+
+} // namespace rdoRuntime
 
 #endif //RDO_SIMULATOR

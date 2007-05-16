@@ -157,7 +157,6 @@ static char THIS_FILE[] = __FILE__;
 #include "rdodpt.h"
 #include "rdortp.h"
 #include "rdorss.h"
-#include "rdoruntime.h"
 
 namespace rdoParse 
 {
@@ -311,7 +310,7 @@ fun_arithm: fun_arithm '+' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOF
 				error_pos.first_column = @1.first_column;
 				error_pos.last_line    = @2.last_line;
 				error_pos.last_column  = @2.last_column;
-				$$ = (int)new RDOFUNArithm( parser, reinterpret_cast<RDOFUNArithm*>($2)->getType(), new rdoRuntime::RDOCalcUMinus( reinterpret_cast<RDOFUNArithm*>($2)->createCalc() ), error_pos );
+				$$ = (int)new RDOFUNArithm( parser, reinterpret_cast<RDOFUNArithm*>($2)->getType(), new rdoRuntime::RDOCalcUMinus( parser->runTime, reinterpret_cast<RDOFUNArithm*>($2)->createCalc() ), error_pos );
 			}
 			| error							{
 				parser->lexer_loc_set( &(@1) );
@@ -377,7 +376,7 @@ fun_group:			fun_group_header fun_logic ')' {
 						$$ = (int)(((RDOFUNGroupLogic *)$1)->createFunLogic((RDOFUNLogic *)$2));
 					}
 					| fun_group_header NoCheck ')' {
-						RDOFUNLogic* trueLogic = new RDOFUNLogic( new rdoRuntime::RDOCalcConst(1) );
+						RDOFUNLogic* trueLogic = new RDOFUNLogic( new rdoRuntime::RDOCalcConst( parser->runTime, 1 ) );
 						trueLogic->setErrorPos( @2 );
 						$$ = (int)(((RDOFUNGroupLogic *)$1)->createFunLogic( trueLogic ));
 					}

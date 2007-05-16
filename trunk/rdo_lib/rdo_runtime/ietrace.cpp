@@ -1,4 +1,6 @@
 #include "pch.h"
+#include "ietrace.h"
+#include "simtrace.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -6,8 +8,14 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-#include "rdotrace.h"
-#include "ietrace.h"
+namespace rdoRuntime {
+
+RDOIETrace::RDOIETrace( RDORuntimeParent* _runtime, RDOSimulatorTrace* _sim ): //qq
+	RDOIE( _runtime ),
+	RDOTraceableObject( _sim ),
+	RDOPatternTrace()
+{
+}
 
 void RDOIETrace::onAfterIrregularEvent( RDOSimulator* sim )
 { 
@@ -15,6 +23,4 @@ void RDOIETrace::onAfterIrregularEvent( RDOSimulator* sim )
 	simTr->getTracer()->writeIrregularEvent( this, simTr );
 }
 
-RDOIETrace::RDOIETrace( RDOSimulatorTrace* _sim ): RDOTraceableObject( _sim ), RDOPatternTrace()
-{
-}
+} // namespace rdoRuntime

@@ -1,6 +1,7 @@
 #pragma warning(disable : 4786)  
 
-#include "../rdo_runtime/memcheck.h"
+#include <memcheck.h> // rdo_runtime.lib
+
 #include <algorithm>
 #include <vector>
 #include <map>

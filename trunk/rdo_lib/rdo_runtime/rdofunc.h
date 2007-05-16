@@ -1,5 +1,8 @@
-#ifndef RDO_FUNC_H_
-#define RDO_FUNC_H_
+#ifndef RDOFUNC_H
+#define RDOFUNC_H
+
+namespace rdoRuntime
+{
 
 class RandGenerator
 {
@@ -195,4 +198,6 @@ public:
 	}
 };
 
-#endif //RDO_FUNC_H_
+} // namespace rdoParse 
+
+#endif // RDOFUNC_H

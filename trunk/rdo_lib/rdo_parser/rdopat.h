@@ -3,12 +3,11 @@
 
 #include "rdoparser_object.h"
 #include <rdotrace.h>
+#include <rdocalc.h>
 
 namespace rdoRuntime
 {
-class RDOCalc;
 class RDOPatternRuntime;
-class RDOSelectResourceCommon;
 }
 
 namespace rdoParse 
@@ -71,8 +70,8 @@ public:
 	virtual PatType getPatType() const = 0;
 	bool    isHaveConvertEnd() const { return getPatType() == PT_Operation || getPatType() == PT_Keyboard; }
 
-	static std::string StatusToStr( RDOResourceTrace::ConvertStatus value );
-	RDOResourceTrace::ConvertStatus StrToStatus( const std::string& value );
+	static std::string StatusToStr( rdoRuntime::RDOResourceTrace::ConvertStatus value );
+	rdoRuntime::RDOResourceTrace::ConvertStatus StrToStatus( const std::string& value );
 
 	std::vector< RDORelevantResource* >::const_iterator rel_res_begin() const { return relRes.begin(); }
 	std::vector< RDORelevantResource* >::const_iterator rel_res_end()   const { return relRes.end();   }
@@ -86,8 +85,8 @@ public:
 	int findPATPatternParamNum(const std::string *const paramName) const;
 	const RDORelevantResource *findRelevantResource(const std::string *const resName) const;
 	int findRelevantResourceNum(const std::string *const resName) const;
-	virtual void addRelRes( std::string* relName, std::string* resName, RDOResourceTrace::ConvertStatus beg, RDOResourceTrace::ConvertStatus end );
-	virtual void addRelRes( std::string* relName, std::string* resName, RDOResourceTrace::ConvertStatus beg );
+	virtual void addRelRes( std::string* relName, std::string* resName, rdoRuntime::RDOResourceTrace::ConvertStatus beg, rdoRuntime::RDOResourceTrace::ConvertStatus end );
+	virtual void addRelRes( std::string* relName, std::string* resName, rdoRuntime::RDOResourceTrace::ConvertStatus beg );
 	virtual void addRelRes( std::string* relName, std::string* resName, std::string* convBeg );
 	const std::string* const getName() const { return name; }
 	void setRelResPos( std::string* relRes, YYLTYPE* pos );
@@ -122,13 +121,18 @@ class RDORelevantResource: public RDOParserObject
 private:
 	const std::string* const name;
 
+protected:
+	rdoRuntime::RDOCalc* getChoiceCalc() const;
+	rdoRuntime::RDOCalc* getSelectCalc() const;
+	rdoRuntime::RDOSelectResourceCalc::Type getSelectType() const;
+
 public:
-	int                                   rel_res_id;
-	const RDOResourceTrace::ConvertStatus begin;
-	const RDOResourceTrace::ConvertStatus end;
-	bool                                  alreadyHaveConverter;
-	RDOPATChoice*                         choice;
-	RDOPATSelectType*                     order_sort;
+	int                rel_res_id;
+	bool               alreadyHaveConverter;
+	RDOPATChoice*      choice;
+	RDOPATSelectType*  order_sort;
+	const rdoRuntime::RDOResourceTrace::ConvertStatus begin;
+	const rdoRuntime::RDOResourceTrace::ConvertStatus end;
 	enum {
 		stateNone = 0,
 		choiceEmpty,
@@ -143,7 +147,7 @@ public:
 	} currentState;
 	bool isChoiceFromState() const { return currentState == choiceEmpty || currentState == choiceNoCheck || currentState == choiceFrom; }
 
-	RDORelevantResource( const RDOParserObject* _parent, const std::string* const _name, const int _rel_res_id, const RDOResourceTrace::ConvertStatus _begin, const RDOResourceTrace::ConvertStatus _end ):
+	RDORelevantResource( const RDOParserObject* _parent, const std::string* const _name, const int _rel_res_id, const rdoRuntime::RDOResourceTrace::ConvertStatus _begin, const rdoRuntime::RDOResourceTrace::ConvertStatus _end ):
 		RDOParserObject( _parent ),
 		name( _name ),
 		rel_res_id( _rel_res_id ),
@@ -173,7 +177,7 @@ private:
 	const RDORSSResource* const res;
 
 public:
-	RDORelevantResourceDirect( const RDOParserObject* _parent, const std::string* const _name, const int _rel_res_id, const RDORSSResource* const _res, const RDOResourceTrace::ConvertStatus _begin, const RDOResourceTrace::ConvertStatus _end = RDOResourceTrace::CS_NoChange ): RDORelevantResource( _parent, _name, _rel_res_id, _begin, _end ), res( _res ) {}
+	RDORelevantResourceDirect( const RDOParserObject* _parent, const std::string* const _name, const int _rel_res_id, const RDORSSResource* const _res, const rdoRuntime::RDOResourceTrace::ConvertStatus _begin, const rdoRuntime::RDOResourceTrace::ConvertStatus _end = rdoRuntime::RDOResourceTrace::CS_NoChange ): RDORelevantResource( _parent, _name, _rel_res_id, _begin, _end ), res( _res ) {}
 	const RDORSSResource* const getResource() const { return res; }
 	virtual const RDORTPResType* const getType() const;
 	virtual rdoRuntime::RDOCalc* createSelectEmptyResourceCalc();
@@ -189,7 +193,7 @@ private:
 	const RDORTPResType* const type;
 
 public:
-	RDORelevantResourceByType( const RDOParserObject* _parent, const std::string* const _name, const int _rel_res_id, const RDORTPResType* const _type, const RDOResourceTrace::ConvertStatus _begin, const RDOResourceTrace::ConvertStatus _end = RDOResourceTrace::CS_NoChange ): RDORelevantResource( _parent, _name, _rel_res_id, _begin, _end ), type( _type ) {}
+	RDORelevantResourceByType( const RDOParserObject* _parent, const std::string* const _name, const int _rel_res_id, const RDORTPResType* const _type, const rdoRuntime::RDOResourceTrace::ConvertStatus _begin, const rdoRuntime::RDOResourceTrace::ConvertStatus _end = rdoRuntime::RDOResourceTrace::CS_NoChange ): RDORelevantResource( _parent, _name, _rel_res_id, _begin, _end ), type( _type ) {}
 	virtual const RDORTPResType* const getType() const { return type; };
 	virtual rdoRuntime::RDOCalc* createSelectEmptyResourceCalc();
 	virtual rdoRuntime::RDOCalc* createSelectFirstResourceChoiceCalc();
@@ -207,7 +211,7 @@ protected:
 
 public:
 	RDOPATPatternOperation( RDOParser* _parser, std::string* _name, bool _trace );
-	virtual void addRelRes( std::string* relName, std::string* resName, RDOResourceTrace::ConvertStatus beg, RDOResourceTrace::ConvertStatus end );
+	virtual void addRelRes( std::string* relName, std::string* resName, rdoRuntime::RDOResourceTrace::ConvertStatus beg, rdoRuntime::RDOResourceTrace::ConvertStatus end );
 	virtual void addRelRes( std::string* relName, std::string* resName, std::string* convBeg );
 	virtual void addRelResConvertBegin(	bool trace, RDOPATParamsSet *parSet);
 	virtual void addRelResConvertEnd(		bool trace, RDOPATParamsSet *parSet);
@@ -225,7 +229,7 @@ protected:
 
 public:
 	RDOPATPatternEvent( RDOParser* _parser, std::string* _name, bool _trace );
-	virtual void addRelRes(std::string *relName, std::string *resName, RDOResourceTrace::ConvertStatus beg);
+	virtual void addRelRes(std::string *relName, std::string *resName, rdoRuntime::RDOResourceTrace::ConvertStatus beg);
 	virtual void addRelResUsage( RDOPATChoice* choice, RDOPATSelectType* order_sort );
 	virtual void addRelResConvertEvent(bool trace, RDOPATParamsSet *parSet);
 	virtual void testGoodForFreeActivity() const {}
@@ -241,7 +245,7 @@ protected:
 
 public:
 	RDOPATPatternRule( RDOParser* _parser, std::string* _name, bool _trace );
-	virtual void addRelRes(std::string *relName, std::string *resName, RDOResourceTrace::ConvertStatus beg);
+	virtual void addRelRes(std::string *relName, std::string *resName, rdoRuntime::RDOResourceTrace::ConvertStatus beg);
 	virtual void setTime(RDOFUNArithm *arithm);
 	virtual void addRelResConvertRule(bool trace, RDOPATParamsSet *parSet);
 	virtual void testGoodForSearchActivity() const;
@@ -283,26 +287,21 @@ public:
 class RDOPATSelectType: public RDODeletable
 {
 public:
-	enum Type {
-		st_empty = 0,
-		st_first,
-		st_with_min, 
-		st_with_max
-	} type;
+	rdoRuntime::RDOSelectResourceCalc::Type type;
 
 	RDOFUNArithm* arithm;
 
-	RDOPATSelectType( Type _type, RDOFUNArithm* _arithm = NULL ):
+	RDOPATSelectType( rdoRuntime::RDOSelectResourceCalc::Type _type, RDOFUNArithm* _arithm = NULL ):
 		type( _type ),
 		arithm( _arithm )
 	{
 	};
 	std::string asString() const {
 		switch ( type ) {
-			case st_empty   : return "<не_указано>";
-			case st_first   : return "first";
-			case st_with_min: return "with_min";
-			case st_with_max: return "with_max";
+			case rdoRuntime::RDOSelectResourceCalc::st_empty   : return "<не_указано>";
+			case rdoRuntime::RDOSelectResourceCalc::st_first   : return "first";
+			case rdoRuntime::RDOSelectResourceCalc::st_with_min: return "with_min";
+			case rdoRuntime::RDOSelectResourceCalc::st_with_max: return "with_max";
 		}
 		return "";
 	}

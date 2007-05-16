@@ -1,11 +1,13 @@
-#ifndef RDO_TRACE
-#define RDO_TRACE
+#ifndef RDOTRACE_H
+#define RDOTRACE_H
 
 #include "rdo.h"
 
+namespace rdoRuntime {
+
+class RDOSimulatorTrace;
 class TreeNodeTrace;
 class RDODecisionPointTrace;
-class RDOSimulatorTrace;
 class RDORuleTrace;
 class RDOIETrace;
 class RDOResourceTrace;
@@ -97,15 +99,13 @@ public:
 
 class RDOPatternTrace
 {
-friend RDOSimulatorTrace;
+friend class RDOSimulatorTrace;
 protected:
 	virtual std::string traceResourcesList( char prefix, RDOSimulatorTrace* sim ) = 0;
 	virtual std::string traceResourcesListNumbers( RDOSimulatorTrace* sim ) = 0;
 };
 
-namespace rdoRuntime {
 class RDORuntime;
-}
 
 // Base class for all resources
 class RDOResourceTrace: public RDOTraceableObject
@@ -152,7 +152,8 @@ protected:
 	bool wasChanged;
 
 public:
-	RDOPokazTrace( RDOSimulatorTrace* _sim ):
+	RDOPokazTrace( RDORuntimeParent* _runtime, RDOSimulatorTrace* _sim ): // qq
+		RDOPokaz( _runtime ),
 		RDOTraceableObject( _sim ),
 		wasChanged( true )
 	{
@@ -161,10 +162,6 @@ public:
 	virtual std::string traceValue() = 0;
 };
 
-#include "simtrace.h"
-#include "searchtrace.h"
-#include "ruletrace.h"
-#include "operationtrace.h"
-#include "ietrace.h"
+} // namespace rdoRuntime;
 
-#endif // RDO_TRACE
+#endif // RDOTRACE_H

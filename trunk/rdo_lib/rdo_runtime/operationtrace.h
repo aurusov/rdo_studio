@@ -1,6 +1,13 @@
 #ifndef OPERATION_TRACE_H
 #define OPERATION_TRACE_H
 
+#include "rdo.h"
+#include "rdotrace.h"
+#include "simtrace.h"
+
+namespace rdoRuntime
+{
+
 class RDOOperationTrace: public RDOOperation, public RDOTraceableObject, protected RDOPatternTrace
 {
 friend RDOTrace;
@@ -19,7 +26,7 @@ private:
 	};
 
 protected:
-	RDOOperationTrace( RDOSimulatorTrace* sim );
+	RDOOperationTrace( RDORuntimeParent* _runtime, RDOSimulatorTrace* sim ); //qq
 	virtual ~RDOOperationTrace();
 
 	virtual void onAfterOperationBegin( RDOSimulator* sim );
@@ -27,5 +34,7 @@ protected:
 
 	virtual RDOOperationTrace* clone2( RDOSimulator* sim ) = 0; 
 };
+
+} // namespace rdoRuntime
 
 #endif // OPERATION_TRACE_H

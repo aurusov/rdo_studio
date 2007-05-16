@@ -1,4 +1,7 @@
 #include "pch.h"
+#include "searchtrace.h"
+#include "rdotrace.h"
+#include "simtrace.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -6,7 +9,19 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-#include "rdotrace.h"
+namespace rdoRuntime
+{
+
+RDOActivityTrace::RDOActivityTrace( RDOSimulatorTrace* i_sim, RDORule* r, bool vA ):
+	RDOActivity( r, vA ),
+	RDOTraceableObject( i_sim )
+{
+	// Т.е. тут можно было написать id = r->id, тольуо r динамически
+	// приведен к типу RDORule, в котром нет id.
+	// Присвоение и увеличение i_sim->activityCounter на один было сделано
+	// в конструкторе r. Текущее значение i_sim->activityCounter на 1 больше.
+	id = i_sim->activityCounter - 1;
+}
 
 void RDODecisionPointTrace::onSearchBegin( RDOSimulator* sim )
 {
@@ -49,55 +64,57 @@ void RDODecisionPointTrace::onSearchResultSuccess( RDOSimulator* sim, TreeRoot* 
 
 void RDODecisionPointTrace::onSearchResultNotFound(RDOSimulator *sim, TreeRoot *treeRoot)
 {
-   if(traceFlag != DPT_no_trace)
-   {
-      RDOSimulatorTrace *simTr = (RDOSimulatorTrace *)sim;
-      simTr->getTracer()->writeSearchResult('N', simTr, treeRoot);
-   }
+	if ( traceFlag != DPT_no_trace ) {
+		RDOSimulatorTrace *simTr = (RDOSimulatorTrace *)sim;
+		simTr->getTracer()->writeSearchResult( 'N', simTr, treeRoot );
+	}
 }
 
-void TreeNodeTrace::onSearchOpenNode(RDOSimulator *sim)
+void TreeNodeTrace::onSearchOpenNode( RDOSimulator* sim )
 {
-   RDODecisionPointTrace *dpTrace = (RDODecisionPointTrace *)root->dp;
-   if(dpTrace->traceFlag == DPT_trace_tops || dpTrace->traceFlag == DPT_trace_all)
-   {
-      RDOSimulatorTrace *simTr = (RDOSimulatorTrace *)sim;
-      simTr->getTracer()->writeSearchOpenNode(count, 
-         (parent?parent->count:0),
-         costPath,
-         costRest);
-   }
+	RDODecisionPointTrace* dpTrace = (RDODecisionPointTrace *)root->dp;
+	if ( dpTrace->traceFlag == DPT_trace_tops || dpTrace->traceFlag == DPT_trace_all ) {
+		RDOSimulatorTrace* simTr = (RDOSimulatorTrace *)sim;
+		simTr->getTracer()->writeSearchOpenNode( count,
+			(parent ? parent->count : 0 ),
+			costPath,
+			costRest );
+	}
 }
 
-void TreeNodeTrace::onSearchNodeInfoDeleted(RDOSimulator *sim)
+void TreeNodeTrace::onSearchNodeInfoDeleted( RDOSimulator* sim )
 {
-	RDOSimulatorTrace *simTr = (RDOSimulatorTrace *)sim;
-	simTr->getTracer()->writeSearchNodeInfo('D', this);
+	RDOSimulatorTrace* simTr = (RDOSimulatorTrace *)sim;
+	simTr->getTracer()->writeSearchNodeInfo( 'D', this );
 }
 
-void TreeNodeTrace::onSearchNodeInfoReplaced(RDOSimulator *sim)
+void TreeNodeTrace::onSearchNodeInfoReplaced( RDOSimulator* sim )
 {
-   RDOSimulatorTrace *simTr = (RDOSimulatorTrace *)sim;
-   simTr->getTracer()->writeSearchNodeInfo('R', this); // must be 'R'
+   RDOSimulatorTrace* simTr = (RDOSimulatorTrace *)sim;
+   simTr->getTracer()->writeSearchNodeInfo( 'R', this ); // must be 'R'
 }
 
-void TreeNodeTrace::onSearchNodeInfoNew(RDOSimulator *sim)
+void TreeNodeTrace::onSearchNodeInfoNew( RDOSimulator* sim )
 {
-   RDOSimulatorTrace *simTr = (RDOSimulatorTrace *)sim;
-   simTr->getTracer()->writeSearchNodeInfo('N', this);
+   RDOSimulatorTrace* simTr = (RDOSimulatorTrace *)sim;
+   simTr->getTracer()->writeSearchNodeInfo( 'N', this );
 }
 
 
-TreeNode *TreeNodeTrace::createChildTreeNode()
+TreeNode* TreeNodeTrace::createChildTreeNode()
 {
-   return new TreeNodeTrace(childSim, this, root, currAct, costPath, root->nodeCount++);
+	root->sizeof_dpt += sizeof( TreeNode );
+	return new TreeNodeTrace( childSim, this, root, currAct, costPath, root->nodeCount++ );
 }
 
-void TreeRootTrace::createRootTreeNode(RDOSimulator *sim)
+void TreeRootTrace::createRootTreeNode( RDOSimulator* sim )
 {
-	rootNode = new TreeNodeTrace(sim, NULL, this, NULL, 0, nodeCount++);
-	rootNode->costRule = rootNode->costPath = rootNode->costRest = 0;
-	allLeafs.push_back(rootNode);
+	rootNode = new TreeNodeTrace( sim, NULL, this, NULL, 0, nodeCount++ );
+	rootNode->costRule = 0;
+	rootNode->costPath = 0;
+	rootNode->costRest = 0;
+	allLeafs.push_back( rootNode );
+	sizeof_dpt += sizeof( TreeNodeTrace ) + sizeof( void* );
 }
 
 TreeRoot* RDODecisionPointTrace::createTreeRoot( RDOSimulator* sim )
@@ -156,3 +173,5 @@ void RDODecisionPointTrace::getStats( std::list< unsigned int >& list, unsigned 
 		med = (double)sum / cnt;
 	}
 }
+
+} // namespace rdoRuntime;

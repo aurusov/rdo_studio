@@ -1,18 +1,22 @@
-#ifndef RDO_SIMULATOR_BASE
-#define RDO_SIMULATOR_BASE
+#ifndef RDOBASE_H
+#define RDOBASE_H
 
+#include "rdoruntime_object.h"
 #include "rdodefines.h"
 #include <rdocommon.h>
 
+namespace rdoRuntime
+{
+
 class RDOBaseOperation;
 
-class RDOSimulatorBase
+class RDOSimulatorBase: public RDORuntimeParent
 {
 private:
 	double currentTime;
 	double nextTime;
 
-	rdoRuntime::RunTimeMode mode;
+	RunTimeMode  mode;
 
 	double       speed;
 	unsigned int speed_range_max;
@@ -37,58 +41,57 @@ protected:
 
 	void setCurrentTime( double value ) { currentTime = value; }
 
-	// Overridables:
+	// Выполнение любых операций (паттерны, DPT и процессы)
+	// Если вернулось значение true, то необходимо вызвать doOperation
+	// и в следующий раз/ без перевода модельного времени вперед
+	virtual bool doOperation()  = 0;
 
-	// Override if you need more or less real time processing.
-	// By default process as fast as possible.
-	virtual void rdoDelay( double fromTime, double toTime ) = 0;
+	// Проверка на условие конца моделирования
+	virtual bool endCondition() = 0;
 
-	// This function is called by engine for every moment of model time
-	// until it returns true, which means "something chanded" in model.
-	virtual bool doOperation() = 0;
+	// Инициализация/очистка симулятора
+	virtual void onInit()    = 0;
+	virtual void onDestroy() = 0;
 
-	// Override if need model time limit.
-	// Default - no time limit.
-	virtual bool endCondition() { return false; }
-
-	// Called by engine during initialisation/deinitialisation.
-	// Override if need special initialisation/deinitialisation.
-	virtual void onInit() {}
-	virtual void onDestroy() {}
-
-	// One of these funcs called by engine just before end of process.
-	virtual void onNothingMoreToDo() {}
-	virtual void onEndCondition() {}
+	// Различные функции конца моделирования
+	// Вызывется, если нет больше событий
+	virtual void onNothingMoreToDo() = 0;
+	// Вызывется, если сработало условие конца моделирования
+	virtual void onEndCondition()    = 0;
+	// Вызывется, tесли возникла ошибка прогона
+	virtual void onRuntimeError()    = 0;
+	// Вызывается, если модель остановлена пользователем
+	virtual void onUserBreak()       = 0;
 
 	// Вызывается в самом начале прогона
 	virtual void preProcess()  = 0;
 	// Вызывается непосредвтсенно перед окончанием прогона
 	virtual void postProcess() = 0;
 
-	virtual bool isKeyDown() { return false; }
+	// Проверка на нажатие клавиши или активной области
+	virtual bool isKeyDown()   = 0;
 
 public:
-	// These function for external use:
-	void rdoInit();
-//	void rdoRun();
-	void rdoDestroy();
-	bool rdoNext();
-	void rdoPostProcess();
+	// Публичные методы управления симулятором
+	virtual void rdoInit();
+	virtual void rdoDestroy();
+	virtual bool rdoNext();
+	virtual void rdoPostProcess();
 
-	double getCurrentTime() const                  { return currentTime; }
+	double getCurrentTime() const           { return currentTime; }
 
-	rdoRuntime::RunTimeMode getMode() const        { return mode;        }
-	void setMode( rdoRuntime::RunTimeMode _mode );
+	RunTimeMode getMode() const             { return mode;        }
+	void setMode( RunTimeMode _mode );
 
-	double getSpeed() const                        { return speed;       }
+	double getSpeed() const                 { return speed;       }
 	void setSpeed( double persent );
 
-	double getShowRate() const                     { return showRate;    }
+	double getShowRate() const              { return showRate;    }
 	void setShowRate( double value );
 
 	void addTimePoint( double timePoint, RDOBaseOperation* opr = NULL, void* param = NULL  );
 
-	RDOSimulatorBase();
+	RDOSimulatorBase( RDORuntimeParent* _runtime );
 	virtual ~RDOSimulatorBase() {}
 
 	static unsigned int getMSec( const SYSTEMTIME& systime ) {
@@ -96,4 +99,6 @@ public:
 	}
 };
 
-#endif // RDO_SIMULATOR_BASE
+} // namespace rdoRuntime;
+
+#endif // RDOBASE_H

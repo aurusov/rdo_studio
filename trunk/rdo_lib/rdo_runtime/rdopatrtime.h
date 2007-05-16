@@ -1,10 +1,13 @@
-#ifndef RDO_PAT_RUNTIME
-#define RDO_PAT_RUNTIME
+#ifndef RDOPATRTIME_H
+#define RDOPATRTIME_H
 
-#include <rdotrace.h>
+#include "rdotrace.h"
+#include "ruletrace.h"
+#include "ietrace.h"
+#include "operationtrace.h"
 
-class RDOSimulator;
-class RDOResourceTrace;
+//class RDOSimulator;
+//class RDOResourceTrace;
 
 namespace rdoRuntime {
 
@@ -15,7 +18,7 @@ class RDOActivityRuntime;
 // ----------------------------------------------------------------------------
 // ---------- RDOPatternRuntime
 // ----------------------------------------------------------------------------
-class RDOPatternRuntime
+class RDOPatternRuntime: public RDORuntimeParent
 {
 friend class RDOActivityRuleRuntime;
 friend class RDOActivityIERuntime;
@@ -28,7 +31,6 @@ protected:
 	std::vector< RDOCalc* > beginCalcs;
 	std::vector< RDOCalc* > beginEraseCalcs;
 	std::string patternId;
-	RDORuntime* runtime;
 	bool        trace;
 	std::vector< RDOResourceTrace::ConvertStatus > beginConvertStatus;
 
@@ -48,7 +50,7 @@ public:
 
 	const std::string& getPatternId() const         { return patternId;                  }
 	const std::string& tracePatternId() const       { return patternId;                  }
-	void setPatternId( int _id )                    { patternId = toString(_id);         }
+	void setPatternId( int _id )                    { patternId = toString( _id );       }
 
 	virtual void setTime( RDOCalc* _timeCalc )      {};
 
@@ -139,10 +141,11 @@ public:
 // ----------------------------------------------------------------------------
 // ---------- RDOActivityRuntime
 // ----------------------------------------------------------------------------
-class RDOActivityRuntime
+class RDOActivityRuntime: public RDORuntimeObject
 {
 protected:
 	RDOActivityRuntime( RDOPatternRuntime* _pattern, const std::string& _oprName ):
+		RDORuntimeObject( _pattern ),
 		pattern( _pattern ),
 		oprName( _oprName )
 #ifdef RDOSIM_COMPATIBLE
@@ -190,7 +193,7 @@ public:
 		}
 		relResID[rel_res_id] = res_id; 
 	}
-	virtual void addHotKey( std::string* hotKey );
+	virtual void addHotKey( std::string* hotKey ) {}
 	void writeModelStructure( std::stringstream& stream );
 };
 
@@ -298,6 +301,6 @@ public:
 	bool choiceFrom( RDOSimulator* sim );
 };
 
-}
+} // namespace rdoRuntime
 
-#endif // RDO_PAT_RUNTIME
+#endif // RDOPATRTIME_H

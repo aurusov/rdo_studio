@@ -8,7 +8,7 @@ static char THIS_FILE[] = __FILE__;
 
 #include "rdogramma.h"
 #include "rdoparser.h"
-#include "rdoruntime.h"
+#include <rdo_runtime.h>
 
 #define YY_INTERACTIVE
 

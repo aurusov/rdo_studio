@@ -4,6 +4,7 @@
 #include "rdoparser_base.h"
 #include "rdoparser_lexer.h"
 #include "rdoparser_object.h"
+#include <rdoruntime_object.h>
 #include <iostream.h>
 
 namespace rdoParse
@@ -128,7 +129,7 @@ public:
 // ----------------------------------------------------------------------------
 // ---------- RDOParserSMR1
 // ----------------------------------------------------------------------------
-class RDOSMR1OkException: public RDOException
+class RDOSMR1OkException: public rdoRuntime::RDOException
 {
 public:
 	virtual std::string getType() const { return ""; }

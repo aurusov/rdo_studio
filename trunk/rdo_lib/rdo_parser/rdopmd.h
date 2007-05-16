@@ -4,12 +4,6 @@
 #include "rdoparser_object.h"
 #include <rdopokaz.h>
 
-namespace rdoRuntime
-{
-class RDOCalc;
-class RDOResource;
-}
-
 namespace rdoParse 
 {
 

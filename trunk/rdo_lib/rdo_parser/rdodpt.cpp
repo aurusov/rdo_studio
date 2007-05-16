@@ -1,18 +1,16 @@
 #include "pch.h"
+#include "rdodpt.h"
+#include "rdoparser.h"
+#include "rdoparser_lexer.h"
+#include "rdorss.h"
+#include <rdopatrtime.h>
+#include <rdoprocess.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
-
-#include "rdodpt.h"
-#include "rdoparser.h"
-#include "rdopatrtime.h"
-#include "rdoparser_lexer.h"
-#include "rdorss.h"
-
-#include <rdoprocess.h>
 
 namespace rdoParse 
 {
@@ -80,7 +78,7 @@ void RDODPTSearch::end()
 {
 	rdoRuntime::RDOCalc *condCalc;
 	if(!conditon)
-		condCalc = new rdoRuntime::RDOCalcConst(1);
+		condCalc = new rdoRuntime::RDOCalcConst(parser->runTime, 1);
 	else
 		condCalc = conditon->calc;
 
@@ -93,20 +91,20 @@ void RDODPTSearch::end()
 	switch(trace)
 	{
 	case DPTnotrace:
-		dpt->traceFlag = DPT_no_trace;
+		dpt->traceFlag = rdoRuntime::DPT_no_trace;
 		break;
 	case DPTtracestat:
-		dpt->traceFlag = DPT_trace_stat;
+		dpt->traceFlag = rdoRuntime::DPT_trace_stat;
 		break;
 	case DPTtracetops:
-		dpt->traceFlag = DPT_trace_tops;
+		dpt->traceFlag = rdoRuntime::DPT_trace_tops;
 		break;
 	case DPTtraceall:
-		dpt->traceFlag = DPT_trace_all;
+		dpt->traceFlag = rdoRuntime::DPT_trace_all;
 		break;
 	};
 
-	parser->runTime->addDPT(dpt);
+	parser->runTime->addRuntimeDPT( dpt );
 
 	int size = activities.size();
 	for(int i = 0; i < size; i++)
@@ -180,13 +178,13 @@ rdoRuntime::RDOSearchActivityRuntime* RDODPTSearchActivity::createActivityRuntim
 {
 	rdoRuntime::RDOActivityRuleRuntime *activity = new rdoRuntime::RDOActivityRuleRuntime(sim, rule->patRuntime, true, *name);
 	rdoRuntime::RDOSearchActivityRuntime *act = new rdoRuntime::RDOSearchActivityRuntime(sim, 
-		dynamic_cast<RDORule *>(activity),
+		dynamic_cast<rdoRuntime::RDORule*>(activity),
 		(value == DPT_value_after), 
 		ruleCost->createCalc());
 
 	int size = params.size();
 	for(int i = 0; i < size; i++)
-		activity->addParamCalc(new rdoRuntime::RDOSetPatternParamCalc(i, params.at(i)));
+		activity->addParamCalc(new rdoRuntime::RDOSetPatternParamCalc(parser->runTime, i, params.at(i)));
 
 	return act;
 }
@@ -281,7 +279,7 @@ void RDODPTSomeActivity::createActivityRuntime(RDOFUNLogic *conditon)
 
 	int size = params.size();
 	for(int i = 0; i < size; i++)
-		activity->addParamCalc(new rdoRuntime::RDOSetPatternParamCalc(i, params.at(i)));
+		activity->addParamCalc(new rdoRuntime::RDOSetPatternParamCalc(parser->runTime, i, params.at(i)));
 }
 
 
@@ -347,7 +345,7 @@ void RDODPTFreeActivity::end()
 	rdoRuntime::RDOActivityRuntime *activity = pattern->patRuntime->createActivity(*name);
 	int size = params.size();
 	for(int i = 0; i < size; i++)
-		activity->addParamCalc(new rdoRuntime::RDOSetPatternParamCalc(i, params.at(i)));
+		activity->addParamCalc(new rdoRuntime::RDOSetPatternParamCalc(parser->runTime, i, params.at(i)));
 
 	size = hotKeys.size();
 	for(i = 0; i < size; i++)
@@ -412,6 +410,7 @@ RDOPROCTransact* RDOPROCTransact::makeRTP( RDOParser* _parser )
 		return rtp;
 	} else {
 		RDOPROCTransact* rtp = new RDOPROCTransact( _parser );
+		rdoRuntime::RDOPROCTransact::typeID = rtp->getNumber();
 		return rtp;
 	}
 }

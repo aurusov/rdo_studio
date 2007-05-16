@@ -1,18 +1,17 @@
 #include "pch.h"
+#include "rdosmr.h"
+#include "rdoparser.h"
+#include "rdofun.h"
+#include "rdorss.h"
+#include "rdoparser_lexer.h"
+#include "rdoparser_rdo.h"
+#include <rdocalc.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
-
-#include "rdosmr.h"
-#include "rdoparser.h"
-#include "rdoruntime.h"
-#include "rdofun.h"
-#include "rdorss.h"
-#include "rdoparser_lexer.h"
-#include "rdoparser_rdo.h"
 
 namespace rdoParse 
 {
@@ -109,7 +108,7 @@ void RDOSMR::setConstValue(std::string *constName, RDOFUNArithm *arithm)
 		parser->error("Undefined constant: " + *constName);
 
 	rdoRuntime::RDOCalc *calc = arithm->createCalc(cons->descr->getType());
-	parser->runTime->addInitCalc(new rdoRuntime::RDOCalcSetConst(cons->number, calc));
+	parser->runTime->addInitCalc(new rdoRuntime::RDOCalcSetConst( parser->runTime, cons->number, calc ));
 }
 
 void RDOSMR::setResParValue(std::string *resName, std::string *parName, RDOFUNArithm *arithm)
@@ -124,7 +123,7 @@ void RDOSMR::setResParValue(std::string *resName, std::string *parName, RDOFUNAr
 
 	int parNumb = res->getType()->getRTPParamNumber(parName);
 	rdoRuntime::RDOCalc *calc = arithm->createCalc(descr->getType());
-	parser->runTime->addInitCalc(new rdoRuntime::RDOSetResourceParamCalc(res->getNumber(), parNumb, calc));
+	parser->runTime->addInitCalc(new rdoRuntime::RDOSetResourceParamCalc( parser->runTime, res->getNumber(), parNumb, calc ));
 }
 
 void RDOSMR::setSeed(std::string *seqName, int _base)

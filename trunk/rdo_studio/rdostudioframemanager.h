@@ -14,7 +14,7 @@
 // ---------- RDOStudioFrameManager
 // ----------------------------------------------------------------------------
 namespace rdoSimulator {
-	struct RDOFrame;
+struct RDOFrame;
 }
 
 class RDOStudioFrameManager

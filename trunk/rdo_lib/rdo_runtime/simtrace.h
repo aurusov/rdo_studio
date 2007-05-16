@@ -3,26 +3,27 @@
 
 #include "rdotrace.h"
 
-namespace rdoRuntime {
-class RDOActivityRuntime;
-}
-
 namespace rdoParse {
 class RDODPTSome;
 }
 
+namespace rdoRuntime {
+
+class RDOActivityRuntime;
+class RDOBaseOperation;
+
 class RDOSimulatorTrace: public RDOSimulator
 {
-friend RDODecisionPointTrace;
-friend RDOOperationTrace;
-friend TreeRootTrace;
-friend TreeNodeTrace;
-friend RDOTrace;
-friend RDOResourceTrace;
-friend RDOIETrace;
-friend RDORuleTrace;
+friend class RDODecisionPointTrace;
+friend class RDOOperationTrace;
+friend class TreeRootTrace;
+friend class TreeNodeTrace;
+friend class RDOTrace;
+friend class RDOResourceTrace;
+friend class RDOIETrace;
+friend class RDORuleTrace;
 friend class RDOActivityTrace;
-friend class rdoRuntime::RDOActivityRuntime;
+friend class RDOActivityRuntime;
 friend class rdoParse::RDODPTSome;
 
 private:
@@ -32,21 +33,15 @@ private:
 	typedef std::map<int, int> MAPII;
 	MAPII resourcesIdsRefs;
 	std::list< int > freeOperationsIds;
-	std::list< RDOResourceTrace* > allResourcesInSim;
-	std::list< RDOResourceTrace* > perm;
 
 	int getFreeResourceId();
 	void freeResourceId(int id);
 	int getFreeOperationId(); 
 	void freeOperationId(int id);
 
-	RDOSimulator *createCopy();
-
 	int ieCounter;
 	int activityCounter;
 	int dptCounter;
-
-//	virtual void onAfterCheckPokaz();
 
 	void addTemplateDecisionPoint(RDODecisionPointTrace *dp);
 	void addTemplateOperation(RDOOperationTrace *op);
@@ -57,8 +52,8 @@ private:
 	unsigned int memory_max;
 
 protected:
-	RDOSimulatorTrace():
-		RDOSimulator(),
+	RDOSimulatorTrace( RDORuntimeParent* _runtime ):
+		RDOSimulator( _runtime ),
 		dptCounter( 1 ),
 		activityCounter( 1 ),
 		ieCounter( 1 ),
@@ -73,16 +68,14 @@ protected:
 
 	virtual void preProcess();
 	virtual void postProcess();
-	void checkPermanentResources();
 	void checkRSSDefinedResources();
 
-	void onResourceErase(RDOResourceTrace *res);
-	virtual std::list< RDOResourceTrace* > getPermanentResources() = 0;
+	void onResourceErase( RDOResourceTrace* res );
+	virtual std::list< RDOResourceTrace* > getTracebleResources() const = 0;
 
 public:
 	virtual RDOTrace* getTracer() = 0;
-	void rdoDestroy();
-	void rdoInit();
+	virtual void rdoInit();
 
 	void memory_insert( unsigned int mem ) {
 		memory_current += mem;
@@ -95,5 +88,7 @@ public:
 		return memory_max;
 	}
 };
+
+} // namespace rdoRuntime
 
 #endif // SIMTRACE_H

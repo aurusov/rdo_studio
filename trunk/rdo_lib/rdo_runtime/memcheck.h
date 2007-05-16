@@ -13,11 +13,7 @@ void AFX_CDECL operator delete(void* p, LPCSTR lpszFileName, int nLine);
 
 #include <afx.h>
 
-
-
-
 /////////////////////////////////////////////////////////////////////////////
- 
 
 #include <new>
 #include <memory>

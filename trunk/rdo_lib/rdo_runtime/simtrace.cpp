@@ -1,4 +1,9 @@
 #include "pch.h"
+#include "simtrace.h"
+#include "searchtrace.h"
+#include "operationtrace.h"
+#include "ietrace.h"
+#include "ruletrace.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -6,7 +11,8 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-#include "rdotrace.h"
+namespace rdoRuntime
+{
 
 void RDOSimulatorTrace::addTemplateDecisionPoint( RDODecisionPointTrace* dp )
 {
@@ -53,11 +59,6 @@ void RDOSimulatorTrace::addTemplateBaseOperation( RDOBaseOperation* bop )
 			}
 		}
 	}
-}
-
-void RDOSimulatorTrace::rdoDestroy()
-{
-	RDOSimulator::rdoDestroy();
 }
 
 void RDOSimulatorTrace::rdoInit()
@@ -114,26 +115,9 @@ void RDOSimulatorTrace::freeOperationId(int id)
 	freeOperationsIds.push_front(id); 
 }
 
-void RDOSimulatorTrace::onResourceErase(RDOResourceTrace *res)
+void RDOSimulatorTrace::onResourceErase( RDOResourceTrace* res )
 {
-/*
-	if( res->temporary && res->trace && getTracer()->canWrite() ) {
-		getTracer()->getOStream() << "RE "
-	                              << getCurrentTime() << " "
-	                              << res->typeId.c_str() << " "
-	                              << res->traceId().c_str() << std::endl
-	                              << getTracer()->getEOL();
-	}
-*/
-	allResourcesInSim.remove(res);
 	freeResourceId(res->id);
-}
-
-void RDOSimulatorTrace::checkPermanentResources()
-{
-	perm = getPermanentResources();
-	allResourcesInSim.clear();
-	allResourcesInSim.insert( allResourcesInSim.begin(), perm.begin(), perm.end() );
 }
 
 void RDOSimulatorTrace::preProcess()
@@ -141,8 +125,7 @@ void RDOSimulatorTrace::preProcess()
 	RDOSimulator::preProcess();
 	getTracer()->startWriting();
 	getTracer()->writeTraceBegin(this);
-	checkPermanentResources();
-	getTracer()->writePermanentResources(this, perm);
+	getTracer()->writePermanentResources( this, getTracebleResources() );
 	getTracer()->writeModelBegin(this);
 }
 
@@ -152,35 +135,4 @@ void RDOSimulatorTrace::postProcess()
 	getTracer()->stopWriting();
 }
 
-RDOSimulator *RDOSimulatorTrace::createCopy()
-{
-	RDOSimulator *res = RDOSimulator::createCopy();
-	((RDOSimulatorTrace*)res)->checkPermanentResources();
-	return res;
-}
-/*
-// TEMPLATE CLASS caster
-template<class FromType, class _Ufn>
-class caster
-{
-public:
-	caster(const _Ufn& _X)
-		: op(_X) {}
-	_Ufn::result_type operator()(const FromType& _X) const
-	{ return op((_Ufn::argument_type)_X); }
-protected:
-	_Ufn op;
-};
-
-// TEMPLATE FUNCTION cast
-template<class FromType, class _Ufn> inline
-caster<FromType, _Ufn> cast(const _Ufn& _X)
-{
-	return caster<FromType, _Ufn>(_X); 
-}
-
-void RDOSimulatorTrace::onAfterCheckPokaz()
-{
-	std::for_each(havePokaz.rbegin(), havePokaz.rend(), cast<RDOPokaz*>(std::mem_fun(&RDOPokazTrace::tracePokaz)));
-}
-*/
+} // namespace rdoRuntime

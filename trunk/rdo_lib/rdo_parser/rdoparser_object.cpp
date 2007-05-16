@@ -1,4 +1,7 @@
 #include "pch.h"
+#include "rdoparser_object.h"
+#include "rdoparser.h"
+#include <rdo_runtime.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -6,19 +9,23 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-#include "rdoparser_object.h"
-#include "rdoparser.h"
-#include "rdoruntime.h"
-
 namespace rdoParse 
 {
 
+// ----------------------------------------------------------------------------
+// ---------- RDODeletable
+// ----------------------------------------------------------------------------
 RDODeletable::RDODeletable()
 {
 	parser->insertDeletables( this );
 }
 
 RDODeletable::~RDODeletable()
+{
+	noAutoDelete();
+}
+
+void RDODeletable::noAutoDelete()
 {
 	parser->removeDeletables( this );
 }
@@ -39,12 +46,14 @@ void RDODeletable::operator delete( void* v )
 }
 #endif
 
+// ----------------------------------------------------------------------------
+// ---------- RDOParserObject
+// ----------------------------------------------------------------------------
 RDOParserObject::RDOParserObject( RDOParser* _parser ):
 	RDODeletable(),
 	parser( _parser ),
 	parent( NULL )
 {
-//	parser->insertDeletables( this );
 }
 
 RDOParserObject::RDOParserObject( const RDOParserObject* _parent ):
@@ -52,12 +61,10 @@ RDOParserObject::RDOParserObject( const RDOParserObject* _parent ):
 	parent( _parent )
 {
 	parser = _parent->parser;
-//	parser->insertDeletables( this );
 }
 
 RDOParserObject::~RDOParserObject()
 {
-//	parser->removeDeletables( this );
 }
 
 void RDOParserObject::reparent( const RDOParserObject* _parent )

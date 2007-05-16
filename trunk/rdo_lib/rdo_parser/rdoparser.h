@@ -2,9 +2,8 @@
 #define RDOPARSER_PARSER
 
 #include "rdoparser_object.h"
-#include "rdocalcconst.h"
 #include "rdoparser_base.h"
-
+#include <rdoruntime_object.h>
 #include <rdocommon.h>
 
 #include <algorithm>
@@ -32,18 +31,11 @@ class RDODPTFreeActivity;
 class RDOPMDPokaz;
 class RDOPROCProcess;
 
-class RDOSyntaxException: public RDOException
+class RDOSyntaxException: public rdoRuntime::RDOException
 {
 public:
    std::string getType() const { return "RDO Syntax Error"; }
-   RDOSyntaxException(const char *str): RDOException(str) {}
-};
-
-class RDOInternalException: public RDOException
-{
-public:
-   std::string getType() const { return "RDO Syntax Error"; }
-   RDOInternalException(const char *str): RDOException(str) {}
+   RDOSyntaxException( const std::string& str ): RDOException( str ) {}
 };
 
 class RDOParser
@@ -90,15 +82,17 @@ public:
 
 	void insertDeletables( RDODeletable* value ) {
 		if ( value ) {
+			TRACE( "insertDeletables: %d\n", value );
 			allDeletables.push_back( value );
-//			TRACE( "add %d\n", value );
 		}
 	}
 	void removeDeletables( RDODeletable* value ) {
+		TRACE( "removeDeletables: %d\n", value );
 		std::vector< RDODeletable* >::iterator it = std::find( allDeletables.begin(), allDeletables.end(), value );
 		if ( it != allDeletables.end() ) {
 			allDeletables.erase( it );
-//			TRACE( "del %d\n", value );
+		} else {
+			TRACE( "removeDeletables: faild !!!!!!!!!!!!!!!!!!!!\n" );
 		}
 	}
 //	void insertDeletables( RDODeletable* value )            { if ( value ) allDeletables.push_back( value );                                         }
@@ -191,15 +185,6 @@ public:
 		allDoubles.push_back( val );
 		return val;
 	}
-
-	class RDOHotKeyToolkit {
-	private:
-		std::map< std::string, int > keys;
-	public:
-		RDOHotKeyToolkit();
-		int codeFromString( std::string* key );
-	};
-	RDOHotKeyToolkit rdoHotKeyToolkit;
 
 	rdoModelObjects::RDOFileType getFileToParse() const       { return parser_base ? parser_base->type : rdoModelObjects::PAT;          }
 	void lexer_setvalue( int val ) const                      { if ( parser_base ) parser_base->lexer_setvalue( val );                  }

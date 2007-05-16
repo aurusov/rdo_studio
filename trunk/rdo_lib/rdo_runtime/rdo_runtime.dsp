@@ -146,6 +146,10 @@ SOURCE=.\rdo.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\rdo_runtime.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdobase.cpp
 
 !IF  "$(CFG)" == "rdo_runtime - Win32 Release"
@@ -158,6 +162,27 @@ SOURCE=.\rdobase.cpp
 
 !ENDIF 
 
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdocalc.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdoframe.cpp
+
+!IF  "$(CFG)" == "rdo_runtime - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "rdo_runtime - Win32 Debug"
+
+# ADD CPP /Ze
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdopatrtime.cpp
 # End Source File
 # Begin Source File
 
@@ -283,7 +308,15 @@ SOURCE=.\rdo.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\rdo_runtime.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdobase.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdocalc.h
 # End Source File
 # Begin Source File
 
@@ -291,7 +324,19 @@ SOURCE=.\rdodefines.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\rdodptrtime.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdoframe.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdofunc.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdopatrtime.h
 # End Source File
 # Begin Source File
 

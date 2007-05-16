@@ -1,15 +1,13 @@
 #include "pch.h"
+#include "rdopatrtime.h"
+#include "rdo_runtime.h"
+#include "rdocalc.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
-
-#include "rdopatrtime.h"
-#include "rdoruntime.h"
-#include "rdoparser.h"
-#include "rdohotkey.h"
 
 namespace rdoRuntime
 {
@@ -18,24 +16,22 @@ namespace rdoRuntime
 // ---------- RDOPatternRuntime
 // ----------------------------------------------------------------------------
 RDOPatternRuntime::RDOPatternRuntime( RDORuntime* _runtime, bool _trace ):
-	runtime( _runtime ),
+	RDORuntimeParent( _runtime ),
 	trace( _trace )
 {
-	runtime->addPattern(this); 
 }
 
 RDOActivityRuntime* RDOPatternRuntime::createActivity( RDOCalc* condition, const std::string& _oprName )
 {
-	throw rdoParse::RDOInternalException( "parser internal error 0009" );
+	throw RDOInternalException( "internal error 0009" );
 }
 
 bool RDOPatternRuntime::choiceFrom( RDOSimulator* sim )
 {
 	RDORuntime* runtime = (RDORuntime*)sim;
-//	runtime->allResourcesChoiced.clear();
 	int size = choiceFromCalcs.size();
 	for ( int i = 0; i < size; i++ ) {
-		if ( !choiceFromCalcs[i]->calcValueBase(runtime) ) return false;
+		if ( !choiceFromCalcs[i]->calcValueBase( runtime ) ) return false;
 	}
 	return true;
 }
@@ -71,15 +67,15 @@ void RDORuleRuntime::convertRule( RDOSimulator* sim )
 
 RDOActivityRuntime* RDORuleRuntime::createActivity( const std::string& _oprName )
 {
-	RDOActivityRuleRuntime* rule = new RDOActivityRuleRuntime( runtime, this, trace, _oprName );
-	rdoParse::parser->runTime->addRuntimeRule( rule );
+	RDOActivityRuleRuntime* rule = new RDOActivityRuleRuntime( getRuntime(), this, trace, _oprName );
+	getRuntime()->addRuntimeRule( rule );
 	return rule;
 }
 
 RDOActivityRuntime* RDORuleRuntime::createActivity( RDOCalc* condition, const std::string& _oprName )
 {
-	RDOActivityRuleRuntime* rule = new RDOActivityRuleRuntime( runtime, this, trace, condition, _oprName );
-	rdoParse::parser->runTime->addRuntimeRule( rule );
+	RDOActivityRuleRuntime* rule = new RDOActivityRuleRuntime( getRuntime(), this, trace, condition, _oprName );
+	getRuntime()->addRuntimeRule( rule );
 	return rule;
 }
 
@@ -109,8 +105,8 @@ void RDOIERuntime::convertEvent( RDOSimulator* sim )
 
 RDOActivityRuntime* RDOIERuntime::createActivity( const std::string& _oprName )
 {
-	RDOActivityIERuntime* ie = new RDOActivityIERuntime( runtime, this, trace, _oprName );
-	rdoParse::parser->runTime->addRuntimeIE( ie );
+	RDOActivityIERuntime* ie = new RDOActivityIERuntime( getRuntime(), this, trace, _oprName );
+	getRuntime()->addRuntimeIE( ie );
 	return ie;
 }
 
@@ -156,15 +152,15 @@ void RDOOperationRuntime::convertEndErase( RDORuntime* _runtime )
 
 RDOActivityRuntime* RDOOperationRuntime::createActivity( const std::string& _oprName )
 {
-	RDOActivityOperationRuntime* oper = new RDOActivityOperationRuntime( runtime, this, trace, _oprName );
-	rdoParse::parser->runTime->addRuntimeOperation( oper );
+	RDOActivityOperationRuntime* oper = new RDOActivityOperationRuntime( getRuntime(), this, trace, _oprName );
+	getRuntime()->addRuntimeOperation( oper );
 	return oper;
 }
 
 RDOActivityRuntime* RDOOperationRuntime::createActivity( RDOCalc* condition, const std::string& _oprName)
 {
-	RDOActivityOperationRuntime* oper = new RDOActivityOperationRuntime( runtime, this, trace, condition, _oprName );
-	rdoParse::parser->runTime->addRuntimeOperation( oper );
+	RDOActivityOperationRuntime* oper = new RDOActivityOperationRuntime( getRuntime(), this, trace, condition, _oprName );
+	getRuntime()->addRuntimeOperation( oper );
 	return oper;
 }
 
@@ -178,15 +174,15 @@ RDOKeyboardRuntime::RDOKeyboardRuntime( RDORuntime* rTime, bool _trace ):
 
 RDOActivityRuntime* RDOKeyboardRuntime::createActivity( const std::string& _oprName )
 {
-	RDOActivityKeyboardRuntime* oper = new RDOActivityKeyboardRuntime( runtime, this, trace, _oprName );
-	rdoParse::parser->runTime->addRuntimeOperation( oper );
+	RDOActivityKeyboardRuntime* oper = new RDOActivityKeyboardRuntime( getRuntime(), this, trace, _oprName );
+	getRuntime()->addRuntimeOperation( oper );
 	return oper;
 }
 
 RDOActivityRuntime* RDOKeyboardRuntime::createActivity( RDOCalc* condition, const std::string& _oprName )
 {
-	RDOActivityKeyboardRuntime* oper = new RDOActivityKeyboardRuntime( runtime, this, trace, condition, _oprName );
-	rdoParse::parser->runTime->addRuntimeOperation( oper );
+	RDOActivityKeyboardRuntime* oper = new RDOActivityKeyboardRuntime( getRuntime(), this, trace, condition, _oprName );
+	getRuntime()->addRuntimeOperation( oper );
 	return oper;
 }
 
@@ -198,7 +194,7 @@ void RDOActivityRuntime::setPatternParameters(RDOSimulator *sim)
 	RDORuntime* runtime = static_cast<RDORuntime*>(sim);
 	int size = paramsCalcs.size();
 	for(int i = 0; i < size; i++)
-		paramsCalcs.at(i)->calcValueBase(runtime);
+		paramsCalcs.at(i)->calcValueBase( runtime );
 }
 
 void RDOActivityRuntime::getRelevantResources( RDOSimulator* sim, std::list< RDOResourceTrace* >& rel_res_list )
@@ -221,7 +217,6 @@ void RDOActivityRuntime::updateConvertStatus( RDOSimulator* sim, const std::vect
 			res->setState( status_list[i] );
 			switch ( status_list[i] ) {
 				case RDOResourceTrace::CS_Create: {
-//					static_cast<RDORuntime*>(sim)->allResourcesInSim.push_back( res );
 					res->makeTemporary( true );
 					break;
 				}
@@ -259,11 +254,6 @@ std::string RDOActivityRuntime::traceResourcesListNumbers( RDOSimulatorTrace* si
 		}
 	}
 	return res.str();
-}
-
-void RDOActivityRuntime::addHotKey( std::string* hotKey )
-{
-	rdoParse::parser->error( "ќбразец не €вл€етс€ клавиатурной операцией" );
 }
 
 RDOOperationTrace *RDOActivityOperationRuntime::clone2(RDOSimulator *sim) 
@@ -323,7 +313,7 @@ bool RDOActivityRuleRuntime::choiceFrom(RDOSimulator *sim)
 { 
 	static_cast<RDORuntime*>(sim)->setCurrentActivity(this);
 	if(haveAdditionalCondition)
-		if(!additionalCondition->calcValueBase(dynamic_cast<RDORuntime *>(sim)))
+		if(!additionalCondition->calcValueBase( static_cast<RDORuntime*>(sim) ))
 			return false;
 
 	return pattern->choiceFrom( sim ); 
@@ -347,7 +337,7 @@ void RDOActivityRuleRuntime::onAfterRule( RDOSimulator* sim, bool inSearch )
 // ---------- RDOActivityIERuntime
 // ----------------------------------------------------------------------------
 RDOActivityIERuntime::RDOActivityIERuntime( RDORuntime* rTime, RDOPatternRuntime* _pattern, bool _trace, const std::string& _oprName ):
-	RDOIETrace( rTime ),
+	RDOIETrace( rTime, rTime ),
 	RDOActivityRuntime( _pattern, _oprName )
 {
 	trace = _trace;
@@ -389,7 +379,7 @@ double RDOActivityIERuntime::getNextTimeInterval( RDOSimulator* sim )
 // ---------- RDOActivityOperationRuntime
 // ----------------------------------------------------------------------------
 RDOActivityOperationRuntime::RDOActivityOperationRuntime( RDORuntime* rTime, RDOPatternRuntime* _pattern, bool _trace, const std::string& _oprName ):
-	RDOOperationTrace( rTime ),
+	RDOOperationTrace( rTime, rTime ),
 	RDOActivityRuntime( _pattern, _oprName ),
 	additionalCondition( NULL )
 {
@@ -401,7 +391,7 @@ RDOActivityOperationRuntime::RDOActivityOperationRuntime( RDORuntime* rTime, RDO
 }
 
 RDOActivityOperationRuntime::RDOActivityOperationRuntime( RDORuntime* rTime, RDOPatternRuntime* _pattern, bool _trace, RDOCalc* condition, const std::string& _oprName ):
-	RDOOperationTrace( rTime ),
+	RDOOperationTrace( rTime, rTime ),
 	RDOActivityRuntime( _pattern, _oprName ),
 	additionalCondition( condition )
 {
@@ -414,9 +404,9 @@ RDOActivityOperationRuntime::RDOActivityOperationRuntime( RDORuntime* rTime, RDO
 
 bool RDOActivityOperationRuntime::choiceFrom( RDOSimulator* sim ) 
 { 
-	static_cast< RDORuntime* >(sim)->setCurrentActivity( this );
+	static_cast<RDORuntime*>(sim)->setCurrentActivity( this );
 	if ( haveAdditionalCondition ) {
-		if ( !additionalCondition->calcValueBase( dynamic_cast<RDORuntime *>(sim) ) ) {
+		if ( !additionalCondition->calcValueBase( static_cast<RDORuntime*>(sim) ) ) {
 			return false;
 		}
 	}
@@ -494,11 +484,12 @@ RDOActivityKeyboardRuntime::RDOActivityKeyboardRuntime( RDORuntime* rTime, RDOPa
 
 void RDOActivityKeyboardRuntime::addHotKey( std::string* hotKey )
 {
-	unsigned int _scan_code = rdoParse::parser->rdoHotKeyToolkit.codeFromString( hotKey );
+	unsigned int _scan_code = RDOOperationTrace::getRuntime()->rdoHotKeyToolkit.codeFromString( hotKey );
+	if ( _scan_code == -1 ) return;
 	switch ( _scan_code ) {
-		case VK_SHIFT  : shift     = true;       rdoParse::parser->runTime->using_scan_codes.push_back( VK_SHIFT   ); break;
-		case VK_CONTROL: control   = true;       rdoParse::parser->runTime->using_scan_codes.push_back( VK_CONTROL ); break;
-		default        : scan_code = _scan_code; rdoParse::parser->runTime->using_scan_codes.push_back( _scan_code ); break;
+		case VK_SHIFT  : shift     = true;       RDOOperationTrace::getRuntime()->using_scan_codes.push_back( VK_SHIFT   ); break;
+		case VK_CONTROL: control   = true;       RDOOperationTrace::getRuntime()->using_scan_codes.push_back( VK_CONTROL ); break;
+		default        : scan_code = _scan_code; RDOOperationTrace::getRuntime()->using_scan_codes.push_back( _scan_code ); break;
 	}
 }
 

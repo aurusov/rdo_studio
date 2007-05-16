@@ -2,7 +2,7 @@
 #define RDOPROCESS_H
 
 #include "rdo.h"
-#include <rdoruntime.h>
+#include "rdo_runtime.h"
 
 namespace rdoRuntime {
 
@@ -44,6 +44,8 @@ protected:
 	RDOPROCBlock* block;
 
 public:
+	static int typeID;
+
 	RDOPROCTransact( RDOSimulator* sim, RDOPROCBlock* _block );
 	void next();
 };
@@ -147,6 +149,6 @@ public:
 	RDOPROCTerminate( RDOPROCProcess* _process ): RDOPROCBlock( _process ) {}
 };
 
-} // rdoRuntime
+} // namespace rdoRuntime
 
 #endif // RDOPROCESS_H

@@ -2,7 +2,6 @@
 #define RDORTP_RTP
 
 #include "rdoparser_object.h"
-#include "rdoparser.h"
 #include <rdoruntime_object.h>
 
 namespace rdoParse 

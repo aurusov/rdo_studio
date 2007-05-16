@@ -304,7 +304,7 @@ void RDOStudioFrameManager::showFrame( const rdoSimulator::RDOFrame* const frame
 			RDOStudioFrameView* view = getFrameView( index );
 			if ( view->mustBeInit ) {
 				if ( frame->hasBackPicture ) {
-					BMP* bmp = bitmaps[*frame->picFileName];
+					BMP* bmp = bitmaps[frame->picFileName];
 					if ( bmp ) {
 						view->frameBmpRect.right  = bmp->w;
 						view->frameBmpRect.bottom = bmp->h;
@@ -356,7 +356,7 @@ void RDOStudioFrameManager::showFrame( const rdoSimulator::RDOFrame* const frame
 				::DeleteObject( pen );
 */
 			} else {
-				BMP* bmp = bitmaps[*frame->picFileName];
+				BMP* bmp = bitmaps[frame->picFileName];
 				if ( bmp ) {
 					CBitmap* pOldBitmap = dcBmp.SelectObject( &bmp->bmp );
 					::BitBlt( hdc, 0, 0, bmp->w, bmp->h, dcBmp.m_hDC, 0, 0, SRCCOPY );

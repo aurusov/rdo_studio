@@ -157,7 +157,6 @@ static char THIS_FILE[] = __FILE__;
 #include "rdodpt.h"
 #include "rdortp.h"
 #include "rdorss.h"
-#include "rdoruntime.h"
 
 namespace rdoParse 
 {

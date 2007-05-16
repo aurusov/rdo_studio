@@ -1,18 +1,18 @@
 #include "pch.h"
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 #include "rdoopr.h"
 #include "rdoparser.h"
 #include "rdortp.h"
 #include "rdofun.h"
 #include "rdopat.h"
 #include "rdopatrtime.h"
-#include "rdoruntime.h"
 #include "rdoparser_lexer.h"
+#include <rdocalc.h>
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
 
 namespace rdoParse 
 {
@@ -46,7 +46,7 @@ void RDOOPROperation::addParam(int intParam)
 
 	RDOFUNFunctionParam *param = pattern->params.at(currParam);
 	rdoRuntime::RDOValue val = param->getType()->getRSSIntValue(intParam);
-	activity->addParamCalc(new rdoRuntime::RDOSetPatternParamCalc(currParam, val));
+	activity->addParamCalc(new rdoRuntime::RDOSetPatternParamCalc(parser->runTime, currParam, val));
 	currParam++;
 }
 
@@ -57,7 +57,7 @@ void RDOOPROperation::addParam(double *realParam)
 
 	RDOFUNFunctionParam *param = pattern->params.at(currParam);
 	rdoRuntime::RDOValue val = param->getType()->getRSSRealValue(realParam);
-	activity->addParamCalc(new rdoRuntime::RDOSetPatternParamCalc(currParam, val));
+	activity->addParamCalc(new rdoRuntime::RDOSetPatternParamCalc(parser->runTime, currParam, val));
 	currParam++;
 }
 
@@ -68,13 +68,17 @@ void RDOOPROperation::addParam(std::string *stringParam)
 
 	RDOFUNFunctionParam *param = pattern->params.at(currParam);
 	rdoRuntime::RDOValue val = param->getType()->getRSSEnumValue(stringParam);
-	activity->addParamCalc(new rdoRuntime::RDOSetPatternParamCalc(currParam, val));
+	activity->addParamCalc(new rdoRuntime::RDOSetPatternParamCalc(parser->runTime, currParam, val));
 	currParam++;
 }
 
-void RDOOPROperation::addHotKey(std::string *hotKey)
+void RDOOPROperation::addHotKey( std::string* hotKey )
 {
-	activity->addHotKey(hotKey);
+	if ( dynamic_cast<rdoRuntime::RDOActivityKeyboardRuntime*>(activity) ) {
+		activity->addHotKey( hotKey );
+	} else {
+		parser->error( "ќбразец не €вл€етс€ клавиатурной операцией" );
+	}
 }
 
 void RDOOPROperation::addParam()
@@ -84,7 +88,7 @@ void RDOOPROperation::addParam()
 
 	RDOFUNFunctionParam *param = pattern->params.at(currParam);
 	rdoRuntime::RDOValue val = param->getType()->getRSSDefaultValue();
-	activity->addParamCalc(new rdoRuntime::RDOSetPatternParamCalc(currParam, val));
+	activity->addParamCalc(new rdoRuntime::RDOSetPatternParamCalc(parser->runTime, currParam, val));
 	currParam++;
 }
 

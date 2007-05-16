@@ -153,7 +153,8 @@ static char THIS_FILE[] = __FILE__;
 #include "rdoparser_rdo.h"
 #include "rdofun.h"
 #include "rdofrm.h"
-#include "rdoruntime.h"
+#include <rdoframe.h>
+#include <rdocalc.h>
 
 namespace rdoParse 
 {
@@ -178,67 +179,67 @@ frm_main:
 
 /* ///////////////////////  FRAME ///////////////////////////// */
 
-frm_begin: Frame IDENTIF						{ $$ = (int)(new RDOFRMFrame(parser, (std::string *)$2)); @$; }
-			| Frame IDENTIF Show_if fun_logic	{ $$ = (int)(new RDOFRMFrame(parser, (std::string *)$2, (RDOFUNLogic *)$4)); };
+frm_begin: Frame IDENTIF						{ $$ = (int)(new rdoRuntime::RDOFRMFrame(parser->runTime, (std::string *)$2)); @$; }
+			| Frame IDENTIF Show_if fun_logic	{ $$ = (int)(new rdoRuntime::RDOFRMFrame(parser->runTime, (std::string *)$2, ((RDOFUNLogic *)$4)->calc)); };
 
-frm_background: frm_begin Back_picture '='													{ ((RDOFRMFrame *)$1)->setBackground(); }
-				  | frm_begin Back_picture '=' '<' INT_CONST INT_CONST INT_CONST '>' { ((RDOFRMFrame *)$1)->setBackground($5, $6, $7); } ;
+frm_background:		frm_begin Back_picture '='                                         { ((rdoRuntime::RDOFRMFrame *)$1)->setBackground();           }
+					| frm_begin Back_picture '=' '<' INT_CONST INT_CONST INT_CONST '>' { ((rdoRuntime::RDOFRMFrame *)$1)->setBackground($5, $6, $7); };
 
-frm_backpicture: frm_background INT_CONST INT_CONST	{ ((RDOFRMFrame *)$1)->setBackPicture($2, $3); }
-					| frm_background IDENTIF					{ ((RDOFRMFrame *)$1)->setBackPicture((std::string*)$2); };
+frm_backpicture:	frm_background INT_CONST INT_CONST { ((rdoRuntime::RDOFRMFrame *)$1)->setBackPicture($2, $3);           }
+					| frm_background IDENTIF           { ((rdoRuntime::RDOFRMFrame *)$1)->setBackPicture((std::string*)$2); };
 
 frm_pre_show: frm_backpicture
 				| frm_item;
 
-frm_show: frm_pre_show							{ ((RDOFRMFrame *)$1)->startShow(); }
-		  | frm_pre_show Show					{ ((RDOFRMFrame *)$1)->startShow(); }
-		  | frm_pre_show Show_if fun_logic	{ ((RDOFRMFrame *)$1)->startShow((RDOFUNLogic *)$3); };
+frm_show:	frm_pre_show                      { ((rdoRuntime::RDOFRMFrame *)$1)->startShow();                         }
+			| frm_pre_show Show               { ((rdoRuntime::RDOFRMFrame *)$1)->startShow();                         }
+			| frm_pre_show Show_if fun_logic  { ((rdoRuntime::RDOFRMFrame *)$1)->startShow(((RDOFUNLogic*)$3)->calc); };
 
 frm_item: frm_show								
-		  | frm_item frm_text					{ ((RDOFRMFrame *)$1)->addItem((RDOFRMText *)$2); }
-		  | frm_item frm_bitmap					{ ((RDOFRMFrame *)$1)->addItem((RDOFRMBitmap *)$2); }
-		  | frm_item frm_rect					{ ((RDOFRMFrame *)$1)->addItem((RDOFRMRect *)$2); }
-		  | frm_item frm_line					{ ((RDOFRMFrame *)$1)->addItem((RDOFRMLine *)$2); }
-		  | frm_item frm_ellipse				{ ((RDOFRMFrame *)$1)->addItem((RDOFRMEllipse *)$2); }
-		  | frm_item frm_r_rect					{ ((RDOFRMFrame *)$1)->addItem((RDOFRMR_rect *)$2); }
-		  | frm_item frm_triang					{ ((RDOFRMFrame *)$1)->addItem((RDOFRMTriang *)$2); }
-		  | frm_item frm_s_bmp					{ ((RDOFRMFrame *)$1)->addItem((RDOFRMS_bmp *)$2); }
-		  | frm_item frm_active					{ ((RDOFRMFrame *)$1)->addItem((RDOFRMActive *)$2); };
+		  | frm_item frm_text					{ ((rdoRuntime::RDOFRMFrame *)$1)->addItem((rdoRuntime::RDOFRMText *)$2); }
+		  | frm_item frm_bitmap					{ ((rdoRuntime::RDOFRMFrame *)$1)->addItem((rdoRuntime::RDOFRMBitmap *)$2); }
+		  | frm_item frm_rect					{ ((rdoRuntime::RDOFRMFrame *)$1)->addItem((rdoRuntime::RDOFRMRect *)$2); }
+		  | frm_item frm_line					{ ((rdoRuntime::RDOFRMFrame *)$1)->addItem((rdoRuntime::RDOFRMLine *)$2); }
+		  | frm_item frm_ellipse				{ ((rdoRuntime::RDOFRMFrame *)$1)->addItem((rdoRuntime::RDOFRMEllipse *)$2); }
+		  | frm_item frm_r_rect					{ ((rdoRuntime::RDOFRMFrame *)$1)->addItem((rdoRuntime::RDOFRMR_rect *)$2); }
+		  | frm_item frm_triang					{ ((rdoRuntime::RDOFRMFrame *)$1)->addItem((rdoRuntime::RDOFRMTriang *)$2); }
+		  | frm_item frm_s_bmp					{ ((rdoRuntime::RDOFRMFrame *)$1)->addItem((rdoRuntime::RDOFRMS_bmp *)$2); }
+		  | frm_item frm_active					{ ((rdoRuntime::RDOFRMFrame *)$1)->addItem((rdoRuntime::RDOFRMActive *)$2); };
 
-frm_end: frm_item End	{ ((RDOFRMFrame *)$1)->end(); };
+frm_end: frm_item End	{ ((rdoRuntime::RDOFRMFrame *)$1)->end(); };
 
 /* ///////////////////////  ITEMS ///////////////////////////// */
 
-frm_text_common: text '[' fun_arithm ',' fun_arithm ',' fun_arithm ',' fun_arithm ',' frm_color ',' frm_color ','  { $$ = (int)(new RDOFRMText(parser->runTime->lastFrame(), (RDOFUNArithm *)$3, (RDOFUNArithm *)$5, (RDOFUNArithm *)$7, (RDOFUNArithm *)$9, (RDOFRMColor *)$11, (RDOFRMColor *)$13)); };
+frm_text_common: text '[' fun_arithm ',' fun_arithm ',' fun_arithm ',' fun_arithm ',' frm_color ',' frm_color ','  { $$ = (int)(new rdoRuntime::RDOFRMText(parser->runTime->lastFrame(), ((RDOFUNArithm *)$3)->createCalc(), ((RDOFUNArithm *)$5)->createCalc(), ((RDOFUNArithm *)$7)->createCalc(), ((RDOFUNArithm *)$9)->createCalc(), (rdoRuntime::RDOFRMColor *)$11, (rdoRuntime::RDOFRMColor *)$13)); };
 
-frm_text: frm_text_common frm_align fun_arithm ']'			{ ((RDOFRMText *)$1)->setText($2, (RDOFUNArithm *)$3); }
-		  | frm_text_common frm_align QUOTED_IDENTIF ']'	{ ((RDOFRMText *)$1)->setText($2, (std::string *)$3);  };
+frm_text: frm_text_common frm_align fun_arithm ']'			{ ((rdoRuntime::RDOFRMText *)$1)->setText($2, ((RDOFUNArithm *)$3)->createCalc(), NULL /*//qq((RDOFUNArithm *)$3)->enu*/); }
+		  | frm_text_common frm_align QUOTED_IDENTIF ']'	{ ((rdoRuntime::RDOFRMText *)$1)->setText($2, (std::string *)$3);  };
 
 frm_align: /* empty */	{ $$ = 1; }
 		| '<'			{ $$ = 1; }
 		| '='			{ $$ = 2; }
 		| '>'			{ $$ = 3; };
 
-frm_color: transparent										{ $$ = (int)(new RDOFRMColor()); }
-		| '<' INT_CONST INT_CONST INT_CONST '>'		{ $$ = (int)(new RDOFRMColor($2, $3, $4)); };		  
+frm_color:	transparent                             { $$ = (int)(new rdoRuntime::RDOFRMColor(parser->runTime->lastFrame()));             }
+			| '<' INT_CONST INT_CONST INT_CONST '>' { $$ = (int)(new rdoRuntime::RDOFRMColor(parser->runTime->lastFrame(), $2, $3, $4)); };
 
-frm_bitmap: bitmap '[' fun_arithm ',' fun_arithm ',' IDENTIF ']'				{ $$ = (int)(new RDOFRMBitmap(parser->runTime->lastFrame(), (RDOFUNArithm *)$3, (RDOFUNArithm *)$5, (std::string *)$7)); }
-		| bitmap '[' fun_arithm ',' fun_arithm ',' IDENTIF ',' IDENTIF ']'	{ $$ = (int)(new RDOFRMBitmap(parser->runTime->lastFrame(), (RDOFUNArithm *)$3, (RDOFUNArithm *)$5, (std::string *)$7, (std::string *)$9)); };
+frm_bitmap:	bitmap '[' fun_arithm ',' fun_arithm ',' IDENTIF ']'               { $$ = (int)(new rdoRuntime::RDOFRMBitmap(parser->runTime->lastFrame(), ((RDOFUNArithm *)$3)->createCalc(), ((RDOFUNArithm *)$5)->createCalc(), (std::string *)$7));                    }
+			| bitmap '[' fun_arithm ',' fun_arithm ',' IDENTIF ',' IDENTIF ']' { $$ = (int)(new rdoRuntime::RDOFRMBitmap(parser->runTime->lastFrame(), ((RDOFUNArithm *)$3)->createCalc(), ((RDOFUNArithm *)$5)->createCalc(), (std::string *)$7, (std::string *)$9)); };
 
-frm_s_bmp: s_bmp '[' fun_arithm ',' fun_arithm ',' fun_arithm ',' fun_arithm ',' IDENTIF ']' 				 { $$ = (int)(new RDOFRMS_bmp(parser->runTime->lastFrame(), (RDOFUNArithm *)$3, (RDOFUNArithm *)$5, (RDOFUNArithm *)$7, (RDOFUNArithm *)$9, (std::string *)$11)); }
-		  |  s_bmp '[' fun_arithm ',' fun_arithm ',' fun_arithm ',' fun_arithm ',' IDENTIF ',' IDENTIF ']'  { $$ = (int)(new RDOFRMS_bmp(parser->runTime->lastFrame(), (RDOFUNArithm *)$3, (RDOFUNArithm *)$5, (RDOFUNArithm *)$7, (RDOFUNArithm *)$9, (std::string *)$11, (std::string *)$13)); };
+frm_s_bmp: s_bmp '[' fun_arithm ',' fun_arithm ',' fun_arithm ',' fun_arithm ',' IDENTIF ']' 				 { $$ = (int)(new rdoRuntime::RDOFRMS_bmp(parser->runTime->lastFrame(), ((RDOFUNArithm *)$3)->createCalc(), ((RDOFUNArithm *)$5)->createCalc(), ((RDOFUNArithm *)$7)->createCalc(), ((RDOFUNArithm *)$9)->createCalc(), (std::string *)$11)); }
+		  |  s_bmp '[' fun_arithm ',' fun_arithm ',' fun_arithm ',' fun_arithm ',' IDENTIF ',' IDENTIF ']'  { $$ = (int)(new rdoRuntime::RDOFRMS_bmp(parser->runTime->lastFrame(), ((RDOFUNArithm *)$3)->createCalc(), ((RDOFUNArithm *)$5)->createCalc(), ((RDOFUNArithm *)$7)->createCalc(), ((RDOFUNArithm *)$9)->createCalc(), (std::string *)$11, (std::string *)$13)); };
 
-frm_rect: rect_keyword '[' fun_arithm ',' fun_arithm ',' fun_arithm ',' fun_arithm ',' frm_color ',' frm_color ']'	{ $$ = (int)(new RDOFRMRect(parser->runTime->lastFrame(), (RDOFUNArithm *)$3, (RDOFUNArithm *)$5, (RDOFUNArithm *)$7, (RDOFUNArithm *)$9, (RDOFRMColor *)$11, (RDOFRMColor *)$13)); };
+frm_rect: rect_keyword '[' fun_arithm ',' fun_arithm ',' fun_arithm ',' fun_arithm ',' frm_color ',' frm_color ']'	{ $$ = (int)(new rdoRuntime::RDOFRMRect(parser->runTime->lastFrame(), ((RDOFUNArithm *)$3)->createCalc(), ((RDOFUNArithm *)$5)->createCalc(), ((RDOFUNArithm *)$7)->createCalc(), ((RDOFUNArithm *)$9)->createCalc(), (rdoRuntime::RDOFRMColor *)$11, (rdoRuntime::RDOFRMColor *)$13)); };
 
-frm_r_rect: r_rect '[' fun_arithm ',' fun_arithm ',' fun_arithm ',' fun_arithm ',' frm_color ',' frm_color ']'			{ $$ = (int)(new RDOFRMR_rect(parser->runTime->lastFrame(), (RDOFUNArithm *)$3, (RDOFUNArithm *)$5, (RDOFUNArithm *)$7, (RDOFUNArithm *)$9, (RDOFRMColor *)$11, (RDOFRMColor *)$13)); };
+frm_r_rect: r_rect '[' fun_arithm ',' fun_arithm ',' fun_arithm ',' fun_arithm ',' frm_color ',' frm_color ']'			{ $$ = (int)(new rdoRuntime::RDOFRMR_rect(parser->runTime->lastFrame(), ((RDOFUNArithm *)$3)->createCalc(), ((RDOFUNArithm *)$5)->createCalc(), ((RDOFUNArithm *)$7)->createCalc(), ((RDOFUNArithm *)$9)->createCalc(), (rdoRuntime::RDOFRMColor *)$11, (rdoRuntime::RDOFRMColor *)$13)); };
 
-frm_line: line '[' fun_arithm ',' fun_arithm ',' fun_arithm ',' fun_arithm ',' frm_color ']'		{ $$ = (int)(new RDOFRMLine(parser->runTime->lastFrame(), (RDOFUNArithm *)$3, (RDOFUNArithm *)$5, (RDOFUNArithm *)$7, (RDOFUNArithm *)$9, (RDOFRMColor *)$11)); };
+frm_line: line '[' fun_arithm ',' fun_arithm ',' fun_arithm ',' fun_arithm ',' frm_color ']'		{ $$ = (int)(new rdoRuntime::RDOFRMLine(parser->runTime->lastFrame(), ((RDOFUNArithm *)$3)->createCalc(), ((RDOFUNArithm *)$5)->createCalc(), ((RDOFUNArithm *)$7)->createCalc(), ((RDOFUNArithm *)$9)->createCalc(), (rdoRuntime::RDOFRMColor *)$11)); };
 
-frm_ellipse: ellipse '[' fun_arithm ',' fun_arithm ',' fun_arithm ',' fun_arithm ',' frm_color ',' frm_color ']'   { $$ = (int)(new RDOFRMEllipse(parser->runTime->lastFrame(), (RDOFUNArithm *)$3, (RDOFUNArithm *)$5, (RDOFUNArithm *)$7, (RDOFUNArithm *)$9, (RDOFRMColor *)$11, (RDOFRMColor *)$13)); };
+frm_ellipse: ellipse '[' fun_arithm ',' fun_arithm ',' fun_arithm ',' fun_arithm ',' frm_color ',' frm_color ']'   { $$ = (int)(new rdoRuntime::RDOFRMEllipse(parser->runTime->lastFrame(), ((RDOFUNArithm *)$3)->createCalc(), ((RDOFUNArithm *)$5)->createCalc(), ((RDOFUNArithm *)$7)->createCalc(), ((RDOFUNArithm *)$9)->createCalc(), (rdoRuntime::RDOFRMColor *)$11, (rdoRuntime::RDOFRMColor *)$13)); };
 
-frm_triang: triang '[' fun_arithm ',' fun_arithm ',' fun_arithm ',' fun_arithm ',' fun_arithm ',' fun_arithm ',' frm_color ',' frm_color ']'		{ $$ = (int)(new RDOFRMTriang(parser->runTime->lastFrame(), (RDOFUNArithm *)$3, (RDOFUNArithm *)$5, (RDOFUNArithm *)$7, (RDOFUNArithm *)$9, (RDOFUNArithm *)$11, (RDOFUNArithm *)$13, (RDOFRMColor *)$15, (RDOFRMColor *)$17)); };
+frm_triang: triang '[' fun_arithm ',' fun_arithm ',' fun_arithm ',' fun_arithm ',' fun_arithm ',' fun_arithm ',' frm_color ',' frm_color ']'		{ $$ = (int)(new rdoRuntime::RDOFRMTriang(parser->runTime->lastFrame(), ((RDOFUNArithm *)$3)->createCalc(), ((RDOFUNArithm *)$5)->createCalc(), ((RDOFUNArithm *)$7)->createCalc(), ((RDOFUNArithm *)$9)->createCalc(), ((RDOFUNArithm *)$11)->createCalc(), ((RDOFUNArithm *)$13)->createCalc(), (rdoRuntime::RDOFRMColor *)$15, (rdoRuntime::RDOFRMColor *)$17)); };
 
-frm_active: active IDENTIF '[' fun_arithm ',' fun_arithm ',' fun_arithm ',' fun_arithm ']'	{ $$ = (int)(new RDOFRMActive(parser->runTime->lastFrame(), (RDOFUNArithm *)$4, (RDOFUNArithm *)$6, (RDOFUNArithm *)$8, (RDOFUNArithm *)$10, (std::string *)$2)); };
+frm_active: active IDENTIF '[' fun_arithm ',' fun_arithm ',' fun_arithm ',' fun_arithm ']'	{ $$ = (int)(new rdoRuntime::RDOFRMActive(parser->runTime->lastFrame(), ((RDOFUNArithm *)$4)->createCalc(), ((RDOFUNArithm *)$6)->createCalc(), ((RDOFUNArithm *)$8)->createCalc(), ((RDOFUNArithm *)$10)->createCalc(), (std::string *)$2)); };
 
 
 // ----------------------------------------------------------------------------
@@ -325,7 +326,7 @@ fun_arithm: fun_arithm '+' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOF
 				error_pos.first_column = @1.first_column;
 				error_pos.last_line    = @2.last_line;
 				error_pos.last_column  = @2.last_column;
-				$$ = (int)new RDOFUNArithm( parser, reinterpret_cast<RDOFUNArithm*>($2)->getType(), new rdoRuntime::RDOCalcUMinus( reinterpret_cast<RDOFUNArithm*>($2)->createCalc() ), error_pos );
+				$$ = (int)new RDOFUNArithm( parser, reinterpret_cast<RDOFUNArithm*>($2)->getType(), new rdoRuntime::RDOCalcUMinus( parser->runTime, reinterpret_cast<RDOFUNArithm*>($2)->createCalc() ), error_pos );
 			}
 			| error							{
 				parser->lexer_loc_set( &(@1) );
@@ -391,7 +392,7 @@ fun_group:			fun_group_header fun_logic ')' {
 						$$ = (int)(((RDOFUNGroupLogic *)$1)->createFunLogic((RDOFUNLogic *)$2));
 					}
 					| fun_group_header NoCheck ')' {
-						RDOFUNLogic* trueLogic = new RDOFUNLogic( new rdoRuntime::RDOCalcConst(1) );
+						RDOFUNLogic* trueLogic = new RDOFUNLogic( new rdoRuntime::RDOCalcConst( parser->runTime, 1 ) );
 						trueLogic->setErrorPos( @2 );
 						$$ = (int)(((RDOFUNGroupLogic *)$1)->createFunLogic( trueLogic ));
 					}

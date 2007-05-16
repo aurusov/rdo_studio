@@ -1,6 +1,11 @@
 #ifndef RULE_TRACE_H
 #define RULE_TRACE_H
 
+#include "rdo.h"
+#include "rdotrace.h"
+
+namespace rdoRuntime {
+
 class RDORuleTrace: public RDORule, RDOTraceableObject, protected RDOPatternTrace
 {
 friend RDOTrace;
@@ -16,5 +21,7 @@ protected:
 public:
 	bool trace;  
 };
+
+} // namespace rdoRuntime
 
 #endif // RULE_TRACE_H

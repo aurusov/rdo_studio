@@ -1,16 +1,16 @@
 #include "pch.h"
+#include "rdortp.h"
+#include "rdoparser.h"
+#include "rdofun.h"
+#include "rdoparser.h"
+#include "rdoDefines.h"
+#include "rdoparser_lexer.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
-
-#include "rdortp.h"
-#include "rdofun.h"
-#include "rdoparser.h"
-#include "rdoDefines.h"
-#include "rdoparser_lexer.h"
 
 namespace rdoParse 
 {

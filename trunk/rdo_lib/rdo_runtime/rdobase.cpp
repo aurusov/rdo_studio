@@ -1,4 +1,6 @@
 #include "pch.h"
+#include "rdobase.h"
+#include <limits>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -6,10 +8,11 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-#include "rdobase.h"
-#include <limits>
+namespace rdoRuntime
+{
 
-RDOSimulatorBase::RDOSimulatorBase():
+RDOSimulatorBase::RDOSimulatorBase( RDORuntimeParent* _runtime ):
+	RDORuntimeParent( _runtime ),
 	currentTime( 0 ),
 	nextTime( 0 ),
 	mode( rdoRuntime::RTM_MaxSpeed ),
@@ -191,3 +194,5 @@ void RDOSimulatorBase::addTimePoint( double timePoint, RDOBaseOperation* opr, vo
 		timePointList[timePoint]->push_back( BOPlanned(opr, param) );
 	}
 }
+
+} // namespace rdoRuntime;

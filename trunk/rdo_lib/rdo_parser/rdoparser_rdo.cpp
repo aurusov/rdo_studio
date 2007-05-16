@@ -1,11 +1,4 @@
 #include "pch.h"
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 #include "rdoparser_rdo.h"
 #include "rdoparser_lexer.h"
 #include "rdoparser.h"
@@ -14,12 +7,18 @@ static char THIS_FILE[] = __FILE__;
 #include "rdortp.h"
 #include "rdofun.h"
 #include "rdosmr.h"
-#include "rdoruntime.h"
 
 #include "../rdo_simulator/rdosimwin.h"
 #include <rdobinarystream.h>
 #include <rdokernel.h>
 #include <rdorepository.h>
+#include <rdocalc.h>
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
 
 namespace rdoParse
 {
@@ -208,7 +207,7 @@ void RDOParserRSSPost::parse()
 {
 	std::vector< RDORSSResource* >::const_iterator it = parser->getRSSResources().begin();
 	while ( it != parser->getRSSResources().end() ) {
-		rdoRuntime::RDOCalcCreateNumberedResource* createResource = new rdoRuntime::RDOCalcCreateNumberedResource( (*it)->getType()->getNumber(), (*it)->getTrace(), (*it)->getValues(), (*it)->getNumber(), (*it)->getType()->isPermanent() );
+		rdoRuntime::RDOCalcCreateNumberedResource* createResource = new rdoRuntime::RDOCalcCreateNumberedResource( parser->runTime, (*it)->getType()->getNumber(), (*it)->getTrace(), (*it)->getValues(), (*it)->getNumber(), (*it)->getType()->isPermanent() );
 		parser->runTime->addInitCalc( createResource );
 		it++;
 	}

@@ -2,18 +2,14 @@
 #define RDOPARSER_OBJECT_H
 
 #include "rdogramma.h"
-
-class RDOException
-{
-public:
-   std::string mess;
-   virtual std::string getType() const = 0;
-   RDOException(const char *str): mess(str) {}
-};
+#include <rdoruntime_object.h>
 
 namespace rdoParse 
 {
 
+// ----------------------------------------------------------------------------
+// ---------- RDODeletable
+// ----------------------------------------------------------------------------
 class RDODeletable
 {
 private:
@@ -22,12 +18,18 @@ private:
 public:
 	RDODeletable();
 	virtual ~RDODeletable();
+
+	void noAutoDelete();
+
 #ifndef _DEBUG
 	void* operator new( size_t sz );
 	void operator delete( void* v );
 #endif
 };
 
+// ----------------------------------------------------------------------------
+// ---------- RDOParserObject
+// ----------------------------------------------------------------------------
 class RDOParser;
 
 class RDOParserObject: public RDODeletable
@@ -43,6 +45,40 @@ public:
 	void reparent( const RDOParserObject* _parent );
 };
 
+// ----------------------------------------------------------------------------
+// ---------- RDOParseErrorPos
+// ----------------------------------------------------------------------------
+class RDOParseErrorPos: public rdoRuntime::RDOErrorPos
+{
+public:
+	RDOParseErrorPos(): RDOErrorPos() {
+	}
+	RDOParseErrorPos( const YYLTYPE& _error_pos ): RDOErrorPos() {
+		error_pos.first_line   = _error_pos.first_line;
+		error_pos.first_column = _error_pos.first_column;
+		error_pos.last_line    = _error_pos.last_line;
+		error_pos.last_column  = _error_pos.last_column;
+	}
+	RDOParseErrorPos( const rdoRuntime::RDOErrorPos::Data& _error_pos ): RDOErrorPos() {
+		RDOErrorPos::setErrorPos( _error_pos );
+	}
+	void setErrorPos( const RDOParseErrorPos& copy ) {
+		RDOErrorPos::setErrorPos( copy.error_pos );
+	}
+	void setErrorPos( int first_line, int first_column, int last_line, int last_column ) {
+		RDOErrorPos::setErrorPos( first_line, first_column, last_line, last_column );
+	}
+	YYLTYPE errorYY() const {
+		YYLTYPE _error_pos;
+		_error_pos.first_line   = error_pos.first_line;
+		_error_pos.first_column = error_pos.first_column;
+		_error_pos.last_line    = error_pos.last_line;
+		_error_pos.last_column  = error_pos.last_column;
+		return _error_pos;
+	}
+};
+
+/*
 class RDOErrorPos
 {
 private:
@@ -69,7 +105,7 @@ public:
 	}
 	const YYLTYPE& error() const { return error_pos; }
 };
-
+*/
 template <class T> class comparePointers
 {
 public:
@@ -86,53 +122,6 @@ public:
 	bool operator() (const T * other) { return ((*(other->getName())) == (*name)); }
 };
 
-}
-
-namespace std
-{
-template <class _Ret, class _Tp>
-class const_mem_fun_t : public unary_function<const _Tp*,_Ret> {
-public:
-  explicit const_mem_fun_t(_Ret (_Tp::*__pf)() const) : _M_f(__pf) {}
-  _Ret operator()(const _Tp* __p) const { return (__p->*_M_f)(); }
-private:
-  _Ret (_Tp::*_M_f)() const;
-};
-
-template <class _Ret, class _Tp, class _Arg>
-class const_mem_fun1_t : public binary_function<const _Tp*,_Arg,_Ret> {
-public:
-  explicit const_mem_fun1_t(_Ret (_Tp::*__pf)(_Arg) const) : _M_f(__pf) {}
-  _Ret operator()(const _Tp* __p, _Arg __x) const
-    { return (__p->*_M_f)(__x); }
-private:
-  _Ret (_Tp::*_M_f)(_Arg) const;
-};
-
-
-template <class _Ret, class _Tp>
-inline const_mem_fun_t<_Ret,_Tp> mem_fun(_Ret (_Tp::*__f)() const)
-  { return const_mem_fun_t<_Ret,_Tp>(__f); }
-
-template <class _Ret, class _Tp, class _Arg>
-inline const_mem_fun1_t<_Ret,_Tp,_Arg> mem_fun(_Ret (_Tp::*__f)(_Arg) const)
-  { return const_mem_fun1_t<_Ret,_Tp,_Arg>(__f); }
-
-template <class _Ret, class _Tp, class _Arg>
-inline const_mem_fun1_t<_Ret,_Tp,_Arg> mem_fun1(_Ret (_Tp::*__f)(_Arg) const)
-  { return const_mem_fun1_t<_Ret,_Tp,_Arg>(__f); }
-
-}	// namespace std
-
-
-inline std::string operator +(char *str1, std::string &str2)
-{
-	return std::string(str1).append(str2);
-}
-
-inline std::string operator +(std::string &str1, char *str2)
-{
-	return std::string(str1).append(str2);
-}
+} // namespace rdoParse
 
 #endif // RDOPARSER_OBJECT_H

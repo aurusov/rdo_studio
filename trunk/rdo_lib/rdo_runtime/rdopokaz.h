@@ -1,18 +1,8 @@
-#ifndef RDORUNTIMEPOKAZ_H
-#define RDORUNTIMEPOKAZ_H
+#ifndef RDOPOKAZ_H
+#define RDOPOKAZ_H
 
 #include "rdotrace.h"
-#include "rdoruntime.h"
-
-namespace rdoParse 
-{
-class RDOFUNLogic;
-class RDOFUNArithm;
-class RDOPMDPokaz;
-class RDOPMDWatchPar;
-class RDOPMDWatchQuant;
-class RDOPMDWatchValue;
-}
+#include "rdo_runtime.h"
 
 namespace rdoRuntime {
 
@@ -21,16 +11,15 @@ namespace rdoRuntime {
 // ----------------------------------------------------------------------------
 class RDOPMDPokaz: public RDOPokazTrace
 {
-friend class rdoParse::RDOPMDPokaz;
-
 protected:
 	const std::string const name;
 
 public:
-	RDOPMDPokaz( const std::string* const _name, bool _trace );
+	RDOPMDPokaz( RDOSimulatorTrace* _sim, const std::string* const _name, bool _trace );
 	virtual ~RDOPMDPokaz() {}
-	virtual bool checkResourceErased(rdoRuntime::RDOResource *res) { return false; }
+	virtual bool checkResourceErased(RDOResource *res) { return false; }
 	virtual void writePokazStructure(std::ostream &stream) const = 0;
+	void setID( int _id ) { id = _id; }
 };
 
 // ----------------------------------------------------------------------------
@@ -38,8 +27,6 @@ public:
 // ----------------------------------------------------------------------------
 class RDOPMDWatchPar: public RDOPMDPokaz
 {
-friend class rdoParse::RDOPMDWatchPar;
-
 private:
 	int resNumber;
 	int parNumber;
@@ -55,7 +42,7 @@ private:
 	double timePrev;
 
 public:
-	RDOPMDWatchPar( std::string* _name, bool _trace, std::string* _resName, std::string* _parName );
+	RDOPMDWatchPar( RDOSimulatorTrace* _sim, std::string* _name, bool _trace, std::string* _resName, std::string* _parName, int _resNumber, int _parNumber );
 	std::string traceValue();
 	bool resetPokaz(RDOSimulator *sim);
 	bool checkPokaz(RDOSimulator *sim);
@@ -69,7 +56,7 @@ public:
 class RDOPMDWatchState: public RDOPMDPokaz
 {
 private:
-	rdoRuntime::RDOCalc *logicCalc;
+	RDOCalc *logicCalc;
 
 	int watchNumber;
 	bool currValue;
@@ -82,7 +69,7 @@ private:
 	double timePrev;
 
 public:
-	RDOPMDWatchState( std::string* _name, bool _trace, rdoParse::RDOFUNLogic* _logic );
+	RDOPMDWatchState( RDOSimulatorTrace* _sim, std::string* _name, bool _trace, RDOCalc* _logic );
 	std::string traceValue();
 	bool resetPokaz(RDOSimulator *sim);
 	bool checkPokaz(RDOSimulator *sim);
@@ -95,11 +82,9 @@ public:
 // ----------------------------------------------------------------------------
 class RDOPMDWatchQuant: public RDOPMDPokaz
 {
-friend class rdoParse::RDOPMDWatchQuant;
-
 private:
-	rdoParse::RDOFUNGroup *funGroup;
-	rdoRuntime::RDOCalc *logicCalc;
+	RDOCalc* logicCalc;
+	int rtp_id;
 
 	int watchNumber;
 	int currValue;
@@ -112,12 +97,13 @@ private:
 	double timePrev;
 
 public:
-	RDOPMDWatchQuant( std::string* _name, bool _trace, std::string* _resTypeName );
+	RDOPMDWatchQuant( RDOSimulatorTrace* _sim, std::string* _name, bool _trace, std::string* _resTypeName, int _rtp_id );
 	std::string traceValue();
 	bool resetPokaz(RDOSimulator *sim);
 	bool checkPokaz(RDOSimulator *sim);
 	bool calcStat(RDOSimulator *sim);
 	void writePokazStructure(std::ostream &stream) const;
+	void setLogicCalc( RDOCalc* _logicCalc ) { logicCalc = _logicCalc; }
 };
 
 // ----------------------------------------------------------------------------
@@ -125,12 +111,10 @@ public:
 // ----------------------------------------------------------------------------
 class RDOPMDWatchValue: public RDOPMDPokaz
 {
-friend class rdoParse::RDOPMDWatchValue;
-
 private:
-	rdoParse::RDOFUNGroup *funGroup;
-	rdoRuntime::RDOCalc *logicCalc;
-	rdoRuntime::RDOCalc *arithmCalc;
+	RDOCalc *logicCalc;
+	RDOCalc *arithmCalc;
+	int rtp_id;
 
 	int watchNumber;
 	double currValue;
@@ -140,13 +124,15 @@ private:
 	double maxValue;
 
 public:
-	RDOPMDWatchValue( std::string* _name, bool _trace, std::string* _resTypeName );
+	RDOPMDWatchValue( RDOSimulatorTrace* _sim, std::string* _name, bool _trace, std::string* _resTypeName, int _rtp_id );
 	std::string traceValue();
 	bool resetPokaz(RDOSimulator *sim);
 	bool checkPokaz(RDOSimulator *sim);
 	bool calcStat(RDOSimulator *sim);
-	bool checkResourceErased(rdoRuntime::RDOResource *res);
+	bool checkResourceErased(RDOResource *res);
 	void writePokazStructure(std::ostream &stream) const;
+	void setLogicCalc( RDOCalc* _logicCalc )   { logicCalc = _logicCalc;   }
+	void setArithmCalc( RDOCalc* _arithmCalc ) { arithmCalc = _arithmCalc; }
 };
 
 // ----------------------------------------------------------------------------
@@ -155,10 +141,10 @@ public:
 class RDOPMDGetValue: public RDOPMDPokaz
 {
 private:
-	rdoRuntime::RDOCalc *arithmCalc;
+	RDOCalc* arithmCalc;
 
 public:
-	RDOPMDGetValue( std::string* _name, rdoParse::RDOFUNArithm* _arithm );
+	RDOPMDGetValue( RDOSimulatorTrace* _sim, std::string* _name, RDOCalc* _arithm );
 	std::string traceValue();
 	bool resetPokaz(RDOSimulator *sim);
 	bool checkPokaz(RDOSimulator *sim);
@@ -168,4 +154,4 @@ public:
 
 } // rdoRuntime
 
-#endif // RDORUNTIMEPOKAZ_H
+#endif // RDOPOKAZ_H

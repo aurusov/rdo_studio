@@ -1,12 +1,5 @@
 #pragma warning(disable : 4786)  
 
-#include "../rdo_runtime/memcheck.h"
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 #include <stdio.h>
 #include <conio.h>
 #include <fstream>
@@ -20,20 +13,29 @@ static char THIS_FILE[] = __FILE__;
 #include <algorithm>
 
 #include "rdosimwin.h"
+
 #include <rdokernel.h>
 #include <rdorepository.h>
+#include <rdotrace.h>
+#include <rdo_runtime.h>
+#include <rdoframe.h>
+#include <memcheck.h>
+#include <rdoparser.h>
+#include <rdosmr.h>
+#include <rdofrm.h>
 
-#include "rdoparser.h"
-#include "rdoruntime.h"
-#include "rdosmr.h"
-#include "rdofrm.h"
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
 
 namespace rdoSimulator
 {
 // --------------------------------------------------------------------
 // ---------- RDORuntimeTracer
 // --------------------------------------------------------------------
-class RDORuntimeTracer: public RDOTrace, public RDOEndL
+class RDORuntimeTracer: public rdoRuntime::RDOTrace, public rdoRuntime::RDOEndL
 {
 private:
 	LPVOID pParam;
@@ -42,7 +44,7 @@ private:
 
 public:
 	std::ostream& getOStream() { return stream; }
-	RDOEndL& getEOL() { return *this; }
+	rdoRuntime::RDOEndL& getEOL() { return *this; }
 	void onEndl()
 	{
 		tracerCallBack(&stream.str(), pParam);
@@ -195,7 +197,7 @@ void RDOThreadRunTime::start()
 	simulator->runtime->config.showAnimation = simulator->parser->smr->showMode;
 	int size = simulator->runtime->allFrames.size();
 	for ( int i = 0; i < size; i++ ) {
-		simulator->runtime->config.allFrameNames.push_back( *simulator->runtime->allFrames.at(i)->getName() );
+		simulator->runtime->config.allFrameNames.push_back( simulator->runtime->allFrames.at(i)->getName() );
 	}
 
 //	simulator->runtime->config.currFrameToShow = simulator->parser->smr->frameNumber - 1;
@@ -228,14 +230,14 @@ void RDOThreadRunTime::start()
 		}
 		simulator->runtime->setShowRate( simulator->runtime->config.showRate );
 	}
-	catch( rdoParse::RDOSyntaxException& ) {
+	catch ( rdoParse::RDOSyntaxException& ) {
 		runtime_error = true;
 		simulator->runtime->onRuntimeError();
 	}
-	catch( rdoParse::RDOInternalException& ex ) {
+	catch ( rdoRuntime::RDORuntimeException& ex ) {
 		runtime_error = true;
 		simulator->runtime->onRuntimeError();
-		std::string mess = "Internal exception: " + ex.mess;
+		std::string mess = ex.getType() + " : " + ex.mess;
 		sendMessage( kernel, RDOThread::RT_DEBUG_STRING, &mess );
 	}
 
@@ -266,10 +268,10 @@ void RDOThreadRunTime::idle()
 		runtime_error = true;
 		simulator->runtime->onRuntimeError();
 	}
-	catch ( rdoParse::RDOInternalException& ex ) {
+	catch ( rdoRuntime::RDORuntimeException& ex ) {
 		runtime_error = true;
 		simulator->runtime->onRuntimeError();
-		std::string mess = "Internal exception: " + ex.mess;
+		std::string mess = ex.getType() + " : " + ex.mess;
 		sendMessage( kernel, RDOThread::RT_DEBUG_STRING, &mess );
 	}
 //	catch (...) {
@@ -288,14 +290,14 @@ void RDOThreadRunTime::stop()
 	try {
 		simulator->runtime->rdoPostProcess();
 	}
-	catch( rdoParse::RDOSyntaxException& ) {
+	catch ( rdoParse::RDOSyntaxException& ) {
 		runtime_error = true;
 		simulator->runtime->onRuntimeError();
 	}
-	catch( rdoParse::RDOInternalException& ex ) {
+	catch ( rdoRuntime::RDORuntimeException& ex ) {
 		runtime_error = true;
 		simulator->runtime->onRuntimeError();
-		std::string mess = "Internal exception: " + ex.mess;
+		std::string mess = ex.getType() + " : " + ex.mess;
 		sendMessage( kernel, RDOThread::RT_DEBUG_STRING, &mess );
 	}
 
@@ -383,7 +385,7 @@ void RDOThreadSimulator::proc( RDOMessageInfo& msg )
 					if ( runtime ) {
 						int size = runtime->allFrames.size();
 						for ( int i = 0; i < size; i++ ) {
-							getlist->list->push_back( *runtime->allFrames.at(i)->getName() );
+							getlist->list->push_back( runtime->allFrames.at(i)->getName() );
 						}
 					}
 					break;
@@ -392,7 +394,7 @@ void RDOThreadSimulator::proc( RDOMessageInfo& msg )
 					if ( runtime ) {
 						int size = runtime->allFrames.size();
 						for ( int i = 0; i < size; i++ ) {
-							runtime->allFrames.at(i)->getAllBitmaps( *getlist->list );
+							runtime->allFrames.at(i)->getBitmaps( *getlist->list );
 						}
 					}
 					break;
@@ -472,21 +474,17 @@ bool RDOThreadSimulator::parseModel()
 		parser->parse();
 	}
 	catch ( rdoParse::RDOSyntaxException& /*ex*/ ) {
-//		string mess = ex.getType() + " : " + ex.mess;
-//		kernel.notifyString(RDOKernel::buildString, mess);
 		exitCode = rdoSimulator::EC_ParserError;
 		broadcastMessage( RT_SIMULATOR_PARSE_ERROR );
 		closeModel();
-//		kernel.callback(RDOKernel::modelExit, rdoSimulator::EC_ParserError);
 		return false;
 	}
-	catch ( rdoParse::RDOInternalException& ex ) {
-		std::string mess = "Internal exception: " + ex.mess;
+	catch ( rdoRuntime::RDORuntimeException& ex ) {
+		std::string mess = ex.getType() + " : " + ex.mess;
 		broadcastMessage( RT_SIMULATOR_PARSE_STRING, &mess );
 		exitCode = rdoSimulator::EC_ParserError;
 		broadcastMessage( RT_SIMULATOR_PARSE_ERROR );
 		closeModel();
-//		kernel.callback(RDOKernel::modelExit, rdoSimulator::EC_ParserError);
 		return false;
 	}
 
@@ -552,15 +550,15 @@ void RDOThreadSimulator::terminateModel()
 
 void RDOThreadSimulator::closeModel()
 {
-	try {
+//	try {
 		if ( runtime ) {
 			delete runtime;
 			runtime = NULL;
 		}
-	} catch (...) {
-		runtime = NULL;
-		TRACE( "******************************** Ошибка удаления runtime\n" );
-	}
+//	} catch (...) {
+//		runtime = NULL;
+//		TRACE( "******************************** Ошибка удаления runtime\n" );
+//	}
 	try {
 		if ( parser ) {
 			delete parser;
@@ -583,14 +581,14 @@ void RDOThreadSimulator::parseSMRFileInfo( rdo::binarystream& smr, rdoModelObjec
 	try {
 		parser->parse( rdoModelObjects::obPRE, smr );
 	}
-	catch( rdoParse::RDOSyntaxException& ) {
+	catch ( rdoParse::RDOSyntaxException& ) {
 		broadcastMessage( RDOThread::RT_SIMULATOR_PARSE_ERROR_SMR );
 		closeModel();
 		info.error = true;
 		return;
 	}
-	catch( rdoParse::RDOInternalException& ex ) {
-		std::string mess = "Internal exception: " + ex.mess;
+	catch ( rdoRuntime::RDORuntimeException& ex ) {
+		std::string mess = ex.getType() + " : " + ex.mess;
 		broadcastMessage( RDOThread::RT_SIMULATOR_PARSE_STRING, &mess );
 		broadcastMessage( RDOThread::RT_SIMULATOR_PARSE_ERROR_SMR );
 		closeModel();
