@@ -141,11 +141,10 @@ public:
 // ----------------------------------------------------------------------------
 // ---------- RDOActivityRuntime
 // ----------------------------------------------------------------------------
-class RDOActivityRuntime: public RDORuntimeObject
+class RDOActivityRuntime
 {
 protected:
 	RDOActivityRuntime( RDOPatternRuntime* _pattern, const std::string& _oprName ):
-		RDORuntimeObject( _pattern ),
 		pattern( _pattern ),
 		oprName( _oprName )
 #ifdef RDOSIM_COMPATIBLE

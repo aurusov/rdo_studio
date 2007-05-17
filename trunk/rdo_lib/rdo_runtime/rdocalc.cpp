@@ -30,7 +30,7 @@ RDOValue RDOCalc::calcValueBase( RDORuntime* runtime ) const
 {
 	try {
 		return calcValue( runtime );
-	} catch ( RDOException& ) {
+	} catch ( RDORuntimeException& ) {
 		if ( runtime->errors.empty() ) {
 			runtime->error( "ошибка в", this );
 //			runtime->error( "in", this );

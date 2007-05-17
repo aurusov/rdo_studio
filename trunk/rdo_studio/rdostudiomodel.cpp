@@ -290,16 +290,8 @@ void RDOStudioModel::proc( RDOThread::RDOMessageInfo& msg )
 			output->appendStringToDebug( rdo::format( IDS_MODEL_FINISHED ) );
 			const_cast<rdoEditCtrl::RDODebugEdit*>(output->getDebug())->UpdateWindow();
 
-			std::stringstream model_results;
-			sendMessage( kernel->simulator(), RT_SIMULATOR_GET_MODEL_RESULTS, &model_results );
-			std::string str = model_results.str();
-			if ( str.length() ) {
-				rdo::binarystream stream;
-				stream.write( str.c_str(), str.length() );
-				studioApp.studioGUI->sendMessage( kernel->repository(), RDOThread::RT_REPOSITORY_SAVE, &rdoRepository::RDOThreadRepository::FileData( rdoModelObjects::PMV, stream ) );
-				output->showResults();
-				output->appendStringToResults( str );
-			}
+			show_result();
+
 			if ( plugins ) {
 				plugins->pluginProc( rdoPlugin::PM_MODEL_FINISHED );
 				plugins->modelStop();
@@ -313,6 +305,8 @@ void RDOStudioModel::proc( RDOThread::RDOMessageInfo& msg )
 			output->appendStringToDebug( rdo::format( IDS_MODEL_STOPED ) );
 			const_cast<rdoEditCtrl::RDODebugEdit*>(output->getDebug())->UpdateWindow();
 
+			show_result();
+
 			if ( plugins ) {
 				plugins->pluginProc( rdoPlugin::PM_MODEL_STOP_CANCEL );
 				plugins->modelStop( false );
@@ -321,6 +315,7 @@ void RDOStudioModel::proc( RDOThread::RDOMessageInfo& msg )
 		}
 		case RDOThread::RT_SIMULATOR_MODEL_STOP_RUNTIME_ERROR: {
 			sendMessage( kernel->simulator(), RT_SIMULATOR_GET_MODEL_EXITCODE, &exitCode );
+			show_result();
 			RDOStudioOutput* output = &studioApp.mainFrame->output;
 			output->clearBuild();
 			output->showBuild();
@@ -411,6 +406,21 @@ void RDOStudioModel::proc( RDOThread::RDOMessageInfo& msg )
 			msg.unlock();
 			break;
 		}
+	}
+}
+
+void RDOStudioModel::show_result()
+{
+	std::stringstream model_results;
+	sendMessage( kernel->simulator(), RT_SIMULATOR_GET_MODEL_RESULTS, &model_results );
+	std::string str = model_results.str();
+	if ( str.length() ) {
+		rdo::binarystream stream;
+		stream.write( str.c_str(), str.length() );
+		studioApp.studioGUI->sendMessage( kernel->repository(), RDOThread::RT_REPOSITORY_SAVE, &rdoRepository::RDOThreadRepository::FileData( rdoModelObjects::PMV, stream ) );
+		RDOStudioOutput* output = &studioApp.mainFrame->output;
+		output->showResults();
+		output->appendStringToResults( str );
 	}
 }
 

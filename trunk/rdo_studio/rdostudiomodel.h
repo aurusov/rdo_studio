@@ -85,6 +85,8 @@ private:
 	};
 	std::map< int, std::map< rdoModelObjects::RDOFileType, TemplateData > > model_templates;
 
+	void show_result();
+
 protected:
 	virtual void proc( RDOThread::RDOMessageInfo& msg );
 

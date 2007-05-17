@@ -492,9 +492,12 @@ void RDORuntime::postProcess()
 	getTracer()->startWriting();
 	try {
 		std::for_each( allPokaz.begin(), allPokaz.end(), std::bind2nd(std::mem_fun1(&RDOPokaz::calcStat), this) );
+	} catch ( RDORuntimeException& ) {
+	}
+	try {
 		RDOSimulatorTrace::postProcess();
 		writeExitCode();
-	} catch ( RDOException& e ) {
+	} catch ( RDORuntimeException& e ) {
 		writeExitCode();
 		throw e;
 	}

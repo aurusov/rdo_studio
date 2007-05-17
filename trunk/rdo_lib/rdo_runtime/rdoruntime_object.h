@@ -41,7 +41,8 @@ class RDORuntimeParent;
 class RDORuntimeObject
 {
 private:
-	size_t object_size;
+	size_t        object_size; // Размер текущего объекта
+	static size_t memory_size; // Сумма размеров всех объектов
 
 protected:
 	RDORuntimeParent* parent;
@@ -68,15 +69,44 @@ public:
 class RDORuntimeParent: public RDORuntimeObject
 {
 protected:
-	std::list< RDORuntimeObject* > objects;
+	std::vector< RDORuntimeObject* > objects;
 
 public:
 	RDORuntimeParent( RDORuntimeParent* _parent );
 	virtual ~RDORuntimeParent();
 
-	void insertObject( RDORuntimeObject* object );
-	void removeObject( RDORuntimeObject* object );
-	void deleteObjects();
+	void insertObject( RDORuntimeObject* object ) {
+		if ( object ) {
+			TRACE( "insert object: %d\n", object );
+			if ( object == this ) {
+				TRACE( "insert parent himself %d !!!!!!!!!!!!!!!!!!!\n", this );
+			} else {
+				objects.push_back( object );
+			}
+		} else {
+			TRACE( "insert object NULL !!!!!!!!!!!!!!!\n" );
+		}
+	}
+	void removeObject( RDORuntimeObject* object ) {
+		std::vector< RDORuntimeObject* >::reverse_iterator it = std::find( objects.rbegin(), objects.rend(), object );
+		if ( it != objects.rend() ) {
+			TRACE( "remove object: %d\n", object );
+			// Комнада it.base() приводит реверсивный итератор к нормальному,
+			// но перед этим необходимо сделать инкремент
+			it++;
+			objects.erase( it.base() );
+		} else {
+			TRACE( "remove object: %d faild !!!!!!!!!!!!!!!!!!!!\n", object );
+		}
+	}
+	void deleteObjects() {
+		std::vector< RDORuntimeObject* >::reverse_iterator it = objects.rbegin();
+		while ( it != objects.rend() ) {
+			delete *it;
+			it = objects.rbegin();
+		}
+		objects.clear();
+	}
 };
 
 // ----------------------------------------------------------------------------

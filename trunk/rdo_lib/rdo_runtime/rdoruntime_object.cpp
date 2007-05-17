@@ -13,6 +13,8 @@ namespace rdoRuntime {
 // ----------------------------------------------------------------------------
 // ---------- RDORuntimeObject
 // ----------------------------------------------------------------------------
+size_t RDORuntimeObject::memory_size = 0;
+
 RDORuntimeObject::RDORuntimeObject( RDORuntimeParent* _parent ):
 	parent( _parent )
 {
@@ -65,15 +67,16 @@ RDORuntime* RDORuntimeObject::getRuntime()
 #ifndef _DEBUG
 void* RDORuntimeObject::operator new( size_t sz )
 {
+	memory_size += sz;
 	RDORuntimeObject* obj = static_cast<RDORuntimeObject*>(::operator new( sz ));
 	obj->object_size = sz;
-	obj->runtime->memory_insert( sz );
+//	obj->runtime->memory_insert( sz );
 	return obj;
 }
 
 void RDORuntimeObject::operator delete( void* v )
 {
-	static_cast<RDORuntimeObject*>(v)->runtime->memory_remove( static_cast<RDORuntimeObject*>(v)->object_size );
+	memory_size -= static_cast<RDORuntimeObject*>(v)->object_size;
 	::operator delete( v );
 }
 #endif
@@ -89,41 +92,6 @@ RDORuntimeParent::RDORuntimeParent( RDORuntimeParent* _parent ):
 RDORuntimeParent::~RDORuntimeParent()
 {
 	deleteObjects();
-}
-
-void RDORuntimeParent::deleteObjects()
-{
-	std::list< RDORuntimeObject* >::reverse_iterator it = objects.rbegin();
-	while ( it != objects.rend() ) {
-		delete *it;
-		it = objects.rbegin();
-	}
-	objects.clear();
-}
-
-void RDORuntimeParent::insertObject( RDORuntimeObject* object )
-{
-	if ( object ) {
-		TRACE( "insert object: %d\n", object );
-		if ( object == this ) {
-			TRACE( "insert parent himself %d !!!!!!!!!!!!!!!!!!!\n", this );
-		} else {
-			objects.push_back( object );
-		}
-	} else {
-		TRACE( "insert object NULL !!!!!!!!!!!!!!!\n" );
-	}
-}
-
-void RDORuntimeParent::removeObject( RDORuntimeObject* object )
-{
-	std::list< RDORuntimeObject* >::iterator it = std::find( objects.begin(), objects.end(), object );
-	if ( it != objects.end() ) {
-		TRACE( "remove object: %d\n", object );
-		objects.erase( it );
-	} else {
-		TRACE( "remove object: %d faild !!!!!!!!!!!!!!!!!!!!\n", object );
-	}
 }
 
 } // namespace rdoRuntime
