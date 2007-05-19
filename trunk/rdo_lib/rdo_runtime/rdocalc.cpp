@@ -16,10 +16,6 @@ namespace rdoRuntime
 RDOCalc::RDOCalc( RDORuntimeParent* _parent ):
 	RDORuntimeObject( _parent )
 {
-//qq	fileToParse         = rdoParse::parser->getFileToParse();
-//qq	YYLTYPE error_pos   = error();
-//qq	error_pos.last_line = rdoParse::parser->lexer_loc_line();
-//qq	setErrorPos( error_pos );
 }
 
 RDOCalc::~RDOCalc()

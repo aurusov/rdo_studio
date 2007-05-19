@@ -89,7 +89,7 @@ int RDOFUNFunction::findFUNFunctionParamNum(const std::string *const paramName) 
 void RDOFUNFunction::add( const RDOFUNFunctionParam* const _param )
 { 
 	if ( findFUNFunctionParam(_param->getName()) ) {
-		parser->lexer_loc_set( _param->error().last_line, _param->error().last_column );
+		parser->lexer_loc_set( _param->src_pos().last_line, _param->src_pos().last_pos );
 		parser->error( rdo::format("Параметр уже существует: %s", _param->getName()->c_str()) );
 //		parser->error("Second appearance of the same parameter name: " + *(_param->getName()));
 	}
@@ -133,10 +133,10 @@ void RDOFUNFunction::createListCalc()
 				}
 				const RDOFUNFunctionListElement* const arg = listElems.at( currElement++ );
 				if ( arg->isEquivalence() ) {
-					parser->lexer_loc_set( arg->error().first_line, arg->error().first_column );
+					parser->lexer_loc_set( arg->src_pos().first_line, arg->src_pos().first_pos );
 					parser->error( "Указаны значения не всех параметров" );
 				}
-				parser->lexer_loc_set( arg->error().last_line, arg->error().last_column );
+				parser->lexer_loc_set( arg->src_pos().last_line, arg->src_pos().last_pos );
 				const RDOFUNFunctionParam *const param = params.at(currParam);
 				rdoRuntime::RDOCalcFuncParam *funcParam = new rdoRuntime::RDOCalcFuncParam(parser->runTime, currParam);
 				rdoRuntime::RDOCalcIsEqual *compareCalc = arg->createIsEqualCalc(param, funcParam);
@@ -149,16 +149,16 @@ void RDOFUNFunction::createListCalc()
 			}
 			const RDOFUNFunctionListElement* const eq = listElems.at( currElement++ );
 			if ( !eq->isEquivalence() ) {
-				parser->lexer_loc_set( eq->error().first_line, eq->error().first_column );
+				parser->lexer_loc_set( eq->src_pos().first_line, eq->src_pos().first_pos );
 				parser->error( "Ожидается '= <значение_функции>'" );
 			}
 
 			if ( currElement >= elements ) {
-				parser->lexer_loc_set( eq->error().last_line, eq->error().last_column );
+				parser->lexer_loc_set( eq->src_pos().last_line, eq->src_pos().last_pos );
 				parser->error( "Ожидается '<значение_функции>'" );
 			}
 			const RDOFUNFunctionListElement* const res = listElems.at(currElement++);
-			parser->lexer_loc_set( res->error().last_line, res->error().last_column );
+			parser->lexer_loc_set( res->src_pos().last_line, res->src_pos().last_pos );
 			rdoRuntime::RDOCalcConst* resultCalc = res->createResultCalc(retType);
 
 			funCalc->addCase(caseCalc, resultCalc);
@@ -181,7 +181,7 @@ void RDOFUNFunction::createTableCalc()
 		int d = 1;
 		for ( int currParam = 0; currParam < numParams; currParam++ ) {
 			const RDOFUNFunctionParam* const param  = params.at(currParam);
-			parser->lexer_loc_set( param->error().last_line, param->error().last_column );
+			parser->lexer_loc_set( param->src_pos().last_line, param->src_pos().last_pos );
 			rdoRuntime::RDOCalcFuncParam *funcParam = new rdoRuntime::RDOCalcFuncParam(parser->runTime, currParam);
 			rdoRuntime::RDOCalc *val2 = funcParam;
 			if ( param->getType()->getType() != RDORTPResParam::pt_enum ) {
@@ -204,7 +204,7 @@ void RDOFUNFunction::createTableCalc()
 		rdoRuntime::RDOFuncTableCalc *funCalc = new rdoRuntime::RDOFuncTableCalc(parser->runTime, calc);
 		for ( int currElem = 0; currElem < d; currElem++ ) {
 			const RDOFUNFunctionListElement* const el = listElems.at(currElem);
-			parser->lexer_loc_set( el->error().last_line, el->error().last_column );
+			parser->lexer_loc_set( el->src_pos().last_line, el->src_pos().last_pos );
 			if ( el->isEquivalence() ) {
 				parser->error( "Символ '=' недопустим в табличной функции" );
 //				parser->error("\"=\" unexpected in table function");
@@ -256,14 +256,14 @@ rdoRuntime::RDOCalcConst* RDOFUNFunctionListElementEq::createResultCalc( const R
 RDOFUNLogic::RDOFUNLogic( rdoRuntime::RDOCalc *_calc ):
 	calc( _calc )
 {
-	if ( calc ) setErrorPos( _calc->error() );
+	if ( calc ) setSrcInfo( _calc->src_info() );
 }
 
 RDOFUNLogic* RDOFUNLogic::operator &&( const RDOFUNLogic& second )
 {
 	rdoRuntime::RDOCalc* newCalc = new rdoRuntime::RDOCalcAnd( parser->runTime, calc, second.calc );
 	RDOFUNLogic* logic = new RDOFUNLogic( newCalc );
-	logic->setErrorPos( error().first_line, error().first_column, second.error().last_line, second.error().last_column );
+	logic->setSrcInfo( src_info() );
 	return logic;
 }
 
@@ -271,7 +271,7 @@ RDOFUNLogic* RDOFUNLogic::operator ||( const RDOFUNLogic& second )
 {
 	rdoRuntime::RDOCalc* newCalc = new rdoRuntime::RDOCalcOr( parser->runTime, calc, second.calc );
 	RDOFUNLogic* logic = new RDOFUNLogic( newCalc );
-	logic->setErrorPos( error().first_line, error().first_column, second.error().last_line, second.error().last_column );
+	logic->setSrcInfo( src_info() );
 	return logic;
 }
 
@@ -279,88 +279,97 @@ RDOFUNLogic* RDOFUNLogic::operator_not()
 {
 	rdoRuntime::RDOCalc* newCalc = new rdoRuntime::RDOCalcNot( parser->runTime, calc );
 	RDOFUNLogic* logic = new RDOFUNLogic( newCalc );
-	logic->setErrorPos( error() );
+	logic->setSrcInfo( src_info() );
 	return logic;
 }
 
-void RDOFUNLogic::setErrorPos( const RDOParseErrorPos& error_pos )
+void RDOFUNLogic::setSrcInfo( const RDOParserSrcInfo& src_info )
 {
-	RDOParseErrorPos::setErrorPos( error_pos );
-	if ( calc ) calc->setErrorPos( error_pos.error() );
+	RDOParserSrcInfo::setSrcInfo( src_info );
+	if ( calc ) calc->setSrcInfo( src_info );
 }
 
-void RDOFUNLogic::setErrorPos( int first_line, int first_column, int last_line, int last_column )
+void RDOFUNLogic::setSrcInfo( const RDOParserSrcInfo& begin, const RDOParserSrcInfo& end )
 {
-	rdoRuntime::RDOErrorPos::Data error;
-	error.first_line   = first_line;
-	error.first_column = first_column;
-	error.last_line    = last_line;
-	error.last_column  = last_column;
-	setErrorPos( error );
+	RDOParserSrcInfo::setSrcInfo( begin, end );
+	if ( calc ) calc->setSrcInfo( begin, end );
+}
+
+void RDOFUNLogic::setSrcPos( const YYLTYPE& _error_pos )
+{
+	RDOParserSrcInfo::setSrcPos( _error_pos );
+	RDOParserSrcInfo info( _error_pos );
+	if ( calc ) calc->setSrcPos( info.src_pos() );
+}
+
+void RDOFUNLogic::setSrcPos( int first_line, int first_pos, int last_line, int last_pos )
+{
+	RDOSrcInfo::setSrcPos( first_line, first_pos, last_line, last_pos );
+	if ( calc ) calc->setSrcPos( first_line, first_pos, last_line, last_pos );
 }
 
 // ----------------------------------------------------------------------------
 // ---------- RDOFUNArithm
 // ----------------------------------------------------------------------------
-RDOFUNArithm::RDOFUNArithm( RDOParser* _parser, RDORTPResParam::ParamType _type, rdoRuntime::RDOCalc* _calc, const RDOParseErrorPos& error_pos ):
+RDOFUNArithm::RDOFUNArithm( RDOParser* _parser, RDORTPResParam::ParamType _type, rdoRuntime::RDOCalc* _calc, const RDOParserSrcInfo& src_info ):
 	RDOParserObject( _parser ),
 	type( _type ),
 	enu( NULL ),
 	str( NULL ),
 	calc( _calc )
 {
-	setErrorPos( error_pos );
+	setSrcInfo( src_info );
 }
 
-RDOFUNArithm::RDOFUNArithm( const RDOParserObject* _parent, RDORTPResParam::ParamType _type, rdoRuntime::RDOCalc* _calc, const RDOParseErrorPos& error_pos ):
+RDOFUNArithm::RDOFUNArithm( const RDOParserObject* _parent, RDORTPResParam::ParamType _type, rdoRuntime::RDOCalc* _calc, const RDOParserSrcInfo& src_info ):
 	RDOParserObject( _parent ),
 	type( _type ),
 	enu( NULL ),
 	str( NULL ),
 	calc( _calc )
 {
-	setErrorPos( error_pos );
+	setSrcInfo( src_info );
 }
 
-RDOFUNArithm::RDOFUNArithm( RDOParser* _parser, std::string* resName, std::string* parName, const RDOParseErrorPos& res_name_error_pos, const RDOParseErrorPos& par_name_error_pos ):
+RDOFUNArithm::RDOFUNArithm( RDOParser* _parser, std::string* resName, std::string* parName, const RDOParserSrcInfo& res_name_src_info, const RDOParserSrcInfo& par_name_src_info ):
 	RDOParserObject( _parser ),
 	type( RDORTPResParam::pt_int ),
 	enu( NULL ),
 	str( NULL ),
 	calc( NULL )
 {
-	init( resName, parName, res_name_error_pos, par_name_error_pos );
+	init( resName, parName, res_name_src_info, par_name_src_info );
 }
 
-RDOFUNArithm::RDOFUNArithm( const RDOParserObject* _parent, std::string* resName, std::string* parName, const RDOParseErrorPos& res_name_error_pos, const RDOParseErrorPos& par_name_error_pos ):
+RDOFUNArithm::RDOFUNArithm( const RDOParserObject* _parent, std::string* resName, std::string* parName, const RDOParserSrcInfo& res_name_src_info, const RDOParserSrcInfo& par_name_src_info ):
 	RDOParserObject( _parent ),
 	type( RDORTPResParam::pt_int ),
 	enu( NULL ),
 	str( NULL ),
 	calc( NULL )
 {
-	init( resName, parName, res_name_error_pos, par_name_error_pos );
+	init( resName, parName, res_name_src_info, par_name_src_info );
 }
 
-void RDOFUNArithm::init( std::string* resName, std::string* parName, const RDOParseErrorPos& res_name_error_pos, const RDOParseErrorPos& par_name_error_pos )
+void RDOFUNArithm::init( std::string* resName, std::string* parName, const RDOParserSrcInfo& res_name_src_info, const RDOParserSrcInfo& par_name_src_info )
 {
-	setErrorPos( res_name_error_pos.error().first_line, res_name_error_pos.error().first_column, par_name_error_pos.error().last_line, par_name_error_pos.error().last_column );
+	setSrcInfo( res_name_src_info );
 	const RDORSSResource* const res = parser->findRSSResource( resName ); 
 	if ( res ) {
 		// Это ресурс с закладки RSS
 		if ( res->getType()->isTemporary() ) {
-			parser->lexer_loc_set( res_name_error_pos.error().last_line, res_name_error_pos.error().last_column );
+			parser->lexer_loc_set( res_name_src_info.src_pos().last_line, res_name_src_info.src_pos().last_pos );
 			parser->error( rdo::format("Нельзя использовать временный ресурс: %s", resName->c_str()) );
 //			parser->error(("Cannot use temporary resource in function: " + *resName).c_str());
 		}
 		int resNumb = res->getNumber();
 		int parNumb = res->getType()->getRTPParamNumber( parName );
 		if ( parNumb == -1 ) {
-			parser->lexer_loc_set( par_name_error_pos.error().last_line, par_name_error_pos.error().last_column );
+			parser->lexer_loc_set( par_name_src_info.src_pos().last_line, par_name_src_info.src_pos().last_pos );
 			parser->error( rdo::format("Неизвестный параметр ресурса: %s", parName->c_str()) );
 		}
 		calc = new rdoRuntime::RDOCalcGetResParam( parser->runTime, resNumb, parNumb );
-		calc->setErrorPos( error() );
+		calc->setSrcInfo( src_info() );
 		type = res->getType()->findRTPParam(parName)->getType()->getType();
 		if ( type == RDORTPResParam::pt_enum ) {
 			enu = ((RDORTPEnumResParam *)res->getType()->findRTPParam(parName)->getType())->enu;
@@ -373,11 +382,11 @@ void RDOFUNArithm::init( std::string* resName, std::string* parName, const RDOPa
 			RDOFUNGroup* currGroup = parser->getFUNGroupStack().back();
 			int parNumb = currGroup->resType->getRTPParamNumber(parName);
 			if ( parNumb == -1 ) {
-				parser->lexer_loc_set( par_name_error_pos.error().last_line, par_name_error_pos.error().last_column );
+				parser->lexer_loc_set( par_name_src_info.src_pos().last_line, par_name_src_info.src_pos().last_pos );
 				parser->error( rdo::format("Неизвестный параметр ресурса: %s", parName->c_str()) );
 			}
 			calc = new rdoRuntime::RDOCalcGetGroupResParam( parser->runTime, parNumb );
-			calc->setErrorPos( error() );
+			calc->setSrcInfo( src_info() );
 			type = currGroup->resType->findRTPParam(parName)->getType()->getType();
 			if ( type == RDORTPResParam::pt_enum ) {
 				enu = ((RDORTPEnumResParam *)currGroup->resType->findRTPParam(parName)->getType())->enu;
@@ -390,7 +399,7 @@ void RDOFUNArithm::init( std::string* resName, std::string* parName, const RDOPa
 			if ( !pat->currRelRes ) {
 				// Внутри with_min-common-choice или $Time
 				if ( rel->begin == rdoRuntime::RDOResourceTrace::CS_NonExist || rel->begin == rdoRuntime::RDOResourceTrace::CS_Create ) {
-					parser->lexer_loc_set( res_name_error_pos.error().last_line, res_name_error_pos.error().last_column );
+					parser->lexer_loc_set( res_name_src_info.src_pos().last_line, res_name_src_info.src_pos().last_pos );
 					parser->error( rdo::format("Релевантный ресурс не может быть использован, т.к. он еще не существует: %s", rel->getName()->c_str()) );
 				}
 			} else {
@@ -398,15 +407,15 @@ void RDOFUNArithm::init( std::string* resName, std::string* parName, const RDOPa
 				// Проверяем использование неинициализированного рел.ресурса в Choice from другом рел.ресурсе
 				if ( pat->currRelRes->isChoiceFromState() ) {
 					if ( !rel->alreadyHaveConverter && !rel->isDirect() ) {
-						parser->lexer_loc_set( res_name_error_pos.error().last_line, res_name_error_pos.error().last_column );
+						parser->lexer_loc_set( res_name_src_info.src_pos().last_line, res_name_src_info.src_pos().last_pos );
 						parser->error( rdo::format("Релевантный ресурс неопределен: %s. Его нельзя использовать в условиях выбора других ресурсов до его собственного Choice from", rel->getName()->c_str()) );
 					}
 					if ( rel->begin == rdoRuntime::RDOResourceTrace::CS_NonExist ) {
-						parser->lexer_loc_set( res_name_error_pos.error().last_line, res_name_error_pos.error().last_column );
+						parser->lexer_loc_set( res_name_src_info.src_pos().last_line, res_name_src_info.src_pos().last_pos );
 						parser->error( rdo::format("Релевантный ресурс в начале операции не существует (NonExist): %s", rel->getName()->c_str()) );
 					}
 					if ( rel->begin == rdoRuntime::RDOResourceTrace::CS_Create ) {
-						parser->lexer_loc_set( res_name_error_pos.error().last_line, res_name_error_pos.error().last_column );
+						parser->lexer_loc_set( res_name_src_info.src_pos().last_line, res_name_src_info.src_pos().last_pos );
 						parser->error( rdo::format("Сразу после создания (Create) релевантный ресурс можно использовать только в конверторах: %s", rel->getName()->c_str()) );
 					}
 				}
@@ -415,30 +424,30 @@ void RDOFUNArithm::init( std::string* resName, std::string* parName, const RDOPa
 					// В конверторе начала
 					if ( pat->currRelRes->currentState == RDORelevantResource::convertBegin ) {
 						if ( rel->begin == rdoRuntime::RDOResourceTrace::CS_Create && !rel->alreadyHaveConverter ) {
-							parser->lexer_loc_set( res_name_error_pos.error().last_line, res_name_error_pos.error().last_column );
+							parser->lexer_loc_set( res_name_src_info.src_pos().last_line, res_name_src_info.src_pos().last_pos );
 							parser->error( rdo::format("Релевантный ресурс нельзя использовать до его создания (Create): %s", rel->getName()->c_str()) );
 						}
 						if ( rel->begin == rdoRuntime::RDOResourceTrace::CS_Erase && rel->alreadyHaveConverter ) {
-							parser->lexer_loc_set( res_name_error_pos.error().last_line, res_name_error_pos.error().last_column );
+							parser->lexer_loc_set( res_name_src_info.src_pos().last_line, res_name_src_info.src_pos().last_pos );
 							parser->error( rdo::format("Релевантный ресурс нельзя использовать полсле удаления (Erase): %s", rel->getName()->c_str()) );
 						}
 						if ( rel->begin == rdoRuntime::RDOResourceTrace::CS_NonExist ) {
-							parser->lexer_loc_set( res_name_error_pos.error().last_line, res_name_error_pos.error().last_column );
+							parser->lexer_loc_set( res_name_src_info.src_pos().last_line, res_name_src_info.src_pos().last_pos );
 							parser->error( rdo::format("Релевантный ресурс не существует в этом конверторе (NonExist): %s", rel->getName()->c_str()) );
 						}
 					}
 					// В конверторе конца
 					if ( pat->currRelRes->currentState == RDORelevantResource::convertEnd ) {
 						if ( rel->end == rdoRuntime::RDOResourceTrace::CS_Create && !rel->alreadyHaveConverter ) {
-							parser->lexer_loc_set( res_name_error_pos.error().last_line, res_name_error_pos.error().last_column );
+							parser->lexer_loc_set( res_name_src_info.src_pos().last_line, res_name_src_info.src_pos().last_pos );
 							parser->error( rdo::format("Релевантный ресурс нельзя использовать до его создания (Create): %s", rel->getName()->c_str()) );
 						}
 						if ( rel->end == rdoRuntime::RDOResourceTrace::CS_Erase && rel->alreadyHaveConverter ) {
-							parser->lexer_loc_set( res_name_error_pos.error().last_line, res_name_error_pos.error().last_column );
+							parser->lexer_loc_set( res_name_src_info.src_pos().last_line, res_name_src_info.src_pos().last_pos );
 							parser->error( rdo::format("Релевантный ресурс нельзя использовать полсле удаления (Erase): %s", rel->getName()->c_str()) );
 						}
 						if ( rel->end == rdoRuntime::RDOResourceTrace::CS_NonExist ) {
-							parser->lexer_loc_set( res_name_error_pos.error().last_line, res_name_error_pos.error().last_column );
+							parser->lexer_loc_set( res_name_src_info.src_pos().last_line, res_name_src_info.src_pos().last_pos );
 							parser->error( rdo::format("Релевантный ресурс не существует в этом конверторе (NonExist): %s", rel->getName()->c_str()) );
 						}
 					}
@@ -447,12 +456,12 @@ void RDOFUNArithm::init( std::string* resName, std::string* parName, const RDOPa
 			int relResNumb = pat->findRelevantResourceNum( resName );
 			int parNumb    = rel->getType()->getRTPParamNumber( parName );
 			if ( parNumb == -1 ) {
-				parser->lexer_loc_set( par_name_error_pos.error().last_line, par_name_error_pos.error().last_column );
+				parser->lexer_loc_set( par_name_src_info.src_pos().last_line, par_name_src_info.src_pos().last_pos );
 				parser->error( rdo::format("Неизвестный параметр ресурса: %s", parName->c_str()) );
 //				parser->error( "Unknown resource parameter: " + *parName );
 			}
 			calc = new rdoRuntime::RDOCalcGetRelevantResParam( parser->runTime, relResNumb, parNumb );
-			calc->setErrorPos( error() );
+			calc->setSrcInfo( src_info() );
 			type = rel->getType()->findRTPParam( parName )->getType()->getType();
 			if ( type == RDORTPResParam::pt_enum ) {
 				enu = ((RDORTPEnumResParam*)rel->getType()->findRTPParam(parName)->getType())->enu;
@@ -464,12 +473,12 @@ void RDOFUNArithm::init( std::string* resName, std::string* parName, const RDOPa
 			int relResNumb = parser->getLastDPTSearch()->lastActivity->getRule()->findRelevantResourceNum( resName );
 			int parNumb    = rel->getType()->getRTPParamNumber(parName);
 			if ( parNumb == -1 ) {
-				parser->lexer_loc_set( par_name_error_pos.error().last_line, par_name_error_pos.error().last_column );
+				parser->lexer_loc_set( par_name_src_info.src_pos().last_line, par_name_src_info.src_pos().last_pos );
 				parser->error( rdo::format("Неизвестный параметр ресурса: %s", parName->c_str()) );
 			}
 
 			calc = new rdoRuntime::RDOCalcGetRelevantResParam( parser->runTime, relResNumb, parNumb );
-			calc->setErrorPos( error() );
+			calc->setSrcInfo( src_info() );
 			type = rel->getType()->findRTPParam(parName)->getType()->getType();
 			if ( type == RDORTPResParam::pt_enum ) {
 				enu = ((RDORTPEnumResParam *)rel->getType()->findRTPParam(parName)->getType())->enu;
@@ -477,12 +486,12 @@ void RDOFUNArithm::init( std::string* resName, std::string* parName, const RDOPa
 			return;
 		}
 	}
-	parser->lexer_loc_set( res_name_error_pos.error().last_line, res_name_error_pos.error().last_column );
+	parser->lexer_loc_set( res_name_src_info.src_pos().last_line, res_name_src_info.src_pos().last_pos );
 	parser->error( rdo::format("Неизвестный ресурс: %s", resName->c_str()) );
 //	parser->error(("Unknown resource name: " + *resName).c_str());
 }
 
-RDOFUNArithm::RDOFUNArithm( RDOParser* _parser, int n, const RDOParseErrorPos& error_pos ):
+RDOFUNArithm::RDOFUNArithm( RDOParser* _parser, int n, const RDOParserSrcInfo& src_info ):
 	RDOParserObject( _parser ),
 	type( RDORTPResParam::pt_int ),
 	enu( NULL ),
@@ -490,10 +499,10 @@ RDOFUNArithm::RDOFUNArithm( RDOParser* _parser, int n, const RDOParseErrorPos& e
 	calc( NULL )
 {
 	calc = new rdoRuntime::RDOCalcConst( parser->runTime, n );
-	setErrorPos( error_pos );
+	setSrcInfo( src_info );
 }
 
-RDOFUNArithm::RDOFUNArithm( const RDOParserObject* _parent, int n, const RDOParseErrorPos& error_pos ):
+RDOFUNArithm::RDOFUNArithm( const RDOParserObject* _parent, int n, const RDOParserSrcInfo& src_info ):
 	RDOParserObject( _parent ),
 	type( RDORTPResParam::pt_int ),
 	enu( NULL ),
@@ -501,10 +510,10 @@ RDOFUNArithm::RDOFUNArithm( const RDOParserObject* _parent, int n, const RDOPars
 	calc( NULL )
 {
 	calc = new rdoRuntime::RDOCalcConst( parser->runTime, n );
-	setErrorPos( error_pos );
+	setSrcInfo( src_info );
 }
 
-RDOFUNArithm::RDOFUNArithm( RDOParser* _parser, double* d, const RDOParseErrorPos& error_pos ):
+RDOFUNArithm::RDOFUNArithm( RDOParser* _parser, double* d, const RDOParserSrcInfo& src_info ):
 	RDOParserObject( _parser ),
 	type( RDORTPResParam::pt_real ),
 	enu( NULL ),
@@ -512,10 +521,10 @@ RDOFUNArithm::RDOFUNArithm( RDOParser* _parser, double* d, const RDOParseErrorPo
 	calc( NULL )
 {
 	calc = new rdoRuntime::RDOCalcConst( parser->runTime, *d );
-	setErrorPos( error_pos );
+	setSrcInfo( src_info );
 }
 
-RDOFUNArithm::RDOFUNArithm( const RDOParserObject* _parent, double* d, const RDOParseErrorPos& error_pos ):
+RDOFUNArithm::RDOFUNArithm( const RDOParserObject* _parent, double* d, const RDOParserSrcInfo& src_info ):
 	RDOParserObject( _parent ),
 	type( RDORTPResParam::pt_real ),
 	enu( NULL ),
@@ -523,44 +532,44 @@ RDOFUNArithm::RDOFUNArithm( const RDOParserObject* _parent, double* d, const RDO
 	calc( NULL )
 {
 	calc = new rdoRuntime::RDOCalcConst( parser->runTime, *d );
-	setErrorPos( error_pos );
+	setSrcInfo( src_info );
 }
 
-RDOFUNArithm::RDOFUNArithm( RDOParser* _parser, std::string* s, const RDOParseErrorPos& error_pos ):
+RDOFUNArithm::RDOFUNArithm( RDOParser* _parser, std::string* s, const RDOParserSrcInfo& src_info ):
 	RDOParserObject( _parser ),
 	type( RDORTPResParam::pt_int ),
 	enu( NULL ),
 	str( NULL ),
 	calc( NULL )
 {
-	init( s, error_pos );
+	init( s, src_info );
 }
 
-RDOFUNArithm::RDOFUNArithm( const RDOParserObject* _parent, std::string* s, const RDOParseErrorPos& error_pos ):
+RDOFUNArithm::RDOFUNArithm( const RDOParserObject* _parent, std::string* s, const RDOParserSrcInfo& src_info ):
 	RDOParserObject( _parent ),
 	type( RDORTPResParam::pt_int ),
 	enu( NULL ),
 	str( NULL ),
 	calc( NULL )
 {
-	init( s, error_pos );
+	init( s, src_info );
 }
 
-void RDOFUNArithm::init( std::string* s, const RDOParseErrorPos& error_pos )
+void RDOFUNArithm::init( std::string* s, const RDOParserSrcInfo& src_info )
 {
-	setErrorPos( error_pos );
+	setSrcInfo( src_info );
 
 	if ( (*s == "Time_now") || (*s == "time_now") || (*s == "Системное_время") || (*s == "системное_время") ) {
 		type = RDORTPResParam::pt_real;
 		calc = new rdoRuntime::RDOCalcGetTimeNow( parser->runTime );
-		calc->setErrorPos( error_pos.error() );
+		calc->setSrcInfo( src_info );
 		return;
 	}
 
 	if ( *s == "Seconds" || *s == "seconds" ) {
 		type = RDORTPResParam::pt_real;
 		calc = new rdoRuntime::RDOCalcGetSeconds( parser->runTime );
-		calc->setErrorPos( error_pos.error() );
+		calc->setSrcInfo( src_info );
 		return;
 	}
 
@@ -575,7 +584,7 @@ void RDOFUNArithm::init( std::string* s, const RDOParseErrorPos& error_pos )
 	const RDOFUNConstant* cons = parser->findFUNConst( s );
 
 	if ( cons && param ) {
-		parser->lexer_loc_set( error_pos.error().last_line, error_pos.error().last_column );
+		parser->lexer_loc_set( src_info.src_pos().last_line, src_info.src_pos().last_pos );
 		parser->error( rdo::format("Имя параметра образца совпадает с именем константы: %s", s->c_str()) );
 //		parser->error( "Ambiguity: constant or parameter usage: " + *s + " ?" );
 	}
@@ -586,14 +595,14 @@ void RDOFUNArithm::init( std::string* s, const RDOParseErrorPos& error_pos )
 			enu = ((RDORTPEnumResParam *)cons->descr->getType())->enu;
 		}
 		calc = new rdoRuntime::RDOCalcGetConst( parser->runTime, cons->number );
-		calc->setErrorPos( error_pos.error() );
+		calc->setSrcInfo( src_info );
 		return;
 	}
 
 	// Ищем последовательность по имени
 	const RDOFUNSequence* seq = parser->findSequence( s );
 	if ( seq && param ) {
-		parser->lexer_loc_set( error_pos.error().last_line, error_pos.error().last_column );
+		parser->lexer_loc_set( src_info.src_pos().last_line, src_info.src_pos().last_pos );
 		parser->error( rdo::format("Имя параметра образца совпадает с именем последовательности: %s", s->c_str()) );
 //		parser->error("Ambiguity: sequence or parameter usage: " + *s + " ?");
 	}
@@ -606,7 +615,7 @@ void RDOFUNArithm::init( std::string* s, const RDOParseErrorPos& error_pos )
 			enu = ar->enu;
 		}
 		calc = ar->calc;
-		calc->setErrorPos( error_pos.error() );
+		calc->setSrcInfo( src_info );
 		return;
 	}
 
@@ -620,7 +629,7 @@ void RDOFUNArithm::init( std::string* s, const RDOParseErrorPos& error_pos )
 			case rdoModelObjects::PAT: calc = new rdoRuntime::RDOCalcPatParam( parser->runTime, parser->getLastPATPattern()->findPATPatternParamNum( s ) ); break;
 			case rdoModelObjects::FUN: calc = new rdoRuntime::RDOCalcFuncParam( parser->runTime, parser->getLastFUNFunction()->findFUNFunctionParamNum( s ) ); break;
 		}
-		if ( calc ) calc->setErrorPos( error_pos.error() );
+		if ( calc ) calc->setSrcInfo( src_info );
 		return;
 	} else {
 		// Это НЕ параметр
@@ -638,26 +647,26 @@ RDOFUNArithm* RDOFUNArithm::operator +( RDOFUNArithm& second )
 		newType = RDORTPResParam::pt_int;
 	} else if ( type == RDORTPResParam::pt_enum || second.type == RDORTPResParam::pt_enum ) {
 		if ( type == RDORTPResParam::pt_enum ) {
-			parser->lexer_loc_set( error().last_line, error().last_column );
+			parser->lexer_loc_set( src_pos().last_line, src_pos().last_pos );
 		} else {
-			parser->lexer_loc_set( second.error().last_line, second.error().last_column );
+			parser->lexer_loc_set( second.src_pos().last_line, second.src_pos().last_pos );
 		}
 		parser->error( "Нельзя складывать перечислимые данные" );
 //		parser->error("cannot add enumerative types");
 	} else if ( type == RDORTPResParam::pt_str || second.type == RDORTPResParam::pt_str ) {
 		if ( type == RDORTPResParam::pt_str ) {
-			parser->lexer_loc_set( error().last_line, error().last_column );
+			parser->lexer_loc_set( src_pos().last_line, src_pos().last_pos );
 			parser->error( rdo::format("Неизвестный идентификатор: %s", str->c_str()) );
 		} else {
-			parser->lexer_loc_set( second.error().last_line, second.error().last_column );
+			parser->lexer_loc_set( second.src_pos().last_line, second.src_pos().last_pos );
 			parser->error( rdo::format("Неизвестный идентификатор: %s", second.str->c_str()) );
 		}
 	} else {
 		newType = RDORTPResParam::pt_real;
 	}
 
-	RDOFUNArithm* arithm = new RDOFUNArithm( this, newType, new rdoRuntime::RDOCalcPlus( parser->runTime, calc, second.calc ), error() );
-	arithm->setErrorPos( error().first_line, error().first_column, second.error().last_line, second.error().last_column );
+	RDOFUNArithm* arithm = new RDOFUNArithm( this, newType, new rdoRuntime::RDOCalcPlus( parser->runTime, calc, second.calc ), src_pos() );
+	arithm->setSrcInfo( src_info(), second.src_info() );
 	return arithm;
 }
 
@@ -669,26 +678,26 @@ RDOFUNArithm* RDOFUNArithm::operator -( RDOFUNArithm& second )
 		newType = RDORTPResParam::pt_int;
 	} else if ( type == RDORTPResParam::pt_enum || second.type == RDORTPResParam::pt_enum ) {
 		if ( type == RDORTPResParam::pt_enum ) {
-			parser->lexer_loc_set( error().last_line, error().last_column );
+			parser->lexer_loc_set( src_pos().last_line, src_pos().last_pos );
 		} else {
-			parser->lexer_loc_set( second.error().last_line, second.error().last_column );
+			parser->lexer_loc_set( second.src_pos().last_line, second.src_pos().last_pos );
 		}
 		parser->error( "Нельзя вычитать перечислимые данные" );
 //		parser->error("cannot subtract enumerative types");
 	} else if ( type == RDORTPResParam::pt_str || second.type == RDORTPResParam::pt_str ) {
 		if ( type == RDORTPResParam::pt_str ) {
-			parser->lexer_loc_set( error().last_line, error().last_column );
+			parser->lexer_loc_set( src_pos().last_line, src_pos().last_pos );
 			parser->error( rdo::format("Неизвестный идентификатор: %s", str->c_str()) );
 		} else {
-			parser->lexer_loc_set( second.error().last_line, second.error().last_column );
+			parser->lexer_loc_set( second.src_pos().last_line, second.src_pos().last_pos );
 			parser->error( rdo::format("Неизвестный идентификатор: %s", second.str->c_str()) );
 		}
 	} else {
 		newType = RDORTPResParam::pt_real;
 	}
 
-	RDOFUNArithm* arithm = new RDOFUNArithm( this, newType, new rdoRuntime::RDOCalcMinus( parser->runTime, calc, second.calc ), error() );
-	arithm->setErrorPos( error().first_line, error().first_column, second.error().last_line, second.error().last_column );
+	RDOFUNArithm* arithm = new RDOFUNArithm( this, newType, new rdoRuntime::RDOCalcMinus( parser->runTime, calc, second.calc ), src_pos() );
+	arithm->setSrcInfo( src_info(), second.src_info() );
 	return arithm;
 }
 
@@ -700,18 +709,18 @@ RDOFUNArithm* RDOFUNArithm::operator *( RDOFUNArithm& second )
 		newType = RDORTPResParam::pt_int;
 	} else if ( type == RDORTPResParam::pt_enum || second.type == RDORTPResParam::pt_enum ) {
 		if ( type == RDORTPResParam::pt_enum ) {
-			parser->lexer_loc_set( error().last_line, error().last_column );
+			parser->lexer_loc_set( src_pos().last_line, src_pos().last_pos );
 		} else {
-			parser->lexer_loc_set( second.error().last_line, second.error().last_column );
+			parser->lexer_loc_set( second.src_pos().last_line, second.src_pos().last_pos );
 		}
 		parser->error( "Нельзя перемножать перечислимые данные" );
 //		parser->error("cannot multiply enumerative types");
 	} else if ( type == RDORTPResParam::pt_str || second.type == RDORTPResParam::pt_str ) {
 		if ( type == RDORTPResParam::pt_str ) {
-			parser->lexer_loc_set( error().last_line, error().last_column );
+			parser->lexer_loc_set( src_pos().last_line, src_pos().last_pos );
 			parser->error( rdo::format("Неизвестный идентификатор: %s", str->c_str()) );
 		} else {
-			parser->lexer_loc_set( second.error().last_line, second.error().last_column );
+			parser->lexer_loc_set( second.src_pos().last_line, second.src_pos().last_pos );
 			parser->error( rdo::format("Неизвестный идентификатор: %s", second.str->c_str()) );
 		}
 	} else {
@@ -719,9 +728,9 @@ RDOFUNArithm* RDOFUNArithm::operator *( RDOFUNArithm& second )
 	}
 
 	rdoRuntime::RDOCalc* newCalc = new rdoRuntime::RDOCalcMult( parser->runTime, calc, second.calc );
-	RDOFUNArithm* arithm = new RDOFUNArithm( this, newType, newCalc, error() );
-	arithm->setErrorPos( error().first_line, error().first_column, second.error().last_line, second.error().last_column );
-	newCalc->setErrorPos( arithm->error() );
+	RDOFUNArithm* arithm = new RDOFUNArithm( this, newType, newCalc, src_pos() );
+	arithm->setSrcInfo( src_info(), second.src_info() );
+	newCalc->setSrcInfo( arithm->src_info() );
 	return arithm;
 }
 
@@ -733,18 +742,18 @@ RDOFUNArithm* RDOFUNArithm::operator /( RDOFUNArithm& second )
 		newType = RDORTPResParam::pt_int;
 	} else if ( type == RDORTPResParam::pt_enum || second.type == RDORTPResParam::pt_enum ) {
 		if ( type == RDORTPResParam::pt_enum ) {
-			parser->lexer_loc_set( error().last_line, error().last_column );
+			parser->lexer_loc_set( src_pos().last_line, src_pos().last_pos );
 		} else {
-			parser->lexer_loc_set( second.error().last_line, second.error().last_column );
+			parser->lexer_loc_set( second.src_pos().last_line, second.src_pos().last_pos );
 		}
 		parser->error( "Нельзя разделить перечислимые данные" );
 //		parser->error("cannot divide enumerative types");
 	} else if ( type == RDORTPResParam::pt_str || second.type == RDORTPResParam::pt_str ) {
 		if ( type == RDORTPResParam::pt_str ) {
-			parser->lexer_loc_set( error().last_line, error().last_column );
+			parser->lexer_loc_set( src_pos().last_line, src_pos().last_pos );
 			parser->error( rdo::format("Неизвестный идентификатор: %s", str->c_str()) );
 		} else {
-			parser->lexer_loc_set( second.error().last_line, second.error().last_column );
+			parser->lexer_loc_set( second.src_pos().last_line, second.src_pos().last_pos );
 			parser->error( rdo::format("Неизвестный идентификатор: %s", second.str->c_str()) );
 		}
 	} else {
@@ -756,10 +765,10 @@ RDOFUNArithm* RDOFUNArithm::operator /( RDOFUNArithm& second )
 	if ( newType == RDORTPResParam::pt_int ) {
 		newCalc = new rdoRuntime::RDOCalcDoubleToInt( parser->runTime, newCalc );
 	}
-	RDOFUNArithm* arithm = new RDOFUNArithm( this, newType, newCalc, error() );
-	arithm->setErrorPos( error().first_line, error().first_column, second.error().last_line, second.error().last_column );
-	newCalc->setErrorPos( arithm->error() );
-	newCalc_div->setErrorPos( arithm->error() );
+	RDOFUNArithm* arithm = new RDOFUNArithm( this, newType, newCalc, src_pos() );
+	arithm->setSrcInfo( src_info(), second.src_info() );
+	newCalc->setSrcInfo( arithm->src_info() );
+	newCalc_div->setSrcInfo( arithm->src_info() );
 	return arithm;
 }
 
@@ -767,25 +776,25 @@ RDOFUNLogic* RDOFUNArithm::operator <( RDOFUNArithm& second )
 {
 	if ( type == RDORTPResParam::pt_enum || second.type == RDORTPResParam::pt_enum ) {
 		if ( type == RDORTPResParam::pt_enum ) {
-			parser->lexer_loc_set( error().last_line, error().last_column );
+			parser->lexer_loc_set( src_pos().last_line, src_pos().last_pos );
 		} else {
-			parser->lexer_loc_set( second.error().last_line, second.error().last_column );
+			parser->lexer_loc_set( second.src_pos().last_line, second.src_pos().last_pos );
 		}
 		parser->error( "Нельзя сравнивать перечислимые данные" );
 //		parser->error("cannot compare enumerative types");
 	} else if ( type == RDORTPResParam::pt_str || second.type == RDORTPResParam::pt_str ) {
 		if ( type == RDORTPResParam::pt_str ) {
-			parser->lexer_loc_set( error().last_line, error().last_column );
+			parser->lexer_loc_set( src_pos().last_line, src_pos().last_pos );
 			parser->error( rdo::format("Неизвестный идентификатор: %s", str->c_str()) );
 		} else {
-			parser->lexer_loc_set( second.error().last_line, second.error().last_column );
+			parser->lexer_loc_set( second.src_pos().last_line, second.src_pos().last_pos );
 			parser->error( rdo::format("Неизвестный идентификатор: %s", second.str->c_str()) );
 		}
 	}
 	rdoRuntime::RDOCalc* newCalc = new rdoRuntime::RDOCalcIsLess( parser->runTime, calc, second.calc );
 	RDOFUNLogic* logic = new RDOFUNLogic( newCalc );
-	logic->setErrorPos( error().first_line, error().first_column, second.error().last_line, second.error().last_column );
-	newCalc->setErrorPos( logic->error() );
+	logic->setSrcInfo( src_info(), second.src_info() );
+	newCalc->setSrcInfo( logic->src_info() );
 	return logic;
 }
 
@@ -793,24 +802,24 @@ RDOFUNLogic* RDOFUNArithm::operator >( RDOFUNArithm& second )
 {
 	if ( type == RDORTPResParam::pt_enum || second.type == RDORTPResParam::pt_enum ) {
 		if ( type == RDORTPResParam::pt_enum ) {
-			parser->lexer_loc_set( error().last_line, error().last_column );
+			parser->lexer_loc_set( src_pos().last_line, src_pos().last_pos );
 		} else {
-			parser->lexer_loc_set( second.error().last_line, second.error().last_column );
+			parser->lexer_loc_set( second.src_pos().last_line, second.src_pos().last_pos );
 		}
 		parser->error( "Нельзя сравнивать перечислимые данные" );
 	} else if ( type == RDORTPResParam::pt_str || second.type == RDORTPResParam::pt_str ) {
 		if ( type == RDORTPResParam::pt_str ) {
-			parser->lexer_loc_set( error().last_line, error().last_column );
+			parser->lexer_loc_set( src_pos().last_line, src_pos().last_pos );
 			parser->error( rdo::format("Неизвестный идентификатор: %s", str->c_str()) );
 		} else {
-			parser->lexer_loc_set( second.error().last_line, second.error().last_column );
+			parser->lexer_loc_set( second.src_pos().last_line, second.src_pos().last_pos );
 			parser->error( rdo::format("Неизвестный идентификатор: %s", second.str->c_str()) );
 		}
 	}
 	rdoRuntime::RDOCalc* newCalc = new rdoRuntime::RDOCalcIsGreater( parser->runTime, calc, second.calc );
 	RDOFUNLogic* logic = new RDOFUNLogic( newCalc );
-	logic->setErrorPos( error().first_line, error().first_column, second.error().last_line, second.error().last_column );
-	newCalc->setErrorPos( logic->error() );
+	logic->setSrcInfo( src_info(), second.src_info() );
+	newCalc->setSrcInfo( logic->src_info() );
 	return logic;
 }
 
@@ -818,24 +827,24 @@ RDOFUNLogic* RDOFUNArithm::operator <=( RDOFUNArithm& second )
 {
 	if ( type == RDORTPResParam::pt_enum || second.type == RDORTPResParam::pt_enum ) {
 		if ( type == RDORTPResParam::pt_enum ) {
-			parser->lexer_loc_set( error().last_line, error().last_column );
+			parser->lexer_loc_set( src_pos().last_line, src_pos().last_pos );
 		} else {
-			parser->lexer_loc_set( second.error().last_line, second.error().last_column );
+			parser->lexer_loc_set( second.src_pos().last_line, second.src_pos().last_pos );
 		}
 		parser->error( "Нельзя сравнивать перечислимые данные" );
 	} else if ( type == RDORTPResParam::pt_str || second.type == RDORTPResParam::pt_str ) {
 		if ( type == RDORTPResParam::pt_str ) {
-			parser->lexer_loc_set( error().last_line, error().last_column );
+			parser->lexer_loc_set( src_pos().last_line, src_pos().last_pos );
 			parser->error( rdo::format("Неизвестный идентификатор: %s", str->c_str()) );
 		} else {
-			parser->lexer_loc_set( second.error().last_line, second.error().last_column );
+			parser->lexer_loc_set( second.src_pos().last_line, second.src_pos().last_pos );
 			parser->error( rdo::format("Неизвестный идентификатор: %s", second.str->c_str()) );
 		}
 	}
 	rdoRuntime::RDOCalc* newCalc = new rdoRuntime::RDOCalcIsLEQ( parser->runTime, calc, second.calc );
 	RDOFUNLogic* logic = new RDOFUNLogic( newCalc );
-	logic->setErrorPos( error().first_line, error().first_column, second.error().last_line, second.error().last_column );
-	newCalc->setErrorPos( logic->error() );
+	logic->setSrcInfo( src_info(), second.src_info() );
+	newCalc->setSrcInfo( logic->src_info() );
 	return logic;
 }
 
@@ -843,24 +852,24 @@ RDOFUNLogic* RDOFUNArithm::operator >=( RDOFUNArithm& second )
 {
 	if ( type == RDORTPResParam::pt_enum || second.type == RDORTPResParam::pt_enum ) {
 		if ( type == RDORTPResParam::pt_enum ) {
-			parser->lexer_loc_set( error().last_line, error().last_column );
+			parser->lexer_loc_set( src_pos().last_line, src_pos().last_pos );
 		} else {
-			parser->lexer_loc_set( second.error().last_line, second.error().last_column );
+			parser->lexer_loc_set( second.src_pos().last_line, second.src_pos().last_pos );
 		}
 		parser->error( "Нельзя сравнивать перечислимые данные" );
 	} else if ( type == RDORTPResParam::pt_str || second.type == RDORTPResParam::pt_str ) {
 		if ( type == RDORTPResParam::pt_str ) {
-			parser->lexer_loc_set( error().last_line, error().last_column );
+			parser->lexer_loc_set( src_pos().last_line, src_pos().last_pos );
 			parser->error( rdo::format("Неизвестный идентификатор: %s", str->c_str()) );
 		} else {
-			parser->lexer_loc_set( second.error().last_line, second.error().last_column );
+			parser->lexer_loc_set( second.src_pos().last_line, second.src_pos().last_pos );
 			parser->error( rdo::format("Неизвестный идентификатор: %s", second.str->c_str()) );
 		}
 	}
 	rdoRuntime::RDOCalc* newCalc = new rdoRuntime::RDOCalcIsGEQ( parser->runTime, calc, second.calc );
 	RDOFUNLogic* logic = new RDOFUNLogic( newCalc );
-	logic->setErrorPos( error().first_line, error().first_column, second.error().last_line, second.error().last_column );
-	newCalc->setErrorPos( logic->error() );
+	logic->setSrcInfo( src_info(), second.src_info() );
+	newCalc->setSrcInfo( logic->src_info() );
 	return logic;
 }
 
@@ -868,7 +877,7 @@ RDOFUNLogic* RDOFUNArithm::operator ==( RDOFUNArithm& second )
 {
 	if ( type == RDORTPResParam::pt_enum && second.type == RDORTPResParam::pt_enum ) {
 		if ( enu != second.enu ) {
-			parser->lexer_loc_set( second.error().last_line, second.error().last_column );
+			parser->lexer_loc_set( second.src_pos().last_line, second.src_pos().last_pos );
 			parser->error( "Нельзя сравнивать разные перечислимые типы" );
 //			parser->error("cannot compare different enumerative types");
 		}
@@ -876,15 +885,15 @@ RDOFUNLogic* RDOFUNArithm::operator ==( RDOFUNArithm& second )
 		second.calc = new rdoRuntime::RDOCalcConst( parser->runTime, enu->findValue(second.str) );
 //	} else if ( (type >= 2) || (second.type >= 2) ) {
 	} else if ( (type == RDORTPResParam::pt_str && second.type == RDORTPResParam::pt_enum) || (type == RDORTPResParam::pt_str && second.type == RDORTPResParam::pt_str) ) {
-		parser->lexer_loc_set( error().last_line, error().last_column );
+		parser->lexer_loc_set( src_pos().last_line, src_pos().last_pos );
 		parser->error( rdo::format("Неизвестный идентификатор: %s", str->c_str()) );
 //		parser->error("cannot compare enumerative type with nonenumerative type");
 	}
 
 	rdoRuntime::RDOCalc* newCalc = new rdoRuntime::RDOCalcIsEqual( parser->runTime, calc, second.calc );
 	RDOFUNLogic* logic = new RDOFUNLogic( newCalc );
-	logic->setErrorPos( error().first_line, error().first_column, second.error().last_line, second.error().last_column );
-	newCalc->setErrorPos( logic->error() );
+	logic->setSrcInfo( src_info(), second.src_info() );
+	newCalc->setSrcInfo( logic->src_info() );
 	return logic;
 }
 
@@ -892,20 +901,20 @@ RDOFUNLogic* RDOFUNArithm::operator !=( RDOFUNArithm& second )
 {
 	if ( type == RDORTPResParam::pt_enum && second.type == RDORTPResParam::pt_enum ) {
 		if ( enu != second.enu ) {
-			parser->lexer_loc_set( second.error().last_line, second.error().last_column );
+			parser->lexer_loc_set( second.src_pos().last_line, second.src_pos().last_pos );
 			parser->error( "Нельзя сравнивать разные перечислимые типы" );
 		}
 	} else if ( type == RDORTPResParam::pt_enum && second.type == RDORTPResParam::pt_str ) {
 		second.calc = new rdoRuntime::RDOCalcConst( parser->runTime, enu->findValue(second.str) );
 	} else if ( (type == RDORTPResParam::pt_str && second.type == RDORTPResParam::pt_enum) || (type == RDORTPResParam::pt_str && second.type == RDORTPResParam::pt_str) ) {
-		parser->lexer_loc_set( error().last_line, error().last_column );
+		parser->lexer_loc_set( src_pos().last_line, src_pos().last_pos );
 		parser->error( rdo::format("Неизвестный идентификатор: %s", str->c_str()) );
 	}
 
 	rdoRuntime::RDOCalc* newCalc = new rdoRuntime::RDOCalcIsNotEqual( parser->runTime, calc, second.calc );
 	RDOFUNLogic* logic = new RDOFUNLogic( newCalc );
-	logic->setErrorPos( error().first_line, error().first_column, second.error().last_line, second.error().last_column );
-	newCalc->setErrorPos( logic->error() );
+	logic->setSrcInfo( src_info(), second.src_info() );
+	newCalc->setSrcInfo( logic->src_info() );
 	return logic;
 }
 
@@ -919,40 +928,49 @@ rdoRuntime::RDOCalc* RDOFUNArithm::createCalc( const RDORTPResParam* const forTy
 			return calc;
 		}
 		rdoRuntime::RDOCalc* newCalc = new rdoRuntime::RDOCalcInt( parser->runTime, calc );
-		newCalc->setErrorPos( calc->error() );
+		newCalc->setSrcInfo( calc->src_info() );
 		return newCalc;
 	} else if ( type == RDORTPResParam::pt_str && !forType && str ) {
-		parser->lexer_loc_set( error().last_line, error().last_column );
+		parser->lexer_loc_set( src_pos().last_line, src_pos().last_pos );
 		parser->error( rdo::format( "Неизвестный идентификатор: %s", str->c_str()) );
 	}
 
 	if ( !forType ) {
-		parser->lexer_loc_set( error().last_line, error().last_column );
+		parser->lexer_loc_set( src_pos().last_line, src_pos().last_pos );
 		parser->error( "Неизвестный тип параметра" );
 	}
 
 	parser->lexer_loc_backup();
-	parser->lexer_loc_set( error().last_line, error().last_column );
+	parser->lexer_loc_set( src_pos().last_line, src_pos().last_pos );
 	rdoRuntime::RDOCalc* newCalc = new rdoRuntime::RDOCalcConst( parser->runTime, forType->getRSSEnumValue(str) );
 	parser->lexer_loc_restore();
-	newCalc->setErrorPos( error() );
+	newCalc->setSrcInfo( src_info() );
 	return newCalc;
 }
 
-void RDOFUNArithm::setErrorPos( const RDOParseErrorPos& error_pos )
+void RDOFUNArithm::setSrcInfo( const RDOParserSrcInfo& src_info )
 {
-	RDOParseErrorPos::setErrorPos( error_pos );
-	if ( calc ) calc->setErrorPos( error_pos.error() );
+	RDOParserSrcInfo::setSrcInfo( src_info );
+	if ( calc ) calc->setSrcInfo( src_info );
 }
 
-void RDOFUNArithm::setErrorPos( int first_line, int first_column, int last_line, int last_column )
+void RDOFUNArithm::setSrcInfo( const RDOParserSrcInfo& begin, const RDOParserSrcInfo& end )
 {
-	rdoRuntime::RDOErrorPos::Data error;
-	error.first_line   = first_line;
-	error.first_column = first_column;
-	error.last_line    = last_line;
-	error.last_column  = last_column;
-	setErrorPos( error );
+	RDOParserSrcInfo::setSrcInfo( begin, end );
+	if ( calc ) calc->setSrcInfo( begin, end );
+}
+
+void RDOFUNArithm::setSrcPos( const YYLTYPE& _error_pos )
+{
+	RDOParserSrcInfo::setSrcPos( _error_pos );
+	RDOParserSrcInfo info( _error_pos );
+	if ( calc ) calc->setSrcPos( info.src_pos() );
+}
+
+void RDOFUNArithm::setSrcPos( int first_line, int first_pos, int last_line, int last_pos )
+{
+	RDOSrcInfo::setSrcPos( first_line, first_pos, last_line, last_pos );
+	if ( calc ) calc->setSrcPos( first_line, first_pos, last_line, last_pos );
 }
 
 // ----------------------------------------------------------------------------
@@ -962,13 +980,13 @@ const RDOFUNArithm* RDOFUNParams::createSeqCall( const std::string* const seqNam
 {
 	const RDOFUNSequence* const seq = parser->findSequence( seqName );
 	if ( !seq ) {
-		parser->lexer_loc_set( error().last_line, error().last_column );
-//		parser->lexer_loc_set( name_error_pos.error().last_line, name_error_pos.error().last_column );
+		parser->lexer_loc_set( src_pos().last_line, src_pos().last_pos );
+//		parser->lexer_loc_set( name_error_pos.src_pos().last_line, name_error_pos.src_pos().last_pos );
 		parser->error( rdo::format("Неопределенная функция или последовательность: %s", seqName->c_str()) );
 //		parser->error( "Undefined function or sequence: " + *seqName );
 	}
 	parser->lexer_loc_backup();
-	parser->lexer_loc_set( error().last_line, error().last_column );
+	parser->lexer_loc_set( src_pos().last_line, src_pos().last_pos );
 	const RDOFUNArithm* arithm = seq->createCallCalc( this );
 	parser->lexer_loc_restore();
 	return arithm;
@@ -990,7 +1008,7 @@ const RDOFUNArithm *RDOFUNSequenceUniform::createCallCalc( const RDOFUNParams* c
 	funcCall->addParameter(arg1);
 	funcCall->addParameter(arg2);
 
-	RDOFUNArithm *res = new RDOFUNArithm( const_cast<RDOFUNSequenceUniform*>(this), RDORTPResParam::pt_int, funcCall, param->error() );
+	RDOFUNArithm *res = new RDOFUNArithm( const_cast<RDOFUNSequenceUniform*>(this), RDORTPResParam::pt_int, funcCall, param->src_pos() );
 	res->type = header->type->getType();
 	if ( res->type == RDORTPResParam::pt_enum ) {
 		parser->error( "Внутренняя ошибка парсера" );
@@ -1012,7 +1030,7 @@ const RDOFUNArithm *RDOFUNSequenceExponential::createCallCalc( const RDOFUNParam
 
 	funcCall->addParameter(arg1);
 
-	RDOFUNArithm* res = new RDOFUNArithm( const_cast<RDOFUNSequenceExponential*>(this), RDORTPResParam::pt_int, funcCall, param->error() );
+	RDOFUNArithm* res = new RDOFUNArithm( const_cast<RDOFUNSequenceExponential*>(this), RDORTPResParam::pt_int, funcCall, param->src_pos() );
 	res->type = header->type->getType();
 	if ( res->type == RDORTPResParam::pt_enum ) {
 		parser->error( "Внутренняя ошибка парсера" );
@@ -1037,7 +1055,7 @@ const RDOFUNArithm* RDOFUNSequenceNormal::createCallCalc( const RDOFUNParams* co
 	funcCall->addParameter(arg1);
 	funcCall->addParameter(arg2);
 
-	RDOFUNArithm* res = new RDOFUNArithm( const_cast<RDOFUNSequenceNormal*>(this), RDORTPResParam::pt_int, funcCall, param->error() );
+	RDOFUNArithm* res = new RDOFUNArithm( const_cast<RDOFUNSequenceNormal*>(this), RDORTPResParam::pt_int, funcCall, param->src_pos() );
 	res->type = header->type->getType();
 	if ( res->type == RDORTPResParam::pt_enum ) {
 		parser->error( "Внутренняя ошибка парсера" );
@@ -1055,7 +1073,7 @@ const RDOFUNArithm *RDOFUNSequenceByHist::createCallCalc(const RDOFUNParams *con
 
 	rdoRuntime::RDOCalcFunctionCall *funcCall = new rdoRuntime::RDOCalcFunctionCall(parser->runTime, next);
 
-	RDOFUNArithm* res = new RDOFUNArithm( const_cast<RDOFUNSequenceByHist*>(this), RDORTPResParam::pt_int, funcCall, param->error() );
+	RDOFUNArithm* res = new RDOFUNArithm( const_cast<RDOFUNSequenceByHist*>(this), RDORTPResParam::pt_int, funcCall, param->src_pos() );
 	res->type = header->type->getType();
 	if(res->type == RDORTPResParam::pt_enum)
 		res->enu = ((RDORTPEnumResParam *)header->type)->enu;
@@ -1072,7 +1090,7 @@ const RDOFUNArithm *RDOFUNSequenceEnumerative::createCallCalc(const RDOFUNParams
 
 	rdoRuntime::RDOCalcFunctionCall *funcCall = new rdoRuntime::RDOCalcFunctionCall(parser->runTime, next);
 
-	RDOFUNArithm* res = new RDOFUNArithm( const_cast<RDOFUNSequenceEnumerative*>(this), RDORTPResParam::pt_int, funcCall, param->error() );
+	RDOFUNArithm* res = new RDOFUNArithm( const_cast<RDOFUNSequenceEnumerative*>(this), RDORTPResParam::pt_int, funcCall, param->src_pos() );
 	res->type = header->type->getType();
 	if(res->type == RDORTPResParam::pt_enum)
 		res->enu = ((RDORTPEnumResParam *)header->type)->enu;
@@ -1089,13 +1107,13 @@ const RDOFUNArithm* RDOFUNParams::createCall( const std::string* const funName )
 
 	int nParams = func->getParams().size();
 	if ( nParams != params.size() ) {
-		parser->lexer_loc_set( error().last_line, error().last_column );
+		parser->lexer_loc_set( src_pos().last_line, src_pos().last_pos );
 		parser->error( rdo::format("Неверное количество параметров функции: %s", funName->c_str()) );
 //		parser->error(("Wrong parameters number in function call: " + *funName).c_str());
 	}
 
 	rdoRuntime::RDOCalcFunctionCall* funcCall = new rdoRuntime::RDOCalcFunctionCall( parser->runTime, func->getFunctionCalc() );
-	funcCall->setErrorPos( error() );
+	funcCall->setSrcInfo( src_info() );
 	for ( int i = 0; i < nParams; i++ ) {
 		const RDORTPResParam* const funcParam = func->getParams()[i]->getType();
 		RDOFUNArithm* arithm = params[i];
@@ -1121,7 +1139,7 @@ const RDOFUNArithm* RDOFUNParams::createCall( const std::string* const funName )
 			}
 			default: {
 				if ( arithm->type == RDORTPResParam::pt_int || arithm->type == RDORTPResParam::pt_real ) {
-					parser->lexer_loc_set( arithm->error().last_line, arithm->error().last_column );
+					parser->lexer_loc_set( arithm->src_pos().last_line, arithm->src_pos().last_pos );
 					parser->error( "Неверный тип параметра функции" );
 //					parser->error("wrong parameter type");
 				}
@@ -1135,7 +1153,7 @@ const RDOFUNArithm* RDOFUNParams::createCall( const std::string* const funName )
 					arg = arithm->createCalc( NULL );
 				} else {
 					arg = new rdoRuntime::RDOCalcConst( parser->runTime, static_cast<const RDORTPEnumResParam*>(funcParam)->enu->findValue(arithm->str) );
-					arg->setErrorPos( arithm->error() );
+					arg->setSrcInfo( arithm->src_info() );
 				}
 				funcCall->addParameter(arg);
 				break;
@@ -1143,7 +1161,7 @@ const RDOFUNArithm* RDOFUNParams::createCall( const std::string* const funName )
 		}
 	}
 
-	RDOFUNArithm* res = new RDOFUNArithm( this, RDORTPResParam::pt_int, funcCall, error() );
+	RDOFUNArithm* res = new RDOFUNArithm( this, RDORTPResParam::pt_int, funcCall, src_pos() );
 	res->type = func->getType()->getType();
 	if ( func->getType()->getType() == RDORTPResParam::pt_enum ) {
 		res->enu = ((RDORTPEnumResParam *)func->getType())->enu;
@@ -1257,23 +1275,26 @@ RDOFUNLogic* RDOFUNSelect::createFunSelectEmpty()
 RDOFUNArithm* RDOFUNSelect::createFunSelectSize()
 {
 	parser->getFUNGroupStack().pop_back();
-	return new RDOFUNArithm( this, RDORTPResParam::pt_int, new rdoRuntime::RDOFunCalcSelectSize( parser->runTime, select ), error() );
+	return new RDOFUNArithm( this, RDORTPResParam::pt_int, new rdoRuntime::RDOFunCalcSelectSize( parser->runTime, select ), src_pos() );
 }
 
-void RDOFUNSelect::setErrorPos( const RDOParseErrorPos& error_pos )
+void RDOFUNSelect::setSrcInfo( const RDOParserSrcInfo& src_info )
 {
-	RDOParseErrorPos::setErrorPos( error_pos );
-	if ( select ) select->setErrorPos( error_pos.error() );
+	RDOParserSrcInfo::setSrcInfo( src_info );
+	if ( select ) select->setSrcInfo( src_info );
 }
 
-void RDOFUNSelect::setErrorPos( int first_line, int first_column, int last_line, int last_column )
+void RDOFUNSelect::setSrcPos( const YYLTYPE& _error_pos )
 {
-	rdoRuntime::RDOErrorPos::Data error;
-	error.first_line   = first_line;
-	error.first_column = first_column;
-	error.last_line    = last_line;
-	error.last_column  = last_column;
-	setErrorPos( error );
+	RDOParserSrcInfo::setSrcPos( _error_pos );
+	RDOParserSrcInfo info( _error_pos );
+	if ( select ) select->setSrcPos( info.src_pos() );
+}
+
+void RDOFUNSelect::setSrcPos( int first_line, int first_pos, int last_line, int last_pos )
+{
+	RDOSrcInfo::setSrcPos( first_line, first_pos, last_line, last_pos );
+	if ( select ) select->setSrcPos( first_line, first_pos, last_line, last_pos );
 }
 
 // ----------------------------------------------------------------------------

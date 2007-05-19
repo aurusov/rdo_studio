@@ -73,4 +73,38 @@ void RDOParserObject::reparent( const RDOParserObject* _parent )
 	parser = _parent->parser;
 }
 
+// ----------------------------------------------------------------------------
+// ---------- RDOParserSrcInfo
+// ----------------------------------------------------------------------------
+RDOParserSrcInfo::RDOParserSrcInfo(): RDOSrcInfo()
+{
+	init();
+}
+
+RDOParserSrcInfo::RDOParserSrcInfo( const YYLTYPE& _error_pos ): RDOSrcInfo()
+{
+	init();
+	setSrcPos( _error_pos );
+}
+
+RDOParserSrcInfo::RDOParserSrcInfo( const rdoRuntime::RDOSrcInfo& _info )
+{
+	init();
+	RDOSrcInfo::setSrcInfo( _info );
+}
+
+RDOParserSrcInfo::RDOParserSrcInfo( const rdoRuntime::RDOSrcInfo::Position& _pos ): RDOSrcInfo()
+{
+	init();
+	RDOSrcInfo::setSrcPos( _pos );
+}
+
+void RDOParserSrcInfo::init()
+{
+	setSrcFileType( parser->getFileToParse() );
+	rdoRuntime::RDOSrcInfo::Position pos = src_pos();
+	pos.last_line = parser->lexer_loc_line();
+	RDOSrcInfo::setSrcPos( pos );
+}
+
 } // namespace rdoParse 

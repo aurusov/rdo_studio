@@ -46,66 +46,38 @@ public:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOParseErrorPos
+// ---------- RDOParserSrcInfo
 // ----------------------------------------------------------------------------
-class RDOParseErrorPos: public rdoRuntime::RDOErrorPos
-{
-public:
-	RDOParseErrorPos(): RDOErrorPos() {
-	}
-	RDOParseErrorPos( const YYLTYPE& _error_pos ): RDOErrorPos() {
-		error_pos.first_line   = _error_pos.first_line;
-		error_pos.first_column = _error_pos.first_column;
-		error_pos.last_line    = _error_pos.last_line;
-		error_pos.last_column  = _error_pos.last_column;
-	}
-	RDOParseErrorPos( const rdoRuntime::RDOErrorPos::Data& _error_pos ): RDOErrorPos() {
-		RDOErrorPos::setErrorPos( _error_pos );
-	}
-	void setErrorPos( const RDOParseErrorPos& copy ) {
-		RDOErrorPos::setErrorPos( copy.error_pos );
-	}
-	void setErrorPos( int first_line, int first_column, int last_line, int last_column ) {
-		RDOErrorPos::setErrorPos( first_line, first_column, last_line, last_column );
-	}
-	YYLTYPE errorYY() const {
-		YYLTYPE _error_pos;
-		_error_pos.first_line   = error_pos.first_line;
-		_error_pos.first_column = error_pos.first_column;
-		_error_pos.last_line    = error_pos.last_line;
-		_error_pos.last_column  = error_pos.last_column;
-		return _error_pos;
-	}
-};
-
-/*
-class RDOErrorPos
+class RDOParserSrcInfo: public rdoRuntime::RDOSrcInfo
 {
 private:
-	YYLTYPE error_pos;
+	void init();
 
 public:
-	RDOErrorPos() {
-		error_pos.first_line   = -1;
-		error_pos.first_column = -1;
-		error_pos.last_line    = -1;
-		error_pos.last_column  = -1;
+	RDOParserSrcInfo();
+	RDOParserSrcInfo( const YYLTYPE& _error_pos );
+	RDOParserSrcInfo( const rdoRuntime::RDOSrcInfo& _info );
+	RDOParserSrcInfo( const rdoRuntime::RDOSrcInfo::Position& _pos );
+
+	virtual void setSrcInfo( const RDOParserSrcInfo& copy ) {
+		RDOSrcInfo::setSrcPos( copy.src_pos() );
+		RDOSrcInfo::setSrcText( copy.src_text() );
+		RDOSrcInfo::setSrcFileType( copy.src_filetype() );
 	}
-	void setErrorPos( const YYLTYPE& _error_pos ) {
-		error_pos.first_line   = _error_pos.first_line;
-		error_pos.first_column = _error_pos.first_column;
-		error_pos.last_line    = _error_pos.last_line;
-		error_pos.last_column  = _error_pos.last_column;
+	virtual void setSrcInfo( const RDOParserSrcInfo& begin, const RDOParserSrcInfo& end ) {
+		RDOSrcInfo::setSrcPos( begin.src_pos().first_line, begin.src_pos().first_pos, end.src_pos().last_line, end.src_pos().last_pos );
+		RDOSrcInfo::setSrcText( begin.src_text() + " " + end.src_text() );
+		RDOSrcInfo::setSrcFileType( begin.src_filetype() );
 	}
-	void setErrorPos( int first_line, int first_column, int last_line, int last_column ) {
-		error_pos.first_line   = first_line;
-		error_pos.first_column = first_column;
-		error_pos.last_line    = last_line;
-		error_pos.last_column  = last_column;
+
+	virtual void setSrcPos( const YYLTYPE& _error_pos ) {
+		RDOSrcInfo::setSrcPos( _error_pos.first_line, _error_pos.first_column, _error_pos.last_line, _error_pos.last_column );
 	}
-	const YYLTYPE& error() const { return error_pos; }
+	virtual void setSrcPos( int first_line, int first_pos, int last_line, int last_pos ) {
+		RDOSrcInfo::setSrcPos( first_line, first_pos, last_line, last_pos );
+	}
 };
-*/
+
 template <class T> class comparePointers
 {
 public:

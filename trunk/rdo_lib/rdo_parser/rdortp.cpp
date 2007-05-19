@@ -153,18 +153,18 @@ void RDORTPResParam::checkParamType( const RDOFUNArithm* const action ) const
 		case RDORTPResParam::pt_int: {
 			if ( action->getType() == RDORTPResParam::pt_real ) {
 				parser->lexer_loc_backup();
-				parser->lexer_loc_set( action->error().last_line, action->error().last_column );
+				parser->lexer_loc_set( action->src_pos().last_line, action->src_pos().last_pos );
 				parser->warning( "Перевод вещественного числа в целое, возможна потеря данных" );
 				parser->lexer_loc_restore();
 			} else if ( action->getType() != RDORTPResParam::pt_int ) {
-				parser->lexer_loc_set( action->error().last_line, action->error().last_column );
+				parser->lexer_loc_set( action->src_pos().last_line, action->src_pos().last_pos );
 				parser->error( "Несоответствие типов. Ожидается целое число" );
 			}
 			break;
 		}
 		case RDORTPResParam::pt_real: {
 			if ( action->getType() != RDORTPResParam::pt_real && action->getType() != RDORTPResParam::pt_int ) {
-				parser->lexer_loc_set( action->error().last_line, action->error().last_column );
+				parser->lexer_loc_set( action->src_pos().last_line, action->src_pos().last_pos );
 				parser->error( "Несоответствие типов. Ожидается вещественное число" );
 			}
 			break;
@@ -172,7 +172,7 @@ void RDORTPResParam::checkParamType( const RDOFUNArithm* const action ) const
 		case RDORTPResParam::pt_enum: {
 			if ( action->getType() == RDORTPResParam::pt_str ) {
 				if ( static_cast<const RDORTPEnumResParam*>(this)->enu->findValue( action->str, false ) == -1 ) {
-					parser->lexer_loc_set( action->error().last_line, action->error().last_column );
+					parser->lexer_loc_set( action->src_pos().last_line, action->src_pos().last_pos );
 					if ( static_cast<const RDORTPEnumResParam*>(this)->enum_fun ) {
 						parser->error( rdo::format("Значение '%s' не может являться результатом функции: %s", action->str->c_str(), static_cast<const RDORTPEnumResParam*>(this)->enum_name.c_str()) );
 					} else {
@@ -180,10 +180,10 @@ void RDORTPResParam::checkParamType( const RDOFUNArithm* const action ) const
 					}
 				}
 			} else if ( action->getType() != RDORTPResParam::pt_enum ) {
-				parser->lexer_loc_set( action->error().last_line, action->error().last_column );
+				parser->lexer_loc_set( action->src_pos().last_line, action->src_pos().last_pos );
 				parser->error( "Несоответствие типов. Ожидается перечислимый тип" );
 			} else if ( action->enu != static_cast<const RDORTPEnumResParam*>(this)->enu ) {
-				parser->lexer_loc_set( action->error().last_line, action->error().last_column );
+				parser->lexer_loc_set( action->src_pos().last_line, action->src_pos().last_pos );
 				parser->error( "Несоответствие перечислимых типов" );
 			}
 			break;

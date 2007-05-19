@@ -11,10 +11,9 @@ namespace rdoRuntime
 // ----------------------------------------------------------------------------
 // ---------- RDOCalc
 // ----------------------------------------------------------------------------
-class RDOCalc: public RDORuntimeObject, public RDOErrorPos
+class RDOCalc: public RDORuntimeObject, public RDOSrcInfo
 {
 private:
-	rdoModelObjects::RDOFileType fileToParse;
 	virtual RDOValue calcValue( RDORuntime* runtime ) const = 0;
 
 public:
@@ -22,8 +21,6 @@ public:
 	virtual ~RDOCalc();
 
 	RDOValue calcValueBase( RDORuntime* runtime ) const;
-
-	rdoModelObjects::RDOFileType getFileType() const { return fileToParse; }
 };
 
 // ----------------------------------------------------------------------------
@@ -121,7 +118,7 @@ public:
 		parNumb( _parNumb ),
 		calc( _calc )
 	{
-		if ( calc ) setErrorPos( calc->error() );
+		if ( calc ) setSrcInfo( calc->src_info() );
 	}
 	virtual RDOValue calcValue( RDORuntime* runtime ) const {
 		runtime->setResParamVal( runtime->getResByRelRes(relNumb), parNumb, calc->calcValueBase( runtime ) );
@@ -146,7 +143,7 @@ public:
 		parNumb( _parNumb ),
 		calc( _calc )
 	{
-		if ( calc ) setErrorPos( calc->error() );
+		if ( calc ) setSrcInfo( calc->src_info() );
 	}
 	virtual RDOValue calcValue( RDORuntime* runtime ) const {
 		runtime->setResParamVal( resNumb, parNumb, calc->calcValueBase( runtime ) );
@@ -793,7 +790,7 @@ public:
 		right( _right )
 	{
 		if ( left && right ) {
-			setErrorPos( left->error().first_line, left->error().first_column, right->error().last_line, right->error().last_column );
+			setSrcInfo( left->src_info(), right->src_info() );
 		}
 	}
 };
@@ -868,7 +865,7 @@ public:
 		RDOCalc( _parent ),
 		calc( _calc )
 	{
-		if ( calc ) setErrorPos( calc->error() );
+		if ( calc ) setSrcInfo( calc->src_info() );
 	}
 	RDOValue calcValue( RDORuntime* runtime ) const {
 		return !calc->calcValueBase( runtime );
@@ -933,7 +930,7 @@ protected:
 		RDOCalc( _parent ),
 		oper( _oper )
 	{
-		if ( oper ) setErrorPos( oper->error() );
+		if ( oper ) setSrcInfo( oper->src_info() );
 	}
 };
 
@@ -1001,7 +998,7 @@ public:
 		number( _number ),
 		value( _value )
 	{
-		if ( value ) setErrorPos( value->error() );
+		if ( value ) setSrcInfo( value->src_info() );
 	}
 	virtual RDOValue calcValue( RDORuntime* runtime ) const { runtime->setConstValue(number, value->calcValueBase( runtime )); return 0; } 
 };
@@ -1173,7 +1170,7 @@ public:
 		useCommonWithMax( _useCommonWithMax ),
 		choice( _choice )
 	{
-		if ( choice ) setErrorPos( choice->error() );
+		if ( choice ) setSrcInfo( choice->src_info() );
 	}
 	virtual RDOValue calcValue( RDORuntime* runtime ) const;
 };

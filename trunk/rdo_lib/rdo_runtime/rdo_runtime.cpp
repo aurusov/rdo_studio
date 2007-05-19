@@ -450,7 +450,7 @@ std::string RDORuntime::writeActivitiesStructure( int& counter )
 void RDORuntime::error( const char* message, const RDOCalc* calc )
 {
 	if ( message ) {
-		errors.push_back( rdoSimulator::RDOSyntaxError( rdoSimulator::RDOSyntaxError::UNKNOWN, message, calc->error().last_line, calc->error().last_column, calc->getFileType() ) );
+		errors.push_back( rdoSimulator::RDOSyntaxError( rdoSimulator::RDOSyntaxError::UNKNOWN, message, calc->src_pos().last_line, calc->src_pos().last_pos, calc->src_filetype() ) );
 	}
 	throw RDORuntimeException( "" );
 }

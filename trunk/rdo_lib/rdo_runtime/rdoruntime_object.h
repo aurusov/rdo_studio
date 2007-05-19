@@ -110,41 +110,65 @@ public:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOErrorPos
+// ---------- RDOSrcInfo
 // ----------------------------------------------------------------------------
-class RDOErrorPos
+class RDOSrcInfo
 {
 public:
 typedef struct {
 	int first_line;
-	int first_column;
+	int first_pos;
 	int last_line;
-	int last_column;
-} Data;
+	int last_pos;
+} Position;
 
-protected:
-	Data error_pos;
+private:
+	Position                     position;
+	std::string                  text_data;
+	rdoModelObjects::RDOFileType file_type;
 
 public:
-	RDOErrorPos() {
-		error_pos.first_line   = -1;
-		error_pos.first_column = -1;
-		error_pos.last_line    = -1;
-		error_pos.last_column  = -1;
+	RDOSrcInfo(): text_data( "" ), file_type( rdoModelObjects::TRC ) {
+		position.first_line = -1;
+		position.first_pos  = -1;
+		position.last_line  = -1;
+		position.last_pos   = -1;
 	}
-	void setErrorPos( const Data& _error_pos ) {
-		error_pos.first_line   = _error_pos.first_line;
-		error_pos.first_column = _error_pos.first_column;
-		error_pos.last_line    = _error_pos.last_line;
-		error_pos.last_column  = _error_pos.last_column;
+	void setSrcInfo( const RDOSrcInfo& _info ) {
+		setSrcPos( _info.position );
+		setSrcText( _info.text_data );
+		setSrcFileType( _info.file_type );
 	}
-	void setErrorPos( int first_line, int first_column, int last_line, int last_column ) {
-		error_pos.first_line   = first_line;
-		error_pos.first_column = first_column;
-		error_pos.last_line    = last_line;
-		error_pos.last_column  = last_column;
+	void setSrcInfo( const RDOSrcInfo& begin, const RDOSrcInfo& end ) {
+		setSrcPos( begin.src_pos().first_line, begin.src_pos().first_pos, end.src_pos().last_line, end.src_pos().last_pos );
+		setSrcText( begin.src_text() + " " + end.src_text() );
+		setSrcFileType( begin.src_filetype() );
 	}
-	const Data& error() const { return error_pos; }
+
+	void setSrcPos( const Position& _position ) {
+		position.first_line = _position.first_line;
+		position.first_pos  = _position.first_pos;
+		position.last_line  = _position.last_line;
+		position.last_pos   = _position.last_pos;
+	}
+	virtual void setSrcPos( int first_line, int first_pos, int last_line, int last_pos ) {
+		position.first_line = first_line;
+		position.first_pos  = first_pos;
+		position.last_line  = last_line;
+		position.last_pos   = last_pos;
+	}
+
+	void setSrcText( const std::string& value ) {
+		text_data = value;
+	}
+	void setSrcFileType( rdoModelObjects::RDOFileType value ) {
+		file_type = value;
+	}
+
+	const RDOSrcInfo&                  src_info() const     { return *this;     }
+	const Position&                    src_pos()  const     { return position;  }
+	const std::string&                 src_text() const     { return text_data; }
+	const rdoModelObjects::RDOFileType src_filetype() const { return file_type; }
 };
 
 } // namespace rdoRuntime
@@ -190,12 +214,12 @@ inline const_mem_fun1_t<_Ret,_Tp,_Arg> mem_fun1(_Ret (_Tp::*__f)(_Arg) const)
 
 } // namespace std
 
-inline std::string operator +(char *str1, std::string &str2)
+inline std::string operator+ ( char* str1, std::string& str2 )
 {
 	return std::string(str1).append(str2);
 }
 
-inline std::string operator +(std::string &str1, char *str2)
+inline std::string operator+ ( std::string& str1, char* str2 )
 {
 	return std::string(str1).append(str2);
 }
