@@ -1526,16 +1526,19 @@ fun_logic: fun_arithm '=' fun_arithm			{ $$ = (int)(*(RDOFUNArithm *)$1 == *(RDO
 			| '[' fun_logic ']'					{
 				RDOFUNLogic* logic = reinterpret_cast<RDOFUNLogic*>($2);
 				logic->setSrcPos( @1.first_line, @1.first_column, @3.last_line, @3.last_column );
+				logic->setSrcText( "[" + logic->src_text() + "]" );
 				$$ = $2;
 			}
 			| '(' fun_logic ')'					{
 				RDOFUNLogic* logic = reinterpret_cast<RDOFUNLogic*>($2);
 				logic->setSrcPos( @1.first_line, @1.first_column, @3.last_line, @3.last_column );
+				logic->setSrcText( "(" + logic->src_text() + ")" );
 				$$ = $2;
 			}
 			| not_keyword fun_logic				{
 				RDOFUNLogic* logic = reinterpret_cast<RDOFUNLogic*>($2);
 				logic->setSrcPos( @1.first_line, @1.first_column, @2.last_line, @2.last_column );
+				logic->setSrcText( "not " + logic->src_text() );
 				$$ = (int)logic->operator_not();
 			}
 			| fun_group							{
@@ -1584,18 +1587,16 @@ fun_arithm: fun_arithm '+' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOF
 				$$ = $1;
 			}
 			| IDENTIF '.' IDENTIF			{
-				$$ = (int)new RDOFUNArithm( parser, reinterpret_cast<std::string*>($1), reinterpret_cast<std::string*>($3), @1, @3 );
+				$$ = (int)new RDOFUNArithm( parser, RDOParserSrcInfo( @1, *reinterpret_cast<std::string*>($1) ), RDOParserSrcInfo( @3, *reinterpret_cast<std::string*>($3) ) );
 			}
-			| INT_CONST						{ $$ = (int)new RDOFUNArithm( parser, (int)$1, @1 );          }
-			| REAL_CONST					{ $$ = (int)new RDOFUNArithm( parser, (double*)$1, @1 );      }
-			| IDENTIF						{ $$ = (int)new RDOFUNArithm( parser, (std::string*)$1, @1 ); }
+			| INT_CONST						{ $$ = (int)new RDOFUNArithm( parser, (int)$1, @1 );                                                                       }
+			| REAL_CONST					{ $$ = (int)new RDOFUNArithm( parser, (double*)$1, RDOParserSrcInfo( @1, reinterpret_cast<RDOLexer*>(lexer)->YYText() ) ); }
+			| IDENTIF						{ $$ = (int)new RDOFUNArithm( parser, (std::string*)$1, @1 );                                                              }
 			| '-' fun_arithm %prec UMINUS	{
-				YYLTYPE error_pos;
-				error_pos.first_line   = @1.first_line;
-				error_pos.first_column = @1.first_column;
-				error_pos.last_line    = @2.last_line;
-				error_pos.last_column  = @2.last_column;
-				$$ = (int)new RDOFUNArithm( parser, reinterpret_cast<RDOFUNArithm*>($2)->getType(), new rdoRuntime::RDOCalcUMinus( parser->runTime, reinterpret_cast<RDOFUNArithm*>($2)->createCalc() ), error_pos );
+				RDOParserSrcInfo info;
+				info.setSrcPos( @1.first_line, @1.first_column, @2.last_line, @2.last_column );
+				info.setSrcText( "-" + reinterpret_cast<RDOFUNArithm*>($2)->src_text() );
+				$$ = (int)new RDOFUNArithm( parser, reinterpret_cast<RDOFUNArithm*>($2)->getType(), new rdoRuntime::RDOCalcUMinus( parser->runTime, reinterpret_cast<RDOFUNArithm*>($2)->createCalc() ), info );
 			}
 			| error							{
 				parser->lexer_loc_set( &(@1) );

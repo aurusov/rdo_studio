@@ -128,11 +128,6 @@ public:
 	int getPAT_id() const      { return allPATPatterns.size() + 0; }
 	int getPMD_id() const      { return allPMDPokaz.size()    + 1; }
 	int getFUNCONST_id() const { return allFUNConstant.size() + 0; }
-//	int resourceTypeCounter;
-//	int resourceCounter;
-//	int patternCounter;
-//	int pokazCounter;
-//	int constCounter;
 
 	rdoRuntime::RDORuntime* runTime;
 	RDOSMR*                 smr;

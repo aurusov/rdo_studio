@@ -289,10 +289,10 @@ void RDOFUNLogic::setSrcInfo( const RDOParserSrcInfo& src_info )
 	if ( calc ) calc->setSrcInfo( src_info );
 }
 
-void RDOFUNLogic::setSrcInfo( const RDOParserSrcInfo& begin, const RDOParserSrcInfo& end )
+void RDOFUNLogic::setSrcInfo( const RDOParserSrcInfo& begin, const std::string& delim, const RDOParserSrcInfo& end )
 {
-	RDOParserSrcInfo::setSrcInfo( begin, end );
-	if ( calc ) calc->setSrcInfo( begin, end );
+	RDOParserSrcInfo::setSrcInfo( begin, delim, end );
+	if ( calc ) calc->setSrcInfo( begin, delim, end );
 }
 
 void RDOFUNLogic::setSrcPos( const YYLTYPE& _error_pos )
@@ -304,8 +304,14 @@ void RDOFUNLogic::setSrcPos( const YYLTYPE& _error_pos )
 
 void RDOFUNLogic::setSrcPos( int first_line, int first_pos, int last_line, int last_pos )
 {
-	RDOSrcInfo::setSrcPos( first_line, first_pos, last_line, last_pos );
+	RDOParserSrcInfo::setSrcPos( first_line, first_pos, last_line, last_pos );
 	if ( calc ) calc->setSrcPos( first_line, first_pos, last_line, last_pos );
+}
+
+void RDOFUNLogic::setSrcText( const std::string& value )
+{
+	RDOParserSrcInfo::setSrcText( value );
+	if ( calc ) calc->setSrcText( value );
 }
 
 // ----------------------------------------------------------------------------
@@ -331,71 +337,99 @@ RDOFUNArithm::RDOFUNArithm( const RDOParserObject* _parent, RDORTPResParam::Para
 	setSrcInfo( src_info );
 }
 
-RDOFUNArithm::RDOFUNArithm( RDOParser* _parser, std::string* resName, std::string* parName, const RDOParserSrcInfo& res_name_src_info, const RDOParserSrcInfo& par_name_src_info ):
+RDOFUNArithm::RDOFUNArithm( RDOParser* _parser, const RDOParserSrcInfo& res_name_src_info, const RDOParserSrcInfo& par_name_src_info ):
 	RDOParserObject( _parser ),
 	type( RDORTPResParam::pt_int ),
 	enu( NULL ),
 	str( NULL ),
 	calc( NULL )
 {
-	init( resName, parName, res_name_src_info, par_name_src_info );
+	init( res_name_src_info, par_name_src_info );
 }
 
-RDOFUNArithm::RDOFUNArithm( const RDOParserObject* _parent, std::string* resName, std::string* parName, const RDOParserSrcInfo& res_name_src_info, const RDOParserSrcInfo& par_name_src_info ):
+RDOFUNArithm::RDOFUNArithm( const RDOParserObject* _parent, const RDOParserSrcInfo& res_name_src_info, const RDOParserSrcInfo& par_name_src_info ):
 	RDOParserObject( _parent ),
 	type( RDORTPResParam::pt_int ),
 	enu( NULL ),
 	str( NULL ),
 	calc( NULL )
 {
-	init( resName, parName, res_name_src_info, par_name_src_info );
+	init( res_name_src_info, par_name_src_info );
 }
 
-void RDOFUNArithm::init( std::string* resName, std::string* parName, const RDOParserSrcInfo& res_name_src_info, const RDOParserSrcInfo& par_name_src_info )
+RDOFUNArithm::RDOFUNArithm( const RDOParserObject* _parent, std::string* qqq, std::string* parName, const RDOParserSrcInfo& res_name_src_info, const RDOParserSrcInfo& par_name_src_info ):
+	RDOParserObject( _parent ),
+	type( RDORTPResParam::pt_int ),
+	enu( NULL ),
+	str( NULL ),
+	calc( NULL )
 {
-	setSrcInfo( res_name_src_info );
-	const RDORSSResource* const res = parser->findRSSResource( resName ); 
+	RDOParserSrcInfo res_info( res_name_src_info );
+	res_info.setSrcText( *qqq );
+	RDOParserSrcInfo par_info( par_name_src_info );
+	par_info.setSrcText( *parName );
+	init( res_info, par_info );
+}
+
+RDOFUNArithm::RDOFUNArithm( RDOParser* _parser, std::string* qqq, std::string* parName, const RDOParserSrcInfo& res_name_src_info, const RDOParserSrcInfo& par_name_src_info ):
+	RDOParserObject( _parser ),
+	type( RDORTPResParam::pt_int ),
+	enu( NULL ),
+	str( NULL ),
+	calc( NULL )
+{
+	RDOParserSrcInfo res_info( res_name_src_info );
+	res_info.setSrcText( *qqq );
+	RDOParserSrcInfo par_info( par_name_src_info );
+	par_info.setSrcText( *parName );
+	init( res_info, par_info );
+}
+
+void RDOFUNArithm::init( const RDOParserSrcInfo& res_name_src_info, const RDOParserSrcInfo& par_name_src_info )
+{
+	setSrcInfo( res_name_src_info, ".", par_name_src_info );
+	const RDORSSResource* const res = parser->findRSSResource( &res_name_src_info.src_text() ); 
 	if ( res ) {
 		// Это ресурс с закладки RSS
 		if ( res->getType()->isTemporary() ) {
 			parser->lexer_loc_set( res_name_src_info.src_pos().last_line, res_name_src_info.src_pos().last_pos );
-			parser->error( rdo::format("Нельзя использовать временный ресурс: %s", resName->c_str()) );
-//			parser->error(("Cannot use temporary resource in function: " + *resName).c_str());
+			parser->error( rdo::format("Нельзя использовать временный ресурс: %s", res_name_src_info.src_text().c_str()) );
+//			parser->error(("Cannot use temporary resource in function: " + *res_name_src_info.src_text()).c_str());
 		}
 		int resNumb = res->getNumber();
-		int parNumb = res->getType()->getRTPParamNumber( parName );
+		int parNumb = res->getType()->getRTPParamNumber( &par_name_src_info.src_text() );
 		if ( parNumb == -1 ) {
 			parser->lexer_loc_set( par_name_src_info.src_pos().last_line, par_name_src_info.src_pos().last_pos );
-			parser->error( rdo::format("Неизвестный параметр ресурса: %s", parName->c_str()) );
+			parser->error( rdo::format("Неизвестный параметр ресурса: %s", par_name_src_info.src_text().c_str()) );
 		}
 		calc = new rdoRuntime::RDOCalcGetResParam( parser->runTime, resNumb, parNumb );
 		calc->setSrcInfo( src_info() );
-		type = res->getType()->findRTPParam(parName)->getType()->getType();
+		type = res->getType()->findRTPParam( &par_name_src_info.src_text() )->getType()->getType();
 		if ( type == RDORTPResParam::pt_enum ) {
-			enu = ((RDORTPEnumResParam *)res->getType()->findRTPParam(parName)->getType())->enu;
+			enu = ((RDORTPEnumResParam *)res->getType()->findRTPParam( &par_name_src_info.src_text() )->getType())->enu;
 		}
 		return;
 	} else {
 		// Это не ресурс, но возможно релевантный ресурс или ресурс, внутри групповой функции
-		if ( !parser->getFUNGroupStack().empty() && *parser->getFUNGroupStack().back()->resType->getName() == *resName ) {
+		if ( !parser->getFUNGroupStack().empty() && *parser->getFUNGroupStack().back()->resType->getName() == res_name_src_info.src_text() ) {
 			// Это ресурс внутри групповой функции
 			RDOFUNGroup* currGroup = parser->getFUNGroupStack().back();
-			int parNumb = currGroup->resType->getRTPParamNumber(parName);
+			int parNumb = currGroup->resType->getRTPParamNumber( &par_name_src_info.src_text() );
 			if ( parNumb == -1 ) {
 				parser->lexer_loc_set( par_name_src_info.src_pos().last_line, par_name_src_info.src_pos().last_pos );
-				parser->error( rdo::format("Неизвестный параметр ресурса: %s", parName->c_str()) );
+				parser->error( rdo::format("Неизвестный параметр ресурса: %s", par_name_src_info.src_text().c_str()) );
 			}
 			calc = new rdoRuntime::RDOCalcGetGroupResParam( parser->runTime, parNumb );
 			calc->setSrcInfo( src_info() );
-			type = currGroup->resType->findRTPParam(parName)->getType()->getType();
+			type = currGroup->resType->findRTPParam( &par_name_src_info.src_text() )->getType()->getType();
 			if ( type == RDORTPResParam::pt_enum ) {
-				enu = ((RDORTPEnumResParam *)currGroup->resType->findRTPParam(parName)->getType())->enu;
+				enu = ((RDORTPEnumResParam *)currGroup->resType->findRTPParam( &par_name_src_info.src_text() )->getType())->enu;
 			}
 			return;
-		} else if ( parser->getFileToParse() == rdoModelObjects::PAT && parser->getLastPATPattern() && parser->getLastPATPattern()->findRelevantResource(resName) ) {
+		} else if ( parser->getFileToParse() == rdoModelObjects::PAT && parser->getLastPATPattern() && parser->getLastPATPattern()->findRelevantResource( &res_name_src_info.src_text() ) ) {
 			// Это релевантный ресурс где-то в паттерне (with_min-common-choice, $Time, $Body)
 			RDOPATPattern* pat = parser->getLastPATPattern();
-			const RDORelevantResource* const rel = pat->findRelevantResource( resName );
+			const RDORelevantResource* const rel = pat->findRelevantResource( &res_name_src_info.src_text() );
 			if ( !pat->currRelRes ) {
 				// Внутри with_min-common-choice или $Time
 				if ( rel->begin == rdoRuntime::RDOResourceTrace::CS_NonExist || rel->begin == rdoRuntime::RDOResourceTrace::CS_Create ) {
@@ -453,120 +487,126 @@ void RDOFUNArithm::init( std::string* resName, std::string* parName, const RDOPa
 					}
 				}
 			}
-			int relResNumb = pat->findRelevantResourceNum( resName );
-			int parNumb    = rel->getType()->getRTPParamNumber( parName );
+			int relResNumb = pat->findRelevantResourceNum( &res_name_src_info.src_text() );
+			int parNumb    = rel->getType()->getRTPParamNumber( &par_name_src_info.src_text() );
 			if ( parNumb == -1 ) {
 				parser->lexer_loc_set( par_name_src_info.src_pos().last_line, par_name_src_info.src_pos().last_pos );
-				parser->error( rdo::format("Неизвестный параметр ресурса: %s", parName->c_str()) );
-//				parser->error( "Unknown resource parameter: " + *parName );
+				parser->error( rdo::format("Неизвестный параметр ресурса: %s", par_name_src_info.src_text().c_str()) );
+//				parser->error( "Unknown resource parameter: " + *par_name_src_info.src_text() );
 			}
 			calc = new rdoRuntime::RDOCalcGetRelevantResParam( parser->runTime, relResNumb, parNumb );
 			calc->setSrcInfo( src_info() );
-			type = rel->getType()->findRTPParam( parName )->getType()->getType();
+			type = rel->getType()->findRTPParam( &par_name_src_info.src_text() )->getType()->getType();
 			if ( type == RDORTPResParam::pt_enum ) {
-				enu = ((RDORTPEnumResParam*)rel->getType()->findRTPParam(parName)->getType())->enu;
+				enu = ((RDORTPEnumResParam*)rel->getType()->findRTPParam( &par_name_src_info.src_text() )->getType())->enu;
 			}
 			return;
-		} else if ( parser->getFileToParse() == rdoModelObjects::DPT && parser->getLastDPTSearch() && parser->getLastDPTSearch()->lastActivity && parser->getLastDPTSearch()->lastActivity->getRule() && parser->getLastDPTSearch()->lastActivity->getRule()->findRelevantResource(resName) ) {
+		} else if ( parser->getFileToParse() == rdoModelObjects::DPT && parser->getLastDPTSearch() && parser->getLastDPTSearch()->lastActivity && parser->getLastDPTSearch()->lastActivity->getRule() && parser->getLastDPTSearch()->lastActivity->getRule()->findRelevantResource( &res_name_src_info.src_text() ) ) {
 			// Это ресурс, который используется в DPT (condition, term_condition, evaluate_by, value before, value after)
-			const RDORelevantResource* const rel = parser->getLastDPTSearch()->lastActivity->getRule()->findRelevantResource( resName );
-			int relResNumb = parser->getLastDPTSearch()->lastActivity->getRule()->findRelevantResourceNum( resName );
-			int parNumb    = rel->getType()->getRTPParamNumber(parName);
+			const RDORelevantResource* const rel = parser->getLastDPTSearch()->lastActivity->getRule()->findRelevantResource( &res_name_src_info.src_text() );
+			int relResNumb = parser->getLastDPTSearch()->lastActivity->getRule()->findRelevantResourceNum( &res_name_src_info.src_text() );
+			int parNumb    = rel->getType()->getRTPParamNumber( &par_name_src_info.src_text() );
 			if ( parNumb == -1 ) {
 				parser->lexer_loc_set( par_name_src_info.src_pos().last_line, par_name_src_info.src_pos().last_pos );
-				parser->error( rdo::format("Неизвестный параметр ресурса: %s", parName->c_str()) );
+				parser->error( rdo::format("Неизвестный параметр ресурса: %s", par_name_src_info.src_text().c_str()) );
 			}
 
 			calc = new rdoRuntime::RDOCalcGetRelevantResParam( parser->runTime, relResNumb, parNumb );
 			calc->setSrcInfo( src_info() );
-			type = rel->getType()->findRTPParam(parName)->getType()->getType();
+			type = rel->getType()->findRTPParam( &par_name_src_info.src_text() )->getType()->getType();
 			if ( type == RDORTPResParam::pt_enum ) {
-				enu = ((RDORTPEnumResParam *)rel->getType()->findRTPParam(parName)->getType())->enu;
+				enu = ((RDORTPEnumResParam *)rel->getType()->findRTPParam( &par_name_src_info.src_text() )->getType())->enu;
 			}
 			return;
 		}
 	}
 	parser->lexer_loc_set( res_name_src_info.src_pos().last_line, res_name_src_info.src_pos().last_pos );
-	parser->error( rdo::format("Неизвестный ресурс: %s", resName->c_str()) );
-//	parser->error(("Unknown resource name: " + *resName).c_str());
+	parser->error( rdo::format("Неизвестный ресурс: %s", res_name_src_info.src_text().c_str()) );
+//	parser->error(("Unknown resource name: " + *res_name_src_info.src_text()).c_str());
 }
 
-RDOFUNArithm::RDOFUNArithm( RDOParser* _parser, int n, const RDOParserSrcInfo& src_info ):
+RDOFUNArithm::RDOFUNArithm( RDOParser* _parser, int value, const YYLTYPE& _pos ):
 	RDOParserObject( _parser ),
 	type( RDORTPResParam::pt_int ),
 	enu( NULL ),
 	str( NULL ),
 	calc( NULL )
 {
-	calc = new rdoRuntime::RDOCalcConst( parser->runTime, n );
+	RDOParserSrcInfo src_info( _pos );
+	src_info.setSrcText( rdo::format( "%d", value ) );
+	calc = new rdoRuntime::RDOCalcConst( parser->runTime, value );
 	setSrcInfo( src_info );
 }
 
-RDOFUNArithm::RDOFUNArithm( const RDOParserObject* _parent, int n, const RDOParserSrcInfo& src_info ):
+RDOFUNArithm::RDOFUNArithm( const RDOParserObject* _parent, int value, const YYLTYPE& _pos ):
 	RDOParserObject( _parent ),
 	type( RDORTPResParam::pt_int ),
 	enu( NULL ),
 	str( NULL ),
 	calc( NULL )
 {
-	calc = new rdoRuntime::RDOCalcConst( parser->runTime, n );
+	RDOParserSrcInfo src_info( _pos );
+	src_info.setSrcText( rdo::format( "%d", value ) );
+	calc = new rdoRuntime::RDOCalcConst( parser->runTime, value );
 	setSrcInfo( src_info );
 }
 
-RDOFUNArithm::RDOFUNArithm( RDOParser* _parser, double* d, const RDOParserSrcInfo& src_info ):
+RDOFUNArithm::RDOFUNArithm( RDOParser* _parser, double* value, const RDOParserSrcInfo& src_info ):
 	RDOParserObject( _parser ),
 	type( RDORTPResParam::pt_real ),
 	enu( NULL ),
 	str( NULL ),
 	calc( NULL )
 {
-	calc = new rdoRuntime::RDOCalcConst( parser->runTime, *d );
+	calc = new rdoRuntime::RDOCalcConst( parser->runTime, *value );
 	setSrcInfo( src_info );
 }
 
-RDOFUNArithm::RDOFUNArithm( const RDOParserObject* _parent, double* d, const RDOParserSrcInfo& src_info ):
+RDOFUNArithm::RDOFUNArithm( const RDOParserObject* _parent, double* value, const RDOParserSrcInfo& src_info ):
 	RDOParserObject( _parent ),
 	type( RDORTPResParam::pt_real ),
 	enu( NULL ),
 	str( NULL ),
 	calc( NULL )
 {
-	calc = new rdoRuntime::RDOCalcConst( parser->runTime, *d );
+	calc = new rdoRuntime::RDOCalcConst( parser->runTime, *value );
 	setSrcInfo( src_info );
 }
 
-RDOFUNArithm::RDOFUNArithm( RDOParser* _parser, std::string* s, const RDOParserSrcInfo& src_info ):
+RDOFUNArithm::RDOFUNArithm( RDOParser* _parser, std::string* value, const YYLTYPE& _pos ):
 	RDOParserObject( _parser ),
 	type( RDORTPResParam::pt_int ),
 	enu( NULL ),
 	str( NULL ),
 	calc( NULL )
 {
-	init( s, src_info );
+	init( value, _pos );
 }
 
-RDOFUNArithm::RDOFUNArithm( const RDOParserObject* _parent, std::string* s, const RDOParserSrcInfo& src_info ):
+RDOFUNArithm::RDOFUNArithm( const RDOParserObject* _parent, std::string* value, const YYLTYPE& _pos ):
 	RDOParserObject( _parent ),
 	type( RDORTPResParam::pt_int ),
 	enu( NULL ),
 	str( NULL ),
 	calc( NULL )
 {
-	init( s, src_info );
+	init( value, _pos );
 }
 
-void RDOFUNArithm::init( std::string* s, const RDOParserSrcInfo& src_info )
+void RDOFUNArithm::init( std::string* value, const YYLTYPE& _pos )
 {
+	RDOParserSrcInfo src_info( _pos );
+	src_info.setSrcText( *value );
 	setSrcInfo( src_info );
 
-	if ( (*s == "Time_now") || (*s == "time_now") || (*s == "Системное_время") || (*s == "системное_время") ) {
+	if ( (*value == "Time_now") || (*value == "time_now") || (*value == "Системное_время") || (*value == "системное_время") ) {
 		type = RDORTPResParam::pt_real;
 		calc = new rdoRuntime::RDOCalcGetTimeNow( parser->runTime );
 		calc->setSrcInfo( src_info );
 		return;
 	}
 
-	if ( *s == "Seconds" || *s == "seconds" ) {
+	if ( *value == "Seconds" || *value == "seconds" ) {
 		type = RDORTPResParam::pt_real;
 		calc = new rdoRuntime::RDOCalcGetSeconds( parser->runTime );
 		calc->setSrcInfo( src_info );
@@ -576,17 +616,17 @@ void RDOFUNArithm::init( std::string* s, const RDOParserSrcInfo& src_info )
 	// Ищем параметры паттерна или функции по имени
 	const RDOFUNFunctionParam* param = NULL;
 	switch ( parser->getFileToParse() ) {
-		case rdoModelObjects::PAT: param = parser->getLastPATPattern()->findPATPatternParam( s ); break;
-		case rdoModelObjects::FUN: param = parser->getLastFUNFunction()->findFUNFunctionParam( s ); break;
+		case rdoModelObjects::PAT: param = parser->getLastPATPattern()->findPATPatternParam( value ); break;
+		case rdoModelObjects::FUN: param = parser->getLastFUNFunction()->findFUNFunctionParam( value ); break;
 	}
 
 	// Ищем константы по имени
-	const RDOFUNConstant* cons = parser->findFUNConst( s );
+	const RDOFUNConstant* cons = parser->findFUNConst( value );
 
 	if ( cons && param ) {
 		parser->lexer_loc_set( src_info.src_pos().last_line, src_info.src_pos().last_pos );
-		parser->error( rdo::format("Имя параметра образца совпадает с именем константы: %s", s->c_str()) );
-//		parser->error( "Ambiguity: constant or parameter usage: " + *s + " ?" );
+		parser->error( rdo::format("Имя параметра образца совпадает с именем константы: %s", value->c_str()) );
+//		parser->error( "Ambiguity: constant or parameter usage: " + *value + " ?" );
 	}
 
 	if ( cons ) {
@@ -600,16 +640,16 @@ void RDOFUNArithm::init( std::string* s, const RDOParserSrcInfo& src_info )
 	}
 
 	// Ищем последовательность по имени
-	const RDOFUNSequence* seq = parser->findSequence( s );
+	const RDOFUNSequence* seq = parser->findSequence( value );
 	if ( seq && param ) {
 		parser->lexer_loc_set( src_info.src_pos().last_line, src_info.src_pos().last_pos );
-		parser->error( rdo::format("Имя параметра образца совпадает с именем последовательности: %s", s->c_str()) );
-//		parser->error("Ambiguity: sequence or parameter usage: " + *s + " ?");
+		parser->error( rdo::format("Имя параметра образца совпадает с именем последовательности: %s", value->c_str()) );
+//		parser->error("Ambiguity: sequence or parameter usage: " + *value + " ?");
 	}
 
 	if ( seq ) {
 		RDOFUNParams tmp( seq );
-		const RDOFUNArithm* ar = tmp.createSeqCall( s );
+		const RDOFUNArithm* ar = tmp.createSeqCall( value );
 		type = ar->getType();
 		if ( type == RDORTPResParam::pt_enum ) {
 			enu = ar->enu;
@@ -626,15 +666,15 @@ void RDOFUNArithm::init( std::string* s, const RDOParserSrcInfo& src_info )
 			enu = ((RDORTPEnumResParam *)param->getType())->enu;
 		}
 		switch ( parser->getFileToParse() ) {
-			case rdoModelObjects::PAT: calc = new rdoRuntime::RDOCalcPatParam( parser->runTime, parser->getLastPATPattern()->findPATPatternParamNum( s ) ); break;
-			case rdoModelObjects::FUN: calc = new rdoRuntime::RDOCalcFuncParam( parser->runTime, parser->getLastFUNFunction()->findFUNFunctionParamNum( s ) ); break;
+			case rdoModelObjects::PAT: calc = new rdoRuntime::RDOCalcPatParam( parser->runTime, parser->getLastPATPattern()->findPATPatternParamNum( value ) ); break;
+			case rdoModelObjects::FUN: calc = new rdoRuntime::RDOCalcFuncParam( parser->runTime, parser->getLastFUNFunction()->findFUNFunctionParamNum( value ) ); break;
 		}
 		if ( calc ) calc->setSrcInfo( src_info );
 		return;
 	} else {
 		// Это НЕ параметр
 		type = RDORTPResParam::pt_str;
-		str  = s;
+		str  = value;
 		return;
 	}
 }
@@ -666,7 +706,7 @@ RDOFUNArithm* RDOFUNArithm::operator +( RDOFUNArithm& second )
 	}
 
 	RDOFUNArithm* arithm = new RDOFUNArithm( this, newType, new rdoRuntime::RDOCalcPlus( parser->runTime, calc, second.calc ), src_pos() );
-	arithm->setSrcInfo( src_info(), second.src_info() );
+	arithm->setSrcInfo( src_info(), " + ", second.src_info() );
 	return arithm;
 }
 
@@ -697,7 +737,7 @@ RDOFUNArithm* RDOFUNArithm::operator -( RDOFUNArithm& second )
 	}
 
 	RDOFUNArithm* arithm = new RDOFUNArithm( this, newType, new rdoRuntime::RDOCalcMinus( parser->runTime, calc, second.calc ), src_pos() );
-	arithm->setSrcInfo( src_info(), second.src_info() );
+	arithm->setSrcInfo( src_info(), " - ", second.src_info() );
 	return arithm;
 }
 
@@ -729,7 +769,7 @@ RDOFUNArithm* RDOFUNArithm::operator *( RDOFUNArithm& second )
 
 	rdoRuntime::RDOCalc* newCalc = new rdoRuntime::RDOCalcMult( parser->runTime, calc, second.calc );
 	RDOFUNArithm* arithm = new RDOFUNArithm( this, newType, newCalc, src_pos() );
-	arithm->setSrcInfo( src_info(), second.src_info() );
+	arithm->setSrcInfo( src_info(), " * ", second.src_info() );
 	newCalc->setSrcInfo( arithm->src_info() );
 	return arithm;
 }
@@ -766,7 +806,7 @@ RDOFUNArithm* RDOFUNArithm::operator /( RDOFUNArithm& second )
 		newCalc = new rdoRuntime::RDOCalcDoubleToInt( parser->runTime, newCalc );
 	}
 	RDOFUNArithm* arithm = new RDOFUNArithm( this, newType, newCalc, src_pos() );
-	arithm->setSrcInfo( src_info(), second.src_info() );
+	arithm->setSrcInfo( src_info(), " / ", second.src_info() );
 	newCalc->setSrcInfo( arithm->src_info() );
 	newCalc_div->setSrcInfo( arithm->src_info() );
 	return arithm;
@@ -793,7 +833,7 @@ RDOFUNLogic* RDOFUNArithm::operator <( RDOFUNArithm& second )
 	}
 	rdoRuntime::RDOCalc* newCalc = new rdoRuntime::RDOCalcIsLess( parser->runTime, calc, second.calc );
 	RDOFUNLogic* logic = new RDOFUNLogic( newCalc );
-	logic->setSrcInfo( src_info(), second.src_info() );
+	logic->setSrcInfo( src_info(), " < ", second.src_info() );
 	newCalc->setSrcInfo( logic->src_info() );
 	return logic;
 }
@@ -818,7 +858,7 @@ RDOFUNLogic* RDOFUNArithm::operator >( RDOFUNArithm& second )
 	}
 	rdoRuntime::RDOCalc* newCalc = new rdoRuntime::RDOCalcIsGreater( parser->runTime, calc, second.calc );
 	RDOFUNLogic* logic = new RDOFUNLogic( newCalc );
-	logic->setSrcInfo( src_info(), second.src_info() );
+	logic->setSrcInfo( src_info(), " > ", second.src_info() );
 	newCalc->setSrcInfo( logic->src_info() );
 	return logic;
 }
@@ -843,7 +883,7 @@ RDOFUNLogic* RDOFUNArithm::operator <=( RDOFUNArithm& second )
 	}
 	rdoRuntime::RDOCalc* newCalc = new rdoRuntime::RDOCalcIsLEQ( parser->runTime, calc, second.calc );
 	RDOFUNLogic* logic = new RDOFUNLogic( newCalc );
-	logic->setSrcInfo( src_info(), second.src_info() );
+	logic->setSrcInfo( src_info(), " <= ", second.src_info() );
 	newCalc->setSrcInfo( logic->src_info() );
 	return logic;
 }
@@ -868,7 +908,7 @@ RDOFUNLogic* RDOFUNArithm::operator >=( RDOFUNArithm& second )
 	}
 	rdoRuntime::RDOCalc* newCalc = new rdoRuntime::RDOCalcIsGEQ( parser->runTime, calc, second.calc );
 	RDOFUNLogic* logic = new RDOFUNLogic( newCalc );
-	logic->setSrcInfo( src_info(), second.src_info() );
+	logic->setSrcInfo( src_info(), " >= ", second.src_info() );
 	newCalc->setSrcInfo( logic->src_info() );
 	return logic;
 }
@@ -892,7 +932,7 @@ RDOFUNLogic* RDOFUNArithm::operator ==( RDOFUNArithm& second )
 
 	rdoRuntime::RDOCalc* newCalc = new rdoRuntime::RDOCalcIsEqual( parser->runTime, calc, second.calc );
 	RDOFUNLogic* logic = new RDOFUNLogic( newCalc );
-	logic->setSrcInfo( src_info(), second.src_info() );
+	logic->setSrcInfo( src_info(), " == ", second.src_info() );
 	newCalc->setSrcInfo( logic->src_info() );
 	return logic;
 }
@@ -913,7 +953,7 @@ RDOFUNLogic* RDOFUNArithm::operator !=( RDOFUNArithm& second )
 
 	rdoRuntime::RDOCalc* newCalc = new rdoRuntime::RDOCalcIsNotEqual( parser->runTime, calc, second.calc );
 	RDOFUNLogic* logic = new RDOFUNLogic( newCalc );
-	logic->setSrcInfo( src_info(), second.src_info() );
+	logic->setSrcInfo( src_info(), " <> ", second.src_info() );
 	newCalc->setSrcInfo( logic->src_info() );
 	return logic;
 }
@@ -954,10 +994,10 @@ void RDOFUNArithm::setSrcInfo( const RDOParserSrcInfo& src_info )
 	if ( calc ) calc->setSrcInfo( src_info );
 }
 
-void RDOFUNArithm::setSrcInfo( const RDOParserSrcInfo& begin, const RDOParserSrcInfo& end )
+void RDOFUNArithm::setSrcInfo( const RDOParserSrcInfo& begin, const std::string& delim, const RDOParserSrcInfo& end )
 {
-	RDOParserSrcInfo::setSrcInfo( begin, end );
-	if ( calc ) calc->setSrcInfo( begin, end );
+	RDOParserSrcInfo::setSrcInfo( begin, delim, end );
+	if ( calc ) calc->setSrcInfo( begin, delim, end );
 }
 
 void RDOFUNArithm::setSrcPos( const YYLTYPE& _error_pos )
@@ -969,7 +1009,7 @@ void RDOFUNArithm::setSrcPos( const YYLTYPE& _error_pos )
 
 void RDOFUNArithm::setSrcPos( int first_line, int first_pos, int last_line, int last_pos )
 {
-	RDOSrcInfo::setSrcPos( first_line, first_pos, last_line, last_pos );
+	RDOParserSrcInfo::setSrcPos( first_line, first_pos, last_line, last_pos );
 	if ( calc ) calc->setSrcPos( first_line, first_pos, last_line, last_pos );
 }
 
@@ -1293,7 +1333,7 @@ void RDOFUNSelect::setSrcPos( const YYLTYPE& _error_pos )
 
 void RDOFUNSelect::setSrcPos( int first_line, int first_pos, int last_line, int last_pos )
 {
-	RDOSrcInfo::setSrcPos( first_line, first_pos, last_line, last_pos );
+	RDOParserSrcInfo::setSrcPos( first_line, first_pos, last_line, last_pos );
 	if ( select ) select->setSrcPos( first_line, first_pos, last_line, last_pos );
 }
 

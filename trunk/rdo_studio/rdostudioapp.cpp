@@ -90,6 +90,8 @@ void RDOStudioCommandLineInfo::ParseParam( LPCTSTR lpszParam, BOOL bFlag, BOOL b
 			studioApp.autoRun = true;
 		} else if ( CString( lpszParam ).CompareNoCase( "autoexit" ) == 0 ) {
 			studioApp.autoExitByModel = true;
+		} else if ( CString( lpszParam ).CompareNoCase( "dont_close_if_error" ) == 0 ) {
+			studioApp.dontCloseIfError = true;
 		} else if ( CString( lpszParam ).CompareNoCase( "pluginstart" ) == 0 ) {
 			plugin_start_found = true;
 		} else if ( CString( lpszParam ).CompareNoCase( "pluginautoexit" ) == 0 ) {
@@ -155,6 +157,7 @@ RDOStudioApp::RDOStudioApp():
 	showCaptionFullName( false ),
 	autoRun( false ),
 	autoExitByModel( false ),
+	dontCloseIfError( false ),
 	exitCode( rdoSimulator::EC_OK ),
 	openModelName( "" )
 {
@@ -247,9 +250,10 @@ BOOL RDOStudioApp::InitInstance()
 		} else {
 			openModelName = rdo::extractFilePath( RDOStudioApp::getFullFileName() ) + openModelName;
 			if ( rdo::isFileExists( openModelName ) && model->openModel( openModelName ) ) {
-				autoRun         = true;
-				autoExitByModel = true;
-				autoModel       = true;
+				autoRun          = true;
+				autoExitByModel  = true;
+				autoModel        = true;
+				dontCloseIfError = true;
 			} else {
 				exitCode = rdoSimulator::EC_ModelNotFound;
 				return false;
@@ -264,8 +268,9 @@ BOOL RDOStudioApp::InitInstance()
 	if ( autoModel ) {
 		newModel = false;
 	} else {
-		autoRun         = false;
-		autoExitByModel = false;
+		autoRun          = false;
+		autoExitByModel  = false;
+		dontCloseIfError = false;
 	}
 	if ( newModel ) {
 //		OnFileNew();
@@ -737,7 +742,9 @@ void RDOStudioApp::OnAppAbout()
 void RDOStudioApp::autoCloseByModel()
 {
 	if ( autoExitByModel ) {
-		mainFrame->SendMessage( WM_CLOSE );
+		if ( !dontCloseIfError || !model || (dontCloseIfError && (model->getExitCode() == rdoSimulator::EC_OK || model->getExitCode() == rdoSimulator::EC_NoMoreEvents) ) ) {
+			mainFrame->SendMessage( WM_CLOSE );
+		}
 	}
 }
 

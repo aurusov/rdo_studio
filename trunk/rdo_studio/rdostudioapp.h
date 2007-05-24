@@ -59,6 +59,7 @@ private:
 
 	bool autoRun;
 	bool autoExitByModel;
+	bool dontCloseIfError;
 	rdoSimulator::RDOExitCode exitCode;
 	std::string openModelName;
 

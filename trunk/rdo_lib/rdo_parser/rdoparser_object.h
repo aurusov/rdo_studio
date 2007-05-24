@@ -58,20 +58,21 @@ public:
 	RDOParserSrcInfo( const YYLTYPE& _error_pos );
 	RDOParserSrcInfo( const rdoRuntime::RDOSrcInfo& _info );
 	RDOParserSrcInfo( const rdoRuntime::RDOSrcInfo::Position& _pos );
+	RDOParserSrcInfo( const YYLTYPE& _error_pos, const std::string& _text );
 
 	virtual void setSrcInfo( const RDOParserSrcInfo& copy ) {
 		RDOSrcInfo::setSrcPos( copy.src_pos() );
 		RDOSrcInfo::setSrcText( copy.src_text() );
 		RDOSrcInfo::setSrcFileType( copy.src_filetype() );
 	}
-	virtual void setSrcInfo( const RDOParserSrcInfo& begin, const RDOParserSrcInfo& end ) {
+	virtual void setSrcInfo( const RDOParserSrcInfo& begin, const std::string& delim, const RDOParserSrcInfo& end ) {
 		RDOSrcInfo::setSrcPos( begin.src_pos().first_line, begin.src_pos().first_pos, end.src_pos().last_line, end.src_pos().last_pos );
-		RDOSrcInfo::setSrcText( begin.src_text() + " " + end.src_text() );
+		RDOSrcInfo::setSrcText( begin.src_text() + delim + end.src_text() );
 		RDOSrcInfo::setSrcFileType( begin.src_filetype() );
 	}
 
-	virtual void setSrcPos( const YYLTYPE& _error_pos ) {
-		RDOSrcInfo::setSrcPos( _error_pos.first_line, _error_pos.first_column, _error_pos.last_line, _error_pos.last_column );
+	virtual void setSrcPos( const YYLTYPE& _pos ) {
+		RDOSrcInfo::setSrcPos( _pos.first_line, _pos.first_column, _pos.last_line, _pos.last_column );
 	}
 	virtual void setSrcPos( int first_line, int first_pos, int last_line, int last_pos ) {
 		RDOSrcInfo::setSrcPos( first_line, first_pos, last_line, last_pos );

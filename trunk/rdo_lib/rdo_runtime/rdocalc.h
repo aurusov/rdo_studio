@@ -789,37 +789,58 @@ public:
 		left( _left ),
 		right( _right )
 	{
-		if ( left && right ) {
-			setSrcInfo( left->src_info(), right->src_info() );
-		}
 	}
 };
 
 class RDOCalcPlus: public RDOCalcBinary
 {
 public:
-	RDOCalcPlus( RDORuntimeParent* _parent, RDOCalc *_left, RDOCalc *_right ): RDOCalcBinary( _parent, _left, _right ) {}
+	RDOCalcPlus( RDORuntimeParent* _parent, RDOCalc* _left, RDOCalc *_right ):
+		RDOCalcBinary( _parent, _left, _right )
+	{
+		if ( left && right ) { 
+			setSrcInfo( left->src_info(), " + ", right->src_info() );
+		}
+	}
 	RDOValue calcValue( RDORuntime* runtime ) const { return RDOValue(left->calcValueBase( runtime ) + right->calcValueBase( runtime )); }
 };
 
 class RDOCalcMinus: public RDOCalcBinary
 {
 public:
-	RDOCalcMinus( RDORuntimeParent* _parent, RDOCalc *_left, RDOCalc *_right ): RDOCalcBinary( _parent, _left, _right ) {}
+	RDOCalcMinus( RDORuntimeParent* _parent, RDOCalc* _left, RDOCalc* _right ):
+		RDOCalcBinary( _parent, _left, _right )
+	{
+		if ( left && right ) {
+			setSrcInfo( left->src_info(), " - ", right->src_info() );
+		}
+	}
 	RDOValue calcValue( RDORuntime* runtime ) const { return RDOValue(left->calcValueBase( runtime ) - right->calcValueBase( runtime )); }
 };
 
 class RDOCalcMult: public RDOCalcBinary
 {
 public:
-	RDOCalcMult( RDORuntimeParent* _parent, RDOCalc *_left, RDOCalc *_right ): RDOCalcBinary( _parent, _left, _right ) {}
+	RDOCalcMult( RDORuntimeParent* _parent, RDOCalc* _left, RDOCalc* _right ):
+		RDOCalcBinary( _parent, _left, _right )
+	{
+		if ( left && right ) {
+			setSrcInfo( left->src_info(), " * ", right->src_info() );
+		}
+	}
 	RDOValue calcValue( RDORuntime* runtime ) const { return RDOValue(left->calcValueBase( runtime ) * right->calcValueBase( runtime )); }
 };
 
 class RDOCalcDiv: public RDOCalcBinary
 {
 public:
-	RDOCalcDiv( RDORuntimeParent* _parent, RDOCalc *_left, RDOCalc *_right ): RDOCalcBinary( _parent, _left, _right ) {}
+	RDOCalcDiv( RDORuntimeParent* _parent, RDOCalc* _left, RDOCalc* _right ):
+		RDOCalcBinary( _parent, _left, _right )
+	{
+		if ( left && right ) {
+			setSrcInfo( left->src_info(), " / ", right->src_info() );
+		}
+	}
 	virtual RDOValue calcValue( RDORuntime* runtime ) const {
 		RDOValue rVal = right->calcValueBase( runtime );
 		if ( rVal == 0 ) {
@@ -836,7 +857,13 @@ public:
 class RDOCalcAnd: public RDOCalcBinary
 {
 public:
-	RDOCalcAnd( RDORuntimeParent* _parent, RDOCalc* _left, RDOCalc* _right ): RDOCalcBinary( _parent, _left, _right ) {};
+	RDOCalcAnd( RDORuntimeParent* _parent, RDOCalc* _left, RDOCalc* _right ):
+		RDOCalcBinary( _parent, _left, _right )
+	{
+		if ( left && right ) {
+			setSrcInfo( left->src_info(), " and ", right->src_info() );
+		}
+	}
 	RDOValue calcValue( RDORuntime* runtime ) const {
 		if ( !left->calcValueBase( runtime )  ) return false;
 		if ( !right->calcValueBase( runtime ) ) return false;
@@ -847,7 +874,13 @@ public:
 class RDOCalcOr: public RDOCalcBinary
 {
 public:
-	RDOCalcOr( RDORuntimeParent* _parent, RDOCalc* _left, RDOCalc* _right ): RDOCalcBinary( _parent, _left, _right ) {};
+	RDOCalcOr( RDORuntimeParent* _parent, RDOCalc* _left, RDOCalc* _right ):
+		RDOCalcBinary( _parent, _left, _right )
+	{
+		if ( left && right ) {
+			setSrcInfo( left->src_info(), " or ", right->src_info() );
+		}
+	}
 	RDOValue calcValue( RDORuntime* runtime ) const {
 		if ( left->calcValueBase( runtime )  ) return true;
 		if ( right->calcValueBase( runtime ) ) return true;
@@ -875,7 +908,13 @@ public:
 class RDOCalcIsEqual: public RDOCalcBinary
 {
 public:
-	RDOCalcIsEqual( RDORuntimeParent* _parent, const RDOCalc* const _left, const RDOCalc* const _right): RDOCalcBinary( _parent, _left, _right ) {}
+	RDOCalcIsEqual( RDORuntimeParent* _parent, const RDOCalc* const _left, const RDOCalc* const _right):
+		RDOCalcBinary( _parent, _left, _right )
+	{
+		if ( left && right ) {
+			setSrcInfo( left->src_info(), " == ", right->src_info() );
+		}
+	}
 	RDOValue calcValue( RDORuntime* runtime ) const {
 		return ( left->calcValueBase( runtime ) == right->calcValueBase( runtime ) );
 	}
@@ -884,7 +923,13 @@ public:
 class RDOCalcIsNotEqual: public RDOCalcBinary
 {
 public:
-	RDOCalcIsNotEqual( RDORuntimeParent* _parent, RDOCalc* _left, RDOCalc* _right ): RDOCalcBinary( _parent, _left, _right ) {}
+	RDOCalcIsNotEqual( RDORuntimeParent* _parent, RDOCalc* _left, RDOCalc* _right ):
+		RDOCalcBinary( _parent, _left, _right )
+	{
+		if ( left && right ) {
+			setSrcInfo( left->src_info(), " <> ", right->src_info() );
+		}
+	}
 	RDOValue calcValue( RDORuntime* runtime ) const {
 		return ( left->calcValueBase( runtime ) != right->calcValueBase( runtime ) );
 	}
@@ -893,28 +938,52 @@ public:
 class RDOCalcIsLess: public RDOCalcBinary
 {
 public:
-	RDOCalcIsLess( RDORuntimeParent* _parent, RDOCalc *_left, RDOCalc *_right ): RDOCalcBinary( _parent, _left, _right ) {}
+	RDOCalcIsLess( RDORuntimeParent* _parent, RDOCalc* _left, RDOCalc* _right ):
+		RDOCalcBinary( _parent, _left, _right )
+	{
+		if ( left && right ) {
+			setSrcInfo( left->src_info(), " < ", right->src_info() );
+		}
+	}
 	RDOValue calcValue( RDORuntime* runtime ) const { return (left->calcValueBase( runtime ) < right->calcValueBase( runtime )); }
 };
 
 class RDOCalcIsGreater: public RDOCalcBinary
 {
 public:
-	RDOCalcIsGreater( RDORuntimeParent* _parent, RDOCalc *_left, RDOCalc *_right ): RDOCalcBinary( _parent, _left, _right ) {}
+	RDOCalcIsGreater( RDORuntimeParent* _parent, RDOCalc* _left, RDOCalc* _right ):
+		RDOCalcBinary( _parent, _left, _right )
+	{
+		if ( left && right ) {
+			setSrcInfo( left->src_info(), " > ", right->src_info() );
+		}
+	}
 	RDOValue calcValue( RDORuntime* runtime ) const { return (left->calcValueBase( runtime ) > right->calcValueBase( runtime ));	}
 };
 
 class RDOCalcIsLEQ: public RDOCalcBinary
 {
 public:
-	RDOCalcIsLEQ( RDORuntimeParent* _parent, RDOCalc *_left, RDOCalc *_right ): RDOCalcBinary( _parent, _left, _right ) {}
+	RDOCalcIsLEQ( RDORuntimeParent* _parent, RDOCalc* _left, RDOCalc* _right ):
+		RDOCalcBinary( _parent, _left, _right )
+	{
+		if ( left && right ) {
+			setSrcInfo( left->src_info(), " <= ", right->src_info() );
+		}
+	}
 	RDOValue calcValue( RDORuntime* runtime ) const { return (left->calcValueBase( runtime ) <= right->calcValueBase( runtime ));	}
 };
 
 class RDOCalcIsGEQ: public RDOCalcBinary
 {
 public:
-	RDOCalcIsGEQ( RDORuntimeParent* _parent, RDOCalc *_left, RDOCalc *_right ): RDOCalcBinary( _parent, _left, _right ) {}
+	RDOCalcIsGEQ( RDORuntimeParent* _parent, RDOCalc* _left, RDOCalc* _right ):
+	RDOCalcBinary( _parent, _left, _right )
+	{
+		if ( left && right ) {
+			setSrcInfo( left->src_info(), " >= ", right->src_info() );
+		}
+	}
 	RDOValue calcValue( RDORuntime* runtime ) const { return (left->calcValueBase( runtime ) >= right->calcValueBase( runtime ));	}
 };
 

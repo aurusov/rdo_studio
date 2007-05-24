@@ -77,26 +77,26 @@ public:
 
 	void insertObject( RDORuntimeObject* object ) {
 		if ( object ) {
-			TRACE( "insert object: %d\n", object );
+//			TRACE( "insert object: %d\n", object );
 			if ( object == this ) {
-				TRACE( "insert parent himself %d !!!!!!!!!!!!!!!!!!!\n", this );
+//				TRACE( "insert parent himself %d !!!!!!!!!!!!!!!!!!!\n", this );
 			} else {
 				objects.push_back( object );
 			}
 		} else {
-			TRACE( "insert object NULL !!!!!!!!!!!!!!!\n" );
+//			TRACE( "insert object NULL !!!!!!!!!!!!!!!\n" );
 		}
 	}
 	void removeObject( RDORuntimeObject* object ) {
 		std::vector< RDORuntimeObject* >::reverse_iterator it = std::find( objects.rbegin(), objects.rend(), object );
 		if ( it != objects.rend() ) {
-			TRACE( "remove object: %d\n", object );
+//			TRACE( "remove object: %d\n", object );
 			// Комнада it.base() приводит реверсивный итератор к нормальному,
 			// но перед этим необходимо сделать инкремент
 			it++;
 			objects.erase( it.base() );
 		} else {
-			TRACE( "remove object: %d faild !!!!!!!!!!!!!!!!!!!!\n", object );
+//			TRACE( "remove object: %d faild !!!!!!!!!!!!!!!!!!!!\n", object );
 		}
 	}
 	void deleteObjects() {
@@ -139,9 +139,9 @@ public:
 		setSrcText( _info.text_data );
 		setSrcFileType( _info.file_type );
 	}
-	void setSrcInfo( const RDOSrcInfo& begin, const RDOSrcInfo& end ) {
+	void setSrcInfo( const RDOSrcInfo& begin, const std::string& delim, const RDOSrcInfo& end ) {
 		setSrcPos( begin.src_pos().first_line, begin.src_pos().first_pos, end.src_pos().last_line, end.src_pos().last_pos );
-		setSrcText( begin.src_text() + " " + end.src_text() );
+		setSrcText( begin.src_text() + delim + end.src_text() );
 		setSrcFileType( begin.src_filetype() );
 	}
 
@@ -158,7 +158,7 @@ public:
 		position.last_pos   = last_pos;
 	}
 
-	void setSrcText( const std::string& value ) {
+	virtual void setSrcText( const std::string& value ) {
 		text_data = value;
 	}
 	void setSrcFileType( rdoModelObjects::RDOFileType value ) {

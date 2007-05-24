@@ -21,13 +21,13 @@ RDORuntimeObject::RDORuntimeObject( RDORuntimeParent* _parent ):
 	if ( parent ) {
 		parent->insertObject( this );
 	} else {
-		TRACE( "========= no parent for %d\n", this );
+//		TRACE( "========= no parent for %d\n", this );
 	}
 }
 
 RDORuntimeObject::~RDORuntimeObject()
 {
-	TRACE( "destroy %d\n", this );
+//	TRACE( "destroy %d\n", this );
 	if ( parent ) {
 		parent->removeObject( this );
 	}

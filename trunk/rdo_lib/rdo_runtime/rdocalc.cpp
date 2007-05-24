@@ -25,6 +25,7 @@ RDOCalc::~RDOCalc()
 RDOValue RDOCalc::calcValueBase( RDORuntime* runtime ) const
 {
 	try {
+		TRACE( "calc: %s\n", src_text().c_str() );
 		return calcValue( runtime );
 	} catch ( RDORuntimeException& ) {
 		if ( runtime->errors.empty() ) {

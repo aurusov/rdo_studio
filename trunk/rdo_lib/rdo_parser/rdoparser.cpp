@@ -225,14 +225,12 @@ const RDORTPResType* RDOParser::findRTPResType( const std::string& name ) const
 	return it != allRTPResType.end() ? *it : NULL;
 }
 
-const RDORSSResource* RDOParser::findRSSResource(const std::string *const name) const
+const RDORSSResource* RDOParser::findRSSResource( const std::string* const name ) const
 {
-	std::vector<RDORSSResource *>::const_iterator it = std::find_if(allRSSResource.begin(), 
-		allRSSResource.end(), 
-		compareName<RDORSSResource>(name));
-	if(it != allRSSResource.end())
-		return (*it);
-
+	std::vector< RDORSSResource* >::const_iterator it = std::find_if( allRSSResource.begin(), allRSSResource.end(), compareName<RDORSSResource>(name) );
+	if ( it != allRSSResource.end() ) {
+		return *it;
+	}
 	return NULL;
 }
 

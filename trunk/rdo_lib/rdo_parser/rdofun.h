@@ -114,9 +114,10 @@ public:
 	RDOFUNLogic* operator_not();
 
 	virtual void setSrcInfo( const RDOParserSrcInfo& src_info );
-	virtual void setSrcInfo( const RDOParserSrcInfo& begin, const RDOParserSrcInfo& end );
+	virtual void setSrcInfo( const RDOParserSrcInfo& begin, const std::string& delim, const RDOParserSrcInfo& end );
 	virtual void setSrcPos( const YYLTYPE& _error_pos );
 	virtual void setSrcPos( int first_line, int first_pos, int last_line, int last_pos );
+	virtual void setSrcText( const std::string& value );
 };
 
 // ----------------------------------------------------------------------------
@@ -132,21 +133,23 @@ public:
 private:
 	rdoRuntime::RDOCalc* calc;
 
-	void init( std::string* resName, std::string* parName, const RDOParserSrcInfo& res_name_error_pos, const RDOParserSrcInfo& par_name_error_pos );
-	void init( std::string* s, const RDOParserSrcInfo& error_pos );
+	void init( const RDOParserSrcInfo& res_name_error_pos, const RDOParserSrcInfo& par_name_error_pos );
+	void init( std::string* value, const YYLTYPE& _pos );
 
 public:
 	RDOFUNArithm( RDOParser* _parser, RDORTPResParam::ParamType _type, rdoRuntime::RDOCalc* _calc, const RDOParserSrcInfo& src_info );
 	RDOFUNArithm( RDOParser* _parser, std::string* resName, std::string* parName, const RDOParserSrcInfo& res_name_src_info, const RDOParserSrcInfo& par_name_src_info );
-	RDOFUNArithm( RDOParser* _parser, int n, const RDOParserSrcInfo& src_info );
-	RDOFUNArithm( RDOParser* _parser, double* d, const RDOParserSrcInfo& src_info );
-	RDOFUNArithm( RDOParser* _parser, std::string* s, const RDOParserSrcInfo& src_info );
+	RDOFUNArithm( RDOParser* _parser, const RDOParserSrcInfo& res_name_src_info, const RDOParserSrcInfo& par_name_src_info );
+	RDOFUNArithm( RDOParser* _parser, int value, const YYLTYPE& _pos );
+	RDOFUNArithm( RDOParser* _parser, double* value, const RDOParserSrcInfo& src_info );
+	RDOFUNArithm( RDOParser* _parser, std::string* value, const YYLTYPE& _pos );
 
 	RDOFUNArithm( const RDOParserObject* _parent, RDORTPResParam::ParamType _type, rdoRuntime::RDOCalc* _calc, const RDOParserSrcInfo& src_info );
 	RDOFUNArithm( const RDOParserObject* _parent, std::string* resName, std::string* parName, const RDOParserSrcInfo& res_name_src_info, const RDOParserSrcInfo& par_name_src_info );
-	RDOFUNArithm( const RDOParserObject* _parent, int n, const RDOParserSrcInfo& src_info );
-	RDOFUNArithm( const RDOParserObject* _parent, double* d, const RDOParserSrcInfo& src_info );
-	RDOFUNArithm( const RDOParserObject* _parent, std::string* s, const RDOParserSrcInfo& src_info );
+	RDOFUNArithm( const RDOParserObject* _parent, const RDOParserSrcInfo& res_name_src_info, const RDOParserSrcInfo& par_name_src_info );
+	RDOFUNArithm( const RDOParserObject* _parent, int value, const YYLTYPE& _pos );
+	RDOFUNArithm( const RDOParserObject* _parent, double* value, const RDOParserSrcInfo& src_info );
+	RDOFUNArithm( const RDOParserObject* _parent, std::string* value, const YYLTYPE& _pos );
 
 	RDOFUNArithm* operator +( RDOFUNArithm& second );
 	RDOFUNArithm* operator -( RDOFUNArithm& second );
@@ -164,7 +167,7 @@ public:
 	RDORTPResParam::ParamType getType() const { return type; }
 
 	virtual void setSrcInfo( const RDOParserSrcInfo& src_info );
-	virtual void setSrcInfo( const RDOParserSrcInfo& begin, const RDOParserSrcInfo& end );
+	virtual void setSrcInfo( const RDOParserSrcInfo& begin, const std::string& delim, const RDOParserSrcInfo& end );
 	virtual void setSrcPos( const YYLTYPE& _error_pos );
 	virtual void setSrcPos( int first_line, int first_pos, int last_line, int last_pos );
 };
