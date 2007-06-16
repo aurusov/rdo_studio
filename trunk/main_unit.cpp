@@ -395,6 +395,8 @@ void __fastcall TForm1::FormCreate(TObject *Sender)
 			remove( "plata.smr" );
 			remove( "plata.pmv" );
 			remove( "plata.trc" );
+        } else {
+			CheckBox1->Checked = true;
         }
     }
 }
