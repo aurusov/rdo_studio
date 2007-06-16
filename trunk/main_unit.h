@@ -23,27 +23,23 @@ __published:	// IDE-managed Components
     TLabel *Label4;
     TLabel *Label5;
     TCSpinEdit *CSpinEdit3;
-    TButton *Button3;
+	TButton *ButtonDelete;
     TButton *Button4;
-    TGroupBox *GroupBox2;
-    TLabel *Label6;
-    TButton *Button2;
-    TCSpinEdit *CSpinEdit4;
-    TMemo *Memo1;
     TCheckBox *CheckBox1;
     TScrollBox *ScrollBox1;
     TPaintBox *PaintBox1;
+	TButton *ButtonInsert;
     void __fastcall FormActivate(TObject *Sender);
     void __fastcall PaintBox1MouseMove(TObject *Sender, TShiftState Shift,
           int X, int Y);
     void __fastcall PaintBox1MouseDown(TObject *Sender,
           TMouseButton Button, TShiftState Shift, int X, int Y);
-    void __fastcall Button2Click(TObject *Sender);
+    void __fastcall ButtonInsertClick(TObject *Sender);
     void __fastcall Button4Click(TObject *Sender);
-    void __fastcall Button3Click(TObject *Sender);
+    void __fastcall ButtonDeleteClick(TObject *Sender);
 	void __fastcall PaintBox1Paint(TObject *Sender);
+	void __fastcall FormCreate(TObject *Sender);
 private:	// User declarations
-public:	 void redraving_();
     __fastcall TForm1(TComponent* Owner);
 };
 //---------------------------------------------------------------------------

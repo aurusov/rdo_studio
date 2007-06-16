@@ -31,22 +31,31 @@ typedef struct {
 
 struct fixsed_points {
     int pos_x, pos_y, pos_x_end, pos_y_end;
-    int wire_number;
     bool operator< ( const fixsed_points& line ) const {
     	return sqrt( pow(pos_x - pos_x_end, 2) + pow(pos_y - pos_y_end, 2) ) <
                sqrt( pow(line.pos_x - line.pos_x_end, 2) + pow(line.pos_y - line.pos_y_end, 2) );
+    }
+    AnsiString toString() const {
+    	return AnsiString( "(" + IntToStr(pos_x) + ", " +
+		                         IntToStr(pos_y) + ") -> (" +
+		                         IntToStr(pos_x_end) + ", " +
+		                         IntToStr(pos_y_end) + ")" );
     }
 };
 
 //graph_tops wires[max_vire_count][50000];
 graph_tops wires[max_vire_count][50];
 best_ways wire_way[max_vire_count][50];
-fixsed_points wire_points[max_vire_count], temp_point;
+fixsed_points temp_point;
+std::vector< fixsed_points > wire_points;
 int all_tops[max_vire_count];
 int field_width,field_height;
 int scale;
 int radius;
-int last_point_number = 0,working_mode=0;
+int working_mode=0;
+bool wasRun = false;
+const int border_x = 10;
+const int border_y = 10;
 
 bool start_=false,end_=false;
 randomize();
@@ -59,14 +68,12 @@ __fastcall TForm1::TForm1(TComponent* Owner)
 
 void __fastcall TForm1::FormActivate(TObject *Sender)
 {
-    field_width = CSpinEdit1->Value;
+    field_width  = CSpinEdit1->Value;
     field_height = CSpinEdit2->Value;
     scale = CSpinEdit3->Value;
     radius = scale / 5;
-    redraving_();
 }
 //---------------------------------------------------------------------------
-
 void __fastcall TForm1::PaintBox1MouseMove(TObject *Sender,
       TShiftState Shift, int X, int Y)
 {   int x_,y_;
@@ -76,29 +83,32 @@ void __fastcall TForm1::PaintBox1MouseMove(TObject *Sender,
     else Form1->Caption = "Координаты точки вне поля";
 }
 //---------------------------------------------------------------------------
-
-
 void __fastcall TForm1::PaintBox1MouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
+	if ( wasRun ) return;
     int x_,y_;
-    x_= (X + scale/2) / scale + 1;
-    y_= (Y + scale/2) / scale + 1;
+    x_= (X - border_x + scale/2) / scale + 1;
+    y_= (Y - border_y + scale/2) / scale + 1;
     if(x_<= field_width && y_<=field_height) {
         Form1->Caption = "X=" + IntToStr(x_) + " Y=" + IntToStr(y_);
-        PaintBox1->Canvas->Pen->Color = clLime;
-        PaintBox1->Canvas->Ellipse(scale*(x_-1) - radius, scale*(y_-1) - radius, scale*(x_-1) + radius, scale*(y_-1) + radius);
-        PaintBox1->Canvas->Pen->Color = clBlack;
+        PaintBox1->Canvas->Pen->Width   = 1;
+        PaintBox1->Canvas->Pen->Color   = clWhite;
+        PaintBox1->Canvas->Pen->Style   = psSolid;
+        PaintBox1->Canvas->Brush->Color = clRed;
+        PaintBox1->Canvas->Brush->Style = bsSolid;
+        PaintBox1->Canvas->Ellipse( border_x + scale*(x_-1) - radius, border_y + scale*(y_-1) - radius, border_x + scale*(x_-1) + radius, border_y + scale*(y_-1) + radius );
 
         if(Button==mbLeft) {
             if(start_) {
-                PaintBox1->Canvas->Pen->Color = clBtnFace;
-                PaintBox1->Canvas->Ellipse(scale*(temp_point.pos_x-1) - radius, scale*(temp_point.pos_y-1) - radius, scale*(temp_point.pos_x-1) + radius, scale*(temp_point.pos_y-1) + radius);
-                PaintBox1->Canvas->Pen->Color = clBlack;
-                PaintBox1->Canvas->MoveTo(scale*(temp_point.pos_x-1) - radius, scale*(temp_point.pos_y-1));
-                PaintBox1->Canvas->LineTo(scale*(temp_point.pos_x-1) + radius, scale*(temp_point.pos_y-1));
-                PaintBox1->Canvas->MoveTo(scale*(temp_point.pos_x-1), scale*(temp_point.pos_y-1) - radius);
-                PaintBox1->Canvas->LineTo(scale*(temp_point.pos_x-1), scale*(temp_point.pos_y-1) + radius);
+                PaintBox1->Canvas->Pen->Color   = clBtnFace;
+		        PaintBox1->Canvas->Brush->Color = clBtnFace;
+                PaintBox1->Canvas->Ellipse( border_x + scale*(temp_point.pos_x-1) - radius, border_y + scale*(temp_point.pos_y-1) - radius, border_x + scale*(temp_point.pos_x-1) + radius, border_y + scale*(temp_point.pos_y-1) + radius );
+                PaintBox1->Canvas->Pen->Color   = clBlack;
+                PaintBox1->Canvas->MoveTo(border_x + scale*(temp_point.pos_x-1) - radius, border_y + scale*(temp_point.pos_y-1));
+                PaintBox1->Canvas->LineTo(border_x + scale*(temp_point.pos_x-1) + radius, border_y + scale*(temp_point.pos_y-1));
+                PaintBox1->Canvas->MoveTo(border_x + scale*(temp_point.pos_x-1), border_y + scale*(temp_point.pos_y-1) - radius);
+                PaintBox1->Canvas->LineTo(border_x + scale*(temp_point.pos_x-1), border_y + scale*(temp_point.pos_y-1) + radius);
             }
             temp_point.pos_x = x_;
             temp_point.pos_y = y_;
@@ -106,68 +116,45 @@ void __fastcall TForm1::PaintBox1MouseDown(TObject *Sender,
         }
         if(Button==mbRight) {
             if(end_) {
-                PaintBox1->Canvas->Pen->Color = clBtnFace;
-                PaintBox1->Canvas->Ellipse(scale*(temp_point.pos_x_end-1) - radius, scale*(temp_point.pos_y_end-1) - radius, scale*(temp_point.pos_x_end-1) + radius, scale*(temp_point.pos_y_end-1) + radius);
-                PaintBox1->Canvas->Pen->Color = clBlack;
-                PaintBox1->Canvas->MoveTo(scale*(temp_point.pos_x_end-1) - radius, scale*(temp_point.pos_y_end-1));
-                PaintBox1->Canvas->LineTo(scale*(temp_point.pos_x_end-1) + radius, scale*(temp_point.pos_y_end-1));
-                PaintBox1->Canvas->MoveTo(scale*(temp_point.pos_x_end-1), scale*(temp_point.pos_y_end-1) - radius);
-                PaintBox1->Canvas->LineTo(scale*(temp_point.pos_x_end-1), scale*(temp_point.pos_y_end-1) + radius);
+                PaintBox1->Canvas->Pen->Color   = clBtnFace;
+		        PaintBox1->Canvas->Brush->Color = clBtnFace;
+                PaintBox1->Canvas->Ellipse(border_x + scale*(temp_point.pos_x_end-1) - radius, border_y + scale*(temp_point.pos_y_end-1) - radius, border_x + scale*(temp_point.pos_x_end-1) + radius, border_y + scale*(temp_point.pos_y_end-1) + radius);
+                PaintBox1->Canvas->Pen->Color   = clBlack;
+                PaintBox1->Canvas->MoveTo(border_x + scale*(temp_point.pos_x_end-1) - radius, border_y + scale*(temp_point.pos_y_end-1));
+                PaintBox1->Canvas->LineTo(border_x + scale*(temp_point.pos_x_end-1) + radius, border_y + scale*(temp_point.pos_y_end-1));
+                PaintBox1->Canvas->MoveTo(border_x + scale*(temp_point.pos_x_end-1), border_y + scale*(temp_point.pos_y_end-1) - radius);
+                PaintBox1->Canvas->LineTo(border_x + scale*(temp_point.pos_x_end-1), border_y + scale*(temp_point.pos_y_end-1) + radius);
             }
             temp_point.pos_x_end = x_;
             temp_point.pos_y_end = y_;
             end_=true;
         }
-        if(end_ && start_) Button2->Enabled=true;
-        temp_point.wire_number = CSpinEdit4->Value;
-        Memo1->Lines->Clear();
-        Memo1->Lines->Add("Тип провода: " + IntToStr(CSpinEdit4->Value));
-        Memo1->Lines->Add("X1="+IntToStr(temp_point.pos_x)+" "+
-                             "Y1="+IntToStr(temp_point.pos_y)+" " );
-        Memo1->Lines->Add(   "X2="+IntToStr(temp_point.pos_x_end)+" "+
-                             "Y2="+IntToStr(temp_point.pos_y_end) );
-
+        if ( end_ && start_ ) ButtonInsert->Enabled = true;
     }
-
 }
 //---------------------------------------------------------------------------
-
-
-void __fastcall TForm1::Button2Click(TObject *Sender)
+void __fastcall TForm1::ButtonInsertClick(TObject *Sender)
 {   int x_,y_;
-    Button3->Enabled = true;
-    Button2->Enabled = false;
-    Memo1->Lines->Clear();
+    ButtonDelete->Enabled = true;
+    ButtonInsert->Enabled = false;
     start_=false;
     end_=false;
-    wire_points[last_point_number].wire_number = temp_point.wire_number;
-    CSpinEdit4->Value++;
-    x_ = wire_points[last_point_number].pos_x       = temp_point.pos_x;
-    y_ = wire_points[last_point_number].pos_y       = temp_point.pos_y;
-    PaintBox1->Canvas->Ellipse(scale*(x_-1) - radius, scale*(y_-1) - radius, scale*(x_-1) + radius, scale*(y_-1) + radius);
-    x_ = wire_points[last_point_number].pos_x_end   = temp_point.pos_x_end;
-    y_ = wire_points[last_point_number].pos_y_end   = temp_point.pos_y_end;
-    PaintBox1->Canvas->Ellipse(scale*(x_-1) - radius, scale*(y_-1) - radius, scale*(x_-1) + radius, scale*(y_-1) + radius);
-    last_point_number++;
-    ListBox1->Items->Add("Тип:" +IntToStr(temp_point.wire_number) +
-                         " X1="+IntToStr(temp_point.pos_x)+" "+
-                         " Y1="+IntToStr(temp_point.pos_y)+" "+
-                         " X2="+IntToStr(temp_point.pos_x_end)+" "+
-                         " Y2="+IntToStr(temp_point.pos_y_end) );
-    //wire_points[last_point_number+1].wire_number = -2;
-
+    wire_points.push_back( temp_point );
+    ListBox1->Items->Add( wire_points.back().toString() );
+	PaintBox1->Repaint();
 }
 //---------------------------------------------------------------------------
-
 void __fastcall TForm1::Button4Click(TObject *Sender)
 {
 	const int fileCount = 5;
 	int res[fileCount] = {PAT_MODEL, RTP_MODEL, FRM_MODEL, SMR_MODEL, DPT_MODEL};
 	char* fileName[fileCount] = {"plata.pat", "plata.rtp", "plata.frm", "plata.smr", "plata.dpt"};
 	for ( int i = 0; i < fileCount; i++ ) {
-		TResourceStream* file = new TResourceStream( 0, res[i], RT_RCDATA );
-		file->SaveToFile(fileName[i]);
-		delete file;
+    	if ( !FileExists( fileName[i] ) ) {
+			TResourceStream* file = new TResourceStream( 0, res[i], RT_RCDATA );
+			file->SaveToFile(fileName[i]);
+			delete file;
+        }
     }
 
 	FILE *sourse_model_files, * model_files;
@@ -177,43 +164,35 @@ void __fastcall TForm1::Button4Click(TObject *Sender)
     int current_wire=-1,temp_var,j;
 
     // FUN
-    TFileStream* file = new TFileStream( "plata.fun", fmCreate );
-    TStringStream* str_stream = new TStringStream( "" );
-    str_stream->WriteString( "$Constant\n" );
-    str_stream->WriteString( "\tКол_во_точек_по_X : integer = " + AnsiString(field_width)  + "\n" );
-    str_stream->WriteString( "\tКол_во_точек_по_Y : integer = " + AnsiString(field_height) + "\n" );
-    str_stream->Seek( 0, soFromBeginning );
-	file->CopyFrom( str_stream, str_stream->Size );
-	TResourceStream* res_stream = new TResourceStream( 0, FUN_MODEL, RT_RCDATA );
-	res_stream->SaveToStream( file );
-	delete file;
-	delete str_stream;
-	delete res_stream;
-	file       = NULL;
-	str_stream = NULL;
-	res_stream = NULL;
+   	if ( !FileExists( "plata.fun" ) ) {
+	    TFileStream* file = new TFileStream( "plata.fun", fmCreate );
+	    TStringStream* str_stream = new TStringStream( "" );
+	    str_stream->WriteString( "$Constant\n" );
+	    str_stream->WriteString( "\tКол_во_точек_по_X : integer = " + IntToStr(field_width)  + "\n" );
+	    str_stream->WriteString( "\tКол_во_точек_по_Y : integer = " + IntToStr(field_height) + "\n" );
+	    str_stream->Seek( 0, soFromBeginning );
+		file->CopyFrom( str_stream, str_stream->Size );
+		TResourceStream* res_stream = new TResourceStream( 0, FUN_MODEL, RT_RCDATA );
+		res_stream->SaveToStream( file );
+		delete file;
+		delete str_stream;
+		delete res_stream;
+    }
 
     // RSS
-    file = new TFileStream( "plata.rss", fmCreate );
-    str_stream = new TStringStream( "" );
+    TFileStream* file = new TFileStream( "plata.rss", fmCreate );
+    TStringStream* str_stream = new TStringStream( "" );
     str_stream->WriteString( "$Resources\n" );
-	std::vector< fixsed_points > lines;
-    for ( int i = 0; i < last_point_number; i++ ) {
-    	lines.push_back( wire_points[i] );
-    }
-    std::sort( lines.begin(), lines.end() );
-    for ( int i = 0; i < last_point_number; i++ ) {
-		wire_points[i] = lines[i];
-    }
+    std::sort( wire_points.begin(), wire_points.end() );
     int i = 1;
-	std::vector< fixsed_points >::iterator it = lines.begin();
-    while ( it != lines.end() ) {
-		str_stream->WriteString( "\tТочка_провода_" + AnsiString(i) +
-                                 " : Точки_провода " + AnsiString(it->wire_number) +
-                                 " " + AnsiString(it->pos_x) +
-                                 " " + AnsiString(it->pos_y) +
-                                 " " + AnsiString(it->pos_x_end) +
-                                 " " + AnsiString(it->pos_y_end) +
+	std::vector< fixsed_points >::iterator it = wire_points.begin();
+    while ( it != wire_points.end() ) {
+		str_stream->WriteString( "\tТочка_провода_" + IntToStr(i) +
+                                 " : Точки_провода " + IntToStr(i) +
+                                 " " + IntToStr(it->pos_x) +
+                                 " " + IntToStr(it->pos_y) +
+                                 " " + IntToStr(it->pos_x_end) +
+                                 " " + IntToStr(it->pos_y_end) +
                                  " *\n" );
         i++;
     	it++;
@@ -230,17 +209,23 @@ void __fastcall TForm1::Button4Click(TObject *Sender)
 	file       = NULL;
 	str_stream = NULL;
 
-    spawnl( P_WAIT, "RAO-studio.exe", "RAO-studio.exe", "-autorun -autoexit plata.smr", NULL );
-    if(!CheckBox1->Checked) {
-        remove("plata.pat");
-        remove("plata.rtp");
-        remove("plata.rss");
-        remove("plata.fun");
-        remove("plata.dpt");
-        remove("plata.frm");
-        remove("plata.smr");
-    }
+	STARTUPINFO si;
+    PROCESS_INFORMATION pi;
+	memset( &si, 0, sizeof(STARTUPINFO) );
+	memset( &pi, 0, sizeof(PROCESS_INFORMATION) );
+	si.cb          = sizeof(STARTUPINFO);
+	si.wShowWindow = SW_SHOWMAXIMIZED;
+	si.dwFlags     = STARTF_USESHOWWINDOW;
+	AnsiString str = "RAO-studio.exe -autorun -autoexit plata.smr";
+//    str = "rdosim.exe plata.smr";
+
+	if ( ::CreateProcess( NULL, str.c_str(), NULL, NULL, false, CREATE_SUSPENDED | NORMAL_PRIORITY_CLASS, NULL, NULL, &si, &pi ) ) {
+		::ResumeThread( pi.hThread );
+		::WaitForSingleObject( pi.hProcess, INFINITE );
+	}
+
     trace_file = fopen("plata.trc","r");
+    if ( trace_file ) {
     while(!feof(trace_file)) {
         fscanf(trace_file,"%s",temp_str);
         if(!strcmp(temp_str,"SB")) {
@@ -276,55 +261,113 @@ void __fastcall TForm1::Button4Click(TObject *Sender)
 
     }
     fclose(trace_file);
+    wasRun = true;
+    }
     working_mode = 1;
-    redraving_();
-//    Refresh();
+    ButtonInsert->Enabled = false;
+    ButtonDelete->Enabled = false;
+    CSpinEdit1->Enabled = false;
+    CSpinEdit2->Enabled = false;
+    CSpinEdit3->Enabled = false;
+	PaintBox1->Repaint();
+    if ( !CheckBox1->Checked ) {
+		remove( "plata.pat" );
+		remove( "plata.rtp" );
+		remove( "plata.rss" );
+		remove( "plata.fun" );
+		remove( "plata.dpt" );
+		remove( "plata.frm" );
+		remove( "plata.smr" );
+		remove( "plata.pmv" );
+		remove( "plata.trc" );
+    }
 }
 //---------------------------------------------------------------------------
-
-void TForm1::redraving_()
-{  int i,j;
-  field_width = CSpinEdit1->Value;
+void __fastcall TForm1::ButtonDeleteClick(TObject *Sender)
+{   int i;
+    if(ListBox1->ItemIndex==-1) ShowMessage("Ничего не выделено для удаления");
+    else {
+		std::vector< fixsed_points >::iterator it = wire_points.begin();
+		while ( it != wire_points.end() ) {
+			if ( ListBox1->Items->Strings[ListBox1->ItemIndex] == it->toString() ) {
+				wire_points.erase( it );
+				break;
+			}
+        	it++;
+        }
+	    ListBox1->Items->Delete( ListBox1->ItemIndex );
+        PaintBox1->Repaint();
+    }
+    if(ListBox1->Items->Count==0) ButtonDelete->Enabled=false;
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm1::PaintBox1Paint(TObject *Sender)
+{
+    if ( !wire_points.empty() ) {
+	    int max_x = -1;
+    	int max_y = -1;
+		std::vector< fixsed_points >::iterator it = wire_points.begin();
+		while ( it != wire_points.end() ) {
+        	if ( max_x < it->pos_x     ) max_x = it->pos_x;
+        	if ( max_x < it->pos_x_end ) max_x = it->pos_x_end;
+        	if ( max_y < it->pos_y     ) max_y = it->pos_y;
+        	if ( max_y < it->pos_y_end ) max_y = it->pos_y_end;
+    		it++;
+		}
+        if ( CSpinEdit1->Value < max_x ) {
+            CSpinEdit1->Value = max_x;
+            return;
+        }
+        if ( field_height < max_y ) {
+            CSpinEdit2->Value = max_y;
+            return;
+        }
+    }
+    if ( CSpinEdit3->Value < 10 ) {
+    	CSpinEdit3->Value = 10;
+        return;
+    }
+	field_width  = CSpinEdit1->Value;
     field_height = CSpinEdit2->Value;
-    scale = CSpinEdit3->Value;
+    scale        = CSpinEdit3->Value;
     radius = scale / 5;
     PaintBox1->Width = field_width * scale;
     PaintBox1->Height = field_height * scale;
-//    PaintBox1->Repaint();
     PaintBox1->Canvas->Pen->Color = clBlack;
     PaintBox1->Canvas->Pen->Width = 1;
-    for(i=0;i<field_height;i++) {
-        PaintBox1->Canvas->MoveTo(0,scale * i);
-        PaintBox1->Canvas->LineTo(scale * (field_width - 1),scale * i);
+    for ( int i = 0; i < field_height; i++ ) {
+        PaintBox1->Canvas->MoveTo( border_x - radius, border_y + scale * i );
+        PaintBox1->Canvas->LineTo( border_x + radius + scale * (field_width - 1), border_y + scale * i );
     }
-
-    for(i=0;i<field_width;i++) {
-        PaintBox1->Canvas->MoveTo(scale * i, 0);
-        PaintBox1->Canvas->LineTo(scale * i, scale * (field_height - 1));
+    for ( int i = 0; i < field_width; i++ ) {
+        PaintBox1->Canvas->MoveTo( border_x + scale * i, border_y - radius );
+        PaintBox1->Canvas->LineTo( border_x + scale * i, border_y + radius + scale * (field_height - 1) );
     }
+    PaintBox1->Canvas->Pen->Width   = 1;
+    PaintBox1->Canvas->Pen->Color   = clWhite;
+    PaintBox1->Canvas->Brush->Color = clRed;
+	std::vector< fixsed_points >::iterator it = wire_points.begin();
+	while ( it != wire_points.end() ) {
+	    PaintBox1->Canvas->Ellipse(border_x + scale*(it->pos_x-1) - radius,
+    	                           border_y + scale*(it->pos_y-1) - radius,
+        	                       border_x + scale*(it->pos_x-1) + radius,
+            	                   border_y + scale*(it->pos_y-1) + radius);
+	    PaintBox1->Canvas->Ellipse(border_x + scale*(it->pos_x_end-1) - radius,
+    	                           border_y + scale*(it->pos_y_end-1) - radius,
+        	                       border_x + scale*(it->pos_x_end-1) + radius,
+            	                   border_y + scale*(it->pos_y_end-1) + radius);
+		it++;
+	}
 
-    for(i=0;i<last_point_number;i++) {
-    PaintBox1->Canvas->Ellipse(scale*(wire_points[i].pos_x-1) - radius,
-                               scale*(wire_points[i].pos_y-1) - radius,
-                               scale*(wire_points[i].pos_x-1) + radius,
-                               scale*(wire_points[i].pos_y-1) + radius
-                               );
-    PaintBox1->Canvas->Ellipse(scale*(wire_points[i].pos_x_end-1) - radius,
-                               scale*(wire_points[i].pos_y_end-1) - radius,
-                               scale*(wire_points[i].pos_x_end-1) + radius,
-                               scale*(wire_points[i].pos_y_end-1) + radius);
-
-    }
-    
-    if(working_mode!=0) {
-        int x_,y_;
-        PaintBox1->Canvas->Pen->Color = RGB(255,0,0);
+    if ( working_mode != 0 ) {
+        int x_, y_;
+        PaintBox1->Canvas->Pen->Color = clRed;
         PaintBox1->Canvas->Pen->Width = 3;
-        for(i=0;i<last_point_number;i++) {
-            j = 0;
-            x_ = scale*(wire_points[i].pos_x-1);
-            y_ = scale*(wire_points[i].pos_y-1);
-            PaintBox1->Canvas->MoveTo(x_,y_);
+        for ( int i = 0; i < wire_points.size(); i++ ) {
+            int j = 0;
+            x_ = border_x + scale*(wire_points[i].pos_x-1);
+            y_ = border_y + scale*(wire_points[i].pos_y-1);
+            PaintBox1->Canvas->MoveTo(x_, y_);
             do {
                 switch (wire_way[i][j].action_number) {
                     case 9  : {PaintBox1->Canvas->LineTo(x_=x_-scale,y_); break;}
@@ -336,36 +379,24 @@ void TForm1::redraving_()
             }
             while (wire_way[i][j].top_number!=-2);
         }
-        PaintBox1->Canvas->Pen->Color = clBlack;
-        PaintBox1->Canvas->Pen->Width = 1;
     }
 }
 //---------------------------------------------------------------------------
-
-
-void __fastcall TForm1::Button3Click(TObject *Sender)
-{   int i;
-    if(ListBox1->ItemIndex==-1) ShowMessage("Ничего не выделено для удаления");
-    else {
-        for(i=ListBox1->ItemIndex;i<last_point_number - 1;i++)  {
-            wire_points[i].wire_number = wire_points[i+1].wire_number;
-            wire_points[i].pos_x = wire_points[i+1].pos_x;
-            wire_points[i].pos_y = wire_points[i+1].pos_y;
-            wire_points[i].pos_x_end = wire_points[i+1].pos_x_end;
-            wire_points[i].pos_y_end = wire_points[i+1].pos_y_end;
-
-        }
-    ListBox1->Items->Delete(ListBox1->ItemIndex);
-    last_point_number--;
-    redraving_();
-    }
-    if(ListBox1->Items->Count==0) Button3->Enabled=false;
-}
-//---------------------------------------------------------------------------
-void __fastcall TForm1::PaintBox1Paint(TObject *Sender)
+void __fastcall TForm1::FormCreate(TObject *Sender)
 {
-    redraving_();
+    if ( FileExists( "plata.pat" ) || FileExists( "plata.rtp" ) || FileExists( "plata.rss" ) || FileExists( "plata.frm" ) || FileExists( "plata.fun" ) || FileExists( "plata.dpt" ) || FileExists( "plata.smr" ) || FileExists( "plata.pmv" ) || FileExists( "plata.trc" ) ) {
+    	if ( ::MessageBox( Application->Handle, "Найдены файлы старой модели. Стереть их и создать новую модель ?", "RAO-platareader", MB_ICONQUESTION | MB_YESNO ) == IDYES ) {
+			remove( "plata.pat" );
+			remove( "plata.rtp" );
+			remove( "plata.rss" );
+			remove( "plata.frm" );
+			remove( "plata.fun" );
+			remove( "plata.dpt" );
+			remove( "plata.smr" );
+			remove( "plata.pmv" );
+			remove( "plata.trc" );
+        }
+    }
 }
 //---------------------------------------------------------------------------
-
 
