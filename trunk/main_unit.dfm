@@ -157,7 +157,7 @@ object Form1: TForm1
       Top = 256
       Width = 81
       Height = 25
-      Caption = 'ПУСК!'
+      Caption = 'Запуск'
       TabOrder = 5
       OnClick = Button4Click
     end

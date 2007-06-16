@@ -6,6 +6,7 @@ const max_vire_count = 100;
 #include <string.h>
 #include <process.h>
 #include <vector>
+#include <list>
 #pragma hdrstop
 
 #include "main_unit.h"
@@ -45,9 +46,10 @@ struct fixsed_points {
 
 //graph_tops wires[max_vire_count][50000];
 graph_tops wires[max_vire_count][50];
-best_ways wire_way[max_vire_count][50];
+//best_ways wire_way[max_vire_count][50];
 fixsed_points temp_point;
 std::vector< fixsed_points > wire_points;
+std::vector< std::vector<best_ways> > wire_way;
 int all_tops[max_vire_count];
 int field_width,field_height;
 int scale;
@@ -226,12 +228,12 @@ void __fastcall TForm1::Button4Click(TObject *Sender)
 
     trace_file = fopen("plata.trc","r");
     if ( trace_file ) {
-    while(!feof(trace_file)) {
+    while ( !feof(trace_file) ) {
         fscanf(trace_file,"%s",temp_str);
-        if(!strcmp(temp_str,"SB")) {
+        if( !strcmp(temp_str,"SB") ) {
+        	wire_way.push_back( std::vector<best_ways>() );
             current_wire++;
             all_tops[current_wire] = 0;
-            i = 0;
         }
        /* if(!strcmp(temp_str,"STN") || !strcmp(temp_str,"STR")) {
             fscanf(trace_file,"%d",&temp_var);
@@ -242,23 +244,19 @@ void __fastcall TForm1::Button4Click(TObject *Sender)
             all_tops[current_wire]++;
         }*/
 
-        if(!strcmp(temp_str,"SD")) {
-            i = 0;
+        if ( !strcmp(temp_str,"SD") ) {
             do {
-                fscanf(trace_file,"%d",&wire_way[current_wire][i].top_number);
-                fscanf(trace_file,"%d",&wire_way[current_wire][i].action_number);
-                i++;
+            	best_ways bway;
+                fscanf(trace_file,"%d",&bway.top_number);
+                fscanf(trace_file,"%d",&bway.action_number);
+				wire_way.back().push_back( bway );
                 do {
-                    fscanf(trace_file,"%c",&temp_str[0]);
-                }
-                while(temp_str[0]!='\n' && temp_str[0]!='S');
-            }
-            while(temp_str[0]!='S');
-            wire_way[current_wire][i].top_number = -2;
+                    fscanf( trace_file, "%c", &temp_str[0] );
+                } while( temp_str[0] != '\n' && temp_str[0] != 'S' );
+            } while( temp_str[0] != 'S' );
+			wire_way.back().erase( wire_way.back().begin() + wire_way.back().size() - 1 );
             Form1->Caption = Form1->Caption + " " +IntToStr(all_tops[current_wire]);
         }
-
-
     }
     fclose(trace_file);
     wasRun = true;
@@ -363,21 +361,23 @@ void __fastcall TForm1::PaintBox1Paint(TObject *Sender)
         int x_, y_;
         PaintBox1->Canvas->Pen->Color = clRed;
         PaintBox1->Canvas->Pen->Width = 3;
+        std::vector< std::vector<best_ways> >::const_iterator wire_way_it = wire_way.begin();
         for ( int i = 0; i < wire_points.size(); i++ ) {
-            int j = 0;
+	        if ( wire_way_it == wire_way.end() ) return;
             x_ = border_x + scale*(wire_points[i].pos_x-1);
             y_ = border_y + scale*(wire_points[i].pos_y-1);
             PaintBox1->Canvas->MoveTo(x_, y_);
-            do {
-                switch (wire_way[i][j].action_number) {
+            std::vector<best_ways>::const_iterator bestway_it = wire_way_it->begin();
+            while ( bestway_it != wire_way_it->end() ) {
+                switch (bestway_it->action_number) {
                     case 9  : {PaintBox1->Canvas->LineTo(x_=x_-scale,y_); break;}
                     case 10 : {PaintBox1->Canvas->LineTo(x_=x_+scale,y_); break;}
                     case 11 : {PaintBox1->Canvas->LineTo(x_,y_=y_-scale); break;}
                     case 12 : {PaintBox1->Canvas->LineTo(x_,y_=y_+scale); break;}
                 }
-            j++;
+                bestway_it++;
             }
-            while (wire_way[i][j].top_number!=-2);
+            wire_way_it++;
         }
     }
 }
