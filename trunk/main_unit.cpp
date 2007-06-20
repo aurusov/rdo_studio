@@ -189,8 +189,8 @@ void __fastcall TForm1::Button4Click(TObject *Sender)
     int i = 1;
 	std::vector< fixsed_points >::iterator it = wire_points.begin();
     while ( it != wire_points.end() ) {
-		str_stream->WriteString( "\tТочка_провода_" + IntToStr(i) +
-                                 " : Точки_провода " + IntToStr(i) +
+		str_stream->WriteString( "\tПровод_" + IntToStr(i) +
+                                 "        : Провод " + IntToStr(i) +
                                  " " + IntToStr(it->pos_x) +
                                  " " + IntToStr(it->pos_y) +
                                  " " + IntToStr(it->pos_x_end) +
@@ -199,10 +199,10 @@ void __fastcall TForm1::Button4Click(TObject *Sender)
         i++;
     	it++;
     }
-    str_stream->WriteString( "\tТочка_провода_текущая_ : Точка_провода_текущая 0 0 0 0 0\n" );
-    str_stream->WriteString( "\tСистема_плата : Система  * *\n" );
-    str_stream->WriteString( "\tСчетчик_X     : Счетчики * * 1\n" );
-    str_stream->WriteString( "\tСчетчик_Y     : Счетчики * * 2\n" );
+    str_stream->WriteString( "\tТекущий_провод  : Текущий_провод_тип 0 0 0 0 0\n" );
+    str_stream->WriteString( "\tСистемная_плата : Системная_плата_тип *\n" );
+    str_stream->WriteString( "\tСчетчик_X       : Счетчики * *\n" );
+    str_stream->WriteString( "\tСчетчик_Y       : Счетчики * *\n" );
     str_stream->WriteString( "$End\n");
     str_stream->Seek( 0, soFromBeginning );
 	file->CopyFrom( str_stream, str_stream->Size );
