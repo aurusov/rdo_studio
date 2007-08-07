@@ -221,6 +221,8 @@ rss_res_type:	IDENTIF_COLON IDENTIF {
 					}
 
 					RDORSSResource* res = new RDORSSResource( parser, name, resType );
+					res->setSrcPos( @1 );
+					res->setSrcText( *name );
 					$$ = (int)res;	  
 				}
 				| IDENTIF_COLON error {

@@ -766,7 +766,7 @@ fun_seq_header:	Sequence IDENTIF_COLON fun_param_type Type_keyword '=' {
 						parser->lexer_loc_set( &(@2) );
 						parser->error( rdo::format( "Существует функция с таким же именем: %s", name->c_str() ) );
 					}
-					$$ = (int)(new RDOFUNSequenceHeader( name, (RDORTPResParam *)$3) );
+					$$ = (int)(new RDOFUNSequence::RDOFUNSequenceHeader( name, (RDORTPResParam *)$3, RDOParserSrcInfo( @2, *name ) ));
 				}
 				| Sequence IDENTIF_COLON fun_param_type Type_keyword '=' error {
 					parser->lexer_loc_set( &(@5), &(@6) );
@@ -790,10 +790,10 @@ fun_seq_header:	Sequence IDENTIF_COLON fun_param_type Type_keyword '=' {
 				};
 
 fun_seq_uniform:	fun_seq_header uniform End {
-						$$ = (int)(new RDOFUNSequenceUniform( parser, (RDOFUNSequenceHeader *)$1) );
+						$$ = (int)(new RDOFUNSequenceUniform( parser, (RDOFUNSequence::RDOFUNSequenceHeader*)$1) );
 					}
 					| fun_seq_header uniform INT_CONST End {
-						$$ = (int)(new RDOFUNSequenceUniform( parser, (RDOFUNSequenceHeader *)$1, $3) );
+						$$ = (int)(new RDOFUNSequenceUniform( parser, (RDOFUNSequence::RDOFUNSequenceHeader*)$1, $3) );
 					}
 					| fun_seq_header uniform INT_CONST error {
 						parser->lexer_loc_set( @4.first_line, @4.first_column );
@@ -805,10 +805,10 @@ fun_seq_uniform:	fun_seq_header uniform End {
 					};
 
 fun_seq_exponential:	fun_seq_header exponential End {
-							$$ = (int)(new RDOFUNSequenceExponential( parser, (RDOFUNSequenceHeader *)$1) );
+							$$ = (int)(new RDOFUNSequenceExponential( parser, (RDOFUNSequence::RDOFUNSequenceHeader*)$1) );
 						}
 						| fun_seq_header exponential INT_CONST End {
-							$$ = (int)(new RDOFUNSequenceExponential( parser, (RDOFUNSequenceHeader *)$1, $3) );
+							$$ = (int)(new RDOFUNSequenceExponential( parser, (RDOFUNSequence::RDOFUNSequenceHeader*)$1, $3) );
 						}
 						| fun_seq_header exponential INT_CONST error {
 							parser->lexer_loc_set( @4.first_line, @4.first_column );
@@ -820,10 +820,10 @@ fun_seq_exponential:	fun_seq_header exponential End {
 						};
 
 fun_seq_normal:	fun_seq_header normal_keyword End {
-					$$ = (int)(new RDOFUNSequenceNormal( parser, (RDOFUNSequenceHeader *)$1) );
+					$$ = (int)(new RDOFUNSequenceNormal( parser, (RDOFUNSequence::RDOFUNSequenceHeader*)$1) );
 				}
 				| fun_seq_header normal_keyword INT_CONST End {
-					$$ = (int)(new RDOFUNSequenceNormal( parser, (RDOFUNSequenceHeader *)$1, $3) );
+					$$ = (int)(new RDOFUNSequenceNormal( parser, (RDOFUNSequence::RDOFUNSequenceHeader*)$1, $3) );
 				}
 				| fun_seq_header normal_keyword INT_CONST error {
 					parser->lexer_loc_set( @4.first_line, @4.first_column );
@@ -835,10 +835,10 @@ fun_seq_normal:	fun_seq_header normal_keyword End {
 				};
 
 fun_seq_by_hist_header:	fun_seq_header by_hist Body {
-							$$ = (int)(new RDOFUNSequenceByHistHeader( (RDOFUNSequenceHeader *)$1) );
+							$$ = (int)(new RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader( (RDOFUNSequence::RDOFUNSequenceHeader*)$1) );
 						}
 						| fun_seq_header by_hist INT_CONST Body {
-							$$ = (int)(new RDOFUNSequenceByHistHeader( (RDOFUNSequenceHeader *)$1, $3) );
+							$$ = (int)(new RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader( (RDOFUNSequence::RDOFUNSequenceHeader*)$1, $3) );
 						}
 						| fun_seq_header by_hist error Body {
 							parser->lexer_loc_set( &(@2), &(@3) );
@@ -854,7 +854,7 @@ fun_seq_by_hist_header:	fun_seq_header by_hist Body {
 						};
 
 fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CONST {
-								RDOFUNSequenceByHistHeader* header = reinterpret_cast<RDOFUNSequenceByHistHeader*>($1);
+								RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader* header = reinterpret_cast<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader*>($1);
 								if ( header->header->type->getType() != RDORTPResParam::pt_real && header->header->type->getType() != RDORTPResParam::pt_int ) {
 									parser->lexer_loc_set( &(@2) );
 									parser->error( "Значение не соответствует типу последовательности" );
@@ -879,7 +879,7 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 								$$ = (int)(new RDOFUNSequenceByHistReal( parser, header, *((double*)$2), *((double*)$3), *((double*)$4)) );
 							}
 							| fun_seq_by_hist_header INT_CONST REAL_CONST REAL_CONST {
-								RDOFUNSequenceByHistHeader* header = reinterpret_cast<RDOFUNSequenceByHistHeader*>($1);
+								RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader* header = reinterpret_cast<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader*>($1);
 								if ( header->header->type->getType() != RDORTPResParam::pt_real && header->header->type->getType() != RDORTPResParam::pt_int ) {
 									parser->lexer_loc_set( &(@2) );
 									parser->error( "Значение не соответствует типу последовательности" );
@@ -904,7 +904,7 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 								$$ = (int)(new RDOFUNSequenceByHistReal( parser, header, $2, *((double*)$3), *((double*)$4)) );
 							}
 							| fun_seq_by_hist_header REAL_CONST INT_CONST REAL_CONST {
-								RDOFUNSequenceByHistHeader* header = reinterpret_cast<RDOFUNSequenceByHistHeader*>($1);
+								RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader* header = reinterpret_cast<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader*>($1);
 								if ( header->header->type->getType() != RDORTPResParam::pt_real && header->header->type->getType() != RDORTPResParam::pt_int ) {
 									parser->lexer_loc_set( &(@2) );
 									parser->error( "Значение не соответствует типу последовательности" );
@@ -929,7 +929,7 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 								$$ = (int)(new RDOFUNSequenceByHistReal( parser, header, *((double*)$2), $3, *((double*)$4)) );
 							}
 							| fun_seq_by_hist_header REAL_CONST REAL_CONST INT_CONST {
-								RDOFUNSequenceByHistHeader* header = reinterpret_cast<RDOFUNSequenceByHistHeader*>($1);
+								RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader* header = reinterpret_cast<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader*>($1);
 								if ( header->header->type->getType() != RDORTPResParam::pt_real && header->header->type->getType() != RDORTPResParam::pt_int ) {
 									parser->lexer_loc_set( &(@2) );
 									parser->error( "Значение не соответствует типу последовательности" );
@@ -954,7 +954,7 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 								$$ = (int)(new RDOFUNSequenceByHistReal( parser, header, *((double*)$2), *((double*)$3), $4) );
 							}
 							| fun_seq_by_hist_header INT_CONST INT_CONST REAL_CONST {
-								RDOFUNSequenceByHistHeader* header = reinterpret_cast<RDOFUNSequenceByHistHeader*>($1);
+								RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader* header = reinterpret_cast<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader*>($1);
 								if ( header->header->type->getType() != RDORTPResParam::pt_real && header->header->type->getType() != RDORTPResParam::pt_int ) {
 									parser->lexer_loc_set( &(@2) );
 									parser->error( "Значение не соответствует типу последовательности" );
@@ -972,10 +972,10 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 									parser->lexer_loc_set( &(@4) );
 									parser->error( "Относительная вероятность должна быть больше нуля" );
 								}
-								$$ = (int)(new RDOFUNSequenceByHistReal( parser, (RDOFUNSequenceByHistHeader *)$1, $2, $3, *((double*)$4)) );
+								$$ = (int)(new RDOFUNSequenceByHistReal( parser, (RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader*)$1, $2, $3, *((double*)$4)) );
 							}
 							| fun_seq_by_hist_header REAL_CONST INT_CONST INT_CONST {
-								RDOFUNSequenceByHistHeader* header = reinterpret_cast<RDOFUNSequenceByHistHeader*>($1);
+								RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader* header = reinterpret_cast<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader*>($1);
 								if ( header->header->type->getType() != RDORTPResParam::pt_real && header->header->type->getType() != RDORTPResParam::pt_int ) {
 									parser->lexer_loc_set( &(@2) );
 									parser->error( "Значение не соответствует типу последовательности" );
@@ -1000,7 +1000,7 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 								$$ = (int)(new RDOFUNSequenceByHistReal( parser, header, *((double*)$2), $3, $4) );
 							}
 							| fun_seq_by_hist_header INT_CONST REAL_CONST INT_CONST {
-								RDOFUNSequenceByHistHeader* header = reinterpret_cast<RDOFUNSequenceByHistHeader*>($1);
+								RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader* header = reinterpret_cast<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader*>($1);
 								if ( header->header->type->getType() != RDORTPResParam::pt_real && header->header->type->getType() != RDORTPResParam::pt_int ) {
 									parser->lexer_loc_set( &(@2) );
 									parser->error( "Значение не соответствует типу последовательности" );
@@ -1025,7 +1025,7 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 								$$ = (int)(new RDOFUNSequenceByHistReal( parser, header, $2, *((double*)$3), $4) );
 							}
 							| fun_seq_by_hist_header INT_CONST INT_CONST INT_CONST {
-								RDOFUNSequenceByHistHeader* header = reinterpret_cast<RDOFUNSequenceByHistHeader*>($1);
+								RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader* header = reinterpret_cast<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader*>($1);
 								if ( header->header->type->getType() != RDORTPResParam::pt_real && header->header->type->getType() != RDORTPResParam::pt_int ) {
 									parser->lexer_loc_set( &(@2) );
 									parser->error( "Значение не соответствует типу последовательности" );
@@ -1043,10 +1043,10 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 									parser->lexer_loc_set( &(@4) );
 									parser->error( "Относительная вероятность должна быть больше нуля" );
 								}
-								$$ = (int)(new RDOFUNSequenceByHistReal( parser, (RDOFUNSequenceByHistHeader *)$1, $2, $3, $4));
+								$$ = (int)(new RDOFUNSequenceByHistReal( parser, (RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader*)$1, $2, $3, $4));
 							}
 							| fun_seq_by_hist_body_real REAL_CONST REAL_CONST REAL_CONST {
-								RDOFUNSequenceHeader* header = reinterpret_cast<RDOFUNSequenceByHistReal*>($1)->header;
+								RDOFUNSequence::RDOFUNSequenceHeader* header = reinterpret_cast<RDOFUNSequenceByHistReal*>($1)->header;
 								if ( header->type->getType() == RDORTPResParam::pt_int ) {
 									parser->lexer_loc_set( &(@2) );
 									parser->error( rdo::format("Последовательность '%s' определена как целочисленная, её даипазоны тоже должны быть челочисленными", header->name->c_str()) );
@@ -1071,7 +1071,7 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 								((RDOFUNSequenceByHistReal *)$1)->addReal(*((double*)$2), *((double*)$3), *((double*)$4)); $$ = $1;
 							}
 							| fun_seq_by_hist_body_real INT_CONST REAL_CONST REAL_CONST {
-								RDOFUNSequenceHeader* header = reinterpret_cast<RDOFUNSequenceByHistReal*>($1)->header;
+								RDOFUNSequence::RDOFUNSequenceHeader* header = reinterpret_cast<RDOFUNSequenceByHistReal*>($1)->header;
 								if ( header->type->getType() == RDORTPResParam::pt_int ) {
 									parser->lexer_loc_set( &(@3) );
 									parser->error( rdo::format("Последовательность '%s' определена как целочисленная, её даипазоны тоже должны быть челочисленными", header->name->c_str()) );
@@ -1096,7 +1096,7 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 								((RDOFUNSequenceByHistReal *)$1)->addReal($2, *((double*)$3), *((double*)$4)); $$ = $1;
 							}
 							| fun_seq_by_hist_body_real REAL_CONST INT_CONST REAL_CONST {
-								RDOFUNSequenceHeader* header = reinterpret_cast<RDOFUNSequenceByHistReal*>($1)->header;
+								RDOFUNSequence::RDOFUNSequenceHeader* header = reinterpret_cast<RDOFUNSequenceByHistReal*>($1)->header;
 								if ( header->type->getType() == RDORTPResParam::pt_int ) {
 									parser->lexer_loc_set( &(@2) );
 									parser->error( rdo::format("Последовательность '%s' определена как целочисленная, её даипазоны тоже должны быть челочисленными", header->name->c_str()) );
@@ -1121,7 +1121,7 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 								((RDOFUNSequenceByHistReal *)$1)->addReal(*((double*)$2), $3, *((double*)$4)); $$ = $1;
 							}
 							| fun_seq_by_hist_body_real REAL_CONST REAL_CONST INT_CONST {
-								RDOFUNSequenceHeader* header = reinterpret_cast<RDOFUNSequenceByHistReal*>($1)->header;
+								RDOFUNSequence::RDOFUNSequenceHeader* header = reinterpret_cast<RDOFUNSequenceByHistReal*>($1)->header;
 								if ( header->type->getType() == RDORTPResParam::pt_int ) {
 									parser->lexer_loc_set( &(@2) );
 									parser->error( rdo::format("Последовательность '%s' определена как целочисленная, её даипазоны тоже должны быть челочисленными", header->name->c_str()) );
@@ -1166,7 +1166,7 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 								((RDOFUNSequenceByHistReal *)$1)->addReal($2, $3, *((double*)$4)); $$ = $1;
 							}
 							| fun_seq_by_hist_body_real REAL_CONST INT_CONST INT_CONST {
-								RDOFUNSequenceHeader* header = reinterpret_cast<RDOFUNSequenceByHistReal*>($1)->header;
+								RDOFUNSequence::RDOFUNSequenceHeader* header = reinterpret_cast<RDOFUNSequenceByHistReal*>($1)->header;
 								if ( header->type->getType() == RDORTPResParam::pt_int ) {
 									parser->lexer_loc_set( &(@2) );
 									parser->error( rdo::format("Последовательность '%s' определена как целочисленная, её даипазоны тоже должны быть челочисленными", header->name->c_str()) );
@@ -1191,7 +1191,7 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 								((RDOFUNSequenceByHistReal *)$1)->addReal(*((double*)$2), $3, $4); $$ = $1;
 							}
 							| fun_seq_by_hist_body_real INT_CONST REAL_CONST INT_CONST {
-								RDOFUNSequenceHeader* header = reinterpret_cast<RDOFUNSequenceByHistReal*>($1)->header;
+								RDOFUNSequence::RDOFUNSequenceHeader* header = reinterpret_cast<RDOFUNSequenceByHistReal*>($1)->header;
 								if ( header->type->getType() == RDORTPResParam::pt_int ) {
 									parser->lexer_loc_set( &(@3) );
 									parser->error( rdo::format("Последовательность '%s' определена как целочисленная, её даипазоны тоже должны быть челочисленными", header->name->c_str()) );
@@ -1289,7 +1289,7 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 							};
 
 fun_seq_by_hist_body_enum:	fun_seq_by_hist_header IDENTIF REAL_CONST {
-								RDOFUNSequenceByHistHeader* header = reinterpret_cast<RDOFUNSequenceByHistHeader*>($1);
+								RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader* header = reinterpret_cast<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader*>($1);
 								if ( header->header->type->getType() != RDORTPResParam::pt_enum ) {
 									parser->lexer_loc_set( &(@2) );
 									parser->error( "Значение не соответствует типу последовательности" );
@@ -1309,7 +1309,7 @@ fun_seq_by_hist_body_enum:	fun_seq_by_hist_header IDENTIF REAL_CONST {
 								parser->lexer_loc_restore();
 							}
 							| fun_seq_by_hist_header IDENTIF INT_CONST {
-								RDOFUNSequenceByHistHeader* header = reinterpret_cast<RDOFUNSequenceByHistHeader*>($1);
+								RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader* header = reinterpret_cast<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader*>($1);
 								if ( header->header->type->getType() != RDORTPResParam::pt_enum ) {
 									parser->lexer_loc_set( &(@2) );
 									parser->error( "Значение не соответствует типу последовательности" );
@@ -1401,10 +1401,10 @@ fun_seq_by_hist:	fun_seq_by_hist_body_real End {
 					};
 
 fun_seq_enumerative_header:	fun_seq_header enumerative Body {
-								$$ = (int)(new RDOFUNSequenceEnumerativeHeader((RDOFUNSequenceHeader *)$1));
+								$$ = (int)(new RDOFUNSequenceEnumerative::RDOFUNSequenceEnumerativeHeader((RDOFUNSequence::RDOFUNSequenceHeader*)$1));
 							}
 							| fun_seq_header enumerative INT_CONST Body {
-								$$ = (int)(new RDOFUNSequenceEnumerativeHeader((RDOFUNSequenceHeader *)$1, $3));
+								$$ = (int)(new RDOFUNSequenceEnumerative::RDOFUNSequenceEnumerativeHeader((RDOFUNSequence::RDOFUNSequenceHeader*)$1, $3));
 							}
 							| fun_seq_header enumerative Parameters {
 								parser->lexer_loc_set( &(@3) );
@@ -1421,7 +1421,7 @@ fun_seq_enumerative_header:	fun_seq_header enumerative Body {
 
 
 fun_seq_enumerative_body_int:	fun_seq_enumerative_header INT_CONST {
-									RDOFUNSequenceEnumerativeHeader* header = reinterpret_cast<RDOFUNSequenceEnumerativeHeader*>($1);
+									RDOFUNSequenceEnumerative::RDOFUNSequenceEnumerativeHeader* header = reinterpret_cast<RDOFUNSequenceEnumerative::RDOFUNSequenceEnumerativeHeader*>($1);
 									if ( header->header->type->getType() != RDORTPResParam::pt_int ) {
 										parser->lexer_loc_set( &(@2) );
 										switch ( header->header->type->getType() ) {
@@ -1446,7 +1446,7 @@ fun_seq_enumerative_body_int:	fun_seq_enumerative_header INT_CONST {
 								};
 
 fun_seq_enumerative_body_real:	fun_seq_enumerative_header REAL_CONST {
-									RDOFUNSequenceEnumerativeHeader* header = reinterpret_cast<RDOFUNSequenceEnumerativeHeader*>($1);
+									RDOFUNSequenceEnumerative::RDOFUNSequenceEnumerativeHeader* header = reinterpret_cast<RDOFUNSequenceEnumerative::RDOFUNSequenceEnumerativeHeader*>($1);
 									if ( header->header->type->getType() != RDORTPResParam::pt_real ) {
 										parser->lexer_loc_set( &(@2) );
 										switch ( header->header->type->getType() ) {
@@ -1471,7 +1471,7 @@ fun_seq_enumerative_body_real:	fun_seq_enumerative_header REAL_CONST {
 								};
 
 fun_seq_enumerative_body_enum:	fun_seq_enumerative_header IDENTIF {
-									RDOFUNSequenceEnumerativeHeader* header = reinterpret_cast<RDOFUNSequenceEnumerativeHeader*>($1);
+									RDOFUNSequenceEnumerative::RDOFUNSequenceEnumerativeHeader* header = reinterpret_cast<RDOFUNSequenceEnumerative::RDOFUNSequenceEnumerativeHeader*>($1);
 									if ( header->header->type->getType() != RDORTPResParam::pt_enum ) {
 										parser->lexer_loc_set( &(@2) );
 										switch ( header->header->type->getType() ) {
@@ -1487,7 +1487,7 @@ fun_seq_enumerative_body_enum:	fun_seq_enumerative_header IDENTIF {
 									}
 									parser->lexer_loc_backup();
 									parser->lexer_loc_set( &(@2) );
-									$$ = (int)(new RDOFUNSequenceEnumerativeEnum(parser, (RDOFUNSequenceEnumerativeHeader *)$1, (std::string*)$2));
+									$$ = (int)(new RDOFUNSequenceEnumerativeEnum(parser, (RDOFUNSequenceEnumerative::RDOFUNSequenceEnumerativeHeader*)$1, (std::string*)$2));
 									parser->lexer_loc_restore();
 								}
 								| fun_seq_enumerative_body_enum IDENTIF {
@@ -1514,7 +1514,6 @@ fun_seq_enumerative:	fun_seq_enumerative_body_int End {
 // ----------------------------------------------------------------------------
 // ---------- Логические выражения
 // ----------------------------------------------------------------------------
-// Пока не использьзуется RDOErrorPos, но в ариф. выражениях уже назначается
 fun_logic: fun_arithm '=' fun_arithm			{ $$ = (int)(*(RDOFUNArithm *)$1 == *(RDOFUNArithm *)$3); }
 			| fun_arithm neq fun_arithm			{ $$ = (int)(*(RDOFUNArithm *)$1 != *(RDOFUNArithm *)$3); }
 			| fun_arithm '<' fun_arithm			{ $$ = (int)(*(RDOFUNArithm *)$1 <  *(RDOFUNArithm *)$3); }
@@ -1525,30 +1524,27 @@ fun_logic: fun_arithm '=' fun_arithm			{ $$ = (int)(*(RDOFUNArithm *)$1 == *(RDO
 			| fun_logic or_keyword fun_logic	{ $$ = (int)(*(RDOFUNLogic *)$1 || *(RDOFUNLogic *)$3);   }
 			| '[' fun_logic ']'					{
 				RDOFUNLogic* logic = reinterpret_cast<RDOFUNLogic*>($2);
-				logic->setSrcPos( @1.first_line, @1.first_column, @3.last_line, @3.last_column );
+				logic->setSrcPos( @1, @3 );
 				logic->setSrcText( "[" + logic->src_text() + "]" );
 				$$ = $2;
 			}
 			| '(' fun_logic ')'					{
 				RDOFUNLogic* logic = reinterpret_cast<RDOFUNLogic*>($2);
-				logic->setSrcPos( @1.first_line, @1.first_column, @3.last_line, @3.last_column );
+				logic->setSrcPos( @1, @3 );
 				logic->setSrcText( "(" + logic->src_text() + ")" );
 				$$ = $2;
 			}
 			| not_keyword fun_logic				{
 				RDOFUNLogic* logic = reinterpret_cast<RDOFUNLogic*>($2);
-				logic->setSrcPos( @1.first_line, @1.first_column, @2.last_line, @2.last_column );
-				logic->setSrcText( "not " + logic->src_text() );
-				$$ = (int)logic->operator_not();
+				RDOFUNLogic* logic_not = logic->operator_not();
+				logic_not->setSrcPos( @1, @2 );
+				logic_not->setSrcText( "not " + logic->src_text() );
+				$$ = (int)logic_not;
 			}
 			| fun_group							{
-				RDOFUNLogic* logic = reinterpret_cast<RDOFUNLogic*>($1);
-				logic->setSrcPos( @1 );
 				$$ = $1;
 			}
 			| fun_select_logic					{
-				RDOFUNLogic* logic = reinterpret_cast<RDOFUNLogic*>($1);
-				logic->setSrcPos( @1 );
 				$$ = $1;
 			}
 			| '[' fun_logic error {
@@ -1573,28 +1569,25 @@ fun_arithm: fun_arithm '+' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOF
 			| fun_arithm '/' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 / *(RDOFUNArithm *)$3); }
 			| '(' fun_arithm ')'			{
 				RDOFUNArithm* arithm = reinterpret_cast<RDOFUNArithm*>($2);
-				arithm->setSrcPos( @1.first_line, @1.first_column, @3.last_line, @3.last_column );
+				arithm->setSrcPos( @1, @3 );
+				arithm->setSrcText( "(" + arithm->src_text() + ")" );
 				$$ = $2;
 			}
 			| fun_arithm_func_call			{
-				RDOFUNArithm* arithm = reinterpret_cast<RDOFUNArithm*>($1);
-				arithm->setSrcPos( @1 );
 				$$ = $1;
 			}
 			| fun_select_arithm				{
-				RDOFUNArithm* arithm = reinterpret_cast<RDOFUNArithm*>($1);
-				arithm->setSrcPos( @1 );
 				$$ = $1;
 			}
 			| IDENTIF '.' IDENTIF			{
 				$$ = (int)new RDOFUNArithm( parser, RDOParserSrcInfo( @1, *reinterpret_cast<std::string*>($1) ), RDOParserSrcInfo( @3, *reinterpret_cast<std::string*>($3) ) );
 			}
-			| INT_CONST						{ $$ = (int)new RDOFUNArithm( parser, (int)$1, @1 );                                                                       }
+			| INT_CONST						{ $$ = (int)new RDOFUNArithm( parser, (int)$1, RDOParserSrcInfo( @1, reinterpret_cast<RDOLexer*>(lexer)->YYText() ) );     }
 			| REAL_CONST					{ $$ = (int)new RDOFUNArithm( parser, (double*)$1, RDOParserSrcInfo( @1, reinterpret_cast<RDOLexer*>(lexer)->YYText() ) ); }
 			| IDENTIF						{ $$ = (int)new RDOFUNArithm( parser, (std::string*)$1, @1 );                                                              }
 			| '-' fun_arithm %prec UMINUS	{
 				RDOParserSrcInfo info;
-				info.setSrcPos( @1.first_line, @1.first_column, @2.last_line, @2.last_column );
+				info.setSrcPos( @1, @2 );
 				info.setSrcText( "-" + reinterpret_cast<RDOFUNArithm*>($2)->src_text() );
 				$$ = (int)new RDOFUNArithm( parser, reinterpret_cast<RDOFUNArithm*>($2)->getType(), new rdoRuntime::RDOCalcUMinus( parser->runTime, reinterpret_cast<RDOFUNArithm*>($2)->createCalc() ), info );
 			}
@@ -1607,11 +1600,16 @@ fun_arithm: fun_arithm '+' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOF
 				}
 			};
 
+// ----------------------------------------------------------------------------
+// ---------- Функции и последовательности
+// ----------------------------------------------------------------------------
 fun_arithm_func_call:	IDENTIF '(' fun_arithm_func_call_pars ')' {
-							RDOFUNParams* fun = ((RDOFUNParams*)$3);
+							RDOFUNParams* fun = reinterpret_cast<RDOFUNParams*>($3);
 							fun->name_error_pos.setSrcPos( @1 );
-							fun->setSrcPos( @1.first_line, @1.first_column, @4.last_line, @4.last_column );
-							$$ = (int)fun->createCall((std::string *)$1);
+							fun->setSrcPos( @1, @4 );
+							fun->setSrcText( *(std::string*)$1 + "(" + fun->src_text() + ")" );
+							RDOFUNArithm* arithm = fun->createCall( (std::string*)$1 );
+							$$ = (int)arithm;
 						}
 						| IDENTIF '(' error {
 							parser->lexer_loc_set( &(@3) );
@@ -1623,15 +1621,17 @@ fun_arithm_func_call_pars:	/* empty */ {
 								$$ = (int)fun;
 							}
 							| fun_arithm_func_call_pars fun_arithm {
-								RDOFUNParams* fun = reinterpret_cast<RDOFUNParams*>($1);
-								fun->setSrcPos( @2 );
-								fun = fun->addParameter((RDOFUNArithm *)$2);
+								RDOFUNParams* fun    = reinterpret_cast<RDOFUNParams*>($1);
+								RDOFUNArithm* arithm = reinterpret_cast<RDOFUNArithm*>($2);
+								fun->setSrcText( arithm->src_text() );
+								fun->addParameter( arithm );
 								$$ = (int)fun;
 							}
 							| fun_arithm_func_call_pars ',' fun_arithm {
-								RDOFUNParams* fun = reinterpret_cast<RDOFUNParams*>($1);
-								fun->setSrcPos( @3 );
-								fun = fun->addParameter((RDOFUNArithm *)$3);
+								RDOFUNParams* fun    = reinterpret_cast<RDOFUNParams*>($1);
+								RDOFUNArithm* arithm = reinterpret_cast<RDOFUNArithm*>($3);
+								fun->setSrcText( fun->src_text() + ", " + arithm->src_text() );
+								fun->addParameter( arithm );
 								$$ = (int)fun;
 							};
 
@@ -1646,7 +1646,7 @@ fun_group_keyword:	Exist			{ $$ = 1; }
 fun_group_header:	fun_group_keyword '(' IDENTIF_COLON {
 						parser->lexer_loc_backup();
 						parser->lexer_loc_set( @3.first_line, @3.first_column + ((std::string*)$3)->length() );
-						$$ = (int)(new RDOFUNGroupLogic(parser, $1, (std::string *)$3));
+						$$ = (int)(new RDOFUNGroupLogic( parser, $1, (std::string *)$3) );
 						parser->lexer_loc_restore();
 					}
 					| fun_group_keyword '(' error {
@@ -1659,12 +1659,17 @@ fun_group_header:	fun_group_keyword '(' IDENTIF_COLON {
 					};
 
 fun_group:			fun_group_header fun_logic ')' {
-						$$ = (int)(((RDOFUNGroupLogic *)$1)->createFunLogic((RDOFUNLogic *)$2));
+						RDOFUNGroupLogic* groupfun = reinterpret_cast<RDOFUNGroupLogic*>($1);
+						groupfun->setSrcPos( @1, @3 );
+						$$ = (int)groupfun->createFunLogic((RDOFUNLogic *)$2);
 					}
 					| fun_group_header NoCheck ')' {
+						RDOFUNGroupLogic* groupfun = reinterpret_cast<RDOFUNGroupLogic*>($1);
+						groupfun->setSrcPos( @1, @3 );
 						RDOFUNLogic* trueLogic = new RDOFUNLogic( new rdoRuntime::RDOCalcConst( parser->runTime, 1 ) );
 						trueLogic->setSrcPos( @2 );
-						$$ = (int)(((RDOFUNGroupLogic *)$1)->createFunLogic( trueLogic ));
+						trueLogic->setSrcText( "NoCheck" );
+						$$ = (int)groupfun->createFunLogic( trueLogic );
 					}
 					| fun_group_header fun_logic error {
 						parser->lexer_loc_set( @2.last_line, @2.last_column );
@@ -1675,8 +1680,13 @@ fun_group:			fun_group_header fun_logic ')' {
 						parser->error( "Ожидается закрывающаяся скобка" );
 					};
 
+// ----------------------------------------------------------------------------
+// ---------- Select
+// ----------------------------------------------------------------------------
 fun_select_header:	Select '(' IDENTIF_COLON {
-						$$ = (int)new RDOFUNSelect(parser, (std::string*)$3);
+						RDOFUNSelect* select = new RDOFUNSelect(parser, (std::string*)$3);
+						select->setSrcText( "Select(" + *(std::string*)$3 + ": " );
+						$$ = (int)select;
 					}
 					| Select '(' error {
 						parser->lexer_loc_set( &(@3) );
@@ -1688,11 +1698,16 @@ fun_select_header:	Select '(' IDENTIF_COLON {
 					};
 
 fun_select_body:	fun_select_header fun_logic ')' {
-						RDOFUNLogic* logic = ((RDOFUNSelect*)$1)->createFunSelect((RDOFUNLogic*)$2);
+						RDOFUNSelect* select = reinterpret_cast<RDOFUNSelect*>($1);
+						RDOFUNLogic*  flogic = reinterpret_cast<RDOFUNLogic*>($2);
+						select->setSrcText( select->src_text() + flogic->src_text() + ")" );
+						RDOFUNLogic* logic = select->createFunSelect( flogic );
 						logic->setSrcPos( @2 );
 						$$ = $1;
 					}
 					| fun_select_header NoCheck ')' {
+						RDOFUNSelect* select = reinterpret_cast<RDOFUNSelect*>($1);
+						select->setSrcText( select->src_text() + "NoCheck)" );
 						RDOFUNLogic* logic = ((RDOFUNSelect*)$1)->createFunSelect();
 						logic->setSrcPos( @2 );
 						$$ = $1;
@@ -1713,16 +1728,14 @@ fun_select_keyword:	Exist			{ $$ = 1; }
 
 fun_select_logic:	fun_select_body '.' fun_select_keyword '(' fun_logic ')' {
 						RDOFUNSelect* select = reinterpret_cast<RDOFUNSelect*>($1);
+						select->setSrcPos( @1, @6 );
 						RDOFUNLogic* logic = select->createFunSelectGroup( $3, (RDOFUNLogic*)$5 );
-						select->setSrcPos( @1.first_line, @1.first_column, @6.last_line, @6.last_column );
-						logic->setSrcInfo( select->src_info() );
 						$$ = (int)logic;
 					}
 					| fun_select_body '.' Empty_kw '(' ')' {
 						RDOFUNSelect* select = reinterpret_cast<RDOFUNSelect*>($1);
+						select->setSrcPos( @1, @5 );
 						RDOFUNLogic* logic = select->createFunSelectEmpty();
-						select->setSrcPos( @1.first_line, @1.first_column, @5.last_line, @5.last_column );
-						logic->setSrcInfo( select->src_info() );
 						$$ = (int)logic;
 					}
 					| fun_select_body error {
@@ -1752,9 +1765,8 @@ fun_select_logic:	fun_select_body '.' fun_select_keyword '(' fun_logic ')' {
 
 fun_select_arithm:	fun_select_body '.' Size_kw '(' ')' {
 						RDOFUNSelect* select = reinterpret_cast<RDOFUNSelect*>($1);
+						select->setSrcPos( @1, @5 );
 						RDOFUNArithm* arithm = select->createFunSelectSize();
-						select->setSrcPos( @1.first_line, @1.first_column, @5.last_line, @5.last_column );
-						arithm->setSrcInfo( select->src_info() );
 						$$ = (int)arithm;
 					}
 					| fun_select_body error {

@@ -25,6 +25,9 @@ RDOCalc::~RDOCalc()
 RDOValue RDOCalc::calcValueBase( RDORuntime* runtime ) const
 {
 	try {
+		if ( src_text().empty() ) {
+			TRACE( "%d\n", sizeof(std::string) );
+		}
 		TRACE( "calc: %s\n", src_text().c_str() );
 		return calcValue( runtime );
 	} catch ( RDORuntimeException& ) {
@@ -198,7 +201,7 @@ RDOValue RDOFunCalcSelectNotForAll::calcValue( RDORuntime* runtime ) const
 // ----------------------------------------------------------------------------
 RDOValue RDOCalcSeqInit::calcValue( RDORuntime* runtime ) const	
 {
-	gen->setSeed(base);
+	gen->setSeed( base );
 	return RDOValue(0);
 }
 

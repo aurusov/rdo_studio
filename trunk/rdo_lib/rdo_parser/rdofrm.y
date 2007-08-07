@@ -245,7 +245,6 @@ frm_active: active IDENTIF '[' fun_arithm ',' fun_arithm ',' fun_arithm ',' fun_
 // ----------------------------------------------------------------------------
 // ---------- Логические выражения
 // ----------------------------------------------------------------------------
-// Пока не использьзуется RDOErrorPos, но в ариф. выражениях уже назначается
 fun_logic: fun_arithm '=' fun_arithm			{ $$ = (int)(*(RDOFUNArithm *)$1 == *(RDOFUNArithm *)$3); }
 			| fun_arithm neq fun_arithm			{ $$ = (int)(*(RDOFUNArithm *)$1 != *(RDOFUNArithm *)$3); }
 			| fun_arithm '<' fun_arithm			{ $$ = (int)(*(RDOFUNArithm *)$1 <  *(RDOFUNArithm *)$3); }
@@ -256,27 +255,27 @@ fun_logic: fun_arithm '=' fun_arithm			{ $$ = (int)(*(RDOFUNArithm *)$1 == *(RDO
 			| fun_logic or_keyword fun_logic	{ $$ = (int)(*(RDOFUNLogic *)$1 || *(RDOFUNLogic *)$3);   }
 			| '[' fun_logic ']'					{
 				RDOFUNLogic* logic = reinterpret_cast<RDOFUNLogic*>($2);
-				logic->setSrcPos( @1.first_line, @1.first_column, @3.last_line, @3.last_column );
+				logic->setSrcPos( @1, @3 );
+				logic->setSrcText( "[" + logic->src_text() + "]" );
 				$$ = $2;
 			}
 			| '(' fun_logic ')'					{
 				RDOFUNLogic* logic = reinterpret_cast<RDOFUNLogic*>($2);
-				logic->setSrcPos( @1.first_line, @1.first_column, @3.last_line, @3.last_column );
+				logic->setSrcPos( @1, @3 );
+				logic->setSrcText( "(" + logic->src_text() + ")" );
 				$$ = $2;
 			}
 			| not_keyword fun_logic				{
 				RDOFUNLogic* logic = reinterpret_cast<RDOFUNLogic*>($2);
-				logic->setSrcPos( @1.first_line, @1.first_column, @2.last_line, @2.last_column );
-				$$ = (int)logic->operator_not();
+				RDOFUNLogic* logic_not = logic->operator_not();
+				logic_not->setSrcPos( @1, @2 );
+				logic_not->setSrcText( "not " + logic->src_text() );
+				$$ = (int)logic_not;
 			}
 			| fun_group							{
-				RDOFUNLogic* logic = reinterpret_cast<RDOFUNLogic*>($1);
-				logic->setSrcPos( @1 );
 				$$ = $1;
 			}
 			| fun_select_logic					{
-				RDOFUNLogic* logic = reinterpret_cast<RDOFUNLogic*>($1);
-				logic->setSrcPos( @1 );
 				$$ = $1;
 			}
 			| '[' fun_logic error {
@@ -301,32 +300,27 @@ fun_arithm: fun_arithm '+' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOF
 			| fun_arithm '/' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 / *(RDOFUNArithm *)$3); }
 			| '(' fun_arithm ')'			{
 				RDOFUNArithm* arithm = reinterpret_cast<RDOFUNArithm*>($2);
-				arithm->setSrcPos( @1.first_line, @1.first_column, @3.last_line, @3.last_column );
+				arithm->setSrcPos( @1, @3 );
+				arithm->setSrcText( "(" + arithm->src_text() + ")" );
 				$$ = $2;
 			}
 			| fun_arithm_func_call			{
-				RDOFUNArithm* arithm = reinterpret_cast<RDOFUNArithm*>($1);
-				arithm->setSrcPos( @1 );
 				$$ = $1;
 			}
 			| fun_select_arithm				{
-				RDOFUNArithm* arithm = reinterpret_cast<RDOFUNArithm*>($1);
-				arithm->setSrcPos( @1 );
 				$$ = $1;
 			}
 			| IDENTIF '.' IDENTIF			{
-				$$ = (int)new RDOFUNArithm( parser, reinterpret_cast<std::string*>($1), reinterpret_cast<std::string*>($3), @1, @3 );
+				$$ = (int)new RDOFUNArithm( parser, RDOParserSrcInfo( @1, *reinterpret_cast<std::string*>($1) ), RDOParserSrcInfo( @3, *reinterpret_cast<std::string*>($3) ) );
 			}
-			| INT_CONST						{ $$ = (int)new RDOFUNArithm( parser, (int)$1, @1 );          }
-			| REAL_CONST					{ $$ = (int)new RDOFUNArithm( parser, (double*)$1, @1 );      }
-			| IDENTIF						{ $$ = (int)new RDOFUNArithm( parser, (std::string*)$1, @1 ); }
+			| INT_CONST						{ $$ = (int)new RDOFUNArithm( parser, (int)$1, RDOParserSrcInfo( @1, reinterpret_cast<RDOLexer*>(lexer)->YYText() ) );     }
+			| REAL_CONST					{ $$ = (int)new RDOFUNArithm( parser, (double*)$1, RDOParserSrcInfo( @1, reinterpret_cast<RDOLexer*>(lexer)->YYText() ) ); }
+			| IDENTIF						{ $$ = (int)new RDOFUNArithm( parser, (std::string*)$1, @1 );                                                              }
 			| '-' fun_arithm %prec UMINUS	{
-				YYLTYPE error_pos;
-				error_pos.first_line   = @1.first_line;
-				error_pos.first_column = @1.first_column;
-				error_pos.last_line    = @2.last_line;
-				error_pos.last_column  = @2.last_column;
-				$$ = (int)new RDOFUNArithm( parser, reinterpret_cast<RDOFUNArithm*>($2)->getType(), new rdoRuntime::RDOCalcUMinus( parser->runTime, reinterpret_cast<RDOFUNArithm*>($2)->createCalc() ), error_pos );
+				RDOParserSrcInfo info;
+				info.setSrcPos( @1, @2 );
+				info.setSrcText( "-" + reinterpret_cast<RDOFUNArithm*>($2)->src_text() );
+				$$ = (int)new RDOFUNArithm( parser, reinterpret_cast<RDOFUNArithm*>($2)->getType(), new rdoRuntime::RDOCalcUMinus( parser->runTime, reinterpret_cast<RDOFUNArithm*>($2)->createCalc() ), info );
 			}
 			| error							{
 				parser->lexer_loc_set( &(@1) );
@@ -337,11 +331,16 @@ fun_arithm: fun_arithm '+' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOF
 				}
 			};
 
+// ----------------------------------------------------------------------------
+// ---------- Функции и последовательности
+// ----------------------------------------------------------------------------
 fun_arithm_func_call:	IDENTIF '(' fun_arithm_func_call_pars ')' {
-							RDOFUNParams* fun = ((RDOFUNParams*)$3);
+							RDOFUNParams* fun = reinterpret_cast<RDOFUNParams*>($3);
 							fun->name_error_pos.setSrcPos( @1 );
-							fun->setSrcPos( @1.first_line, @1.first_column, @4.last_line, @4.last_column );
-							$$ = (int)fun->createCall((std::string *)$1);
+							fun->setSrcPos( @1, @4 );
+							fun->setSrcText( *(std::string*)$1 + "(" + fun->src_text() + ")" );
+							RDOFUNArithm* arithm = fun->createCall( (std::string*)$1 );
+							$$ = (int)arithm;
 						}
 						| IDENTIF '(' error {
 							parser->lexer_loc_set( &(@3) );
@@ -353,15 +352,17 @@ fun_arithm_func_call_pars:	/* empty */ {
 								$$ = (int)fun;
 							}
 							| fun_arithm_func_call_pars fun_arithm {
-								RDOFUNParams* fun = reinterpret_cast<RDOFUNParams*>($1);
-								fun->setSrcPos( @2 );
-								fun = fun->addParameter((RDOFUNArithm *)$2);
+								RDOFUNParams* fun    = reinterpret_cast<RDOFUNParams*>($1);
+								RDOFUNArithm* arithm = reinterpret_cast<RDOFUNArithm*>($2);
+								fun->setSrcText( arithm->src_text() );
+								fun->addParameter( arithm );
 								$$ = (int)fun;
 							}
 							| fun_arithm_func_call_pars ',' fun_arithm {
-								RDOFUNParams* fun = reinterpret_cast<RDOFUNParams*>($1);
-								fun->setSrcPos( @3 );
-								fun = fun->addParameter((RDOFUNArithm *)$3);
+								RDOFUNParams* fun    = reinterpret_cast<RDOFUNParams*>($1);
+								RDOFUNArithm* arithm = reinterpret_cast<RDOFUNArithm*>($3);
+								fun->setSrcText( fun->src_text() + ", " + arithm->src_text() );
+								fun->addParameter( arithm );
 								$$ = (int)fun;
 							};
 
@@ -389,12 +390,17 @@ fun_group_header:	fun_group_keyword '(' IDENTIF_COLON {
 					};
 
 fun_group:			fun_group_header fun_logic ')' {
-						$$ = (int)(((RDOFUNGroupLogic *)$1)->createFunLogic((RDOFUNLogic *)$2));
+						RDOFUNGroupLogic* groupfun = reinterpret_cast<RDOFUNGroupLogic*>($1);
+						groupfun->setSrcPos( @1, @3 );
+						$$ = (int)groupfun->createFunLogic((RDOFUNLogic *)$2);
 					}
 					| fun_group_header NoCheck ')' {
+						RDOFUNGroupLogic* groupfun = reinterpret_cast<RDOFUNGroupLogic*>($1);
+						groupfun->setSrcPos( @1, @3 );
 						RDOFUNLogic* trueLogic = new RDOFUNLogic( new rdoRuntime::RDOCalcConst( parser->runTime, 1 ) );
 						trueLogic->setSrcPos( @2 );
-						$$ = (int)(((RDOFUNGroupLogic *)$1)->createFunLogic( trueLogic ));
+						trueLogic->setSrcText( "NoCheck" );
+						$$ = (int)groupfun->createFunLogic( trueLogic );
 					}
 					| fun_group_header fun_logic error {
 						parser->lexer_loc_set( @2.last_line, @2.last_column );
@@ -405,8 +411,13 @@ fun_group:			fun_group_header fun_logic ')' {
 						parser->error( "Ожидается закрывающаяся скобка" );
 					};
 
+// ----------------------------------------------------------------------------
+// ---------- Select
+// ----------------------------------------------------------------------------
 fun_select_header:	Select '(' IDENTIF_COLON {
-						$$ = (int)new RDOFUNSelect( parser, (std::string*)$3 );
+						RDOFUNSelect* select = new RDOFUNSelect(parser, (std::string*)$3);
+						select->setSrcText( "Select(" + *(std::string*)$3 + ": " );
+						$$ = (int)select;
 					}
 					| Select '(' error {
 						parser->lexer_loc_set( &(@3) );
@@ -418,11 +429,16 @@ fun_select_header:	Select '(' IDENTIF_COLON {
 					};
 
 fun_select_body:	fun_select_header fun_logic ')' {
-						RDOFUNLogic* logic = ((RDOFUNSelect*)$1)->createFunSelect((RDOFUNLogic*)$2);
+						RDOFUNSelect* select = reinterpret_cast<RDOFUNSelect*>($1);
+						RDOFUNLogic*  flogic = reinterpret_cast<RDOFUNLogic*>($2);
+						select->setSrcText( select->src_text() + flogic->src_text() + ")" );
+						RDOFUNLogic* logic = select->createFunSelect( flogic );
 						logic->setSrcPos( @2 );
 						$$ = $1;
 					}
 					| fun_select_header NoCheck ')' {
+						RDOFUNSelect* select = reinterpret_cast<RDOFUNSelect*>($1);
+						select->setSrcText( select->src_text() + "NoCheck)" );
 						RDOFUNLogic* logic = ((RDOFUNSelect*)$1)->createFunSelect();
 						logic->setSrcPos( @2 );
 						$$ = $1;
@@ -443,16 +459,14 @@ fun_select_keyword:	Exist			{ $$ = 1; }
 
 fun_select_logic:	fun_select_body '.' fun_select_keyword '(' fun_logic ')' {
 						RDOFUNSelect* select = reinterpret_cast<RDOFUNSelect*>($1);
+						select->setSrcPos( @1, @6 );
 						RDOFUNLogic* logic = select->createFunSelectGroup( $3, (RDOFUNLogic*)$5 );
-						select->setSrcPos( @1.first_line, @1.first_column, @6.last_line, @6.last_column );
-						logic->setSrcInfo( select->src_info() );
 						$$ = (int)logic;
 					}
 					| fun_select_body '.' Empty_kw '(' ')' {
 						RDOFUNSelect* select = reinterpret_cast<RDOFUNSelect*>($1);
+						select->setSrcPos( @1, @5 );
 						RDOFUNLogic* logic = select->createFunSelectEmpty();
-						select->setSrcPos( @1.first_line, @1.first_column, @5.last_line, @5.last_column );
-						logic->setSrcInfo( select->src_info() );
 						$$ = (int)logic;
 					}
 					| fun_select_body error {
@@ -482,9 +496,8 @@ fun_select_logic:	fun_select_body '.' fun_select_keyword '(' fun_logic ')' {
 
 fun_select_arithm:	fun_select_body '.' Size_kw '(' ')' {
 						RDOFUNSelect* select = reinterpret_cast<RDOFUNSelect*>($1);
+						select->setSrcPos( @1, @5 );
 						RDOFUNArithm* arithm = select->createFunSelectSize();
-						select->setSrcPos( @1.first_line, @1.first_column, @5.last_line, @5.last_column );
-						arithm->setSrcInfo( select->src_info() );
 						$$ = (int)arithm;
 					}
 					| fun_select_body error {

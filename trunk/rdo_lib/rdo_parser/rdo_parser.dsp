@@ -407,7 +407,18 @@ SOURCE=.\rdogramopr.cpp
 # Begin Source File
 
 SOURCE=.\rdogrampat.cpp
+
+!IF  "$(CFG)" == "rdo_parser - Win32 Release"
+
+# ADD CPP /O1
 # SUBTRACT CPP /YX /Yc /Yu
+
+!ELSEIF  "$(CFG)" == "rdo_parser - Win32 Debug"
+
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 

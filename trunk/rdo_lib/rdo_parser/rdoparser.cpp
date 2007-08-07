@@ -256,11 +256,11 @@ const RDOFUNSequence *RDOParser::findSequence(const std::string *const name) con
 	return NULL;
 }
 
-const RDOPATPattern *RDOParser::findPattern(const std::string *const name) const
+const RDOPATPattern* RDOParser::findPattern( const std::string& name ) const
 {
 	std::vector<RDOPATPattern *>::const_iterator it = std::find_if(allPATPatterns.begin(), 
 		allPATPatterns.end(), 
-		compareName<RDOPATPattern>(name));
+		compareName2<RDOPATPattern>(name));
 	if(it != allPATPatterns.end())
 		return (*it);
 

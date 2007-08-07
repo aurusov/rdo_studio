@@ -81,10 +81,10 @@ RDOParserSrcInfo::RDOParserSrcInfo(): RDOSrcInfo()
 	init();
 }
 
-RDOParserSrcInfo::RDOParserSrcInfo( const YYLTYPE& _error_pos ): RDOSrcInfo()
+RDOParserSrcInfo::RDOParserSrcInfo( const YYLTYPE& _pos ): RDOSrcInfo()
 {
 	init();
-	setSrcPos( _error_pos );
+	setSrcPos( _pos );
 }
 
 RDOParserSrcInfo::RDOParserSrcInfo( const rdoRuntime::RDOSrcInfo& _info )
@@ -99,10 +99,10 @@ RDOParserSrcInfo::RDOParserSrcInfo( const rdoRuntime::RDOSrcInfo::Position& _pos
 	RDOSrcInfo::setSrcPos( _pos );
 }
 
-RDOParserSrcInfo::RDOParserSrcInfo( const YYLTYPE& _error_pos, const std::string& _text )
+RDOParserSrcInfo::RDOParserSrcInfo( const YYLTYPE& _pos, const std::string& _text )
 {
 	init();
-	setSrcPos( _error_pos );
+	setSrcPos( _pos );
 	setSrcText( _text );
 }
 

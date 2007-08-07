@@ -151,14 +151,20 @@ public:
 		position.last_line  = _position.last_line;
 		position.last_pos   = _position.last_pos;
 	}
-	virtual void setSrcPos( int first_line, int first_pos, int last_line, int last_pos ) {
+	void setSrcPos( const Position& _position_begin, const Position& _position_end ) {
+		position.first_line = _position_begin.first_line;
+		position.first_pos  = _position_begin.first_pos;
+		position.last_line  = _position_end.last_line;
+		position.last_pos   = _position_end.last_pos;
+	}
+	void setSrcPos( int first_line, int first_pos, int last_line, int last_pos ) {
 		position.first_line = first_line;
 		position.first_pos  = first_pos;
 		position.last_line  = last_line;
 		position.last_pos   = last_pos;
 	}
 
-	virtual void setSrcText( const std::string& value ) {
+	void setSrcText( const std::string& value ) {
 		text_data = value;
 	}
 	void setSrcFileType( rdoModelObjects::RDOFileType value ) {

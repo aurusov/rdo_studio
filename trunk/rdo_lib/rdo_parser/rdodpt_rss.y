@@ -205,9 +205,9 @@ dpt_process_line:	IDENTIF	{
 	std::string* opr_name     = parser->registerName( "OPR_GENERATE" );
 
 	// Создадим последовательность
-	RDORTPRealResParam*    uniform_real_param = new RDORTPRealResParam( new RDORTPRealDiap(), new RDORTPRealDefVal(0) );
-	RDOFUNSequenceHeader*  uniform_seq_h      = new RDOFUNSequenceHeader( uniform_name, uniform_real_param );
-	RDOFUNSequenceUniform* uniform_seq        = new RDOFUNSequenceUniform( uniform_seq_h, 123456789 );
+	RDORTPRealResParam*    uniform_real_param            = new RDORTPRealResParam( new RDORTPRealDiap(), new RDORTPRealDefVal(0) );
+	RDOFUNSequence::RDOFUNSequenceHeader*  uniform_seq_h = new RDOFUNSequence::RDOFUNSequenceHeader( uniform_name, uniform_real_param );
+	RDOFUNSequenceUniform* uniform_seq                   = new RDOFUNSequenceUniform( uniform_seq_h, 123456789 );
 
 	RDOPATPatternEvent* ie = new RDOPATPatternEvent( ie_name, true );
 //	ie->addRelRes( rel_res_name, const_cast<std::string*>(transact_type->getName()), RDOPATPattern::CS_Create );

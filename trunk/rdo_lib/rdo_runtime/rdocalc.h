@@ -898,7 +898,6 @@ public:
 		RDOCalc( _parent ),
 		calc( _calc )
 	{
-		if ( calc ) setSrcInfo( calc->src_info() );
 	}
 	RDOValue calcValue( RDORuntime* runtime ) const {
 		return !calc->calcValueBase( runtime );
@@ -1123,7 +1122,7 @@ public:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOCalcCreateNumberedResource (System calcs - создание нового временного ресурса по индексу с параметрами)
+// ---------- RDOCalcCreateNumberedResource (System calcs - создание нового временного ресурса или постоянного в начальный момент времени по индексу с параметрами)
 // ----------------------------------------------------------------------------
 class RDOCalcCreateNumberedResource: public RDOCalc
 {

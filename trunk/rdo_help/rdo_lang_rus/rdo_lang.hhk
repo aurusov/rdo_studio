@@ -916,6 +916,16 @@
 		<param name="Local" value="html\rdo_base_std_var_func.htm#select">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Empty">
+		<param name="Name" value="Глобальные переменные и стандартные функции">
+		<param name="Local" value="html\rdo_base_std_var_func.htm#select_empty">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Size">
+		<param name="Name" value="Глобальные переменные и стандартные функции">
+		<param name="Local" value="html\rdo_base_std_var_func.htm#select_size">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="selected">
 		<param name="Name" value="Зарезервированные слова">
 		<param name="Local" value="html\rdo_lex_div_res_words.htm">

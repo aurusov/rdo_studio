@@ -14,10 +14,10 @@ void rsserror( char* mes );
 class RDORTPResType;
 class RDORTPParamDesc;
 
-class RDORSSResource: public RDOParserObject
+class RDORSSResource: public RDOParserObject, public RDOParserSrcInfo
 {
 protected:
-	const std::string* const   name;
+	std::string                name;
 	const RDORTPResType* const resType;
 	const int                  number;  // in system
 	std::vector< rdoRuntime::RDOValue > values;
@@ -29,7 +29,7 @@ public:
 public:
 	RDORSSResource( RDOParser* _parser, const std::string* const _name, const RDORTPResType* const _resType );
 	
-	const std::string*   const getName() const       { return name;    }
+	const std::string*   const getName() const       { return &name;   }
 	const RDORTPResType* const getType() const       { return resType; }
 	
 	int getNumber() const                            { return number;  }

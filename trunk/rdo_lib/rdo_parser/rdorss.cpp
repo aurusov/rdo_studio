@@ -26,7 +26,7 @@ void rsserror( char* mes )
 
 RDORSSResource::RDORSSResource( RDOParser* _parser, const std::string* const _name, const RDORTPResType* const _resType ):
 	RDOParserObject( _parser ),
-	name( _name ),
+	name( *_name ),
 	resType( _resType ),
 	number( parser->getRSS_id() ),
 	trace( false )

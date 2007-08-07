@@ -55,10 +55,10 @@ private:
 
 public:
 	RDOParserSrcInfo();
-	RDOParserSrcInfo( const YYLTYPE& _error_pos );
+	RDOParserSrcInfo( const YYLTYPE& _pos );
 	RDOParserSrcInfo( const rdoRuntime::RDOSrcInfo& _info );
 	RDOParserSrcInfo( const rdoRuntime::RDOSrcInfo::Position& _pos );
-	RDOParserSrcInfo( const YYLTYPE& _error_pos, const std::string& _text );
+	RDOParserSrcInfo( const YYLTYPE& _pos, const std::string& _text );
 
 	virtual void setSrcInfo( const RDOParserSrcInfo& copy ) {
 		RDOSrcInfo::setSrcPos( copy.src_pos() );
@@ -74,8 +74,35 @@ public:
 	virtual void setSrcPos( const YYLTYPE& _pos ) {
 		RDOSrcInfo::setSrcPos( _pos.first_line, _pos.first_column, _pos.last_line, _pos.last_column );
 	}
+	virtual void setSrcPos( const YYLTYPE& _pos_begin, const YYLTYPE& _pos_end ) {
+		RDOSrcInfo::setSrcPos( _pos_begin.first_line, _pos_begin.first_column, _pos_end.last_line, _pos_end.last_column );
+	}
 	virtual void setSrcPos( int first_line, int first_pos, int last_line, int last_pos ) {
 		RDOSrcInfo::setSrcPos( first_line, first_pos, last_line, last_pos );
+	}
+	void setSrcPosByLength( const YYLTYPE& _pos, const std::string& _text ) {
+		RDOSrcInfo::setSrcPos( _pos.first_line, _pos.first_column, _pos.last_line, _pos.last_column );
+		if ( _pos.first_line == _pos.last_line ) {
+			rdoRuntime::RDOSrcInfo::Position position = src_pos();
+			position.last_pos = position.first_pos + _text.length();
+			RDOSrcInfo::setSrcPos( position );
+		}
+	}
+	void setSrcPosAndTextByLength( const YYLTYPE& _pos, const std::string& _text ) {
+		setSrcPosByLength( _pos, _text );
+		RDOSrcInfo::setSrcText( _text );
+	}
+	YYLTYPE getPosAsYY() const {
+		YYLTYPE pos1;
+		rdoRuntime::RDOSrcInfo::Position pos2 = src_pos();
+		pos1.first_line   = pos2.first_line;
+		pos1.first_column = pos2.first_pos;
+		pos1.last_line    = pos2.last_line;
+		pos1.last_column  = pos2.last_pos;
+		return pos1;
+	}
+	static int getPosByLength( int _pos, const std::string& _text ) {
+		return _pos + _text.length();
 	}
 };
 
@@ -93,6 +120,14 @@ public:
 	const std::string * const name;
 	compareName(const std::string * const _name): name(_name) {}
 	bool operator() (const T * other) { return ((*(other->getName())) == (*name)); }
+};
+
+template <class T> class compareName2
+{
+public:
+	const std::string& name;
+	compareName2( const std::string& _name ): name(_name) {}
+	bool operator() (const T* other) { return other->getName() == name; }
 };
 
 } // namespace rdoParse

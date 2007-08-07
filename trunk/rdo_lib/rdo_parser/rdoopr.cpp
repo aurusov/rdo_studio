@@ -31,7 +31,7 @@ RDOOPROperation::RDOOPROperation( RDOParser* _parser, std::string* _oprName, std
 	RDOParserObject( _parser ),
 	name( _oprName )
 {
-	pattern = parser->findPattern(patName);
+	pattern = parser->findPattern( *patName );
 	if(!pattern)
 		parser->error("Undefined pattern name: " + *getName());
 
@@ -42,7 +42,7 @@ RDOOPROperation::RDOOPROperation( RDOParser* _parser, std::string* _oprName, std
 void RDOOPROperation::addParam(int intParam)
 {
 	if(pattern->params.size() <= currParam)
-		parser->error("Too much parameters for pattern : " + *pattern->getName() + " in operation: " + *getName());
+		parser->error("Too much parameters for pattern : " + pattern->getName() + " in operation: " + *getName());
 
 	RDOFUNFunctionParam *param = pattern->params.at(currParam);
 	rdoRuntime::RDOValue val = param->getType()->getRSSIntValue(intParam);
@@ -53,7 +53,7 @@ void RDOOPROperation::addParam(int intParam)
 void RDOOPROperation::addParam(double *realParam)
 {
 	if(pattern->params.size() <= currParam)
-		parser->error("Too much parameters for pattern : " + *pattern->getName() + " in operation: " + *getName());
+		parser->error("Too much parameters for pattern : " + pattern->getName() + " in operation: " + *getName());
 
 	RDOFUNFunctionParam *param = pattern->params.at(currParam);
 	rdoRuntime::RDOValue val = param->getType()->getRSSRealValue(realParam);
@@ -64,7 +64,7 @@ void RDOOPROperation::addParam(double *realParam)
 void RDOOPROperation::addParam(std::string *stringParam)
 {
 	if(pattern->params.size() <= currParam)
-		parser->error("Too much parameters for pattern : " + *pattern->getName() + " in operation: " + *getName());
+		parser->error("Too much parameters for pattern : " + pattern->getName() + " in operation: " + *getName());
 
 	RDOFUNFunctionParam *param = pattern->params.at(currParam);
 	rdoRuntime::RDOValue val = param->getType()->getRSSEnumValue(stringParam);
@@ -84,7 +84,7 @@ void RDOOPROperation::addHotKey( std::string* hotKey )
 void RDOOPROperation::addParam()
 {
 	if(pattern->params.size() <= currParam)
-		parser->error("Too much parameters for pattern : " + *pattern->getName() + " in operation: " + *getName());
+		parser->error("Too much parameters for pattern : " + pattern->getName() + " in operation: " + *getName());
 
 	RDOFUNFunctionParam *param = pattern->params.at(currParam);
 	rdoRuntime::RDOValue val = param->getType()->getRSSDefaultValue();
@@ -95,7 +95,7 @@ void RDOOPROperation::addParam()
 void RDOOPROperation::endOfDefinition()
 {
 	if(pattern->params.size() > currParam)
-		parser->error("Too few parameters for pattern : " + *pattern->getName() + " in operation: " + *getName());
+		parser->error("Too few parameters for pattern : " + pattern->getName() + " in operation: " + *getName());
 }
 
 } // namespace rdoParse 

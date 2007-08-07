@@ -82,12 +82,12 @@ public:
 
 	void insertDeletables( RDODeletable* value ) {
 		if ( value ) {
-			TRACE( "insertDeletables: %d\n", value );
+//			TRACE( "insertDeletables: %d\n", value );
 			allDeletables.push_back( value );
 		}
 	}
 	void removeDeletables( RDODeletable* value ) {
-		TRACE( "removeDeletables: %d\n", value );
+//		TRACE( "removeDeletables: %d\n", value );
 		std::vector< RDODeletable* >::iterator it = std::find( allDeletables.begin(), allDeletables.end(), value );
 		if ( it != allDeletables.end() ) {
 			allDeletables.erase( it );
@@ -144,7 +144,7 @@ public:
 	const RDORSSResource* findRSSResource( const std::string* const name ) const;
 	const RDOFUNFunction* findFunction( const std::string* const name ) const;
 	const RDOFUNSequence* findSequence( const std::string* const name ) const;
-	const RDOPATPattern*  findPattern( const std::string* const name ) const;
+	const RDOPATPattern*  findPattern( const std::string& name ) const;
 
 	void parse( int files = rdoModelObjects::obALL );
 	void parse( rdoModelObjects::RDOParseType file );
