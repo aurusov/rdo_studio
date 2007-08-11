@@ -53,7 +53,7 @@ private:
 	int current_rel_res_index;
 
 protected:
-	RDOPATPattern( RDOParser* _parser, const std::string* const _name, const bool _trace );
+	RDOPATPattern( RDOParser* _parser, const std::string& _name, const bool _trace );
 	virtual ~RDOPATPattern() {}
 
 	rdoRuntime::RDOPatternRuntime* patRuntime;
@@ -82,18 +82,18 @@ public:
 	RDORelevantResource* currRelRes;
 
 	void add(RDOFUNFunctionParam *const _param);
-	const RDOFUNFunctionParam *findPATPatternParam(const std::string *const paramName) const;
-	int findPATPatternParamNum(const std::string *const paramName) const;
+	const RDOFUNFunctionParam* findPATPatternParam( const std::string& paramName ) const;
+	int findPATPatternParamNum( const std::string& paramName ) const;
 	const RDORelevantResource* findRelevantResource( const std::string& resName ) const;
 	int findRelevantResourceNum( const std::string& resName ) const;
-	virtual void addRelRes( std::string* relName, std::string* typeName, rdoRuntime::RDOResourceTrace::ConvertStatus beg, const YYLTYPE& rel_pos, const YYLTYPE& type_pos, const YYLTYPE& convertor_pos ) = 0;
+	virtual void addRelRes( const std::string& relName, const std::string& typeName, rdoRuntime::RDOResourceTrace::ConvertStatus beg, const YYLTYPE& rel_pos, const YYLTYPE& type_pos, const YYLTYPE& convertor_pos ) = 0;
 	const std::string& getName() const { return name; }
 
 	void setCommonChoiceFirst();
 	void setCommonChoiceWithMin( RDOFUNArithm* arithm );
 	void setCommonChoiceWithMax( RDOFUNArithm* arithm );
 	virtual void setTime( RDOFUNArithm* arithm );
-	void addRelResBody( std::string* resName );
+	void addRelResBody( const std::string& resName );
 	virtual void addRelResUsage( RDOPATChoiceFrom* choice_from, RDOPATChoiceOrder* choice_order );
 	virtual void addRelResConvert();
 	virtual void addRelResConvert( bool trace, RDOPATParamSet* parSet, const YYLTYPE& convertor_pos ) = 0;
@@ -119,8 +119,8 @@ protected:
 	virtual std::string getPatTypeStr() const { return "irregular event"; }
 
 public:
-	RDOPATPatternEvent( RDOParser* _parser, std::string* _name, bool _trace );
-	virtual void addRelRes( std::string* relName, std::string* typeName, rdoRuntime::RDOResourceTrace::ConvertStatus beg, const YYLTYPE& rel_pos, const YYLTYPE& type_pos, const YYLTYPE& convertor_pos );
+	RDOPATPatternEvent( RDOParser* _parser, const std::string& _name, bool _trace );
+	virtual void addRelRes( const std::string& relName, const std::string& typeName, rdoRuntime::RDOResourceTrace::ConvertStatus beg, const YYLTYPE& rel_pos, const YYLTYPE& type_pos, const YYLTYPE& convertor_pos );
 	virtual void addRelResUsage( RDOPATChoiceFrom* choice_from, RDOPATChoiceOrder* choice_order );
 	virtual void addRelResConvert( bool trace, RDOPATParamSet* parSet, const YYLTYPE& convertor_pos );
 	virtual void testGoodForFreeActivity() const {}
@@ -138,9 +138,9 @@ protected:
 	virtual std::string getPatTypeStr() const { return "rule"; }
 
 public:
-	RDOPATPatternRule( RDOParser* _parser, std::string* _name, bool _trace );
-	virtual void addRelRes( std::string* relName, std::string* typeName, rdoRuntime::RDOResourceTrace::ConvertStatus beg, const YYLTYPE& rel_pos, const YYLTYPE& type_pos, const YYLTYPE& convertor_pos );
-	virtual void setTime(RDOFUNArithm *arithm);
+	RDOPATPatternRule( RDOParser* _parser, const std::string& _name, bool _trace );
+	virtual void addRelRes( const std::string& relName, const std::string& typeName, rdoRuntime::RDOResourceTrace::ConvertStatus beg, const YYLTYPE& rel_pos, const YYLTYPE& type_pos, const YYLTYPE& convertor_pos );
+	virtual void setTime( RDOFUNArithm* arithm );
 	virtual void addRelResConvert( bool trace, RDOPATParamSet* parSet, const YYLTYPE& convertor_pos );
 	virtual void testGoodForSearchActivity() const;
 	virtual void testGoodForSomeActivity() const {}
@@ -154,14 +154,14 @@ public:
 class RDOPATPatternOperation: public RDOPATPattern
 {
 protected:
-	RDOPATPatternOperation( RDOParser* _parser, bool _trace, std::string* _name );
+	RDOPATPatternOperation( RDOParser* _parser, bool _trace, const std::string& _name );
 	virtual std::string getPatTypeStr() const { return "operation"; }
 	virtual void rel_res_insert( RDORelevantResource* rel_res, const YYLTYPE& pos );
 
 public:
-	RDOPATPatternOperation( RDOParser* _parser, std::string* _name, bool _trace );
-	virtual void addRelRes( std::string* relName, std::string* typeName, rdoRuntime::RDOResourceTrace::ConvertStatus beg, const YYLTYPE& rel_pos, const YYLTYPE& type_pos, const YYLTYPE& convertor_pos );
-	        void addRelRes( std::string* relName, std::string* typeName, rdoRuntime::RDOResourceTrace::ConvertStatus beg, rdoRuntime::RDOResourceTrace::ConvertStatus end, const YYLTYPE& rel_pos, const YYLTYPE& type_pos, const YYLTYPE& convertor_begin_pos, const YYLTYPE& convertor_end_pos );
+	RDOPATPatternOperation( RDOParser* _parser, const std::string& _name, bool _trace );
+	virtual void addRelRes( const std::string& relName, const std::string& typeName, rdoRuntime::RDOResourceTrace::ConvertStatus beg, const YYLTYPE& rel_pos, const YYLTYPE& type_pos, const YYLTYPE& convertor_pos );
+	        void addRelRes( const std::string& relName, const std::string& typeName, rdoRuntime::RDOResourceTrace::ConvertStatus beg, rdoRuntime::RDOResourceTrace::ConvertStatus end, const YYLTYPE& rel_pos, const YYLTYPE& type_pos, const YYLTYPE& convertor_begin_pos, const YYLTYPE& convertor_end_pos );
 	virtual void addRelResConvert( bool trace, RDOPATParamSet* parSet, const YYLTYPE& convertor_pos );
 	        void addRelResConvertEnd( bool trace, RDOPATParamSet* parSet, const YYLTYPE& convertor_pos );
 	        void addRelResConvertBeginEnd( bool trace, RDOPATParamSet* parSet, bool trace2, RDOPATParamSet* parSet2, const YYLTYPE& convertor_begin_pos, const YYLTYPE& convertor_end_pos );
@@ -180,7 +180,7 @@ protected:
 	virtual std::string getPatTypeStr() const { return "keyboard"; }
 
 public:
-	RDOPATPatternKeyboard( RDOParser* _parser, std::string *_name, bool _trace );
+	RDOPATPatternKeyboard( RDOParser* _parser, const std::string& _name, bool _trace );
 	virtual char getModelStructureLetter() const { return 'K'; };
 	virtual void testGoodForFreeActivity() const {}
 	virtual PatType getPatType() const { return PT_Keyboard; }
@@ -275,9 +275,9 @@ public:
 	} currentState;
 	bool isChoiceFromState() const { return currentState == choiceEmpty || currentState == choiceNoCheck || currentState == choiceFrom; }
 
-	RDORelevantResource( const RDOParserObject* _parent, const std::string* const _name, const int _rel_res_id, const rdoRuntime::RDOResourceTrace::ConvertStatus _begin, const rdoRuntime::RDOResourceTrace::ConvertStatus _end ):
+	RDORelevantResource( const RDOParserObject* _parent, const std::string& _name, const int _rel_res_id, const rdoRuntime::RDOResourceTrace::ConvertStatus _begin, const rdoRuntime::RDOResourceTrace::ConvertStatus _end ):
 		RDOParserObject( _parent ),
-		name( *_name ),
+		name( _name ),
 		rel_res_id( _rel_res_id ),
 		begin( _begin ),
 		end( _end ),
@@ -308,7 +308,7 @@ private:
 	const RDORSSResource* const res;
 
 public:
-	RDORelevantResourceDirect( const RDOParserObject* _parent, const std::string* const _name, const int _rel_res_id, const RDORSSResource* const _res, const rdoRuntime::RDOResourceTrace::ConvertStatus _begin, const rdoRuntime::RDOResourceTrace::ConvertStatus _end = rdoRuntime::RDOResourceTrace::CS_NoChange ):
+	RDORelevantResourceDirect( const RDOParserObject* _parent, const std::string& _name, const int _rel_res_id, const RDORSSResource* const _res, const rdoRuntime::RDOResourceTrace::ConvertStatus _begin, const rdoRuntime::RDOResourceTrace::ConvertStatus _end = rdoRuntime::RDOResourceTrace::CS_NoChange ):
 		RDORelevantResource( _parent, _name, _rel_res_id, _begin, _end ),
 		res( _res )
 	{
@@ -331,7 +331,11 @@ private:
 	const RDORTPResType* const type;
 
 public:
-	RDORelevantResourceByType( const RDOParserObject* _parent, const std::string* const _name, const int _rel_res_id, const RDORTPResType* const _type, const rdoRuntime::RDOResourceTrace::ConvertStatus _begin, const rdoRuntime::RDOResourceTrace::ConvertStatus _end = rdoRuntime::RDOResourceTrace::CS_NoChange ): RDORelevantResource( _parent, _name, _rel_res_id, _begin, _end ), type( _type ) {}
+	RDORelevantResourceByType( const RDOParserObject* _parent, const std::string& _name, const int _rel_res_id, const RDORTPResType* const _type, const rdoRuntime::RDOResourceTrace::ConvertStatus _begin, const rdoRuntime::RDOResourceTrace::ConvertStatus _end = rdoRuntime::RDOResourceTrace::CS_NoChange ):
+		RDORelevantResource( _parent, _name, _rel_res_id, _begin, _end ),
+		type( _type )
+	{
+	}
 	virtual const RDORTPResType* const getType() const { return type; };
 	virtual rdoRuntime::RDOCalc* createSelectEmptyResourceCalc();
 	virtual rdoRuntime::RDOCalc* createSelectFirstResourceChoiceCalc();
@@ -346,9 +350,9 @@ public:
 class RDOPATParamSet: public RDOParserObject, public RDOParserSrcInfo
 {
 private:
-	const RDORelevantResource*  rel_res;
-	std::vector< std::string* > paramNames;
-	void checkParam( std::string* paramName );
+	const RDORelevantResource* rel_res;
+	std::vector< std::string > paramNames;
+	void checkParam( const std::string& paramName );
 
 public:
 	RDOPATParamSet( const RDORelevantResource* _parent ):
@@ -358,7 +362,7 @@ public:
 	}
 	std::vector< RDOFUNArithm* > paramArithms;
 	std::vector< int >           paramNumbs;
-	void addSet( std::string* paramName, const YYLTYPE& param_name_pos, RDOFUNArithm* paramArithm = NULL );
+	void addSet( const std::string& paramName, const YYLTYPE& param_name_pos, RDOFUNArithm* paramArithm = NULL );
 	void setParamsNumbers();
 };
 

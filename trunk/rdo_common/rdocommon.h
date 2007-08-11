@@ -103,9 +103,6 @@ struct RDOSyntaxError
 		RTP_INVALID_DEFVAULT_INT_AS_REAL = 1009, // Invalid default value
 		RTP_INVALID_DEFVAULT_REAL        = 1010, // Invalid default value
 		RTP_INVALID_DEFVAULT_ENUM        = 1011, // Invalid default value
-		RTP_INVALID_DEFVAULT_INT_SUCHAS  = 1012, // Invalid default value: %d-value
-		RTP_INVALID_DEFVAULT_REAL_SUCHAS = 1013, // Invalid default value: %f-value
-		RTP_INVALID_DEFVAULT_ENUM_SUCHAS = 1014, // Invalid default value: %s-value
 		RTP_INVALID_RANGE                = 1015, // Invalid range
 		RTP_INVALID_INT_RANGE_REAL       = 1016, // Invalid integer range: using real values
 		RTP_WAITING_FOR_INT_PARAM_END    = 1017, // Ending of description of integer parameter is expected

@@ -211,7 +211,7 @@ dpt_activ_search_descr:	dpt_activ_search IDENTIF_COLON IDENTIF					{ ((RDODPTSea
 dpt_activ_search_descr_param:	dpt_activ_search_descr								
 								|		dpt_activ_search_descr_param INT_CONST			{ ((RDODPTSearch *)$$)->addActivityParam((int)$2); }
 								|		dpt_activ_search_descr_param REAL_CONST		{ ((RDODPTSearch *)$$)->addActivityParam((double *)$2); }
-								|		dpt_activ_search_descr_param IDENTIF			{ ((RDODPTSearch *)$$)->addActivityParam((std::string *)$2); }
+								|		dpt_activ_search_descr_param IDENTIF			{ ((RDODPTSearch *)$$)->addActivityParam(*(std::string *)$2); }
 								|		dpt_activ_search_descr_param '*'					{ ((RDODPTSearch *)$$)->addActivityParam(); };
 
 dpt_activ_search_descr_value:	dpt_activ_search_descr_param value_before	fun_arithm		{ ((RDODPTSearch *)$$)->setActivityValue(DPT_value_before, (RDOFUNArithm *)$3); }
@@ -250,10 +250,10 @@ dpt_activ_some_descr:		dpt_activ_some_activity IDENTIF_COLON IDENTIF {
 							};
 
 dpt_activ_some_descr_param:	dpt_activ_some_descr
-							|	dpt_activ_some_descr_param INT_CONST  { ((RDODPTSome *)$$)->addActivityParam((int)$2);           }
-							|	dpt_activ_some_descr_param REAL_CONST { ((RDODPTSome *)$$)->addActivityParam((double *)$2);      }
-							|	dpt_activ_some_descr_param IDENTIF    { ((RDODPTSome *)$$)->addActivityParam((std::string *)$2); }
-							|	dpt_activ_some_descr_param '*'        { ((RDODPTSome *)$$)->addActivityParam();                  };
+							|	dpt_activ_some_descr_param INT_CONST  { ((RDODPTSome *)$$)->addActivityParam((int)$2);            }
+							|	dpt_activ_some_descr_param REAL_CONST { ((RDODPTSome *)$$)->addActivityParam((double *)$2);       }
+							|	dpt_activ_some_descr_param IDENTIF    { ((RDODPTSome *)$$)->addActivityParam(*(std::string *)$2); }
+							|	dpt_activ_some_descr_param '*'        { ((RDODPTSome *)$$)->addActivityParam();                   };
 
 dpt_activ_some_end:			dpt_activ_some_activity End {
 								((RDODPTSome *)$$)->end();
@@ -267,12 +267,12 @@ dpt_activ_free:	Activities																{ $$ = NULL; };
 dpt_activ_free_descr:	dpt_activ_free IDENTIF_COLON IDENTIF					{ $$ = (int)(new RDODPTFreeActivity( parser, (std::string *)$2, (std::string *)$3 )); };
 																									                                                                    
 dpt_activ_free_descr_keyb:	dpt_activ_free_descr
-			|	dpt_activ_free_descr_keyb QUOTED_IDENTIF			{ ((RDODPTFreeActivity *)$1)->addHotKey((std::string *)$2); }
-			|	dpt_activ_free_descr_keyb '+' QUOTED_IDENTIF	{ ((RDODPTFreeActivity *)$1)->addHotKey((std::string *)$3); };
+			|	dpt_activ_free_descr_keyb QUOTED_IDENTIF		{ ((RDODPTFreeActivity *)$1)->addHotKey(*(std::string *)$2); }
+			|	dpt_activ_free_descr_keyb '+' QUOTED_IDENTIF	{ ((RDODPTFreeActivity *)$1)->addHotKey(*(std::string *)$3); };
 
 dpt_activ_free_descr_param:	dpt_activ_free_descr_param INT_CONST			{ ((RDODPTFreeActivity *)$1)->addParam((int)$2); }                  
 								|		dpt_activ_free_descr_param REAL_CONST			{ ((RDODPTFreeActivity *)$1)->addParam((double *)$2); }             
-								|		dpt_activ_free_descr_param IDENTIF				{ ((RDODPTFreeActivity *)$1)->addParam((std::string *)$2); }             
+								|		dpt_activ_free_descr_param IDENTIF				{ ((RDODPTFreeActivity *)$1)->addParam(*(std::string *)$2); }             
 								|		dpt_activ_free_descr_param '*'					{ ((RDODPTFreeActivity *)$1)->addParam(); }
 								|		dpt_activ_free_descr_keyb;
 																									                                                                    
@@ -355,7 +355,7 @@ fun_arithm: fun_arithm '+' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOF
 			}
 			| INT_CONST						{ $$ = (int)new RDOFUNArithm( parser, (int)$1, RDOParserSrcInfo( @1, reinterpret_cast<RDOLexer*>(lexer)->YYText() ) );     }
 			| REAL_CONST					{ $$ = (int)new RDOFUNArithm( parser, (double*)$1, RDOParserSrcInfo( @1, reinterpret_cast<RDOLexer*>(lexer)->YYText() ) ); }
-			| IDENTIF						{ $$ = (int)new RDOFUNArithm( parser, (std::string*)$1, @1 );                                                              }
+			| IDENTIF						{ $$ = (int)new RDOFUNArithm( parser, *(std::string*)$1, @1 );                                                             }
 			| '-' fun_arithm %prec UMINUS	{
 				RDOParserSrcInfo info;
 				info.setSrcPos( @1, @2 );
@@ -379,7 +379,7 @@ fun_arithm_func_call:	IDENTIF '(' fun_arithm_func_call_pars ')' {
 							fun->name_error_pos.setSrcPos( @1 );
 							fun->setSrcPos( @1, @4 );
 							fun->setSrcText( *(std::string*)$1 + "(" + fun->src_text() + ")" );
-							RDOFUNArithm* arithm = fun->createCall( (std::string*)$1 );
+							RDOFUNArithm* arithm = fun->createCall( *(std::string*)$1 );
 							$$ = (int)arithm;
 						}
 						| IDENTIF '(' error {
@@ -417,7 +417,7 @@ fun_group_keyword:	Exist			{ $$ = 1; }
 fun_group_header:	fun_group_keyword '(' IDENTIF_COLON {
 						parser->lexer_loc_backup();
 						parser->lexer_loc_set( @3.first_line, @3.first_column + ((std::string*)$3)->length() );
-						$$ = (int)(new RDOFUNGroupLogic( parser, $1, (std::string *)$3) );
+						$$ = (int)(new RDOFUNGroupLogic( parser, $1, *(std::string *)$3) );
 						parser->lexer_loc_restore();
 					}
 					| fun_group_keyword '(' error {
@@ -455,7 +455,7 @@ fun_group:			fun_group_header fun_logic ')' {
 // ---------- Select
 // ----------------------------------------------------------------------------
 fun_select_header:	Select '(' IDENTIF_COLON {
-						RDOFUNSelect* select = new RDOFUNSelect(parser, (std::string*)$3);
+						RDOFUNSelect* select = new RDOFUNSelect(parser, *(std::string*)$3);
 						select->setSrcText( "Select(" + *(std::string*)$3 + ": " );
 						$$ = (int)select;
 					}

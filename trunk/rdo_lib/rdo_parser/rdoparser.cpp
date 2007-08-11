@@ -20,6 +20,7 @@ namespace rdoParse
 RDOParser* parser = NULL;
 
 RDOParser::RDOParser():
+	parsing_object( NULL ),
 	parsers( NULL ),
 	parser_base( NULL ),
 	have_kw_Resources( false ),
@@ -53,6 +54,87 @@ RDOParser::~RDOParser()
 		parsers = NULL;
 	}
 	parser = NULL;
+}
+
+void RDOParser::insertRTPResType( RDORTPResType* value )
+{
+	parsing_object = value;
+	allRTPResType.push_back( value );
+}
+
+void RDOParser::insertRTPParam( RDORTPParam* value )
+{
+//	parsing_object = value;
+	allRTPParams.push_back( value );
+}
+
+void RDOParser::insertRSSResource( RDORSSResource* value )
+{
+	parsing_object = value;
+	allRSSResource.push_back( value );
+}
+
+void RDOParser::insertPATPattern( RDOPATPattern* value )
+{
+	parsing_object = value;
+	allPATPatterns.push_back( value );
+}
+
+void RDOParser::insertFUNConstant( RDOFUNConstant* value )
+{
+	parsing_object = value;
+	allFUNConstant.push_back( value );
+}
+
+void RDOParser::insertFUNFunction( RDOFUNFunction* value )
+{
+	parsing_object = value;
+	allFUNFunctions.push_back( value );
+}
+
+void RDOParser::insertFUNSequences( RDOFUNSequence* value )
+{
+	parsing_object = value;
+	allFUNSequences.push_back( value );
+}
+
+void RDOParser::insertFUNGroup( RDOFUNGroup* value )
+{
+	parsing_object = value;
+	allFUNGroupStack.push_back( value );
+}
+
+void RDOParser::insertDPTSearch( RDODPTSearch* value )
+{
+	parsing_object = value;
+	allDPTSearch.push_back( value ); 
+	lastDPTSearch = value;
+}
+
+void RDOParser::insertDPTSome( RDODPTSome* value )
+{
+	parsing_object = value;
+	allDPTSome.push_back( value );
+	lastDPTSearch = NULL;
+}
+
+void RDOParser::insertDPTFreeActivity( RDODPTFreeActivity* value )
+{
+	parsing_object = value;
+	allDPTFreeActivity.push_back( value );
+	lastDPTSearch = NULL;
+}
+
+void RDOParser::insertPMDPokaz( RDOPMDPokaz* value )
+{
+//	parsing_object = value;
+	allPMDPokaz.push_back( value );
+}
+
+void RDOParser::insertDPTProcess( RDOPROCProcess* value )
+{
+	parsing_object = value;
+	allDPTProcess.push_back( value );
 }
 
 std::stringstream& RDOParser::getModelStructure()
@@ -173,7 +255,15 @@ void RDOParser::error( rdoSimulator::RDOSyntaxError::ErrorCode error_code, ... )
 void RDOParser::error( const std::string& message, rdoSimulator::RDOSyntaxError::ErrorCode error_code ) 
 {
 	errors.push_back( rdoSimulator::RDOSyntaxError( error_code, message, lexer_loc_line(), lexer_loc_pos(), getFileToParse() ) );
-	throw rdoParse::RDOSyntaxException( "" );
+	throw rdoParse::RDOSyntaxException( errors.back().message );
+}
+
+void RDOParser::error_modify( const std::string& message )
+{
+	if ( !errors.empty() ) {
+		errors.back().message = message;
+		throw rdoParse::RDOSyntaxException( "" );
+	}
 }
 
 void RDOParser::warning( rdoSimulator::RDOSyntaxError::ErrorCode error_code, ... )
@@ -188,6 +278,25 @@ void RDOParser::warning( rdoSimulator::RDOSyntaxError::ErrorCode error_code, ...
 void RDOParser::warning( const std::string& message, rdoSimulator::RDOSyntaxError::ErrorCode error_code ) 
 {
 	errors.push_back( rdoSimulator::RDOSyntaxError( error_code, message, lexer_loc_line(), lexer_loc_pos(), getFileToParse(), true ) );
+}
+
+void RDOParser::addConstant( RDORTPParam* const _cons )
+{
+	if ( !findFUNConst(_cons->getName()) ) {
+		RDOFUNConstant* newConst = new RDOFUNConstant( this, _cons );
+		runTime->setConstValue( newConst->number, newConst->getType()->getRSSDefaultValue() );
+	}
+}
+
+const RDOFUNConstant* RDOParser::findFUNConst( const std::string& _cons ) const
+{
+	std::vector<RDOFUNConstant *>::const_iterator it = 
+		std::find_if(allFUNConstant.begin(), allFUNConstant.end(), compareName2<RDOFUNConstant>(_cons));
+
+	if(it == allFUNConstant.end())
+		return NULL;
+
+	return (*it);
 }
 
 void RDOParser::checkActivityName( const std::string* _name )
@@ -213,43 +322,37 @@ void RDOParser::checkActivityName( const std::string* _name )
 	}
 }
 
-const RDORTPResType* RDOParser::findRTPResType( const std::string* const type ) const
-{
-	std::vector< RDORTPResType* >::const_iterator it = std::find_if( allRTPResType.begin(), allRTPResType.end(), compareName<RDORTPResType>(type) );
-	return it != allRTPResType.end() ? *it : NULL;
-}
-
 const RDORTPResType* RDOParser::findRTPResType( const std::string& name ) const
 {
-	std::vector< RDORTPResType* >::const_iterator it = std::find_if( allRTPResType.begin(), allRTPResType.end(), compareName<RDORTPResType>(&name) );
+	std::vector< RDORTPResType* >::const_iterator it = std::find_if( allRTPResType.begin(), allRTPResType.end(), compareName2<RDORTPResType>(name) );
 	return it != allRTPResType.end() ? *it : NULL;
 }
 
-const RDORSSResource* RDOParser::findRSSResource( const std::string* const name ) const
+const RDORSSResource* RDOParser::findRSSResource( const std::string& name ) const
 {
-	std::vector< RDORSSResource* >::const_iterator it = std::find_if( allRSSResource.begin(), allRSSResource.end(), compareName<RDORSSResource>(name) );
+	std::vector< RDORSSResource* >::const_iterator it = std::find_if( allRSSResource.begin(), allRSSResource.end(), compareName2<RDORSSResource>(name) );
 	if ( it != allRSSResource.end() ) {
 		return *it;
 	}
 	return NULL;
 }
 
-const RDOFUNFunction *RDOParser::findFunction(const std::string *const name) const
+const RDOFUNFunction* RDOParser::findFunction( const std::string& name ) const
 {
-	std::vector<RDOFUNFunction *>::const_iterator it = std::find_if(allFUNFunctions.begin(), 
+	std::vector< RDOFUNFunction* >::const_iterator it = std::find_if(allFUNFunctions.begin(), 
 		allFUNFunctions.end(), 
-		compareName<RDOFUNFunction>(name));
+		compareName2<RDOFUNFunction>(name));
 	if(it != allFUNFunctions.end())
 		return (*it);
 
 	return NULL;
 }
 
-const RDOFUNSequence *RDOParser::findSequence(const std::string *const name) const
+const RDOFUNSequence* RDOParser::findSequence( const std::string& name ) const
 {
-	std::vector<RDOFUNSequence *>::const_iterator it = std::find_if(allFUNSequences.begin(), 
+	std::vector< RDOFUNSequence* >::const_iterator it = std::find_if(allFUNSequences.begin(), 
 		allFUNSequences.end(), 
-		compareName<RDOFUNSequence>(name));
+		compareName2<RDOFUNSequence>(name));
 	if(it != allFUNSequences.end())
 		return (*it);
 
@@ -269,337 +372,337 @@ const RDOPATPattern* RDOParser::findPattern( const std::string& name ) const
 
 void RDOParser::LoadStdFunctions()
 {
-	RDORTPIntResParam *intType = new RDORTPIntResParam( this, new RDORTPIntDiap(), new RDORTPIntDefVal(false) );
-	RDORTPRealResParam *realType = new RDORTPRealResParam( this, new RDORTPRealDiap(), new RDORTPRealDefVal(false) );
+	RDORTPIntParamType *intType = new RDORTPIntParamType( this, new RDORTPIntDiap(), new RDORTPIntDefVal() );
+	RDORTPRealParamType *realType = new RDORTPRealParamType( this, new RDORTPRealDiap(), new RDORTPRealDefVal() );
 
-	RDOFUNFunction *fun = new RDOFUNFunction( this, registerName("Abs"), realType );
+	RDOFUNFunction *fun = new RDOFUNFunction( this, "Abs", realType );
 	allFUNFunctions.push_back(fun);
-	RDOFUNFunctionParam *param = new RDOFUNFunctionParam( registerName("p1"), realType );
+	RDOFUNFunctionParam *param = new RDOFUNFunctionParam( "p1", realType );
 	fun->add(param);
 	fun->functionCalc = new rdoRuntime::RDOFunCalcAbs( runTime );
 
-	fun = new RDOFUNFunction( this, registerName("ArcCos"), realType );
+	fun = new RDOFUNFunction( this, "ArcCos", realType );
 	allFUNFunctions.push_back(fun);
-	param = new RDOFUNFunctionParam( registerName("p1"), realType );
+	param = new RDOFUNFunctionParam( "p1", realType );
 	fun->add(param);
 	fun->functionCalc = new rdoRuntime::RDOFunCalcArcCos( runTime );
 
-	fun = new RDOFUNFunction( this, registerName("ArcSin"), realType );
+	fun = new RDOFUNFunction( this, "ArcSin", realType );
 	allFUNFunctions.push_back(fun);
-	param = new RDOFUNFunctionParam( registerName("p1"), realType );
+	param = new RDOFUNFunctionParam( "p1", realType );
 	fun->add(param);
 	fun->functionCalc = new rdoRuntime::RDOFunCalcArcSin( runTime );
 
-	fun = new RDOFUNFunction( this, registerName("ArcTan"), realType );
+	fun = new RDOFUNFunction( this, "ArcTan", realType );
 	allFUNFunctions.push_back(fun);
-	param = new RDOFUNFunctionParam( registerName("p1"), realType );
+	param = new RDOFUNFunctionParam( "p1", realType );
 	fun->add(param);
 	fun->functionCalc = new rdoRuntime::RDOFunCalcArcTan( runTime );
 
-	fun = new RDOFUNFunction( this, registerName("Cos"), realType );
+	fun = new RDOFUNFunction( this, "Cos", realType );
 	allFUNFunctions.push_back(fun);
-	param = new RDOFUNFunctionParam( registerName("p1"), realType );
+	param = new RDOFUNFunctionParam( "p1", realType );
 	fun->add(param);
 	fun->functionCalc = new rdoRuntime::RDOFunCalcCos( runTime );
 
-	fun = new RDOFUNFunction( this, registerName("Cotan"), realType );
+	fun = new RDOFUNFunction( this, "Cotan", realType );
 	allFUNFunctions.push_back(fun);
-	param = new RDOFUNFunctionParam( registerName("p1"), realType );
+	param = new RDOFUNFunctionParam( "p1", realType );
 	fun->add(param);
 	fun->functionCalc = new rdoRuntime::RDOFunCalcCotan( runTime );
 
-	fun = new RDOFUNFunction( this, registerName("Exp"), realType );
+	fun = new RDOFUNFunction( this, "Exp", realType );
 	allFUNFunctions.push_back(fun);
-	param = new RDOFUNFunctionParam( registerName("p1"), realType );
+	param = new RDOFUNFunctionParam( "p1", realType );
 	fun->add(param);
 	fun->functionCalc = new rdoRuntime::RDOFunCalcExp( runTime );
 
-	fun = new RDOFUNFunction( this, registerName("Floor"), intType);
+	fun = new RDOFUNFunction( this, "Floor", intType);
 	allFUNFunctions.push_back(fun);
-	param = new RDOFUNFunctionParam( registerName("p1"), realType );
+	param = new RDOFUNFunctionParam( "p1", realType );
 	fun->add(param);
 	fun->functionCalc = new rdoRuntime::RDOFunCalcFloor( runTime );
 
-	fun = new RDOFUNFunction( this, registerName("Frac"), realType );
+	fun = new RDOFUNFunction( this, "Frac", realType );
 	allFUNFunctions.push_back(fun);
-	param = new RDOFUNFunctionParam( registerName("p1"), realType );
+	param = new RDOFUNFunctionParam( "p1", realType );
 	fun->add(param);
 	fun->functionCalc = new rdoRuntime::RDOFunCalcFrac( runTime );
 
-	fun = new RDOFUNFunction( this, registerName("IAbs"), intType);
+	fun = new RDOFUNFunction( this, "IAbs", intType);
 	allFUNFunctions.push_back(fun);
-	param = new RDOFUNFunctionParam( registerName("p1"), intType);
+	param = new RDOFUNFunctionParam( "p1", intType);
 	fun->add(param);
 	fun->functionCalc = new rdoRuntime::RDOFunCalcIAbs( runTime );
 
-	fun = new RDOFUNFunction( this, registerName("IMax"), intType);
+	fun = new RDOFUNFunction( this, "IMax", intType);
 	allFUNFunctions.push_back(fun);
-	param = new RDOFUNFunctionParam( registerName("p1"), intType);
+	param = new RDOFUNFunctionParam( "p1", intType);
 	fun->add(param);
-	param = new RDOFUNFunctionParam( registerName("p2"), intType);
+	param = new RDOFUNFunctionParam( "p2", intType);
 	fun->add(param);
 	fun->functionCalc = new rdoRuntime::RDOFunCalcIMax( runTime );
 
-	fun = new RDOFUNFunction( this, registerName("IMin"), intType);
+	fun = new RDOFUNFunction( this, "IMin", intType);
 	allFUNFunctions.push_back(fun);
-	param = new RDOFUNFunctionParam( registerName("p1"), intType);
+	param = new RDOFUNFunctionParam( "p1", intType);
 	fun->add(param);
-	param = new RDOFUNFunctionParam( registerName("p2"), intType);
+	param = new RDOFUNFunctionParam( "p2", intType);
 	fun->add(param);
 	fun->functionCalc = new rdoRuntime::RDOFunCalcIMin( runTime );
 
-	fun = new RDOFUNFunction( this, registerName("Int"), intType);
+	fun = new RDOFUNFunction( this, "Int", intType);
 	allFUNFunctions.push_back(fun);
-	param = new RDOFUNFunctionParam( registerName("p1"), realType );
+	param = new RDOFUNFunctionParam( "p1", realType );
 	fun->add(param);
 	fun->functionCalc = new rdoRuntime::RDOFunCalcInt( runTime );
 
-	fun = new RDOFUNFunction( this, registerName("IntPower"), realType );
+	fun = new RDOFUNFunction( this, "IntPower", realType );
 	allFUNFunctions.push_back(fun);
-	param = new RDOFUNFunctionParam( registerName("p1"), realType );
+	param = new RDOFUNFunctionParam( "p1", realType );
 	fun->add(param);
-	param = new RDOFUNFunctionParam( registerName("p2"), intType);
+	param = new RDOFUNFunctionParam( "p2", intType);
 	fun->add(param);
 	fun->functionCalc = new rdoRuntime::RDOFunCalcIntPower( runTime );
 
-	fun = new RDOFUNFunction( this, registerName("Ln"), realType );
+	fun = new RDOFUNFunction( this, "Ln", realType );
 	allFUNFunctions.push_back(fun);
-	param = new RDOFUNFunctionParam( registerName("p1"), realType );
+	param = new RDOFUNFunctionParam( "p1", realType );
 	fun->add(param);
 	fun->functionCalc = new rdoRuntime::RDOFunCalcLn( runTime );
 
-	fun = new RDOFUNFunction( this, registerName("Log10"), realType );
+	fun = new RDOFUNFunction( this, "Log10", realType );
 	allFUNFunctions.push_back(fun);
-	param = new RDOFUNFunctionParam( registerName("p1"), realType );
+	param = new RDOFUNFunctionParam( "p1", realType );
 	fun->add(param);
 	fun->functionCalc = new rdoRuntime::RDOFunCalcLog10( runTime );
 
-	fun = new RDOFUNFunction( this, registerName("Log2"), realType );
+	fun = new RDOFUNFunction( this, "Log2", realType );
 	allFUNFunctions.push_back(fun);
-	param = new RDOFUNFunctionParam( registerName("p1"), realType );
+	param = new RDOFUNFunctionParam( "p1", realType );
 	fun->add(param);
 	fun->functionCalc = new rdoRuntime::RDOFunCalcLog2( runTime );
 
-	fun = new RDOFUNFunction( this, registerName("LogN"), realType );
+	fun = new RDOFUNFunction( this, "LogN", realType );
 	allFUNFunctions.push_back(fun);
-	param = new RDOFUNFunctionParam( registerName("p1"), realType );
+	param = new RDOFUNFunctionParam( "p1", realType );
 	fun->add(param);
-	param = new RDOFUNFunctionParam( registerName("p2"), realType );
+	param = new RDOFUNFunctionParam( "p2", realType );
 	fun->add(param);
 	fun->functionCalc = new rdoRuntime::RDOFunCalcLogN( runTime );
 
-	fun = new RDOFUNFunction( this, registerName("Max"), realType );
+	fun = new RDOFUNFunction( this, "Max", realType );
 	allFUNFunctions.push_back(fun);
-	param = new RDOFUNFunctionParam( registerName("p1"), realType );
+	param = new RDOFUNFunctionParam( "p1", realType );
 	fun->add(param);
-	param = new RDOFUNFunctionParam( registerName("p2"), realType );
+	param = new RDOFUNFunctionParam( "p2", realType );
 	fun->add(param);
 	fun->functionCalc = new rdoRuntime::RDOFunCalcMax( runTime );
 
-	fun = new RDOFUNFunction( this, registerName("Min"), realType );
+	fun = new RDOFUNFunction( this, "Min", realType );
 	allFUNFunctions.push_back(fun);
-	param = new RDOFUNFunctionParam( registerName("p1"), realType );
+	param = new RDOFUNFunctionParam( "p1", realType );
 	fun->add(param);
-	param = new RDOFUNFunctionParam( registerName("p2"), realType );
+	param = new RDOFUNFunctionParam( "p2", realType );
 	fun->add(param);
 	fun->functionCalc = new rdoRuntime::RDOFunCalcMin( runTime );
 
-	fun = new RDOFUNFunction( this, registerName("Power"), realType );
+	fun = new RDOFUNFunction( this, "Power", realType );
 	allFUNFunctions.push_back(fun);
-	param = new RDOFUNFunctionParam( registerName("p1"), realType );
+	param = new RDOFUNFunctionParam( "p1", realType );
 	fun->add(param);
-	param = new RDOFUNFunctionParam( registerName("p2"), realType );
+	param = new RDOFUNFunctionParam( "p2", realType );
 	fun->add(param);
 	fun->functionCalc = new rdoRuntime::RDOFunCalcPower( runTime );
 
-	fun = new RDOFUNFunction( this, registerName("Round"), intType);
+	fun = new RDOFUNFunction( this, "Round", intType);
 	allFUNFunctions.push_back(fun);
-	param = new RDOFUNFunctionParam( registerName("p1"), realType );
+	param = new RDOFUNFunctionParam( "p1", realType );
 	fun->add(param);
 	fun->functionCalc = new rdoRuntime::RDOFunCalcRound( runTime );
 
-	fun = new RDOFUNFunction( this, registerName("Sin"), realType );
+	fun = new RDOFUNFunction( this, "Sin", realType );
 	allFUNFunctions.push_back(fun);
-	param = new RDOFUNFunctionParam( registerName("p1"), realType );
+	param = new RDOFUNFunctionParam( "p1", realType );
 	fun->add(param);
 	fun->functionCalc = new rdoRuntime::RDOFunCalcSin( runTime );
 
-	fun = new RDOFUNFunction( this, registerName("Sqrt"), realType );
+	fun = new RDOFUNFunction( this, "Sqrt", realType );
 	allFUNFunctions.push_back(fun);
-	param = new RDOFUNFunctionParam( registerName("p1"), realType );
+	param = new RDOFUNFunctionParam( "p1", realType );
 	fun->add(param);
 	fun->functionCalc = new rdoRuntime::RDOFunCalcSqrt( runTime );
 
-	fun = new RDOFUNFunction( this, registerName("Tan"), realType );
+	fun = new RDOFUNFunction( this, "Tan", realType );
 	allFUNFunctions.push_back(fun);
-	param = new RDOFUNFunctionParam( registerName("p1"), realType );
+	param = new RDOFUNFunctionParam( "p1", realType );
 	fun->add(param);
 	fun->functionCalc = new rdoRuntime::RDOFunCalcTan( runTime );
 
 	// -----------------------------------------
 	// И для маленьких букв
 	// -----------------------------------------
-	fun = new RDOFUNFunction( this, registerName("abs"), realType );
+	fun = new RDOFUNFunction( this, "abs", realType );
 	allFUNFunctions.push_back(fun);
-	param = new RDOFUNFunctionParam( registerName("p1"), realType );
+	param = new RDOFUNFunctionParam( "p1", realType );
 	fun->add(param);
 	fun->functionCalc = new rdoRuntime::RDOFunCalcAbs( runTime );
 
-	fun = new RDOFUNFunction( this, registerName("arccos"), realType );
+	fun = new RDOFUNFunction( this, "arccos", realType );
 	allFUNFunctions.push_back(fun);
-	param = new RDOFUNFunctionParam( registerName("p1"), realType );
+	param = new RDOFUNFunctionParam( "p1", realType );
 	fun->add(param);
 	fun->functionCalc = new rdoRuntime::RDOFunCalcArcCos( runTime );
 
-	fun = new RDOFUNFunction( this, registerName("arcsin"), realType );
+	fun = new RDOFUNFunction( this, "arcsin", realType );
 	allFUNFunctions.push_back(fun);
-	param = new RDOFUNFunctionParam( registerName("p1"), realType );
+	param = new RDOFUNFunctionParam( "p1", realType );
 	fun->add(param);
 	fun->functionCalc = new rdoRuntime::RDOFunCalcArcSin( runTime );
 
-	fun = new RDOFUNFunction( this, registerName("arctan"), realType );
+	fun = new RDOFUNFunction( this, "arctan", realType );
 	allFUNFunctions.push_back(fun);
-	param = new RDOFUNFunctionParam( registerName("p1"), realType );
+	param = new RDOFUNFunctionParam( "p1", realType );
 	fun->add(param);
 	fun->functionCalc = new rdoRuntime::RDOFunCalcArcTan( runTime );
 
-	fun = new RDOFUNFunction( this, registerName("cos"), realType );
+	fun = new RDOFUNFunction( this, "cos", realType );
 	allFUNFunctions.push_back(fun);
-	param = new RDOFUNFunctionParam( registerName("p1"), realType );
+	param = new RDOFUNFunctionParam( "p1", realType );
 	fun->add(param);
 	fun->functionCalc = new rdoRuntime::RDOFunCalcCos( runTime );
 
-	fun = new RDOFUNFunction( this, registerName("cotan"), realType );
+	fun = new RDOFUNFunction( this, "cotan", realType );
 	allFUNFunctions.push_back(fun);
-	param = new RDOFUNFunctionParam( registerName("p1"), realType );
+	param = new RDOFUNFunctionParam( "p1", realType );
 	fun->add(param);
 	fun->functionCalc = new rdoRuntime::RDOFunCalcCotan( runTime );
 
-	fun = new RDOFUNFunction( this, registerName("exp"), realType );
+	fun = new RDOFUNFunction( this, "exp", realType );
 	allFUNFunctions.push_back(fun);
-	param = new RDOFUNFunctionParam( registerName("p1"), realType );
+	param = new RDOFUNFunctionParam( "p1", realType );
 	fun->add(param);
 	fun->functionCalc = new rdoRuntime::RDOFunCalcExp( runTime );
 
-	fun = new RDOFUNFunction( this, registerName("floor"), intType);
+	fun = new RDOFUNFunction( this, "floor", intType);
 	allFUNFunctions.push_back(fun);
-	param = new RDOFUNFunctionParam( registerName("p1"), realType );
+	param = new RDOFUNFunctionParam( "p1", realType );
 	fun->add(param);
 	fun->functionCalc = new rdoRuntime::RDOFunCalcFloor( runTime );
 
-	fun = new RDOFUNFunction( this, registerName("frac"), realType );
+	fun = new RDOFUNFunction( this, "frac", realType );
 	allFUNFunctions.push_back(fun);
-	param = new RDOFUNFunctionParam( registerName("p1"), realType );
+	param = new RDOFUNFunctionParam( "p1", realType );
 	fun->add(param);
 	fun->functionCalc = new rdoRuntime::RDOFunCalcFrac( runTime );
 
-	fun = new RDOFUNFunction( this, registerName("iabs"), intType);
+	fun = new RDOFUNFunction( this, "iabs", intType);
 	allFUNFunctions.push_back(fun);
-	param = new RDOFUNFunctionParam( registerName("p1"), intType);
+	param = new RDOFUNFunctionParam( "p1", intType);
 	fun->add(param);
 	fun->functionCalc = new rdoRuntime::RDOFunCalcIAbs( runTime );
 
-	fun = new RDOFUNFunction( this, registerName("imax"), intType);
+	fun = new RDOFUNFunction( this, "imax", intType);
 	allFUNFunctions.push_back(fun);
-	param = new RDOFUNFunctionParam( registerName("p1"), intType);
+	param = new RDOFUNFunctionParam( "p1", intType);
 	fun->add(param);
-	param = new RDOFUNFunctionParam( registerName("p2"), intType);
+	param = new RDOFUNFunctionParam( "p2", intType);
 	fun->add(param);
 	fun->functionCalc = new rdoRuntime::RDOFunCalcIMax( runTime );
 
-	fun = new RDOFUNFunction( this, registerName("imin"), intType);
+	fun = new RDOFUNFunction( this, "imin", intType);
 	allFUNFunctions.push_back(fun);
-	param = new RDOFUNFunctionParam( registerName("p1"), intType);
+	param = new RDOFUNFunctionParam( "p1", intType);
 	fun->add(param);
-	param = new RDOFUNFunctionParam( registerName("p2"), intType);
+	param = new RDOFUNFunctionParam( "p2", intType);
 	fun->add(param);
 	fun->functionCalc = new rdoRuntime::RDOFunCalcIMin( runTime );
 
-	fun = new RDOFUNFunction( this, registerName("int"), intType);
+	fun = new RDOFUNFunction( this, "int", intType);
 	allFUNFunctions.push_back(fun);
-	param = new RDOFUNFunctionParam( registerName("p1"), realType );
+	param = new RDOFUNFunctionParam( "p1", realType );
 	fun->add(param);
 	fun->functionCalc = new rdoRuntime::RDOFunCalcInt( runTime );
 
-	fun = new RDOFUNFunction( this, registerName("intpower"), realType );
+	fun = new RDOFUNFunction( this, "intpower", realType );
 	allFUNFunctions.push_back(fun);
-	param = new RDOFUNFunctionParam( registerName("p1"), realType );
+	param = new RDOFUNFunctionParam( "p1", realType );
 	fun->add(param);
-	param = new RDOFUNFunctionParam( registerName("p2"), intType);
+	param = new RDOFUNFunctionParam( "p2", intType);
 	fun->add(param);
 	fun->functionCalc = new rdoRuntime::RDOFunCalcIntPower( runTime );
 
-	fun = new RDOFUNFunction( this, registerName("ln"), realType );
+	fun = new RDOFUNFunction( this, "ln", realType );
 	allFUNFunctions.push_back(fun);
-	param = new RDOFUNFunctionParam( registerName("p1"), realType );
+	param = new RDOFUNFunctionParam( "p1", realType );
 	fun->add(param);
 	fun->functionCalc = new rdoRuntime::RDOFunCalcLn( runTime );
 
-	fun = new RDOFUNFunction( this, registerName("log10"), realType );
+	fun = new RDOFUNFunction( this, "log10", realType );
 	allFUNFunctions.push_back(fun);
-	param = new RDOFUNFunctionParam( registerName("p1"), realType );
+	param = new RDOFUNFunctionParam( "p1", realType );
 	fun->add(param);
 	fun->functionCalc = new rdoRuntime::RDOFunCalcLog10( runTime );
 
-	fun = new RDOFUNFunction( this, registerName("log2"), realType );
+	fun = new RDOFUNFunction( this, "log2", realType );
 	allFUNFunctions.push_back(fun);
-	param = new RDOFUNFunctionParam( registerName("p1"), realType );
+	param = new RDOFUNFunctionParam( "p1", realType );
 	fun->add(param);
 	fun->functionCalc = new rdoRuntime::RDOFunCalcLog2( runTime );
 
-	fun = new RDOFUNFunction( this, registerName("logn"), realType );
+	fun = new RDOFUNFunction( this, "logn", realType );
 	allFUNFunctions.push_back(fun);
-	param = new RDOFUNFunctionParam( registerName("p1"), realType );
+	param = new RDOFUNFunctionParam( "p1", realType );
 	fun->add(param);
-	param = new RDOFUNFunctionParam( registerName("p2"), realType );
+	param = new RDOFUNFunctionParam( "p2", realType );
 	fun->add(param);
 	fun->functionCalc = new rdoRuntime::RDOFunCalcLogN( runTime );
 
-	fun = new RDOFUNFunction( this, registerName("max"), realType );
+	fun = new RDOFUNFunction( this, "max", realType );
 	allFUNFunctions.push_back(fun);
-	param = new RDOFUNFunctionParam( registerName("p1"), realType );
+	param = new RDOFUNFunctionParam( "p1", realType );
 	fun->add(param);
-	param = new RDOFUNFunctionParam( registerName("p2"), realType );
+	param = new RDOFUNFunctionParam( "p2", realType );
 	fun->add(param);
 	fun->functionCalc = new rdoRuntime::RDOFunCalcMax( runTime );
 
-	fun = new RDOFUNFunction( this, registerName("min"), realType );
+	fun = new RDOFUNFunction( this, "min", realType );
 	allFUNFunctions.push_back(fun);
-	param = new RDOFUNFunctionParam( registerName("p1"), realType );
+	param = new RDOFUNFunctionParam( "p1", realType );
 	fun->add(param);
-	param = new RDOFUNFunctionParam( registerName("p2"), realType );
+	param = new RDOFUNFunctionParam( "p2", realType );
 	fun->add(param);
 	fun->functionCalc = new rdoRuntime::RDOFunCalcMin( runTime );
 
-	fun = new RDOFUNFunction( this, registerName("power"), realType );
+	fun = new RDOFUNFunction( this, "power", realType );
 	allFUNFunctions.push_back(fun);
-	param = new RDOFUNFunctionParam( registerName("p1"), realType );
+	param = new RDOFUNFunctionParam( "p1", realType );
 	fun->add(param);
-	param = new RDOFUNFunctionParam( registerName("p2"), realType );
+	param = new RDOFUNFunctionParam( "p2", realType );
 	fun->add(param);
 	fun->functionCalc = new rdoRuntime::RDOFunCalcPower( runTime );
 
-	fun = new RDOFUNFunction( this, registerName("round"), intType);
+	fun = new RDOFUNFunction( this, "round", intType);
 	allFUNFunctions.push_back(fun);
-	param = new RDOFUNFunctionParam( registerName("p1"), realType );
+	param = new RDOFUNFunctionParam( "p1", realType );
 	fun->add(param);
 	fun->functionCalc = new rdoRuntime::RDOFunCalcRound( runTime );
 
-	fun = new RDOFUNFunction( this, registerName("sin"), realType );
+	fun = new RDOFUNFunction( this, "sin", realType );
 	allFUNFunctions.push_back(fun);
-	param = new RDOFUNFunctionParam( registerName("p1"), realType );
+	param = new RDOFUNFunctionParam( "p1", realType );
 	fun->add(param);
 	fun->functionCalc = new rdoRuntime::RDOFunCalcSin( runTime );
 
-	fun = new RDOFUNFunction( this, registerName("sqrt"), realType );
+	fun = new RDOFUNFunction( this, "sqrt", realType );
 	allFUNFunctions.push_back(fun);
-	param = new RDOFUNFunctionParam( registerName("p1"), realType );
+	param = new RDOFUNFunctionParam( "p1", realType );
 	fun->add(param);
 	fun->functionCalc = new rdoRuntime::RDOFunCalcSqrt( runTime );
 
-	fun = new RDOFUNFunction( this, registerName("tan"), realType );
+	fun = new RDOFUNFunction( this, "tan", realType );
 	allFUNFunctions.push_back(fun);
-	param = new RDOFUNFunctionParam( registerName("p1"), realType );
+	param = new RDOFUNFunctionParam( "p1", realType );
 	fun->add(param);
 	fun->functionCalc = new rdoRuntime::RDOFunCalcTan( runTime );
 }

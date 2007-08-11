@@ -11,8 +11,11 @@ int rssparse( void* lexer );
 int rsslex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer );
 void rsserror( char* mes );
 
+// ----------------------------------------------------------------------------
+// ---------- RDORSSResource
+// ----------------------------------------------------------------------------
 class RDORTPResType;
-class RDORTPParamDesc;
+class RDORTPParam;
 
 class RDORSSResource: public RDOParserObject, public RDOParserSrcInfo
 {
@@ -24,12 +27,12 @@ protected:
 	bool trace;
 
 public:
-	std::vector< const RDORTPParamDesc* >::const_iterator currParam;
+	std::vector< const RDORTPParam* >::const_iterator currParam;
 
 public:
-	RDORSSResource( RDOParser* _parser, const std::string* const _name, const RDORTPResType* const _resType );
+	RDORSSResource( RDOParser* _parser, const std::string& _name, const RDORTPResType* const _resType );
 	
-	const std::string*   const getName() const       { return &name;   }
+	const std::string&         getName() const       { return name;    }
 	const RDORTPResType* const getType() const       { return resType; }
 	
 	int getNumber() const                            { return number;  }
@@ -43,10 +46,13 @@ public:
 	void setTrace( bool value ) { trace = value; }
 };
 
+// ----------------------------------------------------------------------------
+// ---------- RDORSSTransact
+// ----------------------------------------------------------------------------
 class RDORSSTransact: public RDORSSResource
 {
 public:
-	RDORSSTransact( RDOParser* _parser, const std::string* const _name, const RDORTPResType* const _resType );
+	RDORSSTransact( RDOParser* _parser, const std::string& _name, const RDORTPResType* const _resType );
 };
 
 } // namespace rdoParse

@@ -64,9 +64,9 @@ public:
 	void setShowMode(rdoSimulator::ShowMode sm);
 	void setFrameNumber(int fn);
 	void setTerminateIf(RDOFUNLogic *logic);
-	void setConstValue(std::string *constName, RDOFUNArithm *arithm);
-	void setResParValue(std::string *resName, std::string *parName, RDOFUNArithm *arithm);
-	void setSeed(std::string *seqName, int _base);
+	void setConstValue( const std::string& constName, RDOFUNArithm* arithm );
+	void setResParValue( const std::string& resName, const std::string& parName, RDOFUNArithm* arithm );
+	void setSeed( const std::string& seqName, int _base );
 };
 
 }		// namespace rdoParse 

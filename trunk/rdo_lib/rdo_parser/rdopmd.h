@@ -34,7 +34,7 @@ public:
 class RDOPMDWatchPar: public RDOPMDPokaz
 {
 public:
-	RDOPMDWatchPar( RDOParser* _parser, std::string* _name, bool _trace, std::string* _resName, std::string* _parName );
+	RDOPMDWatchPar( RDOParser* _parser, std::string* _name, bool _trace, const std::string& _resName, const std::string& _parName );
 };
 
 // ----------------------------------------------------------------------------
@@ -52,7 +52,7 @@ public:
 class RDOPMDWatchQuant: public RDOPMDPokaz
 {
 public:
-	RDOPMDWatchQuant( RDOParser* _parser, std::string* _name, bool _trace, std::string* _resTypeName );
+	RDOPMDWatchQuant( RDOParser* _parser, std::string* _name, bool _trace, const std::string& _resTypeName );
 	void setLogic( RDOFUNLogic* _logic );
 	void setLogicNoCheck();
 };
@@ -63,7 +63,7 @@ public:
 class RDOPMDWatchValue: public RDOPMDPokaz
 {
 public:
-	RDOPMDWatchValue( RDOParser* _parser, std::string* _name, bool _trace, std::string* _resTypeName );
+	RDOPMDWatchValue( RDOParser* _parser, std::string* _name, bool _trace, const std::string& _resTypeName );
 	void setLogic( RDOFUNLogic* _logic, RDOFUNArithm* _arithm );
 	void setLogicNoCheck( RDOFUNArithm* _arithm );
 };

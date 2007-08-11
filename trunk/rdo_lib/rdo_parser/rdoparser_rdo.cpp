@@ -175,18 +175,6 @@ int RDOParserRDO::lexer_loc_pos()
 }
 
 // ----------------------------------------------------------------------------
-// ---------- RDOParserRTP
-// ----------------------------------------------------------------------------
-RDOParserRTP::RDOParserRTP( RDOParser* _parser ): RDOParserRDO( _parser, rdoModelObjects::RTP, rtpparse, rtperror, rtplex )
-{
-}
-
-RDOLexer* RDOParserRTP::getLexer( std::istream& in_stream, std::ostream& out_stream )
-{
-	return new RDOLexerRTP( this, &in_stream, &out_stream );
-}
-
-// ----------------------------------------------------------------------------
 // ---------- RDOParserRSS
 // ----------------------------------------------------------------------------
 RDOParserRSS::RDOParserRSS( RDOParser* _parser ): RDOParserRDO( _parser, rdoModelObjects::RSS, rssparse, rsserror, rsslex )
@@ -213,18 +201,6 @@ void RDOParserRSSPost::parse()
 		parser->runTime->addInitCalc( createResource );
 		it++;
 	}
-}
-
-// ----------------------------------------------------------------------------
-// ---------- RDOParserFUN
-// ----------------------------------------------------------------------------
-RDOParserFUN::RDOParserFUN( RDOParser* _parser ): RDOParserRDO( _parser, rdoModelObjects::FUN, funparse, funerror, funlex )
-{
-}
-
-RDOLexer* RDOParserFUN::getLexer( std::istream& in_stream, std::ostream& out_stream )
-{
-	return new RDOLexerFUN( this, &in_stream, &out_stream );
 }
 
 // ----------------------------------------------------------------------------

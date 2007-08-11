@@ -604,11 +604,11 @@ const int RDONUMPAD9	= 0x149;
 		keys.insert(std::map<std::string, int>::value_type(std::string(1, i), (int)i));
 }
 
-int RDORuntime::RDOHotKeyToolkit::codeFromString( std::string* key )
+int RDORuntime::RDOHotKeyToolkit::codeFromString( const std::string& key )
 {
-	std::map< std::string, int >::iterator it = keys.find( *key );
+	std::map< std::string, int >::iterator it = keys.find( key );
 	if ( it == keys.end() ) {
-		throw RDORuntimeException( "Unknown key name: " + *key );
+		throw RDORuntimeException( "Unknown key name: " + key );
 	}
 	return (*it).second;
 }

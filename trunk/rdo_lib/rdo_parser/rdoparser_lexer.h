@@ -24,7 +24,8 @@ public:
 		yyin( _yyin ),
 		yyout( _yyout ),
 		m_lpval( NULL ),
-		m_lploc( NULL )
+		m_lploc( NULL ),
+		enum_param_cnt( 0 )
 	{
 	};
 
@@ -32,6 +33,8 @@ public:
 	YYLTYPE*       m_lploc;
 
 	RDOParserBase* m_parser;
+
+	int enum_param_cnt;
 
 protected:
 	virtual int LexerInput( char* buf, int max_size );

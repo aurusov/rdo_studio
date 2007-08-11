@@ -29,9 +29,9 @@ void paterror( char* mes )
 // ----------------------------------------------------------------------------
 // ---------- RDOPATPattern
 // ----------------------------------------------------------------------------
-RDOPATPattern::RDOPATPattern( RDOParser* _parser, const std::string* const _name, const bool _trace ):
+RDOPATPattern::RDOPATPattern( RDOParser* _parser, const std::string& _name, const bool _trace ):
 	RDOParserObject( _parser ),
-	name( *_name ),
+	name( _name ),
 	commonChoice( NULL ),
 	patRuntime( NULL ),
 	currRelRes( NULL ),
@@ -122,10 +122,9 @@ int RDOPATPattern::writeModelStructure() const
 	return 0;
 }
 
-const RDOFUNFunctionParam* RDOPATPattern::findPATPatternParam(const std::string *const paramName) const
+const RDOFUNFunctionParam* RDOPATPattern::findPATPatternParam( const std::string& paramName ) const
 {
-	std::vector<RDOFUNFunctionParam *>::const_iterator it = 
-		std::find_if(params.begin(), params.end(), compareName<RDOFUNFunctionParam>(paramName));
+	std::vector< RDOFUNFunctionParam* >::const_iterator it = std::find_if(params.begin(), params.end(), compareName2<RDOFUNFunctionParam>(paramName));
 
 	if(it == params.end())
 		return NULL;
@@ -139,9 +138,9 @@ const RDORelevantResource* RDOPATPattern::findRelevantResource( const std::strin
 	return it != relRes.end() ? (*it) : NULL;
 }
 
-int RDOPATPattern::findPATPatternParamNum( const std::string* const paramName ) const
+int RDOPATPattern::findPATPatternParamNum( const std::string& paramName ) const
 {
-	std::vector< RDOFUNFunctionParam* >::const_iterator it = std::find_if( params.begin(), params.end(), compareName<RDOFUNFunctionParam>(paramName) );
+	std::vector< RDOFUNFunctionParam* >::const_iterator it = std::find_if( params.begin(), params.end(), compareName2<RDOFUNFunctionParam>(paramName) );
 	return it != params.end() ? it - params.begin() : -1;
 }
 
@@ -154,7 +153,7 @@ int RDOPATPattern::findRelevantResourceNum( const std::string& resName ) const
 void RDOPATPattern::add( RDOFUNFunctionParam* const _param )
 { 
 	if ( findPATPatternParam(_param->getName()) ) {
-		parser->error("Second appearance of the same parameter name: " + *(_param->getName()));
+		parser->error("Second appearance of the same parameter name: " + _param->getName());
 	}
 	params.push_back(_param); 
 }
@@ -185,19 +184,19 @@ void RDOPATPattern::setTime( RDOFUNArithm* arithm )
 //	time = arithm; 
 }
 
-void RDOPATPattern::addRelResBody( std::string* resName )
+void RDOPATPattern::addRelResBody( const std::string& resName )
 { 
-	std::vector< RDORelevantResource* >::const_iterator it = std::find_if( relRes.begin(), relRes.end(), compareName2<RDORelevantResource>(*resName) );
+	std::vector< RDORelevantResource* >::const_iterator it = std::find_if( relRes.begin(), relRes.end(), compareName2<RDORelevantResource>(resName) );
 	if ( it == relRes.end() ) {
-		parser->error( rdo::format("Неизвестный релевантный ресурс: %s", resName->c_str()) );
+		parser->error( rdo::format("Неизвестный релевантный ресурс: %s", resName.c_str()) );
 //		parser->error( "Name of relevant resource expected instead of: " + *resName );
 	}
-	if ( findRelevantResourceNum( *resName ) != current_rel_res_index ) {
+	if ( findRelevantResourceNum( resName ) != current_rel_res_index ) {
 		std::string rel_res_waiting = current_rel_res_index < relRes.size() ? relRes[current_rel_res_index]->getName().c_str() : "";
-		parser->error( rdo::format("Ожидается описание релевантного ресурса '%s', вместо него найдено описание '%s'", rel_res_waiting.c_str(), resName->c_str()) );
+		parser->error( rdo::format("Ожидается описание релевантного ресурса '%s', вместо него найдено описание '%s'", rel_res_waiting.c_str(), resName.c_str()) );
 	}
 	if ( (*it)->alreadyHaveConverter ) {
-		parser->error( rdo::format("Релевантный ресурс уже используется: %s", resName->c_str()) );
+		parser->error( rdo::format("Релевантный ресурс уже используется: %s", resName.c_str()) );
 //		parser->error( "\"" + *resName + "\" relevant resource has converter block already" );
 	}
 	currRelRes = (*it);
@@ -296,7 +295,7 @@ void RDOPATPattern::addRelResConvert()
 // ----------------------------------------------------------------------------
 // ---------- RDOPATPatternEvent
 // ----------------------------------------------------------------------------
-RDOPATPatternEvent::RDOPATPatternEvent( RDOParser* _parser, std::string* _name, bool _trace ):
+RDOPATPatternEvent::RDOPATPatternEvent( RDOParser* _parser, const std::string& _name, bool _trace ):
 	RDOPATPattern( _parser, _name, _trace )
 { 
 //	parser->runTime->addRuntimeIE((RDOIERuntime *)(patRuntime = new RDOIERuntime(parser->runTime, _trace))); 
@@ -304,9 +303,9 @@ RDOPATPatternEvent::RDOPATPatternEvent( RDOParser* _parser, std::string* _name, 
 	patRuntime->setPatternId( parser->getPAT_id() );
 }
 
-void RDOPATPatternEvent::addRelRes( std::string* relName, std::string* typeName, rdoRuntime::RDOResourceTrace::ConvertStatus beg, const YYLTYPE& rel_pos, const YYLTYPE& type_pos, const YYLTYPE& convertor_pos )
+void RDOPATPatternEvent::addRelRes( const std::string& relName, const std::string& typeName, rdoRuntime::RDOResourceTrace::ConvertStatus beg, const YYLTYPE& rel_pos, const YYLTYPE& type_pos, const YYLTYPE& convertor_pos )
 {
-	beforeRelRensert( *relName, rel_pos );
+	beforeRelRensert( relName, rel_pos );
 	if ( beg == rdoRuntime::RDOResourceTrace::CS_NonExist || beg == rdoRuntime::RDOResourceTrace::CS_NoChange ) {
 		parser->lexer_loc_set( convertor_pos.last_line, convertor_pos.last_column );
 		parser->error( "Статусы конверторов NonExist и NoChange не могут быть использованы в нерегулярном событии" );
@@ -317,7 +316,7 @@ void RDOPATPatternEvent::addRelRes( std::string* relName, std::string* typeName,
 	if ( res ) {
 		if ( beg == rdoRuntime::RDOResourceTrace::CS_Create ) {
 			parser->lexer_loc_set( type_pos.last_line, type_pos.last_column );
-			parser->error( rdo::format("При создания ресурса '%s' требуется указать его тип, но указан просто ресурс (%s)", relName->c_str(), typeName->c_str()) );
+			parser->error( rdo::format("При создания ресурса '%s' требуется указать его тип, но указан просто ресурс (%s)", relName.c_str(), typeName.c_str()) );
 //			parser->error( "Cannot use Create status for resource, only for resource type" );
 		}
 		if ( beg == rdoRuntime::RDOResourceTrace::CS_Erase ) {
@@ -332,12 +331,12 @@ void RDOPATPatternEvent::addRelRes( std::string* relName, std::string* typeName,
 		const RDORTPResType* const type = parser->findRTPResType( typeName );
 		if ( !type ) {
 			parser->lexer_loc_set( type_pos.last_line, type_pos.last_column );
-			parser->error( rdo::format("Неизвестный тип ресурса: %s", typeName->c_str()) );
+			parser->error( rdo::format("Неизвестный тип ресурса: %s", typeName.c_str()) );
 //			parser->error( "Unknown resource name or type: " + *typeName );
 		}
 		if ( beg == rdoRuntime::RDOResourceTrace::CS_Create && !type->isTemporary() ) {
 			parser->lexer_loc_set( type_pos.last_line, type_pos.last_column );
-			parser->error( rdo::format("Тип ресурса '%s' постоянный. Динамически создавать от него ресурсы нельзя", typeName->c_str()) );
+			parser->error( rdo::format("Тип ресурса '%s' постоянный. Динамически создавать от него ресурсы нельзя", typeName.c_str()) );
 		}
 		if ( beg == rdoRuntime::RDOResourceTrace::CS_Keep || beg == rdoRuntime::RDOResourceTrace::CS_Erase ) {
 			parser->error( "Статусы конверторов Keep и Erase могут быть использованы в нерегулярном событии с описателем в виде ресурса, но не типа ресурса" );
@@ -400,7 +399,7 @@ void RDOPATPatternEvent::addRelResConvert( bool trace, RDOPATParamSet* parSet, c
 // ----------------------------------------------------------------------------
 // ---------- RDOPATPatternRule
 // ----------------------------------------------------------------------------
-RDOPATPatternRule::RDOPATPatternRule( RDOParser* _parser, std::string* _name, bool _trace ):
+RDOPATPatternRule::RDOPATPatternRule( RDOParser* _parser, const std::string& _name, bool _trace ):
 	RDOPATPattern( _parser, _name, _trace )
 { 
 //	parser->runTime->addRuntimeRule((RDORuleRuntime *)(patRuntime = new RDORuleRuntime(parser->runTime, _trace))); 
@@ -419,13 +418,13 @@ void RDOPATPatternRule::testGoodForSearchActivity() const
 
 void RDOPATPatternRule::setTime( RDOFUNArithm* arithm )
 { 
-	parser->error( rdo::format("Поле $Time не используется в образце типа %s", getPatTypeStr().c_str()) );
+	parser->error( "Поле $Time не используется в продукционном правиле" );
 //	parser->error( "Rule must have no $Time field" );
 }
 
-void RDOPATPatternRule::addRelRes( std::string* relName, std::string* typeName, rdoRuntime::RDOResourceTrace::ConvertStatus beg, const YYLTYPE& rel_pos, const YYLTYPE& type_pos, const YYLTYPE& convertor_pos )
+void RDOPATPatternRule::addRelRes( const std::string& relName, const std::string& typeName, rdoRuntime::RDOResourceTrace::ConvertStatus beg, const YYLTYPE& rel_pos, const YYLTYPE& type_pos, const YYLTYPE& convertor_pos )
 {
-	beforeRelRensert( *relName, rel_pos );
+	beforeRelRensert( relName, rel_pos );
 	if ( beg == rdoRuntime::RDOResourceTrace::CS_NonExist ) {
 		parser->lexer_loc_set( convertor_pos.last_line, convertor_pos.last_column );
 		parser->error( rdo::format("Нельзя использовать статус конвертора '%s' в продукционном правиле", RDOPATPattern::StatusToStr(beg).c_str()) );
@@ -437,7 +436,7 @@ void RDOPATPatternRule::addRelRes( std::string* relName, std::string* typeName, 
 	if ( res ) {
 		if ( beg == rdoRuntime::RDOResourceTrace::CS_Create ) {
 			parser->lexer_loc_set( type_pos.last_line, type_pos.last_column );
-			parser->error( rdo::format("При создания ресурса '%s' требуется указать его тип, но указан просто ресурс (%s)", relName->c_str(), typeName->c_str()) );
+			parser->error( rdo::format("При создания ресурса '%s' требуется указать его тип, но указан просто ресурс (%s)", relName.c_str(), typeName.c_str()) );
 //			parser->error( "Cannot use Create status for resource, only for resource type" );
 		}
 		if ( beg == rdoRuntime::RDOResourceTrace::CS_Erase ) {
@@ -452,12 +451,12 @@ void RDOPATPatternRule::addRelRes( std::string* relName, std::string* typeName, 
 		const RDORTPResType* const type = parser->findRTPResType( typeName );
 		if ( !type ) {
 			parser->lexer_loc_set( type_pos.last_line, type_pos.last_column );
-			parser->error( rdo::format("Неизвестный тип ресурса: %s", typeName->c_str()) );
+			parser->error( rdo::format("Неизвестный тип ресурса: %s", typeName.c_str()) );
 //			parser->error( "Unknown resource name or type: " + *typeName );
 		}
 		if ( !type->isTemporary() && (beg == rdoRuntime::RDOResourceTrace::CS_Create || beg == rdoRuntime::RDOResourceTrace::CS_Erase ) ) {
 			parser->lexer_loc_set( type_pos.last_line, type_pos.last_column );
-			parser->error( rdo::format("Для создании или удалении ресурса его тип должен быть временным (temporary), а не постоянным (permanent), как у '%s'", typeName->c_str()) );
+			parser->error( rdo::format("Для создании или удалении ресурса его тип должен быть временным (temporary), а не постоянным (permanent), как у '%s'", typeName.c_str()) );
 		}
 		relRes = new RDORelevantResourceByType( this, relName, rel_res_count(), type, beg );
 		rel_res_insert( relRes, rel_pos );
@@ -504,7 +503,7 @@ void RDOPATPatternRule::addRelResConvert( bool trace, RDOPATParamSet* parSet, co
 // ----------------------------------------------------------------------------
 // ---------- RDOPATPatternOperation
 // ----------------------------------------------------------------------------
-RDOPATPatternOperation::RDOPATPatternOperation( RDOParser* _parser, std::string* _name, bool _trace ):
+RDOPATPatternOperation::RDOPATPatternOperation( RDOParser* _parser, const std::string& _name, bool _trace ):
 	RDOPATPattern( _parser, _name, _trace )
 { 
 //	parser->runTime->addRuntimeOperation((RDOOperationRuntime *)(patRuntime = new RDOOperationRuntime(parser->runTime, _trace)));
@@ -512,7 +511,7 @@ RDOPATPatternOperation::RDOPATPatternOperation( RDOParser* _parser, std::string*
 	patRuntime->setPatternId( parser->getPAT_id() );
 }
 
-RDOPATPatternOperation::RDOPATPatternOperation( RDOParser* _parser, bool _trace, std::string* _name ):
+RDOPATPatternOperation::RDOPATPatternOperation( RDOParser* _parser, bool _trace, const std::string& _name ):
 	RDOPATPattern( _parser, _name, _trace )
 {
 }
@@ -523,15 +522,15 @@ void RDOPATPatternOperation::rel_res_insert( RDORelevantResource* rel_res, const
 	static_cast<rdoRuntime::RDOOperationRuntime*>(patRuntime)->addEndConvertStatus( rel_res->end );
 }
 
-void RDOPATPatternOperation::addRelRes( std::string* relName, std::string* typeName, rdoRuntime::RDOResourceTrace::ConvertStatus beg, const YYLTYPE& rel_pos, const YYLTYPE& type_pos, const YYLTYPE& convertor_pos )
+void RDOPATPatternOperation::addRelRes( const std::string& relName, const std::string& typeName, rdoRuntime::RDOResourceTrace::ConvertStatus beg, const YYLTYPE& rel_pos, const YYLTYPE& type_pos, const YYLTYPE& convertor_pos )
 {
 	parser->lexer_loc_set( convertor_pos.last_line, convertor_pos.last_column );
 	parser->error( "Внутренняя ошибка парсера" );
 }
 
-void RDOPATPatternOperation::addRelRes( std::string* relName, std::string* typeName, rdoRuntime::RDOResourceTrace::ConvertStatus beg, rdoRuntime::RDOResourceTrace::ConvertStatus end, const YYLTYPE& rel_pos, const YYLTYPE& type_pos, const YYLTYPE& convertor_begin_pos, const YYLTYPE& convertor_end_pos )
+void RDOPATPatternOperation::addRelRes( const std::string& relName, const std::string& typeName, rdoRuntime::RDOResourceTrace::ConvertStatus beg, rdoRuntime::RDOResourceTrace::ConvertStatus end, const YYLTYPE& rel_pos, const YYLTYPE& type_pos, const YYLTYPE& convertor_begin_pos, const YYLTYPE& convertor_end_pos )
 {
-	beforeRelRensert( *relName, rel_pos );
+	beforeRelRensert( relName, rel_pos );
 	switch ( beg ) {
 		case rdoRuntime::RDOResourceTrace::CS_Keep:
 			if ( end != rdoRuntime::RDOResourceTrace::CS_Keep && end != rdoRuntime::RDOResourceTrace::CS_Erase && end != rdoRuntime::RDOResourceTrace::CS_NoChange ) {
@@ -575,11 +574,11 @@ void RDOPATPatternOperation::addRelRes( std::string* relName, std::string* typeN
 	if ( res ) {
 		if ( beg == rdoRuntime::RDOResourceTrace::CS_Create ) {
 			parser->lexer_loc_set( convertor_begin_pos.last_line, convertor_begin_pos.last_column );
-			parser->error( rdo::format("При создания ресурса '%s' требуется указать его тип, но указан просто ресурс (%s)", relName->c_str(), typeName->c_str()) );
+			parser->error( rdo::format("При создания ресурса '%s' требуется указать его тип, но указан просто ресурс (%s)", relName.c_str(), typeName.c_str()) );
 		}
 		if ( end == rdoRuntime::RDOResourceTrace::CS_Create ) {
 			parser->lexer_loc_set( convertor_end_pos.last_line, convertor_end_pos.last_column );
-			parser->error( rdo::format("При создания ресурса '%s' требуется указать его тип, но указан просто ресурс (%s)", relName->c_str(), typeName->c_str()) );
+			parser->error( rdo::format("При создания ресурса '%s' требуется указать его тип, но указан просто ресурс (%s)", relName.c_str(), typeName.c_str()) );
 		}
 		if ( beg == rdoRuntime::RDOResourceTrace::CS_Erase || beg == rdoRuntime::RDOResourceTrace::CS_NonExist ) {
 			parser->lexer_loc_set( convertor_begin_pos.last_line, convertor_begin_pos.last_column );
@@ -596,7 +595,7 @@ void RDOPATPatternOperation::addRelRes( std::string* relName, std::string* typeN
 		const RDORTPResType* const type = parser->findRTPResType( typeName );
 		if ( !type ) {
 			parser->lexer_loc_set( type_pos.last_line, type_pos.last_column );
-			parser->error( rdo::format("Неизвестный тип ресурса: %s", typeName->c_str()) );
+			parser->error( rdo::format("Неизвестный тип ресурса: %s", typeName.c_str()) );
 //			parser->error( "Unknown resource name or type: " + *typeName );
 		}
 		if ( type->isPermanent() ) {
@@ -772,7 +771,7 @@ void RDOPATPatternOperation::addRelResConvertBeginEnd( bool trace, RDOPATParamSe
 // ----------------------------------------------------------------------------
 // ---------- RDOPATPatternKeyboard
 // ----------------------------------------------------------------------------
-RDOPATPatternKeyboard::RDOPATPatternKeyboard( RDOParser* _parser, std::string* _name, bool _trace ):
+RDOPATPatternKeyboard::RDOPATPatternKeyboard( RDOParser* _parser, const std::string& _name, bool _trace ):
 	RDOPATPatternOperation( _parser, _trace, _name )
 {
 	patRuntime = new rdoRuntime::RDOKeyboardRuntime(parser->runTime, _trace); 
@@ -886,7 +885,7 @@ rdoRuntime::RDOSelectResourceCommon* RDORelevantResourceByType::createSelectReso
 // ----------------------------------------------------------------------------
 // ---------- RDOPATParamSet - все операторы set для одного рел. ресурса
 // ----------------------------------------------------------------------------
-void RDOPATParamSet::addSet( std::string* paramName, const YYLTYPE& param_name_pos, RDOFUNArithm* paramArithm )
+void RDOPATParamSet::addSet( const std::string& paramName, const YYLTYPE& param_name_pos, RDOFUNArithm* paramArithm )
 {
 	if ( paramNames.empty() ) {
 		setSrcPos( param_name_pos );
@@ -899,25 +898,25 @@ void RDOPATParamSet::addSet( std::string* paramName, const YYLTYPE& param_name_p
 	setSrcPos( position );
 	checkParam( paramName );
 	if ( paramArithm ) {
-		const RDORTPParamDesc* param = rel_res->getType()->findRTPParam( paramName );
+		const RDORTPParam* param = rel_res->getType()->findRTPParam( paramName );
 		param->getType()->checkParamType( paramArithm );
 	}
 	paramNames.push_back( paramName );
 	paramArithms.push_back( paramArithm );
 }
 
-void RDOPATParamSet::checkParam( std::string* paramName )
+void RDOPATParamSet::checkParam( const std::string& paramName )
 {
-	const RDORTPParamDesc* param = rel_res->getType()->findRTPParam( paramName );
+	const RDORTPParam* param = rel_res->getType()->findRTPParam( paramName );
 	if ( !param ) {
 		parser->lexer_loc_set( src_pos().last_line, src_pos().last_pos );
-		parser->error( rdo::format("Неизвестный параметр ресурса: %s", paramName->c_str()) );
+		parser->error( rdo::format("Неизвестный параметр ресурса: %s", paramName.c_str()) );
 	}
-	std::vector< std::string* >::const_iterator it = paramNames.begin();
+	std::vector< std::string >::const_iterator it = paramNames.begin();
 	while ( it != paramNames.end() ) {
-		if ( **it == *paramName ) {
+		if ( *it == paramName ) {
 			parser->lexer_loc_set( src_pos().last_line, src_pos().last_pos );
-			parser->error( rdo::format("Параметр ресурса уже используется: %s", paramName->c_str()) );
+			parser->error( rdo::format("Параметр ресурса уже используется: %s", paramName.c_str()) );
 		}
 		it++;
 	}
@@ -929,11 +928,11 @@ void RDOPATParamSet::setParamsNumbers()
 	for ( int i = 0; i < size; i++ ) {
 		int parNumb = rel_res->getType()->getRTPParamNumber( paramNames.at(i) );
 		if ( parNumb == -1 ) {
-			parser->error( rdo::format("Неизвестный параметр ресурса: %s", paramNames.at(i)->c_str()) );
+			parser->error( rdo::format("Неизвестный параметр ресурса: %s", paramNames.at(i).c_str()) );
 //			parser->error("Wrong resource parameter name: " + *paramNames.at(i));
 		}
 		if ( std::find(paramNumbs.begin(), paramNumbs.end(), parNumb) != paramNumbs.end() ) {
-			parser->error( rdo::format("Параметр ресурса уже используется: %s", paramNames.at(i)->c_str()) );
+			parser->error( rdo::format("Параметр ресурса уже используется: %s", paramNames.at(i).c_str()) );
 //			parser->error("Second appearence of the same resource parameter name: " + *paramNames.at(i));
 		}
 		paramNumbs.push_back( parNumb );

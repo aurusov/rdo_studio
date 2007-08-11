@@ -482,7 +482,7 @@ RDOActivityKeyboardRuntime::RDOActivityKeyboardRuntime( RDORuntime* rTime, RDOPa
 {
 }
 
-void RDOActivityKeyboardRuntime::addHotKey( std::string* hotKey )
+void RDOActivityKeyboardRuntime::addHotKey( const std::string& hotKey )
 {
 	unsigned int _scan_code = RDOOperationTrace::getRuntime()->rdoHotKeyToolkit.codeFromString( hotKey );
 	if ( _scan_code == -1 ) return;

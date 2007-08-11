@@ -48,26 +48,26 @@ void RDOPMDPokaz::endOfCreation( rdoRuntime::RDOPMDPokaz* _pokaz_runtime )
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDWatchPar
 // ----------------------------------------------------------------------------
-RDOPMDWatchPar::RDOPMDWatchPar( RDOParser* _parser, std::string* _name, bool _trace, std::string* _resName, std::string* _parName ):
+RDOPMDWatchPar::RDOPMDWatchPar( RDOParser* _parser, std::string* _name, bool _trace, const std::string& _resName, const std::string& _parName ):
 	RDOPMDPokaz( _parser )
 {
 	const RDORSSResource *const res = parser->findRSSResource(_resName);
 	if(!res)
-		parser->error("Undefined resource name: " + *_resName);
+		parser->error("Undefined resource name: " + _resName);
 
 	if( !res->getType()->isPermanent() )
-		parser->error("Resource must be of permanent type: " + *_resName);
+		parser->error("Resource must be of permanent type: " + _resName);
 
-	const RDORTPParamDesc *const par = res->getType()->findRTPParam(_parName);
+	const RDORTPParam *const par = res->getType()->findRTPParam(_parName);
 	if(!par)
-		parser->error("Undefined parameter name: " + *_parName + " for resource " + *_resName);
+		parser->error("Undefined parameter name: " + _parName + " for resource " + _resName);
 
 	int type = par->getType()->getType();
-	if ( type != RDORTPResParam::pt_int && type != RDORTPResParam::pt_real ) {
-		parser->error("Enumerative parameter: " + *_resName + "." + *_parName + " not allowed in watch_par statement");
+	if ( type != RDORTPParamType::pt_int && type != RDORTPParamType::pt_real ) {
+		parser->error("Enumerative parameter: " + _resName + "." + _parName + " not allowed in watch_par statement");
 	}
 
-	rdoRuntime::RDOPMDWatchPar* pokaz = new rdoRuntime::RDOPMDWatchPar( parser->runTime, _name, _trace, _parName, _parName, res->getNumber(), res->getType()->getRTPParamNumber(_parName) );
+	rdoRuntime::RDOPMDWatchPar* pokaz = new rdoRuntime::RDOPMDWatchPar( parser->runTime, _name, _trace, _resName, _parName, res->getNumber(), res->getType()->getRTPParamNumber(_parName) );
 	endOfCreation( pokaz );
 }
 
@@ -83,7 +83,7 @@ RDOPMDWatchState::RDOPMDWatchState( RDOParser* _parser, std::string* _name, bool
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDWatchQuant
 // ----------------------------------------------------------------------------
-RDOPMDWatchQuant::RDOPMDWatchQuant( RDOParser* _parser, std::string* _name, bool _trace, std::string* _resTypeName ):
+RDOPMDWatchQuant::RDOPMDWatchQuant( RDOParser* _parser, std::string* _name, bool _trace, const std::string& _resTypeName ):
 	RDOPMDPokaz( _parser )
 {
 	RDOFUNGroupLogic* fgl = new RDOFUNGroupLogic( this, 5, _resTypeName );
@@ -106,7 +106,7 @@ void RDOPMDWatchQuant::setLogicNoCheck()
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDWatchValue
 // ----------------------------------------------------------------------------
-RDOPMDWatchValue::RDOPMDWatchValue( RDOParser* _parser, std::string* _name, bool _trace, std::string* _resTypeName ):
+RDOPMDWatchValue::RDOPMDWatchValue( RDOParser* _parser, std::string* _name, bool _trace, const std::string& _resTypeName ):
 	RDOPMDPokaz( _parser )
 {
 	RDOFUNGroupLogic* fgl = new RDOFUNGroupLogic( this, 5, _resTypeName );

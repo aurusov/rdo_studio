@@ -63,9 +63,9 @@ public:
 	RDODPTSearchActivity( const RDOParserObject* _parent, std::string* _name, std::string* _ruleName );
 	void setValue(DPTSearchValue _value, RDOFUNArithm *_ruleCost);
 	const std::string *getName() const { return name; }
-	void addParam(int _param);
-	void addParam(double * _param);
-	void addParam(std::string *_param);
+	void addParam( int _param );
+	void addParam( double* _param );
+	void addParam( const std::string& _param );
 	void addParam();
 	RDOPATPatternRule *getRule() { return rule; }
 
@@ -120,9 +120,9 @@ private:
 public:
 	RDODPTSomeActivity( const RDOParserObject* _parent, std::string* _name, std::string* _ruleName );
 	const std::string *getName() const { return name; }
-	void addParam(int _param);
-	void addParam(double * _param);
-	void addParam(std::string *_param);
+	void addParam( int _param );
+	void addParam( double* _param );
+	void addParam( const std::string& _param );
 	void addParam();
 
 	void createActivityRuntime(RDOFUNLogic *conditon);
@@ -165,17 +165,17 @@ private:
 	const RDOPATPattern* pattern;
 	int currParamNum;
 	std::vector< rdoRuntime::RDOValue > params;
-	std::vector< std::string* >         hotKeys;
+	std::vector< std::string >          hotKeys;
 
 public:
 	RDODPTFreeActivity( RDOParser* _parser, std::string* _name, std::string* _ruleName );
 	const std::string *getName() const { return name; }
-	void addParam(int _param);
-	void addParam(double * _param);
-	void addParam(std::string *_param);
+	void addParam( int _param );
+	void addParam( double* _param );
+	void addParam( const std::string& _param );
 	void addParam();
 	void end();
-	void addHotKey(std::string *hotKey) { hotKeys.push_back(hotKey); }
+	void addHotKey( const std::string& hotKey ) { hotKeys.push_back( hotKey ); }
 };
 
 // ----------------------------------------------------------------------------
@@ -254,7 +254,7 @@ protected:
 	rdoRuntime::RDOPROCSeize* runtime;
 
 public:
-	RDOPROCSeize( RDOPROCProcess* _process, const std::string& _name, const std::string* res_name );
+	RDOPROCSeize( RDOPROCProcess* _process, const std::string& _name, const std::string& res_name );
 };
 
 // ----------------------------------------------------------------------------
@@ -266,7 +266,7 @@ protected:
 	rdoRuntime::RDOPROCRelease* runtime;
 
 public:
-	RDOPROCRelease( RDOPROCProcess* _process, const std::string& _name, const std::string* res_name );
+	RDOPROCRelease( RDOPROCProcess* _process, const std::string& _name, const std::string& res_name );
 };
 
 

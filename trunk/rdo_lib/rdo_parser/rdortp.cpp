@@ -25,164 +25,93 @@ void rtperror( char* mes )
 {
 }
 
-void RDORTPEnum::add(const std::string *const next) 
-{ 
-	if ( std::find_if(enumVals.begin(), enumVals.end(), comparePointers<std::string>(next)) != enumVals.end() )
-		parser->error( rdoSimulator::RDOSyntaxError::RTP_SECOND_ENUM_VALUE, next->c_str() );
-
-	enumVals.push_back(next); 
-}
-
-int RDORTPEnum::findValue( const std::string* const val, bool auto_error ) const
+// ----------------------------------------------------------------------------
+// ---------- RDORTPDefVal - значение по-умолчанию, базовый класс
+// ----------------------------------------------------------------------------
+RDORTPDefVal::RDORTPDefVal( const RDORTPDefVal& dv ):
+	RDOParserObject( parser ),
+	RDOParserSrcInfo( dv.src_info() ),
+	exist( dv.exist )
 {
-	std::vector<const std::string *>::const_iterator it = 
-		std::find_if(enumVals.begin(), enumVals.end(), comparePointers<std::string>(val));
-
-	if ( it == enumVals.end() ) {
-		if ( auto_error ) {
-			parser->error( rdoSimulator::RDOSyntaxError::RTP_WRONG_ENUM_PARAM_VALUE, val->c_str() );
-		} else {
-			return -1;
-		}
-	}
-
-//	return (it - enumVals.begin()) + 1;
-	return it - enumVals.begin();
 }
 
-RDORTPResType::RDORTPResType( RDOParser* _parser, const std::string* const _name, const bool _permanent ):
-	RDOParserObject( _parser ),
-	name( _name ),
-	number( parser->getRTP_id() ),
-	permanent( _permanent )
+RDORTPDefVal::RDORTPDefVal( bool _exist ):
+	RDOParserObject( parser ),
+	RDOParserSrcInfo(),
+	exist( _exist )
 {
-	parser->insertRTPResType( this );
 }
 
-void RDORTPResType::addParam( const RDORTPParamDesc* const param )
+RDORTPDefVal::RDORTPDefVal( bool _exist, const RDOParserSrcInfo& _src_info ):
+	RDOParserObject( parser ),
+	RDOParserSrcInfo( _src_info ),
+	exist( _exist )
 {
-	if ( findRTPParam( param->getName() ) ) {
-		parser->lexer_loc_restore();
-		parser->error( rdoSimulator::RDOSyntaxError::RTP_SECOND_PARAM_NAME, param->getName()->c_str() );
-	}
-	params.push_back( param );
 }
 
-const RDORTPParamDesc* RDORTPResType::findRTPParam( const std::string* const param ) const
+int RDORTPDefVal::getIntValue() const
 {
-	std::vector<const RDORTPParamDesc *>::const_iterator it = std::find_if( params.begin(), params.end(), compareName<RDORTPParamDesc>(param) );
-	return it != params.end() ? *it : NULL;
+	parser->lexer_loc_set( src_pos().last_line, src_pos().last_pos );
+	parser->error( "Неверное значение по-умолчанию" );
+//	parser->error( "Invalid default value" );
+	return 0;	// unreachable code...
 }
 
-int RDORTPResType::getRTPParamNumber( const std::string* const param ) const
+double RDORTPDefVal::getRealValue() const
 {
-	std::vector<const RDORTPParamDesc *>::const_iterator it = std::find_if(params.begin(), 
-		params.end(), 
-		compareName<RDORTPParamDesc>(param));
-	if(it != params.end())
-		return it - params.begin();
-
-	return -1;
+	parser->lexer_loc_set( src_pos().last_line, src_pos().last_pos );
+	parser->error( "Неверное значение по-умолчанию" );
+	return 0.;	// unreachable code...
 }
 
-int RDORTPResType::writeModelStructure() const
+const std::string& RDORTPDefVal::getEnumValue() const
 {
-	parser->modelStructure << getNumber() << " " << *getName() << " " << getParams().size() << std::endl;
-	for(int i = 0; i < getParams().size(); i++)
-	{
-		parser->modelStructure << "  " << (i+1) << " ";
-		getParams().at(i)->writeModelStructure();
-	}
-	return 0;
+	parser->lexer_loc_set( src_pos().last_line, src_pos().last_pos );
+	parser->error( "Неверное значение по-умолчанию" );
+#pragma warning( disable: 4172 )
+	return "";	// unreachable code...
+#pragma warning( default: 4172 )
 }
 
-int RDORTPParamDesc::writeModelStructure() const
-{
-	parser->modelStructure << *getName() << " ";
-	getType()->writeModelStructure();
-//	parser->modelStructure << " ";
-	return 0;
-}
-
-int RDORTPIntResParam::writeModelStructure() const
-{
-	parser->modelStructure << "I" << std::endl;
-	return 0;
-}
-
-int RDORTPRealResParam::writeModelStructure() const
-{
-	parser->modelStructure << "R" << std::endl;
-	return 0;
-}
-
-int RDORTPEnumResParam::writeModelStructure() const
-{
-	parser->modelStructure << "E " << enu->enumVals.size() << std::endl;
-	for(int i = 0; i < enu->enumVals.size(); i++)
-		parser->modelStructure << "    " << i << " " << *enu->enumVals.at(i) << std::endl;
-	return 0;
-}
-
-const RDORTPResParam *RDORTPResParam::constructSuchAs() const 
-{ 
-	return this; 
-}
-
-const RDORTPResParam* RDORTPResParam::constructSuchAs( const int defVal ) const
-{
-	parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_DEFVAULT_INT_SUCHAS, defVal );
-	return NULL;	// unreachable code...
-}
-
-const RDORTPResParam* RDORTPResParam::constructSuchAs( const double* const defVal ) const
-{
-	parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_DEFVAULT_REAL_SUCHAS, *defVal );
-	return NULL;	// unreachable code...
-}
-
-const RDORTPResParam* RDORTPResParam::constructSuchAs( const std::string* const defVal ) const
-{
-	parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_DEFVAULT_ENUM_SUCHAS, defVal->c_str() );
-	return NULL;	// unreachable code...
-}
-
-void RDORTPResParam::checkParamType( const RDOFUNArithm* const action ) const
+// ----------------------------------------------------------------------------
+// ---------- RDORTPParamType
+// ----------------------------------------------------------------------------
+void RDORTPParamType::checkParamType( const RDOFUNArithm* const action ) const
 {
 	switch ( getType() ) {
-		case RDORTPResParam::pt_int: {
-			if ( action->getType() == RDORTPResParam::pt_real ) {
+		case RDORTPParamType::pt_int: {
+			if ( action->getType() == RDORTPParamType::pt_real ) {
 				parser->lexer_loc_backup();
 				parser->lexer_loc_set( action->src_pos().last_line, action->src_pos().last_pos );
 				parser->warning( "Перевод вещественного числа в целое, возможна потеря данных" );
 				parser->lexer_loc_restore();
-			} else if ( action->getType() != RDORTPResParam::pt_int ) {
+			} else if ( action->getType() != RDORTPParamType::pt_int ) {
 				parser->lexer_loc_set( action->src_pos().last_line, action->src_pos().last_pos );
 				parser->error( "Несоответствие типов. Ожидается целое число" );
 			}
 			break;
 		}
-		case RDORTPResParam::pt_real: {
-			if ( action->getType() != RDORTPResParam::pt_real && action->getType() != RDORTPResParam::pt_int ) {
+		case RDORTPParamType::pt_real: {
+			if ( action->getType() != RDORTPParamType::pt_real && action->getType() != RDORTPParamType::pt_int ) {
 				parser->lexer_loc_set( action->src_pos().last_line, action->src_pos().last_pos );
 				parser->error( "Несоответствие типов. Ожидается вещественное число" );
 			}
 			break;
 		}
-		case RDORTPResParam::pt_enum: {
-			if ( action->getType() == RDORTPResParam::pt_str ) {
-				if ( static_cast<const RDORTPEnumResParam*>(this)->enu->findValue( action->str, false ) == -1 ) {
+		case RDORTPParamType::pt_enum: {
+			if ( action->getType() == RDORTPParamType::pt_str ) {
+				if ( static_cast<const RDORTPEnumParamType*>(this)->enu->findValue( action->str, false ) == -1 ) {
 					parser->lexer_loc_set( action->src_pos().last_line, action->src_pos().last_pos );
-					if ( static_cast<const RDORTPEnumResParam*>(this)->enum_fun ) {
-						parser->error( rdo::format("Значение '%s' не может являться результатом функции: %s", action->str->c_str(), static_cast<const RDORTPEnumResParam*>(this)->enum_name.c_str()) );
+					if ( static_cast<const RDORTPEnumParamType*>(this)->enum_fun ) {
+						parser->error( rdo::format("Значение '%s' не может являться результатом функции: %s", action->str.c_str(), static_cast<const RDORTPEnumParamType*>(this)->enum_name.c_str()) );
 					} else {
-						parser->error( rdo::format("Значение '%s' не является элементом перечислимого параметра: %s", action->str->c_str(), static_cast<const RDORTPEnumResParam*>(this)->enum_name.c_str()) );
+						parser->error( rdo::format("Значение '%s' не является элементом перечислимого параметра: %s", action->str.c_str(), static_cast<const RDORTPEnumParamType*>(this)->enum_name.c_str()) );
 					}
 				}
-			} else if ( action->getType() != RDORTPResParam::pt_enum ) {
+			} else if ( action->getType() != RDORTPParamType::pt_enum ) {
 				parser->lexer_loc_set( action->src_pos().last_line, action->src_pos().last_pos );
 				parser->error( "Несоответствие типов. Ожидается перечислимый тип" );
-			} else if ( action->enu != static_cast<const RDORTPEnumResParam*>(this)->enu ) {
+			} else if ( action->enu != static_cast<const RDORTPEnumParamType*>(this)->enu ) {
 				parser->lexer_loc_set( action->src_pos().last_line, action->src_pos().last_pos );
 				parser->error( "Несоответствие перечислимых типов" );
 			}
@@ -191,48 +120,269 @@ void RDORTPResParam::checkParamType( const RDOFUNArithm* const action ) const
 	}
 }
 
-rdoRuntime::RDOValue RDORTPIntResParam::getRSSEnumValue( const std::string* const val ) const
+// ----------------------------------------------------------------------------
+// ---------- RDORTPParam
+// ----------------------------------------------------------------------------
+RDORTPParam::RDORTPParam( RDOParser* _parser, const std::string& _name, const RDORTPParamType* const _parType, const RDOParserSrcInfo& _src_info ):
+	RDOParserObject( _parser ),
+	RDOParserSrcInfo( _src_info ),
+	name( _name ),
+	parType( _parType ),
+	resType( NULL )
 {
-	parser->error( rdo::format("Ожидается целое число: %s", val->c_str()) );
+	setSrcText( name + ": " + parType->src_text() );
+	parser->insertRTPParam( this );
+}
+
+RDORTPParam::RDORTPParam( RDORTPResType* _parent, const std::string& _name, const RDORTPParamType* const _parType ):
+	RDOParserObject( _parent ),
+	RDOParserSrcInfo(),
+	name( _name ),
+	parType( _parType ),
+	resType( _parent )
+{
+	setSrcText( name + ": " + parType->src_text() );
+	parser->insertRTPParam( this );
+}
+
+RDORTPParam::RDORTPParam( RDORTPResType* _parent, const std::string& _name, const RDORTPParamType* const _parType, const RDOParserSrcInfo& _src_info ):
+	RDOParserObject( _parent ),
+	RDOParserSrcInfo( _src_info ),
+	name( _name ),
+	parType( _parType ),
+	resType( _parent )
+{
+	setSrcText( name + ": " + parType->src_text() );
+	parser->insertRTPParam( this );
+}
+
+int RDORTPParam::writeModelStructure() const
+{
+	parser->modelStructure << getName() << " ";
+	getType()->writeModelStructure();
+//	parser->modelStructure << " ";
+	return 0;
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDORTPResType
+// ----------------------------------------------------------------------------
+RDORTPResType::RDORTPResType( RDOParser* _parser, const std::string& _name, const bool _permanent ):
+	RDOParserObject( _parser ),
+	RDOParserSrcInfo(),
+	name( _name ),
+	number( parser->getRTP_id() ),
+	permanent( _permanent )
+{
+	setSrcText( name );
+	parser->insertRTPResType( this );
+}
+
+void RDORTPResType::addParam( const RDORTPParam* const param )
+{
+	if ( findRTPParam( param->getName() ) ) {
+		parser->lexer_loc_restore();
+		parser->error( rdoSimulator::RDOSyntaxError::RTP_SECOND_PARAM_NAME, param->getName().c_str() );
+	}
+	params.push_back( param );
+}
+
+const RDORTPParam* RDORTPResType::findRTPParam( const std::string& param ) const
+{
+	std::vector<const RDORTPParam *>::const_iterator it = std::find_if( params.begin(), params.end(), compareName2<RDORTPParam>(param) );
+	return it != params.end() ? *it : NULL;
+}
+
+int RDORTPResType::getRTPParamNumber( const std::string& param ) const
+{
+	std::vector<const RDORTPParam *>::const_iterator it = std::find_if(params.begin(), 
+		params.end(), 
+		compareName2<RDORTPParam>(param));
+	if(it != params.end())
+		return it - params.begin();
+
+	return -1;
+}
+
+int RDORTPResType::writeModelStructure() const
+{
+	parser->modelStructure << getNumber() << " " << getName() << " " << getParams().size() << std::endl;
+	for(int i = 0; i < getParams().size(); i++)
+	{
+		parser->modelStructure << "  " << (i+1) << " ";
+		getParams().at(i)->writeModelStructure();
+	}
+	return 0;
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDORTPIntDiap - даипазон, например, [1 .. 4]
+// ----------------------------------------------------------------------------
+RDORTPIntDiap::RDORTPIntDiap():
+	RDOParserObject( parser ),
+	RDOParserSrcInfo(),
+	exist( false ),
+	minVal( 0 ),
+	maxVal( 0 )
+{
+}
+
+RDORTPIntDiap::RDORTPIntDiap( const RDORTPIntDiap& diap ):
+	RDOParserObject( parser ),
+	RDOParserSrcInfo( diap.src_info() ),
+	exist( diap.exist ),
+	minVal( diap.minVal ),
+	maxVal( diap.maxVal )
+{
+}
+
+RDORTPIntDiap::RDORTPIntDiap( const RDOParserSrcInfo& _src_info ):
+	RDOParserObject( parser ),
+	RDOParserSrcInfo( _src_info ),
+	exist( false ),
+	minVal( 0 ),
+	maxVal( 0 )
+{
+}
+
+RDORTPIntDiap::RDORTPIntDiap( int _minVal, int _maxVal, const RDOParserSrcInfo& _src_info, const YYLTYPE& _max_value_pos ):
+	RDOParserObject( parser ),
+	RDOParserSrcInfo( _src_info ),
+	exist( true ),
+	minVal( _minVal ),
+	maxVal( _maxVal )
+{
+	if ( minVal > maxVal ) {
+		parser->lexer_loc_set( _max_value_pos.last_line, _max_value_pos.last_column );
+		parser->error( "Левая граница диапазона должна быть меньше правой" );
+	}
+	setSrcText( rdo::format("[%d..%d]", minVal, maxVal) );
+}
+
+void RDORTPIntDiap::check( const RDORTPIntDefVal* dv ) const
+{
+	if ( isExist() && dv->isExist() ) {
+		if ((minVal > dv->getIntValue()) || (maxVal < dv->getIntValue())) {
+			parser->lexer_loc_set( dv->src_pos().last_line, dv->src_pos().last_pos );
+			parser->error( rdo::format("Целочисленное значение выходит за допустимый диапазон [%d..%d]: %d", minVal, maxVal, dv->getIntValue()) );
+		}
+	}
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDORTPIntParamType
+// ----------------------------------------------------------------------------
+RDORTPIntParamType::RDORTPIntParamType( RDOParser* _parser, RDORTPIntDiap* _diap, RDORTPIntDefVal* _dv ):
+	RDORTPParamType( _parser, _dv ),
+	diap( _diap )
+{
+	init();
+}
+
+RDORTPIntParamType::RDORTPIntParamType( const RDOParserObject* _parent ):
+	RDORTPParamType( _parent, new RDORTPIntDefVal(0) ),
+	diap( new RDORTPIntDiap() )
+{
+	init();
+}
+
+RDORTPIntParamType::RDORTPIntParamType( const RDOParserObject* _parent, RDORTPIntDiap* _diap, RDORTPIntDefVal* _dv ):
+	RDORTPParamType( _parent, _dv ),
+	diap( _diap )
+{
+	init();
+}
+
+RDORTPIntParamType::RDORTPIntParamType( const RDOParserObject* _parent, RDORTPIntDiap* _diap, RDORTPIntDefVal* _dv, const RDOParserSrcInfo& _src_info ):
+	RDORTPParamType( _parent, _dv, _src_info ),
+	diap( _diap )
+{
+	init();
+}
+
+void RDORTPIntParamType::init()
+{
+	diap->reparent( this );
+	dv->reparent( this );
+	std::string src_text = "integer";
+	if ( diap->isExist() ) {
+		src_text += " " + diap->src_text();
+	}
+	if ( dv->isExist() ) {
+		src_text += " = " + dv->src_text();
+	}
+	setSrcText( src_text );
+	diap->check( static_cast<RDORTPIntDefVal*>(dv) );
+}
+
+const RDORTPParamType* RDORTPIntParamType::constructSuchAs( const RDOParserSrcInfo& _src_info ) const 
+{ 
+	RDORTPIntDiap*      _diap = new RDORTPIntDiap( *diap );
+	RDORTPIntDefVal*    _dv   = new RDORTPIntDefVal( *static_cast<RDORTPIntDefVal*>(dv) );
+	RDORTPIntParamType* _type = new RDORTPIntParamType( parent, _diap, _dv, _src_info );
+	_type->setSrcText( _src_info.src_text() );
+	if ( _dv->isExist() ) {
+		_type->setSrcText( _type->src_text() + " = " + _dv->src_text() );
+	}
+	return _type;
+}
+
+const RDORTPParamType* RDORTPIntParamType::constructSuchAs( int defVal, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& defVal_info ) const
+{
+	RDORTPIntDiap*      _diap = new RDORTPIntDiap( *diap );
+	RDORTPIntDefVal*    _dv   = new RDORTPIntDefVal( defVal, defVal_info );
+	RDORTPIntParamType* _type = new RDORTPIntParamType( parent, _diap, _dv, _src_info );
+	_type->setSrcText( _src_info.src_text() );
+	if ( _dv->isExist() ) {
+		_type->setSrcText( _type->src_text() + " = " + _dv->src_text() );
+	}
+	return _type;
+}
+
+const RDORTPParamType* RDORTPIntParamType::constructSuchAs( double defVal, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& defVal_info ) const
+{
+	parser->lexer_loc_set( defVal_info.src_pos().last_line, defVal_info.src_pos().last_pos );
+	parser->error( rdo::format("Неверное значение по-умолчанию для параметра целого типа: %f", defVal) );
+	return NULL;
+}
+
+const RDORTPParamType* RDORTPIntParamType::constructSuchAs( const std::string& defVal, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& defVal_info ) const
+{
+	parser->lexer_loc_set( defVal_info.src_pos().last_line, defVal_info.src_pos().last_pos );
+	parser->error( rdo::format("Неверное значение по-умолчанию для параметра целого типа: %s", defVal.c_str()) );
+	return NULL;
+}
+
+int RDORTPIntParamType::writeModelStructure() const
+{
+	parser->modelStructure << "I" << std::endl;
+	return 0;
+}
+
+rdoRuntime::RDOValue RDORTPIntParamType::getRSSEnumValue( const std::string& val ) const
+{
+	parser->error( rdo::format("Ожидается целое число: %s", val.c_str()) );
 	return NULL;	// unreachable code...
 }
 
-rdoRuntime::RDOValue RDORTPRealResParam::getRSSEnumValue( const std::string* const val ) const
-{
-	parser->error( rdo::format("Ожидается вещественное число: %s", val->c_str()) );
-	return NULL;	// unreachable code...
-}
-
-rdoRuntime::RDOValue RDORTPEnumResParam::getRSSIntValue( const int val ) const 
-{
-	parser->error( rdo::format("Ожидается перечислимый тип: %d", val) );
-	return NULL;	// unreachable code...
-}
-
-rdoRuntime::RDOValue RDORTPEnumResParam::getRSSRealValue( const double* const val ) const
-{
-	parser->error( rdo::format("Ожидается перечислимый тип: %f", *val) );
-	return NULL;	// unreachable code...
-}
-
-rdoRuntime::RDOValue RDORTPIntResParam::getRSSRealValue( const double* const val ) const
+rdoRuntime::RDOValue RDORTPIntParamType::getRSSRealValue( const double* const val ) const
 {
 	parser->error( rdo::format("Ожидается целое число: %f", *val) );
 	return NULL;	// unreachable code...
 }
 
-rdoRuntime::RDOValue RDORTPIntResParam::getRSSDefaultValue() const 
+rdoRuntime::RDOValue RDORTPIntParamType::getRSSDefaultValue() const 
 {
-	if ( !dv->exist ) {
+	if ( !dv->isExist() ) {
 		parser->error( "Нет значения по-умолчанию" );
 //		parser->error( "No default value" );
 	}
-	return rdoRuntime::RDOValue( dv->GetIntValue() );
+	return rdoRuntime::RDOValue( dv->getIntValue() );
 }
 
-rdoRuntime::RDOValue RDORTPIntResParam::getRSSIntValue( const int val ) const 
+rdoRuntime::RDOValue RDORTPIntParamType::getRSSIntValue( const int val ) const 
 {
-	if ( diap->exist ) {
+	if ( diap->isExist() ) {
 		if ((val < diap->minVal) || (val > diap->maxVal)) {
 			parser->error( rdo::format("Целочисленное значение выходит за допустимый диапазон [%d..%d]: %d", diap->minVal, diap->maxVal, val) );
 //			parser->error( ("integer value " + toString(val) + " out of range[" + toString(diap->minVal) + ", " + toString(diap->maxVal) + "]").c_str() );
@@ -241,173 +391,9 @@ rdoRuntime::RDOValue RDORTPIntResParam::getRSSIntValue( const int val ) const
 	return rdoRuntime::RDOValue( val );
 }
 
-rdoRuntime::RDOValue RDORTPRealResParam::getRSSDefaultValue() const 
+int RDORTPIntParamType::getDiapTableFunc() const 
 {
-	if ( !dv->exist ) {
-		parser->error( "Нет значения по-умолчанию" );
-	}
-	return rdoRuntime::RDOValue( dv->GetRealValue() );
-}
-
-rdoRuntime::RDOValue RDORTPRealResParam::getRSSRealValue( const double* const val ) const 
-{
-	if ( diap->exist ) {
-		if ((*val < diap->minVal) || (*val > diap->maxVal)) {
-			parser->error( rdo::format("Вещественное значение выходит за допустимый диапазон [%f..%f]: %f", diap->minVal, diap->maxVal, *val) );
-//			parser->error(("real value " + toString(*val) + " out of range[" + toString(diap->minVal) + ", " + toString(diap->maxVal) + "]").c_str());
-		}
-	}
-	return rdoRuntime::RDOValue( *val );
-}
-
-rdoRuntime::RDOValue RDORTPRealResParam::getRSSIntValue( const int val ) const
-{
-	if ( diap->exist ) {
-		if ((val < diap->minVal) || (val > diap->maxVal)) {
-			parser->error( rdo::format("Вещественное значение выходит за допустимый диапазон [%f..%f]: %d", diap->minVal, diap->maxVal, val) );
-		}
-	}
-	return rdoRuntime::RDOValue( val );
-}
-
-rdoRuntime::RDOValue RDORTPEnumResParam::getRSSDefaultValue() const 
-{
-	if ( !dv->exist ) {
-		parser->error( "Нет значения по-умолчанию" );
-	}
-	return rdoRuntime::RDOValue( enu->findValue( dv->GetEnumValue() ) );
-}
-
-rdoRuntime::RDOValue RDORTPEnumResParam::getRSSEnumValue(const std::string *const val) const
-{
-	return enu->findValue(val);
-}
-
-RDORTPIntResParam::RDORTPIntResParam( RDOParser* _parser, RDORTPIntDiap *_diap, RDORTPIntDefVal *_dv ):
-	RDORTPResParam( _parser, _dv ),
-	diap( _diap )
-{
-	diap->check(_dv);
-}
-
-RDORTPIntResParam::RDORTPIntResParam( const RDOParserObject* _parent ):
-	RDORTPResParam( _parent, new RDORTPIntDefVal(0) ),
-	diap( new RDORTPIntDiap() )
-{
-	diap->check( static_cast<RDORTPIntDefVal*>(dv) );
-}
-
-RDORTPIntResParam::RDORTPIntResParam( const RDOParserObject* _parent, RDORTPIntDiap *_diap, RDORTPIntDefVal *_dv ):
-	RDORTPResParam( _parent, _dv ),
-	diap( _diap )
-{
-	diap->check(_dv);
-}
-
-RDORTPIntDiap::RDORTPIntDiap( int _minVal, int _maxVal ):
-	RDODeletable(),
-	minVal( _minVal ),
-	maxVal( _maxVal ),
-	exist( true )
-{
-	if ( minVal > maxVal ) {
-		parser->error( "Левая граница диапазона должна быть меньше правой" );
-	}
-}
-
-void RDORTPIntDiap::check( const RDORTPIntDefVal* dv ) const
-{
-	if ( exist && dv->exist ) {
-		if ((minVal > dv->GetIntValue()) || (maxVal < dv->GetIntValue())) {
-			parser->error( rdo::format("Целочисленное значение выходит за допустимый диапазон [%d..%d]: %d", minVal, maxVal, dv->GetIntValue()) );
-		}
-	}
-}
-
-RDORTPRealResParam::RDORTPRealResParam( RDOParser* _parser, RDORTPRealDiap* _diap, RDORTPRealDefVal* _dv ):
-	RDORTPResParam( _parser, _dv ),
-	diap( _diap )
-{
-	diap->check( _dv );
-}
-
-RDORTPRealResParam::RDORTPRealResParam( const RDOParserObject* _parent ):
-	RDORTPResParam( _parent, new RDORTPRealDefVal(0) ),
-	diap( new RDORTPRealDiap() )
-{
-	diap->check( static_cast<RDORTPRealDefVal*>(dv) );
-}
-
-RDORTPRealResParam::RDORTPRealResParam( const RDOParserObject* _parent, RDORTPRealDiap* _diap, RDORTPRealDefVal* _dv ):
-	RDORTPResParam( _parent, _dv ),
-	diap( _diap )
-{
-	diap->check( _dv );
-}
-
-RDORTPRealDiap::RDORTPRealDiap( double _minVal, double _maxVal ):
-	minVal( _minVal ),
-	maxVal( _maxVal ),
-	exist( true )
-{
-	if ( minVal > maxVal ) {
-		parser->error( "Левая граница диапазона должна быть меньше правой" );
-	}
-}
-
-void RDORTPRealDiap::check( const RDORTPRealDefVal* dv ) const
-{
-	if ( exist && dv->exist ) {
-		if ((minVal > dv->GetRealValue()) || (maxVal < dv->GetRealValue())) {
-			parser->error( rdo::format("Вещественное значение выходит за допустимый диапазон [%f..%f]: %f", minVal, maxVal, dv->GetRealValue()) );
-		}
-	}
-}
-
-const RDORTPResParam* RDORTPIntResParam::constructSuchAs( const int defVal ) const
-{
-	RDORTPIntDefVal* newDV = new RDORTPIntDefVal( defVal );
-	RDORTPIntResParam*  rp = new RDORTPIntResParam( parent, diap, newDV );
-	return rp;
-}
-
-const RDORTPResParam *RDORTPRealResParam::constructSuchAs(const double *const defVal) const 
-{
-	RDORTPRealDefVal *newDV = new RDORTPRealDefVal( *defVal );
-	RDORTPRealResParam *rp = new RDORTPRealResParam( parent, diap, newDV );
-	return rp;
-}
-
-const RDORTPResParam *RDORTPEnumResParam::constructSuchAs(const std::string *const defVal) const 
-{
-	enu->findValue(defVal);	 // if no value - Syntax exception will be thrown
-	RDORTPEnumDefVal *newDV = new RDORTPEnumDefVal(defVal);
-	RDORTPEnumResParam *rp = new RDORTPEnumResParam( parent, enu, newDV );
-	return rp;
-}
-
-int RDORTPDefVal::GetIntValue() const
-{
-	parser->error( "Неверное значение по-умолчанию" );
-//	parser->error( "Invalid default value" );
-	return 0;	// unreachable code...
-}
-
-double RDORTPDefVal::GetRealValue() const
-{
-	parser->error( "Неверное значение по-умолчанию" );
-	return 0.;	// unreachable code...
-}
-
-const std::string *RDORTPDefVal::GetEnumValue() const
-{
-	parser->error( "Неверное значение по-умолчанию" );
-	return NULL;	// unreachable code...
-}
-
-int RDORTPIntResParam::getDiapTableFunc() const 
-{
-	if ( !diap->exist ) {
+	if ( !diap->isExist() ) {
 		parser->error( "Для параметра табличной функции должен быть задан допустимый диапазон" );
 //		parser->error("integer table function parameter must have range");
 	}
@@ -420,23 +406,315 @@ int RDORTPIntResParam::getDiapTableFunc() const
 	return diap->maxVal - diap->minVal + 1;
 }
 
-int RDORTPRealResParam::getDiapTableFunc() const
+// ----------------------------------------------------------------------------
+// ---------- RDORTPRealDiap - даипазон, например, [1.2 .. 4.78]
+// ----------------------------------------------------------------------------
+RDORTPRealDiap::RDORTPRealDiap():
+	RDOParserObject( parser ),
+	RDOParserSrcInfo(),
+	exist( false ),
+	minVal( 0 ),
+	maxVal( 0 )
+{
+}
+
+RDORTPRealDiap::RDORTPRealDiap( const RDORTPRealDiap& diap ):
+	RDOParserObject( parser ),
+	RDOParserSrcInfo( diap.src_info() ),
+	exist( diap.exist ),
+	minVal( diap.minVal ),
+	maxVal( diap.maxVal )
+{
+}
+
+RDORTPRealDiap::RDORTPRealDiap( const RDOParserSrcInfo& _src_info ):
+	RDOParserObject( parser ),
+	RDOParserSrcInfo( _src_info ),
+	exist( false ),
+	minVal( 0 ),
+	maxVal( 0 )
+{
+}
+
+RDORTPRealDiap::RDORTPRealDiap( double _minVal, double _maxVal, const RDOParserSrcInfo& _src_info, const YYLTYPE& _max_value_pos ):
+	RDOParserObject( parser ),
+	RDOParserSrcInfo( _src_info ),
+	exist( true ),
+	minVal( _minVal ),
+	maxVal( _maxVal )
+{
+	if ( minVal > maxVal ) {
+		parser->lexer_loc_set( _max_value_pos.last_line, _max_value_pos.last_column );
+		parser->error( "Левая граница диапазона должна быть меньше правой" );
+	}
+	setSrcText( rdo::format("[%f..%f]", minVal, maxVal) );
+}
+
+void RDORTPRealDiap::check( const RDORTPRealDefVal* dv ) const
+{
+	if ( isExist() && dv->isExist() ) {
+		if ((minVal > dv->getRealValue()) || (maxVal < dv->getRealValue())) {
+			parser->lexer_loc_set( dv->src_pos().last_line, dv->src_pos().last_pos );
+			parser->error( rdo::format("Вещественное значение выходит за допустимый диапазон [%f..%f]: %f", minVal, maxVal, dv->getRealValue()) );
+		}
+	}
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDORTPRealParamType
+// ----------------------------------------------------------------------------
+RDORTPRealParamType::RDORTPRealParamType( RDOParser* _parser, RDORTPRealDiap* _diap, RDORTPRealDefVal* _dv ):
+	RDORTPParamType( _parser, _dv ),
+	diap( _diap )
+{
+	init();
+}
+
+RDORTPRealParamType::RDORTPRealParamType( const RDOParserObject* _parent ):
+	RDORTPParamType( _parent, new RDORTPRealDefVal(0) ),
+	diap( new RDORTPRealDiap() )
+{
+	init();
+}
+
+RDORTPRealParamType::RDORTPRealParamType( const RDOParserObject* _parent, RDORTPRealDiap* _diap, RDORTPRealDefVal* _dv ):
+	RDORTPParamType( _parent, _dv ),
+	diap( _diap )
+{
+	init();
+}
+
+RDORTPRealParamType::RDORTPRealParamType( const RDOParserObject* _parent, RDORTPRealDiap* _diap, RDORTPRealDefVal* _dv, const RDOParserSrcInfo& _src_info ):
+	RDORTPParamType( _parent, _dv, _src_info ),
+	diap( _diap )
+{
+	init();
+}
+
+void RDORTPRealParamType::init()
+{
+	diap->reparent( this );
+	dv->reparent( this );
+	std::string src_text = "real";
+	if ( diap->isExist() ) {
+		src_text += " " + diap->src_text();
+	}
+	if ( dv->isExist() ) {
+		src_text += " = " + dv->src_text();
+	}
+	setSrcText( src_text );
+	diap->check( static_cast<RDORTPRealDefVal*>(dv) );
+}
+
+const RDORTPParamType* RDORTPRealParamType::constructSuchAs( const RDOParserSrcInfo& _src_info ) const 
+{ 
+	RDORTPRealDiap*      _diap = new RDORTPRealDiap( *diap );
+	RDORTPRealDefVal*    _dv   = new RDORTPRealDefVal( *static_cast<RDORTPRealDefVal*>(dv) );
+	RDORTPRealParamType* _type = new RDORTPRealParamType( parent, _diap, _dv, _src_info );
+	_type->setSrcText( _src_info.src_text() );
+	if ( _dv->isExist() ) {
+		_type->setSrcText( _type->src_text() + " = " + _dv->src_text() );
+	}
+	return _type;
+}
+
+const RDORTPParamType* RDORTPRealParamType::constructSuchAs( int defVal, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& defVal_info ) const
+{
+	RDORTPRealDiap*      _diap = new RDORTPRealDiap( *diap );
+	RDORTPRealDefVal*    _dv   = new RDORTPRealDefVal( defVal, defVal_info );
+	RDORTPRealParamType* _type = new RDORTPRealParamType( parent, _diap, _dv, _src_info );
+	_type->setSrcText( _src_info.src_text() );
+	if ( _dv->isExist() ) {
+		_type->setSrcText( _type->src_text() + " = " + _dv->src_text() );
+	}
+	return _type;
+}
+
+const RDORTPParamType* RDORTPRealParamType::constructSuchAs( double defVal, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& defVal_info ) const
+{
+	RDORTPRealDiap*      _diap = new RDORTPRealDiap( *diap );
+	RDORTPRealDefVal*    _dv   = new RDORTPRealDefVal( defVal, defVal_info );
+	RDORTPRealParamType* _type = new RDORTPRealParamType( parent, _diap, _dv, _src_info );
+	_type->setSrcText( _src_info.src_text() );
+	if ( _dv->isExist() ) {
+		_type->setSrcText( _type->src_text() + " = " + _dv->src_text() );
+	}
+	return _type;
+}
+
+const RDORTPParamType* RDORTPRealParamType::constructSuchAs( const std::string& defVal, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& defVal_info ) const
+{
+	parser->lexer_loc_set( defVal_info.src_pos().last_line, defVal_info.src_pos().last_pos );
+	parser->error( rdo::format("Неверное значение по-умолчанию для параметра вещественного типа: %s", defVal.c_str()) );
+	return NULL;
+}
+
+int RDORTPRealParamType::writeModelStructure() const
+{
+	parser->modelStructure << "R" << std::endl;
+	return 0;
+}
+
+rdoRuntime::RDOValue RDORTPRealParamType::getRSSEnumValue( const std::string& val ) const
+{
+	parser->error( rdo::format("Ожидается вещественное число: %s", val.c_str()) );
+	return NULL;	// unreachable code...
+}
+
+rdoRuntime::RDOValue RDORTPRealParamType::getRSSDefaultValue() const 
+{
+	if ( !dv->isExist() ) {
+		parser->error( "Нет значения по-умолчанию" );
+	}
+	return rdoRuntime::RDOValue( dv->getRealValue() );
+}
+
+rdoRuntime::RDOValue RDORTPRealParamType::getRSSRealValue( const double* const val ) const 
+{
+	if ( diap->isExist() ) {
+		if ((*val < diap->minVal) || (*val > diap->maxVal)) {
+			parser->error( rdo::format("Вещественное значение выходит за допустимый диапазон [%f..%f]: %f", diap->minVal, diap->maxVal, *val) );
+//			parser->error(("real value " + toString(*val) + " out of range[" + toString(diap->minVal) + ", " + toString(diap->maxVal) + "]").c_str());
+		}
+	}
+	return rdoRuntime::RDOValue( *val );
+}
+
+rdoRuntime::RDOValue RDORTPRealParamType::getRSSIntValue( const int val ) const
+{
+	if ( diap->isExist() ) {
+		if ((val < diap->minVal) || (val > diap->maxVal)) {
+			parser->error( rdo::format("Вещественное значение выходит за допустимый диапазон [%f..%f]: %d", diap->minVal, diap->maxVal, val) );
+		}
+	}
+	return rdoRuntime::RDOValue( val );
+}
+
+int RDORTPRealParamType::getDiapTableFunc() const
 {
 	parser->error( "Параметр табличной функции может быть только целого типа" );
 //	parser->error( "unexpected real table function parameter" );
 	return 0;		// unreachable code...
 }
 
-int RDORTPEnumResParam::getDiapTableFunc() const 
+// ----------------------------------------------------------------------------
+// ---------- RDORTPEnum
+// ----------------------------------------------------------------------------
+void RDORTPEnum::add( const std::string& next, const YYLTYPE& _pos )
 {
-	return enu->enumVals.size();
+	if ( std::find( enumVals.begin(), enumVals.end(), next ) != enumVals.end() ) {
+		parser->lexer_loc_set( _pos.last_line, _pos.last_column );
+		parser->error( rdoSimulator::RDOSyntaxError::RTP_SECOND_ENUM_VALUE, next.c_str() );
+	}
+	enumVals.push_back( next );
 }
 
-RDORTPParamDesc::RDORTPParamDesc( const std::string* const _name, const RDORTPResParam* const _parType ):
-	name( _name ),
-	parType( _parType )
+int RDORTPEnum::findValue( const std::string& val, bool auto_error ) const
 {
-	parser->insertRTPParam( this );
+	std::vector< std::string >::const_iterator it = std::find( enumVals.begin(), enumVals.end(), val );
+	if ( it == enumVals.end() ) {
+		if ( auto_error ) {
+			parser->error( rdoSimulator::RDOSyntaxError::RTP_WRONG_ENUM_PARAM_VALUE, val.c_str() );
+		} else {
+			return -1;
+		}
+	}
+
+//	return (it - enumVals.begin()) + 1;
+	return it - enumVals.begin();
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDORTPEnumParamType
+// ----------------------------------------------------------------------------
+void RDORTPEnumParamType::init_src_info()
+{
+	std::string src_text = enu->src_text();
+	if ( dv->isExist() ) {
+		src_text += " = " + dv->src_text();
+	}
+	setSrcText( src_text );
+	setSrcPos( enu->getPosAsYY(), dv->getPosAsYY() );
+}
+
+const RDORTPParamType* RDORTPEnumParamType::constructSuchAs( const RDOParserSrcInfo& _src_info ) const 
+{ 
+	RDORTPEnumDefVal*    _dv   = new RDORTPEnumDefVal( *static_cast<RDORTPEnumDefVal*>(dv) );
+	RDORTPEnum*          _enu  = enu;
+	RDORTPEnumParamType* _type = new RDORTPEnumParamType( parent, _enu, _dv, _src_info );
+	_type->setSrcText( _src_info.src_text() );
+	if ( _dv->isExist() ) {
+		_type->setSrcText( _type->src_text() + " = " + _dv->src_text() );
+	}
+	return _type;
+}
+
+const RDORTPParamType* RDORTPEnumParamType::constructSuchAs( int defVal, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& defVal_info ) const
+{
+	parser->lexer_loc_set( defVal_info.src_pos().last_line, defVal_info.src_pos().last_pos );
+	parser->error( rdo::format("Неверное значение по-умолчанию для параметра перечислимого типа: %d", defVal) );
+	return NULL;
+}
+
+const RDORTPParamType* RDORTPEnumParamType::constructSuchAs( double defVal, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& defVal_info ) const
+{
+	parser->lexer_loc_set( defVal_info.src_pos().last_line, defVal_info.src_pos().last_pos );
+	parser->error( rdo::format("Неверное значение по-умолчанию для параметра перечислимого типа: %f", defVal) );
+	return NULL;
+}
+
+const RDORTPParamType* RDORTPEnumParamType::constructSuchAs( const std::string& defVal, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& defVal_info ) const 
+{
+	parser->lexer_loc_backup();
+	parser->lexer_loc_set( defVal_info.src_pos().last_line, defVal_info.src_pos().last_pos );
+	enu->findValue( defVal );	 // if no value - Syntax exception will be thrown
+	parser->lexer_loc_restore();
+	RDORTPEnumDefVal*    _dv   = new RDORTPEnumDefVal( defVal );
+	RDORTPEnum*          _enu  = enu;
+	RDORTPEnumParamType* _type = new RDORTPEnumParamType( parent, _enu, _dv, _src_info );
+	_type->setSrcText( _src_info.src_text() );
+	if ( _dv->isExist() ) {
+		_type->setSrcText( _type->src_text() + " = " + _dv->src_text() );
+	}
+	return _type;
+}
+
+int RDORTPEnumParamType::writeModelStructure() const
+{
+	parser->modelStructure << "E " << enu->enumVals.size() << std::endl;
+	for(int i = 0; i < enu->enumVals.size(); i++)
+		parser->modelStructure << "    " << i << " " << enu->enumVals.at(i) << std::endl;
+	return 0;
+}
+
+rdoRuntime::RDOValue RDORTPEnumParamType::getRSSIntValue( const int val ) const 
+{
+	parser->error( rdo::format("Ожидается перечислимый тип: %d", val) );
+	return NULL;	// unreachable code...
+}
+
+rdoRuntime::RDOValue RDORTPEnumParamType::getRSSRealValue( const double* const val ) const
+{
+	parser->error( rdo::format("Ожидается перечислимый тип: %f", *val) );
+	return NULL;	// unreachable code...
+}
+
+rdoRuntime::RDOValue RDORTPEnumParamType::getRSSDefaultValue() const 
+{
+	if ( !dv->isExist() ) {
+		parser->error( "Нет значения по-умолчанию" );
+	}
+	return rdoRuntime::RDOValue( enu->findValue( dv->getEnumValue() ) );
+}
+
+rdoRuntime::RDOValue RDORTPEnumParamType::getRSSEnumValue( const std::string& val ) const
+{
+	return enu->findValue( val );
+}
+
+int RDORTPEnumParamType::getDiapTableFunc() const 
+{
+	return enu->enumVals.size();
 }
 
 } // namespace rdoParse

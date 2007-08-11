@@ -24,25 +24,25 @@ int funparse( void* lexer );
 int funlex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer );
 void funerror( char* mes );
 
-class RDORTPResParam;
+class RDORTPParamType;
 class RDORTPEnum;
 class RDORTPResType;
-class RDORTPParamDesc;
+class RDORTPParam;
 
 class RDOFUNFunctionParam: public RDODeletable, public RDOParserSrcInfo
 {
 private:
-	std::string     name;
-	RDORTPResParam* type;
+	std::string      name;
+	RDORTPParamType* type;
 
 public:
-	RDOFUNFunctionParam( std::string* _name, RDORTPResParam* _type ):
-		name( *_name ),
+	RDOFUNFunctionParam( const std::string& _name, RDORTPParamType* _type ):
+		name( _name ),
 		type( _type )
 	{
 	}
-	const std::string* const getName() const    { return &name; };
-	const RDORTPResParam* const getType() const { return type;  };
+	const std::string& getName() const           { return name; };
+	const RDORTPParamType* const getType() const { return type; };
 };
 
 class RDOFUNFunctionListElement: public RDOParserObject, public RDOParserSrcInfo
@@ -50,7 +50,7 @@ class RDOFUNFunctionListElement: public RDOParserObject, public RDOParserSrcInfo
 public:
 	RDOFUNFunctionListElement( const RDOParserObject* _parent ): RDOParserObject( _parent ) {}
 	virtual ~RDOFUNFunctionListElement() {}
-	virtual rdoRuntime::RDOCalcConst*   createResultCalc( const RDORTPResParam* const retType ) const = 0;
+	virtual rdoRuntime::RDOCalcConst*   createResultCalc( const RDORTPParamType* const retType ) const = 0;
 	virtual rdoRuntime::RDOCalcIsEqual* createIsEqualCalc( const RDOFUNFunctionParam* const param, const rdoRuntime::RDOCalcFuncParam* const funcParam ) const;
 	virtual bool isEquivalence() const { return false; }
 };
@@ -58,13 +58,13 @@ public:
 class RDOFUNFunctionListElementIdentif: public RDOFUNFunctionListElement
 {
 public:
-	std::string* value;
-	RDOFUNFunctionListElementIdentif( const RDOParserObject* _parent, std::string* _value ):
+	std::string value;
+	RDOFUNFunctionListElementIdentif( const RDOParserObject* _parent, const std::string& _value ):
 		RDOFUNFunctionListElement( _parent ),
 		value( _value )
 	{
 	}
-	rdoRuntime::RDOCalcConst *createResultCalc(const RDORTPResParam *const retType) const;
+	rdoRuntime::RDOCalcConst *createResultCalc(const RDORTPParamType *const retType) const;
 };
 
 class RDOFUNFunctionListElementReal: public RDOFUNFunctionListElement
@@ -76,7 +76,7 @@ public:
 		value( _value )
 	{
 	}
-	rdoRuntime::RDOCalcConst *createResultCalc(const RDORTPResParam *const retType) const;
+	rdoRuntime::RDOCalcConst *createResultCalc(const RDORTPParamType *const retType) const;
 };
 
 class RDOFUNFunctionListElementInt: public RDOFUNFunctionListElement
@@ -88,7 +88,7 @@ public:
 		value( _value )
 	{
 	}
-	rdoRuntime::RDOCalcConst *createResultCalc(const RDORTPResParam *const retType) const;
+	rdoRuntime::RDOCalcConst *createResultCalc(const RDORTPParamType *const retType) const;
 };
 
 class RDOFUNFunctionListElementEq: public RDOFUNFunctionListElement
@@ -96,7 +96,7 @@ class RDOFUNFunctionListElementEq: public RDOFUNFunctionListElement
 public:
 	RDOFUNFunctionListElementEq( const RDOParserObject* _parent ): RDOFUNFunctionListElement( _parent ) {}
 	bool isEquivalence() const { return true; }
-	rdoRuntime::RDOCalcConst *createResultCalc(const RDORTPResParam *const retType) const;
+	rdoRuntime::RDOCalcConst *createResultCalc(const RDORTPParamType *const retType) const;
 };
 
 // ----------------------------------------------------------------------------
@@ -127,30 +127,28 @@ public:
 class RDOFUNArithm: public RDOParserObject, public RDOParserSrcInfo
 {
 public:
-	RDORTPResParam::ParamType type; // 0 - int, 1 - real, 2 - enum, 3 - string
-	RDORTPEnum*  enu; // for type == 2
-	std::string* str; // for type == 3
+	RDORTPParamType::ParamType type; // 0 - int, 1 - real, 2 - enum, 3 - string
+	RDORTPEnum* enu; // for type == 2
+	std::string str; // for type == 3
 
 private:
 	rdoRuntime::RDOCalc* calc;
 
 	void init( const RDOParserSrcInfo& res_name_error_pos, const RDOParserSrcInfo& par_name_error_pos );
-	void init( std::string* value, const YYLTYPE& _pos );
+	void init( const std::string& value, const YYLTYPE& _pos );
 
 public:
-	RDOFUNArithm( RDOParser* _parser, RDORTPResParam::ParamType _type, rdoRuntime::RDOCalc* _calc, const RDOParserSrcInfo& src_info );
-	RDOFUNArithm( RDOParser* _parser, std::string* resName, std::string* parName, const RDOParserSrcInfo& res_name_src_info, const RDOParserSrcInfo& par_name_src_info );
+	RDOFUNArithm( RDOParser* _parser, RDORTPParamType::ParamType _type, rdoRuntime::RDOCalc* _calc, const RDOParserSrcInfo& src_info );
 	RDOFUNArithm( RDOParser* _parser, const RDOParserSrcInfo& res_name_src_info, const RDOParserSrcInfo& par_name_src_info );
 	RDOFUNArithm( RDOParser* _parser, int value, const RDOParserSrcInfo& src_info );
 	RDOFUNArithm( RDOParser* _parser, double* value, const RDOParserSrcInfo& src_info );
-	RDOFUNArithm( RDOParser* _parser, std::string* value, const YYLTYPE& _pos );
+	RDOFUNArithm( RDOParser* _parser, const std::string& value, const YYLTYPE& _pos );
 
-	RDOFUNArithm( const RDOParserObject* _parent, RDORTPResParam::ParamType _type, rdoRuntime::RDOCalc* _calc, const RDOParserSrcInfo& src_info );
-	RDOFUNArithm( const RDOParserObject* _parent, std::string* resName, std::string* parName, const RDOParserSrcInfo& res_name_src_info, const RDOParserSrcInfo& par_name_src_info );
+	RDOFUNArithm( const RDOParserObject* _parent, RDORTPParamType::ParamType _type, rdoRuntime::RDOCalc* _calc, const RDOParserSrcInfo& src_info );
 	RDOFUNArithm( const RDOParserObject* _parent, const RDOParserSrcInfo& res_name_src_info, const RDOParserSrcInfo& par_name_src_info );
 	RDOFUNArithm( const RDOParserObject* _parent, int value, const RDOParserSrcInfo& src_info );
 	RDOFUNArithm( const RDOParserObject* _parent, double* value, const RDOParserSrcInfo& src_info );
-	RDOFUNArithm( const RDOParserObject* _parent, std::string* value, const YYLTYPE& _pos );
+	RDOFUNArithm( const RDOParserObject* _parent, const std::string& value, const YYLTYPE& _pos );
 
 	RDOFUNArithm* operator +( RDOFUNArithm& second );
 	RDOFUNArithm* operator -( RDOFUNArithm& second );
@@ -164,8 +162,8 @@ public:
 	RDOFUNLogic* operator <=( RDOFUNArithm& second );
 	RDOFUNLogic* operator >=( RDOFUNArithm& second );
 
-	rdoRuntime::RDOCalc* createCalc( const RDORTPResParam* const forType = NULL );
-	RDORTPResParam::ParamType getType() const { return type; }
+	rdoRuntime::RDOCalc* createCalc( const RDORTPParamType* const forType = NULL );
+	RDORTPParamType::ParamType getType() const { return type; }
 
 	virtual void setSrcInfo( const RDOParserSrcInfo& src_info );
 	virtual void setSrcInfo( const RDOParserSrcInfo& begin, const std::string& delim, const RDOParserSrcInfo& end );
@@ -179,10 +177,10 @@ class RDOFUNCalculateIf: public RDOParserObject
 {
 public:
 	RDOFUNLogic*  condition;
-	std::string*  funName;
+	std::string   funName;
 	RDOFUNArithm* action;
 
-	RDOFUNCalculateIf( const RDOParserObject* _parent, RDOFUNLogic* _condition, std::string* _funName, RDOFUNArithm* _action );
+	RDOFUNCalculateIf( const RDOParserObject* _parent, RDOFUNLogic* _condition, const std::string& _funName, RDOFUNArithm* _action );
 };
 
 class RDOParser;
@@ -190,27 +188,27 @@ class RDOFUNFunction: public RDOParserObject
 {
 friend RDOParser;
 private:
-	const std::string *const name;
-	const RDORTPResParam *const retType;
-	std::vector<const RDOFUNFunctionParam *>	params;
-	std::vector<const RDOFUNFunctionListElement *>	listElems;	// for list and table
+	std::string name;
+	const RDORTPParamType *const retType;
+	std::vector<const RDOFUNFunctionParam *>	   params;
+	std::vector<const RDOFUNFunctionListElement *> listElems;	// for list and table
 	std::vector<const RDOFUNCalculateIf *>	calculateIf;	// for algorithmic
 	rdoRuntime::RDOFunCalc *functionCalc;
 
 public:
-	RDOFUNFunction( RDOParser* _parser, const std::string* const _name, const RDORTPResParam* const _retType );
+	RDOFUNFunction( RDOParser* _parser, const std::string& _name, const RDORTPParamType* const _retType );
 	void add(const RDOFUNFunctionParam *const _param);
 	void add(const RDOFUNFunctionListElement *const _listElement);
 	void add(const RDOFUNCalculateIf *const _calculateIf);
-	const RDOFUNFunctionParam *const findFUNFunctionParam(const std::string *const paramName) const;
-	int findFUNFunctionParamNum(const std::string *const paramName) const;
+	const RDOFUNFunctionParam* const findFUNFunctionParam( const std::string& paramName ) const;
+	int findFUNFunctionParamNum( const std::string& paramName ) const;
 	void createListCalc();
 	void createTableCalc();
 	void createAlgorithmicCalc();
-	const std::string *const getName() const { return name; }
+	const std::string& getName() const { return name; }
 	const std::vector<const RDOFUNFunctionParam *> getParams() const { return params; }
 	const rdoRuntime::RDOFunCalc *getFunctionCalc() const { return functionCalc; }
-	const RDORTPResParam *const getType() const { return retType; }
+	const RDORTPParamType *const getType() const { return retType; }
 };
 
 // ----------------------------------------------------------------------------
@@ -226,8 +224,8 @@ public:
 	void addParameter( RDOFUNArithm* param ) {
 		params.push_back( param );
 	}
-	RDOFUNArithm* createCall( const std::string* const funName ) const;
-	RDOFUNArithm* createSeqCall( const std::string* const seqName ) const;
+	RDOFUNArithm* createCall( const std::string& funName ) const;
+	RDOFUNArithm* createSeqCall( const std::string& seqName ) const;
 };
 
 // ----------------------------------------------------------------------------
@@ -236,13 +234,13 @@ public:
 class RDOFUNGroup: public RDOParserObject, public RDOParserSrcInfo
 {
 protected:
-	void init( const std::string* const _resType );
+	void init( const std::string& _resType );
 
 public:
 	const RDORTPResType* resType;
 
-	RDOFUNGroup( RDOParser* _parser, const std::string* const _resTypeName );
-	RDOFUNGroup( const RDOParserObject* _parent, const std::string* const _resTypeName );
+	RDOFUNGroup( RDOParser* _parser, const std::string& _resTypeName );
+	RDOFUNGroup( const RDOParserObject* _parent, const std::string& _resTypeName );
 };
 
 // ----------------------------------------------------------------------------
@@ -253,12 +251,12 @@ class RDOFUNGroupLogic: public RDOFUNGroup
 public:
 	const int funType;
 
-	RDOFUNGroupLogic( RDOParser* _parser, int _funType, const std::string* const _resTypeName ):
+	RDOFUNGroupLogic( RDOParser* _parser, int _funType, const std::string& _resTypeName ):
 		RDOFUNGroup( _parser, _resTypeName ),
 		funType( _funType )
 	{
 	}
-	RDOFUNGroupLogic( const RDOParserObject* _parent, int _funType, const std::string* const _resTypeName ):
+	RDOFUNGroupLogic( const RDOParserObject* _parent, int _funType, const std::string& _resTypeName ):
 		RDOFUNGroup( _parent, _resTypeName ),
 		funType( _funType )
 	{
@@ -275,14 +273,14 @@ private:
 	rdoRuntime::RDOFunCalcSelect* select;
 
 public:
-	RDOFUNSelect( RDOParser* _parser, const std::string* const _resTypeName ):
+	RDOFUNSelect( RDOParser* _parser, const std::string& _resTypeName ):
 		RDOFUNGroup( _parser, _resTypeName ),
 		select( NULL )
 	{
 	}
 /*
 todo: а зачем ?
-	RDOFUNSelect( const RDOParserObject* _parent, const std::string* const _resTypeName ):
+	RDOFUNSelect( const RDOParserObject* _parent, const std::string& _resTypeName ):
 		RDOFUNGroup( _parent, _resTypeName ),
 		select( NULL )
 	{
@@ -309,9 +307,9 @@ public:
 	class RDOFUNSequenceHeader: public RDODeletable, public RDOParserSrcInfo
 	{
 	public:
-		std::string*    name;
-		RDORTPResParam* type;
-		RDOFUNSequenceHeader( std::string* _name, RDORTPResParam* _type, const RDOParserSrcInfo& _src_info ):
+		std::string      name;
+		RDORTPParamType* type;
+		RDOFUNSequenceHeader( const std::string& _name, RDORTPParamType* _type, const RDOParserSrcInfo& _src_info ):
 			name(_name),
 			type(_type)
 		{
@@ -330,7 +328,7 @@ protected:
 	void initCalcSrcInfo();
 
 public:
-	const std::string* getName() const { return header->name; }
+	const std::string& getName() const  { return header->name; }
 	virtual void createCalcs() = 0;
 	virtual RDOFUNArithm* createCallCalc( const RDOFUNParams* const params, const RDOParserSrcInfo& src_info ) const = 0;
 };
@@ -424,12 +422,12 @@ public:
 	std::vector< rdoRuntime::RDOValue > val;
 	std::vector< double >               freq;
 
-	RDOFUNSequenceByHistEnum( RDOParser* _parser, RDOFUNSequenceByHistHeader* _header, std::string* _val, double _freq ):
+	RDOFUNSequenceByHistEnum( RDOParser* _parser, RDOFUNSequenceByHistHeader* _header, const std::string& _val, double _freq ):
 		RDOFUNSequenceByHist( _parser, _header )
 	{
 		addEnum( _val, _freq );
 	}
-	void addEnum( std::string* _val, double _freq );
+	void addEnum( const std::string& _val, double _freq );
 	virtual void createCalcs();
 };
 
@@ -500,12 +498,12 @@ class RDOFUNSequenceEnumerativeEnum: public RDOFUNSequenceEnumerative
 public:
 	std::vector< rdoRuntime::RDOValue > val;
 
-	RDOFUNSequenceEnumerativeEnum( RDOParser* _parser, RDOFUNSequenceEnumerativeHeader* _header, std::string* _val ):
+	RDOFUNSequenceEnumerativeEnum( RDOParser* _parser, RDOFUNSequenceEnumerativeHeader* _header, const std::string& _val ):
 		RDOFUNSequenceEnumerative( _parser, _header )
 	{
 		addEnum( _val );
 	}
-	void addEnum( std::string* _val );
+	void addEnum( const std::string& _val );
 	virtual void createCalcs();
 };
 
@@ -514,11 +512,15 @@ public:
 // ----------------------------------------------------------------------------
 class RDOFUNConstant: public RDOParserObject
 {
+private:
+	RDORTPParam* param;
+
 public:
-	RDORTPParamDesc* descr;
 	int number;
-	RDOFUNConstant( RDOParser* _parser, RDORTPParamDesc* _descr );
-	const std::string* const getName() const { return descr->getName(); }
+	RDOFUNConstant( RDOParser* _parser, RDORTPParam* _param );
+	const std::string&           getName() const  { return param->getName(); }
+	const RDORTPParamType* const getType() const  { return param->getType(); }
+	const RDORTPParam* const     getDescr() const { return param;            }
 };
 
 } // namespace rdoParse 

@@ -178,7 +178,7 @@ public:
 		std::map< std::string, int > keys;
 	public:
 		RDOHotKeyToolkit();
-		int codeFromString( std::string* key );
+		int codeFromString( const std::string& key );
 	};
 	RDOHotKeyToolkit rdoHotKeyToolkit;
 

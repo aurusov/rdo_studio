@@ -1327,8 +1327,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,8,0,500
- PRODUCTVERSION 0,8,0,500
+ FILEVERSION 0,8,0,505
+ PRODUCTVERSION 0,8,0,505
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -1346,14 +1346,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "RAO studio\0"
-            VALUE "FileVersion", "0, 8, 0, 500\0"
+            VALUE "FileVersion", "0, 8, 0, 505\0"
             VALUE "InternalName", "RAO-Studio\0"
             VALUE "LegalCopyright", "Copyright (C) 2003-2006\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "RAO-Studio.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "RAO-Studio\0"
-            VALUE "ProductVersion", "0, 8, 0, 500\0"
+            VALUE "ProductVersion", "0, 8, 0, 505\0"
             VALUE "SpecialBuild", "\0"
         END
     END
@@ -3809,12 +3809,6 @@ BEGIN
                             "Целое число инициализируется вещественным: %f"
     IDS_ER_RTP_INVALID_DEFVALUE_REAL "Неверное значение по-умолчанию"
     IDS_ER_RTP_INVALID_DEFVALUE_ENUM "Неверное значение по-умолчанию"
-    IDS_ER_RTP_INVALID_DEFVAULT_INT_SUCHAS 
-                            "Неверное значение по-умолчанию: %d"
-    IDS_ER_RTP_INVALID_DEFVAULT_REAL_SUCHAS 
-                            "Неверное значение по-умолчанию: %f"
-    IDS_ER_RTP_INVALID_DEFVAULT_ENUM_SUCHAS 
-                            "Неверное значение по-умолчанию: %s"
     IDS_ER_RTP_INVALID_RANGE "Диапазон задан неверно"
     IDS_ER_RTP_INVALID_INT_RANGE_REAL 
                             "Требуется целочисленный диапазон, указан вещественный"
@@ -5314,9 +5308,6 @@ BEGIN
     IDS_ER_RTP_INVALID_DEFVALUE_INT_AS_REAL "Invalid default value"
     IDS_ER_RTP_INVALID_DEFVALUE_REAL "Invalid default value"
     IDS_ER_RTP_INVALID_DEFVALUE_ENUM "Invalid default value"
-    IDS_ER_RTP_INVALID_DEFVAULT_INT_SUCHAS "Invalid default value: %d"
-    IDS_ER_RTP_INVALID_DEFVAULT_REAL_SUCHAS "Invalid default value: %f"
-    IDS_ER_RTP_INVALID_DEFVAULT_ENUM_SUCHAS "Invalid default value: %s"
     IDS_ER_RTP_INVALID_RANGE "Invalid range"
     IDS_ER_RTP_INVALID_INT_RANGE_REAL 
                             "Invalid integer range: using real values"

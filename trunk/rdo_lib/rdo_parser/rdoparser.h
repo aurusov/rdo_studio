@@ -16,7 +16,7 @@ class RDORuntime;
 namespace rdoParse
 {
 
-class RDORTPParamDesc;
+class RDORTPParam;
 class RDORTPResType;
 class RDORSSResource;
 class RDOFUNFunction;
@@ -40,6 +40,9 @@ public:
 
 class RDOParser
 {
+private:
+	RDOParserObject* parsing_object;
+
 protected:
 	RDOParserList* parsers;
 	RDOParserBase* parser_base;
@@ -52,7 +55,7 @@ protected:
 	std::vector< RDODeletable* >       allDeletables;
 
 	std::vector< RDORTPResType* >      allRTPResType;
-	std::vector< RDORTPParamDesc* >    allRTPParams;
+	std::vector< RDORTPParam* >        allRTPParams;
 	std::vector< RDORSSResource* >     allRSSResource;
 	std::vector< RDOPATPattern* >      allPATPatterns;
 	std::vector< RDOFUNConstant* >     allFUNConstant;
@@ -98,25 +101,26 @@ public:
 //	void insertDeletables( RDODeletable* value )            { if ( value ) allDeletables.push_back( value );                                         }
 //	void removeDeletables( RDODeletable* value )            { allDeletables.erase( std::find( allDeletables.begin(), allDeletables.end(), value ) ); }
 
-	void insertRTPResType( RDORTPResType* value )           { if ( value ) allRTPResType.push_back( value );    }
-	void insertRTPParam( RDORTPParamDesc* value )           { if ( value ) allRTPParams.push_back( value );     }
-	void insertRSSResource( RDORSSResource* value )         { if ( value ) allRSSResource.push_back( value );   }
-	void insertPATPattern( RDOPATPattern* value )           { if ( value ) allPATPatterns.push_back( value );   }
-	void insertFUNConstant( RDOFUNConstant* value )         { if ( value ) allFUNConstant.push_back( value );   }
-	void insertFUNFunction( RDOFUNFunction* value )         { if ( value ) allFUNFunctions.push_back( value );  }
-	void insertFUNSequences( RDOFUNSequence* value )        { if ( value ) allFUNSequences.push_back( value );  }
-	void insertFUNGroup( RDOFUNGroup* value )               { if ( value ) allFUNGroupStack.push_back( value ); }
-	void insertDPTSearch( RDODPTSearch* value )             { if ( value ) allDPTSearch.push_back( value );       lastDPTSearch = value; }
-	void insertDPTSome( RDODPTSome* value )                 { if ( value ) allDPTSome.push_back( value );         lastDPTSearch = NULL;  }
-	void insertDPTFreeActivity( RDODPTFreeActivity* value ) { if ( value ) allDPTFreeActivity.push_back( value ); lastDPTSearch = NULL;  }
-	void insertPMDPokaz( RDOPMDPokaz* value )               { if ( value ) allPMDPokaz.push_back( value );      }
-	void insertDPTProcess( RDOPROCProcess* value )          { if ( value ) allDPTProcess.push_back( value );    }
+	void insertRTPResType( RDORTPResType* value );
+	void insertRTPParam( RDORTPParam* value );
+	void insertRSSResource( RDORSSResource* value );
+	void insertPATPattern( RDOPATPattern* value );
+	void insertFUNConstant( RDOFUNConstant* value );
+	void insertFUNFunction( RDOFUNFunction* value );
+	void insertFUNSequences( RDOFUNSequence* value );
+	void insertFUNGroup( RDOFUNGroup* value );
+	void insertDPTSearch( RDODPTSearch* value );
+	void insertDPTSome( RDODPTSome* value );
+	void insertDPTFreeActivity( RDODPTFreeActivity* value );
+	void insertPMDPokaz( RDOPMDPokaz* value );
+	void insertDPTProcess( RDOPROCProcess* value );
 	RDORTPResType*  getLastRTPResType()                     { return !allRTPResType.empty()   ? allRTPResType.back()   : NULL; }
 	RDORSSResource* getLastRSSResource()                    { return !allRSSResource.empty()  ? allRSSResource.back()  : NULL; }
 	RDOPATPattern*  getLastPATPattern()                     { return !allPATPatterns.empty()  ? allPATPatterns.back()  : NULL; }
 	RDOFUNFunction* getLastFUNFunction()                    { return !allFUNFunctions.empty() ? allFUNFunctions.back() : NULL; }
 	RDOPROCProcess* getLastDPTProcess()                     { return !allDPTProcess.empty()   ? allDPTProcess.back()   : NULL; }
 	RDODPTSearch*   getLastDPTSearch()                      { return lastDPTSearch;                                            }
+	RDOParserObject* getLastParsingObject()                 { return parsing_object; }
 
 	bool isHaveKWResources() const           { return have_kw_Resources;     }
 	void setHaveKWResources( bool value )    { have_kw_Resources = value;    }
@@ -139,11 +143,10 @@ public:
 
 	void setSMR( RDOSMR* _smr)  { smr = _smr; }
 
-	const RDORTPResType*  findRTPResType( const std::string* const type ) const;
 	const RDORTPResType*  findRTPResType( const std::string& name ) const;
-	const RDORSSResource* findRSSResource( const std::string* const name ) const;
-	const RDOFUNFunction* findFunction( const std::string* const name ) const;
-	const RDOFUNSequence* findSequence( const std::string* const name ) const;
+	const RDORSSResource* findRSSResource( const std::string& name ) const;
+	const RDOFUNFunction* findFunction( const std::string& name ) const;
+	const RDOFUNSequence* findSequence( const std::string& name ) const;
 	const RDOPATPattern*  findPattern( const std::string& name ) const;
 
 	void parse( int files = rdoModelObjects::obALL );
@@ -151,10 +154,11 @@ public:
 	void parse( rdoModelObjects::RDOParseType file, std::istream& stream );
 	void error( rdoSimulator::RDOSyntaxError::ErrorCode error_code, ... );
 	void error( const std::string& message, rdoSimulator::RDOSyntaxError::ErrorCode error_code = rdoSimulator::RDOSyntaxError::UNKNOWN );
+	void error_modify( const std::string& message );
 	void warning( rdoSimulator::RDOSyntaxError::ErrorCode error_code, ... );
 	void warning( const std::string& message, rdoSimulator::RDOSyntaxError::ErrorCode error_code = rdoSimulator::RDOSyntaxError::UNKNOWN );
-	void addConstant( RDORTPParamDesc* const _cons );
-	const RDOFUNConstant* findFUNConst( const std::string* const _cons) const;
+	void addConstant( RDORTPParam* const _cons );
+	const RDOFUNConstant* findFUNConst( const std::string& _cons ) const;
 	bool hasConstant() const { return !allFUNConstant.empty(); }
 
 	void LoadStdFunctions();

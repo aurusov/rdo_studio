@@ -46,10 +46,10 @@ void RDOParserList::reset()
 	clear();
 	insertParser( rdoModelObjects::obPRE, new RDOParserSMR1( parser ) );
 	insertParser( rdoModelObjects::obPRE, new RDOParserSTDFUN( parser ) );
-	insertParser( rdoModelObjects::obRTP, new RDOParserRTP( parser ) );
+	insertParser( rdoModelObjects::obRTP, new RDOParserRDO( parser, rdoModelObjects::RTP, rtpparse, rtperror, rtplex ) );
 	insertParser( rdoModelObjects::obRSS, new RDOParserRSS( parser ) );
 	insertParser( rdoModelObjects::obRSS, new RDOParserRDO( parser, rdoModelObjects::DPT, dpt_rss_parse, dpt_rss_error, dpt_rss_lex ) );
-	insertParser( rdoModelObjects::obFUN, new RDOParserFUN( parser ) );
+	insertParser( rdoModelObjects::obFUN, new RDOParserRDO( parser, rdoModelObjects::FUN, funparse, funerror, funlex ) );
 	insertParser( rdoModelObjects::obPAT, new RDOParserRDO( parser, rdoModelObjects::PAT, patparse, paterror, patlex ) );
 	insertParser( rdoModelObjects::obOPR, new RDOParserRDO( parser, rdoModelObjects::OPR, oprparse, oprerror, oprlex ) );
 	insertParser( rdoModelObjects::obOPR, new RDOParserRDO( parser, rdoModelObjects::DPT, dpt_opr_parse, dpt_opr_error, dpt_opr_lex ) );

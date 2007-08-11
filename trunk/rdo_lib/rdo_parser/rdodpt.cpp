@@ -154,7 +154,7 @@ void RDODPTSearchActivity::addParam(double *_param)
 	params.push_back(val);
 }
 
-void RDODPTSearchActivity::addParam(std::string *_param) 
+void RDODPTSearchActivity::addParam( const std::string& _param )
 {
 	if(currParamNum >= rule->params.size())
 		parser->error("Too many parameters for rule: " + rule->getName());
@@ -249,7 +249,7 @@ void RDODPTSomeActivity::addParam(double *_param)
 	params.push_back(val);
 }
 
-void RDODPTSomeActivity::addParam(std::string *_param) 
+void RDODPTSomeActivity::addParam( const std::string& _param )
 {
 	if(currParamNum >= pattern->params.size())
 		parser->error("Too many parameters for pattern: " + pattern->getName());
@@ -320,7 +320,7 @@ void RDODPTFreeActivity::addParam(double *_param)
 	params.push_back(val);
 }
 
-void RDODPTFreeActivity::addParam(std::string *_param) 
+void RDODPTFreeActivity::addParam( const std::string& _param )
 {
 	if(currParamNum >= pattern->params.size())
 		parser->error("Too many parameters for pattern: " + pattern->getName());
@@ -349,7 +349,7 @@ void RDODPTFreeActivity::end()
 
 	size = hotKeys.size();
 	for(i = 0; i < size; i++)
-		activity->addHotKey(hotKeys.at(i));
+		activity->addHotKey( hotKeys.at(i) );
 }
 
 // ----------------------------------------------------------------------------
@@ -388,12 +388,12 @@ void RDOPROCProcess::insertChild( RDOPROCProcess* value )
 bool RDOPROCTransact::created = false;
 
 RDOPROCTransact::RDOPROCTransact( RDOParser* _parser ):
-	RDORTPResType( _parser, _parser->registerName( "Транзакты" ), false )
+	RDORTPResType( _parser, "Транзакты", false )
 {
 	// Создадим параметр вещественного типа 'Время_создания'
-	addParam( new RDORTPParamDesc( parser->registerName( "Время_создания" ), new RDORTPRealResParam( this ) ) );
+	addParam( new RDORTPParam( this, "Время_создания", new RDORTPRealParamType( this ) ) );
 	// Создадим параметр целого типа 'Просто_так'
-	addParam( new RDORTPParamDesc( parser->registerName( "Просто_так" ), new RDORTPIntResParam( this ) ) );
+	addParam( new RDORTPParam( this, "Просто_так", new RDORTPIntParamType( this ) ) );
 	// Больше этот ресурс создавать не надо
 	RDOPROCTransact::created = true;
 }
@@ -439,7 +439,7 @@ RDOPROCGenerate::RDOPROCGenerate( RDOPROCProcess* _process, const std::string& _
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCSeize
 // ----------------------------------------------------------------------------
-RDOPROCSeize::RDOPROCSeize( RDOPROCProcess* _process, const std::string& _name, const std::string* res_name ):
+RDOPROCSeize::RDOPROCSeize( RDOPROCProcess* _process, const std::string& _name, const std::string& res_name ):
 	RDOPROCOperator( _process, _name )
 {
 	const RDORSSResource* rss = parser->findRSSResource( res_name );
@@ -453,7 +453,7 @@ RDOPROCSeize::RDOPROCSeize( RDOPROCProcess* _process, const std::string& _name, 
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCRelease
 // ----------------------------------------------------------------------------
-RDOPROCRelease::RDOPROCRelease( RDOPROCProcess* _process, const std::string& _name, const std::string* res_name ):
+RDOPROCRelease::RDOPROCRelease( RDOPROCProcess* _process, const std::string& _name, const std::string& res_name ):
 	RDOPROCOperator( _process, _name )
 {
 	const RDORSSResource* rss = parser->findRSSResource( res_name );

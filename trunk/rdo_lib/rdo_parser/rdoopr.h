@@ -20,20 +20,20 @@ class RDOPATPattern;
 class RDOOPROperation: public RDOParserObject
 {
 private:
-	const std::string* const name;
+	std::string          name;
 	const RDOPATPattern* pattern;
 	int currParam;
 	rdoRuntime::RDOActivityRuntime* activity;
 
 public:
-	RDOOPROperation( RDOParser* _parser, std::string* _oprName, std::string* patName );
+	RDOOPROperation( RDOParser* _parser, const std::string& _oprName, const std::string& patName );
 	void endOfDefinition();
-	void addParam(std::string *stringParam);
-	void addParam(int intParam);
-	void addParam(double *realParam);
+	void addParam( const std::string& stringParam );
+	void addParam( int intParam );
+	void addParam( double* realParam );
 	void addParam();
-	const std::string *const getName() const { return name; }
-	void addHotKey(std::string *hotKey);
+	const std::string& getName() const { return name; }
+	void addHotKey( const std::string& hotKey );
 };
 
 } // namespace rdoParse 

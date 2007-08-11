@@ -149,9 +149,6 @@ std::string RDOSyntaxError::getMessage( ErrorCode _error_code, va_list& params )
 		case rdoSimulator::RDOSyntaxError::RTP_INVALID_DEFVAULT_INT_AS_REAL: res_id = IDS_ER_RTP_INVALID_DEFVALUE_INT_AS_REAL; break;
 		case rdoSimulator::RDOSyntaxError::RTP_INVALID_DEFVAULT_REAL       : res_id = IDS_ER_RTP_INVALID_DEFVALUE_REAL; break;
 		case rdoSimulator::RDOSyntaxError::RTP_INVALID_DEFVAULT_ENUM       : res_id = IDS_ER_RTP_INVALID_DEFVALUE_ENUM; break;
-		case rdoSimulator::RDOSyntaxError::RTP_INVALID_DEFVAULT_INT_SUCHAS : res_id = IDS_ER_RTP_INVALID_DEFVAULT_INT_SUCHAS; break;
-		case rdoSimulator::RDOSyntaxError::RTP_INVALID_DEFVAULT_REAL_SUCHAS: res_id = IDS_ER_RTP_INVALID_DEFVAULT_REAL_SUCHAS; break;
-		case rdoSimulator::RDOSyntaxError::RTP_INVALID_DEFVAULT_ENUM_SUCHAS: res_id = IDS_ER_RTP_INVALID_DEFVAULT_ENUM_SUCHAS; break;
 		case rdoSimulator::RDOSyntaxError::RTP_INVALID_RANGE               : res_id = IDS_ER_RTP_INVALID_RANGE; break;
 		case rdoSimulator::RDOSyntaxError::RTP_INVALID_INT_RANGE_REAL      : res_id = IDS_ER_RTP_INVALID_INT_RANGE_REAL; break;
 		case rdoSimulator::RDOSyntaxError::RTP_WAITING_FOR_INT_PARAM_END   : res_id = IDS_ER_RTP_WAITING_FOR_INT_PARAM_END; break;

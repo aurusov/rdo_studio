@@ -24,7 +24,7 @@ RDOPMDPokaz::RDOPMDPokaz( RDOSimulatorTrace* _sim, const std::string* const _nam
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDWatchPar
 // ----------------------------------------------------------------------------
-RDOPMDWatchPar::RDOPMDWatchPar( RDOSimulatorTrace* _sim, std::string* _name, bool _trace, std::string* _resName, std::string* _parName, int _resNumber, int _parNumber ):
+RDOPMDWatchPar::RDOPMDWatchPar( RDOSimulatorTrace* _sim, std::string* _name, bool _trace, const std::string& _resName, const std::string& _parName, int _resNumber, int _parNumber ):
 	RDOPMDPokaz( _sim, _name, _trace ),
 	resNumber( _resNumber ),
 	parNumber( _parNumber )
@@ -209,7 +209,7 @@ bool RDOPMDWatchState::calcStat(RDOSimulator *sim)
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDWatchQuant
 // ----------------------------------------------------------------------------
-RDOPMDWatchQuant::RDOPMDWatchQuant( RDOSimulatorTrace* _sim, std::string* _name, bool _trace, std::string* _resTypeName, int _rtp_id ):
+RDOPMDWatchQuant::RDOPMDWatchQuant( RDOSimulatorTrace* _sim, std::string* _name, bool _trace, const std::string& _resTypeName, int _rtp_id ):
 	RDOPMDPokaz( _sim, _name, _trace ),
 	logicCalc( NULL ),
 	rtp_id( _rtp_id )
@@ -305,7 +305,7 @@ bool RDOPMDWatchQuant::calcStat(RDOSimulator *sim)
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDWatchValue
 // ----------------------------------------------------------------------------
-RDOPMDWatchValue::RDOPMDWatchValue( RDOSimulatorTrace* _sim, std::string* _name, bool _trace, std::string* _resTypeName, int _rtp_id ):
+RDOPMDWatchValue::RDOPMDWatchValue( RDOSimulatorTrace* _sim, std::string* _name, bool _trace, const std::string& _resTypeName, int _rtp_id ):
 	RDOPMDPokaz( _sim, _name, _trace ),
 	logicCalc( NULL ),
 	arithmCalc( NULL ),

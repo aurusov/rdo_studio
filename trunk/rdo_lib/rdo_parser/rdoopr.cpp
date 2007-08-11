@@ -27,22 +27,22 @@ void oprerror( char* mes )
 {
 }
 
-RDOOPROperation::RDOOPROperation( RDOParser* _parser, std::string* _oprName, std::string* patName ):
+RDOOPROperation::RDOOPROperation( RDOParser* _parser, const std::string& _oprName, const std::string& patName ):
 	RDOParserObject( _parser ),
 	name( _oprName )
 {
-	pattern = parser->findPattern( *patName );
+	pattern = parser->findPattern( patName );
 	if(!pattern)
-		parser->error("Undefined pattern name: " + *getName());
+		parser->error("Undefined pattern name: " + getName());
 
-	activity = pattern->patRuntime->createActivity(*_oprName);
+	activity = pattern->patRuntime->createActivity(_oprName);
 	currParam = 0;
 }
 
 void RDOOPROperation::addParam(int intParam)
 {
 	if(pattern->params.size() <= currParam)
-		parser->error("Too much parameters for pattern : " + pattern->getName() + " in operation: " + *getName());
+		parser->error("Too much parameters for pattern : " + pattern->getName() + " in operation: " + getName());
 
 	RDOFUNFunctionParam *param = pattern->params.at(currParam);
 	rdoRuntime::RDOValue val = param->getType()->getRSSIntValue(intParam);
@@ -53,7 +53,7 @@ void RDOOPROperation::addParam(int intParam)
 void RDOOPROperation::addParam(double *realParam)
 {
 	if(pattern->params.size() <= currParam)
-		parser->error("Too much parameters for pattern : " + pattern->getName() + " in operation: " + *getName());
+		parser->error("Too much parameters for pattern : " + pattern->getName() + " in operation: " + getName());
 
 	RDOFUNFunctionParam *param = pattern->params.at(currParam);
 	rdoRuntime::RDOValue val = param->getType()->getRSSRealValue(realParam);
@@ -61,10 +61,10 @@ void RDOOPROperation::addParam(double *realParam)
 	currParam++;
 }
 
-void RDOOPROperation::addParam(std::string *stringParam)
+void RDOOPROperation::addParam( const std::string& stringParam )
 {
 	if(pattern->params.size() <= currParam)
-		parser->error("Too much parameters for pattern : " + pattern->getName() + " in operation: " + *getName());
+		parser->error("Too much parameters for pattern : " + pattern->getName() + " in operation: " + getName());
 
 	RDOFUNFunctionParam *param = pattern->params.at(currParam);
 	rdoRuntime::RDOValue val = param->getType()->getRSSEnumValue(stringParam);
@@ -72,7 +72,7 @@ void RDOOPROperation::addParam(std::string *stringParam)
 	currParam++;
 }
 
-void RDOOPROperation::addHotKey( std::string* hotKey )
+void RDOOPROperation::addHotKey( const std::string& hotKey )
 {
 	if ( dynamic_cast<rdoRuntime::RDOActivityKeyboardRuntime*>(activity) ) {
 		activity->addHotKey( hotKey );
@@ -84,7 +84,7 @@ void RDOOPROperation::addHotKey( std::string* hotKey )
 void RDOOPROperation::addParam()
 {
 	if(pattern->params.size() <= currParam)
-		parser->error("Too much parameters for pattern : " + pattern->getName() + " in operation: " + *getName());
+		parser->error("Too much parameters for pattern : " + pattern->getName() + " in operation: " + getName());
 
 	RDOFUNFunctionParam *param = pattern->params.at(currParam);
 	rdoRuntime::RDOValue val = param->getType()->getRSSDefaultValue();
@@ -95,7 +95,7 @@ void RDOOPROperation::addParam()
 void RDOOPROperation::endOfDefinition()
 {
 	if(pattern->params.size() > currParam)
-		parser->error("Too few parameters for pattern : " + pattern->getName() + " in operation: " + *getName());
+		parser->error("Too few parameters for pattern : " + pattern->getName() + " in operation: " + getName());
 }
 
 } // namespace rdoParse 

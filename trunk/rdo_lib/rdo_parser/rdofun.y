@@ -187,28 +187,28 @@ fun_consts:	/* empty */
 
 fun_const_body:	/* empty */
 				| fun_const_body fun_const_param_desc {
-					RDORTPParamDesc* cons = (RDORTPParamDesc*)$2;
-					parser->addConstant(cons);
+					RDORTPParam* cons = (RDORTPParam*)$2;
+					parser->addConstant( cons );
 				}
 				| fun_const_body error {
 					parser->lexer_loc_set( &(@2) );
 					parser->error( "Ожидается описание константы" );
 				};
 
-fun_const_param_desc:	IDENTIF_COLON fun_param_type {
-							std::string* name = (std::string*)$1;
+fun_const_param_desc:	IDENTIF_COLON param_type {
+							std::string name = *reinterpret_cast<std::string*>($1);
 							if ( parser->findFUNConst( name ) ) {
 								parser->lexer_loc_set( &(@1) );
-								parser->error( rdo::format("Константа с таким именем уже существует: %s", name->c_str()) );
+								parser->error( rdo::format("Константа с таким именем уже существует: %s", name.c_str()) );
 //								parser->error("Second appearance of the same constant name: " + *(_cons->getName()));
 							}
-							RDORTPResParam*  parType = (RDORTPResParam*)$2;
-							RDORTPParamDesc* param   = new RDORTPParamDesc( name, parType );
-							if ( !parType->dv->exist ) {
+							RDORTPParamType* parType = (RDORTPParamType*)$2;
+							if ( !parType->dv->isExist() ) {
 								parser->lexer_loc_set( &(@2) );
 								parser->error( "Константа должна иметь значение" );
 //								parser->error( "Constant must have value" );
 							}
+							RDORTPParam* param = new RDORTPParam( parser, name, parType, RDOParserSrcInfo( @1, @2 ) );
 							$$ = (int)param;
 						}
 						| IDENTIF_COLON {
@@ -221,110 +221,87 @@ fun_const_param_desc:	IDENTIF_COLON fun_param_type {
 						};
 
 // ----------------------------------------------------------------------------
-// ---------- Описание параметров
+// ---------- Описание типа параметра
 // ----------------------------------------------------------------------------
-fun_param_type: integer fun_int_diap fun_int_default_val {
-					RDORTPIntDiap *diap = (RDORTPIntDiap *)$2;
-					RDORTPIntDefVal *dv = (RDORTPIntDefVal *)$3;
-					parser->lexer_loc_backup();
-					parser->lexer_loc_set( &(@3) );
-					RDORTPIntResParam *rp = new RDORTPIntResParam( parser, diap, dv );
-					parser->lexer_loc_restore();
+param_type:		integer param_int_diap param_int_default_val {
+					RDORTPIntDiap* diap = reinterpret_cast<RDORTPIntDiap*>($2);
+					RDORTPIntDefVal* dv = reinterpret_cast<RDORTPIntDefVal*>($3);
+					RDORTPIntParamType* rp = new RDORTPIntParamType( parser->getLastParsingObject(), diap, dv, RDOParserSrcInfo( @1, @3 ) );
 					$$ = (int)rp;
 				}
-				| integer fun_int_diap {
-					RDORTPIntDiap *diap = (RDORTPIntDiap *)$2;
-					RDORTPIntDefVal *dv = new RDORTPIntDefVal();
-					RDORTPIntResParam *rp = new RDORTPIntResParam( parser, diap, dv );
+				| real param_real_diap param_real_default_val {
+					RDORTPRealDiap* diap = reinterpret_cast<RDORTPRealDiap*>($2);
+					RDORTPRealDefVal* dv = reinterpret_cast<RDORTPRealDefVal*>($3);
+					RDORTPRealParamType* rp = new RDORTPRealParamType( parser->getLastParsingObject(), diap, dv, RDOParserSrcInfo( @1, @3 ) );
 					$$ = (int)rp;
 				}
-				| real fun_real_diap fun_real_default_val {
-					RDORTPRealDiap *diap = (RDORTPRealDiap *)$2;
-					RDORTPRealDefVal *dv = (RDORTPRealDefVal *)$3;
-					parser->lexer_loc_backup();
-					parser->lexer_loc_set( &(@3) );
-					RDORTPRealResParam *rp = new RDORTPRealResParam( parser, diap, dv );
-					parser->lexer_loc_restore();
-					$$ = (int)rp;
-				}
-				| real fun_real_diap {
-					RDORTPRealDiap *diap = (RDORTPRealDiap *)$2;
-					RDORTPRealDefVal *dv = new RDORTPRealDefVal();
-					RDORTPRealResParam *rp = new RDORTPRealResParam( parser, diap, dv );
-					$$ = (int)rp;
-				}
-				| fun_enum fun_enum_default_val {
-					reinterpret_cast<RDOLexerFUN*>(lexer)->enum_param_cnt = 0;
-					RDORTPEnum *enu = (RDORTPEnum *)$1;
-					RDORTPEnumDefVal *dv = (RDORTPEnumDefVal *)$2;
-					enu->findValue(dv->value);	 // if no value - Syntax exception will be thrown
-					RDORTPEnumResParam *rp = new RDORTPEnumResParam( parser, enu, dv );
-					$$ = (int)rp;
-				}
-				| fun_enum {
-					reinterpret_cast<RDOLexerFUN*>(lexer)->enum_param_cnt = 0;
-					RDORTPEnum *enu = (RDORTPEnum *)$1;
-					RDORTPEnumDefVal *dv = new RDORTPEnumDefVal();
-					RDORTPEnumResParam *rp = new RDORTPEnumResParam( parser, enu, dv );
-					$$ = (int)rp;
-				}
-				| fun_such_as {
-					RDORTPParamDesc *desc = (RDORTPParamDesc *)$1;
-					$$ = (int)desc->getType()->constructSuchAs();
-				}
-				| fun_such_as fun_int_default_val {
-					RDORTPParamDesc *desc = (RDORTPParamDesc *)$1;
-					RDORTPIntDefVal *dv = (RDORTPIntDefVal *)$2;
-					$$ = (int)desc->getType()->constructSuchAs((int)dv->val);
-				}
-				| fun_such_as	fun_real_default_val {
-					RDORTPParamDesc *desc = (RDORTPParamDesc *)$1;
-					RDORTPRealDefVal *dv = (RDORTPRealDefVal *)$2;
-					if(!dv->exist)
-						$$ = (int)desc->getType()->constructSuchAs();
-					else
-						$$ = (int)desc->getType()->constructSuchAs((double *)&(dv->val));
-				}
-				| fun_such_as fun_enum_default_val {
-					RDORTPParamDesc *desc = (RDORTPParamDesc *)$1;
-					RDORTPEnumDefVal *dv = (RDORTPEnumDefVal *)$2;
-					if ( !dv->exist ) {
-						$$ = (int)desc->getType()->constructSuchAs();
-					} else {
+				| param_enum param_enum_default_val {
+					reinterpret_cast<RDOLexer*>(lexer)->enum_param_cnt = 0;
+					RDORTPEnum* enu      = reinterpret_cast<RDORTPEnum*>($1);
+					RDORTPEnumDefVal* dv = reinterpret_cast<RDORTPEnumDefVal*>($2);
+					if ( dv->isExist() ) {
 						parser->lexer_loc_backup();
-						parser->lexer_loc_set( &(@2) );
-						$$ = (int)desc->getType()->constructSuchAs((std::string *)dv->value);
+						parser->lexer_loc_set( dv->src_pos().last_line, dv->src_pos().last_pos );
+						enu->findValue( dv->getEnumValue() ); // Если не найдено, то будет сообщение об ошибке, т.е. throw
 						parser->lexer_loc_restore();
 					}
+					RDORTPEnumParamType* rp = new RDORTPEnumParamType( parser->getLastParsingObject(), enu, dv, RDOParserSrcInfo( @1, @2 ) );
+					$$ = (int)rp;
 				}
-				| fun_such_as '=' error {
+				| param_such_as {
+					RDORTPParam* param = reinterpret_cast<RDORTPParam*>($1);
+					RDOParserSrcInfo src_info( @1 );
+					src_info.setSrcText( "such_as " + (param->getResType() ? param->getResType()->getName() + "." : "") + param->getName() );
+					$$ = (int)param->getType()->constructSuchAs( src_info );
+				}
+				| param_such_as '=' INT_CONST {
+					RDORTPParam* param = reinterpret_cast<RDORTPParam*>($1);
+					RDOParserSrcInfo src_info( @1, @3 );
+					src_info.setSrcText( "such_as " + (param->getResType() ? param->getResType()->getName() + "." : "") + param->getName() );
+					$$ = (int)param->getType()->constructSuchAs( (int)$3, src_info, RDOParserSrcInfo( @3 ) );
+				}
+				| param_such_as '=' REAL_CONST {
+					RDORTPParam* param = reinterpret_cast<RDORTPParam*>($1);
+					RDOParserSrcInfo src_info( @1, @3 );
+					src_info.setSrcText( "such_as " + (param->getResType() ? param->getResType()->getName() + "." : "") + param->getName() );
+					$$ = (int)param->getType()->constructSuchAs( *(double*)$3, src_info, RDOParserSrcInfo( @3 ) );
+				}
+				| param_such_as '=' IDENTIF {
+					RDORTPParam* param = reinterpret_cast<RDORTPParam*>($1);
+					RDOParserSrcInfo src_info( @1, @3 );
+					src_info.setSrcText( "such_as " + (param->getResType() ? param->getResType()->getName() + "." : "") + param->getName() );
+					$$ = (int)param->getType()->constructSuchAs( *(std::string*)$3, src_info, RDOParserSrcInfo( @3 ) );
+				}
+				| param_such_as '=' error {
 					parser->error( "Ожидается зачение по-умолчанию" );
 				}
-				| fun_such_as error {
-					parser->error( "Ожидается окончание описания ссылки, например, зачение по-умолчанию" );
+				| param_such_as error {
+					parser->error( "Ожидается окончание описания параметра-ссылки, например, зачение по-умолчанию" );
 				}
 				| integer error {
 					parser->lexer_loc_set( &(@2) );
 					parser->error( "Ошибка после ключевого слова integer. Возможно, не хватает значения по-умолчанию." );
+//					parser->error( rdoSimulator::RDOSyntaxError::RTP_WAITING_FOR_INT_PARAM_END );
 				}
 				| real error {
 					parser->lexer_loc_set( &(@2) );
 					parser->error( "Ошибка после ключевого слова real. Возможно, не хватает значения по-умолчанию." );
+//					parser->error( rdoSimulator::RDOSyntaxError::RTP_WAITING_FOR_REAL_PARAM_END );
 				}
-				| fun_enum error {
+				| param_enum error {
 					parser->lexer_loc_set( &(@2) );
 					parser->error( "Ошибка после перечислимого типа. Возможно, не хватает значения по-умолчанию." );
+//					parser->error( rdoSimulator::RDOSyntaxError::RTP_WAITING_FOR_ENUM_PARAM_END );
 				};
 
-fun_int_diap:	/* empty */ {
-					RDORTPIntDiap *diap = new RDORTPIntDiap();
+param_int_diap:	/* empty */ {
+					YYLTYPE pos = @0;
+					pos.first_column = pos.last_column;
+					RDORTPIntDiap* diap = new RDORTPIntDiap( pos );
 					$$ = (int)diap;
 				}
 				| '[' INT_CONST dblpoint INT_CONST ']' {
-					parser->lexer_loc_backup();
-					parser->lexer_loc_set( &(@2) );
-					RDORTPIntDiap *diap = new RDORTPIntDiap($2, $4);
-					parser->lexer_loc_restore();
+					RDORTPIntDiap* diap = new RDORTPIntDiap( $2, $4, RDOParserSrcInfo( @1, @5 ), @4 );
 					$$ = (int)diap;
 				}
 				| '[' REAL_CONST dblpoint REAL_CONST {
@@ -350,46 +327,37 @@ fun_int_diap:	/* empty */ {
 				| '[' error {
 					parser->lexer_loc_set( &(@2) );
 					parser->error( "Диапазон задан неверно" );
+//					parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_RANGE );
 				};
 
-fun_real_diap: /* empty */ {
-					RDORTPRealDiap *diap = new RDORTPRealDiap();
+param_real_diap:	/* empty */ {
+					YYLTYPE pos = @0;
+					pos.first_column = pos.last_column;
+					RDORTPRealDiap* diap = new RDORTPRealDiap( pos );
 					$$ = (int)diap;
 				}
 				| '[' REAL_CONST dblpoint REAL_CONST ']' {
-					parser->lexer_loc_backup();
-					parser->lexer_loc_set( &(@2) );
-					double min = *((double *)$2);
-					double max = *((double *)$4);
-					RDORTPRealDiap *diap = new RDORTPRealDiap(min, max);
-					parser->lexer_loc_restore();
+					double min = *reinterpret_cast<double*>($2);
+					double max = *reinterpret_cast<double*>($4);
+					RDORTPRealDiap* diap = new RDORTPRealDiap( min, max, RDOParserSrcInfo( @1, @5 ), @4 );
 					$$ = (int)diap;
 				}
 				| '[' REAL_CONST dblpoint INT_CONST ']' {
-					parser->lexer_loc_backup();
-					parser->lexer_loc_set( &(@2) );
-					double min = *((double *)$2);
+					double min = *reinterpret_cast<double*>($2);
 					double max = $4;
-					RDORTPRealDiap *diap = new RDORTPRealDiap(min, max);
-					parser->lexer_loc_restore();
+					RDORTPRealDiap* diap = new RDORTPRealDiap( min, max, RDOParserSrcInfo( @1, @5 ), @4 );
 					$$ = (int)diap;
 				}
 				| '[' INT_CONST dblpoint REAL_CONST ']' {
-					parser->lexer_loc_backup();
-					parser->lexer_loc_set( &(@2) );
 					double min = $2;
-					double max = *((double *)$4);
-					RDORTPRealDiap *diap = new RDORTPRealDiap(min, max);
-					parser->lexer_loc_restore();
+					double max = *reinterpret_cast<double*>($4);
+					RDORTPRealDiap* diap = new RDORTPRealDiap( min, max, RDOParserSrcInfo( @1, @5 ), @4 );
 					$$ = (int)diap;
 				}
 				| '[' INT_CONST dblpoint INT_CONST ']' {
-					parser->lexer_loc_backup();
-					parser->lexer_loc_set( &(@2) );
 					double min = $2;
 					double max = $4;
-					RDORTPRealDiap *diap = new RDORTPRealDiap(min, max);
-					parser->lexer_loc_restore();
+					RDORTPRealDiap* diap = new RDORTPRealDiap( min, max, RDOParserSrcInfo( @1, @5 ), @4 );
 					$$ = (int)diap;
 				}
 				| '[' REAL_CONST dblpoint REAL_CONST error {
@@ -419,41 +387,88 @@ fun_real_diap: /* empty */ {
 				| '[' error {
 					parser->lexer_loc_set( &(@2) );
 					parser->error( "Диапазон задан неверно" );
+//					parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_RANGE );
 				};
 
-fun_enum:	'(' fun_enum_item ')' {
+param_int_default_val:	/* empty */ {
+						YYLTYPE pos = @0;
+						pos.first_column = pos.last_column;
+						$$ = (int)(new RDORTPIntDefVal(pos));
+					}
+					| '=' INT_CONST {
+						$$ = (int)(new RDORTPIntDefVal($2, RDOParserSrcInfo( @1, @2 )));
+					}
+					| '=' REAL_CONST {
+						// Целое число инициализируется вещественным: %f
+						parser->lexer_loc_set( &(@2) );
+						parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_DEFVAULT_INT_AS_REAL, *(double*)$2 );
+					}
+					| '=' {
+						parser->lexer_loc_set( @1.last_line, @1.last_column );
+						parser->error( "Не указано значение по-умолчанию для целого типа" );
+					}
+					| '=' error {
+						parser->lexer_loc_set( @2.last_line, @2.last_column );
+						parser->error( "Неверное значение по-умолчанию для целого типа" );
+					};
+
+param_real_default_val:	/* empty */ {
+						YYLTYPE pos = @0;
+						pos.first_column = pos.last_column;
+						$$ = (int)(new RDORTPRealDefVal(pos));
+					}
+					| '=' REAL_CONST {
+						$$ = (int)(new RDORTPRealDefVal(*((double *)$2), RDOParserSrcInfo( @1, @2 )));
+					}
+					| '=' INT_CONST {
+						$$ = (int)(new RDORTPRealDefVal($2, RDOParserSrcInfo( @1, @2 )));
+					}
+					| '=' {
+						parser->lexer_loc_set( &(@1) );
+						parser->error( "Не указано значение по-умолчанию для вещественного типа" );
+					}
+					| '=' error {
+						parser->lexer_loc_set( &(@2) );
+						parser->error( "Неверное значение по-умолчанию для вещественного типа" );
+					};
+
+param_enum:	'(' param_enum_list ')' {
+				RDORTPEnum* enu = reinterpret_cast<RDORTPEnum*>($2);
+				enu->setSrcPos( @1, @3 );
+				enu->setSrcText( enu->src_text() + ")" );
 				$$ = $2;
 			}
-			| '(' fun_enum_item {
+			| '(' param_enum_list {
 				parser->lexer_loc_set( &(@2) );
 				parser->error( "Перечисление должно заканчиваться скобкой" );
 			};
 
-fun_enum_item:	IDENTIF {
-					RDORTPEnum* enu = new RDORTPEnum( parser, (std::string *)$1 );
+param_enum_list: IDENTIF {
+					RDORTPEnum* enu = new RDORTPEnum( parser->getLastParsingObject(), *(std::string *)$1 );
+					std::string* first = reinterpret_cast<std::string*>($1);
+					enu->setSrcText( "(" + *first );
+					reinterpret_cast<RDOLexer*>(lexer)->enum_param_cnt = 1;
 					$$ = (int)enu;
-					reinterpret_cast<RDOLexerFUN*>(lexer)->enum_param_cnt = 1;
 				}
-				| fun_enum_item ',' IDENTIF {
-					if ( reinterpret_cast<RDOLexerFUN*>(lexer)->enum_param_cnt >= 1 ) {
-						parser->lexer_loc_backup();
-						parser->lexer_loc_set( &(@3) );
-						RDORTPEnum *enu = (RDORTPEnum *)$1;
-						enu->add((std::string *)$3);
-						parser->lexer_loc_restore();
+				| param_enum_list ',' IDENTIF {
+					if ( reinterpret_cast<RDOLexer*>(lexer)->enum_param_cnt >= 1 ) {
+						RDORTPEnum* enu  = reinterpret_cast<RDORTPEnum*>($1);
+						std::string next = *reinterpret_cast<std::string*>($3);
+						enu->add( next, @3 );
+						enu->setSrcText( enu->src_text() + ", " + next );
 						$$ = (int)enu;
 					} else {
 						parser->error( "Ошибка в описании значений перечислимого типа" );
 					}
 				}
-				| fun_enum_item IDENTIF {
-					if ( reinterpret_cast<RDOLexerFUN*>(lexer)->enum_param_cnt >= 1 ) {
+				| param_enum_list IDENTIF {
+					if ( reinterpret_cast<RDOLexer*>(lexer)->enum_param_cnt >= 1 ) {
 						parser->error( rdo::format("Пропущена запятая перед: %s", ((std::string*)$2)->c_str()) );
 					} else {
 						parser->error( "Ошибка в описании значений перечислимого типа" );
 					}
 				}
-				| fun_enum_item error {
+				| param_enum_list error {
 					std::string str( reinterpret_cast<RDOLexer*>(lexer)->YYText() );
 					if ( str.empty() ) {
 						parser->lexer_loc_set( &(@1) );
@@ -463,11 +478,11 @@ fun_enum_item:	IDENTIF {
 						parser->error( rdo::format( "Неверное значение перечислимого типа: %s", str.c_str() ) );
 					}
 				}
-				| fun_enum_item ',' INT_CONST {
+				| param_enum_list ',' INT_CONST {
 					parser->lexer_loc_set( &(@3) );
 					parser->error( "Значение перечислимого типа не может начинаться с цифры" );
 				}
-				| fun_enum_item ',' REAL_CONST {
+				| param_enum_list ',' REAL_CONST {
 					parser->lexer_loc_set( &(@3) );
 					parser->error( "Значение перечислимого типа не может начинаться с цифры" );
 				}
@@ -484,61 +499,78 @@ fun_enum_item:	IDENTIF {
 					parser->error( "Ошибка в описании значений перечислимого типа" );
 				};
 
-fun_such_as:	such_as IDENTIF '.' IDENTIF {
-					std::string* type = (std::string *)$2;
-					std::string* param = (std::string *)$4;
-					const RDORTPResType *const rt = parser->findRTPResType( type );
+param_enum_default_val:	/* empty */ {
+						YYLTYPE pos = @0;
+						pos.first_column = pos.last_column;
+						$$ = (int)(new RDORTPEnumDefVal(pos));
+					}
+					| '=' IDENTIF {
+						$$ = (int)(new RDORTPEnumDefVal( *(std::string*)$2, RDOParserSrcInfo( @1, @2 ) ));
+					}
+					| '=' {
+						parser->lexer_loc_set( &(@1) );
+						parser->error( "Не указано значение по-умолчанию для перечислимого типа" );
+					}
+					| '=' error {
+						parser->lexer_loc_set( &(@2) );
+						parser->error( "Неверное значение по-умолчанию для перечислимого типа" );
+					};
+
+param_such_as:	such_as IDENTIF '.' IDENTIF {
+					std::string type  = *reinterpret_cast<std::string*>($2);
+					std::string param = *reinterpret_cast<std::string*>($4);
+					const RDORTPResType* const rt = parser->findRTPResType( type );
 					if ( !rt ) {
 						parser->lexer_loc_set( &(@2) );
-						parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_SUCHAS_RES_TYPE, type->c_str() );
+						parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_SUCHAS_RES_TYPE, type.c_str() );
 					}
-					const RDORTPParamDesc *const rp = rt->findRTPParam( param );
+					const RDORTPParam* const rp = rt->findRTPParam( param );
 					if ( !rp ) {
 						parser->lexer_loc_set( &(@4) );
-						parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_SUCHAS_PARAM, type->c_str(), param->c_str() );
+						parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_SUCHAS_PARAM, type.c_str(), param.c_str() );
 					}
 					$$ = (int)rp;
 				}
 				| such_as IDENTIF {
-					std::string *constName = (std::string *)$2;
-					const RDOFUNConstant *const cons = parser->findFUNConst(constName);
+					std::string constName = *reinterpret_cast<std::string*>($2);
+					const RDOFUNConstant* const cons = parser->findFUNConst( constName );
 					if ( !cons ) {
 						parser->lexer_loc_set( &(@2) );
-						parser->error( rdo::format("Ссылка на несужествующую константу: %s", constName->c_str()) );
+						parser->error( rdo::format("Ссылка на несуществующую константу: %s", constName.c_str()) );
 					}
-					$$ = (int)(cons->descr);
+					$$ = (int)(cons->getDescr());
 				}
 				| such_as IDENTIF '.' {
-					std::string* type = (std::string *)$2;
-					const RDORTPResType *const rt = parser->findRTPResType( type );
+					std::string type = *reinterpret_cast<std::string*>($2);
+					const RDORTPResType* const rt = parser->findRTPResType( type );
 					if ( !rt ) {
 						parser->lexer_loc_set( &(@2) );
-						parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_SUCHAS_RES_TYPE, type->c_str() );
+						parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_SUCHAS_RES_TYPE, type.c_str() );
 					} else {
 						parser->lexer_loc_set( &(@3) );
-						parser->error( "Не указан параметр" );
+						parser->error( "Не указан параметер" );
 					}
 				}
 				| such_as IDENTIF '.' error {
-					std::string* type = (std::string *)$2;
-					const RDORTPResType *const rt = parser->findRTPResType( type );
+					std::string type = *reinterpret_cast<std::string*>($2);
+					const RDORTPResType* const rt = parser->findRTPResType( type );
 					if ( !rt ) {
 						parser->lexer_loc_set( &(@2) );
-						parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_SUCHAS_RES_TYPE, type->c_str() );
+						parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_SUCHAS_RES_TYPE, type.c_str() );
 					} else {
 						parser->lexer_loc_set( &(@4) );
 						parser->error( "Ошибка при указании параметра" );
 					}
 				}
 				| such_as IDENTIF error {
-					std::string* type = (std::string *)$2;
-					const RDORTPResType *const rt = parser->findRTPResType( type );
+					std::string type = *reinterpret_cast<std::string*>($2);
+					const RDORTPResType* const rt = parser->findRTPResType( type );
 					if ( !rt ) {
 						parser->lexer_loc_set( &(@2) );
-						parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_SUCHAS_RES_TYPE, type->c_str() );
+						parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_SUCHAS_RES_TYPE, type.c_str() );
 					} else {
 						parser->lexer_loc_set( &(@2) );
-						parser->error( "После имени типа должен быть указан параметр через точку" );
+						parser->error( "После имени типа должен быть указан параметер через точку" );
 					}
 				}
 				| such_as error {
@@ -547,55 +579,9 @@ fun_such_as:	such_as IDENTIF '.' IDENTIF {
 					} else {
 						parser->lexer_loc_set( &(@1) );
 					}
-					parser->error( "После ключевого слова such_as необходимо указать тип и парамтер ресурса для ссылки" );
+					parser->error( "После ключевого слова such_as необходимо указать тип и параметер ресурса для ссылки" );
 				};
-
-fun_int_default_val:	'=' INT_CONST {
-						RDORTPIntDefVal *dv = new RDORTPIntDefVal($2);
-						$$ = (int)dv;
-					}
-					| '=' REAL_CONST {
-						// Целое число инициализируется вещественным: %f
-						parser->lexer_loc_set( &(@2) );
-						parser->error( rdoSimulator::RDOSyntaxError::RTP_INVALID_DEFVAULT_INT_AS_REAL, *(double*)$2 );
-					}
-					| '=' {
-						parser->lexer_loc_set( &(@1) );
-						parser->error( "Не указано значение по-умолчанию целого типа" );
-					}
-					| '=' error {
-						parser->lexer_loc_set( &(@2) );
-						parser->error( "Неверное значение по-умолчанию целого типа" );
-					};
-
-fun_real_default_val:	'=' REAL_CONST {
-						$$ = (int)(new RDORTPRealDefVal(*((double *)$2)));
-					}
-					| '=' INT_CONST {
-						$$ = (int)(new RDORTPRealDefVal($2));
-					}
-					| '=' {
-						parser->lexer_loc_set( &(@1) );
-						parser->error( "Не указано значение по-умолчанию вещественного типа" );
-					}
-					| '=' error {
-						parser->lexer_loc_set( &(@2) );
-						parser->error( "Неверное значение по-умолчанию вещественного типа" );
-					};
-
-fun_enum_default_val:	'=' IDENTIF {
-						std::string *val = (std::string *)$2;
-						RDORTPEnumDefVal* dv = new RDORTPEnumDefVal(val);
-						$$ = (int)dv;
-					}
-					| '=' {
-						parser->lexer_loc_set( &(@1) );
-						parser->error( "Не указано значение по-умолчанию перечислимого типа" );
-					}
-					| '=' error {
-						parser->lexer_loc_set( &(@2) );
-						parser->error( "Неверное значение по-умолчанию перечислимого типа" );
-					};
+// ----------------------------------------------------------------------------
 
 fun_func_seq:	/* empty */
 			| fun_func_seq fun_func_descr
@@ -607,26 +593,26 @@ fun_func_seq:	/* empty */
 
 fun_func_descr:	fun_func_header fun_func_footer;
 
-fun_func_header:	Function_keyword IDENTIF_COLON fun_param_type {
-						std::string* name = (std::string*)$2;
-						if ( parser->findFUNConst(name) ) {
+fun_func_header:	Function_keyword IDENTIF_COLON param_type {
+						std::string name = *reinterpret_cast<std::string*>($2);
+						if ( parser->findFUNConst( name ) ) {
 							parser->lexer_loc_set( &(@2) );
-							parser->error( rdo::format( "Существует константа с таким же именем: %s", name->c_str() ) );
+							parser->error( rdo::format( "Существует константа с таким же именем: %s", name.c_str() ) );
 						}
-						if ( parser->findSequence(name) ) {
+						if ( parser->findSequence( name ) ) {
 							parser->lexer_loc_set( &(@2) );
-							parser->error( rdo::format( "Существует последовательность с таким же именем: %s", name->c_str() ) );
+							parser->error( rdo::format( "Существует последовательность с таким же именем: %s", name.c_str() ) );
 						}
-						if ( parser->findFunction(name) ) {
+						if ( parser->findFunction( name ) ) {
 							parser->lexer_loc_set( &(@2) );
-							parser->error( rdo::format( "Функция уже существует: %s", name->c_str() ) );
-//							parser->error(("Second appearance of the same function: " + *(name)).c_str());
+							parser->error( rdo::format( "Функция уже существует: %s", name.c_str() ) );
+//							parser->error( ("Second appearance of the same function: " + name).c_str() );
 						}
-						RDORTPResParam* retType = (RDORTPResParam*)$3;
+						RDORTPParamType* retType = (RDORTPParamType*)$3;
 						RDOFUNFunction* fun = new RDOFUNFunction( parser, name, retType );
-						if ( retType->getType() == RDORTPResParam::pt_enum && static_cast<RDORTPEnumResParam*>(retType)->enum_name.empty() ) {
-							static_cast<RDORTPEnumResParam*>(retType)->enum_name = *name;
-							static_cast<RDORTPEnumResParam*>(retType)->enum_fun  = true;
+						if ( retType->getType() == RDORTPParamType::pt_enum && static_cast<RDORTPEnumParamType*>(retType)->enum_name.empty() ) {
+							static_cast<RDORTPEnumParamType*>(retType)->enum_name = name;
+							static_cast<RDORTPEnumParamType*>(retType)->enum_fun  = true;
 						}
 						$$ = (int)fun;
 					};
@@ -689,9 +675,9 @@ fun_func_footer:	Type_keyword '=' algorithmic Parameters fun_func_params Body fu
 					};
 
 fun_func_params:	/* empty */
-			|	fun_func_params IDENTIF_COLON fun_param_type	{
-				std::string*         name  = (std::string*)$2;
-				RDORTPResParam*      type  = (RDORTPResParam*)$3;
+			|	fun_func_params IDENTIF_COLON param_type	{
+				std::string      name = *reinterpret_cast<std::string*>($2);
+				RDORTPParamType* type = reinterpret_cast<RDORTPParamType*>($3);
 				RDOFUNFunctionParam* param = new RDOFUNFunctionParam( name, type );
 				param->setSrcPos( @2 );
 				parser->getLastFUNFunction()->add(param);	// the function must check uniquness of parameters names
@@ -702,7 +688,7 @@ fun_func_list_body:	/* empty */
 			| fun_func_list_body fun_std_value;
 
 fun_std_value:	IDENTIF {
-					RDOFUNFunctionListElementIdentif *value = new RDOFUNFunctionListElementIdentif( parser->getLastFUNFunction(), (std::string *)$1 );
+					RDOFUNFunctionListElementIdentif *value = new RDOFUNFunctionListElementIdentif( parser->getLastFUNFunction(), *(std::string *)$1 );
 					parser->getLastFUNFunction()->add(value);
 					value->setSrcPos( @1 );
 					$$ = (int)value;
@@ -734,7 +720,7 @@ fun_func_algorithmic_body:	/* empty */
 fun_func_algorithmic_calc_if:	Calculate_if fun_logic IDENTIF '=' fun_arithm {
 									parser->lexer_loc_backup();
 									parser->lexer_loc_set( &(@3) );
-									$$ = (int)(new RDOFUNCalculateIf( parser->getLastFUNFunction(), (RDOFUNLogic *)$2, (std::string *)$3, (RDOFUNArithm *)$5 ));
+									$$ = (int)(new RDOFUNCalculateIf( parser->getLastFUNFunction(), (RDOFUNLogic *)$2, *(std::string *)$3, (RDOFUNArithm *)$5 ));
 									parser->lexer_loc_restore();
 								}
 								| Calculate_if fun_logic error {
@@ -752,31 +738,31 @@ fun_seq_descr:	fun_seq_uniform
 				| fun_seq_by_hist
 				| fun_seq_enumerative;
 
-fun_seq_header:	Sequence IDENTIF_COLON fun_param_type Type_keyword '=' {
-					std::string* name = (std::string*)$2;
-					if ( parser->findFUNConst(name) ) {
+fun_seq_header:	Sequence IDENTIF_COLON param_type Type_keyword '=' {
+					std::string name = *reinterpret_cast<std::string*>($2);
+					if ( parser->findFUNConst( name ) ) {
 						parser->lexer_loc_set( &(@2) );
-						parser->error( rdo::format( "Существует константа с таким же именем: %s", name->c_str() ) );
+						parser->error( rdo::format( "Существует константа с таким же именем: %s", name.c_str() ) );
 					}
-					if ( parser->findSequence(name) ) {
+					if ( parser->findSequence( name ) ) {
 						parser->lexer_loc_set( &(@2) );
-						parser->error( rdo::format( "Последовательность уже существует: %s", name->c_str() ) );
+						parser->error( rdo::format( "Последовательность уже существует: %s", name.c_str() ) );
 					}
-					if ( parser->findFunction(name) ) {
+					if ( parser->findFunction( name ) ) {
 						parser->lexer_loc_set( &(@2) );
-						parser->error( rdo::format( "Существует функция с таким же именем: %s", name->c_str() ) );
+						parser->error( rdo::format( "Существует функция с таким же именем: %s", name.c_str() ) );
 					}
-					$$ = (int)(new RDOFUNSequence::RDOFUNSequenceHeader( name, (RDORTPResParam *)$3, RDOParserSrcInfo( @2, *name ) ));
+					$$ = (int)(new RDOFUNSequence::RDOFUNSequenceHeader( name, (RDORTPParamType *)$3, RDOParserSrcInfo( @2, name ) ));
 				}
-				| Sequence IDENTIF_COLON fun_param_type Type_keyword '=' error {
+				| Sequence IDENTIF_COLON param_type Type_keyword '=' error {
 					parser->lexer_loc_set( &(@5), &(@6) );
 					parser->error( "Ожидается тип последовательности" );
 				}
-				| Sequence IDENTIF_COLON fun_param_type Type_keyword error {
+				| Sequence IDENTIF_COLON param_type Type_keyword error {
 					parser->lexer_loc_set( &(@4), &(@5) );
 					parser->error( "Ожидается тип последовательности в формате '=' <тип>" );
 				}
-				| Sequence IDENTIF_COLON fun_param_type error {
+				| Sequence IDENTIF_COLON param_type error {
 					parser->lexer_loc_set( @4.first_line, @4.first_column );
 					parser->error( "Ожидается ключевое слово $Type" );
 				}
@@ -855,13 +841,13 @@ fun_seq_by_hist_header:	fun_seq_header by_hist Body {
 
 fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CONST {
 								RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader* header = reinterpret_cast<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader*>($1);
-								if ( header->header->type->getType() != RDORTPResParam::pt_real && header->header->type->getType() != RDORTPResParam::pt_int ) {
+								if ( header->header->type->getType() != RDORTPParamType::pt_real && header->header->type->getType() != RDORTPParamType::pt_int ) {
 									parser->lexer_loc_set( &(@2) );
 									parser->error( "Значение не соответствует типу последовательности" );
 								}
-								if ( header->header->type->getType() == RDORTPResParam::pt_int ) {
+								if ( header->header->type->getType() == RDORTPParamType::pt_int ) {
 									parser->lexer_loc_set( &(@2) );
-									parser->error( rdo::format("Последовательность '%s' определена как целочисленная, её даипазоны тоже должны быть челочисленными", header->header->name->c_str()) );
+									parser->error( rdo::format("Последовательность '%s' определена как целочисленная, её даипазоны тоже должны быть челочисленными", header->header->name.c_str()) );
 								}
 								if ( *((double*)$2) > *((double*)$3) ) {
 									parser->lexer_loc_set( &(@3) );
@@ -880,13 +866,13 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 							}
 							| fun_seq_by_hist_header INT_CONST REAL_CONST REAL_CONST {
 								RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader* header = reinterpret_cast<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader*>($1);
-								if ( header->header->type->getType() != RDORTPResParam::pt_real && header->header->type->getType() != RDORTPResParam::pt_int ) {
+								if ( header->header->type->getType() != RDORTPParamType::pt_real && header->header->type->getType() != RDORTPParamType::pt_int ) {
 									parser->lexer_loc_set( &(@2) );
 									parser->error( "Значение не соответствует типу последовательности" );
 								}
-								if ( header->header->type->getType() == RDORTPResParam::pt_int ) {
+								if ( header->header->type->getType() == RDORTPParamType::pt_int ) {
 									parser->lexer_loc_set( &(@3) );
-									parser->error( rdo::format("Последовательность '%s' определена как целочисленная, её даипазоны тоже должны быть челочисленными", header->header->name->c_str()) );
+									parser->error( rdo::format("Последовательность '%s' определена как целочисленная, её даипазоны тоже должны быть челочисленными", header->header->name.c_str()) );
 								}
 								if ( $2 > *((double*)$3) ) {
 									parser->lexer_loc_set( &(@3) );
@@ -905,13 +891,13 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 							}
 							| fun_seq_by_hist_header REAL_CONST INT_CONST REAL_CONST {
 								RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader* header = reinterpret_cast<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader*>($1);
-								if ( header->header->type->getType() != RDORTPResParam::pt_real && header->header->type->getType() != RDORTPResParam::pt_int ) {
+								if ( header->header->type->getType() != RDORTPParamType::pt_real && header->header->type->getType() != RDORTPParamType::pt_int ) {
 									parser->lexer_loc_set( &(@2) );
 									parser->error( "Значение не соответствует типу последовательности" );
 								}
-								if ( header->header->type->getType() == RDORTPResParam::pt_int ) {
+								if ( header->header->type->getType() == RDORTPParamType::pt_int ) {
 									parser->lexer_loc_set( &(@2) );
-									parser->error( rdo::format("Последовательность '%s' определена как целочисленная, её даипазоны тоже должны быть челочисленными", header->header->name->c_str()) );
+									parser->error( rdo::format("Последовательность '%s' определена как целочисленная, её даипазоны тоже должны быть челочисленными", header->header->name.c_str()) );
 								}
 								if ( *((double*)$2) > $3 ) {
 									parser->lexer_loc_set( &(@3) );
@@ -930,13 +916,13 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 							}
 							| fun_seq_by_hist_header REAL_CONST REAL_CONST INT_CONST {
 								RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader* header = reinterpret_cast<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader*>($1);
-								if ( header->header->type->getType() != RDORTPResParam::pt_real && header->header->type->getType() != RDORTPResParam::pt_int ) {
+								if ( header->header->type->getType() != RDORTPParamType::pt_real && header->header->type->getType() != RDORTPParamType::pt_int ) {
 									parser->lexer_loc_set( &(@2) );
 									parser->error( "Значение не соответствует типу последовательности" );
 								}
-								if ( header->header->type->getType() == RDORTPResParam::pt_int ) {
+								if ( header->header->type->getType() == RDORTPParamType::pt_int ) {
 									parser->lexer_loc_set( &(@2) );
-									parser->error( rdo::format("Последовательность '%s' определена как целочисленная, её даипазоны тоже должны быть челочисленными", header->header->name->c_str()) );
+									parser->error( rdo::format("Последовательность '%s' определена как целочисленная, её даипазоны тоже должны быть челочисленными", header->header->name.c_str()) );
 								}
 								if ( *((double*)$2) > *((double*)$3) ) {
 									parser->lexer_loc_set( &(@3) );
@@ -955,7 +941,7 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 							}
 							| fun_seq_by_hist_header INT_CONST INT_CONST REAL_CONST {
 								RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader* header = reinterpret_cast<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader*>($1);
-								if ( header->header->type->getType() != RDORTPResParam::pt_real && header->header->type->getType() != RDORTPResParam::pt_int ) {
+								if ( header->header->type->getType() != RDORTPParamType::pt_real && header->header->type->getType() != RDORTPParamType::pt_int ) {
 									parser->lexer_loc_set( &(@2) );
 									parser->error( "Значение не соответствует типу последовательности" );
 								}
@@ -976,13 +962,13 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 							}
 							| fun_seq_by_hist_header REAL_CONST INT_CONST INT_CONST {
 								RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader* header = reinterpret_cast<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader*>($1);
-								if ( header->header->type->getType() != RDORTPResParam::pt_real && header->header->type->getType() != RDORTPResParam::pt_int ) {
+								if ( header->header->type->getType() != RDORTPParamType::pt_real && header->header->type->getType() != RDORTPParamType::pt_int ) {
 									parser->lexer_loc_set( &(@2) );
 									parser->error( "Значение не соответствует типу последовательности" );
 								}
-								if ( header->header->type->getType() == RDORTPResParam::pt_int ) {
+								if ( header->header->type->getType() == RDORTPParamType::pt_int ) {
 									parser->lexer_loc_set( &(@2) );
-									parser->error( rdo::format("Последовательность '%s' определена как целочисленная, её даипазоны тоже должны быть челочисленными", header->header->name->c_str()) );
+									parser->error( rdo::format("Последовательность '%s' определена как целочисленная, её даипазоны тоже должны быть челочисленными", header->header->name.c_str()) );
 								}
 								if ( *((double*)$2) > $3 ) {
 									parser->lexer_loc_set( &(@3) );
@@ -1001,13 +987,13 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 							}
 							| fun_seq_by_hist_header INT_CONST REAL_CONST INT_CONST {
 								RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader* header = reinterpret_cast<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader*>($1);
-								if ( header->header->type->getType() != RDORTPResParam::pt_real && header->header->type->getType() != RDORTPResParam::pt_int ) {
+								if ( header->header->type->getType() != RDORTPParamType::pt_real && header->header->type->getType() != RDORTPParamType::pt_int ) {
 									parser->lexer_loc_set( &(@2) );
 									parser->error( "Значение не соответствует типу последовательности" );
 								}
-								if ( header->header->type->getType() == RDORTPResParam::pt_int ) {
+								if ( header->header->type->getType() == RDORTPParamType::pt_int ) {
 									parser->lexer_loc_set( &(@3) );
-									parser->error( rdo::format("Последовательность '%s' определена как целочисленная, её даипазоны тоже должны быть челочисленными", header->header->name->c_str()) );
+									parser->error( rdo::format("Последовательность '%s' определена как целочисленная, её даипазоны тоже должны быть челочисленными", header->header->name.c_str()) );
 								}
 								if ( $2 > *((double*)$3) ) {
 									parser->lexer_loc_set( &(@3) );
@@ -1026,7 +1012,7 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 							}
 							| fun_seq_by_hist_header INT_CONST INT_CONST INT_CONST {
 								RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader* header = reinterpret_cast<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader*>($1);
-								if ( header->header->type->getType() != RDORTPResParam::pt_real && header->header->type->getType() != RDORTPResParam::pt_int ) {
+								if ( header->header->type->getType() != RDORTPParamType::pt_real && header->header->type->getType() != RDORTPParamType::pt_int ) {
 									parser->lexer_loc_set( &(@2) );
 									parser->error( "Значение не соответствует типу последовательности" );
 								}
@@ -1047,9 +1033,9 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 							}
 							| fun_seq_by_hist_body_real REAL_CONST REAL_CONST REAL_CONST {
 								RDOFUNSequence::RDOFUNSequenceHeader* header = reinterpret_cast<RDOFUNSequenceByHistReal*>($1)->header;
-								if ( header->type->getType() == RDORTPResParam::pt_int ) {
+								if ( header->type->getType() == RDORTPParamType::pt_int ) {
 									parser->lexer_loc_set( &(@2) );
-									parser->error( rdo::format("Последовательность '%s' определена как целочисленная, её даипазоны тоже должны быть челочисленными", header->name->c_str()) );
+									parser->error( rdo::format("Последовательность '%s' определена как целочисленная, её даипазоны тоже должны быть челочисленными", header->name.c_str()) );
 								}
 								if ( *((double*)$2) != ((RDOFUNSequenceByHistReal *)$1)->lastTo() ) {
 									parser->lexer_loc_set( &(@2) );
@@ -1072,9 +1058,9 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 							}
 							| fun_seq_by_hist_body_real INT_CONST REAL_CONST REAL_CONST {
 								RDOFUNSequence::RDOFUNSequenceHeader* header = reinterpret_cast<RDOFUNSequenceByHistReal*>($1)->header;
-								if ( header->type->getType() == RDORTPResParam::pt_int ) {
+								if ( header->type->getType() == RDORTPParamType::pt_int ) {
 									parser->lexer_loc_set( &(@3) );
-									parser->error( rdo::format("Последовательность '%s' определена как целочисленная, её даипазоны тоже должны быть челочисленными", header->name->c_str()) );
+									parser->error( rdo::format("Последовательность '%s' определена как целочисленная, её даипазоны тоже должны быть челочисленными", header->name.c_str()) );
 								}
 								if ( $2 != ((RDOFUNSequenceByHistReal *)$1)->lastTo() ) {
 									parser->lexer_loc_set( &(@2) );
@@ -1097,9 +1083,9 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 							}
 							| fun_seq_by_hist_body_real REAL_CONST INT_CONST REAL_CONST {
 								RDOFUNSequence::RDOFUNSequenceHeader* header = reinterpret_cast<RDOFUNSequenceByHistReal*>($1)->header;
-								if ( header->type->getType() == RDORTPResParam::pt_int ) {
+								if ( header->type->getType() == RDORTPParamType::pt_int ) {
 									parser->lexer_loc_set( &(@2) );
-									parser->error( rdo::format("Последовательность '%s' определена как целочисленная, её даипазоны тоже должны быть челочисленными", header->name->c_str()) );
+									parser->error( rdo::format("Последовательность '%s' определена как целочисленная, её даипазоны тоже должны быть челочисленными", header->name.c_str()) );
 								}
 								if ( *((double*)$2) != ((RDOFUNSequenceByHistReal *)$1)->lastTo() ) {
 									parser->lexer_loc_set( &(@2) );
@@ -1122,9 +1108,9 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 							}
 							| fun_seq_by_hist_body_real REAL_CONST REAL_CONST INT_CONST {
 								RDOFUNSequence::RDOFUNSequenceHeader* header = reinterpret_cast<RDOFUNSequenceByHistReal*>($1)->header;
-								if ( header->type->getType() == RDORTPResParam::pt_int ) {
+								if ( header->type->getType() == RDORTPParamType::pt_int ) {
 									parser->lexer_loc_set( &(@2) );
-									parser->error( rdo::format("Последовательность '%s' определена как целочисленная, её даипазоны тоже должны быть челочисленными", header->name->c_str()) );
+									parser->error( rdo::format("Последовательность '%s' определена как целочисленная, её даипазоны тоже должны быть челочисленными", header->name.c_str()) );
 								}
 								if ( *((double*)$2) != ((RDOFUNSequenceByHistReal *)$1)->lastTo() ) {
 									parser->lexer_loc_set( &(@2) );
@@ -1167,9 +1153,9 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 							}
 							| fun_seq_by_hist_body_real REAL_CONST INT_CONST INT_CONST {
 								RDOFUNSequence::RDOFUNSequenceHeader* header = reinterpret_cast<RDOFUNSequenceByHistReal*>($1)->header;
-								if ( header->type->getType() == RDORTPResParam::pt_int ) {
+								if ( header->type->getType() == RDORTPParamType::pt_int ) {
 									parser->lexer_loc_set( &(@2) );
-									parser->error( rdo::format("Последовательность '%s' определена как целочисленная, её даипазоны тоже должны быть челочисленными", header->name->c_str()) );
+									parser->error( rdo::format("Последовательность '%s' определена как целочисленная, её даипазоны тоже должны быть челочисленными", header->name.c_str()) );
 								}
 								if ( *((double*)$2) != ((RDOFUNSequenceByHistReal *)$1)->lastTo() ) {
 									parser->lexer_loc_set( &(@2) );
@@ -1192,9 +1178,9 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 							}
 							| fun_seq_by_hist_body_real INT_CONST REAL_CONST INT_CONST {
 								RDOFUNSequence::RDOFUNSequenceHeader* header = reinterpret_cast<RDOFUNSequenceByHistReal*>($1)->header;
-								if ( header->type->getType() == RDORTPResParam::pt_int ) {
+								if ( header->type->getType() == RDORTPParamType::pt_int ) {
 									parser->lexer_loc_set( &(@3) );
-									parser->error( rdo::format("Последовательность '%s' определена как целочисленная, её даипазоны тоже должны быть челочисленными", header->name->c_str()) );
+									parser->error( rdo::format("Последовательность '%s' определена как целочисленная, её даипазоны тоже должны быть челочисленными", header->name.c_str()) );
 								}
 								if ( $2 != ((RDOFUNSequenceByHistReal *)$1)->lastTo() ) {
 									parser->lexer_loc_set( &(@2) );
@@ -1290,7 +1276,7 @@ fun_seq_by_hist_body_real:	fun_seq_by_hist_header REAL_CONST REAL_CONST REAL_CON
 
 fun_seq_by_hist_body_enum:	fun_seq_by_hist_header IDENTIF REAL_CONST {
 								RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader* header = reinterpret_cast<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader*>($1);
-								if ( header->header->type->getType() != RDORTPResParam::pt_enum ) {
+								if ( header->header->type->getType() != RDORTPParamType::pt_enum ) {
 									parser->lexer_loc_set( &(@2) );
 									parser->error( "Значение не соответствует типу последовательности" );
 								}
@@ -1305,12 +1291,12 @@ fun_seq_by_hist_body_enum:	fun_seq_by_hist_header IDENTIF REAL_CONST {
 								}
 								parser->lexer_loc_backup();
 								parser->lexer_loc_set( &(@2) );
-								$$ = (int)(new RDOFUNSequenceByHistEnum(parser, header, (std::string*)$2, *((double*)$3)));
+								$$ = (int)(new RDOFUNSequenceByHistEnum(parser, header, *(std::string*)$2, *((double*)$3)));
 								parser->lexer_loc_restore();
 							}
 							| fun_seq_by_hist_header IDENTIF INT_CONST {
 								RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader* header = reinterpret_cast<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader*>($1);
-								if ( header->header->type->getType() != RDORTPResParam::pt_enum ) {
+								if ( header->header->type->getType() != RDORTPParamType::pt_enum ) {
 									parser->lexer_loc_set( &(@2) );
 									parser->error( "Значение не соответствует типу последовательности" );
 								}
@@ -1325,7 +1311,7 @@ fun_seq_by_hist_body_enum:	fun_seq_by_hist_header IDENTIF REAL_CONST {
 								}
 								parser->lexer_loc_backup();
 								parser->lexer_loc_set( &(@2) );
-								$$ = (int)(new RDOFUNSequenceByHistEnum(parser, header, (std::string*)$2, $3));
+								$$ = (int)(new RDOFUNSequenceByHistEnum(parser, header, *(std::string*)$2, $3));
 								parser->lexer_loc_restore();
 							}
 							| fun_seq_by_hist_body_enum IDENTIF REAL_CONST {
@@ -1340,7 +1326,7 @@ fun_seq_by_hist_body_enum:	fun_seq_by_hist_header IDENTIF REAL_CONST {
 								}
 								parser->lexer_loc_backup();
 								parser->lexer_loc_set( &(@2) );
-								((RDOFUNSequenceByHistEnum *)$1)->addEnum((std::string*)$2, *((double*)$3));
+								((RDOFUNSequenceByHistEnum *)$1)->addEnum(*(std::string*)$2, *((double*)$3));
 								parser->lexer_loc_restore();
 								$$ = $1;
 							}
@@ -1356,7 +1342,7 @@ fun_seq_by_hist_body_enum:	fun_seq_by_hist_header IDENTIF REAL_CONST {
 								}
 								parser->lexer_loc_backup();
 								parser->lexer_loc_set( &(@2) );
-								((RDOFUNSequenceByHistEnum *)$1)->addEnum((std::string*)$2, $3);
+								((RDOFUNSequenceByHistEnum *)$1)->addEnum(*(std::string*)$2, $3);
 								parser->lexer_loc_restore();
 								$$ = $1;
 							}
@@ -1422,15 +1408,15 @@ fun_seq_enumerative_header:	fun_seq_header enumerative Body {
 
 fun_seq_enumerative_body_int:	fun_seq_enumerative_header INT_CONST {
 									RDOFUNSequenceEnumerative::RDOFUNSequenceEnumerativeHeader* header = reinterpret_cast<RDOFUNSequenceEnumerative::RDOFUNSequenceEnumerativeHeader*>($1);
-									if ( header->header->type->getType() != RDORTPResParam::pt_int ) {
+									if ( header->header->type->getType() != RDORTPParamType::pt_int ) {
 										parser->lexer_loc_set( &(@2) );
 										switch ( header->header->type->getType() ) {
-											case RDORTPResParam::pt_real: {
-												parser->error( rdo::format("Последовательность '%s' определена как вещественная, её значения тоже должны быть вещественными", header->header->name->c_str()) );
+											case RDORTPParamType::pt_real: {
+												parser->error( rdo::format("Последовательность '%s' определена как вещественная, её значения тоже должны быть вещественными", header->header->name.c_str()) );
 												break;
 											}
-											case RDORTPResParam::pt_enum: {
-												parser->error( rdo::format("Последовательность '%s' определена как перечислимая, её значения тоже должны быть перечислимого типа", header->header->name->c_str()) );
+											case RDORTPParamType::pt_enum: {
+												parser->error( rdo::format("Последовательность '%s' определена как перечислимая, её значения тоже должны быть перечислимого типа", header->header->name.c_str()) );
 												break;
 											}
 										}
@@ -1447,15 +1433,15 @@ fun_seq_enumerative_body_int:	fun_seq_enumerative_header INT_CONST {
 
 fun_seq_enumerative_body_real:	fun_seq_enumerative_header REAL_CONST {
 									RDOFUNSequenceEnumerative::RDOFUNSequenceEnumerativeHeader* header = reinterpret_cast<RDOFUNSequenceEnumerative::RDOFUNSequenceEnumerativeHeader*>($1);
-									if ( header->header->type->getType() != RDORTPResParam::pt_real ) {
+									if ( header->header->type->getType() != RDORTPParamType::pt_real ) {
 										parser->lexer_loc_set( &(@2) );
 										switch ( header->header->type->getType() ) {
-											case RDORTPResParam::pt_int: {
-												parser->error( rdo::format("Последовательность '%s' определена как целочисленная, её значения тоже должны быть челочисленными", header->header->name->c_str()) );
+											case RDORTPParamType::pt_int: {
+												parser->error( rdo::format("Последовательность '%s' определена как целочисленная, её значения тоже должны быть челочисленными", header->header->name.c_str()) );
 												break;
 											}
-											case RDORTPResParam::pt_enum: {
-												parser->error( rdo::format("Последовательность '%s' определена как перечислимая, её значения тоже должны быть перечислимого типа", header->header->name->c_str()) );
+											case RDORTPParamType::pt_enum: {
+												parser->error( rdo::format("Последовательность '%s' определена как перечислимая, её значения тоже должны быть перечислимого типа", header->header->name.c_str()) );
 												break;
 											}
 										}
@@ -1472,28 +1458,28 @@ fun_seq_enumerative_body_real:	fun_seq_enumerative_header REAL_CONST {
 
 fun_seq_enumerative_body_enum:	fun_seq_enumerative_header IDENTIF {
 									RDOFUNSequenceEnumerative::RDOFUNSequenceEnumerativeHeader* header = reinterpret_cast<RDOFUNSequenceEnumerative::RDOFUNSequenceEnumerativeHeader*>($1);
-									if ( header->header->type->getType() != RDORTPResParam::pt_enum ) {
+									if ( header->header->type->getType() != RDORTPParamType::pt_enum ) {
 										parser->lexer_loc_set( &(@2) );
 										switch ( header->header->type->getType() ) {
-											case RDORTPResParam::pt_int: {
-												parser->error( rdo::format("Последовательность '%s' определена как целочисленная, её значения тоже должны быть челочисленными", header->header->name->c_str()) );
+											case RDORTPParamType::pt_int: {
+												parser->error( rdo::format("Последовательность '%s' определена как целочисленная, её значения тоже должны быть челочисленными", header->header->name.c_str()) );
 												break;
 											}
-											case RDORTPResParam::pt_real: {
-												parser->error( rdo::format("Последовательность '%s' определена как вещественная, её значения тоже должны быть вещественными", header->header->name->c_str()) );
+											case RDORTPParamType::pt_real: {
+												parser->error( rdo::format("Последовательность '%s' определена как вещественная, её значения тоже должны быть вещественными", header->header->name.c_str()) );
 												break;
 											}
 										}
 									}
 									parser->lexer_loc_backup();
 									parser->lexer_loc_set( &(@2) );
-									$$ = (int)(new RDOFUNSequenceEnumerativeEnum(parser, (RDOFUNSequenceEnumerative::RDOFUNSequenceEnumerativeHeader*)$1, (std::string*)$2));
+									$$ = (int)(new RDOFUNSequenceEnumerativeEnum(parser, (RDOFUNSequenceEnumerative::RDOFUNSequenceEnumerativeHeader*)$1, *(std::string*)$2));
 									parser->lexer_loc_restore();
 								}
 								| fun_seq_enumerative_body_enum IDENTIF {
 									parser->lexer_loc_backup();
 									parser->lexer_loc_set( &(@2) );
-									((RDOFUNSequenceEnumerativeEnum *)$1)->addEnum((std::string*)$2); $$ = $1;
+									((RDOFUNSequenceEnumerativeEnum *)$1)->addEnum(*(std::string*)$2); $$ = $1;
 									parser->lexer_loc_restore();
 								}
 								| fun_seq_enumerative_body_enum error {
@@ -1584,7 +1570,7 @@ fun_arithm: fun_arithm '+' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOF
 			}
 			| INT_CONST						{ $$ = (int)new RDOFUNArithm( parser, (int)$1, RDOParserSrcInfo( @1, reinterpret_cast<RDOLexer*>(lexer)->YYText() ) );     }
 			| REAL_CONST					{ $$ = (int)new RDOFUNArithm( parser, (double*)$1, RDOParserSrcInfo( @1, reinterpret_cast<RDOLexer*>(lexer)->YYText() ) ); }
-			| IDENTIF						{ $$ = (int)new RDOFUNArithm( parser, (std::string*)$1, @1 );                                                              }
+			| IDENTIF						{ $$ = (int)new RDOFUNArithm( parser, *(std::string*)$1, @1 );                                                             }
 			| '-' fun_arithm %prec UMINUS	{
 				RDOParserSrcInfo info;
 				info.setSrcPos( @1, @2 );
@@ -1608,7 +1594,7 @@ fun_arithm_func_call:	IDENTIF '(' fun_arithm_func_call_pars ')' {
 							fun->name_error_pos.setSrcPos( @1 );
 							fun->setSrcPos( @1, @4 );
 							fun->setSrcText( *(std::string*)$1 + "(" + fun->src_text() + ")" );
-							RDOFUNArithm* arithm = fun->createCall( (std::string*)$1 );
+							RDOFUNArithm* arithm = fun->createCall( *(std::string*)$1 );
 							$$ = (int)arithm;
 						}
 						| IDENTIF '(' error {
@@ -1646,7 +1632,7 @@ fun_group_keyword:	Exist			{ $$ = 1; }
 fun_group_header:	fun_group_keyword '(' IDENTIF_COLON {
 						parser->lexer_loc_backup();
 						parser->lexer_loc_set( @3.first_line, @3.first_column + ((std::string*)$3)->length() );
-						$$ = (int)(new RDOFUNGroupLogic( parser, $1, (std::string *)$3) );
+						$$ = (int)(new RDOFUNGroupLogic( parser, $1, *(std::string *)$3) );
 						parser->lexer_loc_restore();
 					}
 					| fun_group_keyword '(' error {
@@ -1684,7 +1670,7 @@ fun_group:			fun_group_header fun_logic ')' {
 // ---------- Select
 // ----------------------------------------------------------------------------
 fun_select_header:	Select '(' IDENTIF_COLON {
-						RDOFUNSelect* select = new RDOFUNSelect(parser, (std::string*)$3);
+						RDOFUNSelect* select = new RDOFUNSelect(parser, *(std::string*)$3);
 						select->setSrcText( "Select(" + *(std::string*)$3 + ": " );
 						$$ = (int)select;
 					}

@@ -690,10 +690,10 @@ void RDOThreadCodeComp::proc( RDOMessageInfo& msg )
 			const std::vector< rdoParse::RDORTPResType* >& rtp_list = parser->getRTPResType(); 
 			std::vector< rdoParse::RDORTPResType* >::const_iterator rtp_it = rtp_list.begin();
 			while ( rtp_it != rtp_list.end() ) {
-				const std::vector< const rdoParse::RDORTPParamDesc* >& param_list = (*rtp_it)->getParams();
-				std::vector< const rdoParse::RDORTPParamDesc* >::const_iterator param_it = param_list.begin();
+				const std::vector< const rdoParse::RDORTPParam* >& param_list = (*rtp_it)->getParams();
+				std::vector< const rdoParse::RDORTPParam* >::const_iterator param_it = param_list.begin();
 				while ( param_it != param_list.end() ) {
-					data->result += *(*param_it)->getName() + ' ';
+					data->result += (*param_it)->getName() + ' ';
 					param_it++;
 				}
 				rtp_it++;

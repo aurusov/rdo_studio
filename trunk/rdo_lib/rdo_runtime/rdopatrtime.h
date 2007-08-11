@@ -192,7 +192,7 @@ public:
 		}
 		relResID[rel_res_id] = res_id; 
 	}
-	virtual void addHotKey( std::string* hotKey ) {}
+	virtual void addHotKey( const std::string& hotKey ) {}
 	void writeModelStructure( std::stringstream& stream );
 };
 
@@ -296,7 +296,7 @@ public:
 	RDOActivityKeyboardRuntime( RDORuntime* rTime, RDOPatternRuntime* _pattern, bool _trace, const std::string& _oprName );
 	RDOActivityKeyboardRuntime( RDORuntime* rTime, RDOPatternRuntime* _pattern, bool _trace, RDOCalc* condition, const std::string& _oprName );
 
-	void addHotKey( std::string* hotKey );
+	virtual void addHotKey( const std::string& hotKey );
 	bool choiceFrom( RDOSimulator* sim );
 };
 

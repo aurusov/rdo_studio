@@ -101,37 +101,37 @@ void RDOSMR::setTerminateIf(RDOFUNLogic *logic)
 		parser->error("Second Terminate_if entry");
 }
 
-void RDOSMR::setConstValue(std::string *constName, RDOFUNArithm *arithm)
+void RDOSMR::setConstValue( const std::string& constName, RDOFUNArithm* arithm )
 {
 	const RDOFUNConstant *cons = parser->findFUNConst(constName);
 	if(!cons)
-		parser->error("Undefined constant: " + *constName);
+		parser->error("Undefined constant: " + constName);
 
-	rdoRuntime::RDOCalc *calc = arithm->createCalc(cons->descr->getType());
+	rdoRuntime::RDOCalc *calc = arithm->createCalc(cons->getType());
 	parser->runTime->addInitCalc(new rdoRuntime::RDOCalcSetConst( parser->runTime, cons->number, calc ));
 }
 
-void RDOSMR::setResParValue(std::string *resName, std::string *parName, RDOFUNArithm *arithm)
+void RDOSMR::setResParValue( const std::string& resName, const std::string& parName, RDOFUNArithm* arithm )
 {
 	const RDORSSResource *res = parser->findRSSResource(resName);
 	if(!res)
-		parser->error("Undefined resource name: " + *resName);
+		parser->error("Undefined resource name: " + resName);
 
-	const RDORTPParamDesc *descr = res->getType()->findRTPParam(parName);
+	const RDORTPParam *descr = res->getType()->findRTPParam(parName);
 	if(!descr)
-		parser->error("Undefined resource parameter name: " + *parName);
+		parser->error("Undefined resource parameter name: " + parName);
 
 	int parNumb = res->getType()->getRTPParamNumber(parName);
 	rdoRuntime::RDOCalc *calc = arithm->createCalc(descr->getType());
 	parser->runTime->addInitCalc(new rdoRuntime::RDOSetResourceParamCalc( parser->runTime, res->getNumber(), parNumb, calc ));
 }
 
-void RDOSMR::setSeed(std::string *seqName, int _base)
+void RDOSMR::setSeed( const std::string& seqName, int _base )
 {
-	const RDOFUNSequence *seq = parser->findSequence(seqName);
-	if(!seq)
-		parser->error("Undefined sequence: " + *seqName);
-
+	const RDOFUNSequence* seq = parser->findSequence( seqName );
+	if ( !seq ) {
+		parser->error( "Undefined sequence: " + seqName );
+	}
 	seq->initSeq->setBase(_base);
 }
 

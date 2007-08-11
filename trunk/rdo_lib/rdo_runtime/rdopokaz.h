@@ -42,7 +42,7 @@ private:
 	double timePrev;
 
 public:
-	RDOPMDWatchPar( RDOSimulatorTrace* _sim, std::string* _name, bool _trace, std::string* _resName, std::string* _parName, int _resNumber, int _parNumber );
+	RDOPMDWatchPar( RDOSimulatorTrace* _sim, std::string* _name, bool _trace, const std::string& _resName, const std::string& _parName, int _resNumber, int _parNumber );
 	std::string traceValue();
 	bool resetPokaz(RDOSimulator *sim);
 	bool checkPokaz(RDOSimulator *sim);
@@ -97,7 +97,7 @@ private:
 	double timePrev;
 
 public:
-	RDOPMDWatchQuant( RDOSimulatorTrace* _sim, std::string* _name, bool _trace, std::string* _resTypeName, int _rtp_id );
+	RDOPMDWatchQuant( RDOSimulatorTrace* _sim, std::string* _name, bool _trace, const std::string& _resTypeName, int _rtp_id );
 	std::string traceValue();
 	bool resetPokaz(RDOSimulator *sim);
 	bool checkPokaz(RDOSimulator *sim);
@@ -124,7 +124,7 @@ private:
 	double maxValue;
 
 public:
-	RDOPMDWatchValue( RDOSimulatorTrace* _sim, std::string* _name, bool _trace, std::string* _resTypeName, int _rtp_id );
+	RDOPMDWatchValue( RDOSimulatorTrace* _sim, std::string* _name, bool _trace, const std::string& _resTypeName, int _rtp_id );
 	std::string traceValue();
 	bool resetPokaz(RDOSimulator *sim);
 	bool checkPokaz(RDOSimulator *sim);

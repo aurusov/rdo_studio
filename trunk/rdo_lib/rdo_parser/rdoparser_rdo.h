@@ -41,32 +41,6 @@ public:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOParserRTP
-// ----------------------------------------------------------------------------
-class RDOParserRTP: public RDOParserRDO
-{
-public:
-	RDOParserRTP( RDOParser* _parser );
-
-	virtual RDOLexer* getLexer( std::istream& in_stream, std::ostream& out_stream );
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOLexerRTP
-// ----------------------------------------------------------------------------
-class RDOLexerRTP: public RDOLexer
-{
-public:
-	RDOLexerRTP( RDOParserBase* parser, std::istream* _yyin, std::ostream* _yyout ):
-		RDOLexer( parser, _yyin, _yyout ),
-		enum_param_cnt( 0 )
-	{
-	};
-
-	int enum_param_cnt;
-};
-
-// ----------------------------------------------------------------------------
 // ---------- RDOParserRSS
 // ----------------------------------------------------------------------------
 class RDOParserRSS: public RDOParserRDO
@@ -87,32 +61,6 @@ public:
 
 	virtual void parse();
 	virtual void parse( std::istream& in_stream ) { parse(); }
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOParserFUN
-// ----------------------------------------------------------------------------
-class RDOParserFUN: public RDOParserRDO
-{
-public:
-	RDOParserFUN( RDOParser* _parser );
-
-	virtual RDOLexer* getLexer( std::istream& in_stream, std::ostream& out_stream );
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOLexerFUN
-// ----------------------------------------------------------------------------
-class RDOLexerFUN: public RDOLexer
-{
-public:
-	RDOLexerFUN( RDOParserBase* parser, std::istream* _yyin, std::ostream* _yyout ):
-		RDOLexer( parser, _yyin, _yyout ),
-		enum_param_cnt( 0 )
-	{
-	};
-
-	int enum_param_cnt;
 };
 
 // ----------------------------------------------------------------------------

@@ -106,6 +106,12 @@ RDOParserSrcInfo::RDOParserSrcInfo( const YYLTYPE& _pos, const std::string& _tex
 	setSrcText( _text );
 }
 
+RDOParserSrcInfo::RDOParserSrcInfo( const YYLTYPE& _pos_begin, const YYLTYPE& _pos_end )
+{
+	init();
+	setSrcPos( _pos_begin, _pos_end );
+}
+
 void RDOParserSrcInfo::init()
 {
 	setSrcFileType( parser->getFileToParse() );
