@@ -307,19 +307,19 @@ RDOValue RDOCalcCreateEmptyResource::calcValue( RDORuntime* runtime ) const
 // ----------------------------------------------------------------------------
 // ---------- Выбор ресурсов
 // ----------------------------------------------------------------------------
-RDOSelectResourceCalc::RDOSelectResourceCalc( RDORuntimeParent* _parent, int _rel_res_id, RDOCalc* _choice, RDOCalc* _selection_calc, Type _selection_type ):
+RDOSelectResourceCalc::RDOSelectResourceCalc( RDORuntimeParent* _parent, int _rel_res_id, RDOCalc* _choice_calc, RDOCalc* _order_calc, Type _order_type ):
 	RDOCalc( _parent ),
 	rel_res_id( _rel_res_id ),
-	choice( _choice ),
-	selection_calc( _selection_calc ),
-	selection_type( _selection_type )
+	choice_calc( _choice_calc ),
+	order_calc( _order_calc ),
+	order_type( _order_type )
 {
 }
 
 RDOValue RDOSelectResourceDirectCalc::calcValue( RDORuntime* runtime ) const
 {
 	runtime->setRelRes( rel_res_id, res_id );
-	if ( choice && !choice->calcValueBase( runtime ) ) {
+	if ( choice_calc && !choice_calc->calcValueBase( runtime ) ) {
 		runtime->setRelRes( rel_res_id, -1 );
 		return 0;
 	}
@@ -338,38 +338,38 @@ RDOValue RDOSelectResourceByTypeCalc::calcValue( RDORuntime* runtime ) const
 
 			int res_id = (*it)->number;
 
-			switch ( selection_type ) {
-				case st_empty: {
+			switch ( order_type ) {
+				case order_empty: {
 					return 1;
 				}
-				case st_first: {
+				case order_first: {
 					runtime->setRelRes( rel_res_id, res_id );
-					if ( choice && !choice->calcValueBase( runtime ) ) {
+					if ( choice_calc && !choice_calc->calcValueBase( runtime ) ) {
 						runtime->setRelRes( rel_res_id, -1 );
 						continue;
 					}
 					return 1;
 				}
-				case st_with_min: {
+				case order_with_min: {
 					runtime->setRelRes( rel_res_id, res_id );
-					if ( choice && !choice->calcValueBase( runtime ) ) {
+					if ( choice_calc && !choice_calc->calcValueBase( runtime ) ) {
 						runtime->setRelRes( rel_res_id, -1 );
 						continue;
 					}
-					RDOValue tmp = selection_calc->calcValueBase( runtime );
+					RDOValue tmp = order_calc->calcValueBase( runtime );
 					if ( tmp < minVal ) {
 						minVal        = tmp;
 						res_minmax_id = res_id;
 					}
 					break;
 				}
-				case st_with_max: {
+				case order_with_max: {
 					runtime->setRelRes( rel_res_id, res_id );
-					if ( choice && !choice->calcValueBase( runtime ) ) {
+					if ( choice_calc && !choice_calc->calcValueBase( runtime ) ) {
 						runtime->setRelRes( rel_res_id, -1 );
 						continue;
 					}
-					RDOValue tmp = selection_calc->calcValueBase( runtime );
+					RDOValue tmp = order_calc->calcValueBase( runtime );
 					if ( tmp > maxVal ) {
 						maxVal        = tmp;
 						res_minmax_id = res_id;
@@ -398,7 +398,7 @@ void RDOSelectResourceCommonCalc::getBest(std::vector<std::vector<int> > &allNum
 				return;	// state not valid
 		}
 
-		RDOValue newVal = choice->calcValueBase( sim );
+		RDOValue newVal = choice_calc->calcValueBase( sim );
 		if(!hasBest || (useCommonWithMax && (newVal > bestVal)) ||
 			(!useCommonWithMax && (newVal < bestVal)))	// found better value
 		{
@@ -468,13 +468,13 @@ std::vector< int > RDOSelectResourceByTypeCommonCalc::getPossibleNumbers( RDORun
 
 bool RDOSelectResourceDirectCommonCalc::callChoice(RDORuntime *sim) const
 {
-	if ( choice && !choice->calcValueBase( sim ) ) return 0;
+	if ( choice_calc && !choice_calc->calcValueBase( sim ) ) return 0;
 	return 1;
 }
 
 bool RDOSelectResourceByTypeCommonCalc::callChoice(RDORuntime *sim) const
 {
-	if ( choice && !choice->calcValueBase( sim ) ) return 0;
+	if ( choice_calc && !choice_calc->calcValueBase( sim ) ) return 0;
 	return 1;
 }
 

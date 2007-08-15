@@ -341,8 +341,7 @@ void RDOFUNArithm::init( const RDOParserSrcInfo& res_name_src_info, const RDOPar
 	if ( res ) {
 		// Это ресурс с закладки RSS
 		if ( res->getType()->isTemporary() ) {
-			parser->lexer_loc_set( res_name_src_info.src_pos().last_line, res_name_src_info.src_pos().last_pos );
-			parser->error( rdo::format("Нельзя использовать временный ресурс: %s", res_name_src_info.src_text().c_str()) );
+			parser->error( res_name_src_info, rdo::format("Нельзя использовать временный ресурс: %s", res_name_src_info.src_text().c_str()) );
 //			parser->error(("Cannot use temporary resource in function: " + *res_name_src_info.src_text()).c_str());
 		}
 		int resNumb = res->getNumber();
@@ -365,8 +364,7 @@ void RDOFUNArithm::init( const RDOParserSrcInfo& res_name_src_info, const RDOPar
 			RDOFUNGroup* currGroup = parser->getFUNGroupStack().back();
 			int parNumb = currGroup->resType->getRTPParamNumber( par_name_src_info.src_text() );
 			if ( parNumb == -1 ) {
-				parser->lexer_loc_set( par_name_src_info.src_pos().last_line, par_name_src_info.src_pos().last_pos );
-				parser->error( rdo::format("Неизвестный параметр ресурса: %s", par_name_src_info.src_text().c_str()) );
+				parser->error( par_name_src_info, rdo::format("Неизвестный параметр ресурса: %s", par_name_src_info.src_text().c_str()) );
 			}
 			calc = new rdoRuntime::RDOCalcGetGroupResParam( parser->runTime, parNumb );
 			calc->setSrcInfo( src_info() );
@@ -382,24 +380,20 @@ void RDOFUNArithm::init( const RDOParserSrcInfo& res_name_src_info, const RDOPar
 			if ( !pat->currRelRes ) {
 				// Внутри with_min-common-choice или $Time
 				if ( rel->begin == rdoRuntime::RDOResourceTrace::CS_NonExist || rel->begin == rdoRuntime::RDOResourceTrace::CS_Create ) {
-					parser->lexer_loc_set( res_name_src_info.src_pos().last_line, res_name_src_info.src_pos().last_pos );
-					parser->error( rdo::format("Релевантный ресурс не может быть использован, т.к. он еще не существует: %s", rel->getName().c_str()) );
+					parser->error( res_name_src_info, rdo::format("Релевантный ресурс не может быть использован, т.к. он еще не существует: %s", rel->getName().c_str()) );
 				}
 			} else {
 				// Внутри $Body
 				// Проверяем использование неинициализированного рел.ресурса в Choice from другом рел.ресурсе
 				if ( pat->currRelRes->isChoiceFromState() ) {
 					if ( !rel->alreadyHaveConverter && !rel->isDirect() ) {
-						parser->lexer_loc_set( res_name_src_info.src_pos().last_line, res_name_src_info.src_pos().last_pos );
-						parser->error( rdo::format("Релевантный ресурс неопределен: %s. Его нельзя использовать в условиях выбора других ресурсов до его собственного Choice from", rel->getName().c_str()) );
+						parser->error( res_name_src_info, rdo::format("Релевантный ресурс неопределен: %s. Его нельзя использовать в условиях выбора других ресурсов до его собственного Choice from", rel->getName().c_str()) );
 					}
 					if ( rel->begin == rdoRuntime::RDOResourceTrace::CS_NonExist ) {
-						parser->lexer_loc_set( res_name_src_info.src_pos().last_line, res_name_src_info.src_pos().last_pos );
-						parser->error( rdo::format("Релевантный ресурс в начале операции не существует (NonExist): %s", rel->getName().c_str()) );
+						parser->error( res_name_src_info, rdo::format("Релевантный ресурс в начале операции не существует (NonExist): %s", rel->getName().c_str()) );
 					}
 					if ( rel->begin == rdoRuntime::RDOResourceTrace::CS_Create ) {
-						parser->lexer_loc_set( res_name_src_info.src_pos().last_line, res_name_src_info.src_pos().last_pos );
-						parser->error( rdo::format("Сразу после создания (Create) релевантный ресурс можно использовать только в конверторах: %s", rel->getName().c_str()) );
+						parser->error( res_name_src_info, rdo::format("Сразу после создания (Create) релевантный ресурс '%s' можно использовать только в конверторах, но не в условии выбора", rel->getName().c_str()) );
 					}
 				}
 				// Проверяем использование временного рел.ресурса внутри конвертора другого рел.ресурса
@@ -407,31 +401,25 @@ void RDOFUNArithm::init( const RDOParserSrcInfo& res_name_src_info, const RDOPar
 					// В конверторе начала
 					if ( pat->currRelRes->currentState == RDORelevantResource::convertBegin ) {
 						if ( rel->begin == rdoRuntime::RDOResourceTrace::CS_Create && !rel->alreadyHaveConverter ) {
-							parser->lexer_loc_set( res_name_src_info.src_pos().last_line, res_name_src_info.src_pos().last_pos );
-							parser->error( rdo::format("Релевантный ресурс нельзя использовать до его создания (Create): %s", rel->getName().c_str()) );
+							parser->error( res_name_src_info, rdo::format("Релевантный ресурс нельзя использовать до его создания (Create): %s", rel->getName().c_str()) );
 						}
 						if ( rel->begin == rdoRuntime::RDOResourceTrace::CS_Erase && rel->alreadyHaveConverter ) {
-							parser->lexer_loc_set( res_name_src_info.src_pos().last_line, res_name_src_info.src_pos().last_pos );
-							parser->error( rdo::format("Релевантный ресурс нельзя использовать полсле удаления (Erase): %s", rel->getName().c_str()) );
+							parser->error( res_name_src_info, rdo::format("Релевантный ресурс нельзя использовать полсле удаления (Erase): %s", rel->getName().c_str()) );
 						}
 						if ( rel->begin == rdoRuntime::RDOResourceTrace::CS_NonExist ) {
-							parser->lexer_loc_set( res_name_src_info.src_pos().last_line, res_name_src_info.src_pos().last_pos );
-							parser->error( rdo::format("Релевантный ресурс не существует в этом конверторе (NonExist): %s", rel->getName().c_str()) );
+							parser->error( res_name_src_info, rdo::format("Релевантный ресурс не существует в этом конверторе (NonExist): %s", rel->getName().c_str()) );
 						}
 					}
 					// В конверторе конца
 					if ( pat->currRelRes->currentState == RDORelevantResource::convertEnd ) {
 						if ( rel->end == rdoRuntime::RDOResourceTrace::CS_Create && !rel->alreadyHaveConverter ) {
-							parser->lexer_loc_set( res_name_src_info.src_pos().last_line, res_name_src_info.src_pos().last_pos );
-							parser->error( rdo::format("Релевантный ресурс нельзя использовать до его создания (Create): %s", rel->getName().c_str()) );
+							parser->error( res_name_src_info, rdo::format("Релевантный ресурс нельзя использовать до его создания (Create): %s", rel->getName().c_str()) );
 						}
 						if ( rel->end == rdoRuntime::RDOResourceTrace::CS_Erase && rel->alreadyHaveConverter ) {
-							parser->lexer_loc_set( res_name_src_info.src_pos().last_line, res_name_src_info.src_pos().last_pos );
-							parser->error( rdo::format("Релевантный ресурс нельзя использовать полсле удаления (Erase): %s", rel->getName().c_str()) );
+							parser->error( res_name_src_info, rdo::format("Релевантный ресурс нельзя использовать полсле удаления (Erase): %s", rel->getName().c_str()) );
 						}
 						if ( rel->end == rdoRuntime::RDOResourceTrace::CS_NonExist ) {
-							parser->lexer_loc_set( res_name_src_info.src_pos().last_line, res_name_src_info.src_pos().last_pos );
-							parser->error( rdo::format("Релевантный ресурс не существует в этом конверторе (NonExist): %s", rel->getName().c_str()) );
+							parser->error( res_name_src_info, rdo::format("Релевантный ресурс не существует в этом конверторе (NonExist): %s", rel->getName().c_str()) );
 						}
 					}
 				}
@@ -439,8 +427,7 @@ void RDOFUNArithm::init( const RDOParserSrcInfo& res_name_src_info, const RDOPar
 			int relResNumb = pat->findRelevantResourceNum( res_name_src_info.src_text() );
 			int parNumb    = rel->getType()->getRTPParamNumber( par_name_src_info.src_text() );
 			if ( parNumb == -1 ) {
-				parser->lexer_loc_set( par_name_src_info.src_pos().last_line, par_name_src_info.src_pos().last_pos );
-				parser->error( rdo::format("Неизвестный параметр ресурса: %s", par_name_src_info.src_text().c_str()) );
+				parser->error( par_name_src_info, rdo::format("Неизвестный параметр ресурса: %s", par_name_src_info.src_text().c_str()) );
 //				parser->error( "Unknown resource parameter: " + *par_name_src_info.src_text() );
 			}
 			calc = new rdoRuntime::RDOCalcGetRelevantResParam( parser->runTime, relResNumb, parNumb );
@@ -456,8 +443,7 @@ void RDOFUNArithm::init( const RDOParserSrcInfo& res_name_src_info, const RDOPar
 			int relResNumb = parser->getLastDPTSearch()->lastActivity->getRule()->findRelevantResourceNum( res_name_src_info.src_text() );
 			int parNumb    = rel->getType()->getRTPParamNumber( par_name_src_info.src_text() );
 			if ( parNumb == -1 ) {
-				parser->lexer_loc_set( par_name_src_info.src_pos().last_line, par_name_src_info.src_pos().last_pos );
-				parser->error( rdo::format("Неизвестный параметр ресурса: %s", par_name_src_info.src_text().c_str()) );
+				parser->error( par_name_src_info, rdo::format("Неизвестный параметр ресурса: %s", par_name_src_info.src_text().c_str()) );
 			}
 
 			calc = new rdoRuntime::RDOCalcGetRelevantResParam( parser->runTime, relResNumb, parNumb );
@@ -469,8 +455,7 @@ void RDOFUNArithm::init( const RDOParserSrcInfo& res_name_src_info, const RDOPar
 			return;
 		}
 	}
-	parser->lexer_loc_set( res_name_src_info.src_pos().last_line, res_name_src_info.src_pos().last_pos );
-	parser->error( rdo::format("Неизвестный ресурс: %s", res_name_src_info.src_text().c_str()) );
+	parser->error( res_name_src_info, rdo::format("Неизвестный ресурс: %s", res_name_src_info.src_text().c_str()) );
 //	parser->error(("Unknown resource name: " + *res_name_src_info.src_text()).c_str());
 }
 

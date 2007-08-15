@@ -219,8 +219,8 @@ dpt_process_line:	IDENTIF	{
 
 	RDOPATParamsSet* generate_pat_params = new RDOPATParamsSet();
 	generate_pat_params->addIdentif( rtp_trans_param_name, new RDOFUNArithm( time_now ) );
-	ie->addRelResBody(rel_res_name);
-	ie->addRelResConvertEvent(true,generate_pat_params);
+	ie->addRelResBody( rel_res_name );
+	ie->addRelResConvertEvent( true, generate_pat_params );
 	ie->end();
 
 	// Создадим активность

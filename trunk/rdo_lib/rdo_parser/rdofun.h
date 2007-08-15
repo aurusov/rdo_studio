@@ -29,20 +29,26 @@ class RDORTPEnum;
 class RDORTPResType;
 class RDORTPParam;
 
-class RDOFUNFunctionParam: public RDODeletable, public RDOParserSrcInfo
+class RDOFUNFunctionParam: public RDOParserObject, public RDOParserSrcInfo
 {
 private:
-	std::string      name;
 	RDORTPParamType* type;
 
 public:
-	RDOFUNFunctionParam( const std::string& _name, RDORTPParamType* _type ):
-		name( _name ),
+	RDOFUNFunctionParam( const RDOParserObject* _parent, const std::string& _name, RDORTPParamType* _type ):
+		RDOParserObject( _parent ),
+		RDOParserSrcInfo( _name ),
 		type( _type )
 	{
 	}
-	const std::string& getName() const           { return name; };
-	const RDORTPParamType* const getType() const { return type; };
+	RDOFUNFunctionParam( const RDOParserObject* _parent, const RDOParserSrcInfo& _src_info, RDORTPParamType* _type ):
+		RDOParserObject( _parent ),
+		RDOParserSrcInfo( _src_info ),
+		type( _type )
+	{
+	}
+	const std::string& getName() const           { return src_info().src_text(); }
+	const RDORTPParamType* const getType() const { return type;                  }
 };
 
 class RDOFUNFunctionListElement: public RDOParserObject, public RDOParserSrcInfo

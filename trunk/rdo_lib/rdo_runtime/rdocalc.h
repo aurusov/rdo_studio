@@ -1161,18 +1161,18 @@ class RDOSelectResourceCalc: public RDOCalc
 {
 public:
 	enum Type {
-		st_empty = 0,
-		st_first,
-		st_with_min, 
-		st_with_max
+		order_empty = 0,
+		order_first,
+		order_with_min, 
+		order_with_max
 	};
 
 protected:
 	int       rel_res_id;
-	RDOCalc*  choice;
-	RDOCalc*  selection_calc;
-	Type      selection_type;
-	RDOSelectResourceCalc( RDORuntimeParent* _parent, int _rel_res_id, RDOCalc* _choice = NULL, RDOCalc* _selection_calc = NULL, Type _selection_type = st_empty );
+	RDOCalc*  choice_calc;
+	RDOCalc*  order_calc;
+	Type      order_type;
+	RDOSelectResourceCalc( RDORuntimeParent* _parent, int _rel_res_id, RDOCalc* _choice_calc = NULL, RDOCalc* _order_calc = NULL, Type _order_type = order_empty );
 };
 
 class RDOSelectResourceNonExistCalc: public RDOSelectResourceCalc
@@ -1194,8 +1194,8 @@ protected:
 	int res_id;
 
 public:
-	RDOSelectResourceDirectCalc( RDORuntimeParent* _parent, int _rel_res_id, int _res_id, RDOCalc* _choice = NULL, RDOCalc* _selection_calc = NULL, Type _selection_type = st_empty ):
-		RDOSelectResourceCalc( _parent, _rel_res_id, _choice, _selection_calc, _selection_type ),
+	RDOSelectResourceDirectCalc( RDORuntimeParent* _parent, int _rel_res_id, int _res_id, RDOCalc* _choice_calc = NULL, RDOCalc* _order_calc = NULL, Type _order_type = order_empty ):
+		RDOSelectResourceCalc( _parent, _rel_res_id, _choice_calc, _order_calc, _order_type ),
 		res_id( _res_id )
 	{
 	}
@@ -1208,8 +1208,8 @@ protected:
 	int resType;
 
 public:
-	RDOSelectResourceByTypeCalc( RDORuntimeParent* _parent, int _rel_res_id, int _resType, RDOCalc* _choice = NULL, RDOCalc* _selection_calc = NULL, Type _selection_type = st_empty ):
-		RDOSelectResourceCalc( _parent, _rel_res_id, _choice, _selection_calc, _selection_type ),
+	RDOSelectResourceByTypeCalc( RDORuntimeParent* _parent, int _rel_res_id, int _resType, RDOCalc* _choice_calc = NULL, RDOCalc* _order_calc = NULL, Type _order_type = order_empty ):
+		RDOSelectResourceCalc( _parent, _rel_res_id, _choice_calc, _order_calc, _order_type ),
 		resType( _resType )
 	{
 	}
@@ -1226,19 +1226,19 @@ public:
 class RDOSelectResourceCommonCalc: public RDOCalc
 {
 private:
-	RDOCalc* choice;
+	RDOCalc* choice_calc;
 	std::vector<RDOSelectResourceCommon *> resSelectors;
 	bool useCommonWithMax;
 	void getBest(std::vector<std::vector<int> > &allNumbs, int level, std::vector<int> &res, RDOValue &bestVal, RDORuntime *sim, bool &hasBest) const;
 
 public:
-	RDOSelectResourceCommonCalc( RDORuntimeParent* _parent, const std::vector< RDOSelectResourceCommon* >& _resSelectors, bool _useCommonWithMax, RDOCalc* _choice ):
+	RDOSelectResourceCommonCalc( RDORuntimeParent* _parent, const std::vector< RDOSelectResourceCommon* >& _resSelectors, bool _useCommonWithMax, RDOCalc* _choice_calc ):
 		RDOCalc( _parent ),
 		resSelectors( _resSelectors ),
 		useCommonWithMax( _useCommonWithMax ),
-		choice( _choice )
+		choice_calc( _choice_calc )
 	{
-		if ( choice ) setSrcInfo( choice->src_info() );
+		if ( choice_calc ) setSrcInfo( choice_calc->src_info() );
 	}
 	virtual RDOValue calcValue( RDORuntime* runtime ) const;
 };
@@ -1246,8 +1246,8 @@ public:
 class RDOSelectResourceDirectCommonCalc: public RDOSelectResourceDirectCalc, public RDOSelectResourceCommon
 {
 public:
-	RDOSelectResourceDirectCommonCalc( RDORuntimeParent* _parent, int _relNumb, int _resNumb, RDOCalc* _choice = NULL, RDOCalc* _selection_calc = NULL, Type _selection_type = st_empty ):
-		RDOSelectResourceDirectCalc( _parent, _relNumb, _resNumb, _choice, _selection_calc, _selection_type )
+	RDOSelectResourceDirectCommonCalc( RDORuntimeParent* _parent, int _relNumb, int _resNumb, RDOCalc* _choice_calc = NULL, RDOCalc* _order_calc = NULL, Type _order_type = order_empty ):
+		RDOSelectResourceDirectCalc( _parent, _relNumb, _resNumb, _choice_calc, _order_calc, _order_type )
 	{
 	}
 	std::vector<int> getPossibleNumbers( RDORuntime* sim ) const;
@@ -1257,8 +1257,8 @@ public:
 class RDOSelectResourceByTypeCommonCalc: public RDOSelectResourceByTypeCalc, public RDOSelectResourceCommon
 {
 public:
-	RDOSelectResourceByTypeCommonCalc( RDORuntimeParent* _parent, int _relNumb, int _resType, RDOCalc* _choice = NULL, RDOCalc* _selection_calc = NULL, Type _selection_type = st_empty ):
-		RDOSelectResourceByTypeCalc( _parent, _relNumb, _resType, _choice, _selection_calc, _selection_type )
+	RDOSelectResourceByTypeCommonCalc( RDORuntimeParent* _parent, int _relNumb, int _resType, RDOCalc* _choice_calc = NULL, RDOCalc* _order_calc = NULL, Type _order_type = order_empty ):
+		RDOSelectResourceByTypeCalc( _parent, _relNumb, _resType, _choice_calc, _order_calc, _order_type )
 	{
 	}
 	std::vector<int> getPossibleNumbers( RDORuntime* sim ) const;

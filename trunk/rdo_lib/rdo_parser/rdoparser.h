@@ -152,11 +152,14 @@ public:
 	void parse( int files = rdoModelObjects::obALL );
 	void parse( rdoModelObjects::RDOParseType file );
 	void parse( rdoModelObjects::RDOParseType file, std::istream& stream );
-	void error( rdoSimulator::RDOSyntaxError::ErrorCode error_code, ... );
-	void error( const std::string& message, rdoSimulator::RDOSyntaxError::ErrorCode error_code = rdoSimulator::RDOSyntaxError::UNKNOWN );
-	void error_modify( const std::string& message );
-	void warning( rdoSimulator::RDOSyntaxError::ErrorCode error_code, ... );
-	void warning( const std::string& message, rdoSimulator::RDOSyntaxError::ErrorCode error_code = rdoSimulator::RDOSyntaxError::UNKNOWN );
+	void error( rdoSimulator::RDOSyntaxError::ErrorCode _error_code, ... );
+	void error( const std::string& _message, rdoSimulator::RDOSyntaxError::ErrorCode _error_code = rdoSimulator::RDOSyntaxError::UNKNOWN );
+	void error_push_only( const std::string& _message, rdoSimulator::RDOSyntaxError::ErrorCode _error_code = rdoSimulator::RDOSyntaxError::UNKNOWN );
+	void error( const RDOParserSrcInfo& _src_info, const std::string& _message, rdoSimulator::RDOSyntaxError::ErrorCode _error_code = rdoSimulator::RDOSyntaxError::UNKNOWN );
+	void error_push_only( const RDOParserSrcInfo& _src_info, const std::string& _message, rdoSimulator::RDOSyntaxError::ErrorCode _error_code = rdoSimulator::RDOSyntaxError::UNKNOWN );
+	void error_modify( const std::string& _message );
+	void warning( rdoSimulator::RDOSyntaxError::ErrorCode _error_code, ... );
+	void warning( const std::string& _message, rdoSimulator::RDOSyntaxError::ErrorCode _error_code = rdoSimulator::RDOSyntaxError::UNKNOWN );
 	void addConstant( RDORTPParam* const _cons );
 	const RDOFUNConstant* findFUNConst( const std::string& _cons ) const;
 	bool hasConstant() const { return !allFUNConstant.empty(); }

@@ -58,8 +58,10 @@ public:
 	RDOParserSrcInfo( const YYLTYPE& _pos );
 	RDOParserSrcInfo( const rdoRuntime::RDOSrcInfo& _info );
 	RDOParserSrcInfo( const rdoRuntime::RDOSrcInfo::Position& _pos );
+	RDOParserSrcInfo( const std::string& _text );
 	RDOParserSrcInfo( const YYLTYPE& _pos, const std::string& _text );
 	RDOParserSrcInfo( const YYLTYPE& _pos_begin, const YYLTYPE& _pos_end );
+	RDOParserSrcInfo( const YYLTYPE& _pos_begin, const YYLTYPE& _pos_end, const std::string& _text );
 
 	virtual void setSrcInfo( const RDOParserSrcInfo& copy ) {
 		RDOSrcInfo::setSrcPos( copy.src_pos() );

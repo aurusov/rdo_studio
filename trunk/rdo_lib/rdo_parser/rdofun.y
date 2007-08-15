@@ -678,7 +678,9 @@ fun_func_params:	/* empty */
 			|	fun_func_params IDENTIF_COLON param_type	{
 				std::string      name = *reinterpret_cast<std::string*>($2);
 				RDORTPParamType* type = reinterpret_cast<RDORTPParamType*>($3);
-				RDOFUNFunctionParam* param = new RDOFUNFunctionParam( name, type );
+				RDOParserSrcInfo pos;
+				pos.setSrcPosAndTextByLength( @2, name );
+				RDOFUNFunctionParam* param = new RDOFUNFunctionParam( parser->getLastFUNFunction(), pos, type );
 				param->setSrcPos( @2 );
 				parser->getLastFUNFunction()->add(param);	// the function must check uniquness of parameters names
 				$$ = (int)param;
