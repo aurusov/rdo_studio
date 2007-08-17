@@ -304,7 +304,7 @@ void RDOParser::addConstant( RDORTPParam* const _cons )
 {
 	if ( !findFUNConst(_cons->getName()) ) {
 		RDOFUNConstant* newConst = new RDOFUNConstant( this, _cons );
-		runTime->setConstValue( newConst->number, newConst->getType()->getRSSDefaultValue() );
+		runTime->setConstValue( newConst->number, newConst->getType()->getParamDefaultValue() );
 	}
 }
 

@@ -170,7 +170,7 @@ void RDODPTSearchActivity::addParam()
 		parser->error("Too many parameters for rule: " + rule->getName());
 
 	RDOFUNFunctionParam *param = rule->params[currParamNum++];
-	rdoRuntime::RDOValue val = param->getType()->getRSSDefaultValue();
+	rdoRuntime::RDOValue val = param->getType()->getParamDefaultValue();
 	params.push_back(val);
 }
 
@@ -265,7 +265,7 @@ void RDODPTSomeActivity::addParam()
 		parser->error("Too many parameters for pattern: " + pattern->getName());
 
 	RDOFUNFunctionParam *param = pattern->params[currParamNum++];
-	rdoRuntime::RDOValue val = param->getType()->getRSSDefaultValue();
+	rdoRuntime::RDOValue val = param->getType()->getParamDefaultValue();
 	params.push_back(val);
 }
 
@@ -336,7 +336,7 @@ void RDODPTFreeActivity::addParam()
 		parser->error("Too many parameters for pattern: " + pattern->getName());
 
 	RDOFUNFunctionParam *param = pattern->params[currParamNum++];
-	rdoRuntime::RDOValue val = param->getType()->getRSSDefaultValue();
+	rdoRuntime::RDOValue val = param->getType()->getParamDefaultValue();
 	params.push_back(val);
 }
 

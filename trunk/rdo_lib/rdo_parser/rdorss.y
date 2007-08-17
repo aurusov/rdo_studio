@@ -253,7 +253,7 @@ rss_value:	'*' {
 //					parser->error( "Too many parameters" );
 				}
 				try {
-					rdoRuntime::RDOValue val = (*(parser->getLastRSSResource()->currParam))->getType()->getRSSDefaultValue();
+					rdoRuntime::RDOValue val = (*(parser->getLastRSSResource()->currParam))->getType()->getParamDefaultValue();
 					parser->getLastRSSResource()->addValue( val );
 					parser->getLastRSSResource()->currParam++;
 				} catch ( RDOSyntaxException& err ) {

@@ -368,7 +368,7 @@ rdoRuntime::RDOValue RDORTPIntParamType::getRSSRealValue( const double* const va
 	return NULL;	// unreachable code...
 }
 
-rdoRuntime::RDOValue RDORTPIntParamType::getRSSDefaultValue() const 
+rdoRuntime::RDOValue RDORTPIntParamType::getParamDefaultValue() const 
 {
 	if ( !dv->isExist() ) {
 		parser->error( "Нет значения по-умолчанию" );
@@ -558,7 +558,7 @@ rdoRuntime::RDOValue RDORTPRealParamType::getRSSEnumValue( const std::string& va
 	return NULL;	// unreachable code...
 }
 
-rdoRuntime::RDOValue RDORTPRealParamType::getRSSDefaultValue() const 
+rdoRuntime::RDOValue RDORTPRealParamType::getParamDefaultValue() const 
 {
 	if ( !dv->isExist() ) {
 		parser->error( "Нет значения по-умолчанию" );
@@ -707,7 +707,7 @@ rdoRuntime::RDOValue RDORTPEnumParamType::getRSSRealValue( const double* const v
 	return NULL;	// unreachable code...
 }
 
-rdoRuntime::RDOValue RDORTPEnumParamType::getRSSDefaultValue() const 
+rdoRuntime::RDOValue RDORTPEnumParamType::getParamDefaultValue() const 
 {
 	if ( !dv->isExist() ) {
 		parser->error( "Нет значения по-умолчанию" );

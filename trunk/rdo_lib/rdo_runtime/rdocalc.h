@@ -1122,7 +1122,7 @@ public:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOCalcCreateNumberedResource (System calcs - создание нового временного ресурса или постоянного в начальный момент времени по индексу с параметрами)
+// ---------- RDOCalcCreateNumberedResource (создание нового временного ресурса или постоянного в начальный момент времени по индексу с параметрами)
 // ----------------------------------------------------------------------------
 class RDOCalcCreateNumberedResource: public RDOCalc
 {
@@ -1139,18 +1139,18 @@ public:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOCalcCreateEmptyResource (System calcs - создание нового временного ресурса с пустым списком параметров)
+// ---------- RDOCalcCreateEmptyResource (создание нового временного ресурса с пустым списком параметров)
 // ----------------------------------------------------------------------------
 class RDOCalcCreateEmptyResource: public RDOCalc
 {
 private:
 	int  type;
 	bool traceFlag;
+	std::vector< RDOValue > params_default;
 	int  rel_res_id;
-	int  numParameters;
 
 public:
-	RDOCalcCreateEmptyResource( RDORuntimeParent* _parent, int _type, bool _traceFlag, int _rel_res_id, int _numParameters );
+	RDOCalcCreateEmptyResource( RDORuntimeParent* _parent, int _type, bool _traceFlag, const std::vector< RDOValue >& _params_default, int _rel_res_id );
 	virtual RDOValue calcValue( RDORuntime* runtime ) const;
 };
 

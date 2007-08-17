@@ -302,7 +302,7 @@ dpt_process_line:	IDENTIF	{
 		res->setTrace( true );
 
 		// Пропишем значения параметров перечислимого типа по-умолчанию
-		rdoRuntime::RDOValue state_val = rtp_param->getType()->getRSSDefaultValue();
+		rdoRuntime::RDOValue state_val = rtp_param->getType()->getParamDefaultValue();
 		res->addValue( state_val );
 		res->currParam++;
 
@@ -310,7 +310,7 @@ dpt_process_line:	IDENTIF	{
 //		const std::vector<const RDORTPParam *>& res_params = res->getType()->getParams();
 //		res->currParam = res_params.begin();
 //		while ( res->currParam != res_params.end() ) {
-//			RDOValue res_param_val = (*res->currParam)->getType()->getRSSDefaultValue();
+//			RDOValue res_param_val = (*res->currParam)->getType()->getParamDefaultValue();
 //			res->addValue( res_param_val );
 //			res->currParam++;
 //		}
@@ -402,12 +402,12 @@ dpt_process_line:	IDENTIF	{
 		const std::vector<const RDORTPParam *>& res_params = res->getType()->getParams();
 		res->currParam = res_params.begin();
 		while ( res->currParam != res_params.end() ) {
-			RDOValue res_param_val = (*res->currParam)->getType()->getRSSDefaultValue();
+			RDOValue res_param_val = (*res->currParam)->getType()->getParamDefaultValue();
 			res->addValue( res_param_val );
 			res->currParam++;
 		}
 	} else if ( param_added ) {
-		RDOValue state_val = rtp_param->getType()->getRSSDefaultValue();
+		RDOValue state_val = rtp_param->getType()->getParamDefaultValue();
 		res->addValue( state_val );
 		res->currParam++;
 	} else {

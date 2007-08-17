@@ -87,7 +87,7 @@ void RDOOPROperation::addParam()
 		parser->error("Too much parameters for pattern : " + pattern->getName() + " in operation: " + getName());
 
 	RDOFUNFunctionParam *param = pattern->params.at(currParam);
-	rdoRuntime::RDOValue val = param->getType()->getRSSDefaultValue();
+	rdoRuntime::RDOValue val = param->getType()->getParamDefaultValue();
 	activity->addParamCalc(new rdoRuntime::RDOSetPatternParamCalc(parser->runTime, currParam, val));
 	currParam++;
 }

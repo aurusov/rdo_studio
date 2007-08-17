@@ -45,7 +45,7 @@ public:
 	virtual const RDORTPParamType* constructSuchAs( int defVal, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& defVal_info ) const = 0;
 	virtual const RDORTPParamType* constructSuchAs( double defVal, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& defVal_info ) const = 0;
 	virtual const RDORTPParamType* constructSuchAs( const std::string& defVal, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& defVal_info ) const = 0;
-	virtual rdoRuntime::RDOValue getRSSDefaultValue() const = 0;
+	virtual rdoRuntime::RDOValue getParamDefaultValue() const = 0;
 	virtual rdoRuntime::RDOValue getRSSEnumValue( const std::string& val ) const = 0;
 	virtual rdoRuntime::RDOValue getRSSIntValue( const int val ) const = 0;
 	virtual rdoRuntime::RDOValue getRSSRealValue( const double* const val ) const = 0;
@@ -202,7 +202,7 @@ public:
 	virtual const RDORTPParamType* constructSuchAs( int defVal, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& defVal_info ) const;
 	virtual const RDORTPParamType* constructSuchAs( double defVal, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& defVal_info ) const;
 	virtual const RDORTPParamType* constructSuchAs( const std::string& defVal, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& defVal_info ) const;
-	virtual rdoRuntime::RDOValue getRSSDefaultValue() const;
+	virtual rdoRuntime::RDOValue getParamDefaultValue() const;
 	virtual rdoRuntime::RDOValue getRSSEnumValue( const std::string& val ) const;
 	virtual rdoRuntime::RDOValue getRSSIntValue(const int val)const ;					// the function also check range if exist
 	virtual rdoRuntime::RDOValue getRSSRealValue( const double* const val ) const;
@@ -286,7 +286,7 @@ public:
 	virtual const RDORTPParamType* constructSuchAs( int defVal, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& defVal_info ) const;
 	virtual const RDORTPParamType* constructSuchAs( double defVal, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& defVal_info ) const;
 	virtual const RDORTPParamType* constructSuchAs( const std::string& defVal, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& defVal_info ) const;
-	virtual rdoRuntime::RDOValue getRSSDefaultValue() const;
+	virtual rdoRuntime::RDOValue getParamDefaultValue() const;
 	virtual rdoRuntime::RDOValue getRSSEnumValue( const std::string& val ) const;
 	virtual rdoRuntime::RDOValue getRSSRealValue(const double *const val)const ; 	// the function also check range if exist
 	virtual rdoRuntime::RDOValue getRSSIntValue(const int val) const;				// this function too
@@ -368,7 +368,7 @@ public:
 	virtual const RDORTPParamType* constructSuchAs( int defVal, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& defVal_info ) const;
 	virtual const RDORTPParamType* constructSuchAs( double defVal, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& defVal_info ) const;
 	virtual const RDORTPParamType* constructSuchAs( const std::string& defVal, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& defVal_info ) const;
-	virtual rdoRuntime::RDOValue getRSSDefaultValue() const;
+	virtual rdoRuntime::RDOValue getParamDefaultValue() const;
 	virtual rdoRuntime::RDOValue getRSSEnumValue( const std::string& val ) const;
 	virtual rdoRuntime::RDOValue getRSSIntValue( const int val ) const;
 	virtual rdoRuntime::RDOValue getRSSRealValue( const double* const val ) const;

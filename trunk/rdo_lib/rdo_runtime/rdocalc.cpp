@@ -279,19 +279,19 @@ RDOValue RDOCalcCreateNumberedResource::calcValue( RDORuntime* runtime ) const
 	res->type  = type;
 	res->trace = traceFlag;
 	res->params.insert( res->params.begin(), paramsCalcs.begin(), paramsCalcs.end() );
-	return RDOValue(1);		// just to return something
+	return RDOValue(1); // just to return something
 }
 
 // ----------------------------------------------------------------------------
 // ---------- RDOCalcCreateEmptyResource
 // ----------------------------------------------------------------------------
-RDOCalcCreateEmptyResource::RDOCalcCreateEmptyResource( RDORuntimeParent* _parent, int _type, bool _traceFlag, int _rel_res_id, int _numParameters ):
+RDOCalcCreateEmptyResource::RDOCalcCreateEmptyResource( RDORuntimeParent* _parent, int _type, bool _traceFlag, const std::vector< RDOValue >& _params_default, int _rel_res_id ):
 	RDOCalc( _parent ),
 	type( _type ),
 	traceFlag( _traceFlag ),
-	rel_res_id( _rel_res_id ),
-	numParameters( _numParameters )
+	rel_res_id( _rel_res_id )
 {
+	params_default.insert( params_default.begin(), _params_default.begin(), _params_default.end() );
 }
 
 RDOValue RDOCalcCreateEmptyResource::calcValue( RDORuntime* runtime ) const
@@ -300,8 +300,8 @@ RDOValue RDOCalcCreateEmptyResource::calcValue( RDORuntime* runtime ) const
 	runtime->setRelRes( rel_res_id, res->number );
 	res->type  = type;
 	res->trace = traceFlag;
-	res->params.insert( res->params.begin(), numParameters, 0 );
-	return RDOValue(1);		// just to return something
+	res->params.insert( res->params.begin(), params_default.begin(), params_default.end() );
+	return RDOValue(1); // just to return something
 }
 
 // ----------------------------------------------------------------------------

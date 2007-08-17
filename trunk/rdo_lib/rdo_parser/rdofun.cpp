@@ -90,7 +90,7 @@ void RDOFUNFunction::createListCalc()
 //		parser->error(("list function " + *name + " must have default result value").c_str());
 	}
 
-	rdoRuntime::RDOCalcConst*   defaultValue = new rdoRuntime::RDOCalcConst( parser->runTime, retType->getRSSDefaultValue() );
+	rdoRuntime::RDOCalcConst*   defaultValue = new rdoRuntime::RDOCalcConst( parser->runTime, retType->getParamDefaultValue() );
 	rdoRuntime::RDOFunListCalc* funCalc      = new rdoRuntime::RDOFunListCalc( parser->runTime, defaultValue );
 	parser->lexer_loc_backup();
 	try {
@@ -621,7 +621,6 @@ void RDOFUNArithm::init( const std::string& value, const YYLTYPE& _pos )
 		if ( calc ) calc->setSrcInfo( src_info() );
 		return;
 	} else {
-/*
 		// ¬озможно, что это значение перечислимого типа
 		std::vector< RDORTPEnumParamType* >::const_iterator it = parser->getEnums().begin();
 		while ( it != parser->getEnums().end() ) {
@@ -629,6 +628,7 @@ void RDOFUNArithm::init( const std::string& value, const YYLTYPE& _pos )
 				// ƒа, это перечислимый тип, только одно и тоже значение может встречатьс€ в разных
 				// перечислимых типах, поэтому какой именно из них выбрать - вопрос
 				type = RDORTPParamType::pt_unknow;
+				str  = value;
 				setSrcText( value );
 				return;
 			}
@@ -636,10 +636,9 @@ void RDOFUNArithm::init( const std::string& value, const YYLTYPE& _pos )
 		}
 		parser->lexer_loc_set( _pos.last_line, _pos.last_column );
 		parser->error( rdo::format("Ќеизвестный идентификатор: %s", value.c_str()) );
-*/
-		type = RDORTPParamType::pt_unknow;
-		str  = value;
-		return;
+//		type = RDORTPParamType::pt_unknow;
+//		str  = value;
+//		return;
 	}
 }
 

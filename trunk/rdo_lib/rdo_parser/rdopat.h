@@ -57,6 +57,8 @@ protected:
 
 	rdoRuntime::RDOPatternRuntime* patRuntime;
 
+	rdoRuntime::RDOCalc* createRelRes( const RDOPATParamSet* const parSet, bool trace ) const;
+
 public:
 	enum PatType {
 		PT_IE,
