@@ -30,6 +30,7 @@ class RDODPTSome;
 class RDODPTFreeActivity;
 class RDOPMDPokaz;
 class RDOPROCProcess;
+class RDORTPEnumParamType;
 
 class RDOSyntaxException: public rdoRuntime::RDOException
 {
@@ -50,23 +51,23 @@ protected:
 	bool have_kw_Resources;
 	bool have_kw_ResourcesEnd;
 
-	std::vector< std::string* >        allNames;
-	std::vector< double* >             allDoubles;
-	std::vector< RDODeletable* >       allDeletables;
+	std::vector< std::string* >         allNames;
+	std::vector< double* >              allDoubles;
+	std::vector< RDODeletable* >        allDeletables;
 
-	std::vector< RDORTPResType* >      allRTPResType;
-	std::vector< RDORTPParam* >        allRTPParams;
-	std::vector< RDORSSResource* >     allRSSResource;
-	std::vector< RDOPATPattern* >      allPATPatterns;
-	std::vector< RDOFUNConstant* >     allFUNConstant;
-	std::vector< RDOFUNFunction* >     allFUNFunctions;
-	std::vector< RDOFUNSequence* >     allFUNSequences;
-	std::vector< RDOFUNGroup* >        allFUNGroupStack;
-	std::vector< RDODPTSearch* >       allDPTSearch;
-	std::vector< RDODPTSome* >         allDPTSome;
-	std::vector< RDODPTFreeActivity* > allDPTFreeActivity;
-	std::vector< RDOPMDPokaz* >        allPMDPokaz;
-	std::vector< RDOPROCProcess* >     allDPTProcess;
+	std::vector< RDORTPResType* >       allRTPResType;
+	std::vector< RDORTPEnumParamType* > allEnums;
+	std::vector< RDORSSResource* >      allRSSResource;
+	std::vector< RDOPATPattern* >       allPATPatterns;
+	std::vector< RDOFUNConstant* >      allFUNConstant;
+	std::vector< RDOFUNFunction* >      allFUNFunctions;
+	std::vector< RDOFUNSequence* >      allFUNSequences;
+	std::vector< RDOFUNGroup* >         allFUNGroupStack;
+	std::vector< RDODPTSearch* >        allDPTSearch;
+	std::vector< RDODPTSome* >          allDPTSome;
+	std::vector< RDODPTFreeActivity* >  allDPTFreeActivity;
+	std::vector< RDOPMDPokaz* >         allPMDPokaz;
+	std::vector< RDOPROCProcess* >      allDPTProcess;
 
 	RDODPTSearch* lastDPTSearch;
 
@@ -74,12 +75,13 @@ public:
 	RDOParser();
 	~RDOParser();
 
-	const std::vector< RDORTPResType* >&      getRTPResType() const      { return allRTPResType;      }
-	const std::vector< RDORSSResource* >&     getRSSResources() const    { return allRSSResource;     }
-	      std::vector< RDOFUNGroup* >&        getFUNGroupStack()         { return allFUNGroupStack;   }
-	const std::vector< RDODPTSearch* >&       getDPTSearch() const       { return allDPTSearch;       }
-	const std::vector< RDODPTSome* >&         getDPTSome() const         { return allDPTSome;         }
-	const std::vector< RDODPTFreeActivity* >& getDPTFreeActivity() const { return allDPTFreeActivity; }
+	const std::vector< RDORTPResType* >&       getRTPResType() const      { return allRTPResType;      }
+	const std::vector< RDORTPEnumParamType* >& getEnums() const           { return allEnums;           }
+	const std::vector< RDORSSResource* >&      getRSSResources() const    { return allRSSResource;     }
+	      std::vector< RDOFUNGroup* >&         getFUNGroupStack()         { return allFUNGroupStack;   }
+	const std::vector< RDODPTSearch* >&        getDPTSearch() const       { return allDPTSearch;       }
+	const std::vector< RDODPTSome* >&          getDPTSome() const         { return allDPTSome;         }
+	const std::vector< RDODPTFreeActivity* >&  getDPTFreeActivity() const { return allDPTFreeActivity; }
 
 	void checkActivityName( const std::string* _name );
 
@@ -102,7 +104,7 @@ public:
 //	void removeDeletables( RDODeletable* value )            { allDeletables.erase( std::find( allDeletables.begin(), allDeletables.end(), value ) ); }
 
 	void insertRTPResType( RDORTPResType* value );
-	void insertRTPParam( RDORTPParam* value );
+	void insertEnum( RDORTPEnumParamType* value );
 	void insertRSSResource( RDORSSResource* value );
 	void insertPATPattern( RDOPATPattern* value );
 	void insertFUNConstant( RDOFUNConstant* value );
@@ -160,6 +162,7 @@ public:
 	void error_modify( const std::string& _message );
 	void warning( rdoSimulator::RDOSyntaxError::ErrorCode _error_code, ... );
 	void warning( const std::string& _message, rdoSimulator::RDOSyntaxError::ErrorCode _error_code = rdoSimulator::RDOSyntaxError::UNKNOWN );
+	void warning( const RDOParserSrcInfo& _src_info, const std::string& _message, rdoSimulator::RDOSyntaxError::ErrorCode _error_code = rdoSimulator::RDOSyntaxError::UNKNOWN );
 	void addConstant( RDORTPParam* const _cons );
 	const RDOFUNConstant* findFUNConst( const std::string& _cons ) const;
 	bool hasConstant() const { return !allFUNConstant.empty(); }

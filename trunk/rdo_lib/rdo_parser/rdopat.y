@@ -1071,7 +1071,7 @@ convert_end:	Convert_end {
 			};
 
 pat_params_set:	/* empty */	{
-					RDOPATParamSet* par_set = new RDOPATParamSet( parser->getLastPATPattern()->currRelRes );
+					RDOPATParamSet* par_set = parser->getLastPATPattern()->currRelRes->createParamSet();
 					par_set->setSrcPos( @0 );
 					$$ = (int)par_set;
 				}

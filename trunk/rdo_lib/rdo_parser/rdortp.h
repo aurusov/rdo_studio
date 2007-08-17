@@ -20,7 +20,7 @@ class RDORTPDefVal;
 class RDORTPParamType: public RDOParserObject, public RDOParserSrcInfo
 {
 public:
-	enum ParamType { pt_int = 0, pt_real = 1, pt_enum = 2, pt_str = 3 };
+	enum ParamType { pt_int = 0, pt_real = 1, pt_enum = 2, pt_unknow = 3 };
 	RDORTPDefVal* dv;
 	// Для глобальный типов, напрмиер, для параметров стандартных фыункций
 	RDORTPParamType( RDOParser* _parser, RDORTPDefVal* _dv ):
@@ -363,21 +363,13 @@ public:
 	RDORTPEnum* enu;
 	std::string enum_name; // Используется в сообщениях об ошибках
 	bool        enum_fun;  // Используется в сообщениях об ошибках
-	RDORTPEnumParamType( const RDOParserObject* _parent, RDORTPEnum* _enu, RDORTPEnumDefVal* _dv, const RDOParserSrcInfo& _src_info ):
-		RDORTPParamType( _parent, _dv, _src_info ),
-		enu( _enu ),
-		enum_name( "" ),
-		enum_fun( false )
-	{
-		enu->reparent( this );
-		init_src_info();
-	}
+	RDORTPEnumParamType( const RDOParserObject* _parent, RDORTPEnum* _enu, RDORTPEnumDefVal* _dv, const RDOParserSrcInfo& _src_info );
 	virtual const RDORTPParamType* constructSuchAs( const RDOParserSrcInfo& _src_info ) const;
 	virtual const RDORTPParamType* constructSuchAs( int defVal, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& defVal_info ) const;
 	virtual const RDORTPParamType* constructSuchAs( double defVal, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& defVal_info ) const;
 	virtual const RDORTPParamType* constructSuchAs( const std::string& defVal, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& defVal_info ) const;
 	virtual rdoRuntime::RDOValue getRSSDefaultValue() const;
-	virtual rdoRuntime::RDOValue getRSSEnumValue(const std::string& val) const;
+	virtual rdoRuntime::RDOValue getRSSEnumValue( const std::string& val ) const;
 	virtual rdoRuntime::RDOValue getRSSIntValue( const int val ) const;
 	virtual rdoRuntime::RDOValue getRSSRealValue( const double* const val ) const;
 	int getDiapTableFunc() const;

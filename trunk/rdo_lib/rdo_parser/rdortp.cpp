@@ -99,7 +99,7 @@ void RDORTPParamType::checkParamType( const RDOFUNArithm* const action ) const
 			break;
 		}
 		case RDORTPParamType::pt_enum: {
-			if ( action->getType() == RDORTPParamType::pt_str ) {
+			if ( action->getType() == RDORTPParamType::pt_unknow ) {
 				if ( static_cast<const RDORTPEnumParamType*>(this)->enu->findValue( action->str, false ) == -1 ) {
 					parser->lexer_loc_set( action->src_pos().last_line, action->src_pos().last_pos );
 					if ( static_cast<const RDORTPEnumParamType*>(this)->enum_fun ) {
@@ -131,7 +131,6 @@ RDORTPParam::RDORTPParam( RDOParser* _parser, const std::string& _name, const RD
 	resType( NULL )
 {
 	setSrcText( name + ": " + parType->src_text() );
-	parser->insertRTPParam( this );
 }
 
 RDORTPParam::RDORTPParam( RDORTPResType* _parent, const std::string& _name, const RDORTPParamType* const _parType ):
@@ -142,7 +141,6 @@ RDORTPParam::RDORTPParam( RDORTPResType* _parent, const std::string& _name, cons
 	resType( _parent )
 {
 	setSrcText( name + ": " + parType->src_text() );
-	parser->insertRTPParam( this );
 }
 
 RDORTPParam::RDORTPParam( RDORTPResType* _parent, const std::string& _name, const RDORTPParamType* const _parType, const RDOParserSrcInfo& _src_info ):
@@ -153,7 +151,6 @@ RDORTPParam::RDORTPParam( RDORTPResType* _parent, const std::string& _name, cons
 	resType( _parent )
 {
 	setSrcText( name + ": " + parType->src_text() );
-	parser->insertRTPParam( this );
 }
 
 int RDORTPParam::writeModelStructure() const
@@ -627,6 +624,17 @@ int RDORTPEnum::findValue( const std::string& val, bool auto_error ) const
 // ----------------------------------------------------------------------------
 // ---------- RDORTPEnumParamType
 // ----------------------------------------------------------------------------
+RDORTPEnumParamType::RDORTPEnumParamType( const RDOParserObject* _parent, RDORTPEnum* _enu, RDORTPEnumDefVal* _dv, const RDOParserSrcInfo& _src_info ):
+	RDORTPParamType( _parent, _dv, _src_info ),
+	enu( _enu ),
+	enum_name( "" ),
+	enum_fun( false )
+{
+	enu->reparent( this );
+	init_src_info();
+	parser->insertEnum( this );
+}
+
 void RDORTPEnumParamType::init_src_info()
 {
 	std::string src_text = enu->src_text();

@@ -62,10 +62,9 @@ void RDOParser::insertRTPResType( RDORTPResType* value )
 	allRTPResType.push_back( value );
 }
 
-void RDOParser::insertRTPParam( RDORTPParam* value )
+void RDOParser::insertEnum( RDORTPEnumParamType* value )
 {
-//	parsing_object = value;
-	allRTPParams.push_back( value );
+	allEnums.push_back( value );
 }
 
 void RDOParser::insertRSSResource( RDORSSResource* value )
@@ -294,6 +293,11 @@ void RDOParser::warning( rdoSimulator::RDOSyntaxError::ErrorCode _error_code, ..
 void RDOParser::warning( const std::string& _message, rdoSimulator::RDOSyntaxError::ErrorCode _error_code ) 
 {
 	errors.push_back( rdoSimulator::RDOSyntaxError( _error_code, _message, lexer_loc_line(), lexer_loc_pos(), getFileToParse(), true ) );
+}
+
+void RDOParser::warning( const RDOParserSrcInfo& _src_info, const std::string& _message, rdoSimulator::RDOSyntaxError::ErrorCode _error_code ) 
+{
+	errors.push_back( rdoSimulator::RDOSyntaxError( _error_code, _message, _src_info.src_pos().last_line, _src_info.src_pos().last_pos, _src_info.src_filetype(), true ) );
 }
 
 void RDOParser::addConstant( RDORTPParam* const _cons )

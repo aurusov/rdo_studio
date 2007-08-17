@@ -174,7 +174,9 @@ public:
 class RDORelevantResource: public RDOParserObject, public RDOParserSrcInfo
 {
 private:
-	std::string name;
+	std::string     name;
+	RDOPATParamSet* param_set_begin;
+	RDOPATParamSet* param_set_end;
 
 protected:
 	rdoRuntime::RDOCalc* getChoiceCalc() const;
@@ -212,6 +214,8 @@ public:
 		alreadyHaveConverter( false ),
 		choice_from( NULL ),
 		choice_order( NULL ),
+		param_set_begin( NULL ),
+		param_set_end( NULL ),
 		currentState( stateNone )
 	{
 	}
@@ -225,6 +229,10 @@ public:
 	virtual rdoRuntime::RDOSelectResourceCommon* createSelectResourceCommonChoiceCalc() = 0; // common with_min/with_max
 
 	virtual bool isDirect() const                                      = 0;
+
+	RDOPATParamSet* createParamSet();
+	const RDOPATParamSet* const getParamSetBegin() const { return param_set_begin; }
+	const RDOPATParamSet* const getParamSetEnd() const   { return param_set_end;   }
 };
 
 // ----------------------------------------------------------------------------
@@ -330,19 +338,33 @@ class RDOPATParamSet: public RDOParserObject, public RDOParserSrcInfo
 {
 private:
 	const RDORelevantResource* rel_res;
-	void checkParam( const std::string& paramName, const YYLTYPE& param_name_pos );
 
 public:
+	struct param_set {
+		std::string   name;
+		int           index;
+		RDOFUNArithm* arithm;
+		param_set(): name( "" ), index( -1 ), arithm( NULL ) {}
+		param_set( const std::string& _name, int _index, RDOFUNArithm* _arithm ): name( _name ), index( _index ), arithm( _arithm ) {}
+	};
+
 	RDOPATParamSet( const RDORelevantResource* _parent ):
 		RDOParserObject( _parent ),
 		rel_res( _parent )
 	{
 	}
-	std::vector< std::string >   paramNames;
-	std::vector< int >           paramNumbs;
-	std::vector< RDOFUNArithm* > paramArithms;
+	std::vector< param_set > params;
 	void addSet( const std::string& paramName, const YYLTYPE& param_name_pos, RDOFUNArithm* paramArithm = NULL );
-	void setParamsNumbers();
+	bool isExist( const std::string& paramName ) const {
+		std::vector< param_set >::const_iterator it = params.begin();
+		while ( it != params.end() ) {
+			if ( it->name == paramName ) {
+				return true;
+			}
+			it++;
+		}
+		return false;
+	}
 };
 
 } // namespace rdoParse

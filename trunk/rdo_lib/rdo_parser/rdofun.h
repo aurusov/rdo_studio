@@ -133,7 +133,7 @@ public:
 class RDOFUNArithm: public RDOParserObject, public RDOParserSrcInfo
 {
 public:
-	RDORTPParamType::ParamType type; // 0 - int, 1 - real, 2 - enum, 3 - string
+	RDORTPParamType::ParamType type; // 0 - int, 1 - real, 2 - enum, 3 - unknow
 	RDORTPEnum* enu; // for type == 2
 	std::string str; // for type == 3
 
