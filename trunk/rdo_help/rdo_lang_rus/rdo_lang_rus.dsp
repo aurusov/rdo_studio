@@ -8,12 +8,12 @@ CFG=rdo_help_lang_rus - Win32 Release
 !MESSAGE This is not a valid makefile. To build this project using NMAKE,
 !MESSAGE use the Export Makefile command and run
 !MESSAGE 
-!MESSAGE NMAKE /f "rdo_help_lang_rus.mak".
+!MESSAGE NMAKE /f "rdo_lang_rus.mak".
 !MESSAGE 
 !MESSAGE You can specify a configuration when running NMAKE
 !MESSAGE by defining the macro CFG on the command line. For example:
 !MESSAGE 
-!MESSAGE NMAKE /f "rdo_help_lang_rus.mak" CFG="rdo_help_lang_rus - Win32 Release"
+!MESSAGE NMAKE /f "rdo_lang_rus.mak" CFG="rdo_help_lang_rus - Win32 Release"
 !MESSAGE 
 !MESSAGE Possible choices for configuration are:
 !MESSAGE 
@@ -243,6 +243,11 @@ SOURCE=.\html\rdo_res_trc_results.htm
 # Begin Source File
 
 SOURCE=.\html\rdo_terms.htm
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=.\html\rdo_whats_new.htm
 # PROP Exclude_From_Build 1
 # End Source File
 # End Group

@@ -36,6 +36,8 @@ dt.syntax { margin-top: .6em; text-align: justify }
 
 p { margin-top: .6em; margin-bottom: .6em; text-align: justify }
 
+p.build { margin-top: .1em; margin-bottom: .1em; font-size: 90%; text-align: left; font-weight: bold }
+
 p.samples { margin-top: .6em; margin-bottom: .6em; color: #660000; font-family: "courier new", "courier", "fixedsys", monospace; font-size: 80%; text-align: left }
 
 p.remarks { margin-top: .1em; margin-bottom: .1em; font-size: 90%; text-align: justify }
@@ -51,6 +53,8 @@ table { margin-top: -1.2em; margin-bottom: .6em; margin-left: -1.2em; width: 100
 table.navigation { padding: 0px 0px 0px 0px; background: #FFFFFF; margin: 0px 0px 0px 0px }
 
 table.visible { width: 90%; background: #777777; margin-top: .6em; margin-bottom: .3em; margin-left: 0px }
+
+table.build { padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px; width: 90% }
 
 th { padding: 4px 8px; background: #dddddd; text-align: left; font-size: 75%; vertical-align: middle; }
 

@@ -11,6 +11,11 @@
 		<param name="ImageNumber" value="11">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Что нового">
+		<param name="Local" value="html\rdo_whats_new.htm">
+		<param name="ImageNumber" value="12">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="&Icirc;&ntilde;&iacute;&icirc;&acirc;&iacute;&ucirc;&aring; &iuml;&icirc;&iacute;&yuml;&ograve;&egrave;&yuml;">
 		<param name="Local" value="html\rdo_terms.htm">
 		<param name="ImageNumber" value="11">
