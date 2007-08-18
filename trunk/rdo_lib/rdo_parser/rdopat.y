@@ -982,10 +982,10 @@ pat_convert:	pat_res_usage {
 					}
 					RDOPATParamSet* par_set = reinterpret_cast<RDOPATParamSet*>($4);
 					par_set->setSrcPos( @4 );
-					pattern->addRelResConvert( $3 != 0, par_set, @2, @3 );
+					static_cast<RDOPATPatternOperation*>(pattern)->addRelResConvertBeginEnd( $3 != 0, par_set, false, NULL, @2, @2, @3, @3 );
 					$$ = $1;
 				}
-				| pat_res_usage convert_end pat_trace pat_params_set {
+				| pat_res_usage pat_params_set convert_end pat_trace pat_params_set {
 					RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
 					if ( pattern->getPatType() != RDOPATPattern::PT_Operation && pattern->getPatType() != RDOPATPattern::PT_Keyboard ) {
 						std::string type = "";
@@ -993,12 +993,13 @@ pat_convert:	pat_res_usage {
 							case RDOPATPattern::PT_IE       : type = "нерегул€рном событии"; break;
 							case RDOPATPattern::PT_Rule     : type = "продукционном правиле"; break;
 						}
-						parser->lexer_loc_set( @2.last_line, @2.last_column );
+						parser->lexer_loc_set( @3.last_line, @3.last_column );
 						parser->error( rdo::format(" лючевое слово Convert_end может быть использовано в обыкновенной и клавиатурной операции, но не в %s '%s'", type.c_str(), pattern->getName().c_str()) );
 					}
-					RDOPATParamSet* par_set = reinterpret_cast<RDOPATParamSet*>($4);
-					par_set->setSrcPos( @4 );
-					static_cast<RDOPATPatternOperation*>(pattern)->addRelResConvertBeginEnd( false, NULL, $3 != 0, par_set, @2, @2, @3, @3 );
+					pattern->currRelRes->deleteParamSetBegin();
+					RDOPATParamSet* par_set = reinterpret_cast<RDOPATParamSet*>($5);
+					par_set->setSrcPos( @5 );
+					static_cast<RDOPATPatternOperation*>(pattern)->addRelResConvertBeginEnd( false, NULL, $4 != 0, par_set, @3, @3, @4, @4 );
 					$$ = $1;
 				}
 				| pat_res_usage convert_begin pat_trace pat_params_set convert_end pat_trace pat_params_set {

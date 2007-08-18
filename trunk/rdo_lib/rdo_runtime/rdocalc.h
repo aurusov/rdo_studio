@@ -127,6 +127,72 @@ public:
 };
 
 // ----------------------------------------------------------------------------
+// ---------- RDOSetRelParamIntDiapCalc
+// ----------------------------------------------------------------------------
+class RDOSetRelParamIntDiapCalc: public RDOCalc
+{
+private:
+	int relNumb;
+	int parNumb;
+	int minVal;
+	int maxVal;
+	RDOCalc* calc;
+
+public:
+	RDOSetRelParamIntDiapCalc( RDORuntimeParent* _parent, int _relNumb, int _parNumb, RDOCalc* _calc, int _minVal, int _maxVal ):
+		RDOCalc( _parent ),
+		relNumb( _relNumb ),
+		parNumb( _parNumb ),
+		calc( _calc ),
+		minVal( _minVal ),
+		maxVal( _maxVal )
+	{
+		if ( calc ) setSrcInfo( calc->src_info() );
+	}
+	virtual RDOValue calcValue( RDORuntime* runtime ) const {
+		RDOValue value = calc->calcValueBase( runtime );
+		if ( value < minVal || value > maxVal ) {
+			runtime->error( rdo::format("Целочисленное значение выходит за допустимый диапазон [%d..%d]: %d", minVal, maxVal, (int)value), this );
+		}
+		runtime->setResParamVal( runtime->getResByRelRes(relNumb), parNumb, value );
+		return 1;
+	}
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOSetRelParamRealDiapCalc
+// ----------------------------------------------------------------------------
+class RDOSetRelParamRealDiapCalc: public RDOCalc
+{
+private:
+	int relNumb;
+	int parNumb;
+	double minVal;
+	double maxVal;
+	RDOCalc* calc;
+
+public:
+	RDOSetRelParamRealDiapCalc( RDORuntimeParent* _parent, int _relNumb, int _parNumb, RDOCalc* _calc, double _minVal, double _maxVal ):
+		RDOCalc( _parent ),
+		relNumb( _relNumb ),
+		parNumb( _parNumb ),
+		calc( _calc ),
+		minVal( _minVal ),
+		maxVal( _maxVal )
+	{
+		if ( calc ) setSrcInfo( calc->src_info() );
+	}
+	virtual RDOValue calcValue( RDORuntime* runtime ) const {
+		RDOValue value = calc->calcValueBase( runtime );
+		if ( value < minVal || value > maxVal ) {
+			runtime->error( rdo::format("Вещественное значение выходит за допустимый диапазон [%f..%f]: %f", minVal, maxVal, value), this );
+		}
+		runtime->setResParamVal( runtime->getResByRelRes(relNumb), parNumb, value );
+		return 1;
+	}
+};
+
+// ----------------------------------------------------------------------------
 // ---------- RDOSetResourceParamCalc
 // ----------------------------------------------------------------------------
 class RDOSetResourceParamCalc: public RDOCalc
@@ -1031,7 +1097,7 @@ public:
 	virtual RDOValue calcValue( RDORuntime* runtime ) const {
 		RDOValue val = oper->calcValueBase( runtime );
 		if ( val < minVal || val > maxVal ) {
-			runtime->error( ("Parameter out of range: " + toString(val)).c_str(), this );
+			runtime->error( ("Parameter out of range: " + toString(val)), this );
 		}
 		return val; 
 	}

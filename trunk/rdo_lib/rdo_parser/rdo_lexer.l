@@ -34,6 +34,7 @@ permanent			return(permanent_kw);
 $Parameters			return(Parameters);
 $parameters			return(Parameters);
 integer				return(integer);
+longint				return(integer);
 real				return(real);
 $End				return(End);
 $end				return(End);

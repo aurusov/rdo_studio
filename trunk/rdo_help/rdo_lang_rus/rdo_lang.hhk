@@ -298,6 +298,11 @@
 		<param name="Local" value="html\rdo_base_alpha.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="!">
+		<param name="Name" value="Арифметические и логические выражения">
+		<param name="Local" value="html\rdo_base_equations.htm#log_oper">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="+">
 		<param name="Name" value="Арифметические и логические выражения">
 		<param name="Local" value="html\rdo_base_equations.htm#operations_plus">
@@ -662,10 +667,6 @@
 		<param name="Name" value="LogN">
 		<param name="Name" value="Глобальные переменные и стандартные функции">
 		<param name="Local" value="html\rdo_base_std_var_func.htm#logn">
-		</OBJECT>
-	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="longint">
-		<param name="Local" value="html\rdo_base_types.htm#longint">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Max">
@@ -1243,15 +1244,6 @@
 		<param name="Name" value="&atilde;&euml;&icirc;&aacute;&agrave;&euml;&uuml;&iacute;&ucirc;&aring; &iuml;&aring;&eth;&aring;&igrave;&aring;&iacute;&iacute;&ucirc;&aring;">
 		<param name="Name" value="Глобальные переменные и стандартные функции">
 		<param name="Local" value="html\rdo_base_std_var_func.htm#glob">
-		</OBJECT>
-	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="&auml;&egrave;&agrave;&iuml;&agrave;&ccedil;&icirc;&iacute;">
-		<param name="Name" value="Типы данных. Соответствие типов">
-		<param name="Local" value="html\rdo_base_types.htm#diap_word">
-		</OBJECT>
-	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="&auml;&euml;&egrave;&iacute;&iacute;&icirc;&aring; &ouml;&aring;&euml;&icirc;&aring;">
-		<param name="Local" value="html\rdo_base_types.htm#longint">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="&ccedil;&agrave;&eth;&aring;&ccedil;&aring;&eth;&acirc;&egrave;&eth;&icirc;&acirc;&agrave;&iacute;&iacute;&ucirc;&aring; &ntilde;&euml;&icirc;&acirc;&agrave;">
@@ -1836,15 +1828,13 @@
 		<param name="Name" value="Типы данных. Соответствие типов">
 		<param name="Local" value="html\rdo_base_types.htm#enum">
 		<param name="Name" value="Типы данных. Соответствие типов">
-		<param name="Local" value="html\rdo_base_types.htm#diap_word">
+		<param name="Local" value="html\rdo_base_types.htm#diap">
 		<param name="Name" value="Типы данных. Соответствие типов">
 		<param name="Local" value="html\rdo_base_types.htm#ref">
 		<param name="Name" value="Типы данных. Соответствие типов">
 		<param name="Local" value="html\rdo_base_types.htm#type_comp">
 		<param name="Name" value="Арифметические и логические выражения">
 		<param name="Local" value="html\rdo_base_equations.htm#type">
-		<param name="Name" value="Типы данных. Соответствие типов">
-		<param name="Local" value="html\rdo_base_types.htm#longint">
 		</OBJECT>
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
@@ -1866,10 +1856,6 @@
 			<param name="Name" value="&auml;&egrave;&agrave;&iuml;&agrave;&ccedil;&icirc;&iacute;">
 			<param name="Name" value="Типы данных. Соответствие типов">
 			<param name="Local" value="html\rdo_base_types.htm#diap">
-			</OBJECT>
-		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="&auml;&euml;&egrave;&iacute;&iacute;&icirc;&aring; &ouml;&aring;&euml;&icirc;&aring;">
-			<param name="Local" value="html\rdo_base_types.htm#longint">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="&iuml;&aring;&eth;&aring;&divide;&egrave;&ntilde;&euml;&egrave;&igrave;&ucirc;&eacute;">

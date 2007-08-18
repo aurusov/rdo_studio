@@ -93,7 +93,7 @@ double RDOIERuntime::getNextTimeInterval( RDOSimulator* sim )
 	RDORuntime* runtime = static_cast<RDORuntime*>(sim);
 	double time_next = timeCalc->calcValueBase( runtime );
 	if ( time_next >= 0 ) return time_next;
-	runtime->error( rdo::format("ѕопытка запланировать событие в прошлом. ¬ыражение времени дл€ $Time имеет отрицательное значение: %f", time_next).c_str(), timeCalc );
+	runtime->error( rdo::format("ѕопытка запланировать событие в прошлом. ¬ыражение времени дл€ $Time имеет отрицательное значение: %f", time_next), timeCalc );
 	return 0;
 }
 
@@ -124,7 +124,7 @@ double RDOOperationRuntime::getNextTimeInterval( RDOSimulator* sim )
 	RDORuntime* runtime = static_cast<RDORuntime*>(sim);
 	double time_next = timeCalc->calcValueBase( runtime );
 	if ( time_next >= 0 ) return time_next;
-	runtime->error( rdo::format("ѕопытка запланировать окончание операции в прошлом. ¬ыражение времени дл€ $Time имеет отрицательное значение: %f", time_next).c_str(), timeCalc );
+	runtime->error( rdo::format("ѕопытка запланировать окончание операции в прошлом. ¬ыражение времени дл€ $Time имеет отрицательное значение: %f", time_next), timeCalc );
 	return 0;
 }
 

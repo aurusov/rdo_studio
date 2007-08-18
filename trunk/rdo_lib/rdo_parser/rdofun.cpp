@@ -404,7 +404,7 @@ void RDOFUNArithm::init( const RDOParserSrcInfo& res_name_src_info, const RDOPar
 							parser->error( res_name_src_info, rdo::format("–елевантный ресурс нельз€ использовать до его создани€ (Create): %s", rel->getName().c_str()) );
 						}
 						if ( rel->begin == rdoRuntime::RDOResourceTrace::CS_Erase && rel->alreadyHaveConverter ) {
-							parser->error( res_name_src_info, rdo::format("–елевантный ресурс нельз€ использовать полсле удалени€ (Erase): %s", rel->getName().c_str()) );
+							parser->error( res_name_src_info, rdo::format("–елевантный ресурс нельз€ использовать после удалени€ (Erase): %s", rel->getName().c_str()) );
 						}
 						if ( rel->begin == rdoRuntime::RDOResourceTrace::CS_NonExist ) {
 							parser->error( res_name_src_info, rdo::format("–елевантный ресурс не существует в этом конверторе (NonExist): %s", rel->getName().c_str()) );
@@ -416,7 +416,7 @@ void RDOFUNArithm::init( const RDOParserSrcInfo& res_name_src_info, const RDOPar
 							parser->error( res_name_src_info, rdo::format("–елевантный ресурс нельз€ использовать до его создани€ (Create): %s", rel->getName().c_str()) );
 						}
 						if ( rel->end == rdoRuntime::RDOResourceTrace::CS_Erase && rel->alreadyHaveConverter ) {
-							parser->error( res_name_src_info, rdo::format("–елевантный ресурс нельз€ использовать полсле удалени€ (Erase): %s", rel->getName().c_str()) );
+							parser->error( res_name_src_info, rdo::format("–елевантный ресурс нельз€ использовать после удалени€ (Erase): %s", rel->getName().c_str()) );
 						}
 						if ( rel->end == rdoRuntime::RDOResourceTrace::CS_NonExist ) {
 							parser->error( res_name_src_info, rdo::format("–елевантный ресурс не существует в этом конверторе (NonExist): %s", rel->getName().c_str()) );

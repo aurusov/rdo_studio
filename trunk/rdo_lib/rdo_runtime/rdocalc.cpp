@@ -35,7 +35,7 @@ RDOValue RDOCalc::calcValueBase( RDORuntime* runtime ) const
 			runtime->error( "ошибка в", this );
 //			runtime->error( "in", this );
 		} else {
-			runtime->error( NULL, this );
+			runtime->error( "", this );
 		}
 	}
 	return 0; // unreachable code

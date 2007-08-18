@@ -123,7 +123,7 @@ void RDORuntime::onEraseRes( const int res_id, const RDOCalcEraseRes* calc )
 {
 	RDOResource* res = allResourcesByID.at( res_id );
 	if ( !res ) {
-		error( rdo::format("Временный ресурс уже удален. Возможно, он удален ранее в этом же образце. Имя релевантного ему ресурса: %s", calc ? calc->getName().c_str() : "неизвестное имя").c_str(), calc );
+		error( rdo::format("Временный ресурс уже удален. Возможно, он удален ранее в этом же образце. Имя релевантного ему ресурса: %s", calc ? calc->getName().c_str() : "неизвестное имя"), calc );
 	}
 	if ( res->referenceCount > 0 ) {
 		error( "Невозможно удалить ресурс, т.к. он еще используется", calc );
@@ -447,9 +447,9 @@ std::string RDORuntime::writeActivitiesStructure( int& counter )
 	return stream.str();
 }
 
-void RDORuntime::error( const char* message, const RDOCalc* calc )
+void RDORuntime::error( const std::string& message, const RDOCalc* calc )
 {
-	if ( message ) {
+	if ( !message.empty() ) {
 		errors.push_back( rdoSimulator::RDOSyntaxError( rdoSimulator::RDOSyntaxError::UNKNOWN, message, calc->src_pos().last_line, calc->src_pos().last_pos, calc->src_filetype() ) );
 	}
 	throw RDORuntimeException( "" );

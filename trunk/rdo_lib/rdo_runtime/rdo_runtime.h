@@ -171,7 +171,7 @@ protected:
 
 public:
 	std::vector< rdoSimulator::RDOSyntaxError > errors;
-	void error( const char* message, const RDOCalc* calc = NULL );
+	void error( const std::string& message, const RDOCalc* calc = NULL );
 
 	class RDOHotKeyToolkit {
 	private:
