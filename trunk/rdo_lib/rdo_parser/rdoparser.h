@@ -19,11 +19,12 @@ namespace rdoParse
 class RDORTPParam;
 class RDORTPResType;
 class RDORSSResource;
+class RDOPATPattern;
+class RDOOPROperation;
 class RDOFUNFunction;
 class RDOFUNSequence;
 class RDOFUNConstant;
 class RDOFUNGroup;
-class RDOPATPattern;
 class RDOSMR;
 class RDODPTSearch;
 class RDODPTSome;
@@ -50,6 +51,8 @@ protected:
 
 	bool have_kw_Resources;
 	bool have_kw_ResourcesEnd;
+	bool have_kw_Operations;
+	bool have_kw_OperationsEnd;
 
 	std::vector< std::string* >         allNames;
 	std::vector< double* >              allDoubles;
@@ -59,6 +62,7 @@ protected:
 	std::vector< RDORTPEnumParamType* > allEnums;
 	std::vector< RDORSSResource* >      allRSSResource;
 	std::vector< RDOPATPattern* >       allPATPatterns;
+	std::vector< RDOOPROperation* >     allOPROperations;
 	std::vector< RDOFUNConstant* >      allFUNConstant;
 	std::vector< RDOFUNFunction* >      allFUNFunctions;
 	std::vector< RDOFUNSequence* >      allFUNSequences;
@@ -107,6 +111,7 @@ public:
 	void insertEnum( RDORTPEnumParamType* value );
 	void insertRSSResource( RDORSSResource* value );
 	void insertPATPattern( RDOPATPattern* value );
+	void insertOPROperation( RDOOPROperation* value );
 	void insertFUNConstant( RDOFUNConstant* value );
 	void insertFUNFunction( RDOFUNFunction* value );
 	void insertFUNSequences( RDOFUNSequence* value );
@@ -129,6 +134,11 @@ public:
 	bool isHaveKWResourcesEnd() const        { return have_kw_ResourcesEnd;  }
 	void setHaveKWResourcesEnd( bool value ) { have_kw_ResourcesEnd = value; }
 
+	bool isHaveKWOperations() const           { return have_kw_Operations;     }
+	void setHaveKWOperations( bool value )    { have_kw_Operations = value;    }
+	bool isHaveKWOperationsEnd() const        { return have_kw_OperationsEnd;  }
+	void setHaveKWOperationsEnd( bool value ) { have_kw_OperationsEnd = value; }
+
 	int getRTP_id() const      { return allRTPResType.size()  + 1; }
 	int getRSS_id() const      { return allRSSResource.size() + 0; }
 	int getPAT_id() const      { return allPATPatterns.size() + 0; }
@@ -145,19 +155,22 @@ public:
 
 	void setSMR( RDOSMR* _smr)  { smr = _smr; }
 
-	const RDORTPResType*  findRTPResType( const std::string& name ) const;
-	const RDORSSResource* findRSSResource( const std::string& name ) const;
-	const RDOFUNFunction* findFunction( const std::string& name ) const;
-	const RDOFUNSequence* findSequence( const std::string& name ) const;
-	const RDOPATPattern*  findPattern( const std::string& name ) const;
+	const RDORTPResType*   findRTPResType( const std::string& name ) const;
+	const RDORSSResource*  findRSSResource( const std::string& name ) const;
+	const RDOFUNFunction*  findFunction( const std::string& name ) const;
+	const RDOFUNSequence*  findSequence( const std::string& name ) const;
+	const RDOPATPattern*   findPattern( const std::string& name ) const;
+	const RDOOPROperation* findOperation( const std::string& name ) const;
 
 	void parse( int files = rdoModelObjects::obALL );
 	void parse( rdoModelObjects::RDOParseType file );
 	void parse( rdoModelObjects::RDOParseType file, std::istream& stream );
 	void error( rdoSimulator::RDOSyntaxError::ErrorCode _error_code, ... );
 	void error( const std::string& _message, rdoSimulator::RDOSyntaxError::ErrorCode _error_code = rdoSimulator::RDOSyntaxError::UNKNOWN );
-	void error_push_only( const std::string& _message, rdoSimulator::RDOSyntaxError::ErrorCode _error_code = rdoSimulator::RDOSyntaxError::UNKNOWN );
+	void error( const RDOParserSrcInfo& _src_info, rdoSimulator::RDOSyntaxError::ErrorCode _error_code, ... );
 	void error( const RDOParserSrcInfo& _src_info, const std::string& _message, rdoSimulator::RDOSyntaxError::ErrorCode _error_code = rdoSimulator::RDOSyntaxError::UNKNOWN );
+	void error_push_only( rdoSimulator::RDOSyntaxError::ErrorCode _error_code, ... );
+	void error_push_only( const std::string& _message, rdoSimulator::RDOSyntaxError::ErrorCode _error_code = rdoSimulator::RDOSyntaxError::UNKNOWN );
 	void error_push_only( const RDOParserSrcInfo& _src_info, const std::string& _message, rdoSimulator::RDOSyntaxError::ErrorCode _error_code = rdoSimulator::RDOSyntaxError::UNKNOWN );
 	void error_modify( const std::string& _message );
 	void warning( rdoSimulator::RDOSyntaxError::ErrorCode _error_code, ... );

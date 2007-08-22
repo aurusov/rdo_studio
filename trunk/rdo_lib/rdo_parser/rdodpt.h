@@ -64,7 +64,7 @@ public:
 	void setValue(DPTSearchValue _value, RDOFUNArithm *_ruleCost);
 	const std::string *getName() const { return name; }
 	void addParam( int _param );
-	void addParam( double* _param );
+	void addParam( double _param );
 	void addParam( const std::string& _param );
 	void addParam();
 	RDOPATPatternRule *getRule() { return rule; }
@@ -121,7 +121,7 @@ public:
 	RDODPTSomeActivity( const RDOParserObject* _parent, std::string* _name, std::string* _ruleName );
 	const std::string *getName() const { return name; }
 	void addParam( int _param );
-	void addParam( double* _param );
+	void addParam( double _param );
 	void addParam( const std::string& _param );
 	void addParam();
 
@@ -171,7 +171,7 @@ public:
 	RDODPTFreeActivity( RDOParser* _parser, std::string* _name, std::string* _ruleName );
 	const std::string *getName() const { return name; }
 	void addParam( int _param );
-	void addParam( double* _param );
+	void addParam( double _param );
 	void addParam( const std::string& _param );
 	void addParam();
 	void end();

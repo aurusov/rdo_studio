@@ -39,7 +39,7 @@ public:
 
 	const std::vector< rdoRuntime::RDOValue >& getValues() const { return values;  }
 	void addValue( const rdoRuntime::RDOValue& val )             { values.push_back( val ); }
-	
+
 	int writeModelStructure();
 
 	bool getTrace() const       { return trace;  }

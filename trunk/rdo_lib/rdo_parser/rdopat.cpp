@@ -231,6 +231,7 @@ void RDOPATPattern::setCommonChoiceFirst()
 {
 	useCommonChoice = true;
 	commonChoice    = NULL;
+	parser->error( "¬ызывать нельз€, т.к. в сообщени€х об ошибках используетс€ commonChoice" );
 }
 
 void RDOPATPattern::setCommonChoiceWithMin( RDOFUNArithm* arithm )
@@ -276,9 +277,22 @@ void RDOPATPattern::addRelResBody( const RDOParserSrcInfo& body_name )
 
 void RDOPATPattern::addRelResUsage( RDOPATChoiceFrom* choice_from, RDOPATChoiceOrder* choice_order )
 {
-	if ( !useCommonChoice && choice_order->type == rdoRuntime::RDOSelectResourceCalc::order_empty ) {
-		if ( (currRelRes->begin != rdoRuntime::RDOResourceTrace::CS_Create) && (currRelRes->end != rdoRuntime::RDOResourceTrace::CS_Create) ) {
-			choice_order->type = rdoRuntime::RDOSelectResourceCalc::order_first;
+	if ( !useCommonChoice ) {
+		if ( choice_order->type == rdoRuntime::RDOSelectResourceCalc::order_empty ) {
+			if ( (currRelRes->begin != rdoRuntime::RDOResourceTrace::CS_Create) && (currRelRes->end != rdoRuntime::RDOResourceTrace::CS_Create) ) {
+				choice_order->type = rdoRuntime::RDOSelectResourceCalc::order_first;
+			}
+		} else if ( currRelRes->isDirect() ) {
+			parser->lexer_loc_backup();
+			parser->lexer_loc_set( choice_order->src_pos().last_line, choice_order->src_pos().last_pos );
+			parser->warning( choice_order->src_info(), rdo::format("ѕравило выбора '%s' релевантного ресурса '%s' не имеет смысла, т.к. релевантный ресурс определен через им€, а не тип, и не может быть св€зан с каким-либо другим ресурсом",choice_order->src_text().c_str(), currRelRes->getName().c_str()) );
+			parser->lexer_loc_restore();
+		}
+	} else {
+		if ( choice_order->type != rdoRuntime::RDOSelectResourceCalc::order_empty ) {
+			parser->error_push_only( choice_order->src_info(), "Ќельз€ указать способ выбора релевантного ресурса, т.к. используетс€ единый дл€ всех релевантных ресурсов способ, указанный до ключевого слова $Body" );
+			parser->error( commonChoice->src_info(), rdo::format("—м. '%s'", commonChoice->src_text().c_str()) );
+//			parser->error( "Cannot use both common choice and choice for \"" + *currRelRes->getName() + "\" relevant resource in pattern \"" + getName() + "\"" );
 		}
 	}
 
@@ -290,11 +304,6 @@ void RDOPATPattern::addRelResUsage( RDOPATChoiceFrom* choice_from, RDOPATChoiceO
 		if ( choice_order->type != rdoRuntime::RDOSelectResourceCalc::order_empty ) {
 			parser->error( choice_from->src_info(), rdo::format("–елевантный ресурс создаетс€, дл€ него нельз€ использовать правило выбора '%s'", choice_order->asString().c_str()) );
 		}
-	}
-
-	if ( useCommonChoice && choice_order->type != rdoRuntime::RDOSelectResourceCalc::order_empty ) {
-		parser->error( choice_from->src_info(), "Ќельз€ указать способ выбора релевантного ресурса, т.к. используетс€ единый дл€ всех релевантных ресурсов способ, указанный до ключевого слова $Body" );
-//		parser->error( "Cannot use both common choice and choice for \"" + *currRelRes->getName() + "\" relevant resource in pattern \"" + getName() + "\"" );
 	}
 
 	currRelRes->choice_from  = choice_from;
@@ -556,8 +565,7 @@ void RDOPATPatternOperation::rel_res_insert( RDORelevantResource* rel_res, const
 
 void RDOPATPatternOperation::addRelRes( const std::string& relName, const std::string& typeName, rdoRuntime::RDOResourceTrace::ConvertStatus beg, const YYLTYPE& rel_pos, const YYLTYPE& type_pos, const YYLTYPE& convertor_pos )
 {
-	parser->lexer_loc_set( convertor_pos.last_line, convertor_pos.last_column );
-	parser->error( "¬нутренн€€ ошибка парсера" );
+	parser->error( convertor_pos, "¬нутренн€€ ошибка парсера" );
 }
 
 void RDOPATPatternOperation::addRelRes( const std::string& relName, const std::string& typeName, rdoRuntime::RDOResourceTrace::ConvertStatus beg, rdoRuntime::RDOResourceTrace::ConvertStatus end, const YYLTYPE& rel_pos, const YYLTYPE& type_pos, const YYLTYPE& convertor_begin_pos, const YYLTYPE& convertor_end_pos )
@@ -748,17 +756,18 @@ rdoRuntime::RDOSelectResourceCalc::Type RDORelevantResource::getSelectType() con
 // ----------------------------------------------------------------------------
 rdoRuntime::RDOCalc* RDORelevantResourceDirect::createSelectEmptyResourceCalc()
 {
-	rdoRuntime::RDOSelectResourceDirectCalc* relres_calc = new rdoRuntime::RDOSelectResourceDirectCalc( parser->runTime, rel_res_id, res->getNumber(), NULL, NULL );
-	relres_calc->setSrcInfo( src_info() );
-	relres_calc->setSrcText( "ѕредварительный выбор рел. ресурса " + relres_calc->src_text() );
-	return relres_calc;
+	rdoRuntime::RDOSelectResourceDirectCalc* calc = new rdoRuntime::RDOSelectResourceDirectCalc( parser->runTime, rel_res_id, res->getNumber(), NULL, NULL );
+	calc->setSrcInfo( src_info() );
+	calc->setSrcText( "ѕредварительный выбор рел. ресурса " + calc->src_text() );
+	return calc;
 }
 
 rdoRuntime::RDOCalc* RDORelevantResourceDirect::createSelectResourceChoiceCalc()
 {
-	rdoRuntime::RDOSelectResourceDirectCalc* relres_calc = new rdoRuntime::RDOSelectResourceDirectCalc( parser->runTime, rel_res_id, res->getNumber(), getChoiceCalc(), getSelectCalc(), getSelectType() );
-	relres_calc->setSrcInfo( choice_from->src_info() );
-	return relres_calc;
+//	rdoRuntime::RDOSelectResourceDirectCalc* calc = new rdoRuntime::RDOSelectResourceDirectCalc( parser->runTime, rel_res_id, res->getNumber(), getChoiceCalc(), NULL, rdoRuntime::RDOSelectResourceCalc::order_empty );
+	rdoRuntime::RDOSelectResourceDirectCalc* calc = new rdoRuntime::RDOSelectResourceDirectCalc( parser->runTime, rel_res_id, res->getNumber(), getChoiceCalc(), getSelectCalc(), getSelectType() );
+	calc->setSrcInfo( choice_from->src_info() );
+	return calc;
 }
 
 rdoRuntime::RDOCalc* RDORelevantResourceDirect::createSelectFirstResourceChoiceCalc()
@@ -782,12 +791,18 @@ const RDORTPResType* const RDORelevantResourceDirect::getType() const
 rdoRuntime::RDOCalc* RDORelevantResourceByType::createSelectEmptyResourceCalc()
 {
 	if ( (begin != rdoRuntime::RDOResourceTrace::CS_Create) && (end != rdoRuntime::RDOResourceTrace::CS_Create) ) {
-		return new rdoRuntime::RDOSelectResourceByTypeCalc( parser->runTime, rel_res_id, type->getNumber(), NULL, NULL );
+		rdoRuntime::RDOSelectResourceByTypeCalc* calc = new rdoRuntime::RDOSelectResourceByTypeCalc( parser->runTime, rel_res_id, type->getNumber(), NULL, NULL );
+		calc->setSrcInfo( src_info() );
+		calc->setSrcText( "ѕредварительный выбор рел. ресурса " + calc->src_text() );
+		return calc;
 	} else {
 		if ( begin == rdoRuntime::RDOResourceTrace::CS_NonExist ) {
 			return new rdoRuntime::RDOSelectResourceNonExistCalc( parser->runTime, rel_res_id );
 		} else {
-			return new rdoRuntime::RDOCalcConst( parser->runTime, 1 );
+			rdoRuntime::RDOCalcConst* calc = new rdoRuntime::RDOCalcConst( parser->runTime, 1 );
+			calc->setSrcInfo( src_info() );
+			calc->setSrcText( "ѕредварительный выбор рел. ресурса перед созданием " + calc->src_text() );
+			return calc;
 		}
 	}
 }
@@ -795,12 +810,17 @@ rdoRuntime::RDOCalc* RDORelevantResourceByType::createSelectEmptyResourceCalc()
 rdoRuntime::RDOCalc* RDORelevantResourceByType::createSelectResourceChoiceCalc()
 {
 	if ( (begin != rdoRuntime::RDOResourceTrace::CS_Create) && (end != rdoRuntime::RDOResourceTrace::CS_Create) ) {
-		return new rdoRuntime::RDOSelectResourceByTypeCalc( parser->runTime, rel_res_id, type->getNumber(), getChoiceCalc(), getSelectCalc(), getSelectType() );
+		rdoRuntime::RDOSelectResourceByTypeCalc* calc = new rdoRuntime::RDOSelectResourceByTypeCalc( parser->runTime, rel_res_id, type->getNumber(), getChoiceCalc(), getSelectCalc(), getSelectType() );
+		calc->setSrcInfo( choice_from->src_info() );
+		return calc;
 	} else {
 		if ( begin == rdoRuntime::RDOResourceTrace::CS_NonExist ) {
 			return new rdoRuntime::RDOSelectResourceNonExistCalc( parser->runTime, rel_res_id );
 		} else {
-			return new rdoRuntime::RDOCalcConst( parser->runTime, 1 );
+			rdoRuntime::RDOCalcConst* calc = new rdoRuntime::RDOCalcConst( parser->runTime, 1 );
+			calc->setSrcInfo( src_info() );
+			calc->setSrcText( "ѕеред созданием рел. ресурса " + calc->src_text() );
+			return calc;
 		}
 	}
 }

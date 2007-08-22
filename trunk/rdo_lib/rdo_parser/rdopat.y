@@ -169,14 +169,14 @@ namespace rdoParse
 
 %%
 
-pat_list:	
-			| pat_list pat_pattern;
+pat_main:
+			| pat_main pat_pattern;
 			| error {
 				parser->lexer_loc_set( &(@1) );
 				parser->error( "Неизвестная ошибка" );
 			};
 
-pat_header:	  Pattern IDENTIF_COLON operation_kw pat_trace {
+pat_header:	Pattern IDENTIF_COLON operation_kw pat_trace {
 				std::string name = *reinterpret_cast<std::string*>($2);
 				RDOParserSrcInfo pos;
 				pos.setSrcPosAndTextByLength( @2, name );
@@ -247,11 +247,10 @@ pat_params:	pat_params_begin IDENTIF_COLON param_type {
 				$$ = $1;
 			}
 			| pat_params_begin error {
-				parser->lexer_loc_set( &(@1), &(@2) );
 				if ( @1.last_line != @2.last_line ) {
-					parser->error( "Ожидается имя параметра образца" );
+					parser->error( @2, "Ожидается имя параметра образца" );
 				} else {
-					parser->error( rdo::format("Ожидается имя параметра образца, найдено: %s", reinterpret_cast<RDOLexer*>(lexer)->YYText()) );
+					parser->error( @2, rdo::format("Ожидается имя параметра образца, найдено: %s", reinterpret_cast<RDOLexer*>(lexer)->YYText()) );
 				}
 			}
 			| pat_params_begin IDENTIF error {
@@ -271,11 +270,10 @@ pat_params:	pat_params_begin IDENTIF_COLON param_type {
 				}
 			}
 			| pat_params error {
-				parser->lexer_loc_set( &(@1), &(@2) );
 				if ( @1.last_line != @2.last_line ) {
-					parser->error( "Ожидается имя параметра образца" );
+					parser->error( @2, "Ожидается имя параметра образца" );
 				} else {
-					parser->error( rdo::format("Ожидается имя параметра образца, найдено: %s", reinterpret_cast<RDOLexer*>(lexer)->YYText()) );
+					parser->error( @2, rdo::format("Ожидается имя параметра образца, найдено: %s", reinterpret_cast<RDOLexer*>(lexer)->YYText()) );
 				}
 			}
 			| pat_params IDENTIF error {
@@ -891,7 +889,7 @@ pat_res_usage:	pat_body pat_choice pat_order {
 
 pat_choice: /* empty */ {
 				parser->getLastPATPattern()->currRelRes->currentState = RDORelevantResource::choiceEmpty;
-				$$ = (int) new RDOPATChoiceFrom( parser->getLastPATPattern()->currRelRes, RDOParserSrcInfo(), RDOPATChoiceFrom::ch_empty );
+				$$ = (int) new RDOPATChoiceFrom( parser->getLastPATPattern()->currRelRes, RDOParserSrcInfo( "Choice NoCheck" ), RDOPATChoiceFrom::ch_empty );
 			}
 			| pat_choice_nocheck {
 				$$ = (int) new RDOPATChoiceFrom( parser->getLastPATPattern()->currRelRes, RDOParserSrcInfo( "Choice NoCheck" ), RDOPATChoiceFrom::ch_nocheck );

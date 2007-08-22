@@ -3,6 +3,7 @@
 #include "rdoparser_rdo.h"
 #include "rdortp.h"
 #include "rdofun.h"
+#include "rdoopr.h"
 #include "rdorss.h"
 #include "rdodpt.h"
 #include "rdocommon.h"
@@ -25,6 +26,8 @@ RDOParser::RDOParser():
 	parser_base( NULL ),
 	have_kw_Resources( false ),
 	have_kw_ResourcesEnd( false ),
+	have_kw_Operations( false ),
+	have_kw_OperationsEnd( false ),
 	lastDPTSearch( NULL ),
 //	patternCounter( 1 ),
 //	pokazCounter( 1 ),
@@ -77,6 +80,11 @@ void RDOParser::insertPATPattern( RDOPATPattern* value )
 {
 	parsing_object = value;
 	allPATPatterns.push_back( value );
+}
+
+void RDOParser::insertOPROperation( RDOOPROperation* value )
+{
+	allOPROperations.push_back( value );
 }
 
 void RDOParser::insertFUNConstant( RDOFUNConstant* value )
@@ -251,6 +259,24 @@ void RDOParser::error( rdoSimulator::RDOSyntaxError::ErrorCode _error_code, ... 
 	error( str, _error_code );
 }
 
+void RDOParser::error_push_only( rdoSimulator::RDOSyntaxError::ErrorCode _error_code, ... )
+{
+	va_list params;
+	va_start( params, _error_code );
+	std::string str = rdoSimulator::RDOSyntaxError::getMessage( _error_code, params );
+	va_end( params );
+	error_push_only( str, _error_code );
+}
+
+void RDOParser::error( const RDOParserSrcInfo& _src_info, rdoSimulator::RDOSyntaxError::ErrorCode _error_code, ... )
+{
+	va_list params;
+	va_start( params, _error_code );
+	std::string str = rdoSimulator::RDOSyntaxError::getMessage( _error_code, params );
+	va_end( params );
+	error( _src_info, str, _error_code );
+}
+
 void RDOParser::error( const std::string& _message, rdoSimulator::RDOSyntaxError::ErrorCode _error_code )
 {
 	error_push_only( _message, _error_code );
@@ -388,6 +414,12 @@ const RDOPATPattern* RDOParser::findPattern( const std::string& name ) const
 		return (*it);
 
 	return NULL;
+}
+
+const RDOOPROperation* RDOParser::findOperation( const std::string& name ) const
+{
+	std::vector< RDOOPROperation* >::const_iterator it = std::find_if( allOPROperations.begin(), allOPROperations.end(), compareName2<RDOOPROperation>(name) );
+	return it != allOPROperations.end() ? *it : NULL;
 }
 
 void RDOParser::LoadStdFunctions()

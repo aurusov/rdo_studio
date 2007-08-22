@@ -144,7 +144,7 @@ void RDODPTSearchActivity::addParam(int _param)
 	params.push_back(val);
 }
 
-void RDODPTSearchActivity::addParam(double *_param) 
+void RDODPTSearchActivity::addParam(double _param) 
 {
 	if(currParamNum >= rule->params.size())
 		parser->error("Too many parameters for rule: " + rule->getName());
@@ -239,7 +239,7 @@ void RDODPTSomeActivity::addParam(int _param)
 	params.push_back(val);
 }
 
-void RDODPTSomeActivity::addParam(double *_param) 
+void RDODPTSomeActivity::addParam(double _param) 
 {
 	if(currParamNum >= pattern->params.size())
 		parser->error("Too many parameters for pattern: " + pattern->getName());
@@ -310,7 +310,7 @@ void RDODPTFreeActivity::addParam(int _param)
 	params.push_back(val);
 }
 
-void RDODPTFreeActivity::addParam(double *_param) 
+void RDODPTFreeActivity::addParam(double _param) 
 {
 	if(currParamNum >= pattern->params.size())
 		parser->error("Too many parameters for pattern: " + pattern->getName());

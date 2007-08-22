@@ -187,7 +187,7 @@ fun_consts:	/* empty */
 
 fun_const_body:	/* empty */
 				| fun_const_body fun_const_param_desc {
-					RDORTPParam* cons = (RDORTPParam*)$2;
+					RDORTPParam* cons = reinterpret_cast<RDORTPParam*>($2);
 					parser->addConstant( cons );
 				}
 				| fun_const_body error {
@@ -202,7 +202,7 @@ fun_const_param_desc:	IDENTIF_COLON param_type {
 								parser->error( rdo::format(" онстанта с таким именем уже существует: %s", name.c_str()) );
 //								parser->error("Second appearance of the same constant name: " + *(_cons->getName()));
 							}
-							RDORTPParamType* parType = (RDORTPParamType*)$2;
+							RDORTPParamType* parType = reinterpret_cast<RDORTPParamType*>($2);
 							if ( !parType->dv->isExist() ) {
 								parser->lexer_loc_set( &(@2) );
 								parser->error( " онстанта должна иметь значение" );
@@ -696,7 +696,7 @@ fun_std_value:	IDENTIF {
 					$$ = (int)value;
 				}
 				| REAL_CONST {
-					RDOFUNFunctionListElementReal *value = new RDOFUNFunctionListElementReal( parser->getLastFUNFunction(), (double *)$1 );
+					RDOFUNFunctionListElementReal *value = new RDOFUNFunctionListElementReal( parser->getLastFUNFunction(), *(double *)$1 );
 					parser->getLastFUNFunction()->add(value);
 					value->setSrcPos( @1 );
 					$$ = (int)value;
@@ -1448,10 +1448,10 @@ fun_seq_enumerative_body_real:	fun_seq_enumerative_header REAL_CONST {
 											}
 										}
 									}
-									$$ = (int)(new RDOFUNSequenceEnumerativeReal( parser, header, (double*)$2) );
+									$$ = (int)(new RDOFUNSequenceEnumerativeReal( parser, header, *(double*)$2) );
 								}
 								| fun_seq_enumerative_body_real REAL_CONST {
-									((RDOFUNSequenceEnumerativeReal *)$1)->addReal((double*)$2); $$ = $1;
+									((RDOFUNSequenceEnumerativeReal *)$1)->addReal(*(double*)$2); $$ = $1;
 								}
 								| fun_seq_enumerative_body_real error {
 									parser->lexer_loc_set( &(@1), &(@2) );

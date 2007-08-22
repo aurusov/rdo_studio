@@ -608,7 +608,8 @@ int RDORuntime::RDOHotKeyToolkit::codeFromString( const std::string& key )
 {
 	std::map< std::string, int >::iterator it = keys.find( key );
 	if ( it == keys.end() ) {
-		throw RDORuntimeException( "Unknown key name: " + key );
+		return -1;
+//		throw RDORuntimeException( "Unknown key name: " + key );
 	}
 	return (*it).second;
 }

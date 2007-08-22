@@ -1,5 +1,5 @@
-#ifndef RDOOPR_OPR
-#define RDOOPR_OPR
+#ifndef RDOOPR_H
+#define RDOOPR_H
 
 #include "rdoparser_object.h"
 
@@ -15,27 +15,29 @@ int oprparse( void* lexer );
 int oprlex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer );
 void oprerror( char* mes );
 
+// ----------------------------------------------------------------------------
+// ---------- RDOOPROperation
+// ----------------------------------------------------------------------------
 class RDOPATPattern;
 
-class RDOOPROperation: public RDOParserObject
+class RDOOPROperation: public RDOParserObject, public RDOParserSrcInfo
 {
 private:
-	std::string          name;
-	const RDOPATPattern* pattern;
-	int currParam;
+	const RDOPATPattern*            pattern;
+	int                             currParam;
 	rdoRuntime::RDOActivityRuntime* activity;
 
 public:
-	RDOOPROperation( RDOParser* _parser, const std::string& _oprName, const std::string& patName );
-	void endOfDefinition();
-	void addParam( const std::string& stringParam );
-	void addParam( int intParam );
-	void addParam( double* realParam );
-	void addParam();
-	const std::string& getName() const { return name; }
-	void addHotKey( const std::string& hotKey );
+	RDOOPROperation( RDOParser* _parser, const RDOParserSrcInfo& _name, const RDOParserSrcInfo& _pattern );
+	void addParam( const std::string& stringParam, const YYLTYPE& param_pos );
+	void addParam( int intParam, const YYLTYPE& param_pos );
+	void addParam( double realParam, const YYLTYPE& param_pos );
+	void addParam( const YYLTYPE& param_pos );
+	void addHotKey( const std::string& hotKey, const YYLTYPE& pattern_pos );
+	void endOfDefinition( const YYLTYPE& opr_pos );
+	const std::string& getName() const { return src_info().src_text(); }
 };
 
 } // namespace rdoParse 
 
-#endif // RDOOPR_OPR
+#endif // RDOOPR_H

@@ -30,9 +30,9 @@ protected:
 	std::vector< RDOCalc* > choiceFromCalcs;
 	std::vector< RDOCalc* > beginCalcs;
 	std::vector< RDOCalc* > beginEraseCalcs;
+	std::vector< RDOResourceTrace::ConvertStatus > beginConvertStatus;
 	std::string patternId;
 	bool        trace;
-	std::vector< RDOResourceTrace::ConvertStatus > beginConvertStatus;
 
 public:
 	virtual ~RDOPatternRuntime() {}
@@ -184,7 +184,7 @@ public:
 			return 0;
 		}
 		return relResID.at( rel_res_id ); 
-	} 
+	}
 	void setRelRes( int rel_res_id, int res_id )
 	{
 		if ( relResID.size() <= rel_res_id ) {
@@ -192,7 +192,7 @@ public:
 		}
 		relResID[rel_res_id] = res_id; 
 	}
-	virtual void addHotKey( const std::string& hotKey ) {}
+	virtual bool addHotKey( const std::string& hotKey ) { return false; }
 	void writeModelStructure( std::stringstream& stream );
 };
 
@@ -296,7 +296,7 @@ public:
 	RDOActivityKeyboardRuntime( RDORuntime* rTime, RDOPatternRuntime* _pattern, bool _trace, const std::string& _oprName );
 	RDOActivityKeyboardRuntime( RDORuntime* rTime, RDOPatternRuntime* _pattern, bool _trace, RDOCalc* condition, const std::string& _oprName );
 
-	virtual void addHotKey( const std::string& hotKey );
+	virtual bool addHotKey( const std::string& hotKey );
 	bool choiceFrom( RDOSimulator* sim );
 };
 

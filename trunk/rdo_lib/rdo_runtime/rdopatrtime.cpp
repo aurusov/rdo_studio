@@ -482,15 +482,16 @@ RDOActivityKeyboardRuntime::RDOActivityKeyboardRuntime( RDORuntime* rTime, RDOPa
 {
 }
 
-void RDOActivityKeyboardRuntime::addHotKey( const std::string& hotKey )
+bool RDOActivityKeyboardRuntime::addHotKey( const std::string& hotKey )
 {
 	unsigned int _scan_code = RDOOperationTrace::getRuntime()->rdoHotKeyToolkit.codeFromString( hotKey );
-	if ( _scan_code == -1 ) return;
+	if ( _scan_code == -1 ) return false;
 	switch ( _scan_code ) {
 		case VK_SHIFT  : shift     = true;       RDOOperationTrace::getRuntime()->using_scan_codes.push_back( VK_SHIFT   ); break;
 		case VK_CONTROL: control   = true;       RDOOperationTrace::getRuntime()->using_scan_codes.push_back( VK_CONTROL ); break;
 		default        : scan_code = _scan_code; RDOOperationTrace::getRuntime()->using_scan_codes.push_back( _scan_code ); break;
 	}
+	return true;
 }
 
 bool RDOActivityKeyboardRuntime::choiceFrom( RDOSimulator *sim )

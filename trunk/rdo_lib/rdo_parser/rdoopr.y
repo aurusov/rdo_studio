@@ -156,24 +156,85 @@ namespace rdoParse
 
 %%
 
-opr_main:	opr_end;
+opr_main:	opr_end
+			| error {
+				if ( !parser->isHaveKWOperations() ) {
+					parser->error( @1, "Ожидается ключевое слово $Operations" );
+				} else if ( parser->isHaveKWOperationsEnd() ) {
+					parser->error( @1, "Операции уже определены" );
+				} else {
+					parser->error( @1, rdoSimulator::RDOSyntaxError::UNKNOWN );
+				}
+			};
 
-opr_header:	Operations;
+opr_header:	Operations {
+				parser->setHaveKWOperations( true );
+			};
 
-opr_body:	opr_header IDENTIF_COLON IDENTIF	{ $$ = (int)(new RDOOPROperation( parser, *(std::string *)$2, *(std::string *)$3 )); @$; }
-			| opr_param IDENTIF_COLON IDENTIF	{ ((RDOOPROperation *)$1)->endOfDefinition(); $$ = (int)(new RDOOPROperation( parser, *(std::string *)$2, *(std::string *)$3 )); };
+opr_body:	opr_header IDENTIF_COLON IDENTIF {
+				RDOParserSrcInfo name;
+				name.setSrcPosAndTextByLength( @2, *reinterpret_cast<std::string*>($2) );
+				RDOParserSrcInfo pattern( @3, *reinterpret_cast<std::string*>($3) );
+				RDOOPROperation* opr = new RDOOPROperation( parser, name, pattern );
+				$$ = (int)opr;
+			}
+			| opr_param IDENTIF_COLON IDENTIF {
+				RDOOPROperation* opr = reinterpret_cast<RDOOPROperation*>($1);
+				opr->endOfDefinition( @1 );
+				RDOParserSrcInfo name;
+				name.setSrcPosAndTextByLength( @2, *reinterpret_cast<std::string*>($2) );
+				RDOParserSrcInfo pattern( @3, *reinterpret_cast<std::string*>($3) );
+				opr = new RDOOPROperation( parser, name, pattern );
+				$$ = (int)opr;
+			}
+			| opr_header IDENTIF_COLON error {
+				parser->error( @3, "Ожидается имя образца" );
+			};
+			| opr_param IDENTIF_COLON error {
+				parser->error( @3, "Ожидается имя образца" );
+			};
+			| opr_header error {
+				parser->error( @2, "Ожидается имя операции" );
+			};
 
 opr_keyb:	opr_body
-			| opr_keyb QUOTED_IDENTIF		{ ((RDOOPROperation *)$1)->addHotKey(*(std::string *)$2); }
-			| opr_keyb '+' QUOTED_IDENTIF	{ ((RDOOPROperation *)$1)->addHotKey(*(std::string *)$3); };
+			| opr_keyb QUOTED_IDENTIF {
+				RDOOPROperation* opr = reinterpret_cast<RDOOPROperation*>($1);
+				std::string      key = *reinterpret_cast<std::string*>($2);
+				opr->addHotKey( key, @2 );
+			}
+			| opr_keyb '+' QUOTED_IDENTIF {
+				RDOOPROperation* opr = reinterpret_cast<RDOOPROperation*>($1);
+				std::string      key = *reinterpret_cast<std::string*>($3);
+				opr->addHotKey( key, @3 );
+			};
 
-opr_param:	opr_param IDENTIF		{ ((RDOOPROperation *)$1)->addParam(*(std::string *)$2); }
-			| opr_param INT_CONST	{ ((RDOOPROperation *)$1)->addParam((int)$2);            }
-			| opr_param REAL_CONST	{ ((RDOOPROperation *)$1)->addParam((double *)$2);       }
-			| opr_param '*'			{ ((RDOOPROperation *)$1)->addParam();                   }
+opr_param:	opr_param IDENTIF {
+				RDOOPROperation* opr   = reinterpret_cast<RDOOPROperation*>($1);
+				std::string      param = *reinterpret_cast<std::string*>($2);
+				opr->addParam( param, @2 );
+			}
+			| opr_param INT_CONST {
+				RDOOPROperation* opr   = reinterpret_cast<RDOOPROperation*>($1);
+				int              param = $2;
+				opr->addParam( param, @2 );
+			}
+			| opr_param REAL_CONST {
+				RDOOPROperation* opr   = reinterpret_cast<RDOOPROperation*>($1);
+				double           param = *reinterpret_cast<double*>($2);
+				opr->addParam( param, @2 );
+			}
+			| opr_param '*' {
+				RDOOPROperation* opr = reinterpret_cast<RDOOPROperation*>($1);
+				opr->addParam( @2 );
+			}
 			| opr_keyb;
 
-opr_end:	opr_param End { ((RDOOPROperation *)$1)->endOfDefinition(); };
+opr_end:	opr_param End {
+				RDOOPROperation* opr = reinterpret_cast<RDOOPROperation*>($1);
+				opr->endOfDefinition( @1 );
+				parser->setHaveKWOperationsEnd( true );
+			};
 
 %%
 
