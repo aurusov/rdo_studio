@@ -116,6 +116,8 @@
 %token some					362
 %token Process				363
 %token SEIZE				364
+%token if_keyword			369
+%token result_keyword		370
 
 %token Frame				400
 %token Show_if				401

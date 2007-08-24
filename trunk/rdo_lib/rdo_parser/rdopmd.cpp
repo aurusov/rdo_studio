@@ -42,7 +42,7 @@ void RDOPMDPokaz::endOfCreation( rdoRuntime::RDOPMDPokaz* _pokaz_runtime )
 	pokaz_runtime->setID( parser->getPMD_id() );
 	parser->insertPMDPokaz( this );
 	//todo: перенести в конструктор rdoRuntime::RDOPMDPokaz
-	parser->runTime->addRuntimePokaz( pokaz_runtime );
+	parser->runtime->addRuntimePokaz( pokaz_runtime );
 }
 
 // ----------------------------------------------------------------------------
@@ -67,7 +67,7 @@ RDOPMDWatchPar::RDOPMDWatchPar( RDOParser* _parser, std::string* _name, bool _tr
 		parser->error("Enumerative parameter: " + _resName + "." + _parName + " not allowed in watch_par statement");
 	}
 
-	rdoRuntime::RDOPMDWatchPar* pokaz = new rdoRuntime::RDOPMDWatchPar( parser->runTime, _name, _trace, _resName, _parName, res->getNumber(), res->getType()->getRTPParamNumber(_parName) );
+	rdoRuntime::RDOPMDWatchPar* pokaz = new rdoRuntime::RDOPMDWatchPar( parser->runtime, _name, _trace, _resName, _parName, res->getNumber(), res->getType()->getRTPParamNumber(_parName) );
 	endOfCreation( pokaz );
 }
 
@@ -77,7 +77,7 @@ RDOPMDWatchPar::RDOPMDWatchPar( RDOParser* _parser, std::string* _name, bool _tr
 RDOPMDWatchState::RDOPMDWatchState( RDOParser* _parser, std::string* _name, bool _trace, RDOFUNLogic* _logic ):
 	RDOPMDPokaz( _parser )
 {
-	endOfCreation( new rdoRuntime::RDOPMDWatchState( parser->runTime, _name, _trace, _logic->calc ) );
+	endOfCreation( new rdoRuntime::RDOPMDWatchState( parser->runtime, _name, _trace, _logic->calc ) );
 }
 
 // ----------------------------------------------------------------------------
@@ -87,7 +87,7 @@ RDOPMDWatchQuant::RDOPMDWatchQuant( RDOParser* _parser, std::string* _name, bool
 	RDOPMDPokaz( _parser )
 {
 	RDOFUNGroupLogic* fgl = new RDOFUNGroupLogic( this, 5, _resTypeName );
-	rdoRuntime::RDOPMDWatchQuant* pokaz = new rdoRuntime::RDOPMDWatchQuant( parser->runTime, _name, _trace, _resTypeName, fgl->resType->getNumber() );
+	rdoRuntime::RDOPMDWatchQuant* pokaz = new rdoRuntime::RDOPMDWatchQuant( parser->runtime, _name, _trace, _resTypeName, fgl->resType->getNumber() );
 	endOfCreation( pokaz );
 }
 
@@ -99,7 +99,7 @@ void RDOPMDWatchQuant::setLogic( RDOFUNLogic* _logic )
 
 void RDOPMDWatchQuant::setLogicNoCheck()
 {
-	static_cast<rdoRuntime::RDOPMDWatchQuant*>(pokaz_runtime)->setLogicCalc( new rdoRuntime::RDOCalcConst( parser->runTime, 1 ) );
+	static_cast<rdoRuntime::RDOPMDWatchQuant*>(pokaz_runtime)->setLogicCalc( new rdoRuntime::RDOCalcConst( parser->runtime, 1 ) );
 	parser->getFUNGroupStack().pop_back();
 }
 
@@ -110,7 +110,7 @@ RDOPMDWatchValue::RDOPMDWatchValue( RDOParser* _parser, std::string* _name, bool
 	RDOPMDPokaz( _parser )
 {
 	RDOFUNGroupLogic* fgl = new RDOFUNGroupLogic( this, 5, _resTypeName );
-	rdoRuntime::RDOPMDWatchValue* pokaz = new rdoRuntime::RDOPMDWatchValue( parser->runTime, _name, _trace, _resTypeName, fgl->resType->getNumber() );
+	rdoRuntime::RDOPMDWatchValue* pokaz = new rdoRuntime::RDOPMDWatchValue( parser->runtime, _name, _trace, _resTypeName, fgl->resType->getNumber() );
 	endOfCreation( pokaz );
 }
 
@@ -123,7 +123,7 @@ void RDOPMDWatchValue::setLogic( RDOFUNLogic* _logic, RDOFUNArithm* _arithm )
 
 void RDOPMDWatchValue::setLogicNoCheck( RDOFUNArithm* _arithm )
 {
-	static_cast<rdoRuntime::RDOPMDWatchValue*>(pokaz_runtime)->setLogicCalc( new rdoRuntime::RDOCalcConst( parser->runTime, 1 ) );
+	static_cast<rdoRuntime::RDOPMDWatchValue*>(pokaz_runtime)->setLogicCalc( new rdoRuntime::RDOCalcConst( parser->runtime, 1 ) );
 	static_cast<rdoRuntime::RDOPMDWatchValue*>(pokaz_runtime)->setArithmCalc( _arithm->createCalc() );
 	parser->getFUNGroupStack().pop_back();
 }
@@ -134,7 +134,7 @@ void RDOPMDWatchValue::setLogicNoCheck( RDOFUNArithm* _arithm )
 RDOPMDGetValue::RDOPMDGetValue( RDOParser* _parser, std::string* _name, RDOFUNArithm* _arithm ):
 	RDOPMDPokaz( _parser )
 {
-	rdoRuntime::RDOPMDGetValue* pokaz = new rdoRuntime::RDOPMDGetValue( parser->runTime, _name, _arithm->createCalc() );
+	rdoRuntime::RDOPMDGetValue* pokaz = new rdoRuntime::RDOPMDGetValue( parser->runtime, _name, _arithm->createCalc() );
 	endOfCreation( pokaz );
 }
 

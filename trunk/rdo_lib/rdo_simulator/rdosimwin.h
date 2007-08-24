@@ -1,5 +1,5 @@
-#ifndef RDO_RDO_SIMULATOR_INTERFACE__
-#define RDO_RDO_SIMULATOR_INTERFACE__
+#ifndef RDOSIMWIN_H
+#define RDOSIMWIN_H
 
 #pragma warning(disable : 4786)  
 
@@ -98,7 +98,7 @@ protected:
 	bool parseModel();
 	void runModel();
 	void stopModel();
-	std::vector< RDOSyntaxError >* getErrors();
+	std::vector< RDOSyntaxError > getErrors();
 
 public:
 	RDOThreadSimulator();
@@ -150,4 +150,4 @@ public:
 
 } // namespace rdoSimulator
 
-#endif // RDO_SIMULATOR_INTERFACE__
+#endif // RDOSIMWIN_H

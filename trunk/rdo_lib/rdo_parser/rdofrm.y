@@ -116,6 +116,8 @@
 %token some					362
 %token Process				363
 %token SEIZE				364
+%token if_keyword			369
+%token result_keyword		370
 
 %token Frame				400
 %token Show_if				401
@@ -179,8 +181,8 @@ frm_main:
 
 /* ///////////////////////  FRAME ///////////////////////////// */
 
-frm_begin: Frame IDENTIF						{ $$ = (int)(new rdoRuntime::RDOFRMFrame(parser->runTime, (std::string *)$2)); @$; }
-			| Frame IDENTIF Show_if fun_logic	{ $$ = (int)(new rdoRuntime::RDOFRMFrame(parser->runTime, (std::string *)$2, ((RDOFUNLogic *)$4)->calc)); };
+frm_begin: Frame IDENTIF						{ $$ = (int)(new rdoRuntime::RDOFRMFrame(parser->runtime, (std::string *)$2)); @$; }
+			| Frame IDENTIF Show_if fun_logic	{ $$ = (int)(new rdoRuntime::RDOFRMFrame(parser->runtime, (std::string *)$2, ((RDOFUNLogic *)$4)->calc)); };
 
 frm_background:		frm_begin Back_picture '='                                         { ((rdoRuntime::RDOFRMFrame *)$1)->setBackground();           }
 					| frm_begin Back_picture '=' '<' INT_CONST INT_CONST INT_CONST '>' { ((rdoRuntime::RDOFRMFrame *)$1)->setBackground($5, $6, $7); };
@@ -210,7 +212,7 @@ frm_end: frm_item End	{ ((rdoRuntime::RDOFRMFrame *)$1)->end(); };
 
 /* ///////////////////////  ITEMS ///////////////////////////// */
 
-frm_text_common: text '[' fun_arithm ',' fun_arithm ',' fun_arithm ',' fun_arithm ',' frm_color ',' frm_color ','  { $$ = (int)(new rdoRuntime::RDOFRMText(parser->runTime->lastFrame(), ((RDOFUNArithm *)$3)->createCalc(), ((RDOFUNArithm *)$5)->createCalc(), ((RDOFUNArithm *)$7)->createCalc(), ((RDOFUNArithm *)$9)->createCalc(), (rdoRuntime::RDOFRMColor *)$11, (rdoRuntime::RDOFRMColor *)$13)); };
+frm_text_common: text '[' fun_arithm ',' fun_arithm ',' fun_arithm ',' fun_arithm ',' frm_color ',' frm_color ','  { $$ = (int)(new rdoRuntime::RDOFRMText(parser->runtime->lastFrame(), ((RDOFUNArithm *)$3)->createCalc(), ((RDOFUNArithm *)$5)->createCalc(), ((RDOFUNArithm *)$7)->createCalc(), ((RDOFUNArithm *)$9)->createCalc(), (rdoRuntime::RDOFRMColor *)$11, (rdoRuntime::RDOFRMColor *)$13)); };
 
 frm_text: frm_text_common frm_align fun_arithm ']'			{ ((rdoRuntime::RDOFRMText *)$1)->setText($2, ((RDOFUNArithm *)$3)->createCalc(), NULL /*//qq((RDOFUNArithm *)$3)->enu*/); }
 		  | frm_text_common frm_align QUOTED_IDENTIF ']'	{ ((rdoRuntime::RDOFRMText *)$1)->setText($2, (std::string *)$3);  };
@@ -220,26 +222,26 @@ frm_align: /* empty */	{ $$ = 1; }
 		| '='			{ $$ = 2; }
 		| '>'			{ $$ = 3; };
 
-frm_color:	transparent                             { $$ = (int)(new rdoRuntime::RDOFRMColor(parser->runTime->lastFrame()));             }
-			| '<' INT_CONST INT_CONST INT_CONST '>' { $$ = (int)(new rdoRuntime::RDOFRMColor(parser->runTime->lastFrame(), $2, $3, $4)); };
+frm_color:	transparent                             { $$ = (int)(new rdoRuntime::RDOFRMColor(parser->runtime->lastFrame()));             }
+			| '<' INT_CONST INT_CONST INT_CONST '>' { $$ = (int)(new rdoRuntime::RDOFRMColor(parser->runtime->lastFrame(), $2, $3, $4)); };
 
-frm_bitmap:	bitmap '[' fun_arithm ',' fun_arithm ',' IDENTIF ']'               { $$ = (int)(new rdoRuntime::RDOFRMBitmap(parser->runTime->lastFrame(), ((RDOFUNArithm *)$3)->createCalc(), ((RDOFUNArithm *)$5)->createCalc(), (std::string *)$7));                    }
-			| bitmap '[' fun_arithm ',' fun_arithm ',' IDENTIF ',' IDENTIF ']' { $$ = (int)(new rdoRuntime::RDOFRMBitmap(parser->runTime->lastFrame(), ((RDOFUNArithm *)$3)->createCalc(), ((RDOFUNArithm *)$5)->createCalc(), (std::string *)$7, (std::string *)$9)); };
+frm_bitmap:	bitmap '[' fun_arithm ',' fun_arithm ',' IDENTIF ']'               { $$ = (int)(new rdoRuntime::RDOFRMBitmap(parser->runtime->lastFrame(), ((RDOFUNArithm *)$3)->createCalc(), ((RDOFUNArithm *)$5)->createCalc(), (std::string *)$7));                    }
+			| bitmap '[' fun_arithm ',' fun_arithm ',' IDENTIF ',' IDENTIF ']' { $$ = (int)(new rdoRuntime::RDOFRMBitmap(parser->runtime->lastFrame(), ((RDOFUNArithm *)$3)->createCalc(), ((RDOFUNArithm *)$5)->createCalc(), (std::string *)$7, (std::string *)$9)); };
 
-frm_s_bmp: s_bmp '[' fun_arithm ',' fun_arithm ',' fun_arithm ',' fun_arithm ',' IDENTIF ']' 				 { $$ = (int)(new rdoRuntime::RDOFRMS_bmp(parser->runTime->lastFrame(), ((RDOFUNArithm *)$3)->createCalc(), ((RDOFUNArithm *)$5)->createCalc(), ((RDOFUNArithm *)$7)->createCalc(), ((RDOFUNArithm *)$9)->createCalc(), (std::string *)$11)); }
-		  |  s_bmp '[' fun_arithm ',' fun_arithm ',' fun_arithm ',' fun_arithm ',' IDENTIF ',' IDENTIF ']'  { $$ = (int)(new rdoRuntime::RDOFRMS_bmp(parser->runTime->lastFrame(), ((RDOFUNArithm *)$3)->createCalc(), ((RDOFUNArithm *)$5)->createCalc(), ((RDOFUNArithm *)$7)->createCalc(), ((RDOFUNArithm *)$9)->createCalc(), (std::string *)$11, (std::string *)$13)); };
+frm_s_bmp: s_bmp '[' fun_arithm ',' fun_arithm ',' fun_arithm ',' fun_arithm ',' IDENTIF ']' 				 { $$ = (int)(new rdoRuntime::RDOFRMS_bmp(parser->runtime->lastFrame(), ((RDOFUNArithm *)$3)->createCalc(), ((RDOFUNArithm *)$5)->createCalc(), ((RDOFUNArithm *)$7)->createCalc(), ((RDOFUNArithm *)$9)->createCalc(), (std::string *)$11)); }
+		  |  s_bmp '[' fun_arithm ',' fun_arithm ',' fun_arithm ',' fun_arithm ',' IDENTIF ',' IDENTIF ']'  { $$ = (int)(new rdoRuntime::RDOFRMS_bmp(parser->runtime->lastFrame(), ((RDOFUNArithm *)$3)->createCalc(), ((RDOFUNArithm *)$5)->createCalc(), ((RDOFUNArithm *)$7)->createCalc(), ((RDOFUNArithm *)$9)->createCalc(), (std::string *)$11, (std::string *)$13)); };
 
-frm_rect: rect_keyword '[' fun_arithm ',' fun_arithm ',' fun_arithm ',' fun_arithm ',' frm_color ',' frm_color ']'	{ $$ = (int)(new rdoRuntime::RDOFRMRect(parser->runTime->lastFrame(), ((RDOFUNArithm *)$3)->createCalc(), ((RDOFUNArithm *)$5)->createCalc(), ((RDOFUNArithm *)$7)->createCalc(), ((RDOFUNArithm *)$9)->createCalc(), (rdoRuntime::RDOFRMColor *)$11, (rdoRuntime::RDOFRMColor *)$13)); };
+frm_rect: rect_keyword '[' fun_arithm ',' fun_arithm ',' fun_arithm ',' fun_arithm ',' frm_color ',' frm_color ']'	{ $$ = (int)(new rdoRuntime::RDOFRMRect(parser->runtime->lastFrame(), ((RDOFUNArithm *)$3)->createCalc(), ((RDOFUNArithm *)$5)->createCalc(), ((RDOFUNArithm *)$7)->createCalc(), ((RDOFUNArithm *)$9)->createCalc(), (rdoRuntime::RDOFRMColor *)$11, (rdoRuntime::RDOFRMColor *)$13)); };
 
-frm_r_rect: r_rect '[' fun_arithm ',' fun_arithm ',' fun_arithm ',' fun_arithm ',' frm_color ',' frm_color ']'			{ $$ = (int)(new rdoRuntime::RDOFRMR_rect(parser->runTime->lastFrame(), ((RDOFUNArithm *)$3)->createCalc(), ((RDOFUNArithm *)$5)->createCalc(), ((RDOFUNArithm *)$7)->createCalc(), ((RDOFUNArithm *)$9)->createCalc(), (rdoRuntime::RDOFRMColor *)$11, (rdoRuntime::RDOFRMColor *)$13)); };
+frm_r_rect: r_rect '[' fun_arithm ',' fun_arithm ',' fun_arithm ',' fun_arithm ',' frm_color ',' frm_color ']'			{ $$ = (int)(new rdoRuntime::RDOFRMR_rect(parser->runtime->lastFrame(), ((RDOFUNArithm *)$3)->createCalc(), ((RDOFUNArithm *)$5)->createCalc(), ((RDOFUNArithm *)$7)->createCalc(), ((RDOFUNArithm *)$9)->createCalc(), (rdoRuntime::RDOFRMColor *)$11, (rdoRuntime::RDOFRMColor *)$13)); };
 
-frm_line: line '[' fun_arithm ',' fun_arithm ',' fun_arithm ',' fun_arithm ',' frm_color ']'		{ $$ = (int)(new rdoRuntime::RDOFRMLine(parser->runTime->lastFrame(), ((RDOFUNArithm *)$3)->createCalc(), ((RDOFUNArithm *)$5)->createCalc(), ((RDOFUNArithm *)$7)->createCalc(), ((RDOFUNArithm *)$9)->createCalc(), (rdoRuntime::RDOFRMColor *)$11)); };
+frm_line: line '[' fun_arithm ',' fun_arithm ',' fun_arithm ',' fun_arithm ',' frm_color ']'		{ $$ = (int)(new rdoRuntime::RDOFRMLine(parser->runtime->lastFrame(), ((RDOFUNArithm *)$3)->createCalc(), ((RDOFUNArithm *)$5)->createCalc(), ((RDOFUNArithm *)$7)->createCalc(), ((RDOFUNArithm *)$9)->createCalc(), (rdoRuntime::RDOFRMColor *)$11)); };
 
-frm_ellipse: ellipse '[' fun_arithm ',' fun_arithm ',' fun_arithm ',' fun_arithm ',' frm_color ',' frm_color ']'   { $$ = (int)(new rdoRuntime::RDOFRMEllipse(parser->runTime->lastFrame(), ((RDOFUNArithm *)$3)->createCalc(), ((RDOFUNArithm *)$5)->createCalc(), ((RDOFUNArithm *)$7)->createCalc(), ((RDOFUNArithm *)$9)->createCalc(), (rdoRuntime::RDOFRMColor *)$11, (rdoRuntime::RDOFRMColor *)$13)); };
+frm_ellipse: ellipse '[' fun_arithm ',' fun_arithm ',' fun_arithm ',' fun_arithm ',' frm_color ',' frm_color ']'   { $$ = (int)(new rdoRuntime::RDOFRMEllipse(parser->runtime->lastFrame(), ((RDOFUNArithm *)$3)->createCalc(), ((RDOFUNArithm *)$5)->createCalc(), ((RDOFUNArithm *)$7)->createCalc(), ((RDOFUNArithm *)$9)->createCalc(), (rdoRuntime::RDOFRMColor *)$11, (rdoRuntime::RDOFRMColor *)$13)); };
 
-frm_triang: triang '[' fun_arithm ',' fun_arithm ',' fun_arithm ',' fun_arithm ',' fun_arithm ',' fun_arithm ',' frm_color ',' frm_color ']'		{ $$ = (int)(new rdoRuntime::RDOFRMTriang(parser->runTime->lastFrame(), ((RDOFUNArithm *)$3)->createCalc(), ((RDOFUNArithm *)$5)->createCalc(), ((RDOFUNArithm *)$7)->createCalc(), ((RDOFUNArithm *)$9)->createCalc(), ((RDOFUNArithm *)$11)->createCalc(), ((RDOFUNArithm *)$13)->createCalc(), (rdoRuntime::RDOFRMColor *)$15, (rdoRuntime::RDOFRMColor *)$17)); };
+frm_triang: triang '[' fun_arithm ',' fun_arithm ',' fun_arithm ',' fun_arithm ',' fun_arithm ',' fun_arithm ',' frm_color ',' frm_color ']'		{ $$ = (int)(new rdoRuntime::RDOFRMTriang(parser->runtime->lastFrame(), ((RDOFUNArithm *)$3)->createCalc(), ((RDOFUNArithm *)$5)->createCalc(), ((RDOFUNArithm *)$7)->createCalc(), ((RDOFUNArithm *)$9)->createCalc(), ((RDOFUNArithm *)$11)->createCalc(), ((RDOFUNArithm *)$13)->createCalc(), (rdoRuntime::RDOFRMColor *)$15, (rdoRuntime::RDOFRMColor *)$17)); };
 
-frm_active: active IDENTIF '[' fun_arithm ',' fun_arithm ',' fun_arithm ',' fun_arithm ']'	{ $$ = (int)(new rdoRuntime::RDOFRMActive(parser->runTime->lastFrame(), ((RDOFUNArithm *)$4)->createCalc(), ((RDOFUNArithm *)$6)->createCalc(), ((RDOFUNArithm *)$8)->createCalc(), ((RDOFUNArithm *)$10)->createCalc(), (std::string *)$2)); };
+frm_active: active IDENTIF '[' fun_arithm ',' fun_arithm ',' fun_arithm ',' fun_arithm ']'	{ $$ = (int)(new rdoRuntime::RDOFRMActive(parser->runtime->lastFrame(), ((RDOFUNArithm *)$4)->createCalc(), ((RDOFUNArithm *)$6)->createCalc(), ((RDOFUNArithm *)$8)->createCalc(), ((RDOFUNArithm *)$10)->createCalc(), (std::string *)$2)); };
 
 
 // ----------------------------------------------------------------------------
@@ -320,7 +322,7 @@ fun_arithm: fun_arithm '+' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOF
 				RDOParserSrcInfo info;
 				info.setSrcPos( @1, @2 );
 				info.setSrcText( "-" + reinterpret_cast<RDOFUNArithm*>($2)->src_text() );
-				$$ = (int)new RDOFUNArithm( parser, reinterpret_cast<RDOFUNArithm*>($2)->getType(), new rdoRuntime::RDOCalcUMinus( parser->runTime, reinterpret_cast<RDOFUNArithm*>($2)->createCalc() ), info );
+				$$ = (int)new RDOFUNArithm( parser, reinterpret_cast<RDOFUNArithm*>($2)->getType(), new rdoRuntime::RDOCalcUMinus( parser->runtime, reinterpret_cast<RDOFUNArithm*>($2)->createCalc() ), info );
 			}
 			| error							{
 				parser->lexer_loc_set( &(@1) );
@@ -397,7 +399,7 @@ fun_group:			fun_group_header fun_logic ')' {
 					| fun_group_header NoCheck ')' {
 						RDOFUNGroupLogic* groupfun = reinterpret_cast<RDOFUNGroupLogic*>($1);
 						groupfun->setSrcPos( @1, @3 );
-						RDOFUNLogic* trueLogic = new RDOFUNLogic( new rdoRuntime::RDOCalcConst( parser->runTime, 1 ) );
+						RDOFUNLogic* trueLogic = new RDOFUNLogic( new rdoRuntime::RDOCalcConst( parser->runtime, 1 ) );
 						trueLogic->setSrcPos( @2 );
 						trueLogic->setSrcText( "NoCheck" );
 						$$ = (int)groupfun->createFunLogic( trueLogic );

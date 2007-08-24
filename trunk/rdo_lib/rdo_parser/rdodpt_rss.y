@@ -120,6 +120,8 @@
 %token TERMINATE			366
 %token ADVANCE				367
 %token RELEASE				368
+%token if_keyword			369
+%token result_keyword		370
 
 %token Frame				400
 %token Show_if				401
@@ -283,8 +285,8 @@ dpt_process_line:	IDENTIF	{
 				if ( rtp_param->getType()->getType() == RDORTPParamType::pt_enum ) {
 					// Теперь проверим сами значения
 					try {
-						rtp_param->getType()->getRSSEnumValue( rtp_state_free );
-						rtp_param->getType()->getRSSEnumValue( rtp_state_buzy );
+						rtp_param->getType()->getRSSEnumValue( rtp_state_free, @2 );
+						rtp_param->getType()->getRSSEnumValue( rtp_state_buzy, @2 );
 					} catch ( RDOSyntaxException& ) {
 						parser->error( rdo::format( "У типа ресурса '%s' перечислимый параметр '%s' должен иметь как минимум два обязательных значения: %s и %s", res_type->getName().c_str(), rtp_param_name.c_str(), rtp_state_free.c_str(), rtp_state_buzy.c_str() ) );
 					}
@@ -302,7 +304,7 @@ dpt_process_line:	IDENTIF	{
 		res->setTrace( true );
 
 		// Пропишем значения параметров перечислимого типа по-умолчанию
-		rdoRuntime::RDOValue state_val = rtp_param->getType()->getParamDefaultValue();
+		rdoRuntime::RDOValue state_val = rtp_param->getType()->getParamDefaultValue( @2 );
 		res->addValue( state_val );
 		res->currParam++;
 
@@ -332,8 +334,8 @@ dpt_process_line:	IDENTIF	{
 		if ( rtp_param->getType()->getType() == RDORTPParamType::pt_enum ) {
 			// Теперь проверим сами значения
 			try {
-				rtp_param->getType()->getRSSEnumValue( rtp_state_free );
-				rtp_param->getType()->getRSSEnumValue( rtp_state_buzy );
+				rtp_param->getType()->getRSSEnumValue( rtp_state_free, @2 );
+				rtp_param->getType()->getRSSEnumValue( rtp_state_buzy, @2 );
 			} catch ( RDOSyntaxException& ) {
 				parser->error( rdo::format( "У типа ресурса '%s' перечислимый параметр '%s' должен иметь как минимум два обязательных значения: %s и %s", res_type->getName().c_str(), rtp_param_name.c_str(), rtp_state_free.c_str(), rtp_state_buzy.c_str() ) );
 			}

@@ -116,6 +116,8 @@
 %token some					362
 %token Process				363
 %token SEIZE				364
+%token if_keyword			369
+%token result_keyword		370
 
 %token Frame				400
 %token Show_if				401
@@ -178,6 +180,9 @@ fun_list:	fun_consts fun_func_seq;
 				}
 			};
 
+// ----------------------------------------------------------------------------
+// ---------- Константы
+// ----------------------------------------------------------------------------
 fun_consts:	/* empty */
 			| Constant fun_const_body End
 			| Constant fun_const_body {
@@ -240,10 +245,7 @@ param_type:		integer param_int_diap param_int_default_val {
 					RDORTPEnum* enu      = reinterpret_cast<RDORTPEnum*>($1);
 					RDORTPEnumDefVal* dv = reinterpret_cast<RDORTPEnumDefVal*>($2);
 					if ( dv->isExist() ) {
-						parser->lexer_loc_backup();
-						parser->lexer_loc_set( dv->src_pos().last_line, dv->src_pos().last_pos );
-						enu->findValue( dv->getEnumValue() ); // Если не найдено, то будет сообщение об ошибке, т.е. throw
-						parser->lexer_loc_restore();
+						enu->findEnumValueWithThrow( dv->src_pos(), dv->getEnumValue() ); // Если не найдено, то будет сообщение об ошибке, т.е. throw
 					}
 					RDORTPEnumParamType* rp = new RDORTPEnumParamType( parser->getLastParsingObject(), enu, dv, RDOParserSrcInfo( @1, @2 ) );
 					$$ = (int)rp;
@@ -277,7 +279,8 @@ param_type:		integer param_int_diap param_int_default_val {
 				}
 				| param_such_as error {
 					parser->error( "Ожидается окончание описания параметра-ссылки, например, зачение по-умолчанию" );
-				}
+				};
+/*
 				| integer error {
 					parser->lexer_loc_set( &(@2) );
 					parser->error( "Ошибка после ключевого слова integer. Возможно, не хватает значения по-умолчанию." );
@@ -293,7 +296,7 @@ param_type:		integer param_int_diap param_int_default_val {
 					parser->error( "Ошибка после перечислимого типа. Возможно, не хватает значения по-умолчанию." );
 //					parser->error( rdoSimulator::RDOSyntaxError::RTP_WAITING_FOR_ENUM_PARAM_END );
 				};
-
+*/
 param_int_diap:	/* empty */ {
 					YYLTYPE pos = @0;
 					pos.first_column = pos.last_column;
@@ -583,6 +586,9 @@ param_such_as:	such_as IDENTIF '.' IDENTIF {
 				};
 // ----------------------------------------------------------------------------
 
+// ----------------------------------------------------------------------------
+// ---------- Последовательности и функции
+// ----------------------------------------------------------------------------
 fun_func_seq:	/* empty */
 			| fun_func_seq fun_func_descr
 			| fun_func_seq fun_seq_descr
@@ -591,7 +597,14 @@ fun_func_seq:	/* empty */
 				parser->error( "Константы долны быть описаны первыми, перед функциями и последовательностями" );
 			};
 
-fun_func_descr:	fun_func_header fun_func_footer;
+// ----------------------------------------------------------------------------
+// ---------- Функции
+// ----------------------------------------------------------------------------
+fun_func_descr:	fun_func_header fun_func_footer
+				| fun_func_header error {
+					RDOFUNFunction* fun = reinterpret_cast<RDOFUNFunction*>($1);
+					parser->error( @2, rdo::format("Ожидается ключевое слово $Type с указанием типа функции '%s'", fun->getName().c_str()) );
+				};
 
 fun_func_header:	Function_keyword IDENTIF_COLON param_type {
 						std::string name = *reinterpret_cast<std::string*>($2);
@@ -604,136 +617,163 @@ fun_func_header:	Function_keyword IDENTIF_COLON param_type {
 							parser->error( rdo::format( "Существует последовательность с таким же именем: %s", name.c_str() ) );
 						}
 						if ( parser->findFunction( name ) ) {
-							parser->lexer_loc_set( &(@2) );
-							parser->error( rdo::format( "Функция уже существует: %s", name.c_str() ) );
+							parser->error( @2, rdo::format( "Функция уже существует: %s", name.c_str() ) );
 //							parser->error( ("Second appearance of the same function: " + name).c_str() );
 						}
-						RDORTPParamType* retType = (RDORTPParamType*)$3;
-						RDOFUNFunction* fun = new RDOFUNFunction( parser, name, retType );
+						RDORTPParamType* retType = reinterpret_cast<RDORTPParamType*>($3);
+						RDOParserSrcInfo src_info;
+						src_info.setSrcPosAndTextByLength( @2, name );
+						RDOFUNFunction* fun = new RDOFUNFunction( parser, src_info, retType );
 						if ( retType->getType() == RDORTPParamType::pt_enum && static_cast<RDORTPEnumParamType*>(retType)->enum_name.empty() ) {
 							static_cast<RDORTPEnumParamType*>(retType)->enum_name = name;
 							static_cast<RDORTPEnumParamType*>(retType)->enum_fun  = true;
 						}
 						$$ = (int)fun;
+					}
+					| Function_keyword IDENTIF_COLON error {
+						std::string name = *reinterpret_cast<std::string*>($2);
+						parser->error( @3, rdo::format("Ожидается тип возвращаемого значения функции '%s'", name.c_str()) );
+					}
+					| Function_keyword error {
+						parser->error( @2, "После ключевого слова $Function ожидается имя фунции" );
 					};
 
-fun_func_footer:	Type_keyword '=' algorithmic Parameters fun_func_params Body fun_func_algorithmic_body End {
-						RDOFUNFunction *currFunc = parser->getLastFUNFunction();
-						currFunc->createAlgorithmicCalc();
-					}
-					| Type_keyword '=' list_keyword Parameters fun_func_params Body fun_func_list_body End {
-						RDOFUNFunction *currFunc = parser->getLastFUNFunction();
-						currFunc->createListCalc();
-					}
-					| Type_keyword '=' table_keyword Parameters fun_func_params Body fun_func_list_body End {
-						RDOFUNFunction *currFunc = parser->getLastFUNFunction();
-						currFunc->createTableCalc();
-					}
-					| Type_keyword '=' algorithmic Parameters fun_func_params Body fun_func_algorithmic_body error {
-						parser->lexer_loc_set( @8.first_line, @8.first_column );
-						parser->error( "Ожидается ключевое слово $End" );
-					}
-					| Type_keyword '=' list_keyword Parameters fun_func_params Body fun_func_list_body error {
-						parser->lexer_loc_set( @8.first_line, @8.first_column );
-						parser->error( "Ожидается ключевое слово $End" );
-					}
-					| Type_keyword '=' table_keyword Parameters fun_func_params Body fun_func_list_body error {
-						parser->lexer_loc_set( @8.first_line, @8.first_column );
-						parser->error( "Ожидается ключевое слово $End" );
-					}
-					| Type_keyword '=' algorithmic Parameters error {
-						parser->lexer_loc_set( @5.first_line, @5.first_column );
-						parser->error( "Ожидается список параметров" );
-					}
-					| Type_keyword '=' list_keyword Parameters error {
-						parser->lexer_loc_set( @5.first_line, @5.first_column );
-						parser->error( "Ожидается список параметров" );
-					}
-					| Type_keyword '=' table_keyword Parameters error {
-						parser->lexer_loc_set( @5.first_line, @5.first_column );
-						parser->error( "Ожидается список параметров" );
-					}
-					| Type_keyword '=' algorithmic error {
-						parser->lexer_loc_set( @4.first_line, @4.first_column );
-						parser->error( "Ожидается ключевое слово $Parameters" );
-					}
-					| Type_keyword '=' list_keyword error {
-						parser->lexer_loc_set( @4.first_line, @4.first_column );
-						parser->error( "Ожидается ключевое слово $Parameters" );
-					}
-					| Type_keyword '=' table_keyword error {
-						parser->lexer_loc_set( @4.first_line, @4.first_column );
-						parser->error( "Ожидается ключевое слово $Parameters" );
-					}
-					| Type_keyword '=' error {
-						parser->lexer_loc_set( &(@3) );
-						parser->error( "Неизвестный тип функции" );
-					}
-					| Type_keyword error {
-						parser->lexer_loc_set( &(@1) );
-						parser->error( "Ожидается тип функции" );
+fun_func_parameters:	/* empty */
+					| Parameters fun_func_params {
 					};
 
 fun_func_params:	/* empty */
-			|	fun_func_params IDENTIF_COLON param_type	{
-				std::string      name = *reinterpret_cast<std::string*>($2);
-				RDORTPParamType* type = reinterpret_cast<RDORTPParamType*>($3);
-				RDOParserSrcInfo pos;
-				pos.setSrcPosAndTextByLength( @2, name );
-				RDOFUNFunctionParam* param = new RDOFUNFunctionParam( parser->getLastFUNFunction(), pos, type );
-				param->setSrcPos( @2 );
-				parser->getLastFUNFunction()->add(param);	// the function must check uniquness of parameters names
-				$$ = (int)param;
-			};
-
-fun_func_list_body:	/* empty */
-			| fun_func_list_body fun_std_value;
-
-fun_std_value:	IDENTIF {
-					RDOFUNFunctionListElementIdentif *value = new RDOFUNFunctionListElementIdentif( parser->getLastFUNFunction(), *(std::string *)$1 );
-					parser->getLastFUNFunction()->add(value);
-					value->setSrcPos( @1 );
-					$$ = (int)value;
+				| fun_func_params IDENTIF_COLON param_type {
+					std::string      name = *reinterpret_cast<std::string*>($2);
+					RDORTPParamType* type = reinterpret_cast<RDORTPParamType*>($3);
+					RDOParserSrcInfo src_info;
+					src_info.setSrcPosAndTextByLength( @2, name );
+					RDOFUNFunctionParam* param = new RDOFUNFunctionParam( parser->getLastFUNFunction(), src_info, type );
+					parser->getLastFUNFunction()->add( param );
 				}
-				| REAL_CONST {
-					RDOFUNFunctionListElementReal *value = new RDOFUNFunctionListElementReal( parser->getLastFUNFunction(), *(double *)$1 );
-					parser->getLastFUNFunction()->add(value);
-					value->setSrcPos( @1 );
-					$$ = (int)value;
+				| fun_func_params IDENTIF_COLON error {
+					parser->error( @3, "Ожидается тип параметра функции" );
 				}
-				| INT_CONST {
-					RDOFUNFunctionListElementInt *value = new RDOFUNFunctionListElementInt( parser->getLastFUNFunction(), (int)$1 );
-					parser->getLastFUNFunction()->add(value);
-					value->setSrcPos( @1 );
-					$$ = (int)value;
-				}
-				| '=' {
-					RDOFUNFunctionListElementEq *value = new RDOFUNFunctionListElementEq( parser->getLastFUNFunction() );
-					parser->getLastFUNFunction()->add(value);
-					value->setSrcPos( @1 );
-					$$ = (int)value;
+				| fun_func_params error {
+					parser->error( @2, "Ожидается описание параметра функции в формате <имя>: <тип>" );
 				};
 
-fun_func_algorithmic_body:	/* empty */
-			| fun_func_algorithmic_body fun_func_algorithmic_calc_if {
-				parser->getLastFUNFunction()->add((RDOFUNCalculateIf*)$2);
-			};
+fun_func_footer:	Type_keyword '=' algorithmic fun_func_parameters Body fun_func_algorithmic_body End {
+						RDOFUNFunction* currFunc = parser->getLastFUNFunction();
+						currFunc->createAlgorithmicCalc( @5 );
+					}
+					| Type_keyword '=' list_keyword fun_func_parameters Body fun_func_list_body End {
+						RDOFUNFunction* currFunc = parser->getLastFUNFunction();
+						currFunc->createListCalc();
+					}
+					| Type_keyword '=' table_keyword fun_func_parameters Body fun_func_list_body End {
+						RDOFUNFunction *currFunc = parser->getLastFUNFunction();
+						currFunc->createTableCalc();
+					}
+					| Type_keyword '=' algorithmic fun_func_parameters Body fun_func_algorithmic_body error {
+						parser->error( @7, "Ожидается ключевое слово $End" );
+					}
+					| Type_keyword '=' list_keyword fun_func_parameters Body fun_func_list_body error {
+						parser->error( @7, "Ожидается ключевое слово $End" );
+					}
+					| Type_keyword '=' table_keyword fun_func_parameters Body fun_func_list_body error {
+						parser->error( @7, "Ожидается ключевое слово $End" );
+					}
+					| Type_keyword '=' algorithmic error {
+						parser->error( @4, "Ожидается ключевое слово $Parameters" );
+					}
+					| Type_keyword '=' list_keyword error {
+						parser->error( @4, "Ожидается ключевое слово $Parameters" );
+					}
+					| Type_keyword '=' table_keyword error {
+						parser->error( @4, "Ожидается ключевое слово $Parameters" );
+					}
+					| Type_keyword '=' error {
+						parser->error( @3, "Неизвестный тип функции" );
+					}
+					| Type_keyword error {
+						parser->error( @2, "После ключевого слова $Type ожидается тип функции" );
+					};
 
-fun_func_algorithmic_calc_if:	Calculate_if fun_logic IDENTIF '=' fun_arithm {
-									parser->lexer_loc_backup();
-									parser->lexer_loc_set( &(@3) );
-									$$ = (int)(new RDOFUNCalculateIf( parser->getLastFUNFunction(), (RDOFUNLogic *)$2, *(std::string *)$3, (RDOFUNArithm *)$5 ));
-									parser->lexer_loc_restore();
+fun_func_algorithmic_body:	/* empty */
+							| fun_func_algorithmic_body fun_func_algorithmic_calc_if {
+								RDOFUNCalculateIf* calculateIf = reinterpret_cast<RDOFUNCalculateIf*>($2);
+								parser->getLastFUNFunction()->add( calculateIf );
+							};
+
+fun_func_calc_if:	Calculate_if {
+					}
+					| if_keyword {
+					};
+
+fun_func_calc_name:	result_keyword {
+					}
+					| IDENTIF {
+						std::string name = *reinterpret_cast<std::string*>($1);
+						if ( name != parser->getLastFUNFunction()->getName() ) {
+							parser->error( @1, rdo::format("Ожидается имя функции '%s'", parser->getLastFUNFunction()->getName().c_str()) );
+						}
+					};
+
+fun_func_algorithmic_calc_if:	fun_func_calc_if fun_logic fun_func_calc_name '=' fun_arithm {
+									RDOFUNLogic*  logic  = reinterpret_cast<RDOFUNLogic*>($2);
+									logic->setSrcText( "Calculate_if " + logic->src_text() );
+									RDOFUNArithm* arithm = reinterpret_cast<RDOFUNArithm*>($5);
+									RDOFUNCalculateIf* calculateIf = new RDOFUNCalculateIf( parser->getLastFUNFunction(), logic, arithm );
+									$$ = (int)calculateIf;
 								}
-								| Calculate_if fun_logic error {
-									parser->lexer_loc_set( &(@2) );
-									parser->error( "Ожидается <имя_функции> = <результат_функции>" );
+								| fun_func_calc_name '=' fun_arithm {
+									rdoRuntime::RDOCalcConst* calc_cond = new rdoRuntime::RDOCalcConst( parser->runtime, 1 );
+									RDOParserSrcInfo logic_src_info( "Calculate_if 1 = 1" );
+									logic_src_info.setSrcPos( @1.first_line, @1.first_column, @1.first_line, @1.first_column );
+									calc_cond->setSrcInfo( logic_src_info );
+									RDOFUNLogic*  logic  = new RDOFUNLogic( calc_cond, true );
+									logic->setSrcInfo( logic_src_info );
+									RDOFUNArithm* arithm = reinterpret_cast<RDOFUNArithm*>($3);
+									RDOFUNCalculateIf* calculateIf = new RDOFUNCalculateIf( parser->getLastFUNFunction(), logic, arithm );
+									$$ = (int)calculateIf;
 								}
+								| fun_func_calc_if fun_logic fun_func_calc_name error {
+									parser->error( @4, "Ожидается '='" );
+								}
+								| fun_func_calc_name error {
+									parser->error( @2, "Ожидается '='" );
+								}
+								| fun_func_calc_if fun_logic error {
+									parser->error( @3, "Ожидается <имя_функции> = <результат_функции>" );
+								};
 								| error {
-									parser->lexer_loc_set( &(@1) );
-									parser->error( "Ожидается ключевое слово Calculate_if" );
+									parser->error( @1, "Ожидается ключевое слово Calculate_if" );
 								};
 
+fun_func_list_body:	/* empty */
+			| fun_func_list_body fun_func_list_value;
+
+fun_func_list_value: IDENTIF {
+						std::string str = *reinterpret_cast<std::string*>($1);
+						RDOFUNFunctionListElementIdentif* value = new RDOFUNFunctionListElementIdentif( parser->getLastFUNFunction(), RDOParserSrcInfo( @1, str ) );
+						parser->getLastFUNFunction()->add( value );
+						$$ = (int)value;
+					}
+					| REAL_CONST {
+						RDOFUNFunctionListElementReal* value = new RDOFUNFunctionListElementReal( parser->getLastFUNFunction(), @1, *(double *)$1 );
+						parser->getLastFUNFunction()->add( value );
+						$$ = (int)value;
+					}
+					| INT_CONST {
+						RDOFUNFunctionListElementInt* value = new RDOFUNFunctionListElementInt( parser->getLastFUNFunction(), @1, (int)$1 );
+						parser->getLastFUNFunction()->add( value );
+						$$ = (int)value;
+					}
+					| '=' {
+						RDOFUNFunctionListElementEq* value = new RDOFUNFunctionListElementEq( parser->getLastFUNFunction(), @1 );
+						parser->getLastFUNFunction()->add( value );
+						$$ = (int)value;
+					};
+
+// ----------------------------------------------------------------------------
+// ---------- Последовательности
+// ----------------------------------------------------------------------------
 fun_seq_descr:	fun_seq_uniform
 				| fun_seq_exponential
 				| fun_seq_normal
@@ -1577,7 +1617,7 @@ fun_arithm: fun_arithm '+' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOF
 				RDOParserSrcInfo info;
 				info.setSrcPos( @1, @2 );
 				info.setSrcText( "-" + reinterpret_cast<RDOFUNArithm*>($2)->src_text() );
-				$$ = (int)new RDOFUNArithm( parser, reinterpret_cast<RDOFUNArithm*>($2)->getType(), new rdoRuntime::RDOCalcUMinus( parser->runTime, reinterpret_cast<RDOFUNArithm*>($2)->createCalc() ), info );
+				$$ = (int)new RDOFUNArithm( parser, reinterpret_cast<RDOFUNArithm*>($2)->getType(), new rdoRuntime::RDOCalcUMinus( parser->runtime, reinterpret_cast<RDOFUNArithm*>($2)->createCalc() ), info );
 			}
 			| error							{
 				parser->lexer_loc_set( &(@1) );
@@ -1654,7 +1694,7 @@ fun_group:			fun_group_header fun_logic ')' {
 					| fun_group_header NoCheck ')' {
 						RDOFUNGroupLogic* groupfun = reinterpret_cast<RDOFUNGroupLogic*>($1);
 						groupfun->setSrcPos( @1, @3 );
-						RDOFUNLogic* trueLogic = new RDOFUNLogic( new rdoRuntime::RDOCalcConst( parser->runTime, 1 ) );
+						RDOFUNLogic* trueLogic = new RDOFUNLogic( new rdoRuntime::RDOCalcConst( parser->runtime, 1 ) );
 						trueLogic->setSrcPos( @2 );
 						trueLogic->setSrcText( "NoCheck" );
 						$$ = (int)groupfun->createFunLogic( trueLogic );

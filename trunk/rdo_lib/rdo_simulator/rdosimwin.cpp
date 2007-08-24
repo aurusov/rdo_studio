@@ -404,10 +404,10 @@ void RDOThreadSimulator::proc( RDOMessageInfo& msg )
 			break;
 		}
 		case RT_SIMULATOR_GET_ERRORS: {
-			std::vector< RDOSyntaxError >* errors = getErrors();
+			std::vector< RDOSyntaxError > errors = getErrors();
 			msg.lock();
 			std::vector< RDOSyntaxError >* msg_errors = static_cast<std::vector< RDOSyntaxError >*>(msg.param);
-			msg_errors->assign( errors->begin(), errors->end() );
+			msg_errors->assign( errors.begin(), errors.end() );
 			msg.unlock();
 			break;
 		}
@@ -467,7 +467,7 @@ bool RDOThreadSimulator::parseModel()
 	closeModel();
 
 	parser = new rdoParse::RDOParser();
-	runtime = parser->runTime;
+	runtime = parser->runtime;
 
 	try {
 		exitCode = rdoSimulator::EC_OK;
@@ -576,7 +576,7 @@ void RDOThreadSimulator::parseSMRFileInfo( rdo::binarystream& smr, rdoModelObjec
 	closeModel();
 
 	parser = new rdoParse::RDOParser();
-	runtime = parser->runTime;
+	runtime = parser->runtime;
 
 	try {
 		parser->parse( rdoModelObjects::obPRE, smr );
@@ -631,18 +631,14 @@ void RDOThreadSimulator::parseSMRFileInfo( rdo::binarystream& smr, rdoModelObjec
 	info.error = false;
 }
 
-std::vector< RDOSyntaxError >* RDOThreadSimulator::getErrors()
+std::vector< RDOSyntaxError > RDOThreadSimulator::getErrors()
 {
-	std::vector< RDOSyntaxError >* res = NULL;
+	std::vector< RDOSyntaxError > res;
 
-	if ( !parser ) return NULL;
+	if ( !parser ) return res;
 
-	res = &parser->errors;
-	if ( res->size() > 0 ) {
-		return res;
-	}
-
-	res = &runtime->errors;
+	res = parser->errors;
+	res.insert( res.end(), runtime->errors.begin(), runtime->errors.end() );
 	return res;
 }
 

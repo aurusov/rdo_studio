@@ -60,6 +60,8 @@ table				return(table_keyword);
 list				return(list_keyword);
 Calculate_if		return(Calculate_if);
 calculate_if		return(Calculate_if);
+if					return(if_keyword);
+result				return(result_keyword);
 $Sequence			return(Sequence);
 $sequence			return(Sequence);
 uniform				return(uniform);
@@ -237,7 +239,7 @@ Empty				return(Empty_kw);
 						std::string n1(YYText());
 						int len = n1.length();
 						std::string *name = new std::string(n1, 1, len-2);
-						rdoParse::parser->runTime->memory_insert( name->length() + sizeof(std::string) );
+						rdoParse::parser->runtime->memory_insert( name->length() + sizeof(std::string) );
 						rdoParse::parser->addName(name);
 						rdoParse::parser->lexer_setvalue((int)name);
 						return QUOTED_IDENTIF;
@@ -245,7 +247,7 @@ Empty				return(Empty_kw);
 
 (\'[^\']*\n\r)		{
 						std::string *name = new std::string(YYText());
-						rdoParse::parser->runTime->memory_insert( name->length() + sizeof(std::string) );
+						rdoParse::parser->runtime->memory_insert( name->length() + sizeof(std::string) );
 						rdoParse::parser->addName(name);
 						rdoParse::parser->lexer_setvalue((int)name);
 						return QUOTED_IDENTIF_BAD;
@@ -283,7 +285,7 @@ Empty				return(Empty_kw);
 
 ([+-]?[0-9]+"."[0-9]*([Ee][+-]?[0-9]+)?) {
 						double *val = rdoParse::parser->addDouble(new double(atof(YYText())));
-						rdoParse::parser->runTime->memory_insert( sizeof(double) );
+						rdoParse::parser->runtime->memory_insert( sizeof(double) );
 						rdoParse::parser->lexer_setvalue((int)val);
 						return REAL_CONST;
 					}
@@ -295,7 +297,7 @@ Empty				return(Empty_kw);
 
 ([+-]?[0-9]+"."?[0-9]*([Ee][+-]?[0-9]+)?)[A-Za-zР-пр-џ\xB8_][A-Za-zР-пр-џ\xB80-9_$]*	{
 						std::string *name = new std::string(YYText());
-						rdoParse::parser->runTime->memory_insert( name->length() + sizeof(std::string) );
+						rdoParse::parser->runtime->memory_insert( name->length() + sizeof(std::string) );
 						rdoParse::parser->addName(name);
 						rdoParse::parser->lexer_setvalue((int)name);
 						return IDENTIF_BAD;
@@ -305,7 +307,7 @@ Empty				return(Empty_kw);
 					std::string n1(YYText());
 					std::string::size_type pos = n1.find_first_of("\r\n\t :");
 					std::string *name = new std::string(n1, 0, pos);
-					rdoParse::parser->runTime->memory_insert( name->length() + sizeof(std::string) );
+					rdoParse::parser->runtime->memory_insert( name->length() + sizeof(std::string) );
 					rdoParse::parser->addName(name);
 					rdoParse::parser->lexer_setvalue((int)name);
 					return IDENTIF_set;
@@ -315,7 +317,7 @@ Empty				return(Empty_kw);
 					std::string n1(YYText());
 					std::string::size_type pos = n1.find_first_of("\r\n\t :");
 					std::string *name = new std::string(n1, 0, pos);
-					rdoParse::parser->runTime->memory_insert( name->length() + sizeof(std::string) );
+					rdoParse::parser->runtime->memory_insert( name->length() + sizeof(std::string) );
 					rdoParse::parser->addName(name);
 					rdoParse::parser->lexer_setvalue((int)name);
 					return IDENTIF_NoChange_NoChange;
@@ -325,7 +327,7 @@ Empty				return(Empty_kw);
 					std::string n1(YYText());
 					std::string::size_type pos = n1.find_first_of("\r\n\t :");
 					std::string *name = new std::string(n1, 0, pos);
-					rdoParse::parser->runTime->memory_insert( name->length() + sizeof(std::string) );
+					rdoParse::parser->runtime->memory_insert( name->length() + sizeof(std::string) );
 					rdoParse::parser->addName(name);
 					rdoParse::parser->lexer_setvalue((int)name);
 					return IDENTIF_NoChange;
@@ -335,15 +337,15 @@ Empty				return(Empty_kw);
 					std::string n1(YYText());
 					std::string::size_type pos = n1.find_first_of("\r\n\t :");
 					std::string *name = new std::string(n1, 0, pos);
-					rdoParse::parser->runTime->memory_insert( name->length() + sizeof(std::string) );
+					rdoParse::parser->runtime->memory_insert( name->length() + sizeof(std::string) );
 					rdoParse::parser->addName(name);
 					rdoParse::parser->lexer_setvalue((int)name);
 					return IDENTIF_COLON;
 				}
 
-[A-Za-zР-пр-џ\xB8_][A-Za-zР-пр-џ\xB80-9_$]*  {       
+[A-Za-zР-пр-џ\xB8_$][A-Za-zР-пр-џ\xB80-9_$]*  {       
 					std::string *name = new std::string(YYText());
-					rdoParse::parser->runTime->memory_insert( name->length() + sizeof(std::string) );
+					rdoParse::parser->runtime->memory_insert( name->length() + sizeof(std::string) );
 					rdoParse::parser->addName(name);
 					rdoParse::parser->lexer_setvalue((int)name);
 					return IDENTIF;

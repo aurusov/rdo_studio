@@ -195,10 +195,10 @@ void RDOParserRSSPost::parse()
 {
 	std::vector< RDORSSResource* >::const_iterator it = parser->getRSSResources().begin();
 	while ( it != parser->getRSSResources().end() ) {
-		rdoRuntime::RDOCalcCreateNumberedResource* createResource = new rdoRuntime::RDOCalcCreateNumberedResource( parser->runTime, (*it)->getType()->getNumber(), (*it)->getTrace(), (*it)->getValues(), (*it)->getNumber(), (*it)->getType()->isPermanent() );
+		rdoRuntime::RDOCalcCreateNumberedResource* createResource = new rdoRuntime::RDOCalcCreateNumberedResource( parser->runtime, (*it)->getType()->getNumber(), (*it)->getTrace(), (*it)->getValues(), (*it)->getNumber(), (*it)->getType()->isPermanent() );
 		createResource->setSrcInfo( (*it)->src_info() );
 		createResource->setSrcText( "Создание ресурса " + createResource->src_text() );
-		parser->runTime->addInitCalc( createResource );
+		parser->runtime->addInitCalc( createResource );
 		it++;
 	}
 }

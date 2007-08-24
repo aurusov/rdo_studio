@@ -31,13 +31,16 @@ class RDOCalcConst: public RDOCalc
 private:
 	RDOValue constanta;
 
+	virtual RDOValue calcValue( RDORuntime* runtime ) const {
+		return constanta;
+	}
+
 public:
 	RDOCalcConst( RDORuntimeParent* _parent, const RDOValue& val ):
 		RDOCalc( _parent ),
 		constanta( val )
 	{
 	};
-	virtual RDOValue calcValue( RDORuntime* runtime ) const { return constanta; }
 };
 
 // ----------------------------------------------------------------------------
@@ -49,15 +52,16 @@ private:
 	int resNumb;
 	int parNumb;
 
+	virtual RDOValue calcValue( RDORuntime* runtime ) const {
+		return runtime->getResParamVal( resNumb, parNumb );
+	}
+
 public:
 	RDOCalcGetResParam( RDORuntimeParent* _parent, int _resNumb, int _parNumb ):
 		RDOCalc( _parent ),
 		resNumb( _resNumb ),
 		parNumb( _parNumb )
 	{
-	}
-	virtual RDOValue calcValue( RDORuntime* runtime ) const {
-		return runtime->getResParamVal( resNumb, parNumb );
 	}
 };
 
@@ -66,17 +70,19 @@ public:
 // ----------------------------------------------------------------------------
 class RDOCalcGetGroupResParam: public RDOCalc
 {
+private:
 	int parNumb;
+
+	virtual RDOValue calcValue( RDORuntime* runtime ) const {
+		RDOResource* currRes = (RDOResource*)runtime->getGroupFuncRes();
+		return currRes->params[parNumb];
+	}
+
 public:
 	RDOCalcGetGroupResParam( RDORuntimeParent* _parent, int _parNumb ):
 		RDOCalc( _parent ),
 		parNumb( _parNumb )
 	{
-	}
-	virtual RDOValue calcValue( RDORuntime* runtime ) const
-	{
-		RDOResource *currRes = (RDOResource *)runtime->getGroupFuncRes();
-	   return currRes->params[parNumb];
 	}
 };
 
@@ -89,15 +95,16 @@ private:
 	int relNumb;
 	int parNumb;
 
+	virtual RDOValue calcValue( RDORuntime* runtime ) const {
+		return runtime->getResParamVal( runtime->getResByRelRes(relNumb), parNumb );
+	}
+
 public:
 	RDOCalcGetRelevantResParam( RDORuntimeParent* _parent, int _relNumb, int _parNumb ):
 		RDOCalc( _parent ),
 		relNumb( _relNumb ),
 		parNumb( _parNumb )
 	{
-	}
-	virtual RDOValue calcValue( RDORuntime* runtime ) const {
-		return runtime->getResParamVal( runtime->getResByRelRes(relNumb), parNumb );
 	}
 };
 
@@ -111,6 +118,11 @@ private:
 	int parNumb;
 	RDOCalc* calc;
 
+	virtual RDOValue calcValue( RDORuntime* runtime ) const {
+		runtime->setResParamVal( runtime->getResByRelRes(relNumb), parNumb, calc->calcValueBase( runtime ) );
+		return 1;
+	}
+
 public:
 	RDOSetRelParamCalc( RDORuntimeParent* _parent, int _relNumb, int _parNumb, RDOCalc* _calc ):
 		RDOCalc( _parent ),
@@ -119,10 +131,6 @@ public:
 		calc( _calc )
 	{
 		if ( calc ) setSrcInfo( calc->src_info() );
-	}
-	virtual RDOValue calcValue( RDORuntime* runtime ) const {
-		runtime->setResParamVal( runtime->getResByRelRes(relNumb), parNumb, calc->calcValueBase( runtime ) );
-		return 1;
 	}
 };
 
@@ -134,28 +142,29 @@ class RDOSetRelParamIntDiapCalc: public RDOCalc
 private:
 	int relNumb;
 	int parNumb;
-	int minVal;
-	int maxVal;
+	int min_value;
+	int max_value;
 	RDOCalc* calc;
 
+	virtual RDOValue calcValue( RDORuntime* runtime ) const {
+		RDOValue value = calc->calcValueBase( runtime );
+		if ( value < min_value || value > max_value ) {
+			runtime->error( rdo::format("Целочисленное значение выходит за допустимый диапазон [%d..%d]: %d", min_value, max_value, (int)value), this );
+		}
+		runtime->setResParamVal( runtime->getResByRelRes(relNumb), parNumb, value );
+		return 1;
+	}
+
 public:
-	RDOSetRelParamIntDiapCalc( RDORuntimeParent* _parent, int _relNumb, int _parNumb, RDOCalc* _calc, int _minVal, int _maxVal ):
+	RDOSetRelParamIntDiapCalc( RDORuntimeParent* _parent, int _relNumb, int _parNumb, RDOCalc* _calc, int _min_value, int _max_value ):
 		RDOCalc( _parent ),
 		relNumb( _relNumb ),
 		parNumb( _parNumb ),
 		calc( _calc ),
-		minVal( _minVal ),
-		maxVal( _maxVal )
+		min_value( _min_value ),
+		max_value( _max_value )
 	{
 		if ( calc ) setSrcInfo( calc->src_info() );
-	}
-	virtual RDOValue calcValue( RDORuntime* runtime ) const {
-		RDOValue value = calc->calcValueBase( runtime );
-		if ( value < minVal || value > maxVal ) {
-			runtime->error( rdo::format("Целочисленное значение выходит за допустимый диапазон [%d..%d]: %d", minVal, maxVal, (int)value), this );
-		}
-		runtime->setResParamVal( runtime->getResByRelRes(relNumb), parNumb, value );
-		return 1;
 	}
 };
 
@@ -167,28 +176,29 @@ class RDOSetRelParamRealDiapCalc: public RDOCalc
 private:
 	int relNumb;
 	int parNumb;
-	double minVal;
-	double maxVal;
+	double min_value;
+	double max_value;
 	RDOCalc* calc;
 
+	virtual RDOValue calcValue( RDORuntime* runtime ) const {
+		RDOValue value = calc->calcValueBase( runtime );
+		if ( value < min_value || value > max_value ) {
+			runtime->error( rdo::format("Вещественное значение выходит за допустимый диапазон [%f..%f]: %f", min_value, max_value, value), this );
+		}
+		runtime->setResParamVal( runtime->getResByRelRes(relNumb), parNumb, value );
+		return 1;
+	}
+
 public:
-	RDOSetRelParamRealDiapCalc( RDORuntimeParent* _parent, int _relNumb, int _parNumb, RDOCalc* _calc, double _minVal, double _maxVal ):
+	RDOSetRelParamRealDiapCalc( RDORuntimeParent* _parent, int _relNumb, int _parNumb, RDOCalc* _calc, double _min_value, double _max_value ):
 		RDOCalc( _parent ),
 		relNumb( _relNumb ),
 		parNumb( _parNumb ),
 		calc( _calc ),
-		minVal( _minVal ),
-		maxVal( _maxVal )
+		min_value( _min_value ),
+		max_value( _max_value )
 	{
 		if ( calc ) setSrcInfo( calc->src_info() );
-	}
-	virtual RDOValue calcValue( RDORuntime* runtime ) const {
-		RDOValue value = calc->calcValueBase( runtime );
-		if ( value < minVal || value > maxVal ) {
-			runtime->error( rdo::format("Вещественное значение выходит за допустимый диапазон [%f..%f]: %f", minVal, maxVal, value), this );
-		}
-		runtime->setResParamVal( runtime->getResByRelRes(relNumb), parNumb, value );
-		return 1;
 	}
 };
 
@@ -202,6 +212,11 @@ private:
 	int parNumb;
 	RDOCalc* calc;
 
+	virtual RDOValue calcValue( RDORuntime* runtime ) const {
+		runtime->setResParamVal( resNumb, parNumb, calc->calcValueBase( runtime ) );
+		return 1;
+	}
+
 public:
 	RDOSetResourceParamCalc( RDORuntimeParent* _parent, int _resNumb, int _parNumb, RDOCalc* _calc ):
 		RDOCalc( _parent ),
@@ -210,10 +225,6 @@ public:
 		calc( _calc )
 	{
 		if ( calc ) setSrcInfo( calc->src_info() );
-	}
-	virtual RDOValue calcValue( RDORuntime* runtime ) const {
-		runtime->setResParamVal( resNumb, parNumb, calc->calcValueBase( runtime ) );
-		return 1;
 	}
 };
 
@@ -226,16 +237,17 @@ private:
 	int          rel_res_id;
 	std::string  rel_res_name;
 
+	virtual RDOValue calcValue( RDORuntime* runtime ) const {
+		runtime->onEraseRes( runtime->getResByRelRes(rel_res_id), this );
+		return 1;
+	}
+
 public:
 	RDOCalcEraseRes( RDORuntimeParent* _parent, int _rel_res_id, const std::string& _rel_res_name ):
 		RDOCalc( _parent ),
 		rel_res_id( _rel_res_id ),
 		rel_res_name( _rel_res_name )
 	{
-	}
-	virtual RDOValue calcValue( RDORuntime* runtime ) const {
-		runtime->onEraseRes( runtime->getResByRelRes(rel_res_id), this );
-		return 1;
 	}
 	std::string getName() const { return rel_res_name; }
 };
@@ -249,6 +261,11 @@ private:
 	int parNumb;
 	RDOValue val;
 
+	virtual RDOValue calcValue( RDORuntime* runtime ) const {
+		runtime->setPatternParameter( parNumb, val );
+		return 0;
+	}
+
 public:
 	RDOSetPatternParamCalc( RDORuntimeParent* _parent, int _parNumb, RDOValue _val ):
 		RDOCalc( _parent ),
@@ -256,7 +273,6 @@ public:
 		val( _val )
 	{
 	}
-	virtual RDOValue calcValue( RDORuntime* runtime ) const { runtime->setPatternParameter(parNumb, val); return 0; }
 };
 
 // ----------------------------------------------------------------------------
@@ -267,16 +283,16 @@ class RDOCalcPatParam: public RDOCalc
 private:
 	int numberOfParam;
 
+	virtual RDOValue calcValue( RDORuntime* runtime ) const { 
+		return runtime->getPatternParameter(numberOfParam); 
+	}
+
 public:
 	RDOCalcPatParam( RDORuntimeParent* _parent, int _numberOfParam ):
 		RDOCalc( _parent ),
 		numberOfParam( _numberOfParam )
 	{
 	}
-	virtual RDOValue calcValue( RDORuntime* runtime ) const { 
-		return runtime->getPatternParameter(numberOfParam); 
-	}
-
 };
 
 // ----------------------------------------------------------------------------
@@ -284,9 +300,13 @@ public:
 // ----------------------------------------------------------------------------
 class RDOCalcGetTimeNow: public RDOCalc
 {
+private:
+	virtual RDOValue calcValue( RDORuntime* runtime ) const {
+		return runtime->getTimeNow();
+	}
+
 public:
 	RDOCalcGetTimeNow( RDORuntimeParent* _parent ): RDOCalc( _parent ) {}
-	virtual RDOValue calcValue( RDORuntime* runtime ) const { return runtime->getTimeNow(); } 
 };
 
 // ----------------------------------------------------------------------------
@@ -294,9 +314,13 @@ public:
 // ----------------------------------------------------------------------------
 class RDOCalcGetSeconds: public RDOCalc
 {
+private:
+	virtual RDOValue calcValue( RDORuntime* runtime ) const {
+		return runtime->getSeconds();
+	}
+
 public:
 	RDOCalcGetSeconds( RDORuntimeParent* _parent ): RDOCalc( _parent ) {}
-	virtual RDOValue calcValue( RDORuntime* runtime ) const { return runtime->getSeconds(); } 
 };
 
 // ----------------------------------------------------------------------------
@@ -305,14 +329,27 @@ public:
 class RDOFunCalc: public RDOCalc
 {
 protected:
-	RDOFunCalc( RDORuntimeParent* _parent ): RDOCalc( _parent ) {}
+	RDOFunCalc( RDORuntimeParent* _parent ):
+		RDOCalc( _parent )
+	{
+	}
 };
 
+// ----------------------------------------------------------------------------
+// ---------- RDOFunListCalc
+// ----------------------------------------------------------------------------
+// Функция типа список
+// ----------------------------------------------------------------------------
 class RDOFuncTableCalc: public RDOFunCalc
 {
 private:
 	std::vector< RDOCalcConst* > results;
 	RDOCalc* argCalc;
+
+	virtual RDOValue calcValue( RDORuntime* runtime ) const {
+		int index = argCalc->calcValueBase( runtime );
+		return results.at(index)->calcValueBase( runtime );
+	}
 
 public:
 	RDOFuncTableCalc( RDORuntimeParent* _parent, RDOCalc* _argCalc ):
@@ -320,69 +357,119 @@ public:
 		argCalc( _argCalc )
 	{
 	}
-	void addResultCalc( RDOCalcConst* res ) { results.push_back(res); }
-	virtual RDOValue calcValue( RDORuntime* runtime ) const
-	{
-		int index = argCalc->calcValueBase( runtime );
-		return results.at(index)->calcValueBase( runtime );
+	void addResultCalc( RDOCalcConst* res ) {
+		results.push_back( res );
 	}
 };
 
+// ----------------------------------------------------------------------------
+// ---------- RDOFunListCalc
+// ----------------------------------------------------------------------------
+// Функция типа список
+// ----------------------------------------------------------------------------
 class RDOFunListCalc: public RDOFunCalc
 {
 private:
-	std::vector< RDOCalc* > cases;
+	std::vector< RDOCalc* >      cases;
 	std::vector< RDOCalcConst* > results;
-	RDOCalcConst* defaultValue;
+	RDOCalcConst*                default_value;
+
+	virtual RDOValue calcValue( RDORuntime* runtime ) const {
+		int size = cases.size();
+		for ( int i = 0; i < size; i++ ) {
+			RDOCalc* cas = cases[i];
+			if ( cas->calcValueBase( runtime ) ) {
+				return results[i]->calcValueBase( runtime );
+			}
+		}
+		return default_value->calcValueBase( runtime );
+	}
 
 public:
-	RDOFunListCalc( RDORuntimeParent* _parent, RDOCalcConst* _defaultValue ):
+	RDOFunListCalc( RDORuntimeParent* _parent, RDOCalcConst* _default_value ):
 		RDOFunCalc( _parent ),
-		defaultValue( _defaultValue )
+		default_value( _default_value )
 	{
 	}
 
-	void addCase( RDOCalc* _caseCalc, RDOCalcConst* _resultCalc )
-	{
-		cases.push_back(_caseCalc); 
-		results.push_back(_resultCalc);
-	}
-
-	virtual RDOValue calcValue( RDORuntime* runtime ) const
-	{
-		int size = cases.size();
-		for(int i = 0; i < size; i++) {
-			RDOCalc* cas = cases[i];
-			if ( cas->calcValueBase( runtime ) ) return results[i]->calcValueBase( runtime );
-		}
-		return defaultValue->calcValueBase( runtime );
+	void addCase( RDOCalc* _case_calc, RDOCalcConst* _result_calc ) {
+		cases.push_back( _case_calc ); 
+		results.push_back( _result_calc );
 	}
 };
 
+// ----------------------------------------------------------------------------
+// ---------- RDOFunAlgorithmicCalc
+// ----------------------------------------------------------------------------
+// Алгоритмическая функция
+// ----------------------------------------------------------------------------
 class RDOFunAlgorithmicCalc: public RDOFunCalc
 {
-private:
-	std::vector<RDOCalc *> conditions;
-	std::vector<RDOCalc *> actions;
+protected:
+	std::vector< RDOCalc* > conditions;
+	std::vector< RDOCalc* > actions;
 
-public:
-	RDOFunAlgorithmicCalc( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
-
-	void addCalcIf(RDOCalc *cond, RDOCalc *act)
-	{
-		conditions.push_back(cond);
-		actions.push_back(act);
+	virtual RDOValue calcValue( RDORuntime* runtime ) const {
+		int size = conditions.size();
+		for ( int i = 0; i < size; i++ ) {
+			if ( conditions[i]->calcValueBase( runtime ) ) {
+				return actions[i]->calcValueBase( runtime );
+			}
+		}
+		// До сюда дело дойти не должно, т.к. последний conditions должен быть значением по-умолчанию
+		runtime->error( "Внутренная ошибка, RDOFunAlgorithmicCalc", this );
+		return 0;
 	}
 
-	virtual RDOValue calcValue( RDORuntime* runtime ) const
+public:
+	RDOFunAlgorithmicCalc( RDORuntimeParent* _parent ):
+		RDOFunCalc( _parent )
 	{
+	}
+
+	void addCalcIf( RDOCalc* cond, RDOCalc* act ) {
+		conditions.push_back( cond );
+		actions.push_back( act );
+	}
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOFunAlgorithmicDiapCalc
+// ----------------------------------------------------------------------------
+// Алгоритмическая функция с проверкой на диапазон возвращаемого значения
+// ----------------------------------------------------------------------------
+class RDOFunAlgorithmicDiapCalc: public RDOFunAlgorithmicCalc
+{
+private:
+	RDOValue min_value;
+	RDOValue max_value;
+
+	virtual RDOValue calcValue( RDORuntime* runtime ) const {
 		int size = conditions.size();
-		for(int i = 0; i < size; i++)
-		{
-			if(conditions[i]->calcValueBase( runtime ))
-				return actions[i]->calcValueBase( runtime );
+		for ( int i = 0; i < size; i++ ) {
+			if ( conditions[i]->calcValueBase( runtime ) ) {
+				RDOValue value = actions[i]->calcValueBase( runtime );
+				if ( value < min_value || value > max_value ) {
+					if ( value == (int)value && min_value == (int)min_value && max_value == (int)max_value ) {
+						runtime->error( rdo::format("Целочисленное значение выходит за допустимый диапазон [%d..%d]: %d", (int)min_value, (int)max_value, (int)value), actions[i] );
+					} else {
+						runtime->error( rdo::format("Вещественное значение выходит за допустимый диапазон [%f..%f]: %f", min_value, max_value, value), actions[i] );
+					}
+				}
+				return value;
+			}
 		}
+		// До сюда дело дойти не должно, т.к. последний conditions должен быть значением по-умолчанию
+		runtime->error( "Внутренная ошибка, RDOFunAlgorithmicDiapCalc", this );
 		return 0;
+	}
+
+public:
+	RDOFunAlgorithmicDiapCalc( RDORuntimeParent* _parent, RDOValue _min_value, RDOValue _max_value ):
+		RDOFunAlgorithmicCalc( _parent ),
+		min_value( _min_value ),
+		max_value( _max_value )
+	{
 	}
 };
 
@@ -405,30 +492,50 @@ protected:
 
 class RDOFunCalcExist: public RDOFunCalcGroup
 {
-public:
-	RDOFunCalcExist( RDORuntimeParent* _parent, int _nResType, RDOCalc* _condition): RDOFunCalcGroup( _parent, _nResType, _condition ) {}
+private:
 	virtual RDOValue calcValue( RDORuntime* runtime ) const;
+
+public:
+	RDOFunCalcExist( RDORuntimeParent* _parent, int _nResType, RDOCalc* _condition):
+		RDOFunCalcGroup( _parent, _nResType, _condition )
+	{
+	}
 };
 
 class RDOFunCalcNotExist: public RDOFunCalcGroup
 {
-public:
-	RDOFunCalcNotExist( RDORuntimeParent* _parent, int _nResType, RDOCalc* _condition ): RDOFunCalcGroup( _parent, _nResType, _condition ) {}
+private:
 	virtual RDOValue calcValue( RDORuntime* runtime ) const;
+
+public:
+	RDOFunCalcNotExist( RDORuntimeParent* _parent, int _nResType, RDOCalc* _condition ):
+		RDOFunCalcGroup( _parent, _nResType, _condition )
+	{
+	}
 };
 
 class RDOFunCalcForAll: public RDOFunCalcGroup
 {
-public:
-	RDOFunCalcForAll( RDORuntimeParent* _parent, int _nResType, RDOCalc* _condition ): RDOFunCalcGroup( _parent, _nResType, _condition ) {}
+private:
 	virtual RDOValue calcValue( RDORuntime* runtime ) const;
+
+public:
+	RDOFunCalcForAll( RDORuntimeParent* _parent, int _nResType, RDOCalc* _condition ):
+		RDOFunCalcGroup( _parent, _nResType, _condition )
+	{
+	}
 };
 
 class RDOFunCalcNotForAll: public RDOFunCalcGroup
 {
-public:
-	RDOFunCalcNotForAll( RDORuntimeParent* _parent, int _nResType, RDOCalc* _condition ): RDOFunCalcGroup( _parent, _nResType, _condition ) {}
+private:
 	virtual RDOValue calcValue( RDORuntime* runtime ) const;
+
+public:
+	RDOFunCalcNotForAll( RDORuntimeParent* _parent, int _nResType, RDOCalc* _condition ):
+		RDOFunCalcGroup( _parent, _nResType, _condition )
+	{
+	}
 };
 
 // ----------------------------------------------------------------------------
@@ -438,12 +545,17 @@ class RDOResource;
 
 class RDOFunCalcSelect: public RDOFunCalcGroup
 {
+private:
+	virtual RDOValue calcValue( RDORuntime* runtime ) const;
+
 public:
 	mutable std::list< RDOResource* > res_list;
 	void prepare( RDORuntime* sim ) const;
 
-	RDOFunCalcSelect( RDORuntimeParent* _parent, int _nResType, RDOCalc* _condition ): RDOFunCalcGroup( _parent, _nResType, _condition ) {}
-	virtual RDOValue calcValue( RDORuntime* runtime ) const;
+	RDOFunCalcSelect( RDORuntimeParent* _parent, int _nResType, RDOCalc* _condition ):
+		RDOFunCalcGroup( _parent, _nResType, _condition )
+	{
+	}
 };
 
 class RDOFunCalcSelectBase: public RDOFunCalc
@@ -463,266 +575,316 @@ public:
 
 class RDOFunCalcSelectSize: public RDOFunCalcSelectBase
 {
-public:
-	RDOFunCalcSelectSize( RDORuntimeParent* _parent, RDOFunCalcSelect* _select ): RDOFunCalcSelectBase( _parent, _select, NULL ) {}
+private:
 	virtual RDOValue calcValue( RDORuntime* runtime ) const;
+
+public:
+	RDOFunCalcSelectSize( RDORuntimeParent* _parent, RDOFunCalcSelect* _select ):
+		RDOFunCalcSelectBase( _parent, _select, NULL )
+	{
+	}
 };
 
 class RDOFunCalcSelectExist: public RDOFunCalcSelectBase
 {
-public:
-	RDOFunCalcSelectExist( RDORuntimeParent* _parent, RDOFunCalcSelect* _select, RDOCalc* _condition ): RDOFunCalcSelectBase( _parent, _select, _condition ) {}
+private:
 	virtual RDOValue calcValue( RDORuntime* runtime ) const;
+
+public:
+	RDOFunCalcSelectExist( RDORuntimeParent* _parent, RDOFunCalcSelect* _select, RDOCalc* _condition ):
+		RDOFunCalcSelectBase( _parent, _select, _condition )
+	{
+	}
 };
 
 class RDOFunCalcSelectNotExist: public RDOFunCalcSelectBase
 {
-public:
-	RDOFunCalcSelectNotExist( RDORuntimeParent* _parent, RDOFunCalcSelect* _select, RDOCalc* _condition ): RDOFunCalcSelectBase( _parent, _select, _condition ) {}
+private:
 	virtual RDOValue calcValue( RDORuntime* runtime ) const;
+
+public:
+	RDOFunCalcSelectNotExist( RDORuntimeParent* _parent, RDOFunCalcSelect* _select, RDOCalc* _condition ):
+		RDOFunCalcSelectBase( _parent, _select, _condition )
+	{
+	}
 };
 
 class RDOFunCalcSelectForAll: public RDOFunCalcSelectBase
 {
-public:
-	RDOFunCalcSelectForAll( RDORuntimeParent* _parent, RDOFunCalcSelect* _select, RDOCalc* _condition ): RDOFunCalcSelectBase( _parent, _select, _condition ) {}
+private:
 	virtual RDOValue calcValue( RDORuntime* runtime ) const;
+
+public:
+	RDOFunCalcSelectForAll( RDORuntimeParent* _parent, RDOFunCalcSelect* _select, RDOCalc* _condition ):
+		RDOFunCalcSelectBase( _parent, _select, _condition )
+	{
+	}
 };
 
 class RDOFunCalcSelectNotForAll: public RDOFunCalcSelectBase
 {
-public:
-	RDOFunCalcSelectNotForAll( RDORuntimeParent* _parent, RDOFunCalcSelect* _select, RDOCalc* _condition ): RDOFunCalcSelectBase( _parent, _select, _condition ) {}
+private:
 	virtual RDOValue calcValue( RDORuntime* runtime ) const;
+
+public:
+	RDOFunCalcSelectNotForAll( RDORuntimeParent* _parent, RDOFunCalcSelect* _select, RDOCalc* _condition ):
+		RDOFunCalcSelectBase( _parent, _select, _condition )
+	{
+	}
 };
 
 // ----------------------------------------------------------------------------
-// ---------- Native functions
+// ---------- Стандартные функции языка
 // ----------------------------------------------------------------------------
 class RDOFunCalcAbs: public RDOFunCalc
 {
-public:
-	RDOFunCalcAbs( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
+private:
 	virtual RDOValue calcValue( RDORuntime* runtime ) const {
 		return RDOValue(fabs(runtime->getFuncArgument(0)));
 	}
+public:
+	RDOFunCalcAbs( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
 };
 
 class RDOFunCalcArcCos: public RDOFunCalc
 {
-public:
-	RDOFunCalcArcCos( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
+private:
 	virtual RDOValue calcValue( RDORuntime* runtime ) const {
 		return RDOValue(acos(runtime->getFuncArgument(0)));
 	}
+public:
+	RDOFunCalcArcCos( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
 };
 
 class RDOFunCalcArcSin: public RDOFunCalc
 {
-public:
-	RDOFunCalcArcSin( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
+private:
 	virtual RDOValue calcValue( RDORuntime* runtime ) const {
 		return RDOValue(asin(runtime->getFuncArgument(0)));
 	}
+public:
+	RDOFunCalcArcSin( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
 };
 
 class RDOFunCalcArcTan: public RDOFunCalc
 {
-public:
-	RDOFunCalcArcTan( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
+private:
 	virtual RDOValue calcValue( RDORuntime* runtime ) const {
 		return RDOValue(atan(runtime->getFuncArgument(0)));
 	}
+public:
+	RDOFunCalcArcTan( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
 };
 
 class RDOFunCalcCos: public RDOFunCalc
 {
-public:
-	RDOFunCalcCos( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
+private:
 	virtual RDOValue calcValue( RDORuntime* runtime ) const {
 		return RDOValue(cos(runtime->getFuncArgument(0)));
 	}
+public:
+	RDOFunCalcCos( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
 };
 
 class RDOFunCalcCotan: public RDOFunCalc
 {
+private:
+	virtual RDOValue calcValue( RDORuntime* runtime ) const {
+		return RDOValue(1.0/tan(runtime->getFuncArgument(0)));
+	}
 public:
 	RDOFunCalcCotan( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
-	virtual RDOValue calcValue( RDORuntime* runtime ) const {
-		return RDOValue(1./tan(runtime->getFuncArgument(0)));
-	}
 };
 
 class RDOFunCalcExp: public RDOFunCalc
 {
-public:
-	RDOFunCalcExp( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
+private:
 	virtual RDOValue calcValue( RDORuntime* runtime ) const {
 		return RDOValue(exp(runtime->getFuncArgument(0)));
 	}
+public:
+	RDOFunCalcExp( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
 };
 
 class RDOFunCalcFloor: public RDOFunCalc
 {
-public:
-	RDOFunCalcFloor( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
+private:
 	virtual RDOValue calcValue( RDORuntime* runtime ) const {
 		return RDOValue(floor(runtime->getFuncArgument(0)));
 	}
+public:
+	RDOFunCalcFloor( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
 };
 
 class RDOFunCalcFrac: public RDOFunCalc
 {
-public:
-	RDOFunCalcFrac( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
+private:
 	virtual RDOValue calcValue( RDORuntime* runtime ) const {
 		double tmp;
 		return RDOValue(modf(runtime->getFuncArgument(0), &tmp));
 	}
+public:
+	RDOFunCalcFrac( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
 };
 
 class RDOFunCalcIAbs: public RDOFunCalc
 {
-public:
-	RDOFunCalcIAbs( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
+private:
 	virtual RDOValue calcValue( RDORuntime* runtime ) const {
 		return RDOValue(abs(runtime->getFuncArgument(0)));
 	}
+public:
+	RDOFunCalcIAbs( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
 };
 
 class RDOFunCalcIMax: public RDOFunCalc
 {
-public:
-	RDOFunCalcIMax( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
+private:
 	virtual RDOValue calcValue( RDORuntime* runtime ) const {
 		return RDOValue((int)std::_MAX(runtime->getFuncArgument(0), runtime->getFuncArgument(1)));
 	}
+public:
+	RDOFunCalcIMax( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
 };
 
 class RDOFunCalcIMin: public RDOFunCalc
 {
-public:
-	RDOFunCalcIMin( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
+private:
 	virtual RDOValue calcValue( RDORuntime* runtime ) const {
 		return RDOValue((int)std::_MIN(runtime->getFuncArgument(0), runtime->getFuncArgument(1)));
 	}
+public:
+	RDOFunCalcIMin( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
 };
 
 class RDOFunCalcInt: public RDOFunCalc
 {
-public:
-	RDOFunCalcInt( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
+private:
 	virtual RDOValue calcValue( RDORuntime* runtime ) const {
 		return RDOValue(int(runtime->getFuncArgument(0)));
 	}
+public:
+	RDOFunCalcInt( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
 };
 
 class RDOFunCalcIntPower: public RDOFunCalc
 {
-public:
-	RDOFunCalcIntPower( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
+private:
 	virtual RDOValue calcValue( RDORuntime* runtime ) const {
 		return RDOValue(pow(runtime->getFuncArgument(0), runtime->getFuncArgument(1)));
 	}
+public:
+	RDOFunCalcIntPower( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
 };
 
 class RDOFunCalcLn: public RDOFunCalc
 {
-public:
-	RDOFunCalcLn( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
+private:
 	virtual RDOValue calcValue( RDORuntime* runtime ) const {
 		return RDOValue(log(runtime->getFuncArgument(0)));
 	}
+public:
+	RDOFunCalcLn( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
 };
 
 class RDOFunCalcLog10: public RDOFunCalc
 {
-public:
-	RDOFunCalcLog10( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
+private:
 	virtual RDOValue calcValue( RDORuntime* runtime ) const {
 		return RDOValue(log10(runtime->getFuncArgument(0)));
 	}
+public:
+	RDOFunCalcLog10( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
 };
 
 class RDOFunCalcLog2: public RDOFunCalc
 {
-public:
-	RDOFunCalcLog2( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
+private:
 	virtual RDOValue calcValue( RDORuntime* runtime ) const {
 		return RDOValue(log(runtime->getFuncArgument(0)) / log(2) );
 	}
+public:
+	RDOFunCalcLog2( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
 };
 
 class RDOFunCalcLogN: public RDOFunCalc
 {
-public:
-	RDOFunCalcLogN( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
+private:
 	virtual RDOValue calcValue( RDORuntime* runtime ) const {
 		return RDOValue(log(runtime->getFuncArgument(0)) / log(runtime->getFuncArgument(1)));
 	}
+public:
+	RDOFunCalcLogN( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
 };
 
 class RDOFunCalcMax: public RDOFunCalc
 {
-public:
-	RDOFunCalcMax( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
+private:
 	virtual RDOValue calcValue( RDORuntime* runtime ) const {
 		return RDOValue(std::_MAX(runtime->getFuncArgument(0), runtime->getFuncArgument(1)));
 	}
+public:
+	RDOFunCalcMax( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
 };
 
 class RDOFunCalcMin: public RDOFunCalc
 {
-public:
-	RDOFunCalcMin( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
+private:
 	virtual RDOValue calcValue( RDORuntime* runtime ) const {
 		return RDOValue(std::_MIN(runtime->getFuncArgument(0), runtime->getFuncArgument(1)));
 	}
+public:
+	RDOFunCalcMin( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
 };
 
 class RDOFunCalcPower: public RDOFunCalc
 {
-public:
-	RDOFunCalcPower( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
+private:
 	virtual RDOValue calcValue( RDORuntime* runtime ) const {
 		return RDOValue(pow(runtime->getFuncArgument(0), runtime->getFuncArgument(1)));
 	}
+public:
+	RDOFunCalcPower( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
 };
 
 class RDOFunCalcRound: public RDOFunCalc
 {
-public:
-	RDOFunCalcRound( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
+private:
 	virtual RDOValue calcValue( RDORuntime* runtime ) const {
 		return RDOValue(floor(runtime->getFuncArgument(0) + 0.5));
 	}
+public:
+	RDOFunCalcRound( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
 };
 
 class RDOFunCalcSin: public RDOFunCalc
 {
-public:
-	RDOFunCalcSin( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
+private:
 	virtual RDOValue calcValue( RDORuntime* runtime ) const {
 		return RDOValue(sin(runtime->getFuncArgument(0)));
 	}
+public:
+	RDOFunCalcSin( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
 };
 
 class RDOFunCalcSqrt: public RDOFunCalc
 {
-public:
-	RDOFunCalcSqrt( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
+private:
 	virtual RDOValue calcValue( RDORuntime* runtime ) const {
 		return RDOValue(sqrt(runtime->getFuncArgument(0)));
 	}
+public:
+	RDOFunCalcSqrt( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
 };
 
 class RDOFunCalcTan: public RDOFunCalc
 {
-public:
-	RDOFunCalcTan( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
+private:
 	virtual RDOValue calcValue( RDORuntime* runtime ) const {
 		return RDOValue(tan(runtime->getFuncArgument(0)));
 	}
+public:
+	RDOFunCalcTan( RDORuntimeParent* _parent ): RDOFunCalc( _parent ) {}
 };
 
 // ----------------------------------------------------------------------------
@@ -826,18 +988,19 @@ public:
 class RDOCalcFuncParam: public RDOCalc
 {
 private:
-	int numberOfParam;
+	int param_number;
+
+	virtual RDOValue calcValue( RDORuntime* runtime ) const {
+		return runtime->getFuncArgument( param_number ); 
+	}
 
 public:
-	RDOCalcFuncParam( RDORuntimeParent* _parent, int _numberOfParam):
+	RDOCalcFuncParam( RDORuntimeParent* _parent, int _param_number, const RDOSrcInfo& _src_info ):
 		RDOCalc( _parent ),
-		numberOfParam( _numberOfParam )
+		param_number( _param_number )
 	{
+		setSrcInfo( _src_info );
 	}
-	virtual RDOValue calcValue( RDORuntime* runtime ) const {
-		return runtime->getFuncArgument(numberOfParam); 
-	}
-
 };
 
 // ----------------------------------------------------------------------------
@@ -846,16 +1009,19 @@ public:
 class RDOCalcBinary: public RDOCalc
 {
 protected:
-	const RDOCalc* const left;
-	const RDOCalc* const right;
+	const RDOCalc* left;
+	const RDOCalc* right;
 
 public:
-	RDOCalcBinary( RDORuntimeParent* _parent, const RDOCalc* const _left, const RDOCalc* const _right ):
+	RDOCalcBinary( RDORuntimeParent* _parent, const RDOCalc* _left, const RDOCalc* _right ):
 		RDOCalc( _parent ),
 		left( _left ),
 		right( _right )
 	{
 	}
+	const RDOCalc*      getLeft() const         { return left; }
+	const RDOCalcConst* getRightAsConst() const { return dynamic_cast<const RDOCalcConst*>(right); }
+	void setRight( const RDOCalc* _right )      { right = _right; }
 };
 
 class RDOCalcPlus: public RDOCalcBinary
@@ -864,11 +1030,16 @@ public:
 	RDOCalcPlus( RDORuntimeParent* _parent, RDOCalc* _left, RDOCalc *_right ):
 		RDOCalcBinary( _parent, _left, _right )
 	{
-		if ( left && right ) { 
-			setSrcInfo( left->src_info(), " + ", right->src_info() );
-		}
+		setSrcInfo( getStaticSrcInfo( left, right ) );
 	}
-	RDOValue calcValue( RDORuntime* runtime ) const { return RDOValue(left->calcValueBase( runtime ) + right->calcValueBase( runtime )); }
+	static RDOSrcInfo getStaticSrcInfo( const RDOCalc* left, const RDOCalc* right ) {
+		RDOSrcInfo src_info;
+		src_info.setSrcInfo( left->src_info(), " + ", right->src_info() );
+		return src_info;
+	}
+	RDOValue calcValue( RDORuntime* runtime ) const {
+		return left->calcValueBase( runtime ) + right->calcValueBase( runtime );
+	}
 };
 
 class RDOCalcMinus: public RDOCalcBinary
@@ -877,11 +1048,16 @@ public:
 	RDOCalcMinus( RDORuntimeParent* _parent, RDOCalc* _left, RDOCalc* _right ):
 		RDOCalcBinary( _parent, _left, _right )
 	{
-		if ( left && right ) {
-			setSrcInfo( left->src_info(), " - ", right->src_info() );
-		}
+		setSrcInfo( getStaticSrcInfo( left, right ) );
 	}
-	RDOValue calcValue( RDORuntime* runtime ) const { return RDOValue(left->calcValueBase( runtime ) - right->calcValueBase( runtime )); }
+	static RDOSrcInfo getStaticSrcInfo( const RDOCalc* left, const RDOCalc* right ) {
+		RDOSrcInfo src_info;
+		src_info.setSrcInfo( left->src_info(), " - ", right->src_info() );
+		return src_info;
+	}
+	RDOValue calcValue( RDORuntime* runtime ) const {
+		return left->calcValueBase( runtime ) - right->calcValueBase( runtime );
+	}
 };
 
 class RDOCalcMult: public RDOCalcBinary
@@ -890,11 +1066,16 @@ public:
 	RDOCalcMult( RDORuntimeParent* _parent, RDOCalc* _left, RDOCalc* _right ):
 		RDOCalcBinary( _parent, _left, _right )
 	{
-		if ( left && right ) {
-			setSrcInfo( left->src_info(), " * ", right->src_info() );
-		}
+		setSrcInfo( getStaticSrcInfo( left, right ) );
 	}
-	RDOValue calcValue( RDORuntime* runtime ) const { return RDOValue(left->calcValueBase( runtime ) * right->calcValueBase( runtime )); }
+	static RDOSrcInfo getStaticSrcInfo( const RDOCalc* left, const RDOCalc* right ) {
+		RDOSrcInfo src_info;
+		src_info.setSrcInfo( left->src_info(), " * ", right->src_info() );
+		return src_info;
+	}
+	RDOValue calcValue( RDORuntime* runtime ) const {
+		return left->calcValueBase( runtime ) * right->calcValueBase( runtime );
+	}
 };
 
 class RDOCalcDiv: public RDOCalcBinary
@@ -903,9 +1084,12 @@ public:
 	RDOCalcDiv( RDORuntimeParent* _parent, RDOCalc* _left, RDOCalc* _right ):
 		RDOCalcBinary( _parent, _left, _right )
 	{
-		if ( left && right ) {
-			setSrcInfo( left->src_info(), " / ", right->src_info() );
-		}
+		setSrcInfo( getStaticSrcInfo( left, right ) );
+	}
+	static RDOSrcInfo getStaticSrcInfo( const RDOCalc* left, const RDOCalc* right ) {
+		RDOSrcInfo src_info;
+		src_info.setSrcInfo( left->src_info(), " / ", right->src_info() );
+		return src_info;
 	}
 	virtual RDOValue calcValue( RDORuntime* runtime ) const {
 		RDOValue rVal = right->calcValueBase( runtime );
@@ -913,7 +1097,7 @@ public:
 			runtime->error( "Деление на ноль", this );
 //			runtime->error("Division by zero", this);
 		}
-		return RDOValue( left->calcValueBase( runtime ) / rVal );
+		return left->calcValueBase( runtime ) / rVal;
 	}
 };
 
@@ -926,9 +1110,12 @@ public:
 	RDOCalcAnd( RDORuntimeParent* _parent, RDOCalc* _left, RDOCalc* _right ):
 		RDOCalcBinary( _parent, _left, _right )
 	{
-		if ( left && right ) {
-			setSrcInfo( left->src_info(), " and ", right->src_info() );
-		}
+		setSrcInfo( getStaticSrcInfo( left, right ) );
+	}
+	static RDOSrcInfo getStaticSrcInfo( const RDOCalc* left, const RDOCalc* right ) {
+		RDOSrcInfo src_info;
+		src_info.setSrcInfo( left->src_info(), " and ", right->src_info() );
+		return src_info;
 	}
 	RDOValue calcValue( RDORuntime* runtime ) const {
 		if ( !left->calcValueBase( runtime )  ) return false;
@@ -943,9 +1130,12 @@ public:
 	RDOCalcOr( RDORuntimeParent* _parent, RDOCalc* _left, RDOCalc* _right ):
 		RDOCalcBinary( _parent, _left, _right )
 	{
-		if ( left && right ) {
-			setSrcInfo( left->src_info(), " or ", right->src_info() );
-		}
+		setSrcInfo( getStaticSrcInfo( left, right ) );
+	}
+	static RDOSrcInfo getStaticSrcInfo( const RDOCalc* left, const RDOCalc* right ) {
+		RDOSrcInfo src_info;
+		src_info.setSrcInfo( left->src_info(), " or ", right->src_info() );
+		return src_info;
 	}
 	RDOValue calcValue( RDORuntime* runtime ) const {
 		if ( left->calcValueBase( runtime )  ) return true;
@@ -976,12 +1166,15 @@ public:
 	RDOCalcIsEqual( RDORuntimeParent* _parent, const RDOCalc* const _left, const RDOCalc* const _right):
 		RDOCalcBinary( _parent, _left, _right )
 	{
-		if ( left && right ) {
-			setSrcInfo( left->src_info(), " == ", right->src_info() );
-		}
+		setSrcInfo( getStaticSrcInfo( left, right ) );
 	}
 	RDOValue calcValue( RDORuntime* runtime ) const {
 		return ( left->calcValueBase( runtime ) == right->calcValueBase( runtime ) );
+	}
+	static RDOSrcInfo getStaticSrcInfo( const RDOCalc* left, const RDOCalc* right ) {
+		RDOSrcInfo src_info;
+		src_info.setSrcInfo( left->src_info(), " = ", right->src_info() );
+		return src_info;
 	}
 };
 
@@ -991,9 +1184,12 @@ public:
 	RDOCalcIsNotEqual( RDORuntimeParent* _parent, RDOCalc* _left, RDOCalc* _right ):
 		RDOCalcBinary( _parent, _left, _right )
 	{
-		if ( left && right ) {
-			setSrcInfo( left->src_info(), " <> ", right->src_info() );
-		}
+		setSrcInfo( getStaticSrcInfo( left, right ) );
+	}
+	static RDOSrcInfo getStaticSrcInfo( const RDOCalc* left, const RDOCalc* right ) {
+		RDOSrcInfo src_info;
+		src_info.setSrcInfo( left->src_info(), " <> ", right->src_info() );
+		return src_info;
 	}
 	RDOValue calcValue( RDORuntime* runtime ) const {
 		return ( left->calcValueBase( runtime ) != right->calcValueBase( runtime ) );
@@ -1007,10 +1203,17 @@ public:
 		RDOCalcBinary( _parent, _left, _right )
 	{
 		if ( left && right ) {
-			setSrcInfo( left->src_info(), " < ", right->src_info() );
+			setSrcInfo( getStaticSrcInfo( left, right ) );
 		}
 	}
-	RDOValue calcValue( RDORuntime* runtime ) const { return (left->calcValueBase( runtime ) < right->calcValueBase( runtime )); }
+	static RDOSrcInfo getStaticSrcInfo( const RDOCalc* left, const RDOCalc* right ) {
+		RDOSrcInfo src_info;
+		src_info.setSrcInfo( left->src_info(), " < ", right->src_info() );
+		return src_info;
+	}
+	RDOValue calcValue( RDORuntime* runtime ) const {
+		return left->calcValueBase( runtime ) < right->calcValueBase( runtime );
+	}
 };
 
 class RDOCalcIsGreater: public RDOCalcBinary
@@ -1019,11 +1222,16 @@ public:
 	RDOCalcIsGreater( RDORuntimeParent* _parent, RDOCalc* _left, RDOCalc* _right ):
 		RDOCalcBinary( _parent, _left, _right )
 	{
-		if ( left && right ) {
-			setSrcInfo( left->src_info(), " > ", right->src_info() );
-		}
+		setSrcInfo( getStaticSrcInfo( left, right ) );
 	}
-	RDOValue calcValue( RDORuntime* runtime ) const { return (left->calcValueBase( runtime ) > right->calcValueBase( runtime ));	}
+	static RDOSrcInfo getStaticSrcInfo( const RDOCalc* left, const RDOCalc* right ) {
+		RDOSrcInfo src_info;
+		src_info.setSrcInfo( left->src_info(), " > ", right->src_info() );
+		return src_info;
+	}
+	RDOValue calcValue( RDORuntime* runtime ) const {
+		return left->calcValueBase( runtime ) > right->calcValueBase( runtime );
+	}
 };
 
 class RDOCalcIsLEQ: public RDOCalcBinary
@@ -1032,24 +1240,34 @@ public:
 	RDOCalcIsLEQ( RDORuntimeParent* _parent, RDOCalc* _left, RDOCalc* _right ):
 		RDOCalcBinary( _parent, _left, _right )
 	{
-		if ( left && right ) {
-			setSrcInfo( left->src_info(), " <= ", right->src_info() );
-		}
+		setSrcInfo( getStaticSrcInfo( left, right ) );
 	}
-	RDOValue calcValue( RDORuntime* runtime ) const { return (left->calcValueBase( runtime ) <= right->calcValueBase( runtime ));	}
+	static RDOSrcInfo getStaticSrcInfo( const RDOCalc* left, const RDOCalc* right ) {
+		RDOSrcInfo src_info;
+		src_info.setSrcInfo( left->src_info(), " <= ", right->src_info() );
+		return src_info;
+	}
+	RDOValue calcValue( RDORuntime* runtime ) const {
+		return left->calcValueBase( runtime ) <= right->calcValueBase( runtime );
+	}
 };
 
 class RDOCalcIsGEQ: public RDOCalcBinary
 {
 public:
 	RDOCalcIsGEQ( RDORuntimeParent* _parent, RDOCalc* _left, RDOCalc* _right ):
-	RDOCalcBinary( _parent, _left, _right )
+		RDOCalcBinary( _parent, _left, _right )
 	{
-		if ( left && right ) {
-			setSrcInfo( left->src_info(), " >= ", right->src_info() );
-		}
+		setSrcInfo( getStaticSrcInfo( left, right ) );
 	}
-	RDOValue calcValue( RDORuntime* runtime ) const { return (left->calcValueBase( runtime ) >= right->calcValueBase( runtime ));	}
+	static RDOSrcInfo getStaticSrcInfo( const RDOCalc* left, const RDOCalc* right ) {
+		RDOSrcInfo src_info;
+		src_info.setSrcInfo( left->src_info(), " >= ", right->src_info() );
+		return src_info;
+	}
+	RDOValue calcValue( RDORuntime* runtime ) const {
+		return left->calcValueBase( runtime ) >= right->calcValueBase( runtime );
+	}
 };
 
 // ----------------------------------------------------------------------------
@@ -1085,21 +1303,27 @@ public:
 class RDOCalcCheckDiap: public RDOCalcUnary
 {
 private:
-	RDOValue minVal, maxVal;
+	RDOValue min_value;
+	RDOValue max_value;
+
+	virtual RDOValue calcValue( RDORuntime* runtime ) const {
+		RDOValue value = oper->calcValueBase( runtime );
+		if ( value < min_value || value > max_value ) {
+			if ( value == (int)value && min_value == (int)min_value && max_value == (int)max_value ) {
+				runtime->error( rdo::format("Целочисленное значение выходит за допустимый диапазон [%d..%d]: %d", (int)min_value, (int)max_value, (int)value), this );
+			} else {
+				runtime->error( rdo::format("Вещественное значение выходит за допустимый диапазон [%f..%f]: %f", min_value, max_value, value), this );
+			}
+		}
+		return value; 
+	}
 
 public:
-	RDOCalcCheckDiap( RDORuntimeParent* _parent, RDOValue _minVal, RDOValue _maxVal, RDOCalc* _oper ):
+	RDOCalcCheckDiap( RDORuntimeParent* _parent, RDOValue _min_value, RDOValue _max_value, RDOCalc* _oper ):
 		RDOCalcUnary( _parent, _oper ),
-		minVal( _minVal ),
-		maxVal( _maxVal )
+		min_value( _min_value ),
+		max_value( _max_value )
 	{
-	}
-	virtual RDOValue calcValue( RDORuntime* runtime ) const {
-		RDOValue val = oper->calcValueBase( runtime );
-		if ( val < minVal || val > maxVal ) {
-			runtime->error( ("Parameter out of range: " + toString(val)), this );
-		}
-		return val; 
 	}
 };
 

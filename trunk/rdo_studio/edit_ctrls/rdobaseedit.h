@@ -189,6 +189,8 @@ public:
 	int getCurrentColumnNumber() const              { return sendEditor( SCI_GETCOLUMN, getCurrentPos() ); };
 	bool isLineVisible( const int line ) const;
 	void scrollToLine( const int line ) const;
+	void scrollToLine2( const int line ) const;
+	void scrollToCarret() const;
 	void horzScrollToCurrentPos() const;
 
 	std::string getCurrentWord() const;

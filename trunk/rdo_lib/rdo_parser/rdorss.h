@@ -34,7 +34,7 @@ public:
 	
 	const std::string&         getName() const       { return name;    }
 	const RDORTPResType* const getType() const       { return resType; }
-	
+
 	int getNumber() const                            { return number;  }
 
 	const std::vector< rdoRuntime::RDOValue >& getValues() const { return values;  }

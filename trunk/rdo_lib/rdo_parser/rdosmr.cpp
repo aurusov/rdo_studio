@@ -97,7 +97,7 @@ void RDOSMR::setFrameNumber(int fn)
 
 void RDOSMR::setTerminateIf(RDOFUNLogic *logic)
 {
-	if(!parser->runTime->setTerminateIf(logic->calc))
+	if(!parser->runtime->setTerminateIf(logic->calc))
 		parser->error("Second Terminate_if entry");
 }
 
@@ -108,7 +108,7 @@ void RDOSMR::setConstValue( const std::string& constName, RDOFUNArithm* arithm )
 		parser->error("Undefined constant: " + constName);
 
 	rdoRuntime::RDOCalc *calc = arithm->createCalc(cons->getType());
-	parser->runTime->addInitCalc(new rdoRuntime::RDOCalcSetConst( parser->runTime, cons->number, calc ));
+	parser->runtime->addInitCalc(new rdoRuntime::RDOCalcSetConst( parser->runtime, cons->number, calc ));
 }
 
 void RDOSMR::setResParValue( const std::string& resName, const std::string& parName, RDOFUNArithm* arithm )
@@ -123,7 +123,7 @@ void RDOSMR::setResParValue( const std::string& resName, const std::string& parN
 
 	int parNumb = res->getType()->getRTPParamNumber(parName);
 	rdoRuntime::RDOCalc *calc = arithm->createCalc(descr->getType());
-	parser->runTime->addInitCalc(new rdoRuntime::RDOSetResourceParamCalc( parser->runTime, res->getNumber(), parNumb, calc ));
+	parser->runtime->addInitCalc(new rdoRuntime::RDOSetResourceParamCalc( parser->runtime, res->getNumber(), parNumb, calc ));
 }
 
 void RDOSMR::setSeed( const std::string& seqName, int _base )

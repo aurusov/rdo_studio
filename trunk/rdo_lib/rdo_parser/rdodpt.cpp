@@ -78,11 +78,11 @@ void RDODPTSearch::end()
 {
 	rdoRuntime::RDOCalc *condCalc;
 	if(!conditon)
-		condCalc = new rdoRuntime::RDOCalcConst(parser->runTime, 1);
+		condCalc = new rdoRuntime::RDOCalcConst(parser->runtime, 1);
 	else
 		condCalc = conditon->calc;
 
-	rdoRuntime::RDOSearchRuntime *dpt = new rdoRuntime::RDOSearchRuntime(parser->runTime, 
+	rdoRuntime::RDOSearchRuntime *dpt = new rdoRuntime::RDOSearchRuntime(parser->runtime, 
 		condCalc, 
 		termConditon->calc, 
 		evalBy->createCalc(), 
@@ -104,13 +104,13 @@ void RDODPTSearch::end()
 		break;
 	};
 
-	parser->runTime->addRuntimeDPT( dpt );
+	parser->runtime->addRuntimeDPT( dpt );
 
 	int size = activities.size();
 	for(int i = 0; i < size; i++)
 	{
 		RDODPTSearchActivity *curr = activities.at(i);
-		rdoRuntime::RDOSearchActivityRuntime *act = curr->createActivityRuntime(parser->runTime);
+		rdoRuntime::RDOSearchActivityRuntime *act = curr->createActivityRuntime(parser->runtime);
 		dpt->addActivity(act);
 	}
 }
@@ -140,7 +140,7 @@ void RDODPTSearchActivity::addParam(int _param)
 		parser->error("Too many parameters for rule: " + rule->getName());
 
 	RDOFUNFunctionParam *param = rule->params[currParamNum++];
-	rdoRuntime::RDOValue val = param->getType()->getRSSIntValue(_param);
+	rdoRuntime::RDOValue val = param->getType()->getRSSIntValue(_param, RDOParserSrcInfo("левое"));
 	params.push_back(val);
 }
 
@@ -150,7 +150,7 @@ void RDODPTSearchActivity::addParam(double _param)
 		parser->error("Too many parameters for rule: " + rule->getName());
 
 	RDOFUNFunctionParam *param = rule->params[currParamNum++];
-	rdoRuntime::RDOValue val = param->getType()->getRSSRealValue(_param);
+	rdoRuntime::RDOValue val = param->getType()->getRSSRealValue(_param, RDOParserSrcInfo("левое"));
 	params.push_back(val);
 }
 
@@ -160,7 +160,7 @@ void RDODPTSearchActivity::addParam( const std::string& _param )
 		parser->error("Too many parameters for rule: " + rule->getName());
 
 	RDOFUNFunctionParam *param = rule->params[currParamNum++];
-	rdoRuntime::RDOValue val = param->getType()->getRSSEnumValue(_param);
+	rdoRuntime::RDOValue val = param->getType()->getRSSEnumValue(_param, RDOParserSrcInfo("левое"));
 	params.push_back(val);
 }
 
@@ -170,7 +170,7 @@ void RDODPTSearchActivity::addParam()
 		parser->error("Too many parameters for rule: " + rule->getName());
 
 	RDOFUNFunctionParam *param = rule->params[currParamNum++];
-	rdoRuntime::RDOValue val = param->getType()->getParamDefaultValue();
+	rdoRuntime::RDOValue val = param->getType()->getParamDefaultValue(RDOParserSrcInfo("левое"));
 	params.push_back(val);
 }
 
@@ -184,7 +184,7 @@ rdoRuntime::RDOSearchActivityRuntime* RDODPTSearchActivity::createActivityRuntim
 
 	int size = params.size();
 	for(int i = 0; i < size; i++)
-		activity->addParamCalc(new rdoRuntime::RDOSetPatternParamCalc(parser->runTime, i, params.at(i)));
+		activity->addParamCalc(new rdoRuntime::RDOSetPatternParamCalc(parser->runtime, i, params.at(i)));
 
 	return act;
 }
@@ -214,7 +214,7 @@ void RDODPTSome::addNewActivity( std::string* _name, std::string* _patternName )
 
 void RDODPTSome::end()
 {
-	parser->runTime->dptCounter++;
+	parser->runtime->dptCounter++;
 	int size = activities.size();
 	for(int i = 0; i < size; i++)
 		activities.at(i)->createActivityRuntime(conditon);
@@ -235,7 +235,7 @@ void RDODPTSomeActivity::addParam(int _param)
 		parser->error("Too many parameters for pattern: " + pattern->getName());
 
 	RDOFUNFunctionParam *param = pattern->params[currParamNum++];
-	rdoRuntime::RDOValue val = param->getType()->getRSSIntValue(_param);
+	rdoRuntime::RDOValue val = param->getType()->getRSSIntValue(_param, RDOParserSrcInfo("левое"));
 	params.push_back(val);
 }
 
@@ -245,7 +245,7 @@ void RDODPTSomeActivity::addParam(double _param)
 		parser->error("Too many parameters for pattern: " + pattern->getName());
 
 	RDOFUNFunctionParam *param = pattern->params[currParamNum++];
-	rdoRuntime::RDOValue val = param->getType()->getRSSRealValue(_param);
+	rdoRuntime::RDOValue val = param->getType()->getRSSRealValue(_param, RDOParserSrcInfo("левое"));
 	params.push_back(val);
 }
 
@@ -255,7 +255,7 @@ void RDODPTSomeActivity::addParam( const std::string& _param )
 		parser->error("Too many parameters for pattern: " + pattern->getName());
 
 	RDOFUNFunctionParam *param = pattern->params[currParamNum++];
-	rdoRuntime::RDOValue val = param->getType()->getRSSEnumValue(_param);
+	rdoRuntime::RDOValue val = param->getType()->getRSSEnumValue(_param, RDOParserSrcInfo("левое"));
 	params.push_back(val);
 }
 
@@ -265,7 +265,7 @@ void RDODPTSomeActivity::addParam()
 		parser->error("Too many parameters for pattern: " + pattern->getName());
 
 	RDOFUNFunctionParam *param = pattern->params[currParamNum++];
-	rdoRuntime::RDOValue val = param->getType()->getParamDefaultValue();
+	rdoRuntime::RDOValue val = param->getType()->getParamDefaultValue(RDOParserSrcInfo("левое"));
 	params.push_back(val);
 }
 
@@ -279,7 +279,7 @@ void RDODPTSomeActivity::createActivityRuntime(RDOFUNLogic *conditon)
 
 	int size = params.size();
 	for(int i = 0; i < size; i++)
-		activity->addParamCalc(new rdoRuntime::RDOSetPatternParamCalc(parser->runTime, i, params.at(i)));
+		activity->addParamCalc(new rdoRuntime::RDOSetPatternParamCalc(parser->runtime, i, params.at(i)));
 }
 
 
@@ -306,7 +306,7 @@ void RDODPTFreeActivity::addParam(int _param)
 		parser->error("Too many parameters for pattern: " + pattern->getName());
 
 	RDOFUNFunctionParam *param = pattern->params[currParamNum++];
-	rdoRuntime::RDOValue val = param->getType()->getRSSIntValue(_param);
+	rdoRuntime::RDOValue val = param->getType()->getRSSIntValue(_param, RDOParserSrcInfo("левое"));
 	params.push_back(val);
 }
 
@@ -316,7 +316,7 @@ void RDODPTFreeActivity::addParam(double _param)
 		parser->error("Too many parameters for pattern: " + pattern->getName());
 
 	RDOFUNFunctionParam *param = pattern->params[currParamNum++];
-	rdoRuntime::RDOValue val = param->getType()->getRSSRealValue(_param);
+	rdoRuntime::RDOValue val = param->getType()->getRSSRealValue(_param, RDOParserSrcInfo("левое"));
 	params.push_back(val);
 }
 
@@ -326,7 +326,7 @@ void RDODPTFreeActivity::addParam( const std::string& _param )
 		parser->error("Too many parameters for pattern: " + pattern->getName());
 
 	RDOFUNFunctionParam *param = pattern->params[currParamNum++];
-	rdoRuntime::RDOValue val = param->getType()->getRSSEnumValue(_param);
+	rdoRuntime::RDOValue val = param->getType()->getRSSEnumValue(_param, RDOParserSrcInfo("левое"));
 	params.push_back(val);
 }
 
@@ -336,7 +336,7 @@ void RDODPTFreeActivity::addParam()
 		parser->error("Too many parameters for pattern: " + pattern->getName());
 
 	RDOFUNFunctionParam *param = pattern->params[currParamNum++];
-	rdoRuntime::RDOValue val = param->getType()->getParamDefaultValue();
+	rdoRuntime::RDOValue val = param->getType()->getParamDefaultValue(RDOParserSrcInfo("левое"));
 	params.push_back(val);
 }
 
@@ -345,7 +345,7 @@ void RDODPTFreeActivity::end()
 	rdoRuntime::RDOActivityRuntime *activity = pattern->patRuntime->createActivity(*name);
 	int size = params.size();
 	for(int i = 0; i < size; i++)
-		activity->addParamCalc(new rdoRuntime::RDOSetPatternParamCalc(parser->runTime, i, params.at(i)));
+		activity->addParamCalc(new rdoRuntime::RDOSetPatternParamCalc(parser->runtime, i, params.at(i)));
 
 	size = hotKeys.size();
 	for(i = 0; i < size; i++)
@@ -366,7 +366,7 @@ RDOPROCProcess::RDOPROCProcess( RDOParser* _parser, const std::string& _name ):
 	runtime( NULL )
 {
 	parser->insertDPTProcess( this );
-	runtime = new rdoRuntime::RDOPROCProcess( name, parser->runTime );
+	runtime = new rdoRuntime::RDOPROCProcess( name, parser->runtime );
 }
 
 void RDOPROCProcess::end()

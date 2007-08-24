@@ -120,6 +120,8 @@
 %token TERMINATE			366
 %token ADVANCE				367
 %token RELEASE				368
+%token if_keyword			369
+%token result_keyword		370
 
 %token Frame				400
 %token Show_if				401
@@ -270,10 +272,7 @@ param_type:		integer param_int_diap param_int_default_val {
 					RDORTPEnum* enu      = reinterpret_cast<RDORTPEnum*>($1);
 					RDORTPEnumDefVal* dv = reinterpret_cast<RDORTPEnumDefVal*>($2);
 					if ( dv->isExist() ) {
-						parser->lexer_loc_backup();
-						parser->lexer_loc_set( dv->src_pos().last_line, dv->src_pos().last_pos );
-						enu->findValue( dv->getEnumValue() ); // Если не найдено, то будет сообщение об ошибке, т.е. throw
-						parser->lexer_loc_restore();
+						enu->findEnumValueWithThrow( dv->src_pos(), dv->getEnumValue() ); // Если не найдено, то будет сообщение об ошибке, т.е. throw
 					}
 					RDORTPEnumParamType* rp = new RDORTPEnumParamType( parser->getLastParsingObject(), enu, dv, RDOParserSrcInfo( @1, @2 ) );
 					$$ = (int)rp;

@@ -129,20 +129,20 @@ void RDOPATPattern::addRelResConvert( bool trace, RDOPATParamSet* parSet, const 
 				case RDORTPParamType::pt_int: {
 					const RDORTPIntParamType* param_type = static_cast<const RDORTPIntParamType*>(param->getType());
 					if ( param_type->diap->isExist() ) {
-						calc = new rdoRuntime::RDOSetRelParamIntDiapCalc( parser->runTime, parSet->getRelRes()->rel_res_id, parNumb, rightValue, param_type->diap->minVal, param_type->diap->maxVal );
+						calc = new rdoRuntime::RDOSetRelParamIntDiapCalc( parser->runtime, parSet->getRelRes()->rel_res_id, parNumb, rightValue, param_type->diap->minVal, param_type->diap->maxVal );
 						break;
 					}
 				}
 				case RDORTPParamType::pt_real: {
 					const RDORTPRealParamType* param_type = static_cast<const RDORTPRealParamType*>(param->getType());
 					if ( param_type->diap->isExist() ) {
-						calc = new rdoRuntime::RDOSetRelParamRealDiapCalc( parser->runTime, parSet->getRelRes()->rel_res_id, parNumb, rightValue, param_type->diap->minVal, param_type->diap->maxVal );
+						calc = new rdoRuntime::RDOSetRelParamRealDiapCalc( parser->runtime, parSet->getRelRes()->rel_res_id, parNumb, rightValue, param_type->diap->minVal, param_type->diap->maxVal );
 						break;
 					}
 				}
 			}
 			if ( !calc ) {
-				calc = new rdoRuntime::RDOSetRelParamCalc( parser->runTime, parSet->getRelRes()->rel_res_id, parNumb, rightValue );
+				calc = new rdoRuntime::RDOSetRelParamCalc( parser->runtime, parSet->getRelRes()->rel_res_id, parNumb, rightValue );
 			}
 			calc->setSrcText( parSet->params.at(i).name + " set " + rightValue->src_text() );
 			addParamSetCalc( parSet, calc );
@@ -344,7 +344,7 @@ void RDOPATPattern::end()
 					resSelectors.push_back( relRes.at(i)->createSelectResourceCommonChoiceCalc() );
 				}
 			}
-			patRuntime->addChoiceFromCalc( new rdoRuntime::RDOSelectResourceCommonCalc( parser->runTime, resSelectors, useCommonWithMax, commonChoice->createCalc() ) );
+			patRuntime->addChoiceFromCalc( new rdoRuntime::RDOSelectResourceCommonCalc( parser->runtime, resSelectors, useCommonWithMax, commonChoice->createCalc() ) );
 		}
 	} else {
 		for ( int i = 0; i < size; i++ ) {
@@ -360,8 +360,8 @@ void RDOPATPattern::end()
 RDOPATPatternEvent::RDOPATPatternEvent( RDOParser* _parser, const RDOParserSrcInfo& _name_src_info, bool _trace ):
 	RDOPATPattern( _parser, _name_src_info, _trace )
 { 
-//	parser->runTime->addRuntimeIE((RDOIERuntime *)(patRuntime = new RDOIERuntime(parser->runTime, _trace))); 
-	patRuntime = new rdoRuntime::RDOIERuntime( parser->runTime, _trace ); 
+//	parser->runtime->addRuntimeIE((RDOIERuntime *)(patRuntime = new RDOIERuntime(parser->runtime, _trace))); 
+	patRuntime = new rdoRuntime::RDOIERuntime( parser->runtime, _trace ); 
 	patRuntime->setPatternId( parser->getPAT_id() );
 }
 
@@ -406,7 +406,7 @@ void RDOPATPatternEvent::addRelRes( const std::string& relName, const std::strin
 		rel_res_insert( relRes, rel_pos );
 	}
 	if ( relRes->begin == rdoRuntime::RDOResourceTrace::CS_Erase ) {
-		patRuntime->addBeginEraseCalc( new rdoRuntime::RDOCalcEraseRes( parser->runTime, relRes->rel_res_id, relRes->getName() ) );
+		patRuntime->addBeginEraseCalc( new rdoRuntime::RDOCalcEraseRes( parser->runtime, relRes->rel_res_id, relRes->getName() ) );
 	}
 }
 
@@ -443,11 +443,11 @@ rdoRuntime::RDOCalc* RDOPATPattern::createRelRes( const RDOPATParamSet* const pa
 				parser->error( parSet->src_info(), rdo::format("ѕри создании ресурса необходимо определить все его параметры. Ќе найдено определение параметра: %s", (*it)->getName().c_str()));
 			}
 		} else {
-			params_default.push_back( (*it)->getType()->getParamDefaultValue() );
+			params_default.push_back( (*it)->getType()->getParamDefaultValue( (*it)->getType()->dv->src_info() ) );
 		}
 		it++;
 	}
-	return new rdoRuntime::RDOCalcCreateEmptyResource( parser->runTime, currRelRes->getType()->getNumber(), trace, params_default, currRelRes->rel_res_id );
+	return new rdoRuntime::RDOCalcCreateEmptyResource( parser->runtime, currRelRes->getType()->getNumber(), trace, params_default, currRelRes->rel_res_id );
 }
 
 std::string RDOPATPatternEvent::getErrorMessage_NotNeedConvertor( const RDOPATParamSet* const parSet )
@@ -466,8 +466,8 @@ std::string RDOPATPatternEvent::getWarningMessage_EmptyConvertor( const RDOPATPa
 RDOPATPatternRule::RDOPATPatternRule( RDOParser* _parser, const RDOParserSrcInfo& _name_src_info, bool _trace ):
 	RDOPATPattern( _parser, _name_src_info, _trace )
 { 
-//	parser->runTime->addRuntimeRule((RDORuleRuntime *)(patRuntime = new RDORuleRuntime(parser->runTime, _trace))); 
-	patRuntime = new rdoRuntime::RDORuleRuntime( parser->runTime, _trace );
+//	parser->runtime->addRuntimeRule((RDORuleRuntime *)(patRuntime = new RDORuleRuntime(parser->runtime, _trace))); 
+	patRuntime = new rdoRuntime::RDORuleRuntime( parser->runtime, _trace );
 	patRuntime->setPatternId( parser->getPAT_id() );
 }
 
@@ -527,7 +527,7 @@ void RDOPATPatternRule::addRelRes( const std::string& relName, const std::string
 		rel_res_insert( relRes, rel_pos );
 	}
 	if ( relRes->begin == rdoRuntime::RDOResourceTrace::CS_Erase ) {
-		patRuntime->addBeginEraseCalc( new rdoRuntime::RDOCalcEraseRes( parser->runTime, relRes->rel_res_id, relRes->getName() ) );
+		patRuntime->addBeginEraseCalc( new rdoRuntime::RDOCalcEraseRes( parser->runtime, relRes->rel_res_id, relRes->getName() ) );
 	}
 }
 
@@ -547,8 +547,8 @@ std::string RDOPATPatternRule::getWarningMessage_EmptyConvertor( const RDOPATPar
 RDOPATPatternOperation::RDOPATPatternOperation( RDOParser* _parser, const RDOParserSrcInfo& _name_src_info, bool _trace ):
 	RDOPATPattern( _parser, _name_src_info, _trace )
 { 
-//	parser->runTime->addRuntimeOperation((RDOOperationRuntime *)(patRuntime = new RDOOperationRuntime(parser->runTime, _trace)));
-	patRuntime = new rdoRuntime::RDOOperationRuntime( parser->runTime, _trace );
+//	parser->runtime->addRuntimeOperation((RDOOperationRuntime *)(patRuntime = new RDOOperationRuntime(parser->runtime, _trace)));
+	patRuntime = new rdoRuntime::RDOOperationRuntime( parser->runtime, _trace );
 	patRuntime->setPatternId( parser->getPAT_id() );
 }
 
@@ -652,10 +652,10 @@ void RDOPATPatternOperation::addRelRes( const std::string& relName, const std::s
 		rel_res_insert( relRes, rel_pos );
 	}
 	if ( relRes->begin == rdoRuntime::RDOResourceTrace::CS_Erase ) {
-		patRuntime->addBeginEraseCalc( new rdoRuntime::RDOCalcEraseRes( parser->runTime, relRes->rel_res_id, relRes->getName() ) );
+		patRuntime->addBeginEraseCalc( new rdoRuntime::RDOCalcEraseRes( parser->runtime, relRes->rel_res_id, relRes->getName() ) );
 	}
 	if ( relRes->end == rdoRuntime::RDOResourceTrace::CS_Erase ) {
-		static_cast<rdoRuntime::RDOOperationRuntime*>(patRuntime)->addEndEraseCalc( new rdoRuntime::RDOCalcEraseRes( parser->runTime, relRes->rel_res_id, relRes->getName() ) );
+		static_cast<rdoRuntime::RDOOperationRuntime*>(patRuntime)->addEndEraseCalc( new rdoRuntime::RDOCalcEraseRes( parser->runtime, relRes->rel_res_id, relRes->getName() ) );
 	}
 }
 
@@ -702,7 +702,7 @@ std::string RDOPATPatternOperation::getWarningMessage_EmptyConvertor( const RDOP
 RDOPATPatternKeyboard::RDOPATPatternKeyboard( RDOParser* _parser, const RDOParserSrcInfo& _name_src_info, bool _trace ):
 	RDOPATPatternOperation( _parser, _trace, _name_src_info )
 {
-	patRuntime = new rdoRuntime::RDOKeyboardRuntime( parser->runTime, _trace ); 
+	patRuntime = new rdoRuntime::RDOKeyboardRuntime( parser->runtime, _trace ); 
 	patRuntime->setPatternId( parser->getPAT_id() );
 }
 
@@ -756,7 +756,7 @@ rdoRuntime::RDOSelectResourceCalc::Type RDORelevantResource::getSelectType() con
 // ----------------------------------------------------------------------------
 rdoRuntime::RDOCalc* RDORelevantResourceDirect::createSelectEmptyResourceCalc()
 {
-	rdoRuntime::RDOSelectResourceDirectCalc* calc = new rdoRuntime::RDOSelectResourceDirectCalc( parser->runTime, rel_res_id, res->getNumber(), NULL, NULL );
+	rdoRuntime::RDOSelectResourceDirectCalc* calc = new rdoRuntime::RDOSelectResourceDirectCalc( parser->runtime, rel_res_id, res->getNumber(), NULL, NULL );
 	calc->setSrcInfo( src_info() );
 	calc->setSrcText( "ѕредварительный выбор рел. ресурса " + calc->src_text() );
 	return calc;
@@ -764,20 +764,20 @@ rdoRuntime::RDOCalc* RDORelevantResourceDirect::createSelectEmptyResourceCalc()
 
 rdoRuntime::RDOCalc* RDORelevantResourceDirect::createSelectResourceChoiceCalc()
 {
-//	rdoRuntime::RDOSelectResourceDirectCalc* calc = new rdoRuntime::RDOSelectResourceDirectCalc( parser->runTime, rel_res_id, res->getNumber(), getChoiceCalc(), NULL, rdoRuntime::RDOSelectResourceCalc::order_empty );
-	rdoRuntime::RDOSelectResourceDirectCalc* calc = new rdoRuntime::RDOSelectResourceDirectCalc( parser->runTime, rel_res_id, res->getNumber(), getChoiceCalc(), getSelectCalc(), getSelectType() );
+//	rdoRuntime::RDOSelectResourceDirectCalc* calc = new rdoRuntime::RDOSelectResourceDirectCalc( parser->runtime, rel_res_id, res->getNumber(), getChoiceCalc(), NULL, rdoRuntime::RDOSelectResourceCalc::order_empty );
+	rdoRuntime::RDOSelectResourceDirectCalc* calc = new rdoRuntime::RDOSelectResourceDirectCalc( parser->runtime, rel_res_id, res->getNumber(), getChoiceCalc(), getSelectCalc(), getSelectType() );
 	calc->setSrcInfo( choice_from->src_info() );
 	return calc;
 }
 
 rdoRuntime::RDOCalc* RDORelevantResourceDirect::createSelectFirstResourceChoiceCalc()
 {
-	return new rdoRuntime::RDOSelectResourceDirectCalc( parser->runTime, rel_res_id, res->getNumber(), getChoiceCalc() );
+	return new rdoRuntime::RDOSelectResourceDirectCalc( parser->runtime, rel_res_id, res->getNumber(), getChoiceCalc() );
 }
 
 rdoRuntime::RDOSelectResourceCommon* RDORelevantResourceDirect::createSelectResourceCommonChoiceCalc()
 {
-	return new rdoRuntime::RDOSelectResourceDirectCommonCalc( parser->runTime, rel_res_id, res->getNumber(), getChoiceCalc() );
+	return new rdoRuntime::RDOSelectResourceDirectCommonCalc( parser->runtime, rel_res_id, res->getNumber(), getChoiceCalc() );
 }
 
 const RDORTPResType* const RDORelevantResourceDirect::getType() const 
@@ -791,15 +791,15 @@ const RDORTPResType* const RDORelevantResourceDirect::getType() const
 rdoRuntime::RDOCalc* RDORelevantResourceByType::createSelectEmptyResourceCalc()
 {
 	if ( (begin != rdoRuntime::RDOResourceTrace::CS_Create) && (end != rdoRuntime::RDOResourceTrace::CS_Create) ) {
-		rdoRuntime::RDOSelectResourceByTypeCalc* calc = new rdoRuntime::RDOSelectResourceByTypeCalc( parser->runTime, rel_res_id, type->getNumber(), NULL, NULL );
+		rdoRuntime::RDOSelectResourceByTypeCalc* calc = new rdoRuntime::RDOSelectResourceByTypeCalc( parser->runtime, rel_res_id, type->getNumber(), NULL, NULL );
 		calc->setSrcInfo( src_info() );
 		calc->setSrcText( "ѕредварительный выбор рел. ресурса " + calc->src_text() );
 		return calc;
 	} else {
 		if ( begin == rdoRuntime::RDOResourceTrace::CS_NonExist ) {
-			return new rdoRuntime::RDOSelectResourceNonExistCalc( parser->runTime, rel_res_id );
+			return new rdoRuntime::RDOSelectResourceNonExistCalc( parser->runtime, rel_res_id );
 		} else {
-			rdoRuntime::RDOCalcConst* calc = new rdoRuntime::RDOCalcConst( parser->runTime, 1 );
+			rdoRuntime::RDOCalcConst* calc = new rdoRuntime::RDOCalcConst( parser->runtime, 1 );
 			calc->setSrcInfo( src_info() );
 			calc->setSrcText( "ѕредварительный выбор рел. ресурса перед созданием " + calc->src_text() );
 			return calc;
@@ -810,14 +810,14 @@ rdoRuntime::RDOCalc* RDORelevantResourceByType::createSelectEmptyResourceCalc()
 rdoRuntime::RDOCalc* RDORelevantResourceByType::createSelectResourceChoiceCalc()
 {
 	if ( (begin != rdoRuntime::RDOResourceTrace::CS_Create) && (end != rdoRuntime::RDOResourceTrace::CS_Create) ) {
-		rdoRuntime::RDOSelectResourceByTypeCalc* calc = new rdoRuntime::RDOSelectResourceByTypeCalc( parser->runTime, rel_res_id, type->getNumber(), getChoiceCalc(), getSelectCalc(), getSelectType() );
+		rdoRuntime::RDOSelectResourceByTypeCalc* calc = new rdoRuntime::RDOSelectResourceByTypeCalc( parser->runtime, rel_res_id, type->getNumber(), getChoiceCalc(), getSelectCalc(), getSelectType() );
 		calc->setSrcInfo( choice_from->src_info() );
 		return calc;
 	} else {
 		if ( begin == rdoRuntime::RDOResourceTrace::CS_NonExist ) {
-			return new rdoRuntime::RDOSelectResourceNonExistCalc( parser->runTime, rel_res_id );
+			return new rdoRuntime::RDOSelectResourceNonExistCalc( parser->runtime, rel_res_id );
 		} else {
-			rdoRuntime::RDOCalcConst* calc = new rdoRuntime::RDOCalcConst( parser->runTime, 1 );
+			rdoRuntime::RDOCalcConst* calc = new rdoRuntime::RDOCalcConst( parser->runtime, 1 );
 			calc->setSrcInfo( src_info() );
 			calc->setSrcText( "ѕеред созданием рел. ресурса " + calc->src_text() );
 			return calc;
@@ -828,19 +828,19 @@ rdoRuntime::RDOCalc* RDORelevantResourceByType::createSelectResourceChoiceCalc()
 rdoRuntime::RDOCalc* RDORelevantResourceByType::createSelectFirstResourceChoiceCalc()
 {
 	if ( (begin != rdoRuntime::RDOResourceTrace::CS_Create) && (end != rdoRuntime::RDOResourceTrace::CS_Create) ) {
-		return new rdoRuntime::RDOSelectResourceByTypeCalc( parser->runTime, rel_res_id, type->getNumber(), getChoiceCalc() );
+		return new rdoRuntime::RDOSelectResourceByTypeCalc( parser->runtime, rel_res_id, type->getNumber(), getChoiceCalc() );
 	} else {
 		if ( begin == rdoRuntime::RDOResourceTrace::CS_NonExist ) {
-			return new rdoRuntime::RDOSelectResourceNonExistCalc( parser->runTime, rel_res_id );
+			return new rdoRuntime::RDOSelectResourceNonExistCalc( parser->runtime, rel_res_id );
 		} else {
-			return new rdoRuntime::RDOCalcConst( parser->runTime, 1 );
+			return new rdoRuntime::RDOCalcConst( parser->runtime, 1 );
 		}
 	}
 }
 
 rdoRuntime::RDOSelectResourceCommon* RDORelevantResourceByType::createSelectResourceCommonChoiceCalc()
 {
-	return new rdoRuntime::RDOSelectResourceByTypeCommonCalc( parser->runTime, rel_res_id, type->getNumber(), getChoiceCalc() );
+	return new rdoRuntime::RDOSelectResourceByTypeCommonCalc( parser->runtime, rel_res_id, type->getNumber(), getChoiceCalc() );
 }
 
 // ----------------------------------------------------------------------------

@@ -289,18 +289,21 @@ void RDOLogEdit::appendLine( RDOLogEditLineInfo* line )
 	if ( readOnly ) {
 		setReadOnly( false );
 	}
-	bool scroll = isLineVisible( getLineCount() - 1 );
+//	bool scroll = isLineVisible( getLineCount() - 1 );
 	std::string str = line->getMessage();
 	rdo::trimRight( str );
 	str += "\r\n";
 	setCurrentPos( getLength() );
 	appendText( str );
-	if ( scroll ) {
-		int line = getLineCount();
-		int line_to_scroll = line > 0 ? line - 1 : 0;
-		scrollToLine( line_to_scroll );
-		setCurrentPos( getLength() );
-	}
+//	if ( scroll ) {
+//		int line = getLineCount();
+//		int line_to_scroll = line > 0 ? line - 1 : 0;
+//		scrollToLine( line_to_scroll );
+//		setCurrentPos( getLength() );
+//		scrollToCarret();
+//	}
+	scrollToLine2( getLineCount() );
+	setCurrentPos( getLength() );
 	if ( readOnly ) {
 		setReadOnly( true );
 	}

@@ -61,11 +61,8 @@ void RDOOPROperation::addParam( int intParam, const YYLTYPE& param_pos )
 	switch ( param->getType()->getType() ) {
 		case RDORTPParamType::pt_enum: parser->error( param_pos, rdo::format("Ожидается параметр перечислимого типа: %s", param->getType()->src_text().c_str()) ); break;
 	}
-	parser->lexer_loc_backup();
-	parser->lexer_loc_set( param_pos.last_line, param_pos.last_column );
-	rdoRuntime::RDOValue val = param->getType()->getRSSIntValue( intParam );
-	parser->lexer_loc_restore();
-	rdoRuntime::RDOSetPatternParamCalc* calc = new rdoRuntime::RDOSetPatternParamCalc( parser->runTime, currParam, val );
+	rdoRuntime::RDOValue val = param->getType()->getRSSIntValue( intParam, param_pos );
+	rdoRuntime::RDOSetPatternParamCalc* calc = new rdoRuntime::RDOSetPatternParamCalc( parser->runtime, currParam, val );
 	calc->setSrcInfo( RDOParserSrcInfo(param_pos, rdo::format("Параметр образца %s.%s = %d", pattern->getName().c_str(), param->getName().c_str(), intParam)) );
 	activity->addParamCalc( calc );
 	currParam++;
@@ -81,11 +78,8 @@ void RDOOPROperation::addParam( double realParam, const YYLTYPE& param_pos )
 		case RDORTPParamType::pt_int : parser->error( param_pos, rdo::format("Ожидается параметр целого типа: %s", param->getType()->src_text().c_str()) ); break;
 		case RDORTPParamType::pt_enum: parser->error( param_pos, rdo::format("Ожидается параметр перечислимого типа: %s", param->getType()->src_text().c_str()) ); break;
 	}
-	parser->lexer_loc_backup();
-	parser->lexer_loc_set( param_pos.last_line, param_pos.last_column );
-	rdoRuntime::RDOValue val = param->getType()->getRSSRealValue( realParam );
-	parser->lexer_loc_restore();
-	rdoRuntime::RDOSetPatternParamCalc* calc = new rdoRuntime::RDOSetPatternParamCalc( parser->runTime, currParam, val );
+	rdoRuntime::RDOValue val = param->getType()->getRSSRealValue( realParam, param_pos );
+	rdoRuntime::RDOSetPatternParamCalc* calc = new rdoRuntime::RDOSetPatternParamCalc( parser->runtime, currParam, val );
 	calc->setSrcInfo( RDOParserSrcInfo(param_pos, rdo::format("Параметр образца %s.%s = %f", pattern->getName().c_str(), param->getName().c_str(), realParam)) );
 	activity->addParamCalc( calc );
 	currParam++;
@@ -101,11 +95,8 @@ void RDOOPROperation::addParam( const std::string& stringParam, const YYLTYPE& p
 		case RDORTPParamType::pt_int : parser->error( param_pos, rdo::format("Ожидается параметр целого типа: %s", param->getType()->src_text().c_str()) ); break;
 		case RDORTPParamType::pt_real: parser->error( param_pos, rdo::format("Ожидается параметр вещественного типа: %s", param->getType()->src_text().c_str()) ); break;
 	}
-	parser->lexer_loc_backup();
-	parser->lexer_loc_set( param_pos.last_line, param_pos.last_column );
-	rdoRuntime::RDOValue val = param->getType()->getRSSEnumValue( stringParam );
-	parser->lexer_loc_restore();
-	rdoRuntime::RDOSetPatternParamCalc* calc = new rdoRuntime::RDOSetPatternParamCalc( parser->runTime, currParam, val );
+	rdoRuntime::RDOValue val = param->getType()->getRSSEnumValue( stringParam, param_pos );
+	rdoRuntime::RDOSetPatternParamCalc* calc = new rdoRuntime::RDOSetPatternParamCalc( parser->runtime, currParam, val );
 	calc->setSrcInfo( RDOParserSrcInfo(param_pos, rdo::format("Параметр образца %s.%s = %s", pattern->getName().c_str(), param->getName().c_str(), stringParam.c_str())) );
 	activity->addParamCalc( calc );
 	currParam++;
@@ -122,11 +113,8 @@ void RDOOPROperation::addParam( const YYLTYPE& param_pos )
 		parser->error_push_only( param_pos, rdo::format("Нет значения по-умолчанию для параметра '%s'", param->src_text().c_str()) );
 		parser->error( param->src_info(), rdo::format("См. параметр '%s', тип '%s'", param->src_text().c_str(), param->getType()->src_text().c_str()) );
 	}
-	parser->lexer_loc_backup();
-	parser->lexer_loc_set( param_pos.last_line, param_pos.last_column );
-	rdoRuntime::RDOValue val = param->getType()->getParamDefaultValue();
-	parser->lexer_loc_restore();
-	rdoRuntime::RDOSetPatternParamCalc* calc = new rdoRuntime::RDOSetPatternParamCalc( parser->runTime, currParam, val );
+	rdoRuntime::RDOValue val = param->getType()->getParamDefaultValue( param_pos );
+	rdoRuntime::RDOSetPatternParamCalc* calc = new rdoRuntime::RDOSetPatternParamCalc( parser->runtime, currParam, val );
 	calc->setSrcInfo( RDOParserSrcInfo(param_pos, rdo::format("Параметр образца %s.%s = *", pattern->getName().c_str(), param->getName().c_str())) );
 	activity->addParamCalc( calc );
 	currParam++;

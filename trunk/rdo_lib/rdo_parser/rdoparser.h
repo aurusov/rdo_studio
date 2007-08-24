@@ -145,7 +145,7 @@ public:
 	int getPMD_id() const      { return allPMDPokaz.size()    + 1; }
 	int getFUNCONST_id() const { return allFUNConstant.size() + 0; }
 
-	rdoRuntime::RDORuntime* runTime;
+	rdoRuntime::RDORuntime* runtime;
 	RDOSMR*                 smr;
 
 	std::vector< rdoSimulator::RDOSyntaxError > errors;
@@ -170,6 +170,7 @@ public:
 	void error( const RDOParserSrcInfo& _src_info, rdoSimulator::RDOSyntaxError::ErrorCode _error_code, ... );
 	void error( const RDOParserSrcInfo& _src_info, const std::string& _message, rdoSimulator::RDOSyntaxError::ErrorCode _error_code = rdoSimulator::RDOSyntaxError::UNKNOWN );
 	void error_push_only( rdoSimulator::RDOSyntaxError::ErrorCode _error_code, ... );
+	void error_push_only( const RDOParserSrcInfo& _src_info, rdoSimulator::RDOSyntaxError::ErrorCode _error_code, ... );
 	void error_push_only( const std::string& _message, rdoSimulator::RDOSyntaxError::ErrorCode _error_code = rdoSimulator::RDOSyntaxError::UNKNOWN );
 	void error_push_only( const RDOParserSrcInfo& _src_info, const std::string& _message, rdoSimulator::RDOSyntaxError::ErrorCode _error_code = rdoSimulator::RDOSyntaxError::UNKNOWN );
 	void error_modify( const std::string& _message );

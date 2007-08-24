@@ -1073,6 +1073,16 @@ void RDOBaseEdit::scrollToLine( const int line ) const
 	setCurrentPos( getPositionFromLine( line ) );
 }
 
+void RDOBaseEdit::scrollToLine2( const int line ) const
+{
+	sendEditor( SCI_LINESCROLL, 0, line );
+}
+
+void RDOBaseEdit::scrollToCarret() const
+{
+	sendEditor( SCI_SCROLLCARET );
+}
+
 void RDOBaseEdit::horzScrollToCurrentPos() const
 {
 	setCurrentPos( getCurrentPos() );
