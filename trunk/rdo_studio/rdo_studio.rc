@@ -1327,8 +1327,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,8,0,519
- PRODUCTVERSION 0,8,0,519
+ FILEVERSION 0,8,0,521
+ PRODUCTVERSION 0,8,0,521
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -1346,14 +1346,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "RAO studio\0"
-            VALUE "FileVersion", "0, 8, 0, 519\0"
+            VALUE "FileVersion", "0, 8, 0, 521\0"
             VALUE "InternalName", "RAO-Studio\0"
             VALUE "LegalCopyright", "Copyright (C) 2003-2006\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "RAO-Studio.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "RAO-Studio\0"
-            VALUE "ProductVersion", "0, 8, 0, 519\0"
+            VALUE "ProductVersion", "0, 8, 0, 521\0"
             VALUE "SpecialBuild", "\0"
         END
     END
@@ -3757,7 +3757,7 @@ BEGIN
     IDS_COLORSTYLE_FRAME_BORDER "цвет оконтовки"
     IDS_COLORSTYLE_FRAME_BACKGROUND "цвет фона за пределами кадра"
     IDS_MODEL_FILE_READONLY "%s - только чтение"
-    IDS_MODEL_DURATION      "Длительность прогона: %d мсек.\n"
+    IDS_MODEL_DURATION      "Длительность прогона: %u мсек.\n"
 END
 
 STRINGTABLE DISCARDABLE 
@@ -5256,7 +5256,7 @@ BEGIN
     IDS_COLORSTYLE_FRAME_BORDER "border line"
     IDS_COLORSTYLE_FRAME_BACKGROUND "outside background"
     IDS_MODEL_FILE_READONLY "%s - readonly"
-    IDS_MODEL_DURATION      "Model execution duration: %d msec.\n"
+    IDS_MODEL_DURATION      "Model execution duration: %u msec.\n"
 END
 
 STRINGTABLE DISCARDABLE 

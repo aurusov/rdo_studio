@@ -114,14 +114,15 @@ public:
 class RDOSetRelParamCalc: public RDOCalc
 {
 private:
-	int relNumb;
-	int parNumb;
-	RDOCalc* calc;
-
 	virtual RDOValue calcValue( RDORuntime* runtime ) const {
 		runtime->setResParamVal( runtime->getResByRelRes(relNumb), parNumb, calc->calcValueBase( runtime ) );
 		return 1;
 	}
+
+protected:
+	int relNumb;
+	int parNumb;
+	RDOCalc* calc;
 
 public:
 	RDOSetRelParamCalc( RDORuntimeParent* _parent, int _relNumb, int _parNumb, RDOCalc* _calc ):
@@ -135,70 +136,33 @@ public:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOSetRelParamIntDiapCalc
+// ---------- RDOSetRelParamDiapCalc
 // ----------------------------------------------------------------------------
-class RDOSetRelParamIntDiapCalc: public RDOCalc
+class RDOSetRelParamDiapCalc: public RDOSetRelParamCalc
 {
 private:
-	int relNumb;
-	int parNumb;
-	int min_value;
-	int max_value;
-	RDOCalc* calc;
+	RDOValue min_value;
+	RDOValue max_value;
 
 	virtual RDOValue calcValue( RDORuntime* runtime ) const {
 		RDOValue value = calc->calcValueBase( runtime );
 		if ( value < min_value || value > max_value ) {
-			runtime->error( rdo::format("÷елочисленное значение выходит за допустимый диапазон [%d..%d]: %d", min_value, max_value, (int)value), this );
+			if ( value == (int)value && min_value == (int)min_value && max_value == (int)max_value ) {
+				runtime->error( rdo::format("«начение выходит за допустимый диапазон [%d..%d]: %d", (int)min_value, (int)max_value, (int)value), this );
+			} else {
+				runtime->error( rdo::format("«начение выходит за допустимый диапазон [%f..%f]: %f", min_value, max_value, value), this );
+			}
 		}
 		runtime->setResParamVal( runtime->getResByRelRes(relNumb), parNumb, value );
 		return 1;
 	}
 
 public:
-	RDOSetRelParamIntDiapCalc( RDORuntimeParent* _parent, int _relNumb, int _parNumb, RDOCalc* _calc, int _min_value, int _max_value ):
-		RDOCalc( _parent ),
-		relNumb( _relNumb ),
-		parNumb( _parNumb ),
-		calc( _calc ),
+	RDOSetRelParamDiapCalc( RDORuntimeParent* _parent, int _relNumb, int _parNumb, RDOCalc* _calc, RDOValue _min_value, RDOValue _max_value ):
+		RDOSetRelParamCalc( _parent, _relNumb, _parNumb, _calc ),
 		min_value( _min_value ),
 		max_value( _max_value )
 	{
-		if ( calc ) setSrcInfo( calc->src_info() );
-	}
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOSetRelParamRealDiapCalc
-// ----------------------------------------------------------------------------
-class RDOSetRelParamRealDiapCalc: public RDOCalc
-{
-private:
-	int relNumb;
-	int parNumb;
-	double min_value;
-	double max_value;
-	RDOCalc* calc;
-
-	virtual RDOValue calcValue( RDORuntime* runtime ) const {
-		RDOValue value = calc->calcValueBase( runtime );
-		if ( value < min_value || value > max_value ) {
-			runtime->error( rdo::format("¬ещественное значение выходит за допустимый диапазон [%f..%f]: %f", min_value, max_value, value), this );
-		}
-		runtime->setResParamVal( runtime->getResByRelRes(relNumb), parNumb, value );
-		return 1;
-	}
-
-public:
-	RDOSetRelParamRealDiapCalc( RDORuntimeParent* _parent, int _relNumb, int _parNumb, RDOCalc* _calc, double _min_value, double _max_value ):
-		RDOCalc( _parent ),
-		relNumb( _relNumb ),
-		parNumb( _parNumb ),
-		calc( _calc ),
-		min_value( _min_value ),
-		max_value( _max_value )
-	{
-		if ( calc ) setSrcInfo( calc->src_info() );
 	}
 };
 
@@ -451,9 +415,9 @@ private:
 				RDOValue value = actions[i]->calcValueBase( runtime );
 				if ( value < min_value || value > max_value ) {
 					if ( value == (int)value && min_value == (int)min_value && max_value == (int)max_value ) {
-						runtime->error( rdo::format("÷елочисленное значение выходит за допустимый диапазон [%d..%d]: %d", (int)min_value, (int)max_value, (int)value), actions[i] );
+						runtime->error( rdo::format("«начение выходит за допустимый диапазон [%d..%d]: %d", (int)min_value, (int)max_value, (int)value), actions[i] );
 					} else {
-						runtime->error( rdo::format("¬ещественное значение выходит за допустимый диапазон [%f..%f]: %f", min_value, max_value, value), actions[i] );
+						runtime->error( rdo::format("«начение выходит за допустимый диапазон [%f..%f]: %f", min_value, max_value, value), actions[i] );
 					}
 				}
 				return value;
@@ -888,13 +852,14 @@ public:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- Sequence
+// ---------- ѕоследовательности
 // ----------------------------------------------------------------------------
 class RDOCalcSeqInit: public RDOCalc
 {
 private:
 	int            base;
 	RandGenerator* gen;
+	virtual RDOValue calcValue( RDORuntime* runtime ) const;
 
 public:
 	RDOCalcSeqInit( RDORuntimeParent* _parent, int _base, RandGenerator* _gen ):
@@ -903,8 +868,7 @@ public:
 		gen( _gen )
 	{
 	}
-	~RDOCalcSeqInit();
-	virtual RDOValue calcValue( RDORuntime* runtime ) const;
+	virtual ~RDOCalcSeqInit();
 	void setBase( int _base ) { base = _base; }
 };
 
@@ -930,6 +894,7 @@ class RDOCalcSeqNextUniform: public RDOCalcSeqNext
 {
 private:
 	RandGeneratorUniform* gen;
+	virtual RDOValue calcValue( RDORuntime* runtime ) const;
 
 public:
 	RDOCalcSeqNextUniform( RDORuntimeParent* _parent, RandGeneratorUniform* _gen ):
@@ -937,13 +902,13 @@ public:
 		gen( _gen )
 	{
 	}
-	virtual RDOValue calcValue( RDORuntime* runtime ) const;
 };
 
 class RDOCalcSeqNextExponential: public RDOCalcSeqNext
 {
 private:
 	RandGeneratorExponential* gen;
+	virtual RDOValue calcValue( RDORuntime* runtime ) const;
 
 public:
 	RDOCalcSeqNextExponential( RDORuntimeParent* _parent, RandGeneratorExponential* _gen ):
@@ -951,13 +916,13 @@ public:
 		gen( _gen )
 	{
 	}
-	virtual RDOValue calcValue( RDORuntime* runtime ) const;
 };
 
 class RDOCalcSeqNextNormal: public RDOCalcSeqNext
 {
 private:
 	RandGeneratorNormal* gen;
+	virtual RDOValue calcValue( RDORuntime* runtime ) const;
 
 public:
 	RDOCalcSeqNextNormal( RDORuntimeParent* _parent, RandGeneratorNormal* _gen ):
@@ -965,21 +930,20 @@ public:
 		gen( _gen )
 	{
 	}
-	virtual RDOValue calcValue( RDORuntime* runtime ) const;
 };
 
 class RDOCalcSeqNextByHist: public RDOCalcSeqNext
 {
 private:
-	RandGeneratorByHistCommon* gen;
+	RandGeneratorCommonNext* gen;
+	virtual RDOValue calcValue( RDORuntime* runtime ) const;
 
 public:
-	RDOCalcSeqNextByHist( RDORuntimeParent* _parent, RandGeneratorByHistCommon* _gen ):
+	RDOCalcSeqNextByHist( RDORuntimeParent* _parent, RandGeneratorCommonNext* _gen ):
 		RDOCalcSeqNext( _parent ),
 		gen( _gen )
 	{
 	}
-	virtual RDOValue calcValue( RDORuntime* runtime ) const;
 };
 
 // ----------------------------------------------------------------------------
@@ -1288,16 +1252,27 @@ protected:
 
 class RDOCalcUMinus: public RDOCalcUnary
 {
+private:
+	virtual RDOValue calcValue( RDORuntime* runtime ) const {
+		return RDOValue(-oper->calcValueBase( runtime ));
+	}
+
 public:
 	RDOCalcUMinus( RDORuntimeParent* _parent, RDOCalc* _oper ): RDOCalcUnary( _parent, _oper ) {}
-	RDOValue calcValue( RDORuntime* runtime ) const { return RDOValue(-oper->calcValueBase( runtime )); }
 };
 
 class RDOCalcDoubleToInt: public RDOCalcUnary
 {
+private:
+	virtual RDOValue calcValue( RDORuntime* runtime ) const {
+		return RDOValue( static_cast<int>(oper->calcValueBase( runtime )) );
+	}
+
 public:
-	RDOCalcDoubleToInt( RDORuntimeParent* _parent, RDOCalc* _oper ): RDOCalcUnary( _parent, _oper ) {}
-	RDOValue calcValue( RDORuntime* runtime ) const { return RDOValue((int)oper->calcValueBase( runtime )); }
+	RDOCalcDoubleToInt( RDORuntimeParent* _parent, RDOCalc* _oper ):
+		RDOCalcUnary( _parent, _oper )
+	{
+	}
 };
 
 class RDOCalcCheckDiap: public RDOCalcUnary
@@ -1310,9 +1285,9 @@ private:
 		RDOValue value = oper->calcValueBase( runtime );
 		if ( value < min_value || value > max_value ) {
 			if ( value == (int)value && min_value == (int)min_value && max_value == (int)max_value ) {
-				runtime->error( rdo::format("÷елочисленное значение выходит за допустимый диапазон [%d..%d]: %d", (int)min_value, (int)max_value, (int)value), this );
+				runtime->error( rdo::format("«начение выходит за допустимый диапазон [%d..%d]: %d", (int)min_value, (int)max_value, (int)value), this );
 			} else {
-				runtime->error( rdo::format("¬ещественное значение выходит за допустимый диапазон [%f..%f]: %f", min_value, max_value, value), this );
+				runtime->error( rdo::format("«начение выходит за допустимый диапазон [%f..%f]: %f", min_value, max_value, value), this );
 			}
 		}
 		return value; 

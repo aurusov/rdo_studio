@@ -174,19 +174,17 @@ opr_header:	Operations {
 			};
 
 opr_body:	opr_header IDENTIF_COLON IDENTIF {
-				RDOParserSrcInfo name;
-				name.setSrcPosAndTextByLength( @2, *reinterpret_cast<std::string*>($2) );
+				std::string name = *reinterpret_cast<std::string*>($2);
 				RDOParserSrcInfo pattern( @3, *reinterpret_cast<std::string*>($3) );
-				RDOOPROperation* opr = new RDOOPROperation( parser, name, pattern );
+				RDOOPROperation* opr = new RDOOPROperation( parser, RDOParserSrcInfo( @2, name, RDOParserSrcInfo::psi_align_bytext ), pattern );
 				$$ = (int)opr;
 			}
 			| opr_param IDENTIF_COLON IDENTIF {
 				RDOOPROperation* opr = reinterpret_cast<RDOOPROperation*>($1);
 				opr->endOfDefinition( @1 );
-				RDOParserSrcInfo name;
-				name.setSrcPosAndTextByLength( @2, *reinterpret_cast<std::string*>($2) );
+				std::string name = *reinterpret_cast<std::string*>($2);
 				RDOParserSrcInfo pattern( @3, *reinterpret_cast<std::string*>($3) );
-				opr = new RDOOPROperation( parser, name, pattern );
+				opr = new RDOOPROperation( parser, RDOParserSrcInfo( @2, name, RDOParserSrcInfo::psi_align_bytext ), pattern );
 				$$ = (int)opr;
 			}
 			| opr_header IDENTIF_COLON error {

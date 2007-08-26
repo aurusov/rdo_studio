@@ -115,12 +115,26 @@ public:
 class RDOSrcInfo
 {
 public:
-typedef struct {
+struct Position {
 	int first_line;
 	int first_pos;
 	int last_line;
 	int last_pos;
-} Position;
+	Position::Position():
+		first_line( -1 ),
+		first_pos( -1 ),
+		last_line( -1 ),
+		last_pos( -1 )
+	{
+	}
+	Position::Position( int _first_line, int _first_pos, int _last_line, int _last_pos ):
+		first_line( _first_line ),
+		first_pos( _first_pos ),
+		last_line( _last_line ),
+		last_pos( _last_pos )
+	{
+	}
+};
 
 private:
 	Position                     position;
@@ -128,11 +142,10 @@ private:
 	rdoModelObjects::RDOFileType file_type;
 
 public:
-	RDOSrcInfo(): text_data( "" ), file_type( rdoModelObjects::TRC ) {
-		position.first_line = -1;
-		position.first_pos  = -1;
-		position.last_line  = -1;
-		position.last_pos   = -1;
+	RDOSrcInfo():
+		text_data( "" ),
+		file_type( rdoModelObjects::TRC )
+	{
 	}
 	void setSrcInfo( const RDOSrcInfo& _info ) {
 		setSrcPos( _info.position );
@@ -164,7 +177,7 @@ public:
 		position.last_pos   = last_pos;
 	}
 
-	void setSrcText( const std::string& value ) {
+	virtual void setSrcText( const std::string& value ) {
 		text_data = value;
 	}
 	void setSrcFileType( rdoModelObjects::RDOFileType value ) {

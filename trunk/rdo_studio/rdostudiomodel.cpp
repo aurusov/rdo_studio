@@ -280,7 +280,15 @@ void RDOStudioModel::proc( RDOThread::RDOMessageInfo& msg )
 			frameManager.bmp_clear();
 			SYSTEMTIME time_stop;
 			::GetSystemTime( &time_stop );
-			studioApp.mainFrame->output.appendStringToDebug( rdo::format(IDS_MODEL_DURATION, time_stop.wMinute * 60000 + time_stop.wSecond * 1000 + time_stop.wMilliseconds - (time_start.wMinute * 60000 + time_start.wSecond * 1000 + time_start.wMilliseconds) ) );
+			unsigned int delay = -1;
+			if ( time_start.wYear == time_stop.wYear && time_start.wMonth == time_stop.wMonth ) {
+				delay = (time_stop.wDay - time_start.wDay) * 24 * 60 * 60 * 1000 + (time_stop.wHour - time_start.wHour) * 60 * 60 * 1000 + (time_stop.wMinute - time_start.wMinute) * 60 * 1000 + (time_stop.wSecond - time_start.wSecond) * 1000 + (time_stop.wMilliseconds - time_start.wMilliseconds );
+			} else if ( time_stop.wYear - time_start.wYear == 1 && time_start.wMonth == 12 && time_stop.wMonth == 1 ) {
+				delay = (time_stop.wDay + 31 - time_start.wDay) * 24 * 60 * 60 * 1000 + (time_stop.wHour - time_start.wHour) * 60 * 60 * 1000 + (time_stop.wMinute - time_start.wMinute) * 60 * 1000 + (time_stop.wSecond - time_start.wSecond) * 1000 + (time_stop.wMilliseconds - time_start.wMilliseconds );
+			}
+			if ( delay != -1 ) {
+				studioApp.mainFrame->output.appendStringToDebug( rdo::format(IDS_MODEL_DURATION, delay ) );
+			}
 			GUI_CAN_RUN   = true;
 			GUI_IS_RUNING = false;
 			break;
@@ -317,10 +325,10 @@ void RDOStudioModel::proc( RDOThread::RDOMessageInfo& msg )
 			sendMessage( kernel->simulator(), RT_SIMULATOR_GET_MODEL_EXITCODE, &exitCode );
 			show_result();
 			RDOStudioOutput* output = &studioApp.mainFrame->output;
+			output->appendStringToDebug( rdo::format( IDS_MODEL_RUNTIMEERROR_STOPED ) );
 			output->clearBuild();
 			output->showBuild();
 			output->appendStringToBuild( rdo::format( IDS_MODEL_RUNTIMEERROR ) );
-			output->appendStringToDebug( rdo::format( IDS_MODEL_RUNTIMEERROR_STOPED ) );
 			std::vector< RDOSyntaxError > errors;
 			studioApp.studioGUI->sendMessage( kernel->simulator(), RDOThread::RT_SIMULATOR_GET_ERRORS, &errors );
 			int errors_cnt   = 0;
@@ -334,7 +342,7 @@ void RDOStudioModel::proc( RDOThread::RDOMessageInfo& msg )
 				}
 			}
 			if ( errors_cnt || warnings_cnt ) {
-				const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->showFirstError();
+//				const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->showFirstError();
 			}
 
 			if ( plugins ) {
@@ -362,7 +370,7 @@ void RDOStudioModel::proc( RDOThread::RDOMessageInfo& msg )
 			}
 			output->appendStringToBuild( rdo::format( IDS_MODEL_BUILDING_RESULTS, errors_cnt, warnings_cnt ) );
 			if ( errors_cnt || warnings_cnt ) {
-				const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->showFirstError();
+//				const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->showFirstError();
 			}
 			if ( plugins ) plugins->pluginProc( rdoPlugin::PM_MODEL_BUILD_OK );
 			break;

@@ -205,7 +205,7 @@ RDOValue RDOFunCalcSelectNotForAll::calcValue( RDORuntime* runtime ) const
 }
 
 // ----------------------------------------------------------------------------
-// ---------- Sequence
+// ---------- Последовательности
 // ----------------------------------------------------------------------------
 RDOValue RDOCalcSeqInit::calcValue( RDORuntime* runtime ) const	
 {
@@ -250,7 +250,7 @@ RDOValue RDOCalcSeqNextNormal::calcValue( RDORuntime* runtime ) const
 		if ( res < diap_min ) return res_real ? diap_min : static_cast<int>(diap_min > 0 ? diap_min + 0.5 : diap_min - 0.5);
 		if ( res > diap_max ) return res_real ? diap_max : static_cast<int>(diap_max > 0 ? diap_max + 0.5 : diap_max - 0.5);
 		return res_real ? res : static_cast<int>(res > 0 ? res + 0.5 : res - 0.5);
-		// В новом РДО была сделана попытка выбирать новое случайное число, если ткущее вышло за диапазон. Но при этом смешается среднее (оно и в другом случае может смещаться imho). Для совместимости оставим первый вариант.
+		// В новом РДО была сделана попытка выбирать новое случайное число, если текущее вышло за диапазон. Но при этом смешается среднее (оно и в другом случае может смещаться imho). Для совместимости оставим первый вариант.
 //		for ( int i = 0; i < 1000; i++ ) {
 //			if ( res >= diap_min && res <= diap_max ) return res_real ? res : static_cast<int>(res > 0 ? res + 0.5 : res - 0.5);
 //			res = gen->next( runtime->getFuncArgument(0), runtime->getFuncArgument(1) );

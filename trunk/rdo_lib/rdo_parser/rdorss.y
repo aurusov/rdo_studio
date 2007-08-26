@@ -168,8 +168,7 @@ namespace rdoParse
 rss_main:	/* empty */
 		| rss_resources_begin rss_resources rss_resources_end
 		| rss_resources_begin rss_resources {
-			parser->lexer_loc_set( @2.last_line, @2.last_column );
-			parser->error( "После описания всех ресурсов ожидается ключевое слово $End" );
+			parser->error( @2, "После описания всех ресурсов ожидается ключевое слово $End" );
 		}
 		| error {
 			if ( !parser->isHaveKWResources() ) {
@@ -195,8 +194,7 @@ rss_resources:	/* empty */
 rss_res_descr:	rss_res_type rss_trace rss_start_vals {
 					RDORSSResource* res = reinterpret_cast<RDORSSResource*>($1);
 					if ( res->currParam != res->getType()->getParams().end() ) {
-						parser->lexer_loc_restore();
-						parser->error( rdo::format("Заданы не все параметры ресурса: %s", res->getName().c_str()) );
+						parser->error( @3, rdo::format("Заданы не все параметры ресурса: %s", res->getName().c_str()) );
 					}
 //					Перенес в отдельный парсер RSS_POST, т.к. есть еще парсер DPT_RSS
 //					RDOCalcCreateNumberedResource *createResource = new RDOCalcCreateNumberedResource(res->getType()->getType(), $2 != 0, res->getValues(), res->getNumber(), res->getType()->isPerm());
@@ -211,8 +209,7 @@ rss_res_type:	IDENTIF_COLON IDENTIF {
 					std::string type = *reinterpret_cast<std::string*>($2);
 					const RDORTPResType* const resType = parser->findRTPResType( type );
 					if ( !resType ) {
-						parser->lexer_loc_set( &(@2) );
-						parser->error( rdo::format("Неизвестный тип ресурса: %s", type.c_str()) );
+						parser->error( @2, rdo::format("Неизвестный тип ресурса: %s", type.c_str()) );
 //						parser->error(("Invalid resource type: " + *type).c_str());
 					}
 
@@ -227,16 +224,13 @@ rss_res_type:	IDENTIF_COLON IDENTIF {
 					$$ = (int)res;	  
 				}
 				| IDENTIF_COLON error {
-					parser->lexer_loc_set( &(@2) );
-					parser->error( "Ожидается тип ресурса" );
+					parser->error( @2, "Ожидается тип ресурса" );
 				}
 				| ':' {
-					parser->lexer_loc_set( @1.first_line, @1.first_column );
-					parser->error( "Ожидается имя ресурса" );
+					parser->error( @1, "Перед двоеточием ожидается имя ресурса" );
 				}
 				| error {
-					parser->lexer_loc_set( &(@1) );
-					parser->error( "Ожидается имя ресурса" );
+					parser->error( @1, "Ожидается имя ресурса" );
 				};
 
 rss_trace:	/* empty */		{ $$ = 0; }
@@ -297,8 +291,7 @@ rss_value:	'*' {
 				}
 			}
 			| error {
-				parser->lexer_loc_set( &(@1) );
-				parser->error( rdo::format("Неправильное значение параметра: %s", reinterpret_cast<RDOLexer*>(lexer)->YYText()) );
+				parser->error( @1, rdo::format("Неправильное значение параметра: %s", reinterpret_cast<RDOLexer*>(lexer)->YYText()) );
 			};
 
 %%

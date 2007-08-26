@@ -499,6 +499,7 @@ bool RDOThreadSimulator::parseModel()
 void RDOThreadSimulator::runModel()
 {
 	if ( parseModel() ) {
+		parser->errors.clear();
 		exitCode = rdoSimulator::EC_OK;
 		thread_runtime = new rdoRuntime::RDOThreadRunTime();
 	}

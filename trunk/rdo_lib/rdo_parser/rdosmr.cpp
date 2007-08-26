@@ -132,7 +132,7 @@ void RDOSMR::setSeed( const std::string& seqName, int _base )
 	if ( !seq ) {
 		parser->error( "Undefined sequence: " + seqName );
 	}
-	seq->initSeq->setBase(_base);
+	seq->init_calc->setBase( _base );
 }
 
 } // namespace rdoParse 

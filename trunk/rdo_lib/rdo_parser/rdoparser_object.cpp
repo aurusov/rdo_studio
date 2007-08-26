@@ -109,12 +109,16 @@ RDOParserSrcInfo::RDOParserSrcInfo( const std::string& _text ):
 	setSrcText( _text );
 }
 
-RDOParserSrcInfo::RDOParserSrcInfo( const YYLTYPE& _pos, const std::string& _text ):
+RDOParserSrcInfo::RDOParserSrcInfo( const YYLTYPE& _pos, const std::string& _text, PSI psi ):
 	RDOSrcInfo()
 {
 	init();
-	setSrcPos( _pos );
-	setSrcText( _text );
+	if ( psi == psi_align_none ) {
+		setSrcPos( _pos );
+		setSrcText( _text );
+	} else {
+		setSrcPosAndTextByLength( _pos, _text );
+	}
 }
 
 RDOParserSrcInfo::RDOParserSrcInfo( const YYLTYPE& _pos_begin, const YYLTYPE& _pos_end ):

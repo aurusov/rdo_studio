@@ -157,10 +157,13 @@ public:
 
 	const RDORTPResType*   findRTPResType( const std::string& name ) const;
 	const RDORSSResource*  findRSSResource( const std::string& name ) const;
+	const RDOFUNConstant*  findFUNConst( const std::string& _cons ) const;
 	const RDOFUNFunction*  findFunction( const std::string& name ) const;
 	const RDOFUNSequence*  findSequence( const std::string& name ) const;
 	const RDOPATPattern*   findPattern( const std::string& name ) const;
 	const RDOOPROperation* findOperation( const std::string& name ) const;
+
+	bool hasConstant() const { return !allFUNConstant.empty(); }
 
 	void parse( int files = rdoModelObjects::obALL );
 	void parse( rdoModelObjects::RDOParseType file );
@@ -169,17 +172,16 @@ public:
 	void error( const std::string& _message, rdoSimulator::RDOSyntaxError::ErrorCode _error_code = rdoSimulator::RDOSyntaxError::UNKNOWN );
 	void error( const RDOParserSrcInfo& _src_info, rdoSimulator::RDOSyntaxError::ErrorCode _error_code, ... );
 	void error( const RDOParserSrcInfo& _src_info, const std::string& _message, rdoSimulator::RDOSyntaxError::ErrorCode _error_code = rdoSimulator::RDOSyntaxError::UNKNOWN );
+	void error( const RDOParserSrcInfo& _src_info1, const RDOParserSrcInfo& _src_info2, const std::string& _message, rdoSimulator::RDOSyntaxError::ErrorCode _error_code = rdoSimulator::RDOSyntaxError::UNKNOWN );
 	void error_push_only( rdoSimulator::RDOSyntaxError::ErrorCode _error_code, ... );
 	void error_push_only( const RDOParserSrcInfo& _src_info, rdoSimulator::RDOSyntaxError::ErrorCode _error_code, ... );
 	void error_push_only( const std::string& _message, rdoSimulator::RDOSyntaxError::ErrorCode _error_code = rdoSimulator::RDOSyntaxError::UNKNOWN );
 	void error_push_only( const RDOParserSrcInfo& _src_info, const std::string& _message, rdoSimulator::RDOSyntaxError::ErrorCode _error_code = rdoSimulator::RDOSyntaxError::UNKNOWN );
+	void error_push_done();
 	void error_modify( const std::string& _message );
 	void warning( rdoSimulator::RDOSyntaxError::ErrorCode _error_code, ... );
 	void warning( const std::string& _message, rdoSimulator::RDOSyntaxError::ErrorCode _error_code = rdoSimulator::RDOSyntaxError::UNKNOWN );
 	void warning( const RDOParserSrcInfo& _src_info, const std::string& _message, rdoSimulator::RDOSyntaxError::ErrorCode _error_code = rdoSimulator::RDOSyntaxError::UNKNOWN );
-	void addConstant( RDORTPParam* const _cons );
-	const RDOFUNConstant* findFUNConst( const std::string& _cons ) const;
-	bool hasConstant() const { return !allFUNConstant.empty(); }
 
 	void LoadStdFunctions();
 

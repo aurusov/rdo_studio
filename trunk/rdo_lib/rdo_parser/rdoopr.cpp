@@ -40,7 +40,8 @@ RDOOPROperation::RDOOPROperation( RDOParser* _parser, const RDOParserSrcInfo& _n
 	const RDOOPROperation* opr = parser->findOperation( getName() );
 	if ( opr ) {
 		parser->error_push_only( src_info(), rdo::format("Операция '%s' уже существует", getName().c_str()) );
-		parser->error( opr->src_info(), rdo::format("См. первое определение") );
+		parser->error_push_only( opr->src_info(), rdo::format("См. первое определение") );
+		parser->error_push_done();
 	}
 	pattern = parser->findPattern( _pattern.src_text() );
 	if ( !pattern ) {
@@ -111,7 +112,8 @@ void RDOOPROperation::addParam( const YYLTYPE& param_pos )
 	RDOFUNFunctionParam* param = pattern->params.at( currParam );
 	if ( !param->getType()->dv->isExist() ) {
 		parser->error_push_only( param_pos, rdo::format("Нет значения по-умолчанию для параметра '%s'", param->src_text().c_str()) );
-		parser->error( param->src_info(), rdo::format("См. параметр '%s', тип '%s'", param->src_text().c_str(), param->getType()->src_text().c_str()) );
+		parser->error_push_only( param->src_info(), rdo::format("См. параметр '%s', тип '%s'", param->src_text().c_str(), param->getType()->src_text().c_str()) );
+		parser->error_push_done();
 	}
 	rdoRuntime::RDOValue val = param->getType()->getParamDefaultValue( param_pos );
 	rdoRuntime::RDOSetPatternParamCalc* calc = new rdoRuntime::RDOSetPatternParamCalc( parser->runtime, currParam, val );
@@ -141,13 +143,9 @@ void RDOOPROperation::endOfDefinition( const YYLTYPE& opr_pos )
 			parser->error_push_only( opr_pos, rdo::format("Указаны не все параметра образца:") );
 			for ( int i = currParam; i < pattern->params.size(); i++ ) {
 				param = pattern->params.at( i );
-				std::string message = rdo::format("Ожидаемый параметр '%s' имеет тип '%s'", param->getName().c_str(), param->getType()->src_text().c_str());
-				if ( i == pattern->params.size() - 1 ) {
-					parser->error( param->src_info(), message );
-				} else {
-					parser->error_push_only( param->src_info(), message );
-				}
+				parser->error_push_only( param->src_info(), rdo::format("Ожидаемый параметр '%s' имеет тип '%s'", param->getName().c_str(), param->getType()->src_text().c_str()) );
 			}
+			parser->error_push_done();
 		}
 //		parser->error("Too few parameters for pattern : " + pattern->getName() + " in operation: " + getName());
 	}

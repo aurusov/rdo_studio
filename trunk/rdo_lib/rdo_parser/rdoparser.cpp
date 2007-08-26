@@ -303,9 +303,22 @@ void RDOParser::error( const RDOParserSrcInfo& _src_info, const std::string& _me
 	throw rdoParse::RDOSyntaxException( errors.back().message );
 }
 
+void RDOParser::error( const RDOParserSrcInfo& _src_info1, const RDOParserSrcInfo& _src_info2, const std::string& _message, rdoSimulator::RDOSyntaxError::ErrorCode _error_code )
+{
+	error_push_only( _src_info1.src_pos().last_line != _src_info2.src_pos().last_line ? _src_info1 : _src_info2, _message, _error_code );
+	throw rdoParse::RDOSyntaxException( errors.back().message );
+}
+
 void RDOParser::error_push_only( const RDOParserSrcInfo& _src_info, const std::string& _message, rdoSimulator::RDOSyntaxError::ErrorCode _error_code )
 {
 	errors.push_back( rdoSimulator::RDOSyntaxError( _error_code, _message, _src_info.src_pos().last_line, _src_info.src_pos().last_pos, _src_info.src_filetype() ) );
+}
+
+void RDOParser::error_push_done()
+{
+	if ( !errors.empty() ) {
+		throw rdoParse::RDOSyntaxException( errors.back().message );
+	}
 }
 
 void RDOParser::error_modify( const std::string& _message )
@@ -333,14 +346,6 @@ void RDOParser::warning( const std::string& _message, rdoSimulator::RDOSyntaxErr
 void RDOParser::warning( const RDOParserSrcInfo& _src_info, const std::string& _message, rdoSimulator::RDOSyntaxError::ErrorCode _error_code ) 
 {
 	errors.push_back( rdoSimulator::RDOSyntaxError( _error_code, _message, _src_info.src_pos().last_line, _src_info.src_pos().last_pos, _src_info.src_filetype(), true ) );
-}
-
-void RDOParser::addConstant( RDORTPParam* const _cons )
-{
-	if ( !findFUNConst(_cons->getName()) ) {
-		RDOFUNConstant* newConst = new RDOFUNConstant( this, _cons );
-		runtime->setConstValue( newConst->number, newConst->getType()->getParamDefaultValue( _cons->src_info() ) );
-	}
 }
 
 const RDOFUNConstant* RDOParser::findFUNConst( const std::string& _cons ) const

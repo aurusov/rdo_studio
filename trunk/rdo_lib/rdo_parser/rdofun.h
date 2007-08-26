@@ -27,23 +27,26 @@ void funerror( char* mes );
 // ----------------------------------------------------------------------------
 // ---------- RDOFUNLogic
 // ----------------------------------------------------------------------------
-class RDOFUNLogic: public RDODeletable, public RDOParserSrcInfo
+class RDOFUNLogic: public RDOParserObject, public RDOParserSrcInfo
 {
 public:
 	rdoRuntime::RDOCalc* calc;
 
-	RDOFUNLogic( rdoRuntime::RDOCalc* _calc, bool hide_warning = false );
+	RDOFUNLogic( const RDOParserObject* _parent, rdoRuntime::RDOCalc* _calc, bool hide_warning = false );
 
 	RDOFUNLogic* operator &&( const RDOFUNLogic& second );
 	RDOFUNLogic* operator ||( const RDOFUNLogic& second );
 	RDOFUNLogic* operator_not();
 
 	virtual void setSrcInfo( const RDOParserSrcInfo& src_info );
-	virtual void setSrcInfo( const RDOParserSrcInfo& begin, const std::string& delim, const RDOParserSrcInfo& end );
-	virtual void setSrcPos( const YYLTYPE& _error_pos );
-	virtual void setSrcPos( const YYLTYPE& _pos_begin, const YYLTYPE& _pos_end );
-	virtual void setSrcPos( int first_line, int first_pos, int last_line, int last_pos );
+	virtual void setSrcPos( const RDOSrcInfo::Position& _pos );
 	virtual void setSrcText( const std::string& value );
+	void setSrcPos( const YYLTYPE& _error_pos ) {
+		RDOParserSrcInfo::setSrcPos( _error_pos );
+	}
+	void setSrcPos( const YYLTYPE& _pos_begin, const YYLTYPE& _pos_end ) {
+		RDOParserSrcInfo::setSrcPos( _pos_begin, _pos_end );
+	}
 };
 
 // ----------------------------------------------------------------------------
@@ -92,15 +95,284 @@ public:
 	RDORTPParamType::ParamType getType() const { return type; }
 
 	virtual void setSrcInfo( const RDOParserSrcInfo& src_info );
-	virtual void setSrcInfo( const RDOParserSrcInfo& begin, const std::string& delim, const RDOParserSrcInfo& end );
-	virtual void setSrcPos( const YYLTYPE& _error_pos );
-	virtual void setSrcPos( const YYLTYPE& _pos_begin, const YYLTYPE& _pos_end );
-	virtual void setSrcPos( int first_line, int first_pos, int last_line, int last_pos );
+	virtual void setSrcPos( const RDOSrcInfo::Position& _pos );
 	virtual void setSrcText( const std::string& value );
+	void setSrcInfo( const RDOParserSrcInfo& begin, const std::string& delim, const RDOParserSrcInfo& end ) {
+		RDOParserSrcInfo::setSrcInfo( begin, delim, end );
+	}
+	void setSrcPos( const YYLTYPE& _error_pos ) {
+		RDOParserSrcInfo::setSrcPos( _error_pos );
+	}
+	void setSrcPos( const YYLTYPE& _pos_begin, const YYLTYPE& _pos_end ) {
+		RDOParserSrcInfo::setSrcPos( _pos_begin, _pos_end );
+	}
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOFUNConstant
+// ----------------------------------------------------------------------------
+class RDOFUNConstant: public RDOParserObject, public RDOParserSrcInfo
+{
+private:
+	RDORTPParam* param;
+
+public:
+	int number;
+	RDOFUNConstant( RDOParser* _parser, RDORTPParam* _param );
+	const std::string&           getName() const  { return param->getName(); }
+	const RDORTPParamType* const getType() const  { return param->getType(); }
+	const RDORTPParam* const     getDescr() const { return param;            }
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOFUNParams
+// ----------------------------------------------------------------------------
+// Параметры, с которыми функция вызывается
+// ----------------------------------------------------------------------------
+class RDOFUNParams: public RDOParserObject, public RDOParserSrcInfo
+{
+public:
+	RDOParserSrcInfo funseq_name;
+	std::vector< RDOFUNArithm* > params;
+
+	RDOFUNParams( RDOParser* _parser ):
+		RDOParserObject( _parser ),
+		RDOParserSrcInfo()
+	{
+	}
+	RDOFUNParams( const RDOParserObject* _parent ):
+		RDOParserObject( _parent ),
+		RDOParserSrcInfo()
+	{
+	}
+	void addParameter( RDOFUNArithm* param ) {
+		params.push_back( param );
+	}
+	RDOFUNArithm* createCall( const std::string& funName ) const;
+	RDOFUNArithm* createSeqCall( const std::string& seqName ) const;
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOFUNSequence
+// ----------------------------------------------------------------------------
+class RDOFUNSequence: public RDOParserObject, public RDOParserSrcInfo
+{
+public:
+	class RDOFUNSequenceHeader: public RDOParserObject, public RDOParserSrcInfo
+	{
+	private:
+		const RDORTPParamType* type;
+
+	public:
+		RDOFUNSequenceHeader( RDOParser* _parser, const RDORTPParamType* _type, const RDOParserSrcInfo& _src_info ):
+			RDOParserObject( _parser ),
+			RDOParserSrcInfo( _src_info ),
+			type( _type )
+		{
+		}
+		const RDORTPParamType* getType() const { return type; }
+	};
+
+	RDOFUNSequenceHeader* header;
+	rdoRuntime::RDOCalcSeqInit* init_calc;
+	rdoRuntime::RDOCalcSeqNext* next_calc;
+
+protected:
+	int base;
+
+	RDOFUNSequence( RDOParser* _parser, RDOFUNSequenceHeader* _header, int _base );
+	void initResult();
+	void initCalcSrcInfo();
+
+public:
+	const std::string& getName() const  { return header->src_text(); }
+	virtual void createCalcs() = 0;
+	virtual RDOFUNArithm* createCallCalc( const RDOFUNParams* const params, const RDOParserSrcInfo& src_info ) const = 0;
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOFUNSequenceUniform
+// ----------------------------------------------------------------------------
+class RDOFUNSequenceUniform: public RDOFUNSequence
+{
+private:
+	virtual void createCalcs();
+
+public:
+	RDOFUNSequenceUniform( RDOParser* _parser, RDOFUNSequenceHeader* _header, int _base = 123456789 );
+	virtual RDOFUNArithm* createCallCalc( const RDOFUNParams* const params, const RDOParserSrcInfo& src_info ) const;
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOFUNSequenceExponential
+// ----------------------------------------------------------------------------
+class RDOFUNSequenceExponential: public RDOFUNSequence
+{
+private:
+	virtual void createCalcs();
+
+public:
+	RDOFUNSequenceExponential( RDOParser* _parser, RDOFUNSequenceHeader* _header, int _base =123456789 );
+	virtual RDOFUNArithm* createCallCalc( const RDOFUNParams* const params, const RDOParserSrcInfo& src_info ) const;
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOFUNSequenceNormal
+// ----------------------------------------------------------------------------
+class RDOFUNSequenceNormal: public RDOFUNSequence
+{
+private:
+	virtual void createCalcs();
+
+public:
+	RDOFUNSequenceNormal( RDOParser* _parser, RDOFUNSequenceHeader* _header, int _base = 123456789 );
+	virtual RDOFUNArithm* createCallCalc( const RDOFUNParams* const params, const RDOParserSrcInfo& src_info ) const;
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOFUNSequenceByHist
+// ----------------------------------------------------------------------------
+class RDOFUNSequenceByHist: public RDOFUNSequence
+{
+public:
+	class RDOFUNSequenceByHistHeader: public RDOParserObject, public RDOParserSrcInfo
+	{
+	public:
+		RDOFUNSequence::RDOFUNSequenceHeader* header;
+		int                                   base;
+
+		RDOFUNSequenceByHistHeader( RDOParser* _parser, RDOFUNSequence::RDOFUNSequenceHeader* _header, int _base = 123456789 ):
+			RDOParserObject( _parser ),
+			RDOParserSrcInfo( _header->src_info() ),
+			header( _header ),
+			base( _base )
+		{
+		}
+	};
+
+	RDOFUNSequenceByHist( RDOParser* _parser, RDOFUNSequenceByHistHeader* _header ):
+		RDOFUNSequence( _parser, _header->header, _header->base )
+	{
+		_header->reparent( this );
+	}
+	virtual RDOFUNArithm* createCallCalc( const RDOFUNParams* const params, const RDOParserSrcInfo& src_info ) const;
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOFUNSequenceByHistReal
+// ----------------------------------------------------------------------------
+class RDOFUNSequenceByHistReal: public RDOFUNSequenceByHist
+{
+private:
+	virtual void createCalcs();
+
+public:
+	std::vector< double > from;
+	std::vector< double > to;
+	std::vector< double > freq;
+
+	RDOFUNSequenceByHistReal( RDOParser* _parser, RDOFUNSequenceByHistHeader* _header, rdoRuntime::RDOValue _from, rdoRuntime::RDOValue _to, rdoRuntime::RDOValue _freq, const YYLTYPE& _from_pos, const YYLTYPE& _to_pos, const YYLTYPE& _freq_pos ):
+		RDOFUNSequenceByHist( _parser, _header )
+	{
+		addReal( _from, _to, _freq, _from_pos, _to_pos, _freq_pos );
+	}
+	void addReal( rdoRuntime::RDOValue _from, rdoRuntime::RDOValue _to, rdoRuntime::RDOValue _freq, const YYLTYPE& _from_pos, const YYLTYPE& _to_pos, const YYLTYPE& _freq_pos );
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOFUNSequenceByHistEnum
+// ----------------------------------------------------------------------------
+class RDOFUNSequenceByHistEnum: public RDOFUNSequenceByHist
+{
+private:
+	virtual void createCalcs();
+
+public:
+	std::vector< rdoRuntime::RDOValue > val;
+	std::vector< double >               freq;
+
+	RDOFUNSequenceByHistEnum( RDOParser* _parser, RDOFUNSequenceByHistHeader* _header, const RDOParserSrcInfo& _value_info, rdoRuntime::RDOValue _freq, const YYLTYPE& _freq_pos ):
+		RDOFUNSequenceByHist( _parser, _header )
+	{
+		addEnum( _value_info, _freq, _freq_pos );
+	}
+	void addEnum( const RDOParserSrcInfo& _value_info, rdoRuntime::RDOValue _freq, const YYLTYPE& _freq_pos );
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOFUNSequenceEnumerative
+// ----------------------------------------------------------------------------
+class RDOFUNSequenceEnumerative: public RDOFUNSequence
+{
+public:
+	RDOFUNSequenceEnumerative( RDOParser* _parser, RDOFUNSequenceHeader* _header ):
+		RDOFUNSequence( _parser, _header, 0 )
+	{
+	}
+	virtual RDOFUNArithm* createCallCalc( const RDOFUNParams* const params, const RDOParserSrcInfo& src_info ) const;
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOFUNSequenceEnumerativeInt
+// ----------------------------------------------------------------------------
+class RDOFUNSequenceEnumerativeInt: public RDOFUNSequenceEnumerative
+{
+private:
+	virtual void createCalcs();
+
+public:
+	std::vector<int> val;
+
+	RDOFUNSequenceEnumerativeInt( RDOParser* _parser, RDOFUNSequenceHeader* _header, int _val ):
+		RDOFUNSequenceEnumerative( _parser, _header )
+	{
+		addInt(_val);
+	}
+	void addInt( int val );
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOFUNSequenceEnumerativeReal
+// ----------------------------------------------------------------------------
+class RDOFUNSequenceEnumerativeReal: public RDOFUNSequenceEnumerative
+{
+private:
+	virtual void createCalcs();
+
+public:
+	std::vector< double > val;
+
+	RDOFUNSequenceEnumerativeReal( RDOParser* _parser, RDOFUNSequenceHeader* _header, double _val ):
+		RDOFUNSequenceEnumerative( _parser, _header )
+	{
+		addReal( _val );
+	}
+	void addReal( double _val );
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOFUNSequenceEnumerativeEnum
+// ----------------------------------------------------------------------------
+class RDOFUNSequenceEnumerativeEnum: public RDOFUNSequenceEnumerative
+{
+private:
+	virtual void createCalcs();
+
+public:
+	std::vector< rdoRuntime::RDOValue > val;
+
+	RDOFUNSequenceEnumerativeEnum( RDOParser* _parser, RDOFUNSequenceHeader* _header, const std::string& _val ):
+		RDOFUNSequenceEnumerative( _parser, _header )
+	{
+		addEnum( _val );
+	}
+	void addEnum( const std::string& _val );
 };
 
 // ----------------------------------------------------------------------------
 // ---------- RDOFUNFunctionParam
+// ----------------------------------------------------------------------------
+// Параметры, описанные внури самой функции после клювевого слова $Parameters
 // ----------------------------------------------------------------------------
 class RDOFUNFunctionParam: public RDOParserObject, public RDOParserSrcInfo
 {
@@ -243,30 +515,6 @@ public:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOFUNParams
-// ----------------------------------------------------------------------------
-class RDOFUNParams: public RDOParserObject, public RDOParserSrcInfo
-{
-public:
-	RDOParserSrcInfo name_error_pos;
-	std::vector< RDOFUNArithm* > params;
-
-	RDOFUNParams( RDOParser* _parser ):
-		RDOParserObject( _parser )
-	{
-	}
-	RDOFUNParams( const RDOParserObject* _parent ):
-		RDOParserObject( _parent )
-	{
-	}
-	void addParameter( RDOFUNArithm* param ) {
-		params.push_back( param );
-	}
-	RDOFUNArithm* createCall( const std::string& funName ) const;
-	RDOFUNArithm* createSeqCall( const std::string& seqName ) const;
-};
-
-// ----------------------------------------------------------------------------
 // ---------- RDOFUNGroup
 // ----------------------------------------------------------------------------
 class RDOFUNGroup: public RDOParserObject, public RDOParserSrcInfo
@@ -331,234 +579,10 @@ todo: а зачем ?
 	RDOFUNArithm* createFunSelectSize();
 
 	virtual void setSrcInfo( const RDOParserSrcInfo& src_info );
-	virtual void setSrcPos( const YYLTYPE& _error_pos );
-	virtual void setSrcPos( const YYLTYPE& _pos_begin, const YYLTYPE& _pos_end );
-	virtual void setSrcPos( int first_line, int first_pos, int last_line, int last_pos );
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOFUNSequence
-// ----------------------------------------------------------------------------
-class RDOFUNSequence: public RDOParserObject
-{
-public:
-	class RDOFUNSequenceHeader: public RDODeletable, public RDOParserSrcInfo
-	{
-	public:
-		std::string      name;
-		RDORTPParamType* type;
-		RDOFUNSequenceHeader( const std::string& _name, RDORTPParamType* _type, const RDOParserSrcInfo& _src_info ):
-			name(_name),
-			type(_type)
-		{
-			setSrcInfo( _src_info );
-		}
-	};
-
-	RDOFUNSequenceHeader* header;
-	int base;
-	rdoRuntime::RDOCalcSeqInit* initSeq;
-	rdoRuntime::RDOCalcSeqNext* next;
-
-protected:
-	RDOFUNSequence( RDOParser* _parser, RDOFUNSequenceHeader* _header, int _base );
-	void initResult();
-	void initCalcSrcInfo();
-
-public:
-	const std::string& getName() const  { return header->name; }
-	virtual void createCalcs() = 0;
-	virtual RDOFUNArithm* createCallCalc( const RDOFUNParams* const params, const RDOParserSrcInfo& src_info ) const = 0;
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOFUNSequenceUniform
-// ----------------------------------------------------------------------------
-class RDOFUNSequenceUniform: public RDOFUNSequence
-{
-public:
-	RDOFUNSequenceUniform( RDOParser* _parser, RDOFUNSequenceHeader* _header, int _base = 123456789 );
-	virtual void createCalcs();
-	virtual RDOFUNArithm* createCallCalc( const RDOFUNParams* const params, const RDOParserSrcInfo& src_info ) const;
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOFUNSequenceExponential
-// ----------------------------------------------------------------------------
-class RDOFUNSequenceExponential: public RDOFUNSequence
-{
-public:
-	RDOFUNSequenceExponential( RDOParser* _parser, RDOFUNSequenceHeader* _header, int _base =123456789 );
-	virtual void createCalcs();
-	virtual RDOFUNArithm* createCallCalc( const RDOFUNParams* const params, const RDOParserSrcInfo& src_info ) const;
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOFUNSequenceNormal
-// ----------------------------------------------------------------------------
-class RDOFUNSequenceNormal: public RDOFUNSequence
-{
-public:
-	RDOFUNSequenceNormal( RDOParser* _parser, RDOFUNSequenceHeader* _header, int _base = 123456789 );
-	virtual void createCalcs();
-	virtual RDOFUNArithm* createCallCalc( const RDOFUNParams* const params, const RDOParserSrcInfo& src_info ) const;
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOFUNSequenceByHist
-// ----------------------------------------------------------------------------
-class RDOFUNSequenceByHist: public RDOFUNSequence
-{
-public:
-	class RDOFUNSequenceByHistHeader: public RDODeletable
-	{
-	public:
-		RDOFUNSequence::RDOFUNSequenceHeader* header;
-		int                                   base;
-
-		RDOFUNSequenceByHistHeader( RDOFUNSequence::RDOFUNSequenceHeader* _header, int _base = 123456789 ):
-			RDODeletable(),
-			header( _header ),
-			base( _base )
-		{
-		}
-	};
-
-	RDOFUNSequenceByHist( RDOParser* _parser, RDOFUNSequenceByHistHeader* _header ):
-		RDOFUNSequence( _parser, _header->header, _header->base )
-	{
+	virtual void setSrcPos( const RDOSrcInfo::Position& _pos );
+	void setSrcPos( const YYLTYPE& _pos_begin, const YYLTYPE& _pos_end ) {
+		RDOParserSrcInfo::setSrcPos( _pos_begin, _pos_end );
 	}
-	virtual RDOFUNArithm* createCallCalc( const RDOFUNParams* const params, const RDOParserSrcInfo& src_info ) const;
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOFUNSequenceByHistReal
-// ----------------------------------------------------------------------------
-class RDOFUNSequenceByHistReal: public RDOFUNSequenceByHist
-{
-public:
-	std::vector< double > from;
-	std::vector< double > to;
-	std::vector< double > freq;
-
-	RDOFUNSequenceByHistReal( RDOParser* _parser, RDOFUNSequenceByHistHeader* _header, double _from, double _to, double _freq ):
-		RDOFUNSequenceByHist( _parser, _header )
-	{
-		addReal( _from, _to, _freq );
-	}
-	void addReal( double _from, double _to, double _freq );
-	double lastTo() const { return !to.empty() ? to.back() : 0; }
-	virtual void createCalcs();
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOFUNSequenceByHistEnum
-// ----------------------------------------------------------------------------
-class RDOFUNSequenceByHistEnum: public RDOFUNSequenceByHist
-{
-public:
-	std::vector< rdoRuntime::RDOValue > val;
-	std::vector< double >               freq;
-
-	RDOFUNSequenceByHistEnum( RDOParser* _parser, RDOFUNSequenceByHistHeader* _header, const std::string& _val, double _freq ):
-		RDOFUNSequenceByHist( _parser, _header )
-	{
-		addEnum( _val, _freq );
-	}
-	void addEnum( const std::string& _val, double _freq );
-	virtual void createCalcs();
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOFUNSequenceEnumerative
-// ----------------------------------------------------------------------------
-class RDOFUNSequenceEnumerative: public RDOFUNSequence
-{
-public:
-	class RDOFUNSequenceEnumerativeHeader: public RDODeletable
-	{
-	public:
-		RDOFUNSequence::RDOFUNSequenceHeader* header;
-		int base;
-		RDOFUNSequenceEnumerativeHeader( RDOFUNSequence::RDOFUNSequenceHeader* _header, int _base = 123456789 ):
-			header( _header ),
-			base( _base )
-		{
-		}
-	};
-
-	RDOFUNSequenceEnumerative( RDOParser* _parser, RDOFUNSequenceEnumerativeHeader* _header ):
-		RDOFUNSequence( _parser, _header->header, _header->base )
-	{
-	}
-	virtual RDOFUNArithm* createCallCalc( const RDOFUNParams* const params, const RDOParserSrcInfo& src_info ) const;
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOFUNSequenceEnumerativeInt
-// ----------------------------------------------------------------------------
-class RDOFUNSequenceEnumerativeInt: public RDOFUNSequenceEnumerative
-{
-public:
-	std::vector<int> val;
-
-	RDOFUNSequenceEnumerativeInt( RDOParser* _parser, RDOFUNSequenceEnumerativeHeader* _header, int _val ):
-		RDOFUNSequenceEnumerative( _parser, _header )
-	{
-		addInt(_val);
-	}
-	void addInt( int val );
-	virtual void createCalcs();
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOFUNSequenceEnumerativeReal
-// ----------------------------------------------------------------------------
-class RDOFUNSequenceEnumerativeReal: public RDOFUNSequenceEnumerative
-{
-public:
-	std::vector< double > val;
-
-	RDOFUNSequenceEnumerativeReal( RDOParser* _parser, RDOFUNSequenceEnumerativeHeader* _header, double _val ):
-		RDOFUNSequenceEnumerative( _parser, _header )
-	{
-		addReal( _val );
-	}
-	void addReal( double _val );
-	virtual void createCalcs();
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOFUNSequenceEnumerativeEnum
-// ----------------------------------------------------------------------------
-class RDOFUNSequenceEnumerativeEnum: public RDOFUNSequenceEnumerative
-{
-public:
-	std::vector< rdoRuntime::RDOValue > val;
-
-	RDOFUNSequenceEnumerativeEnum( RDOParser* _parser, RDOFUNSequenceEnumerativeHeader* _header, const std::string& _val ):
-		RDOFUNSequenceEnumerative( _parser, _header )
-	{
-		addEnum( _val );
-	}
-	void addEnum( const std::string& _val );
-	virtual void createCalcs();
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOFUNConstant
-// ----------------------------------------------------------------------------
-class RDOFUNConstant: public RDOParserObject
-{
-private:
-	RDORTPParam* param;
-
-public:
-	int number;
-	RDOFUNConstant( RDOParser* _parser, RDORTPParam* _param );
-	const std::string&           getName() const  { return param->getName(); }
-	const RDORTPParamType* const getType() const  { return param->getType(); }
-	const RDORTPParam* const     getDescr() const { return param;            }
 };
 
 } // namespace rdoParse 

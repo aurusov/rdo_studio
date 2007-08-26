@@ -57,6 +57,7 @@ public:
 	virtual int writeModelStructure() const = 0;
 
 	void checkParamType( const RDOFUNArithm* const action ) const;
+	void checkParamType( const rdoRuntime::RDOValue& value, const RDOParserSrcInfo& value_info ) const;
 };
 
 // ----------------------------------------------------------------------------
@@ -178,11 +179,12 @@ private:
 	bool exist;
 
 public:
-	int minVal, maxVal;
+	int min_value;
+	int max_value;
 	RDORTPIntDiap();
 	RDORTPIntDiap( const RDORTPIntDiap& diap );
 	RDORTPIntDiap( const RDOParserSrcInfo& _src_info );
-	RDORTPIntDiap( int _minVal, int _maxVal, const RDOParserSrcInfo& _src_info, const YYLTYPE& _max_value_pos );
+	RDORTPIntDiap( int _min_value, int _max_value, const RDOParserSrcInfo& _src_info, const YYLTYPE& _max_value_pos );
 	bool isExist() const { return exist; }
 };
 
@@ -264,11 +266,12 @@ private:
 	bool exist;
 
 public:
-	double minVal, maxVal;
+	double min_value;
+	double max_value;
 	RDORTPRealDiap();
 	RDORTPRealDiap( const RDORTPRealDiap& diap );
 	RDORTPRealDiap( const RDOParserSrcInfo& _src_info );
-	RDORTPRealDiap( double _minVal, double _maxVal, const RDOParserSrcInfo& _src_info, const YYLTYPE& _max_value_pos );
+	RDORTPRealDiap( double _min_value, double _max_value, const RDOParserSrcInfo& _src_info, const YYLTYPE& _max_value_pos );
 	bool isExist() const { return exist; }
 };
 
