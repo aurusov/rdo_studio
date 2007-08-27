@@ -914,6 +914,8 @@ RDOFUNArithm* RDOFUNParams::createSeqCall( const std::string& seqName ) const
 }
 
 // ----------------------------------------------------------------------------
+// ---------- Последовательности
+// ----------------------------------------------------------------------------
 // ---------- RDOFUNSequence
 // ----------------------------------------------------------------------------
 RDOFUNSequence::RDOFUNSequence( RDOParser* _parser, RDOFUNSequenceHeader* _header, int _base ):
@@ -961,6 +963,8 @@ void RDOFUNSequence::initCalcSrcInfo()
 	next_calc->setSrcInfo( header->src_info() );
 }
 
+// ----------------------------------------------------------------------------
+// ---------- Датчики случайных чисел
 // ----------------------------------------------------------------------------
 // ---------- RDOFUNSequenceUniform
 // ----------------------------------------------------------------------------
@@ -1095,6 +1099,8 @@ RDOFUNArithm* RDOFUNSequenceNormal::createCallCalc( const RDOFUNParams* const pa
 }
 
 // ----------------------------------------------------------------------------
+// ---------- Гистограмма
+// ----------------------------------------------------------------------------
 // ---------- RDOFUNSequenceByHist
 // ----------------------------------------------------------------------------
 RDOFUNArithm* RDOFUNSequenceByHist::createCallCalc( const RDOFUNParams* const param, const RDOParserSrcInfo& _src_info ) const
@@ -1184,6 +1190,8 @@ void RDOFUNSequenceByHistEnum::createCalcs()
 }
 
 // ----------------------------------------------------------------------------
+// ---------- Перечень значений
+// ----------------------------------------------------------------------------
 // ---------- RDOFUNSequenceEnumerative
 // ----------------------------------------------------------------------------
 RDOFUNArithm* RDOFUNSequenceEnumerative::createCallCalc( const RDOFUNParams* const param, const RDOParserSrcInfo& _src_info ) const
@@ -1193,7 +1201,7 @@ RDOFUNArithm* RDOFUNSequenceEnumerative::createCallCalc( const RDOFUNParams* con
 //		parser->error("Wrong parameters number in enumerative sequence call: " + *header->name);
 	}
 
-	rdoRuntime::RDOCalcFunctionCall *funcCall = new rdoRuntime::RDOCalcFunctionCall(parser->runtime, next_calc);
+	rdoRuntime::RDOCalcFunctionCall* funcCall = new rdoRuntime::RDOCalcFunctionCall( parser->runtime, next_calc );
 
 	RDOFUNArithm* arithm = new RDOFUNArithm( const_cast<RDOFUNSequenceEnumerative*>(this), header->getType()->getType(), funcCall, param->src_pos() );
 	arithm->setSrcInfo( _src_info );
@@ -1208,7 +1216,7 @@ RDOFUNArithm* RDOFUNSequenceEnumerative::createCallCalc( const RDOFUNParams* con
 // ----------------------------------------------------------------------------
 void RDOFUNSequenceEnumerativeInt::addInt( int _val )
 {
-	val.push_back(_val);
+	val.push_back( _val );
 }
 
 void RDOFUNSequenceEnumerativeInt::createCalcs()
@@ -1216,9 +1224,9 @@ void RDOFUNSequenceEnumerativeInt::createCalcs()
 	rdoRuntime::RandGeneratorEnumerative* gen = new rdoRuntime::RandGeneratorEnumerative();
 	int size = val.size();
 	for ( int i = 0; i < size; i++ ) {
-		gen->addValue(val[i]);
+		gen->addValue( val[i] );
 	}
-	next_calc = new rdoRuntime::RDOCalcSeqNextByHist(parser->runtime, gen);
+	next_calc = new rdoRuntime::RDOCalcSeqNextByHist( parser->runtime, gen );
 	initCalcSrcInfo();
 }
 
@@ -1235,31 +1243,33 @@ void RDOFUNSequenceEnumerativeReal::createCalcs()
 	rdoRuntime::RandGeneratorEnumerative* gen = new rdoRuntime::RandGeneratorEnumerative();
 	int size = val.size();
 	for ( int i = 0; i < size; i++ ) {
-		gen->addValue(val[i]);
+		gen->addValue( val[i] );
 	}
-	next_calc = new rdoRuntime::RDOCalcSeqNextByHist(parser->runtime, gen);
+	next_calc = new rdoRuntime::RDOCalcSeqNextByHist( parser->runtime, gen );
 	initCalcSrcInfo();
 }
 
 // ----------------------------------------------------------------------------
 // ---------- RDOFUNSequenceEnumerativeEnum
 // ----------------------------------------------------------------------------
-void RDOFUNSequenceEnumerativeEnum::addEnum( const std::string& _val )
+void RDOFUNSequenceEnumerativeEnum::addEnum( const RDOParserSrcInfo& _value_info )
 {
-	val.push_back( header->getType()->getRSSEnumValue(_val, RDOParserSrcInfo("левое")) );
+	val.push_back( header->getType()->getRSSEnumValue( _value_info.src_text(), _value_info ) );
 }
 
 void RDOFUNSequenceEnumerativeEnum::createCalcs()
 {
 	rdoRuntime::RandGeneratorEnumerative* gen = new rdoRuntime::RandGeneratorEnumerative();
 	int size = val.size();
-	for(int i = 0; i < size; i++)
-		gen->addValue(val[i]);
-
+	for ( int i = 0; i < size; i++ ) {
+		gen->addValue( val[i] );
+	}
 	next_calc = new rdoRuntime::RDOCalcSeqNextByHist( parser->runtime, gen );
 	initCalcSrcInfo();
 }
 
+// ----------------------------------------------------------------------------
+// ---------- Функции
 // ----------------------------------------------------------------------------
 // ---------- RDOFUNFunctionListElement
 // ----------------------------------------------------------------------------
@@ -1567,23 +1577,25 @@ void RDOFUNFunction::createAlgorithmicCalc( const RDOParserSrcInfo& _body_src_in
 // ----------------------------------------------------------------------------
 // ---------- RDOFUNGroup
 // ----------------------------------------------------------------------------
-RDOFUNGroup::RDOFUNGroup( RDOParser* _parser, const std::string& _resType ):
-	RDOParserObject( _parser )
+RDOFUNGroup::RDOFUNGroup( RDOParser* _parser, const RDOParserSrcInfo& _res_info ):
+	RDOParserObject( _parser ),
+	RDOParserSrcInfo( _res_info )
 {
-	init( _resType );
+	init( _res_info );
 }
 
-RDOFUNGroup::RDOFUNGroup( const RDOParserObject* _parent, const std::string& _resType ):
-	RDOParserObject( _parent )
+RDOFUNGroup::RDOFUNGroup( const RDOParserObject* _parent, const RDOParserSrcInfo& _res_info ):
+	RDOParserObject( _parent ),
+	RDOParserSrcInfo( _res_info )
 {
-	init( _resType );
+	init( _res_info );
 }
 
-void RDOFUNGroup::init( const std::string& _resType )
+void RDOFUNGroup::init( const RDOParserSrcInfo& _res_info )
 {
-	resType = parser->findRTPResType( _resType );
+	resType = parser->findRTPResType( _res_info.src_text() );
 	if ( !resType ) {
-		parser->error( rdo::format("Неизвестный тип ресурса: %s", _resType.c_str()) );
+		parser->error( _res_info, rdo::format("Неизвестный тип ресурса: %s", _res_info.src_text().c_str()) );
 	}
 	parser->insertFUNGroup( this );
 }
@@ -1599,7 +1611,7 @@ RDOFUNLogic* RDOFUNGroupLogic::createFunLogic( RDOFUNLogic* cond )
 		case 2 : setSrcText( "NotExist(" + resType->getName() + ": " + cond->src_text() + ")" );  calc = new rdoRuntime::RDOFunCalcNotExist ( parser->runtime, resType->getNumber(), cond->calc ); break;
 		case 3 : setSrcText( "ForAll(" + resType->getName() + ": " + cond->src_text() + ")" );    calc = new rdoRuntime::RDOFunCalcForAll   ( parser->runtime, resType->getNumber(), cond->calc ); break;
 		case 4 : setSrcText( "NotForAll(" + resType->getName() + ": " + cond->src_text() + ")" ); calc = new rdoRuntime::RDOFunCalcNotForAll( parser->runtime, resType->getNumber(), cond->calc ); break;
-		default: parser->error( "Несуществующий тип функции" );
+		default: parser->error( src_info(), "Внутренная ошибка: несуществующий тип функции" );
 	}
 	parser->getFUNGroupStack().pop_back();
 	calc->setSrcInfo( src_info() );

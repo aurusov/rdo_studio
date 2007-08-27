@@ -1165,8 +1165,6 @@ fun_seq_by_hist:	fun_seq_by_hist_body_real End {
 // ---------- Перечень значений
 // ----------------------------------------------------------------------------
 fun_seq_enumerative_header:	fun_seq_header enumerative Body {
-								RDOFUNSequence::RDOFUNSequenceHeader* header = reinterpret_cast<RDOFUNSequenceEnumerative::RDOFUNSequenceHeader*>($1);
-								$$ = $1;
 							}
 							| fun_seq_header enumerative INT_CONST error {
 								parser->error( @3, "У последовательности типа enumerative нет базы генератора" );
@@ -1182,78 +1180,62 @@ fun_seq_enumerative_body_int:	fun_seq_enumerative_header INT_CONST {
 									RDOFUNSequence::RDOFUNSequenceHeader* header = reinterpret_cast<RDOFUNSequenceEnumerative::RDOFUNSequenceHeader*>($1);
 									if ( header->getType()->getType() != RDORTPParamType::pt_int ) {
 										switch ( header->getType()->getType() ) {
-											case RDORTPParamType::pt_real: {
-												parser->error( @2, rdo::format("Последовательность '%s' определена как вещественная, её значения тоже должны быть вещественными", header->src_text().c_str()) );
-												break;
-											}
-											case RDORTPParamType::pt_enum: {
-												parser->error( @2, rdo::format("Последовательность '%s' определена как перечислимая, её значения тоже должны быть перечислимого типа", header->src_text().c_str()) );
-												break;
-											}
+											case RDORTPParamType::pt_int : break;
+											case RDORTPParamType::pt_real: parser->error( @2, rdo::format("Последовательность '%s' определена как вещественная, её значения тоже должны быть вещественными", header->src_text().c_str()) );
+											case RDORTPParamType::pt_enum: parser->error( @2, rdo::format("Последовательность '%s' определена как перечислимая, её значения тоже должны быть перечислимого типа", header->src_text().c_str()) );
+											default                      : parser->error( @1, "Внутренная ошибка парсера: не все типы обработаны" );
 										}
 									}
 									$$ = (int)(new RDOFUNSequenceEnumerativeInt( parser, header, $2 ));
 								}
 								| fun_seq_enumerative_body_int INT_CONST {
-									((RDOFUNSequenceEnumerativeInt *)$1)->addInt($2); $$ = $1;
+									RDOFUNSequenceEnumerativeInt* seq = reinterpret_cast<RDOFUNSequenceEnumerativeInt*>($1);
+									seq->addInt( $2 );
 								}
 								| fun_seq_enumerative_body_int error {
-									parser->lexer_loc_set( &(@1), &(@2) );
-									parser->error( "Ожидается целое число или ключевое слово $End" );
+									parser->error( @1, @2, "Ожидается целое число или ключевое слово $End" );
 								};
 
 fun_seq_enumerative_body_real:	fun_seq_enumerative_header REAL_CONST {
 									RDOFUNSequence::RDOFUNSequenceHeader* header = reinterpret_cast<RDOFUNSequenceEnumerative::RDOFUNSequenceHeader*>($1);
 									if ( header->getType()->getType() != RDORTPParamType::pt_real ) {
 										switch ( header->getType()->getType() ) {
-											case RDORTPParamType::pt_int: {
-												parser->error( @2, rdo::format("Последовательность '%s' определена как целочисленная, её значения тоже должны быть челочисленными", header->src_text().c_str()) );
-												break;
-											}
-											case RDORTPParamType::pt_enum: {
-												parser->error( @2, rdo::format("Последовательность '%s' определена как перечислимая, её значения тоже должны быть перечислимого типа", header->src_text().c_str()) );
-												break;
-											}
+											case RDORTPParamType::pt_int : parser->error( @2, rdo::format("Последовательность '%s' определена как целочисленная, её значения тоже должны быть челочисленными", header->src_text().c_str()) );
+											case RDORTPParamType::pt_real: break;
+											case RDORTPParamType::pt_enum: parser->error( @2, rdo::format("Последовательность '%s' определена как перечислимая, её значения тоже должны быть перечислимого типа", header->src_text().c_str()) );
+											default                      : parser->error( @1, "Внутренная ошибка парсера: не все типы обработаны" );
 										}
 									}
 									$$ = (int)(new RDOFUNSequenceEnumerativeReal( parser, header, *(double*)$2) );
 								}
 								| fun_seq_enumerative_body_real REAL_CONST {
-									((RDOFUNSequenceEnumerativeReal *)$1)->addReal(*(double*)$2); $$ = $1;
+									RDOFUNSequenceEnumerativeReal* seq = reinterpret_cast<RDOFUNSequenceEnumerativeReal*>($1);
+									seq->addReal( *(double*)$2 );
 								}
 								| fun_seq_enumerative_body_real error {
-									parser->lexer_loc_set( &(@1), &(@2) );
-									parser->error( "Ожидается вещественное число или ключевое слово $End" );
+									parser->error( @1, @2, "Ожидается вещественное число или ключевое слово $End" );
 								};
 
 fun_seq_enumerative_body_enum:	fun_seq_enumerative_header IDENTIF {
 									RDOFUNSequence::RDOFUNSequenceHeader* header = reinterpret_cast<RDOFUNSequenceEnumerative::RDOFUNSequenceHeader*>($1);
 									if ( header->getType()->getType() != RDORTPParamType::pt_enum ) {
 										switch ( header->getType()->getType() ) {
-											case RDORTPParamType::pt_int: {
-												parser->error( @2, rdo::format("Последовательность '%s' определена как целочисленная, её значения тоже должны быть челочисленными", header->src_text().c_str()) );
-												break;
-											}
-											case RDORTPParamType::pt_real: {
-												parser->error( @2, rdo::format("Последовательность '%s' определена как вещественная, её значения тоже должны быть вещественными", header->src_text().c_str()) );
-												break;
-											}
+											case RDORTPParamType::pt_int : parser->error( @2, rdo::format("Последовательность '%s' определена как целочисленная, её значения тоже должны быть челочисленными", header->src_text().c_str()) );
+											case RDORTPParamType::pt_real: parser->error( @2, rdo::format("Последовательность '%s' определена как вещественная, её значения тоже должны быть вещественными", header->src_text().c_str()) );
+											case RDORTPParamType::pt_enum: break;
+											default                      : parser->error( @1, "Внутренная ошибка парсера: не все типы обработаны" );
 										}
 									}
-									parser->lexer_loc_backup();
-									parser->lexer_loc_set( &(@2) );
-									$$ = (int)(new RDOFUNSequenceEnumerativeEnum(parser, header, *(std::string*)$2));
-									parser->lexer_loc_restore();
+									std::string value = *reinterpret_cast<std::string*>($2);
+									$$ = (int)(new RDOFUNSequenceEnumerativeEnum( parser, header, RDOParserSrcInfo(@2, value) ));
 								}
 								| fun_seq_enumerative_body_enum IDENTIF {
-									parser->lexer_loc_backup();
-									parser->lexer_loc_set( &(@2) );
-									((RDOFUNSequenceEnumerativeEnum *)$1)->addEnum(*(std::string*)$2); $$ = $1;
-									parser->lexer_loc_restore();
+									RDOFUNSequenceEnumerativeEnum* seq = reinterpret_cast<RDOFUNSequenceEnumerativeEnum*>($1);
+									std::string value = *reinterpret_cast<std::string*>($2);
+									seq->addEnum( RDOParserSrcInfo(@2, value) );
 								}
 								| fun_seq_enumerative_body_enum error {
-									parser->lexer_loc_set( &(@1), &(@2) );
-									parser->error( "Ожидается элемент перечислимого типа или ключевое слово $End" );
+									parser->error( @1, @2, "Ожидается элемент перечислимого типа или ключевое слово $End" );
 								};
 
 fun_seq_enumerative:	fun_seq_enumerative_body_int End {
@@ -1267,6 +1249,10 @@ fun_seq_enumerative:	fun_seq_enumerative_body_int End {
 						| fun_seq_enumerative_body_enum End {
 							RDOFUNSequence* seq = reinterpret_cast<RDOFUNSequence*>($1);
 							seq->createCalcs();
+						}
+						| fun_seq_enumerative_header End {
+							RDOFUNSequence::RDOFUNSequenceHeader* header = reinterpret_cast<RDOFUNSequenceEnumerative::RDOFUNSequenceHeader*>($1);
+							parser->error( header->src_info(), rdo::format("Последовательность '%s' не должна быть пустой", header->src_text().c_str()) );
 						};
 
 // ----------------------------------------------------------------------------
@@ -1394,10 +1380,8 @@ fun_group_keyword:	Exist			{ $$ = 1; }
 					| Not_For_All	{ $$ = 4; };
 
 fun_group_header:	fun_group_keyword '(' IDENTIF_COLON {
-						parser->lexer_loc_backup();
-						parser->lexer_loc_set( @3.first_line, @3.first_column + ((std::string*)$3)->length() );
-						$$ = (int)(new RDOFUNGroupLogic( parser, $1, *(std::string *)$3) );
-						parser->lexer_loc_restore();
+						std::string type_name = *reinterpret_cast<std::string*>($3);
+						$$ = (int)(new RDOFUNGroupLogic( parser, $1, RDOParserSrcInfo(@3, type_name, RDOParserSrcInfo::psi_align_bytext) ));
 					}
 					| fun_group_keyword '(' error {
 						parser->error( @3, "Ожидается имя типа" );
@@ -1409,7 +1393,7 @@ fun_group_header:	fun_group_keyword '(' IDENTIF_COLON {
 fun_group:			fun_group_header fun_logic ')' {
 						RDOFUNGroupLogic* groupfun = reinterpret_cast<RDOFUNGroupLogic*>($1);
 						groupfun->setSrcPos( @1, @3 );
-						$$ = (int)groupfun->createFunLogic((RDOFUNLogic *)$2);
+						$$ = (int)groupfun->createFunLogic( reinterpret_cast<RDOFUNLogic*>($2) );
 					}
 					| fun_group_header NoCheck ')' {
 						RDOFUNGroupLogic* groupfun = reinterpret_cast<RDOFUNGroupLogic*>($1);
@@ -1430,8 +1414,9 @@ fun_group:			fun_group_header fun_logic ')' {
 // ---------- Select
 // ----------------------------------------------------------------------------
 fun_select_header:	Select '(' IDENTIF_COLON {
-						RDOFUNSelect* select = new RDOFUNSelect(parser, *(std::string*)$3);
-						select->setSrcText( "Select(" + *(std::string*)$3 + ": " );
+						std::string type_name = *reinterpret_cast<std::string*>($3);
+						RDOFUNSelect* select = new RDOFUNSelect( parser, RDOParserSrcInfo(@3, type_name, RDOParserSrcInfo::psi_align_bytext) );
+						select->setSrcText( "Select(" + type_name + ": " );
 						$$ = (int)select;
 					}
 					| Select '(' error {
@@ -1452,7 +1437,7 @@ fun_select_body:	fun_select_header fun_logic ')' {
 					| fun_select_header NoCheck ')' {
 						RDOFUNSelect* select = reinterpret_cast<RDOFUNSelect*>($1);
 						select->setSrcText( select->src_text() + "NoCheck)" );
-						RDOFUNLogic* logic = ((RDOFUNSelect*)$1)->createFunSelect();
+						RDOFUNLogic* logic = select->createFunSelect();
 						logic->setSrcPos( @2 );
 						$$ = $1;
 					}
@@ -1484,8 +1469,7 @@ fun_select_logic:	fun_select_body '.' fun_select_keyword '(' fun_logic ')' {
 						parser->error( @1, "Ожидается '.' (точка) для вызова метода списка ресурсов" );
 					}
 					| fun_select_body '.' error {
-						parser->lexer_loc_set( &(@2), &(@3) );
-						parser->error( "Ожидается метод списка ресурсов" );
+						parser->error( @2, @3, "Ожидается метод списка ресурсов" );
 					}
 					| fun_select_body '.' fun_select_keyword error {
 						parser->error( @3, "Ожидается октрывающаяся скобка" );
@@ -1510,8 +1494,7 @@ fun_select_arithm:	fun_select_body '.' Size_kw '(' ')' {
 						parser->error( @1, "Ожидается '.' (точка) для вызова метода списка ресурсов" );
 					}
 					| fun_select_body '.' error {
-						parser->lexer_loc_set( &(@2), &(@3) );
-						parser->error( "Ожидается метод списка ресурсов: Size()" );
+						parser->error( @2, @3, "Ожидается метод списка ресурсов: Size()" );
 					}
 					| fun_select_body '.' Size_kw error {
 						parser->error( @3, "Ожидается октрывающаяся скобка" );

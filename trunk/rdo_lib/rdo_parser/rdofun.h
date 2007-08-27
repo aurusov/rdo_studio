@@ -153,6 +153,8 @@ public:
 };
 
 // ----------------------------------------------------------------------------
+// ---------- Последовательности
+// ----------------------------------------------------------------------------
 // ---------- RDOFUNSequence
 // ----------------------------------------------------------------------------
 class RDOFUNSequence: public RDOParserObject, public RDOParserSrcInfo
@@ -190,6 +192,8 @@ public:
 	virtual RDOFUNArithm* createCallCalc( const RDOFUNParams* const params, const RDOParserSrcInfo& src_info ) const = 0;
 };
 
+// ----------------------------------------------------------------------------
+// ---------- Датчики случайных чисел
 // ----------------------------------------------------------------------------
 // ---------- RDOFUNSequenceUniform
 // ----------------------------------------------------------------------------
@@ -229,6 +233,8 @@ public:
 	virtual RDOFUNArithm* createCallCalc( const RDOFUNParams* const params, const RDOParserSrcInfo& src_info ) const;
 };
 
+// ----------------------------------------------------------------------------
+// ---------- Гистограмма
 // ----------------------------------------------------------------------------
 // ---------- RDOFUNSequenceByHist
 // ----------------------------------------------------------------------------
@@ -300,6 +306,8 @@ public:
 };
 
 // ----------------------------------------------------------------------------
+// ---------- Перечень значений
+// ----------------------------------------------------------------------------
 // ---------- RDOFUNSequenceEnumerative
 // ----------------------------------------------------------------------------
 class RDOFUNSequenceEnumerative: public RDOFUNSequence
@@ -321,7 +329,7 @@ private:
 	virtual void createCalcs();
 
 public:
-	std::vector<int> val;
+	std::vector< int > val;
 
 	RDOFUNSequenceEnumerativeInt( RDOParser* _parser, RDOFUNSequenceHeader* _header, int _val ):
 		RDOFUNSequenceEnumerative( _parser, _header )
@@ -361,14 +369,16 @@ private:
 public:
 	std::vector< rdoRuntime::RDOValue > val;
 
-	RDOFUNSequenceEnumerativeEnum( RDOParser* _parser, RDOFUNSequenceHeader* _header, const std::string& _val ):
+	RDOFUNSequenceEnumerativeEnum( RDOParser* _parser, RDOFUNSequenceHeader* _header, const RDOParserSrcInfo& _value_info ):
 		RDOFUNSequenceEnumerative( _parser, _header )
 	{
-		addEnum( _val );
+		addEnum( _value_info );
 	}
-	void addEnum( const std::string& _val );
+	void addEnum( const RDOParserSrcInfo& _value_info );
 };
 
+// ----------------------------------------------------------------------------
+// ---------- Функции
 // ----------------------------------------------------------------------------
 // ---------- RDOFUNFunctionParam
 // ----------------------------------------------------------------------------
@@ -515,18 +525,20 @@ public:
 };
 
 // ----------------------------------------------------------------------------
+// ---------- Групповые выражения
+// ----------------------------------------------------------------------------
 // ---------- RDOFUNGroup
 // ----------------------------------------------------------------------------
 class RDOFUNGroup: public RDOParserObject, public RDOParserSrcInfo
 {
 protected:
-	void init( const std::string& _resType );
+	void init( const RDOParserSrcInfo& _res_info );
 
 public:
 	const RDORTPResType* resType;
 
-	RDOFUNGroup( RDOParser* _parser, const std::string& _resTypeName );
-	RDOFUNGroup( const RDOParserObject* _parent, const std::string& _resTypeName );
+	RDOFUNGroup( RDOParser* _parser, const RDOParserSrcInfo& _res_info );
+	RDOFUNGroup( const RDOParserObject* _parent, const RDOParserSrcInfo& _res_info );
 };
 
 // ----------------------------------------------------------------------------
@@ -534,16 +546,17 @@ public:
 // ----------------------------------------------------------------------------
 class RDOFUNGroupLogic: public RDOFUNGroup
 {
-public:
+private:
 	const int funType;
 
-	RDOFUNGroupLogic( RDOParser* _parser, int _funType, const std::string& _resTypeName ):
-		RDOFUNGroup( _parser, _resTypeName ),
+public:
+	RDOFUNGroupLogic( RDOParser* _parser, int _funType, const RDOParserSrcInfo& _res_info ):
+		RDOFUNGroup( _parser, _res_info ),
 		funType( _funType )
 	{
 	}
-	RDOFUNGroupLogic( const RDOParserObject* _parent, int _funType, const std::string& _resTypeName ):
-		RDOFUNGroup( _parent, _resTypeName ),
+	RDOFUNGroupLogic( const RDOParserObject* _parent, int _funType, const RDOParserSrcInfo& _res_info ):
+		RDOFUNGroup( _parent, _res_info ),
 		funType( _funType )
 	{
 	}
@@ -559,8 +572,8 @@ private:
 	rdoRuntime::RDOFunCalcSelect* select;
 
 public:
-	RDOFUNSelect( RDOParser* _parser, const std::string& _resTypeName ):
-		RDOFUNGroup( _parser, _resTypeName ),
+	RDOFUNSelect( RDOParser* _parser, const RDOParserSrcInfo& _res_info ):
+		RDOFUNGroup( _parser, _res_info.src_text() ),
 		select( NULL )
 	{
 	}
