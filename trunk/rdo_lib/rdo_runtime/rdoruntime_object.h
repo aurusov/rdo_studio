@@ -53,7 +53,7 @@ public:
 	virtual ~RDORuntimeObject();
 	void reparent( RDORuntimeParent* _parent );
 	RDORuntimeParent* getParent() const { return parent;  }
-	RDORuntime*       getRuntime();
+	RDORuntime*       getRuntime() const;
 
 	void detach();
 
@@ -115,26 +115,26 @@ public:
 class RDOSrcInfo
 {
 public:
-struct Position {
-	int first_line;
-	int first_pos;
-	int last_line;
-	int last_pos;
-	Position::Position():
-		first_line( -1 ),
-		first_pos( -1 ),
-		last_line( -1 ),
-		last_pos( -1 )
-	{
-	}
-	Position::Position( int _first_line, int _first_pos, int _last_line, int _last_pos ):
-		first_line( _first_line ),
-		first_pos( _first_pos ),
-		last_line( _last_line ),
-		last_pos( _last_pos )
-	{
-	}
-};
+	struct Position {
+		int first_line;
+		int first_pos;
+		int last_line;
+		int last_pos;
+		Position::Position():
+			first_line( -1 ),
+			first_pos( -1 ),
+			last_line( -1 ),
+			last_pos( -1 )
+		{
+		}
+		Position::Position( int _first_line, int _first_pos, int _last_line, int _last_pos ):
+			first_line( _first_line ),
+			first_pos( _first_pos ),
+			last_line( _last_line ),
+			last_pos( _last_pos )
+		{
+		}
+	};
 
 private:
 	Position                     position;

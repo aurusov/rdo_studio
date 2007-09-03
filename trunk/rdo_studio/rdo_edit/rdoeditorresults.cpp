@@ -32,6 +32,7 @@ RDOEditorResults::RDOEditorResults(): RDOEditorBaseEdit()
 	kw0 = "TRUE FALSE";
 	kw1 = "";
 	kw2 = "";
+	kw3 = "";
 }
 
 RDOEditorResults::~RDOEditorResults()
@@ -66,12 +67,7 @@ void RDOEditorResults::OnHelpKeyword()
 	if ( filename.empty() ) return;
 
 	std::string keyword = getCurrentOrSelectedWord();
-
-	std::string s = kw0;
-	s += " ";
-	s += kw1;
-	s += " ";
-	s += kw2;
+	std::string s = getAllKW();
 
 	if ( s.find_first_of( keyword ) == std::string::npos || keyword.empty() ) {
 		keyword = "pmv";

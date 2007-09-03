@@ -219,7 +219,6 @@ Show				return(Show);
 show				return(Show);
 frm_cell			return(frm_cell);
 text				return(text);
-transparent			return(transparent);
 bitmap				return(bitmap);
 s_bmp				return(s_bmp);
 rect				return(rect_keyword);
@@ -228,12 +227,27 @@ line				return(line);
 ellipse				return(ellipse);
 triang				return(triang);
 active				return(active);
+ruler				return(ruler);
+space				return(space_kw);
+transparent			return(color_transparent_kw);
+white				return(color_white_kw);
+black				return(color_black_kw);
+red					return(color_red_kw);
+green				return(color_green_kw);
+blue				return(color_blue_kw);
+cyan				return(color_cyan_kw);
+magenta				return(color_magenta_kw);
+yellow				return(color_yellow_kw);
+gray				return(color_gray_kw);
+last				return(color_last_kw);
+
 Select				return(Select);
 select				return(Select);
 Size				return(Size_kw);
 size				return(Size_kw);
 empty				return(Empty_kw);
 Empty				return(Empty_kw);
+
 
 (\'[^\']*\')		{
 						std::string n1(YYText());
@@ -272,7 +286,7 @@ Empty				return(Empty_kw);
 					}
 
 [\r\n\t ]+						;
-[:(),=\[\]\.\*\>\<\+\-\/\\]		return(YYText()[YYLeng()-1]);
+[#`~@$%^&|:(),=\[\]\.\*\>\<\+\-\/\\]	return(YYText()[YYLeng()-1]);
 
 ([+-]?[0-9]+"..")		{
 						std::string n1(YYText(), YYLeng()-2);
@@ -290,7 +304,7 @@ Empty				return(Empty_kw);
 						return REAL_CONST;
 					}
 
-[+-]?[0-9]+    {
+[+-]?[0-9]+			{
 						rdoParse::parser->lexer_setvalue(atoi(YYText()));
 						return INT_CONST;
 					}

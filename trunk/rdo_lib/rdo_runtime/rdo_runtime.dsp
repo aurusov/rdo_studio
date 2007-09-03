@@ -173,6 +173,8 @@ SOURCE=.\rdoframe.cpp
 
 !IF  "$(CFG)" == "rdo_runtime - Win32 Release"
 
+# ADD CPP /O2
+
 !ELSEIF  "$(CFG)" == "rdo_runtime - Win32 Debug"
 
 # ADD CPP /Ze

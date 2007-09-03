@@ -16,6 +16,8 @@ protected:
 	std::string kw0;
 	std::string kw1;
 	std::string kw2;
+	std::string kw3;
+	std::string getAllKW() const;
 	static std::string convertToLexer( const std::string& kw );
 
 	//{{AFX_MSG(RDOEditorBaseEdit)

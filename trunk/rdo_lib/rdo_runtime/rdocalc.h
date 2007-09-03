@@ -537,6 +537,18 @@ public:
 	}
 };
 
+class RDOFunCalcSelectEmpty: public RDOFunCalcSelectBase
+{
+private:
+	virtual RDOValue calcValue( RDORuntime* runtime ) const;
+
+public:
+	RDOFunCalcSelectEmpty( RDORuntimeParent* _parent, RDOFunCalcSelect* _select ):
+		RDOFunCalcSelectBase( _parent, _select, NULL )
+	{
+	}
+};
+
 class RDOFunCalcSelectSize: public RDOFunCalcSelectBase
 {
 private:

@@ -438,8 +438,8 @@ const RDOOPROperation* RDOParser::findOperation( const std::string& name ) const
 
 void RDOParser::LoadStdFunctions()
 {
-	RDORTPIntParamType* intType   = new RDORTPIntParamType( this, new RDORTPIntDiap(), new RDORTPIntDefVal() );
-	RDORTPRealParamType* realType = new RDORTPRealParamType( this, new RDORTPRealDiap(), new RDORTPRealDefVal() );
+	RDORTPIntParamType* intType   = new RDORTPIntParamType( this, new RDORTPIntDiap(this), new RDORTPIntDefVal(this) );
+	RDORTPRealParamType* realType = new RDORTPRealParamType( this, new RDORTPRealDiap(this), new RDORTPRealDefVal(this) );
 
 	RDOFUNFunction* fun = new RDOFUNFunction( this, "Abs", realType );
 	RDOFUNFunctionParam* param = new RDOFUNFunctionParam( fun, "p1", realType );

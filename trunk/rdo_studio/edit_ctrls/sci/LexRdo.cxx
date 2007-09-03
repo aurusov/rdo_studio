@@ -29,6 +29,7 @@ static void ColouriseRdoDoc( unsigned int startPos, int length, int initStyle, W
 	WordList& keywords  = *keywordlists[0];
 	WordList& functions = *keywordlists[1];
 	WordList& traces    = *keywordlists[2];
+	WordList& colors    = *keywordlists[3];
 
 	styler.StartAt( startPos );
 
@@ -49,6 +50,8 @@ static void ColouriseRdoDoc( unsigned int startPos, int length, int initStyle, W
 					sc.ChangeState( SCE_RDO_FUNCTION );
 				} else if ( traces.InList(s) ) {
 					sc.ChangeState( SCE_RDO_TRACE );
+				} else if ( colors.InList(s) ) {
+					sc.ChangeState( SCE_RDO_COLOR );
 				}
 				sc.SetState( SCE_RDO_DEFAULT );
 			}

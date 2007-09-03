@@ -377,7 +377,17 @@ SOURCE=.\rdogramdpt_rss.cpp
 # Begin Source File
 
 SOURCE=.\rdogramfrm.cpp
+
+!IF  "$(CFG)" == "rdo_parser - Win32 Release"
+
+# SUBTRACT CPP /O<none> /YX /Yc /Yu
+
+!ELSEIF  "$(CFG)" == "rdo_parser - Win32 Debug"
+
 # SUBTRACT CPP /YX /Yc /Yu
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 

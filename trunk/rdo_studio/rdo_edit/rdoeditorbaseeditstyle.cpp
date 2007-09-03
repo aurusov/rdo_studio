@@ -22,6 +22,7 @@ RDOEditorBaseEditTheme::RDOEditorBaseEditTheme(): RDOBaseEditTheme()
 	keywordColor    = RGB( 0x00, 0x00, 0x00 );
 	functionsColor  = RGB( 0x00, 0x80, 0x00 );
 	traceColor      = RGB( 0x80, 0x00, 0x00 );
+	colorColor      = RGB( 0x09, 0x26, 0xB0 );
 	commentColor    = RGB( 0x00, 0x80, 0x00 );
 	numberColor     = RGB( 0x00, 0x00, 0x80 );
 	stringColor     = RGB( 0x80, 0x00, 0x80 );
@@ -31,6 +32,7 @@ RDOEditorBaseEditTheme::RDOEditorBaseEditTheme(): RDOBaseEditTheme()
 	keywordStyle    = RDOStyleFont::BOLD;
 	functionsStyle  = RDOStyleFont::BOLD;
 	traceStyle      = RDOStyleFont::BOLD;
+	colorStyle      = RDOStyleFont::BOLD;
 	commentStyle    = RDOStyleFont::ITALIC;
 	numberStyle     = RDOStyleFont::NONE;
 	stringStyle     = RDOStyleFont::NONE;
@@ -49,6 +51,7 @@ RDOEditorBaseEditTheme& RDOEditorBaseEditTheme::operator =( const RDOEditorBaseE
 	keywordColor    = theme.keywordColor;
 	functionsColor  = theme.functionsColor;
 	traceColor      = theme.traceColor;
+	colorColor      = theme.colorColor;
 	commentColor    = theme.commentColor;
 	numberColor     = theme.numberColor;
 	stringColor     = theme.stringColor;
@@ -58,6 +61,7 @@ RDOEditorBaseEditTheme& RDOEditorBaseEditTheme::operator =( const RDOEditorBaseE
 	keywordStyle    = theme.keywordStyle;
 	functionsStyle  = theme.functionsStyle;
 	traceStyle      = theme.traceStyle;
+	colorStyle      = theme.colorStyle;
 	commentStyle    = theme.commentStyle;
 	numberStyle     = theme.numberStyle;
 	stringStyle     = theme.stringStyle;
@@ -74,6 +78,7 @@ bool RDOEditorBaseEditTheme::operator ==( const RDOEditorBaseEditTheme& theme ) 
 	                    keywordColor    == theme.keywordColor &&
 	                    functionsColor  == theme.functionsColor &&
 	                    traceColor      == theme.traceColor &&
+	                    colorColor      == theme.colorColor &&
 	                    commentColor    == theme.commentColor &&
 	                    numberColor     == theme.numberColor &&
 	                    stringColor     == theme.stringColor &&
@@ -83,6 +88,7 @@ bool RDOEditorBaseEditTheme::operator ==( const RDOEditorBaseEditTheme& theme ) 
 	                    keywordStyle    == theme.keywordStyle &&
 	                    functionsStyle  == theme.functionsStyle &&
 	                    traceStyle      == theme.traceStyle &&
+	                    colorStyle      == theme.colorStyle &&
 	                    commentStyle    == theme.commentStyle &&
 	                    numberStyle     == theme.numberStyle &&
 	                    stringStyle     == theme.stringStyle &&
@@ -104,6 +110,7 @@ void RDOEditorBaseEditTheme::load( std::string regPath )
 	keywordColor           = AfxGetApp()->GetProfileInt( regPath.c_str(), "keywordColor", keywordColor );
 	functionsColor         = AfxGetApp()->GetProfileInt( regPath.c_str(), "functionsColor", functionsColor );
 	traceColor             = AfxGetApp()->GetProfileInt( regPath.c_str(), "traceColor", traceColor );
+	colorColor             = AfxGetApp()->GetProfileInt( regPath.c_str(), "colorColor", colorColor );
 	commentColor           = AfxGetApp()->GetProfileInt( regPath.c_str(), "commentColor", commentColor );
 	numberColor            = AfxGetApp()->GetProfileInt( regPath.c_str(), "numberColor", numberColor );
 	stringColor            = AfxGetApp()->GetProfileInt( regPath.c_str(), "stringColor", stringColor );
@@ -112,6 +119,7 @@ void RDOEditorBaseEditTheme::load( std::string regPath )
 	keywordStyle           = static_cast<RDOStyleFont::style>(AfxGetApp()->GetProfileInt( regPath.c_str(), "keywordStyle", keywordStyle ));
 	functionsStyle         = static_cast<RDOStyleFont::style>(AfxGetApp()->GetProfileInt( regPath.c_str(), "functionsStyle", functionsStyle ));
 	traceStyle             = static_cast<RDOStyleFont::style>(AfxGetApp()->GetProfileInt( regPath.c_str(), "traceStyle", traceStyle ));
+	colorStyle             = static_cast<RDOStyleFont::style>(AfxGetApp()->GetProfileInt( regPath.c_str(), "colorStyle", colorStyle ));
 	commentStyle           = static_cast<RDOStyleFont::style>(AfxGetApp()->GetProfileInt( regPath.c_str(), "commentStyle", commentStyle ));
 	numberStyle            = static_cast<RDOStyleFont::style>(AfxGetApp()->GetProfileInt( regPath.c_str(), "numberStyle", numberStyle ));
 	stringStyle            = static_cast<RDOStyleFont::style>(AfxGetApp()->GetProfileInt( regPath.c_str(), "stringStyle", stringStyle ));
@@ -127,6 +135,7 @@ void RDOEditorBaseEditTheme::save( std::string regPath ) const
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "keywordColor", keywordColor );
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "functionsColor", functionsColor );
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "traceColor", traceColor );
+	AfxGetApp()->WriteProfileInt( regPath.c_str(), "colorColor", colorColor );
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "commentColor", commentColor );
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "numberColor", numberColor );
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "stringColor", stringColor );
@@ -134,7 +143,8 @@ void RDOEditorBaseEditTheme::save( std::string regPath ) const
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "identifierStyle", identifierStyle );
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "keywordStyle", keywordStyle );
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "functionsStyle", functionsStyle );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "traceStyle", traceStyle );
+	AfxGetApp()->WriteProfileInt( regPath.c_str(), "traceColor", traceColor );
+	AfxGetApp()->WriteProfileInt( regPath.c_str(), "colorColor", colorColor );
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "commentStyle", commentStyle );
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "numberStyle", numberStyle );
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "stringStyle", stringStyle );
@@ -152,7 +162,7 @@ bool RDOEditorBaseEditTheme::styleUsing( const int styleType ) const
 	       styleType == SCE_RDO_KEYWORD || styleType == SCE_RDO_FUNCTION ||
 	       styleType == SCE_RDO_TRACE   || styleType == SCE_RDO_COMMENT_RDO ||
 	       styleType == SCE_RDO_NUMBER  || styleType == SCE_RDO_STRING ||
-	       styleType == SCE_RDO_OPERATOR;
+	       styleType == SCE_RDO_OPERATOR || styleType == SCE_RDO_COLOR;
 }
 
 bool RDOEditorBaseEditTheme::styleBold( const int styleType ) const
@@ -163,6 +173,7 @@ bool RDOEditorBaseEditTheme::styleBold( const int styleType ) const
 		case SCE_RDO_KEYWORD    : return keywordStyle    & RDOStyleFont::BOLD ? true : false;
 		case SCE_RDO_FUNCTION   : return functionsStyle  & RDOStyleFont::BOLD ? true : false;
 		case SCE_RDO_TRACE      : return traceStyle      & RDOStyleFont::BOLD ? true : false;
+		case SCE_RDO_COLOR      : return colorStyle      & RDOStyleFont::BOLD ? true : false;
 		case SCE_RDO_COMMENT_RDO: return commentStyle    & RDOStyleFont::BOLD ? true : false;
 		case SCE_RDO_NUMBER     : return numberStyle     & RDOStyleFont::BOLD ? true : false;
 		case SCE_RDO_STRING     : return stringStyle     & RDOStyleFont::BOLD ? true : false;
@@ -179,6 +190,7 @@ bool RDOEditorBaseEditTheme::styleItalic( const int styleType ) const
 		case SCE_RDO_KEYWORD    : return keywordStyle    & RDOStyleFont::ITALIC ? true : false;
 		case SCE_RDO_FUNCTION   : return functionsStyle  & RDOStyleFont::ITALIC ? true : false;
 		case SCE_RDO_TRACE      : return traceStyle      & RDOStyleFont::ITALIC ? true : false;
+		case SCE_RDO_COLOR      : return colorStyle      & RDOStyleFont::ITALIC ? true : false;
 		case SCE_RDO_COMMENT_RDO: return commentStyle    & RDOStyleFont::ITALIC ? true : false;
 		case SCE_RDO_NUMBER     : return numberStyle     & RDOStyleFont::ITALIC ? true : false;
 		case SCE_RDO_STRING     : return stringStyle     & RDOStyleFont::ITALIC ? true : false;
@@ -195,6 +207,7 @@ std::string RDOEditorBaseEditTheme::styleFGColorToHEX( const int styleType ) con
 		case SCE_RDO_KEYWORD    : return colorToHEX( keywordColor );
 		case SCE_RDO_FUNCTION   : return colorToHEX( functionsColor );
 		case SCE_RDO_TRACE      : return colorToHEX( traceColor );
+		case SCE_RDO_COLOR      : return colorToHEX( colorColor );
 		case SCE_RDO_COMMENT_RDO: return colorToHEX( commentColor );
 		case SCE_RDO_NUMBER     : return colorToHEX( numberColor );
 		case SCE_RDO_STRING     : return colorToHEX( stringColor );
@@ -218,6 +231,7 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getCppTheme()
 	theme.keywordColor    = RGB( 0x00, 0x00, 0xFF );
 	theme.functionsColor  = RGB( 0x00, 0x00, 0xFF );
 	theme.traceColor      = RGB( 0x00, 0x00, 0xFF );
+	theme.colorColor      = RGB( 0x00, 0x00, 0xFF );
 	theme.commentColor    = RGB( 0x00, 0x80, 0x00 );
 	theme.numberColor     = RGB( 0x00, 0x00, 0x00 );
 	theme.stringColor     = RGB( 0x00, 0x00, 0x00 );
@@ -227,6 +241,7 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getCppTheme()
 	theme.keywordStyle    = RDOStyleFont::NONE;
 	theme.functionsStyle  = RDOStyleFont::NONE;
 	theme.traceStyle      = RDOStyleFont::NONE;
+	theme.colorStyle      = RDOStyleFont::NONE;
 	theme.commentStyle    = RDOStyleFont::NONE;
 	theme.numberStyle     = RDOStyleFont::NONE;
 	theme.stringStyle     = RDOStyleFont::NONE;
@@ -244,6 +259,7 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getPascalTheme()
 	theme.keywordColor    = RGB( 0x00, 0x00, 0x00 );
 	theme.functionsColor  = RGB( 0x00, 0x00, 0x00 );
 	theme.traceColor      = RGB( 0x00, 0x00, 0x00 );
+	theme.colorColor      = RGB( 0x00, 0x00, 0x00 );
 	theme.commentColor    = RGB( 0x00, 0x00, 0x80 );
 	theme.numberColor     = RGB( 0x00, 0x00, 0x00 );
 	theme.stringColor     = RGB( 0x00, 0x00, 0x00 );
@@ -253,6 +269,7 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getPascalTheme()
 	theme.keywordStyle    = RDOStyleFont::BOLD;
 	theme.functionsStyle  = RDOStyleFont::BOLD;
 	theme.traceStyle      = RDOStyleFont::BOLD;
+	theme.colorStyle      = RDOStyleFont::BOLD;
 	theme.commentStyle    = RDOStyleFont::ITALIC;
 	theme.numberStyle     = RDOStyleFont::NONE;
 	theme.stringStyle     = RDOStyleFont::NONE;
@@ -270,6 +287,7 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getHtmlTheme()
 	theme.keywordColor    = RGB( 0x80, 0x00, 0x80 );
 	theme.functionsColor  = RGB( 0xFF, 0x00, 0x00 );
 	theme.traceColor      = RGB( 0xFF, 0x00, 0x00 );
+	theme.colorColor      = RGB( 0xFF, 0x00, 0x00 );
 	theme.commentColor    = RGB( 0x00, 0x80, 0x00 );
 	theme.numberColor     = RGB( 0x00, 0x00, 0xFF );
 	theme.stringColor     = RGB( 0x00, 0x00, 0xFF );
@@ -279,6 +297,7 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getHtmlTheme()
 	theme.keywordStyle    = RDOStyleFont::NONE;
 	theme.functionsStyle  = RDOStyleFont::NONE;
 	theme.traceStyle      = RDOStyleFont::NONE;
+	theme.colorStyle      = RDOStyleFont::NONE;
 	theme.commentStyle    = RDOStyleFont::NONE;
 	theme.numberStyle     = RDOStyleFont::NONE;
 	theme.stringStyle     = RDOStyleFont::NONE;
@@ -296,6 +315,7 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getClassicTheme()
 	theme.keywordColor    = RGB( 0xFF, 0xFF, 0xFF );
 	theme.functionsColor  = RGB( 0xFF, 0xFF, 0xFF );
 	theme.traceColor      = RGB( 0xFF, 0xFF, 0xFF );
+	theme.colorColor      = RGB( 0xFF, 0xFF, 0xFF );
 	theme.commentColor    = RGB( 0xC0, 0xC0, 0xC0 );
 	theme.numberColor     = RGB( 0xFF, 0xFF, 0x00 );
 	theme.stringColor     = RGB( 0xFF, 0xFF, 0x00 );
@@ -305,6 +325,7 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getClassicTheme()
 	theme.keywordStyle    = RDOStyleFont::NONE;
 	theme.functionsStyle  = RDOStyleFont::NONE;
 	theme.traceStyle      = RDOStyleFont::NONE;
+	theme.colorStyle      = RDOStyleFont::NONE;
 	theme.commentStyle    = RDOStyleFont::NONE;
 	theme.numberStyle     = RDOStyleFont::NONE;
 	theme.stringStyle     = RDOStyleFont::NONE;
@@ -322,6 +343,7 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getTwilightTheme()
 	theme.keywordColor    = RGB( 0x00, 0xFF, 0xFF );
 	theme.functionsColor  = RGB( 0xFF, 0xFF, 0x00 );
 	theme.traceColor      = RGB( 0x00, 0xFF, 0x00 );
+	theme.colorColor      = RGB( 0x00, 0xFF, 0x00 );
 	theme.commentColor    = RGB( 0xC0, 0xC0, 0xC0 );
 	theme.numberColor     = RGB( 0xC0, 0xC0, 0xC0 );
 	theme.stringColor     = RGB( 0xFF, 0xFF, 0xFF );
@@ -331,6 +353,7 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getTwilightTheme()
 	theme.keywordStyle    = RDOStyleFont::BOLD;
 	theme.functionsStyle  = RDOStyleFont::BOLD;
 	theme.traceStyle      = static_cast<RDOStyleFont::style>(RDOStyleFont::BOLD | RDOStyleFont::ITALIC);
+	theme.colorStyle      = RDOStyleFont::BOLD;
 	theme.commentStyle    = RDOStyleFont::ITALIC;
 	theme.numberStyle     = RDOStyleFont::NONE;
 	theme.stringStyle     = RDOStyleFont::NONE;
@@ -348,6 +371,7 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getOceanTheme()
 	theme.keywordColor    = RGB( 0x00, 0x00, 0x00 );
 	theme.functionsColor  = RGB( 0x00, 0x00, 0x00 );
 	theme.traceColor      = RGB( 0x00, 0x00, 0x00 );
+	theme.colorColor      = RGB( 0x00, 0x00, 0x00 );
 	theme.commentColor    = RGB( 0x00, 0x80, 0x80 );
 	theme.numberColor     = RGB( 0x00, 0x00, 0xFF );
 	theme.stringColor     = RGB( 0x00, 0x00, 0xFF );
@@ -357,6 +381,7 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getOceanTheme()
 	theme.keywordStyle    = RDOStyleFont::BOLD;
 	theme.functionsStyle  = RDOStyleFont::BOLD;
 	theme.traceStyle      = RDOStyleFont::BOLD;
+	theme.colorStyle      = RDOStyleFont::BOLD;
 	theme.commentStyle    = RDOStyleFont::ITALIC;
 	theme.numberStyle     = RDOStyleFont::NONE;
 	theme.stringStyle     = RDOStyleFont::NONE;

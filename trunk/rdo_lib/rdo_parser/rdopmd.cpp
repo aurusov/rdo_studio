@@ -24,7 +24,6 @@ int pmdlex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer )
 }
 void pmderror( char* mes )
 {
-//	rdoParse::parser->error( mes );
 }
 
 // ----------------------------------------------------------------------------
@@ -39,10 +38,10 @@ RDOPMDPokaz::RDOPMDPokaz( RDOParser* _parser ):
 void RDOPMDPokaz::endOfCreation( rdoRuntime::RDOPMDPokaz* _pokaz_runtime )
 {
 	pokaz_runtime     = _pokaz_runtime;
-	pokaz_runtime->setID( parser->getPMD_id() );
-	parser->insertPMDPokaz( this );
+	pokaz_runtime->setID( getParser()->getPMD_id() );
+	getParser()->insertPMDPokaz( this );
 	//todo: перенести в конструктор rdoRuntime::RDOPMDPokaz
-	parser->runtime->addRuntimePokaz( pokaz_runtime );
+	getParser()->runtime->addRuntimePokaz( pokaz_runtime );
 }
 
 // ----------------------------------------------------------------------------
@@ -51,23 +50,23 @@ void RDOPMDPokaz::endOfCreation( rdoRuntime::RDOPMDPokaz* _pokaz_runtime )
 RDOPMDWatchPar::RDOPMDWatchPar( RDOParser* _parser, std::string* _name, bool _trace, const std::string& _resName, const std::string& _parName ):
 	RDOPMDPokaz( _parser )
 {
-	const RDORSSResource *const res = parser->findRSSResource(_resName);
+	const RDORSSResource *const res = getParser()->findRSSResource(_resName);
 	if(!res)
-		parser->error("Undefined resource name: " + _resName);
+		getParser()->error("Undefined resource name: " + _resName);
 
 	if( !res->getType()->isPermanent() )
-		parser->error("Resource must be of permanent type: " + _resName);
+		getParser()->error("Resource must be of permanent type: " + _resName);
 
 	const RDORTPParam *const par = res->getType()->findRTPParam(_parName);
 	if(!par)
-		parser->error("Undefined parameter name: " + _parName + " for resource " + _resName);
+		getParser()->error("Undefined parameter name: " + _parName + " for resource " + _resName);
 
 	int type = par->getType()->getType();
 	if ( type != RDORTPParamType::pt_int && type != RDORTPParamType::pt_real ) {
-		parser->error("Enumerative parameter: " + _resName + "." + _parName + " not allowed in watch_par statement");
+		getParser()->error("Enumerative parameter: " + _resName + "." + _parName + " not allowed in watch_par statement");
 	}
 
-	rdoRuntime::RDOPMDWatchPar* pokaz = new rdoRuntime::RDOPMDWatchPar( parser->runtime, _name, _trace, _resName, _parName, res->getNumber(), res->getType()->getRTPParamNumber(_parName) );
+	rdoRuntime::RDOPMDWatchPar* pokaz = new rdoRuntime::RDOPMDWatchPar( getParser()->runtime, _name, _trace, _resName, _parName, res->getNumber(), res->getType()->getRTPParamNumber(_parName) );
 	endOfCreation( pokaz );
 }
 
@@ -77,7 +76,7 @@ RDOPMDWatchPar::RDOPMDWatchPar( RDOParser* _parser, std::string* _name, bool _tr
 RDOPMDWatchState::RDOPMDWatchState( RDOParser* _parser, std::string* _name, bool _trace, RDOFUNLogic* _logic ):
 	RDOPMDPokaz( _parser )
 {
-	endOfCreation( new rdoRuntime::RDOPMDWatchState( parser->runtime, _name, _trace, _logic->calc ) );
+	endOfCreation( new rdoRuntime::RDOPMDWatchState( getParser()->runtime, _name, _trace, _logic->calc ) );
 }
 
 // ----------------------------------------------------------------------------
@@ -87,20 +86,20 @@ RDOPMDWatchQuant::RDOPMDWatchQuant( RDOParser* _parser, std::string* _name, bool
 	RDOPMDPokaz( _parser )
 {
 	RDOFUNGroupLogic* fgl = new RDOFUNGroupLogic( this, 5, _resTypeName );
-	rdoRuntime::RDOPMDWatchQuant* pokaz = new rdoRuntime::RDOPMDWatchQuant( parser->runtime, _name, _trace, _resTypeName, fgl->resType->getNumber() );
+	rdoRuntime::RDOPMDWatchQuant* pokaz = new rdoRuntime::RDOPMDWatchQuant( getParser()->runtime, _name, _trace, _resTypeName, fgl->resType->getNumber() );
 	endOfCreation( pokaz );
 }
 
 void RDOPMDWatchQuant::setLogic( RDOFUNLogic* _logic )
 {
 	static_cast<rdoRuntime::RDOPMDWatchQuant*>(pokaz_runtime)->setLogicCalc( _logic->calc );
-	parser->getFUNGroupStack().pop_back();
+	getParser()->getFUNGroupStack().pop_back();
 }
 
 void RDOPMDWatchQuant::setLogicNoCheck()
 {
-	static_cast<rdoRuntime::RDOPMDWatchQuant*>(pokaz_runtime)->setLogicCalc( new rdoRuntime::RDOCalcConst( parser->runtime, 1 ) );
-	parser->getFUNGroupStack().pop_back();
+	static_cast<rdoRuntime::RDOPMDWatchQuant*>(pokaz_runtime)->setLogicCalc( new rdoRuntime::RDOCalcConst( getParser()->runtime, 1 ) );
+	getParser()->getFUNGroupStack().pop_back();
 }
 
 // ----------------------------------------------------------------------------
@@ -110,7 +109,7 @@ RDOPMDWatchValue::RDOPMDWatchValue( RDOParser* _parser, std::string* _name, bool
 	RDOPMDPokaz( _parser )
 {
 	RDOFUNGroupLogic* fgl = new RDOFUNGroupLogic( this, 5, _resTypeName );
-	rdoRuntime::RDOPMDWatchValue* pokaz = new rdoRuntime::RDOPMDWatchValue( parser->runtime, _name, _trace, _resTypeName, fgl->resType->getNumber() );
+	rdoRuntime::RDOPMDWatchValue* pokaz = new rdoRuntime::RDOPMDWatchValue( getParser()->runtime, _name, _trace, _resTypeName, fgl->resType->getNumber() );
 	endOfCreation( pokaz );
 }
 
@@ -118,14 +117,14 @@ void RDOPMDWatchValue::setLogic( RDOFUNLogic* _logic, RDOFUNArithm* _arithm )
 {
 	static_cast<rdoRuntime::RDOPMDWatchValue*>(pokaz_runtime)->setLogicCalc( _logic->calc );
 	static_cast<rdoRuntime::RDOPMDWatchValue*>(pokaz_runtime)->setArithmCalc( _arithm->createCalc() );
-	parser->getFUNGroupStack().pop_back();
+	getParser()->getFUNGroupStack().pop_back();
 }
 
 void RDOPMDWatchValue::setLogicNoCheck( RDOFUNArithm* _arithm )
 {
-	static_cast<rdoRuntime::RDOPMDWatchValue*>(pokaz_runtime)->setLogicCalc( new rdoRuntime::RDOCalcConst( parser->runtime, 1 ) );
+	static_cast<rdoRuntime::RDOPMDWatchValue*>(pokaz_runtime)->setLogicCalc( new rdoRuntime::RDOCalcConst( getParser()->runtime, 1 ) );
 	static_cast<rdoRuntime::RDOPMDWatchValue*>(pokaz_runtime)->setArithmCalc( _arithm->createCalc() );
-	parser->getFUNGroupStack().pop_back();
+	getParser()->getFUNGroupStack().pop_back();
 }
 
 // ----------------------------------------------------------------------------
@@ -134,7 +133,7 @@ void RDOPMDWatchValue::setLogicNoCheck( RDOFUNArithm* _arithm )
 RDOPMDGetValue::RDOPMDGetValue( RDOParser* _parser, std::string* _name, RDOFUNArithm* _arithm ):
 	RDOPMDPokaz( _parser )
 {
-	rdoRuntime::RDOPMDGetValue* pokaz = new rdoRuntime::RDOPMDGetValue( parser->runtime, _name, _arithm->createCalc() );
+	rdoRuntime::RDOPMDGetValue* pokaz = new rdoRuntime::RDOPMDGetValue( getParser()->runtime, _name, _arithm->createCalc() );
 	endOfCreation( pokaz );
 }
 

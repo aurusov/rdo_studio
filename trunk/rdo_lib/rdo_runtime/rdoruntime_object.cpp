@@ -54,9 +54,9 @@ void RDORuntimeObject::reparent( RDORuntimeParent* _parent )
 	}
 }
 
-RDORuntime* RDORuntimeObject::getRuntime()
+RDORuntime* RDORuntimeObject::getRuntime() const
 {
-	if ( !parent ) return static_cast<RDORuntime*>(this);
+	if ( !parent ) return const_cast<RDORuntime*>(static_cast<const RDORuntime*>(this));
 	RDORuntimeObject* _parent = parent;
 	while ( _parent->parent ) {
 		_parent = _parent->parent;

@@ -303,13 +303,16 @@ void RDOStudioFrameManager::showFrame( const rdoSimulator::RDOFrame* const frame
 
 			RDOStudioFrameView* view = getFrameView( index );
 			if ( view->mustBeInit ) {
+				bool show_fillrect = true;
 				if ( frame->hasBackPicture ) {
 					BMP* bmp = bitmaps[frame->picFileName];
 					if ( bmp ) {
 						view->frameBmpRect.right  = bmp->w;
 						view->frameBmpRect.bottom = bmp->h;
+						show_fillrect = false;
 					}
-				} else {
+				}
+				if ( show_fillrect ) {
 					view->frameBmpRect.right  = frame->width;
 					view->frameBmpRect.bottom = frame->height;
 				}
@@ -331,6 +334,30 @@ void RDOStudioFrameManager::showFrame( const rdoSimulator::RDOFrame* const frame
 
 			HDC hdc = view->hmemdc;
 
+			bool show_fillrect = true;
+			if ( frame->hasBackPicture ) {
+				BMP* bmp = bitmaps[frame->picFileName];
+				if ( bmp ) {
+					CBitmap* pOldBitmap = dcBmp.SelectObject( &bmp->bmp );
+					::BitBlt( hdc, 0, 0, bmp->w, bmp->h, dcBmp.m_hDC, 0, 0, SRCCOPY );
+					dcBmp.SelectObject( pOldBitmap );
+					show_fillrect = false;
+				}
+			}
+			if ( show_fillrect ) {
+				HBRUSH brush     = ::CreateSolidBrush( RGB( frame->r, frame->g, frame->b ) );
+				HBRUSH pOldBrush = static_cast<HBRUSH>(::SelectObject( hdc, brush ));
+				HPEN pen     = ::CreatePen( PS_SOLID, 0, studioApp.mainFrame->style_frame.theme->defaultColor );
+				HPEN pOldPen = static_cast<HPEN>(::SelectObject( hdc, pen ));
+				::FillRect( hdc, view->frameBmpRect, brush );
+				::Polyline( hdc, view->points, 5 );
+				::SelectObject( hdc, pOldBrush );
+				::SelectObject( hdc, pOldPen );
+				::DeleteObject( brush );
+				::DeleteObject( pen );
+			}
+			view->bgColor = studioApp.mainFrame->style_frame.theme->backgroundColor;
+/*
 			if( !frame->hasBackPicture ) {
 				HBRUSH brush     = ::CreateSolidBrush( RGB( frame->r, frame->g, frame->b ) );
 				HBRUSH pOldBrush = static_cast<HBRUSH>(::SelectObject( hdc, brush ));
@@ -344,17 +371,16 @@ void RDOStudioFrameManager::showFrame( const rdoSimulator::RDOFrame* const frame
 				::DeleteObject( pen );
 				view->bgColor = studioApp.mainFrame->style_frame.theme->backgroundColor;
 
-/*
-				HBRUSH brush     = ::CreateSolidBrush( RGB( frame->r, frame->g, frame->b ) );
-				HBRUSH pOldBrush = static_cast<HBRUSH>(::SelectObject( hdc, brush ));
-				HPEN pen     = ::CreatePen( PS_SOLID, 0, RGB( 0x00, 0x00, 0x00 ) );
-				HPEN pOldPen = static_cast<HPEN>(::SelectObject( hdc, pen ));
-				::Rectangle( hdc, 0, 0, frame->width, frame->height );
-				::SelectObject( hdc, pOldBrush );
-				::SelectObject( hdc, pOldPen );
-				::DeleteObject( brush );
-				::DeleteObject( pen );
-*/
+//				HBRUSH brush     = ::CreateSolidBrush( RGB( frame->r, frame->g, frame->b ) );
+//				HBRUSH pOldBrush = static_cast<HBRUSH>(::SelectObject( hdc, brush ));
+//				HPEN pen     = ::CreatePen( PS_SOLID, 0, RGB( 0x00, 0x00, 0x00 ) );
+//				HPEN pOldPen = static_cast<HPEN>(::SelectObject( hdc, pen ));
+//				::Rectangle( hdc, 0, 0, frame->width, frame->height );
+//				::SelectObject( hdc, pOldBrush );
+//				::SelectObject( hdc, pOldPen );
+//				::DeleteObject( brush );
+//				::DeleteObject( pen );
+
 			} else {
 				BMP* bmp = bitmaps[frame->picFileName];
 				if ( bmp ) {
@@ -364,7 +390,7 @@ void RDOStudioFrameManager::showFrame( const rdoSimulator::RDOFrame* const frame
 				}
 				view->bgColor = RGB( frame->r, frame->g, frame->b );
 			}
-
+*/
 			int size = frame->elements.size();
 			for ( int i = 0; i < size; i++ ) {
 				rdoSimulator::RDOFrameElement* currElement = frame->elements.at(i);
@@ -579,6 +605,11 @@ void RDOStudioFrameManager::showFrame( const rdoSimulator::RDOFrame* const frame
 							area->w    = element->w;
 							area->h    = element->h;
 							frames[index]->areas_sim.push_back( area );
+						} else {
+							(*it)->x    = element->x;
+							(*it)->y    = element->y;
+							(*it)->w    = element->w;
+							(*it)->h    = element->h;
 						}
 						break;
 					}

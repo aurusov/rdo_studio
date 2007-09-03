@@ -26,6 +26,7 @@ public:
 	COLORREF keywordColor;
 	COLORREF functionsColor;
 	COLORREF traceColor;
+	COLORREF colorColor;
 	COLORREF commentColor;
 	COLORREF numberColor;
 	COLORREF stringColor;
@@ -35,6 +36,7 @@ public:
 	rdoStyle::RDOStyleFont::style keywordStyle;
 	rdoStyle::RDOStyleFont::style functionsStyle;
 	rdoStyle::RDOStyleFont::style traceStyle;
+	rdoStyle::RDOStyleFont::style colorStyle;
 	rdoStyle::RDOStyleFont::style commentStyle;
 	rdoStyle::RDOStyleFont::style numberStyle;
 	rdoStyle::RDOStyleFont::style stringStyle;

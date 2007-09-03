@@ -125,21 +125,36 @@
 %token Show					403
 %token frm_cell				404
 %token text					405
-%token transparent			406
-%token bitmap				407
-%token s_bmp				408
-%token rect_keyword			409
-%token r_rect				410
-%token line					411
-%token ellipse				412
-%token triang				413
-%token active				414
-%token QUOTED_IDENTIF		415
-%token Select				418
-%token Size_kw				419
-%token Empty_kw				420
-%token not_keyword			421
-%token UMINUS				422
+%token bitmap				406
+%token s_bmp				407
+%token rect_keyword			408
+%token r_rect				409
+%token line					410
+%token ellipse				411
+%token triang				412
+%token active				413
+%token ruler				414
+%token space_kw				415
+%token color_transparent_kw	416
+%token color_last_kw		417
+%token color_white_kw		418
+%token color_black_kw		419
+%token color_red_kw			420
+%token color_green_kw		421
+%token color_blue_kw		422
+%token color_cyan_kw		423
+%token color_magenta_kw		424
+%token color_yellow_kw		425
+%token color_gray_kw		426
+
+%token QUOTED_IDENTIF		430
+%token QUOTED_IDENTIF_BAD	431
+%token IDENTIF_BAD			432
+%token Select				433
+%token Size_kw				434
+%token Empty_kw				435
+%token not_keyword			436
+%token UMINUS				437
 
 %{
 #include "pch.h"
@@ -268,7 +283,12 @@ fun_arithm: fun_arithm '+' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOF
 			}
 			| error {
 				if ( @1.first_line = @1.last_line ) {
-					parser->error( @1, rdo::format("Неизвестный идентификатор: %s", reinterpret_cast<RDOLexer*>(lexer)->YYText()) );
+					std::string str = reinterpret_cast<RDOLexer*>(lexer)->YYText();
+					if ( str.length() == 1 && str.find_first_of("!#`~@$%^&|:(),=[].*><+-/\\") != std::string::npos ) {
+						parser->error( @1, rdo::format("Неизвестный символ: %s", str.c_str()) );
+					} else {
+						parser->error( @1, rdo::format("Неизвестный идентификатор: %s", str.c_str()) );
+					}
 				} else {
 					parser->error( @1, "Ошибка в арифметическом выражении" );
 				}
@@ -318,22 +338,20 @@ fun_group_keyword:	Exist			{ $$ = 1; }
 					| Not_For_All	{ $$ = 4; };
 
 fun_group_header:	fun_group_keyword '(' IDENTIF_COLON {
-						parser->lexer_loc_backup();
-						parser->lexer_loc_set( @3.first_line, @3.first_column + ((std::string*)$3)->length() );
-						$$ = (int)(new RDOFUNGroupLogic( parser, $1, *(std::string *)$3) );
-						parser->lexer_loc_restore();
+						std::string type_name = *reinterpret_cast<std::string*>($3);
+						$$ = (int)(new RDOFUNGroupLogic( parser, $1, RDOParserSrcInfo(@3, type_name, RDOParserSrcInfo::psi_align_bytext) ));
 					}
 					| fun_group_keyword '(' error {
 						parser->error( @3, "Ожидается имя типа" );
 					}
 					| fun_group_keyword error {
-						parser->error( @1, "Ожидается октрывающаяся скобка" );
+						parser->error( @1, "После имени функции ожидается октрывающаяся скобка" );
 					};
 
 fun_group:			fun_group_header fun_logic ')' {
 						RDOFUNGroupLogic* groupfun = reinterpret_cast<RDOFUNGroupLogic*>($1);
 						groupfun->setSrcPos( @1, @3 );
-						$$ = (int)groupfun->createFunLogic((RDOFUNLogic *)$2);
+						$$ = (int)groupfun->createFunLogic( reinterpret_cast<RDOFUNLogic*>($2) );
 					}
 					| fun_group_header NoCheck ')' {
 						RDOFUNGroupLogic* groupfun = reinterpret_cast<RDOFUNGroupLogic*>($1);
@@ -354,8 +372,9 @@ fun_group:			fun_group_header fun_logic ')' {
 // ---------- Select
 // ----------------------------------------------------------------------------
 fun_select_header:	Select '(' IDENTIF_COLON {
-						RDOFUNSelect* select = new RDOFUNSelect(parser, *(std::string*)$3);
-						select->setSrcText( "Select(" + *(std::string*)$3 + ": " );
+						std::string type_name = *reinterpret_cast<std::string*>($3);
+						RDOFUNSelect* select = new RDOFUNSelect( parser, RDOParserSrcInfo(@3, type_name, RDOParserSrcInfo::psi_align_bytext) );
+						select->setSrcText( "Select(" + type_name + ": " );
 						$$ = (int)select;
 					}
 					| Select '(' error {
@@ -369,16 +388,16 @@ fun_select_body:	fun_select_header fun_logic ')' {
 						RDOFUNSelect* select = reinterpret_cast<RDOFUNSelect*>($1);
 						RDOFUNLogic*  flogic = reinterpret_cast<RDOFUNLogic*>($2);
 						select->setSrcText( select->src_text() + flogic->src_text() + ")" );
-						RDOFUNLogic* logic = select->createFunSelect( flogic );
-						logic->setSrcPos( @2 );
-						$$ = $1;
+						select->initSelect( flogic );
 					}
 					| fun_select_header NoCheck ')' {
 						RDOFUNSelect* select = reinterpret_cast<RDOFUNSelect*>($1);
-						select->setSrcText( select->src_text() + "NoCheck)" );
-						RDOFUNLogic* logic = ((RDOFUNSelect*)$1)->createFunSelect();
-						logic->setSrcPos( @2 );
-						$$ = $1;
+						RDOParserSrcInfo logic_info(@2, "NoCheck");
+						select->setSrcText( select->src_text() + logic_info.src_text() + ")" );
+						rdoRuntime::RDOCalcConst* calc_nocheck = new rdoRuntime::RDOCalcConst( parser->runtime, 1 );
+						RDOFUNLogic* flogic = new RDOFUNLogic( select, calc_nocheck, true );
+						flogic->setSrcInfo( logic_info );
+						select->initSelect( flogic );
 					}
 					| fun_select_header fun_logic error {
 						parser->error( @2, "Ожидается закрывающаяся скобка" );
@@ -395,21 +414,21 @@ fun_select_keyword:	Exist			{ $$ = 1; }
 fun_select_logic:	fun_select_body '.' fun_select_keyword '(' fun_logic ')' {
 						RDOFUNSelect* select = reinterpret_cast<RDOFUNSelect*>($1);
 						select->setSrcPos( @1, @6 );
-						RDOFUNLogic* logic = select->createFunSelectGroup( $3, (RDOFUNLogic*)$5 );
+						RDOFUNLogic* logic = select->createFunSelectGroup( $3, reinterpret_cast<RDOFUNLogic*>($5) );
 						$$ = (int)logic;
 					}
 					| fun_select_body '.' Empty_kw '(' ')' {
 						RDOFUNSelect* select = reinterpret_cast<RDOFUNSelect*>($1);
 						select->setSrcPos( @1, @5 );
-						RDOFUNLogic* logic = select->createFunSelectEmpty();
+						RDOParserSrcInfo empty_info(@3, @5, "Empty()");
+						RDOFUNLogic* logic = select->createFunSelectEmpty( empty_info );
 						$$ = (int)logic;
 					}
 					| fun_select_body error {
 						parser->error( @1, "Ожидается '.' (точка) для вызова метода списка ресурсов" );
 					}
 					| fun_select_body '.' error {
-						parser->lexer_loc_set( &(@2), &(@3) );
-						parser->error( "Ожидается метод списка ресурсов" );
+						parser->error( @2, @3, "Ожидается метод списка ресурсов" );
 					}
 					| fun_select_body '.' fun_select_keyword error {
 						parser->error( @3, "Ожидается октрывающаяся скобка" );
@@ -427,15 +446,15 @@ fun_select_logic:	fun_select_body '.' fun_select_keyword '(' fun_logic ')' {
 fun_select_arithm:	fun_select_body '.' Size_kw '(' ')' {
 						RDOFUNSelect* select = reinterpret_cast<RDOFUNSelect*>($1);
 						select->setSrcPos( @1, @5 );
-						RDOFUNArithm* arithm = select->createFunSelectSize();
+						RDOParserSrcInfo size_info(@3, @5, "Size()");
+						RDOFUNArithm* arithm = select->createFunSelectSize( size_info );
 						$$ = (int)arithm;
 					}
 					| fun_select_body error {
 						parser->error( @1, "Ожидается '.' (точка) для вызова метода списка ресурсов" );
 					}
 					| fun_select_body '.' error {
-						parser->lexer_loc_set( &(@2), &(@3) );
-						parser->error( "Ожидается метод списка ресурсов: Size()" );
+						parser->error( @2, @3, "Ожидается метод списка ресурсов: Size()" );
 					}
 					| fun_select_body '.' Size_kw error {
 						parser->error( @3, "Ожидается октрывающаяся скобка" );

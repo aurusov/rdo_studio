@@ -36,6 +36,7 @@ public:
 	void addHotKey( const std::string& hotKey, const YYLTYPE& pattern_pos );
 	void endOfDefinition( const YYLTYPE& opr_pos );
 	const std::string& getName() const { return src_info().src_text(); }
+	const RDOPATPattern* getType() const { return pattern; }
 };
 
 } // namespace rdoParse 

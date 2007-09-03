@@ -334,7 +334,7 @@ public:
 	RDOFUNSequenceEnumerativeInt( RDOParser* _parser, RDOFUNSequenceHeader* _header, int _val ):
 		RDOFUNSequenceEnumerative( _parser, _header )
 	{
-		addInt(_val);
+		addInt( _val );
 	}
 	void addInt( int val );
 };
@@ -516,7 +516,7 @@ public:
 	const RDOFUNFunctionParam* const findFUNFunctionParam( const std::string& paramName ) const;
 	int findFUNFunctionParamNum( const std::string& paramName ) const;
 	void createListCalc();
-	void createTableCalc();
+	void createTableCalc( const YYLTYPE& _elements_pos );
 	void createAlgorithmicCalc( const RDOParserSrcInfo& _body_src_info );
 	const std::string& getName() const                                { return src_info().src_text(); }
 	const std::vector< const RDOFUNFunctionParam* > getParams() const { return params;                }
@@ -577,25 +577,10 @@ public:
 		select( NULL )
 	{
 	}
-/*
-todo: а зачем ?
-	RDOFUNSelect( const RDOParserObject* _parent, const std::string& _resTypeName ):
-		RDOFUNGroup( _parent, _resTypeName ),
-		select( NULL )
-	{
-		setSrcText( "Select( " + *_resTypeName + ": " );
-	}
-*/
-	RDOFUNLogic* createFunSelect( RDOFUNLogic* cond = NULL );
+	void initSelect( const RDOFUNLogic* cond = NULL );
 	RDOFUNLogic* createFunSelectGroup( int funType, RDOFUNLogic* cond );
-	RDOFUNLogic* createFunSelectEmpty();
-	RDOFUNArithm* createFunSelectSize();
-
-	virtual void setSrcInfo( const RDOParserSrcInfo& src_info );
-	virtual void setSrcPos( const RDOSrcInfo::Position& _pos );
-	void setSrcPos( const YYLTYPE& _pos_begin, const YYLTYPE& _pos_end ) {
-		RDOParserSrcInfo::setSrcPos( _pos_begin, _pos_end );
-	}
+	RDOFUNLogic* createFunSelectEmpty( const RDOParserSrcInfo& _empty_info );
+	RDOFUNArithm* createFunSelectSize( const RDOParserSrcInfo& _size_info );
 };
 
 } // namespace rdoParse 

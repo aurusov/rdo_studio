@@ -458,19 +458,8 @@ void RDOEditorEdit::completeWord()
 //		studioApp.studioGUI->sendMessage( kernel->codecomp(), RDOThread::RT_CODECOMP_GET_DATA, &rdoSimulator::RDOThreadCodeComp::GetCodeComp( tab->getCurrentRDOItem(), getCurrentPos(), getCurrentLineNumber(), s ) );
 	}
 	if ( s.empty() ) {
-		s  = kw0;
-		s += " ";
-		s += kw1;
-		s += " ";
-		s += kw2;
+		s = getAllKW();
 	}
-/*
-	std::string s = kw0;
-	s += " ";
-	s += kw1;
-	s += " ";
-	s += kw2;
-*/
 	WordList wl;
 	wl.Set( s.c_str() );
 	wl.InList( "" );
@@ -907,12 +896,7 @@ void RDOEditorEdit::OnHelpKeyword()
 	if ( filename.empty() ) return;
 
 	std::string keyword = getCurrentOrSelectedWord();
-
-	std::string s = kw0;
-	s += " ";
-	s += kw1;
-	s += " ";
-	s += kw2;
+	std::string s = getAllKW();
 
 	if ( s.find_first_of( keyword ) == std::string::npos || keyword.empty() ) {
 		RDOEditorTabCtrl* tab = model->getTab();

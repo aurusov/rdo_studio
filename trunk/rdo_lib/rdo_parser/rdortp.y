@@ -129,23 +129,36 @@
 %token Show					403
 %token frm_cell				404
 %token text					405
-%token transparent			406
-%token bitmap				407
-%token s_bmp				408
-%token rect_keyword			409
-%token r_rect				410
-%token line					411
-%token ellipse				412
-%token triang				413
-%token active				414
-%token QUOTED_IDENTIF		415
-%token QUOTED_IDENTIF_BAD	416
-%token IDENTIF_BAD			417
-%token Select				418
-%token Size_kw				419
-%token Empty_kw				420
-%token not_keyword			421
-%token UMINUS				422
+%token bitmap				406
+%token s_bmp				407
+%token rect_keyword			408
+%token r_rect				409
+%token line					410
+%token ellipse				411
+%token triang				412
+%token active				413
+%token ruler				414
+%token space_kw				415
+%token color_transparent_kw	416
+%token color_last_kw		417
+%token color_white_kw		418
+%token color_black_kw		419
+%token color_red_kw			420
+%token color_green_kw		421
+%token color_blue_kw		422
+%token color_cyan_kw		423
+%token color_magenta_kw		424
+%token color_yellow_kw		425
+%token color_gray_kw		426
+
+%token QUOTED_IDENTIF		430
+%token QUOTED_IDENTIF_BAD	431
+%token IDENTIF_BAD			432
+%token Select				433
+%token Size_kw				434
+%token Empty_kw				435
+%token not_keyword			436
+%token UMINUS				437
 
 %{
 #include "pch.h"
@@ -313,12 +326,13 @@ param_type:		integer param_int_diap param_int_default_val {
 */
 param_int_diap:	/* empty */ {
 					YYLTYPE pos = @0;
+					pos.first_line   = pos.last_line;
 					pos.first_column = pos.last_column;
-					RDORTPIntDiap* diap = new RDORTPIntDiap( pos );
+					RDORTPIntDiap* diap = new RDORTPIntDiap( parser, pos );
 					$$ = (int)diap;
 				}
 				| '[' INT_CONST dblpoint INT_CONST ']' {
-					RDORTPIntDiap* diap = new RDORTPIntDiap( $2, $4, RDOParserSrcInfo( @1, @5 ), @4 );
+					RDORTPIntDiap* diap = new RDORTPIntDiap( parser, $2, $4, RDOParserSrcInfo( @1, @5 ), @4 );
 					$$ = (int)diap;
 				}
 				| '[' REAL_CONST dblpoint REAL_CONST {
@@ -343,32 +357,33 @@ param_int_diap:	/* empty */ {
 
 param_real_diap:	/* empty */ {
 					YYLTYPE pos = @0;
+					pos.first_line   = pos.last_line;
 					pos.first_column = pos.last_column;
-					RDORTPRealDiap* diap = new RDORTPRealDiap( pos );
+					RDORTPRealDiap* diap = new RDORTPRealDiap( parser, pos );
 					$$ = (int)diap;
 				}
 				| '[' REAL_CONST dblpoint REAL_CONST ']' {
 					double min = *reinterpret_cast<double*>($2);
 					double max = *reinterpret_cast<double*>($4);
-					RDORTPRealDiap* diap = new RDORTPRealDiap( min, max, RDOParserSrcInfo( @1, @5 ), @4 );
+					RDORTPRealDiap* diap = new RDORTPRealDiap( parser, min, max, RDOParserSrcInfo( @1, @5 ), @4 );
 					$$ = (int)diap;
 				}
 				| '[' REAL_CONST dblpoint INT_CONST ']' {
 					double min = *reinterpret_cast<double*>($2);
 					double max = $4;
-					RDORTPRealDiap* diap = new RDORTPRealDiap( min, max, RDOParserSrcInfo( @1, @5 ), @4 );
+					RDORTPRealDiap* diap = new RDORTPRealDiap( parser, min, max, RDOParserSrcInfo( @1, @5 ), @4 );
 					$$ = (int)diap;
 				}
 				| '[' INT_CONST dblpoint REAL_CONST ']' {
 					double min = $2;
 					double max = *reinterpret_cast<double*>($4);
-					RDORTPRealDiap* diap = new RDORTPRealDiap( min, max, RDOParserSrcInfo( @1, @5 ), @4 );
+					RDORTPRealDiap* diap = new RDORTPRealDiap( parser, min, max, RDOParserSrcInfo( @1, @5 ), @4 );
 					$$ = (int)diap;
 				}
 				| '[' INT_CONST dblpoint INT_CONST ']' {
 					double min = $2;
 					double max = $4;
-					RDORTPRealDiap* diap = new RDORTPRealDiap( min, max, RDOParserSrcInfo( @1, @5 ), @4 );
+					RDORTPRealDiap* diap = new RDORTPRealDiap( parser, min, max, RDOParserSrcInfo( @1, @5 ), @4 );
 					$$ = (int)diap;
 				}
 				| '[' REAL_CONST dblpoint REAL_CONST error {
@@ -396,11 +411,12 @@ param_real_diap:	/* empty */ {
 
 param_int_default_val:	/* empty */ {
 						YYLTYPE pos = @0;
+						pos.first_line   = pos.last_line;
 						pos.first_column = pos.last_column;
-						$$ = (int)(new RDORTPIntDefVal(pos));
+						$$ = (int)(new RDORTPIntDefVal(parser, pos));
 					}
 					| '=' INT_CONST {
-						$$ = (int)(new RDORTPIntDefVal($2, RDOParserSrcInfo( @1, @2 )));
+						$$ = (int)(new RDORTPIntDefVal(parser, $2, RDOParserSrcInfo( @1, @2 )));
 					}
 					| '=' REAL_CONST {
 						// Целое число инициализируется вещественным: %f
@@ -415,14 +431,15 @@ param_int_default_val:	/* empty */ {
 
 param_real_default_val:	/* empty */ {
 						YYLTYPE pos = @0;
+						pos.first_line   = pos.last_line;
 						pos.first_column = pos.last_column;
-						$$ = (int)(new RDORTPRealDefVal(pos));
+						$$ = (int)(new RDORTPRealDefVal(parser, pos));
 					}
 					| '=' REAL_CONST {
-						$$ = (int)(new RDORTPRealDefVal(*((double *)$2), RDOParserSrcInfo( @1, @2 )));
+						$$ = (int)(new RDORTPRealDefVal(parser, *((double *)$2), RDOParserSrcInfo( @1, @2 )));
 					}
 					| '=' INT_CONST {
-						$$ = (int)(new RDORTPRealDefVal($2, RDOParserSrcInfo( @1, @2 )));
+						$$ = (int)(new RDORTPRealDefVal(parser, $2, RDOParserSrcInfo( @1, @2 )));
 					}
 					| '=' {
 						parser->error( @1, "Не указано значение по-умолчанию для вещественного типа" );
@@ -492,11 +509,12 @@ param_enum_list: IDENTIF {
 
 param_enum_default_val:	/* empty */ {
 						YYLTYPE pos = @0;
+						pos.first_line   = pos.last_line;
 						pos.first_column = pos.last_column;
-						$$ = (int)(new RDORTPEnumDefVal(pos));
+						$$ = (int)(new RDORTPEnumDefVal(parser, pos));
 					}
 					| '=' IDENTIF {
-						$$ = (int)(new RDORTPEnumDefVal( *(std::string*)$2, RDOParserSrcInfo( @1, @2 ) ));
+						$$ = (int)(new RDORTPEnumDefVal( parser, *(std::string*)$2, RDOParserSrcInfo( @1, @2 ) ));
 					}
 					| '=' {
 						parser->error( @1, "Не указано значение по-умолчанию для перечислимого типа" );

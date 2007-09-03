@@ -610,6 +610,7 @@
 #define IDS_MODEL_SHOWRATE_S            40179
 #define IDS_INFINITI                    40180
 #define IDS_MODEL_SPEED                 40181
+#define IDS_COLORSTYLE_EDITOR_COLOR     40182
 #define IDS_FRAMES                      40200
 #define IDS_FRAME_NAME                  40201
 #define IDS_MODEL_NAME                  40202

@@ -122,9 +122,9 @@ private:
 	bool exist;
 
 public:
-	RDORTPDefVal( const RDORTPDefVal& dv );
-	RDORTPDefVal( bool _exist );
-	RDORTPDefVal( bool _exist, const RDOParserSrcInfo& _src_info );
+	RDORTPDefVal( RDOParser* _parser, const RDORTPDefVal& dv );
+	RDORTPDefVal( RDOParser* _parser, bool _exist );
+	RDORTPDefVal( RDOParser* _parser, bool _exist, const RDOParserSrcInfo& _src_info );
 	virtual int getIntValue() const;
 	virtual double getRealValue() const;
 	virtual const std::string& getEnumValue() const;
@@ -140,27 +140,27 @@ private:
 	int val;
 
 public:
-	RDORTPIntDefVal():
-		RDORTPDefVal( false )
+	RDORTPIntDefVal( RDOParser* _parser ):
+		RDORTPDefVal( _parser, false )
 	{
 	}
-	RDORTPIntDefVal( const RDORTPIntDefVal& dv ):
-		RDORTPDefVal( dv ),
+	RDORTPIntDefVal( RDOParser* _parser, const RDORTPIntDefVal& dv ):
+		RDORTPDefVal( _parser, dv ),
 		val( dv.val )
 	{
 	}
-	RDORTPIntDefVal( int _val ):
-		RDORTPDefVal( true ),
+	RDORTPIntDefVal( RDOParser* _parser, int _val ):
+		RDORTPDefVal( _parser, true ),
 		val( _val )
 	{
 		setSrcText( rdo::format("%d", val) );
 	}
-	RDORTPIntDefVal( const RDOParserSrcInfo& _src_info ):
-		RDORTPDefVal( false, _src_info )
+	RDORTPIntDefVal( RDOParser* _parser, const RDOParserSrcInfo& _src_info ):
+		RDORTPDefVal( _parser, false, _src_info )
 	{
 	}
-	RDORTPIntDefVal( int _val, const RDOParserSrcInfo& _src_info ):
-		RDORTPDefVal( true, _src_info ),
+	RDORTPIntDefVal( RDOParser* _parser, int _val, const RDOParserSrcInfo& _src_info ):
+		RDORTPDefVal( _parser, true, _src_info ),
 		val( _val )
 	{
 		setSrcText( rdo::format("%d", val) );
@@ -181,10 +181,10 @@ private:
 public:
 	int min_value;
 	int max_value;
-	RDORTPIntDiap();
-	RDORTPIntDiap( const RDORTPIntDiap& diap );
-	RDORTPIntDiap( const RDOParserSrcInfo& _src_info );
-	RDORTPIntDiap( int _min_value, int _max_value, const RDOParserSrcInfo& _src_info, const YYLTYPE& _max_value_pos );
+	RDORTPIntDiap( RDOParser* _parser );
+	RDORTPIntDiap( RDOParser* _parser, const RDORTPIntDiap& diap );
+	RDORTPIntDiap( RDOParser* _parser, const RDOParserSrcInfo& _src_info );
+	RDORTPIntDiap( RDOParser* _parser, int _min_value, int _max_value, const RDOParserSrcInfo& _src_info, const YYLTYPE& _max_value_pos );
 	bool isExist() const { return exist; }
 };
 
@@ -227,27 +227,27 @@ private:
 	double val;
 
 public:
-	RDORTPRealDefVal():
-		RDORTPDefVal( false )
+	RDORTPRealDefVal( RDOParser* _parser ):
+		RDORTPDefVal( _parser, false )
 	{
 	}
-	RDORTPRealDefVal( const RDORTPIntDefVal& dv ):
-		RDORTPDefVal( dv ),
+	RDORTPRealDefVal( RDOParser* _parser, const RDORTPIntDefVal& dv ):
+		RDORTPDefVal( _parser, dv ),
 		val( dv.getRealValue() )
 	{
 	}
-	RDORTPRealDefVal( double _val ):
-		RDORTPDefVal( true ),
+	RDORTPRealDefVal( RDOParser* _parser, double _val ):
+		RDORTPDefVal( _parser, true ),
 		val( _val )
 	{
 		setSrcText( rdo::format("%f", val) );
 	}
-	RDORTPRealDefVal( const RDOParserSrcInfo& _src_info ):
-		RDORTPDefVal( false, _src_info )
+	RDORTPRealDefVal( RDOParser* _parser, const RDOParserSrcInfo& _src_info ):
+		RDORTPDefVal( _parser, false, _src_info )
 	{
 	}
-	RDORTPRealDefVal( double _val, const RDOParserSrcInfo& _src_info ):
-		RDORTPDefVal( true, _src_info ),
+	RDORTPRealDefVal( RDOParser* _parser, double _val, const RDOParserSrcInfo& _src_info ):
+		RDORTPDefVal( _parser, true, _src_info ),
 		val( _val )
 	{
 		setSrcText( rdo::format("%f", val) );
@@ -268,10 +268,10 @@ private:
 public:
 	double min_value;
 	double max_value;
-	RDORTPRealDiap();
-	RDORTPRealDiap( const RDORTPRealDiap& diap );
-	RDORTPRealDiap( const RDOParserSrcInfo& _src_info );
-	RDORTPRealDiap( double _min_value, double _max_value, const RDOParserSrcInfo& _src_info, const YYLTYPE& _max_value_pos );
+	RDORTPRealDiap( RDOParser* _parser );
+	RDORTPRealDiap( RDOParser* _parser, const RDORTPRealDiap& diap );
+	RDORTPRealDiap( RDOParser* _parser, const RDOParserSrcInfo& _src_info );
+	RDORTPRealDiap( RDOParser* _parser, double _min_value, double _max_value, const RDOParserSrcInfo& _src_info, const YYLTYPE& _max_value_pos );
 	bool isExist() const { return exist; }
 };
 
@@ -331,30 +331,30 @@ private:
 	std::string val;
 
 public:
-	RDORTPEnumDefVal():
-		RDORTPDefVal( false ),
+	RDORTPEnumDefVal( RDOParser* _parser ):
+		RDORTPDefVal( _parser, false ),
 		val( "" )
 	{
 	}
-	RDORTPEnumDefVal( const RDORTPEnumDefVal& dv ):
-		RDORTPDefVal( dv ),
+	RDORTPEnumDefVal( RDOParser* _parser, const RDORTPEnumDefVal& dv ):
+		RDORTPDefVal( _parser, dv ),
 		val( dv.val )
 	{
 		setSrcText( val );
 	}
-	RDORTPEnumDefVal( const std::string& _val ):
-		RDORTPDefVal( true ),
+	RDORTPEnumDefVal( RDOParser* _parser, const std::string& _val ):
+		RDORTPDefVal( _parser, true ),
 		val( _val )
 	{
 		setSrcText( val );
 	}
-	RDORTPEnumDefVal( const RDOParserSrcInfo& _src_info ):
-		RDORTPDefVal( false, _src_info ),
+	RDORTPEnumDefVal( RDOParser* _parser, const RDOParserSrcInfo& _src_info ):
+		RDORTPDefVal( _parser, false, _src_info ),
 		val( "" )
 	{
 	}
-	RDORTPEnumDefVal( const std::string& _val, const RDOParserSrcInfo& _src_info ):
-		RDORTPDefVal( true, _src_info ),
+	RDORTPEnumDefVal( RDOParser* _parser, const std::string& _val, const RDOParserSrcInfo& _src_info ):
+		RDORTPDefVal( _parser, true, _src_info ),
 		val( _val )
 	{
 		setSrcText( val );

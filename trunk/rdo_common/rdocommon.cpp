@@ -160,6 +160,21 @@ std::string RDOSyntaxError::getMessage( ErrorCode _error_code, va_list& params )
 	return rdo::format( res_id, params );
 }
 
+RDOColoredElement::RDOColoredElement( const RDOColor& _background, const RDOColor& _foreground):
+	background( _background ),
+	foreground( _foreground )
+{
+}
+
+RDOTextElement::RDOTextElement( double _x, double _y, double _w, double _h, const RDOColor& _background, const RDOColor& _foreground, const std::string& _text, RDOTextAlign _align ):
+	RDOBoundedElement( _x, _y, _w, _h ),
+	RDOColoredElement( _background, _foreground ),
+	strText( _text ), 
+	align( _align )
+{ 
+	type = text_type; 
+}
+
 RDOFrame::~RDOFrame()
 {
 	for(std::vector<RDOFrameElement *>::iterator it = elements.begin(); it != elements.end(); it++)
@@ -167,16 +182,6 @@ RDOFrame::~RDOFrame()
 
 	elements.clear();
 }
-
-RDOTextElement::RDOTextElement(double _x, double _y, double _w, double _h, RDOColor &_background, RDOColor &_foreground, std::string &_text, RDOTextAlign _align)
-	: RDOBoundedElement(_x, _y, _w, _h), RDOColoredElement(_background, _foreground), strText(_text), align(_align)
-{ 
-	type = text_type; 
-}
-
-RDOColoredElement::RDOColoredElement(RDOColor &_background, RDOColor &_foreground)
-	: background(_background), foreground(_foreground)
-{}
 
 RDOBoundedElement::RDOBoundedElement(double _x, double _y, double _w, double _h)
 	: x(_x), y(_y), w(_w), h(_h)

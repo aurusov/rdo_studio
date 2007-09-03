@@ -125,21 +125,36 @@
 %token Show					403
 %token frm_cell				404
 %token text					405
-%token transparent			406
-%token bitmap				407
-%token s_bmp				408
-%token rect_keyword			409
-%token r_rect				410
-%token line					411
-%token ellipse				412
-%token triang				413
-%token active				414
-%token QUOTED_IDENTIF		415
-%token Select				418
-%token Size_kw				419
-%token Empty_kw				420
-%token not_keyword			421
-%token UMINUS				422
+%token bitmap				406
+%token s_bmp				407
+%token rect_keyword			408
+%token r_rect				409
+%token line					410
+%token ellipse				411
+%token triang				412
+%token active				413
+%token ruler				414
+%token space_kw				415
+%token color_transparent_kw	416
+%token color_last_kw		417
+%token color_white_kw		418
+%token color_black_kw		419
+%token color_red_kw			420
+%token color_green_kw		421
+%token color_blue_kw		422
+%token color_cyan_kw		423
+%token color_magenta_kw		424
+%token color_yellow_kw		425
+%token color_gray_kw		426
+
+%token QUOTED_IDENTIF		430
+%token QUOTED_IDENTIF_BAD	431
+%token IDENTIF_BAD			432
+%token Select				433
+%token Size_kw				434
+%token Empty_kw				435
+%token not_keyword			436
+%token UMINUS				437
 
 %{
 #include "pch.h"
@@ -294,12 +309,13 @@ param_type:		integer param_int_diap param_int_default_val {
 */
 param_int_diap:	/* empty */ {
 					YYLTYPE pos = @0;
+					pos.first_line   = pos.last_line;
 					pos.first_column = pos.last_column;
-					RDORTPIntDiap* diap = new RDORTPIntDiap( pos );
+					RDORTPIntDiap* diap = new RDORTPIntDiap( parser, pos );
 					$$ = (int)diap;
 				}
 				| '[' INT_CONST dblpoint INT_CONST ']' {
-					RDORTPIntDiap* diap = new RDORTPIntDiap( $2, $4, RDOParserSrcInfo( @1, @5 ), @4 );
+					RDORTPIntDiap* diap = new RDORTPIntDiap( parser, $2, $4, RDOParserSrcInfo( @1, @5 ), @4 );
 					$$ = (int)diap;
 				}
 				| '[' REAL_CONST dblpoint REAL_CONST {
@@ -324,32 +340,33 @@ param_int_diap:	/* empty */ {
 
 param_real_diap:	/* empty */ {
 					YYLTYPE pos = @0;
+					pos.first_line   = pos.last_line;
 					pos.first_column = pos.last_column;
-					RDORTPRealDiap* diap = new RDORTPRealDiap( pos );
+					RDORTPRealDiap* diap = new RDORTPRealDiap( parser, pos );
 					$$ = (int)diap;
 				}
 				| '[' REAL_CONST dblpoint REAL_CONST ']' {
 					double min = *reinterpret_cast<double*>($2);
 					double max = *reinterpret_cast<double*>($4);
-					RDORTPRealDiap* diap = new RDORTPRealDiap( min, max, RDOParserSrcInfo( @1, @5 ), @4 );
+					RDORTPRealDiap* diap = new RDORTPRealDiap( parser, min, max, RDOParserSrcInfo( @1, @5 ), @4 );
 					$$ = (int)diap;
 				}
 				| '[' REAL_CONST dblpoint INT_CONST ']' {
 					double min = *reinterpret_cast<double*>($2);
 					double max = $4;
-					RDORTPRealDiap* diap = new RDORTPRealDiap( min, max, RDOParserSrcInfo( @1, @5 ), @4 );
+					RDORTPRealDiap* diap = new RDORTPRealDiap( parser, min, max, RDOParserSrcInfo( @1, @5 ), @4 );
 					$$ = (int)diap;
 				}
 				| '[' INT_CONST dblpoint REAL_CONST ']' {
 					double min = $2;
 					double max = *reinterpret_cast<double*>($4);
-					RDORTPRealDiap* diap = new RDORTPRealDiap( min, max, RDOParserSrcInfo( @1, @5 ), @4 );
+					RDORTPRealDiap* diap = new RDORTPRealDiap( parser, min, max, RDOParserSrcInfo( @1, @5 ), @4 );
 					$$ = (int)diap;
 				}
 				| '[' INT_CONST dblpoint INT_CONST ']' {
 					double min = $2;
 					double max = $4;
-					RDORTPRealDiap* diap = new RDORTPRealDiap( min, max, RDOParserSrcInfo( @1, @5 ), @4 );
+					RDORTPRealDiap* diap = new RDORTPRealDiap( parser, min, max, RDOParserSrcInfo( @1, @5 ), @4 );
 					$$ = (int)diap;
 				}
 				| '[' REAL_CONST dblpoint REAL_CONST error {
@@ -377,11 +394,12 @@ param_real_diap:	/* empty */ {
 
 param_int_default_val:	/* empty */ {
 						YYLTYPE pos = @0;
+						pos.first_line   = pos.last_line;
 						pos.first_column = pos.last_column;
-						$$ = (int)(new RDORTPIntDefVal(pos));
+						$$ = (int)(new RDORTPIntDefVal(parser, pos));
 					}
 					| '=' INT_CONST {
-						$$ = (int)(new RDORTPIntDefVal($2, RDOParserSrcInfo( @1, @2 )));
+						$$ = (int)(new RDORTPIntDefVal(parser, $2, RDOParserSrcInfo( @1, @2 )));
 					}
 					| '=' REAL_CONST {
 						// Целое число инициализируется вещественным: %f
@@ -396,14 +414,15 @@ param_int_default_val:	/* empty */ {
 
 param_real_default_val:	/* empty */ {
 						YYLTYPE pos = @0;
+						pos.first_line   = pos.last_line;
 						pos.first_column = pos.last_column;
-						$$ = (int)(new RDORTPRealDefVal(pos));
+						$$ = (int)(new RDORTPRealDefVal(parser, pos));
 					}
 					| '=' REAL_CONST {
-						$$ = (int)(new RDORTPRealDefVal(*((double *)$2), RDOParserSrcInfo( @1, @2 )));
+						$$ = (int)(new RDORTPRealDefVal(parser, *((double *)$2), RDOParserSrcInfo( @1, @2 )));
 					}
 					| '=' INT_CONST {
-						$$ = (int)(new RDORTPRealDefVal($2, RDOParserSrcInfo( @1, @2 )));
+						$$ = (int)(new RDORTPRealDefVal(parser, $2, RDOParserSrcInfo( @1, @2 )));
 					}
 					| '=' {
 						parser->error( @1, "Не указано значение по-умолчанию для вещественного типа" );
@@ -473,11 +492,12 @@ param_enum_list: IDENTIF {
 
 param_enum_default_val:	/* empty */ {
 						YYLTYPE pos = @0;
+						pos.first_line   = pos.last_line;
 						pos.first_column = pos.last_column;
-						$$ = (int)(new RDORTPEnumDefVal(pos));
+						$$ = (int)(new RDORTPEnumDefVal(parser, pos));
 					}
 					| '=' IDENTIF {
-						$$ = (int)(new RDORTPEnumDefVal( *(std::string*)$2, RDOParserSrcInfo( @1, @2 ) ));
+						$$ = (int)(new RDORTPEnumDefVal(parser, *(std::string*)$2, RDOParserSrcInfo( @1, @2 ) ));
 					}
 					| '=' {
 						parser->error( @1, "Не указано значение по-умолчанию для перечислимого типа" );
@@ -623,7 +643,7 @@ fun_func_footer:	Type_keyword '=' algorithmic fun_func_parameters Body fun_func_
 					}
 					| Type_keyword '=' table_keyword fun_func_parameters Body fun_func_list_body End {
 						RDOFUNFunction* currFunc = parser->getLastFUNFunction();
-						currFunc->createTableCalc();
+						currFunc->createTableCalc( @6 );
 					}
 					| Type_keyword '=' algorithmic fun_func_parameters Body fun_func_algorithmic_body error {
 						parser->error( @7, "Ожидается ключевое слово $End" );
@@ -695,7 +715,7 @@ fun_func_algorithmic_calc_if:	fun_func_calc_if fun_logic fun_func_calc_name '=' 
 									parser->error( @2, "Ожидается '='" );
 								}
 								| fun_func_calc_if fun_logic error {
-									parser->error( @3, "Ожидается <имя_функции> = <результат_функции>" );
+									parser->error( @2, @3, "После логического выражения ожидается <имя_функции> = <результат_функции>" );
 								};
 								| error {
 									parser->error( @1, "Ожидается ключевое слово Calculate_if" );
@@ -1178,19 +1198,23 @@ fun_seq_enumerative_header:	fun_seq_header enumerative Body {
 
 fun_seq_enumerative_body_int:	fun_seq_enumerative_header INT_CONST {
 									RDOFUNSequence::RDOFUNSequenceHeader* header = reinterpret_cast<RDOFUNSequenceEnumerative::RDOFUNSequenceHeader*>($1);
-									if ( header->getType()->getType() != RDORTPParamType::pt_int ) {
-										switch ( header->getType()->getType() ) {
-											case RDORTPParamType::pt_int : break;
-											case RDORTPParamType::pt_real: parser->error( @2, rdo::format("Последовательность '%s' определена как вещественная, её значения тоже должны быть вещественными", header->src_text().c_str()) );
-											case RDORTPParamType::pt_enum: parser->error( @2, rdo::format("Последовательность '%s' определена как перечислимая, её значения тоже должны быть перечислимого типа", header->src_text().c_str()) );
-											default                      : parser->error( @1, "Внутренная ошибка парсера: не все типы обработаны" );
-										}
+									int value = $2;
+									switch ( header->getType()->getType() ) {
+										case RDORTPParamType::pt_int : header->getType()->checkRSSIntValue( value, @2 ); break;
+										case RDORTPParamType::pt_real: parser->error( @2, rdo::format("Последовательность '%s' определена как вещественная, её значения тоже должны быть вещественными", header->src_text().c_str()) );
+										case RDORTPParamType::pt_enum: parser->error( @2, rdo::format("Последовательность '%s' определена как перечислимая, её значения тоже должны быть перечислимого типа", header->src_text().c_str()) );
+										default                      : parser->error( @1, "Внутренная ошибка парсера: не все типы обработаны" );
 									}
-									$$ = (int)(new RDOFUNSequenceEnumerativeInt( parser, header, $2 ));
+									$$ = (int)new RDOFUNSequenceEnumerativeInt( parser, header, value );
 								}
 								| fun_seq_enumerative_body_int INT_CONST {
 									RDOFUNSequenceEnumerativeInt* seq = reinterpret_cast<RDOFUNSequenceEnumerativeInt*>($1);
-									seq->addInt( $2 );
+									int value = $2;
+									switch ( seq->header->getType()->getType() ) {
+										case RDORTPParamType::pt_int : seq->header->getType()->checkRSSIntValue( value, @2 ); break;
+										default                      : parser->error( @1, "Внутренная ошибка парсера: fun_seq_enumerative_body_int INT_CONST" );
+									}
+									seq->addInt( value );
 								}
 								| fun_seq_enumerative_body_int error {
 									parser->error( @1, @2, "Ожидается целое число или ключевое слово $End" );
@@ -1198,19 +1222,23 @@ fun_seq_enumerative_body_int:	fun_seq_enumerative_header INT_CONST {
 
 fun_seq_enumerative_body_real:	fun_seq_enumerative_header REAL_CONST {
 									RDOFUNSequence::RDOFUNSequenceHeader* header = reinterpret_cast<RDOFUNSequenceEnumerative::RDOFUNSequenceHeader*>($1);
-									if ( header->getType()->getType() != RDORTPParamType::pt_real ) {
-										switch ( header->getType()->getType() ) {
-											case RDORTPParamType::pt_int : parser->error( @2, rdo::format("Последовательность '%s' определена как целочисленная, её значения тоже должны быть челочисленными", header->src_text().c_str()) );
-											case RDORTPParamType::pt_real: break;
-											case RDORTPParamType::pt_enum: parser->error( @2, rdo::format("Последовательность '%s' определена как перечислимая, её значения тоже должны быть перечислимого типа", header->src_text().c_str()) );
-											default                      : parser->error( @1, "Внутренная ошибка парсера: не все типы обработаны" );
-										}
+									double value = *reinterpret_cast<double*>($2);
+									switch ( header->getType()->getType() ) {
+										case RDORTPParamType::pt_int : parser->error( @2, rdo::format("Последовательность '%s' определена как целочисленная, её значения тоже должны быть челочисленными", header->src_text().c_str()) );
+										case RDORTPParamType::pt_real: header->getType()->checkRSSRealValue( value, @2 ); break;
+										case RDORTPParamType::pt_enum: parser->error( @2, rdo::format("Последовательность '%s' определена как перечислимая, её значения тоже должны быть перечислимого типа", header->src_text().c_str()) );
+										default                      : parser->error( @1, "Внутренная ошибка парсера: не все типы обработаны" );
 									}
-									$$ = (int)(new RDOFUNSequenceEnumerativeReal( parser, header, *(double*)$2) );
+									$$ = (int)new RDOFUNSequenceEnumerativeReal( parser, header, value );
 								}
 								| fun_seq_enumerative_body_real REAL_CONST {
 									RDOFUNSequenceEnumerativeReal* seq = reinterpret_cast<RDOFUNSequenceEnumerativeReal*>($1);
-									seq->addReal( *(double*)$2 );
+									double value = *reinterpret_cast<double*>($2);
+									switch ( seq->header->getType()->getType() ) {
+										case RDORTPParamType::pt_real: seq->header->getType()->checkRSSRealValue( value, @2 ); break;
+										default                      : parser->error( @1, "Внутренная ошибка парсера: fun_seq_enumerative_body_real REAL_CONST" );
+									}
+									seq->addReal( value );
 								}
 								| fun_seq_enumerative_body_real error {
 									parser->error( @1, @2, "Ожидается вещественное число или ключевое слово $End" );
@@ -1227,7 +1255,7 @@ fun_seq_enumerative_body_enum:	fun_seq_enumerative_header IDENTIF {
 										}
 									}
 									std::string value = *reinterpret_cast<std::string*>($2);
-									$$ = (int)(new RDOFUNSequenceEnumerativeEnum( parser, header, RDOParserSrcInfo(@2, value) ));
+									$$ = (int)new RDOFUNSequenceEnumerativeEnum( parser, header, RDOParserSrcInfo(@2, value) );
 								}
 								| fun_seq_enumerative_body_enum IDENTIF {
 									RDOFUNSequenceEnumerativeEnum* seq = reinterpret_cast<RDOFUNSequenceEnumerativeEnum*>($1);
@@ -1330,7 +1358,12 @@ fun_arithm: fun_arithm '+' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOF
 			}
 			| error {
 				if ( @1.first_line = @1.last_line ) {
-					parser->error( @1, rdo::format("Неизвестный идентификатор: %s", reinterpret_cast<RDOLexer*>(lexer)->YYText()) );
+					std::string str = reinterpret_cast<RDOLexer*>(lexer)->YYText();
+					if ( str.length() == 1 && str.find_first_of("!#`~@$%^&|:(),=[].*><+-/\\") != std::string::npos ) {
+						parser->error( @1, rdo::format("Неизвестный символ: %s", str.c_str()) );
+					} else {
+						parser->error( @1, rdo::format("Неизвестный идентификатор: %s", str.c_str()) );
+					}
 				} else {
 					parser->error( @1, "Ошибка в арифметическом выражении" );
 				}
@@ -1387,7 +1420,7 @@ fun_group_header:	fun_group_keyword '(' IDENTIF_COLON {
 						parser->error( @3, "Ожидается имя типа" );
 					}
 					| fun_group_keyword error {
-						parser->error( @1, "Ожидается октрывающаяся скобка" );
+						parser->error( @1, "После имени функции ожидается октрывающаяся скобка" );
 					};
 
 fun_group:			fun_group_header fun_logic ')' {
@@ -1430,16 +1463,16 @@ fun_select_body:	fun_select_header fun_logic ')' {
 						RDOFUNSelect* select = reinterpret_cast<RDOFUNSelect*>($1);
 						RDOFUNLogic*  flogic = reinterpret_cast<RDOFUNLogic*>($2);
 						select->setSrcText( select->src_text() + flogic->src_text() + ")" );
-						RDOFUNLogic* logic = select->createFunSelect( flogic );
-						logic->setSrcPos( @2 );
-						$$ = $1;
+						select->initSelect( flogic );
 					}
 					| fun_select_header NoCheck ')' {
 						RDOFUNSelect* select = reinterpret_cast<RDOFUNSelect*>($1);
-						select->setSrcText( select->src_text() + "NoCheck)" );
-						RDOFUNLogic* logic = select->createFunSelect();
-						logic->setSrcPos( @2 );
-						$$ = $1;
+						RDOParserSrcInfo logic_info(@2, "NoCheck");
+						select->setSrcText( select->src_text() + logic_info.src_text() + ")" );
+						rdoRuntime::RDOCalcConst* calc_nocheck = new rdoRuntime::RDOCalcConst( parser->runtime, 1 );
+						RDOFUNLogic* flogic = new RDOFUNLogic( select, calc_nocheck, true );
+						flogic->setSrcInfo( logic_info );
+						select->initSelect( flogic );
 					}
 					| fun_select_header fun_logic error {
 						parser->error( @2, "Ожидается закрывающаяся скобка" );
@@ -1456,13 +1489,14 @@ fun_select_keyword:	Exist			{ $$ = 1; }
 fun_select_logic:	fun_select_body '.' fun_select_keyword '(' fun_logic ')' {
 						RDOFUNSelect* select = reinterpret_cast<RDOFUNSelect*>($1);
 						select->setSrcPos( @1, @6 );
-						RDOFUNLogic* logic = select->createFunSelectGroup( $3, (RDOFUNLogic*)$5 );
+						RDOFUNLogic* logic = select->createFunSelectGroup( $3, reinterpret_cast<RDOFUNLogic*>($5) );
 						$$ = (int)logic;
 					}
 					| fun_select_body '.' Empty_kw '(' ')' {
 						RDOFUNSelect* select = reinterpret_cast<RDOFUNSelect*>($1);
 						select->setSrcPos( @1, @5 );
-						RDOFUNLogic* logic = select->createFunSelectEmpty();
+						RDOParserSrcInfo empty_info(@3, @5, "Empty()");
+						RDOFUNLogic* logic = select->createFunSelectEmpty( empty_info );
 						$$ = (int)logic;
 					}
 					| fun_select_body error {
@@ -1487,7 +1521,8 @@ fun_select_logic:	fun_select_body '.' fun_select_keyword '(' fun_logic ')' {
 fun_select_arithm:	fun_select_body '.' Size_kw '(' ')' {
 						RDOFUNSelect* select = reinterpret_cast<RDOFUNSelect*>($1);
 						select->setSrcPos( @1, @5 );
-						RDOFUNArithm* arithm = select->createFunSelectSize();
+						RDOParserSrcInfo size_info(@3, @5, "Size()");
+						RDOFUNArithm* arithm = select->createFunSelectSize( size_info );
 						$$ = (int)arithm;
 					}
 					| fun_select_body error {

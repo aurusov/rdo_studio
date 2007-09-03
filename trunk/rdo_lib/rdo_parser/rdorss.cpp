@@ -31,16 +31,16 @@ RDORSSResource::RDORSSResource( RDOParser* _parser, const std::string& _name, co
 	RDOParserObject( _parser ),
 	name( _name ),
 	resType( _resType ),
-	number( parser->getRSS_id() ),
+	number( _parser->getRSS_id() ),
 	trace( false )
 {
-	parser->insertRSSResource( this );
+	getParser()->insertRSSResource( this );
 	currParam = resType->getParams().begin();
 }
 
 int RDORSSResource::writeModelStructure()
 {
-	parser->modelStructure << (number + 1) << " " << getName() << " " << getType()->getNumber() << std::endl;
+	getParser()->modelStructure << (number + 1) << " " << getName() << " " << getType()->getNumber() << std::endl;
 	return 0;
 }
 

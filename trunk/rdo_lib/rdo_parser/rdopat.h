@@ -89,7 +89,7 @@ public:
 	const RDORelevantResource* findRelevantResource( const std::string& resName ) const;
 	int findRelevantResourceNum( const std::string& resName ) const;
 	virtual void addRelRes( const RDOParserSrcInfo& rel_info, const RDOParserSrcInfo& type_info, rdoRuntime::RDOResourceTrace::ConvertStatus beg, const YYLTYPE& convertor_pos ) = 0;
-	const std::string& getName() const { return src_info().src_text(); }
+	const std::string& getName() const { return src_text(); }
 
 	void setCommonChoiceFirst();
 	void setCommonChoiceWithMin( RDOFUNArithm* arithm );
@@ -392,7 +392,7 @@ public:
 		}
 		return false;
 	}
-	const RDORelevantResource* getRelRes() const { return static_cast<const RDORelevantResource*>(parent); }
+	const RDORelevantResource* getRelRes() const { return static_cast<const RDORelevantResource*>(getParent()); }
 };
 
 } // namespace rdoParse

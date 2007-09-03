@@ -129,21 +129,36 @@
 %token Show					403
 %token frm_cell				404
 %token text					405
-%token transparent			406
-%token bitmap				407
-%token s_bmp				408
-%token rect_keyword			409
-%token r_rect				410
-%token line					411
-%token ellipse				412
-%token triang				413
-%token active				414
-%token QUOTED_IDENTIF		415
-%token Select				418
-%token Size_kw				419
-%token Empty_kw				420
-%token not_keyword			421
-%token UMINUS				422
+%token bitmap				406
+%token s_bmp				407
+%token rect_keyword			408
+%token r_rect				409
+%token line					410
+%token ellipse				411
+%token triang				412
+%token active				413
+%token ruler				414
+%token space_kw				415
+%token color_transparent_kw	416
+%token color_last_kw		417
+%token color_white_kw		418
+%token color_black_kw		419
+%token color_red_kw			420
+%token color_green_kw		421
+%token color_blue_kw		422
+%token color_cyan_kw		423
+%token color_magenta_kw		424
+%token color_yellow_kw		425
+%token color_gray_kw		426
+
+%token QUOTED_IDENTIF		430
+%token QUOTED_IDENTIF_BAD	431
+%token IDENTIF_BAD			432
+%token Select				433
+%token Size_kw				434
+%token Empty_kw				435
+%token not_keyword			436
+%token UMINUS				437
 
 %{
 #include "pch.h"
@@ -269,7 +284,7 @@ dpt_process_line:	IDENTIF	{
 			RDORTPEnum* state_enum = new RDORTPEnum( res_type, rtp_state_free );
 			state_enum->add( rtp_state_buzy, @2 );
 
-			RDORTPEnumDefVal* state_default = new RDORTPEnumDefVal( rtp_state_free );
+			RDORTPEnumDefVal* state_default = new RDORTPEnumDefVal( parser, rtp_state_free );
 
 			RDORTPEnumParamType* rtp_param_enum = new RDORTPEnumParamType( res_type, state_enum, state_default, RDOParserSrcInfo( @2 ) );
 			rtp_param_enum->enum_name = rdo::format( "%s.%s", res_type_name.c_str(), rtp_param_name.c_str() );

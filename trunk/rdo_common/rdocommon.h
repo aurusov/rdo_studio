@@ -157,28 +157,33 @@ struct RDOColor
 
 struct RDOColoredElement
 {
+public:
 	RDOColor background;
 	RDOColor foreground;
+
 protected:
-	RDOColoredElement(RDOColor &_background, RDOColor &_foreground);
+	RDOColoredElement( const RDOColor& _background, const RDOColor& _foreground );
 };
 
 struct RDOBoundedElement
 {
+public:
 	double x, y, w, h;
+
 protected:
-	RDOBoundedElement(double _x, double _y, double _w, double _h);
+	RDOBoundedElement( double _x, double _y, double _w, double _h );
 };
 
 struct RDOTextElement: public RDOColoredElement, public RDOBoundedElement, public RDOFrameElement
 {
+public:
 	enum RDOTextAlign {
 		left,
 		right,
 		center
 	} align;
 
-	RDOTextElement(double _x, double _y, double _w, double _h, RDOColor &_background, RDOColor &_foreground, std::string &_text, RDOTextAlign _align);
+	RDOTextElement( double _x, double _y, double _w, double _h, const RDOColor& _background, const RDOColor& _foreground, const std::string& _text, RDOTextAlign _align );
 	std::string strText;
 };
 

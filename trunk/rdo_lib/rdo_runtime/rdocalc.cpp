@@ -134,13 +134,19 @@ void RDOFunCalcSelect::prepare( RDORuntime* sim ) const
 RDOValue RDOFunCalcSelect::calcValue( RDORuntime* runtime ) const
 {
 	prepare( runtime );
-	return res_list.empty();
+	return RDOValue(1);
 }
 
 RDOValue RDOFunCalcSelectSize::calcValue( RDORuntime* runtime ) const
 {
 	select->prepare( runtime );
 	return select->res_list.size();
+}
+
+RDOValue RDOFunCalcSelectEmpty::calcValue( RDORuntime* runtime ) const
+{
+	select->prepare( runtime );
+	return select->res_list.empty();
 }
 
 RDOValue RDOFunCalcSelectExist::calcValue( RDORuntime* runtime ) const
@@ -347,9 +353,7 @@ RDOValue RDOSelectResourceByTypeCalc::calcValue( RDORuntime* runtime ) const
 			int res_id = (*it)->number;
 
 			switch ( order_type ) {
-				case order_empty: {
-					return 1;
-				}
+				case order_empty:
 				case order_first: {
 					runtime->setRelRes( rel_res_id, res_id );
 					if ( choice_calc && !choice_calc->calcValueBase( runtime ) ) {
