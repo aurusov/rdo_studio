@@ -40,7 +40,7 @@ RDOOPROperation::RDOOPROperation( RDOParser* _parser, const RDOParserSrcInfo& _n
 	const RDOOPROperation* opr = getParser()->findOperation( getName() );
 	if ( opr ) {
 		getParser()->error_push_only( src_info(), rdo::format("Операция '%s' уже существует", getName().c_str()) );
-		getParser()->error_push_only( opr->src_info(), rdo::format("См. первое определение") );
+		getParser()->error_push_only( opr->src_info(), "См. первое определение" );
 		getParser()->error_push_done();
 	}
 	pattern = getParser()->findPattern( _pattern.src_text() );
@@ -52,10 +52,31 @@ RDOOPROperation::RDOOPROperation( RDOParser* _parser, const RDOParserSrcInfo& _n
 	getParser()->insertOPROperation( this );
 }
 
+void RDOOPROperation::addParam( const std::string& stringParam, const YYLTYPE& param_pos )
+{
+	if ( pattern->params.size() <= currParam ) {
+		getParser()->error_push_only( param_pos, rdo::format("Слишком много параметров для образца '%s' при описании операции '%s', а если это имя новой операции, то оно должно заканчиваться двоеточием", pattern->getName().c_str(), getName().c_str()) );
+		getParser()->error_push_only( pattern->src_info(), "См. образец" );
+		getParser()->error_push_done();
+	}
+	RDOFUNFunctionParam* param = pattern->params.at( currParam );
+	switch ( param->getType()->getType() ) {
+		case RDORTPParamType::pt_int : getParser()->error( param_pos, rdo::format("Ожидается параметр целого типа: %s", param->getType()->src_text().c_str()) ); break;
+		case RDORTPParamType::pt_real: getParser()->error( param_pos, rdo::format("Ожидается параметр вещественного типа: %s", param->getType()->src_text().c_str()) ); break;
+	}
+	rdoRuntime::RDOValue val = param->getType()->getRSSEnumValue( stringParam, param_pos );
+	rdoRuntime::RDOSetPatternParamCalc* calc = new rdoRuntime::RDOSetPatternParamCalc( getParser()->runtime, currParam, val );
+	calc->setSrcInfo( RDOParserSrcInfo(param_pos, rdo::format("Параметр образца %s.%s = %s", pattern->getName().c_str(), param->getName().c_str(), stringParam.c_str())) );
+	activity->addParamCalc( calc );
+	currParam++;
+}
+
 void RDOOPROperation::addParam( int intParam, const YYLTYPE& param_pos )
 {
 	if ( pattern->params.size() <= currParam ) {
-		getParser()->error( param_pos, rdo::format("Слишком много параметров для образца '%s' при описании операции '%s'", pattern->getName().c_str(), getName().c_str()) );
+		getParser()->error_push_only( param_pos, rdo::format("Слишком много параметров для образца '%s' при описании операции '%s'", pattern->getName().c_str(), getName().c_str()) );
+		getParser()->error_push_only( pattern->src_info(), "См. образец" );
+		getParser()->error_push_done();
 //		getParser()->error( "Too much parameters for pattern : " + pattern->getName() + " in operation: " + getName() );
 	}
 	RDOFUNFunctionParam* param = pattern->params.at( currParam );
@@ -72,7 +93,9 @@ void RDOOPROperation::addParam( int intParam, const YYLTYPE& param_pos )
 void RDOOPROperation::addParam( double realParam, const YYLTYPE& param_pos )
 {
 	if ( pattern->params.size() <= currParam ) {
-		getParser()->error( param_pos, rdo::format("Слишком много параметров для образца '%s' при описании операции '%s'", pattern->getName().c_str(), getName().c_str()) );
+		getParser()->error_push_only( param_pos, rdo::format("Слишком много параметров для образца '%s' при описании операции '%s'", pattern->getName().c_str(), getName().c_str()) );
+		getParser()->error_push_only( pattern->src_info(), "См. образец" );
+		getParser()->error_push_done();
 	}
 	RDOFUNFunctionParam* param = pattern->params.at( currParam );
 	switch ( param->getType()->getType() ) {
@@ -86,27 +109,12 @@ void RDOOPROperation::addParam( double realParam, const YYLTYPE& param_pos )
 	currParam++;
 }
 
-void RDOOPROperation::addParam( const std::string& stringParam, const YYLTYPE& param_pos )
-{
-	if ( pattern->params.size() <= currParam ) {
-		getParser()->error( param_pos, rdo::format("Слишком много параметров для образца '%s' при описании операции '%s', а если это имя новой операции, то оно должно заканчиваться двоеточием", pattern->getName().c_str(), getName().c_str()) );
-	}
-	RDOFUNFunctionParam* param = pattern->params.at( currParam );
-	switch ( param->getType()->getType() ) {
-		case RDORTPParamType::pt_int : getParser()->error( param_pos, rdo::format("Ожидается параметр целого типа: %s", param->getType()->src_text().c_str()) ); break;
-		case RDORTPParamType::pt_real: getParser()->error( param_pos, rdo::format("Ожидается параметр вещественного типа: %s", param->getType()->src_text().c_str()) ); break;
-	}
-	rdoRuntime::RDOValue val = param->getType()->getRSSEnumValue( stringParam, param_pos );
-	rdoRuntime::RDOSetPatternParamCalc* calc = new rdoRuntime::RDOSetPatternParamCalc( getParser()->runtime, currParam, val );
-	calc->setSrcInfo( RDOParserSrcInfo(param_pos, rdo::format("Параметр образца %s.%s = %s", pattern->getName().c_str(), param->getName().c_str(), stringParam.c_str())) );
-	activity->addParamCalc( calc );
-	currParam++;
-}
-
 void RDOOPROperation::addParam( const YYLTYPE& param_pos )
 {
 	if ( pattern->params.size() <= currParam ) {
-		getParser()->error( param_pos, rdo::format("Слишком много параметров для образца '%s' при описании операции '%s'", pattern->getName().c_str(), getName().c_str()) );
+		getParser()->error_push_only( param_pos, rdo::format("Слишком много параметров для образца '%s' при описании операции '%s'", pattern->getName().c_str(), getName().c_str()) );
+		getParser()->error_push_only( pattern->src_info(), "См. образец" );
+		getParser()->error_push_done();
 	}
 
 	RDOFUNFunctionParam* param = pattern->params.at( currParam );
@@ -122,18 +130,33 @@ void RDOOPROperation::addParam( const YYLTYPE& param_pos )
 	currParam++;
 }
 
-void RDOOPROperation::addHotKey( const std::string& hotKey, const YYLTYPE& pattern_pos )
+void RDOOPROperation::addHotKey( const std::string& hotKey, const YYLTYPE& hotkey_pos )
 {
-	if ( dynamic_cast<rdoRuntime::RDOActivityKeyboardRuntime*>(activity) ) {
-		if ( !activity->addHotKey( hotKey ) ) {
-			getParser()->error( pattern_pos, rdo::format("Неизвестная клавиша: %s", hotKey.c_str()) );
+	switch ( activity->addHotKey( hotKey ) ) {
+		case rdoRuntime::RDOActivityRuntime::addhk_ok      : {
+			break;
 		}
-	} else {
-		getParser()->error( pattern_pos, "Образец не является клавиатурной операцией" );
+		case rdoRuntime::RDOActivityRuntime::addhk_already : {
+			getParser()->error( hotkey_pos, rdo::format("Для операции '%s' клавиша уже назначена", src_text().c_str()) );
+			break;
+		}
+		case rdoRuntime::RDOActivityRuntime::addhk_notfound: {
+			getParser()->error( hotkey_pos, rdo::format("Неизвестная клавиша: %s", hotKey.c_str()) );
+			break;
+		}
+		case rdoRuntime::RDOActivityRuntime::addhk_dont    : {
+			getParser()->error_push_only( src_info(), rdo::format("Операция '%s' не является клавиатурной", src_text().c_str()) );
+			getParser()->error_push_only( getType()->src_info(), "См. образец" );
+			getParser()->error_push_done();
+			break;
+		}
+		default: {
+			getParser()->error( src_info(), "Внутренная ошибка: RDOOPROperation::addHotKey" );
+		}
 	}
 }
 
-void RDOOPROperation::endOfDefinition( const YYLTYPE& opr_pos )
+void RDOOPROperation::end( const YYLTYPE& opr_pos )
 {
 	if ( pattern->params.size() > currParam ) {
 		RDOFUNFunctionParam* param = pattern->params.at( currParam );

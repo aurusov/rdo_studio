@@ -1368,7 +1368,7 @@ void RDOFUNFunction::add( const RDOFUNFunctionParam* const _param )
 	const RDOFUNFunctionParam* const param = findFUNFunctionParam( _param->getName() );
 	if ( param ) {
 		getParser()->error_push_only( _param->src_info(), rdo::format("Параметр уже существует: %s", _param->getName().c_str()) );
-		getParser()->error_push_only( param->src_info(), rdo::format("См. первое определение") );
+		getParser()->error_push_only( param->src_info(), "См. первое определение" );
 		getParser()->error_push_done();
 //		getParser()->error("Second appearance of the same parameter name: " + *(_param->getName()));
 	}

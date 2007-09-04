@@ -87,7 +87,8 @@ public:
 	const std::vector< RDODPTSome* >&          getDPTSome() const         { return allDPTSome;         }
 	const std::vector< RDODPTFreeActivity* >&  getDPTFreeActivity() const { return allDPTFreeActivity; }
 
-	void checkActivityName( const std::string* _name );
+	void checkFunctionName( const RDOParserSrcInfo& _src_info );
+	void checkActivityName( const RDOParserSrcInfo& _src_info );
 
 	void insertDeletables( RDODeletable* value ) {
 		if ( value ) {
@@ -155,13 +156,14 @@ public:
 
 	void setSMR( RDOSMR* _smr)  { smr = _smr; }
 
-	const RDORTPResType*   findRTPResType( const std::string& name ) const;
-	const RDORSSResource*  findRSSResource( const std::string& name ) const;
-	const RDOFUNConstant*  findFUNConst( const std::string& _cons ) const;
-	const RDOFUNFunction*  findFunction( const std::string& name ) const;
-	const RDOFUNSequence*  findSequence( const std::string& name ) const;
-	const RDOPATPattern*   findPattern( const std::string& name ) const;
-	const RDOOPROperation* findOperation( const std::string& name ) const;
+	const RDORTPResType*      findRTPResType( const std::string& name ) const;
+	const RDORSSResource*     findRSSResource( const std::string& name ) const;
+	const RDOFUNConstant*     findFUNConst( const std::string& name ) const;
+	const RDOFUNFunction*     findFunction( const std::string& name ) const;
+	const RDOFUNSequence*     findSequence( const std::string& name ) const;
+	const RDOPATPattern*      findPattern( const std::string& name ) const;
+	const RDOOPROperation*    findOperation( const std::string& name ) const;
+	const RDODPTFreeActivity* findFreeActivity( const std::string& name ) const;
 
 	bool hasConstant() const { return !allFUNConstant.empty(); }
 

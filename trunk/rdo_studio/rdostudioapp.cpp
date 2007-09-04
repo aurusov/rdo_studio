@@ -762,10 +762,25 @@ bool RDOStudioApp::isPluginAutoStart( RDOStudioPlugin* plugin ) const
 
 BOOL RDOStudioApp::PreTranslateMessage( MSG* pMsg ) 
 {
+	if ( pMsg->message == WM_KEYDOWN ) {
+		CMDIChildWnd* child = mainFrame->MDIGetActive();
+		if ( child ) {
+			CView* view = child->GetActiveView();
+			if ( dynamic_cast<RDOStudioFrameView*>(view) ) {
+				view->SendMessage( pMsg->message, pMsg->wParam, pMsg->lParam );
+				return true;
+			}
+		}
+	}
 	if ( pMsg->message == PLUGIN_MUSTEXIT_MESSAGE ) {
 		plugins->stopPluginByStudio( reinterpret_cast<HMODULE>(pMsg->wParam) );
 	}
 	return CWinApp::PreTranslateMessage(pMsg);
+}
+
+BOOL RDOStudioApp::ProcessMessageFilter( int code, LPMSG lpMsg )
+{
+	return CWinApp::ProcessMessageFilter( code, lpMsg );
 }
 
 // ----------------------------------------------------------------------------

@@ -165,6 +165,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 #include "rdoopr.h"
+#include "rdopat.h"
 #include "rdoparser.h"
 
 namespace rdoParse 
@@ -191,23 +192,23 @@ opr_header:	Operations {
 opr_body:	opr_header IDENTIF_COLON IDENTIF {
 				std::string name = *reinterpret_cast<std::string*>($2);
 				RDOParserSrcInfo pattern( @3, *reinterpret_cast<std::string*>($3) );
-				RDOOPROperation* opr = new RDOOPROperation( parser, RDOParserSrcInfo( @2, name, RDOParserSrcInfo::psi_align_bytext ), pattern );
+				RDOOPROperation* opr = new RDOOPROperation( parser, RDOParserSrcInfo(@2, name, RDOParserSrcInfo::psi_align_bytext), pattern );
 				$$ = (int)opr;
 			}
 			| opr_param IDENTIF_COLON IDENTIF {
 				RDOOPROperation* opr = reinterpret_cast<RDOOPROperation*>($1);
-				opr->endOfDefinition( @1 );
+				opr->end( @1 );
 				std::string name = *reinterpret_cast<std::string*>($2);
 				RDOParserSrcInfo pattern( @3, *reinterpret_cast<std::string*>($3) );
-				opr = new RDOOPROperation( parser, RDOParserSrcInfo( @2, name, RDOParserSrcInfo::psi_align_bytext ), pattern );
+				opr = new RDOOPROperation( parser, RDOParserSrcInfo(@2, name, RDOParserSrcInfo::psi_align_bytext), pattern );
 				$$ = (int)opr;
 			}
 			| opr_header IDENTIF_COLON error {
-				parser->error( @3, "Ожидается имя образца" );
-			};
+				parser->error( @2, @3, "Ожидается имя образца" );
+			}
 			| opr_param IDENTIF_COLON error {
-				parser->error( @3, "Ожидается имя образца" );
-			};
+				parser->error( @2, @3, "Ожидается имя образца" );
+			}
 			| opr_header error {
 				parser->error( @2, "Ожидается имя операции" );
 			};
@@ -247,7 +248,7 @@ opr_param:	opr_param IDENTIF {
 
 opr_end:	opr_param End {
 				RDOOPROperation* opr = reinterpret_cast<RDOOPROperation*>($1);
-				opr->endOfDefinition( @1 );
+				opr->end( @1 );
 				parser->setHaveKWOperationsEnd( true );
 			};
 

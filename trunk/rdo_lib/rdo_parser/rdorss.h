@@ -20,7 +20,6 @@ class RDORTPParam;
 class RDORSSResource: public RDOParserObject, public RDOParserSrcInfo
 {
 protected:
-	std::string                name;
 	const RDORTPResType* const resType;
 	const int                  number;  // in system
 	std::vector< rdoRuntime::RDOValue > values;
@@ -30,12 +29,12 @@ public:
 	std::vector< const RDORTPParam* >::const_iterator currParam;
 
 public:
-	RDORSSResource( RDOParser* _parser, const std::string& _name, const RDORTPResType* const _resType );
+	RDORSSResource( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDORTPResType* const _resType );
 	
-	const std::string&         getName() const       { return name;    }
-	const RDORTPResType* const getType() const       { return resType; }
+	const std::string&         getName() const { return src_info().src_text(); }
+	const RDORTPResType* const getType() const { return resType; }
 
-	int getNumber() const                            { return number;  }
+	int getNumber() const                      { return number;  }
 
 	const std::vector< rdoRuntime::RDOValue >& getValues() const { return values;  }
 	void addValue( const rdoRuntime::RDOValue& val )             { values.push_back( val ); }

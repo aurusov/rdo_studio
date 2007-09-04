@@ -216,7 +216,6 @@ rss_res_descr:	rss_res_type rss_trace rss_start_vals {
 //					parser->runTime->addInitCalc(createResource);
 //					Вместо этого, пришлось сохранить признак трассировки для последеющего использования в RSS_POST
 					res->setTrace( $2 != 0 );
-					res->setSrcPos( @1, @3 );
 				};
 
 rss_res_type:	IDENTIF_COLON IDENTIF {
@@ -227,16 +226,15 @@ rss_res_type:	IDENTIF_COLON IDENTIF {
 						parser->error( @2, rdo::format("Неизвестный тип ресурса: %s", type.c_str()) );
 //						parser->error(("Invalid resource type: " + *type).c_str());
 					}
-
-					if ( parser->findRSSResource(name) ) {
-						parser->lexer_loc_set( @1.first_line, @1.first_column + name.length() );
-						parser->error( rdo::format( "Ресурс уже существует: %s", name.c_str()) );
+					RDOParserSrcInfo src_info(@1, name, RDOParserSrcInfo::psi_align_bytext);
+					const RDORSSResource* res = parser->findRSSResource( name );
+					if ( res ) {
+						parser->error_push_only( src_info, rdo::format( "Ресурс '%s' уже существует", name.c_str()) );
+						parser->error_push_only( res->src_info(), "См. первое определение" );
+						parser->error_push_done();
 //						parser->error( ("Double resource name: " + *name).c_str() );
 					}
-
-					RDORSSResource* res = new RDORSSResource( parser, name, resType );
-					res->setSrcText( name + ": " + resType->getName() );
-					$$ = (int)res;	  
+					$$ = (int)new RDORSSResource( parser, src_info, resType );
 				}
 				| IDENTIF_COLON error {
 					parser->error( @2, "Ожидается тип ресурса" );

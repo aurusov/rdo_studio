@@ -170,8 +170,9 @@ static char THIS_FILE[] = __FILE__;
 #include "rdoparser_rdo.h"
 #include "rdofun.h"
 #include "rdofrm.h"
-#include "rdoopr.h"
 #include "rdopat.h"
+#include "rdoopr.h"
+#include "rdodpt.h"
 #include <rdoframe.h>
 #include <rdocalc.h>
 
@@ -926,13 +927,24 @@ frm_active:	active IDENTIF '[' frm_position_xy ',' frm_position_xy ',' frm_posit
 				std::string opr_name = *reinterpret_cast<std::string*>($2);
 				const RDOOPROperation* opr = parser->findOperation( opr_name );
 				if ( !opr ) {
-					parser->error( @2, rdo::format("Опреация '%s' не найдена", opr_name.c_str()) );
-				}
-				if ( opr->getType()->getPatType() != RDOPATPattern::PT_Keyboard ) {
-					parser->error_push_only( @2, rdo::format("Операция '%s' должна быть клавиатурной", opr->getName().c_str()) );
-					parser->error_push_only( opr->src_info(), "См. операцию" );
-					parser->error_push_only( opr->getType()->src_info(), "См. образец" );
-					parser->error_push_done();
+					const RDODPTFreeActivity* activity = parser->findFreeActivity( opr_name );
+					if ( !activity ) {
+						parser->error( @2, rdo::format("Опреация '%s' не найдена", opr_name.c_str()) );
+					} else {
+						if ( activity->getType()->getType() != RDOPATPattern::PT_Keyboard ) {
+							parser->error_push_only( @2, rdo::format("Активность '%s' должна быть клавиатурной", activity->getName().c_str()) );
+							parser->error_push_only( activity->src_info(), "См. акивность" );
+							parser->error_push_only( activity->getType()->src_info(), "См. образец" );
+							parser->error_push_done();
+						}
+					}
+				} else {
+					if ( opr->getType()->getType() != RDOPATPattern::PT_Keyboard ) {
+						parser->error_push_only( @2, rdo::format("Операция '%s' должна быть клавиатурной", opr->getName().c_str()) );
+						parser->error_push_only( opr->src_info(), "См. операцию" );
+						parser->error_push_only( opr->getType()->src_info(), "См. образец" );
+						parser->error_push_done();
+					}
 				}
 				rdoRuntime::RDOFRMFrame::RDOFRMPosition* x      = reinterpret_cast<rdoRuntime::RDOFRMFrame::RDOFRMPosition*>($4);
 				rdoRuntime::RDOFRMFrame::RDOFRMPosition* y      = reinterpret_cast<rdoRuntime::RDOFRMFrame::RDOFRMPosition*>($6);

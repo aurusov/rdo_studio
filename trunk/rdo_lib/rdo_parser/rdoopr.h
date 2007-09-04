@@ -33,8 +33,8 @@ public:
 	void addParam( int intParam, const YYLTYPE& param_pos );
 	void addParam( double realParam, const YYLTYPE& param_pos );
 	void addParam( const YYLTYPE& param_pos );
-	void addHotKey( const std::string& hotKey, const YYLTYPE& pattern_pos );
-	void endOfDefinition( const YYLTYPE& opr_pos );
+	void addHotKey( const std::string& hotKey, const YYLTYPE& hotkey_pos );
+	void end( const YYLTYPE& opr_pos );
 	const std::string& getName() const { return src_info().src_text(); }
 	const RDOPATPattern* getType() const { return pattern; }
 };

@@ -172,7 +172,7 @@ std::stringstream& RDOParser::getModelStructure()
 		for( int i = 0; i < allDPTSearch.size(); i++ ) {
 			for( int j = 0; j < allDPTSearch.at(i)->getActivities().size(); j++ ) {
 				RDODPTSearchActivity* curr = allDPTSearch.at(i)->getActivities().at(j);
-				modelStructure << counter++ << " " << *curr->getName() << " " << curr->getRule()->getPatternId() << std::endl;
+				modelStructure << counter++ << " " << curr->getName() << " " << curr->getRule()->getPatternId() << std::endl;
 			}
 		}
 
@@ -348,10 +348,10 @@ void RDOParser::warning( const RDOParserSrcInfo& _src_info, const std::string& _
 	errors.push_back( rdoSimulator::RDOSyntaxError( _error_code, _message, _src_info.src_pos().last_line, _src_info.src_pos().last_pos, _src_info.src_filetype(), true ) );
 }
 
-const RDOFUNConstant* RDOParser::findFUNConst( const std::string& _cons ) const
+const RDOFUNConstant* RDOParser::findFUNConst( const std::string& name ) const
 {
 	std::vector<RDOFUNConstant *>::const_iterator it = 
-		std::find_if(allFUNConstant.begin(), allFUNConstant.end(), compareName2<RDOFUNConstant>(_cons));
+		std::find_if(allFUNConstant.begin(), allFUNConstant.end(), compareName2<RDOFUNConstant>(name));
 
 	if(it == allFUNConstant.end())
 		return NULL;
@@ -359,25 +359,57 @@ const RDOFUNConstant* RDOParser::findFUNConst( const std::string& _cons ) const
 	return (*it);
 }
 
-void RDOParser::checkActivityName( const std::string* _name )
+void RDOParser::checkFunctionName( const RDOParserSrcInfo& _src_info )
+{
+	const RDOFUNConstant* _const = findFUNConst( _src_info.src_text() );
+	if ( _const ) {
+		error_push_only( _src_info, rdo::format("Константа '%s' уже существует", _src_info.src_text().c_str()) );
+//		parser->error("Second appearance of the same constant name: " + *(_cons->getName()));
+		error_push_only( _const->src_info(), "См. первое определение" );
+		error_push_done();
+	}
+	const RDOFUNSequence* _seq = findSequence( _src_info.src_text() );
+	if ( _seq ) {
+		error_push_only( _src_info, rdo::format( "Последовательность '%s' уже существует", _src_info.src_text().c_str() ) );
+		error_push_only( _seq->src_info(), "См. первое определение" );
+		error_push_done();
+	}
+	const RDOFUNFunction* _fun = findFunction( _src_info.src_text() );
+	if ( _fun ) {
+		error_push_only( _src_info, rdo::format( "Функция '%s' уже существует", _src_info.src_text().c_str() ) );
+		error_push_only( _fun->src_info(), "См. первое определение" );
+		error_push_done();
+	}
+}
+
+void RDOParser::checkActivityName( const RDOParserSrcInfo& _src_info )
 {
 	std::vector< RDODPTSearch* >::const_iterator it_search = getDPTSearch().begin();
 	while ( it_search != getDPTSearch().end() ) {
-		if ( std::find_if( (*it_search)->getActivities().begin(), (*it_search)->getActivities().end(), compareName<RDODPTSearchActivity>(_name) ) != (*it_search)->getActivities().end() ) {
-			error( rdo::format("Активность с таким именем уже существует в точке типа search: %s", (*it_search)->getName()->c_str()) );
+		std::vector< RDODPTSearchActivity* >::const_iterator it_search_act = std::find_if( (*it_search)->getActivities().begin(), (*it_search)->getActivities().end(), compareName2<RDODPTSearchActivity>(_src_info.src_text()) );
+		if ( it_search_act != (*it_search)->getActivities().end() ) {
+			error_push_only( _src_info, rdo::format("Активность '%s' уже существует", _src_info.src_text().c_str()) );
+			error_push_only( (*it_search_act)->src_info(), "См. первое определение" );
+			error_push_done();
 //			error("Activity name: " + *_name + " already defined");
 		}
 		it_search++;
 	}
 	std::vector< RDODPTSome* >::const_iterator it_some = getDPTSome().begin();
 	while ( it_some != getDPTSome().end() ) {
-		if ( std::find_if( (*it_some)->getActivities().begin(), (*it_some)->getActivities().end(), compareName<RDODPTSomeActivity>(_name) ) != (*it_some)->getActivities().end() ) {
-			error( rdo::format("Активность с таким именем уже существует в точке типа some: %s", (*it_some)->getName()->c_str()) );
+		std::vector< RDODPTSomeActivity* >::const_iterator it_some_act = std::find_if( (*it_some)->getActivities().begin(), (*it_some)->getActivities().end(), compareName2<RDODPTSomeActivity>(_src_info.src_text()) );
+		if ( it_some_act != (*it_some)->getActivities().end() ) {
+			error_push_only( _src_info, rdo::format("Активность '%s' уже существует", _src_info.src_text().c_str()) );
+			error_push_only( (*it_some_act)->src_info(), "См. первое определение" );
+			error_push_done();
 		}
 		it_some++;
 	}
-	if ( std::find_if( getDPTFreeActivity().begin(), getDPTFreeActivity().end(), compareName<RDODPTFreeActivity>(_name) ) != getDPTFreeActivity().end() ) {
-		error( rdo::format("Активность с таким именем уже существует: %s", _name->c_str()) );
+	std::vector< RDODPTFreeActivity* >::const_iterator it_free_act = std::find_if( getDPTFreeActivity().begin(), getDPTFreeActivity().end(), compareName2<RDODPTFreeActivity>(_src_info.src_text()) );
+	if ( it_free_act != getDPTFreeActivity().end() ) {
+		error_push_only( _src_info, rdo::format("Активность '%s' уже существует", _src_info.src_text().c_str()) );
+		error_push_only( (*it_free_act)->src_info(), "См. первое определение" );
+		error_push_done();
 //		error("Free activity name: " + *_name + " already defined");
 	}
 }
@@ -434,6 +466,12 @@ const RDOOPROperation* RDOParser::findOperation( const std::string& name ) const
 {
 	std::vector< RDOOPROperation* >::const_iterator it = std::find_if( allOPROperations.begin(), allOPROperations.end(), compareName2<RDOOPROperation>(name) );
 	return it != allOPROperations.end() ? *it : NULL;
+}
+
+const RDODPTFreeActivity* RDOParser::findFreeActivity( const std::string& name ) const
+{
+	std::vector< RDODPTFreeActivity* >::const_iterator it = std::find_if( allDPTFreeActivity.begin(), allDPTFreeActivity.end(), compareName2<RDODPTFreeActivity>(name) );
+	return it != allDPTFreeActivity.end() ? *it : NULL;
 }
 
 void RDOParser::LoadStdFunctions()

@@ -301,7 +301,7 @@ pat_params_end:	pat_params Relevant_resources   { $$ = $1; }
 pat_rel_res:	pat_params_end IDENTIF_COLON IDENTIF pat_conv pat_conv {
 					// проверено для ie,rule,opr,key
 					RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
-					switch ( pattern->getPatType() ) {
+					switch ( pattern->getType() ) {
 						case RDOPATPattern::PT_Operation:
 						case RDOPATPattern::PT_Keyboard : {
 							std::string rel_name  = *reinterpret_cast<std::string*>($2);
@@ -322,7 +322,7 @@ pat_rel_res:	pat_params_end IDENTIF_COLON IDENTIF pat_conv pat_conv {
 				| pat_rel_res IDENTIF_COLON IDENTIF pat_conv pat_conv {
 					// проверено для ie,rule,opr,key
 					RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
-					switch ( pattern->getPatType() ) {
+					switch ( pattern->getType() ) {
 						case RDOPATPattern::PT_Operation:
 						case RDOPATPattern::PT_Keyboard : {
 							std::string rel_name  = *reinterpret_cast<std::string*>($2);
@@ -343,7 +343,7 @@ pat_rel_res:	pat_params_end IDENTIF_COLON IDENTIF pat_conv pat_conv {
 				| pat_params_end IDENTIF_COLON IDENTIF pat_conv {
 					// проверено для ie,rule,opr,key
 					RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
-					switch ( pattern->getPatType() ) {
+					switch ( pattern->getType() ) {
 						case RDOPATPattern::PT_Operation:
 						case RDOPATPattern::PT_Keyboard : {
 							parser->error( @4, rdo::format("Помимо статуса конвертора начала (%s), ожидается статус конвертора конца, потому что у операции есть событие конца", RDOPATPattern::StatusToStr((rdoRuntime::RDOResourceTrace::ConvertStatus)$4).c_str()) );
@@ -361,7 +361,7 @@ pat_rel_res:	pat_params_end IDENTIF_COLON IDENTIF pat_conv pat_conv {
 				| pat_rel_res IDENTIF_COLON IDENTIF pat_conv {
 					// проверено для ie,rule,opr,key
 					RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
-					switch ( pattern->getPatType() ) {
+					switch ( pattern->getType() ) {
 						case RDOPATPattern::PT_Operation:
 						case RDOPATPattern::PT_Keyboard : {
 							parser->error( @4, rdo::format("Помимо статуса конвертора начала (%s), ожидается статус конвертора конца, потому что у операции есть событие конца", RDOPATPattern::StatusToStr((rdoRuntime::RDOResourceTrace::ConvertStatus)$4).c_str()) );
@@ -379,7 +379,7 @@ pat_rel_res:	pat_params_end IDENTIF_COLON IDENTIF pat_conv pat_conv {
 				| pat_params_end IDENTIF_COLON IDENTIF_NoChange pat_conv {
 					// проверено для ie,rule,opr,key
 					RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
-					switch ( pattern->getPatType() ) {
+					switch ( pattern->getType() ) {
 						case RDOPATPattern::PT_Operation:
 						case RDOPATPattern::PT_Keyboard : {
 							std::string rel_name  = *reinterpret_cast<std::string*>($2);
@@ -406,7 +406,7 @@ pat_rel_res:	pat_params_end IDENTIF_COLON IDENTIF pat_conv pat_conv {
 				| pat_rel_res IDENTIF_COLON IDENTIF_NoChange pat_conv {
 					// проверено для ie,rule,opr,key
 					RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
-					switch ( pattern->getPatType() ) {
+					switch ( pattern->getType() ) {
 						case RDOPATPattern::PT_Operation:
 						case RDOPATPattern::PT_Keyboard : {
 							std::string rel_name  = *reinterpret_cast<std::string*>($2);
@@ -433,7 +433,7 @@ pat_rel_res:	pat_params_end IDENTIF_COLON IDENTIF pat_conv pat_conv {
 				| pat_params_end IDENTIF_COLON IDENTIF_NoChange_NoChange {
 					// проверено для ie,rule,opr,key
 					RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
-					switch ( pattern->getPatType() ) {
+					switch ( pattern->getType() ) {
 						case RDOPATPattern::PT_Operation:
 						case RDOPATPattern::PT_Keyboard : {
 							std::string rel_name  = *reinterpret_cast<std::string*>($2);
@@ -477,7 +477,7 @@ pat_rel_res:	pat_params_end IDENTIF_COLON IDENTIF pat_conv pat_conv {
 				| pat_rel_res IDENTIF_COLON IDENTIF_NoChange_NoChange {
 					// проверено для ie,rule,opr,key
 					RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
-					switch ( pattern->getPatType() ) {
+					switch ( pattern->getType() ) {
 						case RDOPATPattern::PT_Operation:
 						case RDOPATPattern::PT_Keyboard : {
 							std::string rel_name  = *reinterpret_cast<std::string*>($2);
@@ -521,7 +521,7 @@ pat_rel_res:	pat_params_end IDENTIF_COLON IDENTIF pat_conv pat_conv {
 				| pat_params_end IDENTIF_COLON IDENTIF_NoChange {
 					// проверено для ie,rule,opr,key
 					RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
-					switch ( pattern->getPatType() ) {
+					switch ( pattern->getType() ) {
 						case RDOPATPattern::PT_Operation:
 						case RDOPATPattern::PT_Keyboard : {
 							parser->error( @3, rdo::format("Помимо статуса конвертора начала (%s), ожидается статус конвертора конца, потому что у операции есть событие конца", RDOPATPattern::StatusToStr(rdoRuntime::RDOResourceTrace::CS_NoChange).c_str()) );
@@ -545,7 +545,7 @@ pat_rel_res:	pat_params_end IDENTIF_COLON IDENTIF pat_conv pat_conv {
 				| pat_rel_res IDENTIF_COLON IDENTIF_NoChange {
 					// проверено для ie,rule,opr,key
 					RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
-					switch ( pattern->getPatType() ) {
+					switch ( pattern->getType() ) {
 						case RDOPATPattern::PT_Operation:
 						case RDOPATPattern::PT_Keyboard : {
 							parser->error( @3, rdo::format("Помимо статуса конвертора начала (%s), ожидается статус конвертора конца, потому что у операции есть событие конца", RDOPATPattern::StatusToStr(rdoRuntime::RDOResourceTrace::CS_NoChange).c_str()) );
@@ -569,7 +569,7 @@ pat_rel_res:	pat_params_end IDENTIF_COLON IDENTIF pat_conv pat_conv {
 				| pat_params_end IDENTIF_COLON IDENTIF IDENTIF_NoChange {
 					// проверено для ie,rule,opr,key
 					RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
-					switch ( pattern->getPatType() ) {
+					switch ( pattern->getType() ) {
 						case RDOPATPattern::PT_Operation:
 						case RDOPATPattern::PT_Keyboard : {
 							std::string  rel_name      = *reinterpret_cast<std::string*>($2);
@@ -597,7 +597,7 @@ pat_rel_res:	pat_params_end IDENTIF_COLON IDENTIF pat_conv pat_conv {
 				| pat_rel_res IDENTIF_COLON IDENTIF IDENTIF_NoChange {
 					// проверено для ie,rule,opr,key
 					RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
-					switch ( pattern->getPatType() ) {
+					switch ( pattern->getType() ) {
 						case RDOPATPattern::PT_Operation:
 						case RDOPATPattern::PT_Keyboard : {
 							std::string  rel_name      = *reinterpret_cast<std::string*>($2);
@@ -653,7 +653,7 @@ pat_rel_res:	pat_params_end IDENTIF_COLON IDENTIF pat_conv pat_conv {
 					}
 				}
 				| pat_params_end IDENTIF_COLON IDENTIF pat_conv error {
-					switch ( parser->getLastPATPattern()->getPatType() ) {
+					switch ( parser->getLastPATPattern()->getType() ) {
 						case RDOPATPattern::PT_Rule: {
 							parser->error( @5, "Ожидается способ выбора (first/with_min/with_max) или $Body" );
 							break;
@@ -670,7 +670,7 @@ pat_rel_res:	pat_params_end IDENTIF_COLON IDENTIF pat_conv pat_conv {
 					}
 				}
 				| pat_rel_res IDENTIF_COLON IDENTIF pat_conv error {
-					switch ( parser->getLastPATPattern()->getPatType() ) {
+					switch ( parser->getLastPATPattern()->getType() ) {
 						case RDOPATPattern::PT_Rule: {
 							parser->error( @5, "Ожидается способ выбора (first/with_min/with_max) или $Body" );
 							break;
@@ -686,7 +686,7 @@ pat_rel_res:	pat_params_end IDENTIF_COLON IDENTIF pat_conv pat_conv {
 					}
 				}
 				| pat_params_end IDENTIF_COLON IDENTIF_NoChange error {
-					switch ( parser->getLastPATPattern()->getPatType() ) {
+					switch ( parser->getLastPATPattern()->getType() ) {
 						case RDOPATPattern::PT_Rule: {
 							parser->error( @4, "Ожидается способ выбора (first/with_min/with_max) или $Body" );
 							break;
@@ -702,7 +702,7 @@ pat_rel_res:	pat_params_end IDENTIF_COLON IDENTIF pat_conv pat_conv {
 					}
 				}
 				| pat_rel_res IDENTIF_COLON IDENTIF_NoChange error {
-					switch ( parser->getLastPATPattern()->getPatType() ) {
+					switch ( parser->getLastPATPattern()->getType() ) {
 						case RDOPATPattern::PT_Rule: {
 							parser->error( @4, "Ожидается способ выбора (first/with_min/with_max) или $Body" );
 							break;
@@ -727,7 +727,7 @@ pat_conv:	Keep				{ $$ = rdoRuntime::RDOResourceTrace::CS_Keep;     }
 pat_common_choice:	pat_rel_res
 					| pat_rel_res first_keyword {
 						RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
-						if ( pattern->getPatType() == RDOPATPattern::PT_IE ) {
+						if ( pattern->getType() == RDOPATPattern::PT_IE ) {
 							parser->error( @2, "В нерегулярном событии не используется способ выбора релевантных ресурсов" );
 						} else {
 //							pattern->setCommonChoiceFirst();
@@ -739,7 +739,7 @@ pat_common_choice:	pat_rel_res
 					}
 					| pat_rel_res with_min fun_arithm {
 						RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
-						if ( pattern->getPatType() == RDOPATPattern::PT_IE ) {
+						if ( pattern->getType() == RDOPATPattern::PT_IE ) {
 							parser->error( @2, "В нерегулярном событии не используется способ выбора релевантных ресурсов" );
 						} else {
 							RDOFUNArithm* arithm = reinterpret_cast<RDOFUNArithm*>($3);
@@ -750,7 +750,7 @@ pat_common_choice:	pat_rel_res
 					}
 					| pat_rel_res with_max fun_arithm {
 						RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
-						if ( pattern->getPatType() == RDOPATPattern::PT_IE ) {
+						if ( pattern->getType() == RDOPATPattern::PT_IE ) {
 							parser->error( @2, "В нерегулярном событии не используется способ выбора релевантных ресурсов" );
 						} else {
 							RDOFUNArithm* arithm = reinterpret_cast<RDOFUNArithm*>($3);
@@ -762,7 +762,7 @@ pat_common_choice:	pat_rel_res
 
 pat_time:	pat_common_choice Body {
 				RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
-				switch ( pattern->getPatType() ) {
+				switch ( pattern->getType() ) {
 					case RDOPATPattern::PT_IE       :
 					case RDOPATPattern::PT_Operation:
 					case RDOPATPattern::PT_Keyboard : {
@@ -780,7 +780,7 @@ pat_time:	pat_common_choice Body {
 			}
 			| pat_common_choice error {
 				RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
-				switch ( pattern->getPatType() ) {
+				switch ( pattern->getType() ) {
 					case RDOPATPattern::PT_Rule: {
 						parser->error( @2, rdo::format("Ожидается $Body, найдено: %s", reinterpret_cast<RDOLexer*>(lexer)->YYText()) );
 						break;
@@ -890,7 +890,7 @@ pat_convert:	pat_res_usage {
 						str = "Сразу после имени";
 					}
 					if ( rel_res->begin != rdoRuntime::RDOResourceTrace::CS_NoChange && rel_res->begin != rdoRuntime::RDOResourceTrace::CS_Erase && rel_res->begin != rdoRuntime::RDOResourceTrace::CS_NonExist ) {
-						switch ( pattern->getPatType() ) {
+						switch ( pattern->getType() ) {
 							case RDOPATPattern::PT_IE       : parser->error( @1, rdo::format("%s ожидается ключевое слово Convert_event для релевантного ресурса '%s', т.к. его статус '%s', но найдено: %s", str.c_str(), rel_res->getName().c_str(), RDOPATPattern::StatusToStr(rel_res->begin).c_str(), reinterpret_cast<RDOLexer*>(lexer)->YYText()) ); break;
 							case RDOPATPattern::PT_Rule     : parser->error( @1, rdo::format("%s ожидается ключевое слово Convert_rule для релевантного ресурса '%s', т.к. его статус '%s', но найдено: %s", str.c_str(), rel_res->getName().c_str(), RDOPATPattern::StatusToStr(rel_res->begin).c_str(), reinterpret_cast<RDOLexer*>(lexer)->YYText()) ); break;
 							case RDOPATPattern::PT_Operation:
@@ -899,7 +899,7 @@ pat_convert:	pat_res_usage {
 //						parser->error( "Converter needed for \"" + *rel_res->getName() + "\" relevant resource in pattern \"" + getName() + "\"" );
 					}
 					if ( rel_res->end != rdoRuntime::RDOResourceTrace::CS_NoChange && rel_res->end != rdoRuntime::RDOResourceTrace::CS_Erase && rel_res->end != rdoRuntime::RDOResourceTrace::CS_NonExist ) {
-						switch ( pattern->getPatType() ) {
+						switch ( pattern->getType() ) {
 							case RDOPATPattern::PT_IE       : parser->error( @1, "Внутренняя ошибка" ); break;
 							case RDOPATPattern::PT_Rule     : parser->error( @1, "Внутренняя ошибка" ); break;
 							case RDOPATPattern::PT_Operation:
@@ -909,9 +909,9 @@ pat_convert:	pat_res_usage {
 				}
 				| pat_res_usage convert_begin pat_trace pat_params_set {
 					RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
-					if ( pattern->getPatType() != RDOPATPattern::PT_Operation && pattern->getPatType() != RDOPATPattern::PT_Keyboard ) {
+					if ( pattern->getType() != RDOPATPattern::PT_Operation && pattern->getType() != RDOPATPattern::PT_Keyboard ) {
 						std::string type = "";
-						switch ( pattern->getPatType() ) {
+						switch ( pattern->getType() ) {
 							case RDOPATPattern::PT_IE       : type = "нерегулярном событии"; break;
 							case RDOPATPattern::PT_Rule     : type = "продукционном правиле"; break;
 						}
@@ -923,9 +923,9 @@ pat_convert:	pat_res_usage {
 				}
 				| pat_res_usage pat_params_set convert_end pat_trace pat_params_set {
 					RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
-					if ( pattern->getPatType() != RDOPATPattern::PT_Operation && pattern->getPatType() != RDOPATPattern::PT_Keyboard ) {
+					if ( pattern->getType() != RDOPATPattern::PT_Operation && pattern->getType() != RDOPATPattern::PT_Keyboard ) {
 						std::string type = "";
-						switch ( pattern->getPatType() ) {
+						switch ( pattern->getType() ) {
 							case RDOPATPattern::PT_IE       : type = "нерегулярном событии"; break;
 							case RDOPATPattern::PT_Rule     : type = "продукционном правиле"; break;
 						}
@@ -938,9 +938,9 @@ pat_convert:	pat_res_usage {
 				}
 				| pat_res_usage convert_begin pat_trace pat_params_set convert_end pat_trace pat_params_set {
 					RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
-					if ( pattern->getPatType() != RDOPATPattern::PT_Operation && pattern->getPatType() != RDOPATPattern::PT_Keyboard ) {
+					if ( pattern->getType() != RDOPATPattern::PT_Operation && pattern->getType() != RDOPATPattern::PT_Keyboard ) {
 						std::string type = "";
-						switch ( pattern->getPatType() ) {
+						switch ( pattern->getType() ) {
 							case RDOPATPattern::PT_IE       : type = "нерегулярном событии"; break;
 							case RDOPATPattern::PT_Rule     : type = "продукционном правиле"; break;
 						}
@@ -954,9 +954,9 @@ pat_convert:	pat_res_usage {
 				}
 				| pat_res_usage convert_rule pat_trace pat_params_set {
 					RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
-					if ( pattern->getPatType() != RDOPATPattern::PT_Rule ) {
+					if ( pattern->getType() != RDOPATPattern::PT_Rule ) {
 						std::string type = "";
-						switch ( pattern->getPatType() ) {
+						switch ( pattern->getType() ) {
 							case RDOPATPattern::PT_IE       : type = "нерегулярном событии"; break;
 							case RDOPATPattern::PT_Operation: type = "операции"; break;
 							case RDOPATPattern::PT_Keyboard : type = "клавиатурной операции"; break;
@@ -969,9 +969,9 @@ pat_convert:	pat_res_usage {
 				}
 				| pat_res_usage convert_event pat_trace pat_params_set {
 					RDOPATPattern* pattern = reinterpret_cast<RDOPATPattern*>($1);
-					if ( pattern->getPatType() != RDOPATPattern::PT_IE ) {
+					if ( pattern->getType() != RDOPATPattern::PT_IE ) {
 						std::string type = "";
-						switch ( pattern->getPatType() ) {
+						switch ( pattern->getType() ) {
 							case RDOPATPattern::PT_Rule     : type = "продукционном правиле"; break;
 							case RDOPATPattern::PT_Operation: type = "операции"; break;
 							case RDOPATPattern::PT_Keyboard : type = "клавиатурной операции"; break;

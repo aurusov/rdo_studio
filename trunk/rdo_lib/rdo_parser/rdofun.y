@@ -212,14 +212,8 @@ fun_const_body:	/* empty */
 
 fun_const_param_desc:	IDENTIF_COLON param_type {
 							std::string name = *reinterpret_cast<std::string*>($1);
-							RDOParserSrcInfo const_info = RDOParserSrcInfo(@1, name, RDOParserSrcInfo::psi_align_bytext);
-							const RDOFUNConstant* _const = parser->findFUNConst( name );
-							if ( _const ) {
-								parser->error_push_only( const_info, rdo::format("Константа '%s' уже существует", name.c_str()) );
-								parser->error_push_only( _const->src_info(), "См. первое определение" );
-								parser->error_push_done();
-//								parser->error("Second appearance of the same constant name: " + *(_cons->getName()));
-							}
+							RDOParserSrcInfo src_info = RDOParserSrcInfo(@1, name, RDOParserSrcInfo::psi_align_bytext);
+							parser->checkFunctionName( src_info );
 							RDORTPParamType* parType = reinterpret_cast<RDORTPParamType*>($2);
 							if ( !parType->dv->isExist() ) {
 								parser->error( @2, "Константа должна иметь значение" );
@@ -227,7 +221,7 @@ fun_const_param_desc:	IDENTIF_COLON param_type {
 							}
 							RDORTPParam* param = new RDORTPParam( parser, name, parType, RDOParserSrcInfo( @1, @2 ) );
 							RDOFUNConstant* newConst = new RDOFUNConstant( parser, param );
-							newConst->setSrcInfo( const_info );
+							newConst->setSrcInfo( src_info );
 							parser->runtime->setConstValue( newConst->number, newConst->getType()->getParamDefaultValue( param->src_info() ) );
 							$$ = (int)newConst;
 						}
@@ -581,24 +575,7 @@ fun_func_descr:	fun_func_header fun_func_footer
 fun_func_header:	Function_keyword IDENTIF_COLON param_type {
 						std::string name = *reinterpret_cast<std::string*>($2);
 						RDOParserSrcInfo src_info = RDOParserSrcInfo(@2, name, RDOParserSrcInfo::psi_align_bytext);
-						const RDOFUNConstant* _const = parser->findFUNConst( name );
-						if ( _const ) {
-							parser->error_push_only( src_info, rdo::format("Константа '%s' уже существует", name.c_str()) );
-							parser->error_push_only( _const->src_info(), "См. первое определение" );
-							parser->error_push_done();
-						}
-						const RDOFUNSequence* _seq = parser->findSequence( name );
-						if ( _seq ) {
-							parser->error_push_only( src_info, rdo::format( "Последовательность '%s' уже существует", name.c_str() ) );
-							parser->error_push_only( _seq->src_info(), "См. первое определение" );
-							parser->error_push_done();
-						}
-						const RDOFUNFunction* _fun = parser->findFunction( name );
-						if ( _fun ) {
-							parser->error_push_only( src_info, rdo::format( "Функция '%s' уже существует", name.c_str() ) );
-							parser->error_push_only( _fun->src_info(), "См. первое определение" );
-							parser->error_push_done();
-						}
+						parser->checkFunctionName( src_info );
 						RDORTPParamType* retType = reinterpret_cast<RDORTPParamType*>($3);
 						RDOFUNFunction* fun = new RDOFUNFunction( parser, src_info, retType );
 						if ( retType->getType() == RDORTPParamType::pt_enum && static_cast<RDORTPEnumParamType*>(retType)->enum_name.empty() ) {
@@ -758,24 +735,7 @@ fun_seq_descr:		fun_seq_uniform
 fun_seq_header:		Sequence IDENTIF_COLON param_type Type_keyword '=' {
 						std::string name = *reinterpret_cast<std::string*>($2);
 						RDOParserSrcInfo src_info = RDOParserSrcInfo(@2, name, RDOParserSrcInfo::psi_align_bytext);
-						const RDOFUNConstant* _const = parser->findFUNConst( name );
-						if ( _const ) {
-							parser->error_push_only( src_info, rdo::format("Константа '%s' уже существует", name.c_str()) );
-							parser->error_push_only( _const->src_info(), "См. первое определение" );
-							parser->error_push_done();
-						}
-						const RDOFUNSequence* _seq = parser->findSequence( name );
-						if ( _seq ) {
-							parser->error_push_only( src_info, rdo::format( "Последовательность '%s' уже существует", name.c_str() ) );
-							parser->error_push_only( _seq->src_info(), "См. первое определение" );
-							parser->error_push_done();
-						}
-						const RDOFUNFunction* _fun = parser->findFunction( name );
-						if ( _fun ) {
-							parser->error_push_only( src_info, rdo::format( "Функция '%s' уже существует", name.c_str() ) );
-							parser->error_push_only( _fun->src_info(), "См. первое определение" );
-							parser->error_push_done();
-						}
+						parser->checkFunctionName( src_info );
 						$$ = (int)(new RDOFUNSequence::RDOFUNSequenceHeader( parser, reinterpret_cast<RDORTPParamType*>($3), src_info ));
 					}
 					| Sequence IDENTIF_COLON param_type Type_keyword '=' error {

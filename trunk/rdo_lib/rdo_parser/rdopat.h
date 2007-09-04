@@ -69,8 +69,8 @@ public:
 		PT_Operation,
 		PT_Keyboard
 	};
-	virtual PatType getPatType() const = 0;
-	bool    isHaveConvertEnd() const { return getPatType() == PT_Operation || getPatType() == PT_Keyboard; }
+	virtual PatType getType() const = 0;
+	bool    isHaveConvertEnd() const { return getType() == PT_Operation || getType() == PT_Keyboard; }
 
 	static std::string StatusToStr( rdoRuntime::RDOResourceTrace::ConvertStatus value );
 	rdoRuntime::RDOResourceTrace::ConvertStatus StrToStatus( const std::string& value, const YYLTYPE& convertor_pos );
@@ -102,7 +102,6 @@ public:
 
 	virtual void testGoodForSearchActivity() const;
 	virtual void testGoodForSomeActivity() const;
-	virtual void testGoodForFreeActivity() const;
 
 	int writeModelStructure() const;
 	virtual char getModelStructureLetter() const = 0;
@@ -122,9 +121,8 @@ public:
 	RDOPATPatternEvent( RDOParser* _parser, const RDOParserSrcInfo& _name_src_info, bool _trace );
 	virtual void addRelRes( const RDOParserSrcInfo& rel_info, const RDOParserSrcInfo& type_info, rdoRuntime::RDOResourceTrace::ConvertStatus beg, const YYLTYPE& convertor_pos );
 	virtual void addRelResUsage( RDOPATChoiceFrom* choice_from, RDOPATChoiceOrder* choice_order );
-	virtual void testGoodForFreeActivity() const {}
 	virtual char getModelStructureLetter() const { return 'I'; };
-	virtual PatType getPatType() const { return PT_IE; }
+	virtual PatType getType() const { return PT_IE; }
 };
 
 // ----------------------------------------------------------------------------
@@ -143,7 +141,7 @@ public:
 	virtual void testGoodForSearchActivity() const;
 	virtual void testGoodForSomeActivity() const {}
 	virtual char getModelStructureLetter() const { return 'R'; };
-	virtual PatType getPatType() const { return PT_Rule; }
+	virtual PatType getType() const { return PT_Rule; }
 };
 
 // ----------------------------------------------------------------------------
@@ -172,7 +170,7 @@ public:
 	        void addRelResConvertBeginEnd( bool trace_begin, RDOPATParamSet* parSet_begin, bool trace_end, RDOPATParamSet* parSet_end, const YYLTYPE& convertor_begin_pos, const YYLTYPE& convertor_end_pos, const YYLTYPE& trace_begin_pos, const YYLTYPE& trace_end_pos );
 	virtual void testGoodForSomeActivity() const {}
 	virtual char getModelStructureLetter() const { return 'A'; };
-	virtual PatType getPatType() const { return PT_Operation; }
+	virtual PatType getType() const { return PT_Operation; }
 };
 
 // ----------------------------------------------------------------------------
@@ -183,8 +181,7 @@ class RDOPATPatternKeyboard: public RDOPATPatternOperation
 public:
 	RDOPATPatternKeyboard( RDOParser* _parser, const RDOParserSrcInfo& _name_src_info, bool _trace );
 	virtual char getModelStructureLetter() const { return 'K'; };
-	virtual void testGoodForFreeActivity() const {}
-	virtual PatType getPatType() const { return PT_Keyboard; }
+	virtual PatType getType() const { return PT_Keyboard; }
 };
 
 // ----------------------------------------------------------------------------

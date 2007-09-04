@@ -104,6 +104,7 @@ public:
 	virtual int ExitInstance();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	virtual BOOL OnIdle(LONG lCount);
+	virtual BOOL ProcessMessageFilter(int code, LPMSG lpMsg);
 	//}}AFX_VIRTUAL
 
 	//{{AFX_MSG(RDOStudioApp)

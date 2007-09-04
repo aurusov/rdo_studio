@@ -42,7 +42,7 @@ RDOPATPattern::RDOPATPattern( RDOParser* _parser, const RDOParserSrcInfo& _name_
 	const RDOPATPattern* pattern = getParser()->findPattern( src_info().src_text() );
 	if ( pattern ) {
 		getParser()->error_push_only( src_info(), rdo::format("Паттерн '%s' уже существует", getName().c_str()) );
-		getParser()->error_push_only( pattern->src_info(), rdo::format("См. первое определение") );
+		getParser()->error_push_only( pattern->src_info(), "См. первое определение" );
 		getParser()->error_push_done();
 //		getParser()->error( "Pattern with name: " + name + " already exist" );
 	}
@@ -160,12 +160,6 @@ void RDOPATPattern::testGoodForSomeActivity() const
 //	getParser()->error("Only RULEs and OPERATIONs can be used in some activity");
 }
 
-void RDOPATPattern::testGoodForFreeActivity() const
-{
-	getParser()->error( "Только нерегулярные события и клавиатурные операции могут быть использованы в списке свободных активностей" );
-//	getParser()->error("Only IEs and KEYBOARD OPERATIONs can be used in free activity");
-}
-
 std::string RDOPATPattern::getPatternId() const
 { 
 	return patRuntime->getPatternId(); 
@@ -214,7 +208,7 @@ void RDOPATPattern::add( RDOFUNFunctionParam* const _param )
 	const RDOFUNFunctionParam* param = findPATPatternParam(_param->getName());
 	if ( param ) {
 		getParser()->error_push_only( _param->src_info(), rdo::format("Параметр '%s' уже определен", _param->src_text().c_str()) );
-		getParser()->error_push_only( param->src_info(), rdo::format("См. первое определение") );
+		getParser()->error_push_only( param->src_info(), "См. первое определение" );
 		getParser()->error_push_done();
 //		getParser()->error("Second appearance of the same parameter name: " + _param->getName());
 	}

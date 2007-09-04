@@ -33,49 +33,53 @@ int dpt_opr_parse( void* lexer );
 int dpt_opr_lex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer );
 void dpt_opr_error( char* mes );
 
-/////////////////////////  "SEARCH" DECISION POINT /////////////////////////
-
-enum DPTSearchTrace
+// ----------------------------------------------------------------------------
+// ---------- DPT Search
+// ----------------------------------------------------------------------------
+// ---------- RDODPTSearchActivity
+// ----------------------------------------------------------------------------
+class RDODPTSearchActivity: public RDOParserObject, public RDOParserSrcInfo
 {
-	DPTnotrace,
-	DPTtracestat,
-	DPTtracetops, 
-	DPTtraceall  
-};
+public:
+	enum DPTSearchValue {
+		DPT_value_before,
+		DPT_value_after
+	};
 
-enum DPTSearchValue
-{
-	DPT_value_before,
-	DPT_value_after
-};
-
-class RDODPTSearchActivity: public RDOParserObject
-{
 private:
-	std::string *name;
-	RDOPATPatternRule *rule;
+	RDOPATPatternRule* rule;
 	DPTSearchValue value;
-	RDOFUNArithm *ruleCost;
+	RDOFUNArithm* ruleCost;
 	int currParamNum;
 	std::vector< rdoRuntime::RDOValue > params;
 
 public:
-	RDODPTSearchActivity( const RDOParserObject* _parent, std::string* _name, std::string* _ruleName );
-	void setValue(DPTSearchValue _value, RDOFUNArithm *_ruleCost);
-	const std::string *getName() const { return name; }
+	RDODPTSearchActivity( const RDOParserObject* _parent, const RDOParserSrcInfo& _src_info, const std::string& _rule );
+	void setValue( DPTSearchValue _value, RDOFUNArithm* _ruleCost );
 	void addParam( int _param );
 	void addParam( double _param );
 	void addParam( const std::string& _param );
 	void addParam();
-	RDOPATPatternRule *getRule() { return rule; }
+	const std::string& getName() const { return src_info().src_text(); }
+	RDOPATPatternRule* getRule()       { return rule;                  }
 
 	rdoRuntime::RDOSearchActivityRuntime* createActivityRuntime( rdoRuntime::RDORuntime* sim );
 };
 
-class RDODPTSearch: public RDOParserObject
+// ----------------------------------------------------------------------------
+// ---------- RDODPTSearch
+// ----------------------------------------------------------------------------
+class RDODPTSearch: public RDOParserObject, public RDOParserSrcInfo
 {
+public:
+	enum DPTSearchTrace {
+		DPTnotrace,
+		DPTtracestat,
+		DPTtracetops, 
+		DPTtraceall  
+	};
+
 private:
-	const std::string* const name;
 	DPTSearchTrace trace;
 	RDOFUNLogic*   conditon;
 	RDOFUNLogic*   termConditon;
@@ -84,12 +88,12 @@ private:
 	std::vector< RDODPTSearchActivity* > activities;
 
 public:
-	RDODPTSearch( RDOParser* _parser, std::string* _name, DPTSearchTrace _trace = DPTnotrace );
+	RDODPTSearch( RDOParser* _parser, const RDOParserSrcInfo& _src_info, DPTSearchTrace _trace = DPTnotrace );
 	void setCondition(RDOFUNLogic *_conditon = NULL) { conditon = _conditon; }
 	void setTermCondition(RDOFUNLogic *_termConditon) { termConditon = _termConditon; }
 	void setEvaluateBy(RDOFUNArithm *_evalBy) { evalBy = _evalBy; }
 	void setCompareTops(bool _compTops) { compTops = _compTops; }
-	void addNewActivity(std::string *_name, std::string *_ruleName);
+	void addNewActivity( const RDOParserSrcInfo& _src_info, const std::string& _pattern );
 	template <typename T>
 		void addActivityParam(T _param)
 	{
@@ -97,29 +101,30 @@ public:
 	}
 	RDODPTSearchActivity* lastActivity;
 
-	void addActivityParam() { lastActivity->addParam(); }
+	void addActivityParam();
 
-	void setActivityValue(DPTSearchValue _value, RDOFUNArithm *_ruleCost);
+	void setActivityValue( RDODPTSearchActivity::DPTSearchValue _value, RDOFUNArithm* _ruleCost );
 	void end();
 
-	const std::string *getName() const { return name; }
+	const std::string& getName() const { return src_info().src_text(); }
 	const std::vector<RDODPTSearchActivity *>& getActivities() const { return activities; }
 };
 
-
-/////////////////////////  "SOME" DECISION POINT /////////////////////////
-
-class RDODPTSomeActivity: public RDOParserObject
+// ----------------------------------------------------------------------------
+// ---------- DPT Some
+// ----------------------------------------------------------------------------
+// ---------- RDODPTSomeActivity
+// ----------------------------------------------------------------------------
+class RDODPTSomeActivity: public RDOParserObject, public RDOParserSrcInfo
 {
 private:
-	std::string *name;
-	const RDOPATPattern *pattern;
+	const RDOPATPattern* pattern;
 	int currParamNum;
 	std::vector< rdoRuntime::RDOValue > params;
 
 public:
-	RDODPTSomeActivity( const RDOParserObject* _parent, std::string* _name, std::string* _ruleName );
-	const std::string *getName() const { return name; }
+	RDODPTSomeActivity( const RDOParserObject* _parent, const RDOParserSrcInfo& _src_info, const std::string& _pattern );
+	const std::string& getName() const { return src_info().src_text(); }
 	void addParam( int _param );
 	void addParam( double _param );
 	void addParam( const std::string& _param );
@@ -128,18 +133,20 @@ public:
 	void createActivityRuntime(RDOFUNLogic *conditon);
 };
 
-class RDODPTSome: public RDOParserObject
+// ----------------------------------------------------------------------------
+// ---------- RDODPTSome
+// ----------------------------------------------------------------------------
+class RDODPTSome: public RDOParserObject, public RDOParserSrcInfo
 {
 private:
-	const std::string *const name;
 	RDOFUNLogic *conditon;
 	std::vector< RDODPTSomeActivity* > activities;
 	RDODPTSomeActivity* lastActivity;
 
 public:
-	RDODPTSome( RDOParser* _parser, std::string* _name );
+	RDODPTSome( RDOParser* _parser, const RDOParserSrcInfo& _src_info );
 	void setCondition(RDOFUNLogic *_conditon = NULL) { conditon = _conditon; }
-	void addNewActivity(std::string *_name, std::string *_patternName);
+	void addNewActivity( const RDOParserSrcInfo& _src_info, const std::string& _pattern );
 	template <typename T>
 		void addActivityParam(T _param)
 	{
@@ -150,32 +157,34 @@ public:
 
 	void end();
 
-	const std::string *getName() const { return name; }
+	const std::string& getName() const { return src_info().src_text(); }
 
 	const std::vector< RDODPTSomeActivity* >& getActivities() const { return activities; }
 };
 
 
-/////////////////////////  FREE ACTIVITIES /////////////////////////
-
-class RDODPTFreeActivity: public RDOParserObject
+// ----------------------------------------------------------------------------
+// ---------- DPT Free
+// ----------------------------------------------------------------------------
+// ---------- RDODPTFreeActivity
+// ----------------------------------------------------------------------------
+class RDODPTFreeActivity: public RDOParserObject, public RDOParserSrcInfo
 {
 private:
-	std::string*         name;
-	const RDOPATPattern* pattern;
-	int currParamNum;
-	std::vector< rdoRuntime::RDOValue > params;
-	std::vector< std::string >          hotKeys;
+	const RDOPATPattern*            pattern;
+	int                             currParam;
+	rdoRuntime::RDOActivityRuntime* activity;
 
 public:
-	RDODPTFreeActivity( RDOParser* _parser, std::string* _name, std::string* _ruleName );
-	const std::string *getName() const { return name; }
-	void addParam( int _param );
-	void addParam( double _param );
-	void addParam( const std::string& _param );
-	void addParam();
-	void end();
-	void addHotKey( const std::string& hotKey ) { hotKeys.push_back( hotKey ); }
+	RDODPTFreeActivity( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info );
+	const std::string& getName() const { return src_info().src_text(); }
+	const RDOPATPattern* getType() const { return pattern; }
+	void addParam( const std::string& stringParam, const YYLTYPE& param_pos );
+	void addParam( int intParam, const YYLTYPE& param_pos );
+	void addParam( double realParam, const YYLTYPE& param_pos );
+	void addParam( const YYLTYPE& param_pos );
+	void end( const YYLTYPE& opr_pos );
+	void addHotKey( const std::string& hotKey, const YYLTYPE& hotkey_pos );
 };
 
 // ----------------------------------------------------------------------------
@@ -294,6 +303,6 @@ public:
 	RDOPROCTerminate( RDOPROCProcess* _process, const std::string& _name );
 };
 
-} // namespace rdoParse 
+} // namespace rdoParse
 
 #endif // RDODPT_DPT

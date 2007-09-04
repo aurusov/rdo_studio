@@ -190,8 +190,9 @@ namespace rdoParse
 
 %%
 
-/* ///////////////////////  GENERAL PART ///////////////////////////// */
-
+// ----------------------------------------------------------------------------
+// ---------- DPT
+// ----------------------------------------------------------------------------
 dpt_main:
 		| dpt_main dpt_activ_search_end
 		| dpt_main dpt_activ_some_end
@@ -201,13 +202,29 @@ dpt_main:
 			parser->error( @1, rdoSimulator::RDOSyntaxError::UNKNOWN );
 		};
 
-/* ///////////////////////  SEARCH POINT ///////////////////////////// */
-
-dpt_begin_search:	Decision_point IDENTIF_COLON search_keyword					{ $$ = (int)(new RDODPTSearch( parser, (std::string *)$2)               ); @$; }
-					|	Decision_point IDENTIF_COLON search_keyword no_trace	{ $$ = (int)(new RDODPTSearch( parser, (std::string *)$2, DPTnotrace)   ); }
-					|	Decision_point IDENTIF_COLON search_keyword trace_stat	{ $$ = (int)(new RDODPTSearch( parser, (std::string *)$2, DPTtracestat) ); }
-					|	Decision_point IDENTIF_COLON search_keyword trace_tops	{ $$ = (int)(new RDODPTSearch( parser, (std::string *)$2, DPTtracetops) ); }
-					|	Decision_point IDENTIF_COLON search_keyword trace_all	{ $$ = (int)(new RDODPTSearch( parser, (std::string *)$2, DPTtraceall)  ); };
+// ----------------------------------------------------------------------------
+// ---------- DPT Search
+// ----------------------------------------------------------------------------
+dpt_begin_search:	Decision_point IDENTIF_COLON search_keyword {
+						std::string name = *reinterpret_cast<std::string*>($2);
+						$$ = (int)new RDODPTSearch( parser, RDOParserSrcInfo(@2, name, RDOParserSrcInfo::psi_align_bytext) );
+					}
+					| Decision_point IDENTIF_COLON search_keyword no_trace {
+						std::string name = *reinterpret_cast<std::string*>($2);
+						$$ = (int)new RDODPTSearch( parser, RDOParserSrcInfo(@2, name, RDOParserSrcInfo::psi_align_bytext), RDODPTSearch::DPTnotrace );
+					}
+					| Decision_point IDENTIF_COLON search_keyword trace_stat {
+						std::string name = *reinterpret_cast<std::string*>($2);
+						$$ = (int)new RDODPTSearch( parser, RDOParserSrcInfo(@2, name, RDOParserSrcInfo::psi_align_bytext), RDODPTSearch::DPTtracestat );
+					}
+					| Decision_point IDENTIF_COLON search_keyword trace_tops {
+						std::string name = *reinterpret_cast<std::string*>($2);
+						$$ = (int)new RDODPTSearch( parser, RDOParserSrcInfo(@2, name, RDOParserSrcInfo::psi_align_bytext), RDODPTSearch::DPTtracetops );
+					}
+					| Decision_point IDENTIF_COLON search_keyword trace_all {
+						std::string name = *reinterpret_cast<std::string*>($2);
+						$$ = (int)new RDODPTSearch( parser, RDOParserSrcInfo(@2, name, RDOParserSrcInfo::psi_align_bytext), RDODPTSearch::DPTtraceall );
+					};
 
 dpt_condition_search:	dpt_begin_search Condition_keyword fun_logic			{ ((RDODPTSearch *)$$)->setCondition((RDOFUNLogic *)$3); }
 						|		dpt_begin_search Condition_keyword NoCheck			{ ((RDODPTSearch *)$$)->setCondition(); };
@@ -222,7 +239,11 @@ dpt_compare_search:	dpt_evaluate_search Compare_tops '=' NO					{ ((RDODPTSearch
 dpt_activ_search:	dpt_compare_search Activities
 					|	dpt_activ_search_descr_value;
 
-dpt_activ_search_descr:	dpt_activ_search IDENTIF_COLON IDENTIF					{ ((RDODPTSearch *)$$)->addNewActivity((std::string *)$2, (std::string *)$3); };		
+dpt_activ_search_descr:	dpt_activ_search IDENTIF_COLON IDENTIF {
+							std::string name    = *reinterpret_cast<std::string*>($2);
+							std::string pattern = *reinterpret_cast<std::string*>($3);
+							((RDODPTSearch*)$1)->addNewActivity( RDOParserSrcInfo(@2, name, RDOParserSrcInfo::psi_align_bytext), pattern );
+						};
 
 dpt_activ_search_descr_param:	dpt_activ_search_descr								
 								|		dpt_activ_search_descr_param INT_CONST			{ ((RDODPTSearch *)$$)->addActivityParam((int)$2); }
@@ -230,13 +251,15 @@ dpt_activ_search_descr_param:	dpt_activ_search_descr
 								|		dpt_activ_search_descr_param IDENTIF			{ ((RDODPTSearch *)$$)->addActivityParam(*(std::string *)$2); }
 								|		dpt_activ_search_descr_param '*'					{ ((RDODPTSearch *)$$)->addActivityParam(); };
 
-dpt_activ_search_descr_value:	dpt_activ_search_descr_param value_before	fun_arithm		{ ((RDODPTSearch *)$$)->setActivityValue(DPT_value_before, (RDOFUNArithm *)$3); }
-								|		dpt_activ_search_descr_param value_after  fun_arithm		{ ((RDODPTSearch *)$$)->setActivityValue(DPT_value_after, (RDOFUNArithm *)$3); };
+dpt_activ_search_descr_value:	dpt_activ_search_descr_param value_before	fun_arithm		{ ((RDODPTSearch *)$$)->setActivityValue(RDODPTSearchActivity::DPT_value_before, (RDOFUNArithm *)$3); }
+								|		dpt_activ_search_descr_param value_after  fun_arithm		{ ((RDODPTSearch *)$$)->setActivityValue(RDODPTSearchActivity::DPT_value_after, (RDOFUNArithm *)$3); };
 	
 dpt_activ_search_end:	dpt_activ_search End											{ ((RDODPTSearch *)$$)->end();};	
 
 
-/* ///////////////////////  SOME POINT ///////////////////////////// */
+// ----------------------------------------------------------------------------
+// ---------- DPT Some
+// ----------------------------------------------------------------------------
 dpt_activ_some_trace:		/* empty */ {
 								$$ = 1;
 							}	
@@ -248,7 +271,8 @@ dpt_activ_some_trace:		/* empty */ {
 							};
 
 dpt_activ_some_begin:		Decision_point IDENTIF_COLON some dpt_activ_some_trace {
-								$$ = (int)(new RDODPTSome( parser, (std::string *)$2) );
+								std::string name = *reinterpret_cast<std::string*>($2);
+								$$ = (int)new RDODPTSome( parser, RDOParserSrcInfo(@2, name, RDOParserSrcInfo::psi_align_bytext) );
 							};
 
 dpt_activ_some_condition:	dpt_activ_some_begin Condition_keyword fun_logic {
@@ -262,7 +286,9 @@ dpt_activ_some_activity:	dpt_activ_some_condition Activities
 							| dpt_activ_some_descr_param;
 
 dpt_activ_some_descr:		dpt_activ_some_activity IDENTIF_COLON IDENTIF {
-								((RDODPTSome *)$$)->addNewActivity((std::string *)$2, (std::string *)$3);
+								std::string name    = *reinterpret_cast<std::string*>($2);
+								std::string pattern = *reinterpret_cast<std::string*>($3);
+								((RDODPTSome*)$1)->addNewActivity( RDOParserSrcInfo(@2, name, RDOParserSrcInfo::psi_align_bytext), pattern );
 							};
 
 dpt_activ_some_descr_param:	dpt_activ_some_descr
@@ -275,27 +301,67 @@ dpt_activ_some_end:			dpt_activ_some_activity End {
 								((RDODPTSome *)$$)->end();
 							};
 
-/* ///////////////////////  FREE ACTIVITIES ///////////////////////////// */
+// ----------------------------------------------------------------------------
+// ---------- DPT Free
+// ----------------------------------------------------------------------------
+dpt_activ_free:				Activities {
+							}
+							| dpt_activ_free_descr_param {
+								RDODPTFreeActivity* activity = reinterpret_cast<RDODPTFreeActivity*>($1);
+								activity->end( @1 );
+							};
 
-dpt_activ_free:	Activities																{ $$ = NULL; };
-					|	dpt_activ_free_descr_param { ((RDODPTFreeActivity *)$1)->end(); };
-																									
-dpt_activ_free_descr:	dpt_activ_free IDENTIF_COLON IDENTIF					{ $$ = (int)(new RDODPTFreeActivity( parser, (std::string *)$2, (std::string *)$3 )); };
-																									                                                                    
-dpt_activ_free_descr_keyb:	dpt_activ_free_descr
-			|	dpt_activ_free_descr_keyb QUOTED_IDENTIF		{ ((RDODPTFreeActivity *)$1)->addHotKey(*(std::string *)$2); }
-			|	dpt_activ_free_descr_keyb '+' QUOTED_IDENTIF	{ ((RDODPTFreeActivity *)$1)->addHotKey(*(std::string *)$3); };
+dpt_activ_free_descr:		dpt_activ_free IDENTIF_COLON IDENTIF {
+								std::string name    = *reinterpret_cast<std::string*>($2);
+								std::string pattern = *reinterpret_cast<std::string*>($3);
+								$$ = (int)new RDODPTFreeActivity( parser, RDOParserSrcInfo(@2, name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(@3, pattern) );
+							}
+							| dpt_activ_free IDENTIF_COLON error {
+								parser->error( @2, @3, "Ожидается имя образца" );
+							}
+							| dpt_activ_free error {
+								parser->error( @2, "Ожидается имя активности" );
+							};
 
-dpt_activ_free_descr_param:	dpt_activ_free_descr_param INT_CONST			{ ((RDODPTFreeActivity *)$1)->addParam((int)$2); }                  
-								|		dpt_activ_free_descr_param REAL_CONST			{ ((RDODPTFreeActivity *)$1)->addParam(*(double *)$2); }             
-								|		dpt_activ_free_descr_param IDENTIF				{ ((RDODPTFreeActivity *)$1)->addParam(*(std::string *)$2); }             
-								|		dpt_activ_free_descr_param '*'					{ ((RDODPTFreeActivity *)$1)->addParam(); }
-								|		dpt_activ_free_descr_keyb;
-																									                                                                    
-dpt_activ_free_end:	dpt_activ_free End												{ /* if ($1 != NULL) ((RDODPTFreeActivity *)$1)->end(); */ };
+dpt_activ_free_descr_activ:	dpt_activ_free_descr
+							|	dpt_activ_free_descr_activ QUOTED_IDENTIF {
+								RDODPTFreeActivity* activity = reinterpret_cast<RDODPTFreeActivity*>($1);
+								std::string         key      = *reinterpret_cast<std::string*>($2);
+								activity->addHotKey( key, @2 );
+							}
+							|	dpt_activ_free_descr_activ '+' QUOTED_IDENTIF {
+								RDODPTFreeActivity* activity = reinterpret_cast<RDODPTFreeActivity*>($1);
+								std::string         key      = *reinterpret_cast<std::string*>($3);
+								activity->addHotKey( key, @3 );
+							};
 
+dpt_activ_free_descr_param:	dpt_activ_free_descr_param IDENTIF {
+								RDODPTFreeActivity* activity = reinterpret_cast<RDODPTFreeActivity*>($1);
+								std::string         param    = *reinterpret_cast<std::string*>($2);
+								activity->addParam( param, @2 );
+							}
+							| dpt_activ_free_descr_param INT_CONST {
+								RDODPTFreeActivity* activity = reinterpret_cast<RDODPTFreeActivity*>($1);
+								int                 param    = $2;
+								activity->addParam( param, @2 );
+							}
+							| dpt_activ_free_descr_param REAL_CONST {
+								RDODPTFreeActivity* activity = reinterpret_cast<RDODPTFreeActivity*>($1);
+								std::string         param    = *reinterpret_cast<std::string*>($2);
+								activity->addParam( param, @2 );
+							}
+							| dpt_activ_free_descr_param '*' {
+								RDODPTFreeActivity* activity = reinterpret_cast<RDODPTFreeActivity*>($1);
+								activity->addParam( @2 );
+							}
+							| dpt_activ_free_descr_activ;
 
-/* ///////////////////////  PROCESS ///////////////////////////// */
+dpt_activ_free_end:			dpt_activ_free End {
+							};
+
+// ----------------------------------------------------------------------------
+// ---------- $Process
+// ----------------------------------------------------------------------------
 dpt_process_end:	Process error End; /* заглушка для $Process */
 
 // ----------------------------------------------------------------------------

@@ -192,8 +192,15 @@ public:
 		}
 		relResID[rel_res_id] = res_id; 
 	}
-	virtual bool addHotKey( const std::string& hotKey ) { return false; }
 	void writeModelStructure( std::stringstream& stream );
+
+	enum AddHotKey {
+		addhk_ok,
+		addhk_already,
+		addhk_notfound,
+		addhk_dont
+	};
+	virtual AddHotKey addHotKey( const std::string& hotKey ) { return addhk_dont; }
 };
 
 // ----------------------------------------------------------------------------
@@ -296,8 +303,8 @@ public:
 	RDOActivityKeyboardRuntime( RDORuntime* rTime, RDOPatternRuntime* _pattern, bool _trace, const std::string& _oprName );
 	RDOActivityKeyboardRuntime( RDORuntime* rTime, RDOPatternRuntime* _pattern, bool _trace, RDOCalc* condition, const std::string& _oprName );
 
-	virtual bool addHotKey( const std::string& hotKey );
 	bool choiceFrom( RDOSimulator* sim );
+	virtual AddHotKey addHotKey( const std::string& hotKey );
 };
 
 } // namespace rdoRuntime
