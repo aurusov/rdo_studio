@@ -994,8 +994,9 @@ RDOFUNArithm* RDOFUNSequenceUniform::createCallCalc( const RDOFUNParams* const p
 	}
 
 	rdoRuntime::RDOCalcFunctionCall* funcCall = new rdoRuntime::RDOCalcFunctionCall( getParser()->runtime, next_calc );
-	rdoRuntime::RDOCalc* arg1 = param->params[0]->createCalc( NULL );
-	rdoRuntime::RDOCalc* arg2 = param->params[1]->createCalc( NULL );
+	RDORTPRealParamType* realType = new RDORTPRealParamType( this, new RDORTPRealDiap(getParser()), new RDORTPRealDefVal(getParser()) );
+	rdoRuntime::RDOCalc* arg1 = param->params[0]->createCalc( realType );
+	rdoRuntime::RDOCalc* arg2 = param->params[1]->createCalc( realType );
 
 	funcCall->addParameter( arg1 );
 	funcCall->addParameter( arg2 );
@@ -1039,7 +1040,8 @@ RDOFUNArithm* RDOFUNSequenceExponential::createCallCalc( const RDOFUNParams* con
 
 	rdoRuntime::RDOCalcFunctionCall* funcCall = new rdoRuntime::RDOCalcFunctionCall( getParser()->runtime, next_calc );
 	RDOFUNArithm *arithm1 = param->params[0];
-	rdoRuntime::RDOCalc *arg1 = arithm1->createCalc(NULL);
+	RDORTPRealParamType* realType = new RDORTPRealParamType( this, new RDORTPRealDiap(getParser()), new RDORTPRealDefVal(getParser()) );
+	rdoRuntime::RDOCalc *arg1 = arithm1->createCalc( realType );
 
 	funcCall->addParameter(arg1);
 
@@ -1081,10 +1083,11 @@ RDOFUNArithm* RDOFUNSequenceNormal::createCallCalc( const RDOFUNParams* const pa
 	}
 
 	rdoRuntime::RDOCalcFunctionCall *funcCall = new rdoRuntime::RDOCalcFunctionCall(getParser()->runtime, next_calc);
+	RDORTPRealParamType* realType = new RDORTPRealParamType( this, new RDORTPRealDiap(getParser()), new RDORTPRealDefVal(getParser()) );
 	RDOFUNArithm *arithm1 = param->params[0];
-	rdoRuntime::RDOCalc *arg1 = arithm1->createCalc(NULL);
 	RDOFUNArithm *arithm2 = param->params[1];
-	rdoRuntime::RDOCalc *arg2 = arithm2->createCalc(NULL);
+	rdoRuntime::RDOCalc *arg1 = arithm1->createCalc( realType );
+	rdoRuntime::RDOCalc *arg2 = arithm2->createCalc( realType );
 
 	funcCall->addParameter(arg1);
 	funcCall->addParameter(arg2);
