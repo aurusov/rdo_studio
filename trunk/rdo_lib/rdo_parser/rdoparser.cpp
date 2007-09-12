@@ -29,6 +29,7 @@ RDOParser::RDOParser():
 	have_kw_Operations( false ),
 	have_kw_OperationsEnd( false ),
 	lastDPTSearch( NULL ),
+	lastDPTSome( NULL ),
 //	patternCounter( 1 ),
 //	pokazCounter( 1 ),
 //	constCounter( 0 ),
@@ -87,6 +88,11 @@ void RDOParser::insertOPROperation( RDOOPROperation* value )
 	allOPROperations.push_back( value );
 }
 
+void RDOParser::insertFRMFrame( rdoRuntime::RDOFRMFrame* value )
+{
+	allFRMFrame.push_back( value );
+}
+
 void RDOParser::insertFUNConstant( RDOFUNConstant* value )
 {
 	parsing_object = value;
@@ -116,6 +122,7 @@ void RDOParser::insertDPTSearch( RDODPTSearch* value )
 	parsing_object = value;
 	allDPTSearch.push_back( value ); 
 	lastDPTSearch = value;
+	lastDPTSome   = NULL;
 }
 
 void RDOParser::insertDPTSome( RDODPTSome* value )
@@ -123,6 +130,7 @@ void RDOParser::insertDPTSome( RDODPTSome* value )
 	parsing_object = value;
 	allDPTSome.push_back( value );
 	lastDPTSearch = NULL;
+	lastDPTSome   = value;
 }
 
 void RDOParser::insertDPTFreeActivity( RDODPTFreeActivity* value )
@@ -130,6 +138,7 @@ void RDOParser::insertDPTFreeActivity( RDODPTFreeActivity* value )
 	parsing_object = value;
 	allDPTFreeActivity.push_back( value );
 	lastDPTSearch = NULL;
+	lastDPTSome   = NULL;
 }
 
 void RDOParser::insertPMDPokaz( RDOPMDPokaz* value )
@@ -172,7 +181,7 @@ std::stringstream& RDOParser::getModelStructure()
 		for( int i = 0; i < allDPTSearch.size(); i++ ) {
 			for( int j = 0; j < allDPTSearch.at(i)->getActivities().size(); j++ ) {
 				RDODPTSearchActivity* curr = allDPTSearch.at(i)->getActivities().at(j);
-				modelStructure << counter++ << " " << curr->getName() << " " << curr->getRule()->getPatternId() << std::endl;
+				modelStructure << counter++ << " " << curr->getName() << " " << curr->getType()->getPatternId() << std::endl;
 			}
 		}
 
@@ -405,12 +414,35 @@ void RDOParser::checkActivityName( const RDOParserSrcInfo& _src_info )
 		}
 		it_some++;
 	}
-	std::vector< RDODPTFreeActivity* >::const_iterator it_free_act = std::find_if( getDPTFreeActivity().begin(), getDPTFreeActivity().end(), compareName2<RDODPTFreeActivity>(_src_info.src_text()) );
-	if ( it_free_act != getDPTFreeActivity().end() ) {
+	const RDODPTFreeActivity* free_act = findFreeActivity( _src_info.src_text() );
+	if ( free_act ) {
 		error_push_only( _src_info, rdo::format("Активность '%s' уже существует", _src_info.src_text().c_str()) );
-		error_push_only( (*it_free_act)->src_info(), "См. первое определение" );
+		error_push_only( free_act->src_info(), "См. первое определение" );
 		error_push_done();
 //		error("Free activity name: " + *_name + " already defined");
+	}
+	const RDOOPROperation* opr = findOperation( _src_info.src_text() );
+	if ( opr ) {
+		error_push_only( _src_info, rdo::format("Операция '%s' уже существует", _src_info.src_text().c_str()) );
+		error_push_only( opr->src_info(), "См. первое определение" );
+		error_push_done();
+	}
+}
+
+void RDOParser::checkDPTName( const RDOParserSrcInfo& _src_info )
+{
+	std::vector< RDODPTSearch* >::const_iterator search_it = std::find_if(getDPTSearch().begin(), getDPTSearch().end(), compareName2<RDODPTSearch>(_src_info.src_text()));
+	if ( search_it != getDPTSearch().end() ) {
+		error_push_only( _src_info, rdo::format("Точка '%s' уже существует", _src_info.src_text().c_str()) );
+		error_push_only( (*search_it)->src_info(), "См. первое определение" );
+		error_push_done();
+//		error( _src_info, "DPT name: " + _src_info.src_text() + " already defined" );
+	}
+	std::vector< RDODPTSome* >::const_iterator some_it = std::find_if(getDPTSome().begin(), getDPTSome().end(), compareName2<RDODPTSome>(_src_info.src_text()));
+	if ( some_it != getDPTSome().end() ) {
+		error_push_only( _src_info, rdo::format("Точка '%s' уже существует", _src_info.src_text().c_str()) );
+		error_push_only( (*some_it)->src_info(), "См. первое определение" );
+		error_push_done();
 	}
 }
 

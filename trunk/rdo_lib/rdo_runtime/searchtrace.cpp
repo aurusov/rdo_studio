@@ -73,7 +73,7 @@ void RDODecisionPointTrace::onSearchResultNotFound(RDOSimulator *sim, TreeRoot *
 void TreeNodeTrace::onSearchOpenNode( RDOSimulator* sim )
 {
 	RDODecisionPointTrace* dpTrace = (RDODecisionPointTrace *)root->dp;
-	if ( dpTrace->traceFlag == DPT_trace_tops || dpTrace->traceFlag == DPT_trace_all ) {
+	if ( dpTrace->traceFlag == RDODecisionPointTrace::DPT_trace_tops || dpTrace->traceFlag == RDODecisionPointTrace::DPT_trace_all ) {
 		RDOSimulatorTrace* simTr = (RDOSimulatorTrace *)sim;
 		simTr->getTracer()->writeSearchOpenNode( count,
 			(parent ? parent->count : 0 ),

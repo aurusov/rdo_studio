@@ -91,14 +91,13 @@ public:
 class RDORTPResType: public RDOParserObject, public RDOParserSrcInfo
 {
 protected:
-	std::string                       name;
 	const int                         number;
 	const bool                        permanent;
 	std::vector< const RDORTPParam* > params;
 
 public:
-	RDORTPResType( RDOParser* _parser, const std::string& _name, const bool _permanent );
-	const std::string& getName() const       { return name;       };
+	RDORTPResType( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const bool _permanent );
+	const std::string& getName() const       { return src_text(); };
 	int getNumber() const                    { return number;     };
 	bool isPermanent() const                 { return permanent;  };
 	bool isTemporary() const                 { return !permanent; };

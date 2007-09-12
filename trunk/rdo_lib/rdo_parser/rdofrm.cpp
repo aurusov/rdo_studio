@@ -19,7 +19,6 @@ int frmlex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer )
 }
 void frmerror( char* mes )
 {
-//	rdoParse::parser->error( mes );
 }
 
 } // namespace rdoParse

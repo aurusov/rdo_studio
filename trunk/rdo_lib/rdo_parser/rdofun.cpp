@@ -247,7 +247,7 @@ void RDOFUNArithm::init( const RDOParserSrcInfo& res_name_src_info, const RDOPar
 					if ( pat->currRelRes->currentState == RDORelevantResource::convertBegin && pat->currRelRes->begin == rdoRuntime::RDOResourceTrace::CS_Create) {
 						if ( !pat->currRelRes->getParamSetBegin()->isExist( par_name_src_info.src_text() ) ) {
 							if ( !param->getType()->dv->isExist() ) {
-								getParser()->error( par_name_src_info, rdo::format("ѕеред использованием параметра '%s' ему необходимо присвоить значение в текущем конверторе или указать значение по-умолчанию в типе ресурса", par_name_src_info.src_text().c_str()) );
+								getParser()->error( par_name_src_info, rdo::format("ѕараметр '%s' еще не определен, ему необходимо присвоить значение в текущем конверторе или указать значение по-умолчанию в типе ресурса", par_name_src_info.src_text().c_str()) );
 							}
 						}
 					}
@@ -255,7 +255,7 @@ void RDOFUNArithm::init( const RDOParserSrcInfo& res_name_src_info, const RDOPar
 					if ( pat->currRelRes->currentState == RDORelevantResource::convertEnd && pat->currRelRes->end == rdoRuntime::RDOResourceTrace::CS_Create) {
 						if ( !pat->currRelRes->getParamSetEnd()->isExist( par_name_src_info.src_text() ) ) {
 							if ( !param->getType()->dv->isExist() ) {
-								getParser()->error( par_name_src_info, rdo::format("ѕеред использованием параметра '%s' ему необходимо присвоить значение в текущем конверторе или указать значение по-умолчанию в типе ресурса", par_name_src_info.src_text().c_str()) );
+								getParser()->error( par_name_src_info, rdo::format("ѕараметр '%s' еще не определен, ему необходимо присвоить значение в текущем конверторе или указать значение по-умолчанию в типе ресурса", par_name_src_info.src_text().c_str()) );
 							}
 						}
 					}
@@ -274,22 +274,25 @@ void RDOFUNArithm::init( const RDOParserSrcInfo& res_name_src_info, const RDOPar
 				enu = ((RDORTPEnumParamType*)rel->getType()->findRTPParam( par_name_src_info.src_text() )->getType())->enu;
 			}
 			return;
-		} else if ( getParser()->getFileToParse() == rdoModelObjects::DPT && getParser()->getLastDPTSearch() && getParser()->getLastDPTSearch()->lastActivity && getParser()->getLastDPTSearch()->lastActivity->getRule() && getParser()->getLastDPTSearch()->lastActivity->getRule()->findRelevantResource( res_name_src_info.src_text() ) ) {
-			// Ёто ресурс, который используетс€ в DPT (condition, term_condition, evaluate_by, value before, value after)
-			const RDORelevantResource* const rel = getParser()->getLastDPTSearch()->lastActivity->getRule()->findRelevantResource( res_name_src_info.src_text() );
-			int relResNumb = getParser()->getLastDPTSearch()->lastActivity->getRule()->findRelevantResourceNum( res_name_src_info.src_text() );
-			int parNumb    = rel->getType()->getRTPParamNumber( par_name_src_info.src_text() );
-			if ( parNumb == -1 ) {
-				getParser()->error( par_name_src_info, rdo::format("Ќеизвестный параметр ресурса: %s", par_name_src_info.src_text().c_str()) );
-			}
+		} else if ( getParser()->getFileToParse() == rdoModelObjects::DPT && getParser()->getLastDPTSearch() && getParser()->getLastDPTSearch()->getLastActivity() ) {
+			const RDOPATPattern* rule = getParser()->getLastDPTSearch()->getLastActivity()->getType();
+			if ( rule && rule->findRelevantResource( res_name_src_info.src_text() ) ) {
+				// Ёто ресурс, который используетс€ в DPT (condition, term_condition, evaluate_by, value before, value after)
+				const RDORelevantResource* const rel = rule->findRelevantResource( res_name_src_info.src_text() );
+				int relResNumb = rule->findRelevantResourceNum( res_name_src_info.src_text() );
+				int parNumb    = rel->getType()->getRTPParamNumber( par_name_src_info.src_text() );
+				if ( parNumb == -1 ) {
+					getParser()->error( par_name_src_info, rdo::format("Ќеизвестный параметр ресурса: %s", par_name_src_info.src_text().c_str()) );
+				}
 
-			calc = new rdoRuntime::RDOCalcGetRelevantResParam( getParser()->runtime, relResNumb, parNumb );
-			calc->setSrcInfo( src_info() );
-			type = rel->getType()->findRTPParam( par_name_src_info.src_text() )->getType()->getType();
-			if ( type == RDORTPParamType::pt_enum ) {
-				enu = ((RDORTPEnumParamType *)rel->getType()->findRTPParam( par_name_src_info.src_text() )->getType())->enu;
+				calc = new rdoRuntime::RDOCalcGetRelevantResParam( getParser()->runtime, relResNumb, parNumb );
+				calc->setSrcInfo( src_info() );
+				type = rel->getType()->findRTPParam( par_name_src_info.src_text() )->getType()->getType();
+				if ( type == RDORTPParamType::pt_enum ) {
+					enu = ((RDORTPEnumParamType *)rel->getType()->findRTPParam( par_name_src_info.src_text() )->getType())->enu;
+				}
+				return;
 			}
-			return;
 		}
 	}
 	getParser()->error( res_name_src_info, rdo::format("Ќеизвестный ресурс: %s", res_name_src_info.src_text().c_str()) );
@@ -598,12 +601,12 @@ RDOFUNArithm* RDOFUNArithm::operator /( RDOFUNArithm& second )
 	} else {
 		newCalc = new rdoRuntime::RDOCalcDiv( getParser()->runtime, calc, second.calc );
 	}
-	rdoRuntime::RDOCalc* newCalc_div = newCalc;
+//	rdoRuntime::RDOCalc* newCalc_div = newCalc;
 	// TODO: перевод вещественного в целое при делении. ј что делать с умножением и т.д. ?
-	if ( newType == RDORTPParamType::pt_int ) {
-		newCalc = new rdoRuntime::RDOCalcDoubleToInt( getParser()->runtime, newCalc );
-		newCalc->setSrcInfo( newCalc_div->src_info() );
-	}
+//	if ( newType == RDORTPParamType::pt_int ) {
+//		newCalc = new rdoRuntime::RDOCalcDoubleToInt( getParser()->runtime, newCalc );
+//		newCalc->setSrcInfo( newCalc_div->src_info() );
+//	}
 	RDOFUNArithm* arithm = new RDOFUNArithm( this, newType, newCalc, newCalc->src_info() );
 	return arithm;
 }

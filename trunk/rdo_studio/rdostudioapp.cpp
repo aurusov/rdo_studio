@@ -766,7 +766,7 @@ BOOL RDOStudioApp::PreTranslateMessage( MSG* pMsg )
 		CMDIChildWnd* child = mainFrame->MDIGetActive();
 		if ( child ) {
 			CView* view = child->GetActiveView();
-			if ( dynamic_cast<RDOStudioFrameView*>(view) ) {
+			if ( dynamic_cast<RDOStudioFrameView*>(view) && view == child->GetFocus() ) {
 				view->SendMessage( pMsg->message, pMsg->wParam, pMsg->lParam );
 				return true;
 			}

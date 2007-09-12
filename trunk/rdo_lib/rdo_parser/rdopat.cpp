@@ -148,18 +148,6 @@ void RDOPATPattern::addParamSetCalc( const RDOPATParamSet* const parSet, rdoRunt
 	patRuntime->addBeginCalc( calc );
 }
 
-void RDOPATPattern::testGoodForSearchActivity() const
-{
-	getParser()->error( "“олько продукционные правила могут быть использованы в точке прин€ти€ решений" );
-//	getParser()->error("Only RULEs can be used in search activity");
-}
-
-void RDOPATPattern::testGoodForSomeActivity() const
-{
-	getParser()->error( "“олько продукционные правила и операции могут быть использованы в точке типа some" );
-//	getParser()->error("Only RULEs and OPERATIONs can be used in some activity");
-}
-
 std::string RDOPATPattern::getPatternId() const
 { 
 	return patRuntime->getPatternId(); 
@@ -288,7 +276,7 @@ void RDOPATPattern::addRelResUsage( RDOPATChoiceFrom* choice_from, RDOPATChoiceO
 //			getParser()->error( "Cannot use choice when create \"" + *currRelRes->getName() + "\" relevant resource in pattern \"" + getName() + "\"" );
 		}
 		if ( choice_order->type != rdoRuntime::RDOSelectResourceCalc::order_empty ) {
-			getParser()->error( choice_from->src_info(), rdo::format("–елевантный ресурс создаетс€, дл€ него нельз€ использовать правило выбора '%s'", choice_order->asString().c_str()) );
+			getParser()->error( choice_order->src_info(), rdo::format("–елевантный ресурс создаетс€, дл€ него нельз€ использовать правило выбора '%s'", choice_order->asString().c_str()) );
 		}
 	}
 
@@ -364,7 +352,7 @@ void RDOPATPatternEvent::addRelRes( const RDOParserSrcInfo& rel_info, const RDOP
 		if ( beg == rdoRuntime::RDOResourceTrace::CS_Erase ) {
 			getParser()->error( convertor_pos, "”дал€ть ресурсы в нерегул€рном событии нельз€" );
 		}
-		relRes = new RDORelevantResourceDirect( this, rel_info.src_text(), rel_res_count(), res, beg );
+		relRes = new RDORelevantResourceDirect( this, rel_info, rel_res_count(), res, beg );
 		rel_res_insert( relRes );
 	} else {
 		const RDORTPResType* const type = getParser()->findRTPResType( type_info.src_text() );
@@ -379,7 +367,7 @@ void RDOPATPatternEvent::addRelRes( const RDOParserSrcInfo& rel_info, const RDOP
 			getParser()->error( convertor_pos, "—татусы конверторов Keep и Erase могут быть использованы в нерегул€рном событии с описателем в виде ресурса, но не типа ресурса" );
 //			getParser()->error( "Can use Keep and Erase status with resource name only (not with resource type) in irregular event" );
 		}
-		relRes = new RDORelevantResourceByType( this, rel_info.src_text(), rel_res_count(), type, beg );
+		relRes = new RDORelevantResourceByType( this, rel_info, rel_res_count(), type, beg );
 		rel_res_insert( relRes );
 	}
 	if ( relRes->begin == rdoRuntime::RDOResourceTrace::CS_Erase ) {
@@ -448,20 +436,9 @@ RDOPATPatternRule::RDOPATPatternRule( RDOParser* _parser, const RDOParserSrcInfo
 	patRuntime->setPatternId( getParser()->getPAT_id() );
 }
 
-void RDOPATPatternRule::testGoodForSearchActivity() const
-{
-	for ( std::vector< RDORelevantResource* >::const_iterator i = rel_res_begin(); i != rel_res_end(); i++ ) {
-		if ( ((*i)->begin == rdoRuntime::RDOResourceTrace::CS_Create) || ((*i)->begin == rdoRuntime::RDOResourceTrace::CS_Erase) ) {
-// TODO
-			getParser()->error( "Rule: " + getName() + " Cannot be used in search activity because of bad converter status" );
-		}
-	}
-}
-
 void RDOPATPatternRule::setTime( RDOFUNArithm* arithm )
 { 
-	getParser()->error( arithm->src_info(), "ѕоле $Time не используетс€ в продукционном правиле" );
-//	getParser()->error( "Rule must have no $Time field" );
+	getParser()->error( arithm->src_info(), "¬нутренна€ ошибка парсера: RDOPATPatternRule::setTime" );
 }
 
 void RDOPATPatternRule::addRelRes( const RDOParserSrcInfo& rel_info, const RDOParserSrcInfo& type_info, rdoRuntime::RDOResourceTrace::ConvertStatus beg, const YYLTYPE& convertor_pos )
@@ -483,7 +460,7 @@ void RDOPATPatternRule::addRelRes( const RDOParserSrcInfo& rel_info, const RDOPa
 			getParser()->error( convertor_pos, rdo::format("Ќедопустимый статус конвертора дл€ ресурса: %s", RDOPATPattern::StatusToStr(beg).c_str()) );
 //			getParser()->error( "Wrong converter status for resource of permanent type" );
 		}
-		relRes = new RDORelevantResourceDirect( this, rel_info.src_text(), rel_res_count(), res, beg );
+		relRes = new RDORelevantResourceDirect( this, rel_info, rel_res_count(), res, beg );
 		rel_res_insert( relRes );
 
 	} else {
@@ -495,7 +472,7 @@ void RDOPATPatternRule::addRelRes( const RDOParserSrcInfo& rel_info, const RDOPa
 		if ( !type->isTemporary() && (beg == rdoRuntime::RDOResourceTrace::CS_Create || beg == rdoRuntime::RDOResourceTrace::CS_Erase ) ) {
 			getParser()->error( type_info, rdo::format("ƒл€ создании или удалении ресурса его тип должен быть временным (temporary), а не посто€нным (permanent), как у '%s'", type_info.src_text().c_str()) );
 		}
-		relRes = new RDORelevantResourceByType( this, rel_info.src_text(), rel_res_count(), type, beg );
+		relRes = new RDORelevantResourceByType( this, rel_info, rel_res_count(), type, beg );
 		rel_res_insert( relRes );
 	}
 	if ( relRes->begin == rdoRuntime::RDOResourceTrace::CS_Erase ) {
@@ -591,7 +568,7 @@ void RDOPATPatternOperation::addRelRes( const RDOParserSrcInfo& rel_info, const 
 		if ( end == rdoRuntime::RDOResourceTrace::CS_Erase || end == rdoRuntime::RDOResourceTrace::CS_NonExist ) {
 			getParser()->error( convertor_end_pos, rdo::format("Ќедопустимый статус конвертора конца дл€ ресурса: %s", RDOPATPattern::StatusToStr(end).c_str()) );
 		}
-		relRes = new RDORelevantResourceDirect( this, rel_info.src_text(), rel_res_count(), res, beg, end );
+		relRes = new RDORelevantResourceDirect( this, rel_info, rel_res_count(), res, beg, end );
 		rel_res_insert( relRes );
 
 	} else {
@@ -608,7 +585,7 @@ void RDOPATPatternOperation::addRelRes( const RDOParserSrcInfo& rel_info, const 
 				getParser()->error( convertor_end_pos, rdo::format("Ќедопустимый статус конвертора конца дл€ посто€нного типа: %s", RDOPATPattern::StatusToStr(end).c_str()) );
 			}
 		}
-		relRes = new RDORelevantResourceByType( this, rel_info.src_text(), rel_res_count(), type, beg, end );
+		relRes = new RDORelevantResourceByType( this, rel_info, rel_res_count(), type, beg, end );
 		rel_res_insert( relRes );
 	}
 	if ( relRes->begin == rdoRuntime::RDOResourceTrace::CS_Erase ) {

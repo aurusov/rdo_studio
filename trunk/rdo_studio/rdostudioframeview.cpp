@@ -327,7 +327,6 @@ void RDOStudioFrameView::OnLButtonDown(UINT nFlags, CPoint point)
 
 void RDOStudioFrameView::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
 {
-	TRACE( "%d, %d, %d\n", nChar, nRepCnt, nFlags );
 	model->sendMessage( kernel->runtime(), RDOThread::RT_RUNTIME_KEY_DOWN, &nChar );
 	RDOStudioView::OnKeyDown(nChar, nRepCnt, nFlags);
 }

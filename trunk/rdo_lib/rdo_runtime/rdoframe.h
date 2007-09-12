@@ -169,7 +169,7 @@ private:
 public:
 	RDOFRMFrame( RDORuntime* _runtime, const RDOSrcInfo& _src_info, RDOCalc* _conditionCalc = NULL );
 	virtual ~RDOFRMFrame();
-	void setBackgroundColor( RDOFRMColor* _background_color = NULL );
+	void setBackgroundColor( RDOFRMColor* _background_color );
 	void setBackPicture( const std::string& _picFileName );
 	void setBackPicture( int _width, int _height );
 	void startShow( RDOCalc* calc = NULL );

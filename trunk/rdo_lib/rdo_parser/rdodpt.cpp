@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "rdodpt.h"
+#include "rdoopr.h"
 #include "rdoparser.h"
 #include "rdoparser_lexer.h"
 #include "rdorss.h"
@@ -46,229 +47,240 @@ void dpt_opr_error( char* mes )
 }
 
 // ----------------------------------------------------------------------------
-// ---------- DPT Search
+// ---------- RDODPTActivity
 // ----------------------------------------------------------------------------
-// ---------- RDODPTSearchActivity
-// ----------------------------------------------------------------------------
-RDODPTSearchActivity::RDODPTSearchActivity( const RDOParserObject* _parent, const RDOParserSrcInfo& _src_info, const std::string& _rule ):
+RDODPTActivity::RDODPTActivity( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info ):
+	RDOParserObject( _parser ),
+	RDOParserSrcInfo( _src_info ),
+	pattern( NULL ),
+	currParam( 0 ),
+	activity( NULL )
+{
+	init( _pattern_src_info );
+}
+
+RDODPTActivity::RDODPTActivity( const RDOParserObject* _parent, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info ):
 	RDOParserObject( _parent ),
 	RDOParserSrcInfo( _src_info ),
-	rule( NULL ),
-	ruleCost( NULL )
+	pattern( NULL ),
+	currParam( 0 ),
+	activity( NULL )
 {
-	const RDOPATPattern* pat = getParser()->findPattern( _rule );
-	pat->testGoodForSearchActivity();
-	rule = (RDOPATPatternRule *)pat;
-	currParamNum = 0;
+	init( _pattern_src_info );
 }
 
-void RDODPTSearchActivity::setValue( DPTSearchValue _value, RDOFUNArithm* _ruleCost )
+void RDODPTActivity::init( const RDOParserSrcInfo& _pattern_src_info )
 {
-	if(currParamNum != rule->params.size())
-		getParser()->error("Too few parameters for rule: " + rule->getName());
-
-	value = _value;
-	ruleCost = _ruleCost;
+	getParser()->checkActivityName( src_info() );
+	pattern = getParser()->findPattern( _pattern_src_info.src_text() );
+	if ( !pattern ) {
+		getParser()->error( _pattern_src_info, rdo::format("Не найден образец: %s", _pattern_src_info.src_text().c_str()) );
+	}
 }
 
-void RDODPTSearchActivity::addParam(int _param) 
+void RDODPTActivity::addParam( const std::string& _param, const YYLTYPE& _param_pos )
 {
-	if(currParamNum >= rule->params.size())
-		getParser()->error("Too many parameters for rule: " + rule->getName());
-
-	RDOFUNFunctionParam *param = rule->params[currParamNum++];
-	rdoRuntime::RDOValue val = param->getType()->getRSSIntValue(_param, RDOParserSrcInfo("левое"));
-	params.push_back(val);
+	if ( pattern->params.size() <= currParam ) {
+		if ( _param_pos.first_line == src_pos().first_line ) {
+			if ( dynamic_cast<RDOOPROperation*>(this) ) {
+				getParser()->error_push_only( _param_pos, rdo::format("Слишком много параметров для образца '%s' при описании операции '%s'", pattern->getName().c_str(), getName().c_str()) );
+			} else {
+				getParser()->error_push_only( _param_pos, rdo::format("Слишком много параметров для образца '%s' при описании активности '%s'", pattern->getName().c_str(), getName().c_str()) );
+			}
+			getParser()->error_push_only( pattern->src_info(), "См. образец" );
+			getParser()->error_push_done();
+		} else {
+			if ( dynamic_cast<RDOOPROperation*>(this) ) {
+				getParser()->error( _param_pos, "Имя операции должно заканчиваться двоеточием" );
+			} else {
+				getParser()->error( _param_pos, "Имя активности должно заканчиваться двоеточием" );
+			}
+		}
+	}
+	RDOFUNFunctionParam* param = pattern->params.at( currParam );
+	switch ( param->getType()->getType() ) {
+		case RDORTPParamType::pt_int : getParser()->error( _param_pos, rdo::format("Ожидается параметр целого типа: %s", param->getType()->src_text().c_str()) ); break;
+		case RDORTPParamType::pt_real: getParser()->error( _param_pos, rdo::format("Ожидается параметр вещественного типа: %s", param->getType()->src_text().c_str()) ); break;
+		case RDORTPParamType::pt_enum: break;
+		default                      : getParser()->error( _param_pos, "Внутренная ошибка парсера: обработаны не все типы" );
+	}
+	rdoRuntime::RDOValue val = param->getType()->getRSSEnumValue( _param, _param_pos );
+	rdoRuntime::RDOSetPatternParamCalc* calc = new rdoRuntime::RDOSetPatternParamCalc( getParser()->runtime, currParam, val );
+	calc->setSrcInfo( RDOParserSrcInfo(_param_pos, rdo::format("Параметр образца %s.%s = %s", pattern->getName().c_str(), param->getName().c_str(), _param.c_str())) );
+	activity->addParamCalc( calc );
+	currParam++;
 }
 
-void RDODPTSearchActivity::addParam(double _param) 
+void RDODPTActivity::addParam( int _param, const YYLTYPE& _param_pos ) 
 {
-	if(currParamNum >= rule->params.size())
-		getParser()->error("Too many parameters for rule: " + rule->getName());
-
-	RDOFUNFunctionParam *param = rule->params[currParamNum++];
-	rdoRuntime::RDOValue val = param->getType()->getRSSRealValue(_param, RDOParserSrcInfo("левое"));
-	params.push_back(val);
+	if ( pattern->params.size() <= currParam ) {
+		if ( dynamic_cast<RDOOPROperation*>(this) ) {
+			getParser()->error_push_only( _param_pos, rdo::format("Слишком много параметров для образца '%s' при описании операции '%s'", pattern->getName().c_str(), getName().c_str()) );
+		} else {
+			getParser()->error_push_only( _param_pos, rdo::format("Слишком много параметров для образца '%s' при описании активности '%s'", pattern->getName().c_str(), getName().c_str()) );
+		}
+		getParser()->error_push_only( pattern->src_info(), "См. образец" );
+		getParser()->error_push_done();
+	}
+	RDOFUNFunctionParam* param = pattern->params.at( currParam );
+	switch ( param->getType()->getType() ) {
+		case RDORTPParamType::pt_int :
+		case RDORTPParamType::pt_real: break;
+		case RDORTPParamType::pt_enum: getParser()->error( _param_pos, rdo::format("Ожидается параметр перечислимого типа: %s", param->getType()->src_text().c_str()) ); break;
+		default                      : getParser()->error( _param_pos, "Внутренная ошибка парсера: обработаны не все типы" );
+	}
+	rdoRuntime::RDOValue val = param->getType()->getRSSIntValue( _param, _param_pos );
+	rdoRuntime::RDOSetPatternParamCalc* calc = new rdoRuntime::RDOSetPatternParamCalc( getParser()->runtime, currParam, val );
+	calc->setSrcInfo( RDOParserSrcInfo(_param_pos, rdo::format("Параметр образца %s.%s = %d", pattern->getName().c_str(), param->getName().c_str(), _param)) );
+	activity->addParamCalc( calc );
+	currParam++;
 }
 
-void RDODPTSearchActivity::addParam( const std::string& _param )
+void RDODPTActivity::addParam( double _param, const YYLTYPE& _param_pos ) 
 {
-	if(currParamNum >= rule->params.size())
-		getParser()->error("Too many parameters for rule: " + rule->getName());
-
-	RDOFUNFunctionParam *param = rule->params[currParamNum++];
-	rdoRuntime::RDOValue val = param->getType()->getRSSEnumValue(_param, RDOParserSrcInfo("левое"));
-	params.push_back(val);
+	if ( pattern->params.size() <= currParam ) {
+		if ( dynamic_cast<RDOOPROperation*>(this) ) {
+			getParser()->error_push_only( _param_pos, rdo::format("Слишком много параметров для образца '%s' при описании операции '%s'", pattern->getName().c_str(), getName().c_str()) );
+		} else {
+			getParser()->error_push_only( _param_pos, rdo::format("Слишком много параметров для образца '%s' при описании активности '%s'", pattern->getName().c_str(), getName().c_str()) );
+		}
+		getParser()->error_push_only( pattern->src_info(), "См. образец" );
+		getParser()->error_push_done();
+	}
+	RDOFUNFunctionParam* param = pattern->params.at( currParam );
+	switch ( param->getType()->getType() ) {
+		case RDORTPParamType::pt_int : getParser()->error( _param_pos, rdo::format("Ожидается параметр целого типа: %s", param->getType()->src_text().c_str()) ); break;
+		case RDORTPParamType::pt_real: break;
+		case RDORTPParamType::pt_enum: getParser()->error( _param_pos, rdo::format("Ожидается параметр перечислимого типа: %s", param->getType()->src_text().c_str()) ); break;
+		default                      : getParser()->error( _param_pos, "Внутренная ошибка парсера: обработаны не все типы" );
+	}
+	rdoRuntime::RDOValue val = param->getType()->getRSSRealValue( _param, _param_pos );
+	rdoRuntime::RDOSetPatternParamCalc* calc = new rdoRuntime::RDOSetPatternParamCalc( getParser()->runtime, currParam, val );
+	calc->setSrcInfo( RDOParserSrcInfo(_param_pos, rdo::format("Параметр образца %s.%s = %f", pattern->getName().c_str(), param->getName().c_str(), _param)) );
+	activity->addParamCalc( calc );
+	currParam++;
 }
 
-void RDODPTSearchActivity::addParam() 
+void RDODPTActivity::addParam( const YYLTYPE& _param_pos ) 
 {
-	if(currParamNum >= rule->params.size())
-		getParser()->error("Too many parameters for rule: " + rule->getName());
-
-	RDOFUNFunctionParam *param = rule->params[currParamNum++];
-	rdoRuntime::RDOValue val = param->getType()->getParamDefaultValue(RDOParserSrcInfo("левое"));
-	params.push_back(val);
+	if ( pattern->params.size() <= currParam ) {
+		if ( dynamic_cast<RDOOPROperation*>(this) ) {
+			getParser()->error_push_only( _param_pos, rdo::format("Слишком много параметров для образца '%s' при описании операции '%s'", pattern->getName().c_str(), getName().c_str()) );
+		} else {
+			getParser()->error_push_only( _param_pos, rdo::format("Слишком много параметров для образца '%s' при описании активности '%s'", pattern->getName().c_str(), getName().c_str()) );
+		}
+		getParser()->error_push_only( pattern->src_info(), "См. образец" );
+		getParser()->error_push_done();
+	}
+	RDOFUNFunctionParam* param = pattern->params.at( currParam );
+	if ( !param->getType()->dv->isExist() ) {
+		getParser()->error_push_only( _param_pos, rdo::format("Нет значения по-умолчанию для параметра '%s'", param->src_text().c_str()) );
+		getParser()->error_push_only( param->src_info(), rdo::format("См. параметр '%s', тип '%s'", param->src_text().c_str(), param->getType()->src_text().c_str()) );
+		getParser()->error_push_done();
+	}
+	rdoRuntime::RDOValue val = param->getType()->getParamDefaultValue( _param_pos );
+	rdoRuntime::RDOSetPatternParamCalc* calc = new rdoRuntime::RDOSetPatternParamCalc( getParser()->runtime, currParam, val );
+	calc->setSrcInfo( RDOParserSrcInfo(_param_pos, rdo::format("Параметр образца %s.%s = *", pattern->getName().c_str(), param->getName().c_str())) );
+	activity->addParamCalc( calc );
+	currParam++;
 }
 
-rdoRuntime::RDOSearchActivityRuntime* RDODPTSearchActivity::createActivityRuntime( rdoRuntime::RDORuntime* sim )
+void RDODPTActivity::endParam( const YYLTYPE& _param_pos )
 {
-	rdoRuntime::RDOActivityRuleRuntime* activity = new rdoRuntime::RDOActivityRuleRuntime( sim, rule->patRuntime, true, getName() );
-	rdoRuntime::RDOSearchActivityRuntime *act = new rdoRuntime::RDOSearchActivityRuntime(sim, 
-		dynamic_cast<rdoRuntime::RDORule*>(activity),
-		(value == DPT_value_after), 
-		ruleCost->createCalc());
-
-	int size = params.size();
-	for(int i = 0; i < size; i++)
-		activity->addParamCalc(new rdoRuntime::RDOSetPatternParamCalc(getParser()->runtime, i, params.at(i)));
-
-	return act;
+	if ( pattern->params.size() > currParam ) {
+		RDOFUNFunctionParam* param = pattern->params.at( currParam );
+		getParser()->error_push_only( _param_pos, rdo::format("Указаны не все параметра образца '%s':", pattern->src_text().c_str()) );
+		for ( int i = currParam; i < pattern->params.size(); i++ ) {
+			param = pattern->params.at( i );
+			getParser()->error_push_only( param->src_info(), rdo::format("Ожидаемый параметр '%s' имеет тип '%s'", param->getName().c_str(), param->getType()->src_text().c_str()) );
+		}
+		getParser()->error_push_done();
+	}
+	if ( pattern->getType() == RDOPATPattern::PT_Keyboard && !activity->hasHotKey() ) {
+		if ( dynamic_cast<RDOOPROperation*>(this) ) {
+			getParser()->error_push_only( _param_pos, "Для клавиатурной операции должна быть указана клавиша" );
+		} else {
+			getParser()->error_push_only( _param_pos, "Для активности должна быть указана клавиша" );
+		}
+		getParser()->error_push_only( pattern->src_info(), "См. образец" );
+		getParser()->error_push_done();
+	}
 }
 
 // ----------------------------------------------------------------------------
 // ---------- RDODPTSearch
 // ----------------------------------------------------------------------------
-RDODPTSearch::RDODPTSearch( RDOParser* _parser, const RDOParserSrcInfo& _src_info, DPTSearchTrace _trace ):
+RDODPTSearch::RDODPTSearch( RDOParser* _parser, const RDOParserSrcInfo& _src_info, rdoRuntime::RDODecisionPointTrace::DPT_TraceFlag _trace ):
 	RDOParserObject( _parser ),
 	RDOParserSrcInfo( _src_info ),
-	trace( _trace ),
-	lastActivity( NULL )
+	trace( _trace )
 {
-	if(std::find_if(getParser()->getDPTSome().begin(), getParser()->getDPTSome().end(), compareName2<RDODPTSome>(getName())) != getParser()->getDPTSome().end())
-		getParser()->error("DPT name: " + getName() + " already defined");
-
-	if(std::find_if(getParser()->getDPTSearch().begin(), getParser()->getDPTSearch().end(), compareName2<RDODPTSearch>(getName())) != getParser()->getDPTSearch().end())
-		getParser()->error("DPT name: " + getName() + " already defined");
-
+	getParser()->checkDPTName( src_info() );
 	getParser()->insertDPTSearch( this );
 }
 
-void RDODPTSearch::addNewActivity( const RDOParserSrcInfo& _src_info, const std::string& _pattern )
+RDODPTSearchActivity* RDODPTSearch::addNewActivity( const RDOParserSrcInfo& _src_info, const std::string& _pattern )
 {
-	getParser()->checkActivityName( _src_info );
-	lastActivity = new RDODPTSearchActivity( this, _src_info, _pattern );
-	activities.push_back( lastActivity );
-}
-
-void RDODPTSearch::addActivityParam()
-{
-	lastActivity->addParam();
-}
-
-void RDODPTSearch::setActivityValue( RDODPTSearchActivity::DPTSearchValue _value, RDOFUNArithm* _ruleCost )
-{
-	lastActivity->setValue( _value, _ruleCost );
+	RDODPTSearchActivity* activity = new RDODPTSearchActivity( this, _src_info, _pattern );
+	activities.push_back( activity );
+	return activity;
 }
 
 void RDODPTSearch::end()
 {
-	rdoRuntime::RDOCalc *condCalc;
-	if(!conditon)
-		condCalc = new rdoRuntime::RDOCalcConst(getParser()->runtime, 1);
-	else
-		condCalc = conditon->calc;
+	rdoRuntime::RDOCalc* condCalc = conditon ? conditon->calc : new rdoRuntime::RDOCalcConst( getParser()->runtime, 1 );
+	rdoRuntime::RDOCalc* termCalc = termConditon ? termConditon->calc : new rdoRuntime::RDOCalcConst( getParser()->runtime, 1 );
 
-	rdoRuntime::RDOSearchRuntime *dpt = new rdoRuntime::RDOSearchRuntime(getParser()->runtime, 
-		condCalc, 
-		termConditon->calc, 
-		evalBy->createCalc(), 
-		compTops);
+	rdoRuntime::RDOSearchRuntime* dpt = new rdoRuntime::RDOSearchRuntime( getParser()->runtime,
+		condCalc,
+		termCalc,
+		evalBy->createCalc(),
+		compTops );
 
-	switch(trace)
-	{
-	case DPTnotrace:
-		dpt->traceFlag = rdoRuntime::DPT_no_trace;
-		break;
-	case DPTtracestat:
-		dpt->traceFlag = rdoRuntime::DPT_trace_stat;
-		break;
-	case DPTtracetops:
-		dpt->traceFlag = rdoRuntime::DPT_trace_tops;
-		break;
-	case DPTtraceall:
-		dpt->traceFlag = rdoRuntime::DPT_trace_all;
-		break;
-	};
-
+	dpt->traceFlag = trace;
 	getParser()->runtime->addRuntimeDPT( dpt );
 
 	int size = activities.size();
-	for(int i = 0; i < size; i++)
-	{
-		RDODPTSearchActivity *curr = activities.at(i);
-		rdoRuntime::RDOSearchActivityRuntime *act = curr->createActivityRuntime(getParser()->runtime);
-		dpt->addActivity(act);
+	for ( int i = 0; i < size; i++ ) {
+		RDODPTSearchActivity* activity = activities.at(i);
+		rdoRuntime::RDOSearchActivityRuntime* act = new rdoRuntime::RDOSearchActivityRuntime( getParser()->runtime,
+			dynamic_cast<rdoRuntime::RDORule*>(activity->getActivity()),
+			(activity->getValue() == RDODPTSearchActivity::DPT_value_after),
+			activity->getRuleCost()->createCalc());
+		dpt->addActivity( act );
 	}
 }
 
 // ----------------------------------------------------------------------------
-// ---------- DPT Some
+// ---------- RDODPTSearchActivity
 // ----------------------------------------------------------------------------
-// ---------- RDODPTSomeActivity
-// ----------------------------------------------------------------------------
-RDODPTSomeActivity::RDODPTSomeActivity( const RDOParserObject* _parent, const RDOParserSrcInfo& _src_info, const std::string& _pattern ):
-	RDOParserObject( _parent ),
-	RDOParserSrcInfo( _src_info ),
-	pattern( NULL ),
-	currParamNum( 0 )
+RDODPTSearchActivity::RDODPTSearchActivity( const RDOParserObject* _parent, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info ):
+	RDODPTActivity( _parent, _src_info, _pattern_src_info ),
+	value( DPT_value_before ),
+	ruleCost( NULL )
 {
-	pattern = getParser()->findPattern( _pattern );
-	pattern->testGoodForSomeActivity();
-//	currParamNum = 0;
+	if ( pattern->getType() != RDOPATPattern::PT_Rule ) {
+		getParser()->error_push_only( src_info(), "Только продукционные правила могут быть использованы в точке принятия решений типа search" );
+		getParser()->error_push_only( pattern->src_info(), "См. образец" );
+		getParser()->error_push_done();
+	}
+	for ( std::vector< RDORelevantResource* >::const_iterator i = pattern->rel_res_begin(); i != pattern->rel_res_end(); i++ ) {
+		if ( ((*i)->begin == rdoRuntime::RDOResourceTrace::CS_Create) || ((*i)->begin == rdoRuntime::RDOResourceTrace::CS_Erase) ) {
+			getParser()->error_push_only( src_info(), rdo::format("В продукционном правиле '%s' нельзя создавать или удалять ресурсы, т.к. оно используется в точке типа search", src_text().c_str()) );
+			getParser()->error_push_only( pattern->src_info(), "См. образец" );
+			getParser()->error_push_only( (*i)->src_info(), "См. релевантный ресурс" );
+			getParser()->error_push_done();
+//			getParser()->error( "Rule: " + getName() + " Cannot be used in search activity because of bad converter status" );
+		}
+	}
+	activity = new rdoRuntime::RDOActivityRuleRuntime( getParser()->runtime, pattern->getPatRuntime(), true, getName() );
 }
 
-void RDODPTSomeActivity::addParam(int _param) 
+void RDODPTSearchActivity::setValue( DPTSearchValue _value, RDOFUNArithm* _ruleCost, const YYLTYPE& _param_pos )
 {
-	if(currParamNum >= pattern->params.size())
-		getParser()->error("Too many parameters for pattern: " + pattern->getName());
-
-	RDOFUNFunctionParam *param = pattern->params[currParamNum++];
-	rdoRuntime::RDOValue val = param->getType()->getRSSIntValue(_param, RDOParserSrcInfo("левое"));
-	params.push_back(val);
-}
-
-void RDODPTSomeActivity::addParam(double _param) 
-{
-	if(currParamNum >= pattern->params.size())
-		getParser()->error("Too many parameters for pattern: " + pattern->getName());
-
-	RDOFUNFunctionParam *param = pattern->params[currParamNum++];
-	rdoRuntime::RDOValue val = param->getType()->getRSSRealValue(_param, RDOParserSrcInfo("левое"));
-	params.push_back(val);
-}
-
-void RDODPTSomeActivity::addParam( const std::string& _param )
-{
-	if(currParamNum >= pattern->params.size())
-		getParser()->error("Too many parameters for pattern: " + pattern->getName());
-
-	RDOFUNFunctionParam *param = pattern->params[currParamNum++];
-	rdoRuntime::RDOValue val = param->getType()->getRSSEnumValue(_param, RDOParserSrcInfo("левое"));
-	params.push_back(val);
-}
-
-void RDODPTSomeActivity::addParam() 
-{
-	if(currParamNum >= pattern->params.size())
-		getParser()->error("Too many parameters for pattern: " + pattern->getName());
-
-	RDOFUNFunctionParam *param = pattern->params[currParamNum++];
-	rdoRuntime::RDOValue val = param->getType()->getParamDefaultValue(RDOParserSrcInfo("левое"));
-	params.push_back(val);
-}
-
-void RDODPTSomeActivity::createActivityRuntime(RDOFUNLogic *conditon)
-{
-	rdoRuntime::RDOActivityRuntime *activity;
-	if(!conditon)
-		activity = pattern->patRuntime->createActivity( getName() );
-	else
-		activity = pattern->patRuntime->createActivity(conditon->calc, getName());
-
-	int size = params.size();
-	for(int i = 0; i < size; i++)
-		activity->addParamCalc(new rdoRuntime::RDOSetPatternParamCalc(getParser()->runtime, i, params.at(i)));
+	endParam( _param_pos );
+	value    = _value;
+	ruleCost = _ruleCost;
 }
 
 // ----------------------------------------------------------------------------
@@ -276,144 +288,59 @@ void RDODPTSomeActivity::createActivityRuntime(RDOFUNLogic *conditon)
 // ----------------------------------------------------------------------------
 RDODPTSome::RDODPTSome( RDOParser* _parser, const RDOParserSrcInfo& _src_info ):
 	RDOParserObject( _parser ),
-	RDOParserSrcInfo( _src_info ),
-	lastActivity( NULL )
+	RDOParserSrcInfo( _src_info )
 {
-	if(std::find_if(getParser()->getDPTSome().begin(), getParser()->getDPTSome().end(), compareName2<RDODPTSome>(getName())) != getParser()->getDPTSome().end())
-		getParser()->error("DPT name: " + getName() + " already defined");
-
-	if(std::find_if(getParser()->getDPTSearch().begin(), getParser()->getDPTSearch().end(), compareName2<RDODPTSearch>(getName())) != getParser()->getDPTSearch().end())
-		getParser()->error("DPT name: " + getName() + " already defined");
-
+	getParser()->checkDPTName( src_info() );
+	// TODO: а почему some делает инкремент тут, а search в другом мечте ?
+	getParser()->runtime->dptCounter++;
 	getParser()->insertDPTSome( this );
 }
 
-void RDODPTSome::addNewActivity( const RDOParserSrcInfo& _src_info, const std::string& _pattern )
+RDODPTSomeActivity* RDODPTSome::addNewActivity( const RDOParserSrcInfo& _src_info, const std::string& _pattern )
 {
-	getParser()->checkActivityName( _src_info );
-	lastActivity = new RDODPTSomeActivity( this, _src_info, _pattern );
-	activities.push_back( lastActivity );
-}
-
-void RDODPTSome::end()
-{
-	getParser()->runtime->dptCounter++;
-	int size = activities.size();
-	for(int i = 0; i < size; i++)
-		activities.at(i)->createActivityRuntime(conditon);
+	RDODPTSomeActivity* activity = new RDODPTSomeActivity( this, _src_info, _pattern );
+	activities.push_back( activity );
+	return activity;
 }
 
 // ----------------------------------------------------------------------------
-// ---------- DPT Free
+// ---------- RDODPTSomeActivity
 // ----------------------------------------------------------------------------
-// ---------- RDODPTFreeActivity
+RDODPTSomeActivity::RDODPTSomeActivity( const RDODPTSome* _parent, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info ):
+	RDODPTActivity( _parent, _src_info, _pattern_src_info )
+{
+	if ( pattern->getType() != RDOPATPattern::PT_Rule && pattern->getType() != RDOPATPattern::PT_Operation ) {
+		getParser()->error_push_only( src_info(), "Только продукционные правила и операции могут быть использованы в точке типа some" );
+		getParser()->error_push_only( pattern->src_info(), "См. образец" );
+		getParser()->error_push_done();
+	}
+	if ( !_parent->getConditon() ) {
+		activity = pattern->getPatRuntime()->createActivity( getName() );
+	} else {
+		activity = pattern->getPatRuntime()->createActivity( _parent->getConditon()->calc, getName() );
+	}
+}
+
 // ----------------------------------------------------------------------------
-RDODPTFreeActivity::RDODPTFreeActivity( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info ):
-	RDOParserObject( _parser ),
-	RDOParserSrcInfo( _src_info ),
-	pattern( NULL ),
-	currParam( 0 ),
-	activity( NULL )
+// ---------- RDODPTActivityHotKey
+// ----------------------------------------------------------------------------
+RDODPTActivityHotKey::RDODPTActivityHotKey( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info ):
+	RDODPTActivity( _parser, _src_info, _pattern_src_info )
 {
-	getParser()->checkActivityName( src_info() );
-	pattern = getParser()->findPattern( _pattern_src_info.src_text() );
-	if ( !pattern ) {
-		getParser()->error( _pattern_src_info, rdo::format("Не найден образец: %s", _pattern_src_info.src_text().c_str()) );
-	}
-	if ( pattern->getType() != RDOPATPattern::PT_IE && pattern->getType() != RDOPATPattern::PT_Keyboard ) {
-		getParser()->error_push_only( src_info(), "Только нерегулярные события и клавиатурные операции могут быть использованы в списке свободных активностей" );
-		getParser()->error_push_only( pattern->src_info(), "См. образец" );
-		getParser()->error_push_done();
-	}
-	activity = pattern->patRuntime->createActivity( getName() );
-	getParser()->insertDPTFreeActivity( this );
 }
 
-void RDODPTFreeActivity::addParam( const std::string& stringParam, const YYLTYPE& param_pos )
-{
-	if ( pattern->params.size() <= currParam ) {
-		getParser()->error_push_only( param_pos, rdo::format("Слишком много параметров для образца '%s' при описании активности '%s', а если это имя новой активности, то оно должно заканчиваться двоеточием", pattern->getName().c_str(), getName().c_str()) );
-		getParser()->error_push_only( pattern->src_info(), "См. образец" );
-		getParser()->error_push_done();
-	}
-	RDOFUNFunctionParam* param = pattern->params.at( currParam );
-	switch ( param->getType()->getType() ) {
-		case RDORTPParamType::pt_int : getParser()->error( param_pos, rdo::format("Ожидается параметр целого типа: %s", param->getType()->src_text().c_str()) ); break;
-		case RDORTPParamType::pt_real: getParser()->error( param_pos, rdo::format("Ожидается параметр вещественного типа: %s", param->getType()->src_text().c_str()) ); break;
-	}
-	rdoRuntime::RDOValue val = param->getType()->getRSSEnumValue( stringParam, param_pos );
-	rdoRuntime::RDOSetPatternParamCalc* calc = new rdoRuntime::RDOSetPatternParamCalc( getParser()->runtime, currParam, val );
-	calc->setSrcInfo( RDOParserSrcInfo(param_pos, rdo::format("Параметр образца %s.%s = %s", pattern->getName().c_str(), param->getName().c_str(), stringParam.c_str())) );
-	activity->addParamCalc( calc );
-	currParam++;
-}
-
-void RDODPTFreeActivity::addParam( int intParam, const YYLTYPE& param_pos ) 
-{
-	if ( pattern->params.size() <= currParam ) {
-		getParser()->error_push_only( param_pos, rdo::format("Слишком много параметров для образца '%s' при описании активности '%s'", pattern->getName().c_str(), getName().c_str()) );
-		getParser()->error_push_only( pattern->src_info(), "См. образец" );
-		getParser()->error_push_done();
-	}
-	RDOFUNFunctionParam* param = pattern->params.at( currParam );
-	switch ( param->getType()->getType() ) {
-		case RDORTPParamType::pt_enum: getParser()->error( param_pos, rdo::format("Ожидается параметр перечислимого типа: %s", param->getType()->src_text().c_str()) ); break;
-	}
-	rdoRuntime::RDOValue val = param->getType()->getRSSIntValue( intParam, param_pos );
-	rdoRuntime::RDOSetPatternParamCalc* calc = new rdoRuntime::RDOSetPatternParamCalc( getParser()->runtime, currParam, val );
-	calc->setSrcInfo( RDOParserSrcInfo(param_pos, rdo::format("Параметр образца %s.%s = %d", pattern->getName().c_str(), param->getName().c_str(), intParam)) );
-	activity->addParamCalc( calc );
-	currParam++;
-}
-
-void RDODPTFreeActivity::addParam( double realParam, const YYLTYPE& param_pos ) 
-{
-	if ( pattern->params.size() <= currParam ) {
-		getParser()->error_push_only( param_pos, rdo::format("Слишком много параметров для образца '%s' при описании операции '%s'", pattern->getName().c_str(), getName().c_str()) );
-		getParser()->error_push_only( pattern->src_info(), "См. образец" );
-		getParser()->error_push_done();
-	}
-	RDOFUNFunctionParam* param = pattern->params.at( currParam );
-	switch ( param->getType()->getType() ) {
-		case RDORTPParamType::pt_int : getParser()->error( param_pos, rdo::format("Ожидается параметр целого типа: %s", param->getType()->src_text().c_str()) ); break;
-		case RDORTPParamType::pt_enum: getParser()->error( param_pos, rdo::format("Ожидается параметр перечислимого типа: %s", param->getType()->src_text().c_str()) ); break;
-	}
-	rdoRuntime::RDOValue val = param->getType()->getRSSRealValue( realParam, param_pos );
-	rdoRuntime::RDOSetPatternParamCalc* calc = new rdoRuntime::RDOSetPatternParamCalc( getParser()->runtime, currParam, val );
-	calc->setSrcInfo( RDOParserSrcInfo(param_pos, rdo::format("Параметр образца %s.%s = %f", pattern->getName().c_str(), param->getName().c_str(), realParam)) );
-	activity->addParamCalc( calc );
-	currParam++;
-}
-
-void RDODPTFreeActivity::addParam( const YYLTYPE& param_pos ) 
-{
-	if ( pattern->params.size() <= currParam ) {
-		getParser()->error_push_only( param_pos, rdo::format("Слишком много параметров для образца '%s' при описании операции '%s'", pattern->getName().c_str(), getName().c_str()) );
-		getParser()->error_push_only( pattern->src_info(), "См. образец" );
-		getParser()->error_push_done();
-	}
-
-	RDOFUNFunctionParam* param = pattern->params.at( currParam );
-	if ( !param->getType()->dv->isExist() ) {
-		getParser()->error_push_only( param_pos, rdo::format("Нет значения по-умолчанию для параметра '%s'", param->src_text().c_str()) );
-		getParser()->error_push_only( param->src_info(), rdo::format("См. параметр '%s', тип '%s'", param->src_text().c_str(), param->getType()->src_text().c_str()) );
-		getParser()->error_push_done();
-	}
-	rdoRuntime::RDOValue val = param->getType()->getParamDefaultValue( param_pos );
-	rdoRuntime::RDOSetPatternParamCalc* calc = new rdoRuntime::RDOSetPatternParamCalc( getParser()->runtime, currParam, val );
-	calc->setSrcInfo( RDOParserSrcInfo(param_pos, rdo::format("Параметр образца %s.%s = *", pattern->getName().c_str(), param->getName().c_str())) );
-	activity->addParamCalc( calc );
-	currParam++;
-}
-
-void RDODPTFreeActivity::addHotKey( const std::string& hotKey, const YYLTYPE& hotkey_pos )
+void RDODPTActivityHotKey::addHotKey( const std::string& hotKey, const YYLTYPE& hotkey_pos )
 {
 	switch ( activity->addHotKey( hotKey ) ) {
 		case rdoRuntime::RDOActivityRuntime::addhk_ok      : {
 			break;
 		}
 		case rdoRuntime::RDOActivityRuntime::addhk_already : {
-			getParser()->error( hotkey_pos, rdo::format("Для операции '%s' клавиша уже назначена", src_text().c_str()) );
+			if ( dynamic_cast<RDOOPROperation*>(this) ) {
+				getParser()->error( hotkey_pos, rdo::format("Для операции '%s' клавиша уже назначена", src_text().c_str()) );
+			} else {
+				getParser()->error( hotkey_pos, rdo::format("Для активности '%s' клавиша уже назначена", src_text().c_str()) );
+			}
 			break;
 		}
 		case rdoRuntime::RDOActivityRuntime::addhk_notfound: {
@@ -432,21 +359,19 @@ void RDODPTFreeActivity::addHotKey( const std::string& hotKey, const YYLTYPE& ho
 	}
 }
 
-void RDODPTFreeActivity::end( const YYLTYPE& opr_pos )
+// ----------------------------------------------------------------------------
+// ---------- RDODPTFreeActivity
+// ----------------------------------------------------------------------------
+RDODPTFreeActivity::RDODPTFreeActivity( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info ):
+	RDODPTActivityHotKey( _parser, _src_info, _pattern_src_info )
 {
-	if ( pattern->params.size() > currParam ) {
-		RDOFUNFunctionParam* param = pattern->params.at( currParam );
-		if ( pattern->params.size() == currParam + 1 ) {
-			getParser()->error( opr_pos, rdo::format("Указаны не все параметра образца, ожидаемый параметр '%s' имеет тип '%s'", param->getName().c_str(), param->getType()->src_text().c_str()) );
-		} else {
-			getParser()->error_push_only( opr_pos, rdo::format("Указаны не все параметра образца:") );
-			for ( int i = currParam; i < pattern->params.size(); i++ ) {
-				param = pattern->params.at( i );
-				getParser()->error_push_only( param->src_info(), rdo::format("Ожидаемый параметр '%s' имеет тип '%s'", param->getName().c_str(), param->getType()->src_text().c_str()) );
-			}
-			getParser()->error_push_done();
-		}
+	if ( pattern->getType() != RDOPATPattern::PT_IE && pattern->getType() != RDOPATPattern::PT_Keyboard ) {
+		getParser()->error_push_only( src_info(), "Только нерегулярные события и клавиатурные операции могут быть использованы в списке свободных активностей" );
+		getParser()->error_push_only( pattern->src_info(), "См. образец" );
+		getParser()->error_push_done();
 	}
+	activity = pattern->getPatRuntime()->createActivity( getName() );
+	getParser()->insertDPTFreeActivity( this );
 }
 
 // ----------------------------------------------------------------------------
@@ -485,7 +410,7 @@ void RDOPROCProcess::insertChild( RDOPROCProcess* value )
 bool RDOPROCTransact::created = false;
 
 RDOPROCTransact::RDOPROCTransact( RDOParser* _parser ):
-	RDORTPResType( _parser, "Транзакты", false )
+	RDORTPResType( _parser, RDOParserSrcInfo("Транзакты"), false )
 {
 	// Создадим параметр вещественного типа 'Время_создания'
 	addParam( new RDORTPParam( this, "Время_создания", new RDORTPRealParamType( this ) ) );

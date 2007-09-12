@@ -190,7 +190,6 @@ rtp_list:	/* empty */
 
 rtp_res_type:	rtp_res_type_hdr Parameters rtp_body End {
 					RDORTPResType* res_type = reinterpret_cast<RDORTPResType*>($1);
-					res_type->setSrcPos( @1, @4 );
 					if ( $3 == 0 ) {
 						parser->warning( @2, rdo::format( "Тип ресурса '%s' не содежит параметров", res_type->getName().c_str() ) );
 					}
@@ -205,12 +204,15 @@ rtp_res_type:	rtp_res_type_hdr Parameters rtp_body End {
 rtp_res_type_hdr:	Resource_type IDENTIF_COLON rtp_vid_res {
 						reinterpret_cast<RDOLexer*>(lexer)->enum_param_cnt = 0;
 						std::string name = *reinterpret_cast<std::string*>($2);
-						if( parser->findRTPResType(name) ) {
-							parser->lexer_loc_set( @2.first_line, @2.first_column + name.length() );
-							parser->error( rdoSimulator::RDOSyntaxError::RTP_SECOND_RES_TYPE, name.c_str() );
+						RDOParserSrcInfo src_info(@2, name, RDOParserSrcInfo::psi_align_bytext);
+						const RDORTPResType* _rtp = parser->findRTPResType( name );
+						if ( _rtp ) {
+							parser->error_push_only( src_info, rdoSimulator::RDOSyntaxError::RTP_SECOND_RES_TYPE, name.c_str() );
+							parser->error_push_only( _rtp->src_info(), "См. первое определение" );
+							parser->error_push_done();
 						}
-						RDORTPResType* res = new RDORTPResType( parser, name, $3 != 0 );
-						$$ = (int)res;
+						RDORTPResType* rtp = new RDORTPResType( parser, src_info, $3 != 0 );
+						$$ = (int)rtp;
 					}
 					| Resource_type error {
 						std::string str( reinterpret_cast<RDOLexer*>(lexer)->YYText() );

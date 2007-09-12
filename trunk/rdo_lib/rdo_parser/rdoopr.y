@@ -197,7 +197,7 @@ opr_body:	opr_header IDENTIF_COLON IDENTIF {
 			}
 			| opr_param IDENTIF_COLON IDENTIF {
 				RDOOPROperation* opr = reinterpret_cast<RDOOPROperation*>($1);
-				opr->end( @1 );
+				opr->endParam( @1 );
 				std::string name = *reinterpret_cast<std::string*>($2);
 				RDOParserSrcInfo pattern( @3, *reinterpret_cast<std::string*>($3) );
 				opr = new RDOOPROperation( parser, RDOParserSrcInfo(@2, name, RDOParserSrcInfo::psi_align_bytext), pattern );
@@ -248,7 +248,7 @@ opr_param:	opr_param IDENTIF {
 
 opr_end:	opr_param End {
 				RDOOPROperation* opr = reinterpret_cast<RDOOPROperation*>($1);
-				opr->end( @1 );
+				opr->endParam( @1 );
 				parser->setHaveKWOperationsEnd( true );
 			};
 

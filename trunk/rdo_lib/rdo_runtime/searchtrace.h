@@ -18,17 +18,16 @@ public:
 	RDOActivityTrace( RDOSimulatorTrace* i_sim, RDORule* r, bool vA );
 };
 
-enum DPT_TraceFlag
-{
-   DPT_no_trace,
-   DPT_trace_stat,
-   DPT_trace_tops,
-   DPT_trace_all
-};
-
 class RDODecisionPointTrace: public RDODecisionPoint, RDOTraceableObject
 {
 public:
+	enum DPT_TraceFlag {
+	   DPT_no_trace,
+	   DPT_trace_stat,
+	   DPT_trace_tops,
+	   DPT_trace_all
+	};
+
 	void onSearchBegin( RDOSimulator* sim );
 	void onSearchDecisionHeader( RDOSimulator* sim );
 	void onSearchDecision( RDOSimulator* sim, TreeNode* node );

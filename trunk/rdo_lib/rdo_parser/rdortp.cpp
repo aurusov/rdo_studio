@@ -200,14 +200,12 @@ int RDORTPParam::writeModelStructure() const
 // ----------------------------------------------------------------------------
 // ---------- RDORTPResType
 // ----------------------------------------------------------------------------
-RDORTPResType::RDORTPResType( RDOParser* _parser, const std::string& _name, const bool _permanent ):
+RDORTPResType::RDORTPResType( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const bool _permanent ):
 	RDOParserObject( _parser ),
-	RDOParserSrcInfo(),
-	name( _name ),
+	RDOParserSrcInfo( _src_info ),
 	number( _parser->getRTP_id() ),
 	permanent( _permanent )
 {
-	setSrcText( name );
 	getParser()->insertRTPResType( this );
 }
 

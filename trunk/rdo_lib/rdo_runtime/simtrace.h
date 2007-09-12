@@ -54,7 +54,7 @@ private:
 protected:
 	RDOSimulatorTrace( RDORuntimeParent* _runtime ):
 		RDOSimulator( _runtime ),
-		dptCounter( 1 ),
+		dptCounter( 0 ),
 		activityCounter( 1 ),
 		ieCounter( 1 ),
 		memory_current( 0 ),

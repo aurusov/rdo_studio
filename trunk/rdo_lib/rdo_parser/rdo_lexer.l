@@ -288,7 +288,7 @@ Empty				return(Empty_kw);
 [\r\n\t ]+						;
 [#`~@$%^&|:(),=\[\]\.\*\>\<\+\-\/\\]	return(YYText()[YYLeng()-1]);
 
-([+-]?[0-9]+"..")		{
+([+-]?[0-9]+"..")	{
 						std::string n1(YYText(), YYLeng()-2);
 						rdoParse::parser->lexer_setvalue(atoi(n1.c_str()));
 						unput('.');

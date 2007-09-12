@@ -66,7 +66,7 @@ void RDOTrace::writeSearchNodeInfo(char sign, TreeNodeTrace *node)
 	if ( isNullTracer ) return;
 
 	RDODecisionPointTrace* dpTrace = static_cast<RDODecisionPointTrace*>(node->root->dp);
-	if ( dpTrace->traceFlag == DPT_trace_tops || dpTrace->traceFlag == DPT_trace_all ) {
+	if ( dpTrace->traceFlag == RDODecisionPointTrace::DPT_trace_tops || dpTrace->traceFlag == RDODecisionPointTrace::DPT_trace_all ) {
 		RDOActivityTrace*  actTr  = static_cast<RDOActivityTrace*>(node->currAct);
 		RDORuleTrace*      ruleTr = static_cast<RDORuleTrace*>(actTr->rule);
 		RDOSimulatorTrace* sim    = static_cast<RDOSimulatorTrace*>(node->sim);
@@ -84,7 +84,7 @@ void RDOTrace::writeSearchNodeInfo(char sign, TreeNodeTrace *node)
 		             << std::endl << getEOL();
 
 		RDODecisionPointTrace* dpTrace = static_cast<RDODecisionPointTrace*>(node->root->dp);
-		if ( dpTrace->traceFlag == DPT_trace_all ) {
+		if ( dpTrace->traceFlag == RDODecisionPointTrace::DPT_trace_all ) {
 			getOStream() << ruleTr->traceResourcesList( 'S', sim ) << getEOL();
 		}
 	}

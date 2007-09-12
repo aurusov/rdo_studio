@@ -201,6 +201,7 @@ public:
 		addhk_dont
 	};
 	virtual AddHotKey addHotKey( const std::string& hotKey ) { return addhk_dont; }
+	virtual bool hasHotKey() const                           { return false;      }
 };
 
 // ----------------------------------------------------------------------------
@@ -305,6 +306,7 @@ public:
 
 	bool choiceFrom( RDOSimulator* sim );
 	virtual AddHotKey addHotKey( const std::string& hotKey );
+	virtual bool hasHotKey() const { return scan_code ? true : false; }
 };
 
 } // namespace rdoRuntime

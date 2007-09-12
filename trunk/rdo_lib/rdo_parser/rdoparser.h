@@ -11,6 +11,7 @@
 namespace rdoRuntime
 {
 class RDORuntime;
+class RDOFRMFrame;
 }
 
 namespace rdoParse
@@ -58,22 +59,24 @@ protected:
 	std::vector< double* >              allDoubles;
 	std::vector< RDODeletable* >        allDeletables;
 
-	std::vector< RDORTPResType* >       allRTPResType;
-	std::vector< RDORTPEnumParamType* > allEnums;
-	std::vector< RDORSSResource* >      allRSSResource;
-	std::vector< RDOPATPattern* >       allPATPatterns;
-	std::vector< RDOOPROperation* >     allOPROperations;
-	std::vector< RDOFUNConstant* >      allFUNConstant;
-	std::vector< RDOFUNFunction* >      allFUNFunctions;
-	std::vector< RDOFUNSequence* >      allFUNSequences;
-	std::vector< RDOFUNGroup* >         allFUNGroupStack;
-	std::vector< RDODPTSearch* >        allDPTSearch;
-	std::vector< RDODPTSome* >          allDPTSome;
-	std::vector< RDODPTFreeActivity* >  allDPTFreeActivity;
-	std::vector< RDOPMDPokaz* >         allPMDPokaz;
-	std::vector< RDOPROCProcess* >      allDPTProcess;
+	std::vector< RDORTPResType* >           allRTPResType;
+	std::vector< RDORTPEnumParamType* >     allEnums;
+	std::vector< RDORSSResource* >          allRSSResource;
+	std::vector< RDOPATPattern* >           allPATPatterns;
+	std::vector< RDOOPROperation* >         allOPROperations;
+	std::vector< rdoRuntime::RDOFRMFrame* > allFRMFrame;
+	std::vector< RDOFUNConstant* >          allFUNConstant;
+	std::vector< RDOFUNFunction* >          allFUNFunctions;
+	std::vector< RDOFUNSequence* >          allFUNSequences;
+	std::vector< RDOFUNGroup* >             allFUNGroupStack;
+	std::vector< RDODPTSearch* >            allDPTSearch;
+	std::vector< RDODPTSome* >              allDPTSome;
+	std::vector< RDODPTFreeActivity* >      allDPTFreeActivity;
+	std::vector< RDOPMDPokaz* >             allPMDPokaz;
+	std::vector< RDOPROCProcess* >          allDPTProcess;
 
 	RDODPTSearch* lastDPTSearch;
+	RDODPTSome*   lastDPTSome;
 
 public:
 	RDOParser();
@@ -89,6 +92,7 @@ public:
 
 	void checkFunctionName( const RDOParserSrcInfo& _src_info );
 	void checkActivityName( const RDOParserSrcInfo& _src_info );
+	void checkDPTName( const RDOParserSrcInfo& _src_info );
 
 	void insertDeletables( RDODeletable* value ) {
 		if ( value ) {
@@ -113,6 +117,7 @@ public:
 	void insertRSSResource( RDORSSResource* value );
 	void insertPATPattern( RDOPATPattern* value );
 	void insertOPROperation( RDOOPROperation* value );
+	void insertFRMFrame( rdoRuntime::RDOFRMFrame* value );
 	void insertFUNConstant( RDOFUNConstant* value );
 	void insertFUNFunction( RDOFUNFunction* value );
 	void insertFUNSequences( RDOFUNSequence* value );
@@ -122,13 +127,15 @@ public:
 	void insertDPTFreeActivity( RDODPTFreeActivity* value );
 	void insertPMDPokaz( RDOPMDPokaz* value );
 	void insertDPTProcess( RDOPROCProcess* value );
-	RDORTPResType*  getLastRTPResType()                     { return !allRTPResType.empty()   ? allRTPResType.back()   : NULL; }
-	RDORSSResource* getLastRSSResource()                    { return !allRSSResource.empty()  ? allRSSResource.back()  : NULL; }
-	RDOPATPattern*  getLastPATPattern()                     { return !allPATPatterns.empty()  ? allPATPatterns.back()  : NULL; }
-	RDOFUNFunction* getLastFUNFunction()                    { return !allFUNFunctions.empty() ? allFUNFunctions.back() : NULL; }
-	RDOPROCProcess* getLastDPTProcess()                     { return !allDPTProcess.empty()   ? allDPTProcess.back()   : NULL; }
-	RDODPTSearch*   getLastDPTSearch()                      { return lastDPTSearch;                                            }
-	RDOParserObject* getLastParsingObject()                 { return parsing_object; }
+	RDORTPResType*           getLastRTPResType()    { return !allRTPResType.empty()   ? allRTPResType.back()   : NULL; }
+	RDORSSResource*          getLastRSSResource()   { return !allRSSResource.empty()  ? allRSSResource.back()  : NULL; }
+	RDOPATPattern*           getLastPATPattern()    { return !allPATPatterns.empty()  ? allPATPatterns.back()  : NULL; }
+	rdoRuntime::RDOFRMFrame* getLastFRMFrame()      { return !allFRMFrame.empty()     ? allFRMFrame.back()     : NULL; }
+	RDOFUNFunction*          getLastFUNFunction()   { return !allFUNFunctions.empty() ? allFUNFunctions.back() : NULL; }
+	RDOPROCProcess*          getLastDPTProcess()    { return !allDPTProcess.empty()   ? allDPTProcess.back()   : NULL; }
+	RDODPTSearch*            getLastDPTSearch()     { return lastDPTSearch;                                            }
+	RDODPTSome*              getLastDPTSome()       { return lastDPTSome;                                              }
+	RDOParserObject*         getLastParsingObject() { return parsing_object; }
 
 	bool isHaveKWResources() const           { return have_kw_Resources;     }
 	void setHaveKWResources( bool value )    { have_kw_Resources = value;    }
