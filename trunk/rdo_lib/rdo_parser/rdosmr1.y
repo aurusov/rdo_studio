@@ -171,25 +171,66 @@ namespace rdoParse
 {
 %}
 
-%start smr_descr
+%start smr_main
 
 %%
 
-smr_model: Model_name '=' IDENTIF		{ $$ = (int)(new RDOSMR((std::string *)$3)); @$; };
+smr_main:	smr_model smr_descr;
 
-smr_descr: smr_model
-		|	smr_descr Resource_file		'=' IDENTIF			{ ((RDOSMR *)$1)->setValue("Resource_file",	&RDOSMR::resourceFileName,	(std::string *)$4); $$ = $1; }
-		|	smr_descr OprIev_file		'=' IDENTIF			{ ((RDOSMR *)$1)->setValue("OprIev_file",		&RDOSMR::oprIevFileName,	(std::string *)$4); $$ = $1; }
-		|	smr_descr Frame_file			'=' IDENTIF			{ ((RDOSMR *)$1)->setValue("Frame_file",		&RDOSMR::frameFileName,		(std::string *)$4); $$ = $1; }
-		|	smr_descr Statistic_file	'=' IDENTIF			{ ((RDOSMR *)$1)->setValue("Statistic_file",	&RDOSMR::statisticFileName,(std::string *)$4); $$ = $1; }
-		|	smr_descr Results_file		'=' IDENTIF			{ ((RDOSMR *)$1)->setValue("Results_file",	&RDOSMR::resultsFileName,	(std::string *)$4); $$ = $1; }
-		|	smr_descr Trace_file			'=' IDENTIF			{ ((RDOSMR *)$1)->setValue("Trace_file",		&RDOSMR::traceFileName,		(std::string *)$4); $$ = $1; }
-		|	smr_descr Show_mode			'=' smr_show_mode	{ ((RDOSMR *)$1)->setShowMode((rdoSimulator::ShowMode)$4); $$ = $1; }
-		|	smr_descr Frame_number		'=' INT_CONST		{ ((RDOSMR *)$1)->setFrameNumber($4); $$ = $1; }
-		|	smr_descr Show_rate			'=' REAL_CONST		{ ((RDOSMR *)$1)->setValue("Show_rate",		&RDOSMR::showRate,			(double *)$4); $$ = $1; }
-		|	smr_descr Run_StartTime		'=' REAL_CONST		{ ((RDOSMR *)$1)->setValue("Run_StartTime",	&RDOSMR::runStartTime,		(double *)$4); $$ = $1; }
-		|	smr_descr Trace_StartTime	'=' REAL_CONST		{ ((RDOSMR *)$1)->setValue("Trace_StartTime",&RDOSMR::traceStartTime,	(double *)$4); $$ = $1; }
-		|	smr_descr Trace_EndTime		'=' REAL_CONST		{ ((RDOSMR *)$1)->setValue("Trace_EndTime",	&RDOSMR::traceEndTime,		(double *)$4); $$ = $1; };
+smr_model:	Model_name '=' IDENTIF {
+				$$ = (int)new RDOSMR( parser, *reinterpret_cast<std::string*>($3) );
+				@$;
+			};
+
+smr_descr:	/* empty */
+			| smr_descr Resource_file '=' IDENTIF {
+				RDOSMR* smr = parser->getSMR();
+				smr->setFile( "Resource_file", *reinterpret_cast<std::string*>($4) );
+			}
+			| smr_descr OprIev_file '=' IDENTIF {
+				RDOSMR* smr = parser->getSMR();
+				smr->setFile( "OprIev_file", *reinterpret_cast<std::string*>($4) );
+			}
+			| smr_descr Frame_file '=' IDENTIF {
+				RDOSMR* smr = parser->getSMR();
+				smr->setFile( "Frame_file", *reinterpret_cast<std::string*>($4) );
+			}
+			| smr_descr Statistic_file '=' IDENTIF {
+				RDOSMR* smr = parser->getSMR();
+				smr->setFile( "Statistic_file", *reinterpret_cast<std::string*>($4) );
+			}
+			| smr_descr Results_file '=' IDENTIF {
+				RDOSMR* smr = parser->getSMR();
+				smr->setFile( "Results_file", *reinterpret_cast<std::string*>($4) );
+			}
+			| smr_descr Trace_file '=' IDENTIF {
+				RDOSMR* smr = parser->getSMR();
+				smr->setFile( "Trace_file", *reinterpret_cast<std::string*>($4) );
+			}
+			| smr_descr Show_mode '=' smr_show_mode {
+				RDOSMR* smr = parser->getSMR();
+				smr->setShowMode( (rdoSimulator::ShowMode)$4 );
+			}
+			| smr_descr Frame_number '=' INT_CONST {
+				RDOSMR* smr = parser->getSMR();
+				smr->setFrameNumber($4);
+			}
+			| smr_descr Show_rate '=' REAL_CONST {
+				RDOSMR* smr = parser->getSMR();
+				smr->setValue( "Show_rate", *reinterpret_cast<double*>($4) );
+			}
+			| smr_descr Run_StartTime '=' REAL_CONST {
+				RDOSMR* smr = parser->getSMR();
+				smr->setValue( "Run_StartTime", *reinterpret_cast<double*>($4) );
+			}
+			| smr_descr Trace_StartTime '=' REAL_CONST {
+				RDOSMR* smr = parser->getSMR();
+				smr->setValue( "Trace_StartTime", *reinterpret_cast<double*>($4) );
+			}
+			| smr_descr Trace_EndTime '=' REAL_CONST {
+				RDOSMR* smr = parser->getSMR();
+				smr->setValue( "Trace_EndTime", *reinterpret_cast<double*>($4) );
+			};
 
 smr_show_mode:		NoShow			{ $$ = rdoSimulator::SM_NoShow;    }
 					|	Monitor 	{ $$ = rdoSimulator::SM_Monitor;   }

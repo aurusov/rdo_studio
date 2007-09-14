@@ -36,51 +36,28 @@ int smr2lex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer )
 }
 void smr2error( char* mes )
 {
-	rdoParse::parser->error( mes );
+//	rdoParse::parser->error( mes );
 }
 
-//////////////////////////// RDOSMR::RDOSMR /////////////////////////////////
-RDOSMR::RDOSMR(std::string *_modelName)
-	: modelName(_modelName),
-	resourceFileName(NULL),
-	oprIevFileName(NULL),
-	frameFileName(NULL),
-	statisticFileName(NULL),
-	resultsFileName(NULL),
-	traceFileName(NULL),
-	showMode(rdoSimulator::SM_NoShow),
-	frameNumber(1),
-	showRate(NULL),
-	runStartTime(NULL),
-	traceStartTime(NULL),
-	traceEndTime(NULL),
+// ----------------------------------------------------------------------------
+// ---------- RDOSMR
+// ----------------------------------------------------------------------------
+RDOSMR::RDOSMR( RDOParser* _parser, const std::string& _modelName ):
+	RDOParserObject( _parser ),
+	showMode( rdoSimulator::SM_NoShow ),
+	frameNumber( 1 ),
 	terminateIf(NULL),
 	showModeSet(false),
 	frameNumberSet(false)
 {
-	parser->setSMR(this);
-}
-
-void RDOSMR::setValue(const char *descrName, std::string* RDOSMR::*pMem, std::string* newValue)
-{
-	if(this->*pMem != NULL)
-		parser->error("Second appearence of " + std::string(descrName) + " descriptor");
-
-	this->*pMem = newValue;
-}
-
-void RDOSMR::setValue(const char *descrName, double* RDOSMR::*pMem, double* newValue)
-{
-	if(this->*pMem != NULL)
-		parser->error("Second appearence of " + std::string(descrName) + " descriptor");
-
-	this->*pMem = newValue;
+	setFile( "Model_name", _modelName );
+	getParser()->setSMR( this );
 }
 
 void RDOSMR::setShowMode(rdoSimulator::ShowMode sm)
 {
 	if(showModeSet)
-		parser->error("Second appearence of Show_mode descriptor");
+		getParser()->error("Second appearence of Show_mode descriptor");
 
 	showModeSet = true;
 	showMode = sm;
@@ -89,7 +66,7 @@ void RDOSMR::setShowMode(rdoSimulator::ShowMode sm)
 void RDOSMR::setFrameNumber(int fn)
 {
 	if(frameNumberSet)
-		parser->error("Second appearence of Frame_number descriptor");
+		getParser()->error("Second appearence of Frame_number descriptor");
 
 	frameNumberSet = true;
 	frameNumber = fn;
@@ -97,40 +74,40 @@ void RDOSMR::setFrameNumber(int fn)
 
 void RDOSMR::setTerminateIf(RDOFUNLogic *logic)
 {
-	if(!parser->runtime->setTerminateIf(logic->calc))
-		parser->error("Second Terminate_if entry");
+	if(!getParser()->runtime->setTerminateIf(logic->calc))
+		getParser()->error("Second Terminate_if entry");
 }
 
 void RDOSMR::setConstValue( const std::string& constName, RDOFUNArithm* arithm )
 {
-	const RDOFUNConstant *cons = parser->findFUNConst(constName);
+	const RDOFUNConstant *cons = getParser()->findFUNConst(constName);
 	if(!cons)
-		parser->error("Undefined constant: " + constName);
+		getParser()->error("Undefined constant: " + constName);
 
 	rdoRuntime::RDOCalc *calc = arithm->createCalc(cons->getType());
-	parser->runtime->addInitCalc(new rdoRuntime::RDOCalcSetConst( parser->runtime, cons->number, calc ));
+	getParser()->runtime->addInitCalc(new rdoRuntime::RDOCalcSetConst( getParser()->runtime, cons->number, calc ));
 }
 
 void RDOSMR::setResParValue( const std::string& resName, const std::string& parName, RDOFUNArithm* arithm )
 {
-	const RDORSSResource *res = parser->findRSSResource(resName);
+	const RDORSSResource *res = getParser()->findRSSResource(resName);
 	if(!res)
-		parser->error("Undefined resource name: " + resName);
+		getParser()->error("Undefined resource name: " + resName);
 
 	const RDORTPParam *descr = res->getType()->findRTPParam(parName);
 	if(!descr)
-		parser->error("Undefined resource parameter name: " + parName);
+		getParser()->error("Undefined resource parameter name: " + parName);
 
 	int parNumb = res->getType()->getRTPParamNumber(parName);
 	rdoRuntime::RDOCalc *calc = arithm->createCalc(descr->getType());
-	parser->runtime->addInitCalc(new rdoRuntime::RDOSetResourceParamCalc( parser->runtime, res->getNumber(), parNumb, calc ));
+	getParser()->runtime->addInitCalc(new rdoRuntime::RDOSetResourceParamCalc( getParser()->runtime, res->getNumber(), parNumb, calc ));
 }
 
 void RDOSMR::setSeed( const std::string& seqName, int _base )
 {
-	const RDOFUNSequence* seq = parser->findSequence( seqName );
+	const RDOFUNSequence* seq = getParser()->findSequence( seqName );
 	if ( !seq ) {
-		parser->error( "Undefined sequence: " + seqName );
+		getParser()->error( "Undefined sequence: " + seqName );
 	}
 	seq->init_calc->setBase( _base );
 }

@@ -50,6 +50,7 @@ RDOStudioModel::RDOStudioModel():
 	GUI_ACTION_BUILD( true ),
 	GUI_ACTION_RUN( true ),
 	openError( false ),
+	smrEmptyError( false ),
 	modelClosed( true ),
 	saveAsFlag( false ),
 	frmDescribed( false ),
@@ -146,6 +147,7 @@ RDOStudioModel::RDOStudioModel():
 	notifies.push_back( RT_SIMULATOR_PARSE_STRING );
 	notifies.push_back( RT_SIMULATOR_PARSE_OK );
 	notifies.push_back( RT_SIMULATOR_PARSE_ERROR );
+	notifies.push_back( RT_SIMULATOR_PARSE_ERROR_SMR_EMPTY );
 	notifies.push_back( RT_SIMULATOR_MODEL_STOP_OK );
 	notifies.push_back( RT_SIMULATOR_MODEL_STOP_BY_USER );
 	notifies.push_back( RT_SIMULATOR_MODEL_STOP_RUNTIME_ERROR );
@@ -402,6 +404,11 @@ void RDOStudioModel::proc( RDOThread::RDOMessageInfo& msg )
 			studioApp.autoCloseByModel();
 			break;
 		}
+		case RDOThread::RT_SIMULATOR_PARSE_ERROR_SMR_EMPTY: {
+			studioApp.mainFrame->MessageBox( "В smr-файле не найдено имя модели", "Ошибка открытия модели", MB_OK | MB_ICONERROR );
+			smrEmptyError = true;
+			break;
+		}
 		case RDOThread::RT_SIMULATOR_PARSE_STRING: {
 			msg.lock();
 			studioApp.mainFrame->output.appendStringToBuild( *static_cast<std::string*>(msg.param) );
@@ -465,11 +472,12 @@ bool RDOStudioModel::openModel( const std::string& modelName ) const
 	output->showBuild();
 	output->appendStringToBuild( rdo::format( IDS_MODEL_LOADING_BEGIN ) );
 	const_cast<rdoEditCtrl::RDOBuildEdit*>(output->getBuild())->UpdateWindow();
-	openError   = false;
-	modelClosed = false;
+	openError     = false;
+	smrEmptyError = false;
+	modelClosed   = false;
 	rdoRepository::RDOThreadRepository::OpenFile data( modelName );
 	studioApp.broadcastMessage( RDOThread::RT_STUDIO_MODEL_OPEN, &data );
-	if ( data.result && !openError ) {
+	if ( data.result && !openError && !smrEmptyError ) {
 		rdo::binarystream stream;
 		studioApp.studioGUI->sendMessage( kernel->repository(), RDOThread::RT_REPOSITORY_LOAD, &rdoRepository::RDOThreadRepository::FileData( rdoModelObjects::PMV, stream ) );
 		output->appendStringToResults( stream.str() );
@@ -477,8 +485,12 @@ bool RDOStudioModel::openModel( const std::string& modelName ) const
 		output->appendStringToBuild( rdo::format( IDS_MODEL_LOADING_OK ) );
 		studioApp.setLastProjectName( kernel->repository()->getFullName() );
 	} else {
-		output->updateLogConnection();
-		output->appendStringToBuild( rdo::format( IDS_MODEL_LOADING_FAILD ) );
+		if ( smrEmptyError ) {
+			closeModel();
+		} else {
+			output->updateLogConnection();
+			output->appendStringToBuild( rdo::format( IDS_MODEL_LOADING_FAILD ) );
+		}
 	}
 	return data.result;
 }

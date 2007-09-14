@@ -206,11 +206,11 @@ smr_show_mode:		NoShow
 					|	Animation;
 
 smr_cond:	smr_descr
-		|	smr_cond Terminate_if fun_logic						{ parser->smr->setTerminateIf((RDOFUNLogic *)$3); @$; }
+		|	smr_cond Terminate_if fun_logic						{ parser->getSMR()->setTerminateIf((RDOFUNLogic *)$3); @$; }
 		|	smr_cond Break_point IDENTIF	fun_logic
-		|	smr_cond IDENTIF				'=' fun_arithm		{ parser->smr->setConstValue(*(std::string*)$2, (RDOFUNArithm *)$4); }
-		|	smr_cond IDENTIF '.' IDENTIF	'=' fun_arithm		{ parser->smr->setResParValue(*(std::string *)$2, *(std::string *)$4, (RDOFUNArithm *)$6); }
-		|	smr_cond IDENTIF '.' Seed		'=' INT_CONST		{ parser->smr->setSeed(*(std::string *)$2, $6); };
+		|	smr_cond IDENTIF				'=' fun_arithm		{ parser->getSMR()->setConstValue(*(std::string*)$2, (RDOFUNArithm *)$4); }
+		|	smr_cond IDENTIF '.' IDENTIF	'=' fun_arithm		{ parser->getSMR()->setResParValue(*(std::string *)$2, *(std::string *)$4, (RDOFUNArithm *)$6); }
+		|	smr_cond IDENTIF '.' Seed		'=' INT_CONST		{ parser->getSMR()->setSeed(*(std::string *)$2, $6); };
 
 // ----------------------------------------------------------------------------
 // ---------- Логические выражения

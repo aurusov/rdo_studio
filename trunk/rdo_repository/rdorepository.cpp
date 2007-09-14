@@ -132,7 +132,7 @@ void RDOThreadRepository::resetModelNames()
 	}
 }
 
-bool RDOThreadRepository::updateModelNames()
+RDOThreadRepository::FindModel RDOThreadRepository::updateModelNames()
 {
 	rdo::binarystream smrStream( std::ios::in | std::ios::out );
 	loadFile( getFullFileName( rdoModelObjects::SMR ), smrStream, true, true, files[ rdoModelObjects::SMR ].readonly );
@@ -177,8 +177,9 @@ bool RDOThreadRepository::updateModelNames()
 		files[ rdoModelObjects::PMD ].mustexist = !fileInfo.statistic_file.empty();
 		files[ rdoModelObjects::PMV ].mustexist = false;
 		files[ rdoModelObjects::TRC ].mustexist = false;
-		return true;
+		return fm_ok;
 	} else {
+		if ( fileInfo.model_name.empty() ) return fm_smr_empty;
 		std::vector< RDOThreadRepository::fileInfo >::iterator it = files.begin();
 		while ( it != files.end() ) {
 			it->filename = files[ rdoModelObjects::SMR ].filename;
@@ -186,7 +187,7 @@ bool RDOThreadRepository::updateModelNames()
 			it->mustexist = true;
 			it++;
 		}
-		return false;
+		return fm_smr_error;
 	}
 }
 
@@ -256,12 +257,10 @@ bool RDOThreadRepository::openModel( const std::string& modelFileName )
 				files[ rdoModelObjects::SMR ].filename = modelName;
 				hasModel = true;
 
-				if ( updateModelNames() ) {
-					broadcastMessage( RT_REPOSITORY_MODEL_OPEN );
-					return true;
-				} else {
-					broadcastMessage( RT_REPOSITORY_MODEL_OPEN );
-					return false;
+				switch ( updateModelNames() ) {
+					case fm_ok       : broadcastMessage( RT_REPOSITORY_MODEL_OPEN ); return true;
+					case fm_smr_error: broadcastMessage( RT_REPOSITORY_MODEL_OPEN ); return false;
+					case fm_smr_empty: return false;
 				}
 
 			} else {

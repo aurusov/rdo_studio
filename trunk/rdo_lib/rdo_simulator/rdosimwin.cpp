@@ -180,13 +180,13 @@ void RDOThreadRunTime::start()
 	rdoRuntime::RDOResult* resulter;
 
 	// Creating tracer and resulter //////////////////////////////////
-	if ( simulator->parser->smr->traceFileName == NULL ) {
+	if ( !simulator->parser->getSMR()->hasFile( "Trace_file" ) ) {
 		tracer = new RDOTrace();
 	} else {
 		tracer = new rdoSimulator::RDORuntimeTracer( rdoSimulator::tracerCallBack, simulator );
 	}
 
-	if ( simulator->parser->smr->resultsFileName == NULL ) {
+	if ( !simulator->parser->getSMR()->hasFile( "Results_file" ) ) {
 		resulter = new rdoRuntime::RDOResult();
 	} else {
 		simulator->resultString.str("");
@@ -194,21 +194,21 @@ void RDOThreadRunTime::start()
 	}
 
 	// RDO config initialization
-	simulator->runtime->config.showAnimation = simulator->parser->smr->showMode;
+	simulator->runtime->config.showAnimation = simulator->parser->getSMR()->showMode;
 	int size = simulator->runtime->allFrames.size();
 	for ( int i = 0; i < size; i++ ) {
 		simulator->runtime->config.allFrameNames.push_back( simulator->runtime->allFrames.at(i)->getName() );
 	}
 
-//	simulator->runtime->config.currFrameToShow = simulator->parser->smr->frameNumber - 1;
+//	simulator->runtime->config.currFrameToShow = simulator->parser->getSMR()->frameNumber - 1;
 	simulator->runtime->config.keyDown.clear();
 	simulator->runtime->config.mouseClicked = false;
 	simulator->runtime->config.activeAreasMouseClicked.clear();
 	simulator->runtime->config.frames.clear();
 	simulator->runtime->config.currTime = 0;
 	simulator->runtime->config.newTime = 0;
-	if ( simulator->parser->smr->showRate ) {
-		simulator->runtime->config.showRate = *simulator->parser->smr->showRate;
+	if ( simulator->parser->getSMR()->hasValue( "Show_rate" ) ) {
+		simulator->runtime->config.showRate = simulator->parser->getSMR()->getValue( "Show_rate" );
 	} else {
 		simulator->runtime->config.showRate = 60;	// default
 	}
@@ -597,9 +597,11 @@ void RDOThreadSimulator::parseSMRFileInfo( rdo::binarystream& smr, rdoModelObjec
 		return;
 	}
 
-	if ( !parser->smr ) {
-		broadcastMessage( RDOThread::RT_SIMULATOR_PARSE_STRING, &std::string("SMR File seems to be empty\n") );
+	if ( !parser->hasSMR() ) {
+		broadcastMessage( RDOThread::RT_SIMULATOR_PARSE_STRING, &std::string("В smr-файле не найдено имя модели") );
+//		broadcastMessage( RDOThread::RT_SIMULATOR_PARSE_STRING, &std::string("SMR File seems to be empty\n") );
 		broadcastMessage( RDOThread::RT_SIMULATOR_PARSE_ERROR_SMR );
+		broadcastMessage( RDOThread::RT_SIMULATOR_PARSE_ERROR_SMR_EMPTY );
 		closeModel();
 		info.error = true;
 		return;
@@ -607,26 +609,13 @@ void RDOThreadSimulator::parseSMRFileInfo( rdo::binarystream& smr, rdoModelObjec
 
 //	kernel.notifyString(RDOKernel::buildString, "SMR File read successfully\n");
 
-	if(parser->smr->modelName)
-		info.model_name = *parser->smr->modelName;
-
-	if(parser->smr->resourceFileName)
-		info.resource_file = *parser->smr->resourceFileName;
-
-	if(parser->smr->oprIevFileName)
-		info.oprIev_file = *parser->smr->oprIevFileName;
-
-	if(parser->smr->frameFileName)
-		info.frame_file = *parser->smr->frameFileName;
-
-	if(parser->smr->statisticFileName)
-		info.statistic_file = *parser->smr->statisticFileName;
-
-	if(parser->smr->resultsFileName)
-		info.results_file = *parser->smr->resultsFileName;
-
-	if(parser->smr->traceFileName)
-		info.trace_file = *parser->smr->traceFileName;
+	info.model_name     = parser->getSMR()->getFile( "Model_name" );
+	info.resource_file  = parser->getSMR()->getFile( "Resource_file" );
+	info.oprIev_file    = parser->getSMR()->getFile( "OprIev_file" );
+	info.frame_file     = parser->getSMR()->getFile( "Frame_file" );
+	info.statistic_file = parser->getSMR()->getFile( "Statistic_file" );
+	info.results_file   = parser->getSMR()->getFile( "Results_file" );
+	info.trace_file     = parser->getSMR()->getFile( "Trace_file" );
 
 	closeModel();
 	info.error = false;
@@ -645,17 +634,17 @@ std::vector< RDOSyntaxError > RDOThreadSimulator::getErrors()
 
 ShowMode RDOThreadSimulator::getInitialShowMode()
 {
-	return parser->smr->showMode;
+	return parser->getSMR()->showMode;
 }
 
 int RDOThreadSimulator::getInitialFrameNumber()
 {
-	return parser->smr->frameNumber;
+	return parser->getSMR()->frameNumber;
 }
 
 double RDOThreadSimulator::getInitialShowRate()
 {
-	return *parser->smr->showRate;
+	return parser->getSMR()->getValue( "Show_rate" );
 }
 
 // --------------------------------------------------------------------

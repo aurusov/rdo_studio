@@ -225,8 +225,8 @@ void RDOParserSMR1::parse( std::istream& in_stream )
 	} catch ( RDOSMR1OkException& ) {
 		// Everithing ok, just end of first part parsing
 	}
-	if ( parser && parser->smr && !parser->smr->showRate ) {
-		parser->smr->showRate = parser->addDouble( new double(60.0) );
+	if ( parser && parser->hasSMR() && !parser->getSMR()->hasValue("Show_rate") ) {
+		parser->getSMR()->setValue( "Show_rate", 60.0 );
 	}
 }
 

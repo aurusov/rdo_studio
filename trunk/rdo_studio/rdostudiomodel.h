@@ -49,6 +49,7 @@ private:
 	SYSTEMTIME time_start;
 
 	mutable bool openError;
+	mutable bool smrEmptyError;
 	mutable bool modelClosed;
 	mutable bool saveAsFlag;
 

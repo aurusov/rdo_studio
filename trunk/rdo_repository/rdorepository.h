@@ -64,7 +64,13 @@ private:
 	std::vector< fileInfo > files;
 
 	void resetModelNames();
-	bool updateModelNames();
+
+	enum FindModel {
+		fm_ok,
+		fm_smr_error,
+		fm_smr_empty
+	};
+	FindModel updateModelNames();
 
 	bool realOnlyInDlg;
 

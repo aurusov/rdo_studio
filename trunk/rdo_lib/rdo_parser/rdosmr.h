@@ -30,36 +30,49 @@ class BreakPoint: public RDODeletable
 	RDOFUNLogic *logic;
 };
 
-class RDOSMR: public RDODeletable
+// ----------------------------------------------------------------------------
+// ---------- RDOSMR
+// ----------------------------------------------------------------------------
+class RDOSMR: public RDOParserObject
 {
-public:
-	std::string *modelName;
-	std::string *resourceFileName;
-	std::string *oprIevFileName;
-	std::string *frameFileName;
-	std::string *statisticFileName;
-	std::string *resultsFileName;
-	std::string *traceFileName;
+private:
+	std::map< std::string, std::string > files;
+	std::map< std::string, double > values;
 
+public:
 	rdoSimulator::ShowMode showMode;
 
 	bool showModeSet;
 	bool frameNumberSet;
 
 	int frameNumber;
-	double *showRate;
-	double *runStartTime;
-	double *traceStartTime;
-	double *traceEndTime;
 
-	RDOFUNLogic *terminateIf;
-	std::vector<BreakPoint *> breakPoints;
-	rdoRuntime::RDOCalc *startCalcs;
+	RDOFUNLogic* terminateIf;
+	std::vector< BreakPoint* > breakPoints;
+	rdoRuntime::RDOCalc* startCalcs;
 
 public:
-	RDOSMR(std::string *_modelName);
-	void setValue(const char* descrName, std::string* RDOSMR::*pMem, std::string* newValue);
-	void setValue(const char* descrName, double* RDOSMR::*pMem, double* newValue);
+	RDOSMR( RDOParser* _parser, const std::string& _modelName );
+
+	void setFile( const std::string& file_type, const std::string& file_name ) {
+		files[ file_type ] = file_name;
+	}
+	bool hasFile( const std::string& file_type ) {
+		return files.find( file_type ) != files.end();
+	}
+	std::string getFile( const std::string& file_type ) {
+		return hasFile( file_type ) ? files[ file_type ] : "";
+	}
+
+	void setValue( const std::string& value_name, double value ) {
+		values[ value_name ] = value;
+	}
+	bool hasValue( const std::string& value_name ) {
+		return values.find( value_name ) != values.end();
+	}
+	double getValue( const std::string& value_name ) {
+		return hasValue( value_name ) ? values[ value_name ] : 0;
+	}
 
 	void setShowMode(rdoSimulator::ShowMode sm);
 	void setFrameNumber(int fn);

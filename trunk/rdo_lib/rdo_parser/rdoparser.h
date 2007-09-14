@@ -45,6 +45,7 @@ class RDOParser
 {
 private:
 	RDOParserObject* parsing_object;
+	RDOSMR*          smr;
 
 protected:
 	RDOParserList* parsers;
@@ -154,14 +155,15 @@ public:
 	int getFUNCONST_id() const { return allFUNConstant.size() + 0; }
 
 	rdoRuntime::RDORuntime* runtime;
-	RDOSMR*                 smr;
 
 	std::vector< rdoSimulator::RDOSyntaxError > errors;
 
 	std::stringstream modelStructure;
 	std::stringstream& getModelStructure();
 
-	void setSMR( RDOSMR* _smr)  { smr = _smr; }
+	RDOSMR* getSMR() const      { return smr; }
+	void setSMR( RDOSMR* _smr ) { smr = _smr; }
+	bool hasSMR() const         { return smr ? true : false; }
 
 	const RDORTPResType*      findRTPResType( const std::string& name ) const;
 	const RDORSSResource*     findRSSResource( const std::string& name ) const;
