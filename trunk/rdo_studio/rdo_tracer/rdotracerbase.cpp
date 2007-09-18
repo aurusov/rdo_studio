@@ -275,18 +275,34 @@ void RDOTracerBase::dispatchNextString( std::string& line )
 		action = RUA_ADD;
 #ifdef RDOSIM_COMPATIBLE
 	} else if ( key == "RE" || key == "SRE" ) {
+		std::string copy1 = line;
 		resource = resourceElimination( line, timeNow );
+		if ( !resource ) {
+			std::string copy2 = copy1;
+			resource = resourceCreation( copy1, timeNow );
+			tree->addResource( resource );
+			resource = resourceElimination( copy2, timeNow );
+		}
 		action = RUA_UPDATE;
-	} else if ( key == "RK" || key == "SRK" || key == "RE" || key == "SRE" ) {
-		resourceChanging( line, timeNow );
+	} else if ( key == "RK" || key == "SRK" ) {
+		std::string copy = line;
+		RDOTracerResource* res = resourceChanging( line, timeNow );
+		if ( !res ) {
+			resource = resourceCreation( copy, timeNow );
+			action = RUA_ADD;
+		}
 #else
 	} else if ( key == "RK" || key == "SRK" || key == "RE" || key == "SRE" ) {
 		bool re = key == "RE" || key == "SRE";
-		std::string copy;
-		if ( re ) copy = line;
-		resourceChanging( line, timeNow );
+		std::string copy1 = line;
+		RDOTracerResource* res = resourceChanging( line, timeNow );
+		if ( !res ) {
+			std::string copy2 = copy1;
+			resource = resourceCreation( copy2, timeNow );
+			tree->addResource( resource );
+		}
 		if ( re ) {
-			resource = resourceElimination( copy, timeNow );
+			resource = resourceElimination( copy1, timeNow );
 			action = RUA_UPDATE;
 		}
 #endif
@@ -405,6 +421,7 @@ RDOTracerResource* RDOTracerBase::resourceCreation( std::string& line, RDOTracer
 RDOTracerResource* RDOTracerBase::resourceElimination( std::string& line, RDOTracerTimeNow* const time  )
 {
 	RDOTracerResource* res = getResource( line );
+	if ( !res ) return NULL;
 #ifdef RDOSIM_COMPATIBLE
 	res->setParams( line, time, eventIndex, true );
 #else
@@ -415,10 +432,13 @@ RDOTracerResource* RDOTracerBase::resourceElimination( std::string& line, RDOTra
 	return res;
 }
 
-void RDOTracerBase::resourceChanging( std::string& line, RDOTracerTimeNow* const time  )
+RDOTracerResource* RDOTracerBase::resourceChanging( std::string& line, RDOTracerTimeNow* const time  )
 {
 	RDOTracerResource* res = getResource( line );
-	res->setParams( line, time, eventIndex );
+	if ( res ) {
+		res->setParams( line, time, eventIndex );
+	}
+	return res;
 }
 
 RDOTracerResult* RDOTracerBase::getResult( std::string& line )

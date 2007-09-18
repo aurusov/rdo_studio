@@ -58,11 +58,13 @@ void RDOTracerOperation::start( RDOTracerTimeNow* const time, const int eventInd
 
 void RDOTracerOperation::accomplish( RDOTracerTimeNow* const time, const int eventIndex )
 {
-	RDOTracerValue* newval = new RDOTracerValue( time, eventIndex );
 	RDOTracerValue* lastval;
 	getLastValue( lastval );
-	newval->value = lastval->value - 1;
-	addValue( newval );
+	if ( lastval ) {
+		RDOTracerValue* newval = new RDOTracerValue( time, eventIndex );
+		newval->value = lastval->value - 1;
+		addValue( newval );
+	}
 }
 
 // ----------------------------------------------------------------------------

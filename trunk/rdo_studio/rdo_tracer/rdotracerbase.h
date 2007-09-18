@@ -65,7 +65,7 @@ private:
 	enum RDOTracerResUpdateAction { RUA_NONE, RUA_ADD, RUA_UPDATE };
 	RDOTracerResUpdateAction action;
 	RDOTracerResource* resource;
-	void resourceChanging( std::string& line, RDOTracerTimeNow* const time  );
+	RDOTracerResource* resourceChanging( std::string& line, RDOTracerTimeNow* const time  );
 	
 	RDOTracerResult* getResult( std::string& line );
 	void resultChanging( std::string& line, RDOTracerTimeNow* const time  );
