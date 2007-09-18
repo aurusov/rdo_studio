@@ -1625,7 +1625,7 @@ RDOFUNLogic* RDOFUNGroupLogic::createFunLogic( RDOFUNLogic* cond )
 	}
 	getParser()->getFUNGroupStack().pop_back();
 	RDOFUNLogic* logic = new RDOFUNLogic( this, calc );
-	logic->setSrcInfo( cond->src_info() );
+	logic->setSrcInfo( src_info() );
 	return logic;
 }
 
@@ -1652,7 +1652,7 @@ RDOFUNLogic* RDOFUNSelect::createFunSelectGroup( int funType, RDOFUNLogic* cond 
 	}
 	getParser()->getFUNGroupStack().pop_back();
 	RDOFUNLogic* logic = new RDOFUNLogic( this, calc );
-	logic->setSrcInfo( cond->src_info() );
+	logic->setSrcInfo( src_info() );
 	return logic;
 }
 

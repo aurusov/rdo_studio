@@ -309,13 +309,14 @@ RDOActivityRuleRuntime::RDOActivityRuleRuntime( RDORuntime* rTime, RDOPatternRun
 	haveAdditionalCondition = true;
 }
 
-bool RDOActivityRuleRuntime::choiceFrom(RDOSimulator *sim) 
+bool RDOActivityRuleRuntime::choiceFrom( RDOSimulator* sim )
 { 
-	static_cast<RDORuntime*>(sim)->setCurrentActivity(this);
-	if(haveAdditionalCondition)
-		if(!additionalCondition->calcValueBase( static_cast<RDORuntime*>(sim) ))
+	static_cast<RDORuntime*>(sim)->setCurrentActivity( this );
+	if ( haveAdditionalCondition ) {
+		if ( !additionalCondition->calcValueBase( static_cast<RDORuntime*>(sim) ) ) {
 			return false;
-
+		}
+	}
 	return pattern->choiceFrom( sim ); 
 }
 

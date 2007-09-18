@@ -8,6 +8,7 @@
 #include "rdodpt.h"
 #include "rdocommon.h"
 #include <rdo_runtime.h>
+#include <rdopokaz.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -210,9 +211,27 @@ std::stringstream& RDOParser::getModelStructure()
 			}
 		}
 
-		// PDM
+		// PMD
 		modelStructure << std::endl << "$Watching" << std::endl;
-		modelStructure << runtime->writePokazStructure();
+		int watching_max_length = 0;
+		std::vector< rdoRuntime::RDOPMDPokaz* >::const_iterator watching_it = runtime->getPokaz().begin();
+		while ( watching_it != runtime->getPokaz().end() ) {
+			if ( (*watching_it)->trace && (*watching_it)->getName().length() > watching_max_length ) {
+				watching_max_length = (*watching_it)->getName().length();
+			}
+			watching_it++;
+		}
+		watching_it = runtime->getPokaz().begin();
+		while ( watching_it != runtime->getPokaz().end() ) {
+			if ( (*watching_it)->trace ) {
+				modelStructure << "  " << (*watching_it)->getName();
+				for ( int i = (*watching_it)->getName().length(); i < watching_max_length + 2; i++ ) {
+					modelStructure << " ";
+				}
+				(*watching_it)->writePokazStructure( modelStructure );
+			}
+			watching_it++;
+		}
 	}
 
 	return modelStructure;

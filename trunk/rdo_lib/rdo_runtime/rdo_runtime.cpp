@@ -431,19 +431,6 @@ void RDORuntime::onAfterCheckPokaz()
 	std::for_each( allPokaz.rbegin(), allPokaz.rend(), std::mem_fun(&RDOPokazTrace::tracePokaz) );
 }
 
-std::string RDORuntime::writePokazStructure()
-{
-	std::stringstream stream;
-	for(int i = 0; i < allPokaz.size(); i++)
-	{
-		rdoRuntime::RDOPMDPokaz *curr = allPokaz.at(i);
-		if(curr->trace)
-			curr->writePokazStructure(stream);
-	}
-
-	return stream.str();
-}
-
 std::string RDORuntime::writeActivitiesStructure( int& counter )
 {
 	std::stringstream stream;

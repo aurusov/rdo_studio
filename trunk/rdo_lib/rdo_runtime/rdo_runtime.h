@@ -194,6 +194,8 @@ public:
 	void addRuntimeFrame( RDOFRMFrame* frame );
 	RDOFRMFrame* lastFrame() const;
 
+	const std::vector< RDOPMDPokaz* >& getPokaz() const { return allPokaz; }
+
 	void addInitCalc( RDOCalc* initCalc) { initCalcs.push_back( initCalc ); }
 
 	// Параметры ресурса
@@ -252,7 +254,6 @@ public:
 		return patternParameters.at(parNumb);
 	}
 	std::string writeActivitiesStructure( int& counter );
-	std::string writePokazStructure();
 
 	std::vector< std::string >  activeAreasMouseClicked;
 	std::list< unsigned int >   keysDown;

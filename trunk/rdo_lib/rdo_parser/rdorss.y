@@ -255,7 +255,9 @@ rss_start_vals:	/* empty */
 
 rss_value:	'*' {
 				if ( parser->getLastRSSResource()->currParam == parser->getLastRSSResource()->getType()->getParams().end() ) {
-					parser->error( "Слишком много параметров" );
+					parser->error_push_only( @1, "Слишком много параметров" );
+					parser->error_push_only( parser->getLastRSSResource()->getType()->src_info(), "См. тип ресурса" );
+					parser->error_push_done();
 //					parser->error( "Too many parameters" );
 				}
 				try {
@@ -269,7 +271,9 @@ rss_value:	'*' {
 			}
 			| IDENTIF {
 				if ( parser->getLastRSSResource()->currParam == parser->getLastRSSResource()->getType()->getParams().end() ) {
-					parser->error( rdo::format("Слишком много параметров. Лишний параметр: %s", ((std::string*)$1)->c_str()) );
+					parser->error_push_only( @1, rdo::format("Слишком много параметров. Лишний параметр: %s", ((std::string*)$1)->c_str()) );
+					parser->error_push_only( parser->getLastRSSResource()->getType()->src_info(), "См. тип ресурса" );
+					parser->error_push_done();
 				}
 				try {
 					rdoRuntime::RDOValue val = (*(parser->getLastRSSResource()->currParam))->getType()->getRSSEnumValue(*(std::string *)$1, @1);
@@ -281,7 +285,9 @@ rss_value:	'*' {
 			}
 			| INT_CONST {
 				if ( parser->getLastRSSResource()->currParam == parser->getLastRSSResource()->getType()->getParams().end() ) {
-					parser->error( rdo::format("Слишком много параметров. Лишний параметр: %d", $1) );
+					parser->error_push_only( @1, rdo::format("Слишком много параметров. Лишний параметр: %d", $1) );
+					parser->error_push_only( parser->getLastRSSResource()->getType()->src_info(), "См. тип ресурса" );
+					parser->error_push_done();
 				}
 				try {
 					rdoRuntime::RDOValue val = (*(parser->getLastRSSResource()->currParam))->getType()->getRSSIntValue($1, @1);
@@ -293,7 +299,9 @@ rss_value:	'*' {
 			}
 			| REAL_CONST {
 				if ( parser->getLastRSSResource()->currParam == parser->getLastRSSResource()->getType()->getParams().end() ) {
-					parser->error( rdo::format("Слишком много параметров. Лишний параметр: %f", *((double*)$1)) );
+					parser->error_push_only( @1, rdo::format("Слишком много параметров. Лишний параметр: %f", *((double*)$1)) );
+					parser->error_push_only( parser->getLastRSSResource()->getType()->src_info(), "См. тип ресурса" );
+					parser->error_push_done();
 				}
 				try {
 					rdoRuntime::RDOValue val = (*(parser->getLastRSSResource()->currParam))->getType()->getRSSRealValue(*(double *)$1, @1);

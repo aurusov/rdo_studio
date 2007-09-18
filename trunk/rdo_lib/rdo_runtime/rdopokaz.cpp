@@ -429,29 +429,29 @@ bool RDOPMDGetValue::calcStat(RDOSimulator *sim)
 	return true;
 }
 
-void RDOPMDWatchPar::writePokazStructure(std::ostream &stream) const
+void RDOPMDWatchPar::writePokazStructure( std::ostream& stream ) const
 {
-	stream << "\t" << name << "\t" << traceId() << "\twatch_par" << std::endl;
+	stream << traceId() << " watch_par" << std::endl;
 }
 
-void RDOPMDWatchState::writePokazStructure(std::ostream &stream) const
+void RDOPMDWatchState::writePokazStructure( std::ostream& stream ) const
 {
-	stream << "\t" << name << "\t" << traceId() << "\twatch_state" << std::endl;
+	stream << traceId() << " watch_state" << std::endl;
 }
 
-void RDOPMDWatchQuant::writePokazStructure(std::ostream &stream) const
+void RDOPMDWatchQuant::writePokazStructure( std::ostream& stream ) const
 {
-	stream << "\t" << name << "\t" << traceId() << "\twatch_quant" << std::endl;
+	stream << traceId() << " watch_quant" << std::endl;
 }
 
-void RDOPMDWatchValue::writePokazStructure(std::ostream &stream) const
+void RDOPMDWatchValue::writePokazStructure( std::ostream& stream ) const
 {
-	stream << "\t" << name << "\t" << traceId() << "\twatch_value" << std::endl;
+	stream << traceId() << " watch_value" << std::endl;
 }
 
-void RDOPMDGetValue::writePokazStructure(std::ostream &stream) const
+void RDOPMDGetValue::writePokazStructure( std::ostream& stream ) const
 {
-	stream << "\t" << name << "\t" << traceId() << "\tget_value" << std::endl;
+	stream << traceId() << " get_value" << std::endl;
 }
 
 } // rdoRuntime

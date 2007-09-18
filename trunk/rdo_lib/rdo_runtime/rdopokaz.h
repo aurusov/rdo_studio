@@ -12,14 +12,15 @@ namespace rdoRuntime {
 class RDOPMDPokaz: public RDOPokazTrace
 {
 protected:
-	const std::string const name;
+	std::string const name;
 
 public:
 	RDOPMDPokaz( RDOSimulatorTrace* _sim, const std::string* const _name, bool _trace );
 	virtual ~RDOPMDPokaz() {}
 	virtual bool checkResourceErased(RDOResource *res) { return false; }
-	virtual void writePokazStructure(std::ostream &stream) const = 0;
+	virtual void writePokazStructure( std::ostream& stream ) const = 0;
 	void setID( int _id ) { id = _id; }
+	const std::string& getName() const { return name; }
 };
 
 // ----------------------------------------------------------------------------
@@ -47,7 +48,7 @@ public:
 	bool resetPokaz(RDOSimulator *sim);
 	bool checkPokaz(RDOSimulator *sim);
 	bool calcStat(RDOSimulator *sim);
-	void writePokazStructure(std::ostream &stream) const;
+	void writePokazStructure( std::ostream& stream ) const;
 };
 
 // ----------------------------------------------------------------------------
@@ -74,7 +75,7 @@ public:
 	bool resetPokaz(RDOSimulator *sim);
 	bool checkPokaz(RDOSimulator *sim);
 	bool calcStat(RDOSimulator *sim);
-	void writePokazStructure(std::ostream &stream) const;
+	void writePokazStructure( std::ostream& stream ) const;
 };
 
 // ----------------------------------------------------------------------------
@@ -102,7 +103,7 @@ public:
 	bool resetPokaz(RDOSimulator *sim);
 	bool checkPokaz(RDOSimulator *sim);
 	bool calcStat(RDOSimulator *sim);
-	void writePokazStructure(std::ostream &stream) const;
+	void writePokazStructure( std::ostream& stream ) const;
 	void setLogicCalc( RDOCalc* _logicCalc ) { logicCalc = _logicCalc; }
 };
 
@@ -130,7 +131,7 @@ public:
 	bool checkPokaz(RDOSimulator *sim);
 	bool calcStat(RDOSimulator *sim);
 	bool checkResourceErased(RDOResource *res);
-	void writePokazStructure(std::ostream &stream) const;
+	void writePokazStructure( std::ostream& stream ) const;
 	void setLogicCalc( RDOCalc* _logicCalc )   { logicCalc = _logicCalc;   }
 	void setArithmCalc( RDOCalc* _arithmCalc ) { arithmCalc = _arithmCalc; }
 };
@@ -149,7 +150,7 @@ public:
 	bool resetPokaz(RDOSimulator *sim);
 	bool checkPokaz(RDOSimulator *sim);
 	bool calcStat(RDOSimulator *sim);
-	void writePokazStructure(std::ostream &stream) const;
+	void writePokazStructure( std::ostream& stream ) const;
 };
 
 } // rdoRuntime

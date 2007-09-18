@@ -25,18 +25,19 @@ RDOCalc::~RDOCalc()
 RDOValue RDOCalc::calcValueBase( RDORuntime* runtime ) const
 {
 	try {
+/*
 #ifdef _DEBUG
 		if ( src_text().empty() ) {
-//			TRACE( "%d\n", sizeof(std::string) );
-		}
-		if ( src_text().length() < 500 ) {
-//			TRACE( "calc: %s\n", src_text().c_str() );
+			TRACE( "%d\n", sizeof(std::string) );
+		} else if ( src_text().length() < 500 ) {
+			TRACE( "calc: %s\n", src_text().c_str() );
 		} else {
 			std::string str = src_text();
 			str.resize( 500 );
-//			TRACE( "calc: %s\n", str.c_str() );
+			TRACE( "calc: %s\n", str.c_str() );
 		}
 #endif
+*/
 		return calcValue( runtime );
 	} catch ( RDORuntimeException& ) {
 		if ( runtime->errors.empty() ) {
@@ -457,7 +458,7 @@ RDOValue RDOSelectResourceCommonCalc::calcValue( RDORuntime* runtime ) const
 std::vector< int > RDOSelectResourceDirectCommonCalc::getPossibleNumbers( RDORuntime* sim ) const
 {
 	std::vector< int > res;	
-	res.push_back( rel_res_id );
+	res.push_back( res_id );
 	return res;
 }
 
