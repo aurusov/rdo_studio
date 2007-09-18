@@ -285,10 +285,22 @@ void RDOTracerBase::dispatchNextString( string& line )
 			resource = resourceCreation( line, timeNow );
 			action = RUA_ADD;
 		} else if ( key == "RE" || key == "SRE" ) {
+			std::string copy1 = line;
 			resource = resourceElimination( line, timeNow );
+			if ( !resource ) {
+				std::string copy2 = copy1;
+				resource = resourceCreation( copy1, timeNow );
+				tree->addResource( resource );
+				resource = resourceElimination( copy2, timeNow );
+			}
 			action = RUA_UPDATE;
 		} else if ( key == "RK" || key == "SRK" ) {
-			resourceChanging( line, timeNow );
+			std::string copy = line;
+			RDOTracerResource* res = resourceChanging( line, timeNow );
+			if ( !res ) {
+				resource = resourceCreation( copy, timeNow );
+				action = RUA_ADD;
+			}
 		} else if ( key == "V" ) {
 			resultChanging( line, timeNow );
 		}/* else if ( key == "$Status" ) {
@@ -432,8 +444,8 @@ RDOTracerResource* RDOTracerBase::getResource( string& line, int& type_id, int& 
 		//i++;
 	}
 
-	if ( !res )
-		throw RDOTracerException( format( IDS_RESCANNOTFIND, res_id, type_id ).c_str() );
+//	if ( !res )
+//		throw RDOTracerException( format( IDS_RESCANNOTFIND, res_id, type_id ).c_str() );
 
 	return res;
 }
@@ -467,8 +479,10 @@ RDOTracerResource* RDOTracerBase::resourceElimination( string& line, RDOTracerTi
 	RDOTracerResource* res = NULL;
 	try {
 		res = getResource( line, type_id, res_id );
-		res->setParams( line, time, eventIndex, true );
-		res->setErased( true );
+		if ( res ) {
+			res->setParams( line, time, eventIndex, true );
+			res->setErased( true );
+		}
 	} catch ( RDOTracerException &e ) {
 		e.message = format( IDS_RESELIMERROR, res_id, res ? res->Name.c_str() : "NULL", type_id, type_id <= resTypes.size() ? resTypes.at( type_id - 1 )->Name.c_str() : "NULL", e.getMessage().c_str() );
 		throw;
@@ -477,13 +491,16 @@ RDOTracerResource* RDOTracerBase::resourceElimination( string& line, RDOTracerTi
 	return res;
 }
 
-void RDOTracerBase::resourceChanging( string& line, RDOTracerTimeNow* const time  )
+RDOTracerResource* RDOTracerBase::resourceChanging( string& line, RDOTracerTimeNow* const time  )
 {
 	int type_id, res_id;
 	RDOTracerResource* res = NULL;
 	try {
 		res = getResource( line, type_id, res_id );
-		res->setParams( line, time, eventIndex );
+		if ( res ) {
+			res->setParams( line, time, eventIndex );
+		}
+		return res;
 	} catch ( RDOTracerException &e ) {
 		e.message = format( IDS_RESSTATECHANGEERROR, res_id, res ? res->Name.c_str() : "NULL", type_id, type_id <= resTypes.size() ? resTypes.at( type_id - 1 )->Name.c_str() : "NULL", e.getMessage().c_str() );
 		throw;

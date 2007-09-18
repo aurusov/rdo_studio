@@ -49,7 +49,7 @@ RDOAbout::RDOAbout() :
 	telBold( false ),
 	emailBold( false ),
 	webSiteBold( false ),
-	emailLinkText( "evv@rk9.bmstu.ru" ),
+	emailLinkText( "rdo@rk9.bmstu.ru" ),
 	webSiteLinkText( "www.rk9.bmstu.ru" ),
 	buttonOkText( "Close" ),
 	emailLinkBold( false ),
