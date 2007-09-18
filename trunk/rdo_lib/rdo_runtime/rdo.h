@@ -39,7 +39,7 @@ public:
 	virtual BOResult checkOperation( RDOSimulator* sim ) = 0;
 	// Вызывается для запланированных в будующем событий: IE, operation_end, keyboard_end
 	// Может не использоваться, например, для rule
-	virtual void makePlanned( RDOSimulator* sim, void* param = NULL ) {}
+	virtual void makePlaned( RDOSimulator* sim, void* param = NULL ) {}
 };
 
 // ----------------------------------------------------------------------------
@@ -54,7 +54,7 @@ private:
 	double time;
 	virtual void init( RDOSimulator* sim );
 	virtual RDOBaseOperation::BOResult checkOperation( RDOSimulator* sim );
-	virtual void makePlanned( RDOSimulator* sim, void* param = NULL );
+	virtual void makePlaned( RDOSimulator* sim, void* param = NULL );
 
 protected:
 	virtual void convertEvent( RDOSimulator* sim )            = 0;
@@ -107,7 +107,7 @@ private:
 	RDORuntimeParent clones;
 
 	virtual RDOBaseOperation::BOResult checkOperation( RDOSimulator* sim );
-	virtual void makePlanned( RDOSimulator* sim, void* param = NULL );
+	virtual void makePlaned( RDOSimulator* sim, void* param = NULL );
 
 public:
 	RDOOperation( RDORuntimeParent* _runtime ):

@@ -1335,7 +1335,7 @@ param_such_as:	such_as IDENTIF '.' IDENTIF {
 					if ( !cons ) {
 						parser->error( @2, rdo::format("—сылка на несуществующую константу: %s", constName.c_str()) );
 					}
-					$$ = (int)(cons->getDescr());
+					$$ = (int)cons->getDescr();
 				}
 				| such_as IDENTIF '.' {
 					std::string type = *reinterpret_cast<std::string*>($2);

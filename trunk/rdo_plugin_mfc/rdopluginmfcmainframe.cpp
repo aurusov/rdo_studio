@@ -1146,7 +1146,7 @@ void RDOPluginMFCMainFrame::OnUpdateModelRunPause(CCmdUI* pCmdUI)
 {
 	bool flag = pluginMFCApp.studio.model.isRunning() && pluginMFCApp.studio.frame.isDescribed();
 	pCmdUI->Enable( flag );
-	pCmdUI->SetCheck( flag ? pluginMFCApp.studio.model.getRuntimeMode() == rdoPlugin::MRTM_Pause : 0 );
+	pCmdUI->SetCheck( flag ? pluginMFCApp.studio.model.getRuntimeMode() == rdoPlugin::MRTM_Pause || pluginMFCApp.studio.model.getRuntimeMode() == rdoPlugin::MRTM_BreakPoint : 0 );
 }
 
 void RDOPluginMFCMainFrame::OnModelShowRateInc() 

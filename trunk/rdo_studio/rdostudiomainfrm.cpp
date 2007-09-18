@@ -414,10 +414,11 @@ void RDOStudioMainFrame::OnUpdateModelRunTypeStatusBar( CCmdUI *pCmdUI )
 	std::string s = "";
 	if ( model->isRunning() ) {
 		switch ( model->getRuntimeMode() ) {
-			case rdoRuntime::RTM_MaxSpeed: s = rdo::format( ID_STATUSBAR_MODEL_RUNTIME_MAXSPEED ); break;
-			case rdoRuntime::RTM_Jump    : s = rdo::format( ID_STATUSBAR_MODEL_RUNTIME_JUMP ); break;
-			case rdoRuntime::RTM_Sync    : s = rdo::format( ID_STATUSBAR_MODEL_RUNTIME_SYNC ); break;
-			case rdoRuntime::RTM_Pause   : s = rdo::format( ID_STATUSBAR_MODEL_RUNTIME_PAUSE ); break;
+			case rdoRuntime::RTM_MaxSpeed  : s = rdo::format( ID_STATUSBAR_MODEL_RUNTIME_MAXSPEED ); break;
+			case rdoRuntime::RTM_Jump      : s = rdo::format( ID_STATUSBAR_MODEL_RUNTIME_JUMP ); break;
+			case rdoRuntime::RTM_Sync      : s = rdo::format( ID_STATUSBAR_MODEL_RUNTIME_SYNC ); break;
+			case rdoRuntime::RTM_Pause     : s = rdo::format( ID_STATUSBAR_MODEL_RUNTIME_PAUSE ); break;
+			case rdoRuntime::RTM_BreakPoint: s = rdo::format( ID_STATUSBAR_MODEL_RUNTIME_BREAKPOINT, model->getLastBreakPointName().c_str() ); break;
 		}
 	}
 	pCmdUI->SetText( s.c_str() );
@@ -443,7 +444,8 @@ void RDOStudioMainFrame::OnUpdateModelShowRateStatusBar( CCmdUI *pCmdUI )
 				pCmdUI->SetText( rdo::format( IDS_MODEL_SHOWRATE_S, rdo::format( IDS_INFINITI ).c_str() ).c_str()  );
 				break;
 			}
-			case rdoRuntime::RTM_Pause: {
+			case rdoRuntime::RTM_Pause     :
+			case rdoRuntime::RTM_BreakPoint: {
 				pCmdUI->SetText( rdo::format( IDS_MODEL_SHOWRATE_S, "0.0" ).c_str() );
 				break;
 			}
@@ -551,7 +553,7 @@ void RDOStudioMainFrame::OnUpdateModelRuntimePause( CCmdUI* pCmdUI )
 {
 	bool runing = model->isRunning();
 	pCmdUI->Enable( runing );
-	pCmdUI->SetCheck( runing ? model->getRuntimeMode() == rdoRuntime::RTM_Pause : 0 );
+	pCmdUI->SetCheck( runing ? model->getRuntimeMode() == rdoRuntime::RTM_Pause || model->getRuntimeMode() == rdoRuntime::RTM_BreakPoint : 0 );
 //	bool flag = model->isRunning() && model->isFrmDescribed();
 //	pCmdUI->Enable( flag );
 //	pCmdUI->SetCheck( flag ? model->getShowMode() == rdoSimulator::SM_Monitor : 0 );

@@ -68,7 +68,8 @@ enum ModelRuntimeMode {
 	MRTM_MaxSpeed,
 	MRTM_Jump,
 	MRTM_Sync,
-	MRTM_Pause
+	MRTM_Pause,
+	MRTM_BreakPoint
 };
 
 enum ModelFileType { PAT = 0, RTP, RSS, OPR, FRM, FUN, DPT, SMR, PMD, PMV, TRC };

@@ -13,6 +13,7 @@ namespace rdoRuntime
 
 RDOSimulatorBase::RDOSimulatorBase( RDORuntimeParent* _runtime ):
 	RDORuntimeParent( _runtime ),
+	startTime( 0 ),
 	currentTime( 0 ),
 	nextTime( 0 ),
 	mode( rdoRuntime::RTM_MaxSpeed ),
@@ -29,14 +30,13 @@ RDOSimulatorBase::RDOSimulatorBase( RDORuntimeParent* _runtime ):
 
 void RDOSimulatorBase::rdoInit()
 {
-	currentTime     = 0;
-	nextTime        = 0;
+	currentTime     = startTime;
+	nextTime        = currentTime;
 	check_operation = true;
 	onInit();
 
 	timePointList.clear();
-	timePointList[0] = NULL;
-//	timePointList.push_back(0);
+	timePointList[currentTime] = NULL;
 	preProcess();
 
 	speed              = 1;
@@ -44,6 +44,8 @@ void RDOSimulatorBase::rdoInit()
 	next_delay_current = 0;
 	showRate           = 60;
 	msec_wait          = 0;
+
+	onNewTimeNow();
 }
 
 void RDOSimulatorBase::rdoDestroy()
@@ -53,7 +55,7 @@ void RDOSimulatorBase::rdoDestroy()
 
 bool RDOSimulatorBase::rdoNext()
 {
-	if ( mode == rdoRuntime::RTM_Pause ) {
+	if ( mode == rdoRuntime::RTM_Pause || mode == rdoRuntime::RTM_BreakPoint ) {
 		::Sleep( 1 );
 		return true;
 	}
@@ -98,9 +100,15 @@ bool RDOSimulatorBase::rdoNext()
 		onEndCondition();
 		return false;
 	}
-	currentTime = nextTime;
+	if ( currentTime != nextTime ) {
+		currentTime = nextTime;
+		onNewTimeNow();
+	}
 	// Выполнение операции
 	if ( doOperation() ) {
+		if ( breakPoints() ) {
+			setMode( RTM_BreakPoint );
+		}
 		return true;
 	} else {
 		// Переход к следующей операции
@@ -118,7 +126,7 @@ bool RDOSimulatorBase::rdoNext()
 			if ( mode == rdoRuntime::RTM_Sync ) {
 				msec_wait += (newTime - nextTime) * 3600.0 * 1000.0 / showRate;
 				if ( msec_wait > 0 ) {
-					if ( nextTime != 0 ) {
+					if ( nextTime != startTime ) {
 						if ( speed > DBL_MIN ) {
 							msec_wait = msec_wait / speed;
 						} else {

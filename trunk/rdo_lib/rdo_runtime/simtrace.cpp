@@ -127,12 +127,15 @@ void RDOSimulatorTrace::preProcess()
 	getTracer()->writeTraceBegin(this);
 	getTracer()->writePermanentResources( this, getTracebleResources() );
 	getTracer()->writeModelBegin(this);
+	getTracer()->startWriting();
+	onCheckPokaz();
+	onAfterCheckPokaz();
 }
 
 void RDOSimulatorTrace::postProcess()
 {
 	getTracer()->writeTraceEnd( this );
-	getTracer()->stopWriting();
+//	getTracer()->stopWriting();
 }
 
 } // namespace rdoRuntime

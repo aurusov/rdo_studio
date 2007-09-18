@@ -219,9 +219,9 @@ RDODPTSearch::RDODPTSearch( RDOParser* _parser, const RDOParserSrcInfo& _src_inf
 	getParser()->insertDPTSearch( this );
 }
 
-RDODPTSearchActivity* RDODPTSearch::addNewActivity( const RDOParserSrcInfo& _src_info, const std::string& _pattern )
+RDODPTSearchActivity* RDODPTSearch::addNewActivity( const RDOParserSrcInfo& _activity_src_info, const RDOParserSrcInfo& _pattern_src_info )
 {
-	RDODPTSearchActivity* activity = new RDODPTSearchActivity( this, _src_info, _pattern );
+	RDODPTSearchActivity* activity = new RDODPTSearchActivity( this, _activity_src_info, _pattern_src_info );
 	activities.push_back( activity );
 	return activity;
 }
@@ -296,9 +296,9 @@ RDODPTSome::RDODPTSome( RDOParser* _parser, const RDOParserSrcInfo& _src_info ):
 	getParser()->insertDPTSome( this );
 }
 
-RDODPTSomeActivity* RDODPTSome::addNewActivity( const RDOParserSrcInfo& _src_info, const std::string& _pattern )
+RDODPTSomeActivity* RDODPTSome::addNewActivity( const RDOParserSrcInfo& _activity_src_info, const RDOParserSrcInfo& _pattern_src_info )
 {
-	RDODPTSomeActivity* activity = new RDODPTSomeActivity( this, _src_info, _pattern );
+	RDODPTSomeActivity* activity = new RDODPTSomeActivity( this, _activity_src_info, _pattern_src_info );
 	activities.push_back( activity );
 	return activity;
 }

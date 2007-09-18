@@ -82,7 +82,7 @@ public:
 	void setEvaluateBy( RDOFUNArithm* _evalBy )                { evalBy       = _evalBy;       }
 	void setCompareTops( bool _compTops )                      { compTops     = _compTops;     }
 
-	RDODPTSearchActivity* addNewActivity( const RDOParserSrcInfo& _src_info, const std::string& _pattern );
+	RDODPTSearchActivity* addNewActivity( const RDOParserSrcInfo& _activity_src_info, const RDOParserSrcInfo& _pattern_src_info );
 	RDODPTSearchActivity* getLastActivity() const {
 		return !activities.empty() ? activities.back() : NULL;
 	}
@@ -132,7 +132,7 @@ public:
 	RDOFUNLogic* getConditon() const                   { return conditon;              }
 	void setCondition( RDOFUNLogic* _conditon = NULL ) { conditon = _conditon;         }
 
-	RDODPTSomeActivity* addNewActivity( const RDOParserSrcInfo& _src_info, const std::string& _pattern );
+	RDODPTSomeActivity* addNewActivity( const RDOParserSrcInfo& _activity_src_info, const RDOParserSrcInfo& _pattern_src_info );
 	RDODPTSomeActivity* getLastActivity() const {
 		return !activities.empty() ? activities.back() : NULL;
 	}

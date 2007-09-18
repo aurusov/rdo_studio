@@ -74,20 +74,23 @@ const std::string& RDORTPDefVal::getEnumValue() const
 // ----------------------------------------------------------------------------
 // ---------- RDORTPParamType
 // ----------------------------------------------------------------------------
-void RDORTPParamType::checkParamType( const RDOFUNArithm* const action ) const
+void RDORTPParamType::checkParamType( const RDOFUNArithm* const action, bool warning ) const
 {
 	switch ( getType() ) {
 		case RDORTPParamType::pt_int: {
 			if ( action->getType() == RDORTPParamType::pt_real ) {
-				getParser()->warning( action->src_info(), "Перевод вещественного числа в целое, возможна потеря данных" );
+//				if ( warning ) {
+					getParser()->warning( action->src_info(), "Перевод вещественного числа в целое, возможна потеря данных" );
+//				} else {
+//					getParser()->error( action->src_info(), "Ожидается целое число" );
+//				}
 			} else if ( action->getType() != RDORTPParamType::pt_int ) {
 				getParser()->error( action->src_info(), "Несоответствие типов. Ожидается целочисленное значение" );
-			} else {
-				const rdoRuntime::RDOCalcConst* calc_const = dynamic_cast<const rdoRuntime::RDOCalcConst*>(action->getCalc());
-				if ( calc_const ) {
-					rdoRuntime::RDOValue value = calc_const->calcValueBase( getParser()->runtime );
-					checkRSSIntValue( value, action->src_info() );
-				}
+			}
+			const rdoRuntime::RDOCalcConst* calc_const = dynamic_cast<const rdoRuntime::RDOCalcConst*>(action->getCalc());
+			if ( calc_const ) {
+				rdoRuntime::RDOValue value = calc_const->calcValueBase( getParser()->runtime );
+				checkRSSIntValue( value, action->src_info() );
 			}
 			break;
 		}

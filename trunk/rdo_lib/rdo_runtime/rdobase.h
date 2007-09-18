@@ -13,6 +13,7 @@ class RDOBaseOperation;
 class RDOSimulatorBase: public RDORuntimeParent
 {
 private:
+	double startTime;
 	double currentTime;
 	double nextTime;
 
@@ -49,6 +50,9 @@ protected:
 	// Проверка на условие конца моделирования
 	virtual bool endCondition() = 0;
 
+	// Проверка на точки останова
+	virtual bool breakPoints() = 0;
+
 	// Инициализация/очистка симулятора
 	virtual void onInit()    = 0;
 	virtual void onDestroy() = 0;
@@ -71,6 +75,9 @@ protected:
 	// Проверка на нажатие клавиши или активной области
 	virtual bool isKeyDown()   = 0;
 
+	// Вызывается при увеличении модельного времени
+	virtual void onNewTimeNow() {};
+
 public:
 	// Публичные методы управления симулятором
 	virtual void rdoInit();
@@ -78,6 +85,7 @@ public:
 	virtual bool rdoNext();
 	virtual void rdoPostProcess();
 
+	void setStartTime( double value )       { startTime = value;  }
 	double getCurrentTime() const           { return currentTime; }
 
 	RunTimeMode getMode() const             { return mode;        }

@@ -134,6 +134,7 @@ public:
 
 	rdoRuntime::RunTimeMode getRuntimeMode() const              { return runtimeMode;               }
 	void setRuntimeMode( const rdoRuntime::RunTimeMode value );
+	std::string getLastBreakPointName();
 	double getSpeed() const                                     { return speed;                     }
 	void setSpeed( double persent );
 	double getShowRate()                                        { return showRate;                  }

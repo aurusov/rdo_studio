@@ -34,7 +34,7 @@ RDOBaseOperation::BOResult RDOIE::checkOperation(RDOSimulator *sim)
 	return RDOBaseOperation::BOR_cant_run;
 }
 
-void RDOIE::makePlanned( RDOSimulator* sim, void* param )
+void RDOIE::makePlaned( RDOSimulator* sim, void* param )
 {
 	onBeforeIrregularEvent( sim );
 	convertEvent( sim );
@@ -77,7 +77,7 @@ RDOBaseOperation::BOResult RDOOperation::checkOperation( RDOSimulator* sim )
 	return RDOBaseOperation::BOR_cant_run;
 }
 
-void RDOOperation::makePlanned( RDOSimulator* sim, void* param )
+void RDOOperation::makePlaned( RDOSimulator* sim, void* param )
 {
 	// Выполняем событие конца операции-клона
 	RDOOperation* opr = static_cast<RDOOperation*>(param);
@@ -162,9 +162,7 @@ void RDODecisionPoint::addActivity( RDOActivity* act )
 // ----------------------------------------------------------------------------
 bool RDOSimulator::doOperation()
 {
-	onCheckPokaz();
-	onAfterCheckPokaz();
-
+	bool found_planed = false;
 	// Отработаем все запланированные на данный момент события
 	if ( !check_operation && !timePointList.empty() ) {
 		check_operation = true;
@@ -187,15 +185,20 @@ bool RDOSimulator::doOperation()
 					delete timePointList.begin()->second;
 					timePointList.erase( timePointList.begin() );
 				}
-				opr->makePlanned( this, param );
-				return true;
+				opr->makePlaned( this, param );
+				found_planed = true;
 			}
 		}
 	}
-	// Не нашли запланированное событие
-	// Проверить все возможные события и действия, вызвать первое, которое может буть вызвано
-	bool res = std::find_if( haveBaseOperations.begin(), haveBaseOperations.end(), CheckOperations( this ) ) != haveBaseOperations.end();
-	if ( !res ) check_operation = false;
+	bool res = found_planed;
+	if ( !found_planed ) {
+		// Не нашли запланированное событие
+		// Проверить все возможные события и действия, вызвать первое, которое может буть вызвано
+		res = std::find_if( haveBaseOperations.begin(), haveBaseOperations.end(), CheckOperations( this ) ) != haveBaseOperations.end();
+		if ( !res ) check_operation = false;
+	}
+	onCheckPokaz();
+	onAfterCheckPokaz();
 	return res;
 }
 

@@ -48,10 +48,10 @@ public:
 	RDOTrace( std::string fn ): fileName( fn ), out( fileName.begin(), std::ios_base::out ), isNullTracer( false ) {}
 	virtual ~RDOTrace() {}
 
-	void startWriting() { canWriteToStream = true; }
-	void stopWriting() { canWriteToStream = false; }
-	bool canWrite() const { return canWriteToStream; }
-	bool isNull() const   { return isNullTracer; }
+	void startWriting()   { canWriteToStream = true;  }
+	void stopWriting()    { canWriteToStream = false; }
+	bool canWrite() const { return canWriteToStream;  }
+	bool isNull() const   { return isNullTracer;      }
 
 	// Search in tree
 	virtual void writeSearchBegin(double currentTime, std::string decisionPointId);

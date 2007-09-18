@@ -185,32 +185,161 @@ namespace rdoParse
 
 %%
 
-smr_model: Model_name '=' IDENTIF;
+smr_show_mode:	NoShow {
+					$$ = rdoSimulator::SM_NoShow;
+				}
+				| Monitor {
+					$$ = rdoSimulator::SM_Monitor;
+				}
+				| Animation {
+					$$ = rdoSimulator::SM_Animation;
+				};
 
-smr_descr: smr_model
-		|	smr_descr Resource_file		'=' IDENTIF
-		|	smr_descr OprIev_file		'=' IDENTIF
-		|	smr_descr Frame_file			'=' IDENTIF
-		|	smr_descr Statistic_file	'=' IDENTIF
-		|	smr_descr Results_file		'=' IDENTIF
-		|	smr_descr Trace_file			'=' IDENTIF
-		|	smr_descr Show_mode			'=' smr_show_mode		
-		|	smr_descr Frame_number		'=' INT_CONST
-		|	smr_descr Show_rate			'=' REAL_CONST
-		|	smr_descr Run_StartTime		'=' REAL_CONST
-		|	smr_descr Trace_StartTime	'=' REAL_CONST
-		|	smr_descr Trace_EndTime		'=' REAL_CONST;
-
-smr_show_mode:		NoShow	
-					|	Monitor 	
-					|	Animation;
-
-smr_cond:	smr_descr
-		|	smr_cond Terminate_if fun_logic						{ parser->getSMR()->setTerminateIf((RDOFUNLogic *)$3); @$; }
-		|	smr_cond Break_point IDENTIF	fun_logic
-		|	smr_cond IDENTIF				'=' fun_arithm		{ parser->getSMR()->setConstValue(*(std::string*)$2, (RDOFUNArithm *)$4); }
-		|	smr_cond IDENTIF '.' IDENTIF	'=' fun_arithm		{ parser->getSMR()->setResParValue(*(std::string *)$2, *(std::string *)$4, (RDOFUNArithm *)$6); }
-		|	smr_cond IDENTIF '.' Seed		'=' INT_CONST		{ parser->getSMR()->setSeed(*(std::string *)$2, $6); };
+smr_cond:	/* empty */
+			| smr_cond Model_name '=' IDENTIF
+			| smr_cond Resource_file '=' IDENTIF
+			| smr_cond OprIev_file '=' IDENTIF
+			| smr_cond Frame_file '=' IDENTIF
+			| smr_cond Statistic_file '=' IDENTIF
+			| smr_cond Results_file '=' IDENTIF
+			| smr_cond Trace_file '=' IDENTIF;
+			| smr_cond Show_mode '=' smr_show_mode {
+				RDOSMR* smr = parser->getSMR();
+				smr->setShowMode( (rdoSimulator::ShowMode)$4 );
+			}
+			| smr_cond Show_mode '=' error {
+				parser->error( @3, @4, "Ожидается режим анимации" );
+			}
+			| smr_cond Show_mode error {
+				parser->error( @2, "Ожидается '='" );
+			}
+			| smr_cond Frame_number '=' INT_CONST {
+				RDOSMR* smr = parser->getSMR();
+				smr->setFrameNumber( $4, @4 );
+			}
+			| smr_cond Frame_number '=' error {
+				parser->error( @3, @4, "Ожидается начальный номер кадра" );
+			}
+			| smr_cond Frame_number error {
+				parser->error( @2, "Ожидается '='" );
+			}
+			| smr_cond Show_rate '=' REAL_CONST {
+				RDOSMR* smr = parser->getSMR();
+				smr->setShowRate( *reinterpret_cast<double*>($4), @4 );
+			}
+			| smr_cond Show_rate '=' INT_CONST {
+				RDOSMR* smr = parser->getSMR();
+				smr->setShowRate( $4, @4 );
+			}
+			| smr_cond Show_rate '=' error {
+				parser->error( @3, @4, "Ожидается масштабный коэффициент" );
+			}
+			| smr_cond Show_rate error {
+				parser->error( @2, "Ожидается '='" );
+			}
+			| smr_cond Run_StartTime '=' REAL_CONST {
+				RDOSMR* smr = parser->getSMR();
+				smr->setRunStartTime( *reinterpret_cast<double*>($4), @4 );
+			}
+			| smr_cond Run_StartTime '=' INT_CONST {
+				RDOSMR* smr = parser->getSMR();
+				smr->setRunStartTime( $4, @4 );
+			}
+			| smr_cond Run_StartTime '=' error {
+				parser->error( @3, @4, "Ожидается начальное модельное время" );
+			}
+			| smr_cond Run_StartTime error {
+				parser->error( @2, "Ожидается '='" );
+			}
+			| smr_cond Trace_StartTime '=' REAL_CONST {
+				RDOSMR* smr = parser->getSMR();
+				smr->setTraceStartTime( *reinterpret_cast<double*>($4), @4 );
+			}
+			| smr_cond Trace_StartTime '=' INT_CONST {
+				RDOSMR* smr = parser->getSMR();
+				smr->setTraceStartTime( $4, @4 );
+			}
+			| smr_cond Trace_StartTime '=' error {
+				parser->error( @3, @4, "Ожидается начальное время трассировки" );
+			}
+			| smr_cond Trace_StartTime error {
+				parser->error( @2, "Ожидается '='" );
+			}
+			| smr_cond Trace_EndTime '=' REAL_CONST {
+				RDOSMR* smr = parser->getSMR();
+				smr->setTraceEndTime( *reinterpret_cast<double*>($4), @4 );
+			}
+			| smr_cond Trace_EndTime '=' INT_CONST {
+				RDOSMR* smr = parser->getSMR();
+				smr->setTraceEndTime( $4, @4 );
+			}
+			| smr_cond Trace_EndTime '=' error {
+				parser->error( @3, @4, "Ожидается конечное время трассировки" );
+			}
+			| smr_cond Trace_EndTime error {
+				parser->error( @2, "Ожидается '='" );
+			}
+			| smr_cond Terminate_if fun_logic {
+				parser->getSMR()->setTerminateIf( reinterpret_cast<RDOFUNLogic*>($3) );
+			}
+			| smr_cond Terminate_if error {
+				parser->error( @2, @3, "Ошибка логического выражения в терминальном условии" );
+			}
+			| smr_cond Break_point IDENTIF fun_logic {
+				RDOSMR* smr = parser->getSMR();
+				smr->insertBreakPoint( RDOParserSrcInfo(@3, *reinterpret_cast<std::string*>($3)), reinterpret_cast<RDOFUNLogic*>($4) );
+			}
+			| smr_cond Break_point IDENTIF error {
+				parser->error( @4, "Ошибка логического выражения в точке останова" );
+			}
+			| smr_cond Break_point error {
+				parser->error( @2, @3, "Ожидается имя точки останова" );
+			}
+			| smr_cond IDENTIF '=' fun_arithm {
+				parser->getSMR()->setConstValue( RDOParserSrcInfo(@2, *reinterpret_cast<std::string*>($2)), reinterpret_cast<RDOFUNArithm*>($4) );
+			}
+			| smr_cond IDENTIF '=' error {
+				parser->error( @3, @4, "Ошибка в арифметическом выражении" );
+			}
+			| smr_cond IDENTIF error {
+				parser->error( @2, "Ожидается '='" );
+			}
+			| smr_cond IDENTIF '.' IDENTIF '=' fun_arithm {
+				parser->getSMR()->setResParValue( RDOParserSrcInfo(@2, *reinterpret_cast<std::string*>($2)), RDOParserSrcInfo(@4, *reinterpret_cast<std::string*>($4)), reinterpret_cast<RDOFUNArithm*>($6) );
+			}
+			| smr_cond IDENTIF '.' IDENTIF '=' error {
+				parser->error( @5, @6, "Ошибка в арифметическом выражении" );
+			}
+			| smr_cond IDENTIF '.' IDENTIF error {
+				parser->error( @4, "Ожидается '='" );
+			}
+			| smr_cond IDENTIF '.' error {
+				std::string name = *reinterpret_cast<std::string*>($2);
+				const RDORSSResource* res = parser->findRSSResource( name );
+				if ( res ) {
+					parser->error( @3, @4, "Ожидается параметр" );
+				} else {
+					const RDOFUNSequence* seq = parser->findSequence( name );
+					if ( seq ) {
+						parser->error( @3, @4, "Ожидается ключевое слово Seed" );
+					} else {
+						parser->error( @2, "Неизвестный параметр или последовательность" );
+					}
+				}
+			}
+			| smr_cond IDENTIF '.' Seed '=' INT_CONST {
+				parser->getSMR()->setSeed( RDOParserSrcInfo(@2, *reinterpret_cast<std::string*>($2)), $6 );
+			}
+			| smr_cond IDENTIF '.' Seed '=' error {
+				parser->error( @5, @6, "Ожидается база генератора" );
+			}
+			| smr_cond IDENTIF '.' Seed error {
+				parser->error( @4, "Ожидается '='" );
+			}
+			| smr_cond error {
+				parser->error( @2, "Неизвестная ошибка" );
+//				parser->error( @2, reinterpret_cast<RDOLexer*>(lexer)->YYText() );
+			};
 
 // ----------------------------------------------------------------------------
 // ---------- Логические выражения

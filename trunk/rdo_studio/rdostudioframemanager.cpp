@@ -344,8 +344,13 @@ void RDOStudioFrameManager::showFrame( const rdoSimulator::RDOFrame* const frame
 					show_fillrect = false;
 				}
 			}
+			if ( frame->bgColor.isTransparent ) {
+				view->bgColor = studioApp.mainFrame->style_frame.theme->backgroundColor;
+			} else {
+				view->bgColor = RGB( frame->bgColor.r, frame->bgColor.g, frame->bgColor.b );
+			}
 			if ( show_fillrect ) {
-				HBRUSH brush     = ::CreateSolidBrush( RGB( frame->r, frame->g, frame->b ) );
+				HBRUSH brush     = ::CreateSolidBrush( view->bgColor );
 				HBRUSH pOldBrush = static_cast<HBRUSH>(::SelectObject( hdc, brush ));
 				HPEN pen     = ::CreatePen( PS_SOLID, 0, studioApp.mainFrame->style_frame.theme->defaultColor );
 				HPEN pOldPen = static_cast<HPEN>(::SelectObject( hdc, pen ));
@@ -356,7 +361,6 @@ void RDOStudioFrameManager::showFrame( const rdoSimulator::RDOFrame* const frame
 				::DeleteObject( brush );
 				::DeleteObject( pen );
 			}
-			view->bgColor = studioApp.mainFrame->style_frame.theme->backgroundColor;
 /*
 			if( !frame->hasBackPicture ) {
 				HBRUSH brush     = ::CreateSolidBrush( RGB( frame->r, frame->g, frame->b ) );

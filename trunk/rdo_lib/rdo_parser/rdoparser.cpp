@@ -153,12 +153,37 @@ void RDOParser::insertDPTProcess( RDOPROCProcess* value )
 	allDPTProcess.push_back( value );
 }
 
+void RDOParser::insertChanges( const std::string& name, const std::string& value )
+{
+	changes.push_back( Changes( name, value ) );
+}
+
 std::stringstream& RDOParser::getModelStructure()
 {
 	modelStructure.str("");
 	modelStructure.clear();
 
 	if ( modelStructure.str().empty() ) {
+
+		// $Changes
+		modelStructure << std::endl << "$Changes" << std::endl;
+		int changes_max_length = 0;
+		std::vector< Changes >::const_iterator change_it = changes.begin();
+		while ( change_it != changes.end() ) {
+			if ( change_it->name.length() > changes_max_length ) {
+				changes_max_length = change_it->name.length();
+			}
+			change_it++;
+		}
+		change_it = changes.begin();
+		while ( change_it != changes.end() ) {
+			modelStructure << "  " << change_it->name;
+			for ( int i = change_it->name.length(); i < changes_max_length; i++ ) {
+				modelStructure << " ";
+			}
+			modelStructure << " = " << change_it->value << std::endl;
+			change_it++;
+		}
 
 		// RTP
 		modelStructure << std::endl << "$Resource_type" << std::endl;

@@ -1,5 +1,5 @@
-#ifndef RDOSMR_SMR
-#define RDOSMR_SMR
+#ifndef RDOSMR_H
+#define RDOSMR_H
 
 #include "rdoparser_object.h"
 #include <rdotrace.h>
@@ -24,32 +24,31 @@ void smr2error( char* mes );
 class RDOFUNLogic;
 class RDOFUNArithm;
 
-class BreakPoint: public RDODeletable
-{
-	std::string *name;
-	RDOFUNLogic *logic;
-};
-
 // ----------------------------------------------------------------------------
 // ---------- RDOSMR
 // ----------------------------------------------------------------------------
+class RDOFUNConstant;
+class RDOFUNSequence;
+
 class RDOSMR: public RDOParserObject
 {
 private:
 	std::map< std::string, std::string > files;
-	std::map< std::string, double > values;
-
-public:
 	rdoSimulator::ShowMode showMode;
-
-	bool showModeSet;
-	bool frameNumberSet;
-
-	int frameNumber;
-
+	int    frameNumber;
+	double showRate;
+	double runStartTime;
+	double traceStartTime;
+	double traceEndTime;
+	YYLTYPE traceStartTime_pos;
+	YYLTYPE traceEndTime_pos;
 	RDOFUNLogic* terminateIf;
+
+	class BreakPoint: public RDOParserObject, public RDOParserSrcInfo {
+	public:
+		BreakPoint( RDOSMR* smr, const RDOParserSrcInfo& _src_info, RDOFUNLogic* _logic );
+	};
 	std::vector< BreakPoint* > breakPoints;
-	rdoRuntime::RDOCalc* startCalcs;
 
 public:
 	RDOSMR( RDOParser* _parser, const std::string& _modelName );
@@ -64,24 +63,27 @@ public:
 		return hasFile( file_type ) ? files[ file_type ] : "";
 	}
 
-	void setValue( const std::string& value_name, double value ) {
-		values[ value_name ] = value;
-	}
-	bool hasValue( const std::string& value_name ) {
-		return values.find( value_name ) != values.end();
-	}
-	double getValue( const std::string& value_name ) {
-		return hasValue( value_name ) ? values[ value_name ] : 0;
-	}
+	rdoSimulator::ShowMode getShowMode() const { return showMode;       }
+	int    getFrameNumber() const              { return frameNumber;    }
+	double getShowRate() const                 { return showRate;       }
+	double getRunStartTime() const             { return runStartTime;   }
+	double getTraceStartTime() const           { return traceStartTime; }
+	double getTraceEndTime() const             { return traceEndTime;   }
 
-	void setShowMode(rdoSimulator::ShowMode sm);
-	void setFrameNumber(int fn);
-	void setTerminateIf(RDOFUNLogic *logic);
-	void setConstValue( const std::string& constName, RDOFUNArithm* arithm );
-	void setResParValue( const std::string& resName, const std::string& parName, RDOFUNArithm* arithm );
-	void setSeed( const std::string& seqName, int _base );
+	void setShowMode( rdoSimulator::ShowMode _showMode );
+	void setFrameNumber( int value, const YYLTYPE& pos );
+	void setShowRate( double value, const YYLTYPE& pos );
+	void setRunStartTime( double value, const YYLTYPE& pos );
+	void setTraceStartTime( double value, const YYLTYPE& pos );
+	void setTraceEndTime( double value, const YYLTYPE& pos );
+
+	void setTerminateIf( RDOFUNLogic* logic );
+	void setConstValue( const RDOParserSrcInfo& const_info, RDOFUNArithm* arithm );
+	void setResParValue( const RDOParserSrcInfo& res_info, const RDOParserSrcInfo& par_info, RDOFUNArithm* arithm );
+	void setSeed( const RDOParserSrcInfo& seq_info, int base );
+	void insertBreakPoint( const RDOParserSrcInfo& _src_info, RDOFUNLogic* _logic );
 };
 
-}		// namespace rdoParse 
+} // namespace rdoParse
 
-#endif //RDOSMR_SMR
+#endif // RDOSMR_H

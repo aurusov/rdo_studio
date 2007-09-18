@@ -27,6 +27,7 @@ public:
 	int                          lineNumber;
 	int                          posInLine;
 	std::string                  message;
+	int                          posInLog;
 
 	virtual std::string getMessage() const;
 };

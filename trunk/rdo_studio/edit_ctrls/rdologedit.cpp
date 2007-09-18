@@ -21,7 +21,8 @@ RDOLogEditLineInfo::RDOLogEditLineInfo( const std::string& _message, const rdoMo
 	fileType( _fileType ),
 	lineNumber( _lineNumber ),
 	posInLine( _posInLine ),
-	message( _message )
+	message( _message ),
+	posInLog( 0 )
 {
 }
 
@@ -222,7 +223,8 @@ void RDOLogEdit::setSelectLine( const int line, const RDOLogEditLineInfo* lineIn
 			clearSelectLine();
 			sendEditor( SCI_MARKERADD, line, sci_MARKER_LINE );
 			if ( useScroll ) {
-				scrollToLine( line );
+				setCurrentPos( lineInfo->posInLog );
+				scrollToCarret();
 			}
 		}
 		rdoEditor::RDOEditorTabCtrl* tab = model->getTab();
@@ -289,21 +291,14 @@ void RDOLogEdit::appendLine( RDOLogEditLineInfo* line )
 	if ( readOnly ) {
 		setReadOnly( false );
 	}
-//	bool scroll = isLineVisible( getLineCount() - 1 );
 	std::string str = line->getMessage();
 	rdo::trimRight( str );
 	str += "\r\n";
 	setCurrentPos( getLength() );
 	appendText( str );
-//	if ( scroll ) {
-//		int line = getLineCount();
-//		int line_to_scroll = line > 0 ? line - 1 : 0;
-//		scrollToLine( line_to_scroll );
-//		setCurrentPos( getLength() );
-//		scrollToCarret();
-//	}
+	line->posInLog = getLength();
 	scrollToLine2( getLineCount() );
-	setCurrentPos( getLength() );
+	setCurrentPos( line->posInLog );
 	if ( readOnly ) {
 		setReadOnly( true );
 	}

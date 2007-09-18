@@ -56,7 +56,7 @@ public:
 	virtual ParamType getType() const = 0;
 	virtual int writeModelStructure() const = 0;
 
-	void checkParamType( const RDOFUNArithm* const action ) const;
+	void checkParamType( const RDOFUNArithm* const action, bool warning = true ) const;
 	void checkParamType( const rdoRuntime::RDOValue& value, const RDOParserSrcInfo& value_info ) const;
 };
 

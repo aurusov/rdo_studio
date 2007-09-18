@@ -199,6 +199,7 @@ void RDOFRMFrame::startShow( RDOCalc* calc )
 
 void RDOFRMFrame::addItem( RDOFRMItem* item )
 {
+	if ( shows.empty() ) startShow();
 	item->reparent( shows.back() );
 }
 
@@ -222,18 +223,18 @@ rdoSimulator::RDOFrame* RDOFRMFrame::prepareFrame( rdoSimulator::RDOFrame* frame
 	if ( background_color ) {
 		if ( background_color->getColorType() == RDOFRMColor::color_rgb ) {
 			rdoSimulator::RDOColor bg_color = background_color->getColor( sim, this );
-			frame->r = bg_color.r;
-			frame->g = bg_color.g;
-			frame->b = bg_color.b;
+			frame->bgColor = bg_color;
 		} else {
-			frame->r = 50;
-			frame->g = 200;
-			frame->b = 50;
+			frame->bgColor.r = 50;
+			frame->bgColor.g = 200;
+			frame->bgColor.b = 50;
+			frame->bgColor.isTransparent = true;
 		}
 	} else {
-		frame->r = 50;
-		frame->g = 200;
-		frame->b = 50;
+		frame->bgColor.r = 50;
+		frame->bgColor.g = 200;
+		frame->bgColor.b = 50;
+		frame->bgColor.isTransparent = true;
 	}
 	frame->hasBackPicture = hasBackPicture;
 	frame->picFileName    = picFileName;

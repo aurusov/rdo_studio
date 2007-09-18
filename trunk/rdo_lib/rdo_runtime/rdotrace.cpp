@@ -16,23 +16,21 @@ namespace rdoRuntime {
 
 void RDOTrace::writeSearchBegin( double currentTime, std::string decisionPointId )
 {
-	if(isNullTracer)
-		return;
+	if ( isNull() || !canWrite() ) return;
 
-   getOStream() << "SB " << currentTime << " " << decisionPointId.c_str() << std::endl << getEOL();
+	getOStream() << "SB " << currentTime << " " << decisionPointId.c_str() << std::endl << getEOL();
 }
 
 void RDOTrace::writeSearchDecisionHeader()
 {
-	if(isNullTracer)
-		return;
+	if ( isNull() || !canWrite() ) return;
 
-   getOStream() << "SD" << std::endl << getEOL();
+	getOStream() << "SD" << std::endl << getEOL();
 }
+
 void RDOTrace::writeSearchDecision(RDOSimulator *sim, TreeNode *node) 
 {
-	if(isNullTracer)
-		return;
+	if ( isNull() || !canWrite() ) return;
 
 	RDOSimulatorTrace *simTr = (RDOSimulatorTrace *)sim;
 	RDOActivityTrace *actTr = (RDOActivityTrace *)node->activity;
@@ -46,14 +44,13 @@ void RDOTrace::writeSearchDecision(RDOSimulator *sim, TreeNode *node)
 }
 void RDOTrace::writeString(std::string str)
 {
-	if(isNullTracer)
-		return;
-
-   getOStream() << str << std::endl << getEOL();
+	if ( isNull() || !canWrite() ) return;
+	
+	getOStream() << str << std::endl << getEOL();
 }
 void RDOTrace::writeSearchOpenNode( int nodeCount, int parentCount, double pathCost, double restCost )
 {
-	if ( isNullTracer ) return;
+	if ( isNull() || !canWrite() ) return;
 
 	getOStream() << "SO " << nodeCount
 	             << " " << parentCount
@@ -63,7 +60,7 @@ void RDOTrace::writeSearchOpenNode( int nodeCount, int parentCount, double pathC
 
 void RDOTrace::writeSearchNodeInfo(char sign, TreeNodeTrace *node)
 {
-	if ( isNullTracer ) return;
+	if ( isNull() || !canWrite() ) return;
 
 	RDODecisionPointTrace* dpTrace = static_cast<RDODecisionPointTrace*>(node->root->dp);
 	if ( dpTrace->traceFlag == RDODecisionPointTrace::DPT_trace_tops || dpTrace->traceFlag == RDODecisionPointTrace::DPT_trace_all ) {
@@ -92,7 +89,7 @@ void RDOTrace::writeSearchNodeInfo(char sign, TreeNodeTrace *node)
 
 void RDOTrace::writeSearchResult( char letter, RDOSimulatorTrace* simTr, TreeRoot* treeRoot )
 {
-	if ( isNullTracer ) return;
+	if ( isNull() || !canWrite() ) return;
 
 	SYSTEMTIME systime_current;
 	::GetSystemTime( &systime_current );
@@ -129,10 +126,9 @@ void RDOTrace::writeSearchResult( char letter, RDOSimulatorTrace* simTr, TreeRoo
 
 void RDOTrace::writePermanentResources( rdoRuntime::RDOSimulatorTrace* sim, const std::list< RDOResourceTrace* >& res_perm )
 {
-	if(isNullTracer)
-		return;
+	if ( isNull() || !canWrite() ) return;
 
-   getOStream() << traceResourcesList('\0', sim, res_perm) << getEOL();
+	getOStream() << traceResourcesList('\0', sim, res_perm) << getEOL();
 }
 
 std::string RDOTrace::traceResourcesList( char prefix, RDOSimulatorTrace* sim, const std::list< RDOResourceTrace* >& rel_res_list )
@@ -170,13 +166,13 @@ std::string RDOResourceTrace::traceResourceState( char prefix, RDOSimulatorTrace
 
 void RDOTrace::writeIrregularEvent(RDOIETrace *ie, RDOSimulatorTrace *sim)
 {
-	if ( isNullTracer ) return;
+	if ( isNull() || !canWrite() ) return;
 
 #ifdef RDOSIM_COMPATIBLE
 	getOStream() << ie->traceResourcesList( '\0', sim ) << getEOL();
 #endif
 
-	if ( ie->trace && canWrite() ) {
+	if ( ie->trace ) {
 		getOStream() << "EI " << sim->getCurrentTime()
 		             << " "   << ie->traceId() 
 		             << " "   << ie->tracePatternId() 
@@ -191,7 +187,7 @@ void RDOTrace::writeIrregularEvent(RDOIETrace *ie, RDOSimulatorTrace *sim)
 
 void RDOTrace::writeRule( RDORuleTrace* rule, RDOSimulatorTrace* sim )
 {
-	if ( isNullTracer ) return;
+	if ( isNullTracer || !canWrite() ) return;
 
 	if ( rule->trace ) {
 		int operId = sim->getFreeOperationId();
@@ -208,7 +204,7 @@ void RDOTrace::writeRule( RDORuleTrace* rule, RDOSimulatorTrace* sim )
 
 void RDOTrace::writeAfterOperationBegin( RDOOperationTrace* op, RDOSimulatorTrace* sim )
 {
-	if ( isNullTracer ) return;
+	if ( isNull() || !canWrite() ) return;
 
 	if ( op->trace ) {
 		getOStream() << "EB " << sim->getCurrentTime() 
@@ -223,7 +219,7 @@ void RDOTrace::writeAfterOperationBegin( RDOOperationTrace* op, RDOSimulatorTrac
 
 void RDOTrace::writeAfterOperationEnd( RDOOperationTrace* op, RDOSimulatorTrace* sim )
 {
-	if ( isNullTracer ) return;
+	if ( isNull() || !canWrite() ) return;
 
 	if ( op->trace ) {
 		getOStream() << "EF " << sim->getCurrentTime() 
@@ -263,26 +259,23 @@ RDOResourceTrace::~RDOResourceTrace()
 
 void RDOTrace::writeTraceBegin(RDOSimulatorTrace *sim)
 {
-	if(isNullTracer)
-		return;
+	if ( isNull() ) return;
 
-   getOStream() << "ES " << sim->getCurrentTime() 
+	getOStream() << "ES " << sim->getCurrentTime() 
       << " 1" << std::endl << getEOL();
 }
 
 void RDOTrace::writeModelBegin(RDOSimulatorTrace *sim)
 {
-	if(isNullTracer)
-		return;
+	if ( isNull() ) return;
 
-   getOStream() << "ES " << sim->getCurrentTime() 
+	getOStream() << "ES " << sim->getCurrentTime() 
       << " 3" << std::endl << getEOL();
 }
 
 void RDOTrace::writeTraceEnd(RDOSimulatorTrace *sim)
 {
-	if(isNullTracer)
-		return;
+	if ( isNull() ) return;
 
    getOStream() << "ES " << sim->getCurrentTime() 
       << " 2" << std::endl << getEOL();
@@ -290,7 +283,7 @@ void RDOTrace::writeTraceEnd(RDOSimulatorTrace *sim)
 
 void RDOTrace::writeStatus( RDOSimulatorTrace* sim, char* status )
 {
-	if ( isNullTracer ) return;
+	if ( isNull() ) return;
 
 	// Статус
 	getOStream() << "$Status = " << status << " " << sim->getCurrentTime() << std::endl << getEOL();
@@ -366,8 +359,7 @@ bool RDOPokazTrace::tracePokaz()
 
 void RDOTrace::writePokaz(RDOSimulatorTrace *sim, RDOPokazTrace *pok)
 {
-	if(isNullTracer)
-		return;
+	if ( isNull() || !canWrite() ) return;
 
 	getOStream() << "V  "  << sim->getCurrentTime() 
 		<< " " << pok->traceId() 

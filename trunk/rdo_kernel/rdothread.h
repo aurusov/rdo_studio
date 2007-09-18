@@ -108,6 +108,7 @@ public:
 		RT_RUNTIME_SET_SHOWRATE,               // param = show_rate:double[0..+max_double]*
 		RT_RUNTIME_GET_TIMENOW,                // param = result:double*
 		RT_RUNTIME_GET_FRAME,                  // param = { result:rdoSimulator::RDOFrame*, frame_number:int }*
+		RT_RUNTIME_GET_LAST_BREAKPOINT,        // param = std::string*
 		RT_RUNTIME_KEY_DOWN,                   // param = scan_code:uint*
 		RT_RUNTIME_KEY_UP,                     // param = scan_code:uint*
 		RT_RUNTIME_FRAME_AREA_DOWN,            // param = area_name:std::string*
@@ -168,6 +169,7 @@ public:
 			case RT_RUNTIME_SET_SHOWRATE              : return "RT_RUNTIME_SET_SHOWRATE";
 			case RT_RUNTIME_GET_TIMENOW               : return "RT_RUNTIME_GET_TIMENOW";
 			case RT_RUNTIME_GET_FRAME                 : return "RT_RUNTIME_GET_FRAME";
+			case RT_RUNTIME_GET_LAST_BREAKPOINT       : return "RT_RUNTIME_GET_LAST_BREAKPOINT";
 			case RT_RUNTIME_KEY_DOWN                  : return "RT_RUNTIME_KEY_DOWN";
 			case RT_RUNTIME_KEY_UP                    : return "RT_RUNTIME_KEY_UP";
 			case RT_RUNTIME_FRAME_AREA_DOWN           : return "RT_RUNTIME_FRAME_AREA_DOWN";

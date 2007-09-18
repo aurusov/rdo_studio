@@ -337,7 +337,7 @@ dpt_search_name:		IDENTIF_COLON IDENTIF {
 							RDODPTSearch* dpt   = parser->getLastDPTSearch();
 							std::string name    = *reinterpret_cast<std::string*>($1);
 							std::string pattern = *reinterpret_cast<std::string*>($2);
-							$$ = (int)dpt->addNewActivity( RDOParserSrcInfo(@1, name, RDOParserSrcInfo::psi_align_bytext), pattern );
+							$$ = (int)dpt->addNewActivity( RDOParserSrcInfo(@1, name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(@2, pattern) );
 						}
 						| IDENTIF_COLON error {
 							parser->error( @1, @2, "Ожидается имя образца" );
@@ -411,7 +411,7 @@ dpt_some_name:			IDENTIF_COLON IDENTIF {
 							RDODPTSome* dpt     = parser->getLastDPTSome();
 							std::string name    = *reinterpret_cast<std::string*>($1);
 							std::string pattern = *reinterpret_cast<std::string*>($2);
-							$$ = (int)dpt->addNewActivity( RDOParserSrcInfo(@1, name, RDOParserSrcInfo::psi_align_bytext), pattern );
+							$$ = (int)dpt->addNewActivity( RDOParserSrcInfo(@1, name, RDOParserSrcInfo::psi_align_bytext), RDOParserSrcInfo(@2, pattern) );
 						}
 						| IDENTIF_COLON error {
 							parser->error( @1, @2, "Ожидается имя образца" );

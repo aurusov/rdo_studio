@@ -221,9 +221,7 @@ frm_begin:			Frame IDENTIF {
 frm_background:		frm_begin Back_picture '=' frm_color {
 						rdoRuntime::RDOFRMFrame* frame                 = reinterpret_cast<rdoRuntime::RDOFRMFrame*>($1);
 						rdoRuntime::RDOFRMFrame::RDOFRMColor* bg_color = reinterpret_cast<rdoRuntime::RDOFRMFrame::RDOFRMColor*>($4);
-						if ( bg_color->getColorType() == rdoRuntime::RDOFRMFrame::RDOFRMColor::color_transparent ) {
-							parser->error( @4, "÷вет фона не может быть прозрачным" );
-						} else if ( bg_color->getColorType() != rdoRuntime::RDOFRMFrame::RDOFRMColor::color_rgb ) {
+						if ( bg_color->getColorType() != rdoRuntime::RDOFRMFrame::RDOFRMColor::color_transparent && bg_color->getColorType() != rdoRuntime::RDOFRMFrame::RDOFRMColor::color_rgb ) {
 							parser->error( @4, "÷вет фона не может быть указан ссылкой на последнее значение" );
 						}
 						frame->setBackgroundColor( bg_color );
@@ -258,6 +256,7 @@ frm_backpicture:	frm_background IDENTIF {
 						parser->error( @1, "Ќеобходимо указать им€ фоновой картинки или размер кадра" );
 					};
 
+/*
 frm_show:			frm_backpicture {
 						rdoRuntime::RDOFRMFrame* frame = reinterpret_cast<rdoRuntime::RDOFRMFrame*>($1);
 						frame->startShow();
@@ -273,21 +272,35 @@ frm_show:			frm_backpicture {
 					| frm_backpicture Show_if error {
 						parser->error( @3, "ќшибка в логическом выражении" )
 					};
+*/
 
-frm_item: /* empty */
-		  | frm_item frm_text    { parser->getLastFRMFrame()->addItem((rdoRuntime::RDOFRMText *)$2); }
-		  | frm_item frm_bitmap  { parser->getLastFRMFrame()->addItem((rdoRuntime::RDOFRMBitmap *)$2); }
-		  | frm_item frm_rect    { parser->getLastFRMFrame()->addItem((rdoRuntime::RDOFRMRect *)$2); }
-		  | frm_item frm_line    { parser->getLastFRMFrame()->addItem((rdoRuntime::RDOFRMLine *)$2); }
-		  | frm_item frm_ellipse { parser->getLastFRMFrame()->addItem((rdoRuntime::RDOFRMEllipse *)$2); }
-		  | frm_item frm_r_rect  { parser->getLastFRMFrame()->addItem((rdoRuntime::RDOFRMRectRound *)$2); }
-		  | frm_item frm_triang  { parser->getLastFRMFrame()->addItem((rdoRuntime::RDOFRMTriang *)$2); }
-		  | frm_item frm_s_bmp   { parser->getLastFRMFrame()->addItem((rdoRuntime::RDOFRMBitmapStretch *)$2); }
-		  | frm_item frm_active  { parser->getLastFRMFrame()->addItem((rdoRuntime::RDOFRMActive *)$2); }
-		  | frm_item frm_ruler   { parser->getLastFRMFrame()->addRulet((rdoRuntime::RDOFRMFrame::RDOFRMRulet*)$2); }
-		  | frm_item frm_space   { parser->getLastFRMFrame()->addItem((rdoRuntime::RDOFRMSpace*)$2); };
+frm_show:	Show {
+				rdoRuntime::RDOFRMFrame* frame = parser->getLastFRMFrame();
+				frame->startShow();
+			}
+			| Show_if fun_logic {
+				rdoRuntime::RDOFRMFrame* frame = parser->getLastFRMFrame();
+				frame->startShow( reinterpret_cast<RDOFUNLogic*>($2)->calc );
+			}
+			| Show_if error {
+				parser->error( @2, "ќшибка в логическом выражении" )
+			};
 
-frm_header:	frm_show frm_item;
+frm_item:	/* empty */
+			| frm_item frm_show
+			| frm_item frm_text    { parser->getLastFRMFrame()->addItem((rdoRuntime::RDOFRMText *)$2); }
+			| frm_item frm_bitmap  { parser->getLastFRMFrame()->addItem((rdoRuntime::RDOFRMBitmap *)$2); }
+			| frm_item frm_rect    { parser->getLastFRMFrame()->addItem((rdoRuntime::RDOFRMRect *)$2); }
+			| frm_item frm_line    { parser->getLastFRMFrame()->addItem((rdoRuntime::RDOFRMLine *)$2); }
+			| frm_item frm_ellipse { parser->getLastFRMFrame()->addItem((rdoRuntime::RDOFRMEllipse *)$2); }
+			| frm_item frm_r_rect  { parser->getLastFRMFrame()->addItem((rdoRuntime::RDOFRMRectRound *)$2); }
+			| frm_item frm_triang  { parser->getLastFRMFrame()->addItem((rdoRuntime::RDOFRMTriang *)$2); }
+			| frm_item frm_s_bmp   { parser->getLastFRMFrame()->addItem((rdoRuntime::RDOFRMBitmapStretch *)$2); }
+			| frm_item frm_active  { parser->getLastFRMFrame()->addItem((rdoRuntime::RDOFRMActive *)$2); }
+			| frm_item frm_ruler   { parser->getLastFRMFrame()->addRulet((rdoRuntime::RDOFRMFrame::RDOFRMRulet*)$2); }
+			| frm_item frm_space   { parser->getLastFRMFrame()->addItem((rdoRuntime::RDOFRMSpace*)$2); };
+
+frm_header:	frm_backpicture frm_item;
 
 frm_end:	frm_header End {
 				reinterpret_cast<rdoRuntime::RDOFRMFrame*>($1)->end();
@@ -296,10 +309,6 @@ frm_end:	frm_header End {
 // ----------------------------------------------------------------------------
 // ---------- Ёлементы
 // ----------------------------------------------------------------------------
-frm_color_deliv:	' '
-					| '\t';
-//					| ',';
-
 frm_color:	color_transparent_kw {
 				$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMColor( parser->runtime->lastFrame(), rdoRuntime::RDOFRMFrame::RDOFRMColor::color_transparent );
 			}
@@ -333,7 +342,26 @@ frm_color:	color_transparent_kw {
 			| color_gray_kw {
 				$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMColor( parser->runtime->lastFrame(), 127, 127, 127 );
 			}
-			| '<' fun_arithm frm_color_deliv fun_arithm frm_color_deliv fun_arithm '>' {
+			| '<' INT_CONST INT_CONST INT_CONST '>' {
+				RDOFUNArithm* red   = new RDOFUNArithm( parser, $2, @2 );
+				RDOFUNArithm* green = new RDOFUNArithm( parser, $3, @2 );
+				RDOFUNArithm* blue  = new RDOFUNArithm( parser, $4, @2 );
+				RDORTPIntParamType intType( parser, new RDORTPIntDiap( parser, 0, 255, @1, @1 ), new RDORTPIntDefVal(parser) );
+				intType.checkParamType( red );
+				intType.checkParamType( green );
+				intType.checkParamType( blue );
+				$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMColor( parser->runtime->lastFrame(), red->createCalc(), green->createCalc(), blue->createCalc() );
+			}
+			| '<' INT_CONST INT_CONST INT_CONST error {
+				parser->error( @4, "Ќайдены все составл€ющие цвета, ожидаетс€ '>'" );
+			}
+			| '<' INT_CONST INT_CONST error {
+				parser->error( @3, @4, "ќжидаетс€ син€€ составл€юща€ цвета" );
+			}
+			| '<' INT_CONST error {
+				parser->error( @2, @3, "ќжидаетс€ зелена€ составл€юща€ цвета" );
+			}
+			| '<' fun_arithm ',' fun_arithm ',' fun_arithm '>' {
 				RDOFUNArithm* red   = reinterpret_cast<RDOFUNArithm*>($2);
 				RDOFUNArithm* green = reinterpret_cast<RDOFUNArithm*>($4);
 				RDOFUNArithm* blue  = reinterpret_cast<RDOFUNArithm*>($6);
@@ -343,20 +371,20 @@ frm_color:	color_transparent_kw {
 				intType.checkParamType( blue );
 				$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMColor( parser->runtime->lastFrame(), red->createCalc(), green->createCalc(), blue->createCalc() );
 			}
-			| '<' fun_arithm frm_color_deliv fun_arithm frm_color_deliv fun_arithm error {
+			| '<' fun_arithm ',' fun_arithm ',' fun_arithm error {
 				parser->error( @6, "Ќайдены все составл€ющие цвета, ожидаетс€ '>'" );
 			}
-			| '<' fun_arithm frm_color_deliv fun_arithm frm_color_deliv error {
-				parser->error( @5, "ќжидаетс€ син€€ составл€юща€ цвета" );
+			| '<' fun_arithm ',' fun_arithm ',' error {
+				parser->error( @5, @6, "ќжидаетс€ син€€ составл€юща€ цвета" );
 			}
-			| '<' fun_arithm frm_color_deliv fun_arithm error {
-				parser->error( @4, "ќжидаетс€ син€€ составл€юща€ цвета" );
+			| '<' fun_arithm ',' fun_arithm error {
+				parser->error( @4, "ѕосле зеленой составл€ющей цвета ожидаетс€ зап€ти€" );
 			}
-			| '<' fun_arithm frm_color_deliv error {
-				parser->error( @3, "ќжидаетс€ зелена€ составл€юща€ цвета" );
+			| '<' fun_arithm ',' error {
+				parser->error( @3, @4, "ќжидаетс€ зелена€ составл€юща€ цвета" );
 			}
 			| '<' fun_arithm error {
-				parser->error( @2, "ќжидаетс€ зелена€ составл€юща€ цвета" );
+				parser->error( @2, "ѕосле красной составл€ющей цвета ожидаетс€ зап€ти€" );
 			}
 			| '<' error {
 				parser->error( @1, "ѕосле '<' ожидаетс€ красна€ составл€юща€ цвета" );

@@ -64,7 +64,8 @@ enum RunTimeMode
 	RTM_MaxSpeed,
 	RTM_Jump,
 	RTM_Sync,
-	RTM_Pause
+	RTM_Pause,
+	RTM_BreakPoint
 };
 
 } // namespace rdoRuntime
@@ -244,7 +245,7 @@ struct RDONullElement: public RDOFrameElement
 
 struct RDOFrame
 {
-	int r, g, b;                // background
+	RDOColor bgColor;           // background
 	bool hasBackPicture;
 	std::string picFileName;    // back picture
 	int width, height;          // frame size

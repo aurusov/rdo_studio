@@ -47,6 +47,17 @@ private:
 	RDOParserObject* parsing_object;
 	RDOSMR*          smr;
 
+	struct Changes {
+		std::string name;
+		std::string value;
+		Changes( const std::string& _name, const std::string& _value ):
+			name( _name ),
+			value( _value )
+		{
+		}
+	};
+	std::vector< Changes > changes;
+
 protected:
 	RDOParserList* parsers;
 	RDOParserBase* parser_base;
@@ -128,6 +139,7 @@ public:
 	void insertDPTFreeActivity( RDODPTFreeActivity* value );
 	void insertPMDPokaz( RDOPMDPokaz* value );
 	void insertDPTProcess( RDOPROCProcess* value );
+	void insertChanges( const std::string& name, const std::string& value );
 	RDORTPResType*           getLastRTPResType()    { return !allRTPResType.empty()   ? allRTPResType.back()   : NULL; }
 	RDORSSResource*          getLastRSSResource()   { return !allRSSResource.empty()  ? allRSSResource.back()  : NULL; }
 	RDOPATPattern*           getLastPATPattern()    { return !allPATPatterns.empty()  ? allPATPatterns.back()  : NULL; }

@@ -73,6 +73,7 @@ std::string RDOResource::traceParametersValue()
 RDORuntime::RDORuntime():
 	RDOSimulatorTrace( NULL ),
 	tracer( NULL ),
+	lastActiveBreakPoint( NULL ),
 	result( NULL ),
 	whyStop( rdoSimulator::EC_OK ),
 	key_found( false )
@@ -97,16 +98,47 @@ bool RDORuntime::endCondition()
 	return fabs( terminateIfCalc->calcValueBase( this ) ) > DBL_EPSILON;
 }
 
-bool RDORuntime::setTerminateIf(RDOCalc *_terminateIfCalc)
+void RDORuntime::setTerminateIf( RDOCalc* _terminateIfCalc )
 {
-	if(terminateIfCalc)
-		return false;
-
 	terminateIfCalc = _terminateIfCalc;
-	return true;
 }
 
-void RDORuntime::setConstValue(int numberOfConst, RDOValue value)
+bool RDORuntime::breakPoints()
+{
+	std::list< BreakPoint* >::const_iterator it = breakPointsCalcs.begin();
+	while ( it != breakPointsCalcs.end() ) {
+		if ( (*it)->calc->calcValueBase( this ) ) {
+			lastActiveBreakPoint = *it;
+			return true;
+		}
+		it++;
+	}
+	return false;
+}
+
+void RDORuntime::insertBreakPoint( const std::string& name, RDOCalc* calc )
+{
+	breakPointsCalcs.push_back( new BreakPoint( this, name, calc ) );
+}
+
+RDOCalc* RDORuntime::findBreakPoint( const std::string& name )
+{
+	std::list< BreakPoint* >::const_iterator it = breakPointsCalcs.begin();
+	while ( it != breakPointsCalcs.end() ) {
+		if ( (*it)->name == name ) {
+			return (*it)->calc;
+		}
+		it++;
+	}
+	return NULL;
+}
+
+std::string RDORuntime::getLastBreakPointName() const
+{
+	return lastActiveBreakPoint ? lastActiveBreakPoint->name + ": " + lastActiveBreakPoint->calc->src_text() : "";
+}
+
+void RDORuntime::setConstValue( int numberOfConst, RDOValue value )
 {
 	if(allConstants.size() <= numberOfConst)
 		allConstants.resize(numberOfConst + 1);
@@ -114,7 +146,7 @@ void RDORuntime::setConstValue(int numberOfConst, RDOValue value)
 	allConstants.at(numberOfConst) = value;
 }
 
-RDOValue RDORuntime::getConstValue(int numberOfConst)
+RDOValue RDORuntime::getConstValue( int numberOfConst )
 {
 	return allConstants.at( numberOfConst );
 }
@@ -220,10 +252,10 @@ bool RDORuntime::keyDown( unsigned int scan_code )
 {
 	// Если нажаты VK_SHIFT или VK_CONTROL, то сбросим буфер клавиатуры
 	if ( scan_code == VK_SHIFT || scan_code == VK_CONTROL ) {
-		std::list< unsigned int >::iterator it = config.keyDown.begin();
-		while ( it != config.keyDown.end() ) {
+		std::list< unsigned int >::iterator it = keysDown.begin();
+		while ( it != keysDown.end() ) {
 			if ( *it != VK_SHIFT && *it != VK_CONTROL ) {
-				it = config.keyDown.erase( it );
+				it = keysDown.erase( it );
 			} else {
 				it++;
 			}
@@ -231,8 +263,8 @@ bool RDORuntime::keyDown( unsigned int scan_code )
 	}
 	// Подсчитаем сколько раз клавиша уже в буфере
 	int cnt = 0;
-	std::list< unsigned int >::iterator it = config.keyDown.begin();
-	while ( it != config.keyDown.end() ) {
+	std::list< unsigned int >::iterator it = keysDown.begin();
+	while ( it != keysDown.end() ) {
 		if ( *it == scan_code ) {
 			cnt++;
 		}
@@ -240,7 +272,7 @@ bool RDORuntime::keyDown( unsigned int scan_code )
 	}
 	// Добавим клавишу в буфер
 	if ( cnt < 4 ) {
-		config.keyDown.push_back( scan_code );
+		keysDown.push_back( scan_code );
 	}
 	if ( cnt == 0 ) key_found = true;
 	return cnt > 0;
@@ -250,10 +282,10 @@ void RDORuntime::keyUp( unsigned int scan_code )
 {
 	// Если отжаты VK_SHIFT или VK_CONTROL, то сбросим удалим их из буфера
 //	if ( scan_code == VK_SHIFT || scan_code == VK_CONTROL ) {
-		std::list< unsigned int >::iterator it = config.keyDown.begin();
-		while ( it != config.keyDown.end() ) {
+		std::list< unsigned int >::iterator it = keysDown.begin();
+		while ( it != keysDown.end() ) {
 			if ( *it == scan_code ) {
-				it = config.keyDown.erase( it );
+				it = keysDown.erase( it );
 			} else {
 				it++;
 			}
@@ -266,8 +298,8 @@ bool RDORuntime::checkKeyPressed( unsigned int scan_code, bool shift, bool contr
 	bool shift_found   = false;
 	bool control_found = false;
 	// Найдем VK_SHIFT и/или VK_CONTROL в буфере
-	std::list< unsigned int >::iterator it = config.keyDown.begin();
-	while ( it != config.keyDown.end() ) {
+	std::list< unsigned int >::iterator it = keysDown.begin();
+	while ( it != keysDown.end() ) {
 		if ( *it == VK_SHIFT ) {
 			shift_found = true;
 			if ( shift_found && control_found ) break;
@@ -281,10 +313,10 @@ bool RDORuntime::checkKeyPressed( unsigned int scan_code, bool shift, bool contr
 	// Теперь найдем саму клавишу в буфере
 	// Удалим её из буфера перед выходом
 	if ( shift_found == shift && control_found == control ) {
-		std::list< unsigned int >::iterator it = config.keyDown.begin();
-		while ( it != config.keyDown.end() ) {
+		std::list< unsigned int >::iterator it = keysDown.begin();
+		while ( it != keysDown.end() ) {
 			if ( *it == scan_code ) {
-				config.keyDown.erase( it );
+				keysDown.erase( it );
 				key_found = true;
 				return true;
 			}
@@ -297,17 +329,17 @@ bool RDORuntime::checkKeyPressed( unsigned int scan_code, bool shift, bool contr
 
 bool RDORuntime::checkAreaActivated( const std::string& oprName )
 {
-	std::vector<std::string>::iterator it = std::find( config.activeAreasMouseClicked.begin(), config.activeAreasMouseClicked.end(), oprName );
-	if ( it == config.activeAreasMouseClicked.end() ) {
+	std::vector<std::string>::iterator it = std::find( activeAreasMouseClicked.begin(), activeAreasMouseClicked.end(), oprName );
+	if ( it == activeAreasMouseClicked.end() ) {
 		return false;
 	}
-	config.activeAreasMouseClicked.erase( it );
+	activeAreasMouseClicked.erase( it );
 	return true;
 }
 
 bool RDORuntime::isKeyDown()
 {
-	return key_found || !config.activeAreasMouseClicked.empty();
+	return key_found || !activeAreasMouseClicked.empty();
 }
 
 void RDORuntime::rdoInit( RDOTrace* customTracer, RDOResult* customResult )
@@ -484,7 +516,6 @@ void RDORuntime::writeExitCode()
 			getTracer()->writeStatus( this, "USER_BREAK" );
 			break;
 	}
-	getTracer()->stopWriting();
 }
 
 void RDORuntime::postProcess()
@@ -497,8 +528,10 @@ void RDORuntime::postProcess()
 	try {
 		RDOSimulatorTrace::postProcess();
 		writeExitCode();
+		getTracer()->stopWriting();
 	} catch ( RDORuntimeException& e ) {
 		writeExitCode();
+		getTracer()->stopWriting();
 		throw e;
 	}
 }

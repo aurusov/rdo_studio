@@ -10,32 +10,6 @@ namespace rdoRuntime
 {
 
 // ----------------------------------------------------------------------------
-// ---------- RDOConfig
-// ----------------------------------------------------------------------------
-struct RDOConfig
-{
-//////// Interactive /////////////////
-	rdoSimulator::ShowMode     showAnimation;
-//	int                        currFrameToShow;
-	std::vector< std::string > allFrameNames;
-	std::vector< std::string > activeAreasMouseClicked;
-	std::list< unsigned int >  keyDown;
-	bool                       mouseClicked;
-
-//////// Frame /////////////////////
-	std::vector< rdoSimulator::RDOFrame* > frames;
-
-//////// Timing ///////////////////
-	double currTime;		// model time
-	double newTime;			// model time
-	double showRate;
-	double realTimeDelay;	// msec
-};
-
-typedef void (*TracerCallBack)( std::string* newString, void* param );
-typedef void (*FrameCallBack)( RDOConfig* config, void* param );
-
-// ----------------------------------------------------------------------------
 // ---------- RDOResource
 // ----------------------------------------------------------------------------
 class RDOResource: public RDOResourceTrace
@@ -120,6 +94,20 @@ private:
 	RDOTrace* tracer;
 	std::list< RDOCalc* > initCalcs;
 
+	class BreakPoint: public RDORuntimeObject {
+	public:
+		std::string name;
+		RDOCalc*    calc;
+		BreakPoint( RDORuntimeParent* _parent, const std::string& _name, RDOCalc* _calc ):
+			RDORuntimeObject( _parent ),
+			name( _name ),
+			calc( _calc )
+		{
+		}
+	};
+	std::list< BreakPoint* > breakPointsCalcs;
+	BreakPoint*              lastActiveBreakPoint;
+
 	std::vector< RDOValue >     funcStack;
 	std::vector< RDOResource* > groupFuncStack;
 	int currFuncTop;
@@ -188,8 +176,8 @@ public:
 	bool checkKeyPressed( unsigned int scan_code, bool shift, bool control );
 	bool checkAreaActivated( const std::string& oprName );
 
-	void setConstValue(int numberOfConst, RDOValue value);
-	RDOValue getConstValue(int numberOfConst);
+	void setConstValue( int numberOfConst, RDOValue value );
+	RDOValue getConstValue( int numberOfConst );
 	RDOResult& getResult() { return *result; }
 	void rdoInit( RDOTrace* customTracer, RDOResult* customResult );
 
@@ -206,8 +194,7 @@ public:
 	void addRuntimeFrame( RDOFRMFrame* frame );
 	RDOFRMFrame* lastFrame() const;
 
-
-	void addInitCalc(RDOCalc *initCalc) { initCalcs.push_back(initCalc); }
+	void addInitCalc( RDOCalc* initCalc) { initCalcs.push_back( initCalc ); }
 
 	// Параметры ресурса
 	RDOValue getResParamVal( const int res_id, const int param_id ) const {
@@ -244,7 +231,13 @@ public:
 	void popFuncTop()                      { currFuncTop = funcStack.back(); funcStack.pop_back(); }
 
 	virtual bool endCondition();
-	bool setTerminateIf( RDOCalc* _terminateIfCalc );
+	void setTerminateIf( RDOCalc* _terminateIfCalc );
+
+	virtual bool breakPoints();
+	void insertBreakPoint( const std::string& name, RDOCalc* calc );
+	RDOCalc* findBreakPoint( const std::string& name );
+	std::string getLastBreakPointName() const;
+
 	RDOResource* getResourceByID( const int num ) const { return num >= 0 ? allResourcesByID.at( num ) : NULL; }
 
 	void setPatternParameter(int parNumb, RDOValue val) 
@@ -261,10 +254,8 @@ public:
 	std::string writeActivitiesStructure( int& counter );
 	std::string writePokazStructure();
 
-  	TracerCallBack tracerCallBack;
-	FrameCallBack  frameCallBack;
-	void* param;		// this param send back to tracerCallBack and frameCallBack
-	RDOConfig config;
+	std::vector< std::string >  activeAreasMouseClicked;
+	std::list< unsigned int >   keysDown;
 	std::vector< RDOFRMFrame* > allFrames;
 
 	virtual void onPutToTreeNode();

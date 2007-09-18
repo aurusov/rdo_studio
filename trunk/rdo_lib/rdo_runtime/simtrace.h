@@ -27,6 +27,9 @@ friend class RDOActivityRuntime;
 friend class rdoParse::RDODPTSome;
 
 private:
+	double traceStartTime;
+	double traceEndTime;
+
 	int maxResourcesId;
 
 	std::list<int> freeResourcesIds;
@@ -54,6 +57,8 @@ private:
 protected:
 	RDOSimulatorTrace( RDORuntimeParent* _runtime ):
 		RDOSimulator( _runtime ),
+		traceStartTime( -1 ),
+		traceEndTime( -1 ),
 		dptCounter( 0 ),
 		activityCounter( 1 ),
 		ieCounter( 1 ),
@@ -76,6 +81,26 @@ protected:
 public:
 	virtual RDOTrace* getTracer() = 0;
 	virtual void rdoInit();
+
+	double getTraceStartTime() const       { return traceStartTime;  }
+	void setTraceStartTime( double value ) { traceStartTime = value; }
+
+	double getTraceEndTime() const         { return traceEndTime;    }
+	void setTraceEndTime( double value )   { traceEndTime = value;   }
+
+	bool canTrace() const {
+		if ( getTraceStartTime() != -1 && getTraceStartTime() > getCurrentTime() ) return false;
+		if ( getTraceEndTime() != -1 && getTraceEndTime() < getCurrentTime() ) return false;
+		return true;
+	}
+	virtual void onNewTimeNow() {
+		RDOTrace* tracer = getTracer();
+		if ( canTrace() ) {
+			tracer->startWriting();
+		} else {
+			tracer->stopWriting();
+		}
+	}
 
 	void memory_insert( unsigned int mem ) {
 		memory_current += mem;

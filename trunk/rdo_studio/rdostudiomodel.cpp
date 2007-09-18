@@ -405,7 +405,6 @@ void RDOStudioModel::proc( RDOThread::RDOMessageInfo& msg )
 			break;
 		}
 		case RDOThread::RT_SIMULATOR_PARSE_ERROR_SMR_EMPTY: {
-			studioApp.mainFrame->MessageBox( "В smr-файле не найдено имя модели", "Ошибка открытия модели", MB_OK | MB_ICONERROR );
 			smrEmptyError = true;
 			break;
 		}
@@ -486,6 +485,7 @@ bool RDOStudioModel::openModel( const std::string& modelName ) const
 		studioApp.setLastProjectName( kernel->repository()->getFullName() );
 	} else {
 		if ( smrEmptyError ) {
+			studioApp.mainFrame->MessageBox( "В smr-файле не найдено имя модели", "Ошибка открытия модели", MB_OK | MB_ICONERROR );
 			closeModel();
 		} else {
 			output->updateLogConnection();
@@ -739,7 +739,12 @@ void RDOStudioModel::saveModelToRepository()
 		if ( smr_edit->isModify() || saveAsFlag ) {
 			rdo::binarystream stream;
 			smr_edit->save( stream );
+			smrEmptyError = false;
 			studioApp.studioGUI->sendMessage( kernel->repository(), RDOThread::RT_REPOSITORY_SAVE, &rdoRepository::RDOThreadRepository::FileData( rdoModelObjects::SMR, stream ) );
+			if ( smrEmptyError ) {
+				studioApp.mainFrame->MessageBox( "В smr-файле не найдено имя модели, модель не будет записана", "Ошибка записи модели", MB_OK | MB_ICONERROR );
+				return;
+			}
 			smr_modified = true;
 		}
 		int cnt = tab->getItemCount();
@@ -913,6 +918,13 @@ void RDOStudioModel::setRuntimeMode( const rdoRuntime::RunTimeMode value )
 	}
 }
 
+std::string RDOStudioModel::getLastBreakPointName()
+{
+	std::string str;
+	sendMessage( kernel->runtime(), RT_RUNTIME_GET_LAST_BREAKPOINT, &str );
+	return str;
+}
+
 void RDOStudioModel::setSpeed( double persent )
 {
 	if ( persent >= 0 && persent <= 1 && speed != persent ) {
@@ -935,6 +947,15 @@ void RDOStudioModel::setShowRate( double value )
 void RDOStudioModel::update()
 {
 	sendMessage( kernel->runtime(), RT_RUNTIME_GET_TIMENOW, &timeNow );
+	rdoRuntime::RunTimeMode rm;
+	sendMessage( kernel->runtime(), RT_RUNTIME_GET_MODE, &rm );
+	if ( rm != runtimeMode ) {
+		if ( rm == rdoRuntime::RTM_BreakPoint ) {
+			RDOStudioOutput* output = &studioApp.mainFrame->output;
+			output->appendStringToDebug( rdo::format("Пауза в %f из-за точки '%s'\n", getTimeNow(), getLastBreakPointName().c_str()) );
+		}
+		setRuntimeMode( rm );
+	}
 	if ( getRuntimeMode() == rdoRuntime::RTM_MaxSpeed ) return;
 	int frames = getFrameCount();
 	for ( int i = 0; i < frames; i++ ) {

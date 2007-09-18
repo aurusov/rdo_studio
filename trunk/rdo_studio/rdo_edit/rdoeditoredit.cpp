@@ -523,7 +523,7 @@ void RDOEditorEdit::completeWord()
 			wl.Set( words );
 			wl.InList( "" );
 			startKeyWord = wl.wordsNoCase[0];
-			if ( wl.len == 1 && strLength <= startKeyWord.length() ) {
+			if ( wl.len == 1 && strLength <= startKeyWord.length() && startKeyWord.find( str ) == 0  ) {
 				useReplace = true;
 			}
 		}

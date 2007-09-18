@@ -511,6 +511,7 @@
 #define ID_STATUSBAR_MODEL_RUNTIME_PAUSE 40007
 #define ID_BUFFER_NAME                  40008
 #define ID_PROGRESSSTATUSBAR            40009
+#define ID_STATUSBAR_MODEL_RUNTIME_BREAKPOINT 40010
 #define ID_MODEL_FILETYPE               40011
 #define ID_OPTIONS                      40012
 #define ID_DOCK_WORKSPACE               40013

@@ -20,9 +20,9 @@ class RDOThreadSimulator;
 }
 
 namespace rdoRuntime {
-	class RDORuntime;
-	class RDOResult;
-	struct RDOConfig;
+
+class RDORuntime;
+class RDOResult;
 
 // --------------------------------------------------------------------
 // ---------- RDOThreadRunTime
@@ -70,8 +70,7 @@ namespace rdoSimulator
 class RDOThreadSimulator: public RDOThreadMT
 {
 friend class rdoRuntime::RDOThreadRunTime;
-friend void frameCallBack( rdoRuntime::RDOConfig* config, void* param );
-friend void tracerCallBack( std::string* newString, void* param );
+friend class RDORuntimeTracer;
 
 private:
 	rdoParse::RDOParser*    parser;
