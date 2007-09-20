@@ -25,7 +25,6 @@ RDOCalc::~RDOCalc()
 RDOValue RDOCalc::calcValueBase( RDORuntime* runtime ) const
 {
 	try {
-/*
 #ifdef _DEBUG
 		if ( src_text().empty() ) {
 			TRACE( "%d\n", sizeof(std::string) );
@@ -36,9 +35,11 @@ RDOValue RDOCalc::calcValueBase( RDORuntime* runtime ) const
 			str.resize( 500 );
 			TRACE( "calc: %s\n", str.c_str() );
 		}
-#endif
-*/
+		RDOValue value = calcValue( runtime );
+		return value;
+#else
 		return calcValue( runtime );
+#endif
 	} catch ( RDORuntimeException& ) {
 		if ( runtime->errors.empty() ) {
 			runtime->error( "ошибка в", this );
@@ -401,58 +402,101 @@ RDOValue RDOSelectResourceByTypeCalc::calcValue( RDORuntime* runtime ) const
 	return 0;
 }
 
-void RDOSelectResourceCommonCalc::getBest(std::vector<std::vector<int> > &allNumbs, int level, std::vector<int> &res, RDOValue &bestVal, RDORuntime *sim, bool &hasBest) const
+void RDOSelectResourceCommonCalc::getBest( std::vector< std::vector< int > >& allNumbs, int level, std::vector< int >& res, RDOValue& bestVal, RDORuntime* sim, bool& hasBest ) const
 {
-	if(level >= allNumbs.size())
-	{
-		for(int i = 0; i < resSelectors.size(); i++)
-		{
-			if(!resSelectors.at(i)->callChoice(sim))
-				return;	// state not valid
+	if ( level >= allNumbs.size() ) {
+		for ( int i = 0; i < resSelectors.size(); i++ ) {
+			if( !resSelectors.at(i)->callChoice(sim) ) {
+				return; // state not valid
+			}
 		}
-
 		RDOValue newVal = choice_calc->calcValueBase( sim );
-		if(!hasBest || (useCommonWithMax && (newVal > bestVal)) ||
-			(!useCommonWithMax && (newVal < bestVal)))	// found better value
+		if ( !hasBest || (useCommonWithMax && (newVal > bestVal)) ||
+			(!useCommonWithMax && (newVal < bestVal))) // found better value
 		{
-			for(int i = 0; i < resSelectors.size(); i++)
+			for ( int i = 0; i < resSelectors.size(); i++ ) {
 				res.at(i) = sim->getResByRelRes(i);
+			}
 			bestVal = newVal;
 			hasBest = true;
 		}
-
 		return;
 	}
-
-	std::vector<int> &ourLevel = allNumbs.at(level);
-	for(int i = 0; i < ourLevel.size(); i++)
-	{
-		sim->setRelRes(level, ourLevel.at(i));
-		getBest(allNumbs, level+1, res, bestVal, sim, hasBest);
+	std::vector< int >& ourLevel = allNumbs.at(level);
+	for ( int i = 0; i < ourLevel.size(); i++ ) {
+		sim->setRelRes( level, ourLevel.at(i) );
+		getBest( allNumbs, level+1, res, bestVal, sim, hasBest );
 	}
 }
 
+bool RDOSelectResourceCommonCalc::getFirst( std::vector< std::vector< int > >& allNumbs, int level, RDORuntime* sim ) const
+{
+	if ( level >= allNumbs.size() ) {
+		for ( int i = 0; i < resSelectors.size(); i++ ) {
+			if( !resSelectors.at(i)->callChoice(sim) ) {
+				return false;
+			}
+		}
+		return true;
+	}
+	std::vector< int >& ourLevel = allNumbs.at(level);
+	for ( int i = 0; i < ourLevel.size(); i++ ) {
+		sim->setRelRes( level, ourLevel.at(i) );
+		if ( getFirst( allNumbs, level+1, sim ) ) return true;
+	}
+	return false;
+}
+
+/*
+void RDOSelectResourceCommonCalc::getFirst( std::vector< std::vector< int > >& allNumbs, int level, std::vector< int >& res, RDORuntime* sim, bool& hasFirst ) const
+{
+	if ( level <= 0 ) {
+		for ( int i = 0; i < resSelectors.size(); i++ ) {
+			if( !resSelectors.at(i)->callChoice(sim) ) {
+				return;
+			}
+		}
+		hasFirst = true;
+		return;
+	} else {
+		level--;
+		std::vector< int >& ourLevel = allNumbs.at(level);
+		for ( int i = 0; i < ourLevel.size(); i++ ) {
+			sim->setRelRes( level, ourLevel.at(i) );
+			getFirst( allNumbs, level, res, sim, hasFirst );
+			if ( hasFirst ) return;
+		}
+	}
+}
+*/
+
 RDOValue RDOSelectResourceCommonCalc::calcValue( RDORuntime* runtime ) const
 {
-	std::vector<std::vector<int> > allNumbs;
-	std::vector<int> res;
-	for(int i = 0; i < resSelectors.size(); i++)
-	{
-		allNumbs.push_back(resSelectors.at(i)->getPossibleNumbers(runtime));
-		res.push_back(runtime->getResByRelRes(i));
+	std::vector< std::vector<int> > allNumbs;
+	std::vector< int > res;
+	for ( int i = 0; i < resSelectors.size(); i++ ) {
+		allNumbs.push_back( resSelectors.at(i)->getPossibleNumbers(runtime) );
+		res.push_back( runtime->getResByRelRes(i) );
 	}
-
-	RDOValue bestVal = 0;
-	bool hasBest = false;
-	getBest(allNumbs, 0, res, bestVal, runtime, hasBest);
-
-	if(!hasBest)
-		return false;
-
-	for(i = 0; i < res.size(); i++)
-		runtime->setRelRes(i, res.at(i));
-
-	return true;
+	if ( !choice_calc ) {
+		// first
+//		getFirst( allNumbs, allNumbs.size(), res, runtime, found );
+		if ( getFirst( allNumbs, 0, runtime ) ) {
+			return true;
+		}
+	} else {
+		// with_min / with_max
+		RDOValue bestVal = 0;
+		bool found = false;
+		getBest( allNumbs, 0, res, bestVal, runtime, found );
+		if ( found ) {
+			for ( i = 0; i < res.size(); i++ ) {
+				runtime->setRelRes( i, res.at(i) );
+			}
+			return true;
+		}
+	}
+	return false;
 }
 
 std::vector< int > RDOSelectResourceDirectCommonCalc::getPossibleNumbers( RDORuntime* sim ) const

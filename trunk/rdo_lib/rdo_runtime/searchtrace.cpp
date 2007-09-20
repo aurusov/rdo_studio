@@ -174,4 +174,4 @@ void RDODecisionPointTrace::getStats( std::list< unsigned int >& list, unsigned 
 	}
 }
 
-} // namespace rdoRuntime;
+} // namespace rdoRuntime

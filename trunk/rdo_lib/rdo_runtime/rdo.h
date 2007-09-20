@@ -24,9 +24,8 @@ public:
 	enum BOResult {
 		BOR_cant_run = 0,
 		BOR_can_run,
-		BOR_planned_done,
-		BOR_planned_only,
-		BOR_planned_and_run
+		BOR_planned_and_run,
+		BOR_must_continue
 	};
 	RDOBaseOperation( RDORuntimeParent* _parent  ): RDORuntimeParent( _parent  ) {}
 	virtual ~RDOBaseOperation() {}
@@ -40,6 +39,8 @@ public:
 	// Вызывается для запланированных в будующем событий: IE, operation_end, keyboard_end
 	// Может не использоваться, например, для rule
 	virtual void makePlaned( RDOSimulator* sim, void* param = NULL ) {}
+	// Вызывается для продолжения долгой операции
+	virtual RDOBaseOperation::BOResult continueOperation( RDOSimulator* sim ) { return BOR_cant_run; }
 };
 
 // ----------------------------------------------------------------------------
@@ -175,7 +176,8 @@ friend class TreeNode;
 friend class CheckOperations;
 
 private:
-	bool RunSearchInTree( RDOSimulator* sim );
+	TreeRoot* treeRoot;
+	RDOBaseOperation::BOResult RunSearchInTree( RDOSimulator* sim );
 	virtual RDOBaseOperation::BOResult checkOperation( RDOSimulator* sim );
 
 protected:
@@ -186,9 +188,14 @@ protected:
 	virtual void onSearchResultSuccess( RDOSimulator* sim, TreeRoot* treeRoot )  = 0;
 	virtual void onSearchResultNotFound( RDOSimulator* sim, TreeRoot* treeRoot ) = 0;
 	virtual TreeRoot* createTreeRoot( RDOSimulator* sim )                        = 0;
+	virtual RDOBaseOperation::BOResult continueOperation( RDOSimulator* sim );
 
 public:
-	RDODecisionPoint( RDORuntimeParent* _runtime ): RDOBaseOperation( _runtime ) {}
+	RDODecisionPoint( RDORuntimeParent* _runtime ):
+		RDOBaseOperation( _runtime ),
+		treeRoot( NULL )
+	{
+	}
 	virtual ~RDODecisionPoint();
 	virtual bool Condition( RDOSimulator* sim )     = 0;
 	virtual bool TermCondition( RDOSimulator* sim ) = 0;
@@ -221,8 +228,10 @@ friend class RDORule;
 friend class RDOIE;
 friend class RDOOperation;
 friend class RDODecisionPointTrace;
+friend class CheckOperations;
 
 private:
+	RDOBaseOperation* opr_must_continue;
 	virtual bool doOperation();
 
 protected:
@@ -247,11 +256,15 @@ protected:
 	// 2. Сравнение двух симуляторов по ресурсам
 	virtual bool operator == ( RDOSimulator& other ) = 0;
 
+	RDOBaseOperation* getMustContinueOpr() const       { return opr_must_continue;  }
+	void setMustContinueOpr( RDOBaseOperation* value ) { opr_must_continue = value; }
+
 	unsigned int sizeof_sim;
 
 public:
 	RDOSimulator( RDORuntimeParent* _runtime ):
 		RDOSimulatorBase( _runtime ),
+		opr_must_continue( NULL ),
 		sizeof_sim( 0 )
 	{
 	}
@@ -263,7 +276,7 @@ public:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- CheckOperations - фуктрорал проверки на запуск RDOBaseOperation
+// ---------- CheckOperations - функторал проверки на запуск RDOBaseOperation
 // ----------------------------------------------------------------------------
 class CheckOperations: public RDORuntimeObject
 {

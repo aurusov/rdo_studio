@@ -29,6 +29,9 @@ RDOFRMFrame::RDOFRMColor::RDOFRMColor( RDOFRMFrame* _parent, int _red, int _gree
 	red_calc   = new RDOCalcConst( _parent, _red );
 	green_calc = new RDOCalcConst( _parent, _green );
 	blue_calc  = new RDOCalcConst( _parent, _blue );
+	red_calc->setSrcText( rdo::format("%d, _red") );
+	green_calc->setSrcText( rdo::format("%d, _green") );
+	blue_calc->setSrcText( rdo::format("%d, _blue") );
 }
 
 RDOFRMFrame::RDOFRMColor::RDOFRMColor( RDOFRMFrame* _parent, RDOCalc* _red_calc, RDOCalc* _green_calc, RDOCalc* _blue_calc ):
@@ -185,7 +188,7 @@ void RDOFRMFrame::setBackPicture( const std::string& _picFileName )
 	picFileName = _picFileName;
 }
 
-void RDOFRMFrame::setBackPicture(int _width, int _height)
+void RDOFRMFrame::setBackPicture( int _width, int _height )
 {
 	hasBackPicture = false;
 	width = _width;

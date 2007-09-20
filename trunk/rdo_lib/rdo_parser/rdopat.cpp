@@ -207,7 +207,7 @@ void RDOPATPattern::setCommonChoiceFirst()
 {
 	useCommonChoice = true;
 	commonChoice    = NULL;
-	getParser()->error( "Вызывать нельзя, т.к. в сообщениях об ошибках используется commonChoice" );
+//	getParser()->error( "Вызывать нельзя, т.к. в сообщениях об ошибках используется commonChoice" );
 }
 
 void RDOPATPattern::setCommonChoiceWithMin( RDOFUNArithm* arithm )
@@ -264,7 +264,9 @@ void RDOPATPattern::addRelResUsage( RDOPATChoiceFrom* choice_from, RDOPATChoiceO
 	} else {
 		if ( choice_order->type != rdoRuntime::RDOSelectResourceCalc::order_empty ) {
 			getParser()->error_push_only( choice_order->src_info(), "Нельзя указать способ выбора релевантного ресурса, т.к. используется единый для всех релевантных ресурсов способ, указанный до ключевого слова $Body" );
-			getParser()->error_push_only( commonChoice->src_info(), rdo::format("См. '%s'", commonChoice->src_text().c_str()) );
+			if ( commonChoice ) {
+				getParser()->error_push_only( commonChoice->src_info(), rdo::format("См. '%s'", commonChoice->src_text().c_str()) );
+			}
 			getParser()->error_push_done();
 //			getParser()->error( "Cannot use both common choice and choice for \"" + *currRelRes->getName() + "\" relevant resource in pattern \"" + getName() + "\"" );
 		}
@@ -299,14 +301,17 @@ void RDOPATPattern::end()
 	if ( useCommonChoice ) {
 		// first
 		// Работает неправильно, а как обыкновенный first
-//		getParser()->error("RDOPATPattern::end not implemented yet for not \"first\" conditions in common choice");
 		if ( commonChoice == NULL ) { // first
-//			int size = relRes.size();
-			for( int i = 0; i < size; i++ ) {
-				rdoRuntime::RDOCalc* calc = relRes.at(i)->createSelectFirstResourceChoiceCalc();
-				patRuntime->addChoiceFromCalc( calc );
+			std::vector< rdoRuntime::RDOSelectResourceCommon* > resSelectors;
+			for ( int i = 0; i < size; i++ ) {
+				if ( relRes.at(i)->begin == rdoRuntime::RDOResourceTrace::CS_Keep || relRes.at(i)->begin == rdoRuntime::RDOResourceTrace::CS_Erase || relRes.at(i)->begin == rdoRuntime::RDOResourceTrace::CS_NoChange ) {
+					resSelectors.push_back( relRes.at(i)->createSelectResourceCommonChoiceCalc() );
+				}
 			}
-			return;
+			rdoRuntime::RDOCalc* calc = new rdoRuntime::RDOSelectResourceCommonCalc( getParser()->runtime, resSelectors, useCommonWithMax, NULL );
+			calc->setSrcInfo( src_info() );
+			calc->setSrcText( "first" );
+			patRuntime->addChoiceFromCalc( calc );
 		} else {
 			// with_min / with_max
 			std::vector< rdoRuntime::RDOSelectResourceCommon* > resSelectors;
@@ -315,7 +320,9 @@ void RDOPATPattern::end()
 					resSelectors.push_back( relRes.at(i)->createSelectResourceCommonChoiceCalc() );
 				}
 			}
-			patRuntime->addChoiceFromCalc( new rdoRuntime::RDOSelectResourceCommonCalc( getParser()->runtime, resSelectors, useCommonWithMax, commonChoice->createCalc() ) );
+			rdoRuntime::RDOCalc* calc = new rdoRuntime::RDOSelectResourceCommonCalc( getParser()->runtime, resSelectors, useCommonWithMax, commonChoice->createCalc() );
+			calc->setSrcInfo( commonChoice->src_info() );
+			patRuntime->addChoiceFromCalc( calc );
 		}
 	} else {
 		for ( int i = 0; i < size; i++ ) {
@@ -371,7 +378,10 @@ void RDOPATPatternEvent::addRelRes( const RDOParserSrcInfo& rel_info, const RDOP
 		rel_res_insert( relRes );
 	}
 	if ( relRes->begin == rdoRuntime::RDOResourceTrace::CS_Erase ) {
-		patRuntime->addBeginEraseCalc( new rdoRuntime::RDOCalcEraseRes( getParser()->runtime, relRes->rel_res_id, relRes->getName() ) );
+		rdoRuntime::RDOCalc* calc = new rdoRuntime::RDOCalcEraseRes( getParser()->runtime, relRes->rel_res_id, relRes->getName() );
+		calc->setSrcInfo( rel_info );
+		calc->setSrcText( rdo::format("Удаление временного ресурса %s", rel_info.src_text().c_str()) );
+		patRuntime->addBeginEraseCalc( calc );
 	}
 }
 
@@ -412,7 +422,10 @@ rdoRuntime::RDOCalc* RDOPATPattern::createRelRes( const RDOPATParamSet* const pa
 		}
 		it++;
 	}
-	return new rdoRuntime::RDOCalcCreateEmptyResource( getParser()->runtime, currRelRes->getType()->getNumber(), trace, params_default, currRelRes->rel_res_id );
+	rdoRuntime::RDOCalc* calc = new rdoRuntime::RDOCalcCreateEmptyResource( getParser()->runtime, currRelRes->getType()->getNumber(), trace, params_default, currRelRes->rel_res_id );
+	calc->setSrcInfo( currRelRes->src_info() );
+	calc->setSrcText( rdo::format("Создание временного ресурса %s", currRelRes->getName().c_str()) );
+	return calc;
 }
 
 std::string RDOPATPatternEvent::getErrorMessage_NotNeedConvertor( const RDOPATParamSet* const parSet )
@@ -476,7 +489,10 @@ void RDOPATPatternRule::addRelRes( const RDOParserSrcInfo& rel_info, const RDOPa
 		rel_res_insert( relRes );
 	}
 	if ( relRes->begin == rdoRuntime::RDOResourceTrace::CS_Erase ) {
-		patRuntime->addBeginEraseCalc( new rdoRuntime::RDOCalcEraseRes( getParser()->runtime, relRes->rel_res_id, relRes->getName() ) );
+		rdoRuntime::RDOCalc* calc = new rdoRuntime::RDOCalcEraseRes( getParser()->runtime, relRes->rel_res_id, relRes->getName() );
+		calc->setSrcInfo( rel_info );
+		calc->setSrcText( rdo::format("Удаление временного ресурса %s", rel_info.src_text().c_str()) );
+		patRuntime->addBeginEraseCalc( calc );
 	}
 }
 
@@ -589,10 +605,16 @@ void RDOPATPatternOperation::addRelRes( const RDOParserSrcInfo& rel_info, const 
 		rel_res_insert( relRes );
 	}
 	if ( relRes->begin == rdoRuntime::RDOResourceTrace::CS_Erase ) {
-		patRuntime->addBeginEraseCalc( new rdoRuntime::RDOCalcEraseRes( getParser()->runtime, relRes->rel_res_id, relRes->getName() ) );
+		rdoRuntime::RDOCalc* calc = new rdoRuntime::RDOCalcEraseRes( getParser()->runtime, relRes->rel_res_id, relRes->getName() );
+		calc->setSrcInfo( rel_info );
+		calc->setSrcText( rdo::format("Удаление временного ресурса %s", rel_info.src_text().c_str()) );
+		patRuntime->addBeginEraseCalc( calc );
 	}
 	if ( relRes->end == rdoRuntime::RDOResourceTrace::CS_Erase ) {
-		static_cast<rdoRuntime::RDOOperationRuntime*>(patRuntime)->addEndEraseCalc( new rdoRuntime::RDOCalcEraseRes( getParser()->runtime, relRes->rel_res_id, relRes->getName() ) );
+		rdoRuntime::RDOCalc* calc = new rdoRuntime::RDOCalcEraseRes( getParser()->runtime, relRes->rel_res_id, relRes->getName() );
+		calc->setSrcInfo( rel_info );
+		calc->setSrcText( rdo::format("Удаление временного ресурса %s", rel_info.src_text().c_str()) );
+		static_cast<rdoRuntime::RDOOperationRuntime*>(patRuntime)->addEndEraseCalc( calc );
 	}
 }
 

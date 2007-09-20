@@ -1504,9 +1504,10 @@ class RDOSelectResourceCommonCalc: public RDOCalc
 {
 private:
 	RDOCalc* choice_calc;
-	std::vector<RDOSelectResourceCommon *> resSelectors;
+	std::vector< RDOSelectResourceCommon* > resSelectors;
 	bool useCommonWithMax;
-	void getBest(std::vector<std::vector<int> > &allNumbs, int level, std::vector<int> &res, RDOValue &bestVal, RDORuntime *sim, bool &hasBest) const;
+	void getBest( std::vector< std::vector< int > >& allNumbs, int level, std::vector< int >& res, RDOValue& bestVal, RDORuntime* sim, bool& hasBest ) const;
+	bool getFirst( std::vector< std::vector< int > >& allNumbs, int level, RDORuntime* sim ) const;
 
 public:
 	RDOSelectResourceCommonCalc( RDORuntimeParent* _parent, const std::vector< RDOSelectResourceCommon* >& _resSelectors, bool _useCommonWithMax, RDOCalc* _choice_calc ):

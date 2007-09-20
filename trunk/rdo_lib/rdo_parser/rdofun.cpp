@@ -601,12 +601,14 @@ RDOFUNArithm* RDOFUNArithm::operator /( RDOFUNArithm& second )
 	} else {
 		newCalc = new rdoRuntime::RDOCalcDiv( getParser()->runtime, calc, second.calc );
 	}
-//	rdoRuntime::RDOCalc* newCalc_div = newCalc;
 	// TODO: перевод вещественного в целое при делении. А что делать с умножением и т.д. ?
-//	if ( newType == RDORTPParamType::pt_int ) {
-//		newCalc = new rdoRuntime::RDOCalcDoubleToInt( getParser()->runtime, newCalc );
-//		newCalc->setSrcInfo( newCalc_div->src_info() );
-//	}
+	// С нижеследующим кодом правильно работает модель тетриса, и неправильно шоколадная фабрика,
+	// хотя если это закомментировать, то будет наоборот
+	if ( newType == RDORTPParamType::pt_int ) {
+		rdoRuntime::RDOCalc* newCalc_div = newCalc;
+		newCalc = new rdoRuntime::RDOCalcDoubleToInt( getParser()->runtime, newCalc );
+		newCalc->setSrcInfo( newCalc_div->src_info() );
+	}
 	RDOFUNArithm* arithm = new RDOFUNArithm( this, newType, newCalc, newCalc->src_info() );
 	return arithm;
 }
@@ -1477,6 +1479,8 @@ void RDOFUNFunction::createTableCalc( const YYLTYPE& _elements_pos )
 	int param_cnt = params.size();
 	int range = 1;
 	rdoRuntime::RDOCalc* calc = new rdoRuntime::RDOCalcConst( getParser()->runtime, 0 );
+	calc->setSrcInfo( src_info() );
+	calc->setSrcText( "0" );
 	for ( int currParam = 0; currParam < param_cnt; currParam++ ) {
 		const RDOFUNFunctionParam* const param  = params.at(currParam);
 		rdoRuntime::RDOCalcFuncParam* funcParam = new rdoRuntime::RDOCalcFuncParam( getParser()->runtime, currParam, param->src_info() );

@@ -13,11 +13,15 @@ static char THIS_FILE[] = __FILE__;
 namespace rdoRuntime {
 
 // ----------------------------------------------------------------------------
-// ---------- CheckOperations - фуктрорал проверки на запуск RDOBaseOperation
+// ---------- CheckOperations - функторал проверки на запуск RDOBaseOperation
 // ----------------------------------------------------------------------------
 bool CheckOperations::operator()( RDOBaseOperation* opr )
 {
-	return opr->checkOperation( sim ) != RDOBaseOperation::BOR_cant_run;
+	RDOBaseOperation::BOResult result = opr->checkOperation( sim );
+	if ( result == RDOBaseOperation::BOR_must_continue ) {
+		sim->setMustContinueOpr( opr );
+	}
+	return result != RDOBaseOperation::BOR_cant_run;
 }
 
 // ----------------------------------------------------------------------------
@@ -98,25 +102,24 @@ RDODecisionPoint::~RDODecisionPoint()
 RDOBaseOperation::BOResult RDODecisionPoint::checkOperation( RDOSimulator* sim )
 {
 	if ( Condition(sim) ) {
-		if ( RunSearchInTree(sim) ) {
-			return RDOBaseOperation::BOR_can_run;
-		}
+		return RunSearchInTree( sim );
 	}
 	return RDOBaseOperation::BOR_cant_run;
 }
 
-bool RDODecisionPoint::RunSearchInTree( RDOSimulator* sim )
+RDOBaseOperation::BOResult RDODecisionPoint::continueOperation( RDOSimulator* sim )
 {
-	// Начало поиска: вывели трасировку, обновили статистику
-	onSearchBegin( sim );
-	TreeRoot* treeRoot = createTreeRoot( sim );
-	treeRoot->createRootTreeNode( sim->createCopy() );
-
-	for (;;) {
+	DWORD time_begin = ::GetTickCount();
+	while ( true ) {
 		// Возмем для раскрытия первую вершину из списка OPEN
 		TreeNode* curr = *(treeRoot->allLeafs.begin());
 		curr->ExpandChildren();
 		if ( treeRoot->allLeafs.empty() || treeRoot->targetNode ) break;
+
+		DWORD time_current = ::GetTickCount();
+		if ( time_current - time_begin > 1000 / 40 ) {
+			return BOR_must_continue;
+		}
 	}
 
 	bool success = treeRoot->targetNode ? true : false;
@@ -147,7 +150,18 @@ bool RDODecisionPoint::RunSearchInTree( RDOSimulator* sim )
 	}
 	delete treeRoot->rootNode;
 	delete treeRoot;
-	return success;
+	treeRoot = NULL;
+	return success ? RDOBaseOperation::BOR_can_run : RDOBaseOperation::BOR_cant_run;
+}
+
+RDOBaseOperation::BOResult RDODecisionPoint::RunSearchInTree( RDOSimulator* sim )
+{
+	// Начало поиска: вывели трасировку, обновили статистику
+	onSearchBegin( sim );
+	treeRoot = createTreeRoot( sim );
+	treeRoot->createRootTreeNode( sim->createCopy() );
+
+	return continueOperation( sim );
 }
 
 void RDODecisionPoint::addActivity( RDOActivity* act )
@@ -162,40 +176,50 @@ void RDODecisionPoint::addActivity( RDOActivity* act )
 // ----------------------------------------------------------------------------
 bool RDOSimulator::doOperation()
 {
-	bool found_planed = false;
-	// Отработаем все запланированные на данный момент события
-	if ( !check_operation && !timePointList.empty() ) {
-		check_operation = true;
-		double newTime = timePointList.begin()->first;
-		if ( getCurrentTime() >= newTime ) {
-			std::list< BOPlanned >* list = timePointList.begin()->second;
-			if ( list && !list->empty() ) {
+	bool res;
+	if ( getMustContinueOpr() ) {
+		// Есть действие, которое необходимо продолжить. Используется в DPT
+		RDOBaseOperation::BOResult result = getMustContinueOpr()->continueOperation( this );
+		if ( result != RDOBaseOperation::BOR_must_continue ) {
+			setMustContinueOpr( NULL );
+		}
+		return result != RDOBaseOperation::BOR_cant_run;
+	} else {
+		bool found_planed = false;
+		// Отработаем все запланированные на данный момент события
+		if ( !check_operation && !timePointList.empty() ) {
+			check_operation = true;
+			double newTime = timePointList.begin()->first;
+			if ( getCurrentTime() >= newTime ) {
+				std::list< BOPlanned >* list = timePointList.begin()->second;
+				if ( list && !list->empty() ) {
 #ifdef RDOSIM_COMPATIBLE
-				// Дисциплина списка текущих событий LIFO
-				RDOBaseOperation* opr   = list->back().opr;
-				void*             param = list->back().param;
-				list->pop_back();
+					// Дисциплина списка текущих событий LIFO
+					RDOBaseOperation* opr   = list->back().opr;
+					void*             param = list->back().param;
+					list->pop_back();
 #else
-				// Дисциплина списка текущих событий FIFO
-				RDOBaseOperation* opr   = list->front().opr;
-				void*             param = list->front().param;
-				list->pop_front();
+					// Дисциплина списка текущих событий FIFO
+					RDOBaseOperation* opr   = list->front().opr;
+					void*             param = list->front().param;
+					list->pop_front();
 #endif
-				if ( list->empty() ) {
-					delete timePointList.begin()->second;
-					timePointList.erase( timePointList.begin() );
+					if ( list->empty() ) {
+						delete timePointList.begin()->second;
+						timePointList.erase( timePointList.begin() );
+					}
+					opr->makePlaned( this, param );
+					found_planed = true;
 				}
-				opr->makePlaned( this, param );
-				found_planed = true;
 			}
 		}
-	}
-	bool res = found_planed;
-	if ( !found_planed ) {
-		// Не нашли запланированное событие
-		// Проверить все возможные события и действия, вызвать первое, которое может буть вызвано
-		res = std::find_if( haveBaseOperations.begin(), haveBaseOperations.end(), CheckOperations( this ) ) != haveBaseOperations.end();
-		if ( !res ) check_operation = false;
+		res = found_planed;
+		if ( !found_planed ) {
+			// Не нашли запланированное событие
+			// Проверить все возможные события и действия, вызвать первое, которое может буть вызвано
+			res = std::find_if( haveBaseOperations.begin(), haveBaseOperations.end(), CheckOperations( this ) ) != haveBaseOperations.end();
+			if ( !res ) check_operation = false;
+		}
 	}
 	onCheckPokaz();
 	onAfterCheckPokaz();

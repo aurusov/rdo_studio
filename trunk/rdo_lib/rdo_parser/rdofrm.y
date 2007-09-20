@@ -343,9 +343,9 @@ frm_color:	color_transparent_kw {
 				$$ = (int)new rdoRuntime::RDOFRMFrame::RDOFRMColor( parser->runtime->lastFrame(), 127, 127, 127 );
 			}
 			| '<' INT_CONST INT_CONST INT_CONST '>' {
-				RDOFUNArithm* red   = new RDOFUNArithm( parser, $2, @2 );
-				RDOFUNArithm* green = new RDOFUNArithm( parser, $3, @2 );
-				RDOFUNArithm* blue  = new RDOFUNArithm( parser, $4, @2 );
+				RDOFUNArithm* red   = new RDOFUNArithm( parser, $2, RDOParserSrcInfo(@2, rdo::format("%d", $2)) );
+				RDOFUNArithm* green = new RDOFUNArithm( parser, $3, RDOParserSrcInfo(@3, rdo::format("%d", $3)) );
+				RDOFUNArithm* blue  = new RDOFUNArithm( parser, $4, RDOParserSrcInfo(@4, rdo::format("%d", $4)) );
 				RDORTPIntParamType intType( parser, new RDORTPIntDiap( parser, 0, 255, @1, @1 ), new RDORTPIntDefVal(parser) );
 				intType.checkParamType( red );
 				intType.checkParamType( green );
@@ -1168,7 +1168,7 @@ fun_arithm_func_call_pars:	fun_arithm {
 							| fun_arithm_func_call_pars ',' fun_arithm {
 								RDOFUNParams* fun    = reinterpret_cast<RDOFUNParams*>($1);
 								RDOFUNArithm* arithm = reinterpret_cast<RDOFUNArithm*>($3);
-								fun->setSrcText( arithm->src_text() );
+								fun->setSrcText( fun->src_text() + ", " + arithm->src_text() );
 								fun->addParameter( arithm );
 								$$ = (int)fun;
 							}

@@ -67,7 +67,7 @@ void TreeNode::ExpandChildren()
 	onSearchOpenNode( root->theRealSimulator );
 
 	// Проверили на конечную вершину
-	// todo: возможно, надо проверить все вершины в списке OPEN
+	// TODO: возможно, надо проверить все вершины в списке OPEN
 	if ( root->dp->TermCondition(sim) ) {
 		root->targetNode = this;
 		return;
@@ -84,7 +84,7 @@ void TreeNode::ExpandChildren()
 		currAct->rule->onBeforeChoiceFrom( childSim );
 		if ( !currAct->rule->choiceFrom( childSim ) ) {
 			// Не прошел Choice from, удаляем симулятор и переходим к другой активности.
-			// todo: а зачем удалять симулятор, ведь БД не поменялась ?
+			// TODO: а зачем удалять симулятор, ведь БД не поменялась ?
 			// Такое будет возможно, если при подготовке параметров паттерна будет
 			// вызываться calc, на котором весит уведомление по вызову для другого
 			// объекта, который будут меняться параметры ресурсов

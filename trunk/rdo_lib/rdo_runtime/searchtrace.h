@@ -85,6 +85,6 @@ public:
 	}
 };
 
-} // namespace rdoRuntime;
+} // namespace rdoRuntime
 
 #endif // SEARCHTRACE_H

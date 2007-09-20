@@ -720,11 +720,11 @@ pat_common_choice:	pat_rel_res
 						if ( pattern->getType() == RDOPATPattern::PT_IE ) {
 							parser->error( @2, "В нерегулярном событии не используется способ выбора релевантных ресурсов" );
 						} else {
-//							pattern->setCommonChoiceFirst();
-							RDOFUNArithm* arithm = new RDOFUNArithm( parser, 1, @2 );
-							arithm->setSrcPos( @2 );
-							arithm->setSrcText( "first" );
-							pattern->setCommonChoiceWithMax( arithm );
+							pattern->setCommonChoiceFirst();
+//							RDOFUNArithm* arithm = new RDOFUNArithm( parser, 1, @2 );
+//							arithm->setSrcPos( @2 );
+//							arithm->setSrcText( "first" );
+//							pattern->setCommonChoiceWithMax( arithm );
 						}
 					}
 					| pat_rel_res with_min fun_arithm {

@@ -155,7 +155,7 @@ void RDORuntime::onEraseRes( const int res_id, const RDOCalcEraseRes* calc )
 {
 	RDOResource* res = allResourcesByID.at( res_id );
 	if ( !res ) {
-		error( rdo::format("Временный ресурс уже удален. Возможно, он удален ранее в этом же образце. Имя релевантного ему ресурса: %s", calc ? calc->getName().c_str() : "неизвестное имя"), calc );
+		error( rdo::format("Временный ресурс уже удален. Возможно, он удален ранее в этом же образце. Имя релевантного ресурса: %s", calc ? calc->getName().c_str() : "неизвестное имя"), calc );
 	}
 	if ( res->referenceCount > 0 ) {
 		error( "Невозможно удалить ресурс, т.к. он еще используется", calc );
