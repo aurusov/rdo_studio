@@ -295,6 +295,7 @@ void RDORuntime::keyUp( unsigned int scan_code )
 
 bool RDORuntime::checkKeyPressed( unsigned int scan_code, bool shift, bool control )
 {
+	if ( scan_code == 0 ) return false;
 	bool shift_found   = false;
 	bool control_found = false;
 	// Найдем VK_SHIFT и/или VK_CONTROL в буфере
@@ -615,7 +616,7 @@ const int RDONUMPAD9	= 0x149;
 	keys.insert(std::map<std::string, int>::value_type("NUMPAD7", VK_NUMPAD7));
 	keys.insert(std::map<std::string, int>::value_type("NUMPAD8", VK_NUMPAD8));
 	keys.insert(std::map<std::string, int>::value_type("NUMPAD9", VK_NUMPAD9));
-	keys.insert(std::map<std::string, int>::value_type("NOKEY", -1));
+	keys.insert(std::map<std::string, int>::value_type("NOKEY", 0));
 
 	for(char i = '0'; i <= '9'; i++)
 		keys.insert(std::map<std::string, int>::value_type(std::string(1, i), (int)i));

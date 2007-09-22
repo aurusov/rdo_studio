@@ -34,6 +34,10 @@ BEGIN_MESSAGE_MAP(RDOStudioFrameView, RDOStudioView)
 	ON_WM_MOUSEWHEEL()
 	ON_WM_PAINT()
 	ON_COMMAND(ID_HELP_KEYWORD, OnHelpKeyword)
+	ON_WM_NCLBUTTONDOWN()
+	ON_WM_NCRBUTTONDOWN()
+	ON_WM_NCMOUSEMOVE()
+	ON_WM_MOUSEMOVE()
 	//}}AFX_MSG_MAP
 	ON_COMMAND(ID_FILE_PRINT, RDOStudioView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, RDOStudioView::OnFilePrint)
@@ -56,7 +60,8 @@ RDOStudioFrameView::RDOStudioFrameView():
 	hfontInit( NULL ),
 	hfontCurrent( NULL ),
 //	hbmpInit( NULL ),
-	hbmp( NULL )
+	hbmp( NULL ),
+	mouseOnHScroll( false )
 {
 }
 
@@ -228,24 +233,35 @@ void RDOStudioFrameView::updateScrollBars()
 
 void RDOStudioFrameView::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
+	if ( nSBCode == SB_ENDSCROLL ) {
+		model->setGUIContinue();
+	}
 	SCROLLINFO si;
 	si.cbSize = sizeof( si );
 	switch( nSBCode ) {
-		case SB_PAGEUP:
+		case SB_LEFT:
+			xPos = 0;
+			break;
+
+		case SB_RIGHT:
+			xPos = frameBmpRect.right - newClientRect.right;
+			break;
+
+		case SB_PAGELEFT:
 			GetScrollInfo( SB_HORZ, &si, SIF_PAGE );
 			xPos -= si.nPage;
 			break; 
 
-		case SB_PAGEDOWN:
+		case SB_PAGERIGHT:
 			GetScrollInfo( SB_HORZ, &si, SIF_PAGE );
 			xPos += si.nPage;
 			break;
 
-		case SB_LINEUP:
+		case SB_LINELEFT:
 			xPos--;
 			break;
 
-		case SB_LINEDOWN:
+		case SB_LINERIGHT:
 			xPos++;
 			break;
 
@@ -266,9 +282,20 @@ void RDOStudioFrameView::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollB
 
 void RDOStudioFrameView::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
+	if ( nSBCode == SB_ENDSCROLL ) {
+		model->setGUIContinue();
+	}
 	SCROLLINFO si;
 	si.cbSize = sizeof( si );
 	switch( nSBCode ) {
+		case SB_TOP:
+			yPos = 0;
+			break;
+
+		case SB_BOTTOM:
+			yPos = frameBmpRect.bottom - newClientRect.bottom;
+			break;
+
 		case SB_PAGEUP:
 			GetScrollInfo( SB_VERT, &si, SIF_PAGE );
 			yPos -= si.nPage;
@@ -347,19 +374,26 @@ void RDOStudioFrameView::OnActivateView(BOOL bActivate, CView* pActivateView, CV
 	RDOStudioView::OnActivateView( bActivate, pActivateView, pDeactiveView );
 }
 
-BOOL RDOStudioFrameView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
+BOOL RDOStudioFrameView::OnMouseWheel( UINT nFlags, short zDelta, CPoint pt )
 {
 	SCROLLINFO si;
 	si.cbSize = sizeof( si );
 	si.fMask  = SIF_POS;
-	yPos      -= newClientRect.bottom / 4 * (zDelta >= 0 ? 1 : -1);
-	if ( yPos > frameBmpRect.bottom - newClientRect.bottom ) yPos = frameBmpRect.bottom - newClientRect.bottom;
-	if ( yPos < 0 ) yPos = 0;
-	si.nPos   = yPos;
-	SetScrollInfo( SB_VERT, &si, TRUE );
+	if ( mouseOnHScroll ) {
+		xPos      -= newClientRect.right / 4 * (zDelta >= 0 ? 1 : -1);
+		if ( xPos > frameBmpRect.right - newClientRect.right ) xPos = frameBmpRect.right - newClientRect.right;
+		if ( xPos < 0 ) xPos = 0;
+		si.nPos   = xPos;
+		SetScrollInfo( SB_HORZ, &si, TRUE );
+	} else {
+		yPos      -= newClientRect.bottom / 4 * (zDelta >= 0 ? 1 : -1);
+		if ( yPos > frameBmpRect.bottom - newClientRect.bottom ) yPos = frameBmpRect.bottom - newClientRect.bottom;
+		if ( yPos < 0 ) yPos = 0;
+		si.nPos   = yPos;
+		SetScrollInfo( SB_VERT, &si, TRUE );
+	}
 	InvalidateRect( NULL );
 	UpdateWindow();
-
 	return TRUE;
 }
 
@@ -437,4 +471,28 @@ void RDOStudioFrameView::OnHelpKeyword()
 	if ( filename.empty() ) return;
 	filename += "::/html/work_model_frame.htm";
 	::HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_DISPLAY_TOPIC, NULL );
+}
+
+void RDOStudioFrameView::OnNcLButtonDown( UINT nHitTest, CPoint point )
+{
+	model->setGUIPause();
+	RDOStudioView::OnNcLButtonDown( nHitTest, point );
+}
+
+void RDOStudioFrameView::OnNcRButtonDown( UINT nHitTest, CPoint point )
+{
+	model->setGUIPause();
+	RDOStudioView::OnNcRButtonDown( nHitTest, point );
+}
+
+void RDOStudioFrameView::OnNcMouseMove( UINT nHitTest, CPoint point )
+{
+	mouseOnHScroll = nHitTest == HTHSCROLL;
+	RDOStudioView::OnNcMouseMove( nHitTest, point );
+}
+
+void RDOStudioFrameView::OnMouseMove( UINT nFlags, CPoint point )
+{
+	mouseOnHScroll = false;
+	RDOStudioView::OnMouseMove( nFlags, point );
 }

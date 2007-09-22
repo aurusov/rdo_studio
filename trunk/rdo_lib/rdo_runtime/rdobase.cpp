@@ -153,6 +153,11 @@ bool RDOSimulatorBase::rdoNext()
 
 void RDOSimulatorBase::setMode( rdoRuntime::RunTimeMode _mode )
 {
+	if ( mode == rdoRuntime::RTM_Pause ) {
+		// Чтобы сразу перейти к следующей операции после паузы и чтобы 'не бегало'
+		next_delay_current = next_delay_count;
+		msec_wait          = 0;
+	}
 	mode = _mode;
 	if ( mode == rdoRuntime::RTM_MaxSpeed || mode == rdoRuntime::RTM_Jump ) {
 		// Чтобы сразу перейти к следующей операции

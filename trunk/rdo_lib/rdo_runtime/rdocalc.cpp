@@ -27,13 +27,13 @@ RDOValue RDOCalc::calcValueBase( RDORuntime* runtime ) const
 	try {
 #ifdef _DEBUG
 		if ( src_text().empty() ) {
-			TRACE( "%d\n", sizeof(std::string) );
+//			TRACE( "%d\n", sizeof(std::string) );
 		} else if ( src_text().length() < 500 ) {
-			TRACE( "calc: %s\n", src_text().c_str() );
+//			TRACE( "calc: %s\n", src_text().c_str() );
 		} else {
-			std::string str = src_text();
-			str.resize( 500 );
-			TRACE( "calc: %s\n", str.c_str() );
+//			std::string str = src_text();
+//			str.resize( 500 );
+//			TRACE( "calc: %s\n", str.c_str() );
 		}
 		RDOValue value = calcValue( runtime );
 		return value;

@@ -176,6 +176,9 @@ protected:
 	afx_msg void OnClose();
 	afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
+	afx_msg void OnEnterMenuLoop( BOOL bIsTrackPopupMenu );
+	afx_msg void OnExitMenuLoop( BOOL bIsTrackPopupMenu );
+	afx_msg void OnEnterIdle(UINT nWhy, CWnd* pWho);
 	//}}AFX_MSG
 	afx_msg void OnUpdateCoordStatusBar( CCmdUI *pCmdUI );
 	afx_msg void OnUpdateModifyStatusBar( CCmdUI *pCmdUI );

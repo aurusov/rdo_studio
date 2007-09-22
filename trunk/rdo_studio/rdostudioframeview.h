@@ -37,6 +37,8 @@ private:
 //	HBITMAP hbmpInit;
 	HBITMAP hbmp;
 
+	bool mouseOnHScroll;
+
 	void onDraw();
 	void updateFont();
 	void updateScrollBars();
@@ -79,6 +81,10 @@ protected:
 	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
 	afx_msg void OnPaint();
 	afx_msg void OnHelpKeyword();
+	afx_msg void OnNcLButtonDown(UINT nHitTest, CPoint point);
+	afx_msg void OnNcRButtonDown(UINT nHitTest, CPoint point);
+	afx_msg void OnNcMouseMove(UINT nHitTest, CPoint point);
+	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

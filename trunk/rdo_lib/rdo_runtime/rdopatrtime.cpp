@@ -471,7 +471,7 @@ RDOActivityKeyboardRuntime::RDOActivityKeyboardRuntime( RDORuntime* rTime, RDOPa
 	RDOActivityOperationRuntime( rTime, _pattern, _trace, _oprName ),
 	shift( false ),
 	control( false ),
-	scan_code( 0 )
+	scan_code( -1 )
 {
 }
 
@@ -479,7 +479,7 @@ RDOActivityKeyboardRuntime::RDOActivityKeyboardRuntime( RDORuntime* rTime, RDOPa
 	RDOActivityOperationRuntime( rTime, _pattern, _trace, condition, _oprName ),
 	shift( false ),
 	control( false ),
-	scan_code( 0 )
+	scan_code( -1 )
 {
 }
 
@@ -487,11 +487,11 @@ RDOActivityRuntime::AddHotKey RDOActivityKeyboardRuntime::addHotKey( const std::
 {
 	unsigned int _scan_code = RDOOperationTrace::getRuntime()->rdoHotKeyToolkit.codeFromString( hotKey );
 	if ( _scan_code == -1 ) return RDOActivityRuntime::addhk_notfound;
-	if ( scan_code && _scan_code != VK_SHIFT && _scan_code != VK_CONTROL ) return RDOActivityRuntime::addhk_already;
+	if ( scan_code != -1 && _scan_code != VK_SHIFT && _scan_code != VK_CONTROL ) return RDOActivityRuntime::addhk_already;
 	switch ( _scan_code ) {
 		case VK_SHIFT  : shift     = true;       RDOOperationTrace::getRuntime()->using_scan_codes.push_back( VK_SHIFT   ); break;
 		case VK_CONTROL: control   = true;       RDOOperationTrace::getRuntime()->using_scan_codes.push_back( VK_CONTROL ); break;
-		default        : scan_code = _scan_code; RDOOperationTrace::getRuntime()->using_scan_codes.push_back( _scan_code ); break;
+		default        : scan_code = _scan_code; if ( scan_code ) RDOOperationTrace::getRuntime()->using_scan_codes.push_back( _scan_code ); break;
 	}
 	return RDOActivityRuntime::addhk_ok;
 }

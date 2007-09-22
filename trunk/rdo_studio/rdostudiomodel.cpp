@@ -58,6 +58,7 @@ RDOStudioModel::RDOStudioModel():
 	speed( 1 ),
 	showRate( 60 ),
 	runtimeMode( rdoRuntime::RTM_MaxSpeed ),
+	runtimeMode_prev( rdoRuntime::RTM_MaxSpeed ),
 	exitCode( rdoSimulator::EC_ModelNotFound ),
 	prevModify( false )
 {
@@ -972,5 +973,20 @@ void RDOStudioModel::update()
 				view->ReleaseDC( dc );
 			}
 		}
+	}
+}
+
+void RDOStudioModel::setGUIPause()
+{
+	if ( isRunning() ) {
+		sendMessage( kernel->runtime(), RT_RUNTIME_GET_MODE, &runtimeMode_prev );
+		setRuntimeMode( rdoRuntime::RTM_Pause );
+	}
+}
+
+void RDOStudioModel::setGUIContinue()
+{
+	if ( isRunning() ) {
+		setRuntimeMode( runtimeMode_prev );
 	}
 }

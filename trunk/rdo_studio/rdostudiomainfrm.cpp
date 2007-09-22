@@ -110,6 +110,9 @@ BEGIN_MESSAGE_MAP(RDOStudioMainFrame, CMDIFrameWnd)
 	ON_WM_CLOSE()
 	ON_WM_SHOWWINDOW()
 	ON_WM_SIZE()
+	ON_WM_ENTERMENULOOP()
+	ON_WM_EXITMENULOOP()
+	ON_WM_ENTERIDLE()
 	//}}AFX_MSG_MAP
 	ON_UPDATE_COMMAND_UI( ID_COORD_STATUSBAR           , OnUpdateCoordStatusBar )
 	ON_UPDATE_COMMAND_UI( ID_MODIFY_STATUSBAR          , OnUpdateModifyStatusBar )
@@ -669,4 +672,22 @@ void RDOStudioMainFrame::OnSize( UINT nType, int cx, int cy )
 {
 	CMDIFrameWnd::OnSize( nType, cx, cy );
 	if ( plugins ) plugins->saveMainFrameState( nType == SIZE_MAXIMIZED || nType == SIZE_RESTORED ? SW_SHOW : SW_HIDE );
+}
+
+void RDOStudioMainFrame::OnEnterMenuLoop( BOOL bIsTrackPopupMenu )
+{
+	CMDIFrameWnd::OnEnterMenuLoop( bIsTrackPopupMenu );
+	model->setGUIPause();
+}
+
+void RDOStudioMainFrame::OnExitMenuLoop( BOOL bIsTrackPopupMenu )
+{
+	CMDIFrameWnd::OnExitMenuLoop( bIsTrackPopupMenu );
+	model->setGUIContinue();
+}
+
+void RDOStudioMainFrame::OnEnterIdle( UINT nWhy, CWnd* pWho )
+{
+	CMDIFrameWnd::OnEnterIdle( nWhy, pWho );
+//	model->setGUIPause();
 }

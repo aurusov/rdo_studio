@@ -58,6 +58,7 @@ private:
 	double speed;
 	double showRate;
 	rdoRuntime::RunTimeMode runtimeMode;
+	rdoRuntime::RunTimeMode runtimeMode_prev;
 	rdoSimulator::RDOExitCode exitCode;
 	void updateFrmDescribed();
 
@@ -106,6 +107,9 @@ public:
 	bool stopModel() const;
 
 	void update();
+
+	void setGUIPause();
+	void setGUIContinue();
 
 	std::string getName() const {
 		RDOStudioModelDoc* doc = getModelDoc();

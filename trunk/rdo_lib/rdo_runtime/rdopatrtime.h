@@ -298,7 +298,7 @@ class RDOActivityKeyboardRuntime: public RDOActivityOperationRuntime
 private:
 	bool shift;
 	bool control;
-	unsigned int scan_code;
+	int scan_code;
 
 public:
 	RDOActivityKeyboardRuntime( RDORuntime* rTime, RDOPatternRuntime* _pattern, bool _trace, const std::string& _oprName );
@@ -306,7 +306,7 @@ public:
 
 	bool choiceFrom( RDOSimulator* sim );
 	virtual AddHotKey addHotKey( const std::string& hotKey );
-	virtual bool hasHotKey() const { return scan_code ? true : false; }
+	virtual bool hasHotKey() const { return scan_code != -1 ? true : false; }
 };
 
 } // namespace rdoRuntime
