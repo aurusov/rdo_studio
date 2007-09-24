@@ -1327,8 +1327,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,8,0,583
- PRODUCTVERSION 0,8,0,583
+ FILEVERSION 0,8,0,587
+ PRODUCTVERSION 0,8,0,587
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -1346,14 +1346,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "RAO studio\0"
-            VALUE "FileVersion", "0, 8, 0, 583\0"
+            VALUE "FileVersion", "0, 8, 0, 587\0"
             VALUE "InternalName", "RAO-Studio\0"
             VALUE "LegalCopyright", "Copyright (C) 2003-2006\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "RAO-Studio.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "RAO-Studio\0"
-            VALUE "ProductVersion", "0, 8, 0, 583\0"
+            VALUE "ProductVersion", "0, 8, 0, 587\0"
             VALUE "SpecialBuild", "\0"
         END
     END
@@ -3691,10 +3691,10 @@ BEGIN
     IDS_FRAMES              "Кадры"
     IDS_FRAME_NAME          "кадр: %s"
     IDS_MODEL_NAME          "модель: %s"
-    IDS_MODEL_LOADING_BEGIN "Загрузка модели..."
-    IDS_MODEL_LOADING_OK    "Загрузка модели... ok"
-    IDS_MODEL_LOADING_FAILD "Загрузка модели... failed"
-    IDS_MODEL_CANNOT_LOAD   "Невозможно загрузить %s (%s)"
+    IDS_MODEL_LOADING_BEGIN "Загрузка модели...\n"
+    IDS_MODEL_LOADING_OK    "Загрузка модели... ok\n"
+    IDS_MODEL_LOADING_FAILD "Загрузка модели... failed\n"
+    IDS_MODEL_CANNOT_LOAD   "Невозможно загрузить %s (%s)\n"
     IDS_MODEL_PATTERNS      "образцы"
 END
 
@@ -3758,7 +3758,7 @@ BEGIN
     IDS_COLORSTYLE_FRAME    "Окно анимации"
     IDS_COLORSTYLE_FRAME_BORDER "цвет оконтовки"
     IDS_COLORSTYLE_FRAME_BACKGROUND "цвет фона за пределами кадра"
-    IDS_MODEL_FILE_READONLY "%s - только чтение"
+    IDS_MODEL_FILE_READONLY "%s - только чтение\n"
     IDS_MODEL_DURATION      "Длительность прогона: %u мсек.\n"
 END
 
@@ -5191,10 +5191,10 @@ BEGIN
     IDS_FRAMES              "Frames"
     IDS_FRAME_NAME          "frame: %s"
     IDS_MODEL_NAME          "model: %s"
-    IDS_MODEL_LOADING_BEGIN "Loading model..."
-    IDS_MODEL_LOADING_OK    "Loading model... ok"
-    IDS_MODEL_LOADING_FAILD "Loading model... failed"
-    IDS_MODEL_CANNOT_LOAD   "Can't load %s (%s)"
+    IDS_MODEL_LOADING_BEGIN "Loading model...\n"
+    IDS_MODEL_LOADING_OK    "Loading model... ok\n"
+    IDS_MODEL_LOADING_FAILD "Loading model... failed\n"
+    IDS_MODEL_CANNOT_LOAD   "Can't load %s (%s)\n"
     IDS_MODEL_PATTERNS      "patterns"
 END
 
@@ -5259,7 +5259,7 @@ BEGIN
     IDS_COLORSTYLE_FRAME    "Animation Window"
     IDS_COLORSTYLE_FRAME_BORDER "border line"
     IDS_COLORSTYLE_FRAME_BACKGROUND "outside background"
-    IDS_MODEL_FILE_READONLY "%s - readonly"
+    IDS_MODEL_FILE_READONLY "%s - readonly\n"
     IDS_MODEL_DURATION      "Model execution duration: %u msec.\n"
 END
 

@@ -61,8 +61,8 @@ void RDOTracer::proc( RDOThread::RDOMessageInfo& msg )
 		}
 		case RDOThread::RT_RUNTIME_MODEL_START_BEFORE: {
 			clear();
-			setModelName( kernel->repository()->getName() );
 			try {
+				setModelName( model->getName() );
 				studioApp.mainFrame->output.appendStringToDebug( rdo::format( IDS_TRACER_GETTING_MODEL_STRUCTURE ) );
 				std::stringstream model_structure;
 				sendMessage( kernel->simulator(), RT_SIMULATOR_GET_MODEL_STRUCTURE, &model_structure );

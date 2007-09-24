@@ -21,8 +21,10 @@ RDOThreadRepository::RDOThreadRepository():
 	notifies.push_back( RT_STUDIO_MODEL_CLOSE );
 	notifies.push_back( RT_STUDIO_MODEL_SAVE );
 	notifies.push_back( RT_STUDIO_MODEL_SAVE_AS );
+	notifies.push_back( RT_REPOSITORY_MODEL_GET_FILEINFO );
 	notifies.push_back( RT_REPOSITORY_LOAD );
 	notifies.push_back( RT_REPOSITORY_SAVE );
+	notifies.push_back( RT_REPOSITORY_LOAD_BINARY );
 	notifies.push_back( RT_SIMULATOR_MODEL_STOP_OK );
 	notifies.push_back( RT_SIMULATOR_MODEL_STOP_BY_USER );
 	notifies.push_back( RT_SIMULATOR_MODEL_STOP_RUNTIME_ERROR );
@@ -105,6 +107,17 @@ void RDOThreadRepository::proc( RDOMessageInfo& msg )
 			msg.unlock();
 			break;
 		}
+		case RT_REPOSITORY_MODEL_GET_FILEINFO: {
+			msg.lock();
+			FileInfo* data = static_cast<FileInfo*>(msg.param);
+			data->name      = getFileName( data->type );
+			data->full_name = getFullFileName( data->type );
+			data->extention = getExtention( data->type );
+			data->described = isDescribed( data->type );
+			data->readonly  = isReadOnly( data->type );
+			msg.unlock();
+			break;
+		}
 		case RT_REPOSITORY_LOAD: {
 			msg.lock();
 			FileData* fdata = static_cast<FileData*>(msg.param);
@@ -116,6 +129,13 @@ void RDOThreadRepository::proc( RDOMessageInfo& msg )
 			msg.lock();
 			FileData* fdata = static_cast<FileData*>(msg.param);
 			save( fdata->type, fdata->stream );
+			msg.unlock();
+			break;
+		}
+		case RT_REPOSITORY_LOAD_BINARY: {
+			msg.lock();
+			BinaryFile* data = static_cast<BinaryFile*>(msg.param);
+			loadBMP( data->name, data->stream );
 			msg.unlock();
 			break;
 		}
@@ -256,7 +276,6 @@ bool RDOThreadRepository::openModel( const std::string& modelFileName )
 
 				files[ rdoModelObjects::SMR ].filename = modelName;
 				hasModel = true;
-
 				switch ( updateModelNames() ) {
 					case fm_ok       : broadcastMessage( RT_REPOSITORY_MODEL_OPEN ); return true;
 					case fm_smr_error: broadcastMessage( RT_REPOSITORY_MODEL_OPEN ); return false;

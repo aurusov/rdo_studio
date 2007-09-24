@@ -855,6 +855,7 @@ RDOFUNArithm* RDOFUNParams::createCall( const std::string& funName ) const
 	for ( int i = 0; i < nParams; i++ ) {
 		const RDORTPParamType* const funcParam = func->getParams()[i]->getType();
 		RDOFUNArithm* arithm = params[i];
+		funcParam->checkParamType( arithm );
 		switch ( funcParam->getType() ) {
 			case RDORTPParamType::pt_int: {
 				rdoRuntime::RDOCalc* arg = arithm->createCalc( NULL );
@@ -872,7 +873,7 @@ RDOFUNArithm* RDOFUNParams::createCall( const std::string& funName ) const
 				if ( static_cast<const RDORTPRealParamType*>(funcParam)->diap->isExist() ) {
 					arg = new rdoRuntime::RDOCalcCheckDiap( getParser()->runtime, static_cast<const RDORTPRealParamType*>(funcParam)->diap->min_value, static_cast<const RDORTPRealParamType*>(funcParam)->diap->max_value, arg );
 				}
-				funcCall->addParameter(arg);
+				funcCall->addParameter( arg );
 				break;
 			}
 			default: {
@@ -892,7 +893,7 @@ RDOFUNArithm* RDOFUNParams::createCall( const std::string& funName ) const
 					arg = new rdoRuntime::RDOCalcConst( getParser()->runtime, static_cast<const RDORTPEnumParamType*>(funcParam)->enu->findEnumValueWithThrow( arithm->src_info(), arithm->str ) );
 					arg->setSrcInfo( arithm->src_info() );
 				}
-				funcCall->addParameter(arg);
+				funcCall->addParameter( arg );
 				break;
 			}
 		}

@@ -204,7 +204,7 @@ void RDOThreadRunTime::start()
 		tracer = new rdoSimulator::RDORuntimeTracer( simulator );
 	}
 
-	if ( !simulator->parser->getSMR()->hasFile( "Results_file" ) ) {
+	if ( !simulator->parser->getSMR()->hasFile( "Statistic_file" ) ) {
 		resulter = new rdoRuntime::RDOResult();
 	} else {
 		simulator->resultString.str("");

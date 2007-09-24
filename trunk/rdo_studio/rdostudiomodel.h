@@ -116,6 +116,7 @@ public:
 		return doc ? doc->getName() : "";
 	}
 	void setName( const std::string& str );
+	std::string getFullName() const;
 
 	bool isModify() const {
 		RDOStudioModelDoc* doc = getModelDoc();

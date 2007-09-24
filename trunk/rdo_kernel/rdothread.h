@@ -70,18 +70,20 @@ public:
 		RT_STUDIO_MODEL_BUILD,
 		RT_STUDIO_MODEL_RUN,
 		RT_STUDIO_MODEL_STOP,
-		RT_STUDIO_MODEL_GET_TEXT,              // param = rdoRepository::RDOThreadRepository::FileData* = { file_type:rdoModelObjects::RDOFileType, result:rdo::binarystream& }
-		RT_REPOSITORY_MODEL_NEW,
+		RT_STUDIO_MODEL_GET_TEXT,              // param = rdoRepository::RDOThreadRepository::FileData* =  { file_type:rdoModelObjects::RDOFileType, result:rdo::binarystream& }
+		RT_REPOSITORY_MODEL_NEW,               // param = rdoRepository::RDOThreadRepository::NewModel* =  { model_name:std::string&, model_path:std::string&   }
 		RT_REPOSITORY_MODEL_OPEN,
-		RT_REPOSITORY_MODEL_OPEN_GET_NAME,     // param = rdoRepository::RDOThreadRepository::OpenFile* = { model_name:std::string, readonly:bool, result:bool }
 		RT_REPOSITORY_MODEL_OPEN_ERROR,        // param = model_name:std::string*
 		RT_REPOSITORY_MODEL_SAVE,
+		RT_REPOSITORY_MODEL_OPEN_GET_NAME,     // param = rdoRepository::RDOThreadRepository::OpenFile* =  { model_name:std::string, readonly:bool, result:bool }
 		RT_REPOSITORY_MODEL_SAVE_GET_NAME,     // param = rdoRepository::RDOThreadRepository::OpenFile* = { model_name:std::string, readonly:bool, result:bool }
 		RT_REPOSITORY_MODEL_CLOSE,
 		RT_REPOSITORY_MODEL_CLOSE_CAN_CLOSE,   // param = result:bool*, работает как И
 		RT_REPOSITORY_MODEL_CLOSE_ERROR,
+		RT_REPOSITORY_MODEL_GET_FILEINFO,      // param = rdoRepository::RDOThreadRepository::FileInfo* = { type:rdoModelObjects::RDOFileType, name:std::string, full_name:std::string, extention:std::string, readonly:bool, described:bool }
 		RT_REPOSITORY_LOAD,                    // param = rdoRepository::RDOThreadRepository::FileData* = { file_type:rdoModelObjects::RDOFileType, result:rdo::binarystream& }
 		RT_REPOSITORY_SAVE,                    // param = rdoRepository::RDOThreadRepository::FileData* = { file_type:rdoModelObjects::RDOFileType, stream:rdo::binarystream& }
+		RT_REPOSITORY_LOAD_BINARY,             // param = rdoRepository::RDOThreadRepository::BinaryFile* = { name:std::string, result:rdo::binarystream& }
 		RT_SIMULATOR_PARSE_OK,
 		RT_SIMULATOR_PARSE_ERROR,
 		RT_SIMULATOR_PARSE_ERROR_SMR,
@@ -134,15 +136,17 @@ public:
 			case RT_STUDIO_MODEL_GET_TEXT             : return "RT_STUDIO_MODEL_GET_TEXT";
 			case RT_REPOSITORY_MODEL_NEW              : return "RT_REPOSITORY_MODEL_NEW";
 			case RT_REPOSITORY_MODEL_OPEN             : return "RT_REPOSITORY_MODEL_OPEN";
-			case RT_REPOSITORY_MODEL_OPEN_GET_NAME    : return "RT_REPOSITORY_MODEL_OPEN_GET_NAME";
 			case RT_REPOSITORY_MODEL_OPEN_ERROR       : return "RT_REPOSITORY_MODEL_OPEN_ERROR";
 			case RT_REPOSITORY_MODEL_SAVE             : return "RT_REPOSITORY_MODEL_SAVE";
+			case RT_REPOSITORY_MODEL_OPEN_GET_NAME    : return "RT_REPOSITORY_MODEL_OPEN_GET_NAME";
 			case RT_REPOSITORY_MODEL_SAVE_GET_NAME    : return "RT_REPOSITORY_MODEL_SAVE_GET_NAME";
 			case RT_REPOSITORY_MODEL_CLOSE            : return "RT_REPOSITORY_MODEL_CLOSE";
 			case RT_REPOSITORY_MODEL_CLOSE_CAN_CLOSE  : return "RT_REPOSITORY_MODEL_CLOSE_CAN_CLOSE";
 			case RT_REPOSITORY_MODEL_CLOSE_ERROR      : return "RT_REPOSITORY_MODEL_CLOSE_ERROR";
+			case RT_REPOSITORY_MODEL_GET_FILEINFO     : return "RT_REPOSITORY_MODEL_GET_FILEINFO";
 			case RT_REPOSITORY_LOAD                   : return "RT_REPOSITORY_LOAD";
 			case RT_REPOSITORY_SAVE                   : return "RT_REPOSITORY_SAVE";
+			case RT_REPOSITORY_LOAD_BINARY            : return "RT_REPOSITORY_LOAD_BINARY";
 			case RT_SIMULATOR_PARSE_OK                : return "RT_SIMULATOR_PARSE_OK";
 			case RT_SIMULATOR_PARSE_ERROR             : return "RT_SIMULATOR_PARSE_ERROR";
 			case RT_SIMULATOR_PARSE_ERROR_SMR         : return "RT_SIMULATOR_PARSE_ERROR_SMR";

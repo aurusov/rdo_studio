@@ -22,18 +22,57 @@ public:
 	struct FileData {
 		rdoModelObjects::RDOFileType type;
 		rdo::binarystream&           stream;
-		FileData( rdoModelObjects::RDOFileType _type, rdo::binarystream& _stream ): type( _type ), stream( _stream ) {};
+		FileData( rdoModelObjects::RDOFileType _type, rdo::binarystream& _stream ):
+			type( _type ),
+			stream( _stream )
+		{
+		};
+	};
+	struct BinaryFile {
+		std::string        name;
+		rdo::binarystream& stream;
+		BinaryFile( const std::string& _name, rdo::binarystream& _stream ):
+			name( _name ),
+			stream( _stream )
+		{
+		};
 	};
 	struct OpenFile {
 		std::string name;
 		bool        readonly;
 		bool        result;
-		OpenFile( const std::string& _name = "", bool _readonly = false ): name( _name ), readonly( _readonly ), result( false ) {}
+		OpenFile( const std::string& _name = "", bool _readonly = false ):
+			name( _name ),
+			readonly( _readonly ),
+			result( false )
+		{
+		}
 	};
 	struct NewModel {
 		std::string name;
 		std::string path;
-		NewModel( const std::string& _name = "", const std::string& _path = "" ): name( _name ), path( _path ) {}
+		NewModel( const std::string& _name = "", const std::string& _path = "" ):
+			name( _name ),
+			path( _path )
+		{
+		}
+	};
+	struct FileInfo {
+		rdoModelObjects::RDOFileType type;
+		std::string name;
+		std::string full_name;
+		std::string extention;
+		bool        readonly;
+		bool        described;
+		FileInfo( rdoModelObjects::RDOFileType _type = rdoModelObjects::SMR, const std::string& _name = "", const std::string& _full_name = "", const std::string& _extention = "smr", bool _readonly = false, bool _described = false ):
+			type( _type ),
+			name( _name ),
+			full_name( _full_name ),
+			extention( _extention ),
+			readonly( _readonly ),
+			described( _described )
+		{
+		}
 	};
 
 private:
@@ -106,12 +145,6 @@ protected:
 	void load( rdoModelObjects::RDOFileType type, rdo::binarystream& stream );
 	void save( rdoModelObjects::RDOFileType type, rdo::binarystream& stream ) const;
 
-public:
-	RDOThreadRepository();
-
-	std::string getName() const      { return modelName;                                          }
-	std::string getFullName() const  { return modelPath + getFileExtName( rdoModelObjects::SMR ); }
-
 	std::string getFileName( rdoModelObjects::RDOFileType type ) const     { return files[ type ].filename;  }
 	std::string getExtention( rdoModelObjects::RDOFileType type ) const    { return files[ type ].extention; }
 	std::string getFileExtName( rdoModelObjects::RDOFileType type ) const  { return files[ type ].filename + files[ type ].extention; }
@@ -121,6 +154,9 @@ public:
 	bool isMustExist( rdoModelObjects::RDOFileType type ) const            { return files[ type ].mustexist; }
 
 	void loadBMP( const std::string& name, rdo::binarystream& stream ) const;
+
+public:
+	RDOThreadRepository();
 };
 
 }; // namespace rdoRepository

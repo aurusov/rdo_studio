@@ -13,6 +13,7 @@
 #include <rdosimwin.h>
 #include <rdorepository.h>
 #include <rdobinarystream.h>
+#include <rdothread.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -194,7 +195,8 @@ void RDOStudioFrameManager::bmp_insert( const std::string& name )
 		bitmaps[name] = NULL;
 
 		rdo::binarystream stream;
-		kernel->repository()->loadBMP( name, stream );
+		rdoRepository::RDOThreadRepository::BinaryFile data( name, stream );
+		model->sendMessage( kernel->repository(), RDOThread::RT_REPOSITORY_LOAD_BINARY, &data );
 
 		char* bmInfo   = NULL;
 		char* pBits    = NULL;
