@@ -19,9 +19,9 @@ namespace rdoRuntime
 // ----------------------------------------------------------------------------
 // ---------- RDOResource
 // ----------------------------------------------------------------------------
-RDOResource::RDOResource( RDORuntime* rt ):
-	RDOResourceTrace( rt ),
-	number( 0 ),
+RDOResource::RDOResource( RDORuntime* rt, int _number ):
+	RDOResourceTrace( rt, _number ),
+	number( _number ),
 	type( 0 ),
 	referenceCount( 0 )
 {
@@ -171,7 +171,7 @@ void RDORuntime::onEraseRes( const int res_id, const RDOCalcEraseRes* calc )
 
 RDOResource* RDORuntime::createNewResource()
 {
-	RDOResource* res = new RDOResource( this );
+	RDOResource* res = new RDOResource( this, -1 );
 
 	std::vector< RDOResource* >::iterator it = std::find( allResourcesByID.begin(), allResourcesByID.end(), static_cast<RDOResource*>(NULL) );
 	// Нашли дырку в последовательности ресурсов
@@ -186,16 +186,20 @@ RDOResource* RDORuntime::createNewResource()
 	return res;
 }
 
+// Вызывается только для ресурсов из RSS, во время прогона вызыват нельзя из-за allResourcesByTime
+// (его недо раскомментировать, но тогда он не будет работать для RSS)
 RDOResource* RDORuntime::createNewResource( int number, bool isPermanent )
 {
-	allResourcesByID.resize( number + 1, NULL );
+	if ( allResourcesByID.size() <= number + 1 ) {
+		allResourcesByID.resize( number + 1, NULL );
+	}
 	if ( allResourcesByID.at(number) != NULL ) {
 		throw RDOInternalException( "internal error N 0010" );
 	}
-	RDOResource* res = new RDOResource( this );
-	res->number = number;
+	RDOResource* res = new RDOResource( this, number );
 	allResourcesByID.at(number) = res;
-	allResourcesByTime.push_back( res );
+//	allResourcesByTime.push_back( res );
+	allResourcesBeforSim.push_back( res );
 	if( !isPermanent ) {
 		res->makeTemporary( true );
 	}
@@ -354,6 +358,12 @@ void RDORuntime::rdoInit( RDOTrace* customTracer, RDOResult* customResult )
 void RDORuntime::onInit()
 {
 	std::for_each( initCalcs.begin(), initCalcs.end(), std::bind2nd(std::mem_fun1(&RDOCalc::calcValueBase), this) );
+	std::vector< RDOResource* >::const_iterator it = allResourcesByID.begin();
+	while ( it != allResourcesByID.end() ) {
+		allResourcesByTime.push_back( *it );
+		it++;
+	}
+//	std::copy( allResourcesByID.begin(), allResourcesByID.end(), allResourcesByTime.begin() );
 }
 
 RDOTrace *RDORuntime::getTracer()

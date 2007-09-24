@@ -232,12 +232,16 @@ void RDOTrace::writeAfterOperationEnd( RDOOperationTrace* op, RDOSimulatorTrace*
 	getOStream() << op->traceResourcesList( '\0', sim ) << getEOL();
 }
 
-RDOResourceTrace::RDOResourceTrace(RDOSimulatorTrace *i_sim):
+RDOResourceTrace::RDOResourceTrace( RDOSimulatorTrace* i_sim, int _id ):
 	RDOTraceableObject(i_sim),
 	state( RDOResourceTrace::CS_None ),
 	temporary( false )
 {
-	id = sim->getFreeResourceId();
+	if ( _id == -1 ) {
+		id = sim->getFreeResourceId();
+	} else {
+		id = _id + 1;
+	}
 	trace = false;
 }
 

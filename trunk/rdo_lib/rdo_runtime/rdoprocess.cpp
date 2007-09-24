@@ -73,7 +73,7 @@ void RDOPROCProcess::next( RDOPROCTransact* transact )
 int RDOPROCTransact::typeID = -1;
 
 RDOPROCTransact::RDOPROCTransact( RDOSimulator* sim, RDOPROCBlock* _block ):
-	RDOResource( static_cast<RDORuntime*>(sim) ),
+	RDOResource( static_cast<RDORuntime*>(sim), -1 ),
 	block( _block )
 {
 	static_cast<RDORuntime*>(sim)->insertNewResource( this );

@@ -125,7 +125,7 @@ void RDOSimulatorTrace::preProcess()
 	RDOSimulator::preProcess();
 	getTracer()->startWriting();
 	getTracer()->writeTraceBegin(this);
-	getTracer()->writePermanentResources( this, getTracebleResources() );
+	getTracer()->writePermanentResources( this, getResourcesBeforeSim() );
 	getTracer()->writeModelBegin(this);
 	getTracer()->startWriting();
 	onCheckPokaz();

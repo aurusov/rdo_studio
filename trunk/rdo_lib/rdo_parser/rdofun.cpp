@@ -605,9 +605,9 @@ RDOFUNArithm* RDOFUNArithm::operator /( RDOFUNArithm& second )
 	// С нижеследующим кодом правильно работает модель тетриса, и неправильно шоколадная фабрика,
 	// хотя если это закомментировать, то будет наоборот
 	if ( newType == RDORTPParamType::pt_int ) {
-		rdoRuntime::RDOCalc* newCalc_div = newCalc;
-		newCalc = new rdoRuntime::RDOCalcDoubleToInt( getParser()->runtime, newCalc );
-		newCalc->setSrcInfo( newCalc_div->src_info() );
+//		rdoRuntime::RDOCalc* newCalc_div = newCalc;
+//		newCalc = new rdoRuntime::RDOCalcDoubleToInt( getParser()->runtime, newCalc );
+//		newCalc->setSrcInfo( newCalc_div->src_info() );
 	}
 	RDOFUNArithm* arithm = new RDOFUNArithm( this, newType, newCalc, newCalc->src_info() );
 	return arithm;

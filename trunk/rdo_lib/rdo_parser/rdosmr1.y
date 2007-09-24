@@ -247,6 +247,8 @@ smr_descr:	/* empty */
 			}
 			| smr_descr Trace_file error {
 				parser->error( @2, "Ожидается '='" );
+			}
+			| smr_descr error {
 			};
 
 %%

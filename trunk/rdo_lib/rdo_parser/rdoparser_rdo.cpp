@@ -193,14 +193,29 @@ void RDOParserRSS::parse( std::istream& in_stream )
 // ----------------------------------------------------------------------------
 void RDOParserRSSPost::parse()
 {
-	std::vector< RDORSSResource* >::const_iterator it = parser->getRSSResources().begin();
-	while ( it != parser->getRSSResources().end() ) {
-		rdoRuntime::RDOCalcCreateNumberedResource* createResource = new rdoRuntime::RDOCalcCreateNumberedResource( parser->runtime, (*it)->getType()->getNumber(), (*it)->getTrace(), (*it)->getValues(), (*it)->getNumber(), (*it)->getType()->isPermanent() );
-		createResource->setSrcInfo( (*it)->src_info() );
-		createResource->setSrcText( "Создание ресурса " + createResource->src_text() );
-		parser->runtime->addInitCalc( createResource );
-		it++;
+	// В режиме совместимости со старым РДО создаем ресурсы по номерам их типов, а не по номерам самих ресурсов из RSS
+#ifdef RDOSIM_COMPATIBLE
+	std::vector< RDORTPResType* >::const_iterator rtp_it = parser->getRTPResType().begin();
+	while ( rtp_it != parser->getRTPResType().end() ) {
+#endif
+		std::vector< RDORSSResource* >::const_iterator rss_it = parser->getRSSResources().begin();
+		while ( rss_it != parser->getRSSResources().end() ) {
+#ifdef RDOSIM_COMPATIBLE
+			if ( (*rss_it)->getType() == *rtp_it ) {
+#endif
+				rdoRuntime::RDOCalcCreateNumberedResource* createResource = new rdoRuntime::RDOCalcCreateNumberedResource( parser->runtime, (*rss_it)->getType()->getNumber(), (*rss_it)->getTrace(), (*rss_it)->getValues(), (*rss_it)->getNumber(), (*rss_it)->getType()->isPermanent() );
+				createResource->setSrcInfo( (*rss_it)->src_info() );
+				createResource->setSrcText( "Создание ресурса " + createResource->src_text() );
+				parser->runtime->addInitCalc( createResource );
+#ifdef RDOSIM_COMPATIBLE
+			}
+#endif
+			rss_it++;
+		}
+#ifdef RDOSIM_COMPATIBLE
+		rtp_it++;
 	}
+#endif
 }
 
 // ----------------------------------------------------------------------------

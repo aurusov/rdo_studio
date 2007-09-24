@@ -15,7 +15,7 @@ namespace rdoRuntime
 class RDOResource: public RDOResourceTrace
 {
 public:
-	RDOResource( RDORuntime* rt );
+	RDOResource( RDORuntime* rt, int _number );
 	virtual ~RDOResource();
 
 	int number; // unique for all resources alive in system
@@ -89,8 +89,9 @@ friend class RDOPMDWatchPar;
 friend class RDOPMDWatchState;
 
 private:
-	std::vector< RDOResource* > allResourcesByID;    // Все ресурсы симулятора, даже NULL (NULL стоит на месте уже удаленного временного ресурса)
-	std::list  < RDOResource* > allResourcesByTime;  // Они же, только упорядочены по времени создания и без NULL-ов
+	std::vector< RDOResource* > allResourcesByID;     // Все ресурсы симулятора, даже NULL (NULL стоит на месте уже удаленного временного ресурса)
+	std::list  < RDOResource* > allResourcesByTime;   // Они же, только упорядочены по времени создания и без NULL-ов
+	std::list  < RDOResource* > allResourcesBeforSim; // Они же, только упорядочены по типу перед запуском
 	RDOTrace* tracer;
 	std::list< RDOCalc* > initCalcs;
 
@@ -116,10 +117,10 @@ private:
 	virtual void onInit();
 	virtual void onDestroy();
 
-	virtual std::list< RDOResourceTrace* > getTracebleResources() const {
+	virtual std::list< RDOResourceTrace* > getResourcesBeforeSim() const {
 		std::list< RDOResourceTrace* > list;
-		std::list< RDOResource* >::const_iterator it = allResourcesByTime.begin();
-		while ( it != allResourcesByTime.end() ) {
+		std::list< RDOResource* >::const_iterator it = allResourcesBeforSim.begin();
+		while ( it != allResourcesBeforSim.end() ) {
 			list.push_back( *it );
 			it++;
 		}

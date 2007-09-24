@@ -19,7 +19,7 @@ public:
 	double u01() {
 // Так было
 		seed = seed * 69069 + 1;
-		return seed / ((long double)0xFFFFFFFF + 1);
+		return seed / 4294967296.0; //(long double)UINT_MAX + 1
 // Так стало
 /*
 		const long int MODLUS = 2147483647;

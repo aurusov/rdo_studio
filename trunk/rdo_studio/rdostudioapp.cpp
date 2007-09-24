@@ -827,7 +827,14 @@ RDOAboutDlg::RDOAboutDlg():
 #else
 								char* thread_ver = "st";
 #endif
-								s.Format( "%s   %s-version %u.%u (build %u)", productName, thread_ver, HIWORD( fixedInfo->dwProductVersionMS ), LOWORD( fixedInfo->dwProductVersionMS ), LOWORD( fixedInfo->dwProductVersionLS ) );
+
+#ifdef RDOSIM_COMPATIBLE
+								char* rdo_compatible = "-comp";
+#else
+								char* rdo_compatible = "";
+#endif
+
+								s.Format( "%s   %s%s-version %u.%u (build %u)", productName, thread_ver, rdo_compatible, HIWORD( fixedInfo->dwProductVersionMS ), LOWORD( fixedInfo->dwProductVersionMS ), LOWORD( fixedInfo->dwProductVersionLS ) );
 								m_caption = s;
 							}
 						}

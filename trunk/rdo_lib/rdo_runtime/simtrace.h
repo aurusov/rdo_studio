@@ -76,7 +76,7 @@ protected:
 	void checkRSSDefinedResources();
 
 	void onResourceErase( RDOResourceTrace* res );
-	virtual std::list< RDOResourceTrace* > getTracebleResources() const = 0;
+	virtual std::list< RDOResourceTrace* > getResourcesBeforeSim() const = 0;
 
 public:
 	virtual RDOTrace* getTracer() = 0;

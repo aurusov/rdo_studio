@@ -211,10 +211,6 @@ rss_res_descr:	rss_res_type rss_trace rss_start_vals {
 					if ( res->currParam != res->getType()->getParams().end() ) {
 						parser->error( @3, rdo::format("Заданы не все параметры ресурса: %s", res->getName().c_str()) );
 					}
-//					Перенес в отдельный парсер RSS_POST, т.к. есть еще парсер DPT_RSS
-//					RDOCalcCreateNumberedResource *createResource = new RDOCalcCreateNumberedResource(res->getType()->getType(), $2 != 0, res->getValues(), res->getNumber(), res->getType()->isPerm());
-//					parser->runTime->addInitCalc(createResource);
-//					Вместо этого, пришлось сохранить признак трассировки для последеющего использования в RSS_POST
 					res->setTrace( $2 != 0 );
 				};
 

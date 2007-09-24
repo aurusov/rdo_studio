@@ -129,7 +129,7 @@ private:
 	std::string traceTypeId() { return typeId.empty()?(typeId=getTypeId()):typeId; }
 
 protected:
-	RDOResourceTrace( RDOSimulatorTrace *sim );
+	RDOResourceTrace( RDOSimulatorTrace* sim, int _id );
 	RDOResourceTrace( const RDOResourceTrace& orig );
 	virtual ~RDOResourceTrace();
 
