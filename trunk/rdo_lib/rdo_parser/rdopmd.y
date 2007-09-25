@@ -194,17 +194,17 @@ pmd_trace:						{ $$ = 0; @$; }
 			| trace_keyword	{ $$ = 1; }
 			| no_trace			{ $$ = 0; };
 
-pmd_watch_quant_begin:	IDENTIF_COLON pmd_trace watch_quant	IDENTIF		{ $$ = (int)(new RDOPMDWatchQuant(parser, (std::string *)$1, $2 != 0, *(std::string *)$4)); };
+pmd_watch_quant_begin:	IDENTIF_COLON pmd_trace watch_quant	IDENTIF		{ $$ = (int)(new RDOPMDWatchQuant(parser, *(std::string *)$1, $2 != 0, *(std::string *)$4)); };
 
-pmd_watch_value_begin:	IDENTIF_COLON pmd_trace watch_value	IDENTIF		{ $$ = (int)(new RDOPMDWatchValue(parser, (std::string *)$1, $2 != 0, *(std::string *)$4)); };
+pmd_watch_value_begin:	IDENTIF_COLON pmd_trace watch_value	IDENTIF		{ $$ = (int)(new RDOPMDWatchValue(parser, *(std::string *)$1, $2 != 0, *(std::string *)$4)); };
 
-pmd_pokaz:	IDENTIF_COLON pmd_trace watch_par    IDENTIF '.' IDENTIF		{ $$ = (int)(new RDOPMDWatchPar( parser, (std::string *)$1, $2 != 0, *(std::string *)$4, *(std::string *)$6)); }
-			|	IDENTIF_COLON pmd_trace watch_state		fun_logic					{ $$ = (int)(new RDOPMDWatchState(parser, (std::string *)$1, $2 != 0, (RDOFUNLogic *)$4)); }
+pmd_pokaz:	IDENTIF_COLON pmd_trace watch_par    IDENTIF '.' IDENTIF		{ $$ = (int)(new RDOPMDWatchPar( parser, *(std::string *)$1, $2 != 0, *(std::string *)$4, *(std::string *)$6)); }
+			|	IDENTIF_COLON pmd_trace watch_state		fun_logic					{ $$ = (int)(new RDOPMDWatchState(parser, *(std::string *)$1, $2 != 0, (RDOFUNLogic *)$4)); }
 			|	pmd_watch_quant_begin					fun_logic					{ ((RDOPMDWatchQuant *)$1)->setLogic((RDOFUNLogic *)$2); $$ = $1; };
 			|	pmd_watch_quant_begin					NoCheck						{ ((RDOPMDWatchQuant *)$1)->setLogicNoCheck();				$$ = $1; };
 			|	pmd_watch_value_begin					fun_logic	fun_arithm	{ ((RDOPMDWatchValue *)$1)->setLogic((RDOFUNLogic *)$2,	(RDOFUNArithm *)$3); $$ = $1; };
 			|	pmd_watch_value_begin					NoCheck		fun_arithm	{ ((RDOPMDWatchValue *)$1)->setLogicNoCheck(					(RDOFUNArithm *)$3);	$$ = $1; };
-			|	IDENTIF_COLON get_value					fun_arithm					{ $$ = (int)(new RDOPMDGetValue(parser, (std::string *)$1, (RDOFUNArithm *)$3)); };
+			|	IDENTIF_COLON get_value					fun_arithm					{ $$ = (int)(new RDOPMDGetValue(parser, *(std::string *)$1, (RDOFUNArithm *)$3)); };
 
 pmd_end:	 pmd_body End;
 
@@ -314,7 +314,7 @@ fun_arithm_func_call_pars:	fun_arithm {
 							| fun_arithm_func_call_pars ',' fun_arithm {
 								RDOFUNParams* fun    = reinterpret_cast<RDOFUNParams*>($1);
 								RDOFUNArithm* arithm = reinterpret_cast<RDOFUNArithm*>($3);
-								fun->setSrcText( arithm->src_text() );
+								fun->setSrcText( fun->src_text() + ", " + arithm->src_text() );
 								fun->addParameter( arithm );
 								$$ = (int)fun;
 							}

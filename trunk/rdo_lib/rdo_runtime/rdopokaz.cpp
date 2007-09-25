@@ -14,9 +14,9 @@ namespace rdoRuntime {
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDPokaz
 // ----------------------------------------------------------------------------
-RDOPMDPokaz::RDOPMDPokaz( RDOSimulatorTrace* _sim, const std::string* const _name, bool _trace ):
+RDOPMDPokaz::RDOPMDPokaz( RDOSimulatorTrace* _sim, const std::string& _name, bool _trace ):
 	RDOPokazTrace( static_cast<RDORuntime*>(_sim), _sim ), //qq
-	name( *_name )
+	name( _name )
 {
 	trace = _trace; 
 }
@@ -24,7 +24,7 @@ RDOPMDPokaz::RDOPMDPokaz( RDOSimulatorTrace* _sim, const std::string* const _nam
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDWatchPar
 // ----------------------------------------------------------------------------
-RDOPMDWatchPar::RDOPMDWatchPar( RDOSimulatorTrace* _sim, std::string* _name, bool _trace, const std::string& _resName, const std::string& _parName, int _resNumber, int _parNumber ):
+RDOPMDWatchPar::RDOPMDWatchPar( RDOSimulatorTrace* _sim, const std::string& _name, bool _trace, const std::string& _resName, const std::string& _parName, int _resNumber, int _parNumber ):
 	RDOPMDPokaz( _sim, _name, _trace ),
 	resNumber( _resNumber ),
 	parNumber( _parNumber )
@@ -41,11 +41,11 @@ bool RDOPMDWatchPar::resetPokaz(RDOSimulator *sim)
 	rdoRuntime::RDORuntime* runtime = dynamic_cast< rdoRuntime::RDORuntime* >(sim);
 
 	watchNumber = 0;
-	currValue = 0;
+	currValue = runtime->getResParamVal( resNumber, parNumber );
 	sum = 0;
 	sumSqr = 0;
-	minValue = DBL_MAX;
-	maxValue = DBL_MIN;
+	minValue = currValue;
+	maxValue = currValue;
 
 	timePrev = timeBegin = runtime->getCurrentTime();
 	return true;
@@ -54,7 +54,7 @@ bool RDOPMDWatchPar::resetPokaz(RDOSimulator *sim)
 bool RDOPMDWatchPar::checkPokaz(RDOSimulator *sim)
 {
 	rdoRuntime::RDORuntime* runtime = dynamic_cast< rdoRuntime::RDORuntime* >(sim);
-	double newValue = runtime->getResParamVal(resNumber, parNumber);
+	RDOValue newValue = runtime->getResParamVal( resNumber, parNumber );
 	if(newValue != currValue)
 	{
 		double currTime = runtime->getCurrentTime();
@@ -103,7 +103,7 @@ bool RDOPMDWatchPar::calcStat(RDOSimulator *sim)
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDWatchState
 // ----------------------------------------------------------------------------
-RDOPMDWatchState::RDOPMDWatchState( RDOSimulatorTrace* _sim, std::string* _name, bool _trace, RDOCalc* _logic ):
+RDOPMDWatchState::RDOPMDWatchState( RDOSimulatorTrace* _sim, const std::string& _name, bool _trace, RDOCalc* _logic ):
 	RDOPMDPokaz( _sim, _name, _trace ),
 	logicCalc( _logic )
 {
@@ -209,7 +209,7 @@ bool RDOPMDWatchState::calcStat(RDOSimulator *sim)
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDWatchQuant
 // ----------------------------------------------------------------------------
-RDOPMDWatchQuant::RDOPMDWatchQuant( RDOSimulatorTrace* _sim, std::string* _name, bool _trace, const std::string& _resTypeName, int _rtp_id ):
+RDOPMDWatchQuant::RDOPMDWatchQuant( RDOSimulatorTrace* _sim, const std::string& _name, bool _trace, const std::string& _resTypeName, int _rtp_id ):
 	RDOPMDPokaz( _sim, _name, _trace ),
 	logicCalc( NULL ),
 	rtp_id( _rtp_id )
@@ -305,7 +305,7 @@ bool RDOPMDWatchQuant::calcStat(RDOSimulator *sim)
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDWatchValue
 // ----------------------------------------------------------------------------
-RDOPMDWatchValue::RDOPMDWatchValue( RDOSimulatorTrace* _sim, std::string* _name, bool _trace, const std::string& _resTypeName, int _rtp_id ):
+RDOPMDWatchValue::RDOPMDWatchValue( RDOSimulatorTrace* _sim, const std::string& _name, bool _trace, const std::string& _resTypeName, int _rtp_id ):
 	RDOPMDPokaz( _sim, _name, _trace ),
 	logicCalc( NULL ),
 	arithmCalc( NULL ),
@@ -397,7 +397,7 @@ bool RDOPMDWatchValue::checkResourceErased( rdoRuntime::RDOResource* res )
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDGetValue
 // ----------------------------------------------------------------------------
-RDOPMDGetValue::RDOPMDGetValue( RDOSimulatorTrace* _sim, std::string* _name, RDOCalc* _arithm):
+RDOPMDGetValue::RDOPMDGetValue( RDOSimulatorTrace* _sim, const std::string& _name, RDOCalc* _arithm):
 	RDOPMDPokaz( _sim, _name, false ),
 	arithmCalc( _arithm )
 {

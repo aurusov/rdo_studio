@@ -30,6 +30,18 @@ void funerror( char* mes )
 }
 
 // ----------------------------------------------------------------------------
+// ---------- RDOFUNDoubleToIntByResult
+// ----------------------------------------------------------------------------
+void RDOFUNDoubleToIntByResult::initCalc( bool round )
+{
+	std::vector< rdoRuntime::RDOCalcDoubleToIntByResult* >::iterator it = int_or_double.begin();
+	while ( it != int_or_double.end() ) {
+		(*it)->round = true;
+		it++;
+	}
+}
+
+// ----------------------------------------------------------------------------
 // ---------- RDOFUNLogic
 // ----------------------------------------------------------------------------
 RDOFUNLogic::RDOFUNLogic( const RDOParserObject* _parent, rdoRuntime::RDOCalc* _calc, bool hide_warning ):
@@ -52,6 +64,14 @@ RDOFUNLogic::RDOFUNLogic( const RDOParserObject* _parent, rdoRuntime::RDOCalc* _
 	}
 }
 
+rdoRuntime::RDOCalc* RDOFUNLogic::createCalc( RDORTPParamType::ParamType _type )
+{
+	if ( _type != RDORTPParamType::pt_real ) {
+		int_or_double.initCalc( true );
+	}
+	return calc;
+}
+
 RDOFUNLogic* RDOFUNLogic::operator &&( const RDOFUNLogic& second )
 {
 	const rdoRuntime::RDOCalcConst* calc1 = dynamic_cast<const rdoRuntime::RDOCalcConst*>(calc);
@@ -65,6 +85,7 @@ RDOFUNLogic* RDOFUNLogic::operator &&( const RDOFUNLogic& second )
 	}
 	RDOFUNLogic* logic = new RDOFUNLogic( this, newCalc );
 	logic->setSrcInfo( newCalc->src_info() );
+	logic->int_or_double.insert( int_or_double, second.int_or_double );
 	return logic;
 }
 
@@ -81,6 +102,7 @@ RDOFUNLogic* RDOFUNLogic::operator ||( const RDOFUNLogic& second )
 	}
 	RDOFUNLogic* logic = new RDOFUNLogic( this, newCalc );
 	logic->setSrcInfo( newCalc->src_info() );
+	logic->int_or_double.insert( int_or_double, second.int_or_double );
 	return logic;
 }
 
@@ -88,6 +110,7 @@ RDOFUNLogic* RDOFUNLogic::operator_not()
 {
 	rdoRuntime::RDOCalc* newCalc = new rdoRuntime::RDOCalcNot( getParser()->runtime, calc );
 	RDOFUNLogic* logic = new RDOFUNLogic( this, newCalc );
+	logic->int_or_double.insert( int_or_double );
 	return logic;
 }
 
@@ -142,7 +165,7 @@ RDOFUNArithm::RDOFUNArithm( RDOParser* _parser, const RDOParserSrcInfo& res_name
 	init( res_name_src_info, par_name_src_info );
 }
 
-RDOFUNArithm::RDOFUNArithm( const RDOParserObject* _parent, const RDOParserSrcInfo& res_name_src_info, const RDOParserSrcInfo& par_name_src_info ):
+RDOFUNArithm::RDOFUNArithm( const RDOFUNArithm* _parent, const RDOParserSrcInfo& res_name_src_info, const RDOParserSrcInfo& par_name_src_info ):
 	RDOParserObject( _parent ),
 	type( RDORTPParamType::pt_int ),
 	enu( NULL ),
@@ -310,7 +333,7 @@ RDOFUNArithm::RDOFUNArithm( RDOParser* _parser, int value, const RDOParserSrcInf
 	setSrcInfo( src_info );
 }
 
-RDOFUNArithm::RDOFUNArithm( const RDOParserObject* _parent, int value, const RDOParserSrcInfo& src_info ):
+RDOFUNArithm::RDOFUNArithm( const RDOFUNArithm* _parent, int value, const RDOParserSrcInfo& src_info ):
 	RDOParserObject( _parent ),
 	type( RDORTPParamType::pt_int ),
 	enu( NULL ),
@@ -332,7 +355,7 @@ RDOFUNArithm::RDOFUNArithm( RDOParser* _parser, double* value, const RDOParserSr
 	setSrcInfo( src_info );
 }
 
-RDOFUNArithm::RDOFUNArithm( const RDOParserObject* _parent, double* value, const RDOParserSrcInfo& src_info ):
+RDOFUNArithm::RDOFUNArithm( const RDOFUNArithm* _parent, double* value, const RDOParserSrcInfo& src_info ):
 	RDOParserObject( _parent ),
 	type( RDORTPParamType::pt_real ),
 	enu( NULL ),
@@ -353,7 +376,7 @@ RDOFUNArithm::RDOFUNArithm( RDOParser* _parser, const std::string& value, const 
 	init( value, _pos );
 }
 
-RDOFUNArithm::RDOFUNArithm( const RDOParserObject* _parent, const std::string& value, const YYLTYPE& _pos ):
+RDOFUNArithm::RDOFUNArithm( const RDOFUNArithm* _parent, const std::string& value, const YYLTYPE& _pos ):
 	RDOParserObject( _parent ),
 	type( RDORTPParamType::pt_int ),
 	enu( NULL ),
@@ -487,6 +510,7 @@ RDOFUNArithm* RDOFUNArithm::operator +( RDOFUNArithm& second )
 		newCalc = new rdoRuntime::RDOCalcPlus( getParser()->runtime, calc, second.calc );
 	}
 	RDOFUNArithm* arithm = new RDOFUNArithm( this, newType, newCalc, newCalc->src_info() );
+	arithm->int_or_double.insert( int_or_double, second.int_or_double );
 	return arithm;
 }
 
@@ -518,6 +542,7 @@ RDOFUNArithm* RDOFUNArithm::operator -( RDOFUNArithm& second )
 		newCalc = new rdoRuntime::RDOCalcMinus( getParser()->runtime, calc, second.calc );
 	}
 	RDOFUNArithm* arithm = new RDOFUNArithm( this, newType, newCalc, newCalc->src_info() );
+	arithm->int_or_double.insert( int_or_double, second.int_or_double );
 	return arithm;
 }
 
@@ -571,12 +596,13 @@ RDOFUNArithm* RDOFUNArithm::operator *( RDOFUNArithm& second )
 		newCalc = new rdoRuntime::RDOCalcMult( getParser()->runtime, calc, second.calc );
 	}
 	RDOFUNArithm* arithm = new RDOFUNArithm( this, newType, newCalc, newCalc->src_info() );
+	arithm->int_or_double.insert( int_or_double, second.int_or_double );
 	return arithm;
 }
 
 RDOFUNArithm* RDOFUNArithm::operator /( RDOFUNArithm& second )
 {
-	RDORTPParamType::ParamType newType;
+	RDORTPParamType::ParamType newType = RDORTPParamType::pt_real;
 
 	if ( type == RDORTPParamType::pt_int && second.type == RDORTPParamType::pt_int ) {
 		newType = RDORTPParamType::pt_int;
@@ -602,14 +628,17 @@ RDOFUNArithm* RDOFUNArithm::operator /( RDOFUNArithm& second )
 		newCalc = new rdoRuntime::RDOCalcDiv( getParser()->runtime, calc, second.calc );
 	}
 	// TODO: перевод вещественного в целое при делении. А что делать с умножением и т.д. ?
-	// С нижеследующим кодом правильно работает модель тетриса, и неправильно шоколадная фабрика,
-	// хотя если это закомментировать, то будет наоборот
+	// Ответ: с умножением надо делать тоже самое, только непонятно как
 	if ( newType == RDORTPParamType::pt_int ) {
-//		rdoRuntime::RDOCalc* newCalc_div = newCalc;
-//		newCalc = new rdoRuntime::RDOCalcDoubleToInt( getParser()->runtime, newCalc );
-//		newCalc->setSrcInfo( newCalc_div->src_info() );
+		rdoRuntime::RDOCalc* newCalc_div = newCalc;
+		newCalc = new rdoRuntime::RDOCalcDoubleToIntByResult( getParser()->runtime, newCalc_div );
+		newCalc->setSrcInfo( newCalc_div->src_info() );
 	}
 	RDOFUNArithm* arithm = new RDOFUNArithm( this, newType, newCalc, newCalc->src_info() );
+	if ( newType == RDORTPParamType::pt_int ) {
+		arithm->int_or_double.push_back( reinterpret_cast<rdoRuntime::RDOCalcDoubleToIntByResult*>(newCalc) );
+	}
+	arithm->int_or_double.insert( int_or_double, second.int_or_double );
 	return arithm;
 }
 
@@ -636,6 +665,7 @@ RDOFUNLogic* RDOFUNArithm::operator <( RDOFUNArithm& second )
 	}
 	RDOFUNLogic* logic = new RDOFUNLogic( this, newCalc );
 	logic->setSrcInfo( newCalc->src_info() );
+	logic->int_or_double.insert( int_or_double, second.int_or_double );
 	return logic;
 }
 
@@ -661,6 +691,7 @@ RDOFUNLogic* RDOFUNArithm::operator >( RDOFUNArithm& second )
 	}
 	RDOFUNLogic* logic = new RDOFUNLogic( this, newCalc );
 	logic->setSrcInfo( newCalc->src_info() );
+	logic->int_or_double.insert( int_or_double, second.int_or_double );
 	return logic;
 }
 
@@ -711,6 +742,7 @@ RDOFUNLogic* RDOFUNArithm::operator >=( RDOFUNArithm& second )
 	}
 	RDOFUNLogic* logic = new RDOFUNLogic( this, newCalc );
 	logic->setSrcInfo( newCalc->src_info() );
+	logic->int_or_double.insert( int_or_double, second.int_or_double );
 	return logic;
 }
 
@@ -744,6 +776,7 @@ RDOFUNLogic* RDOFUNArithm::operator ==( RDOFUNArithm& second )
 	}
 	RDOFUNLogic* logic = new RDOFUNLogic( this, newCalc );
 	logic->setSrcInfo( newCalc->src_info() );
+	logic->int_or_double.insert( int_or_double, second.int_or_double );
 	return logic;
 }
 
@@ -774,6 +807,7 @@ RDOFUNLogic* RDOFUNArithm::operator !=( RDOFUNArithm& second )
 	}
 	RDOFUNLogic* logic = new RDOFUNLogic( this, newCalc );
 	logic->setSrcInfo( newCalc->src_info() );
+	logic->int_or_double.insert( int_or_double, second.int_or_double );
 	return logic;
 }
 
@@ -784,11 +818,17 @@ rdoRuntime::RDOCalc* RDOFUNArithm::createCalc( const RDORTPParamType* const forT
 			return calc;
 		}
 		if ( forType->getType() != RDORTPParamType::pt_int ) {
+			if ( forType->getType() == RDORTPParamType::pt_enum ) {
+				int_or_double.initCalc( true );
+			}
 			return calc;
+		} else {
+			int_or_double.initCalc( true );
+			rdoRuntime::RDOCalc* newCalc = new rdoRuntime::RDOCalcDoubleToInt( getParser()->runtime, calc );
+//			rdoRuntime::RDOCalc* newCalc = new rdoRuntime::RDOCalcInt( getParser()->runtime, calc );
+			newCalc->setSrcInfo( src_info() );
+			return newCalc;
 		}
-		rdoRuntime::RDOCalc* newCalc = new rdoRuntime::RDOCalcInt( getParser()->runtime, calc );
-		newCalc->setSrcInfo( src_info() );
-		return newCalc;
 	} else if ( type == RDORTPParamType::pt_unknow && !forType && !str.empty() ) {
 		getParser()->error( src_info(), rdo::format( "Неизвестный идентификатор: %s", str.c_str()) );
 	}
@@ -1537,13 +1577,14 @@ void RDOFUNFunction::createAlgorithmicCalc( const RDOParserSrcInfo& _body_src_in
 	int size = calculateIf.size();
 	int cnt = 0;
 	for ( int i = 0; i < size; i++ ) {
-		const rdoRuntime::RDOCalcConst* calc_cond_last = dynamic_cast<const rdoRuntime::RDOCalcConst*>(calculateIf[i]->condition->calc);
+		rdoRuntime::RDOCalc* logic_calc = calculateIf[i]->condition->createCalc( getType()->getType() );
+		const rdoRuntime::RDOCalcConst* calc_cond_last = dynamic_cast<const rdoRuntime::RDOCalcConst*>(logic_calc);
 		if ( true_const ) {
 			getParser()->warning( calculateIf[i]->condition->src_info(), rdo::format("Условие не используется: %s", calculateIf[i]->condition->src_text().c_str()) );
 			getParser()->warning( calc_cond_const->src_info(), rdo::format("Последнее рабочее условие функции: %s", calc_cond_const->src_text().c_str()) );
 		} else if ( !calc_cond_last || calc_cond_last->calcValueBase( getParser()->runtime ) ) {
 			// Игнорируем чистые false-условия предыдущей проверкой
-			funcCalc->addCalcIf( calculateIf[i]->condition->calc, calculateIf[i]->action->createCalc(getType()) );
+			funcCalc->addCalcIf( logic_calc, calculateIf[i]->action->createCalc(getType()) );
 			cnt++;
 		}
 		if ( !default_flag && calc_cond_last && calc_cond_last->calcValueBase( getParser()->runtime ) ) {
@@ -1622,10 +1663,10 @@ RDOFUNLogic* RDOFUNGroupLogic::createFunLogic( RDOFUNLogic* cond )
 {
 	rdoRuntime::RDOFunCalcGroup* calc;
 	switch ( funType ) {
-		case 1 : setSrcText( "Exist(" + resType->getName() + ": " + cond->src_text() + ")" );     calc = new rdoRuntime::RDOFunCalcExist    ( getParser()->runtime, resType->getNumber(), cond->calc ); break;
-		case 2 : setSrcText( "NotExist(" + resType->getName() + ": " + cond->src_text() + ")" );  calc = new rdoRuntime::RDOFunCalcNotExist ( getParser()->runtime, resType->getNumber(), cond->calc ); break;
-		case 3 : setSrcText( "ForAll(" + resType->getName() + ": " + cond->src_text() + ")" );    calc = new rdoRuntime::RDOFunCalcForAll   ( getParser()->runtime, resType->getNumber(), cond->calc ); break;
-		case 4 : setSrcText( "NotForAll(" + resType->getName() + ": " + cond->src_text() + ")" ); calc = new rdoRuntime::RDOFunCalcNotForAll( getParser()->runtime, resType->getNumber(), cond->calc ); break;
+		case 1 : setSrcText( "Exist(" + resType->getName() + ": " + cond->src_text() + ")" );     calc = new rdoRuntime::RDOFunCalcExist    ( getParser()->runtime, resType->getNumber(), cond->createCalc() ); break;
+		case 2 : setSrcText( "NotExist(" + resType->getName() + ": " + cond->src_text() + ")" );  calc = new rdoRuntime::RDOFunCalcNotExist ( getParser()->runtime, resType->getNumber(), cond->createCalc() ); break;
+		case 3 : setSrcText( "ForAll(" + resType->getName() + ": " + cond->src_text() + ")" );    calc = new rdoRuntime::RDOFunCalcForAll   ( getParser()->runtime, resType->getNumber(), cond->createCalc() ); break;
+		case 4 : setSrcText( "NotForAll(" + resType->getName() + ": " + cond->src_text() + ")" ); calc = new rdoRuntime::RDOFunCalcNotForAll( getParser()->runtime, resType->getNumber(), cond->createCalc() ); break;
 		default: getParser()->error( src_info(), "Внутренная ошибка: несуществующий тип функции" );
 	}
 	getParser()->getFUNGroupStack().pop_back();
@@ -1640,7 +1681,7 @@ RDOFUNLogic* RDOFUNGroupLogic::createFunLogic( RDOFUNLogic* cond )
 // Сам Select как выборка по типу и условию
 void RDOFUNSelect::initSelect( const RDOFUNLogic* cond )
 {
-	select = new rdoRuntime::RDOFunCalcSelect( getParser()->runtime, resType->getNumber(), cond->calc );
+	select = new rdoRuntime::RDOFunCalcSelect( getParser()->runtime, resType->getNumber(), const_cast<RDOFUNLogic*>(cond)->createCalc() );
 	select->setSrcInfo( cond->src_info() );
 }
 
@@ -1649,10 +1690,10 @@ RDOFUNLogic* RDOFUNSelect::createFunSelectGroup( int funType, RDOFUNLogic* cond 
 {
 	rdoRuntime::RDOFunCalcSelectBase* calc;
 	switch ( funType ) {
-		case 1 : setSrcText( src_text() + ".Exist(" + cond->src_text() + ")" );     calc = new rdoRuntime::RDOFunCalcSelectExist    ( getParser()->runtime, select, cond->calc ); break;
-		case 2 : setSrcText( src_text() + ".NotExist(" + cond->src_text() + ")" );  calc = new rdoRuntime::RDOFunCalcSelectNotExist ( getParser()->runtime, select, cond->calc ); break;
-		case 3 : setSrcText( src_text() + ".ForAll(" + cond->src_text() + ")" );    calc = new rdoRuntime::RDOFunCalcSelectForAll   ( getParser()->runtime, select, cond->calc ); break;
-		case 4 : setSrcText( src_text() + ".NotForAll(" + cond->src_text() + ")" ); calc = new rdoRuntime::RDOFunCalcSelectNotForAll( getParser()->runtime, select, cond->calc ); break;
+		case 1 : setSrcText( src_text() + ".Exist(" + cond->src_text() + ")" );     calc = new rdoRuntime::RDOFunCalcSelectExist    ( getParser()->runtime, select, cond->createCalc() ); break;
+		case 2 : setSrcText( src_text() + ".NotExist(" + cond->src_text() + ")" );  calc = new rdoRuntime::RDOFunCalcSelectNotExist ( getParser()->runtime, select, cond->createCalc() ); break;
+		case 3 : setSrcText( src_text() + ".ForAll(" + cond->src_text() + ")" );    calc = new rdoRuntime::RDOFunCalcSelectForAll   ( getParser()->runtime, select, cond->createCalc() ); break;
+		case 4 : setSrcText( src_text() + ".NotForAll(" + cond->src_text() + ")" ); calc = new rdoRuntime::RDOFunCalcSelectNotForAll( getParser()->runtime, select, cond->createCalc() ); break;
 		default: getParser()->error( "Неизвестный метод для списка ресурсов" );
 	}
 	getParser()->getFUNGroupStack().pop_back();

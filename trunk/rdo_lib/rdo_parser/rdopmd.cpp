@@ -37,7 +37,7 @@ RDOPMDPokaz::RDOPMDPokaz( RDOParser* _parser ):
 
 void RDOPMDPokaz::endOfCreation( rdoRuntime::RDOPMDPokaz* _pokaz_runtime )
 {
-	pokaz_runtime     = _pokaz_runtime;
+	pokaz_runtime = _pokaz_runtime;
 	pokaz_runtime->setID( getParser()->getPMD_id() );
 	getParser()->insertPMDPokaz( this );
 	//todo: перенести в конструктор rdoRuntime::RDOPMDPokaz
@@ -47,7 +47,7 @@ void RDOPMDPokaz::endOfCreation( rdoRuntime::RDOPMDPokaz* _pokaz_runtime )
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDWatchPar
 // ----------------------------------------------------------------------------
-RDOPMDWatchPar::RDOPMDWatchPar( RDOParser* _parser, std::string* _name, bool _trace, const std::string& _resName, const std::string& _parName ):
+RDOPMDWatchPar::RDOPMDWatchPar( RDOParser* _parser, const std::string& _name, bool _trace, const std::string& _resName, const std::string& _parName ):
 	RDOPMDPokaz( _parser )
 {
 	const RDORSSResource *const res = getParser()->findRSSResource(_resName);
@@ -73,16 +73,16 @@ RDOPMDWatchPar::RDOPMDWatchPar( RDOParser* _parser, std::string* _name, bool _tr
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDWatchState
 // ----------------------------------------------------------------------------
-RDOPMDWatchState::RDOPMDWatchState( RDOParser* _parser, std::string* _name, bool _trace, RDOFUNLogic* _logic ):
+RDOPMDWatchState::RDOPMDWatchState( RDOParser* _parser, const std::string& _name, bool _trace, RDOFUNLogic* _logic ):
 	RDOPMDPokaz( _parser )
 {
-	endOfCreation( new rdoRuntime::RDOPMDWatchState( getParser()->runtime, _name, _trace, _logic->calc ) );
+	endOfCreation( new rdoRuntime::RDOPMDWatchState( getParser()->runtime, _name, _trace, _logic->createCalc() ) );
 }
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDWatchQuant
 // ----------------------------------------------------------------------------
-RDOPMDWatchQuant::RDOPMDWatchQuant( RDOParser* _parser, std::string* _name, bool _trace, const std::string& _resTypeName ):
+RDOPMDWatchQuant::RDOPMDWatchQuant( RDOParser* _parser, const std::string& _name, bool _trace, const std::string& _resTypeName ):
 	RDOPMDPokaz( _parser )
 {
 	RDOFUNGroupLogic* fgl = new RDOFUNGroupLogic( this, 5, _resTypeName );
@@ -92,7 +92,7 @@ RDOPMDWatchQuant::RDOPMDWatchQuant( RDOParser* _parser, std::string* _name, bool
 
 void RDOPMDWatchQuant::setLogic( RDOFUNLogic* _logic )
 {
-	static_cast<rdoRuntime::RDOPMDWatchQuant*>(pokaz_runtime)->setLogicCalc( _logic->calc );
+	static_cast<rdoRuntime::RDOPMDWatchQuant*>(pokaz_runtime)->setLogicCalc( _logic->createCalc() );
 	getParser()->getFUNGroupStack().pop_back();
 }
 
@@ -105,7 +105,7 @@ void RDOPMDWatchQuant::setLogicNoCheck()
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDWatchValue
 // ----------------------------------------------------------------------------
-RDOPMDWatchValue::RDOPMDWatchValue( RDOParser* _parser, std::string* _name, bool _trace, const std::string& _resTypeName ):
+RDOPMDWatchValue::RDOPMDWatchValue( RDOParser* _parser, const std::string& _name, bool _trace, const std::string& _resTypeName ):
 	RDOPMDPokaz( _parser )
 {
 	RDOFUNGroupLogic* fgl = new RDOFUNGroupLogic( this, 5, _resTypeName );
@@ -115,7 +115,7 @@ RDOPMDWatchValue::RDOPMDWatchValue( RDOParser* _parser, std::string* _name, bool
 
 void RDOPMDWatchValue::setLogic( RDOFUNLogic* _logic, RDOFUNArithm* _arithm )
 {
-	static_cast<rdoRuntime::RDOPMDWatchValue*>(pokaz_runtime)->setLogicCalc( _logic->calc );
+	static_cast<rdoRuntime::RDOPMDWatchValue*>(pokaz_runtime)->setLogicCalc( _logic->createCalc() );
 	static_cast<rdoRuntime::RDOPMDWatchValue*>(pokaz_runtime)->setArithmCalc( _arithm->createCalc() );
 	getParser()->getFUNGroupStack().pop_back();
 }
@@ -130,7 +130,7 @@ void RDOPMDWatchValue::setLogicNoCheck( RDOFUNArithm* _arithm )
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDGetValue
 // ----------------------------------------------------------------------------
-RDOPMDGetValue::RDOPMDGetValue( RDOParser* _parser, std::string* _name, RDOFUNArithm* _arithm ):
+RDOPMDGetValue::RDOPMDGetValue( RDOParser* _parser, const std::string& _name, RDOFUNArithm* _arithm ):
 	RDOPMDPokaz( _parser )
 {
 	rdoRuntime::RDOPMDGetValue* pokaz = new rdoRuntime::RDOPMDGetValue( getParser()->runtime, _name, _arithm->createCalc() );

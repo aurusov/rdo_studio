@@ -12,10 +12,10 @@ namespace rdoRuntime {
 class RDOPMDPokaz: public RDOPokazTrace
 {
 protected:
-	std::string const name;
+	std::string name;
 
 public:
-	RDOPMDPokaz( RDOSimulatorTrace* _sim, const std::string* const _name, bool _trace );
+	RDOPMDPokaz( RDOSimulatorTrace* _sim, const std::string& _name, bool _trace );
 	virtual ~RDOPMDPokaz() {}
 	virtual bool checkResourceErased(RDOResource *res) { return false; }
 	virtual void writePokazStructure( std::ostream& stream ) const = 0;
@@ -43,7 +43,7 @@ private:
 	double timePrev;
 
 public:
-	RDOPMDWatchPar( RDOSimulatorTrace* _sim, std::string* _name, bool _trace, const std::string& _resName, const std::string& _parName, int _resNumber, int _parNumber );
+	RDOPMDWatchPar( RDOSimulatorTrace* _sim, const std::string& _name, bool _trace, const std::string& _resName, const std::string& _parName, int _resNumber, int _parNumber );
 	std::string traceValue();
 	bool resetPokaz(RDOSimulator *sim);
 	bool checkPokaz(RDOSimulator *sim);
@@ -70,7 +70,7 @@ private:
 	double timePrev;
 
 public:
-	RDOPMDWatchState( RDOSimulatorTrace* _sim, std::string* _name, bool _trace, RDOCalc* _logic );
+	RDOPMDWatchState( RDOSimulatorTrace* _sim, const std::string& _name, bool _trace, RDOCalc* _logic );
 	std::string traceValue();
 	bool resetPokaz(RDOSimulator *sim);
 	bool checkPokaz(RDOSimulator *sim);
@@ -98,7 +98,7 @@ private:
 	double timePrev;
 
 public:
-	RDOPMDWatchQuant( RDOSimulatorTrace* _sim, std::string* _name, bool _trace, const std::string& _resTypeName, int _rtp_id );
+	RDOPMDWatchQuant( RDOSimulatorTrace* _sim, const std::string& _name, bool _trace, const std::string& _resTypeName, int _rtp_id );
 	std::string traceValue();
 	bool resetPokaz(RDOSimulator *sim);
 	bool checkPokaz(RDOSimulator *sim);
@@ -125,7 +125,7 @@ private:
 	double maxValue;
 
 public:
-	RDOPMDWatchValue( RDOSimulatorTrace* _sim, std::string* _name, bool _trace, const std::string& _resTypeName, int _rtp_id );
+	RDOPMDWatchValue( RDOSimulatorTrace* _sim, const std::string& _name, bool _trace, const std::string& _resTypeName, int _rtp_id );
 	std::string traceValue();
 	bool resetPokaz(RDOSimulator *sim);
 	bool checkPokaz(RDOSimulator *sim);
@@ -145,7 +145,7 @@ private:
 	RDOCalc* arithmCalc;
 
 public:
-	RDOPMDGetValue( RDOSimulatorTrace* _sim, std::string* _name, RDOCalc* _arithm );
+	RDOPMDGetValue( RDOSimulatorTrace* _sim, const std::string& _name, RDOCalc* _arithm );
 	std::string traceValue();
 	bool resetPokaz(RDOSimulator *sim);
 	bool checkPokaz(RDOSimulator *sim);

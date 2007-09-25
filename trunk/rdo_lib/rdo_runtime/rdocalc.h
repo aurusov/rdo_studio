@@ -1287,6 +1287,22 @@ public:
 	}
 };
 
+class RDOCalcDoubleToIntByResult: public RDOCalcUnary
+{
+private:
+	virtual RDOValue calcValue( RDORuntime* runtime ) const {
+		return round ? RDOValue( static_cast<int>(oper->calcValueBase( runtime )) ) : oper->calcValueBase( runtime );
+	}
+
+public:
+	bool round;
+	RDOCalcDoubleToIntByResult( RDORuntimeParent* _parent, RDOCalc* _oper ):
+		RDOCalcUnary( _parent, _oper ),
+		round( false )
+	{
+	}
+};
+
 class RDOCalcCheckDiap: public RDOCalcUnary
 {
 private:

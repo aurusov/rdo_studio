@@ -1380,30 +1380,6 @@ fun_logic:	fun_arithm '=' fun_arithm         { $$ = (int)(*(RDOFUNArithm *)$1 ==
 			| fun_arithm geq fun_arithm       { $$ = (int)(*(RDOFUNArithm *)$1 >= *(RDOFUNArithm *)$3); }
 			| fun_logic and_keyword fun_logic { $$ = (int)(*(RDOFUNLogic *)$1 && *(RDOFUNLogic *)$3);   }
 			| fun_logic or_keyword fun_logic  { $$ = (int)(*(RDOFUNLogic *)$1 || *(RDOFUNLogic *)$3);   }
-			| fun_arithm '=' error {
-				parser->error( @2, @3, "Ошибка в арифметическом выражении" )
-			}
-			| fun_arithm neq error {
-				parser->error( @2, @3, "Ошибка в арифметическом выражении" )
-			}
-			| fun_arithm '<' error {
-				parser->error( @2, @3, "Ошибка в арифметическом выражении" )
-			}
-			| fun_arithm '>' error {
-				parser->error( @2, @3, "Ошибка в арифметическом выражении" )
-			}
-			| fun_arithm leq error {
-				parser->error( @2, @3, "Ошибка в арифметическом выражении" )
-			}
-			| fun_arithm geq error {
-				parser->error( @2, @3, "Ошибка в арифметическом выражении" )
-			}
-			| fun_logic and_keyword error {
-				parser->error( @2, @3, "Ошибка в логическом выражении" )
-			}
-			| fun_logic or_keyword error {
-				parser->error( @2, @3, "Ошибка в логическом выражении" )
-			}
 			| '[' fun_logic ']' {
 				RDOFUNLogic* logic = reinterpret_cast<RDOFUNLogic*>($2);
 				logic->setSrcPos( @1, @3 );
@@ -1429,9 +1405,6 @@ fun_logic:	fun_arithm '=' fun_arithm         { $$ = (int)(*(RDOFUNArithm *)$1 ==
 				logic_not->setSrcText( "not " + logic->src_text() );
 				$$ = (int)logic_not;
 			}
-			| not_keyword error {
-				parser->error( @1, @2, "Ошибка в логическом выражении" )
-			}
 			| fun_group {
 			}
 			| fun_select_logic {
@@ -1444,18 +1417,6 @@ fun_arithm: fun_arithm '+' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOF
 			| fun_arithm '-' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 - *(RDOFUNArithm *)$3); }
 			| fun_arithm '*' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 * *(RDOFUNArithm *)$3); }
 			| fun_arithm '/' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 / *(RDOFUNArithm *)$3); }
-			| fun_arithm '+' error {
-				parser->error( @2, @3, "Ошибка в арифметическом выражении" )
-			}
-			| fun_arithm '-' error {
-				parser->error( @2, @3, "Ошибка в арифметическом выражении" )
-			}
-			| fun_arithm '*' error {
-				parser->error( @2, @3, "Ошибка в арифметическом выражении" )
-			}
-			| fun_arithm '/' error {
-				parser->error( @2, @3, "Ошибка в арифметическом выражении" )
-			}
 			| '(' fun_arithm ')' {
 				RDOFUNArithm* arithm = reinterpret_cast<RDOFUNArithm*>($2);
 				arithm->setSrcPos( @1, @3 );
@@ -1514,7 +1475,7 @@ fun_arithm_func_call_pars:	fun_arithm {
 							| fun_arithm_func_call_pars ',' fun_arithm {
 								RDOFUNParams* fun    = reinterpret_cast<RDOFUNParams*>($1);
 								RDOFUNArithm* arithm = reinterpret_cast<RDOFUNArithm*>($3);
-								fun->setSrcText( arithm->src_text() );
+								fun->setSrcText( fun->src_text() + ", " + arithm->src_text() );
 								fun->addParameter( arithm );
 								$$ = (int)fun;
 							}

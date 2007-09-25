@@ -210,7 +210,7 @@ frm_begin:			Frame IDENTIF {
 						$$ = (int)frame;
 					}
 					| Frame IDENTIF Show_if fun_logic {
-						rdoRuntime::RDOFRMFrame* frame = new rdoRuntime::RDOFRMFrame( parser->runtime, RDOParserSrcInfo(@2, *reinterpret_cast<std::string*>($2)).src_info(), ((RDOFUNLogic *)$4)->calc );
+						rdoRuntime::RDOFRMFrame* frame = new rdoRuntime::RDOFRMFrame( parser->runtime, RDOParserSrcInfo(@2, *reinterpret_cast<std::string*>($2)).src_info(), ((RDOFUNLogic *)$4)->createCalc() );
 						parser->insertFRMFrame( frame );
 						$$ = (int)frame;
 					}
@@ -280,7 +280,7 @@ frm_show:	Show {
 			}
 			| Show_if fun_logic {
 				rdoRuntime::RDOFRMFrame* frame = parser->getLastFRMFrame();
-				frame->startShow( reinterpret_cast<RDOFUNLogic*>($2)->calc );
+				frame->startShow( reinterpret_cast<RDOFUNLogic*>($2)->createCalc() );
 			}
 			| Show_if error {
 				parser->error( @2, "Ошибка в логическом выражении" )

@@ -228,8 +228,8 @@ RDODPTSearchActivity* RDODPTSearch::addNewActivity( const RDOParserSrcInfo& _act
 
 void RDODPTSearch::end()
 {
-	rdoRuntime::RDOCalc* condCalc = conditon ? conditon->calc : new rdoRuntime::RDOCalcConst( getParser()->runtime, 1 );
-	rdoRuntime::RDOCalc* termCalc = termConditon ? termConditon->calc : new rdoRuntime::RDOCalcConst( getParser()->runtime, 1 );
+	rdoRuntime::RDOCalc* condCalc = conditon ? conditon->createCalc() : new rdoRuntime::RDOCalcConst( getParser()->runtime, 1 );
+	rdoRuntime::RDOCalc* termCalc = termConditon ? termConditon->createCalc() : new rdoRuntime::RDOCalcConst( getParser()->runtime, 1 );
 
 	rdoRuntime::RDOSearchRuntime* dpt = new rdoRuntime::RDOSearchRuntime( getParser()->runtime,
 		condCalc,
@@ -317,7 +317,7 @@ RDODPTSomeActivity::RDODPTSomeActivity( const RDODPTSome* _parent, const RDOPars
 	if ( !_parent->getConditon() ) {
 		activity = pattern->getPatRuntime()->createActivity( getName() );
 	} else {
-		activity = pattern->getPatRuntime()->createActivity( _parent->getConditon()->calc, getName() );
+		activity = pattern->getPatRuntime()->createActivity( _parent->getConditon()->createCalc(), getName() );
 	}
 }
 

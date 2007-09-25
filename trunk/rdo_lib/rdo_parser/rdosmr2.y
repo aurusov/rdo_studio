@@ -447,7 +447,7 @@ fun_arithm_func_call_pars:	fun_arithm {
 							| fun_arithm_func_call_pars ',' fun_arithm {
 								RDOFUNParams* fun    = reinterpret_cast<RDOFUNParams*>($1);
 								RDOFUNArithm* arithm = reinterpret_cast<RDOFUNArithm*>($3);
-								fun->setSrcText( arithm->src_text() );
+								fun->setSrcText( fun->src_text() + ", " + arithm->src_text() );
 								fun->addParameter( arithm );
 								$$ = (int)fun;
 							}
