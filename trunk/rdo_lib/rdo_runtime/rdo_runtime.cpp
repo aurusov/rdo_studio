@@ -6,6 +6,7 @@
 #include "rdodptrtime.h"
 #include "rdocalc.h"
 #include <limits>
+#include <iomanip>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -58,6 +59,9 @@ std::string RDOResource::traceParametersValue()
 		std::vector<RDOValue>::iterator end = params.end();
 		for(std::vector<RDOValue>::iterator it = params.begin();;)
 		{
+//		    str << std::setiosflags( std::scientific );
+//		    str << std::setw(20);
+//		    str << std::setprecision(14);
 			str << (*it);
 			if(++it == end)
 				break;
