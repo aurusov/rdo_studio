@@ -59,10 +59,18 @@ std::string RDOResource::traceParametersValue()
 		std::vector<RDOValue>::iterator end = params.end();
 		for(std::vector<RDOValue>::iterator it = params.begin();;)
 		{
-//		    str << std::setiosflags( std::scientific );
-//		    str << std::setw(20);
-//		    str << std::setprecision(14);
-			str << (*it);
+//			str << (*it);
+			std::ostringstream _str;
+			_str << *it;
+			std::string::size_type pos = _str.str().find( "e" );
+			if ( pos != std::string::npos ) {
+				std::string __str = _str.str();
+				__str.erase( pos + 2, 1 );
+				str << __str.c_str();
+			} else {
+				str << _str.str().c_str();
+			}
+				
 			if(++it == end)
 				break;
 			str << " ";
