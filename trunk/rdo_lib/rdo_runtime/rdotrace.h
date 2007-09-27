@@ -84,8 +84,8 @@ public:
 
 class RDOTraceableObject
 {
-friend RDOSimulatorTrace;
-friend RDOTrace;
+friend class RDOSimulatorTrace;
+friend class RDOTrace;
 
 protected:
 	int id;
@@ -95,6 +95,7 @@ protected:
 public:
 	bool trace;
 	virtual std::string traceId() const { return toString( id ); }
+	int getTraceID() const { return id; }
 };
 
 class RDOPatternTrace

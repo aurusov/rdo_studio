@@ -1,14 +1,14 @@
-#ifndef RULE_TRACE_H
-#define RULE_TRACE_H
+#ifndef RULETRACE_H
+#define RULETRACE_H
 
 #include "rdo.h"
 #include "rdotrace.h"
 
 namespace rdoRuntime {
 
-class RDORuleTrace: public RDORule, RDOTraceableObject, protected RDOPatternTrace
+class RDORuleTrace: public RDORule, public RDOTraceableObject, protected RDOPatternTrace
 {
-friend RDOTrace;
+friend class RDOTrace;
 
 private:
    virtual const std::string& tracePatternId() const = 0;
@@ -24,4 +24,4 @@ public:
 
 } // namespace rdoRuntime
 
-#endif // RULE_TRACE_H
+#endif // RULETRACE_H

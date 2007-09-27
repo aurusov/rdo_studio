@@ -448,25 +448,24 @@ bool RDOSelectResourceCommonCalc::getFirst( std::vector< std::vector< int > >& a
 }
 
 /*
-void RDOSelectResourceCommonCalc::getFirst( std::vector< std::vector< int > >& allNumbs, int level, std::vector< int >& res, RDORuntime* sim, bool& hasFirst ) const
+bool RDOSelectResourceCommonCalc::getFirst( std::vector< std::vector< int > >& allNumbs, int level, RDORuntime* sim ) const
 {
 	if ( level <= 0 ) {
 		for ( int i = 0; i < resSelectors.size(); i++ ) {
 			if( !resSelectors.at(i)->callChoice(sim) ) {
-				return;
+				return false;
 			}
 		}
-		hasFirst = true;
-		return;
+		return true;
 	} else {
 		level--;
 		std::vector< int >& ourLevel = allNumbs.at(level);
 		for ( int i = 0; i < ourLevel.size(); i++ ) {
 			sim->setRelRes( level, ourLevel.at(i) );
-			getFirst( allNumbs, level, res, sim, hasFirst );
-			if ( hasFirst ) return;
+			if ( getFirst( allNumbs, level, sim ) ) return true;
 		}
 	}
+	return false;
 }
 */
 
@@ -480,7 +479,11 @@ RDOValue RDOSelectResourceCommonCalc::calcValue( RDORuntime* runtime ) const
 	}
 	if ( !choice_calc ) {
 		// first
-//		getFirst( allNumbs, allNumbs.size(), res, runtime, found );
+/*
+		if ( getFirst( allNumbs, allNumbs.size(), runtime ) ) {
+			return true;
+		}
+*/
 		if ( getFirst( allNumbs, 0, runtime ) ) {
 			return true;
 		}

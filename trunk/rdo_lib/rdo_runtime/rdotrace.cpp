@@ -14,6 +14,27 @@ static char THIS_FILE[] = __FILE__;
 
 namespace rdoRuntime {
 
+#ifdef RDOSIM_COMPATIBLE
+std::string doubleToString( double value )
+{
+	std::ostringstream _str;
+	_str << value;
+	std::string::size_type pos = _str.str().find( "e" );
+	if ( pos != std::string::npos ) {
+		std::string __str = _str.str();
+		__str.erase( pos + 2, 1 );
+		return __str.c_str();
+	} else {
+		return _str.str().c_str();
+	}
+}
+#else
+double doubleToString( double value )
+{
+	return value;
+}
+#endif
+
 void RDOTrace::writeSearchBegin( double currentTime, std::string decisionPointId )
 {
 	if ( isNull() || !canWrite() ) return;
@@ -53,9 +74,9 @@ void RDOTrace::writeSearchOpenNode( int nodeCount, int parentCount, double pathC
 	if ( isNull() || !canWrite() ) return;
 
 	getOStream() << "SO " << nodeCount
-	             << " " << parentCount
-	             << " " << pathCost
-	             << " " << restCost << std::endl << getEOL();
+	             << " " << doubleToString(parentCount)
+	             << " " << doubleToString(pathCost)
+	             << " " << doubleToString(restCost) << std::endl << getEOL();
 }
 
 void RDOTrace::writeSearchNodeInfo(char sign, TreeNodeTrace *node)
@@ -70,13 +91,13 @@ void RDOTrace::writeSearchNodeInfo(char sign, TreeNodeTrace *node)
 
 		getOStream().precision(4);
 		getOStream() << "ST" << sign
-		             << " " << ((sign != 'D')?node->count:node->root->nodeCount-1)
-		             << " " << ((sign != 'D')?node->parent->count:node->count)
-		             << " " << ((sign != 'D')?node->costPath:node->newCostPath)
-		             << " " << ((sign != 'D')?node->costRest:node->newCostRest)
+		             << " " << ((sign != 'D') ? node->count:node->root->nodeCount-1)
+		             << " " << ((sign != 'D') ? node->parent->count:node->count)
+		             << " " << ((sign != 'D') ? doubleToString(node->costPath) : doubleToString(node->newCostPath) )
+		             << " " << ((sign != 'D') ? doubleToString(node->costRest) : doubleToString(node->newCostRest) )
 		             << " " << actTr->traceId()
 		             << " " << ruleTr->tracePatternId()
-		             << " " << ((sign != 'D')?node->costRule:node->newCostRule)
+		             << " " << ((sign != 'D') ? doubleToString(node->costRule) : doubleToString(node->newCostRule) )
 		             << " " << ruleTr->traceResourcesListNumbers( sim )
 		             << std::endl << getEOL();
 

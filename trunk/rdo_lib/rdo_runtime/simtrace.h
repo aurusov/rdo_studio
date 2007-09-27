@@ -59,7 +59,7 @@ protected:
 		RDOSimulator( _runtime ),
 		traceStartTime( -1 ),
 		traceEndTime( -1 ),
-		dptCounter( 0 ),
+		dptCounter( 1 ),
 		activityCounter( 1 ),
 		ieCounter( 1 ),
 		memory_current( 0 ),

@@ -166,7 +166,7 @@ RDOBaseOperation::BOResult RDODecisionPoint::RunSearchInTree( RDOSimulator* sim 
 
 void RDODecisionPoint::addActivity( RDOActivity* act )
 {
-	// Удалять из активности из activities не надо, т.к. это делает объект-родитель
+	// Удалять активности из activities не надо, т.к. это делает объект-родитель
 	act->reparent( this );
 	activities.push_back( act ); 
 }

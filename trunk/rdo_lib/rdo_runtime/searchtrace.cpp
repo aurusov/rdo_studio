@@ -2,6 +2,7 @@
 #include "searchtrace.h"
 #include "rdotrace.h"
 #include "simtrace.h"
+#include "ruletrace.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -16,11 +17,7 @@ RDOActivityTrace::RDOActivityTrace( RDOSimulatorTrace* i_sim, RDORule* r, bool v
 	RDOActivity( r, vA ),
 	RDOTraceableObject( i_sim )
 {
-	// Т.е. тут можно было написать id = r->id, тольуо r динамически
-	// приведен к типу RDORule, в котром нет id.
-	// Присвоение и увеличение i_sim->activityCounter на один было сделано
-	// в конструкторе r. Текущее значение i_sim->activityCounter на 1 больше.
-	id = i_sim->activityCounter - 1;
+	id = reinterpret_cast<RDORuleTrace*>(r)->getTraceID();
 }
 
 void RDODecisionPointTrace::onSearchBegin( RDOSimulator* sim )

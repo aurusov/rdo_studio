@@ -59,7 +59,7 @@ std::string RDOResource::traceParametersValue()
 		std::vector<RDOValue>::iterator end = params.end();
 		for(std::vector<RDOValue>::iterator it = params.begin();;)
 		{
-//			str << (*it);
+#ifdef RDOSIM_COMPATIBLE
 			std::ostringstream _str;
 			_str << *it;
 			std::string::size_type pos = _str.str().find( "e" );
@@ -70,7 +70,9 @@ std::string RDOResource::traceParametersValue()
 			} else {
 				str << _str.str().c_str();
 			}
-				
+#else
+			str << (*it);
+#endif
 			if(++it == end)
 				break;
 			str << " ";
