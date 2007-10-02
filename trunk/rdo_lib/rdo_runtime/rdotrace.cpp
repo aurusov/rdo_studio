@@ -259,8 +259,11 @@ RDOResourceTrace::RDOResourceTrace( RDOSimulatorTrace* i_sim, int _id ):
 	temporary( false )
 {
 	if ( _id == -1 ) {
+		// Для временного ресурса ищем дырку в нумерации
 		id = sim->getFreeResourceId();
 	} else {
+		// Вызываем для увеличения счетчика maxResourcesId постоянных ресурсов
+		sim->getFreeResourceId();
 		id = _id + 1;
 	}
 	trace = false;

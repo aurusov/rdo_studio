@@ -42,6 +42,8 @@ p.samples { margin-top: .6em; margin-bottom: .6em; color: #660000; font-family: 
 
 p.remarks { margin-top: .1em; margin-bottom: .1em; font-size: 90%; text-align: justify }
 
+p.image { margin-bottom: 1.5em; text-align: center }
+
 pre { padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px; font-weight: bold; color: #000000; font-family: "courier new", "courier", "fixedsys", monospace }
 
 pre.samples { margin-top: .1em; margin-bottom: .1em; font-weight: normal; color: #660000; font-family: "courier new", "courier", "fixedsys", monospace; font-size: 100% }

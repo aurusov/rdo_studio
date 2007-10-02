@@ -190,10 +190,14 @@ RDOResource* RDORuntime::createNewResource()
 	std::vector< RDOResource* >::iterator it = std::find( allResourcesByID.begin(), allResourcesByID.end(), static_cast<RDOResource*>(NULL) );
 	// Ќашли дырку в последовательности ресурсов
 	if ( it != allResourcesByID.end() ) {
-		res->number = (it - allResourcesByID.begin());
+//		res->number = (it - allResourcesByID.begin());
+//		res->id = res->number + 1;
+		res->number = res->id - 1;
 		(*it) = res;
 	} else {
-		res->number = allResourcesByID.size();
+//		res->number = allResourcesByID.size();
+//		res->id = res->number + 1;
+		res->number = res->id - 1;
 		allResourcesByID.push_back( res );
 	}
 	allResourcesByTime.push_back( res );
@@ -474,7 +478,10 @@ std::string RDORuntime::writeActivitiesStructure( int& counter )
 		}
 		it++;
 	}
+#ifdef RDOSIM_COMPATIBLE
+#else
 	stream << std::endl;
+#endif
 
 	int _counter = 1;
 	it = haveBaseOperations.begin();

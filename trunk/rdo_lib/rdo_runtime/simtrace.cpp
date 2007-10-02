@@ -79,7 +79,7 @@ int RDOSimulatorTrace::getFreeResourceId()
 	}
 }
 
-void RDOSimulatorTrace::freeResourceId(int id) 
+void RDOSimulatorTrace::eraseFreeResourceId( int id ) 
 {
 	MAPII::iterator it = resourcesIdsRefs.find(id);
 	if ( it != resourcesIdsRefs.end() ) {
@@ -117,7 +117,7 @@ void RDOSimulatorTrace::freeOperationId(int id)
 
 void RDOSimulatorTrace::onResourceErase( RDOResourceTrace* res )
 {
-	freeResourceId(res->id);
+	eraseFreeResourceId( res->id );
 }
 
 void RDOSimulatorTrace::preProcess()

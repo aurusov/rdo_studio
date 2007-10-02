@@ -149,7 +149,7 @@ protected:
 		oprName( _oprName )
 #ifdef RDOSIM_COMPATIBLE
 		,
-		show_create_index( true )
+		show_create_index( false )
 #endif
 	{
 	}

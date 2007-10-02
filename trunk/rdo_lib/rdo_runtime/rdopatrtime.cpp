@@ -241,7 +241,7 @@ std::string RDOActivityRuntime::traceResourcesList( char prefix, RDOSimulatorTra
 std::string RDOActivityRuntime::traceResourcesListNumbers( RDOSimulatorTrace* sim )
 {
 	std::ostringstream res;
-	res << relevantResources.size();
+	res << relevantResources.size() << " ";
 	for ( std::list< RDOResourceTrace* >::const_iterator i = relevantResources.begin(); i != relevantResources.end(); i++ ) {
 #ifdef RDOSIM_COMPATIBLE
 		if ( *i && (show_create_index || (!show_create_index && (*i)->getState() != RDOResourceTrace::CS_Create)) ) {

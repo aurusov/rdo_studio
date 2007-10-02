@@ -343,7 +343,7 @@ int RDOStudioApp::ExitInstance()
 		CWinApp::ExitInstance();
 		return exitCode;
 	} else {
-		WriteProfileString( "general", "lastProject", getOpenLastProject() ? lastProjectName.c_str() : "" );
+//		WriteProfileString( "general", "lastProject", getOpenLastProject() ? lastProjectName.c_str() : "" );
 		return CWinApp::ExitInstance();
 	}
 }
@@ -359,6 +359,7 @@ void RDOStudioApp::OnFileNew()
 void RDOStudioApp::OnFileOpen() 
 {
 	model->openModel();
+	WriteProfileString( "general", "lastProject", getOpenLastProject() ? lastProjectName.c_str() : "" );
 }
 
 void RDOStudioApp::OnFileClose() 
@@ -625,6 +626,7 @@ void RDOStudioApp::setLastProjectName( const std::string& projectName )
 	insertReopenItem( projectName );
 	if ( lastProjectName != projectName ) {
 		lastProjectName = projectName;
+		WriteProfileString( "general", "lastProject", getOpenLastProject() ? lastProjectName.c_str() : "" );
 	}
 }
 

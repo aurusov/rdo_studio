@@ -1815,6 +1815,8 @@ BOOL RDOStudioOptionsPlugins::OnInitDialog()
 	if ( i ) {
 		m_pluginList.SortItems( ComparePluginName, !NULL );
 		m_pluginList.SetItemState( 0, LVIS_SELECTED, LVIS_SELECTED );
+	} else {
+		updateControls( NULL );
 	}
 
 	CRect comboBoxRect;

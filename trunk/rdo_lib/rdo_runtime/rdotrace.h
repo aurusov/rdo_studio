@@ -85,6 +85,7 @@ public:
 class RDOTraceableObject
 {
 friend class RDOSimulatorTrace;
+friend class RDORuntime;
 friend class RDOTrace;
 
 protected:

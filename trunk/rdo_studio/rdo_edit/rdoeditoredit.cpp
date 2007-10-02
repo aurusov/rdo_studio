@@ -493,19 +493,6 @@ void RDOEditorEdit::completeWord()
 		word = wl.GetNearestWord( str, wordLength, true );
 	}
 	char* words = wl.GetNearestWords( str, wordLength, true );
-	if ( words ) {
-		std::string _s = words;
-		while ( _s.find( '?' ) != std::string::npos ) {
-			std::string::size_type pos1 = _s.find( '?' );
-			std::string::size_type pos2 = _s.find( ' ', pos1 );
-			_s.erase( pos1, pos2 - pos1 );
-		}
-//		delete []words; 
-		words = new char[ _s.length() + 1 ];
-		strcpy( words, _s.c_str() );
-		words[ _s.length() + 1 ] = '\0';
-	}
-
 	LPCTSTR list;
 	if ( ((RDOEditorEditStyle*)style)->autoComplete->showFullList ) {
 		list = s.c_str();
@@ -520,12 +507,18 @@ void RDOEditorEdit::completeWord()
 		std::string startKeyWordScroll = wl.wordsNoCase[ wl.len-1 ];
 		bool useReplace = false;
 		if ( words ) {
+			wl.Clear();
 			wl.Set( words );
 			wl.InList( "" );
 			startKeyWord = wl.wordsNoCase[0];
 			if ( wl.len == 1 && strLength <= startKeyWord.length() && startKeyWord.find( str ) == 0  ) {
 				useReplace = true;
 			}
+		}
+		while ( startKeyWord.find( '?' ) != std::string::npos ) {
+			std::string::size_type pos1 = startKeyWord.find( '?' );
+			std::string::size_type pos2 = startKeyWord.find( ' ', pos1 );
+			startKeyWord.erase( pos1, pos2 - pos1 );
 		}
 		if ( useReplace ) {
 			setSelection( getCurrentPos(), getCurrentPos() - strLength );
@@ -537,7 +530,7 @@ void RDOEditorEdit::completeWord()
 		}
 	}
 
-//	if ( words ) delete words;
+	if ( words ) delete []words;
 }
 
 void RDOEditorEdit::setErrorLine( int line )

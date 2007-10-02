@@ -133,19 +133,8 @@ END
 IDD_OPTIONS_EDITOR DIALOGEX 0, 0, 292, 138
 STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "Редактор"
-FONT 8, "MS Sans Serif", 0, 0, 0x1
+FONT 8, "MS Sans Serif"
 BEGIN
-    GROUPBOX        "Авто-завершение",IDC_AUTOCOMPLETE_STATIC,0,52,136,56,0,
-                    0,HIDC_AUTOCOMPLETE_STATIC
-    CONTROL         "Включить",IDC_USEAUTOCOMPLETE_CHECK,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,8,64,49,10,0,
-                    HIDC_USEAUTOCOMPLETE_CHECK
-    CONTROL         "Полный список",IDC_SHOWFULLLIST_RADIO,"Button",
-                    BS_AUTORADIOBUTTON | WS_GROUP,16,80,69,10,0,
-                    HIDC_SHOWFULLLIST_RADIO
-    CONTROL         "Только ближайшие слова",IDC_SHOWNEARESTWORDSONLY_RADIO,
-                    "Button",BS_AUTORADIOBUTTON,16,92,104,10,0,
-                    HIDC_SHOWNEARESTWORDSONLY_RADIO
     GROUPBOX        "Буфер",IDC_BUFFERS_STATIC,0,4,292,43,0,0,
                     HIDC_BUFFERS_STATIC
     CONTROL         "Очищать автоматически",IDC_CLEARAUTO_CHECK,"Button",
@@ -157,17 +146,28 @@ BEGIN
                     ES_NUMBER,0,HIDC_CLEARAUTO_EDIT
     LTEXT           "секунд",IDC_CLEARAUTO_STATIC2,96,32,24,8,0,0,
                     HIDC_CLEARAUTO_STATIC2
+    GROUPBOX        "Авто-завершение",IDC_AUTOCOMPLETE_STATIC,0,52,136,56,0,
+                    0,HIDC_AUTOCOMPLETE_STATIC
+    CONTROL         "Включить",IDC_USEAUTOCOMPLETE_CHECK,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,8,64,49,10,0,
+                    HIDC_USEAUTOCOMPLETE_CHECK
+    CONTROL         "Полный список",IDC_SHOWFULLLIST_RADIO,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP,16,80,69,10,0,
+                    HIDC_SHOWFULLLIST_RADIO
+    CONTROL         "Только ближайшие слова",IDC_SHOWNEARESTWORDSONLY_RADIO,
+                    "Button",BS_AUTORADIOBUTTON,16,92,104,10,0,
+                    HIDC_SHOWNEARESTWORDSONLY_RADIO
     GROUPBOX        "Слева",IDC_MARGIN_STATIC,144,52,148,56,0,0,
                     HIDC_MARGIN_STATIC
-    CONTROL         "Выводить номера строк",IDC_MARGIN_LINENUMBER_CHECK,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,152,88,98,10,0,
-                    HIDC_MARGIN_LINENUMBER_CHECK
-    CONTROL         "Выводить закладки",IDC_MARGIN_BOOKMARK_CHECK,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,152,76,83,10,0,
-                    HIDC_MARGIN_BOOKMARK_CHECK
     CONTROL         "Выводить группы",IDC_MARGIN_FOLD_CHECK,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,152,64,75,10,0,
                     HIDC_MARGIN_FOLD_CHECK
+    CONTROL         "Выводить закладки",IDC_MARGIN_BOOKMARK_CHECK,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,152,76,83,10,0,
+                    HIDC_MARGIN_BOOKMARK_CHECK
+    CONTROL         "Выводить номера строк",IDC_MARGIN_LINENUMBER_CHECK,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,152,88,98,10,0,
+                    HIDC_MARGIN_LINENUMBER_CHECK
 END
 
 IDD_OPTIONS_STYLESANDCOLORS DIALOGEX 0, 0, 292, 229
@@ -277,8 +277,9 @@ END
 IDD_OPTIONS_TABS DIALOGEX 0, 0, 292, 121
 STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "Табуляция"
-FONT 8, "MS Sans Serif", 0, 0, 0x1
+FONT 8, "MS Sans Serif"
 BEGIN
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDFRAME,0,8,292,88
     LTEXT           "Размер табуляции",IDC_TABSIZE_STATIC,8,21,64,8,NOT 
                     WS_GROUP,0,HIDC_TABSIZE_STATIC
     EDITTEXT        IDC_TABSIZE_EDIT,76,16,40,12,ES_AUTOHSCROLL | ES_NUMBER,
@@ -302,7 +303,6 @@ BEGIN
     CONTROL         "Авто-отступ",IDC_AUTOINDENT_CHECK,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,8,80,56,10,0,
                     HIDC_AUTOINDENT_CHECK
-    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDFRAME,0,8,292,88
 END
 
 IDD_OPTIONS_GENERAL DIALOGEX 0, 0, 292, 138
@@ -437,9 +437,9 @@ BEGIN
                     BS_AUTORADIOBUTTON | BS_FLAT,8,88,67,10
     CONTROL         "Модель простейшей СМО",IDC_MODEL_BARBER1,"Button",
                     BS_AUTORADIOBUTTON | BS_FLAT,8,100,103,10
-    CONTROL         "Модель простейшей СМО с временными ресурсами",
+    CONTROL         "Модель многоканальной СМО с временными ресурсами",
                     IDC_MODEL_BARBER2,"Button",BS_AUTORADIOBUTTON | BS_FLAT,
-                    8,112,193,10
+                    8,112,209,10
     LTEXT           "Static",IDC_INFO,8,36,226,24
     CONTROL         "Добавить комментарии",IDC_COMMENT,"Button",
                     BS_AUTOCHECKBOX | BS_FLAT | WS_TABSTOP,8,132,194,10
@@ -1327,8 +1327,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,8,0,594
- PRODUCTVERSION 0,8,0,594
+ FILEVERSION 0,8,0,598
+ PRODUCTVERSION 0,8,0,598
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -1346,14 +1346,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "RAO studio\0"
-            VALUE "FileVersion", "0, 8, 0, 594\0"
+            VALUE "FileVersion", "0, 8, 0, 598\0"
             VALUE "InternalName", "RAO-Studio\0"
             VALUE "LegalCopyright", "Copyright (C) 2003-2006\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "RAO-Studio.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "RAO-Studio\0"
-            VALUE "ProductVersion", "0, 8, 0, 594\0"
+            VALUE "ProductVersion", "0, 8, 0, 598\0"
             VALUE "SpecialBuild", "\0"
         END
     END
@@ -4054,19 +4054,8 @@ END
 IDD_OPTIONS_EDITOR DIALOGEX 0, 0, 292, 138
 STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "Editor"
-FONT 8, "MS Sans Serif", 0, 0, 0x1
+FONT 8, "MS Sans Serif"
 BEGIN
-    GROUPBOX        "Auto complete",IDC_AUTOCOMPLETE_STATIC,0,52,136,56,0,0,
-                    HIDC_AUTOCOMPLETE_STATIC
-    CONTROL         "Use auto complete",IDC_USEAUTOCOMPLETE_CHECK,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,8,64,75,10,0,
-                    HIDC_USEAUTOCOMPLETE_CHECK
-    CONTROL         "Show full list",IDC_SHOWFULLLIST_RADIO,"Button",
-                    BS_AUTORADIOBUTTON | WS_GROUP,16,80,55,10,0,
-                    HIDC_SHOWFULLLIST_RADIO
-    CONTROL         "Show nearest words only",IDC_SHOWNEARESTWORDSONLY_RADIO,
-                    "Button",BS_AUTORADIOBUTTON,16,92,92,10,0,
-                    HIDC_SHOWNEARESTWORDSONLY_RADIO
     GROUPBOX        "Buffers",IDC_BUFFERS_STATIC,0,4,292,43,0,0,
                     HIDC_BUFFERS_STATIC
     CONTROL         "Clear automatically",IDC_CLEARAUTO_CHECK,"Button",
@@ -4078,16 +4067,27 @@ BEGIN
                     ES_NUMBER,0,HIDC_CLEARAUTO_EDIT
     LTEXT           "sec.",IDC_CLEARAUTO_STATIC2,96,32,14,8,0,0,
                     HIDC_CLEARAUTO_STATIC2
+    GROUPBOX        "Auto complete",IDC_AUTOCOMPLETE_STATIC,0,52,136,56,0,0,
+                    HIDC_AUTOCOMPLETE_STATIC
+    CONTROL         "Use auto complete",IDC_USEAUTOCOMPLETE_CHECK,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,8,64,75,10,0,
+                    HIDC_USEAUTOCOMPLETE_CHECK
+    CONTROL         "Show full list",IDC_SHOWFULLLIST_RADIO,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP,16,80,55,10,0,
+                    HIDC_SHOWFULLLIST_RADIO
+    CONTROL         "Show nearest words only",IDC_SHOWNEARESTWORDSONLY_RADIO,
+                    "Button",BS_AUTORADIOBUTTON,16,92,92,10,0,
+                    HIDC_SHOWNEARESTWORDSONLY_RADIO
     GROUPBOX        "Margin",IDC_MARGIN_STATIC,144,52,148,56,0,0,
                     HIDC_MARGIN_STATIC
-    CONTROL         "Line number",IDC_MARGIN_LINENUMBER_CHECK,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,152,88,55,10,0,
-                    HIDC_MARGIN_LINENUMBER_CHECK
+    CONTROL         "Fold",IDC_MARGIN_FOLD_CHECK,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,152,64,29,10,0,HIDC_MARGIN_FOLD_CHECK
     CONTROL         "Bookmark",IDC_MARGIN_BOOKMARK_CHECK,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,152,76,48,10,0,
                     HIDC_MARGIN_BOOKMARK_CHECK
-    CONTROL         "Fold",IDC_MARGIN_FOLD_CHECK,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,152,64,29,10,0,HIDC_MARGIN_FOLD_CHECK
+    CONTROL         "Line number",IDC_MARGIN_LINENUMBER_CHECK,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,152,88,55,10,0,
+                    HIDC_MARGIN_LINENUMBER_CHECK
 END
 
 IDD_OPTIONS_GENERAL DIALOGEX 0, 0, 292, 138
@@ -4212,8 +4212,9 @@ END
 IDD_OPTIONS_TABS DIALOGEX 0, 0, 292, 121
 STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "Tabs"
-FONT 8, "MS Sans Serif", 0, 0, 0x1
+FONT 8, "MS Sans Serif"
 BEGIN
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDFRAME,0,8,292,88
     LTEXT           "Tab size",IDC_TABSIZE_STATIC,8,21,28,8,NOT WS_GROUP,0,
                     HIDC_TABSIZE_STATIC
     EDITTEXT        IDC_TABSIZE_EDIT,48,16,40,12,ES_AUTOHSCROLL | ES_NUMBER,
@@ -4236,7 +4237,6 @@ BEGIN
     CONTROL         "Auto indent",IDC_AUTOINDENT_CHECK,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,8,80,52,10,0,
                     HIDC_AUTOINDENT_CHECK
-    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDFRAME,0,8,292,88
 END
 
 IDD_MODEL_NEW DIALOG DISCARDABLE  0, 0, 238, 170

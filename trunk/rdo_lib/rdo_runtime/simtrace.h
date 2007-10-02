@@ -38,7 +38,7 @@ private:
 	std::list< int > freeOperationsIds;
 
 	int getFreeResourceId();
-	void freeResourceId(int id);
+	void eraseFreeResourceId( int id );
 	int getFreeOperationId(); 
 	void freeOperationId(int id);
 

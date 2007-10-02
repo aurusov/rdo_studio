@@ -35,52 +35,53 @@
 			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="&Atilde;&euml;&agrave;&acirc;&iacute;&icirc;&aring; &igrave;&aring;&iacute;&thorn;">
 				<param name="Local" value="html\work_menu_intro.htm">
+				<param name="ImageNumber" value="3">
 				</OBJECT>
 			<UL>
 				<LI> <OBJECT type="text/sitemap">
-					<param name="Name" value="&Igrave;&aring;&iacute;&thorn; File">
+					<param name="Name" value="&Igrave;&aring;&iacute;&thorn; Файл">
 					<param name="Local" value="html\work_menu_file.htm">
-					<param name="ImageNumber" value="11">
+					<param name="ImageNumber" value="12">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
-					<param name="Name" value="&Igrave;&aring;&iacute;&thorn; Edit">
+					<param name="Name" value="&Igrave;&aring;&iacute;&thorn; Правка">
 					<param name="Local" value="html\work_menu_edit.htm">
-					<param name="ImageNumber" value="11">
+					<param name="ImageNumber" value="12">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
-					<param name="Name" value="&Igrave;&aring;&iacute;&thorn; Search">
+					<param name="Name" value="&Igrave;&aring;&iacute;&thorn; Поиск">
 					<param name="Local" value="html\work_menu_search.htm">
-					<param name="ImageNumber" value="11">
+					<param name="ImageNumber" value="12">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
-					<param name="Name" value="&Igrave;&aring;&iacute;&thorn; View">
+					<param name="Name" value="&Igrave;&aring;&iacute;&thorn; Просмотр">
 					<param name="Local" value="html\work_menu_view.htm">
-					<param name="ImageNumber" value="11">
+					<param name="ImageNumber" value="12">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
-					<param name="Name" value="&Igrave;&aring;&iacute;&thorn; Insert">
+					<param name="Name" value="&Igrave;&aring;&iacute;&thorn; Вставка">
 					<param name="Local" value="html\work_menu_insert.htm">
-					<param name="ImageNumber" value="11">
+					<param name="ImageNumber" value="12">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
-					<param name="Name" value="&Igrave;&aring;&iacute;&thorn; Model">
+					<param name="Name" value="&Igrave;&aring;&iacute;&thorn; Модель">
 					<param name="Local" value="html\work_menu_model.htm">
-					<param name="ImageNumber" value="11">
+					<param name="ImageNumber" value="12">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
-					<param name="Name" value="&Igrave;&aring;&iacute;&thorn; Chart">
+					<param name="Name" value="&Igrave;&aring;&iacute;&thorn; График">
 					<param name="Local" value="html\work_menu_chart.htm">
-					<param name="ImageNumber" value="11">
+					<param name="ImageNumber" value="12">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
-					<param name="Name" value="&Igrave;&aring;&iacute;&thorn; Window">
+					<param name="Name" value="&Igrave;&aring;&iacute;&thorn; Окна">
 					<param name="Local" value="html\work_menu_window.htm">
-					<param name="ImageNumber" value="11">
+					<param name="ImageNumber" value="12">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
-					<param name="Name" value="&Igrave;&aring;&iacute;&thorn; Help">
+					<param name="Name" value="&Igrave;&aring;&iacute;&thorn; Помощь">
 					<param name="Local" value="html\work_menu_help.htm">
-					<param name="ImageNumber" value="11">
+					<param name="ImageNumber" value="12">
 					</OBJECT>
 			</UL>
 			<LI> <OBJECT type="text/sitemap">
@@ -117,7 +118,7 @@
 				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="&Ntilde;&icirc;&ccedil;&auml;&agrave;&iacute;&egrave;&aring;">
 					<param name="Local" value="html\work_model_creation.htm">
-					<param name="ImageNumber" value="11">
+					<param name="ImageNumber" value="12">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="&Icirc;&ograve;&ecirc;&eth;&ucirc;&ograve;&egrave;&aring;">
@@ -214,28 +215,33 @@
 			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="&Iacute;&agrave;&ntilde;&ograve;&eth;&icirc;&eacute;&ecirc;&egrave;">
 				<param name="Local" value="html\work_options.htm">
-				<param name="ImageNumber" value="2">
+				<param name="ImageNumber" value="3">
 				</OBJECT>
 			<UL>
 				<LI> <OBJECT type="text/sitemap">
-					<param name="Name" value="&Ccedil;&agrave;&ecirc;&euml;&agrave;&auml;&ecirc;&agrave; General">
+					<param name="Name" value="&Ccedil;&agrave;&ecirc;&euml;&agrave;&auml;&ecirc;&agrave; Основные">
 					<param name="Local" value="html\work_options_general.htm">
-					<param name="ImageNumber" value="11">
+					<param name="ImageNumber" value="12">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
-					<param name="Name" value="&Ccedil;&agrave;&ecirc;&euml;&agrave;&auml;&ecirc;&agrave; Editor">
+					<param name="Name" value="&Ccedil;&agrave;&ecirc;&euml;&agrave;&auml;&ecirc;&agrave; Редактор">
 					<param name="Local" value="html\work_options_editor.htm">
-					<param name="ImageNumber" value="11">
+					<param name="ImageNumber" value="12">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
-					<param name="Name" value="&Ccedil;&agrave;&ecirc;&euml;&agrave;&auml;&ecirc;&agrave; Tabs">
+					<param name="Name" value="&Ccedil;&agrave;&ecirc;&euml;&agrave;&auml;&ecirc;&agrave; Табуляция">
 					<param name="Local" value="html\work_options_tabs.htm">
-					<param name="ImageNumber" value="11">
+					<param name="ImageNumber" value="12">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
-					<param name="Name" value="&Ccedil;&agrave;&ecirc;&euml;&agrave;&auml;&ecirc;&agrave; Styles and Colors">
+					<param name="Name" value="&Ccedil;&agrave;&ecirc;&euml;&agrave;&auml;&ecirc;&agrave; Стиль и цвет">
 					<param name="Local" value="html\work_options_styles_and_color.htm">
-					<param name="ImageNumber" value="11">
+					<param name="ImageNumber" value="12">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="&Ccedil;&agrave;&ecirc;&euml;&agrave;&auml;&ecirc;&agrave; Внешние модули">
+					<param name="Local" value="html\work_options_plugins.htm">
+					<param name="ImageNumber" value="12">
 					</OBJECT>
 			</UL>
 			<LI> <OBJECT type="text/sitemap">

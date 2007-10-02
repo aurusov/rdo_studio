@@ -8,12 +8,12 @@ CFG=rdo_help_studio_rus - Win32 Release
 !MESSAGE This is not a valid makefile. To build this project using NMAKE,
 !MESSAGE use the Export Makefile command and run
 !MESSAGE 
-!MESSAGE NMAKE /f "rdo_help_studio_rus.mak".
+!MESSAGE NMAKE /f "rdo_studio_rus.mak".
 !MESSAGE 
 !MESSAGE You can specify a configuration when running NMAKE
 !MESSAGE by defining the macro CFG on the command line. For example:
 !MESSAGE 
-!MESSAGE NMAKE /f "rdo_help_studio_rus.mak" CFG="rdo_help_studio_rus - Win32 Release"
+!MESSAGE NMAKE /f "rdo_studio_rus.mak" CFG="rdo_help_studio_rus - Win32 Release"
 !MESSAGE 
 !MESSAGE Possible choices for configuration are:
 !MESSAGE 
@@ -266,6 +266,10 @@ SOURCE=.\html\work_options_general.htm
 # End Source File
 # Begin Source File
 
+SOURCE=.\html\work_options_plugins.htm
+# End Source File
+# Begin Source File
+
 SOURCE=.\html\work_options_styles_and_color.htm
 # End Source File
 # Begin Source File
@@ -402,19 +406,23 @@ SOURCE=.\images\next_bookmark.gif
 # End Source File
 # Begin Source File
 
-SOURCE=.\images\options_editor.gif
+SOURCE=.\images\options_editor.png
 # End Source File
 # Begin Source File
 
-SOURCE=.\images\options_general.gif
+SOURCE=.\images\options_general.png
 # End Source File
 # Begin Source File
 
-SOURCE=.\images\options_styles_and_color.gif
+SOURCE=.\images\options_plugins.png
 # End Source File
 # Begin Source File
 
-SOURCE=.\images\options_tabs.gif
+SOURCE=.\images\options_styles_and_color.png
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\options_tabs.png
 # End Source File
 # Begin Source File
 
