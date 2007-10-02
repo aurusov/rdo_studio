@@ -73,7 +73,7 @@ void RDOPROCProcess::next( RDOPROCTransact* transact )
 int RDOPROCTransact::typeID = -1;
 
 RDOPROCTransact::RDOPROCTransact( RDOSimulator* sim, RDOPROCBlock* _block ):
-	RDOResource( static_cast<RDORuntime*>(sim), -1 ),
+	RDOResource( static_cast<RDORuntime*>(sim), -1, true ),
 	block( _block )
 {
 	static_cast<RDORuntime*>(sim)->insertNewResource( this );
@@ -229,7 +229,7 @@ RDOBaseOperation::BOResult RDOPROCTerminate::checkOperation( RDOSimulator* sim )
 		if ( !tracer->isNull() ) {
 			tracer->getOStream() << transact->traceResourceState('\0', static_cast<RDORuntime*>(sim)) << tracer->getEOL();
 		}
-		static_cast<RDORuntime*>(sim)->onEraseRes( transact->number, NULL );
+		static_cast<RDORuntime*>(sim)->onEraseRes( transact->getTraceID(), NULL );
 		transacts.erase( transacts.begin() );
 		TRACE( "%7.1f TERMINATE\n", sim->getCurrentTime() );
 		return RDOBaseOperation::BOR_can_run;

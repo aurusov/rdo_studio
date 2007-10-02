@@ -63,7 +63,7 @@ void RDOSimulatorTrace::addTemplateBaseOperation( RDOBaseOperation* bop )
 
 void RDOSimulatorTrace::rdoInit()
 {
-	maxResourcesId = 1;
+	maxResourcesId = 0;
 	maxOperationId = 1;
 	RDOSimulator::rdoInit();
 }
@@ -71,8 +71,20 @@ void RDOSimulatorTrace::rdoInit()
 int RDOSimulatorTrace::getFreeResourceId()
 {
 	if ( freeResourcesIds.empty() ) {
-		return maxResourcesId++;
+		maxResourcesId++;
+		return maxResourcesId - 1;
 	} else {
+		std::list<int>::const_iterator it = freeResourcesIds.begin();
+		while ( it != freeResourcesIds.end() ) {
+			TRACE( "%d\n", *it );
+			it++;
+		}
+		freeResourcesIds.sort();
+		it = freeResourcesIds.begin();
+		while ( it != freeResourcesIds.end() ) {
+			TRACE( "%d\n", *it );
+			it++;
+		}
 		int id = freeResourcesIds.front();
 		freeResourcesIds.pop_front();
 		return id;
@@ -81,21 +93,21 @@ int RDOSimulatorTrace::getFreeResourceId()
 
 void RDOSimulatorTrace::eraseFreeResourceId( int id ) 
 {
-	MAPII::iterator it = resourcesIdsRefs.find(id);
+	MAPII::iterator it = resourcesIdsRefs.find( id );
 	if ( it != resourcesIdsRefs.end() ) {
 		if( --(*it).second >= 1 ) return;
-		resourcesIdsRefs.erase(it);
+		resourcesIdsRefs.erase( it );
 	}
-	freeResourcesIds.push_front(id); 
+	freeResourcesIds.push_back( id ); 
 }
 
-void RDOSimulatorTrace::incrementResourceIdReference(int id)
+void RDOSimulatorTrace::incrementResourceIdReference( int id )
 {
-	MAPII::iterator it = resourcesIdsRefs.find(id);
+	MAPII::iterator it = resourcesIdsRefs.find( id );
 	if ( it == resourcesIdsRefs.end() ) {
-		resourcesIdsRefs.insert(MAPII::value_type(id, 2));
+		resourcesIdsRefs.insert( MAPII::value_type(id, 2) );
 	} else {
-		(*it).second ++;
+		(*it).second++;
 	}
 }
 

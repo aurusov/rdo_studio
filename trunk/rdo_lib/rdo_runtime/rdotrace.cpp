@@ -253,7 +253,7 @@ void RDOTrace::writeAfterOperationEnd( RDOOperationTrace* op, RDOSimulatorTrace*
 	getOStream() << op->traceResourcesList( '\0', sim ) << getEOL();
 }
 
-RDOResourceTrace::RDOResourceTrace( RDOSimulatorTrace* i_sim, int _id ):
+RDOResourceTrace::RDOResourceTrace( RDOSimulatorTrace* i_sim, int _id, bool _tarce ):
 	RDOTraceableObject(i_sim),
 	state( RDOResourceTrace::CS_None ),
 	temporary( false )
@@ -264,9 +264,10 @@ RDOResourceTrace::RDOResourceTrace( RDOSimulatorTrace* i_sim, int _id ):
 	} else {
 		// Вызываем для увеличения счетчика maxResourcesId постоянных ресурсов
 		sim->getFreeResourceId();
-		id = _id + 1;
+		id = _id;
 	}
-	trace = false;
+	setTraceID( id, id + 1 );
+	trace = _tarce;
 }
 
 RDOResourceTrace::RDOResourceTrace( const RDOResourceTrace& orig ):

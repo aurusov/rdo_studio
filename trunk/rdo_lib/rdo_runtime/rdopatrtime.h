@@ -6,9 +6,6 @@
 #include "ietrace.h"
 #include "operationtrace.h"
 
-//class RDOSimulator;
-//class RDOResourceTrace;
-
 namespace rdoRuntime {
 
 class RDOCalc;

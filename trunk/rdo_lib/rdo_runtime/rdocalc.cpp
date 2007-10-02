@@ -291,9 +291,8 @@ RDOCalcCreateNumberedResource::RDOCalcCreateNumberedResource( RDORuntimeParent* 
 
 RDOValue RDOCalcCreateNumberedResource::calcValue( RDORuntime* runtime ) const
 {
-	RDOResource* res = runtime->createNewResource( number, isPermanent );
+	RDOResource* res = runtime->createNewResource( number, isPermanent, traceFlag );
 	res->type  = type;
-	res->trace = traceFlag;
 	res->params.insert( res->params.begin(), paramsCalcs.begin(), paramsCalcs.end() );
 	return RDOValue(1); // just to return something
 }
@@ -312,10 +311,9 @@ RDOCalcCreateEmptyResource::RDOCalcCreateEmptyResource( RDORuntimeParent* _paren
 
 RDOValue RDOCalcCreateEmptyResource::calcValue( RDORuntime* runtime ) const
 {
-	RDOResource* res = runtime->createNewResource();
-	runtime->setRelRes( rel_res_id, res->number );
+	RDOResource* res = runtime->createNewResource( traceFlag );
+	runtime->setRelRes( rel_res_id, res->getTraceID() );
 	res->type  = type;
-	res->trace = traceFlag;
 	res->params.insert( res->params.begin(), params_default.begin(), params_default.end() );
 	return RDOValue(1); // just to return something
 }
@@ -352,7 +350,7 @@ RDOValue RDOSelectResourceByTypeCalc::calcValue( RDORuntime* runtime ) const
 
 		if ( *it && (*it)->type == resType ) {
 
-			int res_id = (*it)->number;
+			int res_id = (*it)->getTraceID();
 
 			switch ( order_type ) {
 				case order_empty:
@@ -520,7 +518,7 @@ std::vector< int > RDOSelectResourceByTypeCommonCalc::getPossibleNumbers( RDORun
 		if((*it)->type != resType)
 			continue;
 
-		res.push_back((*it)->number);
+		res.push_back((*it)->getTraceID());
 	}
 
 	return res;

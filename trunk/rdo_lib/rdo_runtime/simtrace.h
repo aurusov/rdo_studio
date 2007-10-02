@@ -62,6 +62,8 @@ protected:
 		dptCounter( 1 ),
 		activityCounter( 1 ),
 		ieCounter( 1 ),
+		maxResourcesId( 0 ),
+		maxOperationId( 1 ),
 		memory_current( 0 ),
 		memory_max( 0 )
 	{

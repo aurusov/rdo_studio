@@ -15,10 +15,10 @@ namespace rdoRuntime
 class RDOResource: public RDOResourceTrace
 {
 public:
-	RDOResource( RDORuntime* rt, int _number );
+	RDOResource( RDORuntime* rt, int _number, bool _trace );
 	virtual ~RDOResource();
 
-	int number; // unique for all resources alive in system
+//	int number; // unique for all resources alive in system
 	int type;
 	int referenceCount;
 	std::vector< RDOValue > params;
@@ -89,9 +89,9 @@ friend class RDOPMDWatchPar;
 friend class RDOPMDWatchState;
 
 private:
-	std::vector< RDOResource* > allResourcesByID;     // Все ресурсы симулятора, даже NULL (NULL стоит на месте уже удаленного временного ресурса)
-	std::list  < RDOResource* > allResourcesByTime;   // Они же, только упорядочены по времени создания и без NULL-ов
-	std::list  < RDOResource* > allResourcesBeforSim; // Они же, только упорядочены по типу перед запуском
+	std::vector< RDOResource* > allResourcesByID;      // Все ресурсы симулятора, даже NULL (NULL стоит на месте уже удаленного временного ресурса)
+	std::list  < RDOResource* > allResourcesByTime;    // Они же, только упорядочены по времени создания и без NULL-ов
+	std::list  < RDOResource* > allResourcesBeforeSim; // Они же, только упорядочены по типу перед запуском
 	RDOTrace* tracer;
 	std::list< RDOCalc* > initCalcs;
 
@@ -119,8 +119,8 @@ private:
 
 	virtual std::list< RDOResourceTrace* > getResourcesBeforeSim() const {
 		std::list< RDOResourceTrace* > list;
-		std::list< RDOResource* >::const_iterator it = allResourcesBeforSim.begin();
-		while ( it != allResourcesBeforSim.end() ) {
+		std::list< RDOResource* >::const_iterator it = allResourcesBeforeSim.begin();
+		while ( it != allResourcesBeforeSim.end() ) {
 			list.push_back( *it );
 			it++;
 		}
@@ -217,8 +217,8 @@ public:
 	void setRelRes( int rel_res_id, int res_id )     { currActivity->setRelRes( rel_res_id, res_id );     }
 
 	void onEraseRes( const int res_id, const RDOCalcEraseRes* calc );
-	RDOResource* createNewResource();
-	RDOResource* createNewResource( int number, bool isPermanent );
+	RDOResource* createNewResource( bool trace );
+	RDOResource* createNewResource( int number, bool isPermanent, bool trace );
 	void insertNewResource( RDOResource* res );
 	RDORuntime();
 	~RDORuntime();

@@ -89,14 +89,35 @@ friend class RDORuntime;
 friend class RDOTrace;
 
 protected:
-	int id;
-	RDOSimulatorTrace* sim;
-	RDOTraceableObject( RDOSimulatorTrace* _sim ): id( -1 ), sim( _sim ) { trace = false; }
+	RDOSimulatorTrace*  sim;
+	bool                trace;
+	int                 id;
+	mutable std::string str_id;
+
+	RDOTraceableObject( RDOSimulatorTrace* _sim ):
+		sim( _sim ),
+		trace( false ),
+		id( -1 ),
+		str_id( "" )
+	{
+	}
+	virtual ~RDOTraceableObject()
+	{
+	}
 
 public:
-	bool trace;
-	virtual std::string traceId() const { return toString( id ); }
-	int getTraceID() const { return id; }
+	bool isTrace() const                { return trace; }
+	int getTraceID() const              { return id;    }
+	std::string& traceId() const {
+		if ( str_id.empty() ) {
+			str_id = toString( id );
+		}
+		return str_id;
+	}
+	void setTraceID( int _id, int _str_id ) {
+		id     = _id;
+		str_id = toString( _str_id );
+	}
 };
 
 class RDOPatternTrace
@@ -131,7 +152,7 @@ private:
 	std::string traceTypeId() { return typeId.empty()?(typeId=getTypeId()):typeId; }
 
 protected:
-	RDOResourceTrace( RDOSimulatorTrace* sim, int _id );
+	RDOResourceTrace( RDOSimulatorTrace* sim, int _id, bool _tarce );
 	RDOResourceTrace( const RDOResourceTrace& orig );
 	virtual ~RDOResourceTrace();
 
@@ -164,6 +185,6 @@ public:
 	virtual std::string traceValue() = 0;
 };
 
-} // namespace rdoRuntime;
+} // namespace rdoRuntime
 
 #endif // RDOTRACE_H

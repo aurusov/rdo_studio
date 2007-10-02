@@ -20,9 +20,9 @@ namespace rdoRuntime
 // ----------------------------------------------------------------------------
 // ---------- RDOResource
 // ----------------------------------------------------------------------------
-RDOResource::RDOResource( RDORuntime* rt, int _number ):
-	RDOResourceTrace( rt, _number ),
-	number( _number ),
+RDOResource::RDOResource( RDORuntime* rt, int _number, bool _trace ):
+	RDOResourceTrace( rt, _number, _trace ),
+//	number( _number ),
 	type( 0 ),
 	referenceCount( 0 )
 {
@@ -183,21 +183,26 @@ void RDORuntime::onEraseRes( const int res_id, const RDOCalcEraseRes* calc )
 	}
 }
 
-RDOResource* RDORuntime::createNewResource()
+RDOResource* RDORuntime::createNewResource( bool trace )
 {
-	RDOResource* res = new RDOResource( this, -1 );
+	RDOResource* res = new RDOResource( this, -1, trace );
 
 	std::vector< RDOResource* >::iterator it = std::find( allResourcesByID.begin(), allResourcesByID.end(), static_cast<RDOResource*>(NULL) );
 	// Ќашли дырку в последовательности ресурсов
 	if ( it != allResourcesByID.end() ) {
 //		res->number = (it - allResourcesByID.begin());
 //		res->id = res->number + 1;
-		res->number = res->id - 1;
+//		res->number = res->id - 1;
+
+//		ѕосле удалени€ 10-го ресурса и создании нового с номером 10 итератор возвращает указатель на 5-ый,
+//		т.е. рассинхронизировались allResourcesByID и getFreeResourceId()
+
+		int number = (it - allResourcesByID.begin());
 		(*it) = res;
 	} else {
 //		res->number = allResourcesByID.size();
 //		res->id = res->number + 1;
-		res->number = res->id - 1;
+//		res->number = res->id - 1;
 		allResourcesByID.push_back( res );
 	}
 	allResourcesByTime.push_back( res );
@@ -206,7 +211,7 @@ RDOResource* RDORuntime::createNewResource()
 
 // ¬ызываетс€ только дл€ ресурсов из RSS, во врем€ прогона вызыват нельз€ из-за allResourcesByTime
 // (его недо раскомментировать, но тогда он не будет работать дл€ RSS)
-RDOResource* RDORuntime::createNewResource( int number, bool isPermanent )
+RDOResource* RDORuntime::createNewResource( int number, bool isPermanent, bool trace )
 {
 	if ( allResourcesByID.size() <= number + 1 ) {
 		allResourcesByID.resize( number + 1, NULL );
@@ -214,10 +219,10 @@ RDOResource* RDORuntime::createNewResource( int number, bool isPermanent )
 	if ( allResourcesByID.at(number) != NULL ) {
 		throw RDOInternalException( "internal error N 0010" );
 	}
-	RDOResource* res = new RDOResource( this, number );
+	RDOResource* res = new RDOResource( this, number, trace );
 	allResourcesByID.at(number) = res;
 //	allResourcesByTime.push_back( res );
-	allResourcesBeforSim.push_back( res );
+	allResourcesBeforeSim.push_back( res );
 	if( !isPermanent ) {
 		res->makeTemporary( true );
 	}
