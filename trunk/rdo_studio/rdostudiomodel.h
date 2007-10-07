@@ -51,7 +51,6 @@ private:
 	mutable bool openError;
 	mutable bool smrEmptyError;
 	mutable bool modelClosed;
-	mutable bool saveAsFlag;
 
 	bool frmDescribed;
 	double timeNow;

@@ -28,7 +28,7 @@ str += '</TR></TABLE>';
 document.write(str);
 var an = document.anchors[len-1];
 var rf = an.name.split(";");
-str = '<DIV class="footer">';
+str = '<TABLE class="navigation" cellpadding="0"><TR class="navigation"><TD class="navigation" align=left width="26">&nbsp;</TD></TR></TABLE><DIV class="footer">';
 if ( rf[0] == 'title' ) {
 	str += rf[1];
 	str += '.<BR>';

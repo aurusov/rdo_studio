@@ -114,15 +114,7 @@ SOURCE=.\html\rdo_lang_help.htm
 # End Source File
 # Begin Source File
 
-SOURCE=.\html\work_exit.htm
-# End Source File
-# Begin Source File
-
 SOURCE=.\html\work_help.htm
-# End Source File
-# Begin Source File
-
-SOURCE=.\html\work_install.htm
 # End Source File
 # Begin Source File
 
@@ -178,15 +170,7 @@ SOURCE=.\html\work_model_buffer.htm
 # End Source File
 # Begin Source File
 
-SOURCE=.\html\work_model_chart_main.htm
-# End Source File
-# Begin Source File
-
-SOURCE=.\html\work_model_chart_opt_c.htm
-# End Source File
-# Begin Source File
-
-SOURCE=.\html\work_model_chart_opt_s.htm
+SOURCE=.\html\work_model_chart.htm
 # End Source File
 # Begin Source File
 
@@ -203,10 +187,6 @@ SOURCE=.\html\work_model_edit.htm
 # Begin Source File
 
 SOURCE=.\html\work_model_find_in_model.htm
-# End Source File
-# Begin Source File
-
-SOURCE=.\html\work_model_folds.htm
 # End Source File
 # Begin Source File
 
@@ -238,19 +218,11 @@ SOURCE=.\html\work_model_save.htm
 # End Source File
 # Begin Source File
 
-SOURCE=.\html\work_model_scale.htm
-# End Source File
-# Begin Source File
-
 SOURCE=.\html\work_model_search_replace.htm
 # End Source File
 # Begin Source File
 
 SOURCE=.\html\work_model_tabsheets.htm
-# End Source File
-# Begin Source File
-
-SOURCE=.\html\work_model_view.htm
 # End Source File
 # Begin Source File
 
@@ -280,22 +252,6 @@ SOURCE=.\html\work_options_tabs.htm
 
 SOURCE=.\html\work_run.htm
 # End Source File
-# Begin Source File
-
-SOURCE=.\html\work_status_bar.htm
-# End Source File
-# Begin Source File
-
-SOURCE=.\html\work_windows.htm
-# End Source File
-# Begin Source File
-
-SOURCE=.\html\work_windows_output.htm
-# End Source File
-# Begin Source File
-
-SOURCE=.\html\work_windows_workspace.htm
-# End Source File
 # End Group
 # Begin Group "Images Files"
 
@@ -306,7 +262,7 @@ SOURCE=.\images\bmstu.gif
 # End Source File
 # Begin Source File
 
-SOURCE=.\images\bookmark_margin.gif
+SOURCE=.\images\bookmark_margin.png
 # End Source File
 # Begin Source File
 
@@ -314,19 +270,27 @@ SOURCE=.\images\bookmark_no_margin.gif
 # End Source File
 # Begin Source File
 
-SOURCE=.\images\chart_main_view.gif
+SOURCE=.\images\chart.png
 # End Source File
 # Begin Source File
 
-SOURCE=.\images\chart_window_chart.gif
+SOURCE=.\images\chart_main_view1.png
 # End Source File
 # Begin Source File
 
-SOURCE=.\images\chart_window_series.gif
+SOURCE=.\images\chart_main_view2.png
 # End Source File
 # Begin Source File
 
-SOURCE=.\images\code_completion.gif
+SOURCE=.\images\chart_main_view3.png
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\chart_option_chart.png
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\chart_option_series.png
 # End Source File
 # Begin Source File
 
@@ -334,7 +298,35 @@ SOURCE=.\images\context_help.gif
 # End Source File
 # Begin Source File
 
+SOURCE=.\images\edit_case_lower.png
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\edit_case_normal.png
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\edit_case_upper.png
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\edit_comment1.png
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\edit_comment2.png
+# End Source File
+# Begin Source File
+
 SOURCE=.\images\edit_copy.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\edit_copy_as_rtf1.png
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\edit_copy_as_rtf2.png
 # End Source File
 # Begin Source File
 
@@ -350,7 +342,15 @@ SOURCE=.\images\edit_redo.gif
 # End Source File
 # Begin Source File
 
+SOURCE=.\images\edit_statusbar.gif
+# End Source File
+# Begin Source File
+
 SOURCE=.\images\edit_undo.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\example_border.psd
 # End Source File
 # Begin Source File
 
@@ -370,19 +370,31 @@ SOURCE=.\images\file_save.gif
 # End Source File
 # Begin Source File
 
-SOURCE=.\images\find_in_model_dlg.gif
+SOURCE=.\images\file_save_all.gif
 # End Source File
 # Begin Source File
 
-SOURCE=.\images\find_in_model_results.gif
+SOURCE=.\images\find_in_model_dlg.png
 # End Source File
 # Begin Source File
 
-SOURCE=.\images\fold.gif
+SOURCE=.\images\find_in_model_results.png
 # End Source File
 # Begin Source File
 
-SOURCE=.\images\frame.gif
+SOURCE=.\images\fold_all.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\fold_one.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\frame.png
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\frame_list.png
 # End Source File
 # Begin Source File
 
@@ -394,7 +406,35 @@ SOURCE=.\images\frame_prev.gif
 # End Source File
 # Begin Source File
 
-SOURCE=.\images\insert_buffer_edit.gif
+SOURCE=.\images\help_contents1.png
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\help_contents2.png
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\help_contents_options1.png
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\help_contents_options2.png
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\insert_buffer_edit.png
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\insert_buffer_menu.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\insert_template1.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\insert_template2.png
 # End Source File
 # Begin Source File
 
@@ -402,11 +442,143 @@ SOURCE=.\images\main_win.gif
 # End Source File
 # Begin Source File
 
-SOURCE=.\images\next_bookmark.gif
+SOURCE=.\images\main_win.png
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\menu.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\menu_chart.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\menu_edit.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\menu_file.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\menu_help.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\menu_insert.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\menu_model.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\menu_search.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\menu_view.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\menu_windows.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\model_compiled.png
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\model_compiled_error.png
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\model_compiled_warning1.png
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\model_compiled_warning2.png
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\model_open1.png
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\model_open2.png
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\model_open_error.png
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\model_reopen.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\model_run.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\model_save.png
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\model_stop.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\model_tabsheets.png
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\model_wizard.png
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\model_wizard_directory.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\model_wizard_directory.png
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\model_wizard_sample.png
 # End Source File
 # Begin Source File
 
 SOURCE=.\images\options_editor.png
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\options_editor_autocomp_full.png
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\options_editor_autocomp_nearest.png
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\options_editor_bookmark_off.png
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\options_editor_bookmark_on.png
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\options_editor_fold_off.png
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\options_editor_fold_on.png
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\options_editor_linenumber_on.png
 # End Source File
 # Begin Source File
 
@@ -426,27 +598,59 @@ SOURCE=.\images\options_tabs.png
 # End Source File
 # Begin Source File
 
-SOURCE=.\images\previous_bookmark.gif
+SOURCE=.\images\panel_output_compiler.gif
 # End Source File
 # Begin Source File
 
-SOURCE=.\images\progon_animation.gif
+SOURCE=.\images\panel_output_debug.gif
 # End Source File
 # Begin Source File
 
-SOURCE=.\images\progon_monitor.gif
+SOURCE=.\images\panel_output_find.gif
 # End Source File
 # Begin Source File
 
-SOURCE=.\images\progon_noshow.gif
+SOURCE=.\images\panel_output_results.gif
 # End Source File
 # Begin Source File
 
-SOURCE=.\images\rdo_run.gif
+SOURCE=.\images\panel_output_trace.gif
 # End Source File
 # Begin Source File
 
-SOURCE=.\images\rdo_stop.gif
+SOURCE=.\images\panel_workspace_chart.png
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\panel_workspace_frame.png
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\progon_jump.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\progon_maxspeed.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\progon_pause.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\progon_speed.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\progon_statusbar.png
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\progon_sync.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\results.png
 # End Source File
 # Begin Source File
 
@@ -454,7 +658,15 @@ SOURCE=.\images\search_find.gif
 # End Source File
 # Begin Source File
 
-SOURCE=.\images\search_find_dlg.gif
+SOURCE=.\images\search_find_dlg.png
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\search_next_bookmark.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\search_previous_bookmark.gif
 # End Source File
 # Begin Source File
 
@@ -462,7 +674,7 @@ SOURCE=.\images\search_replace.gif
 # End Source File
 # Begin Source File
 
-SOURCE=.\images\search_replace_dlg.gif
+SOURCE=.\images\search_replace_dlg.png
 # End Source File
 # Begin Source File
 
@@ -480,10 +692,50 @@ SOURCE=.\images\tempo_plus.gif
 
 SOURCE=.\images\tempo_plus4.gif
 # End Source File
+# Begin Source File
+
+SOURCE=.\images\trace.png
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\view_endofline.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\view_panel_object.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\view_panel_output.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\view_whitespace.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\view_zoom_auto.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\view_zoom_in.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\view_zoom_out.gif
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\view_zoom_reset.gif
+# End Source File
 # End Group
 # Begin Group "Scripts"
 
 # PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=..\shared\scripts\footer_raostudio.js
+# End Source File
 # Begin Source File
 
 SOURCE=..\shared\scripts\navbar.js

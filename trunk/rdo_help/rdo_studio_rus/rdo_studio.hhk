@@ -58,11 +58,6 @@
 		<param name="Local" value="html\intro.htm#comp_list">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="&oacute;&ntilde;&ograve;&agrave;&iacute;&icirc;&acirc;&ecirc;&agrave;">
-		<param name="Name" value="Установка программного комплекса">
-		<param name="Local" value="html\work_install.htm">
-		</OBJECT>
-	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="&ccedil;&agrave;&iuml;&oacute;&ntilde;&ecirc;">
 		<param name="Name" value="Запуск программного комплекса">
 		<param name="Local" value="html\work_run.htm">
@@ -72,7 +67,7 @@
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="&atilde;&eth;&agrave;&ocirc;&egrave;&ecirc;&egrave;">
 		<param name="Name" value="Автоматическое построение графиков">
-		<param name="Local" value="html\work_model_chart_main.htm">
+		<param name="Local" value="html\work_model_chart.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="PAT">
@@ -84,8 +79,6 @@
 		<param name="Local" value="html\work_menu_insert.htm">
 		<param name="Name" value="Шаблоны и вставка синтаксических конструкций">
 		<param name="Local" value="html\work_model_insert.htm">
-		<param name="Name" value="Скрытие фрагментов текста">
-		<param name="Local" value="html\work_model_folds.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="RTP">
@@ -97,8 +90,6 @@
 		<param name="Local" value="html\work_menu_insert.htm">
 		<param name="Name" value="Шаблоны и вставка синтаксических конструкций">
 		<param name="Local" value="html\work_model_insert.htm">
-		<param name="Name" value="Скрытие фрагментов текста">
-		<param name="Local" value="html\work_model_folds.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="RSS">
@@ -110,8 +101,6 @@
 		<param name="Local" value="html\work_menu_insert.htm">
 		<param name="Name" value="Шаблоны и вставка синтаксических конструкций">
 		<param name="Local" value="html\work_model_insert.htm">
-		<param name="Name" value="Скрытие фрагментов текста">
-		<param name="Local" value="html\work_model_folds.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="OPR">
@@ -121,8 +110,6 @@
 		<param name="Local" value="html\work_model_tabsheets.htm">
 		<param name="Name" value="Меню Вставка">
 		<param name="Local" value="html\work_menu_insert.htm">
-		<param name="Name" value="Скрытие фрагментов текста">
-		<param name="Local" value="html\work_model_folds.htm">
 		<param name="Name" value="Шаблоны и вставка синтаксических конструкций">
 		<param name="Local" value="html\work_model_insert.htm">
 		</OBJECT>
@@ -134,8 +121,6 @@
 		<param name="Local" value="html\work_model_tabsheets.htm">
 		<param name="Name" value="Меню Вставка">
 		<param name="Local" value="html\work_menu_insert.htm">
-		<param name="Name" value="Скрытие фрагментов текста">
-		<param name="Local" value="html\work_model_folds.htm">
 		<param name="Name" value="Шаблоны и вставка синтаксических конструкций">
 		<param name="Local" value="html\work_model_insert.htm">
 		</OBJECT>
@@ -147,8 +132,6 @@
 		<param name="Local" value="html\work_model_tabsheets.htm">
 		<param name="Name" value="Меню Вставка">
 		<param name="Local" value="html\work_menu_insert.htm">
-		<param name="Name" value="Скрытие фрагментов текста">
-		<param name="Local" value="html\work_model_folds.htm">
 		<param name="Name" value="Шаблоны и вставка синтаксических конструкций">
 		<param name="Local" value="html\work_model_insert.htm">
 		</OBJECT>
@@ -160,8 +143,6 @@
 		<param name="Local" value="html\work_model_tabsheets.htm">
 		<param name="Name" value="Меню Вставка">
 		<param name="Local" value="html\work_menu_insert.htm">
-		<param name="Name" value="Скрытие фрагментов текста">
-		<param name="Local" value="html\work_model_folds.htm">
 		<param name="Name" value="Шаблоны и вставка синтаксических конструкций">
 		<param name="Local" value="html\work_model_insert.htm">
 		</OBJECT>
@@ -184,19 +165,17 @@
 		<param name="Local" value="html\work_model_tabsheets.htm">
 		<param name="Name" value="Меню Вставка">
 		<param name="Local" value="html\work_menu_insert.htm">
-		<param name="Name" value="Скрытие фрагментов текста">
-		<param name="Local" value="html\work_model_folds.htm">
 		<param name="Name" value="Шаблоны и вставка синтаксических конструкций">
 		<param name="Local" value="html\work_model_insert.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="PMV">
-		<param name="Name" value="Просмотр результатов моделирования">
+		<param name="Name" value="Результаты моделирования">
 		<param name="Local" value="html\work_model_results.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="TRC">
-		<param name="Name" value="Просмотр результатов моделирования">
+		<param name="Name" value="Результаты моделирования">
 		<param name="Local" value="html\work_model_results.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
@@ -304,27 +283,18 @@
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="&eth;&aring;&ccedil;&oacute;&euml;&uuml;&ograve;&agrave;&ograve;&ucirc; &igrave;&icirc;&auml;&aring;&euml;&egrave;&eth;&icirc;&acirc;&agrave;&iacute;&egrave;&yuml;">
-		<param name="Name" value="Просмотр результатов моделирования">
+		<param name="Name" value="Результаты моделирования">
 		<param name="Local" value="html\work_model_results.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="&ntilde;&ecirc;&eth;&ucirc;&ograve;&egrave;&aring; &ocirc;&eth;&agrave;&atilde;&igrave;&aring;&iacute;&ograve;&icirc;&acirc; &ograve;&aring;&ecirc;&ntilde;&ograve;&agrave;">
 		<param name="Name" value="Меню Просмотр">
 		<param name="Local" value="html\work_menu_view.htm">
-		<param name="Name" value="Скрытие фрагментов текста">
-		<param name="Local" value="html\work_model_folds.htm">
-		</OBJECT>
-	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="&igrave;&agrave;&ntilde;&oslash;&ograve;&agrave;&aacute;&egrave;&eth;&icirc;&acirc;&agrave;&iacute;&egrave;&aring; &ograve;&aring;&ecirc;&ntilde;&ograve;&agrave;">
-		<param name="Name" value="Масштабирование текста">
-		<param name="Local" value="html\work_model_scale.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="&oacute;&iuml;&eth;&agrave;&acirc;&euml;&aring;&iacute;&egrave;&aring; &icirc;&ograve;&icirc;&aacute;&eth;&agrave;&aelig;&aring;&iacute;&egrave;&aring;&igrave; &ograve;&aring;&ecirc;&ntilde;&ograve;&agrave;">
 		<param name="Name" value="Меню Просмотр">
 		<param name="Local" value="html\work_menu_view.htm">
-		<param name="Name" value="Управление отображением текста">
-		<param name="Local" value="html\work_model_view.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="&iacute;&agrave;&ntilde;&ograve;&eth;&icirc;&eacute;&ecirc;&egrave;">
@@ -379,20 +349,13 @@
 		<param name="Name" value="&ccedil;&agrave;&acirc;&aring;&eth;&oslash;&aring;&iacute;&egrave;&aring; &eth;&agrave;&aacute;&icirc;&ograve;&ucirc;">
 		<param name="Name" value="Меню Файл">
 		<param name="Local" value="html\work_menu_file.htm#file_exit">
-		<param name="Name" value="Завершение работы">
-		<param name="Local" value="html\work_exit.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="&iuml;&icirc;&euml;&aring;">
 		<param name="Name" value="Закладки окна модели">
 		<param name="Local" value="html\work_model_tabsheets.htm#margin">
 		<param name="Name" value="Меню Просмотр">
-		<param name="Local" value="html\work_menu_view.htm#view_margin">
-		</OBJECT>
-	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="&ntilde;&ograve;&eth;&icirc;&ecirc;&agrave; &ntilde;&icirc;&ntilde;&ograve;&icirc;&yuml;&iacute;&egrave;&yuml;">
-		<param name="Name" value="Строка состояния">
-		<param name="Local" value="html\work_status_bar.htm">
+		<param name="Local" value="html\work_menu_view.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="&acirc;&ucirc;&auml;&aring;&euml;&aring;&iacute;&egrave;&aring; &ograve;&aring;&ecirc;&ntilde;&ograve;&agrave;">
@@ -463,8 +426,6 @@
 		<param name="Name" value="&igrave;&agrave;&eth;&ecirc;&aring;&eth;">
 		<param name="Name" value="Навигация с помощью закладок">
 		<param name="Local" value="html\work_model_bookmarks.htm#marker">
-		<param name="Name" value="Скрытие фрагментов текста">
-		<param name="Local" value="html\work_model_folds.htm#marker">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="&Dstrok;&Auml;&Icirc;-&egrave;&igrave;&egrave;&ograve;&agrave;&ograve;&icirc;&eth;">
@@ -519,8 +480,6 @@
 			<param name="Name" value="Файл">
 			<param name="Name" value="Меню Файл">
 			<param name="Local" value="html\work_menu_file.htm">
-			<param name="Name" value="Завершение работы">
-			<param name="Local" value="html\work_exit.htm">
 			<param name="Name" value="Открытие модели">
 			<param name="Local" value="html\work_model_open.htm">
 			<param name="Name" value="Создание модели">
@@ -552,7 +511,7 @@
 			<param name="Local" value="html\work_model_run.htm">
 			<param name="Name" value="Меню Модель">
 			<param name="Local" value="html\work_menu_model.htm">
-			<param name="Name" value="Просмотр результатов моделирования">
+			<param name="Name" value="Результаты моделирования">
 			<param name="Local" value="html\work_model_results.htm">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
@@ -561,10 +520,6 @@
 			<param name="Local" value="html\work_menu_view.htm">
 			<param name="Name" value="Настройки">
 			<param name="Local" value="html\work_options.htm">
-			<param name="Name" value="Скрытие фрагментов текста">
-			<param name="Local" value="html\work_model_folds.htm">
-			<param name="Name" value="Управление отображением текста">
-			<param name="Local" value="html\work_model_view.htm">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Вставка">
@@ -677,27 +632,18 @@
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="&eth;&aring;&ccedil;&oacute;&euml;&uuml;&ograve;&agrave;&ograve;&ucirc;">
-			<param name="Name" value="Просмотр результатов моделирования">
+			<param name="Name" value="Результаты моделирования">
 			<param name="Local" value="html\work_model_results.htm">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="&ntilde;&ecirc;&eth;&ucirc;&ograve;&egrave;&aring; &ocirc;&eth;&agrave;&atilde;&igrave;&aring;&iacute;&ograve;&icirc;&acirc; &ograve;&aring;&ecirc;&ntilde;&ograve;&agrave;">
 			<param name="Name" value="Меню Просмотр">
 			<param name="Local" value="html\work_menu_view.htm">
-			<param name="Name" value="Скрытие фрагментов текста">
-			<param name="Local" value="html\work_model_folds.htm">
-			</OBJECT>
-		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="&igrave;&agrave;&ntilde;&oslash;&ograve;&agrave;&aacute;&egrave;&eth;&icirc;&acirc;&agrave;&iacute;&egrave;&aring; &ograve;&aring;&ecirc;&ntilde;&ograve;&agrave;">
-			<param name="Name" value="Масштабирование текста">
-			<param name="Local" value="html\work_model_scale.htm">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="&icirc;&ograve;&icirc;&aacute;&eth;&agrave;&aelig;&aring;&iacute;&egrave;&aring; &ograve;&aring;&ecirc;&ntilde;&ograve;&agrave;">
 			<param name="Name" value="Меню Просмотр">
 			<param name="Local" value="html\work_menu_view.htm">
-			<param name="Name" value="Управление отображением текста">
-			<param name="Local" value="html\work_model_view.htm">
 			</OBJECT>
 	</UL>
 </UL>

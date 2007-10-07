@@ -17,11 +17,8 @@ main=,"rdo_studio.hhc","rdo_studio.hhk","html\intro.htm",,,,,,0x23520,,0x304e,,,
 
 
 [FILES]
-html\work_status_bar.htm
 html\intro.htm
-html\work_exit.htm
 html\work_help.htm
-html\work_install.htm
 html\work_intro.htm
 html\work_menu_edit.htm
 html\work_menu_file.htm
@@ -35,15 +32,12 @@ html\work_model_buffer.htm
 html\work_model_complete.htm
 html\work_model_creation.htm
 html\work_model_edit.htm
-html\work_model_folds.htm
 html\work_model_insert.htm
 html\work_model_open.htm
 html\work_model_results.htm
 html\work_model_run.htm
 html\work_model_save.htm
-html\work_model_scale.htm
 html\work_model_search_replace.htm
-html\work_model_view.htm
 html\work_options.htm
 html\work_run.htm
 html\about.htm
@@ -60,16 +54,12 @@ html\rdo_lang_help.htm
 ..\shared\images\section_top.gif
 ..\shared\images\next_section.gif
 ..\shared\scripts\navbar.js
+..\shared\scripts\footer_raostudio.js
 ..\shared\styles\styles.css
 html\work_menu_model.htm
 html\work_model_tabsheets.htm
 html\work_model_find_in_model.htm
-html\work_model_chart_opt_s.htm
-html\work_model_chart_opt_c.htm
-html\work_model_chart_main.htm
-html\work_windows.htm
-html\work_windows_output.htm
-html\work_windows_workspace.htm
+html\work_model_chart.htm
 html\work_options_tabs.htm
 html\work_options_general.htm
 html\work_options_styles_and_color.htm

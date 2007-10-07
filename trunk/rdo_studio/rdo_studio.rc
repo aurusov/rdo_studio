@@ -133,7 +133,7 @@ END
 IDD_OPTIONS_EDITOR DIALOGEX 0, 0, 292, 138
 STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "Редактор"
-FONT 8, "MS Sans Serif"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     GROUPBOX        "Буфер",IDC_BUFFERS_STATIC,0,4,292,43,0,0,
                     HIDC_BUFFERS_STATIC
@@ -277,7 +277,7 @@ END
 IDD_OPTIONS_TABS DIALOGEX 0, 0, 292, 121
 STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "Табуляция"
-FONT 8, "MS Sans Serif"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDFRAME,0,8,292,88
     LTEXT           "Размер табуляции",IDC_TABSIZE_STATIC,8,21,64,8,NOT 
@@ -1097,6 +1097,8 @@ BEGIN
 
             MENUITEM "Round",                       ID_INSERT_FUNCTIONS_ROUND
 
+            MENUITEM "Select",                      ID_INSERT_FUNCTIONS_SELECT
+
             MENUITEM "Sin",                         ID_INSERT_FUNCTIONS_SIN
             MENUITEM "Sqrt",                        ID_INSERT_FUNCTIONS_SQRT
             MENUITEM "Tan",                         ID_INSERT_FUNCTIONS_TAN
@@ -1152,7 +1154,7 @@ BEGIN
         MENUITEM "Уменьшить масштаб\tAlt+Num-", ID_MODEL_SHOWRATE_DEC
         MENUITEM SEPARATOR
         MENUITEM "След. кадр анимации",         ID_MODEL_FRAME_NEXT
-        MENUITEM "Перд. кадр анимации",         ID_MODEL_FRAME_PREV
+        MENUITEM "Пред. кадр анимации",         ID_MODEL_FRAME_PREV
     END
     POPUP "&График"
     BEGIN
@@ -1171,7 +1173,7 @@ BEGIN
     END
     POPUP "Помо&щь"
     BEGIN
-        MENUITEM "&Содержание",                 ID_HELP_CONTENTS
+        MENUITEM "&Содержание\tF1",             ID_HELP_CONTENTS
         MENUITEM SEPARATOR
         MENUITEM "&О программе...",             ID_APP_ABOUT
     END
@@ -1327,8 +1329,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,8,0,598
- PRODUCTVERSION 0,8,0,598
+ FILEVERSION 0,8,0,609
+ PRODUCTVERSION 0,8,0,609
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -1346,14 +1348,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "RAO studio\0"
-            VALUE "FileVersion", "0, 8, 0, 598\0"
+            VALUE "FileVersion", "0, 8, 0, 609\0"
             VALUE "InternalName", "RAO-Studio\0"
             VALUE "LegalCopyright", "Copyright (C) 2003-2006\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "RAO-Studio.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "RAO-Studio\0"
-            VALUE "ProductVersion", "0, 8, 0, 598\0"
+            VALUE "ProductVersion", "0, 8, 0, 609\0"
             VALUE "SpecialBuild", "\0"
         END
     END
@@ -3713,7 +3715,7 @@ BEGIN
     ID_MODEL_SHOWRATE_INCFOUR "\nУвеличить масштаб в 4-ре раза"
     ID_MODEL_SHOWRATE_DECFOUR "\nУменьшить масштаб в 4-ре раза"
     ID_MODEL_SHOWRATE_DEC   "\nУменьшить масштаб (Alt+Num-)"
-    ID_MODEL_FRAME_PREV     "\nПерд. кадр анимации"
+    ID_MODEL_FRAME_PREV     "\nПред. кадр анимации"
     ID_MODEL_FRAME_NEXT     "\nСлед. кадр анимации"
     IDS_ERROR               "ошибка C%04d"
     IDS_WARNING             "предупреждение C%04d"
@@ -4054,7 +4056,7 @@ END
 IDD_OPTIONS_EDITOR DIALOGEX 0, 0, 292, 138
 STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "Editor"
-FONT 8, "MS Sans Serif"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     GROUPBOX        "Buffers",IDC_BUFFERS_STATIC,0,4,292,43,0,0,
                     HIDC_BUFFERS_STATIC
@@ -4212,7 +4214,7 @@ END
 IDD_OPTIONS_TABS DIALOGEX 0, 0, 292, 121
 STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "Tabs"
-FONT 8, "MS Sans Serif"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDFRAME,0,8,292,88
     LTEXT           "Tab size",IDC_TABSIZE_STATIC,8,21,28,8,NOT WS_GROUP,0,
