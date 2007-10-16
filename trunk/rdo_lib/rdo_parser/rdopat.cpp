@@ -165,7 +165,7 @@ int RDOPATPattern::writeModelStructure() const
 
 const RDOFUNFunctionParam* RDOPATPattern::findPATPatternParam( const std::string& paramName ) const
 {
-	std::vector< RDOFUNFunctionParam* >::const_iterator it = std::find_if(params.begin(), params.end(), compareName2<RDOFUNFunctionParam>(paramName));
+	std::vector< RDOFUNFunctionParam* >::const_iterator it = std::find_if(params.begin(), params.end(), compareName<RDOFUNFunctionParam>(paramName));
 
 	if(it == params.end())
 		return NULL;
@@ -175,19 +175,19 @@ const RDOFUNFunctionParam* RDOPATPattern::findPATPatternParam( const std::string
 
 const RDORelevantResource* RDOPATPattern::findRelevantResource( const std::string& resName ) const
 {
-	std::vector< RDORelevantResource* >::const_iterator it = std::find_if( relRes.begin(), relRes.end(), compareName2<RDORelevantResource>(resName) );
+	std::vector< RDORelevantResource* >::const_iterator it = std::find_if( relRes.begin(), relRes.end(), compareName<RDORelevantResource>(resName) );
 	return it != relRes.end() ? (*it) : NULL;
 }
 
 int RDOPATPattern::findPATPatternParamNum( const std::string& paramName ) const
 {
-	std::vector< RDOFUNFunctionParam* >::const_iterator it = std::find_if( params.begin(), params.end(), compareName2<RDOFUNFunctionParam>(paramName) );
+	std::vector< RDOFUNFunctionParam* >::const_iterator it = std::find_if( params.begin(), params.end(), compareName<RDOFUNFunctionParam>(paramName) );
 	return it != params.end() ? it - params.begin() : -1;
 }
 
 int RDOPATPattern::findRelevantResourceNum( const std::string& resName ) const
 {
-	std::vector< RDORelevantResource* >::const_iterator it = std::find_if( relRes.begin(), relRes.end(), compareName2<RDORelevantResource>(resName) );
+	std::vector< RDORelevantResource* >::const_iterator it = std::find_if( relRes.begin(), relRes.end(), compareName<RDORelevantResource>(resName) );
 	return it != relRes.end() ? it - relRes.begin() : -1;
 }
 
@@ -232,7 +232,7 @@ void RDOPATPattern::setTime( RDOFUNArithm* arithm )
 
 void RDOPATPattern::addRelResBody( const RDOParserSrcInfo& body_name )
 { 
-	std::vector< RDORelevantResource* >::const_iterator it = std::find_if( relRes.begin(), relRes.end(), compareName2<RDORelevantResource>(body_name.src_text()) );
+	std::vector< RDORelevantResource* >::const_iterator it = std::find_if( relRes.begin(), relRes.end(), compareName<RDORelevantResource>(body_name.src_text()) );
 	if ( it == relRes.end() ) {
 		getParser()->error( body_name.src_info(), rdo::format("Неизвестный релевантный ресурс: %s", body_name.src_text().c_str()) );
 //		getParser()->error( "Name of relevant resource expected instead of: " + body_name.src_text() );

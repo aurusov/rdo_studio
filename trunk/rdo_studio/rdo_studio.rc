@@ -1329,8 +1329,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,8,0,609
- PRODUCTVERSION 0,8,0,609
+ FILEVERSION 0,8,0,617
+ PRODUCTVERSION 0,8,0,617
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -1348,14 +1348,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "RAO studio\0"
-            VALUE "FileVersion", "0, 8, 0, 609\0"
+            VALUE "FileVersion", "0, 8, 0, 617\0"
             VALUE "InternalName", "RAO-Studio\0"
             VALUE "LegalCopyright", "Copyright (C) 2003-2006\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "RAO-Studio.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "RAO-Studio\0"
-            VALUE "ProductVersion", "0, 8, 0, 609\0"
+            VALUE "ProductVersion", "0, 8, 0, 617\0"
             VALUE "SpecialBuild", "\0"
         END
     END
@@ -3793,7 +3793,7 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_ER_UNKNOWN          "Неизвестная синтаксическая ошибка. Извините. Если у Вас есть желание, то пример с ошибкой и её возможное объяснение высылайте на http://rdo.rk9.bmstu.ru/bugs в категорию rdo-parser."
+    IDS_ER_UNKNOWN          "Неизвестная синтаксическая ошибка. Пример с ошибкой  можно высылать на http://rdo.rk9.bmstu.ru/bugs в категорию rdo-parser."
     IDS_ER_RTP_SECOND_RES_TYPE "Тип ресурса уже существует: %s"
     IDS_ER_RTP_WAITING_FOR_PARAMS_KW "Ожидается ключевое слово $Parameters"
     IDS_ER_RTP_INVALID_SUCHAS_RES_TYPE "Ссылка на неизвестный тип ресурса: %s"
@@ -5294,7 +5294,7 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_ER_UNKNOWN          "Parser error. Sorry. Tell us about it using http://rdo.rk9.bmstu.ru/bugs"
+    IDS_ER_UNKNOWN          "Parser error. Tell us about it using http://rdo.rk9.bmstu.ru/bugs."
     IDS_ER_RTP_SECOND_RES_TYPE 
                             "Second appearance of the same resource type: %s"
     IDS_ER_RTP_WAITING_FOR_PARAMS_KW "Waiting for $Parameters keyword"

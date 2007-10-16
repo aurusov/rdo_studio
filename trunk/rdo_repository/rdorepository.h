@@ -78,7 +78,6 @@ public:
 private:
 	std::string modelName;
 	std::string modelPath;
-//	std::string lastModelPath;
 	bool hasModel;
 
 	struct fileInfo {
@@ -131,6 +130,7 @@ private:
 	void beforeModelStart();
 	void stopModel();
 	void trace( const std::string& str );
+	void writeModelFilesInfo( std::ofstream& stream ) const;
 
 protected:
 	virtual ~RDOThreadRepository(); // Чтобы нельзя было удалить через delete

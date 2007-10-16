@@ -29,10 +29,17 @@ void pmderror( char* mes )
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDPokaz
 // ----------------------------------------------------------------------------
-RDOPMDPokaz::RDOPMDPokaz( RDOParser* _parser ):
+RDOPMDPokaz::RDOPMDPokaz( RDOParser* _parser, const RDOParserSrcInfo& _src_info ):
 	RDOParserObject( _parser ),
+	RDOParserSrcInfo( _src_info ),
 	pokaz_runtime( NULL )
 {
+	const RDOPMDPokaz* pokaz = getParser()->findPMDPokaz( src_text() );
+	if ( pokaz ) {
+		getParser()->error_push_only( src_info(), rdo::format("Показатель '%s' уже существует", src_text().c_str()) );
+		getParser()->error_push_only( pokaz->src_info(), "См. первое определение" );
+		getParser()->error_push_done();
+	}
 }
 
 void RDOPMDPokaz::endOfCreation( rdoRuntime::RDOPMDPokaz* _pokaz_runtime )
@@ -47,46 +54,70 @@ void RDOPMDPokaz::endOfCreation( rdoRuntime::RDOPMDPokaz* _pokaz_runtime )
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDWatchPar
 // ----------------------------------------------------------------------------
-RDOPMDWatchPar::RDOPMDWatchPar( RDOParser* _parser, const std::string& _name, bool _trace, const std::string& _resName, const std::string& _parName ):
-	RDOPMDPokaz( _parser )
+RDOPMDWatchPar::RDOPMDWatchPar( RDOParser* _parser, const RDOParserSrcInfo& _src_info, bool _trace, const RDOParserSrcInfo& _res_src_info, const RDOParserSrcInfo& _par_src_info ):
+	RDOPMDPokaz( _parser, _src_info )
 {
-	const RDORSSResource *const res = getParser()->findRSSResource(_resName);
-	if(!res)
-		getParser()->error("Undefined resource name: " + _resName);
-
-	if( !res->getType()->isPermanent() )
-		getParser()->error("Resource must be of permanent type: " + _resName);
-
-	const RDORTPParam *const par = res->getType()->findRTPParam(_parName);
-	if(!par)
-		getParser()->error("Undefined parameter name: " + _parName + " for resource " + _resName);
-
-	int type = par->getType()->getType();
-	if ( type != RDORTPParamType::pt_int && type != RDORTPParamType::pt_real ) {
-		getParser()->error("Enumerative parameter: " + _resName + "." + _parName + " not allowed in watch_par statement");
+	const RDORSSResource* const res = getParser()->findRSSResource( _res_src_info.src_text() );
+	if ( !res ) {
+		getParser()->error( _res_src_info, rdo::format("Ресурс '%s' не найден", _res_src_info.src_text().c_str()) );
 	}
-
-	rdoRuntime::RDOPMDWatchPar* pokaz = new rdoRuntime::RDOPMDWatchPar( getParser()->runtime, _name, _trace, _resName, _parName, res->getNumber(), res->getType()->getRTPParamNumber(_parName) );
+	if ( !res->getType()->isPermanent() ) {
+		getParser()->error_push_only( _res_src_info, "Наблюдать (watch_par) можно только за параметром постоянного ресурса" );
+		getParser()->error_push_only( res->getType()->src_info(), "См. тип ресурса" );
+		getParser()->error_push_done();
+//		getParser()->error("Resource must be of permanent type: " + _resName);
+	}
+	const RDORTPParam* const par = res->getType()->findRTPParam( _par_src_info.src_text() );
+	if ( !par ) {
+		getParser()->error_push_only( _par_src_info, rdo::format("Параметр '%s' не найден", _par_src_info.src_text().c_str()) );
+		getParser()->error_push_only( res->src_info(), "См. ресурс" );
+		getParser()->error_push_only( res->getType()->src_info(), "См. тип ресурса" );
+		getParser()->error_push_done();
+	}
+	RDORTPParamType::ParamType type = par->getType()->getType();
+	if ( type != RDORTPParamType::pt_int && type != RDORTPParamType::pt_real ) {
+		getParser()->error_push_only( _par_src_info, "Наблюдать можно только за параметром целого или вещественного типа" );
+		getParser()->error_push_only( par->getType()->src_info(), "См. тип параметра" );
+		getParser()->error_push_done();
+	}
+	rdoRuntime::RDOPMDWatchPar* pokaz = new rdoRuntime::RDOPMDWatchPar( getParser()->runtime, src_text(), _trace, _res_src_info.src_text(), _par_src_info.src_text(), res->getNumber(), res->getType()->getRTPParamNumber(_par_src_info.src_text()) );
 	endOfCreation( pokaz );
 }
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDWatchState
 // ----------------------------------------------------------------------------
-RDOPMDWatchState::RDOPMDWatchState( RDOParser* _parser, const std::string& _name, bool _trace, RDOFUNLogic* _logic ):
-	RDOPMDPokaz( _parser )
+RDOPMDWatchState::RDOPMDWatchState( RDOParser* _parser, const RDOParserSrcInfo& _src_info, bool _trace, RDOFUNLogic* _logic ):
+	RDOPMDPokaz( _parser, _src_info )
 {
-	endOfCreation( new rdoRuntime::RDOPMDWatchState( getParser()->runtime, _name, _trace, _logic->createCalc() ) );
+	endOfCreation( new rdoRuntime::RDOPMDWatchState( getParser()->runtime, src_text(), _trace, _logic->createCalc() ) );
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOPMDWatchTemp
+// ----------------------------------------------------------------------------
+RDOPMDWatchTemp::RDOPMDWatchTemp( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _res_type_src_info ):
+	RDOPMDPokaz( _parser, _src_info )
+{
+	const RDORTPResType* const res_type = getParser()->findRTPResType( _res_type_src_info.src_text() );
+	if ( !res_type ) {
+		getParser()->error( _res_type_src_info, rdo::format("Тип ресурса '%s' не найден", _res_type_src_info.src_text().c_str()) );
+	}
+	if ( !res_type->isTemporary() ) {
+		getParser()->error_push_only( _res_type_src_info, "Показатель собирает информацию по временным ресурсам (temporary)" );
+		getParser()->error_push_only( res_type->src_info(), "См. тип ресурса" );
+		getParser()->error_push_done();
+	}
 }
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDWatchQuant
 // ----------------------------------------------------------------------------
-RDOPMDWatchQuant::RDOPMDWatchQuant( RDOParser* _parser, const std::string& _name, bool _trace, const std::string& _resTypeName ):
-	RDOPMDPokaz( _parser )
+RDOPMDWatchQuant::RDOPMDWatchQuant( RDOParser* _parser, const RDOParserSrcInfo& _src_info, bool _trace, const RDOParserSrcInfo& _res_type_src_info ):
+	RDOPMDWatchTemp( _parser, _src_info, _res_type_src_info )
 {
-	RDOFUNGroupLogic* fgl = new RDOFUNGroupLogic( this, 5, _resTypeName );
-	rdoRuntime::RDOPMDWatchQuant* pokaz = new rdoRuntime::RDOPMDWatchQuant( getParser()->runtime, _name, _trace, _resTypeName, fgl->resType->getNumber() );
+	RDOFUNGroupLogic* fgl = new RDOFUNGroupLogic( this, RDOFUNGroupLogic::fgt_unknow, _res_type_src_info.src_text() );
+	rdoRuntime::RDOPMDWatchQuant* pokaz = new rdoRuntime::RDOPMDWatchQuant( getParser()->runtime, src_text(), _trace, _res_type_src_info.src_text(), fgl->resType->getNumber() );
 	endOfCreation( pokaz );
 }
 
@@ -105,11 +136,11 @@ void RDOPMDWatchQuant::setLogicNoCheck()
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDWatchValue
 // ----------------------------------------------------------------------------
-RDOPMDWatchValue::RDOPMDWatchValue( RDOParser* _parser, const std::string& _name, bool _trace, const std::string& _resTypeName ):
-	RDOPMDPokaz( _parser )
+RDOPMDWatchValue::RDOPMDWatchValue( RDOParser* _parser, const RDOParserSrcInfo& _src_info, bool _trace, const RDOParserSrcInfo& _res_type_src_info ):
+	RDOPMDWatchTemp( _parser, _src_info, _res_type_src_info )
 {
-	RDOFUNGroupLogic* fgl = new RDOFUNGroupLogic( this, 5, _resTypeName );
-	rdoRuntime::RDOPMDWatchValue* pokaz = new rdoRuntime::RDOPMDWatchValue( getParser()->runtime, _name, _trace, _resTypeName, fgl->resType->getNumber() );
+	RDOFUNGroupLogic* fgl = new RDOFUNGroupLogic( this, RDOFUNGroupLogic::fgt_unknow, _res_type_src_info.src_text() );
+	rdoRuntime::RDOPMDWatchValue* pokaz = new rdoRuntime::RDOPMDWatchValue( getParser()->runtime, src_text(), _trace, _res_type_src_info.src_text(), fgl->resType->getNumber() );
 	endOfCreation( pokaz );
 }
 
@@ -130,10 +161,10 @@ void RDOPMDWatchValue::setLogicNoCheck( RDOFUNArithm* _arithm )
 // ----------------------------------------------------------------------------
 // ---------- RDOPMDGetValue
 // ----------------------------------------------------------------------------
-RDOPMDGetValue::RDOPMDGetValue( RDOParser* _parser, const std::string& _name, RDOFUNArithm* _arithm ):
-	RDOPMDPokaz( _parser )
+RDOPMDGetValue::RDOPMDGetValue( RDOParser* _parser, const RDOParserSrcInfo& _src_info, RDOFUNArithm* _arithm ):
+	RDOPMDPokaz( _parser, _src_info )
 {
-	rdoRuntime::RDOPMDGetValue* pokaz = new rdoRuntime::RDOPMDGetValue( getParser()->runtime, _name, _arithm->createCalc() );
+	rdoRuntime::RDOPMDGetValue* pokaz = new rdoRuntime::RDOPMDGetValue( getParser()->runtime, src_text(), _arithm->createCalc() );
 	endOfCreation( pokaz );
 }
 

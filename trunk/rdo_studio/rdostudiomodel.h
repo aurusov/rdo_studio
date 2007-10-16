@@ -56,6 +56,7 @@ private:
 	double timeNow;
 	double speed;
 	double showRate;
+	bool                    tempPause;
 	rdoRuntime::RunTimeMode runtimeMode;
 	rdoRuntime::RunTimeMode runtimeMode_prev;
 	rdoSimulator::RDOExitCode exitCode;

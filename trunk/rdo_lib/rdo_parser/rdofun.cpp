@@ -1402,13 +1402,13 @@ RDOFUNFunction::RDOFUNFunction( RDOParser* _parser, const std::string& _name, co
 
 const RDOFUNFunctionParam* const RDOFUNFunction::findFUNFunctionParam( const std::string& paramName ) const 
 {
-	std::vector< const RDOFUNFunctionParam* >::const_iterator it = std::find_if( params.begin(), params.end(), compareName2<RDOFUNFunctionParam>(paramName) );
+	std::vector< const RDOFUNFunctionParam* >::const_iterator it = std::find_if( params.begin(), params.end(), compareName<RDOFUNFunctionParam>(paramName) );
 	return it != params.end() ? *it : NULL;
 }
 
 int RDOFUNFunction::findFUNFunctionParamNum( const std::string& paramName ) const
 {
-	std::vector< const RDOFUNFunctionParam* >::const_iterator it = std::find_if( params.begin(), params.end(), compareName2<RDOFUNFunctionParam>(paramName) );
+	std::vector< const RDOFUNFunctionParam* >::const_iterator it = std::find_if( params.begin(), params.end(), compareName<RDOFUNFunctionParam>(paramName) );
 	return it != params.end() ? it - params.begin() : -1;
 }
 
@@ -1663,10 +1663,10 @@ RDOFUNLogic* RDOFUNGroupLogic::createFunLogic( RDOFUNLogic* cond )
 {
 	rdoRuntime::RDOFunCalcGroup* calc;
 	switch ( funType ) {
-		case 1 : setSrcText( "Exist(" + resType->getName() + ": " + cond->src_text() + ")" );     calc = new rdoRuntime::RDOFunCalcExist    ( getParser()->runtime, resType->getNumber(), cond->createCalc() ); break;
-		case 2 : setSrcText( "NotExist(" + resType->getName() + ": " + cond->src_text() + ")" );  calc = new rdoRuntime::RDOFunCalcNotExist ( getParser()->runtime, resType->getNumber(), cond->createCalc() ); break;
-		case 3 : setSrcText( "ForAll(" + resType->getName() + ": " + cond->src_text() + ")" );    calc = new rdoRuntime::RDOFunCalcForAll   ( getParser()->runtime, resType->getNumber(), cond->createCalc() ); break;
-		case 4 : setSrcText( "NotForAll(" + resType->getName() + ": " + cond->src_text() + ")" ); calc = new rdoRuntime::RDOFunCalcNotForAll( getParser()->runtime, resType->getNumber(), cond->createCalc() ); break;
+		case fgt_exist    : setSrcText( "Exist(" + resType->getName() + ": " + cond->src_text() + ")" );     calc = new rdoRuntime::RDOFunCalcExist    ( getParser()->runtime, resType->getNumber(), cond->createCalc() ); break;
+		case fgt_notexist : setSrcText( "NotExist(" + resType->getName() + ": " + cond->src_text() + ")" );  calc = new rdoRuntime::RDOFunCalcNotExist ( getParser()->runtime, resType->getNumber(), cond->createCalc() ); break;
+		case fgt_forall   : setSrcText( "ForAll(" + resType->getName() + ": " + cond->src_text() + ")" );    calc = new rdoRuntime::RDOFunCalcForAll   ( getParser()->runtime, resType->getNumber(), cond->createCalc() ); break;
+		case fgt_notforall: setSrcText( "NotForAll(" + resType->getName() + ": " + cond->src_text() + ")" ); calc = new rdoRuntime::RDOFunCalcNotForAll( getParser()->runtime, resType->getNumber(), cond->createCalc() ); break;
 		default: getParser()->error( src_info(), "Внутренная ошибка: несуществующий тип функции" );
 	}
 	getParser()->getFUNGroupStack().pop_back();
@@ -1686,15 +1686,15 @@ void RDOFUNSelect::initSelect( const RDOFUNLogic* cond )
 }
 
 // Групповая функция над выборкой Select'а
-RDOFUNLogic* RDOFUNSelect::createFunSelectGroup( int funType, RDOFUNLogic* cond )
+RDOFUNLogic* RDOFUNSelect::createFunSelectGroup( RDOFUNGroupLogic::FunGroupType funType, RDOFUNLogic* cond )
 {
 	rdoRuntime::RDOFunCalcSelectBase* calc;
 	switch ( funType ) {
-		case 1 : setSrcText( src_text() + ".Exist(" + cond->src_text() + ")" );     calc = new rdoRuntime::RDOFunCalcSelectExist    ( getParser()->runtime, select, cond->createCalc() ); break;
-		case 2 : setSrcText( src_text() + ".NotExist(" + cond->src_text() + ")" );  calc = new rdoRuntime::RDOFunCalcSelectNotExist ( getParser()->runtime, select, cond->createCalc() ); break;
-		case 3 : setSrcText( src_text() + ".ForAll(" + cond->src_text() + ")" );    calc = new rdoRuntime::RDOFunCalcSelectForAll   ( getParser()->runtime, select, cond->createCalc() ); break;
-		case 4 : setSrcText( src_text() + ".NotForAll(" + cond->src_text() + ")" ); calc = new rdoRuntime::RDOFunCalcSelectNotForAll( getParser()->runtime, select, cond->createCalc() ); break;
-		default: getParser()->error( "Неизвестный метод для списка ресурсов" );
+		case RDOFUNGroupLogic::fgt_exist    : setSrcText( src_text() + ".Exist(" + cond->src_text() + ")" );     calc = new rdoRuntime::RDOFunCalcSelectExist    ( getParser()->runtime, select, cond->createCalc() ); break;
+		case RDOFUNGroupLogic::fgt_notexist : setSrcText( src_text() + ".NotExist(" + cond->src_text() + ")" );  calc = new rdoRuntime::RDOFunCalcSelectNotExist ( getParser()->runtime, select, cond->createCalc() ); break;
+		case RDOFUNGroupLogic::fgt_forall   : setSrcText( src_text() + ".ForAll(" + cond->src_text() + ")" );    calc = new rdoRuntime::RDOFunCalcSelectForAll   ( getParser()->runtime, select, cond->createCalc() ); break;
+		case RDOFUNGroupLogic::fgt_notforall: setSrcText( src_text() + ".NotForAll(" + cond->src_text() + ")" ); calc = new rdoRuntime::RDOFunCalcSelectNotForAll( getParser()->runtime, select, cond->createCalc() ); break;
+		default: getParser()->error( "Внутренная ошибка: неизвестный метод для списка ресурсов" );
 	}
 	getParser()->getFUNGroupStack().pop_back();
 	RDOFUNLogic* logic = new RDOFUNLogic( this, calc );

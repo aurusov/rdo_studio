@@ -105,6 +105,7 @@ public:
 		RT_SIMULATOR_MODEL_STOP_RUNTIME_ERROR,
 		RT_SIMULATOR_GET_MODEL_STRUCTURE,      // param = result:std::stringstream*
 		RT_SIMULATOR_GET_MODEL_RESULTS,        // param = result:std::stringstream*
+		RT_SIMULATOR_GET_MODEL_RESULTS_INFO,   // param = result:std::stringstream*
 		RT_SIMULATOR_GET_MODEL_EXITCODE,       // param = result:rdoSimulator::RDOExitCode*
 		RT_SIMULATOR_GET_LIST,                 // param = rdoSimulator::RDOThreadSimulator::GetList* = { type:GetList::Type, result:std::list< std::string >* }
 		RT_SIMULATOR_GET_ERRORS,               // param = result:std::vector< RDOSyntaxError >*
@@ -168,6 +169,7 @@ public:
 			case RT_SIMULATOR_MODEL_STOP_RUNTIME_ERROR: return "RT_SIMULATOR_MODEL_STOP_RUNTIME_ERROR";
 			case RT_SIMULATOR_GET_MODEL_STRUCTURE     : return "RT_SIMULATOR_GET_MODEL_STRUCTURE";
 			case RT_SIMULATOR_GET_MODEL_RESULTS       : return "RT_SIMULATOR_GET_MODEL_RESULTS";
+			case RT_SIMULATOR_GET_MODEL_RESULTS_INFO  : return "RT_SIMULATOR_GET_MODEL_RESULTS_INFO";
 			case RT_SIMULATOR_GET_MODEL_EXITCODE      : return "RT_SIMULATOR_GET_MODEL_EXITCODE";
 			case RT_SIMULATOR_GET_LIST                : return "RT_SIMULATOR_GET_LIST";
 			case RT_SIMULATOR_GET_ERRORS              : return "RT_SIMULATOR_GET_ERRORS";

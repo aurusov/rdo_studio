@@ -28,9 +28,9 @@ public:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOResult
+// ---------- RDOResults
 // ----------------------------------------------------------------------------
-class RDOResult
+class RDOResults
 {
 private:
 	std::ofstream out;
@@ -40,25 +40,25 @@ protected:
 	bool isNullResult;
 
 public:
-	RDOResult( const char* const fileName ):
+	RDOResults( const char* const fileName ):
 		out( fileName, std::ios::out ),
 		isNullResult( false )
 	{
 	}
-	RDOResult():
+	RDOResults():
 		isNullResult( true )
+	{
+	}
+	virtual ~RDOResults()
 	{
 	}
 	int width( int w ) {
 		return isNullResult ? 0 : getOStream().width(w);
 	}
-	template< class TN >
-		RDOResult& operator << (TN str) {
-			if ( !isNullResult ) getOStream() << str;
-			return *this;
-		}
-
-	virtual ~RDOResult() {}
+	template< class TN > RDOResults& operator << (TN str) {
+		if ( !isNullResult ) getOStream() << str;
+		return *this;
+	}
 };
 
 // ----------------------------------------------------------------------------
@@ -92,7 +92,6 @@ private:
 	std::vector< RDOResource* > allResourcesByID;      // Все ресурсы симулятора, даже NULL (NULL стоит на месте уже удаленного временного ресурса)
 	std::list  < RDOResource* > allResourcesByTime;    // Они же, только упорядочены по времени создания и без NULL-ов
 	std::list  < RDOResource* > allResourcesBeforeSim; // Они же, только упорядочены по типу перед запуском
-	RDOTrace* tracer;
 	std::list< RDOCalc* > initCalcs;
 
 	class BreakPoint: public RDORuntimeObject {
@@ -140,7 +139,9 @@ private:
 		physic_time = time(NULL);
 	}
 
-	RDOResult* result; // Output class for results (PMV)
+	RDOTrace*   tracer;
+	RDOResults* results;
+	RDOResults* results_info;
 
 	RDOCalc* terminateIfCalc;
 	std::vector< RDOValue > allConstants;
@@ -179,13 +180,15 @@ public:
 
 	void setConstValue( int numberOfConst, RDOValue value );
 	RDOValue getConstValue( int numberOfConst );
-	RDOResult& getResult() { return *result; }
-	void rdoInit( RDOTrace* customTracer, RDOResult* customResult );
+	void rdoInit( RDOTrace* customTracer, RDOResults* customResults, RDOResults* customResultsInfo );
+
+	RDOResults& getResults()     { return *results;      }
+	RDOResults& getResultsInfo() { return *results_info; }
 
 	double getTimeNow() { return getCurrentTime(); }
 	double getSeconds() { return (time(NULL) - physic_time); }
 
-	void setCurrentActivity( RDOActivityRuntime* pat )           { currActivity = pat;                  }
+	void setCurrentActivity( RDOActivityRuntime* pat )           { currActivity = pat; }
 	void addRuntimeOperation( RDOActivityOperationRuntime* opr );
 	void addRuntimeRule( RDOActivityRuleRuntime* rule );
 	void addRuntimeIE( RDOActivityIERuntime* ie );

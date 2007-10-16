@@ -1014,6 +1014,7 @@ public:
 		return src_info;
 	}
 	RDOValue calcValue( RDORuntime* runtime ) const {
+		runtime->inc_cnt_calc_arithm();
 		return left->calcValueBase( runtime ) + right->calcValueBase( runtime );
 	}
 };
@@ -1032,6 +1033,7 @@ public:
 		return src_info;
 	}
 	RDOValue calcValue( RDORuntime* runtime ) const {
+		runtime->inc_cnt_calc_arithm();
 		return left->calcValueBase( runtime ) - right->calcValueBase( runtime );
 	}
 };
@@ -1050,6 +1052,7 @@ public:
 		return src_info;
 	}
 	RDOValue calcValue( RDORuntime* runtime ) const {
+		runtime->inc_cnt_calc_arithm();
 		return left->calcValueBase( runtime ) * right->calcValueBase( runtime );
 	}
 };
@@ -1068,6 +1071,7 @@ public:
 		return src_info;
 	}
 	virtual RDOValue calcValue( RDORuntime* runtime ) const {
+		runtime->inc_cnt_calc_arithm();
 		RDOValue rVal = right->calcValueBase( runtime );
 		if ( rVal == 0 ) {
 			runtime->error( "Деление на ноль", this );
@@ -1094,6 +1098,7 @@ public:
 		return src_info;
 	}
 	RDOValue calcValue( RDORuntime* runtime ) const {
+		runtime->inc_cnt_calc_logic();
 		if ( !left->calcValueBase( runtime )  ) return false;
 		if ( !right->calcValueBase( runtime ) ) return false;
 		return true;
@@ -1114,6 +1119,7 @@ public:
 		return src_info;
 	}
 	RDOValue calcValue( RDORuntime* runtime ) const {
+		runtime->inc_cnt_calc_logic();
 		if ( left->calcValueBase( runtime )  ) return true;
 		if ( right->calcValueBase( runtime ) ) return true;
 		return false;
@@ -1132,6 +1138,7 @@ public:
 	{
 	}
 	RDOValue calcValue( RDORuntime* runtime ) const {
+		runtime->inc_cnt_calc_logic();
 		return !calc->calcValueBase( runtime );
 	}
 };
@@ -1144,13 +1151,14 @@ public:
 	{
 		setSrcInfo( getStaticSrcInfo( left, right ) );
 	}
-	RDOValue calcValue( RDORuntime* runtime ) const {
-		return ( left->calcValueBase( runtime ) == right->calcValueBase( runtime ) );
-	}
 	static RDOSrcInfo getStaticSrcInfo( const RDOCalc* left, const RDOCalc* right ) {
 		RDOSrcInfo src_info;
 		src_info.setSrcInfo( left->src_info(), " = ", right->src_info() );
 		return src_info;
+	}
+	RDOValue calcValue( RDORuntime* runtime ) const {
+		runtime->inc_cnt_calc_logic();
+		return ( left->calcValueBase( runtime ) == right->calcValueBase( runtime ) );
 	}
 };
 
@@ -1168,6 +1176,7 @@ public:
 		return src_info;
 	}
 	RDOValue calcValue( RDORuntime* runtime ) const {
+		runtime->inc_cnt_calc_logic();
 		return ( left->calcValueBase( runtime ) != right->calcValueBase( runtime ) );
 	}
 };
@@ -1188,6 +1197,7 @@ public:
 		return src_info;
 	}
 	RDOValue calcValue( RDORuntime* runtime ) const {
+		runtime->inc_cnt_calc_logic();
 		return left->calcValueBase( runtime ) < right->calcValueBase( runtime );
 	}
 };
@@ -1206,6 +1216,7 @@ public:
 		return src_info;
 	}
 	RDOValue calcValue( RDORuntime* runtime ) const {
+		runtime->inc_cnt_calc_logic();
 		return left->calcValueBase( runtime ) > right->calcValueBase( runtime );
 	}
 };
@@ -1224,6 +1235,7 @@ public:
 		return src_info;
 	}
 	RDOValue calcValue( RDORuntime* runtime ) const {
+		runtime->inc_cnt_calc_logic();
 		return left->calcValueBase( runtime ) <= right->calcValueBase( runtime );
 	}
 };
@@ -1242,6 +1254,7 @@ public:
 		return src_info;
 	}
 	RDOValue calcValue( RDORuntime* runtime ) const {
+		runtime->inc_cnt_calc_logic();
 		return left->calcValueBase( runtime ) >= right->calcValueBase( runtime );
 	}
 };

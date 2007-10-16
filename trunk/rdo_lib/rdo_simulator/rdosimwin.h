@@ -30,9 +30,11 @@ class RDOResult;
 class RDOThreadRunTime: public RDOThreadMT
 {
 friend class rdoSimulator::RDOThreadSimulator;
-protected:
+
+private:
 	rdoSimulator::RDOThreadSimulator* simulator;
 	bool                              runtime_error;
+	SYSTEMTIME time_start;
 
 	RDOThreadRunTime();
 	virtual ~RDOThreadRunTime() {}; // „тобы нельз€ было удалить через delete
@@ -40,6 +42,7 @@ protected:
 	virtual void idle();
 	virtual void start();
 	virtual void stop();
+	void writeResultsInfo();
 
 public:
 	struct GetFrame {
@@ -86,8 +89,8 @@ private:
 	ShowMode showMode; // current show mode
 	double showRate; // current show mode
 
-	std::stringstream& getModelStructure();
 	std::stringstream resultString;
+	std::stringstream resultInfoString;
 
 protected:
 	virtual ~RDOThreadSimulator(); // „тобы нельз€ было удалить через delete помещаем его в protected

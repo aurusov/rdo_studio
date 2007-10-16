@@ -30,12 +30,7 @@ public:
 	virtual void lexer_setvalue( int value );
 	virtual void lexer_loc_init();
 	virtual void lexer_loc_action();
-	virtual void lexer_loc_set( int error_line, int error_pos );
-	virtual void lexer_loc_set( void* data );
-	virtual void lexer_loc_set( void* data1, void* data2 );
 	virtual void lexer_loc_delta_pos( int value );
-	virtual void lexer_loc_backup( void* data = NULL );
-	virtual void lexer_loc_restore();
 	virtual int  lexer_loc_line();
 	virtual int  lexer_loc_pos();
 };

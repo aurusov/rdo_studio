@@ -88,8 +88,8 @@ bool RDOPMDWatchPar::calcStat(RDOSimulator *sim)
 
 	double average = sum / (currTime - timeBegin);
 
-	runtime->getResult().width(30);
-	runtime->getResult() << std::left << name 
+	runtime->getResults().width(30);
+	runtime->getResults() << std::left << name 
 		<< "\t" << traceValue()
 		<< "\t" << watchNumber
 		<< "\t" << average 
@@ -194,8 +194,8 @@ bool RDOPMDWatchState::calcStat(RDOSimulator *sim)
 
 	double average = sum / (currTime - timeBegin);
 
-	runtime->getResult().width(30);
-	runtime->getResult() << std::left << name 
+	runtime->getResults().width(30);
+	runtime->getResults() << std::left << name 
 		<< "\t" << traceValue() 
 		<< "\t" << watchNumber
 		<< "\t" << average 
@@ -226,7 +226,7 @@ bool RDOPMDWatchQuant::resetPokaz(RDOSimulator *sim)
 	rdoRuntime::RDORuntime* runtime = dynamic_cast< rdoRuntime::RDORuntime* >(sim);
 
 	watchNumber = 0;
-	currValue = 0;
+	currValue = -1;
 	sum = 0;
 	sumSqr = 0;
 	minValue = DBL_MAX;
@@ -290,8 +290,8 @@ bool RDOPMDWatchQuant::calcStat(RDOSimulator *sim)
 
 	double average = sum / (currTime - timeBegin);
 
-	runtime->getResult().width(30);
-	runtime->getResult() << std::left << name 
+	runtime->getResults().width(30);
+	runtime->getResults() << std::left << name 
 		<< "\t" << traceValue()
 		<< "\t" << watchNumber
 		<< "\t" << average 
@@ -351,8 +351,8 @@ bool RDOPMDWatchValue::calcStat(RDOSimulator *sim)
 		deviation = averageSqr / sqrt(watchNumber);
 	}
 
-	runtime->getResult().width(30);
-	runtime->getResult() << std::left << name 
+	runtime->getResults().width(30);
+	runtime->getResults() << std::left << name 
 		<< "\t" << watchNumber
 		<< "\t" << average 
 		<< "\t" << averageSqr
@@ -422,8 +422,8 @@ bool RDOPMDGetValue::calcStat(RDOSimulator *sim)
 {
 	rdoRuntime::RDORuntime* runtime = dynamic_cast< rdoRuntime::RDORuntime* >(sim);
 
-	runtime->getResult().width(30);
-	runtime->getResult() << std::left << name 
+	runtime->getResults().width(30);
+	runtime->getResults() << std::left << name 
 		<< "\t" << arithmCalc->calcValueBase( runtime ) << '\n';
 
 	return true;

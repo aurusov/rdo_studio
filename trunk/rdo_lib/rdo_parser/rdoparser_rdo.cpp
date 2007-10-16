@@ -91,74 +91,11 @@ void RDOParserRDO::lexer_loc_action()
 	}
 }
 
-void RDOParserRDO::lexer_loc_set( int error_line, int error_pos )
-{
-	if ( m_lexer && m_lexer->m_lploc && error_line != -1 ) {
-		m_lexer->m_lploc->first_line   = error_line;
-		m_lexer->m_lploc->first_column = error_pos;
-		m_lexer->m_lploc->last_line    = error_line;
-		m_lexer->m_lploc->last_column  = error_pos;
-	}
-}
-
-void RDOParserRDO::lexer_loc_set( void* data )
-{
-	if ( m_lexer && m_lexer->m_lploc ) {
-		if ( reinterpret_cast<YYLTYPE*>(data)->first_line == reinterpret_cast<YYLTYPE*>(data)->last_line ) {
-			m_lexer->m_lploc->first_line   = reinterpret_cast<YYLTYPE*>(data)->last_line;
-			m_lexer->m_lploc->first_column = reinterpret_cast<YYLTYPE*>(data)->last_column;
-			m_lexer->m_lploc->last_line    = reinterpret_cast<YYLTYPE*>(data)->last_line;
-			m_lexer->m_lploc->last_column  = reinterpret_cast<YYLTYPE*>(data)->last_column;
-		} else {
-			m_lexer->m_lploc->first_line   = reinterpret_cast<YYLTYPE*>(data)->first_line;
-			m_lexer->m_lploc->first_column = reinterpret_cast<YYLTYPE*>(data)->first_column;
-			m_lexer->m_lploc->last_line    = reinterpret_cast<YYLTYPE*>(data)->last_line;
-			m_lexer->m_lploc->last_column  = reinterpret_cast<YYLTYPE*>(data)->last_column;
-		}
-	}
-}
-
-void RDOParserRDO::lexer_loc_set( void* data1, void* data2 )
-{
-	if ( m_lexer && m_lexer->m_lploc ) {
-		if ( reinterpret_cast<YYLTYPE*>(data1)->last_line == reinterpret_cast<YYLTYPE*>(data2)->last_line ) {
-			m_lexer->m_lploc->first_line   = reinterpret_cast<YYLTYPE*>(data2)->last_line;
-			m_lexer->m_lploc->first_column = reinterpret_cast<YYLTYPE*>(data2)->last_column;
-			m_lexer->m_lploc->last_line    = reinterpret_cast<YYLTYPE*>(data2)->last_line;
-			m_lexer->m_lploc->last_column  = reinterpret_cast<YYLTYPE*>(data2)->last_column;
-		} else {
-			m_lexer->m_lploc->first_line   = reinterpret_cast<YYLTYPE*>(data1)->last_line;
-			m_lexer->m_lploc->first_column = reinterpret_cast<YYLTYPE*>(data1)->last_column;
-			m_lexer->m_lploc->last_line    = reinterpret_cast<YYLTYPE*>(data1)->last_line;
-			m_lexer->m_lploc->last_column  = reinterpret_cast<YYLTYPE*>(data1)->last_column;
-		}
-	}
-}
-
 void RDOParserRDO::lexer_loc_delta_pos( int value )
 {
 	if ( m_lexer && m_lexer->m_lploc ) {
 		m_lexer->m_lploc->first_column += value;
 		m_lexer->m_lploc->last_column  += value;
-	}
-}
-
-void RDOParserRDO::lexer_loc_backup( void* data )
-{
-	if ( data ) {
-		m_loc.first_line   = reinterpret_cast<YYLTYPE*>(data)->first_line;
-		m_loc.first_column = reinterpret_cast<YYLTYPE*>(data)->first_column;
-		m_loc.last_line    = reinterpret_cast<YYLTYPE*>(data)->last_line;
-		m_loc.last_column  = reinterpret_cast<YYLTYPE*>(data)->last_column;
-	} else if ( m_lexer && m_lexer->m_lploc ) {
-		m_loc = *m_lexer->m_lploc;
-	}
-}
-
-void RDOParserRDO::lexer_loc_restore()
-{
-	if ( m_lexer && m_lexer->m_lploc ) {
-		*m_lexer->m_lploc = m_loc;
 	}
 }
 

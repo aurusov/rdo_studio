@@ -56,6 +56,7 @@ RDOStudioModel::RDOStudioModel():
 	timeNow( 0 ),
 	speed( 1 ),
 	showRate( 60 ),
+	tempPause( false ),
 	runtimeMode( rdoRuntime::RTM_MaxSpeed ),
 	runtimeMode_prev( rdoRuntime::RTM_MaxSpeed ),
 	exitCode( rdoSimulator::EC_ModelNotFound ),
@@ -432,11 +433,7 @@ void RDOStudioModel::show_result()
 		RDOStudioOutput* output = &studioApp.mainFrame->output;
 		rdoRepository::RDOThreadRepository::FileInfo data( rdoModelObjects::PMV );
 		studioApp.studioGUI->sendMessage( kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data );
-		if ( data.described ) {
-			rdo::binarystream stream;
-			stream.write( str.c_str(), str.length() );
-			studioApp.studioGUI->sendMessage( kernel->repository(), RDOThread::RT_REPOSITORY_SAVE, &rdoRepository::RDOThreadRepository::FileData( rdoModelObjects::PMV, stream ) );
-		} else {
+		if ( !data.described ) {
 			output->appendStringToDebug( "Результаты не будут записаны в файл, т.к. в SMR не определен Results_file\n" );
 		}
 		output->showResults();
@@ -648,6 +645,7 @@ void RDOStudioModel::newModelFromRepository()
 		if ( maximize && wnd && wnd != studioApp.mainFrame ) {
 			studioApp.mainFrame->MDIMaximize( wnd );
 		}
+		studioApp.setLastProjectName( getFullName() );
 		if ( useTemplate != -1 ) {
 			saveModel();
 		}
@@ -924,6 +922,11 @@ void RDOStudioModel::updateStyleOfAllModel() const
 void RDOStudioModel::setRuntimeMode( const rdoRuntime::RunTimeMode value )
 {
 	if ( isRunning() ) {
+		if ( tempPause ) {
+			rdoRuntime::RunTimeMode _value = value;
+			sendMessage( kernel->runtime(), RT_RUNTIME_SET_MODE, &_value );
+			return;
+		}
 		runtimeMode = value;
 		sendMessage( kernel->runtime(), RT_RUNTIME_SET_MODE, &runtimeMode );
 		tracer->setRuntimeMode( runtimeMode );
@@ -1000,6 +1003,7 @@ void RDOStudioModel::update()
 
 void RDOStudioModel::setGUIPause()
 {
+	tempPause = true;
 	if ( isRunning() ) {
 		sendMessage( kernel->runtime(), RT_RUNTIME_GET_MODE, &runtimeMode_prev );
 		setRuntimeMode( rdoRuntime::RTM_Pause );
@@ -1008,6 +1012,7 @@ void RDOStudioModel::setGUIPause()
 
 void RDOStudioModel::setGUIContinue()
 {
+	tempPause = false;
 	if ( isRunning() ) {
 		setRuntimeMode( runtimeMode_prev );
 	}

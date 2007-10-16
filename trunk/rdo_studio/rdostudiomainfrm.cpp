@@ -529,37 +529,28 @@ void RDOStudioMainFrame::OnUpdateModelRuntimeMaxSpeed( CCmdUI* pCmdUI )
 {
 	bool runing = model->isRunning();
 	pCmdUI->Enable( runing );
-	pCmdUI->SetCheck( runing ? model->getRuntimeMode() == rdoRuntime::RTM_MaxSpeed : 0 );
-//	bool flag = model->isRunning() && model->isFrmDescribed();
-//	pCmdUI->Enable( flag );
-//	pCmdUI->SetCheck( flag ? model->getShowMode() == rdoSimulator::SM_NoShow : 0 );
+	pCmdUI->SetCheck( runing && model->getRuntimeMode() == rdoRuntime::RTM_MaxSpeed ? 1 : 0 );
 }
 
 void RDOStudioMainFrame::OnUpdateModelRuntimeJump( CCmdUI* pCmdUI )
 {
 	bool runing = model->isRunning();
 	pCmdUI->Enable( runing );
-	pCmdUI->SetCheck( runing ? model->getRuntimeMode() == rdoRuntime::RTM_Jump : 0 );
+	pCmdUI->SetCheck( runing && model->getRuntimeMode() == rdoRuntime::RTM_Jump ? 1 : 0 );
 }
 
 void RDOStudioMainFrame::OnUpdateModelRuntimeSync( CCmdUI* pCmdUI )
 {
 	bool runing = model->isRunning();
 	pCmdUI->Enable( runing );
-	pCmdUI->SetCheck( runing ? model->getRuntimeMode() == rdoRuntime::RTM_Sync : 0 );
-//	bool flag = model->isRunning() && model->isFrmDescribed();
-//	pCmdUI->Enable( flag );
-//	pCmdUI->SetCheck( flag ? model->getShowMode() == rdoSimulator::SM_Animation : 0 );
+	pCmdUI->SetCheck( runing && model->getRuntimeMode() == rdoRuntime::RTM_Sync ? 1 : 0 );
 }
 
 void RDOStudioMainFrame::OnUpdateModelRuntimePause( CCmdUI* pCmdUI )
 {
 	bool runing = model->isRunning();
 	pCmdUI->Enable( runing );
-	pCmdUI->SetCheck( runing ? model->getRuntimeMode() == rdoRuntime::RTM_Pause || model->getRuntimeMode() == rdoRuntime::RTM_BreakPoint : 0 );
-//	bool flag = model->isRunning() && model->isFrmDescribed();
-//	pCmdUI->Enable( flag );
-//	pCmdUI->SetCheck( flag ? model->getShowMode() == rdoSimulator::SM_Monitor : 0 );
+	pCmdUI->SetCheck( runing && (model->getRuntimeMode() == rdoRuntime::RTM_Pause || model->getRuntimeMode() == rdoRuntime::RTM_BreakPoint) ? 1 : 0 );
 }
 
 void RDOStudioMainFrame::OnModelShowRateInc()

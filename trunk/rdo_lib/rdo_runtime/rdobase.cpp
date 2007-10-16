@@ -24,6 +24,10 @@ RDOSimulatorBase::RDOSimulatorBase( RDORuntimeParent* _runtime ):
 	showRate( 60 ),
 	msec_wait( 0 ),
 	msec_prev( 0 ),
+	cnt_events( 0 ),
+	cnt_choice_from( 0 ),
+	cnt_calc_arithm( 0 ),
+	cnt_calc_logic( 0 ),
 	check_operation( true )
 {
 }

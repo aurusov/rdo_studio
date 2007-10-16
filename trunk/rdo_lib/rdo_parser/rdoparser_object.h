@@ -121,27 +121,11 @@ public:
 	}
 };
 
-template <class T> class comparePointers
-{
-public:
-	const T * const val;
-	comparePointers(const T * const _val): val(_val) {}
-	bool operator() (const T * const other) { return ((*other) == (*val)); }
-};
-
 template <class T> class compareName
 {
 public:
-	const std::string * const name;
-	compareName(const std::string * const _name): name(_name) {}
-	bool operator() (const T * other) { return ((*(other->getName())) == (*name)); }
-};
-
-template <class T> class compareName2
-{
-public:
 	const std::string& name;
-	compareName2( const std::string& _name ): name(_name) {}
+	compareName( const std::string& _name ): name(_name) {}
 	bool operator() (const T* other) { return other->getName() == name; }
 };
 

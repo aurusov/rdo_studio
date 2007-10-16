@@ -172,6 +172,7 @@ public:
 
 	std::stringstream modelStructure;
 	std::stringstream& getModelStructure();
+	std::string        getChanges() const;
 
 	RDOSMR* getSMR() const      { return smr; }
 	void setSMR( RDOSMR* _smr ) { smr = _smr; }
@@ -185,6 +186,7 @@ public:
 	const RDOPATPattern*      findPattern( const std::string& name ) const;
 	const RDOOPROperation*    findOperation( const std::string& name ) const;
 	const RDODPTFreeActivity* findFreeActivity( const std::string& name ) const;
+	const RDOPMDPokaz*        findPMDPokaz( const std::string& name ) const;
 
 	bool hasConstant() const { return !allFUNConstant.empty(); }
 
@@ -234,12 +236,7 @@ public:
 	void lexer_setvalue( int val ) const                      { if ( parser_base ) parser_base->lexer_setvalue( val );                  }
 	void lexer_loc_init() const                               { if ( parser_base ) parser_base->lexer_loc_init();                       }
 	void lexer_loc_action() const                             { if ( parser_base ) parser_base->lexer_loc_action();                     }
-	void lexer_loc_set( int error_line, int error_pos ) const { if ( parser_base ) parser_base->lexer_loc_set( error_line, error_pos ); }
-	void lexer_loc_set( void* data ) const                    { if ( parser_base ) parser_base->lexer_loc_set( data );                  }
-	void lexer_loc_set( void* data1, void* data2 ) const      { if ( parser_base ) parser_base->lexer_loc_set( data1, data2 );          }
 	void lexer_loc_delta_pos( int value ) const               { if ( parser_base ) parser_base->lexer_loc_delta_pos( value );           }
-	void lexer_loc_backup( void* data = NULL ) const          { if ( parser_base ) parser_base->lexer_loc_backup( data );               }
-	void lexer_loc_restore() const                            { if ( parser_base ) parser_base->lexer_loc_restore();                    }
 	int  lexer_loc_line() const                               { return parser_base ? parser_base->lexer_loc_line() : -1;                }
 	int  lexer_loc_pos() const                                { return parser_base ? parser_base->lexer_loc_pos() : 0;                  }
 };

@@ -576,16 +576,25 @@ public:
 // ----------------------------------------------------------------------------
 class RDOFUNGroupLogic: public RDOFUNGroup
 {
+public:
+	enum FunGroupType {
+		fgt_unknow    = 0,
+		fgt_exist     = 1,
+		fgt_notexist  = 2,
+		fgt_forall    = 3,
+		fgt_notforall = 4
+	};
+
 private:
 	const int funType;
 
 public:
-	RDOFUNGroupLogic( RDOParser* _parser, int _funType, const RDOParserSrcInfo& _res_info ):
+	RDOFUNGroupLogic( RDOParser* _parser, FunGroupType _funType, const RDOParserSrcInfo& _res_info ):
 		RDOFUNGroup( _parser, _res_info ),
 		funType( _funType )
 	{
 	}
-	RDOFUNGroupLogic( const RDOParserObject* _parent, int _funType, const RDOParserSrcInfo& _res_info ):
+	RDOFUNGroupLogic( const RDOParserObject* _parent, FunGroupType _funType, const RDOParserSrcInfo& _res_info ):
 		RDOFUNGroup( _parent, _res_info ),
 		funType( _funType )
 	{
@@ -608,7 +617,7 @@ public:
 	{
 	}
 	void initSelect( const RDOFUNLogic* cond = NULL );
-	RDOFUNLogic* createFunSelectGroup( int funType, RDOFUNLogic* cond );
+	RDOFUNLogic* createFunSelectGroup( RDOFUNGroupLogic::FunGroupType funType, RDOFUNLogic* cond );
 	RDOFUNLogic* createFunSelectEmpty( const RDOParserSrcInfo& _empty_info );
 	RDOFUNArithm* createFunSelectSize( const RDOParserSrcInfo& _size_info );
 };

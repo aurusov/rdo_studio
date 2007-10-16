@@ -12,7 +12,6 @@ RDOThreadRepository::RDOThreadRepository():
 	RDOThreadMT( "RDOThreadRepository" ),
 	modelName( "" ),
 	modelPath( "" ),
-//	lastModelPath( "" ),
 	hasModel( false ),
 	realOnlyInDlg( false )
 {
@@ -30,8 +29,6 @@ RDOThreadRepository::RDOThreadRepository():
 	notifies.push_back( RT_SIMULATOR_MODEL_STOP_RUNTIME_ERROR );
 	notifies.push_back( RT_RUNTIME_MODEL_START_BEFORE );
 	notifies.push_back( RT_RUNTIME_TRACE_STRING );
-
-//	lastModelPath = AfxGetApp()->GetProfileString( "repository", "lastModelPath", "" );
 
 	files.resize( 11 );
 	files[ rdoModelObjects::PAT ].extention = ".pat";
@@ -182,10 +179,6 @@ RDOThreadRepository::FindModel RDOThreadRepository::updateModelNames()
 		files[ rdoModelObjects::PMV ].described = !fileInfo.results_file.empty();
 		files[ rdoModelObjects::TRC ].described = !fileInfo.trace_file.empty();
 
-//		files[ rdoModelObjects::PAT ].mustexist = !fileInfo.model_name.empty();
-//		files[ rdoModelObjects::RTP ].mustexist = !fileInfo.model_name.empty();
-//		files[ rdoModelObjects::RSS ].mustexist = !fileInfo.resource_file.empty();
-//		files[ rdoModelObjects::OPR ].mustexist = !fileInfo.oprIev_file.empty();
 		files[ rdoModelObjects::PAT ].mustexist = true;
 		files[ rdoModelObjects::RTP ].mustexist = true;
 		files[ rdoModelObjects::RSS ].mustexist = true;
@@ -400,27 +393,6 @@ bool RDOThreadRepository::isFileReadOnly( const std::string& fileName )
 	return false;
 }
 
-/*
-void RDOThreadRepository::changeLastModelPath()
-{
-	std::string name = !modelName.empty() ? modelName + files[ rdoModelObjects::SMR ].extention : "*" + files[ rdoModelObjects::SMR ].extention;
-	if ( !modelPath.empty() ) {
-		lastModelPath = modelPath + name;
-	} else {
-		TCHAR buff[ MAX_PATH ];
-		::GetCurrentDirectory( MAX_PATH, buff );
-		lastModelPath = buff;
-		if ( !lastModelPath.empty() ) {
-			if ( lastModelPath[ lastModelPath.length()-1 ] != '\\' && lastModelPath[ lastModelPath.length()-1 ] != '/' ) {
-				lastModelPath += "\\";
-			}
-		}
-		lastModelPath += name;
-	}
-	AfxGetApp()->WriteProfileString( "repository", "lastModelPath", lastModelPath.c_str() );
-}
-*/
-
 void RDOThreadRepository::setName( const std::string& str )
 {
 	modelName = str;
@@ -431,7 +403,6 @@ void RDOThreadRepository::setName( const std::string& str )
 		modelPath = "";
 		resetModelNames();
 	}
-//	changeLastModelPath();
 }
 
 void RDOThreadRepository::loadFile( const std::string& filename, rdo::binarystream& stream, const bool described, const bool mustExist, bool& reanOnly ) const
@@ -516,6 +487,15 @@ void RDOThreadRepository::loadBMP( const std::string& name, rdo::binarystream& s
 	}
 }
 
+void RDOThreadRepository::writeModelFilesInfo( std::ofstream& stream ) const
+{
+	stream << "Results_file   = " << getFileExtName( rdoModelObjects::PMV ) << "    " << static_cast<LPCTSTR>(CTime::GetCurrentTime().Format( "%a %b %d %H:%M:%S %Y" )) << std::endl;
+	stream << "Run_file       = " << getFileExtName( rdoModelObjects::SMR ) << std::endl;
+	stream << "Model_name     = " << files[ rdoModelObjects::SMR ].filename << std::endl;
+	stream << "Resource_file  = " << files[ rdoModelObjects::RSS ].filename << files[ rdoModelObjects::RSS ].extention << std::endl;
+	stream << "OprIev_file    = " << files[ rdoModelObjects::OPR ].filename << files[ rdoModelObjects::OPR ].extention << std::endl;
+}
+
 void RDOThreadRepository::beforeModelStart()
 {
 	if ( trace_file.is_open() ) {
@@ -524,14 +504,10 @@ void RDOThreadRepository::beforeModelStart()
 	if ( files[ rdoModelObjects::TRC ].described ) {
 		trace_file.open( getFullFileName( rdoModelObjects::TRC ).c_str(), std::ios::out | std::ios::binary );
 		if ( trace_file.is_open() ) {
-			trace_file << "Results_file   = " << getFileExtName( rdoModelObjects::PMV ) << "    " << static_cast<LPCTSTR>(CTime::GetCurrentTime().Format( "%a %b %d %H:%M:%S %Y" )) << std::endl;
-			trace_file << "Run_file       = " << getFileExtName( rdoModelObjects::SMR ) << std::endl;
-			trace_file << "Model_name     = " << files[ rdoModelObjects::SMR ].filename << std::endl;
-			trace_file << "Resource_file  = " << files[ rdoModelObjects::RSS ].filename << files[ rdoModelObjects::RSS ].extention << std::endl;
-			trace_file << "OprIev_file    = " << files[ rdoModelObjects::OPR ].filename << files[ rdoModelObjects::OPR ].extention << std::endl;
+			writeModelFilesInfo( trace_file );
 			std::stringstream model_structure;
 			sendMessage( kernel->simulator(), RT_SIMULATOR_GET_MODEL_STRUCTURE, &model_structure );
-			trace_file << model_structure.str() << std::endl;
+			trace_file << std::endl << model_structure.str() << std::endl;
 			trace_file << "$Tracing" << std::endl;
 		}
 	}
@@ -541,6 +517,20 @@ void RDOThreadRepository::stopModel()
 {
 	if ( trace_file.is_open() ) {
 		trace_file.close();
+	}
+	if ( files[ rdoModelObjects::PMV ].described ) {
+		std::ofstream results_file;
+		results_file.open( getFullFileName( rdoModelObjects::PMV ).c_str(), std::ios::out | std::ios::binary );
+		if ( results_file.is_open() ) {
+			writeModelFilesInfo( results_file );
+			std::stringstream stream;
+			sendMessage( kernel->simulator(), RT_SIMULATOR_GET_MODEL_RESULTS_INFO, &stream );
+			results_file << std::endl << stream.str() << std::endl;
+			stream.str("");
+			stream.clear();
+			sendMessage( kernel->simulator(), RT_SIMULATOR_GET_MODEL_RESULTS, &stream );
+			results_file << std::endl << stream.str() << std::endl;
+		}
 	}
 }
 

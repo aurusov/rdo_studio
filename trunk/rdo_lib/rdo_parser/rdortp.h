@@ -63,7 +63,7 @@ public:
 // ----------------------------------------------------------------------------
 // ---------- RDORTPParam
 // ----------------------------------------------------------------------------
-// Параметр ресурса или константа, т.е. с родителем надо быть поосторожнее,
+// Параметр ресурса или константа, т.е. с getResType() надо быть поосторожнее,
 // т.к. он или RDORTPResType или NULL (для константы)
 // ----------------------------------------------------------------------------
 class RDORTPResType;
@@ -71,15 +71,13 @@ class RDORTPResType;
 class RDORTPParam: public RDOParserObject, public RDOParserSrcInfo
 {
 private:
-	std::string name;
 	const RDORTPParamType* const parType;
 	const RDORTPResType*   const resType;
 
 public:
-	RDORTPParam( RDOParser* _parser, const std::string& _name, const RDORTPParamType* const _parType, const RDOParserSrcInfo& _src_info );
-	RDORTPParam( RDORTPResType* _parent, const std::string& _name, const RDORTPParamType* const _parType );
-	RDORTPParam( RDORTPResType* _parent, const std::string& _name, const RDORTPParamType* const _parType, const RDOParserSrcInfo& _src_info );
-	const std::string&           getName() const    { return name;    }
+	RDORTPParam( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDORTPParamType* const _parType );
+	RDORTPParam( RDORTPResType* _parent, const RDOParserSrcInfo& _src_info, const RDORTPParamType* const _parType );
+	const std::string&           getName() const    { return src_info().src_text(); }
 	const RDORTPParamType* const getType() const    { return parType; }
 	const RDORTPResType* const   getResType() const { return resType; }
 	int writeModelStructure() const;
@@ -121,7 +119,7 @@ private:
 	bool exist;
 
 public:
-	RDORTPDefVal( RDOParser* _parser, const RDORTPDefVal& dv );
+	RDORTPDefVal( RDOParser* _parser, const RDORTPDefVal& copy );
 	RDORTPDefVal( RDOParser* _parser, bool _exist );
 	RDORTPDefVal( RDOParser* _parser, bool _exist, const RDOParserSrcInfo& _src_info );
 	virtual int getIntValue() const;
@@ -143,9 +141,14 @@ public:
 		RDORTPDefVal( _parser, false )
 	{
 	}
-	RDORTPIntDefVal( RDOParser* _parser, const RDORTPIntDefVal& dv ):
-		RDORTPDefVal( _parser, dv ),
-		val( dv.val )
+	RDORTPIntDefVal( RDOParser* _parser, const RDORTPIntDefVal& copy ):
+		RDORTPDefVal( _parser, copy ),
+		val( copy.val )
+	{
+	}
+	RDORTPIntDefVal( const RDORTPIntDefVal& copy ):
+		RDORTPDefVal( copy.getParser(), copy ),
+		val( copy.val )
 	{
 	}
 	RDORTPIntDefVal( RDOParser* _parser, int _val ):
@@ -181,9 +184,10 @@ public:
 	int min_value;
 	int max_value;
 	RDORTPIntDiap( RDOParser* _parser );
-	RDORTPIntDiap( RDOParser* _parser, const RDORTPIntDiap& diap );
+	RDORTPIntDiap( RDOParser* _parser, const RDORTPIntDiap& copy );
 	RDORTPIntDiap( RDOParser* _parser, const RDOParserSrcInfo& _src_info );
 	RDORTPIntDiap( RDOParser* _parser, int _min_value, int _max_value, const RDOParserSrcInfo& _src_info, const YYLTYPE& _max_value_pos );
+	RDORTPIntDiap( const RDORTPIntDiap& copy );
 	bool isExist() const { return exist; }
 };
 
@@ -230,9 +234,14 @@ public:
 		RDORTPDefVal( _parser, false )
 	{
 	}
-	RDORTPRealDefVal( RDOParser* _parser, const RDORTPIntDefVal& dv ):
-		RDORTPDefVal( _parser, dv ),
-		val( dv.getRealValue() )
+	RDORTPRealDefVal( RDOParser* _parser, const RDORTPRealDefVal& copy ):
+		RDORTPDefVal( _parser, copy ),
+		val( copy.val )
+	{
+	}
+	RDORTPRealDefVal( const RDORTPRealDefVal& copy ):
+		RDORTPDefVal( copy.getParser(), copy ),
+		val( copy.val )
 	{
 	}
 	RDORTPRealDefVal( RDOParser* _parser, double _val ):
@@ -268,9 +277,10 @@ public:
 	double min_value;
 	double max_value;
 	RDORTPRealDiap( RDOParser* _parser );
-	RDORTPRealDiap( RDOParser* _parser, const RDORTPRealDiap& diap );
+	RDORTPRealDiap( RDOParser* _parser, const RDORTPRealDiap& copy );
 	RDORTPRealDiap( RDOParser* _parser, const RDOParserSrcInfo& _src_info );
 	RDORTPRealDiap( RDOParser* _parser, double _min_value, double _max_value, const RDOParserSrcInfo& _src_info, const YYLTYPE& _max_value_pos );
+	RDORTPRealDiap( const RDORTPRealDiap& copy );
 	bool isExist() const { return exist; }
 };
 
@@ -335,9 +345,15 @@ public:
 		val( "" )
 	{
 	}
-	RDORTPEnumDefVal( RDOParser* _parser, const RDORTPEnumDefVal& dv ):
-		RDORTPDefVal( _parser, dv ),
-		val( dv.val )
+	RDORTPEnumDefVal( RDOParser* _parser, const RDORTPEnumDefVal& copy ):
+		RDORTPDefVal( _parser, copy ),
+		val( copy.val )
+	{
+		setSrcText( val );
+	}
+	RDORTPEnumDefVal( const RDORTPEnumDefVal& copy ):
+		RDORTPDefVal( copy.getParser(), copy ),
+		val( copy.val )
 	{
 		setSrcText( val );
 	}

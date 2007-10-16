@@ -69,14 +69,18 @@ public:
 // --------------------------------------------------------------------
 // ---------- RDOSimResulter
 // --------------------------------------------------------------------
-class RDOSimResulter: public rdoRuntime::RDOResult
+class RDOSimResulter: public rdoRuntime::RDOResults
 {
 private:
 	std::ostream& stream;
+	virtual std::ostream& getOStream() { return stream; }
 
 public:
-	RDOSimResulter(std::ostream &_stream): stream(_stream) {isNullResult = false;}
-	virtual std::ostream &getOStream() { return stream; }
+	RDOSimResulter( std::ostream& _stream ):
+		stream( _stream )
+	{
+		isNullResult = false;
+	}
 };
 
 } // namespace rdoSimulator
@@ -90,6 +94,8 @@ RDOThreadRunTime::RDOThreadRunTime():
 	simulator( NULL ),
 	runtime_error( false )
 {
+	::GetSystemTime( &time_start );
+
 	simulator = kernel->simulator();
 
 	notifies.push_back( RT_RUNTIME_GET_MODE );
@@ -195,9 +201,10 @@ void RDOThreadRunTime::start()
 	broadcastMessage( RT_RUNTIME_MODEL_START_BEFORE );
 
 	RDOTrace* tracer;
-	rdoRuntime::RDOResult* resulter;
+	rdoRuntime::RDOResults* results;
+	rdoRuntime::RDOResults* results_info;
 
-	// Creating tracer and resulter //////////////////////////////////
+	// Creating tracer and results //////////////////////////////////
 	if ( !simulator->parser->getSMR()->hasFile( "Trace_file" ) ) {
 		tracer = new RDOTrace();
 	} else {
@@ -206,9 +213,16 @@ void RDOThreadRunTime::start()
 
 	simulator->resultString.str( "" );
 	if ( !simulator->parser->getSMR()->hasFile( "Statistic_file" ) ) {
-		resulter = new rdoRuntime::RDOResult();
+		results      = new rdoRuntime::RDOResults();
 	} else {
-		resulter = new rdoSimulator::RDOSimResulter( simulator->resultString );
+		results      = new rdoSimulator::RDOSimResulter( simulator->resultString );
+	}
+
+	simulator->resultInfoString.str( "" );
+	if ( !simulator->parser->getSMR()->hasFile( "Results_file" ) ) {
+		results_info = new rdoRuntime::RDOResults();
+	} else {
+		results_info = new rdoSimulator::RDOSimResulter( simulator->resultInfoString );
 	}
 
 	// RDO config initialization
@@ -223,7 +237,7 @@ void RDOThreadRunTime::start()
 
 	try {
 		simulator->exitCode = rdoSimulator::EC_OK;
-		simulator->runtime->rdoInit( tracer, resulter );
+		simulator->runtime->rdoInit( tracer, results, results_info );
 		switch ( simulator->parser->getSMR()->getShowMode() ) {
 			case rdoSimulator::SM_NoShow   : simulator->runtime->setMode( rdoRuntime::RTM_MaxSpeed ); break;
 			case rdoSimulator::SM_Animation: simulator->runtime->setMode( rdoRuntime::RTM_Sync ); break;
@@ -282,6 +296,62 @@ void RDOThreadRunTime::idle()
 //	}
 }
 
+void RDOThreadRunTime::writeResultsInfo()
+{
+	switch ( simulator->runtime->whyStop ) {
+		case rdoSimulator::EC_OK:
+			simulator->runtime->getResultsInfo() << "$Status = " << "NORMAL_TERMINATION";
+			break;
+		case rdoSimulator::EC_NoMoreEvents:
+			simulator->runtime->getResultsInfo() << "$Status = " << "NO_MORE_EVENTS";
+			break;
+		case rdoSimulator::EC_RunTimeError:
+			simulator->runtime->getResultsInfo() << "$Status = " << "RUN_TIME_ERROR";
+			break;
+		case rdoSimulator::EC_UserBreak:
+			simulator->runtime->getResultsInfo() << "$Status = " << "USER_BREAK";
+			break;
+	}
+	simulator->runtime->getResultsInfo() << '\n' << "$Result_values  0  " << simulator->runtime->getTimeNow();
+	SYSTEMTIME time_stop;
+	::GetSystemTime( &time_stop );
+	double delay = -1;
+	if ( time_start.wYear == time_stop.wYear && time_start.wMonth == time_stop.wMonth ) {
+		delay = (time_stop.wDay - time_start.wDay) * 24 * 60 * 60 * 1000 + (time_stop.wHour - time_start.wHour) * 60 * 60 * 1000 + (time_stop.wMinute - time_start.wMinute) * 60 * 1000 + (time_stop.wSecond - time_start.wSecond) * 1000 + (time_stop.wMilliseconds - time_start.wMilliseconds );
+	} else if ( time_stop.wYear - time_start.wYear == 1 && time_start.wMonth == 12 && time_stop.wMonth == 1 ) {
+		delay = (time_stop.wDay + 31 - time_start.wDay) * 24 * 60 * 60 * 1000 + (time_stop.wHour - time_start.wHour) * 60 * 60 * 1000 + (time_stop.wMinute - time_start.wMinute) * 60 * 1000 + (time_stop.wSecond - time_start.wSecond) * 1000 + (time_stop.wMilliseconds - time_start.wMilliseconds );
+	}
+	if ( delay != -1 ) {
+		simulator->runtime->getResultsInfo() << "  " << delay / 1000.0;
+	} else {
+		simulator->runtime->getResultsInfo() << "  ?";
+	}
+	simulator->runtime->getResultsInfo() << '\n' << "  EventCount           " << simulator->runtime->get_cnt_events() << "  " << (double)simulator->runtime->get_cnt_events() / simulator->runtime->getTimeNow() << "  ";
+	if ( delay != -1 ) {
+		simulator->runtime->getResultsInfo() << (unsigned int)((double)simulator->runtime->get_cnt_events() / delay * 1000);
+	} else {
+		simulator->runtime->getResultsInfo() << "?";
+	}
+	simulator->runtime->getResultsInfo() << '\n' << "  OperRuleCheckCounter " << simulator->runtime->get_cnt_choice_from() << "  " << (double)simulator->runtime->get_cnt_choice_from() / simulator->runtime->getTimeNow() << "  ";
+	if ( delay != -1 ) {
+		simulator->runtime->getResultsInfo() << (unsigned int)((double)simulator->runtime->get_cnt_choice_from() / delay * 1000);
+	} else {
+		simulator->runtime->getResultsInfo() << "?";
+	}
+	simulator->runtime->getResultsInfo() << '\n' << "  AExpCalcCounter      " << simulator->runtime->get_cnt_calc_arithm() << "  " << (double)simulator->runtime->get_cnt_calc_arithm() / simulator->runtime->getTimeNow() << "  ";
+	if ( delay != -1 ) {
+		simulator->runtime->getResultsInfo() << (unsigned int)((double)simulator->runtime->get_cnt_calc_arithm() / delay * 1000);
+	} else {
+		simulator->runtime->getResultsInfo() << "?";
+	}
+	simulator->runtime->getResultsInfo() << '\n' << "  BExpCalcCounter      " << simulator->runtime->get_cnt_calc_logic() << "  " << (double)simulator->runtime->get_cnt_calc_logic() / simulator->runtime->getTimeNow() << "  ";
+	if ( delay != -1 ) {
+		simulator->runtime->getResultsInfo() << (unsigned int)((double)simulator->runtime->get_cnt_calc_logic() / delay * 1000);
+	} else {
+		simulator->runtime->getResultsInfo() << "?";
+	}
+}
+
 void RDOThreadRunTime::stop()
 {
 #ifdef TR_TRACE
@@ -290,6 +360,7 @@ void RDOThreadRunTime::stop()
 
 	try {
 		simulator->runtime->rdoPostProcess();
+		writeResultsInfo();
 	}
 	catch ( rdoParse::RDOSyntaxException& ) {
 		runtime_error = true;
@@ -330,6 +401,7 @@ RDOThreadSimulator::RDOThreadSimulator():
 	notifies.push_back( RT_STUDIO_MODEL_STOP );
 	notifies.push_back( RT_SIMULATOR_GET_MODEL_STRUCTURE );
 	notifies.push_back( RT_SIMULATOR_GET_MODEL_RESULTS );
+	notifies.push_back( RT_SIMULATOR_GET_MODEL_RESULTS_INFO );
 	notifies.push_back( RT_SIMULATOR_GET_MODEL_EXITCODE );
 	notifies.push_back( RT_SIMULATOR_GET_LIST );
 	notifies.push_back( RT_SIMULATOR_GET_ERRORS );
@@ -367,6 +439,14 @@ void RDOThreadSimulator::proc( RDOMessageInfo& msg )
 		case RT_SIMULATOR_GET_MODEL_RESULTS: {
 			msg.lock();
 			*static_cast<std::stringstream*>(msg.param) << resultString.str();
+			msg.unlock();
+			break;
+		}
+		case RT_SIMULATOR_GET_MODEL_RESULTS_INFO: {
+			msg.lock();
+			*static_cast<std::stringstream*>(msg.param) << parser->getChanges();
+			*static_cast<std::stringstream*>(msg.param) << std::endl << std::endl;
+			*static_cast<std::stringstream*>(msg.param) << resultInfoString.str();
 			msg.unlock();
 			break;
 		}

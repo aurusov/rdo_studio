@@ -28,6 +28,11 @@ private:
 	double       msec_wait;
 	unsigned int msec_prev;
 
+	unsigned int cnt_events;
+	unsigned int cnt_choice_from;
+	unsigned int cnt_calc_arithm;
+	unsigned int cnt_calc_logic;
+
 protected:
 	struct BOPlanned {
 		RDOBaseOperation* opr;
@@ -101,6 +106,16 @@ public:
 
 	RDOSimulatorBase( RDORuntimeParent* _runtime );
 	virtual ~RDOSimulatorBase() {}
+
+	void inc_cnt_events()      { cnt_events++;      }
+	void inc_cnt_choice_from() { cnt_choice_from++; }
+	void inc_cnt_calc_arithm() { cnt_calc_arithm++; }
+	void inc_cnt_calc_logic()  { cnt_calc_logic++;  }
+
+	unsigned int get_cnt_events()      { return cnt_events;      }
+	unsigned int get_cnt_choice_from() { return cnt_choice_from; }
+	unsigned int get_cnt_calc_arithm() { return cnt_calc_arithm; }
+	unsigned int get_cnt_calc_logic()  { return cnt_calc_logic;  }
 
 	static unsigned int getMSec( const SYSTEMTIME& systime ) {
 		return systime.wMilliseconds + systime.wSecond * 1000 + systime.wMinute * 1000 * 60 + systime.wHour * 1000 * 60 * 60;

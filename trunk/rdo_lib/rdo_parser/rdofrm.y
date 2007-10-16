@@ -1182,14 +1182,14 @@ fun_arithm_func_call_pars:	fun_arithm {
 // ----------------------------------------------------------------------------
 // ---------- Групповые выражения
 // ----------------------------------------------------------------------------
-fun_group_keyword:	Exist			{ $$ = 1; }
-					| Not_Exist		{ $$ = 2; }
-					| For_All		{ $$ = 3; }
-					| Not_For_All	{ $$ = 4; };
+fun_group_keyword:	Exist			{ $$ = RDOFUNGroupLogic::fgt_exist;     }
+					| Not_Exist		{ $$ = RDOFUNGroupLogic::fgt_notexist;  }
+					| For_All		{ $$ = RDOFUNGroupLogic::fgt_forall;    }
+					| Not_For_All	{ $$ = RDOFUNGroupLogic::fgt_notforall; };
 
 fun_group_header:	fun_group_keyword '(' IDENTIF_COLON {
 						std::string type_name = *reinterpret_cast<std::string*>($3);
-						$$ = (int)(new RDOFUNGroupLogic( parser, $1, RDOParserSrcInfo(@3, type_name, RDOParserSrcInfo::psi_align_bytext) ));
+						$$ = (int)(new RDOFUNGroupLogic( parser, (RDOFUNGroupLogic::FunGroupType)$1, RDOParserSrcInfo(@3, type_name, RDOParserSrcInfo::psi_align_bytext) ));
 					}
 					| fun_group_keyword '(' error {
 						parser->error( @3, "Ожидается имя типа" );
@@ -1262,15 +1262,15 @@ fun_select_body:	fun_select_header fun_logic ')' {
 						parser->error( @1, @2, "Ошибка в логическом выражении" )
 					};
 
-fun_select_keyword:	Exist			{ $$ = 1; }
-					| Not_Exist		{ $$ = 2; }
-					| For_All		{ $$ = 3; }
-					| Not_For_All	{ $$ = 4; };
+fun_select_keyword:	Exist			{ $$ = RDOFUNGroupLogic::fgt_exist;     }
+					| Not_Exist		{ $$ = RDOFUNGroupLogic::fgt_notexist;  }
+					| For_All		{ $$ = RDOFUNGroupLogic::fgt_forall;    }
+					| Not_For_All	{ $$ = RDOFUNGroupLogic::fgt_notforall; };
 
 fun_select_logic:	fun_select_body '.' fun_select_keyword '(' fun_logic ')' {
 						RDOFUNSelect* select = reinterpret_cast<RDOFUNSelect*>($1);
 						select->setSrcPos( @1, @6 );
-						RDOFUNLogic* logic = select->createFunSelectGroup( $3, reinterpret_cast<RDOFUNLogic*>($5) );
+						RDOFUNLogic* logic = select->createFunSelectGroup( (RDOFUNGroupLogic::FunGroupType)$3, reinterpret_cast<RDOFUNLogic*>($5) );
 						$$ = (int)logic;
 					}
 					| fun_select_body '.' fun_select_keyword '(' error {

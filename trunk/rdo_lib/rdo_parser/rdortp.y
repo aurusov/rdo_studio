@@ -235,13 +235,12 @@ rtp_body:	/* empty */ {
 			};
 
 rtp_param: IDENTIF_COLON param_type {
-					parser->lexer_loc_backup( &(@1) ); // Используется в addParam
-					std::string parName      = *reinterpret_cast<std::string*>($1);
+					RDOParserSrcInfo par_src_info(@1, *reinterpret_cast<std::string*>($1), RDOParserSrcInfo::psi_align_bytext);
 					RDORTPParamType* parType = reinterpret_cast<RDORTPParamType*>($2);
-					RDORTPParam* param = new RDORTPParam( parser->getLastRTPResType(), parName, parType, RDOParserSrcInfo( @1, @2 ) );
+					RDORTPParam* param = new RDORTPParam( parser->getLastRTPResType(), par_src_info, parType );
 					parType->reparent( param );
 					if ( parType->getType() == RDORTPParamType::pt_enum ) {
-						static_cast<RDORTPEnumParamType*>(parType)->enum_name = rdo::format( "%s.%s", parser->getLastRTPResType()->getName().c_str(), parName.c_str() );
+						static_cast<RDORTPEnumParamType*>(parType)->enum_name = rdo::format( "%s.%s", parser->getLastRTPResType()->getName().c_str(), par_src_info.src_text().c_str() );
 					}
 					$$ = (int)param;
 				}

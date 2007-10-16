@@ -162,41 +162,26 @@ void RDORTPParamType::checkParamType( const rdoRuntime::RDOValue& value, const R
 // ----------------------------------------------------------------------------
 // ---------- RDORTPParam
 // ----------------------------------------------------------------------------
-RDORTPParam::RDORTPParam( RDOParser* _parser, const std::string& _name, const RDORTPParamType* const _parType, const RDOParserSrcInfo& _src_info ):
+RDORTPParam::RDORTPParam( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDORTPParamType* const _parType ):
 	RDOParserObject( _parser ),
 	RDOParserSrcInfo( _src_info ),
-	name( _name ),
 	parType( _parType ),
 	resType( NULL )
 {
-	setSrcText( name + ": " + parType->src_text() );
 }
 
-RDORTPParam::RDORTPParam( RDORTPResType* _parent, const std::string& _name, const RDORTPParamType* const _parType ):
-	RDOParserObject( _parent ),
-	RDOParserSrcInfo(),
-	name( _name ),
-	parType( _parType ),
-	resType( _parent )
-{
-	setSrcText( name + ": " + parType->src_text() );
-}
-
-RDORTPParam::RDORTPParam( RDORTPResType* _parent, const std::string& _name, const RDORTPParamType* const _parType, const RDOParserSrcInfo& _src_info ):
+RDORTPParam::RDORTPParam( RDORTPResType* _parent, const RDOParserSrcInfo& _src_info, const RDORTPParamType* const _parType ):
 	RDOParserObject( _parent ),
 	RDOParserSrcInfo( _src_info ),
-	name( _name ),
 	parType( _parType ),
 	resType( _parent )
 {
-	setSrcText( name + ": " + parType->src_text() );
 }
 
 int RDORTPParam::writeModelStructure() const
 {
 	getParser()->modelStructure << getName() << " ";
 	getType()->writeModelStructure();
-//	getParser()->modelStructure << " ";
 	return 0;
 }
 
@@ -215,15 +200,14 @@ RDORTPResType::RDORTPResType( RDOParser* _parser, const RDOParserSrcInfo& _src_i
 void RDORTPResType::addParam( const RDORTPParam* const param )
 {
 	if ( findRTPParam( param->getName() ) ) {
-		getParser()->lexer_loc_restore();
-		getParser()->error( rdoSimulator::RDOSyntaxError::RTP_SECOND_PARAM_NAME, param->getName().c_str() );
+		getParser()->error( param->src_info(), rdoSimulator::RDOSyntaxError::RTP_SECOND_PARAM_NAME, param->getName().c_str() );
 	}
 	params.push_back( param );
 }
 
 const RDORTPParam* RDORTPResType::findRTPParam( const std::string& param ) const
 {
-	std::vector<const RDORTPParam *>::const_iterator it = std::find_if( params.begin(), params.end(), compareName2<RDORTPParam>(param) );
+	std::vector<const RDORTPParam *>::const_iterator it = std::find_if( params.begin(), params.end(), compareName<RDORTPParam>(param) );
 	return it != params.end() ? *it : NULL;
 }
 
@@ -231,7 +215,7 @@ int RDORTPResType::getRTPParamNumber( const std::string& param ) const
 {
 	std::vector<const RDORTPParam *>::const_iterator it = std::find_if(params.begin(), 
 		params.end(), 
-		compareName2<RDORTPParam>(param));
+		compareName<RDORTPParam>(param));
 	if(it != params.end())
 		return it - params.begin();
 
@@ -261,12 +245,12 @@ RDORTPIntDiap::RDORTPIntDiap( RDOParser* _parser ):
 {
 }
 
-RDORTPIntDiap::RDORTPIntDiap( RDOParser* _parser, const RDORTPIntDiap& diap ):
+RDORTPIntDiap::RDORTPIntDiap( RDOParser* _parser, const RDORTPIntDiap& copy ):
 	RDOParserObject( _parser ),
-	RDOParserSrcInfo( diap.src_info() ),
-	exist( diap.exist ),
-	min_value( diap.min_value ),
-	max_value( diap.max_value )
+	RDOParserSrcInfo( copy.src_info() ),
+	exist( copy.exist ),
+	min_value( copy.min_value ),
+	max_value( copy.max_value )
 {
 }
 
@@ -290,6 +274,15 @@ RDORTPIntDiap::RDORTPIntDiap( RDOParser* _parser, int _min_value, int _max_value
 		getParser()->error( _max_value_pos, "Ћева€ граница диапазона должна быть меньше правой" );
 	}
 	setSrcText( rdo::format("[%d..%d]", min_value, max_value) );
+}
+
+RDORTPIntDiap::RDORTPIntDiap( const RDORTPIntDiap& copy ):
+	RDOParserObject( copy.getParser() ),
+	RDOParserSrcInfo( copy.src_info() ),
+	exist( copy.exist ),
+	min_value( copy.min_value ),
+	max_value( copy.max_value )
+{
 }
 
 // ----------------------------------------------------------------------------
@@ -462,12 +455,12 @@ RDORTPRealDiap::RDORTPRealDiap( RDOParser* _parser ):
 {
 }
 
-RDORTPRealDiap::RDORTPRealDiap( RDOParser* _parser, const RDORTPRealDiap& diap ):
+RDORTPRealDiap::RDORTPRealDiap( RDOParser* _parser, const RDORTPRealDiap& copy ):
 	RDOParserObject( _parser ),
-	RDOParserSrcInfo( diap.src_info() ),
-	exist( diap.exist ),
-	min_value( diap.min_value ),
-	max_value( diap.max_value )
+	RDOParserSrcInfo( copy.src_info() ),
+	exist( copy.exist ),
+	min_value( copy.min_value ),
+	max_value( copy.max_value )
 {
 }
 
@@ -491,6 +484,15 @@ RDORTPRealDiap::RDORTPRealDiap( RDOParser* _parser, double _min_value, double _m
 		getParser()->error( _max_value_pos, "Ћева€ граница диапазона должна быть меньше правой" );
 	}
 	setSrcText( rdo::format("[%f..%f]", min_value, max_value) );
+}
+
+RDORTPRealDiap::RDORTPRealDiap( const RDORTPRealDiap& copy ):
+	RDOParserObject( copy.getParser() ),
+	RDOParserSrcInfo( copy.src_info() ),
+	exist( copy.exist ),
+	min_value( copy.min_value ),
+	max_value( copy.max_value )
+{
 }
 
 // ----------------------------------------------------------------------------

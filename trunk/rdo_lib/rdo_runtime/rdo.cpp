@@ -40,6 +40,7 @@ RDOBaseOperation::BOResult RDOIE::checkOperation(RDOSimulator *sim)
 
 void RDOIE::makePlaned( RDOSimulator* sim, void* param )
 {
+	sim->inc_cnt_events();
 	onBeforeIrregularEvent( sim );
 	convertEvent( sim );
 	sim->addTimePoint( time = (getNextTimeInterval(sim) + sim->getCurrentTime()), this );
@@ -52,6 +53,7 @@ void RDOIE::makePlaned( RDOSimulator* sim, void* param )
 RDOBaseOperation::BOResult RDORule::checkOperation( RDOSimulator* sim )
 {
 	onBeforeChoiceFrom( sim );
+	sim->inc_cnt_choice_from();
 	if ( choiceFrom(sim) ) {
 		onBeforeRule( sim );
 		convertRule( sim );
@@ -68,6 +70,7 @@ RDOBaseOperation::BOResult RDOOperation::checkOperation( RDOSimulator* sim )
 {
 	// ≈сли операци€ может начатьс€, то создать еЄ клон и поместить его в список
 	onBeforeChoiceFrom( sim );
+	sim->inc_cnt_choice_from();
 	if ( choiceFrom(sim) ) {
 		RDOOperation* newOp = clone( sim );
 		newOp->reparent( &clones );
@@ -84,6 +87,7 @@ RDOBaseOperation::BOResult RDOOperation::checkOperation( RDOSimulator* sim )
 void RDOOperation::makePlaned( RDOSimulator* sim, void* param )
 {
 	// ¬ыполн€ем событие конца операции-клона
+	sim->inc_cnt_events();
 	RDOOperation* opr = static_cast<RDOOperation*>(param);
 	opr->onBeforeOperationEnd( sim );
 	opr->convertEnd( sim );

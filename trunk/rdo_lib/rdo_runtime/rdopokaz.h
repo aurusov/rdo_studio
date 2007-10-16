@@ -57,7 +57,7 @@ public:
 class RDOPMDWatchState: public RDOPMDPokaz
 {
 private:
-	RDOCalc *logicCalc;
+	RDOCalc* logicCalc;
 
 	int watchNumber;
 	bool currValue;
