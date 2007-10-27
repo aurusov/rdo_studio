@@ -93,7 +93,7 @@ protected:
 	RandGeneratorCommonNext() {}
 
 public:
-	virtual double next() = 0;
+	virtual RDOValue next() = 0;
 };
 
 // ----------------------------------------------------------------------------
@@ -118,7 +118,7 @@ private:
 	std::vector< double > to;
 	std::vector< double > freq;
 
-	virtual double next() {
+	virtual RDOValue next() {
 		double ran1 = RandGeneratorUniform::next( 0, summ );
 		double add = 0;
 		for ( int i = 0; i < freq.size() - 1; i++ ) {
@@ -144,10 +144,10 @@ public:
 class RandGeneratorByHistEnum: public RandGeneratorByHist
 {
 private:
-	std::vector< int >    vals;
-	std::vector< double > freq;
+	std::vector< RDOValue > vals;
+	std::vector< double >   freq;
 
-	virtual double next() {
+	virtual RDOValue next() {
 		double ran1 = RandGeneratorUniform::next( 0, summ );
 		double add = 0;
 		for ( int i = 0; i < freq.size() - 1; i++ ) {
@@ -162,7 +162,7 @@ public:
 		RandGeneratorByHist( _seed )
 	{
 	}
-	void addValues( int _val, double _freq ) {
+	void addValues( RDOValue _val, double _freq ) {
 		vals.push_back( _val );
 		freq.push_back( _freq );
 		summ += _freq;
@@ -175,11 +175,11 @@ public:
 class RandGeneratorEnumerative: public RandGeneratorCommonNext
 {
 private:
-	std::vector< double > vals;
+	std::vector< RDOValue > vals;
 	int curr;
 
-	virtual double next() {
-		double res = vals[curr++];
+	virtual RDOValue next() {
+		RDOValue res = vals[curr++];
 		if ( curr >= vals.size() ) curr = 0;
 		return res;
 	}
@@ -190,7 +190,7 @@ public:
 		curr( 0 )
 	{
 	}
-	void addValue( double val ) {
+	void addValue( RDOValue val ) {
 		vals.push_back( val );
 	}
 };

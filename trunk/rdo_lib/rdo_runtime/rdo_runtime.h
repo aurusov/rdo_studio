@@ -55,6 +55,12 @@ public:
 	int width( int w ) {
 		return isNullResult ? 0 : getOStream().width(w);
 	}
+//	RDOResults& operator<< (const RDOValue& value ) {
+//		if ( !isNullResult ) {
+//			value.save( getOStream() );
+//		}
+//		return *this;
+//	}
 	template< class TN > RDOResults& operator << (TN str) {
 		if ( !isNullResult ) getOStream() << str;
 		return *this;
@@ -232,9 +238,9 @@ public:
 	void pushGroupFunc( RDOResource* res ) { groupFuncStack.push_back( res );                      }
 	void popFuncArgument()                 { funcStack.pop_back();                                 }
 	void popGroupFunc()                    { groupFuncStack.pop_back();                            }
-	void pushFuncTop()                     { funcStack.push_back( currFuncTop );                   }
+	void pushFuncTop()                     { funcStack.push_back( RDOValue(currFuncTop) );         }
 	void resetFuncTop( int numArg )        { currFuncTop = funcStack.size() - numArg;              }
-	void popFuncTop()                      { currFuncTop = funcStack.back(); funcStack.pop_back(); }
+	void popFuncTop()                      { currFuncTop = funcStack.back().getInt(); funcStack.pop_back(); }
 
 	virtual bool endCondition();
 	void setTerminateIf( RDOCalc* _terminateIfCalc );

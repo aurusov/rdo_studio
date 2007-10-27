@@ -55,7 +55,7 @@ public:
 				case RDOFRMPosition::mult   : res *= frame->last_x;                     break;
 				case RDOFRMPosition::rulet  : res += frame->getRuletX( sim, rulet_id ); break;
 			}
-			return res;
+			return res.getInt();
 		}
 		int getY( RDORuntime* sim, RDOFRMFrame* frame ) {
 			RDOValue res = calc->calcValueBase( sim );
@@ -65,7 +65,7 @@ public:
 				case RDOFRMPosition::mult   : res *= frame->last_y;                      break;
 				case RDOFRMPosition::rulet  : res += frame->getRuletY( sim, rulet_id );  break;
 			}
-			return res;
+			return res.getInt();
 		}
 		int getWidth( RDORuntime* sim, RDOFRMFrame* frame ) {
 			RDOValue res = calc->calcValueBase( sim );
@@ -74,7 +74,7 @@ public:
 				case RDOFRMPosition::mult   : res *= frame->last_width; break;
 				case RDOFRMPosition::rulet  : res += frame->getRuletX( sim, rulet_id ); break;
 			}
-			return res;
+			return res.getInt();
 		}
 		int getHeight( RDORuntime* sim, RDOFRMFrame* frame ) {
 			RDOValue res = calc->calcValueBase( sim );
@@ -83,7 +83,7 @@ public:
 				case RDOFRMPosition::mult   : res *= frame->last_height; break;
 				case RDOFRMPosition::rulet  : res += frame->getRuletY( sim, rulet_id ); break;
 			}
-			return res;
+			return res.getInt();
 		}
 	};
 	friend class RDOFRMPosition;
@@ -199,7 +199,7 @@ public:
 	int getRuletX( RDORuntime* sim, int rulet_id ) {
 		std::vector< RDOFRMRulet* >::const_iterator it = rulets.begin();
 		while ( it != rulets.end() ) {
-			if ( (*it)->index == rulet_id ) return (*it)->x->calc->calcValueBase( sim );
+			if ( (*it)->index == rulet_id ) return (*it)->x->calc->calcValueBase( sim ).getInt();
 			it++;
 		}
 		return 0;
@@ -207,7 +207,7 @@ public:
 	int getRuletY( RDORuntime* sim, int rulet_id ) {
 		std::vector< RDOFRMRulet* >::const_iterator it = rulets.begin();
 		while ( it != rulets.end() ) {
-			if ( (*it)->index == rulet_id ) return (*it)->y->calc->calcValueBase( sim );
+			if ( (*it)->index == rulet_id ) return (*it)->y->calc->calcValueBase( sim ).getInt();
 			it++;
 		}
 		return 0;

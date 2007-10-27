@@ -33,11 +33,11 @@ private:
 	int parNumber;
 
 	int watchNumber;
-	double currValue;
+	RDOValue currValue;
 	double sum;
 	double sumSqr;
-	double minValue;
-	double maxValue;
+	RDOValue minValue;
+	RDOValue maxValue;
 
 	double timeBegin;
 	double timePrev;
@@ -118,11 +118,11 @@ private:
 	int rtp_id;
 
 	int watchNumber;
-	double currValue;
+	RDOValue currValue;
 	double sum;
 	double sumSqr;
-	double minValue;
-	double maxValue;
+	RDOValue minValue;
+	RDOValue maxValue;
 
 public:
 	RDOPMDWatchValue( RDOSimulatorTrace* _sim, const std::string& _name, bool _trace, const std::string& _resTypeName, int _rtp_id );

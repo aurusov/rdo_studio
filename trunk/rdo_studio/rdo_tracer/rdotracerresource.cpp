@@ -136,7 +136,7 @@ void RDOTracerResource::setParams( std::string& line, RDOTracerTimeNow* const ti
 		RDOTracerValue* prevval;
 		params.at( i )->getLastValue( prevval );
 		double newval = erasing ? prevval->value : atof( tracer->getNextValue( line ).c_str() );
-		if ( !prevval || erasing || prevval->value != newval ) {
+		if ( true /*!prevval || erasing || prevval->value != newval*/ ) {
 			RDOTracerValue* newvalue = new RDOTracerValue( time, eventIndex );
 			newvalue->value = newval;
 			params.at( i )->addValue( newvalue );

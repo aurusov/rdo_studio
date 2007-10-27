@@ -17,7 +17,7 @@ class RDOSearchActivityRuntime: public RDOActivityTrace
 private:
 	RDOCalc* cost;
 	virtual double costOfRule( RDOSimulator* runtime ) {
-		return cost->calcValueBase( static_cast<RDORuntime*>(runtime) );
+		return cost->calcValueBase( static_cast<RDORuntime*>(runtime) ).getDouble();
 	}
 
 public:
@@ -39,9 +39,9 @@ private:
 	RDOCalc* evaluateBy;
 	bool compTops;
 
-	virtual bool Condition( RDOSimulator* sim )     { return (condition->calcValueBase( static_cast<RDORuntime*>(sim) ) != 0);     }
-	virtual bool TermCondition( RDOSimulator* sim ) { return (termCondition->calcValueBase( static_cast<RDORuntime*>(sim) ) != 0); }
-	virtual double EvaluateBy( RDOSimulator* sim )  { return evaluateBy->calcValueBase( static_cast<RDORuntime*>(sim) );           }
+	virtual bool Condition( RDOSimulator* sim )     { return condition->calcValueBase( static_cast<RDORuntime*>(sim) ).getBool();     }
+	virtual bool TermCondition( RDOSimulator* sim ) { return termCondition->calcValueBase( static_cast<RDORuntime*>(sim) ).getBool(); }
+	virtual double EvaluateBy( RDOSimulator* sim )  { return evaluateBy->calcValueBase( static_cast<RDORuntime*>(sim) ).getDouble();  }
 	virtual bool NeedCompareTops()                  { return compTops; }
 
 public:

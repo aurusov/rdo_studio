@@ -59,7 +59,7 @@ private:
 	RDOFUNDoubleToIntByResult int_or_double;
 
 public:
-	rdoRuntime::RDOCalc* createCalc( RDORTPParamType::ParamType _type = RDORTPParamType::pt_real );
+	rdoRuntime::RDOCalc* createCalc( rdoRuntime::RDOValue::ParamType _type = rdoRuntime::RDOValue::pt_real );
 
 	RDOFUNLogic( const RDOParserObject* _parent, rdoRuntime::RDOCalc* _calc, bool hide_warning = false );
 
@@ -84,25 +84,25 @@ public:
 class RDOFUNArithm: public RDOParserObject, public RDOParserSrcInfo
 {
 public:
-	RDORTPParamType::ParamType type; // 0 - int, 1 - real, 2 - enum, 3 - unknow
-	RDORTPEnum* enu; // for type == 2
-	std::string str; // for type == 3
+	RDORTPEnum* enu; // for type == enum
+	std::string str; // for type == unknow
 
 private:
+	rdoRuntime::RDOValue::ParamType type;
 	rdoRuntime::RDOCalc* calc;
 	RDOFUNDoubleToIntByResult int_or_double;
 
-	void init( const RDOParserSrcInfo& res_name_error_pos, const RDOParserSrcInfo& par_name_error_pos );
+	void init( const RDOParserSrcInfo& res_name_src_info, const RDOParserSrcInfo& par_name_src_info );
 	void init( const std::string& value, const YYLTYPE& _pos );
 
 public:
-	RDOFUNArithm( RDOParser* _parser, RDORTPParamType::ParamType _type, rdoRuntime::RDOCalc* _calc, const RDOParserSrcInfo& src_info );
+	RDOFUNArithm( RDOParser* _parser, rdoRuntime::RDOValue::ParamType _type, rdoRuntime::RDOCalc* _calc, const RDOParserSrcInfo& src_info );
 	RDOFUNArithm( RDOParser* _parser, const RDOParserSrcInfo& res_name_src_info, const RDOParserSrcInfo& par_name_src_info );
 	RDOFUNArithm( RDOParser* _parser, int value, const RDOParserSrcInfo& src_info );
 	RDOFUNArithm( RDOParser* _parser, double* value, const RDOParserSrcInfo& src_info );
 	RDOFUNArithm( RDOParser* _parser, const std::string& value, const YYLTYPE& _pos );
 
-	RDOFUNArithm( const RDOParserObject* _parent, RDORTPParamType::ParamType _type, rdoRuntime::RDOCalc* _calc, const RDOParserSrcInfo& src_info );
+	RDOFUNArithm( const RDOParserObject* _parent, rdoRuntime::RDOValue::ParamType _type, rdoRuntime::RDOCalc* _calc, const RDOParserSrcInfo& src_info );
 	RDOFUNArithm( const RDOFUNArithm* _parent, const RDOParserSrcInfo& res_name_src_info, const RDOParserSrcInfo& par_name_src_info );
 	RDOFUNArithm( const RDOFUNArithm* _parent, int value, const RDOParserSrcInfo& src_info );
 	RDOFUNArithm( const RDOFUNArithm* _parent, double* value, const RDOParserSrcInfo& src_info );
@@ -121,8 +121,8 @@ public:
 	RDOFUNLogic* operator >=( RDOFUNArithm& second );
 
 	rdoRuntime::RDOCalc* createCalc( const RDORTPParamType* const forType = NULL );
-	const rdoRuntime::RDOCalc* getCalc() const { return calc; }
-	RDORTPParamType::ParamType getType() const { return type; }
+	rdoRuntime::RDOCalc* getCalc() const            { return calc; }
+	rdoRuntime::RDOValue::ParamType getType() const { return type; }
 
 	virtual void setSrcInfo( const RDOParserSrcInfo& src_info );
 	virtual void setSrcPos( const RDOSrcInfo::Position& _pos );
@@ -303,9 +303,9 @@ private:
 	virtual void createCalcs();
 
 public:
-	std::vector< double > from;
-	std::vector< double > to;
-	std::vector< double > freq;
+	std::vector< rdoRuntime::RDOValue > from;
+	std::vector< rdoRuntime::RDOValue > to;
+	std::vector< rdoRuntime::RDOValue > freq;
 
 	RDOFUNSequenceByHistReal( RDOParser* _parser, RDOFUNSequenceByHistHeader* _header, rdoRuntime::RDOValue _from, rdoRuntime::RDOValue _to, rdoRuntime::RDOValue _freq, const YYLTYPE& _from_pos, const YYLTYPE& _to_pos, const YYLTYPE& _freq_pos ):
 		RDOFUNSequenceByHist( _parser, _header )
@@ -325,7 +325,7 @@ private:
 
 public:
 	std::vector< rdoRuntime::RDOValue > val;
-	std::vector< double >               freq;
+	std::vector< rdoRuntime::RDOValue > freq;
 
 	RDOFUNSequenceByHistEnum( RDOParser* _parser, RDOFUNSequenceByHistHeader* _header, const RDOParserSrcInfo& _value_info, rdoRuntime::RDOValue _freq, const YYLTYPE& _freq_pos ):
 		RDOFUNSequenceByHist( _parser, _header )
@@ -448,7 +448,7 @@ public:
 	{
 	}
 	virtual ~RDOFUNFunctionListElement() {}
-	virtual rdoRuntime::RDOCalcIsEqual* createIsEqualCalc( const RDORTPParamType* const retType, const rdoRuntime::RDOCalcFuncParam* const funcParam, const RDOParserSrcInfo& _src_pos ) const;
+	virtual rdoRuntime::RDOCalcIsEqual* createIsEqualCalc( const RDORTPParamType* const retType, rdoRuntime::RDOCalcFuncParam* const funcParam, const RDOParserSrcInfo& _src_pos ) const;
 	virtual rdoRuntime::RDOCalcConst*   createResultCalc( const RDORTPParamType* const retType, const RDOParserSrcInfo& _src_pos ) const = 0;
 	virtual bool isEquivalence() const { return false; }
 };
@@ -550,7 +550,7 @@ public:
 	void createAlgorithmicCalc( const RDOParserSrcInfo& _body_src_info );
 	const std::string& getName() const                                { return src_info().src_text(); }
 	const std::vector< const RDOFUNFunctionParam* > getParams() const { return params;                }
-	const rdoRuntime::RDOFunCalc* getFunctionCalc() const             { return functionCalc;          }
+	      rdoRuntime::RDOFunCalc* getFunctionCalc() const             { return functionCalc;          }
 	const RDORTPParamType* const getType() const                      { return retType;               }
 };
 

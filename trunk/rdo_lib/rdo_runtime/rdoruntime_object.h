@@ -1,11 +1,10 @@
 #ifndef RDORUNTIME_OBJECT_H
 #define RDORUNTIME_OBJECT_H
 
+#include "rdodefines.h"
 #include <rdocommon.h>
 
 namespace rdoRuntime {
-
-typedef double RDOValue;
 
 // ----------------------------------------------------------------------------
 // ---------- RDOException
@@ -23,6 +22,13 @@ class RDORuntimeException: public RDOException
 public:
 	std::string getType() const { return "RDO Runtime Error"; }
 	RDORuntimeException( const std::string& str ): RDOException( str ) {}
+};
+
+class RDORuntimeRDOValue: public RDOException
+{
+public:
+	std::string getType() const { return "RDOValue Error"; }
+	RDORuntimeRDOValue( const std::string& str ): RDOException( str ) {}
 };
 
 class RDOInternalException: public RDORuntimeException
@@ -189,6 +195,340 @@ public:
 	const std::string&                 src_text() const     { return text_data; }
 	const rdoModelObjects::RDOFileType src_filetype() const { return file_type; }
 };
+
+// ----------------------------------------------------------------------------
+// ---------- RDOEnum
+// ----------------------------------------------------------------------------
+class RDOEnum: public RDORuntimeObject
+{
+private:
+	std::vector< std::string > enumVals;
+
+public:
+	RDOEnum( RDORuntimeParent* _parent ):
+		RDORuntimeObject( _parent )
+	{
+	}
+	void add( const std::string& next ) {
+		enumVals.push_back( next );
+	}
+	int findEnum( const std::string& val ) const {
+		std::vector< std::string >::const_iterator it = std::find( enumVals.begin(), enumVals.end(), val );
+		return it != enumVals.end() ? it - enumVals.begin() : -1;
+	}
+	const std::vector< std::string >& getValues() const { return enumVals; }
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOValue
+// ----------------------------------------------------------------------------
+// typedef double RDOValue;
+
+class RDOValue
+{
+friend bool operator< ( const RDOValue& value1, const RDOValue& value2 );
+friend bool operator> ( const RDOValue& value1, const RDOValue& value2 );
+
+public:
+	enum ParamType {
+		pt_unknow = 0,
+		pt_int    = 1,
+		pt_real   = 2,
+		pt_enum   = 3
+	};
+
+private:
+	ParamType type;
+	union {
+		int    i_value;
+		double d_value;
+	} value;
+	void* data;
+
+public:
+	RDOValue(): type( pt_int ) {
+		value.i_value = 0;
+	}
+	~RDOValue() {
+	}
+	RDOValue( const RDOValue& _value ):
+		type( _value.type ),
+		value( _value.value ),
+		data( _value.data )
+	{
+	}
+	RDOValue( ParamType _type ): type( _type ) {
+		switch ( type ) {
+			case pt_int : value.i_value = 0;
+			case pt_real: value.d_value = 0;
+			default     : throw RDORuntimeRDOValue("");
+		}
+	}
+	RDOValue( int _value ): type( pt_int ) {
+		value.i_value = _value;
+	}
+	RDOValue( unsigned int _value ): type( pt_int ) {
+		value.i_value = _value;
+	}
+	RDOValue( double _value ): type( pt_real ) {
+		value.d_value = _value;
+	}
+	RDOValue( RDOEnum* enums, const std::string& val ): type( pt_enum ) {
+		data          = enums;
+		value.i_value = enums->findEnum( val );
+	}
+	ParamType getType() const { return type; }
+	int getInt() const {
+		switch ( type ) {
+			case pt_int : return value.i_value;
+			case pt_real: return value.d_value;
+			case pt_enum: return value.i_value;
+			default     : throw RDORuntimeRDOValue("");
+		}
+	}
+	int getEnumAsInt() const {
+		switch ( type ) {
+			case pt_int : return value.i_value;
+			case pt_real: return value.d_value;
+			case pt_enum: return value.i_value;
+			default     : throw RDORuntimeRDOValue("");
+		}
+	}
+	double getDouble() const {
+		switch ( type ) {
+			case pt_int : return value.i_value;
+			case pt_real: return value.d_value;
+			case pt_enum: return value.i_value;
+			default     : throw RDORuntimeRDOValue("");
+		}
+	}
+	bool getBool() const {
+		switch ( type ) {
+			case pt_int : return value.i_value ? true : false;
+			case pt_real: return value.d_value ? true : false;
+			case pt_enum: return value.i_value ? true : false;
+			default     : throw RDORuntimeRDOValue("");
+		}
+	}
+	std::string getAsString() const {
+		switch ( type ) {
+			case pt_int : return rdo::format( "%d", value.i_value );
+			case pt_real: return toString( value.d_value );
+			case pt_enum: return reinterpret_cast<RDOEnum*>(data)->getValues().at( value.i_value );
+			default     : throw RDORuntimeRDOValue("");
+		}
+	}
+	std::string getAsStringForTrace() const {
+		switch ( type ) {
+			case pt_int : return rdo::format( "%d", value.i_value );
+			case pt_real: return toString( value.d_value );
+			case pt_enum: return rdo::format( "%d", value.i_value );
+			default     : throw RDORuntimeRDOValue("");
+		}
+	}
+	RDOValue& operator= ( const RDOValue& _value ) {
+		type  = _value.type;
+		value = _value.value;
+		data  = _value.data;
+		return *this;
+	}
+	bool operator< ( const RDOValue& _value ) {
+		switch ( type ) {
+			case pt_int : switch ( _value.type ) {
+								case pt_int : return value.i_value < _value.value.i_value;
+								case pt_real: return value.i_value < _value.value.d_value;
+								default     : throw RDORuntimeRDOValue("");
+							}
+			case pt_real: switch ( _value.type ) {
+								case pt_int : return value.d_value < _value.value.i_value;
+								case pt_real: return value.d_value < _value.value.d_value;
+								default     : throw RDORuntimeRDOValue("");
+							}
+			default     : throw RDORuntimeRDOValue("");
+		}
+	}
+	bool operator> ( const RDOValue& _value ) {
+		switch ( type ) {
+			case pt_int : switch ( _value.type ) {
+								case pt_int : return value.i_value > _value.value.i_value;
+								case pt_real: return value.i_value > _value.value.d_value;
+								default     : throw RDORuntimeRDOValue("");
+							}
+			case pt_real: switch ( _value.type ) {
+								case pt_int : return value.d_value > _value.value.i_value;
+								case pt_real: return value.d_value > _value.value.d_value;
+								default     : throw RDORuntimeRDOValue("");
+							}
+			default     : throw RDORuntimeRDOValue("");
+		}
+	}
+	bool operator!= ( const RDOValue& _value ) const {
+		switch ( type ) {
+			case pt_int : switch ( _value.type ) {
+								case pt_int : return value.i_value != _value.value.i_value;
+								case pt_real: return value.i_value != _value.value.d_value;
+								default     : throw RDORuntimeRDOValue("");
+							}
+			case pt_real: switch ( _value.type ) {
+								case pt_int : return value.d_value != _value.value.i_value;
+								case pt_real: return value.d_value != _value.value.d_value;
+								default     : throw RDORuntimeRDOValue("");
+							}
+			case pt_enum: switch ( _value.type ) {
+								case pt_enum: return value.i_value != _value.value.i_value;
+								default     : throw RDORuntimeRDOValue("");
+							}
+			default     : throw RDORuntimeRDOValue("");
+		}
+	}
+	bool operator== ( const RDOValue& _value ) const {
+		switch ( type ) {
+			case pt_int : switch ( _value.type ) {
+								case pt_int : return value.i_value == _value.value.i_value;
+								case pt_real: return value.i_value == _value.value.d_value;
+								default     : throw RDORuntimeRDOValue("");
+							}
+			case pt_real: switch ( _value.type ) {
+								case pt_int : return value.d_value  == _value.value.i_value;
+								case pt_real: return value.d_value  == _value.value.d_value;
+								default     : throw RDORuntimeRDOValue("");
+							}
+			case pt_enum: switch ( _value.type ) {
+								case pt_enum: return data == _value.data && value.i_value == _value.value.i_value;
+								default     : throw RDORuntimeRDOValue("");
+							}
+			default     : throw RDORuntimeRDOValue("");
+		}
+	}
+	bool operator<= ( const RDOValue& _value ) const {
+		switch ( type ) {
+			case pt_int : switch ( _value.type ) {
+								case pt_int : return value.i_value <= _value.value.i_value;
+								case pt_real: return value.i_value <= _value.value.d_value;
+								default     : throw RDORuntimeRDOValue("");
+							}
+			case pt_real: switch ( _value.type ) {
+								case pt_int : return value.d_value <= _value.value.i_value;
+								case pt_real: return value.d_value <= _value.value.d_value;
+								default     : throw RDORuntimeRDOValue("");
+							}
+			default     : throw RDORuntimeRDOValue("");
+		}
+	}
+	bool operator>= ( const RDOValue& _value ) const {
+		switch ( type ) {
+			case pt_int : switch ( _value.type ) {
+								case pt_int : return value.i_value >= _value.value.i_value;
+								case pt_real: return value.i_value >= _value.value.d_value;
+								default     : throw RDORuntimeRDOValue("");
+							}
+			case pt_real: switch ( _value.type ) {
+								case pt_int : return value.d_value >= _value.value.i_value;
+								case pt_real: return value.d_value >= _value.value.d_value;
+								default     : throw RDORuntimeRDOValue("");
+							}
+			default     : throw RDORuntimeRDOValue("");
+		}
+	}
+	RDOValue operator- () const {
+		RDOValue _value( *this );
+		switch ( type ) {
+			case pt_int : _value.value.i_value = -value.i_value; break;
+			case pt_real: _value.value.d_value = -value.d_value; break;
+			default     : throw RDORuntimeRDOValue("");
+		}
+		return _value;
+	}
+	void operator+= ( const RDOValue& _value ) {
+		switch ( type ) {
+			case pt_int : switch ( _value.type ) {
+								case pt_int :
+								case pt_real: value.i_value += _value.getInt(); return;
+								default     : throw RDORuntimeRDOValue("");
+							}
+			case pt_real: switch ( _value.type ) {
+								case pt_int :
+								case pt_real: value.d_value += _value.getDouble(); return;
+								default     : throw RDORuntimeRDOValue("");
+							}
+			default     : throw RDORuntimeRDOValue("");
+		}
+	}
+	void operator-= ( const RDOValue& _value ) {
+		switch ( type ) {
+			case pt_int : switch ( _value.type ) {
+								case pt_int :
+								case pt_real: value.i_value -= _value.getInt(); return;
+								default     : throw RDORuntimeRDOValue("");
+							}
+			case pt_real: switch ( _value.type ) {
+								case pt_int :
+								case pt_real: value.d_value -= _value.getDouble(); return;
+								default     : throw RDORuntimeRDOValue("");
+							}
+			default     : throw RDORuntimeRDOValue("");
+		}
+	}
+	void operator*= ( const RDOValue& _value ) {
+		switch ( type ) {
+			case pt_int : switch ( _value.type ) {
+								case pt_int : value.i_value *= _value.value.i_value; return;
+								case pt_real: value.d_value = value.i_value * _value.value.d_value; type = pt_real; return;
+								default     : throw RDORuntimeRDOValue("");
+							}
+			case pt_real: switch ( _value.type ) {
+								case pt_int :
+								case pt_real: value.d_value *= _value.getDouble(); return;
+								default     : throw RDORuntimeRDOValue("");
+							}
+			default     : throw RDORuntimeRDOValue("");
+		}
+	}
+	void operator/= ( const RDOValue& _value ) {
+		switch ( type ) {
+			case pt_int : switch ( _value.type ) {
+								case pt_int :
+								case pt_real: value.d_value = value.i_value / _value.getDouble(); type = pt_real; return;
+								default     : throw RDORuntimeRDOValue("");
+							}
+			case pt_real: switch ( _value.type ) {
+								case pt_int :
+								case pt_real: value.d_value = value.d_value / _value.getDouble(); return;
+								default     : throw RDORuntimeRDOValue("");
+							}
+			default     : throw RDORuntimeRDOValue("");
+		}
+	}
+	RDOValue operator+ ( const RDOValue& _value ) const {
+		RDOValue value2( *this );
+		value2 += _value;
+		return value2;
+	}
+	RDOValue operator- ( const RDOValue& _value ) const {
+		RDOValue value2( *this );
+		value2 -= _value;
+		return value2;
+	}
+	RDOValue operator* ( const RDOValue& _value ) const {
+		RDOValue value2( *this );
+		value2 *= _value;
+		return value2;
+	}
+	RDOValue operator/ ( const RDOValue& _value ) const {
+		RDOValue value2( *this );
+		value2 /= _value;
+		return value2;
+	}
+};
+
+inline std::ostream& operator<< ( std::ostream& stream, const RDOValue& value ) {
+	stream << value.getAsStringForTrace();
+	return stream;
+}
+
+inline bool operator< ( const RDOValue& value1, const RDOValue& value2 ) {
+	return const_cast<RDOValue&>(value1).operator<( value2 );
+}
 
 } // namespace rdoRuntime
 

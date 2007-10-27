@@ -126,7 +126,7 @@ RDOBaseOperation::BOResult RDOPROCGenerate::checkOperation( RDOSimulator* sim )
 
 void RDOPROCGenerate::calcNextTimeInterval( RDOSimulator* sim )
 {
-	sim->addTimePoint( timeNext = timeCalc->calcValueBase( static_cast<RDORuntime*>(sim) ) + sim->getCurrentTime(), process, this );
+	sim->addTimePoint( timeNext = timeCalc->calcValueBase( static_cast<RDORuntime*>(sim) ).getDouble() + sim->getCurrentTime(), process, this );
 }
 
 // ----------------------------------------------------------------------------
@@ -187,7 +187,7 @@ RDOBaseOperation::BOResult RDOPROCRelease::checkOperation( RDOSimulator* sim )
 RDOBaseOperation::BOResult RDOPROCAdvance::checkOperation( RDOSimulator* sim )
 {
 	if ( !transacts.empty() ) {
-		double timeLeave = delayCalc->calcValueBase( static_cast<RDORuntime*>(sim) ) + sim->getCurrentTime();
+		double timeLeave = delayCalc->calcValueBase( static_cast<RDORuntime*>(sim) ).getDouble() + sim->getCurrentTime();
 		leave_list.push_back( LeaveTr(transacts.front(), timeLeave) );
 		transacts.erase( transacts.begin() );
 		sim->addTimePoint( timeLeave, process, this );

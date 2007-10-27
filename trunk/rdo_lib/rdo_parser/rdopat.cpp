@@ -119,14 +119,14 @@ void RDOPATPattern::addRelResConvert( bool trace, RDOPATParamSet* parSet, const 
 			rdoRuntime::RDOCalc* rightValue = currArithm->createCalc( param->getType() );
 			rdoRuntime::RDOCalc* calc = NULL;
 			switch ( param->getType()->getType() ) {
-				case RDORTPParamType::pt_int: {
+				case rdoRuntime::RDOValue::ParamType::pt_int: {
 					const RDORTPIntParamType* param_type = static_cast<const RDORTPIntParamType*>(param->getType());
 					if ( param_type->diap->isExist() ) {
 						calc = new rdoRuntime::RDOSetRelParamDiapCalc( getParser()->runtime, parSet->getRelRes()->rel_res_id, parNumb, rightValue, param_type->diap->min_value, param_type->diap->max_value );
 						break;
 					}
 				}
-				case RDORTPParamType::pt_real: {
+				case rdoRuntime::RDOValue::ParamType::pt_real: {
 					const RDORTPRealParamType* param_type = static_cast<const RDORTPRealParamType*>(param->getType());
 					if ( param_type->diap->isExist() ) {
 						calc = new rdoRuntime::RDOSetRelParamDiapCalc( getParser()->runtime, parSet->getRelRes()->rel_res_id, parNumb, rightValue, param_type->diap->min_value, param_type->diap->max_value );
@@ -692,7 +692,7 @@ void RDORelevantResource::deleteParamSetBegin()
 rdoRuntime::RDOCalc* RDORelevantResource::getChoiceCalc() const
 {
 	if ( choice_from && choice_from->type == rdoParse::RDOPATChoiceFrom::ch_from ) {
-		return choice_from->logic->createCalc( RDORTPParamType::pt_int );
+		return choice_from->logic->createCalc( rdoRuntime::RDOValue::ParamType::pt_int );
 	}
 	return NULL;
 }

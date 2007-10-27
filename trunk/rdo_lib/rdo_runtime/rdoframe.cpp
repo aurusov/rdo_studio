@@ -60,9 +60,9 @@ rdoSimulator::RDOColor RDOFRMFrame::RDOFRMColor::getColor( RDORuntime* sim, RDOF
 		}
 		case color_rgb: {
 			color.isTransparent = false;
-			color.r = red_calc->calcValueBase( sim );
-			color.g = green_calc->calcValueBase( sim );
-			color.b = blue_calc->calcValueBase( sim );
+			color.r = red_calc->calcValueBase( sim ).getInt();
+			color.g = green_calc->calcValueBase( sim ).getInt();
+			color.b = blue_calc->calcValueBase( sim ).getInt();
 			break;
 		}
 		case color_transparent: {
@@ -327,12 +327,13 @@ rdoSimulator::RDOFrameElement* RDOFRMText::createElement( RDORuntime* sim )
 		t = txt;
 	} else {
 		RDOValue val = value->calcValueBase( sim );
-		if ( enu ) {
+		t = val.getAsString();
+//		if ( enu ) {
 //qq			t = *enu->enumVals.at( val );
-			t = "//qq";
-		} else {
-			t = toString( val );
-		}
+//			t = "//qq";
+//		} else {
+//			t = toString( val );
+//		}
 	}
 
 	int _x      = getX( sim, getFrame() );

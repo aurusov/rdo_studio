@@ -71,7 +71,7 @@ std::string RDOResource::traceParametersValue()
 				str << _str.str().c_str();
 			}
 #else
-			str << (*it);
+			str << *it;
 #endif
 			if(++it == end)
 				break;
@@ -110,7 +110,7 @@ bool RDORuntime::endCondition()
 	if ( !terminateIfCalc ) {
 		return false;	// forever
 	}
-	return fabs( terminateIfCalc->calcValueBase( this ) ) > DBL_EPSILON;
+	return fabs( terminateIfCalc->calcValueBase( this ).getDouble() ) > DBL_EPSILON;
 }
 
 void RDORuntime::setTerminateIf( RDOCalc* _terminateIfCalc )
@@ -122,7 +122,7 @@ bool RDORuntime::breakPoints()
 {
 	std::list< BreakPoint* >::const_iterator it = breakPointsCalcs.begin();
 	while ( it != breakPointsCalcs.end() ) {
-		if ( (*it)->calc->calcValueBase( this ) ) {
+		if ( (*it)->calc->calcValueBase( this ).getBool() ) {
 			lastActiveBreakPoint = *it;
 			return true;
 		}
@@ -414,9 +414,9 @@ void RDORuntime::onDestroy()
 	}
 }
 
-RDOValue RDORuntime::getFuncArgument(int numberOfParam)
+RDOValue RDORuntime::getFuncArgument( int numberOfParam )
 {
-	return funcStack.at(currFuncTop + numberOfParam);
+	return funcStack.at( currFuncTop + numberOfParam );
 }
 
 RDOSimulator* RDORuntime::clone()

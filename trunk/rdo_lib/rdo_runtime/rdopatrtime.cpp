@@ -31,7 +31,7 @@ bool RDOPatternRuntime::choiceFrom( RDOSimulator* sim )
 	RDORuntime* runtime = (RDORuntime*)sim;
 	int size = choiceFromCalcs.size();
 	for ( int i = 0; i < size; i++ ) {
-		if ( !choiceFromCalcs[i]->calcValueBase( runtime ) ) return false;
+		if ( !choiceFromCalcs[i]->calcValueBase( runtime ).getBool() ) return false;
 	}
 	return true;
 }
@@ -91,7 +91,7 @@ RDOIERuntime::RDOIERuntime( RDORuntime* rTime, bool _trace ):
 double RDOIERuntime::getNextTimeInterval( RDOSimulator* sim )
 {
 	RDORuntime* runtime = static_cast<RDORuntime*>(sim);
-	double time_next = timeCalc->calcValueBase( runtime );
+	double time_next = timeCalc->calcValueBase( runtime ).getDouble();
 	if ( time_next >= 0 ) return time_next;
 	runtime->error( rdo::format("ѕопытка запланировать событие в прошлом. ¬ыражение времени дл€ $Time имеет отрицательное значение: %f", time_next), timeCalc );
 	return 0;
@@ -122,7 +122,7 @@ RDOOperationRuntime::RDOOperationRuntime( RDORuntime* rTime, bool _trace ):
 double RDOOperationRuntime::getNextTimeInterval( RDOSimulator* sim )
 {
 	RDORuntime* runtime = static_cast<RDORuntime*>(sim);
-	double time_next = timeCalc->calcValueBase( runtime );
+	double time_next = timeCalc->calcValueBase( runtime ).getDouble();
 	if ( time_next >= 0 ) return time_next;
 	runtime->error( rdo::format("ѕопытка запланировать окончание операции в прошлом. ¬ыражение времени дл€ $Time имеет отрицательное значение: %f", time_next), timeCalc );
 	return 0;
@@ -313,7 +313,7 @@ bool RDOActivityRuleRuntime::choiceFrom( RDOSimulator* sim )
 { 
 	static_cast<RDORuntime*>(sim)->setCurrentActivity( this );
 	if ( haveAdditionalCondition ) {
-		if ( !additionalCondition->calcValueBase( static_cast<RDORuntime*>(sim) ) ) {
+		if ( !additionalCondition->calcValueBase( static_cast<RDORuntime*>(sim) ).getBool() ) {
 			return false;
 		}
 	}
@@ -407,7 +407,7 @@ bool RDOActivityOperationRuntime::choiceFrom( RDOSimulator* sim )
 { 
 	static_cast<RDORuntime*>(sim)->setCurrentActivity( this );
 	if ( haveAdditionalCondition ) {
-		if ( !additionalCondition->calcValueBase( static_cast<RDORuntime*>(sim) ) ) {
+		if ( !additionalCondition->calcValueBase( static_cast<RDORuntime*>(sim) ).getBool() ) {
 			return false;
 		}
 	}

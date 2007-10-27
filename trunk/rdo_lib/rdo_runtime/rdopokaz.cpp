@@ -41,13 +41,13 @@ bool RDOPMDWatchPar::resetPokaz(RDOSimulator *sim)
 	rdoRuntime::RDORuntime* runtime = dynamic_cast< rdoRuntime::RDORuntime* >(sim);
 
 	watchNumber = 0;
-	currValue = runtime->getResParamVal( resNumber, parNumber );
-	sum = 0;
-	sumSqr = 0;
-	minValue = currValue;
-	maxValue = currValue;
+	currValue   = runtime->getResParamVal( resNumber, parNumber );
+	sum         = 0;
+	sumSqr      = 0;
+	minValue    = currValue;
+	maxValue    = currValue;
 
-	timePrev = timeBegin = runtime->getCurrentTime();
+	timePrev    = timeBegin = runtime->getCurrentTime();
 	return true;
 }
 
@@ -55,23 +55,21 @@ bool RDOPMDWatchPar::checkPokaz(RDOSimulator *sim)
 {
 	rdoRuntime::RDORuntime* runtime = dynamic_cast< rdoRuntime::RDORuntime* >(sim);
 	RDOValue newValue = runtime->getResParamVal( resNumber, parNumber );
-	if(newValue != currValue)
-	{
+	if ( newValue != currValue ) {
 		double currTime = runtime->getCurrentTime();
-		double val = currValue * (currTime - timePrev);
-		sum	+= val;
-		sumSqr += val * val;
+		double val = currValue.getDouble() * (currTime - timePrev);
+		sum	    += val;
+		sumSqr  += val * val;
 		timePrev = currTime;
-
-		currValue = newValue;
+		currValue  = newValue;
 		wasChanged = true;
-		watchNumber ++;
-		if(minValue > currValue)
+		watchNumber++;
+		if ( minValue > currValue ) {
 			minValue = currValue;
-
-		if(maxValue < currValue)
+		}
+		if ( maxValue < currValue ) {
 			maxValue = currValue;
-
+		}
 		return true;
 	}
 	return false;
@@ -82,7 +80,7 @@ bool RDOPMDWatchPar::calcStat(RDOSimulator *sim)
 	rdoRuntime::RDORuntime* runtime = dynamic_cast< rdoRuntime::RDORuntime* >(sim);
 
 	double currTime = runtime->getCurrentTime();
-	double val = currValue * (currTime - timePrev);
+	double val = currValue.getDouble() * (currTime - timePrev);
 	sum	+= val;
 	sumSqr += val * val;
 
@@ -111,7 +109,7 @@ RDOPMDWatchState::RDOPMDWatchState( RDOSimulatorTrace* _sim, const std::string& 
 
 std::string RDOPMDWatchState::traceValue()
 {
-	return currValue?"TRUE":"FALSE";
+	return currValue ? "TRUE" : "FALSE";
 }
 
 bool RDOPMDWatchState::resetPokaz(RDOSimulator *sim)
@@ -119,68 +117,38 @@ bool RDOPMDWatchState::resetPokaz(RDOSimulator *sim)
 	rdoRuntime::RDORuntime* runtime = dynamic_cast< rdoRuntime::RDORuntime* >(sim);
 
 	watchNumber = 0;
-	currValue = fabs(logicCalc->calcValueBase( runtime )) > DBL_EPSILON;
-	sum = 0;
-	sumSqr = 0;
-	minValue = DBL_MAX;
-	maxValue = DBL_MIN;
+	currValue   = fabs(logicCalc->calcValueBase( runtime ).getDouble()) > DBL_EPSILON;
+	sum         = 0;
+	sumSqr      = 0;
+	minValue    = DBL_MAX;
+	maxValue    = DBL_MIN;
 
-	timePrev = timeBegin = runtime->getCurrentTime();
+	timePrev    = timeBegin = runtime->getCurrentTime();
 	return true;
 }
 
 bool RDOPMDWatchState::checkPokaz(RDOSimulator *sim)
 {
 	rdoRuntime::RDORuntime* runtime = dynamic_cast< rdoRuntime::RDORuntime* >(sim);
-	bool newValue = fabs(logicCalc->calcValueBase( runtime )) > DBL_EPSILON;
-	if(newValue && !currValue)	// from FALSE to TRUE
-	{
+	bool newValue = fabs(logicCalc->calcValueBase( runtime ).getDouble()) > DBL_EPSILON;
+	if ( newValue && !currValue ) { // from FALSE to TRUE
 		timePrev = runtime->getCurrentTime();
-	}
-	else if(!newValue && currValue)	// from TRUE to FALSE
-	{
+	} else if ( !newValue && currValue ) { // from TRUE to FALSE
 		double currTime = runtime->getCurrentTime();
 		double val = currTime - timePrev;
-		sum	+= val;
+		sum	   += val;
 		sumSqr += val * val;
-
 		wasChanged = true;
-		watchNumber ++;
-
-		if(minValue > val)
+		watchNumber++;
+		if ( minValue > val ) {
 			minValue = val;
-
-		if(maxValue < val)
+		}
+		if ( maxValue < val ) {
 			maxValue = val;
+		}
 	}
-
 	currValue = newValue;
 	return true;
-
-/*
-	if(newValue != currValue)
-	{
-		double currTime = runtime->getCurrentTime();
-		double val = currValue * (currTime - timePrev);
-		sum	+= val;
-		sumSqr += val * val;
-		timePrev = currTime;
-
-		currValue = newValue;
-		wasChanged = true;
-		if(!newValue)
-			watchNumber ++;
-
-		if(minValue > val)
-			minValue = val;
-
-		if(maxValue < val)
-			maxValue = val;
-
-		return true;
-	}
-	return false;
-*/
 }
 
 bool RDOPMDWatchState::calcStat(RDOSimulator *sim)
@@ -195,7 +163,9 @@ bool RDOPMDWatchState::calcStat(RDOSimulator *sim)
 	double average = sum / (currTime - timeBegin);
 
 	runtime->getResults().width(30);
-	runtime->getResults() << std::left << name 
+	runtime->getResults() << std::left
+		<<
+		name 
 		<< "\t" << traceValue() 
 		<< "\t" << watchNumber
 		<< "\t" << average 
@@ -226,13 +196,13 @@ bool RDOPMDWatchQuant::resetPokaz(RDOSimulator *sim)
 	rdoRuntime::RDORuntime* runtime = dynamic_cast< rdoRuntime::RDORuntime* >(sim);
 
 	watchNumber = 0;
-	currValue = -1;
-	sum = 0;
-	sumSqr = 0;
-	minValue = DBL_MAX;
-	maxValue = DBL_MIN;
+	currValue   = -1;
+	sum         = 0;
+	sumSqr      = 0;
+	minValue    = DBL_MAX;
+	maxValue    = DBL_MIN;
 
-	timePrev = timeBegin = runtime->getCurrentTime();
+	timePrev    = timeBegin = runtime->getCurrentTime();
 	return true;
 }
 
@@ -251,7 +221,7 @@ bool RDOPMDWatchQuant::checkPokaz(RDOSimulator *sim)
 			continue;
 
 		runtime->pushGroupFunc(*it);
-		if(logicCalc->calcValueBase( runtime ))
+		if(logicCalc->calcValueBase( runtime ).getBool())
 			newValue++;
 
 		runtime->popGroupFunc();
@@ -285,9 +255,8 @@ bool RDOPMDWatchQuant::calcStat(RDOSimulator *sim)
 
 	double currTime = runtime->getCurrentTime();
 	double val = currValue * (currTime - timePrev);
-	sum	+= val;
+	sum	   += val;
 	sumSqr += val * val;
-
 	double average = sum / (currTime - timeBegin);
 
 	runtime->getResults().width(30);
@@ -322,11 +291,11 @@ std::string RDOPMDWatchValue::traceValue()
 bool RDOPMDWatchValue::resetPokaz(RDOSimulator *sim)
 {
 	watchNumber = 0;
-	currValue = 0;
-	sum = 0;
-	sumSqr = 0;
-	minValue = DBL_MAX;
-	maxValue = DBL_MIN;
+	currValue   = 0;
+	sum         = 0;
+	sumSqr      = 0;
+	minValue    = DBL_MAX;
+	maxValue    = DBL_MIN;
 
 	return true;
 }
@@ -366,30 +335,26 @@ bool RDOPMDWatchValue::calcStat(RDOSimulator *sim)
 bool RDOPMDWatchValue::checkResourceErased( rdoRuntime::RDOResource* res )
 {
 	rdoRuntime::RDORuntime* runtime = dynamic_cast< rdoRuntime::RDORuntime* >(sim);
-
-	if ( res->type != rtp_id /* //qq funGroup->resType->getNumber()*/ )
+	if ( res->type != rtp_id /* //qq funGroup->resType->getNumber()*/ ) {
 		return false;
-
+	}
 	runtime->pushGroupFunc(res);
-	if(logicCalc->calcValueBase( runtime ))
-	{
+	if ( logicCalc->calcValueBase( runtime ).getBool() ) {
 		currValue = arithmCalc->calcValueBase( runtime );
 		tracePokaz();
 //		runtime->getTracer()->writePokaz(runtime, this);
-
-		sum	+= currValue;
-		sumSqr += currValue * currValue;
+		double curr = currValue.getDouble();
+		sum	   += curr;
+		sumSqr += curr * curr;
 		watchNumber++;
-
-		if(minValue > currValue)
+		if ( minValue > currValue ) {
 			minValue = currValue;
-
-		if(maxValue < currValue)
+		}
+		if ( maxValue < currValue ) {
 			maxValue = currValue;
-
+		}
 		return true;
 	}
-
 	runtime->popGroupFunc();
 	return true;
 }

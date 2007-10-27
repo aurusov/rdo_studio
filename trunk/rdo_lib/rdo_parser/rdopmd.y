@@ -198,6 +198,16 @@ pmd_trace:	/* empty */ {
 				$$ = 0;
 			};
 
+pmd_pokaz_watch_quant_begin: IDENTIF_COLON pmd_trace watch_quant IDENTIF {
+				RDOPMDWatchQuant* pmd = new RDOPMDWatchQuant( parser, RDOParserSrcInfo(@1, *reinterpret_cast<std::string*>($1), RDOParserSrcInfo::psi_align_bytext), $2 != 0, RDOParserSrcInfo(@4, *reinterpret_cast<std::string*>($4)) );
+				$$ = (int)pmd;
+			};
+
+pmd_pokaz_watch_value_begin: IDENTIF_COLON pmd_trace watch_value IDENTIF {
+				RDOPMDWatchValue* pmd = new RDOPMDWatchValue( parser, RDOParserSrcInfo(@1, *reinterpret_cast<std::string*>($1), RDOParserSrcInfo::psi_align_bytext), $2 != 0, RDOParserSrcInfo(@4, *reinterpret_cast<std::string*>($4)) );
+				$$ = (int)pmd;
+			};
+
 pmd_pokaz:	IDENTIF_COLON pmd_trace watch_par IDENTIF '.' IDENTIF {
 				$$ = (int)(new RDOPMDWatchPar( parser, RDOParserSrcInfo(@1, *reinterpret_cast<std::string*>($1), RDOParserSrcInfo::psi_align_bytext), $2 != 0, RDOParserSrcInfo(@4, *reinterpret_cast<std::string*>($4)), RDOParserSrcInfo(@6, *reinterpret_cast<std::string*>($6)) ));
 			}
@@ -228,36 +238,32 @@ pmd_pokaz:	IDENTIF_COLON pmd_trace watch_par IDENTIF '.' IDENTIF {
 			| IDENTIF_COLON pmd_trace watch_state error {
 				parser->error( @3, @4, "После ключевого слова watch_state ожидается логическое выражение" );
 			}
-			| IDENTIF_COLON pmd_trace watch_quant IDENTIF fun_logic {
-				RDOPMDWatchQuant* pmd = new RDOPMDWatchQuant( parser, RDOParserSrcInfo(@1, *reinterpret_cast<std::string*>($1), RDOParserSrcInfo::psi_align_bytext), $2 != 0, RDOParserSrcInfo(@4, *reinterpret_cast<std::string*>($4)) );
-				pmd->setLogic( reinterpret_cast<RDOFUNLogic*>($5) );
+			| pmd_pokaz_watch_quant_begin fun_logic {
+				reinterpret_cast<RDOPMDWatchQuant*>($1)->setLogic( reinterpret_cast<RDOFUNLogic*>($2) );
 			}
-			| IDENTIF_COLON pmd_trace watch_quant IDENTIF NoCheck {
-				RDOPMDWatchQuant* pmd = new RDOPMDWatchQuant( parser, RDOParserSrcInfo(@1, *reinterpret_cast<std::string*>($1), RDOParserSrcInfo::psi_align_bytext), $2 != 0, RDOParserSrcInfo(@4, *reinterpret_cast<std::string*>($4)) );
-				pmd->setLogicNoCheck();
+			| pmd_pokaz_watch_quant_begin NoCheck {
+				reinterpret_cast<RDOPMDWatchQuant*>($1)->setLogicNoCheck();
 			}
-			| IDENTIF_COLON pmd_trace watch_quant IDENTIF error {
-				parser->error( @4, @5, "После имени типа ожидается логическое выражение" );
+			| pmd_pokaz_watch_quant_begin error {
+				parser->error( @1, @2, "После имени типа ожидается логическое выражение" );
 			}
 			| IDENTIF_COLON pmd_trace watch_quant error {
 				parser->error( @3, @4, "После ключевого слова watch_quant ожидается тип ресурса" );
 			}
-			| IDENTIF_COLON pmd_trace watch_value IDENTIF fun_logic fun_arithm {
-				RDOPMDWatchValue* pmd = new RDOPMDWatchValue( parser, RDOParserSrcInfo(@1, *reinterpret_cast<std::string*>($1), RDOParserSrcInfo::psi_align_bytext), $2 != 0, RDOParserSrcInfo(@4, *reinterpret_cast<std::string*>($4)) );
-				pmd->setLogic( reinterpret_cast<RDOFUNLogic*>($5), reinterpret_cast<RDOFUNArithm*>($6) );
+			| pmd_pokaz_watch_value_begin fun_logic fun_arithm {
+				reinterpret_cast<RDOPMDWatchValue*>($1)->setLogic( reinterpret_cast<RDOFUNLogic*>($2), reinterpret_cast<RDOFUNArithm*>($3) );
 			}
-			| IDENTIF_COLON pmd_trace watch_value IDENTIF NoCheck fun_arithm {
-				RDOPMDWatchValue* pmd = new RDOPMDWatchValue( parser, RDOParserSrcInfo(@1, *reinterpret_cast<std::string*>($1), RDOParserSrcInfo::psi_align_bytext), $2 != 0, RDOParserSrcInfo(@4, *reinterpret_cast<std::string*>($4)) );
-				pmd->setLogicNoCheck( reinterpret_cast<RDOFUNArithm*>($6) );
+			| pmd_pokaz_watch_value_begin NoCheck fun_arithm {
+				reinterpret_cast<RDOPMDWatchValue*>($1)->setLogicNoCheck( reinterpret_cast<RDOFUNArithm*>($3) );
 			}
-			| IDENTIF_COLON pmd_trace watch_value IDENTIF fun_logic error {
-				parser->error( @5, @6, "После логического ожидается арифметическое выражение" );
+			| pmd_pokaz_watch_value_begin fun_logic error {
+				parser->error( @2, @3, "После логического ожидается арифметическое выражение" );
 			}
-			| IDENTIF_COLON pmd_trace watch_value IDENTIF NoCheck error {
-				parser->error( @5, @6, "После логического ожидается арифметическое выражение" );
+			| pmd_pokaz_watch_value_begin NoCheck error {
+				parser->error( @2, @3, "После логического ожидается арифметическое выражение" );
 			}
-			| IDENTIF_COLON pmd_trace watch_value IDENTIF error {
-				parser->error( @4, @5, "После имени типа ожидается логическое выражение" );
+			| pmd_pokaz_watch_value_begin error {
+				parser->error( @1, @2, "После имени типа ожидается логическое выражение" );
 			}
 			| IDENTIF_COLON pmd_trace watch_value error {
 				parser->error( @3, @4, "После ключевого слова watch_value ожидается тип ресурса" );

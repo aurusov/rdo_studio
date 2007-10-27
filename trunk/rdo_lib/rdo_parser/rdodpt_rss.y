@@ -288,7 +288,7 @@ dpt_process_line:	IDENTIF	{
 
 			// Создадим параметр перечислимого типа
 			RDORTPEnum* state_enum = new RDORTPEnum( res_type, rtp_state_free );
-			state_enum->add( rtp_state_buzy, @2 );
+			state_enum->add( RDOParserSrcInfo(@2, rtp_state_buzy) );
 
 			RDORTPEnumDefVal* state_default = new RDORTPEnumDefVal( parser, rtp_state_free );
 
@@ -303,7 +303,7 @@ dpt_process_line:	IDENTIF	{
 			if ( rtp_param ) {
 				// Параметр Состояние есть, надо проверить, чтобы в нем были значения Свободен и Занят
 				// Для начала проверим тип параметра
-				if ( rtp_param->getType()->getType() == RDORTPParamType::pt_enum ) {
+				if ( rtp_param->getType()->getType() == rdoRuntime::RDOValue::ParamType::pt_enum ) {
 					// Теперь проверим сами значения
 					try {
 						rtp_param->getType()->getRSSEnumValue( rtp_state_free, @2 );
@@ -352,7 +352,7 @@ dpt_process_line:	IDENTIF	{
 		}
 		// Параметр Состояние есть, надо проверить, чтобы в нем были значения Свободен и Занят
 		// Для начала проверим тип параметра
-		if ( rtp_param->getType()->getType() == RDORTPParamType::pt_enum ) {
+		if ( rtp_param->getType()->getType() == rdoRuntime::RDOValue::ParamType::pt_enum ) {
 			// Теперь проверим сами значения
 			try {
 				rtp_param->getType()->getRSSEnumValue( rtp_state_free, @2 );
@@ -399,7 +399,7 @@ dpt_process_line:	IDENTIF	{
 	} else {
 		// Параметр Состояние есть, надо проверить, чтобы в нем были значения Свободен и Занят
 		// Для начала проверим тип параметра
-		if ( rtp_param->getType()->getType() == RDORTPParamType::pt_enum ) {
+		if ( rtp_param->getType()->getType() == rdoRuntime::RDOValue::ParamType::pt_enum ) {
 			// Теперь проверим сами значения
 			try {
 				rtp_param->getType()->getRSSEnumValue( rtp_state_free );

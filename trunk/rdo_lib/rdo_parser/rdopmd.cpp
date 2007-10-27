@@ -74,8 +74,8 @@ RDOPMDWatchPar::RDOPMDWatchPar( RDOParser* _parser, const RDOParserSrcInfo& _src
 		getParser()->error_push_only( res->getType()->src_info(), "См. тип ресурса" );
 		getParser()->error_push_done();
 	}
-	RDORTPParamType::ParamType type = par->getType()->getType();
-	if ( type != RDORTPParamType::pt_int && type != RDORTPParamType::pt_real ) {
+	rdoRuntime::RDOValue::ParamType type = par->getType()->getType();
+	if ( type != rdoRuntime::RDOValue::ParamType::pt_int && type != rdoRuntime::RDOValue::ParamType::pt_real ) {
 		getParser()->error_push_only( _par_src_info, "Наблюдать можно только за параметром целого или вещественного типа" );
 		getParser()->error_push_only( par->getType()->src_info(), "См. тип параметра" );
 		getParser()->error_push_done();

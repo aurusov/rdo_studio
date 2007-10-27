@@ -239,7 +239,7 @@ rtp_param: IDENTIF_COLON param_type {
 					RDORTPParamType* parType = reinterpret_cast<RDORTPParamType*>($2);
 					RDORTPParam* param = new RDORTPParam( parser->getLastRTPResType(), par_src_info, parType );
 					parType->reparent( param );
-					if ( parType->getType() == RDORTPParamType::pt_enum ) {
+					if ( parType->getType() == rdoRuntime::RDOValue::ParamType::pt_enum ) {
 						static_cast<RDORTPEnumParamType*>(parType)->enum_name = rdo::format( "%s.%s", parser->getLastRTPResType()->getName().c_str(), par_src_info.src_text().c_str() );
 					}
 					$$ = (int)param;
@@ -470,7 +470,7 @@ param_enum_list: IDENTIF {
 					if ( reinterpret_cast<RDOLexer*>(lexer)->enum_param_cnt >= 1 ) {
 						RDORTPEnum* enu  = reinterpret_cast<RDORTPEnum*>($1);
 						std::string next = *reinterpret_cast<std::string*>($3);
-						enu->add( next, @3 );
+						enu->add( RDOParserSrcInfo(@3, next) );
 						enu->setSrcText( enu->src_text() + ", " + next );
 						$$ = (int)enu;
 					} else {

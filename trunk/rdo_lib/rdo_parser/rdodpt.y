@@ -341,12 +341,21 @@ dpt_search_name:		IDENTIF_COLON IDENTIF {
 						}
 						| IDENTIF_COLON error {
 							parser->error( @1, @2, "ќжидаетс€ им€ образца" );
+						}
+						| IDENTIF {
+							parser->error( @1, "ќжидаетс€ ':'" );
+						}
+						| error {
+							parser->error( @1, "ќжидаетс€ им€ активности" );
 						};
 
 dpt_searcht_activity:	/* empty */
 						| dpt_searcht_activity dpt_search_name dpt_search_descr_param dpt_search_descr_value {
 							RDODPTSearchActivity* activity = reinterpret_cast<RDODPTSearchActivity*>($2);
 							activity->endParam( @3 );
+						}
+						| dpt_searcht_activity dpt_search_name dpt_search_descr_param error {
+							parser->error( @3, @4, "ќжидаютс€ ключевые слова value before или value after и стоимость применени€ правила" );
 						};
 
 dpt_search_header:		dp_searcht_compare Activities dpt_searcht_activity {
