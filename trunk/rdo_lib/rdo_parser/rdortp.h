@@ -327,6 +327,7 @@ public:
 	virtual ~RDORTPEnum();
 	void add( const RDOParserSrcInfo& next );
 	rdoRuntime::RDOValue findEnumValueWithThrow( const RDOParserSrcInfo& val_src_info, const std::string& val ) const;
+	rdoRuntime::RDOValue getFirstValue() const;
 	const rdoRuntime::RDOEnum* getEnums() const { return enums; }
 };
 

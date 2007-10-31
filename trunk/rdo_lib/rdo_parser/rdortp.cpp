@@ -686,6 +686,14 @@ rdoRuntime::RDOValue RDORTPEnum::findEnumValueWithThrow( const RDOParserSrcInfo&
 	return rdoRuntime::RDOValue( enums, val );
 }
 
+rdoRuntime::RDOValue RDORTPEnum::getFirstValue() const
+{
+	if ( enums->getValues().empty() ) {
+		getParser()->error( src_info(), "¬нутренн€€ ошибка: ѕустой перечислимый тип" );
+	}
+	return rdoRuntime::RDOValue( enums, enums->getValues()[0] );
+}
+
 // ----------------------------------------------------------------------------
 // ---------- RDORTPEnumParamType
 // ----------------------------------------------------------------------------

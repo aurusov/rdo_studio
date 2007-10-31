@@ -1618,6 +1618,10 @@ void RDOFUNFunction::createAlgorithmicCalc( const RDOParserSrcInfo& _body_src_in
 				calc_act = new rdoRuntime::RDOCalcConst( getParser()->runtime, static_cast<const RDORTPRealParamType*>(getType())->diap->min_value );
 				break;
 			}
+			case rdoRuntime::RDOValue::ParamType::pt_enum: {
+				calc_act = new rdoRuntime::RDOCalcConst( getParser()->runtime, static_cast<const RDORTPEnumParamType*>(getType())->enu->getFirstValue() );
+				break;
+			}
 		}
 		if ( !calc_act ) {
 			calc_act = new rdoRuntime::RDOCalcConst( getParser()->runtime, 0 );
