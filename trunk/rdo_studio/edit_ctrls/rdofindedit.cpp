@@ -112,6 +112,6 @@ void RDOFindEdit::OnHelpKeyword()
 {
 	std::string filename = studioApp.getFullHelpFileName();
 	if ( filename.empty() ) return;
-	filename += "::/html/work_model_find_in_model.htm";
+	filename += "::/html/work_run.htm#output_find";
 	::HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_DISPLAY_TOPIC, NULL );
 }

@@ -13,8 +13,35 @@ namespace rdoEditCtrl {
 typedef long (*sciFunType)( long ptr, unsigned int iMessage, unsigned long wParam, long lParam );
 
 class RDOBaseEdit;
-typedef std::vector< RDOBaseEdit* >           RDOBaseEditList;
-typedef std::vector< RDOBaseEdit* >::iterator RDOBaseEditListIterator;
+
+typedef std::vector< RDOBaseEdit* >                 RDOBaseEditList;
+typedef std::vector< RDOBaseEdit* >::const_iterator RDOBaseEditListIterator;
+
+class RDOBaseEditGroup {
+private:
+	RDOBaseEditList list;
+
+public:
+	bool bMatchCase;
+	bool bMatchWholeWord;
+	bool bSearchDown;
+	std::string findStr;
+	std::string replaceStr;
+
+	RDOBaseEditGroup():
+		bMatchCase( false ),
+		bMatchWholeWord( false ),
+		bSearchDown( true ),
+		findStr( "" ),
+		replaceStr( "" )
+	{
+	}
+	void insert( RDOBaseEdit* edit ) {
+		list.insert( list.end(), edit );
+	}
+	RDOBaseEditListIterator begin() const { return list.begin(); }
+	RDOBaseEditListIterator end()   const { return list.end();   }
+};
 
 class RDOBaseEdit: public CWnd
 {
@@ -53,14 +80,10 @@ protected:
 	void ensureRangeVisible( int posStart, int posEnd, bool enforcePolicy = true ) const;
 
 	RDOBaseEditStyle* style;
-	RDOBaseEditList*  group;
+	RDOBaseEditGroup* group;
 
 	int  firstFoundPos;
 	bool bHaveFound;
-	bool bSearchDown;
-	bool bMatchCase;
-	bool bMatchWholeWord;
-	std::string findStr;
 	void findNext( std::string& findWhat, const bool searchDown = true, const bool matchCase = false, const bool matchWholeWord = false );
 	void replace( std::string& findWhat, std::string& replaceWhat, const bool searchDown = true, const bool matchCase = false, const bool matchWholeWord = false );
 	void replaceAll( std::string& findWhat, std::string& replaceWhat, const bool matchCase = false, const bool matchWholeWord = false );
@@ -121,6 +144,7 @@ protected:
 	afx_msg void OnUpdateZoomOut( CCmdUI *pCmdUI );
 	afx_msg void OnUpdateZoomReset( CCmdUI *pCmdUI );
 	afx_msg void OnIsSelected(CCmdUI* pCmdUI);
+	afx_msg void OnSearchGotoLine();
 	//}}AFX_MSG
 	afx_msg LRESULT OnFindReplaceMsg( WPARAM wParam, LPARAM lParam );
 	DECLARE_MESSAGE_MAP()
@@ -141,7 +165,7 @@ public:
 	const RDOBaseEditStyle* getEditorStyle() const         { return style; };
 	void setEditorStyle( RDOBaseEditStyle* _style );
 
-	void setGroup( RDOBaseEditList* _group );
+	void setGroup( RDOBaseEditGroup* _group );
 	void setPopupMenu( CMenu* const value )                { popupMenu = value; };
 
 	bool isEmpty() const                                   { return getLength() == 0;                                                         };
@@ -196,6 +220,7 @@ public:
 	std::string getCurrentWord() const;
 	std::string getSelection() const;
 	std::string getCurrentOrSelectedWord() const;
+	std::string getWordForFind() const;
 
 	int findPos( std::string& findWhat, const int startFromLine = 0, const bool matchCase = false, const bool matchWholeWord = false ) const;
 	std::string getLine( const int line ) const;

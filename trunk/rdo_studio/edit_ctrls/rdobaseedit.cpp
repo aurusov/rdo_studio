@@ -113,6 +113,7 @@ BEGIN_MESSAGE_MAP( RDOBaseEdit, CWnd )
 	ON_UPDATE_COMMAND_UI( ID_SEARCH_BOOKMARKS_CLEAR  , OnHasBookmarks )
 	ON_UPDATE_COMMAND_UI( ID_SEARCH_FIND_PREVIOUS, OnUpdateSearchFindNextPrev )
 	ON_UPDATE_COMMAND_UI( ID_EDIT_COPY, OnIsSelected )
+	ON_COMMAND(ID_SEARCH_GOTO_LINE, OnSearchGotoLine)
 	//}}AFX_MSG_MAP
 
 	ON_REGISTERED_MESSAGE( FIND_REPLASE_MSG, OnFindReplaceMsg )
@@ -141,11 +142,7 @@ RDOBaseEdit::RDOBaseEdit():
 	style( NULL ),
 	group( NULL ),
 	firstFoundPos( -1 ),
-	bHaveFound( false ),
-	bSearchDown( true ),
-	bMatchCase( false ),
-	bMatchWholeWord( false ),
-	findStr( "" )
+	bHaveFound( false )
 {
 	if ( !objectCount ) {
 		Scintilla_RegisterClasses( 0 );
@@ -335,7 +332,7 @@ void RDOBaseEdit::setEditorStyle( RDOBaseEditStyle* _style )
 	sendEditor( SCI_SETHSCROLLBAR, style->window->showHorzScrollBar );
 }
 
-void RDOBaseEdit::setGroup( RDOBaseEditList* _group )
+void RDOBaseEdit::setGroup( RDOBaseEditGroup* _group )
 {
 	group = _group;
 }
@@ -460,6 +457,17 @@ std::string RDOBaseEdit::getCurrentOrSelectedWord() const
 	}
 }
 
+std::string RDOBaseEdit::getWordForFind() const
+{
+	if ( isSelected() ) {
+		return getSelection();
+	} else if ( group && !group->findStr.empty() ) {
+		return group->findStr;
+	} else {
+		return getCurrentWord();
+	}
+}
+
 CharacterRange RDOBaseEdit::getSelectionRange() const
 {
 	CharacterRange crange;
@@ -487,51 +495,61 @@ void RDOBaseEdit::OnSearchFind()
 {
 	firstFoundPos = -1;
 	CFindReplaceDialog* pDlg = new CFindReplaceDialog();
-	DWORD flag = (bSearchDown ? FR_DOWN : 0) | (bMatchCase ? FR_MATCHCASE : 0) | (bMatchWholeWord ? FR_WHOLEWORD : 0);
-	pDlg->Create( true, getCurrentOrSelectedWord().c_str(), NULL, flag, this );
+	DWORD flag = group ? ((group->bSearchDown ? FR_DOWN : 0) | (group->bMatchCase ? FR_MATCHCASE : 0) | (group->bMatchWholeWord ? FR_WHOLEWORD : 0)) : 0;
+	pDlg->Create( true, getWordForFind().c_str(), NULL, flag, this );
 }
 
 void RDOBaseEdit::OnSearchReplace() 
 {
 	firstFoundPos = -1;
 	CFindReplaceDialog* pDlg = new CFindReplaceDialog();
-	DWORD flag = (bSearchDown ? FR_DOWN : 0) | (bMatchCase ? FR_MATCHCASE : 0) | (bMatchWholeWord ? FR_WHOLEWORD : 0);
-	pDlg->Create( false, getCurrentOrSelectedWord().c_str(), NULL, flag, this );
+	DWORD flag = group ? ((group->bSearchDown ? FR_DOWN : 0) | (group->bMatchCase ? FR_MATCHCASE : 0) | (group->bMatchWholeWord ? FR_WHOLEWORD : 0)) : 0;
+	pDlg->Create( false, getWordForFind().c_str(), group ? group->replaceStr.c_str() : NULL, flag, this );
 }
 
 void RDOBaseEdit::OnSearchFindNext() 
 {
 	firstFoundPos = -1;
-	findNext( findStr, bSearchDown, bMatchCase, bMatchWholeWord );
+	if ( group ) {
+		findNext( group->findStr, group->bSearchDown, group->bMatchCase, group->bMatchWholeWord );
+	}
 }
 
 void RDOBaseEdit::OnSearchFindPrevious() 
 {
 	firstFoundPos = -1;
-	findNext( findStr, !bSearchDown, bMatchCase, bMatchWholeWord );
+	if ( group ) {
+		findNext( group->findStr, !group->bSearchDown, group->bMatchCase, group->bMatchWholeWord );
+	}
 }
 
 void RDOBaseEdit::OnSearchFindNextFast() 
 {
 	firstFoundPos = getCurrentPos();
-	findStr       = getCurrentOrSelectedWord();
-	bSearchDown   = true;
-	findNext( findStr, bSearchDown, bMatchCase, bMatchWholeWord );
+	if ( group ) {
+		group->findStr     = getWordForFind();
+		group->bSearchDown = true;
+		findNext( group->findStr, group->bSearchDown, group->bMatchCase, group->bMatchWholeWord );
+	}
 }
 
 void RDOBaseEdit::OnSearchFindPreviousFast() 
 {
 	firstFoundPos = getCurrentPos();
-	findStr       = getCurrentOrSelectedWord();
-	bSearchDown   = true;
-	findNext( findStr, !bSearchDown, bMatchCase, bMatchWholeWord );
+	if ( group ) {
+		group->findStr     = getWordForFind();
+		group->bSearchDown = true;
+		findNext( group->findStr, !group->bSearchDown, group->bMatchCase, group->bMatchWholeWord );
+	}
 }
 
 LRESULT RDOBaseEdit::OnFindReplaceMsg( WPARAM /*wParam*/, LPARAM lParam )
 {
+	if ( !group ) return 0;
+
 	CFindReplaceDialog* pDialog = CFindReplaceDialog::GetNotifier( lParam );
 
-	findStr = pDialog->GetFindString();
+	group->findStr = pDialog->GetFindString();
 
 	if ( pDialog->IsTerminating() ) {
 		firstFoundPos = -1;
@@ -541,26 +559,26 @@ LRESULT RDOBaseEdit::OnFindReplaceMsg( WPARAM /*wParam*/, LPARAM lParam )
 		bool newSearchDown     = pDialog->SearchDown() ? true : false;
 		bool newMatchCase      = pDialog->MatchCase() ? true : false;
 		bool newMatchWholeWord = pDialog->MatchWholeWord() ? true : false;
-		if ( newSearchDown != bSearchDown || newMatchCase != bMatchCase || newMatchWholeWord != bMatchWholeWord ) {
+		if ( newSearchDown != group->bSearchDown || newMatchCase != group->bMatchCase || newMatchWholeWord != group->bMatchWholeWord ) {
 			firstFoundPos = -1;
 		}
-		bSearchDown     = newSearchDown;
-		bMatchCase      = newMatchCase;
-		bMatchWholeWord = newMatchWholeWord;
+		group->bSearchDown     = newSearchDown;
+		group->bMatchCase      = newMatchCase;
+		group->bMatchWholeWord = newMatchWholeWord;
 
 		if ( pDialog->FindNext() ) {
 
-			findNext( findStr, bSearchDown, bMatchCase, bMatchWholeWord );
+			findNext( group->findStr, group->bSearchDown, group->bMatchCase, group->bMatchWholeWord );
 
 		} else if ( pDialog->ReplaceCurrent() ) {
 
-			std::string replaceWhat = static_cast<LPCTSTR>(pDialog->GetReplaceString());
-			replace( findStr, replaceWhat, bSearchDown, bMatchCase, bMatchWholeWord );
+			group->replaceStr = static_cast<LPCTSTR>(pDialog->GetReplaceString());
+			replace( group->findStr, group->replaceStr, group->bSearchDown, group->bMatchCase, group->bMatchWholeWord );
 
 		} else if ( pDialog->ReplaceAll() ) {
 
-			std::string replaceWhat = static_cast<LPCTSTR>(pDialog->GetReplaceString());
-			replaceAll( findStr, replaceWhat, bMatchCase, bMatchWholeWord );
+			group->replaceStr = static_cast<LPCTSTR>(pDialog->GetReplaceString());
+			replaceAll( group->findStr, group->replaceStr, group->bMatchCase, group->bMatchWholeWord );
 
 		}
 	}
@@ -569,7 +587,7 @@ LRESULT RDOBaseEdit::OnFindReplaceMsg( WPARAM /*wParam*/, LPARAM lParam )
 
 void RDOBaseEdit::OnUpdateSearchFindNextPrev(CCmdUI* pCmdUI) 
 {
-	pCmdUI->Enable( !findStr.empty() );
+	pCmdUI->Enable( group ? !group->findStr.empty() : false );
 }
 
 void RDOBaseEdit::OnUpdateSearchFind(CCmdUI* pCmdUI) 
@@ -1393,4 +1411,36 @@ std::string RDOBaseEdit::getLine( const int line ) const
 	str.resize( length );
 	sendEditor( SCI_GETLINE, line, (long)str.data() );
 	return str;
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOGotoDlg
+// ----------------------------------------------------------------------------
+class RDOGotoDlg: public CDialog
+{
+protected:
+	virtual void DoDataExchange( CDataExchange* pDX )
+	{
+		CDialog::DoDataExchange( pDX );
+		DDX_Text(pDX, IDC_GOTO_EDIT, line);
+	}
+
+public:
+	RDOGotoDlg( CWnd* pParentWnd, int _line ):
+		CDialog( IDD_GOTO_LINE_DIALOG, pParentWnd ),
+		line( _line )
+	{
+	}
+	int line;
+};
+
+void RDOBaseEdit::OnSearchGotoLine()
+{
+	RDOGotoDlg dialog( this, getCurrentLineNumber() + 1 );
+	if ( dialog.DoModal() == IDOK ) {
+		if ( dialog.line - 1 > getLineCount() ) {
+			dialog.line = getLineCount() + 1;
+		}
+		setCurrentPos( dialog.line - 1, 0 );
+	}
 }

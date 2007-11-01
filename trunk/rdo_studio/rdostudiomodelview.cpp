@@ -137,7 +137,7 @@ RDOEditorEdit* RDOStudioModelView::getEdit() const
 void RDOStudioModelView::OnSearchFindInModel() 
 {
 	CFindReplaceDialog* pDlg = new CFindReplaceDialog();
-	pDlg->Create( true, getEdit()->getCurrentOrSelectedWord().c_str(), NULL, FR_HIDEUPDOWN, this );
+	pDlg->Create( true, getEdit()->getWordForFind().c_str(), NULL, FR_HIDEUPDOWN, this );
 }
 
 LRESULT RDOStudioModelView::OnFindInModelMsg( WPARAM /*wParam*/, LPARAM lParam )

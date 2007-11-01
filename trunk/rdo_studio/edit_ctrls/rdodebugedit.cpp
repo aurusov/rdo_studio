@@ -78,6 +78,6 @@ void RDODebugEdit::OnHelpKeyword()
 {
 	std::string filename = studioApp.getFullHelpFileName();
 	if ( filename.empty() ) return;
-	filename += "::/html/work_windows_output.htm";
+	filename += "::/html/work_run.htm#output_debug";
 	::HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_DISPLAY_TOPIC, NULL );
 }

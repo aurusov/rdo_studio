@@ -121,6 +121,14 @@ BEGIN
         TOPMARGIN, 7
         BOTTOMMARGIN, 163
     END
+
+    IDD_GOTO_LINE_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 153
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 34
+    END
 END
 #endif    // APSTUDIO_INVOKED
 
@@ -443,6 +451,16 @@ BEGIN
     CONTROL         "Добавить комментарии",IDC_COMMENT,"Button",
                     BS_AUTOCHECKBOX | BS_FLAT | WS_TABSTOP,8,132,194,10
     CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME,8,126,192,1
+END
+
+IDD_GOTO_LINE_DIALOG DIALOG DISCARDABLE  0, 0, 160, 41
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Перейти на строчку"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Номер строки",IDC_GOTO_STATIC,12,4,49,8
+    EDITTEXT        IDC_GOTO_EDIT,12,16,76,14,ES_AUTOHSCROLL | ES_NUMBER
+    DEFPUSHBUTTON   "OK",IDOK,100,16,50,14
 END
 
 
@@ -823,6 +841,8 @@ BEGIN
                                                 ID_SEARCH_BOOKMARK_PREVIOUS
         MENUITEM "&Очисть все закладки\tCtrl+Shift+F2", 
                                                 ID_SEARCH_BOOKMARKS_CLEAR
+        MENUITEM SEPARATOR
+        MENUITEM "П&ерейти на строчку\tCtrl+G", ID_SEARCH_GOTO_LINE
     END
     POPUP "П&росмотр"
     BEGIN
@@ -1235,7 +1255,7 @@ BEGIN
     "F",            ID_SEARCH_FIND,         VIRTKEY, CONTROL, NOINVERT
     "F",            ID_SEARCH_FIND_INMODEL, VIRTKEY, SHIFT, CONTROL, 
                                                     NOINVERT
-    "G",            ID_EMPTYCOMMAND_22,     VIRTKEY, CONTROL, NOINVERT
+    "G",            ID_SEARCH_GOTO_LINE,    VIRTKEY, CONTROL, NOINVERT
     "G",            ID_EMPTYCOMMAND_23,     VIRTKEY, SHIFT, CONTROL, 
                                                     NOINVERT
     "H",            ID_EMPTYCOMMAND_24,     VIRTKEY, CONTROL, NOINVERT
@@ -1328,8 +1348,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,8,0,629
- PRODUCTVERSION 0,8,0,629
+ FILEVERSION 0,8,0,634
+ PRODUCTVERSION 0,8,0,634
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -1347,14 +1367,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "RAO studio\0"
-            VALUE "FileVersion", "0, 8, 0, 629\0"
+            VALUE "FileVersion", "0, 8, 0, 634\0"
             VALUE "InternalName", "RAO-Studio\0"
             VALUE "LegalCopyright", "Copyright (C) 2003-2006\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "RAO-Studio.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "RAO-Studio\0"
-            VALUE "ProductVersion", "0, 8, 0, 629\0"
+            VALUE "ProductVersion", "0, 8, 0, 634\0"
             VALUE "SpecialBuild", "\0"
         END
     END
@@ -3947,6 +3967,14 @@ BEGIN
         TOPMARGIN, 7
         BOTTOMMARGIN, 163
     END
+
+    IDD_GOTO_LINE_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 153
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 34
+    END
 END
 #endif    // APSTUDIO_INVOKED
 
@@ -4268,6 +4296,16 @@ BEGIN
     CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME,8,126,192,1
 END
 
+IDD_GOTO_LINE_DIALOG DIALOG DISCARDABLE  0, 0, 160, 41
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Go to line"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Line number",IDC_GOTO_STATIC,12,4,49,8
+    EDITTEXT        IDC_GOTO_EDIT,12,16,76,14,ES_AUTOHSCROLL | ES_NUMBER
+    DEFPUSHBUTTON   "OK",IDOK,100,16,50,14
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -4501,13 +4539,15 @@ BEGIN
         MENUITEM "Find &Previous\tShift+F3",    ID_SEARCH_FIND_PREVIOUS
         MENUITEM "&Replace...\tCtrl+R",         ID_SEARCH_REPLACE
         MENUITEM SEPARATOR
-        MENUITEM "Find in Model...\tCtrl+Shift+F", ID_SEARCH_FIND_INMODEL
+        MENUITEM "Find in &Model...\tCtrl+Shift+F", ID_SEARCH_FIND_INMODEL
         MENUITEM SEPARATOR
         MENUITEM "&Toggle Bookmark\tCtrl+F2",   ID_SEARCH_BOOKMARK_TOGGLE
         MENUITEM "N&ext Bookmark\tF2",          ID_SEARCH_BOOKMARK_NEXT
         MENUITEM "Pre&vious Bookmark\tShift+F2", ID_SEARCH_BOOKMARK_PREVIOUS
         MENUITEM "&Clear Bookmarks\tCtrl+Shift+F2", 
                                                 ID_SEARCH_BOOKMARKS_CLEAR
+        MENUITEM SEPARATOR
+        MENUITEM "&Go to line\tCtrl+G",         ID_SEARCH_GOTO_LINE
     END
     POPUP "&View"
     BEGIN

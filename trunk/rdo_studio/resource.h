@@ -71,6 +71,7 @@
 #define IDR_MODEL_TMP6_PAT              219
 #define IDR_MODEL_TMP6_RTP              221
 #define IDR_MODEL_TMP6_RSS              222
+#define IDD_GOTO_LINE_DIALOG            222
 #define IDR_MODEL_TMP6_PMD              223
 #define IDR_MODEL_TMP6_FUN              225
 #define IDR_MODEL_TMP6_SMR              226
@@ -186,6 +187,8 @@
 #define IDC_MODEL_BARBER2               1128
 #define IDC_INFO                        1129
 #define IDC_COMMENT                     1130
+#define IDC_GOTO_EDIT                   1131
+#define IDC_GOTO_STATIC                 1132
 #define ID_CHART_ADDTONEWCHART          32771
 #define ID_VIEW_WORKSPACE               32774
 #define ID_VIEW_OUTPUT                  32775
@@ -478,6 +481,7 @@
 #define ID_MODEL_RUNTIME_JUMP           33185
 #define ID_MODEL_RUNTIME_SYNC           33186
 #define ID_MODEL_RUNTIME_PAUSE          33187
+#define ID_SEARCH_GOTO_LINE             33192
 #define IDS_DEVELOPERS                  34000
 #define IDS_ER_UNKNOWN                  35000
 #define IDS_ER_RTP_SECOND_RES_TYPE      35001
@@ -687,9 +691,9 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        222
-#define _APS_NEXT_COMMAND_VALUE         33191
-#define _APS_NEXT_CONTROL_VALUE         1131
+#define _APS_NEXT_RESOURCE_VALUE        223
+#define _APS_NEXT_COMMAND_VALUE         33193
+#define _APS_NEXT_CONTROL_VALUE         1133
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

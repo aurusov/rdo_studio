@@ -84,15 +84,15 @@ int RDOEditorTabCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	page8->setPopupMenu( &view->popupMenu );
 	page9->setPopupMenu( &view->popupMenu );
 
-	group.insert( group.end(), page1 );
-	group.insert( group.end(), page2 );
-	group.insert( group.end(), page3 );
-	group.insert( group.end(), page4 );
-	group.insert( group.end(), page5 );
-	group.insert( group.end(), page6 );
-	group.insert( group.end(), page7 );
-	group.insert( group.end(), page8 );
-	group.insert( group.end(), page9 );
+	group.insert( page1 );
+	group.insert( page2 );
+	group.insert( page3 );
+	group.insert( page4 );
+	group.insert( page5 );
+	group.insert( page6 );
+	group.insert( page7 );
+	group.insert( page8 );
+	group.insert( page9 );
 	page1->setGroup( &group );
 	page2->setGroup( &group );
 	page3->setGroup( &group );

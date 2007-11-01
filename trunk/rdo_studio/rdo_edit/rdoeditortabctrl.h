@@ -16,8 +16,8 @@ namespace rdoEditor {
 class RDOEditorTabCtrl: public RDOTabCtrl
 {
 private:
-	RDOStudioEditBaseView*       view;
-	rdoEditCtrl::RDOBaseEditList group;
+	RDOStudioEditBaseView*        view;
+	rdoEditCtrl::RDOBaseEditGroup group;
 
 protected:
 	//{{AFX_MSG(RDOEditorTabCtrl)

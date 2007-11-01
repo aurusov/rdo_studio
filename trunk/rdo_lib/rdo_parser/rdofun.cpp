@@ -1610,12 +1610,16 @@ void RDOFUNFunction::createAlgorithmicCalc( const RDOParserSrcInfo& _body_src_in
 		rdoRuntime::RDOCalcConst* calc_cond = new rdoRuntime::RDOCalcConst( getParser()->runtime, 1 );
 		rdoRuntime::RDOCalcConst* calc_act  = NULL;
 		switch ( getType()->getType() ) {
-			case rdoRuntime::RDOValue::ParamType::pt_int: if ( static_cast<const RDORTPIntParamType*>(getType())->diap->isExist() ) {
-				calc_act = new rdoRuntime::RDOCalcConst( getParser()->runtime, static_cast<const RDORTPIntParamType*>(getType())->diap->min_value );
+			case rdoRuntime::RDOValue::ParamType::pt_int: {
+				if ( static_cast<const RDORTPIntParamType*>(getType())->diap->isExist() ) {
+					calc_act = new rdoRuntime::RDOCalcConst( getParser()->runtime, static_cast<const RDORTPIntParamType*>(getType())->diap->min_value );
+				}
 				break;
 			}
-			case rdoRuntime::RDOValue::ParamType::pt_real: if ( static_cast<const RDORTPRealParamType*>(getType())->diap->isExist() ) {
-				calc_act = new rdoRuntime::RDOCalcConst( getParser()->runtime, static_cast<const RDORTPRealParamType*>(getType())->diap->min_value );
+			case rdoRuntime::RDOValue::ParamType::pt_real: {
+				if ( static_cast<const RDORTPRealParamType*>(getType())->diap->isExist() ) {
+					calc_act = new rdoRuntime::RDOCalcConst( getParser()->runtime, static_cast<const RDORTPRealParamType*>(getType())->diap->min_value );
+				}
 				break;
 			}
 			case rdoRuntime::RDOValue::ParamType::pt_enum: {
