@@ -231,10 +231,10 @@ friend bool operator> ( const RDOValue& value1, const RDOValue& value2 );
 
 public:
 	enum ParamType {
-		pt_unknow = 0,
-		pt_int    = 1,
-		pt_real   = 2,
-		pt_enum   = 3
+		pt_int    = 0,
+		pt_real   = 1,
+		pt_enum   = 2,
+		pt_unknow = 3
 	};
 
 private:

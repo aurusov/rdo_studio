@@ -924,10 +924,10 @@ public:
 class RDOCalcSeqNext: public RDOFunCalc
 {
 public:
-	bool     res_real;
-	bool     diap;
-	RDOValue diap_min;
-	RDOValue diap_max;
+	bool   res_real;
+	bool   diap;
+	double diap_min;
+	double diap_max;
 
 	RDOCalcSeqNext( RDORuntimeParent* _parent ):
 		RDOFunCalc( _parent ),

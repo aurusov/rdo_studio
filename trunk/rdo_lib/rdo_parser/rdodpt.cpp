@@ -102,7 +102,7 @@ void RDODPTActivity::addParam( const std::string& _param, const YYLTYPE& _param_
 		case rdoRuntime::RDOValue::pt_int : getParser()->error( _param_pos, rdo::format("ќжидаетс€ параметр целого типа: %s", param->getType()->src_text().c_str()) ); break;
 		case rdoRuntime::RDOValue::pt_real: getParser()->error( _param_pos, rdo::format("ќжидаетс€ параметр вещественного типа: %s", param->getType()->src_text().c_str()) ); break;
 		case rdoRuntime::RDOValue::pt_enum: break;
-		default                           : getParser()->error( _param_pos, "¬нутренна€ ошибка парсера: обработаны не все типы" );
+		default: getParser()->error( src_info(), "¬нутренн€€ ошибка: обработать все типы RDOValue" );
 	}
 	rdoRuntime::RDOValue val = param->getType()->getRSSEnumValue( _param, _param_pos );
 	rdoRuntime::RDOSetPatternParamCalc* calc = new rdoRuntime::RDOSetPatternParamCalc( getParser()->runtime, currParam, val );
@@ -127,7 +127,7 @@ void RDODPTActivity::addParam( int _param, const YYLTYPE& _param_pos )
 		case rdoRuntime::RDOValue::pt_int :
 		case rdoRuntime::RDOValue::pt_real: break;
 		case rdoRuntime::RDOValue::pt_enum: getParser()->error( _param_pos, rdo::format("ќжидаетс€ параметр перечислимого типа: %s", param->getType()->src_text().c_str()) ); break;
-		default                           : getParser()->error( _param_pos, "¬нутренна€ ошибка парсера: обработаны не все типы" );
+		default: getParser()->error( src_info(), "¬нутренн€€ ошибка: обработать все типы RDOValue" );
 	}
 	rdoRuntime::RDOValue val = param->getType()->getRSSIntValue( _param, _param_pos );
 	rdoRuntime::RDOSetPatternParamCalc* calc = new rdoRuntime::RDOSetPatternParamCalc( getParser()->runtime, currParam, val );
@@ -152,7 +152,7 @@ void RDODPTActivity::addParam( double _param, const YYLTYPE& _param_pos )
 		case rdoRuntime::RDOValue::pt_int : getParser()->error( _param_pos, rdo::format("ќжидаетс€ параметр целого типа: %s", param->getType()->src_text().c_str()) ); break;
 		case rdoRuntime::RDOValue::pt_real: break;
 		case rdoRuntime::RDOValue::pt_enum: getParser()->error( _param_pos, rdo::format("ќжидаетс€ параметр перечислимого типа: %s", param->getType()->src_text().c_str()) ); break;
-		default                           : getParser()->error( _param_pos, "¬нутренна€ ошибка парсера: обработаны не все типы" );
+		default: getParser()->error( src_info(), "¬нутренн€€ ошибка: обработать все типы RDOValue" );
 	}
 	rdoRuntime::RDOValue val = param->getType()->getRSSRealValue( _param, _param_pos );
 	rdoRuntime::RDOSetPatternParamCalc* calc = new rdoRuntime::RDOSetPatternParamCalc( getParser()->runtime, currParam, val );

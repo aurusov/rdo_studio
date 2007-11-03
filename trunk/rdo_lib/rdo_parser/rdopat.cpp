@@ -133,6 +133,10 @@ void RDOPATPattern::addRelResConvert( bool trace, RDOPATParamSet* parSet, const 
 						break;
 					}
 				}
+				case rdoRuntime::RDOValue::ParamType::pt_enum: {
+					break;
+				}
+				default: getParser()->error( src_info(), "¬нутренн€€ ошибка: обработать все типы RDOValue" );
 			}
 			if ( !calc ) {
 				calc = new rdoRuntime::RDOSetRelParamCalc( getParser()->runtime, parSet->getRelRes()->rel_res_id, parNumb, rightValue );

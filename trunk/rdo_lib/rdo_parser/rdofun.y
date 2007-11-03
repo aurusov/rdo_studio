@@ -1172,7 +1172,7 @@ fun_seq_enumerative_body_int:	fun_seq_enumerative_header INT_CONST {
 										case rdoRuntime::RDOValue::ParamType::pt_int : header->getType()->checkRSSIntValue( value, @2 ); break;
 										case rdoRuntime::RDOValue::ParamType::pt_real: parser->error( @2, rdo::format("Последовательность '%s' определена как вещественная, её значения тоже должны быть вещественными", header->src_text().c_str()) );
 										case rdoRuntime::RDOValue::ParamType::pt_enum: parser->error( @2, rdo::format("Последовательность '%s' определена как перечислимая, её значения тоже должны быть перечислимого типа", header->src_text().c_str()) );
-										default                      : parser->error( @1, "Внутренная ошибка парсера: не все типы обработаны" );
+										default: parser->error( @1, "Внутренняя ошибка: обработать все типы RDOValue" );
 									}
 									$$ = (int)new RDOFUNSequenceEnumerativeInt( parser, header, value );
 								}
@@ -1181,7 +1181,7 @@ fun_seq_enumerative_body_int:	fun_seq_enumerative_header INT_CONST {
 									int value = $2;
 									switch ( seq->header->getType()->getType() ) {
 										case rdoRuntime::RDOValue::ParamType::pt_int : seq->header->getType()->checkRSSIntValue( value, @2 ); break;
-										default                      : parser->error( @1, "Внутренная ошибка парсера: fun_seq_enumerative_body_int INT_CONST" );
+										default: parser->error( @1, "Внутренняя ошибка: обработать все типы RDOValue" );
 									}
 									seq->addInt( value );
 								}
@@ -1196,7 +1196,7 @@ fun_seq_enumerative_body_real:	fun_seq_enumerative_header REAL_CONST {
 										case rdoRuntime::RDOValue::ParamType::pt_int : parser->error( @2, rdo::format("Последовательность '%s' определена как целочисленная, её значения тоже должны быть целочисленными", header->src_text().c_str()) );
 										case rdoRuntime::RDOValue::ParamType::pt_real: header->getType()->checkRSSRealValue( value, @2 ); break;
 										case rdoRuntime::RDOValue::ParamType::pt_enum: parser->error( @2, rdo::format("Последовательность '%s' определена как перечислимая, её значения тоже должны быть перечислимого типа", header->src_text().c_str()) );
-										default                      : parser->error( @1, "Внутренная ошибка парсера: не все типы обработаны" );
+										default: parser->error( @1, "Внутренняя ошибка: обработать все типы RDOValue" );
 									}
 									$$ = (int)new RDOFUNSequenceEnumerativeReal( parser, header, value );
 								}

@@ -136,6 +136,7 @@ void RDORTPParamType::checkParamType( const RDOFUNArithm* const action, bool war
 			}
 			break;
 		}
+		default: getParser()->error( src_info(), "¬нутренн€€ ошибка: обработать все типы RDOValue" );
 	}
 }
 
@@ -156,6 +157,7 @@ void RDORTPParamType::checkParamType( const rdoRuntime::RDOValue& value, const R
 			}
 			break;
 		}
+		default: getParser()->error( src_info(), "¬нутренн€€ ошибка: обработать все типы RDOValue" );
 	}
 }
 

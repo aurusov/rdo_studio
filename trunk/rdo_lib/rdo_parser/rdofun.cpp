@@ -997,6 +997,7 @@ void RDOFUNSequence::initResult()
 			}
 			break;
 		}
+		default: getParser()->error( src_info(), "¬нутренн€€ ошибка: обработать все типы RDOValue" );
 	}
 }
 
@@ -1558,14 +1559,22 @@ void RDOFUNFunction::createAlgorithmicCalc( const RDOParserSrcInfo& _body_src_in
 {
 	rdoRuntime::RDOFunAlgorithmicCalc* funcCalc = NULL;
 	switch ( getType()->getType() ) {
-		case rdoRuntime::RDOValue::ParamType::pt_int: if ( static_cast<const RDORTPIntParamType*>(getType())->diap->isExist() ) {
-			funcCalc = new rdoRuntime::RDOFunAlgorithmicDiapCalc( getParser()->runtime, static_cast<const RDORTPIntParamType*>(getType())->diap->min_value, static_cast<const RDORTPIntParamType*>(getType())->diap->max_value );
+		case rdoRuntime::RDOValue::ParamType::pt_int: {
+			if ( static_cast<const RDORTPIntParamType*>(getType())->diap->isExist() ) {
+				funcCalc = new rdoRuntime::RDOFunAlgorithmicDiapCalc( getParser()->runtime, static_cast<const RDORTPIntParamType*>(getType())->diap->min_value, static_cast<const RDORTPIntParamType*>(getType())->diap->max_value );
+			}
 			break;
 		}
-		case rdoRuntime::RDOValue::ParamType::pt_real: if ( static_cast<const RDORTPRealParamType*>(getType())->diap->isExist() ) {
-			funcCalc = new rdoRuntime::RDOFunAlgorithmicDiapCalc( getParser()->runtime, static_cast<const RDORTPRealParamType*>(getType())->diap->min_value, static_cast<const RDORTPRealParamType*>(getType())->diap->max_value );
+		case rdoRuntime::RDOValue::ParamType::pt_real: {
+			if ( static_cast<const RDORTPRealParamType*>(getType())->diap->isExist() ) {
+				funcCalc = new rdoRuntime::RDOFunAlgorithmicDiapCalc( getParser()->runtime, static_cast<const RDORTPRealParamType*>(getType())->diap->min_value, static_cast<const RDORTPRealParamType*>(getType())->diap->max_value );
+			}
 			break;
 		}
+		case rdoRuntime::RDOValue::ParamType::pt_enum: {
+			break;
+		}
+		default: getParser()->error( src_info(), "¬нутренн€€ ошибка: обработать все типы RDOValue" );
 	}
 	if ( !funcCalc ) {
 		funcCalc = new rdoRuntime::RDOFunAlgorithmicCalc( getParser()->runtime );
@@ -1626,6 +1635,7 @@ void RDOFUNFunction::createAlgorithmicCalc( const RDOParserSrcInfo& _body_src_in
 				calc_act = new rdoRuntime::RDOCalcConst( getParser()->runtime, static_cast<const RDORTPEnumParamType*>(getType())->enu->getFirstValue() );
 				break;
 			}
+			default: getParser()->error( src_info(), "¬нутренн€€ ошибка: обработать все типы RDOValue" );
 		}
 		if ( !calc_act ) {
 			calc_act = new rdoRuntime::RDOCalcConst( getParser()->runtime, 0 );
