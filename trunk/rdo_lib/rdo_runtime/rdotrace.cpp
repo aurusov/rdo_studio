@@ -216,7 +216,7 @@ void RDOTrace::writeRule( RDORuleTrace* rule, RDOSimulatorTrace* sim )
 		             << " "   << operId
 		             << " "   << rule->traceId() 
 		             << " "   << rule->tracePatternId()
-		             << " "   << rule->traceResourcesListNumbers( sim )
+		             << " "   << rule->traceResourcesListNumbers( sim, false )
 		             << std::endl << getEOL();
 		sim->freeOperationId(operId);
 	}
@@ -232,7 +232,7 @@ void RDOTrace::writeAfterOperationBegin( RDOOperationTrace* op, RDOSimulatorTrac
 		             << " "   << op->traceOperId() 
 		             << " "   << op->traceId() 
 		             << " "   << op->tracePatternId() 
-		             << " "   << op->traceResourcesListNumbers( sim )
+		             << " "   << op->traceResourcesListNumbers( sim, false )
 		             << std::endl << getEOL(); 
 	}
 	getOStream() << op->traceResourcesList( '\0', sim ) << getEOL();
@@ -247,7 +247,7 @@ void RDOTrace::writeAfterOperationEnd( RDOOperationTrace* op, RDOSimulatorTrace*
 		             << " "   << op->traceOperId() 
 		             << " "   << op->traceId() 
 		             << " "   << op->tracePatternId() 
-		             << " "   << op->traceResourcesListNumbers( sim )
+		             << " "   << op->traceResourcesListNumbers( sim, false )
 		             << std::endl << getEOL();
 	}
 	getOStream() << op->traceResourcesList( '\0', sim ) << getEOL();
@@ -378,10 +378,10 @@ void RDOTrace::writeStatus( RDOSimulatorTrace* sim, char* status )
 
 bool RDOPokazTrace::tracePokaz()
 {
-	if(!trace || !wasChanged)
+	if ( !trace || !wasChanged ) {
 		return false;
-
-	sim->getTracer()->writePokaz(sim, this);
+	}
+	sim->getTracer()->writePokaz( sim, this );
 	wasChanged = false;
 	return true;
 }

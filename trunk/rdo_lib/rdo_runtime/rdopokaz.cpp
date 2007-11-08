@@ -133,6 +133,7 @@ bool RDOPMDWatchState::checkPokaz(RDOSimulator *sim)
 	bool newValue = fabs(logicCalc->calcValueBase( runtime ).getDouble()) > DBL_EPSILON;
 	if ( newValue && !currValue ) { // from FALSE to TRUE
 		timePrev = runtime->getCurrentTime();
+		wasChanged = true;
 	} else if ( !newValue && currValue ) { // from TRUE to FALSE
 		double currTime = runtime->getCurrentTime();
 		double val = currTime - timePrev;
@@ -164,8 +165,7 @@ bool RDOPMDWatchState::calcStat(RDOSimulator *sim)
 
 	runtime->getResults().width(30);
 	runtime->getResults() << std::left
-		<<
-		name 
+		<< name 
 		<< "\t" << traceValue() 
 		<< "\t" << watchNumber
 		<< "\t" << average 

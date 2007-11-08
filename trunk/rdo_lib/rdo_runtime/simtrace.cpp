@@ -74,19 +74,23 @@ int RDOSimulatorTrace::getFreeResourceId()
 		maxResourcesId++;
 		return maxResourcesId - 1;
 	} else {
-		std::list<int>::const_iterator it = freeResourcesIds.begin();
+#ifdef _DEBUG
+		std::list< int >::const_iterator it = freeResourcesIds.begin();
 		while ( it != freeResourcesIds.end() ) {
 			TRACE( "%d\n", *it );
 			it++;
 		}
-		freeResourcesIds.sort();
+#endif
+//		freeResourcesIds.sort();
+#ifdef _DEBUG
 		it = freeResourcesIds.begin();
 		while ( it != freeResourcesIds.end() ) {
 			TRACE( "%d\n", *it );
 			it++;
 		}
-		int id = freeResourcesIds.front();
-		freeResourcesIds.pop_front();
+#endif
+		int id = freeResourcesIds.back();
+		freeResourcesIds.pop_back();
 		return id;
 	}
 }

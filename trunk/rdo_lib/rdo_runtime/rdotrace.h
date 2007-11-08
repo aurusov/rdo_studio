@@ -125,7 +125,7 @@ class RDOPatternTrace
 friend class RDOSimulatorTrace;
 protected:
 	virtual std::string traceResourcesList( char prefix, RDOSimulatorTrace* sim ) = 0;
-	virtual std::string traceResourcesListNumbers( RDOSimulatorTrace* sim ) = 0;
+	virtual std::string traceResourcesListNumbers( RDOSimulatorTrace* sim, bool show_create_index = true ) = 0;
 };
 
 class RDORuntime;

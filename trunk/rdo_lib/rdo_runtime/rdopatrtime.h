@@ -144,17 +144,10 @@ protected:
 	RDOActivityRuntime( RDOPatternRuntime* _pattern, const std::string& _oprName ):
 		pattern( _pattern ),
 		oprName( _oprName )
-#ifdef RDOSIM_COMPATIBLE
-		,
-		show_create_index( false )
-#endif
 	{
 	}
 	virtual ~RDOActivityRuntime() {}
 
-#ifdef RDOSIM_COMPATIBLE
-	bool                           show_create_index;
-#endif
 	std::string                    oprName;
 	std::list< RDOResourceTrace* > relevantResources; // Список релевантных ресурсов
 	std::vector< int >             relResID;  // Содержит список id ресурсов, которые стали релевантными образцу
@@ -171,7 +164,7 @@ protected:
 	void updateConvertStatus( RDOSimulator* sim, const std::vector< RDOResourceTrace::ConvertStatus >& status_list );
 
 	std::string traceResourcesList( char prefix, RDOSimulatorTrace* sim );
-	virtual std::string traceResourcesListNumbers( RDOSimulatorTrace* sim );
+	virtual std::string traceResourcesListNumbers( RDOSimulatorTrace* sim, bool show_create_index = true );
 
 public:
 	void addParamCalc( RDOCalc* calc ) { paramsCalcs.push_back( calc ); }
@@ -219,8 +212,8 @@ private:
 	virtual std::string traceResourcesList( char prefix, RDOSimulatorTrace* sim ) {
 		return RDOActivityRuntime::traceResourcesList( prefix, sim );
 	}
-	virtual std::string traceResourcesListNumbers( RDOSimulatorTrace* sim ) {
-		return RDOActivityRuntime::traceResourcesListNumbers( sim );
+	virtual std::string traceResourcesListNumbers( RDOSimulatorTrace* sim, bool show_create_index = true ) {
+		return RDOActivityRuntime::traceResourcesListNumbers( sim, show_create_index );
 	}
 
 public:
@@ -244,8 +237,8 @@ private:
 	virtual std::string traceResourcesList( char prefix, RDOSimulatorTrace* sim ) {
 		return RDOActivityRuntime::traceResourcesList( prefix, sim );
 	}
-	virtual std::string traceResourcesListNumbers( RDOSimulatorTrace* sim ) {
-		return RDOActivityRuntime::traceResourcesListNumbers( sim );
+	virtual std::string traceResourcesListNumbers( RDOSimulatorTrace* sim, bool show_create_index = true ) {
+		return RDOActivityRuntime::traceResourcesListNumbers( sim, show_create_index );
 	}
 
 public:
@@ -275,8 +268,8 @@ private:
 	virtual std::string traceResourcesList( char prefix, RDOSimulatorTrace* sim ) {
 		return RDOActivityRuntime::traceResourcesList( prefix, sim );
 	}
-	virtual std::string traceResourcesListNumbers( RDOSimulatorTrace* sim ) {
-		return RDOActivityRuntime::traceResourcesListNumbers( sim );
+	virtual std::string traceResourcesListNumbers( RDOSimulatorTrace* sim, bool show_create_index = true ) {
+		return RDOActivityRuntime::traceResourcesListNumbers( sim, show_create_index );
 	}
 
 protected:

@@ -32,7 +32,7 @@ private:
 
 	int maxResourcesId;
 
-	std::list<int> freeResourcesIds;
+	std::list< int > freeResourcesIds;
 	typedef std::map<int, int> MAPII;
 	MAPII resourcesIdsRefs;
 	std::list< int > freeOperationsIds;

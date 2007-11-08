@@ -238,7 +238,7 @@ std::string RDOActivityRuntime::traceResourcesList( char prefix, RDOSimulatorTra
 	return res;
 }
 
-std::string RDOActivityRuntime::traceResourcesListNumbers( RDOSimulatorTrace* sim )
+std::string RDOActivityRuntime::traceResourcesListNumbers( RDOSimulatorTrace* sim, bool show_create_index )
 {
 	std::ostringstream res;
 	res << relevantResources.size() << " ";
@@ -386,9 +386,6 @@ RDOActivityOperationRuntime::RDOActivityOperationRuntime( RDORuntime* rTime, RDO
 {
 	trace                   = _trace;
 	haveAdditionalCondition = false;
-#ifdef RDOSIM_COMPATIBLE
-	show_create_index       = false;
-#endif
 }
 
 RDOActivityOperationRuntime::RDOActivityOperationRuntime( RDORuntime* rTime, RDOPatternRuntime* _pattern, bool _trace, RDOCalc* condition, const std::string& _oprName ):
@@ -398,9 +395,6 @@ RDOActivityOperationRuntime::RDOActivityOperationRuntime( RDORuntime* rTime, RDO
 {
 	trace                   = _trace;
 	haveAdditionalCondition = true;
-#ifdef RDOSIM_COMPATIBLE
-	show_create_index       = false;
-#endif
 }
 
 bool RDOActivityOperationRuntime::choiceFrom( RDOSimulator* sim ) 

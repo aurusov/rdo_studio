@@ -187,7 +187,17 @@ void RDORuntime::onEraseRes( const int res_id, const RDOCalcEraseRes* calc )
 RDOResource* RDORuntime::createNewResource( bool trace )
 {
 	RDOResource* res = new RDOResource( this, -1, trace );
-
+	if ( res->id >= allResourcesByID.size() ) {
+		allResourcesByID.resize( res->id + 1, NULL );
+		allResourcesByID.at( res->id ) = res;
+	} else {
+		if ( allResourcesByID.at( res->id ) == NULL ) {
+			allResourcesByID.at( res->id ) = res;
+		} else {
+			TRACE( "ошибка\n" );
+		}
+	}
+/*
 	std::vector< RDOResource* >::iterator it = std::find( allResourcesByID.begin(), allResourcesByID.end(), static_cast<RDOResource*>(NULL) );
 	// Нашли дырку в последовательности ресурсов
 	if ( it != allResourcesByID.end() ) {
@@ -206,6 +216,7 @@ RDOResource* RDORuntime::createNewResource( bool trace )
 //		res->number = res->id - 1;
 		allResourcesByID.push_back( res );
 	}
+*/
 	allResourcesByTime.push_back( res );
 	return res;
 }
@@ -467,7 +478,7 @@ void RDORuntime::onCheckPokaz()
 
 void RDORuntime::onAfterCheckPokaz()
 {
-	std::for_each( allPokaz.rbegin(), allPokaz.rend(), std::mem_fun(&RDOPokazTrace::tracePokaz) );
+	std::for_each( allPokaz.begin(), allPokaz.end(), std::mem_fun(&RDOPokazTrace::tracePokaz) );
 }
 
 std::string RDORuntime::writeActivitiesStructure( int& counter )
