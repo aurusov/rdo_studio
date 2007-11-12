@@ -174,6 +174,7 @@ static char THIS_FILE[] = __FILE__;
 #include "rdodpt.h"
 #include "rdortp.h"
 #include "rdorss.h"
+#include <rdoprocess.h>
 
 namespace rdoParse 
 {
@@ -268,9 +269,9 @@ dpt_process_line:	IDENTIF	{
 					| SEIZE IDENTIF {
 
 	std::string res_name       = *(std::string*)$2;
-	std::string rtp_param_name = "Состояние";
-	std::string rtp_state_free = "Свободен";
-	std::string rtp_state_buzy = "Занят";
+	std::string rtp_param_name = rdoRuntime::RDOPROCBlockForSeize::getStateParamName();
+	std::string rtp_state_free = rdoRuntime::RDOPROCBlockForSeize::getStateEnumFree();
+	std::string rtp_state_buzy = rdoRuntime::RDOPROCBlockForSeize::getStateEnumBuzy();
 
 	// Найти ресурс, если его нет, то создать
 	RDORSSResource* res = const_cast<RDORSSResource*>(parser->findRSSResource( res_name ));

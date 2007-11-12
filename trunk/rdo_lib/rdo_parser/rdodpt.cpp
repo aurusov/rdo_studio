@@ -468,7 +468,7 @@ RDOPROCSeize::RDOPROCSeize( RDOPROCProcess* _process, const std::string& _name, 
 	if ( rss ) {
 		runtime = new rdoRuntime::RDOPROCSeize( getParser()->getLastDPTProcess()->getRunTime(), rss->getNumber() );
 	} else {
-		// error: не нашли parser-ресурс
+		getParser()->error( "¬нутренн€€ ошибка RDOPROCSeize: не нашли parser-ресурс" );
 	}
 }
 

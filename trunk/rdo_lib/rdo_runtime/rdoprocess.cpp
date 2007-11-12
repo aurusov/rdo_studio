@@ -130,21 +130,37 @@ void RDOPROCGenerate::calcNextTimeInterval( RDOSimulator* sim )
 }
 
 // ----------------------------------------------------------------------------
+// ---------- RDOPROCBlockForSeize
+// ----------------------------------------------------------------------------
+RDOPROCBlockForSeize::RDOPROCBlockForSeize( RDOPROCProcess* _process, int _rss_id ):
+	RDOPROCBlock( _process ),
+	rss( NULL ),
+	rss_id( _rss_id )
+{
+}
+
+void RDOPROCBlockForSeize::init( RDOSimulator* sim )
+{
+	// todo: если потребуется стоить деревья, вершинами которых будут полные снимки БД,
+	// как при DPT search, то инициализацию атрибутов надо будет делать в checkOperation
+	rss = static_cast<RDORuntime*>(sim)->getResourceByID( rss_id );
+	enum_free = RDOValue( rss->params[0].getEnum(), RDOPROCBlockForSeize::getStateEnumFree() );
+	enum_buzy = RDOValue( rss->params[0].getEnum(), RDOPROCBlockForSeize::getStateEnumBuzy() );
+}
+
+// ----------------------------------------------------------------------------
 // ---------- RDOPROCSeize
 // ----------------------------------------------------------------------------
 RDOBaseOperation::BOResult RDOPROCSeize::checkOperation( RDOSimulator* sim )
 {
 	if ( !transacts.empty() ) {
-		RDOResource* rss = static_cast<RDORuntime*>(sim)->getResourceByID( rss_id );
-
 		RDOTrace* tracer = static_cast<RDORuntime*>(sim)->getTracer();
 		if ( !tracer->isNull() ) {
 			tracer->getOStream() << rss->traceResourceState('\0', static_cast<RDORuntime*>(sim)) << tracer->getEOL();
 		}
-
 		// Свободен
-		if ( rss->params[0] == 0.0 ) {
-			rss->params[0] = 1.0;
+		if ( rss->params[0] == enum_free ) {
+			rss->params[0] = enum_buzy;
 			transacts.front()->next();
 			TRACE( "%7.1f SEIZE\n", sim->getCurrentTime() );
 			return RDOBaseOperation::BOR_can_run;
@@ -161,16 +177,13 @@ RDOBaseOperation::BOResult RDOPROCSeize::checkOperation( RDOSimulator* sim )
 RDOBaseOperation::BOResult RDOPROCRelease::checkOperation( RDOSimulator* sim )
 {
 	if ( !transacts.empty() ) {
-		RDOResource* rss = static_cast<RDORuntime*>(sim)->getResourceByID( rss_id );
-
 		RDOTrace* tracer = static_cast<RDORuntime*>(sim)->getTracer();
 		if ( !tracer->isNull() ) {
 			tracer->getOStream() << rss->traceResourceState('\0', static_cast<RDORuntime*>(sim)) << tracer->getEOL();
 		}
-
 		// Занят
-		if ( rss->params[0] == 1.0 ) {
-			rss->params[0] = 0.0;
+		if ( rss->params[0] == enum_buzy ) {
+			rss->params[0] = enum_free;
 			transacts.front()->next();
 			TRACE( "%7.1f RELEASE\n", sim->getCurrentTime() );
 			return RDOBaseOperation::BOR_can_run;

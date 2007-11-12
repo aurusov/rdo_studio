@@ -30,7 +30,7 @@ public:
 
 public:
 	RDORSSResource( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDORTPResType* const _resType );
-	
+
 	const std::string&         getName() const { return src_info().src_text(); }
 	const RDORTPResType* const getType() const { return resType; }
 

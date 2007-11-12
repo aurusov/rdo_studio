@@ -85,31 +85,47 @@ public:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOPROCSeize
+// ---------- RDOPROCBlockForSeize
 // ----------------------------------------------------------------------------
-class RDOPROCSeize: public RDOPROCBlock
+class RDOPROCBlockForSeize: public RDOPROCBlock
 {
 protected:
-	int rss_id;
+	RDOResource* rss;
+	int          rss_id;
+	RDOValue     enum_free;
+	RDOValue     enum_buzy;
+	virtual void init( RDOSimulator* sim );
 
+public:
+	RDOPROCBlockForSeize( RDOPROCProcess* _process, int _rss_id );
+
+	static std::string getStateParamName() { return "Состояние"; }
+	static std::string getStateEnumFree()  { return "Свободен";  }
+	static std::string getStateEnumBuzy()  { return "Занят";     }
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOPROCSeize
+// ----------------------------------------------------------------------------
+class RDOPROCSeize: public RDOPROCBlockForSeize
+{
+private:
 	virtual RDOBaseOperation::BOResult checkOperation( RDOSimulator* sim );
 
 public:
-	RDOPROCSeize( RDOPROCProcess* _process, int _rss_id ): RDOPROCBlock( _process ), rss_id( _rss_id ) {}
+	RDOPROCSeize( RDOPROCProcess* _process, int _rss_id ): RDOPROCBlockForSeize( _process, _rss_id ) {}
 };
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCRelease
 // ----------------------------------------------------------------------------
-class RDOPROCRelease: public RDOPROCBlock
+class RDOPROCRelease: public RDOPROCBlockForSeize
 {
-protected:
-	int rss_id;
-
+private:
 	virtual RDOBaseOperation::BOResult checkOperation( RDOSimulator* sim );
 
 public:
-	RDOPROCRelease( RDOPROCProcess* _process, int _rss_id ): RDOPROCBlock( _process ), rss_id( _rss_id ) {}
+	RDOPROCRelease( RDOPROCProcess* _process, int _rss_id ): RDOPROCBlockForSeize( _process, _rss_id ) {}
 };
 
 // ----------------------------------------------------------------------------

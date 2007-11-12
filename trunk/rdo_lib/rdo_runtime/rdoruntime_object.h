@@ -294,6 +294,12 @@ public:
 			default     : throw RDORuntimeRDOValue("");
 		}
 	}
+	RDOEnum* getEnum() const {
+		switch ( type ) {
+			case pt_enum: return reinterpret_cast<RDOEnum*>(data);
+			default     : throw RDORuntimeRDOValue("");
+		}
+	}
 	double getDouble() const {
 		switch ( type ) {
 			case pt_int : return value.i_value;
