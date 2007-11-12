@@ -263,7 +263,7 @@ RDOResourceTrace::RDOResourceTrace( RDOSimulatorTrace* i_sim, int _id, bool _tar
 		id = sim->getFreeResourceId();
 	} else {
 		// Вызываем для увеличения счетчика maxResourcesId постоянных ресурсов
-		sim->getFreeResourceId();
+		sim->getFreeResourceId( _id );
 		id = _id;
 	}
 	setTraceID( id, id + 1 );

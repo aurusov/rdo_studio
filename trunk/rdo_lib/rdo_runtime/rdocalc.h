@@ -1548,9 +1548,10 @@ private:
 	int  number;
 	bool isPermanent;
 
+	virtual RDOValue& calcValue( RDORuntime* runtime );
+
 public:
 	RDOCalcCreateNumberedResource( RDORuntimeParent* _parent, int _type, bool _traceFlag, const std::vector< RDOValue >& _paramsCalcs, int _number, bool _isPermanent );
-	virtual RDOValue& calcValue( RDORuntime* runtime );
 };
 
 // ----------------------------------------------------------------------------

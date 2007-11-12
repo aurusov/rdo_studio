@@ -184,19 +184,31 @@ void RDORuntime::onEraseRes( const int res_id, const RDOCalcEraseRes* calc )
 	}
 }
 
+// Вызывается только для ресурсов из RSS, во время прогона вызыват нельзя из-за allResourcesByTime
+// (его надо раскомментировать, но тогда он не будет работать для RSS)
+RDOResource* RDORuntime::createNewResource( int number, bool isPermanent, bool trace )
+{
+	if ( allResourcesByID.size() <= number + 1 ) {
+		allResourcesByID.resize( number + 1, NULL );
+	}
+	if ( allResourcesByID.at( number ) != NULL ) {
+		throw RDOInternalException( "internal error N 0010" );
+	}
+	RDOResource* res = new RDOResource( this, number, trace );
+	allResourcesByID.at( number ) = res;
+//	allResourcesByTime.push_back( res );
+	allResourcesBeforeSim.push_back( res );
+	if( !isPermanent ) {
+		res->makeTemporary( true );
+	}
+	return res;
+}
+
+// Для новых ресурсов, создаваемых в процессе моделирования
 RDOResource* RDORuntime::createNewResource( bool trace )
 {
 	RDOResource* res = new RDOResource( this, -1, trace );
-	if ( res->id >= allResourcesByID.size() ) {
-		allResourcesByID.resize( res->id + 1, NULL );
-		allResourcesByID.at( res->id ) = res;
-	} else {
-		if ( allResourcesByID.at( res->id ) == NULL ) {
-			allResourcesByID.at( res->id ) = res;
-		} else {
-			TRACE( "ошибка\n" );
-		}
-	}
+	insertNewResource( res );
 /*
 	std::vector< RDOResource* >::iterator it = std::find( allResourcesByID.begin(), allResourcesByID.end(), static_cast<RDOResource*>(NULL) );
 	// Нашли дырку в последовательности ресурсов
@@ -217,33 +229,21 @@ RDOResource* RDORuntime::createNewResource( bool trace )
 		allResourcesByID.push_back( res );
 	}
 */
-	allResourcesByTime.push_back( res );
-	return res;
-}
-
-// Вызывается только для ресурсов из RSS, во время прогона вызыват нельзя из-за allResourcesByTime
-// (его недо раскомментировать, но тогда он не будет работать для RSS)
-RDOResource* RDORuntime::createNewResource( int number, bool isPermanent, bool trace )
-{
-	if ( allResourcesByID.size() <= number + 1 ) {
-		allResourcesByID.resize( number + 1, NULL );
-	}
-	if ( allResourcesByID.at(number) != NULL ) {
-		throw RDOInternalException( "internal error N 0010" );
-	}
-	RDOResource* res = new RDOResource( this, number, trace );
-	allResourcesByID.at(number) = res;
-//	allResourcesByTime.push_back( res );
-	allResourcesBeforeSim.push_back( res );
-	if( !isPermanent ) {
-		res->makeTemporary( true );
-	}
 	return res;
 }
 
 void RDORuntime::insertNewResource( RDOResource* res )
 {
-	allResourcesByID.push_back( res );
+	if ( res->id >= allResourcesByID.size() ) {
+		allResourcesByID.resize( res->id + 1, NULL );
+		allResourcesByID.at( res->id ) = res;
+	} else {
+		if ( allResourcesByID.at( res->id ) == NULL ) {
+			allResourcesByID.at( res->id ) = res;
+		} else {
+			error( "Внутренняя ошибка: insertNewResource" );
+		}
+	}
 	allResourcesByTime.push_back( res );
 }
 

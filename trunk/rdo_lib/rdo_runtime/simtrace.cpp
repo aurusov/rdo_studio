@@ -68,27 +68,38 @@ void RDOSimulatorTrace::rdoInit()
 	RDOSimulator::rdoInit();
 }
 
-int RDOSimulatorTrace::getFreeResourceId()
+int RDOSimulatorTrace::getFreeResourceId( int _id )
 {
 	if ( freeResourcesIds.empty() ) {
-		maxResourcesId++;
-		return maxResourcesId - 1;
+		if ( _id == -1 ) {
+			// Для новых ресурсов в процессе работы
+			maxResourcesId++;
+			return maxResourcesId - 1;
+		} else {
+			// id может быть больше maxResourcesId только при,
+			// инициализации RSS, в котором ресурсы могут инититься
+			// не по порядку в RSS, а по RTP
+			if ( _id >= maxResourcesId ) {
+				maxResourcesId = _id + 1;
+			}
+			return _id;
+		}
 	} else {
 #ifdef _DEBUG
 		std::list< int >::const_iterator it = freeResourcesIds.begin();
 		while ( it != freeResourcesIds.end() ) {
-			TRACE( "%d\n", *it );
+			TRACE( "getFreeResourceId: %d\n", *it );
 			it++;
 		}
 #endif
 //		freeResourcesIds.sort();
-#ifdef _DEBUG
-		it = freeResourcesIds.begin();
-		while ( it != freeResourcesIds.end() ) {
-			TRACE( "%d\n", *it );
-			it++;
-		}
-#endif
+//#ifdef _DEBUG
+//		it = freeResourcesIds.begin();
+//		while ( it != freeResourcesIds.end() ) {
+//			TRACE( "%d\n", *it );
+//			it++;
+//		}
+//#endif
 		int id = freeResourcesIds.back();
 		freeResourcesIds.pop_back();
 		return id;

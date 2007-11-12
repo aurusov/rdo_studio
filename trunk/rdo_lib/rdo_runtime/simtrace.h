@@ -37,7 +37,7 @@ private:
 	MAPII resourcesIdsRefs;
 	std::list< int > freeOperationsIds;
 
-	int getFreeResourceId();
+	int getFreeResourceId( int id = -1 );
 	void eraseFreeResourceId( int id );
 	int getFreeOperationId(); 
 	void freeOperationId(int id);

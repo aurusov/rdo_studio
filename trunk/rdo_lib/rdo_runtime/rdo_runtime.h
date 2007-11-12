@@ -226,8 +226,8 @@ public:
 	void setRelRes( int rel_res_id, int res_id )     { currActivity->setRelRes( rel_res_id, res_id );     }
 
 	void onEraseRes( const int res_id, const RDOCalcEraseRes* calc );
-	RDOResource* createNewResource( bool trace );
 	RDOResource* createNewResource( int number, bool isPermanent, bool trace );
+	RDOResource* createNewResource( bool trace );
 	void insertNewResource( RDOResource* res );
 	RDORuntime();
 	~RDORuntime();
