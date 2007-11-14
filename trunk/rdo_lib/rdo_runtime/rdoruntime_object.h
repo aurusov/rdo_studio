@@ -163,7 +163,6 @@ public:
 		setSrcText( begin.src_text() + delim + end.src_text() );
 		setSrcFileType( begin.src_filetype() );
 	}
-
 	void setSrcPos( const Position& _position ) {
 		position.first_line = _position.first_line;
 		position.first_pos  = _position.first_pos;
@@ -182,14 +181,12 @@ public:
 		position.last_line  = last_line;
 		position.last_pos   = last_pos;
 	}
-
 	virtual void setSrcText( const std::string& value ) {
 		text_data = value;
 	}
 	void setSrcFileType( rdoModelObjects::RDOFileType value ) {
 		file_type = value;
 	}
-
 	const RDOSrcInfo&                  src_info() const     { return *this;     }
 	const Position&                    src_pos()  const     { return position;  }
 	const std::string&                 src_text() const     { return text_data; }
@@ -479,7 +476,7 @@ public:
 		switch ( type ) {
 			case pt_int : switch ( _value.type ) {
 								case pt_int : value.i_value *= _value.value.i_value; return;
-								case pt_real: value.d_value = value.i_value * _value.value.d_value; type = pt_real; return;
+								case pt_real: value.d_value = ((double)value.i_value) * _value.value.d_value; type = pt_real; return;
 								default     : throw RDORuntimeRDOValue("");
 							}
 			case pt_real: switch ( _value.type ) {
@@ -494,7 +491,7 @@ public:
 		switch ( type ) {
 			case pt_int : switch ( _value.type ) {
 								case pt_int :
-								case pt_real: value.d_value = value.i_value / _value.getDouble(); type = pt_real; return;
+								case pt_real: value.d_value = ((double)value.i_value) / _value.getDouble(); type = pt_real; return;
 								default     : throw RDORuntimeRDOValue("");
 							}
 			case pt_real: switch ( _value.type ) {
