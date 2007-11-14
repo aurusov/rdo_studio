@@ -10,6 +10,7 @@ static char THIS_FILE[] = __FILE__;
 #include "rdortp.h"
 #include "rdoparser.h"
 #include "rdoparser_lexer.h"
+#include <rdocalc.h>
 
 namespace rdoParse 
 {
@@ -44,12 +45,28 @@ int RDORSSResource::writeModelStructure()
 	return 0;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDORSSTransact
-// ----------------------------------------------------------------------------
-RDORSSTransact::RDORSSTransact( RDOParser* _parser, const std::string& _name, const RDORTPResType* const _resType ):
-	RDORSSResource( _parser, _name, _resType )
+rdoRuntime::RDOCalc* RDORSSResource::createCalc()
 {
+	rdoRuntime::RDOCalc* calc = new rdoRuntime::RDOCalcCreateNumberedResource( getParser()->runtime, getType()->getNumber(), getTrace(), getValues(), getNumber(), getType()->isPermanent() );
+	calc->setSrcInfo( src_info() );
+	calc->setSrcText( "Создание ресурса " + calc->src_text() );
+	return calc;
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOPROCResource
+// ----------------------------------------------------------------------------
+RDOPROCResource::RDOPROCResource( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDORTPResType* const _resType ):
+	RDORSSResource( _parser, _src_info, _resType )
+{
+}
+
+rdoRuntime::RDOCalc* RDOPROCResource::createCalc()
+{
+	rdoRuntime::RDOCalc* calc = new rdoRuntime::RDOCalcCreateProcessResource( getParser()->runtime, getType()->getNumber(), getTrace(), getValues(), getNumber(), getType()->isPermanent() );
+	calc->setSrcInfo( src_info() );
+	calc->setSrcText( "Создание ресурса " + calc->src_text() );
+	return calc;
 }
 
 } // namespace rdoParse 

@@ -91,6 +91,14 @@ void RDOPROCTransact::next()
 }
 
 // ----------------------------------------------------------------------------
+// ---------- RDOPROCResource
+// ----------------------------------------------------------------------------
+RDOPROCResource::RDOPROCResource( RDORuntime* _runtime, int _number, bool _trace ):
+	RDOResource( _runtime, _number, _trace )
+{
+}
+
+// ----------------------------------------------------------------------------
 // ---------- RDOPROCBlock
 // ----------------------------------------------------------------------------
 RDOPROCBlock::RDOPROCBlock( RDOPROCProcess* _process ):

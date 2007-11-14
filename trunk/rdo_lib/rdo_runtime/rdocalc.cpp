@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "rdocalc.h"
+#include "rdoprocess.h"
 #include <limits>
 
 #ifdef _DEBUG
@@ -331,10 +332,31 @@ RDOCalcCreateNumberedResource::RDOCalcCreateNumberedResource( RDORuntimeParent* 
 
 RDOValue& RDOCalcCreateNumberedResource::calcValue( RDORuntime* runtime )
 {
-	RDOResource* res = runtime->createNewResource( number, isPermanent, traceFlag );
+	RDOResource* res = runtime->createNewResource( this );
+	if ( !isPermanent ) {
+		res->makeTemporary( true );
+	}
 	res->type  = type;
 	res->params.insert( res->params.begin(), paramsCalcs.begin(), paramsCalcs.end() );
 	return value; // just to return something
+}
+
+RDOResource* RDOCalcCreateNumberedResource::createResource( RDORuntime* runtime ) const
+{
+	return new RDOResource( runtime, number, traceFlag );
+}
+
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcCreateProcessResource
+// ----------------------------------------------------------------------------
+RDOCalcCreateProcessResource::RDOCalcCreateProcessResource( RDORuntimeParent* _parent, int _type, bool _traceFlag, const std::vector< RDOValue >& _paramsCalcs, int _number, bool _isPermanent ):
+	RDOCalcCreateNumberedResource( _parent, _type, _traceFlag, _paramsCalcs, _number, _isPermanent )
+{
+}
+
+RDOResource* RDOCalcCreateProcessResource::createResource( RDORuntime* runtime ) const
+{
+	return new RDOPROCResource( runtime, number, traceFlag );
 }
 
 // ----------------------------------------------------------------------------

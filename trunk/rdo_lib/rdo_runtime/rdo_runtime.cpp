@@ -186,21 +186,17 @@ void RDORuntime::onEraseRes( const int res_id, const RDOCalcEraseRes* calc )
 
 // ¬ызываетс€ только дл€ ресурсов из RSS, во врем€ прогона вызыват нельз€ из-за allResourcesByTime
 // (его надо раскомментировать, но тогда он не будет работать дл€ RSS)
-RDOResource* RDORuntime::createNewResource( int number, bool isPermanent, bool trace )
+RDOResource* RDORuntime::createNewResource( RDOCalcCreateNumberedResource* calc )
 {
-	if ( allResourcesByID.size() <= number + 1 ) {
-		allResourcesByID.resize( number + 1, NULL );
+	if ( allResourcesByID.size() <= calc->getNumber() + 1 ) {
+		allResourcesByID.resize( calc->getNumber() + 1, NULL );
 	}
-	if ( allResourcesByID.at( number ) != NULL ) {
+	if ( allResourcesByID.at( calc->getNumber() ) != NULL ) {
 		throw RDOInternalException( "internal error N 0010" );
 	}
-	RDOResource* res = new RDOResource( this, number, trace );
-	allResourcesByID.at( number ) = res;
-//	allResourcesByTime.push_back( res );
+	RDOResource* res = calc->createResource( this );
+	allResourcesByID.at( calc->getNumber() ) = res;
 	allResourcesBeforeSim.push_back( res );
-	if( !isPermanent ) {
-		res->makeTemporary( true );
-	}
 	return res;
 }
 
@@ -209,26 +205,6 @@ RDOResource* RDORuntime::createNewResource( bool trace )
 {
 	RDOResource* res = new RDOResource( this, -1, trace );
 	insertNewResource( res );
-/*
-	std::vector< RDOResource* >::iterator it = std::find( allResourcesByID.begin(), allResourcesByID.end(), static_cast<RDOResource*>(NULL) );
-	// Ќашли дырку в последовательности ресурсов
-	if ( it != allResourcesByID.end() ) {
-//		res->number = (it - allResourcesByID.begin());
-//		res->id = res->number + 1;
-//		res->number = res->id - 1;
-
-//		ѕосле удалени€ 10-го ресурса и создании нового с номером 10 итератор возвращает указатель на 5-ый,
-//		т.е. рассинхронизировались allResourcesByID и getFreeResourceId()
-
-		int number = (it - allResourcesByID.begin());
-		(*it) = res;
-	} else {
-//		res->number = allResourcesByID.size();
-//		res->id = res->number + 1;
-//		res->number = res->id - 1;
-		allResourcesByID.push_back( res );
-	}
-*/
 	return res;
 }
 

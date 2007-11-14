@@ -1537,11 +1537,11 @@ public:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOCalcCreateNumberedResource (создание нового временного ресурса или постоянного в начальный момент времени по индексу с параметрами)
+// ---------- RDOCalcCreateNumberedResource (RSS: создание нового временного ресурса или постоянного в начальный момент времени по индексу с параметрами)
 // ----------------------------------------------------------------------------
 class RDOCalcCreateNumberedResource: public RDOCalc
 {
-private:
+protected:
 	int  type;
 	bool traceFlag;
 	std::vector< RDOValue > paramsCalcs;
@@ -1552,6 +1552,21 @@ private:
 
 public:
 	RDOCalcCreateNumberedResource( RDORuntimeParent* _parent, int _type, bool _traceFlag, const std::vector< RDOValue >& _paramsCalcs, int _number, bool _isPermanent );
+	virtual RDOResource* createResource( RDORuntime* runtime ) const;
+
+	int getNumber() const { return number; }
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcCreateProcessResource (SEIZE: создание нового ресурса процесса)
+// ----------------------------------------------------------------------------
+class RDOCalcCreateProcessResource: public RDOCalcCreateNumberedResource
+{
+private:
+	virtual RDOResource* createResource( RDORuntime* runtime ) const;
+
+public:
+	RDOCalcCreateProcessResource( RDORuntimeParent* _parent, int _type, bool _traceFlag, const std::vector< RDOValue >& _paramsCalcs, int _number, bool _isPermanent );
 };
 
 // ----------------------------------------------------------------------------

@@ -51,6 +51,15 @@ public:
 };
 
 // ----------------------------------------------------------------------------
+// ---------- RDOPROCResource
+// ----------------------------------------------------------------------------
+class RDOPROCResource: public RDOResource
+{
+public:
+	RDOPROCResource( RDORuntime* _runtime, int _number, bool _trace );
+};
+
+// ----------------------------------------------------------------------------
 // ---------- RDOPROCBlock
 // ----------------------------------------------------------------------------
 class RDOPROCBlock: public RDOBaseOperation

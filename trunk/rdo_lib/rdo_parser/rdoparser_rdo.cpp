@@ -140,10 +140,8 @@ void RDOParserRSSPost::parse()
 #ifdef RDOSIM_COMPATIBLE
 			if ( (*rss_it)->getType() == *rtp_it ) {
 #endif
-				rdoRuntime::RDOCalcCreateNumberedResource* createResource = new rdoRuntime::RDOCalcCreateNumberedResource( parser->runtime, (*rss_it)->getType()->getNumber(), (*rss_it)->getTrace(), (*rss_it)->getValues(), (*rss_it)->getNumber(), (*rss_it)->getType()->isPermanent() );
-				createResource->setSrcInfo( (*rss_it)->src_info() );
-				createResource->setSrcText( "Создание ресурса " + createResource->src_text() );
-				parser->runtime->addInitCalc( createResource );
+				rdoRuntime::RDOCalc* calc = (*rss_it)->createCalc();
+				parser->runtime->addInitCalc( calc );
 #ifdef RDOSIM_COMPATIBLE
 			}
 #endif

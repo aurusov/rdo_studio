@@ -4,7 +4,12 @@
 #include "rdoparser_object.h"
 #include <rdoruntime_object.h>
 
-namespace rdoParse 
+namespace rdoRuntime
+{
+class RDOCalc;
+}
+
+namespace rdoParse
 {
 
 int rssparse( void* lexer );
@@ -31,6 +36,8 @@ public:
 public:
 	RDORSSResource( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDORTPResType* const _resType );
 
+	virtual rdoRuntime::RDOCalc* createCalc();
+
 	const std::string&         getName() const { return src_info().src_text(); }
 	const RDORTPResType* const getType() const { return resType; }
 
@@ -46,12 +53,15 @@ public:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDORSSTransact
+// ---------- RDOPROCResource
 // ----------------------------------------------------------------------------
-class RDORSSTransact: public RDORSSResource
+class RDOPROCResource: public RDORSSResource
 {
+private:
+	virtual rdoRuntime::RDOCalc* createCalc();
+
 public:
-	RDORSSTransact( RDOParser* _parser, const std::string& _name, const RDORTPResType* const _resType );
+	RDOPROCResource( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDORTPResType* const _resType );
 };
 
 } // namespace rdoParse
