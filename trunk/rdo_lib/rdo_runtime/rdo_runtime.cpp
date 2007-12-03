@@ -471,6 +471,7 @@ RDOSimulator* RDORuntime::clone()
 			other->allResourcesByID.push_back( NULL );
 		} else {
 			RDOResource* res = new RDOResource( *allResourcesByID.at(i) );
+			res->setTraceID( res->id, res->id + 1 );
 			other->sizeof_sim += sizeof( RDOResource ) + sizeof( void* ) * 2;
 			other->allResourcesByID.push_back( res );
 			other->allResourcesByTime.push_back( res );

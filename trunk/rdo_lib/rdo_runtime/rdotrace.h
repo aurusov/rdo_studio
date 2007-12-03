@@ -110,7 +110,7 @@ public:
 	int getTraceID() const              { return id;    }
 	std::string& traceId() const {
 		if ( str_id.empty() ) {
-			str_id = toString( id + 1 );
+			str_id = toString( id );
 		}
 		return str_id;
 	}
