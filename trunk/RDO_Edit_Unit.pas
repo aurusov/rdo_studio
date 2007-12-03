@@ -1910,10 +1910,10 @@ procedure TRDOEdit_Game5.Guide1Click(Sender: TObject);
 var
   res: integer;
 begin
-  res := ShellExecute( Application.Handle, 'open', 'RAO-game5.pdf', nil, PChar(ExtractFileDir(Application.ExeName)), SW_SHOWNORMAL );
+  res := ShellExecute( Application.Handle, 'open', 'RAO-game5 - Руководство пользователя.pdf', nil, PChar(ExtractFileDir(Application.ExeName)), SW_SHOWNORMAL );
   if res < 32 then begin
     case res of
-      ERROR_FILE_NOT_FOUND: MessageBox( Application.Handle, 'Руководство пользователя не найдено. Файл RAO-game5.pdf должен находится в одной с RAO-game5.exe директории.', 'Ошибка', MB_OK or MB_ICONERROR );
+      ERROR_FILE_NOT_FOUND: MessageBox( Application.Handle, 'Руководство пользователя не найдено. Файл RAO-game5 - Руководство пользователя.pdf должен находится в одной с RAO-game5.exe директории.', 'Ошибка', MB_OK or MB_ICONERROR );
       SE_ERR_NOASSOC      : MessageBox( Application.Handle, 'Руководство пользователя не может быть загружено. Возможно, у Вас не установлен Adobe Reader.', 'Ошибка', MB_OK or MB_ICONERROR );
     else
       MessageBox( Application.Handle, 'Ошибка загрузки руководства пользователя.', 'Ошибка', MB_OK or MB_ICONERROR );
