@@ -18,6 +18,9 @@ class RDODecisionPoint;
 // ----------------------------------------------------------------------------
 class TreeRoot
 {
+private:
+	int nodesCount;
+
 protected:
 	TreeRoot( RDOSimulator* sim, RDODecisionPoint* _dp);
 
@@ -26,17 +29,22 @@ public:
 
 	virtual void createRootTreeNode( RDOSimulator* sim ) = 0;
 
-	std::vector< TreeNode* > allLeafs;
+	std::vector< TreeNode* > OPEN;
 	RDODecisionPoint* dp;
 	TreeNode*         rootNode;
 	TreeNode*         targetNode;
 	RDOSimulator*     theRealSimulator;       // all others are copy
-	int               nodeCount;
 	int               nodesInGraphCount;
 	int               expandedNodesCount;
 	int               fullNodesCount;
 	SYSTEMTIME        systime_begin;
 	unsigned int      sizeof_dpt;
+
+	int getNodesCound() const { return nodesCount; }
+	int getNewNodeNumber() {
+		return ++nodesCount;
+	}
+
 };
 
 // ----------------------------------------------------------------------------
@@ -45,9 +53,9 @@ public:
 class TreeNode
 {
 protected:
-	TreeNode( RDOSimulator* i_sim, TreeNode* i_parent, TreeRoot* i_root, RDOActivity* i_activity, double cost, int cnt );
+	TreeNode( RDOSimulator* _sim, TreeNode* _parent, TreeRoot* _root, RDOActivity* _activity, double cost, int cnt );
 
-	RDOActivity*  currAct;
+	RDOActivity*  currAct; // вершина пытается применять различные активности
 	RDOSimulator* childSim;
 
 	double newCostPath; 
@@ -67,16 +75,25 @@ public:
 	std::vector< TreeNode* > children;
 	TreeNode*    parent;
 	TreeRoot*    root;
-	RDOActivity* activity;
+	RDOActivity* activity; // активность (currAct), которую применил предок при создании this
 	double costRule;
 	double costPath;
 	double costRest;
-	int count;
+	int number; // Номер узла
 
 public:
 	void ExpandChildren();
-	int CheckIfExistBetter( RDOSimulator* childSim, double useCost, TreeNode** better ); // return 0 - no such simulator, 1 - exist better, 2 - exist not better
+
+	enum NodeFoundInfo {
+		nfi_notfound     = 0,
+		nfi_found_better = 1,
+		nfi_found_loser  = 2
+	};
+
+	NodeFoundInfo CheckIfExistBetter( RDOSimulator* childSim, double useCost, TreeNode** better ); // return 0 - no such simulator, 1 - exist better, 2 - exist not better
 	void ReCostSubTree( double cost );
+
+	int getActivityID() const;
 };
 
 // ----------------------------------------------------------------------------
@@ -89,7 +106,7 @@ inline bool compareNodes( const TreeNode* tn1, const TreeNode* tn2 )
 	if ( fabs(tn1->costRest - tn2->costRest) > 0.0000001 ) {
 		return ( tn1->costRest < tn2->costRest );
 	} else {
-		return ( tn1->count < tn2->count );
+		return ( tn1->number < tn2->number );
 	}
 }
 

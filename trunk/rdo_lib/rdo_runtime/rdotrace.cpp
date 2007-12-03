@@ -57,7 +57,7 @@ void RDOTrace::writeSearchDecision(RDOSimulator *sim, TreeNode *node)
 	RDOActivityTrace *actTr = (RDOActivityTrace *)node->activity;
 	RDORuleTrace *ruleTr = (RDORuleTrace *)actTr->rule;
 
-	getOStream() << node->count
+	getOStream() << node->number
 	             << " " << actTr->traceId()
 	             << " " << ruleTr->tracePatternId()
 	             << " " << ruleTr->traceResourcesListNumbers( simTr )
@@ -91,8 +91,8 @@ void RDOTrace::writeSearchNodeInfo(char sign, TreeNodeTrace *node)
 
 		getOStream().precision(4);
 		getOStream() << "ST" << sign
-		             << " " << ((sign != 'D') ? node->count:node->root->nodeCount-1)
-		             << " " << ((sign != 'D') ? node->parent->count:node->count)
+		             << " " << ((sign != 'D') ? node->number : node->root->getNodesCound())
+		             << " " << ((sign != 'D') ? node->parent->number : node->number)
 		             << " " << ((sign != 'D') ? doubleToString(node->costPath) : doubleToString(node->newCostPath) )
 		             << " " << ((sign != 'D') ? doubleToString(node->costRest) : doubleToString(node->newCostRest) )
 		             << " " << actTr->traceId()
@@ -129,7 +129,7 @@ void RDOTrace::writeSearchResult( char letter, RDOSimulatorTrace* simTr, TreeRoo
 	             << " " << (letter == 'S' ? treeRoot->targetNode->costPath : 0)
 	             << " " << treeRoot->expandedNodesCount
 	             << " " << treeRoot->nodesInGraphCount
-	             << " " << treeRoot->nodeCount - 1
+	             << " " << treeRoot->getNodesCound()
 	             << " " << treeRoot->fullNodesCount 
 	             << std::endl << getEOL();
 	if ( letter == 'S' ) {
@@ -138,7 +138,7 @@ void RDOTrace::writeSearchResult( char letter, RDOSimulatorTrace* simTr, TreeRoo
 		             << " 4"
 		             << std::endl << getEOL();
 		static_cast<RDODecisionPointTrace*>(treeRoot->dp)->calc_cost.push_back( treeRoot->targetNode->costPath );
-		static_cast<RDODecisionPointTrace*>(treeRoot->dp)->calc_nodes.push_back( treeRoot->nodeCount - 1 );
+		static_cast<RDODecisionPointTrace*>(treeRoot->dp)->calc_nodes.push_back( treeRoot->getNodesCound() );
 		static_cast<RDODecisionPointTrace*>(treeRoot->dp)->calc_nodes_expended.push_back( treeRoot->expandedNodesCount );
 		static_cast<RDODecisionPointTrace*>(treeRoot->dp)->calc_nodes_full.push_back( treeRoot->fullNodesCount );
 		static_cast<RDODecisionPointTrace*>(treeRoot->dp)->calc_nodes_in_graph.push_back( treeRoot->nodesInGraphCount );

@@ -315,9 +315,9 @@ RDODPTSomeActivity::RDODPTSomeActivity( const RDODPTSome* _parent, const RDOPars
 		getParser()->error_push_done();
 	}
 	if ( !_parent->getConditon() ) {
-		activity = pattern->getPatRuntime()->createActivity( getName() );
+		activity = pattern->getPatRuntime()->createActivity( getParser()->runtime, getName() );
 	} else {
-		activity = pattern->getPatRuntime()->createActivity( _parent->getConditon()->createCalc(), getName() );
+		activity = pattern->getPatRuntime()->createActivity( getParser()->runtime, _parent->getConditon()->createCalc(), getName() );
 	}
 }
 
@@ -331,7 +331,7 @@ RDODPTActivityHotKey::RDODPTActivityHotKey( RDOParser* _parser, const RDOParserS
 
 void RDODPTActivityHotKey::addHotKey( const std::string& hotKey, const YYLTYPE& hotkey_pos )
 {
-	switch ( activity->addHotKey( hotKey ) ) {
+	switch ( activity->addHotKey( getParser()->runtime, hotKey ) ) {
 		case rdoRuntime::RDOActivityRuntime::addhk_ok      : {
 			break;
 		}
@@ -370,7 +370,7 @@ RDODPTFreeActivity::RDODPTFreeActivity( RDOParser* _parser, const RDOParserSrcIn
 		getParser()->error_push_only( pattern->src_info(), "См. образец" );
 		getParser()->error_push_done();
 	}
-	activity = pattern->getPatRuntime()->createActivity( getName() );
+	activity = pattern->getPatRuntime()->createActivity( getParser()->runtime, getName() );
 	getParser()->insertDPTFreeActivity( this );
 }
 

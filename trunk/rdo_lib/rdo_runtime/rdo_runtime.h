@@ -226,6 +226,12 @@ public:
 	int getResByRelRes( const int rel_res_id ) const { return currActivity->getResByRelRes( rel_res_id ); }
 	void setRelRes( int rel_res_id, int res_id )     { currActivity->setRelRes( rel_res_id, res_id );     }
 
+#ifdef _DEBUG
+	std::vector< std::vector< RDOValue > > state;
+	bool checkState();
+	void showResources( int node ) const;
+#endif
+
 	void onEraseRes( const int res_id, const RDOCalcEraseRes* calc );
 	RDOResource* createNewResource( RDOCalcCreateNumberedResource* calc );
 	RDOResource* createNewResource( bool trace );

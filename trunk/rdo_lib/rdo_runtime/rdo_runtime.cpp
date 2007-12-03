@@ -166,6 +166,61 @@ RDOValue RDORuntime::getConstValue( int numberOfConst )
 	return allConstants.at( numberOfConst );
 }
 
+#ifdef _DEBUG
+bool RDORuntime::checkState()
+{
+	if ( state.empty() ) {
+		std::vector< RDOValue > res;
+		res.push_back( 1 );
+		res.push_back( 4 );
+		state.push_back( res );
+		res[0] = 2;
+		res[1] = 1;
+		state.push_back( res );
+		res[0] = 3;
+		res[1] = 3;
+		state.push_back( res );
+		res[0] = 4;
+		res[1] = 2;
+		state.push_back( res );
+		res[0] = 5;
+		res[1] = 6;
+		state.push_back( res );
+		res.clear();
+		res.push_back( 5 );
+		state.push_back( res );
+	}
+	if ( state.size() != allResourcesByID.size() ) return false;
+	for ( int i = 0; i < state.size(); i++ ) {
+		if ( state[i].size() != allResourcesByID[i]->params.size() ) return false;
+		if ( state[i] != allResourcesByID[i]->params ) return false;
+	}
+	return true;
+}
+
+void RDORuntime::showResources( int node ) const
+{
+	TRACE( "------------- %d:\n", node );
+	int index = 0;
+	std::vector< RDOResource* >::const_iterator it = allResourcesByID.begin();
+	while ( it != allResourcesByID.end() ) {
+		if ( *it ) {
+			TRACE( "%d. ", index );
+			std::vector< RDOValue >::const_iterator param_it = (*it)->params.begin();
+			while ( param_it != (*it)->params.end() ) {
+				TRACE( "%s ", param_it->getAsString().c_str() );
+				param_it++;
+			}
+			TRACE( "\n" );
+		} else {
+			TRACE( "%d. NULL\n", index );
+		}
+		index++;
+		it++;
+	}
+}
+#endif
+
 void RDORuntime::onEraseRes( const int res_id, const RDOCalcEraseRes* calc )
 {
 	RDOResource* res = allResourcesByID.at( res_id );

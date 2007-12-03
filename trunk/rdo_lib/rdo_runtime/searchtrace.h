@@ -8,7 +8,7 @@
 namespace rdoRuntime
 {
 
-class RDOActivityTrace: public RDOActivity, RDOTraceableObject
+class RDOActivityTrace: public RDOActivity, public RDOTraceableObject
 {
 friend class TreeNodeTrace;
 friend class RDODecisionPointTrace;

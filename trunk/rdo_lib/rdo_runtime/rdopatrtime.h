@@ -51,8 +51,8 @@ public:
 
 	virtual void setTime( RDOCalc* _timeCalc )      {};
 
-	virtual RDOActivityRuntime* createActivity( const std::string& _oprName ) = 0;
-	virtual RDOActivityRuntime* createActivity( RDOCalc* condition, const std::string& _oprName );
+	virtual RDOActivityRuntime* createActivity( RDORuntime* runtime, const std::string& _oprName ) = 0;
+	virtual RDOActivityRuntime* createActivity( RDORuntime* runtime, RDOCalc* condition, const std::string& _oprName );
 };
 
 // ----------------------------------------------------------------------------
@@ -65,8 +65,8 @@ public:
 
 	void convertRule( RDOSimulator* sim );
 
-	virtual RDOActivityRuntime* createActivity( const std::string& _oprName );
-	virtual RDOActivityRuntime* createActivity( RDOCalc* condition, const std::string& _oprName );
+	virtual RDOActivityRuntime* createActivity( RDORuntime* runtime, const std::string& _oprName );
+	virtual RDOActivityRuntime* createActivity( RDORuntime* runtime, RDOCalc* condition, const std::string& _oprName );
 };
 
 // ----------------------------------------------------------------------------
@@ -85,7 +85,7 @@ public:
 	double getNextTimeInterval( RDOSimulator* sim );
 	virtual void setTime( RDOCalc* _timeCalc )        { timeCalc = _timeCalc; }
 
-	virtual RDOActivityRuntime* createActivity( const std::string& _oprName );
+	virtual RDOActivityRuntime* createActivity( RDORuntime* runtime, const std::string& _oprName );
 };
 
 // ----------------------------------------------------------------------------
@@ -119,8 +119,8 @@ public:
 	double getNextTimeInterval( RDOSimulator* sim );
 	virtual void setTime( RDOCalc* _timeCalc )        { timeCalc = _timeCalc;            }
 
-	virtual RDOActivityRuntime* createActivity( const std::string& _oprName );
-	virtual RDOActivityRuntime* createActivity( RDOCalc* condition, const std::string& _oprName );
+	virtual RDOActivityRuntime* createActivity( RDORuntime* runtime, const std::string& _oprName );
+	virtual RDOActivityRuntime* createActivity( RDORuntime* runtime, RDOCalc* condition, const std::string& _oprName );
 };
 
 // ----------------------------------------------------------------------------
@@ -131,8 +131,8 @@ class RDOKeyboardRuntime: public RDOOperationRuntime
 public:
 	RDOKeyboardRuntime( RDORuntime* rTime, bool _trace );
 
-	virtual RDOActivityRuntime* createActivity( const std::string& _oprName );
-	virtual RDOActivityRuntime* createActivity( RDOCalc* condition, const std::string& _oprName );
+	virtual RDOActivityRuntime* createActivity( RDORuntime* runtime, const std::string& _oprName );
+	virtual RDOActivityRuntime* createActivity( RDORuntime* runtime, RDOCalc* condition, const std::string& _oprName );
 };
 
 // ----------------------------------------------------------------------------
@@ -190,8 +190,11 @@ public:
 		addhk_notfound,
 		addhk_dont
 	};
-	virtual AddHotKey addHotKey( const std::string& hotKey ) { return addhk_dont; }
-	virtual bool hasHotKey() const                           { return false;      }
+	virtual AddHotKey addHotKey( RDORuntime* runtime, const std::string& hotKey )
+	{
+		return addhk_dont;
+	}
+	virtual bool hasHotKey() const { return false;      }
 };
 
 // ----------------------------------------------------------------------------
@@ -295,7 +298,7 @@ public:
 	RDOActivityKeyboardRuntime( RDORuntime* rTime, RDOPatternRuntime* _pattern, bool _trace, RDOCalc* condition, const std::string& _oprName );
 
 	bool choiceFrom( RDOSimulator* sim );
-	virtual AddHotKey addHotKey( const std::string& hotKey );
+	virtual AddHotKey addHotKey( RDORuntime* runtime, const std::string& hotKey );
 	virtual bool hasHotKey() const { return scan_code != -1 ? true : false; }
 };
 

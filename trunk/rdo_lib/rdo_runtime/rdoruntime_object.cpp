@@ -54,6 +54,7 @@ void RDORuntimeObject::reparent( RDORuntimeParent* _parent )
 	}
 }
 
+/*
 RDORuntime* RDORuntimeObject::getRuntime() const
 {
 	if ( !parent ) return const_cast<RDORuntime*>(static_cast<const RDORuntime*>(this));
@@ -63,6 +64,7 @@ RDORuntime* RDORuntimeObject::getRuntime() const
 	}
 	return static_cast<RDORuntime*>(_parent);
 }
+*/
 
 #ifndef _DEBUG
 void* RDORuntimeObject::operator new( size_t sz )

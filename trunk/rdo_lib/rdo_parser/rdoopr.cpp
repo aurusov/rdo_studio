@@ -33,7 +33,7 @@ void oprerror( char* mes )
 RDOOPROperation::RDOOPROperation( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& _pattern_src_info ):
 	RDODPTActivityHotKey( _parser, _src_info, _pattern_src_info )
 {
-	activity = pattern->patRuntime->createActivity( getName() );
+	activity = pattern->patRuntime->createActivity( getParser()->runtime, getName() );
 	getParser()->insertOPROperation( this );
 }
 

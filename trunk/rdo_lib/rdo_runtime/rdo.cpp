@@ -116,9 +116,9 @@ RDOBaseOperation::BOResult RDODecisionPoint::continueOperation( RDOSimulator* si
 	DWORD time_begin = ::GetTickCount();
 	while ( true ) {
 		// ¬озмем дл€ раскрыти€ первую вершину из списка OPEN
-		TreeNode* curr = *(treeRoot->allLeafs.begin());
+		TreeNode* curr = *(treeRoot->OPEN.begin());
 		curr->ExpandChildren();
-		if ( treeRoot->allLeafs.empty() || treeRoot->targetNode ) break;
+		if ( treeRoot->OPEN.empty() || treeRoot->targetNode ) break;
 
 		DWORD time_current = ::GetTickCount();
 		if ( time_current - time_begin > 1000 / 40 ) {
@@ -130,9 +130,14 @@ RDOBaseOperation::BOResult RDODecisionPoint::continueOperation( RDOSimulator* si
 	if ( success ) {
 		// Ќашли решение, собрали путь
 		std::list< TreeNode* > bestPath;
+		TRACE( "решение... \n" );
 		for ( TreeNode* i = treeRoot->targetNode; i->parent; i = i->parent ) {
+#ifdef _DEBUG
+			static_cast<RDORuntime*>(i->sim)->showResources(i->number);
+#endif
 			bestPath.push_front(i);
 		}
+		TRACE( "решение... done\n" );
 		// ќтработали предварительные действи€: вывели трассировку
 		onSearchDecisionHeader( treeRoot->theRealSimulator );
 		// ќтработали рулы

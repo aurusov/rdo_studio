@@ -18,6 +18,7 @@ RDOActivityTrace::RDOActivityTrace( RDOSimulatorTrace* i_sim, RDORule* r, bool v
 	RDOTraceableObject( i_sim )
 {
 	id = reinterpret_cast<RDORuleTrace*>(r)->getTraceID();
+	setTraceID( id, id );
 }
 
 void RDODecisionPointTrace::onSearchBegin( RDOSimulator* sim )
@@ -72,8 +73,8 @@ void TreeNodeTrace::onSearchOpenNode( RDOSimulator* sim )
 	RDODecisionPointTrace* dpTrace = (RDODecisionPointTrace *)root->dp;
 	if ( dpTrace->traceFlag == RDODecisionPointTrace::DPT_trace_tops || dpTrace->traceFlag == RDODecisionPointTrace::DPT_trace_all ) {
 		RDOSimulatorTrace* simTr = (RDOSimulatorTrace *)sim;
-		simTr->getTracer()->writeSearchOpenNode( count,
-			(parent ? parent->count : 0 ),
+		simTr->getTracer()->writeSearchOpenNode( number,
+			(parent ? parent->number : 0 ),
 			costPath,
 			costRest );
 	}
@@ -101,16 +102,16 @@ void TreeNodeTrace::onSearchNodeInfoNew( RDOSimulator* sim )
 TreeNode* TreeNodeTrace::createChildTreeNode()
 {
 	root->sizeof_dpt += sizeof( TreeNode );
-	return new TreeNodeTrace( childSim, this, root, currAct, costPath, root->nodeCount++ );
+	return new TreeNodeTrace( childSim, this, root, currAct, costPath, root->getNewNodeNumber() );
 }
 
 void TreeRootTrace::createRootTreeNode( RDOSimulator* sim )
 {
-	rootNode = new TreeNodeTrace( sim, NULL, this, NULL, 0, nodeCount++ );
+	rootNode = new TreeNodeTrace( sim, NULL, this, NULL, 0, getNewNodeNumber() );
 	rootNode->costRule = 0;
 	rootNode->costPath = 0;
 	rootNode->costRest = 0;
-	allLeafs.push_back( rootNode );
+	OPEN.push_back( rootNode );
 	sizeof_dpt += sizeof( TreeNodeTrace ) + sizeof( void* );
 }
 

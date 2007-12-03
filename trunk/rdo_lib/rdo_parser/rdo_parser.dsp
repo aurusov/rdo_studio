@@ -41,7 +41,7 @@ RSC=rc.exe
 # PROP Intermediate_Dir "Release"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GR /GX /O2 /Ob2 /I "." /I ".." /I "../rdo_system" /I "../rdo_runtime" /I "../../rdo_common" /I "../../rdo_kernel" /I "../../rdo_repository" /D "RDOSIM_COMPATIBLE" /D "_LIB" /D "_UNISTD_H_" /D "WIN32" /D "NDEBUG" /D "_MBCS" /Yu"pch.h" /FD /c
+# ADD CPP /nologo /MT /W3 /GR /GX /O2 /Ob2 /I "." /I ".." /I "../rdo_system" /I "../rdo_runtime" /I "../../rdo_common" /I "../../rdo_kernel" /I "../../rdo_repository" /D "_LIB" /D "_UNISTD_H_" /D "WIN32" /D "NDEBUG" /D "_MBCS" /Yu"pch.h" /FD /c
 # SUBTRACT CPP /Fr
 # ADD BASE RSC /l 0x419 /d "NDEBUG"
 # ADD RSC /l 0x419 /d "NDEBUG"

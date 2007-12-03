@@ -59,7 +59,7 @@ public:
 	virtual ~RDORuntimeObject();
 	void reparent( RDORuntimeParent* _parent );
 	RDORuntimeParent* getParent() const { return parent;  }
-	RDORuntime*       getRuntime() const;
+//	RDORuntime*       getRuntime() const;
 
 	void detach();
 
