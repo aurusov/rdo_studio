@@ -118,6 +118,7 @@ void TreeNode::ExpandChildren()
 			currAct->rule->onBeforeRule( childSim );
 			currAct->rule->convertRule( childSim );
 			currAct->rule->onAfterRule( childSim, true );
+
 			// Расчитать стоимость применения правила (value after)
 			if ( currAct->valueAfter ) {
 				newCostRule = currAct->costOfRule( childSim );
@@ -149,6 +150,7 @@ void TreeNode::ExpandChildren()
 						TRACE( "loser->number = %d\n", loser->number );
 						TRACE( "loser->parent->number = %d\n", loser->parent->number );
 						TRACE( "loser->parent->children.size() = %d\n", loser->parent->children.size() );
+						static_cast<RDORuntime*>(loser->sim)->showResources(loser->number);
 					}
 #endif
 					// Смена родителя
@@ -179,6 +181,8 @@ void TreeNode::ExpandChildren()
 					loser->costRule = newCostRule;
 					// Меняем указатель на новую активность
 					loser->activity = currAct;
+					// Тоже, но только для правильного вывода статистики
+					loser->currAct  = currAct;
 					// Выводим трассировку по смене родителя
 					loser->onSearchNodeInfoReplaced( root->theRealSimulator );
 					// Добавляем в список потомков текущей

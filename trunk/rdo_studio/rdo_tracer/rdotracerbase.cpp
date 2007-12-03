@@ -380,7 +380,11 @@ void RDOTracerBase::accomplishAction( std::string& line, RDOTracerTimeNow* const
 
 void RDOTracerBase::irregularEvent( std::string& line, RDOTracerTimeNow* const time  )
 {
+#ifdef RDOSIM_COMPATIBLE
 	irregularEvents.at( atoi( getNextValue( line ).c_str() ) - 1 )->occurs( time, eventIndex );
+#else
+	irregularEvents.at( atoi( getNextValue( line ).c_str() ) - 1 )->occurs( time, eventIndex );
+#endif
 }
 
 void RDOTracerBase::productionRule( std::string& line, RDOTracerTimeNow* const time  )

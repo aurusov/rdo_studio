@@ -245,11 +245,6 @@ SOURCE=.\html\rdo_res_trc_results.htm
 SOURCE=.\html\rdo_terms.htm
 # PROP Exclude_From_Build 1
 # End Source File
-# Begin Source File
-
-SOURCE=.\html\rdo_whats_new.htm
-# PROP Exclude_From_Build 1
-# End Source File
 # End Group
 # Begin Group "Images Files"
 

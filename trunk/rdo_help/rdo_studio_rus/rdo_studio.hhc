@@ -13,6 +13,11 @@
 		</OBJECT>
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Что нового">
+			<param name="Local" value="html\rdo_whats_new.htm">
+			<param name="ImageNumber" value="12">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="&Icirc;&aacute;&ugrave;&egrave;&aring; &ntilde;&acirc;&aring;&auml;&aring;&iacute;&egrave;&yuml;">
 			<param name="Local" value="html\intro.htm">
 			<param name="ImageNumber" value="11">
@@ -212,7 +217,6 @@
 		</OBJECT>
 	<OBJECT type="text/sitemap">
 		<param name="Merge" value="RAO-language.chm::\rdo_lang.hhc">
-
 		</OBJECT>
 </UL>
 </BODY></HTML>

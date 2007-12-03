@@ -114,6 +114,10 @@ SOURCE=.\html\rdo_lang_help.htm
 # End Source File
 # Begin Source File
 
+SOURCE=.\html\rdo_whats_new.htm
+# End Source File
+# Begin Source File
+
 SOURCE=.\html\work_help.htm
 # End Source File
 # Begin Source File
