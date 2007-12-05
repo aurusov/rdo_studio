@@ -389,7 +389,7 @@ bool RDOPMDGetValue::calcStat(RDOSimulator *sim)
 
 	runtime->getResults().width(30);
 	runtime->getResults() << std::left << name 
-		<< "\t" << arithmCalc->calcValueBase( runtime ) << '\n';
+		<< "\t" << arithmCalc->calcValueBase( runtime ).getAsString() << '\n';
 
 	return true;
 }
