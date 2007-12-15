@@ -273,7 +273,7 @@ dpt_search_evaluate:	dpt_search_term Evaluate_by fun_arithm {
 							dpt->setEvaluateBy((RDOFUNArithm *)$3);
 						}
 						| dpt_search_term Evaluate_by error {
-							parser->error( @2, @3, "После ключевого слова $Evaluate_by ожидается оценочная функция (1 - поиск в ширину)" );
+							parser->error( @2, @3, "После ключевого слова $Evaluate_by ожидается оценочная функция, например, 0 для поиска в ширину" );
 						}
 						| dpt_search_term error {
 							parser->error( @2, "Ожидается ключевое слово $Evaluate_by" );
