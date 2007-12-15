@@ -73,9 +73,9 @@ begin
     begin
       TopT.Caption          := IntToStr(NumberTopBox);
       TopBossT.Caption      := IntToStr(TopBoss);
-      MoneyPathT.Caption    := IntToStr(MoneyPath);
-      MoneyEndPathT.Caption := IntToStr(MoneyEndPath);
-      MoneyRuleT.Caption    := IntToStr(MoneyRule);
+      MoneyPathT.Caption    := FloatToStr(MoneyPath);
+      MoneyEndPathT.Caption := FloatToStr(MoneyEndPath);
+      MoneyRuleT.Caption    := FloatToStr(MoneyRule);
       NumberChipT.Caption   := IntToStr(NumberChip);
       case Direct of
         cdRight : begin

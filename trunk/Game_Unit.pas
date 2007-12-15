@@ -59,8 +59,9 @@ type
     property ActiveTopBox: PTopBox read FActiveTopBox write SetActiveTopBox;
   end;
 
-  function  PickOut(pkstr: string; pkint: integer): integer;
-  function  PickOutStr(pkstr: string; pkint: integer): string;
+  function PickOut(pkstr: string; pkint: integer): integer;
+  function PickOutFloat(pkstr: string; pkint: integer): extended;
+  function PickOutStr(pkstr: string; pkint: integer): string;
 
 var
   GraphForm: TGraphForm;
@@ -109,11 +110,17 @@ begin
 end;
 
 function PickOut(pkstr: string; pkint: integer): integer;
+begin
+  Result := Round( PickOutFloat(pkstr, pkint) );
+end;
+
+function PickOutFloat(pkstr: string; pkint: integer): extended;
 var
   j, count: integer;
   str: string;
 begin
   try
+    DecimalSeparator := '.';
     pkstr:= Trim(pkstr);
     str  := '';
     count:= 0;
@@ -137,7 +144,7 @@ begin
         str   := '';
       end;
     end;
-    if count = pkint then Result := StrToInt(Trim(str))
+    if count = pkint then Result := StrToFloat(Trim(str))
                      else raise Exc.Create('');
   except
     raise Exc.Create('Ошибка выборки числа из файла трассировки.');
@@ -367,9 +374,9 @@ begin
               NewTopBox;
               with TopBox^ do
               begin
-                MoneyPath   := PickOut(str, 4);
-                MoneyEndPath:= PickOut(str, 5) - MoneyPath;
-                MoneyRule   := PickOut(str, 8);
+                MoneyPath   := PickOutFloat(str, 4);
+                MoneyEndPath:= PickOutFloat(str, 5) - MoneyPath;
+                MoneyRule   := PickOutFloat(str, 8);
               end;
               inc(TopCount);
               inc(i);                             // Перешли на фишку

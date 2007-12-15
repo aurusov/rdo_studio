@@ -26,7 +26,7 @@ type
   public
     Curr, Pred, Next : PTopBox;
     NumberTopBox, TopBoss, ChipMesto, DeepTop: integer;
-    MoneyPath, MoneyEndPath, MoneyRule: integer;
+    MoneyPath, MoneyEndPath, MoneyRule: extended;
     NumberChip  : ShortInt;
     Direct      : ChipDirect;
     MainTop     : boolean;
@@ -51,8 +51,8 @@ begin
   Lines.Clear;
   Lines.Add('');
   Lines.Add('');
-  Lines[0] := IntToStr(NumberTopBox)+' ('+IntToStr(MoneyPath)+'/'+
-    IntToStr(MoneyEndPath)+'/'+IntToStr(MoneyRule)+')';
+  Lines[0] := IntToStr(NumberTopBox)+' ('+FloatToStr(MoneyPath)+'/'+
+    FloatToStr(MoneyEndPath)+'/'+FloatToStr(MoneyRule)+')';
   Lines[1] := 'Фишка'+IntToStr(NumberChip)+' = '+IntToStr(ChipMesto);
   case Direct of
     cdRight : Lines[2] := 'вправо';

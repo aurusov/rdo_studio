@@ -105,6 +105,7 @@ type
     procedure ArrayButtonClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure RFun2LabelClick(Sender: TObject);
+    procedure EBEditKeyPress(Sender: TObject; var Key: Char);
   private
     ActiveImage: PImage;
     MakeChip: array[1..6] of ChipNumType;
@@ -518,6 +519,11 @@ begin
         if Name = 'UFun2Label' then RFun1Click(UFun2);
         if Name = 'DFun2Label' then RFun1Click(DFun2);
       end;
+end;
+
+procedure TMakeChipForm.EBEditKeyPress(Sender: TObject; var Key: Char);
+begin
+  if Key = #13 then OkButtonClick( Sender );
 end;
 
 end.
