@@ -12,6 +12,7 @@ class RDOCalcConst;
 class RDOCalcIsEqual;
 class RDOCalcFuncParam;
 class RDOCalcDoubleToIntByResult;
+class RDOCalcFunctionCall;
 class RDOFunCalc;
 class RDOCalcSeqInit;
 class RDOCalcSeqNext;
@@ -536,6 +537,8 @@ private:
 	std::vector< const RDOFUNFunctionListElement* > elements;    // for list and table
 	std::vector< const RDOFUNCalculateIf* >         calculateIf; // for algorithmic
 	rdoRuntime::RDOFunCalc* functionCalc;
+	void setFunctionCalc( rdoRuntime::RDOFunCalc* calc );
+	std::vector< rdoRuntime::RDOCalcFunctionCall* > post_linked; // для рекурсивного вызова
 
 public:
 	RDOFUNFunction( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDORTPParamType* const _retType );
@@ -552,6 +555,9 @@ public:
 	const std::vector< const RDOFUNFunctionParam* > getParams() const { return params;                }
 	      rdoRuntime::RDOFunCalc* getFunctionCalc() const             { return functionCalc;          }
 	const RDORTPParamType* const getType() const                      { return retType;               }
+	void insertPostLinked( rdoRuntime::RDOCalcFunctionCall* calc ) {
+		post_linked.push_back( calc );
+	}
 };
 
 // ----------------------------------------------------------------------------

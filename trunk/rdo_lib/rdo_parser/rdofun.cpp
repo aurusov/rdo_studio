@@ -891,6 +891,7 @@ RDOFUNArithm* RDOFUNParams::createCall( const std::string& funName ) const
 	}
 
 	rdoRuntime::RDOCalcFunctionCall* funcCall = new rdoRuntime::RDOCalcFunctionCall( getParser()->runtime, func->getFunctionCalc() );
+	const_cast<RDOFUNFunction*>(func)->insertPostLinked( funcCall );
 	funcCall->setSrcInfo( src_info() );
 	for ( int i = 0; i < nParams; i++ ) {
 		const RDORTPParamType* const funcParam = func->getParams()[i]->getType();
@@ -1401,6 +1402,16 @@ RDOFUNFunction::RDOFUNFunction( RDOParser* _parser, const std::string& _name, co
 	getParser()->insertFUNFunction( this );
 }
 
+void RDOFUNFunction::setFunctionCalc( rdoRuntime::RDOFunCalc* calc )
+{
+	functionCalc = calc;
+	std::vector< rdoRuntime::RDOCalcFunctionCall* >::iterator it = post_linked.begin();
+	while ( it != post_linked.end() ) {
+		(*it)->setFunctionCalc( getFunctionCalc() );
+		it++;
+	}
+}
+
 const RDOFUNFunctionParam* const RDOFUNFunction::findFUNFunctionParam( const std::string& paramName ) const 
 {
 	std::vector< const RDOFUNFunctionParam* >::const_iterator it = std::find_if( params.begin(), params.end(), compareName<RDOFUNFunctionParam>(paramName) );
@@ -1505,7 +1516,7 @@ void RDOFUNFunction::createListCalc()
 		fun_calc->addCase( case_calc, result_calc );
 		elem_it++;
 	}
-	functionCalc = fun_calc;
+	setFunctionCalc( fun_calc );
 }
 
 void RDOFUNFunction::createTableCalc( const YYLTYPE& _elements_pos )
@@ -1552,7 +1563,7 @@ void RDOFUNFunction::createTableCalc( const YYLTYPE& _elements_pos )
 		rdoRuntime::RDOCalcConst* result_calc = elem->createResultCalc( getType(), elem->src_info() );
 		fun_calc->addResultCalc( result_calc );
 	}
-	functionCalc = fun_calc;
+	setFunctionCalc( fun_calc );
 }
 
 void RDOFUNFunction::createAlgorithmicCalc( const RDOParserSrcInfo& _body_src_info )
@@ -1645,7 +1656,7 @@ void RDOFUNFunction::createAlgorithmicCalc( const RDOParserSrcInfo& _body_src_in
 		funcCalc->addCalcIf( calc_cond, calc_act );
 		getParser()->warning( src_info(), rdo::format("Для функции '%s' неопределено значение по-умолчанию", getName().c_str()) );
 	}
-	functionCalc = funcCalc;
+	setFunctionCalc( funcCalc );
 }
 
 // ----------------------------------------------------------------------------

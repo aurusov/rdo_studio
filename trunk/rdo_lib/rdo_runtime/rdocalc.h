@@ -1505,10 +1505,10 @@ class RDOCalcFunctionCall: public RDOCalc
 {
 private:
 	std::vector< RDOCalc* > parameters;
-	RDOFunCalc* const function;
+	RDOFunCalc* function;
 
 public:
-	RDOCalcFunctionCall( RDORuntimeParent* _parent, RDOFunCalc* const _function ):
+	RDOCalcFunctionCall( RDORuntimeParent* _parent, RDOFunCalc* _function ):
 		RDOCalc( _parent ),
 		function( _function )
 	{
@@ -1516,6 +1516,10 @@ public:
 	void addParameter( RDOCalc* calc )
 	{
 		parameters.push_back( calc );
+	}
+	void setFunctionCalc( RDOFunCalc* calc )
+	{
+		function = calc;
 	}
 	virtual RDOValue& calcValue( RDORuntime* runtime )
 	{
