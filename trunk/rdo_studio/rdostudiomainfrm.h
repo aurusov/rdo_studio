@@ -9,7 +9,7 @@
 #include "rdostudiooutput.h"
 #include "rdo_edit/rdoeditoreditstyle.h"
 #include "rdo_edit/rdoeditorresultsstyle.h"
-#include "edit_ctrls/rdologeditstyle.h"
+#include "edit_ctrls/rdobuildeditstyle.h"
 #include "edit_ctrls/rdobaseeditstyle.h"
 #include "edit_ctrls/rdofindeditstyle.h"
 #include "rdo_tracer/tracer_ctrls/rdotracerlogstyle.h"
@@ -85,7 +85,7 @@ public:
 	RDOStudioOutput    output;
 
 	rdoEditor::RDOEditorEditStyle    style_editor;
-	rdoEditCtrl::RDOLogEditStyle     style_build;
+	rdoEditCtrl::RDOBuildEditStyle   style_build;
 	rdoEditCtrl::RDOBaseEditStyle    style_debug;
 	rdoTracerLog::RDOTracerLogStyle  style_trace;
 	rdoEditor::RDOEditorResultsStyle style_results;

@@ -313,6 +313,7 @@ COLORREF RDOStudioOptionsColorsStyles::null_fg_color = RGB( 0x00, 0x00, 0x00 );
 COLORREF RDOStudioOptionsColorsStyles::null_bg_color = RGB( 0xFF, 0xFF, 0xFF );
 bool RDOStudioOptionsColorsStyles::null_wordwrap      = false;
 bool RDOStudioOptionsColorsStyles::null_horzscrollbar = true;
+bool RDOStudioOptionsColorsStyles::null_warning       = true;
 bool RDOStudioOptionsColorsStyles::null_commentfold   = false;
 RDOBookmarkStyle RDOStudioOptionsColorsStyles::null_bookmarkstyle = RDOBOOKMARKS_NONE;
 RDOFoldStyle     RDOStudioOptionsColorsStyles::null_foldstyle     = RDOFOLDS_NONE;
@@ -336,11 +337,12 @@ BEGIN_MESSAGE_MAP(RDOStudioOptionsColorsStyles, CPropertyPage)
 	ON_CBN_SELCHANGE(IDC_FOLD_COMBO, OnFoldChanged)
 	ON_CBN_SELCHANGE(IDC_THEME_COMBO, OnThemeChanged)
 	ON_EN_CHANGE(IDC_VERTBORDER_EDIT, OnUpdateModify)
+	ON_BN_CLICKED(IDC_COMMENTGROUP_CHECK, OnCommentGroupCheck)
 	ON_EN_CHANGE(IDC_HORZBORDER_EDIT, OnUpdateModify)
 	ON_CBN_SELCHANGE(IDC_TITLE_FONTSIZE_COMBO, OnUpdateModify)
 	ON_CBN_SELCHANGE(IDC_LEGEND_FONTSIZE_COMBO, OnUpdateModify)
 	ON_EN_CHANGE(IDC_TICKWIDTH_EDIT, OnUpdateModify)
-	ON_BN_CLICKED(IDC_COMMENTGROUP_CHECK, OnCommentGroupCheck)
+	ON_BN_CLICKED(IDC_WARNING_CHECK, OnWarningCheck)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -385,8 +387,8 @@ RDOStudioOptionsColorsStyles::RDOStudioOptionsColorsStyles( RDOStudioOptions& _s
 	object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_EDITOR_ERROR ), null_font_style, null_fg_color, editor_theme->errorBgColor ) );
 	objects.push_back( object );
 
-	RDOLogEditTheme* build_theme = static_cast<RDOLogEditTheme*>(sheet->style_build.theme);
-	object = new STYLEObject( STYLEObject::build, sheet->style_build.font->name, sheet->style_build.font->size, false, sheet->style_build.window->wordWrap, sheet->style_build.window->showHorzScrollBar );
+	RDOBuildEditTheme* build_theme = static_cast<RDOBuildEditTheme*>(sheet->style_build.theme);
+	object = new STYLEObject( STYLEObject::build, sheet->style_build.font->name, sheet->style_build.font->size, false, sheet->style_build.window->wordWrap, sheet->style_build.window->showHorzScrollBar, null_bookmarkstyle, null_foldstyle, null_commentfold, build_theme->warning );
 	object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_BUILD ), build_theme->defaultStyle, build_theme->defaultColor, build_theme->backgroundColor ) );
 	object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_BUILD_TEXT ), build_theme->defaultStyle, build_theme->defaultColor, build_theme->backgroundColor ) );
 	object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_BUILD_SELECTEDLINE ), null_font_style, null_fg_color, build_theme->selectLineBgColor ) );
@@ -496,6 +498,7 @@ void RDOStudioOptionsColorsStyles::DoDataExchange(CDataExchange* pDX)
 	CPropertyPage::DoDataExchange(pDX);
 
 	//{{AFX_DATA_MAP(RDOStudioOptionsColorsStyles)
+	DDX_Control(pDX, IDC_WARNING_CHECK, m_warning);
 	DDX_Control(pDX, IDC_COMMENTGROUP_CHECK, m_commentGroupButton);
 	DDX_Control(pDX, IDC_TITLE_FONTSIZE_STATIC, m_title_fontSizeStatic);
 	DDX_Control(pDX, IDC_LEGEND_FONTSIZE_STATIC, m_leg_fontSizeStatic);
@@ -816,6 +819,12 @@ void RDOStudioOptionsColorsStyles::updateStyleItem()
 		m_horzScrollBar.SetCheck( prop->object->horzscrollbar ? 1 : 0 );
 		OnWordWrapClicked();
 
+		// Update warning
+		bool flag_worning = type == STYLEObject::build;
+		m_warning.ShowWindow( flag_worning ? SW_SHOW : SW_HIDE );
+		m_warning.SetCheck( prop->object->warning ? 1 : 0 );
+		OnWordWrapClicked();
+
 		// Update borders
 		bool flag_border = type == STYLEObject::trace;
 		m_vertBorder.ShowWindow( flag_border ? SW_SHOW : SW_HIDE );
@@ -896,7 +905,7 @@ void RDOStudioOptionsColorsStyles::updateTheme()
 	switch ( getCurrentObjectType() ) {
 		case STYLEObject::all: {
 			if ( *static_cast<RDOEditorEditTheme*>(sheet->style_editor.theme) == RDOEditorEditTheme::getDefaultTheme() &&
-				 *static_cast<RDOLogEditTheme*>(sheet->style_build.theme) == RDOLogEditTheme::getDefaultTheme() &&
+				 *static_cast<RDOBuildEditTheme*>(sheet->style_build.theme) == RDOBuildEditTheme::getDefaultTheme() &&
 				 *static_cast<RDOBaseEditTheme*>(sheet->style_debug.theme) == RDOBaseEditTheme::getDefaultTheme() &&
 				 *static_cast<RDOTracerLogTheme*>(sheet->style_trace.theme) == RDOTracerLogTheme::getDefaultTheme() &&
 				 *static_cast<RDOEditorBaseEditTheme*>(sheet->style_results.theme) == RDOEditorBaseEditTheme::getDefaultTheme() &&
@@ -940,15 +949,15 @@ void RDOStudioOptionsColorsStyles::updateTheme()
 			break;
 		}
 		case STYLEObject::build: {
-			RDOLogEditTheme* theme = static_cast<RDOLogEditTheme*>(sheet->style_build.theme);
+			RDOBuildEditTheme* theme = static_cast<RDOBuildEditTheme*>(sheet->style_build.theme);
 			RDOStyleFont* font = sheet->style_build.font;
-			if ( *theme == RDOLogEditTheme::getDefaultTheme() && *font == RDOStyleFont::getDefaultFont() ) {
+			if ( *theme == RDOBuildEditTheme::getDefaultTheme() && *font == RDOStyleFont::getDefaultFont() ) {
 				m_theme.SetCurSel( 1 );
-			} else if ( *theme == RDOLogEditTheme::getClassicTheme() && *font == RDOStyleFont::getClassicFont() ) {
+			} else if ( *theme == RDOBuildEditTheme::getClassicTheme() && *font == RDOStyleFont::getClassicFont() ) {
 				m_theme.SetCurSel( 2 );
-			} else if ( *theme == RDOLogEditTheme::getTwilightTheme() && *font == RDOStyleFont::getDefaultFont() ) {
+			} else if ( *theme == RDOBuildEditTheme::getTwilightTheme() && *font == RDOStyleFont::getDefaultFont() ) {
 				m_theme.SetCurSel( 3 );
-			} else if ( *theme == RDOLogEditTheme::getOceanTheme() && *font == RDOStyleFont::getDefaultFont() ) {
+			} else if ( *theme == RDOBuildEditTheme::getOceanTheme() && *font == RDOStyleFont::getDefaultFont() ) {
 				m_theme.SetCurSel( 4 );
 			} else {
 				m_theme.SetCurSel( 0 );
@@ -1051,7 +1060,7 @@ void RDOStudioOptionsColorsStyles::OnThemeChanged()
 			case STYLEObject::all: {
 				if ( index == 1 ) {
 					*static_cast<RDOEditorEditTheme*>(sheet->style_editor.theme) = RDOEditorEditTheme::getDefaultTheme();
-					*static_cast<RDOLogEditTheme*>(sheet->style_build.theme) = RDOLogEditTheme::getDefaultTheme();
+					*static_cast<RDOBuildEditTheme*>(sheet->style_build.theme) = RDOBuildEditTheme::getDefaultTheme();
 					*static_cast<RDOBaseEditTheme*>(sheet->style_debug.theme) = RDOBaseEditTheme::getDefaultTheme();
 					*static_cast<RDOTracerLogTheme*>(sheet->style_trace.theme) = RDOTracerLogTheme::getDefaultTheme();
 					*static_cast<RDOEditorBaseEditTheme*>(sheet->style_results.theme) = RDOEditorBaseEditTheme::getDefaultTheme();
@@ -1083,12 +1092,12 @@ void RDOStudioOptionsColorsStyles::OnThemeChanged()
 				break;
 			}
 			case STYLEObject::build: {
-				RDOLogEditTheme* theme = static_cast<RDOLogEditTheme*>(sheet->style_build.theme);
+				RDOBuildEditTheme* theme = static_cast<RDOBuildEditTheme*>(sheet->style_build.theme);
 				switch ( index ) {
-					case 1: *theme = RDOLogEditTheme::getDefaultTheme();  *sheet->style_build.font = RDOStyleFont::getDefaultFont(); break;
-					case 2: *theme = RDOLogEditTheme::getClassicTheme();  *sheet->style_build.font = RDOStyleFont::getClassicFont(); break;
-					case 3: *theme = RDOLogEditTheme::getTwilightTheme(); *sheet->style_build.font = RDOStyleFont::getDefaultFont(); break;
-					case 4: *theme = RDOLogEditTheme::getOceanTheme();    *sheet->style_build.font = RDOStyleFont::getDefaultFont(); break;
+					case 1: *theme = RDOBuildEditTheme::getDefaultTheme();  *sheet->style_build.font = RDOStyleFont::getDefaultFont(); break;
+					case 2: *theme = RDOBuildEditTheme::getClassicTheme();  *sheet->style_build.font = RDOStyleFont::getClassicFont(); break;
+					case 3: *theme = RDOBuildEditTheme::getTwilightTheme(); *sheet->style_build.font = RDOStyleFont::getDefaultFont(); break;
+					case 4: *theme = RDOBuildEditTheme::getOceanTheme();    *sheet->style_build.font = RDOStyleFont::getDefaultFont(); break;
 				}
 				break;
 			}
@@ -1388,6 +1397,15 @@ void RDOStudioOptionsColorsStyles::OnHorzScrollBarClicked()
 	}
 }
 
+void RDOStudioOptionsColorsStyles::OnWarningCheck()
+{
+	STYLEObject* obj = getCurrentObject();
+	if ( obj && &obj->warning != &null_warning ) {
+		obj->warning = m_warning.GetCheck() ? true : false;
+		OnUpdateModify();
+	}
+}
+
 void RDOStudioOptionsColorsStyles::OnBookmarkChanged()
 {
 	STYLEObject* obj = getCurrentObject();
@@ -1478,7 +1496,7 @@ void RDOStudioOptionsColorsStyles::OnUpdateModify()
 				 *sheet->style_chart.font   != *studioApp.mainFrame->style_chart.font ||
 				 *sheet->style_frame.font   != *studioApp.mainFrame->style_frame.font ||
 	             *static_cast<RDOEditorEditTheme*>(sheet->style_editor.theme) != *static_cast<RDOEditorEditTheme*>(studioApp.mainFrame->style_editor.theme) ||
-	             *static_cast<RDOLogEditTheme*>(sheet->style_build.theme) != *static_cast<RDOLogEditTheme*>(studioApp.mainFrame->style_build.theme) ||
+	             *static_cast<RDOBuildEditTheme*>(sheet->style_build.theme) != *static_cast<RDOBuildEditTheme*>(studioApp.mainFrame->style_build.theme) ||
 	             *static_cast<RDOBaseEditTheme*>(sheet->style_debug.theme) != *static_cast<RDOBaseEditTheme*>(studioApp.mainFrame->style_debug.theme) ||
 	             *static_cast<RDOTracerLogTheme*>(sheet->style_trace.theme) != *static_cast<RDOTracerLogTheme*>(studioApp.mainFrame->style_trace.theme) ||
 	             *static_cast<RDOEditorBaseEditTheme*>(sheet->style_results.theme) != *static_cast<RDOEditorBaseEditTheme*>(studioApp.mainFrame->style_results.theme) ||

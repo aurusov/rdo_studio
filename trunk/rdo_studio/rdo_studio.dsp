@@ -738,6 +738,10 @@ SOURCE=.\edit_ctrls\rdobuildedit.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\edit_ctrls\rdobuildeditstyle.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\edit_ctrls\rdodebugedit.cpp
 # End Source File
 # Begin Source File
@@ -771,6 +775,10 @@ SOURCE=.\edit_ctrls\rdobaseeditstyle.h
 # Begin Source File
 
 SOURCE=.\edit_ctrls\rdobuildedit.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\edit_ctrls\rdobuildeditstyle.h
 # End Source File
 # Begin Source File
 

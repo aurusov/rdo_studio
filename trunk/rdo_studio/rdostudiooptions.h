@@ -13,7 +13,7 @@
 #include "edit_ctrls/rdobuildedit.h"
 #include "edit_ctrls/rdodebugedit.h"
 #include "edit_ctrls/rdofindedit.h"
-#include "edit_ctrls/rdologeditstyle.h"
+#include "edit_ctrls/rdobuildeditstyle.h"
 #include "edit_ctrls/rdobaseeditstyle.h"
 #include "edit_ctrls/rdofindeditstyle.h"
 #include "rdo_tracer/tracer_ctrls/rdotracerlogctrl.h"
@@ -176,6 +176,7 @@ private:
 		bool                           font_fixed;
 		bool&                          wordwrap;
 		bool&                          horzscrollbar;
+		bool&                          warning;
 		rdoEditCtrl::RDOBookmarkStyle& bookmarkstyle;
 		rdoEditor::RDOFoldStyle&       foldstyle;
 		bool&                          commentfold;
@@ -183,13 +184,14 @@ private:
 		std::list< std::string > themes;
 		std::list< STYLEProperty* > properties;
 
-		STYLEObject( const Type _type, std::string& _font_name, int& _font_size, const bool _font_fixed = true, bool& _wordwrap = null_wordwrap, bool& _horzscrollbar = null_horzscrollbar, rdoEditCtrl::RDOBookmarkStyle& _bookmarkstyle = null_bookmarkstyle, rdoEditor::RDOFoldStyle& _foldstyle = null_foldstyle, bool& _commentfold = null_commentfold ):
+		STYLEObject( const Type _type, std::string& _font_name, int& _font_size, const bool _font_fixed = true, bool& _wordwrap = null_wordwrap, bool& _horzscrollbar = null_horzscrollbar, rdoEditCtrl::RDOBookmarkStyle& _bookmarkstyle = null_bookmarkstyle, rdoEditor::RDOFoldStyle& _foldstyle = null_foldstyle, bool& _commentfold = null_commentfold, bool& _warning = null_warning ):
 			type( _type ),
 			font_name( _font_name ),
 			font_size( _font_size ),
 			font_fixed( _font_fixed ),
 			wordwrap( _wordwrap ),
 			horzscrollbar( _horzscrollbar ),
+			warning( _warning ),
 			bookmarkstyle( _bookmarkstyle ),
 			foldstyle( _foldstyle ),
 			commentfold( _commentfold )
@@ -243,6 +245,7 @@ private:
 	static COLORREF                      null_bg_color;
 	static bool                          null_wordwrap;
 	static bool                          null_horzscrollbar;
+	static bool                          null_warning;
 	static bool                          null_commentfold;
 	static rdoEditCtrl::RDOBookmarkStyle null_bookmarkstyle;
 	static rdoEditor::RDOFoldStyle       null_foldstyle;
@@ -253,6 +256,7 @@ private:
 protected:
 	//{{AFX_DATA(RDOStudioOptionsColorsStyles)
 	enum { IDD = IDD_OPTIONS_STYLESANDCOLORS };
+	CButton	m_warning;
 	CButton	m_commentGroupButton;
 	CStatic	m_title_fontSizeStatic;
 	CStatic	m_leg_fontSizeStatic;
@@ -313,6 +317,7 @@ protected:
 	afx_msg void OnThemeChanged();
 	afx_msg void OnUpdateModify();
 	afx_msg void OnCommentGroupCheck();
+	afx_msg void OnWarningCheck();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
@@ -395,7 +400,7 @@ friend class RDOStudioOptionsPlugins;
 
 private:
 	rdoEditor::RDOEditorEditStyle    style_editor;
-	rdoEditCtrl::RDOLogEditStyle     style_build;
+	rdoEditCtrl::RDOBuildEditStyle   style_build;
 	rdoEditCtrl::RDOBaseEditStyle    style_debug;
 	rdoTracerLog::RDOTracerLogStyle  style_trace;
 	rdoEditor::RDOEditorResultsStyle style_results;

@@ -189,6 +189,7 @@
 #define IDC_COMMENT                     1130
 #define IDC_GOTO_EDIT                   1131
 #define IDC_GOTO_STATIC                 1132
+#define IDC_WARNING_CHECK               1133
 #define ID_CHART_ADDTONEWCHART          32771
 #define ID_VIEW_WORKSPACE               32774
 #define ID_VIEW_OUTPUT                  32775
@@ -693,7 +694,7 @@
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        223
 #define _APS_NEXT_COMMAND_VALUE         33193
-#define _APS_NEXT_CONTROL_VALUE         1133
+#define _APS_NEXT_CONTROL_VALUE         1134
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

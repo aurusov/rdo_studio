@@ -256,6 +256,8 @@ BEGIN
                     HIDC_TICKWIDTH_STATIC
     CONTROL         "Группа для комментариев",IDC_COMMENTGROUP_CHECK,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,88,100,105,10
+    CONTROL         "Вывод предупреждений",IDC_WARNING_CHECK,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,88,84,97,10
 END
 
 IDD_FILEASSOCIATION DIALOG DISCARDABLE  0, 0, 200, 70
@@ -1348,8 +1350,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,9,0,648
- PRODUCTVERSION 0,9,0,648
+ FILEVERSION 0,9,0,650
+ PRODUCTVERSION 0,9,0,650
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -1367,14 +1369,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "RAO studio\0"
-            VALUE "FileVersion", "0, 9, 0, 648\0"
+            VALUE "FileVersion", "0, 9, 0, 650\0"
             VALUE "InternalName", "RAO-Studio\0"
             VALUE "LegalCopyright", "Copyright (C) 2003-2006\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "RAO-Studio.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "RAO-Studio\0"
-            VALUE "ProductVersion", "0, 9, 0, 648\0"
+            VALUE "ProductVersion", "0, 9, 0, 650\0"
             VALUE "SpecialBuild", "\0"
         END
     END
@@ -4162,7 +4164,7 @@ END
 IDD_OPTIONS_STYLESANDCOLORS DIALOGEX 0, 0, 292, 229
 STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "Styles and Colors"
-FONT 8, "MS Sans Serif", 0, 0, 0x1
+FONT 8, "MS Sans Serif"
 BEGIN
     CONTROL         "Tree1",IDC_STYLEITEM_TREE,"SysTreeView32",
                     TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | 
@@ -4235,6 +4237,8 @@ BEGIN
                     HIDC_TICKWIDTH_STATIC
     CONTROL         "Comments fold",IDC_COMMENTGROUP_CHECK,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,88,100,62,10
+    CONTROL         "Show warnings",IDC_WARNING_CHECK,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,88,84,64,10
 END
 
 IDD_OPTIONS_TABS DIALOGEX 0, 0, 292, 121
