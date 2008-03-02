@@ -328,12 +328,6 @@ rdoSimulator::RDOFrameElement* RDOFRMText::createElement( RDORuntime* sim )
 	} else {
 		RDOValue val = value->calcValueBase( sim );
 		t = val.getAsString();
-//		if ( enu ) {
-//qq			t = *enu->enumVals.at( val );
-//			t = "//qq";
-//		} else {
-//			t = toString( val );
-//		}
 	}
 
 	int _x      = getX( sim, getFrame() );

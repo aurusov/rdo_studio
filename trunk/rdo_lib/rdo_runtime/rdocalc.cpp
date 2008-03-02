@@ -63,7 +63,7 @@ RDOValue& RDOFunCalcExist::calcValue( RDORuntime* runtime )
 	std::list< RDOResource* >::iterator end = runtime->allResourcesByTime.end();
 	for ( std::list< RDOResource* >::iterator it = runtime->allResourcesByTime.begin(); it != end && !res; it++ ) {
 		if ( *it == NULL ) continue;
-		if ( (*it)->type != nResType ) continue;
+		if ( !(*it)->checkType(nResType) ) continue;
 		runtime->pushGroupFunc( *it );
 		if ( condition->calcValueBase( runtime ).getBool() ) res = true;
 		runtime->popGroupFunc();
@@ -78,7 +78,7 @@ RDOValue& RDOFunCalcNotExist::calcValue( RDORuntime* runtime )
 	std::list< RDOResource* >::iterator end = runtime->allResourcesByTime.end();
 	for ( std::list< RDOResource* >::iterator it = runtime->allResourcesByTime.begin(); it != end && res; it++ ) {
 		if ( *it == NULL ) continue;
-		if ( (*it)->type != nResType ) continue;
+		if ( !(*it)->checkType(nResType) ) continue;
 		runtime->pushGroupFunc( *it );
 		if ( condition->calcValueBase( runtime ).getBool() ) res = false;
 		runtime->popGroupFunc();
@@ -94,7 +94,7 @@ RDOValue& RDOFunCalcForAll::calcValue( RDORuntime* runtime )
 	std::list< RDOResource* >::iterator end = runtime->allResourcesByTime.end();
 	for ( std::list< RDOResource* >::iterator it = runtime->allResourcesByTime.begin(); it != end && res; it++ ) {
 		if ( *it == NULL ) continue;
-		if ( (*it)->type != nResType ) continue;
+		if ( !(*it)->checkType(nResType) ) continue;
 		runtime->pushGroupFunc( *it );
 		if ( !condition->calcValueBase( runtime ).getBool() ) {
 			res = false;
@@ -113,7 +113,7 @@ RDOValue& RDOFunCalcNotForAll::calcValue( RDORuntime* runtime )
 	std::list< RDOResource* >::iterator end = runtime->allResourcesByTime.end();
 	for ( std::list< RDOResource* >::iterator it = runtime->allResourcesByTime.begin(); it != end && !res; it++ ) {
 		if ( *it == NULL ) continue;
-		if ( (*it)->type != nResType ) continue;
+		if ( !(*it)->checkType(nResType) ) continue;
 		runtime->pushGroupFunc( *it );
 		if( !condition->calcValueBase( runtime ).getBool() ) res = true;
 		runtime->popGroupFunc();
@@ -131,7 +131,7 @@ void RDOFunCalcSelect::prepare( RDORuntime* sim ) const
 	std::list< RDOResource* >::iterator end = sim->allResourcesByTime.end();
 	for ( std::list< RDOResource* >::iterator it = sim->allResourcesByTime.begin(); it != end; it++ ) {
 		if ( *it == NULL ) continue;
-		if ( (*it)->type != nResType ) continue;
+		if ( !(*it)->checkType(nResType) ) continue;
 		sim->pushGroupFunc( *it );
 		if ( condition->calcValueBase( sim ).getBool() ) {
 			res_list.push_back( *it );
@@ -332,18 +332,17 @@ RDOCalcCreateNumberedResource::RDOCalcCreateNumberedResource( RDORuntimeParent* 
 
 RDOValue& RDOCalcCreateNumberedResource::calcValue( RDORuntime* runtime )
 {
-	RDOResource* res = runtime->createNewResource( this );
+	RDOResource* res = runtime->createNewResource( type, this );
 	if ( !isPermanent ) {
 		res->makeTemporary( true );
 	}
-	res->type  = type;
-	res->params.insert( res->params.begin(), paramsCalcs.begin(), paramsCalcs.end() );
+	res->appendParams( paramsCalcs.begin(), paramsCalcs.end() );
 	return value; // just to return something
 }
 
 RDOResource* RDOCalcCreateNumberedResource::createResource( RDORuntime* runtime ) const
 {
-	return new RDOResource( runtime, number, traceFlag );
+	return new RDOResource( runtime, number, type, traceFlag );
 }
 
 // ----------------------------------------------------------------------------
@@ -356,7 +355,7 @@ RDOCalcCreateProcessResource::RDOCalcCreateProcessResource( RDORuntimeParent* _p
 
 RDOResource* RDOCalcCreateProcessResource::createResource( RDORuntime* runtime ) const
 {
-	return new RDOPROCResource( runtime, number, traceFlag );
+	return new RDOPROCResource( runtime, number, type, traceFlag );
 }
 
 // ----------------------------------------------------------------------------
@@ -373,10 +372,9 @@ RDOCalcCreateEmptyResource::RDOCalcCreateEmptyResource( RDORuntimeParent* _paren
 
 RDOValue& RDOCalcCreateEmptyResource::calcValue( RDORuntime* runtime )
 {
-	RDOResource* res = runtime->createNewResource( traceFlag );
+	RDOResource* res = runtime->createNewResource( type, traceFlag );
 	runtime->setRelRes( rel_res_id, res->getTraceID() );
-	res->type  = type;
-	res->params.insert( res->params.begin(), params_default.begin(), params_default.end() );
+	res->appendParams( params_default.begin(), params_default.end() );
 	return value; // just to return something
 }
 
@@ -412,7 +410,7 @@ RDOValue& RDOSelectResourceByTypeCalc::calcValue( RDORuntime* runtime )
 	std::list< RDOResource* >::iterator end = runtime->allResourcesByTime.end();
 	for ( std::list< RDOResource* >::iterator it = runtime->allResourcesByTime.begin(); it != end; it++ ) {
 
-		if ( *it && (*it)->type == resType ) {
+		if ( *it && (*it)->checkType(resType) ) {
 
 			int res_id = (*it)->getTraceID();
 
@@ -584,8 +582,10 @@ std::vector< int > RDOSelectResourceByTypeCommonCalc::getPossibleNumbers( RDORun
 		if(*it == NULL)
 			continue;
 
-		if((*it)->type != resType)
+		if ( !(*it)->checkType(resType) )
+		{
 			continue;
+		}
 
 		res.push_back((*it)->getTraceID());
 	}

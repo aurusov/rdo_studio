@@ -56,7 +56,7 @@ public:
 class RDOPROCResource: public RDOResource
 {
 public:
-	RDOPROCResource( RDORuntime* _runtime, int _number, bool _trace );
+	RDOPROCResource( RDORuntime* _runtime, int _number, unsigned int type, bool _trace );
 };
 
 // ----------------------------------------------------------------------------

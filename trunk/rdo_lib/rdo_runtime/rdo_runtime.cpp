@@ -20,44 +20,43 @@ namespace rdoRuntime
 // ----------------------------------------------------------------------------
 // ---------- RDOResource
 // ----------------------------------------------------------------------------
-RDOResource::RDOResource( RDORuntime* rt, int _number, bool _trace ):
+RDOResource::RDOResource( RDORuntime* rt, int _number, unsigned int _type, bool _trace ):
 	RDOResourceTrace( rt, _number, _trace ),
-//	number( _number ),
-	type( 0 ),
-	referenceCount( 0 )
+	m_type( _type ),
+	m_referenceCount( 0 )
 {
 }
 
-RDOResource::~RDOResource()
+inline RDOResource::~RDOResource()
 {
 }
 
-bool RDOResource::operator != (RDOResource &other)
+inline bool RDOResource::operator != (RDOResource &other)
 {
-	if ( type != other.type ) return true;
-	if ( params.size() != other.params.size() ) return true;
+	if ( m_type != other.m_type ) return true;
+	if ( m_params.size() != other.m_params.size() ) return true;
 
-	int size = params.size();
+	int size = m_params.size();
 	for ( int i = 0; i < size; i++ ) {
-		if ( params.at(i) != other.params.at(i) ) return true;
+		if ( m_params.at(i) != other.m_params.at(i) ) return true;
 	}
 	return false;
 }
 
-std::string RDOResource::getTypeId()
+inline std::string RDOResource::getTypeId()
 {
 	std::ostringstream str;
-	str << type;
+	str << m_type;
 	return str.str();
 }
 
-std::string RDOResource::traceParametersValue()
+inline std::string RDOResource::traceParametersValue()
 {
 	std::ostringstream str;
-	if(params.size() > 0)
+	if(m_params.size() > 0)
 	{
-		std::vector<RDOValue>::iterator end = params.end();
-		for(std::vector<RDOValue>::iterator it = params.begin();;)
+		std::vector<RDOValue>::iterator end = m_params.end();
+		for(std::vector<RDOValue>::iterator it = m_params.begin();;)
 		{
 #ifdef RDOSIM_COMPATIBLE
 			std::ostringstream _str;
@@ -192,8 +191,11 @@ bool RDORuntime::checkState()
 	}
 	if ( state.size() != allResourcesByID.size() ) return false;
 	for ( int i = 0; i < state.size(); i++ ) {
-		if ( state[i].size() != allResourcesByID[i]->params.size() ) return false;
-		if ( state[i] != allResourcesByID[i]->params ) return false;
+		if ( state[i].size() != allResourcesByID[i]->paramsCount() ) return false;
+		for ( unsigned int j = 0; j < allResourcesByID[i]->paramsCount(); j++ )
+		{
+			if ( state[i][j] != allResourcesByID[i]->getParam(j) ) return false;
+		}
 	}
 	return true;
 }
@@ -206,10 +208,9 @@ void RDORuntime::showResources( int node ) const
 	while ( it != allResourcesByID.end() ) {
 		if ( *it ) {
 			TRACE( "%d. ", index );
-			std::vector< RDOValue >::const_iterator param_it = (*it)->params.begin();
-			while ( param_it != (*it)->params.end() ) {
-				TRACE( "%s ", param_it->getAsString().c_str() );
-				param_it++;
+			for ( unsigned int i = 0; i < (*it)->paramsCount(); i++ )
+			{
+				TRACE( "%s ", (*it)->getParam(i).getAsString().c_str() );
 			}
 			TRACE( "\n" );
 		} else {
@@ -227,7 +228,7 @@ void RDORuntime::onEraseRes( const int res_id, const RDOCalcEraseRes* calc )
 	if ( !res ) {
 		error( rdo::format("Временный ресурс уже удален. Возможно, он удален ранее в этом же образце. Имя релевантного ресурса: %s", calc ? calc->getName().c_str() : "неизвестное имя"), calc );
 	}
-	if ( res->referenceCount > 0 ) {
+	if ( !res->canFree() ) {
 		error( "Невозможно удалить ресурс, т.к. он еще используется", calc );
 //		error( "Try to erase used resource", fromCalc );
 	} else {
@@ -241,7 +242,7 @@ void RDORuntime::onEraseRes( const int res_id, const RDOCalcEraseRes* calc )
 
 // Вызывается только для ресурсов из RSS, во время прогона вызыват нельзя из-за allResourcesByTime
 // (его надо раскомментировать, но тогда он не будет работать для RSS)
-RDOResource* RDORuntime::createNewResource( RDOCalcCreateNumberedResource* calc )
+RDOResource* RDORuntime::createNewResource( unsigned int type, RDOCalcCreateNumberedResource* calc )
 {
 	if ( allResourcesByID.size() <= calc->getNumber() + 1 ) {
 		allResourcesByID.resize( calc->getNumber() + 1, NULL );
@@ -256,9 +257,9 @@ RDOResource* RDORuntime::createNewResource( RDOCalcCreateNumberedResource* calc 
 }
 
 // Для новых ресурсов, создаваемых в процессе моделирования
-RDOResource* RDORuntime::createNewResource( bool trace )
+RDOResource* RDORuntime::createNewResource( unsigned int type, bool trace )
 {
-	RDOResource* res = new RDOResource( this, -1, trace );
+	RDOResource* res = new RDOResource( this, -1, type, trace );
 	insertNewResource( res );
 	return res;
 }

@@ -217,7 +217,7 @@ bool RDOPMDWatchQuant::checkPokaz(RDOSimulator *sim)
 		if(*it == NULL)
 			continue;
 
-		if( (*it)->type != rtp_id /* //qq funGroup->resType->getNumber()*/ )
+		if( !(*it)->checkType(rtp_id) )
 			continue;
 
 		runtime->pushGroupFunc(*it);
@@ -335,7 +335,7 @@ bool RDOPMDWatchValue::calcStat(RDOSimulator *sim)
 bool RDOPMDWatchValue::checkResourceErased( rdoRuntime::RDOResource* res )
 {
 	rdoRuntime::RDORuntime* runtime = dynamic_cast< rdoRuntime::RDORuntime* >(sim);
-	if ( res->type != rtp_id /* //qq funGroup->resType->getNumber()*/ ) {
+	if ( !res->checkType(rtp_id) ) {
 		return false;
 	}
 	runtime->pushGroupFunc(res);

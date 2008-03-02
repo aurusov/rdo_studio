@@ -77,7 +77,8 @@ private:
 
 	virtual RDOValue& calcValue( RDORuntime* runtime ) {
 		RDOResource* currRes = (RDOResource*)runtime->getGroupFuncRes();
-		return currRes->params[parNumb];
+		value = currRes->getParam( parNumb );
+		return value;
 	}
 
 public:

@@ -73,16 +73,15 @@ void RDOPROCProcess::next( RDOPROCTransact* transact )
 int RDOPROCTransact::typeID = -1;
 
 RDOPROCTransact::RDOPROCTransact( RDOSimulator* sim, RDOPROCBlock* _block ):
-	RDOResource( static_cast<RDORuntime*>(sim), -1, true ),
+	RDOResource( static_cast<RDORuntime*>(sim), -1, typeID, true ),
 	block( _block )
 {
 	static_cast<RDORuntime*>(sim)->insertNewResource( this );
-	type        = typeID;
 	trace       = true;
 	temporary   = true;
 	state       = RDOResourceTrace::CS_Create;
-	params.push_back( sim->getCurrentTime() );
-	params.push_back( 0 );
+	m_params.push_back( sim->getCurrentTime() );
+	m_params.push_back( 0 );
 }
 
 void RDOPROCTransact::next()
@@ -93,8 +92,8 @@ void RDOPROCTransact::next()
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCResource
 // ----------------------------------------------------------------------------
-RDOPROCResource::RDOPROCResource( RDORuntime* _runtime, int _number, bool _trace ):
-	RDOResource( _runtime, _number, _trace )
+RDOPROCResource::RDOPROCResource( RDORuntime* _runtime, int _number, unsigned int type, bool _trace ):
+	RDOResource( _runtime, _number, type, _trace )
 {
 }
 
@@ -152,8 +151,8 @@ void RDOPROCBlockForSeize::init( RDOSimulator* sim )
 	// todo: если потребуется стоить деревья, вершинами которых будут полные снимки БД,
 	// как при DPT search, то инициализацию атрибутов надо будет делать в checkOperation
 	rss = static_cast<RDORuntime*>(sim)->getResourceByID( rss_id );
-	enum_free = RDOValue( rss->params[0].getEnum(), RDOPROCBlockForSeize::getStateEnumFree() );
-	enum_buzy = RDOValue( rss->params[0].getEnum(), RDOPROCBlockForSeize::getStateEnumBuzy() );
+	enum_free = RDOValue( rss->getParam(0).getEnum(), RDOPROCBlockForSeize::getStateEnumFree() );
+	enum_buzy = RDOValue( rss->getParam(0).getEnum(), RDOPROCBlockForSeize::getStateEnumBuzy() );
 }
 
 // ----------------------------------------------------------------------------
@@ -167,9 +166,9 @@ RDOBaseOperation::BOResult RDOPROCSeize::checkOperation( RDOSimulator* sim )
 			tracer->getOStream() << rss->traceResourceState('\0', static_cast<RDORuntime*>(sim)) << tracer->getEOL();
 		}
 		// Свободен
-		if ( rss->params[0] == enum_free ) {
+		if ( rss->getParam(0) == enum_free ) {
 			TRACE( "%7.1f SEIZE\n", sim->getCurrentTime() );
-			rss->params[0] = enum_buzy;
+			rss->setParam(0, enum_buzy);
 			transacts.front()->next();
 			return RDOBaseOperation::BOR_can_run;
 		} else {
@@ -190,9 +189,9 @@ RDOBaseOperation::BOResult RDOPROCRelease::checkOperation( RDOSimulator* sim )
 			tracer->getOStream() << rss->traceResourceState('\0', static_cast<RDORuntime*>(sim)) << tracer->getEOL();
 		}
 		// Занят
-		if ( rss->params[0] == enum_buzy ) {
+		if ( rss->getParam(0) == enum_buzy ) {
 			TRACE( "%7.1f RELEASE\n", sim->getCurrentTime() );
-			rss->params[0] = enum_free;
+			rss->setParam(0, enum_free);
 			transacts.front()->next();
 			return RDOBaseOperation::BOR_can_run;
 		} else {

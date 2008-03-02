@@ -276,7 +276,7 @@ void RDOActivityRuntime::incrementRelevantResourceReference( RDOSimulator* sim )
 {
 	for ( int i = 0; i < relResID.size(); i++ ) {
 		RDOResource* res = static_cast<RDORuntime*>(sim)->getResourceByID( relResID.at(i) );
-		if ( res && (res->getState() == RDOResourceTrace::CS_Keep || res->getState() == RDOResourceTrace::CS_Create || res->getState() == RDOResourceTrace::CS_Erase ) ) res->referenceCount++;
+		if ( res && (res->getState() == RDOResourceTrace::CS_Keep || res->getState() == RDOResourceTrace::CS_Create || res->getState() == RDOResourceTrace::CS_Erase ) ) res->incRef();
 	}
 }
 
@@ -284,7 +284,7 @@ void RDOActivityRuntime::decrementRelevantResourceReference( RDOSimulator* sim )
 {
 	for ( int i = 0; i < relResID.size(); i++ ) {
 		RDOResource* res = static_cast<RDORuntime*>(sim)->getResourceByID( relResID.at(i) );
-		if ( res && (res->getState() == RDOResourceTrace::CS_Keep || res->getState() == RDOResourceTrace::CS_Create || res->getState() == RDOResourceTrace::CS_Erase ) ) res->referenceCount--;
+		if ( res && (res->getState() == RDOResourceTrace::CS_Keep || res->getState() == RDOResourceTrace::CS_Create || res->getState() == RDOResourceTrace::CS_Erase ) ) res->decRef();
 	}
 }
 

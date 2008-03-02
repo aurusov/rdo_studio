@@ -15,16 +15,46 @@ namespace rdoRuntime
 class RDOResource: public RDOResourceTrace
 {
 public:
-	RDOResource( RDORuntime* rt, int _number, bool _trace );
+	RDOResource( RDORuntime* rt, int _number, unsigned int _type, bool _trace );
 	virtual ~RDOResource();
 
-//	int number; // unique for all resources alive in system
-	int type;
-	int referenceCount;
-	std::vector< RDOValue > params;
+	bool checkType( unsigned int type ) const
+	{
+		return m_type == type;
+	}
+
+	virtual const RDOValue& getParam( unsigned int index ) const
+	{
+		return m_params.at( index );
+	}
+	virtual void setParam( unsigned int index, const RDOValue& value )
+	{
+		if ( m_params.size() <= index ) {
+			m_params.resize( index + 1 );
+		}
+		m_params.at( index ) = value;
+	}
+	virtual unsigned int paramsCount() const
+	{
+		return m_params.size();
+	}
+	virtual void appendParams( const std::vector< RDOValue >::const_iterator& from_begin, const std::vector< RDOValue >::const_iterator& from_end )
+	{
+		m_params.insert( m_params.end(), from_begin, from_end );
+	}
+
 	std::string getTypeId();
 	std::string traceParametersValue();
 	bool operator != ( RDOResource& other );
+
+	bool canFree() const { return m_referenceCount == 0; }
+	void incRef()        { m_referenceCount++;           }
+	void decRef()        { m_referenceCount--;           }
+
+protected:
+	std::vector< RDOValue > m_params;
+	unsigned int            m_type;
+	unsigned int            m_referenceCount;
 };
 
 // ----------------------------------------------------------------------------
@@ -55,12 +85,6 @@ public:
 	int width( int w ) {
 		return isNullResult ? 0 : getOStream().width(w);
 	}
-//	RDOResults& operator<< (const RDOValue& value ) {
-//		if ( !isNullResult ) {
-//			value.save( getOStream() );
-//		}
-//		return *this;
-//	}
 	template< class TN > RDOResults& operator << (TN str) {
 		if ( !isNullResult ) getOStream() << str;
 		return *this;
@@ -210,16 +234,14 @@ public:
 	void addInitCalc( RDOCalc* initCalc) { initCalcs.push_back( initCalc ); }
 
 	// Параметры ресурса
-	RDOValue getResParamVal( const int res_id, const int param_id ) const {
+	RDOValue getResParamVal( unsigned int res_id, unsigned int param_id ) const
+	{
 		RDOResource* res = getResourceByID( res_id );
-		return res->params.at( param_id );
+		return res->getParam( param_id );
 	}
-	void setResParamVal( const int res_id, const int param_id, RDOValue val ) {
+	void setResParamVal( unsigned int res_id, unsigned int param_id, const RDOValue& value ) {
 		RDOResource* res = getResourceByID( res_id );
-		if ( res->params.size() <= param_id ) {
-			res->params.resize( param_id + 1 );
-		}
-		res->params.at( param_id ) = val;
+		res->setParam( param_id, value );
 	}
 
 	// Релевантные ресурсы
@@ -233,8 +255,8 @@ public:
 #endif
 
 	void onEraseRes( const int res_id, const RDOCalcEraseRes* calc );
-	RDOResource* createNewResource( RDOCalcCreateNumberedResource* calc );
-	RDOResource* createNewResource( bool trace );
+	RDOResource* createNewResource( unsigned int type, RDOCalcCreateNumberedResource* calc );
+	RDOResource* createNewResource( unsigned int type, bool trace );
 	void insertNewResource( RDOResource* res );
 	RDORuntime();
 	~RDORuntime();
