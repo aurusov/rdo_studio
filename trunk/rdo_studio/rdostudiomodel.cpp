@@ -18,6 +18,7 @@
 #include <rdobinarystream.h>
 #include <rdoplugin.h>
 #include <rdothread.h>
+#include <rdoruntime_object.h>
 #include <limits>
 
 using namespace rdoEditor;
@@ -991,9 +992,14 @@ void RDOStudioModel::update()
 			CDC* dc = view->GetDC();
 			if ( dc->RectVisible( view->getClientRect() ) ) {
 				view->ReleaseDC( dc );
-				RDOFrame frame;
-				sendMessage( kernel->runtime(), RT_RUNTIME_GET_FRAME, &rdoRuntime::RDOThreadRunTime::GetFrame(&frame, i) );
-				frameManager.showFrame( &frame, i );
+				try {
+					RDOFrame frame;
+					sendMessage( kernel->runtime(), RT_RUNTIME_GET_FRAME, &rdoRuntime::RDOThreadRunTime::GetFrame(&frame, i) );
+					frameManager.showFrame( &frame, i );
+				} catch ( rdoRuntime::RDORuntimeException& ) {
+					sendMessage( kernel->runtime(), RT_SIMULATOR_MODEL_STOP_RUNTIME_DELAY );
+					return;
+				}
 			} else {
 				view->ReleaseDC( dc );
 			}

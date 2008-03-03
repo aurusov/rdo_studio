@@ -68,6 +68,30 @@ public:
 };
 
 // ----------------------------------------------------------------------------
+// ---------- RDOCalcGetUnknowResParam (ѕараметры несуществующего ресурса)
+// ----------------------------------------------------------------------------
+class RDOCalcGetUnknowResParam: public RDOCalc
+{
+private:
+	std::string m_resName;
+	std::string m_parName;
+
+	virtual RDOValue& calcValue( RDORuntime* runtime )
+	{
+		runtime->error( rdo::format("ѕопытка использовать несуществующий ресурс: %s.%s", m_resName.c_str(), m_parName.c_str()), this );
+		return value;
+	}
+
+public:
+	RDOCalcGetUnknowResParam( RDORuntimeParent* _parent, const std::string& resName, const std::string& parName ):
+		RDOCalc( _parent ),
+		m_resName( resName ),
+		m_parName( parName )
+	{
+	}
+};
+
+// ----------------------------------------------------------------------------
 // ---------- RDOCalcGetGroupResParam
 // ----------------------------------------------------------------------------
 class RDOCalcGetGroupResParam: public RDOCalc

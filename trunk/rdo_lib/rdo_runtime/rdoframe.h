@@ -173,6 +173,7 @@ public:
 	void setBackPicture( const std::string& _picFileName );
 	void setBackPicture( int _width, int _height );
 	void startShow( RDOCalc* calc = NULL );
+	const RDOFRMShow* getLastShow() const { return !shows.empty() ? shows.back() : NULL; }
 	void addItem( RDOFRMItem* item );
 	void addRulet( RDOFRMRulet* rulet );
 	void end();
@@ -523,6 +524,8 @@ private:
 public:
 	RDOFRMShow( RDOFRMFrame* _parent, RDOCalc* _conditionCalc );
 	virtual ~RDOFRMShow();
+
+	bool isShowIf() const { return conditionCalc != NULL; }
 
 	bool checkCondition( RDORuntime* sim );
 	virtual void getBitmaps( std::list< std::string >& list );

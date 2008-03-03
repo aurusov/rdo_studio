@@ -8,6 +8,7 @@
 #include "rdodpt.h"
 #include "rdoparser_lexer.h"
 #include <rdo_runtime.h>
+#include <rdoframe.h>
 #include <rdocalc.h>
 
 #ifdef _DEBUG
@@ -197,124 +198,152 @@ void RDOFUNArithm::init( const RDOParserSrcInfo& res_name_src_info, const RDOPar
 			enu = ((RDORTPEnumParamType *)res->getType()->findRTPParam( par_name_src_info.src_text() )->getType())->enu;
 		}
 		return;
-	} else {
-		// Это не ресурс, но возможно релевантный ресурс или ресурс, внутри групповой функции
-		if ( !getParser()->getFUNGroupStack().empty() && getParser()->getFUNGroupStack().back()->resType->getName() == res_name_src_info.src_text() ) {
-			// Это ресурс внутри групповой функции
-			RDOFUNGroup* currGroup = getParser()->getFUNGroupStack().back();
-			int parNumb = currGroup->resType->getRTPParamNumber( par_name_src_info.src_text() );
-			if ( parNumb == -1 ) {
-				getParser()->error( par_name_src_info, rdo::format("Неизвестный параметр ресурса: %s", par_name_src_info.src_text().c_str()) );
-			}
-			calc = new rdoRuntime::RDOCalcGetGroupResParam( getParser()->runtime, parNumb );
-			calc->setSrcInfo( src_info() );
-			type = currGroup->resType->findRTPParam( par_name_src_info.src_text() )->getType()->getType();
-			if ( type == rdoRuntime::RDOValue::pt_enum ) {
-				enu = ((RDORTPEnumParamType *)currGroup->resType->findRTPParam( par_name_src_info.src_text() )->getType())->enu;
-			}
-			return;
-		} else if ( getParser()->getFileToParse() == rdoModelObjects::PAT && getParser()->getLastPATPattern() && getParser()->getLastPATPattern()->findRelevantResource( res_name_src_info.src_text() ) ) {
-			// Это релевантный ресурс где-то в паттерне (with_min-common-choice, $Time, $Body)
-			RDOPATPattern* pat = getParser()->getLastPATPattern();
-			const RDORelevantResource* const rel = pat->findRelevantResource( res_name_src_info.src_text() );
-			if ( !pat->currRelRes ) {
-				// Внутри with_min-common-choice или $Time
-				if ( rel->begin == rdoRuntime::RDOResourceTrace::CS_NonExist || rel->begin == rdoRuntime::RDOResourceTrace::CS_Create ) {
-					getParser()->error( res_name_src_info, rdo::format("Релевантный ресурс не может быть использован, т.к. он еще не существует: %s", rel->getName().c_str()) );
-				}
-			} else {
-				// Внутри $Body
-				// Проверяем использование неинициализированного рел.ресурса (rel) в Choice from другом рел.ресурсе (pat->currRelRes)
-				if ( pat->currRelRes->isChoiceFromState() ) {
-					if ( !rel->alreadyHaveConverter && !rel->isDirect() ) {
-						getParser()->error( res_name_src_info, rdo::format("Релевантный ресурс неопределен: %s. Его нельзя использовать в условиях выбора других ресурсов до его собственного Choice from", rel->getName().c_str()) );
-					}
-					if ( rel->begin == rdoRuntime::RDOResourceTrace::CS_NonExist ) {
-						getParser()->error( res_name_src_info, rdo::format("Релевантный ресурс в начале операции не существует (NonExist): %s", rel->getName().c_str()) );
-					}
-					if ( rel->begin == rdoRuntime::RDOResourceTrace::CS_Create ) {
-						getParser()->error( res_name_src_info, rdo::format("Сразу после создания (Create) релевантный ресурс '%s' можно использовать только в конверторах, но не в условии выбора", rel->getName().c_str()) );
-					}
-				}
-				// Проверяем использование временного рел.ресурса внутри конвертора другого рел.ресурса
-				if ( rel->getType()->isTemporary() ) {
-					// В конверторе начала
-					if ( pat->currRelRes->currentState == RDORelevantResource::convertBegin ) {
-						if ( rel->begin == rdoRuntime::RDOResourceTrace::CS_Create && !rel->alreadyHaveConverter ) {
-							getParser()->error( res_name_src_info, rdo::format("Релевантный ресурс нельзя использовать до его создания (Create): %s", rel->getName().c_str()) );
+	}
+	// Это не ресурс, но возможно релевантный ресурс или ресурс, внутри групповой функции
+	else if ( !getParser()->getFUNGroupStack().empty() && getParser()->getFUNGroupStack().back()->resType->getName() == res_name_src_info.src_text() )
+	{
+		// Это ресурс внутри групповой функции
+		RDOFUNGroup* currGroup = getParser()->getFUNGroupStack().back();
+		int parNumb = currGroup->resType->getRTPParamNumber( par_name_src_info.src_text() );
+		if ( parNumb == -1 ) {
+			getParser()->error( par_name_src_info, rdo::format("Неизвестный параметр ресурса: %s", par_name_src_info.src_text().c_str()) );
+		}
+		calc = new rdoRuntime::RDOCalcGetGroupResParam( getParser()->runtime, parNumb );
+		calc->setSrcInfo( src_info() );
+		type = currGroup->resType->findRTPParam( par_name_src_info.src_text() )->getType()->getType();
+		if ( type == rdoRuntime::RDOValue::pt_enum ) {
+			enu = ((RDORTPEnumParamType *)currGroup->resType->findRTPParam( par_name_src_info.src_text() )->getType())->enu;
+		}
+		return;
+	}
+	else
+	{
+		switch ( getParser()->getFileToParse() )
+		{
+			case rdoModelObjects::PAT:
+			{
+				if ( getParser()->getLastPATPattern() && getParser()->getLastPATPattern()->findRelevantResource( res_name_src_info.src_text() ) )
+				{
+					// Это релевантный ресурс где-то в паттерне (with_min-common-choice, $Time, $Body)
+					RDOPATPattern* pat = getParser()->getLastPATPattern();
+					const RDORelevantResource* const rel = pat->findRelevantResource( res_name_src_info.src_text() );
+					if ( !pat->currRelRes ) {
+						// Внутри with_min-common-choice или $Time
+						if ( rel->begin == rdoRuntime::RDOResourceTrace::CS_NonExist || rel->begin == rdoRuntime::RDOResourceTrace::CS_Create ) {
+							getParser()->error( res_name_src_info, rdo::format("Релевантный ресурс не может быть использован, т.к. он еще не существует: %s", rel->getName().c_str()) );
 						}
-						if ( rel->begin == rdoRuntime::RDOResourceTrace::CS_Erase && rel->alreadyHaveConverter ) {
-							getParser()->error( res_name_src_info, rdo::format("Релевантный ресурс нельзя использовать после удаления (Erase): %s", rel->getName().c_str()) );
+					} else {
+						// Внутри $Body
+						// Проверяем использование неинициализированного рел.ресурса (rel) в Choice from другом рел.ресурсе (pat->currRelRes)
+						if ( pat->currRelRes->isChoiceFromState() ) {
+							if ( !rel->alreadyHaveConverter && !rel->isDirect() ) {
+								getParser()->error( res_name_src_info, rdo::format("Релевантный ресурс неопределен: %s. Его нельзя использовать в условиях выбора других ресурсов до его собственного Choice from", rel->getName().c_str()) );
+							}
+							if ( rel->begin == rdoRuntime::RDOResourceTrace::CS_NonExist ) {
+								getParser()->error( res_name_src_info, rdo::format("Релевантный ресурс в начале операции не существует (NonExist): %s", rel->getName().c_str()) );
+							}
+							if ( rel->begin == rdoRuntime::RDOResourceTrace::CS_Create ) {
+								getParser()->error( res_name_src_info, rdo::format("Сразу после создания (Create) релевантный ресурс '%s' можно использовать только в конверторах, но не в условии выбора", rel->getName().c_str()) );
+							}
 						}
-						if ( rel->begin == rdoRuntime::RDOResourceTrace::CS_NonExist ) {
-							getParser()->error( res_name_src_info, rdo::format("Релевантный ресурс не существует в этом конверторе (NonExist): %s", rel->getName().c_str()) );
+						// Проверяем использование временного рел.ресурса внутри конвертора другого рел.ресурса
+						if ( rel->getType()->isTemporary() ) {
+							// В конверторе начала
+							if ( pat->currRelRes->currentState == RDORelevantResource::convertBegin ) {
+								if ( rel->begin == rdoRuntime::RDOResourceTrace::CS_Create && !rel->alreadyHaveConverter ) {
+									getParser()->error( res_name_src_info, rdo::format("Релевантный ресурс нельзя использовать до его создания (Create): %s", rel->getName().c_str()) );
+								}
+								if ( rel->begin == rdoRuntime::RDOResourceTrace::CS_Erase && rel->alreadyHaveConverter ) {
+									getParser()->error( res_name_src_info, rdo::format("Релевантный ресурс нельзя использовать после удаления (Erase): %s", rel->getName().c_str()) );
+								}
+								if ( rel->begin == rdoRuntime::RDOResourceTrace::CS_NonExist ) {
+									getParser()->error( res_name_src_info, rdo::format("Релевантный ресурс не существует в этом конверторе (NonExist): %s", rel->getName().c_str()) );
+								}
+							}
+							// В конверторе конца
+							if ( pat->currRelRes->currentState == RDORelevantResource::convertEnd ) {
+								if ( rel->end == rdoRuntime::RDOResourceTrace::CS_Create && !rel->alreadyHaveConverter ) {
+									getParser()->error( res_name_src_info, rdo::format("Релевантный ресурс нельзя использовать до его создания (Create): %s", rel->getName().c_str()) );
+								}
+								if ( rel->end == rdoRuntime::RDOResourceTrace::CS_Erase && rel->alreadyHaveConverter ) {
+									getParser()->error( res_name_src_info, rdo::format("Релевантный ресурс нельзя использовать после удаления (Erase): %s", rel->getName().c_str()) );
+								}
+								if ( rel->end == rdoRuntime::RDOResourceTrace::CS_NonExist ) {
+									getParser()->error( res_name_src_info, rdo::format("Релевантный ресурс не существует в этом конверторе (NonExist): %s", rel->getName().c_str()) );
+								}
+							}
 						}
-					}
-					// В конверторе конца
-					if ( pat->currRelRes->currentState == RDORelevantResource::convertEnd ) {
-						if ( rel->end == rdoRuntime::RDOResourceTrace::CS_Create && !rel->alreadyHaveConverter ) {
-							getParser()->error( res_name_src_info, rdo::format("Релевантный ресурс нельзя использовать до его создания (Create): %s", rel->getName().c_str()) );
-						}
-						if ( rel->end == rdoRuntime::RDOResourceTrace::CS_Erase && rel->alreadyHaveConverter ) {
-							getParser()->error( res_name_src_info, rdo::format("Релевантный ресурс нельзя использовать после удаления (Erase): %s", rel->getName().c_str()) );
-						}
-						if ( rel->end == rdoRuntime::RDOResourceTrace::CS_NonExist ) {
-							getParser()->error( res_name_src_info, rdo::format("Релевантный ресурс не существует в этом конверторе (NonExist): %s", rel->getName().c_str()) );
-						}
-					}
-				}
-				// Проверяем использование еще не инициализированного (только для Create) параметра рел. ресурса в его же конверторе
-				const RDORTPParam* param = pat->currRelRes->getType()->findRTPParam( par_name_src_info.src_text() );
-				if ( param && pat->currRelRes->getName() == res_name_src_info.src_text() ) {
-					// В конверторе начала
-					if ( pat->currRelRes->currentState == RDORelevantResource::convertBegin && pat->currRelRes->begin == rdoRuntime::RDOResourceTrace::CS_Create) {
-						if ( !pat->currRelRes->getParamSetBegin()->isExist( par_name_src_info.src_text() ) ) {
-							if ( !param->getType()->dv->isExist() ) {
-								getParser()->error( par_name_src_info, rdo::format("Параметр '%s' еще не определен, ему необходимо присвоить значение в текущем конверторе или указать значение по-умолчанию в типе ресурса", par_name_src_info.src_text().c_str()) );
+						// Проверяем использование еще не инициализированного (только для Create) параметра рел. ресурса в его же конверторе
+						const RDORTPParam* param = pat->currRelRes->getType()->findRTPParam( par_name_src_info.src_text() );
+						if ( param && pat->currRelRes->getName() == res_name_src_info.src_text() ) {
+							// В конверторе начала
+							if ( pat->currRelRes->currentState == RDORelevantResource::convertBegin && pat->currRelRes->begin == rdoRuntime::RDOResourceTrace::CS_Create) {
+								if ( !pat->currRelRes->getParamSetBegin()->isExist( par_name_src_info.src_text() ) ) {
+									if ( !param->getType()->dv->isExist() ) {
+										getParser()->error( par_name_src_info, rdo::format("Параметр '%s' еще не определен, ему необходимо присвоить значение в текущем конверторе или указать значение по-умолчанию в типе ресурса", par_name_src_info.src_text().c_str()) );
+									}
+								}
+							}
+							// В конверторе начала
+							if ( pat->currRelRes->currentState == RDORelevantResource::convertEnd && pat->currRelRes->end == rdoRuntime::RDOResourceTrace::CS_Create) {
+								if ( !pat->currRelRes->getParamSetEnd()->isExist( par_name_src_info.src_text() ) ) {
+									if ( !param->getType()->dv->isExist() ) {
+										getParser()->error( par_name_src_info, rdo::format("Параметр '%s' еще не определен, ему необходимо присвоить значение в текущем конверторе или указать значение по-умолчанию в типе ресурса", par_name_src_info.src_text().c_str()) );
+									}
+								}
 							}
 						}
 					}
-					// В конверторе начала
-					if ( pat->currRelRes->currentState == RDORelevantResource::convertEnd && pat->currRelRes->end == rdoRuntime::RDOResourceTrace::CS_Create) {
-						if ( !pat->currRelRes->getParamSetEnd()->isExist( par_name_src_info.src_text() ) ) {
-							if ( !param->getType()->dv->isExist() ) {
-								getParser()->error( par_name_src_info, rdo::format("Параметр '%s' еще не определен, ему необходимо присвоить значение в текущем конверторе или указать значение по-умолчанию в типе ресурса", par_name_src_info.src_text().c_str()) );
-							}
-						}
+					int relResNumb = pat->findRelevantResourceNum( res_name_src_info.src_text() );
+					int parNumb    = rel->getType()->getRTPParamNumber( par_name_src_info.src_text() );
+					if ( parNumb == -1 ) {
+						getParser()->error( par_name_src_info, rdo::format("Неизвестный параметр ресурса: %s", par_name_src_info.src_text().c_str()) );
+//							getParser()->error( "Unknown resource parameter: " + *par_name_src_info.src_text() );
 					}
+					calc = new rdoRuntime::RDOCalcGetRelevantResParam( getParser()->runtime, relResNumb, parNumb );
+					calc->setSrcInfo( src_info() );
+					type = rel->getType()->findRTPParam( par_name_src_info.src_text() )->getType()->getType();
+					if ( type == rdoRuntime::RDOValue::pt_enum ) {
+						enu = ((RDORTPEnumParamType*)rel->getType()->findRTPParam( par_name_src_info.src_text() )->getType())->enu;
+					}
+					return;
 				}
+				break;
 			}
-			int relResNumb = pat->findRelevantResourceNum( res_name_src_info.src_text() );
-			int parNumb    = rel->getType()->getRTPParamNumber( par_name_src_info.src_text() );
-			if ( parNumb == -1 ) {
-				getParser()->error( par_name_src_info, rdo::format("Неизвестный параметр ресурса: %s", par_name_src_info.src_text().c_str()) );
-//				getParser()->error( "Unknown resource parameter: " + *par_name_src_info.src_text() );
-			}
-			calc = new rdoRuntime::RDOCalcGetRelevantResParam( getParser()->runtime, relResNumb, parNumb );
-			calc->setSrcInfo( src_info() );
-			type = rel->getType()->findRTPParam( par_name_src_info.src_text() )->getType()->getType();
-			if ( type == rdoRuntime::RDOValue::pt_enum ) {
-				enu = ((RDORTPEnumParamType*)rel->getType()->findRTPParam( par_name_src_info.src_text() )->getType())->enu;
-			}
-			return;
-		} else if ( getParser()->getFileToParse() == rdoModelObjects::DPT && getParser()->getLastDPTSearch() && getParser()->getLastDPTSearch()->getLastActivity() ) {
-			const RDOPATPattern* rule = getParser()->getLastDPTSearch()->getLastActivity()->getType();
-			if ( rule && rule->findRelevantResource( res_name_src_info.src_text() ) ) {
-				// Это ресурс, который используется в DPT (condition, term_condition, evaluate_by, value before, value after)
-				const RDORelevantResource* const rel = rule->findRelevantResource( res_name_src_info.src_text() );
-				int relResNumb = rule->findRelevantResourceNum( res_name_src_info.src_text() );
-				int parNumb    = rel->getType()->getRTPParamNumber( par_name_src_info.src_text() );
-				if ( parNumb == -1 ) {
-					getParser()->error( par_name_src_info, rdo::format("Неизвестный параметр ресурса: %s", par_name_src_info.src_text().c_str()) );
-				}
+			case rdoModelObjects::DPT:
+			{
+				if ( rdoModelObjects::DPT && getParser()->getLastDPTSearch() && getParser()->getLastDPTSearch()->getLastActivity() )
+				{
+					const RDOPATPattern* rule = getParser()->getLastDPTSearch()->getLastActivity()->getType();
+					if ( rule && rule->findRelevantResource( res_name_src_info.src_text() ) ) {
+						// Это ресурс, который используется в DPT (condition, term_condition, evaluate_by, value before, value after)
+						const RDORelevantResource* const rel = rule->findRelevantResource( res_name_src_info.src_text() );
+						int relResNumb = rule->findRelevantResourceNum( res_name_src_info.src_text() );
+						int parNumb    = rel->getType()->getRTPParamNumber( par_name_src_info.src_text() );
+						if ( parNumb == -1 ) {
+							getParser()->error( par_name_src_info, rdo::format("Неизвестный параметр ресурса: %s", par_name_src_info.src_text().c_str()) );
+						}
 
-				calc = new rdoRuntime::RDOCalcGetRelevantResParam( getParser()->runtime, relResNumb, parNumb );
-				calc->setSrcInfo( src_info() );
-				type = rel->getType()->findRTPParam( par_name_src_info.src_text() )->getType()->getType();
-				if ( type == rdoRuntime::RDOValue::pt_enum ) {
-					enu = ((RDORTPEnumParamType *)rel->getType()->findRTPParam( par_name_src_info.src_text() )->getType())->enu;
+						calc = new rdoRuntime::RDOCalcGetRelevantResParam( getParser()->runtime, relResNumb, parNumb );
+						calc->setSrcInfo( src_info() );
+						type = rel->getType()->findRTPParam( par_name_src_info.src_text() )->getType()->getType();
+						if ( type == rdoRuntime::RDOValue::pt_enum ) {
+							enu = ((RDORTPEnumParamType *)rel->getType()->findRTPParam( par_name_src_info.src_text() )->getType())->enu;
+						}
+						return;
+					}
 				}
-				return;
+				break;
+			}
+			case rdoModelObjects::FRM:
+			{
+				if ( getParser()->getLastFRMFrame() && getParser()->getLastFRMFrame()->getLastShow() && getParser()->getLastFRMFrame()->getLastShow()->isShowIf() )
+				{
+					calc = new rdoRuntime::RDOCalcGetUnknowResParam( getParser()->runtime, res_name_src_info.src_text(), par_name_src_info.src_text() );
+					calc->setSrcInfo( src_info() );
+					return;
+				}
+				break;
 			}
 		}
 	}

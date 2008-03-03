@@ -98,6 +98,7 @@ RDOThreadRunTime::RDOThreadRunTime():
 
 	simulator = kernel->simulator();
 
+	notifies.push_back( RT_SIMULATOR_MODEL_STOP_RUNTIME_DELAY );
 	notifies.push_back( RT_RUNTIME_GET_MODE );
 	notifies.push_back( RT_RUNTIME_SET_MODE );
 	notifies.push_back( RT_RUNTIME_GET_SPEED );
@@ -117,6 +118,10 @@ void RDOThreadRunTime::proc( RDOMessageInfo& msg )
 	switch ( msg.message ) {
 		case RT_THREAD_CLOSE: {
 			broadcastMessage( RT_RUNTIME_MODEL_STOP_BEFORE );
+			break;
+		}
+		case RT_SIMULATOR_MODEL_STOP_RUNTIME_DELAY: {
+			runtime_error = true;
 			break;
 		}
 		case RT_RUNTIME_GET_MODE: {
