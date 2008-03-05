@@ -61,12 +61,14 @@ RDOPMDWatchPar::RDOPMDWatchPar( RDOParser* _parser, const RDOParserSrcInfo& _src
 	if ( !res ) {
 		getParser()->error( _res_src_info, rdo::format("Ресурс '%s' не найден", _res_src_info.src_text().c_str()) );
 	}
+/*
 	if ( !res->getType()->isPermanent() ) {
 		getParser()->error_push_only( _res_src_info, "Наблюдать (watch_par) можно только за параметром постоянного ресурса" );
 		getParser()->error_push_only( res->getType()->src_info(), "См. тип ресурса" );
 		getParser()->error_push_done();
 //		getParser()->error("Resource must be of permanent type: " + _resName);
 	}
+*/
 	const RDORTPParam* const par = res->getType()->findRTPParam( _par_src_info.src_text() );
 	if ( !par ) {
 		getParser()->error_push_only( _par_src_info, rdo::format("Параметр '%s' не найден", _par_src_info.src_text().c_str()) );

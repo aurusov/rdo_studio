@@ -22,6 +22,7 @@ namespace rdoRuntime
 // ----------------------------------------------------------------------------
 RDOResource::RDOResource( RDORuntime* rt, int _number, unsigned int _type, bool _trace ):
 	RDOResourceTrace( rt, _number, _trace ),
+	RDORuntimeObject( NULL ),
 	m_type( _type ),
 	m_referenceCount( 0 )
 {
@@ -29,6 +30,7 @@ RDOResource::RDOResource( RDORuntime* rt, int _number, unsigned int _type, bool 
 
 inline RDOResource::~RDOResource()
 {
+	static_cast<RDORuntime*>(sim)->fireMessage( this, RDORuntime::RO_BEFOREDELETE, (void*)getTraceID() );
 }
 
 inline bool RDOResource::operator != (RDOResource &other)
@@ -100,8 +102,54 @@ RDORuntime::RDORuntime():
 
 RDORuntime::~RDORuntime()
 {
+	connected.clear();
 	rdoDestroy();
 	DeleteAllObjects( allPokaz );
+}
+
+void RDORuntime::connect( RDORuntimeObject* to, UINT message )
+{
+	Connected::iterator it = connected.find( message );
+	while ( it != connected.end() ) {
+		if ( it->second == to ) break;
+		it++;
+	}
+	if ( it == connected.end() ) {
+		connected.insert( Connected::value_type( message, to ) );
+	}
+}
+
+void RDORuntime::disconnect( RDORuntimeObject* to )
+{
+	Connected::iterator it = connected.begin();
+	while ( it != connected.end() ) {
+		if ( it->second == to ) {
+			it = connected.erase( it );
+			if ( it == connected.end() ) break;
+		}
+		it++;
+	}
+}
+
+void RDORuntime::disconnect( RDORuntimeObject* to, UINT message )
+{
+	Connected::iterator it = connected.find( message );
+	while ( it != connected.end() ) {
+		if ( it->second == to ) {
+			it = connected.erase( it );
+			if ( it == connected.end() ) break;
+		}
+		it++;
+	}
+}
+
+void RDORuntime::fireMessage( RDORuntimeObject* from, UINT message, void* param )
+{
+	Connected::iterator it = connected.find( message );
+	while ( it != connected.end() ) {
+		it->second->notify( from, message, param );
+		it++;
+	}
 }
 
 bool RDORuntime::endCondition()

@@ -182,16 +182,19 @@ void RDOFUNArithm::init( const RDOParserSrcInfo& res_name_src_info, const RDOPar
 	const RDORSSResource* const res = getParser()->findRSSResource( res_name_src_info.src_text() ); 
 	if ( res ) {
 		// Это ресурс с закладки RSS
-		if ( res->getType()->isTemporary() ) {
-			getParser()->error( res_name_src_info, rdo::format("Нельзя использовать временный ресурс: %s", res_name_src_info.src_text().c_str()) );
-//			getParser()->error(("Cannot use temporary resource in function: " + *res_name_src_info.src_text()).c_str());
-		}
 		int resNumb = res->getNumber();
 		int parNumb = res->getType()->getRTPParamNumber( par_name_src_info.src_text() );
 		if ( parNumb == -1 ) {
 			getParser()->error( par_name_src_info, rdo::format("Неизвестный параметр ресурса: %s", par_name_src_info.src_text().c_str()) );
 		}
-		calc = new rdoRuntime::RDOCalcGetResParam( getParser()->runtime, resNumb, parNumb );
+		if ( res->getType()->isPermanent() ) {
+			calc = new rdoRuntime::RDOCalcGetResParam( getParser()->runtime, resNumb, parNumb );
+		} else if ( res->getType()->isTemporary() && getParser()->getFileToParse() == rdoModelObjects::FRM ) {
+			calc = new rdoRuntime::RDOCalcGetTempResParamFRM( getParser()->runtime, resNumb, parNumb );
+		} else {
+			getParser()->error( res_name_src_info, rdo::format("Нельзя использовать временный ресурс: %s", res_name_src_info.src_text().c_str()) );
+//			getParser()->error(("Cannot use temporary resource in function: " + *res_name_src_info.src_text()).c_str());
+		}
 		calc->setSrcInfo( src_info() );
 		type = res->getType()->findRTPParam( par_name_src_info.src_text() )->getType()->getType();
 		if ( type == rdoRuntime::RDOValue::pt_enum ) {
@@ -1597,17 +1600,17 @@ void RDOFUNFunction::createTableCalc( const YYLTYPE& _elements_pos )
 
 void RDOFUNFunction::createAlgorithmicCalc( const RDOParserSrcInfo& _body_src_info )
 {
-	rdoRuntime::RDOFunAlgorithmicCalc* funcCalc = NULL;
+	rdoRuntime::RDOFunAlgorithmicCalc* fun_calc = NULL;
 	switch ( getType()->getType() ) {
 		case rdoRuntime::RDOValue::ParamType::pt_int: {
 			if ( static_cast<const RDORTPIntParamType*>(getType())->diap->isExist() ) {
-				funcCalc = new rdoRuntime::RDOFunAlgorithmicDiapCalc( getParser()->runtime, static_cast<const RDORTPIntParamType*>(getType())->diap->min_value, static_cast<const RDORTPIntParamType*>(getType())->diap->max_value );
+				fun_calc = new rdoRuntime::RDOFunAlgorithmicDiapCalc( getParser()->runtime, static_cast<const RDORTPIntParamType*>(getType())->diap->min_value, static_cast<const RDORTPIntParamType*>(getType())->diap->max_value );
 			}
 			break;
 		}
 		case rdoRuntime::RDOValue::ParamType::pt_real: {
 			if ( static_cast<const RDORTPRealParamType*>(getType())->diap->isExist() ) {
-				funcCalc = new rdoRuntime::RDOFunAlgorithmicDiapCalc( getParser()->runtime, static_cast<const RDORTPRealParamType*>(getType())->diap->min_value, static_cast<const RDORTPRealParamType*>(getType())->diap->max_value );
+				fun_calc = new rdoRuntime::RDOFunAlgorithmicDiapCalc( getParser()->runtime, static_cast<const RDORTPRealParamType*>(getType())->diap->min_value, static_cast<const RDORTPRealParamType*>(getType())->diap->max_value );
 			}
 			break;
 		}
@@ -1616,10 +1619,10 @@ void RDOFUNFunction::createAlgorithmicCalc( const RDOParserSrcInfo& _body_src_in
 		}
 		default: getParser()->error( src_info(), "Внутренняя ошибка: обработать все типы RDOValue" );
 	}
-	if ( !funcCalc ) {
-		funcCalc = new rdoRuntime::RDOFunAlgorithmicCalc( getParser()->runtime );
+	if ( !fun_calc ) {
+		fun_calc = new rdoRuntime::RDOFunAlgorithmicCalc( getParser()->runtime );
 	}
-	funcCalc->setSrcInfo( src_info() );
+	fun_calc->setSrcInfo( src_info() );
 	bool default_flag = false;
 	bool true_const   = false;
 	const rdoRuntime::RDOCalcConst* calc_cond_const = NULL;
@@ -1633,7 +1636,7 @@ void RDOFUNFunction::createAlgorithmicCalc( const RDOParserSrcInfo& _body_src_in
 			getParser()->warning( calc_cond_const->src_info(), rdo::format("Последнее рабочее условие функции: %s", calc_cond_const->src_text().c_str()) );
 		} else if ( !calc_cond_last || calc_cond_last->calcValueBase( getParser()->runtime ).getBool() ) {
 			// Игнорируем чистые false-условия предыдущей проверкой
-			funcCalc->addCalcIf( logic_calc, calculateIf[i]->action->createCalc(getType()) );
+			fun_calc->addCalcIf( logic_calc, calculateIf[i]->action->createCalc(getType()) );
 			cnt++;
 		}
 		if ( !default_flag && calc_cond_last && calc_cond_last->calcValueBase( getParser()->runtime ).getBool() ) {
@@ -1651,7 +1654,7 @@ void RDOFUNFunction::createAlgorithmicCalc( const RDOParserSrcInfo& _body_src_in
 			rdoRuntime::RDOCalcConst* calc_act  = new rdoRuntime::RDOCalcConst( getParser()->runtime, getType()->getParamDefaultValue( getType()->dv->src_info() ) );
 			calc_cond->setSrcInfo( getType()->src_info() );
 			calc_act->setSrcInfo( getType()->src_info() );
-			funcCalc->addCalcIf( calc_cond, calc_act );
+			fun_calc->addCalcIf( calc_cond, calc_act );
 			default_flag = true;
 		}
 	}
@@ -1682,10 +1685,10 @@ void RDOFUNFunction::createAlgorithmicCalc( const RDOParserSrcInfo& _body_src_in
 		}
 		calc_cond->setSrcInfo( getType()->src_info() );
 		calc_act->setSrcInfo( getType()->src_info() );
-		funcCalc->addCalcIf( calc_cond, calc_act );
+		fun_calc->addCalcIf( calc_cond, calc_act );
 		getParser()->warning( src_info(), rdo::format("Для функции '%s' неопределено значение по-умолчанию", getName().c_str()) );
 	}
-	setFunctionCalc( funcCalc );
+	setFunctionCalc( fun_calc );
 }
 
 // ----------------------------------------------------------------------------

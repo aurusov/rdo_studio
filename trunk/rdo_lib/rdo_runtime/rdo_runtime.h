@@ -12,7 +12,7 @@ namespace rdoRuntime
 // ----------------------------------------------------------------------------
 // ---------- RDOResource
 // ----------------------------------------------------------------------------
-class RDOResource: public RDOResourceTrace
+class RDOResource: public RDOResourceTrace, public RDORuntimeObject
 {
 public:
 	RDOResource( RDORuntime* rt, int _number, unsigned int _type, bool _trace );
@@ -185,12 +185,23 @@ private:
 	bool key_found;
 	virtual bool isKeyDown();
 
-protected:
+	typedef std::multimap< UINT, RDORuntimeObject* > Connected;
+	Connected connected;
+
 	virtual void onResetPokaz();
 	virtual void onCheckPokaz();
 	virtual void onAfterCheckPokaz();
 
 public:
+	// Работа с уведомлениями
+	enum Messages {
+		RO_BEFOREDELETE = 0
+	};
+	void connect( RDORuntimeObject* to, UINT message );
+	void disconnect( RDORuntimeObject* to );
+	void disconnect( RDORuntimeObject* to, UINT message );
+	void fireMessage( RDORuntimeObject* from, UINT message, void* param = NULL );
+
 	std::vector< rdoSimulator::RDOSyntaxError > errors;
 	void error( const std::string& message, const RDOCalc* calc = NULL );
 

@@ -46,6 +46,7 @@ class RDORuntimeParent;
 
 class RDORuntimeObject
 {
+friend class RDORuntime;
 private:
 	size_t        object_size; // Размер текущего объекта
 	static size_t memory_size; // Сумма размеров всех объектов
@@ -54,6 +55,7 @@ protected:
 	RDORuntimeParent* parent;
 
 	RDORuntimeObject( RDORuntimeParent* _parent );
+	virtual void notify( RDORuntimeObject* from, UINT message, void* param = NULL ) {};
 
 public:
 	virtual ~RDORuntimeObject();

@@ -45,25 +45,59 @@ public:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOCalcGetResParam (Параметры ресурса)
+// ---------- RDOCalcGetResParam (Параметры постоянного ресурса)
 // ----------------------------------------------------------------------------
 class RDOCalcGetResParam: public RDOCalc
 {
-private:
-	int resNumb;
-	int parNumb;
+protected:
+	int m_resID;
+	int m_paramID;
 
 	virtual RDOValue& calcValue( RDORuntime* runtime ) {
-		value = runtime->getResParamVal( resNumb, parNumb );
+		value = runtime->getResParamVal( m_resID, m_paramID );
 		return value;
 	}
 
 public:
 	RDOCalcGetResParam( RDORuntimeParent* _parent, int _resNumb, int _parNumb ):
 		RDOCalc( _parent ),
-		resNumb( _resNumb ),
-		parNumb( _parNumb )
+		m_resID( _resNumb ),
+		m_paramID( _parNumb )
 	{
+	}
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOCalcGetTempResParamFRM (Параметры временного ресурса для FRM)
+// ----------------------------------------------------------------------------
+class RDOCalcGetTempResParamFRM: public RDOCalcGetResParam
+{
+private:
+	virtual RDOValue& calcValue( RDORuntime* runtime ) {
+		if ( m_resID >= 0 ) {
+			value = runtime->getResParamVal( m_resID, m_paramID );
+		} else if ( m_resID == -1 ) {
+			RDOEnum* _enum = new RDOEnum( runtime );
+			_enum->add( "Удален" );
+			value = RDOValue( _enum, _enum->getValues()[0] );
+			m_resID = -2;
+		}
+		return value;
+	}
+	virtual void notify( RDORuntimeObject* from, UINT message, void* param = NULL )
+	{
+		if ( (int)param == m_resID )
+		{
+			m_resID = -1;
+		}
+	};
+
+
+public:
+	RDOCalcGetTempResParamFRM( RDORuntime* _parent, int _resNumb, int _parNumb ):
+		RDOCalcGetResParam( _parent, _resNumb, _parNumb )
+	{
+		_parent->connect( this, RDORuntime::RO_BEFOREDELETE );
 	}
 };
 

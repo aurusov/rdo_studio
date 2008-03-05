@@ -133,10 +133,6 @@ class RDORuntime;
 // Base class for all resources
 class RDOResourceTrace: public RDOTraceableObject
 {
-//friend RDOTrace;
-//friend RDOSimulatorTrace;
-//friend class rdoRuntime::RDORuntime;
-
 public:
 	enum ConvertStatus {
 		CS_None = 0,

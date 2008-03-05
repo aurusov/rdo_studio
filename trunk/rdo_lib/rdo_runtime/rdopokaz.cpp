@@ -29,7 +29,17 @@ RDOPMDWatchPar::RDOPMDWatchPar( RDOSimulatorTrace* _sim, const std::string& _nam
 	resNumber( _resNumber ),
 	parNumber( _parNumber )
 {
+	static_cast<RDORuntime*>(_sim)->connect( this, RDORuntime::RO_BEFOREDELETE );
 }
+
+void RDOPMDWatchPar::notify( RDORuntimeObject* from, UINT message, void* param )
+{
+	if ( (int)param == resNumber )
+	{
+		resNumber = -1;
+		timeErase = sim->getCurrentTime();
+	}
+};
 
 std::string RDOPMDWatchPar::traceValue()
 {
@@ -47,13 +57,14 @@ bool RDOPMDWatchPar::resetPokaz(RDOSimulator *sim)
 	minValue    = currValue;
 	maxValue    = currValue;
 
-	timePrev    = timeBegin = runtime->getCurrentTime();
+	timePrev    = timeBegin = timeErase = runtime->getCurrentTime();
 	return true;
 }
 
 bool RDOPMDWatchPar::checkPokaz(RDOSimulator *sim)
 {
-	rdoRuntime::RDORuntime* runtime = dynamic_cast< rdoRuntime::RDORuntime* >(sim);
+	if ( resNumber == -1 ) return false;
+	rdoRuntime::RDORuntime* runtime = static_cast< rdoRuntime::RDORuntime* >(sim);
 	RDOValue newValue = runtime->getResParamVal( resNumber, parNumber );
 	if ( newValue != currValue ) {
 		double currTime = runtime->getCurrentTime();
@@ -79,7 +90,7 @@ bool RDOPMDWatchPar::calcStat(RDOSimulator *sim)
 {
 	rdoRuntime::RDORuntime* runtime = dynamic_cast< rdoRuntime::RDORuntime* >(sim);
 
-	double currTime = runtime->getCurrentTime();
+	double currTime = resNumber == -1 ? timeErase : runtime->getCurrentTime();
 	double val = currValue.getDouble() * (currTime - timePrev);
 	sum	+= val;
 	sumSqr += val * val;
