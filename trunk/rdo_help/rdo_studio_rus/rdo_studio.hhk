@@ -297,6 +297,10 @@
 		<param name="Local" value="html\work_menu_view.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="warnings">
+		<param name="Local" value="html\work_options_styles_and_color.htm#warnings">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="&iacute;&agrave;&ntilde;&ograve;&eth;&icirc;&eacute;&ecirc;&egrave;">
 		<param name="Name" value="Настройки">
 		<param name="Local" value="html\work_options.htm">
@@ -326,6 +330,11 @@
 			<param name="Name" value="&ograve;&aring;&igrave;&agrave;">
 			<param name="Name" value="Настройки">
 			<param name="Local" value="html\work_options_styles_and_color.htm#theme">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="warnings">
+			<param name="Name" value="Настройки">
+			<param name="Local" value="html\work_options_styles_and_color.htm#warnings">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="&ouml;&acirc;&aring;&ograve;&agrave;">

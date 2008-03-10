@@ -144,15 +144,16 @@ public:
 // ----------------------------------------------------------------------------
 class RDOFUNConstant: public RDOParserObject, public RDOParserSrcInfo
 {
-private:
-	RDORTPParam* param;
-
 public:
-	int number;
-	RDOFUNConstant( RDOParser* _parser, RDORTPParam* _param );
-	const std::string&           getName() const  { return param->getName(); }
-	const RDORTPParamType* const getType() const  { return param->getType(); }
-	const RDORTPParam* const     getDescr() const { return param;            }
+	RDOFUNConstant( RDOParser* _parser, RDOFUNConst* _const );
+	const std::string&           getName() const   { return m_const->getName(); }
+	const RDORTPParamType* const getType() const   { return m_const->getType(); }
+	const RDOFUNConst* const     getDescr() const  { return m_const;            }
+	int                          getNumber() const { return m_number;           }
+
+private:
+	RDOFUNConst* m_const;
+	int          m_number;
 };
 
 // ----------------------------------------------------------------------------
@@ -531,15 +532,6 @@ public:
 class RDOFUNFunction: public RDOParserObject, public RDOParserSrcInfo
 {
 friend class RDOParser;
-private:
-	const RDORTPParamType* const retType;
-	std::vector< const RDOFUNFunctionParam* >       params;
-	std::vector< const RDOFUNFunctionListElement* > elements;    // for list and table
-	std::vector< const RDOFUNCalculateIf* >         calculateIf; // for algorithmic
-	rdoRuntime::RDOFunCalc* functionCalc;
-	void setFunctionCalc( rdoRuntime::RDOFunCalc* calc );
-	std::vector< rdoRuntime::RDOCalcFunctionCall* > post_linked; // для рекурсивного вызова
-
 public:
 	RDOFUNFunction( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDORTPParamType* const _retType );
 	RDOFUNFunction( RDOParser* _parser, const std::string& _name, const RDORTPParamType* const _retType );
@@ -553,11 +545,22 @@ public:
 	void createAlgorithmicCalc( const RDOParserSrcInfo& _body_src_info );
 	const std::string& getName() const                                { return src_info().src_text(); }
 	const std::vector< const RDOFUNFunctionParam* > getParams() const { return params;                }
-	      rdoRuntime::RDOFunCalc* getFunctionCalc() const             { return functionCalc;          }
+
+	void setFunctionCalc( rdoRuntime::RDOFunCalc* calc );
+	rdoRuntime::RDOFunCalc* getFunctionCalc() const                   { return functionCalc;          }
+
 	const RDORTPParamType* const getType() const                      { return retType;               }
 	void insertPostLinked( rdoRuntime::RDOCalcFunctionCall* calc ) {
 		post_linked.push_back( calc );
 	}
+
+private:
+	const RDORTPParamType* const retType;
+	std::vector< const RDOFUNFunctionParam* >       params;
+	std::vector< const RDOFUNFunctionListElement* > elements;    // for list and table
+	std::vector< const RDOFUNCalculateIf* >         calculateIf; // for algorithmic
+	rdoRuntime::RDOFunCalc* functionCalc;
+	std::vector< rdoRuntime::RDOCalcFunctionCall* > post_linked; // для рекурсивного вызова
 };
 
 // ----------------------------------------------------------------------------

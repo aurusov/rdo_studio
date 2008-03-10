@@ -169,12 +169,14 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 #include "rdoparser.h"
-#include "rdoparser_rdo.h"
+#include "rdoparser_lexer.h"
 #include "rdofun.h"
 #include "rdodpt.h"
 #include "rdortp.h"
 #include "rdorss.h"
 #include <rdoprocess.h>
+
+#define PARSER reinterpret_cast<rdoParse::RDOLexer*>(lexer)->m_parser
 
 namespace rdoParse 
 {
@@ -207,20 +209,20 @@ dpt_process_input:	/* empty */
 					| dpt_process_input dpt_process_line;
 
 dpt_process_line:	IDENTIF	{
-						parser->error( rdo::format("Неизвестный оператор '%s'", ((std::string *)$1)->c_str()) );
+						PARSER->error( rdo::format("Неизвестный оператор '%s'", ((std::string *)$1)->c_str()) );
 					}
 					| GENERATE fun_arithm {
 
-	RDOPROCTransact::makeRTP( parser );
+	RDOPROCTransact::makeRTP( PARSER );
 
 //	new RDOPROCTransact();
 /*
-	std::string* rtp_trans_param_name   = parser->registerName( "Время_создания" );
-	std::string* rel_res_name = parser->registerName( "Транзакт" );
-	std::string* ie_name      = parser->registerName( "PAT_GENERATE" );
-	std::string* uniform_name = parser->registerName( "Равномерный" );
-	std::string* time_now     = parser->registerName( "Time_now" );
-	std::string* opr_name     = parser->registerName( "OPR_GENERATE" );
+	std::string* rtp_trans_param_name   = PARSER->registerName( "Время_создания" );
+	std::string* rel_res_name = PARSER->registerName( "Транзакт" );
+	std::string* ie_name      = PARSER->registerName( "PAT_GENERATE" );
+	std::string* uniform_name = PARSER->registerName( "Равномерный" );
+	std::string* time_now     = PARSER->registerName( "Time_now" );
+	std::string* opr_name     = PARSER->registerName( "OPR_GENERATE" );
 
 	// Создадим последовательность
 	RDORTPRealResParam*    uniform_real_param            = new RDORTPRealResParam( new RDORTPRealDiap(), new RDORTPRealDefVal(0) );
@@ -247,14 +249,14 @@ dpt_process_line:	IDENTIF	{
 */
 					}
 					| GENERATE error {
-						parser->error( @2, "Ошибка в арифметическом выражении" )
+						PARSER->error( @2, "Ошибка в арифметическом выражении" )
 					}
 					| TERMINATE {
 					}
 					| ADVANCE fun_arithm {
 					}
 					| ADVANCE error {
-						parser->error( @2, "Ошибка в арифметическом выражении" )
+						PARSER->error( @2, "Ошибка в арифметическом выражении" )
 					}
 					| RELEASE IDENTIF {
 					}
@@ -263,7 +265,7 @@ dpt_process_line:	IDENTIF	{
 	@$.first_line   = @1.first_line;
 	@$.last_column  = @1.last_column;
 	@$.last_line    = @1.first_column;
-	parser->error( std::string(_T("Ожидается имя ресурса")).c_str() );
+	PARSER->error( std::string(_T("Ожидается имя ресурса")).c_str() );
 }
 
 					| SEIZE IDENTIF {
@@ -274,7 +276,7 @@ dpt_process_line:	IDENTIF	{
 	std::string rtp_state_buzy = rdoRuntime::RDOPROCBlockForSeize::getStateEnumBuzy();
 
 	// Найти ресурс, если его нет, то создать
-	RDORSSResource* res = const_cast<RDORSSResource*>(parser->findRSSResource( res_name ));
+	RDORSSResource* res = const_cast<RDORSSResource*>(PARSER->findRSSResource( res_name ));
 	if ( !res ) {
 
 		// Сформировать имя типа по имени ресурса
@@ -282,16 +284,16 @@ dpt_process_line:	IDENTIF	{
 
 		// Найти тип ресурса, если его нет, то создать тип и положить в него параметр
 		RDORTPParam* rtp_param = NULL;
-		RDORTPResType* res_type = const_cast<RDORTPResType*>(parser->findRTPResType( res_type_name ));
+		RDORTPResType* res_type = const_cast<RDORTPResType*>(PARSER->findRTPResType( res_type_name ));
 		if ( !res_type ) {
 			// Создадим тип ресурса
-			res_type = new RDORTPResType( parser, res_type_name, true );
+			res_type = new RDORTPResType( PARSER, res_type_name, true );
 
 			// Создадим параметр перечислимого типа
 			RDORTPEnum* state_enum = new RDORTPEnum( res_type, rtp_state_free );
 			state_enum->add( RDOParserSrcInfo(@2, rtp_state_buzy) );
 
-			RDORTPEnumDefVal* state_default = new RDORTPEnumDefVal( parser, rtp_state_free );
+			RDORTPEnumDefVal* state_default = new RDORTPEnumDefVal( PARSER, rtp_state_free );
 
 			RDORTPEnumParamType* rtp_param_enum = new RDORTPEnumParamType( res_type, state_enum, state_default, RDOParserSrcInfo( @2 ) );
 			rtp_param_enum->enum_name = rdo::format( "%s.%s", res_type_name.c_str(), rtp_param_name.c_str() );
@@ -310,19 +312,19 @@ dpt_process_line:	IDENTIF	{
 						rtp_param->getType()->getRSSEnumValue( rtp_state_free, @2 );
 						rtp_param->getType()->getRSSEnumValue( rtp_state_buzy, @2 );
 					} catch ( RDOSyntaxException& ) {
-						parser->error( rdo::format( "У типа ресурса '%s' перечислимый параметр '%s' должен иметь как минимум два обязательных значения: %s и %s", res_type->getName().c_str(), rtp_param_name.c_str(), rtp_state_free.c_str(), rtp_state_buzy.c_str() ) );
+						PARSER->error( rdo::format( "У типа ресурса '%s' перечислимый параметр '%s' должен иметь как минимум два обязательных значения: %s и %s", res_type->getName().c_str(), rtp_param_name.c_str(), rtp_state_free.c_str(), rtp_state_buzy.c_str() ) );
 					}
 				} else {
 					// Параметр Состояние есть, но он не перечислимого типа
-					parser->error( rdo::format( "У типа ресурса '%s' параметр '%s' не является перечислимым типом", res_type->getName().c_str(), rtp_param_name.c_str() ) );
+					PARSER->error( rdo::format( "У типа ресурса '%s' параметр '%s' не является перечислимым типом", res_type->getName().c_str(), rtp_param_name.c_str() ) );
 				}
 			} else {
-				parser->error( rdo::format( "У типа ресурса '%s' нет параметра перечислимого типа '%s'", res_type->getName().c_str(), rtp_param_name.c_str() ) );
+				PARSER->error( rdo::format( "У типа ресурса '%s' нет параметра перечислимого типа '%s'", res_type->getName().c_str(), rtp_param_name.c_str() ) );
 			}
 		}
 
 		// Создать ресурс
-		RDORSSResource* res = new RDOPROCResource( parser, res_name, res_type );
+		RDORSSResource* res = new RDOPROCResource( PARSER, res_name, res_type );
 		res->setTrace( true );
 
 		// Пропишем значения параметров перечислимого типа по-умолчанию
@@ -341,15 +343,15 @@ dpt_process_line:	IDENTIF	{
 
 	} else {
 		// Ресурс найден, найдем для него тип
-		RDORTPResType* res_type = const_cast<RDORTPResType*>(parser->findRTPResType( res->getType()->getName() ));
+		RDORTPResType* res_type = const_cast<RDORTPResType*>(PARSER->findRTPResType( res->getType()->getName() ));
 		if ( !res_type ) {
 			// Тип не найден, выдай сообщение об ошибке
-			parser->error( rdo::format( "Для ресурса %s не наден тип %s", res_name.c_str(), res_type->getName().c_str() ) );
+			PARSER->error( rdo::format( "Для ресурса %s не наден тип %s", res_name.c_str(), res_type->getName().c_str() ) );
 		}
 		RDORTPParam* rtp_param = const_cast<RDORTPParam*>(res_type->findRTPParam( rtp_param_name ));
 		if ( !rtp_param ) {
 			// Не найден перечислимый параметр Состояние, выдай сообщение об ошибке
-			parser->error( rdo::format( "Для типа ресурса %s не наден параметр перечислимого типа %s", res_type->getName().c_str(), rtp_param_name.c_str() ) );
+			PARSER->error( rdo::format( "Для типа ресурса %s не наден параметр перечислимого типа %s", res_type->getName().c_str(), rtp_param_name.c_str() ) );
 		}
 		// Параметр Состояние есть, надо проверить, чтобы в нем были значения Свободен и Занят
 		// Для начала проверим тип параметра
@@ -359,11 +361,11 @@ dpt_process_line:	IDENTIF	{
 				rtp_param->getType()->getRSSEnumValue( rtp_state_free, @2 );
 				rtp_param->getType()->getRSSEnumValue( rtp_state_buzy, @2 );
 			} catch ( RDOSyntaxException& ) {
-				parser->error( rdo::format( "У типа ресурса '%s' перечислимый параметр '%s' должен иметь как минимум два обязательных значения: %s и %s", res_type->getName().c_str(), rtp_param_name.c_str(), rtp_state_free.c_str(), rtp_state_buzy.c_str() ) );
+				PARSER->error( rdo::format( "У типа ресурса '%s' перечислимый параметр '%s' должен иметь как минимум два обязательных значения: %s и %s", res_type->getName().c_str(), rtp_param_name.c_str(), rtp_state_free.c_str(), rtp_state_buzy.c_str() ) );
 			}
 		} else {
 			// Параметр Состояние есть, но он не перечислимого типа
-			parser->error( rdo::format( "У типа ресурса '%s' параметр '%s' не является перечислимым типом", res_type->getName().c_str(), rtp_param_name.c_str() ) );
+			PARSER->error( rdo::format( "У типа ресурса '%s' параметр '%s' не является перечислимым типом", res_type->getName().c_str(), rtp_param_name.c_str() ) );
 		}
 
 	}
@@ -396,10 +398,10 @@ fun_logic:	fun_arithm '=' fun_arithm         { $$ = (int)(*(RDOFUNArithm *)$1 ==
 				$$ = $2;
 			}
 			| '[' fun_logic error {
-				parser->error( @2, "Ожидается закрывающаяся скобка" );
+				PARSER->error( @2, "Ожидается закрывающаяся скобка" );
 			}
 			| '(' fun_logic error {
-				parser->error( @2, "Ожидается закрывающаяся скобка" );
+				PARSER->error( @2, "Ожидается закрывающаяся скобка" );
 			}
 			| not_keyword fun_logic {
 				RDOFUNLogic* logic = reinterpret_cast<RDOFUNLogic*>($2);
@@ -431,23 +433,23 @@ fun_arithm: fun_arithm '+' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOF
 			| fun_select_arithm {
 			}
 			| IDENTIF '.' IDENTIF {
-				$$ = (int)new RDOFUNArithm( parser, RDOParserSrcInfo( @1, *reinterpret_cast<std::string*>($1) ), RDOParserSrcInfo( @3, *reinterpret_cast<std::string*>($3) ) );
+				$$ = (int)new RDOFUNArithm( PARSER, RDOParserSrcInfo( @1, *reinterpret_cast<std::string*>($1) ), RDOParserSrcInfo( @3, *reinterpret_cast<std::string*>($3) ) );
 			}
-			| INT_CONST                   { $$ = (int)new RDOFUNArithm( parser, (int)$1, RDOParserSrcInfo( @1, reinterpret_cast<RDOLexer*>(lexer)->YYText() ) );     }
-			| REAL_CONST                  { $$ = (int)new RDOFUNArithm( parser, (double*)$1, RDOParserSrcInfo( @1, reinterpret_cast<RDOLexer*>(lexer)->YYText() ) ); }
-			| IDENTIF                     { $$ = (int)new RDOFUNArithm( parser, *(std::string*)$1, @1 );                                                             }
+			| INT_CONST                   { $$ = (int)new RDOFUNArithm( PARSER, (int)$1, RDOParserSrcInfo( @1, reinterpret_cast<RDOLexer*>(lexer)->YYText() ) );     }
+			| REAL_CONST                  { $$ = (int)new RDOFUNArithm( PARSER, (double*)$1, RDOParserSrcInfo( @1, reinterpret_cast<RDOLexer*>(lexer)->YYText() ) ); }
+			| IDENTIF                     { $$ = (int)new RDOFUNArithm( PARSER, *(std::string*)$1, @1 );                                                             }
 			| '-' fun_arithm %prec UMINUS {
 				RDOParserSrcInfo info;
 				info.setSrcPos( @1, @2 );
 				info.setSrcText( "-" + reinterpret_cast<RDOFUNArithm*>($2)->src_text() );
-				$$ = (int)new RDOFUNArithm( parser, reinterpret_cast<RDOFUNArithm*>($2)->getType(), new rdoRuntime::RDOCalcUMinus( parser->runtime, reinterpret_cast<RDOFUNArithm*>($2)->createCalc() ), info );
+				$$ = (int)new RDOFUNArithm( PARSER, reinterpret_cast<RDOFUNArithm*>($2)->getType(), new rdoRuntime::RDOCalcUMinus( PARSER->runtime, reinterpret_cast<RDOFUNArithm*>($2)->createCalc() ), info );
 			};
 
 // ----------------------------------------------------------------------------
 // ---------- Функции и последовательности
 // ----------------------------------------------------------------------------
 fun_arithm_func_call:	IDENTIF '(' ')' {
-							RDOFUNParams* fun = new RDOFUNParams( parser );
+							RDOFUNParams* fun = new RDOFUNParams( PARSER );
 							std::string fun_name = *reinterpret_cast<std::string*>($1);
 							fun->funseq_name.setSrcInfo( RDOParserSrcInfo(@1, fun_name) );
 							fun->setSrcPos( @1, @3 );
@@ -465,11 +467,11 @@ fun_arithm_func_call:	IDENTIF '(' ')' {
 							$$ = (int)arithm;
 						}
 						| IDENTIF '(' error {
-							parser->error( @3, "Ошибка в параметрах функции" );
+							PARSER->error( @3, "Ошибка в параметрах функции" );
 						};
 
 fun_arithm_func_call_pars:	fun_arithm {
-								RDOFUNParams* fun = new RDOFUNParams( parser );
+								RDOFUNParams* fun = new RDOFUNParams( PARSER );
 								RDOFUNArithm* arithm = reinterpret_cast<RDOFUNArithm*>($1);
 								fun->setSrcText( arithm->src_text() );
 								fun->addParameter( arithm );
@@ -483,10 +485,10 @@ fun_arithm_func_call_pars:	fun_arithm {
 								$$ = (int)fun;
 							}
 							| fun_arithm_func_call_pars error {
-								parser->error( @2, "Ошибка в арифметическом выражении" );
+								PARSER->error( @2, "Ошибка в арифметическом выражении" );
 							}
 							| fun_arithm_func_call_pars ',' error {
-								parser->error( @3, "Ошибка в арифметическом выражении" );
+								PARSER->error( @3, "Ошибка в арифметическом выражении" );
 							};
 
 // ----------------------------------------------------------------------------
@@ -499,13 +501,13 @@ fun_group_keyword:	Exist			{ $$ = RDOFUNGroupLogic::fgt_exist;     }
 
 fun_group_header:	fun_group_keyword '(' IDENTIF_COLON {
 						std::string type_name = *reinterpret_cast<std::string*>($3);
-						$$ = (int)(new RDOFUNGroupLogic( parser, (RDOFUNGroupLogic::FunGroupType)$1, RDOParserSrcInfo(@3, type_name, RDOParserSrcInfo::psi_align_bytext) ));
+						$$ = (int)(new RDOFUNGroupLogic( PARSER, (RDOFUNGroupLogic::FunGroupType)$1, RDOParserSrcInfo(@3, type_name, RDOParserSrcInfo::psi_align_bytext) ));
 					}
 					| fun_group_keyword '(' error {
-						parser->error( @3, "Ожидается имя типа" );
+						PARSER->error( @3, "Ожидается имя типа" );
 					}
 					| fun_group_keyword error {
-						parser->error( @1, "После имени функции ожидается октрывающаяся скобка" );
+						PARSER->error( @1, "После имени функции ожидается октрывающаяся скобка" );
 					};
 
 fun_group:			fun_group_header fun_logic ')' {
@@ -516,19 +518,19 @@ fun_group:			fun_group_header fun_logic ')' {
 					| fun_group_header NoCheck ')' {
 						RDOFUNGroupLogic* groupfun = reinterpret_cast<RDOFUNGroupLogic*>($1);
 						groupfun->setSrcPos( @1, @3 );
-						RDOFUNLogic* trueLogic = new RDOFUNLogic( groupfun, new rdoRuntime::RDOCalcConst( parser->runtime, 1 ) );
+						RDOFUNLogic* trueLogic = new RDOFUNLogic( groupfun, new rdoRuntime::RDOCalcConst( PARSER->runtime, 1 ) );
 						trueLogic->setSrcPos( @2 );
 						trueLogic->setSrcText( "NoCheck" );
 						$$ = (int)groupfun->createFunLogic( trueLogic );
 					}
 					| fun_group_header fun_logic error {
-						parser->error( @2, "Ожидается закрывающаяся скобка" );
+						PARSER->error( @2, "Ожидается закрывающаяся скобка" );
 					}
 					| fun_group_header NoCheck error {
-						parser->error( @2, "Ожидается закрывающаяся скобка" );
+						PARSER->error( @2, "Ожидается закрывающаяся скобка" );
 					}
 					| fun_group_header error {
-						parser->error( @1, @2, "Ошибка в логическом выражении" )
+						PARSER->error( @1, @2, "Ошибка в логическом выражении" )
 					};
 
 // ----------------------------------------------------------------------------
@@ -536,15 +538,15 @@ fun_group:			fun_group_header fun_logic ')' {
 // ----------------------------------------------------------------------------
 fun_select_header:	Select '(' IDENTIF_COLON {
 						std::string type_name = *reinterpret_cast<std::string*>($3);
-						RDOFUNSelect* select = new RDOFUNSelect( parser, RDOParserSrcInfo(@3, type_name, RDOParserSrcInfo::psi_align_bytext) );
+						RDOFUNSelect* select = new RDOFUNSelect( PARSER, RDOParserSrcInfo(@3, type_name, RDOParserSrcInfo::psi_align_bytext) );
 						select->setSrcText( "Select(" + type_name + ": " );
 						$$ = (int)select;
 					}
 					| Select '(' error {
-						parser->error( @3, "Ожидается имя типа" );
+						PARSER->error( @3, "Ожидается имя типа" );
 					}
 					| Select error {
-						parser->error( @1, "Ожидается октрывающаяся скобка" );
+						PARSER->error( @1, "Ожидается октрывающаяся скобка" );
 					};
 
 fun_select_body:	fun_select_header fun_logic ')' {
@@ -557,19 +559,19 @@ fun_select_body:	fun_select_header fun_logic ')' {
 						RDOFUNSelect* select = reinterpret_cast<RDOFUNSelect*>($1);
 						RDOParserSrcInfo logic_info(@2, "NoCheck");
 						select->setSrcText( select->src_text() + logic_info.src_text() + ")" );
-						rdoRuntime::RDOCalcConst* calc_nocheck = new rdoRuntime::RDOCalcConst( parser->runtime, 1 );
+						rdoRuntime::RDOCalcConst* calc_nocheck = new rdoRuntime::RDOCalcConst( PARSER->runtime, 1 );
 						RDOFUNLogic* flogic = new RDOFUNLogic( select, calc_nocheck, true );
 						flogic->setSrcInfo( logic_info );
 						select->initSelect( flogic );
 					}
 					| fun_select_header fun_logic error {
-						parser->error( @2, "Ожидается закрывающаяся скобка" );
+						PARSER->error( @2, "Ожидается закрывающаяся скобка" );
 					}
 					| fun_select_header NoCheck error {
-						parser->error( @2, "Ожидается закрывающаяся скобка" );
+						PARSER->error( @2, "Ожидается закрывающаяся скобка" );
 					}
 					| fun_select_header error {
-						parser->error( @1, @2, "Ошибка в логическом выражении" )
+						PARSER->error( @1, @2, "Ошибка в логическом выражении" )
 					};
 
 fun_select_keyword:	Exist			{ $$ = RDOFUNGroupLogic::fgt_exist;     }
@@ -584,10 +586,10 @@ fun_select_logic:	fun_select_body '.' fun_select_keyword '(' fun_logic ')' {
 						$$ = (int)logic;
 					}
 					| fun_select_body '.' fun_select_keyword '(' error {
-						parser->error( @4, @5, "Ошибка в логическом выражении" )
+						PARSER->error( @4, @5, "Ошибка в логическом выражении" )
 					}
 					| fun_select_body '.' fun_select_keyword error {
-						parser->error( @3, "Ожидается октрывающаяся скобка" );
+						PARSER->error( @3, "Ожидается октрывающаяся скобка" );
 					}
 					| fun_select_body '.' Empty_kw '(' ')' {
 						RDOFUNSelect* select = reinterpret_cast<RDOFUNSelect*>($1);
@@ -597,16 +599,16 @@ fun_select_logic:	fun_select_body '.' fun_select_keyword '(' fun_logic ')' {
 						$$ = (int)logic;
 					}
 					| fun_select_body '.' Empty_kw '(' error {
-						parser->error( @4, "Ожидается закрывающаяся скобка" );
+						PARSER->error( @4, "Ожидается закрывающаяся скобка" );
 					}
 					| fun_select_body '.' Empty_kw error {
-						parser->error( @3, "Ожидается октрывающаяся скобка" );
+						PARSER->error( @3, "Ожидается октрывающаяся скобка" );
 					}
 					| fun_select_body '.' error {
-						parser->error( @2, @3, "Ожидается метод списка ресурсов" );
+						PARSER->error( @2, @3, "Ожидается метод списка ресурсов" );
 					}
 					| fun_select_body error {
-						parser->error( @1, "Ожидается '.' (точка) для вызова метода списка ресурсов" );
+						PARSER->error( @1, "Ожидается '.' (точка) для вызова метода списка ресурсов" );
 					};
 
 fun_select_arithm:	fun_select_body '.' Size_kw '(' ')' {
@@ -617,10 +619,10 @@ fun_select_arithm:	fun_select_body '.' Size_kw '(' ')' {
 						$$ = (int)arithm;
 					}
 					| fun_select_body '.' Size_kw error {
-						parser->error( @3, "Ожидается октрывающаяся скобка" );
+						PARSER->error( @3, "Ожидается октрывающаяся скобка" );
 					}
 					| fun_select_body '.' Size_kw '(' error {
-						parser->error( @4, "Ожидается закрывающаяся скобка" );
+						PARSER->error( @4, "Ожидается закрывающаяся скобка" );
 					};
 
 %%

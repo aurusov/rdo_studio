@@ -165,7 +165,10 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 #include "rdoparser.h"
+#include "rdoparser_lexer.h"
 #include "rdosmr.h"
+
+#define PARSER reinterpret_cast<rdoParse::RDOLexer*>(lexer)->m_parser
 
 namespace rdoParse 
 {
@@ -178,75 +181,75 @@ namespace rdoParse
 smr_main:	smr_model smr_descr;
 
 smr_model:	Model_name '=' IDENTIF {
-				$$ = (int)new RDOSMR( parser, *reinterpret_cast<std::string*>($3) );
+				$$ = (int)new RDOSMR( PARSER, *reinterpret_cast<std::string*>($3) );
 			}
 			| Model_name '=' error {
-				parser->error( @2, @3, "ќжидаетс€ им€ модели" );
+				PARSER->error( @2, @3, "ќжидаетс€ им€ модели" );
 			}
 			| Model_name error {
-				parser->error( @1, "ќжидаетс€ '='" );
+				PARSER->error( @1, "ќжидаетс€ '='" );
 			};
 
 smr_descr:	/* empty */
 			| smr_descr Resource_file '=' IDENTIF {
-				RDOSMR* smr = parser->getSMR();
+				RDOSMR* smr = PARSER->getSMR();
 				smr->setFile( "Resource_file", *reinterpret_cast<std::string*>($4) );
 			}
 			| smr_descr Resource_file '=' error {
-				parser->error( @3, @4, "ќжидаетс€ им€ файла ресурсов" );
+				PARSER->error( @3, @4, "ќжидаетс€ им€ файла ресурсов" );
 			}
 			| smr_descr Resource_file error {
-				parser->error( @2, "ќжидаетс€ '='" );
+				PARSER->error( @2, "ќжидаетс€ '='" );
 			}
 			| smr_descr OprIev_file '=' IDENTIF {
-				RDOSMR* smr = parser->getSMR();
+				RDOSMR* smr = PARSER->getSMR();
 				smr->setFile( "OprIev_file", *reinterpret_cast<std::string*>($4) );
 			}
 			| smr_descr OprIev_file '=' error {
-				parser->error( @3, @4, "ќжидаетс€ им€ файла операций" );
+				PARSER->error( @3, @4, "ќжидаетс€ им€ файла операций" );
 			}
 			| smr_descr OprIev_file error {
-				parser->error( @2, "ќжидаетс€ '='" );
+				PARSER->error( @2, "ќжидаетс€ '='" );
 			}
 			| smr_descr Frame_file '=' IDENTIF {
-				RDOSMR* smr = parser->getSMR();
+				RDOSMR* smr = PARSER->getSMR();
 				smr->setFile( "Frame_file", *reinterpret_cast<std::string*>($4) );
 			}
 			| smr_descr Frame_file '=' error {
-				parser->error( @3, @4, "ќжидаетс€ им€ файла анимации" );
+				PARSER->error( @3, @4, "ќжидаетс€ им€ файла анимации" );
 			}
 			| smr_descr Frame_file error {
-				parser->error( @2, "ќжидаетс€ '='" );
+				PARSER->error( @2, "ќжидаетс€ '='" );
 			}
 			| smr_descr Statistic_file '=' IDENTIF {
-				RDOSMR* smr = parser->getSMR();
+				RDOSMR* smr = PARSER->getSMR();
 				smr->setFile( "Statistic_file", *reinterpret_cast<std::string*>($4) );
 			}
 			| smr_descr Statistic_file '=' error {
-				parser->error( @3, @4, "ќжидаетс€ им€ файла собираемых показателей" );
+				PARSER->error( @3, @4, "ќжидаетс€ им€ файла собираемых показателей" );
 			}
 			| smr_descr Statistic_file error {
-				parser->error( @2, "ќжидаетс€ '='" );
+				PARSER->error( @2, "ќжидаетс€ '='" );
 			}
 			| smr_descr Results_file '=' IDENTIF {
-				RDOSMR* smr = parser->getSMR();
+				RDOSMR* smr = PARSER->getSMR();
 				smr->setFile( "Results_file", *reinterpret_cast<std::string*>($4) );
 			}
 			| smr_descr Results_file '=' error {
-				parser->error( @3, @4, "ќжидаетс€ им€ файла результатов" );
+				PARSER->error( @3, @4, "ќжидаетс€ им€ файла результатов" );
 			}
 			| smr_descr Results_file error {
-				parser->error( @2, "ќжидаетс€ '='" );
+				PARSER->error( @2, "ќжидаетс€ '='" );
 			}
 			| smr_descr Trace_file '=' IDENTIF {
-				RDOSMR* smr = parser->getSMR();
+				RDOSMR* smr = PARSER->getSMR();
 				smr->setFile( "Trace_file", *reinterpret_cast<std::string*>($4) );
 			}
 			| smr_descr Trace_file '=' error {
-				parser->error( @3, @4, "ќжидаетс€ им€ файла трассировки" );
+				PARSER->error( @3, @4, "ќжидаетс€ им€ файла трассировки" );
 			}
 			| smr_descr Trace_file error {
-				parser->error( @2, "ќжидаетс€ '='" );
+				PARSER->error( @2, "ќжидаетс€ '='" );
 			}
 			| smr_descr error {
 			};

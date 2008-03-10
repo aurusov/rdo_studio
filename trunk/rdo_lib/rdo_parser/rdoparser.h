@@ -208,8 +208,6 @@ public:
 	void warning( const std::string& _message, rdoSimulator::RDOSyntaxError::ErrorCode _error_code = rdoSimulator::RDOSyntaxError::UNKNOWN );
 	void warning( const RDOParserSrcInfo& _src_info, const std::string& _message, rdoSimulator::RDOSyntaxError::ErrorCode _error_code = rdoSimulator::RDOSyntaxError::UNKNOWN );
 
-	void LoadStdFunctions();
-
 	std::string* registerName( const char* name ) {
 		std::vector< std::string* >::iterator it = allNames.begin();
 		while ( it != allNames.end() ) {
@@ -241,8 +239,8 @@ public:
 	int  lexer_loc_pos() const                                { return parser_base ? parser_base->lexer_loc_pos() : 0;                  }
 };
 
-extern RDOParser* parser;
+//extern RDOParser* parser;
 
-} // namespace rdoParse 
+} // namespace rdoParse
 
 #endif // RDOPARSER_PARSER

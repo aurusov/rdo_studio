@@ -142,6 +142,10 @@ public:
 			last_pos( _last_pos )
 		{
 		}
+		bool empty() const
+		{
+			return first_line == -1 && first_pos == -1 && last_line == -1 && last_pos == -1;
+		}
 	};
 
 private:
@@ -193,6 +197,10 @@ public:
 	const Position&                    src_pos()  const     { return position;  }
 	const std::string&                 src_text() const     { return text_data; }
 	const rdoModelObjects::RDOFileType src_filetype() const { return file_type; }
+	bool                               src_empty() const
+	{
+		return position.empty() && text_data.empty() && file_type == rdoModelObjects::TRC;
+	}
 };
 
 // ----------------------------------------------------------------------------

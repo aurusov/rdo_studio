@@ -181,6 +181,10 @@ SOURCE=.\rdoparser_base.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\rdoparser_corba.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\rdoparser_lexer.cpp
 
 !IF  "$(CFG)" == "rdo_parser - Win32 Release"
@@ -319,6 +323,10 @@ SOURCE=.\rdoparser.h
 # Begin Source File
 
 SOURCE=.\rdoparser_base.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdoparser_corba.h
 # End Source File
 # Begin Source File
 

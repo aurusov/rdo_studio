@@ -122,14 +122,14 @@ void RDOPATPattern::addRelResConvert( bool trace, RDOPATParamSet* parSet, const 
 				case rdoRuntime::RDOValue::ParamType::pt_int: {
 					const RDORTPIntParamType* param_type = static_cast<const RDORTPIntParamType*>(param->getType());
 					if ( param_type->diap->isExist() ) {
-						calc = new rdoRuntime::RDOSetRelParamDiapCalc( getParser()->runtime, parSet->getRelRes()->rel_res_id, parNumb, rightValue, param_type->diap->min_value, param_type->diap->max_value );
+						calc = new rdoRuntime::RDOSetRelParamDiapCalc( getParser()->runtime, parSet->getRelRes()->rel_res_id, parNumb, rightValue, param_type->diap->getMin(), param_type->diap->getMax() );
 						break;
 					}
 				}
 				case rdoRuntime::RDOValue::ParamType::pt_real: {
 					const RDORTPRealParamType* param_type = static_cast<const RDORTPRealParamType*>(param->getType());
 					if ( param_type->diap->isExist() ) {
-						calc = new rdoRuntime::RDOSetRelParamDiapCalc( getParser()->runtime, parSet->getRelRes()->rel_res_id, parNumb, rightValue, param_type->diap->min_value, param_type->diap->max_value );
+						calc = new rdoRuntime::RDOSetRelParamDiapCalc( getParser()->runtime, parSet->getRelRes()->rel_res_id, parNumb, rightValue, param_type->diap->getMin(), param_type->diap->getMax() );
 						break;
 					}
 				}

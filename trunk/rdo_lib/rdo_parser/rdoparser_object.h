@@ -10,13 +10,12 @@ namespace rdoParse
 // ----------------------------------------------------------------------------
 // ---------- RDODeletable
 // ----------------------------------------------------------------------------
+class RDOParser;
+
 class RDODeletable
 {
-private:
-	size_t object_size;
-
 public:
-	RDODeletable();
+	RDODeletable( RDOParser* parser );
 	virtual ~RDODeletable();
 
 	void noAutoDelete();
@@ -25,6 +24,10 @@ public:
 	void* operator new( size_t sz );
 	void operator delete( void* v );
 #endif
+
+private:
+	RDOParser* m_parser;
+	size_t     object_size;
 };
 
 // ----------------------------------------------------------------------------
@@ -124,9 +127,11 @@ public:
 template <class T> class compareName
 {
 public:
-	const std::string& name;
-	compareName( const std::string& _name ): name(_name) {}
-	bool operator() (const T* other) { return other->getName() == name; }
+	compareName( const std::string& name ): m_name(name) {}
+	bool operator() (const T* obj) { return obj->getName() == m_name; }
+
+private:
+	const std::string& m_name;
 };
 
 } // namespace rdoParse

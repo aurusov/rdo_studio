@@ -61,12 +61,13 @@ public:
 // ----------------------------------------------------------------------------
 // ---------- RDOParserSTDFUN
 // ----------------------------------------------------------------------------
-class RDOParserSTDFUN: public RDOParserRDO
+class RDOParserSTDFUN: public RDOParserBase
 {
 public:
-	RDOParserSTDFUN( RDOParser* _parser ): RDOParserRDO( _parser, rdoModelObjects::FUN, NULL, NULL, NULL ) {};
+	RDOParserSTDFUN( RDOParser* _parser ): RDOParserBase( _parser, rdoModelObjects::FUN, NULL, NULL, NULL ) {};
 
 	virtual void parse();
+	virtual void parse( std::istream& in_stream ) { parse(); }
 };
 
 // ----------------------------------------------------------------------------

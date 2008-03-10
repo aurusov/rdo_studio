@@ -726,7 +726,7 @@ void RDOThreadCodeComp::proc( RDOMessageInfo& msg )
 {
 	switch ( msg.message ) {
 		case RT_CODECOMP_GET_DATA: {
-			if ( rdoParse::parser ) parser = rdoParse::parser;
+//			if ( rdoParse::parser ) parser = rdoParse::parser;
 			if ( !parser ) break;
 			msg.lock();
 			GetCodeComp* data = static_cast<GetCodeComp*>(msg.param);
@@ -745,7 +745,7 @@ void RDOThreadCodeComp::proc( RDOMessageInfo& msg )
 				rtp_it++;
 			}
 			msg.unlock();
-			if ( parser != rdoParse::parser ) delete parser;
+//			if ( parser != rdoParse::parser ) delete parser;
 			parser = NULL;
 			break;
 		}

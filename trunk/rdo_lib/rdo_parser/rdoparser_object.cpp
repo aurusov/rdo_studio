@@ -15,9 +15,14 @@ namespace rdoParse
 // ----------------------------------------------------------------------------
 // ---------- RDODeletable
 // ----------------------------------------------------------------------------
-RDODeletable::RDODeletable()
+RDODeletable::RDODeletable( RDOParser* parser ):
+	m_parser( parser )
 {
-	parser->insertDeletables( this );
+	if ( m_parser )
+	{
+		m_parser->insertDeletables( this );
+		m_parser->runtime->memory_insert( object_size );
+	}
 }
 
 RDODeletable::~RDODeletable()
@@ -27,7 +32,10 @@ RDODeletable::~RDODeletable()
 
 void RDODeletable::noAutoDelete()
 {
-	parser->removeDeletables( this );
+	if ( m_parser )
+	{
+		m_parser->removeDeletables( this );
+	}
 }
 
 #ifndef _DEBUG
@@ -35,13 +43,15 @@ void* RDODeletable::operator new( size_t sz )
 {
 	RDODeletable* obj = static_cast<RDODeletable*>(::operator new( sz ));
 	obj->object_size = sz;
-	parser->runtime->memory_insert( sz );
 	return obj;
 }
 
 void RDODeletable::operator delete( void* v )
 {
-	parser->runtime->memory_remove( static_cast<RDODeletable*>(v)->object_size );
+	if ( static_cast<RDODeletable*>(v)->m_parser )
+	{
+		static_cast<RDODeletable*>(v)->m_parser->runtime->memory_remove( static_cast<RDODeletable*>(v)->object_size );
+	}
 	::operator delete( v );
 }
 #endif
@@ -50,14 +60,14 @@ void RDODeletable::operator delete( void* v )
 // ---------- RDOParserObject
 // ----------------------------------------------------------------------------
 RDOParserObject::RDOParserObject( RDOParser* _parser ):
-	RDODeletable(),
+	RDODeletable( _parser ),
 	parser( _parser ),
 	parent( NULL )
 {
 }
 
 RDOParserObject::RDOParserObject( const RDOParserObject* _parent ):
-	RDODeletable(),
+	RDODeletable( _parent->parser ),
 	parent( _parent )
 {
 	parser = _parent->parser;
@@ -138,9 +148,9 @@ RDOParserSrcInfo::RDOParserSrcInfo( const YYLTYPE& _pos_begin, const YYLTYPE& _p
 
 void RDOParserSrcInfo::init()
 {
-	setSrcFileType( parser->getFileToParse() );
+//qq2	setSrcFileType( parser->getFileToParse() );
 	rdoRuntime::RDOSrcInfo::Position pos = src_pos();
-	pos.last_line = parser->lexer_loc_line();
+//qq2	pos.last_line = parser->lexer_loc_line();
 	RDOSrcInfo::setSrcPos( pos );
 }
 

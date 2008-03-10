@@ -167,6 +167,9 @@ static char THIS_FILE[] = __FILE__;
 #include "rdoopr.h"
 #include "rdopat.h"
 #include "rdoparser.h"
+#include "rdoparser_lexer.h"
+
+#define PARSER reinterpret_cast<rdoParse::RDOLexer*>(lexer)->m_parser
 
 namespace rdoParse 
 {
@@ -176,23 +179,23 @@ namespace rdoParse
 
 opr_main:	opr_end
 			| error {
-				if ( !parser->isHaveKWOperations() ) {
-					parser->error( @1, "Ожидается ключевое слово $Operations" );
-				} else if ( parser->isHaveKWOperationsEnd() ) {
-					parser->error( @1, "Операции уже определены" );
+				if ( !PARSER->isHaveKWOperations() ) {
+					PARSER->error( @1, "Ожидается ключевое слово $Operations" );
+				} else if ( PARSER->isHaveKWOperationsEnd() ) {
+					PARSER->error( @1, "Операции уже определены" );
 				} else {
-					parser->error( @1, rdoSimulator::RDOSyntaxError::UNKNOWN );
+					PARSER->error( @1, rdoSimulator::RDOSyntaxError::UNKNOWN );
 				}
 			};
 
 opr_header:	Operations {
-				parser->setHaveKWOperations( true );
+				PARSER->setHaveKWOperations( true );
 			};
 
 opr_body:	opr_header IDENTIF_COLON IDENTIF {
 				std::string name = *reinterpret_cast<std::string*>($2);
 				RDOParserSrcInfo pattern( @3, *reinterpret_cast<std::string*>($3) );
-				RDOOPROperation* opr = new RDOOPROperation( parser, RDOParserSrcInfo(@2, name, RDOParserSrcInfo::psi_align_bytext), pattern );
+				RDOOPROperation* opr = new RDOOPROperation( PARSER, RDOParserSrcInfo(@2, name, RDOParserSrcInfo::psi_align_bytext), pattern );
 				$$ = (int)opr;
 			}
 			| opr_param IDENTIF_COLON IDENTIF {
@@ -200,17 +203,17 @@ opr_body:	opr_header IDENTIF_COLON IDENTIF {
 				opr->endParam( @1 );
 				std::string name = *reinterpret_cast<std::string*>($2);
 				RDOParserSrcInfo pattern( @3, *reinterpret_cast<std::string*>($3) );
-				opr = new RDOOPROperation( parser, RDOParserSrcInfo(@2, name, RDOParserSrcInfo::psi_align_bytext), pattern );
+				opr = new RDOOPROperation( PARSER, RDOParserSrcInfo(@2, name, RDOParserSrcInfo::psi_align_bytext), pattern );
 				$$ = (int)opr;
 			}
 			| opr_header IDENTIF_COLON error {
-				parser->error( @2, @3, "Ожидается имя образца" );
+				PARSER->error( @2, @3, "Ожидается имя образца" );
 			}
 			| opr_param IDENTIF_COLON error {
-				parser->error( @2, @3, "Ожидается имя образца" );
+				PARSER->error( @2, @3, "Ожидается имя образца" );
 			}
 			| opr_header error {
-				parser->error( @2, "Ожидается имя операции" );
+				PARSER->error( @2, "Ожидается имя операции" );
 			};
 
 opr_keyb:	opr_body
@@ -249,7 +252,7 @@ opr_param:	opr_param IDENTIF {
 opr_end:	opr_param End {
 				RDOOPROperation* opr = reinterpret_cast<RDOOPROperation*>($1);
 				opr->endParam( @1 );
-				parser->setHaveKWOperationsEnd( true );
+				PARSER->setHaveKWOperationsEnd( true );
 			};
 
 %%

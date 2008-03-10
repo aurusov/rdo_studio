@@ -63,24 +63,35 @@ public:
 // ----------------------------------------------------------------------------
 // ---------- RDORTPParam
 // ----------------------------------------------------------------------------
-// Параметр ресурса или константа, т.е. с getResType() надо быть поосторожнее,
-// т.к. он или RDORTPResType или NULL (для константы)
+// Параметр ресурса (RDORTPParam) или константа(RDOFUNConst)
+// С методом getResType() надо быть поосторожнее, т.к.
+// он или RDORTPResType или NULL для константы
 // ----------------------------------------------------------------------------
 class RDORTPResType;
 
 class RDORTPParam: public RDOParserObject, public RDOParserSrcInfo
 {
-private:
-	const RDORTPParamType* const parType;
-	const RDORTPResType*   const resType;
-
 public:
-	RDORTPParam( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDORTPParamType* const _parType );
 	RDORTPParam( RDORTPResType* _parent, const RDOParserSrcInfo& _src_info, const RDORTPParamType* const _parType );
 	const std::string&           getName() const    { return src_info().src_text(); }
-	const RDORTPParamType* const getType() const    { return parType; }
-	const RDORTPResType* const   getResType() const { return resType; }
+	const RDORTPParamType* const getType() const    { return m_parType; }
+	const RDORTPResType* const   getResType() const { return m_resType; }
 	int writeModelStructure() const;
+
+protected:
+	RDORTPParam( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDORTPParamType* const _parType );
+
+	const RDORTPParamType* const m_parType;
+	const RDORTPResType*   const m_resType;
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOFUNConst
+// ----------------------------------------------------------------------------
+class RDOFUNConst: public RDORTPParam
+{
+public:
+	RDOFUNConst( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const RDORTPParamType* const _parType );
 };
 
 // ----------------------------------------------------------------------------
@@ -88,24 +99,25 @@ public:
 // ----------------------------------------------------------------------------
 class RDORTPResType: public RDOParserObject, public RDOParserSrcInfo
 {
-protected:
-	const int                         number;
-	const bool                        permanent;
-	std::vector< const RDORTPParam* > params;
-
 public:
 	RDORTPResType( RDOParser* _parser, const RDOParserSrcInfo& _src_info, const bool _permanent );
-	const std::string& getName() const       { return src_text(); };
-	int getNumber() const                    { return number;     };
-	bool isPermanent() const                 { return permanent;  };
-	bool isTemporary() const                 { return !permanent; };
+	const std::string& getName() const       { return src_text();   };
+	int getNumber() const                    { return m_number;     };
+	bool isPermanent() const                 { return m_permanent;  };
+	bool isTemporary() const                 { return !m_permanent; };
 
 	void addParam( const RDORTPParam* const param );
+	void addParam( const std::string param_name, rdoRuntime::RDOValue::ParamType param_type );
 	const RDORTPParam* findRTPParam( const std::string& param ) const;
 	int getRTPParamNumber( const std::string& param ) const;
-	const std::vector< const RDORTPParam* >& getParams() const { return params; }
+	const std::vector< const RDORTPParam* >& getParams() const { return m_params; }
 
 	int writeModelStructure() const;
+
+private:
+	const int                         m_number;
+	const bool                        m_permanent;
+	std::vector< const RDORTPParam* > m_params;
 };
 
 // ----------------------------------------------------------------------------
@@ -171,25 +183,88 @@ public:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDORTPIntDiap - даипазон, например, [1 .. 4]
+// ---------- RDORTPDiap - Шаблон классов диапазонов для integer и real
 // ----------------------------------------------------------------------------
 // Сначала цепляется к парсеру, а потом идет reparent на тип ресурса
 // ----------------------------------------------------------------------------
-class RDORTPIntDiap: public RDOParserObject, public RDOParserSrcInfo
+template<class T>
+class RDORTPDiap: public RDOParserObject, public RDOParserSrcInfo
 {
-private:
-	bool exist;
-
 public:
-	int min_value;
-	int max_value;
-	RDORTPIntDiap( RDOParser* _parser );
-	RDORTPIntDiap( RDOParser* _parser, const RDORTPIntDiap& copy );
-	RDORTPIntDiap( RDOParser* _parser, const RDOParserSrcInfo& _src_info );
-	RDORTPIntDiap( RDOParser* _parser, int _min_value, int _max_value, const RDOParserSrcInfo& _src_info, const YYLTYPE& _max_value_pos );
-	RDORTPIntDiap( const RDORTPIntDiap& copy );
-	bool isExist() const { return exist; }
+	RDORTPDiap( RDOParser* _parser ):
+		RDOParserObject( _parser ),
+		RDOParserSrcInfo(),
+		m_exist( false ),
+		m_min_value( 0 ),
+		m_max_value( 0 )
+	{
+	}
+	RDORTPDiap( RDOParser* _parser, const RDORTPDiap<T>& copy ):
+		RDOParserObject( _parser ),
+		RDOParserSrcInfo( copy.src_info() ),
+		m_exist( copy.m_exist ),
+		m_min_value( copy.m_min_value ),
+		m_max_value( copy.m_max_value )
+	{
+	}
+	RDORTPDiap( const RDORTPDiap<T>& copy ):
+		RDOParserObject( copy.getParser() ),
+		RDOParserSrcInfo( copy.src_info() ),
+		m_exist( copy.m_exist ),
+		m_min_value( copy.m_min_value ),
+		m_max_value( copy.m_max_value )
+	{
+	}
+	RDORTPDiap( RDOParser* _parser, const RDOParserSrcInfo& _src_info ):
+		RDOParserObject( _parser ),
+		RDOParserSrcInfo( _src_info ),
+		m_exist( false ),
+		m_min_value( 0 ),
+		m_max_value( 0 )
+	{
+	}
+	RDORTPDiap( RDOParser* _parser, T min_value, T max_value, const RDOParserSrcInfo& _src_info, const YYLTYPE& max_value_pos ):
+		RDOParserObject( _parser ),
+		RDOParserSrcInfo( _src_info ),
+		m_exist( true ),
+		m_min_value( min_value ),
+		m_max_value( max_value )
+	{
+		init( &max_value_pos );
+	}
+	RDORTPDiap( T min_value, T max_value ):
+		m_exist( true ),
+		m_min_value( min_value ),
+		m_max_value( max_value )
+	{
+		init( NULL );
+	}
+	bool isExist() const { return m_exist;     }
+	T  getMin() const    { return m_min_value; }
+	T  getMax() const    { return m_max_value; }
+
+private:
+	bool m_exist;
+	T    m_min_value;
+	T    m_max_value;
+
+	void init( const YYLTYPE* const max_value_pos )
+	{
+		if ( max_value_pos && m_min_value > m_max_value ) {
+			getParser()->error( *max_value_pos, "Левая граница диапазона должна быть меньше правой" );
+		}
+		setSrcText( rdo::format("[%s..%s]", rdoRuntime::RDOValue(m_min_value).getAsString().c_str(), rdoRuntime::RDOValue(m_max_value).getAsString().c_str()) );
+	}
 };
+
+// ----------------------------------------------------------------------------
+// ---------- RDORTPIntDiap - integer даипазон, например, [1 .. 4]
+// ----------------------------------------------------------------------------
+typedef RDORTPDiap<int>    RDORTPIntDiap;
+// ----------------------------------------------------------------------------
+// ---------- RDORTPRealDiap - real даипазон, например, [1.2 .. 4.78]
+// ----------------------------------------------------------------------------
+typedef RDORTPDiap<double> RDORTPRealDiap;
 
 // ----------------------------------------------------------------------------
 // ---------- RDORTPIntParamType
@@ -261,27 +336,6 @@ public:
 		setSrcText( rdo::format("%f", val) );
 	}
 	virtual double getRealValue() const { return val; }
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDORTPRealDiap - даипазон, например, [1.2 .. 4.78]
-// ----------------------------------------------------------------------------
-// Сначала цепляется к парсеру, а потом идет reparent на тип ресурса
-// ----------------------------------------------------------------------------
-class RDORTPRealDiap: public RDOParserObject, public RDOParserSrcInfo
-{
-private:
-	bool exist;
-
-public:
-	double min_value;
-	double max_value;
-	RDORTPRealDiap( RDOParser* _parser );
-	RDORTPRealDiap( RDOParser* _parser, const RDORTPRealDiap& copy );
-	RDORTPRealDiap( RDOParser* _parser, const RDOParserSrcInfo& _src_info );
-	RDORTPRealDiap( RDOParser* _parser, double _min_value, double _max_value, const RDOParserSrcInfo& _src_info, const YYLTYPE& _max_value_pos );
-	RDORTPRealDiap( const RDORTPRealDiap& copy );
-	bool isExist() const { return exist; }
 };
 
 // ----------------------------------------------------------------------------

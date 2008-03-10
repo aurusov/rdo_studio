@@ -8,16 +8,20 @@ static char THIS_FILE[] = __FILE__;
 
 #include "rdogramma.h"
 #include "rdoparser.h"
+#include "rdoparser_lexer.h"
 #include <rdo_runtime.h>
+
+#define PARSER reinterpret_cast<rdoParse::RDOLexer*>(this)->m_parser
+//#define PARSER rdoParse::parser
 
 #define YY_INTERACTIVE
 
-#define YY_USER_INIT {                  \
-	rdoParse::parser->lexer_loc_init(); \
+#define YY_USER_INIT {          \
+	PARSER->lexer_loc_init();   \
 }
 
-#define YY_USER_ACTION {                  \
-	rdoParse::parser->lexer_loc_action(); \
+#define YY_USER_ACTION {        \
+	PARSER->lexer_loc_action(); \
 }
 
 %}
@@ -253,17 +257,17 @@ Empty				return(Empty_kw);
 						std::string n1(YYText());
 						int len = n1.length();
 						std::string *name = new std::string(n1, 1, len-2);
-						rdoParse::parser->runtime->memory_insert( name->length() + sizeof(std::string) );
-						rdoParse::parser->addName(name);
-						rdoParse::parser->lexer_setvalue((int)name);
+						PARSER->runtime->memory_insert( name->length() + sizeof(std::string) );
+						PARSER->addName(name);
+						PARSER->lexer_setvalue((int)name);
 						return QUOTED_IDENTIF;
 					}
 
 (\'[^\']*\n\r)		{
 						std::string *name = new std::string(YYText());
-						rdoParse::parser->runtime->memory_insert( name->length() + sizeof(std::string) );
-						rdoParse::parser->addName(name);
-						rdoParse::parser->lexer_setvalue((int)name);
+						PARSER->runtime->memory_insert( name->length() + sizeof(std::string) );
+						PARSER->addName(name);
+						PARSER->lexer_setvalue((int)name);
 						return QUOTED_IDENTIF_BAD;
 					}
 
@@ -281,8 +285,8 @@ Empty				return(Empty_kw);
 <comment_line>[\n\r]+	BEGIN(INITIAL);
 
 "}"|"*/"			{
-						rdoParse::parser->lexer_loc_delta_pos( YYLeng() );
-						rdoParse::parser->error( "Не найдено начало комментария" );
+						PARSER->lexer_loc_delta_pos( YYLeng() );
+						PARSER->error( "Не найдено начало комментария" );
 					}
 
 [\r\n\t ]+						;
@@ -290,30 +294,30 @@ Empty				return(Empty_kw);
 
 ([+-]?[0-9]+"..")	{
 						std::string n1(YYText(), YYLeng()-2);
-						rdoParse::parser->lexer_setvalue(atoi(n1.c_str()));
+						PARSER->lexer_setvalue(atoi(n1.c_str()));
 						unput('.');
 						unput('.');
-						rdoParse::parser->lexer_loc_delta_pos( -2 );
+						PARSER->lexer_loc_delta_pos( -2 );
 						return INT_CONST;
 					}
 
 ([+-]?[0-9]+"."[0-9]*([Ee][+-]?[0-9]+)?) {
-						double *val = rdoParse::parser->addDouble(new double(atof(YYText())));
-						rdoParse::parser->runtime->memory_insert( sizeof(double) );
-						rdoParse::parser->lexer_setvalue((int)val);
+						double *val = PARSER->addDouble(new double(atof(YYText())));
+						PARSER->runtime->memory_insert( sizeof(double) );
+						PARSER->lexer_setvalue((int)val);
 						return REAL_CONST;
 					}
 
 [+-]?[0-9]+			{
-						rdoParse::parser->lexer_setvalue(atoi(YYText()));
+						PARSER->lexer_setvalue(atoi(YYText()));
 						return INT_CONST;
 					}
 
 ([+-]?[0-9]+"."?[0-9]*([Ee][+-]?[0-9]+)?)[A-Za-zА-Яа-я\xB8_][A-Za-zА-Яа-я\xB80-9_$]*	{
 						std::string *name = new std::string(YYText());
-						rdoParse::parser->runtime->memory_insert( name->length() + sizeof(std::string) );
-						rdoParse::parser->addName(name);
-						rdoParse::parser->lexer_setvalue((int)name);
+						PARSER->runtime->memory_insert( name->length() + sizeof(std::string) );
+						PARSER->addName(name);
+						PARSER->lexer_setvalue((int)name);
 						return IDENTIF_BAD;
 					}
 
@@ -321,9 +325,9 @@ Empty				return(Empty_kw);
 					std::string n1(YYText());
 					std::string::size_type pos = n1.find_first_of("\r\n\t :");
 					std::string *name = new std::string(n1, 0, pos);
-					rdoParse::parser->runtime->memory_insert( name->length() + sizeof(std::string) );
-					rdoParse::parser->addName(name);
-					rdoParse::parser->lexer_setvalue((int)name);
+					PARSER->runtime->memory_insert( name->length() + sizeof(std::string) );
+					PARSER->addName(name);
+					PARSER->lexer_setvalue((int)name);
 					return IDENTIF_set;
 				}
 
@@ -331,9 +335,9 @@ Empty				return(Empty_kw);
 					std::string n1(YYText());
 					std::string::size_type pos = n1.find_first_of("\r\n\t :");
 					std::string *name = new std::string(n1, 0, pos);
-					rdoParse::parser->runtime->memory_insert( name->length() + sizeof(std::string) );
-					rdoParse::parser->addName(name);
-					rdoParse::parser->lexer_setvalue((int)name);
+					PARSER->runtime->memory_insert( name->length() + sizeof(std::string) );
+					PARSER->addName(name);
+					PARSER->lexer_setvalue((int)name);
 					return IDENTIF_NoChange_NoChange;
 				}
 
@@ -341,9 +345,9 @@ Empty				return(Empty_kw);
 					std::string n1(YYText());
 					std::string::size_type pos = n1.find_first_of("\r\n\t :");
 					std::string *name = new std::string(n1, 0, pos);
-					rdoParse::parser->runtime->memory_insert( name->length() + sizeof(std::string) );
-					rdoParse::parser->addName(name);
-					rdoParse::parser->lexer_setvalue((int)name);
+					PARSER->runtime->memory_insert( name->length() + sizeof(std::string) );
+					PARSER->addName(name);
+					PARSER->lexer_setvalue((int)name);
 					return IDENTIF_NoChange;
 				}
 
@@ -351,17 +355,17 @@ Empty				return(Empty_kw);
 					std::string n1(YYText());
 					std::string::size_type pos = n1.find_first_of("\r\n\t :");
 					std::string *name = new std::string(n1, 0, pos);
-					rdoParse::parser->runtime->memory_insert( name->length() + sizeof(std::string) );
-					rdoParse::parser->addName(name);
-					rdoParse::parser->lexer_setvalue((int)name);
+					PARSER->runtime->memory_insert( name->length() + sizeof(std::string) );
+					PARSER->addName(name);
+					PARSER->lexer_setvalue((int)name);
 					return IDENTIF_COLON;
 				}
 
 [A-Za-zА-Яа-я\xB8_$][A-Za-zА-Яа-я\xB80-9_$]*  {       
 					std::string *name = new std::string(YYText());
-					rdoParse::parser->runtime->memory_insert( name->length() + sizeof(std::string) );
-					rdoParse::parser->addName(name);
-					rdoParse::parser->lexer_setvalue((int)name);
+					PARSER->runtime->memory_insert( name->length() + sizeof(std::string) );
+					PARSER->addName(name);
+					PARSER->lexer_setvalue((int)name);
 					return IDENTIF;
 				}
 

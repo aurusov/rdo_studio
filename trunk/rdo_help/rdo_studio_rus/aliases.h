@@ -1,4 +1,4 @@
-A=html/intro.htm
+A=html/rdo_whats_new.htm
 HIDC_BUFFERS_STATIC=html/work_options_editor.htm#buffers
 HIDC_CLEARAUTO_CHECK=html/work_options_editor.htm#clear_auto
 HIDC_CLEARAUTO_EDIT=html/work_options_editor.htm#clear_after
