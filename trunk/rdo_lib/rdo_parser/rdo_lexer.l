@@ -11,17 +11,17 @@ static char THIS_FILE[] = __FILE__;
 #include "rdoparser_lexer.h"
 #include <rdo_runtime.h>
 
-#define PARSER reinterpret_cast<rdoParse::RDOLexer*>(this)->m_parser
-//#define PARSER rdoParse::parser
+#define LEXER     reinterpret_cast<rdoParse::RDOLexer*>(this)
+#define PARSER    LEXER->m_parser
 
 #define YY_INTERACTIVE
 
-#define YY_USER_INIT {          \
-	PARSER->lexer_loc_init();   \
+#define YY_USER_INIT {   \
+	LEXER->loc_init();   \
 }
 
-#define YY_USER_ACTION {        \
-	PARSER->lexer_loc_action(); \
+#define YY_USER_ACTION { \
+	LEXER->loc_action(); \
 }
 
 %}
@@ -259,7 +259,7 @@ Empty				return(Empty_kw);
 						std::string *name = new std::string(n1, 1, len-2);
 						PARSER->runtime->memory_insert( name->length() + sizeof(std::string) );
 						PARSER->addName(name);
-						PARSER->lexer_setvalue((int)name);
+						LEXER->setvalue((int)name);
 						return QUOTED_IDENTIF;
 					}
 
@@ -267,7 +267,7 @@ Empty				return(Empty_kw);
 						std::string *name = new std::string(YYText());
 						PARSER->runtime->memory_insert( name->length() + sizeof(std::string) );
 						PARSER->addName(name);
-						PARSER->lexer_setvalue((int)name);
+						LEXER->setvalue((int)name);
 						return QUOTED_IDENTIF_BAD;
 					}
 
@@ -285,7 +285,7 @@ Empty				return(Empty_kw);
 <comment_line>[\n\r]+	BEGIN(INITIAL);
 
 "}"|"*/"			{
-						PARSER->lexer_loc_delta_pos( YYLeng() );
+						LEXER->loc_delta_pos( YYLeng() );
 						PARSER->error( "Не найдено начало комментария" );
 					}
 
@@ -294,22 +294,22 @@ Empty				return(Empty_kw);
 
 ([+-]?[0-9]+"..")	{
 						std::string n1(YYText(), YYLeng()-2);
-						PARSER->lexer_setvalue(atoi(n1.c_str()));
+						LEXER->setvalue(atoi(n1.c_str()));
 						unput('.');
 						unput('.');
-						PARSER->lexer_loc_delta_pos( -2 );
+						LEXER->loc_delta_pos( -2 );
 						return INT_CONST;
 					}
 
 ([+-]?[0-9]+"."[0-9]*([Ee][+-]?[0-9]+)?) {
 						double *val = PARSER->addDouble(new double(atof(YYText())));
 						PARSER->runtime->memory_insert( sizeof(double) );
-						PARSER->lexer_setvalue((int)val);
+						LEXER->setvalue((int)val);
 						return REAL_CONST;
 					}
 
 [+-]?[0-9]+			{
-						PARSER->lexer_setvalue(atoi(YYText()));
+						LEXER->setvalue(atoi(YYText()));
 						return INT_CONST;
 					}
 
@@ -317,7 +317,7 @@ Empty				return(Empty_kw);
 						std::string *name = new std::string(YYText());
 						PARSER->runtime->memory_insert( name->length() + sizeof(std::string) );
 						PARSER->addName(name);
-						PARSER->lexer_setvalue((int)name);
+						LEXER->setvalue((int)name);
 						return IDENTIF_BAD;
 					}
 
@@ -327,7 +327,7 @@ Empty				return(Empty_kw);
 					std::string *name = new std::string(n1, 0, pos);
 					PARSER->runtime->memory_insert( name->length() + sizeof(std::string) );
 					PARSER->addName(name);
-					PARSER->lexer_setvalue((int)name);
+					LEXER->setvalue((int)name);
 					return IDENTIF_set;
 				}
 
@@ -337,7 +337,7 @@ Empty				return(Empty_kw);
 					std::string *name = new std::string(n1, 0, pos);
 					PARSER->runtime->memory_insert( name->length() + sizeof(std::string) );
 					PARSER->addName(name);
-					PARSER->lexer_setvalue((int)name);
+					LEXER->setvalue((int)name);
 					return IDENTIF_NoChange_NoChange;
 				}
 
@@ -347,7 +347,7 @@ Empty				return(Empty_kw);
 					std::string *name = new std::string(n1, 0, pos);
 					PARSER->runtime->memory_insert( name->length() + sizeof(std::string) );
 					PARSER->addName(name);
-					PARSER->lexer_setvalue((int)name);
+					LEXER->setvalue((int)name);
 					return IDENTIF_NoChange;
 				}
 
@@ -357,7 +357,7 @@ Empty				return(Empty_kw);
 					std::string *name = new std::string(n1, 0, pos);
 					PARSER->runtime->memory_insert( name->length() + sizeof(std::string) );
 					PARSER->addName(name);
-					PARSER->lexer_setvalue((int)name);
+					LEXER->setvalue((int)name);
 					return IDENTIF_COLON;
 				}
 
@@ -365,7 +365,7 @@ Empty				return(Empty_kw);
 					std::string *name = new std::string(YYText());
 					PARSER->runtime->memory_insert( name->length() + sizeof(std::string) );
 					PARSER->addName(name);
-					PARSER->lexer_setvalue((int)name);
+					LEXER->setvalue((int)name);
 					return IDENTIF;
 				}
 

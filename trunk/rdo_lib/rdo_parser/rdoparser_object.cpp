@@ -148,9 +148,9 @@ RDOParserSrcInfo::RDOParserSrcInfo( const YYLTYPE& _pos_begin, const YYLTYPE& _p
 
 void RDOParserSrcInfo::init()
 {
-//qq2	setSrcFileType( parser->getFileToParse() );
+	setSrcFileType( RDOParser::getFileToParse() );
 	rdoRuntime::RDOSrcInfo::Position pos = src_pos();
-//qq2	pos.last_line = parser->lexer_loc_line();
+	pos.last_line = RDOParser::lexer_loc_line();
 	RDOSrcInfo::setSrcPos( pos );
 }
 

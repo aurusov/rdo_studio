@@ -27,10 +27,6 @@ public:
 	virtual void parse( std::istream& in_stream );
 	virtual RDOLexer* getLexer( std::istream& in_stream, std::ostream& out_stream );
 
-	virtual void lexer_setvalue( int value );
-	virtual void lexer_loc_init();
-	virtual void lexer_loc_action();
-	virtual void lexer_loc_delta_pos( int value );
 	virtual int  lexer_loc_line();
 	virtual int  lexer_loc_pos();
 };

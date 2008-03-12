@@ -230,16 +230,14 @@ public:
 		return val;
 	}
 
-	rdoModelObjects::RDOFileType getFileToParse() const       { return parser_base ? parser_base->type : rdoModelObjects::PAT;          }
-	void lexer_setvalue( int val ) const                      { if ( parser_base ) parser_base->lexer_setvalue( val );                  }
-	void lexer_loc_init() const                               { if ( parser_base ) parser_base->lexer_loc_init();                       }
-	void lexer_loc_action() const                             { if ( parser_base ) parser_base->lexer_loc_action();                     }
-	void lexer_loc_delta_pos( int value ) const               { if ( parser_base ) parser_base->lexer_loc_delta_pos( value );           }
-	int  lexer_loc_line() const                               { return parser_base ? parser_base->lexer_loc_line() : -1;                }
-	int  lexer_loc_pos() const                                { return parser_base ? parser_base->lexer_loc_pos() : 0;                  }
-};
+public:
+	static rdoModelObjects::RDOFileType getFileToParse();
+	static int lexer_loc_line();
 
-//extern RDOParser* parser;
+private:
+	int lexer_loc_pos();
+	static std::list< RDOParser* > parserStack;
+};
 
 } // namespace rdoParse
 

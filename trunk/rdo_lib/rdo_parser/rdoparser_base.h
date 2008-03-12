@@ -49,10 +49,6 @@ public:
 	virtual void parse()                          = 0;
 	virtual void parse( std::istream& in_stream ) = 0;
 
-	virtual void lexer_setvalue( int value )        {};
-	virtual void lexer_loc_init()                   {};
-	virtual void lexer_loc_action()                 {};
-	virtual void lexer_loc_delta_pos( int value )   {};
 	virtual int  lexer_loc_line()                   { return -1; };
 	virtual int  lexer_loc_pos()                    { return 0;  };
 };

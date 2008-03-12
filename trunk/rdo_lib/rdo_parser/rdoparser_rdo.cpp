@@ -56,49 +56,6 @@ RDOLexer* RDOParserRDO::getLexer( std::istream& in_stream, std::ostream& out_str
 	return new RDOLexer( parser, &in_stream, &out_stream );
 }
 
-void RDOParserRDO::lexer_setvalue( int value )
-{
-	if ( m_lexer ) {
-		*m_lexer->m_lpval = value;
-	}
-}
-
-void RDOParserRDO::lexer_loc_init()
-{
-	if ( m_lexer && m_lexer->m_lploc ) {
-		m_lexer->m_lploc->first_line   = 0;
-		m_lexer->m_lploc->first_column = 0;
-		m_lexer->m_lploc->last_line    = 0;
-		m_lexer->m_lploc->last_column  = 0;
-	}
-}
-
-void RDOParserRDO::lexer_loc_action()
-{
-	if ( m_lexer && m_lexer->m_lploc ) {
-		m_lexer->m_lploc->first_line   = m_lexer->m_lploc->last_line;
-		m_lexer->m_lploc->first_column = m_lexer->m_lploc->last_column;
-		for ( int i = 0; i < m_lexer->YYLeng(); i++ ) {
-			if ( m_lexer->YYText()[i] == '\n' ) {
-				m_lexer->m_lploc->last_line++;
-				m_lexer->m_lploc->last_column = 0;
-			} else if ( m_lexer->YYText()[i] == '\r' ) {
-				m_lexer->m_lploc->last_column = 0;
-			} else {
-				m_lexer->m_lploc->last_column++;
-			}
-		}
-	}
-}
-
-void RDOParserRDO::lexer_loc_delta_pos( int value )
-{
-	if ( m_lexer && m_lexer->m_lploc ) {
-		m_lexer->m_lploc->first_column += value;
-		m_lexer->m_lploc->last_column  += value;
-	}
-}
-
 int RDOParserRDO::lexer_loc_line()
 {
 	if ( m_lexer ) {

@@ -20,7 +20,22 @@ static char THIS_FILE[] = __FILE__;
 namespace rdoParse 
 {
 
-//RDOParser* parser = NULL;
+std::list< RDOParser* > RDOParser::parserStack;
+
+rdoModelObjects::RDOFileType RDOParser::getFileToParse()
+{
+	return !parserStack.empty() && parserStack.back()->parser_base ? parserStack.back()->parser_base->type : rdoModelObjects::PAT;
+}
+
+int RDOParser::lexer_loc_line()
+{
+	return !parserStack.empty() && parserStack.back()->parser_base ? parserStack.back()->parser_base->lexer_loc_line() : -1;
+}
+
+int RDOParser::lexer_loc_pos()
+{
+	return parser_base ? parser_base->lexer_loc_pos() : 0;
+}
 
 RDOParser::RDOParser():
 	parsing_object( NULL ),
@@ -34,7 +49,7 @@ RDOParser::RDOParser():
 	lastDPTSome( NULL ),
 	smr( NULL )
 {
-//	parser = this;
+	parserStack.push_back( this );
 	runtime = new rdoRuntime::RDORuntime();
 	parsers = new RDOParserList( this );
 	parsers->reset();
@@ -56,7 +71,7 @@ RDOParser::~RDOParser()
 		delete parsers;
 		parsers = NULL;
 	}
-//	parser = NULL;
+	parserStack.remove( this );
 }
 
 void RDOParser::insertRTPResType( RDORTPResType* value )
