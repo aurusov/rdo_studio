@@ -128,7 +128,9 @@ public:
 		RT_RUNTIME_KEY_UP,                     // param = scan_code:uint*
 		RT_RUNTIME_FRAME_AREA_DOWN,            // param = area_name:std::string*
 		RT_CODECOMP_GET_DATA,                  // param = rdoSimulator::RDOThreadCodeComp::GetCodeComp* = { file_type:rdoModelObjects::RDOFileType, pos_x:int, pos_y:int, result:std::list< std::string >& }
-		RT_DEBUG_STRING                        // param = std::string*
+		RT_DEBUG_STRING,                       // param = std::string*
+		RT_CORBA_PARSER_GET_RTP,
+		RT_CORBA_PARSER_GET_RSS
 	};
 	std::string messageToString( RDOTreadMessage message ) {
 		switch ( message ) {
@@ -194,6 +196,8 @@ public:
 			case RT_RUNTIME_FRAME_AREA_DOWN           : return "RT_RUNTIME_FRAME_AREA_DOWN";
 			case RT_CODECOMP_GET_DATA                 : return "RT_CODECOMP_GET_DATA";
 			case RT_DEBUG_STRING                      : return "RT_DEBUG_STRING";
+			case RT_CORBA_PARSER_GET_RTP              : return "RT_CORBA_PARSER_GET_RTP";
+			case RT_CORBA_PARSER_GET_RSS              : return "RT_CORBA_PARSER_GET_RSS";
 			default                                   : return "RT_UNKNOWN";
 		}
 	}

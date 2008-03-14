@@ -84,7 +84,7 @@ private:
 		}
 		return value;
 	}
-	virtual void notify( RDORuntimeObject* from, UINT message, void* param = NULL )
+	virtual void notify( RDORuntimeObject* from, unsigned int message, void* param = NULL )
 	{
 		if ( (int)param == m_resID )
 		{

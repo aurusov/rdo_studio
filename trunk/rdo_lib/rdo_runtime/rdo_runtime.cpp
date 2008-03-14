@@ -143,7 +143,7 @@ void RDORuntime::disconnect( RDORuntimeObject* to, UINT message )
 	}
 }
 
-void RDORuntime::fireMessage( RDORuntimeObject* from, UINT message, void* param )
+void RDORuntime::fireMessage( RDORuntimeObject* from, unsigned int message, void* param )
 {
 	Connected::iterator it = connected.find( message );
 	while ( it != connected.end() ) {

@@ -44,7 +44,7 @@ private:
 
 	double timeErase;
 
-	virtual void notify( RDORuntimeObject* from, UINT message, void* param = NULL );
+	virtual void notify( RDORuntimeObject* from, unsigned int message, void* param = NULL );
 
 public:
 	RDOPMDWatchPar( RDOSimulatorTrace* _sim, const std::string& _name, bool _trace, const std::string& _resName, const std::string& _parName, int _resNumber, int _parNumber );

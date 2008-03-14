@@ -32,7 +32,7 @@ RDOPMDWatchPar::RDOPMDWatchPar( RDOSimulatorTrace* _sim, const std::string& _nam
 	static_cast<RDORuntime*>(_sim)->connect( this, RDORuntime::RO_BEFOREDELETE );
 }
 
-void RDOPMDWatchPar::notify( RDORuntimeObject* from, UINT message, void* param )
+void RDOPMDWatchPar::notify( RDORuntimeObject* from, unsigned int message, void* param )
 {
 	if ( (int)param == resNumber )
 	{

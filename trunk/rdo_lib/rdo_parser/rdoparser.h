@@ -118,7 +118,7 @@ public:
 		if ( it != allDeletables.end() ) {
 			allDeletables.erase( it );
 		} else {
-			TRACE( "removeDeletables: faild !!!!!!!!!!!!!!!!!!!!\n" );
+//			TRACE( "removeDeletables: faild !!!!!!!!!!!!!!!!!!!!\n" );
 		}
 	}
 //	void insertDeletables( RDODeletable* value )            { if ( value ) allDeletables.push_back( value );                                         }

@@ -18,9 +18,6 @@ class RDOParser;
 
 class RDOParserBase
 {
-protected:
-	RDOParser* parser;
-
 public:
 	rdoModelObjects::RDOFileType type;
 
@@ -29,7 +26,7 @@ public:
 	t_flex_lexer_fun  lexer_fun;
 
 	RDOParserBase( RDOParser* _parser ):
-		parser( _parser ),
+		m_parser( _parser ),
 		type( rdoModelObjects::PAT ),
 		parser_fun( NULL ),
 		error_fun( NULL ),
@@ -37,7 +34,7 @@ public:
 	{
 	};
 	RDOParserBase( RDOParser* _parser, rdoModelObjects::RDOFileType _type, t_bison_parse_fun _parser_fun, t_bison_error_fun _error_fun, t_flex_lexer_fun _lexer_fun ):
-		parser( _parser ),
+		m_parser( _parser ),
 		type( _type ),
 		parser_fun( _parser_fun ),
 		error_fun( _error_fun ),
@@ -51,6 +48,9 @@ public:
 
 	virtual int  lexer_loc_line()                   { return -1; };
 	virtual int  lexer_loc_pos()                    { return 0;  };
+
+protected:
+	RDOParser* m_parser;
 };
 
 // ----------------------------------------------------------------------------

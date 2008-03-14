@@ -81,6 +81,18 @@ Package=<4>
 
 ###############################################################################
 
+Project: "rdo_mbuilder"=.\RDO_LIB\rdo_mbuilder\rdo_mbuilder.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
 Project: "rdo_parser"=.\rdo_lib\rdo_parser\rdo_parser.dsp - Package Owner=<4>
 
 Package=<5>
@@ -160,6 +172,9 @@ Package=<4>
 {{{
     Begin Project Dependency
     Project_Dep_Name rdo_parser
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name rdo_mbuilder
     End Project Dependency
 }}}
 

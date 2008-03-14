@@ -197,10 +197,10 @@ public:
 	enum Messages {
 		RO_BEFOREDELETE = 0
 	};
-	void connect( RDORuntimeObject* to, UINT message );
+	void connect( RDORuntimeObject* to, unsigned int message );
 	void disconnect( RDORuntimeObject* to );
-	void disconnect( RDORuntimeObject* to, UINT message );
-	void fireMessage( RDORuntimeObject* from, UINT message, void* param = NULL );
+	void disconnect( RDORuntimeObject* to, unsigned int message );
+	void fireMessage( RDORuntimeObject* from, unsigned int message, void* param = NULL );
 
 	std::vector< rdoSimulator::RDOSyntaxError > errors;
 	void error( const std::string& message, const RDOCalc* calc = NULL );

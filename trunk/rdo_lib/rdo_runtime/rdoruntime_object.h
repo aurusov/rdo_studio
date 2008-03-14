@@ -55,7 +55,7 @@ protected:
 	RDORuntimeParent* parent;
 
 	RDORuntimeObject( RDORuntimeParent* _parent );
-	virtual void notify( RDORuntimeObject* from, UINT message, void* param = NULL ) {};
+	virtual void notify( RDORuntimeObject* from, unsigned int message, void* param = NULL ) {};
 
 public:
 	virtual ~RDORuntimeObject();

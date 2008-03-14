@@ -15,12 +15,8 @@ namespace rdoParse
 // ----------------------------------------------------------------------------
 class RDOParserRDO: public RDOParserBase
 {
-protected:
-	RDOLexer*            m_lexer;
-	YYLTYPE              m_loc;
-
 public:
-	RDOParserRDO( RDOParser* _parser, rdoModelObjects::RDOFileType _type, t_bison_parse_fun _parser_fun, t_bison_error_fun _error_fun, t_flex_lexer_fun _lexer_fun ): RDOParserBase( _parser, _type, _parser_fun, _error_fun, _lexer_fun ), m_lexer( NULL ) {};
+	RDOParserRDO( RDOParser* _parser, rdoModelObjects::RDOFileType _type, t_bison_parse_fun _parser_fun, t_bison_error_fun _error_fun, t_flex_lexer_fun _lexer_fun );
 	virtual ~RDOParserRDO();
 
 	virtual void parse();
@@ -29,6 +25,10 @@ public:
 
 	virtual int  lexer_loc_line();
 	virtual int  lexer_loc_pos();
+
+protected:
+	RDOLexer*  m_lexer;
+	YYLTYPE    m_loc;
 };
 
 // ----------------------------------------------------------------------------
