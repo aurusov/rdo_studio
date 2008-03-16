@@ -370,17 +370,47 @@ SOURCE=.\rdosmr.h
 # Begin Source File
 
 SOURCE=.\rdogramdpt.cpp
+
+!IF  "$(CFG)" == "rdo_parser - Win32 Release"
+
 # SUBTRACT CPP /YX /Yc /Yu
+
+!ELSEIF  "$(CFG)" == "rdo_parser - Win32 Debug"
+
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
 SOURCE=.\rdogramdpt_opr.cpp
+
+!IF  "$(CFG)" == "rdo_parser - Win32 Release"
+
 # SUBTRACT CPP /YX /Yc /Yu
+
+!ELSEIF  "$(CFG)" == "rdo_parser - Win32 Debug"
+
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
 SOURCE=.\rdogramdpt_rss.cpp
+
+!IF  "$(CFG)" == "rdo_parser - Win32 Release"
+
 # SUBTRACT CPP /YX /Yc /Yu
+
+!ELSEIF  "$(CFG)" == "rdo_parser - Win32 Debug"
+
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
@@ -420,7 +450,17 @@ SOURCE=.\rdogramma.h
 # Begin Source File
 
 SOURCE=.\rdogramopr.cpp
+
+!IF  "$(CFG)" == "rdo_parser - Win32 Release"
+
 # SUBTRACT CPP /YX /Yc /Yu
+
+!ELSEIF  "$(CFG)" == "rdo_parser - Win32 Debug"
+
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
@@ -441,27 +481,77 @@ SOURCE=.\rdogrampat.cpp
 # Begin Source File
 
 SOURCE=.\rdogrampmd.cpp
+
+!IF  "$(CFG)" == "rdo_parser - Win32 Release"
+
 # SUBTRACT CPP /YX /Yc /Yu
+
+!ELSEIF  "$(CFG)" == "rdo_parser - Win32 Debug"
+
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
 SOURCE=.\rdogramrss.cpp
+
+!IF  "$(CFG)" == "rdo_parser - Win32 Release"
+
 # SUBTRACT CPP /YX /Yc /Yu
+
+!ELSEIF  "$(CFG)" == "rdo_parser - Win32 Debug"
+
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
 SOURCE=.\rdogramrtp.cpp
+
+!IF  "$(CFG)" == "rdo_parser - Win32 Release"
+
 # SUBTRACT CPP /YX /Yc /Yu
+
+!ELSEIF  "$(CFG)" == "rdo_parser - Win32 Debug"
+
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
 SOURCE=.\rdogramsmr1.cpp
+
+!IF  "$(CFG)" == "rdo_parser - Win32 Release"
+
 # SUBTRACT CPP /YX /Yc /Yu
+
+!ELSEIF  "$(CFG)" == "rdo_parser - Win32 Debug"
+
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
 SOURCE=.\rdogramsmr2.cpp
+
+!IF  "$(CFG)" == "rdo_parser - Win32 Release"
+
 # SUBTRACT CPP /YX /Yc /Yu
+
+!ELSEIF  "$(CFG)" == "rdo_parser - Win32 Debug"
+
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 

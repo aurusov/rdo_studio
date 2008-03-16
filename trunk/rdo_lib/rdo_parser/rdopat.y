@@ -231,7 +231,7 @@ pat_params:	pat_params_begin IDENTIF_COLON param_type {
 				RDORTPParamType* param_type = reinterpret_cast<RDORTPParamType*>($3);
 				RDOFUNFunctionParam* param = new RDOFUNFunctionParam( pattern, RDOParserSrcInfo( @2, param_name, RDOParserSrcInfo::psi_align_bytext ), param_type );
 				pattern->add( param );
-				if ( param_type->getType() == rdoRuntime::RDOValue::ParamType::pt_enum ) {
+				if ( param_type->getType() == rdoRuntime::RDOValue::Type::rvt_enum ) {
 					static_cast<RDORTPEnumParamType*>(param_type)->enum_name = rdo::format( "%s.%s", pattern->getName().c_str(), param_name.c_str() );
 				}
 			}
@@ -241,7 +241,7 @@ pat_params:	pat_params_begin IDENTIF_COLON param_type {
 				RDORTPParamType* param_type = reinterpret_cast<RDORTPParamType*>($3);
 				RDOFUNFunctionParam* param = new RDOFUNFunctionParam( pattern, RDOParserSrcInfo( @2, param_name, RDOParserSrcInfo::psi_align_bytext ), param_type );
 				pattern->add( param );
-				if ( param_type->getType() == rdoRuntime::RDOValue::ParamType::pt_enum ) {
+				if ( param_type->getType() == rdoRuntime::RDOValue::Type::rvt_enum ) {
 					static_cast<RDORTPEnumParamType*>(param_type)->enum_name = rdo::format( "%s.%s", pattern->getName().c_str(), param_name.c_str() );
 				}
 			}

@@ -241,7 +241,7 @@ rtp_param: IDENTIF_COLON param_type {
 					RDORTPParamType* parType = reinterpret_cast<RDORTPParamType*>($2);
 					RDORTPParam* param = new RDORTPParam( PARSER->getLastRTPResType(), par_src_info, parType );
 					parType->reparent( param );
-					if ( parType->getType() == rdoRuntime::RDOValue::ParamType::pt_enum ) {
+					if ( parType->getType() == rdoRuntime::RDOValue::Type::rvt_enum ) {
 						static_cast<RDORTPEnumParamType*>(parType)->enum_name = rdo::format( "%s.%s", PARSER->getLastRTPResType()->getName().c_str(), par_src_info.src_text().c_str() );
 					}
 					$$ = (int)param;

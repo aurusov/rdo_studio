@@ -119,21 +119,21 @@ void RDOPATPattern::addRelResConvert( bool trace, RDOPATParamSet* parSet, const 
 			rdoRuntime::RDOCalc* rightValue = currArithm->createCalc( param->getType() );
 			rdoRuntime::RDOCalc* calc = NULL;
 			switch ( param->getType()->getType() ) {
-				case rdoRuntime::RDOValue::ParamType::pt_int: {
+				case rdoRuntime::RDOValue::Type::rvt_int: {
 					const RDORTPIntParamType* param_type = static_cast<const RDORTPIntParamType*>(param->getType());
-					if ( param_type->diap->isExist() ) {
-						calc = new rdoRuntime::RDOSetRelParamDiapCalc( getParser()->runtime, parSet->getRelRes()->rel_res_id, parNumb, rightValue, param_type->diap->getMin(), param_type->diap->getMax() );
-						break;
+					if ( param_type->getDiap().isExist() ) {
+						calc = new rdoRuntime::RDOSetRelParamDiapCalc( getParser()->runtime, parSet->getRelRes()->rel_res_id, parNumb, rightValue, param_type->getDiap().getMin(), param_type->getDiap().getMax() );
 					}
+					break;
 				}
-				case rdoRuntime::RDOValue::ParamType::pt_real: {
+				case rdoRuntime::RDOValue::Type::rvt_real: {
 					const RDORTPRealParamType* param_type = static_cast<const RDORTPRealParamType*>(param->getType());
-					if ( param_type->diap->isExist() ) {
-						calc = new rdoRuntime::RDOSetRelParamDiapCalc( getParser()->runtime, parSet->getRelRes()->rel_res_id, parNumb, rightValue, param_type->diap->getMin(), param_type->diap->getMax() );
-						break;
+					if ( param_type->getDiap().isExist() ) {
+						calc = new rdoRuntime::RDOSetRelParamDiapCalc( getParser()->runtime, parSet->getRelRes()->rel_res_id, parNumb, rightValue, param_type->getDiap().getMin(), param_type->getDiap().getMax() );
 					}
+					break;
 				}
-				case rdoRuntime::RDOValue::ParamType::pt_enum: {
+				case rdoRuntime::RDOValue::Type::rvt_enum: {
 					break;
 				}
 				default: getParser()->error( src_info(), "Внутренняя ошибка: обработать все типы RDOValue" );
@@ -407,7 +407,7 @@ rdoRuntime::RDOCalc* RDOPATPattern::createRelRes( const RDOPATParamSet* const pa
 	std::vector< rdoRuntime::RDOValue > params_default;
 	std::vector< const RDORTPParam* >::const_iterator it = currRelRes->getType()->getParams().begin();
 	while ( it != currRelRes->getType()->getParams().end() ) {
-		if ( !(*it)->getType()->dv->isExist() ) {
+		if ( !(*it)->getType()->getDV().isExist() ) {
 			params_default.push_back( rdoRuntime::RDOValue(0) );
 			bool set_found = false;
 			std::vector< RDOPATParamSet::param_set >::const_iterator set_it = parSet->params.begin();
@@ -422,7 +422,7 @@ rdoRuntime::RDOCalc* RDOPATPattern::createRelRes( const RDOPATParamSet* const pa
 				getParser()->error( parSet->src_info(), rdo::format("При создании ресурса необходимо определить все его параметры. Не найдено определение параметра: %s", (*it)->getName().c_str()));
 			}
 		} else {
-			params_default.push_back( (*it)->getType()->getParamDefaultValue( (*it)->getType()->dv->src_info() ) );
+			params_default.push_back( (*it)->getType()->getDefaultValue( (*it)->getType()->getDV().src_info() ) );
 		}
 		it++;
 	}
@@ -696,7 +696,7 @@ void RDORelevantResource::deleteParamSetBegin()
 rdoRuntime::RDOCalc* RDORelevantResource::getChoiceCalc() const
 {
 	if ( choice_from && choice_from->type == rdoParse::RDOPATChoiceFrom::ch_from ) {
-		return choice_from->logic->createCalc( rdoRuntime::RDOValue::ParamType::pt_int );
+		return choice_from->logic->createCalc( rdoRuntime::RDOValue::Type::rvt_int );
 	}
 	return NULL;
 }

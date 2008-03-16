@@ -306,7 +306,7 @@ dpt_process_line:	IDENTIF	{
 			if ( rtp_param ) {
 				// Параметр Состояние есть, надо проверить, чтобы в нем были значения Свободен и Занят
 				// Для начала проверим тип параметра
-				if ( rtp_param->getType()->getType() == rdoRuntime::RDOValue::ParamType::pt_enum ) {
+				if ( rtp_param->getType()->getType() == rdoRuntime::RDOValue::Type::rvt_enum ) {
 					// Теперь проверим сами значения
 					try {
 						rtp_param->getType()->getRSSEnumValue( rtp_state_free, @2 );
@@ -328,7 +328,7 @@ dpt_process_line:	IDENTIF	{
 		res->setTrace( true );
 
 		// Пропишем значения параметров перечислимого типа по-умолчанию
-		rdoRuntime::RDOValue state_val = rtp_param->getType()->getParamDefaultValue( @2 );
+		rdoRuntime::RDOValue state_val = rtp_param->getType()->getDefaultValue( @2 );
 		res->addValue( state_val );
 		res->currParam++;
 
@@ -336,7 +336,7 @@ dpt_process_line:	IDENTIF	{
 //		const std::vector<const RDORTPParam *>& res_params = res->getType()->getParams();
 //		res->currParam = res_params.begin();
 //		while ( res->currParam != res_params.end() ) {
-//			RDOValue res_param_val = (*res->currParam)->getType()->getParamDefaultValue();
+//			RDOValue res_param_val = (*res->currParam)->getType()->getDefaultValue();
 //			res->addValue( res_param_val );
 //			res->currParam++;
 //		}
@@ -355,7 +355,7 @@ dpt_process_line:	IDENTIF	{
 		}
 		// Параметр Состояние есть, надо проверить, чтобы в нем были значения Свободен и Занят
 		// Для начала проверим тип параметра
-		if ( rtp_param->getType()->getType() == rdoRuntime::RDOValue::ParamType::pt_enum ) {
+		if ( rtp_param->getType()->getType() == rdoRuntime::RDOValue::Type::rvt_enum ) {
 			// Теперь проверим сами значения
 			try {
 				rtp_param->getType()->getRSSEnumValue( rtp_state_free, @2 );

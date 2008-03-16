@@ -79,7 +79,7 @@ private:
 		} else if ( m_resID == -1 ) {
 			RDOEnum* _enum = new RDOEnum( runtime );
 			_enum->add( "Удален" );
-			value = RDOValue( _enum, _enum->getValues()[0] );
+			value = RDOValue( *_enum );
 			m_resID = -2;
 		}
 		return value;
@@ -210,7 +210,7 @@ private:
 	virtual RDOValue& calcValue( RDORuntime* runtime ) {
 		value = calc->calcValueBase( runtime );
 		if ( value < min_value || value > max_value ) {
-			if ( value.getType() == RDOValue::pt_int && min_value.getType() == RDOValue::pt_int && max_value.getType() == RDOValue::pt_int ) {
+			if ( value.getType() == RDOValue::rvt_int && min_value.getType() == RDOValue::rvt_int && max_value.getType() == RDOValue::rvt_int ) {
 				runtime->error( rdo::format("Значение выходит за допустимый диапазон [%d..%d]: %d", min_value.getInt(), max_value.getInt(), value.getInt()), this );
 			} else {
 				runtime->error( rdo::format("Значение выходит за допустимый диапазон [%f..%f]: %f", min_value.getDouble(), max_value.getDouble(), value.getDouble()), this );
@@ -484,7 +484,7 @@ private:
 			if ( conditions[i]->calcValueBase( runtime ).getBool() ) {
 				value = actions[i]->calcValueBase( runtime );
 				if ( value < min_value || value > max_value ) {
-					if ( value.getType() == RDOValue::pt_int && min_value.getType() == RDOValue::pt_int && max_value.getType() == RDOValue::pt_int ) {
+					if ( value.getType() == RDOValue::rvt_int && min_value.getType() == RDOValue::rvt_int && max_value.getType() == RDOValue::rvt_int ) {
 						runtime->error( rdo::format("Значение выходит за допустимый диапазон [%d..%d]: %d", min_value.getInt(), max_value.getInt(), value.getInt()), actions[i] );
 					} else {
 						runtime->error( rdo::format("Значение выходит за допустимый диапазон [%f..%f]: %f", min_value.getDouble(), max_value.getDouble(), value.getDouble()), actions[i] );
@@ -1484,7 +1484,7 @@ private:
 	virtual RDOValue& calcValue( RDORuntime* runtime ) {
 		value = oper->calcValueBase( runtime );
 		if ( value < min_value || value > max_value ) {
-			if ( value.getType() == RDOValue::pt_int && min_value.getType() == RDOValue::pt_int && max_value.getType() == RDOValue::pt_int ) {
+			if ( value.getType() == RDOValue::rvt_int && min_value.getType() == RDOValue::rvt_int && max_value.getType() == RDOValue::rvt_int ) {
 				runtime->error( rdo::format("Значение выходит за допустимый диапазон [%d..%d]: %d", min_value.getInt(), max_value.getInt(), value.getInt()), this );
 			} else {
 				runtime->error( rdo::format("Значение выходит за допустимый диапазон [%f..%f]: %f", min_value.getDouble(), max_value.getDouble(), value.getDouble()), this );

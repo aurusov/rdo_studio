@@ -20,25 +20,24 @@ class RDORTPDefVal;
 class RDORTPParamType: public RDOParserObject, public RDOParserSrcInfo
 {
 public:
-//	enum ParamType { pt_int = 0, pt_real = 1, pt_enum = 2, pt_unknow = 3 };
-	RDORTPDefVal* dv;
 	// Для глобальный типов, напрмиер, для параметров стандартных фыункций
 	RDORTPParamType( RDOParser* _parser, RDORTPDefVal* _dv ):
 		RDOParserObject( _parser ),
-		dv( _dv )
+		RDOParserSrcInfo(),
+		m_dv( _dv )
 	{
 	}
 	// Для нормальных параметров
 	RDORTPParamType( const RDOParserObject* _parent, RDORTPDefVal* _dv ):
 		RDOParserObject( _parent ),
 		RDOParserSrcInfo(),
-		dv( _dv )
+		m_dv( _dv )
 	{
 	}
 	RDORTPParamType( const RDOParserObject* _parent, RDORTPDefVal* _dv, const RDOParserSrcInfo& _src_info ):
 		RDOParserObject( _parent ),
 		RDOParserSrcInfo( _src_info ),
-		dv( _dv )
+		m_dv( _dv )
 	{
 	}
 	virtual const RDORTPParamType* constructSuchAs( const RDOParserSrcInfo& _src_info ) const = 0;
@@ -48,16 +47,21 @@ public:
 	virtual void checkRSSEnumValue( const std::string& val, const RDOParserSrcInfo& _src_info ) const = 0;
 	virtual void checkRSSIntValue( int val, const RDOParserSrcInfo& _src_info ) const = 0;
 	virtual void checkRSSRealValue( double val, const RDOParserSrcInfo& _src_info ) const = 0;
-	virtual rdoRuntime::RDOValue getParamDefaultValue( const RDOParserSrcInfo& _src_info ) const = 0;
+	virtual rdoRuntime::RDOValue getDefaultValue( const RDOParserSrcInfo& _src_info ) const = 0;
 	virtual rdoRuntime::RDOValue getRSSEnumValue( const std::string& val, const RDOParserSrcInfo& _src_info ) const = 0;
 	virtual rdoRuntime::RDOValue getRSSIntValue( int val, const RDOParserSrcInfo& _src_info ) const = 0;
 	virtual rdoRuntime::RDOValue getRSSRealValue( double val, const RDOParserSrcInfo& _src_info ) const = 0;
 	virtual int getDiapTableFunc() const = 0;
-	virtual rdoRuntime::RDOValue::ParamType getType() const = 0;
+	virtual rdoRuntime::RDOValue::Type getType() const = 0;
 	virtual int writeModelStructure() const = 0;
 
 	void checkParamType( const RDOFUNArithm* const action, bool warning = true ) const;
 	void checkParamType( const rdoRuntime::RDOValue& value, const RDOParserSrcInfo& value_info ) const;
+
+	const RDORTPDefVal& getDV() const { return *m_dv; }
+
+protected:
+	RDORTPDefVal* m_dv;
 };
 
 // ----------------------------------------------------------------------------
@@ -107,7 +111,7 @@ public:
 	bool isTemporary() const                 { return !m_permanent; };
 
 	void addParam( const RDORTPParam* const param );
-	void addParam( const std::string param_name, rdoRuntime::RDOValue::ParamType param_type );
+	void addParam( const std::string param_name, rdoRuntime::RDOValue::Type param_type );
 	const RDORTPParam* findRTPParam( const std::string& param ) const;
 	int getRTPParamNumber( const std::string& param ) const;
 	const std::vector< const RDORTPParam* >& getParams() const { return m_params; }
@@ -145,9 +149,6 @@ public:
 // ----------------------------------------------------------------------------
 class RDORTPIntDefVal: public RDORTPDefVal
 {
-private:
-	int val;
-
 public:
 	RDORTPIntDefVal( RDOParser* _parser ):
 		RDORTPDefVal( _parser, false )
@@ -155,31 +156,34 @@ public:
 	}
 	RDORTPIntDefVal( RDOParser* _parser, const RDORTPIntDefVal& copy ):
 		RDORTPDefVal( _parser, copy ),
-		val( copy.val )
+		m_val( copy.m_val )
 	{
 	}
 	RDORTPIntDefVal( const RDORTPIntDefVal& copy ):
 		RDORTPDefVal( copy.getParser(), copy ),
-		val( copy.val )
+		m_val( copy.m_val )
 	{
 	}
-	RDORTPIntDefVal( RDOParser* _parser, int _val ):
+	RDORTPIntDefVal( RDOParser* _parser, int val ):
 		RDORTPDefVal( _parser, true ),
-		val( _val )
+		m_val( val )
 	{
-		setSrcText( rdo::format("%d", val) );
+		setSrcText( rdo::format("%d", m_val) );
 	}
 	RDORTPIntDefVal( RDOParser* _parser, const RDOParserSrcInfo& _src_info ):
 		RDORTPDefVal( _parser, false, _src_info )
 	{
 	}
-	RDORTPIntDefVal( RDOParser* _parser, int _val, const RDOParserSrcInfo& _src_info ):
+	RDORTPIntDefVal( RDOParser* _parser, int val, const RDOParserSrcInfo& _src_info ):
 		RDORTPDefVal( _parser, true, _src_info ),
-		val( _val )
+		m_val( val )
 	{
-		setSrcText( rdo::format("%d", val) );
+		setSrcText( rdo::format("%d", m_val) );
 	}
-	virtual int getIntValue() const { return val; }
+	virtual int getIntValue() const { return m_val; }
+
+private:
+	int m_val;
 };
 
 // ----------------------------------------------------------------------------
@@ -271,11 +275,7 @@ typedef RDORTPDiap<double> RDORTPRealDiap;
 // ----------------------------------------------------------------------------
 class RDORTPIntParamType: public RDORTPParamType
 {
-private:
-	void init();
-
 public:
-	RDORTPIntDiap* diap;
 	RDORTPIntParamType( RDOParser* _parser, RDORTPIntDiap* _diap, RDORTPIntDefVal* _dv );
 	RDORTPIntParamType( const RDOParserObject* _parent );
 	RDORTPIntParamType( const RDOParserObject* _parent, RDORTPIntDiap* _diap, RDORTPIntDefVal* _dv );
@@ -287,13 +287,19 @@ public:
 	virtual void checkRSSEnumValue( const std::string& val, const RDOParserSrcInfo& _src_info ) const;
 	virtual void checkRSSIntValue( int val, const RDOParserSrcInfo& _src_info ) const;
 	virtual void checkRSSRealValue( double val, const RDOParserSrcInfo& _src_info ) const;
-	virtual rdoRuntime::RDOValue getParamDefaultValue( const RDOParserSrcInfo& _src_info ) const;
+	virtual rdoRuntime::RDOValue getDefaultValue( const RDOParserSrcInfo& _src_info ) const;
 	virtual rdoRuntime::RDOValue getRSSEnumValue( const std::string& val, const RDOParserSrcInfo& _src_info ) const;
 	virtual rdoRuntime::RDOValue getRSSIntValue( int val, const RDOParserSrcInfo& _src_info ) const;					// the function also check range if exist
 	virtual rdoRuntime::RDOValue getRSSRealValue( double val, const RDOParserSrcInfo& _src_info ) const;
 	virtual int getDiapTableFunc() const;
-	virtual rdoRuntime::RDOValue::ParamType getType() const { return rdoRuntime::RDOValue::pt_int; }
+	virtual rdoRuntime::RDOValue::Type getType() const { return rdoRuntime::RDOValue::rvt_int; }
 	virtual int writeModelStructure() const;
+
+	const RDORTPIntDiap& getDiap() const { return *m_diap; }
+
+private:
+	RDORTPIntDiap* m_diap;
+	void init();
 };
 
 // ----------------------------------------------------------------------------
@@ -301,9 +307,6 @@ public:
 // ----------------------------------------------------------------------------
 class RDORTPRealDefVal: public RDORTPDefVal
 {
-private:
-	double val;
-
 public:
 	RDORTPRealDefVal( RDOParser* _parser ):
 		RDORTPDefVal( _parser, false )
@@ -311,31 +314,34 @@ public:
 	}
 	RDORTPRealDefVal( RDOParser* _parser, const RDORTPRealDefVal& copy ):
 		RDORTPDefVal( _parser, copy ),
-		val( copy.val )
+		m_val( copy.m_val )
 	{
 	}
 	RDORTPRealDefVal( const RDORTPRealDefVal& copy ):
 		RDORTPDefVal( copy.getParser(), copy ),
-		val( copy.val )
+		m_val( copy.m_val )
 	{
 	}
-	RDORTPRealDefVal( RDOParser* _parser, double _val ):
+	RDORTPRealDefVal( RDOParser* _parser, double val ):
 		RDORTPDefVal( _parser, true ),
-		val( _val )
+		m_val( val )
 	{
-		setSrcText( rdo::format("%f", val) );
+		setSrcText( rdo::format("%f", m_val) );
 	}
 	RDORTPRealDefVal( RDOParser* _parser, const RDOParserSrcInfo& _src_info ):
 		RDORTPDefVal( _parser, false, _src_info )
 	{
 	}
-	RDORTPRealDefVal( RDOParser* _parser, double _val, const RDOParserSrcInfo& _src_info ):
+	RDORTPRealDefVal( RDOParser* _parser, double val, const RDOParserSrcInfo& _src_info ):
 		RDORTPDefVal( _parser, true, _src_info ),
-		val( _val )
+		m_val( val )
 	{
-		setSrcText( rdo::format("%f", val) );
+		setSrcText( rdo::format("%f", m_val) );
 	}
-	virtual double getRealValue() const { return val; }
+	virtual double getRealValue() const { return m_val; }
+
+private:
+	double m_val;
 };
 
 // ----------------------------------------------------------------------------
@@ -343,11 +349,7 @@ public:
 // ----------------------------------------------------------------------------
 class RDORTPRealParamType: public RDORTPParamType
 {
-private:
-	void init();
-
 public:
-	RDORTPRealDiap* diap;
 	RDORTPRealParamType( RDOParser* _parser, RDORTPRealDiap* _diap, RDORTPRealDefVal* _dv );
 	RDORTPRealParamType( const RDOParserObject* _parent );
 	RDORTPRealParamType( const RDOParserObject* _parent, RDORTPRealDiap* _diap, RDORTPRealDefVal* _dv );
@@ -359,13 +361,18 @@ public:
 	virtual void checkRSSEnumValue( const std::string& val, const RDOParserSrcInfo& _src_info ) const;
 	virtual void checkRSSIntValue( int val, const RDOParserSrcInfo& _src_info ) const;
 	virtual void checkRSSRealValue( double val, const RDOParserSrcInfo& _src_info ) const;
-	virtual rdoRuntime::RDOValue getParamDefaultValue( const RDOParserSrcInfo& _src_info ) const;
+	virtual rdoRuntime::RDOValue getDefaultValue( const RDOParserSrcInfo& _src_info ) const;
 	virtual rdoRuntime::RDOValue getRSSEnumValue( const std::string& val, const RDOParserSrcInfo& _src_info ) const;
 	virtual rdoRuntime::RDOValue getRSSIntValue( int val, const RDOParserSrcInfo& _src_info ) const;				// this function too
 	virtual rdoRuntime::RDOValue getRSSRealValue( double val, const RDOParserSrcInfo& _src_info )const ; 	// the function also check range if exist
 	virtual int getDiapTableFunc() const;
-	virtual rdoRuntime::RDOValue::ParamType getType() const { return rdoRuntime::RDOValue::pt_real; }
+	virtual rdoRuntime::RDOValue::Type getType() const { return rdoRuntime::RDOValue::rvt_real; }
 	virtual int writeModelStructure() const;
+	const RDORTPRealDiap& getDiap() const { return *m_diap; }
+
+private:
+	RDORTPRealDiap* m_diap;
+	void init();
 };
 
 // ----------------------------------------------------------------------------
@@ -373,16 +380,17 @@ public:
 // ----------------------------------------------------------------------------
 class RDORTPEnum: public RDOParserObject, public RDOParserSrcInfo
 {
-private:
-	rdoRuntime::RDOEnum* enums;
-
 public:
 	RDORTPEnum( const RDOParserObject* _parent, const std::string& first );
 	virtual ~RDORTPEnum();
+
 	void add( const RDOParserSrcInfo& next );
 	rdoRuntime::RDOValue findEnumValueWithThrow( const RDOParserSrcInfo& val_src_info, const std::string& val ) const;
 	rdoRuntime::RDOValue getFirstValue() const;
-	const rdoRuntime::RDOEnum* getEnums() const { return enums; }
+	rdoRuntime::RDOEnum& getEnums() { return *m_enums; }
+
+private:
+	rdoRuntime::RDOEnum* m_enums;
 };
 
 // ----------------------------------------------------------------------------
@@ -390,45 +398,45 @@ public:
 // ----------------------------------------------------------------------------
 class RDORTPEnumDefVal: public RDORTPDefVal
 {
-private:
-	std::string val;
-
 public:
 	RDORTPEnumDefVal( RDOParser* _parser ):
 		RDORTPDefVal( _parser, false ),
-		val( "" )
+		m_val( "" )
 	{
 	}
 	RDORTPEnumDefVal( RDOParser* _parser, const RDORTPEnumDefVal& copy ):
 		RDORTPDefVal( _parser, copy ),
-		val( copy.val )
+		m_val( copy.m_val )
 	{
-		setSrcText( val );
+		setSrcText( m_val );
 	}
 	RDORTPEnumDefVal( const RDORTPEnumDefVal& copy ):
 		RDORTPDefVal( copy.getParser(), copy ),
-		val( copy.val )
+		m_val( copy.m_val )
 	{
-		setSrcText( val );
+		setSrcText( m_val );
 	}
 	RDORTPEnumDefVal( RDOParser* _parser, const std::string& _val ):
 		RDORTPDefVal( _parser, true ),
-		val( _val )
+		m_val( _val )
 	{
-		setSrcText( val );
+		setSrcText( m_val );
 	}
 	RDORTPEnumDefVal( RDOParser* _parser, const RDOParserSrcInfo& _src_info ):
 		RDORTPDefVal( _parser, false, _src_info ),
-		val( "" )
+		m_val( "" )
 	{
 	}
 	RDORTPEnumDefVal( RDOParser* _parser, const std::string& _val, const RDOParserSrcInfo& _src_info ):
 		RDORTPDefVal( _parser, true, _src_info ),
-		val( _val )
+		m_val( _val )
 	{
-		setSrcText( val );
+		setSrcText( m_val );
 	}
-	virtual const std::string& getEnumValue() const { return val; }
+	virtual const std::string& getEnumValue() const { return m_val; }
+
+private:
+	std::string m_val;
 };
 
 // ----------------------------------------------------------------------------
@@ -436,9 +444,6 @@ public:
 // ----------------------------------------------------------------------------
 class RDORTPEnumParamType: public RDORTPParamType
 {
-private:
-	void init_src_info();
-
 public:
 	RDORTPEnum* enu;
 	std::string enum_name; // Используется в сообщениях об ошибках
@@ -451,13 +456,16 @@ public:
 	virtual void checkRSSEnumValue( const std::string& val, const RDOParserSrcInfo& _src_info ) const;
 	virtual void checkRSSIntValue( int val, const RDOParserSrcInfo& _src_info ) const;
 	virtual void checkRSSRealValue( double val, const RDOParserSrcInfo& _src_info ) const;
-	virtual rdoRuntime::RDOValue getParamDefaultValue( const RDOParserSrcInfo& _src_info ) const;
+	virtual rdoRuntime::RDOValue getDefaultValue( const RDOParserSrcInfo& _src_info ) const;
 	virtual rdoRuntime::RDOValue getRSSEnumValue( const std::string& val, const RDOParserSrcInfo& _src_info ) const;
 	virtual rdoRuntime::RDOValue getRSSIntValue( int val, const RDOParserSrcInfo& _src_info ) const;
 	virtual rdoRuntime::RDOValue getRSSRealValue( double val, const RDOParserSrcInfo& _src_info ) const;
 	virtual int getDiapTableFunc() const;
-	virtual rdoRuntime::RDOValue::ParamType getType() const { return rdoRuntime::RDOValue::pt_enum; }
+	virtual rdoRuntime::RDOValue::Type getType() const { return rdoRuntime::RDOValue::rvt_enum; }
 	virtual int writeModelStructure() const;
+
+private:
+	void init_src_info();
 };
 
 } // namespace rdoParse

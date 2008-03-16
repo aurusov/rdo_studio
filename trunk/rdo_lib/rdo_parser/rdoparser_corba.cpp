@@ -2,6 +2,7 @@
 #include "rdoparser_corba.h"
 #include "rdortp.h"
 #include <rdo_resources.h>
+#include <rdoruntime_object.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -25,14 +26,33 @@ void RDOParserCorbaRTP::parse()
 		rdoMBuilder::RDOResType::ParamList::const_iterator param_it = rtp_it->begin();
 		while ( param_it != rtp_it->end() )
 		{
-			TRACE("  param: %s\n", param_it->getName().c_str());
+			std::string info = rdo::format("  param: %s: %s", param_it->getName().c_str(), param_it->getTypeStr().c_str());
+			if ( param_it->hasDiap() )
+			{
+				info = rdo::format("%s [%s..%s]", info.c_str(), param_it->getMin().getAsString().c_str(), param_it->getMax().getAsString().c_str());
+			}
+			if ( param_it->hasDefault() )
+			{
+				info = rdo::format("%s = %s", info.c_str(), param_it->getDefault().getAsString().c_str());
+			}
+			TRACE( "%s\n", info.c_str() );
+
+			if ( param_it->getType() == rdoRuntime::RDOValue::rvt_enum )
+			{
+				rdoRuntime::RDOEnum::CIterator enum_it = param_it->getEnum().begin();
+				while ( enum_it != param_it->getEnum().end() )
+				{
+					TRACE( "  - enum - %s\n", enum_it->c_str() );
+					enum_it++;
+				}
+			}
 			param_it++;
 		}
 		rtp_it++;
 	}
 
 	// Тут надо запросить все типы ресурсов у парного РДО,
-	// вызвав с помощью корбы некий метод, который вернут кучу структур
+	// вызвав с помощью корбы некий метод, который вернёт кучу структур
 	// с описанием RTP
 //	RDORTPResType* rtp = new RDORTPResType( parser, std::string("RTPCorba"), true );
 //	rtp->addParam( "param1", rdoRuntime::RDOValue::pt_int );

@@ -60,7 +60,7 @@ private:
 	RDOFUNDoubleToIntByResult int_or_double;
 
 public:
-	rdoRuntime::RDOCalc* createCalc( rdoRuntime::RDOValue::ParamType _type = rdoRuntime::RDOValue::pt_real );
+	rdoRuntime::RDOCalc* createCalc( rdoRuntime::RDOValue::Type _type = rdoRuntime::RDOValue::rvt_real );
 
 	RDOFUNLogic( const RDOParserObject* _parent, rdoRuntime::RDOCalc* _calc, bool hide_warning = false );
 
@@ -89,21 +89,21 @@ public:
 	std::string str; // for type == unknow
 
 private:
-	rdoRuntime::RDOValue::ParamType type;
-	rdoRuntime::RDOCalc* calc;
+	rdoRuntime::RDOValue::Type  type;
+	rdoRuntime::RDOCalc*        calc;
 	RDOFUNDoubleToIntByResult int_or_double;
 
 	void init( const RDOParserSrcInfo& res_name_src_info, const RDOParserSrcInfo& par_name_src_info );
 	void init( const std::string& value, const YYLTYPE& _pos );
 
 public:
-	RDOFUNArithm( RDOParser* _parser, rdoRuntime::RDOValue::ParamType _type, rdoRuntime::RDOCalc* _calc, const RDOParserSrcInfo& src_info );
+	RDOFUNArithm( RDOParser* _parser, rdoRuntime::RDOValue::Type _type, rdoRuntime::RDOCalc* _calc, const RDOParserSrcInfo& src_info );
 	RDOFUNArithm( RDOParser* _parser, const RDOParserSrcInfo& res_name_src_info, const RDOParserSrcInfo& par_name_src_info );
 	RDOFUNArithm( RDOParser* _parser, int value, const RDOParserSrcInfo& src_info );
 	RDOFUNArithm( RDOParser* _parser, double* value, const RDOParserSrcInfo& src_info );
 	RDOFUNArithm( RDOParser* _parser, const std::string& value, const YYLTYPE& _pos );
 
-	RDOFUNArithm( const RDOParserObject* _parent, rdoRuntime::RDOValue::ParamType _type, rdoRuntime::RDOCalc* _calc, const RDOParserSrcInfo& src_info );
+	RDOFUNArithm( const RDOParserObject* _parent, rdoRuntime::RDOValue::Type _type, rdoRuntime::RDOCalc* _calc, const RDOParserSrcInfo& src_info );
 	RDOFUNArithm( const RDOFUNArithm* _parent, const RDOParserSrcInfo& res_name_src_info, const RDOParserSrcInfo& par_name_src_info );
 	RDOFUNArithm( const RDOFUNArithm* _parent, int value, const RDOParserSrcInfo& src_info );
 	RDOFUNArithm( const RDOFUNArithm* _parent, double* value, const RDOParserSrcInfo& src_info );
@@ -123,7 +123,7 @@ public:
 
 	rdoRuntime::RDOCalc* createCalc( const RDORTPParamType* const forType = NULL );
 	rdoRuntime::RDOCalc* getCalc() const            { return calc; }
-	rdoRuntime::RDOValue::ParamType getType() const { return type; }
+	rdoRuntime::RDOValue::Type getType() const { return type; }
 
 	virtual void setSrcInfo( const RDOParserSrcInfo& src_info );
 	virtual void setSrcPos( const RDOSrcInfo::Position& _pos );
