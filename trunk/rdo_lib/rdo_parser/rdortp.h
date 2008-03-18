@@ -20,26 +20,6 @@ class RDORTPDefVal;
 class RDORTPParamType: public RDOParserObject, public RDOParserSrcInfo
 {
 public:
-	// Для глобальный типов, напрмиер, для параметров стандартных фыункций
-	RDORTPParamType( RDOParser* _parser, RDORTPDefVal* _dv ):
-		RDOParserObject( _parser ),
-		RDOParserSrcInfo(),
-		m_dv( _dv )
-	{
-	}
-	// Для нормальных параметров
-	RDORTPParamType( const RDOParserObject* _parent, RDORTPDefVal* _dv ):
-		RDOParserObject( _parent ),
-		RDOParserSrcInfo(),
-		m_dv( _dv )
-	{
-	}
-	RDORTPParamType( const RDOParserObject* _parent, RDORTPDefVal* _dv, const RDOParserSrcInfo& _src_info ):
-		RDOParserObject( _parent ),
-		RDOParserSrcInfo( _src_info ),
-		m_dv( _dv )
-	{
-	}
 	virtual const RDORTPParamType* constructSuchAs( const RDOParserSrcInfo& _src_info ) const = 0;
 	virtual const RDORTPParamType* constructSuchAs( int defVal, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& defVal_info ) const = 0;
 	virtual const RDORTPParamType* constructSuchAs( double defVal, const RDOParserSrcInfo& _src_info, const RDOParserSrcInfo& defVal_info ) const = 0;
@@ -62,6 +42,27 @@ public:
 
 protected:
 	RDORTPDefVal* m_dv;
+
+	// Для глобальный типов, напрмиер, для параметров стандартных фыункций
+	RDORTPParamType( RDOParser* _parser, RDORTPDefVal* _dv ):
+		RDOParserObject( _parser ),
+		RDOParserSrcInfo(),
+		m_dv( _dv )
+	{
+	}
+	// Для нормальных параметров
+	RDORTPParamType( const RDOParserObject* _parent, RDORTPDefVal* _dv ):
+		RDOParserObject( _parent ),
+		RDOParserSrcInfo(),
+		m_dv( _dv )
+	{
+	}
+	RDORTPParamType( const RDOParserObject* _parent, RDORTPDefVal* _dv, const RDOParserSrcInfo& _src_info ):
+		RDOParserObject( _parent ),
+		RDOParserSrcInfo( _src_info ),
+		m_dv( _dv )
+	{
+	}
 };
 
 // ----------------------------------------------------------------------------
@@ -236,7 +237,8 @@ public:
 	{
 		init( &max_value_pos );
 	}
-	RDORTPDiap( T min_value, T max_value ):
+	RDORTPDiap( RDOParser* _parser, T min_value, T max_value ):
+		RDOParserObject( _parser ),
 		m_exist( true ),
 		m_min_value( min_value ),
 		m_max_value( max_value )

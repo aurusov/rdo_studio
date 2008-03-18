@@ -384,7 +384,10 @@ void RDOParser::error( const RDOParserSrcInfo& _src_info1, const RDOParserSrcInf
 
 void RDOParser::error_push_only( const RDOParserSrcInfo& _src_info, const std::string& _message, rdoSimulator::RDOSyntaxError::ErrorCode _error_code )
 {
-	errors.push_back( rdoSimulator::RDOSyntaxError( _error_code, _message, _src_info.src_pos().last_line, _src_info.src_pos().last_pos, _src_info.src_filetype() ) );
+	if ( _src_info.src_pos().last_line != -1 && _src_info.src_pos().last_pos != -1 )
+	{
+		errors.push_back( rdoSimulator::RDOSyntaxError( _error_code, _message, _src_info.src_pos().last_line, _src_info.src_pos().last_pos, _src_info.src_filetype() ) );
+	}
 }
 
 void RDOParser::error_push_done()

@@ -18,7 +18,16 @@ namespace rdoParse
 // ----------------------------------------------------------------------------
 void RDOParserCorbaRTP::parse()
 {
+	// Получили список всех типов ресурсов
 	rdoMBuilder::RDOResTypeList rtpList( m_parser );
+	// Создаём новый тип ресурса
+	rdoMBuilder::RDOResType rtp( "MyRTP" );
+	rtp.append( rdoMBuilder::RDOResType::Param("p1", rdoRuntime::RDOValue::rvt_int) );
+	rtp.append( rdoMBuilder::RDOResType::Param("p2", rdoRuntime::RDOValue::rvt_int) );
+	// Добавляем его к списку сещуествующих
+	rtpList.append( rtp );
+
+	// Вывели все типы ресурсов
 	rdoMBuilder::RDOResTypeList::RTPList::const_iterator rtp_it = rtpList.begin();
 	while ( rtp_it != rtpList.end() )
 	{
@@ -63,6 +72,22 @@ void RDOParserCorbaRTP::parse()
 // ----------------------------------------------------------------------------
 void RDOParserCorbaRSS::parse()
 {
+	// Получили список всех ресурсов
+	rdoMBuilder::RDOResourceList rssList( m_parser );
+	// Вывели все ресурсы
+	rdoMBuilder::RDOResourceList::RSSList::const_iterator rss_it = rssList.begin();
+	while ( rss_it != rssList.end() )
+	{
+		TRACE("rss.name = %s: %s\n", rss_it->getName().c_str(), rss_it->getType().getName().c_str());
+		rdoMBuilder::RDOResource::ParamList::const_iterator param_it = rss_it->begin();
+		while ( param_it != rss_it->end() )
+		{
+			TRACE("  %s = %s\n", param_it->first.c_str(), param_it->second.getAsString().c_str());
+			param_it++;
+		}
+		rss_it++;
+	}
+
 	// Тут надо запросить все ресурсы у парного РДО
 }
 
