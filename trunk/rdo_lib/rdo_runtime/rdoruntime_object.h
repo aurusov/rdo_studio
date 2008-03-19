@@ -285,6 +285,7 @@ public:
 		switch ( m_type ) {
 			case rvt_int : m_value.i_value = 0; break;
 			case rvt_real: m_value.d_value = 0; break;
+			case rvt_enum: m_value.i_value = 0; m_data = NULL; break;
 			default      : throw RDORuntimeRDOValue("");
 		}
 	}

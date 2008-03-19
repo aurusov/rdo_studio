@@ -16,7 +16,7 @@ namespace rdoMBuilder
 // --------------------------------------------------------------------
 RDOResType::RDOResType( const rdoParse::RDORTPResType& rtp ):
 	m_name( rtp.getName() ),
-	m_permanent( rtp.isPermanent() )
+	m_type( rtp.isPermanent() ? rt_permanent : rt_temporary )
 {
 	std::vector< const rdoParse::RDORTPParam* >::const_iterator param_it = rtp.getParams().begin();
 	while ( param_it != rtp.getParams().end() )
@@ -64,9 +64,9 @@ RDOResType::Param::Param( const rdoParse::RDORTPParam& param ):
 // --------------------------------------------------------------------
 // ---- Инициализация *нового* типа ресурса
 // --------------------------------------------------------------------
-RDOResType::RDOResType( const std::string& name, bool permanent ):
+RDOResType::RDOResType( const std::string& name, Type type ):
 	m_name( name ),
-	m_permanent( permanent )
+	m_type( type )
 {
 }
 
@@ -150,6 +150,49 @@ RDOResource::RDOResource( const rdoParse::RDORSSResource& rss ):
 	}
 }
 
+RDOResource::ParamList::const_iterator RDOResource::operator[] ( const std::string& param ) const
+{
+	return m_params.find(param);
+}
+
+rdoRuntime::RDOValue& RDOResource::operator[] ( const std::string& param )
+{
+	RDOResource::ParamList::iterator param_it = m_params.find(param);
+	if ( param_it != m_params.end() )
+	{
+		return param_it->second;
+	}
+	else
+	{
+		static rdoRuntime::RDOValue tmpValue;
+		return tmpValue;
+	}
+}
+
+// --------------------------------------------------------------------
+// ---- Инициализация *нового* ресурса
+// --------------------------------------------------------------------
+RDOResource::RDOResource( const RDOResType& rtp, const std::string& name ):
+	m_name( name ),
+	m_rtp( rtp )
+{
+	RDOResType::ParamList::const_iterator param_it = m_rtp.begin();
+	while ( param_it != m_rtp.end() )
+	{
+		rdoRuntime::RDOValue value( param_it->getTypeObject() );
+		if ( param_it->hasDefault() )
+		{
+			value = param_it->getDefault();
+		}
+		else if ( param_it->hasDiap() )
+		{
+			value = param_it->getMin();
+		}
+		m_params[param_it->getName()] = value;
+		param_it++;
+	}
+}
+
 // --------------------------------------------------------------------
 // ---------- RDOResTypeList
 // --------------------------------------------------------------------
@@ -163,6 +206,20 @@ RDOResTypeList::RDOResTypeList( rdoParse::RDOParser* parser ):
 		RDOResType rtp( **rtp_it );
 		m_list.push_back( rtp );
 		rtp_it++;
+	}
+}
+
+const RDOResType& RDOResTypeList::operator[] ( const std::string& rtp ) const
+{
+	RTPList::const_iterator rtp_it = std::find_if(begin(), end(), rdoParse::compareNameRef<RDOResType>(rtp));
+	if ( rtp_it != end() )
+	{
+		return *rtp_it;
+	}
+	else
+	{
+		static RDOResType rtp( "__tmp" );
+		return rtp;
 	}
 }
 
@@ -239,6 +296,40 @@ RDOResourceList::RDOResourceList( rdoParse::RDOParser* parser ):
 		RDOResource rss( **rss_it );
 		m_list.push_back( rss );
 		rss_it++;
+	}
+}
+
+// --------------------------------------------------------------------
+// ---- Добавление *нового* ресурса
+// --------------------------------------------------------------------
+bool RDOResourceList::append( const RDOResource& rss )
+{
+	if ( std::find_if(begin(), end(), rdoParse::compareNameRef<RDOResource>(rss.getName())) == end() )
+	{
+		const rdoParse::RDORTPResType* pRTP = m_parser->findRTPResType(rss.getType().getName());
+		if ( !pRTP )
+		{
+			return false;
+		}
+		m_list.push_back( rss );
+		rdoParse::RDORSSResource* pRSS = new rdoParse::RDORSSResource( m_parser, rss.getName(), pRTP );
+		RDOResType::ParamList::const_iterator param_it = rss.getType().begin();
+		while ( param_it != rss.getType().end() )
+		{
+			RDOResource::ParamList::const_iterator value_it = rss[param_it->getName()];
+			if ( value_it == rss.end() )
+			{
+				delete pRSS;
+				return false;
+			}
+			pRSS->addValue( value_it->second );
+			param_it++;
+		}
+		return true;
+	}
+	else
+	{
+		return false;
 	}
 }
 

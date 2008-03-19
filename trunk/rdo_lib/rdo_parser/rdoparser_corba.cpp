@@ -18,16 +18,19 @@ namespace rdoParse
 // ----------------------------------------------------------------------------
 void RDOParserCorbaRTP::parse()
 {
-	// Получили список всех типов ресурсов
-	rdoMBuilder::RDOResTypeList rtpList( m_parser );
-	// Создаём новый тип ресурса
-	rdoMBuilder::RDOResType rtp( "MyRTP" );
-	rtp.append( rdoMBuilder::RDOResType::Param("p1", rdoRuntime::RDOValue::rvt_int) );
-	rtp.append( rdoMBuilder::RDOResType::Param("p2", rdoRuntime::RDOValue::rvt_int) );
-	// Добавляем его к списку сещуествующих
-	rtpList.append( rtp );
+	{
+		// Получили список всех типов ресурсов
+		rdoMBuilder::RDOResTypeList rtpList( m_parser );
+		// Создали новый тип ресурса
+		rdoMBuilder::RDOResType rtp( "MyRTP" );
+		rtp.append( rdoMBuilder::RDOResType::Param("p1", rdoRuntime::RDOValue::rvt_int) );
+		rtp.append( rdoMBuilder::RDOResType::Param("p2", rdoRuntime::RDOValue::rvt_int) );
+		// Добавили его к списку существующих
+		rtpList.append( rtp );
+	}
 
 	// Вывели все типы ресурсов
+	rdoMBuilder::RDOResTypeList rtpList( m_parser );
 	rdoMBuilder::RDOResTypeList::RTPList::const_iterator rtp_it = rtpList.begin();
 	while ( rtp_it != rtpList.end() )
 	{
@@ -72,9 +75,20 @@ void RDOParserCorbaRTP::parse()
 // ----------------------------------------------------------------------------
 void RDOParserCorbaRSS::parse()
 {
-	// Получили список всех ресурсов
-	rdoMBuilder::RDOResourceList rssList( m_parser );
+	{
+		// Получили список всех типов ресурсов
+		rdoMBuilder::RDOResTypeList rtpList( m_parser );
+		// Получили список всех ресурсов
+		rdoMBuilder::RDOResourceList rssList( m_parser );
+		// Создали новый ресурс
+		rdoMBuilder::RDOResource rss( rtpList["Парикмахеры"], "MyRSS1" );
+		rss["длительность_max"] = 174;
+		// Добавляем его к списку существующих
+		rssList.append( rss );
+	}
+
 	// Вывели все ресурсы
+	rdoMBuilder::RDOResourceList rssList( m_parser );
 	rdoMBuilder::RDOResourceList::RSSList::const_iterator rss_it = rssList.begin();
 	while ( rss_it != rssList.end() )
 	{
