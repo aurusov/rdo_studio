@@ -138,7 +138,7 @@ template <class T> class compareNameRef
 {
 public:
 	compareNameRef( const std::string& name ): m_name(name) {}
-	bool operator() (const T& obj) { return obj.getName() == m_name; }
+	bool operator() (const T& obj) { return obj.name() == m_name; }
 
 private:
 	const std::string& m_name;

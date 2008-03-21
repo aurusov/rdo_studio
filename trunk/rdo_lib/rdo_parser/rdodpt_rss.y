@@ -175,6 +175,7 @@ static char THIS_FILE[] = __FILE__;
 #include "rdortp.h"
 #include "rdorss.h"
 #include <rdoprocess.h>
+#include <rdo_resources.h>
 
 #define PARSER reinterpret_cast<rdoParse::RDOLexer*>(lexer)->m_parser
 
@@ -270,104 +271,80 @@ dpt_process_line:	IDENTIF	{
 
 					| SEIZE IDENTIF {
 
+	// Имя ресурса
 	std::string res_name       = *(std::string*)$2;
+	// "Состояние"
 	std::string rtp_param_name = rdoRuntime::RDOPROCBlockForSeize::getStateParamName();
+	// "Свободен"
 	std::string rtp_state_free = rdoRuntime::RDOPROCBlockForSeize::getStateEnumFree();
+	// "Занят"
 	std::string rtp_state_buzy = rdoRuntime::RDOPROCBlockForSeize::getStateEnumBuzy();
 
-	// Найти ресурс, если его нет, то создать
-	RDORSSResource* res = const_cast<RDORSSResource*>(PARSER->findRSSResource( res_name ));
-	if ( !res ) {
+	// Получили список всех типов ресурсов
+	rdoMBuilder::RDOResTypeList rtpList( PARSER );
+	// Получили список всех ресурсов
+	rdoMBuilder::RDOResourceList rssList( PARSER );
 
+	rdoMBuilder::RDOResType rtp;
+	bool rssMustCreate = !rssList[res_name].exist();
+	if ( rssMustCreate )
+	{
+		// Ресурс не наден, проверим наличие типа
 		// Сформировать имя типа по имени ресурса
 		std::string res_type_name( RDOPROCProcess::name_prefix + res_name + RDOPROCProcess::name_sufix );
 
 		// Найти тип ресурса, если его нет, то создать тип и положить в него параметр
-		RDORTPParam* rtp_param = NULL;
-		RDORTPResType* res_type = const_cast<RDORTPResType*>(PARSER->findRTPResType( res_type_name ));
-		if ( !res_type ) {
+		if ( !rtpList[res_type_name].exist() )
+		{
 			// Создадим тип ресурса
-			res_type = new RDORTPResType( PARSER, res_type_name, true );
-
+			rdoMBuilder::RDOResType rtp(res_type_name);
 			// Создадим параметр перечислимого типа
-			RDORTPEnum* state_enum = new RDORTPEnum( res_type, rtp_state_free );
-			state_enum->add( RDOParserSrcInfo(@2, rtp_state_buzy) );
-
-			RDORTPEnumDefVal* state_default = new RDORTPEnumDefVal( PARSER, rtp_state_free );
-
-			RDORTPEnumParamType* rtp_param_enum = new RDORTPEnumParamType( res_type, state_enum, state_default, RDOParserSrcInfo( @2 ) );
-			rtp_param_enum->enum_name = rdo::format( "%s.%s", res_type_name.c_str(), rtp_param_name.c_str() );
-
-			rtp_param = new RDORTPParam( res_type, RDOParserSrcInfo(@2, rtp_param_name), rtp_param_enum );
-			res_type->addParam( rtp_param );
-		} else {
-			// Тип найден, проверить на наличие перечислимого параметра
-			rtp_param = const_cast<RDORTPParam*>(res_type->findRTPParam( rtp_param_name ));
-			if ( rtp_param ) {
-				// Параметр Состояние есть, надо проверить, чтобы в нем были значения Свободен и Занят
-				// Для начала проверим тип параметра
-				if ( rtp_param->getType()->getType() == rdoRuntime::RDOValue::Type::rvt_enum ) {
-					// Теперь проверим сами значения
-					try {
-						rtp_param->getType()->getRSSEnumValue( rtp_state_free, @2 );
-						rtp_param->getType()->getRSSEnumValue( rtp_state_buzy, @2 );
-					} catch ( RDOSyntaxException& ) {
-						PARSER->error( rdo::format( "У типа ресурса '%s' перечислимый параметр '%s' должен иметь как минимум два обязательных значения: %s и %s", res_type->getName().c_str(), rtp_param_name.c_str(), rtp_state_free.c_str(), rtp_state_buzy.c_str() ) );
-					}
-				} else {
-					// Параметр Состояние есть, но он не перечислимого типа
-					PARSER->error( rdo::format( "У типа ресурса '%s' параметр '%s' не является перечислимым типом", res_type->getName().c_str(), rtp_param_name.c_str() ) );
-				}
-			} else {
-				PARSER->error( rdo::format( "У типа ресурса '%s' нет параметра перечислимого типа '%s'", res_type->getName().c_str(), rtp_param_name.c_str() ) );
+			rdoRuntime::RDOEnum* state_enum = new rdoRuntime::RDOEnum( PARSER->runtime );
+			state_enum->add( rtp_state_free );
+			state_enum->add( rtp_state_buzy );
+			rdoMBuilder::RDOResType::Param param(rtp_param_name, *state_enum);
+			param.setDefault( rdoRuntime::RDOValue(*state_enum, rtp_state_free) );
+			// Добавим параметр
+			rtp.m_params.append( param );
+			// Добавим тип ресурса
+			if ( !rtpList.append( rtp ) )
+			{
+				PARSER->error( @2, rdo::format("Ошибка создания типа ресурса: %s", res_type_name.c_str()) );
 			}
 		}
+		// Тип найден или создан, теперь надо его проверить на наличие перечислимого параметра
+		rtp = rtpList[res_type_name];
+	}
+	else
+	{
+		// Ресурсе найден, проверим его тип на наличие перечислимого параметра
+		rtp = rssList[res_name].getType();
+	}
 
-		// Создать ресурс
-		RDORSSResource* res = new RDOPROCResource( PARSER, res_name, res_type );
-		res->setTrace( true );
+	// Проверить тип на наличие перечислимого параметра
+	if ( !rtp.m_params[rtp_param_name].exist() ) {
+		PARSER->error( rdo::format( "У типа ресурса '%s' нет параметра перечислимого типа '%s'", rtp.name().c_str(), rtp_param_name.c_str() ) );
+	}
+	const rdoMBuilder::RDOResType::Param& param = rtp.m_params[rtp_param_name];
+	// Параметр Состояние есть, надо проверить, чтобы в нем были значения Свободен и Занят
+	// Для начала проверим тип параметра
+	if ( param.getType() != rdoRuntime::RDOValue::Type::rvt_enum ) {
+		// Параметр Состояние есть, но он не перечислимого типа
+		PARSER->error( rdo::format( "У типа ресурса '%s' параметр '%s' не является перечислимым типом", rtp.name().c_str(), rtp_param_name.c_str() ) );
+	}
+	// Теперь проверим сами значения
+	if ( !param.getEnum().exist(rtp_state_free) || !param.getEnum().exist(rtp_state_buzy) )
+	{
+		PARSER->error( rdo::format( "У типа ресурса '%s' перечислимый параметр '%s' должен иметь как минимум два обязательных значения: %s и %s", rtp.name().c_str(), param.name().c_str(), rtp_state_free.c_str(), rtp_state_buzy.c_str() ) );
+	}
 
-		// Пропишем значения параметров перечислимого типа по-умолчанию
-		rdoRuntime::RDOValue state_val = rtp_param->getType()->getDefaultValue( @2 );
-		res->addValue( state_val );
-		res->currParam++;
-
-		// Пропишем значения параметров (всех) для созданного ресурса. Берутся как значения по-умолчанию
-//		const std::vector<const RDORTPParam *>& res_params = res->getType()->getParams();
-//		res->currParam = res_params.begin();
-//		while ( res->currParam != res_params.end() ) {
-//			RDOValue res_param_val = (*res->currParam)->getType()->getDefaultValue();
-//			res->addValue( res_param_val );
-//			res->currParam++;
-//		}
-
-	} else {
-		// Ресурс найден, найдем для него тип
-		RDORTPResType* res_type = const_cast<RDORTPResType*>(PARSER->findRTPResType( res->getType()->getName() ));
-		if ( !res_type ) {
-			// Тип не найден, выдай сообщение об ошибке
-			PARSER->error( rdo::format( "Для ресурса %s не наден тип %s", res_name.c_str(), res_type->getName().c_str() ) );
-		}
-		RDORTPParam* rtp_param = const_cast<RDORTPParam*>(res_type->findRTPParam( rtp_param_name ));
-		if ( !rtp_param ) {
-			// Не найден перечислимый параметр Состояние, выдай сообщение об ошибке
-			PARSER->error( rdo::format( "Для типа ресурса %s не наден параметр перечислимого типа %s", res_type->getName().c_str(), rtp_param_name.c_str() ) );
-		}
-		// Параметр Состояние есть, надо проверить, чтобы в нем были значения Свободен и Занят
-		// Для начала проверим тип параметра
-		if ( rtp_param->getType()->getType() == rdoRuntime::RDOValue::Type::rvt_enum ) {
-			// Теперь проверим сами значения
-			try {
-				rtp_param->getType()->getRSSEnumValue( rtp_state_free, @2 );
-				rtp_param->getType()->getRSSEnumValue( rtp_state_buzy, @2 );
-			} catch ( RDOSyntaxException& ) {
-				PARSER->error( rdo::format( "У типа ресурса '%s' перечислимый параметр '%s' должен иметь как минимум два обязательных значения: %s и %s", res_type->getName().c_str(), rtp_param_name.c_str(), rtp_state_free.c_str(), rtp_state_buzy.c_str() ) );
-			}
-		} else {
-			// Параметр Состояние есть, но он не перечислимого типа
-			PARSER->error( rdo::format( "У типа ресурса '%s' параметр '%s' не является перечислимым типом", res_type->getName().c_str(), rtp_param_name.c_str() ) );
-		}
-
+	if ( rssMustCreate )
+	{
+		// Создадим ресурс
+		rdoMBuilder::RDOResource rss( rtp, res_name );
+//		res->setTrace( true );
+		// Добавим его в систему
+		rssList.append( rss );
 	}
 };
 

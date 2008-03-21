@@ -6,6 +6,7 @@
 #endif
 
 #include <rdoruntime_object.h>
+#include <rdoparser_object.h>
 
 namespace rdoParse
 {
@@ -18,10 +19,74 @@ class RDORSSResource;
 namespace rdoMBuilder {
 
 // --------------------------------------------------------------------
+// ---------- RDOList
+// --------------------------------------------------------------------
+template <class T>
+class RDOList
+{
+public:
+	typedef std::list< T > List;
+
+	RDOList():
+		m_parser( NULL )
+	{
+	}
+	RDOList( rdoParse::RDOParser* parser ):
+		m_parser( parser )
+	{
+	}
+
+	List::const_iterator begin() const { return m_list.begin(); }
+	List::const_iterator end  () const { return m_list.end();   }
+	unsigned int         size () const { return m_list.size();  }
+	List::const_iterator found( const std::string& name ) const
+	{
+		return std::find_if( begin(), end(), rdoParse::compareNameRef<T>(name) );
+	}
+	bool exist( const std::string& name ) const
+	{
+		return found( name ) != end();
+	}
+	const T& operator[] ( const std::string& name ) const
+	{
+		List::const_iterator it = found( name );
+		if ( it != end() )
+		{
+			return *it;
+		}
+		else
+		{
+			static T __t;
+			return __t;
+		}
+	}
+
+protected:
+	List                 m_list;
+	rdoParse::RDOParser* m_parser;
+};
+
+// --------------------------------------------------------------------
+// ---------- Базовая часть mbuilder-объекта
+// --------------------------------------------------------------------
+#define MBUILDER_OBJECT( Class )                           \
+class Class                                                \
+{                                                          \
+friend class Class##List;                                  \
+public:                                                    \
+	Class(): m_exist( false ), m_name("") {}               \
+                                                           \
+	const std::string& name() const    { return m_name;  } \
+	bool               exist() const   { return m_exist; } \
+                                                           \
+private:                                                   \
+	std::string m_name;                                    \
+	bool        m_exist;
+
+// --------------------------------------------------------------------
 // ---------- RDOResType
 // --------------------------------------------------------------------
-class RDOResType
-{
+MBUILDER_OBJECT(RDOResType)
 public:
 	enum Type
 	{
@@ -33,8 +98,7 @@ public:
 	// Создать новый тип
 	RDOResType( const std::string& name, Type type = rt_permanent );
 
-	class Param
-	{
+	MBUILDER_OBJECT(Param)
 	public:
 		Param( const rdoParse::RDORTPParam& param );
 		Param( const std::string& name, rdoRuntime::RDOValue::Type type );
@@ -42,7 +106,6 @@ public:
 		Param( const std::string& name, const rdoRuntime::RDOValue& type );
 		Param( const std::string& name, const rdoRuntime::RDOValue& min, const rdoRuntime::RDOValue& max, const rdoRuntime::RDOValue& def = rdoRuntime::RDOValue::rvt_unknow );
 
-		const std::string&          getName() const       { return m_name;                   }
 		rdoRuntime::RDOValue        getTypeObject() const { return m_type;                   }
 		rdoRuntime::RDOValue::Type  getType() const       { return m_type.getType();         }
 		std::string                 getTypeStr() const    { return m_type.getTypeAsString(); }
@@ -61,97 +124,73 @@ public:
 		bool operator== ( const Param& param ) const;
 
 	private:
-		std::string            m_name;
 		rdoRuntime::RDOValue   m_type;
 		rdoRuntime::RDOValue   m_min;
 		rdoRuntime::RDOValue   m_max;
 		rdoRuntime::RDOValue   m_default;
 	};
-	typedef std::list< Param > ParamList;
+	class ParamList: public RDOList<Param>
+	{
+	public:
+		bool append( const Param& param );
+	};
+	ParamList m_params;
 
-	bool                      append( const Param& param );
 
-	ParamList::const_iterator begin() const { return m_params.begin(); }
-	ParamList::const_iterator end  () const { return m_params.end();   }
-	unsigned int              size () const { return m_params.size();  }
+//	ParamList::const_iterator begin() const { return m_params.begin(); }
+//	ParamList::const_iterator end  () const { return m_params.end();   }
+//	unsigned int              size () const { return m_params.size();  }
 
-	const std::string& getName() const { return m_name; }
 	Type               getType() const { return m_type; }
 	bool           isPermanent() const { return m_type == rt_permanent; }
 
 private:
-	std::string m_name;
 	Type        m_type;
-	ParamList   m_params;
 };
 
 // --------------------------------------------------------------------
 // ---------- RDOResource
 // --------------------------------------------------------------------
-class RDOResource
-{
+MBUILDER_OBJECT(RDOResource)
 public:
 	// Проинициализировать по существующему ресурсу
 	RDOResource( const rdoParse::RDORSSResource& rss );
 	// Создать новый ресурс
 	RDOResource( const RDOResType& rtp, const std::string& name );
 
-	const std::string& getName() const { return m_name; }
 	const RDOResType&  getType() const { return m_rtp;  }
 
-	typedef std::map< std::string, rdoRuntime::RDOValue > ParamList;
+	typedef std::map< std::string, rdoRuntime::RDOValue > Params;
 
-	ParamList::const_iterator begin() const { return m_params.begin(); }
-	ParamList::const_iterator end  () const { return m_params.end();   }
-	unsigned int              size () const { return m_params.size();  }
-	rdoRuntime::RDOValue&     operator[] ( const std::string& param );
-	ParamList::const_iterator operator[] ( const std::string& param ) const;
+	Params::const_iterator begin() const { return m_params.begin(); }
+	Params::const_iterator end  () const { return m_params.end();   }
+	unsigned int           size () const { return m_params.size();  }
+	rdoRuntime::RDOValue&  operator[] ( const std::string& param );
+	Params::const_iterator operator[] ( const std::string& param ) const;
 
 private:
-	std::string m_name;
-	RDOResType  m_rtp;
-	ParamList   m_params;
+	RDOResType m_rtp;
+	Params     m_params;
 };
 
 // --------------------------------------------------------------------
 // ---------- RDOResTypeList
 // --------------------------------------------------------------------
-class RDOResTypeList
+class RDOResTypeList: public RDOList<RDOResType>
 {
 public:
 	RDOResTypeList( rdoParse::RDOParser* parser );
-
-	typedef std::list< RDOResType > RTPList;
-
-	bool append( const RDOResType& rtp );
-
-	RTPList::const_iterator begin() const { return m_list.begin(); }
-	RTPList::const_iterator end  () const { return m_list.end();   }
-	const RDOResType& operator[] ( const std::string& rtp ) const;
-
-private:
-	RTPList              m_list;
-	rdoParse::RDOParser* m_parser;
+	bool append( RDOResType& rtp );
 };
 
 // --------------------------------------------------------------------
 // ---------- RDOResourceList
 // --------------------------------------------------------------------
-class RDOResourceList
+class RDOResourceList: public RDOList<RDOResource>
 {
 public:
 	RDOResourceList( rdoParse::RDOParser* parser );
-
-	typedef std::list< RDOResource > RSSList;
-
-	bool append( const RDOResource& rss );
-
-	RSSList::const_iterator begin() const { return m_list.begin(); }
-	RSSList::const_iterator end  () const { return m_list.end();   }
-
-private:
-	RSSList              m_list;
-	rdoParse::RDOParser* m_parser;
+	bool append( RDOResource& rss );
 };
 
 } // rdoMBuilder

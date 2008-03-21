@@ -225,6 +225,10 @@ public:
 		CIterator it = std::find( m_enum.begin(), m_enum.end(), val );
 		return it != m_enum.end() ? it - m_enum.begin() : -1;
 	}
+	bool exist( const std::string& val ) const
+	{
+		return findEnum( val ) != -1;
+	}
 
 	bool            empty() const     { return m_enum.empty(); }
 	const CIterator begin() const     { return m_enum.begin(); }

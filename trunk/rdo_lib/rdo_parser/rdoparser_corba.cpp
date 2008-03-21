@@ -23,22 +23,22 @@ void RDOParserCorbaRTP::parse()
 		rdoMBuilder::RDOResTypeList rtpList( m_parser );
 		// Создали новый тип ресурса
 		rdoMBuilder::RDOResType rtp( "MyRTP" );
-		rtp.append( rdoMBuilder::RDOResType::Param("p1", rdoRuntime::RDOValue::rvt_int) );
-		rtp.append( rdoMBuilder::RDOResType::Param("p2", rdoRuntime::RDOValue::rvt_int) );
+		rtp.m_params.append( rdoMBuilder::RDOResType::Param("p1", rdoRuntime::RDOValue::rvt_int) );
+		rtp.m_params.append( rdoMBuilder::RDOResType::Param("p2", rdoRuntime::RDOValue::rvt_int) );
 		// Добавили его к списку существующих
 		rtpList.append( rtp );
 	}
 
 	// Вывели все типы ресурсов
 	rdoMBuilder::RDOResTypeList rtpList( m_parser );
-	rdoMBuilder::RDOResTypeList::RTPList::const_iterator rtp_it = rtpList.begin();
+	rdoMBuilder::RDOResTypeList::List::const_iterator rtp_it = rtpList.begin();
 	while ( rtp_it != rtpList.end() )
 	{
-		TRACE("rtp.name = %s\n", rtp_it->getName().c_str());
-		rdoMBuilder::RDOResType::ParamList::const_iterator param_it = rtp_it->begin();
-		while ( param_it != rtp_it->end() )
+		TRACE("rtp.name = %s\n", rtp_it->name().c_str());
+		rdoMBuilder::RDOResType::ParamList::List::const_iterator param_it = rtp_it->m_params.begin();
+		while ( param_it != rtp_it->m_params.end() )
 		{
-			std::string info = rdo::format("  param: %s: %s", param_it->getName().c_str(), param_it->getTypeStr().c_str());
+			std::string info = rdo::format("  param: %s: %s", param_it->name().c_str(), param_it->getTypeStr().c_str());
 			if ( param_it->hasDiap() )
 			{
 				info = rdo::format("%s [%s..%s]", info.c_str(), param_it->getMin().getAsString().c_str(), param_it->getMax().getAsString().c_str());
@@ -85,15 +85,17 @@ void RDOParserCorbaRSS::parse()
 		rss["длительность_max"] = 174;
 		// Добавляем его к списку существующих
 		rssList.append( rss );
+
+		rssList.exist("qqq");
 	}
 
 	// Вывели все ресурсы
 	rdoMBuilder::RDOResourceList rssList( m_parser );
-	rdoMBuilder::RDOResourceList::RSSList::const_iterator rss_it = rssList.begin();
+	rdoMBuilder::RDOResourceList::List::const_iterator rss_it = rssList.begin();
 	while ( rss_it != rssList.end() )
 	{
-		TRACE("rss.name = %s: %s\n", rss_it->getName().c_str(), rss_it->getType().getName().c_str());
-		rdoMBuilder::RDOResource::ParamList::const_iterator param_it = rss_it->begin();
+		TRACE("rss.name = %s: %s\n", rss_it->name().c_str(), rss_it->getType().name().c_str());
+		rdoMBuilder::RDOResource::Params::const_iterator param_it = rss_it->begin();
 		while ( param_it != rss_it->end() )
 		{
 			TRACE("  %s = %s\n", param_it->first.c_str(), param_it->second.getAsString().c_str());
