@@ -186,9 +186,52 @@ bool RDOResTypeList::append( RDOResType& rtp )
 					break;
 				}
 				case rdoRuntime::RDOValue::rvt_real: {
+					rdoParse::RDORTPRealDiap* pDiap;
+					if ( param->hasDiap() )
+					{
+						pDiap = new rdoParse::RDORTPRealDiap( m_parser, param->getMin().getDouble(), param->getMax().getDouble() );
+					}
+					else
+					{
+						pDiap = new rdoParse::RDORTPRealDiap( m_parser );
+					}
+					rdoParse::RDORTPRealDefVal* pDef;
+					if ( param->hasDefault() )
+					{
+						pDef = new rdoParse::RDORTPRealDefVal( m_parser, param->getDefault().getDouble() );
+					}
+					else
+					{
+						pDef = new rdoParse::RDORTPRealDefVal( m_parser );
+					}
+					pParamType = new rdoParse::RDORTPRealParamType( m_parser, pDiap, pDef );
 					break;
 				}
 				case rdoRuntime::RDOValue::rvt_enum: {
+					rdoParse::RDORTPEnum* pEnum = NULL;
+					rdoRuntime::RDOEnum::CIterator enum_it = param->getEnum().begin();
+					while ( enum_it != param->getEnum().end() )
+					{
+						if ( !pEnum )
+						{
+							pEnum = new rdoParse::RDORTPEnum( pRTP, *enum_it );
+						}
+						else
+						{
+							pEnum->add( *enum_it );
+						}
+						enum_it++;
+					}
+					rdoParse::RDORTPEnumDefVal* pEnumDefValue;
+					if ( param->hasDefault() )
+					{
+						pEnumDefValue = new rdoParse::RDORTPEnumDefVal( m_parser, param->getDefault().getAsString() );
+					}
+					else
+					{
+						pEnumDefValue = new rdoParse::RDORTPEnumDefVal( m_parser );
+					}
+					pParamType = new rdoParse::RDORTPEnumParamType( pRTP, pEnum, pEnumDefValue, rtp.name() );
 					break;
 				}
 				default: {
