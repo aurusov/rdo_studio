@@ -48,14 +48,15 @@ void RDOParserList::reset()
 	insertParser( rdoModelObjects::obPRE, new RDOParserSMR1( parser ) );
 	insertParser( rdoModelObjects::obPRE, new RDOParserSTDFUN( parser ) );
 	insertParser( rdoModelObjects::obRTP, new RDOParserRDO( parser, rdoModelObjects::RTP, rtpparse, rtperror, rtplex ) );
+	insertParser( rdoModelObjects::obRTP, new RDOParserRDO( parser, rdoModelObjects::DPT, proc_rtp_parse, proc_rtp_error, proc_rtp_lex ) );
 	insertParser( rdoModelObjects::obRTP, new RDOParserCorbaRTP( parser ) );
 	insertParser( rdoModelObjects::obRSS, new RDOParserRSS( parser ) );
+	insertParser( rdoModelObjects::obRSS, new RDOParserRDO( parser, rdoModelObjects::DPT, proc_rss_parse, proc_rss_error, proc_rss_lex ) );
 	insertParser( rdoModelObjects::obRSS, new RDOParserCorbaRSS( parser ) );
-	insertParser( rdoModelObjects::obRSS, new RDOParserRDO( parser, rdoModelObjects::DPT, dpt_rss_parse, dpt_rss_error, dpt_rss_lex ) );
 	insertParser( rdoModelObjects::obFUN, new RDOParserRDO( parser, rdoModelObjects::FUN, funparse, funerror, funlex ) );
 	insertParser( rdoModelObjects::obPAT, new RDOParserRDO( parser, rdoModelObjects::PAT, patparse, paterror, patlex ) );
 	insertParser( rdoModelObjects::obOPR, new RDOParserRDO( parser, rdoModelObjects::OPR, oprparse, oprerror, oprlex ) );
-	insertParser( rdoModelObjects::obOPR, new RDOParserRDO( parser, rdoModelObjects::DPT, dpt_opr_parse, dpt_opr_error, dpt_opr_lex ) );
+	insertParser( rdoModelObjects::obOPR, new RDOParserRDO( parser, rdoModelObjects::DPT, proc_opr_parse, proc_opr_error, proc_opr_lex ) );
 	insertParser( rdoModelObjects::obDPT, new RDOParserRDO( parser, rdoModelObjects::DPT, dptparse, dpterror, dptlex ) );
 	insertParser( rdoModelObjects::obPMD, new RDOParserRDO( parser, rdoModelObjects::PMD, pmdparse, pmderror, pmdlex ) );
 	insertParser( rdoModelObjects::obFRM, new RDOParserRDO( parser, rdoModelObjects::FRM, frmparse, frmerror, frmlex ) );

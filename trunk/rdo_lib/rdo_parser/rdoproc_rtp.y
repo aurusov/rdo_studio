@@ -214,40 +214,38 @@ dpt_process_line:	IDENTIF	{
 					}
 					| GENERATE fun_arithm {
 
-	RDOPROCTransact::makeRTP( PARSER );
+						std::string rtp_name       = "Транзакты";
+						std::string rtp_param_name = "Время_создания";
 
-//	new RDOPROCTransact();
-/*
-	std::string* rtp_trans_param_name   = PARSER->registerName( "Время_создания" );
-	std::string* rel_res_name = PARSER->registerName( "Транзакт" );
-	std::string* ie_name      = PARSER->registerName( "PAT_GENERATE" );
-	std::string* uniform_name = PARSER->registerName( "Равномерный" );
-	std::string* time_now     = PARSER->registerName( "Time_now" );
-	std::string* opr_name     = PARSER->registerName( "OPR_GENERATE" );
-
-	// Создадим последовательность
-	RDORTPRealResParam*    uniform_real_param            = new RDORTPRealResParam( new RDORTPRealDiap(), new RDORTPRealDefVal(0) );
-	RDOFUNSequence::RDOFUNSequenceHeader*  uniform_seq_h = new RDOFUNSequence::RDOFUNSequenceHeader( uniform_name, uniform_real_param );
-	RDOFUNSequenceUniform* uniform_seq                   = new RDOFUNSequenceUniform( uniform_seq_h, 123456789 );
-
-	RDOPATPatternEvent* ie = new RDOPATPatternEvent( ie_name, true );
-//	ie->addRelRes( rel_res_name, const_cast<std::string*>(transact_type->getName()), RDOPATPattern::CS_Create );
-
-	RDOFUNParams* uniform_params = new RDOFUNParams();
-	uniform_params->addParameter( new RDOFUNArithm( 0.25 ) );
-	uniform_params->addParameter( new RDOFUNArithm( 0.75 ) );
-	ie->setTime( const_cast<RDOFUNArithm*>(uniform_params->createCall( uniform_name )) );
-
-	RDOPATParamsSet* generate_pat_params = new RDOPATParamsSet();
-	generate_pat_params->addIdentif( rtp_trans_param_name, new RDOFUNArithm( time_now ) );
-	ie->addRelResBody( rel_res_name );
-	ie->addRelResConvertEvent( true, generate_pat_params );
-	ie->end();
-
-	// Создадим активность
-	RDODPTFreeActivity* ie_opr = new RDODPTFreeActivity(opr_name, ie_name);
-	ie_opr->end();
-*/
+						// Получили список всех типов ресурсов
+						rdoMBuilder::RDOResTypeList rtpList( PARSER );
+						// Найти тип ресурса, если его нет, то создать
+						if ( !rtpList[rtp_name].exist() )
+						{
+							// Создадим тип ресурса
+							rdoMBuilder::RDOResType rtp(rtp_name);
+							// Добавим параметр Время_создания
+							rtp.m_params.append( rdoMBuilder::RDOResType::Param(rtp_param_name, rdoRuntime::RDOValue::rvt_real ) );
+							// Добавим тип ресурса
+							if ( !rtpList.append( rtp ) )
+							{
+								PARSER->error( @2, rdo::format("Ошибка создания типа ресурса: %s", rtp_name.c_str()) );
+							}
+							rdoRuntime::RDOPROCTransact::typeID = rtp.id();
+						}
+						else
+						{
+							// Тип найден, проверим его на наличие вещественного параметра
+							const rdoMBuilder::RDOResType& rtp = rtpList[rtp_name];
+							if ( !rtp.m_params[rtp_param_name].exist() ) {
+								PARSER->error( rdo::format( "У типа ресурса '%s' нет требуемого параметра '%s'", rtp.name().c_str(), rtp_param_name.c_str() ) );
+							}
+							// Параметр есть, надо проверить на тип
+							if ( rtp.m_params[rtp_param_name].getType() != rdoRuntime::RDOValue::Type::rvt_real ) {
+								PARSER->error( rdo::format( "У типа ресурса '%s' параметр '%s' не является перечислимым типом", rtp.name().c_str(), rtp_param_name.c_str() ) );
+							}
+							rdoRuntime::RDOPROCTransact::typeID = rtp.id();
+						}
 					}
 					| GENERATE error {
 						PARSER->error( @2, "Ошибка в арифметическом выражении" )
@@ -262,91 +260,56 @@ dpt_process_line:	IDENTIF	{
 					| RELEASE IDENTIF {
 					}
 					| SEIZE {
-	@$.first_column = @1.first_column;
-	@$.first_line   = @1.first_line;
-	@$.last_column  = @1.last_column;
-	@$.last_line    = @1.first_column;
-	PARSER->error( std::string(_T("Ожидается имя ресурса")).c_str() );
-}
-
+						PARSER->error( @1, "Ожидается имя ресурса" );
+					}
 					| SEIZE IDENTIF {
 
-	// Имя ресурса
-	std::string res_name       = *(std::string*)$2;
-	// "Состояние"
-	std::string rtp_param_name = rdoRuntime::RDOPROCBlockForSeize::getStateParamName();
-	// "Свободен"
-	std::string rtp_state_free = rdoRuntime::RDOPROCBlockForSeize::getStateEnumFree();
-	// "Занят"
-	std::string rtp_state_buzy = rdoRuntime::RDOPROCBlockForSeize::getStateEnumBuzy();
+						// Имя ресурса
+						std::string res_name       = *(std::string*)$2;
+						// Сформировать имя типа по имени ресурса
+						std::string rtp_name( RDOPROCProcess::name_prefix + res_name + RDOPROCProcess::name_sufix );
+						// "Состояние"
+						std::string rtp_param_name = rdoRuntime::RDOPROCBlockForSeize::getStateParamName();
+						// "Свободен"
+						std::string rtp_state_free = rdoRuntime::RDOPROCBlockForSeize::getStateEnumFree();
+						// "Занят"
+						std::string rtp_state_buzy = rdoRuntime::RDOPROCBlockForSeize::getStateEnumBuzy();
 
-	// Получили список всех типов ресурсов
-	rdoMBuilder::RDOResTypeList rtpList( PARSER );
-	// Получили список всех ресурсов
-	rdoMBuilder::RDOResourceList rssList( PARSER );
-
-	rdoMBuilder::RDOResType rtp;
-	bool rssMustCreate = !rssList[res_name].exist();
-	if ( rssMustCreate )
-	{
-		// Ресурс не наден, проверим наличие типа
-		// Сформировать имя типа по имени ресурса
-		std::string res_type_name( RDOPROCProcess::name_prefix + res_name + RDOPROCProcess::name_sufix );
-
-		// Найти тип ресурса, если его нет, то создать тип и положить в него параметр
-		if ( !rtpList[res_type_name].exist() )
-		{
-			// Создадим тип ресурса
-			rdoMBuilder::RDOResType rtp(res_type_name);
-			// Создадим параметр перечислимого типа
-			rdoRuntime::RDOEnum* state_enum = new rdoRuntime::RDOEnum( PARSER->runtime );
-			state_enum->add( rtp_state_free );
-			state_enum->add( rtp_state_buzy );
-			rdoMBuilder::RDOResType::Param param(rtp_param_name, *state_enum);
-			param.setDefault( rdoRuntime::RDOValue(*state_enum, rtp_state_free) );
-			// Добавим параметр
-			rtp.m_params.append( param );
-			// Добавим тип ресурса
-			if ( !rtpList.append( rtp ) )
-			{
-				PARSER->error( @2, rdo::format("Ошибка создания типа ресурса: %s", res_type_name.c_str()) );
-			}
-		}
-		// Тип найден или создан, теперь надо его проверить на наличие перечислимого параметра
-		rtp = rtpList[res_type_name];
-	}
-	else
-	{
-		// Ресурсе найден, проверим его тип на наличие перечислимого параметра
-		rtp = rssList[res_name].getType();
-	}
-
-	// Проверить тип на наличие перечислимого параметра
-	if ( !rtp.m_params[rtp_param_name].exist() ) {
-		PARSER->error( rdo::format( "У типа ресурса '%s' нет параметра перечислимого типа '%s'", rtp.name().c_str(), rtp_param_name.c_str() ) );
-	}
-	const rdoMBuilder::RDOResType::Param& param = rtp.m_params[rtp_param_name];
-	// Параметр Состояние есть, надо проверить, чтобы в нем были значения Свободен и Занят
-	// Для начала проверим тип параметра
-	if ( param.getType() != rdoRuntime::RDOValue::Type::rvt_enum ) {
-		// Параметр Состояние есть, но он не перечислимого типа
-		PARSER->error( rdo::format( "У типа ресурса '%s' параметр '%s' не является перечислимым типом", rtp.name().c_str(), rtp_param_name.c_str() ) );
-	}
-	// Теперь проверим сами значения
-	if ( !param.getEnum().exist(rtp_state_free) || !param.getEnum().exist(rtp_state_buzy) )
-	{
-		PARSER->error( rdo::format( "У типа ресурса '%s' перечислимый параметр '%s' должен иметь как минимум два обязательных значения: %s и %s", rtp.name().c_str(), param.name().c_str(), rtp_state_free.c_str(), rtp_state_buzy.c_str() ) );
-	}
-
-	if ( rssMustCreate )
-	{
-		// Создадим ресурс
-		rdoMBuilder::RDOResource rss( rtp, res_name );
-//		res->setTrace( true );
-		// Добавим его в систему
-		rssList.append( rss );
-	}
-};
+						// Получили список всех типов ресурсов
+						rdoMBuilder::RDOResTypeList rtpList( PARSER );
+						// Найти тип ресурса, если его нет, то создать тип
+						if ( !rtpList[rtp_name].exist() )
+						{
+							// Создадим тип ресурса
+							rdoMBuilder::RDOResType rtp(rtp_name);
+							// Создадим параметр перечислимого типа
+							rtp.m_params.append( rdoMBuilder::RDOResType::Param(rtp_param_name, new rdoRuntime::RDOEnum(PARSER->runtime, rdoRuntime::RDOEnum::EnumArray(rtp_state_free)(rtp_state_buzy)), rtp_state_free) );
+							// Добавим тип ресурса
+							if ( !rtpList.append( rtp ) )
+							{
+								PARSER->error( @2, rdo::format("Ошибка создания типа ресурса: %s", rtp_name.c_str()) );
+							}
+						}
+						else
+						{
+							// Тип найден, проверим его на наличие перечислимого параметра
+							const rdoMBuilder::RDOResType& rtp = rtpList[rtp_name];
+							if ( !rtp.m_params[rtp_param_name].exist() ) {
+								PARSER->error( rdo::format( "У типа ресурса '%s' нет параметра перечислимого типа '%s'", rtp.name().c_str(), rtp_param_name.c_str() ) );
+							}
+							const rdoMBuilder::RDOResType::Param& param = rtp.m_params[rtp_param_name];
+							// Параметр Состояние есть, надо проверить, чтобы в нем были значения Свободен и Занят
+							// Для начала проверим тип параметра
+							if ( param.getType() != rdoRuntime::RDOValue::Type::rvt_enum ) {
+								PARSER->error( rdo::format( "У типа ресурса '%s' параметр '%s' не является параметром перечислимого типа", rtp.name().c_str(), rtp_param_name.c_str() ) );
+							}
+							// Теперь проверим сами значения
+							if ( !param.getEnum().exist(rtp_state_free) || !param.getEnum().exist(rtp_state_buzy) )
+							{
+								PARSER->error( rdo::format( "У типа ресурса '%s' перечислимый параметр '%s' должен иметь как минимум два обязательных значения: %s и %s", rtp.name().c_str(), param.name().c_str(), rtp_state_free.c_str(), rtp_state_buzy.c_str() ) );
+							}
+						}
+					};
 
 dpt_process_end:	dpt_process End	{
 					};

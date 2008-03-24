@@ -17,7 +17,8 @@ namespace rdoMBuilder
 RDOResType::RDOResType( const rdoParse::RDORTPResType& rtp ):
 	m_name( rtp.getName() ),
 	m_type( rtp.isPermanent() ? rt_permanent : rt_temporary ),
-	m_exist( true )
+	m_exist( true ),
+	m_id( rtp.getNumber() )
 {
 	std::vector< const rdoParse::RDORTPParam* >::const_iterator param_it = rtp.getParams().begin();
 	while ( param_it != rtp.getParams().end() )
@@ -68,7 +69,8 @@ RDOResType::Param::Param( const rdoParse::RDORTPParam& param ):
 RDOResType::RDOResType( const std::string& name, Type type ):
 	m_name( name ),
 	m_type( type ),
-	m_exist( false )
+	m_exist( false ),
+	m_id( -1 )
 {
 }
 
@@ -115,6 +117,37 @@ RDOResType::Param::Param( const std::string& name, const rdoRuntime::RDOValue& m
 	m_default( def ),
 	m_exist( true )
 {
+}
+
+RDOResType::Param::Param( const std::string& name, rdoRuntime::RDOEnum* enums ):
+	m_name( name ),
+	m_exist( true )
+{
+	if ( enums )
+	{
+		m_type = *enums;
+	}
+	else
+	{
+		m_exist = false;
+		m_type  = rdoRuntime::RDOValue::rvt_enum;
+	}
+}
+
+RDOResType::Param::Param( const std::string& name, rdoRuntime::RDOEnum* enums, const rdoRuntime::RDOEnum::EnumItem& defaultValue ):
+	m_name( name ),
+	m_exist( true )
+{
+	if ( enums )
+	{
+		m_type = *enums;
+		setDefault( rdoRuntime::RDOValue(*enums, defaultValue) );
+	}
+	else
+	{
+		m_exist = false;
+		m_type  = rdoRuntime::RDOValue::rvt_enum;
+	}
 }
 
 void RDOResType::Param::setDiap( const rdoRuntime::RDOValue& min, const rdoRuntime::RDOValue& max )
@@ -243,6 +276,7 @@ bool RDOResTypeList::append( RDOResType& rtp )
 			param++;
 		}
 		rtp.m_exist = true;
+		rtp.m_id    = pRTP->getNumber();
 		m_list.push_back( rtp );
 		return true;
 	}

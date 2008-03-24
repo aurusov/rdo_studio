@@ -105,6 +105,8 @@ public:
 		Param( const std::string& name, rdoRuntime::RDOValue::Type type, const rdoRuntime::RDOValue& def );
 		Param( const std::string& name, const rdoRuntime::RDOValue& type );
 		Param( const std::string& name, const rdoRuntime::RDOValue& min, const rdoRuntime::RDOValue& max, const rdoRuntime::RDOValue& def = rdoRuntime::RDOValue::rvt_unknow );
+		Param( const std::string& name, rdoRuntime::RDOEnum* enums );
+		Param( const std::string& name, rdoRuntime::RDOEnum* enums, const rdoRuntime::RDOEnum::EnumItem& defaultValue );
 
 		rdoRuntime::RDOValue        getTypeObject() const { return m_type;                   }
 		rdoRuntime::RDOValue::Type  getType() const       { return m_type.getType();         }
@@ -136,16 +138,13 @@ public:
 	};
 	ParamList m_params;
 
-
-//	ParamList::const_iterator begin() const { return m_params.begin(); }
-//	ParamList::const_iterator end  () const { return m_params.end();   }
-//	unsigned int              size () const { return m_params.size();  }
-
-	Type               getType() const { return m_type; }
-	bool           isPermanent() const { return m_type == rt_permanent; }
+	Type   getType()     const { return m_type;                 }
+	bool   isPermanent() const { return m_type == rt_permanent; }
+	int    id()          const { return m_id;                   }
 
 private:
-	Type        m_type;
+	Type   m_type;
+	int    m_id;
 };
 
 // --------------------------------------------------------------------

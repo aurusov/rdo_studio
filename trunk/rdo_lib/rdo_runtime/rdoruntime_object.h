@@ -204,16 +204,44 @@ public:
 };
 
 // ----------------------------------------------------------------------------
+// ---------- RDOStdVector
+// ----------------------------------------------------------------------------
+template <class T>
+class RDOStdVector: public std::vector<T>
+{
+public:
+	RDOStdVector()
+	{
+	}
+	RDOStdVector( const T& item )
+	{
+		push_back( item );
+	}
+	RDOStdVector& operator() ( const T& item )
+	{
+		push_back( item );
+		return *this;
+	}
+};
+
+// ----------------------------------------------------------------------------
 // ---------- RDOEnum
 // ----------------------------------------------------------------------------
 class RDOEnum: public RDORuntimeObject
 {
 public:
-	typedef std::vector< std::string > Enums;
-	typedef Enums::const_iterator      CIterator;
+	typedef std::string             EnumItem;
+	typedef std::vector< EnumItem > Enums;
+	typedef Enums::const_iterator   CIterator;
+	typedef RDOStdVector<EnumItem>  EnumArray;
 
 	RDOEnum( RDORuntimeParent* _parent ):
 		RDORuntimeObject( _parent )
+	{
+	}
+	RDOEnum( RDORuntimeParent* _parent, const Enums& enums ):
+		RDORuntimeObject( _parent ),
+		m_enum( enums )
 	{
 	}
 	void add( const std::string& next )

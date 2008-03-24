@@ -25,13 +25,17 @@ int dptparse( void* lexer );
 int dptlex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer );
 void dpterror( char* mes );
 
-int dpt_rss_parse( void* lexer );
-int dpt_rss_lex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer );
-void dpt_rss_error( char* mes );
+int proc_rtp_parse( void* lexer );
+int proc_rtp_lex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer );
+void proc_rtp_error( char* mes );
 
-int dpt_opr_parse( void* lexer );
-int dpt_opr_lex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer );
-void dpt_opr_error( char* mes );
+int proc_rss_parse( void* lexer );
+int proc_rss_lex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer );
+void proc_rss_error( char* mes );
+
+int proc_opr_parse( void* lexer );
+int proc_opr_lex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer );
+void proc_opr_error( char* mes );
 
 // ----------------------------------------------------------------------------
 // ---------- RDODPTActivity
@@ -194,20 +198,6 @@ public:
 	void insertChild( RDOPROCProcess* value );
 
 	rdoRuntime::RDOPROCProcess* getRunTime() const { return runtime; }
-};
-
-// ----------------------------------------------------------------------------
-// ---------- RDOPROCTransact
-// ----------------------------------------------------------------------------
-class RDOPROCTransact: public RDORTPResType
-{
-protected:
-	static bool created;
-	RDOPROCTransact( RDOParser* _parser );
-
-public:
-	static RDOPROCTransact* makeRTP( RDOParser* _parser );
-	virtual ~RDOPROCTransact();
 };
 
 // ----------------------------------------------------------------------------

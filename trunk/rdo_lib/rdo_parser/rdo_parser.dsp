@@ -370,47 +370,7 @@ SOURCE=.\rdosmr.h
 # Begin Source File
 
 SOURCE=.\rdogramdpt.cpp
-
-!IF  "$(CFG)" == "rdo_parser - Win32 Release"
-
 # SUBTRACT CPP /YX /Yc /Yu
-
-!ELSEIF  "$(CFG)" == "rdo_parser - Win32 Debug"
-
-# SUBTRACT CPP /YX /Yc /Yu
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdogramdpt_opr.cpp
-
-!IF  "$(CFG)" == "rdo_parser - Win32 Release"
-
-# SUBTRACT CPP /YX /Yc /Yu
-
-!ELSEIF  "$(CFG)" == "rdo_parser - Win32 Debug"
-
-# SUBTRACT CPP /YX /Yc /Yu
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdogramdpt_rss.cpp
-
-!IF  "$(CFG)" == "rdo_parser - Win32 Release"
-
-# SUBTRACT CPP /YX /Yc /Yu
-
-!ELSEIF  "$(CFG)" == "rdo_parser - Win32 Debug"
-
-# SUBTRACT CPP /YX /Yc /Yu
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -450,17 +410,7 @@ SOURCE=.\rdogramma.h
 # Begin Source File
 
 SOURCE=.\rdogramopr.cpp
-
-!IF  "$(CFG)" == "rdo_parser - Win32 Release"
-
 # SUBTRACT CPP /YX /Yc /Yu
-
-!ELSEIF  "$(CFG)" == "rdo_parser - Win32 Debug"
-
-# SUBTRACT CPP /YX /Yc /Yu
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -481,77 +431,42 @@ SOURCE=.\rdogrampat.cpp
 # Begin Source File
 
 SOURCE=.\rdogrampmd.cpp
-
-!IF  "$(CFG)" == "rdo_parser - Win32 Release"
-
 # SUBTRACT CPP /YX /Yc /Yu
+# End Source File
+# Begin Source File
 
-!ELSEIF  "$(CFG)" == "rdo_parser - Win32 Debug"
-
+SOURCE=.\rdogramproc_opr.cpp
 # SUBTRACT CPP /YX /Yc /Yu
+# End Source File
+# Begin Source File
 
-!ENDIF 
+SOURCE=.\rdogramproc_rss.cpp
+# SUBTRACT CPP /YX /Yc /Yu
+# End Source File
+# Begin Source File
 
+SOURCE=.\rdogramproc_rtp.cpp
+# SUBTRACT CPP /YX /Yc /Yu
 # End Source File
 # Begin Source File
 
 SOURCE=.\rdogramrss.cpp
-
-!IF  "$(CFG)" == "rdo_parser - Win32 Release"
-
 # SUBTRACT CPP /YX /Yc /Yu
-
-!ELSEIF  "$(CFG)" == "rdo_parser - Win32 Debug"
-
-# SUBTRACT CPP /YX /Yc /Yu
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
 SOURCE=.\rdogramrtp.cpp
-
-!IF  "$(CFG)" == "rdo_parser - Win32 Release"
-
 # SUBTRACT CPP /YX /Yc /Yu
-
-!ELSEIF  "$(CFG)" == "rdo_parser - Win32 Debug"
-
-# SUBTRACT CPP /YX /Yc /Yu
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
 SOURCE=.\rdogramsmr1.cpp
-
-!IF  "$(CFG)" == "rdo_parser - Win32 Release"
-
 # SUBTRACT CPP /YX /Yc /Yu
-
-!ELSEIF  "$(CFG)" == "rdo_parser - Win32 Debug"
-
-# SUBTRACT CPP /YX /Yc /Yu
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
 SOURCE=.\rdogramsmr2.cpp
-
-!IF  "$(CFG)" == "rdo_parser - Win32 Release"
-
 # SUBTRACT CPP /YX /Yc /Yu
-
-!ELSEIF  "$(CFG)" == "rdo_parser - Win32 Debug"
-
-# SUBTRACT CPP /YX /Yc /Yu
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -615,60 +530,6 @@ InputPath=.\rdodpt.y
 
 "rdogramdpt.cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
 	..\rdo_system\bison.exe -pdpt --skeleton=..\rdo_system\bison.simple -ordogramdpt.cpp $(InputPath)
-
-# End Custom Build
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdodpt_opr.y
-
-!IF  "$(CFG)" == "rdo_parser - Win32 Release"
-
-# Begin Custom Build
-InputPath=.\rdodpt_opr.y
-
-"rdogramdpt_opr.cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	..\rdo_system\bison.exe -pdpt_opr_ --skeleton=..\rdo_system\bison.simple -ordogramdpt_opr.cpp $(InputPath)
-
-# End Custom Build
-
-!ELSEIF  "$(CFG)" == "rdo_parser - Win32 Debug"
-
-# Begin Custom Build
-InputPath=.\rdodpt_opr.y
-
-"rdogramdpt_opr.cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	..\rdo_system\bison.exe -pdpt_opr_ --skeleton=..\rdo_system\bison.simple -ordogramdpt_opr.cpp $(InputPath)
-
-# End Custom Build
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=.\rdodpt_rss.y
-
-!IF  "$(CFG)" == "rdo_parser - Win32 Release"
-
-# Begin Custom Build
-InputPath=.\rdodpt_rss.y
-
-"rdogramdpt_rss.cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	..\rdo_system\bison.exe -pdpt_rss_ --skeleton=..\rdo_system\bison.simple -ordogramdpt_rss.cpp $(InputPath)
-
-# End Custom Build
-
-!ELSEIF  "$(CFG)" == "rdo_parser - Win32 Debug"
-
-# Begin Custom Build
-InputPath=.\rdodpt_rss.y
-
-"rdogramdpt_rss.cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	..\rdo_system\bison.exe -pdpt_rss_ --skeleton=..\rdo_system\bison.simple -ordogramdpt_rss.cpp $(InputPath)
 
 # End Custom Build
 
@@ -804,6 +665,87 @@ InputPath=.\rdopmd.y
 
 "rdogrampmd.cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
 	..\rdo_system\bison.exe -ppmd --skeleton=..\rdo_system\bison.simple -ordogrampmd.cpp $(InputPath)
+
+# End Custom Build
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdoproc_opr.y
+
+!IF  "$(CFG)" == "rdo_parser - Win32 Release"
+
+# Begin Custom Build
+InputPath=.\rdoproc_opr.y
+
+"rdogramproc_opr.cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	..\rdo_system\bison.exe -pproc_opr_ --skeleton=..\rdo_system\bison.simple -ordogramproc_opr.cpp $(InputPath)
+
+# End Custom Build
+
+!ELSEIF  "$(CFG)" == "rdo_parser - Win32 Debug"
+
+# Begin Custom Build
+InputPath=.\rdoproc_opr.y
+
+"rdogramproc_opr.cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	..\rdo_system\bison.exe -pproc_opr_ --skeleton=..\rdo_system\bison.simple -ordogramproc_opr.cpp $(InputPath)
+
+# End Custom Build
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdoproc_rss.y
+
+!IF  "$(CFG)" == "rdo_parser - Win32 Release"
+
+# Begin Custom Build
+InputPath=.\rdoproc_rss.y
+
+"rdogramproc_rss.cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	..\rdo_system\bison.exe -pproc_rss_ --skeleton=..\rdo_system\bison.simple -ordogramproc_rss.cpp $(InputPath)
+
+# End Custom Build
+
+!ELSEIF  "$(CFG)" == "rdo_parser - Win32 Debug"
+
+# Begin Custom Build
+InputPath=.\rdoproc_rss.y
+
+"rdogramproc_rss.cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	..\rdo_system\bison.exe -pproc_rss_ --skeleton=..\rdo_system\bison.simple -ordogramproc_rss.cpp $(InputPath)
+
+# End Custom Build
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\rdoproc_rtp.y
+
+!IF  "$(CFG)" == "rdo_parser - Win32 Release"
+
+# Begin Custom Build
+InputPath=.\rdoproc_rtp.y
+
+"rdogramproc_rtp.cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	..\rdo_system\bison.exe -pproc_rtp_ --skeleton=..\rdo_system\bison.simple -ordogramproc_rtp.cpp $(InputPath)
+
+# End Custom Build
+
+!ELSEIF  "$(CFG)" == "rdo_parser - Win32 Debug"
+
+# Begin Custom Build
+InputPath=.\rdoproc_rtp.y
+
+"rdogramproc_rtp.cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	..\rdo_system\bison.exe -pproc_rtp_ --skeleton=..\rdo_system\bison.simple -ordogramproc_rtp.cpp $(InputPath)
 
 # End Custom Build
 

@@ -26,23 +26,33 @@ void dpterror( char* mes )
 {
 }
 
-int dpt_rss_lex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer )
+int proc_rtp_lex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer )
 {
 	reinterpret_cast<RDOLexer*>(lexer)->m_lpval = lpval;
 	reinterpret_cast<RDOLexer*>(lexer)->m_lploc = llocp;
 	return reinterpret_cast<RDOLexer*>(lexer)->yylex();
 }
-void dpt_rss_error( char* mes )
+void proc_rtp_error( char* mes )
 {
 }
 
-int dpt_opr_lex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer )
+int proc_rss_lex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer )
 {
 	reinterpret_cast<RDOLexer*>(lexer)->m_lpval = lpval;
 	reinterpret_cast<RDOLexer*>(lexer)->m_lploc = llocp;
 	return reinterpret_cast<RDOLexer*>(lexer)->yylex();
 }
-void dpt_opr_error( char* mes )
+void proc_rss_error( char* mes )
+{
+}
+
+int proc_opr_lex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer )
+{
+	reinterpret_cast<RDOLexer*>(lexer)->m_lpval = lpval;
+	reinterpret_cast<RDOLexer*>(lexer)->m_lploc = llocp;
+	return reinterpret_cast<RDOLexer*>(lexer)->yylex();
+}
+void proc_opr_error( char* mes )
 {
 }
 
@@ -401,39 +411,6 @@ void RDOPROCProcess::insertChild( RDOPROCProcess* value )
 	if ( value ) {
 		child.push_back( value );
 		value->parent = this;
-	}
-}
-
-// ----------------------------------------------------------------------------
-// ---------- RDOPROCTransact
-// ----------------------------------------------------------------------------
-bool RDOPROCTransact::created = false;
-
-RDOPROCTransact::RDOPROCTransact( RDOParser* _parser ):
-	RDORTPResType( _parser, RDOParserSrcInfo("Транзакты"), false )
-{
-	// Создадим параметр вещественного типа 'Время_создания'
-	addParam( new RDORTPParam( this, RDOParserSrcInfo("Время_создания"), new RDORTPRealParamType( this ) ) );
-	// Создадим параметр целого типа 'Просто_так'
-	addParam( new RDORTPParam( this, RDOParserSrcInfo("Просто_так"), new RDORTPIntParamType( this ) ) );
-	// Больше этот ресурс создавать не надо
-	RDOPROCTransact::created = true;
-}
-
-RDOPROCTransact::~RDOPROCTransact()
-{
-	RDOPROCTransact::created = false;
-}
-
-RDOPROCTransact* RDOPROCTransact::makeRTP( RDOParser* _parser )
-{
-	if ( RDOPROCTransact::created ) {
-		RDOPROCTransact* rtp = static_cast<RDOPROCTransact*>(const_cast<RDORTPResType*>(_parser->findRTPResType( "Транзакты" )));
-		return rtp;
-	} else {
-		RDOPROCTransact* rtp = new RDOPROCTransact( _parser );
-		rdoRuntime::RDOPROCTransact::typeID = rtp->getNumber();
-		return rtp;
 	}
 }
 
