@@ -59,8 +59,20 @@ private:
 	std::vector< Changes > changes;
 
 protected:
-	RDOParserList* parsers;
-	RDOParserBase* parser_base;
+	RDOParserItem* parser_item;
+	virtual RDOParserContainer* getContainer() = 0;
+	RDOParserContainer::CIterator begin()
+	{
+		return getContainer()->begin();
+	}
+	RDOParserContainer::CIterator end()
+	{
+		return getContainer()->end();
+	}
+	RDOParserContainer::CIterator find( int index )
+	{
+		return getContainer()->find( index );
+	}
 
 	bool have_kw_Resources;
 	bool have_kw_ResourcesEnd;
@@ -92,7 +104,7 @@ protected:
 
 public:
 	RDOParser();
-	~RDOParser();
+	virtual ~RDOParser();
 
 	const std::vector< RDORTPResType* >&       getRTPResType() const      { return allRTPResType;      }
 	const std::vector< RDORTPEnumParamType* >& getEnums() const           { return allEnums;           }
@@ -193,6 +205,7 @@ public:
 	void parse( int files = rdoModelObjects::obALL );
 	void parse( rdoModelObjects::RDOParseType file );
 	void parse( rdoModelObjects::RDOParseType file, std::istream& stream );
+	void parse( std::istream& stream );
 	void error( rdoSimulator::RDOSyntaxError::ErrorCode _error_code, ... );
 	void error( const std::string& _message, rdoSimulator::RDOSyntaxError::ErrorCode _error_code = rdoSimulator::RDOSyntaxError::UNKNOWN );
 	void error( const RDOParserSrcInfo& _src_info, rdoSimulator::RDOSyntaxError::ErrorCode _error_code, ... );
@@ -238,6 +251,46 @@ private:
 	int lexer_loc_pos();
 	static std::list< RDOParser* > parserStack;
 };
+
+// ----------------------------------------------------------------------------
+// ---------- RDOParserTemplate
+// ----------------------------------------------------------------------------
+template <class Container>
+class RDOParserTemplate: public RDOParser
+{
+public:
+	RDOParserTemplate():
+		RDOParser(),
+		m_container( NULL )
+	{
+	}
+
+private:
+	Container* m_container;
+	virtual RDOParserContainer* getContainer()
+	{
+		if ( !m_container )
+		{
+			m_container = new Container( this ); 
+		}
+		return m_container;
+	}
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOParserModel
+// ----------------------------------------------------------------------------
+typedef RDOParserTemplate<RDOParserContainerModel> RDOParserModel;
+
+// ----------------------------------------------------------------------------
+// ---------- RDOParserSMRInfo
+// ----------------------------------------------------------------------------
+typedef RDOParserTemplate<RDOParserContainerSMRInfo> RDOParserSMRInfo;
+
+// ----------------------------------------------------------------------------
+// ---------- RDOParserCorbar
+// ----------------------------------------------------------------------------
+typedef RDOParserTemplate<RDOParserContainerCorba> RDOParserCorbar;
 
 } // namespace rdoParse
 

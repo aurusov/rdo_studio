@@ -59,28 +59,26 @@ void RDODeletable::operator delete( void* v )
 // ----------------------------------------------------------------------------
 // ---------- RDOParserObject
 // ----------------------------------------------------------------------------
-RDOParserObject::RDOParserObject( RDOParser* _parser ):
-	RDODeletable( _parser ),
-	parser( _parser ),
-	parent( NULL )
+RDOParserObject::RDOParserObject( RDOParser* parser ):
+	RDODeletable( parser ),
+	m_parent( NULL )
 {
 }
 
-RDOParserObject::RDOParserObject( const RDOParserObject* _parent ):
-	RDODeletable( _parent->parser ),
-	parent( _parent )
+RDOParserObject::RDOParserObject( const RDOParserObject* parent ):
+	RDODeletable( parent->m_parser ),
+	m_parent( parent )
 {
-	parser = _parent->parser;
 }
 
 RDOParserObject::~RDOParserObject()
 {
 }
 
-void RDOParserObject::reparent( const RDOParserObject* _parent )
+void RDOParserObject::reparent( const RDOParserObject* parent )
 {
-	parent = _parent;
-	parser = _parent->parser;
+	m_parent = parent;
+	m_parser = parent->m_parser;
 }
 
 // ----------------------------------------------------------------------------

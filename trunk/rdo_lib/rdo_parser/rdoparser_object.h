@@ -18,6 +18,8 @@ public:
 	RDODeletable( RDOParser* parser );
 	virtual ~RDODeletable();
 
+	RDOParser* parser() const { return m_parser; }
+
 	void noAutoDelete();
 
 #ifndef _DEBUG
@@ -25,8 +27,10 @@ public:
 	void operator delete( void* v );
 #endif
 
-private:
+protected:
 	RDOParser* m_parser;
+
+private:
 	size_t     object_size;
 };
 
@@ -37,19 +41,17 @@ class RDOParser;
 
 class RDOParserObject: public RDODeletable
 {
-private:
-	RDOParser*             parser;
-	const RDOParserObject* parent;
+public:
+	const RDOParserObject* parent() const { return m_parent; }
+	void reparent( const RDOParserObject* parent );
 
 protected:
-	RDOParserObject( RDOParser* _parser );
-	RDOParserObject( const RDOParserObject* _parent );
+	RDOParserObject( RDOParser* parser );
+	RDOParserObject( const RDOParserObject* parent );
 	virtual ~RDOParserObject();
 
-public:
-	RDOParser* getParser() const { return parser; }
-	const RDOParserObject* getParent() const { return parent; }
-	void reparent( const RDOParserObject* _parent );
+private:
+	const RDOParserObject* m_parent;
 };
 
 // ----------------------------------------------------------------------------

@@ -9,20 +9,20 @@ namespace rdoParse
 // ----------------------------------------------------------------------------
 // ---------- RDOParserCorbaRTP
 // ----------------------------------------------------------------------------
-class RDOParserCorbaRTP: public RDOParserRDO
+class RDOParserCorbaRTP: public RDOParserRDOItem
 {
 public:
-	RDOParserCorbaRTP( RDOParser* _parser ): RDOParserRDO( _parser, rdoModelObjects::RTP, NULL, NULL, NULL ) {};
+	RDOParserCorbaRTP( RDOParser* _parser ): RDOParserRDOItem( _parser, rdoModelObjects::RTP, NULL, NULL, NULL ) {};
 	virtual void parse();
 };
 
 // ----------------------------------------------------------------------------
 // ---------- RDOParserCorbaRSS
 // ----------------------------------------------------------------------------
-class RDOParserCorbaRSS: public RDOParserRDO
+class RDOParserCorbaRSS: public RDOParserRDOItem
 {
 public:
-	RDOParserCorbaRSS( RDOParser* _parser ): RDOParserRDO( _parser, rdoModelObjects::RSS, NULL, NULL, NULL ) {};
+	RDOParserCorbaRSS( RDOParser* _parser ): RDOParserRDOItem( _parser, rdoModelObjects::RSS, NULL, NULL, NULL ) {};
 	virtual void parse();
 };
 

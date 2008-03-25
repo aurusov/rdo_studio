@@ -382,7 +382,7 @@ public:
 		}
 		return false;
 	}
-	const RDORelevantResource* getRelRes() const { return static_cast<const RDORelevantResource*>(getParent()); }
+	const RDORelevantResource* getRelRes() const { return static_cast<const RDORelevantResource*>(parent()); }
 };
 
 } // namespace rdoParse

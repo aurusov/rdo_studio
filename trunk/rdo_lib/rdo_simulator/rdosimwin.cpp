@@ -528,7 +528,7 @@ bool RDOThreadSimulator::parseModel()
 	terminateModel();
 	closeModel();
 
-	parser = new rdoParse::RDOParser();
+	parser = new rdoParse::RDOParserModel();
 	runtime = parser->runtime;
 
 	try {
@@ -635,50 +635,37 @@ void RDOThreadSimulator::closeModel()
 
 void RDOThreadSimulator::parseSMRFileInfo( rdo::binarystream& smr, rdoModelObjects::RDOSMRFileInfo& info )
 {
-	terminateModel();
-	closeModel();
-
-	parser = new rdoParse::RDOParser();
-	runtime = parser->runtime;
+	rdoParse::RDOParserSMRInfo parser;
 
 	try {
 		info.error = false;
-		parser->parse( rdoModelObjects::obPRE, smr );
+		parser.parse( smr );
 	}
 	catch ( rdoParse::RDOSyntaxException& ) {
 		broadcastMessage( RDOThread::RT_SIMULATOR_PARSE_ERROR_SMR );
-//		closeModel();
 		info.error = true;
-//		return;
 	}
 	catch ( rdoRuntime::RDORuntimeException& ex ) {
 		std::string mess = ex.getType() + " : " + ex.mess;
 		broadcastMessage( RDOThread::RT_SIMULATOR_PARSE_STRING, &mess );
 		broadcastMessage( RDOThread::RT_SIMULATOR_PARSE_ERROR_SMR );
-//		closeModel();
 		info.error = true;
-//		return;
 	}
 
-	if ( !parser->hasSMR() ) {
-//		broadcastMessage( RDOThread::RT_SIMULATOR_PARSE_STRING, &std::string("В smr-файле не найдено имя модели") );
-//		broadcastMessage( RDOThread::RT_SIMULATOR_PARSE_STRING, &std::string("SMR File seems to be empty\n") );
+	if ( !parser.hasSMR() ) {
 		broadcastMessage( RDOThread::RT_SIMULATOR_PARSE_ERROR_SMR );
 		broadcastMessage( RDOThread::RT_SIMULATOR_PARSE_ERROR_SMR_EMPTY );
-//		closeModel();
 		info.error = true;
-//		return;
 	} else {
-		info.model_name     = parser->getSMR()->getFile( "Model_name" );
-		info.resource_file  = parser->getSMR()->getFile( "Resource_file" );
-		info.oprIev_file    = parser->getSMR()->getFile( "OprIev_file" );
-		info.frame_file     = parser->getSMR()->getFile( "Frame_file" );
-		info.statistic_file = parser->getSMR()->getFile( "Statistic_file" );
-		info.results_file   = parser->getSMR()->getFile( "Results_file" );
-		info.trace_file     = parser->getSMR()->getFile( "Trace_file" );
+		info.model_name     = parser.getSMR()->getFile( "Model_name" );
+		info.resource_file  = parser.getSMR()->getFile( "Resource_file" );
+		info.oprIev_file    = parser.getSMR()->getFile( "OprIev_file" );
+		info.frame_file     = parser.getSMR()->getFile( "Frame_file" );
+		info.statistic_file = parser.getSMR()->getFile( "Statistic_file" );
+		info.results_file   = parser.getSMR()->getFile( "Results_file" );
+		info.trace_file     = parser.getSMR()->getFile( "Trace_file" );
 	}
-
-	closeModel();
+	delete parser.runtime;
 }
 
 std::vector< RDOSyntaxError > RDOThreadSimulator::getErrors()

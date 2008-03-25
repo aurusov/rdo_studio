@@ -2,21 +2,22 @@
 #define RDOPARSER_BASE_H
 
 #include "rdogramma.h"
+#include "rdoparser_object.h"
 #include <rdocommon.h>
 
 namespace rdoParse
 {
 
 typedef int  (*t_bison_parse_fun)( void* lexer );
-typedef void (*t_bison_error_fun)( char* mes );
+typedef void (*t_bison_error_fun)( char* message );
 typedef int  (*t_flex_lexer_fun)( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer );
 
 // ----------------------------------------------------------------------------
-// ---------- RDOParserBase
+// ---------- RDOParserItem
 // ----------------------------------------------------------------------------
 class RDOParser;
 
-class RDOParserBase
+class RDOParserItem: public RDODeletable
 {
 public:
 	rdoModelObjects::RDOFileType type;
@@ -25,57 +26,91 @@ public:
 	t_bison_error_fun error_fun;
 	t_flex_lexer_fun  lexer_fun;
 
-	RDOParserBase( RDOParser* _parser ):
-		m_parser( _parser ),
+	RDOParserItem( RDOParser* parser ):
+		RDODeletable( parser ),
 		type( rdoModelObjects::PAT ),
 		parser_fun( NULL ),
 		error_fun( NULL ),
 		lexer_fun( NULL )
 	{
 	};
-	RDOParserBase( RDOParser* _parser, rdoModelObjects::RDOFileType _type, t_bison_parse_fun _parser_fun, t_bison_error_fun _error_fun, t_flex_lexer_fun _lexer_fun ):
-		m_parser( _parser ),
+	RDOParserItem( RDOParser* parser, rdoModelObjects::RDOFileType _type, t_bison_parse_fun _parser_fun, t_bison_error_fun _error_fun, t_flex_lexer_fun _lexer_fun ):
+		RDODeletable( parser ),
 		type( _type ),
 		parser_fun( _parser_fun ),
 		error_fun( _error_fun ),
 		lexer_fun( _lexer_fun )
 	{
 	};
-	virtual ~RDOParserBase() {};
+	virtual ~RDOParserItem() {};
 
 	virtual void parse()                          = 0;
 	virtual void parse( std::istream& in_stream ) = 0;
 
 	virtual int  lexer_loc_line()                   { return -1; };
 	virtual int  lexer_loc_pos()                    { return 0;  };
-
-protected:
-	RDOParser* m_parser;
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOParserList
+// ---------- RDOParserContainer
 // ----------------------------------------------------------------------------
-class RDOParserList
+class RDOParserContainer: public RDODeletable
 {
-private:
-	RDOParser* parser;
-	std::map< int, RDOParserBase* > list;
-
 public:
-	RDOParserList( RDOParser* _parser );
-	~RDOParserList();
+	typedef std::map< int, RDOParserItem* > List;
+	typedef List::const_iterator           CIterator;
 
-	void clear();
-	void reset();
+	CIterator begin() const           { return m_list.begin();       }
+	CIterator end()   const           { return m_list.end();         }
+	CIterator find( int index ) const { return m_list.find( index ); }
 
-	int insertParser( rdoModelObjects::RDOParseType type, RDOParserBase* parser );
-	std::map< int, RDOParserBase* >::const_iterator begin() const { return list.begin(); }
-	std::map< int, RDOParserBase* >::const_iterator end()   const { return list.end();   }
-	std::map< int, RDOParserBase* >::const_iterator find( int index ) const { return list.find( index ); }
+	static void getMinMax( rdoModelObjects::RDOParseType type, int& min, int& max );
+	static std::list< rdoModelObjects::RDOFileType > getFiles( int files );
 
-	static void getParserMinMax( rdoModelObjects::RDOParseType type, int& min, int& max );
-	static std::list< rdoModelObjects::RDOFileType > getParserFiles( int files );
+protected:
+	RDOParserContainer( RDOParser* parser );
+
+	int insert( rdoModelObjects::RDOParseType type, RDOParserItem* parser );
+	virtual void init() = 0;
+
+private:
+	List m_list;
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOParserContainerModel
+// ----------------------------------------------------------------------------
+class RDOParserContainerModel: public RDOParserContainer
+{
+public:
+	RDOParserContainerModel( RDOParser* parser );
+
+protected:
+	virtual void init();
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOParserContainerSMRInfo
+// ----------------------------------------------------------------------------
+class RDOParserContainerSMRInfo: public RDOParserContainer
+{
+public:
+	RDOParserContainerSMRInfo( RDOParser* parser );
+
+protected:
+	virtual void init();
+};
+
+// ----------------------------------------------------------------------------
+// ---------- RDOParserContainerCorba
+// ----------------------------------------------------------------------------
+class RDOParserContainerCorba: public RDOParserContainer
+{
+public:
+	RDOParserContainerCorba( RDOParser* parser );
+
+protected:
+	virtual void init();
 };
 
 } // namespace rdoParse

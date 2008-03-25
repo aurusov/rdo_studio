@@ -24,23 +24,22 @@ std::list< RDOParser* > RDOParser::parserStack;
 
 rdoModelObjects::RDOFileType RDOParser::getFileToParse()
 {
-	return !parserStack.empty() && parserStack.back()->parser_base ? parserStack.back()->parser_base->type : rdoModelObjects::PAT;
+	return !parserStack.empty() && parserStack.back()->parser_item ? parserStack.back()->parser_item->type : rdoModelObjects::PAT;
 }
 
 int RDOParser::lexer_loc_line()
 {
-	return !parserStack.empty() && parserStack.back()->parser_base ? parserStack.back()->parser_base->lexer_loc_line() : -1;
+	return !parserStack.empty() && parserStack.back()->parser_item ? parserStack.back()->parser_item->lexer_loc_line() : -1;
 }
 
 int RDOParser::lexer_loc_pos()
 {
-	return parser_base ? parser_base->lexer_loc_pos() : 0;
+	return parser_item ? parser_item->lexer_loc_pos() : 0;
 }
 
 RDOParser::RDOParser():
 	parsing_object( NULL ),
-	parsers( NULL ),
-	parser_base( NULL ),
+	parser_item( NULL ),
 	have_kw_Resources( false ),
 	have_kw_ResourcesEnd( false ),
 	have_kw_Operations( false ),
@@ -51,8 +50,6 @@ RDOParser::RDOParser():
 {
 	parserStack.push_back( this );
 	runtime = new rdoRuntime::RDORuntime();
-	parsers = new RDOParserList( this );
-	parsers->reset();
 	runtime->memory_insert( sizeof(RDOParser) );
 	runtime->memory_insert( sizeof(rdoRuntime::RDORuntime) );
 }
@@ -67,10 +64,6 @@ RDOParser::~RDOParser()
 		it = allDeletables.rbegin();
 	}
 	TRACE( "PARSER : allDeletables.size() = %d\n",allDeletables.size() );
-	if ( parsers ) {
-		delete parsers;
-		parsers = NULL;
-	}
 	parserStack.remove( this );
 }
 
@@ -263,21 +256,21 @@ void RDOParser::parse( int files )
 //	resourceCounter = 0;
 
 	int min1, max1, min2, max2;
-	RDOParserList::getParserMinMax( rdoModelObjects::obPRE , min1, max1 );
-	RDOParserList::getParserMinMax( rdoModelObjects::obPOST, min2, max2 );
+	RDOParserContainer::getMinMax( rdoModelObjects::obPRE , min1, max1 );
+	RDOParserContainer::getMinMax( rdoModelObjects::obPOST, min2, max2 );
 
 	if ( files & rdoModelObjects::obPRE ) {
 		parse( rdoModelObjects::obPRE );
 	}
 
-	std::list< rdoModelObjects::RDOFileType > file_list = RDOParserList::getParserFiles( files );
+	std::list< rdoModelObjects::RDOFileType > file_list = RDOParserContainer::getFiles( files );
 
-	std::map< int, RDOParserBase* >::const_iterator it = parsers->begin();
-	while ( it != parsers->end() ) {
+	RDOParserContainer::CIterator it = begin();
+	while ( it != end() ) {
 		if ( it->first > max1 && it->first < min2 && std::find( file_list.begin(), file_list.end(), it->second->type ) != file_list.end() ) {
-			parser_base = it->second;
+			parser_item = it->second;
 			it->second->parse();
-			parser_base = NULL;
+			parser_item = NULL;
 		}
 		it++;
 	}
@@ -290,14 +283,14 @@ void RDOParser::parse( int files )
 void RDOParser::parse( rdoModelObjects::RDOParseType file )
 {
 	int min, max;
-	RDOParserList::getParserMinMax( file, min, max );
+	RDOParserContainer::getMinMax( file, min, max );
 	if ( min == -1 || max == -1 ) return;
-	std::map< int, RDOParserBase* >::const_iterator it = parsers->find( min );
-	while ( it != parsers->end() ) {
+	RDOParserContainer::CIterator it = find( min );
+	while ( it != end() ) {
 		if ( it->first <= max ) {
-			parser_base = it->second;
+			parser_item = it->second;
 			it->second->parse();
-			parser_base = NULL;
+			parser_item = NULL;
 		} else {
 			break;
 		}
@@ -308,17 +301,28 @@ void RDOParser::parse( rdoModelObjects::RDOParseType file )
 void RDOParser::parse( rdoModelObjects::RDOParseType file, std::istream& stream )
 {
 	int min, max;
-	RDOParserList::getParserMinMax( file, min, max );
+	RDOParserContainer::getMinMax( file, min, max );
 	if ( min == -1 || max == -1 ) return;
-	std::map< int, RDOParserBase* >::const_iterator it = parsers->find( min );
-	while ( it != parsers->end() ) {
+	RDOParserContainer::CIterator it = find( min );
+	while ( it != end() ) {
 		if ( it->first <= max ) {
-			parser_base = it->second;
+			parser_item = it->second;
 			it->second->parse( stream );
-			parser_base = NULL;
+			parser_item = NULL;
 		} else {
 			break;
 		}
+		it++;
+	}
+}
+
+void RDOParser::parse( std::istream& stream )
+{
+	RDOParserContainer::CIterator it = begin();
+	while ( it != end() ) {
+		parser_item = it->second;
+		it->second->parse( stream );
+		parser_item = NULL;
 		it++;
 	}
 }

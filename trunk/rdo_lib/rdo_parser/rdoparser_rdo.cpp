@@ -24,15 +24,15 @@ namespace rdoParse
 {
 
 // ----------------------------------------------------------------------------
-// ---------- RDOParserRDO
+// ---------- RDOParserRDOItem
 // ----------------------------------------------------------------------------
-RDOParserRDO::RDOParserRDO( RDOParser* _parser, rdoModelObjects::RDOFileType _type, t_bison_parse_fun _parser_fun, t_bison_error_fun _error_fun, t_flex_lexer_fun _lexer_fun ):
-	RDOParserBase( _parser, _type, _parser_fun, _error_fun, _lexer_fun ),
+RDOParserRDOItem::RDOParserRDOItem( RDOParser* _parser, rdoModelObjects::RDOFileType _type, t_bison_parse_fun _parser_fun, t_bison_error_fun _error_fun, t_flex_lexer_fun _lexer_fun ):
+	RDOParserItem( _parser, _type, _parser_fun, _error_fun, _lexer_fun ),
 	m_lexer( NULL )
 {
 };
 
-RDOParserRDO::~RDOParserRDO()
+RDOParserRDOItem::~RDOParserRDOItem()
 {
 	if ( m_lexer ) {
 		delete m_lexer;
@@ -40,7 +40,7 @@ RDOParserRDO::~RDOParserRDO()
 	}
 }
 
-void RDOParserRDO::parse()
+void RDOParserRDOItem::parse()
 {
 	rdo::binarystream in_stream;
 	kernel->simulator()->sendMessage( kernel->repository(), RDOThread::RT_REPOSITORY_LOAD, &rdoRepository::RDOThreadRepository::FileData( type, in_stream ) );
@@ -49,7 +49,7 @@ void RDOParserRDO::parse()
 	}
 }
 
-void RDOParserRDO::parse( std::istream& in_stream )
+void RDOParserRDOItem::parse( std::istream& in_stream )
 {
 	if ( m_lexer ) delete m_lexer;
 	std::ostringstream out_stream;
@@ -57,19 +57,19 @@ void RDOParserRDO::parse( std::istream& in_stream )
 	if ( m_lexer && parser_fun ) parser_fun( m_lexer );
 }
 
-RDOLexer* RDOParserRDO::getLexer( std::istream& in_stream, std::ostream& out_stream )
+RDOLexer* RDOParserRDOItem::getLexer( std::istream& in_stream, std::ostream& out_stream )
 {
 	return new RDOLexer( m_parser, &in_stream, &out_stream );
 }
 
-int RDOParserRDO::lexer_loc_line()
+int RDOParserRDOItem::lexer_loc_line()
 {
 	if ( m_lexer ) {
 		return m_lexer->m_lploc ? m_lexer->m_lploc->first_line : m_lexer->lineno();
 	} else return -1;
 }
 
-int RDOParserRDO::lexer_loc_pos()
+int RDOParserRDOItem::lexer_loc_pos()
 {
 	return m_lexer && m_lexer->m_lploc ? m_lexer->m_lploc->first_column : 0;
 }
@@ -77,7 +77,7 @@ int RDOParserRDO::lexer_loc_pos()
 // ----------------------------------------------------------------------------
 // ---------- RDOParserRSS
 // ----------------------------------------------------------------------------
-RDOParserRSS::RDOParserRSS( RDOParser* _parser ): RDOParserRDO( _parser, rdoModelObjects::RSS, rssparse, rsserror, rsslex )
+RDOParserRSS::RDOParserRSS( RDOParser* _parser ): RDOParserRDOItem( _parser, rdoModelObjects::RSS, rssparse, rsserror, rsslex )
 {
 }
 
@@ -85,7 +85,7 @@ void RDOParserRSS::parse( std::istream& in_stream )
 {
 	m_parser->setHaveKWResources( false );
 	m_parser->setHaveKWResourcesEnd( false );
-	RDOParserRDO::parse( in_stream );
+	RDOParserRDOItem::parse( in_stream );
 }
 
 // ----------------------------------------------------------------------------
@@ -409,14 +409,14 @@ void RDOParserSTDFUN::parse()
 // ----------------------------------------------------------------------------
 // ---------- RDOParserSMR1
 // ----------------------------------------------------------------------------
-RDOParserSMR1::RDOParserSMR1( RDOParser* _parser ): RDOParserRDO( _parser, rdoModelObjects::SMR, smr1parse, smr1error, smr1lex )
+RDOParserSMR1::RDOParserSMR1( RDOParser* _parser ): RDOParserRDOItem( _parser, rdoModelObjects::SMR, smr1parse, smr1error, smr1lex )
 {
 }
 
 void RDOParserSMR1::parse( std::istream& in_stream )
 {
 	try {
-		RDOParserRDO::parse( in_stream );
+		RDOParserRDOItem::parse( in_stream );
 	} catch ( RDOSMR1OkException& ) {
 		// Everithing ok, just end of first part parsing
 	}

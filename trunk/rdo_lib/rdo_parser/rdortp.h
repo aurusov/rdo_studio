@@ -161,7 +161,7 @@ public:
 	{
 	}
 	RDORTPIntDefVal( const RDORTPIntDefVal& copy ):
-		RDORTPDefVal( copy.getParser(), copy ),
+		RDORTPDefVal( copy.parser(), copy ),
 		m_val( copy.m_val )
 	{
 	}
@@ -213,7 +213,7 @@ public:
 	{
 	}
 	RDORTPDiap( const RDORTPDiap<T>& copy ):
-		RDOParserObject( copy.getParser() ),
+		RDOParserObject( copy.parser() ),
 		RDOParserSrcInfo( copy.src_info() ),
 		m_exist( copy.m_exist ),
 		m_min_value( copy.m_min_value ),
@@ -257,7 +257,7 @@ private:
 	void init( const YYLTYPE* const max_value_pos )
 	{
 		if ( max_value_pos && m_min_value > m_max_value ) {
-			getParser()->error( *max_value_pos, "Ћева€ граница диапазона должна быть меньше правой" );
+			parser()->error( *max_value_pos, "Ћева€ граница диапазона должна быть меньше правой" );
 		}
 		setSrcText( rdo::format("[%s..%s]", rdoRuntime::RDOValue(m_min_value).getAsString().c_str(), rdoRuntime::RDOValue(m_max_value).getAsString().c_str()) );
 	}
@@ -320,7 +320,7 @@ public:
 	{
 	}
 	RDORTPRealDefVal( const RDORTPRealDefVal& copy ):
-		RDORTPDefVal( copy.getParser(), copy ),
+		RDORTPDefVal( copy.parser(), copy ),
 		m_val( copy.m_val )
 	{
 	}
@@ -413,7 +413,7 @@ public:
 		setSrcText( m_val );
 	}
 	RDORTPEnumDefVal( const RDORTPEnumDefVal& copy ):
-		RDORTPDefVal( copy.getParser(), copy ),
+		RDORTPDefVal( copy.parser(), copy ),
 		m_val( copy.m_val )
 	{
 		setSrcText( m_val );

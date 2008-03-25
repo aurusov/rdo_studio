@@ -11,13 +11,13 @@ namespace rdoParse
 {
 
 // ----------------------------------------------------------------------------
-// ---------- RDOParserRDO
+// ---------- RDOParserRDOItem
 // ----------------------------------------------------------------------------
-class RDOParserRDO: public RDOParserBase
+class RDOParserRDOItem: public RDOParserItem
 {
 public:
-	RDOParserRDO( RDOParser* _parser, rdoModelObjects::RDOFileType _type, t_bison_parse_fun _parser_fun, t_bison_error_fun _error_fun, t_flex_lexer_fun _lexer_fun );
-	virtual ~RDOParserRDO();
+	RDOParserRDOItem( RDOParser* _parser, rdoModelObjects::RDOFileType _type, t_bison_parse_fun _parser_fun, t_bison_error_fun _error_fun, t_flex_lexer_fun _lexer_fun );
+	virtual ~RDOParserRDOItem();
 
 	virtual void parse();
 	virtual void parse( std::istream& in_stream );
@@ -34,7 +34,7 @@ protected:
 // ----------------------------------------------------------------------------
 // ---------- RDOParserRSS
 // ----------------------------------------------------------------------------
-class RDOParserRSS: public RDOParserRDO
+class RDOParserRSS: public RDOParserRDOItem
 {
 public:
 	RDOParserRSS( RDOParser* _parser );
@@ -45,10 +45,10 @@ public:
 // ----------------------------------------------------------------------------
 // ---------- RDOParserRSSPost
 // ----------------------------------------------------------------------------
-class RDOParserRSSPost: public RDOParserBase
+class RDOParserRSSPost: public RDOParserItem
 {
 public:
-	RDOParserRSSPost( RDOParser* _parser ): RDOParserBase( _parser, rdoModelObjects::RSS, NULL, NULL, NULL ) {};
+	RDOParserRSSPost( RDOParser* _parser ): RDOParserItem( _parser, rdoModelObjects::RSS, NULL, NULL, NULL ) {};
 
 	virtual void parse();
 	virtual void parse( std::istream& in_stream ) { parse(); }
@@ -57,10 +57,10 @@ public:
 // ----------------------------------------------------------------------------
 // ---------- RDOParserSTDFUN
 // ----------------------------------------------------------------------------
-class RDOParserSTDFUN: public RDOParserBase
+class RDOParserSTDFUN: public RDOParserItem
 {
 public:
-	RDOParserSTDFUN( RDOParser* _parser ): RDOParserBase( _parser, rdoModelObjects::FUN, NULL, NULL, NULL ) {};
+	RDOParserSTDFUN( RDOParser* _parser ): RDOParserItem( _parser, rdoModelObjects::FUN, NULL, NULL, NULL ) {};
 
 	virtual void parse();
 	virtual void parse( std::istream& in_stream ) { parse(); }
@@ -76,7 +76,7 @@ public:
 	RDOSMR1OkException( const char* str ): RDOException( str ) {};
 };
 
-class RDOParserSMR1: public RDOParserRDO
+class RDOParserSMR1: public RDOParserRDOItem
 {
 public:
 	RDOParserSMR1( RDOParser* _parser );
