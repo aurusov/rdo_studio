@@ -115,7 +115,7 @@ void RDODPTActivity::addParam( const std::string& _param, const YYLTYPE& _param_
 		default: parser()->error( src_info(), "¬нутренн€€ ошибка: обработать все типы RDOValue" );
 	}
 	rdoRuntime::RDOValue val = param->getType()->getRSSEnumValue( _param, _param_pos );
-	rdoRuntime::RDOSetPatternParamCalc* calc = new rdoRuntime::RDOSetPatternParamCalc( parser()->runtime, currParam, val );
+	rdoRuntime::RDOSetPatternParamCalc* calc = new rdoRuntime::RDOSetPatternParamCalc( parser()->runtime(), currParam, val );
 	calc->setSrcInfo( RDOParserSrcInfo(_param_pos, rdo::format("ѕараметр образца %s.%s = %s", pattern->getName().c_str(), param->getName().c_str(), _param.c_str())) );
 	activity->addParamCalc( calc );
 	currParam++;
@@ -140,7 +140,7 @@ void RDODPTActivity::addParam( int _param, const YYLTYPE& _param_pos )
 		default: parser()->error( src_info(), "¬нутренн€€ ошибка: обработать все типы RDOValue" );
 	}
 	rdoRuntime::RDOValue val = param->getType()->getRSSIntValue( _param, _param_pos );
-	rdoRuntime::RDOSetPatternParamCalc* calc = new rdoRuntime::RDOSetPatternParamCalc( parser()->runtime, currParam, val );
+	rdoRuntime::RDOSetPatternParamCalc* calc = new rdoRuntime::RDOSetPatternParamCalc( parser()->runtime(), currParam, val );
 	calc->setSrcInfo( RDOParserSrcInfo(_param_pos, rdo::format("ѕараметр образца %s.%s = %d", pattern->getName().c_str(), param->getName().c_str(), _param)) );
 	activity->addParamCalc( calc );
 	currParam++;
@@ -165,7 +165,7 @@ void RDODPTActivity::addParam( double _param, const YYLTYPE& _param_pos )
 		default: parser()->error( src_info(), "¬нутренн€€ ошибка: обработать все типы RDOValue" );
 	}
 	rdoRuntime::RDOValue val = param->getType()->getRSSRealValue( _param, _param_pos );
-	rdoRuntime::RDOSetPatternParamCalc* calc = new rdoRuntime::RDOSetPatternParamCalc( parser()->runtime, currParam, val );
+	rdoRuntime::RDOSetPatternParamCalc* calc = new rdoRuntime::RDOSetPatternParamCalc( parser()->runtime(), currParam, val );
 	calc->setSrcInfo( RDOParserSrcInfo(_param_pos, rdo::format("ѕараметр образца %s.%s = %f", pattern->getName().c_str(), param->getName().c_str(), _param)) );
 	activity->addParamCalc( calc );
 	currParam++;
@@ -189,7 +189,7 @@ void RDODPTActivity::addParam( const YYLTYPE& _param_pos )
 		parser()->error_push_done();
 	}
 	rdoRuntime::RDOValue val = param->getType()->getDefaultValue( _param_pos );
-	rdoRuntime::RDOSetPatternParamCalc* calc = new rdoRuntime::RDOSetPatternParamCalc( parser()->runtime, currParam, val );
+	rdoRuntime::RDOSetPatternParamCalc* calc = new rdoRuntime::RDOSetPatternParamCalc( parser()->runtime(), currParam, val );
 	calc->setSrcInfo( RDOParserSrcInfo(_param_pos, rdo::format("ѕараметр образца %s.%s = *", pattern->getName().c_str(), param->getName().c_str())) );
 	activity->addParamCalc( calc );
 	currParam++;
@@ -238,22 +238,22 @@ RDODPTSearchActivity* RDODPTSearch::addNewActivity( const RDOParserSrcInfo& _act
 
 void RDODPTSearch::end()
 {
-	rdoRuntime::RDOCalc* condCalc = conditon ? conditon->createCalc() : new rdoRuntime::RDOCalcConst( parser()->runtime, 1 );
-	rdoRuntime::RDOCalc* termCalc = termConditon ? termConditon->createCalc() : new rdoRuntime::RDOCalcConst( parser()->runtime, 1 );
+	rdoRuntime::RDOCalc* condCalc = conditon ? conditon->createCalc() : new rdoRuntime::RDOCalcConst( parser()->runtime(), 1 );
+	rdoRuntime::RDOCalc* termCalc = termConditon ? termConditon->createCalc() : new rdoRuntime::RDOCalcConst( parser()->runtime(), 1 );
 
-	rdoRuntime::RDOSearchRuntime* dpt = new rdoRuntime::RDOSearchRuntime( parser()->runtime,
+	rdoRuntime::RDOSearchRuntime* dpt = new rdoRuntime::RDOSearchRuntime( parser()->runtime(),
 		condCalc,
 		termCalc,
 		evalBy->createCalc(),
 		compTops );
 
 	dpt->traceFlag = trace;
-	parser()->runtime->addRuntimeDPT( dpt );
+	parser()->runtime()->addRuntimeDPT( dpt );
 
 	int size = activities.size();
 	for ( int i = 0; i < size; i++ ) {
 		RDODPTSearchActivity* activity = activities.at(i);
-		rdoRuntime::RDOSearchActivityRuntime* act = new rdoRuntime::RDOSearchActivityRuntime( parser()->runtime,
+		rdoRuntime::RDOSearchActivityRuntime* act = new rdoRuntime::RDOSearchActivityRuntime( parser()->runtime(),
 			dynamic_cast<rdoRuntime::RDORule*>(activity->getActivity()),
 			(activity->getValue() == RDODPTSearchActivity::DPT_value_after),
 			activity->getRuleCost()->createCalc());
@@ -283,7 +283,7 @@ RDODPTSearchActivity::RDODPTSearchActivity( const RDOParserObject* _parent, cons
 //			parser()->error( "Rule: " + getName() + " Cannot be used in search activity because of bad converter status" );
 		}
 	}
-	activity = new rdoRuntime::RDOActivityRuleRuntime( parser()->runtime, pattern->getPatRuntime(), true, getName() );
+	activity = new rdoRuntime::RDOActivityRuleRuntime( parser()->runtime(), pattern->getPatRuntime(), true, getName() );
 }
 
 void RDODPTSearchActivity::setValue( DPTSearchValue _value, RDOFUNArithm* _ruleCost, const YYLTYPE& _param_pos )
@@ -302,7 +302,7 @@ RDODPTSome::RDODPTSome( RDOParser* _parser, const RDOParserSrcInfo& _src_info ):
 {
 	parser()->checkDPTName( src_info() );
 	// TODO: а почему some делает инкремент тут, а search в другом мечте ?
-	parser()->runtime->dptCounter++;
+	parser()->runtime()->dptCounter++;
 	parser()->insertDPTSome( this );
 }
 
@@ -325,9 +325,9 @@ RDODPTSomeActivity::RDODPTSomeActivity( const RDODPTSome* _parent, const RDOPars
 		parser()->error_push_done();
 	}
 	if ( !_parent->getConditon() ) {
-		activity = pattern->getPatRuntime()->createActivity( parser()->runtime, getName() );
+		activity = pattern->getPatRuntime()->createActivity( parser()->runtime(), getName() );
 	} else {
-		activity = pattern->getPatRuntime()->createActivity( parser()->runtime, _parent->getConditon()->createCalc(), getName() );
+		activity = pattern->getPatRuntime()->createActivity( parser()->runtime(), _parent->getConditon()->createCalc(), getName() );
 	}
 }
 
@@ -341,7 +341,7 @@ RDODPTActivityHotKey::RDODPTActivityHotKey( RDOParser* _parser, const RDOParserS
 
 void RDODPTActivityHotKey::addHotKey( const std::string& hotKey, const YYLTYPE& hotkey_pos )
 {
-	switch ( activity->addHotKey( parser()->runtime, hotKey ) ) {
+	switch ( activity->addHotKey( parser()->runtime(), hotKey ) ) {
 		case rdoRuntime::RDOActivityRuntime::addhk_ok      : {
 			break;
 		}
@@ -380,7 +380,7 @@ RDODPTFreeActivity::RDODPTFreeActivity( RDOParser* _parser, const RDOParserSrcIn
 		parser()->error_push_only( pattern->src_info(), "—м. образец" );
 		parser()->error_push_done();
 	}
-	activity = pattern->getPatRuntime()->createActivity( parser()->runtime, getName() );
+	activity = pattern->getPatRuntime()->createActivity( parser()->runtime(), getName() );
 	parser()->insertDPTFreeActivity( this );
 }
 
@@ -398,7 +398,7 @@ RDOPROCProcess::RDOPROCProcess( RDOParser* _parser, const std::string& _name ):
 	runtime( NULL )
 {
 	parser()->insertDPTProcess( this );
-	runtime = new rdoRuntime::RDOPROCProcess( name, parser()->runtime );
+	runtime = new rdoRuntime::RDOPROCProcess( name, parser()->runtime() );
 }
 
 void RDOPROCProcess::end()

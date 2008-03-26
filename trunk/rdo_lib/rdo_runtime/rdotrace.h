@@ -3,6 +3,8 @@
 
 #include "rdo.h"
 
+#include <fstream>
+
 namespace rdoRuntime {
 
 class RDOSimulatorTrace;

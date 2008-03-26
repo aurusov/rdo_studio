@@ -529,7 +529,7 @@ bool RDOThreadSimulator::parseModel()
 	closeModel();
 
 	parser = new rdoParse::RDOParserModel();
-	runtime = parser->runtime;
+	runtime = parser->runtime();
 
 	try {
 		exitCode = rdoSimulator::EC_OK;
@@ -613,15 +613,18 @@ void RDOThreadSimulator::terminateModel()
 
 void RDOThreadSimulator::closeModel()
 {
-//	try {
+/*
+	try {
 		if ( runtime ) {
 			delete runtime;
 			runtime = NULL;
 		}
-//	} catch (...) {
-//		runtime = NULL;
-//		TRACE( "******************************** Ошибка удаления runtime\n" );
-//	}
+	} catch (...) {
+		runtime = NULL;
+		TRACE( "******************************** Ошибка удаления runtime\n" );
+	}
+*/
+	runtime = NULL;
 	try {
 		if ( parser ) {
 			delete parser;
@@ -665,7 +668,6 @@ void RDOThreadSimulator::parseSMRFileInfo( rdo::binarystream& smr, rdoModelObjec
 		info.results_file   = parser.getSMR()->getFile( "Results_file" );
 		info.trace_file     = parser.getSMR()->getFile( "Trace_file" );
 	}
-	delete parser.runtime;
 }
 
 std::vector< RDOSyntaxError > RDOThreadSimulator::getErrors()

@@ -177,7 +177,8 @@ static char THIS_FILE[] = __FILE__;
 #include <rdoprocess.h>
 #include <rdo_resources.h>
 
-#define PARSER reinterpret_cast<rdoParse::RDOLexer*>(lexer)->m_parser
+#define PARSER  reinterpret_cast<rdoParse::RDOLexer*>(lexer)->m_parser
+#define RUNTIME PARSER->runtime()
 
 namespace rdoParse 
 {
@@ -362,7 +363,7 @@ fun_arithm: fun_arithm '+' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOF
 				RDOParserSrcInfo info;
 				info.setSrcPos( @1, @2 );
 				info.setSrcText( "-" + reinterpret_cast<RDOFUNArithm*>($2)->src_text() );
-				$$ = (int)new RDOFUNArithm( PARSER, reinterpret_cast<RDOFUNArithm*>($2)->getType(), new rdoRuntime::RDOCalcUMinus( PARSER->runtime, reinterpret_cast<RDOFUNArithm*>($2)->createCalc() ), info );
+				$$ = (int)new RDOFUNArithm( PARSER, reinterpret_cast<RDOFUNArithm*>($2)->getType(), new rdoRuntime::RDOCalcUMinus( RUNTIME, reinterpret_cast<RDOFUNArithm*>($2)->createCalc() ), info );
 			};
 
 // ----------------------------------------------------------------------------
@@ -438,7 +439,7 @@ fun_group:			fun_group_header fun_logic ')' {
 					| fun_group_header NoCheck ')' {
 						RDOFUNGroupLogic* groupfun = reinterpret_cast<RDOFUNGroupLogic*>($1);
 						groupfun->setSrcPos( @1, @3 );
-						RDOFUNLogic* trueLogic = new RDOFUNLogic( groupfun, new rdoRuntime::RDOCalcConst( PARSER->runtime, 1 ) );
+						RDOFUNLogic* trueLogic = new RDOFUNLogic( groupfun, new rdoRuntime::RDOCalcConst( RUNTIME, 1 ) );
 						trueLogic->setSrcPos( @2 );
 						trueLogic->setSrcText( "NoCheck" );
 						$$ = (int)groupfun->createFunLogic( trueLogic );
@@ -479,7 +480,7 @@ fun_select_body:	fun_select_header fun_logic ')' {
 						RDOFUNSelect* select = reinterpret_cast<RDOFUNSelect*>($1);
 						RDOParserSrcInfo logic_info(@2, "NoCheck");
 						select->setSrcText( select->src_text() + logic_info.src_text() + ")" );
-						rdoRuntime::RDOCalcConst* calc_nocheck = new rdoRuntime::RDOCalcConst( PARSER->runtime, 1 );
+						rdoRuntime::RDOCalcConst* calc_nocheck = new rdoRuntime::RDOCalcConst( RUNTIME, 1 );
 						RDOFUNLogic* flogic = new RDOFUNLogic( select, calc_nocheck, true );
 						flogic->setSrcInfo( logic_info );
 						select->initSelect( flogic );

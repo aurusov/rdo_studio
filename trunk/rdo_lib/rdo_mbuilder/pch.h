@@ -1,5 +1,6 @@
 #pragma warning(disable : 4786)  
 
+#include <windows.h>
 #include <algorithm>
 #include <vector>
 #include <map>

@@ -21,7 +21,7 @@ RDODeletable::RDODeletable( RDOParser* parser ):
 	if ( m_parser )
 	{
 		m_parser->insertDeletables( this );
-		m_parser->runtime->memory_insert( object_size );
+		m_parser->runtime()->memory_insert( object_size );
 	}
 }
 
@@ -50,7 +50,7 @@ void RDODeletable::operator delete( void* v )
 {
 	if ( static_cast<RDODeletable*>(v)->m_parser )
 	{
-		static_cast<RDODeletable*>(v)->m_parser->runtime->memory_remove( static_cast<RDODeletable*>(v)->object_size );
+		static_cast<RDODeletable*>(v)->m_parser->runtime()->memory_remove( static_cast<RDODeletable*>(v)->object_size );
 	}
 	::operator delete( v );
 }

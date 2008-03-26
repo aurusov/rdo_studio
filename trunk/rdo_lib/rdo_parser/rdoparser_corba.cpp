@@ -16,7 +16,7 @@ namespace rdoParse
 // ----------------------------------------------------------------------------
 // ---------- RDOParserCorbaRTP
 // ----------------------------------------------------------------------------
-void RDOParserCorbaRTP::parse()
+void RDOParserCorbaRTP::parse( StreamFrom from )
 {
 	{
 		// ѕолучили список всех типов ресурсов
@@ -73,7 +73,7 @@ void RDOParserCorbaRTP::parse()
 // ----------------------------------------------------------------------------
 // ---------- RDOParserCorbaRSS
 // ----------------------------------------------------------------------------
-void RDOParserCorbaRSS::parse()
+void RDOParserCorbaRSS::parse( StreamFrom from )
 {
 	{
 		// ѕолучили список всех типов ресурсов

@@ -66,7 +66,7 @@ void RDOSMR::setFrameNumber( int value, const YYLTYPE& pos )
 	if ( value <= 0 ) {
 		parser()->error( pos, "Номер кадра должен быть больше нуля" );
 	}
-	if ( parser()->runtime->allFrames.size() + 1 <= value ) {
+	if ( parser()->runtime()->allFrames.size() + 1 <= value ) {
 		parser()->error( pos, rdo::format("Несуществующий кадр: %d", value) );
 	}
 	frameNumber = value;
@@ -125,7 +125,7 @@ void RDOSMR::setTerminateIf( RDOFUNLogic* logic )
 		parser()->error_push_done();
 	}
 	terminateIf = logic;
-	parser()->runtime->setTerminateIf( logic->createCalc() );
+	parser()->runtime()->setTerminateIf( logic->createCalc() );
 }
 
 void RDOSMR::setConstValue( const RDOParserSrcInfo& const_info, RDOFUNArithm* arithm )
@@ -136,7 +136,7 @@ void RDOSMR::setConstValue( const RDOParserSrcInfo& const_info, RDOFUNArithm* ar
 	}
 	cons->getType()->checkParamType( arithm, false );
 	rdoRuntime::RDOCalc* calc = arithm->createCalc( cons->getType() );
-	parser()->runtime->addInitCalc( new rdoRuntime::RDOCalcSetConst( parser()->runtime, cons->getNumber(), calc ) );
+	parser()->runtime()->addInitCalc( new rdoRuntime::RDOCalcSetConst( parser()->runtime(), cons->getNumber(), calc ) );
 	parser()->insertChanges( cons->src_text(), arithm->src_text() );
 }
 
@@ -158,7 +158,7 @@ void RDOSMR::setResParValue( const RDOParserSrcInfo& res_info, const RDOParserSr
 	param->getType()->checkParamType( arithm, false );
 	int parNumb = res->getType()->getRTPParamNumber( par_info.src_text() );
 	rdoRuntime::RDOCalc* calc = arithm->createCalc( param->getType() );
-	parser()->runtime->addInitCalc( new rdoRuntime::RDOSetResourceParamCalc( parser()->runtime, res->getNumber(), parNumb, calc ) );
+	parser()->runtime()->addInitCalc( new rdoRuntime::RDOSetResourceParamCalc( parser()->runtime(), res->getNumber(), parNumb, calc ) );
 	parser()->insertChanges( res_info.src_text() + "." + par_info.src_text(), arithm->src_text() );
 }
 
@@ -191,7 +191,7 @@ RDOSMR::BreakPoint::BreakPoint( RDOSMR* smr, const RDOParserSrcInfo& _src_info, 
 	RDOParserObject( smr ),
 	RDOParserSrcInfo( _src_info )
 {
-	parser()->runtime->insertBreakPoint( src_text(), _logic->createCalc() );
+	parser()->runtime()->insertBreakPoint( src_text(), _logic->createCalc() );
 }
 
 } // namespace rdoParse 

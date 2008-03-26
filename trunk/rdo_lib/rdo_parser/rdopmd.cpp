@@ -48,7 +48,7 @@ void RDOPMDPokaz::endOfCreation( rdoRuntime::RDOPMDPokaz* _pokaz_runtime )
 	pokaz_runtime->setID( parser()->getPMD_id() );
 	parser()->insertPMDPokaz( this );
 	//todo: перенести в конструктор rdoRuntime::RDOPMDPokaz
-	parser()->runtime->addRuntimePokaz( pokaz_runtime );
+	parser()->runtime()->addRuntimePokaz( pokaz_runtime );
 }
 
 // ----------------------------------------------------------------------------
@@ -82,7 +82,7 @@ RDOPMDWatchPar::RDOPMDWatchPar( RDOParser* _parser, const RDOParserSrcInfo& _src
 		parser()->error_push_only( par->getType()->src_info(), "См. тип параметра" );
 		parser()->error_push_done();
 	}
-	rdoRuntime::RDOPMDWatchPar* pokaz = new rdoRuntime::RDOPMDWatchPar( parser()->runtime, src_text(), _trace, _res_src_info.src_text(), _par_src_info.src_text(), res->getNumber(), res->getType()->getRTPParamNumber(_par_src_info.src_text()) );
+	rdoRuntime::RDOPMDWatchPar* pokaz = new rdoRuntime::RDOPMDWatchPar( parser()->runtime(), src_text(), _trace, _res_src_info.src_text(), _par_src_info.src_text(), res->getNumber(), res->getType()->getRTPParamNumber(_par_src_info.src_text()) );
 	endOfCreation( pokaz );
 }
 
@@ -92,7 +92,7 @@ RDOPMDWatchPar::RDOPMDWatchPar( RDOParser* _parser, const RDOParserSrcInfo& _src
 RDOPMDWatchState::RDOPMDWatchState( RDOParser* _parser, const RDOParserSrcInfo& _src_info, bool _trace, RDOFUNLogic* _logic ):
 	RDOPMDPokaz( _parser, _src_info )
 {
-	endOfCreation( new rdoRuntime::RDOPMDWatchState( parser()->runtime, src_text(), _trace, _logic->createCalc() ) );
+	endOfCreation( new rdoRuntime::RDOPMDWatchState( parser()->runtime(), src_text(), _trace, _logic->createCalc() ) );
 }
 
 // ----------------------------------------------------------------------------
@@ -119,7 +119,7 @@ RDOPMDWatchQuant::RDOPMDWatchQuant( RDOParser* _parser, const RDOParserSrcInfo& 
 	RDOPMDWatchTemp( _parser, _src_info, _res_type_src_info )
 {
 	RDOFUNGroupLogic* fgl = new RDOFUNGroupLogic( this, RDOFUNGroupLogic::fgt_unknow, _res_type_src_info.src_text() );
-	rdoRuntime::RDOPMDWatchQuant* pokaz = new rdoRuntime::RDOPMDWatchQuant( parser()->runtime, src_text(), _trace, _res_type_src_info.src_text(), fgl->resType->getNumber() );
+	rdoRuntime::RDOPMDWatchQuant* pokaz = new rdoRuntime::RDOPMDWatchQuant( parser()->runtime(), src_text(), _trace, _res_type_src_info.src_text(), fgl->resType->getNumber() );
 	endOfCreation( pokaz );
 }
 
@@ -131,7 +131,7 @@ void RDOPMDWatchQuant::setLogic( RDOFUNLogic* _logic )
 
 void RDOPMDWatchQuant::setLogicNoCheck()
 {
-	static_cast<rdoRuntime::RDOPMDWatchQuant*>(pokaz_runtime)->setLogicCalc( new rdoRuntime::RDOCalcConst( parser()->runtime, 1 ) );
+	static_cast<rdoRuntime::RDOPMDWatchQuant*>(pokaz_runtime)->setLogicCalc( new rdoRuntime::RDOCalcConst( parser()->runtime(), 1 ) );
 	parser()->getFUNGroupStack().pop_back();
 }
 
@@ -142,7 +142,7 @@ RDOPMDWatchValue::RDOPMDWatchValue( RDOParser* _parser, const RDOParserSrcInfo& 
 	RDOPMDWatchTemp( _parser, _src_info, _res_type_src_info )
 {
 	RDOFUNGroupLogic* fgl = new RDOFUNGroupLogic( this, RDOFUNGroupLogic::fgt_unknow, _res_type_src_info.src_text() );
-	rdoRuntime::RDOPMDWatchValue* pokaz = new rdoRuntime::RDOPMDWatchValue( parser()->runtime, src_text(), _trace, _res_type_src_info.src_text(), fgl->resType->getNumber() );
+	rdoRuntime::RDOPMDWatchValue* pokaz = new rdoRuntime::RDOPMDWatchValue( parser()->runtime(), src_text(), _trace, _res_type_src_info.src_text(), fgl->resType->getNumber() );
 	endOfCreation( pokaz );
 }
 
@@ -155,7 +155,7 @@ void RDOPMDWatchValue::setLogic( RDOFUNLogic* _logic, RDOFUNArithm* _arithm )
 
 void RDOPMDWatchValue::setLogicNoCheck( RDOFUNArithm* _arithm )
 {
-	static_cast<rdoRuntime::RDOPMDWatchValue*>(pokaz_runtime)->setLogicCalc( new rdoRuntime::RDOCalcConst( parser()->runtime, 1 ) );
+	static_cast<rdoRuntime::RDOPMDWatchValue*>(pokaz_runtime)->setLogicCalc( new rdoRuntime::RDOCalcConst( parser()->runtime(), 1 ) );
 	static_cast<rdoRuntime::RDOPMDWatchValue*>(pokaz_runtime)->setArithmCalc( _arithm->createCalc() );
 	parser()->getFUNGroupStack().pop_back();
 }
@@ -166,7 +166,7 @@ void RDOPMDWatchValue::setLogicNoCheck( RDOFUNArithm* _arithm )
 RDOPMDGetValue::RDOPMDGetValue( RDOParser* _parser, const RDOParserSrcInfo& _src_info, RDOFUNArithm* _arithm ):
 	RDOPMDPokaz( _parser, _src_info )
 {
-	rdoRuntime::RDOPMDGetValue* pokaz = new rdoRuntime::RDOPMDGetValue( parser()->runtime, src_text(), _arithm->createCalc() );
+	rdoRuntime::RDOPMDGetValue* pokaz = new rdoRuntime::RDOPMDGetValue( parser()->runtime(), src_text(), _arithm->createCalc() );
 	endOfCreation( pokaz );
 }
 

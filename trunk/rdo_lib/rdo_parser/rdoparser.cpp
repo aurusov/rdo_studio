@@ -8,7 +8,6 @@
 #include "rdodpt.h"
 #include "rdopmd.h"
 #include "rdocommon.h"
-#include <rdo_runtime.h>
 #include <rdopokaz.h>
 
 #ifdef _DEBUG
@@ -49,9 +48,9 @@ RDOParser::RDOParser():
 	smr( NULL )
 {
 	parserStack.push_back( this );
-	runtime = new rdoRuntime::RDORuntime();
-	runtime->memory_insert( sizeof(RDOParser) );
-	runtime->memory_insert( sizeof(rdoRuntime::RDORuntime) );
+//	runtime = new rdoRuntime::RDORuntime();
+	m_runtime.memory_insert( sizeof(RDOParser) );
+	m_runtime.memory_insert( sizeof(rdoRuntime::RDORuntime) );
 }
 
 RDOParser::~RDOParser()
@@ -214,7 +213,7 @@ std::stringstream& RDOParser::getModelStructure()
 		// OPR/DPT
 		int counter = 1;
 		modelStructure << std::endl << "$Activities" << std::endl;
-		modelStructure << runtime->writeActivitiesStructure( counter );
+		modelStructure << m_runtime.writeActivitiesStructure( counter );
 
 		// DPT only
 		for( int i = 0; i < allDPTSearch.size(); i++ ) {
@@ -227,15 +226,15 @@ std::stringstream& RDOParser::getModelStructure()
 		// PMD
 		modelStructure << std::endl << "$Watching" << std::endl;
 		int watching_max_length = 0;
-		std::vector< rdoRuntime::RDOPMDPokaz* >::const_iterator watching_it = runtime->getPokaz().begin();
-		while ( watching_it != runtime->getPokaz().end() ) {
+		std::vector< rdoRuntime::RDOPMDPokaz* >::const_iterator watching_it = m_runtime.getPokaz().begin();
+		while ( watching_it != m_runtime.getPokaz().end() ) {
 			if ( (*watching_it)->isTrace() && (*watching_it)->getName().length() > watching_max_length ) {
 				watching_max_length = (*watching_it)->getName().length();
 			}
 			watching_it++;
 		}
-		watching_it = runtime->getPokaz().begin();
-		while ( watching_it != runtime->getPokaz().end() ) {
+		watching_it = m_runtime.getPokaz().begin();
+		while ( watching_it != m_runtime.getPokaz().end() ) {
 			if ( (*watching_it)->isTrace() ) {
 				modelStructure << "  " << (*watching_it)->getName();
 				for ( int i = (*watching_it)->getName().length(); i < watching_max_length + 2; i++ ) {
@@ -252,9 +251,6 @@ std::stringstream& RDOParser::getModelStructure()
 
 void RDOParser::parse( int files )
 {
-//	resourceTypeCounter = 1;
-//	resourceCounter = 0;
-
 	int min1, max1, min2, max2;
 	RDOParserContainer::getMinMax( rdoModelObjects::obPRE , min1, max1 );
 	RDOParserContainer::getMinMax( rdoModelObjects::obPOST, min2, max2 );

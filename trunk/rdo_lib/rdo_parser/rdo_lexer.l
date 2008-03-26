@@ -13,6 +13,7 @@ static char THIS_FILE[] = __FILE__;
 
 #define LEXER     reinterpret_cast<rdoParse::RDOLexer*>(this)
 #define PARSER    LEXER->m_parser
+#define RUNTIME   PARSER->runtime()
 
 #define YY_INTERACTIVE
 
@@ -257,7 +258,7 @@ Empty				return(Empty_kw);
 						std::string n1(YYText());
 						int len = n1.length();
 						std::string *name = new std::string(n1, 1, len-2);
-						PARSER->runtime->memory_insert( name->length() + sizeof(std::string) );
+						RUNTIME->memory_insert( name->length() + sizeof(std::string) );
 						PARSER->addName(name);
 						LEXER->setvalue((int)name);
 						return QUOTED_IDENTIF;
@@ -265,7 +266,7 @@ Empty				return(Empty_kw);
 
 (\'[^\']*\n\r)		{
 						std::string *name = new std::string(YYText());
-						PARSER->runtime->memory_insert( name->length() + sizeof(std::string) );
+						RUNTIME->memory_insert( name->length() + sizeof(std::string) );
 						PARSER->addName(name);
 						LEXER->setvalue((int)name);
 						return QUOTED_IDENTIF_BAD;
@@ -303,7 +304,7 @@ Empty				return(Empty_kw);
 
 ([+-]?[0-9]+"."[0-9]*([Ee][+-]?[0-9]+)?) {
 						double *val = PARSER->addDouble(new double(atof(YYText())));
-						PARSER->runtime->memory_insert( sizeof(double) );
+						RUNTIME->memory_insert( sizeof(double) );
 						LEXER->setvalue((int)val);
 						return REAL_CONST;
 					}
@@ -315,7 +316,7 @@ Empty				return(Empty_kw);
 
 ([+-]?[0-9]+"."?[0-9]*([Ee][+-]?[0-9]+)?)[A-Za-zР-пр-џ\xB8_][A-Za-zР-пр-џ\xB80-9_$]*	{
 						std::string *name = new std::string(YYText());
-						PARSER->runtime->memory_insert( name->length() + sizeof(std::string) );
+						RUNTIME->memory_insert( name->length() + sizeof(std::string) );
 						PARSER->addName(name);
 						LEXER->setvalue((int)name);
 						return IDENTIF_BAD;
@@ -325,7 +326,7 @@ Empty				return(Empty_kw);
 					std::string n1(YYText());
 					std::string::size_type pos = n1.find_first_of("\r\n\t :");
 					std::string *name = new std::string(n1, 0, pos);
-					PARSER->runtime->memory_insert( name->length() + sizeof(std::string) );
+					RUNTIME->memory_insert( name->length() + sizeof(std::string) );
 					PARSER->addName(name);
 					LEXER->setvalue((int)name);
 					return IDENTIF_set;
@@ -335,7 +336,7 @@ Empty				return(Empty_kw);
 					std::string n1(YYText());
 					std::string::size_type pos = n1.find_first_of("\r\n\t :");
 					std::string *name = new std::string(n1, 0, pos);
-					PARSER->runtime->memory_insert( name->length() + sizeof(std::string) );
+					RUNTIME->memory_insert( name->length() + sizeof(std::string) );
 					PARSER->addName(name);
 					LEXER->setvalue((int)name);
 					return IDENTIF_NoChange_NoChange;
@@ -345,7 +346,7 @@ Empty				return(Empty_kw);
 					std::string n1(YYText());
 					std::string::size_type pos = n1.find_first_of("\r\n\t :");
 					std::string *name = new std::string(n1, 0, pos);
-					PARSER->runtime->memory_insert( name->length() + sizeof(std::string) );
+					RUNTIME->memory_insert( name->length() + sizeof(std::string) );
 					PARSER->addName(name);
 					LEXER->setvalue((int)name);
 					return IDENTIF_NoChange;
@@ -355,7 +356,7 @@ Empty				return(Empty_kw);
 					std::string n1(YYText());
 					std::string::size_type pos = n1.find_first_of("\r\n\t :");
 					std::string *name = new std::string(n1, 0, pos);
-					PARSER->runtime->memory_insert( name->length() + sizeof(std::string) );
+					RUNTIME->memory_insert( name->length() + sizeof(std::string) );
 					PARSER->addName(name);
 					LEXER->setvalue((int)name);
 					return IDENTIF_COLON;
@@ -363,7 +364,7 @@ Empty				return(Empty_kw);
 
 [A-Za-zР-пр-џ\xB8_$][A-Za-zР-пр-џ\xB80-9_$]*  {       
 					std::string *name = new std::string(YYText());
-					PARSER->runtime->memory_insert( name->length() + sizeof(std::string) );
+					RUNTIME->memory_insert( name->length() + sizeof(std::string) );
 					PARSER->addName(name);
 					LEXER->setvalue((int)name);
 					return IDENTIF;

@@ -5,6 +5,7 @@
 #include "rdoparser_base.h"
 #include <rdoruntime_object.h>
 #include <rdocommon.h>
+#include <rdo_runtime.h>
 
 #include <algorithm>
 
@@ -102,9 +103,13 @@ protected:
 	RDODPTSearch* lastDPTSearch;
 	RDODPTSome*   lastDPTSome;
 
+	rdoRuntime::RDORuntime m_runtime;
+
 public:
 	RDOParser();
 	virtual ~RDOParser();
+
+	rdoRuntime::RDORuntime* runtime() { return &m_runtime; }
 
 	const std::vector< RDORTPResType* >&       getRTPResType() const      { return allRTPResType;      }
 	const std::vector< RDORTPEnumParamType* >& getEnums() const           { return allEnums;           }
@@ -177,8 +182,6 @@ public:
 	int getPAT_id() const      { return allPATPatterns.size() + 0; }
 	int getPMD_id() const      { return allPMDPokaz.size()    + 1; }
 	int getFUNCONST_id() const { return allFUNConstant.size() + 0; }
-
-	rdoRuntime::RDORuntime* runtime;
 
 	std::vector< rdoSimulator::RDOSyntaxError > errors;
 

@@ -20,6 +20,12 @@ class RDOParser;
 class RDOParserItem: public RDODeletable
 {
 public:
+	enum StreamFrom
+	{
+		sf_repository,
+		sf_editor
+	};
+
 	rdoModelObjects::RDOFileType type;
 
 	t_bison_parse_fun parser_fun;
@@ -44,8 +50,11 @@ public:
 	};
 	virtual ~RDOParserItem() {};
 
-	virtual void parse()                          = 0;
-	virtual void parse( std::istream& in_stream ) = 0;
+	virtual void parse( StreamFrom streamFrom = sf_repository ) = 0;
+	virtual void parse( std::istream& in_stream )
+	{
+		parse();
+	}
 
 	virtual int  lexer_loc_line()                   { return -1; };
 	virtual int  lexer_loc_pos()                    { return 0;  };

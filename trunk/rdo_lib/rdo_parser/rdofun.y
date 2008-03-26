@@ -170,7 +170,8 @@ static char THIS_FILE[] = __FILE__;
 #include "rdofun.h"
 #include <rdocalc.h>
 
-#define PARSER reinterpret_cast<rdoParse::RDOLexer*>(lexer)->m_parser
+#define PARSER  reinterpret_cast<rdoParse::RDOLexer*>(lexer)->m_parser
+#define RUNTIME PARSER->runtime()
 
 namespace rdoParse 
 {
@@ -224,7 +225,7 @@ fun_const_param_desc:	IDENTIF_COLON param_type {
 							RDOFUNConst* param = new RDOFUNConst( PARSER, src_info, parType );
 							RDOFUNConstant* newConst = new RDOFUNConstant( PARSER, param );
 							newConst->setSrcInfo( src_info );
-							PARSER->runtime->setConstValue( newConst->getNumber(), newConst->getType()->getDefaultValue( param->src_info() ) );
+							RUNTIME->setConstValue( newConst->getNumber(), newConst->getType()->getDefaultValue( param->src_info() ) );
 							$$ = (int)newConst;
 						}
 						| IDENTIF_COLON {
@@ -680,7 +681,7 @@ fun_func_algorithmic_calc_if:	fun_func_calc_if fun_logic fun_func_calc_name '=' 
 									PARSER->error( @5, "Ошибка в арифметическом выражении" );
 								}
 								| fun_func_calc_name '=' fun_arithm {
-									rdoRuntime::RDOCalcConst* calc_cond = new rdoRuntime::RDOCalcConst( PARSER->runtime, 1 );
+									rdoRuntime::RDOCalcConst* calc_cond = new rdoRuntime::RDOCalcConst( RUNTIME, 1 );
 									RDOParserSrcInfo logic_src_info( "Calculate_if 1 = 1" );
 									logic_src_info.setSrcPos( @1.first_line, @1.first_column, @1.first_line, @1.first_column );
 									calc_cond->setSrcInfo( logic_src_info );
@@ -1322,7 +1323,7 @@ fun_arithm: fun_arithm '+' fun_arithm		{ $$ = (int)(*(RDOFUNArithm *)$1 + *(RDOF
 				RDOParserSrcInfo info;
 				info.setSrcPos( @1, @2 );
 				info.setSrcText( "-" + reinterpret_cast<RDOFUNArithm*>($2)->src_text() );
-				$$ = (int)new RDOFUNArithm( PARSER, reinterpret_cast<RDOFUNArithm*>($2)->getType(), new rdoRuntime::RDOCalcUMinus( PARSER->runtime, reinterpret_cast<RDOFUNArithm*>($2)->createCalc() ), info );
+				$$ = (int)new RDOFUNArithm( PARSER, reinterpret_cast<RDOFUNArithm*>($2)->getType(), new rdoRuntime::RDOCalcUMinus( RUNTIME, reinterpret_cast<RDOFUNArithm*>($2)->createCalc() ), info );
 			};
 
 // ----------------------------------------------------------------------------
@@ -1398,7 +1399,7 @@ fun_group:			fun_group_header fun_logic ')' {
 					| fun_group_header NoCheck ')' {
 						RDOFUNGroupLogic* groupfun = reinterpret_cast<RDOFUNGroupLogic*>($1);
 						groupfun->setSrcPos( @1, @3 );
-						RDOFUNLogic* trueLogic = new RDOFUNLogic( groupfun, new rdoRuntime::RDOCalcConst( PARSER->runtime, 1 ) );
+						RDOFUNLogic* trueLogic = new RDOFUNLogic( groupfun, new rdoRuntime::RDOCalcConst( RUNTIME, 1 ) );
 						trueLogic->setSrcPos( @2 );
 						trueLogic->setSrcText( "NoCheck" );
 						$$ = (int)groupfun->createFunLogic( trueLogic );
@@ -1439,7 +1440,7 @@ fun_select_body:	fun_select_header fun_logic ')' {
 						RDOFUNSelect* select = reinterpret_cast<RDOFUNSelect*>($1);
 						RDOParserSrcInfo logic_info(@2, "NoCheck");
 						select->setSrcText( select->src_text() + logic_info.src_text() + ")" );
-						rdoRuntime::RDOCalcConst* calc_nocheck = new rdoRuntime::RDOCalcConst( PARSER->runtime, 1 );
+						rdoRuntime::RDOCalcConst* calc_nocheck = new rdoRuntime::RDOCalcConst( RUNTIME, 1 );
 						RDOFUNLogic* flogic = new RDOFUNLogic( select, calc_nocheck, true );
 						flogic->setSrcInfo( logic_info );
 						select->initSelect( flogic );
