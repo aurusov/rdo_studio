@@ -8,7 +8,6 @@
 #include "rdofun.h"
 #include "rdosmr.h"
 
-#include "../rdo_simulator/rdosimwin.h"
 #include <rdobinarystream.h>
 #include <rdokernel.h>
 #include <rdorepository.h>
@@ -26,8 +25,8 @@ namespace rdoParse
 // ----------------------------------------------------------------------------
 // ---------- RDOParserRDOItem
 // ----------------------------------------------------------------------------
-RDOParserRDOItem::RDOParserRDOItem( RDOParser* _parser, rdoModelObjects::RDOFileType _type, t_bison_parse_fun _parser_fun, t_bison_error_fun _error_fun, t_flex_lexer_fun _lexer_fun ):
-	RDOParserItem( _parser, _type, _parser_fun, _error_fun, _lexer_fun ),
+RDOParserRDOItem::RDOParserRDOItem( RDOParser* _parser, rdoModelObjects::RDOFileType _type, t_bison_parse_fun _parser_fun, t_bison_error_fun _error_fun, t_flex_lexer_fun _lexer_fun, StreamFrom from ):
+	RDOParserItem( _parser, _type, _parser_fun, _error_fun, _lexer_fun, from ),
 	m_lexer( NULL )
 {
 };
@@ -40,10 +39,18 @@ RDOParserRDOItem::~RDOParserRDOItem()
 	}
 }
 
-void RDOParserRDOItem::parse( StreamFrom from )
+void RDOParserRDOItem::parse()
 {
 	rdo::binarystream in_stream;
-	kernel->simulator()->sendMessage( kernel->repository(), RDOThread::RT_REPOSITORY_LOAD, &rdoRepository::RDOThreadRepository::FileData( type, in_stream ) );
+	switch ( m_from )
+	{
+		case sf_repository:
+			kernel->sendMessage( kernel->repository(), RDOThread::RT_REPOSITORY_LOAD, &rdoRepository::RDOThreadRepository::FileData( m_type, in_stream ) );
+			break;
+		case sf_editor:
+			kernel->sendMessage( kernel->studio(), RDOThread::RT_STUDIO_MODEL_GET_TEXT, &rdoRepository::RDOThreadRepository::FileData( m_type, in_stream ) );
+			break;
+	}
 	if ( in_stream.good() ) {
 		parse( in_stream );
 	}
@@ -54,7 +61,7 @@ void RDOParserRDOItem::parse( std::istream& in_stream )
 	if ( m_lexer ) delete m_lexer;
 	std::ostringstream out_stream;
 	m_lexer = getLexer( in_stream, out_stream );
-	if ( m_lexer && parser_fun ) parser_fun( m_lexer );
+	if ( m_lexer && m_parser_fun ) m_parser_fun( m_lexer );
 }
 
 RDOLexer* RDOParserRDOItem::getLexer( std::istream& in_stream, std::ostream& out_stream )
@@ -77,21 +84,21 @@ int RDOParserRDOItem::lexer_loc_pos()
 // ----------------------------------------------------------------------------
 // ---------- RDOParserRSS
 // ----------------------------------------------------------------------------
-RDOParserRSS::RDOParserRSS( RDOParser* _parser ): RDOParserRDOItem( _parser, rdoModelObjects::RSS, rssparse, rsserror, rsslex )
+RDOParserRSS::RDOParserRSS( RDOParser* _parser, StreamFrom from ): RDOParserRDOItem( _parser, rdoModelObjects::RSS, rssparse, rsserror, rsslex, from )
 {
 }
 
-void RDOParserRSS::parse( std::istream& in_stream )
+void RDOParserRSS::parse()
 {
 	m_parser->setHaveKWResources( false );
 	m_parser->setHaveKWResourcesEnd( false );
-	RDOParserRDOItem::parse( in_stream );
+	RDOParserRDOItem::parse();
 }
 
 // ----------------------------------------------------------------------------
 // ---------- RDOParserRSSPost
 // ----------------------------------------------------------------------------
-void RDOParserRSSPost::parse( StreamFrom from )
+void RDOParserRSSPost::parse()
 {
 	// В режиме совместимости со старым РДО создаем ресурсы по номерам их типов, а не по номерам самих ресурсов из RSS
 #ifdef RDOSIM_COMPATIBLE
@@ -119,7 +126,7 @@ void RDOParserRSSPost::parse( StreamFrom from )
 // ----------------------------------------------------------------------------
 // ---------- RDOParserSTDFUN
 // ----------------------------------------------------------------------------
-void RDOParserSTDFUN::parse( StreamFrom from )
+void RDOParserSTDFUN::parse()
 {
 	RDORTPIntParamType* intType   = new RDORTPIntParamType( m_parser, new RDORTPIntDiap(m_parser), new RDORTPIntDefVal(m_parser) );
 	RDORTPRealParamType* realType = new RDORTPRealParamType( m_parser, new RDORTPRealDiap(m_parser), new RDORTPRealDefVal(m_parser) );
@@ -404,22 +411,6 @@ void RDOParserSTDFUN::parse( StreamFrom from )
 	param = new RDOFUNFunctionParam( fun, "p1", realType );
 	fun->add( param );
 	fun->setFunctionCalc( new rdoRuntime::RDOFunCalcTan( m_parser->runtime() ) );
-}
-
-// ----------------------------------------------------------------------------
-// ---------- RDOParserSMRFile
-// ----------------------------------------------------------------------------
-RDOParserSMRFile::RDOParserSMRFile( RDOParser* _parser ): RDOParserRDOItem( _parser, rdoModelObjects::SMR, smr_file_parse, smr_file_error, smr_file_lex )
-{
-}
-
-void RDOParserSMRFile::parse( std::istream& in_stream )
-{
-	try {
-		RDOParserRDOItem::parse( in_stream );
-	} catch ( RDOSMR1OkException& ) {
-		// Everithing ok, just end of first part parsing
-	}
 }
 
 } // namespace rdoParse

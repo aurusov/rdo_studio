@@ -60,7 +60,7 @@ int RDORTPDefVal::getIntValue() const
 double RDORTPDefVal::getRealValue() const
 {
 	parser()->error( src_info(), "Неверное значение по-умолчанию" );
-	return 0.;	// unreachable code...
+	return 0;	// unreachable code...
 }
 
 const std::string& RDORTPDefVal::getEnumValue() const

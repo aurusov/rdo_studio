@@ -13,7 +13,7 @@ class RDOParserCorbaRTP: public RDOParserRDOItem
 {
 public:
 	RDOParserCorbaRTP( RDOParser* _parser ): RDOParserRDOItem( _parser, rdoModelObjects::RTP, NULL, NULL, NULL ) {};
-	virtual void parse( StreamFrom streamFrom = sf_repository );
+	virtual void parse();
 };
 
 // ----------------------------------------------------------------------------
@@ -23,7 +23,7 @@ class RDOParserCorbaRSS: public RDOParserRDOItem
 {
 public:
 	RDOParserCorbaRSS( RDOParser* _parser ): RDOParserRDOItem( _parser, rdoModelObjects::RSS, NULL, NULL, NULL ) {};
-	virtual void parse( StreamFrom streamFrom = sf_repository );
+	virtual void parse();
 };
 
 } // namespace rdoParse

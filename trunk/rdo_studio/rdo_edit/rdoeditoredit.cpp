@@ -455,7 +455,7 @@ void RDOEditorEdit::completeWord()
 	std::string s;
 	RDOEditorTabCtrl* tab = model->getTab();
 	if ( tab ) {
-//		studioApp.studioGUI->sendMessage( kernel->codecomp(), RDOThread::RT_CODECOMP_GET_DATA, &rdoSimulator::RDOThreadCodeComp::GetCodeComp( tab->getCurrentRDOItem(), getCurrentPos(), getCurrentLineNumber(), s ) );
+		studioApp.studioGUI->sendMessage( kernel->simulator(), RDOThread::RT_CODECOMP_GET_DATA, &rdoSimulator::RDOThreadCodeComp::GetCodeComp( tab->getCurrentRDOItem(), getCurrentPos(), getCurrentLineNumber(), s ) );
 	}
 	if ( s.empty() ) {
 		s = getAllKW();

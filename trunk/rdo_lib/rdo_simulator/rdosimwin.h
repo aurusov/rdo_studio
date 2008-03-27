@@ -102,6 +102,8 @@ protected:
 	void stopModel();
 	std::vector< RDOSyntaxError > getErrors();
 
+	void codeCompletion();
+
 public:
 	RDOThreadSimulator();
 

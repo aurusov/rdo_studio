@@ -23,7 +23,7 @@ std::list< RDOParser* > RDOParser::parserStack;
 
 rdoModelObjects::RDOFileType RDOParser::getFileToParse()
 {
-	return !parserStack.empty() && parserStack.back()->parser_item ? parserStack.back()->parser_item->type : rdoModelObjects::PAT;
+	return !parserStack.empty() && parserStack.back()->parser_item ? parserStack.back()->parser_item->m_type : rdoModelObjects::PAT;
 }
 
 int RDOParser::lexer_loc_line()

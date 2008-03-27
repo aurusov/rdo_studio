@@ -23,6 +23,7 @@
 #include <rdoparser.h>
 #include <rdosmr.h>
 #include <rdofrm.h>
+#include <rdo_resources.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -411,6 +412,7 @@ RDOThreadSimulator::RDOThreadSimulator():
 	notifies.push_back( RT_SIMULATOR_GET_LIST );
 	notifies.push_back( RT_SIMULATOR_GET_ERRORS );
 	notifies.push_back( RT_THREAD_STOP_AFTER );
+	notifies.push_back( RT_CODECOMP_GET_DATA );
 	after_constructor();
 }
 
@@ -459,6 +461,10 @@ void RDOThreadSimulator::proc( RDOMessageInfo& msg )
 			msg.lock();
 			*static_cast<rdoSimulator::RDOExitCode*>(msg.param) = exitCode;
 			msg.unlock();
+			break;
+		}
+		case RT_CODECOMP_GET_DATA: {
+			codeCompletion();
 			break;
 		}
 		case RT_SIMULATOR_GET_LIST: {
@@ -696,6 +702,65 @@ double RDOThreadSimulator::getInitialShowRate()
 	return parser->getSMR()->getShowRate();
 }
 
+void RDOThreadSimulator::codeCompletion()
+{
+	rdoParse::RDOParserCorba parser;
+	try {
+		parser.parse();
+	}
+	catch ( rdoParse::RDOSyntaxException& ) {
+	}
+	catch ( rdoRuntime::RDORuntimeException& ) {
+	}
+	// Вывели все типы ресурсов
+	rdoMBuilder::RDOResTypeList rtpList( &parser );
+	rdoMBuilder::RDOResTypeList::List::const_iterator rtp_it = rtpList.begin();
+	while ( rtp_it != rtpList.end() )
+	{
+		TRACE("rtp.name = %s\n", rtp_it->name().c_str());
+		rdoMBuilder::RDOResType::ParamList::List::const_iterator param_it = rtp_it->m_params.begin();
+		while ( param_it != rtp_it->m_params.end() )
+		{
+			std::string info = rdo::format("  param: %s: %s", param_it->name().c_str(), param_it->getTypeStr().c_str());
+			if ( param_it->hasDiap() )
+			{
+				info = rdo::format("%s [%s..%s]", info.c_str(), param_it->getMin().getAsString().c_str(), param_it->getMax().getAsString().c_str());
+			}
+			if ( param_it->hasDefault() )
+			{
+				info = rdo::format("%s = %s", info.c_str(), param_it->getDefault().getAsString().c_str());
+			}
+			TRACE( "%s\n", info.c_str() );
+
+			if ( param_it->getType() == rdoRuntime::RDOValue::rvt_enum )
+			{
+				rdoRuntime::RDOEnum::CIterator enum_it = param_it->getEnum().begin();
+				while ( enum_it != param_it->getEnum().end() )
+				{
+					TRACE( "  - enum - %s\n", enum_it->c_str() );
+					enum_it++;
+				}
+			}
+			param_it++;
+		}
+		rtp_it++;
+	}
+	// Вывели все ресурсы
+	rdoMBuilder::RDOResourceList rssList( &parser );
+	rdoMBuilder::RDOResourceList::List::const_iterator rss_it = rssList.begin();
+	while ( rss_it != rssList.end() )
+	{
+		TRACE("rss.name = %s: %s\n", rss_it->name().c_str(), rss_it->getType().name().c_str());
+		rdoMBuilder::RDOResource::Params::const_iterator param_it = rss_it->begin();
+		while ( param_it != rss_it->end() )
+		{
+			TRACE("  %s = %s\n", param_it->first.c_str(), param_it->second.getAsString().c_str());
+			param_it++;
+		}
+		rss_it++;
+	}
+}
+
 // --------------------------------------------------------------------
 // ---------- RDOThreadCodeComp
 // --------------------------------------------------------------------
@@ -703,7 +768,7 @@ RDOThreadCodeComp::RDOThreadCodeComp():
 	RDOThreadMT( "RDOThreadCodeComp" ),
 	parser( NULL )
 {
-	notifies.push_back( RT_CODECOMP_GET_DATA );
+//	notifies.push_back( RT_CODECOMP_GET_DATA );
 	after_constructor();
 }
 

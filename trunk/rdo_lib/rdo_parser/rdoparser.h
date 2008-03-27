@@ -293,7 +293,7 @@ typedef RDOParserTemplate<RDOParserContainerSMRInfo> RDOParserSMRInfo;
 // ----------------------------------------------------------------------------
 // ---------- RDOParserCorbar
 // ----------------------------------------------------------------------------
-typedef RDOParserTemplate<RDOParserContainerCorba> RDOParserCorbar;
+typedef RDOParserTemplate<RDOParserContainerCorba> RDOParserCorba;
 
 } // namespace rdoParse
 

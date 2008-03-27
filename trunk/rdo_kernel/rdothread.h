@@ -81,12 +81,12 @@ public:
 		RT_STUDIO_MODEL_BUILD,
 		RT_STUDIO_MODEL_RUN,
 		RT_STUDIO_MODEL_STOP,
-		RT_STUDIO_MODEL_GET_TEXT,              // param = rdoRepository::RDOThreadRepository::FileData* =  { file_type:rdoModelObjects::RDOFileType, result:rdo::binarystream& }
-		RT_REPOSITORY_MODEL_NEW,               // param = rdoRepository::RDOThreadRepository::NewModel* =  { model_name:std::string&, model_path:std::string&   }
+		RT_STUDIO_MODEL_GET_TEXT,              // param = rdoRepository::RDOThreadRepository::FileData* = { file_type:rdoModelObjects::RDOFileType, result:rdo::binarystream& }
+		RT_REPOSITORY_MODEL_NEW,               // param = rdoRepository::RDOThreadRepository::NewModel* = { model_name:std::string&, model_path:std::string&   }
 		RT_REPOSITORY_MODEL_OPEN,
 		RT_REPOSITORY_MODEL_OPEN_ERROR,        // param = model_name:std::string*
 		RT_REPOSITORY_MODEL_SAVE,
-		RT_REPOSITORY_MODEL_OPEN_GET_NAME,     // param = rdoRepository::RDOThreadRepository::OpenFile* =  { model_name:std::string, readonly:bool, result:bool }
+		RT_REPOSITORY_MODEL_OPEN_GET_NAME,     // param = rdoRepository::RDOThreadRepository::OpenFile* = { model_name:std::string, readonly:bool, result:bool }
 		RT_REPOSITORY_MODEL_SAVE_GET_NAME,     // param = rdoRepository::RDOThreadRepository::OpenFile* = { model_name:std::string, readonly:bool, result:bool }
 		RT_REPOSITORY_MODEL_CLOSE,
 		RT_REPOSITORY_MODEL_CLOSE_CAN_CLOSE,   // param = result:bool*, работает как И
