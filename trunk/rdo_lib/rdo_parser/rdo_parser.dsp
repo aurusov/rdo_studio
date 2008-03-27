@@ -460,12 +460,12 @@ SOURCE=.\rdogramrtp.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\rdogramsmr1.cpp
+SOURCE=.\rdogramsmr_file.cpp
 # SUBTRACT CPP /YX /Yc /Yu
 # End Source File
 # Begin Source File
 
-SOURCE=.\rdogramsmr2.cpp
+SOURCE=.\rdogramsmr_sim.cpp
 # SUBTRACT CPP /YX /Yc /Yu
 # End Source File
 # Begin Source File
@@ -818,25 +818,25 @@ BuildCmds= \
 # End Source File
 # Begin Source File
 
-SOURCE=.\rdosmr1.y
+SOURCE=.\rdosmr_file.y
 
 !IF  "$(CFG)" == "rdo_parser - Win32 Release"
 
 # Begin Custom Build
-InputPath=.\rdosmr1.y
+InputPath=.\rdosmr_file.y
 
-"rdogramsmr1.cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	..\rdo_system\bison.exe -psmr1 --skeleton=..\rdo_system\bison.simple -ordogramsmr1.cpp $(InputPath)
+"rdogramsmr_file.cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	..\rdo_system\bison.exe -psmr_file_ --skeleton=..\rdo_system\bison.simple -ordogramsmr_file.cpp $(InputPath)
 
 # End Custom Build
 
 !ELSEIF  "$(CFG)" == "rdo_parser - Win32 Debug"
 
 # Begin Custom Build
-InputPath=.\rdosmr1.y
+InputPath=.\rdosmr_file.y
 
-"rdogramsmr1.cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	..\rdo_system\bison.exe -psmr1 --skeleton=..\rdo_system\bison.simple -ordogramsmr1.cpp $(InputPath)
+"rdogramsmr_file.cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	..\rdo_system\bison.exe -psmr_file_ --skeleton=..\rdo_system\bison.simple -ordogramsmr_file.cpp $(InputPath)
 
 # End Custom Build
 
@@ -845,25 +845,25 @@ InputPath=.\rdosmr1.y
 # End Source File
 # Begin Source File
 
-SOURCE=.\rdosmr2.y
+SOURCE=.\rdosmr_sim.y
 
 !IF  "$(CFG)" == "rdo_parser - Win32 Release"
 
 # Begin Custom Build
-InputPath=.\rdosmr2.y
+InputPath=.\rdosmr_sim.y
 
-"rdogramsmr2.cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	..\rdo_system\bison.exe -psmr2 --skeleton=..\rdo_system\bison.simple -ordogramsmr2.cpp $(InputPath)
+"rdogramsmr_sim.cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	..\rdo_system\bison.exe -psmr_sim_ --skeleton=..\rdo_system\bison.simple -ordogramsmr_sim.cpp $(InputPath)
 
 # End Custom Build
 
 !ELSEIF  "$(CFG)" == "rdo_parser - Win32 Debug"
 
 # Begin Custom Build
-InputPath=.\rdosmr2.y
+InputPath=.\rdosmr_sim.y
 
-"rdogramsmr2.cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	..\rdo_system\bison.exe -psmr2 --skeleton=..\rdo_system\bison.simple -ordogramsmr2.cpp $(InputPath)
+"rdogramsmr_sim.cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	..\rdo_system\bison.exe -psmr_sim_ --skeleton=..\rdo_system\bison.simple -ordogramsmr_sim.cpp $(InputPath)
 
 # End Custom Build
 

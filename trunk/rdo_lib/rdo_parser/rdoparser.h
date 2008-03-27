@@ -105,6 +105,8 @@ protected:
 
 	rdoRuntime::RDORuntime m_runtime;
 
+	void parse( rdoModelObjects::RDOParseType file );
+
 public:
 	RDOParser();
 	virtual ~RDOParser();
@@ -205,9 +207,7 @@ public:
 
 	bool hasConstant() const { return !allFUNConstant.empty(); }
 
-	void parse( int files = rdoModelObjects::obALL );
-	void parse( rdoModelObjects::RDOParseType file );
-	void parse( rdoModelObjects::RDOParseType file, std::istream& stream );
+	void parse();
 	void parse( std::istream& stream );
 	void error( rdoSimulator::RDOSyntaxError::ErrorCode _error_code, ... );
 	void error( const std::string& _message, rdoSimulator::RDOSyntaxError::ErrorCode _error_code = rdoSimulator::RDOSyntaxError::UNKNOWN );

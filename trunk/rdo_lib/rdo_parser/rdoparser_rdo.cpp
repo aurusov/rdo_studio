@@ -407,13 +407,13 @@ void RDOParserSTDFUN::parse( StreamFrom from )
 }
 
 // ----------------------------------------------------------------------------
-// ---------- RDOParserSMR1
+// ---------- RDOParserSMRFile
 // ----------------------------------------------------------------------------
-RDOParserSMR1::RDOParserSMR1( RDOParser* _parser ): RDOParserRDOItem( _parser, rdoModelObjects::SMR, smr1parse, smr1error, smr1lex )
+RDOParserSMRFile::RDOParserSMRFile( RDOParser* _parser ): RDOParserRDOItem( _parser, rdoModelObjects::SMR, smr_file_parse, smr_file_error, smr_file_lex )
 {
 }
 
-void RDOParserSMR1::parse( std::istream& in_stream )
+void RDOParserSMRFile::parse( std::istream& in_stream )
 {
 	try {
 		RDOParserRDOItem::parse( in_stream );

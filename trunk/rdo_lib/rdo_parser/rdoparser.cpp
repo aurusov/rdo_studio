@@ -249,31 +249,19 @@ std::stringstream& RDOParser::getModelStructure()
 	return modelStructure;
 }
 
-void RDOParser::parse( int files )
+void RDOParser::parse()
 {
-	int min1, max1, min2, max2;
-	RDOParserContainer::getMinMax( rdoModelObjects::obPRE , min1, max1 );
-	RDOParserContainer::getMinMax( rdoModelObjects::obPOST, min2, max2 );
-
-	if ( files & rdoModelObjects::obPRE ) {
-		parse( rdoModelObjects::obPRE );
-	}
-
-	std::list< rdoModelObjects::RDOFileType > file_list = RDOParserContainer::getFiles( files );
+	parse( rdoModelObjects::obPRE );
 
 	RDOParserContainer::CIterator it = begin();
 	while ( it != end() ) {
-		if ( it->first > max1 && it->first < min2 && std::find( file_list.begin(), file_list.end(), it->second->type ) != file_list.end() ) {
-			parser_item = it->second;
-			it->second->parse();
-			parser_item = NULL;
-		}
+		parser_item = it->second;
+		it->second->parse();
+		parser_item = NULL;
 		it++;
 	}
 
-	if ( files & rdoModelObjects::obPOST ) {
-		parse( rdoModelObjects::obPOST );
-	}
+	parse( rdoModelObjects::obPOST );
 }
 
 void RDOParser::parse( rdoModelObjects::RDOParseType file )
@@ -286,24 +274,6 @@ void RDOParser::parse( rdoModelObjects::RDOParseType file )
 		if ( it->first <= max ) {
 			parser_item = it->second;
 			it->second->parse();
-			parser_item = NULL;
-		} else {
-			break;
-		}
-		it++;
-	}
-}
-
-void RDOParser::parse( rdoModelObjects::RDOParseType file, std::istream& stream )
-{
-	int min, max;
-	RDOParserContainer::getMinMax( file, min, max );
-	if ( min == -1 || max == -1 ) return;
-	RDOParserContainer::CIterator it = find( min );
-	while ( it != end() ) {
-		if ( it->first <= max ) {
-			parser_item = it->second;
-			it->second->parse( stream );
 			parser_item = NULL;
 		} else {
 			break;

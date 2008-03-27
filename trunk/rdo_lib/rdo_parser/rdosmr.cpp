@@ -16,27 +16,24 @@ static char THIS_FILE[] = __FILE__;
 namespace rdoParse 
 {
 
-int smr1lex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer )
+int smr_file_lex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer )
 {
 	reinterpret_cast<RDOLexer*>(lexer)->m_lpval = lpval;
 	reinterpret_cast<RDOLexer*>(lexer)->m_lploc = llocp;
 	return reinterpret_cast<RDOLexer*>(lexer)->yylex();
 }
-void smr1error( char* mes )
+void smr_file_error( char* mes )
 {
-//	throw RDOSMR1OkException("");
-//	rdoParse::parser->error( mes );
 }
 
-int smr2lex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer )
+int smr_sim_lex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer )
 {
 	reinterpret_cast<RDOLexer*>(lexer)->m_lpval = lpval;
 	reinterpret_cast<RDOLexer*>(lexer)->m_lploc = llocp;
 	return reinterpret_cast<RDOLexer*>(lexer)->yylex();
 }
-void smr2error( char* mes )
+void smr_sim_error( char* mes )
 {
-//	rdoParse::parser->error( mes );
 }
 
 // ----------------------------------------------------------------------------

@@ -67,20 +67,18 @@ class RDOParserContainer: public RDODeletable
 {
 public:
 	typedef std::map< int, RDOParserItem* > List;
-	typedef List::const_iterator           CIterator;
+	typedef List::const_iterator            CIterator;
 
 	CIterator begin() const           { return m_list.begin();       }
 	CIterator end()   const           { return m_list.end();         }
 	CIterator find( int index ) const { return m_list.find( index ); }
 
 	static void getMinMax( rdoModelObjects::RDOParseType type, int& min, int& max );
-	static std::list< rdoModelObjects::RDOFileType > getFiles( int files );
 
 protected:
 	RDOParserContainer( RDOParser* parser );
 
 	int insert( rdoModelObjects::RDOParseType type, RDOParserItem* parser );
-	virtual void init() = 0;
 
 private:
 	List m_list;
@@ -93,9 +91,6 @@ class RDOParserContainerModel: public RDOParserContainer
 {
 public:
 	RDOParserContainerModel( RDOParser* parser );
-
-protected:
-	virtual void init();
 };
 
 // ----------------------------------------------------------------------------
@@ -105,9 +100,6 @@ class RDOParserContainerSMRInfo: public RDOParserContainer
 {
 public:
 	RDOParserContainerSMRInfo( RDOParser* parser );
-
-protected:
-	virtual void init();
 };
 
 // ----------------------------------------------------------------------------
@@ -117,9 +109,6 @@ class RDOParserContainerCorba: public RDOParserContainer
 {
 public:
 	RDOParserContainerCorba( RDOParser* parser );
-
-protected:
-	virtual void init();
 };
 
 } // namespace rdoParse

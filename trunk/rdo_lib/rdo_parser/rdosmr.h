@@ -13,13 +13,13 @@ class RDOCalc;
 namespace rdoParse 
 {
 
-int smr1parse( void* lexer );
-int smr1lex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer );
-void smr1error( char* mes );
+int smr_file_parse( void* lexer );
+int smr_file_lex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer );
+void smr_file_error( char* mes );
 
-int smr2parse( void* lexer );
-int smr2lex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer );
-void smr2error( char* mes );
+int smr_sim_parse( void* lexer );
+int smr_sim_lex( YYSTYPE* lpval, YYLTYPE* llocp, void* lexer );
+void smr_sim_error( char* mes );
 
 class RDOFUNLogic;
 class RDOFUNArithm;

@@ -74,10 +74,10 @@ public:
 	RDOSMR1OkException( const char* str ): RDOException( str ) {};
 };
 
-class RDOParserSMR1: public RDOParserRDOItem
+class RDOParserSMRFile: public RDOParserRDOItem
 {
 public:
-	RDOParserSMR1( RDOParser* _parser );
+	RDOParserSMRFile( RDOParser* _parser );
 
 	virtual void parse( std::istream& in_stream );
 };

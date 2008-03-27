@@ -199,7 +199,15 @@ smr_show_mode:	NoShow {
 				};
 
 smr_cond:	/* empty */
-			| smr_cond Model_name '=' IDENTIF
+			| smr_cond Model_name '=' IDENTIF {
+				$$ = (int)new RDOSMR( PARSER, *reinterpret_cast<std::string*>($4) );
+			}
+			| smr_cond Model_name '=' error {
+				PARSER->error( @3, @4, "Ожидается имя модели" );
+			}
+			| smr_cond Model_name error {
+				PARSER->error( @2, "Ожидается '='" );
+			}
 			| smr_cond Resource_file '=' IDENTIF
 			| smr_cond OprIev_file '=' IDENTIF
 			| smr_cond Frame_file '=' IDENTIF

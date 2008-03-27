@@ -71,33 +71,12 @@ void RDOParserContainer::getMinMax( rdoModelObjects::RDOParseType type, int& min
 	}
 }
 
-std::list< rdoModelObjects::RDOFileType > RDOParserContainer::getFiles( int files )
-{
-	std::list< rdoModelObjects::RDOFileType > list;
-	if ( files & rdoModelObjects::obRTP ) list.push_back( rdoModelObjects::RTP );
-	if ( files & rdoModelObjects::obRSS ) list.push_back( rdoModelObjects::RSS );
-	if ( files & rdoModelObjects::obFUN ) list.push_back( rdoModelObjects::FUN );
-	if ( files & rdoModelObjects::obPAT ) list.push_back( rdoModelObjects::PAT );
-	if ( files & rdoModelObjects::obOPR ) list.push_back( rdoModelObjects::OPR );
-	if ( files & rdoModelObjects::obDPT ) list.push_back( rdoModelObjects::DPT );
-	if ( files & rdoModelObjects::obPMD ) list.push_back( rdoModelObjects::PMD );
-	if ( files & rdoModelObjects::obFRM ) list.push_back( rdoModelObjects::FRM );
-	if ( files & rdoModelObjects::obSMR ) list.push_back( rdoModelObjects::SMR );
-	return list;
-}
-
 // ----------------------------------------------------------------------------
 // ---------- RDOParserContainerModel
 // ----------------------------------------------------------------------------
 RDOParserContainerModel::RDOParserContainerModel( RDOParser* parser ):
 	RDOParserContainer( parser )
 {
-	init();
-}
-
-void RDOParserContainerModel::init()
-{
-	insert( rdoModelObjects::obPRE, new RDOParserSMR1( m_parser ) );
 	insert( rdoModelObjects::obPRE, new RDOParserSTDFUN( m_parser ) );
 	insert( rdoModelObjects::obRTP, new RDOParserRDOItem( m_parser, rdoModelObjects::RTP, rtpparse, rtperror, rtplex ) );
 	insert( rdoModelObjects::obRTP, new RDOParserRDOItem( m_parser, rdoModelObjects::DPT, proc_rtp_parse, proc_rtp_error, proc_rtp_lex ) );
@@ -113,7 +92,7 @@ void RDOParserContainerModel::init()
 	insert( rdoModelObjects::obPMD, new RDOParserRDOItem( m_parser, rdoModelObjects::PMD, pmdparse, pmderror, pmdlex ) );
 	insert( rdoModelObjects::obFRM, new RDOParserRDOItem( m_parser, rdoModelObjects::FRM, frmparse, frmerror, frmlex ) );
 	insert( rdoModelObjects::obSMR, new RDOParserRSSPost( m_parser ) );
-	insert( rdoModelObjects::obSMR, new RDOParserRDOItem( m_parser, rdoModelObjects::SMR, smr2parse, smr2error, smr2lex ) );
+	insert( rdoModelObjects::obSMR, new RDOParserRDOItem( m_parser, rdoModelObjects::SMR, smr_sim_parse, smr_sim_error, smr_sim_lex ) );
 }
 
 // ----------------------------------------------------------------------------
@@ -122,12 +101,7 @@ void RDOParserContainerModel::init()
 RDOParserContainerSMRInfo::RDOParserContainerSMRInfo( RDOParser* parser ):
 	RDOParserContainer( parser )
 {
-	init();
-}
-
-void RDOParserContainerSMRInfo::init()
-{
-	insert( rdoModelObjects::obPRE, new RDOParserSMR1( m_parser ) );
+	insert( rdoModelObjects::obPRE, new RDOParserSMRFile( m_parser ) );
 }
 
 // ----------------------------------------------------------------------------
@@ -135,11 +109,6 @@ void RDOParserContainerSMRInfo::init()
 // ----------------------------------------------------------------------------
 RDOParserContainerCorba::RDOParserContainerCorba( RDOParser* parser ):
 	RDOParserContainer( parser )
-{
-	init();
-}
-
-void RDOParserContainerCorba::init()
 {
 	insert( rdoModelObjects::obRTP, new RDOParserRDOItem( m_parser, rdoModelObjects::RTP, rtpparse, rtperror, rtplex ) );
 	insert( rdoModelObjects::obRTP, new RDOParserRDOItem( m_parser, rdoModelObjects::DPT, proc_rtp_parse, proc_rtp_error, proc_rtp_lex ) );
