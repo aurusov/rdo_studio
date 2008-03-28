@@ -75,6 +75,28 @@ class RDOThreadSimulator: public RDOThreadMT
 friend class rdoRuntime::RDOThreadRunTime;
 friend class RDORuntimeTracer;
 
+public:
+	struct RTP
+	{
+		std::string m_name;
+		struct Param
+		{
+			std::string m_name;
+		};
+		std::vector< Param > m_params;
+	};
+	struct RSS
+	{
+		std::string m_name;
+	};
+
+	struct GetRTP: public std::vector< RTP >
+	{
+	};
+	struct GetRSS: public std::vector< RSS >
+	{
+	};
+
 private:
 	rdoParse::RDOParser*    parser;
 	rdoRuntime::RDORuntime* runtime;
@@ -104,6 +126,9 @@ protected:
 
 	void codeCompletion();
 
+	void corbaGetRTP( GetRTP* RTPList );
+	void corbaGetRSS( GetRSS* RSSList );
+
 public:
 	RDOThreadSimulator();
 
@@ -113,8 +138,10 @@ public:
 	int getInitialFrameNumber();
 	double getInitialShowRate();
 
-	struct GetList {
-		enum Type {
+	struct GetList
+	{
+		enum Type
+		{
 			frames,
 			bitmaps 
 		} type;

@@ -413,6 +413,8 @@ RDOThreadSimulator::RDOThreadSimulator():
 	notifies.push_back( RT_SIMULATOR_GET_ERRORS );
 	notifies.push_back( RT_THREAD_STOP_AFTER );
 	notifies.push_back( RT_CODECOMP_GET_DATA );
+	notifies.push_back( RT_CORBA_PARSER_GET_RTP );
+	notifies.push_back( RT_CORBA_PARSER_GET_RSS );
 	after_constructor();
 }
 
@@ -465,6 +467,18 @@ void RDOThreadSimulator::proc( RDOMessageInfo& msg )
 		}
 		case RT_CODECOMP_GET_DATA: {
 			codeCompletion();
+			break;
+		}
+		case RT_CORBA_PARSER_GET_RTP: {
+			msg.lock();
+			corbaGetRTP( static_cast<GetRTP*>(msg.param) );
+			msg.unlock();
+			break;
+		}
+		case RT_CORBA_PARSER_GET_RSS: {
+			msg.lock();
+			corbaGetRSS( static_cast<GetRSS*>(msg.param) );
+			msg.unlock();
 			break;
 		}
 		case RT_SIMULATOR_GET_LIST: {
@@ -704,6 +718,11 @@ double RDOThreadSimulator::getInitialShowRate()
 
 void RDOThreadSimulator::codeCompletion()
 {
+}
+
+void RDOThreadSimulator::corbaGetRTP( GetRTP* RTPList )
+{
+	// Пропарсели типы и ресурсы текста модели (текущие, а не записанные)
 	rdoParse::RDOParserCorba parser;
 	try {
 		parser.parse();
@@ -712,52 +731,105 @@ void RDOThreadSimulator::codeCompletion()
 	}
 	catch ( rdoRuntime::RDORuntimeException& ) {
 	}
-	// Вывели все типы ресурсов
+	// Пробежались по всем типам и переписали в RTPList
 	rdoMBuilder::RDOResTypeList rtpList( &parser );
 	rdoMBuilder::RDOResTypeList::List::const_iterator rtp_it = rtpList.begin();
 	while ( rtp_it != rtpList.end() )
 	{
-		TRACE("rtp.name = %s\n", rtp_it->name().c_str());
+		// Создаем текстовую структуру
+		RTP rtp;
+		rtp.m_name = rtp_it->name();
 		rdoMBuilder::RDOResType::ParamList::List::const_iterator param_it = rtp_it->m_params.begin();
 		while ( param_it != rtp_it->m_params.end() )
 		{
-			std::string info = rdo::format("  param: %s: %s", param_it->name().c_str(), param_it->getTypeStr().c_str());
-			if ( param_it->hasDiap() )
-			{
-				info = rdo::format("%s [%s..%s]", info.c_str(), param_it->getMin().getAsString().c_str(), param_it->getMax().getAsString().c_str());
-			}
-			if ( param_it->hasDefault() )
-			{
-				info = rdo::format("%s = %s", info.c_str(), param_it->getDefault().getAsString().c_str());
-			}
-			TRACE( "%s\n", info.c_str() );
-
-			if ( param_it->getType() == rdoRuntime::RDOValue::rvt_enum )
-			{
-				rdoRuntime::RDOEnum::CIterator enum_it = param_it->getEnum().begin();
-				while ( enum_it != param_it->getEnum().end() )
-				{
-					TRACE( "  - enum - %s\n", enum_it->c_str() );
-					enum_it++;
-				}
-			}
+			// Добавляем в структуру параметр
+			RTP::Param param;
+			param.m_name = param_it->name();
+			rtp.m_params.push_back( param );
+			// Тут надо еще запомнить тип параметра, диапазон и т.д.
 			param_it++;
 		}
+		// Запоминаем в списке
+		RTPList->push_back( rtp );
 		rtp_it++;
 	}
-	// Вывели все ресурсы
+
+	{
+		// Вывели все типы ресурсов (исключительно для теста)
+		rdoMBuilder::RDOResTypeList rtpList( &parser );
+		rdoMBuilder::RDOResTypeList::List::const_iterator rtp_it = rtpList.begin();
+		while ( rtp_it != rtpList.end() )
+		{
+			TRACE("rtp.name = %s\n", rtp_it->name().c_str());
+			rdoMBuilder::RDOResType::ParamList::List::const_iterator param_it = rtp_it->m_params.begin();
+			while ( param_it != rtp_it->m_params.end() )
+			{
+				std::string info = rdo::format("  param: %s: %s", param_it->name().c_str(), param_it->getTypeStr().c_str());
+				if ( param_it->hasDiap() )
+				{
+					info = rdo::format("%s [%s..%s]", info.c_str(), param_it->getMin().getAsString().c_str(), param_it->getMax().getAsString().c_str());
+				}
+				if ( param_it->hasDefault() )
+				{
+					info = rdo::format("%s = %s", info.c_str(), param_it->getDefault().getAsString().c_str());
+				}
+				TRACE( "%s\n", info.c_str() );
+
+				if ( param_it->getType() == rdoRuntime::RDOValue::rvt_enum )
+				{
+					rdoRuntime::RDOEnum::CIterator enum_it = param_it->getEnum().begin();
+					while ( enum_it != param_it->getEnum().end() )
+					{
+						TRACE( "  - enum - %s\n", enum_it->c_str() );
+						enum_it++;
+					}
+				}
+				param_it++;
+			}
+			rtp_it++;
+		}
+	}
+}
+
+void RDOThreadSimulator::corbaGetRSS( GetRSS* RSSList )
+{
+	// Пропарсели типы и ресурсы текста модели (текущие, а не записанные)
+	rdoParse::RDOParserCorba parser;
+	try {
+		parser.parse();
+	}
+	catch ( rdoParse::RDOSyntaxException& ) {
+	}
+	catch ( rdoRuntime::RDORuntimeException& ) {
+	}
+	// Пробежались по всем ресурсам и переписали в RSSList
 	rdoMBuilder::RDOResourceList rssList( &parser );
 	rdoMBuilder::RDOResourceList::List::const_iterator rss_it = rssList.begin();
 	while ( rss_it != rssList.end() )
 	{
-		TRACE("rss.name = %s: %s\n", rss_it->name().c_str(), rss_it->getType().name().c_str());
-		rdoMBuilder::RDOResource::Params::const_iterator param_it = rss_it->begin();
-		while ( param_it != rss_it->end() )
-		{
-			TRACE("  %s = %s\n", param_it->first.c_str(), param_it->second.getAsString().c_str());
-			param_it++;
-		}
+		// Создаем текстовую структуру
+		RSS rss;
+		rss.m_name = rss_it->name();
+		// Запоминаем в списке
+		RSSList->push_back( rss );
 		rss_it++;
+	}
+
+	{
+		// Вывели все ресурсы
+		rdoMBuilder::RDOResourceList rssList( &parser );
+		rdoMBuilder::RDOResourceList::List::const_iterator rss_it = rssList.begin();
+		while ( rss_it != rssList.end() )
+		{
+			TRACE("rss.name = %s: %s\n", rss_it->name().c_str(), rss_it->getType().name().c_str());
+			rdoMBuilder::RDOResource::Params::const_iterator param_it = rss_it->begin();
+			while ( param_it != rss_it->end() )
+			{
+				TRACE("  %s = %s\n", param_it->first.c_str(), param_it->second.getAsString().c_str());
+				param_it++;
+			}
+			rss_it++;
+		}
 	}
 }
 

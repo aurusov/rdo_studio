@@ -455,7 +455,25 @@ void RDOEditorEdit::completeWord()
 	std::string s;
 	RDOEditorTabCtrl* tab = model->getTab();
 	if ( tab ) {
-		studioApp.studioGUI->sendMessage( kernel->simulator(), RDOThread::RT_CODECOMP_GET_DATA, &rdoSimulator::RDOThreadCodeComp::GetCodeComp( tab->getCurrentRDOItem(), getCurrentPos(), getCurrentLineNumber(), s ) );
+//		studioApp.studioGUI->sendMessage( kernel->simulator(), RDOThread::RT_CODECOMP_GET_DATA, &rdoSimulator::RDOThreadCodeComp::GetCodeComp( tab->getCurrentRDOItem(), getCurrentPos(), getCurrentLineNumber(), s ) );
+
+		rdoSimulator::RDOThreadSimulator::GetRTP RTPList;
+		studioApp.studioGUI->sendMessage( kernel->simulator(), RDOThread::RT_CORBA_PARSER_GET_RTP, &RTPList );
+		std::vector< rdoSimulator::RDOThreadSimulator::RTP >::iterator rtp_it = RTPList.begin();
+		while ( rtp_it != RTPList.end() )
+		{
+			// Что-то делаем
+			rtp_it++;
+		}
+
+		rdoSimulator::RDOThreadSimulator::GetRSS RSSList;
+		studioApp.studioGUI->sendMessage( kernel->simulator(), RDOThread::RT_CORBA_PARSER_GET_RSS, &RSSList );
+		std::vector< rdoSimulator::RDOThreadSimulator::RSS >::iterator rss_it = RSSList.begin();
+		while ( rss_it != RSSList.end() )
+		{
+			// Что-то делаем
+			rss_it++;
+		}
 	}
 	if ( s.empty() ) {
 		s = getAllKW();
