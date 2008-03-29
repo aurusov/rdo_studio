@@ -78,6 +78,7 @@ RDOParserContainerModel::RDOParserContainerModel( RDOParser* parser ):
 	RDOParserContainer( parser )
 {
 	insert( rdoModelObjects::obPRE, new RDOParserSTDFUN( m_parser ) );
+	insert( rdoModelObjects::obPRE, new RDOParserRDOItem( m_parser, rdoModelObjects::SMR, smr_file_parse, smr_file_error, smr_file_lex ) );
 	insert( rdoModelObjects::obRTP, new RDOParserRDOItem( m_parser, rdoModelObjects::RTP, rtpparse, rtperror, rtplex ) );
 	insert( rdoModelObjects::obRTP, new RDOParserRDOItem( m_parser, rdoModelObjects::DPT, proc_rtp_parse, proc_rtp_error, proc_rtp_lex ) );
 	insert( rdoModelObjects::obRTP, new RDOParserCorbaRTP( m_parser ) );
