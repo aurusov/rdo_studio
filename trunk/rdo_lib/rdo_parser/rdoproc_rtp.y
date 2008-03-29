@@ -266,7 +266,7 @@ dpt_process_line:	IDENTIF	{
 					| SEIZE IDENTIF {
 
 						// Имя ресурса
-						std::string res_name       = *(std::string*)$2;
+						std::string res_name       = *reinterpret_cast<std::string*>($2);
 						// Сформировать имя типа по имени ресурса
 						std::string rtp_name( RDOPROCProcess::name_prefix + res_name + RDOPROCProcess::name_sufix );
 						// "Состояние"

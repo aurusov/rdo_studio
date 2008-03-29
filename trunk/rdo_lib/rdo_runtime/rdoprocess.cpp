@@ -81,7 +81,6 @@ RDOPROCTransact::RDOPROCTransact( RDOSimulator* sim, RDOPROCBlock* _block ):
 	temporary   = true;
 	state       = RDOResourceTrace::CS_Create;
 	m_params.push_back( sim->getCurrentTime() );
-	m_params.push_back( 0 );
 }
 
 void RDOPROCTransact::next()
