@@ -13,27 +13,20 @@ static char THIS_FILE[] = __FILE__;
 namespace rdoRuntime {
 
 // ----------------------------------------------------------------------------
-// ---------- CheckOperations - функторал проверки на запуск RDOBaseOperation
-// ----------------------------------------------------------------------------
-bool CheckOperations::operator()( RDOBaseOperation* opr )
-{
-	RDOBaseOperation::BOResult result = opr->checkOperation( sim );
-	if ( result == RDOBaseOperation::BOR_must_continue ) {
-		sim->setMustContinueOpr( opr );
-	}
-	return result != RDOBaseOperation::BOR_cant_run;
-}
-
-// ----------------------------------------------------------------------------
 // ---------- RDOIE - irregular_event
 // ----------------------------------------------------------------------------
 void RDOIE::init( RDOSimulator* sim )
 {
 	onBeforeIrregularEvent( sim );
-	sim->addTimePoint( time = (getNextTimeInterval(sim) + sim->getCurrentTime()), this );
+	sim->addTimePoint( m_time = (getNextTimeInterval(sim) + sim->getCurrentTime()), this );
 }
 
-RDOBaseOperation::BOResult RDOIE::checkOperation(RDOSimulator *sim)
+bool RDOIE::checkOperation(RDOSimulator *sim)
+{
+	return false;
+}
+
+RDOBaseOperation::BOResult RDOIE::doOperation( RDOSimulator* sim )
 {
 	return RDOBaseOperation::BOR_cant_run;
 }
@@ -43,45 +36,49 @@ void RDOIE::makePlaned( RDOSimulator* sim, void* param )
 	sim->inc_cnt_events();
 	onBeforeIrregularEvent( sim );
 	convertEvent( sim );
-	sim->addTimePoint( time = (getNextTimeInterval(sim) + sim->getCurrentTime()), this );
+	sim->addTimePoint( m_time = (getNextTimeInterval(sim) + sim->getCurrentTime()), this );
 	onAfterIrregularEvent( sim );
 }
 
 // ----------------------------------------------------------------------------
 // ---------- RDORule - rule
 // ----------------------------------------------------------------------------
-RDOBaseOperation::BOResult RDORule::checkOperation( RDOSimulator* sim )
+bool RDORule::checkOperation( RDOSimulator* sim )
 {
 	onBeforeChoiceFrom( sim );
 	sim->inc_cnt_choice_from();
-	if ( choiceFrom(sim) ) {
-		onBeforeRule( sim );
-		convertRule( sim );
-		onAfterRule( sim );
-		return RDOBaseOperation::BOR_can_run;
-	}
-	return RDOBaseOperation::BOR_cant_run;
+	return choiceFrom(sim);
+}
+
+RDOBaseOperation::BOResult RDORule::doOperation( RDOSimulator* sim )
+{
+	onBeforeRule( sim );
+	convertRule( sim );
+	onAfterRule( sim );
+	return RDOBaseOperation::BOR_done;
 }
 
 // ----------------------------------------------------------------------------
 // ---------- RDOOperation - operation
 // ----------------------------------------------------------------------------
-RDOBaseOperation::BOResult RDOOperation::checkOperation( RDOSimulator* sim )
+bool RDOOperation::checkOperation( RDOSimulator* sim )
 {
 	// Если операция может начаться, то создать её клон и поместить его в список
 	onBeforeChoiceFrom( sim );
 	sim->inc_cnt_choice_from();
-	if ( choiceFrom(sim) ) {
-		RDOOperation* newOp = clone( sim );
-		newOp->reparent( &clones );
-		newOp->onBeforeOperationBegin( sim );
-		newOp->convertBegin( sim );
-		sim->addTimePoint( newOp->time = (newOp->getNextTimeInterval(sim) + sim->getCurrentTime()), this, newOp );
-		newOp->onAfterOperationBegin( sim );
-		newOp->convert_end = true;
-		return RDOBaseOperation::BOR_planned_and_run;
-	}
-	return RDOBaseOperation::BOR_cant_run;
+	return choiceFrom(sim);
+}
+
+RDOBaseOperation::BOResult RDOOperation::doOperation( RDOSimulator* sim )
+{
+	RDOOperation* newOp = clone( sim );
+	newOp->reparent( &clones );
+	newOp->onBeforeOperationBegin( sim );
+	newOp->convertBegin( sim );
+	sim->addTimePoint( newOp->time = (newOp->getNextTimeInterval(sim) + sim->getCurrentTime()), this, newOp );
+	newOp->onAfterOperationBegin( sim );
+	newOp->convert_end = true;
+	return RDOBaseOperation::BOR_planned_and_run;
 }
 
 void RDOOperation::makePlaned( RDOSimulator* sim, void* param )
@@ -103,12 +100,14 @@ RDODecisionPoint::~RDODecisionPoint()
 //qq	DeleteAllObjects( activities );
 }
 
-RDOBaseOperation::BOResult RDODecisionPoint::checkOperation( RDOSimulator* sim )
+bool RDODecisionPoint::checkOperation( RDOSimulator* sim )
 {
-	if ( Condition(sim) ) {
-		return RunSearchInTree( sim );
-	}
-	return RDOBaseOperation::BOR_cant_run;
+	return Condition(sim);
+}
+
+RDOBaseOperation::BOResult RDODecisionPoint::doOperation( RDOSimulator* sim )
+{
+	return RunSearchInTree( sim );
 }
 
 RDOBaseOperation::BOResult RDODecisionPoint::continueOperation( RDOSimulator* sim )
@@ -160,7 +159,7 @@ RDOBaseOperation::BOResult RDODecisionPoint::continueOperation( RDOSimulator* si
 	delete treeRoot->rootNode;
 	delete treeRoot;
 	treeRoot = NULL;
-	return success ? RDOBaseOperation::BOR_can_run : RDOBaseOperation::BOR_cant_run;
+	return success ? RDOBaseOperation::BOR_done : RDOBaseOperation::BOR_cant_run;
 }
 
 RDOBaseOperation::BOResult RDODecisionPoint::RunSearchInTree( RDOSimulator* sim )
@@ -226,7 +225,11 @@ bool RDOSimulator::doOperation()
 		if ( !found_planed ) {
 			// Не нашли запланированное событие
 			// Проверить все возможные события и действия, вызвать первое, которое может буть вызвано
-			res = std::find_if( haveBaseOperations.begin(), haveBaseOperations.end(), CheckOperations( this ) ) != haveBaseOperations.end();
+			res = haveBaseOperations.checkOperation(this);
+			if ( res )
+			{
+				res = haveBaseOperations.doOperation(this) != RDOBaseOperation::BOR_cant_run;
+			}
 			if ( !res ) check_operation = false;
 		}
 	}

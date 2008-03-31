@@ -86,7 +86,7 @@ inline std::string RDOResource::traceParametersValue()
 // ---------- RDORuntime
 // ----------------------------------------------------------------------------
 RDORuntime::RDORuntime():
-	RDOSimulatorTrace( NULL ),
+	RDOSimulatorTrace(),
 	tracer( NULL ),
 	results( NULL ),
 	results_info( NULL ),
@@ -94,8 +94,7 @@ RDORuntime::RDORuntime():
 	whyStop( rdoSimulator::EC_OK ),
 	key_found( false )
 {
-//	runtime = this; //qq
-	parent  = NULL;
+	m_parent = NULL;
 	detach();
 	terminateIfCalc = NULL;
 }

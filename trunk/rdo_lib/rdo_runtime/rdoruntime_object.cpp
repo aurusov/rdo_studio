@@ -13,13 +13,13 @@ namespace rdoRuntime {
 // ----------------------------------------------------------------------------
 // ---------- RDORuntimeObject
 // ----------------------------------------------------------------------------
-size_t RDORuntimeObject::memory_size = 0;
+size_t RDORuntimeObject::s_memory_size = 0;
 
-RDORuntimeObject::RDORuntimeObject( RDORuntimeParent* _parent ):
-	parent( _parent )
+RDORuntimeObject::RDORuntimeObject( RDORuntimeParent* parent ):
+	m_parent( parent )
 {
-	if ( parent ) {
-		parent->insertObject( this );
+	if ( m_parent ) {
+		m_parent->insertObject( this );
 	} else {
 //		TRACE( "========= no parent for %d\n", this );
 	}
@@ -28,28 +28,28 @@ RDORuntimeObject::RDORuntimeObject( RDORuntimeParent* _parent ):
 RDORuntimeObject::~RDORuntimeObject()
 {
 //	TRACE( "destroy %d\n", this );
-	if ( parent ) {
-		parent->removeObject( this );
+	if ( m_parent ) {
+		m_parent->removeObject( this );
 	}
 }
 
 void RDORuntimeObject::detach()
 {
-	if ( parent ) {
-		parent->removeObject( this );
-		parent = NULL;
+	if ( m_parent ) {
+		m_parent->removeObject( this );
+		m_parent = NULL;
 	}
 }
 
-void RDORuntimeObject::reparent( RDORuntimeParent* _parent )
+void RDORuntimeObject::reparent( RDORuntimeParent* parent )
 {
-	if ( parent != _parent ) {
-		if ( parent ) {
-			parent->removeObject( this );
+	if ( m_parent != parent ) {
+		if ( m_parent ) {
+			m_parent->removeObject( this );
 		}
-		parent = _parent;
-		if ( parent ) {
-			parent->insertObject( this );
+		m_parent = parent;
+		if ( m_parent ) {
+			m_parent->insertObject( this );
 		}
 	}
 }
@@ -57,28 +57,28 @@ void RDORuntimeObject::reparent( RDORuntimeParent* _parent )
 /*
 RDORuntime* RDORuntimeObject::getRuntime() const
 {
-	if ( !parent ) return const_cast<RDORuntime*>(static_cast<const RDORuntime*>(this));
-	RDORuntimeObject* _parent = parent;
-	while ( _parent->parent ) {
-		_parent = _parent->parent;
+	if ( !m_parent ) return const_cast<RDORuntime*>(static_cast<const RDORuntime*>(this));
+	RDORuntimeObject* parent = m_parent;
+	while ( parent->m_parent ) {
+		parent = parent->m_parent;
 	}
-	return static_cast<RDORuntime*>(_parent);
+	return static_cast<RDORuntime*>(parent);
 }
 */
 
 #ifndef _DEBUG
 void* RDORuntimeObject::operator new( size_t sz )
 {
-	memory_size += sz;
+	s_memory_size += sz;
 	RDORuntimeObject* obj = static_cast<RDORuntimeObject*>(::operator new( sz ));
-	obj->object_size = sz;
+	obj->m_object_size = sz;
 //	obj->runtime->memory_insert( sz );
 	return obj;
 }
 
 void RDORuntimeObject::operator delete( void* v )
 {
-	memory_size -= static_cast<RDORuntimeObject*>(v)->object_size;
+	s_memory_size -= static_cast<RDORuntimeObject*>(v)->m_object_size;
 	::operator delete( v );
 }
 #endif
@@ -86,8 +86,8 @@ void RDORuntimeObject::operator delete( void* v )
 // ----------------------------------------------------------------------------
 // ---------- RDORuntimeParent
 // ----------------------------------------------------------------------------
-RDORuntimeParent::RDORuntimeParent( RDORuntimeParent* _parent ):
-	RDORuntimeObject( _parent )
+RDORuntimeParent::RDORuntimeParent( RDORuntimeParent* parent ):
+	RDORuntimeObject( parent )
 {
 }
 

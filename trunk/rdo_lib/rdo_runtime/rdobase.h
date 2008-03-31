@@ -104,7 +104,7 @@ public:
 
 	void addTimePoint( double timePoint, RDOBaseOperation* opr = NULL, void* param = NULL  );
 
-	RDOSimulatorBase( RDORuntimeParent* _runtime );
+	RDOSimulatorBase();
 	virtual ~RDOSimulatorBase() {}
 
 	void inc_cnt_events()      { cnt_events++;      }

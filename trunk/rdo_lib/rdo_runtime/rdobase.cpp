@@ -11,8 +11,8 @@ static char THIS_FILE[] = __FILE__;
 namespace rdoRuntime
 {
 
-RDOSimulatorBase::RDOSimulatorBase( RDORuntimeParent* _runtime ):
-	RDORuntimeParent( _runtime ),
+RDOSimulatorBase::RDOSimulatorBase():
+	RDORuntimeParent( NULL ),
 	startTime( 0 ),
 	currentTime( 0 ),
 	nextTime( 0 ),

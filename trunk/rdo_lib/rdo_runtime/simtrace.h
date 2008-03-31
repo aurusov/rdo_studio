@@ -55,8 +55,8 @@ private:
 	unsigned int memory_max;
 
 protected:
-	RDOSimulatorTrace( RDORuntimeParent* _runtime ):
-		RDOSimulator( _runtime ),
+	RDOSimulatorTrace():
+		RDOSimulator(),
 		traceStartTime( -1 ),
 		traceEndTime( -1 ),
 		dptCounter( 1 ),

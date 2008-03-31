@@ -9,11 +9,27 @@ namespace rdoRuntime {
 class RDOCalc;
 
 // ----------------------------------------------------------------------------
+// ---------- RDOPROCBlock
+// ----------------------------------------------------------------------------
+class RDOPROCBlock: public RDOBaseOperation
+{
+friend class RDOPROCTransact;
+friend class RDOPROCProcess;
+
+protected:
+	RDOPROCProcess* process;
+	std::list< RDOPROCTransact* > transacts;
+
+	RDOPROCBlock( RDOPROCProcess* _process );
+	virtual ~RDOPROCBlock() {}
+};
+
+// ----------------------------------------------------------------------------
 // ---------- RDOPROCProcess
 // ----------------------------------------------------------------------------
 class RDOPROCTransact;
 
-class RDOPROCProcess: public RDOBaseOperation
+class RDOPROCProcess: public RDOBaseLogic<RDOPROCBlock>
 {
 friend class RDOPROCBlock;
 
@@ -21,10 +37,8 @@ protected:
 	std::string                  name;
 	RDOPROCProcess*              parent;
 	std::list< RDOPROCProcess* > child;
-	std::list< RDOPROCBlock* >   blocks;
 
 	virtual void init( RDOSimulator* sim );
-	virtual RDOBaseOperation::BOResult checkOperation( RDOSimulator* sim );
 
 public:
 	RDOPROCProcess( const std::string& _name, RDOSimulator* sim );
@@ -60,22 +74,6 @@ public:
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOPROCBlock
-// ----------------------------------------------------------------------------
-class RDOPROCBlock: public RDOBaseOperation
-{
-friend class RDOPROCTransact;
-friend class RDOPROCProcess;
-
-protected:
-	RDOPROCProcess* process;
-	std::list< RDOPROCTransact* > transacts;
-
-	RDOPROCBlock( RDOPROCProcess* _process );
-	virtual ~RDOPROCBlock() {}
-};
-
-// ----------------------------------------------------------------------------
 // ---------- RDOPROCGenerate
 // ----------------------------------------------------------------------------
 class RDOPROCGenerate: public RDOPROCBlock
@@ -86,7 +84,8 @@ protected:
 
 protected:
 	virtual void init( RDOSimulator* sim );
-	virtual RDOBaseOperation::BOResult checkOperation( RDOSimulator* sim );
+	virtual bool     checkOperation( RDOSimulator* sim );
+	virtual BOResult doOperation   ( RDOSimulator* sim );
 
 public:
 	RDOPROCGenerate( RDOPROCProcess* _process, RDOCalc* time ): RDOPROCBlock( _process ), timeNext( 0 ), timeCalc( time ) {}
@@ -119,7 +118,8 @@ public:
 class RDOPROCSeize: public RDOPROCBlockForSeize
 {
 private:
-	virtual RDOBaseOperation::BOResult checkOperation( RDOSimulator* sim );
+	virtual bool     checkOperation( RDOSimulator* sim );
+	virtual BOResult doOperation   ( RDOSimulator* sim );
 
 public:
 	RDOPROCSeize( RDOPROCProcess* _process, int _rss_id ): RDOPROCBlockForSeize( _process, _rss_id ) {}
@@ -131,7 +131,8 @@ public:
 class RDOPROCRelease: public RDOPROCBlockForSeize
 {
 private:
-	virtual RDOBaseOperation::BOResult checkOperation( RDOSimulator* sim );
+	virtual bool     checkOperation( RDOSimulator* sim );
+	virtual BOResult doOperation   ( RDOSimulator* sim );
 
 public:
 	RDOPROCRelease( RDOPROCProcess* _process, int _rss_id ): RDOPROCBlockForSeize( _process, _rss_id ) {}
@@ -156,7 +157,8 @@ protected:
 	};
 	std::list< LeaveTr > leave_list;
 
-	virtual RDOBaseOperation::BOResult checkOperation( RDOSimulator* sim );
+	virtual bool     checkOperation( RDOSimulator* sim );
+	virtual BOResult doOperation   ( RDOSimulator* sim );
 
 public:
 	RDOPROCAdvance( RDOPROCProcess* _process, RDOCalc* _delayCalc ): RDOPROCBlock( _process ), delayCalc( _delayCalc ) {}
@@ -168,7 +170,8 @@ public:
 class RDOPROCTerminate: public RDOPROCBlock
 {
 protected:
-	virtual RDOBaseOperation::BOResult checkOperation( RDOSimulator* sim );
+	virtual bool     checkOperation( RDOSimulator* sim );
+	virtual BOResult doOperation( RDOSimulator* sim );
 
 public:
 	RDOPROCTerminate( RDOPROCProcess* _process ): RDOPROCBlock( _process ) {}

@@ -47,20 +47,10 @@ class RDORuntimeParent;
 class RDORuntimeObject
 {
 friend class RDORuntime;
-private:
-	size_t        object_size; // Размер текущего объекта
-	static size_t memory_size; // Сумма размеров всех объектов
-
-protected:
-	RDORuntimeParent* parent;
-
-	RDORuntimeObject( RDORuntimeParent* _parent );
-	virtual void notify( RDORuntimeObject* from, unsigned int message, void* param = NULL ) {};
-
 public:
 	virtual ~RDORuntimeObject();
-	void reparent( RDORuntimeParent* _parent );
-	RDORuntimeParent* getParent() const { return parent;  }
+	void reparent( RDORuntimeParent* parent );
+	RDORuntimeParent* getParent() const { return m_parent;  }
 //	RDORuntime*       getRuntime() const;
 
 	void detach();
@@ -69,6 +59,16 @@ public:
 	void* operator new( size_t sz );
 	void operator delete( void* v );
 #endif
+
+protected:
+	RDORuntimeParent* m_parent;
+
+	RDORuntimeObject( RDORuntimeParent* parent );
+	virtual void notify( RDORuntimeObject* from, unsigned int message, void* param = NULL ) {};
+
+private:
+	size_t        m_object_size; // Размер текущего объекта
+	static size_t s_memory_size; // Сумма размеров всех объектов
 };
 
 // ----------------------------------------------------------------------------
@@ -76,11 +76,8 @@ public:
 // ----------------------------------------------------------------------------
 class RDORuntimeParent: public RDORuntimeObject
 {
-protected:
-	std::vector< RDORuntimeObject* > objects;
-
 public:
-	RDORuntimeParent( RDORuntimeParent* _parent );
+	RDORuntimeParent( RDORuntimeParent* parent );
 	virtual ~RDORuntimeParent();
 
 	void insertObject( RDORuntimeObject* object ) {
@@ -89,32 +86,35 @@ public:
 			if ( object == this ) {
 //				TRACE( "insert parent himself %d !!!!!!!!!!!!!!!!!!!\n", this );
 			} else {
-				objects.push_back( object );
+				m_objects.push_back( object );
 			}
 		} else {
 //			TRACE( "insert object NULL !!!!!!!!!!!!!!!\n" );
 		}
 	}
 	void removeObject( RDORuntimeObject* object ) {
-		std::vector< RDORuntimeObject* >::reverse_iterator it = std::find( objects.rbegin(), objects.rend(), object );
-		if ( it != objects.rend() ) {
+		std::vector< RDORuntimeObject* >::reverse_iterator it = std::find( m_objects.rbegin(), m_objects.rend(), object );
+		if ( it != m_objects.rend() ) {
 //			TRACE( "remove object: %d\n", object );
 			// Комнада it.base() приводит реверсивный итератор к нормальному,
 			// но перед этим необходимо сделать инкремент
 			it++;
-			objects.erase( it.base() );
+			m_objects.erase( it.base() );
 		} else {
 //			TRACE( "remove object: %d faild !!!!!!!!!!!!!!!!!!!!\n", object );
 		}
 	}
 	void deleteObjects() {
-		std::vector< RDORuntimeObject* >::reverse_iterator it = objects.rbegin();
-		while ( it != objects.rend() ) {
+		std::vector< RDORuntimeObject* >::reverse_iterator it = m_objects.rbegin();
+		while ( it != m_objects.rend() ) {
 			delete *it;
-			it = objects.rbegin();
+			it = m_objects.rbegin();
 		}
-		objects.clear();
+		m_objects.clear();
 	}
+
+protected:
+	std::vector< RDORuntimeObject* > m_objects;
 };
 
 // ----------------------------------------------------------------------------
@@ -235,12 +235,12 @@ public:
 	typedef Enums::const_iterator   CIterator;
 	typedef RDOStdVector<EnumItem>  EnumArray;
 
-	RDOEnum( RDORuntimeParent* _parent ):
-		RDORuntimeObject( _parent )
+	RDOEnum( RDORuntimeParent* parent ):
+		RDORuntimeObject( parent )
 	{
 	}
-	RDOEnum( RDORuntimeParent* _parent, const Enums& enums ):
-		RDORuntimeObject( _parent ),
+	RDOEnum( RDORuntimeParent* parent, const Enums& enums ):
+		RDORuntimeObject( parent ),
 		m_enum( enums )
 	{
 	}

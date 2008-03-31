@@ -14,7 +14,7 @@ namespace rdoRuntime {
 // ---------- RDOPROCProcess
 // ----------------------------------------------------------------------------
 RDOPROCProcess::RDOPROCProcess( const std::string& _name, RDOSimulator* sim ):
-	RDOBaseOperation( static_cast<RDORuntime*>(sim) ),
+	RDOBaseLogic<RDOPROCBlock>( static_cast<RDORuntime*>(sim) ),
 	name( _name ),
 	parent( NULL )
 {
@@ -31,32 +31,24 @@ void RDOPROCProcess::insertChild( RDOPROCProcess* value )
 
 void RDOPROCProcess::init( RDOSimulator* sim )
 {
-	std::list< RDOPROCBlock* >::iterator it = blocks.begin();
-	while ( it != blocks.end() ) {
+	Iterator it = begin();
+	while ( it != end() ) {
 		(*it)->init( sim );
 		it++;
 	}
 }
 
-RDOBaseOperation::BOResult RDOPROCProcess::checkOperation( RDOSimulator* sim )
-{
-	if ( std::find_if( blocks.begin(), blocks.end(), CheckOperations( sim ) ) != blocks.end() ) {
-		return RDOBaseOperation::BOR_can_run;
-	}
-	return RDOBaseOperation::BOR_cant_run;
-}
-
 void RDOPROCProcess::next( RDOPROCTransact* transact )
 {
-	std::list< RDOPROCBlock* >::iterator it = std::find( blocks.begin(), blocks.end(), transact->block );
-	if ( it != blocks.end() ) {
+	Iterator it = std::find( begin(), end(), transact->block );
+	if ( it != end() ) {
 		RDOPROCBlock* block = *it;
 		std::list< RDOPROCTransact* >::iterator it_res = std::find( block->transacts.begin(), block->transacts.end(), transact );
 		if ( it_res != block->transacts.end() ) {
 			block->transacts.erase( it_res );
 		}
 		it++;
-		if ( it != blocks.end() ) {
+		if ( it != end() ) {
 			transact->block = *it;
 			(*it)->transacts.push_back( transact );
 		} else {
@@ -103,7 +95,7 @@ RDOPROCBlock::RDOPROCBlock( RDOPROCProcess* _process ):
 	RDOBaseOperation( _process ),
 	process( _process )
 {
-	process->blocks.push_back( this );
+	process->append( *this );
 }
 
 // ----------------------------------------------------------------------------
@@ -114,20 +106,22 @@ void RDOPROCGenerate::init( RDOSimulator* sim )
 	calcNextTimeInterval( sim );
 }
 
-RDOBaseOperation::BOResult RDOPROCGenerate::checkOperation( RDOSimulator* sim )
+bool RDOPROCGenerate::checkOperation( RDOSimulator* sim )
 {
-	if ( sim->getCurrentTime() >= timeNext ) {
-		TRACE( "%7.1f GENERATE\n", sim->getCurrentTime() );
-		calcNextTimeInterval( sim );
-		RDOPROCTransact* transact = new RDOPROCTransact( sim, this );
-		RDOTrace* tracer = static_cast<RDORuntime*>(sim)->getTracer();
-		if ( !tracer->isNull() ) {
-			tracer->getOStream() << transact->traceResourceState('\0', static_cast<RDORuntime*>(sim)) << tracer->getEOL();
-		}
-		transact->next();
-		return RDOBaseOperation::BOR_can_run;
+	return sim->getCurrentTime() >= timeNext ? true : false;
+}
+
+RDOBaseOperation::BOResult RDOPROCGenerate::doOperation( RDOSimulator* sim )
+{
+	TRACE( "%7.1f GENERATE\n", sim->getCurrentTime() );
+	calcNextTimeInterval( sim );
+	RDOPROCTransact* transact = new RDOPROCTransact( sim, this );
+	RDOTrace* tracer = static_cast<RDORuntime*>(sim)->getTracer();
+	if ( !tracer->isNull() ) {
+		tracer->getOStream() << transact->traceResourceState('\0', static_cast<RDORuntime*>(sim)) << tracer->getEOL();
 	}
-	return RDOBaseOperation::BOR_cant_run;
+	transact->next();
+	return RDOBaseOperation::BOR_done;
 }
 
 void RDOPROCGenerate::calcNextTimeInterval( RDOSimulator* sim )
@@ -157,7 +151,7 @@ void RDOPROCBlockForSeize::init( RDOSimulator* sim )
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCSeize
 // ----------------------------------------------------------------------------
-RDOBaseOperation::BOResult RDOPROCSeize::checkOperation( RDOSimulator* sim )
+bool RDOPROCSeize::checkOperation( RDOSimulator* sim )
 {
 	if ( !transacts.empty() ) {
 		RDOTrace* tracer = static_cast<RDORuntime*>(sim)->getTracer();
@@ -166,21 +160,26 @@ RDOBaseOperation::BOResult RDOPROCSeize::checkOperation( RDOSimulator* sim )
 		}
 		// Свободен
 		if ( rss->getParam(0) == enum_free ) {
-			TRACE( "%7.1f SEIZE\n", sim->getCurrentTime() );
-			rss->setParam(0, enum_buzy);
-			transacts.front()->next();
-			return RDOBaseOperation::BOR_can_run;
+			return true;
 		} else {
 			TRACE( "%7.1f SEIZE CANNOT\n", sim->getCurrentTime() );
 		}
 	}
-	return RDOBaseOperation::BOR_cant_run;
+	return false;
+}
+
+RDOBaseOperation::BOResult RDOPROCSeize::doOperation( RDOSimulator* sim )
+{
+	TRACE( "%7.1f SEIZE\n", sim->getCurrentTime() );
+	rss->setParam(0, enum_buzy);
+	transacts.front()->next();
+	return RDOBaseOperation::BOR_done;
 }
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCRelease
 // ----------------------------------------------------------------------------
-RDOBaseOperation::BOResult RDOPROCRelease::checkOperation( RDOSimulator* sim )
+bool RDOPROCRelease::checkOperation( RDOSimulator* sim )
 {
 	if ( !transacts.empty() ) {
 		RDOTrace* tracer = static_cast<RDORuntime*>(sim)->getTracer();
@@ -189,21 +188,43 @@ RDOBaseOperation::BOResult RDOPROCRelease::checkOperation( RDOSimulator* sim )
 		}
 		// Занят
 		if ( rss->getParam(0) == enum_buzy ) {
-			TRACE( "%7.1f RELEASE\n", sim->getCurrentTime() );
-			rss->setParam(0, enum_free);
-			transacts.front()->next();
-			return RDOBaseOperation::BOR_can_run;
+			return true;
 		} else {
 			TRACE( "%7.1f RELEASE CANNOT\n", sim->getCurrentTime() );
 		}
 	}
-	return RDOBaseOperation::BOR_cant_run;
+	return false;
+}
+
+RDOBaseOperation::BOResult RDOPROCRelease::doOperation( RDOSimulator* sim )
+{
+	TRACE( "%7.1f RELEASE\n", sim->getCurrentTime() );
+	rss->setParam(0, enum_free);
+	transacts.front()->next();
+	return RDOBaseOperation::BOR_done;
 }
 
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCAdvance
 // ----------------------------------------------------------------------------
-RDOBaseOperation::BOResult RDOPROCAdvance::checkOperation( RDOSimulator* sim )
+bool RDOPROCAdvance::checkOperation( RDOSimulator* sim )
+{
+	if ( !transacts.empty() ) {
+		return true;
+	} else if ( !leave_list.empty() ) {
+		double tnow = sim->getCurrentTime();
+		std::list< LeaveTr >::iterator it = leave_list.begin();
+		while ( it != leave_list.end() ) {
+			if ( tnow >= it->timeLeave ) {
+				return true;
+			}
+			it++;
+		}
+	}
+	return false;
+}
+
+RDOBaseOperation::BOResult RDOPROCAdvance::doOperation( RDOSimulator* sim )
 {
 	if ( !transacts.empty() ) {
 		TRACE( "%7.1f ADVANCE BEGIN\n", sim->getCurrentTime() );
@@ -215,7 +236,7 @@ RDOBaseOperation::BOResult RDOPROCAdvance::checkOperation( RDOSimulator* sim )
 //		if ( !tracer->isNull() ) {
 //			tracer->getOStream() << res->traceResourceState('\0', sim) << tracer->getEOL();
 //		}
-		return RDOBaseOperation::BOR_can_run;
+		return RDOBaseOperation::BOR_done;
 	} else if ( !leave_list.empty() ) {
 		double tnow = sim->getCurrentTime();
 		std::list< LeaveTr >::iterator it = leave_list.begin();
@@ -228,7 +249,7 @@ RDOBaseOperation::BOResult RDOPROCAdvance::checkOperation( RDOSimulator* sim )
 				TRACE( "%7.1f ADVANCE END\n", it->timeLeave );
 				it->transact->next();
 				leave_list.erase( it );
-				return RDOBaseOperation::BOR_cant_run;
+				return RDOBaseOperation::BOR_planned_and_run;
 			}
 			it++;
 		}
@@ -239,21 +260,23 @@ RDOBaseOperation::BOResult RDOPROCAdvance::checkOperation( RDOSimulator* sim )
 // ----------------------------------------------------------------------------
 // ---------- RDOPROCTerminate
 // ----------------------------------------------------------------------------
-RDOBaseOperation::BOResult RDOPROCTerminate::checkOperation( RDOSimulator* sim )
+bool RDOPROCTerminate::checkOperation( RDOSimulator* sim )
 {
-	if ( !transacts.empty() ) {
-		TRACE( "%7.1f TERMINATE\n", sim->getCurrentTime() );
-		RDOPROCTransact* transact = transacts.front();
-		transact->setState( RDOResourceTrace::CS_Erase );
-		RDOTrace* tracer = static_cast<RDORuntime*>(sim)->getTracer();
-		if ( !tracer->isNull() ) {
-			tracer->getOStream() << transact->traceResourceState('\0', static_cast<RDORuntime*>(sim)) << tracer->getEOL();
-		}
-		static_cast<RDORuntime*>(sim)->onEraseRes( transact->getTraceID(), NULL );
-		transacts.erase( transacts.begin() );
-		return RDOBaseOperation::BOR_can_run;
+	return !transacts.empty() ? true : false;
+}
+
+RDOBaseOperation::BOResult RDOPROCTerminate::doOperation( RDOSimulator* sim )
+{
+	TRACE( "%7.1f TERMINATE\n", sim->getCurrentTime() );
+	RDOPROCTransact* transact = transacts.front();
+	transact->setState( RDOResourceTrace::CS_Erase );
+	RDOTrace* tracer = static_cast<RDORuntime*>(sim)->getTracer();
+	if ( !tracer->isNull() ) {
+		tracer->getOStream() << transact->traceResourceState('\0', static_cast<RDORuntime*>(sim)) << tracer->getEOL();
 	}
-	return RDOBaseOperation::BOR_cant_run;
+	static_cast<RDORuntime*>(sim)->onEraseRes( transact->getTraceID(), NULL );
+	transacts.erase( transacts.begin() );
+	return RDOBaseOperation::BOR_done;
 }
 
 } // rdoRuntime

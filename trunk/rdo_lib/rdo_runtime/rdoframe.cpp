@@ -253,8 +253,8 @@ rdoSimulator::RDOFrame* RDOFRMFrame::prepareFrame( rdoSimulator::RDOFrame* frame
 		std::list< RDOFRMShow* >::iterator it_show = shows.begin();
 		while ( it_show != shows.end() ) {
 			if ( (*it_show)->checkCondition(sim) ) {
-				std::vector< RDORuntimeObject* >::iterator it_obj = (*it_show)->objects.begin();
-				while ( it_obj != (*it_show)->objects.end() ) {
+				std::vector< RDORuntimeObject* >::iterator it_obj = (*it_show)->m_objects.begin();
+				while ( it_obj != (*it_show)->m_objects.end() ) {
 					rdoSimulator::RDOFrameElement* element = static_cast<RDOFRMItem*>(*it_obj)->createElement(sim);
 					if ( element ) {
 						frame->elements.push_back( element );
@@ -630,8 +630,8 @@ RDOFRMShow::~RDOFRMShow()
 
 void RDOFRMShow::getBitmaps( std::list< std::string >& list )
 {
-	std::vector< RDORuntimeObject* >::iterator it = objects.begin();
-	while ( it != objects.end() ) {
+	std::vector< RDORuntimeObject* >::iterator it = m_objects.begin();
+	while ( it != m_objects.end() ) {
 		static_cast<RDOFRMItem*>(*it)->getBitmaps( list );
 		it++;
 	}
