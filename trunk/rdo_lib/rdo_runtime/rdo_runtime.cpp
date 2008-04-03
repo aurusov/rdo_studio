@@ -343,7 +343,8 @@ void RDORuntime::addRuntimeIE( RDOActivityIERuntime* ie )
 
 void RDORuntime::addRuntimeProcess( RDOPROCProcess* process )
 {
-	addTemplateBaseOperation( process );
+	m_logics.m_childLogic.append( *process );
+//	addTemplateBaseOperation( process );
 }
 
 void RDORuntime::addRuntimeDPT( RDOSearchRuntime* dpt )
@@ -564,8 +565,8 @@ void RDORuntime::onAfterCheckPokaz()
 std::string RDORuntime::writeActivitiesStructure( int& counter )
 {
 	std::stringstream stream;
-	std::vector< RDOBaseOperation* >::const_iterator it = haveBaseOperations.begin();
-	while ( it != haveBaseOperations.end() ) {
+	RDOLogicContainer::CIterator it = m_logics.begin();
+	while ( it != m_logics.end() ) {
 		RDOActivityRuleRuntime* rule = dynamic_cast<RDOActivityRuleRuntime*>(*it);
 		if ( rule ) {
 			stream << counter++ << " ";
@@ -585,8 +586,8 @@ std::string RDORuntime::writeActivitiesStructure( int& counter )
 #endif
 
 	int _counter = 1;
-	it = haveBaseOperations.begin();
-	while ( it != haveBaseOperations.end() ) {
+	it = m_logics.begin();
+	while ( it != m_logics.end() ) {
 		RDOActivityIERuntime* ie = dynamic_cast<RDOActivityIERuntime*>(*it);
 		if ( ie ) {
 			stream << _counter++ << " ";

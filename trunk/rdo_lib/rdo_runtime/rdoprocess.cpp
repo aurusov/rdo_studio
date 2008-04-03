@@ -29,15 +29,6 @@ void RDOPROCProcess::insertChild( RDOPROCProcess* value )
 	}
 }
 
-void RDOPROCProcess::init( RDOSimulator* sim )
-{
-	Iterator it = begin();
-	while ( it != end() ) {
-		(*it)->init( sim );
-		it++;
-	}
-}
-
 void RDOPROCProcess::next( RDOPROCTransact* transact )
 {
 	Iterator it = std::find( begin(), end(), transact->block );

@@ -27,46 +27,49 @@ public:
 		BOR_must_continue,
 		BOR_done
 	};
-	RDOBaseOperation( RDORuntimeParent* parent  ): RDORuntimeParent( parent  ) {}
+	RDOBaseOperation( RDORuntimeParent* parent ): RDORuntimeParent( parent ) {}
 	virtual ~RDOBaseOperation() {}
 	// Вызывается перед стартом прогона для инициализации операции
 	// Используется для IE и GENERATE, чтобы задать время прихода первого клиента
-	virtual void init( RDOSimulator* sim ) {}
+	virtual void     init( RDOSimulator* sim ) {}
 	// Вызывается для проверки выполнимости операции
 	virtual bool     checkOperation( RDOSimulator* sim ) = 0;
 	// Вызывается для выполнения
 	virtual BOResult doOperation   ( RDOSimulator* sim ) = 0;
 	// Вызывается для запланированных в будующем событий: IE, operation_end, keyboard_end
 	// Может не использоваться, например, для rule
-	virtual void makePlaned( RDOSimulator* sim, void* param = NULL ) {}
+	virtual void     makePlaned( RDOSimulator* sim, void* param = NULL ) {}
 	// Вызывается для продолжения долгой операции, например, DPT search
-	virtual RDOBaseOperation::BOResult continueOperation( RDOSimulator* sim ) { return BOR_cant_run; }
+	virtual BOResult continueOperation( RDOSimulator* sim ) { return BOR_cant_run; }
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOBaseLogic
+// ---------- RDOOprContainer
 // ----------------------------------------------------------------------------
 template<class T>
-class RDOBaseLogic: public RDOBaseOperation
+class RDOOprContainer: public RDOBaseOperation
 {
 public:
-	RDOBaseLogic( RDORuntimeParent* parent  ):
+	RDOOprContainer( RDORuntimeParent* parent ):
 		RDOBaseOperation( parent ),
 		m_first( NULL )
 	{
 	}
-	virtual ~RDOBaseLogic() {}
+	virtual ~RDOOprContainer() {}
 
-	typedef std::vector< T* > List;
-	typedef List::iterator    Iterator;
+	typedef std::vector< T* >    List;
+	typedef List::iterator       Iterator;
+	typedef List::const_iterator CIterator;
 
-	Iterator begin() { return m_operations.begin(); }
-	Iterator end()   { return m_operations.end();   }
+	Iterator  begin()       { return m_items.begin(); }
+	Iterator  end()         { return m_items.end();   }
+	CIterator begin() const { return m_items.begin(); }
+	CIterator end()   const { return m_items.end();   }
 
-	void append( T& operation )
+	void append( T& item )
 	{
-		operation.reparent( this );
-		m_operations.push_back( &operation );
+		item.reparent( this );
+		m_items.push_back( &item );
 	}
 	virtual void init( RDOSimulator* sim )
 	{
@@ -89,7 +92,7 @@ public:
 			}
 			it++;
 		}
-		m_first = false;
+		m_first = NULL;
 		return false;
 	}
 	virtual BOResult doOperation( RDOSimulator* sim )
@@ -107,21 +110,102 @@ public:
 		}
 		return result;
 	}
+	virtual void makePlaned( RDOSimulator* sim, void* param = NULL )
+	{
+		Iterator it = begin();
+		while ( it != end() )
+		{
+			(*it)->makePlaned( sim, param );
+			it++;
+		}
+	}
+	virtual BOResult continueOperation( RDOSimulator* sim )
+	{
+		Iterator it = begin();
+		while ( it != end() )
+		{
+			if ( (*it)->continueOperation( sim ) == BOR_must_continue )
+			{
+				return BOR_must_continue;
+			}
+			it++;
+		}
+		return BOR_cant_run;
+	}
 
 private:
-	std::vector< T* > m_operations;
+	std::vector< T* > m_items;
 	T*                m_first;
 };
 
 // ----------------------------------------------------------------------------
-// ---------- RDOBaseLogicContainer
+// ---------- RDOBaseLogic
 // ----------------------------------------------------------------------------
-class RDOBaseLogicContainer: public RDOBaseLogic<RDOBaseOperation>
+template< class T >
+class RDOBaseLogic: public RDOOprContainer< T >
 {
 public:
-	RDOBaseLogicContainer( RDORuntimeParent* parent  ): RDOBaseLogic<RDOBaseOperation>( parent ) {}
-	virtual ~RDOBaseLogicContainer() {}
+	RDOBaseLogic( RDORuntimeParent* parent ):
+		RDOOprContainer< T >( parent ),
+		m_childLogic( NULL )
+	{
+		m_childLogic.reparent( this );
+	}
+	virtual ~RDOBaseLogic() {}
+
+	RDOOprContainer< RDOBaseOperation > m_childLogic;
+
+	virtual void init( RDOSimulator* sim )
+	{
+		m_childLogic.init( sim );
+		RDOOprContainer<T>::init( sim );
+	}
+	virtual bool checkOperation( RDOSimulator* sim )
+	{
+		if ( !m_childLogic.checkOperation( sim ) )
+		{
+			return RDOOprContainer<T>::checkOperation( sim );
+		}
+		else
+		{
+			return true;
+		}
+	}
+	virtual BOResult doOperation( RDOSimulator* sim )
+	{
+		BOResult result = m_childLogic.doOperation( sim );
+		if ( result != BOR_cant_run )
+		{
+			return RDOOprContainer<T>::doOperation( sim );
+		}
+		else
+		{
+			return result;
+		}
+	}
+	virtual void makePlaned( RDOSimulator* sim, void* param = NULL )
+	{
+		m_childLogic.makePlaned( sim, param );
+		RDOOprContainer<T>::makePlaned( sim, param );
+	}
+	virtual BOResult continueOperation( RDOSimulator* sim )
+	{
+		BOResult result = m_childLogic.continueOperation( sim );
+		if ( result != BOR_must_continue )
+		{
+			return RDOOprContainer<T>::continueOperation( sim );
+		}
+		else
+		{
+			return result;
+		}
+	}
 };
+
+// ----------------------------------------------------------------------------
+// ---------- RDOBaseLogic
+// ----------------------------------------------------------------------------
+typedef RDOBaseLogic< RDOBaseOperation > RDOLogicContainer;
 
 // ----------------------------------------------------------------------------
 // ---------- RDOIE - irregular_event
@@ -314,13 +398,16 @@ private:
 	virtual bool doOperation();
 
 protected:
-//	std::vector< RDOBaseOperation* > haveBaseOperations; // все паттерны, точки принятия решений и процессы: DP, IE, Rules, Operations, Process
-	RDOBaseLogicContainer haveBaseOperations;
+//	std::vector< RDOBaseOperation* > m_logics; // все паттерны, точки принятия решений и процессы: DP, IE, Rules, Operations, Process
+	RDOLogicContainer m_logics;
 
 	// Following member are used in users class derived from RDOSimulator
 	// to add Operations, IEs, Rules and DecisionPoints which can be 
 	// "happened" in process.
-	virtual void addTemplateBaseOperation( RDOBaseOperation* op ) { haveBaseOperations.append(*op); }
+	virtual void addTemplateBaseOperation( RDOBaseOperation* op )
+	{
+		m_logics.append(*op);
+	}
 
 	// Инициализирует нерегулярные события и блоки GENERATE: задает время первого срабатывания
 	virtual void preProcess();
@@ -341,11 +428,11 @@ protected:
 public:
 	RDOSimulator():
 		RDOSimulatorBase(),
-		haveBaseOperations( NULL ),
+		m_logics( NULL ),
 		opr_must_continue( NULL ),
 		sizeof_sim( 0 )
 	{
-		haveBaseOperations.reparent( this );
+		m_logics.reparent( this );
 	}
 	virtual ~RDOSimulator()
 	{

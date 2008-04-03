@@ -38,8 +38,6 @@ protected:
 	RDOPROCProcess*              parent;
 	std::list< RDOPROCProcess* > child;
 
-	virtual void init( RDOSimulator* sim );
-
 public:
 	RDOPROCProcess( const std::string& _name, RDOSimulator* sim );
 	void insertChild( RDOPROCProcess* value );

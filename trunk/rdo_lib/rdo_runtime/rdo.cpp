@@ -225,10 +225,10 @@ bool RDOSimulator::doOperation()
 		if ( !found_planed ) {
 			// Не нашли запланированное событие
 			// Проверить все возможные события и действия, вызвать первое, которое может буть вызвано
-			res = haveBaseOperations.checkOperation(this);
+			res = m_logics.checkOperation(this);
 			if ( res )
 			{
-				res = haveBaseOperations.doOperation(this) != RDOBaseOperation::BOR_cant_run;
+				res = m_logics.doOperation(this) != RDOBaseOperation::BOR_cant_run;
 			}
 			if ( !res ) check_operation = false;
 		}
@@ -240,9 +240,7 @@ bool RDOSimulator::doOperation()
 
 void RDOSimulator::preProcess()
 {
-	for ( std::vector< RDOBaseOperation* >::const_iterator it = haveBaseOperations.begin(); it != haveBaseOperations.end(); it++ ) {
-		(*it)->init( this );
-	}
+	m_logics.init( this );
 	onResetPokaz();
 }
 

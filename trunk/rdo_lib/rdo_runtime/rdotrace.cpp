@@ -318,8 +318,8 @@ void RDOTrace::writeStatus( RDOSimulatorTrace* sim, char* status )
 	getOStream() << "$Status = " << status << " " << sim->getCurrentTime() << std::endl << getEOL();
 
 	// Статистика по поиску на графе
-	std::vector< RDOBaseOperation* >::const_iterator it = sim->haveBaseOperations.begin();
-	while ( it != sim->haveBaseOperations.end() ) {
+	RDOLogicContainer::CIterator it = sim->m_logics.begin();
+	while ( it != sim->m_logics.end() ) {
 		RDODecisionPointTrace* dp = dynamic_cast<RDODecisionPointTrace*>(*it);
 		if ( dp ) {
 			// Информация о точке
